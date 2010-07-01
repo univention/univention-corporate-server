@@ -1,0 +1,84 @@
+What is MIMP?
+=============
+
+:Last update:   $Date: 2007-12-20 12:09:24 $
+:Revision:      $Revision: 1.6.2.1 $
+:Contact:       imp@lists.horde.org
+
+.. contents:: Contents
+.. section-numbering::
+
+MIMP is a version of `IMP`_ intended for mobile phones/PDAs, written in PHP
+and utilizing the Horde Application Framework.
+
+This software is OSI Certified Open Source Software.  OSI Certified is a
+certification mark of the `Open Source Initiative`_.
+
+.. _IMP: http://www.horde.org/imp/
+.. _`Open Source Initiative`: http://www.opensource.org/
+
+
+Obtaining MIMP
+--------------
+
+Further information on MIMP and the latest version can be obtained at: 
+
+  http://www.horde.org/mimp/
+
+
+Documentation
+-------------
+
+The following documentation is available in the MIMP distribution:
+
+:README_:          This file
+:COPYING_:         Copyright and license information
+:`docs/CHANGES`_:  Changes by release
+:`docs/CREDITS`_:  Project developers
+:`docs/INSTALL`_:  Installation instructions and notes
+
+
+Installation
+------------
+
+Instructions for installing MIMP can be found in the file INSTALL_ in the
+``docs/`` directory of the MIMP distribution.
+
+
+Assistance
+----------
+
+If you encounter problems with MIMP, help is available! 
+
+The Horde Frequently Asked Questions List (FAQ), available on the Web at
+ 
+  http://www.horde.org/faq/
+
+The Horde Project runs a number of mailing lists, for individual applications
+and for issues relating to the project as a whole.  Information, archives, and
+subscription information can be found at
+
+  http://www.horde.org/mail/
+
+Lastly, Horde developers, contributors and users also make occasional
+appearances on IRC, on the channel #horde on the freenode Network
+(irc.freenode.net).
+
+
+Licensing
+---------
+
+For licensing and copyright information, please see the file COPYING_ in the
+MIMP distribution.
+
+Thanks,
+
+The MIMP team
+
+
+.. _README: ?f=README.html
+.. _COPYING: http://www.horde.org/licenses/gpl.php
+.. _docs/CHANGES: ?f=CHANGES.html
+.. _docs/CREDITS: ?f=CREDITS.html
+.. _INSTALL:
+.. _docs/INSTALL: ?f=INSTALL.html

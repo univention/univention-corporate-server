@@ -8,8 +8,8 @@ in conjunction with shared calendars if not all readers have write permission.
 Additionally the patch switches event's german "owner" translation from 
 "Besitzer" to "Organisator".
 
---- a/horde-webmail/kronolith/lib/Driver.php
-+++ b/horde-webmail/kronolith/lib/Driver.php
+--- a/horde-webmailer/kronolith/lib/Driver.php
++++ b/horde-webmailer/kronolith/lib/Driver.php
 @@ -1433,7 +1433,7 @@ class Kronolith_Event {
       */
      function getCreatorId()
@@ -19,8 +19,8 @@ Additionally the patch switches event's german "owner" translation from
      }
  
      /**
---- a/horde-webmail/kronolith/lib/Driver/kolab.php
-+++ b/horde-webmail/kronolith/lib/Driver/kolab.php
+--- a/horde-webmailer/kronolith/lib/Driver/kolab.php
++++ b/horde-webmailer/kronolith/lib/Driver/kolab.php
 @@ -1467,6 +1467,58 @@ class Kronolith_Event_kolab_new extends Kronolith_Event {
              $this->alarm = $event['alarm'];
          }
@@ -80,8 +80,8 @@ Additionally the patch switches event's german "owner" translation from
          $this->start = new Horde_Date($event['start-date']);
          $this->end = new Horde_Date($event['end-date']);
          $this->durMin = ($this->end->timestamp() - $this->start->timestamp()) / 60;
---- a/horde-webmail/kronolith/lib/Views/Event.php
-+++ b/horde-webmail/kronolith/lib/Views/Event.php
+--- a/horde-webmailer/kronolith/lib/Views/Event.php
++++ b/horde-webmailer/kronolith/lib/Views/Event.php
 @@ -59,7 +59,11 @@ class Kronolith_View_Event {
                      case 'add':
                          $created = $entry['ts'];
@@ -108,8 +108,8 @@ Additionally the patch switches event's german "owner" translation from
                          } else {
                              $modifiedby = _("by me");
                          }
---- a/horde-webmail/kronolith/po/de_DE.po
-+++ b/horde-webmail/kronolith/po/de_DE.po
+--- a/horde-webmailer/kronolith/po/de_DE.po
++++ b/horde-webmailer/kronolith/po/de_DE.po
 @@ -1348,8 +1348,8 @@ msgid ""
  "Only the owner or system administrator may change ownership or owner "
  "permissions for a share"

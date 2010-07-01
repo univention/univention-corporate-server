@@ -35,7 +35,7 @@ index f11ae06..8d1154e 100644
          $this->addVariable(_("Name"), 'name', 'text', true);
          $this->addVariable(_("Description"), 'description', 'longtext', false, false, null, array(4, 60));
 +        $this->addVariable(_("Relevance"), 'fbrelevance', 'radio', false, false, null, 
-+                           array(array('owners/administrators', 'readers', 'no one'), 
++                           array(array(_("owners/administrators"), _("readers"), _("no one")), 
 +                                 'This calendar is only included into the free/busy data for ...'));
  
          $this->setButtons(array(_("Create")));
@@ -57,7 +57,7 @@ index 0a76c57..e0b4659 100644
          $this->addVariable(_("Name"), 'name', 'text', true);
          $this->addVariable(_("Description"), 'description', 'longtext', false, false, null, array(4, 60));
 +        $this->addVariable(_("Relevance"), 'fbrelevance', 'radio', false, false, null, 
-+                           array(array('owners/administrators', 'readers', 'no one'), 
++                           array(array(_("owners/administrators"), _("readers"), _("no one")), 
 +                                 'This calendar is only included into the free/busy data for ...'));
  
          $this->setButtons(array(_("Save")));
@@ -70,6 +70,24 @@ index 0a76c57..e0b4659 100644
  
          if ($original_name != $this->_vars->get('name')) {
              $result = $GLOBALS['kronolith_driver']->rename($original_name, $this->_vars->get('name'));
+--- a/po/de_DE.po	2010-03-05 14:12:23.870442274 +0100
++++ b/po/de_DE.po.orig	2010-03-05 14:26:38.598825847 +0100
+@@ -2697,3 +2697,15 @@
+ 
+ msgid "Save Attendee List"
+ msgstr "Teilnehmerliste speichern"
++
++msgid "Relevance"
++msgstr "Relevant für"
++
++msgid "owners/administrators"
++msgstr "Eigentümer/Administratoren"
++
++msgid "readers"
++msgstr "Leser"
++
++msgid "no one"
++msgstr "niemanden"
 -- 
 tg: (2b89751..) t/kronolith/HK/GW/FbviewRelevance (depends on: t/kronolith/HK/SB/ExtraParameters)
 -- 

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Horde: mnemo/locale/it_IT/help.xml,v 1.3 2003-07-04 20:51:45 jan Exp $ -->
+<help>
+  <entry id="Overview" state="uptodate" md5="50ee76138fb08b04b029006053bbadbc">
+    <title>Overview</title>
+    <heading>Introduction</heading>
+    <para>
+    <i>Appunti</i> è un programma che ti permette di creare gli equivalenti informatici dei Post-It®. Gli appunti possono essere creati, modificati, eliminati e stampati. Inoltre, puoi fare delle ricerche sui tuoi appunti per trovare l'informazioni. E' disponibile anche il supporto per l'importazione e l'esportazione degli appunti.
+    </para>
+    <para>
+    Al contrario dei Post-It®, i tuoi appunti informatici possono essere condivisi con gli altri nei diversi luoghi geografici. Gli appunti si possono organizzare in diversi blocchi appunti e dividere in categorie.
+    </para>
+</entry>
+  <entry id="list-actions" state="uptodate" md5="6d592f153bfb5c296de5dfebb428e1ba">
+    <title>Lista Note: Azioni</title>
+    <heading>Azioni</heading>
+    <para>
+    <i>Cancella Nota</i> elimina in modo permanente la nota selezionata.
+    </para>
+    <para>
+    <i>Modifica Nota</i> permette di modificare una nota esistente.
+    </para>
+    <para>
+    <i>Torna al Blocco Note</i> torna indietro dalla vista note al blocco note.
+    </para>
+</entry>
+  <entry id="menu-actions" state="uptodate" md5="3325c9be84c986753d3fde061266d934">
+    <title>Opzioni Menu</title>
+    <heading>Opzioni Menu</heading>
+    <para>
+    <i>Lista Note</i> elenca tutte le note presenti nel blocco note.
+    </para>
+    <para>
+    <i>Nuova Nota</i> permette di creare una nuova nota nel blocco note.
+    </para>
+    <para>
+    <i>Ricerca</i> permette di ricercare un testo nelle note. E' possobile fare ricerca nel campo Descrizione o nel testo completo delle note.
+    </para>
+    <para>
+    <i>Stampa</i> permette di stampare una nota. L'icona <i>Stampa</i> è presente nel menu solo quando si sta visualizzando una nota.
+    </para>
+</entry>
+  <entry id="sorting" state="uptodate" md5="cca3b1d1c9ed0ec5ab385f82469ddc8f">
+    <title>Ordinamento Voci</title>
+    <heading>Ordinamento Voci</heading>
+    <para>
+    Quandi viene visualizzato un elenco di voci, e' possibile farne l'ordinamento per colonna, andando a selezionare il titolo della colonna appropriata. Per passare da un ordinamento crescente ad uno decrescente è sufficiente cliccare sull'icona freccia presente nel titolo della colonna.
+    </para>
+</entry>
+</help>

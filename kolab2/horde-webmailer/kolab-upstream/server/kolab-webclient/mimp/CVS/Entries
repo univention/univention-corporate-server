@@ -1,4 +1,5 @@
-/.cvsignore/1.1/Tue Jan 19 05:36:24 2010//THEAD
-/Makefile/1.1/Tue Jan 19 05:36:24 2010//THEAD
-/mimp.spec/1.2/Fri Jan 22 08:41:35 2010//THEAD
-D
+D/configuration////
+D/templates////
+/.cvsignore/1.1/Tue Jun 15 12:35:25 2010//THEAD
+/Makefile/1.1/Tue Jun 15 12:35:25 2010//THEAD
+/mimp.spec/1.2/Tue Jun 15 12:35:25 2010//THEAD

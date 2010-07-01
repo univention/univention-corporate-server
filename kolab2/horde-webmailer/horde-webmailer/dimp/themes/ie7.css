@@ -1,0 +1,57 @@
+/**
+ * $Horde: dimp/themes/ie7.css,v 1.14.2.9 2009-03-26 04:34:55 slusarz Exp $
+ *
+ * CSS corrections for IE 7.
+ */
+
+#pageContainer {
+    height: 1px;
+}
+
+#sidebarPanel li {
+    overflow: hidden;
+    max-width: 133px;
+    text-overflow: ellipsis;
+}
+#sidebarPanel .folderlist {
+    overflow-y: auto;
+}
+
+#msgSplitPane {
+    margin-top: -4px;
+    width: 99.7%;
+}
+
+div.msgSize {
+    width: auto;
+    overflow: hidden;
+}
+
+form#compose {
+    margin-top: -13px;
+}
+#to, #cc, #bcc, .msgBody {
+    overflow: auto;
+}
+
+#alerts {
+    width: expression(document.body.clientWidth/2);
+}
+
+#sidebarPanel .custom img {
+    vertical-align: middle;
+}
+
+.block-monthgrid table {
+    border-width: 2px;
+}
+
+#msgHeadersColl div.others div.from a.address, #msgHeaderFrom a.address, #msgHeaderTo a.address {
+    overflow: hidden;
+    position: static;
+}
+
+/* Fixes li & ol list numbering issues in HTML messages. */
+#html-message ul li , #html-message ol li {
+    margin-left: 2em;
+}

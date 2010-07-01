@@ -1,0 +1,1044 @@
+# Ingo Hungarian translation file
+# Copyright 2004-2008 Laszlo L. Tornoci
+# This file is distributed under the same license as the Ingo package.
+#
+# Attila Nagy <bra@fsn.hu>, 2004.
+# Laszlo L. Tornoci <torlasz@xenia.sote.hu>, 2008.
+msgid ""
+msgstr ""
+"Project-Id-Version: Ingo-h3-1.2\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-01-22 17:27+0100\n"
+"PO-Revision-Date: 2008-01-26 15:14+0100\n"
+"Last-Translator: Laszlo L. Tornoci <torlasz@xenia.sote.hu>\n"
+"Language-Team: Hungarian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+#: filters.php:223
+msgid " and"
+msgstr " és"
+
+#: filters.php:223
+msgid " or"
+msgstr " vagy"
+
+#: templates/blacklist/blacklist.inc:17
+msgid "Action for blacklisted addresses:"
+msgstr ""
+"A feketelistán szereplõ feladótól érkezõ üzenettel a következõ történjen:"
+
+#: templates/script/activate.inc:10
+msgid "Activate Script"
+msgstr "Szûrõlista érvényesítése"
+
+#: lib/Driver/ldap.php:229
+#, php-format
+msgid "Activating the script for \"%s\" failed: (%d) %s"
+msgstr "A \"%s\" script aktiválása nem sikerült: (%d) %s"
+
+#: templates/filters/settings.inc:8
+msgid "Additional Settings"
+msgstr "További beállítások"
+
+#: forward.php:43
+msgid "Address(es) to forward to:"
+msgstr "Cím(ek), amelyekre továbbítjuk az üzenetet:"
+
+#: vacation.php:56
+msgid "Addresses to not send responses to:"
+msgstr "A következõ címekre ne küldjünk választ:"
+
+#: vacation.php:50
+msgid "Advanced Settings"
+msgstr "Haladó beállítások"
+
+#: templates/rule/header.inc:44
+msgid "All of the following"
+msgstr "mindegyikének"
+
+#: lib/api.php:68
+msgid "Allow Rules"
+msgstr "Szabályok engedélyezése"
+
+#: templates/rule/footer.inc:34
+msgid "Answered"
+msgstr "Megválaszolt"
+
+#: templates/rule/header.inc:45
+msgid "Any of the following"
+msgstr "valamelyikének"
+
+#: templates/filters/footer.inc:8
+msgid "Apply Filters"
+msgstr "Kapcsoljuk be a szûrõket"
+
+#: filters.php:252
+msgid "Are you sure you want to delete this rule?"
+msgstr "Biztos, hogy törölni akarja ezt a szabályt?"
+
+#: config/prefs.php.dist:33
+msgid "Automatically update the script after each change?"
+msgstr "Automatikusan frissítsük a szûrõszabályt minden változtatás után?"
+
+#: vacation.php:41
+msgid "Basic Settings"
+msgstr "Alapbeállítások"
+
+#: config/fields.php.dist:47
+msgid "Bcc"
+msgstr "Bcc"
+
+#: lib/Storage.php:346
+msgid "Begins with"
+msgstr "A következõvel kezdõdik"
+
+#: lib/Driver/ldap.php:106 lib/Driver/ldap.php:111
+#, php-format
+msgid "Bind failed: (%s) %s"
+msgstr "A kapcsolat felvétele nem sikerült: (%s) %s"
+
+#: filters.php:174 templates/blacklist/blacklist.inc:7
+#: lib/Block/overview.php:95 lib/Block/overview.php:98
+msgid "Blacklist"
+msgstr "Tiltott címek"
+
+#: blacklist.php:104
+msgid "Blacklist Edit"
+msgstr "Tiltott címek szerkesztése"
+
+#: blacklist.php:19
+msgid "Blacklist is not supported in the current filtering driver."
+msgstr "A feketelista nem támogatott a szûrõmeghajtóban"
+
+#: lib/Script/procmail.php:209 lib/Script/sieve.php:269
+#: lib/Script/maildrop.php:197
+msgid "Blacklisted Addresses"
+msgstr "Tiltott címek"
+
+#: config/fields.php.dist:100
+msgid "Body"
+msgstr "Levéltörzs"
+
+#: filters.php:220 rule.php:322
+msgid "Case Sensitive"
+msgstr "Kis/nagybetû érzékeny"
+
+#: config/fields.php.dist:43
+msgid "Cc"
+msgstr "Cc"
+
+#: spam.php:90 rule.php:141 whitelist.php:38 forward.php:56 vacation.php:81
+#: blacklist.php:70
+msgid "Changes saved."
+msgstr "Változások elmentve."
+
+#: lib/Driver/ldap.php:73
+msgid "Connection failure"
+msgstr "A kapcsolat nem sikerült"
+
+#: lib/Storage.php:342
+msgid "Contains"
+msgstr "A következõt tartalmazza"
+
+#: filters.php:263 filters.php:264
+#, php-format
+msgid "Copy %s"
+msgstr "%s másolása"
+
+#: lib/Storage.php:993 lib/Storage/sql.php:618
+#, php-format
+msgid "Copy of %s"
+msgstr "%s másolata"
+
+#: lib/Template.php:235
+#, php-format
+msgid "Could not save the compiled template file '%s'."
+msgstr "Nem sikerült elmenteni a lefordított '%s' állományt."
+
+#: lib/Ingo.php:62
+msgid "Create new folder"
+msgstr "Hozzunk létre új mappát"
+
+#: lib/Script/procmail.php:342 lib/Script/maildrop.php:362
+msgid "DISABLED: "
+msgstr "LETILTVA:"
+
+#: templates/script/activate.inc:17
+msgid "Deactivate Script"
+msgstr "Szûrõlista érvénytelenítése"
+
+#: filters.php:252 filters.php:253
+#, php-format
+msgid "Delete %s"
+msgstr "%s törlése"
+
+#: templates/rule/filter.inc:33
+msgid "Delete Condition"
+msgstr "A feltétel törlése"
+
+#: lib/Storage.php:290
+msgid "Delete message completely"
+msgstr "Végérvényesen töröljük a levelet"
+
+#: templates/rule/footer.inc:36
+msgid "Deleted"
+msgstr "Törölt"
+
+#: lib/Storage.php:278
+msgid "Deliver into my Inbox"
+msgstr "A levél kerüljön az INBOX-omba"
+
+#: lib/Storage.php:304
+msgid "Deliver into my Inbox and copy to"
+msgstr "A levél kerüljön az INBOX-omba és másoljuk át ide"
+
+#: lib/Storage.php:299
+msgid "Deliver into my Inbox and redirect to"
+msgstr "A levél kerüljön az INBOX-omba és irányítsuk át a következõ címre"
+
+#: lib/Storage.php:284
+msgid "Deliver to folder"
+msgstr "Kézbesítés a következõ folderbe"
+
+#: config/fields.php.dist:83
+msgid "Destination (To,Cc,Bcc,etc)"
+msgstr "Címzett (To,Cc,Bcc, stb.)"
+
+#: filters.php:277 filters.php:278
+#, php-format
+msgid "Disable %s"
+msgstr "%s inaktiválása"
+
+#: spam.php:149 forward.php:99 vacation.php:153
+#: templates/whitelist/whitelist.inc:10 templates/blacklist/blacklist.inc:10
+#: templates/rule/header.inc:26
+msgid "Disabled"
+msgstr "Letiltott"
+
+#: templates/filters/settings.inc:15
+msgid "Display detailed notification when each filter is applied?"
+msgstr ""
+"Jelenítsünk meg részletes tájékoztatást amint az egyes sz?r?k alkalmazása "
+"megtörténik?"
+
+#: vacation.php:58
+msgid "Do not send responses to bulk or list messages?"
+msgstr "Tömeges és levelezõlistás üzenetekre ne küljdünk választ?"
+
+#: templates/rule/footer.inc:10
+msgid "Do this:"
+msgstr "Tedd ezt:"
+
+#: lib/Storage.php:347
+msgid "Doesn't begin with"
+msgstr "Nem a következõvel kezdõdik"
+
+#: lib/Storage.php:343
+msgid "Doesn't contain"
+msgstr "Nem tartalmazza a következõt"
+
+#: lib/Storage.php:349
+msgid "Doesn't end with"
+msgstr "Nem a következõvel végzõdik"
+
+#: lib/Storage.php:351
+msgid "Doesn't exist"
+msgstr "Nem létezik"
+
+#: lib/Storage.php:354
+msgid "Doesn't match (with placeholders)"
+msgstr "Nem illeszkedik (adatszimbólumokkal)"
+
+#: templates/filters/header.inc:26 lib/Block/overview.php:63
+#: lib/Block/overview.php:72 lib/Block/overview.php:87
+#: lib/Block/overview.php:97 lib/Block/overview.php:107
+msgid "Edit"
+msgstr "Szerkesztés"
+
+#: filters.php:241 filters.php:243 filters.php:247 filters.php:248
+#, php-format
+msgid "Edit %s"
+msgstr "%s szerkesztése"
+
+#: filters.php:287 filters.php:288
+#, php-format
+msgid "Enable %s"
+msgstr "%s engedélyezése"
+
+#: templates/filters/header.inc:28
+msgid "Enabled"
+msgstr "Engedélyezett"
+
+#: vacation.php:45
+msgid "End of vacation:"
+msgstr "Az automatikus válaszlevelek küldésének vége:"
+
+#: lib/Storage.php:348
+msgid "Ends with"
+msgstr "A következõvel végzõdik"
+
+#: lib/Storage.php:359
+msgid "Equal to"
+msgstr "A következõvel egyenlõ"
+
+#: lib/Driver/ldap.php:138 lib/Driver/ldap.php:148 lib/Driver/ldap.php:157
+#: lib/Driver/ldap.php:167
+#, php-format
+msgid "Error retrieving current script: (%d) %s"
+msgstr "Nem sikerült beolvasni a scriptet: (%d) %s"
+
+#: blacklist.php:68
+msgid "Error saving changes."
+msgstr "A változások elmentésekor hiba történt."
+
+#: templates/filters/header.inc:20
+msgid "Existing Rules"
+msgstr "Létezõ szabályok"
+
+#: lib/Storage.php:350
+msgid "Exists"
+msgstr "Létezik"
+
+#: lib/Driver/ldap.php:143
+#, php-format
+msgid "Expected 1 object, got %d."
+msgstr "A várt 1 objektum helyett %d jött."
+
+#: lib/Driver/sivtest.php:204
+msgid "Failed to read from socket: "
+msgstr "Nem sikerült olvasni a socketról:"
+
+#: lib/Driver/sivtest.php:199
+msgid "Failed to write to socket: "
+msgstr "Nem sikerült írni a socketra:"
+
+#: lib/Driver/sivtest.php:194
+msgid "Failed to write to socket: (connection lost!)"
+msgstr "Nem sikerült írni a socketra: (megszakadt a kapcsolat!)"
+
+#: templates/rule/filter.inc:10
+msgid "Field"
+msgstr "mezõ"
+
+#: templates/filters/settings.inc:22
+msgid "Filter All Messages"
+msgstr "Összes levél szûrése"
+
+#: templates/filters/settings.inc:24
+msgid "Filter Only Seen Messages"
+msgstr "Csak az olvasott levelek szûrése"
+
+#: templates/filters/settings.inc:23
+msgid "Filter Only Unseen Messages"
+msgstr "Csak az olvasatlan levelek szûrése"
+
+#: templates/filters/settings.inc:20
+msgid "Filter Options"
+msgstr "Szûrési beállítások"
+
+#: templates/rule/header.inc:25
+msgid "Filter Rule"
+msgstr "Szûrési szabály"
+
+#: filters.php:139
+msgid "Filter Rules"
+msgstr "Szûrési szabályok"
+
+#: script.php:54
+msgid "Filter Script Display"
+msgstr "A szûrõprogram megjelenítése"
+
+#: lib/Ingo.php:379
+msgid "Filter _Rules"
+msgstr "_Szûrõfeltételek"
+
+#: lib/Script/imap.php:348
+#, php-format
+msgid "Filter activity: %s message(s) have been copied to the folder \"%s\"."
+msgstr "Szûrõfunkció: %s levelet áthelyeztünk a %s mappába."
+
+#: lib/Script/imap.php:334
+#, php-format
+msgid "Filter activity: %s message(s) have been deleted."
+msgstr "Szûrõfunkció: %s levelet töröltünk."
+
+#: lib/Script/imap.php:312
+#, php-format
+msgid "Filter activity: %s message(s) have been moved to the folder \"%s\"."
+msgstr "Szûrõfunkció: %s levelet áthelyeztünk a %s mappába."
+
+#: lib/Script/imap.php:206
+#, php-format
+msgid "Filter activity: %s message(s) that matched the blacklist were deleted."
+msgstr ""
+"Szûrõfunkció: %s olyan levelet töröltünk, amely megfelelt a feketelistának."
+
+#: lib/Script/imap.php:345
+#, php-format
+msgid ""
+"Filter activity: The message \"%s\" from \"%s\" has been copied to the "
+"folder \"%s\"."
+msgstr ""
+"Szûrõfunkció: A %s levelet, amely %s-tõl érkezett áthelyeztük a %s mappába."
+
+#: lib/Script/imap.php:329
+#, php-format
+msgid "Filter activity: The message \"%s\" from \"%s\" has been deleted."
+msgstr "Szûrõfunkció: \"%s\"-tõl \"%s\"-ig a leveleket töröltük."
+
+#: lib/Script/imap.php:306
+#, php-format
+msgid ""
+"Filter activity: The message \"%s\" from \"%s\" has been moved to the folder "
+"\"%s\"."
+msgstr ""
+"Szûrõfunkció: A %s levelet, amely %s-tõl érkezett áthelyeztük a %s mappába."
+
+#: rule.php:188
+msgid "Filter not found."
+msgstr "Nem létezõ szabály"
+
+#: templates/rule/footer.inc:32
+msgid "Flagged For Followup"
+msgstr "Követésre megjelölve"
+
+#: spam.php:74
+msgid "Folder to receive spam:"
+msgstr "A spam mappa neve:"
+
+#: templates/rule/header.inc:42
+msgid "For an incoming message that matches:"
+msgstr ""
+"A szabály arra a bejövõ levélre lesz érvényes, amely megfelel az alábbi "
+"feltételek:"
+
+#: filters.php:192 forward.php:97 lib/Block/overview.php:71
+#: lib/Block/overview.php:73
+msgid "Forward"
+msgstr "Továbbítás"
+
+#: lib/Script/sieve.php:222
+msgid "Forward Keep Action"
+msgstr "Továbbítási másolat"
+
+#: forward.php:18
+msgid "Forward is not supported in the current filtering driver."
+msgstr "A továbbítás nem támogatott a szûrõmeghajtóban"
+
+#: lib/Script/procmail.php:288 lib/Script/sieve.php:232
+#: lib/Script/maildrop.php:246
+msgid "Forwards"
+msgstr "Továbbítások"
+
+#: forward.php:104
+msgid "Forwards Edit"
+msgstr "Továbbítások szerkesztése"
+
+#: config/fields.php.dist:39
+msgid "From"
+msgstr "Feladó"
+
+#: lib/Script/sieve.php:2927
+msgid "From:"
+msgstr "Feladó:"
+
+#: lib/Script/sieve.php:118
+msgid "Generated by Ingo (http://www.horde.org/ingo/)"
+msgstr ""
+
+#: lib/Storage.php:357
+msgid "Greater than"
+msgstr "Nagyobb mint"
+
+#: lib/Storage.php:358
+msgid "Greater than or equal to"
+msgstr "Nagyobb mint, vagy egyenlõ"
+
+#: rule.php:38
+msgid "Individual rules are not supported in the current filtering driver."
+msgstr "A jelenlegi szûrõmeghajtó nem támogatja az egyéni szûrõszabályokat."
+
+#: lib/Script/sieve.php:2521
+msgid "Inexistant mailbox specified for message delivery."
+msgstr "A kézbesítéshez nemlétezõ levélládát adtak meg."
+
+#: lib/Storage.php:344
+msgid "Is"
+msgstr "Megegyezik a következõvel"
+
+#: lib/Storage.php:345
+msgid "Isn't"
+msgstr "Nem a következõ"
+
+#: forward.php:41
+msgid "Keep a copy of messages in this account?"
+msgstr "Küldjünk a levelekrõl egy másolatot erre a címre?"
+
+#: lib/Driver/ldap.php:23
+msgid ""
+"LDAP support is required but the LDAP module is not available or not loaded."
+msgstr ""
+"LDAP támogatásra lenne szükség, de az LDAP modul nem áll rendelkezésre, vagy "
+"nem töltõdött be."
+
+#: lib/Storage.php:355
+msgid "Less than"
+msgstr "Kevesebb, mint"
+
+#: lib/Storage.php:356
+msgid "Less than or equal to"
+msgstr "Kevesebb, vagy egyenlõ mint"
+
+#: config/fields.php.dist:59
+msgid "List-ID"
+msgstr "Lista azonosító"
+
+#: templates/blacklist/blacklist.inc:20
+msgid "Mar_k message as deleted"
+msgstr "_Jelöljük meg a levelet töröltnek"
+
+#: templates/rule/footer.inc:25
+msgid "Mark message as:"
+msgstr "Jelöljük meg a levelet a következõképpen:"
+
+#: templates/rule/filter.inc:23
+msgid "Match type"
+msgstr "Az illeszkedés típusa"
+
+#: lib/Storage.php:353
+msgid "Matches (with placeholders)"
+msgstr "Illeszkedik (adatszimbólumokkal)"
+
+#: lib/api.php:71
+msgid "Maximum Number of Rules"
+msgstr "A szabályok maximális száma"
+
+#: lib/Storage.php:507
+#, php-format
+msgid ""
+"Maximum number of blacklisted addresses exceeded (Total addresses: %s, "
+"Maximum addresses: %s).  Could not add new addresses to blacklist."
+msgstr ""
+"Túllépte a tiltólistán tárolható címek maximálisan megengedett számát (címek "
+"száma: %s, maximális szám: %s). Az új cím nem került fel a listára."
+
+#: lib/Storage.php:560
+#, php-format
+msgid ""
+"Maximum number of whitelisted addresses exceeded (Total addresses: %s, "
+"Maximum addresses: %s).  Could not add new addresses to whitelist."
+msgstr ""
+"Túllépte az engedélyezett címek listáján tárolható címek maximálisan "
+"megengedett számát (címek száma: %s, maximális szám: %s). Az új cím nem "
+"került fel a listára."
+
+#: spam.php:71
+msgid ""
+"Messages with a likely spam score greater than or equal to this number will "
+"be treated as spam."
+msgstr ""
+"Azokat a leveleket, melyeknek spampontszáma ennél nagyobb, vagy egyenlõ, "
+"spamként kezeljük."
+
+#: lib/Script/sieve.php:2941
+msgid "Missing address to notify"
+msgstr "Hiányzik a cím, amelyre figyelmeztetést kell küldeni"
+
+#: lib/Script/sieve.php:2322
+msgid "Missing address to redirect message to"
+msgstr "Hiányzik a cím, amelyre át kell irányítanom a levelet"
+
+#: lib/Script/sieve.php:2368
+msgid "Missing reason for reject"
+msgstr "Hiányzik a visszautasításra küldendõ válasz"
+
+#: lib/Script/sieve.php:2671
+msgid "Missing reason in vacation."
+msgstr "Hiányzik a vakációs üzenet."
+
+#: templates/filters/header.inc:32
+msgid "Move"
+msgstr "Mozgatás"
+
+#: filters.php:156 filters.php:273
+msgid "Move Rule Down"
+msgstr "A szabály lejjebb léptetése"
+
+#: filters.php:157 filters.php:272
+msgid "Move Rule Up"
+msgstr "A szabály fejlebb léptetése"
+
+#: vacation.php:53
+msgid "My email addresses:"
+msgstr "Az én e-mail címeim:"
+
+#: templates/filters/filter-none.inc:3 templates/filters/footer.inc:6
+#: lib/Storage.php:889
+msgid "New Rule"
+msgstr "Új szabály"
+
+#: lib/Ingo.php:230 lib/Ingo.php:232
+#, php-format
+msgid "No \"%s\" element found in backend configuration."
+msgstr "Az alrendszer beállításaiban nem található \"%s\" elem."
+
+#: lib/Ingo.php:223
+msgid "No backend configured for this host"
+msgstr "Nincs háttérszerver beállítva ehhez a szolgáltatáshoz"
+
+#: lib/Ingo.php:199
+msgid "No backends configured in backends.php"
+msgstr "Nincs háttérszerver beállítva"
+
+#: templates/filters/filter-none.inc:3
+#, php-format
+msgid "No filters. Click \"%s\" to create a new filter."
+msgstr "Nincsenek szûrõk. Kattintson a(z) \"%s\" gombra egy új létrehozásához."
+
+#: lib/Script/sieve.php:1679 lib/Script/sieve.php:1828
+#: lib/Script/sieve.php:2044
+msgid "No headers specified"
+msgstr "Nem adott meg fejléceket"
+
+#: script.php:69
+msgid "No script generated."
+msgstr "A szûrõlistát nem frissítettem"
+
+#: lib/Script/sieve.php:2060 lib/Script/sieve.php:2144
+msgid "No strings specified"
+msgstr "Nem adott meg értéket"
+
+#: lib/Storage.php:360
+msgid "Not equal to"
+msgstr "Nem egyenlõ a következõvel"
+
+#: lib/Storage.php:320
+msgid "Notify email address"
+msgstr "Küldjön figyelmeztetést erre a címre"
+
+#: vacation.php:60
+msgid "Number of days between vacation replies:"
+msgstr "Ennyi naponként küldjünk csak újból üzenetet:"
+
+#: lib/Storage.php:314
+msgid "Only flag the message"
+msgstr "Csak jelöljük meg a levelet"
+
+#: config/prefs.php.dist:19
+msgid "Options about script updating."
+msgstr "A szûrõlista frissítésével kapcsolatos beállítások."
+
+#: config/prefs.php.dist:17
+msgid "Other Options"
+msgstr "Egyéb beállítások"
+
+#: lib/Block/overview.php:3
+msgid "Overview"
+msgstr "Áttekintés"
+
+#: config/fields.php.dist:91
+msgid "Participant (From,To,etc)"
+msgstr "Résztvevõ (Feladó, címzett, stb.)"
+
+#: templates/javascript/new_folder.js:7
+msgid "Please enter the name of the new folder:"
+msgstr "Kérem adja meg az új mappa nevét:"
+
+#: vacation.php:48
+msgid "Reason:"
+msgstr "Az ok:"
+
+#: config/fields.php.dist:63
+msgid "Received"
+msgstr "A beérkezés napja"
+
+#: lib/Storage.php:295
+msgid "Redirect to"
+msgstr "Átirányítás"
+
+#: lib/Storage.php:352
+msgid "Regular expression"
+msgstr "Reguláris kifejezés"
+
+#: lib/Storage.php:310
+msgid "Reject with reason"
+msgstr "Az üzenet visszadobása a következõ indokkal"
+
+#: config/fields.php.dist:51
+msgid "Resent-From"
+msgstr ""
+
+#: config/fields.php.dist:55
+msgid "Resent-To"
+msgstr ""
+
+#: templates/rule/footer.inc:61
+msgid "Return to Filters List"
+msgstr "Vissza a szabálylistához"
+
+#: spam.php:62 spam.php:130 forward.php:34 forward.php:88 vacation.php:34
+#: vacation.php:117 templates/whitelist/whitelist.inc:24
+#: templates/blacklist/blacklist.inc:42
+msgid "Return to Rules List"
+msgstr "Vissza a szabálylistához"
+
+#: templates/filters/header.inc:27
+msgid "Rule"
+msgstr "Szabály"
+
+#: filters.php:78
+msgid "Rule Copied"
+msgstr "A szabályt lemásoltam"
+
+#: filters.php:57
+msgid "Rule Deleted"
+msgstr "A szabályt töröltem"
+
+#: spam.php:106 filters.php:94 forward.php:72 vacation.php:97
+msgid "Rule Disabled"
+msgstr "A szabályt letiltottuk"
+
+#: spam.php:97 filters.php:99 forward.php:63 vacation.php:88
+msgid "Rule Enabled"
+msgstr "A szabályt engedélyeztem"
+
+#: templates/rule/header.inc:33
+msgid "Rule Name:"
+msgstr "A szabály neve:"
+
+#: lib/Script/sieve.php:2929
+msgid "Rule:"
+msgstr "Szabály:"
+
+#: lib/Driver/ldap.php:86
+#, php-format
+msgid "STARTTLS failed: (%s) %s"
+msgstr "A STARTTLS nem sikerült: (%s) %s"
+
+#: lib/Ingo.php:393
+msgid "S_pam"
+msgstr "Spam"
+
+#: spam.php:79 forward.php:45 vacation.php:62
+#: templates/whitelist/whitelist.inc:23 templates/blacklist/blacklist.inc:41
+#: templates/rule/footer.inc:60
+msgid "Save"
+msgstr "Mentés"
+
+#: templates/filters/settings.inc:31
+msgid "Save Settings"
+msgstr "Beállítások elmentése"
+
+#: spam.php:100 spam.php:126 forward.php:66 forward.php:84 vacation.php:91
+#: vacation.php:113
+msgid "Save and Disable"
+msgstr "Mentsük el és inaktiváljuk"
+
+#: spam.php:91 spam.php:128 forward.php:57 forward.php:86 vacation.php:82
+#: vacation.php:115
+msgid "Save and Enable"
+msgstr "Mentsük el és aktiváljuk"
+
+#: templates/script/header.inc:2
+msgid "Script"
+msgstr "Szûrõlista"
+
+#: config/prefs.php.dist:18
+msgid "Script Updating"
+msgstr "Szûrõlista frissítés"
+
+#: lib/Ingo.php:175
+msgid "Script not updated."
+msgstr "A szûrõlistát nem frissítettem"
+
+#: lib/Ingo.php:146
+msgid "Script successfully activated."
+msgstr "A szûrõlistát sikeresen érvényesítettem."
+
+#: lib/Ingo.php:145
+msgid "Script successfully deactivated."
+msgstr "A szûrõlistát sikeresen érvényesítettem."
+
+#: templates/rule/footer.inc:30
+msgid "Seen"
+msgstr "Olvasott"
+
+#: rule.php:218
+msgid "Select a field"
+msgstr "Válasszon ki egy mezõt"
+
+#: templates/menu.inc:6 templates/menu.inc:8
+msgid "Select ruleset to display:"
+msgstr "Melyik szabályrendszert mutassuk:"
+
+#: rule.php:347 templates/blacklist/blacklist.inc:23 lib/Ingo.php:59
+msgid "Select target folder"
+msgstr "Válassza ki a célmappát"
+
+#: rule.php:255
+msgid "Self-Defined Header"
+msgstr "Általam megadott fejléc"
+
+#: config/fields.php.dist:35
+msgid "Sender"
+msgstr "Küldõ"
+
+#: filters.php:118
+msgid "Settings successfully updated."
+msgstr "A beállításokat sikeresen érvényesítettem."
+
+#: templates/script/activate.inc:24
+msgid "Show Active Script"
+msgstr "Aktuális szûrõlista megtekintése"
+
+#: templates/script/activate.inc:31
+msgid "Show Current Script"
+msgstr "Az aktuális szûrõlista megjelenítése"
+
+#: spam.php:18
+msgid "Simple spam filtering is not supported in the current filtering driver."
+msgstr "Az egyszerû spamszûrés nem támogatott a jelenlegi szûrõmeghajtóban."
+
+#: config/fields.php.dist:95
+msgid "Size"
+msgstr "Méret"
+
+#: config/fields.php.dist:87
+msgid "Source (From,Reply-to,etc)"
+msgstr "Küldõ (Feladó, Viszontválasz cím, stb.)"
+
+#: filters.php:198 lib/Script/sieve.php:425 lib/Script/maildrop.php:301
+#: lib/Block/overview.php:105 lib/Block/overview.php:108
+msgid "Spam Filter"
+msgstr "Spamszûrés"
+
+#: spam.php:147 spam.php:154
+msgid "Spam Filtering"
+msgstr "Spamszûrés"
+
+#: spam.php:71
+msgid "Spam Level:"
+msgstr "Spam szint:"
+
+#: vacation.php:43
+msgid "Start of vacation:"
+msgstr "Az automatikus válaszlevelek küldésének kezdete:"
+
+#: templates/rule/footer.inc:50
+msgid "Stop checking if this rule matches?"
+msgstr "Ha ez a szabály ráillik az üzenetre, a többi szabályt ne dolgozzuk fel"
+
+#: config/fields.php.dist:31
+msgid "Subject"
+msgstr "Tárgy"
+
+#: vacation.php:46
+msgid "Subject of vacation message:"
+msgstr "A válaszüzenet tárgy mezõje:"
+
+#: lib/Script/sieve.php:2928
+msgid "Subject:"
+msgstr "Tárgy:"
+
+#: lib/api.php:103
+#, php-format
+msgid "The address \"%s\" has been added to your blacklist."
+msgstr "A \"%s\" címet hozzátettük a feketelistához."
+
+#: lib/api.php:126
+#, php-format
+msgid "The address \"%s\" has been added to your whitelist."
+msgstr "A \"%s\" címet hozzátettük az engedélyezési listájához."
+
+#: lib/Ingo.php:141
+msgid "The driver said: "
+msgstr "A meghajtó a következõt üzente: "
+
+#: lib/Ingo.php:140
+msgid "There was an error activating the script."
+msgstr "Hiba történt a szûrõlista engedélyezése során."
+
+#: lib/Ingo.php:139
+msgid "There was an error deactivating the script."
+msgstr "Hiba történt a szûrõlista letiltása során."
+
+#: config/fields.php.dist:27
+msgid "To"
+msgstr "Címzett"
+
+#: templates/filters/filter.html:32
+msgid "To:"
+msgstr "Címzett:"
+
+#: lib/Script.php:126
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Nem sikerült beolvasni %s definícióját."
+
+#: templates/rule/filter.inc:15
+msgid "User header"
+msgstr "Felhasználói fejléc"
+
+#: filters.php:186 vacation.php:151 lib/Script/procmail.php:268
+#: lib/Script/sieve.php:399 lib/Script/maildrop.php:276
+#: lib/Block/overview.php:61 lib/Block/overview.php:64
+msgid "Vacation"
+msgstr "Automatikus válaszlevél"
+
+#: vacation.php:158
+msgid "Vacation Edit"
+msgstr "Az automatikus válaszlevél szerkesztése"
+
+#: vacation.php:18
+msgid "Vacation is not supported in the current filtering driver."
+msgstr ""
+"A jelenlegi szûrõmeghajtó nem támogatja az automatikus válaszlevelek "
+"küldését."
+
+#: rule.php:353
+msgid "Value"
+msgstr "Érték"
+
+#: templates/whitelist/whitelist.inc:16
+msgid "Wh_itelist addresses:"
+msgstr "_Engedélyezett címek"
+
+#: filters.php:180 templates/whitelist/whitelist.inc:8
+#: lib/Block/overview.php:85 lib/Block/overview.php:88
+msgid "Whitelist"
+msgstr "Engedélyezett címek"
+
+#: whitelist.php:57
+msgid "Whitelist Edit"
+msgstr "Engedélyezett címek szerkesztése"
+
+#: whitelist.php:20
+msgid "Whitelist is not supported in the current filtering driver."
+msgstr "Egyedi címek engedélyezése nem támogatott a szûrõmeghajtóban"
+
+#: lib/Script/procmail.php:236 lib/Script/sieve.php:329
+#: lib/Script/maildrop.php:224
+msgid "Whitelisted Addresses"
+msgstr "Engedélyezett címek"
+
+#: config/fields.php.dist:79
+msgid "X-Priority"
+msgstr ""
+
+#: config/fields.php.dist:67
+msgid "X-Spam-Level"
+msgstr ""
+
+#: config/fields.php.dist:71
+msgid "X-Spam-Score"
+msgstr ""
+
+#: config/fields.php.dist:75
+msgid "X-Spam-Status"
+msgstr ""
+
+#: filters.php:71 rule.php:172
+#, php-format
+msgid "You are not allowed to create more than %d rules."
+msgstr "Ön legfeljebb %d szabályt hozhat létre."
+
+#: filters.php:63 rule.php:23
+msgid "You are not allowed to create or edit custom rules."
+msgstr "Ön nem hozhat létre ill. nem módosíthat saját szabályokat."
+
+#: rule.php:96
+#, php-format
+msgid "You cannot create empty conditions. Please fill in a value for \"%s\"."
+msgstr "Üres feltétel nem hozható létre. Kérem adja meg \"%s\" értékét."
+
+#: filters.php:52 rule.php:151
+msgid "You do not have permission to delete filter rules."
+msgstr "Önnek nincs jogosultsága törölni a szûrõlistát."
+
+#: filters.php:45 filters.php:112 filters.php:123 rule.php:58 rule.php:165
+msgid "You do not have permission to edit filter rules."
+msgstr "Önnek nincs jogosultsága módosítani a szûrõlistát."
+
+#: lib/Script/sieve.php:2926
+msgid "You have received a new message"
+msgstr "Érkezett egy új levele"
+
+#: lib/Script/imap.php:307 lib/Script/imap.php:330 lib/Script/imap.php:345
+msgid "[No Subject]"
+msgstr "[Tárgy nélkül]"
+
+#: lib/Ingo.php:384
+msgid "_Blacklist"
+msgstr "_Tiltott címek"
+
+#: templates/blacklist/blacklist.inc:18
+msgid "_Delete message completely"
+msgstr "Végérvényesen tö_röljük a levelet"
+
+#: templates/blacklist/blacklist.inc:32
+msgid "_Enter each address on a new line:"
+msgstr "Írja be a _címeket, mindegyiket új sorba."
+
+#: lib/Ingo.php:390
+msgid "_Forward"
+msgstr "T_ovábbítás"
+
+#: templates/blacklist/blacklist.inc:22
+msgid "_Move message to folder:"
+msgstr "Tegyük át az üzenetet a következõ _mappába:"
+
+#: lib/Ingo.php:399
+msgid "_Permissions"
+msgstr "_Jogosultságok"
+
+#: lib/Ingo.php:396
+msgid "_Script"
+msgstr "Szûrõlista"
+
+#: lib/Ingo.php:387
+msgid "_Vacation"
+msgstr "_Vakáció"
+
+#: lib/Ingo.php:381
+msgid "_Whitelist"
+msgstr "_Engedélyezett címek"
+
+#: lib/Block/overview.php:54
+msgid "active"
+msgstr "aktív"
+
+#: templates/rule/filter.inc:4
+msgid "and"
+msgstr "és"
+
+#: templates/filters/filter.html:19
+msgid "disabled - click to enable"
+msgstr "inaktiválva - kattintson ide az aktiváláshoz"
+
+#: filters.php:218
+msgid "field"
+msgstr "mezõ"
+
+#: lib/Block/overview.php:52
+msgid "inactive"
+msgstr "inaktív"
+
+#: lib/Script/maildrop.php:134
+msgid "maildrop script generated by Ingo"
+msgstr "a maildrop szkriptet az Ingo keszitette"
+
+#: filters.php:218
+msgid "match"
+msgstr "egyezés"
+
+#: templates/rule/filter.inc:4
+msgid "or"
+msgstr "vagy"
+
+#: lib/Script/procmail.php:130
+msgid "procmail script generated by Ingo"
+msgstr "a procmail szkriptet az Ingo keszitette"

@@ -1,0 +1,3994 @@
+# Horde - Indonesian Language Translation
+# Copyright 2005-2009 The Horde Project (http://www.horde.org/)
+# This file is distributed under the same license as the Horde package.
+# James <james@actionmessage.com>, 2005.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 2005-08-03\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2005-08-03 00:03+0200\n"
+"PO-Revision-Date: 2005-08-04 09:10+0200\n"
+"Last-Translator: James <james@actionmessage.com>\n"
+"Language-Team: id <id@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=US-ASCII\n"
+"Content-Transfer-Encoding: 7bit\n"
+
+#: lib/Block/weatherdotcom.php:231 lib/Block/weatherdotcom.php:339
+#: lib/Block/weatherdotcom.php:385
+msgid " at "
+msgstr " pada "
+
+#: admin/groups.php:56
+#, php-format
+msgid "\"%s\" was added to the groups system."
+msgstr "\"%s\" sudah ditambahkan ke dalam sistem grup."
+
+#: admin/perms/addchild.php:52
+#, php-format
+msgid "\"%s\" was added to the permissions system."
+msgstr "\"%s\" sudah ditambahkan ke dalam izin sistem."
+
+#: admin/groups.php:54 admin/perms/addchild.php:50
+#, php-format
+msgid "\"%s\" was not created: %s."
+msgstr "\"%s\" belum dibuat: %s."
+
+#: lib/Block/account.php:70
+#, php-format
+msgid "%.2fMB used of %.2fMB allowed (%.2f%%)"
+msgstr "%.2fMB sudah digunakan dari %.2fMB yang sudah diijinkan (%.2f%%)"
+
+#: lib/Block/weatherdotcom.php:212
+#, php-format
+msgid "%d %s and %s"
+msgstr "%d %s dan %s"
+
+#: lib/Block/account.php:557
+#, php-format
+msgid "%d days until your password expires."
+msgstr "%d hari sampai sandi anda habis masa berlakunya."
+
+#: lib/Block/weatherdotcom.php:260
+#, php-format
+msgid "%d-day forecast"
+msgstr "%d-hari ramalan cuaca"
+
+#: services/maintenance.php:68
+#, php-format
+msgid "%s - Notice"
+msgstr "%s - Pemberitahuan"
+
+#: services/maintenance.php:49
+#, php-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "Konfirmasi - Operasi Pemeliharaan %s"
+
+#: admin/setup/config.php:30 admin/setup/index.php:219
+#, php-format
+msgid "%s Setup"
+msgstr "%s Setup"
+
+#: services/maintenance.php:59
+#, php-format
+msgid "%s Terms of Agreement"
+msgstr "%s Syarat-syarat Perjanjian"
+
+#: lib/Block/metar.php:157 lib/Block/metar.php:163 lib/Block/metar.php:237
+#: lib/Block/metar.php:343 lib/Block/metar.php:349
+#, php-format
+msgid "%s at %s %s"
+msgstr "%s pada %s %s"
+
+#: services/maintenance.php:48
+#, php-format
+msgid ""
+"%s is ready to perform the maintenance operations checked below. Check the "
+"box for any operation(s) you want to perform at this time."
+msgstr ""
+"%s siap untuk melaksanakan operasi pemeliharaan yang sudah ditandai di bawah "
+"ini. Berilah tanda pada kotak tersebut untuk operasi manapun yang anda "
+"inginkan untuk dilaksanakan pada waktu ini."
+
+#: lib/Block/metar.php:284
+#, php-format
+msgid "%s minutes"
+msgstr "%s menit"
+
+#: templates/admin/user/list.inc:4
+#, php-format
+msgid "%s to %s of %s"
+msgstr "%s untuk %s %s"
+
+#: lib/Block/weatherdotcom.php:343 lib/Block/weatherdotcom.php:388
+msgid ", gusting"
+msgstr ", angin kencang"
+
+#: lib/Block/metar.php:186 lib/Block/metar.php:191
+#, php-format
+msgid ", gusting %s %s"
+msgstr ", angin kencang %s %s"
+
+#: lib/Block/metar.php:199
+#, php-format
+msgid ", variable from %s to %s"
+msgstr ", variable dari %s ke %s"
+
+#: lib/Block/time.php:20
+msgid "12 Hour Format"
+msgstr "Format 12 Jam"
+
+#: lib/Block/time.php:19
+msgid "24 Hour Format"
+msgstr "Format 24 Jam"
+
+#: templates/data/time.inc:28
+msgid "24 hours"
+msgstr "24 jam"
+
+#: lib/Block/metar.php:117
+msgid "A database backend is required for this block."
+msgstr "Database backend diperlukan untuk area ini."
+
+#: lib/Block/weatherdotcom_strings.php:7
+msgid "AM Clouds"
+msgstr "AM Mendung"
+
+#: lib/Block/weatherdotcom_strings.php:8
+msgid "AM Light Rain"
+msgstr "AM Gerimis"
+
+#: lib/Block/weatherdotcom_strings.php:9
+msgid "AM Rain"
+msgstr "AM Hujan"
+
+#: lib/Block/weatherdotcom_strings.php:10
+msgid "AM Showers"
+msgstr "AM Gerimis"
+
+#: lib/Block/weatherdotcom_strings.php:11
+msgid "AM Snow Showers"
+msgstr "AM Gerimis Salju"
+
+#: templates/data/time.inc:29
+msgid "AM/PM"
+msgstr "AM/PM"
+
+#: templates/javascript/htmlarea_lang.js:30
+msgid "About this editor"
+msgstr "Tentang editor ini"
+
+#: services/help/index.php:52
+msgid "About..."
+msgstr "Tentang... "
+
+#: templates/javascript/htmlarea_lang.js:74
+msgid "Absbottom"
+msgstr "Jarak antara bagian bawah baris dengan bagian bawah gambar"
+
+#: templates/javascript/htmlarea_lang.js:72
+msgid "Absmiddle"
+msgstr "Jarak antara bagian tengah baris dengan bagian tengah gambar"
+
+#: lib/Block/account.php:3
+msgid "Account Information"
+msgstr "Informasi Account"
+
+#: config/prefs.php.dist:75
+msgid "Account Password"
+msgstr "Sandi Account"
+
+#: config/registry.php.dist:330
+msgid "Accounting"
+msgstr "Akuntansi"
+
+#: templates/portal/add.inc:14 templates/admin/groups/addchild.inc:17
+msgid "Add"
+msgstr "Tambah"
+
+#: admin/groups.php:214 admin/groups.php:215
+msgid "Add Child Group"
+msgstr "Tambah Grup Anak"
+
+#: templates/portal/add.inc:5
+msgid "Add Here:"
+msgstr "Tambah Disini:"
+
+#: admin/groups.php:208 admin/groups.php:209
+msgid "Add New Group"
+msgstr "Tambah Grup Baru"
+
+#: templates/admin/groups/addchild.inc:9
+#, php-format
+msgid "Add a child group to '%s'"
+msgstr "Tambah grup anak ke '%s'"
+
+#: admin/user.php:30
+msgid "Add a new user:"
+msgstr "Tambah pengguna baru:"
+
+#: templates/admin/groups/edit.inc:40
+msgid "Add new members"
+msgstr "Tambah anggota baru"
+
+#: templates/data/csvmap.inc:103
+msgid "Add pair"
+msgstr "Tambah pasangan"
+
+#: config/prefs.php.dist:357
+#, php-format
+msgid "Add the %s Menu as a Mozilla Sidebar"
+msgstr "Tambah Menu %s sebagai Panel navigasi Mozilla"
+
+#: admin/user.php:31
+msgid "Add user"
+msgstr "Tambah pengguna"
+
+#: admin/user.php:79
+#, php-format
+msgid ""
+"Added '%s' to the system, but could not add additional signup information: %"
+"s."
+msgstr ""
+" '%s' sudah ditambahkan ke dalam sistem, tetapi tidak dapat menambahkan "
+"informasi pendaftaran tambahan: %s."
+
+#: signup.php:45
+#, php-format
+msgid "Added '%s' to the system. You can log in now."
+msgstr " '%s'  sudah ditambahkan ke dalam sistem. Anda dapat log in sekarang."
+
+#: templates/admin/user/noadd.inc:4
+msgid "Adding users is disabled."
+msgstr "Penambahan pengguna tidak diaktifkan."
+
+#: config/registry.php.dist:136
+msgid "Address Book"
+msgstr "Buku Alamat "
+
+#: admin/index.php:19 services/portal/sidebar.php:113
+msgid "Administration"
+msgstr "Administrasi"
+
+#: config/registry.php.dist:338
+msgid "Ads"
+msgstr "Iklan"
+
+#: templates/javascript/htmlarea_table_lang.js:16
+msgid "Align"
+msgstr "Rata"
+
+#: templates/javascript/htmlarea_lang.js:67
+msgid "Alignment:"
+msgstr "Perataan"
+
+#: lib/Block/fortune.php:87
+msgid "All"
+msgstr "Semua"
+
+#: templates/shares/edit.inc:65
+msgid "All Authenticated Users"
+msgstr "Semua Pengguna Asli"
+
+#: admin/groups.php:33 admin/groups.php:212
+msgid "All Groups"
+msgstr "Semua Grup"
+
+#: templates/javascript/htmlarea_table_lang.js:17
+msgid "All four sides"
+msgstr "Semua empat sisi"
+
+#: config/prefs.php.dist:523
+msgid "Allow setting of ordered list type?"
+msgstr "Izinkan pengaturan dari tipe daftar nomor berurut?"
+
+#: config/prefs.php.dist:122
+msgid "Alternate IMSP Login"
+msgstr "Pengganti Login IMSP"
+
+#: config/prefs.php.dist:496
+msgid "Alternate IMSP Password"
+msgstr "Pengganti Sandi IMSP"
+
+#: config/prefs.php.dist:488
+msgid "Alternate IMSP Username"
+msgstr "Pengganti Nama Pengguna IMSP"
+
+#: services/resetpassword.php:35
+msgid "Alternate email address"
+msgstr "Pengganti alamat email"
+
+#: admin/templates.php:142
+msgid "Alternate templates"
+msgstr "Pengganti template"
+
+#: templates/javascript/htmlarea_lang.js:122
+#: templates/javascript/htmlarea_anselimage_lang.js:25
+msgid "Alternate text:"
+msgstr "Pengganti teks:"
+
+#: services/resetpassword.php:49
+msgid "Answer"
+msgstr "Jawaban"
+
+#: admin/templates.php:74 admin/phpshell.php:35
+#: templates/admin/setup/index.html:6
+msgid "Application"
+msgstr "Aplikasi"
+
+#: util/icon_browser.php:42
+msgid "Application List"
+msgstr "Daftar Aplikasi"
+
+#: admin/setup/index.php:140
+msgid "Application is ready."
+msgstr "Aplikasi sudah siap."
+
+#: templates/shares/edit.inc:218
+msgid "Apply to Child Shares"
+msgstr "Digunakan untuk Bagian Anak"
+
+#: templates/admin/user/approve.inc:21
+msgid "Approve"
+msgstr "Disetujui"
+
+#: templates/javascript/open_calendar.js:68
+msgid "April"
+msgstr "April"
+
+#: config/nls.php.dist:175
+msgid "Arabic (Windows-1256)"
+msgstr "Arab (Windows-1256)"
+
+#: templates/admin/user/removequeued.inc:8
+#, php-format
+msgid "Are you sure you want to remove the signup request for %s ?"
+msgstr ""
+"Apakah anda yakin anda ingin memindahkan permohonan pendaftaran untuk %s?"
+
+#: templates/admin/groups/delete.inc:9
+#, php-format
+msgid "Are you sure you wish to delete '%s' and any sub-groups?"
+msgstr "Apakah anda yakin anda ingin menghapus '%s' dan sub-grup manapun?"
+
+#: config/nls.php.dist:176
+msgid "Armenian (ARMSCII-8)"
+msgstr "Armenia (ARMSCII-8)"
+
+#: lib/Block/fortune.php:28
+msgid "Art"
+msgstr "Seni"
+
+#: lib/Block/fortune.php:29
+msgid "Ascii Art"
+msgstr "Kode Ascii"
+
+#: config/prefs.php.dist:415
+msgid "Ask for confirmation before doing maintenance operations?"
+msgstr "Meminta konfirmasi sebelum melaksanakan operasi pemeliharaan?"
+
+#: admin/groups.php:74
+msgid "Attempt to delete a non-existent group."
+msgstr "Mencoba untuk menghapus grup yang tidak ada."
+
+#: admin/perms/delete.php:29
+msgid "Attempt to delete a non-existent permission."
+msgstr "Mencoba untuk menghapus izin yang tidak ada."
+
+#: admin/perms/edit.php:87
+msgid "Attempt to edit a non-existent permission."
+msgstr "Mencoba untuk mengubah izin yang tidak ada."
+
+#: services/shares/edit.php:53
+msgid "Attempt to edit a non-existent share."
+msgstr "Mencoba untuk mengubah bagian yang tidak ada."
+
+#: templates/javascript/open_calendar.js:72
+msgid "August"
+msgstr "Agustus"
+
+#: templates/data/csvmap.inc:83
+msgid "Available fields:"
+msgstr "Kolom yang tersedia:"
+
+#: lib/Block/fortune.php:30
+msgid "BOFH Excuses"
+msgstr "Alasan BOFH"
+
+#: templates/javascript/htmlarea_table_lang.js:18
+msgid "Background"
+msgstr "Latar Belakang"
+
+#: templates/javascript/htmlarea_lang.js:23
+msgid "Background Color"
+msgstr "Warna Latar Belakang"
+
+#: config/nls.php.dist:177
+msgid "Baltic (ISO-8859-13)"
+msgstr "Baltic (ISO-8859-13)"
+
+#: util/icon_browser.php:31
+#, php-format
+msgid "Base graphics directory '%s' not found."
+msgstr "Dasar direktori grafik '%s' tidak ditemukan."
+
+#: templates/javascript/htmlarea_table_lang.js:19
+#: templates/javascript/htmlarea_lang.js:73
+msgid "Baseline"
+msgstr "Jarak antara bagian bawah gambar dengan garis dasar baris"
+
+#: templates/portal/layout.inc:89
+msgid "Block Settings"
+msgstr "Pengaturan Area"
+
+#: templates/portal/layout.inc:74
+msgid "Block Type"
+msgstr "Tipe Area"
+
+#: templates/javascript/htmlarea_lang.js:8
+msgid "Bold"
+msgstr "Huruf Tebal"
+
+#: config/registry.php.dist:202
+msgid "Bookmarks"
+msgstr "Petunjuk halaman web"
+
+#: templates/javascript/htmlarea_table_lang.js:20
+msgid "Border"
+msgstr "Border"
+
+#: templates/javascript/htmlarea_lang.js:85
+msgid "Border thickness:"
+msgstr "Ketebalan Border"
+
+#: templates/javascript/htmlarea_table_lang.js:21
+msgid "Borders"
+msgstr "Border"
+
+#: lib/Block/fortune.php:96
+msgid "Both"
+msgstr "Keduanya"
+
+#: templates/javascript/htmlarea_table_lang.js:22
+#: templates/javascript/htmlarea_lang.js:75
+msgid "Bottom"
+msgstr "Bawah"
+
+#: templates/javascript/htmlarea_lang.js:19
+msgid "Bulleted List"
+msgstr "Daftar Bullet"
+
+#: config/registry.php.dist:430
+msgid "CMS"
+msgstr "CMS"
+
+#: templates/javascript/htmlarea_context_lang.js:27
+msgid "C_ell Properties..."
+msgstr "Properti S_el"
+
+#: config/hooks.php.dist:993 config/registry.php.dist:152
+msgid "Calendar"
+msgstr "Kalender"
+
+#: lib/Block/weatherdotcom.php:221
+msgid "Calm"
+msgstr "Tenang"
+
+#: services/resetpassword.php:20
+msgid "Can not reset password automatically, contact your administrator."
+msgstr ""
+"Tidak dapat mengatur ulang sandi secara otomatis, silakan hubungi "
+"administrator anda."
+
+#: admin/user.php:101 admin/user.php:120
+#: templates/javascript/htmlarea_lang.js:47
+#: templates/javascript/htmlarea_lang.js:65
+#: templates/admin/groups/delete.inc:14 templates/admin/user/clear.inc:16
+#: templates/admin/user/remove.inc:16
+msgid "Cancel"
+msgstr "Batal"
+
+#: templates/problem/problem.inc:59
+msgid "Cancel Problem Report"
+msgstr "Batalkan Laporan Masalah"
+
+#: templates/javascript/htmlarea_table_lang.js:24
+msgid "Caption"
+msgstr "Judul Tabel"
+
+#: config/prefs.php.dist:90
+msgid "Categories and Labels"
+msgstr "Kategori dan Label"
+
+#: templates/javascript/htmlarea_table_lang.js:25
+msgid "Cell Properties"
+msgstr "Properti Sel"
+
+#: templates/javascript/htmlarea_lang.js:114
+msgid "Cell padding:"
+msgstr "Jarak spasi dari border dengan teks di dalam sel:"
+
+#: templates/javascript/htmlarea_table_lang.js:61
+msgid "Cell properties"
+msgstr "properti sel"
+
+#: templates/javascript/htmlarea_lang.js:112
+msgid "Cell spacing:"
+msgstr "Jarak spasi antar sel."
+
+#: config/nls.php.dist:178
+msgid "Celtic (ISO-8859-14)"
+msgstr "Celtic (ISO-8859-14)"
+
+#: templates/javascript/htmlarea_table_lang.js:26
+msgid "Center"
+msgstr "Tengah"
+
+#: config/nls.php.dist:179
+msgid "Central European (ISO-8859-2)"
+msgstr "Eropa Tengah (ISO-8859-2)"
+
+#: templates/rpcsum/rpcsum.inc:24 templates/rpcsum/rpcsum.inc:97
+msgid "Change"
+msgstr "Ubah"
+
+#: services/changepassword.php:31
+msgid "Change Your Password"
+msgstr "Ubah Sandi Anda"
+
+#: templates/prefs/changedefaultidentity.inc:13
+msgid "Change default identity"
+msgstr "Ubah default identitas"
+
+#: config/prefs.php.dist:66
+msgid ""
+"Change the name and address that people see when they read and reply to your "
+"emails."
+msgstr ""
+"Ubah nama dan alamat sehingga orang dapat melihatnya ketika mereka membaca "
+"dan membalas ke email anda."
+
+#: services/changepassword.php:24
+msgid ""
+"Changing your password is not supported with the current configuration.  "
+"Contact your administrator."
+msgstr ""
+"Mengubah sandi anda tidak didukung dengan konfigurasi yang sekarang. Silakan "
+"hubungi administrator anda."
+
+#: templates/javascript/htmlarea_table_lang.js:27
+msgid "Char"
+msgstr "Karakter"
+
+#: templates/javascript/htmlarea_context_lang.js:25
+msgid "Chec_k Link..."
+msgstr "Periksa Link..."
+
+#: config/nls.php.dist:180
+msgid "Chinese Simplified (GB2312)"
+msgstr "Cina Sederhana (GB2312)"
+
+#: config/nls.php.dist:181
+msgid "Chinese Traditional (Big5)"
+msgstr "Cina Tradisionil (Big5)"
+
+#: config/prefs.php.dist:288
+msgid "Choose how to display dates:"
+msgstr "Pilih cara untuk menampilkan tanggal:"
+
+#: templates/javascript/htmlarea_listtype_lang.js:22
+msgid "Choose list style type (for ordered lists)"
+msgstr "Pilih daftar tipe gaya (untuk daftar nomor berurut)"
+
+#: lib/Block/weatherdotcom_strings.php:12
+msgid "Clear"
+msgstr "Bersihkan"
+
+#: templates/javascript/htmlarea_lang.js:42
+msgid "Clear MSOffice tags"
+msgstr "Bersihkan tag MSOffice"
+
+#: templates/admin/user/clear.inc:7
+#, php-format
+msgid "Clear out user: %s"
+msgstr "Bersihkan pengguna: %s"
+
+#: templates/admin/user/clear.inc:15
+msgid "Clear user"
+msgstr "Bersihkan pengguna"
+
+#: templates/admin/user/list.inc:34
+msgid "Clear user data"
+msgstr "Bersihkan data pengguna"
+
+#: lib/Block/weatherdotcom_strings.php:13
+msgid "Clearing Late"
+msgstr "Cerah beberapa saat lagi"
+
+#: templates/maintenance/maintenance.html:60
+msgid "Click to Continue"
+msgstr "Klik untuk Lanjut"
+
+#: services/keyboard.php:146 templates/shares/edit.inc:12
+msgid "Close Window"
+msgstr "Tutup Jendela"
+
+#: lib/Block/metar.php:242
+msgid "Clouds"
+msgstr "Mendung"
+
+#: lib/Block/weatherdotcom_strings.php:14
+msgid "Clouds Early"
+msgstr "Mendung di pagi hari"
+
+#: lib/Block/weatherdotcom_strings.php:15
+msgid "Cloudy"
+msgstr "Berawan"
+
+#: templates/portal/sidebar.inc:4
+msgid "Collapse Sidebar"
+msgstr "Perbesar Panel Navigasi "
+
+#: templates/javascript/htmlarea_table_lang.js:28
+msgid "Collapsed borders"
+msgstr "Perbesar border"
+
+#: lib/Block/color.php:18 lib/Block/color.php:29
+#: templates/javascript/htmlarea_table_lang.js:29
+msgid "Color"
+msgstr "Warna"
+
+#: services/images/colorpicker.php:14
+#: templates/prefs/categorymanagement.inc:51
+#: templates/prefs/categorymanagement.inc:52
+#: templates/prefs/categorymanagement.inc:68
+#: templates/prefs/categorymanagement.inc:69
+#: templates/prefs/categorymanagement.inc:85
+#: templates/prefs/categorymanagement.inc:86
+msgid "Color Picker"
+msgstr "Pemilih Warna"
+
+#: templates/javascript/htmlarea_lang.js:103
+msgid "Cols:"
+msgstr "Kolom"
+
+#: config/registry.php.dist:261
+msgid "Comics"
+msgstr "Comics"
+
+#: admin/cmdshell.php:25
+msgid "Command"
+msgstr "Command"
+
+#: admin/cmdshell.php:20
+msgid "Command Shell"
+msgstr "Command Shell"
+
+#: lib/Block/fortune.php:31
+msgid "Computers"
+msgstr "Komputer"
+
+#: lib/Block/weatherdotcom.php:272
+msgid "Condition"
+msgstr "Kondisi"
+
+#: lib/Block/metar.php:247
+msgid "Conditions"
+msgstr "Kondisi"
+
+#: admin/setup/diff.php:89
+msgid "Configuration Differences"
+msgstr "Perbedaan Konfigurasi"
+
+#: admin/setup/index.php:135
+msgid "Configuration is out of date."
+msgstr "Konfigurasi sudah habis masa berlakunya."
+
+#: admin/setup/index.php:100
+#, php-format
+msgid "Configure %s"
+msgstr "Mengatur %s"
+
+#: templates/admin/user/update.inc:49
+msgid "Confirm Password"
+msgstr "Konfirmasi Sandi"
+
+#: config/hooks.php.dist:1017
+msgid "Contacts"
+msgstr "Kontak"
+
+#: services/resetpassword.php:29 services/changepassword.php:33
+msgid "Continue"
+msgstr "Lanjut"
+
+#: lib/Block/fortune.php:32
+msgid "Cookie"
+msgstr "Cookie"
+
+#: templates/javascript/htmlarea_context_lang.js:21
+msgid "Copy"
+msgstr "Salin"
+
+#: templates/javascript/htmlarea_lang.js:36
+msgid "Copy selection"
+msgstr "Salin Pilihan"
+
+#: lib/Block/account.php:457
+msgid "Could not bind to ldap server"
+msgstr "Tidak dapat terikat dengan server ldap"
+
+#: lib/Block/account.php:441
+msgid "Could not connect to ldap server"
+msgstr "Tidak dapat terhubung ke server ldap"
+
+#: admin/setup/index.php:48
+#, php-format
+msgid "Could not connect to server '%s' using FTP: %s"
+msgstr "Tidak dapat terhubung ke server '%s' dengan menggunakan FTP:%s"
+
+#: admin/setup/scripts.php:38
+#, php-format
+msgid "Could not delete setup upgrade script '%s'."
+msgstr "Tidak dapat menghapus script setup upgrade '%s'. "
+
+#: services/resetpassword.php:85
+msgid ""
+"Could not reset the password for the requested user. Some or all of the "
+"details are not correct. Try again or contact your administrator if you need "
+"further help."
+msgstr ""
+"Tidak dapat mengatur ulang untuk pengguna yang diminta. Beberapa atau semua "
+"detil tidak benar. Coba lagi atau silakan hubungi administrator anda jika "
+"anda memerlukan bantuan lebih lanjut."
+
+#: admin/setup/config.php:54
+msgid "Could not revert configuration."
+msgstr "Tidak dapat kembali ke konfigurasi."
+
+#: admin/setup/scripts.php:73
+#, php-format
+msgid "Could not save %s configuration."
+msgstr "Tidak dapat menyimpan konfigurasi %s."
+
+#: admin/setup/index.php:63 admin/setup/scripts.php:59
+msgid "Could not save a backup configuration."
+msgstr "Tidak dapat menyimpan konfigurasi backup."
+
+#: admin/setup/index.php:61
+#, php-format
+msgid "Could not save a backup configuration: %s"
+msgstr "Tidak dapat menyimpan konfigurasi backup: %s"
+
+#: admin/setup/scripts.php:95
+#, php-format
+msgid "Could not save setup upgrade script to: '%s'."
+msgstr "Tidak dapat menyimpan script setup upgrade ke:'%s'."
+
+#: admin/setup/config.php:64
+#, php-format
+msgid "Could not save the backup configuration file %s."
+msgstr "Tidak dapat menyimpan file konfigurasi backup %s."
+
+#: admin/setup/config.php:75
+#, php-format
+msgid ""
+"Could not save the configuration file %s. You can either use one of the "
+"options to save the code back on %s or copy manually the code below to %s."
+msgstr ""
+"Tidak dapat menyimpan file konfigurasi %s. Anda dapat menggunakan salah satu "
+"dari pilihan untuk menyimpan kode tersebut kembali ke %s ataupun menyalin "
+"kode di bawah ini secara manual ke %s."
+
+#: admin/setup/index.php:70
+#, php-format
+msgid "Could not write configuration for '%s': %s"
+msgstr "Tidak dapat menulis konfigurasi untuk '%s': %s"
+
+#: config/prefs.php.dist:356
+msgid "Couldn't find the Mozilla Sidebar. Make sure the sidebar is open."
+msgstr ""
+"Tidak dapat menemukan Panel Navigasi Mozilla. Pastikan panel navigasi sudah "
+"terbuka."
+
+#: config/registry.php.dist:270
+msgid "Courses"
+msgstr "Kursus"
+
+#: templates/rpcsum/rpcsum.inc:21 templates/rpcsum/rpcsum.inc:97
+#: templates/rpcsum/rpcsum.inc:101
+msgid "Create"
+msgstr "Buat"
+
+#: templates/javascript/htmlarea_context_lang.js:68
+msgid "Create a link"
+msgstr "Buat link"
+
+#: templates/prefs/identityselect.inc:94
+msgid "Create a new one"
+msgstr "Buat baru"
+
+#: lib/Block/moon.php:26
+msgid "Current Phase"
+msgstr "Fase Sekarang"
+
+#: lib/Block/time.php:3 lib/Block/time.php:30
+msgid "Current Time"
+msgstr "Waktu Sekarang"
+
+#: templates/javascript/htmlarea_context_lang.js:54
+msgid "Current URL is"
+msgstr "URL Sekarang adalah"
+
+#: lib/Block/metar.php:25
+msgid "Current Weather"
+msgstr "Cuaca Sekarang"
+
+#: lib/Block/weatherdotcom.php:250
+msgid "Current condition: "
+msgstr "Kondisi Sekarang:"
+
+#: templates/javascript/htmlarea_lang.js:32
+msgid "Current style"
+msgstr "Gaya Sekarang"
+
+#: config/prefs.php.dist:108
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Kostumisasi tugas untuk dijalankan sebelum logon ke %s."
+
+#: templates/javascript/htmlarea_context_lang.js:20
+msgid "Cut"
+msgstr "Hapus"
+
+#: templates/javascript/htmlarea_lang.js:35
+msgid "Cut selection"
+msgstr "Hapus pilihan"
+
+#: config/nls.php.dist:182
+msgid "Cyrillic (KOI8-R)"
+msgstr "Cyrillic (KOI8-R)"
+
+#: config/nls.php.dist:183
+msgid "Cyrillic (Windows-1251)"
+msgstr "Cyrillic (Windows-1251)"
+
+#: config/nls.php.dist:184
+msgid "Cyrillic/Ukrainian (KOI8-U)"
+msgstr "Cyrillic/Ukrainian (KOI8-U)"
+
+#: templates/data/date.inc:47 templates/data/date.inc:48
+#: templates/data/date.inc:49 templates/data/date.inc:50
+msgid "DD"
+msgstr "DD"
+
+#: admin/datatree.php:65
+msgid "DataTree Browser"
+msgstr "DataTree Browser"
+
+#: templates/admin/user/approve.inc:13
+msgid "Date Received"
+msgstr "Tanggal Diterima"
+
+#: lib/Block/weatherdotcom.php:267 lib/Block/weatherdotcom.php:298
+msgid "Day"
+msgstr "Hari"
+
+#: templates/javascript/htmlarea_context_lang.js:36
+msgid "De_lete Column"
+msgstr "Hapus Kolom"
+
+#: templates/javascript/open_calendar.js:76
+msgid "December"
+msgstr "Desember"
+
+#: templates/javascript/htmlarea_listtype_lang.js:16
+msgid "Decimal numbers"
+msgstr "Angka Desimal"
+
+#: templates/javascript/htmlarea_lang.js:20
+msgid "Decrease Indent"
+msgstr "Mengurangi Inden"
+
+#: lib/prefs.php:117
+msgid "Default"
+msgstr "Default"
+
+#: templates/prefs/categorymanagement.inc:47
+#: templates/prefs/categorymanagement.inc:81
+msgid "Default Color"
+msgstr "Default Warna"
+
+#: lib/Block/account.php:67
+msgid "Default Shell"
+msgstr "Default Shell"
+
+#: lib/Block/fortune.php:33
+msgid "Definitions"
+msgstr "Definisi"
+
+#: admin/groups.php:71 templates/shares/edit.inc:36
+#: templates/shares/edit.inc:70 templates/shares/edit.inc:93
+#: templates/shares/edit.inc:116 templates/shares/edit.inc:139
+#: templates/shares/edit.inc:182 templates/rpcsum/rpcsum.inc:73
+#: templates/rpcsum/rpcsum.inc:99 templates/admin/groups/delete.inc:13
+#: templates/admin/user/list.inc:31
+msgid "Delete"
+msgstr "Hapus"
+
+#: templates/javascript/htmlarea_context_lang.js:32
+msgid "Delete Cell"
+msgstr "Hapus Sel"
+
+#: admin/groups.php:189 admin/groups.php:217
+msgid "Delete Group"
+msgstr "Hapus Grup"
+
+#: templates/javascript/htmlarea_table_lang.js:57
+msgid "Delete cell"
+msgstr "Hapus sel"
+
+#: templates/javascript/htmlarea_table_lang.js:63
+msgid "Delete column"
+msgstr "Hapus kolom"
+
+#: admin/templates.php:148
+msgid "Delete existing alternate template"
+msgstr "Hapus pengganti template yang sudah ada"
+
+#: templates/javascript/htmlarea_table_lang.js:67
+msgid "Delete row"
+msgstr "Hapus baris"
+
+#: templates/prefs/deleteidentity.inc:15
+msgid "Delete selected identity"
+msgstr "Hapus identitas yang terpilih"
+
+#: templates/javascript/htmlarea_context_lang.js:67
+msgid "Delete the current column"
+msgstr "Hapus kolom yang sekarang"
+
+#: templates/javascript/htmlarea_context_lang.js:63
+msgid "Delete the current row"
+msgstr "Hapus baris yang sekarang"
+
+#: admin/setup/scripts.php:36
+#, php-format
+msgid "Deleted setup upgrade script '%s'."
+msgstr "Hapus script setup upgrade '%s'."
+
+#: templates/problem/problem.inc:29
+msgid "Describe the Problem"
+msgstr "Jelaskan Masalah"
+
+#: templates/javascript/htmlarea_table_lang.js:30
+msgid "Description"
+msgstr "Deskripsi"
+
+#: config/registry.php.dist:216
+msgid "Development"
+msgstr "Perkembangan"
+
+#: lib/Block/metar.php:215
+msgid "Dew Point"
+msgstr "Titik Embun"
+
+#: lib/Block/metar.php:292
+msgid "Dew Point for last hour: "
+msgstr "Titik Embun untuk jam terakhir:"
+
+#: lib/Block/weatherdotcom.php:202
+msgid "Dew point: "
+msgstr "Titik Embun"
+
+#: templates/javascript/htmlarea_lang.js:38
+msgid "Direction left to right"
+msgstr "Arah kiri ke kanan"
+
+#: templates/javascript/htmlarea_lang.js:39
+msgid "Direction right to left"
+msgstr "Arah kanan ke kiri"
+
+#: lib/Block/google.php:39
+msgid "Directory"
+msgstr "Direktori"
+
+#: config/prefs.php.dist:256
+msgid "Display 24-hour times?"
+msgstr "Tampilkan waktu 24 jam?"
+
+#: config/prefs.php.dist:97
+msgid "Display Options"
+msgstr "Tampilkan Pilihan"
+
+#: lib/Block/weatherdotcom.php:96
+msgid "Display detailed forecast"
+msgstr "Tampilkan detil ramalan cuaca"
+
+#: lib/Block/metar.php:83
+msgid "Display forecast (TAF)"
+msgstr "Tampilkan ramalan cuaca (TAF)"
+
+#: services/maintenance.php:25
+msgid "Do not directly access maintenance.php"
+msgstr "Jangan langsung mengakses maintenance.php"
+
+#: templates/data/tsvinfo.inc:19 templates/data/csvinfo.inc:19
+msgid "Does the first row contain the field names? If yes, check this box:"
+msgstr ""
+"Apakah baris yang pertama terdiri dari kolom nama? jika ya, beri tanda pada "
+"kotak ini:"
+
+#: templates/login/login.inc:93
+msgid "Don't have an account? Sign up."
+msgstr "Tidak memiliki account? Silakan mendaftar."
+
+#: admin/setup/index.php:166
+msgid "Download generated configuration as PHP script."
+msgstr "Download konfigurasi yang dihasilkan sebagai script PHP."
+
+#: lib/Block/fortune.php:34
+msgid "Drugs"
+msgstr "Obat-obatan"
+
+#: templates/shares/edit.inc:35 templates/shares/edit.inc:69
+#: templates/shares/edit.inc:92 templates/shares/edit.inc:115
+#: templates/shares/edit.inc:138 templates/shares/edit.inc:181
+#: templates/rpcsum/rpcsum.inc:72 templates/portal/edit.inc:25
+msgid "Edit"
+msgstr "Ubah"
+
+#: templates/portal/edit.inc:25
+msgid "Edit Block"
+msgstr "Ubah Blokir"
+
+#: admin/groups.php:188 admin/groups.php:216
+msgid "Edit Group"
+msgstr "Ubah Grup"
+
+#: services/shares/edit.php:237
+msgid "Edit Permissions"
+msgstr "Ubah Izin"
+
+#: services/shares/edit.php:239
+#, php-format
+msgid "Edit Permissions for %s"
+msgstr "Ubah Izin untuk %s"
+
+#: templates/prefs/app.inc:5
+msgid "Edit options for:"
+msgstr "Ubah pilihan untuk:"
+
+#: templates/shares/edit.inc:14
+#, php-format
+msgid "Edit permissions for %s"
+msgstr "Ubah izin untuk %s"
+
+#: lib/Block/fortune.php:35
+msgid "Education"
+msgstr "Pendidikan"
+
+#: templates/javascript/htmlarea_context_lang.js:43
+msgid "Element..."
+msgstr "Elemen..."
+
+#: templates/javascript/htmlarea_lang.js:109
+msgid "Em"
+msgstr "Em"
+
+#: templates/admin/groups/edit.inc:12 templates/admin/user/update.inc:63
+msgid "Email Address"
+msgstr "Alamat Email"
+
+#: config/prefs.php.dist:532
+msgid "Enable insertion of images from Photo Galleries in text?"
+msgstr "Aktifkan penyisipan gambar-gambar dari Galeri Foto di dalam teks?"
+
+#: config/prefs.php.dist:507
+msgid "Enable right click context menu?"
+msgstr "Aktifkan klik kanan menu konteks?"
+
+#: templates/javascript/htmlarea_lang.js:29
+msgid "Enlarge Editor"
+msgstr "Perbesar Editor"
+
+#: config/prefs.php.dist:211
+msgid ""
+"Enter a security question which you will be asked if you need to reset your "
+"password, e.g. 'what is the name of your pet?':"
+msgstr ""
+"Masukkan pertanyaan keamanan dimana anda akan ditanyakan apabila anda perlu "
+"untuk mengatur ulang sandi anda,  contoh 'apakah nama binatang kesayangan "
+"anda?':"
+
+#: templates/javascript/htmlarea_lang.js:119
+#: templates/javascript/htmlarea_anselimage_lang.js:22
+msgid "Enter the image URL here"
+msgstr "Masukkan URL gambar disini"
+
+#: lib/Block/weatherdotcom.php:45 lib/Block/weatherdotcom.php:55
+#: lib/Block/metar.php:36 services/portal/index.php:82
+msgid "Error"
+msgstr "Kesalahan"
+
+#: services/changepassword.php:76
+#, php-format
+msgid "Error updating password: %s"
+msgstr "Kesalahan saat memperbaharui sandi: %s"
+
+#: lib/Block/fortune.php:36
+msgid "Ethnic"
+msgstr "Suku"
+
+#: config/prefs.php.dist:329
+msgid "Every 15 minutes"
+msgstr "Setiap 15 menit"
+
+#: config/prefs.php.dist:379
+msgid "Every 2 minutes"
+msgstr "Setiap 2 menit"
+
+#: config/prefs.php.dist:326 config/prefs.php.dist:377
+msgid "Every 30 seconds"
+msgstr "Setiap 30 detik"
+
+#: config/prefs.php.dist:328 config/prefs.php.dist:380
+msgid "Every 5 minutes"
+msgstr "Setiap 5 menit"
+
+#: config/prefs.php.dist:330
+msgid "Every half hour"
+msgstr "Setiap setengah jam"
+
+#: config/prefs.php.dist:327 config/prefs.php.dist:378
+msgid "Every minute"
+msgstr "Setiap menit"
+
+#: templates/data/datemap.inc:28
+msgid "Example values:"
+msgstr "Contoh nilai-nilai:"
+
+#: admin/phpshell.php:81 admin/cmdshell.php:50 admin/sqlshell.php:127
+msgid "Execute"
+msgstr "Jalankan"
+
+#: templates/portal/sidebar.inc:31
+msgid "Expand Sidebar"
+msgstr "Perbesar Panel Navigasi"
+
+#: templates/javascript/htmlarea_table_lang.js:31
+msgid "FG Color"
+msgstr "Warna FG"
+
+#: admin/setup/index.php:181
+msgid "FTP upload of setup"
+msgstr "FTP upload untuk setup"
+
+#: lib/Block/weatherdotcom_strings.php:16
+msgid "Fair"
+msgstr "Cerah"
+
+#: config/registry.php.dist:346
+msgid "Faxes"
+msgstr "Fax"
+
+#: templates/javascript/open_calendar.js:66
+msgid "February"
+msgstr "Februari"
+
+#: lib/Block/metar.php:218
+msgid "Feels Like"
+msgstr "Seperti"
+
+#: lib/Block/weatherdotcom.php:206
+msgid "Feels like: "
+msgstr "Seperti:"
+
+#: lib/Block/weatherdotcom_strings.php:17
+msgid "Few Showers"
+msgstr "Gerimis Sebagian"
+
+#: lib/Block/weatherdotcom_strings.php:18
+msgid "Few Snow Showers"
+msgstr "Gerimis Salju Sebagian"
+
+#: config/registry.php.dist:393
+msgid "File Manager"
+msgstr "File Manager"
+
+#: config/registry.php.dist:86
+msgid "Filters"
+msgstr "Filter"
+
+#: lib/Block/moon.php:171
+msgid "First Half"
+msgstr "Fase pertama dari Separuh Bulan"
+
+#: lib/Block/moon.php:74 lib/Block/moon.php:76
+msgid "First Quarter"
+msgstr "Fase pertama dari Separuh Bulan"
+
+#: templates/javascript/htmlarea_table_lang.js:32
+msgid "Float"
+msgstr "Float"
+
+#: lib/Block/weatherdotcom_strings.php:19
+msgid "Fog"
+msgstr "Berkabut"
+
+#: templates/javascript/htmlarea_lang.js:22
+msgid "Font Color"
+msgstr "Warna Tulisan"
+
+#: lib/Block/fortune.php:37
+msgid "Food"
+msgstr "Makanan"
+
+#: templates/javascript/htmlarea_lang.js:123
+#: templates/javascript/htmlarea_anselimage_lang.js:26
+msgid "For browsers that don't support images"
+msgstr "Untuk browser yang tidak dapat mendukung gambar"
+
+#: lib/Block/metar.php:332
+msgid "Forecast (TAF)"
+msgstr "Ramalan cuaca (TAF)"
+
+#: lib/Block/weatherdotcom.php:79
+msgid ""
+"Forecast Days (note that the returned forecast returns both day and night; a "
+"large number here could result in a wide block)"
+msgstr ""
+"Hari Ramalan Cuaca (catatan bahwa ramalan cuaca yang dikembalikan akan "
+"mengembalikan baik siang atau malam hari, sejumlah angka dapat dihasilkan "
+"pada area ini)"
+
+#: templates/login/login.inc:99
+msgid "Forgot your password?"
+msgstr "Lupa dengan sandi anda?"
+
+#: config/registry.php.dist:448
+msgid "Forms"
+msgstr "Formulir"
+
+#: lib/Block/fortune.php:21
+msgid "Fortune"
+msgstr "Ramalan"
+
+#: lib/Block/fortune.php:99
+msgid "Fortune type"
+msgstr "Tipe Ramalan"
+
+#: lib/Block/fortune.php:38
+msgid "Fortunes"
+msgstr "Ramalan"
+
+#: lib/Block/fortune.php:39
+msgid "Fortunes 2"
+msgstr "Ramalan 2"
+
+#: config/registry.php.dist:439
+msgid "Forums"
+msgstr "Forum"
+
+#: config/registry.php.dist:106
+msgid "Forwards"
+msgstr "Diteruskan"
+
+#: templates/javascript/open_calendar.js:60
+msgid "Fr"
+msgstr "Jmt"
+
+#: templates/javascript/htmlarea_table_lang.js:33
+msgid "Frames"
+msgstr "Frame"
+
+#: lib/Block/weatherdotcom.php:223 lib/Block/weatherdotcom.php:338
+#: lib/Block/weatherdotcom.php:384
+msgid "From the "
+msgstr "Dari"
+
+#: templates/problem/problem.inc:48
+msgid "Full Description"
+msgstr "Deskripsi Lengkap"
+
+#: lib/Block/moon.php:82 lib/Block/moon.php:181
+msgid "Full Moon"
+msgstr "Bulan Purnama"
+
+#: lib/Block/account.php:61 templates/admin/user/update.inc:57
+msgid "Full Name"
+msgstr "Nama Lengkap"
+
+#: templates/javascript/htmlarea_anselimage_lang.js:30
+msgid "Gallery to take image from"
+msgstr "Galeri untuk mengambil gambar dari"
+
+#: templates/javascript/htmlarea_anselimage_lang.js:29
+msgid "Gallery:"
+msgstr "Galeri"
+
+#: admin/setup/config.php:42
+#, php-format
+msgid "Generate %s Configuration"
+msgstr "Menghasilkan %s Konfigurasi "
+
+#: templates/admin/setup/config.html:10
+msgid "Generated Code"
+msgstr "Kode yang dihasilkan"
+
+#: templates/prefs/app.inc:12
+msgid "Go"
+msgstr "Jalankan"
+
+#: lib/Block/fortune.php:40
+msgid "Goedel"
+msgstr "Goedel"
+
+#: lib/Block/google.php:3 lib/Block/google.php:21 lib/Block/google.php:41
+msgid "Google Search"
+msgstr "Pencarian Google"
+
+#: config/nls.php.dist:185
+msgid "Greek (ISO-8859-7)"
+msgstr "Yunani (ISO-8859-7)"
+
+#: admin/groups.php:169
+msgid "Group Administration"
+msgstr "Administrasi Grup"
+
+#: lib/Block/google.php:38 templates/shares/edit.inc:177
+msgid "Groups"
+msgstr "Grup"
+
+#: templates/shares/edit.inc:88
+msgid "Guest Permissions"
+msgstr "Izin tamu"
+
+#: config/registry.php.dist:456
+msgid "Guestbook"
+msgstr "Buku tamu"
+
+#: templates/javascript/htmlarea_table_lang.js:85
+msgid "HTMLArea cowardly refuses to delete the last cell in row."
+msgstr ""
+"HTMLArea dengan ragu menolak untuk menghapus sel yang terakhir di dalam "
+"baris."
+
+#: templates/javascript/htmlarea_table_lang.js:86
+msgid "HTMLArea cowardly refuses to delete the last column in table."
+msgstr ""
+"HTMLArea dengan ragu menolak untuk menghapus kolom yang terakhir di dalam "
+"tabel."
+
+#: templates/javascript/htmlarea_table_lang.js:87
+msgid "HTMLArea cowardly refuses to delete the last row in table."
+msgstr ""
+"HTMLArea dengan ragu menolak untuk menghapus baris yang terakhir di dalam "
+"tabel."
+
+#: lib/Block/weatherdotcom_strings.php:20
+msgid "Haze"
+msgstr "Berkabut"
+
+#: config/nls.php.dist:186
+msgid "Hebrew (ISO-8859-8-I)"
+msgstr "Yahudi (ISO-8859-8-I)"
+
+#: templates/javascript/htmlarea_table_lang.js:34
+msgid "Height"
+msgstr "Tinggi"
+
+#: services/help/index.php:17 templates/help/index.inc:3
+msgid "Help"
+msgstr "Bantuan"
+
+#: templates/javascript/htmlarea_lang.js:31
+msgid "Help using editor"
+msgstr "Bantuan menggunakan editor"
+
+#: lib/Block/moon.php:29
+msgid "Hemisphere"
+msgstr "Belahan Bumi"
+
+#: templates/data/tsvinfo.inc:17 templates/data/csvinfo.inc:17
+msgid "Here is the beginning of the file:"
+msgstr "Ini adalah permulaan dari file:"
+
+#: lib/Block/weatherdotcom_strings.php:65
+msgid "High"
+msgstr "Tinggi"
+
+#: templates/portal/menu.inc:6 templates/admin/common-header.inc:5
+msgid "Ho_me"
+msgstr "Ho_me"
+
+#: lib/Block/account.php:64
+msgid "Home Directory"
+msgstr "Direktori Home"
+
+#: config/registry.php.dist:62
+msgid "Horde"
+msgstr "Horde"
+
+#: templates/javascript/htmlarea_lang.js:24
+msgid "Horizontal Rule"
+msgstr "Garis Horisontal di dalam HTML"
+
+#: templates/javascript/htmlarea_lang.js:82
+msgid "Horizontal padding"
+msgstr "Jarak garis horizontal dari border dengan teks di dalam sel"
+
+#: templates/javascript/htmlarea_lang.js:81
+msgid "Horizontal:"
+msgstr "Horizontal:"
+
+#: templates/javascript/htmlarea_context_lang.js:51
+msgid "How did you get here? (Please report!)"
+msgstr "Bagaimana cara anda bisa sampai disini? (Silakan melapor!)"
+
+#: templates/javascript/htmlarea_table_lang.js:35
+msgid "How many columns would you like to merge?"
+msgstr "Berapa banyak kolom yang ingin anda gabungkan?"
+
+#: templates/data/csvinfo.inc:28
+msgid "How many fields (columns) are there?"
+msgstr "Berapa banyak kolom yang ada disana?"
+
+#: templates/javascript/htmlarea_table_lang.js:36
+msgid "How many rows would you like to merge?"
+msgstr "Berapa banyak baris yang ingin anda gabungkan?"
+
+#: lib/Block/weatherdotcom.php:275 lib/Block/metar.php:228
+msgid "Humidity"
+msgstr "Kelembaban"
+
+#: lib/Block/weatherdotcom.php:234
+msgid "Humidity: "
+msgstr "Kelembaban:"
+
+#: lib/Block/fortune.php:41
+msgid "Humorists"
+msgstr "Pelawak"
+
+#: templates/javascript/htmlarea_context_lang.js:29
+msgid "I_nsert Row Before"
+msgstr "Masukkan Baris Sebelumnya"
+
+#: config/prefs.php.dist:366
+msgid "Icons Only"
+msgstr "Hanya ikon"
+
+#: util/icon_browser.php:49
+#, php-format
+msgid "Icons for %s"
+msgstr "Ikon untuk %s"
+
+#: config/prefs.php.dist:367
+msgid "Icons with text"
+msgstr "Ikon dengan teks"
+
+#: config/prefs.php.dist:180
+msgid "Identity's name:"
+msgstr "Nama Identitas:"
+
+#: config/prefs.php.dist:445
+msgid ""
+"If you don't see any icons using Internet Explorer, you may need to check "
+"this box to turn off PNG transparency."
+msgstr ""
+"Jika anda tidak melihat ikon manapun dengan menggunakan Internet Explorer, "
+"anda mungkin perlu untuk menandai kotak ini untuk menon-aktifkan kelemahan "
+"PNG."
+
+#: templates/javascript/htmlarea_lang.js:125
+#: templates/javascript/htmlarea_anselimage_lang.js:28
+msgid "Image Preview:"
+msgstr "Lihat Gambar:"
+
+#: templates/javascript/htmlarea_table_lang.js:37
+msgid "Image URL"
+msgstr "URL Gambar"
+
+#: templates/javascript/htmlarea_lang.js:118
+#: templates/javascript/htmlarea_anselimage_lang.js:21
+msgid "Image URL:"
+msgstr "URL Gambar:"
+
+#: templates/javascript/htmlarea_anselimage_lang.js:32
+msgid "Image from gallery"
+msgstr "Gambar dari galeri"
+
+#: templates/javascript/htmlarea_anselimage_lang.js:31
+msgid "Image from gallery:"
+msgstr "Gambar dari galeri:"
+
+#: lib/Block/google.php:37
+msgid "Images"
+msgstr "Gambar-gambar"
+
+#: templates/data/tsvinfo.inc:10 templates/data/datemap.inc:10
+#: templates/data/csvmap.inc:57 templates/data/csvinfo.inc:10
+#, php-format
+msgid "Import, Step %d"
+msgstr "Impor, Langkah %d"
+
+#: templates/data/datemap.inc:20
+#, php-format
+msgid "Imported field: %s"
+msgstr "Kolom yang diimpor: %s"
+
+#: templates/data/csvmap.inc:73
+msgid "Imported fields:"
+msgstr "Kolom yang diimpor:"
+
+#: templates/javascript/htmlarea_context_lang.js:30
+msgid "In_sert Row After"
+msgstr "Masukkan Baris Berikutnya"
+
+#: services/resetpassword.php:51
+msgid ""
+"Incorrect username or alternate address. Try again or contact your "
+"administrator if you need further help."
+msgstr ""
+"Nama pengguna atau alamat email pengganti tidak benar. Coba lagi atau "
+"silakan hubungi administrator anda jika anda memerlukan bantuan lebih lanjut."
+
+#: templates/javascript/htmlarea_lang.js:21
+msgid "Increase Indent"
+msgstr "Menambah Inden"
+
+#: templates/shares/edit.inc:134
+msgid "Individual Users"
+msgstr "Pengguna Pribadi"
+
+#: config/registry.php.dist:254
+msgid "Information"
+msgstr "Informasi"
+
+#: lib/Block/weatherdotcom.php:308
+msgid "Information no longer available."
+msgstr "Informasi sudah tidak disediakan."
+
+#: templates/javascript/htmlarea_context_lang.js:35
+msgid "Insert C_olumn After"
+msgstr "Masukkan Kolom Berikutnya"
+
+#: templates/javascript/htmlarea_lang.js:117
+#: templates/javascript/htmlarea_anselimage_lang.js:20
+msgid "Insert Image"
+msgstr "Masukkan Gambar"
+
+#: templates/javascript/htmlarea_lang.js:27
+#: templates/javascript/htmlarea_lang.js:100
+msgid "Insert Table"
+msgstr "Masukkan Tabel"
+
+#: templates/javascript/htmlarea_lang.js:25
+msgid "Insert Web Link"
+msgstr "Masukkan Web Link"
+
+#: templates/javascript/htmlarea_context_lang.js:34
+msgid "Insert _Column Before"
+msgstr "Masukkan Kolom Sebelumnya"
+
+#: templates/javascript/htmlarea_context_lang.js:66
+msgid "Insert a new column after the current one"
+msgstr "Masukkan kolom yang baru setelah kolom yang sekarang"
+
+#: templates/javascript/htmlarea_context_lang.js:65
+msgid "Insert a new column before the current one"
+msgstr "Masukkan kolom yang baru sebelum kolom yang sekarang"
+
+#: templates/javascript/htmlarea_context_lang.js:62
+msgid "Insert a new row after the current one"
+msgstr "Masukkan baris yang baru setelah baris yang sekarang"
+
+#: templates/javascript/htmlarea_context_lang.js:61
+msgid "Insert a new row before the current one"
+msgstr "Masukkan baris yang baru sebelum kolom yang sekarang"
+
+#: templates/javascript/htmlarea_context_lang.js:70
+msgid "Insert a paragraph after the current node"
+msgstr "Masukkan paragraf setelah paragraf yang sekarang"
+
+#: templates/javascript/htmlarea_context_lang.js:69
+msgid "Insert a paragraph before the current node"
+msgstr "Masukkan paragraf sebelum paragraf yang sekarang"
+
+#: admin/templates.php:150
+msgid "Insert alternate template"
+msgstr "Masukkan template pengganti"
+
+#: config/prefs.php.dist:229
+msgid "Insert an email address to which you can receive the new password:"
+msgstr "Masukkan alamat email dimana anda dapat menerima sandi yang baru:"
+
+#: templates/javascript/htmlarea_table_lang.js:58
+msgid "Insert cell after"
+msgstr "Masukkan sel berikutnya"
+
+#: templates/javascript/htmlarea_table_lang.js:59
+msgid "Insert cell before"
+msgstr "Masukkan sel sebelumnya"
+
+#: templates/javascript/htmlarea_table_lang.js:64
+msgid "Insert column after"
+msgstr "Masukkan kolom berikutnya"
+
+#: templates/javascript/htmlarea_table_lang.js:65
+msgid "Insert column before"
+msgstr "Masukkan kolom sebelumnya"
+
+#: templates/javascript/htmlarea_context_lang.js:45
+msgid "Insert paragraph after"
+msgstr "Masukkan paragraf berikutnya"
+
+#: templates/javascript/htmlarea_context_lang.js:44
+msgid "Insert paragraph before"
+msgstr "Masukkan paragraf sebelumnya"
+
+#: templates/javascript/htmlarea_table_lang.js:69
+msgid "Insert row after"
+msgstr "Masukkan baris berikutnya"
+
+#: templates/javascript/htmlarea_table_lang.js:68
+msgid "Insert row before"
+msgstr "Masukkan baris sebelumnya"
+
+#: config/prefs.php.dist:220
+msgid "Insert the required answer to the security question:"
+msgstr "Masukkan jawaban yang diperlukan untuk pertanyaaan keamanan:"
+
+#: templates/javascript/htmlarea_lang.js:26
+msgid "Insert/Modify Image"
+msgstr "Masukkan/Ubah Gambar"
+
+#: templates/javascript/htmlarea_lang.js:89
+msgid "Insert/Modify Link"
+msgstr "Masukkan/Ubah Link"
+
+#: admin/setup/config.php:34
+msgid "Invalid application."
+msgstr "Aplikasi tidak valid."
+
+#: admin/perms/addchild.php:27
+msgid "Invalid parent permission."
+msgstr "Izin induk tidak valid."
+
+#: config/registry.php.dist:354
+msgid "Inventory"
+msgstr "Inventoris"
+
+#: lib/Block/weatherdotcom_strings.php:21
+msgid "Isolated T-Storms"
+msgstr "Hujan petir disertai angin ribut di daerah yang terpencil"
+
+#: templates/javascript/htmlarea_lang.js:9
+msgid "Italic"
+msgstr "Huruf Miring"
+
+#: templates/javascript/open_calendar.js:65
+msgid "January"
+msgstr "Januari"
+
+#: config/nls.php.dist:187
+msgid "Japanese (ISO-2022-JP)"
+msgstr "Jepang (ISO-2022-JP)"
+
+#: templates/javascript/open_calendar.js:71
+msgid "July"
+msgstr "Juli"
+
+#: templates/javascript/open_calendar.js:70
+msgid "June"
+msgstr "Juni"
+
+#: templates/javascript/htmlarea_table_lang.js:38
+msgid "Justify"
+msgstr "Rata"
+
+#: templates/javascript/htmlarea_context_lang.js:38
+#: templates/javascript/htmlarea_lang.js:15
+msgid "Justify Center"
+msgstr "Rata Tengah"
+
+#: templates/javascript/htmlarea_context_lang.js:40
+#: templates/javascript/htmlarea_lang.js:17
+msgid "Justify Full"
+msgstr "Rata Kiri dan Kanan"
+
+#: templates/javascript/htmlarea_context_lang.js:37
+#: templates/javascript/htmlarea_lang.js:14
+msgid "Justify Left"
+msgstr "Rata Kiri"
+
+#: templates/javascript/htmlarea_context_lang.js:39
+#: templates/javascript/htmlarea_lang.js:16
+msgid "Justify Right"
+msgstr "Rata Kanan"
+
+#: lib/Block/fortune.php:42
+msgid "Kernel Newbies"
+msgstr "Kernel Newbies"
+
+#: lib/Block/fortune.php:43
+msgid "Kids"
+msgstr "Anak-anak"
+
+#: config/nls.php.dist:188
+msgid "Korean (EUC-KR)"
+msgstr "Korea (EUC-KR)"
+
+#: templates/portal/menu.inc:8
+msgid "La_yout"
+msgstr "Tampilan"
+
+#: templates/login/login.inc:80
+msgid "Language"
+msgstr "Bahasa"
+
+#: lib/Block/moon.php:174
+msgid "Last Half"
+msgstr "Fase terakhir dari Separuh Bulan"
+
+#: lib/Block/account.php:76
+msgid "Last Password Change"
+msgstr "Perubahan Sandi Terakhir"
+
+#: lib/Block/moon.php:88 lib/Block/moon.php:90
+msgid "Last Quarter"
+msgstr "Fase terakhir dari Separuh Bulan"
+
+#: lib/Block/metar.php:149
+msgid "Last Updated:"
+msgstr "Perubahan Terakir:"
+
+#: lib/Block/fortune.php:44
+msgid "Law"
+msgstr "Hukum"
+
+#: templates/javascript/htmlarea_table_lang.js:39
+#: templates/javascript/htmlarea_lang.js:79
+msgid "Layout"
+msgstr "Tampilan"
+
+#: templates/javascript/htmlarea_lang.js:86
+msgid "Leave empty for no border"
+msgstr "Tinggalkan kosong tanpa border"
+
+#: templates/javascript/htmlarea_table_lang.js:40
+#: templates/javascript/htmlarea_lang.js:69
+msgid "Left"
+msgstr "Kiri"
+
+#: lib/Block/weatherdotcom_strings.php:22
+msgid "Light Drizzle"
+msgstr "Gerimis"
+
+#: lib/Block/weatherdotcom_strings.php:23
+msgid "Light Rain"
+msgstr "Gerimis"
+
+#: lib/Block/weatherdotcom_strings.php:24
+msgid "Light Rain Early"
+msgstr "Gerimis di pagi hari"
+
+#: lib/Block/weatherdotcom_strings.php:25
+msgid "Light Rain Late"
+msgstr "Gerimis beberapa saat lagi"
+
+#: lib/Block/weatherdotcom_strings.php:26
+msgid "Light Rain Shower"
+msgstr "Gerimis"
+
+#: lib/Block/weatherdotcom_strings.php:27
+msgid "Light Rain with Thunder"
+msgstr "Gerimis disertai petir"
+
+#: lib/Block/weatherdotcom_strings.php:28
+msgid "Light Snow"
+msgstr "Bersalju"
+
+#: lib/Block/weatherdotcom_strings.php:29
+msgid "Light Snow Shower"
+msgstr "Gerimis Salju"
+
+#: lib/Block/fortune.php:45
+msgid "Limerick"
+msgstr "Pantun Jenaka"
+
+#: templates/javascript/htmlarea_context_lang.js:57
+msgid "Link points to:"
+msgstr "Link menunjuk ke:"
+
+#: lib/Block/fortune.php:46
+msgid "Linux Cookie"
+msgstr "Linux Cookie"
+
+#: admin/sqlshell.php:129
+msgid "List Databases"
+msgstr "Daftar Database"
+
+#: services/help/index.php:50
+msgid "List Help Topics"
+msgstr "Daftar Topik Bantuan"
+
+#: admin/sqlshell.php:128
+msgid "List Tables"
+msgstr "Daftar Tabel"
+
+#: templates/admin/user/nolist.inc:4
+msgid "Listing users is disabled."
+msgstr "Daftar pengguna dinon-aktifkan."
+
+#: lib/Block/fortune.php:47
+msgid "Literature"
+msgstr "Daftar Bacaan"
+
+#: lib/Block/weatherdotcom.php:186
+msgid "Local time: "
+msgstr "Waktu local:"
+
+#: config/prefs.php.dist:83
+msgid "Locale and Time"
+msgstr "Tempat Peristiwa dan Waktu"
+
+#: lib/Block/weatherdotcom.php:64 lib/Block/sunrise.php:22
+#: lib/Block/metar.php:63
+msgid "Location"
+msgstr "Lokasi"
+
+#: login.php:154 services/portal/sidebar.php:191 templates/login/mobile.inc:3
+#: templates/login/mobile.inc:15 templates/login/login.inc:87
+msgid "Log in"
+msgstr "Login"
+
+#: services/portal/sidebar.php:185
+msgid "Log out"
+msgstr "Log out"
+
+#: lib/Block/account.php:59
+msgid "Login"
+msgstr "Login"
+
+#: config/prefs.php.dist:107
+msgid "Login Tasks"
+msgstr "Tugas Login"
+
+#: lib/Block/fortune.php:48
+msgid "Love"
+msgstr "Cinta"
+
+#: lib/Block/weatherdotcom_strings.php:63
+msgid "Low"
+msgstr "Rendah"
+
+#: templates/javascript/htmlarea_listtype_lang.js:21
+msgid "Lower greek letters"
+msgstr "Simbol Huruf kecil yunani"
+
+#: templates/javascript/htmlarea_listtype_lang.js:19
+msgid "Lower latin letters"
+msgstr "Simbol Huruf kecil latin"
+
+#: templates/javascript/htmlarea_listtype_lang.js:17
+msgid "Lower roman numbers"
+msgstr "Simbol Huruf kecil romawi"
+
+#: templates/data/date.inc:47 templates/data/date.inc:48
+#: templates/data/date.inc:49 templates/data/date.inc:50
+msgid "MM"
+msgstr "MM"
+
+#: config/registry.php.dist:278
+msgid "MOTD"
+msgstr "MOTD"
+
+#: lib/Block/fortune.php:49
+msgid "Magic"
+msgstr "Sulap"
+
+#: config/registry.php.dist:78
+msgid "Mail"
+msgstr "Surat"
+
+#: config/registry.php.dist:508
+msgid "Mail Admin"
+msgstr "Surat Admin"
+
+#: templates/javascript/htmlarea_context_lang.js:41
+msgid "Make lin_k..."
+msgstr "Buat link..."
+
+#: config/prefs.php.dist:91
+msgid ""
+"Manage the list of categories you have to label items with, and colors "
+"associated with those categories."
+msgstr ""
+"Mengatur daftar kategori yang harus diberi label item, dan warna yang "
+"berhubungan  dengan kategori tersebut."
+
+#: templates/javascript/open_calendar.js:67
+msgid "March"
+msgstr "Maret"
+
+#: templates/javascript/htmlarea_table_lang.js:41
+msgid "Margin"
+msgstr "Margin"
+
+#: templates/data/csvmap.inc:111
+msgid "Matching fields"
+msgstr "Mencocokkan kolom"
+
+#: lib/Block/metar.php:304
+msgid "Max temp last 24 hours: "
+msgstr " Suhu maksimum yang berlangsung selama 24 jam:"
+
+#: lib/Block/metar.php:296
+msgid "Max temp last 6 hours: "
+msgstr "Suhu maksimum yang berlangsung selama 6 jam:"
+
+#: lib/api.php:82
+msgid "Maximum Number of Portal Blocks"
+msgstr "Jumlah maksimum dari portal yang diblokir"
+
+#: templates/javascript/open_calendar.js:69
+msgid "May"
+msgstr "Mei"
+
+#: lib/Block/fortune.php:50
+msgid "Medicine"
+msgstr "Obat-obatan"
+
+#: templates/admin/groups/edit.inc:20
+msgid "Members"
+msgstr "Anggota"
+
+#: config/prefs.php.dist:368
+msgid "Menu mode:"
+msgstr "Menu mode:"
+
+#: templates/javascript/htmlarea_table_lang.js:60
+msgid "Merge cells"
+msgstr "Gabungkan sel"
+
+#: lib/Block/metar.php:3
+msgid "Metar Weather"
+msgstr " Cuaca Metar"
+
+#: lib/Block/metar.php:37
+msgid "Metar block not available."
+msgstr "Area Metar tidak disediakan."
+
+#: lib/Block/metar.php:110
+msgid ""
+"Metar block not available. Details have been logged for the administrator."
+msgstr "Area Metar tidak disediakan. Detil telah dicatat untuk administrator."
+
+#: lib/Block/weatherdotcom.php:74 lib/Block/metar.php:73
+msgid "Metric"
+msgstr "Metrik"
+
+#: templates/javascript/htmlarea_table_lang.js:42
+#: templates/javascript/htmlarea_lang.js:76
+msgid "Middle"
+msgstr "Tengah"
+
+#: lib/Block/metar.php:308
+msgid "Min temp last 24 hours: "
+msgstr "Suhu minimum yang berlangsung selama 24 jam:"
+
+#: lib/Block/metar.php:300
+msgid "Min temp last 6 hours: "
+msgstr "Suhu minimum yang berlangsung selama 6 jam:"
+
+#: lib/Block/fortune.php:51
+msgid "Miscellaneous"
+msgstr "Lain-lain"
+
+#: admin/setup/index.php:115
+msgid ""
+"Missing configuration. You have to generate it now if you want to use this "
+"application."
+msgstr ""
+"Konfigurasi tidak ditemukan. Anda harus menghasikan konfigurasi sekarang "
+"jika anda ingin menggunakan aplikasi ini."
+
+#: templates/javascript/open_calendar.js:56
+msgid "Mo"
+msgstr "Sen"
+
+#: config/registry.php.dist:71
+msgid "Mobile Mail"
+msgstr "Mobile Mail"
+
+#: lib/Block/weatherdotcom_strings.php:64
+msgid "Moderate"
+msgstr "Sedang"
+
+#: templates/javascript/htmlarea_context_lang.js:53
+msgid "Modify URL"
+msgstr "Ubah URL"
+
+#: lib/Block/moon.php:3 lib/Block/moon.php:16
+msgid "Moon Phases"
+msgstr "Fase Bulan"
+
+#: lib/Block/weatherdotcom_strings.php:30
+msgid "Mostly Clear"
+msgstr "Sebagian besar Cerah"
+
+#: lib/Block/weatherdotcom_strings.php:31
+msgid "Mostly Cloudy"
+msgstr "Sebagian besar Berawan"
+
+#: lib/Block/weatherdotcom_strings.php:32
+msgid "Mostly Sunny"
+msgstr "Sebagian besar Cerah"
+
+#: config/registry.php.dist:386
+msgid "My Account"
+msgstr "Account-ku"
+
+#: lib/Block/account.php:28
+msgid "My Account Information"
+msgstr "Informasi Account-ku"
+
+#: services/portal/index.php:54
+msgid "My Portal"
+msgstr "Portalku"
+
+#: services/portal/edit.php:136
+msgid "My Portal Layout"
+msgstr "Tampilan Portalku"
+
+#: templates/maintenance/maintenance.html:57
+msgid "NO, I Do NOT Agree"
+msgstr "TIDAK, Saya TIDAK Setuju"
+
+#: config/registry.php.dist:248
+msgid "Network"
+msgstr "Network"
+
+#: config/prefs.php.dist:325 config/prefs.php.dist:376
+msgid "Never"
+msgstr "Tidak pernah"
+
+#: templates/prefs/categorymanagement.inc:27
+msgid "New Category"
+msgstr "Kategori Baru"
+
+#: lib/Block/moon.php:46 lib/Block/moon.php:68 lib/Block/moon.php:179
+msgid "New Moon"
+msgstr "Bulan Baru"
+
+#: templates/admin/user/update.inc:37
+msgid "New Username (optional)"
+msgstr "Nama Pengguna Baru (pilihan)"
+
+#: services/changepassword.php:37
+msgid "New password"
+msgstr "Sandi Baru"
+
+#: services/changepassword.php:52
+msgid "New passwords don't match."
+msgstr "Sandi baru tidak cocok."
+
+#: templates/javascript/htmlarea_lang.js:91
+msgid "New window (_blank)"
+msgstr "Window Baru (_blank)"
+
+#: lib/Block/google.php:40 lib/Block/fortune.php:52
+#: config/registry.php.dist:286
+msgid "News"
+msgstr "Berita"
+
+#: config/registry.php.dist:302
+msgid "Newsgroups"
+msgstr "Grup Berita"
+
+#: templates/data/tsvinfo.inc:21 templates/data/datemap.inc:46
+#: templates/data/csvmap.inc:137 templates/data/csvinfo.inc:32
+msgid "Next"
+msgstr "Berikutnya"
+
+#: lib/Block/moon.php:27
+msgid "Next Phase"
+msgstr "Fase Berikutnya"
+
+#: lib/Block/weatherdotcom.php:358
+msgid "Night"
+msgstr "Malam"
+
+#: templates/admin/setup/diff.html:16
+msgid "No available configuration data to show differences for."
+msgstr ""
+"Tidak ada data konfigurasi yang tersedia untuk menunjukkan perbedaan untuk."
+
+#: admin/setup/diff.php:55
+msgid "No change."
+msgstr "Tidak ada perubahan."
+
+#: util/icon_browser.php:71
+msgid "No icons found."
+msgstr "Tidak ada ikon yang ditemukan."
+
+#: lib/Block/weatherdotcom.php:128 lib/Block/sunrise.php:40
+#: lib/Block/metar.php:121
+msgid "No location is set."
+msgstr "Tidak ada lokasi yang diatur."
+
+#: lib/Block/fortune.php:94
+msgid "No offensive fortunes"
+msgstr "Tidak ada ramalan yang tidak sopan"
+
+#: templates/admin/user/approve.inc:6
+msgid "No pending signups."
+msgstr "Tidak ada pendaftaran yang ditunda."
+
+#: templates/javascript/htmlarea_table_lang.js:43
+msgid "No rules"
+msgstr "Tidak ada aturan"
+
+#: templates/javascript/htmlarea_table_lang.js:44
+msgid "No sides"
+msgstr "Tidak ada sisi"
+
+#: lib/Block/weatherdotcom.php:138
+msgid "No temporary directory available for cache."
+msgstr "Tidak ada direktori sementara yang tersedia untuk cache"
+
+#: admin/setup/index.php:120
+msgid "No version found in original configuration. Regenerate configuration."
+msgstr ""
+"Tidak ada versi yang ditemukan di dalam konfigurasi yang asli. Menghasilkan "
+"konfigurasi kembali."
+
+#: admin/setup/index.php:128
+msgid "No version found in your configuration. Regenerate configuration."
+msgstr ""
+"Tidak ada versi yang ditemukan di dalam konfigurasi anda. Menghasilkan "
+"konfigurasi kembali."
+
+#: templates/javascript/htmlarea_table_lang.js:45
+#: templates/prefs/identityselect.inc:93
+msgid "None"
+msgstr "Tidak ada"
+
+#: templates/javascript/htmlarea_lang.js:90
+msgid "None (use implicit)"
+msgstr "Tidak ada (digunakan selengkapnya)"
+
+#: config/nls.php.dist:189
+msgid "Nordic (ISO-8859-10)"
+msgstr "Scandinavia (ISO-8859-10)"
+
+#: lib/Block/moon.php:32 lib/Block/moon.php:60
+msgid "Northern Hemisphere"
+msgstr "Belahan Bumi Utara"
+
+#: templates/javascript/htmlarea_lang.js:68
+msgid "Not set"
+msgstr "Belum diatur"
+
+#: config/hooks.php.dist:1009 config/registry.php.dist:175
+msgid "Notes"
+msgstr "Catatan"
+
+#: services/obrowser/index.php:36
+msgid "Nothing to browse, go back."
+msgstr "Tidak ada yang dapat dibrowse, silakan kembali."
+
+#: templates/javascript/open_calendar.js:75
+msgid "November"
+msgstr "November"
+
+#: templates/javascript/htmlarea_lang.js:104
+msgid "Number of columns"
+msgstr "Jumlah kolom"
+
+#: templates/javascript/htmlarea_lang.js:102
+msgid "Number of rows"
+msgstr "Jumlah baris"
+
+#: templates/javascript/htmlarea_lang.js:46
+#: templates/javascript/htmlarea_lang.js:64
+msgid "OK"
+msgstr "OK"
+
+#: templates/shares/edit.inc:111
+msgid "Object Creator"
+msgstr "Pencipta Objek"
+
+#: templates/javascript/open_calendar.js:74
+msgid "October"
+msgstr "Oktober"
+
+#: lib/Block/fortune.php:92
+msgid "Offense filter"
+msgstr "Filter Pelanggaran"
+
+#: config/registry.php.dist:323
+msgid "Office"
+msgstr "Kantor"
+
+#: services/changepassword.php:58
+msgid "Old and new passwords must be different."
+msgstr "Sandi lama dan baru harus berbeda."
+
+#: services/changepassword.php:36
+msgid "Old password"
+msgstr "Sandi lama"
+
+#: services/changepassword.php:46
+msgid "Old password is not correct."
+msgstr "Sandi lama tidak benar."
+
+#: lib/Block/fortune.php:95
+msgid "Only offensive fortunes"
+msgstr "Hanya ramalan yang tidak sopan"
+
+#: services/shares/edit.php:65
+msgid ""
+"Only the owner or system administrator may change ownership or owner "
+"permissions for a share"
+msgstr ""
+"Hanya pemilik atau sistem administrator saja yang dapat mengubah kepemilikan "
+"atau pemilik izin untuk bagian"
+
+#: lib/Block/iframe.php:35
+msgid "Open in a new window"
+msgstr "Buka di jendela yang baru"
+
+#: templates/javascript/htmlarea_context_lang.js:55
+msgid "Opens this link in a new window"
+msgstr "Buka link ini di jendela yang baru"
+
+#: lib/Block/fortune.php:53
+msgid "Operating System"
+msgstr "Sistem Operasi"
+
+#: services/portal/sidebar.php:151
+msgid "Options"
+msgstr "Pilihan"
+
+#: services/prefs.php:31 templates/prefs/app.inc:14
+#, php-format
+msgid "Options for %s"
+msgstr "Pilihan untuk %s"
+
+#: templates/javascript/htmlarea_lang.js:18
+msgid "Ordered List"
+msgstr "Daftar Nomor Berurut"
+
+#: config/registry.php.dist:129
+msgid "Organizing"
+msgstr "Mengatur"
+
+#: admin/templates.php:135
+msgid "Original application template"
+msgstr "Aplikasi template asli"
+
+#: admin/templates.php:117
+#, php-format
+msgid "Original templates in %s:"
+msgstr "Template asli di dalam %s:"
+
+#: services/keyboard.php:117 templates/javascript/htmlarea_lang.js:94
+msgid "Other"
+msgstr "Lain-lain"
+
+#: config/prefs.php.dist:96 config/prefs.php.dist:106
+#: config/prefs.php.dist:113 config/prefs.php.dist:121
+#: config/prefs.php.dist:129
+msgid "Other Information"
+msgstr "Informasi Lain"
+
+#: templates/shares/edit.inc:31
+msgid "Owner Permissions"
+msgstr "Izin Pemilik"
+
+#: admin/phpshell.php:68
+msgid "PHP Code"
+msgstr "Kode PHP"
+
+#: admin/phpshell.php:20
+msgid "PHP Shell"
+msgstr "PHP Shell"
+
+#: lib/Block/weatherdotcom_strings.php:34
+msgid "PM Light Rain"
+msgstr "PM Gerimis"
+
+#: lib/Block/weatherdotcom_strings.php:35
+msgid "PM Showers"
+msgstr "PM Gerimis"
+
+#: lib/Block/weatherdotcom_strings.php:36
+msgid "PM Snow"
+msgstr "PM Bersalju"
+
+#: lib/Block/weatherdotcom_strings.php:37
+msgid "PM Snow Showers"
+msgstr "PM Gerimis Salju"
+
+#: lib/Block/weatherdotcom_strings.php:38
+msgid "PM Sun"
+msgstr "PM Cerah"
+
+#: lib/Block/weatherdotcom_strings.php:39
+msgid "PM T-Storms"
+msgstr "PM Hujan petir disertai dengan angin ribut"
+
+#: lib/Block/account.php:274
+msgid "POSIX extension is missing"
+msgstr "Ekstensi POSIX tidak ditemukan"
+
+#: lib/api.php:141
+msgid "P_HP Shell"
+msgstr "PHP Shell"
+
+#: templates/javascript/htmlarea_table_lang.js:46
+msgid "Padding"
+msgstr "Jarak spasi dari border"
+
+#: lib/Block/weatherdotcom_strings.php:33
+msgid "Partly Cloudy"
+msgstr "Sebagian Berawan"
+
+#: admin/user.php:36 admin/setup/index.php:184 templates/login/login.inc:74
+#: templates/admin/user/update.inc:43 config/registry.php.dist:409
+msgid "Password"
+msgstr "Sandi"
+
+#: services/changepassword.php:82
+msgid "Password changed successfully."
+msgstr "Sandi berhasil diubah."
+
+#: templates/rpcsum/rpcsum.inc:90
+msgid "Password:"
+msgstr "Sandi:"
+
+#: templates/login/mobile.inc:11
+msgid "Password: "
+msgstr "Sandi:"
+
+#: admin/user.php:150 templates/admin/user/update.inc:15
+msgid "Passwords must match."
+msgstr "Sandi harus cocok."
+
+#: admin/sqlshell.php:119 templates/javascript/htmlarea_context_lang.js:22
+msgid "Paste"
+msgstr "Salin"
+
+#: templates/javascript/htmlarea_lang.js:37
+msgid "Paste from clipboard"
+msgstr "Lekatkan dari clipboard"
+
+#: templates/javascript/htmlarea_lang.js:51
+msgid "Path"
+msgstr "Path"
+
+#: templates/admin/user/approve.inc:2 templates/admin/user/removequeued.inc:4
+msgid "Pending Signups:"
+msgstr "Pendaftaran yang ditunda:"
+
+#: lib/Block/fortune.php:54
+msgid "People"
+msgstr "Orang"
+
+#: templates/javascript/htmlarea_lang.js:107
+msgid "Percent"
+msgstr "Persen"
+
+#: templates/maintenance/maintenance.html:49
+msgid "Perform Maintenance Operations"
+msgstr "Melaksanakan Operasi Pemeliharaan"
+
+#: config/prefs.php.dist:396
+msgid "Perform maintenance operations on login?"
+msgstr "Melaksanakan operasi pemeliharaan pada waktu login?"
+
+#: admin/perms/delete.php:52
+#, php-format
+msgid "Permission \"%s\" not deleted."
+msgstr "Izin untuk \"%s\" tidak dapat dihapus."
+
+#: admin/perms/edit.php:109 admin/perms/addchild.php:60
+#: admin/perms/index.php:22 admin/perms/delete.php:58
+msgid "Permissions Administration"
+msgstr "Izin Administrasi"
+
+#: config/prefs.php.dist:65
+msgid "Personal Information"
+msgstr "Informasi Pribadi"
+
+#: lib/Block/fortune.php:55
+msgid "Pets"
+msgstr "Binatang Kesayangan"
+
+#: config/registry.php.dist:464
+msgid "Photos"
+msgstr "Foto"
+
+#: templates/javascript/htmlarea_lang.js:108
+msgid "Pixels"
+msgstr "Pixel"
+
+#: lib/Block/fortune.php:56
+msgid "Platitudes"
+msgstr "Kata-kata klise"
+
+#: templates/javascript/htmlarea_table_lang.js:47
+msgid "Please click into some cell"
+msgstr "Silakan klik ke dalam beberapa sel"
+
+#: templates/javascript/htmlarea_context_lang.js:49
+msgid "Please confirm that you want to remove this element:"
+msgstr "Silakan konfirmasi bahwa anda ingin memindahkan elemen ini:"
+
+#: templates/javascript/htmlarea_context_lang.js:56
+msgid "Please confirm that you want to unlink this element."
+msgstr "Silakan konfirmasi bahwa anda ingin menghapus link untuk elemen ini."
+
+#: templates/prefs/categorymanagement.inc:12
+msgid "Please enter a name for the new category:"
+msgstr "Silakan masukkan nama untuk kategori yang baru:"
+
+#: templates/problem/problem.inc:7
+msgid "Please provide a summary of the problem."
+msgstr "Silakan masukkan ringkasan untuk masalah."
+
+#: templates/login/login.inc:22 templates/login/login.inc:26
+msgid "Please provide your username and password"
+msgstr "Silakan masukkan nama pengguna dan sandi anda"
+
+#: services/maintenance.php:58
+msgid ""
+"Please read the following text. You MUST agree with the terms to use the "
+"system."
+msgstr ""
+"Silakan membaca teks berikut ini. Anda HARUS setuju dengan syarat-syarat "
+"untuk menggunakan sistem."
+
+#: lib/Block/fortune.php:57
+msgid "Politics"
+msgstr "Politik"
+
+#: config/registry.php.dist:473
+msgid "Polls"
+msgstr "Polling"
+
+#: templates/javascript/htmlarea_lang.js:124
+#: templates/javascript/htmlarea_anselimage_lang.js:27
+msgid "Positioning of this image"
+msgstr "Posisi untuk gambar ini"
+
+#: templates/javascript/htmlarea_lang.js:111
+msgid "Positioning of this table"
+msgstr "Posisi untuk tabel ini"
+
+#: lib/Block/metar.php:264 lib/Block/metar.php:269
+#, php-format
+msgid "Precipitation for last %s hour(s): "
+msgstr "Hujan salju untuk %s jam terakhir:"
+
+#: lib/Block/weatherdotcom.php:273
+msgid "Precipitation<br />chance"
+msgstr "Kemungkinan <br/>Hujan salju"
+
+#: lib/Block/metar.php:223
+msgid "Pressure"
+msgstr "Tekanan"
+
+#: lib/Block/metar.php:257
+msgid "Pressure at sea level: "
+msgstr "Tekanan pada permukaan laut:"
+
+#: lib/Block/weatherdotcom.php:210
+msgid "Pressure: "
+msgstr "Tekanan:"
+
+#: templates/javascript/htmlarea_lang.js:120
+#: templates/javascript/htmlarea_anselimage_lang.js:23
+msgid "Preview"
+msgstr "Lihat"
+
+#: templates/javascript/htmlarea_lang.js:121
+#: templates/javascript/htmlarea_anselimage_lang.js:24
+msgid "Preview the image in a new window"
+msgstr "Lihat gambar di dalam jendela yang baru"
+
+#: templates/javascript/htmlarea_lang.js:41
+msgid "Print document"
+msgstr "Cetak dokumen"
+
+#: services/problem.php:126
+msgid "Problem Description"
+msgstr "Deskripsi Masalah"
+
+#: config/registry.php.dist:362
+msgid "Projects"
+msgstr "Projek"
+
+#: admin/sqlshell.php:63
+msgid "Query"
+msgstr "Query"
+
+#: lib/Block/account.php:70
+msgid "Quota"
+msgstr "Kuota"
+
+#: lib/Block/weatherdotcom_strings.php:40
+msgid "Rain"
+msgstr "Hujan"
+
+#: lib/Block/weatherdotcom_strings.php:41
+msgid "Rain Early"
+msgstr "Hujan di pagi hari"
+
+#: lib/Block/weatherdotcom_strings.php:42
+msgid "Rain Late"
+msgstr "Hujan beberapa saat lagi"
+
+#: lib/Block/weatherdotcom_strings.php:43
+msgid "Rain Shower"
+msgstr "Gerimis"
+
+#: lib/Block/weatherdotcom_strings.php:44
+msgid "Rain and Snow"
+msgstr "Hujan dan Bersalju"
+
+#: lib/Block/weatherdotcom_strings.php:45
+msgid "Rain to Snow"
+msgstr "Hujan bercampur dengan salju"
+
+#: lib/Block/fortune.php:3
+msgid "Random Fortune"
+msgstr "Ramalan Acak"
+
+#: templates/shares/edit.inc:34 templates/shares/edit.inc:68
+#: templates/shares/edit.inc:91 templates/shares/edit.inc:114
+#: templates/shares/edit.inc:137 templates/shares/edit.inc:180
+msgid "Read"
+msgstr "Baca"
+
+#: templates/admin/user/remove.inc:11
+#, php-format
+msgid "Really delete %s? This operation cannot be undone."
+msgstr "Yakin untuk menghapus %s? Operasi ini tidak dapat dibatalkan."
+
+#: templates/admin/user/clear.inc:11
+#, php-format
+msgid "Really remove user data for user %s? This operation cannot be undone."
+msgstr ""
+"Yakin untuk memindahkan data pengguna untuk pengguna %s? Operasi ini tidak "
+"dapat dibatalkan."
+
+#: templates/javascript/htmlarea_lang.js:34
+msgid "Redoes your last action"
+msgstr "Ulangi aksi terakhir anda"
+
+#: config/prefs.php.dist:381
+msgid "Refresh Dynamic Menu Elements:"
+msgstr "Refresh Elemen Menu Dinamis:"
+
+#: config/prefs.php.dist:331
+msgid "Refresh Portal View:"
+msgstr "Refresh Lihat Portal:"
+
+#: lib/Block/metar.php:324
+msgid "Remarks"
+msgstr "Ditandai"
+
+#: config/prefs.php.dist:114
+msgid "Remote Servers"
+msgstr "Remote Server"
+
+#: templates/rpcsum/rpcsum.inc:84
+msgid "Remote URL (http://www.example.com/horde):"
+msgstr "Remote URL (http://www.example.com/horde)"
+
+#: templates/admin/groups/edit.inc:22 templates/admin/user/approve.inc:28
+#: templates/admin/user/removequeued.inc:14
+msgid "Remove"
+msgstr "Pindahkan"
+
+#: templates/portal/layout.inc:11
+msgid "Remove Block"
+msgstr "Pindahkan Blokir"
+
+#: templates/javascript/htmlarea_lang.js:40
+msgid "Remove formatting"
+msgstr "Pindahkan Cara Format"
+
+#: templates/data/csvmap.inc:136
+msgid "Remove pair"
+msgstr "Pindahkan pasangan"
+
+#: admin/setup/index.php:206
+msgid "Remove saved script from server's temporary directory."
+msgstr "Pindahkan script yang sudah disimpan dari direktori server sementara."
+
+#: templates/javascript/htmlarea_context_lang.js:42
+msgid "Remove the"
+msgstr "Pindahkan"
+
+#: templates/javascript/htmlarea_context_lang.js:50
+msgid "Remove this node from the document"
+msgstr "Pindahkan node ini dari dokumen"
+
+#: templates/admin/user/remove.inc:15
+msgid "Remove user"
+msgstr "Pindahkan pengguna"
+
+#: templates/admin/user/remove.inc:7
+#, php-format
+msgid "Remove user: %s"
+msgstr "Pindahkan pengguna: %s"
+
+#: admin/user.php:31 templates/rpcsum/rpcsum.inc:101
+#: templates/admin/user/update.inc:70
+msgid "Reset"
+msgstr "Atur kembali "
+
+#: services/resetpassword.php:46
+msgid "Reset Password"
+msgstr "Atur kembali Sandi"
+
+#: services/resetpassword.php:27
+msgid "Reset Your Password"
+msgstr "Atur kembali Sandi Anda"
+
+#: admin/phpshell.php:71 admin/cmdshell.php:28 admin/sqlshell.php:66
+msgid "Results"
+msgstr "Hasil"
+
+#: templates/rpcsum/rpcsum.inc:102 templates/prefs/end.inc:7
+msgid "Return to Options"
+msgstr "Kembali ke Pilihan"
+
+#: services/changepassword.php:38
+msgid "Retype new password"
+msgstr "Ketik ulang sandi baru"
+
+#: admin/setup/config.php:44 admin/setup/config.php:48
+msgid "Revert Configuration"
+msgstr "Kembali ke Konfigurasi"
+
+#: config/prefs.php.dist:130
+msgid "Rich Text Editor Options"
+msgstr "Pilihan Editor Rich Text"
+
+#: lib/Block/fortune.php:58
+msgid "Riddles"
+msgstr "Teka-teki"
+
+#: templates/javascript/htmlarea_table_lang.js:48
+#: templates/javascript/htmlarea_lang.js:70
+msgid "Right"
+msgstr "Kanan"
+
+#: templates/javascript/htmlarea_context_lang.js:28
+msgid "Ro_w Properties..."
+msgstr "Properti Baris..."
+
+#: templates/javascript/htmlarea_table_lang.js:49
+msgid "Row Properties"
+msgstr "Properti Baris"
+
+#: templates/javascript/htmlarea_table_lang.js:70
+msgid "Row properties"
+msgstr "Properti baris"
+
+#: templates/javascript/htmlarea_lang.js:101
+msgid "Rows:"
+msgstr "Baris:"
+
+#: templates/javascript/htmlarea_table_lang.js:53
+msgid "Rules"
+msgstr "Aturan"
+
+#: templates/javascript/htmlarea_table_lang.js:50
+msgid "Rules will appear between all rows and columns"
+msgstr "Aturan akan ditampilkan diantara semua baris dan kolom"
+
+#: templates/javascript/htmlarea_table_lang.js:51
+msgid "Rules will appear between columns only"
+msgstr "Aturan akan ditampilkan hanya diantara kolom"
+
+#: templates/javascript/htmlarea_table_lang.js:52
+msgid "Rules will appear between rows only"
+msgstr "Aturan akan ditampilkan hanya diantara baris"
+
+#: admin/sqlshell.php:120
+msgid "Run"
+msgstr "Jalankan"
+
+#: config/registry.php.dist:490
+msgid "SMS Messaging"
+msgstr "Pesan SMS"
+
+#: admin/sqlshell.php:21
+msgid "SQL Shell"
+msgstr "SQL Shell"
+
+#: config/registry.php.dist:417
+msgid "SSH"
+msgstr "SSH"
+
+#: lib/api.php:145
+msgid "S_QL Shell"
+msgstr "S_QL Shell"
+
+#: templates/javascript/open_calendar.js:61
+msgid "Sa"
+msgstr "Sbt"
+
+#: templates/javascript/htmlarea_lang.js:92
+msgid "Same frame (_self)"
+msgstr "Frame yang sama (_self)"
+
+#: templates/portal/layout.inc:98
+msgid "Save"
+msgstr "Simpan"
+
+#: templates/shares/edit.inc:216
+#, php-format
+msgid "Save %s"
+msgstr "Simpan %s"
+
+#: templates/admin/groups/edit.inc:53
+#, php-format
+msgid "Save '%s'"
+msgstr "Simpan '%s'"
+
+#: templates/prefs/end.inc:5
+msgid "Save Options"
+msgstr "Simpan Pilihan"
+
+#: admin/setup/index.php:171
+msgid ""
+"Save generated configuration as a PHP script to your server's temporary "
+"directory."
+msgstr ""
+"Simpan konfigurasi yang dihasilkan sebagai script PHP ke dalam direktori "
+"server sementara anda."
+
+#: admin/setup/scripts.php:71
+#, php-format
+msgid "Saved %s configuration."
+msgstr "Konfigurasi %s sudah disimpan."
+
+#: admin/setup/scripts.php:93
+#, php-format
+msgid "Saved setup upgrade script to: '%s'."
+msgstr "Script setup upgrade sudah disimpan ke: '%s'."
+
+#: lib/Block/weatherdotcom_strings.php:46
+msgid "Scattered T-Storms"
+msgstr "Sebagian Hujan petir disertai angin ribut"
+
+#: lib/Block/fortune.php:59
+msgid "Science"
+msgstr "Ilmu Pengetahuan"
+
+#: templates/admin/user/list.inc:14 templates/admin/user/list.inc:16
+msgid "Search"
+msgstr "Pencarian"
+
+#: config/registry.php.dist:317
+msgid "Search Engines"
+msgstr "Mesin Pencarian"
+
+#: templates/shares/edit.inc:198
+msgid "Select a group to add"
+msgstr "Pilih grup untuk ditambah"
+
+#: templates/shares/edit.inc:43
+msgid "Select a new owner"
+msgstr "Pilih pemilik baru"
+
+#: templates/rpcsum/rpcsum.inc:60
+msgid "Select a server"
+msgstr "Pilih server"
+
+#: templates/shares/edit.inc:156
+msgid "Select a user to add"
+msgstr "Pilih pengguna untuk ditambah"
+
+#: services/keyboard.php:37
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the text area."
+msgstr ""
+"Pilih karakter yang anda perlukan dari kotak-kotak dibawah ini. Anda dapat "
+"menyalin dan melekatkannya ke dalam area teks."
+
+#: templates/data/date.inc:34
+msgid "Select the date delimiter:"
+msgstr "Pilih batas tanggal:"
+
+#: templates/data/date.inc:44
+msgid "Select the date format:"
+msgstr "Pilih format tanggal:"
+
+#: templates/prefs/identityselect.inc:90
+msgid "Select the identity you want to change:"
+msgstr "Pilih identitas yang ingin diubah oleh anda:"
+
+#: templates/data/time.inc:16
+msgid "Select the time delimiter:"
+msgstr "Pilih batas waktu:"
+
+#: templates/data/time.inc:25
+msgid "Select the time format:"
+msgstr "Pilih format waktu:"
+
+#: templates/data/csvmap.inc:64
+msgid "Select two matching fields."
+msgstr "Pilih dua kolom yang cocok."
+
+#: config/prefs.php.dist:296
+msgid "Select your color scheme."
+msgstr "Pilih warna scheme anda."
+
+#: config/prefs.php.dist:238
+msgid "Select your preferred language:"
+msgstr "Pilih bahasa yang anda inginkan:"
+
+#: templates/problem/problem.inc:58
+msgid "Send Problem Report"
+msgstr "Kirim Laporan Masalah"
+
+#: lib/Block/metar.php:314
+msgid "Sensor: "
+msgstr "Sensor:"
+
+#: templates/javascript/open_calendar.js:73
+msgid "September"
+msgstr "September"
+
+#: config/prefs.php.dist:76
+msgid "Set options to allow you to reset your password if you ever forget it."
+msgstr ""
+"Atur pilihan untuk mengizinkan anda dapat mengatur ulang kembali sandi anda "
+"apabila anda lupa."
+
+#: config/prefs.php.dist:115
+msgid "Set up remote servers that you want to access from your portal."
+msgstr "Atur remote server yang ingin anda akses dari portal anda."
+
+#: config/prefs.php.dist:84
+msgid "Set your preferred language, timezone and date options."
+msgstr "Atur bahasa, zona waktu dan pilihan tanggal, yang anda inginkan."
+
+#: config/prefs.php.dist:98
+msgid ""
+"Set your startup application, color scheme, page refreshing, and other "
+"display options."
+msgstr ""
+"Atur aplikasi awal anda, warna scheme, halaman refresh dan pilihan tampilan "
+"lainnya."
+
+#: admin/setup/config.php:75
+msgid "Setup"
+msgstr "Setup"
+
+#: templates/admin/setup/index.html:39
+msgid "Setup upgrade scripts available"
+msgstr "Script setup upgrade tersedia"
+
+#: lib/Block/weatherdotcom.php:161
+msgid "Several locations possible with the parameter: "
+msgstr "Beberapa lokasi yang mungkin dengan parameter:"
+
+#: config/registry.php.dist:482
+msgid "Shopping"
+msgstr "Belanja"
+
+#: templates/problem/problem.inc:43
+msgid "Short Summary"
+msgstr "Ringkasan Pendek"
+
+#: config/prefs.php.dist:436
+msgid "Should access keys be defined for most links?"
+msgstr "Perlukah kunci akses didefinisikan untuk kebanyakan link?"
+
+#: templates/shares/edit.inc:33 templates/shares/edit.inc:67
+#: templates/shares/edit.inc:90 templates/shares/edit.inc:113
+#: templates/shares/edit.inc:136 templates/shares/edit.inc:179
+msgid "Show"
+msgstr "Tampilkan"
+
+#: admin/setup/index.php:159
+msgid ""
+"Show differences between currently saved and the newly generated "
+"configuration."
+msgstr ""
+"Tampilkan perbedaan diantara konfigurasi yang baru disimpan dan yang baru "
+"dihasilkan."
+
+#: config/prefs.php.dist:480
+msgid "Show last login time when logging in?"
+msgstr "Tampilkan waktu login terakhir ketika anda login?"
+
+#: config/prefs.php.dist:515
+msgid "Show table operations menu bar?"
+msgstr "Tampilkan panel menu tabel operasi?"
+
+#: config/prefs.php.dist:339
+#, php-format
+msgid "Show the %s Menu on the left?"
+msgstr "Tampilkan Menu %s di sebelah kiri?"
+
+#: templates/javascript/htmlarea_context_lang.js:59
+msgid "Show the Table Cell Properties dialog"
+msgstr "Tampilkan dialog Properti Sel Tabel"
+
+#: templates/javascript/htmlarea_context_lang.js:64
+msgid "Show the Table Properties dialog"
+msgstr "Tampilkan dialog Properti Tabel"
+
+#: templates/javascript/htmlarea_context_lang.js:60
+msgid "Show the Table Row Properties dialog"
+msgstr "Tampilkan dialog Properti Baris Tabel"
+
+#: templates/javascript/htmlarea_context_lang.js:52
+msgid "Show the image properties dialog"
+msgstr "Tampilkan dialog properti gambar"
+
+#: lib/Block/weatherdotcom_strings.php:47
+msgid "Showers"
+msgstr "Gerimis"
+
+#: lib/Block/weatherdotcom_strings.php:48
+msgid "Showers Early"
+msgstr "Gerimis di pagi hari"
+
+#: lib/Block/weatherdotcom_strings.php:49
+msgid "Showers Late"
+msgstr "Gerimis beberapa saat lagi"
+
+#: lib/Block/weatherdotcom_strings.php:50
+msgid "Showers in the Vicinity"
+msgstr "Gerimis di sekitar daerah"
+
+#: templates/maintenance/maintenance.html:52
+msgid "Skip Maintenance"
+msgstr "Lewati Pemeliharaan"
+
+#: lib/Block/weatherdotcom_strings.php:51
+msgid "Snow"
+msgstr "Salju"
+
+#: lib/Block/weatherdotcom_strings.php:52
+msgid "Snow Shower"
+msgstr "Gerimis Salju"
+
+#: lib/Block/weatherdotcom_strings.php:53
+msgid "Snow Showers"
+msgstr "Gerimis Salju"
+
+#: lib/Block/weatherdotcom_strings.php:54
+msgid "Snow Showers Early"
+msgstr "Gerimis Salju di pagi hari"
+
+#: lib/Block/weatherdotcom_strings.php:55
+msgid "Snow Showers Late"
+msgstr "Gerimis Salju beberapa saat lagi"
+
+#: lib/Block/metar.php:276
+msgid "Snow depth: "
+msgstr "Kedalaman Salju:"
+
+#: lib/Block/metar.php:280
+msgid "Snow equivalent in water: "
+msgstr "Perbandingan salju di (dalam) air:"
+
+#: lib/Block/fortune.php:60
+msgid "Songs & Poems"
+msgstr "Lagu & Sajak"
+
+#: config/nls.php.dist:190
+msgid "South European (ISO-8859-3)"
+msgstr "Eropa Selatan (ISO-8859-3)"
+
+#: lib/Block/moon.php:33 lib/Block/moon.php:62
+msgid "Southern Hemisphere"
+msgstr "Belahan Bumi Selatan"
+
+#: templates/javascript/htmlarea_lang.js:113
+msgid "Space between adjacent cells"
+msgstr "Jarak antara sel yang berdekatan"
+
+#: templates/javascript/htmlarea_lang.js:115
+msgid "Space between content and border in cell"
+msgstr "Jarak antara isi dan border di dalam sel"
+
+#: templates/javascript/htmlarea_table_lang.js:55
+#: templates/javascript/htmlarea_lang.js:80
+msgid "Spacing"
+msgstr "Jarak spasi"
+
+#: templates/javascript/htmlarea_table_lang.js:54
+msgid "Spacing and padding"
+msgstr "Jarak spasi dan jarak spasi dari border"
+
+#: config/registry.php.dist:95
+msgid "Spam"
+msgstr "Spam"
+
+#: services/keyboard.php:14
+msgid "Special Character Input"
+msgstr "Masukkan Karakter Spesial"
+
+#: templates/javascript/htmlarea_table_lang.js:62
+msgid "Split cell"
+msgstr "Pisahkan Sel"
+
+#: templates/javascript/htmlarea_table_lang.js:66
+msgid "Split column"
+msgstr "Pisahkan kolom"
+
+#: templates/javascript/htmlarea_table_lang.js:71
+msgid "Split row"
+msgstr "Pisahkan baris"
+
+#: lib/Block/fortune.php:61
+msgid "Sports"
+msgstr "Olahraga"
+
+#: lib/Block/weatherdotcom.php:73 lib/Block/metar.php:72
+msgid "Standard"
+msgstr "Standar"
+
+#: lib/Block/fortune.php:62
+msgid "Star Trek"
+msgstr "Perjalanan Bintang"
+
+#: templates/admin/setup/index.html:12
+msgid "Status"
+msgstr "Status"
+
+#: templates/javascript/htmlarea_lang.js:11
+msgid "Strikethrough"
+msgstr "Angka/huruf/simbol yang diberi tanda garis"
+
+#: templates/javascript/htmlarea_table_lang.js:23
+msgid "Style [CSS]"
+msgstr "Gaya [CSS]"
+
+#: templates/javascript/open_calendar.js:62
+msgid "Su"
+msgstr "Min"
+
+#: util/icon_browser.php:37
+#, php-format
+msgid "Subdirectory '%s' not found."
+msgstr "Subdirektori '%s' tidak ditemukan."
+
+#: signup.php:49
+#, php-format
+msgid ""
+"Submitted request to add '%s' to the system. You can not log in until your "
+"request has been approved."
+msgstr ""
+" Permintaan yang disampaikan untuk menambahkan '% s' ke dalam sistem. Anda "
+"tidak dapat log in sampai permintaan anda telah disetujui."
+
+#: templates/javascript/htmlarea_lang.js:12
+msgid "Subscript"
+msgstr "Angka/huruf/simbol yang ditulis dibawah garis baris teks"
+
+#: admin/sqlshell.php:104
+msgid "Success"
+msgstr "Berhasil"
+
+#: admin/user.php:85
+#, php-format
+msgid "Successfully added '%s' to the system."
+msgstr "'%s' sudah berhasil ditambahkan ke dalam sistem."
+
+#: admin/user.php:124
+#, php-format
+msgid "Successfully cleared data for user '%s' from the system."
+msgstr "Data untuk pengguna '%s' sudah berhasil dibersihkan dari sistem."
+
+#: admin/groups.php:80 admin/perms/delete.php:46
+#, php-format
+msgid "Successfully deleted \"%s\"."
+msgstr "\"%s\"sudah berhasil dihapus."
+
+#: admin/user.php:105
+#, php-format
+msgid "Successfully removed '%s' from the system."
+msgstr "'%s sudah berhasil dipindahkan dari sistem."
+
+#: admin/setup/config.php:51
+msgid "Successfully reverted configuration. Reload to see changes."
+msgstr ""
+"Konfigurasi sudah berhasil dikembalikan. Ulangi untuk melihat perubahan. "
+
+#: admin/setup/index.php:59 admin/setup/scripts.php:57
+msgid "Successfully saved backup configuration."
+msgstr "Backup konfigurasi sudah berhasil disimpan."
+
+#: admin/setup/config.php:62
+#, php-format
+msgid "Successfully saved the backup configuration file %s."
+msgstr "File Backup Konfigurasi %s sudah berhasil disimpan."
+
+#: admin/user.php:168
+#, php-format
+msgid "Successfully updated '%s'"
+msgstr "'%s' sudah berhasil diperbaharui"
+
+#: admin/setup/config.php:71 admin/setup/index.php:72
+#, php-format
+msgid "Successfully wrote %s"
+msgstr "'%s' sudah berhasil ditulis"
+
+#: templates/javascript/htmlarea_table_lang.js:56
+msgid "Summary"
+msgstr "Ringkasan"
+
+#: lib/Block/sunrise.php:66
+msgid "Sun Rise"
+msgstr "Matahari Terbit"
+
+#: lib/Block/sunrise.php:71
+msgid "Sun Set"
+msgstr "Matahari Terbenam"
+
+#: lib/Block/weatherdotcom_strings.php:56
+msgid "Sunny"
+msgstr "Cerah"
+
+#: lib/Block/weatherdotcom.php:191
+msgid "Sunrise"
+msgstr "Matahari Terbit"
+
+#: lib/Block/sunrise.php:3 lib/Block/sunrise.php:16
+msgid "Sunrise/Sunset"
+msgstr "Matahari Terbit/Matahari Terbenam"
+
+#: lib/Block/weatherdotcom.php:190
+msgid "Sunrise: "
+msgstr "Matahari Terbit:"
+
+#: lib/Block/weatherdotcom.php:194
+msgid "Sunset"
+msgstr "Matahari Terbenam"
+
+#: lib/Block/weatherdotcom.php:193
+msgid "Sunset: "
+msgstr "Matahari Terbenam:"
+
+#: templates/javascript/htmlarea_lang.js:13
+msgid "Superscript"
+msgstr "Angka/huruf/simbol yang ditulis diatas baris teks"
+
+#: config/registry.php.dist:371
+msgid "Support"
+msgstr "Dukungan"
+
+#: lib/Block/weatherdotcom_strings.php:57
+msgid "T-Storm"
+msgstr "Hujan petir disertai dengan angin ribut"
+
+#: lib/Block/weatherdotcom_strings.php:58
+msgid "T-Storm and Windy"
+msgstr "Hujan petir disertai dengan badai angin ribut"
+
+#: lib/Block/weatherdotcom_strings.php:59
+msgid "T-Storms"
+msgstr "Hujan petir disertai dengan angin ribut"
+
+#: templates/javascript/htmlarea_table_lang.js:73
+msgid "Table Properties"
+msgstr "Properti Tabel"
+
+#: templates/javascript/htmlarea_table_lang.js:72
+msgid "Table properties"
+msgstr "Properti tabel"
+
+#: templates/javascript/htmlarea_lang.js:95
+msgid "Target:"
+msgstr "Target:"
+
+#: config/hooks.php.dist:1001 config/registry.php.dist:184
+msgid "Tasks"
+msgstr "Tugas"
+
+#: lib/Block/metar.php:288
+msgid "Temp for last hour: "
+msgstr "Suhu untuk jam terakhir:"
+
+#: lib/Block/metar.php:212
+msgid "Temperature"
+msgstr "Suhu"
+
+#: lib/Block/weatherdotcom.php:198
+msgid "Temperature: "
+msgstr "Suhu:"
+
+#: lib/Block/weatherdotcom.php:268
+#, php-format
+msgid "Temperature<br />(%sHi%s/%sLo%s) &deg;%s"
+msgstr "Suhu<br />(%sHi%s/%sLo%s) &deg;%s"
+
+#: admin/templates.php:169
+msgid "Template Administration"
+msgstr "Template Administrasi"
+
+#: config/prefs.php.dist:365
+msgid "Text Only"
+msgstr "Hanya Teks"
+
+#: templates/javascript/htmlarea_table_lang.js:74
+msgid "Text align"
+msgstr "Perataan Teks"
+
+#: templates/javascript/htmlarea_lang.js:71
+msgid "Texttop"
+msgstr "Teks Bagian Atas"
+
+#: templates/javascript/open_calendar.js:59
+msgid "Th"
+msgstr "Kms"
+
+#: config/nls.php.dist:191
+msgid "Thai (TIS-620)"
+msgstr "Thai (TIS-620)"
+
+#: services/maintenance.php:31
+msgid "The Maintenance:: class did not load successfully"
+msgstr "Pemeliharaan:: class tidak berhasil dipanggil"
+
+#: services/images/colorpicker.php:29
+msgid "The Options window has closed. Exiting."
+msgstr "Window Pilihan sudah ditutup. Silakan Keluar"
+
+#: templates/javascript/htmlarea_table_lang.js:75
+msgid "The bottom side only"
+msgstr "Hanya sisi bagian bawah"
+
+#: templates/javascript/htmlarea_lang.js:56
+msgid ""
+"The full screen mode is known to cause problems with Internet Explorer, due "
+"to browser bugs that we weren't able to workaround.  You might experience "
+"garbage display, lack of editor functions and/or random browser crashes.  If "
+"your system is Windows 9x it's very likely that you'll get a 'General "
+"Protection Fault' and need to reboot.\\n\\nYou have been warned.  Please "
+"press OK if you still want to try the full screen editor."
+msgstr ""
+"Mode Layar Penuh dikenal dapat menyebabkan masalah dengan Internet Explorer, "
+"juga untuk mencari kesalahan yang menyebabkan anda tidak mampu bekerja "
+"dengan baik. Anda mungkin pernah mengalami tampilan yang buruk, kekurangan "
+"dari fungsi editor dan/atau browser yang sering kali rusak dan harus diulang "
+"kembali. Jika sistem anda adalah Windows 9x ada kemungkinan anda akan "
+"mendapatkan 'Kesalahan Perlindungan Umum' dan perlu untuk me-restart "
+"komputer anda.\\n\\n Anda sudah diperingati. Silakan klik OK jika anda ingin "
+"mencoba editor layar penuh."
+
+#: services/prefs.php:90
+#, php-format
+msgid "The identity \"%s\" has been deleted."
+msgstr "Identitas \"%s\" sudah dihapus."
+
+#: templates/javascript/htmlarea_table_lang.js:76
+msgid "The left-hand side only"
+msgstr "Hanya sisi bagian kiri"
+
+#: templates/javascript/htmlarea_table_lang.js:77
+msgid "The right and left sides only"
+msgstr "Hanya sisi bagian kanan dan kiri"
+
+#: templates/javascript/htmlarea_table_lang.js:78
+msgid "The right-hand side only"
+msgstr "Hanya sisi bagian kanan"
+
+#: services/portal/rpcsum.php:78
+#, php-format
+msgid "The server \"%s\" has been deleted."
+msgstr "Server \"%s\" sudah berhasil dihapus."
+
+#: services/portal/rpcsum.php:49
+#, php-format
+msgid "The server \"%s\" has been saved."
+msgstr "Server \"%s\" sudah berhasil disimpan."
+
+#: admin/user.php:198
+#, php-format
+msgid "The signup request for %s has been removed."
+msgstr "Permintaan pendaftaran untuk %s sudah berhasil dipindahkan."
+
+#: templates/javascript/htmlarea_table_lang.js:79
+msgid "The top and bottom sides only"
+msgstr "Hanya sisi bagian atas dan bawah"
+
+#: templates/javascript/htmlarea_table_lang.js:80
+msgid "The top side only"
+msgstr "Hanya sisi bagian atas"
+
+#: lib/Block/weatherdotcom.php:46 lib/Block/weatherdotcom.php:56
+#: lib/Block/weatherdotcom.php:115 lib/Block/weatherdotcom.php:119
+msgid "The weather.com block is not available."
+msgstr "Area ke weather.com tidak disediakan."
+
+#: util/icon_browser.php:25
+#, php-format
+msgid "Themes directory '%s' not found."
+msgstr "Direktori Motif '%s' tidak ditemukan."
+
+#: signup.php:53
+#, php-format
+msgid "There was a problem adding '%s' to the system. %s."
+msgstr "Ada masalah ketika menambahkan'%s' ke dalam sistem. %s."
+
+#: admin/user.php:73
+#, php-format
+msgid "There was a problem adding '%s' to the system: %s"
+msgstr "Ada masalah ketika menambahkan '%s' ke dalam sistem: %s "
+
+#: admin/user.php:122
+#, php-format
+msgid "There was a problem clearing data for user '%s' from the system: "
+msgstr "Ada masalah ketika membersihkan data untuk pengguna '%s' dari sistem:"
+
+#: admin/user.php:103
+#, php-format
+msgid "There was a problem removing '%s' from the system: "
+msgstr "Ada masalah ketika memindahkan '%s' dari sistem:"
+
+#: admin/user.php:159
+#, php-format
+msgid "There was a problem updating '%s': %s"
+msgstr "Ada masalah ketika memperbaharui '%s':%s"
+
+#: admin/setup/config.php:80
+msgid ""
+"There was an error in the configuration form. Perhaps you left out a "
+"required field."
+msgstr ""
+"Ada kesalahan di dalam formulir konfigurasi. Mungkin anda tidak mengisi "
+"kolom yang diperlukan."
+
+#: templates/help/about.inc:1
+#, php-format
+msgid "This is %s."
+msgstr "Ini adalah %s."
+
+#: services/images/colorpicker.php:35
+msgid "This window must be called from an Options window"
+msgstr "Window ini harus dipanggil dari Pilihan Window"
+
+#: lib/Block/weatherdotcom_strings.php:60
+msgid "Thunder"
+msgstr "Petir"
+
+#: config/registry.php.dist:231
+msgid "Tickets"
+msgstr "Tiket"
+
+#: config/registry.php.dist:379
+msgid "Time Tracking"
+msgstr "Mengikuti Waktu"
+
+#: lib/Block/time.php:17
+msgid "Time format"
+msgstr "Format Waktu"
+
+#: lib/Block/iframe.php:20
+msgid "Title"
+msgstr "Judul"
+
+#: templates/javascript/htmlarea_lang.js:96
+msgid "Title (tooltip):"
+msgstr "Judul (Catatan petunjuk)"
+
+#: lib/Block/weatherdotcom.php:286
+msgid "Today"
+msgstr "Hari Ini"
+
+#: templates/javascript/htmlarea_lang.js:28
+msgid "Toggle HTML Source"
+msgstr "Ganti Source HTML"
+
+#: lib/Block/weatherdotcom.php:288
+msgid "Tomorrow"
+msgstr "Besok"
+
+#: templates/javascript/htmlarea_table_lang.js:81
+#: templates/javascript/htmlarea_lang.js:77
+msgid "Top"
+msgstr "Atas"
+
+#: templates/javascript/htmlarea_lang.js:93
+msgid "Top frame (_top)"
+msgstr "Frame Atas (_top)"
+
+#: lib/Block/fortune.php:63
+msgid "Translations"
+msgstr "Translasi"
+
+#: templates/javascript/open_calendar.js:57
+msgid "Tu"
+msgstr "Sel"
+
+#: config/nls.php.dist:192
+msgid "Turkish (ISO-8859-9)"
+msgstr "Turki (ISO-8859-9)"
+
+#: lib/Block/weatherdotcom.php:244
+msgid "U.V. index: "
+msgstr "Indeks U.V:"
+
+#: lib/Block/iframe.php:17
+msgid "URL"
+msgstr "URL"
+
+#: templates/javascript/htmlarea_lang.js:97
+msgid "URL:"
+msgstr "URL:"
+
+#: admin/groups.php:78 admin/perms/delete.php:44
+#, php-format
+msgid "Unable to delete \"%s\": %s."
+msgstr "Tidak dapat untuk menghapus \"%s\": %s."
+
+#: templates/javascript/htmlarea_lang.js:10
+msgid "Underline"
+msgstr "Garis bawah"
+
+#: templates/prefs/end.inc:6
+msgid "Undo Changes"
+msgstr "Batalkan Perubahan"
+
+#: templates/javascript/htmlarea_lang.js:33
+msgid "Undoes your last action"
+msgstr "Batalkan aksi terakhir anda"
+
+#: templates/prefs/categorymanagement.inc:64
+msgid "Unfiled"
+msgstr "Tidak diarsipkan"
+
+#: config/nls.php.dist:193
+msgid "Unicode (UTF-8)"
+msgstr "Unicode (UTF-8)"
+
+#: lib/Block/weatherdotcom.php:69 lib/Block/metar.php:69
+msgid "Units"
+msgstr "Unit"
+
+#: templates/javascript/htmlarea_context_lang.js:58
+msgid "Unlink the current element"
+msgstr "Batalkan link pada elemen yang sekarang"
+
+#: templates/javascript/htmlarea_lang.js:59
+msgid ""
+"Unprivileged scripts cannot access Cut/Copy/Paste programatically for "
+"security reasons.  Click OK to see a technical note at mozilla.org which "
+"shows you how to allow a script to access the clipboard."
+msgstr ""
+"Script yang tidak mempunyai hak istimewa tidak dapat mengakses Hapus/Salin/"
+"Lekatkan sesuai rencana untuk alasan keamanan.Klik OK untuk melihat catatan "
+"teknis pada mozilla.org dimana anda akan diperlihatkan cara bagaimana untuk "
+"mengizinkan script untuk dapat mengakses ke clipboard."
+
+#: templates/javascript/htmlarea_table_lang.js:82
+msgid "Unset color"
+msgstr "Warna belum diatur"
+
+#: templates/admin/user/list.inc:33
+msgid "Update"
+msgstr "Perbaharui"
+
+#: templates/admin/user/update.inc:31
+#, php-format
+msgid "Update %s"
+msgstr "Perbaharui %s"
+
+#: templates/admin/user/update.inc:69
+msgid "Update user"
+msgstr "Perbaharui pengguna"
+
+#: admin/groups.php:136 admin/perms/edit.php:102 services/shares/edit.php:230
+#, php-format
+msgid "Updated \"%s\"."
+msgstr "\"%s\" sudah diperbaharui."
+
+#: admin/setup/scripts.php:83
+msgid "Upgrade script deleted."
+msgstr "Script upgrade sudah dihapus."
+
+#: admin/setup/index.php:182
+msgid "Upload"
+msgstr "Upload"
+
+#: admin/setup/index.php:190
+msgid "Uploaded all application setup files to the server."
+msgstr "Semua file setup aplikasi sudah diupload ke server."
+
+#: templates/javascript/htmlarea_listtype_lang.js:20
+msgid "Upper latin letters"
+msgstr "Simbol huruf besar latin"
+
+#: templates/javascript/htmlarea_listtype_lang.js:18
+msgid "Upper roman numbers"
+msgstr "Simbol huruf besar romawi"
+
+#: config/prefs.php.dist:123
+msgid "Use if name/password is different for IMSP server."
+msgstr "Gunakanlah jika nama/sandi anda berbeda untuk server IMSP."
+
+#: admin/user.php:203
+msgid "User Administration"
+msgstr "Administrasi Pengguna"
+
+#: signup.php:62
+msgid "User Registration"
+msgstr "Pendaftaran Pengguna"
+
+#: signup.php:22
+msgid "User Registration has been disabled for this site."
+msgstr "Pendaftaran Pengguna sudah dinon-aktifkan untuk site ini."
+
+#: lib/Block/account.php:469
+msgid "User account not found"
+msgstr "Account Pengguna tidak ditemukan"
+
+#: admin/user.php:35 admin/setup/index.php:183 services/resetpassword.php:33
+#: templates/login/login.inc:69 templates/admin/user/approve.inc:12
+msgid "Username"
+msgstr "Nama Pengguna"
+
+#: templates/rpcsum/rpcsum.inc:87
+msgid "Username:"
+msgstr "Nama Pengguna:"
+
+#: templates/login/mobile.inc:8
+msgid "Username: "
+msgstr "Nama Pengguna:"
+
+#: templates/admin/user/list.inc:2
+msgid "Users in the system:"
+msgstr "Pengguna di dalam sistem:"
+
+#: config/registry.php.dist:115
+msgid "Vacation"
+msgstr "Liburan"
+
+#: lib/Block/weatherdotcom.php:219
+msgid "Variable"
+msgstr "Variable"
+
+#: config/registry.php.dist:223
+msgid "Version Control"
+msgstr "Versi Kontrol"
+
+#: templates/javascript/htmlarea_table_lang.js:83
+msgid "Vertical align"
+msgstr "Jarak posisi vertikal antara garis dasar dengan gambar"
+
+#: templates/javascript/htmlarea_lang.js:84
+msgid "Vertical padding"
+msgstr "Jarak posisi vertikal antara border dengan gambar"
+
+#: templates/javascript/htmlarea_lang.js:83
+msgid "Vertical:"
+msgstr "Vertikal:"
+
+#: lib/Block/weatherdotcom_strings.php:66
+msgid "Very High"
+msgstr "Sangat Tinggi"
+
+#: config/nls.php.dist:194
+msgid "Vietnamese (VISCII)"
+msgstr "Vietnam (VISCII)"
+
+#: lib/Block/iframe.php:3
+msgid "View an external web page"
+msgstr "Lihat web page eksternal"
+
+#: lib/Block/metar.php:207
+msgid "Visibility"
+msgstr "Jarak Pandang"
+
+#: lib/Block/weatherdotcom.php:238
+msgid "Visibility: "
+msgstr "Jarak Pandang:"
+
+#: admin/setup/scripts.php:85
+#, php-format
+msgid "WARNING!!! REMOVE SCRIPT MANUALLY FROM %s."
+msgstr "PERINGATAN!!! PINDAHKAN SCRIPT INI SECARA MANUAL DARI %s."
+
+#: lib/Block/account.php:83
+msgid "Warning"
+msgstr "Peringatan"
+
+#: templates/javascript/open_calendar.js:58
+msgid "We"
+msgstr "Rabu"
+
+#: lib/Block/weatherdotcom.php:29
+msgid "Weather Forecast"
+msgstr "Ramalan Cuaca"
+
+#: lib/Block/weatherdotcom.php:405
+msgid "Weather data provided by"
+msgstr "Data Cuaca disediakan oleh"
+
+#: lib/Block/google.php:36
+msgid "Web"
+msgstr "Web"
+
+#: config/registry.php.dist:423
+msgid "Web Site"
+msgstr "Web Site"
+
+#: services/portal/mobile.php:28
+msgid "Welcome"
+msgstr "Selamat Datang"
+
+#: templates/login/mobile.inc:4 templates/login/login.inc:54
+#, php-format
+msgid "Welcome to %s"
+msgstr "Selamat datang ke %s"
+
+#: services/portal/mobile.php:29 templates/portal/menu.inc:2
+#, php-format
+msgid "Welcome, %s"
+msgstr "Selamat datang, %s"
+
+#: config/nls.php.dist:195
+msgid "Western (ISO-8859-1)"
+msgstr "Western (ISO-8859-1)"
+
+#: config/nls.php.dist:196
+msgid "Western (ISO-8859-15)"
+msgstr "Western (ISO-8859-15)"
+
+#: config/prefs.php.dist:427
+#, php-format
+msgid "What application should %s display after login?"
+msgstr "Apakah aplikasi %s perlu ditampilkan setelah login?"
+
+#: templates/data/csvinfo.inc:21
+msgid "What is the delimiter character?"
+msgstr "Apakah yang merupakan batas karakter?"
+
+#: templates/data/csvinfo.inc:24
+msgid "What is the quote character?"
+msgstr "Apakah yang merupakan karakter indentasi?"
+
+#: lib/Block/moon.php:23
+msgid "Which phases"
+msgstr "Fase yang mana"
+
+#: config/prefs.php.dist:131
+msgid "Which plugins to enable for the Rich Text editor."
+msgstr "Plugin manakah yang dapat diaktifkan untuk editor Rich Text."
+
+#: templates/javascript/htmlarea_table_lang.js:84
+msgid "Width"
+msgstr "Lebar"
+
+#: config/prefs.php.dist:347
+#, php-format
+msgid "Width of the %s menu on the left (takes effect on next log-in):"
+msgstr ""
+"Lebar menu %s pada bagian kiri (akan berpengaruh pada login berikutnya)"
+
+#: templates/javascript/htmlarea_lang.js:106
+msgid "Width of the table"
+msgstr "Lebar tabel"
+
+#: templates/javascript/htmlarea_lang.js:110
+msgid "Width unit"
+msgstr "Lebar unit"
+
+#: templates/javascript/htmlarea_lang.js:105
+msgid "Width:"
+msgstr "Lebar:"
+
+#: config/registry.php.dist:499
+msgid "Wiki"
+msgstr "Wiki"
+
+#: lib/Block/weatherdotcom.php:275 lib/Block/weatherdotcom_strings.php:61
+msgid "Wind"
+msgstr "Angin"
+
+#: lib/Block/weatherdotcom_strings.php:62
+msgid "Wind Early"
+msgstr "Angin di pagi hari"
+
+#: lib/Block/metar.php:78
+msgid "Wind speed in knots"
+msgstr "Kecepatan angin di dalam knot"
+
+#: lib/Block/metar.php:154
+msgid "Wind:"
+msgstr "Angin:"
+
+#: lib/Block/weatherdotcom.php:217
+msgid "Wind: "
+msgstr "Angin:"
+
+#: lib/Block/fortune.php:64
+msgid "Wisdom"
+msgstr "Kata Bijaksana"
+
+#: config/registry.php.dist:193
+msgid "Wishlist"
+msgstr "Daftar Keinginan"
+
+#: lib/Block/fortune.php:65
+msgid "Work"
+msgstr "Pekerjaan"
+
+#: config/registry.php.dist:240
+msgid "X-Ref"
+msgstr "X-Ref"
+
+#: templates/data/date.inc:47 templates/data/date.inc:48
+#: templates/data/date.inc:49 templates/data/date.inc:50
+msgid "YY"
+msgstr "YY"
+
+#: templates/maintenance/maintenance.html:56
+msgid "Yes, I Agree"
+msgstr "Ya, SAYA SETUJU"
+
+#: templates/javascript/htmlarea_lang.js:52
+msgid "You are in TEXT MODE.  Use the [<>] button to switch back to WYSIWYG."
+msgstr ""
+"Anda berada di dalam MODE TEKS. Gunakan tombol [<>] untuk mengganti kembali "
+"ke dalam mode WYSIWYG."
+
+#: services/portal/edit.php:82
+#, php-format
+msgid "You are not allowed to create more than %d blocks."
+msgstr "Anda tidak diizinkan untuk membuat lebih dari %d area."
+
+#: templates/problem/problem.inc:11
+msgid "You must describe the problem before you can send the problem report."
+msgstr ""
+"Anda harus menjelaskan masalah sebelum anda dapat mengirimkan laporan "
+"masalah."
+
+#: templates/javascript/htmlarea_lang.js:98
+msgid "You must enter the URL where this link points to"
+msgstr "Anda harus memasukkan URL dimana link ini menunjuk ke"
+
+#: services/portal/rpcsum.php:80
+msgid "You must select an server to be deleted."
+msgstr "Anda harus memilih server untuk dapat dihapus."
+
+#: admin/user.php:119
+msgid "You must specify a username to clear out."
+msgstr "Anda harus menetapkan nama pengguna yang ingin dibersihkan."
+
+#: admin/user.php:100
+msgid "You must specify a username to remove."
+msgstr "Anda harus menetapkan nama pengguna yang ingin dipindahkan."
+
+#: admin/user.php:62 templates/admin/user/update.inc:8
+msgid "You must specify the username to add."
+msgstr "Anda harus menetapkan nama pengguna untuk ditambah."
+
+#: admin/user.php:146
+msgid "You must specify the username to update."
+msgstr "Anda harus menetapkan nama pengguna untuk diperbaharui."
+
+#: templates/problem/problem.inc:38
+msgid "Your Email Address"
+msgstr "Alamat Email Anda"
+
+#: config/prefs.php.dist:202
+msgid "Your From: address:"
+msgstr "Anda Dari: alamat:"
+
+#: config/prefs.php.dist:64 config/prefs.php.dist:74 config/prefs.php.dist:82
+#: config/prefs.php.dist:89
+msgid "Your Information"
+msgstr "Informasi Anda"
+
+#: templates/problem/problem.inc:33
+msgid "Your Name"
+msgstr "Nama Anda"
+
+#: templates/admin/user/noadd.inc:8
+msgid ""
+"Your authentication backend does not support adding users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Backend asli anda tidak dapat mendukung penambahan pengguna, atau fitur ini "
+"sudah dinon-aktifkan untuk beberapa alasan lain."
+
+#: templates/admin/user/nolist.inc:8
+msgid ""
+"Your authentication backend does not support listing users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Backend asli anda tidak dapat mendukung pendaftaran pengguna, atau fitur ini "
+"sudah dinon-aktifkan untuk beberapa alasan lain"
+
+#: lib/Block/iframe.php:50
+msgid "Your browser does not support this feature."
+msgstr "Browser anda tidak mendukung untuk fitur ini."
+
+#: templates/javascript/print.js:27
+msgid ""
+"Your browser does not support this print option. Press Control/Option + P to "
+"print."
+msgstr ""
+"Browser anda tidak mendukung pilihan untuk mencetak. Tekan Control/Pilihan + "
+"P untuk mencetak."
+
+#: config/prefs.php.dist:247
+msgid "Your current time zone:"
+msgstr "Zona Waktu Anda Sekarang:"
+
+#: services/prefs.php:96
+msgid "Your default identity has been changed."
+msgstr "Default identitas anda sudah diubah."
+
+#: config/prefs.php.dist:148
+msgid "Your default identity:"
+msgstr "Default identitas anda:"
+
+#: config/prefs.php.dist:191
+msgid "Your full name:"
+msgstr "Nama lengkap anda:"
+
+#: services/resetpassword.php:76
+#, php-format
+msgid "Your new password for %s is: %s"
+msgstr "Sandi baru anda untuk %s adalah: %s"
+
+#: services/resetpassword.php:75
+msgid "Your password has been reset"
+msgstr "Sandi anda sudah diatur ulang"
+
+#: services/resetpassword.php:79
+msgid ""
+"Your password has been reset, check your email and log in with your new "
+"password."
+msgstr ""
+"Sandi anda sudah diatur ulang, periksalah email anda dan login dengan "
+"menggunakan sandi baru anda"
+
+#: templates/rpcsum/rpcsum.inc:58
+msgid "Your remote servers:"
+msgstr "Remote server anda:"
+
+#: lib/Block/fortune.php:66
+msgid "Zippy"
+msgstr "Ceria"
+
+#: templates/javascript/quoteBlocks.js:12
+msgid "[Hide Quoted Text]"
+msgstr "[Sembunyikan Indentasi Teks]"
+
+#: services/problem.php:88
+msgid "[Problem Report]"
+msgstr "[Laporan Masalah]"
+
+#: templates/javascript/quoteBlocks.js:13
+msgid "[Show Quoted Text -"
+msgstr "[Tampilan Indentasi Teks -"
+
+#: templates/portal/menu.inc:11
+msgid "_Administration"
+msgstr "_Administrasi"
+
+#: lib/api.php:149
+msgid "_CLI"
+msgstr "_CLI"
+
+#: lib/api.php:137
+msgid "_DataTree"
+msgstr "_DataTree"
+
+#: templates/javascript/htmlarea_context_lang.js:31
+msgid "_Delete Row"
+msgstr "Hapus Baris"
+
+#: lib/api.php:129
+msgid "_Groups"
+msgstr "_Grup"
+
+#: templates/javascript/htmlarea_context_lang.js:23
+msgid "_Image Properties..."
+msgstr "Properti Gambar..."
+
+#: templates/javascript/htmlarea_context_lang.js:24
+msgid "_Modify Link..."
+msgstr "Ubah Link..."
+
+#: lib/api.php:133
+msgid "_Permissions"
+msgstr "Izin"
+
+#: templates/javascript/htmlarea_context_lang.js:26
+msgid "_Remove Link..."
+msgstr "Pindahkan Link..."
+
+#: lib/api.php:121
+msgid "_Setup"
+msgstr "_Setup"
+
+#: templates/javascript/htmlarea_context_lang.js:33
+msgid "_Table Properties..."
+msgstr "Properti Tabel..."
+
+#: lib/api.php:125
+msgid "_Users"
+msgstr "Pengguna"
+
+#: lib/Block/metar.php:170 lib/Block/metar.php:356
+#, php-format
+msgid "calm"
+msgstr "Tenang"
+
+#: lib/Block/weatherdotcom_strings.php:67
+msgid "falling"
+msgstr "jatuh"
+
+#: lib/Block/metar.php:172 lib/Block/metar.php:358 lib/Block/metar.php:384
+#, php-format
+msgid "from the %s (%s) at %s %s"
+msgstr "Dari %s (%s) pada %s %s"
+
+#: lib/Block/weatherdotcom.php:225
+msgid "gusting"
+msgstr "angin kencang"
+
+#: admin/setup/diff.php:68 admin/setup/diff.php:76
+msgid "inline"
+msgstr "masih di dalam antrian"
+
+#: templates/javascript/quoteBlocks.js:13
+msgid "lines]"
+msgstr "baris]"
+
+#: services/portal/sidebar.php:170 services/portal/sidebar.php:232
+msgid "name"
+msgstr "nama"
+
+#: templates/javascript/htmlarea_table_lang.js:88
+msgid "percent"
+msgstr "persen"
+
+#: templates/javascript/htmlarea_table_lang.js:89
+msgid "pixels"
+msgstr "pixel"
+
+#: lib/Block/weatherdotcom_strings.php:69
+msgid "rising"
+msgstr "naik"
+
+#: admin/setup/config.php:99
+msgid "show differences"
+msgstr "tampilkan perbedaan"
+
+#: lib/Block/weatherdotcom_strings.php:68
+msgid "steady"
+msgstr "tetap"
+
+#: admin/user.php:36
+msgid "type the password twice to confirm"
+msgstr "Ketik sandi dua kali untuk mengkonfirmasi"
+
+#: admin/setup/diff.php:68 admin/setup/diff.php:76
+msgid "unified"
+msgstr "menyatukan"
+
+#: lib/Block/weatherdotcom.php:6
+msgid "weather.com"
+msgstr "weather.com"

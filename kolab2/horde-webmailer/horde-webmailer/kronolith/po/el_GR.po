@@ -1,0 +1,1716 @@
+# Kronolith Greek translation.
+# Copyright 2002 Stefanos I. Dimitriou.
+# Stefanos I. Dimitriou <support_webmail@teiath.gr>, 2002.
+# Silligardos Xristoforos, 2002.
+# Anagnostopoulos Apostolis, 2002.
+# Milosis C. Konstantinos, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith: 2.0-cvs\n"
+"POT-Creation-Date: 2002-11-07 12:10+0200\n"
+"PO-Revision-Date: 2001-07-26 11:36+0200\n"
+"Last-Translator: Konstantinos C. Milosis <kmilosis@yahoo.com>\n"
+"Language-Team: Greek <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-7\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: templates/search/header.inc:8
+msgid "%d events"
+msgstr "%d Γεγονότα"
+
+#, c-format
+msgid "%d hour"
+msgstr "%d ώρα"
+
+#, c-format
+msgid "%d hour, %d minute"
+msgstr "%d ώρα, %d λεπτό"
+
+#, c-format
+msgid "%d hour, %d minutes"
+msgstr "%d ώρα, %d λεπτά"
+
+#, c-format
+msgid "%d hours"
+msgstr "%d ώρες"
+
+#, c-format
+msgid "%d hours, %d minute"
+msgstr "%d ώρες, %d λεπτό"
+
+#, c-format
+msgid "%d hours, %d minutes"
+msgstr "%d ώρες, %d λεπτά"
+
+#, c-format
+msgid "%d minute"
+msgstr "%d λεπτό"
+
+#, c-format
+msgid "%d minutes"
+msgstr "%d λεπτά"
+
+#: templates/edit/edit_timespan.inc:127
+msgid "%s Day(s) %s Hour(s) %s Minutes"
+msgstr "%s Ημερα(ες) %s Ώρα(ες) %s Λεπτά"
+
+#: lib/Driver.php:1698
+msgid "%s attendees"
+msgstr "%s συμμετέχοντες"
+
+# data.php:236, c-format
+#: data.php:236
+msgid "%s file successfully imported"
+msgstr "%s, έγινε επιτυχώς η εισαγωγή του αρχείου"
+
+#, c-format
+msgid "%s is in progress."
+msgstr "%s είναι σε λειτουργία."
+
+#, c-format
+msgid "%s is starting now."
+msgstr "%s αρχίζει τώρα."
+
+#, c-format
+msgid "%s starts in %s"
+msgstr "%s ξεκινά σε %s"
+
+#: calendars.php:105 lib/base.php:126
+msgid "%s's Calendar"
+msgstr "%ss Ημερολόγιο"
+
+msgid "(optional)"
+msgstr "(Προαιρετικά)"
+
+#: templates/contacts/contacts.inc:166
+msgid "* Add these by clicking Add *"
+msgstr "* Προσθέστε αυτά κάνοντας κλικ στο 'Προσθήκη' *"
+
+#: templates/contacts/contacts.inc:152
+msgid "* Please select address(es) *"
+msgstr "* Παρακαλώ επιλέξτε διεύθυνση (εις *"
+
+msgid "-- No attendees --"
+msgstr "-- Δεν υπάρχουν συμμετέχοντες --"
+
+#: lib/Driver.php:1698
+msgid "1 attendee"
+msgstr "1 συμμετέχων"
+
+#: templates/search/header.inc:8
+msgid "1 event"
+msgstr "1 γεγονός"
+
+msgid "<b>Attendees</b> (optional)"
+msgstr "<b>Συμμετέχοντες</b> (προαιρετικό)"
+
+msgid "<b>Descri_ption</b> (optional)"
+msgstr "<b>Περιγραφή</b> (προαιρετικό)"
+
+msgid "<b>Description</b>"
+msgstr "<b>Περιγραφή</b>"
+
+msgid "<b>Keywords</b> (optional)"
+msgstr "<b>Λέξεις κλειδιά</b> (προαιρετικό)"
+
+msgid "<b>Keywords</b>"
+msgstr "<b>Λέξεις κλειδιά</b>"
+
+msgid "<b>Recurrence</b> (optional)"
+msgstr "<b>Επανάληψη</b> (προαιρετικό)"
+
+msgid "<b>Recurrence</b>"
+msgstr "<b>Επανάληψη</b>"
+
+#: templates/edit/edit.inc:169
+msgid "<strong>Attendees</strong> (optional)"
+msgstr "<strong>Συμμετέχοντες</strong> (προαιρετικό)"
+
+#: templates/edit/edit.inc:147
+msgid "<strong>Descri_ption</strong> (optional)"
+msgstr "<strong>Περιγραφή</strong> (προαιρετικό)"
+
+#: templates/edit/edit.inc:192
+msgid "<strong>Recurrence</strong> (optional)"
+msgstr "<strong>Επανάληψη</strong> (προαιρετικά)"
+
+msgid "AM"
+msgstr "πμ"
+
+#: lib/Kronolith.php:520
+msgid "Accepted"
+msgstr "Αποδεκτό"
+
+#: templates/search/search.inc:10
+msgid "Ad_vanced Search"
+msgstr "Επεκταμένη Αναζήτηση"
+
+#: templates/contacts/contacts.inc:163 templates/contacts/contacts.inc:192
+msgid "Add"
+msgstr "Προσθήκη"
+
+#: templates/edit/edit.inc:25
+msgid "Add Event"
+msgstr "Προσθήκη Γεγονότος"
+
+#: templates/prefs/remote_cal_management.inc:35
+msgid "Add a new Remote Calendar"
+msgstr "Προσθήκη νέου Απομακρυσμένου Ημερολογίου"
+
+#: addevent.php:50
+msgid "Add a new event"
+msgstr "Προσθήκη νέου Γεγονότος"
+
+msgid "Add attendees"
+msgstr "Προσθήκη Συμμετεχόντων"
+
+msgid "Add people from my Address Book"
+msgstr "Προσθήκη ανθρώπων από το Διευθυνσιογράφο μου"
+
+msgid "Add these people"
+msgstr "Προσθήκη αυτών των ανθρώπων"
+
+#: contacts.php:85 templates/contacts/contacts.inc:122
+msgid "Address Book"
+msgstr "Διευθυνσιογράφος"
+
+#: config/prefs.php.dist:50
+msgid "Address Books"
+msgstr "Διευθυνσιογράφοι"
+
+#: templates/search/search_advanced.inc:7 templates/search/search.inc:10
+msgid "Advanced Search"
+msgstr "Επεκταμένη Αναζήτηση"
+
+#: lib/Driver.php:1678
+msgid "Alarm %d days before"
+msgstr "Προειδοποίηση %d μέρες πριν"
+
+#: lib/Driver.php:1683
+msgid "Alarm %d hours before"
+msgstr "Προειδοποιηση %d ώρες πριν"
+
+#: lib/Driver.php:1688
+msgid "Alarm %d minutes before"
+msgstr "Προειδοποίηση %d λεπτά πριν"
+
+#: lib/Driver.php:1673
+msgid "Alarm %d weeks before"
+msgstr "Προειδοποίηση %d εβδομάδες πριν"
+
+#: lib/Driver.php:1677
+msgid "Alarm 1 day before"
+msgstr "Προειδοποίηση 1 ημέρα πριν"
+
+#: lib/Driver.php:1682
+msgid "Alarm 1 hour before"
+msgstr "Προειδοποίηση 1 ώρα πριν"
+
+#: lib/Driver.php:1687
+msgid "Alarm 1 minute before"
+msgstr "Προειδοποίηση 1 λεπτό πριν"
+
+#: lib/Driver.php:1672
+msgid "Alarm 1 week before"
+msgstr "Προειδοποίηση 1 εβδομάδα πριν"
+
+#: data.php:50
+msgid "Alarm Date"
+msgstr "Ημερομηνία Προειδοποίησης"
+
+msgid "Alarm Span (minutes)"
+msgstr "Διάρκεια Προειδοποίησης (λεπτά)"
+
+msgid "Alarm Time"
+msgstr "Ημερομηνία Προειδοποίησης"
+
+msgid "Alarm"
+msgstr "Προειδοποίηση"
+
+msgid "All Attendees"
+msgstr "Ολοι οι συμμετέχοντες"
+
+#: templates/search/search.inc:58
+msgid "All Future"
+msgstr "Όλα τα Μελλοντικά"
+
+#: templates/search/search.inc:52
+msgid "All Past"
+msgstr "Όλα τα περασμένα"
+
+#: lib/Block/prevmonthlist.php:27 lib/Block/month.php:24
+#: lib/Block/monthlist.php:27 lib/Block/summary.php:25
+msgid "All Visible"
+msgstr "Όλα τα εμφανή"
+
+msgid "All day event"
+msgstr "Γεγονός που διαρκεί όλη την μέρα"
+
+msgid "All day"
+msgstr "Όλες τις μέρες"
+
+msgid "All events"
+msgstr "Όλα τα γεγονότα"
+
+msgid "All"
+msgstr "Όλα"
+
+#: templates/search/search_advanced.inc:48
+#: templates/search/search_advanced.inc:70 lib/Kronolith.php:610
+msgid "Any"
+msgstr "Οποιοδήποτε"
+
+msgid "An illegal value was specified."
+msgstr "Ορίστηκε μία μη επιτρεπόμενη τιμή."
+
+msgid "April"
+msgstr "Απρίλιος"
+
+msgid "Are you sure you want to delete the event \"%s\"?"
+msgstr "Θέλετε να διαγράψετε το γεγονός \"%s\";"
+
+msgid "At"
+msgstr "Την"
+
+#: lib/Kronolith.php:966
+msgid ""
+"Attached is an iCalendar file with more information about the event. If your "
+"mail client supports iTip requests you can use this file to easily update "
+"your local copy of the event."
+msgstr ""
+"Το συνημμένο είναι ένα αρχείο iCalendar με περισσότερες πληροφορίες για αυτό "
+"το γεγονός. Αν το πρόγραμμα mail σας υποστηρίζει αιτήματα iTip μπορείτε να "
+"το χρησιμοποιήσετε για να ενημερώσετε εύκολα το δικό αντίγραφο του γεγονότος."
+
+msgid "Attendance"
+msgstr "Παρακολούθηση"
+
+msgid "Attendees"
+msgstr "Συμμετέχοντες"
+
+msgid "August"
+msgstr "Αύγουστος"
+
+msgid "Back to Calendar Options"
+msgstr "Επιστροφή στις Επιλογές"
+
+#: templates/search/search_advanced.inc:10 templates/search/search.inc:7
+msgid "Basic Search"
+msgstr "Βασική Αναζήτηση"
+
+#: config/keywords.php.dist:17
+msgid "Birthday"
+msgstr "Γενέθλια"
+
+msgid "Busy"
+msgstr "Απασχολημένος"
+
+msgid "Business"
+msgstr "Επιχείρηση"
+
+#: templates/search/search_advanced.inc:43
+msgid "C_alendar"
+msgstr "Ημερολόγιο"
+
+#: templates/edit/edit.inc:48
+msgid "Cal_endar"
+msgstr "Ημερολόγιο"
+
+msgid "Cal_endar Name"
+msgstr "Ονομα Ημερολογίου"
+
+msgid "Calendar Description"
+msgstr "Περιγραφή Ημερολογίου"
+
+msgid "Calendar Name"
+msgstr "Ονομα Ημερολογίου"
+
+#: lib/Block/summary.php:3
+msgid "Calendar Summary"
+msgstr "Σύνοψη Ημερολογίου"
+
+msgid "Calendar"
+msgstr "Ημερολόγιο"
+
+msgid "Calendars"
+msgstr "Ημερολόγια"
+
+#: calendars.php:27
+msgid "Calendars must have a name."
+msgstr "Τα ημερολόγια πρέπει να έχουν όνομα."
+
+#: data.php:211
+msgid "Can't create a new event."
+msgstr "Αδύνατη η δημιουργία νέου γεγονότος."
+
+#: templates/contacts/contacts.inc:193 templates/delete/one.inc:42
+#: templates/delete/delete.inc:44 templates/edit/edit.inc:32
+#: templates/edit/edit.inc:292
+msgid "Cancel"
+msgstr "Ακυρο"
+
+msgid "Cancelled"
+msgstr "Ακυρώθηκε"
+
+#: lib/Kronolith.php:943
+msgid "Cancelled: %s"
+msgstr "Ακυρώθηκε: %s"
+
+#: templates/search/search_advanced.inc:63 templates/edit/edit.inc:68
+msgid "Categor_y"
+msgstr "Κατηγορία"
+
+msgid "Category"
+msgstr "Κατηγορία"
+
+#: templates/calendars/calendars.inc:22 templates/calendars/calendars.inc:123
+msgid "Change"
+msgstr "Αλλαγή"
+
+msgid "Change the way dates and times are formatted."
+msgstr "Αλλαγή του τρόπου μορφοποίησης της ημερομηνίας και της ώρας."
+
+msgid "Choose the address books to search for free/busy URLs:"
+msgstr "Επιλέξτε το διευθυνσιογράφο για αναζήτηση ιστοσελίων διαθεσιμότητας:"
+
+msgid ""
+"Choose the calendars that you want to be included in your Free/Busy listings:"
+msgstr ""
+"Επιλέξτε τα ημερολόγια που επιθυμείτε να συμπεριληφθούν στη λιστα "
+"διαθεσιμότητας:"
+
+msgid "Choose your default calendar."
+msgstr "Επιλέξτε το προκαθορισμένο ημερολόγιό σας."
+
+#: templates/search/search_advanced.inc:116 templates/search/search.inc:68
+msgid "Clear Form"
+msgstr "Καθάρισμα Φόρμας"
+
+#: templates/attendees/attendees.inc:84
+msgid "Clear all attendees"
+msgstr "Διαγραφή όλων των συμμετεχόντων"
+
+#: data.php:28 templates/data/import.inc:21
+msgid "Comma separated values"
+msgstr "Τιμές χωρισμένες με Ελληνικό Ερωτηματικό (CVS)"
+
+#: config/prefs.php.dist:142
+msgid "Confirm deletion of events?"
+msgstr "Να ζητείται επιβεβαίωση κατά τη διαγραφή των γεγονότων;"
+
+msgid "Confirmed"
+msgstr "Επιβεβαιωμένο"
+
+msgid "Copy the URL below for use wherever you need your Free/Busy URL:"
+msgstr ""
+"Αντιγράψτε το URL που θα χρησιμοποιείτε όταν χρειάζεστε URL διαθεσιμότητας:"
+
+#: lib/Kronolith.php:158
+msgid "Could not open %s."
+msgstr "Δε μπορώ να ανοίξω %s."
+
+msgid "Create a New Event"
+msgstr "Δημιουργία νέου γεγονότος"
+
+msgid "Create"
+msgstr "Δημιουργία"
+
+msgid "Created"
+msgstr "Δημιουργήθηκε"
+
+msgid "Current"
+msgstr "Τρέχων"
+
+msgid "Daily: Recurs every"
+msgstr "Καθημερινά: Επαναλαμβανόμενο κάθε"
+
+msgid "Date and Time Options"
+msgstr "Ρυθμίσεις Ημερομηνίας και Ώρας"
+
+msgid "Day"
+msgstr "Ημέρα"
+
+msgid "Day(s) "
+msgstr "Ημέρα(ες)"
+
+msgid "De_lete"
+msgstr "Διαγραφή"
+
+msgid "December"
+msgstr "Δεκέμβριος"
+
+#: lib/Kronolith.php:523
+msgid "Declined"
+msgstr "Αρνήθηκε"
+
+#: config/prefs.php.dist:35
+msgid "Default Calendar"
+msgstr "Προκαθορισμένο Ημερολόγιο"
+
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#, c-format
+msgid "Delete %s"
+msgstr "Διαγραφή %s"
+
+#, c-format
+msgid "Delete '%s'"
+msgstr "Διαγραφή '%s'"
+
+msgid "Delete Event"
+msgstr "Διαγραφή Γεγονότος"
+
+msgid ""
+"Delete the current event only, this occurrence and all future occurences, or "
+"all occurences?"
+msgstr ""
+"Διαγράψτε το τρέχων γεγονός μόνο, αυτό το περιστατικό και όλες τις "
+"μελλοντικές εμφανίσεις του, ήόλες τις εμφανίσεις του;"
+
+msgid "Deny Request"
+msgstr "Αρνηση Αιτήματος"
+
+msgid "Descri_ption (Optional)"
+msgstr "Περιγραφή (Προαιρετικά)"
+
+msgid "Descri_ption"
+msgstr "Περιγραφή"
+
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgid "Dismiss"
+msgstr "Κλείσιμο"
+
+msgid "Display 24-hour times?"
+msgstr "Εμφάνιση της ώρας σε 24ωρη μορφή?"
+
+msgid "Display Options"
+msgstr "Εμφάνιση Ρυθμίσεων"
+
+msgid "Display"
+msgstr "Εμφάνιση"
+
+msgid "Do you want to show tasks which are due on your calendar?"
+msgstr "Θέλετε να εμφανίζονται οι εργασίες που έχουν λήξει στο ημερολόγιό σας;"
+
+#: lib/Kronolith.php:466
+msgid "Does not recur"
+msgstr "Δεν επαναλαμβάνεται"
+
+# lib/Kronolith.php:312, c-format
+#: lib/Kronolith.php:312
+msgid "Due: %s"
+msgstr "Διάρκεια: %s"
+
+msgid "Duration"
+msgstr "Διάρκεια"
+
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+#, c-format
+msgid "Edit %s"
+msgstr "Επεξεργασία %s"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "Επεξεργασία '%s'"
+
+msgid "Edit Attendees"
+msgstr "Επεξεργασία Συμμετεχόντων"
+
+#: config/prefs.php.dist:223
+msgid "Edit Remote Calendars"
+msgstr "Επεξεργασία Απομακρυσμένων Ημερολογίων"
+
+#: attendees.php:146
+msgid "Edit attendees"
+msgstr "Επεξεργασία συμμετεχόντων"
+
+#: templates/category_legend.inc:25
+msgid "Edit categories and colors"
+msgstr "Επεξεργασία κατηγοριών και χρωμάτων"
+
+msgid "Edit permissions for %s Calendar"
+msgstr "Επεξεργασία Εξουσιοδοτήσεων για το ημερολόγιο του %s"
+
+msgid "Email Address"
+msgstr "Διεύθυνση Email"
+
+msgid "En_d"
+msgstr "Λήξη"
+
+msgid "End Date"
+msgstr "Ημερομηνία Λήξης"
+
+msgid "End On"
+msgstr "Λήξη Στις"
+
+msgid "End Time"
+msgstr "Ώρα Λήξης"
+
+#: attendees.php:120 attendees.php:131 attendees.php:138
+msgid "Error retrieving free/busy information for %s: %s"
+msgstr "Λάθος κατά την ανάκτηση πλοροφοριών διαθεσιμότητας για %s: %s"
+
+msgid "Error"
+msgstr "Λάθος"
+
+#: lib/Driver.php:934
+msgid "Event from %s to %s"
+msgstr "Γεγονός από %s ως %s"
+
+#: templates/attendees/attendees.inc:75
+msgid "Expand Names"
+msgstr "Ανάπτυξη Ονομάτων"
+
+msgid "Export Calendar"
+msgstr "Εξαγωγή Ημερολογίου"
+
+msgid "Export"
+msgstr "Εξαγωγή"
+
+msgid "February"
+msgstr "Φεβρουάριος"
+
+msgid "Fr"
+msgstr "Πα"
+
+msgid "Friday"
+msgstr "Παρασκευή"
+
+msgid "Future"
+msgstr "Μελλοντικά"
+
+msgid "Game"
+msgstr "Παιχνίδι"
+
+#: templates/search/search_advanced.inc:22
+msgid "General"
+msgstr "Γενικά"
+
+#: lib/Block/summary.php:127
+msgid "Goto %s"
+msgstr "Μεταφορά %s"
+
+msgid "Goto"
+msgstr "Μεταφορά"
+
+msgid "Groups"
+msgstr "Ομάδες"
+
+msgid "Guest Permissions"
+msgstr "Εξουσιοδοτήσεις Φιλοξενούμενου"
+
+msgid "Help"
+msgstr "Βοήθεια"
+
+msgid "Hour(s)"
+msgstr "Ώρα(ες)"
+
+#: config/prefs.php.dist:197
+msgid ""
+"How many days into the future should we generate free/busy information for?"
+msgstr "Για πόσες ημέρες θέλετε να δημιουργήσετε πληροφορίες διαθεσιμότητας;"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr ""
+"Αν εισάγετε διευθύνσεις από αρχείο χαρακτήρων, η πρώτη γραμμή περιέχει τα "
+"ονόματα των πεδίων;"
+
+msgid "Illegal or malformed form data."
+msgstr "Λανθασμένη μορφή ή τύπος δεδομένων."
+
+msgid "Import Calendar"
+msgstr "Εισαγωγή Ημερολογίου"
+
+#: templates/data/import.inc:9
+msgid "Import Calendar, Step %d"
+msgstr "Εισαγωγή Ημερολογίου,Βήμα %d"
+
+msgid "Import"
+msgstr "Εισαγωγή"
+
+msgid "Import/Export Calendar"
+msgstr "Εισαγωγή/Εξαγωγή Ημερολογίου"
+
+msgid "Import/Export"
+msgstr "Εισαγωγή/Εξαγωγή"
+
+msgid "January"
+msgstr "Ιανουάριος"
+
+msgid "July"
+msgstr "Ιούλιος"
+
+msgid "June"
+msgstr "Ιούνιος"
+
+msgid "Keywords"
+msgstr "Λέξη κλειδί"
+
+msgid "Kronolith is not properly configured"
+msgstr "Το πρόγραμμα Kronolith δεν είναι πλήρως ρυθμισμένο."
+
+msgid "Kronolith"
+msgstr "Ημερολόγιο"
+
+msgid "Language"
+msgstr "Γλώσσα"
+
+#: templates/view/view.inc:95
+msgid "Last Modified"
+msgstr "Τελευταία Αλαγμένο"
+
+#: templates/month/head_side_by_side.inc:4
+#: templates/month/head_side_by_side.inc:10
+#: templates/month/head_side_by_side.inc:16 templates/month/head.inc:4
+msgid "Last Month"
+msgstr "Τελευταίος μήνας"
+
+msgid "Last month"
+msgstr "Τελευταίος μήνας"
+
+msgid "Last week"
+msgstr "Τελευταία Εβδομάδα"
+
+msgid "Lasts"
+msgstr "Τελευταία"
+
+msgid "Limit the time span to export:"
+msgstr "Επιλέξτε το εύρος του χρόνου που θα εξάγετε:"
+
+msgid "Lo_cation"
+msgstr "Τοποθεσία"
+
+msgid "Location"
+msgstr "Τοποθεσία"
+
+msgid "Manage remote calendars."
+msgstr "Διαχείριση απομακρυσμένων ημερολογίων"
+
+msgid "March"
+msgstr "Μάρτιος"
+
+msgid "May"
+msgstr "Μάιος"
+
+msgid "Meeting"
+msgstr "Συνάντηση"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "Λίστα Μενού"
+
+msgid "Message"
+msgstr "Μήνυμα"
+
+#: templates/view/view.inc:76 templates/edit/edit.inc:125
+msgid "Minute(s)"
+msgstr "Λεπτό(ά)"
+
+msgid "Minutes before"
+msgstr "Λεπτά πριν"
+
+msgid "Minutes"
+msgstr "Λεπτά"
+
+#: lib/Block/prevmonthlist.php:44
+msgid "Missed Events List"
+msgstr "Χαμένη Λίστα Γεγονότων"
+
+msgid "Mo"
+msgstr "Δε"
+
+msgid "Monday"
+msgstr "Δευτέρα"
+
+msgid "Month"
+msgstr "Μήνας"
+
+#: lib/Block/month.php:3
+msgid "Month View"
+msgstr "Εμφάνιση Μήνα"
+
+msgid "Monthly: Recurs every"
+msgstr "Μηνιαία: Κάθε"
+
+#: lib/Block/monthlist.php:24
+msgid "Months Ahead"
+msgstr "Μήνες Μετά"
+
+#: lib/Block/prevmonthlist.php:24
+msgid "Months Before"
+msgstr "Μήνες Πρίν"
+
+msgid "More than %s entry fount"
+msgstr "Βρέθηκαν περισσότερες από %s εγγραφές"
+
+#: lib/api.php:174 lib/api.php:347
+msgid "Multiple iCalendar components found; only one vEvent is supported."
+msgstr "Πολλαπλά στοιχεία iCalendar βρέθηκαν, μόνο vEvent υποστηρίζονται."
+
+msgid "My Calendar"
+msgstr "Το Ημερολόγιό μου"
+
+#: templates/calendars/calendars.inc:84
+msgid "My Calendars"
+msgstr "Τα Ημερολόγιά μου"
+
+msgid "My Calendars:"
+msgstr "Τα Ημερολόγιά μου:"
+
+msgid "My Free/Busy URL"
+msgstr "Τοποθεσίες διαθεσιμότητάς μου"
+
+#: templates/contacts/contacts.inc:177
+#: templates/prefs/remote_cal_management.inc:17
+#: templates/prefs/remote_cal_management.inc:44
+msgid "Name"
+msgstr "Όνομα"
+
+#: lib/Block/month.php:43 lib/Block/monthlist.php:45 lib/Block/summary.php:43
+#: lib/Block/tree_menu.php:20
+msgid "New Event"
+msgstr "Νέο Γεγονός"
+
+msgid "New meeting"
+msgstr "Νέο Γεγονός"
+
+msgid "Next"
+msgstr "Επόμενο"
+
+#: templates/search/search.inc:56
+msgid "Next 24 hours"
+msgstr "Επόμενες 24 ώρες"
+
+#: lib/FBView/day.php:78
+msgid "Next Day"
+msgstr "Επόμενη μέρα"
+
+#: templates/month/head_side_by_side.inc:6
+#: templates/month/head_side_by_side.inc:12
+#: templates/month/head_side_by_side.inc:18 templates/month/head.inc:6
+msgid "Next Month"
+msgstr "Επόμενος Μήνας"
+
+#: lib/FBView/week.php:32
+msgid "Next Week"
+msgstr "Επόμενη Εβδομάδα"
+
+msgid "Next day"
+msgstr "Επόμενη Μέρα"
+
+msgid "Next week"
+msgstr "Επόμενη εβδομάδα"
+
+msgid "No Information"
+msgstr "Δεν υπάρχουν Πληροφορίες"
+
+#: templates/attendees/attendees.inc:53
+msgid "No attendees"
+msgstr "Χωρίς συμμετέχοντες"
+
+#: lib/Kronolith.php:1066
+msgid "No calendars are available to guests."
+msgstr "Δεν υπάρχουν διαθέσιμα ημερολόγια για φιλοξενία."
+
+msgid "No configuration information specified for SQL Calendar."
+msgstr "Δεν έχει ρυθμιστεί το ημερολόγιο για την SQL."
+
+msgid "No end date"
+msgstr "Δεν υπάρχει ημερομηνία λήξης"
+
+msgid "No events to display"
+msgstr "Δεν υπάρχουν γεγονότα γι εμφάνιση"
+
+#: lib/Storage/kolab.php:44
+msgid "No free/busy information is available for %s"
+msgstr "Δεν υπάρχουν πληροφορίες διαθεσιμότητας για %s"
+
+#: lib/api.php:164 lib/api.php:337
+msgid "No iCalendar data was found."
+msgstr "Δε βρέθηκαν δεδομένα iCalendar."
+
+#: templates/edit/edit.inc:201
+msgid "No recurrence"
+msgstr "Χωρίς επανάληψη"
+
+#: lib/Kronolith.php:836
+msgid "No valid email address found"
+msgstr "Δε βρέθηκε έγγυρη Email διεύθυνση"
+
+#: templates/view/view.inc:81 templates/edit/edit.inc:121
+#: templates/edit/edit.inc:189 lib/Kronolith.php:530 lib/Kronolith.php:550
+msgid "None"
+msgstr "Κανένα"
+
+#: lib/Storage/sql.php:127
+msgid "Not found"
+msgstr "Δε βρέθηκε"
+
+#: templates/data/import.inc:17
+msgid ""
+"Notice: Importing is not possible with this configuration due to a bug in "
+"the underlying calendar driver."
+msgstr ""
+"Σημείωση: Δεν μπορεί να πραγματοποιηθεί η εισαγωγή λόγο λάθους που οφείλεται "
+"σε ένα driver του ημερολογίου."
+
+msgid "November"
+msgstr "Νοέμβριος"
+
+#: templates/search/search.inc:55
+msgid "Now"
+msgstr "Τώρα"
+
+msgid "October"
+msgstr "Οκτώβριος"
+
+msgid "Optional"
+msgstr "Προαιρετικό"
+
+#: lib/FBView.php:117
+msgid "Optional to attend"
+msgstr "Προαιρετικά για συμμετοχή"
+
+msgid "Options"
+msgstr "Ρυθμίσεις"
+
+msgid "Owner"
+msgstr "Ιδιοκτήτης"
+
+#: lib/Driver.php:1880
+msgid "Owner: %s"
+msgstr "Ιδιοκτήτης: %s"
+
+msgid "PM"
+msgstr "μμ"
+
+#: data.php:29 templates/data/import.inc:22
+msgid "Palm DateBook"
+msgstr "Ημερολόγιο Χειρός (Palm DateBook)"
+
+#: lib/Block/prevmonthlist.php:3
+msgid "Past Events List"
+msgstr "Λίστα περασμένων Γεγονότων"
+
+#: templates/view/view.inc:119 templates/edit/edit.inc:183
+msgid "Pattern"
+msgstr "Μοτίβο"
+
+msgid "Permanently delete this event?"
+msgstr "Να διαγραφεί ΜΟΝΙΜΑ αυτό το γεγονός;"
+
+#: lib/api.php:145 lib/api.php:222 lib/api.php:289 lib/api.php:319
+#: lib/api.php:402 lib/api.php:436
+msgid "Permission Denied"
+msgstr "Αρνηση Πρόσβασης"
+
+#: templates/calendars/calendars.inc:107
+msgid "Permissions"
+msgstr "Εξουσιοδοτήσεις"
+
+msgid "Personal"
+msgstr "Προσωπικό"
+
+msgid "Portal Options"
+msgstr "Επιλογές για την Πύλη"
+
+msgid "Possible Meeting Time"
+msgstr "Πιθανή ώρα συνάντησης"
+
+msgid "Possible Meeting Times"
+msgstr "Πιθανές ώρες συνάντησης"
+
+msgid "Previous Day"
+msgstr "Προηγούμενη Ημέρα"
+
+#: lib/FBView/week.php:26
+msgid "Previous Week"
+msgstr "Προηγούμενη Εβδομάδα"
+
+msgid "Previous day"
+msgstr "Προηγούμενη ημέρα"
+
+msgid "Problem"
+msgstr "Πρόβλημα"
+
+msgid "Problem?"
+msgstr "Πρόβλημα;"
+
+msgid "Read"
+msgstr "Ανάγνωση"
+
+msgid "Recur Until"
+msgstr "Επανάληψη έως"
+
+msgid "Recurrence"
+msgstr "Επανάληψη"
+
+msgid "Recurrence Data"
+msgstr "Επανάληψη δεδομένων"
+
+msgid "Recurrence End Date"
+msgstr "*Ημερομηνία Τέλους"
+
+msgid "Recurrence Interval"
+msgstr "*Επανάληψη έως"
+
+msgid "Recurrence Type"
+msgstr "*Επαναλαμβανόμενος Τύπος"
+
+msgid "Recurs daily"
+msgstr "Καθημερινώς"
+
+msgid "Recurs monthly"
+msgstr "Επανάληψη ανά μήνα"
+
+msgid "Recurs not"
+msgstr "Χωρίς επανάληψη"
+
+msgid "Recurs weekly"
+msgstr "Επανάληψη ανά εβδομάδα"
+
+msgid "Recurs yearly"
+msgstr "Επανάληψη ανά χρόνο"
+
+#: lib/Scheduler/kronolith.php:166
+msgid "Reminder: %s"
+msgstr "Υπενθυμιστής: %s"
+
+#: config/prefs.php.dist:42
+msgid "Remote Calendars"
+msgstr "Απομακρυσμένα Ημερολόγια"
+
+#: templates/menu.inc:48
+msgid "Remote Calendars:"
+msgstr "Απομακρυσμένα Ημερολόγια:"
+
+#: templates/attendees/attendees.inc:57
+msgid "Remove %s"
+msgstr "Διαγραφή %s"
+
+#: attendees.php:37
+msgid "Remove Attendee"
+msgstr "Διαγραφή Συμμετέχοντα"
+
+msgid "Required 'database' not specified in calendar configuration."
+msgstr "Η απαιτούμενη βάση δεδομένων δεν έχει καθοριστεί για το ημερολόγιο."
+
+msgid "Required 'hostspec' not specified in calendar configuration."
+msgstr "Το απαιτούμενο 'hostspec' δεν έχει καθοριστεί για το ημερολόγιο."
+
+msgid "Required 'password' not specified in calendar configuration."
+msgstr "Το απαιτούμενο 'password' δεν έχει καθοριστεί για το ημερολόγιο."
+
+msgid "Required 'phptype' not specified in calendar configuration."
+msgstr "Το απαιτούμενο 'phptype' δεν έχει καθοριστεί για το ημερολόγιο."
+
+msgid "Required 'username' not specified in calendar configuration."
+msgstr "Το απαιτούμενο 'username' δεν έχει καθοριστεί για το ημερολόγιο."
+
+msgid "Required Attendees"
+msgstr "Απαιτούμενοι Συμμετέχοντες"
+
+#: lib/FBView.php:98
+msgid "Required to attend"
+msgstr "Απαιτείται για συμμετοχή"
+
+msgid "Required"
+msgstr "Απαιτούμενοι"
+
+msgid "Reset"
+msgstr "Επαναφορά"
+
+msgid "Reset to Defaults"
+msgstr "Επαναφορά των προεπιλεγμένων ρυθμίσεων"
+
+msgid "Response"
+msgstr "Απάντηση"
+
+msgid "Return to Options"
+msgstr "Επιστροφή στις Επιλογές"
+
+#: viewevent.php:120
+msgid "S_ave '%s' As New"
+msgstr "Αποθήκευση '%s' σαν Νέο"
+
+#: templates/javascript/goto.inc:64 templates/edit/edit.inc:208
+#: lib/Block/month.php:109
+msgid "Sa"
+msgstr "Σα"
+
+msgid "Saturday"
+msgstr "Σάββατο"
+
+msgid "Save %s Calendar"
+msgstr "Αποθήκευση %s Ημερολόγιο"
+
+msgid "Save As New"
+msgstr "Αποθήκευση ως νέο"
+
+#: templates/attendees/attendees.inc:83
+msgid "Save Attendees"
+msgstr "Αποθήκευση Συμμετεχόντων"
+
+msgid "Save Event"
+msgstr "Αποθήκευση Γεγονότος"
+
+#: search.php:14 templates/search/search_advanced.inc:115
+#: templates/search/search.inc:67 templates/contacts/contacts.inc:142
+#: lib/Block/tree_menu.php:25
+msgid "Search"
+msgstr "Αναζήτηση"
+
+#: templates/calendars/search.inc:1
+msgid "Search Calendars"
+msgstr "Αναζήτηση Ημερολογίων"
+
+#: templates/search/header.inc:6
+msgid "Search Results"
+msgstr "Αποτελέσματα Αναζήτησης"
+
+#: templates/calendars/search.inc:6
+msgid "Search for calendars containing:"
+msgstr "Αναζήτηση για ημερολόγια που περιέχουν:"
+
+#: templates/calendars/calendars.inc:86
+msgid "Select a Calendar"
+msgstr "Επιλέξτε Ημερολόγιο"
+
+#: templates/calendars/calendars.inc:153
+msgid "Select a calendar to edit"
+msgstr "Επιλέξτε ένα ημερολόγιο για επεξεργασία"
+
+#: templates/edit/edit.inc:253 templates/edit/edit_timespan.inc:30
+#: templates/edit/edit_timespan.inc:85
+msgid "Select a date"
+msgstr "Επιλέξτε μια ημερομηνία"
+
+msgid "Select a group to add:"
+msgstr "Επιλέξτε ομάδα για προσθήκη:"
+
+#: config/prefs.php.dist:51
+msgid "Select address book sources for searching for addresses."
+msgstr "Επιλέξτε διευθυνσιογράφους για αναζήτηση διευθύνσεων."
+
+#: templates/menu.inc:30
+msgid "Select calendars to display:"
+msgstr "Επιλέξτε ημερολόγια για εμφάνιση:"
+
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr ""
+"Επιλέξτε τον τρόπο εμφάνισης, και τον τρόπο επιβεβαίωσης των ενεργειών."
+
+msgid "Select how to display Dates:"
+msgstr "Επιλέξτε τον τρόπο εμφάνισης των Ημερομηνιών:"
+
+msgid "Select if to show due tasks in the calendar."
+msgstr "*Επιλέξτε αν θα εμφανίζονται τα γεγονότα του ημερολογίου"
+
+#: templates/data/import.inc:27
+msgid "Select the calendar to import to:"
+msgstr "Επιλέξτε το ημερολόγιο από το οποίο θα γίνει η εισαγωγή:"
+
+#: templates/data/export.inc:16
+msgid "Select the export format:"
+msgstr "Επιλέξτε τη μορφή εγαγωγής:"
+
+msgid "Select the file to import:"
+msgstr "Επιλέξτε το αρχείο που θα εισάγετε:"
+
+msgid "Select the first weekday:"
+msgstr "Επιλέξτε την πρώτη ημέρα της εβδομάδος:"
+
+#: templates/data/import.inc:19
+msgid "Select the format of the source file:"
+msgstr "Επιλέξτε τη μορφή του αρχείου εισαγωγής:"
+
+msgid "Select the format to export to:"
+msgstr "Επιλέξτε την μορφή των δεδομένων εξόδου:"
+
+msgid "Select the source to import from:"
+msgstr "Επιλέξτε από που θα εισάγετε τα δεδομένα:"
+
+msgid "Select the time span to show:"
+msgstr "Επιλέξτε το εύρος του χρόνου που θα εμφανίζεται:"
+
+msgid "Select the view to display after login:"
+msgstr "Επιλέξτε την εμφάνιση που θα χρησιμοποιείται μετά την είσοδο σας:"
+
+msgid "Select the view to display on startup:"
+msgstr "Επιλέξτε την εμφάνιση που θα χρησιμοποιείται στην εκκίνηση:"
+
+msgid "Select what events to show in the Horde summary."
+msgstr ""
+"Επιλέξτε ποια γεγονότα θα εμφανίζονται στην πρώτη σελίδα (περίληψη) της "
+"υπηρεσίας."
+
+msgid "Select which events to show in the portal."
+msgstr "Επιλέξτε ποια γεγονότα θα εμφανίζονται στην πύλη"
+
+msgid "Select your preferred language:"
+msgstr "Επιλέξτε την προτιμούμενη γλώσσα:"
+
+msgid "Send a cancel notification to all attendees when deleting this event"
+msgstr ""
+"Αποστολή μηνύματος ακύρωσης σε όλους τους συμμετέχοντες με τη διαγραφή αυτού "
+"του γεγονότος"
+
+#: templates/attendees/attendees.inc:60 templates/view/view.inc:186
+msgid "Send an email to %s"
+msgstr "Αποστολή Email σε %s"
+
+#: templates/edit/edit.inc:166
+msgid "Send updates/invitations to all attendees when saving this event"
+msgstr ""
+"Αποστολή ενημερώσεων/προσκλήσεων σε όλους τους συμμετέχοντες με την "
+"αποθήκευση αυτού του γεγονότος"
+
+msgid "September"
+msgstr "Σεπτέμβριος"
+
+#: templates/edit/edit_timespan.inc:85
+msgid "Set end date"
+msgstr "Θέστε ημερομηνία τέλους"
+
+#: templates/edit/edit.inc:253
+msgid "Set recurrence end date"
+msgstr "Θέστε ημερομηνία τέλους επανάληψης"
+
+#: templates/edit/edit_timespan.inc:30
+msgid "Set start date"
+msgstr "Θέστε ημερομηνία έναρξης"
+
+msgid "Set the current time zone."
+msgstr "Επιλέξτε τη Ζώνη Ώρας στην οποία βρίσκεστε :"
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Ορίστε την γλώσσα για τα μενού, τις οδηγίες και την βοήθεια"
+
+msgid "Set your preferred display language."
+msgstr "Ορίστε την γλώσσα προτίμησής σας."
+
+#: calendars.php:77
+msgid "Share not found: %s"
+msgstr "Το κοινόχρηστο δε βρέθηκε: %s"
+
+#: templates/menu.inc:42
+msgid "Shared Calendars:"
+msgstr "Κοινόχρηστα Ημερολόγια:"
+
+msgid "Show"
+msgstr "Εμφάνιση"
+
+msgid "Show category legend?"
+msgstr "Εμφάνιση περιγραφής κατηγοριών;"
+
+msgid "Show delete, alarm, and recurrence icons in calendar views?"
+msgstr ""
+"Εμφάνιση εικονιδίων διαγραφής, συναγερμού και επανάληψης στις οθόνες "
+"ημερολογίων;"
+
+msgid "Show due tasks in the calendar?"
+msgstr "Να εμφανίζονται τα γεγονότα στο Ημερολόγιο"
+
+msgid "Show free/busy legend?"
+msgstr "Εμφάνιση περιγραφής διαθεσιμότητας;"
+
+msgid "Show half hour slots in day and week views?"
+msgstr ""
+"Να γίνεται χωρισμός ανά μισή ώρα στη λίστα της ημέρας και της εβδομάδας;"
+
+msgid "Show only events that have an alarm set?"
+msgstr "Να εμφανιστούν μόνο τα γεγονότα στα οποία έχει οριστεί υπενθύμιση;"
+
+msgid "Show shared calendars side-by-side"
+msgstr "Εμφάνιση διαμοιρασμένων ημερολογίων πλάι-πλάι"
+
+msgid "Show tasks using category colors?"
+msgstr "Εμφάνιση εργασιών με χρήση των χρωμάτων κατηγοριών;"
+
+msgid "Show time of day between each day in week views?"
+msgstr "Εμφάνιση τρέχουσας ώρας μεταξύ κάθε μέρας στις εμφανίσεις εβδομάδας;"
+
+msgid "Some of Kronolith's configuration files are missing:"
+msgstr "Κάποια αρχεία ρυθμίσεων του προγράμματος Kronolith λείπουν:"
+
+msgid "Sta_rt"
+msgstr "Εναρξη"
+
+msgid "Sta_rt On"
+msgstr "Εναρξη στις"
+
+msgid "Start Date"
+msgstr "Ημερομηνία Έναρξης"
+
+msgid "Start On"
+msgstr "Εναρξη στις"
+
+msgid "Start Time"
+msgstr "Ώρα Έναρξης"
+
+msgid "Stat_us"
+msgstr "Κατάσταση"
+
+msgid "Status"
+msgstr "Κατάσταση"
+
+msgid "Su"
+msgstr "Κυ"
+
+msgid "Success"
+msgstr "Επιτυχία"
+
+msgid "Summary"
+msgstr "Περίληψη"
+
+msgid "Sunday"
+msgstr "Κυριακή"
+
+msgid "Tasks"
+msgstr "Γεγονότα"
+
+msgid "Tentative"
+msgstr "Προσωρινό"
+
+msgid "Th"
+msgstr "Πέ"
+
+#: templates/contacts/contacts.inc:73
+msgid "The Edit Attendees screen is no longer present. Exiting."
+msgstr "Η σελίδα επεξεργασίας συμμετεχόντων δεν υπάρχει. Έξοδος."
+
+#: calendars.php:70
+msgid "The calendar \"%s\" cannot be deleted."
+msgstr "Το ημερολόγιο \"%s\" δε μπορεί να διαγραφεί."
+
+#: calendars.php:40
+msgid "The calendar \"%s\" has been created."
+msgstr "Το Ημερολόγιο \"%s\" δεν μπορεί να δημιουργηθεί."
+
+#: calendars.php:88
+msgid "The calendar \"%s\" has been deleted."
+msgstr "Το ημερολόγιο \"%s\" διαγράφηκε."
+
+#: calendars.php:54
+msgid "The calendar \"%s\" has been renamed to \"%s\"."
+msgstr "Το ημερολόγιο \"%s\" μετονομάσθηκε σε \"%s\"."
+
+#: calendars.php:56
+msgid "The calendar \"%s\" has been saved."
+msgstr "Το ημερολόγιο \"%s\" αποθηκεύθηκε."
+
+msgid "The data was lost."
+msgstr "Τα δεδομένα χάθηκαν."
+
+msgid "The end date must be later than the start date."
+msgstr ""
+"Η ημερομηνία τέλους πρέπει να είναι μεταγενέστερη της ημερομηνίας αρχής."
+
+#: lib/Kronolith.php:1003
+msgid "The event notification to %s was successfully sent."
+msgstr "Η ενημέρωση γεγονότος σε %s στάλθηκε επιτυχώς."
+
+msgid "The file contained no data."
+msgstr "Το αρχείο δεν περιέχει δεδομένα."
+
+#: lib/Kronolith.php:964
+msgid "The following is a more detailed description of the event:"
+msgstr "Το παρακάτω είναι λεπτομερέστερη περιγραφή του γεγονότος:"
+
+#: templates/search/empty.inc:4
+msgid "There are no events matching the current criteria."
+msgstr "Δεν υπάρχουν γεγονότα να πληρούν τα συγκεκριμένα κριτήρια."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Υπήρξε πρόβλημα κατά την μεταφορά του αρχείου. Το αρχείο μπορεί να είναι "
+"μεγαλύτερο από το επιτρεπόμενο μέγεθος."
+
+#: addeventaction.php:18 editeventaction.php:35
+msgid "There was an error accessing the calendar: %s"
+msgstr "Πρόβλημα κατά την πρόσβαση στο ημερολόγιο: %s."
+
+#: addeventaction.php:33
+msgid "There was an error adding the event: %s"
+msgstr "Πρόβλημα κατά τη προσθήκη του γεγονότος: %s."
+
+#: editeventaction.php:73
+msgid "There was an error editing the event: %s"
+msgstr "Πρόβλημα κατά την επεξεργασία του γεγονότος: %s."
+
+#: lib/api.php:158 lib/api.php:331
+msgid "There was an error importing the iCalendar data."
+msgstr "Πρόβλημα κατά την εισαγωγή iCalendar δεδομένων."
+
+msgid "There was an error importing the data."
+msgstr "Παρουσιάστηκε σφάλμα κατά την εισαγωγή των δεδομένων"
+
+msgid "There was an error importing the uploaded file"
+msgstr "Υπήρξε σφάλμα κατά την εισαγωγή του αρχείου"
+
+#: editeventaction.php:54
+msgid "There was an error moving the event: %s"
+msgstr "Πρόβλημα κατά τη μεταφορά του γεγονότος: %s."
+
+#: lib/Kronolith.php:1008
+msgid "There was an error sending an event notification to %s: %s"
+msgstr "Πρόβλημα κατά την αποστολή ενημέρωσης γεγονοτος σε %s: %s"
+
+msgid "There were no events to export."
+msgstr "Δεν υπάρχουν γεγονότα προς εξαγωγή."
+
+msgid ""
+"This file controls the default preferences for Kronolith, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Αυτό το αρχείο ελέγχει τις προεπιλεγμένες προτιμήσεις του προγράμματος "
+"Kronolith, και ελέγχει επίσης ποιες προτιμήσεις μπορούν οι χρήστες  να "
+"μεταβάλλουν"
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Αυτό το αρχείο ρυθμίζει τα χρώματα και τις γραμματοσειρές για οτιδήποτε δεν "
+"περιέχεται στις ρυθμίσεις του προγράμματος Horde."
+
+#: data.php:173
+msgid "This file format is not supported."
+msgstr "Αυτή η μορφή αρχείου δεν υποστηρίζεται."
+
+msgid ""
+"This is the main Kronolith configuration file. It contains paths and options "
+"for all Kronolith scripts."
+msgstr ""
+"Αυτό είναι το βασικό αρχείο ρυθμίσεων του προγράμματος Kronolith. Περιέχει "
+"τα μονοπάτια και τις ρυθμίσεις για τα scripts του προγράμματος."
+
+#: data.php:213
+msgid "This is what the server said: %s"
+msgstr "Αυτό είναι το μήνυμα του εξυπηρετητή: %s"
+
+msgid "This number must be at least one."
+msgstr "Αυτός ο αριθμός πρέπει να είναι τουλάχιστον ένα."
+
+msgid "This value must be a number."
+msgstr "Αυτή η τιμή πρέπει να είναι αριθμός."
+
+msgid "Thursday"
+msgstr "Πέμπτη"
+
+msgid "Time Sp_an"
+msgstr "Ορισμός Χρόνου"
+
+msgid "Time span"
+msgstr "Ορισμός Χρόνου"
+
+msgid "Time Zone"
+msgstr "Ζώνη Ώρας"
+
+msgid "Tit_le"
+msgstr "Τίτλος"
+
+msgid "Title"
+msgstr "Τίτλος"
+
+msgid "Today"
+msgstr "Σήμερα"
+
+#: lib/Block/prevmonthlist.php:133 lib/Block/monthlist.php:129
+#: lib/Block/summary.php:119
+msgid "Tomorrow"
+msgstr "Αύριο"
+
+msgid "Tu"
+msgstr "Τρί"
+
+msgid "Tuesday"
+msgstr "Τρίτη"
+
+msgid "Type"
+msgstr "Τύπος"
+
+#: lib/Storage/sql.php:54
+msgid "Unable to connect to SQL server."
+msgstr "Αδύνατη η σύνδεση με τον SQL εξυπηρετητή."
+
+#: calendars.php:84
+msgid "Unable to delete \"%s\": %s"
+msgstr "Αδύνατη η διαγραφή \"%s\": %s"
+
+#: lib/Driver/mcal.php:135
+msgid "Unable to delete %s."
+msgstr "Αδύνατη η διαγραφή %s."
+
+# lib/Driver.php:174, c-format
+#: lib/Driver.php:174
+msgid "Unable to load the definition of %s."
+msgstr "Δεν είναι δυνατόν να φορτωθούν οι ρυθμίσεις του %s."
+
+#: calendars.php:51
+msgid "Unable to rename \"%s\": %s"
+msgstr "Αδύνατη η μετονομασία \"%s\": %s"
+
+#: lib/Storage/kolab.php:35
+msgid "Unable to retrieve free/busy information for %s"
+msgstr "Αδύνατη η ανάκτηση πληροφοριών διαθεσιμότητας για %s"
+
+msgid "Undo Changes"
+msgstr "Ακύρωση Επιλογών"
+
+#: templates/view/view.inc:23
+#: scripts/upgrades/2004-05-19_convert_categories_to_strings.php:53
+msgid "Unfiled"
+msgstr "Μη αρχειοθετημένο"
+
+#: lib/FBView/day.php:48 lib/FBView/day.php:58
+msgid "Unknown"
+msgstr "Αγνωστο"
+
+#: lib/api.php:184 lib/api.php:253 lib/api.php:356
+msgid "Unsupported Content-Type."
+msgstr "Μη υποστηριζόμενο τύπος περιεχομένου."
+
+#: lib/Kronolith.php:956
+msgid "Updated: %s."
+msgstr "Ενημερώθηκε: %s."
+
+#: config/prefs.php.dist:10
+msgid "User Interface"
+msgstr "Περιβάλλον Χρήστη"
+
+msgid "User Options"
+msgstr "Επιλογές Χρήστη"
+
+msgid "User Preferences"
+msgstr "Προτιμήσεις Χρήστη"
+
+#, c-format
+msgid "View %s"
+msgstr "Εμφάνιση %s"
+
+#: lib/Block/month.php:163 lib/Block/month.php:166
+msgid "View Day"
+msgstr "Εμφάνιση Ημέρας"
+
+msgid "Warning"
+msgstr "Προειδοποίηση"
+
+msgid "We"
+msgstr "Τε"
+
+msgid "Wednesday"
+msgstr "Τετάρτη"
+
+#, c-format
+msgid "Week %d"
+msgstr "Εβδομάδα %d"
+
+msgid "Week"
+msgstr "Εβδομάδα"
+
+#, c-format
+msgid "Week&nbsp;%d"
+msgstr "Εβδομάδα&nbsp;%d"
+
+msgid "Week(s)"
+msgstr "Εβδομάδα(ες)"
+
+msgid "Weekly: Recurs every"
+msgstr "Εβδομαδιαία: Κάθε"
+
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr ""
+"Ποια θα είναι η τελική ώρα στην εμφάνιση ανά ημέρα και ανά εβδομάδα, όταν "
+"δενυπάρχουν άλλα γεγονότα προσδιορισμένα αργότερα από αυτή;"
+
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr ""
+"Ποια θα είναι η ώρα έναρξης στην εμφάνιση ανά ημέρα και ανά εβδομάδα, όταν "
+"δενυπάρχουν άλλα γεγονότα προσδιορισμένα νωρίτερα από αυτή;"
+
+msgid "Work Week"
+msgstr "Πενθήμερο"
+
+msgid "Work&nbsp;Week"
+msgstr "Πενθήμερο"
+
+#: lib/Kronolith.php:1315 lib/Block/tree_menu.php:25
+msgid "Year"
+msgstr "Έτος"
+
+msgid "Yearly: Recurs every"
+msgstr "Ετησίως: Επανάληψη Κάθε"
+
+#: templates/contacts/contacts.inc:79
+msgid "You can only use this form from the Edit Attendees screen."
+msgstr ""
+"Αυτή τη φόρμα μπορείτε να τη χρησιμοποιήσετε από την οθόνη επεξε-σίας "
+"Συμμετεχόντων."
+
+#: lib/Kronolith.php:920
+msgid ""
+"You do not have an email address configured in your Personal Information "
+"Options. You must set one %shere%s before event notifications can be sent."
+msgstr ""
+"Δεν έχετε ορίσει email διεύθυνση στις Επιλογές 'Προσωπικές Πληροφορίες'. "
+"Πρέπει να ορίσετε μια %sεδώ%s για να μπορούν να σταλούν πληροφορίες για τα "
+"γεγονότα."
+
+#: addeventaction.php:20
+msgid "You do not have permission to add events to %s."
+msgstr "Δεν έχετε εξουσιοδότηση να προσθέσετε γεγονότα στο %s."
+
+#: data.php:183
+msgid "You do not have permission to add events to the selected calendar."
+msgstr ""
+"Δεν έχετε εξουσιοδότηση να προσθέσετε γεγονότα στο επιλεγμένο ημερολόγιο."
+
+#: deleventaction.php:26
+msgid "You do not have permission to delete this event."
+msgstr "Δεν έχετε εξουσιοδότηση να διαγράψετε αυτό το γεγονός."
+
+#: editeventaction.php:68
+msgid "You do not have permission to edit this event."
+msgstr "Δεν έχετε εξουσιοδότηση να επεξεργασθείτε αυτό το γεγονός."
+
+#: data.php:178
+msgid "You have specified an invalid calendar."
+msgstr "Έχετε ορίσει μη έγκυρο ημερολόγιο."
+
+#: calendars.php:91
+msgid "You must select a calendar to be deleted."
+msgstr "Πρέπει να επιλέξετε ένα ημερολόγιο για διαγραφή."
+
+#: templates/contacts/contacts.inc:57
+msgid "You must select an address first."
+msgstr "Πρέπει να επιλέξετε μια διεύθυνση πρώτα."
+
+#: lib/Scheduler/kronolith.php:168
+msgid "You requested to be reminded about %s, which is at %s."
+msgstr "Ζητήσατε υπενθίμιση για %s το οποίο είναι στις %s."
+
+msgid "Your Information"
+msgstr "Οι Πληροφορίες σας"
+
+msgid "Your default calendar"
+msgstr "Το προκαθορισμένο σας ημερολόγιο"
+
+msgid "Your current time zone:"
+msgstr "Η Ζώνη Ώρας σας:"
+
+msgid "Your preferences have been updated."
+msgstr "Οι προτιμήσεις σου έχουν ενημερωθεί."
+
+msgid "before the event starts"
+msgstr "πριν αρχίσει το γεγονός"
+
+msgid "day"
+msgstr "ημέρα"
+
+msgid "day(s)"
+msgstr "ημέρα(ες)"
+
+msgid "days"
+msgstr "ημέρες"
+
+#: templates/contacts/contacts.inc:133
+msgid "from"
+msgstr "από"
+
+msgid "iCalendar file successfully imported"
+msgstr "Επιτυχής εισαγωγή του Ημερολογίου"
+
+msgid "month(s)"
+msgstr "μήνα(ες)"
+
+msgid "no time"
+msgstr "χωρίς χρόνο"
+
+msgid "on the same date"
+msgstr "την ίδια ημέρα"
+
+msgid "on the same weekday"
+msgstr "την ίδια ημέρα της εβδομάδας"
+
+#: lib/api.php:169 lib/api.php:342
+msgid "vEvent not found."
+msgstr "Το vEvent δε βρέθηκε."
+
+msgid "week"
+msgstr "εβδομάδα"
+
+msgid "week(s) on:"
+msgstr "εβδομάδα(ες) την(το):"
+
+msgid "weeks"
+msgstr "εβδομάδες"
+
+msgid "year(s)"
+msgstr "έτος(η)"
+
+#: lib/Driver.php:922 lib/Driver.php:931
+msgid "[Unnamed event]"
+msgstr "[Γεγονός χωρίς όνομα]"
+
+msgid "_Alarm"
+msgstr "Προειδοποίηση"
+
+msgid "_At"
+msgstr "Την"
+
+#: templates/search/search_advanced.inc:10
+msgid "_Basic Search"
+msgstr "Βασική Αναζήτηση"
+
+msgid "_Edit"
+msgstr "Επεξεργασία"
+
+msgid "_Goto"
+msgstr "Μετάβαση"
+
+msgid "_Help"
+msgstr "Βοήθεια"
+
+msgid "_Import/Export"
+msgstr "Εισαγωγή/Εξαγωγή"
+
+#: lib/IMP.php:947
+msgid "_Log out"
+msgstr "Εξοδος"
+
+msgid "_My Calendars"
+msgstr "Ημερολόγιά μου"
+
+msgid "_New Event"
+msgstr "Νέο Συμβάν"
+
+msgid "_Options"
+msgstr "Επιλογές"
+
+#: lib/Kronolith.php:1094
+msgid "_Print"
+msgstr "Εκτύπωση"
+
+msgid "_Search"
+msgstr "Αναζήτηση"
+
+msgid "_Show"
+msgstr "Εμφάνιση"
+
+#: lib/IMP.php:908
+msgid "_Today"
+msgstr "Σήμερα"

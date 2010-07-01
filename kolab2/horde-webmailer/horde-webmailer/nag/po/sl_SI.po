@@ -1,0 +1,1034 @@
+# Slovenian translations for Nag packaga
+# Slovenski prevod Nag paketa
+# Copyright 2006-2009 The Horde Project
+# This file is distributed under the same license as the horde package.
+# Automatically generated, 2006.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: nag\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2006-08-16 19:14+0200\n"
+"PO-Revision-Date: 2006-04-30 10:32+0100\n"
+"Last-Translator: duck@obala.net\n"
+"Language-Team: sl_SI <duck@obala.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: lib/Nag.php:71
+#, php-format
+msgid "%d hour"
+msgstr "%d ura"
+
+#: lib/Nag.php:73
+#, php-format
+msgid "%d hour, %d minute"
+msgstr "%d ura, %d minuta"
+
+#: lib/Nag.php:75
+#, php-format
+msgid "%d hour, %d minutes"
+msgstr "%d ura, %d minut"
+
+#: lib/Nag.php:63
+#, php-format
+msgid "%d hours"
+msgstr "%d ur"
+
+#: lib/Nag.php:65
+#, php-format
+msgid "%d hours, %d minute"
+msgstr "%d ur, %d minuta"
+
+#: lib/Nag.php:67
+#, php-format
+msgid "%d hours, %d minutes"
+msgstr "%d ur, %d minut"
+
+#: lib/Nag.php:81
+#, php-format
+msgid "%d minute"
+msgstr "%d minuta"
+
+#: lib/Nag.php:83
+#, php-format
+msgid "%d minutes"
+msgstr "%d minut"
+
+#: templates/list/header.inc:3
+#, php-format
+msgid "%d tasks"
+msgstr "%d opravil"
+
+#: lib/Nag.php:380
+#, php-format
+msgid "%s at %s"
+msgstr "%s ob %s"
+
+#: lib/Nag.php:532 lib/Block/tree_alarms.php:34 lib/Block/summary.php:90
+#, php-format
+msgid "%s is due in %s"
+msgstr "%s zapade %s "
+
+#: lib/Nag.php:530 lib/Block/tree_alarms.php:32 lib/Block/summary.php:88
+#, php-format
+msgid "%s is due now."
+msgstr "%s zapade zdaj."
+
+#: task.php:324
+#, php-format
+msgid "%s is now incomplete."
+msgstr "%s je sedaj nedokončana."
+
+#: data.php:191
+#, php-format
+msgid "%s successfully imported"
+msgstr "%s je uspeno sprejet."
+
+#: tasklists.php:100 lib/base.php:104
+#, php-format
+msgid "%s's Task List"
+msgstr "%s Seznam Opravil"
+
+#: lib/Nag.php:337
+msgid "(highest)"
+msgstr "(najvišji)"
+
+#: lib/Nag.php:337
+msgid "(lowest)"
+msgstr "(najnižji)"
+
+#: templates/list/header.inc:3
+msgid "1 task"
+msgstr "1 opravilo"
+
+#: task.php:305
+#, php-format
+msgid "Access denied completing task %s."
+msgstr "Dokončanje opravila %s je zavrnjeno."
+
+#: task.php:279
+#, php-format
+msgid "Access denied deleting %s."
+msgstr "Brisanje %s je zavrnjeno."
+
+#: task.php:81 task.php:91
+msgid "Access denied editing task."
+msgstr "Nimate pravic urejanja tega opravila."
+
+#: task.php:79
+#, php-format
+msgid "Access denied editing task: %s"
+msgstr "Nimate pravic urejanja opravila: %s"
+
+#: task.php:237
+#, php-format
+msgid "Access denied moving the task to %s."
+msgstr "Premikanje opravila na %s je zavrnjeno."
+
+#: task.php:240
+#, php-format
+msgid "Access denied removing task from %s."
+msgstr "Odstranjevanje opravila iz %s je zavrnejno."
+
+#: task.php:158
+#, php-format
+msgid "Access denied saving task to %s."
+msgstr "Shranjevanje opravila na %s je zavrnejno."
+
+#: task.php:156
+#, php-format
+msgid "Access denied saving task: %s"
+msgstr "Shranjevanje opravila: %s je zavrnjeno."
+
+#: templates/view/task.inc:39 templates/task/task.inc:78
+msgid "Alarm"
+msgstr "Alarem"
+
+#: templates/task/task.inc:86
+msgid "Alarm Unit"
+msgstr "Enota alarma"
+
+#: templates/task/task.inc:84
+msgid "Alarm Value"
+msgstr "Vrednost alarama"
+
+#: config/prefs.php.dist:143
+msgid "All tasks"
+msgstr "Vsa opravila"
+
+#: lib/Block/summary.php:54
+msgid "Always show completed tasks?"
+msgstr "Ali naj vedno prikažem zaključena opravila?"
+
+#: lib/Block/summary.php:51
+msgid "Always show overdue tasks?"
+msgstr "Ali naj vedno prikažem zapadla opravila?"
+
+#: config/prefs.php.dist:98
+msgid "Ascending"
+msgstr "Naraščajoče"
+
+#: templates/tasklists/tasklists.inc:102
+msgid "Back to Task List Options"
+msgstr "Nazaj na Seznam Možnosti Opravil"
+
+#: data.php:28
+msgid "CSV"
+msgstr "CSV"
+
+#: templates/task/task.inc:65
+msgid "Calendar"
+msgstr "Koledar"
+
+#: templates/list/task_headers.inc:65
+msgid "Cat_egory"
+msgstr "Kategorija"
+
+#: data.php:52 templates/view/task.inc:25 config/prefs.php.dist:70
+#: config/prefs.php.dist:85
+msgid "Category"
+msgstr "Kategorija"
+
+#: templates/tasklists/tasklists.inc:22
+msgid "Change"
+msgstr "Spremeni"
+
+#: config/prefs.php.dist:15
+msgid "Change your task sorting and display options."
+msgstr "Spremeni nastavitve razvrščanja in prikazovanja opravil."
+
+#: config/prefs.php.dist:122
+msgid ""
+"Choose if you want to be notified of new, edited, and deleted tasks by email:"
+msgstr ""
+"Izberite če želite biti opozorjeni kadar bo opravilo dodano, urejeno ali "
+"izbrisano po emailu:"
+
+#: config/prefs.php.dist:36
+msgid "Choose if you want to be notified of new, edited, and deleted tasks."
+msgstr ""
+"Izberite če želite biti opozorjeni kadar bo opravilo dodano, urejeno ali "
+"izbrisano."
+
+#: config/prefs.php.dist:29
+msgid "Choose your default task list."
+msgstr "Izberi prevzat spisek pravil."
+
+#: templates/search/search.inc:34
+msgid "Clear Form"
+msgstr "Sprazni Obrazec"
+
+#: templates/task/task.inc:108
+msgid "Co_mpleted?"
+msgstr "Zaključeno?"
+
+#: templates/view/task.inc:11
+msgid "Complete"
+msgstr "Končaj"
+
+#: templates/list/task_summaries.inc:6 lib/Block/summary.php:145
+#, php-format
+msgid "Complete \"%s\""
+msgstr "Coleten \"%s\""
+
+#: templates/view/task.inc:55
+msgid "Complete Task"
+msgstr "Končaj Opravilo"
+
+#: config/prefs.php.dist:145
+msgid "Complete tasks"
+msgstr "Končaj opravilo"
+
+#: lib/Nag.php:395 lib/Block/summary.php:143
+msgid "Completed"
+msgstr "Končano"
+
+#: task.php:322
+#, php-format
+msgid "Completed %s."
+msgstr "Končano %s."
+
+#: templates/view/task.inc:51 templates/list/task_headers.inc:43
+#: config/prefs.php.dist:72 config/prefs.php.dist:87
+msgid "Completed?"
+msgstr "Zaključim?"
+
+#: data.php:55
+msgid "Completion Status"
+msgstr "Zaključeno Stanje"
+
+#: lib/api.php:267
+#, php-format
+msgid "Connection failed: %s"
+msgstr "Povezava neuspešna: %s"
+
+#: templates/tasklists/tasklists.inc:17 templates/tasklists/tasklists.inc:99
+#: templates/tasklists/tasklists.inc:101
+msgid "Create"
+msgstr "Ustvari"
+
+#: templates/view/task.inc:67
+msgid "Created"
+msgstr "Ustvarjeno"
+
+#: templates/task/task.inc:58
+msgid "Day"
+msgstr "Dan"
+
+#: templates/task/task.inc:90 lib/Nag.php:427
+msgid "Day(s)"
+msgstr "Dnevi"
+
+#: config/prefs.php.dist:28
+msgid "Default Task List"
+msgstr "Privzet spisek opravil"
+
+#: templates/tasklists/tasklists.inc:100 templates/view/task.inc:16
+msgid "Delete"
+msgstr "Zbriši"
+
+#: config/prefs.php.dist:21
+msgid "Delete Confirmation"
+msgstr "Potrditev izbrisa"
+
+#: config/prefs.php.dist:22
+msgid "Delete button behaviour"
+msgstr "Lastnosti gumba za brisanje"
+
+#: templates/task/task.inc:130
+msgid "Delete this task"
+msgstr "Izbriši izbrano opravilo"
+
+#: task.php:287
+#, php-format
+msgid "Deleted %s."
+msgstr "Zbrisano %s."
+
+#: config/prefs.php.dist:99
+msgid "Descending"
+msgstr "Padajoďż"
+
+#: data.php:51
+msgid "Description"
+msgstr "Opis"
+
+#: templates/tasklists/tasklists.inc:90
+msgid "Description:"
+msgstr "Opis:"
+
+#: config/prefs.php.dist:14
+msgid "Display Options"
+msgstr "Prikaži Možnosti:"
+
+#: config/prefs.php.dist:109
+msgid "Do you want to confirm deleting entries?"
+msgstr "Zahtevam potrditev izbrisana opravila?"
+
+#: data.php:53 templates/view/task.inc:35 templates/task/task.inc:50
+msgid "Due By"
+msgstr "Končati do"
+
+#: config/prefs.php.dist:71 config/prefs.php.dist:86
+msgid "Due Date"
+msgstr "KOnčni Datum"
+
+#: templates/task/task.inc:57
+msgid "Due date specified."
+msgstr "Podana zapadlost."
+
+#: lib/api.php:729
+#, php-format
+msgid "Due: %s"
+msgstr "Zapade: %s"
+
+#: templates/view/task.inc:13
+msgid "Edit"
+msgstr "Uredi"
+
+#: templates/list/task_summaries.inc:27 lib/Block/summary.php:140
+#, php-format
+msgid "Edit \"%s\""
+msgstr "Uredi \"%s\""
+
+#: templates/list/task_headers.inc:54
+msgid "Edit Task"
+msgstr "Uredi Opravila"
+
+#: templates/list/task_headers.inc:70
+msgid "Edit categories and colors"
+msgstr "Uredi kategorije in barve"
+
+#: task.php:139
+#, php-format
+msgid "Edit: %s:"
+msgstr "Uredi: %s:"
+
+#: templates/task/task.inc:83
+msgid "Enabled"
+msgstr "Vklopljen"
+
+#: templates/view/task.inc:47 templates/task/task.inc:102
+msgid "Estimated Time"
+msgstr "Predvideno ur"
+
+#: templates/data/export.inc:17
+msgid "Export"
+msgstr "Oddaj"
+
+#: templates/data/export.inc:6
+msgid "Export Tasks"
+msgstr "Oddaj Opravila"
+
+#: config/prefs.php.dist:47
+msgid "External Data"
+msgstr "Zunanji Podatki"
+
+#: config/prefs.php.dist:13 config/prefs.php.dist:20
+msgid "General Options"
+msgstr "Splone Monosti"
+
+#: templates/task/task.inc:70
+msgid "Hour"
+msgstr "Ura"
+
+#: templates/task/task.inc:89 lib/Nag.php:430
+msgid "Hour(s)"
+msgstr "Ure"
+
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Tasks, Step %d"
+msgstr "Sprejmi Opravila, Korak %d"
+
+#: data.php:197
+msgid "Import/Export Tasks"
+msgstr "Sprejmi/Oddaj Opravila"
+
+#: list.php:88
+msgid "Incom_plete tasks"
+msgstr "Nedokončana opravila"
+
+#: config/prefs.php.dist:144
+msgid "Incomplete tasks"
+msgstr "Nedokončana opravila"
+
+#: templates/view/task.inc:74
+msgid "Last Modified"
+msgstr "Zadnjič Spremenjeno"
+
+#: templates/list/task_summaries.inc:9
+#, php-format
+msgid "Mark \"%s\" as incomplete"
+msgstr "Osnači \"%s\" ko nedokončana"
+
+#: templates/view/task.inc:57
+msgid "Mark as incomplete"
+msgstr "Označi kot nedokončan"
+
+#: lib/api.php:96
+msgid "Maximum Number of Tasks"
+msgstr "Največje število opravil"
+
+#: lib/Block/tree_alarms.php:3
+msgid "Menu Alarms"
+msgstr "Meni Alarmov"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "Spisek"
+
+#: templates/task/task.inc:71
+msgid "Minute"
+msgstr "Minute"
+
+#: templates/task/task.inc:88 lib/Nag.php:433
+msgid "Minute(s)"
+msgstr "Minuta(e)"
+
+#: templates/task/task.inc:59
+msgid "Month"
+msgstr "Mesec"
+
+#: lib/api.php:659
+msgid "Multiple iCalendar components found; only one vTodo is supported."
+msgstr "Razne iKoledarjeve komponente; samo en vTodo ima podporo."
+
+#: list.php:39
+msgid "My Tasks"
+msgstr "Moja Opravila"
+
+#: templates/search/search.inc:25 templates/task/task.inc:17
+msgid "N_ame"
+msgstr "Ime"
+
+#: templates/list/task_headers.inc:57
+msgid "Na_me"
+msgstr "Ime"
+
+#: data.php:50
+msgid "Name"
+msgstr "Ime"
+
+#: task.php:71 lib/Block/summary.php:18 lib/Block/tree_menu.php:21
+msgid "New Task"
+msgstr "Novo Opravilo"
+
+#: templates/data/import.inc:39
+msgid "Next"
+msgstr "Naslednji"
+
+#: config/prefs.php.dist:118
+msgid "No"
+msgstr "Ne"
+
+#: templates/task/task.inc:53
+msgid "No due date."
+msgstr "Ni končnega datuma."
+
+#: lib/api.php:446 lib/api.php:497 lib/api.php:652
+msgid "No iCalendar data was found."
+msgstr "Podatkov iKoledarja nisem nael."
+
+#: lib/Nag.php:546
+msgid "No task lists are available to guests."
+msgstr "Seznami opravil niso na voljo gostom."
+
+#: lib/Block/summary.php:186
+msgid "No tasks to display"
+msgstr "Ni opravil za prikaz"
+
+#: templates/task/task.inc:81 lib/Nag.php:437
+msgid "None"
+msgstr "Nedoločen"
+
+#: lib/Nag.php:396
+msgid "Not Completed"
+msgstr "Ni končano"
+
+#: templates/view/task.inc:31
+msgid "Not Private"
+msgstr "Ni zasebna"
+
+#: lib/Driver/sql.php:100 lib/Driver/sql.php:136
+msgid "Not found"
+msgstr "Ne najdem"
+
+#: config/prefs.php.dist:35
+msgid "Notifications"
+msgstr "Opozarjanje"
+
+#: config/prefs.php.dist:120
+msgid "On all shown tasklists"
+msgstr "Na vseh porkazanih opravilih"
+
+#: config/prefs.php.dist:121
+msgid "On all tasklists I have read access to"
+msgstr "Na vseh opravilih za katera imam dostop za branje."
+
+#: config/prefs.php.dist:119
+msgid "On my tasklists only"
+msgstr "Samo na mojih opravilih"
+
+#: templates/list/task_headers.inc:51
+msgid "P_ri"
+msgstr "Pri"
+
+#: templates/tasklists/tasklists.inc:87
+msgid "Permission"
+msgstr "Dovoljenja"
+
+#: lib/api.php:420 lib/api.php:534 lib/api.php:597 lib/api.php:634
+msgid "Permission Denied"
+msgstr "Dovoljenje je bilo zavrnjeno"
+
+#: lib/api.php:148
+msgid "Permission denied"
+msgstr "Dostopo zavrnjen"
+
+#: data.php:54 templates/view/task.inc:43 config/prefs.php.dist:68
+#: config/prefs.php.dist:83
+msgid "Priority"
+msgstr "Prioriteta"
+
+#: list.php:138 view.php:78 templates/view/task.inc:31
+msgid "Private"
+msgstr "Zasebni"
+
+#: list.php:136 view.php:76
+msgid "Private Task"
+msgstr "Zasebno opravilo"
+
+#: templates/view/task.inc:29
+msgid "Private?"
+msgstr "Zasebno?"
+
+#: templates/view/task.inc:16
+msgid "Really delete this task?"
+msgstr "Resnično želite izbrisati opravilo?"
+
+#: templates/list/header.inc:5
+msgid "Refresh List"
+msgstr "Osvei seznam"
+
+#: templates/tasklists/tasklists.inc:101
+msgid "Reset"
+msgstr "Ponovno zaženi"
+
+#: templates/task/task.inc:122
+msgid "Save"
+msgstr "Shrani"
+
+#: task.php:263
+#, php-format
+msgid "Saved %s."
+msgstr "Shranjeno %s."
+
+#: search.php:14 templates/search/search.inc:6 templates/search/search.inc:33
+#: lib/Block/tree_menu.php:30
+msgid "Search"
+msgstr "Najdi"
+
+#: list.php:62
+msgid "Search Results"
+msgstr "Najdi Rezultate"
+
+#: templates/search/search.inc:22
+msgid "Search Scope:"
+msgstr "Najdi v"
+
+#: templates/search/search.inc:14
+msgid "Search _Text:"
+msgstr "Išči besedilo"
+
+#: templates/task/task.inc:65
+msgid "Select a date"
+msgstr "Izberite datum"
+
+#: templates/tasklists/tasklists.inc:72
+msgid "Select a task list"
+msgstr "Izberite seznam opravil"
+
+#: templates/menu.inc:7 templates/menu.inc:9
+msgid "Select tasklists to display:"
+msgstr "Izberi opravila za prikaz:"
+
+#: templates/data/export.inc:11
+msgid "Select the export format:"
+msgstr "Izberite obliko izvozne datoteke:"
+
+#: templates/data/import.inc:36
+msgid "Select the file to import:"
+msgstr "Izberite datoteko, ki jo elite sprejeti:"
+
+#: templates/data/import.inc:12
+msgid "Select the format of the source file:"
+msgstr "Izberite obliko zapisa uvozne datoteke:"
+
+#: config/prefs.php.dist:59
+msgid "Should the Task List be shown in its own column in the List view?"
+msgstr "Prikažem spiek opravil v svoji koloni v spisku?"
+
+#: lib/Block/summary.php:36
+msgid "Show action buttons?"
+msgstr "Ali naj prikažem ukazne tipke?"
+
+#: config/prefs.php.dist:146
+msgid "Show complete, incomplete, or all tasks in the task list?"
+msgstr ""
+"Ali naj prikažem dokončana, nedokončana ali vsa opravila na seznamu opravil?"
+
+#: config/prefs.php.dist:133
+msgid "Show data from any of these other applications in your task list?"
+msgstr "Ali naj prikažem podatke ostalih aplikacij na vašem seznamu opravil?"
+
+#: config/prefs.php.dist:48
+msgid "Show data from other applications or sources."
+msgstr "Prikaži podatke ostalih aplikacij ali virov."
+
+#: lib/Block/summary.php:39
+msgid "Show due dates?"
+msgstr "Prikažem končne datume?"
+
+#: lib/Block/summary.php:33
+msgid "Show priorities?"
+msgstr "Ali naj prikažem prioritete?"
+
+#: lib/Block/summary.php:45
+msgid "Show task alarms?"
+msgstr "Ali naj prikažem alarme opravil?"
+
+#: lib/Block/summary.php:48
+msgid "Show task category?"
+msgstr "Prikaži kategorije opravil?"
+
+#: lib/Block/summary.php:42
+msgid "Show tasklist name?"
+msgstr "Ali naj prikažem ime seznama opravil?"
+
+#: lib/Block/summary.php:57
+msgid "Show tasks from these categories"
+msgstr "Prikaži opravila iz te kategorije"
+
+#: templates/list/task_headers.inc:65
+msgid "Sort by Category"
+msgstr "Razvrsti glede na Kategorijo"
+
+#: templates/list/task_headers.inc:43
+msgid "Sort by Completion Status"
+msgstr "Razvrsti glede na zaključno stanje"
+
+#: templates/list/task_headers.inc:62
+msgid "Sort by Due Date"
+msgstr "Razvrsti glede na Končni Datum"
+
+#: templates/list/task_headers.inc:57
+msgid "Sort by Name"
+msgstr "Razvrsti po Imenih"
+
+#: templates/list/task_headers.inc:51
+msgid "Sort by Priority"
+msgstr "Razvrsti glede ne Prioritete"
+
+#: templates/list/task_headers.inc:47
+msgid "Sort by User Name"
+msgstr "Razvrsti po Imenih Uporabnikov"
+
+#: config/prefs.php.dist:100
+msgid "Sort direction:"
+msgstr "Smer prikazovanja"
+
+#: config/prefs.php.dist:74
+msgid "Sort tasks by:"
+msgstr "Upredni opravila po"
+
+#: templates/list/task_summaries.inc:35
+msgid "Task Alarm"
+msgstr "Alarm Opravila"
+
+#: templates/list/task_headers.inc:60
+msgid "Task Alarm?"
+msgstr "Alarm Opravila?"
+
+#: templates/tasklists/tasklists.inc:66
+msgid "Task List"
+msgstr "Seznam Opravil"
+
+#: config/prefs.php.dist:27 config/prefs.php.dist:34 config/prefs.php.dist:46
+msgid "Task List and Share Options"
+msgstr "Seznam Opravil in Monosti"
+
+#: templates/tasklists/tasklists.inc:84
+msgid "Task List's name:"
+msgstr "Ime Seznama Opravil:"
+
+#: tasklists.php:111
+msgid "Task Lists"
+msgstr "Seznami Opravil"
+
+#: config/prefs.php.dist:69 config/prefs.php.dist:84
+msgid "Task Name"
+msgstr "Ime Opravila"
+
+#: templates/list/task_summaries.inc:33
+msgid "Task Note"
+msgstr "Opomba Opravila"
+
+#: templates/list/task_headers.inc:59
+msgid "Task Note?"
+msgstr "Opomba pravila?"
+
+#: lib/Nag.php:571
+msgid "Task added:"
+msgstr "Opravil oddano:"
+
+#: lib/Nag.php:581
+msgid "Task deleted:"
+msgstr "Izbrisana opravila:"
+
+#: tasklists.php:28
+msgid "Task lists must have a name."
+msgstr "Spisek opravil mora vsebovati ime."
+
+#: lib/Nag.php:576
+msgid "Task modified:"
+msgstr "Opravilo spremenjeno:"
+
+#: task.php:89 view.php:43
+msgid "Task not found."
+msgstr "Opravila ne najdem."
+
+#: config/prefs.php.dist:73 config/prefs.php.dist:88
+msgid "Tasklist"
+msgstr "Seznam Opravil"
+
+#: lib/api.php:710
+msgid "Tasks"
+msgstr "Opravila"
+
+#: lib/Block/summary.php:3
+msgid "Tasks Summary"
+msgstr "Povzetek Opravil"
+
+#: lib/Driver.php:55
+msgid "The Tasks backend is not currently available."
+msgstr "Podatkovni vir opravil je trenutno nedostopen."
+
+#: lib/Driver.php:309
+#, php-format
+msgid "The Tasks backend is not currently available: %s"
+msgstr "Podatkovni vir opravil je trenutno nedostopen: %s"
+
+#: task.php:194
+msgid "The alarm field may only contain integers."
+msgstr "Alarem lahko vsebuje le celotna števila."
+
+#: lib/Nag.php:572
+#, php-format
+msgid ""
+"The task \"%s\" has been added to \"%s\" tasklist, with a due date of: %s."
+msgstr "Opravilo \"%s\" je bilo dodano v \"%s\", in preteče: %s."
+
+#: lib/Nag.php:582
+#, php-format
+msgid ""
+"The task \"%s\" has been deleted from \"%s\" tasklist, with a due date of: %"
+"s."
+msgstr "Opravilo \"%s\" je bilo izbrisano iz \"%s\", in je poteklo: %s."
+
+#: lib/Nag.php:577
+#, php-format
+msgid ""
+"The task \"%s\" has been edited on \"%s\" tasklist, with a due date of: %s."
+msgstr "Opravilo \"%s\" je bilo urejeno v \"%s\", in preteče: %s."
+
+#: tasklists.php:45
+#, php-format
+msgid "The task list \"%s\" couldn't be created: %s"
+msgstr "Seznama opravil \"%s\" ne morem ustvariti: %s"
+
+#: tasklists.php:56
+#, php-format
+msgid "The task list \"%s\" couldn't be saved: %s"
+msgstr "Seznama opravil \"%s\" ne morem shraniti: %s"
+
+#: tasklists.php:47
+#, php-format
+msgid "The task list \"%s\" has been created."
+msgstr "Seznam opravil \"%s\" je bil ustvarjen."
+
+#: tasklists.php:81
+#, php-format
+msgid "The task list \"%s\" has been deleted."
+msgstr "Seznam opravil \"%s\" je bil zbrisan."
+
+#: tasklists.php:58
+#, php-format
+msgid "The task list \"%s\" has been saved."
+msgstr "Seznam opravil \"%s\" je bil shranjen."
+
+#: config/prefs.php.dist:89
+msgid "Then:"
+msgstr "Potem:"
+
+#: templates/list/empty.inc:2
+msgid "There are no tasks matching the current criteria."
+msgstr "Ni opravil, ki bi ustrezale izbranim kriterijem."
+
+#: task.php:318
+#, php-format
+msgid "There was a problem completing %s: %s"
+msgstr "Prilo je do težave pri zaključevanju %s: %s"
+
+#: task.php:284
+#, php-format
+msgid "There was a problem deleting %s: %s"
+msgstr "Prilo je do težave pri brisanju %s: %s"
+
+#: task.php:261
+#, php-format
+msgid "There was a problem saving the task: %s."
+msgstr "Prilo je do težave pri shranjevanju opravila: %s"
+
+#: data.php:188
+#, php-format
+msgid "There was an error importing the data: %s"
+msgstr "Prilo je do napake pri sprejemanju podatkov: %s"
+
+#: lib/api.php:438 lib/api.php:646
+msgid "There was an error importing the iCalendar data."
+msgstr "Prilo je do napake pri sprejemanju podatkov iKoledarja"
+
+#: data.php:77
+msgid "There were no tasks to export."
+msgstr "Ni opravil za oddajo."
+
+#: data.php:121
+msgid "This file format is not supported."
+msgstr "Format datoteke nima podpore."
+
+#: tasklists.php:77
+#, php-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "Ne morem zbrisati \"%s\": %s"
+
+#: lib/Driver.php:312
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Ne morem naložiti definicije za %s."
+
+#: templates/task/task.inc:123
+msgid "Undo changes"
+msgstr "Povrni Spremenjeno"
+
+#: templates/view/task.inc:26 templates/list/task_summaries.inc:40
+#: scripts/upgrades/2004-05-13_convert_categories_to_strings.php:50
+#: lib/Nag.php:791 lib/Nag.php:792 lib/Nag.php:806 lib/Nag.php:807
+#: lib/Block/summary.php:30 lib/Block/summary.php:179
+msgid "Unfiled"
+msgstr "Neizpoljeno"
+
+#: lib/api.php:504 lib/api.php:561 lib/api.php:681
+#, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "Nepoznana oblika zapisa: %s"
+
+#: templates/task/task.inc:91 lib/Nag.php:424
+msgid "Week(s)"
+msgstr "Teden(i)"
+
+#: templates/data/import.inc:21
+msgid "Which tasklist should the tasks be added to?"
+msgstr "Kateremu seznamu opravil naj dodam opravilo?"
+
+#: templates/task/task.inc:60
+msgid "Year"
+msgstr "Leto"
+
+#: data.php:39 data.php:146 task.php:31
+#, php-format
+msgid "You are not allowed to create more than %d tasks."
+msgstr "Nimate pravice tvorjenja več kot %d opravil."
+
+#: view.php:51
+msgid "You do not have permission to view this tasklist."
+msgstr "Ni vam dovoljen vpogled v ta seznam opravil. "
+
+#: tasklists.php:84 templates/tasklists/tasklists.inc:48
+msgid "You must select a task list to be deleted."
+msgstr "Izbrati morate seznam opravil, ki bo zbrisan."
+
+#: lib/Nag.php:572
+msgid "You requested to be notified when tasks are added to your tasklists."
+msgstr ""
+"Zahtevali ste opozorilo kadar bo dodano novo opravilo. v vaši spisek opravil."
+
+#: lib/Nag.php:582
+msgid ""
+"You requested to be notified when tasks are deleted from your tasklists."
+msgstr ""
+"Zahtevali ste opozorilo kadar bo opravilo izbrisano iz vašega spiseka "
+"opravil."
+
+#: lib/Nag.php:577
+msgid "You requested to be notified when tasks are edited on your tasklists."
+msgstr ""
+"Zahtevali ste opozorilo kadar bo opravilo urejeno v vaši spisek opravil."
+
+#: templates/prefs/tasklistselect.inc:10
+msgid "Your default task list:"
+msgstr "Va privzet seznam opravila:"
+
+#: templates/tasklists/tasklists.inc:70
+msgid "Your task lists:"
+msgstr "Vai seznami opravil:"
+
+#: templates/list/task_summaries.inc:32 lib/Block/summary.php:86
+#: lib/Block/summary.php:169
+msgid "[none]"
+msgstr "[nič]"
+
+#: list.php:87
+msgid "_All tasks"
+msgstr "Vsa opravila"
+
+#: templates/search/search.inc:27 templates/task/task.inc:40
+msgid "_Category"
+msgstr "Kategorija"
+
+#: templates/view/task.inc:11
+msgid "_Complete"
+msgstr "Končaj"
+
+#: list.php:89
+msgid "_Completed tasks"
+msgstr "Končna opravila"
+
+#: templates/view/task.inc:16
+msgid "_Delete"
+msgstr "Zbriši"
+
+#: templates/search/search.inc:26 templates/task/task.inc:114
+msgid "_Description"
+msgstr "Opis"
+
+#: templates/list/task_headers.inc:62
+msgid "_Due Date"
+msgstr "Končni Datum"
+
+#: templates/view/task.inc:13
+msgid "_Edit"
+msgstr "Uredi"
+
+#: lib/Nag.php:496
+msgid "_Import/Export"
+msgstr "Uvozi/Izvozi"
+
+#: lib/Nag.php:481
+msgid "_List Tasks"
+msgstr "Prikaži Opravila"
+
+#: lib/Nag.php:491
+msgid "_My Tasklists"
+msgstr "Moja Opravila"
+
+#: lib/Nag.php:486
+msgid "_New Task"
+msgstr "Novo Opravilo"
+
+#: lib/Nag.php:501
+msgid "_Print"
+msgstr "Natisni"
+
+#: templates/task/task.inc:96
+msgid "_Priority"
+msgstr "Prioriteta"
+
+#: templates/task/task.inc:44
+msgid "_Private?"
+msgstr "Zasebni?"
+
+#: lib/Nag.php:488
+msgid "_Search"
+msgstr "Najdi"
+
+#: templates/task/task.inc:25 templates/list/task_headers.inc:47
+msgid "_Task List"
+msgstr "Seznam Opravil"
+
+#: data.php:29
+msgid "iCalendar (vTodo)"
+msgstr "iCalendar (vTodo)"
+
+#: lib/Nag.php:79
+msgid "no time"
+msgstr "ni časa"
+
+#: data.php:94 templates/data/export.inc:1
+msgid "tasks.csv"
+msgstr "opravila.csv"
+
+#: data.php:106
+msgid "tasks.ics"
+msgstr "opravila.ics"

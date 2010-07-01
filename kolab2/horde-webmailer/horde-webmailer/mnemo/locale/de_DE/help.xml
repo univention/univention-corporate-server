@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Horde: mnemo/locale/de_DE/help.xml,v 1.3 2004-12-03 02:03:16 jan Exp $ -->
+<help>
+  <entry id="Overview" md5="50ee76138fb08b04b029006053bbadbc" state="uptodate">
+    <title>Übersicht</title>
+    <heading>Einführung</heading>
+    <para>
+      <i>Notizen</i> ist so etwas wie ein Notizblock im Computer. Sie können
+      Notizen erstellen, bearbeiten, löschen und drucken. Sie können Ihre
+      Notizen außerdem durchsuchen, um Informationen wiederzufinden. Außerdem
+      können Sie Ihre Notizen im- und exportieren.
+    </para>
+    <para>
+      Anders als bei einem echten Notizblock können Sie Ihre Notizen mit
+      anderen Personen an anderen Orten teilen. Notizen können in Notizblöcken
+      zusammengefasst und Kategorien zugeordnet werden.
+    </para>
+  </entry>
+  <entry id="list-actions" md5="6d592f153bfb5c296de5dfebb428e1ba" state="uptodate">
+    <title>Notizblock: Aktionen</title>
+    <heading>Aktionen</heading>
+    <para>
+      <i>Notiz löschen</i> löscht die ausgewählte Notiz endgültig.
+    </para>
+    <para>
+      Mit <i>Notiz bearbeiten</i> können Sie eine bestehende Notiz bearbeiten.
+    </para>
+    <para>
+      <i>Zurück zum Notizblock</i> führt Sie von der Notizansicht zurück zum
+      Notizblock.
+    </para>
+  </entry>
+  <entry id="menu-actions" md5="715a853d93cd3330e4d730b9112c8a82" state="uptodate">
+    <title>Menüpunkte</title>
+    <heading>Menüpunkte</heading>
+    <para>
+      <i>Notizen anzeigen</i> zeigt eine Liste aller Notizen an.
+    </para>
+    <para>
+      Mit <i>Neue Notiz</i> können Sie neue Notizen im Notizblock erstellen.
+    </para>
+    <para>
+      Unter <i>Suche</i> können Sie Ihre Notizen nach einem Text
+      durchsuchen. Sie können im Beschreibungsfeld oder im gesamten Text der
+      Notizen suchen.
+    </para>
+    <para>
+      <i>Import/Export</i> erlaubt Ihnen das Im- und Exportieren von
+      Notizen. Zur Zeit werden kommagetrennte (CSV) und vNote-Dateien
+      unterstützt.
+    </para>
+    <para>
+      <i>Drucken</i> öffnet ein neues Fenster, mit dem Sie eine Notiz
+      ausdrucken können. Der <i>Drucken</i>-Eintrag wird nur in der
+      Notizenansicht angezeigt.
+    </para>
+  </entry>
+  <entry id="sorting" md5="cca3b1d1c9ed0ec5ab385f82469ddc8f" state="uptodate">
+    <title>Einträge sortieren</title>
+    <heading>Einträge sortieren</heading>
+    <para>
+      Wenn Sie sich eine Liste mit Einträgen anzeigen lassen, können Sie die
+      Einträge nach jeder beliebigen Spalte sortieren, indem Sie auf die
+      jeweilige Spaltenüberschrift klicken. Wenn Sie die Sortierreihenfolge
+      umschalten möchten, klicken Sie auf das Pfeilsymbol in der
+      Spaltenüberschrift.
+    </para>
+  </entry>
+</help>

@@ -1,0 +1,22 @@
+<if:form_tag>
+<form method="post" id="messages" name="messages" action="<tag:mailbox_url />">
+<input type="hidden" name="mailbox" value="<tag:mailbox />" />
+<input type="hidden" name="mailbox_token" value="<tag:mailbox_token />" />
+<tag:sessiontag />
+</if:form_tag>
+<table class="messageList" width="100%" cellspacing="0">
+ <tr class="item">
+<if:mh_count>
+  <th width="8%">&nbsp;</th>
+<else:mh_count>
+  <th id="checkheader" width="8%" onclick="$('checkAll').checked = !$('checkAll').checked;makeSelection(-1);">
+   <label for="checkAll" class="hidden"><gettext>Check All/None</gettext></label>
+   <input type="checkbox" class="checkbox" id="checkAll" name="checkAll" onclick="makeSelection(-1);if(window.event){window.event.cancelBubble = true;}else if(event){event.stopPropagation();}" <tag:check_all /> />
+  </th>
+</else:mh_count></if:mh_count>
+<loop:headers>
+  <th class="<tag:headers.class />" width="<tag:headers.width />" <if:sortlimit><else:sortlimit>onclick="document.location.href=this.down('A').href;"</else:sortlimit></if:sortlimit>>
+   <tag:headers.change_sort_link /> <if:sortlimit><tag:headers.sortlimit_text /><else:sortlimit><tag:headers.change_sort_widget /> <tag:headers.extra /></else:sortlimit></if:sortlimit>
+  </th>
+</loop:headers>
+ </tr>

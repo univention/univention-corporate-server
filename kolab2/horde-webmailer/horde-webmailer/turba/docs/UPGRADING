@@ -1,0 +1,315 @@
+=================
+ Upgrading Turba
+=================
+
+:Last update:   $Date: 2009-09-25 15:24:25 $
+:Revision:      $Revision: 1.3.6.29 $
+:Contact:       turba@lists.horde.org
+
+
+These are instructions to upgrade from earlier Turba versions. Please backup
+your existing data before running any of the steps described below. You can't
+use the updated data with your old Turba version anymore.
+
+
+Upgrading Turba from 2.3.x to 2.3.3
+===================================
+
+
+Share Table Updates
+-------------------
+
+The SQL script for PostgreSQL used a wrong column type for the share
+tables. If you have many users or shares, this could cause an overrun at some
+point. Execute the provided SQL script to update your database if you are
+using the native SQL share driver on PostgresSQL::
+
+   psql <db name> < scripts/upgrades/2.3_to_2.3.3.pgsql.sql
+
+
+Upgrading Turba from 2.2.1 to 2.3
+=================================
+
+
+Share Table Updates
+-------------------
+
+Some fields in the SQL share driver tables have been changed. Execute the
+provided SQL script to update your database if you are using the native SQL
+share driver::
+
+   mysql --user=root --password=<MySQL-root-password>  <db name> < scripts/upgrades/2.2.1_to_2.3.sql
+
+
+New fields
+----------
+
+Examples for a few new fields have been added to
+``config/attributes.php.dist`` and ``config/sources.php.dist``. These field
+require Horde 3.3 or later though, so they are disabled by default. If you
+update your ``attributes.php`` and ``sources.php`` files and are using a
+sufficiently recent Horde version, you may want to uncomment those
+examples. These are the ``photo``, ``phototype``, ``logo``, ``logotype``,
+``pgpPublicKey`` and ``smimePublicKey`` fields.
+
+
+Upgrading to Turba 2.2
+======================
+
+These are notes on upgrading from Turba 2.1.x to Turba 2.2.x.
+
+.. Important:: These upgrade instructions assume that you are upgrading from
+               at least Turba 2.1.  If you have an older version of Turba,
+               follow the upgrade steps described in `Upgrading to Turba 2.1`_
+               first.
+
+
+New Default Schema
+------------------
+
+The default database address book schema has been changed to better match
+other address book applications and to ease synchronization with those.
+
+You can still use your old address book schema without any restrictions, but
+if you want to migrate existing address books to the new default scheme, you
+can use the provided upgrade script. This script assumes that you use the old
+default schema from Turba 2.1 and doesn't permanently change any data unless
+you edit it.
+
+To run the script you have to open it in any text editor and change the three
+variables at the top of the script ``$db_user``, ``$db_pass`` and
+``$db_table`` to fit your current Turba installation. You can then run the
+script to see how the data //would// be changed::
+
+   php scripts/upgrades/2.1_to_2.2_sql_schema.php
+
+If you are happy with the results, you can edit the script again and change
+the ``$for_real`` variable::
+
+   $for_real = true;
+
+As always make sure you have a recent backup before running the script once
+more, this time the changes will be permanent. Don't forget to update your
+configuration files or to re-create them from the ``.php.dist`` examples.
+
+A few advanced attribute definitions have been commented out in
+``config/attributes.php`` by default because they require Horde 3.2 or later
+to be installed. If you have a sufficiently recent Horde version you can
+uncomment those lines in ``attributes.php``.
+
+As part of the new default schema, the various address fields have been split
+into individual fields (such as homeStreet, homeProvince etc...). If you still
+wish to display an individual composite address field (which will give you the
+map links) you must add a composite field (such as homeAddress). There is an
+example entry in the sources.php.dist file.
+
+The new schema also uses the "phone" field type that has been introduced with
+Horde 3.2. If you still run earlier Horde versions, change the phone field
+types in ``attributes.php`` to anything that fits your needs, e.g "cellphone"
+or "text".
+
+
+New Beta SQL Share Driver Support
+---------------------------------
+
+A new beta-level SQL Horde_Share driver has been added in Horde 3.2. This
+driver offers significant performance improvements over the existing Datatree
+driver but it has not received the same level of testing, thus the beta
+designation.  In order to make use of this driver, you must be running Horde
+3.2-RC3 or later. To add the new SQL tables for this driver, execute the sql
+script ``2.1_to_2.2_add_sql_share_tables`` that is appropriate for your
+RDBMS. You then must execute the ``convert_datatree_shares_to_sql.php``
+upgrade script to migrate your existing share data.  Both of these scripts can
+be found in the ``scripts/upgrades`` folder.
+
+
+Flattened Horde Shares
+----------------------
+
+Shared address books are now stored in a flat namespace in order
+to remove dependency on the hierarchal properties of the Horde_Share api.  You
+must run the upgrade script ``scripts/upgrades/2007-06-17_flatten_shares.php``.
+
+.. Important:: You must run these scripts BEFORE any user logs in to your
+               upgraded installation to avoid the creation of any duplicate
+               shares.
+
+All user preferences related to address books will be checked and updated by
+Turba transparently during each user's first login after the update.
+
+Additionally, if you are currently using the configuration setting,
+``Name of Client Address Book`` and have it set to a share enabled source, you
+will most likely have to change the entry.  The correct share key to enter here
+is the share name and can be found by browsing the datatree via the
+administration UI if using datatree shares, or by looking in the turba_shares
+table if using SQL based shares.
+
+
+IMSP Driver and Share Support
+-----------------------------
+
+Share support has been added to the IMSP driver.  This support requires at
+least a Horde 3.2 install.  With this change, any IMSP address books the user
+has rights to will be represented internally as a Horde share.  Permissions
+changed on the share will be reflected back to the IMSP server.  If you set
+the configuration setting ``Name of source for creating new shares`` to
+``imsp`` then any shares created by the user will result in a new IMSP address
+book being created on the IMSP server.  Likewise, any IMSP address book
+deleted in Turba will be removed from the IMSP server.
+
+To enable this support, make sure you are using at least Horde 3.2, set the
+``use_shares`` attribute to true, and uncomment the IMSP
+``_horde_hook_share_*`` functions in ``horde/config/hooks.php``.
+
+With this change, the ``IMSP Address Book Administration`` option page has
+been removed, as the creation/deletion of address books is now handled with
+shares.
+
+.. Important:: IMSP contacts contained in contact groups that are not from an
+               IMSP source may not be visible within that group when migrating
+               an IMSP source to a share.
+
+
+Application Hooks
+-----------------
+
+All hooks that are specific to Turba have been moved from the
+``horde/config/hooks.php`` file. Move your existing Turba Hooks from there to
+``turba/config/hooks.php``.
+
+
+Upgrading to Turba 2.1
+======================
+
+
+These are notes on upgrading from Turba 2.0.x to Turba 2.1.
+
+.. Important:: These upgrade instructions assume that you are upgrading from
+               at least Turba 2.0.  If you have an older version of Turba,
+               follow the upgrade steps described in `Upgrading to Turba 2.0`_
+               first.
+
+
+Synchronization Support
+-----------------------
+
+Synchronization with SyncML capable devices is possible now if you have at
+least Horde 3.1.  You need to create a History backend with
+``horde/scripts/sql/horde_histories.sql`` to allow synchronization.  You also
+need to create default history entries for existing contacts by running the
+script ``scripts/upgrades/create_default_histories.php``.
+
+
+New Hook Parameters
+-------------------
+
+The ``_turba_hook_encode_{attribute}`` and ``_turba_hook_decode_{attribute}``
+functions are now passed an additional parameter - the object that is being
+loaded/saved. This enables you to create more powerful custom hooks that build
+a field from several other field's values (the opposite of composite fields),
+or otherwise modify a value based on other properties of the object.
+
+
+Share Support
+-------------
+
+Share support has been added to Turba.  This allows the sharing, adding, and
+deleting of addressbooks for those sources that support it.  Currently, this
+is supported by the SQL driver.  With this change, the ``public`` attribute of
+the params array has been removed in favor of the ``use_share`` attribute.  If
+you are currently using a SQL source as a public source, you must run the
+upgrade script ``scripts/upgrades/public_to_horde_share.php``.  Be sure to
+read the script comments and backup all data before conversion.  This script
+will create a new share that is viewable by all users.  If you choose not to
+use shares, set the ``use_shares`` attribute to ``false`` and the SQL driver
+will behave as in previous versions, that is, a seperate, private addressbook
+for each user.
+
+.. Important:: If you are currently using two seperate ``turba_objects`` tables
+               - one for personal address books and one for a public address
+               book, you should run the upgrade script on the public table,
+               then merge the public table into the private table and enable
+               share support on the private table.  There is no longer any
+               need for maintaining the two seperate tables. If you desire not
+               to enable share support, you may still use seperate tables and
+               set permissions via the administration interface.
+
+
+Upgrading to Turba 2.0
+======================
+
+These are instructions to upgrade from Turba 1.2.x to Turba 2.0.  Please
+backup your existing data before running any of the steps described below.
+You can't use the updated data with your old Turba version anymore.
+
+.. Important:: These upgrade instructions assume that you are upgrading from
+               at least Turba 1.2.  If you have an older version of Turba,
+               follow the upgrade steps described in `Upgrading to Turba 1.2`_
+               first.
+
+
+SQL Backends
+------------
+
+Four new fields have been added to the default SQL table layout, one being
+mandatory.  The new ``object_uid`` field provides a global unique ID to
+objects.
+
+Execute the provided SQL script to update your data to the new Turba version::
+
+   mysql --user=root --password=<MySQL-root-password> <db name> < 1.2_to_2.0.sql
+   psql <db name> -f 1.2_to_2.0.sql
+
+
+History
+-------
+
+The contacts history is now being maintained by the global Horde History
+backend.  To create default history entries execute the provided PHP script::
+
+   php scripts/upgrades/create_default_histories.php
+
+
+Upgrading to Turba 1.2
+======================
+
+These are instructions to upgrade from Turba 1.1 to Turba 1.2.  Please backup
+your existing data before running any of the steps described below.  You will
+no longer be able to use your data with older versions of Turba.
+
+
+SQL Backends
+------------
+
+The SQL schema for the SQL address book has changed. Please update your SQL
+table to the new schema after you update to Turba 1.2.  The fields
+``object_type`` and ``object_members`` have been added (needed for
+distribution lists) and the fields ``object_homeaddress``,
+``object_workaddress``, ``object_homephone``, ``object_workphone`` and
+``object_cellphone`` have changed to all lowercase.
+
+If you are using a MySQL or PostgreSQL database you can also use the update
+script available in ``scripts/upgrades/1.1_to_1.2.sql``.
+
+
+LDAP Backends
+-------------
+
+The LDAP schema for the shared LDAP address book has changed. Please update
+your LDAP directory to use the new schema after you update to Turba 1.2, and
+also update ``config/sources.php`` accordingly.
+
+The ``objectclass`` entry for LDAP address book definitions in
+``config/sources.php`` is respected in Turba 1.2 but wasn't before, so you
+should make sure that you use a correct setting here.
+
+
+IMP Integration
+---------------
+
+If you were using IMP_ 3.1 you should also upgrade to IMP 3.2; distribution
+list support in Turba 1.2/IMP 3.2 is not compatible with how the contacts
+window in IMP 3.1 worked. However, IMP 3.0 did not have this window, and will
+probably play nicely with Turba 1.2.
+
+.. _IMP: http://www.horde.org/imp/

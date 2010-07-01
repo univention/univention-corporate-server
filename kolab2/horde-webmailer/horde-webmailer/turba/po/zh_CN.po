@@ -1,0 +1,1502 @@
+# Turba Simplified Chinese Translation
+# Copyright 2001 WangHengWen.
+# WangHengWen <whw@my169.com>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 1.0\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2005-10-18 15:12+0200\n"
+"PO-Revision-Date: 2008-03-22 00:36+0100\n"
+"Last-Translator: Anna Chen <annachen2008@yahoo.com.cn>\n"
+"Language-Team: Chinese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=GB2312\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Bookmarks: -1,-1,-1,-1,-1,-1,-1,175,-1,-1\n"
+
+#: templates/prefs/imsp_opt.inc:40
+msgid " Add an IMSP Address Book"
+msgstr "添加 IMSP 地址簿"
+
+#: templates/prefs/imsp_opt.inc:29
+msgid " Delete IMSP Address Book"
+msgstr "删除 IMSP 地址簿"
+
+#: data.php:342
+#, php-format
+msgid "\"%s\" already exists and was not imported."
+msgstr "“%s”已存在，且未导入。"
+
+#: lib/Forms/EditContact.php:76
+#, php-format
+msgid "\"%s\" updated, but saving the uploaded file failed: %s"
+msgstr "“%s”已更新，但保存所上传的文件失败：%s"
+
+#: lib/Forms/EditContact.php:78 lib/Forms/EditContact.php:81
+#, php-format
+msgid "\"%s\" updated."
+msgstr "“%s”已更新。"
+
+#: lib/Views/Browse.php:191
+#, php-format
+msgid "\"%s\" was not copied because it is a list."
+msgstr "“%s”未复制，因它是列表。"
+
+#: lib/Views/Browse.php:189
+#, php-format
+msgid "\"%s\" was not moved because it is a list."
+msgstr "“%s”未移动，因它是列表。"
+
+#: config/prefs.php.dist:118
+msgid "\"Firstname Lastname\"  (ie. John Doe)"
+msgstr "\"Firstname Lastname\"  (例如：John Doe)"
+
+#: config/prefs.php.dist:117
+msgid "\"Lastname, Firstname\" (ie. Doe, John)"
+msgstr "\"Lastname, Firstname\" (例如：Doe, John)"
+
+#: lib/Forms/AddContact.php:84
+#, php-format
+msgid "%s added."
+msgstr "%s 已添加。"
+
+#: data.php:366
+#, php-format
+msgid "%s file successfully imported"
+msgstr "已成功导入 %s 文件"
+
+#: templates/list/numPager.inc:6
+#, php-format
+msgid "%s to %s of %s"
+msgstr "%s 至 %s/%s"
+
+#: lib/Turba.php:531
+#, php-format
+msgid "%s's Address Book"
+msgstr "%s 的地址簿"
+
+#: lib/Block/minisearch.php:42
+msgid "A browser that supports iFrames is required"
+msgstr "需要支持 iFrames 的浏览器"
+
+#: view.php:52
+#, php-format
+msgid "Access denied to %s"
+msgstr "访问 %s 被拒"
+
+#: templates/browse/actions.inc:30 lib/Forms/AddContact.php:25
+msgid "Add"
+msgstr "增加"
+
+#: lib/Forms/AddContact.php:22
+msgid "Add Contact"
+msgstr "添加联系人"
+
+#: templates/prefs/addressbookselect.inc:175
+msgid "Add address book"
+msgstr "添加地址簿"
+
+#: templates/prefs/columnselect.inc:239
+msgid "Add column"
+msgstr "添加列"
+
+#: lib/Forms/EditContact.php:34
+msgid "Add file"
+msgstr "添加文件"
+
+#: templates/browse/actions.inc:30
+msgid "Add to"
+msgstr "添加到"
+
+#: lib/Driver.php:1223
+msgid "Adding contacts is not available."
+msgstr "添加联系人功能不可用。"
+
+#: templates/addressbooks.inc:95
+msgid "Address Book"
+msgstr "地址簿"
+
+#: lib/Views/Browse.php:77 config/prefs.php.dist:106
+msgid "Address Book Listing"
+msgstr "地址簿列表"
+
+#: config/prefs.php.dist:10
+msgid "Address Books"
+msgstr "地址簿"
+
+#: data.php:322
+msgid "Address book successfully purged."
+msgstr "成功清除地址簿。"
+
+#: templates/addressbooks.inc:71
+msgid "Address book to delete "
+msgstr "待删除的地址簿"
+
+#: templates/prefs/addressbookselect.inc:169
+#: templates/prefs/addressbookselect.inc:171
+msgid "Address books that will not be displayed:"
+msgstr "将要显示的地址簿："
+
+#: search.php:201 templates/browse/search.inc:48
+msgid "Advanced Search"
+msgstr "高级搜索"
+
+#: config/attributes.php.dist:64
+msgid "Alias"
+msgstr "别名"
+
+#: templates/browse/actions.inc:50 templates/list/alphaPager.inc:7
+#: templates/list/alphaPager.inc:10
+msgid "All"
+msgstr "全部"
+
+#: lib/api.php:655
+msgid "Already Exists"
+msgstr "已存在"
+
+#: templates/browse/javascript.inc:85
+#, php-format
+msgid "Are you sure that you want to delete %s?"
+msgstr "您确定要删除 %s 吗？"
+
+#: templates/browse/javascript.inc:66
+msgid "Are you sure that you want to delete the selected entries?"
+msgstr "您确定要删除所选条目吗？"
+
+#: addressbook_perms.php:56
+msgid "Attempt to edit a non-existent share."
+msgstr "尝试编辑不存在的共享内容。"
+
+#: search.php:198 templates/browse/search.inc:47
+msgid "Basic Search"
+msgstr "基本搜索"
+
+#: lib/Driver/ldap.php:92 lib/Driver/ldap.php:95
+#, php-format
+msgid "Bind failed: (%s) %s"
+msgstr "绑定失败：(%s) %s"
+
+#: config/attributes.php.dist:178
+msgid "Birthday"
+msgstr "生日"
+
+#: contact.php:92 templates/browse/row.inc:6
+msgid "Blank name"
+msgstr "名称为空"
+
+#: templates/menu.inc:8
+msgid "Browse"
+msgstr "浏览"
+
+#: config/attributes.php.dist:173
+msgid "Business Category"
+msgstr "商业类别"
+
+#: data.php:58
+msgid "CSV"
+msgstr "CSV"
+
+#: lib/Object/Group.php:68
+msgid "Can't add a group to itself."
+msgstr "无法将组添加到自身。"
+
+#: templates/browse/column_headers.inc:24
+#, php-format
+msgid "Change %s sort to %s"
+msgstr "将 %s 顺序更改为 %s"
+
+#: templates/browse/column_headers.inc:7
+msgid "Check All/None"
+msgstr "选中全部/全部不选"
+
+#: templates/browse/column_headers.inc:7
+msgid "Check _All/None"
+msgstr "选中全部_A/全部不选"
+
+#: templates/addressbooks.inc:52
+msgid "Choose a name"
+msgstr "选择姓名"
+
+#: lib/Forms/AddContact.php:36
+msgid "Choose an address book"
+msgstr "选择地址簿"
+
+#: templates/prefs/columnselect.inc:220 templates/prefs/columnselect.inc:222
+msgid "Choose an address book:"
+msgstr "选择地址簿："
+
+#: templates/prefs/addressbookselect.inc:165
+msgid "Choose which address books to display, and in what order:"
+msgstr "选择要显示的地址簿以及显示顺序："
+
+#: config/prefs.php.dist:11
+msgid "Choose which address books to use."
+msgstr "选择待用的地址簿。"
+
+#: templates/prefs/columnselect.inc:229
+msgid "Choose which columns to display and in what order:"
+msgstr "选择要显示的列以及显示顺序："
+
+#: templates/block/minisearch.inc:27
+msgid "Close"
+msgstr "关闭"
+
+#: templates/browse/header.inc:27
+msgid "Close Search"
+msgstr "关闭搜索"
+
+#: config/prefs.php.dist:17
+msgid "Column Options"
+msgstr "列选项"
+
+#: templates/prefs/columnselect.inc:233 templates/prefs/columnselect.inc:235
+msgid "Columns that will not be displayed:"
+msgstr "不会显示的列："
+
+#: templates/data/import.inc:13 templates/data/export.inc:12
+msgid "Comma separated values"
+msgstr "逗号分隔(CSV)"
+
+#: templates/data/export.inc:13
+msgid "Comma separated values (Microsoft Outlook)"
+msgstr "逗号分隔(CSV)(Microsoft Outlook)"
+
+#: config/attributes.php.dist:76
+msgid "Company"
+msgstr "公司"
+
+#: config/attributes.php.dist:144
+msgid "Company Address"
+msgstr "公司地址"
+
+#: lib/api.php:366 lib/api.php:411 lib/api.php:461 lib/api.php:593
+#: lib/api.php:708 lib/api.php:795 lib/api.php:853 lib/api.php:936
+#: lib/api.php:1131 lib/api.php:1220
+#, php-format
+msgid "Connection failed: %s"
+msgstr "连接失败：%s"
+
+#: lib/Driver/ldap.php:68
+msgid "Connection failure"
+msgstr "连接失败"
+
+#: lib/Block/minisearch.php:3 lib/Block/minisearch.php:26
+msgid "Contact Search"
+msgstr "搜索联系人"
+
+#: templates/list/numPager.inc:3
+msgid "Contacts displayed:"
+msgstr "所显示的联系人："
+
+#: lib/Views/Browse.php:350
+#, php-format
+msgid "Contacts in list: %s"
+msgstr "列表中的联系人：%s"
+
+#: templates/browse/actions.inc:18
+msgid "Copy"
+msgstr "复制"
+
+#: lib/VBook.php:284 lib/VBook.php:342
+#, php-format
+msgid "Could not find the virtual address book \"%s\""
+msgstr "无法找到虚拟地址簿“%s”"
+
+#: search.php:96
+#, php-format
+msgid "Could not update the virtual address book \"%s\""
+msgstr "无法更新虚拟地址簿“%s”"
+
+#: templates/addressbooks.inc:61
+msgid "Create"
+msgstr "创建"
+
+#: templates/addressbooks.inc:48
+msgid "Create Address Book"
+msgstr "创建地址簿"
+
+#: lib/ListView.php:445
+msgid "Create a new Contact List in:"
+msgstr "创建新的联系人列表，位置："
+
+#: lib/Views/Contact.php:58
+msgid "Created"
+msgstr "已创建"
+
+#: contact.php:81
+msgid "De_lete"
+msgstr "删除_L"
+
+#: templates/addressbooks.inc:85 templates/browse/actions.inc:3
+#: templates/browse/header.inc:20 lib/Views/DeleteContact.php:58
+msgid "Delete"
+msgstr "删除"
+
+#: lib/Views/DeleteContact.php:28
+#, php-format
+msgid "Delete %s"
+msgstr "删除 %s"
+
+#: templates/addressbooks.inc:67
+msgid "Delete Address Book"
+msgstr "创建地址簿"
+
+#: lib/Driver/ldap.php:285
+#, php-format
+msgid "Delete failed: (%s) %s"
+msgstr "删除失败：(%s) %s"
+
+#: templates/browse/header.inc:16
+#, php-format
+msgid "Delete virtual address book \"%s\""
+msgstr "删除虚拟地址簿“%s”"
+
+#: lib/Driver.php:1231
+msgid "Deleting contacts is not available."
+msgstr "删除联系人功能不可用。"
+
+#: delete.php:38
+msgid "Deletion failed"
+msgstr "删除失败"
+
+#: config/attributes.php.dist:213
+msgid "Department"
+msgstr "部门"
+
+#: templates/addressbooks.inc:124
+msgid "Description"
+msgstr "描述"
+
+#: templates/browse/search.inc:146
+msgid "Directory"
+msgstr "目录"
+
+#: config/prefs.php.dist:24
+msgid "Display"
+msgstr "显示"
+
+#: config/prefs.php.dist:9 config/prefs.php.dist:16 config/prefs.php.dist:23
+#: config/prefs.php.dist:30
+msgid "Display Options"
+msgstr "显示选项"
+
+#: lib/Object.php:334
+msgid "Download"
+msgstr "下载"
+
+#: templates/browse/row.inc:13
+msgid "Download vCard"
+msgstr "下载 vCard"
+
+#: templates/addressbooks.inc:111 templates/browse/row.inc:21
+#: templates/browse/column_headers.inc:10 templates/browse/actions.inc:6
+#: templates/browse/header.inc:17
+msgid "Edit"
+msgstr "编辑"
+
+#: edit.php:97
+#, php-format
+msgid "Edit \"%s\""
+msgstr "编辑“%s”"
+
+#: lib/Views/EditContact.php:35
+#, php-format
+msgid "Edit %s"
+msgstr "编辑 %s"
+
+#: templates/addressbooks.inc:90
+msgid "Edit Address Books"
+msgstr "编辑地址簿"
+
+#: addressbook_perms.php:246 templates/browse/header.inc:19
+msgid "Edit Permissions"
+msgstr "编辑权限"
+
+#: addressbook_perms.php:248
+#, php-format
+msgid "Edit Permissions for %s"
+msgstr "编辑 %s 权限"
+
+#: templates/browse/vbook_header.inc:2
+msgid "Edit Virtual Address Book"
+msgstr "编辑虚拟地址簿"
+
+#: templates/browse/header.inc:15
+#, php-format
+msgid "Edit permissions for virtual address book \"%s\""
+msgstr "编辑虚拟地址簿“%s”的权限"
+
+#: templates/browse/header.inc:14
+#, php-format
+msgid "Edit virtual address book definition of \"%s\""
+msgstr "编辑虚拟地址簿“%s”的定义"
+
+#: config/attributes.php.dist:58
+msgid "Email"
+msgstr "电子邮件"
+
+#: lib/Views/Browse.php:267 lib/Views/Browse.php:315
+#, php-format
+msgid "Error adding %d contact(s) to list."
+msgstr "将 %d 联系人添加到列表时出错。"
+
+#: lib/Views/Browse.php:269 lib/Views/Browse.php:317
+#, php-format
+msgid "Error adding %d of %d requested contact(s) to list."
+msgstr "将 %d 请求的 %d 联系人添加到列表时出错。"
+
+#: lib/Views/Browse.php:137
+#, php-format
+msgid "Error deleting %d contact(s)."
+msgstr "删除 %d 联系人时出错。"
+
+#: lib/Views/Browse.php:139
+#, php-format
+msgid "Error deleting %d of %d requested contacts(s)."
+msgstr "删除 %d 请求的 %d 联系人时出错。"
+
+#: lib/Views/Browse.php:117
+#, php-format
+msgid "Error removing %d contact(s) from list."
+msgstr "从列表中删除 %d 联系人时出错。"
+
+#: lib/Views/Browse.php:119
+#, php-format
+msgid "Error removing %d of %d requested contact(s) from list."
+msgstr "从列表中删除 %d 请求的 %d 联系人时出错。"
+
+#: lib/api.php:467
+#, php-format
+msgid "Error searching the address book: %s"
+msgstr "搜索地址簿时出错：%s"
+
+#: templates/browse/actions.inc:10 templates/data/export.inc:41
+msgid "Export"
+msgstr "导出"
+
+#: templates/data/export.inc:6
+msgid "Export Address Book"
+msgstr "导出地址簿"
+
+#: templates/data/export.inc:21
+msgid "Export only the selected contacts."
+msgstr "仅导出所选联系人。"
+
+#: templates/data/export.inc:27
+msgid "Export the following address book completely."
+msgstr "完全导出下列地址簿。"
+
+#: data.php:143 data.php:237 data.php:311 add.php:40 search.php:65
+#: lib/Views/Browse.php:83 lib/Views/Browse.php:154 lib/Views/Browse.php:181
+#, php-format
+msgid "Failed to access the address book: %s"
+msgstr "访问地址簿时出错：%s"
+
+#: lib/Views/Browse.php:209
+#, php-format
+msgid "Failed to add %s to %s: %s"
+msgstr "将 %s 添加到 %s 时出错：%s"
+
+#: lib/Views/Browse.php:356
+msgid "Failed to browse list"
+msgstr "浏览列表失败"
+
+#: lib/Views/Browse.php:387
+msgid "Failed to browse the directory"
+msgstr "浏览目录失败：%s"
+
+#: lib/Driver/ldap.php:318
+#, php-format
+msgid "Failed to change name: (%s) %s; Old DN = %s, New DN = %s, Root = %s"
+msgstr "更改名称失败：(%s) %s；旧 DN = %s、新 DN = %s、Root = %s"
+
+#: search.php:129
+#, php-format
+msgid "Failed to delete the virtual address book. %s"
+msgstr "删除虚拟地址簿失败。%s"
+
+#: lib/Views/Browse.php:185
+#, php-format
+msgid "Failed to find object to be added: %s"
+msgstr "寻找待添加的对象失败：%s"
+
+#: search.php:192
+msgid "Failed to search the address book"
+msgstr "搜索地址簿失败：%s"
+
+#: data.php:158
+#, php-format
+msgid "Failed to search the directory: %s"
+msgstr "搜索目录失败:：%s"
+
+#: config/attributes.php.dist:167
+msgid "Fax"
+msgstr "传真"
+
+#: lib/Forms/Contact.php:40
+msgid "Files"
+msgstr "文件"
+
+#: templates/browse/search.inc:96
+msgid "Find"
+msgstr "查找"
+
+#: lib/Forms/EditContact.php:119 lib/Forms/EditContact.php:155
+msgid "Finish"
+msgstr "完成"
+
+#: config/attributes.php.dist:48
+msgid "First Name"
+msgstr "名字"
+
+#: config/attributes.php.dist:202
+msgid "Freebusy URL"
+msgstr "Freebusy URL"
+
+#: templates/browse/search.inc:109
+msgid "From"
+msgstr "发件人"
+
+#: config/sources.php.dist:684
+msgid "Global Address Book"
+msgstr "全局地址簿"
+
+#: templates/browse/row.inc:39
+msgid "Group"
+msgstr "组"
+
+#: config/attributes.php.dist:82
+msgid "Home Address"
+msgstr "家庭地址"
+
+#: config/attributes.php.dist:93
+msgid "Home City"
+msgstr "家庭住址 城市"
+
+#: config/attributes.php.dist:108
+msgid "Home Country"
+msgstr "住宅地址 国家/地区"
+
+#: config/attributes.php.dist:150
+msgid "Home Phone"
+msgstr "家庭电话"
+
+#: config/attributes.php.dist:103
+msgid "Home Postal Code"
+msgstr "住宅地址 邮政编码"
+
+#: config/attributes.php.dist:98
+msgid "Home State/Province"
+msgstr "住宅地址 省份"
+
+#: config/attributes.php.dist:88
+msgid "Home Street Address"
+msgstr "住宅地址 街道地址"
+
+#: config/sources.php.dist:575
+msgid "IMSP"
+msgstr "IMSP"
+
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Address Book, Step %d"
+msgstr "导入地址簿，步骤 %d"
+
+#: data.php:384
+msgid "Import/Export Address Books"
+msgstr "导入/导出地址簿"
+
+#: config/attributes.php.dist:228
+msgid "Initials"
+msgstr "首字母"
+
+#: lib/api.php:703 lib/api.php:790
+msgid "Invalid ID"
+msgstr "ID 无效 "
+
+#: lib/api.php:278 lib/api.php:456 lib/api.php:588 lib/api.php:699
+#: lib/api.php:786 lib/api.php:843 lib/api.php:1203
+#, php-format
+msgid "Invalid address book: %s"
+msgstr "无效的地址簿：%s"
+
+#: lib/api.php:1207 lib/api.php:1281 lib/api.php:1337
+msgid "Invalid email"
+msgstr "电子邮件无效"
+
+#: lib/api.php:1215
+msgid "Invalid entry"
+msgstr "条目无效"
+
+#: lib/Driver/ldap.php:281
+msgid "Invalid key specified."
+msgstr "所指定的键值无效。"
+
+#: lib/api.php:1211
+msgid "Invalid name"
+msgstr "名称无效"
+
+#: lib/api.php:847
+msgid "Invalid objectId"
+msgstr "对象 ID 无效"
+
+#: lib/Driver/ldap.php:64
+msgid ""
+"LDAP support is required but the LDAP module is not available or not loaded."
+msgstr "需要 LDAP 支持，但 LDAP 未安装或未加载。"
+
+#: lib/Views/Contact.php:64
+msgid "Last Modified"
+msgstr "上次修改"
+
+#: config/attributes.php.dist:53
+msgid "Last Name"
+msgstr "姓氏"
+
+#: templates/browse/column_headers.inc:16
+msgid "List"
+msgstr "列表"
+
+#: templates/browse/search.inc:103
+msgid "Matching"
+msgstr "匹配"
+
+#: lib/api.php:253
+msgid "Maximum Number of Contacts"
+msgstr "联系人最大数量"
+
+#: config/prefs.php.dist:88
+msgid "Maximum number of pages"
+msgstr "页面最大数"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "菜单列表"
+
+#: lib/Driver/ldap.php:311
+msgid "Missing DN in LDAP source configuration."
+msgstr "LDAP 源配置中丢失 DN。"
+
+#: config/attributes.php.dist:162
+msgid "Mobile Phone"
+msgstr "行动电话"
+
+#: lib/Driver/ldap.php:340 lib/Driver/ldap.php:356
+#, php-format
+msgid "Modify failed: (%s) %s"
+msgstr "修改失败：(%s) %s"
+
+#: templates/browse/header.inc:28
+msgid "More Options..."
+msgstr "更多选项..."
+
+#: lib/api.php:1322
+msgid "More than 1 entry found"
+msgstr "找到多个条目"
+
+#: templates/browse/actions.inc:16
+msgid "Move"
+msgstr "移动"
+
+#: templates/prefs/columnselect.inc:250
+#: templates/prefs/addressbookselect.inc:186
+msgid "Move left"
+msgstr "左移"
+
+#: templates/prefs/columnselect.inc:252
+#: templates/prefs/addressbookselect.inc:188
+msgid "Move right"
+msgstr "右移"
+
+#: data.php:61 templates/data/import.inc:16
+msgid "Mulberry Address Book"
+msgstr "Mulberry 地址簿"
+
+#: lib/api.php:1239
+#, php-format
+msgid ""
+"Multiple persons with address [%s], but none with name [%s] already exist"
+msgstr "多人使用地址[%s]，但无人使用已存在的姓名 [%s]"
+
+#: config/sources.php.dist:143
+msgid "My Address Book"
+msgstr "我的地址簿"
+
+#: addressbooks.php:130
+msgid "My Address Books"
+msgstr "我的地址簿"
+
+#: templates/addressbooks.inc:116 config/attributes.php.dist:42
+msgid "Name"
+msgstr "名称"
+
+#: config/prefs.php.dist:31
+msgid "Name Format"
+msgstr "姓名格式"
+
+#: add.php:68 lib/Block/tree_menu.php:27
+msgid "New Contact"
+msgstr "新建联系人"
+
+#: templates/data/import.inc:45 lib/Forms/EditContact.php:110
+#: lib/Forms/EditContact.php:117 lib/Forms/EditContact.php:170
+msgid "Next"
+msgstr "下一步"
+
+#: config/attributes.php.dist:218
+msgid "Nickname"
+msgstr "昵称"
+
+#: lib/api.php:1325 lib/api.php:1374
+#, php-format
+msgid "No %s entry found for %s"
+msgstr "未找到 %s 项目 %s"
+
+#: data.php:50
+msgid ""
+"No Address Books are currently available. Import and Export is disabled."
+msgstr "当前无可用的地址簿。“导入”和“导出”选项已禁用。"
+
+#: search.php:41
+msgid "No Address Books are currently available. Searching is disabled."
+msgstr "当前无可用的地址簿。搜索功能已禁用。"
+
+#: lib/api.php:1290
+msgid "No address books found."
+msgstr "未找到地址簿。"
+
+#: minisearch.php:78
+msgid "No contacts found"
+msgstr "未找到联系人"
+
+#: templates/browse/column_headers.inc:43
+msgid "No contacts match the current filter."
+msgstr "无联系人匹配当前过滤器。"
+
+#: lib/ListView.php:248
+msgid "No matching contacts"
+msgstr "无匹配的联系人"
+
+#: lib/Driver/favourites.php:121
+msgid "No source for favourite recipients exists."
+msgstr "喜爱的收件人无来源。"
+
+#: lib/api.php:614 lib/api.php:879
+msgid "No vCard data was found."
+msgstr "未找到 vCard 数据。"
+
+#: templates/list/numPager.inc:8
+msgid "None"
+msgstr "无"
+
+#: lib/Views/EditContact.php:33 lib/Views/Contact.php:33
+#: lib/Views/DeleteContact.php:26
+msgid "Not Found"
+msgstr "未找到"
+
+#: edit.php:50 deletefile.php:20
+msgid "Not found"
+msgstr "未找到"
+
+#: config/attributes.php.dist:184
+msgid "Notes"
+msgstr "备注"
+
+#: config/prefs.php.dist:96
+msgid "Number of items per page"
+msgstr "每页项目数"
+
+#: lib/api.php:719 lib/api.php:859
+msgid "Object not found"
+msgstr "未找到对象"
+
+#: config/attributes.php.dist:223
+msgid "Office"
+msgstr "办公室"
+
+#: templates/prefs/imsp_opt.inc:22
+msgid ""
+"Once you save this option page, the address book will be permanently "
+"deleted. If this is not what you want, then you must change your selection "
+"to \"None\"."
+msgstr ""
+"保存此选项页面之后，则会永久删除地址簿。如果不希望出现这种情况，则必须将选择"
+"更改为“无”。"
+
+#: lib/api.php:887
+msgid "Only one vcard supported."
+msgstr "仅支持一种 vcard。"
+
+#: addressbook_perms.php:68
+msgid ""
+"Only the owner or system administrator may change ownership or owner "
+"permissions for a share"
+msgstr "仅有所有者或系统管理员可以更改共享内容的所有权或所有者权限"
+
+#: config/attributes.php.dist:190
+msgid "PGP Public Key"
+msgstr "PGP 公钥"
+
+#: lib/Views/DeleteContact.php:57
+msgid "Permanently delete this contact?"
+msgstr "永久删除此联系人？"
+
+#: deletefile.php:40 lib/Driver.php:574 lib/api.php:597 lib/api.php:712
+#: lib/api.php:799 lib/api.php:1059 lib/api.php:1224 lib/Driver/sql.php:488
+msgid "Permission denied"
+msgstr "权限不足"
+
+#: templates/addressbooks.inc:108
+msgid "Permissions"
+msgstr "权限"
+
+#: data.php:62 templates/data/import.inc:17
+msgid "Pine Address Book"
+msgstr "Pine 地址簿"
+
+#: templates/browse/javascript.inc:27
+msgid "Please name the new contact list:"
+msgstr "请命名新联系人列表："
+
+#: lib/Forms/EditContact.php:113 lib/Forms/EditContact.php:116
+#: lib/Forms/EditContact.php:162
+msgid "Previous"
+msgstr "上一步"
+
+#: lib/Driver/ldap.php:162
+#, php-format
+msgid "Query failed: (%s) %s"
+msgstr "查询失败：(%s) %s"
+
+#: lib/Driver/ldap.php:206 lib/Driver/ldap.php:214 lib/Driver/ldap.php:450
+#, php-format
+msgid "Read failed: (%s) %s"
+msgstr "读取失败：(%s) %s"
+
+#: lib/Driver.php:1215
+msgid "Reading contacts is not available."
+msgstr "读取联系人功能不可用。"
+
+#: templates/prefs/addressbookselect.inc:177
+msgid "Remove address book"
+msgstr "删除地址簿"
+
+#: templates/prefs/columnselect.inc:241
+msgid "Remove column"
+msgstr "删除列"
+
+#: templates/browse/actions.inc:3
+msgid "Remove from this list"
+msgstr "从列表中删除"
+
+#: lib/Driver.php:1248
+msgid ""
+"Removing user data is not supported in the current address book storage "
+"driver."
+msgstr "当前地址簿存储驱动程序不支持删除用户数据功能。"
+
+#: templates/data/import.inc:21
+msgid ""
+"Replace existing address book with the imported one? <strong>Warning: This "
+"deletes all entries in your current address book.</strong>"
+msgstr ""
+"是否使用导入的地址簿替换现有的地址簿？<strong>警告：此操作会删除现有地址簿中"
+"的所有条目。</strong>"
+
+#: lib/Driver.php:462
+msgid "Requested object not found."
+msgstr "未找到请求的对象。"
+
+#: templates/browse/search.inc:141
+msgid "Reset to Defaults"
+msgstr "重置为默认项"
+
+#: config/attributes.php.dist:196
+msgid "S/MIME Public Certificate"
+msgstr "S/MIME 公钥证书"
+
+#: lib/Driver/ldap.php:84
+#, php-format
+msgid "STARTTLS failed: (%s) %s"
+msgstr "STARTTLS 失败：(%s) %s"
+
+#: config/attributes.php.dist:233
+msgid "Salutation"
+msgstr "称呼语"
+
+#: templates/addressbooks.inc:133 templates/browse/search.inc:122
+#: templates/browse/search.inc:140 lib/Forms/EditContact.php:26
+msgid "Save"
+msgstr "保存"
+
+#: templates/browse/search_vbook.inc:20
+msgid "Save search as a virtual addressbook?"
+msgstr "将搜索另存为地址簿？"
+
+#: lib/Driver.php:1239
+msgid "Saving contacts is not available."
+msgstr "保存联系人功能不可用。"
+
+#: templates/browse/search.inc:122 templates/browse/search.inc:140
+#: templates/browse/header.inc:23 templates/block/minisearch.inc:26
+#: lib/Block/tree_menu.php:72 config/prefs.php.dist:107
+msgid "Search"
+msgstr "搜索"
+
+#: lib/api.php:1136
+msgid "Search failed"
+msgstr "搜索失败"
+
+#: lib/api.php:1229 lib/api.php:1235 lib/api.php:1244 lib/api.php:1257
+#, php-format
+msgid "Search failed: %s"
+msgstr "搜索失败：%s"
+
+#: templates/block/minisearch.inc:24
+msgid "Search for: "
+msgstr "搜索："
+
+#: lib/Driver.php:1207
+msgid "Searching is not available."
+msgstr "搜索功能不可用。"
+
+#: templates/block/minisearch.inc:28
+msgid "Searching..."
+msgstr "搜索中..."
+
+#: templates/addressbooks.inc:75
+msgid "Select an address book to delete"
+msgstr "选择要删除的地址簿"
+
+#: templates/addressbooks.inc:99
+msgid "Select an address book to edit"
+msgstr "选择要编辑的地址簿"
+
+#: templates/browse/row.inc:30
+msgid "Select contact"
+msgstr "选择联系人"
+
+#: templates/data/export.inc:32
+msgid "Select the address book to export from:"
+msgstr "选择待导出的地址簿："
+
+#: templates/data/import.inc:26
+msgid "Select the address book to import to:"
+msgstr "选择待导入的地址簿："
+
+#: templates/data/import.inc:35
+msgid "Select the charset of the source file:"
+msgstr "选择源文件字符集："
+
+#: templates/data/export.inc:10
+msgid "Select the export format:"
+msgstr "选择导出格式："
+
+#: templates/data/import.inc:43
+msgid "Select the file to import:"
+msgstr "选择待导出的文件："
+
+#: templates/data/import.inc:11
+msgid "Select the format of the source file:"
+msgstr "选择源文件格式："
+
+#: config/prefs.php.dist:116
+msgid "Select the format used to display names:"
+msgstr "选择用于显示姓名的格式："
+
+#: config/prefs.php.dist:25
+msgid "Select view to display by default, sort options, and paging options."
+msgstr "选择默认的显示视图、排序选项和页面选项。"
+
+#: config/prefs.php.dist:18
+msgid "Select which fields to display in the address lists."
+msgstr "选择地址簿中显示内容的字段。"
+
+#: config/prefs.php.dist:32
+msgid "Select which format to display names."
+msgstr "选择用于显示姓名的格式："
+
+#: lib/Forms/AddContact.php:42
+#, php-format
+msgid "Selected address book \"%s\"."
+msgstr "所选地址簿“%s”。"
+
+#: templates/browse/actions.inc:48
+#, php-format
+msgid "Show %s"
+msgstr "显示 %s"
+
+#: templates/browse/actions.inc:50
+msgid "Show All"
+msgstr "显示全部"
+
+#: templates/browse/actions.inc:49
+msgid "Show Contacts"
+msgstr "显示联系人"
+
+#: templates/browse/actions.inc:48
+msgid "Show Lists"
+msgstr "显示列表"
+
+#: lib/ListView.php:317 lib/ListView.php:323
+msgid "Sort Direction"
+msgstr "排序方向"
+
+#: templates/browse/column_headers.inc:31
+#, php-format
+msgid "Sort by %s"
+msgstr "按 %s 排序"
+
+#: templates/browse/column_headers.inc:26
+#, php-format
+msgid "Sort by %s only"
+msgstr "仅按 %s 排序"
+
+#: templates/browse/column_headers.inc:29
+#, php-format
+msgid "Sort by %s, then by %s"
+msgstr "按 %s 排序，然后按 %s 排序"
+
+#: templates/menu.inc:6
+msgid "Source:"
+msgstr "来源："
+
+#: lib/api.php:246
+msgid "Sources"
+msgstr "来源"
+
+#: lib/Views/Browse.php:211
+#, php-format
+msgid "Successfully added %s to %s"
+msgstr "成功将 %s 添加到 %s"
+
+#: search.php:99
+#, php-format
+msgid "Successfully changed virtual address book \"%s\""
+msgstr "成功更改虚拟地址簿“%s”"
+
+#: lib/Views/Browse.php:299
+#, php-format
+msgid "Successfully created the contact list \"%s\"."
+msgstr "成功创建联系人列表“%s”。"
+
+#: search.php:167
+#, php-format
+msgid "Successfully created virtual address book \"%s\""
+msgstr "成功创建虚拟地址簿“%s”"
+
+#: lib/Views/Browse.php:135
+#, php-format
+msgid "Successfully deleted %d contact(s)."
+msgstr "成功删除 %d 联系人。"
+
+#: lib/Views/Browse.php:115
+#, php-format
+msgid "Successfully removed %d contact(s) from list."
+msgstr "从列表中成功删除 %d 联系人。"
+
+#: data.php:59
+msgid "TSV"
+msgstr "TSV"
+
+#: templates/data/import.inc:14 templates/data/export.inc:14
+msgid "Tab separated values"
+msgstr "Tab 分隔(TSV) "
+
+#: templates/browse/actions.inc:20
+msgid "Target Address Book"
+msgstr "目标地址簿"
+
+#: templates/browse/actions.inc:31
+msgid "Target Contact List"
+msgstr "目标联系人列表"
+
+#: data.php:313
+#, php-format
+msgid "The %s file didn't contain any contacts."
+msgstr "%s 文件不包含任何联系人。"
+
+#: view.php:15
+msgid "The VFS backend needs to be configured to enable attachment uploads."
+msgstr "若要启用附件上传功能，则需要配置 VFS 后端。"
+
+#: lib/Driver.php:1185
+#, php-format
+msgid "The address book \"%s\" does not exist."
+msgstr "此地址簿“%s”不存在。"
+
+#: addressbooks.php:52
+#, php-format
+msgid "The address book \"%s\" was created successfully."
+msgstr "成功创建此地址簿“%s”。"
+
+#: addressbooks.php:73
+#, php-format
+msgid "The address book \"%s\" was removed successfully."
+msgstr "成功删除此地址簿“%s”。"
+
+#: addressbooks.php:94
+#, php-format
+msgid "The address book \"%s\" was successfully updated."
+msgstr "成功更新此地址簿“%s”。"
+
+#: data.php:320
+#, php-format
+msgid "The address book could not be purged: %s"
+msgstr "无法清除此地址簿：%s"
+
+#: vcard.php:17 contact.php:21 view.php:26
+msgid "The contact you requested does not exist."
+msgstr "所请求的联系人不存在。"
+
+#: deletefile.php:50
+#, php-format
+msgid "The file \"%s\" has been deleted."
+msgstr "已删除文件“%s”。"
+
+#: data.php:293
+msgid "The import can be finished despite the warnings."
+msgstr "忽略警告，完成导入。"
+
+#: lib/Views/EditContact.php:43 lib/Views/Contact.php:43
+#: lib/Views/DeleteContact.php:36
+msgid "The requested contact was not found."
+msgstr "未找到请求的联系人。"
+
+#: lib/Views/Browse.php:79
+msgid "There are no browseable address books."
+msgstr "无可供浏览的地址簿。"
+
+#: add.php:30
+msgid ""
+"There are no writeable address books. None of the available address books "
+"are configured to allow you to add new entries to them. If you believe this "
+"is an error, please contact your system administrator."
+msgstr ""
+"无可供写入的地址簿。无一地址簿允许您添加新条目。如果您认为这种情况不正常，请"
+"联系系统管理员。"
+
+#: search.php:163
+#, php-format
+msgid "There was a problem creating the virtual address book: %s"
+msgstr "创建虚拟地址簿时出错：%s"
+
+#: lib/Forms/AddContact.php:90
+msgid ""
+"There was an error adding the new contact. Contact your system administrator "
+"for further help."
+msgstr "添加联系人时出错。请联系系统管理员寻求协助。"
+
+#: lib/Views/Browse.php:322
+msgid "There was an error creating a new list."
+msgstr "创建新列表时出错。"
+
+#: addressbooks.php:39 addressbooks.php:42
+#, php-format
+msgid "There was an error creating this address book: %s"
+msgstr "创建此地址簿时出错：%s"
+
+#: lib/Views/Browse.php:217
+#, php-format
+msgid "There was an error deleting \"%s\" from the source address book."
+msgstr "从源地址簿中删除“%s”时出错。"
+
+#: delete.php:37
+#, php-format
+msgid "There was an error deleting this contact: %s"
+msgstr "删除此联系人时出错：%s"
+
+#: lib/Views/Browse.php:362
+msgid "There was an error displaying the list"
+msgstr "显示列表时出错"
+
+#: data.php:352
+#, php-format
+msgid "There was an error importing the data: %s"
+msgstr "导入数据时出错：%s"
+
+#: lib/api.php:610 lib/api.php:874
+msgid "There was an error importing the iCalendar data."
+msgstr "导入 iCalendar 数据时出错。"
+
+#: lib/api.php:199
+#, php-format
+msgid "There was an error removing an address book for %s"
+msgstr "删除 %s 地址簿时出错"
+
+#: addressbooks.php:60 addressbooks.php:65 addressbooks.php:71
+#, php-format
+msgid "There was an error removing this address book: %s"
+msgstr "删除此地址簿时出错：%s"
+
+#: addressbooks.php:92
+#, php-format
+msgid "There was an error updating this address book: %s"
+msgstr "更新此地址簿时出错：%s"
+
+#: data.php:188
+msgid "There were no addresses to export."
+msgstr "无待导入的地址。"
+
+#: templates/prefs/addressbookselect.inc:180
+#: templates/prefs/addressbookselect.inc:182
+msgid "These address books will display in this order:"
+msgstr "这些地址簿将以此顺序显示："
+
+#: templates/prefs/columnselect.inc:244 templates/prefs/columnselect.inc:246
+msgid "These columns will display in this order:"
+msgstr "这些地列将以此顺序显示："
+
+#: data.php:278
+msgid "This file format is not supported."
+msgstr "不支持此文件格式。"
+
+#: lib/api.php:1248 lib/api.php:1261
+#, php-format
+msgid "This person already has a %s entry in the address book"
+msgstr "此人已在您的地址簿中，条目为 %s 。"
+
+#: config/prefs.php.dist:129
+msgid ""
+"This will be the default address book when adding or importing contacts."
+msgstr "此为添加或导入联系人时的默认地址簿。"
+
+#: config/attributes.php.dist:70
+msgid "Title"
+msgstr "标题"
+
+#: lib/Turba.php:516
+#, php-format
+msgid "Unable to create new share. Missing source type."
+msgstr "无法创建新的共享文件夹。丢失源类型。"
+
+#: lib/Driver.php:1107
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "无法加载 %s 定义。"
+
+#: lib/Driver/kolab.php:244
+msgid "Unable to search."
+msgstr "无法搜索。"
+
+#: lib/Forms/EditContact.php:26 lib/Forms/EditContact.php:110
+#: lib/Forms/EditContact.php:113 lib/Forms/EditContact.php:116
+#: lib/Forms/EditContact.php:164
+msgid "Undo Changes"
+msgstr "取消更改"
+
+#: lib/api.php:643 lib/api.php:744 lib/api.php:892
+#, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "不受支持的内容类型：%s"
+
+#: addressbook_perms.php:239
+#, php-format
+msgid "Updated \"%s\"."
+msgstr "已更新“%s”。"
+
+#: minisearch.php:73
+msgid "View Contact"
+msgstr "查看联系人"
+
+#: config/prefs.php.dist:105
+msgid "View to display by default:"
+msgstr "默认方式显示视图："
+
+#: templates/browse/search_vbook.inc:15 lib/Block/tree_menu.php:51
+msgid "Virtual Address Books"
+msgstr "虚拟地址簿"
+
+#: search.php:132
+#, php-format
+msgid "Virtual address book \"%s\" deleted."
+msgstr "已删除虚拟地址簿“%s”。"
+
+#: templates/browse/search_vbook.inc:37
+msgid "Virtual address book description:"
+msgstr "虚拟地址簿描述："
+
+#: templates/browse/search_vbook.inc:29
+msgid "Virtual address book name:"
+msgstr "虚拟地址簿名称："
+
+#: config/attributes.php.dist:208
+msgid "Website URL"
+msgstr "网站 URL"
+
+#: config/attributes.php.dist:113
+msgid "Work Address"
+msgstr "工作地址"
+
+#: config/attributes.php.dist:124
+msgid "Work City"
+msgstr "工作城市"
+
+#: config/attributes.php.dist:139
+msgid "Work Country"
+msgstr "工作地址 国家/地区"
+
+#: config/attributes.php.dist:156
+msgid "Work Phone"
+msgstr "工作电话"
+
+#: config/attributes.php.dist:134
+msgid "Work Postal Code"
+msgstr "工作地址 邮政编码"
+
+#: config/attributes.php.dist:129
+msgid "Work State/Province"
+msgstr "工作地址 省份"
+
+#: config/attributes.php.dist:119
+msgid "Work Street Address"
+msgstr "工作地址 街道地址"
+
+#: data.php:246 add.php:46 lib/Views/Browse.php:157 lib/Views/Browse.php:278
+#, php-format
+msgid "You are not allowed to create more than %d contacts in \"%s\"."
+msgstr "不允许创建的联系人多于 %d 位(在“%s” 中)。"
+
+#: lib/Driver/vbook.php:116
+msgid "You cannot add an entry to a virtual address book."
+msgstr "您无法将条目添加到虚拟地址簿中。"
+
+#: lib/Driver/vbook.php:100
+msgid "You cannot add new contacts to a virtual address book"
+msgstr "您无法将新联系人添加到虚拟地址簿中"
+
+#: lib/Driver/vbook.php:108
+msgid "You cannot delete contacts from a virtual address book"
+msgstr "您无法从虚拟地址簿中删除联系人"
+
+#: edit.php:72 view.php:36 lib/Views/EditContact.php:49
+#: lib/Views/DeleteContact.php:42
+msgid "You do not have permission to view this contact."
+msgstr "您不具有查看此联系人的权限。"
+
+#: vcard.php:35
+msgid "You do not have permission to view this object."
+msgstr "您不具有查看此对象的权限。"
+
+#: lib/Turba.php:606
+msgid "You do not have permissions to delete this source."
+msgstr "您不具有删除此来源的权限。"
+
+#: search.php:149
+msgid "You must provide a name for virtual address books."
+msgstr "您需要提供虚拟地址簿名称。"
+
+#: templates/browse/javascript.inc:54
+msgid "You must select a target address book."
+msgstr "您必须选择目标地址簿。"
+
+#: templates/browse/javascript.inc:22
+msgid "You must select a target list."
+msgstr "您必须选择目标列表。"
+
+#: edit.php:29
+msgid "You must select at least one contact first."
+msgstr "您必须先选择至少一位联系人。"
+
+#: templates/browse/javascript.inc:16 templates/browse/javascript.inc:48
+#: templates/browse/javascript.inc:71
+msgid "You must select at least one entry first."
+msgstr "您必须先选择至少一个条目。"
+
+#: edit.php:76 lib/Views/EditContact.php:52 lib/Views/DeleteContact.php:45
+msgid "You only have permission to view this contact."
+msgstr "您仅有权限查看此联系人。"
+
+#: lib/Views/Browse.php:369
+msgid "Your default address book is not browseable."
+msgstr "无法浏览您的默认地址簿。"
+
+#: lib/Turba.php:629
+msgid "_Browse"
+msgstr "浏览_B"
+
+#: templates/browse/actions.inc:49
+msgid "_Contacts"
+msgstr "联系人_C"
+
+#: templates/browse/actions.inc:3
+msgid "_Delete"
+msgstr "删除_D"
+
+#: contact.php:77
+msgid "_Edit"
+msgstr "编辑_E"
+
+#: lib/Turba.php:638
+msgid "_Import/Export"
+msgstr "导入/导出_I"
+
+#: templates/browse/actions.inc:48
+msgid "_Lists"
+msgstr "列表_L"
+
+#: lib/Turba.php:626
+msgid "_My Address Books"
+msgstr "我的地址簿_M"
+
+#: lib/Turba.php:632
+msgid "_New Contact"
+msgstr "新建联系人_N"
+
+#: templates/browse/actions.inc:3
+msgid "_Remove from this list"
+msgstr "从此列表中删除_R"
+
+#: lib/Turba.php:634
+msgid "_Search"
+msgstr "搜索_S"
+
+#: contact.php:74
+msgid "_View"
+msgstr "查看_V"
+
+#: templates/browse/column_headers.inc:24
+msgid "ascending"
+msgstr "升序"
+
+#: vcard.php:43
+msgid "contact"
+msgstr "联系人"
+
+#: data.php:208 data.php:213 templates/data/export.inc:1
+msgid "contacts.csv"
+msgstr "contacts.csv"
+
+#: data.php:218
+msgid "contacts.tsv"
+msgstr "contacts.tsv"
+
+#: data.php:228
+msgid "contacts.vcf"
+msgstr "contacts.vcf"
+
+#: templates/browse/column_headers.inc:24
+msgid "descending"
+msgstr "降序"
+
+#: config/prefs.php.dist:119
+msgid "no formatting"
+msgstr "无需格式化"
+
+#: templates/prefs/imsp_opt.inc:32
+msgid "none"
+msgstr "无"
+
+#: templates/browse/actions.inc:33
+msgid "to a Contact List"
+msgstr "到联系人列表"
+
+#: templates/browse/actions.inc:22
+msgid "to a different Address Book"
+msgstr "到不同的地址簿"
+
+#: data.php:60 templates/browse/column_headers.inc:13
+#: templates/data/import.inc:15 templates/data/export.inc:15
+msgid "vCard"
+msgstr "vCard"

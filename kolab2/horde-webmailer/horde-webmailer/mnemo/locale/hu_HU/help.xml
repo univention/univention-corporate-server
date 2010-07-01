@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="iso-8859-2"?>
+<!-- based on $Horde: mnemo/locale/hu_HU/help.xml,v 1.2.12.3 2009-01-06 15:24:59 jan Exp $ -->
+<!-- Mnemo help file, Hungarian translation -->
+<!-- Copyright 2004 Laszlo L. Tornoci -->
+<!-- This file is distributed under the same license as the Mnemo package. -->
+<!-- Latest versions: ftp://xenia.sote.hu/pub/linux/horde/ -->
+
+<help>
+
+<entry id="Overview">
+    <title>Áttekintés</title>
+    <heading>Bevezetés</heading>
+    <para>
+    A <i>Notes (Feljegyzések)</i> program lehetővé teszi, hogy számítógépünkön
+a kiragasztható papírlapokra írtakhoz hasonló módon készítsünk feljegyzéseket.
+A jegyzetek tárolhatók, módosíthatók, törölhetők és kinyomtathatók. Keresni
+is lehet a feljegyzések tartalmában, melyek kategóriákba is rendezhetők.
+    </para>
+</entry>
+
+<entry id="list-actions">
+    <title>Funkciólista</title>
+    <heading>Funkciók</heading>
+    <para>
+    <i>A feljegyzés törlése</i>. Végleg törli a kiválasztott feljegyzést.
+    </para>
+    <para>
+    <i>A feljegyzés módosítása</i>. Lehetővé teszi egy korábban írt feljegyzés
+módosítását.
+    </para>
+    <para>
+    <i>Vissza a feljegyzések listájához</i>. A feljegyzés megtekintésétől 
+visszavisz az áttekintő oldalra.
+    </para>
+</entry>
+
+<entry id="menu-actions">
+    <title>A menüpontok</title>
+    <heading>A menüpontok</heading>
+    <para>
+    <i>Lista</i>. Felsorolja a feljegyzéseinket.
+    </para>
+    <para>
+    <i>Új feljegyzés</i>. Ezzel készíthetünk új feljegyzést.
+    </para>
+    <para>
+    <i>Keresés</i>. Lehetővé teszi a feljegyzések közötti keresést. Kereshetünk
+a leíró mezők tartalmában, vagy a teljes szövegben is.
+    </para>
+    <para>
+    <i>Nyomtatás</i>. Lehetővé teszi a feljegyzés kinyomtatását. A 
+<i>Nyomtatás</i> ikon csak egy adott feljegyzés megtekintésekor jelenik meg 
+a menüsorban.
+    </para>
+</entry>
+
+<entry id="sorting">
+    <title>Sorbarendezés</title>
+    <heading>Sorbarendezés</heading>
+    <para>
+    Feljegyzések kilistázásakor bármely oszlop szerint sorba rendezhetjük
+az adatokat, ha a kérdéses oszlop fejlécére kattintunk. Ha a sorbarendezés
+irányát akarjuk átállítani, akkor a fejlécben levő kis nyílra kell
+kattintani.
+    </para>
+</entry>
+</help>

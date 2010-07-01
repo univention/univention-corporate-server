@@ -1,0 +1,2665 @@
+# Basque translation for kronolith package.
+# This file is distributed under the same license as the kronolith package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kronolith\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2009-09-12 10:10+0200\n"
+"PO-Revision-Date: 2009-11-20 12:25+0100\n"
+"Last-Translator: Euskal Herriko Unibertsitatea <webmaster@ehu.es>\n"
+"Language-Team: Euskal Herriko Unibertsitatea <webmaster@ehu.es>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: feed/index.php:128
+msgid " to "
+msgstr " - "
+
+#: templates/edit/edit.inc:211
+#, php-format
+msgid " until %s"
+msgstr " %s arte"
+
+#: templates/edit/edit.inc:211
+msgid " without end"
+msgstr " amaierarik gabe"
+
+#: templates/search/header.inc:4
+#, php-format
+msgid "%d events"
+msgstr "%d gertaera"
+
+#: templates/view/view.inc:126
+#, php-format
+msgid "%d times"
+msgstr "%d aldiz"
+
+#: templates/edit/edit_timespan.inc:120
+#, php-format
+msgid "%s Day(s) %s Hour(s) %s Minutes"
+msgstr "%s egun %s ordu %s minutu"
+
+#: lib/Driver.php:2302
+#, php-format
+msgid "%s attendees"
+msgstr "%s parte-hartzaile"
+
+#: data.php:310
+#, php-format
+msgid "%s file successfully imported"
+msgstr "%s fitxategi ondo inportatu dira"
+
+#: lib/Kronolith.php:368 lib/Forms/DeleteCalendar.php:85
+#, php-format
+msgid "%s's Calendar"
+msgstr "%s(r)en Egutegia"
+
+#: templates/contacts/contacts.inc:178
+msgid "* Add these by clicking Add *"
+msgstr "* Gehitu hauek Gehitu sakatuz *"
+
+#: templates/contacts/contacts.inc:163
+msgid "* Please select address(es) *"
+msgstr "* Hautatu helbidea(k) *"
+
+#: templates/edit/edit.inc:211
+#, php-format
+msgid ", %d times"
+msgstr ", %d aldiz"
+
+#: lib/Driver.php:2301
+msgid "1 attendee"
+msgstr "1. parte-hartzailea"
+
+#: templates/search/header.inc:4
+msgid "1 event"
+msgstr "1. gertaera"
+
+#: config/prefs.php.dist:160
+msgid "1 hour"
+msgstr "1 ordu"
+
+#: config/prefs.php.dist:157
+msgid "15 minutes"
+msgstr "15 minutu"
+
+#: config/prefs.php.dist:158
+msgid "20 minutes"
+msgstr "20 minutu"
+
+#: config/prefs.php.dist:159
+msgid "30 minutes"
+msgstr "30 minutu"
+
+#: templates/data/export.inc:118 templates/data/export.inc:203
+msgid "AM"
+msgstr "AM"
+
+#: lib/Kronolith.php:1215
+msgid "Accepted"
+msgstr "Onartua"
+
+#: templates/search/search.inc:9
+msgid "Ad_vanced Search"
+msgstr "_Bilaketa aurreratua"
+
+#: templates/contacts/contacts.inc:172
+msgid "Add"
+msgstr "Gehitu"
+
+#: templates/edit/edit.inc:23
+msgid "Add Event"
+msgstr "Gehitu gertaera"
+
+#: new.php:71
+msgid "Add a new event"
+msgstr "Gehitu gertaera berria"
+
+#: templates/attendees/attendees.inc:85
+msgid "Add attendees"
+msgstr "Gehitu parte-hartzaileak"
+
+#: templates/prefs/sourceselect.inc:298
+msgid "Add source"
+msgstr "Gehitu iturburua"
+
+#: templates/contacts/contacts.inc:198
+msgid "Add to attendees"
+msgstr "Gehitu parte-hartzaileetan"
+
+#: contacts.php:76 templates/contacts/contacts.inc:139
+#: templates/attendees/attendees.inc:92
+msgid "Address Book"
+msgstr "Helbide-liburua"
+
+#: config/prefs.php.dist:75
+msgid "Address Books"
+msgstr "Helbide-liburuak"
+
+#: templates/search/search_advanced.inc:12 templates/search/search.inc:9
+msgid "Advanced Search"
+msgstr "Bilaketa aurreratua"
+
+#: templates/view/view.inc:49
+msgid "Alarm"
+msgstr "Alarma"
+
+#: lib/Driver.php:2265
+#, php-format
+msgid "Alarm %d days before"
+msgstr "Alarma %d egun lehenago"
+
+#: lib/Driver.php:2270
+#, php-format
+msgid "Alarm %d hours before"
+msgstr "Alarma %d ordu lehenago"
+
+#: lib/Driver.php:2275
+#, php-format
+msgid "Alarm %d minutes before"
+msgstr "Alarma %d minutu lehenago"
+
+#: lib/Driver.php:2260
+#, php-format
+msgid "Alarm %d weeks before"
+msgstr "Alarma %d aste lehenago"
+
+#: lib/Driver.php:2264
+msgid "Alarm 1 day before"
+msgstr "Alarma 1 egun lehenago"
+
+#: lib/Driver.php:2269
+msgid "Alarm 1 hour before"
+msgstr "Alarma 1 ordu lehenago"
+
+#: lib/Driver.php:2274
+msgid "Alarm 1 minute before"
+msgstr "Alarma 1 minutu lehenago"
+
+#: lib/Driver.php:2259
+msgid "Alarm 1 week before"
+msgstr "Alarma 1 aste lehenago"
+
+#: data.php:61
+msgid "Alarm Date"
+msgstr "Alarma-data"
+
+#: data.php:60
+msgid "Alarm Span (minutes)"
+msgstr "Alarma-bitartea (minutuak)"
+
+#: data.php:62
+msgid "Alarm Time"
+msgstr "Alarma-ordua"
+
+#: templates/prefs/default_alarm_management.inc:24 templates/edit/edit.inc:166
+msgid "Alarm Unit"
+msgstr "Alarma-unitatea"
+
+#: templates/prefs/default_alarm_management.inc:22 templates/edit/edit.inc:164
+msgid "Alarm Value"
+msgstr "Alarma-balioa"
+
+#: templates/edit/edit.inc:159
+msgid "Alarm enabled"
+msgstr "Alarma gaituta"
+
+#: templates/delete/delete.inc:27 templates/edit/edit.inc:39
+msgid "All"
+msgstr "Denak"
+
+#: lib/FBView.php:129 lib/FBView.php:132 lib/FBView.php:135
+msgid "All Attendees"
+msgstr "Parte-hartzaile guztiak"
+
+#: templates/perms/perms.inc:51
+msgid "All Authenticated Users"
+msgstr "Erabiltzaile autentifikatu guztiak"
+
+#: lib/Block/month.php:43
+msgid "All Calendars"
+msgstr "Egutegi guztiak"
+
+#: templates/search/search.inc:57
+msgid "All Future"
+msgstr "Etorkizuneko guztiak"
+
+#: templates/search/search.inc:51
+msgid "All Past"
+msgstr "Lehenaldiko guztiak"
+
+#: lib/Block/prevmonthlist.php:27 lib/Block/month.php:25
+#: lib/Block/monthlist.php:30 lib/Block/summary.php:28
+msgid "All Visible"
+msgstr "Denak ikusgai"
+
+#: templates/edit/edit_timespan.inc:119 lib/Driver.php:2372
+#: lib/Scheduler/kronolith.php:445 lib/Scheduler/kronolith.php:458
+#: lib/Views/Day.php:99 lib/Views/Day.php:102 lib/Views/Week.php:149
+#: lib/Views/Week.php:156 lib/Views/Year.php:158 lib/Block/month.php:187
+msgid "All day"
+msgstr "Egun osokoa"
+
+#: templates/view/view.inc:36 lib/Block/summary.php:170
+msgid "All day event"
+msgstr "Egun osoko gertaera"
+
+#: templates/data/export.inc:33
+msgid "All events"
+msgstr "Gertaera guztiak"
+
+#: lib/Maintenance/Task/purge_events.php:72
+#, php-format
+msgid "All of your events older than %d days will be permanently deleted."
+msgstr "%d egun baino gehiago dituzten gertaera guztiak betiko ezabatuko dira."
+
+#: lib/api.php:811 lib/api.php:823
+msgid "Already Exists"
+msgstr "Badago lehendik"
+
+#: templates/search/search_advanced.inc:44
+#: templates/search/search_advanced.inc:65 lib/Kronolith.php:1308
+msgid "Any"
+msgstr "Edozein"
+
+#: templates/javascript/goto.js:71
+msgid "April"
+msgstr "Apirila"
+
+#: templates/edit/edit_timespan.inc:36 templates/edit/edit_timespan.inc:90
+#: templates/data/export.inc:85 templates/data/export.inc:176
+msgid "At"
+msgstr "-"
+
+#: lib/Kronolith.php:1536
+msgid ""
+"Attached is an iCalendar file with more information about the event. If your "
+"mail client supports iTip requests you can use this file to easily update "
+"your local copy of the event."
+msgstr ""
+"iCalendar fitxategi bat eransten da, gertaerari buruzko informazio "
+"gehiagorekin. Zure posta-bezeroak iTip eskaerak onartzen baditu, fitxategi "
+"hau erabil dezakezu gertaeraren kopia lokala erraz eguneratzeko."
+
+#: perms.php:45
+msgid "Attempt to edit a non-existent share."
+msgstr "Ez dagoen baliabide partekatu bat editatzen saiatu zara."
+
+#: templates/attendees/attendees.inc:48 templates/attendees/attendees.inc:60
+#: templates/view/view.inc:174
+msgid "Attendance"
+msgstr "Parte-hartzea"
+
+#: templates/attendees/attendees.inc:47 templates/view/view.inc:173
+msgid "Attendee"
+msgstr "Parte-hartzailea"
+
+#: templates/view/view.inc:170 templates/edit/edit.inc:193
+msgid "Attendees"
+msgstr "Parte-hartzaileak"
+
+#: lib/Kronolith.php:1530
+#, php-format
+msgid "Attendees: %s"
+msgstr "Parte-hartzaileak: %s"
+
+#: templates/javascript/goto.js:75
+msgid "August"
+msgstr "Abuztua"
+
+#: templates/prefs/sourceselect.inc:291 templates/prefs/sourceselect.inc:293
+msgid "Available Address books:"
+msgstr "Helbide-liburu erabilgarriak:"
+
+#: templates/search/search_advanced.inc:10 templates/search/search.inc:11
+msgid "Basic Search"
+msgstr "Oinarrizko bilaketa"
+
+#: config/keywords.php.dist:17
+msgid "Birthday"
+msgstr "Urtebetetzea"
+
+#: lib/FBView.php:90 lib/FBView.php:112 templates/fbview/legend.html:9
+msgid "Busy"
+msgstr "Lanpetuta"
+
+#: templates/search/search_advanced.inc:37
+msgid "C_alendar"
+msgstr "E_gutegia"
+
+#: templates/edit/edit.inc:67
+msgid "Cal_endar"
+msgstr "_Egutegia"
+
+#: templates/calendar_list.php:24 lib/Block/prevmonthlist.php:21
+#: lib/Block/month.php:22 lib/Block/monthlist.php:21 lib/Block/summary.php:22
+msgid "Calendar"
+msgstr "Egutegia"
+
+#: templates/panel.inc:6
+msgid "Calendar Information"
+msgstr "Egutegi-informazioa"
+
+#: templates/calendar_list.php:21
+msgid "Calendar List"
+msgstr "Egutegi-zerrenda"
+
+#: lib/Block/summary.php:3
+msgid "Calendar Summary"
+msgstr "Egutegi-laburpena"
+
+#: data.php:254
+msgid "Calendar successfully purged."
+msgstr "Egutegia behar bezala borratu da betiko."
+
+#: templates/panel.inc:23 templates/panel.inc:24 config/prefs.php.dist:27
+#: config/prefs.php.dist:35 config/prefs.php.dist:66
+msgid "Calendars"
+msgstr "Egutegiak"
+
+#: templates/calendar_titles.inc:8
+msgid "Calendars Printed: "
+msgstr "Egutegiak inprimatuta: "
+
+#: data.php:270
+msgid "Can't create a new event."
+msgstr "Ezin da gertaera berria sortu."
+
+#: templates/delete/one.inc:25 templates/delete/delete.inc:28
+#: templates/edit/edit.inc:51 templates/edit/edit.inc:384
+#: lib/Forms/UnsubscribeRemoteCalendar.php:39
+#: lib/Forms/UnsubscribeRemoteCalendar.php:45 lib/Forms/DeleteCalendar.php:45
+#: lib/Forms/DeleteCalendar.php:51
+msgid "Cancel"
+msgstr "Utzi"
+
+#: lib/Kronolith.php:1191
+msgid "Cancelled"
+msgstr "Bertan behera utzita"
+
+#: lib/Kronolith.php:1497
+#, php-format
+msgid "Cancelled: %s"
+msgstr "Bertan behera utzita: %s"
+
+#: lib/Driver/kolab.php:1407
+#, php-format
+msgid "Cannot delete event: %s"
+msgstr "Ezin da gertaera ezabatu: %s"
+
+#: templates/search/search_advanced.inc:58 templates/edit/edit.inc:94
+msgid "Categor_y"
+msgstr "_Kategoria"
+
+#: data.php:64 templates/search/event_headers.inc:4 templates/view/view.inc:6
+msgid "Category"
+msgstr "Kategoria"
+
+#: templates/calendar_list.php:52 calendars/index.php:69
+msgid "Change Permissions"
+msgstr "Aldatu baimenak"
+
+#: config/prefs.php.dist:58
+msgid ""
+"Choose how you want to be notified about event changes, event alarms and "
+"upcoming events."
+msgstr ""
+"Aukeratu nola jaso nahi dituzun gertaera-aldaketen, gertaera-alarmen eta "
+"hurrengo gertaeren jakinarazpenak."
+
+#: config/prefs.php.dist:388
+msgid "Choose how you want to receive reminders for events with alarms:"
+msgstr "Aukeratu nola jaso nahi dituzun alarmadun gertaeren abisuak:"
+
+#: config/prefs.php.dist:345
+msgid ""
+"Choose if you want to be notified of new, edited, and deleted events by "
+"email:"
+msgstr ""
+"Aukeratu gertaera berrien, editatuen eta ezabatuen berri posta elektronikoz "
+"ematea nahi duzun ala ez:"
+
+#: config/prefs.php.dist:358
+msgid "Choose if you want to receive daily agenda email reminders:"
+msgstr ""
+"Aukeratu eguneko agendako abisuak jaso nahi dituzun ala ez posta elektroniko "
+"bidez:"
+
+#: config/prefs.php.dist:379
+msgid "Choose if you want to receive reminders for events with alarms:"
+msgstr "Aukeratu alarmadun gertaeren abisuak jaso nahi dituzun ala ez:"
+
+#: templates/prefs/fb_cals_select.inc:28
+msgid "Choose the calendars to include in the above Free/Busy URL:"
+msgstr "Aukeratu goiko libre/lanpetuta URLan sartu beharreko egutegiak:"
+
+#: config/prefs.php.dist:445
+msgid "Choose the calendars to include when generating Free/Busy URLs:"
+msgstr "Aukeratu libre/lanpetuta URLak sortzean sartu beharreko egutegiak:"
+
+#: templates/prefs/sourceselect.inc:287
+msgid "Choose the order of address books to search when expanding addresses."
+msgstr ""
+"Aukeratu helbideak hedatzean bilaketak egiteko erabiliko den helbide-"
+"liburuen ordena."
+
+#: config/prefs.php.dist:194
+msgid "Choose the views to show event locations in:"
+msgstr "Aukeratu gertaera-kokalekuak erakusteko ikuspegiak:"
+
+#: config/prefs.php.dist:182
+msgid "Choose the views to show event start and end times in:"
+msgstr ""
+"Aukeratu gertaeraren hasiera- eta amaiera-orduak erakusteko ikuspegiak:"
+
+#: config/prefs.php.dist:37
+msgid "Choose which holidays to display"
+msgstr "Aukeratu zein opor-egun bistaratuko diren."
+
+#: config/prefs.php.dist:29
+msgid "Choose your default calendar."
+msgstr "Aukeratu egutegi lehenetsia."
+
+#: templates/attendees/attendees.inc:102
+msgid "Clear all attendees"
+msgstr "Garbitu parte-hartzaile guztiak"
+
+#: templates/prefs/sourceselect.inc:317
+msgid ""
+"Click on one of your selected address books and then select all fields to "
+"search."
+msgstr ""
+"Egin klik hautatutako helbide-liburuetako batean, eta ondoren hautatu "
+"bilaketa egiteko eremu guztiak."
+
+#: templates/calendar_list.php:38 templates/calendar_list.php:39
+#: templates/calendar_list.php:48 templates/calendar_list.php:49
+msgid "Click or copy this URL to display this calendar"
+msgstr "Egin klik edo kopiatu URLa egutegi hau bistaratzeko "
+
+#: templates/javascript_defs.php:17
+msgid "Close"
+msgstr "Itxi"
+
+#: templates/perms/perms.inc:9
+msgid "Close Window"
+msgstr "Itxi leihoa"
+
+#: templates/contacts/contacts.inc:199
+msgid "Close window"
+msgstr "Itxi leihoa"
+
+#: data.php:30 templates/data/import.inc:13
+msgid "Comma separated values"
+msgstr "Komaz bereizitako balioak"
+
+#: config/prefs.php.dist:87
+msgid "Confirm deletion of events?"
+msgstr "Gertaerak ezabatzea berretsi?"
+
+#: lib/Kronolith.php:1188
+msgid "Confirmed"
+msgstr "Berretsita"
+
+#: templates/prefs/fb_cals_select.inc:6
+msgid "Copy this URL for use wherever you need your Free/Busy URL:"
+msgstr ""
+"Kopiatu URL hau, libre/lanpetuta URLa behar duzun guztietan erabiltzeko:"
+
+#: lib/base.php:103 lib/base.php:114
+msgid "Could not execute maintenance operations."
+msgstr "Ezin izan dira mantentze-eragiketak exekutatu."
+
+#: lib/Kronolith.php:481
+#, php-format
+msgid "Could not open %s."
+msgstr "Ezin izan da %s ireki."
+
+#: lib/Forms/CreateCalendar.php:39
+msgid "Create"
+msgstr "Sortu"
+
+#: lib/Forms/CreateCalendar.php:34
+msgid "Create Calendar"
+msgstr "Sortu egutegia"
+
+#: templates/week/head.inc:29 lib/Views/Day.php:99 lib/Views/Day.php:261
+#: lib/Views/Month.php:173
+msgid "Create a New Event"
+msgstr "Sortu gertaera berria"
+
+#: templates/calendar_list.php:11
+msgid "Create a new Local Calendar"
+msgstr "Sortu egutegi lokal berria"
+
+#: templates/view/view.inc:76
+msgid "Created"
+msgstr "Sortua"
+
+#: templates/delete/delete.inc:25 templates/edit/edit.inc:37
+msgid "Current"
+msgstr "Unekoa"
+
+#: lib/Recurrence.php:199
+msgid "Daily"
+msgstr "Egunero"
+
+#: templates/view/view.inc:98 templates/edit/edit.inc:226
+msgid "Daily: Recurs every"
+msgstr "Egunero: Errepikatu"
+
+#: attendees.php:203 lib/Kronolith.php:1846 lib/Block/tree_menu.php:21
+#: config/prefs.php.dist:96
+msgid "Day"
+msgstr "Eguna"
+
+#: templates/prefs/default_alarm_management.inc:28 templates/view/view.inc:58
+#: templates/edit/edit.inc:170
+msgid "Day(s)"
+msgstr "egunez behin"
+
+#: lib/Kronolith.php:1896
+msgid "De_lete"
+msgstr "E_zabatu"
+
+#: templates/javascript/goto.js:79
+msgid "December"
+msgstr "Abendua"
+
+#: lib/Kronolith.php:1218
+msgid "Declined"
+msgstr "Ezetsia"
+
+#: templates/prefs/default_alarm_management.inc:21
+msgid "Default Alarm Setting:"
+msgstr "Alarma-ezarpen lehenetsia:"
+
+#: config/prefs.php.dist:28
+msgid "Default Calendar"
+msgstr "Egutegi lehenetsia"
+
+#: templates/perms/perms.inc:57 templates/perms/perms.inc:81
+#: templates/perms/perms.inc:98 templates/perms/perms.inc:122
+#: templates/perms/perms.inc:139 templates/perms/perms.inc:163
+#: templates/perms/perms.inc:180 templates/perms/perms.inc:208
+#: templates/perms/perms.inc:248 templates/perms/perms.inc:279
+#: templates/perms/perms.inc:297 templates/perms/perms.inc:321
+#: templates/perms/perms.inc:355
+msgid "Delegate"
+msgstr "Delegatu"
+
+#: templates/calendar_list.php:54 templates/delete/one.inc:24
+#: templates/perms/perms.inc:56 templates/perms/perms.inc:77
+#: templates/perms/perms.inc:97 templates/perms/perms.inc:118
+#: templates/perms/perms.inc:138 templates/perms/perms.inc:159
+#: templates/perms/perms.inc:179 templates/perms/perms.inc:204
+#: templates/perms/perms.inc:244 templates/perms/perms.inc:275
+#: templates/perms/perms.inc:296 templates/perms/perms.inc:317
+#: templates/perms/perms.inc:351 calendars/index.php:70 lib/Driver.php:1343
+#: lib/Driver.php:2331 lib/Forms/DeleteCalendar.php:45
+msgid "Delete"
+msgstr "Ezabatu"
+
+#: lib/Driver.php:2330 lib/Views/DeleteEvent.php:29
+#: lib/Forms/DeleteCalendar.php:40
+#, php-format
+msgid "Delete %s"
+msgstr "Ezabatu %s"
+
+#: lib/Driver.php:1342
+#, php-format
+msgid "Delete exception on %s"
+msgstr "Ezabatu %s(e)ko salbuespena"
+
+#: lib/Maintenance/Task/purge_events.php:59
+#, php-format
+msgid "Deleted %d event older than %d days."
+msgid_plural "Deleted %d events older than %d days."
+msgstr[0] "%d gertaera ezabatu da, %d egun baino lehenagokoa."
+msgstr[1] "%d gertaera ezabatu dira, %d egun baino lehenagokoak."
+
+#: templates/search/search_advanced.inc:101 templates/search/search.inc:26
+#: templates/edit/edit.inc:180
+msgid "Descri_ption"
+msgstr "Azal_pena"
+
+#: data.php:63 templates/view/view.inc:157 lib/Forms/EditCalendar.php:44
+#: lib/Forms/CreateCalendar.php:37
+msgid "Description"
+msgstr "Azalpena"
+
+#: templates/contacts/contacts.inc:187
+msgid "Display"
+msgstr "Bistaratu"
+
+#: config/prefs.php.dist:9 config/prefs.php.dist:20
+msgid "Display Options"
+msgstr "Bistaratzeko aukerak"
+
+#: templates/calendar_list.php:26
+msgid "Display URL"
+msgstr "Bistaratu URLa"
+
+#: lib/Kronolith.php:1156
+msgid "Does not recur"
+msgstr "Ez da errepikatzen"
+
+#: config/prefs.php.dist:366
+msgid ""
+"Don't send me a notification if I've added, changed or deleted the event?"
+msgstr ""
+"Ez bidali jakinarazpenik gertaera bat gehitu, aldatu edo ezabatzen dudanean?"
+
+#: lib/Kronolith.php:719
+#, php-format
+msgid "Due: %s"
+msgstr "Mugaeguna: %s"
+
+#: templates/edit/edit_timespan.inc:112
+msgid "Duration"
+msgstr "Iraupena"
+
+#: lib/Driver.php:2038
+msgid "Duration Day"
+msgstr "Iraupena (egun)"
+
+#: lib/Driver.php:2050
+msgid "Duration Hour"
+msgstr "Iraupena (ordu)"
+
+#: lib/Driver.php:2061
+msgid "Duration Minute"
+msgstr "Iraupena (minutu)"
+
+#: templates/calendar_list.php:40 templates/calendar_list.php:50
+#: templates/perms/perms.inc:55 templates/perms/perms.inc:73
+#: templates/perms/perms.inc:96 templates/perms/perms.inc:114
+#: templates/perms/perms.inc:137 templates/perms/perms.inc:155
+#: templates/perms/perms.inc:178 templates/perms/perms.inc:200
+#: templates/perms/perms.inc:240 templates/perms/perms.inc:271
+#: templates/perms/perms.inc:295 templates/perms/perms.inc:313
+#: templates/perms/perms.inc:347 calendars/index.php:68 lib/Driver.php:2324
+msgid "Edit"
+msgstr "Editatu"
+
+#: templates/attendees/attendees.inc:57 lib/Driver.php:2323
+#: lib/Views/EditEvent.php:29 lib/Forms/EditRemoteCalendar.php:34
+#: lib/Forms/EditCalendar.php:40
+#, php-format
+msgid "Edit %s"
+msgstr "Editatu %s"
+
+#: templates/edit/edit.inc:202
+msgid "Edit Attendees"
+msgstr "Editatu parte-hartzaileak"
+
+#: perms.php:255
+msgid "Edit Permissions"
+msgstr "Editatu baimenak"
+
+#: perms.php:257
+#, php-format
+msgid "Edit Permissions for %s"
+msgstr "Editatu %s(r)en baimenak"
+
+#: templates/attendees/attendees.inc:85
+msgid "Edit attendee"
+msgstr "Editatu parte-hartzailea"
+
+#: attendees.php:274
+msgid "Edit attendees"
+msgstr "Editatu parte-hartzaileak"
+
+#: templates/category_legend.inc:20
+msgid "Edit categories and colors"
+msgstr "Editatu kategoriak eta koloreak"
+
+#: templates/perms/perms.inc:11
+#, php-format
+msgid "Edit permissions for %s"
+msgstr "Editatu %s(r)en baimenak"
+
+#: templates/contacts/contacts.inc:190
+msgid "Email Address"
+msgstr "Helbide elektronikoa"
+
+#: templates/edit/edit_timespan.inc:57
+msgid "En_d"
+msgstr "A_maitu"
+
+#: data.php:58
+msgid "End Date"
+msgstr "Amaiera-data"
+
+#: templates/data/export.inc:161 lib/Driver.php:2009
+msgid "End Day"
+msgstr "Amaiera (egun)"
+
+#: templates/data/export.inc:178 lib/Driver.php:2022
+msgid "End Hour"
+msgstr "Amaiera (ordu)"
+
+#: templates/data/export.inc:190 lib/Driver.php:2033
+msgid "End Minute"
+msgstr "Amaiera (minutu)"
+
+#: templates/data/export.inc:148 lib/Driver.php:2000
+msgid "End Month"
+msgstr "Amaiera (hilabete)"
+
+#: templates/search/event_headers.inc:8 templates/view/view.inc:42
+#: templates/data/export.inc:125
+msgid "End On"
+msgstr "Amaitu"
+
+#: data.php:59
+msgid "End Time"
+msgstr "Amaiera-ordua"
+
+#: templates/data/export.inc:134 lib/Driver.php:1989
+msgid "End Year"
+msgstr "Amaiera (urte)"
+
+#: attendees.php:253
+#, php-format
+msgid "Error retrieving free/busy information for %s: %s"
+msgstr "Errorea gertatu da %s(r)en libre/lanpetuta informazioa eskuratzean: %s"
+
+#: attendees.php:230
+#, php-format
+msgid "Error retrieving your free/busy information: %s"
+msgstr "Errorea gertatu da zure libre/lanpetuta informazioa eskuratzean: %s"
+
+#: config/prefs.php.dist:44
+msgid "Event Defaults"
+msgstr "Gertaera-lehenespenak"
+
+#: feed/index.php:145
+msgid "Event Status:"
+msgstr "Gertaera-egoera:"
+
+#: lib/Kronolith.php:1693
+msgid "Event added:"
+msgstr "Gertaera gehitu da:"
+
+#: lib/Kronolith.php:1703
+msgid "Event deleted:"
+msgstr "Gertaera ezabatu da:"
+
+#: lib/Kronolith.php:1698
+msgid "Event edited:"
+msgstr "Gertaera editatu da:"
+
+#: lib/Driver.php:1480
+#, php-format
+msgid "Event from %s to %s"
+msgstr "Gertaera: %s - %s"
+
+#: lib/Driver/sql.php:411
+msgid "Event not found"
+msgstr "Gertaera ez da aurkitu"
+
+#: lib/Driver/kolab.php:453 lib/Driver/kolab.php:1192
+#: lib/Driver/kolab.php:1231 lib/Driver/kolab.php:1383
+#, php-format
+msgid "Event not found: %s"
+msgstr "Gertaera ez da aurkitu: %s"
+
+#: config/prefs.php.dist:43 config/prefs.php.dist:49 config/prefs.php.dist:56
+msgid "Events"
+msgstr "Gertaerak"
+
+#: lib/api.php:315
+#, php-format
+msgid "Events from %s"
+msgstr "Honen gertaerak: %s"
+
+#: lib/Driver.php:1074
+msgid "Events must have a start date."
+msgstr "Gertaerek hasiera-data eduki behar dute."
+
+#: lib/Driver.php:1036
+msgid "Events must have a title."
+msgstr "Gertaerek izenburua eduki behar dute."
+
+#: templates/view/view.inc:132 templates/edit/edit.inc:323
+msgid "Exceptions"
+msgstr "Salbuespenak"
+
+#: templates/data/export.inc:209 lib/Kronolith.php:1903
+msgid "Export"
+msgstr "Esportatu"
+
+#: templates/data/export.inc:8
+msgid "Export Calendar"
+msgstr "Esportatu egutegia"
+
+#: templates/panel.inc:59
+msgid "External Events:"
+msgstr "Kanpoko gertaerak:"
+
+#: templates/javascript/goto.js:69
+msgid "February"
+msgstr "Otsaila"
+
+#: templates/prefs/sourceselect.inc:327
+msgid "Fields to search"
+msgstr "Bilatzeko eremuak"
+
+#: templates/contacts/contacts.inc:144
+msgid "Find"
+msgstr "Bilatu"
+
+#: templates/javascript/goto.js:63 templates/edit/edit.inc:239
+#: lib/Views/Year.php:81 lib/Block/month.php:124
+msgid "Fr"
+msgstr "Or"
+
+#: lib/Kronolith.php:1194
+msgid "Free"
+msgstr "Libre"
+
+#: config/prefs.php.dist:67
+msgid "Free/Busy Information"
+msgstr "Libre/lanpetuta informazioa"
+
+#: templates/month/head.inc:21 templates/view/view.inc:105
+#: templates/edit/javascript.inc:71
+msgid "Friday"
+msgstr "Ostirala"
+
+#: templates/delete/delete.inc:26 templates/edit/edit.inc:38
+msgid "Future"
+msgstr "Etorkizunekoa"
+
+#: config/keywords.php.dist:17
+msgid "Game"
+msgstr "Jokoa"
+
+#: templates/search/search_advanced.inc:19
+msgid "General"
+msgstr "Orokorra"
+
+#: lib/Block/summary.php:157
+#, php-format
+msgid "Goto %s"
+msgstr "Joan hona: %s"
+
+#: templates/perms/perms.inc:291
+msgid "Groups"
+msgstr "Taldeak"
+
+#: templates/perms/perms.inc:92
+msgid "Guest Permissions"
+msgstr "Gonbidatu-baimenak"
+
+#: templates/edit/javascript.inc:259
+msgid "Hide"
+msgstr "Ezkutatu"
+
+#: config/prefs.php.dist:36
+msgid "Holidays"
+msgstr "Opor-egunak"
+
+#: templates/prefs/default_alarm_management.inc:27 templates/view/view.inc:61
+#: templates/edit/edit.inc:169
+msgid "Hour(s)"
+msgstr "orduz behin"
+
+#: config/prefs.php.dist:156
+msgid "How long should the time slots on the day and week views be?"
+msgstr "Eguneko eta asteko ikuspegietako ordu-bitarteen luzera?"
+
+#: config/prefs.php.dist:397
+msgid "How many days of Free/Busy information should be generated?"
+msgstr "eguneko libre/lanpetuta informazioa sortuko da"
+
+#: lib/Kronolith.php:1540
+#, php-format
+msgid ""
+"If your email client doesn't support iTip requests you can use one of the "
+"following links to accept or decline the event.\n"
+"\n"
+"To accept the event:\n"
+"%s\n"
+"\n"
+"To accept the event tentatively:\n"
+"%s\n"
+"\n"
+"To decline the event:\n"
+"%s\n"
+msgstr ""
+"Zure posta-bezeroak ez baditu iTip eskaerak onartzen, ondoko esteketako bat "
+"erabil dezakezu gertaera onartu edo ukatzeko.\n"
+"\n"
+"Gertaera onartzeko:\n"
+"%s\n"
+"\n"
+"Gertaera behin-behinean onartzeko:\n"
+"%s\n"
+"\n"
+"Gertaera ukatzeko:\n"
+"%s\n"
+
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Calendar, Step %d"
+msgstr "Inportatu egutegia. %d urratsa"
+
+#: data.php:316
+msgid "Import/Export Calendar"
+msgstr "Inportatu/esportatu egutegia"
+
+#: templates/perms/perms.inc:174
+msgid "Individual Users"
+msgstr "Erabiltzaile indibidualak"
+
+#: templates/javascript/goto.js:68
+msgid "January"
+msgstr "Urtarrila"
+
+#: templates/javascript/goto.js:74
+msgid "July"
+msgstr "Uztaila"
+
+#: templates/javascript/goto.js:73
+msgid "June"
+msgstr "Ekaina"
+
+#: data.php:66 templates/view/view.inc:140 templates/edit/edit.inc:338
+msgid "Keywords"
+msgstr "Gako-hitzak"
+
+#: templates/calendar_list.php:25
+msgid "Kind"
+msgstr "Mota"
+
+#: templates/search/search.inc:53
+msgid "Last 24 hours"
+msgstr "Azken 24 orduak"
+
+#: templates/view/view.inc:83
+msgid "Last Modified"
+msgstr "Aldatze-data"
+
+#: templates/month/head_side_by_side.inc:5 templates/month/head.inc:5
+msgid "Last Month"
+msgstr "Azken hilabetea"
+
+#: templates/year/head.inc:3
+msgid "Last Year"
+msgstr "Azken urtea"
+
+#: templates/search/search.inc:52 templates/week/head.inc:6
+msgid "Last week"
+msgstr "Azken astea"
+
+#: templates/calendar_info.php:38
+msgid "Learn how to embed other calendar views."
+msgstr "Ikusi nola kapsulatu beste egutegi-ikuspegi batzuk."
+
+#: templates/data/export.inc:29
+msgid "Limit the time span to export:"
+msgstr "Mugatu esportatzeko denbora-bitartea:"
+
+#: config/prefs.php.dist:408
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+"Zerrendatu kontaktu guztiak kontaktuen pantaila kargatzean? (desgaituz gero, "
+"esplizituki bilatutako kontaktuak bakarrik ikusiko dituzu)"
+
+#: templates/search/search_advanced.inc:81 templates/edit/edit.inc:101
+msgid "Lo_cation"
+msgstr "_Kokalekua"
+
+#: templates/javascript_defs.php:16
+msgid "Loading ..."
+msgstr "Kargatzen..."
+
+#: templates/attendees/attendees.inc:88
+msgid "Loading..."
+msgstr "Kargatzen..."
+
+#: templates/calendar_list.php:47
+msgid "Local"
+msgstr "Lokala"
+
+#: templates/calendar_info.php:18
+#, php-format
+msgid "Local calendar owned by %s."
+msgstr "%s(r)en egutegi lokala."
+
+#: data.php:65 templates/search/event_headers.inc:5 templates/view/view.inc:14
+#: lib/Driver.php:2354
+msgid "Location"
+msgstr "Kokalekua"
+
+#: lib/Kronolith.php:1521
+#, php-format
+msgid "Location: %s"
+msgstr "Kokalekua: %s"
+
+#: feed/index.php:64
+#, php-format
+msgid "Login required for the requested feed (%s)."
+msgstr "Saioa hastea eskatzen du eskatutako iturriak (%s)."
+
+#: config/prefs.php.dist:50
+msgid "Maintenance"
+msgstr "Mantentzea"
+
+#: templates/calendar_list.php:4 calendars/index.php:74
+msgid "Manage Calendars"
+msgstr "Kudeatu egutegiak"
+
+#: templates/javascript/goto.js:70
+msgid "March"
+msgstr "Martxoa"
+
+#: lib/api.php:143
+msgid "Maximum Number of Events"
+msgstr "Gertaeren gehieneko kopurua"
+
+#: lib/Block/monthlist.php:27 lib/Block/summary.php:25
+msgid "Maximum number of events to display (0 = no limit)"
+msgstr "Bistaratu beharreko gertaeren gehieneko kopurua (0 = mugarik ez)"
+
+#: templates/javascript/goto.js:72
+msgid "May"
+msgstr "Maiatza"
+
+#: lib/Driver.php:2350
+msgid "Me"
+msgstr "Ni"
+
+#: config/keywords.php.dist:17
+msgid "Meeting"
+msgstr "Bilera"
+
+#: lib/Block/tree_alarms.php:3
+msgid "Menu Alarms"
+msgstr "Menu-alarmak"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "Menu-zerrenda"
+
+#: templates/prefs/default_alarm_management.inc:26 templates/view/view.inc:64
+#: templates/edit/edit.inc:168
+msgid "Minute(s)"
+msgstr "minutuz behin"
+
+#: templates/javascript/goto.js:59 templates/edit/edit.inc:235
+#: lib/Views/Year.php:77 lib/Block/month.php:124
+msgid "Mo"
+msgstr "Al"
+
+#: templates/month/head.inc:17 templates/view/view.inc:101
+#: templates/edit/javascript.inc:67 config/prefs.php.dist:120
+msgid "Monday"
+msgstr "Astelehena"
+
+#: attendees.php:206 lib/Kronolith.php:1852 lib/Block/tree_menu.php:24
+#: config/prefs.php.dist:99
+msgid "Month"
+msgstr "Hilabetea"
+
+#: config/prefs.php.dist:179 config/prefs.php.dist:191
+msgid "Month, Week, and Day Views"
+msgstr "Hilabete, aste eta eguneko ikuspegiak"
+
+#: lib/Recurrence.php:202
+msgid "Monthly"
+msgstr "Hilero"
+
+#: templates/view/view.inc:110 templates/view/view.inc:112
+#: templates/edit/edit.inc:246 templates/edit/edit.inc:252
+msgid "Monthly: Recurs every"
+msgstr "Hilero: Errepikatu"
+
+#: lib/Block/monthlist.php:24
+msgid "Months Ahead"
+msgstr "Datozen hilabeteak"
+
+#: lib/Block/prevmonthlist.php:24
+msgid "Months Before"
+msgstr "Aurreko hilabeteak"
+
+#: templates/prefs/sourceselect.inc:312
+msgid "Move down"
+msgstr "Eraman behera"
+
+#: templates/prefs/sourceselect.inc:310
+msgid "Move up"
+msgstr "Eraman gora"
+
+#: lib/api.php:1066
+msgid "Multiple iCalendar components found; only one vEvent is supported."
+msgstr ""
+"iCalendar osagai bat baino gehiago aurkitu dira; vEvent bakarra onartzen da."
+
+#: templates/panel.inc:41
+msgid "My Calendars:"
+msgstr "Nire egutegiak:"
+
+#: templates/prefs/fb_cals_select.inc:2
+msgid "My Free/Busy URL"
+msgstr "Nire libre/lanpetuta URLa"
+
+#: templates/contacts/contacts.inc:189
+#: lib/Forms/SubscribeRemoteCalendar.php:36
+#: lib/Forms/EditRemoteCalendar.php:36 lib/Forms/EditCalendar.php:43
+#: lib/Forms/CreateCalendar.php:36
+msgid "Name"
+msgstr "Izena"
+
+#: lib/Block/tree_menu.php:20
+msgid "New Event"
+msgstr "Gertaera berria"
+
+#: lib/Kronolith.php:402
+#, php-format
+msgid ""
+"New calendar created and automatically shared with the following group(s): %"
+"s."
+msgstr ""
+"Egutegi berria sortu da, eta automatikoki partekatu da ondoko taldeekin: %s."
+
+#: templates/data/import.inc:33
+msgid "Next"
+msgstr "Hurrengoa"
+
+#: templates/search/search.inc:55
+msgid "Next 24 hours"
+msgstr "Hurrengo 24 orduak"
+
+#: lib/FBView/day.php:28
+msgid "Next Day"
+msgstr "Hurrengo eguna"
+
+#: templates/month/head_side_by_side.inc:7 templates/month/head.inc:7
+#: lib/FBView/month.php:31
+msgid "Next Month"
+msgstr "Hurrengo hilabetea"
+
+#: lib/FBView/week.php:31
+msgid "Next Week"
+msgstr "Hurrengo astea"
+
+#: templates/year/head.inc:5
+msgid "Next Year"
+msgstr "Hurrengo urtea"
+
+#: templates/day/head.inc:5
+msgid "Next day"
+msgstr "Hurrengo eguna"
+
+#: templates/search/search.inc:56 templates/week/head.inc:8
+msgid "Next week"
+msgstr "Hurrengo astea"
+
+#: config/prefs.php.dist:341 config/prefs.php.dist:354
+#: config/prefs.php.dist:375
+msgid "No"
+msgstr "Ez"
+
+#: templates/fbview/legend.html:13
+msgid "No Information"
+msgstr "Informaziorik ez"
+
+#: templates/view/view.inc:69 templates/edit/edit.inc:163
+msgid "No alarm"
+msgstr "Alarmarik ez"
+
+#: templates/attendees/attendees.inc:54
+msgid "No attendees"
+msgstr "Parte-hartzailerik ez"
+
+#: lib/api.php:1204
+msgid ""
+"No attendees have been updated because none of the provided email addresses "
+"have been found in the event's attendees list."
+msgstr ""
+"Ez da parte-hartzailerik eguneratu, emandako helbide elektronikoak ez "
+"direlako aurkitu gertaeraren parte-hartzaileen zerrendan."
+
+#: lib/Kronolith.php:2095
+msgid "No calendars are available to guests."
+msgstr "Ez dago egutegi erabilgarririk gonbidatuentzat."
+
+#: lib/Driver/sql.php:439
+msgid "No calendars to search"
+msgstr "Ez dago egutegirik bilatzeko"
+
+#: templates/view/view.inc:126 templates/edit/edit.inc:284
+msgid "No end date"
+msgstr "Ez dago amaiera-datarik"
+
+#: lib/Block/prevmonthlist.php:170 lib/Block/monthlist.php:177
+#: lib/Block/summary.php:209
+msgid "No events to display"
+msgstr "Ez dago gertaerarik bistaratzeko"
+
+#: lib/FreeBusy.php:234
+#, php-format
+msgid "No free/busy information found at the free/busy url of %s."
+msgstr ""
+"Ez da libre/lanpetuta informaziorik aurkitu %s(r)en libre/lanpetuta URLan."
+
+#: lib/Storage/kolab.php:74
+#, php-format
+msgid "No free/busy information is available for %s"
+msgstr "Ez dago %s(r)en libre/lanpetuta informazio erabilgarririk."
+
+#: lib/FreeBusy.php:235
+#, php-format
+msgid "No free/busy url found for %s."
+msgstr "Ez da %s(r)en libre/lanpetuta URLa aurkitu."
+
+#: lib/api.php:796 lib/api.php:836 lib/api.php:1073
+msgid "No iCalendar data was found."
+msgstr "Ez da aurkitu iCalendar daturik."
+
+#: templates/edit/edit.inc:221 lib/Recurrence.php:198 lib/Driver.php:1327
+msgid "No recurrence"
+msgstr "Errepikapenik ez"
+
+#: lib/FreeBusy.php:166
+msgid "No valid email address found"
+msgstr "Ez da baliozko helbide elektronikorik aurkitu"
+
+#: templates/prefs/sourceselect.inc:35 lib/Kronolith.php:1225
+#: lib/Kronolith.php:1246
+msgid "None"
+msgstr "Bat ere ez"
+
+#: lib/Views/Event.php:26 lib/Views/DeleteEvent.php:27
+#: lib/Views/EditEvent.php:27
+msgid "Not Found"
+msgstr "Ez da aurkitu"
+
+#: lib/Storage/sql.php:157
+msgid "Not found"
+msgstr "Ez da aurkitu"
+
+#: config/prefs.php.dist:57
+msgid "Notifications"
+msgstr "Jakinarazpenak"
+
+#: templates/javascript/goto.js:78
+msgid "November"
+msgstr "Azaroa"
+
+#: templates/search/search.inc:54
+msgid "Now"
+msgstr "Orain"
+
+#: templates/perms/perms.inc:133
+msgid "Object Creator"
+msgstr "Objektu-sortzailea"
+
+#: templates/javascript/goto.js:77
+msgid "October"
+msgstr "Urria"
+
+#: templates/edit/edit_timespan.inc:13 templates/edit/edit_timespan.inc:62
+msgid "On"
+msgstr "Noiz"
+
+#: config/prefs.php.dist:344 config/prefs.php.dist:357
+#: config/prefs.php.dist:378
+msgid "On all calendars I have read access to"
+msgstr "Irakurtzeko baimena dudan egutegi guztietan"
+
+#: config/prefs.php.dist:343 config/prefs.php.dist:356
+#: config/prefs.php.dist:377
+msgid "On all shown calendars"
+msgstr "Erakutsitako egutegi guztietan"
+
+#: config/prefs.php.dist:342 config/prefs.php.dist:355
+#: config/prefs.php.dist:376
+msgid "On my calendars only"
+msgstr "Nire egutegietan bakarrik"
+
+#: perms.php:57
+msgid ""
+"Only the owner or system administrator may change ownership or owner "
+"permissions for a share"
+msgstr ""
+"Jabeak edo sistema-administratzaileak bakarrik alda ditzake baliabide "
+"partekatu baten jabetza edo jabe-baimenak"
+
+#: lib/Kronolith.php:1243
+msgid "Optional"
+msgstr "Aukerakoa"
+
+#: lib/FBView.php:120
+msgid "Optional Attendees"
+msgstr "Aukerako parte-hartzaileak"
+
+#: templates/perms/perms.inc:256
+msgid "Or enter a user name:"
+msgstr "Edo sartu erabiltzaile-izen bat:"
+
+#: config/prefs.php.dist:74
+msgid "Other Options"
+msgstr "Beste aukera batzuk"
+
+#: lib/FBView.php:155
+msgid "Overview"
+msgstr "Ikuspegi orokorra"
+
+#: templates/perms/perms.inc:22 templates/view/view.inc:28
+msgid "Owner"
+msgstr "Jabea"
+
+#: templates/perms/perms.inc:28 templates/perms/perms.inc:39
+msgid "Owner:"
+msgstr "Jabea:"
+
+#: lib/Driver.php:2349
+#, php-format
+msgid "Owner: %s"
+msgstr "Jabea: %s"
+
+#: templates/data/export.inc:119 templates/data/export.inc:204
+msgid "PM"
+msgstr "PM"
+
+#: lib/Forms/SubscribeRemoteCalendar.php:39
+#: lib/Forms/EditRemoteCalendar.php:39
+msgid "Password"
+msgstr "Pasahitza"
+
+#: templates/view/view.inc:95 templates/edit/edit.inc:216
+msgid "Pattern"
+msgstr "Eredua"
+
+#: templates/delete/one.inc:22
+msgid "Permanently delete this event?"
+msgstr "Gertaera hau betiko ezabatu?"
+
+#: lib/api.php:678 lib/api.php:714 lib/api.php:746 lib/api.php:777
+#: lib/api.php:871 lib/api.php:918 lib/api.php:1013 lib/api.php:1045
+#: lib/api.php:1134 lib/api.php:1194 lib/api.php:1260 lib/api.php:1282
+#: lib/Kronolith.php:1997 lib/Kronolith.php:2016 lib/Kronolith.php:2029
+#: lib/Kronolith.php:2050 lib/Block/prevmonthlist.php:75
+#: lib/Block/month.php:76 lib/Block/monthlist.php:79 lib/Block/summary.php:79
+#: lib/Driver/sql.php:841
+msgid "Permission Denied"
+msgstr "Baimena ukatu da"
+
+#: lib/Forms/DeleteCalendar.php:56
+msgid "Permission denied"
+msgstr "Baimena ukatuta"
+
+#: feed/index.php:45
+#, php-format
+msgid "Permission denied for the requested feed (%s)."
+msgstr "Baimena ukatu da eskatutako iturriarentzat (%s)."
+
+#: lib/Imple/ContactAutoCompleter.php:227
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Konpondu helbide anbiguoak edo baliogabeak."
+
+#: config/prefs.php.dist:21
+msgid "Portal Options"
+msgstr "Atariaren aukerak"
+
+#: templates/fbview/legend.html:11
+msgid "Possible Meeting Time"
+msgstr "Bilera-ordu posiblea"
+
+#: lib/FBView/day.php:24
+msgid "Previous Day"
+msgstr "Aurreko eguna"
+
+#: lib/FBView/month.php:25
+msgid "Previous Month"
+msgstr "Aurreko hilabetea"
+
+#: lib/FBView/week.php:25
+msgid "Previous Week"
+msgstr "Aurreko astea"
+
+#: templates/day/head.inc:3
+msgid "Previous day"
+msgstr "Aurreko eguna"
+
+#: config/prefs.php.dist:180 config/prefs.php.dist:192
+msgid "Print Views"
+msgstr "Inprimatzeko ikuspegiak"
+
+#: lib/Block/prevmonthlist.php:3 lib/Block/prevmonthlist.php:47
+msgid "Prior Events"
+msgstr "Aurreko gertaerak"
+
+#: lib/Driver.php:1476
+#, php-format
+msgid "Private Event from %s to %s"
+msgstr "Gertaera pribatua: %s - %s"
+
+#: lib/Driver.php:2292
+msgid "Private event"
+msgstr "Gertaera pribatua"
+
+#: templates/edit/edit.inc:120
+msgid "Private?"
+msgstr "Pribatua?"
+
+#: config/prefs.php.dist:471
+msgid "Purge old events from your calender?"
+msgstr "Betiko borratu gertaera zaharrak egutegitik?"
+
+#: config/prefs.php.dist:480
+msgid "Purge old events how often:"
+msgstr "Gertaera zaharrak betiko borratzeko maiztasuna:"
+
+#: config/prefs.php.dist:488
+msgid "Purge old events older than this amount of days."
+msgstr "Borratu betiko egun kopuru hau baino gehiagoko gertaera zaharrak."
+
+#: templates/perms/perms.inc:54 templates/perms/perms.inc:69
+#: templates/perms/perms.inc:95 templates/perms/perms.inc:110
+#: templates/perms/perms.inc:136 templates/perms/perms.inc:151
+#: templates/perms/perms.inc:177 templates/perms/perms.inc:196
+#: templates/perms/perms.inc:236 templates/perms/perms.inc:267
+#: templates/perms/perms.inc:294 templates/perms/perms.inc:309
+#: templates/perms/perms.inc:343
+msgid "Read"
+msgstr "Irakurri"
+
+#: lib/Forms/DeleteCalendar.php:43
+#, php-format
+msgid ""
+"Really delete the calendar \"%s\"? This cannot be undone and all data on "
+"this calendar will be permanently removed."
+msgstr ""
+"Ziur zaude \"%s\" ezabatu nahi duzula? Ekintza ezingo da desegin, eta "
+"egutegi honetako datu guztiak betiko ezabatuko dira."
+
+#: lib/Forms/UnsubscribeRemoteCalendar.php:37
+#, php-format
+msgid "Really unsubscribe from the calendar \"%s\" (%s)?"
+msgstr "Ziur zaude \"%s\" (%s) egutegiaren harpidetza kendu nahi duzula?"
+
+#: templates/view/view.inc:125 templates/edit/edit.inc:281
+msgid "Recur Until"
+msgstr "Noiz arte errepikatu"
+
+#: templates/view/view.inc:92 templates/edit/edit.inc:210
+msgid "Recurrence"
+msgstr "Errepikapena"
+
+#: data.php:70
+msgid "Recurrence Data"
+msgstr "Errepikapen-datuak"
+
+#: data.php:68
+msgid "Recurrence End Date"
+msgstr "Errepikapenaren amaiera-data"
+
+#: lib/Driver.php:2104
+msgid "Recurrence End Day"
+msgstr "Errepikapenaren amaiera-eguna"
+
+#: lib/Driver.php:2089
+msgid "Recurrence End Month"
+msgstr "Errepikapenaren amaiera-hilabetea"
+
+#: lib/Driver.php:2072
+msgid "Recurrence End Year"
+msgstr "Errepikapenaren amaiera-urtea"
+
+#: data.php:69
+msgid "Recurrence Interval"
+msgstr "Errepikapenaren bitartea"
+
+#: data.php:67
+msgid "Recurrence Type"
+msgstr "Errepikapen mota"
+
+#: lib/Kronolith.php:1159
+msgid "Recurs daily"
+msgstr "Errepikatu egunero"
+
+#: lib/Kronolith.php:1166
+msgid "Recurs monthly"
+msgstr "Errepikatu hilero"
+
+#: lib/Kronolith.php:1162
+msgid "Recurs weekly"
+msgstr "Errepikatu astero"
+
+#: lib/Kronolith.php:1171
+msgid "Recurs yearly"
+msgstr "Errepikatu urtero"
+
+#: lib/Scheduler/kronolith.php:285
+#, php-format
+msgid "Reminder: %s"
+msgstr "Abisua: %s"
+
+#: templates/calendar_list.php:37
+msgid "Remote"
+msgstr "Urrunekoa"
+
+#: templates/calendar_info.php:5
+msgid "Remote Calendar from: "
+msgstr "Honen urruneko egutegia: "
+
+#: templates/panel.inc:73
+msgid "Remote Calendars:"
+msgstr "Urruneko egutegiak:"
+
+#: templates/contacts/contacts.inc:173
+msgid "Remove"
+msgstr "Kendu"
+
+#: templates/attendees/attendees.inc:57
+#, php-format
+msgid "Remove %s"
+msgstr "Kendu %s"
+
+#: attendees.php:196
+msgid "Remove Attendee"
+msgstr "Kendu parte-hartzailea"
+
+#: templates/prefs/sourceselect.inc:300
+msgid "Remove source"
+msgstr "Kendu iturburua"
+
+#: lib/Driver.php:259
+msgid ""
+"Removing user data is not supported with the current calendar storage "
+"backend."
+msgstr ""
+"Ez da onartzen erabiltzaile-datuak kentzea uneko egutegi-biltegiratzearen "
+"euskarri-moduluarekin."
+
+#: templates/data/import.inc:31
+msgid ""
+"Replace existing calendar with the imported one? <strong>Warning: This "
+"deletes all entries in your current calendar.</strong>"
+msgstr ""
+"Ordeztu lehendik dagoen egutegia inportatutakoarekin? <strong>Kontuz: Uneko "
+"egutegiko sarrera guztiak ezabatuko ditu.</strong>"
+
+#: lib/Kronolith.php:1250
+msgid "Required"
+msgstr "Beharrezkoa"
+
+#: lib/FBView.php:98 lib/FBView.php:140 lib/FBView.php:143 lib/FBView.php:146
+msgid "Required Attendees"
+msgstr "Beharrezko parte-hartzaileak"
+
+#: templates/edit/edit.inc:52 templates/edit/edit.inc:385
+msgid "Reset to Defaults"
+msgstr "Berrezarri lehenetsiak"
+
+#: templates/attendees/attendees.inc:49 templates/view/view.inc:175
+msgid "Response"
+msgstr "Erantzuna"
+
+#: config/prefs.php.dist:147
+msgid ""
+"Restrict day and week views to these time slots, even if there <strong>are</"
+"strong> earlier or later events?"
+msgstr ""
+"Mugatu eguneko eta asteko ikuspegiak ordu-bitarte hauetara, lehenagoko edo "
+"geroagoko gertaerak <strong>badaude</strong> ere?"
+
+#: templates/javascript/goto.js:64 templates/edit/edit.inc:240
+#: lib/Views/Year.php:82 lib/Block/month.php:124
+msgid "Sa"
+msgstr "Lr"
+
+#: templates/month/head.inc:22 templates/view/view.inc:106
+#: templates/edit/javascript.inc:72
+msgid "Saturday"
+msgstr "larunbata"
+
+#: templates/panel.inc:83 lib/Forms/EditRemoteCalendar.php:41
+#: lib/Forms/EditCalendar.php:46
+msgid "Save"
+msgstr "Gorde"
+
+#: templates/perms/perms.inc:366
+#, php-format
+msgid "Save %s"
+msgstr "Gorde %s"
+
+#: templates/edit/edit.inc:40 lib/Kronolith.php:1888
+#: lib/Views/EditEvent.php:79 lib/Views/EditEvent.php:89
+msgid "Save As New"
+msgstr "Gorde berri gisa"
+
+#: templates/attendees/attendees.inc:100
+msgid "Save Attendees"
+msgstr "Gorde parte-hartzaileak"
+
+#: new.php:62 lib/Views/EditEvent.php:82
+msgid "Save Event"
+msgstr "Gorde gertaera"
+
+#: templates/perms/perms.inc:367 templates/attendees/attendees.inc:101
+msgid "Save and Finish"
+msgstr "Gorde eta amaitu"
+
+#: search.php:91 templates/search/search_advanced.inc:113
+#: templates/search/search.inc:65 templates/contacts/contacts.inc:156
+#: lib/Block/tree_menu.php:26
+msgid "Search"
+msgstr "Bilatu"
+
+#: templates/search/header.inc:6
+msgid "Search Results"
+msgstr "Bilaketaren emaitzak"
+
+#: templates/panel.inc:29
+msgid "Search for Calendars:"
+msgstr "Bilatu egutegiak:"
+
+#: templates/contacts/contacts.inc:161
+msgid "Search results"
+msgstr "Bilaketaren emaitzak"
+
+#: lib/Storage.php:131
+msgid "Searching free/busy is not available."
+msgstr "Libre/lanpetuta informazioaren bilaketa ez dago erabilgarri."
+
+#: templates/edit/edit.inc:302 templates/edit/edit_timespan.inc:29
+#: templates/edit/edit_timespan.inc:79
+msgid "Select a date"
+msgstr "Hautatu data"
+
+#: templates/perms/perms.inc:331
+msgid "Select a group to add"
+msgstr "Hautatu gehitu nahi duzun taldea"
+
+#: templates/perms/perms.inc:329
+msgid "Select a group to add:"
+msgstr "Hautatu gehitu nahi duzun taldea:"
+
+#: templates/perms/perms.inc:30
+msgid "Select a new owner:"
+msgstr "Hautatu jabe berria:"
+
+#: templates/perms/perms.inc:218 templates/perms/perms.inc:220
+msgid "Select a user to add:"
+msgstr "Hautatu gehitu nahi duzun erabiltzailea:"
+
+#: config/prefs.php.dist:76
+msgid "Select address book sources for adding and searching for addresses."
+msgstr ""
+"Hautatu helbide-liburuen iturburuak, helbideak gehitzeko eta bilatzeko."
+
+#: templates/prefs/sourceselect.inc:319
+msgid "Select all fields to search when expanding addresses."
+msgstr "Hautatu helbideak zabaltzean bilatzeko eremu guztiak."
+
+#: config/prefs.php.dist:11
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr ""
+"Hautatu berrespen-aukerak, ikuspegiak bistaratzeko moduak, eta aukeratu "
+"ikuspegi lehenetsia."
+
+#: templates/data/import.inc:18
+msgid "Select the calendar to import to:"
+msgstr "Hautatu inportaziorako egutegia:"
+
+#: templates/data/export.inc:19
+msgid "Select the calendar(s) to export from"
+msgstr "Hautatu esportaziorako egutegia(k)"
+
+#: templates/data/export.inc:12
+msgid "Select the export format:"
+msgstr "Hautatu esportazio-formatua:"
+
+#: templates/data/import.inc:27
+msgid "Select the file to import:"
+msgstr "Hautatu inportatu beharreko fitxategia:"
+
+#: config/prefs.php.dist:118
+msgid "Select the first weekday:"
+msgstr "Hautatu lehen asteguna:"
+
+#: templates/data/import.inc:11
+msgid "Select the format of the source file:"
+msgstr "Hautatu iturburu-fitxategiaren formatua:"
+
+#: config/prefs.php.dist:241
+msgid "Select the time span to show:"
+msgstr "Hautatu bistaratzeko denbora-bitartea:"
+
+#: config/prefs.php.dist:100
+msgid "Select the view to display on startup:"
+msgstr "Hautatu abioan bistaratzeko ikuspegia:"
+
+#: config/prefs.php.dist:22
+msgid "Select which events to show in the portal."
+msgstr "Hautatu atarian ikusteko gertaerak."
+
+#: templates/prefs/sourceselect.inc:303 templates/prefs/sourceselect.inc:305
+msgid "Selected Address books:"
+msgstr "Hautatutako helbide-liburuak:"
+
+#: templates/contacts/contacts.inc:176
+msgid "Selected addresses"
+msgstr "Hautatutako helbideak"
+
+#: templates/delete/one.inc:19 templates/delete/delete.inc:21
+msgid "Send a cancel notification to all attendees when deleting this event?"
+msgstr ""
+"Bidali bertan behera utzi dela esateko jakinarazpena parte-hartzaile guztiei "
+"gertaera hau ezabatzean?"
+
+#: templates/view/view.inc:179
+#, php-format
+msgid "Send an email to %s"
+msgstr "Bidali mezua -> %s"
+
+#: templates/edit/edit.inc:377
+msgid "Send invitations to all attendees?"
+msgstr "Bidali gonbidapena parte-hartzaile guztiei?"
+
+#: templates/edit/edit.inc:377
+msgid "Send updates to all attendees?"
+msgstr "Bidali eguneratzeak parte-hartzaile guztiei?"
+
+#: templates/javascript/goto.js:76
+msgid "September"
+msgstr "Iraila"
+
+#: config/prefs.php.dist:45
+msgid "Set default values for new events."
+msgstr "Ezarri balio lehenetsiak gertaera berrientzat."
+
+#: templates/edit/edit_timespan.inc:79
+msgid "Set end date"
+msgstr "Ezarri amaiera-data"
+
+#: config/prefs.php.dist:51
+msgid "Set options for deleting old events."
+msgstr "Ezarri gertaera zaharrak ezabatzeko aukerak."
+
+#: templates/edit/edit.inc:302
+msgid "Set recurrence end date"
+msgstr "Ezarri errepikapenaren amaiera-data"
+
+#: templates/edit/edit_timespan.inc:29
+msgid "Set start date"
+msgstr "Ezarri hasiera-data"
+
+#: config/prefs.php.dist:68
+msgid ""
+"Set your Free/Busy calendars and your own and other users' Free/Busy options."
+msgstr ""
+"Ezarri zure libre/lanpetuta egutegiak eta zure eta beste erabiltzaileen "
+"libre/lanpetuta aukerak."
+
+#: templates/panel.inc:50
+msgid "Shared Calendars:"
+msgstr "Egutegi partekatuak:"
+
+#: templates/perms/perms.inc:53 templates/perms/perms.inc:65
+#: templates/perms/perms.inc:94 templates/perms/perms.inc:106
+#: templates/perms/perms.inc:135 templates/perms/perms.inc:147
+#: templates/perms/perms.inc:176 templates/perms/perms.inc:192
+#: templates/perms/perms.inc:232 templates/perms/perms.inc:263
+#: templates/perms/perms.inc:293 templates/perms/perms.inc:305
+#: templates/perms/perms.inc:339 templates/edit/javascript.inc:265
+msgid "Show"
+msgstr "Erakutsi"
+
+#: config/prefs.php.dist:223
+msgid "Show Free/Busy legend?"
+msgstr "Erakutsi libre/lanpetuta legenda?"
+
+#: config/prefs.php.dist:204
+msgid "Show category legend?"
+msgstr "Erakutsi kategoriaren legenda?"
+
+#: config/prefs.php.dist:170
+msgid "Show delete, alarm, and recurrence icons in calendar views?"
+msgstr ""
+"Erakutsi ezabatzearen, alarmaren eta errepikapenaren ikonoak egutegiaren "
+"ikuspegietan?"
+
+#: config/prefs.php.dist:270
+msgid "Show external events using category colors?"
+msgstr "Erakutsi kanpoko gertaerak kategoria-koloreekin?"
+
+#: config/prefs.php.dist:261
+msgid "Show only events that have an alarm set?"
+msgstr "Erakutsi alarma ezarrita daukaten gertaerak bakarrik?"
+
+#: config/prefs.php.dist:232
+msgid "Show shared calendars side-by-side?"
+msgstr "Erakutsi egutegi partekatuak elkarren ondoan?"
+
+#: config/prefs.php.dist:109
+msgid "Show time of day between each day in week views?"
+msgstr "Erakutsi eguneko ordua egunen artean asteko ikuspegietan?"
+
+#: templates/edit/edit_timespan.inc:11
+msgid "Sta_rt"
+msgstr "_Hasi"
+
+#: data.php:56
+msgid "Start Date"
+msgstr "Hasiera-data"
+
+#: templates/data/export.inc:68 lib/Driver.php:1964
+msgid "Start Day"
+msgstr "Hasiera-eguna"
+
+#: templates/data/export.inc:87 lib/Driver.php:1975
+msgid "Start Hour"
+msgstr "Hasiera-ordua"
+
+#: templates/data/export.inc:102 lib/Driver.php:1985
+msgid "Start Minute"
+msgstr "Hasiera-minutua"
+
+#: templates/data/export.inc:54 lib/Driver.php:1955
+msgid "Start Month"
+msgstr "Hasiera-hilabetea"
+
+#: templates/search/event_headers.inc:7 templates/view/view.inc:35
+#: templates/data/export.inc:37
+msgid "Start On"
+msgstr "Hasi"
+
+#: data.php:57
+msgid "Start Time"
+msgstr "Hasiera-ordua"
+
+#: templates/data/export.inc:39 lib/Driver.php:1944
+msgid "Start Year"
+msgstr "Hasiera-urtea"
+
+#: templates/search/search_advanced.inc:91 templates/edit/edit.inc:110
+msgid "Stat_us"
+msgstr "E_goera"
+
+#: templates/search/event_headers.inc:6 templates/view/view.inc:21
+msgid "Status"
+msgstr "Egoera"
+
+#: lib/Storage.php:139
+msgid "Storing free/busy is not available."
+msgstr "Libre/lanpetuta informazioa gordetzea ez dago erabilgarri."
+
+#: templates/javascript/goto.js:65 templates/edit/edit.inc:241
+#: lib/Views/Year.php:75 lib/Views/Year.php:84 lib/Block/month.php:126
+#: lib/Block/month.php:128
+msgid "Su"
+msgstr "Ig"
+
+#: lib/Forms/SubscribeRemoteCalendar.php:41
+msgid "Subscribe"
+msgstr "Harpidetu"
+
+#: templates/calendar_list.php:17 lib/Forms/SubscribeRemoteCalendar.php:34
+msgid "Subscribe to a Remote Calendar"
+msgstr "Harpidetu urruneko egutegi batera"
+
+#: templates/calendar_list.php:27
+msgid "Subscription URL"
+msgstr "Harpidetzaren URLa"
+
+#: templates/month/head.inc:15 templates/month/head.inc:24
+#: templates/view/view.inc:107 templates/edit/javascript.inc:66
+#: config/prefs.php.dist:119
+msgid "Sunday"
+msgstr "Igandea"
+
+#: lib/Kronolith.php:1198 lib/Kronolith.php:1221
+msgid "Tentative"
+msgstr "Behin-behinekoa"
+
+#: templates/javascript/goto.js:62 templates/edit/edit.inc:238
+#: lib/Views/Year.php:80 lib/Block/month.php:124
+msgid "Th"
+msgstr "Og"
+
+#: data.php:244
+#, php-format
+msgid "The %s file didn't contain any events."
+msgstr "%s fitxategiak ez dauka gertaerarik."
+
+#: lib/Driver.php:48
+msgid "The Calendar backend is not currently available."
+msgstr "Egutegiaren euskarri-modulua ez dago erabilgarri une honetan."
+
+#: lib/Driver.php:204
+#, php-format
+msgid "The Calendar backend is not currently available: %s"
+msgstr "Egutegiaren euskarri-modulua ez dago erabilgarri une honetan: %s"
+
+#: templates/contacts/contacts.inc:72
+msgid "The Edit Attendees screen is no longer present. Exiting."
+msgstr ""
+"Parte-hartzaileak editatzeko pantaila jada ez da gehiago agertzen. Irteten."
+
+#: lib/api.php:1214
+msgid ""
+"The attendee hasn't been updated because the update was not sent from the "
+"attendee."
+msgstr ""
+"Parte-hartzailea ez da eguneratu, eguneratzea ez duelako parte-hartzaileak "
+"bidali."
+
+#: calendars/create.php:33
+#, php-format
+msgid "The calendar \"%s\" has been created."
+msgstr "\"%s\" egutegia sortu da."
+
+#: calendars/delete.php:50
+#, php-format
+msgid "The calendar \"%s\" has been deleted."
+msgstr "\"%s\" egutegia ezabatuta dago."
+
+#: calendars/edit.php:44
+#, php-format
+msgid "The calendar \"%s\" has been renamed to \"%s\"."
+msgstr "\"%s\" egutegiari izena aldatu zaio: \"%s\"."
+
+#: calendars/edit.php:46 calendars/remote_edit.php:49
+#, php-format
+msgid "The calendar \"%s\" has been saved."
+msgstr "\"%s\" egutegia gordeta dago."
+
+#: data.php:252
+#, php-format
+msgid "The calendar could not be purged: %s"
+msgstr "Egutegia ezin izan da betiko borratu: %s"
+
+#: templates/edit/javascript.inc:156
+msgid "The end date must be later than the start date."
+msgstr "Amaierako datak hasierakoa baino beranduagokoa izan behar du."
+
+#: lib/Kronolith.php:1694
+#, php-format
+msgid ""
+"The event \"%s\" has been added to \"%s\" calendar, which is on %s at %s."
+msgstr ""
+"\"%s\" gertaera gehitu da \"%s\" egutegian. Gertaeraren data: %s, lekua: %s."
+
+#: lib/Kronolith.php:1704
+#, php-format
+msgid ""
+"The event \"%s\" has been deleted from \"%s\" calendar, which was on %s at %"
+"s."
+msgstr ""
+"\"%s\" gertaera ezabatu da \"%s\" egutegitik. Gertaeraren data: %s, lekua: %"
+"s."
+
+#: lib/Kronolith.php:1699
+#, php-format
+msgid ""
+"The event \"%s\" has been edited on \"%s\" calendar, which is on %s at %s."
+msgstr ""
+"\"%s\" gertaera editatu da \"%s\" egutegian. Gertaeraren data: %s, lekua: %s."
+
+#: lib/Kronolith.php:1584
+#, php-format
+msgid "The event notification to %s was successfully sent."
+msgstr "Behar bezala bidali da %s(r)en gertaera-jakinarazpena."
+
+#: lib/Kronolith.php:1534
+msgid "The following is a more detailed description of the event:"
+msgstr "Hona hemen gertaerari buruzko xehetasun gehiagoko azalpena:"
+
+#: lib/FreeBusy.php:191
+#, php-format
+msgid "The free/busy url for %s cannot be retrieved."
+msgstr "Ezin da eskuratu %s(e)ren libre/lanpetuta URLa."
+
+#: calendars/remote_unsubscribe.php:36 calendars/remote_edit.php:36
+msgid "The remote calendar was not found."
+msgstr "Ez da aurkitu urruneko egutegia."
+
+#: attend.php:45
+msgid ""
+"The request was incomplete. Some parameters that are necessary to accept or "
+"decline an event are missing."
+msgstr ""
+"Eskaera osatu gabea. Gertaera bat onartzeko edo ukatzeko beharrezkoak diren "
+"parametro batzuk falta dira."
+
+#: lib/Views/Event.php:41 lib/Views/DeleteEvent.php:40
+#: lib/Views/EditEvent.php:43
+msgid "The requested event was not found."
+msgstr "Ez da aurkitu eskatutako gertaera."
+
+#: feed/index.php:39
+#, php-format
+msgid "The requested feed (%s) was not found on this server."
+msgstr "Eskatutako iturria (%s) ez da aurkitu zerbitzari honetan."
+
+#: perms.php:59 perms.php:164
+#, php-format
+msgid "The user \"%s\" does not exist."
+msgstr "\"%s\" erabiltzailea ez dago."
+
+#: templates/search/empty.inc:3
+msgid "There are no events matching the current criteria."
+msgstr "Ez dago uneko irizpideak betetzen dituen gertaerarik."
+
+#: edit.php:46 edit.php:68 add.php:24
+#, php-format
+msgid "There was an error accessing the calendar: %s"
+msgstr "Errorea gertatu da egutegia atzitzean: %s"
+
+#: add.php:44
+#, php-format
+msgid "There was an error adding the event: %s"
+msgstr "Errorea gertatu da gertaera gehitzean: %s"
+
+#: edit.php:17
+#, php-format
+msgid "There was an error editing the event: %s"
+msgstr "Errorea gertatu da gertaera editatzean: %s"
+
+#: lib/api.php:516 lib/api.php:788 lib/api.php:1058
+msgid "There was an error importing the iCalendar data."
+msgstr "Errorea gertatu da iCalendar datuak inportatzean."
+
+#: edit.php:145
+#, php-format
+msgid "There was an error moving the event: %s"
+msgstr "Errorea gertatu da gertaera lekuz aldatzean: %s"
+
+#: lib/Kronolith.php:1589
+#, php-format
+msgid "There was an error sending an event notification to %s: %s"
+msgstr "Errorea gertatu da gertaera-jakinarazpena bidaltzean: %s: %s"
+
+#: data.php:109
+msgid "There were no events to export."
+msgstr "Ez dago gertaerarik esportatzeko."
+
+#: lib/Block/month.php:3
+msgid "This Month"
+msgstr "Hilabete honetan"
+
+#: calendars/delete.php:26
+msgid "This calendar cannot be deleted."
+msgstr "Egutegi hau ezin da ezabatu."
+
+#: data.php:200
+msgid "This file format is not supported."
+msgstr "Fitxategi-formatu hau ez da onartzen."
+
+#: templates/delete/delete.inc:18
+msgid ""
+"This is a recurring event. Delete the current event only, this<br /"
+">occurrence and all future occurences, or all occurences?"
+msgstr ""
+"Gertaera hau errepikaria da. Ezabatu uneko gertaera bakarrik,<br />gertaldi "
+"hau eta etorkizuneko gertaldi guztiak, edo gertaldi guztiak?"
+
+#: templates/edit/edit.inc:36
+msgid ""
+"This is a recurring event. Edit the current event only, this occurrence<br /"
+">and all future occurences, all occurences, or save this event as new?"
+msgstr ""
+"Gertaera hau errepikaria da. Editatu uneko gertaera hau bakarrik, gertaera "
+"hau<br />eta etorkizuneko gertaldi guztiak, gertaldi guztiak, edo gorde "
+"gertaera hau berri gisa?"
+
+#: data.php:272
+#, php-format
+msgid "This is what the server said: %s"
+msgstr "Hau esan du zerbitzariak: %s"
+
+#: templates/month/head.inc:20 templates/view/view.inc:104
+#: templates/edit/javascript.inc:70
+msgid "Thursday"
+msgstr "Osteguna"
+
+#: templates/search/search.inc:35
+msgid "Time Sp_an"
+msgstr "_Denbora-bitartea"
+
+#: templates/edit/edit_timespan.inc:4
+msgid "Time span"
+msgstr "Denbora-bitartea"
+
+#: templates/search/search_advanced.inc:28 templates/edit/edit.inc:58
+msgid "Tit_le"
+msgstr "_Izenburua"
+
+#: data.php:55 templates/search/search.inc:18
+#: templates/search/event_headers.inc:3
+msgid "Title"
+msgstr "Izenburua"
+
+#: templates/calendar_info.php:32
+msgid "To embed this calendar in another website, use this code: "
+msgstr "Egutegi hau beste webgune batean txertatzeko, erabili kode hau: "
+
+#: templates/prefs/sourceselect.inc:322
+msgid ""
+"To select multiple fields, hold down the Control (PC) or Command (Mac) while "
+"clicking."
+msgstr ""
+"Hainbat eremu hautatzeko, sakatu Ktrl (PC) edo Komandoa (Mac) tekla klik "
+"egiten duzun bitartean."
+
+#: templates/calendar_info.php:25
+msgid "To subscribe to this calendar from a feed reader, use this URL: "
+msgstr ""
+"Egutegi honetara harpidetzeko berri-irakurle batetik, erabili URL hau: "
+
+#: templates/calendar_info.php:19
+msgid ""
+"To subscribe to this calendar from another calendar program, use this URL: "
+msgstr ""
+"Egutegi honetara harpidetzeko beste egutegi-programa batetik, erabili URL "
+"hau: "
+
+#: lib/Block/prevmonthlist.php:129 lib/Block/monthlist.php:134
+#: lib/Block/summary.php:141
+msgid "Today"
+msgstr "Gaur"
+
+#: lib/Block/prevmonthlist.php:131 lib/Block/monthlist.php:136
+#: lib/Block/summary.php:143
+msgid "Tomorrow"
+msgstr "Bihar"
+
+#: templates/javascript/goto.js:60 templates/edit/edit.inc:236
+#: lib/Views/Year.php:78 lib/Block/month.php:124
+msgid "Tu"
+msgstr "Ar"
+
+#: templates/month/head.inc:18 templates/view/view.inc:102
+#: templates/edit/javascript.inc:68
+msgid "Tuesday"
+msgstr "Asteartea"
+
+#: config/keywords.php.dist:17
+msgid "Type"
+msgstr "Mota"
+
+#: lib/Forms/SubscribeRemoteCalendar.php:37
+#: lib/Forms/EditRemoteCalendar.php:37
+msgid "URL"
+msgstr "URLa"
+
+#: lib/Storage/sql.php:76
+msgid "Unable to connect to SQL server."
+msgstr "Ezin da SQL zerbitzariarekin konektatu."
+
+#: lib/Forms/DeleteCalendar.php:62
+#, php-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "Ezin da ezabatu \"%s\": %s"
+
+#: lib/api.php:629
+#, php-format
+msgid "Unable to delete calendar \"%s\": %s"
+msgstr "Ezin da ezabatu \"%s\" egutegia: %s"
+
+#: lib/Driver.php:207 lib/Storage.php:58
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Ezin da %s(r)en definizioa kargatu."
+
+#: attendees.php:66
+#, php-format
+msgid "Unable to recognize \"%s\" as an email address."
+msgstr "Ezin da \"%s\" helbide elektroniko gisa ezagutu."
+
+#: lib/Forms/EditCalendar.php:59
+#, php-format
+msgid "Unable to rename \"%s\": %s"
+msgstr "Ezin da aldatu \"%s\" izena: %s"
+
+#: lib/Storage/kolab.php:64
+#, php-format
+msgid "Unable to retrieve free/busy information for %s"
+msgstr "Ezin da eskuratu %s(r)en libre/lanpetuta informazioa"
+
+#: lib/Forms/EditCalendar.php:65
+#, php-format
+msgid "Unable to save calendar \"%s\": %s"
+msgstr "Ezin da gorde \"%s\" egutegia: %s."
+
+#: templates/view/view.inc:8
+msgid "Unfiled"
+msgstr "Sailkatu gabea"
+
+#: lib/api.php:1351 lib/api.php:1387
+msgid "Unknown calendar protocol"
+msgstr "Egutegi-protokolo ezezaguna"
+
+#: templates/calendar_list.php:44 lib/Forms/UnsubscribeRemoteCalendar.php:39
+msgid "Unsubscribe"
+msgstr "Kendu harpidetza"
+
+#: lib/Forms/UnsubscribeRemoteCalendar.php:34
+#, php-format
+msgid "Unsubscribe from %s"
+msgstr "Kendu hemengo harpidetza: %s"
+
+#: lib/api.php:580 lib/api.php:843 lib/api.php:893 lib/api.php:950
+#: lib/api.php:1078
+#, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "Eduki mota hau ez da onartzen: %s"
+
+#: lib/Block/monthlist.php:3 lib/Block/monthlist.php:51
+msgid "Upcoming Events"
+msgstr "Hurrengo gertaerak"
+
+#: perms.php:247
+#, php-format
+msgid "Updated \"%s\"."
+msgstr "\"%s\" eguneratu da."
+
+#: lib/Kronolith.php:1511
+#, php-format
+msgid "Updated: %s."
+msgstr "Eguneratuta:  %s."
+
+#: config/prefs.php.dist:10
+msgid "User Interface"
+msgstr "Erabiltzailearen interfazea"
+
+#: templates/perms/perms.inc:258
+msgid "User to add:"
+msgstr "Gehitzeko erabiltzailea:"
+
+#: lib/Forms/SubscribeRemoteCalendar.php:38
+#: lib/Forms/EditRemoteCalendar.php:38
+msgid "Username"
+msgstr "Erabiltzaile-izena"
+
+#: lib/Views/Year.php:167 lib/Views/Year.php:170 lib/Block/month.php:195
+#: lib/Block/month.php:198
+msgid "View Day"
+msgstr "Eguneko ikuspegia"
+
+#: templates/javascript/goto.js:61 templates/edit/edit.inc:237
+#: lib/Views/Year.php:79 lib/Block/month.php:124
+msgid "We"
+msgstr "Az"
+
+#: lib/Driver.php:1200 lib/Scheduler/kronolith.php:287
+#, php-format
+msgid ""
+"We would like to remind you of this upcoming event.\n"
+"\n"
+"%s\n"
+"\n"
+"Location: %s\n"
+"\n"
+"Date: %s\n"
+"Time: %s\n"
+"\n"
+"%s"
+msgstr ""
+"Hurrengo gertaera hau gogorarazi nahi dizugu.\n"
+"\n"
+"%s\n"
+"\n"
+"Kokalekua: %s\n"
+"\n"
+"Data: %s\n"
+"Ordua: %s\n"
+"\n"
+"%s"
+
+#: templates/month/head.inc:19 templates/view/view.inc:103
+#: templates/edit/javascript.inc:69
+msgid "Wednesday"
+msgstr "Asteazkena"
+
+#: attendees.php:205 lib/Kronolith.php:1850 lib/Block/tree_menu.php:23
+#: config/prefs.php.dist:97
+msgid "Week"
+msgstr "Astea"
+
+#: workweek.php:16 week.php:16 lib/Views/Month.php:186
+#, php-format
+msgid "Week %d"
+msgstr "%d. astea"
+
+#: templates/prefs/default_alarm_management.inc:29 templates/view/view.inc:55
+#: templates/edit/edit.inc:171
+msgid "Week(s)"
+msgstr "astez behin"
+
+#: lib/Recurrence.php:200
+msgid "Weekly"
+msgstr "Astero"
+
+#: templates/view/view.inc:108 templates/edit/edit.inc:232
+msgid "Weekly: Recurs every"
+msgstr "Astero: Errepikatu"
+
+#: config/prefs.php.dist:138
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr ""
+"Zein ordutan amaituko dira eguneko eta asteko ikuspegiak, beranduago "
+"gertaerarik ez badago?"
+
+#: config/prefs.php.dist:129
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr ""
+"Zein ordutan hasiko dira eguneko eta asteko ikuspegiak, goizago gertaerarik "
+"ez badago?"
+
+#: feed/index.php:128
+msgid "When:"
+msgstr "Noiz:"
+
+#: feed/index.php:143
+msgid "Where:"
+msgstr "Non:"
+
+#: config/prefs.php.dist:291
+msgid "Which kind of holidays do you want to get displayed?"
+msgstr "Zein motatako jaiegunak bistaratu nahi dituzu?"
+
+#: feed/index.php:140
+msgid "Who:"
+msgstr "Nor:"
+
+#: attendees.php:204 lib/Kronolith.php:1848 lib/Block/tree_menu.php:22
+#: config/prefs.php.dist:98
+msgid "Work Week"
+msgstr "Lan-astea"
+
+#: lib/Kronolith.php:1854 lib/Block/tree_menu.php:25
+msgid "Year"
+msgstr "Urtea"
+
+#: lib/Recurrence.php:205
+msgid "Yearly"
+msgstr "Urtero"
+
+#: templates/view/view.inc:114 templates/view/view.inc:116
+#: templates/view/view.inc:118 templates/edit/edit.inc:258
+#: templates/edit/edit.inc:264 templates/edit/edit.inc:270
+msgid "Yearly: Recurs every"
+msgstr "Urtero: Errepikatu"
+
+#: calendars/edit.php:30
+msgid "You are not allowed to change this calendar."
+msgstr "Ez daukazu baimenik egutegi hau aldatzeko."
+
+#: edit.php:27 data.php:41 data.php:261 new.php:19
+#, php-format
+msgid "You are not allowed to create more than %d events."
+msgstr "Ez daukazu baimenik %d gertaera baino gehiago sortzeko."
+
+#: calendars/delete.php:37
+msgid "You are not allowed to delete this calendar."
+msgstr "Ez daukazu baimenik egutegi hau ezabatzeko."
+
+#: lib/api.php:159
+msgid "You are not allowed to remove user data."
+msgstr "Ez daukazu baimenik erabiltzaile-daturik kentzeko."
+
+#: attend.php:58
+msgid "You are not an attendee of the specified event."
+msgstr "Ez zara aipatutako gertaerako parte-hartzailea."
+
+#: templates/contacts/contacts.inc:78
+msgid "You can only use this form from the Edit Attendees screen."
+msgstr ""
+"Parte-hartzaileak editatzeko pantailatik bakarrik erabil dezakezu inprimaki "
+"hau."
+
+#: lib/Kronolith.php:1460
+#, php-format
+msgid ""
+"You do not have an email address configured in your Personal Information "
+"Options. You must set one %shere%s before event notifications can be sent."
+msgstr ""
+"Ez daukazu helbide elektronikorik konfiguratuta Informazio pertsonalaren "
+"aukeretan. Helbide bat ezarri behar duzu %shemen%s gertaera-jakinarazpenak "
+"bidali ahal izateko."
+
+#: add.php:30
+#, php-format
+msgid "You do not have permission to add events to %s."
+msgstr "Ez daukazu baimenik gertaerak gehitzeko hemen: %s."
+
+#: data.php:209
+msgid "You do not have permission to add events to the selected calendar."
+msgstr "Ez daukazu baimenik gertaerak gehitzeko hautatutako egutegian."
+
+#: edit.php:162 add.php:27
+#, php-format
+msgid "You do not have permission to delegate events to %s."
+msgstr "Ez daukazu baimenik gertaerak delegatzeko hemen: %s."
+
+#: delete.php:28
+msgid "You do not have permission to delete this event."
+msgstr "Ez daukazu baimenik gertaera hau ezabatzeko."
+
+#: edit.php:165
+msgid "You do not have permission to edit this event."
+msgstr "Ez daukazu baimenik gertaera hau editatzeko."
+
+#: edit.php:159
+msgid "You do not have permission to move this event."
+msgstr "Ez daukazu baimenik gertaera hau lekuz aldatzeko."
+
+#: calendars/remote_subscribe.php:33
+#, php-format
+msgid "You have been subscribed to \"%s\" (%s)."
+msgstr "Honen harpidetza egin duzu: \"%s\" (%s)."
+
+#: calendars/remote_unsubscribe.php:49
+#, php-format
+msgid "You have been unsubscribed from \"%s\" (%s)."
+msgstr "Honen harpidetza kendu duzu: \"%s\" (%s)."
+
+#: data.php:206
+msgid "You have specified an invalid calendar."
+msgstr "Egutegi baliogabe bat zehaztu duzu."
+
+#: attend.php:25
+msgid "You have successfully accepted attendence to this event."
+msgstr "Behar bezala onartu duzu gertaera honetan parte-hartzea."
+
+#: attend.php:30
+msgid "You have successfully declined attendence to this event."
+msgstr "Behar bezala ezetsi duzu gertaera honetan parte-hartzea."
+
+#: attend.php:35
+msgid "You have tentatively accepted attendence to this event."
+msgstr "Behin-behinean onartu duzu gertaera honetan parte-hartzea."
+
+#: templates/contacts/contacts.inc:54
+msgid "You must select an address first."
+msgstr "Helbide bat hautatu behar duzu lehendabizi."
+
+#: lib/Kronolith.php:1694
+msgid "You requested to be notified when events are added to your calendars."
+msgstr ""
+"Zure egutegietan gertaerak gehitzen direnean horren berri ematea eskatu "
+"zenuen."
+
+#: lib/Kronolith.php:1704
+msgid ""
+"You requested to be notified when events are deleted from your calendars."
+msgstr ""
+"Zure egutegietatik gertaerak ezabatzen direnean horren berri ematea eskatu "
+"zenuen."
+
+#: lib/Kronolith.php:1699
+msgid "You requested to be notified when events are edited in your calendars."
+msgstr ""
+"Zure egutegietan gertaerak editatzen direnean horren berri ematea eskatu "
+"zenuen."
+
+#: lib/Scheduler/kronolith.php:450 lib/Scheduler/kronolith.php:453
+#, php-format
+msgid "Your daily agenda for %s"
+msgstr "Zure eguneroko agenda (%s)"
+
+#: templates/prefs/shareselect.inc:10
+msgid "Your default calendar"
+msgstr "Egutegi lehenetsia"
+
+#: templates/panel.inc:36
+msgid "[Manage Calendars]"
+msgstr "[Kudeatu egutegiak]"
+
+#: lib/Driver.php:1458 lib/Driver.php:1478
+msgid "[Unnamed event]"
+msgstr "[Izenik gabeko gertaera]"
+
+#: templates/edit/edit.inc:132
+msgid "_Alarm"
+msgstr "_Alarma"
+
+#: templates/search/search_advanced.inc:10
+msgid "_Basic Search"
+msgstr "_Oinarrizko bilaketa"
+
+#: lib/Kronolith.php:1888
+msgid "_Edit"
+msgstr "E_ditatu"
+
+#: lib/Kronolith.php:2110
+msgid "_Goto"
+msgstr "_Joan"
+
+#: lib/Kronolith.php:2116
+msgid "_Import/Export"
+msgstr "_Inportatu/esportatu"
+
+#: lib/Kronolith.php:2106
+msgid "_New Event"
+msgstr "N_ire gertaera"
+
+#: lib/Kronolith.php:2121
+msgid "_Print"
+msgstr "I_nprimatu"
+
+#: lib/Kronolith.php:2112
+msgid "_Search"
+msgstr "_Bilatu"
+
+#: lib/Kronolith.php:2101
+msgid "_Today"
+msgstr "_Gaur"
+
+#: templates/edit/edit.inc:77
+#, php-format
+msgid "as %s"
+msgstr "%s gisa"
+
+#: templates/edit/edit.inc:173
+msgid "before the event starts"
+msgstr "gertaera hasi aurretik"
+
+#: templates/prefs/default_alarm_management.inc:31
+msgid "before the event starts. A value of \"0\" means no default alarms."
+msgstr ""
+"gertaera hasi aurretik. \"0\" balioak esan nahi du ez dagoela alarma "
+"lehenetsirik."
+
+#: lib/Views/Event.php:63 lib/Views/Event.php:72
+#, php-format
+msgid "by %s"
+msgstr "- %s"
+
+#: lib/Views/Event.php:65 lib/Views/Event.php:74
+msgid "by me"
+msgstr "nik"
+
+#: config/prefs.php.dist:242
+msgid "day"
+msgstr "egun"
+
+#: templates/view/view.inc:98 templates/edit/edit.inc:227
+msgid "day(s)"
+msgstr "egunez"
+
+#: config/prefs.php.dist:243 config/prefs.php.dist:244
+#: config/prefs.php.dist:245 config/prefs.php.dist:246
+#: config/prefs.php.dist:247
+msgid "days"
+msgstr "egun"
+
+#: data.php:158 templates/data/export.inc:1
+msgid "events.csv"
+msgstr "events.csv"
+
+#: data.php:185
+msgid "events.ics"
+msgstr "events.ics"
+
+#: templates/contacts/contacts.inc:147
+msgid "in"
+msgstr "- "
+
+#: templates/view/view.inc:110 templates/view/view.inc:112
+#: templates/edit/edit.inc:247 templates/edit/edit.inc:253
+msgid "month(s)"
+msgstr "hilabetez"
+
+#: lib/Kronolith.php:1517
+#, php-format
+msgid "on %s at %s"
+msgstr "data : %s, ordua: %s"
+
+#: templates/view/view.inc:110 templates/edit/edit.inc:247
+msgid "on the same date"
+msgstr "egun berean"
+
+#: templates/view/view.inc:112 templates/edit/edit.inc:253
+msgid "on the same weekday"
+msgstr "astegun berean"
+
+#: templates/edit/edit.inc:312
+msgid "recurrences"
+msgstr "gertaldi"
+
+#: data.php:31 templates/data/import.inc:14
+msgid "vCalendar/iCalendar"
+msgstr "vCalendar/iCalendar"
+
+#: config/prefs.php.dist:248
+msgid "week"
+msgstr "aste"
+
+#: templates/view/view.inc:108 templates/edit/edit.inc:234
+msgid "week(s) on:"
+msgstr "astez behin, eguna:"
+
+#: config/prefs.php.dist:249 config/prefs.php.dist:250
+#: config/prefs.php.dist:251
+msgid "weeks"
+msgstr "aste"
+
+#: templates/view/view.inc:114 templates/edit/edit.inc:259
+msgid "year(s) on the same date"
+msgstr "urtez data berean"
+
+#: templates/view/view.inc:116 templates/edit/edit.inc:265
+msgid "year(s) on the same day of the year"
+msgstr "urtez urteko egun berean"
+
+#: templates/view/view.inc:118 templates/edit/edit.inc:271
+msgid "year(s) on the same weekday and month of the year"
+msgstr "urtez urteko astegun eta hilabete berean"

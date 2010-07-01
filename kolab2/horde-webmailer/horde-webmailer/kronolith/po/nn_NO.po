@@ -1,0 +1,680 @@
+# Kronolith Norwegian Nynorsk translation
+# Copyright 2002 Per-Stian Vatne
+# This file is distributed under the same license as the Kronolith package.
+# Per-Stian Vatne <psv@orsta.org>, 2002.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith 2.0-cvs\n"
+"POT-Creation-Date: 2002-06-08 22:17+0200\n"
+"PO-Revision-Date: 2002-06-08 02:39+0100\n"
+"Last-Translator: Per-Stian Vatne <psv@orsta.org>\n"
+"Language-Team: Norwegian Nynorsk <nynorsk@orsta.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%d hour"
+msgstr "%d time"
+
+#, c-format
+msgid "%d hour, %d minute"
+msgstr "%d time, %d minutt"
+
+#, c-format
+msgid "%d hour, %d minutes"
+msgstr "%d time, %d minutt"
+
+#, c-format
+msgid "%d hours"
+msgstr "%d timar"
+
+#, c-format
+msgid "%d hours, %d minute"
+msgstr "%d timar, %d minutt"
+
+#, c-format
+msgid "%d hours, %d minutes"
+msgstr "%d timar, %d minutt"
+
+#, c-format
+msgid "%d minute"
+msgstr "%d minutt"
+
+#, c-format
+msgid "%d minutes"
+msgstr "%d minutt"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "Fila %s vart importert"
+
+#, c-format
+msgid "%s is in progress."
+msgstr "%s pågår."
+
+#, c-format
+msgid "%s is starting now."
+msgstr "%s startar no."
+
+#, c-format
+msgid "%s starts in %s"
+msgstr "%s startar om %s"
+
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Skildring</b> (valfritt)"
+
+msgid "<b>Description</b>"
+msgstr "<b>Skildring</b>"
+
+msgid "<b>Keywords</b> (optional)"
+msgstr "<b>Nøkkelord</b> (valfritt)"
+
+msgid "<b>Keywords</b>"
+msgstr "<b>Nøkkelord</b>"
+
+msgid "<b>Recurrence</b> (optional)"
+msgstr "<b>Regelfast</b> (valfritt)"
+
+msgid "<b>Recurrence</b>"
+msgstr "<b>Regelfast</b>"
+
+msgid "Add Event"
+msgstr "Legg til hending"
+
+msgid "Add a new event"
+msgstr "Legg til ny hending"
+
+msgid "Alarm Date"
+msgstr "Alarmdato"
+
+msgid "Alarm Span (minutes)"
+msgstr "Alarmintervall (minutt)"
+
+msgid "Alarm Time"
+msgstr "Alarmtidspunkt"
+
+msgid "Alarm"
+msgstr "Alarm"
+
+msgid "All day event"
+msgstr "Varer heile dagen"
+
+msgid "All day"
+msgstr "Heile dagen"
+
+msgid "All events"
+msgstr "Alle hendingar"
+
+msgid "All"
+msgstr "Alle"
+
+msgid "April"
+msgstr "April"
+
+msgid "At"
+msgstr " "
+
+msgid "August"
+msgstr "August"
+
+msgid "Birthday"
+msgstr "Bursdag"
+
+msgid "Business"
+msgstr "Bransje"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Category"
+msgstr "Kategori"
+
+msgid "Change the way dates and times are formatted."
+msgstr "Endre formatering for dato og tid."
+
+msgid "Confirm deletion of events?"
+msgstr "Stadfest sletting av hendingar?"
+
+msgid "Create a New Event"
+msgstr "Opprett ny hending"
+
+msgid "Current"
+msgstr "Noverande"
+
+msgid "Daily: Recurs every"
+msgstr "Kvar dag: Skjer kvar"
+
+msgid "Date and Time Options"
+msgstr "Alternativ for dato og tid"
+
+msgid "Day"
+msgstr "Dag"
+
+msgid "Day(s)"
+msgstr "dag(ar)"
+
+msgid "December"
+msgstr "Desember"
+
+#, c-format
+msgid "Delete %s"
+msgstr "Slett %s"
+
+#, c-format
+msgid "Delete '%s'"
+msgstr "Slett '%s'"
+
+msgid "Delete Event"
+msgstr "Slett hending"
+
+msgid ""
+"Delete the current event only, this occurrence and all future occurences, or "
+"all occurences?"
+msgstr ""
+"Slett berre gjeldande hending, denne førekomsten og alle framtidige "
+"førekomster, eller alle førekomster?"
+
+msgid "Delete"
+msgstr "Slett"
+
+msgid "Description"
+msgstr "Skildring"
+
+msgid "Display 24-hour times?"
+msgstr "Vis tid som 24-timar?"
+
+msgid "Display Options"
+msgstr "Visingsalternativ"
+
+#, c-format
+msgid "Due: %s"
+msgstr "Forfell: %s"
+
+msgid "Duration"
+msgstr "Duration"
+
+#, c-format
+msgid "Edit %s"
+msgstr "Endre %s"
+
+msgid "Edit"
+msgstr "Endre"
+
+msgid "End Date"
+msgstr "Sluttdato"
+
+msgid "End On"
+msgstr "Slutt"
+
+msgid "End Time"
+msgstr "Sluttidspunkt"
+
+msgid "Export Calendar"
+msgstr "Eksporter kalender"
+
+msgid "Export"
+msgstr "Eksport"
+
+msgid "February"
+msgstr "Februar"
+
+msgid "Fr"
+msgstr "Fr"
+
+msgid "Friday"
+msgstr "Fredag"
+
+msgid "Future"
+msgstr "Framtid"
+
+msgid "Game"
+msgstr "Spel"
+
+msgid "Goto"
+msgstr "Gå til"
+
+msgid "Help"
+msgstr "Hjelp"
+
+msgid "Hour(s)"
+msgstr "time/timar"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "Dersom du importerer CSV-data; inneheld den første rada feltnamn?"
+
+msgid "Illegal or malformed form data."
+msgstr "Ulovleg eller feil utforma data."
+
+msgid "Import Calendar"
+msgstr "Importer kalender"
+
+msgid "Import"
+msgstr "Import"
+
+msgid "Import/Export Calendar"
+msgstr "Import/eksport kalender"
+
+msgid "Import/Export"
+msgstr "Import/eksport"
+
+msgid "January"
+msgstr "Januar"
+
+msgid "July"
+msgstr "Juli"
+
+msgid "June"
+msgstr "Juni"
+
+msgid "Keywords"
+msgstr "Nøkkelord"
+
+msgid "Kronolith is not properly configured"
+msgstr "Kronolith er ikkje ordentleg konfigurert"
+
+msgid "Language"
+msgstr "Språk"
+
+msgid "Last month"
+msgstr "Førre månad"
+
+msgid "Last week"
+msgstr "Førre veke"
+
+msgid "Lasts"
+msgstr "Varer"
+
+msgid "Limit the time span to export:"
+msgstr "Avgrens tidsintervall for eksport:"
+
+msgid "Location"
+msgstr "Plassering"
+
+msgid "March"
+msgstr "Mars"
+
+msgid "May"
+msgstr "Mai"
+
+msgid "Meeting"
+msgstr "Møte"
+
+msgid "Minute(s)"
+msgstr "minutt"
+
+msgid "Minutes before"
+msgstr "Minutt før"
+
+msgid "Minutes"
+msgstr "Minutt"
+
+msgid "Mo"
+msgstr "Må"
+
+msgid "Monday"
+msgstr "Måndag"
+
+msgid "Month"
+msgstr "Månad"
+
+msgid "Monthly: Recurs every"
+msgstr "Kvar månad: Skjer kvar"
+
+msgid "New Event"
+msgstr "Ny hending"
+
+msgid "Next Month"
+msgstr "Neste månad"
+
+msgid "Next day"
+msgstr "Neste dag"
+
+msgid "Next week"
+msgstr "Neste veke"
+
+msgid "No configuration information specified for SQL Calendar."
+msgstr "Ingen konfigurasjon spesifisert for SQL-kalender."
+
+msgid "No end date"
+msgstr "Ingen sluttdato"
+
+msgid "None"
+msgstr "Ingen"
+
+msgid ""
+"Notice: Importing is not possible with this configuration due to a bug in "
+"the underlying calendar driver."
+msgstr ""
+"Merk: Kan ikkje importere med denne konfigurasjonen, grunna ein feil i den "
+"underliggande kalendermodulen."
+
+msgid "November"
+msgstr "November"
+
+msgid "October"
+msgstr "Oktober"
+
+msgid "Options"
+msgstr "Alternativ"
+
+msgid "Pattern"
+msgstr "Mønster"
+
+msgid "Permanently delete this event?"
+msgstr "Slett denne hendinga permanent?"
+
+msgid "Personal"
+msgstr "Personleg"
+
+msgid "Previous day"
+msgstr "Førre dag"
+
+msgid "Problem?"
+msgstr "Problem?"
+
+msgid "Recur Until"
+msgstr "Skjer til"
+
+msgid "Recurrence Data"
+msgstr "Regelfast data"
+
+msgid "Recurrence End Date"
+msgstr "Regelfast sluttdato"
+
+msgid "Recurrence Interval"
+msgstr "Regelfast intervall"
+
+msgid "Recurrence Type"
+msgstr "Regelfast type"
+
+msgid "Recurs daily"
+msgstr "Skjer dagleg"
+
+msgid "Recurs monthly"
+msgstr "Skjer månadleg"
+
+msgid "Recurs not"
+msgstr "Skjer ikkje"
+
+msgid "Recurs weekly"
+msgstr "Skjer kvar veke"
+
+msgid "Recurs yearly"
+msgstr "Skjer årleg"
+
+msgid "Required 'database' not specified in calendar configuration."
+msgstr "Nødvendig 'database' ikkje spesifisert i konfigurasjon for kalender."
+
+msgid "Required 'hostspec' not specified in calendar configuration."
+msgstr "Nødvendig 'hostspec' ikkje spesifisert i konfigurasjon for kalender."
+
+msgid "Required 'password' not specified in calendar configuration."
+msgstr "Nødvendig 'password' ikkje spesifisert i konfigurasjon for kalender."
+
+msgid "Required 'phptype' not specified in calendar configuration."
+msgstr "Nødvendig 'phptype' ikkje spesifisert i konfigurasjon for kalender."
+
+msgid "Required 'username' not specified in calendar configuration."
+msgstr "Nødvendig 'username' ikkje spesifisert i konfigurasjon for kalender."
+
+msgid "Reset to Defaults"
+msgstr "Nullstill til standardverdiar"
+
+msgid "Sa"
+msgstr "La"
+
+msgid "Saturday"
+msgstr "Laurdag"
+
+msgid "Save As New"
+msgstr "Lagre som ny"
+
+msgid "Save Event"
+msgstr "Lagre hending"
+
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr ""
+"Vel alternativ for stadfesting, korleis dei ulike visingane skal "
+"presenterast og vel ei standardvising."
+
+msgid "Select how to display Dates:"
+msgstr "Vel korleis datoar skal visast:"
+
+msgid "Select if to show due tasks in the calendar."
+msgstr "Vel om forfelte oppgåver skal visast i kalenderen."
+
+msgid "Select the file to import:"
+msgstr "Vel fil som skal importerast:"
+
+msgid "Select the first weekday:"
+msgstr "Vel første vekedag:"
+
+msgid "Select the format to export to:"
+msgstr "Vel format å eksportere til:"
+
+msgid "Select the source to import from:"
+msgstr "Vel kjelde å importere frå:"
+
+msgid "Select the time span to show:"
+msgstr "Vel tidsintervall å vise:"
+
+msgid "Select the view to display after login:"
+msgstr "Vel visinga som skal brukast etter innlogging:"
+
+msgid "Select what events to show in the Horde summary."
+msgstr "Vel kva hendingar som skal visast i samandrag for Horde."
+
+msgid "September"
+msgstr "September"
+
+msgid "Set the current time zone."
+msgstr "Set gjeldande tidssone."
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Vel språk for menyar, forklaringar og hjelp."
+
+msgid "Set your preferred display language."
+msgstr "Vel ønska språk."
+
+msgid "Show due tasks in the calendar?"
+msgstr "Vis oppgåver til forfall i kalenderen?"
+
+msgid "Show half hour slots in day and week views?"
+msgstr "Vis halvtimesegment i dag- og vekevising?"
+
+msgid "Show only events that have an alarm set?"
+msgstr "Vis berre hendingar som har ein alarm aktivert?"
+
+msgid "Some of Kronolith's configuration files are missing:"
+msgstr "Nokre av Kronolith sine konfigurasjonsfiler manglar:"
+
+msgid "Start Date"
+msgstr "Startdato"
+
+msgid "Start On"
+msgstr "Start"
+
+msgid "Start Time"
+msgstr "Starttidspunkt"
+
+msgid "Su"
+msgstr "Sø"
+
+msgid "Summary"
+msgstr "Samandrag"
+
+msgid "Sunday"
+msgstr "Søndag"
+
+msgid "Tasks"
+msgstr "Oppgåver"
+
+msgid "Th"
+msgstr "To"
+
+msgid "The data was lost."
+msgstr "Dataene forsvann."
+
+msgid "The end date must be later than the start date."
+msgstr "Sluttdato må vere seinare enn startdato."
+
+msgid "The file contained no data."
+msgstr "Fila inneheld ingen data."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Problem ved opplasting av fil. Fila er kanskje større enn maksimalt tillaten "
+"storleik."
+
+msgid "There was an error importing the data."
+msgstr "Det skjedde ein feil ved import av data."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Det skjedde ein feil ved import av den opplasta fila"
+
+msgid "There were no events to export."
+msgstr "Det var ingen hendingar å eksportere."
+
+msgid ""
+"This file controls the default preferences for Kronolith, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Denne fila kontrollerer standardinnstillingane for Kronolith, og "
+"kontrollerer også kva innstillingar brukarar kan endre."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Denne fila kontrollerer stilarket som blir brukt til å definere fargar og "
+"skrifttypar, og legg til eller overstyrer standardverdiane til Horde."
+
+msgid ""
+"This is the main Kronolith configuration file. It contains paths and options "
+"for all Kronolith scripts."
+msgstr ""
+"Dette er hovedkonfigurasjonsfila for Kronolith. Den inneheld katalognamn og "
+"alternativ for alle Kronolith-skripta."
+
+msgid "Thursday"
+msgstr "Torsdag"
+
+msgid "Time Zone"
+msgstr "Tidssone"
+
+msgid "Title"
+msgstr "Tittel"
+
+msgid "Today"
+msgstr "I dag"
+
+msgid "Tu"
+msgstr "Ty"
+
+msgid "Tuesday"
+msgstr "Tysdag"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "User Interface"
+msgstr "Brukargrensesnitt"
+
+msgid "User Options"
+msgstr "Brukaralternativ"
+
+#, c-format
+msgid "View %s"
+msgstr "Vis %s"
+
+msgid "We"
+msgstr "On"
+
+msgid "Wednesday"
+msgstr "Onsdag"
+
+#, c-format
+msgid "Week %d"
+msgstr "Veke %d"
+
+msgid "Week"
+msgstr "Veke"
+
+#, c-format
+msgid "Week&nbsp;%d"
+msgstr "Veke&nbsp;%d"
+
+msgid "Week(s)"
+msgstr "Veke(r)"
+
+msgid "Weekly: Recurs every"
+msgstr "Kvar veke: Skjer kvar"
+
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr ""
+"På kva tidspunkt skal dag- og vekevisingar slutte, når det er ingen seinare "
+"hendingar?"
+
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr ""
+"På kva tidspunkt skal dag- og vekevisingar starte, når det er ingen "
+"tidlegare hendingar?"
+
+msgid "Work Week"
+msgstr "Arbeidsveke"
+
+msgid "Work&nbsp;Week"
+msgstr "Arbeidsveke"
+
+msgid "Yearly: Recurs every"
+msgstr "Kvart år: Skjer kvart"
+
+msgid "Your Information"
+msgstr "Din informasjon"
+
+msgid "Your current time zone:"
+msgstr "Di noverande tidssone:"
+
+msgid "day"
+msgstr "dag"
+
+msgid "day(s)"
+msgstr "dag"
+
+msgid "days"
+msgstr "dagar"
+
+msgid "iCalendar file successfully imported"
+msgstr "iCalendar-fil vart importert"
+
+msgid "month(s)"
+msgstr "månad "
+
+msgid "no time"
+msgstr "inga tid"
+
+msgid "on the same date"
+msgstr "på same dato"
+
+msgid "on the same weekday"
+msgstr "på same vekedag"
+
+msgid "week"
+msgstr "veke"
+
+msgid "week(s) on:"
+msgstr "veke på:"
+
+msgid "weeks"
+msgstr "veker"
+
+msgid "year(s)"
+msgstr "år"

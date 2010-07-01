@@ -1,0 +1,23 @@
+<form method="post" name="save_image_dialog" action="<tag:action />">
+<input type="hidden" name="actionID" value="save_image" />
+<input type="hidden" name="id" value="<tag:id />" />
+<input type="hidden" name="index" value="<tag:index />" />
+
+<h1 class="header">
+ <tag:image_img />
+ <gettext>Select the gallery to save the image in.</gettext>
+</h1>
+
+<p class="item">
+ <label for="gallery" class="hidden"><gettext>Gallery</gettext></label>
+ <select id="gallery" name="gallery">
+  <tag:gallerylist />
+ </select>
+</p>
+
+<div class="nowrap">
+ <input type="submit" name="submit" class="button" value="<gettext>Submit</gettext>" />&nbsp;
+ <input type="button" class="button" onclick="window.close();" value="<gettext>Cancel</gettext>" />
+</div>
+
+</form>

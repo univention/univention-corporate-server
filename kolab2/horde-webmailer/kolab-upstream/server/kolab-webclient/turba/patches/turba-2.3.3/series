@@ -1,3 +1,6 @@
 t_turba_HK_GW_AllowAttributeDefaults.diff
 t_turba_HK_GW_FixAddressbookDeletion.diff
 t_turba_HK_GW_SyncMLrefresh.diff
+t_turba_HK_GW_ConfigurationOverride.diff
+t_turba_HK_GW_AlternativeNameDetailView.diff
+t_turba_HK_GW_ZpushAnnotations.diff

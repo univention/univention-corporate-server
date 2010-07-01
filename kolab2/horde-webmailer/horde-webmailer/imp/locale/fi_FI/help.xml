@@ -1,0 +1,996 @@
+<?xml version="1.0"?>
+<!-- $Horde: imp/locale/fi_FI/help.xml,v 1.19.6.15 2009-02-03 00:15:51 jan Exp $ -->
+<help>
+  <entry id="keyboard-navigation" state="uptodate" md5="885a83e5ce7c455f8d7d40a17ca901df">
+    <title>N&#xE4;pp&#xE4;imist&#xF6;: Navigointi</title>
+    <para>Voit k&#xE4;ytt&#xE4;&#xE4; n&#xE4;pp&#xE4;imist&#xF6;&#xE4; liikkumiseen eri n&#xE4;kymiss&#xE4;; Postilaatikkon&#xE4;kym&#xE4;ss&#xE4; voit nuolin&#xE4;pp&#xE4;imill&#xE4; siirty&#xE4; sivulta toiselle ja viesti&#xE4; lukiessa voi siirty&#xE4; viestist&#xE4; toiseen.</para>
+    <heading>Viestilista: N&#xE4;pp&#xE4;imist&#xF6;navigointi</heading>
+    <para>Voit k&#xE4;ytt&#xE4;&#xE4; n&#xE4;pp&#xE4;imist&#xF6;&#xE4; viestien valitsemiseen ja liikkumiseen viestilistassa. Viestilistalla voi liikkua pit&#xE4;m&#xE4;ll&#xE4; pohjassa Control (CTRL)-n&#xE4;pp&#xE4;int&#xE4; ja kursorin&#xE4;pp&#xE4;imien yl&#xF6;s- ja alas-n&#xE4;pp&#xE4;imill&#xE4;. Jos painat ensimm&#xE4;isen&#xE4; painalluksena yl&#xF6;s-n&#xE4;pp&#xE4;int&#xE4;, niin selaaminen alkaa listan alalaidasta (Listan viimeinen viesti). Jos painat ensimm&#xE4;isen&#xE4; alas-n&#xE4;pp&#xE4;int&#xE4;, niin selaaminen alkaa listan yl&#xE4;laidasta (Listan ensimm&#xE4;inen viesti).</para>
+    <para>Valittu viesti n&#xE4;kyy korostettua eri v&#xE4;risen&#xE4; samalla tavalla kuin olisit valinnut viestin hiirell&#xE4;. Voit v&#xE4;lily&#xF6;ntin&#xE4;pp&#xE4;imell&#xE4; valita viestin tai poistaa viestin valinnan ja Return-n&#xE4;pp&#xE4;imell&#xE4; voit aukaista viestin.</para>
+    <heading>Viestilista: Edellinen/Seuraava sivu</heading>
+    <para>Kursorin&#xE4;pp&#xE4;imien oikea/vasen-n&#xE4;pp&#xE4;imill&#xE4; voit siirty&#xE4; viestilistan&#xE4;kym&#xE4;ss&#xE4; sivulta toiselle: oikealla seuraavalle ja vasemmalla edelliselle sivulle.</para>
+    <heading>Viestin&#xE4;kym&#xE4;: Edellinen/Seuraava viesti</heading>
+    <para>Kursorin&#xE4;pp&#xE4;imien oikea/vasen-n&#xE4;pp&#xE4;imill&#xE4; voit siirty&#xE4; viesti&#xE4; toiseen: oikealla seuraavaan ja vasemmalle edelliseen viestiin.</para>
+</entry>
+  <entry id="message-forward" state="uptodate" md5="54e9d9dcf21964f5f81bc6c23e48cdea">
+  <title>S&#xE4;hk&#xF6;postin uudelleenojaus</title>
+  <para>Viestin uudelleenohjauksen voi tehd&#xE4; eri tavoilla</para>
+  <heading>Uudelleenohjaus postilaatikkon&#xE4;kym&#xE4;ss&#xE4;</heading>
+  <para>Postilaatikkon&#xE4;kym&#xE4;ss&#xE4; voit uudelleenohjata yhden tai usean viestin kerrallaan samalle vastaanottajalle. Jokainen valitsemasi viesti l&#xE4;hetet&#xE4;&#xE4;n kokonaisena vastaanottajalle. Uudelleenohjattavat viestit n&#xE4;kyv&#xE4;t liitteen&#xE4; viestin kirjoitus ikkunassa. Viestin vastaanottajat n&#xE4;kev&#xE4;n viestin yhten&#xE4; viestin&#xE4;, johon on sis&#xE4;llytetty alkuper&#xE4;iset uudelleenohjatut viestit.</para>
+  <heading>Uudelleenohjaus viestin&#xE4;kym&#xE4;ss&#xE4;</heading>
+  <para>Kun uudelleenohjaat viestin viestin&#xE4;kym&#xE4;ss&#xE4;, niin voit valita kolmen eri vaihtoehdon v&#xE4;lill&#xE4;:</para>
+  <para><b>1. Viesti kokonaisuudessaan</b>: T&#xE4;m&#xE4; vaihtoehto liitt&#xE4;&#xE4; alkuper&#xE4;isen viestin uudellenohjausviestin liitteeksi. Kirjoituskent&#xE4;ss&#xE4; ei n&#xE4;y laisinkaan alkuper&#xE4;isen viesin teksti&#xE4;. T&#xE4;m&#xE4; on muuten sama tilanne kuin uudelleenohjaisit yksitt&#xE4;isen viestin postilaatikkon&#xE4;kym&#xE4;st&#xE4;, mutta voit itse m&#xE4;&#xE4;ritell&#xE4; viestin otsikon.</para>
+  <para><b>2. Vain viestin leip&#xE4;teksti</b>: Jos haluta uudelleenohjata vain viestin leip&#xE4;tekstin, niin valitse t&#xE4;m&#xE4; vaihtoehto. Alkuper&#xE4;isen viestin teksti n&#xE4;kyy kirjoituskent&#xE4;ss&#xE4;. Alkuper&#xE4;isen viestin liitteit&#xE4; ei liitet&#xE4; t&#xE4;h&#xE4;n uudelleenohjattavaan viestiin.</para>
+  <para><b>3. Viestin leip&#xE4;teksti viestin liitteen&#xE4;</b>: T&#xE4;m&#xE4; uudelleenohjaa viestin liitteineen ja viestin leip&#xE4;teksti kopioidaan kirjoituskent&#xE4;&#xE4;n kuten vaihtoehdossa 2.</para>
+</entry>
+  <entry id="compose-buttons" state="uptodate" md5="bd0e2b0eff15d7c5cf7df9b7ef4ac40a">
+    <title>Viestin kirjoitus: Toiminnot</title>
+    <heading>Toiminnot</heading>
+    <para>
+    "L&#xE4;het&#xE4; viesti" l&#xE4;hett&#xE4;&#xE4; viestin vastaanottajille. Muistathan ett&#xE4;
+    viesti&#xE4; ei voi en&#xE4;&#xE4; perua kun se on l&#xE4;hetetty matkaan.
+    </para>
+    <para>
+    "Tallenna luonnos" tallettaa keskener&#xE4;isen viestin kansioon
+    "Luonnos". Kansiota voi k&#xE4;sitell&#xE4; alasvetovalikosta ruudun
+    oikeasta yl&#xE4;kulmasta. Voit viimeistell&#xE4; viestisi siirtym&#xE4;ll&#xE4;
+    "Luonnos" kansioon, valitsemalla sielt&#xE4; viestin ja painamalla
+    painiketta "Jatka". Muistathan aina laittaa viesteihin kuvaavan
+    otsikon ennenkuin talletat ne luonnoskansioon. Hyv&#xE4; otsikko
+    helpottaa my&#xF6;hemmin tilannetta kun pit&#xE4;&#xE4; l&#xF6;yt&#xE4;&#xE4; oikea viesti.
+    </para>
+    <tip>
+    Asennuksesta riippuen voit valita asetuksistasi palaatko viimeksi
+    selailemaasi kansioon tai viimeksi lukemaasi viestiin kun viesti
+    on talletettu luonnokseksi.
+    </tip>
+    <para>
+    "Peru viesti" hylk&#xE4;&#xE4; kirjoittamasi viestin ja palauttaa sinut
+    siihen kansioon mit&#xE4; olit viimeksi selaillut.
+    </para>
+</entry>
+  <entry id="compose-identity" state="uptodate" md5="6b2272c5440c753e783d000db88fea07">
+    <title>Viestin kirjoitus: Profiili</title>
+    <heading>Profiili</heading>
+    <para>L&#xE4;hetysprofiili on mahdollista valita alasvetolistasta. Listassa n&#xE4;kyy ne profiilit, jotka olet aikaisemmin m&#xE4;&#xE4;ritellyt <qt>Asetukset-&gt;Omat tiedot</qt>.</para>
+</entry>
+  <entry id="compose-from" state="uptodate" md5="4395043c22323cc80d50709c5d20637e">
+    <title>Viestin kirjoitus: L&#xE4;hett&#xE4;j&#xE4;</title>
+    <heading>L&#xE4;hett&#xE4;j&#xE4;</heading>
+    <para>
+    Vain jos yll&#xE4;pit&#xE4;j&#xE4; on sallinut t&#xE4;m&#xE4;n toiminnon k&#xE4;ytt&#xE4;misen. Sinun
+    on mahdollista valita alasvetovalikosta k&#xE4;ytett&#xE4;v&#xE4; profiili tai
+    voit kirjoittaa kentt&#xE4;&#xE4;n l&#xE4;hett&#xE4;j&#xE4;n&#xE4; n&#xE4;kyv&#xE4;n
+    s&#xE4;hk&#xF6;postiosoitteen. Profiileja voit m&#xE4;&#xE4;ritell&#xE4;
+    <qt>Asetukset-&gt;Omat tiedot</qt>.
+    </para>
+</entry>
+  <entry id="compose-to" state="uptodate" md5="31cba17f169572c367aa8014831eb8f8">
+    <title>Viestin kirjoitus: Vastaanottaja</title>
+    <heading>Vastaanottaja</heading>
+    <para>
+    Kirjoita t&#xE4;h&#xE4;n viestin vastaanottajan s&#xE4;hk&#xF6;postiosoite. Jos
+    viestill&#xE4; on useita vastaanottajia, niin erota osoitteet
+    toisistaan pilkulla. Mink&#xE4; tahansa muun merkin k&#xE4;ytt&#xE4;minen
+    erottimena aiheuttaa vikatilanteen ja virheilmoituksen.
+    </para>
+</entry>
+  <entry id="compose-cc" state="uptodate" md5="97571433ab037ef9c4d101a56bf74e25">
+    <title>Viestin kirjoitus: Kopio</title>
+    <heading>Kopio</heading>
+    <para>
+    Kirjoita t&#xE4;h&#xE4;n s&#xE4;hk&#xF6;postiosoite, johon l&#xE4;hetet&#xE4;&#xE4;n kopio
+    viestist&#xE4;. Jos viestist&#xE4; l&#xE4;hetet&#xE4;&#xE4;n kopio usealle
+    vastaanottajalle, niin erota osoitteet toisistaan pilkulla. Mink&#xE4;
+    tahansa muun merkin k&#xE4;ytt&#xE4;minen erottimena aiheuttaa vikatilanteen
+    ja virheilmoituksen.
+    </para>
+    <para>
+    Kopio l&#xE4;hetet&#xE4;&#xE4;n yleens&#xE4; niille vastaanottajille, jotka eiv&#xE4;t ole
+    viestin suoranaisia vastaanottajia, mutta voivat tarvita tai olla
+    kiinnostuneita viestiss&#xE4; olevista tiedoista. Muistathan ett&#xE4;
+    vastaanottaja n&#xE4;kee kaikki ne osoitteet, jotka ovat viestin
+    vastaanottajina tai joille viestist&#xE4; on l&#xE4;hetetty kopio.
+    </para>
+</entry>
+  <entry id="compose-bcc" state="uptodate" md5="aa8f9e2d44fdb74def0fa15240ff687b">
+    <title>Viestin kirjoitus: Piilokopio</title>
+    <heading>Piilo</heading>
+    <para>
+    Kirjoita t&#xE4;h&#xE4;n s&#xE4;hk&#xF6;postiosoite, johon l&#xE4;hetet&#xE4;&#xE4;n piilokopio
+    viestist&#xE4;. Jos viestist&#xE4; l&#xE4;hetet&#xE4;&#xE4;n piilokopio usealle
+    vastaanottajalle, niin erota osoitteet toisistaan pilkulla. Mink&#xE4;
+    tahansa muun merkin k&#xE4;ytt&#xE4;minen erottimena aiheuttaa vikatilanteen
+    ja virheilmoituksen.
+    </para>
+    <para>
+    Piilokopio l&#xE4;hetet&#xE4;&#xE4;n yleens&#xE4; niille vastaanottajille, jotka eiv&#xE4;t
+    ole viestin suoranaisia vastaanottajia, mutta voivat tarvita tai
+    olla kiinnostuneita viestiss&#xE4; olevista tiedoista. Viestin
+    varsinaiset vastaanottajat eiv&#xE4;t n&#xE4;e kenelle viesti on mennyt
+    piilokopioina. Vain viestin l&#xE4;hett&#xE4;j&#xE4; tiet&#xE4;&#xE4; kenelle kaikille
+    viesti on l&#xE4;hetetty.
+    </para>
+</entry>
+  <entry id="compose-subject" state="uptodate" md5="0639a8790e306acc9e19b4d1ce342d53">
+    <title>Viestin kirjoitus: Otsikko</title>
+    <heading>Otsikko</heading>
+    <para>
+    Kirjoita t&#xE4;h&#xE4;n viestin otsikko. Viestin otsikko on parasta pit&#xE4;&#xE4;
+    lyhyen&#xE4; ja yksinkertaisena mutta kuitenkin kuvaavana. Otsikko voi
+    auttaa oikean viestin l&#xF6;yt&#xE4;misess&#xE4; ja my&#xF6;s muistuttaa sinua mist&#xE4;
+    viestiss&#xE4; oli kyse.
+    </para>
+    <para>
+    Muista my&#xF6;s ett&#xE4; viestin "Vastaa" tai "V&#xE4;lit&#xE4; eteenp&#xE4;in"
+    toiminnoissa viestin otsikko kopioidaan uuteen viestiin siten ett&#xE4;
+    viesteist&#xE4; n&#xE4;kee mitk&#xE4; kuuluvat samaan "s&#xE4;ikeeseen". Jos viestin
+    aihe muuttuu alkuper&#xE4;isesti otsikosta, niin kannattanee vaihtaa
+    my&#xF6;s viestin otsikkoa.
+    </para>
+</entry>
+  <entry id="compose-charset" state="uptodate" md5="c2c878070445af81407da5bfc4083ea3">
+    <title>Viestin kirjoitus: Merkist&#xF6;</title>
+    <heading>Merkist&#xF6;</heading>
+    <para>Voit listasta valita l&#xE4;hetyksess&#xE4; k&#xE4;ytett&#xE4;v&#xE4;n merkist&#xF6;n.
+    </para>
+</entry>
+  <entry id="compose-options" md5="5f1d50a733c8b7e46aecece28822ff70" state="uptodate">
+    <title>Viestin kirjoitus: Lis&#xE4;toiminnot</title>
+    <heading>Lis&#xE4;toiminnot</heading>
+    <para>
+    N&#xE4;m&#xE4; lis&#xE4;toiminnot ovat apuna viestien kirjoittamiseen.
+    </para>
+    <para>
+    Napsauta "Oikeinkirjoitus" tarkistaaksesi viestin oikeinkirjoituksen.
+    </para>
+    <para>
+    Napsauta "Liitteet" menn&#xE4;ksesi viestisivun loppuun, jossa voit liitt&#xE4;&#xE4; viestiin liitetiedostoja.
+    </para>
+    <para>
+    Vain jos yll&#xE4;pit&#xE4;j&#xE4; on sallinut t&#xE4;m&#xE4;n toiminnon k&#xE4;ytt&#xE4;misen. Voit
+    tallettaa viestist&#xE4; kopion l&#xE4;htevien viestien kansioon tai
+    valitsemaasi kansioon. L&#xE4;htevien viestin kansion voi m&#xE4;&#xE4;ritell&#xE4;
+    "Asetukset-&gt;Omat tiedot-&gt;Profiilit". Jos yll&#xE4;pit&#xE4;j&#xE4; on
+    sallinut toiminnon, niin voit valita talletuskansion
+    alasvetovalikosta.
+    </para>
+    <para>
+    Voi olla ihan hyv&#xE4; tapa tallettaa kopio t&#xE4;rke&#xE4;ksi katsomistasi
+    viesteit&#xE4;. On my&#xF6;s mahdollista laittaa p&#xE4;&#xE4;lle asetus, jolla
+    talletat kopioin kaikista l&#xE4;htevist&#xE4; viesteist&#xE4;
+    "Asetukset-&gt;Omat tiedot-&gt;Profiilit-&gt;Muokkaa
+    profilia". Asetuksista voit my&#xF6;s m&#xE4;&#xE4;ritell&#xE4; yll&#xE4;pitotoimenpiteit&#xE4;,
+    joilla voit nimet&#xE4; n&#xE4;m&#xE4; kansiot uudestaan tietyin v&#xE4;liajoin.
+    </para>
+    <warn>
+    Sinun ei kannata tallettaa kaikkia viestej&#xE4;, koska talletetut
+    viestit viev&#xE4;t tilaa ja postikiinti&#xF6;t&#xE4;. Jos sinulla on paljon talletettuja viestej&#xE4; ja niiss&#xE4; on isoja liitetiedostoja, niin postikiinti&#xF6;si voi t&#xE4;ytty&#xE4; hyvinkin nopeasti. Jos postikiinti&#xF6;si on
+    t&#xE4;ynn&#xE4;, niin et voi vastaanottaa uusia viestej&#xE4;.
+    </warn>
+</entry>
+  <entry id="compose-attach" state="uptodate" md5="e806e5e1641fb2531cc95d2df277851f">
+    <title>Viestin kirjoitus: Liit&#xE4;</title>
+    <heading>Liit&#xE4;</heading>
+    <para>
+    Voit liitt&#xE4;&#xE4; viestiisi liitetiedostoja, jos selaimesi tukee
+    tiedostojen tuomista. Voit tuoda vain yhden tiedoston kerrallaan.
+    </para>
+    <para>
+    Askel 1: Kirjoita tiedoston nimi ja polku, tai napsauta "Selaa"
+    painiketta ja voit valita tuotavan tiedoston. Valinnan j&#xE4;lkeen
+    tiedoston nimi ja polku n&#xE4;kyy kent&#xE4;ss&#xE4;.
+    </para>
+    <para>
+    Askel 2: Valitse miten haluat tiedoston n&#xE4;kyv&#xE4;n liitteen&#xE4; vai muun
+    viestin yhteydess&#xE4;. Jos vastaanottajan s&#xE4;hk&#xF6;postiohjelma ei pysty
+    n&#xE4;ytt&#xE4;m&#xE4;&#xE4;n liitett&#xE4; viestin yhteydess&#xE4;, niin liite n&#xE4;kyy
+    tavallisena liitetiedostona.
+    </para>
+    <para>
+    Askel 3: Napsauta "Liit&#xE4;" painiketta. Tiedoston nimi ja koko
+    liitet&#xE4;&#xE4;n liitettyjen liitteiden listaan.
+    </para>
+    <tip>
+    Huomaathan ett&#xE4; suurten tiedostojen tuonti saattaa kest&#xE4;&#xE4; ja
+    vied&#xE4; kauan aikaa. Etenkin jos tiedosto on suuri tai k&#xE4;yt&#xE4;t
+    hidasta yhteytt&#xE4; internettiin. Kannattaa vain odottaa
+    rauhallisesti ja muista my&#xF6;s ett&#xE4; samaan aikaan ei saa napsauttaa muita
+    painikkeita tai muita linkkej&#xE4;.
+    </tip>
+</entry>
+  <entry id="compose-attachments" state="uptodate" md5="b0d28bb946919a0c13c45721aa5d3f67">
+    <title>Viestin kirjoitus: Liitteet</title>
+    <heading>Liitteet</heading>
+    <para>
+    T&#xE4;ss&#xE4; osiossa on lista liitetyist&#xE4; liitetiedostoista.
+    </para>
+    <heading>Poista liitetty liitetiedosto</heading>
+    <para>
+    Poistaaksesi liitetyn liitetiedoston:
+    </para>
+    <para>
+    Askel 1: Valitse poistettava liitetiedosto k&#xE4;ytt&#xE4;en valintalaatikkoa.
+    </para>
+    <para>
+    Askel 2: Napsauta "P&#xE4;ivit&#xE4; liitetiedoston tiedot".
+    </para>
+    <heading>Liitetavan muutos</heading>
+    <para>
+    Muuttaaksesi liitteen liitetapaa:
+    </para>
+    <para>
+    Askel 1: Muuta liitteen tyyppi&#xE4; haluttuun muotoon joko "viestin
+    yhteydess&#xE4;" tai "liite".
+    </para>
+    <para>
+    Askel 2: Napsauta "P&#xE4;ivit&#xE4; liitetiedoston tiedot".
+    </para>
+    <heading>Muuta liitteen kuvausta</heading>
+    <para>
+    Muuttaaksesi liitteen kuvausta (kuvaava teksti, joka n&#xE4;kyy viestin vastaanottajalle):
+    </para>
+    <para>
+    Askel 1: Kirjoita kuvaus kuvauskentt&#xE4;&#xE4;n.
+    </para>
+    <para>
+    Askel 2: Napsauta "P&#xE4;ivit&#xE4; liitetiedoston tiedot". Tiedot p&#xE4;ivitet&#xE4;&#xE4;n automaattisesti kun viesti l&#xE4;hetet&#xE4;&#xE4;n.
+    </para>
+</entry>
+  <entry id="compose-priority" state="uptodate" md5="b023367c36de3ce1567d27ccaa45640c">
+    <title>Viestin kirjoitus: Prioriteetti</title>
+    <heading>Prioriteetti</heading>
+    <para>
+    T&#xE4;m&#xE4; asettaa l&#xE4;htev&#xE4;n viestin "X-Priority"
+    -otsakkeen. "X-Priority" -otsakkeen k&#xE4;yt&#xF6;st&#xE4; ei ole varsinaista
+    standardia, mutta ainakin Netscape, Mozilla, Opera ja Outlook
+    k&#xE4;ytt&#xE4;v&#xE4;t t&#xE4;t&#xE4; kentt&#xE4;&#xE4;. Jos ohjelma ei tue otsaketta, niin ne vain
+    j&#xE4;tt&#xE4;v&#xE4;t sen huomiotta.
+    </para>
+</entry>
+  <entry id="compose-save-attachments" state="uptodate" md5="db89972c4ebb0b41ab691b6a7744a81d">
+    <title>Viestin kirjoitus: Liitteiden talletus</title>
+    <para>
+    Voit valita talletetaanko liite viestin mukana kun viesti
+    talletetaan l&#xE4;htevien viestien kansioon. Jos valitset "Kyll&#xE4;",
+    niin liiteet talletetaan. Jos valitset "Ei", niin liitetiedosto
+    poistetaan viestist&#xE4; ennenkuin se talletaan l&#xE4;htevien viestien
+    kansioon. Valitsemalla "Ei" s&#xE4;&#xE4;st&#xE4;t levytilaa ja voit tallettaa
+    useampia viestej&#xE4;.
+    </para>
+</entry>
+  <entry id="compose-link-attachments" state="uptodate" md5="63b3841c95aed31b5372f0fa770ee382">
+    <title>Viestin kirjoitus: Linkitetyt liitteet</title>
+    <para>
+    T&#xE4;ll&#xE4; asetuksella voi m&#xE4;&#xE4;ritell&#xE4; l&#xE4;hetet&#xE4;&#xE4;nk&#xF6; liitteet viestin yhteydess&#xE4; vai liitet&#xE4;&#xE4;nk&#xF6; viestiin vain liitet&#xE4;&#xE4;nk&#xF6; viestin vain linkki paikalliselle palvelimelle talletettuun liitetiedostoon. Jos liitteet l&#xE4;hetet&#xE4;&#xE4;n linkitettyin&#xE4;, niin viestin vastaanottajille toimitaan vain linkki, josta voivat hakea liitteen. Liitetiedostojen linkityksess&#xE4; on se etu, ett&#xE4; viestin koko pysyy pienemp&#xE4;n&#xE4;. Haittana on se, ett&#xE4; linkin osoittama liitetiedosto ei ole v&#xE4;ltt&#xE4;m&#xE4;tt&#xE4; kaikkien vastaanottajien haettavissa tai se voidaan poistaa ennenkuin kaikki ovat ehtineet hakea liitteen.
+    </para>
+</entry>
+  <entry id="search" state="uptodate" md5="86b2ef57b1194890833d9dd49ebc9b32">
+    <title>Viestihaku</title>
+    <heading>Haun kriteerit</heading>
+    <para>
+    Voit etsi&#xE4; viestej&#xE4; kansioistasi antamiesi kriteerien perusteella.
+    </para>
+    <para>
+        Askel 1: Kirjoita etsitt&#xE4;v&#xE4; teksti, jonka haluat lis&#xE4;tt&#xE4;v&#xE4;n
+        hakukriteereihisi.
+    </para>
+    <para>
+        Askel 2: Valitse viestin viestin tilatiedot, jotka haluat
+        lis&#xE4;tt&#xE4;v&#xE4;n hakukriteereihisi.
+    </para>
+    <para>
+        Askel 3: Valitse kansiot, joista viestej&#xE4; etsit&#xE4;&#xE4;n.
+    </para>
+    <para>
+        Askel 4: Napsauta "Hae".
+    </para>
+    <para>
+    Jos jokin viesti vastasi hakukriteereit&#xE4;si, niin n&#xE4;iden viestin
+    otsikot n&#xE4;kyv&#xE4;t "Haun tulokset" n&#xE4;kym&#xE4;ss&#xE4;.
+    </para>
+</entry>
+  <entry id="folder-options" md5="08ee3e450a82431727763b9db082ec08" state="uptodate">
+    <title>Kansioiden hallinta: Toiminnot</title>
+    <heading>Kansiotoiminnot</heading>
+    <para>
+     Voit valita kansion k&#xE4;ytt&#xE4;m&#xE4;ll&#xE4; radiopainikkeita vasemmassa
+     sarakkeessa. Kun olet valinnut kansiot, niin valitse kansiolle
+     teht&#xE4;v&#xE4; toiminto alasvetovalikosta.
+    </para>
+    <para>
+      Riippuen toiminnosta, sinulta voidaan kysy&#xE4; viel&#xE4;
+      lis&#xE4;tietoja. Ole eritt&#xE4;in varovainen Poista toiminnon
+      kanssa. Jos poistat kansion, niin poistat my&#xF6;s kaikki kansiossa
+      olevat viestit.
+    </para>
+    <heading>Tuo viestej&#xE4;</heading>
+    <para>
+      T&#xE4;ll&#xE4; toiminnolla voit tuoda viestej&#xE4; mbox tai .eml tiedostoista
+      valitsemaasi kansioon. Valitse ensin yksi kansio, johon viestit
+      tuodaan ja valitse sitten t&#xE4;m&#xE4; toiminto. Sen j&#xE4;lkeen tulet
+      sivulle, jossa kysyt&#xE4;&#xE4;n tuotko viestej&#xE4; mbox vai .elm
+      tiedostosta.
+    </para>
+</entry>
+  <entry id="filters" md5="5ef60786767e638fbf5ba8fc5bd5d9d2" state="uptodate">
+    <title>Suodattimet: K&#xE4;ytt&#xF6;</title>
+    <heading>Suodatins&#xE4;&#xE4;nt&#xF6;jen k&#xE4;ytt&#xF6;</heading>
+    <para>
+    Napsauta "Suodata viestit" -ikonia INBOX nimen vieress&#xE4;
+    postikansion&#xE4;kym&#xE4;ss&#xE4; suodattaaksesi viestit m&#xE4;&#xE4;rittelemiesi
+    suodatuss&#xE4;&#xE4;nt&#xF6;jen mukaan.
+    </para>
+</entry>
+  <entry id="filter-edit-rules" md5="5baa5708ac9449e797f967313a9e1a27" state="uptodate">
+    <title>Suodattimet: Muokkaa suodatins&#xE4;&#xE4;nt&#xF6;j&#xE4;</title>
+    <heading>Muokkaa suodatins&#xE4;&#xE4;nt&#xF6;j&#xE4;si</heading>
+    <para>
+    Napsauta "Muokkaa suodattimia" p&#xE4;&#xE4;st&#xE4;ksesi sivulle, jossa voit
+    lis&#xE4;t&#xE4;, poistaa ja muokata k&#xE4;yt&#xF6;ss&#xE4; olevia suodatins&#xE4;&#xE4;nt&#xF6;j&#xE4;.
+    </para>
+</entry>
+  <entry id="filter-edit-blacklist" md5="80ff7803c66599c7035f7f8811d218cc" state="uptodate">
+    <title>Suodattimet: Muokkaa mustaa listaa</title>
+    <heading>Muokkaa mustaa listaa</heading>
+    <para>
+    Napsauta "Muokkaa mustaa listaa" p&#xE4;&#xE4;st&#xE4;ksesi sivulla, jossa voit
+    lis&#xE4;t&#xE4;, poistaa ja muokata listaa niist&#xE4; s&#xE4;hk&#xF6;postiosoitteista,
+    joista et ota vastaan s&#xE4;hk&#xF6;postia.
+    </para>
+</entry>
+  <entry id="filter-edit-whitelist" md5="330c3a8fad198c7afe855c101c63cd0f" state="uptodate">
+    <title>Suodattimet: Muokkaa sallittujen listaa</title>
+    <heading>Muokkaa sallittujen listaa</heading>
+    <para>
+    Napsauta "Muokkaa sallittujen listaa" p&#xE4;&#xE4;st&#xE4;ksesi sivulla, jossa
+    voit lis&#xE4;t&#xE4;, poistaa ja muokata listaa niist&#xE4;
+    s&#xE4;hk&#xF6;postiosoitteista, joista otat AINA vastaan s&#xE4;hk&#xF6;postia.
+    </para>
+</entry>
+  <entry id="filter-on-login" md5="37d9297d1cca46435e36b6e38e45dcdb" state="uptodate">
+    <title>Suodattimet: Suodatus sis&#xE4;&#xE4;nkirjautuessa</title>
+    <heading>Suodata viestit sis&#xE4;&#xE4;nkirjautumisen yhteydess&#xE4;.</heading>
+    <para>
+    Kun valitset t&#xE4;m&#xE4;n asetuksen, niin suodattimet ajetaan aina kun
+    kirjaudut sis&#xE4;&#xE4;n IMP-ohjelmaan.
+    </para>
+</entry>
+  <entry id="filter-on-display" md5="f5afc305402ef52bad108933f3f33291" state="uptodate">
+    <title>Suodattimet: Suodata p&#xE4;ivityksen yhteydess&#xE4;</title>
+    <heading>Suodata viestit kun INBOX postikansioa p&#xE4;ivitet&#xE4;&#xE4;n.</heading>
+    <para>
+    Kun valitset t&#xE4;m&#xE4;n asetuksen, niin suodattimet ajetaan aina kun
+    INBOX:a p&#xE4;ivitet&#xE4;&#xE4;n.
+    </para>
+</entry>
+  <entry id="filter-any-mailbox" md5="71c51e83909f9d0bd440d220772ee3c6" state="uptodate">
+    <title>Suodattimet: Suodata mit&#xE4; tahansa postikansioa</title>
+    <heading>K&#xE4;yt&#xE4; suodattimia mihin kansioon tahansa.</heading>
+    <para>
+    K&#xE4;yt&#xE4; t&#xE4;t&#xE4; asetusta jos haluat k&#xE4;ytt&#xE4;&#xE4; suodattimia mihin kansioon
+    tahansa. Yleens&#xE4; suodattimia k&#xE4;ytet&#xE4;&#xE4;n vain niihin kansioihin,
+    joihin tulee uusia viestej&#xE4; kuten INBOX. Jos t&#xE4;m&#xE4; asetus on
+    valittuna, niin "Suodata viestit" -ikoni tulee kaikkien kansioiden
+    kansion&#xE4;kymiin ja voit k&#xE4;ytt&#xE4;&#xE4; n&#xE4;iss&#xE4;kin kansioissa
+    m&#xE4;&#xE4;rittelemi&#xE4;si suodattimia. HUOMIO: Suodattimien k&#xE4;ytt&#xF6; muissa
+    kuin INBOX kansiossa voi aiheuttaa omituisia lopputuloksia
+    (esimerkiksi: suodatin voi aiheuttaa sen ett&#xE4; viestej&#xE4; kopioidaan
+    samasta kansiosta samaan kansioon) tai ei-toivottuja lopputuloksia
+    (esimerkiksi: viestej&#xE4; voi siirty&#xE4; tai kadota, jos uusia
+    suodattimia on tullut k&#xE4;yt&#xF6;&#xF6;n sen j&#xE4;lkeen kun viestit on
+    talletettu kansioon).
+    </para>
+</entry>
+  <entry id="pgp-compose-attach-pubkey" md5="97446dbbb27616b4fa39be801e10df2d" state="uptodate">
+    <title>PGP: Liit&#xE4; julkinen avain</title>
+    <heading>Liit&#xE4; julkinen avain</heading>
+    <para>
+    Jos t&#xE4;m&#xE4; toiminto on valittuna ja jos sinulla on julkinen
+    PGP-avain, niin se liitet&#xE4;&#xE4;n l&#xE4;hteviin viesteihin. Voit asettaa
+    oletustoiminnon PGP Asetukset n&#xE4;kym&#xE4;st&#xE4;.
+    </para>
+</entry>
+  <entry id="pgp-option-scan-body" md5="6baaada0d46dc1ab0941087f235f359b" state="uptodate">
+    <title>PGP: Etsi viestien viestiosasta</title>
+    <heading>Etsi viestien viestiosasta</heading>
+    <para>
+    Jos t&#xE4;m&#xE4; on valittuna, niin IMP etsii viestin viestiosasta
+    PGP-tietoja ja n&#xE4;ytt&#xE4;&#xE4; tulokset jos jotain tietoja
+    l&#xF6;ytyi. Huomioithan ett&#xE4; t&#xE4;m&#xE4; toiminto voi huomattavasti hidastaa
+    koko j&#xE4;rjestelm&#xE4;n toimintaa, koska jokainen viesti joudutaan
+    k&#xE4;ym&#xE4;&#xE4;n kokonaan l&#xE4;vitse.
+    </para>
+</entry>
+  <entry id="compose-options-encrypt" md5="78ff9bd91687efb91d2798ca0458b5cb" state="uptodate">
+    <title>Kirjoitus: Salausasetukset</title>
+    <heading>Ei salausta</heading>
+    <para>
+    L&#xE4;het&#xE4; viesti ilman salausta (selv&#xE4;kielisen&#xE4;).
+    </para>
+    <heading>PGP-salattu viesti</heading>
+    <para>
+    K&#xE4;ytt&#xE4;m&#xE4;ll&#xE4; t&#xE4;t&#xE4; asetusta voit salata l&#xE4;htev&#xE4;n viestin k&#xE4;ytt&#xE4;en
+    PGP-ohjelmaa ja vastaanottajan julkista avainta. PGP-salatun
+    viestin voi l&#xE4;hett&#xE4;&#xE4; vain ja ainoastaan yhdelle
+    vastaanottajalle. Sinulla pit&#xE4;&#xE4; olla vastaanottajan julkinen avain
+    talletettuna osoitekirjaan tai et voi l&#xE4;hett&#xE4;&#xE4; salattua
+    viesti&#xE4;. Jos viestin l&#xE4;hetys ei onnistu sittenk&#xE4;&#xE4;n ja saat
+    virheilmoituksen, niin tarkista ett&#xE4; julkisessa avaimessa oleva
+    s&#xE4;hk&#xF6;postiosoite on sama kuin vastaanottajan s&#xE4;hk&#xF6;postiosoite. Kun
+    salaus on onnistunut, niin salattu tieto liitet&#xE4;&#xE4;n l&#xE4;htev&#xE4;&#xE4;n
+    viestiin.
+    </para>
+    <heading>PGP-allekirjoita viesti</heading>
+    <para>
+    K&#xE4;ytt&#xE4;m&#xE4;ll&#xE4; t&#xE4;t&#xE4; asetusta voit s&#xE4;hk&#xF6;isesti allekirjoittaa l&#xE4;htev&#xE4;n
+    viestin k&#xE4;ytt&#xE4;en PGP-ohjelmaa ja vastaanottajan julkista
+    avainta. Jos et ole jo antanut salasanateksti&#xE4;si, niin aukeaa
+    erillinen ikkuna jossa sinua pyydet&#xE4;&#xE4;n antamaan
+    salasanatekstisi. Vastaanottajalla pit&#xE4;&#xE4; olla talletettuna sinun
+    julkinen avaimesi, jotta h&#xE4;n voi tarkistaa viestisi eheyden.
+    </para>
+    <heading>PGP-salaa ja allekirjoita viesti</heading>
+    <para>
+    K&#xE4;ytt&#xE4;m&#xE4;ll&#xE4; t&#xE4;t&#xE4; asetusta voit s&#xE4;hk&#xF6;isesti allekirjoittaa salata l&#xE4;htev&#xE4;n viestin k&#xE4;ytt&#xE4;en PGP-ohjelmaa. Katso tarkemmat tiedot kohdista "PGP-salattu viesti" ja "PGP-allekirjoita viesti".
+    </para>
+    <heading>S/MIME-salaa viesti</heading>
+    <para>
+    T&#xE4;m&#xE4;n toiminto salaa viestin k&#xE4;ytt&#xE4;m&#xE4;ll&#xE4; S/MIME-tekniikkaa, vastaanottajan varmennetta ja sitten l&#xE4;hett&#xE4;&#xE4; sen. Vastaanottajan varmenne pit&#xE4;&#xE4; olla tallettettuna osoitekirjaan tai muuten t&#xE4;t&#xE4; toimintoa ei voi k&#xE4;ytt&#xE4;&#xE4;. Jos varmenne on tallettu osoitekirjaan ja silti k&#xE4;yt&#xF6;ss&#xE4; tulee virheit&#xE4;, niin tarkasta ensin, ett&#xE4; vastaanottajan osoite on sama kuin mik&#xE4; on tallettu osoitekirjaan. Salattu viesti l&#xE4;hetet&#xE4;&#xE4;n liitetiedostona.
+    </para>
+    <heading>S/MIME-allekirjoita viesti</heading>
+    <para>
+    T&#xE4;m&#xE4;n toiminto allekirjoittaa viestin s&#xE4;hk&#xF6;isesti k&#xE4;ytt&#xE4;m&#xE4;ll&#xE4; S/MIME-tekniikkaa ja omaa varmennettasi. Jos et ole istunnon aikana antanut varmenteesi salasanateksti&#xE4;, niin sit&#xE4; tullaan kysym&#xE4;&#xE4;n ennen viestin l&#xE4;hetyst&#xE4;.
+    </para>
+    <heading>S/MIME-salaa ja allekirjoita viesti</heading>
+    <para>
+    T&#xE4;m&#xE4; toiminto ensin s&#xE4;hk&#xF6;isesti allekirjoittaa viestin ja sitten salaa viestin. Katso tarkemmat tiedot kohdista "S/MIME-salaa viesti" ja "S/MIME-allekirjoita viesti".
+    </para>
+</entry>
+  <entry id="pgp-overview" md5="24b5138b4b53f73b5f2f2739e4c1858d" state="uptodate">
+    <title>PGP: Yleiskuva</title>
+    <heading>Mik&#xE4; on PGP?</heading>
+    <para>
+    PGP on ohjelma, joka on kehitetty turvaamaan tiedonsiirtoa
+    esimerkiksi s&#xE4;hk&#xF6;postissa ja tiedon turvallista
+    talletusta. Ohjelmaa voidaan k&#xE4;ytt&#xE4;&#xE4; salaamaan tietoa ja sill&#xE4; voi
+    tehd&#xE4; s&#xE4;hk&#xF6;isi&#xE4; allekirjoituksia. IMP k&#xE4;ytt&#xE4;&#xE4; GnuPG (Gnu Privacy
+    Guard) ohjelmaa t&#xE4;h&#xE4;n tarkoitukseen.
+    </para>
+    <heading>K&#xE4;yt&#xE4; PGP-toimitoa.</heading>
+    <para>
+    Jos t&#xE4;m&#xE4; asetus on valittuna, niin voit luoda tai katsoa
+    henkil&#xF6;kohtaisia PGP-avaimia, poistaa tai lis&#xE4;t&#xE4; osoitekirjaan
+    toisten k&#xE4;ytt&#xE4;jien julkisia avaimia, lukea salattua s&#xE4;hk&#xF6;postia,
+    tarkistaa s&#xE4;hk&#xF6;postin s&#xE4;hk&#xF6;isen allekirjoituksen, l&#xE4;hett&#xE4;&#xE4;
+    salattua s&#xE4;hk&#xF6;postia tai s&#xE4;hk&#xF6;isesti allekirjoittaa l&#xE4;htev&#xE4;n
+    s&#xE4;hk&#xF6;postin.
+    </para>
+</entry>
+  <entry id="pgp-option-attach-pubkey" md5="561ce43370ac4afbcc3f9818c8fbc2f6" state="uptodate">
+    <title>PGP: Asetukset - Liit&#xE4; julkinen avain</title>
+    <heading>Asetukset - Liit&#xE4; julkinen avain</heading>
+    <para>
+    Jos t&#xE4;m&#xE4; asetus on valittuna ja jos sinulla on olemassa julkinen
+    PGP-avain, niin se liitet&#xE4;&#xE4;n oletuksena kaikkiin l&#xE4;hteviin
+    viesteihin.
+    </para>
+</entry>
+  <entry id="pgp-manage-pubkey" md5="b289ea5824b7f69f35c0751497f4e1c3" state="uptodate">
+    <title>PGP: Julkisen avaimen hallinta</title>
+    <heading>Yleiskuva</heading>
+    <para>
+    Listaa osoitekirjastasi kaikki ne k&#xE4;ytt&#xE4;j&#xE4;t, joiden julkinen
+    PGP-avain on talletettuna osoitekirjaasi. N&#xE4;m&#xE4; k&#xE4;ytt&#xE4;j&#xE4;t
+    muodostavat joukon, jolle voit l&#xE4;hett&#xE4;&#xE4; salattua s&#xE4;hk&#xF6;postia tai
+    tarkistaa heid&#xE4;n l&#xE4;hett&#xE4;m&#xE4;ns&#xE4; s&#xE4;hk&#xF6;isesti allekirjoitetun
+    s&#xE4;hk&#xF6;postin allekirjoituksen.
+    </para>
+    <heading>N&#xE4;yt&#xE4;</heading>
+    <para>
+    N&#xE4;ytt&#xE4;&#xE4; julkisen PGP-avaimen erillisess&#xE4; ikkunassa.
+    </para>
+    <heading>Tarkemmat tiedot</heading>
+    <para>
+    N&#xE4;ytt&#xE4;&#xE4; tarkempia tietoja julkisesta PGP-avaimesta.
+    </para>
+    <heading>Poista</heading>
+    <para>
+    Poistaa julkisen avaimen osoitekirjastasi.
+    </para>
+</entry>
+  <entry id="pgp-import-pubkey" md5="6ee1130b46e9ff1ca9ad3a3a47e7b382" state="uptodate">
+    <title>PGP: Julkisen avaimen hallinta - Tuonti</title>
+    <heading>Tuo julkisia avaimia</heading>
+    <para>
+    T&#xE4;st&#xE4;  painikkeesta  aukeaa   ikkuna,  johon  voi  tuoda  julkisen
+    PGP-avaimen. Voit  kopioida ja liitt&#xE4;&#xE4;  avaimen tekstikentt&#xE4;&#xE4;n tai
+    jos sinulla on  avaintiedostoja paikallisella tietokoneella, niin
+    voit tuoda sen suoraan. Jos avain on kelvollinen, niin se lis&#xE4;t&#xE4;&#xE4;n
+    osoitekirjaasi   ja   ikkuna  sulkeutuu.   Jos   avain  ei   ollut
+    kelvollinen, niin n&#xE4;kyviin  tulee virheilmoitus, jossa selvitet&#xE4;&#xE4;n
+    mik&#xE4; avaimessa oli vikana.
+    </para>
+</entry>
+  <entry id="pgp-overview-personalkey" md5="220af2b74a58f430efd72d6d6b1f993f" state="uptodate">
+    <title>PGP: Henkil&#xF6;kohtaisten avainten hallinta</title>
+    <heading>Yleiskuva</heading>
+    <para>
+    Jos haluat  s&#xE4;hk&#xF6;isesti allekirjoittaa tai  vastaanottaa salattuja
+    s&#xE4;hk&#xF6;postiviestej&#xE4;, niin  sinulla pit&#xE4;&#xE4; olla  oma henkil&#xF6;kohtainen
+    julkinen/salainen PGP-avainpari.
+    </para>
+    <heading>Julkinen avaimesi</heading>
+    <para>
+    Julkinen   avaimesi   tulee   olla  saatavilla   kaikille   niille
+    henkil&#xF6;ille,  joiden kanssa  haluat  kommunikoida salatusti  siten
+    ett&#xE4; vain  SIN&#xC4; voit avata sinulle tulleet  viestit. Lis&#xE4;ksi sinun
+    tulee  laittaa  avain saataville  siten  ett&#xE4;  ne, joille  l&#xE4;het&#xE4;t
+    s&#xE4;hk&#xF6;isesti    allekirjoitettuja    viestej&#xE4;   voivat    tarkistaa
+    allekirjoituksesi.
+    </para>
+    <heading>Salainen avaimesi</heading>
+    <para>
+    Salainen avain tarvitaan siihen ett&#xE4; voisit purkaa sellaisen
+    viestin, joka on salattu k&#xE4;ytt&#xE4;en julkista avainta. Lis&#xE4;ksi
+    salaista avainta tarvitaan, jos haluat s&#xE4;hk&#xF6;isesti allekirjoittaa
+    s&#xE4;hk&#xF6;postiviestej&#xE4;. Salainen avaimesi on suojattu niihin luonnin
+    yhteydess&#xE4; liitetyll&#xE4; salasanatekstill&#xE4;. Jos haluat k&#xE4;ytt&#xE4;&#xE4;
+    sellaisia toimintoja, jotka k&#xE4;ytt&#xE4;v&#xE4;t salaista avaintasi, niin
+    silloin IMP kysyy sinulta t&#xE4;t&#xE4; salasanateksti. Sinun ei tarvitse
+    kirjoittaa salasanateksti kuin kerran yhden istunnon aikana - IMP
+    muistaa annetun salasanatekstin siihen saakka kunnes kirjaudut
+    ulos (Muista siis aina kirjautua ulos!).
+    </para>
+</entry>
+  <entry id="pgp-personalkey-public" md5="3c844d4ff8fdda3e0d446b47a63117e0" state="uptodate">
+    <title>PGP: Henkil&#xF6;kohtaisten avainten hallinta - Julkinen avain</title>
+    <heading>N&#xE4;yt&#xE4;</heading>
+    <para>
+    Avaa uuden ikkunan jossa n&#xE4;kyy sinun julkinen PGP-avain.
+    </para>
+    <heading>Tarkemmat tiedot</heading>
+    <para>
+    N&#xE4;ytt&#xE4;&#xE4; tarkempia tietoja julkisesta PGP-avaimestasi.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-private" md5="1851b67a1aeef1242fc3a2b94af75c03" state="uptodate">
+    <title>PGP: Henkil&#xF6;kohtaisten avainten hallinta - Salainen avain</title>
+    <heading>Anna salasanateksti</heading>
+    <para>
+    Avaa erillisen ikkunan, jossa kysyt&#xE4;&#xE4;n salasanateksti&#xE4;. Jos annat oikean salasanatekstin, niin IMP tallettaa t&#xE4;m&#xE4;n tiedon ja se on voimassa istunnon p&#xE4;&#xE4;ttymiseen saakka.
+    </para>
+    <heading>Poista salasanateksti</heading>
+    <para>
+    Poistaa IMP-ohjelman muistista talletetun salasanateksti - t&#xE4;m&#xE4;n
+    j&#xE4;lkeen jos salaista avainta tarvitaan johonkin toimintoon, niin
+    se kysyt&#xE4;&#xE4;n sinulta uudestaan.
+    </para>
+    <heading>N&#xE4;yt&#xE4;</heading>
+    <para>
+    Avaa uuden ikkunan jossa n&#xE4;kyy salainen PGP-avaimesi. &#xC4;L&#xC4; KOSKAAN
+    L&#xC4;HET&#xC4; T&#xC4;T&#xC4; AVAINTA KENELLEKK&#xC4;&#xC4;N - t&#xE4;m&#xE4; toiminto on vain sit&#xE4;
+    varten ett&#xE4; voit vied&#xE4; ja k&#xE4;ytt&#xE4;&#xE4; avainta jossakin toisessa
+    ohjelmassa.
+    </para>
+    <heading>Tarkemmat tiedot</heading>
+    <para>
+    N&#xE4;ytt&#xE4;&#xE4; tarkempia tietoja salaisesta PGP-avaimestasi.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-delete" md5="dbd8cbe6bce71c4fb592dd1b3b27b7ce" state="uptodate">
+    <title>PGP: Henkil&#xF6;kohtaisten avainten hallinta - Poista</title>
+    <heading>Poista henkil&#xF6;kohtaiset avaimet</heading>
+    <para>
+    Napauttamalla t&#xE4;t&#xE4; painiketta voit poistaa julkinen/salainen
+    PGP-avainparisi IMP-ohjelman asetuksista.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-create-name" md5="748cb124b7ff52820792e278037a8c27" state="uptodate">
+    <title>PGP: Luo henkil&#xF6;kohtainen avain - Nimi</title>
+    <heading>Nimi</heading>
+    <para>
+    Nimi, jonka haluat sis&#xE4;llytt&#xE4;&#xE4; henkil&#xF6;kohtaisiin
+    avaimiisi. Pakollinen kentt&#xE4;.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-create-comment" md5="e666eb9f0ee4b49fe04f74fc18db8640" state="uptodate">
+    <title>PGP: Luo henkil&#xF6;kohtainen avain - Kommentti</title>
+    <heading>Kommentti</heading>
+    <para>
+    Kommentti, joka haluat sis&#xE4;llytt&#xE4;&#xE4; henkil&#xF6;kohtaisiin
+    avaimiisi. Vapaaehtoinen kentt&#xE4;.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-create-email" md5="c729f70fdb3a73cbb7ba5ef5888e3092" state="uptodate">
+    <title>PGP: Luo henkil&#xF6;kohtainen avain - S&#xE4;hk&#xF6;postiosoite</title>
+    <heading>S&#xE4;hk&#xF6;postiosoite</heading>
+    <para>
+    S&#xE4;hk&#xF6;postiosoite, jonka haluat liitt&#xE4;&#xE4; henkil&#xF6;kohtaisiin
+    avaimiisi. Pakollinen kentt&#xE4;.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-create-keylength" md5="24ca641c63fb5ff310a39ee0d3b1ee55" state="uptodate">
+    <title>PGP: Luo henkil&#xF6;kohtainen avain - Avaimen pituus</title>
+    <heading>Avaimen pituus</heading>
+    <para>
+    Sinulle luotavan avaimen pituus tavuina. Mit&#xE4; suurempi arvo, niin
+    sen suurempi suoja, mutta my&#xF6;s suurempi luontiaika ja salaukseen
+    k&#xE4;ytetty aika). 1024 on oletusarvo - t&#xE4;m&#xE4; on enemm&#xE4;n kuin riitt&#xE4;v&#xE4;
+    avainpituus ja tarjoaa hyv&#xE4;n suojan.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-create-passphrase" md5="2fb9372970bf33f51e988ba39dbd7193" state="uptodate">
+    <title>PGP: Luo henkil&#xF6;kohtainen avain - Salasanateksti</title>
+    <heading>Salasanateksti</heading>
+    <para>
+    Salasanateksti k&#xE4;ytet&#xE4;&#xE4;n suojaamaan ja salaamaan henkil&#xF6;kohtaiset
+    avaimesi. T&#xE4;m&#xE4; pit&#xE4;&#xE4; olla V&#xC4;HINT&#xC4;&#xC4;N 6 merkki&#xE4; pitk&#xE4;, EI SAA olla
+    sama kuin mihink&#xE4;&#xE4;n palveluun k&#xE4;ytt&#xE4;m&#xE4;si salasana, ei tulisi olla
+    sanakirjasta l&#xF6;ytyv&#xE4; sana ja tulisi sis&#xE4;lt&#xE4;&#xE4; sek&#xE4; numeroita ett&#xE4;
+    kirjaimia. Varmuuden vuoksi sinun pit&#xE4;&#xE4; kirjoittaa salasanateksti
+    kahteen kertaan. Pakollinen kentt&#xE4;.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-create-actions" md5="0f8234935b964c83533b4ec4c15eb712" state="uptodate">
+    <title>PGP: Luo henkil&#xF6;kohtainen avain - Toiminnot</title>
+    <heading>Luo avaimet</heading>
+    <para>
+    Luo ja tallettaa henkil&#xF6;kohtaisen julkinen/salainen avainparin.
+    </para>
+    <heading>Tuo avainpari</heading>
+    <para>
+    T&#xE4;st&#xE4; painikkeesta aukeaa ikkuna, johon voi tuoda
+    julkisen/salaisen avainparin. Voit kopioida ja liitt&#xE4;&#xE4;
+    PGP-avainparin tekstikentt&#xE4;&#xE4;n tai jos sinulla on avaimet
+    tiedostoina paikallisella tietokoneella, niin voit tuoda ne
+    suoraan. Jos avaimet ovat kelvolliset, niin ne lis&#xE4;t&#xE4;&#xE4;n
+    asetuksiisi ja ikkuna sulkeutuu. Jos avaimet eiv&#xE4;t olleet
+    kelvollisia, niin n&#xE4;kyviin tulee virheilmoitus, jossa selvitet&#xE4;&#xE4;n
+    mik&#xE4; avaimissa oli vikana.
+    </para>
+</entry>
+  <entry id="smime-overview" md5="d3c752b1345fb2eccfe575c07461963f" state="uptodate">
+    <title>S/MIME: Yleiskuva</title>
+    <heading>Mik&#xE4; on S/MIME?</heading>
+    <para>
+    S/MIME on julkiseen ja salaiseen avaimeen perustuva avoin ja
+    yhteensopiva j&#xE4;rjestelm&#xE4;, jonka avulla voi muodostaa s&#xE4;hk&#xF6;isi&#xE4;
+    allekirjoituksia, salata viesti ja suojata viestin eheys. S/MIME
+    avulla voit salata viestit siten ett&#xE4; vain viestin l&#xE4;hett&#xE4;j&#xE4; ja
+    vastaanottaja voi sen lukea. Voit my&#xF6;s s&#xE4;hk&#xF6;isesti allekirjoittaa
+    viestin, jolloin vastaanottaja voi tarkistaa ett&#xE4; viesti on tullut
+    juuri sinulta ja sit&#xE4; ei ole muutettu matkalla. Yhdist&#xE4;m&#xE4;ll&#xE4;
+    salaus ja s&#xE4;hk&#xF6;inen allekirjoitus voidaan taata viestin eheys ja
+    se ett&#xE4; kukaan muu kuin vastaanottaja ei p&#xE4;&#xE4;se lukemaan viesti&#xE4;.
+    </para>
+    <heading>K&#xE4;yt&#xE4; S/MIME-toimintoa</heading>
+    <para>
+    Jos t&#xE4;m&#xE4; asetus on valittuna, niin voit tuoda ohjelmaan
+    henkil&#xF6;kohtaiset S/MIME-avaimet, lukea salattuja viestej&#xE4;,
+    tarkistaa s&#xE4;hk&#xF6;isi&#xE4; allekirjoituksia ja voit kirjoittaa ja
+    l&#xE4;hett&#xE4;&#xE4; s&#xE4;hk&#xF6;isesti allekirjoitettuja salattuja viestej&#xE4;.
+    </para>
+</entry>
+  <entry id="smime-overview-personalkey" md5="9f4f36ae72cb4abc731067d338be3b98" state="uptodate">
+    <title>S/MIME: Henkil&#xF6;kohtaiset avaimet</title>
+    <heading>Yleiskuva</heading>
+    <para>
+    Jos haluat lis&#xE4;t&#xE4; viesteihin s&#xE4;hk&#xF6;isen allekirjoituksen tai salata
+    viestej&#xE4;, niin sinulla pit&#xE4;&#xE4; olla julkinen/salainen
+    S/MIME-avainpari.
+    </para>
+</entry>
+  <entry id="smime-import-personal-certs" md5="cf0ed2e3e24d30dedf8cfef2c2645759" state="uptodate">
+    <title>S/MIME: Tuo henkil&#xF6;kohtaiset varmenteet</title>
+    <heading>Tuo henkil&#xF6;kohtaiset varmenteet</heading>
+    <para>
+    Voit henkil&#xF6;kohtaiset varmenteesti, jos ne ovat PKCS #12
+    muodossa. PKCS #12 muotoa k&#xE4;ytet&#xE4;&#xE4;n yleisesti avainten vienniss&#xE4;
+    esimerkiksi selaimista (esim. Internet Explorer, Firefox) tai jos
+    avaimet halutaan vied&#xE4; k&#xE4;ytt&#xF6;j&#xE4;rjestelm&#xE4;st&#xE4; (esim. Windows
+    XP). Jos avainmet ovat kelvolliset, niin ne lis&#xE4;t&#xE4;&#xE4;n asetuksiisi
+    ja ikkuna sulkeutuu. Jos avaimet eiv&#xE4;t olleet kelvollisia, niin
+    n&#xE4;kyviin tulee virheilmoitus, jossa selvitet&#xE4;&#xE4;n mik&#xE4; avaimissa oli
+    vikana.
+    </para>
+</entry>
+  <entry id="smime-delete-personal-certs" md5="018bb6b61a7e416892de288ad1c880f4" state="uptodate">
+    <title>S/MIME: Poista henkil&#xF6;kohtainen varmanne</title>
+    <heading>Poista henkil&#xF6;kohtainen varmenne</heading>
+    <para>
+    Poistaa henkil&#xF6;kohtaisen varmenteen asetuksistasi. T&#xE4;m&#xE4;n j&#xE4;lkeen et voi en&#xE4;&#xE4; S/MIME-allekirjoittaa viestej&#xE4; tai lukea sinulle osoitettuja S/MIME-salattuja viestej&#xE4;.
+    </para>
+</entry>
+  <entry id="smime-manage-pubkey" md5="8b6c63684d3d73b3d084025a78fe7e88" state="uptodate">
+    <title>S/MIME: Julkisten avaimien hallinta</title>
+    <heading>S/MIME: Julkisten avaimien hallinta</heading>
+    <para>
+    Voit hallinnoida julkisten S/MIME-avainten listaa.
+    </para>
+    <heading>N&#xE4;yt&#xE4;</heading>
+    <para>
+    N&#xE4;ytt&#xE4;&#xE4; julkisen avaimen raakatekstiversiona.
+    </para>
+    <heading>Tarkemmat tiedot</heading>
+    <para>
+    N&#xE4;ytt&#xE4;&#xE4; julkisen avaimen tarkemmat tekniset tiedot.
+    </para>
+    <heading>Poista</heading>
+    <para>
+    Poistaa valitun julkisen avaimen. Kun poistat jonkun k&#xE4;ytt&#xE4;j&#xE4;n
+    julkisen avaimen, niin et voi en&#xE4;&#xE4; l&#xE4;hett&#xE4;&#xE4; h&#xE4;nelle salattuja
+    viestej&#xE4;.
+    </para>
+</entry>
+  <entry id="printing" md5="f233c11b6b4a6bedeb68f1d5a2a976db" state="uptodate">
+    <title>Tulostus</title>
+    <heading>Tulosta viesti</heading>
+    <para>
+    Tulostaaksesi katselemasi viestin, napsauta viestin alussa tai
+    lopussa olevaa "Tulosta" -linkki&#xE4;. Viesti aukeaa uuteen ikkunaan
+    tulostettavassa muodossa. Riippuen k&#xE4;ytetyst&#xE4; selaimesta ja
+    k&#xE4;ytt&#xF6;j&#xE4;rjestelm&#xE4;st&#xE4;, niin sinulle pit&#xE4;isi aueta
+    tulostusdialogi. Jos dialogia ei tule, niin valitse selaimen
+    "Tiedosto" -alasvetovalikosta toiminto "Tulosta".
+    </para>
+</entry>
+  <entry id="sorting" md5="18cdeac38027fe5c42bab693f2a4260a" state="uptodate">
+    <title>Lajittelu ja s&#xE4;ikeet</title>
+    <heading>Lajittelu</heading>
+    <para>
+    Voit j&#xE4;rjest&#xE4;&#xE4; viestit eri sarakkeiden mukaan napauttamalla
+    sarakkeen otsikkoa. Voit lajitella ne nousevaan tai laskevaan
+    j&#xE4;rjestykseen napauttamalla sarakkeen otsikon vieress&#xE4; olevaa
+    nuolenp&#xE4;&#xE4;n kuvaa.
+    </para>
+    <heading>S&#xE4;ikeet</heading>
+    <para>
+    Jos haluat j&#xE4;rjest&#xE4;&#xE4; viestit keskustelus&#xE4;ikeen mukaan, niin
+    napsauta [Keskustelus&#xE4;ie] -linkki&#xE4; Otsikkosarakkeessa. Kun haluat
+    palauttaa j&#xE4;rjestyksen otsikon mukaiseksi, niin napsauta [Otsikko]
+    linkki&#xE4; otsikkosarakkeessa.
+    </para>
+</entry>
+  <entry id="alternative-msg" md5="4978073f76977b6af6b69810e4d22a65" state="uptodate">
+    <title>Multipart/Alternative viestit</title>
+    <para>
+    L&#xE4;hett&#xE4;j&#xE4; on voinut l&#xE4;hett&#xE4;&#xE4; jotkut viestit tyypill&#xE4;
+    "multipart/alternative". N&#xE4;iss&#xE4; viesteiss&#xE4; on monta osiota, mutta
+    niiss&#xE4; kaikissa on SAMA SIS&#xC4;LT&#xD6;, mutta ERI
+    MUOTO. S&#xE4;hk&#xF6;postiohjelma pyrkii n&#xE4;ytt&#xE4;m&#xE4;&#xE4;n n&#xE4;ist&#xE4; osioista sen,
+    mink&#xE4; se pystyy parhaiten n&#xE4;ytt&#xE4;m&#xE4;&#xE4;n, viestin muut osiot n&#xE4;kyv&#xE4;t
+    otsikon "Vaihtoehtoiset osat t&#xE4;lle osiolle:" alapuolella ja ne voi
+    katsoa tai tallettaa erikseen. Kannattaa kuitenkin pit&#xE4;&#xE4; mieless&#xE4;
+    ett&#xE4; n&#xE4;m&#xE4; vaihtoehtoiset osiot pit&#xE4;v&#xE4;t sis&#xE4;ll&#xE4;&#xE4;n saman sis&#xE4;ll&#xF6;n
+    kuin se osio mink&#xE4; s&#xE4;hk&#xF6;postiohjelma n&#xE4;ytti - osiot ovat vain eri
+    muodossa (esimerkiksi teksti ja HTML-osiot).
+    </para>
+</entry>
+  <entry id="prefs-rename_sentmail_monthly" md5="530fa20e0afbc25ffd40877948832899" state="uptodate">
+    <title>Asetukset: Yll&#xE4;pitotoimenpiteet: Nime&#xE4; kuukausittain uudestaan l&#xE4;hetettyjen viestien kansiot</title>
+    <para>
+    Laita t&#xE4;m&#xE4; asetus p&#xE4;&#xE4;lle, jos haluat kuukausittain nimet&#xE4;
+    uudelleen l&#xE4;hetettyjen viestien kansiot, niin kansiot nimet&#xE4;&#xE4;n
+    uudestaan kuukauden alussa. Kansioiden uuteen nimeen lis&#xE4;t&#xE4;&#xE4;n
+    kuukausi ja vuosi ja samalla luodaan my&#xF6;s uusi l&#xE4;hetettyjen
+    viestien kansio.
+    </para>
+</entry>
+  <entry id="prefs-delete_sentmail_monthly" md5="0beed16dfd68e2f25e0c66871fd546df" state="uptodate">
+    <title>Asetukset: Yll&#xE4;pitotoimenpiteet: Poista kuukausittain: L&#xE4;hetettyjen viestien kansio</title>
+    <para>
+    Laita t&#xE4;m&#xE4; asetus p&#xE4;&#xE4;lle jos haluat joka kuukauden alussa poistaa
+    vanhan l&#xE4;hetettyjen viestien kansion. Jos postilaatikollesi on
+    asetettu kiinti&#xF6;, niin t&#xE4;m&#xE4; asetus voi olla hy&#xF6;dyllinen.
+    </para>
+</entry>
+  <entry id="prefs-delete_sentmail_monthly_keep" md5="71ed1c2eab48b91a25b5bcd4b14ccea9" state="uptodate">
+    <title>Asetukset: Yll&#xE4;pitotoimenpiteet: Poista kuukausittain: L&#xE4;hetettyjen viestien kansio - # kansiota pidet&#xE4;&#xE4;n tallessa</title>
+    <para>
+    Jos poistat l&#xE4;hetettyjen viestien kansioita kuukausittain, niin
+    kuinka monta vanhaa kansiota haluat pit&#xE4;&#xE4; tallessa. Kaikki ne
+    l&#xE4;hetettyjen viestien kansiot poistetaan, jotka ovat vanhempia
+    kuin valittu m&#xE4;&#xE4;r&#xE4; kuukausia.
+    </para>
+</entry>
+  <entry id="prefs-purge_sentmail" state="uptodate" md5="7b37c534aaaec6b43589f15845cf0273">
+    <title>Asetukset: Yll&#xE4;pitotoimenpiteet: Tyhjenn&#xE4; l&#xE4;hetettyjen viestien kansio</title>
+    <para>
+    T&#xE4;ll&#xE4; asetuksella voi automaattisesti tyhjent&#xE4;&#xE4; l&#xE4;hetettyjen viestien kansiota.
+    </para>
+</entry>
+  <entry id="prefs-purge_sentmail_interval" state="uptodate" md5="423f3c1b0645cee1bc58e6e22a6d8b68">
+    <title>Asetukset: Yll&#xE4;pitotoimenpiteet: Tyhjenn&#xE4; l&#xE4;hetettyjen viestien kansio: L&#xE4;hettyjen viestien tyhjennysv&#xE4;li</title>
+    <para>
+    Jos l&#xE4;hetettyjen viestien kansiota tyhjennet&#xE4;&#xE4;n, niin t&#xE4;ss&#xE4; asetuksessa voit m&#xE4;&#xE4;ritell&#xE4; millaisin v&#xE4;liajoin kansiosta tyhjennet&#xE4;&#xE4;n vanhat viestit.
+    </para>
+</entry>
+  <entry id="prefs-purge_sentmail_keep" state="uptodate" md5="fcba2b7e5da61a7fdda7970f926f8d8a">
+    <title>Asetukset: Yll&#xE4;pitotoimenpiteet: Tyhjenn&#xE4; l&#xE4;hetettyjen viestien kansio: Viestien ik&#xE4;</title>
+    <para>
+    Jos tyhjenn&#xE4;t l&#xE4;hetettyjen viestien kansiot automaattisesti, niin kuinka vanhat viestit kansiosta pit&#xE4;isi poistaa.
+    </para>
+</entry>
+  <entry id="prefs-delete_attachments_monthly" md5="373ea02ede6df5fc345caf632e19a75f" state="uptodate">
+    <title>Asetukset: Yll&#xE4;pitotoimenpiteet: Poista kuukausittain: Liitetyt liitetiedostot</title>
+    <para>
+    Laita t&#xE4;m&#xE4; asetus p&#xE4;&#xE4;lle, jos haluat poistaa liitetiedostot joka
+    kuukauden alussa. Jos postilaatikollesi on asetettu kiinti&#xF6;, niin
+    t&#xE4;m&#xE4; asetus voi olla hy&#xF6;dyllinen.
+    </para>
+</entry>
+  <entry id="prefs-delete_attachments_monthly_keep" md5="1b340a60214dffd04aec02cc1127df5d" state="uptodate">
+    <title>Asetukset: Yll&#xE4;pitotoimenpiteet: Poista kuukausittain: Liitetyt liitetiedostot - # kuukauta vanhemmat</title>
+    <para>
+    Jos poistat liitetiedostoja kuukausittain, niin kuinka monta
+    kuukautta vanhemmat liitetiedostot poistetaan? Jos jokin liite on
+    t&#xE4;t&#xE4; vanhempi, niin se poistetaan.
+    </para>
+</entry>
+  <entry id="prefs-purge_trash" md5="dc71871146be3e46ade0087a8cf18273" state="uptodate">
+    <title>Asetukset: Yll&#xE4;pitotoimenpiteet: Tyhjenn&#xE4; roskakori</title>
+    <para>
+    Kun haluat automaattisesti tyhjent&#xE4;&#xE4; roskakorin tietyin v&#xE4;liajoin.
+    </para>
+</entry>
+  <entry id="prefs-purge_trash_interval" md5="7be91fbeb05b2d87289d4c5602d5a32f" state="uptodate">
+    <title>Asetukset: Yll&#xE4;pitotoimenpiteet: Tyhjenn&#xE4; roskakori: v&#xE4;liajoin</title>
+    <para>
+    Jos tyhjenn&#xE4;t roskakorikansiota automaattisesti, niin miten usein
+    se pit&#xE4;isi tyhjent&#xE4;&#xE4;.
+    </para>
+</entry>
+  <entry id="prefs-purge_trash_keep" md5="3cb5a2b5b80b7ac1179ae005f983970e" state="uptodate">
+    <title>Asetukset: Yll&#xE4;pitotoimenpiteet: Tyhjenn&#xE4; roskakori: Viestien ik&#xE4;</title>
+    <para>
+    Jos tyhjenn&#xE4;t roskakorikansiota automaattisesti, niin montako
+    p&#xE4;iv&#xE4;&#xE4; vanhemmat viestit tuhotaan automaattisesti.
+    </para>
+</entry>
+  <entry id="prefs-purge_spam" state="uptodate" md5="9cabaf3500d3316054db045cf5339f5e">
+    <title>Asetukset: Yll&#xE4;pitotoimenpiteet: Poista roskapostit</title>
+    <para>
+    Jos haluat poistaa roskapostit ajoittain.
+    </para>
+</entry>
+  <entry id="prefs-purge_spam_interval" state="uptodate" md5="fe0f7289693d19bd386638e25beeb276">
+    <title>Asetukset: Yll&#xE4;pitotoimenpiteet: Poista roskapostit: Poistamisen aikav&#xE4;li</title>
+    <para>
+    Jos poistat roskapostiviestit automaattisesti, niin kuinka usein kansio pit&#xE4;isi tyhjent&#xE4;&#xE4;.
+    </para>
+</entry>
+  <entry id="prefs-purge_spam_keep" state="uptodate" md5="f4748aba20cf4a9b6ce92822bd185de6">
+    <title>Asetukset: Yll&#xE4;pitotoimenpiteet: Poista roskapostit: Viestien ik&#xE4;</title>
+    <para>
+    Jos tyhjenn&#xE4;t roskapostikansiota automaattisesti, niin kuinka vanhat viestit kansiosta pit&#xE4;isi poistaa.
+    </para>
+</entry>
+  <entry id="prefs-attrib_text" md5="721a09d7ca028c97e3bd2b38c597fff7" state="uptodate">
+     <title>Asetukset: Viestin kirjoitus: Lainausteksti</title>
+     <para>
+     T&#xE4;ll&#xE4; asetuksella voit m&#xE4;&#xE4;ritell&#xE4; mik&#xE4; teksti laitetaan
+     vastausviesteihin ennen lainattua teksti&#xE4;.
+     </para>
+     <para>
+     Voit erikoiskoodien avulla laittaa laittaa m&#xE4;&#xE4;rittelytekstiin
+     lis&#xE4;tietoja viestist&#xE4;, johon olet vastaamassa. Erikoiskoodi
+     koostuu '%'-merkist&#xE4; ja sit&#xE4; seuraa aina yksi kirjain tai
+     merkki. Alla on lista, jossa on m&#xE4;&#xE4;ritelty k&#xE4;ytett&#xE4;vis&#xE4; olevat
+     erikoiskoodit.
+     </para>
+
+     <para> %f : L&#xE4;hett&#xE4;j&#xE4;n nimi ja s&#xE4;hk&#xF6;postiosoite</para>
+     <para> %a : L&#xE4;hett&#xE4;j&#xE4;n s&#xE4;hk&#xF6;postiosoite</para>
+     <para> %p : L&#xE4;hett&#xE4;j&#xE4;n nimi</para>
+     <para> %r : RFC 2822 mukainen p&#xE4;iv&#xE4;m&#xE4;&#xE4;r&#xE4; ja aikavy&#xF6;hyke</para>
+     <para> %d : P&#xE4;iv&#xE4;m&#xE4;&#xE4;r&#xE4; muodossa www, pp kkk VVVV</para>
+     <para> %x : P&#xE4;iv&#xE4;m&#xE4;&#xE4;r&#xE4; esitettyn&#xE4; lokalisaation oletustavalla</para>
+     <para> %c : P&#xE4;iv&#xE4;m&#xE4;&#xE4;r&#xE4; ja aika esitettyn&#xE4; lokalisaation oletustavalla</para>
+     <para> %m : Message-ID</para>
+     <para> %s : Otsikko</para>
+     <para> %n : Rivinvaihto</para>
+     <para> %% : '%' -merkki</para>
+
+</entry>
+  <entry id="prefs-default_msg_charset" state="uptodate" md5="4ef4fb2090e703f6f8e03f39ab96e717">
+    <title>Asetukset: Viestin oletusmerkist&#xF6;</title>
+    <para>
+    Viestin oletusmerkist&#xF6;&#xE4; k&#xE4;ytet&#xE4;&#xE4;n silloin kun viestin osioihin ei ole merkitty mit&#xE4;&#xE4;n merkist&#xF6;tietoa. RFC 2045 dokumentiss&#xE4; m&#xE4;&#xE4;ritell&#xE4;&#xE4;n, ett&#xE4; viestit joissa ei ole m&#xE4;&#xE4;ritelty merkist&#xF6;tietoa n&#xE4;ytet&#xE4;&#xE4;n k&#xE4;ytt&#xE4;en merkist&#xF6;&#xE4; 'US-ASCII'. Jotku rikkin&#xE4;isen s&#xE4;hk&#xF6;postiohjelmistot l&#xE4;hett&#xE4;v&#xE4;t viestej&#xE4; siten, ett&#xE4; tekstiss&#xE4; on k&#xE4;ytetty US-ASCII ulkopuolisia merkkej&#xE4;, mutta merkist&#xF6;tietoa ei ole m&#xE4;&#xE4;ritelty. T&#xE4;m&#xE4;n arvon voi asettaa siihen merkist&#xF6;&#xF6;n, mit&#xE4; yleisesti k&#xE4;ytet&#xE4;&#xE4;n paikallisesti. Voit my&#xF6;s valita "Oletus", jolloin k&#xE4;ytet&#xE4;&#xE4;n MIME-oletuksia.
+    </para>
+</entry>
+  <entry id="prefs-disposition_request_read" md5="89e92c4d68224b2345b59959878a7174" state="uptodate">
+    <title>Asetukset: Pyyd&#xE4; ilmoitus viestin lukemisesta</title>
+    <para>
+    "Pyyd&#xE4; ilmoitus viestin lukemisesta" voi liitt&#xE4;&#xE4; viestiin pyynn&#xF6;n
+    ett&#xE4; sinulle l&#xE4;htisi viesti kun vastaanottaja aukaisee
+    viestin. Kaikki s&#xE4;hk&#xF6;postiohjelmat eiv&#xE4;t tue t&#xE4;t&#xE4; toimintoa,
+    lis&#xE4;ksi k&#xE4;ytt&#xE4;j&#xE4; voi kielt&#xE4;&#xE4; kuittausviestin l&#xE4;hett&#xE4;misen.
+    </para>
+</entry>
+  <entry id="prefs-disposition_send_mdn" md5="1fe04e5dc3de68d172da284895973ea9" state="uptodate">
+    <title>Asetukset: L&#xE4;het&#xE4; MDN</title>
+    <para>
+    "L&#xE4;het&#xE4; MDN" l&#xE4;hett&#xE4;&#xE4; Message Disposition Notification (viestin
+    aukaisun kuittausviesti) -ilmoitusviestin kun aukaiset viestin ja
+    jos l&#xE4;hett&#xE4;j&#xE4; on pyyt&#xE4;nyt ett&#xE4; viestist&#xE4; l&#xE4;hetet&#xE4;&#xE4;n
+    kuittausviesti. Useimmissa tapauksissa t&#xE4;m&#xE4; tapahtuu
+    automaattisesti ilman ett&#xE4; sinulta kysyt&#xE4;&#xE4;n lupaa. Joidenkin
+    viestien kohdalla voit joutua p&#xE4;&#xE4;tt&#xE4;m&#xE4;&#xE4;n l&#xE4;hetet&#xE4;&#xE4;nk&#xF6;
+    kuittausviesti&#xE4; ja napsauttamaan linkki&#xE4;.
+    </para>
+</entry>
+  <entry id="prefs-disposition_request_delivery" md5="26598e29af05a07de5e13644669be712" state="uptodate">
+    <title>Asetukset: Pyyd&#xE4; ilmoitus viestin perillemenosta</title>
+    <para>
+    "Pyyd&#xE4; ilmoitus viestin perillemenosta" l&#xE4;hett&#xE4;&#xE4; ilmoitusviestin
+    kun vastaanottajan s&#xE4;hk&#xF6;postipalvelin on toimittanut viestin
+    vastaanottajan s&#xE4;hk&#xF6;postikansioon. T&#xE4;m&#xE4; ei tarkoita sit&#xE4;, ett&#xE4;
+    vastaanottaja olisi lukenut viestin vaan ett&#xE4; viesti on toimitettu
+    vastaanottajalle. Kaikki postipalvelimet eiv&#xE4;t tue t&#xE4;t&#xE4; toimintoa.
+    </para>
+</entry>
+  <entry id="prefs-delete_spam_after_report" state="uptodate" md5="cefa8b52e09b0ada90e0889a3959efea">
+    <title>Asetukset: Poista roskaposti raportoinnin j&#xE4;lkeen</title>
+    <para>Voit jonkun kolmesta asiasta kun olet raportoinut viestin joko roskapostina tai puhtaana.</para>
+    <para>
+    Yksi: Voit valita olla tekem&#xE4;tt&#xE4; mit&#xE4;&#xE4;n - viesti raportoidaan joko roskapostina tai puhtaana, mutta muuten se pysyy muuttumattomana postilaatikossasi.
+    </para>
+    <para>
+    Kaksi: Jos viesti raportoidaan roskapostina, niin viesti poistetaan v&#xE4;litt&#xF6;m&#xE4;sti postilaatikostasi. Jos viesti on puhdas, niin t&#xE4;m&#xE4; vaihtoehto ei tee sille mit&#xE4;&#xE4;n.
+    </para>
+    <para>
+    Kolme: Jos viesti raportoidaan roskapostina, niin viesti poistetaan nykyisest&#xE4; postilaatikosta ja siirret&#xE4;&#xE4;n roskapostikansioosi. Jos raportoitava viesti on puhdas, niin viesti poistetaan nykyisest&#xE4; postilaatikostasi ja siirret&#xE4;&#xE4;n INBOX postilaatikkoosi.
+    </para>
+</entry>
+  <entry id="prefs-html_image_replacement" md5="28e1cf08e328345a8e7274c853492d4f" state="uptodate">
+    <title>Asetukset: HTML, kuvan korvaus</title>
+    <para>
+    Jos HTML-viestit n&#xE4;ytet&#xE4;&#xE4;n suoraan, niin estet&#xE4;&#xE4;k&#xF6; kuvien
+    n&#xE4;ytt&#xE4;minen viestin yhteydess&#xE4; ellet olet antanut siihen
+    lupaa. Huomaathan ett&#xE4; jos katsot HTML-liitett&#xE4;, niin kuvat
+    n&#xE4;ytet&#xE4;&#xE4;n automaattisesti viestin mukana.
+    </para>
+</entry>
+  <entry id="prefs-html_image_addrbook" md5="759fa3df24e0a3cd89f320102252f91a" state="uptodate">
+    <title>Asetukset: HTML, kuvan korvaus / N&#xE4;yt&#xE4; jos osoitekirjassa</title>
+    <para>
+    Jos HTML-viesteist&#xE4; ei oletuksena n&#xE4;ytet&#xE4; kuvia viestin
+    yhteydess&#xE4;, niin n&#xE4;ytet&#xE4;&#xE4;nk&#xF6; kuvat jos l&#xE4;hett&#xE4;j&#xE4;n s&#xE4;hk&#xF6;postiosoite
+    l&#xF6;ytyy osoitekirjasta.
+    </para>
+</entry>
+  <entry id="prefs-mailbox_start" md5="62fcc38a15f54dae7eb8bdafa93ed341" state="uptodate">
+    <title>Asetukset: Postilaatikon aloitussivu</title>
+    <para>
+    T&#xE4;ll&#xE4; asetuksella voidaan m&#xE4;&#xE4;ritell&#xE4; mille sivulle postikansio
+    aukeaa, kun se avataan ensimm&#xE4;ist&#xE4; kertaa. Huomaa ett&#xE4; "uusi"
+    viestiasetus ei toimi, jos sinulla on valittuna "Keskustelus&#xE4;ie"
+    j&#xE4;rjestysasetus - t&#xE4;ss&#xE4; tapauksessa aukeaa aina viimeisin
+    viestisivu.
+    </para>
+</entry>
+  <entry id="prefs-save_attachments" md5="35b46334cdcc7fa416b9f9fca5874e80" state="uptodate">
+    <title>Asetukset: Talleta liitetiedostot l&#xE4;hetetyist&#xE4; viesteist&#xE4;</title>
+    <para>
+    Jos talletat l&#xE4;hetetyt viesti l&#xE4;hetettyjen viestien kansioon, niin talletetaanko viestien mukana my&#xF6;s liitetiedosto. Vaihtoehtoja ovat:
+    </para>
+
+    <para>* "Talleta aina liitteet" - &#xC4;L&#xC4; KOSKAAN kysy talletetaanko liitteit&#xE4;. Liitteet talletaan AINA viestin mukana.</para>
+    <para>* "Kysy aina kun l&#xE4;hetet&#xE4;&#xE4;n liitetiedosto; Oletus KYLL&#xC4;" - Kysy AINA talletaanko liitteet viestin mukana. Oletus on ett&#xE4; liitteet talletaan viestin mukana.</para>
+    <para>* "Kysy aina kun l&#xE4;hetet&#xE4;&#xE4;n liitetiedosto; Oletus EI" - Kysy AINA talletaanko liitteet viestin mukana. Oletus on ett&#xE4; liitteit&#xE4; ei talleteta viestin mukana.</para>
+    <para>* "&#xC4;l&#xE4; talleta liitteit&#xE4;" &#xC4;L&#xC4; KOSKAAN kysy talletetaanko liitteit&#xE4;. Liitteit&#xE4; EI IKIN&#xC4; talleteta viestin mukana.</para>
+</entry>
+  <entry id="virtual_inbox" state="uptodate" md5="a91e01732bb8129cbc6a7f5c6dca3ab3">
+    <title>Virtuaaliset kansiot: Virtuaalinen Inbox</title>
+    <para>
+    Virtuaalinen Inbox on talletettu haku, joka tekee tarpeettomaksi etsi&#xE4; uusiksi merkittyj&#xE4; viestej&#xE4; kaikista postilaatikoista. T&#xE4;m&#xE4;n sijaan uusia viestej&#xE4; etsit&#xE4;&#xE4;n vain tilatuista postilaatikoista ja haun tulos n&#xE4;ytet&#xE4;&#xE4;n yhten&#xE4; virtuaalisena kansiona.
+    </para>
+</entry>
+  <entry id="virtual_trash" state="uptodate" md5="b83f73ed56dff0addcbd4702e5a21a3d">
+    <title>Virtuaaliset kansiot: Virtuaalinen roskakori</title>
+    <para>
+    Virtuaalinen roskakori on talletettu haku, joka voi korvata tarpeen erillisille roskakorikansiolle. Sen sijaan, ett&#xE4; viestit siirret&#xE4;&#xE4;n erilliseen roskakorikansioon, niin ne merkit&#xE4;&#xE4;n poistettavaksi ja viesti pysyy nykyisess&#xE4; kansiossa. Kun viel&#xE4; on p&#xE4;&#xE4;ll&#xE4; asetus 'Piilota poistetut', niin viestit eiv&#xE4;t n&#xE4;y viestilistauksessa. Kun k&#xE4;ytt&#xE4;j&#xE4; napsauttaa Virtuaalinen roskakori, niin poistetuksi merkittyj&#xE4; kansioita etsit&#xE4;&#xE4;n kaikista kansioista ja n&#xE4;m&#xE4; viestit n&#xE4;ytet&#xE4;&#xE4;n yyhten&#xE4; virtuaalisena kansiona.
+    </para>
+</entry>
+</help>

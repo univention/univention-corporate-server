@@ -1,0 +1,1602 @@
+# Kronolith Czech Translation.
+# Copyright 2004-2009 The Horde Project
+# This file is distributed under the same license as the Horde package.
+# Pavel Chytil <pavel@chytil.tk>, 2001-2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith 2.0-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2004-12-22 10:04-0800\n"
+"PO-Revision-Date:  2001-07-26 14:56-0900\n"
+"Last-Translator: Pavel Chytil <pavel@chytil.tk>\n"
+"Language-Team: Czech <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8-bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: templates/search/header.inc:8
+#, php-format
+msgid "%d events"
+msgstr "%d událostí"
+
+#: templates/edit/edit_timespan.inc:127
+#, php-format
+msgid "%s Day(s) %s Hour(s) %s Minutes"
+msgstr "%s Dnù(Den) %s Hodin(a) %s Minut"
+
+#: lib/Driver.php:1687
+#, php-format
+msgid "%s attendees"
+msgstr "%s úèastníkù"
+
+#: data.php:236
+#, php-format
+msgid "%s file successfully imported"
+msgstr "%s soubor úspì¹nì importován"
+
+#: calendars.php:97 lib/base.php:126
+#, php-format
+msgid "%s's Calendar"
+msgstr "%s - Kalendáø"
+
+#: templates/contacts/contacts.inc:166
+msgid "* Add these by clicking Add *"
+msgstr "* Pøidat tyto kliknutím na Pøidat *"
+
+#: templates/contacts/contacts.inc:152
+msgid "* Please select address(es) *"
+msgstr "* Prosím vyberte emailovou(é) adresu(y) *"
+
+#: lib/Driver.php:1687
+msgid "1 attendee"
+msgstr "1 úèastník"
+
+#: templates/search/header.inc:8
+msgid "1 event"
+msgstr "1 událost"
+
+#: templates/edit/edit.inc:159
+msgid "<b>Attendees</b> (optional)"
+msgstr "<b>Úèastníci</b> (nepovinné)"
+
+#: templates/edit/edit.inc:137
+msgid "<b>Descri_ption</b> (optional)"
+msgstr "<b>Popi_s</b> (nepovinné)"
+
+#: templates/edit/edit.inc:261
+msgid "<b>Keywords</b> (optional)"
+msgstr "<b>Klíèová slova</b> (nepovinné)"
+
+#: templates/edit/edit.inc:179
+msgid "<b>Recurrence</b> (optional)"
+msgstr "<b>Opakování</b> (nepovinné)"
+
+#: templates/data/export.inc:105 templates/data/export.inc:185
+msgid "AM"
+msgstr "AM"
+
+#: lib/Kronolith.php:520
+msgid "Accepted"
+msgstr "Pøijato"
+
+#: templates/search/search.inc:10
+msgid "Ad_vanced Search"
+msgstr "Hl_edat Dùkladnìji"
+
+#: templates/contacts/contacts.inc:163 templates/contacts/contacts.inc:192
+msgid "Add"
+msgstr "Pøidat"
+
+#: templates/edit/edit.inc:25
+msgid "Add Event"
+msgstr "Pøidat Událost"
+
+#: templates/prefs/remote_cal_management.inc:35
+msgid "Add a new Remote Calendar"
+msgstr "Pøidat nový Vzdálený Kalendáø"
+
+#: addevent.php:50
+msgid "Add a new event"
+msgstr "Pøidat novou událost"
+
+#: templates/attendees/attendees.inc:82
+msgid "Add attendees"
+msgstr "Pøidat úèastníky"
+
+#: templates/attendees/attendees.inc:86
+msgid "Add people from my Address Book"
+msgstr "Pøidat úèastníky z mých Kontaktù"
+
+#: templates/attendees/attendees.inc:90
+msgid "Add these people"
+msgstr "Pøidat tyto úèastníky"
+
+#: contacts.php:85 templates/contacts/contacts.inc:122
+msgid "Address Book"
+msgstr "Kontakty"
+
+#: config/prefs.php.dist:50
+msgid "Address Books"
+msgstr "Kontakty"
+
+#: templates/search/search.inc:10 templates/search/search_advanced.inc:7
+msgid "Advanced Search"
+msgstr "Hledat Dùkladnìji"
+
+#: templates/view/view.inc:61 templates/edit/edit.inc:96
+msgid "Alarm"
+msgstr "Alarm"
+
+#: lib/Driver.php:1667
+#, php-format
+msgid "Alarm %d days before"
+msgstr "Alarm %d dnù pøed"
+
+#: lib/Driver.php:1672
+#, php-format
+msgid "Alarm %d hours before"
+msgstr "Alarm %d hodin pøed"
+
+#: lib/Driver.php:1677
+#, php-format
+msgid "Alarm %d minutes before"
+msgstr "Alarm %d minut pøed"
+
+#: lib/Driver.php:1662
+#, php-format
+msgid "Alarm %d weeks before"
+msgstr "Alarn %d týdnù pøed"
+
+#: lib/Driver.php:1666
+msgid "Alarm 1 day before"
+msgstr "Alarm 1 den pøed"
+
+#: lib/Driver.php:1671
+msgid "Alarm 1 hour before"
+msgstr "Alarm 1 hodinu pøed"
+
+#: lib/Driver.php:1676
+msgid "Alarm 1 minute before"
+msgstr "Alarm 1 minutu pøed"
+
+#: lib/Driver.php:1661
+msgid "Alarm 1 week before"
+msgstr "Alarm 1 týden pøed"
+
+#: data.php:50
+msgid "Alarm Date"
+msgstr "Datum Alarmu"
+
+#: data.php:49
+msgid "Alarm Span (minutes)"
+msgstr "Vymìøení Alarmu (v minutách)"
+
+#: data.php:51
+msgid "Alarm Time"
+msgstr "Èas Alarmu"
+
+#: templates/delete/delete.inc:43
+msgid "All"
+msgstr "V¹e"
+
+#: lib/FBView.php:119 lib/FBView.php:122 lib/FBView.php:125
+msgid "All Attendees"
+msgstr "V¹ichni Úèastníci"
+
+#: templates/search/search.inc:58
+msgid "All Future"
+msgstr "V¹echny v Budoucnosti"
+
+#: templates/search/search.inc:52
+msgid "All Past"
+msgstr "V¹echny Minulé"
+
+#: lib/Block/month.php:24 lib/Block/monthlist.php:27
+#: lib/Block/prevmonthlist.php:27 lib/Block/summary.php:25
+msgid "All Visible"
+msgstr "V¹echny Viditelné"
+
+#: templates/edit/edit_timespan.inc:126 lib/DayView.php:88 lib/DayView.php:90
+#: lib/Driver.php:1591 lib/Driver.php:1617 lib/WeekView.php:110
+#: lib/WeekView.php:120
+msgid "All day"
+msgstr "Celý den"
+
+#: lib/Block/monthlist.php:156 lib/Block/prevmonthlist.php:154
+#: lib/Block/summary.php:148
+msgid "All day event"
+msgstr "Událost na celý den"
+
+#: templates/data/export.inc:25
+msgid "All events"
+msgstr "V¹echny Události"
+
+#: templates/search/search_advanced.inc:48
+#: templates/search/search_advanced.inc:70 lib/Kronolith.php:610
+msgid "Any"
+msgstr "Jakákoliv"
+
+#: templates/javascript/goto.inc:71
+msgid "April"
+msgstr "Duben"
+
+#: templates/edit/edit_timespan.inc:95 templates/data/export.inc:74
+#: templates/data/export.inc:160
+msgid "At"
+msgstr "V"
+
+#: lib/Kronolith.php:966
+msgid ""
+"Attached is an iCalendar file with more information about the event. If your "
+"mail client supports iTip requests you can use this file to easily update "
+"your local copy of the event."
+msgstr ""
+"Soubor iCalendar je pøilo¾en s informacemi o události. Pokud Vá¹ emailový "
+"klient podporuje iTip ¾ádosti, mù¾ete pou¾ít tento soubor pro jednodu¹í "
+"aktualizaci lokálního kalendáøe."
+
+#: templates/view/view.inc:181 templates/attendees/attendees.inc:46
+msgid "Attendance"
+msgstr "Úèast"
+
+#: templates/view/view.inc:177
+msgid "Attendees"
+msgstr "Úèastníci"
+
+#: templates/javascript/goto.inc:75
+msgid "August"
+msgstr "Srpen"
+
+#: templates/calendars/calendars.inc:126
+msgid "Back to Calendar Options"
+msgstr "Zpìt do Mo¾ností pro Kalendáø"
+
+#: templates/search/search.inc:7 templates/search/search_advanced.inc:10
+msgid "Basic Search"
+msgstr "Vyhledat"
+
+#: config/keywords.php.dist:17
+msgid "Birthday"
+msgstr "Narozeniny"
+
+#: templates/fbview/legend.inc:3 lib/FBView.php:85 lib/FBView.php:104
+msgid "Busy"
+msgstr "Zanepráznìný"
+
+#: templates/search/search_advanced.inc:43
+msgid "C_alendar"
+msgstr "K_alendáø"
+
+#: templates/edit/edit.inc:48
+msgid "Cal_endar"
+msgstr "Kal_endáø"
+
+#: lib/Block/month.php:21 lib/Block/monthlist.php:21
+#: lib/Block/prevmonthlist.php:21 lib/Block/summary.php:22
+msgid "Calendar"
+msgstr "Kalendáø"
+
+#: templates/calendars/calendars.inc:113
+msgid "Calendar Description"
+msgstr "Popis Kalendáøe"
+
+#: templates/calendars/calendars.inc:97
+msgid "Calendar Name"
+msgstr "Název Kalendáøe"
+
+#: lib/Block/summary.php:3
+msgid "Calendar Summary"
+msgstr "Shrnutí Kalendáøe"
+
+#: calendars.php:109 config/prefs.php.dist:34 config/prefs.php.dist:41
+#: config/prefs.php.dist:49
+msgid "Calendars"
+msgstr "Kalendáøe"
+
+#: calendars.php:27
+msgid "Calendars must have a name."
+msgstr "Kalendáøe musí mít jméno."
+
+#: data.php:211
+msgid "Can't create a new event."
+msgstr "Nelze vytvoøit novou událost."
+
+#: templates/edit/edit.inc:32 templates/edit/edit.inc:292
+#: templates/delete/delete.inc:44 templates/delete/one.inc:42
+#: templates/contacts/contacts.inc:193
+msgid "Cancel"
+msgstr "Storno"
+
+#: lib/Kronolith.php:499
+msgid "Cancelled"
+msgstr "Stornováno"
+
+#: lib/Kronolith.php:943
+#, php-format
+msgid "Cancelled: %s"
+msgstr "Stornováno: %s"
+
+#: templates/search/search_advanced.inc:63 templates/edit/edit.inc:68
+msgid "Categor_y"
+msgstr "Kategor_ie"
+
+#: data.php:53 templates/view/view.inc:21 templates/search/event_headers.inc:4
+msgid "Category"
+msgstr "Kategorie"
+
+#: templates/calendars/calendars.inc:22 templates/calendars/calendars.inc:123
+msgid "Change"
+msgstr "Zmìnit"
+
+#: templates/prefs/search_abook_select.inc:17 config/prefs.php.dist:288
+msgid "Choose the address books to search for free/busy URLs:"
+msgstr "Vybrat Kontakty pro hledání free/busy URL:"
+
+#: templates/calendars/calendars.inc:138
+msgid ""
+"Choose the calendars that you want to be included in your Free/Busy listings:"
+msgstr "Zvolit kalendáøe, které si pøejete pou¾ít pro výpis seznamu Free/Busy:"
+
+#: config/prefs.php.dist:36
+msgid "Choose your default calendar."
+msgstr "Zvolit implicitní kalendáø"
+
+#: templates/search/search.inc:68 templates/search/search_advanced.inc:116
+msgid "Clear Form"
+msgstr "Vyèistit Formuláø"
+
+#: templates/attendees/attendees.inc:73
+msgid "Clear all attandees"
+msgstr "Smazat v¹echny úèastníky"
+
+#: data.php:28 templates/data/import.inc:21
+msgid "Comma separated values"
+msgstr "Èárkou oddìlené hodnoty"
+
+#: config/prefs.php.dist:142
+msgid "Confirm deletion of events?"
+msgstr "Potvrdit smazání událostí?"
+
+#: lib/Kronolith.php:496
+msgid "Confirmed"
+msgstr "Potvrzeno"
+
+#: templates/calendars/calendars.inc:151
+msgid "Copy the URL below for use wherever you need your Free/Busy URL:"
+msgstr "Zkopírovat ní¾e uvedenou URL pro pou¾ití s Va¹í Free/Busy URL:"
+
+#: lib/Kronolith.php:158
+#, php-format
+msgid "Could not open %s."
+msgstr "Nelze otevøít %s."
+
+#: templates/calendars/calendars.inc:17 templates/calendars/calendars.inc:123
+#: templates/calendars/calendars.inc:125
+msgid "Create"
+msgstr "Vytvoøit"
+
+#: month.php:152 month.php:153 templates/week/head.inc:20
+#: templates/week/head.inc:21 templates/week/head_side_by_side.inc:20
+#: templates/week/head_side_by_side.inc:21 templates/day/row.inc:6
+#: lib/DayView.php:88 lib/DayView.php:186
+msgid "Create a New Event"
+msgstr "Vytvoøit Novou Událost"
+
+#: templates/view/view.inc:88
+msgid "Created"
+msgstr "Vytvoøeno"
+
+#: templates/delete/delete.inc:41
+msgid "Current"
+msgstr "Souèasný"
+
+#: templates/view/view.inc:122 templates/edit/edit.inc:194
+msgid "Daily: Recurs every"
+msgstr "Dennì: Rekurzívnì ka¾dý"
+
+#: attendees.php:106 lib/Kronolith.php:1039 lib/Block/tree_menu.php:21
+#: config/prefs.php.dist:63
+msgid "Day"
+msgstr "Den"
+
+#: templates/view/view.inc:70 templates/edit/edit.inc:127
+msgid "Day(s)"
+msgstr "Den(Dny)"
+
+#: viewevent.php:103
+msgid "De_lete"
+msgstr "Sm_zat"
+
+#: templates/javascript/goto.inc:79
+msgid "December"
+msgstr "Prosinec"
+
+#: lib/Kronolith.php:523
+msgid "Declined"
+msgstr "Zamítnut"
+
+#: config/prefs.php.dist:35
+msgid "Default Calendar"
+msgstr "Implicitní Kalendáø"
+
+#: templates/prefs/remote_cal_management.inc:23 templates/delete/one.inc:41
+#: templates/contacts/contacts.inc:183 templates/calendars/calendars.inc:124
+#: lib/Driver.php:1707
+msgid "Delete"
+msgstr "Smazat"
+
+#: delevent.php:40 templates/delete/delete.inc:21 templates/delete/one.inc:21
+#: lib/Driver.php:1707
+#, php-format
+msgid "Delete %s"
+msgstr "Smazat %s"
+
+#: viewevent.php:103
+#, php-format
+msgid "Delete '%s'"
+msgstr "Smazat '%s'"
+
+#: editevent.php:61
+msgid "Delete Event"
+msgstr "Smazat Událost"
+
+#: templates/delete/delete.inc:35
+msgid ""
+"Delete the current event only, this occurrence and all future occurences, or "
+"all occurences?"
+msgstr ""
+"Smazat pouze souèasnou událost, tento výskyt a v¹echny výskyty v budoucnu, "
+"nebo v¹echny výskyty?"
+
+#: templates/search/search.inc:27 templates/search/search_advanced.inc:103
+msgid "Descri_ption"
+msgstr "Popi_s"
+
+#: data.php:52 templates/view/view.inc:105
+msgid "Description"
+msgstr "Popis"
+
+#: templates/attendees/attendees.inc:103
+msgid "Dismiss"
+msgstr "Pominout"
+
+#: templates/contacts/contacts.inc:175
+msgid "Display"
+msgstr "Zobrazit"
+
+#: config/prefs.php.dist:9 config/prefs.php.dist:18 config/prefs.php.dist:26
+msgid "Display Options"
+msgstr "Mo¾nosti Zobrazení"
+
+#: config/prefs.php.dist:28
+msgid "Do you want to show tasks which are due on your calendar?"
+msgstr "Pøejete si zobrazit úkoly, které jsou po¾adovány, na Va¹em kalendáøi?"
+
+#: lib/Kronolith.php:466
+msgid "Does not recur"
+msgstr "Bez opakování"
+
+#: lib/Kronolith.php:312
+#, php-format
+msgid "Due: %s"
+msgstr "Po¾adovaný: %s"
+
+#: templates/edit/edit_timespan.inc:62
+msgid "Duration"
+msgstr "Délka Trvání"
+
+#: lib/Driver.php:1701
+msgid "Edit"
+msgstr "Upravit"
+
+#: editevent.php:33 templates/edit/edit.inc:25 lib/Driver.php:1701
+#, php-format
+msgid "Edit %s"
+msgstr "Upravit %s"
+
+#: viewevent.php:122
+#, php-format
+msgid "Edit '%s'"
+msgstr "Upravit '%s'"
+
+#: templates/edit/edit.inc:172
+msgid "Edit Attendees"
+msgstr "Upravit Úèastníky"
+
+#: config/prefs.php.dist:223
+msgid "Edit Remote Calendars"
+msgstr "Upravit Vzdálené Kalendáøe"
+
+#: attendees.php:146
+msgid "Edit attendees"
+msgstr "Upravit ùèastníky"
+
+#: templates/category_legend.inc:25
+msgid "Edit categories and colors"
+msgstr "Upravit kategorie a barvy"
+
+#: templates/view/view.inc:180 templates/contacts/contacts.inc:178
+#: templates/attendees/attendees.inc:45
+msgid "Email Address"
+msgstr "Emailová Adresa"
+
+#: data.php:47
+msgid "End Date"
+msgstr "Datum Ukonèení"
+
+#: templates/view/view.inc:55 templates/search/event_headers.inc:8
+#: templates/edit/edit_timespan.inc:67 templates/data/export.inc:112
+msgid "End On"
+msgstr "Konec v"
+
+#: data.php:48
+msgid "End Time"
+msgstr "Èas Ukonèení"
+
+#: attendees.php:120 attendees.php:131 attendees.php:138
+#, php-format
+msgid "Error retrieving free/busy information for %s: %s"
+msgstr "Nastala chyba pøi výbìru %s informace o free/busy: %s"
+
+#: lib/Driver.php:925
+#, php-format
+msgid "Event from %s to %s"
+msgstr "Událost od %s do %s"
+
+#: templates/data/export.inc:191
+msgid "Export"
+msgstr "Exportovat"
+
+#: templates/data/export.inc:9
+msgid "Export Calendar"
+msgstr "Exportovat Kalendáø"
+
+#: templates/javascript/goto.inc:69
+msgid "February"
+msgstr "Únor"
+
+#: templates/contacts/contacts.inc:130
+msgid "Find"
+msgstr "Vyhledat"
+
+#: templates/javascript/goto.inc:63 templates/edit/edit.inc:207
+#: lib/Block/month.php:109
+msgid "Fr"
+msgstr "Pá"
+
+#: templates/view/view.inc:130 templates/month/head.inc:20
+#: templates/edit/javascript.inc:72
+msgid "Friday"
+msgstr "Pátek"
+
+#: templates/delete/delete.inc:42
+msgid "Future"
+msgstr "Budoucnost"
+
+#: config/keywords.php.dist:17
+msgid "Game"
+msgstr "Hra"
+
+#: templates/search/search_advanced.inc:22
+msgid "General"
+msgstr "V¹eobecnì"
+
+#: lib/Block/summary.php:127
+#, php-format
+msgid "Goto %s"
+msgstr "Jít na %s"
+
+#: templates/view/view.inc:73 templates/edit/edit.inc:126
+msgid "Hour(s)"
+msgstr "Hodin(a)"
+
+#: config/prefs.php.dist:197
+msgid ""
+"How many days into the future should we generate free/busy information for?"
+msgstr "Kolik dní dopøedu máme generovat informaci free/busy?"
+
+#: templates/data/import.inc:9
+#, php-format
+msgid "Import Calendar, Step %d"
+msgstr "Importovat Kalendáø, Krok %d"
+
+#: data.php:281
+msgid "Import/Export Calendar"
+msgstr "Importovat/Exportovat Kalendáø"
+
+#: templates/javascript/goto.inc:68
+msgid "January"
+msgstr "Leden"
+
+#: templates/javascript/goto.inc:74
+msgid "July"
+msgstr "Èervenec"
+
+#: templates/javascript/goto.inc:73
+msgid "June"
+msgstr "Èerven"
+
+#: data.php:55 templates/view/view.inc:155
+msgid "Keywords"
+msgstr "Klíèová slova"
+
+#: templates/search/search.inc:54
+msgid "Last 24 hours"
+msgstr "Posledních 24 hodin"
+
+#: templates/view/view.inc:95
+msgid "Last Modified"
+msgstr "Naposledy Zmìnìno"
+
+#: templates/month/head.inc:4 templates/month/head_side_by_side.inc:4
+#: templates/month/head_side_by_side.inc:10
+#: templates/month/head_side_by_side.inc:16
+msgid "Last Month"
+msgstr "Minulý Mìsíc"
+
+#: templates/week/head.inc:4 templates/week/head_side_by_side.inc:4
+#: templates/search/search.inc:53
+msgid "Last week"
+msgstr "Minulý týden"
+
+#: templates/edit/edit_timespan.inc:122
+msgid "Lasts"
+msgstr "Trvá"
+
+#: templates/data/export.inc:21
+msgid "Limit the time span to export:"
+msgstr "Limitovat èasové rozpìtí pro exportování:"
+
+#: templates/search/search_advanced.inc:85 templates/edit/edit.inc:75
+msgid "Lo_cation"
+msgstr "Mí_sto"
+
+#: data.php:54 templates/view/view.inc:29 templates/search/event_headers.inc:5
+#: templates/prefs/remote_cal_management.inc:18
+#: templates/prefs/remote_cal_management.inc:52
+msgid "Location"
+msgstr "Místo"
+
+#: config/prefs.php.dist:43
+msgid "Manage remote calendars."
+msgstr "Ovládání pro vzdálené kalendáøe"
+
+#: templates/javascript/goto.inc:70
+msgid "March"
+msgstr "Bøezen"
+
+#: templates/javascript/goto.inc:72
+msgid "May"
+msgstr "Kvìten"
+
+#: config/keywords.php.dist:17
+msgid "Meeting"
+msgstr "Schùze"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "Menu Seznam"
+
+#: templates/view/view.inc:76 templates/edit/edit.inc:125
+msgid "Minute(s)"
+msgstr "Minut(a)"
+
+#: lib/Block/prevmonthlist.php:44
+msgid "Missed Events List"
+msgstr "Výpis Zme¹kaných Událostí"
+
+#: templates/javascript/goto.inc:59 templates/edit/edit.inc:203
+#: lib/Block/month.php:109
+msgid "Mo"
+msgstr "Po"
+
+#: templates/view/view.inc:126 templates/month/head.inc:16
+#: templates/edit/javascript.inc:68 config/prefs.php.dist:87
+msgid "Monday"
+msgstr "Pondìlí"
+
+#: lib/Kronolith.php:1042 lib/Block/tree_menu.php:24 config/prefs.php.dist:66
+msgid "Month"
+msgstr "Mìsíc"
+
+#: lib/Block/month.php:3
+msgid "Month View"
+msgstr "Zobrazit Mìsíc"
+
+#: lib/Block/monthlist.php:3 lib/Block/monthlist.php:44
+msgid "Monthly Events List"
+msgstr "Mìsíèní Výpis Událostí"
+
+#: templates/view/view.inc:136 templates/view/view.inc:138
+#: templates/edit/edit.inc:214 templates/edit/edit.inc:220
+msgid "Monthly: Recurs every"
+msgstr "Mìsíènì: Rekurzívnì ka¾dý"
+
+#: lib/Block/monthlist.php:24
+msgid "Months Ahead"
+msgstr "Mìsíce Dopøedu"
+
+#: lib/Block/prevmonthlist.php:24
+msgid "Months Before"
+msgstr "Pøed Mìsíci"
+
+#: lib/api.php:172 lib/api.php:344
+msgid "Multiple iCalendar components found; only one vEvent is supported."
+msgstr ""
+"Bylo nalezeno nìkolik èástí iCalendar. Je mo¾no pou¾ít jen jeden vEvent."
+
+#: templates/calendars/calendars.inc:84
+msgid "My Calendars"
+msgstr "Kalendáøe"
+
+#: templates/menu.inc:36
+msgid "My Calendars:"
+msgstr "Kalendáøe:"
+
+#: templates/calendars/calendars.inc:132
+msgid "My Free/Busy URL"
+msgstr "Free/Busy URL"
+
+#: templates/prefs/remote_cal_management.inc:17
+#: templates/prefs/remote_cal_management.inc:44
+#: templates/contacts/contacts.inc:177
+msgid "Name"
+msgstr "Název"
+
+#: lib/Block/month.php:43 lib/Block/monthlist.php:45 lib/Block/summary.php:43
+#: lib/Block/tree_menu.php:20
+msgid "New Event"
+msgstr "Nová Událost"
+
+#: templates/data/import.inc:39
+msgid "Next"
+msgstr "Dal¹í"
+
+#: templates/search/search.inc:56
+msgid "Next 24 hours"
+msgstr "Dal¹ích 24 hodin"
+
+#: lib/FBView/day.php:78
+msgid "Next Day"
+msgstr "Dal¹í Den"
+
+#: templates/month/head.inc:6 templates/month/head_side_by_side.inc:6
+#: templates/month/head_side_by_side.inc:12
+#: templates/month/head_side_by_side.inc:18
+msgid "Next Month"
+msgstr "Dal¹í Mìsíc"
+
+#: lib/FBView/week.php:32
+msgid "Next Week"
+msgstr "Dal¹í Týden"
+
+#: templates/day/head.inc:7 templates/day/head_side_by_side.inc:7
+msgid "Next day"
+msgstr "Dal¹í den"
+
+#: templates/week/head.inc:6 templates/week/head_side_by_side.inc:6
+#: templates/search/search.inc:57
+msgid "Next week"
+msgstr "Dal¹í týden"
+
+#: templates/fbview/legend.inc:7
+msgid "No Information"
+msgstr "Bez Informace"
+
+#: templates/attendees/attendees.inc:53
+msgid "No attendees"
+msgstr "Bez úèastníkù"
+
+#: lib/Kronolith.php:1063
+msgid "No calendars are available to guests."
+msgstr "®ádný z Kalendáøù není dostupný pro hosty."
+
+#: templates/view/view.inc:148 templates/edit/edit.inc:240
+msgid "No end date"
+msgstr "Bez dne ukonèení"
+
+#: lib/Block/monthlist.php:197 lib/Block/prevmonthlist.php:195
+#: lib/Block/summary.php:196
+msgid "No events to display"
+msgstr "®ádné události k zobrazení"
+
+#: lib/Storage/kolab.php:44
+#, php-format
+msgid "No free/busy information is available for %s"
+msgstr "®ádná free/busy informace není dostupná pro %s"
+
+#: lib/api.php:162 lib/api.php:334
+msgid "No iCalendar data was found."
+msgstr "Nebyla nalezena ¾ádná data pro iCalendar."
+
+#: lib/Kronolith.php:836
+msgid "No valid email address found"
+msgstr "Nebyla nalezena ¾ádná platná e-mailová adresa"
+
+#: templates/view/view.inc:81 templates/edit/edit.inc:121
+#: templates/edit/edit.inc:189 lib/Kronolith.php:530 lib/Kronolith.php:550
+msgid "None"
+msgstr "®ádná"
+
+#: lib/Storage/sql.php:127
+msgid "Not found"
+msgstr "Nenalezeno"
+
+#: templates/data/import.inc:17
+msgid ""
+"Notice: Importing is not possible with this configuration due to a bug in "
+"the underlying calendar driver."
+msgstr ""
+"Upozornìní: Není mo¾no importovat, proto¾e driver pro kalendáø obsahuje "
+"chyby."
+
+#: templates/javascript/goto.inc:78
+msgid "November"
+msgstr "Listopad"
+
+#: templates/search/search.inc:55
+msgid "Now"
+msgstr "Nyní"
+
+#: templates/javascript/goto.inc:77
+msgid "October"
+msgstr "Øíjen"
+
+#: lib/Kronolith.php:547
+msgid "Optional"
+msgstr "Nepovinný"
+
+#: lib/FBView.php:112
+msgid "Optional to attend"
+msgstr "Úèast nepovinná"
+
+#: templates/view/view.inc:42
+msgid "Owner"
+msgstr "Vlastník"
+
+#: templates/data/export.inc:106 templates/data/export.inc:186
+msgid "PM"
+msgstr "PM"
+
+#: data.php:29 templates/data/import.inc:22
+msgid "Palm DateBook"
+msgstr "Palm DateBook"
+
+#: lib/Block/prevmonthlist.php:3
+msgid "Past Events List"
+msgstr "Výpis pro¹lích událostí"
+
+#: templates/view/view.inc:119 templates/edit/edit.inc:183
+msgid "Pattern"
+msgstr "Vzor"
+
+#: templates/delete/one.inc:35
+msgid "Permanently delete this event?"
+msgstr "Permanentnì smazat tuto událost?"
+
+#: lib/api.php:143 lib/api.php:219 lib/api.php:286 lib/api.php:316
+#: lib/api.php:399 lib/api.php:433
+msgid "Permission Denied"
+msgstr "Nepovolený pøístup"
+
+#: templates/calendars/calendars.inc:107
+msgid "Permissions"
+msgstr "Práva"
+
+#: config/prefs.php.dist:19
+msgid "Portal Options"
+msgstr "Mo¾nosti Portálu"
+
+#: templates/fbview/legend.inc:5
+msgid "Possible Meeting Time"
+msgstr "Mo¾ný Èas Schùze"
+
+#: lib/FBView.php:141
+msgid "Possible Meeting Times"
+msgstr "Mo¾né Èasy Schùze"
+
+#: lib/FBView/day.php:74
+msgid "Previous Day"
+msgstr "Pøedchozí Den"
+
+#: lib/FBView/week.php:26
+msgid "Previous Week"
+msgstr "Pøedchozí Týden"
+
+#: templates/day/head.inc:5 templates/day/head_side_by_side.inc:5
+msgid "Previous day"
+msgstr "Pøedchozí den"
+
+#: templates/view/view.inc:147 templates/edit/edit.inc:237
+msgid "Recur Until"
+msgstr "Rekurzívnì a¾ do"
+
+#: templates/view/view.inc:116
+msgid "Recurrence"
+msgstr "Opakování"
+
+#: data.php:59
+msgid "Recurrence Data"
+msgstr "Opakování Dat"
+
+#: data.php:57
+msgid "Recurrence End Date"
+msgstr "Datum Opakovaní do"
+
+#: data.php:58
+msgid "Recurrence Interval"
+msgstr "Opakovací Interval"
+
+#: data.php:56
+msgid "Recurrence Type"
+msgstr "Opakovací Typ"
+
+#: lib/Kronolith.php:469
+msgid "Recurs daily"
+msgstr "Opakovat dennì"
+
+#: lib/Kronolith.php:476
+msgid "Recurs monthly"
+msgstr "Opakovat mesíènì"
+
+#: lib/Kronolith.php:472
+msgid "Recurs weekly"
+msgstr "Opakovat týdnì"
+
+#: lib/Kronolith.php:479
+msgid "Recurs yearly"
+msgstr "Opakovat roènì"
+
+#: lib/Scheduler/kronolith.php:166
+#, php-format
+msgid "Reminder: %s"
+msgstr "Upomínka: %s"
+
+#: config/prefs.php.dist:42
+msgid "Remote Calendars"
+msgstr "Vzdálené Kalendáøe"
+
+#: templates/menu.inc:48
+msgid "Remote Calendars:"
+msgstr "Vzdálené Kalendáøe:"
+
+#: templates/attendees/attendees.inc:57
+#, php-format
+msgid "Remove %s"
+msgstr "Odstranit %s"
+
+#: attendees.php:37
+msgid "Remove Attendee"
+msgstr "Odstranit Úèastníka"
+
+#: lib/Kronolith.php:554
+msgid "Required"
+msgstr "Povinné"
+
+#: lib/FBView.php:130 lib/FBView.php:133 lib/FBView.php:136
+msgid "Required Attendees"
+msgstr "Povinní Úèastníci"
+
+#: lib/FBView.php:93
+msgid "Required to attend"
+msgstr "Povinná úèast"
+
+#: templates/calendars/calendars.inc:125
+msgid "Reset"
+msgstr "Smazat"
+
+#: templates/edit/edit.inc:33 templates/edit/edit.inc:293
+msgid "Reset to Defaults"
+msgstr "Resetovat na Implicitní Nastavení"
+
+#: templates/view/view.inc:182 templates/attendees/attendees.inc:47
+msgid "Response"
+msgstr "Odpovìï"
+
+#: viewevent.php:120
+#, php-format
+msgid "S_ave '%s' As New"
+msgstr "U_lo¾it '%s' Jako Novou"
+
+#: templates/javascript/goto.inc:64 templates/edit/edit.inc:208
+#: lib/Block/month.php:109
+msgid "Sa"
+msgstr "So"
+
+#: templates/view/view.inc:131 templates/month/head.inc:21
+#: templates/edit/javascript.inc:73
+msgid "Saturday"
+msgstr "Sobota"
+
+#: editevent.php:44 editevent.php:48 viewevent.php:120
+msgid "Save As New"
+msgstr "Ulo¾it Jako Novou"
+
+#: addevent.php:41 editevent.php:46
+msgid "Save Event"
+msgstr "Ulo¾it Událost"
+
+#: search.php:14 templates/search/search.inc:67
+#: templates/search/search_advanced.inc:115
+#: templates/contacts/contacts.inc:142 lib/Block/tree_menu.php:25
+msgid "Search"
+msgstr "Vyhledat"
+
+#: templates/calendars/calendars.inc:86
+msgid "Select a calendar"
+msgstr "Vybrat kalendáø"
+
+#: templates/edit/edit.inc:253 templates/edit/edit_timespan.inc:30
+#: templates/edit/edit_timespan.inc:85
+msgid "Select a date"
+msgstr "Vybrat datum"
+
+#: config/prefs.php.dist:51
+msgid "Select address book sources for searching for addresses."
+msgstr "Vybrat zdroj Kontaktù pro vyhledávání adres."
+
+#: config/prefs.php.dist:11
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr ""
+"Vybrat mo¾nosti potvrzení, rùzné zobrazení a vyberat implicitní zobrazení."
+
+#: templates/data/import.inc:27
+msgid "Select the calendar to import to:"
+msgstr "Vybrat kalendáø pro importování:"
+
+#: templates/data/export.inc:16
+msgid "Select the export format:"
+msgstr "Vybrat formát exportu:"
+
+#: templates/data/import.inc:36
+msgid "Select the file to import:"
+msgstr "Vybrat soubor k importování:"
+
+#: config/prefs.php.dist:85
+msgid "Select the first weekday:"
+msgstr "Vybrat první den týdne:"
+
+#: templates/data/import.inc:19
+msgid "Select the format of the source file:"
+msgstr "Vybrat formát zdrojového souboru:"
+
+#: config/prefs.php.dist:96
+msgid "Select the time span to show:"
+msgstr "Vybrat èasové rozpìtí k zobrazení:"
+
+#: config/prefs.php.dist:67
+msgid "Select the view to display on startup:"
+msgstr "Vybrat zobrazení po pøihla¹ení se: "
+
+#: config/prefs.php.dist:20
+msgid "Select which events to show in the portal."
+msgstr "Vybrat jaké události se mají zobrazit v portálu."
+
+#: templates/delete/delete.inc:28 templates/delete/one.inc:28
+msgid "Send a cancel notification to all attendees when deleting this event"
+msgstr ""
+"Zaslat zprávu o zru¹ení události v¹em úèastníkùm, kdy¾ se událost smazává"
+
+#: templates/view/view.inc:186 templates/attendees/attendees.inc:60
+#, php-format
+msgid "Send an email to %s"
+msgstr "Zaslat email %s"
+
+#: templates/edit/edit.inc:166
+msgid "Send updates/invitations to all attendees when saving this event"
+msgstr "Zaslat aktualizaci/pozvánku v¹em úèastníkùm, kdy¾ se událost ukládá"
+
+#: templates/javascript/goto.inc:76
+msgid "September"
+msgstr "Záøí"
+
+#: templates/edit/edit_timespan.inc:85
+msgid "Set end date"
+msgstr "Nastavit koneèný datum"
+
+#: templates/edit/edit.inc:253
+msgid "Set recurrence end date"
+msgstr "Koneèný datum opakovaní"
+
+#: templates/edit/edit_timespan.inc:30
+msgid "Set start date"
+msgstr "Nastavit datum zaèátku"
+
+#: templates/menu.inc:42
+msgid "Shared Calendars:"
+msgstr "Sdílené Kalendáøe:"
+
+#: config/prefs.php.dist:133
+msgid ""
+"Should tasks be shown with their category color, or with no background color?"
+msgstr "Zobrazit úkoly s jejich barevným oznaèením, nebo bez barvy pozadí?"
+
+#: config/prefs.php.dist:258
+msgid "Show category legend?"
+msgstr "Zobrazit legendu kategorií?"
+
+#: config/prefs.php.dist:214
+msgid "Show delete, alarm, and recurrence icons in calendar views?"
+msgstr ""
+"Zobrazit ikonky pro smazání, alarm a opakování pøi zobrazování kalendáøe?"
+
+#: config/prefs.php.dist:124
+msgid "Show due tasks in the calendar?"
+msgstr "Zobrazit oèekávané udalosti v kalendáøi?"
+
+#: config/prefs.php.dist:268
+msgid "Show free/busy legend?"
+msgstr "Zobrazit legendu pro free/busy?"
+
+#: config/prefs.php.dist:76
+msgid "Show half hour slots in day and week views?"
+msgstr "Zobrazit pùlhodinové úseky v denním a týdenním zobrazení?"
+
+#: config/prefs.php.dist:115
+msgid "Show only events that have an alarm set?"
+msgstr "Mají se ukázat pouze události s alarmem?"
+
+#: config/prefs.php.dist:248
+msgid "Show shared calendars side-by-side"
+msgstr "Zobrazit sdílené kalendáøe vedle sebe?"
+
+#: config/prefs.php.dist:277
+msgid "Show time of day between each day in week views?"
+msgstr "Zobrazit èas mezi ka¾dým dnem v týdenním zobrazení?"
+
+#: templates/edit/edit_timespan.inc:11
+msgid "Sta_rt On"
+msgstr "Zaè_íná V"
+
+#: data.php:45
+msgid "Start Date"
+msgstr "Datum Zaèátku"
+
+#: templates/view/view.inc:49 templates/search/event_headers.inc:7
+#: templates/data/export.inc:29
+msgid "Start On"
+msgstr "Zaèíná V"
+
+#: data.php:46
+msgid "Start Time"
+msgstr "Èas Zaèátku"
+
+#: templates/search/search_advanced.inc:94 templates/edit/edit.inc:84
+msgid "Stat_us"
+msgstr "Sta_v"
+
+#: templates/view/view.inc:35 templates/search/event_headers.inc:6
+msgid "Status"
+msgstr "Stav"
+
+#: templates/javascript/goto.inc:65 templates/edit/edit.inc:209
+#: lib/Block/month.php:111 lib/Block/month.php:113
+msgid "Su"
+msgstr "Ne"
+
+#: templates/view/view.inc:132 templates/month/head.inc:14
+#: templates/month/head.inc:23 templates/edit/javascript.inc:67
+#: config/prefs.php.dist:86
+msgid "Sunday"
+msgstr "Nedìle"
+
+#: config/prefs.php.dist:27
+msgid "Tasks"
+msgstr "Události"
+
+#: lib/Kronolith.php:503 lib/Kronolith.php:526
+msgid "Tentative"
+msgstr "Pøedbì¾ný"
+
+#: templates/javascript/goto.inc:62 templates/edit/edit.inc:206
+#: lib/Block/month.php:109
+msgid "Th"
+msgstr "Èt"
+
+#: templates/contacts/contacts.inc:73
+msgid "The Edit Attendees screen is no longer present. Exiting."
+msgstr "Stránka s Upravou Úèastníkù ji¾ není. Konèím."
+
+#: calendars.php:66
+#, php-format
+msgid "The calendar \"%s\" cannot be deleted."
+msgstr "Nelze smazat kalendáø \"%s\"."
+
+#: calendars.php:80
+#, php-format
+msgid "The calendar \"%s\" has been deleted."
+msgstr "Kalendáø \"%s\" byl smazán."
+
+#: calendars.php:49
+#, php-format
+msgid "The calendar \"%s\" has been renamed to \"%s\"."
+msgstr "Kalendáø \"%s\" byl pøejmenován na \"%s\"."
+
+#: calendars.php:58
+#, php-format
+msgid "The calendar \"%s\" has been saved."
+msgstr "Kalendáø \"%s\" byl ulo¾en."
+
+#: templates/edit/javascript.inc:151
+msgid "The end date must be later than the start date."
+msgstr "Datum konce musí být po datu zaèátku."
+
+#: lib/Kronolith.php:1003
+#, php-format
+msgid "The event notification to %s was successfully sent."
+msgstr "Upozornìní o události bylo úspì¹nì zasláno pro %s."
+
+#: lib/Kronolith.php:964
+msgid "The following is a more detailed description of the event:"
+msgstr "Následuje podrobnìj¹í popis události:"
+
+#: templates/search/empty.inc:4
+msgid "There are no events matching the current criteria."
+msgstr "®ádné události se neshodují se souèasným kritériem."
+
+#: addeventaction.php:18 editeventaction.php:35
+#, php-format
+msgid "There was an error accessing the calendar: %s"
+msgstr "Nastala chyba pøi pøístupu ke kalendáøi: %s"
+
+#: addeventaction.php:33
+#, php-format
+msgid "There was an error adding the event: %s"
+msgstr "Nastala chyba pøi pøidávání události: %s"
+
+#: editeventaction.php:73
+#, php-format
+msgid "There was an error editing the event: %s"
+msgstr "Nastala chyba pøi úpravì události: %s"
+
+#: lib/api.php:156 lib/api.php:328
+msgid "There was an error importing the iCalendar data."
+msgstr "Pøi importování iCalendar dat do¹lo k chybì."
+
+#: editeventaction.php:54
+#, php-format
+msgid "There was an error moving the event: %s"
+msgstr "Nastala chyba pøi posunu události: %s"
+
+#: lib/Kronolith.php:1008
+#, php-format
+msgid "There was an error sending an event notification to %s: %s"
+msgstr "Nastala chyba pøi zasílíní oznámení o události pro %s: %s"
+
+#: data.php:95
+msgid "There were no events to export."
+msgstr "®ádné události k exportování."
+
+#: data.php:173
+msgid "This file format is not supported."
+msgstr "Tento formát souboru nelze pou¾ít."
+
+#: data.php:213
+#, php-format
+msgid "This is what the server said: %s"
+msgstr "Toto je zpráva ze serveru: %s"
+
+#: templates/view/view.inc:129 templates/month/head.inc:19
+#: templates/edit/javascript.inc:71
+msgid "Thursday"
+msgstr "Ètvrtek"
+
+#: templates/search/search.inc:36
+msgid "Time Sp_an"
+msgstr "Èasové Roz_pìtí"
+
+#: templates/edit/edit_timespan.inc:4
+msgid "Time span"
+msgstr "Èasové Rozpìtí "
+
+#: templates/search/search_advanced.inc:35 templates/edit/edit.inc:39
+msgid "Tit_le"
+msgstr "Tit_ul"
+
+#: data.php:44 templates/search/event_headers.inc:3
+#: templates/search/search.inc:19
+msgid "Title"
+msgstr "Titul"
+
+#: lib/Block/monthlist.php:127 lib/Block/prevmonthlist.php:125
+#: lib/Block/summary.php:117
+msgid "Today"
+msgstr "Dnes"
+
+#: lib/Block/month.php:184
+#, php-format
+msgid "Today is %s"
+msgstr "Dnes je %s"
+
+#: lib/Block/monthlist.php:129 lib/Block/prevmonthlist.php:127
+#: lib/Block/summary.php:119
+msgid "Tomorrow"
+msgstr "Zítra"
+
+#: templates/javascript/goto.inc:60 templates/edit/edit.inc:204
+#: lib/Block/month.php:109
+msgid "Tu"
+msgstr "Út"
+
+#: templates/view/view.inc:127 templates/month/head.inc:17
+#: templates/edit/javascript.inc:69
+msgid "Tuesday"
+msgstr "Úterý"
+
+#: config/keywords.php.dist:17
+msgid "Type"
+msgstr "Typ"
+
+#: lib/Storage/sql.php:54
+msgid "Unable to connect to SQL server."
+msgstr "Nelze se pøipojit na SQL server."
+
+#: calendars.php:76
+#, php-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "Nelze smazat \"%s\": %s."
+
+#: lib/Driver/mcal.php:135
+#, php-format
+msgid "Unable to delete %s."
+msgstr "Nelze smazat %s."
+
+#: lib/Driver.php:174
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Definice %s není dostupná."
+
+#: calendars.php:47
+#, php-format
+msgid "Unable to rename \"%s\": %s"
+msgstr "Nelze pøejmìnovat \"%s\": %s"
+
+#: lib/Storage/kolab.php:35
+#, php-format
+msgid "Unable to retrieve free/busy information for %s"
+msgstr "Nelze zjistit informací free/busy pr %s"
+
+#: templates/view/view.inc:23
+#: scripts/upgrades/2004-05-19_convert_categories_to_strings.php:53
+msgid "Unfiled"
+msgstr "Nevyplnìno"
+
+#: lib/FBView/day.php:48 lib/FBView/day.php:58
+msgid "Unknown"
+msgstr "Neznámí"
+
+#: lib/api.php:182 lib/api.php:250 lib/api.php:353
+msgid "Unsupported Content-Type."
+msgstr "Nepodporovaný Typ Obsahu (Content-Type)."
+
+#: lib/Kronolith.php:956
+#, php-format
+msgid "Updated: %s."
+msgstr "Aktualizovánio: %s."
+
+#: config/prefs.php.dist:10
+msgid "User Interface"
+msgstr "U¾ivatelské Rozhraní"
+
+#: lib/Block/month.php:163 lib/Block/month.php:166
+msgid "View Day"
+msgstr "Zobrazit Den"
+
+#: templates/javascript/goto.inc:61 templates/edit/edit.inc:205
+#: lib/Block/month.php:109
+msgid "We"
+msgstr "St"
+
+#: templates/view/view.inc:128 templates/month/head.inc:18
+#: templates/edit/javascript.inc:70
+msgid "Wednesday"
+msgstr "Støeda"
+
+#: attendees.php:108 lib/Kronolith.php:1041 lib/Block/tree_menu.php:23
+#: config/prefs.php.dist:64
+msgid "Week"
+msgstr "Týden"
+
+#: month.php:164 week.php:31 workweek.php:24
+#, php-format
+msgid "Week %d"
+msgstr "Týden %d"
+
+#: templates/view/view.inc:67 templates/edit/edit.inc:128
+msgid "Week(s)"
+msgstr "Týden(y)"
+
+#: templates/view/view.inc:134 templates/edit/edit.inc:200
+msgid "Weekly: Recurs every"
+msgstr "Týdnì: Rekurzívnì ka¾dý"
+
+#: config/prefs.php.dist:160
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr ""
+"Kdy má èasové zobrazeni dne a týdne konèit, pokud neobsahují pozdni události?"
+
+#: config/prefs.php.dist:151
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr ""
+"Kdy má èasové zobrazeni dne a týdne zaèít, pokud neobsahují èasné události?"
+
+#: attendees.php:107 lib/Kronolith.php:1040 lib/Block/tree_menu.php:22
+#: config/prefs.php.dist:65
+msgid "Work Week"
+msgstr "Pracovní Týden"
+
+#: templates/view/view.inc:140 templates/edit/edit.inc:226
+msgid "Yearly: Recurs every"
+msgstr "Roènì: Rekurzívnì ka¾dý"
+
+#: templates/contacts/contacts.inc:79
+msgid "You can only use this form from the Edit Attendees screen."
+msgstr "Tento formuláø lze pouze pou¾ít ze stránky Úpravy Úèastníkù."
+
+#: lib/Kronolith.php:920
+msgid ""
+"You do not have an email address configured in your identity preferences. "
+"You must set one before event notifications can be sent."
+msgstr ""
+"Neudali jste emailovou adresu v nastavení identity. Alespoò jedna musí být "
+"zadána."
+
+#: addeventaction.php:20
+#, php-format
+msgid "You do not have permission to add events to %s."
+msgstr "Nedostateèná práva pro pøidání událostí do %s."
+
+#: data.php:183
+msgid "You do not have permission to add events to the selected calendar."
+msgstr "Nedostateèná práva pro pøidání událostí do vybraného kalendáøe."
+
+#: deleventaction.php:26
+msgid "You do not have permission to delete this event."
+msgstr "Nedostateèná práva pro smazání této události."
+
+#: editeventaction.php:68
+msgid "You do not have permission to edit this event."
+msgstr "Nedostateèná práva pro úpravu této události."
+
+#: data.php:178
+msgid "You have specified an invalid calendar."
+msgstr "Byl zadán neiplatný kalendáø."
+
+#: calendars.php:83
+msgid "You must select a calendar to be deleted."
+msgstr "Musíte vybrat kalendáø, který bude smazán."
+
+#: templates/contacts/contacts.inc:57
+msgid "You must select an address first."
+msgstr "Musíte nejdøíve vybrat emailovou adresu."
+
+#: lib/Scheduler/kronolith.php:168
+#, php-format
+msgid "You requested to be reminded about %s, which is at %s."
+msgstr "®ádali jste o pøipomenutí události %s, která je v %s."
+
+#: templates/prefs/shareselect.inc:10
+msgid "Your default calendar"
+msgstr "Vá¹ implicitní kalendáø"
+
+#: lib/Driver.php:913 lib/Driver.php:922
+msgid "[Unnamed event]"
+msgstr "[Událost bez názvu]"
+
+#: templates/edit/edit_timespan.inc:38
+msgid "_At"
+msgstr "_V"
+
+#: templates/search/search_advanced.inc:10
+msgid "_Basic Search"
+msgstr "_Vyhledat"
+
+#: viewevent.php:122
+msgid "_Edit"
+msgstr "_Upravit"
+
+#: lib/Kronolith.php:1076
+msgid "_Goto"
+msgstr "_Jít na"
+
+#: lib/Kronolith.php:1086
+msgid "_Import/Export"
+msgstr "_Importovat/Exportovat"
+
+#: lib/Kronolith.php:1081
+msgid "_My Calendars"
+msgstr "_Kalendáøe"
+
+#: lib/Kronolith.php:1072
+msgid "_New Event"
+msgstr "_Nová Událost"
+
+#: lib/Kronolith.php:1091
+msgid "_Print"
+msgstr "_Tisk"
+
+#: lib/Kronolith.php:1078
+msgid "_Search"
+msgstr "_Vyhledat"
+
+#: templates/menu.inc:21
+msgid "_Show"
+msgstr "_Zobrazit"
+
+#: lib/Kronolith.php:1069
+msgid "_Today"
+msgstr "_Dnes"
+
+#: templates/edit/edit.inc:130
+msgid "before the event starts"
+msgstr "pøed zaèátkem události"
+
+#: config/prefs.php.dist:97
+msgid "day"
+msgstr "den"
+
+#: templates/view/view.inc:122 templates/edit/edit.inc:195
+msgid "day(s)"
+msgstr "den(dny)"
+
+#: config/prefs.php.dist:98 config/prefs.php.dist:99 config/prefs.php.dist:100
+#: config/prefs.php.dist:101 config/prefs.php.dist:102
+msgid "days"
+msgstr "dny"
+
+#: data.php:137 templates/data/export.inc:1
+msgid "events.csv"
+msgstr "události.cvs"
+
+#: data.php:158
+msgid "events.ics"
+msgstr "udílosti.ics"
+
+#: templates/contacts/contacts.inc:133
+msgid "from"
+msgstr "od"
+
+#: templates/view/view.inc:136 templates/view/view.inc:138
+#: templates/edit/edit.inc:215 templates/edit/edit.inc:221
+msgid "month(s)"
+msgstr "mìsíc(e)"
+
+#: templates/view/view.inc:136 templates/edit/edit.inc:215
+msgid "on the same date"
+msgstr "ve stejném dnu"
+
+#: templates/view/view.inc:138 templates/edit/edit.inc:221
+msgid "on the same weekday"
+msgstr "ve stejném týdnu"
+
+#: data.php:30 templates/data/import.inc:23
+msgid "vCalendar/iCalendar"
+msgstr "vCalendar/iCalendar"
+
+#: lib/api.php:167 lib/api.php:339
+msgid "vEvent not found."
+msgstr "vEvent nebyl nalezen."
+
+#: config/prefs.php.dist:103
+msgid "week"
+msgstr "týden"
+
+#: templates/view/view.inc:134 templates/edit/edit.inc:202
+msgid "week(s) on:"
+msgstr "týden(týdny) v:"
+
+#: config/prefs.php.dist:104 config/prefs.php.dist:105
+#: config/prefs.php.dist:106
+msgid "weeks"
+msgstr "týdny"
+
+#: templates/view/view.inc:140 templates/edit/edit.inc:227
+msgid "year(s)"
+msgstr "rok(y)"

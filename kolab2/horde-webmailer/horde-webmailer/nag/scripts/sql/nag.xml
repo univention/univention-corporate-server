@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>name</variable></name>
+ <create>false</create>
+ <overwrite>false</overwrite>
+
+ <table>
+
+  <name>nag_tasks</name>
+
+  <declaration>
+
+   <field>
+    <name>task_id</name>
+    <type>text</type>
+    <length>32</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>task_owner</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>task_creator</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>task_parent</name>
+    <type>text</type>
+    <length>32</length>
+   </field>
+
+   <field>
+    <name>task_assignee</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>task_name</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>task_uid</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>task_desc</name>
+    <type>clob</type>
+   </field>
+
+   <field>
+    <name>task_start</name>
+    <type>integer</type>
+   </field>
+
+   <field>
+    <name>task_due</name>
+    <type>integer</type>
+   </field>
+
+   <field>
+    <name>task_priority</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <default>0</default>
+   </field>
+
+   <field>
+    <name>task_estimate</name>
+    <type>float</type>
+   </field>
+
+   <field>
+    <name>task_category</name>
+    <type>text</type>
+    <length>80</length>
+   </field>
+
+   <field>
+    <name>task_completed</name>
+    <type>integer</type>
+    <length>1</length>
+    <notnull>true</notnull>
+    <default>0</default>
+   </field>
+
+   <field>
+    <name>task_completed_date</name>
+    <type>integer</type>
+   </field>
+
+   <field>
+    <name>task_alarm</name>
+    <type>integer</type>
+    <unsigned>false</unsigned>
+    <notnull>true</notnull>
+    <default>0</default>
+   </field>
+
+   <field>
+    <name>task_private</name>
+    <type>integer</type>
+    <length>1</length>
+    <notnull>true</notnull>
+    <default>0</default>
+   </field>
+
+   <index>
+    <name>nag_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>task_id</name>
+    </field>
+   </index>
+
+   <index>
+    <name>nag_tasklist</name>
+    <field>
+     <name>task_owner</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>nag_uid</name>
+    <field>
+     <name>task_uid</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>nag_start</name>
+    <field>
+     <name>task_start</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>nag_shares</name>
+
+  <declaration>
+
+   <field>
+    <name>share_id</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>share_name</name>
+    <type>text</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>share_owner</name>
+    <type>text</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>share_flags</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>perm_creator</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>perm_default</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>perm_guest</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>attribute_name</name>
+    <type>text</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>attribute_desc</name>
+    <type>text</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>255</length>
+   </field>
+
+   <index>
+    <name>nag_shares_name</name>
+    <field>
+     <name>share_name</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>nag_shares_owner</name>
+    <field>
+     <name>share_owner</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>nag_shares_creator</name>
+    <field>
+     <name>perm_creator</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>nag_shares_default</name>
+    <field>
+     <name>perm_default</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>nag_shares_guest</name>
+    <field>
+     <name>perm_guest</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>nag_shares_pKey</name>
+    <primary>true</primary>
+    <field>
+     <name>share_id</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>nag_shares_groups</name>
+
+  <declaration>
+
+   <field>
+    <name>share_id</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>group_uid</name>
+    <type>text</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>perm</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <index>
+    <name>nag_groups_share_id</name>
+    <field>
+     <name>share_id</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>nag_groups_group_uid</name>
+    <field>
+     <name>group_uid</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>nag_groups_perm</name>
+    <field>
+     <name>perm</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>nag_shares_users</name>
+
+  <declaration>
+
+   <field>
+    <name>share_id</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>user_uid</name>
+    <type>text</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>perm</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <index>
+    <name>nag_users_share_id</name>
+    <field>
+     <name>share_id</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>nag_users_user_uid</name>
+    <field>
+     <name>user_uid</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>nag_users_perm</name>
+    <field>
+     <name>perm</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+</database>

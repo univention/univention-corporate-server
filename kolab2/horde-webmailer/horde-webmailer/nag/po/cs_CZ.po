@@ -1,0 +1,810 @@
+# Nag Czech Translation.
+# Copyright 2004-2009 The Horde Project
+# This file is distributed under the same license as the Horde package.
+# Pavel Chytil <pavel@chytil.tk>, 2001-2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nag 2.0-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2004-12-22 10:04-0800\n"
+"PO-Revision-Date:  2001-07-26 14:56-0900\n"
+"Last-Translator: Pavel Chytil <pavel@chytil.tk>\n"
+"Language-Team: Czech <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8-bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: lib/Nag.php:48
+#, php-format
+msgid "%d hour"
+msgstr "%d hodina"
+
+#: lib/Nag.php:50
+#, php-format
+msgid "%d hour, %d minute"
+msgstr "%d hodina, %d minuta"
+
+#: lib/Nag.php:52
+#, php-format
+msgid "%d hour, %d minutes"
+msgstr "%d hodina, %d minut"
+
+#: lib/Nag.php:40
+#, php-format
+msgid "%d hours"
+msgstr "%d hodin"
+
+#: lib/Nag.php:42
+#, php-format
+msgid "%d hours, %d minute"
+msgstr "%d hodin, %d minuta"
+
+#: lib/Nag.php:44
+#, php-format
+msgid "%d hours, %d minutes"
+msgstr "%d hodin, %d minut"
+
+#: lib/Nag.php:58
+#, php-format
+msgid "%d minute"
+msgstr "%d minuta"
+
+#: lib/Nag.php:60
+#, php-format
+msgid "%d minutes"
+msgstr "%d minut"
+
+#: templates/list/header.inc:9
+#, php-format
+msgid "%d tasks"
+msgstr "%d úkoly"
+
+#: lib/Nag.php:341
+#, php-format
+msgid "%s at %s"
+msgstr "%s na %s"
+
+#: lib/Nag.php:462 lib/Block/summary.php:92
+#, php-format
+msgid "%s is due in %s"
+msgstr "%s je po¾adováno v %s"
+
+#: lib/Nag.php:460 lib/Block/summary.php:90
+#, php-format
+msgid "%s is due now."
+msgstr "%s po¾adováno nyní."
+
+#: data.php:140
+#, php-format
+msgid "%s successfully imported"
+msgstr "%s úspì¹nì importováno"
+
+#: tasklists.php:100 lib/base.php:97
+#, php-format
+msgid "%s's Task List"
+msgstr "%s - Seznam Úkolù"
+
+#: lib/Nag.php:289
+msgid "(highest)"
+msgstr "(nejvy¹í)"
+
+#: lib/Nag.php:289
+msgid "(lowest)"
+msgstr "(nejni¾¹í)"
+
+#: templates/list/header.inc:9
+msgid "1 task"
+msgstr "1 úkol"
+
+#: task.php:258
+#, php-format
+msgid "Access denied completing task %s."
+msgstr "Zamezen pøístup pro dokonèení úkolu %s."
+
+#: task.php:232
+#, php-format
+msgid "Access denied deleting %s."
+msgstr "Zamezen pøístup pro smazání úkolu %s."
+
+#: task.php:198
+#, php-format
+msgid "Access denied moving the task to %s."
+msgstr "Zamezen pøístup pro posun úkolu %s."
+
+#: task.php:201
+#, php-format
+msgid "Access denied removing task from %s."
+msgstr "Zamezen pøístup pro odstranìní úkolu %s."
+
+#: task.php:133
+#, php-format
+msgid "Access denied saving task to %s."
+msgstr "Zamezen pøístup pro ulo¾ení úkolu %s."
+
+#: task.php:131
+#, php-format
+msgid "Access denied saving task: %s"
+msgstr "Zamezen pøístup pro ulo¾ení úkolu: %s."
+
+#: task.php:58
+msgid "Adding A New Task"
+msgstr "Pøidát Nový Úkol"
+
+#: templates/task/task.inc:68
+msgid "Ala_rm"
+msgstr "Ala_rm"
+
+#: templates/view/task.inc:37
+msgid "Alarm"
+msgstr "Alarm"
+
+#: config/prefs.php.dist:98
+msgid "All tasks"
+msgstr "V¹echny úkoly"
+
+#: lib/Block/summary.php:55
+msgid "Always show completed tasks?"
+msgstr "V¾dy zobrazit dokonèené úkoly?"
+
+#: lib/Block/summary.php:52
+msgid "Always show overdue tasks?"
+msgstr "V¾dy zobrazit zpo¾dìné úkoly?"
+
+#: config/prefs.php.dist:75
+msgid "Ascending"
+msgstr "Vzestupnì"
+
+#: templates/tasklists/tasklists.inc:102
+msgid "Back to Task List Options"
+msgstr "Zpìt do Mo¾ností pro Seznam Úkolù"
+
+#: data.php:28
+msgid "CSV"
+msgstr "CSV"
+
+#: templates/task/task.inc:57
+msgid "Calendar"
+msgstr "Kalendáø"
+
+#: templates/list/task_headers.inc:30
+msgid "Cat_egory"
+msgstr "Kat_egorie"
+
+#: data.php:42 templates/view/task.inc:29 config/prefs.php.dist:47
+#: config/prefs.php.dist:62
+msgid "Category"
+msgstr "Kategorie"
+
+#: templates/tasklists/tasklists.inc:22
+msgid "Change"
+msgstr "Zmìnit"
+
+#: templates/list/task_headers.inc:4 templates/list/task_headers.inc:8
+#: templates/list/task_headers.inc:12 templates/list/task_headers.inc:19
+#: templates/list/task_headers.inc:25 templates/list/task_headers.inc:29
+msgid "Change sort direction"
+msgstr "Zmìnit Typ Tøídìní"
+
+#: config/prefs.php.dist:15
+msgid "Change your task sorting and display options."
+msgstr "Zmìò mo¾nosti tøídení a zobrazení."
+
+#: config/prefs.php.dist:22
+msgid "Choose your default task list."
+msgstr "Zvolit implicitní seznam úkolù."
+
+#: templates/search/search.inc:33
+msgid "Clear Form"
+msgstr "Vyèisti Formuláø"
+
+#: templates/task/task.inc:89
+msgid "Co_mpleted?"
+msgstr "Do_konèeno?"
+
+#: templates/view/task.inc:13
+msgid "Complete"
+msgstr "Dokonèit"
+
+#: templates/list/task_summaries.inc:4 lib/Block/summary.php:146
+msgid "Complete Task"
+msgstr "Dokonèit Úkol"
+
+#: config/prefs.php.dist:100
+msgid "Complete tasks"
+msgstr "Dokonèit úkoly"
+
+#: lib/Nag.php:356 lib/Block/summary.php:144
+msgid "Completed"
+msgstr "Dokonèeno"
+
+#: task.php:267
+#, php-format
+msgid "Completed %s."
+msgstr "%s dokonèeno."
+
+#: templates/view/task.inc:45 templates/list/task_headers.inc:5
+#: config/prefs.php.dist:49 config/prefs.php.dist:64
+msgid "Completed?"
+msgstr "Dokonèeno?"
+
+#: data.php:45
+msgid "Completion Status"
+msgstr "Stav Dokonèení"
+
+#: templates/tasklists/tasklists.inc:17 templates/tasklists/tasklists.inc:99
+#: templates/tasklists/tasklists.inc:101
+msgid "Create"
+msgstr "Vytvoøit"
+
+#: templates/view/task.inc:51
+msgid "Created"
+msgstr "Vytvoøeno"
+
+#: templates/task/task.inc:77 lib/Nag.php:387
+msgid "Day(s)"
+msgstr "Den(Dny)"
+
+#: config/prefs.php.dist:21
+msgid "Default Task List"
+msgstr "Implicitní Seznam Úkolù"
+
+#: templates/view/task.inc:18 templates/tasklists/tasklists.inc:100
+msgid "Delete"
+msgstr "Smazat"
+
+#: task.php:240
+#, php-format
+msgid "Deleted %s."
+msgstr "Smazat %s."
+
+#: config/prefs.php.dist:76
+msgid "Descending"
+msgstr "Sestupnì"
+
+#: data.php:41
+msgid "Description"
+msgstr "Popis"
+
+#: templates/tasklists/tasklists.inc:90
+msgid "Description:"
+msgstr "Popis:"
+
+#: config/prefs.php.dist:14
+msgid "Display Options"
+msgstr "Mo¾nosti Zobrazení"
+
+#: data.php:43 templates/view/task.inc:33
+msgid "Due By"
+msgstr "Po¾adováno"
+
+#: config/prefs.php.dist:48 config/prefs.php.dist:63
+msgid "Due Date"
+msgstr "Datum Po¾adovaného Dokonèení"
+
+#: templates/task/task.inc:43
+msgid "Due _By"
+msgstr "Po¾adová_no"
+
+#: templates/view/task.inc:15
+msgid "Edit"
+msgstr "Upravit"
+
+#: templates/list/task_headers.inc:16 templates/list/task_summaries.inc:15
+#: lib/Block/summary.php:142
+msgid "Edit Task"
+msgstr "Upravit Úkol"
+
+#: templates/data/export.inc:22
+msgid "Export"
+msgstr "Exportovat"
+
+#: templates/data/export.inc:8
+msgid "Export Tasks"
+msgstr "Exportovat Úkoly"
+
+#: config/prefs.php.dist:33
+msgid "External Data"
+msgstr "Externí Data"
+
+#: config/prefs.php.dist:13
+msgid "General Options"
+msgstr "V¹eobecné Mo¾nosti"
+
+#: templates/task/task.inc:76 lib/Nag.php:390
+msgid "Hour(s)"
+msgstr "Hodin(a)"
+
+#: templates/data/import.inc:9
+#, php-format
+msgid "Import Tasks, Step %d"
+msgstr "Importovat Úkoly, Krok %d"
+
+#: data.php:146
+msgid "Import/Export Tasks"
+msgstr "Importovat/Exportovat Úkoly"
+
+#: list.php:77
+msgid "Incom_plete tasks"
+msgstr "Nedoko_nèené úkoly"
+
+#: config/prefs.php.dist:99
+msgid "Incomplete tasks"
+msgstr "Nedokonèené úkoly"
+
+#: templates/view/task.inc:58
+msgid "Last Modified"
+msgstr "Zmìnìn Poslední"
+
+#: templates/task/task.inc:75 lib/Nag.php:393
+msgid "Minute(s)"
+msgstr "Minut(a)"
+
+#: task.php:115
+msgid "Modifying:"
+msgstr "Modifikování:"
+
+#: lib/api.php:282 lib/api.php:465
+msgid "Multiple iCalendar components found; only one vTodo is supported."
+msgstr "Nalezeno nìkolik èástí iCalendar; je mo¾né pou¾ít pouze jednu vTodo."
+
+#: list.php:40
+msgid "My Tasks"
+msgstr "Úkoly"
+
+#: templates/task/task.inc:12 templates/search/search.inc:21
+msgid "N_ame"
+msgstr "N_ázev"
+
+#: templates/list/task_headers.inc:20
+msgid "Na_me"
+msgstr "Ná_zev"
+
+#: data.php:40
+msgid "Name"
+msgstr "Název"
+
+#: lib/Block/summary.php:18
+msgid "New Task"
+msgstr "Nový Úkol"
+
+#: templates/data/import.inc:43
+msgid "Next"
+msgstr "Dal¹í"
+
+#: lib/Nag.php:19
+msgid "No"
+msgstr "Ne"
+
+#: templates/task/task.inc:46
+msgid "No due date."
+msgstr "Bez po¾adovaného dokoèení."
+
+#: lib/api.php:275 lib/api.php:458
+msgid "No iCalendar data was found."
+msgstr "Nebyla nalezena ¾ádna data v iCalendar."
+
+#: lib/Nag.php:476
+msgid "No task lists are available to guests."
+msgstr "®ádný seznam úkolù není dostupný pro hosty."
+
+#: lib/Block/summary.php:186
+msgid "No tasks to display"
+msgstr "®ádné úkoly k zobrazení"
+
+#: templates/task/task.inc:71 lib/Nag.php:397
+msgid "None"
+msgstr "®ádný"
+
+#: lib/Nag.php:357
+msgid "Not Completed"
+msgstr "Nedokonèeno"
+
+#: config/prefs.php.dist:50 config/prefs.php.dist:65
+msgid "Owner"
+msgstr "Vlastník"
+
+#: templates/list/task_headers.inc:13
+msgid "P_ri"
+msgstr "D_ùl"
+
+#: templates/tasklists/tasklists.inc:87
+msgid "Permission"
+msgstr "Práva"
+
+#: lib/api.php:254 lib/api.php:339 lib/api.php:410 lib/api.php:441
+msgid "Permission Denied"
+msgstr "Nepovolený pøístup"
+
+#: lib/api.php:86
+msgid "Permission denied"
+msgstr "Nepovolený pøístup"
+
+#: data.php:44 templates/view/task.inc:41 config/prefs.php.dist:45
+#: config/prefs.php.dist:60
+msgid "Priority"
+msgstr "Dùle¾itost"
+
+#: templates/list/header.inc:5 templates/list/header.inc:6
+msgid "Refresh List"
+msgstr "Obnovit Seznam"
+
+#: templates/tasklists/tasklists.inc:101
+msgid "Reset"
+msgstr "Smazat"
+
+#: templates/task/task.inc:103
+msgid "Save Task"
+msgstr "Ulo¾it Úkol"
+
+#: task.php:215
+#, php-format
+msgid "Saved %s."
+msgstr "Ulo¾eno %s."
+
+#: search.php:14 templates/search/search.inc:5 templates/search/search.inc:32
+msgid "Search"
+msgstr "Hledat"
+
+#: list.php:63
+msgid "Search Results"
+msgstr "Výsledky Vyhledávání"
+
+#: templates/search/search.inc:18
+msgid "Search Scope"
+msgstr "Hledat v Oblasti"
+
+#: templates/search/search.inc:10
+msgid "Search _Text"
+msgstr "Hledaný _Text"
+
+#: templates/task/task.inc:57
+msgid "Select a date"
+msgstr "Vybrat datum"
+
+#: templates/tasklists/tasklists.inc:72
+msgid "Select a task list"
+msgstr "Vybrat seznam úkolù"
+
+#: templates/data/export.inc:15
+msgid "Select the export format:"
+msgstr "Zvolit formát exportu:"
+
+#: templates/data/import.inc:40
+msgid "Select the file to import:"
+msgstr "Vybrat soubor k importování:"
+
+#: templates/data/import.inc:16
+msgid "Select the format of the source file:"
+msgstr "Vybrat formát zdrojového souboru:"
+
+#: templates/menu.inc:8
+msgid "Show"
+msgstr "Zobrazit"
+
+#: templates/menu.inc:14
+msgid "Show Tasklists:"
+msgstr "Zobrazit Seznam Úkolù:"
+
+#: lib/Block/summary.php:37
+msgid "Show action buttons?"
+msgstr "Zobrazit akèní tlaèítka?"
+
+#: config/prefs.php.dist:101
+msgid "Show complete, incomplete, or all tasks in the task list?"
+msgstr "Zobrazit dokonèené, nedokonèené nebo v¹echny úkoly v seznamu úkolù?"
+
+#: config/prefs.php.dist:88
+msgid "Show data from any of these other applications in your task list?"
+msgstr "Zobrazit data z jakékoliv jiných aplikací v seznamu úkolù?"
+
+#: config/prefs.php.dist:34
+msgid "Show data from other applications or sources."
+msgstr "Zobrazit data z jiných aplikací a zdrojù."
+
+#: lib/Block/summary.php:40
+msgid "Show due dates?"
+msgstr "Zobrazit datum po¾adovaného dokoèení?"
+
+#: lib/Block/summary.php:34
+msgid "Show priorities?"
+msgstr "Zobrazit dùle¾itost?"
+
+#: lib/Block/summary.php:46
+msgid "Show task alarms?"
+msgstr "Zobrazit Alarmy pro úkoly?"
+
+#: lib/Block/summary.php:49
+msgid "Show task category?"
+msgstr "Zobrazit kategorie úkolù?"
+
+#: lib/Block/summary.php:43
+msgid "Show tasklist name?"
+msgstr "Zobrazit název seznamu úkolù?"
+
+#: lib/Block/summary.php:58
+msgid "Show tasks from these categories"
+msgstr "Zobrazit úkoly v tìchto kategoriích"
+
+#: templates/list/task_headers.inc:30
+msgid "Sort by Category"
+msgstr "Setøídit podle Kategorií"
+
+#: templates/list/task_headers.inc:5
+msgid "Sort by Completion Status"
+msgstr "Tøidìní podle Stavu Dokonèení"
+
+#: templates/list/task_headers.inc:26
+msgid "Sort by Due Date"
+msgstr "Tøídìní podle Datumu Po¾adovaného Dokonèení"
+
+#: templates/list/task_headers.inc:20
+msgid "Sort by Name"
+msgstr "Tøídìní podle Názvu"
+
+#: templates/list/task_headers.inc:13
+msgid "Sort by Priority"
+msgstr "Tøídìní podle Dùle¾itosti"
+
+#: templates/list/task_headers.inc:9
+msgid "Sort by User Name"
+msgstr "Tøídìní podle U¾ivatelského Jména"
+
+#: config/prefs.php.dist:77
+msgid "Sort direction:"
+msgstr "Smìr Tøídìní:"
+
+#: config/prefs.php.dist:51
+msgid "Sort tasks by:"
+msgstr "Tøídìní Úkolù podle:"
+
+#: templates/list/task_summaries.inc:22
+msgid "Task Alarm"
+msgstr "Alarm Úkolu"
+
+#: templates/list/task_headers.inc:23
+msgid "Task Alarm?"
+msgstr "Alarm Úkolu?"
+
+#: view.php:74
+msgid "Task Details"
+msgstr "Detaily Úkolu"
+
+#: templates/tasklists/tasklists.inc:66
+msgid "Task List"
+msgstr "Seznam Úkolù"
+
+#: config/prefs.php.dist:20 config/prefs.php.dist:32
+msgid "Task List and Share Options"
+msgstr "Seznam Úkolù a Mo¾nosti Sdílení"
+
+#: templates/tasklists/tasklists.inc:84
+msgid "Task List's name:"
+msgstr "Název Seznamu Úkolù"
+
+#: tasklists.php:111
+msgid "Task Lists"
+msgstr "Seznam Úkolù"
+
+#: config/prefs.php.dist:46 config/prefs.php.dist:61
+msgid "Task Name"
+msgstr "Název Úkolu"
+
+#: templates/list/task_summaries.inc:20
+msgid "Task Note"
+msgstr "Poznámka Úkolu"
+
+#: templates/list/task_headers.inc:22
+msgid "Task Note?"
+msgstr "Poznámku Úkolu?"
+
+#: tasklists.php:28
+msgid "Task lists must have a name."
+msgstr "Seznam Úkolù musí mít název."
+
+#: task.php:117 view.php:43
+msgid "Task not found."
+msgstr "Úkol nebyl nalezen."
+
+#: lib/Block/summary.php:3
+msgid "Tasks Summary"
+msgstr "Shrnutí Úkolù"
+
+#: tasklists.php:45
+#, php-format
+msgid "The task list \"%s\" couldn't be created: %s"
+msgstr "Nelze vytvoøit seznam úkolù \"%s\": %s"
+
+#: tasklists.php:56
+#, php-format
+msgid "The task list \"%s\" couldn't be saved: %s"
+msgstr "Nelze ulo¾it seznam úkolù \"%s\": %s"
+
+#: tasklists.php:47
+#, php-format
+msgid "The task list \"%s\" has been created."
+msgstr "Byl vytvoøen seznam úkolù \"%s\"."
+
+#: tasklists.php:81
+#, php-format
+msgid "The task list \"%s\" has been deleted."
+msgstr "Byl´smazán seznam úkolù \"%s\"."
+
+#: tasklists.php:58
+#, php-format
+msgid "The task list \"%s\" has been saved."
+msgstr "Byl ulo¾en seznam úkolù \"%s\"."
+
+#: config/prefs.php.dist:66
+msgid "Then:"
+msgstr "Pak:"
+
+#: templates/list/empty.inc:3
+msgid "There are no tasks matching the current criteria."
+msgstr "®ádné úkoly se neshodují se souèasným kritériem."
+
+#: task.php:264
+#, php-format
+msgid "There was a problem completing %s: %s"
+msgstr "Problém se vyskytl pøi dokonèování %s: %s"
+
+#: task.php:237
+#, php-format
+msgid "There was a problem deleting %s: %s"
+msgstr "Problém se vyskytl pøi smazávání %s: %s"
+
+#: task.php:213
+#, php-format
+msgid "There was a problem saving the task: %s."
+msgstr "Problém se vyskytl pøi ukádání úkolu: %s."
+
+#: data.php:137
+#, php-format
+msgid "There was an error importing the data: %s"
+msgstr "Nastala chyba pøi importování dat: %s."
+
+#: lib/api.php:269 lib/api.php:452
+msgid "There was an error importing the iCalendar data."
+msgstr "Pøi importování iCalendar dat do¹lo k chybì."
+
+#: data.php:66
+msgid "There were no tasks to export."
+msgstr "®ádné úkoly k exportování."
+
+#: data.php:105
+msgid "This file format is not supported."
+msgstr "Tento formát souboru nelze pou¾ít."
+
+#: tasklists.php:77
+#, php-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "Nelze smazat \"%s\": %s."
+
+#: templates/task/task.inc:104
+msgid "Undo Changes"
+msgstr "Storno Zmìny"
+
+#: templates/view/task.inc:30 templates/list/task_summaries.inc:27
+#: scripts/upgrades/2004-05-13_convert_categories_to_strings.php:50
+#: lib/Block/summary.php:179
+msgid "Unfiled"
+msgstr "Nevyplnìno"
+
+#: lib/api.php:301 lib/api.php:374 lib/api.php:485
+msgid "Unsupported Content-Type."
+msgstr "Nepodporovaný Typ Obsahu."
+
+#: templates/list/task_summaries.inc:19
+msgid "View Task Details"
+msgstr "Prohlídni Detaily Úkolu"
+
+#: templates/task/task.inc:78 lib/Nag.php:384
+msgid "Week(s)"
+msgstr "Týden(y)"
+
+#: templates/data/import.inc:24
+msgid "Which tasklist should the tasks be added to?"
+msgstr "Do kterého Seznamu Úkolù se mají úkoly ukládat?"
+
+#: lib/Nag.php:20
+msgid "Yes"
+msgstr "Ano"
+
+#: view.php:51
+msgid "You do not have permission to view this tasklist."
+msgstr "Nedostateèná práva pro prohlí¾ení toho to seznamu úkolù."
+
+#: tasklists.php:84 templates/tasklists/tasklists.inc:48
+msgid "You must select a task list to be deleted."
+msgstr "Musíte vybrat, který seznam úkolù bude smazán."
+
+#: templates/prefs/tasklistselect.inc:10
+msgid "Your default task list:"
+msgstr "Implicitní seznam úkolù"
+
+#: templates/tasklists/tasklists.inc:70
+msgid "Your task lists:"
+msgstr "Vá¹ Seznam Úkolù:"
+
+#: templates/list/task_summaries.inc:19 lib/Block/summary.php:88
+#: lib/Block/summary.php:169
+msgid "[none]"
+msgstr "[¾ádný]"
+
+#: list.php:76
+msgid "_All tasks"
+msgstr "_V¹echny úkoly"
+
+#: templates/task/task.inc:39 templates/search/search.inc:23
+msgid "_Category"
+msgstr "_Kategorie"
+
+#: templates/view/task.inc:13
+msgid "_Complete"
+msgstr "_Dokonèit"
+
+#: list.php:78
+msgid "_Completed tasks"
+msgstr "_Dokonèené úkoly"
+
+#: templates/view/task.inc:18
+msgid "_Delete"
+msgstr "_Smazat"
+
+#: templates/task/task.inc:95 templates/search/search.inc:22
+msgid "_Description"
+msgstr "_Popis"
+
+#: templates/list/task_headers.inc:26
+msgid "_Due Date"
+msgstr "_Datum Po¾adovaného Dokonèení"
+
+#: templates/view/task.inc:15
+msgid "_Edit"
+msgstr "_Upravit"
+
+#: lib/Nag.php:426
+msgid "_Import/Export"
+msgstr "_Importovat/Exportovat"
+
+#: lib/Nag.php:414
+msgid "_List Tasks"
+msgstr "_Seznam Úkolù"
+
+#: lib/Nag.php:421
+msgid "_My Tasklists"
+msgstr "_Úkoly"
+
+#: lib/Nag.php:416
+msgid "_New Task"
+msgstr "_Nový Úkol"
+
+#: lib/Nag.php:431
+msgid "_Print"
+msgstr "_Tisk"
+
+#: templates/task/task.inc:83
+msgid "_Priority"
+msgstr "Dùle¾itost"
+
+#: lib/Nag.php:418
+msgid "_Search"
+msgstr "_Vyhledat"
+
+#: templates/task/task.inc:20 templates/list/task_headers.inc:9
+msgid "_Task List"
+msgstr "_Seznam Úkolù"
+
+#: data.php:29
+msgid "iCalendar (vTodo)"
+msgstr "iCalendar (vTodo)"
+
+#: lib/Nag.php:56
+msgid "no time"
+msgstr "bez èasového údaje"
+
+#: data.php:78 templates/data/export.inc:1
+msgid "tasks.csv"
+msgstr "ukoly.cvs"

@@ -1,8 +1,8 @@
 kronolith: shared folder access with unixhierarchysep (Bug #17440)
            https://issues.kolab.org/issue4165
 
---- a/horde-webmail/lib/Horde/Kolab/Storage/Folder.php  2010-02-24 09:43:42.000000000 +0100
-+++ b/horde-webmail/lib/Horde/Kolab/Storage/Folder.php	2010-02-24 09:43:48.000000000 +0100
+--- a/horde-webmailer/lib/Horde/Kolab/Storage/Folder.php  2010-02-24 09:43:42.000000000 +0100
++++ b/horde-webmailer/lib/Horde/Kolab/Storage/Folder.php	2010-02-24 09:43:48.000000000 +0100
 @@ -241,7 +241,7 @@
      function setName($name)
      {

@@ -1,0 +1,316 @@
+# nag Korean translation.
+# Copyright 2002 J.I Kim.
+# J.I Kim <aporie@netian.com>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nag 2.0-cvs\n"
+"POT-Creation-Date: 2002-05-29 15:58+0900\n"
+"PO-Revision-Date: 2002-05-29 15:58+0900\n"
+"Last-Translator: J.I Kim <aporie@netian.com>\n"
+"Language-Team: Korean <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=EUC-KR\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%d tasks"
+msgstr "%d개의 작업"
+
+msgid "1 task"
+msgstr "1개의 작업"
+
+msgid "Adding A New Task"
+msgstr "새로운 작업 추가"
+
+msgid "Are you sure you want to permanently delete these tasks?"
+msgstr "이 작업을 완전히 삭제하시겠습니까?"
+
+msgid "Ascending"
+msgstr "오름차순"
+
+msgid "Back to Task List"
+msgstr "목록으로 돌아가기"
+
+msgid "Category"
+msgstr "범주"
+
+msgid "Change your task sorting and display options."
+msgstr "정렬 및 화면 출력 형식을 변경합니다."
+
+#, c-format
+msgid "Changed %d tasks to priority %d."
+msgstr "%d개의 작업이 우선순위 %d로 변경되었습니다."
+
+#, c-format
+msgid "Changed 1 task to priority %d."
+msgstr "1개의 작업이 우선순위 %d로 변경되었습니다."
+
+msgid "Choose Action:"
+msgstr "동작 선택:"
+
+msgid "Clear Form"
+msgstr "폼 삭제"
+
+msgid "Complete Task"
+msgstr "작업 완료"
+
+msgid "Complete Tasks"
+msgstr "작업 완료"
+
+msgid "Completed?"
+msgstr "완료?"
+
+msgid "Completion Status"
+msgstr "완료 상태"
+
+msgid "Default sorting criteria:"
+msgstr "기본 정렬 범주:"
+
+msgid "Default sorting direction:"
+msgstr "기본 정렬 방식:"
+
+msgid "Delete Task"
+msgstr "작업 삭제"
+
+msgid "Delete Tasks"
+msgstr "작업 삭제"
+
+#, c-format
+msgid "Deleted %d tasks."
+msgstr "%d개의 작업이 삭제되었습니다."
+
+msgid "Deleted 1 task."
+msgstr "1개의 작업이 삭제되었습니다."
+
+msgid "Descending"
+msgstr "내림차순"
+
+msgid "Description"
+msgstr "설명"
+
+msgid "Display Options"
+msgstr "화면 설정"
+
+msgid "Due By"
+msgstr "완료 일자"
+
+msgid "Due Date"
+msgstr "일자"
+
+msgid "Help"
+msgstr "도움말"
+
+msgid "Language"
+msgstr "언어"
+
+msgid "List Tasks"
+msgstr "목록"
+
+#, c-format
+msgid "Marked %d tasks as completed."
+msgstr "%d개의 작업이 완료상태로 설정되었습니다."
+
+msgid "Marked 1 task as completed."
+msgstr "1개의 작업이 완료상태로 설정되었습니다."
+
+msgid "Modify Task"
+msgstr "수정"
+
+msgid "Modifying:"
+msgstr "수정중:"
+
+msgid "Nag is not properly configured"
+msgstr "Nag가 정상적으로 설정되어 있지 않습니다."
+
+msgid "Name"
+msgstr "이름"
+
+msgid "New Task"
+msgstr "새로운 작업"
+
+msgid "No configuration information specified for SQL Tasks."
+msgstr "SQL 태스크를 위한 설정 정보가 없습니다."
+
+msgid "No due date."
+msgstr "일자 없슴."
+
+msgid "No tasks were changed."
+msgstr "변경된 업무가 없습니다."
+
+msgid "No tasks were deleted."
+msgstr "삭제된 업무가 없습니다."
+
+msgid "No"
+msgstr "없슴"
+
+msgid "None specified"
+msgstr "명시되지 않았습니다."
+
+msgid "Options"
+msgstr "설정"
+
+msgid "Other Options"
+msgstr "기타 설정"
+
+msgid "Please enter the task priority (1-5):"
+msgstr "업무 우선순위(1-5)를 입력하세요:"
+
+msgid "Pri"
+msgstr "우선순위"
+
+msgid "Priorities must be between 1 and 5. Please enter a valid priority:"
+msgstr "우선순위는 1 과 5사이여야 합니다. 다시 입력하세요:"
+
+msgid "Priority"
+msgstr "우선순위"
+
+msgid "Problem?"
+msgstr "문제?"
+
+msgid "Refresh List"
+msgstr "갱신 목록"
+
+msgid "Required 'database' not specified in tasks configuration."
+msgstr "설정에서 'database'가 명시되지 않았습니다."
+
+msgid "Required 'hostspec' not specified in tasks configuration."
+msgstr "설정에서 'hostspec'이 명시되지 않았습니다."
+
+msgid "Required 'password' not specified in tasks configuration."
+msgstr "설정에서 'password'가 명시되지 않았습니다."
+
+msgid "Required 'phptype' not specified in tasks configuration."
+msgstr "설정에서 'phptype'이 명시되지 않았습니다."
+
+msgid "Required 'table' not specified in tasks configuration."
+msgstr "설정에서 'table'이 명시되지 않았습니다."
+
+msgid "Required 'username' not specified in tasks configuration."
+msgstr "설정에서 'username'이 명시되지 않았습니다."
+
+msgid "Save Task"
+msgstr "저장"
+
+msgid "Search Results"
+msgstr "검색 결과"
+
+msgid "Search Scope"
+msgstr "검색 영역"
+
+msgid "Search Text"
+msgstr "검색 문자열"
+
+msgid "Search"
+msgstr "검색"
+
+msgid "Select your preferred language:"
+msgstr "언어 선택:"
+
+msgid "Selected?"
+msgstr "선택?"
+
+msgid "Set Task Priority"
+msgstr "우선순위 설정"
+
+msgid "Set the your preferred display language."
+msgstr "화면 출력 언어를 설정합니다.화면 출력 언어를 설정합니다."
+
+msgid "Show completed tasks in the task list?"
+msgstr "목록에서 완료된 작업 보여주기?"
+
+msgid "Some of Nag's configuration files are missing:"
+msgstr "일부 Nag 설정파일이 없습니다:"
+
+msgid "Sort Direction"
+msgstr "정렬 방식"
+
+msgid "Sort by Category"
+msgstr "범주로 정렬"
+
+msgid "Sort by Completion Status"
+msgstr "완료상태로 정렬"
+
+msgid "Sort by Due Date"
+msgstr "일자로 정렬"
+
+msgid "Sort by Name"
+msgstr "이름으로 정렬"
+
+msgid "Sort by Priority"
+msgstr "우선순위로 정렬"
+
+msgid "Task Details"
+msgstr "자세히"
+
+msgid "Task List"
+msgstr "작업 목록"
+
+msgid "Task Name"
+msgstr "작업 이름"
+
+msgid "Task Note"
+msgstr "작업 노트"
+
+msgid "Task Note?"
+msgstr "작업 노트?"
+
+msgid "The requested task does not exist."
+msgstr "요청된 작업이 존재하지 않습니다."
+
+msgid "There was a problem deleting tasks."
+msgstr "작업 삭제에 문제가 발생했습니다."
+
+msgid "There was a problem setting task completion status."
+msgstr "작업 완료 상태 설정에 문제가 발생했습니다."
+
+msgid "There was a problem setting task priority."
+msgstr "작업 우선순위 설정에 문제가 발생했습니다."
+
+msgid "This file contains preferences for Nag."
+msgstr "이 파일은 Nag의 환경설정파일입니다."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"이 파일은 Horde 기본설정의 색상과 폰트등에 대한 스타일시트를 갱신합니다."
+
+msgid ""
+"This is the main Nag configuration file. It contains options for all Nag "
+"scripts."
+msgstr ""
+"이 파일은 메인 Nag 설정 파일입니다. 모든 Nag 스크립트의 설정을 포함합니다."
+
+msgid "Undo Changes"
+msgstr "변경 취소"
+
+msgid "Unfiled"
+msgstr "미범주"
+
+msgid "Unknown task"
+msgstr "알수 없는 작업"
+
+msgid "Unknown"
+msgstr "알수 없슴"
+
+msgid "User Options"
+msgstr "사용자 설정"
+
+msgid "View Task Details"
+msgstr "작업 자세히 보기"
+
+msgid "Yes"
+msgstr "예"
+
+msgid "You must select at least one task first."
+msgstr "적어도 한개의 작업을 먼저 선택해야 합니다."
+
+msgid "Your Information"
+msgstr "정보사항"
+
+msgid "Your task list is empty."
+msgstr "작업목록이 없습니다."
+
+msgid "at"
+msgstr "시간"

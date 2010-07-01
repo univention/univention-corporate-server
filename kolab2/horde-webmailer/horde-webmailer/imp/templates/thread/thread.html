@@ -1,0 +1,67 @@
+<h1 class="header">
+ <if:thread><gettext>Thread Display:</gettext><else:thread><gettext>Multiple Message View:</gettext></else:thread></if:thread> <tag:subject /> <tag:delete />
+</h1>
+<br class="spacer" />
+
+<a id="display"></a>
+<div class="solidbox">
+<loop:tree>
+<div class="<tag:tree.class />">&nbsp;<tag:tree.subject /></div>
+</loop:tree>
+</div>
+
+<br class="spacer" />
+
+<table width="100%" cellspacing="0" cellpadding="3">
+
+<loop:messages>
+ <tr>
+  <td class="item">
+  <a id="i<tag:messages.idx />"></a>
+   <table width="100%">
+    <tr valign="top">
+     <td class="item">
+      <table width="100%" cellpadding="2" cellspacing="0">
+       <tr>
+        <td class="item0 rightAlign" valign="top" nowrap="nowrap"><strong><gettext>Date:</gettext></strong>&nbsp;</td>
+        <td class="item0 leftAlign"><tag:messages.date /></td>
+        <td class="item0 rightAlign"><tag:messages.link /></td>
+       </tr>
+       <tr>
+        <td class="item1 rightAlign" valign="top" nowrap="nowrap"><strong><if:messages.addr_to><gettext>To:</gettext><else:messages.addr_to><gettext>From:</gettext></else:messages.addr_to></if:messages.addr_to></strong>&nbsp;</td>
+        <td class="item1 leftAlign" width="100%" colspan="2"><tag:messages.addr /></td>
+       </tr>
+<if:messages.subject>
+       <tr>
+        <td class="item0 rightAlign" valign="top" nowrap="nowrap"><strong><gettext>Subject:</gettext></strong>&nbsp;</td>
+        <td class="item0 leftAlign" width="100%" colspan="2"><tag:messages.subject /></td>
+       </tr>
+</if:messages.subject>
+      </table>
+
+      <div class="messageBody">
+        <tag:messages.body />
+      </div>
+     </td>
+    </tr>
+
+<if:messages.last_message>
+    <tr valign="top">
+     <td class="item">
+      <table width="100%" cellpadding="2" cellspacing="0">
+       <tr>
+        <td class="item0 rightAlign"><tag:messages.link /></td>
+       </tr>
+      </table>
+     </td>
+    </tr>
+</if:messages.last_message>
+
+   </table>
+  </td>
+ </tr>
+
+ <tr><td>&nbsp;</td></tr>
+</loop:messages>
+
+</table>

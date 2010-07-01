@@ -1,0 +1,2047 @@
+# Slovenian translations for Kronolith packaga
+# Slovenski prevod Kronolith paketa
+# Copyright 2006-2009 The Horde Project
+# This file is distributed under the same license as the horde package.
+# Automatically generated, 2006.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kronolith\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2006-07-25 11:30+0200\n"
+"PO-Revision-Date: 2006-04-30 10:32+0100\n"
+"Last-Translator: duck@obala.net\n"
+"Language-Team: sl_SI <duck@obala.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: templates/calendars/search.inc:16
+#, php-format
+msgid "%d calendars found"
+msgstr "%d nadenih koledarjev."
+
+#: templates/search/header.inc:4
+#, php-format
+msgid "%d events"
+msgstr "%d dogodki"
+
+#: templates/edit/edit_timespan.inc:121
+#, php-format
+msgid "%s Day(s) %s Hour(s) %s Minutes"
+msgstr "%s Dan(i) %s Ur(a) %s Minut(a)"
+
+#: lib/Driver.php:1882
+#, php-format
+msgid "%s attendees"
+msgstr "%s prisotnih"
+
+#: data.php:287
+#, php-format
+msgid "%s file successfully imported"
+msgstr "%s datoteka je bila uspešno sprejeta"
+
+#: calendars.php:105 lib/base.php:141
+#, php-format
+msgid "%s's Calendar"
+msgstr "%s's Koledar"
+
+#: templates/calendars/search.inc:17
+msgid ""
+"(Click on calendar name to switch the calendar's visibility in the main "
+"window)"
+msgstr "(Kliknite na ime koledarja za premik nanj)"
+
+#: templates/contacts/contacts.inc:165
+msgid "* Add these by clicking Add *"
+msgstr "* To dodajte s klikom na Dodaj *"
+
+#: templates/contacts/contacts.inc:151
+msgid "* Please select address(es) *"
+msgstr "* Prosim, izberite naslov(e) *"
+
+#: lib/Driver.php:1881
+msgid "1 attendee"
+msgstr "1 prisoten"
+
+#: templates/search/header.inc:4
+msgid "1 event"
+msgstr "1 dogodek"
+
+#: config/prefs.php.dist:161
+msgid "1 hour"
+msgstr "1 ura"
+
+#: config/prefs.php.dist:158
+msgid "15 minutes"
+msgstr "15 minut"
+
+#: config/prefs.php.dist:159
+msgid "20 minutes"
+msgstr "20 minut"
+
+#: config/prefs.php.dist:160
+msgid "30 minutes"
+msgstr "40 minut"
+
+#: templates/edit/edit.inc:172
+msgid "<strong>Attendees</strong> (optional)"
+msgstr "<strong>Prisotnih</strong> (neobvezno)"
+
+#: templates/edit/edit.inc:159
+msgid "<strong>Descri_ption</strong> (optional)"
+msgstr "<strong>Opis</strong> (neobvezno)"
+
+#: templates/edit/edit.inc:276
+msgid "<strong>Keywords</strong> (optional)"
+msgstr "<strong>Gesla</strong> (neobvezno)"
+
+#: templates/edit/edit.inc:195
+msgid "<strong>Recurrence</strong> (optional)"
+msgstr "<strong>Ponavljanje</strong> (neobvezno)"
+
+#: templates/data/export.inc:113 templates/data/export.inc:193
+msgid "AM"
+msgstr "Dopoldan"
+
+#: lib/Kronolith.php:657
+msgid "Accepted"
+msgstr "Sprejeto"
+
+#: templates/search/search.inc:11
+msgid "Ad_vanced Search"
+msgstr "Napredno iskanje"
+
+#: templates/contacts/contacts.inc:160
+msgid "Add"
+msgstr "Dodaj"
+
+#: templates/edit/edit.inc:21
+msgid "Add Event"
+msgstr "Dodaj Dogodek"
+
+#: templates/prefs/remote_cal_management.inc:35
+msgid "Add a new Remote Calendar"
+msgstr "Dodaj novi Oddaljeni Koledar"
+
+#: addevent.php:64
+msgid "Add a new event"
+msgstr "Dodaj nov dogodek"
+
+#: templates/attendees/attendees.inc:71
+msgid "Add attendees"
+msgstr "Dodaj prisotne"
+
+#: templates/contacts/contacts.inc:185
+msgid "Add to attendees"
+msgstr "Dodaj med prisotne"
+
+#: contacts.php:76 templates/contacts/contacts.inc:128
+#: templates/attendees/attendees.inc:74
+msgid "Address Book"
+msgstr "Imenik naslovov"
+
+#: config/prefs.php.dist:38
+msgid "Address Books"
+msgstr "Imenik"
+
+#: templates/search/search_advanced.inc:8 templates/search/search.inc:11
+msgid "Advanced Search"
+msgstr "Napredno iskanje"
+
+#: templates/view/view.inc:47
+msgid "Alarm"
+msgstr "Opozorilo"
+
+#: lib/Driver.php:1857
+#, php-format
+msgid "Alarm %d days before"
+msgstr "Opozorilo %d dni pred dogodkom"
+
+#: lib/Driver.php:1862
+#, php-format
+msgid "Alarm %d hours before"
+msgstr "Opozorilo %d ur pred dogodkom"
+
+#: lib/Driver.php:1867
+#, php-format
+msgid "Alarm %d minutes before"
+msgstr "Alerem %d minut pred dogodkom"
+
+#: lib/Driver.php:1852
+#, php-format
+msgid "Alarm %d weeks before"
+msgstr "Opozorilo %d tednov pred dogodkom"
+
+#: lib/Driver.php:1856
+msgid "Alarm 1 day before"
+msgstr "Opozorilo 1 dan pred dogodkom"
+
+#: lib/Driver.php:1861
+msgid "Alarm 1 hour before"
+msgstr "Opozorilo 1 uro pred dogodkom"
+
+#: lib/Driver.php:1866
+msgid "Alarm 1 minute before"
+msgstr "Alerem 1 minuto pred dogodkom"
+
+#: lib/Driver.php:1851
+msgid "Alarm 1 week before"
+msgstr "Opozorilo 1 teden pred dogodkom"
+
+#: data.php:59
+msgid "Alarm Date"
+msgstr "Datum Opozorila"
+
+#: data.php:58
+msgid "Alarm Span (minutes)"
+msgstr "Opozorilo Span (minute)"
+
+#: data.php:60
+msgid "Alarm Time"
+msgstr "Čas Opozorila"
+
+#: templates/delete/delete.inc:26
+msgid "All"
+msgstr "Vse"
+
+#: lib/FBView.php:128 lib/FBView.php:131 lib/FBView.php:134
+msgid "All Attendees"
+msgstr "Vsi Prisotni"
+
+#: templates/perms/perms.inc:65
+msgid "All Authenticated Users"
+msgstr "Vsi overjeni uporabniki"
+
+#: templates/search/search.inc:59
+msgid "All Future"
+msgstr "Vse lastnosti"
+
+#: templates/search/search.inc:53
+msgid "All Past"
+msgstr "Vsi petekli"
+
+#: lib/Block/prevmonthlist.php:27 lib/Block/month.php:24
+#: lib/Block/monthlist.php:27 lib/Block/summary.php:25
+msgid "All Visible"
+msgstr "Vsi Vidni"
+
+#: templates/edit/edit_timespan.inc:120 lib/Driver.php:1928
+#: lib/Views/Day.php:93 lib/Views/Day.php:96 lib/Views/Week.php:141
+#: lib/Views/Week.php:148
+msgid "All day"
+msgstr "Vsi dnevi"
+
+#: lib/Block/summary.php:163
+msgid "All day event"
+msgstr "Celodnevni dogodek"
+
+#: templates/data/export.inc:33
+msgid "All events"
+msgstr "Vsi dogodki"
+
+#: templates/search/search_advanced.inc:48
+#: templates/search/search_advanced.inc:70 lib/Kronolith.php:750
+msgid "Any"
+msgstr "Katirkoli"
+
+#: templates/javascript/goto.inc:71
+msgid "April"
+msgstr "April"
+
+#: templates/edit/edit_timespan.inc:38 templates/edit/edit_timespan.inc:91
+#: templates/data/export.inc:82 templates/data/export.inc:168
+msgid "At"
+msgstr "Pri"
+
+#: lib/Kronolith.php:1109
+msgid ""
+"Attached is an iCalendar file with more information about the event. If your "
+"mail client supports iTip requests you can use this file to easily update "
+"your local copy of the event."
+msgstr ""
+"Pripeta je datoteka iKoledarja, ki vsebuje podrobnejše podatke o dogodku. V "
+"primeru, da poštni predal vašega gosta podpira iNasvete, lahko uporabite to "
+"datoteko za enostavno posodabljanje vaše lokalne kopije dogodka."
+
+#: perms.php:44
+msgid "Attempt to edit a non-existent share."
+msgstr "Poskušali smo urediti neobstoječi deljeni koledar."
+
+#: templates/attendees/attendees.inc:42 templates/view/view.inc:159
+msgid "Attendance"
+msgstr "Prisotnost"
+
+#: templates/view/view.inc:155
+msgid "Attendees"
+msgstr "Prisotni"
+
+#: templates/javascript/goto.inc:75
+msgid "August"
+msgstr "Avgust"
+
+#: templates/search/search_advanced.inc:11 templates/search/search.inc:8
+msgid "Basic Search"
+msgstr "Osnovno iskanje"
+
+#: config/keywords.php.dist:17
+msgid "Birthday"
+msgstr "Rojstni dan"
+
+#: lib/FBView.php:90 lib/FBView.php:111
+msgid "Busy"
+msgstr "Zasedeno"
+
+#: templates/search/search_advanced.inc:42
+msgid "C_alendar"
+msgstr "Koledar"
+
+#: templates/edit/edit.inc:47
+msgid "Cal_endar"
+msgstr "Koledar"
+
+#: templates/calendars/calendars.inc:149 lib/Block/prevmonthlist.php:21
+#: lib/Block/month.php:21 lib/Block/monthlist.php:21 lib/Block/summary.php:22
+msgid "Calendar"
+msgstr "Koledar"
+
+#: lib/Block/summary.php:3
+msgid "Calendar Summary"
+msgstr "Povzetek Koledarja"
+
+#: data.php:238
+msgid "Calendar successfully purged."
+msgstr "%s datoteka je bila uspešno sprejeta"
+
+#: config/prefs.php.dist:45 config/prefs.php.dist:52 config/prefs.php.dist:73
+msgid "Calendars"
+msgstr "Koledarji"
+
+#: calendars.php:27
+msgid "Calendars must have a name."
+msgstr "Koledarji morajo imeti ime."
+
+#: data.php:253
+msgid "Can't create a new event."
+msgstr "Novega dogodka ne morem ustvariti."
+
+#: templates/delete/one.inc:25 templates/delete/delete.inc:27
+#: templates/edit/edit.inc:31 templates/edit/edit.inc:309
+msgid "Cancel"
+msgstr "Zbriši"
+
+#: lib/Kronolith.php:633
+msgid "Cancelled"
+msgstr "Zbrisano"
+
+#: lib/Kronolith.php:1084
+#, php-format
+msgid "Cancelled: %s"
+msgstr "Zbrisano: %s"
+
+#: templates/search/search_advanced.inc:63 templates/edit/edit.inc:76
+msgid "Categor_y"
+msgstr "Kategorija"
+
+#: data.php:62 templates/search/event_headers.inc:4 templates/view/view.inc:6
+msgid "Category"
+msgstr "Kategorija"
+
+#: config/prefs.php.dist:304
+msgid ""
+"Choose if you want to be notified of new, edited, and deleted events by "
+"email:"
+msgstr ""
+"Izberite če želite biti opozirjeni na nove, urejene ali brzsane dogodke po "
+"elektronski pošti:"
+
+#: config/prefs.php.dist:68
+msgid "Choose if you want to be notified of new, edited, and deleted events."
+msgstr ""
+"Izberite če želite biti opozirjeni na nove, urejene ali brzsane dogodke."
+
+#: config/prefs.php.dist:317
+msgid "Choose if you want to receive email reminders for events with alarms:"
+msgstr "Izberite če želite prejemati emaile za dogofke z alamom;"
+
+#: templates/prefs/search_abook_select.inc:19 config/prefs.php.dist:337
+msgid "Choose the address books to search for free/busy URLs:"
+msgstr "Izberite adresarje kjer lahko najdem proste/zasedene URLje:"
+
+#: templates/prefs/fb_cals_select.inc:16
+msgid "Choose the calendars to include in your free/busy information:"
+msgstr "Izberite koledar, ki naj ga vkjučim v prosto/zasedene infromacije:"
+
+#: config/prefs.php.dist:360
+msgid "Choose the calendars to include when generating free/busy URLs:"
+msgstr "Izberite koledar za tvrojenje prosto/zasedenih infromacij:"
+
+#: config/prefs.php.dist:47
+msgid "Choose your default calendar."
+msgstr "Izberite privzet koledaer"
+
+#: templates/attendees/attendees.inc:84
+msgid "Clear all attendees"
+msgstr "Odstrani vse prisotne"
+
+#: templates/perms/perms.inc:9
+msgid "Close Window"
+msgstr "Zapri okno"
+
+#: templates/contacts/contacts.inc:186
+msgid "Close window"
+msgstr "Zapri okno"
+
+#: data.php:28 templates/data/import.inc:13
+msgid "Comma separated values"
+msgstr "Vrednosti so ločene z vejico"
+
+#: config/prefs.php.dist:39
+msgid "Configure the address book search used when sending invitations."
+msgstr "Nastavi adresar za iskanje ob pošiljanju povabil."
+
+#: config/prefs.php.dist:88
+msgid "Confirm deletion of events?"
+msgstr "Ali naj potrdim brisanje dogodka?"
+
+#: lib/Kronolith.php:630
+msgid "Confirmed"
+msgstr "Potrjeno"
+
+#: templates/calendars/calendars.inc:217
+msgid "Copy the URL below for use wherever you need your Free/Busy URL:"
+msgstr "Prenesi URL kadarkoli potrebuješ svoje prosto/zasedene povezavo:"
+
+#: lib/Kronolith.php:168
+#, php-format
+msgid "Could not open %s."
+msgstr "%s ne morem odpreti."
+
+#: templates/calendars/calendars.inc:129
+msgid "Create"
+msgstr "Ustvari"
+
+#: templates/calendars/calendars.inc:115
+msgid "Create Calendar"
+msgstr "Tvori koledar"
+
+#: templates/week/head.inc:28 lib/Views/Day.php:93 lib/Views/Day.php:205
+#: lib/Views/Month.php:170
+msgid "Create a New Event"
+msgstr "Ustvari Nov Dogodek"
+
+#: templates/view/view.inc:74
+msgid "Created"
+msgstr "Ustvarjeno"
+
+#: templates/delete/delete.inc:24
+msgid "Current"
+msgstr "Tekoče"
+
+#: templates/view/view.inc:106 templates/edit/edit.inc:209
+msgid "Daily: Recurs every"
+msgstr "Dnevno: Ponovi vsakič"
+
+#: attendees.php:106 lib/Kronolith.php:1399 lib/Block/tree_menu.php:21
+#: config/prefs.php.dist:97
+msgid "Day"
+msgstr "Dan"
+
+#: templates/prefs/default_alarm_management.inc:26 templates/view/view.inc:56
+#: templates/edit/edit.inc:149
+msgid "Day(s)"
+msgstr "Dan(i)"
+
+#: lib/Kronolith.php:1441
+msgid "De_lete"
+msgstr "Zbriši"
+
+#: templates/javascript/goto.inc:79
+msgid "December"
+msgstr "December"
+
+#: lib/Kronolith.php:660
+msgid "Declined"
+msgstr "Neodobreno"
+
+#: templates/prefs/default_alarm_management.inc:21
+msgid "Default Alarm Setting:"
+msgstr "Prenastavljene lastnisti opozoril"
+
+#: config/prefs.php.dist:46
+msgid "Default Calendar"
+msgstr "Privzet koledar"
+
+#: templates/perms/perms.inc:34 templates/perms/perms.inc:71
+#: templates/perms/perms.inc:97 templates/perms/perms.inc:123
+#: templates/perms/perms.inc:149 templates/perms/perms.inc:197
+msgid "Delegate"
+msgstr "Določi"
+
+#: templates/calendars/calendars.inc:204 templates/delete/one.inc:24
+#: templates/prefs/remote_cal_management.inc:23 templates/perms/perms.inc:33
+#: templates/perms/perms.inc:70 templates/perms/perms.inc:96
+#: templates/perms/perms.inc:122 templates/perms/perms.inc:148
+#: templates/perms/perms.inc:196 lib/Driver.php:1909
+msgid "Delete"
+msgstr "Zbriši"
+
+#: lib/Driver.php:1908 lib/Views/DeleteEvent.php:29
+#, php-format
+msgid "Delete %s"
+msgstr "Zbriši %s"
+
+#: templates/delete/delete.inc:22
+msgid ""
+"Delete the current event only, this occurrence and all future occurences, or "
+"all occurences?"
+msgstr "Ali naj zbrišem samo sledeči dogodek ali vse dogodke?"
+
+#: templates/search/search_advanced.inc:103 templates/search/search.inc:28
+msgid "Descri_ption"
+msgstr "Opis"
+
+#: data.php:61 templates/calendars/calendars.inc:178
+#: templates/view/view.inc:90
+msgid "Description"
+msgstr "Opis"
+
+#: templates/contacts/contacts.inc:174
+msgid "Display"
+msgstr "Prikaži"
+
+#: templates/calendars/calendars.inc:63
+msgid "Display Calendars"
+msgstr "Moji Koledarji"
+
+#: config/prefs.php.dist:9 config/prefs.php.dist:20 config/prefs.php.dist:28
+#: config/prefs.php.dist:37
+msgid "Display Options"
+msgstr "Prikaži Možnosti"
+
+#: config/prefs.php.dist:30
+msgid "Do you want to show tasks which are due on your calendar?"
+msgstr "Želite prikazati opravila v koledarju?"
+
+#: lib/Kronolith.php:600
+msgid "Does not recur"
+msgstr "Se ne ponavlja"
+
+#: lib/Kronolith.php:347
+#, php-format
+msgid "Due: %s"
+msgstr "Pristojen: %s"
+
+#: templates/edit/edit_timespan.inc:113
+msgid "Duration"
+msgstr "Trajanje"
+
+#: templates/calendars/calendars.inc:173 templates/perms/perms.inc:32
+#: templates/perms/perms.inc:69 templates/perms/perms.inc:95
+#: templates/perms/perms.inc:121 templates/perms/perms.inc:147
+#: templates/perms/perms.inc:195 lib/Driver.php:1901
+msgid "Edit"
+msgstr "Uredi"
+
+#: lib/Driver.php:1900 lib/Views/EditEvent.php:29
+#, php-format
+msgid "Edit %s"
+msgstr "Uredi %s"
+
+#: templates/edit/edit.inc:188
+msgid "Edit Attendees"
+msgstr "Urejanja Prisotnih"
+
+#: templates/calendars/calendars.inc:143
+msgid "Edit Calendars"
+msgstr "Uredi Koledarje"
+
+#: perms.php:259
+msgid "Edit Permissions"
+msgstr "Dovoljenja"
+
+#: perms.php:261
+#, php-format
+msgid "Edit Permissions for %s"
+msgstr "Uredi pravice za %s"
+
+#: attendees.php:156
+msgid "Edit attendees"
+msgstr "Urejanje prisotnih"
+
+#: templates/category_legend.inc:20
+msgid "Edit categories and colors"
+msgstr "Uredi kategorije in barve"
+
+#: templates/perms/perms.inc:11
+#, php-format
+msgid "Edit permissions for %s"
+msgstr "Uredi pravice za %s"
+
+#: templates/contacts/contacts.inc:177 templates/attendees/attendees.inc:41
+#: templates/view/view.inc:158
+msgid "Email Address"
+msgstr "Email naslov"
+
+#: templates/edit/edit_timespan.inc:59
+msgid "En_d"
+msgstr "Končaj"
+
+#: data.php:56
+msgid "End Date"
+msgstr "Zključni Datum"
+
+#: templates/search/event_headers.inc:8 templates/view/view.inc:41
+#: templates/data/export.inc:120
+msgid "End On"
+msgstr "Končaj"
+
+#: data.php:57
+msgid "End Time"
+msgstr "Zaključni čas"
+
+#: attendees.php:141 attendees.php:148
+#, php-format
+msgid "Error retrieving free/busy information for %s: %s"
+msgstr ""
+"Prišlo je do napake pri vzpostavljanju prosto/zasedenih informacij za %s: %s"
+
+#: attendees.php:131
+#, php-format
+msgid "Error retrieving your free/busy information: %s"
+msgstr "Prišlo je do napake pri vzpostavljanju prosto/zasedenih informacij: %s"
+
+#: config/prefs.php.dist:60
+msgid "Event Defaults"
+msgstr "Povrni na prenastavlene"
+
+#: lib/Kronolith.php:1254
+msgid "Event added:"
+msgstr "Dogodek dodan:"
+
+#: lib/Kronolith.php:1264
+msgid "Event deleted:"
+msgstr "Dogodek izbrisan:"
+
+#: lib/Kronolith.php:1259
+msgid "Event edited:"
+msgstr "Dogodek urjen:"
+
+#: lib/Driver.php:1096
+#, php-format
+msgid "Event from %s to %s"
+msgstr "Dogodki od %s do %s"
+
+#: lib/Driver/sql.php:370
+msgid "Event not found"
+msgstr "Ne najdem dogodka."
+
+#: config/prefs.php.dist:59 config/prefs.php.dist:66
+msgid "Events"
+msgstr "Dogodki"
+
+#: lib/Driver.php:749
+msgid "Events must have a start date."
+msgstr "Dogodki morajo imeti začetni datum."
+
+#: lib/Driver.php:715
+msgid "Events must have a title."
+msgstr "Dogodki morajo imeti naslov."
+
+#: templates/attendees/attendees.inc:75
+msgid "Expand Names"
+msgstr "Razširi imena"
+
+#: templates/data/export.inc:199
+msgid "Export"
+msgstr "Oddaj"
+
+#: templates/data/export.inc:8
+msgid "Export Calendar"
+msgstr "Oddaj Koledar"
+
+#: templates/javascript/goto.inc:69
+msgid "February"
+msgstr "Februar"
+
+#: templates/contacts/contacts.inc:133
+msgid "Find"
+msgstr "Najdi"
+
+#: templates/javascript/goto.inc:63 templates/edit/edit.inc:222
+#: lib/Views/Year.php:81 lib/Block/month.php:99
+msgid "Fr"
+msgstr "Pe"
+
+#: lib/Kronolith.php:636
+msgid "Free"
+msgstr "Prosto"
+
+#: config/prefs.php.dist:74
+msgid "Free/Busy Information"
+msgstr "Informacije o Prosti/Zasedenih"
+
+#: templates/month/head.inc:21 templates/view/view.inc:113
+#: templates/edit/javascript.inc:73
+msgid "Friday"
+msgstr "Petek"
+
+#: templates/delete/delete.inc:25
+msgid "Future"
+msgstr "Prihodnost"
+
+#: config/keywords.php.dist:17
+msgid "Game"
+msgstr "Igra"
+
+#: templates/search/search_advanced.inc:23
+msgid "General"
+msgstr "Splošno"
+
+#: lib/Block/summary.php:139
+#, php-format
+msgid "Goto %s"
+msgstr "Pojdi na %s"
+
+#: templates/perms/perms.inc:191
+msgid "Groups"
+msgstr "Skupine"
+
+#: templates/perms/perms.inc:91
+msgid "Guest Permissions"
+msgstr "Dovoljenja gostov"
+
+#: templates/week/head_side_by_side.inc:12
+#: templates/day/head_side_by_side.inc:10 lib/Views/Month.php:140
+msgid "Hide"
+msgstr "Skrij"
+
+#: templates/week/head_side_by_side.inc:12
+#: templates/day/head_side_by_side.inc:10 lib/Views/Month.php:140
+#, php-format
+msgid "Hide %s"
+msgstr "Skrij %s"
+
+#: templates/prefs/default_alarm_management.inc:25 templates/view/view.inc:59
+#: templates/edit/edit.inc:148
+msgid "Hour(s)"
+msgstr "Ura(e)"
+
+#: config/prefs.php.dist:157
+msgid "How long should the time slots on the day and week views be?"
+msgstr "Koliko dolgi naj bodo intervali med dnevi in tedni?"
+
+#: config/prefs.php.dist:326
+msgid "How many days of free/busy information should we generate?"
+msgstr "Za koliko dni naj sestavim proste/zasedene informacije?"
+
+#: lib/Kronolith.php:1113
+#, php-format
+msgid ""
+"If your email client doesn't support iTip requests you can use one of the "
+"following links to accept or decline the event.\n"
+"\n"
+"To accept the event:\n"
+"%s\n"
+"\n"
+"To accept the event tentatively:\n"
+"%s\n"
+"\n"
+"To decline the event:\n"
+"%s"
+msgstr ""
+"Če vaš odjemalec elektronske pošte ne podpira iTip zahtevkov lahko uporavite "
+"enega od spodnjih naslovov za potrditev ali zavritev udeležbe.\n"
+"\n"
+"Za potdtiev prostnosti:\n"
+"%s\n"
+"\n"
+"Za potrditev možne prisotnosti:\n"
+"%s\n"
+"\n"
+"Za zavrnitev prostnosti:\n"
+"%s"
+
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Calendar, Step %d"
+msgstr "Sprejem Koledarja, Korak %d "
+
+#: data.php:293
+msgid "Import/Export Calendar"
+msgstr "Sprejmi/Oddaj KOledar"
+
+#: templates/perms/perms.inc:143
+msgid "Individual Users"
+msgstr "Posamični uporabniki"
+
+#: templates/javascript/goto.inc:68
+msgid "January"
+msgstr "Januar"
+
+#: templates/javascript/goto.inc:74
+msgid "July"
+msgstr "Julij"
+
+#: templates/javascript/goto.inc:73
+msgid "June"
+msgstr "Junij"
+
+#: data.php:64 templates/view/view.inc:136
+msgid "Keywords"
+msgstr "Gesla"
+
+#: templates/search/search.inc:55
+msgid "Last 24 hours"
+msgstr "Zadnjih 24 ur"
+
+#: templates/view/view.inc:81
+msgid "Last Modified"
+msgstr "Nazadnje Spremenjeno"
+
+#: templates/month/head_side_by_side.inc:5 templates/month/head.inc:5
+msgid "Last Month"
+msgstr "Prejšnji Mesec"
+
+#: templates/year/head.inc:3
+msgid "Last Year"
+msgstr "Prejšnje leto"
+
+#: templates/search/search.inc:54 templates/week/head.inc:6
+msgid "Last week"
+msgstr "Prejšnji teden"
+
+#: templates/data/export.inc:29
+msgid "Limit the time span to export:"
+msgstr "Časovna omejitev za oddajo spana:"
+
+#: config/prefs.php.dist:351
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+"Izpišem vse stike kadar nalagam njihov spisek? (Če je ne, boste vidli le "
+"stike, ki ste jih eksplicitno iskali)"
+
+#: templates/search/search_advanced.inc:85 templates/edit/edit.inc:83
+msgid "Lo_cation"
+msgstr "Mesto"
+
+#: js/Kronolith.js.php:7 js/src/Kronolith.js.php:68
+msgid "Loading ..."
+msgstr "Nalagam ..."
+
+#: data.php:63 templates/search/event_headers.inc:5
+#: templates/prefs/remote_cal_management.inc:18
+#: templates/prefs/remote_cal_management.inc:52 templates/view/view.inc:14
+#: lib/Driver.php:1946
+msgid "Location"
+msgstr "Mesto"
+
+#: config/prefs.php.dist:54
+msgid "Manage remote calendars."
+msgstr "Vodi oddaljen koledar"
+
+#: templates/javascript/goto.inc:70
+msgid "March"
+msgstr "Marec"
+
+#: lib/api.php:104
+msgid "Maximum Number of Events"
+msgstr "Največje ptevilo dogodkov"
+
+#: templates/javascript/goto.inc:72
+msgid "May"
+msgstr "Maj"
+
+#: lib/Driver.php:1942
+msgid "Me"
+msgstr ""
+
+#: config/keywords.php.dist:17
+msgid "Meeting"
+msgstr "Sestanek"
+
+#: lib/Block/tree_alarms.php:3
+msgid "Menu Alarms"
+msgstr "Meni Alarmov"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "Spisek"
+
+#: templates/prefs/default_alarm_management.inc:24 templates/view/view.inc:62
+#: templates/edit/edit.inc:147
+msgid "Minute(s)"
+msgstr "Minuta(e)"
+
+#: templates/javascript/goto.inc:59 templates/edit/edit.inc:218
+#: lib/Views/Year.php:77 lib/Block/month.php:99
+msgid "Mo"
+msgstr "Po"
+
+#: templates/month/head.inc:17 templates/view/view.inc:109
+#: templates/edit/javascript.inc:69 config/prefs.php.dist:121
+msgid "Monday"
+msgstr "Ponedeljek"
+
+#: lib/Kronolith.php:1405 lib/Block/tree_menu.php:24 config/prefs.php.dist:100
+msgid "Month"
+msgstr "Mesec"
+
+#: templates/view/view.inc:118 templates/view/view.inc:120
+#: templates/edit/edit.inc:229 templates/edit/edit.inc:235
+msgid "Monthly: Recurs every"
+msgstr "Mesešno: Ponovi vsakič"
+
+#: lib/Block/monthlist.php:24
+msgid "Months Ahead"
+msgstr "Prihodnji Meseci"
+
+#: lib/Block/prevmonthlist.php:24
+msgid "Months Before"
+msgstr "Prejšnji Meseci"
+
+#: lib/api.php:657
+msgid "Multiple iCalendar components found; only one vEvent is supported."
+msgstr "Najdel sem več komponent iKoledarja; podprt je le en  vDogodek."
+
+#: calendars.php:128 templates/calendars/calendars.inc:70
+msgid "My Calendars"
+msgstr "Moji Koledarji"
+
+#: templates/menu.inc:35 templates/menu.inc:37
+msgid "My Calendars:"
+msgstr "Moji Koledarji:"
+
+#: templates/calendars/calendars.inc:213
+msgid "My Free/Busy URL"
+msgstr "Moj Prosti/Zasedeni URL"
+
+#: templates/calendars/calendars.inc:120 templates/calendars/calendars.inc:162
+#: templates/contacts/contacts.inc:176
+#: templates/prefs/remote_cal_management.inc:17
+#: templates/prefs/remote_cal_management.inc:44
+msgid "Name"
+msgstr "Ime"
+
+#: lib/Block/month.php:41 lib/Block/monthlist.php:44 lib/Block/summary.php:41
+#: lib/Block/tree_menu.php:20
+msgid "New Event"
+msgstr "Nov Dogodek"
+
+#: lib/base.php:175
+#, php-format
+msgid ""
+"New calendar created and automatically shared with the following group(s): %"
+"s."
+msgstr "Nov koledar ustvarjen in deljen z sledečimi skupinami: %s"
+
+#: templates/data/import.inc:33
+msgid "Next"
+msgstr "Naslednji"
+
+#: templates/search/search.inc:57
+msgid "Next 24 hours"
+msgstr "Naslednjih 24 ur"
+
+#: lib/FBView/day.php:29
+msgid "Next Day"
+msgstr "Naslednji Dan"
+
+#: templates/month/head_side_by_side.inc:7 templates/month/head.inc:7
+msgid "Next Month"
+msgstr "Naslednji Mesec"
+
+#: lib/FBView/week.php:32
+msgid "Next Week"
+msgstr "Naslednji Teden"
+
+#: templates/year/head.inc:5
+msgid "Next Year"
+msgstr "Naslednje leto"
+
+#: templates/day/head.inc:5
+msgid "Next day"
+msgstr "Naslednji dan"
+
+#: templates/search/search.inc:58 templates/week/head.inc:8
+msgid "Next week"
+msgstr "Naslednji teden"
+
+#: config/prefs.php.dist:300 config/prefs.php.dist:313
+msgid "No"
+msgstr "Ne"
+
+#: templates/view/view.inc:67 templates/edit/edit.inc:144
+msgid "No alarm"
+msgstr "Brez alarma"
+
+#: templates/attendees/attendees.inc:48
+msgid "No attendees"
+msgstr "Ni prisotnih"
+
+#: lib/Kronolith.php:1558
+msgid "No calendars are available to guests."
+msgstr "Koledarji niso na voljo gostom."
+
+#: templates/view/view.inc:130 templates/edit/edit.inc:255
+msgid "No end date"
+msgstr "Ni končnega datuma"
+
+#: lib/Block/prevmonthlist.php:167 lib/Block/monthlist.php:166
+#: lib/Block/summary.php:193
+msgid "No events to display"
+msgstr "Ni dogodkov za prikaz"
+
+#: lib/Storage/kolab.php:61
+#, php-format
+msgid "No free/busy information is available for %s"
+msgstr "Ni informacij o prosto/zasedenih časih za %s"
+
+#: lib/api.php:364 lib/api.php:647
+msgid "No iCalendar data was found."
+msgstr "Nobenih podatkov iKoledarja nisem najdel."
+
+#: templates/edit/edit.inc:204
+msgid "No recurrence"
+msgstr "Se ne ponavlja"
+
+#: lib/Kronolith.php:960
+msgid "No valid email address found"
+msgstr "Nobenega veljavnega email naslova nisem najdel."
+
+#: lib/Kronolith.php:667 lib/Kronolith.php:688
+msgid "None"
+msgstr "Noben"
+
+#: lib/Views/Event.php:26 lib/Views/DeleteEvent.php:27
+#: lib/Views/EditEvent.php:27
+msgid "Not Found"
+msgstr "Ne najdem"
+
+#: lib/Storage/sql.php:155
+msgid "Not found"
+msgstr "Ne najdem"
+
+#: config/prefs.php.dist:67
+msgid "Notifications"
+msgstr "Opozorila"
+
+#: templates/javascript/goto.inc:78
+msgid "November"
+msgstr "November"
+
+#: templates/search/search.inc:56
+msgid "Now"
+msgstr "Sedaj"
+
+#: templates/perms/perms.inc:117
+msgid "Object Creator"
+msgstr "Tvorec dogodka"
+
+#: templates/javascript/goto.inc:77
+msgid "October"
+msgstr "October"
+
+#: templates/edit/edit_timespan.inc:13 templates/edit/edit_timespan.inc:64
+msgid "On"
+msgstr "Na"
+
+#: config/prefs.php.dist:303 config/prefs.php.dist:316
+msgid "On all calendars I have read access to"
+msgstr "Pri vseh koledarjih katere imam pravico brati"
+
+#: config/prefs.php.dist:302 config/prefs.php.dist:315
+msgid "On all shown calendars"
+msgstr "Vsi prikazani koledarji"
+
+#: config/prefs.php.dist:301 config/prefs.php.dist:314
+msgid "On my calendars only"
+msgstr "Samo Moji Koledarji"
+
+#: perms.php:56
+msgid ""
+"Only the owner or system administrator may change ownership or owner "
+"permissions for a share"
+msgstr ""
+"Samo lastnik ali sistemski administrator lahko spremeni lastništvo dogodka"
+
+#: lib/Kronolith.php:685
+msgid "Optional"
+msgstr "Neobvezno"
+
+#: lib/FBView.php:119
+msgid "Optional Attendees"
+msgstr "Neobvezna Prisotni"
+
+#: lib/FBView.php:154
+msgid "Overview"
+msgstr "Pregled"
+
+#: templates/view/view.inc:28
+msgid "Owner"
+msgstr "Lastnik"
+
+#: templates/perms/perms.inc:28
+msgid "Owner Permissions"
+msgstr "Pravice lastnika"
+
+#: lib/Driver.php:1941
+#, php-format
+msgid "Owner: %s"
+msgstr "Lastnik: %s"
+
+#: templates/data/export.inc:114 templates/data/export.inc:194
+msgid "PM"
+msgstr "Popoldan"
+
+#: templates/view/view.inc:103 templates/edit/edit.inc:199
+msgid "Pattern"
+msgstr "Vzorec"
+
+#: templates/delete/one.inc:22
+msgid "Permanently delete this event?"
+msgstr "Ali naj trajno zbrišem ta dogodek?"
+
+#: lib/api.php:345 lib/api.php:441 lib/api.php:515 lib/api.php:597
+#: lib/api.php:629 lib/api.php:715 lib/api.php:751
+msgid "Permission Denied"
+msgstr "Dovjenje ni bilo odobreno"
+
+#: templates/calendars/calendars.inc:170
+msgid "Permissions"
+msgstr "Dovoljenja"
+
+#: config/prefs.php.dist:21
+msgid "Portal Options"
+msgstr "Možnosti Portala"
+
+#: lib/FBView/day.php:25
+msgid "Previous Day"
+msgstr "Prejšnji Dan"
+
+#: lib/FBView/week.php:26
+msgid "Previous Week"
+msgstr "Prejšnji Teden"
+
+#: templates/day/head.inc:3
+msgid "Previous day"
+msgstr "Prejšnji dan"
+
+#: lib/Block/prevmonthlist.php:3 lib/Block/prevmonthlist.php:42
+msgid "Prior Events"
+msgstr "Predhnodni dogodki"
+
+#: lib/Driver.php:1823 lib/Kronolith.php:1431 lib/Views/Event.php:30
+msgid "Private Event"
+msgstr "Zasebni dogodek"
+
+#: templates/edit/edit.inc:102
+msgid "Private?"
+msgstr "Zasebni?"
+
+#: templates/perms/perms.inc:31 templates/perms/perms.inc:68
+#: templates/perms/perms.inc:94 templates/perms/perms.inc:120
+#: templates/perms/perms.inc:146 templates/perms/perms.inc:194
+msgid "Read"
+msgstr "Preberi"
+
+#: templates/view/view.inc:129 templates/edit/edit.inc:252
+msgid "Recur Until"
+msgstr "Obnavljaj Do"
+
+#: templates/view/view.inc:100
+msgid "Recurrence"
+msgstr "Ponovitve"
+
+#: data.php:68
+msgid "Recurrence Data"
+msgstr "Podatki, ki se Ponavljajo"
+
+#: data.php:66
+msgid "Recurrence End Date"
+msgstr "Končni datum, ki se ponavlja"
+
+#: data.php:67
+msgid "Recurrence Interval"
+msgstr "Interval, ki se ponavlja"
+
+#: data.php:65
+msgid "Recurrence Type"
+msgstr "Vrsta, ki se ponavlja"
+
+#: lib/Kronolith.php:603
+msgid "Recurs daily"
+msgstr "Ponovlja se dnevno"
+
+#: lib/Kronolith.php:610
+msgid "Recurs monthly"
+msgstr "Ponovja se mesečno"
+
+#: lib/Kronolith.php:606
+msgid "Recurs weekly"
+msgstr "Ponovlja se tedenskoi"
+
+#: lib/Kronolith.php:613
+msgid "Recurs yearly"
+msgstr "Ponavlja se letno"
+
+#: lib/Scheduler/kronolith.php:208
+#, php-format
+msgid "Reminder: %s"
+msgstr "Opomnik: %s"
+
+#: templates/calendars/calendars.inc:94 config/prefs.php.dist:53
+msgid "Remote Calendars"
+msgstr "Oddaljen Koledar"
+
+#: templates/menu.inc:61 templates/menu.inc:63
+msgid "Remote Calendars:"
+msgstr "Oddaljeni koledarji:"
+
+#: templates/calendars/calendars.inc:194
+msgid "Remote Subscription URL"
+msgstr "Oddaljena povezava za ureležbe"
+
+#: templates/contacts/contacts.inc:161
+msgid "Remove"
+msgstr "Odstrani"
+
+#: templates/attendees/attendees.inc:51
+#, php-format
+msgid "Remove %s"
+msgstr "Odstrani %s "
+
+#: attendees.php:100
+msgid "Remove Attendee"
+msgstr "Odstrani Prisotnega"
+
+#: templates/data/import.inc:31
+msgid ""
+"Replace existing calendar with the imported one? <strong>Warning: This "
+"deletes all entries in your current calendar.</strong>"
+msgstr ""
+"Zamenjaj obstoječi koledaer z uvoženim?<strong>Zamenjeva pobriše vse stare "
+"zapise</strong>"
+
+#: lib/Kronolith.php:692
+msgid "Required"
+msgstr "Zahtevano"
+
+#: lib/FBView.php:98 lib/FBView.php:139 lib/FBView.php:142 lib/FBView.php:145
+msgid "Required Attendees"
+msgstr "Zahtevani so Prisotni"
+
+#: templates/edit/edit.inc:32 templates/edit/edit.inc:310
+msgid "Reset to Defaults"
+msgstr "Povni na prenastavlene"
+
+#: templates/attendees/attendees.inc:43 templates/view/view.inc:160
+msgid "Response"
+msgstr "Odgovori"
+
+#: config/prefs.php.dist:148
+msgid ""
+"Restrict day and week views to these time slots, even if there <strong>are</"
+"strong> earlier or later events?"
+msgstr ""
+" Omejite prikaz dneva in tedna na te termine, tudi če obstajajo pretekli ali "
+"bodoči dogodki"
+
+#: templates/javascript/goto.inc:64 templates/edit/edit.inc:223
+#: lib/Views/Year.php:82 lib/Block/month.php:99
+msgid "Sa"
+msgstr "So"
+
+#: templates/month/head.inc:22 templates/view/view.inc:114
+#: templates/edit/javascript.inc:74
+msgid "Saturday"
+msgstr "Sobota"
+
+#: templates/calendars/calendars.inc:203
+msgid "Save"
+msgstr "Shrani"
+
+#: templates/perms/perms.inc:235
+#, php-format
+msgid "Save %s"
+msgstr "Shrani %s"
+
+#: lib/Kronolith.php:1436 lib/Views/EditEvent.php:74
+#: lib/Views/EditEvent.php:81
+msgid "Save As New"
+msgstr "Shrani Kot Novo"
+
+#: templates/attendees/attendees.inc:83
+msgid "Save Attendees"
+msgstr "Shrani Prisotne"
+
+#: addevent.php:55 lib/Views/EditEvent.php:76
+msgid "Save Event"
+msgstr "Shrani Dogodek"
+
+#: search.php:91 templates/search/search_advanced.inc:114
+#: templates/search/search.inc:67 templates/calendars/search.inc:8
+#: templates/contacts/contacts.inc:145 lib/Block/tree_menu.php:26
+msgid "Search"
+msgstr "Išči"
+
+#: templates/calendars/search.inc:1
+msgid "Search Calendars"
+msgstr "Išči Koledarje"
+
+#: templates/search/header.inc:6
+msgid "Search Results"
+msgstr "Rezultati iskanja"
+
+#: templates/calendars/search.inc:6
+msgid "Search for calendars containing:"
+msgstr "Išči koledarje ki vsebujejo:"
+
+#: lib/Storage.php:135
+msgid "Searching free/busy is not available."
+msgstr "Isanje po prosto/zasedenih ni na voljo."
+
+#: templates/calendars/calendars.inc:153
+msgid "Select a calendar to edit"
+msgstr "Izberite Koledar za urejanje"
+
+#: templates/edit/edit.inc:267 templates/edit/edit_timespan.inc:30
+#: templates/edit/edit_timespan.inc:81
+msgid "Select a date"
+msgstr "Izberite datum"
+
+#: templates/perms/perms.inc:215
+msgid "Select a group to add"
+msgstr "Izberite skupino za dodati"
+
+#: templates/perms/perms.inc:41
+msgid "Select a new owner"
+msgstr "Izberite novega lastnika"
+
+#: templates/perms/perms.inc:168
+msgid "Select a user to add"
+msgstr "Izberite uproabnika"
+
+#: templates/menu.inc:31
+msgid "Select calendars to display:"
+msgstr "Izberite koledar za prikaz:"
+
+#: config/prefs.php.dist:11
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr ""
+"Izberite potrdilne možnosti, kako naj bodo prikazani različni pogledai in "
+"privzet pogled."
+
+#: templates/data/import.inc:18
+msgid "Select the calendar to import to:"
+msgstr "Izberite koledar, ki želite sprejeti na:"
+
+#: templates/data/export.inc:19
+msgid "Select the calendar(s) to export from"
+msgstr "Izberite koledar(je) za izvoz"
+
+#: templates/data/export.inc:12
+msgid "Select the export format:"
+msgstr "Izberite obliko izvozne datoteke:"
+
+#: templates/data/import.inc:27
+msgid "Select the file to import:"
+msgstr "Izberite datoteko, ki želite sprejeti:"
+
+#: config/prefs.php.dist:119
+msgid "Select the first weekday:"
+msgstr "izberite prvi dan v tednu:"
+
+#: templates/data/import.inc:11
+msgid "Select the format of the source file:"
+msgstr "Izberite obliko uvozne datoteke: "
+
+#: config/prefs.php.dist:208
+msgid "Select the time span to show:"
+msgstr "Izberite čas spana za prikaz:"
+
+#: config/prefs.php.dist:101
+msgid "Select the view to display on startup:"
+msgstr "Izberite pogled, ki bo prikazan na startupu:"
+
+#: config/prefs.php.dist:22
+msgid "Select which events to show in the portal."
+msgstr "Določite kateri dogodki naj bodo prikazani na portalu."
+
+#: templates/delete/one.inc:19 templates/delete/delete.inc:19
+msgid "Send a cancel notification to all attendees when deleting this event"
+msgstr "Pošlji sporočilo o zbrisanem dogodku vsem prisotnim."
+
+#: templates/view/view.inc:164
+#, php-format
+msgid "Send an email to %s"
+msgstr "Pošlji sporočilo %s"
+
+#: templates/edit/edit.inc:182
+msgid "Send updates/invitations to all attendees when saving this event"
+msgstr ""
+"Pri spreminjanju dogodkov pošlji povabila in posodobljene dogodke vsem "
+"prisotnim."
+
+#: templates/javascript/goto.inc:76
+msgid "September"
+msgstr "September"
+
+#: config/prefs.php.dist:61
+msgid "Set default values for new events."
+msgstr "Nastavite privzete lastnosti novih dogodkov."
+
+#: templates/edit/edit_timespan.inc:81
+msgid "Set end date"
+msgstr "Nastavi končni datum"
+
+#: templates/edit/edit.inc:267
+msgid "Set recurrence end date"
+msgstr "Nastavi ponavljanja in datum"
+
+#: templates/edit/edit_timespan.inc:30
+msgid "Set start date"
+msgstr "Nastavi zažetni datum"
+
+#: config/prefs.php.dist:75
+msgid ""
+"Set your free/busy calendars and your own and other users' free/busy options."
+msgstr ""
+"Nastavi svoje prosto/zasedene koledarje in stale nastavitve o zasedenosti."
+
+#: calendars.php:77
+#, php-format
+msgid "Share not found: %s"
+msgstr "Deljeni komedarji niso bili najdeni: %s"
+
+#: templates/calendars/calendars.inc:82
+msgid "Shared Calendars"
+msgstr "Koledar v skupni uporabi"
+
+#: templates/menu.inc:48 templates/menu.inc:50
+msgid "Shared Calendars:"
+msgstr "Koledarji v skupni Uporabi:"
+
+#: templates/perms/perms.inc:30 templates/perms/perms.inc:67
+#: templates/perms/perms.inc:93 templates/perms/perms.inc:119
+#: templates/perms/perms.inc:145 templates/perms/perms.inc:193
+msgid "Show"
+msgstr "Prikaži"
+
+#: calendar_search.php:25 templates/week/head_side_by_side.inc:3
+#: templates/day/head_side_by_side.inc:3
+msgid "Show Calendar"
+msgstr "Prikaži Koledar"
+
+#: config/prefs.php.dist:180
+msgid "Show category legend?"
+msgstr "Ali naj prikačem legendo kategorij?"
+
+#: config/prefs.php.dist:170
+msgid "Show delete, alarm, and recurrence icons in calendar views?"
+msgstr ""
+"Ali naj v pogledu koledarja prikažem ikone za brisanje, opozorila in "
+"ponavljanja?"
+
+#: config/prefs.php.dist:236
+msgid "Show due tasks in the calendar?"
+msgstr "Ali naj na koledarju prikažem nujna opravila?"
+
+#: config/prefs.php.dist:190
+msgid "Show free/busy legend?"
+msgstr "Ali naj prikažem legendo prost/zasedenih teminov"
+
+#: config/prefs.php.dist:227
+msgid "Show only events that have an alarm set?"
+msgstr "Ali naj prikažem le dogodke, za katere ste nastavlili opozorilo?"
+
+#: config/prefs.php.dist:199
+msgid "Show shared calendars side-by-side?"
+msgstr "Prikažem deljene koledarje en ob drugemu?"
+
+#: config/prefs.php.dist:245
+msgid "Show tasks using category colors?"
+msgstr "Pikaži orpavila v barvah kategorij?"
+
+#: config/prefs.php.dist:110
+msgid "Show time of day between each day in week views?"
+msgstr "Ali naj pri pregledu tedna prikažem vsako uro med dnevi?"
+
+#: templates/edit/edit_timespan.inc:11
+msgid "Sta_rt"
+msgstr "Začetek"
+
+#: data.php:54
+msgid "Start Date"
+msgstr "Začetni datum"
+
+#: templates/search/event_headers.inc:7 templates/view/view.inc:35
+#: templates/data/export.inc:37
+msgid "Start On"
+msgstr "Začni"
+
+#: data.php:55
+msgid "Start Time"
+msgstr "Začetni čas"
+
+#: templates/search/search_advanced.inc:94 templates/edit/edit.inc:92
+msgid "Stat_us"
+msgstr "Stanje"
+
+#: templates/search/event_headers.inc:6 templates/view/view.inc:21
+msgid "Status"
+msgstr "Stanje"
+
+#: lib/Storage.php:143
+msgid "Storing free/busy is not available."
+msgstr "Razvrščanje prosto/zasedenih ni na voljo"
+
+#: templates/javascript/goto.inc:65 templates/edit/edit.inc:224
+#: lib/Views/Year.php:75 lib/Views/Year.php:84 lib/Block/month.php:101
+#: lib/Block/month.php:103
+msgid "Su"
+msgstr "Ne"
+
+#: templates/month/head.inc:15 templates/month/head.inc:24
+#: templates/view/view.inc:115 templates/edit/javascript.inc:68
+#: config/prefs.php.dist:120
+msgid "Sunday"
+msgstr "Nedelja"
+
+#: config/prefs.php.dist:29
+msgid "Tasks"
+msgstr "Opravila"
+
+#: lib/Kronolith.php:640 lib/Kronolith.php:663
+msgid "Tentative"
+msgstr "Poskus"
+
+#: templates/javascript/goto.inc:62 templates/edit/edit.inc:221
+#: lib/Views/Year.php:80 lib/Block/month.php:99
+msgid "Th"
+msgstr "Če"
+
+#: lib/Driver.php:45
+msgid "The Calendar backend is not currently available."
+msgstr "Gonilnik koledarjev trenutno ni na voljo."
+
+#: lib/Driver.php:200
+#, php-format
+msgid "The Calendar backend is not currently available: %s"
+msgstr "Gonilnik koledarjev trenutno ni na voljo: %s"
+
+#: templates/contacts/contacts.inc:70
+msgid "The Edit Attendees screen is no longer present. Exiting."
+msgstr "Urejanje Prisotnih ni več možno. Program se zaustavlja."
+
+#: calendars.php:70
+#, php-format
+msgid "The calendar \"%s\" cannot be deleted."
+msgstr "Koledarja \"%s\" ne morem zbrisati."
+
+#: calendars.php:40
+#, php-format
+msgid "The calendar \"%s\" has been created."
+msgstr "Koledar \"%s\" je bil ustvarjen."
+
+#: calendars.php:88
+#, php-format
+msgid "The calendar \"%s\" has been deleted."
+msgstr "Koledar \"%s\" je bil zbrisan."
+
+#: calendars.php:54
+#, php-format
+msgid "The calendar \"%s\" has been renamed to \"%s\"."
+msgstr "Koledar \"%s\" je bil preimenovan na \"%s\"."
+
+#: calendars.php:56
+#, php-format
+msgid "The calendar \"%s\" has been saved."
+msgstr "Koledar \"%s\" je shranjen."
+
+#: data.php:236
+#, php-format
+msgid "The calendar could not be purged: %s"
+msgstr "Koledarja ne mora biti počiščen: %s"
+
+#: templates/edit/javascript.inc:164
+msgid "The end date must be later than the start date."
+msgstr "Končni datum mora biti za začetnim."
+
+#: lib/Kronolith.php:1255
+#, php-format
+msgid ""
+"The event \"%s\" has been added to \"%s\" calendar, which is on %s at %s."
+msgstr "Dogodek \"%s\" je bil dodan v koledar \"%s\", ki %s ob %s."
+
+#: lib/Kronolith.php:1265
+#, php-format
+msgid ""
+"The event \"%s\" has been deleted from \"%s\" calendar, which was on %s at %"
+"s."
+msgstr ""
+"Dogodek \"%s\" je bil izbrisan iz koledarja \"%s\", ki je bil %s ob %s."
+
+#: lib/Kronolith.php:1260
+#, php-format
+msgid ""
+"The event \"%s\" has been edited on \"%s\" calendar, which is on %s at %s."
+msgstr "Dogodek \"%s\" je bil urejen v koledarju \"%s\", ki bo %s ob %s."
+
+#: lib/Kronolith.php:1151
+#, php-format
+msgid "The event notification to %s was successfully sent."
+msgstr "Opozorilo za dogodek je bilo uspešno poslano za %s."
+
+#: lib/Kronolith.php:1107
+msgid "The following is a more detailed description of the event:"
+msgstr "Sledi podroben opis dogodka:"
+
+#: attend.php:41
+msgid ""
+"The request was incomplete. Some parameters that are necessary to accept or "
+"decline an event are missing."
+msgstr "Zahtevek je bil nepopoln. Manjkajo nekateri zahtevani parametri."
+
+#: lib/Views/Event.php:45 lib/Views/DeleteEvent.php:40
+#: lib/Views/EditEvent.php:43
+msgid "The requested event was not found."
+msgstr "Zahtevna dogodek ne obstaja."
+
+#: templates/search/empty.inc:3
+msgid "There are no events matching the current criteria."
+msgstr "Ni dogodkov ki bi ustrezali izbranim kategorijam."
+
+#: addeventaction.php:24 editeventaction.php:28
+#, php-format
+msgid "There was an error accessing the calendar: %s"
+msgstr "Pri odpiranju koledarja je prišlo do napake: %s"
+
+#: addeventaction.php:44
+#, php-format
+msgid "There was an error adding the event: %s"
+msgstr "Pri dodajanju dogodka je prišlo do napake: %s"
+
+#: editeventaction.php:84
+#, php-format
+msgid "There was an error editing the event: %s"
+msgstr "Pri urejnju dogodka je prišlo do napake: %s"
+
+#: lib/api.php:358 lib/api.php:641
+msgid "There was an error importing the iCalendar data."
+msgstr "Prišlo je do napake pri sprejemanju podatkov iKoledarja."
+
+#: editeventaction.php:60
+#, php-format
+msgid "There was an error moving the event: %s"
+msgstr "Prišlo je do napake pri premiku dogodka: %s"
+
+#: lib/Kronolith.php:1156
+#, php-format
+msgid "There was an error sending an event notification to %s: %s"
+msgstr "Prišlo je do napake pri pošiljanju opozorila o dogodku za %s: %s "
+
+#: data.php:108
+msgid "There were no events to export."
+msgstr "Ni dogodkov za oddajo."
+
+#: lib/Block/month.php:3
+msgid "This Month"
+msgstr "Tekoči mesec"
+
+#: data.php:192
+msgid "This file format is not supported."
+msgstr "Format datokeke nima podpore."
+
+#: data.php:255
+#, php-format
+msgid "This is what the server said: %s"
+msgstr "Sporočilo strežnika se glasi: %s "
+
+#: templates/month/head.inc:20 templates/view/view.inc:112
+#: templates/edit/javascript.inc:72
+msgid "Thursday"
+msgstr "Četrtek"
+
+#: templates/search/search.inc:37
+msgid "Time Sp_an"
+msgstr "Časovni doseg"
+
+#: templates/edit/edit_timespan.inc:4
+msgid "Time span"
+msgstr "Časovni doseg"
+
+#: templates/search/search_advanced.inc:34 templates/edit/edit.inc:38
+msgid "Tit_le"
+msgstr "Naslov"
+
+#: data.php:53 templates/search/search.inc:20
+#: templates/search/event_headers.inc:3
+msgid "Title"
+msgstr "Naslov"
+
+#: lib/Block/prevmonthlist.php:125 lib/Block/monthlist.php:124
+#: lib/Block/summary.php:126
+msgid "Today"
+msgstr "Danes"
+
+#: lib/Block/prevmonthlist.php:127 lib/Block/monthlist.php:126
+#: lib/Block/summary.php:128
+msgid "Tomorrow"
+msgstr "Jutri"
+
+#: templates/javascript/goto.inc:60 templates/edit/edit.inc:219
+#: lib/Views/Year.php:78 lib/Block/month.php:99
+msgid "Tu"
+msgstr "To"
+
+#: templates/month/head.inc:18 templates/view/view.inc:110
+#: templates/edit/javascript.inc:70
+msgid "Tuesday"
+msgstr "Torek"
+
+#: config/keywords.php.dist:17
+msgid "Type"
+msgstr "Vrsta"
+
+#: templates/calendars/calendars.inc:186
+msgid "URL"
+msgstr "Povezava"
+
+#: lib/Storage/sql.php:75
+msgid "Unable to connect to SQL server."
+msgstr "Ne morem se povezati s SQL strežnikom."
+
+#: calendars.php:84
+#, php-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "Ne morem zbrisati \"%s\": %s"
+
+#: lib/Driver.php:203 lib/Storage.php:58
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Ne morem naložiti definicije za %s."
+
+#: calendars.php:51
+#, php-format
+msgid "Unable to rename \"%s\": %s"
+msgstr "Ne morem preimenovati \"%s\": %s"
+
+#: lib/Storage/kolab.php:51
+#, php-format
+msgid "Unable to retrieve free/busy information for %s"
+msgstr "Ne morem prebrati prosto/zasedenih informacij za %s"
+
+#: templates/view/view.inc:8
+#: scripts/upgrades/2004-05-19_convert_categories_to_strings.php:53
+msgid "Unfiled"
+msgstr "Neurejeno"
+
+#: lib/api.php:396 lib/api.php:482 lib/api.php:560 lib/api.php:666
+#, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "Nepodprti tip: %s"
+
+#: lib/Block/monthlist.php:3 lib/Block/monthlist.php:43
+msgid "Upcoming Events"
+msgstr "Bodoči dogodki"
+
+#: perms.php:253
+#, php-format
+msgid "Updated \"%s\"."
+msgstr "\"%s\" posodobljen."
+
+#: lib/Kronolith.php:1097
+#, php-format
+msgid "Updated: %s."
+msgstr "Posodobljeno: %s."
+
+#: config/prefs.php.dist:10
+msgid "User Interface"
+msgstr "Uporabnikov Vmesnik"
+
+#: lib/Views/Year.php:156 lib/Views/Year.php:162 lib/Block/month.php:156
+#: lib/Block/month.php:159
+msgid "View Day"
+msgstr "Poglej Dan"
+
+#: templates/javascript/goto.inc:61 templates/edit/edit.inc:220
+#: lib/Views/Year.php:79 lib/Block/month.php:99
+msgid "We"
+msgstr "Sr"
+
+#: templates/month/head.inc:19 templates/view/view.inc:111
+#: templates/edit/javascript.inc:71
+msgid "Wednesday"
+msgstr "Sreda"
+
+#: attendees.php:108 lib/Kronolith.php:1403 lib/Block/tree_menu.php:23
+#: config/prefs.php.dist:98
+msgid "Week"
+msgstr "Teden"
+
+#: workweek.php:15 week.php:15 lib/Views/Month.php:184
+#, php-format
+msgid "Week %d"
+msgstr "Teden %d"
+
+#: templates/prefs/default_alarm_management.inc:27 templates/view/view.inc:53
+#: templates/edit/edit.inc:150
+msgid "Week(s)"
+msgstr "Teden(i)"
+
+#: templates/view/view.inc:116 templates/edit/edit.inc:215
+msgid "Weekly: Recurs every"
+msgstr "Tedensko: Ponovi vasakič"
+
+#: config/prefs.php.dist:139
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr "Ob kateri uri naj se zaključijo dnevi in tedni, ko ni več dogodkov?"
+
+#: config/prefs.php.dist:130
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr ""
+" Ob kateri uri naj se začnejo dnevi in tedni, ko ni napovedanih dogodkov "
+"zgodnaj zjuraj?"
+
+#: attendees.php:107 lib/Kronolith.php:1401 lib/Block/tree_menu.php:22
+#: config/prefs.php.dist:99
+msgid "Work Week"
+msgstr "Delavni Teden"
+
+#: lib/Kronolith.php:1407 lib/Block/tree_menu.php:25
+msgid "Year"
+msgstr "Leto"
+
+#: templates/view/view.inc:122 templates/edit/edit.inc:241
+msgid "Yearly: Recurs every"
+msgstr "Letno: Ponovi vsakič"
+
+#: data.php:39 data.php:244 editeventaction.php:39 addevent.php:17
+#, php-format
+msgid "You are not allowed to create more than %d events."
+msgstr "Nimate pravice za tvojenje več kot %d dogodkov."
+
+#: attend.php:49
+msgid "You are not an attendee of the specified event."
+msgstr "Niste povabljeni na izbrani dogodek."
+
+#: templates/contacts/contacts.inc:76
+msgid "You can only use this form from the Edit Attendees screen."
+msgstr "Uporabite lahko le ta obrazec za Urejanje Prisotnih."
+
+#: lib/Kronolith.php:1049
+#, php-format
+msgid ""
+"You do not have an email address configured in your Personal Information "
+"Options. You must set one %shere%s before event notifications can be sent."
+msgstr ""
+"V nastavitvah nimate nastavlenega vašega naslova elektronske pošte. Pred "
+"pošiljanjem morate ga nastaviti en %shere%s."
+
+#: addeventaction.php:30
+#, php-format
+msgid "You do not have permission to add events to %s."
+msgstr "Niste pooblaščeni za dodajanje dogodkov k %s."
+
+#: data.php:202
+msgid "You do not have permission to add events to the selected calendar."
+msgstr "Niste pooblaščeni za dodajanje dogodkov k izbranemu koledarju."
+
+#: addeventaction.php:27 editeventaction.php:76
+#, php-format
+msgid "You do not have permission to delegate events to %s."
+msgstr "Niste pooblaščeni za dodeljevanje prisotnosti dogodkov k %s."
+
+#: deleventaction.php:26
+msgid "You do not have permission to delete this event."
+msgstr "Niste pooblaščeni za brisaanje tega dogodka."
+
+#: editeventaction.php:79
+msgid "You do not have permission to edit this event."
+msgstr "Niste pooblaščeni za urejanje tega dogodka."
+
+#: data.php:197
+msgid "You have specified an invalid calendar."
+msgstr "Izbrali ste neveljaven koledar."
+
+#: attend.php:21
+msgid "You have successfully accepted attendence to this event."
+msgstr "Zpešno ste potrdili prisotnost v tem dogodku."
+
+#: attend.php:26
+msgid "You have successfully declined attendence to this event."
+msgstr "Uspešno ste zarnili udeležbo v tem dogodku."
+
+#: attend.php:31
+msgid "You have tentatively accepted attendence to this event."
+msgstr "Potrdili ste možno prisotnost na dogodku."
+
+#: calendars.php:91
+msgid "You must select a calendar to be deleted."
+msgstr "Izbrati morate koledar, ki bo zbrisan."
+
+#: templates/contacts/contacts.inc:54
+msgid "You must select an address first."
+msgstr "Najprej morate izbrati naslov."
+
+#: templates/calendars/calendars.inc:173
+msgid "You need to select a calendar first"
+msgstr "Najprej morate izbrati koledar."
+
+#: lib/Kronolith.php:1255
+msgid "You requested to be notified when events are added to your calendars."
+msgstr "Zahtevali ste da vas obvestimo kadar so dogodki dodani v vaš koledar."
+
+#: lib/Kronolith.php:1265
+msgid ""
+"You requested to be notified when events are deleted from your calendars."
+msgstr ""
+"Zahtevali ste da vas obvestimo kadar bo kakšen dogodek izbrisan z vašega "
+"koledarja"
+
+#: lib/Kronolith.php:1260
+msgid "You requested to be notified when events are edited in your calendars."
+msgstr ""
+"Zahtevali ste da vas obvestimo kadar so dogodki ažurirani v vašem koledar."
+
+#: lib/Scheduler/kronolith.php:211
+#, php-format
+msgid "You requested to be reminded about %s, which is on %s at %s."
+msgstr "Želeli ste, da vas opozorimo na %s, ki bo dne %s ob %s."
+
+#: templates/prefs/shareselect.inc:10
+msgid "Your default calendar"
+msgstr "Vaš privzet koledar"
+
+#: lib/Driver.php:1085 lib/Driver.php:1093
+msgid "[Unnamed event]"
+msgstr "[Neimenovan dogodek]"
+
+#: templates/edit/edit.inc:114
+msgid "_Alarm"
+msgstr "_Opozorilo"
+
+#: templates/search/search_advanced.inc:11
+msgid "_Basic Search"
+msgstr "Osnovno iskanje"
+
+#: lib/Kronolith.php:1436
+msgid "_Edit"
+msgstr "Uredi"
+
+#: lib/Kronolith.php:1578
+msgid "_Goto"
+msgstr "Pojdi"
+
+#: lib/Kronolith.php:1584
+msgid "_Import/Export"
+msgstr "Sprejmi/Oddaj"
+
+#: lib/Kronolith.php:1565
+msgid "_My Calendars"
+msgstr "_Moji Koledarji"
+
+#: lib/Kronolith.php:1572
+msgid "_New Event"
+msgstr "Nov Dogodek"
+
+#: lib/Kronolith.php:1589
+msgid "_Print"
+msgstr "Natisni"
+
+#: lib/Kronolith.php:1580
+msgid "_Search"
+msgstr "Iskanje"
+
+#: lib/Kronolith.php:1575
+msgid "_Today"
+msgstr "Danes"
+
+#: templates/edit/edit.inc:57
+#, php-format
+msgid "as %s"
+msgstr "kot %s"
+
+#: templates/edit/edit.inc:152
+msgid "before the event starts"
+msgstr "pred dogodkom"
+
+#: templates/prefs/default_alarm_management.inc:29
+msgid "before the event starts. A value of \"0\" means no default alarms."
+msgstr "preden prične dogodek. Verdnost \"0\" pomeni brez alarma."
+
+#: config/prefs.php.dist:209
+msgid "day"
+msgstr "dan"
+
+#: templates/view/view.inc:106 templates/edit/edit.inc:210
+msgid "day(s)"
+msgstr "dan(i)"
+
+#: config/prefs.php.dist:210 config/prefs.php.dist:211
+#: config/prefs.php.dist:212 config/prefs.php.dist:213
+#: config/prefs.php.dist:214
+msgid "days"
+msgstr "dni"
+
+#: data.php:151 templates/data/export.inc:1
+msgid "events.csv"
+msgstr "dogodki.csv"
+
+#: data.php:177
+msgid "events.ics"
+msgstr "dogodki.csv"
+
+#: templates/contacts/contacts.inc:136
+msgid "in"
+msgstr "v"
+
+#: templates/view/view.inc:118 templates/view/view.inc:120
+#: templates/edit/edit.inc:230 templates/edit/edit.inc:236
+msgid "month(s)"
+msgstr "mesec(i)"
+
+#: lib/Kronolith.php:1103
+#, php-format
+msgid "on %s at %s"
+msgstr "dne %s ob %s"
+
+#: templates/view/view.inc:118 templates/edit/edit.inc:230
+msgid "on the same date"
+msgstr "na isti datum"
+
+#: templates/view/view.inc:120 templates/edit/edit.inc:236
+msgid "on the same weekday"
+msgstr "istega dne v tednu"
+
+#: data.php:29 templates/data/import.inc:14
+msgid "vCalendar/iCalendar"
+msgstr "vKoledar/iKoledar"
+
+#: lib/api.php:369 lib/api.php:652
+msgid "vEvent not found."
+msgstr "vDogodka ne najdem."
+
+#: config/prefs.php.dist:215
+msgid "week"
+msgstr "teden"
+
+#: templates/view/view.inc:116 templates/edit/edit.inc:217
+msgid "week(s) on:"
+msgstr "teden(i) na:"
+
+#: config/prefs.php.dist:216 config/prefs.php.dist:217
+#: config/prefs.php.dist:218
+msgid "weeks"
+msgstr "tedni"
+
+#: templates/view/view.inc:122 templates/edit/edit.inc:242
+msgid "year(s)"
+msgstr "leto(a)"

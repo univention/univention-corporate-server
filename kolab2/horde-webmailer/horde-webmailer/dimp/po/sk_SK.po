@@ -1,0 +1,778 @@
+# DIMP Slovak translation.
+# Copyright 2008-2009 The Horde Project
+# This file is distributed under the same license as the DIMP package.
+# Martin Matu¹ka <martin@matuska.org>, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DIMP 1.0\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-09-06 11:10+0200\n"
+"PO-Revision-Date: 2008-09-17 12:51+0100\n"
+"Last-Translator: Martin Matuska <martin@matuska.org>\n"
+"Language-Team: Slovak <martin@matuska.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: lib/Views/ShowMessage.php:295
+#, php-format
+msgid "%d Attachment"
+msgid_plural "%d Attachments"
+msgstr[0] "%d príloha"
+msgstr[1] "%d prílohy"
+msgstr[2] "%d príloh"
+
+#: imp.php:661
+#, php-format
+msgid "%s messages were purged from \"%s\"."
+msgstr "%s správ odstránených z \"%s\"."
+
+#: lib/Block/newmail.php:70
+#, php-format
+msgid "%s more unseen messages..."
+msgstr "%s ïal¹ích nepreèítaných správ..."
+
+#: imp.php:447
+#, php-format
+msgid "%s was successfully added to your address book."
+msgstr "%s bol/a úspe¹ne zaradený/á do Vá¹ho adresára kontaktov."
+
+#: templates/index/index.inc:247
+#, php-format
+msgid ""
+"%s will delete the current message and move to the next message if a single "
+"message is selected."
+msgstr ""
+"%s zma¾e aktuálnu správu a prejde na ïal¹iu správu, ake je vyznaèená iba "
+"jedna správa."
+
+#: imp.php:659
+#, php-format
+msgid "1 message was purged from \"%s\"."
+msgstr "1 správa odstránená z \"%s\"."
+
+#: lib/Block/newmail.php:68
+msgid "1 more unseen message..."
+msgstr "1 ïal¹ia nepreèítaná správa..."
+
+#: lib/DIMP.php:208
+msgid ""
+"A popup window could not be opened. Your browser may be blocking popups."
+msgstr ""
+"Vyskakovacie okno nemohlo by» otvorené. Vá¹ prehliadaè pravdepodobne blokuje "
+"vyskakovacie okná."
+
+#: templates/chunks/message.php:127 templates/index/index.inc:421
+msgid "Add to Address Book"
+msgstr "Prida» do adresára"
+
+#: templates/index/index.inc:193 templates/index/index.inc:198
+msgid "All"
+msgstr "V¹etky"
+
+#: templates/index/index.inc:220 templates/index/index.inc:222
+msgid "Arrival"
+msgstr "Doruèené"
+
+#: templates/chunks/message.php:122 templates/index/index.inc:392
+msgid "Attachments Only"
+msgstr "Iba prílohy správ"
+
+#: templates/index/index.inc:126
+msgid "Base Level"
+msgstr "Najni¾¹ia úroveò"
+
+#: templates/chunks/compose.php:114
+msgid "Bcc: "
+msgstr "Bcc: "
+
+#: templates/index/index.inc:360 templates/index/index.inc:405
+msgid "Blacklist"
+msgstr "Èierna listina"
+
+#: templates/chunks/message.php:121 templates/index/index.inc:391
+msgid "Body Text Only"
+msgstr "Iba text v tele správ"
+
+#: lib/DIMP.php:200
+msgid "Cancel"
+msgstr "Zru¹i»"
+
+#: lib/DIMP.php:236
+msgid ""
+"Cancelling this message will permanently discard its contents and will "
+"delete auto-saved drafts.\n"
+"Are you sure you want to do this?"
+msgstr ""
+"Zru¹ením tejto správy sa trvale stratí jej obsah a budú zmazané automatiky "
+"ulo¾ené koncepty.\n"
+"Naozaj chcete zru¹i» správu?"
+
+#: templates/index/index.inc:293
+msgid "Cc"
+msgstr "Cc"
+
+#: templates/chunks/compose.php:100
+msgid "Cc: "
+msgstr "Cc: "
+
+#: templates/chunks/compose.php:57
+msgid "Check Spelling"
+msgstr "Kontrolova» pravopis"
+
+#: templates/index/index.inc:330
+msgid "Check for New Mail"
+msgstr "Kontrolova» novú po¹tu"
+
+#: lib/DIMP.php:202
+msgid "Checking..."
+msgstr "Kontroluje sa..."
+
+#: templates/index/index.inc:351 templates/index/index.inc:375
+#: templates/index/index.inc:401
+msgid "Clear Flag"
+msgstr "Zru¹i» príznak správy"
+
+#: templates/index/index.inc:242
+#, php-format
+msgid ""
+"Click on a message while holding down the %s key to select multiple "
+"messages.  To select a range of messages, click the first message of the "
+"range, navigate to the last message of the range, and then click on the last "
+"message while holding down the %s key."
+msgstr ""
+"Na vybranie viacerých správ naraz kliknite na správu a pri tom dr¾te "
+"stlaèené tlaèidlo %s. Ak chcete vybra» rozsah správ, kliknite na prvú správu "
+"rozsahu, nájdite poslednú správu rozsahu a kliknite na nu pri stlaèenom "
+"tlaèidle %s."
+
+#: templates/index/index.inc:276
+msgid "Collapse Headers"
+msgstr "Zbali» hlavièky"
+
+#: templates/index/index.inc:62 templates/index/index.inc:183
+msgid "Compose"
+msgstr "Nová správa"
+
+#: templates/index/index.inc:234
+msgid "Could not get message list from server"
+msgstr "Nie je mo¾né prija» zoznam správ zo servera"
+
+#: lib/DIMP.php:212
+msgid "Create folder:"
+msgstr "Vytvori» prieèinok:"
+
+#: templates/index/index.inc:322 templates/index/index.inc:335
+msgid "Create subfolder"
+msgstr "Vytvori» podprieèinok"
+
+#: lib/DIMP.php:213
+msgid "Create subfolder:"
+msgstr "Vytvori» podprieèinok:"
+
+#: templates/index/index.inc:242 templates/index/index.inc:249
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: config/prefs.php.dist:11
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Upravi» úlohy, ktoré sa majú spusti» pri prihlásení sa do %s."
+
+#: templates/index/index.inc:219 templates/index/index.inc:223
+#: templates/index/index.inc:285
+msgid "Date"
+msgstr "Dátum"
+
+#: templates/chunks/message.php:49 templates/index/index.inc:185
+#: templates/index/index.inc:247 templates/index/index.inc:365
+#: templates/index/index.inc:377
+msgid "Delete"
+msgstr "Zmaza»"
+
+#: templates/index/index.inc:325
+msgid "Delete Folder"
+msgstr "Zmaza» prieèinok"
+
+#: templates/index/index.inc:247
+msgid "Delete the currently selected message(s)."
+msgstr "Zmaza» práve vyznaèené správy."
+
+#: templates/index/index.inc:331
+msgid "Do Not Check for New Mail"
+msgstr "Nekontrolova» novú po¹tu"
+
+#: templates/index/index.inc:324
+msgid "Empty Folder"
+msgstr "Vyprázdni» prieèinok"
+
+#: templates/index/index.inc:246
+msgid "End"
+msgstr "End"
+
+#: templates/index/index.inc:248
+msgid "Enter"
+msgstr "Enter"
+
+#: templates/chunks/message.php:120 templates/index/index.inc:390
+msgid "Entire Message"
+msgstr "Celá správa"
+
+#: templates/index/index.inc:257
+msgid "Expand Headers"
+msgstr "Rozbali» hlavièky"
+
+#: templates/index/index.inc:350 templates/index/index.inc:374
+#: templates/index/index.inc:400
+msgid "Flag Message"
+msgstr "Nastavi» príznak správy"
+
+#: config/portal.php.dist:28
+msgid "Folder Summary"
+msgstr "Informácie o prieèinku"
+
+#: templates/index/index.inc:191
+msgid "Folders: "
+msgstr "Prieèinky: "
+
+#: templates/chunks/message.php:42 templates/index/index.inc:176
+msgid "Forward"
+msgstr "Preposla»"
+
+#: templates/index/index.inc:346
+msgid "Forward Attachments Only"
+msgstr "Preposla» iba prílohy"
+
+#: templates/index/index.inc:345
+msgid "Forward Body Text Only"
+msgstr "Preposla» iba telo správy"
+
+#: templates/index/index.inc:344
+msgid "Forward Entire Message"
+msgstr "Preposla» celú správu"
+
+#: templates/index/index.inc:199 templates/index/index.inc:207
+#: templates/index/index.inc:281
+msgid "From"
+msgstr "Od"
+
+#: templates/chunks/compose.php:76
+msgid "From: "
+msgstr "Od: "
+
+#: config/prefs.php.dist:9
+msgid "General Options"
+msgstr "V¹eobecné nastavenia"
+
+#: templates/index/index.inc:63 templates/index/index.inc:184 lib/DIMP.php:203
+msgid "Get Mail"
+msgstr "Stiahnu» po¹tu"
+
+#: lib/Block/newmail.php:72
+msgid "Go to your Inbox..."
+msgstr "Prejs» do prieèinka prijatých správ..."
+
+#: lib/Views/ShowMessage.php:359
+msgid "HERE"
+msgstr "TU"
+
+#: templates/chunks/compose.php:67
+msgid "HTML composition"
+msgstr "Písa» pomocou HTML"
+
+#: templates/index/index.inc:396 lib/DIMP.php:209
+msgid "Hide Preview"
+msgstr "Skry» náhµad"
+
+#: lib/DIMP.php:194
+msgid "Hide Quoted Text"
+msgstr "Skry» citovaný text"
+
+#: templates/index/index.inc:426
+msgid "High Priority"
+msgstr "Vysoká priorita"
+
+#: templates/index/index.inc:141 templates/index/index.inc:246
+msgid "Home"
+msgstr "Home"
+
+#: templates/index/index.inc:60
+msgid "Horde"
+msgstr "Horde"
+
+#: config/prefs.php.dist:22
+msgid "Inbox"
+msgstr "Prijaté správy"
+
+#: templates/index/index.inc:181
+msgid "Innocent"
+msgstr "Ne¹kodné"
+
+#: templates/chunks/compose.php:20 templates/index/index.inc:34
+#: lib/DIMP.php:201
+msgid "Loading..."
+msgstr "Nahráva sa..."
+
+#: templates/index/index.inc:79
+msgid "Log Out"
+msgstr "Odhlási»"
+
+#: config/prefs.php.dist:10
+msgid "Login Tasks"
+msgstr "Úlohy pri prihlásení"
+
+#: templates/index/index.inc:427
+msgid "Low Priority"
+msgstr "Nízka priorita"
+
+#: lib/Views/ListMessages.php:161
+#, php-format
+msgid "Mailbox %s does not exist."
+msgstr "Schránka %s neexistuje."
+
+#: templates/index/index.inc:328
+msgid "Mark all as New"
+msgstr "Oznaèi» v¹etko ako nové."
+
+#: templates/index/index.inc:327
+msgid "Mark all as Read"
+msgstr "Oznaèi» v¹etko ako preèítané."
+
+#: templates/index/index.inc:357
+msgid "Mark as Innocent"
+msgstr "Oznaèi» ako ne¹kodné"
+
+#: templates/index/index.inc:349 templates/index/index.inc:399
+msgid "Mark as New"
+msgstr "Oznaèi» ako nové"
+
+#: templates/index/index.inc:348 templates/index/index.inc:398
+msgid "Mark as Read"
+msgstr "Oznaèi» ako preèítané"
+
+#: templates/index/index.inc:354
+msgid "Mark as Spam"
+msgstr "Oznaèi» ako nevy¾iadanú po¹tu"
+
+#: lib/DIMP.php:190
+msgid "Message"
+msgstr "Správa"
+
+#: compose.php:344
+msgid "Message Composition"
+msgstr "Písanie správy"
+
+#: compose.php:182
+msgid "Message sent successfully."
+msgstr "Správa bola úspe¹ne odoslaná."
+
+#: templates/chunks/message.php:37 templates/chunks/message.php:105
+msgid "Message:"
+msgstr "Správa:"
+
+#: templates/index/index.inc:197
+msgid "Message: "
+msgstr "Správa: "
+
+#: lib/DIMP.php:191
+msgid "Messages"
+msgstr "Správy"
+
+#: lib/DIMP.php:198
+#, php-format
+msgid "Move %s to %s"
+msgstr "Presunú» %s do %s"
+
+#: templates/index/index.inc:245
+msgid "Move one page up/down through the message list."
+msgstr "Premiestòova» sa v zozname správ o stranu vy¹¹ie/ni¾¹ie."
+
+#: templates/index/index.inc:246
+msgid "Move to the beginning/end of the message list."
+msgstr "Presunú» sa na zaèiatok/koniec zoznamu správ."
+
+#: templates/index/index.inc:244
+msgid "Move up/down through the message list."
+msgstr "Pohybova» sa vy¹¹ie/ni¾¹ie po zozname správ."
+
+#: templates/index/index.inc:118
+msgid "My Folders"
+msgstr "Moje prieèinky"
+
+#: templates/index/index.inc:122
+msgid "New Folder"
+msgstr "Nový prieèinok"
+
+#: compose.php:204 templates/chunks/message.php:126
+#: templates/index/index.inc:420
+msgid "New Message"
+msgstr "Nová správa"
+
+#: lib/DIMP.php:193
+msgid "No Messages"
+msgstr "®iadne správy"
+
+#: lib/Block/foldersummary.php:75
+msgid "No folders are being checked for new mail."
+msgstr "V ¾iadnych prieèinkoch sa nekontroluje nová po¹ta."
+
+#: lib/Block/foldersummary.php:79
+msgid "No folders with new messages"
+msgstr "®iadne prieèinky s novými správami"
+
+#: lib/Block/foldersummary.php:77
+msgid "No folders with unseen messages"
+msgstr "®iadne prieèinky s nepreèítanými správami"
+
+#: templates/index/index.inc:233
+msgid "No messages to display"
+msgstr "®iadne správy na zobrazenie"
+
+#: lib/Block/newmail.php:41
+msgid "No unread messages"
+msgstr "®iadne nepreèítané správy"
+
+#: lib/DIMP.php:197
+msgid "Ok"
+msgstr "Ok"
+
+#: templates/index/index.inc:16 templates/index/index.inc:263
+msgid "Open in new window"
+msgstr "Otvori» v novom okne"
+
+#: templates/index/index.inc:248
+msgid "Open message in a popup window."
+msgstr "Otvori» správu vo vyskakovacom okne."
+
+#: templates/index/index.inc:74
+msgid "Options"
+msgstr "Nastavenia"
+
+#: templates/index/index.inc:186
+msgid "Other Actions"
+msgstr "Ïal¹ie operácie"
+
+#: templates/index/index.inc:245
+msgid "Page Down"
+msgstr "Page Down"
+
+#: templates/index/index.inc:245
+msgid "Page Up"
+msgstr "Page Up"
+
+#: lib/DIMP.php:214
+msgid "Permanently delete all messages?"
+msgstr "Trvale zmaza» v¹etky správy?"
+
+#: lib/DIMP.php:215
+msgid "Permanently delete this folder?"
+msgstr "Trvale zmaza» tento prieèinok?"
+
+#: templates/index/index.inc:69 lib/DIMP.php:186 config/prefs.php.dist:21
+msgid "Portal"
+msgstr "Portál"
+
+#: templates/chunks/message.php:57 templates/index/index.inc:265
+msgid "Print"
+msgstr "Tlaèi»"
+
+#: templates/index/index.inc:415
+msgid "Purge Deleted"
+msgstr "Odstráni» vymazané"
+
+#: templates/chunks/compose.php:52
+msgid "Read Receipt"
+msgstr "Správa o preèítaní"
+
+#: lib/DIMP.php:243
+msgid ""
+"Really discard all formatting information? This operation cannot be undone."
+msgstr ""
+"Naozaj zru¹i» v¹etko formátovanie? Táto operácia sa nedá navráti» spä»."
+
+#: templates/index/index.inc:323 templates/index/index.inc:336
+msgid "Rename Folder"
+msgstr "Premenova» prieèinok"
+
+#: lib/DIMP.php:211
+msgid "Rename folder to:"
+msgstr "Premenova» prieèinok na:"
+
+#: templates/chunks/message.php:41 templates/index/index.inc:175
+msgid "Reply"
+msgstr "Odpoveda»"
+
+#: templates/index/index.inc:341
+msgid "Reply to All"
+msgstr "Odpoveda» v¹etkým"
+
+#: compose.php:232
+msgid "Reply to All:"
+msgstr "Odpoveda» v¹etkým:"
+
+#: templates/index/index.inc:342
+msgid "Reply to List"
+msgstr "Odpoveda» do e-mailovej konferencie:"
+
+#: compose.php:234
+msgid "Reply to List:"
+msgstr "Odpoveda» do e-mailovej konferencie:"
+
+#: templates/index/index.inc:340
+msgid "Reply to Sender"
+msgstr "Odpoveda» odosielateµovi"
+
+#: compose.php:230
+msgid "Reply:"
+msgstr "Odpoveda»:"
+
+#: templates/chunks/message.php:47
+msgid "Report Innocent"
+msgstr "Ohlási» ako ne¹kodnú po¹tu"
+
+#: templates/chunks/message.php:44
+msgid "Report Spam"
+msgstr "Ohlási» ako nevy¾iadanú po¹tu"
+
+#: compose.php:214 lib/Views/ShowMessage.php:154
+msgid "Requested message not found."
+msgstr "Po¾adovaná správa nebola nájdená."
+
+#: templates/index/index.inc:372
+msgid "Resume Draft"
+msgstr "Obnovi» z konceptu"
+
+#: lib/Views/ShowMessage.php:298
+msgid "Save All"
+msgstr "Ulo¾i» v¹etko"
+
+#: templates/chunks/compose.php:140
+msgid "Save Attachments in sent folder"
+msgstr "Ulo¾i» prílohy do prieèinku s odoslanou po¹tou"
+
+#: templates/chunks/compose.php:58
+msgid "Save as Draft"
+msgstr "Ulo¾i» ako koncept"
+
+#: templates/chunks/compose.php:55
+msgid "Save in "
+msgstr "Ulo¾i» do "
+
+#: lib/DIMP.php:242
+msgid "Saving..."
+msgstr "Ukladá sa..."
+
+#: lib/DIMP.php:188
+msgid "Search"
+msgstr "Hµada»"
+
+#: lib/Views/ListMessages.php:80
+msgid "Search Results"
+msgstr "Výsledok hµadania"
+
+#: templates/index/index.inc:412
+msgid "Select All"
+msgstr "Oznaèi» v¹etko"
+
+#: templates/index/index.inc:249
+msgid "Select all messages in the current mailbox."
+msgstr "Oznaèi» v¹etky správy v aktuálnom prieèinku."
+
+#: templates/chunks/compose.php:50
+msgid "Send"
+msgstr "Odosla»"
+
+#: lib/DIMP.php:241
+msgid "Sending..."
+msgstr "Odosiela sa..."
+
+#: templates/index/index.inc:242 templates/index/index.inc:247
+msgid "Shift"
+msgstr "Shift"
+
+#: templates/chunks/compose.php:65
+msgid "Show Bcc"
+msgstr "Zobrazi» skrytú kópiu (Bcc)"
+
+#: templates/chunks/compose.php:64
+msgid "Show Cc"
+msgstr "Zobrazi» kópiu (Cc)"
+
+#: templates/index/index.inc:396 lib/DIMP.php:210
+msgid "Show Preview"
+msgstr "Zobrazi» náhµad"
+
+#: lib/DIMP.php:195
+msgid "Show Quoted Text"
+msgstr "Zobrazi» citovaný text"
+
+#: templates/index/index.inc:226
+msgid "Size"
+msgstr "Veµkos»"
+
+#: templates/index/index.inc:178
+msgid "Spam"
+msgstr "Nevy¾iadaná po¹ta"
+
+#: templates/chunks/compose.php:70
+msgid "Special Characters"
+msgstr "©peciálne znaky"
+
+#: templates/chunks/message.php:67 templates/index/index.inc:201
+#: templates/index/index.inc:211 templates/index/index.inc:215
+#: templates/index/index.inc:276
+msgid "Subject"
+msgstr "Predmet"
+
+#: templates/chunks/compose.php:128
+msgid "Subject: "
+msgstr "Predmet: "
+
+#: lib/DIMP.php:240
+msgid "The attachment limit has been reached."
+msgstr "Bol dosiahnutý maximálny poèet príloh."
+
+#: lib/DIMP.php:205
+msgid "The connection to the remote server has been restored."
+msgstr "Spojenie so vzdialeným serverom bolo obnovené."
+
+#: templates/index/index.inc:243
+msgid "The following keyboard shortcuts are available:"
+msgstr "K dispozícii sú nasledujúce klávesové skratky:"
+
+#: config/prefs.php.dist:23
+msgid "The page to view immediately after login."
+msgstr "Stàanka, ktorá sa má zobrazi» ihneï po prihlásení."
+
+#: lib/Views/ShowMessage.php:360
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Click %s to send the notification "
+"message."
+msgstr ""
+"Odosielateµ tejto správy vy¾aduje od Vás oznámenie o preèítaní správy. "
+"Kliknite prosím %s pre odoslanie správy s oznámením."
+
+#: lib/DIMP.php:206
+msgid "The server is still generating the message list."
+msgstr "Server e¹te stále vytvára zoznam správ."
+
+#: lib/DIMP.php:207
+msgid ""
+"The server was unable to generate the message list. Please try again later."
+msgstr "Serveru sa nepodarilo vytvori» zoznam správ. Prosím skúste neskôr."
+
+#: lib/DIMP.php:204
+msgid ""
+"There has been no contact with the remote server for several minutes. The "
+"server may be temporarily unavailable or network problems may be "
+"interrupting your session. You will not see any updates until the connection "
+"is restored."
+msgstr ""
+"Kontakt so vzdialeným serverom je preru¹ený u¾ niekoµko minút. Server mô¾e "
+"by» doèasne nedostupný alebo problémy so sie»ou ru¹ia Va¹u reláciu. Nebudú "
+"zobrazené ¾iadne aktualizácie pokiaµ spojenie nebude obnovené. "
+
+#: templates/index/index.inc:212 templates/index/index.inc:214
+msgid "Thread"
+msgstr "Vlákno"
+
+#: templates/index/index.inc:200 templates/index/index.inc:208
+#: templates/index/index.inc:289
+msgid "To"
+msgstr "Pre"
+
+#: templates/chunks/message.php:113 templates/index/index.inc:385
+msgid "To All"
+msgstr "Pre v¹etkých"
+
+#: templates/chunks/message.php:115 templates/index/index.inc:386
+msgid "To List"
+msgstr "Do e-mailovej konferencie"
+
+#: templates/chunks/message.php:112 templates/index/index.inc:384
+msgid "To Sender"
+msgstr "Pre odosielateµa"
+
+#: templates/index/index.inc:241
+msgid ""
+"To preview a message, select it from the list above. A right-click on the "
+"messages will display available actions."
+msgstr ""
+"Pre náhµad spravý vyberte správu z vy¹¹ie uvedeného zoznamu. Právé tlaèidlo "
+"my¹i na správy zobrazí ïal¹ie dostupné operácie."
+
+#: templates/chunks/compose.php:86
+msgid "To: "
+msgstr "Pre:"
+
+#: templates/index/index.inc:367 templates/index/index.inc:379
+msgid "Undelete"
+msgstr "Obnovi»"
+
+#: lib/Views/ShowMessage.php:87
+msgid "Undisclosed Recipients"
+msgstr "Nezverejnení príjemcovia"
+
+#: lib/Views/ShowMessage.php:323
+msgid "Unknown Date"
+msgstr "Neznámy dátum"
+
+#: lib/DIMP.php:239
+msgid "Uploading..."
+msgstr "Posiela sa..."
+
+#: lib/DIMP.php:187
+msgid "User Options"
+msgstr "Pou¾ívateµské nastavenia"
+
+#: templates/chunks/message.php:60 templates/index/index.inc:268
+msgid "View Message Source"
+msgstr "Zobrazi» zdrojový text správy"
+
+#: templates/index/index.inc:363 templates/index/index.inc:408
+msgid "Whitelist"
+msgstr "Biela listina"
+
+#: lib/DIMP.php:237
+msgid ""
+"You have already changed the message body, are you sure you want to drop the "
+"changes?"
+msgstr ""
+"Zmenili ste text tela správy, naozaj chcete zru¹i» Vami prevedené zmeny?"
+
+#: lib/Views/ShowMessage.php:95
+msgid "[Hide Addresses]"
+msgstr "[skry» adresy]"
+
+#: lib/Views/ShowMessage.php:281 lib/Views/ListMessages.php:297
+#: lib/Block/newmail.php:58
+msgid "[No Subject]"
+msgstr "[bez predmetu]"
+
+#: lib/DIMP.php:199
+msgid "base level of the folder tree"
+msgstr "najni¾¹ia úroveò stromu prieèinkov"
+
+#: templates/index/index.inc:258
+msgid "from"
+msgstr "od"
+
+#: lib/DIMP.php:196
+msgid "lines"
+msgstr "riadky"
+
+#: lib/DIMP.php:192
+msgid "of"
+msgstr "z"
+
+#: lib/DIMP.php:238
+msgid "remove"
+msgstr "odstráni»"
+
+#: lib/DIMP.php:189
+msgid "results found"
+msgstr "výsledkov nájdených"

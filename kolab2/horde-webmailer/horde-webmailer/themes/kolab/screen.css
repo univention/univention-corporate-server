@@ -1,0 +1,88 @@
+/**
+ * Kolab theme by Stuart Binge <skbinge@gmail.com>
+ * Derived from the 'Light Blue' theme.
+ *
+ * $Horde: horde/themes/kolab/screen.css,v 1.10.6.3 2007-12-20 15:04:30 jan Exp $
+ */
+
+body {
+    background: #e5e5e5;
+}
+a {
+    color: #339;
+}
+.light {
+    color: #000;
+}
+#themelogo {
+    background-image: url("graphics/kolablogo.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 100px;
+}
+.header {
+    background: #ddf;
+    border-bottom: .1em solid #00c;
+}
+.smallheader {
+    color: #000;
+    background: #ddf;
+}
+.smallheader a, .smallheader a:hover, a.smallheader:hover {
+    color: #000;
+}
+.button {
+    background: #00c;
+    color: #fff;
+    font-weight: bold;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+/* Menu styles. */
+#menu {
+    background: #fff;
+    border-top: 5px solid #00c;
+    border-bottom: 3px solid #8bf;
+    color: #000;
+}
+#menu a {
+    color: #000;
+}
+#menu a:hover {
+    border: none;
+    padding: 3px;
+    background: #ccf;
+    color: #00c;
+}
+#menu a.current {
+    background: #ddf;
+    border: none;
+    padding: 3px;
+}
+
+/* Sidebar styles. */
+#sidebarPanel {
+    background: #fff;
+    border-bottom: .2em solid #8bf;
+    border-right: .2em solid #8bf;
+}
+#sidebarPanel a {
+    padding-left: 1px;
+    padding-bottom: 2px;
+}
+#sidebarPanel a:hover {
+    color: #000;
+    background: #ccf;
+}
+#expandButton {
+    margin-right: .2em;
+}
+
+/* Tab styles. */
+.tabset li.activeTab a, .tabset li.activeTab a:hover {
+    color: #000;
+    background: #ddf;
+    border-bottom-color: #ddf;
+}

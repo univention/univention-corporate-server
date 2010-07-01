@@ -1,0 +1,28 @@
+/**
+ * $Horde: imp/themes/mozilla/screen.css,v 1.1.2.1 2007-12-20 14:00:47 jan Exp $
+ */
+
+/* Navbar action styling. */
+.msgactions li ul a:hover, .msgactions li ul a:active {
+    color: #000;
+    background-color: #e8f1ff;
+}
+.mboxcontrol {
+    color: #000;
+    background: #aebaca;
+}
+
+/* Message body styling. */
+#messageBody {
+    padding: 2px;
+}
+
+/* Autocomplete styles. */
+.autocomplete ul li {
+    text-decoration: none;
+}
+.autocomplete ul .selected {
+    color: #000;
+    background-color: #e8f1ff;
+    text-decoration: underline;
+}

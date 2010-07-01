@@ -1,0 +1,762 @@
+# DIMP Hungarian translation file.
+# Copyright 2008 Laszlo L. Tornoci
+# This file is distributed under the same license as the DIMP package.
+# Latest versions: ftp://xenia.sote.hu/pub/linux/horde/
+#
+# Laszlo L. Tornoci <torlasz@xenia.sote.hu>, 2008.
+msgid ""
+msgstr ""
+"Project-Id-Version: Dimp-H3-1.0\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-01-22 17:27+0100\n"
+"PO-Revision-Date: 2008-01-23 21:54+0100\n"
+"Last-Translator: Laszlo L. Tornoci <torlasz@xenia.sote.hu>\n"
+"Language-Team: Hungarian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: imp.php:626
+#, php-format
+msgid "%s messages were purged from \"%s\"."
+msgstr "%s levelet töröltünk \"%s\" mappából."
+
+#: lib/Block/newmail.php:69
+#, php-format
+msgid "%s more unseen messages..."
+msgstr "még %s olvasatlan levél..."
+
+#: imp.php:400
+#, php-format
+msgid "%s was successfully added to your address book."
+msgstr "%s-t sikeresen hozzáadtuk a címjegyzékéhez."
+
+#: imp.php:624
+#, php-format
+msgid "1 message was purged from \"%s\"."
+msgstr "1 levelet töröltünk \"%s\"-ból."
+
+#: lib/Block/newmail.php:67
+msgid "1 more unseen message..."
+msgstr "még 1 olvasatlan levél..."
+
+#: lib/DIMP.php:189
+msgid ""
+"A popup window could not be opened. Your browser may be blocking popups."
+msgstr ""
+"Nem nyitható meg egy új (felbukkanó) ablak. Lehet, hogy a böngészõprogramja "
+"tiltja le."
+
+#: lib/Views/ShowMessage.php:305
+msgid "Add to Address Book"
+msgstr "Adjuk hozzá a címjegyzékhez"
+
+#: templates/index/index.inc:175 templates/index/index.inc:180
+msgid "All"
+msgstr "az összeset"
+
+#: lib/DIMP.php:182
+msgid "Arrival"
+msgstr "Érkezési idõ"
+
+#: templates/chunks/fullmessage.php:54 templates/index/index.inc:279
+msgid "Attachments Only"
+msgstr "Csak mellékletek"
+
+#: templates/chunks/compose.php:93
+msgid "Bcc: "
+msgstr "Bcc:"
+
+#: templates/index/index.inc:248 templates/index/index.inc:292
+msgid "Blacklist"
+msgstr "Tiltott címek"
+
+#: templates/chunks/fullmessage.php:53 templates/index/index.inc:278
+msgid "Body Text Only"
+msgstr "Csak a levéltörzs"
+
+#: templates/index/index.inc:315
+msgid "CTRL-A: Select all messages in the current mailbox."
+msgstr "CTRL-A: Kiválasztja a mappa összes levelét."
+
+#: lib/DIMP.php:175
+msgid "Cancel"
+msgstr "Mégse"
+
+#: lib/DIMP.php:219
+msgid ""
+"Cancelling this message will permanently discard its contents and will "
+"delete auto-saved drafts.\n"
+"Are you sure you want to do this?"
+msgstr ""
+"A kilépés következtében e levél tartalma az automatikus mentésével együtt "
+"véglegesen elvész. \n"
+"Biztos, hogy ezt kívánja tenni?"
+
+#: templates/chunks/compose.php:79
+msgid "Cc: "
+msgstr "Cc:"
+
+#: templates/chunks/compose.php:38
+msgid "Check Spelling"
+msgstr "Helyesírásellenõrzés"
+
+#: templates/index/index.inc:219
+msgid "Check for New Mail"
+msgstr "Ellenõrizzük, hogy jött-e új levél"
+
+#: lib/DIMP.php:183
+msgid "Checking..."
+msgstr "Ellenõrzés..."
+
+#: templates/index/index.inc:239 templates/index/index.inc:263
+#: templates/index/index.inc:288
+msgid "Clear Flag"
+msgstr "A jelzet törlése"
+
+#: templates/index/index.inc:308
+msgid ""
+"Click on a message while holding down the CTRL key to select multiple "
+"messages.  To select a range of messages, click the first message of the "
+"range, navigate to the last message of the range, and then click on the last "
+"message while holding down the SHIFT key."
+msgstr ""
+"Ha több levelet is ki akar jelölni, tartsa lenyomva a CTRL billentyût és úgy "
+"kattintson a további levelekre. Ha több egymásutáni levelet akar kijelölni, "
+"akkor jelölje ki a blokk elsõ tagját, majd a blokk végén úgy jelölje ki az "
+"utolsót, hogy közben nyomva tartja a SHIFT billentyût."
+
+#: templates/imp/message.html:30
+msgid "Collapse Headers"
+msgstr "Csukjuk össze a fejléceket"
+
+#: config/prefs.php.dist:16
+msgid "Compose Options"
+msgstr "A levélírás beállításai"
+
+#: config/prefs.php.dist:18
+msgid "Control the behavior of the javascript HTML editor."
+msgstr "A javasript HTML editor mûködését szabályozó beállítások."
+
+#: templates/index/index.inc:199
+msgid "Could not get message list from server"
+msgstr "Nem sikerült a szervertõl megkapni a levelek listáját"
+
+#: lib/DIMP.php:193
+msgid "Create folder:"
+msgstr "Új mappa létrehozása:"
+
+#: templates/index/index.inc:211 templates/index/index.inc:224
+msgid "Create subfolder"
+msgstr "Almappa létrehozása"
+
+#: lib/DIMP.php:194
+msgid "Create subfolder:"
+msgstr "Almappa létrehozása:"
+
+#: config/prefs.php.dist:11
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr ""
+"Milyen parancsok fussanak le automatikusan a %sbe történõ bejelentkezéskor."
+
+#: templates/index/index.inc:313
+msgid ""
+"DELETE key: Delete the currently selected message(s). SHIFT-DELETE will "
+"delete the current message and move to the next message if a single message "
+"is selected."
+msgstr ""
+"Delete billentyû: törli a kijelölt level(ek)et. A SHIFT-DELETE törli a "
+"kijelölt levelet és a következõre lép."
+
+#: lib/DIMP.php:181
+msgid "Date"
+msgstr "Dátum"
+
+#: templates/index/index.inc:167 templates/index/index.inc:253
+#: templates/index/index.inc:265
+msgid "Delete"
+msgstr "Törlés"
+
+#: templates/index/index.inc:214
+msgid "Delete Folder"
+msgstr "Mappa törlése"
+
+#: templates/index/index.inc:220
+msgid "Do Not Check for New Mail"
+msgstr "Ne ellenõrizzük, hogy jött-e új levél"
+
+#: templates/index/index.inc:314
+msgid "ENTER key: Open message(s) in a popup window."
+msgstr ""
+"Az ENTER billentyû: A levél külön, felbukkanó ablakban történõ megnyitása."
+
+#: templates/index/index.inc:213
+msgid "Empty Folder"
+msgstr "A mappa kiürítése"
+
+#: templates/chunks/fullmessage.php:52 templates/index/index.inc:277
+msgid "Entire Message"
+msgstr "A teljes levél"
+
+#: templates/imp/message.html:9
+msgid "Expand Headers"
+msgstr "A fejlécek kinyitása"
+
+#: config/prefs.php.dist:39
+msgid "FCKeditor"
+msgstr "FCKeditor"
+
+#: templates/index/index.inc:238 templates/index/index.inc:262
+#: templates/index/index.inc:287
+msgid "Flag Message"
+msgstr "A levél megjelölése"
+
+#: config/portal.php.dist:28
+msgid "Folder Summary"
+msgstr "Mappa összefoglalás"
+
+#: templates/index/index.inc:173
+msgid "Folders: "
+msgstr "Mappák: "
+
+#: templates/index/index.inc:160
+msgid "Forward"
+msgstr "Továbbítás"
+
+#: templates/index/index.inc:234
+msgid "Forward Attachments Only"
+msgstr "Csak a mellékletek továbbítása"
+
+#: templates/index/index.inc:233
+msgid "Forward Body Text Only"
+msgstr "Csak a levéltörzs továbbítása"
+
+#: templates/index/index.inc:232
+msgid "Forward Entire Message"
+msgstr "A teljes levél továbbítása"
+
+#: templates/index/index.inc:181 lib/DIMP.php:178
+msgid "From"
+msgstr "Feladó"
+
+#: templates/chunks/compose.php:55
+msgid "From: "
+msgstr "Feladó: "
+
+#: config/prefs.php.dist:9
+msgid "General Options"
+msgstr "Általános beállítások"
+
+#: templates/index/index.inc:54 lib/DIMP.php:184
+msgid "Get Mail"
+msgstr "Beérkezõ levelek"
+
+#: lib/Block/newmail.php:71
+msgid "Go to your Inbox..."
+msgstr "Menjünk az Inboxhoz..."
+
+#: lib/Views/ShowMessage.php:374
+msgid "HERE"
+msgstr "ITT"
+
+#: templates/index/index.inc:312
+msgid "HOME/END keys: Move to the beginning/end of the message list."
+msgstr "HOME/END billentyûk: ugrás a levelek listájának elejére/végére."
+
+#: templates/chunks/compose.php:49
+msgid "HTML composition"
+msgstr "HTML formátumú levélírás"
+
+#: lib/DIMP.php:171
+msgid "Hide Addresses"
+msgstr "Rejtsük el a címeket"
+
+#: templates/index/index.inc:283 lib/DIMP.php:190
+msgid "Hide Preview"
+msgstr "Ne legyen betekintés"
+
+#: lib/DIMP.php:168
+msgid "Hide Quoted Text"
+msgstr "Ne mutassuk a beidézett szöveget"
+
+#: lib/Views/ShowMessage.php:226
+msgid "High Priority"
+msgstr "Sürgõs"
+
+#: templates/index/index.inc:125
+msgid "Home"
+msgstr "Saját mappa"
+
+#: templates/index/index.inc:51
+msgid "Horde"
+msgstr "Horde"
+
+#: config/prefs.php.dist:29
+msgid "Inbox"
+msgstr "Inbox"
+
+#: templates/index/index.inc:165
+msgid "Innocent"
+msgstr "Nem-spam"
+
+#: config/prefs.php.dist:17
+msgid "Javascript HTML Editor Options"
+msgstr "Javascript HTML Editor opciók"
+
+#: templates/chunks/compose.php:13 templates/index/index.inc:46
+#: templates/index/index.inc:73 templates/index/index.inc:323 lib/DIMP.php:176
+msgid "Loading..."
+msgstr "Betöltés..."
+
+#: config/prefs.php.dist:10
+msgid "Login Tasks"
+msgstr "Bejelentkezéssel kapcsolatos feladatok"
+
+#: lib/Views/ShowMessage.php:230
+msgid "Low Priority"
+msgstr "Nem sürgõs"
+
+#: lib/Views/ListMessages.php:124
+#, php-format
+msgid "Mailbox %s does not exist."
+msgstr "A(z) %s mappa nem létezik."
+
+#: templates/index/index.inc:217
+msgid "Mark all as New"
+msgstr "Jelöljük meg az összeset olvasatlanként"
+
+#: templates/index/index.inc:216
+msgid "Mark all as Read"
+msgstr "Jelöljük meg az összeset olvasottként"
+
+#: templates/index/index.inc:245
+msgid "Mark as Innocent"
+msgstr "Jelöljük meg, mint nem-spam"
+
+#: templates/index/index.inc:237 templates/index/index.inc:286
+msgid "Mark as New"
+msgstr "Jelöljük meg olvasatlanként"
+
+#: templates/index/index.inc:236 templates/index/index.inc:285
+msgid "Mark as Read"
+msgstr "Jelöljük meg olvasottként"
+
+#: templates/index/index.inc:242
+msgid "Mark as Spam"
+msgstr "Jelöljük meg, mint spam"
+
+#: compose.php:314
+msgid "Message Composition"
+msgstr "Levélírás"
+
+#: compose.php:159
+msgid "Message sent successfully."
+msgstr "A levelet elküldtük."
+
+#: templates/chunks/fullmessage.php:16 templates/chunks/fullmessage.php:40
+msgid "Message:"
+msgstr "A levél:"
+
+#: templates/index/index.inc:179
+msgid "Message: "
+msgstr "Szöveg: "
+
+#: lib/DIMP.php:165
+msgid "Messages"
+msgstr "Levelek"
+
+#: templates/index/index.inc:110
+msgid "New Folder"
+msgstr "Új mappa"
+
+#: compose.php:181 lib/Views/ShowMessage.php:303
+msgid "New Message"
+msgstr "Új levél"
+
+#: lib/DIMP.php:167
+msgid "No Messages"
+msgstr "Nincs levél"
+
+#: lib/Block/foldersummary.php:73
+msgid "No folders are being checked for new mail."
+msgstr "Egy mappában sem ellenõrizzük, érkezett-e új levél."
+
+#: lib/Block/foldersummary.php:77
+msgid "No folders with new messages"
+msgstr "Nincs új levelet tartalmazó mappa"
+
+#: lib/Block/foldersummary.php:75
+msgid "No folders with unseen messages"
+msgstr "Nincs olvasatlan levelet tartalmazó mappa"
+
+#: templates/index/index.inc:198
+msgid "No messages to display"
+msgstr "Nincs megjelenítendõ levél"
+
+#: lib/Block/newmail.php:40
+msgid "No unread messages"
+msgstr "Nincs olvasatlan levél"
+
+#: lib/DIMP.php:174
+msgid "Ok"
+msgstr "Ok"
+
+#: lib/Views/ShowMessage.php:262 lib/Views/ShowMessage.php:266
+msgid "Open in new window"
+msgstr "Nyissuk meg új ablakban"
+
+#: options.php:17
+msgid "Options"
+msgstr "Opciók"
+
+#: templates/index/index.inc:168
+msgid "Other Actions"
+msgstr "Egyéb mûveletek"
+
+#: templates/index/index.inc:311
+msgid "PAGE UP/PAGE DOWN keys: Move one page up/down through the message list."
+msgstr ""
+"PAGE UP/PAGE DOWN billentyûk: felfelé/lefelé lapozás a levelek listájában."
+
+#: templates/index/index.inc:213
+msgid "Permanently delete all messages?"
+msgstr "Véglegesen töröljük ki az összes levelet?"
+
+#: templates/index/index.inc:214
+msgid "Permanently delete this folder?"
+msgstr "Véglegesen töröljük ezt a mappát?"
+
+#: lib/DIMP.php:161 config/prefs.php.dist:28
+msgid "Portal"
+msgstr "Összegzõ oldal"
+
+#: lib/Views/ShowMessage.php:275
+msgid "Print"
+msgstr "Nyomtatás"
+
+#: templates/index/index.inc:302
+msgid "Purge Deleted"
+msgstr "Végleges törlés"
+
+#: templates/chunks/compose.php:32
+msgid "Read Receipt"
+msgstr "Visszaigazolás kérése"
+
+#: templates/chunks/compose.php:49
+msgid ""
+"Really discard all formatting information? This operation cannot be undone."
+msgstr ""
+"Tényleg töröljük az összes, a formátumra vontakozó információt? Ez a "
+"változtatás nem fordítható vissza."
+
+#: templates/index/index.inc:212 templates/index/index.inc:225
+msgid "Rename Folder"
+msgstr "A mappa átnevezése"
+
+#: lib/DIMP.php:192
+msgid "Rename folder to:"
+msgstr "A mappa átnevezése erre:"
+
+#: templates/index/index.inc:159
+msgid "Reply"
+msgstr "Válasz"
+
+#: templates/index/index.inc:230
+msgid "Reply to All"
+msgstr "Válasz az összes címre"
+
+#: compose.php:208
+msgid "Reply to All:"
+msgstr "Válasz az összes címre:"
+
+#: templates/index/index.inc:229
+msgid "Reply to Sender"
+msgstr "Válasz a feladónak"
+
+#: compose.php:206
+msgid "Reply:"
+msgstr "Válasz:"
+
+#: templates/chunks/fullmessage.php:26
+msgid "Report Innocent"
+msgstr "Nem-spam bejelentés"
+
+#: templates/chunks/fullmessage.php:23
+msgid "Report Spam"
+msgstr "Spam bejelentés"
+
+#: compose.php:192 lib/Views/ShowMessage.php:112 lib/Views/ShowMessage.php:122
+msgid "Requested message not found."
+msgstr "A kívánt levél nem található."
+
+#: templates/index/index.inc:260
+msgid "Resume Draft"
+msgstr "Folytatás"
+
+#: lib/Views/ShowMessage.php:242
+msgid "Save All"
+msgstr "Mentés"
+
+#: templates/chunks/compose.php:119
+msgid "Save Attachments in sent folder"
+msgstr "A mellékleteket mentsük el az elküldött levelek mappájában"
+
+#: templates/chunks/compose.php:40
+msgid "Save as Draft"
+msgstr "Mentsük el munkapéldányként"
+
+#: templates/chunks/compose.php:35
+msgid "Save in "
+msgstr "Mentés ide "
+
+#: lib/DIMP.php:225
+msgid "Saving..."
+msgstr "Mentés..."
+
+#: templates/chunks/compose.php:30
+msgid "Se_nd"
+msgstr "Küldés"
+
+#: lib/DIMP.php:163
+msgid "Search"
+msgstr "Keresés"
+
+#: lib/Views/ListMessages.php:87
+msgid "Search Results"
+msgstr "A keresés eredménye"
+
+#: templates/index/index.inc:299
+msgid "Select All"
+msgstr "Mindet kijelöljük"
+
+#: lib/DIMP.php:224
+msgid "Sending..."
+msgstr "Levélküldés..."
+
+#: lib/DIMP.php:172
+msgid "Show Addresses"
+msgstr "Mutassuk a címeket"
+
+#: templates/chunks/compose.php:47
+msgid "Show Bcc"
+msgstr "Mutassunk a Bcc-t"
+
+#: templates/chunks/compose.php:46
+msgid "Show Cc"
+msgstr "Mutassunk a Cc-t"
+
+#: templates/index/index.inc:283 lib/DIMP.php:191
+msgid "Show Preview"
+msgstr "Legyen betekintés"
+
+#: lib/DIMP.php:169
+msgid "Show Quoted Text"
+msgstr "Mutassuk a beidézett szöveget"
+
+#: templates/index/index.inc:162
+msgid "Spam"
+msgstr "Spam"
+
+#: templates/index/index.inc:183 lib/DIMP.php:180
+#: lib/Views/ShowMessage.php:214
+msgid "Subject"
+msgstr "Tárgy"
+
+#: templates/chunks/compose.php:107
+msgid "Subject: "
+msgstr "Tárgy: "
+
+#: lib/DIMP.php:223
+msgid "The attachment limit has been reached."
+msgstr "Elértük a mellékletekre megszabott mérethatárt."
+
+#: config/prefs.php.dist:59
+msgid "The buttons NOT to show when using Xinha."
+msgstr "Mely gombok NE jelenjenek meg a Xinha használatakor."
+
+#: config/prefs.php.dist:49
+msgid "The buttons to show when using FCKeditor."
+msgstr "Mely gombok jelenjenek meg az FCKeditor használatakor."
+
+#: lib/DIMP.php:186
+msgid "The connection to the remote server has been restored."
+msgstr "A távoli szerver ismét elérhetõ."
+
+#: templates/index/index.inc:309
+msgid "The following keyboard shortcuts are available:"
+msgstr "A következõ billentyûparancsok használhatók:"
+
+#: config/prefs.php.dist:41
+msgid "The javascript editor to use on the compose page."
+msgstr "A levélíráskor használt javascript editor."
+
+#: config/prefs.php.dist:30
+msgid "The page to view immediately after login."
+msgstr "A bejelentkezés után közvetlenül megjelenítendõ oldal."
+
+#: lib/Views/ShowMessage.php:375
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Click %s to send the notification "
+"message."
+msgstr ""
+"A feladó visszaigazolást kér arról, hogy Ön elolvasta ezt a levelet. Kérem %"
+"s kattintson, ha teljesíteni kívánja ezt a kérést."
+
+#: lib/DIMP.php:187
+msgid "The server is still generating the message list."
+msgstr "A levelezõszerver még mindig küldi a levelek listáját."
+
+#: lib/DIMP.php:188
+msgid ""
+"The server was unable to generate the message list. Please try again later."
+msgstr ""
+"A szerver nem tudta elküldeni a levelek listáját. Kérem próbálja meg késõbb."
+
+#: lib/DIMP.php:185
+msgid ""
+"There has been no contact with the remote server for several minutes. The "
+"server may be temporarily unavailable or network problems may be "
+"interrupting your session. You will not see any updates until the connection "
+"is restored."
+msgstr ""
+"A szerverrel több perce megszûnt a kapcsolat. Lehet, hogy a szerver "
+"átmenetileg nem áll rendelkezésre, vagy hálózati problémák miatt nincs "
+"kapcsolat. A kapcsolat visszaállításáig nem lesz adatfrissítés."
+
+#: lib/DIMP.php:179
+msgid "Thread"
+msgstr "Logikai sorrend"
+
+#: templates/index/index.inc:182 lib/DIMP.php:177
+msgid "To"
+msgstr "Címzett"
+
+#: templates/chunks/fullmessage.php:48 templates/index/index.inc:273
+msgid "To All"
+msgstr "Minden címzettnek"
+
+#: templates/chunks/fullmessage.php:47 templates/index/index.inc:272
+msgid "To Sender"
+msgstr "A feladónak"
+
+#: templates/index/index.inc:307
+msgid ""
+"To preview a message, select it from the list above. A right-click on the "
+"messages will display available actions."
+msgstr ""
+"A levélbe történõ betekintéshez válassza ki a fenti listából. A jobb oldali "
+"egérgombbal a levélre kattintva megjelennek az elvégezhetõ mûveletek."
+
+#: templates/chunks/compose.php:65
+msgid "To: "
+msgstr "Címzett: "
+
+#: templates/index/index.inc:310
+msgid "UP/DOWN Arrow keys: Move up/down through the message list."
+msgstr "FEL/LE nyilak: a levelek listájában felfelé/lefelé lép."
+
+#: templates/index/index.inc:255 templates/index/index.inc:267
+msgid "Undelete"
+msgstr "Törlés vissza"
+
+#: lib/Views/ShowMessage.php:77
+msgid "Undisclosed Recipients"
+msgstr "A címzettek listája nem ismert"
+
+#: lib/Views/ShowMessage.php:322
+msgid "Unknown Date"
+msgstr "Ismeretlen dátum"
+
+#: lib/DIMP.php:222
+msgid "Uploading..."
+msgstr "Feltöltés..."
+
+#: lib/DIMP.php:162
+msgid "User Options"
+msgstr "Felhasználói beállítások"
+
+#: lib/Views/ShowMessage.php:288 lib/Views/ShowMessage.php:289
+msgid "View Message Source"
+msgstr "A levél forrása"
+
+#: templates/index/index.inc:251 templates/index/index.inc:295
+msgid "Whitelist"
+msgstr "Engedélyezett címek"
+
+#: config/prefs.php.dist:40
+msgid "Xinha"
+msgstr "Xinha"
+
+#: lib/DIMP.php:220
+msgid ""
+"You have already changed the message body, are you sure you want to drop the "
+"changes?"
+msgstr ""
+"Változtatott a levéltörzsön. Biztos, hogy el akarja dobni a változtatásokat?"
+
+#: lib/Views/ShowMessage.php:219 lib/Views/ListMessages.php:255
+#: lib/Block/newmail.php:57
+msgid "[No Subject]"
+msgstr "[Tárgy nélkül]"
+
+#: lib/Views/ShowMessage.php:83
+#, php-format
+msgid "[Show addresses - %s recipients]"
+msgstr "[Mutassuk a címeket - %s címzett]"
+
+#: templates/index/index.inc:53
+msgid "_Compose"
+msgstr "Levélírás"
+
+#: templates/chunks/fullmessage.php:28
+msgid "_Delete"
+msgstr "_Törlés"
+
+#: templates/chunks/fullmessage.php:21
+msgid "_Forward"
+msgstr "T_ovábbítás"
+
+#: templates/index/index.inc:68
+msgid "_Log Out"
+msgstr "_Kijelentkezés"
+
+#: templates/index/index.inc:63
+msgid "_Options"
+msgstr "_Opciók"
+
+#: templates/index/index.inc:59
+msgid "_Portal"
+msgstr "Összegzõ oldal"
+
+#: templates/chunks/fullmessage.php:20
+msgid "_Reply"
+msgstr "_Válasz"
+
+#: templates/imp/message.html:13
+msgid "from"
+msgstr "itt"
+
+#: lib/DIMP.php:170
+msgid "lines"
+msgstr "sor"
+
+#: lib/DIMP.php:166
+msgid "of"
+msgstr ""
+
+#: lib/DIMP.php:173
+msgid "recipients"
+msgstr "címzettek"
+
+#: lib/DIMP.php:221
+msgid "remove"
+msgstr "törlés"
+
+#: lib/DIMP.php:164
+msgid "results found"
+msgstr "találat"

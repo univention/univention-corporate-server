@@ -1,0 +1,192 @@
+/**
+ * $Horde: mnemo/themes/screen.css,v 1.4.2.6 2009-08-05 23:03:25 jan Exp $
+ */
+
+/* Menu bottom margin, added for BC. */
+#menu {
+    margin-bottom: 8px;
+}
+
+/* Added for BC. */
+.hidden {
+    display: none;
+}
+
+/* Image alignment, added for BC. */
+img {
+    vertical-align: middle;
+}
+
+/* Sort arrow styles, added for BC. */
+.sortup {
+    background: #bbcbff url("graphics/za.png") center left no-repeat;
+    padding-left: 10px;
+}
+.sortdown {
+    background: #bbcbff url("graphics/az.png") center left no-repeat;
+    padding-left: 10px;
+}
+
+/* Table CSS, added for BC. */
+th {
+    color: #333;
+    font-size: 90%;
+    border-bottom: 1px solid #999;
+}
+
+/* RTL styles, added for BC. */
+.leftAlign {
+    text-align: left;
+}
+.rightAlign {
+    text-align: right;
+}
+.leftFloat {
+    float: left;
+}
+.rightFloat {
+    float: right;
+}
+
+.notePassphrase {
+    padding: 10px;
+    background: #fff;
+    border-top: 1px solid #ccc;
+}
+
+.noteBody {
+    padding: 10px;
+    background: #fff;
+    border-top: 1px solid #ccc;
+    font-family: "Lucida Console",Courier,"Courier New";
+    white-space: normal;
+    overflow: auto;
+}
+
+.noteArea {
+    padding: 10px;
+    background: #e9e9e9;
+}
+.noteArea p, .noteArea td {
+    font-weight: bold;
+    margin: 5px 0;
+}
+.noteArea textarea {
+    width: 100%;
+}
+
+body.rightPanel #page {
+    margin-right: 10em;
+}
+body #pageControlsInner {
+    display: none;
+}
+body #sbarShow, body #sbarHide {
+    padding-left: 18px;
+    white-space: nowrap;
+}
+body #sbarShow {
+    display: block;
+    background: transparent url("graphics/plus.png") center left no-repeat;
+}
+body #sbarHide {
+    display: none;
+    background: transparent url("graphics/minus.png") center left no-repeat;
+}
+body.rightPanel #pageControlsInner {
+    display: block;
+}
+body.rightPanel #sbarShow {
+    display: none;
+}
+body.rightPanel #sbarHide {
+    display: block;
+}
+body.rightPanel ul {
+    list-style-type: none;
+}
+
+#pageControls {
+    position: absolute;
+    top: 52px;
+    right: 0;
+    background: #eee;
+    border: 1px solid #ccc;
+    padding: 4px;
+    -moz-border-radius-bottomleft: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+}
+#pageControls #notepadSearch {
+    background-image: url("graphics/search.png");
+    background-repeat: no-repeat;
+    background-position: 2px center;
+    border: 1px solid #ccc;
+    padding: 2px 0 2px 20px;
+}
+#pageControls h3 {
+    font-size: 100%;
+    margin-top: 1em;
+}
+#pageControls h4 {
+    font-size: 90%;
+    margin-top: .5em;
+}
+
+.QuickFinderNoMatch {
+    display: none;
+}
+#notes_empty {
+    padding: 4px;
+    font-style: italic;
+}
+
+#quicksearch {
+    display: inline;
+}
+#quicksearch input {
+    background-image: url("graphics/search.png");
+    background-repeat: no-repeat;
+    background-position: 2px center;
+    padding: 1px 0 1px 20px;
+}
+#quicksearch a {
+    display: inline-block;
+    padding: 2px 4px;
+}
+
+/* Tables. */
+table#notepad-list {
+    width: 99%;
+    margin: 0 0 8px 5px;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
+table#notepad-list th {
+    padding: 3px;
+    background: #e9e9e9;
+    border-right: 1px solid #ccc;
+    text-align: left;
+}
+table#notepad-list td {
+    padding: 3px;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+table#notepad-list th.sortup {
+    background: #bbcbff url("graphics/za.png") center left no-repeat;
+    padding-left: 10px;
+}
+table#notepad-list th.sortdown {
+    background: #bbcbff url("graphics/az.png") center left no-repeat;
+    padding-left: 10px;
+}
+
+#notepad-list-buttons {
+    padding: 1em;
+}
+#notepad-list-buttons form {
+    display: inline;
+}
+.notepad-list-icon {
+    width: 1%;
+}

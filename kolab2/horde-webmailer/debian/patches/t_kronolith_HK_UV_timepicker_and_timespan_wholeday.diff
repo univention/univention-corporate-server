@@ -16,8 +16,8 @@ the function of the hidden fields:
    counted in days.
 
 
---- a/horde-webmail/kronolith/lib/Driver.php
-+++ b/horde-webmail/kronolith/lib/Driver.php
+--- a/horde-webmailer/kronolith/lib/Driver.php
++++ b/horde-webmailer/kronolith/lib/Driver.php
 @@ -1264,6 +1264,13 @@ class Kronolith_Event {
  
          if ($this->isInitialized()) {
@@ -108,8 +108,8 @@ the function of the hidden fields:
          }
      }
  
---- a/horde-webmail/kronolith/templates/edit/edit_timespan.inc
-+++ b/horde-webmail/kronolith/templates/edit/edit_timespan.inc
+--- a/horde-webmailer/kronolith/templates/edit/edit_timespan.inc
++++ b/horde-webmailer/kronolith/templates/edit/edit_timespan.inc
 @@ -5,6 +5,16 @@
   </td>
  </tr>
@@ -231,8 +231,8 @@ the function of the hidden fields:
  <?php endif; ?>
   </td>
  </tr>
---- a/horde-webmail/kronolith/templates/edit/javascript.inc
-+++ b/horde-webmail/kronolith/templates/edit/javascript.inc
+--- a/horde-webmailer/kronolith/templates/edit/javascript.inc
++++ b/horde-webmailer/kronolith/templates/edit/javascript.inc
 @@ -4,6 +4,31 @@
  
  <?php if (!Util::nonInputVar('issearch')): ?>
@@ -364,7 +364,7 @@ the function of the hidden fields:
  </script>
 new file mode 100644
 --- /dev/null
-+++ b/horde-webmail/templates/javascript/time_picker.js
++++ b/horde-webmailer/templates/javascript/time_picker.js
 @@ -0,0 +1,196 @@
 +var TimePicker = {
 +	targetId: null,

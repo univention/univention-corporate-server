@@ -1,0 +1,97 @@
+<if:smimeactive>
+ <input type="checkbox" id="use_smime" name="use_smime" checked="checked" /> <label for="use_smime"><gettext>Enable S/MIME functionality?</gettext></label>&nbsp;<tag:use_smime_help />
+ <br />
+ <em style="color:red"><gettext>NOTE:</gettext></em> <gettext>S/MIME support requires popup windows to be used.  If your browser is currently set to disable popup windows, you must change this setting or else the S/MIME features will not work correctly.</gettext>
+ <br />
+<if:verify_notlocked>
+ <input type="checkbox" id="smime_verify" name="smime_verify"<if:smime_verify> checked="checked"</if:smime_verify> /> <label for="smime_verify"><gettext>Should S/MIME signed messages automatically be verified when viewed?</gettext></label>&nbsp;<tag:smime_verify-help />
+ <br />
+</if:verify_notlocked>
+
+ <p>
+  <input type="submit" name="save" class="button" onclick="document.prefs.actionID.value='save_options'; return true;" value="<gettext>Save Options</gettext>" />
+  <input id="prefs_return" type="button" name="back" class="button" onclick="document.location.href='<tag:prefsurl />'" value="<gettext>Return to Options</gettext>" />
+ </p>
+</div>
+
+<br class="spacer" />
+
+<div class="header">
+ <ul><li><tag:manage_pubkey-help /></li></ul>
+ <gettext>S/MIME Public Keyring</gettext>
+</div>
+
+<div class="prefsContainer item">
+<if:empty_pubkey_list>
+ <em><gettext>No Keys in Keyring</gettext></em>
+<else:empty_pubkey_list>
+<if:pubkey_error>
+ <em style="color:red"><gettext>Error:</gettext></em> <tag:pubkey_error />
+<else:pubkey_error>
+ <table>
+<loop:pubkey_list>
+  <tr>
+   <td><tag:pubkey_list.name /> (<tag:pubkey_list.email />)</td>
+   <td>&nbsp;&nbsp;[<tag:pubkey_list.view /><gettext>View</gettext></a>]&nbsp;[<tag:pubkey_list.info /><gettext>Details</gettext></a>]&nbsp;[<tag:pubkey_list.delete /><gettext>Delete</gettext></a>]</td>
+  </tr>
+</loop:pubkey_list>
+ </table>
+</else:pubkey_error></if:pubkey_error></else:empty_pubkey_list></if:empty_pubkey_list>
+
+<if:no_file_upload>
+ <em style="color:red"><gettext>Key import is not available. File upload is not enabled on this server.</gettext></em>
+<else:no_file_upload>
+<if:no_source>
+ <em><gettext>Key import is not available. You have no address book defined to add your contacts.</gettext></em>
+<else:no_source>
+ <p><input type="submit" name="save" class="button" onclick="popup_imp('<tag:public_import_url />',750,275); return false;" value="<gettext>Import Public Key</gettext>" />
+ <tag:import_pubkey-help /></p>
+</else:no_source></if:no_source></else:no_file_upload></if:no_file_upload>
+</div>
+
+<br class="spacer" />
+
+<div class="header">
+ <ul><li><tag:personalkey-help /></li></ul>
+ <gettext>Your S/MIME Public/Private Certificates</gettext>
+</div>
+
+<div class="prefsContainer item">
+<if:secure_check>
+ <em><gettext>S/MIME Personal Keypair support requires a secure web connection.</gettext></em>
+<else:secure_check>
+<if:has_key>
+ <table>
+  <tr>
+   <td><gettext>Your Public Key:</gettext></td>
+   <td>&nbsp;&nbsp;[<tag:viewpublic /><gettext>View</gettext></a>]&nbsp;[<tag:infopublic /><gettext>Details</gettext></a>]</td>
+  </tr>
+  <tr>
+   <td><gettext>Your Private Key:</gettext></td>
+   <td>&nbsp;&nbsp;[<tag:passphrase /></a>]&nbsp;[<tag:viewprivate /><gettext>View</gettext></a>]</td>
+  </tr>
+ </table>
+
+ <p><input type="submit" name="delete" class="button" onclick="if (confirm('<tag:deletekeypair />')) { document.prefs.actionID.value='delete_key'; return true; } else { return false; }" value="<gettext>Delete Current Keys</gettext>" />
+ <tag:personalkey-delete-help /></p>
+<else:has_key>
+<if:no_file_upload>
+ <em style="color:red"><gettext>Certificate import is not available. File upload is not enabled on this server.</gettext></em>
+<else:no_file_upload>
+ <p><input type="submit" name="save" class="button" onclick="popup_imp('<tag:personal_import_url />',750,275);return false;" value="<gettext>Import Keypair</gettext>" /> <tag:import-cert-help /></p>
+</else:no_file_upload></if:no_file_upload>
+</else:has_key></if:has_key></else:secure_check></if:secure_check>
+<else:smimeactive>
+<if:use_smime_locked>
+ <em><gettext>S/MIME support is disabled on this system.</gettext></em>
+<else:use_smime_locked>
+ <input type="checkbox" id="use_smime" name="use_smime" /> <tag:use_smime_label /> <tag:use_smime_help /><br />
+</else:use_smime_locked></if:use_smime_locked>
+
+ <p>
+  <input type="submit" name="save" class="button" onclick="document.prefs.actionID.value='save_options'; return true;" value="<gettext>Save Options</gettext>" />
+  <input id="prefs_return" type="button" name="back" class="button" onclick="document.location.href='<tag:prefsurl />'" value="<gettext>Return to Options</gettext>" />
+ </p>
+</else:smimeactive></if:smimeactive>
+</div>
+</form>

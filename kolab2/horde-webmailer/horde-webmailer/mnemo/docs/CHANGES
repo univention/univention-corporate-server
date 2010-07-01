@@ -1,0 +1,331 @@
+------
+v2.2.3
+------
+
+[jan] Add and fix Oracle SQL scripts.
+[jan] Add Croatian translation (Matej Vela <matej.vela@carnet.hr>).
+
+
+------
+v2.2.2
+------
+
+[mms] Upgrade prototype.js to v1.6.1.
+[jan] Fix synchronization with output compression enabled (Bug #7769).
+[jan] Add passphrase confirmation field (Bug #7379).
+[cjh] Work around BC break with Horde versions before 3.2 (Bug #7820).
+[cjh] Add URL access to notes by "starts-with" search on the note title.
+[cjh] Add hooks for altering the displayed note body and showing help text next
+      to the note entry field.
+[cjh] Explicitly load DB library (Bug #7648).
+[jan] Fix "replace" API method (Alfonso Marín Marín <almarin@um.es>, Bug #7436).
+[cjh] Add a PostgreSQL-specific upgrade script.
+[jan] Change group field in shares table to work with LDAP groups (Bug #6883).
+[jan] Fix user name conversion with user hooks in the notepad panel (Bug #7366).
+
+
+------
+v2.2.1
+------
+
+[jan] Log moving of memos in the history backend (Bug #3207).
+[jan] Add Basque translation (Euskal Herriko Unibertsitatea EHU/UPV
+      <xabier.arrieta@ehu.es>).
+[mjr] Remove user permissions on all shares when deleting a user.
+[mjr] Fix issue with removeUserData api that caused the deleted user's task list
+      to not be deleted (Bug #6969).
+
+
+----
+v2.2
+----
+
+[mjr] Fix issue with removeUserData api that caused the deleted user's task list
+      to not be deleted (Bug #6969).
+[cjh] Improve resource usage in datatree_to_sql share migration script
+      (Bug #6740).
+[jan] Fix exporting and synchronization of encrypted notes.
+
+
+--------
+v2.2-RC3
+--------
+
+[cjh] Apply fix for http://dev.rubyonrails.org/ticket/11473 to prototype.js
+      (Request #6590).
+[cjh] Add an upgrade script for the new SQL share driver (Request #6109).
+[gwr] Added History support in the Kolab driver.
+[cjh] Avoid errors when trying to export an empty notepad (Bug #6409).
+[cjh] Show who created or made the last change to a note along with the date
+      (Request #6305).
+[jan] Add Turkish translation (METU <horde-tr@metu.edu.tr>).
+
+
+--------
+v2.2-RC2
+--------
+
+[jan] Fix saving the password when creating new notes.
+
+
+--------
+v2.2-RC2
+--------
+
+[jan] SECURITY: Fix privilege escalation in Horde API.
+[cjh] SECURITY: Fix missing ownership validation on share changes.
+[cjh] Add the ability to filter the list of notepads in the panel.
+[cjh] New share management UI that doesn't require JavaScript.
+[cjh] Add support for split read/write databases (<duck@obala.net>,
+      Request #5936).
+
+
+--------
+v2.2-RC1
+--------
+
+[jan] Implement WebDAV DELETE.
+[cjh] Add quick links to the sidebar block for adding notes to a specific
+      notepad (Gunnar Wrobel <p@rdus.de>, Request #5716).
+[cjh] Fix generation of UIDs with PHP 5.2+.
+
+
+----------
+v2.2-ALPHA
+----------
+
+[cjh] Show tooltips in the summary block, and restrict tooltips to 20 lines
+      (Request #3443).
+[cjh] Optionally show a note's notepad in the list view (Request #2317).
+[cjh] Add quick (inline) note searching.
+[cjh] Add the ability to save a note as a PDF.
+[jan] Add support for encrypted notes.
+[cjh] Move notepad selection/deselection to a collapsible panel.
+[mas] Conform to WCAG 1.0 Priority 2/Section 508 accessibility guidelines.
+      (Request #4080)
+[cjh] Notes search should be either title or full text (Request #4277).
+[cjh] Make the note edit view the full page width.
+
+
+------
+v2.1.2
+------
+
+[jan] SECURITY: Fix privilege escalation in Horde API.
+[cjh] SECURITY: Fix missing ownership validation on share changes.
+
+
+------
+v2.1.1
+------
+
+[jan] Show error message if imported file didn't contain notes.
+[jan] Add Slovenian translation (Duck <duck@obala.net>).
+[jan] Add categories from imported contacts to the user's categories.
+[jan] Show personal notepad by default with disabled preferences (Bug #4078).
+
+
+----
+v2.1
+----
+
+[jan] Fix portal block if used with Kolab driver (tokoe@kde.org, Bug #2735).
+[jan] Add Russian translation (Alexey Zakharov <baber@mosga.net>).
+[ben] Better support for MS-SQL.
+
+
+--------
+v2.1-RC1
+--------
+
+[jan] Confirm note deletions (Request #1156).
+[jan] Add CLI script to import vNote data.
+[cjh] Add support for dynamic re-sorting of the note list, including saving
+      the sort preferences on any changes.
+[jan] Show character count next to notes.
+[mas] Change any output of <b> and <i> tags to <strong> and <em> for better
+      accessibility support.
+[jan] Add permissions to restrict number of notes.
+
+
+------
+v2.0.3
+------
+
+[cjh] Close several XSS vulnerabilities with note and notepad data.
+
+
+------
+v2.0.2
+------
+
+[jan] Allow to import more than one note from vNote data at once.
+
+
+----------
+v2.0.2-RC1
+----------
+
+[cjh] Fix resetting categories to Unfiled (Bug #2018).
+[cjh] Use bind variables in SQL driver, clean up required parameters
+      (selsky@columbia.edu, Bug #1791).
+[cjh] Add a PostgreSQL upgrade script (Bug #1779).
+[cjh] Better error handling when deleting shares that don't exist (Bug #1754).
+[jan] Add Japanese translation (Hiromi Kimura <hiromi@tac.tsukuba.ac.jp>).
+[jan] Add shortcut icon (favicon.ico).
+
+
+------
+v2.0.1
+------
+
+[jan] Fix print view.
+[jan] Fix print button.
+
+
+----
+v2.0
+----
+
+[cjh] UIDs need to be stored in the History system with a mnemo: prefix and
+      with the notepad so as not to confuse different instances of the
+      same note (if two users both have a note on their seperate notepads,
+      they should have unique histories for that note).
+[cjh] Don't throw a fatal error if an empty share name is submitted
+      (Bug #1000).
+
+
+--------
+v2.0-RC3
+--------
+
+[cjh] Add My Notepads menu entry.
+
+
+--------
+v2.0-RC2
+--------
+
+[jan] Add Czech translation (Pavel Chytil <pavel@chytil.tk>).
+[jan] Add Latvian translation (Janis Eisaks <jancs@dv.lv>).
+
+
+--------
+v2.0-RC1
+--------
+
+[jan] Tweak layout of the summary block.
+
+
+---------
+v2.0-BETA
+---------
+
+[jan] Add Polish translation (Mateusz Kaminski <matipl@ds.pg.gda.pl>).
+[jan] Add special black-on-white styles for message printing.
+[jan] Add access keys.
+[cjh] Add Kolab drivers (Stuart Bingë <s.binge@codefusion.co.za>).
+
+
+----------
+v2.0-ALPHA
+----------
+
+[cjh] GUIDs now only contain mnemo: and the note ID - sharename is not needed.
+[cjh] Note IDs are now 32-character unique strings, to be useable as GUIDs.
+      The SQL table definition has changed; conversion scripts are in scripts/.
+[cjh] The notes/ API now implements the modern methods required for SyncML and
+      other syncing efforts.
+[cjh] Make sure there is a view link for empty notes.
+[cjh] Add a Delete link from the note edit screen.
+[cjh] Make sure that the correct categories for a note's current notepad
+      are always used.
+[cjh] Change how memos are stored in the SQL driver.
+      scripts/create_sequence.php will update an existing database with no
+      loss of data.
+[cjh] Display the Creation and Last-Modified dates in the note view.
+[cjh] Track addition, modification, and deletion of notes
+      with the Horde History:: API.
+[cjh] Add import of vNotes.
+[cjh] Show the full memo body in a tooltip.
+[cjh] Add a preference for the default category for notes
+      (Brian Keifer <brian@valinor.net>).
+[jan] Add UTF-8 support and charset parameter for backend drivers.
+[jan] Only show selected note categories on the summary screen
+      (Brian Keifer <brian@valinor.net>).
+[cjh] Much more comprehensive permissions checking, and support for
+      guest access.
+[cjh] Use the global shares editing page for changing/assigning share
+      permissions.
+[mac] Allow importing onto any available Notepad.
+[mac] Add shared notepads.
+
+
+------
+v1.1.4
+------
+
+[jan] Close XSS when setting the parent frame's page title by javascript (cjh).
+
+
+------
+v1.1.3
+------
+
+[jan] Add Polish translation (Mateusz Kaminski <matipl@ds.pg.gda.pl>).
+
+
+------
+v1.1.2
+------
+
+[jan] Make memos without description accessible from the memo list.
+
+
+------
+v1.1.1
+------
+
+[jan] Add Italian translation (Sergio G. Caredda <scaredda@tiscali.it>).
+[jan] Add Romanian translation (Eugen Hoanca <eugenh@urban-grafx.ro>,
+      Marius Dragulescu <mariusd@urban-grafx.ro>).
+
+
+----
+v1.1
+----
+
+[jan] Rename Memos to Notes (mac).
+[jan] Add print memo button (mac).
+[jan] Show current category color in category color options screen
+      (Jan Kuipers <jrkuipers@lauwerscollege.nl>).
+[jan] Add ability to create/remove categories (mac).
+[jan] Add user preferences for the color of different categories (mac).
+[jan] Add Mnemo::addParameter().
+[jan] Add Greek translation (Stefanos I. Dimitriou <sdimitri@teiath.gr>).
+[jan] Add Slovak translation (Ivan Noris <vix@vazka.sk>).
+[jan] Add Norwegian Bokmaal translation (Torstein S. Hansen <huleboer@techbee.no>).
+[jan] Add Bulgarian translation (Miroslav Pendev <miro@cybershade.us>).
+[jan] Add Lithuanian translation (Darius Matuliauskas <darius@lnk.lt>).
+[jan] Replace <?= with <?php echo to remove the short_open_tags requirement (cjh).
+[jan] Add Danish translation (Martin List-Petersen <martin@list-petersen.dk>).
+
+
+----
+v1.0
+----
+
+[jan] Add Hungarian translation (Laszlo L. Tornoci <torlasz@xenia.sote.hu>).
+[jan] Add Simplified Chinese translation (Peter Wang <whw@oulink.net>).
+[jan] Add Czech translation (Pavel Chytil <pavel@chytil.tk>).
+[jan] Add Brazilian Portuguese translation (Antonio Dias <accdias-horde-i18n@sst.com.br>).
+[jan] Add Dutch translation (Jan Kuipers <jrkuipers@lauwerscollege.nl>).
+[jan] Add French translation (Thierry Thomas <thierry@pompo.net>).
+[jan] Add Finnish translation (Leena Heino <liinu@uta.fi>).
+[jan] Add Norwegian Nynorsk translation (Per-Stian Vatne <psv@orsta.org>).
+[jan] Add Traditional Chinese translation (Chih-Wei Yeh <cwyeh@ccca.nctu.edu.tw>).
+[jan] Add Swedish translation (Andreas Dahlén <andreas@dahlen.ws>).
+[jan] Add Spanish translation (Raul Alvarez Venegas <rav@tecoman.ucol.mx>).
+[jan] Add German translation.
+[jan] Add Portuguese translation (Nuno Loureiro <nuno@co.eth.pt>).
+[cjh] Initial Mnemo version, based on Nag.

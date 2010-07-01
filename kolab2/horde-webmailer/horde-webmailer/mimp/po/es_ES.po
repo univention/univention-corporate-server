@@ -1,0 +1,264 @@
+# Spanish translations for mimp package.
+# Traducciones al español para el paquete mimp.
+# Copyright 2008-2009 The Horde Project
+# This file is distributed under the same license as the mimp package.
+# Automatically generated, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: MIMP 1.1-rc3\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2009-02-20 15:31+0100\n"
+"PO-Revision-Date: 2008-05-24 09:29+0200\n"
+"Last-Translator: Manuel P. Ayala <mayala@unex.es>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: message.php:295
+#, php-format
+msgid "(%d of %d)"
+msgstr "(%d de %d)"
+
+#: lib/MIME/Contents.php:62
+msgid "Attachment"
+msgstr "Adjunto"
+
+#: templates/compose/compose.inc:52
+msgid "Bcc: "
+msgstr "Bcc: "
+
+#: templates/compose/compose.inc:49
+msgid "Cc: "
+msgstr "Cc:"
+
+#: config/.bak/prefs.php.dist:11
+msgid "Configure how messages are displayed."
+msgstr "Configura cómo se muestran los mensajes."
+
+#: compose.php:22
+msgid "Could not retrieve the message from the mail server."
+msgstr "No se puede obtener el mensaje del servidor."
+
+#: message.php:258
+msgid "Delete"
+msgstr "Eliminar"
+
+#: config/.bak/prefs.php.dist:23
+msgid "Display only the first 250 characters of a message initially?"
+msgstr "¿Mostrar inicialmente sólo los primeros 250 caracteres de un mensaje?"
+
+#: mailbox.php:189
+msgid "Do Not Sort by Thread"
+msgstr "No ordenar por Conversación"
+
+#: lib/MIME/Viewer/status.php:69
+msgid "ERROR: Your message could not be delivered."
+msgstr "ERROR: El mensaje no se pudo enviar."
+
+#: compose.php:88 templates/compose/compose.inc:59
+#: templates/compose/redirect.inc:19
+msgid "Expand Names"
+msgstr "Expandir nombres"
+
+#: mailbox.php:66
+msgid "First Page"
+msgstr "Primera página"
+
+#: folders.php:60 lib/MIMP.php:36
+msgid "Folders"
+msgstr "Carpetas"
+
+#: message.php:275
+msgid "Forward"
+msgstr "Reenviar"
+
+#: mailbox.php:171
+msgid "From"
+msgstr "De"
+
+#: templates/compose/compose.inc:39
+msgid "Identity"
+msgstr "Identidad"
+
+#: lib/MIMP.php:30
+msgid "Inbox"
+msgstr "Entrada"
+
+#: mailbox.php:71
+msgid "Last Page"
+msgstr "Última página"
+
+#: lib/MIMP.php:44
+msgid "Log out"
+msgstr "Salir"
+
+#: config/.bak/prefs.php.dist:9
+msgid "Mail Management"
+msgstr "Gestión de correo"
+
+#: message.php:252 message.php:296 compose.php:240 mailbox.php:201
+#: templates/mailbox/mailbox.inc:10 templates/compose/compose.inc:4
+#: templates/compose/redirect.inc:4 templates/folders/folders.inc:6
+#: templates/folders/folders.inc:29
+msgid "Menu"
+msgstr "Menú"
+
+#: compose.php:225
+msgid "Message Composition"
+msgstr "Redacción del mensaje"
+
+#: config/.bak/prefs.php.dist:10
+msgid "Message Viewing"
+msgstr "Visualización de mensajes"
+
+#: compose.php:142
+msgid "Message redirected successfully."
+msgstr "Se ha redirigido correctamente el mensaje."
+
+#: compose.php:215
+msgid "Message sent successfully."
+msgstr "Se envió correctamente el mensaje."
+
+#: templates/compose/compose.inc:56
+msgid "Message: "
+msgstr "Mensaje: "
+
+#: lib/MIMP.php:33
+msgid "New Message"
+msgstr "Redactar"
+
+#: message.php:283
+msgid "Next"
+msgstr "Siguiente"
+
+#: mailbox.php:70
+msgid "Next Page"
+msgstr "Próxima página"
+
+#: message.php:286
+msgid "Prev"
+msgstr "Anterior"
+
+#: mailbox.php:67
+msgid "Previous Page"
+msgstr "Página anterior"
+
+#: mailbox.php:164
+msgid "Purge Deleted"
+msgstr "Purgar eliminados"
+
+#: message.php:276 compose.php:129 templates/compose/redirect.inc:18
+msgid "Redirect"
+msgstr "Redirigir"
+
+#: mailbox.php:158 templates/folders/folders.inc:31
+msgid "Refresh"
+msgstr "Actualizar"
+
+#: message.php:265
+msgid "Reply"
+msgstr "Responder"
+
+#: message.php:272
+msgid "Reply All"
+msgstr "Responder a todos"
+
+#: message.php:268
+msgid "Reply to List"
+msgstr "Responder a la lista"
+
+#: compose.php:151 templates/compose/compose.inc:58
+msgid "Send"
+msgstr "Enviar"
+
+#: message.php:316
+msgid "Show All"
+msgstr "Mostrar todos"
+
+#: folders.php:56
+msgid "Show All Folders"
+msgstr "Mostrar todas las carpetas"
+
+#: folders.php:56
+msgid "Show Subscribed Folders"
+msgstr "Mostrar carpetas suscritas"
+
+#: mailbox.php:186
+msgid "Sort by Thread"
+msgstr "Ordenar por conversación"
+
+#: mailbox.php:172
+msgid "Subject"
+msgstr "Asunto"
+
+#: templates/compose/compose.inc:54
+msgid "Subject: "
+msgstr "Asunto: "
+
+#: lib/MIME/Viewer/status.php:70
+msgid "The mail server generated the following error message:"
+msgstr "El servidor de correo generó el siguiente mensaje de error:"
+
+#: lib/MIME/Viewer/status.php:79
+msgid "The mail server generated the following message:"
+msgstr "El servidor de correo generó el siguiente mensaje:"
+
+#: lib/MIME/Viewer/alternative.php:49
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "No hay partes alternativas que se puedan mostrar en línea."
+
+#: lib/MIME/Contents.php:91
+msgid "There are no parts that can be displayed inline."
+msgstr "No hay partes que se puedan mostrar en línea."
+
+#: lib/MIME/Viewer/plain.php:29 lib/MIME/Viewer/html.php:31
+msgid "There was an error displaying this message part"
+msgstr "Se produjo un error al mostrar esta parte del mensaje"
+
+#: mailbox.php:36
+msgid "There was an error viewing the requested message."
+msgstr "Se produjo un error viendo el mensaje solicitado."
+
+#: lib/MIME/Viewer/status.php:114
+msgid ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+msgstr ""
+"Este mensaje contiene información de estado de envío de correo, pero el "
+"formato del mensaje es desconocido."
+
+#: message.php:289
+#, php-format
+msgid "To %s"
+msgstr "Para %s"
+
+#: templates/compose/compose.inc:47 templates/compose/redirect.inc:16
+msgid "To: "
+msgstr "Para: "
+
+#: message.php:256
+msgid "Undelete"
+msgstr "Recuperar"
+
+#: message.php:41
+msgid "Undisclosed Recipients"
+msgstr "Destinatarios ocultos"
+
+#: message.php:248
+msgid "View Full Message"
+msgstr "Ver mensaje completo"
+
+#: lib/MIME/Viewer/status.php:78
+msgid "Your message was successfully delivered."
+msgstr "Se envió correctamente el mensaje."
+
+#: message.php:159 mailbox.php:117
+msgid "[No Subject]"
+msgstr "[Sin asunto]"
+
+#: templates/mailbox/mailbox.inc:7
+msgid "of"
+msgstr "de"

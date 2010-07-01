@@ -1,0 +1,743 @@
+# Turba Arabic Translation.
+# This file is distributed under the same license as the Turba package.
+# Copyright 2003 Platinum Inc. <pl@tinum.info>
+# Custom Web Applications <http://platinum-sy.com>
+# Platinum Development Team <devteam@platinum-sy.net>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba \n"
+"POT-Creation-Date: 2003-04-30 12:00+0200\n"
+"PO-Revision-Date: 2003-04-30 12:00+0200\n"
+"Last-Translator:  Platinum Development Team <devteam@platinum-sy.com>\n"
+"Language-Team: Arabic <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1256\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: config/prefs.php.dist:90
+msgid "\"Firstname Lastname\"  (ie. John Doe)"
+msgstr "\"ÇáÇÓã ¡ ÇááŞÈ\"  (ãËÇá: ãÍãÏ ÇáÚÑÈí)"
+
+#: config/prefs.php.dist:98
+msgid "\"Lastname, Firstname\" (ie. Doe, John)"
+msgstr "\"ÇááŞÈ ¡ ÇáÇÓã\"  (ãËÇá: ÇáÚÑÈí ãÍãÏ)"
+
+#: data.php:145 data.php:310
+#, c-format
+msgid "%s file successfully imported"
+msgstr "Êã ÇÓÊíÑÇÏ Çáãáİ %s ÈäÌÇÍ"
+
+#: templates/menu/menu.inc:11
+msgid "Add"
+msgstr "ÅÖÇİÉ"
+
+#: templates/add/select.inc:12
+msgid "Add Contact ..."
+msgstr "ÅÖÇİÉ ÇÊÕÇá..."
+
+#: templates/add/add.inc:10 addobject.php:19
+msgid "Add a new contact"
+msgstr "ÅÖÇİÉ ÇÊÕÇá ÌÏíÏ"
+
+#: addobjectaction.php:44
+msgid "Add failed"
+msgstr "ÎØÃ ÎáÇá ÇáÅÖÇİÉ"
+
+#: templates/browse/actions.inc:16
+msgid "Add to"
+msgstr "ÅÖÇİÉ Åáì"
+
+#: browse.php:31 config/prefs.php.dist:87
+msgid "Address Book Listing"
+msgstr "ŞÇÆãÉ ÏİÊÑ ÇáÚäÇæíä"
+
+#: lib/api.php:25 lib/api.php:179 lib/api.php:259
+msgid "Address book is read-only."
+msgstr "ÏİÊÑ ÇáÚäÇæíä ááŞÑÇÁÉ İŞØ"
+
+#: browse.php:202
+#, c-format
+msgid "Addresses in list: %s"
+msgstr "ÚÏÏ ÇáÚäÇæíä İí ÇáŞÇÆãÉ: %s"
+
+#: templates/menu/menu.inc:13 templates/advanced/head.inc:8 advanced.php:19
+msgid "Advanced Search"
+msgstr "ÈÍË ãÊŞÏã"
+
+#: config/attributes.php.dist:22
+msgid "Alias"
+msgstr "ÇÓã ÈÏíá"
+
+#: templates/browse/actions.inc:8
+msgid "All"
+msgstr "ÇáÌãíÚ"
+
+#: prefs.php:77
+msgid "An illegal value was specified."
+msgstr "Êã ÊÍÏíÏ ŞíãÉ ÛíÑ ãŞÈæáÉ"
+
+#: config/prefs.php.dist:75
+msgid "Ascending"
+msgstr "ÊÕÇÚÏí"
+
+#: templates/prefs/columnselect.inc:235
+msgid "Available Columns:"
+msgstr "ÇáÃÚãÏÉ ÇáãÊÇÍÉ:"
+
+#: templates/browse/actions.inc:44
+#, c-format
+msgid "Back to %s"
+msgstr "ÚæÏÉ Åáì %s"
+
+#: templates/menu/menu.inc:10
+msgid "Browse"
+msgstr "ÊÕİÍ"
+
+#: templates/edit/edit.inc:15 templates/edit/edit.inc:70
+msgid "Cancel"
+msgstr "ÅáÛÇÁ"
+
+#: templates/browse/column_headers.inc:7
+msgid "Checkbox"
+msgstr "ãÑÈÚ ÇÎÊíÇÑ"
+
+#: templates/prefs/columnselect.inc:229
+msgid "Choose the order of the columns to display in the address list."
+msgstr ""
+"ÇÎÊÑ ÊæÖÚ ÇáÃÚãÏÉ áÅÙåÇÑåÇ İí ŞÇÆãÉ ÇáÚäÇæíä"
+
+#: templates/search/head.inc:77 templates/advanced/results_head.inc:18
+#: templates/browse/actions.inc:46
+msgid "Clear Search"
+msgstr "ãÓÍ ÇáÈÍË"
+
+#: config/prefs.php.dist:12
+msgid "Column Options"
+msgstr "ÎíÇÑÇÊ ÇáÃÚãÏÉ"
+
+#: templates/data/import.inc:16 templates/data/export.inc:16
+msgid "Comma separated values"
+msgstr "Şíã ãİÕæáÉ ÈİÇÑÒÉ"
+
+#: config/attributes.php.dist:34
+msgid "Company"
+msgstr "ÇáÔÑßÉ"
+
+#: browse.php:80
+msgid "Contact removed from list."
+msgstr "ÇÊÕÇá ãÍĞæİ ãä ÇáŞÇÆãÉ."
+
+#: browse.php:225
+#, c-format
+msgid "Contents of %s"
+msgstr "ãÍÊæíÇÊ %s"
+
+#: config/prefs.php.dist:18
+msgid "Default Display"
+msgstr "ÇáÅÙåÇÑ ÇáÇİÊÑÇÖí"
+
+#: config/prefs.php.dist:77
+msgid "Default sorting direction:"
+msgstr "ÇÊÌÇå ÇáİÑÒ ÇáÇİÊÑÇÖí:"
+
+#: templates/display/display.inc:20 templates/display/display.inc:86
+#: templates/browse/actions.inc:34
+msgid "Delete"
+msgstr "ÍĞİ"
+
+#: deleteobject.php:37
+msgid "Deletion failed"
+msgstr "ÎØÃ ÎáÇá ÇáÍĞİ"
+
+#: config/prefs.php.dist:76
+msgid "Descending"
+msgstr "ÊäÇÒáí"
+
+#: advanced.php:46
+msgid "Directory"
+msgstr "ãÌáÏ"
+
+#: config/prefs.php.dist:11 config/prefs.php.dist:17 config/prefs.php.dist:23
+msgid "Display Options"
+msgstr "ÎíÇÑÇÊ ÇáÅÙåÇÑ"
+
+#: templates/edit/edit.inc:10 templates/display/display.inc:19
+#: templates/display/display.inc:85
+msgid "Edit"
+msgstr "ÊÍÑíÑ"
+
+#: templates/search/row.inc:48 templates/browse/contactrow.inc:55
+#: templates/browse/contactrow.inc:60
+#, c-format
+msgid "Edit '%s'"
+msgstr "ÊÍÑíÑ « %s »"
+
+#: config/attributes.php.dist:26
+msgid "Email"
+msgstr "ÈÑíÏ ÅáßÊÑæäí"
+
+#: status.php:19
+msgid "Error"
+msgstr "ÎØÃ"
+
+#: lib/api.php:265 lib/api.php:269
+msgid "Error while searching directory."
+msgstr "ÍÕá ÎØÃ ÎáÇá ÇáÈÍË İí ÇáãÌáÏÇÊ"
+
+#: templates/miniwindow/menu.inc:1
+msgid "Exit Address Book"
+msgstr "ÎÑæÌ ãä ÏİÊÑ ÇáÚäÇæíä"
+
+#: templates/data/export.inc:27
+msgid "Export"
+msgstr "ÊÕÏíÑ"
+
+#: templates/data/export.inc:7
+msgid "Export Address Book"
+msgstr "ÊÕÏíÑ ÏİÊÑ ÇáÚäÇæíä"
+
+#: browse.php:59
+msgid "Failed to access the specified address book."
+msgstr "ÎØÃ İí İÊÍ ÏİÊÑ ÇáÚäÇæíä ÇáãØáæÈ."
+
+#: browse.php:206
+msgid "Failed to browse list"
+msgstr "ÎØÃ İí ÊÕİÍ ÇáŞÇÆãÉ"
+
+#: browse.php:239
+msgid "Failed to browse the directory"
+msgstr "ÎØÃ İí ÊÕİÍ ÇáãÌáÏ"
+
+#: lib/api.php:82 lib/api.php:308 lib/api.php:356 lib/api.php:399
+#: advanced.php:63 data.php:96 data.php:230 data.php:324 data.php:378
+#: data.php:445 data.php:481 search.php:47 addobject.php:44
+msgid "Failed to connect to the specified directory."
+msgstr "ÎØÃ İí ÇáÇÊÕÇá ÈÇáãÌáÏ ÇáãØáæÈ."
+
+#: advanced.php:85 data.php:449 data.php:485 search.php:63
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "ÎØÃ ÎáÇá ÇáÈÍË İí ÇáãÌáÏ: %s"
+
+#: lib/api.php:320 lib/api.php:367
+msgid "Failed to search the specified directory."
+msgstr "ÎØÃ ÎáÇá ÇáÈÍË İí ÇáãÌáÏ ÇáãØáæÈ."
+
+#: config/attributes.php.dist:58
+msgid "Fax"
+msgstr "İÇßÓ"
+
+#: templates/search/head.inc:37 templates/browse/search.inc:65
+msgid "Find"
+msgstr "ÃæÌÏ"
+
+#: templates/search/head.inc:50 templates/browse/search.inc:78
+msgid "From"
+msgstr "ãä"
+
+#: templates/browse/contactrow.inc:70
+msgid "Group"
+msgstr "ãÌãæÚÉ"
+
+#: templates/menu/menu.inc:35
+msgid "Help"
+msgstr "ÇáãÓÇÚÏÉ"
+
+#: config/attributes.php.dist:38
+msgid "Home Address"
+msgstr "ÚäæÇä ÇáãäÒá"
+
+#: config/attributes.php.dist:46
+msgid "Home Phone"
+msgstr "åÇÊİ ÇáãäÒá"
+
+#: templates/data/import.inc:28
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr ""
+"ÎáÇá ÇÓÊíÑÇÏ ãáİ 'CVS': åá íÍÊæí ÇáÓØÑ ÇáÃæá Úáì ÇÓãÇÁ ÇáÍŞæá¿"
+
+#: data.php:157
+msgid "Illegal or malformed form data."
+msgstr "ÊäÓíŞ ÛíÑ ãŞÈæá Ãæ ÎØÃ İí ÇáÈíÇäÇÊ."
+
+#: templates/data/import.inc:35
+msgid "Import"
+msgstr "ÇÓÊíÑÇÏ"
+
+#: templates/data/import.inc:7
+msgid "Import Address Book"
+msgstr "ÇÓÊíÑÇÏ ÏİÊÑ ÚäÇæíä"
+
+#: templates/menu/menu.inc:17
+msgid "Import/Export"
+msgstr "ÇÓÊíÑÇÏ/ÊÕÏíÑ"
+
+#: data.php:510
+msgid "Import/Export Addressbooks"
+msgstr "ÇÓÊíÑÇÏ/ÊÕÏíÑ ÏİÇÊÑ ÚäÇæíä"
+
+#: lib/api.php:19 lib/api.php:165 lib/api.php:218 lib/api.php:241
+msgid "Invalid address book."
+msgstr "ÏİÊÑ ÚäÇæíä ÛíÑ ÕÍíÍ"
+
+#: lib/api.php:173 lib/api.php:245
+msgid "Invalid e-mail address."
+msgstr "ÚäæÇä ÈÑíÏ ÅáßÊÑæäí ÛíÑ ÕÍíÍ"
+
+#: lib/api.php:292 lib/api.php:384
+msgid "Invalid email."
+msgstr "ÈÑíÏ ÅáßÊÑæäí ÛíÑ ÕÍíÍ"
+
+#: lib/api.php:253
+msgid "Invalid entry."
+msgstr "ÎØÃ İí Şíã ÇáÅÏÎÇá"
+
+#: lib/api.php:169 lib/api.php:249
+msgid "Invalid name."
+msgstr "ÎØÃ İí ÇáÇÓã"
+
+#: config/prefs.php.dist:6
+msgid "Language"
+msgstr "ÇááÛÉ"
+
+#: templates/search/head.inc:44 templates/browse/search.inc:72
+msgid "Matching"
+msgstr "ãØÇÈŞÉ ÕÍíÍÉ"
+
+#: status.php:32
+msgid "Message"
+msgstr "ÑÓÇáÉ"
+
+#: config/attributes.php.dist:54
+msgid "Mobile Phone"
+msgstr "ÇáåÇÊİ ÇáãÍãæá"
+
+#: lib/api.php:327 lib/api.php:404
+msgid "More than 1 entry returned."
+msgstr "Êã ÅÑÌÇÚ ÃßËÑ ãä ŞíãÉ"
+
+#: templates/data/import.inc:23
+msgid "Mulberry Address Book"
+msgstr "ÏİÊÑ ÚäÇæíä ÇáÊæÊí"
+
+#: data.php:364
+msgid "Mulberry addressbook sucessfully imported"
+msgstr "Êã ÇÓÊíÑÇÏ ÏİÊÑ ÚäÇæíä ÇáÊæÊí ÈäÌÇÍ"
+
+#: config/attributes.php.dist:18
+msgid "Name"
+msgstr "ÇÓã"
+
+#: config/prefs.php.dist:24
+msgid "Name Format"
+msgstr "ÊäÓíŞ ÇáÇÓã"
+
+#: templates/browse/actions.inc:20
+msgid "New List"
+msgstr "ŞÇÆãÉ ÌÏíÏÉ"
+
+#: lib/api.php:329 lib/api.php:411
+#, c-format
+msgid "No %s entry found for %s."
+msgstr "áÇ ÊæÌÏ ÈíÇäÇÊ %s ãä ÃÌá %s"
+
+#: templates/browse/actions.inc:9
+msgid "None"
+msgstr "áÇíæÌÏ"
+
+#: templates/add/noadd.inc:9
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"áÇíæÌÏ ÏİÊÑ ÚäÇæíä ãÚÏ áÅÏÎÇá "
+"ÈíÇäÇÊ ÌÏíÏÉ. ÅĞÇ ßäÊ ÊÚÊŞÏ Ãäå ÎØÃ ãÇ¡ ÇáÑÌÇÁ ÅÈáÇÛ "
+"ãÏíÑ ÇáäÙÇã."
+
+#: config/attributes.php.dist:62
+msgid "Notes"
+msgstr "ãáÇÍÙÇÊ"
+
+#: templates/menu/menu.inc:22
+msgid "Options"
+msgstr "ÎíÇÑÇÊ"
+
+#: templates/data/import.inc:20
+msgid "Outlook"
+msgstr "ÃæÊáæß"
+
+#: templates/data/import.inc:24
+msgid "Pine Address Book"
+msgstr "ÏİÊÑ ÇáÚäÇæíä ÇáÕäæÈÑí"
+
+#: data.php:418
+msgid "Pine addressbook sucessfully imported"
+msgstr "Êã ÇÓÊíÑÇÏ ÏİÊÑ ÇáÚäÇæíä ÇáÕäæÈÑí ÈäÌÇÍ"
+
+#: templates/add/select.inc:6
+msgid "Please choose an address book to add a contact to."
+msgstr ""
+"ÇáÑÌÇÁ ÇÎÊíÇÑ ÏİÊÑ ÚäÇæíä áÅÖÇİÉ ÇÊÕÇá Åáíå."
+
+#: templates/browse/javascript.inc:18
+msgid "Please enter the name of the new list:"
+msgstr "ÇáÑÌÇÁ ÅÏÎÇá ÇÓã ÇáŞÇÆãÉ ÇáÌÏíÏÉ:"
+
+#: templates/prefs/columnselect.inc:220
+msgid "Please select a directory:"
+msgstr "ÇáÑÌÇÁ ÇÎÊíÇÑ ãÌáÏ:"
+
+#: templates/menu/menu.inc:27
+msgid "Problem?"
+msgstr "ãÔßáÉ¿"
+
+#: templates/browse/actions.inc:34
+msgid "Remove from this list"
+msgstr "ÇÍĞİ ãä ÇáŞÇÆãÉ"
+
+#: templates/add/add.inc:14 templates/add/add.inc:69
+#: templates/edit/edit.inc:14 templates/edit/edit.inc:69
+#: templates/advanced/results_head.inc:5 templates/advanced/head.inc:15
+msgid "Reset"
+msgstr "ÅÚÇÏÉ ÊåíÆÉ"
+
+#: templates/add/add.inc:13 templates/add/add.inc:68
+msgid "Save"
+msgstr "ÍİÙ"
+
+#: templates/edit/edit.inc:13 templates/edit/edit.inc:68
+msgid "Save Changes"
+msgstr "ÍİÙ ÇáÊÛííÑÇÊ"
+
+#: templates/menu/menu.inc:12 templates/search/head.inc:31
+#: templates/browse/search.inc:59 search.php:18 config/prefs.php.dist:88
+msgid "Search"
+msgstr "ÈÍË"
+
+#: templates/advanced/results_head.inc:15 browse.php:185
+msgid "Search Results"
+msgstr "äÊÇÆÌ ÇáÈÍË"
+
+#: templates/search/head.inc:74
+msgid "Search&nbsp;Results"
+msgstr "äÊÇÆÌ ÇáÈÍË"
+
+#: templates/browse/actions.inc:7
+msgid "Select"
+msgstr "ÇÎÊíÇÑ"
+
+#: templates/browse/select.inc:8
+msgid "Select Address Book"
+msgstr "ÇÎÊÑ ÏİÊÑ ÚäÇæíä"
+
+#: templates/browse/actions.inc:18
+msgid "Select List"
+msgstr "ÇÎÊÑ ŞÇÆãÉ"
+
+#: templates/data/import.inc:29
+msgid "Select the destination to import to:"
+msgstr "ÇÎÊÑ ÇáæÌåÉ ÇáÊí ÊÑíÏ ÇáÅÓÊíÑÇÏ ÅáíåÇ:"
+
+#: templates/data/import.inc:33
+msgid "Select the file to import:"
+msgstr "ÇÎÊÑ ãáİ áíÊã ÇÓÊíÑÇÏå:"
+
+#: templates/data/export.inc:14
+msgid "Select the format to export to:"
+msgstr "ÇÎÊÑ ÊäÓíŞ ÇáÊÕÏíÑ:"
+
+#: templates/data/import.inc:14
+msgid "Select the format to import from:"
+msgstr "ÇÎÊÑ ÊäÓíŞ ÇáÇÓÊíÑÇÏ ãä:"
+
+#: config/prefs.php.dist:97
+msgid "Select the format used to display names:"
+msgstr "ÇÎÊÑ ÊäÓíŞ ÅÙåÇÑ ÇáÃÓãÇÁ:"
+
+#: templates/data/export.inc:23
+msgid "Select the source to export from:"
+msgstr "ÇÎÊÑ ÇáãÕÏÑ ááÊÕÏíÑ ãäå:"
+
+#: config/prefs.php.dist:19
+msgid "Select view to display by default."
+msgstr "ÇÎÊÑ Ôßá ÇáÅÙåÇÑ ÇáÇİÊÑÇÖí."
+
+#: config/prefs.php.dist:13
+msgid "Select which fields to display in the address lists."
+msgstr "ÇÎÊÑ ÍŞæáÇğ áíÊã ÅÙåÇÑåÇ İí ŞÇÆãÉ ÇáÚäÇæíä."
+
+#: config/prefs.php.dist:25
+msgid "Select which format to display names."
+msgstr "ÇÎÊÑ ÊäÓíŞ ÅÙåÇÑ ÇáÃÓãÇÁ."
+
+#: config/prefs.php.dist:34
+msgid "Select your preferred language:"
+msgstr "ÇÎÊÑ áÛÊß ÇáãİÖáÉ:"
+
+#: templates/prefs/columnselect.inc:245
+msgid "Selected Columns:"
+msgstr "ÇÎÊÑ ÃÚãÏÉ:"
+
+#: templates/display/display.inc:53
+#, c-format
+msgid "Send mail to %s"
+msgstr "ÃÑÓá ÑÓÇáÉ Åáì %s"
+
+#: config/prefs.php.dist:7
+msgid "Set your preferred display language."
+msgstr "ÇÎÊÑ áÛÉ ÇáÅÙåÇÑ ÇáãİÖáÉ."
+
+#: templates/browse/select.inc:13
+msgid "Show"
+msgstr "ÅÙåÇÑ"
+
+#: templates/browse/actions.inc:42
+msgid "Show All"
+msgstr "ÅÙåÇÑ Çáßá"
+
+#: templates/browse/actions.inc:41
+msgid "Show Contacts"
+msgstr "ÅÙåÇÑ ÇáÇÊÕÇáÇÊ"
+
+#: templates/browse/actions.inc:40
+msgid "Show Lists"
+msgstr "ÅÙåÇÑ ÇáŞæÇÆã"
+
+#: templates/index/notconfigured.inc:13
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Certains fichiers de configuration de Turba sont absents :"
+
+#: templates/browse/column_headers.inc:9
+#: templates/browse/column_headers.inc:14
+msgid "Sort Direction"
+msgstr "ÇÊÌÇå ÇáİÑÒ"
+
+#: status.php:23
+msgid "Success"
+msgstr "Êã ÈäÌÇÍ"
+
+#: templates/data/import.inc:18 templates/data/export.inc:18
+msgid "Tab separated values"
+msgstr "Şíã ãİÕæáÉ ÈãÓÇÍÉ"
+
+#: data.php:77
+msgid "The data got lost"
+msgstr "ÇáÈíÇäÇÊ ãİŞæÏÉ"
+
+#: data.php:37 data.php:331 data.php:385
+msgid "The data got lost."
+msgstr "Êã İŞÏÇä ÇáÈíÇäÇÊ"
+
+#: data.php:426
+msgid "The file contained no data."
+msgstr "Çáãáİ ÎÇá ãä ÇáÈíÇäÇÊ."
+
+#: browse.php:55
+msgid "There are no browseable address books."
+msgstr "áÇíæÌÏ ÏİÊÑ ÚäÇæíä ŞÇÈá ááÊÕİÍ."
+
+#: templates/add/noadd.inc:4
+msgid "There are no writeable address books."
+msgstr "áÇíæÌÏ ÏİÊÑ ÚäÇæíä ŞÇÈá ááßÊÇÈÉ."
+
+#: data.php:154
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"ÊæÌÏ ãÔßáÉ İí ÊÍãíá Çáãáİ. ŞÏ íßæä ÍÌã Çáãáİ ÃßÈÑ ãä "
+" ÇáÍÌã ÇáÃŞÕì ÇáãÓãæÍ Èå."
+
+#: addobjectaction.php:42
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"ÍÕá ÎØÃ ÎáÇá ÇáÅÖÇİÉ. ÇáÑÌÇÁ ÓÄÇá ãÏíÑ ÇáäÙÇã "
+"áØáÈ ÇáãÓÇÚÏÉ."
+
+#: browse.php:143
+msgid "There was an error creating a new list."
+msgstr "ÍÕá ÎØÃ ÎáÇá ÅäÔÇÁ ŞÇÆãÉ ÌÏíÏÉ."
+
+#: browse.php:87
+msgid "There was an error deleting this object."
+msgstr "ÍÕá ÎØÃ ÎáÇá ÇáÍĞİ."
+
+#: deleteobject.php:35
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"ÍÕá ÎØÃ ÎáÇá ÇáÍĞİ. ÇáÑÌÇÁ ÓÄÇá ãÏíÑ ÇáäÙÇã "
+"áØáÈ ÇáãÓÇÚÏÉ."
+
+#: browse.php:220
+msgid "There was an error displaying the select List"
+msgstr "ÍÕá ÎØÃ ÎáÇá ÅÙåÇÑ ÇáŞÇÆãÉ ÇáãÎÊÇÑÉ."
+
+#: data.php:131 data.php:308 data.php:362 data.php:416
+msgid "There was an error importing the data."
+msgstr "ÍÕá ÎØÃ ÎáÇá ÇÓÊíÑÇÏ ÇáÈíÇäÇÊ."
+
+#: data.php:176 data.php:204 data.php:321 data.php:375
+msgid "There was an error importing the uploaded file"
+msgstr "ÍÕá ÎØÃ ÎáÇá ÇÓÊíÑÇÏ Çáãáİ ÇáãÍãá."
+
+#: lib/api.php:30 lib/api.php:53
+msgid "There was an error importing the vCard data."
+msgstr "ÍÕá ÎØÃ ÎáÇá ÇÓÊíÑÇÏ ÈíÇäÇÊ ãä vCard"
+
+#: browse.php:78
+msgid "There was an error removing this object."
+msgstr "ÍÕá ÎØÃ ÎáÇá ÇáÍĞİ."
+
+#: templates/index/notconfigured.inc:32
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"íÊÍßã åĞÇ Çáãáİ ÈÇáÅÚÏÇÏÇÊ ÇáÇİÊÑÇÖíÉ áÈÑíãÌÇÊ ÊæÑÈÇ¡ ßãÇ "
+"íÍÏÏ ÇáÅÚÏÇÏÇÊ ÇáÊí íãßä ááãÓÊÎÏã ÊÚÏíáåÇ."
+
+#: templates/index/notconfigured.inc:25
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"íÊÍßã åĞÇ Çáãáİ ÈáæÇÆÍ ÇáÃáæÇä æÇáÎØæØ ÅÖÇİÉ "
+"Ãæ ÈÏáÇğ ãä ÅÚÏÇÏÇÊ åæÑÏí 'Horde'."
+
+#: templates/index/notconfigured.inc:46
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"íÍÊæí åĞÇ Çáãáİ Úáì ÇáÊÚÑíİÇÊ ÇáÚÇãÉ áÊæÑÈÇ ÇÓãÇÁ ÇáãßæäÇÊ æäãØåÇ¡ ÚäÇæíä "
+"ÇáÈÑíÏ ¡ ÃáÎ."
+
+#: templates/index/notconfigured.inc:39
+msgid "This file defines the list of available sources for Turba."
+msgstr "íÍÊæí åĞÇ Çáãáİ Úáì ŞÇÆãÉ ÇáãÕÇÏÑ ÇáãÊÇÎÉ áÊæÑÈÇ."
+
+#: templates/index/notconfigured.inc:18
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"åĞÇ ãáİ ÇáÅÚÏÇÏÇÊ ÇáÑÆíÓí áÊæÑÈÇ æíÍæí ãÓÇÑÇÊ æ "
+"ÎíÇÑÇÊ ÌãíÚ ÈíÑãÌÇÊ ÊæÑÈÇ"
+
+#: prefs.php:86
+msgid "This number must be at least one."
+msgstr "íÌÈ Ãä íßæä åĞÇ ÇáÑŞã ÃßÈÑ ãä ÇáÕİÑ."
+
+#: lib/api.php:271
+#, c-format
+msgid "This person already has a %s entry in the address book."
+msgstr "íÍÊæí ÏİÊÑ ÇáÚäÇæíä ÅÏÎÇáÇÊ ÚÏÏ %s áåĞÇ ÇáÔÎÕ ."
+
+#: lib/api.php:41 lib/api.php:185
+msgid "This person is already in your address book."
+msgstr "åĞÇ ÇáÔÎÕ ãÏÑÌ İí ÏİÊÑ ÇáÚäÇæíä"
+
+#: prefs.php:84
+msgid "This value must be a number."
+msgstr "íÌÈ Ãä Êßæä åĞå ÇáŞíãÉ ÑŞãÇğ."
+
+#: config/attributes.php.dist:30
+msgid "Title"
+msgstr "ÇááŞÈ"
+
+#: templates/index/notconfigured.inc:4
+msgid "Turba is not properly configured"
+msgstr "íæÌÏ ÎØÃ İí ÅÚÏÇÏÇÊ ÊæÑÈÇ"
+
+#: lib/Driver.php:44
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "ÊÚĞÑ ÊÍãíá ÊÚÑíİ: %s."
+
+#: lib/api.php:46
+msgid "Unnamed Contact"
+msgstr "ÇÊÕÇá Ïæä ÇÓã"
+
+#: prefs.php:143
+msgid "User Options"
+msgstr "ÎíÇÑÇÊ ÇáãÓÊÎÏã"
+
+#: templates/display/display.inc:77
+msgid "View map"
+msgstr "ÅÙåÇÑ ÇáÎÑíØÉ"
+
+#: config/prefs.php.dist:86
+msgid "View to display by default:"
+msgstr "Ôßá ÇáÅÙåÇÑ ÇáÇİÊÑÇÖí:"
+
+#: status.php:27
+msgid "Warning"
+msgstr "ÊÍĞíÑ"
+
+#: config/attributes.php.dist:42
+msgid "Work Address"
+msgstr "åÇÊİ ÇáÚãá"
+
+#: config/attributes.php.dist:50
+msgid "Work Phone"
+msgstr "åÇÊİ ÇáÚãá"
+
+#: templates/browse/javascript.inc:18
+msgid "You are creating a distribution list."
+msgstr "íÊ ÅäÔÇÁ ŞÇÆãÉ ÊæÒíÚ."
+
+#: data.php:44
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr ""
+"áã íÊã ÊÍÏíÏ ÏáÇáÇÊ ÇáÍŞæá ãä Çáãáİ ÇáãÓÊæÑÏ áÊÏá Úáì ÇáÍŞæá ÇáãØÇÈŞÉ "
+"İí ÊæÑÈÇ."
+
+#: templates/browse/javascript.inc:33
+msgid "You must select at least one contact first."
+msgstr "íÌÈ ÊÍÏíÏ ÇÊÕÇá æÇÍÏ Úáì ÇáÃŞá."
+
+#: config/prefs.php.dist:5
+msgid "Your Information"
+msgstr "ÇáÈíÇäÇÊ ÇáÔÎÕíÉ"
+
+#: prefs.php:128
+msgid "Your options have been updated."
+msgstr "Êã ÊÍÏíË ÇáÎíÇÑÇÊ."
+
+#: templates/search/row.inc:48 templates/browse/contactrow.inc:43
+#: templates/browse/contactrow.inc:61
+msgid "[Edit]"
+msgstr "[ÊÍÑíÑ]"
+
+#: templates/prefs/columnselect.inc:239
+msgid "add column"
+msgstr "ÅÖÇİÉ ÚãæÏ"
+
+#: config/prefs.php.dist:43
+msgid "from"
+msgstr "ãä"
+
+#: templates/prefs/columnselect.inc:249
+msgid "move left"
+msgstr "ÊÍÑíß äÍæ ÇáíÓÇÑ"
+
+#: templates/prefs/columnselect.inc:251
+msgid "move right"
+msgstr "ÊÍÑíß äÍæ Çáíãíä"
+
+#: templates/prefs/columnselect.inc:241
+msgid "remove column"
+msgstr "ÍĞİ ÚãæÏ"
+
+#: templates/data/import.inc:21 templates/data/export.inc:21
+msgid "vCard"
+msgstr "vCard"

@@ -1,0 +1,1909 @@
+<?xml version="1.0"?>
+<!-- $Horde: horde/config/conf.xml,v 1.74.2.88 2009-09-02 08:21:46 jan Exp $ -->
+<configuration>
+ <configtab name="general" desc="General">
+  <configheader>General Horde Settings</configheader>
+  <configboolean name="vhosts" desc="Enable virtual host configuration? If you
+  want to use a single Horde installation for different virtual hosts, you can
+  create separate configuration files for each virtual host,
+  e.g. &lt;code&gt;conf-www.example.com.php&lt;/code&gt; or
+  &lt;code&gt;prefs-mail.example.com.php&lt;/code&gt;. The global
+  configuration files are always loaded first, and virtual host specific files
+  are not required.">false</configboolean>
+  <configheader>PHP Settings</configheader>
+  <configphp name="debug_level" desc="The value to set
+  error_reporting() to.
+  See http://www.php.net/manual/function.error-reporting.php for more
+  information and possible values.">E_ALL &amp; ~E_NOTICE</configphp>
+  <configinteger name="max_exec_time" desc="If we need to perform a long
+  operation, what should we set max_execution_time to (in seconds)? 0 means no
+  limit; however, a value of 0 will cause a warning if you are running in safe
+  mode. See http://www.php.net/manual/function.set-time-limit.php for more
+  information.">0</configinteger>
+  <configboolean name="compress_pages" desc="If this option is set to true, and
+  you have the php zlib extension, pages over a certain size will be compressed
+  and sent to the browser as gzip-encoded data in order to save
+  bandwidth. There is a CPU-usage penalty to pay for this, but the decrease in
+  page size can be dramatic (70k to under 10k for a full mailbox page), and is
+  more than worth it over anything but an extremely fast
+  link.">true</configboolean>
+  <configsecret name="secret_key" desc="Secret key for generating signed
+  messages from this server. This is a random string unique to this Horde
+  installation."></configsecret>
+  <configinteger name="umask" octal="true" desc="What umask should we run
+  with? This will affect the permissions on any temporary files that are
+  created. This value is an integer.">077</configinteger>
+  <configstring name="tmpdir" required="false" desc="If you want to use a
+  temporary directory other than the system default or the one specified in
+  php's upload_tmp_dir value, enter it here."/>
+  <configheader>URL Settings</configheader>
+  <configenum name="use_ssl" quote="false" desc="Determines how we generate
+  full URLs (for location headers and such).">2
+   <values>
+    <value desc="Assume that we are not using SSL and never generate https
+    URLs.">0</value>
+    <value desc="Assume that we are using SSL and always generate https
+    URLs.">1</value>
+    <value desc="Attempt to auto-detect, and generate URLs
+    appropriately">2</value>
+    <value desc="Assume that we are not using SSL and generate https URLs only
+    for login.">3</value>
+   </values>
+  </configenum>
+  <configsection name="server">
+   <configphp name="name" desc="What server name should we use? You'll probably
+   know if you need to change this default; only in situations where you need
+   to override what Apache thinks the server name is.">
+   $_SERVER['SERVER_NAME']</configphp>
+   <configphp name="port" required="false" desc="What port number is the
+   webserver running on?  Again, you shouldn't need to change the default, and
+   you probably know it if you do. The exception is if you have chosen to
+   always generate https URLs, as described above."/>
+  </configsection>
+  <configsection name="urls">
+   <configinteger name="token_lifetime" desc="This is the length of time in
+   minutes that links protected with request tokens (to prevent cross-site
+   request forgery) will be valid. Higher values may make your users more
+   vulnerable to these attacks.">30</configinteger>
+   <configinteger name="hmac_lifetime" desc="This is the length of time in
+   minutes that links signed with HMACs (to prevent forged URL parametes)
+   will be valid. Higher values may make your users more vulnerable to
+   forgery or phishing.">30</configinteger>
+
+   <configenum name="pretty" required="false" desc="Use pretty URLs?">false
+    <values>
+     <value desc="No (GET-based URLs)">false</value>
+     <value desc="URL rewriting (mod_rewrite, lighttpd rules, etc.)">rewrite</value>
+    </values>
+   </configenum>
+  </configsection>
+  <configlist name="safe_ips" required="false" desc="A list of IP subnets
+  that are considered safe, e.g. to transfer encryption passphrases without
+  requiring an HTTPS connection. (Example: 192.168.0.0, 10.0.0.0) To consider
+  all connections to be safe (e.g. when SSL is handled by an SSL crypto card
+  and not by the webserver) this value should be '*'."/>
+
+  <configheader>Session Settings</configheader>
+  <configsection name="session">
+   <configstring name="name" desc="What name should we use for the session
+   that Horde applications share? If you want to share sessions with other
+   applications on your webserver, you will need to make sure that they are
+   using the same session name.  Note: Session names must consist of only
+   alphanumeric characters.">Horde</configstring>
+   <configboolean name="use_only_cookies" desc="Should we only allow session
+   information to be stored in a session cookie and not be passed by URL (GET)
+   parameters? This is on by default because passing session information in
+   the URL is a security risk. &lt;b&gt;Consider carefully before turning it
+   off&lt;/b&gt;. Cookies must be working and enabled in the browser though, or
+   you won't be able to login to Horde. If false, session information will be
+   passed via both the URL and cookies.">true</configboolean>
+   <configstring name="cache_limiter" desc="What caching level should we use
+   for the session? DO NOT CHANGE THIS UNLESS YOU &lt;strong&gt;REALLY
+   &lt;/strong&gt; KNOW WHAT YOU ARE DOING. Setting this to anything other
+   than 'nocache' will almost certainly result in severely broken script
+   behavior.">nocache</configstring>
+   <configinteger name="timeout" desc="How long should sessions last (in
+   seconds)? 0 means that the session ends when the user closes their browser.
+   Set other values with care - see
+   http://www.php.net/manual/en/function.session-set-cookie-params.php.">
+   0</configinteger>
+  </configsection>
+  <configsection name="cookie">
+   <configphp name="domain" desc="What domain should we set cookies from? If
+   you have a cluster that needs to share cookies, this might be '.example.com'
+   - the leading '.' is important. If you only use session cookies (see
+   above), but you are running Horde on an intranet server without a domain
+   part, i.e. http//horde/, you need to set this value to ''. Most likely,
+   though, you won't have to change the
+   default.">$_SERVER['SERVER_NAME']</configphp>
+   <configstring name="path" desc="What path should we set cookies to? This
+   should match where Horde is on your webserver - if it is at /horde, then
+   this should be '/horde'. If Horde is installed as the document root, then
+   this needs to be '/' - NOT ''.&lt;br /&gt;&lt;strong&gt;BUT&lt;/strong&gt;,
+   if IE will be used to access Horde modules, you should read this first
+   (discussing issues with IE's Content Advisor):
+   http://lists.horde.org/archives/imp/Week-of-Mon-20030113/029149.html">
+   /horde</configstring>
+  </configsection>
+ </configtab>
+
+ <configtab name="sql" desc="Database">
+  <configsection name="sql">
+   <configheader>Database Settings</configheader>
+   <configdescription>&lt;strong&gt;NOTE:&lt;/strong&gt; These are only the
+   &lt;em&gt;default&lt;/em&gt; values for any database driven backends. You
+   still need to configure the different systems like "Preferences" or
+   "DataTree" to actually &lt;em&gt;use&lt;/em&gt; a database
+   backend.</configdescription>
+   <configsql switchname="phptype" baseconfig="true" />
+  </configsection>
+ </configtab>
+
+ <configtab name="auth" desc="Authentication">
+  <configsection name="auth">
+   <configheader>Authentication Settings</configheader>
+   <configlist name="admins" desc="Which users should be treated as
+   administrators (root, super-user) by Horde?" required="false"/>
+   <configboolean name="checkip" desc="Should we always store and validate
+   the IP address of the client (as seen by the web server) in the session?
+   Doing so will help increase security by making it harder for an attacker
+   from another host to hijack the session.">true</configboolean>
+   <configboolean name="checkbrowser" desc="Should we always store and
+   validate the browser string of the client (as seen by the web server) in
+   the session? Doing so will help increase security by making it harder for
+   an attacker to hijack the session.">true</configboolean>
+   <configstring name="alternate_login" desc="If this is not false, it is
+   assumed to be the URL of an alternate login screen which will be used in
+   place of horde's default login screen.">false</configstring>
+   <configstring name="redirect_on_logout" desc="If this is not false, it is
+   assumed to be the URL of an alternate logout page which users will be sent
+   to when they log out.">false</configstring>
+   <configenum name="list_users" desc="If the authentication backend is
+   capable of listing all users, should we show this list to the users,
+   e.g. in the permissions screen?">list
+    <values>
+     <value desc="Show a drop down list">list</value>
+     <value desc="Show an input field">input</value>
+     <value desc="Show both, a list and an input field">both</value>
+    </values>
+   </configenum>
+
+   <configswitch name="driver" desc="What backend should we use for
+   authenticating users to Horde?">
+
+    <case name="application" desc="Let a Horde application handle
+    authentication">
+     <configsection name="params">
+      <configenum name="app" desc="The application which is providing
+      authentication">imp
+       <values>
+        <configspecial name="list-horde-apps"/>
+       </values>
+      </configenum>
+     </configsection>
+    </case>
+
+    <case name="auto" desc="Automatic authentication as a certain user">
+     <configsection name="params">
+      <configstring name="username" desc="The username to authenticate
+      everyone as">horde_user</configstring>
+      <configstring name="password" desc="The password to use for the user's
+      credentials" required="false"/>
+      <configboolean name="requestuser" desc="Allow username to be passed by
+      GET, POST or cookie?">false</configboolean>
+     </configsection>
+    </case>
+
+    <case name="composite" desc="Composite authentication">
+     <configdescription>
+      This authentication driver needs manual configuration not possible
+      through this interface. Add the appropriate configuration lines at the
+      end of the generated configuration file. See
+      http://wiki.horde.org/AuthCompositeHowTo for details.
+     </configdescription>
+    </case>
+
+    <case name="ftp" desc="FTP authentication">
+     <configsection name="params">
+      <configstring name="hostspec" desc="The hostname or IP address of the
+      FTP server">localhost</configstring>
+      <configinteger name="port" desc="The server port to connect to">
+      21</configinteger>
+     </configsection>
+    </case>
+
+    <case name="http" desc="HTTP (Basic Authentication/.htpasswd)
+    authentication">
+     <configsection name="params">
+      <configstring name="htpasswd_file" required="false" desc="The location of
+      the htpasswd file containing the user names and passwords"/>
+      <configenum name="encryption" desc="The password hashing algorithm used in the htpasswd file">crypt-des
+       <values>
+        <value>aprmd5</value>
+        <value>crypt</value>
+        <value>crypt-blowfish</value>
+        <value>crypt-des</value>
+        <value>crypt-md5</value>
+        <value>md5-base64</value>
+        <value>md5-hex</value>
+        <value>plain</value>
+        <value>sha</value>
+        <value>smd5</value>
+        <value>ssha</value>
+       </values>
+      </configenum>
+     </configsection>
+    </case>
+
+    <case name="http_remote" desc="Remote HTTP Authentication">
+     <configsection name="params">
+      <configstring name="url" desc="The remote HTTP endpoint to authenticate against" />
+     </configsection>
+    </case>
+
+    <case name="imap" desc="IMAP authentication">
+     <configsection name="params">
+      <configswitch name="imapconfig" desc="Configuration type">
+       <case name="dsn" desc="DSN">
+        <configstring name="dsn" desc="The full IMAP connection
+        string">{localhost:143/imap/notls}</configstring>
+       </case>
+       <case name="separate" desc="Separate values">
+        <configstring name="hostspec" desc="The hostname or IP address of the
+        server">localhost</configstring>
+        <configinteger name="port" desc="The server port to which we will
+        connect. IMAP is generally 143, while IMAP-SSL is generally
+        993.">143</configinteger>
+        <configenum name="protocol" desc="The connection protocol">imap/notls
+         <values>
+          <value>imap</value>
+          <value>imap/novalidate-cert</value>
+          <value>imap/notls</value>
+          <value>imap/tls</value>
+          <value>imap/tls/novalidate-cert</value>
+          <value>imap/ssl</value>
+          <value>imap/ssl/novalidate-cert</value>
+         </values>
+        </configenum>
+       </case>
+      </configswitch>
+     </configsection>
+    </case>
+
+    <case name="imsp" desc="IMSP server authentication" />
+
+    <case name="ipbasic" desc="Simple IP based authentication">
+     <configsection name="params">
+      <configlist name="blocks" desc="A list of CIDR masks which are allowed
+      access"/>
+     </configsection>
+    </case>
+
+    <case name="ipmap" desc="IP based authentication">
+     <configsection name="params">
+      <configlist name="blocks" desc="A list of CIDR masks which are allowed
+      access"/>
+     </configsection>
+    </case>
+
+    <case name="krb5" desc="Kerberos authentication"/>
+
+    <case name="kolab" desc="Kolab authentication">
+     <configsection name="params">
+      <configboolean name="login_block" desc="Should the login be
+      blocked after a given number of failed logins?">
+      false</configboolean>
+      <configinteger name="login_block_count" desc="After how many
+      failed logins the login should be blocked?">3</configinteger>
+      <configinteger name="login_block_time" desc="How many minutes
+      the login should be blocked?">5</configinteger>
+     </configsection>
+    </case>
+
+    <case name="ldap" desc="LDAP authentication">
+     <configsection name="params">
+      <configstring name="hostspec" desc="The hostname of the LDAP server">
+      localhost</configstring>
+      <configstring name="basedn" desc="The base DN for the LDAP server"/>
+      <configstring name="binddn" required="false" desc="The DN used to bind
+      to the LDAP server"/>
+      <configstring name="password" required="false" desc="The password used
+      to bind to the LDAP server"/>
+      <configenum name="version" desc="LDAP protocol version">3
+       <values>
+        <value desc="LDAPv2 (deprecated)">2</value>
+        <value desc="LDAPv3">3</value>
+       </values>
+      </configenum>
+      <configboolean name="tls" desc="Enable TLS?">false</configboolean>
+      <configenum name="scope" desc="Search scope">sub
+       <values>
+        <value desc="Subtree search">sub</value>
+        <value desc="One level">one</value>
+       </values>
+      </configenum>
+      <configstring name="sizelimit" required="false" desc="Size limit for
+      listing users on large directories"/>
+      <configboolean name="ad" desc="Is this an AD server?">
+      false</configboolean>
+      <configstring name="uid" desc="The username search key (set to
+      samaccountname for AD)"/>
+      <configenum name="encryption" desc="The password hashing algorithm to
+      use">ssha
+       <values>
+        <value>aprmd5</value>
+        <value>crypt</value>
+        <value>crypt-blowfish</value>
+        <value>crypt-des</value>
+        <value>crypt-md5</value>
+        <value>md5-base64</value>
+        <value>md5-hex</value>
+        <value>msad</value>
+        <value>plain</value>
+        <value>sha</value>
+        <value>smd5</value>
+        <value>ssha</value>
+       </values>
+      </configenum>
+
+      <configlist name="newuser_objectclass" desc="What objectclasses should a
+      new user account be member of? These objectclasses should cover the
+      cn,sn,userPassword attributes as well as the username search key">
+      shadowAccount,inetOrgPerson</configlist>
+
+      <configswitch name="filter_type" desc="How to specify a filter for the
+      user lists">objectclass
+       <case name="objectclass" desc="One or more objectclass filters">
+        <configlist name="objectclass" desc="The objectclass filter used to
+        search for users. Can be a single objectclass or a list."/>
+       </case>
+       <case name="free" desc="A complete LDAP filter expression">
+        <configstring name="filter" desc="The LDAP RFC formatted filter used
+        to search for users."/>
+       </case>
+      </configswitch>
+
+      <configswitch name="password_expiration" desc="Enable the creating of
+      accounts with expiring passwords? (Note: New users should have the
+      shadowAccount objectclass)">no
+       <case name="no" desc="no" />
+       <case name="yes" desc="yes">
+        <configstring name="minage" desc="After how many days may a password
+        be changed again?">5</configstring>
+        <configstring name="maxage" desc="How many days will a password
+        remain valid?">30</configstring>
+        <configstring name="warnage" desc="How many days before expiration
+        should a user be warned?">5</configstring>
+       </case>
+      </configswitch>
+     </configsection>
+    </case>
+
+    <case name="login" desc="Login (su) authentication">
+     <configsection name="params">
+      <configstring name="location" desc="Location of the su binary">
+      /bin/su</configstring>
+     </configsection>
+    </case>
+
+    <case name="mcal" desc="MCAL authentication">
+     <configsection name="params">
+      <configstring name="calendar" desc="The MCAL calendar name"/>
+     </configsection>
+    </case>
+
+    <case name="pam" desc="PAM (Pluggable Authentication Modules, DEPRECATED)
+    authentication">
+     <configsection name="params">
+      <configstring name="service" desc="The name of the PAM service to use
+      when authenticating">php</configstring>
+     </configsection>
+    </case>
+
+    <case name="passwd" desc="password file authentication">
+     <configsection name="params">
+      <configstring name="filename" desc="The password file to use">
+      /etc/passwd</configstring>
+      <configenum name="encryption" required="false" desc="The password
+      hashing algorithm used in the password file">crypt
+       <values>
+        <value>aprmd5</value>
+        <value>crypt</value>
+        <value>crypt-blowfish</value>
+        <value>crypt-des</value>
+        <value>crypt-md5</value>
+        <value>md5-base64</value>
+        <value>md5-hex</value>
+        <value>plain</value>
+        <value>sha</value>
+        <value>smd5</value>
+        <value>ssha</value>
+       </values>
+      </configenum>
+      <configboolean name="show_encryption" required="false" desc="Prepend the
+      password algorithm to the password value?">false</configboolean>
+      <configstring name="group_filename" required="false" desc="An accompanying group file" />
+      <configlist name="required_groups" required="false" desc="A comma-separated list of groups allowed to log in. If blank, or if there is no group file, any valid user will be allowed to log in." />
+      <configboolean name="lock" desc="Should we lock the password file? This incurs a concurrent performance penalty, but is required if you want the ability to add, update, or delete users.">
+      false</configboolean>
+     </configsection>
+    </case>
+
+    <case name="radius" desc="Radius authentication">
+     <configsection name="params">
+      <configstring name="host" desc="The RADIUS host to use (IP address or
+      fully qualified hostname)">localhost</configstring>
+      <configinteger name="port" required="false" desc="The port to use on the
+      RADIUS server"/>
+      <configenum name="method" desc="The RADIUS method to use for validating
+      the request">PAP
+       <values>
+        <value desc="PAP">PAP</value>
+        <value desc="CHAP_MD5 (not supported at the moment)">CHAP_MD5</value>
+        <value desc="MSCHAPv1 (not supported at the moment)">MSCHAPv1</value>
+        <value desc="MSCHAPv2 (not supported at the moment)">MSCHAPv2</value>
+       </values>
+      </configenum>
+      <configstring name="nas" required="false" desc="The RADIUS NAS
+      identifier to use." />
+      <configstring name="secret" desc="The RADIUS shared secret string for the
+      host. The RADIUS protocol ignores all but the leading 128 bytes of the
+      shared secret."/>
+      <configinteger name="retries" required="false" desc="The maximum number
+      of repeated requests to make before giving up [3]"/>
+      <configstring name="suffix" required="false" desc="The domain name to add
+      to unqualified user names"/>
+      <configinteger name="timeout" required="false" desc="The timeout for
+      receiving replies from the server (in seconds) [3]"/>
+     </configsection>
+    </case>
+
+    <case name="peclsasl" desc="SASL authentication">
+     <configsection name="params">
+      <configstring name="app" desc="The name of the authenticating
+      application">horde</configstring>
+      <configstring name="service" desc="The name of the SASL service to use
+      when authenticating">php</configstring>
+     </configsection>
+    </case>
+
+    <case name="smb" desc="SMB (smbauth extension) authentication">
+     <configsection name="params">
+      <configstring name="hostspec" desc="IP, DNS Name, or NetBios Name of the
+      SMB server to authenticate with">localhost</configstring>
+      <configstring name="domain" desc="The domain name to authenticate with"/>
+      <configstring name="group" required="false" desc="Optional group name
+      that the user must be a member of"/>
+     </configsection>
+    </case>
+
+    <case name="smbclient" desc="SMB (smbclient) authentication">
+     <configsection name="params">
+      <configstring name="hostspec" desc="IP, DNS Name, or NetBios Name of the
+      SMB server to authenticate with">localhost</configstring>
+      <configstring name="domain" desc="The domain name to authenticate with"/>
+      <configstring name="smbclient_path" desc="The location of the smbclient program">/usr/bin/smbclient</configstring>
+     </configsection>
+    </case>
+
+    <case name="sql" desc="SQL authentication">
+     <configsection name="params">
+      <configsql switchname="driverconfig" />
+      <configstring name="table" required="false" desc="The name of the auth
+      table in the database [horde_users]"/>
+      <configstring name="username_field" required="false" desc="The name of
+      the username field in the auth table [user_uid]"/>
+      <configstring name="password_field" required="false" desc="The name of
+      the password field in the auth table [user_pass]"/>
+      <configstring name="soft_expiration_field" required="false" desc="The
+      name of a field containing a UNIX timestamp.  When a user logs in after
+      the specified time, if 'passwd' is installed, that user will be asked to
+      change his or her password.  This feature is disabled by default."/>
+      <configstring name="hard_expiration_field" required="false" desc="The
+      name of a field containing a UNIX timestamp.  A user will not be able to
+      log in after the specified time.  This feature is disabled by default."/>
+      <configinteger name="soft_expiration_window" required="false"
+      desc="This is how often, in days, the user must change his or her
+      password.  When the user's password is updated, the &quot;soft&quot;
+      expiration is set this many days in the future.  If not provided,
+      the user's password will not expire by default."/>
+      <configinteger name="hard_expiration_window" required="false" desc="The
+      number of days in the grace period the user has to change his or her
+      password after it has expired.  If not provided, the grace period will
+      not expire."/>
+      <configenum name="encryption" required="false" desc="The password hashing algorithm to use">ssha
+       <values>
+        <value>aprmd5</value>
+        <value>crypt</value>
+        <value>crypt-blowfish</value>
+        <value>crypt-des</value>
+        <value>crypt-md5</value>
+        <value>md5-base64</value>
+        <value>md5-hex</value>
+        <value>plain</value>
+        <value>sha</value>
+        <value>smd5</value>
+        <value>ssha</value>
+       </values>
+      </configenum>
+      <configboolean name="show_encryption" required="false" desc="Prepend the password algorithm to the password value?">false</configboolean>
+     </configsection>
+    </case>
+
+    <case name="customsql" desc="SQL authentication w/custom-made queries">
+     <configsection name="params">
+      <configenum name="phptype" desc="The name of the database">mysql
+       <values>
+        <value desc="Microsoft SQL Server">mssql</value>
+        <value desc="MySQL">mysql</value>
+        <value desc="MySQL (mysqli)">mysqli</value>
+        <value desc="ODBC">odbc</value>
+        <value desc="Oracle 8">oci8</value>
+        <value desc="PostgreSQL">pgsql</value>
+       </values>
+      </configenum>
+      <configswitch name="protocol" desc="What protocol will we use to connect
+      to the database?">unix
+       <case name="unix" desc="UNIX Sockets">
+        <configstring name="socket" required="false" desc="Location of UNIX
+        socket"></configstring>
+       </case>
+       <case name="tcp" desc="TCP/IP">
+        <configinteger name="port" required="false" desc="Port the DB is
+        running on, if non-standard">5432</configinteger>
+       </case>
+      </configswitch>
+      <configstring name="hostspec" desc="What hostname is the database server
+      running on, or what is the name of the system DSN to use?">
+      localhost</configstring>
+      <configstring name="username" desc="What username do we authenticate to
+      the database server as?">horde</configstring>
+      <configstring name="password" required="false" desc="What password do we
+      authenticate to the database server with?"/>
+      <configstring name="database" desc="What database name/tablespace are we
+      using?">horde</configstring>
+      <configdescription>
+       Some special tokens can be used in the sql query. They are replaced at
+       the query stage:&lt;ul&gt;
+       &lt;li&gt;"\L" will be replaced by the user's login&lt;/li&gt;
+       &lt;li&gt;"\P" will be replaced by the user's password&lt;/li&gt;
+       &lt;li&gt;"\O" will be replaced by the old user's login (required for
+       update)&lt;/li&gt;&lt;/ul&gt;
+       Eg: "SELECT * FROM users WHERE uid = \L AND passwd = \P AND billing =
+       'paid'"
+      </configdescription>
+      <configstring name="query_auth" desc="Authenticate the user"/>
+      <configstring name="query_add" desc="Add user"/>
+      <configstring name="query_getpw" desc="Get a user's password"/>
+      <configstring name="query_update" desc="Update user"/>
+      <configstring name="query_resetpassword" desc="Reset a user's password"/>
+      <configstring name="query_remove" desc="Remove user"/>
+      <configstring name="query_list" desc="List users"/>
+      <configstring name="query_exists" desc="Check if an account exists"/>
+      <configenum name="encryption" desc="The password hashing algorithm to use">ssha
+       <values>
+        <value>aprmd5</value>
+        <value>crypt</value>
+        <value>crypt-blowfish</value>
+        <value>crypt-des</value>
+        <value>crypt-md5</value>
+        <value>md5-base64</value>
+        <value>md5-hex</value>
+        <value>plain</value>
+        <value>sha</value>
+        <value>smd5</value>
+        <value>ssha</value>
+       </values>
+      </configenum>
+      <configboolean name="show_encryption" desc="Prepend the password algorithm to the password value?">false</configboolean>
+     </configsection>
+    </case>
+
+    <case name="cyrsql" desc="SQL implementation for the Cyrus IMAP server">
+     <configsection name="params">
+      <configstring name="cyradmin" desc="The username of the cyrus
+      administrator"/>
+      <configstring name="cyrpass" desc="The password for the cyrus
+      administrator"/>
+      <configstring name="imap_dsn" desc="The full IMAP DSN
+      (i.e. {localhost:993/imap/ssl/novalidate-cert})"/>
+      <configenum name="phptype" desc="The name of the database">mysql
+       <values>
+        <value desc="Microsoft SQL Server">mssql</value>
+        <value desc="MySQL">mysql</value>
+        <value desc="ODBC">odbc</value>
+        <value desc="Oracle 8">oci8</value>
+        <value desc="PostgreSQL">pgsql</value>
+       </values>
+      </configenum>
+      <configswitch name="protocol" desc="What protocol will we use to connect
+      to the database?">unix
+       <case name="unix" desc="UNIX Sockets">
+        <configstring name="socket" required="false" desc="Location of UNIX
+        socket"></configstring>
+       </case>
+       <case name="tcp" desc="TCP/IP">
+        <configinteger name="port" required="false" desc="Port the DB is
+        running on, if non-standard">5432</configinteger>
+       </case>
+      </configswitch>
+      <configstring name="hostspec" desc="What hostname is the database server
+      running on, or what is the name of the system DSN to use?">
+      localhost</configstring>
+      <configstring name="username" desc="What username do we authenticate to
+      the database server as?">horde</configstring>
+      <configstring name="password" required="false" desc="What password do we
+      authenticate to the database server with?"/>
+      <configstring name="database" desc="What database name/tablespace are we
+      using?">horde</configstring>
+      <configstring name="table" desc="The name of the auth table in the
+      database">horde_users</configstring>
+      <configstring name="username_field" desc="The name of the username field
+      in the auth table">user_uid</configstring>
+      <configstring name="password_field" desc="The name of the password field
+      in the auth table">user_pass</configstring>
+      <configstring name="domain_field" desc="If set to anything other than
+      'none' this is used as field name where domain is
+      stored">none</configstring>
+      <configenum name="encryption" desc="The password hashing algorithm to use">ssha
+       <values>
+        <value>aprmd5</value>
+        <value>crypt</value>
+        <value>crypt-blowfish</value>
+        <value>crypt-des</value>
+        <value>crypt-md5</value>
+        <value>md5-base64</value>
+        <value>md5-hex</value>
+        <value>plain</value>
+        <value>sha</value>
+        <value>smd5</value>
+        <value>ssha</value>
+       </values>
+      </configenum>
+      <configlist name="folders" required="false" desc="A list of folders to
+      create under username"/>
+      <configinteger name="quota" required="false" desc="The quota (in
+      kilobytes) to grant on the mailbox"/>
+      <configboolean name="unixhier" desc="The value of imapd.conf's
+      unixhierarchysep setting. Check this if the value is true in
+      imapd.conf.">false</configboolean>
+      <configlist name="hidden_accounts" required="false" desc="A list of accounts to
+      hide from the user interface">cyrus</configlist>
+     </configsection>
+    </case>
+
+    <case name="shibboleth" desc="Shibboleth Authentication">
+     <configsection name="params">
+      <configstring name="username_header" desc="The HTTP header holding the
+      username">REMOTE_USER</configstring>
+      <configswitch name="password_holder" desc="Where should we get the
+      password for hordeauth from?">
+       <case name="none" desc="No passwords"/>
+       <case name="header" desc="HTTP Header">
+        <configstring name="password_header" desc="The HTTP header holding the
+        password" required="false"></configstring>
+       </case>
+       <case name="preferences" desc="Horde Preferences">
+        <configstring name="password_preference" desc="The Horde preference
+        that contains the password" required="false"></configstring>
+       </case>
+      </configswitch>
+     </configsection>
+    </case>
+   </configswitch>
+  </configsection>
+ </configtab>
+
+ <configtab name="signup" desc="Sign Up">
+  <configsection name="signup">
+   <configheader>Sign Up Settings</configheader>
+   <configswitch name="allow" desc="Allow non-registered users to register and
+   provide a link on the login screen?">false
+    <case name="true" desc="Yes">
+     <configswitch name="driver" desc="What signup driver should we
+     use?">session
+      <case name="sql" desc="SQL Database">
+       <configsection name="params">
+        <configsql switchname="driverconfig">
+         <configstring name="table" required="false" desc="The name of the
+         signup table in the database [horde_signups]"/>
+        </configsql>
+       </configsection>
+      </case>
+      <case name="datatree" desc="DataTree" />
+     </configswitch>
+     <configstring name="email" desc="Specify an email address, if a message
+     should be send to notify about new signups, including links for approving
+     and denying." required="false"/>
+     <configboolean name="approve" desc="Admin has to approve any user
+     submitted registration requests? (WARNING: Setting to false would mean
+     that every user who signs up would have automatic access to your horde
+     system.)" required="false">true</configboolean>
+     <configboolean name="preprocess" desc="Pass the user submitted information
+     through the _horde_hook_signup_preprocess function in hooks.php before
+     processing the request?" required="false">false</configboolean>
+     <configboolean name="queue" desc="Pass the user submitted information
+     through the _horde_hook_signup_queue function in hooks.php after
+     processing the request but before actually queueing it?" required="false">
+     false</configboolean>
+    </case>
+    <case name="false" desc="No" />
+   </configswitch>
+  </configsection>
+ </configtab>
+
+ <configtab name="log" desc="Logging">
+  <configsection name="log">
+   <configheader>Logging Settings</configheader>
+   <configswitch name="enabled" quote="false" desc="Should Horde log errors and
+   other useful information?">true
+    <case name="true" desc="Yes">
+     <configenum name="priority" quote="false" desc="What level of messages
+     should we log? Each level logs itself and all those that come before it:
+     PEAR_LOG_ALERT would only log alerts and emergencies, but PEAR_LOG_DEBUG
+     would log everything.">PEAR_LOG_NOTICE
+      <values>
+       <value desc="PEAR_LOG_EMERG">PEAR_LOG_EMERG</value>
+       <value desc="PEAR_LOG_ALERT">PEAR_LOG_ALERT</value>
+       <value desc="PEAR_LOG_CRIT">PEAR_LOG_CRIT</value>
+       <value desc="PEAR_LOG_ERR">PEAR_LOG_ERR</value>
+       <value desc="PEAR_LOG_WARNING">PEAR_LOG_WARNING</value>
+       <value desc="PEAR_LOG_NOTICE">PEAR_LOG_NOTICE</value>
+       <value desc="PEAR_LOG_INFO">PEAR_LOG_INFO</value>
+       <value desc="PEAR_LOG_DEBUG">PEAR_LOG_DEBUG</value>
+      </values>
+     </configenum>
+     <configstring name="ident" desc="What identifier should we use in the
+     logs?">HORDE</configstring>
+
+     <configsection name="params">
+      <configplaceholder/>
+     </configsection>
+
+     <configswitch name="type" desc="What log driver should we use?">file
+      <case name="console" desc="Console">
+       <configsection name="params">
+        <configphp name="stream" required="false" desc="The output stream to
+        use"/>
+        <configboolean name="buffering" required="false" desc="Should the
+        output be buffered until shutdown?">false</configboolean>
+        <configstring name="lineFormat" required="false" desc="Log line format
+        specification"/>
+        <configstring name="timeFormat" required="false" desc="Time stamp
+        format"/>
+       </configsection>
+      </case>
+
+      <case name="display" desc="Display">
+       <configsection name="params">
+        <configstring name="error_prepend" required="false" desc="This string
+        will be prepended to the log output"/>
+        <configstring name="error_append" required="false" desc="This string
+        will be appended to the log output"/>
+       </configsection>
+      </case>
+
+      <case name="error_log" desc="Error Log">
+       <configsection name="params">
+        <configstring name="destination" required="false" desc="Optional
+        destination value for error_log(). See
+        http://www.csh.rit.edu/~jon/projects/pear/Log/guide.html#error-log-types
+        for more details."/>
+        <configstring name="extra_headers" required="false" desc="Additional
+        headers to pass to the mail() function when the PEAR_LOG_TYPE_MAIL type
+        is specified"/>
+       </configsection>
+      </case>
+
+      <case name="file" desc="File">
+       <configstring name="name" desc="Path to the log
+       file">/tmp/horde.log</configstring>
+       <configsection name="params">
+        <configboolean name="append" required="false" desc="Should new log
+        entries be appended to an existing log file? If this is false, new log
+        files will overwrite existing ones.">true</configboolean>
+        <configinteger name="mode" octal="true" required="false" desc="Octal
+        representation of the log file's permissions mode"/>
+        <configphp name="eol" required="false" desc="The end-of-line character
+        sequence"/>
+        <configstring name="lineFormat" required="false" desc="Log line format
+        specification"/>
+        <configstring name="timeFormat" required="false" desc="Time stamp
+        format"/>
+       </configsection>
+      </case>
+
+      <case name="mail" desc="Mail">
+       <configstring name="name" desc="The recipient for the message"/>
+       <configsection name="params">
+        <configstring name="from" required="false" desc="Value for the
+        message's From: header"/>
+        <configstring name="subject" required="false" desc="Value for the
+        message's Subject: header"/>
+        <configstring name="preamble" required="false" desc="Preamble for the
+        message"/>
+       </configsection>
+      </case>
+
+      <case name="mcal" desc="Mcal">
+       <configsection name="params">
+        <configstring name="calendar" desc="The MCAL calendar name"/>
+        <configstring name="username" desc="Connect to MCAL as"/>
+        <configstring name="password" desc="Password to connect with"/>
+       </configsection>
+      </case>
+
+      <case name="null" desc="Null"/>
+
+      <case name="sql" desc="SQL">
+       <configstring name="name" desc="The table to log
+       to">log_table</configstring>
+       <configsection name="params">
+        <configphp name="dsn" desc="A Data Source
+        Name">$conf['sql']</configphp>
+       </configsection>
+      </case>
+
+      <case name="sqlite" desc="SQLite">
+       <configstring name="name" desc="The table to log
+       to">log_table</configstring>
+       <configsection name="params">
+        <configstring name="filename" desc="Path to an Sqlite database"/>
+        <configinteger name="mode" octal="true" required="false" desc="Octal
+        mode used to open the database [0666]"/>
+        <configboolean name="persistent" required="false" desc="Use a
+        persistent connection">false</configboolean>
+       </configsection>
+      </case>
+
+      <case name="syslog" desc="Syslog">
+       <configphp name="name" quote="false" desc="Syslog facility to use"/>
+      </case>
+
+      <case name="win" desc="Window">
+       <configstring name="name" desc="Name of the opened window"/>
+       <configsection name="params">
+        <configstring name="title" required="false" desc="The title of the
+        output window"/>
+       </configsection>
+      </case>
+     </configswitch>
+
+    </case>
+    <case name="false" desc="No"/>
+   </configswitch>
+  </configsection>
+  <configboolean name="log_accesskeys" desc="Should Horde log statistics about
+   used access keys? This is only useful for translators of the
+   UI. You also need to set the log level to at least
+   PEAR_LOG_INFO.">false</configboolean>
+ </configtab>
+
+ <configtab name="prefs" desc="Preference System">
+  <configsection name="prefs">
+   <configheader>Preference System Settings</configheader>
+   <configinteger name="maxsize" required="false" desc="The size of the
+   preferences field in your backend in bytes. Horde will reject any write to
+   the preferences backend if its length exceeds this value. Leave empty to
+   skip this checking. E.g. MySQL stores the preference data in a LONGTEXT
+   field. This field can hold 4294967295 bytes so most likely checking is not
+   needed. However other DB installations may only have a storage size of 64
+   KB (65535 bytes). These installations would want to turn checking on."/>
+   <configswitch name="driver" desc="What preferences driver should we
+   use?">session
+     <case name="sql" desc="SQL Database">
+      <configsection name="params">
+       <configsql switchname="driverconfig">
+        <configstring name="table" required="false" desc="The name of the
+        preference table in the database [horde_prefs]"/>
+       </configsql>
+      </configsection>
+     </case>
+     <case name="file" desc="Files">
+      <configsection name="params">
+        <configstring name="directory" required="true" desc="Directory to store the preferences in."/>
+      </configsection>
+     </case>
+     <case name="ldap" desc="LDAP">
+      <configsection name="params">
+       <configstring name="hostspec" desc="The hostname of the LDAP server">
+       localhost</configstring>
+       <configinteger name="port" desc="The port of the LDAP server">
+       389</configinteger>
+       <configenum name="version" desc="LDAP protocol version">3
+        <values>
+         <value desc="LDAPv2 (deprecated)">2</value>
+         <value desc="LDAPv3">3</value>
+        </values>
+       </configenum>
+       <configboolean name="tls" desc="Enable TLS?">false</configboolean>
+       <configstring name="basedn" desc="The base DN for LDAP preference
+       searches"/>
+       <configstring name="searchdn" required="false" desc="DN with which to
+       bind for searches - blank for anonymous"/>
+       <configstring name="searchpw" required="false"  desc="Password with
+       which to bind for searches - blank for anonymous"/>
+       <configswitch name="writedn" desc="Bind to LDAP as which user when
+       writing permissions to LDAP">
+         <case name="user" desc="Bind as User" />
+         <case name="admin" desc="Bind as Admin">
+           <configstring name="admindn" desc="DN of the administrative account
+           with which to bind for write operations"/>
+           <configstring name="adminpw" desc="Password of the administrative
+           DN"/>
+         </case>
+         <case name="searchdn" desc="Use search credentials"/>
+       </configswitch>
+       <configstring name="uid" desc="The username search key"/>
+      </configsection>
+     </case>
+     <case name="session" desc="PHP Sessions"/>
+     <case name="kolab" desc="Kolab (LDAP)" />
+     <case name="kolab_imap" desc="Kolab (IMAP)" />
+     <case name="imsp" desc="IMSP Server" />
+   </configswitch>
+  </configsection>
+ </configtab>
+
+ <configtab name="alarms" desc="Alarm System">
+  <configsection name="alarms">
+   <configheader>Alarm System Settings</configheader>
+   <configswitch name="driver" desc="What alarm storage driver should we
+   use?">false
+     <case name="false" desc="None"/>
+     <case name="sql" desc="SQL Database">
+      <configsection name="params">
+       <configsql switchname="driverconfig">
+        <configstring name="table" required="false" desc="The name of the
+        alarm table in the database [horde_alarms]"/>
+       </configsql>
+       <configinteger name="ttl" desc="How often should the applications be
+       queried for new alarms, in seconds?">300</configinteger>
+      </configsection>
+     </case>
+   </configswitch>
+  </configsection>
+ </configtab>
+
+ <configtab name="datatree" desc="DataTree System">
+  <configsection name="datatree">
+   <configheader>DataTree System Settings</configheader>
+   <configswitch name="driver" desc="What backend should we use for Horde
+   DataTree storage?">null
+     <case name="null" desc="None"/>
+     <case name="sql" desc="SQL Database">
+      <configsection name="params">
+       <configsql switchname="driverconfig">
+        <configstring name="table" required="false" desc="The name of the
+        data table in the database [horde_datatree]"/>
+        <configstring name="table_attributes" required="false" desc="The name
+        of the data attributes table in the database
+        [horde_datatree_attributes]"/>
+       </configsql>
+      </configsection>
+     </case>
+   </configswitch>
+  </configsection>
+ </configtab>
+
+ <configtab name="group" desc="Groups">
+  <configsection name="group">
+   <configheader>Groups Settings</configheader>
+   <configdescription>
+    The Hooks backend extends the DataTree backend to allow hooks to extend a
+    group to dynamically include members into a group.  See hooks.php.dist for
+    an example.
+   </configdescription>
+   <configswitch name="driver" desc="What backend should we use for Horde
+   Groups?">datatree
+     <case name="datatree" desc="DataTree"/>
+     <case name="hooks" desc="Hooks"/>
+     <case name="kolab" desc="Kolab"/>
+     <case name="ldap" desc="LDAP">
+       <configsection name="params">
+        <configstring name="hostspec" desc="The hostname of the LDAP server">
+        localhost</configstring>
+        <configstring name="basedn" desc="The base DN for the LDAP server"/>
+        <configstring name="binddn" required="false" desc="The DN used to bind
+        to the LDAP server"/>
+        <configstring name="password" required="false" desc="The password used
+        to bind to the LDAP server"/>
+        <configenum name="version" desc="LDAP protocol version">3
+         <values>
+          <value desc="LDAPv2 (deprecated)">2</value>
+          <value desc="LDAPv3">3</value>
+         </values>
+        </configenum>
+        <configboolean name="tls" desc="Enable TLS?">false</configboolean>
+        <configstring name="gid" desc="The group search key">cn</configstring>
+        <configstring name="memberuid" desc="Group membership field">
+        memberUid</configstring>
+        <configboolean name="attrisdn" required="false"
+         desc="If checked, the user member attributes returned from LDAP are
+        expected to be fully qualified DNs"/>
+        <configlist name="newgroup_objectclass" desc="What objectclasses should
+        a new group be member of? These objectclasses should cover the mail and
+        gidnumber attributes as well as the group search key">
+        posixGroup,hordeGroup</configlist>
+        <configswitch name="filter_type" desc="How to specify a filter for the
+        group lists">objectclass
+         <case name="objectclass" desc="One or more objectclass filters">
+          <configlist name="objectclass" desc="The objectclass filter used to
+          search for groups. Can be a single objectclass or a list.">
+          posixGroup</configlist>
+         </case>
+         <case name="free" desc="A complete LDAP filter expression">
+          <configstring name="filter" desc="The LDAP RFC formatted filter used
+          to search for groups."/>
+         </case>
+        </configswitch>
+      </configsection>
+     </case>
+     <case name="mock" desc="No Groups"/>
+     <case name="sql" desc="SQL">
+      <configsql switchname="driverconfig" />
+     </case>
+   </configswitch>
+   <configheader>Group Caching</configheader>
+   <configdescription>Enabling group caching improves performance because the
+   group backend will only be queried once per session. But it also increases
+   the users' session sizes, and group changes won't take effect before the
+   users log in the next time.</configdescription>
+   <configboolean name="cache" required="false" desc="Enable group
+   caching?">false</configboolean>
+  </configsection>
+ </configtab>
+
+ <configtab name="perms" desc="Permissions">
+  <configsection name="perms">
+   <configheader>Permissions Settings</configheader>
+   <configswitch name="driver" desc="What backend should we use for Horde
+   Permissions?">datatree
+     <case name="datatree" desc="DataTree"/>
+     <case name="sql" desc="SQL">
+      <configsql switchname="driverconfig" />
+     </case>
+   </configswitch>
+  </configsection>
+ </configtab>
+
+ <configtab name="share" desc="Shares">
+  <configheader>Shares Settings</configheader>
+  <configdescription>Shares are objects or lists that can be shared with other
+  users, e.g. calendars that other users can be given read or write access
+  to.</configdescription>
+  <configsection name="share">
+   <configheader>Allow Sharing?</configheader>
+   <configboolean name="no_sharing" required="false" desc="Prevent
+   users from editing permissions on their shares. This will keep a
+   user from granting other users (or guests) access to their address
+   book, notebook, calendar, etc.">false</configboolean>
+
+   <configheader>Allow sharing with groups that users aren't members
+   of?</configheader>
+   <configboolean name="any_group" required="false" desc="If you enable this
+   option, users will be able to share their resources with any group,
+   regardless of whether or not they are a member. If you disable it, users
+   will only be able to share their resources with groups they are members
+   of.">false</configboolean>
+
+   <configheader>Share Caching</configheader>
+   <configdescription>Enabling share caching improves performance because the
+   share backend will only be queried once per session. But it also increases
+   the users' session sizes, and share changes won't take effect before the
+   users log in the next time.</configdescription>
+   <configboolean name="cache" required="false" desc="Enable share
+   caching?">false</configboolean>
+
+   <configheader>Shares Driver</configheader>
+   <configdescription>
+     You can use different driver types for the Horde Share
+     system. The default driver is the DataTree driver.
+   </configdescription>
+   <configswitch name="driver" desc="What backend should we use for Horde
+   Shares?">datatree
+     <case name="datatree" desc="DataTree"/>
+     <case name="kolab" desc="Kolab"/>
+     <case name="sql" desc="SQL"/>
+   </configswitch>
+  </configsection>
+ </configtab>
+
+ <configtab name="cache" desc="Cache System">
+  <configsection name="cache">
+   <configheader>Cache System Settings</configheader>
+   <configinteger name="default_lifetime" desc="How long, in seconds, should
+   objects be cached by default?">86400</configinteger>
+   <configswitch name="driver" desc="If you want to enable the Horde Cache,
+   select a driver here. This is used to speed up portions of Horde by storing
+   commonly processed objects.">file
+    <case name="none" desc="Don't cache any objects"/>
+    <case name="apc" desc="Use the APC cache"/>
+    <case name="eaccelerator" desc="Use the eAccelerator cache"/>
+    <case name="memcache" desc="Use a Memcache server"/>
+    <case name="xcache" desc="Use the xCache cache"/>
+    <case name="file" desc="Store objects in filesystem">
+     <configsection name="params">
+      <configstring name="dir" required="false" desc="The location to store the
+      cached files"/>
+      <configinteger name="sub" required="false" desc="If non-zero, the number
+      of subdirectories to create to store the file (see, e.g.,
+      http://php.net/manual/en/ref.session.php#ini.session.save-path). When
+      creating the directory tree, the md5sum of the cache id will be used.
+      Thus, each level of the tree will have up to 16 subdirectories named
+      [0-9a-f].">0</configinteger>
+      <configstring name="prefix" required="false" desc="The filename prefix to
+      use for the cache files."/>
+     </configsection>
+    </case>
+    <case name="sql" desc="SQL-based cache storage">
+     <configsection name="params">
+      <configsql switchname="driverconfig">
+       <configstring name="table" required="false" desc="The name of the
+       cache table in the database [horde_cache]"/>
+      </configsql>
+      <configswitch name="use_memorycache" required="false" desc="Use a
+      separate Horde_Cache memory cache driver to store data in memory? If
+      data is not found in memory, we will fall back to accessing the
+      SQL database. This is useful if you want the performance of an in-memory
+      cache with the more persistent storage an SQL server provides.">
+       <case name="" desc="None"/>
+       <case name="apc" desc="APC"/>
+       <case name="eaccelerator" desc="eAccelerator"/>
+       <case name="memcache" desc="Memcache"/>
+      </configswitch>
+     </configsection>
+    </case>
+    <case name="zps4" desc="Use the Zend Performance Suite output cache"/>
+   </configswitch>
+  </configsection>
+ </configtab>
+
+ <configtab name="lock" desc="Lock System">
+  <configsection name="lock">
+   <configheader>Lock System Settings</configheader>
+   <configswitch name="driver" desc="If you want to enable resource locking
+   you must choose a driver here. Currently locking is only used by the WebDAV
+   subsystem to allow locking on Horde objects via WebDAV.  This driver requires
+   Horde 3.2 or later.">none
+    <case name="none" desc="Disable Horde Locks"/>
+    <case name="sql" desc="SQL-based locking">
+     <configsection name="params">
+      <configsql switchname="driverconfig">
+       <configstring name="table" required="false" desc="The name of the
+       locking table in the database [horde_locks]"/>
+      </configsql>
+     </configsection>
+    </case>
+   </configswitch>
+  </configsection>
+ </configtab>
+
+ <configtab name="token" desc="Token System">
+  <configsection name="token">
+   <configheader>Token System Settings</configheader>
+   <configinteger name="timeout" required="false" desc="The period (in
+   seconds) after which an id is purged"/>
+   <configswitch name="driver" desc="If you want to enable Form Tokens, select
+   a driver here. This is used by the Horde::Form:: API and some other parts
+   of Horde to ensure that a form can only be submitted once.">none
+    <case name="none" desc="Disable Form Tokens"/>
+    <case name="file" desc="Local filesystem token storage">
+     <configsection name="params">
+      <configstring name="token_dir" required="false" desc="The directory where
+      to keep token files"/>
+     </configsection>
+    </case>
+    <case name="sql" desc="SQL-based token storage">
+     <configsection name="params">
+      <configsql switchname="driverconfig">
+       <configstring name="table" required="false" desc="The name of the
+       tokens table in the database [horde_tokens]"/>
+      </configsql>
+     </configsection>
+    </case>
+   </configswitch>
+  </configsection>
+ </configtab>
+
+ <configtab name="mailer" desc="Mailer">
+  <configsection name="mailer">
+   <configheader>Mailer Settings</configheader>
+   <configswitch name="type" desc="What method should we use for sending
+   mail?">sendmail
+    <case name="null" desc="Disable mailing" />
+    <case name="sendmail" desc="Use the local sendmail binary">
+     <configsection name="params">
+      <configstring name="sendmail_path" required="false" desc="The location
+      of the sendmail binary on the filesystem
+      [/usr/sbin/sendmail]">/usr/lib/sendmail</configstring>
+      <configstring name="sendmail_args" required="false" desc="Any extra
+      parameters to pass to the sendmail or sendmail wrapper
+      binary">-oi</configstring>
+     </configsection>
+    </case>
+    <case name="smtp" desc="Use a SMTP server">
+     <configsection name="params">
+      <configstring name="host" required="false" desc="The server to connect
+      to [localhost]"/>
+      <configinteger name="port" required="false" desc="The port to connect
+      to [25]"/>
+      <configstring name="localhost" required="false" desc="The local hostname
+      / domain [localhost]"/>
+      <configenum name="auth" desc="SMTP authentication">0
+       <values>
+        <value desc="No authentication">false</value>
+        <value desc="Best available authentication">true</value>
+        <value>DIGEST-MD5</value>
+        <value>CRAM-MD5</value>
+        <value>LOGIN</value>
+        <value>PLAIN</value>
+       </values>
+      </configenum>
+      <configstring name="username" required="false" desc="The username to use
+      for SMTP auth"/>
+      <configstring name="password" required="false" desc="The password to use
+      for SMTP auth"/>
+     </configsection>
+    </case>
+   </configswitch>
+  </configsection>
+  <configsection name="mailformat">
+   <configheader>Format</configheader>
+    <configboolean name="brokenrfc2231" required="false" desc="Some MUAs
+    (e.g. Outlook) do not correctly parse MIME parameter information according
+    to the relevant standard. This may result, for example, in filenames that
+    do not appear correctly in these MUAs. If this option is enabled, Horde
+    will attempt to send messages in a way that both standards compliant
+    agents and these broken agents can understand. However, since these
+    messages are no longer standards compliant, there is no guarantee these
+    messages will appear correctly in *any* MUA so the default is to send
+    in the standards compliant method only.">false</configboolean>
+  </configsection>
+ </configtab>
+
+ <configtab name="vfs" desc="Virtual File Storage">
+  <configsection name="vfs">
+   <configheader>Virtual File Storage Settings</configheader>
+   <configvfs baseconfig="true" switchname="type"/>
+  </configsection>
+ </configtab>
+
+ <configtab name="session" desc="Custom Session Handler">
+  <configsection name="sessionhandler">
+   <configheader>Custom Session Handler Settings</configheader>
+   <configswitch name="type" desc="What sessionhandler driver should we
+   use?">none
+    <case name="none" desc="Use the default PHP session handler (file-based by
+    default)">
+     <configdescription>
+      If you have configured a custom session extension in php.ini, such as
+      native memcache sessions, then you should use this option. Horde doesn't
+      force PHP to use the file-based session handler, so your php.ini
+      settings settings will be deferred to.
+     </configdescription>
+    </case>
+    <case name="external" desc="Use your own custom session handler">
+     <configsection name="params">
+      <configstring name="open" desc="Your open() function"/>
+      <configstring name="close" desc="Your close() function"/>
+      <configstring name="read" desc="Your read() function"/>
+      <configstring name="write" desc="Your write() function"/>
+      <configstring name="destroy" desc="Your destroy() function"/>
+      <configstring name="gc" desc="Your gc() function"/>
+     </configsection>
+    </case>
+
+    <case name="mysql" desc="MySQL based sessions">
+     <configsection name="params">
+      <configboolean name="persistent" desc="Request persistent
+      connections?">false</configboolean>
+      <configboolean name="rowlocking" desc="Should we use row-level locking
+      and transactions? This is strongly recommended, but requires a table
+      type that is transaction-safe and supports row-level locking, like
+      InnoDB. If you don't have such a table type, disable this setting and we
+      will use table-level locking and no locking
+      instead.">true</configboolean>
+      <configswitch name="protocol" desc="What protocol will we use to connect
+      to the database?">unix
+       <case name="unix" desc="UNIX Sockets">
+        <configstring name="socket" required="false" desc="Location of UNIX
+        socket"></configstring>
+       </case>
+       <case name="tcp" desc="TCP/IP">
+        <configinteger name="port" required="false" desc="Port the DB is
+        running on, if non-standard">3306</configinteger>
+       </case>
+      </configswitch>
+      <configstring name="hostspec" desc="What hostname is the database server
+      running on, or what is the name of the system DSN to use?">
+      localhost</configstring>
+      <configstring name="username" desc="What username do we authenticate to
+      the database server as?">horde</configstring>
+      <configstring name="password" required="false" desc="What password do we
+      authenticate to the database server with?"/>
+      <configstring name="database" desc="What database name/tablespace are we
+      using?">horde</configstring>
+      <configstring name="table" required="false" desc="The name of the
+      session table in the database [horde_sessionhandler]"/>
+     </configsection>
+    </case>
+    <case name="oci8" desc="Oracle based sessions">
+     <configsection name="params">
+      <configboolean name="persistent" desc="Request persistent connections?">
+      false</configboolean>
+      <configstring name="hostspec" desc="Database name or Easy Connect
+      parameter">horde</configstring>
+      <configstring name="username" desc="What username do we authenticate to
+      the database server as?">horde</configstring>
+      <configstring name="password" required="false" desc="What password do we
+      authenticate to the database server with?"/>
+      <configstring name="table" required="false" desc="The name of the session
+      table in the database [horde_sessionhandler]"/>
+     </configsection>
+    </case>
+    <case name="pgsql" desc="PostgreSQL based sessions">
+     <configsection name="params">
+      <configboolean name="persistent" desc="Request persistent connections?">
+      false</configboolean>
+      <configswitch name="protocol" desc="What protocol will we use to connect
+      to the database?">unix
+       <case name="unix" desc="UNIX Sockets">
+        <configstring name="socket" required="false" desc="Location of UNIX
+        socket"></configstring>
+       </case>
+       <case name="tcp" desc="TCP/IP">
+        <configinteger name="port" required="false" desc="Port the DB is
+        running on, if non-standard">5432</configinteger>
+       </case>
+      </configswitch>
+      <configstring name="hostspec" desc="What hostname is the database server
+      running on, or what is the name of the system DSN to use?">
+      localhost</configstring>
+      <configstring name="username" desc="What username do we authenticate to
+      the database server as?">horde</configstring>
+      <configstring name="password" required="false" desc="What password do we
+      authenticate to the database server with?"/>
+      <configstring name="database" desc="What database name/tablespace are we
+      using?">horde</configstring>
+      <configstring name="table" required="false" desc="The name of the
+      session table in the database [horde_sessionhandler]"/>
+     </configsection>
+    </case>
+    <case name="sapdb" desc="Use PEAR's DB abstraction layer w/ODBC">
+     <configsection name="params">
+      <configstring name="hostspec" desc="What hostname is the database server
+      running on, or what is the name of the system DSN to use?">
+      localhost</configstring>
+      <configstring name="username" desc="What username do we authenticate to
+      the database server as?">horde</configstring>
+      <configstring name="password" required="false" desc="What password do we
+      authenticate to the database server with?"/>
+      <configstring name="database" desc="What database name/tablespace are we
+      using?">horde</configstring>
+      <configstring name="table" desc="The name of the session table in the
+      database"/>
+     </configsection>
+    </case>
+    <case name="sql" desc="Use PEAR's DB abstraction layer">
+     <configsection name="params">
+      <configboolean name="persistent" desc="Request persistent
+      connections?">false</configboolean>
+      <configswitch name="protocol" desc="What protocol will we use to connect
+      to the database?">unix
+       <case name="unix" desc="UNIX Sockets">
+        <configstring name="socket" required="false" desc="Location of UNIX
+        socket"></configstring>
+       </case>
+       <case name="tcp" desc="TCP/IP">
+        <configinteger name="port" required="false" desc="Port the DB is
+        running on, if non-standard">5432</configinteger>
+       </case>
+      </configswitch>
+      <configstring name="hostspec" desc="What hostname is the database server
+      running on, or what is the name of the system DSN to use?">
+      localhost</configstring>
+      <configstring name="username" desc="What username do we authenticate to
+      the database server as?">horde</configstring>
+      <configstring name="password" required="false" desc="What password do we
+      authenticate to the database server with?"/>
+      <configstring name="database" desc="What database name/tablespace are we
+      using?">horde</configstring>
+      <configstring name="table" required="false" desc="The name of the session
+      table in the database [horde_sessionhandler]"/>
+     </configsection>
+    </case>
+    <case name="memcache" desc="Memcache only">
+     <configsection name="params">
+      <configswitch name="track" required="false" desc="Keep track of active
+      session information? Tracking requires a small amount of extra load.">
+      false
+       <case name="false" desc="No" />
+       <case name="true" desc="Yes" >
+        <configinteger name="track_lifetime" required="false" desc="The number
+        of seconds after which tracked sessions will be treated as
+        expired. If empty, defaults to value in php.ini's
+        'session.gc_maxlifetime'."></configinteger>
+       </case>
+      </configswitch>
+     </configsection>
+    </case>
+   </configswitch>
+   <configboolean name="memcache" desc="Use memcache to cache session
+   information?">false</configboolean>
+  </configsection>
+ </configtab>
+
+ <configtab name="proxy" desc="HTTP Proxy">
+  <configsection name="http">
+   <configsection name="proxy">
+    <configheader>HTTP Proxy Settings</configheader>
+    <configdescription>
+     If you need to use a proxy for fetching HTTP resources (feeds,
+     security keys, external calendars or free/busy information,
+     etc.), configure it here.
+    </configdescription>
+    <configstring name="proxy_host" required="false" desc="Proxy host"/>
+    <configinteger name="proxy_port" required="false" desc="Proxy port"/>
+    <configstring name="proxy_user" required="false" desc="Proxy user if
+    necessary"/>
+    <configstring name="proxy_pass" required="false" desc="Proxy password"/>
+   </configsection>
+  </configsection>
+ </configtab>
+
+ <configtab name="image" desc="Image Manipulation">
+  <configsection name="image">
+   <configheader>Image Manipulation Settings</configheader>
+   <configstring name="convert" required="false" desc="Horde requires either
+   GD support built-in to PHP (--with-gd) or the ImageMagick software package
+   (optionally supported by the 'imagick' PHP extension) to do image
+   manipulation/creation. If using ImageMagick, specify the full path name to
+   the 'convert' program. On Windows, this path &lt;em&gt;must not&lt;/em&gt;
+   have spaces in it. Use DOS-style abbreviations if necessary: Progra~1
+   instead of Program Files, for instance. If using GD, or using neither,
+   leave this field blank."/>
+  </configsection>
+ </configtab>
+
+ <configtab name="mime" desc="MIME Detection">
+  <configsection name="mime">
+   <configheader>MIME Detection Settings</configheader>
+   <configstring name="magic_db" required="false" desc="Location of the MIME
+   magic database. Usually /usr/share/misc/magic or /etc/magic."/>
+  </configsection>
+ </configtab>
+
+ <configtab name="geoip" desc="Country Lookup">
+  <configsection name="geoip">
+   <configheader>Country Lookup Settings</configheader>
+   <configstring name="datafile" required="false" desc="Horde, by default, can
+   do Hostname -&gt; Country lookup using the top level domain (e.g. 'uk',
+   'de') of the hostname.  However, many popular top level domains
+   (e.g. 'com', 'net') span more than one country.  In these instances, Horde
+   can use the MaxMind GeoIP Hostname to Country lookup to try to determine
+   the correct country.  To activate this functionality, the geoip PECL
+   extension must be installed.  If that extension doesn't exist, Horde can
+   use a PHP only method of querying the database if the GeoIP.dat country
+   database is present on your local system.  This file can be downloaded
+   free of charge from http://www.maxmind.com/download/geoip/database/.  If
+   this database is present, specify the full path name to the database below.
+   If empty, the GeoIP lookup will not be performed."/>
+  </configsection>
+ </configtab>
+
+ <configtab name="dns" desc="DNS Lookups">
+  <configsection name="dns">
+   <configheader>DNS Lookup Settings</configheader>
+   <configinteger name="retrans" required="false" desc="If installed, Horde
+   can use the PEAR Net_DNS module for DNS lookups. Set the amount of time
+   in seconds the resolver will wait for a response from a remote name server
+   before retrying the query. Defaults to 1."/>
+   <configinteger name="retry" required="false" desc="If installed, Horde
+   can use the PEAR Net_DNS module for DNS lookups. Set the number of times
+   the resolver will send a query to its name servers before giving
+   up. Defaults to 1."/>
+  </configsection>
+ </configtab>
+ 
+ <configtab name="problems" desc="Problem Reporting">
+  <configsection name="problems">
+   <configheader>Problem Reporting Settings</configheader>
+   <configswitch name="tickets" desc="If a ticket system with a
+   tickets/addTicket API method is present, should we create tickets for
+   problem reports instead of emailing them?">false
+    <case name="true" desc="Yes">
+     <configphp name="ticket_params" desc="Enter as a PHP array any
+     additional arguments for the created ticket (queue, state, priority,
+     etc). Example for Whups: array('queue' => 2, 'state' => 1, 'priority' => 1,
+     'type' => 1). You will need to look up the appropriate IDs in Whups's
+     database, or whatever is appropriate for the ticket system you are
+     using.">array()</configphp>
+    </case>
+    <case name="false" desc="No">
+     <configstring name="email" desc="Where should problem report emails be
+     sent?">webmaster@example.com</configstring>
+     <configstring name="maildomain" desc="If Horde cannot determine a user's
+     email address, this domain will be appended to their
+     username.">example.com</configstring>
+     <configstring name="username" required="false" desc="If requiring SMTP
+     authentication without a global SMTP user (in section &quot;Mailer&quot;
+     and allowing problem reporting for not authenticated users (in section
+     &quot;Menu Settings&quot;), what username should be use for SMTP
+     authentication?"/>
+     <configstring name="password" required="false" desc="The password to use"/>
+    </case>
+   </configswitch>
+   <configboolean name="attachments" required="false" desc="Allow users to
+   upload file attachments to the problem report?">true</configboolean>
+  </configsection>
+ </configtab>
+
+ <configtab name="menu" desc="Menu">
+  <configheader>Menu Settings</configheader>
+  <configsection name="menu">
+   <configmultienum name="apps" desc="Select any applications that should be
+   linked in Horde's menu">
+    <values>
+     <configspecial name="list-horde-apps" />
+    </values>
+   </configmultienum>
+
+   <configboolean name="always" desc="Should we &lt;strong&gt;always
+   &lt;/strong&gt; display the Horde frameset?">false</configboolean>
+
+   <configsection name="links">
+    <configenum name="help" desc="Should we display help links in the
+    menu?">all
+     <values>
+      <value desc="All users">all</value>
+      <value desc="Authenticated users">authenticated</value>
+      <value desc="Never">never</value>
+     </values>
+    </configenum>
+    <configenum name="options" desc="Should we display options links in the
+    menu? You still need to configure a preference backend in the
+    &quot;Preference System&quot; section.">authenticated
+     <values>
+      <value desc="All users">all</value>
+      <value desc="Authenticated users">authenticated</value>
+      <value desc="Never">never</value>
+     </values>
+    </configenum>
+    <configenum name="problem" desc="Should we display problem reporting links
+    in the menu?">all
+     <values>
+      <value desc="All users">all</value>
+      <value desc="Authenticated users">authenticated</value>
+      <value desc="Never">never</value>
+     </values>
+    </configenum>
+    <configenum name="login" desc="Should we display a login link in the menu
+    when not logged in?">all
+     <values>
+      <value desc="All users">all</value>
+      <value desc="Never">never</value>
+     </values>
+    </configenum>
+    <configenum name="logout" desc="Should we display a logout link in the
+    menu when logged in?">authenticated
+     <values>
+      <value desc="Authenticated users">authenticated</value>
+      <value desc="Never">never</value>
+     </values>
+    </configenum>
+    <configenum name="login" desc="Should we display a login link in the menu
+    when not logged in?">all
+     <values>
+      <value desc="All users">all</value>
+      <value desc="Never">never</value>
+     </values>
+    </configenum>
+    <configenum name="logout" desc="Should we display a logout link in the
+    menu when logged in?">authenticated
+     <values>
+      <value desc="Authenticated users">authenticated</value>
+      <value desc="Never">never</value>
+     </values>
+    </configenum>
+   </configsection>
+  </configsection>
+
+  <configsection name="logo">
+   <configstring name="image" required="false" desc="The URL of an image for
+   the top of the Horde menu. The image should be no larger than 140 pixels
+   wide by 40 pixels high to prevent the frame from scrolling."/>
+   <configstring name="link" required="false" desc="If a logo is displayed in
+   the Horde menu, what URL (if any) should it link to?"/>
+  </configsection>
+ </configtab>
+
+ <configtab name="hooks" desc="Custom Function Hooks">
+  <configsection name="hooks">
+   <configheader>Custom Function Hooks Settings</configheader>
+   <configdescription>
+    There are example functions for all hooks in horde/config/hooks.php.dist.
+   </configdescription>
+   <configboolean name="permsdenied" desc="If this is checked, the
+   function _perms_hook_denied() will be called to return an error message if
+   a permission has been denied. Otherwise a standard message will be shown
+   and the user won't see any action widgets that he doesn't have access
+   to.">false</configboolean>
+   <configboolean name="username" desc="If this is checked, the function
+   _username_hook_frombackend() will be used to set the user name at login
+   time. The counterpart function _username_hook_tobackend() will be used to
+   convert user names back, for example when showing name lists to the
+   user.">false</configboolean>
+   <configboolean name="preauthenticate" desc="If this is checked and the
+   function _horde_hook_preauthenticate() returns false, authentication will
+   fail.">false</configboolean>
+   <configboolean name="postauthenticate" desc="If this is checked and the
+   function _horde_hook_postauthenticate() returns false, authentication will
+   fail.">false</configboolean>
+   <configboolean name="authldap" desc="If this is checked, the function
+   _horde_hook_authldap() will be used to create and set the attributes needed
+   to add/edit/delete users by the LDAP Auth driver.">false</configboolean>
+   <configboolean name="groupldap" desc="If this is checked, the function
+   _horde_hook_groupldap() will be used to create and set the attributes needed
+   to add/edit/delete groups by the LDAP Group driver.">false</configboolean>
+  </configsection>
+ </configtab>
+
+ <configtab name="block" desc="Portal Blocks">
+  <configsection name="portal">
+   <configheader>Portal Blocks Settings</configheader>
+   <configmultienum name="fixed_blocks" muldesc="Which blocks should always be
+    displayed in the portal?">
+    <values>
+     <configspecial name="list-blocks" />
+    </values>
+   </configmultienum>
+  </configsection>
+  <configheader>weather.com Configuration</configheader>
+  <configsection name="weatherdotcom">
+   <configdescription>
+    Use of the weather.com block requires free registration for the XML
+    feed at http://www.weather.com/services/xmloap.html.
+    After registration, an email will be returned with the Partner ID and
+    license key.&lt;br /&gt;
+    NOTE: weather.com guidelines require registration and use of the returned
+    values, but the application appears to function with any string values.
+   </configdescription>
+   <configstring name="partner_id" required="false" desc="The partner I.D.
+   from weather.com"/>
+   <configstring name="license_key" required="false" desc="The license key
+   from weather.com"/>
+  </configsection>
+
+  <configheader>Fortune Configuration</configheader>
+  <configsection name="fortune">
+   <configstring name="exec_path" required="false" desc="Path to fortune
+   executable, e.g. /usr/games/fortune"/>
+  </configsection>
+
+  <configheader>Account Info Configuration</configheader>
+  <configsection name="accounts">
+   <configswitch name="driver" desc="What driver should we use?">null
+    <case name="null" desc="None"/>
+    <case name="localhost" desc="localhost">
+     <configsection name="params">
+      <configstring name="quota_path" desc="Path to the quota program">
+      /usr/bin/quota</configstring>
+      <configstring name="grep_path" desc="Path to the grep program">
+      /bin/grep</configstring>
+      <configboolean name="translateMountPoint" desc="Should we translate home
+      directories to mount point device names?">false</configboolean>
+      <configstring name="translationTable" desc="File to translate directory
+      names to mount point device names?">/etc/mtab</configstring>
+     </configsection>
+    </case>
+    <case name="finger" desc="Finger">
+     <configsection name="params">
+      <configstring name="finger_path" desc="Path to the finger
+      program">/usr/bin/finger</configstring>
+      <configstring name="host" desc="Host to request finger information
+      from">localhost</configstring>
+     </configsection>
+    </case>
+    <case name="ldap" desc="LDAP">
+     <configsection name="params">
+      <configstring name="host" desc="LDAP server/host">localhost</configstring>
+      <configinteger name="port" required="false" desc="Port LDAP is running
+      on, if non-standard">389</configinteger>
+      <configstring name="basedn" desc="basedn string">
+      o=example.com,c=US</configstring>
+      <configstring name="binddn" required="false" desc="The DN used to bind
+      to the LDAP server"/>
+      <configstring name="password" required="false" desc="The password used
+      to bind to the LDAP server"/>
+      <configstring name="attr" desc="LDAP attribute to search on">
+      uid</configstring>
+      <configenum name="version" desc="LDAP Protocol Version">3
+       <values>
+        <value desc="LDAPv2 (Deprecated)">2</value>
+        <value desc="LDAPv3">3</value>
+       </values>
+      </configenum>
+      <configboolean name="strip" desc="Strip domain from user
+      name?">false</configboolean>
+     </configsection>
+    </case>
+    <case name="kolab" desc="Kolab (LDAP)">
+     <configsection name="params">
+      <configdescription>This will use the parameters set in the Kolab
+      Groupware Server tab. You must enable Kolab integration for this to
+      work.</configdescription>
+      <configstring name="attr" desc="LDAP attribute to search
+      on">uid</configstring>
+      <configboolean name="strip" desc="Strip domain from user
+      name?">false</configboolean>
+     </configsection>
+    </case>
+   </configswitch>
+  </configsection>
+ </configtab>
+
+ <configtab name="user" desc="User Capabilities and Constraints">
+  <configsection name="user">
+   <configheader>User Capabilities and Constraints</configheader>
+   <configboolean name="verify_from_addr" desc="If users are adding new From:
+   addresses to their identities, should we send them a confirmation message
+   to verify that the email address is really theirs?">false</configboolean>
+  </configsection>
+ </configtab>
+
+ <configtab name="api" desc="API Keys">
+  <configsection name="api">
+   <configheader>API Keys Settings</configheader>
+   <configstring name="googlemaps" desc="Google Maps API Key"
+   required="false"/>
+   <configstring name="googlesafebrowsing" desc="Google Safe Browsing API Key"
+   required="false"/>
+   <configstring name="googlesearch" desc="Google AJAX Search API Key"
+   required="false"/>
+  </configsection>
+ </configtab>
+
+ <configtab name="imsp" desc="IMSP Server">
+  <configsection name="imsp">
+   <configheader>IMSP Server Settings</configheader>
+   <configdescription>If you plan to use any of Horde's IMSP server support,
+   enable this option and configure the server settings below.  Note that you
+   must still configure/enable specific IMSP support in the appropriate
+   section.</configdescription>
+   <configswitch name="enabled">false
+    <case name="false" desc="Disabled" />
+    <case name="true" desc="Enabled">
+     <configheader>IMSP Server Settings</configheader>
+     <configstring name="server" desc="Server Address:">localhost</configstring>
+     <configstring name="port" desc="Server port:">406</configstring>
+     <configswitch name="auth_method" desc="The authentication method to
+     use">plaintext
+      <case name="plaintext" desc="Plaintext" />
+      <case name="cram_md5" desc="CRAM-MD5" />
+      <case name="imtest" desc="Cyrus imtest">
+       <configstring name="socket" desc="Path to the directory that will hold
+       the socket. (The socket will be named 'imsp_username.sck').">
+       /tmp/</configstring>
+       <configstring name="command" desc="Path to imtest binary">
+       /cyrus/usr/cyrus/bin/imtest</configstring>
+       <configenum name="auth_mechanism" description="What authentication
+       method do you want to use with the imtest utility?">
+        <values>
+         <value desc="Plaintext (LOGIN)">LOGIN</value>
+         <value desc="GSSAPI">gssapi</value>
+        </values>
+       </configenum>
+      </case>
+     </configswitch>
+    </case>
+   </configswitch>
+  </configsection>
+ </configtab>
+
+ <configtab name="kolab" desc="Kolab Server">
+  <configsection name="kolab">
+   <configheader>Kolab Server Settings</configheader>
+   <configdescription>
+    &lt;strong&gt;*** IF YOU HAVE NO IDEA WHAT KOLAB IS THEN YOU CAN SAFELY
+    IGNORE THIS TAB ***&lt;/strong&gt;&lt;br /&gt;
+    Kolab is in no way required for normal Horde usage. If, however, you
+    intend to use Horde as a webclient for Kolab then you will need to ensure
+    that the following fields correspond to those required by your Kolab
+    installation.  You can find some of the required values in the
+    &lt;code&gt; $KOLAB_ROOT/etc/kolab/kolab.conf&lt;/code&gt; configuration
+    file. Please note that the old iCal/vCard storage format has been dropped
+    in favour of the new XML storage format &amp;amp; IMAP folder annotations;
+    subsequently the Horde Kolab modules will only work with version 2 of the
+    Kolab server.&lt;br /&gt;
+    If you would like to find out more about Kolab then please visit the Kolab
+    community website at http://www.kolab.org/
+   </configdescription>
+   <configswitch name="enabled" quote="false" desc="Horde/Kolab integration
+    status">false
+    <case name="false" desc="Disabled" />
+    <case name="true" desc="Enabled">
+     <configheader>Kolab LDAP Server Settings</configheader>
+     <configsection name="ldap">
+      <configstring name="server" desc="Server
+      address:">localhost</configstring>
+      <configinteger name="port" desc="Server port:">389</configinteger>
+      <configstring name="basedn" desc="Base
+      DN:">dc=example,dc=com</configstring>
+      <configstring name="phpdn" desc="Search
+      DN:">cn=nobody,cn=internal,dc=example,dc=com</configstring>
+      <configstring name="phppw" desc="Search Password:"/>
+     </configsection>
+     <configheader>Kolab Cyrus IMAP Server Settings</configheader>
+     <configsection name="imap">
+      <configstring name="server" desc="Server
+      address:">localhost</configstring>
+      <configinteger name="port" desc="Server port:">143</configinteger>
+      <configinteger name="sieveport" desc="Sieve port:">2000</configinteger>
+      <configstring name="maildomain" desc="Default
+      maildomain:">example.com</configstring>
+      <configboolean name="cache_folders" desc="Cache IMAP folders:"
+       required="true">true</configboolean>
+     </configsection>
+     <configheader>Kolab SMTP Server Settings</configheader>
+     <configsection name="smtp">
+      <configstring name="server" desc="Server
+      address:">localhost</configstring>
+      <configinteger name="port" desc="Server port:">25</configinteger>
+     </configsection>
+     <configheader>Kolab Free/Busy Application Settings</configheader>
+     <configsection name="freebusy">
+       <configdescription>
+	 Enter the leading part of the URL to the Kolab Free/Busy
+	 application here. This will usually be
+	 "https://localhost/freebusy" but if you installed it so that
+	 you reach the application at "https://freebusy.example.org"
+	 then you would enter "https://freebusy.example.org". The URL
+	 "https://freebusy.example.org/freebusy" would thus need the
+	 setting "https://freebusy.example.org/freebusy".
+       </configdescription>
+      <configstring name="server" desc="Application
+      address:">https://localhost/freebusy</configstring>
+     </configsection>
+    </case>
+   </configswitch>
+  </configsection>
+ </configtab>
+ <configtab name="memcache" desc="Memcache Server">
+  <configsection name="memcache">
+   <configheader>Memcache Server Settings</configheader>
+   <configswitch name="enabled" quote="false" desc="Use a memcache
+   server?">false
+    <case name="false" desc="Disabled"/>
+    <case name="true" desc="Enabled">
+     <configlist name="hostspec" required="false" desc="What hostname(s) is
+     the memcache server(s) running on, or what is the name of the system
+     DSN(s)? Specify multiple servers by separating with
+     commas.">localhost</configlist>
+     <configlist name="port" required="false" desc="Port(s) the memcache
+     server(s) are running on. If more than one host is used, specify ports
+     for respective servers, separated by commas.">11211</configlist>
+     <configlist name="weight" required="false" desc="The weight to give each
+     memcache server. If more than one host is used, specify weights
+     for respective servers, separated by commas."></configlist>
+     <configboolean name="persistent" required="false" desc="Enable
+     persistent connections to server(s).">false</configboolean>
+     <configswitch name="compression" quote="false" desc="Enable compression
+     when storing entries on server.">false
+      <case name="false" desc="No" />
+      <case name="true" desc="Yes">
+       <configinteger name="c_threshold" required="false" desc="The threshold
+       length before compressing data.">0</configinteger>
+      </case>
+     </configswitch>
+     <configphp name="prefix" required="false" desc="Prefix to use for the
+     memcache keys. PHP expressions are allowed."></configphp>
+     <configphp name="large_items" required="false" desc="Memcache natively
+     supports data of limited length only (default: 1 MB). If this option is
+     true, Horde will transparently work around this
+     limitation.">true</configphp>
+    </case>
+   </configswitch>
+  </configsection>
+ </configtab>
+</configuration>

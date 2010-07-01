@@ -1,0 +1,4985 @@
+# IMP Greek translation.
+# Copyright 2002 Stefanos I. Dimitriou.
+# Stefanos I. Dimitriou <sdimitri_webmail@teiath.gr>, 2002.
+# Silligardos Xristoforos, 2002.
+# Anagnostopoulos Apostolis, 2002.
+# Milosis C. Konstantinos, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: IMP: 3.2-cvs\n"
+"POT-Creation-Date: 2002-11-07 12:08+0200\n"
+"PO-Revision-Date: 2001-05-05 15:00+0200\n"
+"Last-Translator: Konstantinos C. Milosis <kmilosis@yahoo.com>\n"
+"Language-Team: Greek <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-7\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+msgid "                        Switch to HTML composition"
+msgstr "Εναλλαγή μεθόδου στοιχειοθεσίας"
+
+msgid "      To: "
+msgstr "    Προς:"
+
+msgid "    Date: "
+msgstr "Ημερομηνία:"
+
+msgid "    From: "
+msgstr "    Από:"
+
+msgid " - $nm new message"
+msgstr " - $nm Νέο μήνυμα."
+
+msgid " - $nm new messages"
+msgstr " - $nm Νέα μηνύματα"
+
+msgid "  The mailbox trash is already empty."
+msgstr "  Η γραμματοθυρίδα 'κάδος' είναι ήδη άδεια."
+
+msgid " Subject: "
+msgstr " Θέμα:"
+
+msgid " in "
+msgstr " σε "
+
+msgid "#"
+msgstr "#"
+
+#: mailbox.php:190
+msgid "%d message(s) have been deleted."
+msgstr "%d μήνυμα(τα) διαγράφηκαν."
+
+#: lib/Spam.php:169
+msgid ""
+"%d messages have been reported as not spam to your system administrator."
+msgstr "%d μηνύματα αναφέρθηκαν σαν ΜΗ spam στο διαχειριστή του συστήματος."
+
+#: lib/Spam.php:149
+msgid "%d messages have been reported as not spam."
+msgstr "%d μηνύματα αναφέρθηκαν σαν ΜΗ spam."
+
+#: lib/Spam.php:161
+msgid "%d messages have been reported as spam to your system administrator."
+msgstr "%d μηνύματα αναφέρθηκαν σαν spam στο διαχειριστή του συστήματος."
+
+#: lib/Spam.php:141
+msgid "%d messages have been reported as spam."
+msgstr "%d μηνύματα αναφέρθηκαν σαν spam."
+
+#, c-format
+msgid "%d of %d Messages"
+msgstr "%d από %d Μηνύματα"
+
+#, c-format
+msgid "%d to %d of %d Messages"
+msgstr "%d έως %d από %d Μηνύματα"
+
+#: pgp.php:332
+msgid "%s PGP Administration"
+msgstr "%s Διαχείριση PGP"
+
+#: smime.php:254
+msgid "%s S/MIME Administration"
+msgstr "%s Διαχείριση S/MIME"
+
+#, c-format
+msgid "%s already exists. Your %s folder was not renamed."
+msgstr "%s υπάρχει ήδη. Ο %s φάκελος δεν μετονομάστηκε."
+
+#, c-format
+msgid "%s does not appear to be a valid mailbox."
+msgstr "%s δεν φαίνεται να είναι έγκυρο γραμματοκιβώτιο."
+
+#, c-format
+msgid "%s folder being renamed at the start of the month."
+msgstr "%s φάκελος θα μετονομαστεί στην αρχή του μήνα."
+
+#: lib/MIME/Viewer/itip.php:226
+msgid "%s has accepted."
+msgstr "%s έγινε αποδεκτό."
+
+#: lib/MIME/Viewer/itip.php:603
+msgid "%s has cancelled %s."
+msgstr "%s ακύρωσε %s."
+
+#: lib/MIME/Viewer/itip.php:232
+msgid "%s has declined."
+msgstr "%s δεν έγινε αποδεκτό."
+
+#: lib/MIME/Viewer/itip.php:452
+msgid "%s has replied to a free/busy request."
+msgstr "%s απάντησε σε ερώτημα ελεύθερου/απασχολημένου."
+
+#: lib/MIME/Viewer/itip.php:583
+msgid "%s has replied to the invitation to %s."
+msgstr "%s απάντησε στη πρόσκληση για %s."
+
+#: lib/MIME/Viewer/itip.php:441
+msgid "%s has sent you free/busy information."
+msgstr "%s απέστειλε πληροφορίες ελεύθερου/απασχολημένου."
+
+#: lib/MIME/Viewer/itip.php:238
+msgid "%s has tentatively accepted."
+msgstr "%s έγινε προσωρινά αποδεκτό."
+
+#, c-format
+msgid "%s is already empty."
+msgstr "%s είναι ήδη άδειο."
+
+#: lib/MIME/Viewer/itip.php:446
+msgid "%s requests your free/busy information."
+msgstr "%s ζήτησσε πληροφορίες ελεύθερου/απασχολημένου."
+
+#: lib/MIME/Viewer/itip.php:541
+msgid "%s requests your presence at %s."
+msgstr "%s ζήτησε την παρουσία σου στην %s."
+
+#: lib/Message.php:398
+msgid "%s was successfully added to %s."
+msgstr "%s προστέθηκε επιτυχώς στο %s."
+
+#: lib/MIME/Viewer/itip.php:553
+msgid "%s wishes to ammend %s."
+msgstr "%s επιθυμεί τροποποίηση του %s."
+
+#: lib/MIME/Viewer/itip.php:531
+msgid "%s wishes to make you aware of %s."
+msgstr "%s επιθυμεί να σας πληροφορήσει για %s."
+
+#: lib/MIME/Viewer/itip.php:558
+msgid "%s wishes to receive the latest information about %s."
+msgstr "%s επιθυμεί να λάβει τις τελευταίες πληροφορίες για %s."
+
+#, c-format
+msgid "%s: %s (%d&nbsp;of&nbsp;%d)"
+msgstr "%s: %s (%d&nbsp;από&nbsp;%d)"
+
+msgid "(Apply these changes and move to next screen.)"
+msgstr "(Εφαρμογή αυτών των αλλαγών και μετακίνηση στην επόμενη οθόνη.)"
+
+msgid "(Discard all changes and return to the compose screen.)"
+msgstr ""
+"(Απόρριψη όλων των αλλαγών και επιστροφή στην οθόνη σύνθεσης μηνύματος.)"
+
+msgid "(Highest)"
+msgstr "(Υψηλότατη)"
+
+msgid "(Maximum Attachment Size: %s bytes)"
+msgstr "(Μέγιστο μέγεθος Επισυναπτόμενου: %s bytes)"
+
+msgid ""
+"(Return to the compose screen after applying all changes made thus far.  "
+"Changes on the current screen will NOT be applied.)"
+msgstr ""
+"(Επιστροφή στην οθόνη σύνθεσης αφού έχουν εφαρμοστεί όλες οι αλλαγές. Οι "
+"αλλαγές σε αυτή την οθόνη ΔΕΝ θα εφαρμοστούν.)"
+
+#: spelling.php:274
+msgid ""
+"(Send message after applying all changes made thus far.  Changes on the "
+"current screen will NOT be applied.)"
+msgstr ""
+"(Αποστολή μηνύματος μετά την εφαρμογή των αλλαγών που έχετε ήδη κάνει. Οι "
+"αλλαγές στην τρέχουσα οθόνη ΔΕΝ θα εφαρμοσθούν.)"
+
+msgid "* Add these by clicking OK *"
+msgstr "* Προσθήκη αυτών επιλέγοντας ΟΚ *"
+
+msgid "* Please select address(es) *"
+msgstr "* Παρακαλώ επιλέξτε τη διεύθυνση(εις) *"
+
+msgid "1 (Highest)"
+msgstr "1 (Υψηλότατη)"
+
+msgid "2 (High)"
+msgstr "2 (Υψηλή)"
+
+msgid "3 (Normal)"
+msgstr "3 (Κανονική)"
+
+msgid "4 (Low)"
+msgstr "4 (Χαμηλή)"
+
+msgid "5 (Lowest)"
+msgstr "5 (Χαμηλότατη)"
+
+#: config/prefs.php.dist:788
+msgid "100 characters"
+msgstr "100 χαρακτήρες"
+
+#: config/prefs.php.dist:791
+msgid "1000 characters"
+msgstr "1000 χαρακτήρες"
+
+#: config/prefs.php.dist:789
+msgid "250 characters"
+msgstr "250 χαρακτήρες"
+
+#: config/prefs.php.dist:790
+msgid "500 characters"
+msgstr "500 χαρακτήρες"
+
+msgid "<b>Content-Disposition:</b>"
+msgstr "<b>Διαρίθμυση Περιεχομένου:</b>"
+
+msgid "<b>Content-Transfer-Encoding:</b>"
+msgstr "<b>Κωδικοποιηση Μεταφοράς Περιεχομένου:</b>"
+
+msgid "<b>Content-Type:</b>"
+msgstr "<b>Τύπος Περιεχομένου</b>"
+
+msgid "<b>Date:</b>"
+msgstr "<b>Ημερομηνία:</b>"
+
+msgid "<b>Delivered-To:</b>"
+msgstr "<b>Παραδόθηκε στον:</b>"
+
+msgid "<b>Description:</b>"
+msgstr "<b>Περιγραφή:</b>"
+
+msgid "<b>Disposition:</b>"
+msgstr "<b>Ρύθμιση:</b>"
+
+msgid "<b>From:</b>"
+msgstr "<b>Από:</b>"
+
+msgid "<b>Headers:</b>"
+msgstr "<b>Επικεφαλίδες:</b>"
+
+msgid "<b>In-Reply-To:</b>"
+msgstr "<b>Σε απάντηση του:</b>"
+
+msgid "<b>MIME-Version:</b>"
+msgstr "<b>Έκδοση MIME:</b>"
+
+msgid "<b>Message-ID:</b>"
+msgstr "<b>Κωδικός Μηνύματος:</b>"
+
+#: lib/MIME/Viewer/itip.php:61
+msgid "<b>The calendar data is invalid</b>"
+msgstr "<b>Τα δεδομένα του ημερολογίου δεν είναι έγκυρα</b>"
+
+msgid "<b>Total Attachments Size:</b>"
+msgstr "<b>Συνολικό Μέγεθος Επισυναπτόμενων: </b>"
+
+msgid "<b>Priority:</b>"
+msgstr "<b>Προτεραιότητα:</b>"
+
+msgid "<b>Received:</b>"
+msgstr "<b>Παραλήφθηκε:</b>"
+
+msgid "<b>Return-Path:</b>"
+msgstr "<b>Επιστροφή σε:</b>"
+
+msgid "<b>Search</b>"
+msgstr "<b>Αναζήτηση</b>"
+
+msgid "<b>Subject:</b>"
+msgstr "<b>Θέμα:</b>"
+
+msgid "<b>To:</b>"
+msgstr "<b>Προς:</b>"
+
+msgid "<b>User-Agent:</b>"
+msgstr "<b>Μεσολαβητής Χρήστη:</b>"
+
+msgid "<b>X-Priority:</b>"
+msgstr "<b>Προταιρεότητα-Χ:</b>"
+
+#, c-format
+msgid ""
+"<p><i>This message was written in a character set other than your own. If it "
+"is not displayed correctly, %sclick here</a> to open it in a new window.</"
+"i></p>\n"
+msgstr ""
+"<p><i>Αυτό το μήνυμα γράφτηκε με διαφορετική κωδικοποίηση από αυτή που "
+"χρησιμοποιείτε. Αν δεν εμφανίζεται σωστά, %s επιλέξτε εδώ </a> για να "
+"ανοίξει σε νέο παράθυρο. </i></p>\n"
+
+msgid "AND"
+msgstr "ΚΑΙ"
+
+#: lib/MIME/Viewer/images.php:150
+msgid "A large image named %s is attached to this message."
+msgstr "Μια μεγάλη εικόνα με όνομα %s έχει επισυναφθεί σε αυτό το μήνυμα."
+
+#: lib/MIME/Viewer/notification.php:53
+msgid ""
+"A message you have sent has resulted in a return notification from the "
+"recipient."
+msgstr ""
+"Ενα μήνυμα που αποστείλατε είχε σαν αποτέλεσμα την επιστροφή αυτού του "
+"μηνήματος ενημέρωσης από τον παραλήπτη."
+
+#: lib/MIME/Viewer/itip.php:546
+msgid "Accept request"
+msgstr "Αποδοχή αιτήματος"
+
+#: lib/MIME/Viewer/itip.php:738
+msgid "Accepted"
+msgstr "Έγινε αποδεκτό"
+
+#: lib/IMP.php:911 lib/IMP.php:913
+msgid "Acco_unts"
+msgstr "Λογαριασμοί"
+
+#: templates/fetchmail/manage.inc:7
+msgid "Account's name:"
+msgstr "Όνομα Λογαριασμού:"
+
+msgid "Action"
+msgstr "Ενέργεια"
+
+msgid "Actions"
+msgstr "Ενέργειες"
+
+#: templates/prefs/sourceselect.inc:303
+msgid "Add source"
+msgstr "Προσθήκη πηγαίου"
+
+#: lib/MIME/Viewer/itip.php:534 lib/MIME/Viewer/itip.php:544
+msgid "Add this to my calendar"
+msgstr "Προσθήκη αυτού στο ημερολόγιό μου"
+
+#: lib/MIME/Headers.php:206 lib/MIME/Headers.php:207
+#, c-format
+msgid "Add to Addressbook (%s)"
+msgstr "Προσθήκη στο Διευθυνσιογράφο (%s)"
+
+msgid "Added \"%s\" as an attachment."
+msgstr "Προστέθηκε \"%s\" σαν συνημμένο."
+
+msgid "Added an attachment."
+msgstr "Προστέθηκε ένα συνημμένο."
+
+#: config/prefs.php.dist:190
+msgid ""
+"Additional headers to display when viewing: <i>(optional, enter each header "
+"on a new line)</i>"
+msgstr ""
+"Πρόσθετες επικεφαλίδες για εμφάνιση κατά την προβολή: <i>(Προαιρετικά, βάλε "
+"κάθε επικεφαλίδα σε νέα γραμμή)</i>"
+
+#: lib/MIME/Viewer/notification.php:65
+msgid "Additional information can be viewed %s."
+msgstr "Επιπρόσθετες πληροφορίες μπορείτε να δείτε %s."
+
+#: lib/MIME/Viewer/notification.php:65
+msgid "Additional information details"
+msgstr "Πρόσθετες πληροφοριακές λεπτομέρειες"
+
+#: lib/MIME/Viewer/status.php:96
+msgid "Additional message details"
+msgstr "Πρόσθετες λεπτομέρειες μηνύματος"
+
+#: lib/MIME/Viewer/status.php:95
+msgid "Additional message details can be viewed %s."
+msgstr "Πρόσθετες λεπτομέρειες μηνύματος μπορούν να προβληθούν %s."
+
+#: lib/MIME/Viewer/status.php:81
+msgid "Additional message error details"
+msgstr "Πρόσθετες λεπτομέρεις λάθους του μηνύματος"
+
+#: lib/MIME/Viewer/status.php:80
+msgid "Additional message error details can be viewed %s."
+msgstr "Πρόσθετες λεπτομέρεις λάθους του μηνύματος μπορούν να προβληθούν %s."
+
+#: contacts.php:90 templates/contacts/contacts.inc:170
+#: templates/compose/compose.inc:330 templates/compose/redirect.inc:55
+msgid "Address Book"
+msgstr "Διευθ/γράφος"
+
+msgid "Address Books"
+msgstr "Διευθυνσιογράφοι"
+
+msgid "Addressbooks"
+msgstr "Διευθυνσιογράφοι"
+
+msgid ""
+"Addresses to BCC all messages: <i>(optional, enter each address on a new "
+"line)</i>"
+msgstr ""
+"Διευθύνσεις για Κρυφή Κοινοποίηση σε όλα σας τα μηνύματα: <i>(προεραιτικά, "
+"βάλτε μία διεύθυνση σε κάθε γραμμή)</i>"
+
+msgid ""
+"Addresses to explicitly tie to this identity: <i>(optional, enter each "
+"address on a new line)</i>"
+msgstr ""
+"Διευθύνσεις που αντιστοιχούν αποκλειστικά σε αυτή τη ταυτότητα: <i>"
+"(προεραιτικά, βάλτε μία διεύθυνση σε κάθε γραμμή)</i>"
+
+msgid "All"
+msgstr "Oλα"
+
+msgid "All messages in the folder(s) will be lost!"
+msgstr "Όλα τα μηνύματα στον(ους) φάκελο(ους) θα χαθούν!"
+
+msgid ""
+"All messages in the folder(s) will be lost!\\nAre you completely sure you "
+"wish to continue?\\n"
+msgstr ""
+"Όλα τα μηνύματα στο(ους) φάκελο(ους) θα χαθούν! \\nΕίστε απολύτως σίγουροι "
+"ότι θέλετε να συνεχίσετε;\\n"
+
+msgid ""
+"All messages in the following folder(s) will be downloaded into one MBOX "
+"file:"
+msgstr ""
+"Όλα τα μηνύματα στον(ους) ακόλουθο φάκελο(ους)θα μεταφέρουν σε ένα φάκελο :"
+
+#, c-format
+msgid ""
+"All messages in your \"%s\" folder older than %s days will be permanently "
+"deleted."
+msgstr ""
+"Όλα τα μηνύματα στο φάκελο \"%s\" που είναι παλιότερα από %s ημέρες θα "
+"διαγραφούν μόνιμα."
+
+#: lib/Maintenance/Task/delete_attachments_monthly.php:65
+msgid "All old linked attachments more than %s months old will be deleted."
+msgstr "Ολα τα συνημμένα που είναι παλαιότερα από %s μήνες θα διαγραφούν."
+
+#, c-format
+msgid "All old sent-mail folders more than %s months old will be deleted."
+msgstr ""
+"Όλοι οι φάκελοι με απεσταλμένα που είναι παλιότεροι από %s μήνες θα "
+"διαγραφούν."
+
+msgid ""
+"All sessions begin at the Login screen.  Before you can use any of the "
+"webmail features, you must connect to your IMAP account using the username "
+"and password assigned to you by your network administrator."
+msgstr ""
+"Θα ξεκινήσετε από την οθόνη εισόδου. Πριν χρησιμοποιήσετε οποιεσδήποτε από "
+"τις υπηρεσίες του Web Mail, θα πρέπει να συνδεθείτε στο λογαριασμό IMAP που "
+"έχετε χρησιμοποιώντας το όνομα χρήστη και το συνθηματικό που σας έχουν δώσει."
+
+#: templates/filters/prefs.inc:55
+msgid "Allow filter rules to be applied in any mailbox?"
+msgstr ""
+"Να επιτρέπεται κανόνες φίλτρων να εφαρμόζονται σε οποιαδήποτε γραμματοθυρίδα "
+"(mailbox);"
+
+#: lib/MIME/Viewer/alternative.php:113
+msgid "Alternative parts for this section:"
+msgstr "Εναλλακτικά μέρη για αυτή τη συνεδρία:"
+
+msgid "Always"
+msgstr "Πάντα"
+
+msgid "Always save attachments"
+msgstr "Αποθήκευση συνημμένων πάντα"
+
+#: lib/Message.php:491
+msgid ""
+"An error occured while attempting to strip the attachment. The IMAP server "
+"said: "
+msgstr ""
+"Προέκυψε λάθος κατά τη προσπάθεια απόσπασης του συνημμένου. Ο εξυπηρετητής "
+"IMAP αναφέρει: "
+
+msgid "An illegal value was specified."
+msgstr "Ορίστηκε μία μη επιτρεπόμενη τιμή."
+
+msgid "An unknown error occured adding the new entry."
+msgstr "Παρουσιάστηκε άγνωστο λάθος κατά την προσθήκη νέας εγγραφής."
+
+#: lib/Message.php:385
+msgid "An unknown error occured while creating the new task."
+msgstr "Προέκυψε άγνωστο λάθος κατά τη δημιουργία νέας εργασίας."
+
+msgid "Answered"
+msgstr "Απαντημένα"
+
+msgid "Answered messages"
+msgstr "Απαντημένα μηνύματα"
+
+msgid "Apply All Rules"
+msgstr "Εφαρμογή όλων των κανόνων"
+
+msgid "Apply Filters"
+msgstr "Εφαρμογή Φίλτρων"
+
+msgid "Apply Filters on"
+msgstr "Εφαρμογή των φίλτρων στο"
+
+msgid "Apply filter rules upon logging on?"
+msgstr "Εφαρμογή των κανόνων φίλτρων κάθε φορά που κάνετε εισαγωγή;"
+
+msgid "Apply filter rules upon logging on."
+msgstr "Εφαρμογή των κανόνων φίλτρων κάθε φορά που μπαίνετε στην υπηρεσία."
+
+msgid "Apply filter rules when mailbox is refreshed?"
+msgstr ""
+"Εφαρμογή των κανόνων φίλτρων κάθε φορά που κάνετε ανανέωση του "
+"γραμματοκιβώτιου;"
+
+msgid "Apply filter rules whenever INBOX is displayed?"
+msgstr "Εφαρμογή των κανόνων φίλτρων κάθε φορά που εμφανίζετε τα Εισερχόμενα;"
+
+msgid "Apply Filters to %s"
+msgstr "Εφαρμογή Φίλτρων σε %s"
+
+msgid "April"
+msgstr "Απρίλιος"
+
+msgid "Approximate Size"
+msgstr "Μέγεθος κατά προσέγγιση"
+
+msgid "Are you SURE you want to continue?"
+msgstr "Είστε σίγουροι πως θέλετε να συνεχίσετε;"
+
+#: templates/folders/javascript.inc:5
+msgid "Are you completely sure you wish to continue?"
+msgstr "Είσαι απόλυτα σίγουρος ότι θέλεις να συνεχίσεις;"
+
+#: templates/smime/smime.inc:65 templates/pgp/pgp.inc:93
+msgid "Are you sure you want to delete this public key?"
+msgstr "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το δημόσιο κλειδί;"
+
+#: templates/smime/smime.inc:128 templates/pgp/pgp.inc:169
+msgid ""
+"Are you sure you want to delete your keypair? (This is NOT recommended!)"
+msgstr ""
+"Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το ζεύγος κελιδιών (Δεν "
+"συνίσταται!)"
+
+msgid "Are you sure you want to do this?"
+msgstr "Είστε σίγουροι πως θέλετε να εκτελέσετε αυτή την ενέργεια;"
+
+#: templates/mailbox/javascript.inc:68
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "Είστε σίγουροι πως θέλετε να διαγράψετε αυτά τα μηνύματα ΜΟΝΙΜΑ;"
+
+#: lib/MIME/Contents.php:215
+msgid "Are you sure you wish to PERMANENTLY delete this attachment?"
+msgstr "Είστε σίγουροι πως θέλετε να διαγράψετε αυτά τα συνημμένα ΜΟΝΙΜΑ;"
+
+msgid "Are you sure you wish to empty this folder?"
+msgstr "Είστε σίγουροι πως θέλετε να αδειάσετε αυτό τον φάκελο;"
+
+msgid "Are you sure you wish to empty your trash folder?"
+msgstr "Είστε σίγουροι πως θέλετε να αδειάσετε τον κάδο;"
+
+#: templates/mailbox/actions.inc:8
+msgid "Are you sure you wish to permanently delete these messages?"
+msgstr "Είστε σίγουροι πως θέλετε να διαγράψετε αυτά τα μηνύματα μονιμα;"
+
+#: templates/mailbox/javascript.inc:86
+msgid "Are you sure you wish to report this message as innocent?"
+msgstr "Θέλετε σίγουρα να αναφέρετε αυτά τα μηνύματα σαν 'αθώα';"
+
+#: templates/mailbox/javascript.inc:77
+msgid "Are you sure you wish to report this message as spam?"
+msgstr "Είστε σίγουροι ότι θέλετε να αναφέρετε αυτά τα μηνύματα σαν 'spam';"
+
+msgid "Arrival Time"
+msgstr "Ώρα Λήψης"
+
+msgid "Ascending"
+msgstr "Αύξουσα"
+
+msgid "Ask"
+msgstr "Ερώτηση"
+
+msgid "Attach"
+msgstr "Επισύναψη"
+
+#: templates/compose/compose.inc:466
+msgid "Attach Files"
+msgstr "Επισύναψη Αρχείων"
+
+#: templates/compose/compose.inc:447
+msgid "Attach a copy of your PGP public key to your message?"
+msgstr "Να επισυναφθεί αντίγραφο του δημόσιου PCP κλειδιού σας στο μήνυμα;"
+
+#: lib/MIME/Viewer/tnef.php:113
+msgid "Attached File:"
+msgstr "Επισυναπτόμενο Αρχείο:"
+
+#: lib/Compose.php:355 lib/Compose.php:442
+msgid ""
+"Attached file \"%s\" exceeds the attachment size limits. File NOT attached."
+msgstr ""
+"Το επισυναπτόμενο αρχείο \"%s\" υπερβαίνει το όριο μεγέθους επισυναπτόμενου. "
+"ΔΕΝ θα επισυναφθεί."
+
+#: lib/MIME/Viewer/itip.php:341
+msgid "Attached is a reply to a calendar request you sent."
+msgstr "Το επισυναπτόμενο είναι απάντηση σε αίτημα ημερολογίου που στείλατε."
+
+msgid "Attachment"
+msgstr "Συνημμένο"
+
+#: compose.php:977 lib/Message.php:452
+msgid "Attachment stripped: Original attachment type"
+msgstr "Το συνημμένο αποσπάσθηκε: Πραγματικός τύπος δεδομένων"
+
+msgid "Attachments"
+msgstr "Συνημμένα"
+
+#: lib/MIME/Viewer/itip.php:668
+msgid "Attendees"
+msgstr "Συμμετέχοντες"
+
+#: lib/MIME/Viewer/notification.php:56
+msgid "Attention"
+msgstr "Προσοχή"
+
+msgid "August"
+msgstr "Αύγουςτος"
+
+#: lib/Auth/imp.php:49
+msgid "Auth_imp: Required IMAP extension not found."
+msgstr "Auth_imp: Η απαιτούμενη επέκταση IMAP δεν βρέθηκε."
+
+msgid ""
+"Automatically show images in HTML messages when the sender is in my "
+"addressbook?"
+msgstr ""
+"Αυτόματη εμφάνιση εικόνων σε HTML μηνύματα όταν ο αποστολέας είναι στο "
+"Διευθυνσιογράφο μου;"
+
+msgid "Available Address books:"
+msgstr "Διαθέσιμοι Διευθυνσιογράφοι:"
+
+#: lib/MIME/Viewer/itip.php:704
+msgid "Awaiting Response"
+msgstr "Σε Αναμονή Απάντησης"
+
+msgid "Bac_k to %s"
+msgstr "Επιστροφή στα %s"
+
+#, c-format
+msgid "Back to %s"
+msgstr "Επιστροφή στα %s"
+
+#: thread.php:134
+msgid "Back to Multiple Message View Index"
+msgstr "Επιστροφή στο Ευρετήριο Πολλαπλών Μηνυμάτων"
+
+#: thread.php:132
+msgid "Back to Thread Display"
+msgstr "Επιστροφή στην εμφάνιση Νημάτων"
+
+#: lib/IMAP/Client.php:572
+msgid "Bad login name or password."
+msgstr "Ακυρο όνομα ή κωδικός."
+
+#: lib/IMAP/Client.php:387
+msgid "Bad or malformed request. Server Responded: %s"
+msgstr "Ακυρο ή κακογραμένο ερώτημα. Ο Εξυπηρετητής απάντησε: %s"
+
+#: lib/IMAP/Client.php:576
+msgid "Bad request: %s."
+msgstr "Ακυρο ερώτημα: %s."
+
+msgid "Bcc"
+msgstr "Κρυφή Κοινοποίηση"
+
+msgid ""
+"Begin by entering your user and password in the appropriate fields.  You'll "
+"then need to select the IMAP mail server to which you'd like to connect."
+msgstr ""
+"Ξεκινήστε βάζοντας το όνομα χρήστη και το συνθηματικό σας στα κατάλληλα "
+"πεδία. Κατόπιν πρέπει να επιλέξετε τον τύπο διακομιστή που θα "
+"χρησιμοποιήσετε."
+
+#: lib/MIME/Viewer/status.php:168
+msgid "Below is the raw text of the status information message."
+msgstr "Ακολουθεί το 'καθαρό' κείμενο του πληροφοριακού μηνύματος κατάστασης."
+
+msgid "Blacklist"
+msgstr "Ενοχλητική Αλληλογραφία"
+
+msgid "Block images in HTML messages unless they are specifically requested?"
+msgstr ""
+"Να μπλοκάρονται οι εικόνες σε μηνύματα HTML εκτός αν ρητά έχουν ζητηθεί;"
+
+msgid "Body"
+msgstr "Κείμενο Μηνύματος"
+
+msgid "Body:"
+msgstr "Κείμενο Μηνύματος:"
+
+msgid "Both"
+msgstr "Και τα δύο"
+
+msgid "Both Header Listing and Body of Message"
+msgstr "Και τα δύο, στην επικεφαλίδα και στο σώμα του μηνήματος"
+
+msgid "Browse..."
+msgstr "Αναζήτηση..."
+
+msgid "C_harset"
+msgstr "Κωδικοσελίδα"
+
+#: templates/search/fields.inc:35
+msgid "Calendar"
+msgstr "Ημερολόγιο"
+
+#: lib/Fetchmail/imap.php:204
+msgid "Can not connect to the remote mail server."
+msgstr "Αδύνατη η σύνδεση με τον απομακρυσμένο εξυπηρετητή e-mail."
+
+#: lib/Fetchmail/imap.php:202
+msgid "Can not connect to the remote mail server: "
+msgstr "Αδύνατη η σύνδεση με τον απομακρυσμένο εξυπηρετητή e-mail:"
+
+#: lib/MIME/Viewer/partial.php:53
+msgid ""
+"Can not display - found only %s of %s parts of this message in the current "
+"mailbox."
+msgstr ""
+"Αδύνατη η εμφάνιση - βρέθηκαν μόνο %s από %s μέρη αυτού του μηνύματος στη "
+"τρέχουσα γραμματοθυρίδα."
+
+#: templates/contacts/contacts.inc:248 templates/folders/import.inc:21
+#: templates/smime/passphrase.inc:22 templates/smime/import_key.inc:85
+#: templates/compose/spelling.inc:106 templates/pgp/passphrase.inc:32
+#: templates/pgp/import_key.inc:66
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+msgid "Cancel Message"
+msgstr "Ακύρωση Μηνύματος"
+
+msgid "Cancelling this message will permanently discard its contents."
+msgstr "Ακυρώνοντας αυτό το μήνυμα θα χαθούν οριστικά τα περιεχόμενα του."
+
+msgid "Cc"
+msgstr "Κοινοποίηση"
+
+msgid "Cc:"
+msgstr "Κοινοποίηση:"
+
+msgid "Change"
+msgstr "Αλλαγή"
+
+msgid "Change All"
+msgstr "Αλλαγή Όλων"
+
+msgid "Change Folder"
+msgstr "Αλλαγή Φακέλου"
+
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr ""
+"Μπορείτε να αλλάξετε τις επιλογές εμφάνισης, όπως είναι ο αριθμός μηνυμάτων "
+"που βλέπετε ανά σελίδα και ο τρόπος ταξινόμησης των μηνυμάτων."
+
+msgid "Change mail server settings."
+msgstr "Αλλαγή των ρυθμίσεων Διακομιστή."
+
+msgid "Change mail server and folder settings."
+msgstr "Αλλαγή των ρυθμίσεων Διακομιστή και Φακέλλων."
+
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr ""
+"Μπορείτε να αλλάξετε το όνομα, τη διεύθυνση και την υπογραφή σας, στοιχεία "
+"που βλέπουν οι παραλήπτες σας όταν διαβάζουν ή απαντάνε στα μηνύματά σας."
+
+#: config/prefs.php.dist:793
+msgid "Characters to display:"
+msgstr "Χαρακτήρες προς εμφάνιση:"
+
+#: templates/folders/actions.inc:13
+msgid "Check Folder(s) for New Mail"
+msgstr "Έλεγχος Φακέλου(ων) για Νέα Μηνύματα"
+
+#: templates/folders/actions.inc:2 templates/mailbox/message_headers.inc:65
+msgid "Check _All/None"
+msgstr "Επιλογή Όλων/Κανενός"
+
+#: templates/fetchmail/fetchmail.inc:14
+msgid "Check all mail servers you want to fetch mail from:"
+msgstr ""
+"Έλεγχος όλων των εξυπηρετητών από τους οποιους θέλετε να αντλήσετε μηνύματα:"
+
+#: config/prefs.php.dist:454
+msgid "Check spelling before sending a message?"
+msgstr "Ελεγχος ορθογραφίας πριν την αποστολή;"
+
+msgid "Checkbox"
+msgstr "Πλαίσιο Επιλογής"
+
+msgid "Choose Action:"
+msgstr "Επιλέξτε Ενέργεια:"
+
+msgid "Choose a mail server:"
+msgstr "Επιλέξτε Διακομιστή Αλληλογραφίας:"
+
+#: lib/MIME/Viewer/itip.php:478 lib/MIME/Viewer/itip.php:716
+msgid "Choose an action:"
+msgstr "Επιλέξτε μια ενέργεια:"
+
+msgid "Choose the address book to use when adding addresses."
+msgstr ""
+"Επιλέξτε τον Διευθυνσιογράφο που θα χρησιμοποιείτε όταν προσθέτετε νέες "
+"διευθύνσεις."
+
+msgid "Choose the order of address books to search when expanding addresses."
+msgstr ""
+"Επιλέξτε τη σειρά με την οποία θα γίνεται αναζήτηση στους διευθυνσιογράφους."
+
+#, c-format
+msgid "Cleared all messages from %s."
+msgstr "Καθαρισμός όλων των μηνυμάτων από %s."
+
+#: lib/MIME/Viewer/images.php:100
+msgid "Click %s to convert the image file into a format your browser can view."
+msgstr ""
+"Πατήστε %s για να μετατραπεί το αρχείο εικόνας σε μορφή που μπορεί να δείξει "
+"ο εξερευνητής σας"
+
+#: lib/MIME/Viewer/images.php:89
+msgid "Click %s to download the image."
+msgstr "Πατήστε %s για να κατεβάσετε την εικόνα."
+
+#: lib/Filter.php:103
+msgid "Click %s to go to %s management page."
+msgstr "Πατήστε %s για μετάβαση στη σελίδα διαχείρισης %s."
+
+#: lib/MIME/Viewer/html.php:116
+msgid "Click %s to view HTML content in a separate window."
+msgstr "Πατήστε %s για να δείτε τα περιεχόμενα HTML σε διαφορετικό παράθυρο."
+
+#: lib/MIME/Viewer/images.php:151
+msgid "Click %s to view a thumbnail of this image."
+msgstr "Πατήστε %s για να δείτε την εικόνα σε μικρή κλίμακα."
+
+#: lib/MIME/Viewer/pkcs7.php:410
+msgid "Click %s to view the attachment in a separate window."
+msgstr "Πατήστε %s για να δείτε το συνημμένο σε διαφορετικό παράθυρο."
+
+#: lib/MIME/Viewer/related.php:64
+msgid "Click %s to view this multipart/related part in a separate window."
+msgstr "Πατήστε %s τα πολλαπλά/σχετικά μέρη σε διαφορετικό παράθυρο."
+
+msgid "Click here for Secure HTTPS"
+msgstr "Επιλέξτε εδώ για ασφαλές HTTPS"
+
+msgid "Click here for Standard HTTP"
+msgstr "Επιλέξτε εδώ για απλό HTTP"
+
+#: lib/MIME/Viewer/html.php:103
+msgid "Click here to HIDE the Images"
+msgstr "Πατήστε εδώ για να ΚΡΥΨΕΤΕ την εικόνα"
+
+#: lib/MIME/Viewer/html.php:106
+msgid "Click here to SHOW the Images"
+msgstr "Πατήστε εδώ για να ΕΜΦΑΝΙΣΕΤΕ την εικόνα"
+
+#: templates/prefs/sourceselect.inc:321
+msgid ""
+"Click on one of your selected address books and then select all fields to "
+"search."
+msgstr ""
+"Επιλέξτε έναν από τους διαθέσιμους διευθυνσιογράφους, κατόπιν επιλέξτε τα "
+"πεδία στα οποία θα γίνεται αναζήτηση."
+
+#: lib/MIME/Viewer/pgp.php:176
+msgid "Click to Save PGP Public Key in your Address book"
+msgstr "Πατήστε για να σώσετε το PGP δημόσιο κλειδί στο Διευθυνσιογράφο σας"
+
+#: lib/MIME/Viewer/pkcs7.php:194
+msgid "Click to Save S/MIME certificate of %s in your Address Book"
+msgstr ""
+"Πατήστε για να σώσετε το S/MIME πιστοποιητικό του %s στο Διευθυνσιογράφο σας"
+
+msgid "Clicking on the address will compose a new message to the sender"
+msgstr ""
+"Κάνοντας κλικ στη διεύθυνση να ανοίξει σύνθεση νέου μηνύματος για τον "
+"αποστολέα"
+
+msgid "Clicking on the address will open the message to be read"
+msgstr "Κάνοντας κλικ στη διεύθυνση να ανοίξει το μήνυμα για ανάγωνση"
+
+#: templates/fetchmail/fetchmail.inc:30
+msgid "Close"
+msgstr "Κλείσιμο"
+
+#: compose.php:751 compose.php:1058
+msgid "Close this window"
+msgstr "Κλείσιμο αυτού του παραθύρου"
+
+#: folders.php:383
+msgid "Closed Folder"
+msgstr "Κλειστός Φάκελος"
+
+#: folders.php:403
+msgid "Collapse"
+msgstr "Σύμπτυξη"
+
+#: templates/folders/actions.inc:34
+msgid "Collapse All"
+msgstr "Σύμπτυξη όλων"
+
+msgid "Collapse All Folders"
+msgstr "Σύμπτυξη όλων των Φακέλων"
+
+msgid "Collapse Folder"
+msgstr "Σύμπτυξη Φακέλου"
+
+#: templates/fetchmail/manage.inc:51
+msgid "Color Indicator: "
+msgstr "Χρωματικός Δείκτης: "
+
+#: templates/pgp/pgp.inc:191
+msgid "Comment"
+msgstr "Σχόλιο"
+
+#: lib/MIME/Viewer/itip.php:754
+msgid "Completed"
+msgstr "Ολοκληρωμένο"
+
+msgid "Compose"
+msgstr "Σύνθεση"
+
+#, c-format
+msgid "Compose Message (%s)"
+msgstr "Σύνθεση Μηνύματος (%s)"
+
+msgid "Compose a message"
+msgstr "Σύνθεση ενός μηνύματος"
+
+#: compose.php:750 compose.php:1057
+msgid "Compose another message"
+msgstr "Σύνθεση άλλου μηνύματος"
+
+msgid "Compose messages in a separate window?"
+msgstr "Η σύνθεση των μηνυμάτων να γίνεται σε νέο παράθυρο;"
+
+msgid ""
+"Compose messages with an HTML GUI by default (if browser supports the "
+"feature)?"
+msgstr ""
+"Σύνθεση μηνήματος με HTML στοιχειοθεσία εξ ορισμού; (αν ο browser "
+"υποστηρίζει αυτό το χαρακτηριστικό)"
+
+msgid "Conclusion"
+msgstr "Συμπέρασμα"
+
+msgid "Configure how messages are displayed."
+msgstr "Ρυθμίστε πως θα εμφανίζονται τα μηνύματα."
+
+#: config/prefs.php.dist:96
+msgid "Configure mail preview options."
+msgstr "Ρυθμίστε τις επιλογές εμφάνισης μηνυμάτων."
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:206
+#: framework/IMAP/IMAP/ACL/rfc2086.php:319
+msgid "Connection failed."
+msgstr "Η σύνδεση απέτυχε."
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:206
+#: framework/IMAP/IMAP/ACL/rfc2086.php:319
+msgid "Connection failed: "
+msgstr "Η σύνδεση απέτυχε:"
+
+#: framework/Crypt/Crypt/pgp.php:793
+msgid "Connection refused to the public keyserver."
+msgstr "Αρνηση σύνδεσης από τον εξυπηρετητή Δημόσιων κλειδιών."
+
+#: framework/Crypt/Crypt/pgp.php:795
+msgid "Connection refused to the public keyserver. Reason: %s (%s)"
+msgstr "Αρνηση σύνδεσης από τον εξυπηρετητή Δημόσιων κλειδιών. Λόγος: %s (%s)"
+
+#: framework/VFS/VFS/ftp.php:794
+msgid "Connection to FTP server failed."
+msgstr "Η σύνδεση στον εξυπηρετητή FTP απέτυχε."
+
+#: lib/Fetchmail/imap.php:237
+msgid "Connection to server failed"
+msgstr "Η σύνδεση με το διακομιστή απέτυχε"
+
+msgid "Contact List"
+msgstr "Λίστα επαφών"
+
+#: config/prefs.php.dist:135
+msgid "Control PGP support for %s."
+msgstr "Ελέγξτε την υποστήριξη PGP για %s."
+
+#: config/prefs.php.dist:144
+msgid "Control S/MIME support for %s."
+msgstr "Ελέγξτε την υποστήριξη S/MIME για %s."
+
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr ""
+"Επιλέξτε κάθε πότε γίνεται έλεγχος για νέα μηνύματα, και αν θα ειδοποιείστε "
+"όταν έρχονται."
+
+#: config/prefs.php.dist:700
+msgid "Convert textual emoticons into graphical ones?"
+msgstr "Να μετατρέπονται χαιρετισμοί συμβόλων σε αντίστοιχα εικονίδια;"
+
+#: templates/message/navbar_navigate.inc:19 templates/mailbox/navbar.inc:51
+msgid "Copy"
+msgstr "Αντιγραφή"
+
+#: templates/message/navbar_navigate.inc:19
+msgid "Copy to folder"
+msgstr "Αντιγραφή σε φάκελο"
+
+#: templates/compose/spelling.inc:44
+msgid "Correct"
+msgstr "Σωστό"
+
+msgid "Corrected Text"
+msgstr "Διορθωμένο Κείμενο"
+
+#: attachment.php:50
+msgid "Could not create the VFS backend: %s"
+msgstr "Αδύνατη η δημιουργία υποστήριξης VFS: %s"
+
+#, c-format
+msgid "Could not delete messages from %s: %s"
+msgstr "Δεν ήταν δυνατόν να διαγραφούν τα μηνύματα από %s: %s"
+
+#: lib/Message.php:634
+msgid "Could not delete messages from %s. The server said: %s"
+msgstr "Αδύνατη η διαγραφή μηνυμάτων από %s. Ο εξυπηρετητής αναφέρει: %s"
+
+#: lib/Session.php:294
+msgid "Could not execute maintenance operations."
+msgstr "Αδύνατη η εκτέλεση διαδικασιών συντήρησης."
+
+#: lib/MIME/Viewer/tnef.php:56
+msgid "Could not extract the requested file from the MS-TNEF attachment."
+msgstr "Αδύνατη η εξαγωγή του αιτούμενου αρχείου από MS-TNEF συνημμένο."
+
+#: lib/MIME/Viewer/zip.php:61
+msgid "Could not extract the requested file from the Zip archive."
+msgstr "Αδύνατη η εξαγωγή του αιτούμενου αρχείου από ZIP βιβλιοθήκη."
+
+#: search.php:356 templates/fetchmail/manage.inc:67
+#: templates/fetchmail/account_select.inc:26 templates/acl/acl.inc:39
+#: templates/acl/acl.inc:157
+msgid "Create"
+msgstr "Δημιουργία"
+
+msgid "Create Folder"
+msgstr "Δημιουργία Φακέλου"
+
+#: templates/pgp/pgp.inc:252
+msgid "Create Keys"
+msgstr "Δημιουργία κλειδιών"
+
+#: templates/search/header.inc:14
+msgid "Create Virtual Folder"
+msgstr "Δημιουργία Ιδεατού Φακέλου"
+
+msgid "Create a new drafts folder"
+msgstr "Δημιουργία Νέου Φακέλου 'Πρόχειρα'"
+
+msgid "Create a new sent mail folder"
+msgstr "Δημιουργία Νέου Φακέλου 'Απεσταλμένα'"
+
+msgid "Create a new trash folder"
+msgstr "Δημιουργία Νέου Φακέλου 'Διαγραμμένα'"
+
+msgid ""
+"Create filtering rules to organize your incoming mail, sort it into folders, "
+"and delete spam."
+msgstr ""
+"Δημιουργία φίλτρων για την οργάνωση των εισερχόμενων μηνυμάτων σε φακέλους "
+"και διαγραφή ανεπιθύμητων μηνυμάτων (spam)."
+
+#: templates/acl/acl.inc:95
+msgid "Current access to %s"
+msgstr "Τρέχουσα πρόσβαση σε %s"
+
+msgid "Customize accounts for fetching mail from other accounts."
+msgstr "Ρύθμιση λογαρισμών για προσκόμιση μηνυμάτων από άλλους λογαριασμούς."
+
+msgid "Customize how you send mail."
+msgstr "Ρύθμιση των επιλογών για την αποστολή μηνυμάτων."
+
+msgid ""
+"Customize how you send mail and where drafts or sent messages are saved."
+msgstr ""
+"Ρύθμιση των επιλογών για την αποστολή μηνυμάτων και την αποθήκευσή τους ως "
+"πρόχειρα ή απεσταλμένα."
+
+msgid "Customize how you send mail and where drafts are saved."
+msgstr ""
+"Ρύθμιση των επιλογών για την αποστολή μηνυμάτων και την αποθήκευση τους ως "
+"πρόχειρα ή απεσταλμένα."
+
+#, c-format
+msgid "Customize maintenance operations run upon login to %s."
+msgstr ""
+"Ρύθμιση των λειτουργιών συντήρησης που γίνονται κατά την είσοδο στην  %s."
+
+#, c-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr ""
+"Ρύθμιση των ενεργειών που θα εκτελούνται κατά την είσοδο στην υπηρεσία %s."
+
+msgid "Dat_e"
+msgstr "Ημερομηνία"
+
+msgid "Date"
+msgstr "Ημερομηνία"
+
+msgid "Date:"
+msgstr "Ημερομηνία:"
+
+msgid "December"
+msgstr "Δεκέμβριος"
+
+#: lib/MIME/Viewer/itip.php:742
+msgid "Declined"
+msgstr "Απορρίφθηκε"
+
+msgid "Default Identity"
+msgstr "Προεπιλεγμένη Ταυτότητα"
+
+msgid "Default sorting criteria:"
+msgstr "Προεπιλεγμένα κριτήρια ταξινόμησης:"
+
+msgid "Default sorting direction:"
+msgstr "Προεπιλεγμένη κατεύθυνση ταξινόμησης:"
+
+#: lib/MIME/Viewer/itip.php:750
+msgid "Delegated"
+msgstr "Μεταβιβάσθηκε"
+
+#: folders.php:374 templates/fetchmail/manage.inc:68
+#: templates/contacts/contacts.inc:239 templates/message/navbar_actions.inc:6
+#: templates/mailbox/actions.inc:8 templates/mailbox/actions.inc:10
+#: templates/smime/smime.inc:65 templates/compose/attachments.inc:28
+#: templates/pgp/pgp.inc:93
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#: templates/smime/smime.inc:65 templates/pgp/pgp.inc:93
+msgid "Delete %s Public Key"
+msgstr "Διαγραφή %s δημιόσιου κλειδιού"
+
+#: templates/smime/smime.inc:128 templates/pgp/pgp.inc:169
+msgid "Delete Current Keys"
+msgstr "Διαγραφή τρέχοντων κλειδιών"
+
+msgid "Delete Folder(s)"
+msgstr "Διαγραφή Φακέλου(ων)"
+
+#: folders.php:374
+msgid "Delete Virtual Folder"
+msgstr "Διαγραφή Ιδεατού Φακέλου"
+
+msgid "Delete an attachment."
+msgstr "Διαγραφή συνημμένου."
+
+#: templates/fetchmail/manage.inc:43
+msgid "Delete fetched messages from remote server?"
+msgstr ""
+"Διαγραφή των προσκομισθέντων μηνυμάτων από τον απομακρυσμένο εξυπηρετητή;"
+
+#: lib/MIME/Viewer/itip.php:606
+msgid "Delete from my calendar"
+msgstr "Διαγραφή από το Ημερολόγιό μου"
+
+msgid "Delete messages"
+msgstr "Διαγραφή Μηνυμάτων"
+
+msgid "Delete old linked attachments at beginning of month?"
+msgstr "Να διαγράφονται τα παλιά συνδεμένα συνημμένα στην αρχή κάθε μήνα?"
+
+msgid "Delete old sent-mail folders at beginning of month?"
+msgstr "Να διαγράφονται οι παλιοί κατάλογοι ΑΠΕΣΤΑΛΜΕΝΑ στην αρχή κάθε μήνα?"
+
+msgid "Delete spam messages after they have been reported as spam?"
+msgstr "Διαγραφή 'spam' μηνυμάτων μετά την αναφορά τους;"
+
+msgid "Deleted"
+msgstr "Διαγραμμένα"
+
+#: templates/search/main.inc:63
+msgid "Deleted messages"
+msgstr "Διαγραμένα μηνύματα"
+
+msgid "Deleted the attachment \"%s\"."
+msgstr "Διαγράφηκε το συνημμένο \"%s\"."
+
+msgid "Deleting and Moving Messages"
+msgstr "Διαγραφή και Μεταφορά Μηνυμάτων"
+
+#: lib/MIME/Viewer/itip.php:548
+msgid "Deny request"
+msgstr "Αρνηση αιτήματος"
+
+#: lib/MIME/Viewer/itip.php:497
+msgid "Deny request for free/busy information"
+msgstr "Αρνηση αιτήματος για πληροφορίες ελεύθερου/απασχολημένου"
+
+#: config/prefs.php.dist:903
+msgid "Descending"
+msgstr "Φθίνουσα"
+
+#: templates/compose/attachments.inc:21 lib/MIME/Viewer/itip.php:656
+msgid "Description"
+msgstr "Περιγραφή"
+
+#: templates/smime/smime.inc:65 templates/smime/smime.inc:113
+#: templates/pgp/pgp.inc:93 templates/pgp/pgp.inc:147
+#: templates/pgp/pgp.inc:151
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+#: config/prefs.php.dist:680
+msgid "Dim signatures?"
+msgstr "Η υπογραφή σας;"
+
+msgid "Display"
+msgstr "Εμφάνιση"
+
+msgid "Display Options"
+msgstr "Επιλογές Εμφάνισης"
+
+msgid "Display confirmation after sending a message?"
+msgstr "Να εμφανίζεται επιβεβαίωση μετά την αποστολή;"
+
+msgid "Display in Body of Message"
+msgstr "Εμφάνιση στο σώμα το μηνύματος"
+
+msgid "Display message when filters have been applied?"
+msgstr "Εμφάνιση ειδοποίησης αφού εφαρμοστούν τα φίλτρα;"
+
+msgid "Display pop-up notification of new mail?"
+msgstr "Εμφάνιση ειδοποίησης κατά την παραλαβή νέων μηνυμάτων;"
+
+msgid "Display the 'Empty Trash' link in the menubar?"
+msgstr "Εμφάνιση του 'Αδειασμα Κάδου' στο μενού;"
+
+#: templates/compose/attachments.inc:11
+msgid "Disposition"
+msgstr "Διακανονισμός"
+
+#: templates/compose/attachments.inc:11
+msgid "Disposition Notification"
+msgstr "Πληροφόρηση Διακανονισμού"
+
+msgid "Do NOT match"
+msgstr "Να ΜΗΝ ταιριάζει"
+
+msgid "Do Not Check Folder(s) for New Mail"
+msgstr "Να μην γίνεται Έλεγχος στον(ους) Φάκελο(ους) για νέα μηνύματα"
+
+msgid "Do not generate a link in the From: column"
+msgstr "Να μη δημιουργηθεί σύνδεση στη στήλη Από:"
+
+msgid "Do you want to open that folder?"
+msgstr "Θέλετε να ανοίξετε αυτόν τον φάκελο;"
+
+msgid "Done"
+msgstr "Έγινε"
+
+msgid "Download"
+msgstr "Κατέβασμα"
+
+#, c-format
+msgid "Download %s"
+msgstr "Κατέβασμα %s"
+
+#: lib/MIME/Contents.php:204
+msgid "Download %s in .zip Format"
+msgstr "Κατέβασμα %s σε .zip Format"
+
+msgid "Download All Attachments (in .zip file)"
+msgstr "Κατέβασμα όλων των συνημένων (σε .zip αρχείο)"
+
+msgid "Download Folder(s)"
+msgstr "Κατέβασμα Φακέλου(ων) (στο PC σας)"
+
+#: templates/folders/actions.inc:19
+msgid "Download Folder(s) [.zip format]"
+msgstr "Κατέβασμα Φακέλου(ων) (στο PC σας) [σε μορφή .zip]"
+
+#: lib/MIME/Contents.php:204
+msgid "Download in .zip Format"
+msgstr "Κατέβασμα σε .zip Format"
+
+#: message.php:491 mailbox.php:676 templates/message/navbar_navigate.inc:11
+#: templates/mailbox/navbar.inc:22 templates/mailbox/navbar.inc:41
+#: templates/mailbox/legend.inc:9
+msgid "Draft"
+msgstr "Πρόχειρα"
+
+msgid "Draft folder"
+msgstr "Πρόχειρος Φάκελοςν"
+
+msgid "Drafts folder:"
+msgstr "Φάκελος Πρόχειρων:"
+
+#: templates/pgp/pgp.inc:196
+msgid "E-mail Address"
+msgstr "Διεύθυνση E-mail"
+
+#: lib/MIME/Viewer/status.php:77
+msgid "ERROR: Your message could not be delivered."
+msgstr "ΛΑΘΟΣ: Το μήνυμά σας δεν μπορεί να παραδοθεί."
+
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+#: templates/filters/prefs.inc:21
+msgid "Edit Blacklist"
+msgstr "Επεξεργασία Μαύρης Λίστας"
+
+#: templates/filters/prefs.inc:16
+msgid "Edit Filters"
+msgstr "Επεξεργασία Φίλτρων"
+
+#: folders.php:375 templates/search/header.inc:16
+#: templates/mailbox/header.inc:13
+msgid "Edit Virtual Folder"
+msgstr "Επεξεργασία Ιδεατού Φακέλου"
+
+#: templates/mailbox/header.inc:13
+msgid "Edit Virtual Folder Definition for %s"
+msgstr "Επεξεργασία Ορισμού Ιδεατού Φακέλου για %s"
+
+#: templates/filters/prefs.inc:26
+msgid "Edit Whitelist"
+msgstr "Επεξεργασία Λευκής Λίστας"
+
+#: templates/filters/prefs.inc:21
+msgid "Edit your blacklist"
+msgstr "Επεξεργασία Μαύρης Λίστας"
+
+msgid "Edit your filter rules"
+msgstr "Επεξεργασία των κανόνων φίλτρων"
+
+msgid "Edit your identities"
+msgstr "Επεξεργασία των ταυτοτήτων σας"
+
+msgid "Edit your preferences for accessing other mail accounts."
+msgstr "Επεξεργασία προτιμήσεων για πρόσβαση άλλων λογαριασμών."
+
+msgid "Edit your whitelist"
+msgstr "Επεξεργασία Λευκής Λίστας"
+
+msgid "Email Address"
+msgstr "Διεύθυνση Αλληλογραφίας"
+
+msgid "Emptied all messages from %s."
+msgstr "Διαγράφηκαν όλα τα μηνύματα από %s."
+
+msgid "Empty Folder(s)"
+msgstr "Αδειασμα Φακέλου(ων)"
+
+msgid "Empty Trash folder"
+msgstr "Αδειασμα Φακέλου Διαγραμμένα"
+
+msgid "Empty _Trash"
+msgstr "Αδειασμα Κάδου"
+
+#: templates/pgp/pgp.inc:20 templates/pgp/notactive.inc:16
+msgid "Enable PGP functionality?"
+msgstr "Ενεργοποίηση λειτουργιών PGP;"
+
+#: templates/smime/smime.inc:20 templates/smime/notactive.inc:16
+msgid "Enable S/MIME functionality?"
+msgstr "Ενεργοποίηση λειτουργιών S/MIME;"
+
+#: config/prefs.php.dist:780
+msgid "Enable message previews?"
+msgstr "Ενεργοποίηση προεπισκόπισης μηνυμάτων;"
+
+#: templates/compose/compose.inc:433
+msgid "Encr_yption Options"
+msgstr "Επιλογές Κρυπτογράφησης"
+
+#: lib/MIME/Viewer/itip.php:474 lib/MIME/Viewer/itip.php:644
+msgid "End"
+msgstr "Τέλος"
+
+msgid "End forwarded message"
+msgstr "Τέλος προωθημένου μηνύματος"
+
+#: lib/Compose.php:262
+msgid "End message"
+msgstr "Τέλος μηνύματος"
+
+#: lib/Compose.php:260
+msgid "End message from %s"
+msgstr "Τέλος μηνύματος από %s"
+
+#: templates/smime/smime.inc:117 templates/pgp/pgp.inc:151
+msgid "Enter Passphrase"
+msgstr "Εισάγετε λέξη κλειδί"
+
+msgid "Enter the name for your new drafts folder"
+msgstr "Δώστε το όνομα για το νέο φάκελο 'Πρόχειρα'"
+
+msgid "Enter the name for your new sent mail folder"
+msgstr "Δώστε το όνομα για το νέο φάκελο Απεσταλμένα"
+
+msgid "Enter the name for your new trash folder"
+msgstr "Δώστε το όνομα για το νέο φάκελο 'Πρόχειρα'"
+
+#, c-format
+msgid "Entry \"%s\" was successfully added to the addressbook"
+msgstr "Η διεύθυνση \"%s\" καταχωρήθηκε επιτυχώς στο διευθυνσιογράφο"
+
+msgid "Error"
+msgstr "Λάθος"
+
+#: lib/MIME/Viewer/itip.php:277 lib/MIME/Viewer/itip.php:370
+msgid "Error sending reply: %s."
+msgstr "Λάθος κατά την αποστολή απάντησης: %s."
+
+#: lib/MIME/Viewer/itip.php:92
+msgid "Event successfully deleted."
+msgstr "Το γεγονός διαγράφηκε επιτυχώς."
+
+msgid "Every 15 minutes"
+msgstr "Κάθε 15 Λεπτά"
+
+msgid "Every 30 seconds"
+msgstr "Κάθε 30 Λεπτά"
+
+msgid "Every 5 minutes"
+msgstr "Κάθε 5 Λεπτά"
+
+msgid "Every half hour"
+msgstr "Κάθε μισή ώρα"
+
+msgid "Every minute"
+msgstr "Κάθε λεπτό"
+
+#: templates/folders/actions.inc:33
+msgid "Expand All"
+msgstr "Ανάπτυξη Όλων"
+
+#: templates/folders/actions.inc:33
+msgid "Expand All Folders"
+msgstr "Ανάπτυξη Όλων των Φακέλων"
+
+msgid "Expand Folder"
+msgstr "Ανάπτυξη Φακέλου"
+
+msgid "Expand Names"
+msgstr "Ανάπτυξη Ονομάτων"
+
+#: config/prefs.php.dist:1021
+msgid "Expand names in the compose window automatically in the background?"
+msgstr "Να αναπτύσονται αυτόματα τα ονόματα κατά τη σύνθεση στο παρασκήνιο;"
+
+msgid "Expand the entire folder tree by default in the folders view?"
+msgstr "Να γίνεται πάντα ανάπτυξη όλου του δέντρου των φακέλων;"
+
+#: templates/compose/compose.inc:155 templates/compose/compose.inc:205
+#: templates/compose/compose.inc:256 templates/compose/redirect.inc:104
+msgid "Expanding"
+msgstr "Αναπτύσσοντας"
+
+#: framework/Crypt/Crypt/pgp.php:398
+msgid "Expiration Date"
+msgstr "Ημερομηνία Λήξης"
+
+msgid "February"
+msgstr "Φεβρουάριος"
+
+msgid "F_etch Mail"
+msgstr "Προσκόμιση Μηνυμάτων"
+
+msgid "Fetch Mail"
+msgstr "Προσκόμιση Μηνυμάτων"
+
+msgid "Fetch Mail in a separate window?"
+msgstr "Προσκόμιση αλληλογραφίας σε διαφορετικό παράθυρο;"
+
+#: templates/fetchmail/manage.inc:46
+msgid "Fetch messages upon logging on?"
+msgstr "Προσκόμιση μηνυμάτων με την είσοδο (login);"
+
+#: lib/Fetchmail.php:306
+msgid "Fetched %d message(s) from %s"
+msgstr "Προσκόμιση %d μηνύματος(ων) από %s"
+
+#: lib/Fetchmail.php:304 lib/Fetchmail.php:306
+msgid "Fetchmail: "
+msgstr "Προσκόμιση μηνυμάτων: "
+
+#: lib/Fetchmail.php:308
+msgid "Fetchmail: no new messages."
+msgstr "Προσκόμιση μηνυμάτων: κανένα νέο μήνυμα."
+
+msgid "Field"
+msgstr "Πεδίο"
+
+#: lib/IMP.php:917
+msgid "Fi_lters"
+msgstr "Φίλτρα"
+
+msgid "File"
+msgstr "Αρχείο"
+
+msgid "File %s:"
+msgstr "Αρχείο %s:"
+
+msgid "Filename"
+msgstr "Όνομα Αρχείου"
+
+msgid "Filter"
+msgstr "Φίλτρο"
+
+#, c-format
+msgid "Filter Activity: The message \"%s\" from \"%s\" has been deleted."
+msgstr "Ενέργεια φίλτρων: Το μήνυμα \"%s\" από \"%s\" διαγράφηκε."
+
+#, c-format
+msgid ""
+"Filter Activity: The message \"%s\" from \"%s\" has been moved to the folder "
+"\"%s\"."
+msgstr ""
+"Αποτέλεσμα Φίλτρου: Το μήνυμα \"%s\" από \"%s\" μετακινήθηκε στο φάκελο \"%s"
+"\"."
+
+#, c-format
+msgid ""
+"Filter Activity: The message \"%s\" from \"%s\" has been moved to your Trash "
+"folder."
+msgstr ""
+"Αποτέλεσμα Φίλτρου: Το μήνυμα \"%s\" από \"%s\" μετακινήθηκε στο κάδο. "
+
+#: templates/filters/prefs.inc:35
+msgid "Filter Options"
+msgstr "Επιλογές Φίλτρων"
+
+msgid "Filter Rules"
+msgstr "Κανόνες Φίλτρων"
+
+#: templates/filters/prefs.inc:8
+msgid "Filter Settings"
+msgstr "Ρυθμίσεις Φίλτρων"
+
+msgid "Filter message content for profanity?"
+msgstr "Να Φιλτράρεται το περιεχόμενο των μηνυμάτων για υβριστικό περιεχόμενο;"
+
+msgid "Filter support is disabled on this system."
+msgstr "Η υποστήριξη φίλτρων έχει απενεργοποιηθεί σ' αυτό το σύστημα."
+
+msgid "Filters"
+msgstr "Φίλτρα"
+
+msgid "Filters NOT Active"
+msgstr "Τα Φίλτρα ΔΕΝ είναι ενεργοποιημένα"
+
+#: lib/Filter.php:102
+msgid "Filters: %s management page"
+msgstr "Φίλτρα: %s σελίδα διαχείρισης"
+
+#: templates/contacts/contacts.inc:178
+msgid "Find"
+msgstr "Εύρεση"
+
+msgid "First Mailbox Page"
+msgstr "Πρώτη σελίδα του Mailbox"
+
+msgid "First Page"
+msgstr "Αρχική Σελίδα "
+
+msgid "Fo_rward"
+msgstr "Προώθηση"
+
+msgid "Folder Navigator"
+msgstr "Πλοήγηση Φάκελων"
+
+msgid "Folder Prefix"
+msgstr "Φάκελος Prefix"
+
+#: lib/Block/summary.php:3
+msgid "Folder Summary"
+msgstr "Σύνοψη Φακέλου"
+
+#: acl.php:24
+msgid "Folder sharing is not enabled."
+msgstr "Ο Διαμοιρασμός φακέλων δεν έχει ενεργοποιηθεί."
+
+#: folders.php:52
+msgid "Folder use is not enabled."
+msgstr "Η χρήση φακέλων δεν έχει ενεργοποιηθεί."
+
+msgid "Folders"
+msgstr "Φάκελοι"
+
+msgid "Format of message dates in the mailbox view for messages dated today"
+msgstr "Μορφή των ημερομηνιών των σημερινών μηνημάτων"
+
+msgid "Forward"
+msgstr "Προώθηση"
+
+msgid "Forward:"
+msgstr "Προώθηση:"
+
+#: lib/Compose.php:290
+msgid "Forwarded message"
+msgstr "Προωθημένο μήνυμα"
+
+#, c-format
+msgid "Forwarded message from %s"
+msgstr "Προώθηση μηνύματος από %s"
+
+#: lib/MIME/Viewer/itip.php:442
+msgid "Free/Busy Information"
+msgstr "Πληροφορίες Ελεύθερου/Απασχολημένου"
+
+#: lib/MIME/Viewer/itip.php:453
+msgid "Free/Busy Reply"
+msgstr "Απάντηση Ελεύθερου/Απασχολημένου"
+
+#: lib/MIME/Viewer/itip.php:447
+msgid "Free/Busy Request"
+msgstr "Αίτημα Ελεύθερου/Απασχολημένου"
+
+#: lib/MIME/Viewer/itip.php:364
+msgid "Free/Busy Request Response"
+msgstr "Απάντηση σε αίτημα Ελεύθερου/Απασχολημένου"
+
+#: templates/mailbox/message_headers.inc:22
+msgid "Fro_m"
+msgstr "Από"
+
+msgid "From"
+msgstr "Από"
+
+msgid "From:"
+msgstr "Από:"
+
+msgid "From Address"
+msgstr "Διεύθυνση Αποστολέα"
+
+msgid "Fwd:"
+msgstr "Προώθ.:"
+
+msgid "Fwd: "
+msgstr "Προώθ.: "
+
+#: compose.php:1207
+msgid "Fwd: %u Forwarded Messages"
+msgstr "Προώθ: %u Προωθημένα Μηνύματα"
+
+#: config/prefs.php.dist:13 config/prefs.php.dist:22 config/prefs.php.dist:30
+#: config/prefs.php.dist:38
+msgid "General Options"
+msgstr "Γενικές Επιλογές"
+
+#: templates/fetchmail/manage.inc:37
+msgid "Get only new messages? (IMAP only)"
+msgstr "Λήψη μόνο των νέων μηνυμάτων; (μόνο IMAP)"
+
+msgid "Getting Started"
+msgstr "Αρχίζοντας"
+
+msgid "Go to Message"
+msgstr "Επιστροφή στο Μήνυμα"
+
+#: templates/acl/acl.inc:135
+msgid "Grant access"
+msgstr "Δώσε πρόσβαση"
+
+#: message.php:546 lib/Filter.php:102 lib/MIME/Viewer/images.php:89
+#: lib/MIME/Viewer/images.php:96 lib/MIME/Viewer/images.php:98
+#: lib/MIME/Viewer/images.php:151 lib/MIME/Viewer/html.php:116
+#: lib/MIME/Viewer/notification.php:65 lib/MIME/Viewer/notification.php:71
+#: lib/MIME/Viewer/related.php:64 lib/MIME/Viewer/pkcs7.php:410
+#: lib/MIME/Viewer/appledouble.php:43 lib/MIME/Viewer/pgp.php:178
+#: lib/MIME/Viewer/status.php:123 lib/MIME/Viewer/status.php:130
+msgid "HERE"
+msgstr "ΕΔΩ"
+
+msgid "HTML Version of Message"
+msgstr "HTML Εκδοση του μηνήματος"
+
+#: framework/Crypt/Crypt/pgp.php:399
+msgid "Hash-Algorithm"
+msgstr "Αλγόριθμος Hash"
+
+msgid "Headers:"
+msgstr "Επικεφαλίδες:"
+
+msgid "Headers"
+msgstr "Επικεφαλίδες"
+
+msgid "Help"
+msgstr "Βοήθεια"
+
+#: templates/compose/recompose.inc:5
+msgid "Here is the message you were composing:"
+msgstr "Αυτό είναι το μήνυμα που συνθέτατε:"
+
+msgid "Hi. This is the qmail-send program at %s"
+msgstr "Το μήνυμα αυτό δημιουργήθηκε από το σύστημα %s"
+
+#: config/prefs.php.dist:671
+msgid "Hidden"
+msgstr "Απόκρυψη"
+
+msgid "Hidden in Thread View"
+msgstr "Απόκρυψη σε εμφάνιση Νήματος"
+
+msgid "Hide Deleted"
+msgstr "Απόκρυψη Διεγραμμένων"
+
+msgid "Hide Unsubscribed"
+msgstr "Απόκρυψη μή συνδεμένων"
+
+#: lib/MIME/Viewer/html.php:103
+msgid "Hide the Images"
+msgstr "Απόκρυψη των εικόνων"
+
+msgid "High"
+msgstr "Υψηλή"
+
+msgid "High Priority"
+msgstr "Υψηλή προτεραιότητα"
+
+msgid "Highest"
+msgstr "Υψηλότατη"
+
+msgid "How do you want to display attachments?"
+msgstr "Πως θέλετε να εμφανίζονται τα συνημμένα;"
+
+msgid "How to attribute quoted lines in a reply"
+msgstr "Πως να σηματοδοτούνται οι εισαγόμενες γραμμές σε μιά απάντηση"
+
+msgid "How to prefix quoted lines in a reply:"
+msgstr "Ποιος χαρακτήρας να τοποθετείται πριν από κάθε γραμμή στις απαντήσεις:"
+
+#: lib/Fetchmail/imap.php:132
+msgid "IMAP (Auto Detect Protocols)"
+msgstr "IMAP (Αυτόματος Εντοπισμός Πρωτοκόλλων)"
+
+#: templates/login/login.inc:174 lib/Fetchmail/imap.php:149
+msgid "IMAP over SSL"
+msgstr "IMAP πάνω από SSL"
+
+#: lib/Fetchmail/imap.php:155
+msgid "IMAP over SSL (self-signed certificate)"
+msgstr "IMAP πάνω από SSL (αυτο-υπογραφόμενο πιστοποιητικό)"
+
+#: templates/login/login.inc:175
+msgid "IMAP over SSL (self-signed)"
+msgstr "IMAP πάνω από SSL (αυτο-υπογραφόμενο)"
+
+#: templates/login/login.inc:173 lib/Fetchmail/imap.php:143
+msgid "IMAP, no TLS"
+msgstr "IMAP χωρίς TLS"
+
+msgid "IMP is not properly configured"
+msgstr "Το IMP δεν είναι πλήρως ρυθμισμένο"
+
+msgid "INBOX"
+msgstr "Εισερχόμενα"
+
+msgid "I_nbox"
+msgstr "Εισερχόμενα"
+
+msgid "Identities"
+msgstr "Ταυτότητες"
+
+msgid "Identity"
+msgstr "Ταυτότητα"
+
+msgid "Identity's name:"
+msgstr "Ονοματεπώνυμο:"
+
+msgid "Ignore"
+msgstr "Παράβλεψη"
+
+msgid "Ignore All"
+msgstr "Παράβλεψη 'Όλων"
+
+#: templates/folders/import.inc:20
+msgid "Import"
+msgstr "Εισαγωγή"
+
+#: templates/smime/import_key.inc:84 templates/pgp/import_key.inc:65
+msgid "Import Key"
+msgstr "Εισαγωγή Κλειδιού"
+
+#: templates/pgp/pgp.inc:254
+msgid "Import Keypair"
+msgstr "Εισαγωγή ζεύγους κλειδιών"
+
+#: templates/folders/actions.inc:25
+msgid "Import Messages"
+msgstr "Εισαγωγή Μηνυμάτων"
+
+#: pgp.php:42
+msgid "Import PGP Key"
+msgstr "Εισαγωγή PGP κλειδιού"
+
+#: templates/smime/smime.inc:148
+msgid "Import Personal Certificates"
+msgstr "Εισαγωγή προσωπικών Πιστοποιητικών"
+
+#: templates/pgp/import_key.inc:14
+msgid "Import Personal Private PGP Key"
+msgstr "Εισαγωγή Προσωπικού Ιδιωτικού PGP Κλειδιού"
+
+#: templates/pgp/import_key.inc:9
+msgid "Import Personal Public PGP Key"
+msgstr "Εισαγωγή Προσωπικού Δημόσιου PGP Κλειδιού"
+
+#: templates/smime/import_key.inc:4
+msgid "Import Personal S/MIME Certificates"
+msgstr "Εισαγωγή Προσωπικού S/MIME Πιστοποιητικού"
+
+#: templates/smime/smime.inc:79 templates/pgp/pgp.inc:107
+msgid "Import Public Key"
+msgstr "Εισαγωγή Δημόσιου Κλειδιού"
+
+#: templates/pgp/import_key.inc:4
+msgid "Import Public PGP Key"
+msgstr "Εισαγωγή Δημόσιου PGP Κλειδιού"
+
+#: templates/smime/import_key.inc:8
+msgid "Import Public S/MIME Key"
+msgstr "Εισαγωγή Δημόσιου S/MIME Κλειδιού"
+
+#: smime.php:16
+msgid "Import S/MIME Key"
+msgstr "Εισαγωγή S/MIME Κλειδιού"
+
+#: templates/folders/import.inc:9
+msgid "Import mbox File"
+msgstr "Εισαγωγή αρχείου 'mbox'"
+
+#: templates/folders/import.inc:16
+msgid "Import mbox file %s into folder %s."
+msgstr "Εισαγωγή 'mbox' αρχείου %s στο φάκελο %s."
+
+msgid "Important"
+msgstr "Σημαντικά"
+
+msgid "Important messages"
+msgstr "Σημαντικά μηνύματα"
+
+#: folders.php:157
+msgid "Imported %d messages from %s."
+msgstr "Εισήχθηκαν %d μηνύματα από %s."
+
+#: lib/MIME/Viewer/itip.php:758
+msgid "In Process"
+msgstr "Σε εξέλιξη"
+
+#: lib/Folder.php:248 lib/IMP.php:369
+msgid "Inbox"
+msgstr "Εισερχόμενα"
+
+msgid "Include a brief summary of the header in a reply?"
+msgstr "Ενσωμάτωση σύντομης περίληψης επικεφαλίδας στις απαντήσεις;"
+
+msgid "Include original message in a reply?"
+msgstr "Ενσωμάτωση του αρχικού μηνύματος στις απαντήσεις;"
+
+#: lib/MIME/Viewer/notification.php:64 lib/MIME/Viewer/status.php:133
+msgid "Info"
+msgstr "Πληροφορίες"
+
+#: templates/smime/smime.inc:65 templates/pgp/pgp.inc:93
+msgid "Information on %s Public Key"
+msgstr "Πληροφορίες για το %s Δημόσιο Κλειδί"
+
+#: templates/pgp/pgp.inc:151
+msgid "Information on Personal Private Key"
+msgstr "Πληφορορίες για το Προσωπικό Ιδιωτικό Κλειδί"
+
+#: templates/smime/smime.inc:113 templates/pgp/pgp.inc:147
+msgid "Information on Personal Public Key"
+msgstr "Πληροφορίες για το Προσωπικό Δημόσιο Κλειδί"
+
+#: templates/compose/attachments.inc:15 templates/compose/compose.inc:497
+#: templates/compose/attachments.js:99
+msgid "Inline"
+msgstr "Ενσωματομένο"
+
+#: templates/smime/import_key.inc:9
+msgid "Insert Certificate Here"
+msgstr "Εισαγωγή Πιστοποιητικού Εδώ"
+
+#: templates/pgp/import_key.inc:15
+msgid "Insert Personal Private PGP Key Here"
+msgstr "Εισαγωγή Προσωπικού Ιδιωτικού PGP κλειδιού Εδώ"
+
+#: templates/pgp/import_key.inc:10
+msgid "Insert Personal Public PGP Key Here"
+msgstr "Εισαγωγή Προσωπικού Δημόσιου PGP κλειδιού Εδώ"
+
+#: templates/pgp/import_key.inc:5
+msgid "Insert Public PGP Key Here"
+msgstr "Εισαγωγή Δημόσιου PGP κλειδιού Εδώ"
+
+msgid "Introduction"
+msgstr "Εισαγωγή"
+
+msgid "Introduction to %s"
+msgstr "Εισαγωγή στο %s"
+
+#: lib/MIME/Viewer/itip.php:375
+msgid "Invalid Action selected for this component."
+msgstr "Επιλέξατε μη έγκυρη ενέργεια για αυτό το στοιχείο."
+
+#: mailbox.php:549 mailbox.php:590
+msgid "Invalid Address"
+msgstr "Ακυρη Διεύθυνση"
+
+#: lib/Fetchmail/imap.php:312
+msgid "Invalid Remote Mailbox"
+msgstr "Μη έγκυρη απομακρυσμένη γραμματοθυρίδα"
+
+#: compose.php:132
+msgid "Invalid character in e-mail address: %s."
+msgstr "Μη έγκυρος χαρακτήρας στην e-mail διεύθυνση: %s."
+
+#: smime.php:82 pgp.php:16
+msgid "Invalid key"
+msgstr "Μη έγκυρο κλειδί"
+
+#: pgp.php:196
+msgid "Invalid personal PGP private key."
+msgstr "Ακυρο προσωπικό ιδιωτικό κλειδί PGP."
+
+#: pgp.php:171
+msgid "Invalid personal PGP public key."
+msgstr "Ακυρο προσωπικό δημόσιο κλειδί PGP."
+
+msgid "Invert"
+msgstr "Αντιστροφή"
+
+msgid "January"
+msgstr "Ιανουάριος"
+
+msgid "July"
+msgstr "Ιούλιος"
+
+msgid "June"
+msgstr "Ιούνιος"
+
+#: framework/Crypt/Crypt/pgp.php:397
+msgid "Key Creation"
+msgstr "Δημιουργία Κλειδιού"
+
+#: framework/Crypt/Crypt/pgp.php:400
+msgid "Key Fingerprint"
+msgstr "Αποτύπωμα Κλειδιού"
+
+#: templates/pgp/pgp.inc:201
+msgid "Key Length"
+msgstr "Μήκος κλειδιού"
+
+#: framework/Crypt/Crypt/pgp.php:397
+msgid "Key Type"
+msgstr "Τύπος Κλειδιού"
+
+#: framework/Crypt/Crypt/smime.php:622
+msgid "Key Usage"
+msgstr "Χρήση Κλειδιού"
+
+#: framework/Crypt/Crypt/pgp.php:743
+msgid "Key already exists on the public keyserver."
+msgstr "Το κλειδί υπάρχει ήδη στον εξυπηρετητή δημόσιων κλειδιών."
+
+#: pgp.php:318
+msgid "Key successfully sent to the public keyserver."
+msgstr "Το κλειδί απεστάλη επιτυχώς στο εξυπηρετητή Δημοσίων Κλειδιών."
+
+msgid "Language"
+msgstr "Γλώσσα"
+
+msgid "Last Mailbox Page"
+msgstr "Τελευταία σελίδα του Mailbox"
+
+msgid "Last Page"
+msgstr "Τελευταία Σελίδα"
+
+#, c-format
+msgid "Last login: %s"
+msgstr "Τελευταία Είσοδος στην υπηρεσία: %s"
+
+msgid "Last login: Never"
+msgstr "Τελευταία Είσοδος στην υπηρεσία: Ποτέ"
+
+msgid "Li_nk Attachments"
+msgstr "Σύνδεση Επισυναπτόμενων"
+
+#: templates/compose/compose.inc:547
+msgid "Link Attachments?"
+msgstr "Σύνδεση Επισυναπτόμενων;"
+
+#: attachment.php:34 lib/Compose.php:988
+msgid "Linked attachments are forbidden."
+msgstr "Η σύνδεση των επισυναπτόμενων δεν επιτρέπεται."
+
+#: config/prefs.php.dist:1040
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+"Εμφάνιση όλων των επαφών όταν εμφανίζεται η οθόνη επαφών (αν απενεργοποι-"
+"ηθεί θα βλέπετε μόνο τις επαφές που ταιριάζουν στα κριτήρια αναζήτησης)"
+
+msgid "Listing in the Header"
+msgstr "Λίστα στην επικεφαλίδα"
+
+#: templates/fetchmail/manage.inc:30
+msgid "Local Mailbox:"
+msgstr "Τοπικός εξυπηρετητής mail:"
+
+#: lib/MIME/Viewer/itip.php:661
+msgid "Location"
+msgstr "Θέση"
+
+msgid "Log in"
+msgstr "Είσοδος"
+
+#, c-format
+msgid "Log in to %s"
+msgstr "Είσοδος στο %s"
+
+msgid "Login"
+msgstr "Είσοδος"
+
+msgid "Login Tasks"
+msgstr "Ενέργειες που εκτελούνται κατά την είσοδο"
+
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr ""
+"Η είσοδος σας απέτυχε. Είναι πολύ πιθανό ότι δώσατε λάθος όνομα χρήστη ή "
+"συνθηματικό. Ελέγξτε ότι το 'Caps Lock' είναι απενεργοποιημένο."
+
+msgid "Logging In"
+msgstr "Είσοδος στην Εφαρμογή"
+
+msgid "Logout"
+msgstr "Έξοδος"
+
+msgid "Low"
+msgstr "Χαμηλή"
+
+msgid "Low Priority"
+msgstr "Χαμηλή προτεραιότητα"
+
+msgid "Lowest"
+msgstr "Χαμηλότατη"
+
+#: lib/MIME/Viewer/appledouble.php:46
+msgid "Macintosh File"
+msgstr "Αρχείο Macintosh"
+
+#: smime.php:254 pgp.php:332 templates/smime/passphrase.inc:13
+msgid "Mail"
+msgstr "Μήνυμα"
+
+msgid "Mail Filters"
+msgstr "Φίλτρα Μηνυμάτων"
+
+msgid "Mail Management"
+msgstr "Διαχείριση Μηνυμάτων"
+
+#: config/prefs.php.dist:95
+msgid "Mail Previews"
+msgstr "Προεπισκόπηση Μηνυμάτων"
+
+#: templates/fetchmail/driver_select.inc:16
+msgid "Mail server type to connect to:"
+msgstr "Εξυπηρετητής μηνυμάτων για σύνδεση:"
+
+msgid "Mailbox"
+msgstr "Γραμματοκιβώτιο"
+
+msgid "Mailbox and Folder Display Options"
+msgstr "Επιλογές εμφάνισης Γραμματοκιβώτιου και Φακέλλων"
+
+msgid "Maintenance Operations"
+msgstr "Λειτουργίες Συντήρησης"
+
+msgid "March"
+msgstr "Μάρτιος"
+
+#: templates/folders/actions.inc:16
+msgid "Mark All Messages in Folder as Seen"
+msgstr "Σήμανση όλων των μηνυμάτων στο φάκελο σαν 'Αναγνωσμένα'"
+
+#: templates/folders/actions.inc:17
+msgid "Mark All Messages in Folder as Unseen"
+msgstr "Σήμανση όλων των μηνυμάτων στο φάκελο σαν 'Μη Αναγνωσμένα'"
+
+msgid "Mark as:"
+msgstr "Χαρακτηρισμός ως:"
+
+msgid "Mark different levels of quoting with different colors?"
+msgstr "Να εμφανίζονται οι απαντήσεις με διαφορετικά χρώματα;"
+
+#: templates/fetchmail/manage.inc:40
+msgid "Mark messages as seen? (IMAP only)"
+msgstr "Μαρκάρισμα μηνυμάτων σαν αναγνωσμένα; (μόνο IMAP)"
+
+msgid "Mark simple markup?"
+msgstr "Να σημειώνωνται απλές σημειώσεις;"
+
+msgid "Match All Queries"
+msgstr "Ταίριασμα όλων των ερωτήσεων"
+
+msgid "Match Any Query"
+msgstr "Ταίριασμα οποιασδήποτε ερώτησης"
+
+msgid "Maximum Attachment Size"
+msgstr "Μέγιστο μέγεθος Επισυναπτόμενου"
+
+#: templates/compose/compose.inc:488
+msgid "Maximum number of attachments reached."
+msgstr "Ξεπεράσθηκε ο μέγιστος αριθμός συνημμένων."
+
+#: templates/compose/compose.inc:483
+msgid "Maximum total attachment size reached."
+msgstr "Ξεπεράσθηκε το συνολικό μέγεθος συνημμένων."
+
+msgid "May"
+msgstr "Μάιος"
+
+#: lib/MIME/Viewer/itip.php:604
+msgid "Meeting Cancellation"
+msgstr "Ακύρωση συνάντησης"
+
+#: lib/MIME/Viewer/itip.php:532
+msgid "Meeting Information"
+msgstr "Πληροφορίες Συνάντησης"
+
+#: lib/MIME/Viewer/itip.php:542
+msgid "Meeting Proposal"
+msgstr "Πρόταση Συνάντησης"
+
+#: lib/MIME/Viewer/itip.php:584
+msgid "Meeting Reply"
+msgstr "Απάντηση για Συνάντηση"
+
+#: lib/MIME/Viewer/itip.php:554
+msgid "Meeting Update"
+msgstr "Ενημέρωση Συνάντησης"
+
+#: lib/MIME/Viewer/itip.php:559
+msgid "Meeting Update Request"
+msgstr "Αίτημα Ενημέρωσης για συνάντηση"
+
+#: lib/Block/tree_folders.php:3
+msgid "Menu Folder List"
+msgstr "Μενού Λίστας Φακέλων"
+
+#: lib/Compose.php:237
+msgid "Message"
+msgstr "Μήνυμα"
+
+#: compose.php:508 compose.php:535 compose.php:567 config/prefs.php.dist:50
+msgid "Message Composition"
+msgstr "Σύνθεση Μηνύματος"
+
+msgid "Message Filters"
+msgstr "Φίλτρα Μηνυμάτων"
+
+msgid "Message Date"
+msgstr "Ημερομηνία Μηνύματος"
+
+msgid "Message Options"
+msgstr "Επιλογές Μηνυμάτων"
+
+msgid "Message Search"
+msgstr "Αναζήτηση Μηνυμάτων"
+
+msgid "Message Size"
+msgstr "Μέγεθος Μηνύματος"
+
+msgid "Message Source"
+msgstr "Πηγαίος Κώδικας"
+
+msgid "Message Viewing"
+msgstr "Προβολή Μηνύματος"
+
+msgid "Message fields"
+msgstr "Αναζήτηση στα πεδία του μηνύματος"
+
+msgid "Message flags"
+msgstr "Αναζήτηση σύμφωνα με τη σήμανση του μηνύματος"
+
+msgid "Message folders"
+msgstr "Αναζήτηση στους φακέλους"
+
+#: lib/Compose.php:235
+msgid "Message from %s"
+msgstr "Μύνυμα από %s"
+
+#: templates/search/header.inc:33
+msgid "Message matches"
+msgstr "Μήνυμα που να ταιριάζει"
+
+#: compose.php:747 compose.php:761
+msgid "Message redirected successfully."
+msgstr "Το μήνυμα ανακατευθύνθηκε επιτυχώς."
+
+#: compose.php:994
+msgid "Message sent successfully, but not saved to %s"
+msgstr "Το Μήνυμα στάλθηκε επιτυχώς, δεν αποθηκεύτηκε όμως στο %s"
+
+# compose.php:1053, 1068
+#: compose.php:1053
+msgid "Message sent successfully."
+msgstr "Το Μήνυμα στάλθηκε επιτυχώς."
+
+msgid "Messages per page in the mailbox view."
+msgstr "Μηνύματα ανά σελίδα στην προβολή του Γραμματοκιβώτιου."
+
+msgid "Messages to"
+msgstr "προς"
+
+msgid "Mime Type"
+msgstr "Τύποι Mime"
+
+msgid "Modify"
+msgstr "Τροποποίηση"
+
+#: templates/compose/expand.inc:12
+msgid "More than one address found for field '%s'."
+msgstr "Περισσότερες από μία διευθύνσεις βρέθηκαν για το πεδίο '%s'."
+
+#: templates/message/navbar_navigate.inc:18 templates/mailbox/navbar.inc:50
+msgid "Move"
+msgstr "Μεταφορά"
+
+msgid "Move Down"
+msgstr "Μετακίνηση Προς τα Κάτω"
+
+msgid "Move Up"
+msgstr "Μετακίνηση Προς τα Επάνω"
+
+#: templates/prefs/sourceselect.inc:316
+msgid "Move down"
+msgstr "Μετακίνηση Προς τα Κάτω"
+
+#, c-format
+msgid "Move messages to the <b>%s</b> folder"
+msgstr "Μεταφορά Μηνύματος στον <b>%s</b> φάκελο"
+
+#: templates/prefs/sourceselect.inc:314
+msgid "Move up"
+msgstr "Μετακίνηση Προς τα Επάνω"
+
+#: lib/MIME/Viewer/alternative.php:130
+msgid "Multipart/alternative"
+msgstr "Multipart/εναλλακτικό"
+
+#: templates/fetchmail/manage.inc:48 templates/smime/smime.inc:24
+#: templates/pgp/pgp.inc:24
+msgid "NOTE"
+msgstr "ΣΗΜΕΙΩΣΗ"
+
+msgid "Name"
+msgstr "Όνομα"
+
+#: pgp.php:110
+msgid "Name and/or email can not be empty"
+msgstr "Το μήνυμα και/ή το όνομα δεν μπορεί να είναι κενά"
+
+#: lib/MIME/Viewer/itip.php:763
+msgid "Needs Action"
+msgstr "Απαιτούνται ενέργειες"
+
+msgid "Never"
+msgstr "Ποτέ"
+
+msgid "Never save attachments"
+msgstr "Ποτέ να μην αποθηκεύονται τα συνημμένα"
+
+msgid "New"
+msgstr "Νέα"
+
+msgid "New Folder"
+msgstr "Εισαγωγή Φακέλου"
+
+msgid "New Mail"
+msgstr "Νέο Μήνυμα"
+
+#: lib/Block/summary.php:21 lib/Block/summary.php:22
+#: lib/Block/tree_folders.php:46
+msgid "New Message"
+msgstr "Νέο Μήνυμα"
+
+#: mailbox.php:770 lib/MIME/Headers.php:184
+msgid "New Message to %s"
+msgstr "Νέο Μήνυμα σε %s"
+
+msgid "New User Introduction"
+msgstr "Οδηγίες για τους νέους χρήστες"
+
+msgid "New messages"
+msgstr "Νέα μηνύματα"
+
+msgid "Next"
+msgstr "Επόμενο"
+
+msgid "Next Message"
+msgstr "Επόμενο Μήνυμα"
+
+msgid "Next Page"
+msgstr "Επόμενη Σελίδα"
+
+msgid "No"
+msgstr "Όχι"
+
+#: smime.php:226
+msgid "No Certificate found"
+msgstr "Δεν βρέθηκε πιστοποιητικό"
+
+#: templates/compose/encrypt_list.inc:5
+msgid "No Encryption"
+msgstr "Χωρίς κρυπτογράφηση"
+
+#: templates/pgp/pgp.inc:80
+msgid "No Keys in Keyring"
+msgstr "Δεν υπάρχουν Κλειδιά στο σύστημα Κλειδιών"
+
+msgid "No Messages"
+msgstr "Δεν Υπάρχουν μηνύματα"
+
+#: pgp.php:137
+msgid "No PGP public key imported."
+msgstr "Δεν εισάχθηκε δημόσιο κλειδί PGP."
+
+#: templates/smime/smime.inc:140
+msgid "No Personal Certificate Present"
+msgstr "Δεν υπάρχει Προσωπικό Πιστοποιητικό"
+
+#: templates/smime/smime.inc:54
+msgid "No Public Keys Found"
+msgstr "Δεν βρέθηκαν Δημόσια Κλειδιά"
+
+#: smime.php:151
+msgid "No S/MIME public key imported."
+msgstr "Δεν εισάχθηκε δημόσιο κλειδί S/MIME."
+
+msgid "No Subject"
+msgstr "Δεν Υπάρχει Θέμα"
+
+#: lib/MIME/Viewer/tnef.php:94
+msgid "No attachments found."
+msgstr "Δεν βρέθηκαν συνημμένα."
+
+#: acl.php:72 acl.php:98
+msgid "No folder selected."
+msgstr "Δεν επιλέχθηκε φάκελος."
+
+#: lib/Block/summary.php:130
+msgid "No folders are being checked for new mail."
+msgstr "Δεν ελέγθηκαν φάκελλοι για νέα μηνύματα."
+
+msgid "No folders were specified"
+msgstr "Δεν έχουν οριστεί φάκελοι"
+
+#: lib/Block/summary.php:133
+msgid "No folders with new messages"
+msgstr "Δεν υπάρχουν φάκελοι με νέα μηνήματα"
+
+#: lib/Block/summary.php:133
+msgid "No folders with unseen messages"
+msgstr "Δεν υπάρχουν φάκελοι με μη αναγνωσμένα μηνήματα"
+
+#: lib/Compose.php:231
+msgid "No message body text"
+msgstr "Δεν υπάρχει σώμα κειμένου"
+
+msgid "No messages matched your search."
+msgstr "Δεν βρέθηκαν μηνύματα που να ταιριάζουν στα κριτήρια σας."
+
+#: pgp.php:189
+msgid "No personal PGP private key imported."
+msgstr "Δεν εισάχθηκε προσωπικό ιδιωτικό κλειδί PGP."
+
+#: pgp.php:165
+msgid "No personal PGP public key imported."
+msgstr "Δεν εισάχθηκε προσωπικό δημόσιο κλειδί PGP."
+
+#: smime.php:201
+msgid "No personal S/MIME certificates imported."
+msgstr "Δεν εισάχθηκε προσωπικό πιστοποιητικό S/MIME."
+
+#: spelling.php:220
+msgid "No spellchecking program configured."
+msgstr "Δεν έχει ορισθεί πρόγραμμα ελέγχου ορθογραφίας."
+
+msgid "No spelling errors"
+msgstr "Δεν υπάρχουν ορθογραφικά λάθη"
+
+msgid "No suggestions"
+msgstr "Δεν υπάρχουν Προτάσεις"
+
+#: acl.php:68 acl.php:94
+msgid "No user specified."
+msgstr "Δεν ορίσθηκε χρήστης."
+
+#: lib/MIME/Viewer/itip.php:694
+msgid "Non Participant"
+msgstr "Κανείς Συμμετέχων"
+
+#: templates/mailbox/navbar.inc:11 templates/prefs/sentmailselect.inc:41
+#: templates/prefs/sourceselect.inc:35 templates/prefs/spamselect.inc:5
+#: lib/MIME/Viewer/itip.php:651
+msgid "None"
+msgstr "Κανένα"
+
+msgid "Normal"
+msgstr "Κανονική"
+
+msgid "Not Deleted"
+msgstr "Μη Διαγραμμένα"
+
+msgid "Not Draft"
+msgstr "Μη Πρόχειρα"
+
+msgid "Not Important"
+msgstr "Μη σημαντικά"
+
+msgid "Not Personal"
+msgstr "Μη προσωπικά"
+
+#: lib/Crypt/PGP.php:154 lib/Crypt/SMIME.php:151 lib/Crypt/SMIME.php:157
+#: lib/Crypt/SMIME.php:166
+msgid "Not a valid public key."
+msgstr "Μη έγκυρο δημόσιο κλειδί."
+
+msgid "Not deleted messages"
+msgstr "Μη Διαγραμμένα μηνύματα"
+
+msgid "Not important messages"
+msgstr "Μη σημαντικά μηνύματα"
+
+#: lib/Maintenance/Task/fetchmail_login.php:76
+msgid "Note that this can take some time"
+msgstr "Υπόψη ότι αυτό θα πάρει κάποια ώρα"
+
+msgid "November"
+msgstr "Νοέμβριος"
+
+#: config/prefs.php.dist:371
+msgid "Number of months to keep old linked attachments if deleting monthly."
+msgstr ""
+"Αριθμός μηνών που θα κρατούνται τα παλιά συνδεμένα συνημμένα, αν γίνεται "
+"διαγραφή μηνιαία."
+
+#: config/prefs.php.dist:353
+msgid "Number of old sent-mail folders to keep if deleting monthly."
+msgstr "Αριθμός φακέλων ΑΠΕΣΤΑΛΜΕΝΑ που δεν θα διαγράφονται ανά μήνα."
+
+msgid "OK"
+msgstr "Εντάξει"
+
+msgid "OR"
+msgstr "ή"
+
+msgid "October"
+msgstr "Οκτώβριος"
+
+msgid "Old messages"
+msgstr "Παλιά Μηνύματα"
+
+msgid "Old sent-mail folders being purged."
+msgstr "Οι Παλιοί Φάκελοι με απεσταλμένα θα διαγραφούν."
+
+msgid ""
+"Once you've filled in these three fields, click the \"Login\" button to "
+"proceed."
+msgstr ""
+"Όταν θα έχετε συμπληρώσει αυτά τα τρία πεδία, επιλέξτε το \"Είσοδος\" για να "
+"συνεχίσετε."
+
+#: lib/Block/summary.php:27
+msgid "Only display folders with unread messages in them?"
+msgstr "Εμφάνιση μόνο των φακέλων που έχουν μη αναγνωσμένα μηνήματα;"
+
+#: templates/folders/javascript.inc:78
+msgid "Only one folder should be selected for this action."
+msgstr "Μόνο ένας φάκελος πρέπει να έχει επιλεγεί γι' αυτή την ενέργεια."
+
+#: templates/menu.inc:7 templates/menu.inc:27
+msgid "Ope_n Folder"
+msgstr "Ανοιγμα"
+
+msgid "Open Folder"
+msgstr "Ανοιγμα Φακέλου"
+
+#: lib/MIME/Viewer/itip.php:690
+msgid "Optional Participant"
+msgstr "Προαιρετικοί Συμμετέχοντες"
+
+msgid "Options"
+msgstr "Επιλογές"
+
+msgid "Options for %s"
+msgstr "Επιλογές για %s"
+
+msgid "Options:"
+msgstr "Επιλογές:"
+
+#: templates/javascript/htmlarea_lang.js:18
+msgid "Ordered List"
+msgstr "Ταξινομημένη Λίστα"
+
+msgid "Organizing"
+msgstr "Οργάνωση"
+
+#: fetchmail.php:33 templates/fetchmail/top.inc:2
+#: templates/fetchmail/fetchmail.inc:6
+msgid "Other Mail Accounts"
+msgstr "Αλλοι λογαριασμοί Mail"
+
+msgid "Other Options"
+msgstr "Αλλες Επιλογές"
+
+msgid "Overview"
+msgstr "Γενικά"
+
+#: templates/compose/encrypt_list.inc:7
+msgid "PGP Encrypt Message"
+msgstr "Κρυπτογραφημένο μήνυμα (PGP)"
+
+#: compose.php:343
+msgid "PGP Error: "
+msgstr "Λάθος PGP: "
+
+#: compose.php:322
+msgid "PGP Error: Need passphrase for personal private key."
+msgstr "Λάθος PGP : Απαιτείται λέξη-κλειδί για το προσωπικό ιδιωτικό κλειδί."
+
+#: templates/pgp/notactive.inc:6
+msgid "PGP NOT Active"
+msgstr "ΜΗ ενεργό PGP"
+
+#: templates/pgp/pgp.inc:6 config/prefs.php.dist:134
+msgid "PGP Options"
+msgstr "Επιλογές PGP"
+
+#: pgp.php:30
+msgid "PGP Passphrase Input"
+msgstr "Εισαγωγή λέξης-κλειδιού PGP"
+
+#: templates/pgp/pgp.inc:128
+msgid "PGP Personal Keypair support requires a secure web connection."
+msgstr "Η υποστήριξη προσωπικού ζεύγους κλειδιών απαιτεί ασφαλή web σύνδεση."
+
+msgid "PGP Public"
+msgstr "Δημόσιο Κλειδί PGP"
+
+#: lib/MIME/Viewer/pgp.php:178
+msgid "PGP Public Key Text"
+msgstr "Κείμενο Δημόσιου Κλειδιού PGP"
+
+#: pgp.php:149
+msgid "PGP Public Key for \"%s (%s)\" was successfully added."
+msgstr "Το Δημόσιο Κλειδί PGP για \"%s (%s)\" προστέθηκε επιτυχώς."
+
+#: pgp.php:245
+msgid "PGP Public Key for \"%s\" was successfully deleted."
+msgstr "Το Δημόσιο Κλειδί PGP για \"%s\" διαγράφηκε επιτυχώς."
+
+#: templates/pgp/pgp.inc:72
+msgid "PGP Public Keyring"
+msgstr "Σύστημα Δημόσιων Κλειδιών PGP"
+
+#: templates/compose/encrypt_list.inc:8
+msgid "PGP Sign Message"
+msgstr "Υπογεγραμμένο μήνυμα (PGP)"
+
+#: templates/compose/encrypt_list.inc:9
+msgid "PGP Sign/Encrypt Message"
+msgstr "Υπογεγραμμένο και κρυπτογραφημένο μήνυμα (PGP)"
+
+#: pgp.php:202
+msgid "PGP private key successfully added."
+msgstr "Το Ιδιωτικό Κλειδί PGP προστέθηκε επιτυχώς."
+
+#: pgp.php:177
+msgid "PGP public key successfully added."
+msgstr "Το Δημόσιο Κλειδί PGP προστέθηκε επιτυχώς."
+
+#: templates/pgp/notactive.inc:11
+msgid "PGP support is disabled on this system."
+msgstr "Η Υποστήριξη PGP έχει απενεργοποιηθεί σ' αυτό το σύστημα."
+
+#: lib/MIME/Viewer/pgp.php:214
+msgid ""
+"PGP support is not currently active so the digital signature is unable to be "
+"verified."
+msgstr ""
+"Η Υποστήριξη PGP δεν είναι ενεργή και η ψηφιακή υπογραφή δεν είναι δυνατό να "
+"επιβεβαιωθεί."
+
+#: lib/MIME/Viewer/pgp.php:301
+msgid ""
+"PGP support is not currently active so the message is unable to be decrypted."
+msgstr ""
+"Η Υποστήριξη PGP δεν είναι ενεργή και το μήνυμα δεν είναι δυνατό να "
+"αποκρυπτογραφηθεί."
+
+#: templates/pgp/pgp.inc:24
+msgid ""
+"PGP support requires popup windows to be used.  If your browser is currently "
+"set to disable popup windows, you must change this setting or else the PGP "
+"features will not work correctly"
+msgstr ""
+"Η υποστήριξη PGP απαιτεί τη χρήση αναδυόμενων (Popup) παραθύρων. Αν έχετε "
+"απενεργοποιήσει αυτή την επιλογή στον browser σας, θα πρέπει να αλλάξετε "
+"αυτή την επιλογή, διαφορετικά το PGP δεν θα λειτουργεί σωστά"
+
+#: lib/Fetchmail/imap.php:103
+msgid "POP3 (Auto Detect Protocols)"
+msgstr "POP3 (Αυτόματη ανίχνευση Πρωτοκόλλων)"
+
+#: lib/Fetchmail/imap.php:120
+msgid "POP3 over SSL"
+msgstr "POP3 πάνω από SSL"
+
+#: lib/Fetchmail/imap.php:126
+msgid "POP3 over SSL (self-signed certificate)"
+msgstr "POP3 πάνω από SSL (αυτόματα υπογεγραμμένο πιστοποιητικό)"
+
+#: templates/login/login.inc:177
+msgid "POP3 over SSL (self-signed)"
+msgstr "POP3 πάνω από SSL (αυτόματα υπογεγραμμένο πιστοποιητικό)"
+
+#: lib/Fetchmail/imap.php:114
+msgid "POP3, no TLS"
+msgstr "POP3 χωρίς TLS"
+
+# templates/mailbox/header.inc:19#, c-format
+#: templates/mailbox/header.inc:19 #
+msgid "Page %d of %d"
+msgstr "Σελίδα %d από %d"
+
+msgid "Page with the First Unseen Message"
+msgstr "Σελίδα με το πρώτο μη αναγνωσμένο μήνυμα"
+
+msgid "Page with the Last Unseen Message"
+msgstr "Σελίδα με το τελευταίο μη αναγνωσμένο μήνυμα"
+
+msgid "Part(s)"
+msgstr "Μέρος(η)"
+
+#: templates/pgp/pgp.inc:211
+msgid "Passphrase"
+msgstr "Λέξη-κλειδί"
+
+#: templates/pgp/pgp.inc:216
+msgid "Passphrase (Again)"
+msgstr "Λέξη-κλειδί (ξανά)"
+
+#: smime.php:235 pgp.php:310
+msgid "Passphrase successfully unloaded."
+msgstr "Η λέξη-κλειδί 'αποφορτώθηκε' επιτυχώς."
+
+#: templates/smime/passphrase.inc:19 templates/pgp/passphrase.inc:29
+msgid "Passphrase:"
+msgstr "Λέξη-κλειδί:"
+
+#: pgp.php:112
+msgid "Passphrases can not be empty"
+msgstr "Η Λέξη-κλειδί δεν μπορεί να είναι κενή"
+
+#: pgp.php:114
+msgid "Passphrases do not match"
+msgstr "Η λέξη-κλειδί δεν ταιριάζει"
+
+msgid "Password"
+msgstr "Κωδικός"
+
+msgid "Path to your mail folders:"
+msgstr "Διαδρομή για τον φάκελο με τα μηνύματα σας:"
+
+msgid "Perform maintenance operations on login?"
+msgstr "Να εκτελούνται λειτουργίες συντήρησης κατά την είσοδο στην υπηρεσία;"
+
+msgid "Personal"
+msgstr "Προσωπικά"
+
+#: config/prefs.php.dist:14
+msgid "Personal Information"
+msgstr "Προσωπικές Πληροφορίες"
+
+#: pgp.php:120
+msgid "Personal PGP keypair generated successfully."
+msgstr "Προσωπικό ζεύγος κλειδιών PGP δημιουργήθηκε επιτυχώς."
+
+#: pgp.php:127
+msgid "Personal PGP keys deleted successfully."
+msgstr "Προσωπικό ζεύγος κλειδιών PGP διαγράφηκε επιτυχώς."
+
+#: smime.php:207
+msgid "Personal S/MIME certificates NOT imported: "
+msgstr "Προσωπικά πιστοποιητικά S/MIME ΔΕΝ εισήχθησαν: "
+
+#: smime.php:132
+msgid "Personal S/MIME keys deleted successfully."
+msgstr "Προσωπικά κλειδιά S/MIME διαγράφηκαν επιτυχώς."
+
+msgid "Place your signature before replies and forwards?"
+msgstr ""
+"Να τοποθετείται η υπογραφή σας πριν από τις απαντήσεις και τις προωθήσεις "
+"των μηνυμάτων σας;"
+
+#: compose.php:241
+msgid "Plaintext Version of Message"
+msgstr "Έκδοση μηνύματος με καθαρό κείμενο"
+
+#: templates/message/javascript.inc:55 templates/mailbox/javascript.inc:200
+msgid "Please enter a name for the new folder:"
+msgstr "Παρακαλώ δώστε ένα όνομα για τον νέο φάκελο:"
+
+msgid "Please enter the name of the new folder:"
+msgstr "Παρακαλώ δώστε το όνομα του νέου φακέλου:"
+
+msgid "Please enter the new name:"
+msgstr "Παρακαλώ εισάγετε το νέο όνομα:"
+
+#: templates/pgp/passphrase.inc:19
+msgid ""
+"Please enter the passphrase for your PGP private key. You will only need to "
+"enter this passphrase once per %s session."
+msgstr ""
+"Παρακαλώ εισάγετε τη λέξη κλειδί για το προσωπικό ιδιωτικό PGP κλειδί. Αυτό "
+"απαιτείται μια φορά μόνο για κάθε %s σύνδεση."
+
+#: templates/smime/passphrase.inc:13
+msgid ""
+"Please enter the passphrase for your S/MIME private key. You will only need "
+"to enter this passphrase once per %s session."
+msgstr ""
+"Παρακαλώ εισάγετε τη λέξη κλειδί για το προσωπικό ιδιωτικό S/MIME κλειδί. "
+"Αυτό απαιτείται μια φορά μόνο για κάθε %s σύνδεση."
+
+msgid "Please enter valid search criteria."
+msgstr "Παρακαλώ εισάγετε έγκυρα κριτήρια αναζήτησης."
+
+#: recompose.php:88
+msgid ""
+"Please log in again to resume composing your message. If you are NOT using "
+"cookies AND you are composing messages in popup windows, you will have to "
+"log in again in your main window as well. This is to keep attackers from "
+"hijacking your session ID. We apologize for any inconvenience."
+msgstr ""
+"Παρακαλώ κάντε είσοδο (login) ξανά για να συνεχίσετε τη σύνθεση του "
+"μηνύματος. Αν δε χρησιμοποιείτε cookies και κάνετε σύνθεση σε αναδυόμενο "
+"παράθυρο, θα πρέπει να ξανακάνετε είσοδο και στο κύριο παράθυρο. Αυτό "
+"γίνεται για να εμποδίσει επίθεση για υποκλοπή της σύνδεσής σας. Ζητούμε "
+"συγνώμη για όποια ταλαιπωρία."
+
+#: templates/login/login.inc:81
+msgid "Please provide your password."
+msgstr "Παρακαλώ δώστε τον κωδικό σας."
+
+msgid "Please provide your username."
+msgstr "Παρακαλώ δώστε το όνομα χρήστη"
+
+msgid "Please provide your username and password"
+msgstr "Παρακαλώ δώστε το όνομα χρήστη και τον κωδικό σας"
+
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Παρακαλώ επιλέξτε, διφορόμενη ή άκυρη διεύθυνση."
+
+#: lib/MIME/Viewer/itip.php:631
+msgid ""
+"Please review the following information, and then select an action from the "
+"menu below."
+msgstr ""
+"Παρακαλώ διαβάστε τις παρακάτω πληροφορίες και μετά επιλέξτε μια ενέργεια "
+"από το παρακάτω μενού."
+
+#: templates/folders/javascript.inc:56
+msgid "Please select a folder before you perform any actions."
+msgstr "Παρακαλώ επιλέξετε ένα φάκελο πριν κάνετε οποιαδήποτε ενέργεια."
+
+#: lib/MIME/Viewer/itip.php:461
+msgid "Please select an action from the menu below."
+msgstr "Παρακαλώ επιλέξτε μια ενέργια από το παρακάτω μενού."
+
+#: templates/search/javascript.inc:41
+msgid "Please select at least one folder to search."
+msgstr "Παρακαλώ επιλέξετε τουλάχιστον ένα κατάλογο για αναζήτηση."
+
+msgid "Please select only one folder for this operation."
+msgstr "Παρακαλώ επιλέξτε μόνο ένα φάκελο για αυτήν την λειτουργία."
+
+msgid "Please select or edit right next:"
+msgstr "Παρακαλώ επιλέξτε ή επεξεργαστείτε το αμέσως επόμενο:"
+
+msgid "Precede your signature with dashes ('-- ')"
+msgstr "Να τοποθετούνται παύλες πριν την υπογραφή σας ('-- ')"
+
+#: smime.php:241 pgp.php:257 filterprefs.php:40
+msgid "Preferences successfully updated."
+msgstr "Οι προτιμήσεις ενημερώθηκαν επιτυχώς."
+
+msgid "Preview"
+msgstr "Προεπισκόπηση"
+
+#: templates/message/navbar_navigate.inc:28
+msgid "Previous Message"
+msgstr "Προηγούμενο Μήνυμα"
+
+#: mailbox.php:336
+msgid "Previous Page"
+msgstr "Προηγούμενη Σελίδα"
+
+msgid "Print"
+msgstr "Εκτύπωση"
+
+msgid "Priority"
+msgstr "Προτεραιότητα"
+
+msgid "Priority:"
+msgstr "Προτεραιότητα:"
+
+#: templates/smime/import_key.inc:74
+msgid "Private Key Password"
+msgstr "Κωδικός προσωπικού κλειδιού"
+
+msgid "Problem"
+msgstr "Πρόβλημα"
+
+#, c-format
+msgid "Problem with filter rule %d: folder does not exist: %s"
+msgstr "Πρόβλημα με τον κανόνα φίλτρου %d: Ο φάκελος δεν υπάρχει: %s"
+
+msgid "Problem?"
+msgstr "Πρόβλημα;"
+
+msgid "Prompt every time an attachment is sent; default to NO"
+msgstr "Ερώτηση κάθε φορά που αποστέλλεται συνημμένο, προκαθορισμένο ΟΧΙ"
+
+msgid "Prompt every time an attachment is sent; default to YES"
+msgstr "Ερώτηση κάθε φορά που αποστέλλεται συνημμένο, προκαθορισμένο ΝΑΙ"
+
+#: templates/fetchmail/manage.inc:10
+msgid "Protocol:"
+msgstr "Πρωτόκολλο:"
+
+#: lib/Crypt/PGP.php:461
+msgid "Public PGP keyserver support has been disabled."
+msgstr "Η υποστήριξη εξυπηρετητή PGP κλειδιών έχει απενεργοποιηθεί."
+
+msgid "Pur_ge Deleted"
+msgstr "Οριστική Διαγραφή"
+
+msgid "Purge Deleted"
+msgstr "Οριστική Διαγραφή"
+
+#: templates/folders/actions.inc:22
+msgid "Purge Folder(s)"
+msgstr "Οριστική διαγραφή φακέλου(ων)"
+
+msgid "Purge Trash how often:"
+msgstr "Να Αδειάζει ο κάδος κάθε:"
+
+msgid "Purge messages in Trash folder older than this amount of days."
+msgstr ""
+"Να διαγράφονται τα μηνύματα από τον κάδο που είναι παλιότερα από αυτό τον "
+"αριθμό ημερών."
+
+msgid "Purge old messages in the Trash folder?"
+msgstr "Διαγραφή παλιών μηνυμάτων από τον κάδο;"
+
+msgid "Purging"
+msgstr "Διαγραφή"
+
+#, c-format
+msgid "Purging %d message(s) from Trash folder."
+msgstr "Διαγραφή %d μήνυμα(τα) από τον κάδο."
+
+msgid "Put this after @ when sending mail and default address expansion:"
+msgstr ""
+"Συμπήρωσε με το παρακάτω μετά το @ κατά την αποστολή με προκαθορισμένη "
+"διεύθυνση:"
+
+#: templates/quota/quota.inc:17
+msgid "Quota status: %.2fMB / %.2fMB  (%.2f%%)"
+msgstr "Διαθεσιμότητα χώρου γραμματοθυρίδας σας: %.2fMB / %.2fMB  (%.2f%%)"
+
+#: templates/quota/quota.inc:21
+msgid "Quota status: %.2fMB / NO LIMIT"
+msgstr "Διαθεσιμότητα χώρου γραμματοθυρίδας σας: %.2fMB / ΧΩΡΙΣ ΟΡΙΑ"
+
+#: templates/quota/quota.inc:24
+msgid "Quota status: NO LIMIT"
+msgstr "Διαθεσιμότητα χώρου γραμματοθυρίδας σας: ΧΩΡΙΣ ΟΡΙΑ"
+
+msgid "Quoting"
+msgstr "Περιορίζοντας"
+
+msgid "Quoting %f"
+msgstr "Περιορίζοντας %f"
+
+msgid "Received:"
+msgstr "Παραλήφθηκε:"
+
+msgid "Received On"
+msgstr "Παραλήφθηκε στις"
+
+msgid "Received Since"
+msgstr "Παραλήφθηκε από τότε"
+
+msgid "Received Until"
+msgstr "Παραλήφθηκε μέχρι"
+
+msgid "Received after"
+msgstr "Παραλήφθηκε μετά από"
+
+msgid "Received before"
+msgstr "Παραλήφθηκε πριν από"
+
+msgid "Received on"
+msgstr "Παραλήφθηκε στις"
+
+msgid "Redirec_t"
+msgstr "Ανακατεύθυνση"
+
+msgid "Redirect"
+msgstr "Ανακατεύθυνση"
+
+msgid "Redirect Message"
+msgstr "Ανακατεύθυνση Μηνύματος"
+
+msgid "Redirect this message"
+msgstr "Ανακατεύθυνση αυτού του Μηνύματος"
+
+msgid "Redirecting failed."
+msgstr "Η ανακατεύθυνση απέτυχε."
+
+msgid "Refresh"
+msgstr "Ανανέωση"
+
+msgid "Refresh Folder Views:"
+msgstr "Ανανέωση Προβολής Φακέλων:"
+
+msgid "Reload"
+msgstr "Ανανέωση"
+
+msgid "Reload View"
+msgstr "Ανανέωση Προβολής"
+
+#: lib/MIME/Viewer/itip.php:483 lib/MIME/Viewer/itip.php:502
+msgid "Remember the free/busy information."
+msgstr "Να θυμάμαι τις πληροφορίες ελεύθερου/απασχολημένου."
+
+#: config/prefs.php.dist:950
+msgid "Remember the last view"
+msgstr "Να παραμένει η τελευταία προβολή"
+
+#: templates/fetchmail/manage.inc:27
+msgid "Remote Mailbox:"
+msgstr "Απομακρυσμένη Γραμματοθυρίδα:"
+
+#: templates/search/fields.inc:40
+msgid "Remove Field From Search"
+msgstr "Διαγραφή πεδίου από την Αναζήτηση"
+
+#: templates/prefs/sourceselect.inc:305
+msgid "Remove source"
+msgstr "Διαγραφή πηγαίου"
+
+msgid "Rename Folder"
+msgstr "Μετονομασία Φακέλου"
+
+#: templates/folders/actions.inc:6
+msgid "Rename Folder(s)"
+msgstr "Μετονομασία Φακέλου(ων)"
+
+msgid "Remove Selected"
+msgstr "Ακύρωση Επιλεγμένων"
+
+msgid "Rename sent-mail folder at beginning of month?"
+msgstr "Μετονομασία του φακέλου ΑΠΕΣΤΑΛΜΕΝΑ στην αρχή κάθε μήνα;"
+
+#, c-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr ""
+"Η μετονομασία του φακέλου \"%s\" σε \"%s\" απέτυχε. Το σύστημα έβγαλε το "
+"ακόλουθο μήνυμα"
+
+#: templates/message/navbar_actions.inc:10
+msgid "Repl_y to List"
+msgstr "Απάντηση στην ομάδα"
+
+#: templates/compose/spelling.inc:90
+msgid "Replace with:"
+msgstr "Αντικατάσταση με:"
+
+msgid "Reply"
+msgstr "Απάντηση"
+
+#: lib/MIME/Viewer/itip.php:279 lib/MIME/Viewer/itip.php:372
+msgid "Reply Sent."
+msgstr "Απάντηση Στάλθηκε."
+
+msgid "Reply to All"
+msgstr "Απάντηση σε όλους"
+
+msgid "Reply to All:"
+msgstr "Απάντηση σε όλους:"
+
+msgid "Reply to List"
+msgstr "Απάντηση στην ομάδα"
+
+msgid "Reply to List:"
+msgstr "Απάντηση στην ομάδα:"
+
+msgid "Reply to _All"
+msgstr "Απάντηση σε όλους"
+
+#: lib/MIME/Viewer/itip.php:485 lib/MIME/Viewer/itip.php:494
+#: lib/MIME/Viewer/itip.php:504
+msgid "Reply with Not Supported Message"
+msgstr "Απάντηση με Μη Υποστηριζόμενο Μήνυμα."
+
+#: lib/MIME/Viewer/itip.php:492
+msgid "Reply with free/busy for next 2 months."
+msgstr ""
+"Απάντηση με πληροφορίες ελεύθερου/απασχολημένου για τους επόμενους δύο (2) "
+"μήνες."
+
+#: lib/MIME/Viewer/itip.php:491
+msgid "Reply with requested free/busy information."
+msgstr "Απάντηση με πληροφορίες ελεύθερου/απασχολημένου που ζητήθηκαν."
+
+msgid "Reply-To"
+msgstr "Απάντηση-Προς"
+
+msgid "Reply-To: "
+msgstr "Απάντηση-Προς: "
+
+msgid "Reply-to"
+msgstr "Απάντηση-προς"
+
+msgid "Reply:"
+msgstr "Απάντηση:"
+
+#: templates/message/navbar_actions.inc:36 templates/mailbox/actions.inc:26
+msgid "Report as Innocent"
+msgstr "Αναφορά σαν Αθώο"
+
+#: templates/message/navbar_actions.inc:33 templates/mailbox/actions.inc:24
+msgid "Report as Spam"
+msgstr "Αναφορά μηνύματος ως 'Spam'"
+
+msgid "Re_quest Delivery Confirmation"
+msgstr "Να ζητηθεί Επιβεβαίωση ότι παραδόθηκε"
+
+msgid "Request Delivery Report"
+msgstr "Να ζητηθεί Αναφορά παράδοσης"
+
+msgid "Request a <span class=\"accessKey\">R</span>ead Receipt"
+msgstr "Να ζητηθεί <span class=\"accessKey\">Ε</span>πιβεβαίωση ότι διαβάσθηκε"
+
+msgid "Request a Return Receipt"
+msgstr "Να ζητηθεί Επιβεβαίωση Παραλαβής"
+
+msgid "Request a _Read Receipt"
+msgstr "Να ζητηθεί Επιβεβαίωση ότι διαβάσθηκε"
+
+msgid "Request delivery confirmation?"
+msgstr "Να ζητηθεί Επιβεβαίωση άφιξης;"
+
+msgid "Request read Receipt?"
+msgstr "Να ζητηθεί Επιβεβαίωση ότι διαβάσθηκε;"
+
+msgid "Request read receipts?"
+msgstr "Να ζητηθεί Επιβεβαίωση ότι διαβάσθηκε;"
+
+#: mailbox.php:197
+msgid "Requested message not found."
+msgstr "Το μήνυμα που ζητήθηκε δεν βρέθηκε."
+
+#: lib/MIME/Viewer/itip.php:682
+msgid "Required Participant"
+msgstr "Ζητήθηκε Συμμετέχων"
+
+#: templates/search/main.inc:143 templates/search/header.inc:26
+#: templates/acl/acl.inc:158
+msgid "Reset"
+msgstr "Καθαρισμός Φόρμας"
+
+#: lib/MIME/Viewer/itip.php:106
+msgid "Respondent Status Updated."
+msgstr "Η κατάσταση αυτού που απάντηση ενημερώθηκε."
+
+#: templates/message/navbar_actions.inc:28
+msgid "Resume"
+msgstr "Συνέχεια"
+
+#: recompose.php:89
+msgid "Resume your session"
+msgstr "Επιστροφή στη σύνδεση"
+
+#: templates/fetchmail/driver_select.inc:31 templates/fetchmail/manage.inc:69
+#: templates/fetchmail/account_select.inc:32
+msgid "Return to Fetch Mail"
+msgstr "Επιστροφή στη Προσκόμιση Μηνυμάτων"
+
+msgid "Return to Main Preferences Screen"
+msgstr "Επιστροφή στην κύρια οθόνη Προτιμήσεων"
+
+msgid "Return to Options"
+msgstr "Επιστροφή στις Επιλογές"
+
+#: templates/smime/notactive.inc:33 templates/pgp/notactive.inc:33
+msgid "Return to Previous Screen"
+msgstr "Επιστορφή στην Προηγούμενη Οθόνη"
+
+msgid "Return to Welcome Screen"
+msgstr "Επιστροφή στην αρχική οθόνη"
+
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr ""
+"Επιστροφή στον φάκελο Εισερχόμενα μετά από διαγραφή, μεταφορά ή αντιγραφή "
+"μηνύματος?"
+
+#: lib/MIME/Viewer/itip.php:673
+msgid "Role"
+msgstr "Ρόλος"
+
+msgid "Rule Definition"
+msgstr "Ορισμός Κανόνα"
+
+#: templates/compose/encrypt_list.inc:12
+msgid "S/MIME Encrypt Message"
+msgstr "Κρυπτογραφημένο μήνυμα (S/MIME)"
+
+#: compose.php:379
+msgid "S/MIME Error: "
+msgstr "S/MIME Λάθος: "
+
+#: compose.php:358
+msgid "S/MIME Error: Need passphrase for personal private key."
+msgstr ""
+"S/MIME Λάθος: Απαιτείται λέξη-κλειδί για το προσωπικό ιδιωτικό κλειδί σας."
+
+#: templates/smime/notactive.inc:6
+msgid "S/MIME NOT Active"
+msgstr "Το S/MIME δεν είναι ενεργό"
+
+#: templates/smime/smime.inc:6 config/prefs.php.dist:143
+msgid "S/MIME Options"
+msgstr "Επιλογές S/MIME"
+
+#: smime.php:49
+msgid "S/MIME Passphrase Input"
+msgstr "Εισαγωγή λέξης-κλειδιού S/MIME"
+
+#: templates/smime/smime.inc:100
+msgid "S/MIME Personal Keypair support requires a secure web connection."
+msgstr ""
+"Η Υποστήριξη Προσωπικού ζεύγους κλειδιών S/MIME απαιτεί ασφαλή σύνδεση web."
+
+#: smime.php:140
+msgid "S/MIME Public Key for \"%s\" was successfully deleted."
+msgstr "Το Δημόσιο κλειδί S/MIME για \"%s\" διαγράφηκε επιτυχώς."
+
+#: smime.php:162
+msgid "S/MIME Public Key successfully added."
+msgstr "Το Δημόσιο Κλειδί S/MIME προστέθηκε επιτυχώς."
+
+#: templates/smime/smime.inc:45
+msgid "S/MIME Public Keyring"
+msgstr "Δημόσια κλειδοθήκη S/MIME"
+
+#: smime.php:211
+msgid "S/MIME Public/Private Keypair successfully added."
+msgstr "Το ζεύγος Δημόσιου/Ιδιωτικού κλειδιού S/MIME προστέθηκε επιτυχώς."
+
+#: templates/compose/encrypt_list.inc:13
+msgid "S/MIME Sign Message"
+msgstr "Υπογεγραμμένο μήνυμα (S/MIME)"
+
+#: templates/compose/encrypt_list.inc:14
+msgid "S/MIME Sign/Encrypt Message"
+msgstr "Υπογεγραμμένο/κρυπτογραφημένο μήνυμα (S/MIME)"
+
+#: templates/smime/notactive.inc:11
+msgid "S/MIME support is disabled on this system."
+msgstr "Η υποστήριξη S/MIME έχει απενεργοποιηθεί σ' αυτό το σύστημα."
+
+#: lib/MIME/Viewer/pkcs7.php:233
+msgid ""
+"S/MIME support is not currently enabled so the message is unable to be "
+"decrypted."
+msgstr ""
+"Η υποστήριξη S/MIME δεν έχει ενεργοποιηθεί και συνεπώς το μήνυμα είναι "
+"αδύνατο να αποκρυπτογραφηθεί."
+
+#: lib/MIME/Viewer/pkcs7.php:165
+msgid ""
+"S/MIME support is not enabled so the contents of this signed message can not "
+"be displayed."
+msgstr ""
+"Η υποστήριξη S/MIME δεν έχει ενεργοποιηθεί και συνεπώς το περιεχόμενο αυτού "
+"του υπογεγραμμένου μηνύματος δεν μπορεί να εμφανισθεί."
+
+#: lib/MIME/Viewer/pkcs7.php:138
+msgid ""
+"S/MIME support is not enabled so the digital signature is unable to be "
+"verified."
+msgstr ""
+"Η υποστήριξη S/MIME δεν έχει ενεργοποιηθεί και συνεπώς η ψηφιακή υπογραφή "
+"είναι αδύνατο να επαληθευθεί."
+
+#: templates/smime/smime.inc:24
+msgid ""
+"S/MIME support requires popup windows to be used.  If your browser is "
+"currently set to disable popup windows, you must change this setting or else "
+"the S/MIME features will not work correctly"
+msgstr ""
+"Η υποστήριξη S/MIME απαιτεί αναδυόμενα (popup) παράθυρα. Αν ο browser σας "
+"έχει ρυθμισθεί σε απενεργοποίηση αυτής της λειτουργίας, πρέπει να το "
+"αλλάξετε, διαφορετικά το S/MIME δεν θα λειτουργεί σωστά."
+
+#: templates/compose/compose.inc:266
+msgid "S_ubject"
+msgstr "Θέμα"
+
+#: templates/compose/compose.inc:354
+msgid "Sa_ve a copy in "
+msgstr "Αποθήκευση αντιγράφου σε "
+
+#: templates/message/navbar_actions.inc:30
+msgid "Sa_ve as"
+msgstr "Αποθήκευση ως"
+
+#: search.php:358 templates/fetchmail/manage.inc:67
+msgid "Save"
+msgstr "Αποθήκευση"
+
+#: templates/compose/compose.inc:528
+msgid "Save Attachments with message in sent-mail folder?"
+msgstr "Να αποθηκευτούν τα συνημμένα στον φάκελλο sent-mail μαζί με το μήνυμα;"
+
+#: templates/compose/compose.inc:68 templates/compose/compose.inc:424
+msgid "Save Draft"
+msgstr "Αποθήκευση στο Πρόχειρο"
+
+#: templates/filters/prefs.inc:69 templates/smime/smime.inc:37
+#: templates/smime/notactive.inc:23 templates/pgp/pgp.inc:64
+#: templates/pgp/notactive.inc:23
+msgid "Save Options"
+msgstr "Αποθήκευση Επιλογών"
+
+#: templates/compose/compose.inc:68 templates/compose/compose.inc:424
+msgid "Save _Draft"
+msgstr "Αποθήκευση στο Πρόχειρο"
+
+msgid "Save a copy in "
+msgstr "Αποθήκευση αντιγράφου στον φάκελο "
+
+msgid "Save a copy in \"sent-mail\""
+msgstr "Αποθήκευση αντιγράφου στον φάκελο \"sent-mail\""
+
+msgid "Save as"
+msgstr "Αποθήκευση ως"
+
+msgid "Save drafts as unseen?"
+msgstr "Αποθήκευση πρόχειρων σαν μη αναγνωσμένα;"
+
+#: config/prefs.php.dist:1030
+msgid "Save recipients automatically to the default address book?"
+msgstr ""
+"Αποθήκευση των παραληπτών αυτόματα στον προκαθορισμένο Διευθυνσιογράφο σας;"
+
+msgid "Save search as a virtual folder?"
+msgstr "Αποθήκευση αναζήτησης σε ιδεατό φάκελο;"
+
+msgid "Save sent mail"
+msgstr "Αποθήκευση απεσταλμένου μηνύματος"
+
+msgid "Save sent mail?"
+msgstr "Αποθήκευση απεσταλμένου μηνύματος;"
+
+#, c-format
+msgid "Saving the draft failed. This is what the server said: %s"
+msgstr ""
+"Η αποθήκευση του πρόχειρου μηνύματος απέτυχε. Το σύστημα έβγαλε το ακόλουθο "
+"μήνυμα: %s"
+
+msgid "Search"
+msgstr "Αναζήτηση"
+
+msgid "Search %s"
+msgstr "Αναζήτηση σε %s"
+
+msgid "Search Mail"
+msgstr "Αναζήτηση Μηνυμάτων"
+
+msgid "Search Results"
+msgstr "Αποτελέσματα Αναζήτησης"
+
+msgid "Seen"
+msgstr "Διαβασμένα"
+
+msgid "Select"
+msgstr "Επιλογή"
+
+#: templates/fetchmail/manage.inc:70
+msgid "Select Another Account"
+msgstr "Επιλογή άλλου Λογαριασμού"
+
+#: templates/search/fields.inc:35
+msgid "Select a date"
+msgstr "Επιλέξτε μια ημερομηνία"
+
+#: templates/search/fields.inc:10
+msgid "Select a field"
+msgstr "Επιλέξτε ένα πεδίο"
+
+msgid "Select address book sources for adding and searching for addresses."
+msgstr "Επιλέξτε από τους διαθέσιμους διευθυνσιογράφους."
+
+msgid "Select all"
+msgstr "Επιλογή όλων"
+
+#: templates/prefs/sourceselect.inc:323
+msgid "Select all fields to search when expanding addresses."
+msgstr ""
+"Επιλογή όλων των πεδίων για αναζήτηση όταν επεκτείνονται οι διευθύνσεις."
+
+#: templates/fetchmail/account_select.inc:21
+msgid "Select an account"
+msgstr "Επιλέξτε ένα λογαριασμό"
+
+msgid "Select an identity"
+msgstr "Επιλέξτε μία ταυτότητα"
+
+msgid "Select charset:"
+msgstr "Επιλογή κωδικοποίησης:"
+
+msgid "Select none"
+msgstr "Επιλογή κανενός"
+
+#: templates/fetchmail/driver_select.inc:21
+msgid "Select the mail server type"
+msgstr "Επιλέξτε τον τύπο του εξυπηρετητή Mail"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the text area."
+msgstr ""
+"Επιλέξτε τους χαρακτήρες που χρειάζεσθε από τα παρακάτω κουτάκια. Στη "
+"συνέχεια αντιγράψτε τα και επικολήστε τα στην περιοχή κειμένου του μηνήματος"
+
+msgid "Select your preferred language:"
+msgstr "Επιλέξτε την προτιμούμενη γλώσσα:"
+
+msgid "Selected Address books:"
+msgstr "Επιλογή Διευθυνσιογράφου:"
+
+#: templates/pgp/pgp.inc:147
+msgid "Send Key to Public Keyserver"
+msgstr "Αποστολή κλειδιού σε εξυπηρετητή Δημόσιων κλειδιών"
+
+#: lib/MIME/Viewer/itip.php:560
+msgid "Send Latest Information"
+msgstr "Αποστολή πρόσφατων πληροφοριών"
+
+msgid "Send MDN when requested by the sender?"
+msgstr "Να αποστέλλεται επιβεβαίωση ανάγνωσης όταν ζητείται από τον αποστολέα;"
+
+msgid "Send Message"
+msgstr "Αποστολή Μηνύματος"
+
+msgid "Sent mail folder"
+msgstr "Φάκελος Απεσταλμένων Μηνυμάτων"
+
+msgid "Sent mail folder:"
+msgstr "Φάκελος Απεσταλμένων Μηνυμάτων:"
+
+msgid "September"
+msgstr "Σεπτέμβριος"
+
+msgid "Server"
+msgstr "Διακομιστής"
+
+msgid "Server and Folder Information"
+msgstr "Πληροφορίες Διακομιστή και Φακέλλων"
+
+msgid "Server Information"
+msgstr "Πληροφορίες Διακομιστή"
+
+msgid "Server:"
+msgstr "Διακομιστής:"
+
+msgid "Set preferences for filtering messages for unwanted content."
+msgstr ""
+"Ρυθμίστε τους κανόνες των φίλτρων για μηνύματα με ανεπιθύμητο περιεχόμενο."
+
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr "Ρυθμίσεις για τη μεταφορά και διαγραφή μηνυμάτων."
+
+msgid "Set the X-Priority header when composing messages?"
+msgstr "Να τίθεται επικεφαλίδα προτεραιότητας κατά τη σύνθεση;"
+
+msgid "Set the current time zone."
+msgstr "Ορισμός ζώνης ώρας."
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Ορίστε την γλώσσα του μενού, και της βοήθειας."
+
+#: config/prefs.php.dist:31
+msgid "Share Folders"
+msgstr "Κοινή Χρήση Φακέλων"
+
+#: templates/acl/acl.inc:86
+msgid "Share mail folders"
+msgstr "Κοινή χρήση φακέλων μηνυμάτων"
+
+#: config/prefs.php.dist:32
+msgid "Share your mail folders with other users."
+msgstr "Κάνε κοινή χρήση φακέλων μηνυμάτων με άλλους χρήστες."
+
+#: config/prefs.php.dist:672
+msgid ""
+"Should large blocks of quoted text be shown or hidden by default? It can be "
+"toggled easily whichever you choose."
+msgstr ""
+"Να αποκρύπτονται εξ ορισμού μεγάλα τμήματα κειμένου σε εισαγωγικά; Μπορείτε "
+"να το εναλλάσετε όποτε το επιθυμείτε."
+
+#: templates/pgp/pgp.inc:52
+msgid "Should the body of text/plain messages be scanned for PGP data?"
+msgstr "Να ελέγχεται το κείμενο του μηνύματος για δεδομένα PGP;"
+
+msgid "Should the compose window be closed after saving a draft?"
+msgstr ""
+"Να κλείνει το παράθυρο σύνθεσης μετά την αποθήκευση του μηνύματος στα "
+"πρόχειρα;"
+
+#: templates/pgp/pgp.inc:40
+msgid "Should your PGP public key to be attached to your messages by default?"
+msgstr "Να επισυνάπτεται εξορισμού το δημόσιο κλειδί σας στα μηνύματα;"
+
+msgid "Show All Folders"
+msgstr "Εμφάνιση Ολων των Φακέλων"
+
+msgid "Show All Headers"
+msgstr "Εμφάνιση Ολων των Επικεφαλίδων"
+
+msgid "Show Deleted"
+msgstr "Εμφάνιση Διαγραμμένων"
+
+msgid "Show Limited Headers"
+msgstr "Εμφάνιση περιορισμένων Επικεφαλίδων"
+
+#: templates/message/headers.inc:70
+msgid "Show Mailing List Information"
+msgstr "Εμφάνιση πληροφοριών για Λίστα Μηνυμάτων"
+
+#: templates/search/main.inc:92
+msgid "Show Only Subscribed Folders"
+msgstr "Εμφάνιση μόνο των συνδεμένων (subscribed) Φακέλων"
+
+#: folders.php:254
+msgid "Show Unsubscribed"
+msgstr "Εμφάνιση ασύνδετων (Unsubscribed) φακέλων"
+
+msgid "Show an icon to allow stripping of attachments from messages?"
+msgstr ""
+"Εμφάνιση εικονιδίου για να επιτρέπεται ο διαχωρισμός συννημμένων από τα "
+"μηνύματα;"
+
+msgid "Show last login time when logging in?"
+msgstr ""
+"Κατά την είσοδο να εμφανίζεται η ημερομηνία που έγινε τελευταία φορά είσοδος "
+"στην υπηρεσία;"
+
+msgid "Show legend in the mailbox view?"
+msgstr "Να εμφανίζονται επεξηγήσεις στην προβολή του Γραμματοκιβώτιου;"
+
+#: config/prefs.php.dist:809
+msgid "Show previews for unread messages only?"
+msgstr "Εμφάνιση προηγούμενων για μη αναγνωσμένα μηνύματα μόνο;"
+
+#: config/prefs.php.dist:817
+msgid "Show previews in tooltips?"
+msgstr "Εμφάνιση προηγόμενου στα 'tooltips';"
+
+#: config/prefs.php.dist:848
+msgid "Show the Fetch Mail icon on the menubar?"
+msgstr "Εμφάνιση του εικονιδίου προσκόμισης (Fetch Mail) στο μενού;"
+
+#: lib/MIME/Viewer/html.php:106
+msgid "Show the Images"
+msgstr "Εμφάνιση των Εικόνων"
+
+#: templates/filters/prefs.inc:61
+msgid "Show the filter icon on the menubar?"
+msgstr "Εμφάνιση του εικονιδίου φίλτρων στο μενού;"
+
+#: lib/Block/summary.php:30
+msgid "Show total number of mails in folder?"
+msgstr "Εμφάνιση αριθμού μηνυμάτων στο φάκελο;"
+
+msgid "Shown"
+msgstr "Εμφανίσθηκε"
+
+msgid "Si_ze"
+msgstr "Μέγεθος"
+
+#: templates/login/login.inc:241
+msgid "Sign up if not registered"
+msgstr "Εγγραφή (sign up) άν δεν έχει ήδη γίνει"
+
+#: templates/mailbox/legend.inc:17
+msgid "Signed"
+msgstr "Υπογεγραμμένα"
+
+msgid "Size"
+msgstr "Μέγεθος"
+
+msgid "Some of IMP's configuration files are missing:"
+msgstr "Μερικά από τα αρχεία ρυθμίσεων του IMP έχουν χαθεί:"
+
+msgid "Sort Direction"
+msgstr "Κατεύθυνση Ταξινόμησης"
+
+#: templates/mailbox/message_headers.inc:6
+msgid "Sort by Arrival"
+msgstr "Ταξινόμηση κατά Αφιξη"
+
+#: templates/mailbox/message_headers.inc:11
+msgid "Sort by Date"
+msgstr "Ταξινόμηση κατά Ημερομηνία"
+
+#: templates/mailbox/message_headers.inc:21
+msgid "Sort by From Address"
+msgstr "Ταξινόμηση κατά Δ-νση Αποστολέα"
+
+#: templates/mailbox/message_headers.inc:36
+msgid "Sort by Message Size"
+msgstr "Ταξινόμηση κατά Μέγεθος Μηνύματος"
+
+#: templates/mailbox/message_headers.inc:31
+msgid "Sort by Subject"
+msgstr "Ταξινόμηση κατά Θέμα"
+
+#: templates/mailbox/message_headers.inc:26
+msgid "Sort by Thread"
+msgstr "Ταξινόμηση κατά Νήμα"
+
+#: templates/mailbox/message_headers.inc:16
+msgid "Sort by To Address"
+msgstr "Ταξινόμηση κατά Δ-νση Παραλήπτη"
+
+#: templates/prefs/spamselect.inc:4
+msgid "Spam folder:"
+msgstr "Φάκελος Spam:"
+
+msgid "Spam Report from"
+msgstr "Αναφορά μηνύματος 'Spam' από"
+
+msgid "Special Characters"
+msgstr "Ειδικοί χαρακτήρες"
+
+msgid "Spell Check"
+msgstr "Ορθογραφικός Έλεγχος"
+
+msgid "Spell Checker"
+msgstr "Ορθογραφικός Ελεγκτής"
+
+msgid "Spell check complete"
+msgstr "Ορθογραφικός έλεγχος ολοκληρώθηκε"
+
+msgid "Spelling errors per screen when spell checking."
+msgstr "Ορθογραφικά λάθη ανά σελίδα όταν γίνεται ορθογραφικός έλεγχος."
+
+#: lib/MIME/Viewer/itip.php:469 lib/MIME/Viewer/itip.php:639
+msgid "Start"
+msgstr "Έναρξη"
+
+#: lib/MIME/Viewer/itip.php:673
+msgid "Status"
+msgstr "Κατάσταση"
+
+#: lib/MIME/Contents.php:215
+msgid "Strip Attachment"
+msgstr "Απόσπαση Συνημμένου"
+
+#: config/prefs.php.dist:801
+msgid "Strip linebreaks?"
+msgstr "Απόσπαση αλλαγών γραμμών;"
+
+#: templates/mailbox/message_headers.inc:32
+msgid "Sub_ject"
+msgstr "Θέμα"
+
+msgid "Subject"
+msgstr "Θέμα"
+
+msgid "Subject Field"
+msgstr "Θέμα μηνύματος"
+
+msgid "Subject:"
+msgstr "Θέμα:"
+
+msgid "Submit"
+msgstr "Αποστολή"
+
+msgid "Subscribe to Folder(s)"
+msgstr "Σύνδεση στο Φάκελο(ους)"
+
+msgid "Success"
+msgstr "Επιτυχία"
+
+msgid "Suggestions"
+msgstr "Προτάσεις"
+
+#: lib/MIME/Viewer/itip.php:649 lib/MIME/Viewer/itip.php:651
+msgid "Summary"
+msgstr "Ανακεφαλαίωση"
+
+msgid "Switch Composition Method"
+msgstr "Εναλλαγή μεθόδου στοιχειοθεσίας"
+
+msgid "Switch to HTML composition"
+msgstr "Εναλλαγή σε HTML στοιχειοθεσία"
+
+msgid "Switch to"
+msgstr "Εναλλαγή σε"
+
+msgid "Switch to %s composition"
+msgstr "Εναλλαγή σε %s στοιχειοθεσία"
+
+msgid "Switch to plain text composition"
+msgstr "Εναλλαγή σε στοιχειοθεσία απλού κειμένου"
+
+msgid "Te_xt"
+msgstr "Κείμενο"
+
+msgid "Text"
+msgstr "Κείμενο"
+
+#: lib/MIME/Viewer/itip.php:547
+msgid "Tentatively Accept request"
+msgstr "Προσωρινή Αποδοχή Αιτήματος"
+
+#: lib/MIME/Viewer/itip.php:746
+msgid "Tentatively Accepted"
+msgstr "Έγινε αποδοχή Προσωρινά"
+
+#: lib/Maintenance/Task/tos_agreement.php:54
+msgid "Terms of Service file not specified in conf.php"
+msgstr "Οι όροι του αρχείου εξυπηρετήσεων δεν ορίσθηκαν στο conf.php"
+
+msgid "Thank you for using the system."
+msgstr "Ευχαριστούμε που χρησιμοποιήσατε το σύστημά μας."
+
+msgid "The Compose Window"
+msgstr "Το παράθυρο Σύνθεσης"
+
+msgid "The From: column of the message should be linked:"
+msgstr "Η στήλη Από: του μηνύματος πρέπει να συνδεθεί:"
+
+#: fetchmailprefs.php:81
+msgid "The account \"%s\" has been deleted."
+msgstr "Ο λογαριασμός \"%s\" διαγράφηκε."
+
+#: fetchmailprefs.php:74
+msgid "The account \"%s\" has been saved."
+msgstr "Ο λογαριασμός \"%s\" αποθηκεύθηκε."
+
+#: lib/Filter.php:94
+msgid "The address \"%s\" has been added to %s."
+msgstr "Η διεύθυνση \"%s\" προστέθηκε στη %s."
+
+#: attachment.php:43
+msgid "The attachment was not found."
+msgstr "Το συνημμένο δεν βρέθηκε."
+
+#: templates/javascript/open_compose_win.js:37
+msgid ""
+"The compose window can't be opened. Perhaps you have set your browser to "
+"block popup windows?"
+msgstr ""
+"Το παράθυρο σύνθεσης δεν μπορεί να ανοίξει. Πιθανώς έχετε ρυθμίσει τον "
+"εξερευνητή σας (browser) να μπλοκάρει τα αναδυόμενα παράθυρα."
+
+msgid ""
+"The contents of your Inbox folder will be displayed immediately upon logging "
+"in.  The Mailbox Listing shows the contents of each message's header "
+"(message status, date sent, sender, subject, and size).  Each column has a "
+"heading.  Clicking on the heading will cause the listing to be sorted by "
+"that column."
+msgstr ""
+"Τα περιεχόμενα του καταλόγου 'Εισερχόμενα' θα εμφανίζονται με την είσοδό σας "
+"στο σύστημα. Στη λίστα με τα μηνύματα εμφανίζονται οι επικεφαλίδες για κάθε "
+"μήνυμα (Η κατάσταση του, η ημερομηνία αποστολής, ο αποστολέας, το θέμα και "
+"το μέγεθος). Μπορείτε να ταξινομήσετε τα μηνύματα σας επιλέγοντας το όνομα "
+"του πεδίου που θέλετε, στην αρχή της λίστας."
+
+#, c-format
+msgid "The current folder(s) \"%s\" will be renamed to \"%s\"."
+msgstr "Ο τρέχων φάκελος(οι) \"%s\" θα μετονομαστεί σε \"%s\"."
+
+#: templates/acl/acl.inc:112
+msgid ""
+"The current list of users with access to this folder could not be retrieved"
+msgstr ""
+"Η τρέχουσα λίστα με τους χρήστες που έχουν πρόσβαση σε αυτό το φάκελο δε "
+"μπορεί να ανακτηθεί"
+
+#: compose.php:1147
+msgid "The draft has been saved to the \"%s\" folder."
+msgstr "Το πρόχειρο αποθηκεύθηκε στο φάκελο \"%s\"."
+
+msgid "The encryption features require a secure web connection."
+msgstr "Οι λειτουργίες κρυπτογράφησης απαιτούν ασφαλή σύνδεση."
+
+#: lib/MIME/Viewer/itip.php:129
+msgid "The event was added to your calendar."
+msgstr "Το γεγονός προστέθηκε στο ημερολόγιό σας."
+
+#: templates/compose/expand.inc:9
+msgid "The field '%s' can't be expanded."
+msgstr "Το πεδίο '%s' δεν μπορεί να επεκταθεί."
+
+# lib/Folder.php:426, c-format
+#: lib/Folder.php:426
+msgid "The folder \"%s\" already exists"
+msgstr "Ο φάκελος \"%s\" υπάρχει ήδη"
+
+#, c-format
+msgid ""
+"The folder \"%s\" contains illegal characters in its name. It may cause "
+"problems. Please see your system administrator."
+msgstr ""
+"Το όνομα του φακέλου \"%s\" περιέχει μη επιτρεπόμενους χαρακτήρες. Μπορεί να "
+"υπάρξουν προβλήματα. Ενημερώστε το διαχειριστή του συστήματος."
+
+#, c-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "Ο φάκελος \"%s\" δημιουργήθηκε αλλά δεν συνδεθήκατε σε αυτόν."
+
+#, c-format
+msgid "The folder \"%s\" was deleted but you were not unsubscribed from it."
+msgstr "Ο φάκελος \"%s\" διαγράφηκε αλλά δεν αποσυνδεθήκατε από αυτόν."
+
+#, c-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr ""
+"Ο φάκελος \"%s\" δεν δημιουργήθηκε. Το σύστημα έβγαλε το ακόλουθο μήνυμα"
+
+#, c-format
+msgid "The folder \"%s\" was not deleted. This is what the server said"
+msgstr "Ο φάκελος \"%s\" δεν διαγράφηκε. Το σύστημα έβγαλε το ακόλουθο μήνυμα"
+
+#, c-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "Ο φάκελος \"%s\" δημιουργήθηκε με επιτυχία."
+
+#, c-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "Ο φάκελος \"%s\" διαγράφηκε με επιτυχία."
+
+#, c-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "Ο φάκελος \"%s\" μετονομάστηκε με επιτυχία σε \"%s\"."
+
+#: lib/MIME/Viewer/tnef.php:96
+msgid "The following files were attached to this part:"
+msgstr "Τα παρακάτω αρχεία είχαν επισυναφθεί σ' αυτό:"
+
+#, c-format
+msgid "The identity \"%s\" has been deleted."
+msgstr "Η ταυτότητα \"%s\" διαγράφηκε."
+
+#, c-format
+msgid "The identity \"%s\" has been saved."
+msgstr "Τα στοιχεία της ταυτότητας \"%s\" έχουν αποθηκευτεί."
+
+#: lib/MIME/Viewer/html.php:95
+msgid ""
+"The images will be displayed because the sender is present in your "
+"addressbook."
+msgstr ""
+"Οι εικόνες θα εμφανισθού, γιατί ο αποστολέας είναι στο Διευθυνσιογράφο σας"
+
+msgid "The Mailbox Listing"
+msgstr "Η λίστα του γραμματοκιβωτίου"
+
+#: lib/MIME/Viewer/status.php:78
+msgid "The mail server generated the following error message:"
+msgstr "Ο διακομιστής αλληλογραφίας δημιούργησε το παρακάτω μήνυμα λάθους:"
+
+#: lib/MIME/Viewer/notification.php:54
+msgid "The mail server generated the following informational message:"
+msgstr ""
+"Ο διακομιστής αλληλογραφίας δημιούργησε το παρακάτω πληροφοριακό μήνυμα:"
+
+#: lib/MIME/Viewer/status.php:93
+msgid "The mail server generated the following message:"
+msgstr "Ο διακομιστής αλληλογραφίας δημιούργησε το παρακάτω μήνυμα:"
+
+#: lib/Message.php:645
+msgid "The mailbox %s is already empty."
+msgstr "Η γραμματοθυρίδα %s είναι ήδη άδεια."
+
+#: lib/Fetchmail.php:262
+msgid "The message \"%s\" from \"%s\" (%d bytes) exceeds fetch size limit."
+msgstr "Το μήνυμα \"%s\" από \"%s\" (%d Bytes) ξεπερνά το όριο προσκόμισης."
+
+#: templates/contacts/contacts.inc:98
+msgid "The message being composed has been closed.  Exiting."
+msgstr "Το μήνυμα που συνθέτεται κλείνει."
+
+#: message.php:142
+msgid "The message has been deleted."
+msgstr "Το μήνυμα έχει διαγραφεί."
+
+#: lib/MIME/Viewer/pgp.php:399
+msgid "The message has been verified."
+msgstr "Το μήνυμα έχει επιβεβαιωθεί."
+
+#: lib/MIME/Viewer/pkcs7.php:374
+msgid "The message has been verified. Sender: %s."
+msgstr "Το μήνυμα έχει επιβεβαιωθεί. Αποστολέας: %s"
+
+#: framework/MIME/MIME/MDN.php:214
+msgid ""
+"The message sent on %s to %s with subject \"%s\" has been displayed.\n"
+"This is no guarantee that the message has been read or understood."
+msgstr ""
+"Το μήνυμα που στάλθηκε την %s στον %s με θέμα \"%s\" εμφανίσθηκε.\n"
+"Αυτό δεν αποτελεί εγγύηση ότι διαβάσθηκε και κατανοήθηκε."
+
+msgid ""
+"The Message Screen display the contents of the selected message.  From here, "
+"you can browse message attachments, reply to the current message, delete the "
+"current message, or advance to the next message in your current mailbox."
+msgstr ""
+"Η οθόνη μηνυμάτων εμφανίζει τα περιεχόμενα του επιλεγμένου μηνύματος. Από "
+"εδώ μπορείτε να δείτε τα συνημμένα αρχεία, να απαντήσετε στο μήνυμα, να το "
+"διαγράψετε η να προχωρήσετε στο επόμενο μήνυμα."
+
+msgid "The Message Screen"
+msgstr "Οθόνη Μηνυμάτων"
+
+#: templates/smime/open_smime_win.js:10 templates/pgp/open_pgp_win.js:10
+msgid ""
+"The passphrase window can't be opened. Perhaps you have set your browser to "
+"block popup windows?"
+msgstr ""
+"Το παράθυρο εισαγωγής λέξης-κλειδιού δεν μπορεί να ανοίξει. Μήπως έχετε "
+"ρυθμίσει το browser σας να μπλοκάρει τα αναδυόμενα (popup) παράθυρα;"
+
+#: lib/MIME/Viewer/pgp.php:178
+msgid "The raw text of the PGP Public Key can be viewed %s."
+msgstr "Το περιεχόμενο του δημόσιου κλειδιού PGP μπορεί να εμφανισθεί %s."
+
+#: lib/MIME/Viewer/tnef.php:62
+msgid "The requested file does not exist in the MS-TNEF attachment."
+msgstr "Το αρχέιο που ζητήθηκε δεν υπάρχει στα MS-TNEF συνημμένα."
+
+#: lib/MIME/Viewer/zip.php:67
+msgid "The requested file does not exist in the Zip attachment."
+msgstr "Το αρχείο που ζητήθηκε δεν υπάρχει στα συμπιεσμένα (ZIP) συνημμένα."
+
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Please click %s to send the "
+"notification message."
+msgstr ""
+"Ο αποστολέας έχει ζητήσει ενημέρωση για την ανάγνωση αυτού του μηνύματος. "
+"Παρακαλώ πατήστε %s για να του αποσταλεί μήνυμα ενημέρωσης."
+
+msgid "The signature couldn't be replaced."
+msgstr "Η υπογραφή δεν μπορούσε να αντικατασταθεί."
+
+msgid "The signature was successfully replaced."
+msgstr "Η υπογραφή αντικαταστάθηκε με επιτυχία."
+
+#: attachment.php:59
+msgid "The specified file does not exist."
+msgstr "Το αρχείο που ορίσατε δεν υπάρχει."
+
+#: lib/MIME/Viewer/itip.php:159
+msgid "The task has been added to your tasklist."
+msgstr "Η εργασία προστέθηκε στη λίστα εργασιών σας."
+
+#: lib/MIME/Viewer/status.php:98
+msgid "The text of the message"
+msgstr "Το κείμενο του μηνύματος"
+
+#: lib/MIME/Viewer/status.php:97
+msgid "The text of the sent message can be viewed %s."
+msgstr "Το κείμενο του απεσταλμένου μηνύματος μπορείτε να το δείτε %s."
+
+#: lib/MIME/Viewer/itip.php:144
+msgid "The user's free/busy information was sucessfully stored."
+msgstr "Οι πληροφορίες ελεύθερου/απασχολημένου αποθηκεύθηκαν επιτυχώς."
+
+#: lib/MIME/Viewer/alternative.php:89
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "Δεν υπάρχουν εναλλακτικά μέρη που μπορούν να εμφανισθούν."
+
+#: templates/mailbox/empty_mailbox.inc:3
+msgid "There are no messages in this mailbox."
+msgstr "Δεν υπάρχουν μηνύματα σε αυτό το γραμματοκιβώτιο."
+
+#, c-format
+msgid "There was a problem expunging %s. This is what the server said"
+msgstr ""
+"Παρουσιάστηκε σφάλμα στη διαγραφή %s. Το σύστημα έβγαλε το ακόλουθο μήνυμα"
+
+msgid "There was a problem expunging the mailbox. This is what the server said"
+msgstr ""
+"Παρουσιάστηκε σφάλμα στη διαγραφή του γραμματοκιβωτίου. Το σύστημα έβγαλε το "
+"ακόλουθο μήνυμα"
+
+#, c-format
+msgid ""
+"There was a problem expunging the mailbox. This is what the server said: %s"
+msgstr ""
+"Παρουσιάστηκε σφάλμα στη διαγραφή του γραμματοκιβωτίου. Το σύστημα έβγαλε το "
+"ακόλουθο μήνυμα: %s"
+
+#, c-format
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size (%d MB)."
+msgstr ""
+"Παρουσιάστηκε σφάλμα κατά τη δημιουργία του συνημμένου. Πιθανότατα το αρχείο "
+"να είναι  μεγαλύτερο από το επιτρεπτό μέγεθος (%d MB)."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Παρουσιάστηκε σφάλμα κατά τη δημιουργία του συνημμένου. Πιθανότατα το αρχείο "
+"να είναι μεγαλύτερο από το επιτρεπτό μέγεθος."
+
+#, c-format
+msgid ""
+"There was an error copying messages to \"%s\". This is what the server said"
+msgstr ""
+"Παρουσιάστηκε σφάλμα κατά τη αντιγραφή των μηνυμάτων στο \"%s\". Το σύστημα "
+"έβγαλε το ακόλουθο μήνυμα"
+
+#, c-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr ""
+"Παρουσιάστηκε σφάλμα κατά τη διαγραφή των μηνυμάτων από το φάκελο \"%s\". Το "
+"σύστημα έβγαλε το ακόλουθο μήνυμα"
+
+#, c-format
+msgid ""
+"There was an error deleting messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"Παρουσιάστηκε σφάλμα κατά τη διαγραφή των μηνυμάτων στο φάκελο \"%s\". Το "
+"σύστημα έβγαλε το ακόλουθο μήνυμα"
+
+msgid "There was an error deleting messages. This is what the server said"
+msgstr ""
+"Παρουσιάστηκε σφάλμα κατά τη διαγραφή των μηνυμάτων. Το σύστημα έβγαλε το "
+"ακόλουθο μήνυμα"
+
+#: lib/MIME/Viewer/itip.php:90
+msgid "There was an error deleting the event: %s."
+msgstr "Παρουσιάσθηκε σφάλμα κατά τη διαγραφή του γεγονότος: %s."
+
+#: lib/MIME/Viewer/plain.php:55 lib/MIME/Viewer/enriched.php:40
+msgid "There was an error displaying this message part"
+msgstr "Υπήρξε λάθος κατά την εμφάνιση αυτού του μέρους του μηνύματος"
+
+#, c-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"Παρουσιάστηκε σφάλμα κατά τη σήμανση των μηνυμάτων στο φάκελο \"%s\". Το "
+"σύστημα έβγαλε το ακόλουθο μήνυμα"
+
+msgid "There was an error flagging messages. This is what the server said"
+msgstr ""
+"Παρουσιάστηκε σφάλμα κατά τη σήμανση των μηνυμάτων. Το σύστημα έβγαλε το "
+"ακόλουθο μήνυμα"
+
+#: folders.php:155
+msgid "There was an error importing %s."
+msgstr "Παρουσιάσθηκε σφάλμα κατά την εισαγωγή %s."
+
+#: lib/MIME/Viewer/itip.php:126
+msgid "There was an error importing the event: %s."
+msgstr "Παρουσιάσθηκε σφάλμα κατά την εισαγωγή του γεγονότος %s."
+
+#: lib/MIME/Viewer/itip.php:156
+msgid "There was an error importing the task: %s."
+msgstr "Παρουσιάσθηκε σφάλμα κατά την εισαγωγή της εργασίας %s."
+
+#: lib/MIME/Viewer/itip.php:142
+msgid "There was an error importing user's free/busy information: %s."
+msgstr ""
+"Παρουσιάσθηκε σφάλμα κατά την εισαγωγή πληροφοριών ελεύθερου/απασχολημένου "
+"του χρήστη %s."
+
+# lib/Message.php:102, c-format
+#: lib/Message.php:102
+msgid ""
+"There was an error moving messages to \"%s\". This is what the server said"
+msgstr ""
+"Παρουσιάστηκε σφάλμα κατά τη μεταφορά των μηνυμάτων στο \"%s\". Το σύστημα "
+"έβγαλε το ακόλουθο μήνυμα"
+
+msgid ""
+"There was an error moving messages to the trash. This is what the server said"
+msgstr ""
+"Παρουσιάστηκε σφάλμα κατά τη μεταφορά των μηνυμάτων στον κάδο. Το σύστημα "
+"έβγαλε το ακόλουθο μήνυμα"
+
+msgid "There was an error saving a draft."
+msgstr "Υπήρξε λάθος στην αποθήκευση του μηνύματος ως πρόχειρο."
+
+msgid "There was an error saving this message as a draft."
+msgstr "Υπήρξε λάθος στην αποθήκευση αυτού του μηνύματος ως πρόχειρο."
+
+#, c-format
+msgid "There was an error sending your message: %s"
+msgstr "Υπήρξε λάθος κατά την αποστολή του μηνύματος: %s"
+
+msgid "There was an error undeleting messages. This is what the server said"
+msgstr ""
+"Υπήρξε πρόβλημα κατά την επαναφορά των μηνυμάτων. Το σύστημα έβγαλε το "
+"ακόλουθο μήνυμα"
+
+#: lib/MIME/Viewer/itip.php:104
+msgid "There was an error updating the event: %s."
+msgstr "Παρουσιάσθηκε λάθος κατά την ενημέρωση του γεγονότος: %s."
+
+msgid "There was an error viewing the requested message."
+msgstr "Υπήρξε πρόβλημα κατά το άνοιγμα του μηνύματος."
+
+#: lib/MIME/Viewer/plain.php:62
+msgid "There was no text in this message part"
+msgstr "Δεν υπάρχει κείμενο στο μήνυμα αυτό"
+
+#: lib/MIME/Viewer/html.php:93
+msgid "This HTML message has images embedded in it."
+msgstr "Το HTML μήνυμα έχει ενσωματωμένη εικόνα."
+
+#: lib/MIME/Viewer/html.php:89
+msgid ""
+"This HTML message has images embedded in it. Blocked images appear like "
+"this: "
+msgstr ""
+"Αυτό το HTML μήνυμα έχει ενσωματωμένες εικόνες. Οι μπλοκαρισμένες εικόνες θα "
+"εμφανισθούν κάπως έτσι: "
+
+#: lib/MIME/Viewer/pgp.php:171
+msgid "This PGP Public Key was attached to the message."
+msgstr "Αυτό το Δημόσιο κλειδί PGP επισυνάφθηκε στο μήνυμα."
+
+#: lib/MIME/Viewer/itip.php:95 lib/MIME/Viewer/itip.php:109
+#: lib/MIME/Viewer/itip.php:133 lib/MIME/Viewer/itip.php:147
+#: lib/MIME/Viewer/itip.php:163 lib/MIME/Viewer/itip.php:282
+msgid "This action is not supported."
+msgstr "Αυτή η ενέργεια δεν υποστηρίζεται."
+
+#: lib/MIME/Viewer/itip.php:169 lib/MIME/Viewer/itip.php:382
+msgid "This action is not yet implemented."
+msgstr "Αυτή η ενέργεια δεν έχει ακόμη υλοποιηθεί."
+
+msgid ""
+"This has hopefully given you a general understanding of how to web mail "
+"interface works.  You'll surely become comfortable with it after seeing how "
+"easy and convenient it is for reading and sending mail, as well as managing "
+"your IMAP mail account."
+msgstr ""
+"Αυτό θα σας έχει δώσει μία καλή εικόνα για το πώς δουλεύει το περιβάλλον του "
+"Web Mail. Θα εξοικειωθείτε με την εφαρμογή αφού δείτε πόσο εύκολη είναι η "
+"αποστολή και η λήψη μηνυμάτων, όπως επίσης και οι διαχείριση των λογαριασμών "
+"σας με IMAP."
+
+msgid ""
+"This file controls local MIME drivers for IMP, specifically what kinds of "
+"attachments are viewable and/or downloadable."
+msgstr ""
+"Αυτό το αρχείο ελέγχει τους MIME drivers για το IMP. Προσδιορίζει τον τύπο "
+"των συνημμένων αρχείων που μπορούν να εμφανιστούν ή να γίνουν download"
+
+msgid ""
+"This file controls the default preferences for IMP, and also controls which "
+"preferences users can alter."
+msgstr ""
+"Αυτό το αρχείο περιέχει τις ρυθμίσεις για το IMP, και τις ρυθμίσεις που ο "
+"χρήστης μπορεί να αλλάξει"
+
+msgid ""
+"This file controls the default settings for IMP, and also defines the list "
+"of available servers if you are using the server list."
+msgstr ""
+"Αυτό το αρχείο περιέχει τις προκαθορισμένες ρυθμίσεις του IMP και επίσης "
+"περιέχει τη λίστα με τους διαθέσιμους διακομιστές."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Αυτό το αρχείο περιέχει τις ρυθμίσεις για τα χρώματα και τις γραμματοσειρές, "
+"με τα οποία μπορούν να παρακαμφθούν τα προκαθορισμένα από το σύστημα."
+
+msgid ""
+"This is the main IMP configuration file. It contains paths and options for "
+"the IMP scripts."
+msgstr ""
+"Αυτό είναι το βασικό αρχείο ρυθμίσεων του IMP. Περιέχει τα μονοπάτια και τις "
+"επιλογές για τα IMP scripts."
+
+msgid "This may take some time. Are you sure you want to continue?"
+msgstr ""
+"Αυτή η ενέργεια ενδέχεται να καθυστερήσει. Είστε σίγουρος(η) ότι θέλετε να "
+"συνεχίσετε;"
+
+#: lib/MIME/Viewer/appledouble.php:42
+msgid "This message contains a Macintosh file."
+msgstr "Αυτό το μήνυμα περιέχει αρχείο Macintosh."
+
+#: lib/MIME/Viewer/pkcs7.php:402
+msgid ""
+"This message contains an attachment that has been digitally signed via S/"
+"MIME."
+msgstr ""
+"Αυτό το μήνυμα περιέχει συνημμένα που έχουν υπογραφεί ψηφιακά μέσω S/MIME."
+
+#: lib/MIME/Viewer/pkcs7.php:406
+msgid "This message contains an attachment that has been encrypted via S/MIME."
+msgstr ""
+"Αυτό το μήνυμα περιέχει συνημμένα που έχουν κρυπτογραφηθεί μέσω S/MIME."
+
+#: lib/MIME/Viewer/status.php:167
+msgid ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+msgstr ""
+"Αυτό το μήνυμα περιέχει πληροφορίες κατάστασης, αλλά η μορφή του είναι "
+"άγνωστη."
+
+#: lib/MIME/Viewer/pgp.php:321 ======= kmilosis =====
+msgid ""
+"This message does not appear to be a valid PGP encrypted message. Error: "
+msgstr "Το μήνυμα αυτό δε φαίνεται να είναι έγκυρο PGP κρυπτογραφημένο. Λάθος:"
+
+#: lib/MIME/Viewer/pgp.php:246 lib/MIME/Viewer/pgp.php:356
+msgid ""
+"This message does not appear to be in the correct PGP format (according to "
+"RFC 2015)."
+msgstr ""
+"Το μήνυμα αυτό δε φαίνεται να είναι σε σωστή PGP μορφή (σύμφωνο με το "
+"πρότυπο RFC 2015)."
+
+#: lib/MIME/Viewer/pkcs7.php:162
+msgid "This message does not appear to be in the correct S/MIME format."
+msgstr "Το μήνυμα αυτό δε φαίνεται να είναι σε σωστή S/MIME μορφή."
+
+#: lib/MIME/Viewer/pgp.php:211 lib/MIME/Viewer/pgp.php:422
+msgid "This message has been digitally signed via PGP."
+msgstr "Το μήνυμα αυτό έχει υπογραφθεί ψηφιακά με PGP."
+
+#: lib/MIME/Viewer/pkcs7.php:135
+msgid "This message has been digitally signed via S/MIME."
+msgstr "Το μήνυμα αυτό έχει υπογραφθεί ψηφιακά με S/MIME."
+
+#: lib/MIME/Viewer/pkcs7.php:131 lib/MIME/Viewer/pkcs7.php:230
+msgid "This message has been encrypted via S/MIME."
+msgstr "Το μήνυμα αυτό έχει κρυπτογραφηθεί με S/MIME."
+
+#: lib/MIME/Viewer/pgp.php:207 lib/MIME/Viewer/pgp.php:297
+msgid "This message has been encrypted with PGP."
+msgstr "Το μήνυμα αυτό έχει κρυπτογραφηθεί με PGP."
+
+msgid "This message has been reported as spam to your system administrator."
+msgstr ""
+"Το μήνυμα αυτό αναφέρθηκε ως 'Spam' στο διαχειριστή του συστήματος σας."
+
+msgid "This message to"
+msgstr "Αυτό το μήνυμα προς"
+
+msgid "This number must be at least one."
+msgstr "Αυτός ο αριθμός πρέπει να είναι τουλάχιστον ένα."
+
+msgid ""
+"This problem report was received from %s. The user clicked the problem<br/"
+">report link from the following location:<br/>%s and is using the following "
+"browser:<br/>%s"
+msgstr ""
+"Το πρόβλημα αυτό αναφέρθηκε από %s. Ο χρήστης κάλεσε την<br/>αναφορά "
+"προβλήματος από το παρακάτω URL:<br/>%s και χρησιμοποιεί τον ακόλουθο "
+"browser:<br/>%s"
+
+#: acl.php:46
+msgid "This server does not support sharing folders."
+msgstr "Αυτός ο εξυπηρετητής δεν υποστηρίζει κοινόχρηστους φακέλους."
+
+msgid "This value must be a number."
+msgstr "Αυτή η τιμή πρέπει να είναι αριθμός."
+
+msgid "This window must be called from compose window"
+msgstr "Αυτό το παράθυρο πρέπει να ανοίγει μόνο μέσα από το παράθυρο σύνθεσης"
+
+msgid "Thread View"
+msgstr "Προβολή νημάτων"
+
+msgid "Thread"
+msgstr "Νήμα"
+
+msgid "Time Zone"
+msgstr "Ζώνη Ώρας"
+
+msgid "To"
+msgstr "Προς"
+
+msgid "To Address"
+msgstr "Διεύθυνση Παραλήπτη"
+
+#: templates/prefs/sourceselect.inc:326
+msgid ""
+"To select multiple fields, hold down the Control (PC) or Command (Mac) while "
+"clicking."
+msgstr ""
+"Για να επιλέξετε πολλαπλά πεδία, κρατήστε πατημένο το Control (PC) ή το "
+"Command (Mac) και στη συνέχεια κάντε κλικ."
+
+msgid "To:"
+msgstr "Προς:"
+
+msgid ""
+"To view the contents of a message, click on the message's subject.  You'll "
+"be taken to the Message screen."
+msgstr ""
+"Για να δείτε τα περιεχόμενα ενός μηνύματος, πατήστε το θέμα του μηνύματος. "
+"Θα εμφανιστεί η οθόνη μηνυμάτων, από όπου θα μπορέσετε να το διαβάσετε."
+
+#: templates/compose/compose.inc:567
+msgid "Total Attachments Size:"
+msgstr "Συνολικό μέγεθος επισυναπτόμενων:"
+
+#, c-format
+msgid "Total Size: %s KB"
+msgstr "Συνολικό Μέγεθος: %s KB"
+
+msgid "Trash folder"
+msgstr "Φάκελος Διαγραμμένα"
+
+msgid "Trash folder:"
+msgstr "Φάκελος Διαγραμμένα:"
+
+#: lib/Quota/cyrus.php:70 lib/Quota/mercury32.php:84 lib/Quota/command.php:77
+#: lib/Quota/logfile.php:93 lib/Quota/courier.php:54 lib/Quota/mdaemon.php:51
+msgid "Unable to retrieve quota"
+msgstr "Αδύνατη η ανάκτηση πληροφοριών για διαθέσιμο χώρο"
+
+#: templates/message/navbar_navigate.inc:10 templates/mailbox/navbar.inc:19
+msgid "Unanswered"
+msgstr "Μη απαντημένα"
+
+#: templates/search/main.inc:35
+msgid "Unanswered messages"
+msgstr "Μη απαντημένα μηνύματα"
+
+#: templates/message/navbar_actions.inc:4 templates/mailbox/actions.inc:13
+msgid "Undelete"
+msgstr "Επαναφορά"
+
+#: mailbox.php:554 mailbox.php:566 lib/MIME/Headers.php:218
+msgid "Undisclosed Recipients"
+msgstr "Μη Υπαρκτοί Παραλήπτες"
+
+msgid "Undo Changes"
+msgstr "Ακύρωση Αλλαγών"
+
+#: lib/MIME/Viewer/itip.php:408
+msgid "Unhandled component of type: %s"
+msgstr "Συστατικό μη χειριζόμενο τύπου: %s"
+
+#: mailbox.php:531
+msgid "Unknown Date"
+msgstr "Αγνωστοι Ημερομηνία"
+
+#: lib/MIME/Viewer/itip.php:624
+msgid "Unknown Meeting"
+msgstr "Αγνωστη Συνάντηση"
+
+#: mailbox.php:582
+msgid "Unknown Recipient"
+msgstr "Αγνωστος Παραλήπτης"
+
+#: templates/smime/smime.inc:117 templates/pgp/pgp.inc:151
+msgid "Unload Passphrase"
+msgstr "Αφαίρεση λέξης-κλειδί"
+
+msgid "Unnamed"
+msgstr "Χωρίς όνομα"
+
+msgid "Unread"
+msgstr "Μη διαβασμένα"
+
+msgid "Unseen"
+msgstr "Μη διαβασμένα"
+
+msgid "Unseen Messages"
+msgstr "Μη διαβασμένα μηνύματα"
+
+#: templates/folders/actions.inc:10
+msgid "Unsubscribe from Folder(s)"
+msgstr "Αποσύνδεση από Φάκελο(ους)"
+
+#: templates/compose/compose.inc:574
+msgid "Update Attachment Information"
+msgstr "Ενημέρωση Πληροφοριών για Συνημμένα"
+
+#: lib/MIME/Viewer/itip.php:587
+msgid "Update respondent status"
+msgstr "Ενημέρωση κατάστασης ανταποκρινόμενου"
+
+#: templates/smime/import_key.inc:56 templates/pgp/import_key.inc:56
+msgid "Upload"
+msgstr "Φόρτωση"
+
+msgid "Use Ctrl/Option+Click to select multiple fields"
+msgstr "Με πατημένο το πλήκτρο Ctrl επιλέξτε πολλαπλά πεδία από τη λίστα"
+
+msgid "Use Default Value"
+msgstr "Χρήση προκαθορισμένης τιμής"
+
+msgid "Use IMAP folder subscriptions?"
+msgstr "Χρησιμοποιήστε τη συνδρομή στους καταλόγους IMAP;"
+
+msgid "User"
+msgstr "Χρήστης"
+
+msgid "User Options"
+msgstr "Επιλογές Χρήστη"
+
+msgid "User Preferences"
+msgstr "Επιλογές Χρήστη"
+
+msgid "Username"
+msgstr "Όνομα Χρήστη"
+
+msgid "Username:"
+msgstr "Όνομα Χρήστη:"
+
+msgid "View"
+msgstr "Εμφάνιση"
+
+#, c-format
+msgid "View %s"
+msgstr "Εμφάνιση %s"
+
+#: templates/smime/smime.inc:65 templates/pgp/pgp.inc:93
+msgid "View %s Public Key"
+msgstr "Εμφάνιση %s Δημόσιου Κλειδιού"
+
+#: lib/MIME/Viewer/html.php:116
+msgid "View HTML content in a separate window"
+msgstr "Εμφάνιση HTML περιεχομένου σε διαφορετικό παράθυρο"
+
+#: templates/mailbox/actions.inc:28
+msgid "View Messages"
+msgstr "Εμφάνιση Μηνυμάτων"
+
+#: templates/smime/smime.inc:117 templates/pgp/pgp.inc:151
+msgid "View Personal Private Key"
+msgstr "Εμφάνιση Προσωπικού Ιδιωτικού Κλειδιού"
+
+#: templates/smime/smime.inc:113 templates/pgp/pgp.inc:147
+msgid "View Personal Public Key"
+msgstr "Εμφάνιση Προσωπικού Δημόσιου Κλειδιού"
+
+#: templates/message/navbar_actions.inc:17
+msgid "View Thread"
+msgstr "Εμφάνιση Νήματος"
+
+#: lib/MIME/Viewer/images.php:151 lib/MIME/Viewer/images.php:153
+msgid "View Thumbnail"
+msgstr "Εμφάνιση σε μικρή κλίμακα"
+
+#: lib/MIME/Viewer/pkcs7.php:410
+msgid "View attachment in a separate window"
+msgstr "Εμφάνιση συνημμένων σε διαφορετικό παράθυρο"
+
+#: lib/MIME/Viewer/related.php:64
+msgid "View content in a separate window"
+msgstr "Εμφάνιση περιεχομένου σε διαφορετικό παράθυρο"
+
+#: lib/MIME/Viewer/itip.php:130
+msgid "View event"
+msgstr "Εμφάνιση συμφάντος"
+
+msgid "View messages in "
+msgstr "Εμφάνιση μηνυμάτων στο "
+
+msgid "View messages in %s"
+msgstr "Εμφάνιση μηνυμάτων στο %s"
+
+msgid "View or mailbox to display after login:"
+msgstr ""
+"Προβολή ή Γραμματοκιβώτιο που θα εμφανίζεται μετά την είσοδο στην υπηρεσία:"
+
+#: lib/MIME/Viewer/itip.php:160
+msgid "View task"
+msgstr "Εμάνιση εργασίας"
+
+#: lib/MIME/Viewer/html.php:110
+msgid "View the Images"
+msgstr "Εμφάνιση των εικόνων"
+
+msgid "Virtual Folder \"%s\" created succesfully."
+msgstr "Ο Ιδεατός Φάκελλος \"%s\" δημιουργήθηκε επιτυχώς."
+
+msgid "Virtual Folders"
+msgstr "Ιδεατοί φάκελλοι"
+
+#: search.php:291
+msgid "Virtual Folders require a label."
+msgstr "Οι ιδεατοί Φάκελοι απαιτούν 'ετικέτα'."
+
+#: templates/search/main.inc:133
+msgid "Virtual folder label"
+msgstr "Ετικέτα ιδεατού φακέλλου"
+
+msgid "Warning"
+msgstr "Προειδοποίηση"
+
+msgid "Welcome"
+msgstr "Καλωσήρθατε"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Καλωσήρθατε %s"
+
+msgid ""
+"Welcome to the Internet Message Program (IMP)!  Through IMP's intuitive "
+"interface, you'll be able to access and manage your IMAP mail account using "
+"the simplicity of a standard web browser."
+msgstr ""
+"Καλώς ήρθατε στο Internet Message Program (IMP)! Το IMP σας δίνει πρόσβαση "
+"στους IMAP λογαριασμούς που έχετε. Μέσω ενός απλού browser μπορείτε να "
+"διαχειριστείτε με απλό και εύκολο τρόπο τους λογαριασμούς σας."
+
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted?"
+msgstr ""
+"Όταν διαγράφονται μηνύματα, να μεταφέρονται στον φάκελο διαγραμμένα αντί να "
+"χαρακτηρίζονται ως διαγραμμένα;"
+
+msgid "When opening a new mailbox, which page do you want to start on?"
+msgstr "Οταν ανοίγετε ένα νέο mailbox, με ποιά σελίδα θέλετε να ξεκινάτε;"
+
+msgid "When saving sent-mail, should we save attachment data?"
+msgstr "Οταν αποθηκεύονται τα απεσταλμένα, να αποθηκεύονται και τα συνημμένα;"
+
+#: templates/message/navbar_actions.inc:22 templates/mailbox/actions.inc:19
+msgid "Whitelist"
+msgstr "Λευκή Λίστα"
+
+#: config/prefs.php.dist:437
+msgid "Wrap text at this many characters."
+msgstr "Αριθμός χαρακτήρων για την αλλαγή γραμμής."
+
+msgid "Yes"
+msgstr "Ναι"
+
+#: lib/Maintenance/Task/fetchmail_login.php:63
+msgid "You are about to fetch email from the following account(s):"
+msgstr "Πρόκειται να προσκομίσετε μηνύματα από τους ακόλουθους λογαριασμούς:"
+
+#: templates/folders/javascript.inc:8
+msgid "You are attempting to delete the following folders:"
+msgstr "Έχετε επιλέξει να διαγράψετε τους ακόλουθους φακέλους:"
+
+msgid "You are copying/moving to a new folder."
+msgstr "Αντιγράφετε / μεταφέρετε σε νέο φάκελο."
+
+msgid "You are creating a sub-folder to "
+msgstr "Δημιουργείτε ένα φάκελο κάτω από τον "
+
+msgid "You are creating a top-level folder."
+msgstr "Δημιουργείτε ένα φάκελο πρώτου επιπέδου."
+
+msgid ""
+"You are creating a top-level folder.\\nPlease enter the name of the new "
+"folder:\\n"
+msgstr ""
+"Δημιουργήστε ένα φάκελο πρώτου επιπέδου.\\nΠαρακαλώ δώστε το όνομά του νέου "
+"καταλόγου:\\n"
+
+msgid "You are currently using Secure HTTPS<br/>"
+msgstr "Αυτή τη στιγμή χρησιμοποιείτε ασφαλές HTTPS<br/>"
+
+msgid "You are currently using Standard HTTP<br/>"
+msgstr "Αυτή τη στιγμή χρησιμοποιείτε απλό (μη ασφαλή) HTTP<br/>"
+
+msgid "You are renaming the folder: "
+msgstr "Έχετε επιλέξει να μετονομάσετε το φάκελο:"
+
+msgid ""
+"You can send mail in a variety ways.  You might choose to compose a new "
+"message or perhaps to reply to an existing message.  Whichever method you "
+"choose, however, will open the standard Compose Window."
+msgstr ""
+"Μπορείτε να στείλετε ένα μήνυμα με διάφορους τρόπους. Μπορείτε να επιλέξετε "
+"να συνθέσετε ένα νέο μήνυμα ή να απαντήσετε σε ένα υπάρχον μήνυμα. Όποιο "
+"τρόπο και να επιλέξετε, θα ανοίξει το παράθυρο για τη σύνθεση μηνύματος."
+
+#: lib/Maintenance/Task/tos_agreement.php:37
+msgid ""
+"You did not agree to the Terms of Service agreement, so you were not allowed "
+"to login."
+msgstr ""
+"Δεν συμφωνείτε με τους όρους χρήσης, συνεπώς δεν επιτρέπεται η σύνδεση."
+
+#: templates/acl/acl.inc:165
+msgid "You do not have permission to change access to this folder"
+msgstr "Δεν έχετε εξουσιοδότηση να αλλάξετε την πρόσβαση σ' αυτόν το φάκελο."
+
+#: lib/Maillog.php:132
+msgid "You forwarded this message on %%s to the following recipients: %s."
+msgstr "Προωθήσατε αυτό το μήνυμα την %%s στους ακόλουθους παραλήπτες: %s."
+
+# templates/mailbox/alert.inc:3, c-format
+#: templates/mailbox/alert.inc:3
+msgid "You have %s new messages."
+msgstr "Έχετε %s Νέα μηνύματα."
+
+msgid "You have 1 new message."
+msgstr "Έχετε 1 Νέο μήνυμα."
+
+#: templates/compose/attachments.js:116
+msgid ""
+"You have at least one attachment selected that you didn't upload yet. Are "
+"you sure you want to send this message without these attachments?"
+msgstr ""
+"Έχετε τουλάχιστον ένα συνημμένο επιλεγμένο που δεν φορτώσατε ακόμη. Είστε "
+"σίγουροι ότι θέλετε να στείλετε αυτό το μήνυμα χωρίς τα συνημμένα;"
+
+msgid "You have been logged out."
+msgstr "Έχετε αποσυνδεθεί."
+
+msgid "You have new mail in the following folder:"
+msgstr "Έχετε νέα μηνύματα στον ακόλουθο φάκελο:"
+
+msgid "You have new mail in the following folders:"
+msgstr "Έχετε νέα μηνύματα στους ακόλουθους φακέλους:"
+
+msgid "You must enter at least one recipient."
+msgstr "Πρέπει να συμπληρώσετε τουλάχιστον έναν παραλήπτη."
+
+#: lib/MIME/Viewer/pgp.php:308
+msgid ""
+"You must enter the passphrase for your PGP private key to view this message"
+msgstr ""
+"Πρέπει να εισάγετε τη λέξη-κλειδί για το ιδιωτικό κλειδί PGP, προκειμένου να "
+"δείτε αυτό το μήνυμα"
+
+#: lib/MIME/Viewer/pkcs7.php:241
+msgid ""
+"You must enter the passphrase for your S/MIME private key to view this "
+"message"
+msgstr ""
+"Πρέπει να εισάγετε τη λέξη-κλειδί για το ιδιωτικό κλειδί S/MIME, προκειμένου "
+"να δείτε αυτό το μήνυμα"
+
+msgid "You must first select the attachment(s) to delete."
+msgstr ""
+"Πρέπει πρώτα να επιλέξετε το συνημμένο(α) αρχείο(α) που θέλετε να διαγράψετε."
+
+msgid "You must first specify the file to attach."
+msgstr "Πρέπει πρώτα να προσδιορίσετε το αρχείο που θέλετε να επισυνάψετε."
+
+msgid "You must have at least one recipient."
+msgstr "Πρέπει να έχετε επιλέξει τουλάχιστον ένα παραλήπτη."
+
+msgid "You must select a target mailbox first."
+msgstr "Πρέπει πρώτα να επιλέξετε ένα φάκελο."
+
+#: fetchmailprefs.php:85
+msgid "You must select an account to be deleted."
+msgstr "Πρέπει να επιλέξτε ένα λογαριασμό για διαγραφή."
+
+#: templates/contacts/contacts.inc:76
+msgid "You must select an address first."
+msgstr "Πρέπει πρώτα να επιλέξετε μια διεύθυνση."
+
+msgid "You must select an identity to be deleted."
+msgstr "Πρέπει πρώτα να επιλέξετε μία ταυτότητα που θέλετε να διαγράψετε."
+
+msgid "You must select at least one message first."
+msgstr "Πρέπει πρώτα να επιλέξετε τουλάχιστον ένα μήνυμα."
+
+msgid "You must specify a recipient."
+msgstr "Πρέπει να προσδιορίσετε ένα παραλήπτη."
+
+#: templates/fetchmail/manage.inc:48
+msgid "You need to have '%s' enabled in your maintenance options."
+msgstr ""
+"Πρέπει να έχετε την επιλογή '%s' ενεργοποιημένη στην επιλογή διαχείρισης."
+
+#: lib/Maillog.php:140
+msgid "You redirected this message to %s on %%s."
+msgstr "Ανακατευθύνατε αυτό το μήνυμα στο %s σε %%s."
+
+#: lib/Maillog.php:144
+msgid "You replied to this message on %s."
+msgstr "Απαντήσατε σε αυτό το μήνυμα στις %s."
+
+# lib/Folder.php:590, c-format
+#: lib/Folder.php:590
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr "Δεν συνδεθήκατε στο \"%s\". Το σύστημα έβγαλε το ακόλουθο μήνυμα"
+
+#, c-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr "Δεν αποσυνδεθήκατε από \"%s\". Το σύστημα έβγαλε το ακόλουθο μήνυμα"
+
+#, c-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr "Έχετε επιτυχώς συνδεθεί στο \"%s\"."
+
+#, c-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "Έχετε επιτυχώς αποσυνδεθεί από \"%s\""
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "Η σύνδεση σας %s έχει λήξει."
+
+msgid "Your From: address:"
+msgstr "Η Από: διεύθυνσή σας:"
+
+msgid "Your Information"
+msgstr "Οι πληροφορίες σας"
+
+#: templates/pgp/pgp.inc:186
+msgid "Your Name"
+msgstr "Το όνομά σας"
+
+#: templates/pgp/pgp.inc:119
+msgid "Your PGP Public/Private Keys"
+msgstr "Το Δημόσιο/Προσωπικό σας PGP κλειδί"
+
+#: templates/smime/smime.inc:116 templates/pgp/pgp.inc:150
+msgid "Your Private Key"
+msgstr "Το Ιδιωτικό κλειδί σας"
+
+#: templates/smime/smime.inc:112 templates/pgp/pgp.inc:146
+msgid "Your Public Key"
+msgstr "Το Δημόσιο κλειδί σας"
+
+msgid "Your Reply-to: address: <i>(optional)</i>"
+msgstr ""
+"Η διεύθυνσή σας που θα τοποθετείται στο πεδίο Απάντηση-προς: <i>(προαιρετικό)"
+"</i>"
+
+#: templates/smime/smime.inc:91
+msgid "Your S/MIME Public/Private Certificates"
+msgstr "Το Δημόσιο/Ιδιωτικό S/MIME κλειδί σας"
+
+#: templates/fetchmail/account_select.inc:16
+msgid "Your accounts:"
+msgstr "Οι λογαριασμοί σας:"
+
+#: config/prefs.php.dist:165
+msgid ""
+"Your alias addresses: <i>(optional, enter each address on a new line)</i>"
+msgstr ""
+"Οι συνώνυμες διευθύσεις σας: <i>(προαιρετικό, εισάγετε κάθε διεύθυνση άλλη "
+"γραμμή)</i>"
+
+msgid "Your browser does not support inline display of this image type"
+msgstr ""
+"Ο Browser (π.χ. Internet Explorer ή Netscape) σας δεν υποστηρίζει την "
+"παρουσίαση αυτού του τύπου εικόνας"
+
+msgid ""
+"Your browser does not support this print option. Press Control/Option + P to "
+"print."
+msgstr ""
+"Ο Browser (π.χ. Internet Explorer ή Netscape) δεν υποστηρίζει αυτή τη "
+"δυνατότητα εκτύπωσης. Επιλέξτε Ctrl + P για εκτύπωση."
+
+msgid "Your current time zone:"
+msgstr "Επιλέξτε τη Ζώνη Ώρας στην οποία βρίσκεστε:"
+
+msgid "Your default charset for sending messages:"
+msgstr "Η προεπιλεγμένη κωδικοσελίδα κατά την αποστολή:"
+
+msgid "Your default encryption method for sending messages:"
+msgstr "Η προεπιλεγμένη μέθοδος κρυπτογράφησης κατά την αποστολή:"
+
+msgid "Your default identity:"
+msgstr "Η προεπιλεγμένη ταυτότητά σας :"
+
+msgid "Your full name:"
+msgstr "Το ονοματεπώνυμο σας:"
+
+msgid "Your identities:"
+msgstr "Οι ταυτότητες σας:"
+
+#: lib/MIME/Viewer/status.php:92
+msgid "Your message was successfully delivered."
+msgstr "Το μήνυμά σας παραδόθηκε επιτυχώς."
+
+msgid "Your options have been updated."
+msgstr "Οι επιλογές που κάνατε έχουν ενημερωθεί."
+
+msgid ""
+"Your session will expire in 1 minute. Do you want to reload the page to "
+"prevent losing your work?"
+msgstr ""
+"Η σύνδεση σας θα λήξει σε ένα λεπτό. Θέλετε να ανανεώσετε τη σελίδαγια να "
+"μην χαθεί η εργασία σας;"
+
+msgid ""
+"Your session will expire in 5 minutes. Do you want to reload the page to "
+"prevent losing your work?"
+msgstr ""
+"Η σύνδεση σας θα λήξει σε 5 λεπτά. Θέλετε να ανανεώσετε τη σελίδαγια να μην "
+"χαθεί η εργασία σας;"
+
+msgid "Your signature:"
+msgstr "Η υπογραφή σας:"
+
+msgid "[No Subject]"
+msgstr "[Δεν υπάρχει θέμα]"
+
+#: templates/compose/compose.inc:216
+msgid "_Bcc"
+msgstr "Κ.Κοιν."
+
+#: templates/message/navbar_actions.inc:19 templates/mailbox/actions.inc:16
+msgid "_Blacklist"
+msgstr "Μαύρη Λίστα"
+
+#: templates/compose/compose.inc:165
+msgid "_Cc"
+msgstr "Κοιν."
+
+#: lib/IMP.php:904
+msgid "_Compose"
+msgstr "Σύνθεση"
+
+#: templates/message/navbar_actions.inc:6 templates/mailbox/actions.inc:8
+#: templates/mailbox/actions.inc:10
+msgid "_Delete"
+msgstr "Διαγραφή"
+
+#: lib/IMP.php:906
+msgid "_Folders"
+msgstr "Φάκελοι"
+
+msgid "_Help"
+msgstr "Βοήθεια"
+
+#: templates/compose/compose.inc:80
+msgid "_Identity"
+msgstr "Ταυτότητα"
+
+#: lib/IMP.php:897
+msgid "_Inbox"
+msgstr "Εισερχόμενα"
+
+#: lib/IMP.php:947
+msgid "_Log out"
+msgstr "Εξοδος"
+
+#: message.php:375
+msgid "_Message Source"
+msgstr "Πηγαίο Μήνυμα"
+
+#: templates/message/navbar_actions.inc:31
+msgid "_Options"
+msgstr "Επιλογές"
+
+#: lib/IMP.php:954
+msgid "_New Message"
+msgstr "Νέο Μήνυμα"
+
+#: templates/message/navbar_actions.inc:31
+msgid "_Print"
+msgstr "Εκτύπωση"
+
+#: templates/compose/compose.inc:283 templates/compose/compose.inc:300
+msgid "_Priority"
+msgstr "Προτεραιότητα"
+
+#: mailbox.php:389
+msgid "_Refresh %s"
+msgstr "Ανανέωση %s"
+
+#: templates/message/navbar_actions.inc:8
+msgid "_Reply"
+msgstr "Απάντηση"
+
+#: lib/IMP.php:908
+msgid "_Search"
+msgstr "Αναζήτηση"
+
+#: templates/compose/compose.inc:66 templates/compose/compose.inc:422
+msgid "_Send Message"
+msgstr "Αποστολή Μηνύματος"
+
+#: templates/mailbox/message_headers.inc:27
+msgid "_Thread"
+msgstr "Νήμα"
+
+#: templates/compose/compose.inc:115
+msgid "_To"
+msgstr "Προς"
+
+msgid "_Undelete"
+msgstr "Επαναφορά"
+
+msgid "_View Thread"
+msgstr "Προβολή Νημάτων"
+
+#: templates/mailbox/actions.inc:13 templates/message/navbar_actions.inc:17
+#: templates/message/navbar_actions.inc:22 templates/mailbox/actions.inc:19
+msgid "_Whitelist"
+msgstr "Λευκή Λίστα"
+
+msgid "add source"
+msgstr "Προσθήκη Πηγαίου Κώδικα"
+
+msgid "and is using the following browser:"
+msgstr "και χρησιμοποιεί τον ακόλουθο browser:"
+
+#: lib/Compose.php:344
+msgid "attachment"
+msgstr "Συνημμένο"
+
+#: view.php:102
+msgid "attachments.zip"
+msgstr "Συνημμένα.zip"
+
+msgid "cannot move past the beginning"
+msgstr ""
+"Είστε στην αρχή της λίστας. Δεν μπορεί να γίνει μετακίνηση προς τα επάνω."
+
+msgid "cannot move past the end"
+msgstr ""
+"Είστε στο τέλος της λίστας. Δεν μπορεί να γίνει μετακίνηση προς τα κάτω."
+
+msgid "delete message"
+msgstr "διαγραφή μηνύματος"
+
+msgid "deleted"
+msgstr "διαγραμμένα"
+
+msgid "drafts"
+msgstr "πρόχειρα"
+
+msgid "from"
+msgstr "από"
+
+msgid "gpg: Signature made %s using %s"
+msgstr "gpg: Η υπογραφή έγινε %s με χρήση %s"
+
+msgid "inline"
+msgstr "ενσωματωμένο"
+
+#: smime.php:29 pgp.php:69
+msgid "key"
+msgstr "κλειδί"
+
+#: folders.php:151
+msgid "mailbox file"
+msgstr "αρχείο γραμματοθυρίδας"
+
+msgid "move down"
+msgstr "μετακίνηση Προς τα Κάτω"
+
+msgid "move message to"
+msgstr "μετακίνηση του μηνύματος στον"
+
+msgid "move up"
+msgstr "μετακίνηση Προς τα Επάνω"
+
+#: compose.php:977 lib/Message.php:452
+msgid "name"
+msgstr "Ονομα"
+
+msgid "no folder selected"
+msgstr "δεν έχει επιλεχτεί φάκελος"
+
+msgid "no rule selected"
+msgstr "δεν έχει επιλεχτεί κανόνας"
+
+msgid "no text specified"
+msgstr "δεν έχει επιλεχτεί κείμενο"
+
+msgid "none"
+msgstr "κανένα"
+
+msgid "or"
+msgstr "ή"
+
+msgid "or:"
+msgstr "ή:"
+
+msgid "please fill in the text and choose a field and an action"
+msgstr ""
+"παρακαλώ συμπληρώστε το κείμενο και επιλέξτε ένα πεδίο και μία ενέργεια "
+
+msgid "quoted-printable"
+msgstr "εκτυπώσιμο"
+
+msgid "remove source"
+msgstr "αφαίρεση πηγής"
+
+msgid "select folder"
+msgstr "επιλέξτε φάκελο"
+
+msgid "spelling error"
+msgstr "ορθογραφικό λάθος"
+
+msgid "spelling errors"
+msgstr "ορθογραφικά λάθη"
+
+msgid "trash"
+msgstr "κάδος"
+
+msgid "trash %s"
+msgstr "κάδος %s"
+
+msgid "unnamed"
+msgstr "χωρίς όνομα"
+
+msgid "user is over quota"
+msgstr "Ο χρήστης δεν έχει διαθέσιμο χώρο!!!"
+
+msgid "your blacklist"
+msgstr "Μαύρη(ς) Λίστας σας"
+
+msgid "your whitelist"
+msgstr "Λευκή(ς) Λίστας σας"
+
+#, c-format
+msgid "where the %s field contains <b>%s</b>"
+msgstr "όπου το πεδίο %s περιέχει <b>%s</b>"

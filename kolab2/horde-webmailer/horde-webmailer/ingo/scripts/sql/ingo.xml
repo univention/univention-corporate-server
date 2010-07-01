@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>name</variable></name>
+ <create>false</create>
+ <overwrite>false</overwrite>
+
+ <table>
+
+  <name>ingo_forwards</name>
+
+  <declaration>
+
+   <field>
+    <name>forward_owner</name>
+    <type>text</type>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>forward_addresses</name>
+    <type>clob</type>
+    <notnull>false</notnull>
+   </field>
+
+   <field>
+    <name>forward_keep</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>1</length>
+   </field>
+
+   <index>
+    <name>ingo_forwards_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>forward_owner</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>ingo_lists</name>
+
+  <declaration>
+
+   <field>
+    <name>list_owner</name>
+    <type>text</type>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>list_blacklist</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>list_address</name>
+    <type>text</type>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <index>
+    <name>ingo_lists_idx</name>
+    <field>
+     <name>list_owner</name>
+     <sorting>ascending</sorting>
+    </field>
+    <field>
+     <name>list_blacklist</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>ingo_rules</name>
+
+  <declaration>
+
+   <field>
+    <name>rule_id</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>rule_owner</name>
+    <type>text</type>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>rule_name</name>
+    <type>text</type>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>rule_action</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>rule_value</name>
+    <type>text</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>rule_flags</name>
+    <type>integer</type>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>rule_conditions</name>
+    <type>clob</type>
+    <notnull>false</notnull>
+   </field>
+
+   <field>
+    <name>rule_combine</name>
+    <type>integer</type>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>rule_stop</name>
+    <type>integer</type>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>rule_active</name>
+    <type>integer</type>
+    <default>1</default>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>rule_order</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <index>
+    <name>ingo_rules_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>rule_id</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>ingo_rules_rule_owner</name>
+    <field>
+     <name>rule_owner</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>ingo_shares</name>
+
+  <declaration>
+
+   <field>
+    <name>share_id</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>share_name</name>
+    <type>text</type>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>share_owner</name>
+    <type>text</type>
+    <notnull>false</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>share_flags</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>perm_creator</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>perm_default</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>perm_guest</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>attribute_name</name>
+    <type>text</type>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>attribute_desc</name>
+    <type>text</type>
+    <notnull>false</notnull>
+    <length>255</length>
+   </field>
+
+   <index>
+    <name>ingo_shares_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>share_id</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>ingo_shares_name</name>
+    <field>
+     <name>share_name</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>ingo_shares_owner</name>
+    <field>
+     <name>share_owner</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>ingo_shares_creator</name>
+    <field>
+     <name>perm_creator</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>ingo_shares_default</name>
+    <field>
+     <name>perm_default</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>ingo_shares_guest</name>
+    <field>
+     <name>perm_guest</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>ingo_shares_groups</name>
+
+  <declaration>
+
+   <field>
+    <name>share_id</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>group_uid</name>
+    <type>text</type>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>perm</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <index>
+    <name>ingo_groups_share_id</name>
+    <field>
+     <name>share_id</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>ingo_groups_group_uid</name>
+    <field>
+     <name>group_uid</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>ingo_groups_perm</name>
+    <field>
+     <name>perm</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>ingo_shares_users</name>
+
+  <declaration>
+
+   <field>
+    <name>share_id</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>user_uid</name>
+    <type>text</type>
+    <notnull>false</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>perm</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <index>
+    <name>ingo_users_share_id</name>
+    <field>
+     <name>share_id</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>ingo_users_user_uid</name>
+    <field>
+     <name>user_uid</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>ingo_users_perm</name>
+    <field>
+     <name>perm</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>ingo_spam</name>
+
+  <declaration>
+
+   <field>
+    <name>spam_owner</name>
+    <type>text</type>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>spam_level</name>
+    <type>integer</type>
+    <default>5</default>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>spam_folder</name>
+    <type>text</type>
+    <notnull>false</notnull>
+    <length>255</length>
+   </field>
+
+   <index>
+    <name>ingo_spam_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>spam_owner</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>ingo_vacations</name>
+
+  <declaration>
+
+   <field>
+    <name>vacation_owner</name>
+    <type>text</type>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>vacation_addresses</name>
+    <type>clob</type>
+    <notnull>false</notnull>
+   </field>
+
+   <field>
+    <name>vacation_subject</name>
+    <type>text</type>
+    <notnull>false</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>vacation_reason</name>
+    <type>clob</type>
+    <notnull>false</notnull>
+   </field>
+
+   <field>
+    <name>vacation_days</name>
+    <type>integer</type>
+    <default>7</default>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>vacation_excludes</name>
+    <type>clob</type>
+    <notnull>false</notnull>
+   </field>
+
+   <field>
+    <name>vacation_ignorelists</name>
+    <type>integer</type>
+    <default>1</default>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>vacation_start</name>
+    <type>integer</type>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>vacation_end</name>
+    <type>integer</type>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <index>
+    <name>ingo_vacations_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>vacation_owner</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+</database>

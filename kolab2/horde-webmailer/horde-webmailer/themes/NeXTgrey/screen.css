@@ -1,0 +1,68 @@
+/**
+ * $Horde: horde/themes/NeXTgrey/screen.css,v 1.6.6.4 2007-12-20 15:04:05 jan Exp $
+ */
+
+body {
+    background: #444;
+}
+a, a.fixed {
+    color: #339;
+}
+a.widget {
+    color: #000;
+}
+a.widget:hover {
+    color: white;
+    background: #ccc;
+}
+.header {
+    color: #9f9fa0;
+    background: #000;
+}
+.header a {
+    color: #9f9fa0;
+}
+.smallheader {
+    color: #9f9fa0;
+    background: #000;
+}
+.light {
+    color: #fff;
+}
+.button {
+    color: #000;
+    background-color: #aca9ac;
+    border-bottom: 1px solid #222;
+    border-right: 1px solid #222;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
+.selected {
+    background-color: #aca9ac;
+}
+
+/* Menu styles. */
+#menu {
+    color: #fff;
+    background-color: #aca9ac;
+}
+#menu h1 {
+    color: #000;
+}
+#menu a {
+    color: #fff;
+}
+#menu a.current {
+    background-color: #878787;
+    color: #ddd;
+}
+
+/* Sidebar styles. */
+#sidebarPanel {
+    background-color: #999;
+    border-right: 1px solid #222;
+    border-bottom: 1px solid #222;
+}
+#expandButton {
+    margin-right: 1px;
+}

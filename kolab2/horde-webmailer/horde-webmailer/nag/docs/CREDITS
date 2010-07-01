@@ -1,0 +1,84 @@
+======================
+ Nag Development Team
+======================
+
+
+Core Developers
+===============
+
+- Chuck Hagenbuch <chuck@horde.org>
+- Jan Schneider <jan@horde.org>
+
+
+Localization
+============
+
+=====================   ======================================================
+Arabic (Syria)          Platinum Development Team <devteam@platinum-sy.net>
+Basque                  Euskal Herriko Unibertsitatea <xabier.arrieta@ehu.es>
+Brazilian Portuguese    Antonio Dias <accdias@sst.com.br>
+                        Fabio Gomes <flgomes@fazenda.sp.gov.br>
+                        Luis Felipe Marzagao <duli@fedoraproject.org>
+                        Eduardo de Carli <carliedu@ig.com.br>
+Bulgarian               Miroslav Pendev <miro@cybershade.us>
+Catalan                 Jordi Giralt <projecte.k2@upcnet.es>
+Chinese (Simplified)    Peter Wang <whw@oulink.net>
+Chinese (Traditional)   David Chang <david@tmv.gov.tw>
+Croatian                Matej Vela <matej.vela@carnet.hr>
+Czech                   Pavel Chytil <pchytil@asp.ogi.edu>
+Danish                  Martin List-Petersen <martin@list-petersen.dk>
+                        Brian Truelsen <horde+i18n@briantruelsen.dk>
+                        Niels Baggesen <nba@users.sourceforge.net>
+Dutch                   Jan Kuipers <jrkuipers@lauwerscollege.nl>
+                        Ariën Huisken <arien@huisken-systems.nl>
+Estonian                Alar Sing <alar.sing@err.ee>
+Finnish                 Tero Matinlassi <terom@iki.fi>
+                        Leena Heino <leena.heino@uta.fi>
+French                  Mikhaël Janson <mik@galaxie.net>
+                        Benoit St-André <ben@benoitst-andre.net>
+                        Pierre Lachance <pl@pierrelachance.net>
+                        Thierry Thomas <thierry@horde.org>
+                        Yannick Sebastia <yannick.sebastia@ecole-navale.fr>
+German                  Jan Schneider <jan@horde.org>
+Greek                   Stefanos I. Dimitriou <support_webmail@teiath.gr>
+                        Silligardos Xristoforos
+                        Anagnostopoulos Apostolis
+                        Konstantinos C. Milosis <kmilosis@yahoo.com>
+Hungarian               Laszlo L. Tornoci <torlasz@xenia.sote.hu>
+Indonesian              Slamin <slamin@unej.ac.id>
+Italian                 Giovanni Meneghetti <gmeneghetti@infvic.it>
+                        Marco Pirovano <marco.pirovano@unibocconi.it>
+                        Cristian Manoni <cristian.manoni@nethesis.it>
+Japanese                Hiromi Kimura <hiromi@tac.tsukuba.ac.jp>
+Korean                  J.I Kim <aporie@netian.com>
+Latvian                 Janis Eisaks <jancs@dv.lv>
+Lithuanian              Darius Matuliauskas <darius@lnk.lt>
+                        Vilius Šumskas <vilius@lnk.lt>
+Norwegian Bokmaal       Torstein S. Hansen <huleboer@techbee.no>
+Norwegian Nynorsk       Per-Stian Vatne <psv@orsta.org>
+Polish                  Piotr Kuczynski <pkuczynski@hypode.pl>
+                        Piotr Adamcio <adamcios@o2.pl>
+                        Tadeusz Lesiecki <lesiecki@tmtsystem.pl>
+                        Piotr Tarnowski <drfugazi@drfugazi.eu.org>
+Portuguese              Manuel Menezes de Sequeira <Manuel.Sequeira>
+Romanian                Eugen Hoanca <eugenh@urban-grafx.ro>
+                        Marius Dragulescu <mariusd@urban-grafx.ro>
+Russian                 Ignat Ikryanov <ignat@ibd.ru>
+                        Alexey Zakharov <baber@mosga.net>
+Slovak                  Ivan Noris <vix@vazka.sk>
+                        Martin Matuška <martin@matuska.org>
+Slovenian               Duck <duck@obala.net>
+Spanish                 Raúl Alvarez Venegas <rav@tecoman.ucol.mx>
+                        Manuel Perez Ayala <mperaya@alcazaba.unex.es>
+Swedish                 Andreas Dahlén <andreas@dahlen.ws>
+                        Joaquim Homrighausen <joho@webbplatsen.se>
+Turkish                 Istanbul Technical University IT Department
+                        <itubim@itu.edu.tr>
+                        Middle East Technical University <horde-tr@metu.edu.tr>
+=====================   ======================================================
+
+
+Inactive Developers
+===================
+
+- Jon Parise <jon@csh.rit.edu>

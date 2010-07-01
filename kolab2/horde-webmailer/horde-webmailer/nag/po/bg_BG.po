@@ -1,0 +1,470 @@
+# Bulgarian translations for Nag package.
+# Copyright 2002-2009 The Horde Project
+# This file is distributed under the same license as the Whups package.
+# Miroslav Pendev <miro@cybershade.us>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nag 2.0-cvs\n"
+"POT-Creation-Date: 2002-09-14 00:38-0400\n"
+"PO-Revision-Date: 2002-11-19 20:44-05000\n"
+"Last-Translator: Miroslav Pendev <miro@cybershade.us>\n"
+"Language-Team: BG i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1251\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%d tasks"
+msgstr "%d Задачи"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s файл беше импортиран успешно"
+
+msgid "1 task"
+msgstr "1 задача"
+
+#, c-format
+msgid "Access denied deleteing task: %s"
+msgstr "Отказан достъп за изтриване на задача: %s"
+
+#, c-format
+msgid "Access denied modifying task: %s"
+msgstr "Отказан достъп за модифициране на задача: %s"
+
+#, c-format
+msgid "Access denied removing task from %s."
+msgstr "Отказан достъп за премахване на задача от %s."
+
+msgid "Adding A New Task"
+msgstr "Добавяне на нова задача"
+
+msgid "All tasks"
+msgstr "Всички задачи"
+
+msgid "Allows categories to be added/removed/renamed."
+msgstr "Позволява да се добавят/премахват/преименуват/ категории."
+
+#, c-format
+msgid "Any tasks in a category that is deleted will become %s."
+msgstr "Всички задачи в избраната категория ще станат %s."
+
+msgid "Ascending"
+msgstr "Нарастващи"
+
+msgid "Back to Task List"
+msgstr "Обратно към задачи"
+
+msgid "Category"
+msgstr "Категория"
+
+msgid "Category Management"
+msgstr "Категории Управление"
+
+msgid "Change your task sorting and display options."
+msgstr "Установете предпочитаните сортиране и опресняване на страницата."
+
+msgid "Choose Action:"
+msgstr "Избери действие:"
+
+msgid "Complete Task"
+msgstr "Извърши задачата"
+
+msgid "Complete Tasks"
+msgstr "Извърши задачите"
+
+msgid "Complete tasks"
+msgstr "Извърши задачите"
+
+msgid "Completed?"
+msgstr "Извършено ли е?"
+
+msgid "Completion Status"
+msgstr "Статус"
+
+msgid "Create New Category"
+msgstr "Създай нова категория"
+
+msgid "Default sorting criteria:"
+msgstr "Критерии за сортиране по подразбиране:"
+
+msgid "Default sorting direction:"
+msgstr "Посока на сортиране по подразбиране:"
+
+msgid "Delete"
+msgstr "Изтрий"
+
+msgid "Delete Task"
+msgstr "Изтрий задача"
+
+msgid "Delete Tasks"
+msgstr "Изтрий задачи"
+
+msgid "Deleted 1 task."
+msgstr "Изтрита 1 задача"
+
+msgid "Descending"
+msgstr "Намаляващи"
+
+msgid "Description"
+msgstr "Описание"
+
+msgid "Description:"
+msgstr "Описание:"
+
+msgid "Display Options"
+msgstr "Дисплей Опции"
+
+msgid "Due By"
+msgstr "Задължение"
+
+msgid "Due Date"
+msgstr "Задължение дата"
+
+msgid "Edit your task lists."
+msgstr "Редактирай списъка със задачи."
+
+msgid "Export Tasks"
+msgstr "Експорт на задачи"
+
+msgid "Flags"
+msgstr "Флагове"
+
+msgid "Group tasks by owner?"
+msgstr "Да се групират ли задачите по притежател?"
+
+msgid "Help"
+msgstr "Помощ"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "При импорт на CSV данни: първия ли ред съдържа имената на полетата?"
+
+msgid "Illegal or malformed form data."
+msgstr "Недопустими или повредени данни."
+
+msgid "Import Tasks"
+msgstr "Импорт на задачи"
+
+msgid "Import/Export"
+msgstr "Импорт/Експорт"
+
+msgid "Import/Export Tasks"
+msgstr "Импорт/Експорт на задачи"
+
+msgid "Incomplete tasks"
+msgstr "Недовършени задачи"
+
+msgid "Language"
+msgstr "Език"
+
+msgid "List Tasks"
+msgstr "Списък със Задачи"
+
+msgid "Manage multiple task lists."
+msgstr "Управляване на множество списъци със задачи."
+
+msgid "Marked task as completed."
+msgstr "Маркирана като извършена задача."
+
+msgid "Modify Task"
+msgstr "Промени задача"
+
+msgid "Modifying:"
+msgstr "Промени:"
+
+msgid "My Task List"
+msgstr "Моите задачи"
+
+msgid "Nag is not properly configured"
+msgstr "Nag не е конфигуриран коректно"
+
+msgid "Name"
+msgstr "Име"
+
+msgid "New Category"
+msgstr "Нова категория"
+
+msgid "New Task"
+msgstr "Нова задача"
+
+msgid "No"
+msgstr "Не"
+
+msgid "No configuration information specified for SQL Tasks."
+msgstr "Няма зададена конфигурация за SQL задачи."
+
+msgid "No due date."
+msgstr "Няма дата."
+
+msgid "None specified"
+msgstr "Няма зададен"
+
+msgid "Options"
+msgstr "Опции"
+
+msgid "Other Options"
+msgstr "Други Опции"
+
+msgid "Owner"
+msgstr "Притежател"
+
+msgid "Pri"
+msgstr "Приоритет"
+
+msgid "Print"
+msgstr "Отпечатай"
+
+msgid "Priority"
+msgstr "Приоритет"
+
+msgid "Private"
+msgstr "Частен"
+
+msgid "Refresh List"
+msgstr "Опресни списъка"
+
+msgid "Rename"
+msgstr "Преименувай"
+
+msgid "Required 'database' not specified in tasks configuration."
+msgstr "Необходимата 'database' не е зададена в конфигурацията за задачи."
+
+msgid "Required 'hostspec' not specified in tasks configuration."
+msgstr "Необходимия 'hostspec' не е указан в конфигурацията за задачи."
+
+msgid "Required 'password' not specified in tasks configuration."
+msgstr "Необходимата 'password' не съществува в конфигурацията за задачи."
+
+msgid "Required 'phptype' not specified in tasks configuration."
+msgstr "Необходимия 'phptype' не е зададен в конфигурацията за задачи."
+
+msgid "Required 'table' not specified in tasks configuration."
+msgstr "Необходимия 'table' не е зададен в конфигурацията за задачи."
+
+msgid "Required 'username' not specified in tasks configuration."
+msgstr "Необходимото 'username' не е зададено в конфигурацията за задачи."
+
+msgid "Search"
+msgstr "Търси"
+
+msgid "Search Results"
+msgstr "Резултати от търсенето"
+
+msgid "Search Scope"
+msgstr "Обхват на търсене"
+
+msgid "Search Text"
+msgstr "Текст за търсене"
+
+msgid "Select Category"
+msgstr "Избери Категория"
+
+msgid "Select a task list"
+msgstr "Избери списък със задачи"
+
+msgid "Select the file to import:"
+msgstr "Изберете файл за импорт:"
+
+msgid "Select the format to export to:"
+msgstr "Изберете формат, към който да се експортира:"
+
+msgid "Select the source to import from:"
+msgstr "Изберете източника за импорт:"
+
+msgid "Select your preferred language:"
+msgstr "Изберете предпочитаният от Вас език:"
+
+msgid "Set Task Priority"
+msgstr "Изберете приоритет на задачата"
+
+msgid "Set the your preferred display language."
+msgstr "Изберете предпочитаният от Вас език."
+
+msgid "Shared"
+msgstr "Поделен"
+
+msgid "Show"
+msgstr "Показване"
+
+msgid "Show complete, incomplete, or all tasks in the task list?"
+msgstr "Да се показват извършените или всички задачи в списъка?"
+
+msgid "Show due dates in the summary view?"
+msgstr "Да се показват ли датите на задълженията в обобщения изглед?"
+
+msgid "Show owner in the summary view?"
+msgstr "Да се показва ли притежателят в обобщения изглед?"
+
+msgid "Show priorities in the summary view?"
+msgstr "Да се показват ли приоритетите в обобщеният изглед?"
+
+msgid "Show: "
+msgstr "Покажи:"
+
+msgid "Some of Nag's configuration files are missing:"
+msgstr "Някои от конфигурационните файлове на Nag липсват:"
+
+msgid "Sort Direction"
+msgstr "Сортиране"
+
+msgid "Sort by Category"
+msgstr "Сортирай по категория"
+
+msgid "Sort by Completion Status"
+msgstr "Сортирай по статус на изпълнение"
+
+msgid "Sort by Due Date"
+msgstr "Сортирай по дата на задължението"
+
+msgid "Sort by Name"
+msgstr "Сортирай по име"
+
+msgid "Sort by Priority"
+msgstr "Сортирай по приоритет"
+
+msgid "Sort by User Name"
+msgstr "Сортирай по потребителско име"
+
+msgid "Task Details"
+msgstr "Детайли"
+
+msgid "Task List"
+msgstr "Списък със задачи"
+
+msgid "Task Lists"
+msgstr "Списък със задачи"
+
+msgid "Task Lists's Type:"
+msgstr "Тип на списъка със задачи"
+
+msgid "Task Lists's name:"
+msgstr "Име на списъка със задачи"
+
+msgid "Task Name"
+msgstr "Име на задачата"
+
+msgid "Task Note"
+msgstr "Бележка"
+
+msgid "Task Note?"
+msgstr "Бележка за задачата?"
+
+msgid "The data was lost."
+msgstr "Данните бяха изгубени."
+
+msgid "The file contained no data."
+msgstr "Файлът не съдържа данни."
+
+msgid "The requested task does not exist."
+msgstr "Задачата, която изисквате не съществува."
+
+#, c-format
+msgid "The task list \"%s\" has been created."
+msgstr "Списъка със задачи \"%s\" беше създаден."
+
+#, c-format
+msgid "The task list \"%s\" has been deleted."
+msgstr "Списъка със задачи \"%s\" беше изтрит."
+
+#, c-format
+msgid "The task list \"%s\" has been saved."
+msgstr "Списъка със задачи \"%s\" беше записан."
+
+msgid "The task list name is empty."
+msgstr "Името на списъка със задачи е празно"
+
+msgid "The task was saved."
+msgstr "Задачата беше записана."
+
+msgid "There was a problem deleting tasks."
+msgstr "Грешка при изтриването на задачи."
+
+#, c-format
+msgid "There was a problem removing the task from %s."
+msgstr "Грешка при премахването на задачата от %s."
+
+msgid "There was a problem saving the task."
+msgstr "Грешка при запис на задачата."
+
+msgid "There was a problem setting task completion status."
+msgstr "Грешка при регистриране на статуса на задачата."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Грешка при изпращането на файла. Възможно е файлът да е по-голям от "
+"максимално допустимият размер."
+
+msgid "There was an error importing the data."
+msgstr "Грешка при импорт на данните."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Грешка при импортиране на изпратения файл"
+
+msgid "There were no tasks to export."
+msgstr "Няма задачи за експорт."
+
+msgid "These changes can not be undone!"
+msgstr "Тези промени не могат да бъдат върнати!"
+
+msgid "This file contains preferences for Nag."
+msgstr "Този файл съдържа настройки за Nag."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Този файл контролира стиловете, който се използват за цветовете и шрифтовете "
+"в допълнение към подразбиращите стилове на Horde."
+
+msgid ""
+"This is the main Nag configuration file. It contains options for all Nag "
+"scripts."
+msgstr ""
+"Това е главния конфигурационен файл на Turba. Той съдържа пътища и опции за "
+"скриптовете на Nag."
+
+#, c-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "Грешка при изтриване \"%s\": %s."
+
+msgid "Unfiled"
+msgstr "Непопълнен"
+
+msgid "Unknown"
+msgstr "Неизвестен"
+
+msgid "Unknown task"
+msgstr "Неизвестна задача"
+
+msgid "User Options"
+msgstr "Потребителски опции"
+
+msgid "View Task Details"
+msgstr "Детайли за задачата"
+
+msgid "Which Task List should the tasks be added to?"
+msgstr "Към кой списък със задачи да бъдат добавени задачите?"
+
+msgid "Yes"
+msgstr "Да"
+
+msgid "You must select a task list to be deleted."
+msgstr "Трябва да изберете кой списък със задачи да бъде изтрит."
+
+msgid "Your Information"
+msgstr "Информация за Вас"
+
+msgid "Your default task list:"
+msgstr "Вашият списък със задачи по подразбиране:"
+
+msgid "Your task list is empty."
+msgstr "Вашият списък със задачи е празен"
+
+msgid "Your task lists:"
+msgstr "Вашият списък със задачи:"
+
+msgid "at"
+msgstr "на"

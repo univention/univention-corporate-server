@@ -1,0 +1,56 @@
+<form enctype="multipart/form-data" method="post" name="import_pgp_key" action="<tag:selfurl />">
+<if:broken_mp_form>
+<input type="hidden" name="msie_formdata_is_broken" value="" />
+</if:broken_mp_form>
+<input type="hidden" name="reload" value="<tag:reload />" />
+<input type="hidden" name="actionID" value="<tag:target />" />
+<tag:forminput />
+
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr>
+  <td class="header leftAlign" nowrap="nowrap"><if:import_public_key><gettext>Import Public PGP Key</gettext></if:import_public_key><if:import_personal_public_key><gettext>Import Personal Public PGP Key</gettext></if:import_personal_public_key><if:import_personal_private_key><gettext>Import Personal Private PGP Key</gettext></if:import_personal_private_key></td>
+ </tr>
+
+ <tr>
+  <td class="item leftAlign">
+   <table border="0" cellpadding="0" width="100%">
+    <tr>
+     <td class="item leftAlign"><label for="import_key"><strong><if:import_public_key><gettext>Import Public PGP Key Here:</gettext></if:import_public_key><if:import_personal_public_key><gettext>Import Personal Public PGP Key Here:</gettext></if:import_personal_public_key><if:import_personal_private_key><gettext>Import Personal Private PGP Key Here:</gettext></if:import_personal_private_key></strong></label></td>
+    </tr>
+    <tr>
+     <td class="item leftAlign">
+      <textarea id="import_key" name="import_key" rows="6" cols="80" class="fixed"></textarea>
+     </td>
+    </tr>
+   </table>
+  </td>
+ </tr>
+
+ <tr>
+  <td class="item leftAlign"><font color="red"><strong>--<gettext>OR</gettext>--</strong></font></td>
+ </tr>
+
+ <tr>
+  <td class="item leftAlign">
+   <table border="0" cellpadding="0" width="100%">
+    <tr>
+     <td class="item leftAlign">
+      <label for="upload_key"><strong><gettext>Upload:</gettext></strong></label>&nbsp;
+      <input id="upload_key" name="upload_key" type="file" size="40" />
+     </td>
+    </tr>
+   </table>
+  </td>
+ </tr>
+
+ <tr>
+  <td nowrap="nowrap" align="center" class="header" valign="middle">
+   <input type="submit" name="import" class="button" value="<gettext>Import Key</gettext>" />
+   <input type="submit" name="import" class="button" onclick="window.close();" value="<gettext>Cancel</gettext>" />
+  </td>
+ </tr>
+</table>
+
+</form>
+</body>
+</html>

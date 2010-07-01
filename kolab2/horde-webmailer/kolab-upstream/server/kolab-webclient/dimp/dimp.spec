@@ -1,7 +1,7 @@
 # Macros
 %define         V_package dimp
 %define         V_version 1.1.4
-%define         V_release 20100122
+%define         V_release 20100414
 
 # Package Information
 Name:		%{V_package}

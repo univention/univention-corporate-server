@@ -1,0 +1,20 @@
+<form name="fmanager" id="fmanager" method="post" enctype="multipart/form-data" action="<tag:folders_url />">
+ <input type="hidden" name="import_folder" value="<tag:import_folder />" />
+ <input type="hidden" name="actionID" id="actionID" value="" />
+ <input type="hidden" id="folders_token" name="folders_token" value="<tag:folders_token />" />
+
+ <div class="header">
+  <gettext>Import mbox File</gettext>
+ </div>
+
+ <div class="item">
+  <br />&nbsp;&nbsp;
+  <label for="mbox_upload"><gettext>Import mbox file</gettext></label>&nbsp;
+  <input id="mbox_upload" name="mbox_upload" type="file" size="30" />&nbsp;
+  <gettext>into folder</gettext>
+  <strong><tag:folder_name /></strong>.
+  &nbsp;&nbsp;
+  <input type="button" class="button" value="<gettext>Import</gettext>" onclick="submitAction('import_mbox')"/>
+  <input type="button" class="button" value="<gettext>Cancel</gettext>" onclick="submitAction(0)"/>
+ </div>
+</form>

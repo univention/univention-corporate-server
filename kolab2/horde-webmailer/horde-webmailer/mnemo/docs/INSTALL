@@ -1,0 +1,193 @@
+======================
+ Installing Mnemo 2.2
+======================
+
+This document contains instructions for installing the Mnemo web-based notes
+application on your system.
+
+For information on the capabilities and features of Mnemo, see the file
+README_ in the top-level directory of the Mnemo distribution.
+
+
+Obtaining Mnemo
+===============
+
+Mnemo can be obtained from the Horde website and FTP server, at
+
+   http://www.horde.org/mnemo/
+
+   ftp://ftp.horde.org/pub/mnemo/
+
+Bleeding-edge development versions of Mnemo are available via CVS; see the
+file `docs/HACKING`_ in the Horde distribution for information on accessing
+the Horde CVS repository.
+
+
+Prerequisites
+=============
+
+To function properly, Mnemo requires the following:
+
+1. A working Horde installation.
+
+   Mnemo runs within the `Horde Application Framework`_, a set of common tools
+   for Web applications written in PHP.  You must install Horde before
+   installing Mnemo.
+
+   .. _`Horde Application Framework`: http://www.horde.org/horde/
+
+   The Horde Framework can be obtained from the Horde website and FTP server,
+   at
+
+      http://www.horde.org/horde/
+
+      ftp://ftp.horde.org/pub/horde/
+
+   Many of Mnemo's prerequisites are also Horde prerequisites.  Be sure to
+   have completed all of the steps in the INSTALL_ file for the Horde
+   Framework before installing Mnemo.
+
+2. SQL support in PHP.
+
+   Mnemo stores its data in an SQL database.  Build PHP with whichever SQL
+   driver you require; see the Horde INSTALL_ file for details.
+
+
+Installing Mnemo
+================
+
+Mnemo is written in PHP, and must be installed in a web-accessible directory.
+The precise location of this directory will differ from system to system.
+Conventionally, Mnemo is installed directly underneath Horde in the
+webserver's document tree.
+
+Since Mnemo is written in PHP, there is no compilation necessary; simply
+expand the distribution where you want it to reside and rename the root
+directory of the distribution to whatever you wish to appear in the URL.  For
+example, with the Apache webserver's default document root of
+``/usr/local/apache/htdocs``, you would type::
+
+   cd /usr/local/apache/htdocs/horde
+   tar zxvf /path/to/mnemo-x.y.z.tar.gz
+   mv mnemo-x.y.z mnemo
+
+and would then find Mnemo at the URL::
+
+   http://your-server/horde/mnemo/
+
+
+Configuring Mnemo
+=================
+
+1. Configuring Horde for Mnemo
+
+   a. Register the application
+
+      In ``horde/config/registry.php``, find the ``applications['mnemo']``
+      stanza.  The default settings here should be okay for most
+      installations, but you can change them if desired, or if you have a
+      non-standard install.  If you have changed the location of Mnemo
+      relative to Horde, either in the URL or in the filesystem or both, then
+      you must update the ``fileroot`` and ``webroot`` settings to their
+      correct values.
+
+   b. Configuring a DataTree backend
+
+      Mnemo requires a permanent ``DataTree`` backend in Horde to manage
+      notepads and to add notes to notepads.  If you didn't setup a DataTree
+      backend yet, go to the configuration interface, select Horde from the
+      list of applications and select a driver different than ``None`` on the
+      ``DataTree System`` tab.  Make sure that you ran the necessary scripts
+      to create a storage backend for the DataTree system, e.g. one of the
+      ``create.*.sql`` or ``horde_datatree.*.sql`` SQL scripts in
+      ``horde/scripts/sql/``.  You should have done this already during the
+      installation of Horde.
+
+2. Creating the database table
+
+   The specific steps to create the Mnemo database table depend on which
+   database you've chosen to use.
+
+   First, look in ``scripts/sql/`` to see if a script already exists for your
+   database type.  If so, you should be able to simply execute that script as
+   superuser in your database.  (Note that executing the script as the "horde"
+   user will probably fail when granting privileges.)
+
+   If such a script does not exist, you'll need to build your own, using the
+   file mnemo.sql as a starting point.  If you need assistance in creating
+   databases, you may wish to let us know on the Mnemo mailing list.
+
+3. Configuring Mnemo
+
+   To configure Mnemo, change to the ``config/`` directory of the installed
+   distribution, and make copies of all of the configuration ``dist`` files
+   without the ``dist`` suffix::
+
+      cd config/
+      for foo in *.dist; do cp $foo `basename $foo .dist`; done
+
+   Documentation on the format of those files can be found in each file.  With
+   the exception of the ``conf.*`` files (see below), the other files in
+   ``config/`` need only be modified if you wish to customize Mnemo's
+   appearance or behavior, as the defaults will be correct for most sites.
+
+   You must login to Horde as a Horde Administrator to finish the
+   configuration of Mnemo.  Use the Horde ``Administration`` menu item to get
+   to the administration page, and then click on the ``Configuration`` icon to
+   get the configuration page.  Select ``Notes`` from the selection list of
+   applications.  Fill in or change any configuration values as needed.  When
+   done click on ``Generate Notes Configuration`` to generate the ``conf.php``
+   file.  If your web server doesn't have write permissions to the Mnemo
+   configuration directory or file, it will not be able to write the file.  In
+   this case, go back to ``Configuration`` and choose one of the other methods
+   to create the configuration file ``mnemo/config/conf.php``.
+
+   Note for international users: Nag uses GNU gettext to provide local
+   translations of text displayed by applications; the translations are found
+   in the po/ directory.  If a translation is not yet available for your
+   locale (and you wish to create one), see the ``horde/po/README`` file, or
+   if you're having trouble using a provided translation, please see the
+   `horde/docs/TRANSLATIONS`_ file for instructions.
+
+4. Testing Mnemo
+
+   Use Mnemo to create, modify, and delete notes. Test at least the following:
+
+   - Creating a new memo
+   - Modifying a memo
+   - Deleting a memo
+
+
+Obtaining Support
+=================
+
+If you encounter problems with Mnemo, help is available!
+
+The Horde Frequently Asked Questions List (FAQ), available on the Web at
+
+  http://www.horde.org/faq/
+
+The Horde Project runs a number of mailing lists, for individual applications
+and for issues relating to the project as a whole.  Information, archives, and
+subscription information can be found at
+
+  http://www.horde.org/mail/
+
+Lastly, Horde developers, contributors and users may also be found on IRC,
+on the channel #horde on the Freenode Network (irc.freenode.net).
+
+Please keep in mind that Mnemo is free software written by volunteers.  For
+information on reasonable support expectations, please read
+
+  http://www.horde.org/support.php
+
+Thanks for using Mnemo!
+
+The Horde team
+
+
+.. _README: ?f=README.html
+.. _`docs/HACKING`: ../../horde/docs/?f=HACKING.html
+.. _INSTALL:
+.. _`horde/docs/INSTALL`: ../../horde/docs/?f=INSTALL.html
+.. _`horde/docs/TRANSLATIONS`: ../../horde/docs/?f=TRANSLATIONS.html

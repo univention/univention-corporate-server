@@ -1,0 +1,5534 @@
+# IMP ESTONIAN TRANSLATION
+# Toomas Aas <toomas.aas@mail.ee>, 2002 - 2006
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: IMP 4.1-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-05-29 15:49+0300\n"
+"PO-Revision-Date: 2008-07-30 18:49+0200\n"
+"Last-Translator: Alar SIng <alar.sing@err.ee>\n"
+"Language-Team: Estonian <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-13\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: lib/Compose.php:1748
+msgid "      Cc: "
+msgstr "    Koopia: "
+
+#: lib/Compose.php:1745
+msgid "      To: "
+msgstr "     Kellele: "
+
+#: lib/Compose.php:1733
+msgid "    Date: "
+msgstr " Kuupäev: "
+
+#: lib/Compose.php:1736
+msgid "    From: "
+msgstr "      Kellelt: "
+
+#: mailbox.php:348 folders.php:344 lib/Block/mailbox.php:97
+#, php-format
+msgid " (Accesskey %s)"
+msgstr " (Kiirklahv %s)"
+
+#: lib/Compose.php:1742
+msgid " Subject: "
+msgstr "     Teema: "
+
+#: mailbox.php:568 lib/Block/mailbox.php:142
+msgid "#"
+msgstr "Nr"
+
+#: folders.php:291 folders.php:302 lib/Message.php:857
+#, php-format
+msgid "%.2fMB"
+msgstr "%.2fMB"
+
+#: thread.php:152
+#, php-format
+msgid "%d Messages"
+msgstr "%d kirja"
+
+#: lib/Spam.php:220
+#, php-format
+msgid "%d messages have been deleted."
+msgstr "%d kirja kustutati."
+
+#: lib/Spam.php:199
+#, php-format
+msgid ""
+"%d messages have been reported as not spam to your system administrator."
+msgstr "%d ekslikult rämpspostiks arvatud kirja edastati süsteemihaldurile."
+
+#: lib/Spam.php:179
+#, php-format
+msgid "%d messages have been reported as not spam."
+msgstr "%d ekslikult rämpspostiks arvatud kirja edastatud."
+
+#: lib/Spam.php:191
+#, php-format
+msgid "%d messages have been reported as spam to your system administrator."
+msgstr "%d rämpskirja edastati süsteemihaldurile."
+
+#: lib/Spam.php:171
+#, php-format
+msgid "%d messages have been reported as spam."
+msgstr "%d rämpskirja edastatud."
+
+#: mailbox.php:256
+#, php-format
+msgid "%d to %d of %d Messages"
+msgstr "Kirjad %d kuni %d, kokku %d"
+
+#: lib/MIME/Contents.php:563
+#, php-format
+msgid "%s Attachments, %s"
+msgstr "%s Manused, %s"
+
+#: lib/MIME/Contents.php:553 lib/UI/Mailbox.php:134
+#, php-format
+msgid "%s KB"
+msgstr "%s KB"
+
+#: lib/MIME/Contents.php:551 lib/UI/Mailbox.php:132
+#, php-format
+msgid "%s MB"
+msgstr "%s MB"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:39
+#, php-format
+msgid "%s already exists. Your %s folder was not renamed."
+msgstr "%s on juba olemas. Sinu %s kausta ei nimetatud ümber."
+
+#: lib/MIME/Contents.php:556
+#, php-format
+msgid "%s bytes"
+msgstr "%s baiti"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:37
+#, php-format
+msgid "%s folder being renamed at the start of the month."
+msgstr "%s kaust nimetatakse ümber kuu alguses."
+
+#: lib/MIME/Viewer/itip.php:260
+#, php-format
+msgid "%s has accepted."
+msgstr "%s nõustus."
+
+#: lib/MIME/Viewer/itip.php:666
+#, php-format
+msgid "%s has cancelled \"%s\"."
+msgstr "%s tühistas  \"%s\"."
+
+#: lib/MIME/Viewer/itip.php:266
+#, php-format
+msgid "%s has declined."
+msgstr "%s ei nõustunud."
+
+#: lib/MIME/Viewer/itip.php:506
+#, php-format
+msgid "%s has replied to a free/busy request."
+msgstr "%s vastas vaba/hõivatud päringule."
+
+#: lib/MIME/Viewer/itip.php:658
+#, php-format
+msgid "%s has replied to the invitation to \"%s\"."
+msgstr "%s vastas %s kutsele."
+
+#: lib/MIME/Viewer/itip.php:497
+#, php-format
+msgid "%s has sent you free/busy information."
+msgstr "%s saatis sulle vaba/hõivatud info."
+
+#: lib/MIME/Viewer/itip.php:272
+#, php-format
+msgid "%s has tentatively accepted."
+msgstr "%s nõustus esialgselt."
+
+#: lib/MIME/Viewer/itip.php:502
+#, php-format
+msgid "%s requests your free/busy information."
+msgstr "%s soovib sinu vaba/hõivatud infot."
+
+#: lib/MIME/Viewer/itip.php:621
+#, php-format
+msgid "%s requests your presence at \"%s\"."
+msgstr "%s palub sul osaleda %s-l."
+
+#: lib/Message.php:468
+#, php-format
+msgid "%s was successfully added to \"%s\"."
+msgstr "%s lisati \"%s\"-sse."
+
+#: lib/MIME/Viewer/itip.php:638
+#, php-format
+msgid "%s wishes to ammend \"%s\"."
+msgstr "%s soovib parandada \"%s\"."
+
+#: lib/MIME/Viewer/itip.php:593 lib/MIME/Viewer/itip.php:622
+#: lib/MIME/Viewer/itip.php:806
+#, php-format
+msgid "%s wishes to make you aware of \"%s\"."
+msgstr "%s soovib teavitada sind %s-st."
+
+#: lib/MIME/Viewer/itip.php:645
+#, php-format
+msgid "%s wishes to receive the latest information about \"%s\"."
+msgstr "%s soovib värskeimat teavet %s kohta."
+
+#: compose.php:1143
+#, php-format
+msgid "%s%% of allowed size"
+msgstr "%s%% lubatud suurusest"
+
+#: message.php:272 message.php:277
+#, php-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#: message.php:490
+#, php-format
+msgid "%s: %s (%d&nbsp;of&nbsp;%d)"
+msgstr "%s: %s (%d&nbsp;/&nbsp;%d)"
+
+#: lib/Compose.php:1677
+#, php-format
+msgid "%u Forwarded Messages"
+msgstr "Fwd: %u edastatud kirja"
+
+#: rss.php:94
+#, php-format
+msgid "%u of %u messages in %s unread."
+msgstr "%u - %u kirja kaustas %s lugemata."
+
+#: stationery.php:133
+msgid "(HTML)"
+msgstr "(HTML)"
+
+#: stationery.php:133
+msgid "(Plain Text)"
+msgstr "(Tekst)"
+
+#: templates/contacts/contacts.html:49
+msgid "* Add these by clicking OK *"
+msgstr "* Lisa need vajutades OK *"
+
+#: templates/contacts/contacts.html:33
+msgid "* Please select address(es) *"
+msgstr "* Palun vali aadress(id) *"
+
+#: lib/MIME/Contents.php:561
+#, php-format
+msgid "1 Attachment, %s"
+msgstr "1 Manus, %s"
+
+#: config/prefs.php.dist:986
+msgid "100 characters"
+msgstr "100 märki"
+
+#: config/prefs.php.dist:989
+msgid "1000 characters"
+msgstr "1000 märki"
+
+#: config/prefs.php.dist:987
+msgid "250 characters"
+msgstr "250 märki"
+
+#: config/prefs.php.dist:988
+msgid "500 characters"
+msgstr "500 märki"
+
+#: lib/MIME/Viewer/notification.php:49
+msgid ""
+"A message you have sent has resulted in a return notification from the "
+"recipient."
+msgstr "Sinu saadetud kiri põhjustas saaja poolse vastuteate."
+
+#: templates/javascript_defs.php:72
+msgid ""
+"A popup window could not be opened. Perhaps you have set your browser to "
+"block popup windows?"
+msgstr ""
+"Uue kirja akent ei saa avada. Äkki oled oma veebilehitsejas keelanud "
+"hüpikaknad?"
+
+#: templates/search/search.html:61
+msgid "AND"
+msgstr "JA"
+
+#: config/prefs.php.dist:854
+msgid "Above the message text"
+msgstr "Sisu kohal"
+
+#: lib/MIME/Viewer/itip.php:625
+msgid "Accept and add to my calendar"
+msgstr "Nõustu ja lisa kalendrisse"
+
+#: lib/MIME/Viewer/itip.php:630
+msgid "Accept request"
+msgstr "Nõustu"
+
+#: lib/MIME/Viewer/itip.php:917
+msgid "Accepted"
+msgstr "Nõus"
+
+#: lib/MIME/Viewer/itip.php:261
+msgid "Accepted: "
+msgstr "Nõus: "
+
+#: templates/fetchmail/fetchmailprefs.html:43
+msgid "Account's name:"
+msgstr "Konto nimi:"
+
+#: lib/MIME/Viewer/itip.php:536 lib/MIME/Viewer/itip.php:768
+#: lib/MIME/Viewer/itip.php:769 lib/MIME/Viewer/itip.php:896
+msgid "Actions"
+msgstr "Tegevused"
+
+#: lib/MIME/Headers.php:201 lib/MIME/Headers.php:202
+#, php-format
+msgid "Add %s to my Address Book"
+msgstr "Lisa %s minu aadressiraamatusse"
+
+#: templates/prefs/sourceselect.inc:300
+msgid "Add source"
+msgstr "Lisa allikas"
+
+#: lib/MIME/Viewer/itip.php:595
+msgid "Add this to my calendar"
+msgstr "Lisa see minu kalendrisse"
+
+#: lib/MIME/Viewer/itip.php:808
+msgid "Add this to my tasklist"
+msgstr "Lisa see minu taskidesse"
+
+#: lib/MIME/Viewer/itip.php:627
+msgid "Add to my calendar"
+msgstr "Lisa see minu kalendrisse"
+
+#: lib/Compose.php:2689
+#, php-format
+msgid "Added \"%s\" as an attachment."
+msgstr "Lisasin lisandi \"%s\"."
+
+#: config/prefs.php.dist:831
+msgid ""
+"Additional headers to display when viewing: <em>(optional, enter each header "
+"on a new line)</em>"
+msgstr ""
+"Täiendavad päised mida näidata kirja vaatamisel: <em>(pole kohustuslik, "
+"kirjuta iga päis omaette reale)</em>"
+
+#: lib/MIME/Viewer/notification.php:60
+#, php-format
+msgid "Additional information can be viewed %s."
+msgstr "Lisateavet võid vaadata %s."
+
+#: lib/MIME/Viewer/notification.php:60
+msgid "Additional information details"
+msgstr "Lisateave"
+
+#: lib/MIME/Viewer/status.php:92
+msgid "Additional message details"
+msgstr "Täiendav teave kirja kohta"
+
+#: lib/MIME/Viewer/status.php:91
+#, php-format
+msgid "Additional message details can be viewed %s."
+msgstr "Lisateavet kirja kohta võid vaadata %s."
+
+#: lib/MIME/Viewer/status.php:77
+msgid "Additional message error details"
+msgstr "Veateate üksikasjad"
+
+#: lib/MIME/Viewer/status.php:76
+#, php-format
+msgid "Additional message error details can be viewed %s."
+msgstr "Veateate üksikasju võid vaadata %s."
+
+#: compose.php:775 compose.php:1011 contacts.php:119
+#: templates/contacts/contacts.html:8
+msgid "Address Book"
+msgstr "Aadressiraamat"
+
+#: config/prefs.php.dist:142
+msgid "Address Books"
+msgstr "Aadressiraamatud"
+
+#: templates/prefs/sourceselect.inc:345
+msgid "Address book to add addresses to"
+msgstr "Aadressiraamat kuhu lisada aadressid"
+
+#: config/prefs.php.dist:197
+msgid ""
+"Addresses to BCC all messages: <em>(optional, enter each address on a new "
+"line)</em>"
+msgstr ""
+"Aadressid kuhu saata pimekoopia kõigist kirjadest: <em>(pole kohustuslik, "
+"kirjuta iga aadress omaette reale)</em>"
+
+#: config/prefs.php.dist:189
+msgid ""
+"Addresses to explicitly tie to this identity: <em>(optional, enter each "
+"address on a new line)</em>"
+msgstr ""
+"Aadressid, mis seostada kindlalt selle identiteediga: <em>(pole kohustuslik, "
+"kirjuta iga aadress omaette reale)</em>"
+
+#: lib/IMAP/ACL/rfc4314.php:59 lib/IMAP/ACL/rfc2086.php:57
+msgid "Administer"
+msgstr "Haldus"
+
+#: templates/mailbox/navbar.html:10
+msgid "All"
+msgstr "Kõik"
+
+#: lib/Maintenance/Task/purge_sentmail.php:82
+#, php-format
+msgid ""
+"All messages in the folder(s) \"%s\" older than %s days will be permanently "
+"deleted."
+msgstr ""
+"Kõik kirjad sinu \"%s\" kaustas mis on vanemad kui %s päeva kustutatakse "
+"jäädavalt."
+
+#: templates/javascript_defs.php:62
+msgid ""
+"All messages in the following folder(s) will be downloaded into one MBOX "
+"file:"
+msgstr "Kõik kirjad järgmistes kaustades salvestatakse ühte MBOX faili:"
+
+#: lib/Maintenance/Task/purge_spam.php:79
+#: lib/Maintenance/Task/purge_trash.php:78
+#, php-format
+msgid ""
+"All messages in your \"%s\" folder older than %s days will be permanently "
+"deleted."
+msgstr ""
+"Kõik kirjad sinu \"%s\" kaustas mis on vanemad kui %s päeva kustutatakse "
+"jäädavalt."
+
+#: lib/Maintenance/Task/delete_attachments_monthly.php:59
+#, php-format
+msgid "All old linked attachments more than %s months old will be deleted."
+msgstr "Kõik lingitud lisandid, mis on rohkem kui %s kuud vanad, kustutatakse."
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:72
+#, php-format
+msgid "All old sent-mail folders more than %s months old will be deleted."
+msgstr ""
+"Kõik saadetud kirjade kaustad, mis on rohkem kui %s kuud vanad, kustutatakse."
+
+#: acl.php:88 acl.php:129
+#, php-format
+msgid "All rights on folder \"%s\" successfully removed for user \"%s\"."
+msgstr "Kõik õigused kaustale \"%s\" võeti kasutajalt \"%s\" ära."
+
+#: lib/api.php:93
+msgid "Allow Folder Creation?"
+msgstr "Luba luua kaustu"
+
+#: filterprefs.php:110
+msgid "Allow filter rules to be applied in any mailbox?"
+msgstr "Luba rakendada filtreid mistahes kirjakastile"
+
+#: lib/MIME/Viewer/alternative.php:79
+msgid "Alternative parts for this section:"
+msgstr "Selle kirja osa teistsugused kujud:"
+
+#: config/prefs.php.dist:709
+msgid "Always"
+msgstr "Alati"
+
+#: config/prefs.php.dist:694
+msgid "Always save attachments"
+msgstr "Salvesta alati lisandid"
+
+#: lib/Message.php:577
+msgid ""
+"An error occured while attempting to strip the attachment. The IMAP server "
+"said: "
+msgstr "Lisandi eemaldamisel tekkis viga. IMAP server ütles: "
+
+#: lib/MIME/Viewer/images.php:153
+#, php-format
+msgid "An image named %s is attached to this message. A thumbnail is below."
+msgstr "Selle kirjaga on kaasas suur pilt nimega %s. Väike pilt on all."
+
+#: lib/Message.php:442
+msgid "An unknown error occured while creating the new note."
+msgstr "Uue sissekande lisamisel tekkis ennenägematu viga."
+
+#: lib/Message.php:441
+msgid "An unknown error occured while creating the new task."
+msgstr "Uue ülesande lisamisel tekkis ennenägematu viga."
+
+#: lib/MIME/Viewer/itip.php:794
+msgid "An unknown person"
+msgstr "Tundmatu kasutaja"
+
+#: mailbox.php:751 message.php:462 lib/Block/mailbox.php:296
+#: templates/mailbox/navbar.html:18 templates/mailbox/navbar.html:34
+#: templates/message/navbar_navigate.html:12
+msgid "Answered"
+msgstr "Vastatud"
+
+#: search.php:329
+msgid "Answered messages"
+msgstr "Vastatud kirjad"
+
+#: mailbox.php:410
+msgid "Apply Filters"
+msgstr "Rakenda filtreid"
+
+#: mailbox.php:410
+#, php-format
+msgid "Apply Filters to %s"
+msgstr "Rakenda filtreid %s-le"
+
+#: filterprefs.php:107
+msgid "Apply filter rules upon logging on?"
+msgstr "Rakenda filtreid sisselogimisel"
+
+#: filterprefs.php:108
+msgid "Apply filter rules whenever Inbox is displayed?"
+msgstr "Rakenda filtreid alati kui avatakse INBOX?"
+
+#: filterprefs.php:109
+msgid "Apply filter rules whenever sidebar is refreshed?"
+msgstr "Rakenda filtreid alati kui avatakse külgriba uuendatakse?"
+
+#: mailbox.php:419
+msgid "Are you sure you want to delete this Virtual Folder Definition?"
+msgstr ""
+"Kas oled kindel, et soovid selle Virtuaal Kausta definitsiooni kustutada?"
+
+#: pgp.php:406 smime.php:314
+msgid "Are you sure you want to delete this public key?"
+msgstr "Kas oled kindel et soovid selle avaliku võtme kustutada?"
+
+#: pgp.php:436 smime.php:340
+msgid ""
+"Are you sure you want to delete your keypair? (This is NOT recommended!)"
+msgstr ""
+"Kas soovid kindlasti kustutada oma võtmepaari? (See EI OLE soovitatav!)"
+
+#: templates/javascript_defs.php:34
+msgid "Are you sure you want to do this?"
+msgstr "Kas oled kindel et soovid seda?"
+
+#: message.php:667
+msgid "Are you sure you wish to PERMANENTLY all attachments?"
+msgstr "Kas oled kindel et soovid kõik manused JÄÄDAVALT kustutada?"
+
+#: message.php:537 templates/javascript_defs.php:46
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "Kas oled kindel et soovid need kirjad JÄÄDAVALT kustutada?"
+
+#: lib/MIME/Contents.php:261
+msgid "Are you sure you wish to PERMANENTLY delete this attachment?"
+msgstr "Kas oled kindel et soovid selle lisandi JÄÄDAVALT kustutada?"
+
+#: mailbox.php:415
+msgid "Are you sure you wish to delete all mail in this folder?"
+msgstr "Kas oled kindel et soovid selle kausta tühjendada?"
+
+#: lib/IMP.php:809
+msgid "Are you sure you wish to empty your spam folder?"
+msgstr "Kas oled kindel et soovid rämpsposti kausta tühjendada?"
+
+#: lib/IMP.php:801
+msgid "Are you sure you wish to empty your trash folder?"
+msgstr "Kas oled kindel et soovid prügikasti tühjendada?"
+
+#: mailbox.php:499
+msgid "Are you sure you wish to permanently delete these messages?"
+msgstr "Kas oled kindel et soovid need kirjad jäädavalt kustutada?"
+
+#: templates/javascript_defs.php:80
+msgid "Are you sure you wish to report this message as innocent?"
+msgstr "Kas oled kindel et soovid selle kirja õigeks mõista?"
+
+#: templates/javascript_defs.php:79
+msgid "Are you sure you wish to report this message as spam?"
+msgstr "Kas oled kindel et soovid selle kirja rämpspostiks mõista?"
+
+#: config/prefs.php.dist:1082
+msgid "Arrival Time"
+msgstr "Saabumise aeg"
+
+#: config/prefs.php.dist:1097
+msgid "Ascending"
+msgstr "Kasvav"
+
+#: config/prefs.php.dist:708
+msgid "Ask"
+msgstr "Küsi"
+
+#: compose.php:1081
+msgid "Attach Files"
+msgstr "Lisa failid"
+
+#: compose.php:1074
+msgid "Attach a copy of your PGP public key to your message?"
+msgstr "Lisa kirjale oma PGP avalik võti?"
+
+#: lib/MIME/Viewer/tnef.php:110
+msgid "Attached File:"
+msgstr "Lisatud fail:"
+
+#: lib/Compose.php:1781 lib/Compose.php:1886
+#, php-format
+msgid ""
+"Attached file \"%s\" exceeds the attachment size limits. File NOT attached."
+msgstr ""
+"Lisatav fail \"%s\" ületab lisandi suuruse piirmäära. Faili EI lisatud."
+
+#: lib/MIME/Viewer/itip.php:386
+msgid "Attached is a reply to a calendar request you sent."
+msgstr "Lisas on vastus sinu kalendrikandele."
+
+#: templates/javascript_defs.php:41 templates/compose/compose.html:266
+#: templates/compose/compose.html:325
+msgid "Attachment"
+msgstr "Lisand"
+
+#: attachment.php:72
+#, php-format
+msgid "Attachment %s deleted."
+msgstr "Manus %s kustutatud."
+
+#: lib/Compose.php:2403
+msgid "Attachment Information"
+msgstr "Manuse Info"
+
+#: lib/Compose.php:766
+msgid "Attachment stripped: Original attachment type"
+msgstr "Lisand eemaldatud: Algne lisandi tüüp"
+
+#: compose.php:1023 lib/Compose.php:2371 templates/compose/compose.html:242
+msgid "Attachments"
+msgstr "Lisandid"
+
+#: message.php:554 config/prefs.php.dist:604
+msgid "Attachments Only"
+msgstr "Ainult Lisandid"
+
+#: lib/MIME/Viewer/itip.php:724 lib/MIME/Viewer/itip.php:849
+msgid "Attendees"
+msgstr "Osalejad"
+
+#: lib/MIME/Viewer/notification.php:52
+msgid "Attention"
+msgstr "Tähelepanu"
+
+#: lib/Auth/imp.php:33
+msgid "Auth_imp: Required IMAP extension not found."
+msgstr "Auth_imp: Vajalikku IMAP laiendust ei leitud."
+
+#: config/prefs.php.dist:765
+msgid ""
+"Automatically show images in HTML messages when the sender is in my address "
+"book?"
+msgstr ""
+"Näita automaatselt pilte HTML kirjades kui saatja on minu aadressiraamatus?"
+
+#: templates/prefs/sourceselect.inc:293 templates/prefs/sourceselect.inc:295
+msgid "Available Address books:"
+msgstr "Kasutatavad aadressiraamatud:"
+
+#: lib/MIME/Viewer/itip.php:757 lib/MIME/Viewer/itip.php:885
+msgid "Awaiting Response"
+msgstr "Pole vastanud"
+
+#: thread.php:137 message.php:507
+#, php-format
+msgid "Bac_k to %s"
+msgstr "Ta_gasi kausta %s"
+
+#: thread.php:137 message.php:507
+#, php-format
+msgid "Back to %s"
+msgstr "Tagasi kausta %s"
+
+#: thread.php:134
+msgid "Back to Multiple Message View Index"
+msgstr "Tagasi kirjade loetelu vaatesse"
+
+#: thread.php:132
+msgid "Back to Thread Display"
+msgstr "Tagasi jutulõnga vaatesse"
+
+#: lib/IMAP/Client.php:478
+#, php-format
+msgid "Bad login name or password."
+msgstr "Tundmatu kasutajanimi või salasõna."
+
+#: lib/IMAP/Client.php:195
+#, php-format
+msgid "Bad or malformed request. Server Responded: %s"
+msgstr "Vigane või valesti esitatud päring. Server vastas: %s"
+
+#: lib/IMAP/Client.php:482
+#, php-format
+msgid "Bad request: %s"
+msgstr "Vigane päring: %s"
+
+#: lib/Search.php:666 lib/UI/Message.php:28
+#: templates/contacts/contacts.html:43 templates/login/recompose.html:32
+msgid "Bcc"
+msgstr "Bcc"
+
+#: config/prefs.php.dist:529
+msgid "Before Signature"
+msgstr "Enne allkirja"
+
+#: lib/MIME/Viewer/status.php:160
+msgid "Below is the raw text of the status information message."
+msgstr "Järgneb kättetoimetamisteate algtekst."
+
+#: config/prefs.php.dist:855
+msgid "Below the message text"
+msgstr "Sisu all"
+
+#: mailbox.php:517 message.php:563
+msgid "Blacklist"
+msgstr "Must nimekiri"
+
+#: config/prefs.php.dist:754
+msgid "Block images in HTML messages unless they are specifically requested?"
+msgstr "Tõkesta vaikimisi pildid HTML kirjades"
+
+#: lib/Search.php:674
+msgid "Body"
+msgstr "Keha"
+
+#: message.php:553 config/prefs.php.dist:603
+msgid "Body Text Only"
+msgstr "Ainult sisu tekst"
+
+#: search.php:326 search.php:331 search.php:336 search.php:341
+msgid "Both"
+msgstr "Mõlemad"
+
+#: config/prefs.php.dist:820
+msgid "Both Header Listing and Body of Message"
+msgstr "Nii päistes kui kirja sees"
+
+#: config/prefs.php.dist:528
+msgid "Bottom"
+msgstr "Alla"
+
+#: lib/IMAP/Client.php:407
+msgid ""
+"CRAM-MD5 or DIGEST-MD5 requires PEAR's Auth_SASL package to be installed."
+msgstr "CRAM-MD5 või DIGEST-MD5 nõuab PEAR'i Auth_SASL pakki installimist."
+
+#: compose.php:969
+msgid "C_harset"
+msgstr "_Märgistik"
+
+#: search.php:312 config/hooks.php.dist:404
+msgid "Calendar"
+msgstr "Kalender"
+
+#: lib/IMAP/Tree.php:2434
+msgid "Can not directly create mailbox in this folder."
+msgstr "Ei ole võimalik otse siia luua kausta."
+
+#: lib/Message.php:196
+msgid "Can not move messages to Trash - no Trash mailbox set in preferences."
+msgstr ""
+"Ei saa liigutada maili Prügikasti - Prügikasti kaust on jäetud defineerimata "
+"seadetes."
+
+#: templates/pgp/passphrase.html:22 templates/pgp/import_key.html:49
+#: templates/folders/import.html:17 templates/folders/folders_confirm.html:23
+#: templates/contacts/contacts.html:76 templates/saveimage/saveimage.html:20
+#: templates/smime/passphrase.html:24 templates/smime/import_key.html:70
+msgid "Cancel"
+msgstr "Loobu"
+
+#: templates/compose/compose.html:21 templates/compose/compose.html:208
+#: templates/compose/redirect.html:83
+msgid "Cancel Message"
+msgstr "Loobu kirjast"
+
+#: templates/javascript_defs.php:34
+msgid "Cancelling this message will permanently discard its contents."
+msgstr "Sellest kirjast loobumisega läheb tema sisu igaveseks kaotsi."
+
+#: lib/prefs.php:151
+msgid ""
+"Cannot activate both a Trash folder and Virtual Trash. A Trash folder will "
+"be used."
+msgstr ""
+"Korraga ei saa olla aktiivsed Prügikaust ja Virtuaalne Prügikast. Prügikasti "
+"kausta kasutatakse."
+
+#: lib/prefs.php:154
+msgid ""
+"Cannot activate both a Trash folder and Virtual Trash. A Virtual Trash "
+"folder will be used."
+msgstr ""
+"Korraga ei saa olla aktiivsed Prügikaust ja Virtuaalne Prügikast. "
+"Virtuaalset Prügikasti kasutatakse."
+
+#: lib/Fetchmail/imap.php:151
+msgid "Cannot connect to the remote mail server."
+msgstr "Ei saa ühendust välise postiserveriga."
+
+#: lib/Fetchmail/imap.php:149
+msgid "Cannot connect to the remote mail server: "
+msgstr "Ei saa ühendust välise postiserveriga: "
+
+#: lib/prefs.php:165
+msgid "Cannot delete to trash unless a Trash folder is defined."
+msgstr "Ei saa kustutada Prügikasti kui pole Prügikasti defineeritud."
+
+#: lib/MIME/Viewer/partial.php:47
+#, php-format
+msgid ""
+"Cannot display - found only %s of %s parts of this message in the current "
+"mailbox."
+msgstr ""
+"Ei saa näidata - kirjakastist leiti ainult selle kirja %s osa, aga olema "
+"peaks %s."
+
+#: pgp.php:271
+msgid "Cannot retrieve public key from cache."
+msgstr "Ei saanud võtmeserverist avalikku võtit kätte."
+
+#: lib/Search.php:662 lib/UI/Message.php:27
+#: templates/contacts/contacts.html:42 templates/login/recompose.html:23
+msgid "Cc"
+msgstr "Koopia"
+
+#: templates/smime/smime.html:83
+msgid ""
+"Certificate import is not available. File upload is not enabled on this "
+"server."
+msgstr "Sertifikaati ei saa importida. Serverisse pole võimalik faile laadida."
+
+#: lib/MIME/Viewer/itip.php:739 lib/MIME/Viewer/itip.php:867
+msgid "Chair Person"
+msgstr "Juhataja"
+
+#: acl.php:173 acl.php:174 templates/acl/acl.html:13
+msgid "Change Folder"
+msgstr "Muuda kausta"
+
+#: config/prefs.php.dist:120
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr ""
+"Muuda ekraani seadeid, näiteks seda, mitut kirja näed korraga ekraanil ja "
+"kuidas on kirjad järjestatud."
+
+#: config/prefs.php.dist:24
+msgid "Change mail server and folder settings."
+msgstr "Muuda postiserveri ja kaustade seadeid."
+
+#: config/prefs.php.dist:15
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr ""
+"Muuda nime, aadressi ja allkirja mida inimesed näevad kui nad sinu kirja "
+"loevad ja sellele vastavad."
+
+#: config/prefs.php.dist:990
+msgid "Characters to display:"
+msgstr "Näidatavad märgid:"
+
+#: templates/mailbox/message_headers.html:12
+msgid "Check All/None"
+msgstr "Märgi/tühjenda kõik"
+
+#: lib/UI/Compose.php:135
+msgid "Check Spelling"
+msgstr "Õigekirja kontroll"
+
+#: mailbox.php:647 folders.php:356 lib/Block/mailbox.php:218
+msgid "Check _All/None"
+msgstr "Märgi/tühjenda _kõik"
+
+#: templates/folders/actions.html:27
+msgid "Check for New Mail"
+msgstr "Kontrolli  värsket posti"
+
+#: config/prefs.php.dist:569
+msgid "Check spelling before sending a message?"
+msgstr "Kontrolli enne saatmist õigekirja"
+
+#: lib/UI/Compose.php:136
+msgid "Checking ..."
+msgstr "Kontrollin..."
+
+#: templates/folders/actions.html:11
+msgid "Choose Action"
+msgstr "Vali tegevus"
+
+#: config/servers.php.dist:212
+msgid "Choose a mail server:"
+msgstr "Vali postiserver:"
+
+#: templates/compose/compose.html:65
+msgid "Choose a match or edit the address to the right:"
+msgstr "Vali sobiv või sisesta aadress siia:"
+
+#: templates/prefs/sourceselect.inc:343
+msgid "Choose the address book to use when adding addresses."
+msgstr "Vali aadressiraamat kuhu aadresse lisada."
+
+#: templates/prefs/sourceselect.inc:289
+msgid "Choose the order of address books to search when expanding addresses."
+msgstr "Vali aadressiraamatute järjekord mida kasutada aadresside leidmiseks."
+
+#: lib/MIME/Viewer/images.php:103
+#, php-format
+msgid "Click %s to convert the image file into a format your browser can view."
+msgstr ""
+"Klõpsa %s, teisendamaks pilt kujule mida su veebilehitseja mõistab näidata."
+
+#: lib/MIME/Contents.php:425
+#, php-format
+msgid "Click %s to download the data."
+msgstr "Vajuta %s andmete salvestamiseks."
+
+#: lib/MIME/Viewer/images.php:92
+#, php-format
+msgid "Click %s to download the image."
+msgstr "Klõpsa %s pildi salvestamiseks."
+
+#: lib/Filter.php:131
+#, php-format
+msgid "Click %s to go to %s management page."
+msgstr "Klõpsa %s et minna %s halduse lehele."
+
+#: lib/MIME/Viewer/pkcs7.php:477
+#, php-format
+msgid "Click %s to view the attachment in a separate window."
+msgstr "Klõpsa %s, nägemaks lisandit eraldi aknas."
+
+#: lib/MIME/Viewer/related.php:85
+#, php-format
+msgid "Click %s to view this multipart/related part in a separate window."
+msgstr "Klõpsa %s, nägemaks seda multipart/related osa eraldi aknas."
+
+#: lib/MIME/Viewer/pgp.php:245 lib/MIME/Viewer/pgp.php:270
+#: lib/MIME/Viewer/pkcs7.php:217
+msgid "Click HERE to verify the message."
+msgstr "Vajuta SIIA kirja kontrollimiseks."
+
+#: templates/prefs/sourceselect.inc:319
+msgid ""
+"Click on one of your selected address books and then select all fields to "
+"search."
+msgstr ""
+"Klõpsa ühe oma valitud aadressiraamatu peal ja siis vali kõik väljad millest "
+"otsida."
+
+#: config/prefs.php.dist:1123
+msgid "Clicking on the address will compose a new message to the sender"
+msgstr "Aadressil klõpsates alustad uut kirja saatjale"
+
+#: config/prefs.php.dist:1124
+msgid "Clicking on the address will open the message to be read"
+msgstr "Aadressil klõpsates avad kirja lugemiseks"
+
+#: templates/newmsg/alert.html:17 templates/fetchmail/fetchmail.html:33
+msgid "Close"
+msgstr "Sule"
+
+#: compose.php:34
+msgid "Close this window"
+msgstr "Sule aken"
+
+#: lib/IMAP/Tree.php:2377
+msgid "Closed Folder"
+msgstr "Kaust suletud"
+
+#: folders.php:437
+msgid "Collapse"
+msgstr "Sule"
+
+#: folders.php:372
+msgid "Collapse All"
+msgstr "Sule kõik"
+
+#: folders.php:372
+msgid "Collapse All Folders"
+msgstr "Sule kõik kaustad"
+
+#: folders.php:437
+msgid "Collapse Folder"
+msgstr "Sule kaust"
+
+#: templates/fetchmail/fetchmailprefs.html:94
+msgid "Color Indicator:"
+msgstr "Värv:"
+
+#: config/prefs.php.dist:1161
+msgid "Combine all namespaces"
+msgstr "Kombineeri kõik nimeruumid"
+
+#: templates/pgp/pgp.html:100
+msgid "Comment:"
+msgstr "Kommentaar:"
+
+#: lib/MIME/Viewer/itip.php:933
+msgid "Completed"
+msgstr "Lõpetatud"
+
+#: compose.php:33
+msgid "Compose another message"
+msgstr "Kirjuta veel üks kiri"
+
+#: config/prefs.php.dist:490
+msgid "Compose messages in a separate window?"
+msgstr "Kirjuta kirjad eraldi aknas."
+
+#: config/prefs.php.dist:500
+msgid ""
+"Compose messages with an HTML GUI by default (if browser supports the "
+"feature)?"
+msgstr "Kirjuta kirjad HTML kujul (kui veebilehitseja seda võimaldab)"
+
+#: config/prefs.php.dist:73
+msgid "Configure how messages are displayed."
+msgstr "Määra, kuidas kirju näidatakse."
+
+#: config/prefs.php.dist:105
+msgid "Configure mail preview options."
+msgstr "Muuda kirja eelvaate määranguid."
+
+#: config/hooks.php.dist:428
+msgid "Contacts"
+msgstr "Kontaktid"
+
+#: config/prefs.php.dist:151
+#, php-format
+msgid "Control PGP support for %s."
+msgstr "Kontrolli %s PGP toetust."
+
+#: config/prefs.php.dist:160
+#, php-format
+msgid "Control S/MIME support for %s."
+msgstr "Kontrolli %s S/MIME toetust."
+
+#: config/prefs.php.dist:129
+msgid "Control options relating to messages searching."
+msgstr "Kirjade otsimise seaded"
+
+#: config/prefs.php.dist:97
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr ""
+"Määra, millal kontrollida uute kirjade saabumist ja kas anda sulle märku kui "
+"nad saabuvad."
+
+#: config/prefs.php.dist:810
+msgid "Convert textual emoticons into graphical ones?"
+msgstr "Teisenda tekstikujul emotikonid graafilisteks"
+
+#: mailbox.php:477 mailbox.php:869 message.php:503 message.php:690
+msgid "Copy"
+msgstr "Kopeeri"
+
+#: mailbox.php:477 mailbox.php:869 message.php:503 message.php:690
+msgid "Copy to folder"
+msgstr "Kopeeri kausta"
+
+#: lib/Compose.php:1861
+#, php-format
+msgid "Could not attach %s to the message."
+msgstr "Ei õnnestunud lisada %s kirjale."
+
+#: lib/IMAP/Client.php:189
+#, php-format
+msgid "Could not complete request. Reason Given: %s"
+msgstr "Päring nurjus. Põhjus: %s"
+
+#: attachment.php:50
+#, php-format
+msgid "Could not create the VFS backend: %s"
+msgstr "Ei saanud luua VFS süsteemi: %s"
+
+#: lib/Message.php:784
+#, php-format
+msgid "Could not delete messages from %s. The server said: %s"
+msgstr "Ei õnnestunud kustutada kirju %s-st. Server ütles: %s"
+
+#: lib/Session.php:324
+msgid "Could not execute maintenance operations."
+msgstr "Hooldustööde käivitamine nurjus."
+
+#: lib/MIME/Viewer/tnef.php:53
+msgid "Could not extract the requested file from the MS-TNEF attachment."
+msgstr "Soovitud faili ei saanud MS-TNEF lisandist kätte."
+
+#: lib/MIME/Viewer/zip.php:56
+msgid "Could not extract the requested file from the Zip archive."
+msgstr "Soovitud faili ei saanud Zip arhiivist kätte."
+
+#: lib/Spam.php:231
+msgid ""
+"Could not move message to spam mailbox - no spam mailbox defined in "
+"preferences."
+msgstr ""
+"Ei saanud liigutada maili SPAMi kausta - SPAMi kaust on defineerimata "
+"seadetes."
+
+#: lib/IMAP/Client.php:318
+msgid "Could not open secure connection to the IMAP server."
+msgstr "Ei õnnestunud turvalist ühendust IMAP serveriga."
+
+#: lib/Session.php:279
+msgid "Could not retrieve namespace information from IMAP server."
+msgstr "Ei saanud kätte IMAP serveri nimeinfot."
+
+#: compose.php:51
+msgid "Could not retrieve the message from the mail server."
+msgstr "Ei õnnestunud tõmmata kirja mailiserverist"
+
+#: lib/Compose.php:1023
+#, php-format
+msgid "Could not save recipients: %s"
+msgstr "Ei õnnestunud salvestada saajat: %s"
+
+#: lib/Template.php:230
+#, php-format
+msgid "Could not save the compiled template file '%s'."
+msgstr "Ei õnnestunud salvestada malli faili %s."
+
+#: templates/folders/actions.html:14
+#: templates/fetchmail/fetchmailprefs.html:121
+msgid "Create"
+msgstr "Salvesta"
+
+#: lib/IMAP/ACL/rfc2086.php:55
+msgid "Create Folder"
+msgstr "Loo kaust"
+
+#: lib/IMAP/ACL/rfc4314.php:55
+msgid "Create Folders"
+msgstr "Loo kaust"
+
+#: templates/pgp/pgp.html:135
+msgid "Create Keys"
+msgstr "Loo võtmed"
+
+#: templates/fetchmail/fetchmailprefs.html:28
+msgid "Create a New Account"
+msgstr "Loo uus konto"
+
+#: templates/prefs/spamselect.inc:11 templates/prefs/spamselect.inc:20
+msgid "Create a new Spam folder"
+msgstr "Loo uus rämpsposti kaust"
+
+#: templates/prefs/folderselect.inc:11 templates/prefs/folderselect.inc:22
+msgid "Create a new drafts folder"
+msgstr "Loo uus mustandite kaust"
+
+#: templates/prefs/sentmailselect.inc:25 templates/prefs/sentmailselect.inc:40
+msgid "Create a new sent mail folder"
+msgstr "Loo uus saadetud kirjade kaust"
+
+#: templates/prefs/trashselect.inc:11 templates/prefs/trashselect.inc:20
+msgid "Create a new trash folder"
+msgstr "Loo uus prügikaust"
+
+#: templates/fetchmail/fetchmail.html:23
+msgid "Create an account"
+msgstr "Loo uus konto"
+
+#: config/prefs.php.dist:136
+msgid ""
+"Create filtering rules to organize your incoming mail, sort it into folders, "
+"and delete spam."
+msgstr ""
+"Loo filtreerimisreeglid et korrastada oma saabuvat posti, sorteerida see "
+"kaustadesse ja kustutada rämpspost."
+
+#: templates/stationery/stationery.html:14
+msgid "Create new stationery"
+msgstr "Loo uus kirjamall"
+
+#: config/prefs.php.dist:555
+msgid "Create stationery and form responses."
+msgstr "Kirjamallide loomine"
+
+#: templates/compose/compose.html:307
+msgid "Current Attachments"
+msgstr "Manused"
+
+#: acl.php:176
+#, php-format
+msgid "Current access to %s"
+msgstr "Praegune juurdepääs %s-le"
+
+#: config/prefs.php.dist:1174
+msgid "Current expanded status in the folders view"
+msgstr "Praegune laiendatud staatus kaustade vaates"
+
+#: config/prefs.php.dist:113
+msgid "Customize accounts for fetching mail from other accounts."
+msgstr "Määra kontod mujalt posti tirimiseks."
+
+#: config/prefs.php.dist:55
+msgid "Customize how you send mail."
+msgstr "Määra, kuidas saata kirju."
+
+#: config/prefs.php.dist:41
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Korralda töid mida tehakse %s-i sisselogimisel automaatselt."
+
+#: mailbox.php:573 lib/Block/mailbox.php:147
+msgid "Dat_e"
+msgstr "_Kuupäev"
+
+#: lib/UI/Message.php:24
+msgid "Date"
+msgstr "Kuupäev"
+
+#: lib/Search.php:686
+msgid "Date <"
+msgstr "Kuupäev <"
+
+#: lib/Search.php:682
+msgid "Date ="
+msgstr "Kuupäev ="
+
+#: lib/Search.php:690
+msgid "Date >"
+msgstr "Kuupäev >"
+
+#: templates/thread/thread.html:27
+msgid "Date:"
+msgstr "Kuupäev:"
+
+#: templates/search/search.html:93
+msgid "Day"
+msgstr "Päev"
+
+#: lib/MIME/Viewer/itip.php:921
+msgid "Declined"
+msgstr "Tagasi lükatud"
+
+#: lib/MIME/Viewer/itip.php:267
+msgid "Declined: "
+msgstr "Tagasi lükatud: "
+
+#: config/prefs.php.dist:674
+msgid "Default"
+msgstr "Vaikimisi"
+
+#: config/prefs.php.dist:843
+msgid "Default (US-ASCII)"
+msgstr "Vaike (US-ASCII)"
+
+#: config/prefs.php.dist:605
+msgid "Default forwarding method:"
+msgstr "Vaikimisi edastamise meetod:"
+
+#: config/prefs.php.dist:1089
+msgid "Default sorting criteria:"
+msgstr "Vaikimisi otsingutingimus:"
+
+#: config/prefs.php.dist:1099
+msgid "Default sorting direction:"
+msgstr "Vaikimisi järjestuse suund:"
+
+#: lib/MIME/Viewer/itip.php:929
+msgid "Delegated"
+msgstr "Delegeeritud"
+
+#: mailbox.php:499 mailbox.php:501 folders.php:402 message.php:537
+#: lib/IMAP/ACL/rfc4314.php:57 templates/pgp/pgp.html:38
+#: templates/folders/actions.html:17
+#: templates/fetchmail/fetchmailprefs.html:122
+#: templates/contacts/contacts.html:66 templates/smime/smime.html:31
+msgid "Delete"
+msgstr "Kustuta"
+
+#: pgp.php:406 smime.php:314
+#, php-format
+msgid "Delete %s Public Key"
+msgstr "Kustuta %s avalik võti"
+
+#: templates/pgp/pgp.html:89 templates/smime/smime.html:79
+msgid "Delete Current Keys"
+msgstr "Kustuta võtmed"
+
+#: lib/IMAP/ACL/rfc4314.php:56
+msgid "Delete Folders"
+msgstr "Kustuta kaust(ad)"
+
+#: templates/folders/folders_confirm.html:22
+msgid "Delete Selected Folders"
+msgstr "Kustuta valitud kaustad"
+
+#: templates/stationery/stationery.html:44
+msgid "Delete Stationery"
+msgstr "Kustuta kirjamall"
+
+#: folders.php:402
+msgid "Delete Virtual Folder"
+msgstr "Kustuta virtuaalkaust"
+
+#: mailbox.php:419
+#, php-format
+msgid "Delete Virtual Folder Definition for %s"
+msgstr "Kustuta Virtuaalse kausta %s definitsioon"
+
+#: templates/fetchmail/fetchmailprefs.html:86
+msgid "Delete fetched messages from remote server?"
+msgstr "Kustuta tiritud kirjad välisest serverist"
+
+#: lib/MIME/Viewer/itip.php:668
+msgid "Delete from my calendar"
+msgstr "Kustuta minu kalendrist"
+
+#: config/prefs.php.dist:396
+msgid "Delete old linked attachments at beginning of month?"
+msgstr "Kustuta vanad lingitud lisandid kuu alguses"
+
+#: config/prefs.php.dist:350
+msgid "Delete old sent-mail folders at beginning of month?"
+msgstr "Kustuta vanad saadetud kirjade kaustad kuu alguses"
+
+#: config/prefs.php.dist:742
+msgid "Delete spam messages"
+msgstr "Kustuta rämpskirjad"
+
+#: lib/IMAP/ACL/rfc2086.php:56
+msgid "Delete/purge"
+msgstr "Kustuta"
+
+#: templates/compose/compose.html:335
+msgid "Delete?"
+msgstr "Kustuta?"
+
+#: mailbox.php:774 message.php:465 lib/Block/mailbox.php:319
+#: templates/mailbox/navbar.html:20 templates/mailbox/navbar.html:37
+msgid "Deleted"
+msgstr "Kustutatud"
+
+#: search.php:339
+msgid "Deleted messages"
+msgstr "Kustutatud kirjad"
+
+#: compose.php:214
+#, php-format
+msgid "Deleted the attachment \"%s\"."
+msgstr "Lisand \"%s\" kustutatud."
+
+#: config/prefs.php.dist:87
+msgid "Deleting and Moving Messages"
+msgstr "Kirjade kustutamine ja ümbertõstmine"
+
+#: lib/MIME/Viewer/itip.php:632
+msgid "Deny request"
+msgstr "Keeldu"
+
+#: lib/MIME/Viewer/itip.php:556
+msgid "Deny request for free/busy information"
+msgstr "Lükka tagasi vaba/hõivatud info päring"
+
+#: config/prefs.php.dist:1098
+msgid "Descending"
+msgstr "Kahanev"
+
+#: lib/MIME/Viewer/itip.php:715 lib/MIME/Viewer/itip.php:842
+msgid "Description"
+msgstr "Kirjeldus"
+
+#: templates/compose/compose.html:331
+msgid "Description:"
+msgstr "Kirjeldus:"
+
+#: templates/pgp/pgp.html:38 templates/pgp/pgp.html:75
+#: templates/pgp/pgp.html:80 templates/smime/smime.html:31
+#: templates/smime/smime.html:67
+msgid "Details"
+msgstr "Üksikasjad"
+
+#: lib/Compose.php:2671
+#, php-format
+msgid "Did not attach \"%s\" as it was only partially uploaded."
+msgstr "Ei lisanud manust \"%s\" kuna see oli poolikult ülesse laetud."
+
+#: lib/Compose.php:2680
+#, php-format
+msgid "Did not attach \"%s\" as the file was empty."
+msgstr "Ei lisanud manust \"%s\" kuna fail oli tühi."
+
+#: lib/Compose.php:2667
+#, php-format
+msgid ""
+"Did not attach \"%s\" as the maximum allowed upload size has been exceeded."
+msgstr ""
+"Ei lisanud manust \"%s\" kuna suurim lubatud ülesse laadimise limiit ületati."
+
+#: lib/Compose.php:2675
+#, php-format
+msgid ""
+"Did not attach \"%s\" as the server configuration did not allow the file to "
+"be uploaded."
+msgstr ""
+"Ei lisanud manust \"%s\" kuna serveri seaded keelavad failide ülesse "
+"laadimist."
+
+#: config/prefs.php.dist:802
+msgid "Dim signatures?"
+msgstr "Näita allkirja tuhmilt"
+
+#: templates/contacts/contacts.html:58
+msgid "Display"
+msgstr "Näita"
+
+#: config/prefs.php.dist:255
+msgid "Display Virtual Inbox?"
+msgstr "Näita Virtuaalset Sisend kausta?"
+
+#: config/prefs.php.dist:577
+msgid "Display confirmation after sending a message?"
+msgstr "Näita pärast kirja saatmist kinnitust"
+
+#: config/prefs.php.dist:819
+msgid "Display in Body of Message"
+msgstr "Kirja sees"
+
+#: config/prefs.php.dist:954
+msgid "Display pop-up notification of new mail?"
+msgstr "Anna märku uute kirjade saabumisest."
+
+#: config/prefs.php.dist:919
+msgid "Display the \"Empty Spam\" link in the menubar?"
+msgstr "Näita menüüribal \"Eemalda rämpspost\" linki"
+
+#: config/prefs.php.dist:911
+msgid "Display the \"Empty Trash\" link in the menubar?"
+msgstr "Näita menüüribal \"Tühjenda prügikast\" linki"
+
+#: templates/compose/compose.html:322
+msgid "Disposition:"
+msgstr "Paigutus:"
+
+#: templates/search/search.html:82
+msgid "Do NOT match"
+msgstr "EI sisalda"
+
+#: templates/folders/actions.html:28
+msgid "Do Not Check for New Mail"
+msgstr "Ära kontrolli värsket posti"
+
+#: config/prefs.php.dist:1125
+msgid "Do not generate a link in the From: column"
+msgstr "Ära tekita Kellelt: veerus linki"
+
+#: templates/javascript_defs.php:35
+msgid "Doing so will discard this message permanently."
+msgstr "Nii tehes kustutate selle maili igaveseks."
+
+#: login.php:411
+msgid "Don't have an account? Sign up."
+msgstr "Sul pole kasutajakontot? Registreeru."
+
+#: templates/folders/actions.html:32
+msgid "Download"
+msgstr "Salvesta"
+
+#: lib/MIME/Contents.php:239
+#, php-format
+msgid "Download %s in .zip Format"
+msgstr "Salvesta %s .zip vormingus"
+
+#: message.php:662
+msgid "Download All Attachments (in .zip file)"
+msgstr "Salvesta kõik lisandid (.zip failina)"
+
+#: templates/folders/actions.html:33
+msgid "Download [.zip format]"
+msgstr "Salvesta [.zip vormingus]"
+
+#: lib/MIME/Contents.php:239
+msgid "Download in .zip Format"
+msgstr "Salvesta .zip vormingus"
+
+#: mailbox.php:756 message.php:463 lib/Block/mailbox.php:301
+#: templates/mailbox/navbar.html:22 templates/mailbox/navbar.html:40
+#: templates/message/navbar_navigate.html:14
+msgid "Draft"
+msgstr "Mustand"
+
+#: lib/IMAP/Tree.php:2332
+msgid "Draft folder"
+msgstr "Mustandite kaust"
+
+#: templates/prefs/folderselect.inc:19
+msgid "Drafts folder:"
+msgstr "Mustandite kaust:"
+
+#: login.php:288
+msgid "Dynamic"
+msgstr "Dynamic"
+
+#: templates/pgp/pgp.html:105
+msgid "E-mail Address:"
+msgstr "Maili aadress:"
+
+#: mailbox.php:808 lib/Block/mailbox.php:353
+msgid "END"
+msgstr "LÕPP"
+
+#: lib/MIME/Viewer/status.php:73
+msgid "ERROR: Your message could not be delivered."
+msgstr "VIGA: kirja ei õnnestunud kätte toimetada."
+
+#: folders.php:403 templates/stationery/stationery.html:19
+msgid "Edit"
+msgstr "Muuda"
+
+#: mailbox.php:422
+msgid "Edit Search Query"
+msgstr "Muuda päringut"
+
+#: folders.php:403 templates/search/search.html:17
+msgid "Edit Virtual Folder"
+msgstr "Muuda virtuaalset kausta"
+
+#: mailbox.php:418
+#, php-format
+msgid "Edit Virtual Folder Definition for %s"
+msgstr "Muuda %s virtuaalse kausta määratlust"
+
+#: filterprefs.php:90
+msgid "Edit your Blacklist"
+msgstr "Muuda musta nimekirja"
+
+#: filterprefs.php:89
+msgid "Edit your Filter Rules"
+msgstr "Muuda filtreerimisreegleid"
+
+#: filterprefs.php:91
+msgid "Edit your Whitelist"
+msgstr "Muuda valget nimekirja"
+
+#: config/prefs.php.dist:1027
+msgid "Edit your preferences for accessing other mail accounts."
+msgstr "Muuda välistele e-posti kontodele juurdepääsu seadeid."
+
+#: templates/contacts/contacts.html:61
+msgid "Email Address"
+msgstr "E-posti aadress"
+
+#: lib/Message.php:801
+#, php-format
+msgid "Emptied all messages from %s."
+msgstr "Kõik kirjad %s-st said kustutatud."
+
+#: lib/Message.php:777
+msgid "Emptied all messages from Virtual Trash Folder."
+msgstr "Kõik kirjad %s-st said kustutatud."
+
+#: templates/folders/actions.html:18
+msgid "Empty"
+msgstr "Tühjenda"
+
+#: templates/folders/folders_confirm.html:22
+msgid "Empty Selected Folders"
+msgstr "Tühjenda märgitud kaustad"
+
+#: lib/IMP.php:809
+msgid "Empty _Spam"
+msgstr "Tühjenda _Rämpspost"
+
+#: lib/IMP.php:801
+msgid "Empty _Trash"
+msgstr "Tühjenda _prügikast"
+
+#: mailbox.php:415
+msgid "Empty folder"
+msgstr "Tühjenda kaust"
+
+#: pgp.php:457 templates/pgp/pgp.html:2
+msgid "Enable PGP functionality?"
+msgstr "Võimalda PGP kasutamine"
+
+#: smime.php:350 templates/smime/smime.html:2
+msgid "Enable S/MIME functionality?"
+msgstr "Võimalda S/MIME kasutamine"
+
+#: config/prefs.php.dist:978
+msgid "Enable message previews?"
+msgstr "Luba näidata kirja eelvaadet"
+
+#: compose.php:1068
+msgid "Encr_yption Options"
+msgstr "_Krüptimise seaded"
+
+#: lib/MIME/Viewer/itip.php:530 lib/MIME/Viewer/itip.php:532
+#: lib/MIME/Viewer/itip.php:700 lib/MIME/Viewer/itip.php:702
+msgid "End"
+msgstr "Lõpp"
+
+#: lib/Compose.php:1580
+msgid "End forwarded message"
+msgstr "Edastatud kirja lõpp"
+
+#: lib/Compose.php:1470
+msgid "End message"
+msgstr "Kirja lõpp"
+
+#: lib/Compose.php:1468
+#, php-format
+msgid "End message from %s"
+msgstr "%s kirja lõpp"
+
+#: pgp.php:432 smime.php:338
+msgid "Enter Passphrase"
+msgstr "Sisesta salasõna"
+
+#: templates/prefs/spamselect.inc:8
+msgid "Enter the name for your new Spam folder"
+msgstr "Sisesta uue rämpsposti kausta nimi"
+
+#: templates/prefs/folderselect.inc:8
+msgid "Enter the name for your new drafts folder"
+msgstr "Sisesta uue mustandite kausta nimi"
+
+#: templates/prefs/sentmailselect.inc:22
+msgid "Enter the name for your new sent mail folder"
+msgstr "Sisesta uue saadetud kirjade kausta nimi"
+
+#: templates/prefs/trashselect.inc:8
+msgid "Enter the name for your new trash folder"
+msgstr "Sisesta uue prügikausta nimi"
+
+#: message.php:552 lib/Search.php:678 config/prefs.php.dist:602
+msgid "Entire Message"
+msgstr "Kogu kiri"
+
+#: thread.php:71 message.php:168 lib/Compose.php:1064
+#, php-format
+msgid "Entry \"%s\" was successfully added to the address book"
+msgstr "\"%s\" lisati aadressiraamatusse"
+
+#: lib/MIME/Viewer/pgp.php:435 lib/MIME/Viewer/pkcs7.php:434
+#: lib/MIME/Viewer/status.php:71 lib/MIME/Viewer/status.php:162
+msgid "Error"
+msgstr "Viga"
+
+#: lib/IMAP/Client.php:303 lib/IMAP/Client.php:323
+#, php-format
+msgid "Error connecting to IMAP server: [%s] %s."
+msgstr "Viga IMAP serveriga ühendumisel. %s: %s."
+
+#: lib/MIME/Contents.php:142
+msgid "Error displaying message."
+msgstr "Viga kirja näitamisel."
+
+#: lib/MIME/Viewer/itip.php:314 lib/MIME/Viewer/itip.php:418
+#, php-format
+msgid "Error sending reply: %s."
+msgstr "Viga vastuse saatmisel: %s."
+
+#: templates/pgp/pgp.html:32 templates/smime/smime.html:25
+msgid "Error:"
+msgstr "Viga:"
+
+#: lib/MIME/Viewer/itip.php:104
+msgid "Event successfully deleted."
+msgstr "Sündmus õnnestus kustutada."
+
+#: config/prefs.php.dist:943
+msgid "Every 15 minutes"
+msgstr "Iga 15 minuti tagant"
+
+#: config/prefs.php.dist:940
+msgid "Every 30 seconds"
+msgstr "Iga 30 sekundi tagant"
+
+#: config/prefs.php.dist:656 config/prefs.php.dist:942
+msgid "Every 5 minutes"
+msgstr "Iga 5 minuti tagant"
+
+#: config/prefs.php.dist:944
+msgid "Every half hour"
+msgstr "Iga poole tunni tagant"
+
+#: config/prefs.php.dist:941
+msgid "Every minute"
+msgstr "Kord minutis"
+
+#: folders.php:448
+msgid "Expand"
+msgstr "Ava"
+
+#: folders.php:371
+msgid "Expand All"
+msgstr "Ava kõik"
+
+#: folders.php:371
+msgid "Expand All Folders"
+msgstr "Ava kõik kaustad"
+
+#: folders.php:448
+msgid "Expand Folder"
+msgstr "Ava kaust"
+
+#: compose.php:777 compose.php:1013
+msgid "Expand Names"
+msgstr "Lahenda nimed"
+
+#: config/prefs.php.dist:1153
+msgid "Expand the entire folder tree by default in the folders view?"
+msgstr "Kaustade vaates ava vaikimisi terve kaustapuu"
+
+#: config/prefs.php.dist:1175
+msgid "Expand the entire folder tree by default in the sidebar?"
+msgstr "Kaustade vaates ava vaikimisi terve kaustapuu?"
+
+#: lib/IMP.php:820 lib/IMP.php:822
+msgid "F_etch Mail"
+msgstr "_Tiri kirju"
+
+#: fetchmail.php:50 config/prefs.php.dist:112
+#: templates/fetchmail/fetchmail.html:6 templates/fetchmail/fetchmail.html:30
+msgid "Fetch Mail"
+msgstr "Kirjade tirimine"
+
+#: config/prefs.php.dist:1035
+msgid "Fetch Mail in a separate window?"
+msgstr "Tiri kirju eraldi aknas."
+
+#: templates/fetchmail/fetchmailprefs.html:89
+msgid "Fetch messages upon logging on?"
+msgstr "Tiri kirjad sisselogimisel"
+
+#: lib/Fetchmail.php:285
+#, php-format
+msgid "Fetched %d messages from %s"
+msgstr "Tirisin %d kirja kontolt %s"
+
+#: lib/Fetchmail.php:283
+#, php-format
+msgid "Fetched 1 message from %s"
+msgstr "Tirisin 1 kirja kontolt %s"
+
+#: lib/Fetchmail.php:281 lib/Fetchmail.php:283 lib/Fetchmail.php:285
+msgid "Fetchmail: "
+msgstr "Fetchmail:"
+
+#: lib/Fetchmail.php:287
+msgid "Fetchmail: no new messages."
+msgstr "Fetchmail: uusi kirju pole."
+
+#: lib/IMP.php:826
+msgid "Fi_lters"
+msgstr "_Filtrid"
+
+#: templates/prefs/sourceselect.inc:329
+msgid "Fields to search"
+msgstr "Väljad millest otsida"
+
+#: templates/javascript_defs.php:40 templates/compose/compose.html:261
+msgid "File"
+msgstr "Fail"
+
+#: templates/filters/prefs.html:48
+msgid "Filter Options"
+msgstr "Filtreerimise seaded"
+
+#: templates/filters/prefs.html:36
+msgid "Filter Settings"
+msgstr "Filtri seaded"
+
+#: config/prefs.php.dist:725
+msgid "Filter message content for profanity?"
+msgstr "Filtreeri kirjade sisu."
+
+#: templates/filters/prefs.html:11
+msgid "Filter support is disabled on this system."
+msgstr "Filtrite kasutamise võimalus selles süsteemis puudub."
+
+#: config/prefs.php.dist:135
+msgid "Filters"
+msgstr "Filtrid"
+
+#: templates/filters/prefs.html:3
+msgid "Filters NOT Active"
+msgstr "Filtrid EI OLE aktiivsed."
+
+#: lib/Filter.php:130
+#, php-format
+msgid "Filters: %s management page"
+msgstr "Filtrid: %s halduse leht"
+
+#: templates/contacts/contacts.html:13
+msgid "Find:"
+msgstr "Leia:"
+
+#: config/prefs.php.dist:1071
+msgid "First Mailbox Page"
+msgstr "Postkasti esimene lehekülg"
+
+#: mailbox.php:269
+msgid "First Page"
+msgstr "Esimene lehekülg"
+
+#: mailbox.php:769 message.php:464 templates/mailbox/navbar.html:32
+#: templates/message/navbar_navigate.html:10
+msgid "Flagged For Followup"
+msgstr "Lipustatud Järgnevuseks"
+
+#: search.php:334
+msgid "Flagged messages"
+msgstr "Lipustatud kirjad"
+
+#: mailbox.php:524 message.php:551
+msgid "Fo_rward"
+msgstr "_Edasta"
+
+#: lib/Block/mailbox.php:455 lib/IMAP/Tree.php:2377
+#: templates/folders/folders_size.html:5
+msgid "Folder"
+msgstr "Kaust"
+
+#: folders.php:254 templates/folders/folders_confirm.html:5
+msgid "Folder Actions - Confirmation"
+msgstr "Kaustatoimingud - kinnitus"
+
+#: folders.php:311 templates/prefs/initialpageselect.inc:11
+#: templates/folders/head.html:2
+msgid "Folder Navigator"
+msgstr "Kaustasirvija"
+
+#: folders.php:273 templates/folders/folders_size.html:1
+msgid "Folder Sizes"
+msgstr "Kaustade suurused"
+
+#: lib/Block/summary.php:3
+msgid "Folder Summary"
+msgstr "Kaustade ülevaade"
+
+#: acl.php:25
+msgid "Folder sharing is not enabled."
+msgstr "Kaustade jagamine pole võimalik."
+
+#: folders.php:47
+msgid "Folder use is not enabled."
+msgstr "Kaustade kasutamine pole võimalik."
+
+#: config/prefs.php.dist:1142
+msgid "Format of message dates in the mailbox view for messages dated today"
+msgstr "Tänaste kirjade kuupäeva esitus postkasti vaates"
+
+#: mailbox.php:524 message.php:551 lib/Compose.php:1563
+msgid "Forward"
+msgstr "Edasta"
+
+#: lib/Compose.php:1549
+msgid "Forward:"
+msgstr "Edasta:"
+
+#: lib/Compose.php:1663
+msgid "Forwarded Message:"
+msgstr "Edastatud kiri:"
+
+#: lib/Compose.php:1576
+msgid "Forwarded message"
+msgstr "Edastatud kiri"
+
+#: lib/Compose.php:1574
+#, php-format
+msgid "Forwarded message from %s"
+msgstr "Edastatud kiri %s'lt"
+
+#: lib/MIME/Viewer/itip.php:412
+msgid "Free/Busy Request Response"
+msgstr "Vastus vaba/hõivatud päringule"
+
+#: mailbox.php:583 lib/Block/mailbox.php:157
+msgid "Fro_m"
+msgstr "Kellel_t"
+
+#: lib/Search.php:654 lib/UI/Mailbox.php:97 lib/UI/Message.php:25
+#: templates/thread/thread.html:32 templates/compose/compose.html:27
+msgid "From"
+msgstr "Kellelt"
+
+#: config/prefs.php.dist:1084
+msgid "From Address"
+msgstr "Saatja aadress"
+
+#: templates/saveimage/saveimage.html:12
+msgid "Gallery"
+msgstr "Galerii:"
+
+#: config/prefs.php.dist:13 config/prefs.php.dist:22 config/prefs.php.dist:31
+#: config/prefs.php.dist:39
+msgid "General Options"
+msgstr "Muud seaded"
+
+#: templates/fetchmail/fetchmailprefs.html:80
+msgid "Get only new messages? (IMAP only)"
+msgstr "Tiri ainult uued kirjad (ainult IMAP)"
+
+#: folders.php:358 lib/MIME/Viewer/itip.php:568 lib/MIME/Viewer/itip.php:772
+#: lib/MIME/Viewer/itip.php:899
+msgid "Go"
+msgstr "Mine"
+
+#: thread.php:136
+msgid "Go to Message"
+msgstr "Kirja juurde"
+
+#: templates/newmsg/alert.html:11
+msgid "Go to Virtual Inbox"
+msgstr "Liigu Virtuaalsesse Sisend kausta"
+
+#: lib/IMP.php:353
+#, php-format
+msgid "Go to address book entry of \"%s\""
+msgstr "Ava \"%s\" kanne aadressiraamatus"
+
+#: message.php:432 lib/Filter.php:130 lib/MIME/Contents.php:425
+#: lib/MIME/Viewer/images.php:92 lib/MIME/Viewer/images.php:99
+#: lib/MIME/Viewer/images.php:101 lib/MIME/Viewer/appledouble.php:40
+#: lib/MIME/Viewer/pkcs7.php:477 lib/MIME/Viewer/status.php:119
+#: lib/MIME/Viewer/status.php:128 lib/MIME/Viewer/notification.php:60
+#: lib/MIME/Viewer/notification.php:66 lib/MIME/Viewer/related.php:85
+msgid "HERE"
+msgstr "SIIN"
+
+#: lib/MIME/Viewer/related.php:86 templates/stationery/stationery.html:32
+msgid "HTML"
+msgstr "HTML"
+
+#: lib/Compose.php:450
+msgid "HTML Version of Message"
+msgstr "Kirja HTML variant"
+
+#: message.php:601
+msgid "Headers"
+msgstr "Päised"
+
+#: templates/login/recompose.html:7
+msgid "Here is the message you were composing:"
+msgstr "Siin on kiri mis sul pooleli jäi:"
+
+#: config/prefs.php.dist:793
+msgid "Hidden"
+msgstr "Peidetud"
+
+#: config/prefs.php.dist:792
+msgid "Hidden in Thread View"
+msgstr "Jutulõnga vaates peidetud"
+
+#: templates/javascript_defs.php:29
+msgid "Hide Addresses"
+msgstr "Peida aadressid"
+
+#: lib/Block/mailbox.php:459
+msgid "Hide Columns"
+msgstr "Peida veerud"
+
+#: mailbox.php:250
+msgid "Hide Deleted"
+msgstr "Peida kustutatud"
+
+#: folders.php:364
+msgid "Hide Unsubscribed"
+msgstr "Peida tellimata"
+
+#: compose.php:985
+msgid "High"
+msgstr "Kõrge"
+
+#: mailbox.php:761 message.php:282 lib/Block/mailbox.php:306
+msgid "High Priority"
+msgstr "Kõrge prioriteet"
+
+#: compose.php:984
+msgid "Highest"
+msgstr "Kõrgeim"
+
+#: config/prefs.php.dist:821
+msgid "How do you want to display attachments?"
+msgstr "Kuidas soovid lisandeid näidata?"
+
+#: config/prefs.php.dist:1163
+msgid "How should namespaces be displayed in the folder tree view?"
+msgstr "Kuidas peaks nimeruum olema näidatud kausta vaates?"
+
+#: config/prefs.php.dist:630
+msgid "How to attribute quoted lines in a reply"
+msgstr "Kuidas alustada tsiteeritud teksti vastuses"
+
+#: lib/IMAP.php:305
+msgid "IMAP"
+msgstr "IMAP"
+
+#: lib/Fetchmail/imap.php:97
+msgid "IMAP (Auto Detect Protocols)"
+msgstr "IMAP (protokolli automaattuvastus)"
+
+#: lib/IMAP/Client.php:200
+#, php-format
+msgid "IMAP Server closed the connection. Server Responded: %s"
+msgstr "IMAP server katkestas ühenduse. Server vastas: %s"
+
+#: lib/IMAP.php:317
+msgid "IMAP over SSL"
+msgstr "IMAP üle SSLi"
+
+#: lib/IMAP.php:323
+msgid "IMAP over SSL (self-signed certificate)"
+msgstr "IMAP üle SSLi (iseallkirjastatud sertifikaat)"
+
+#: lib/IMAP.php:311
+msgid "IMAP, no TLS"
+msgstr "IMAP ilma TLSita"
+
+#: lib/Fetchmail/imap.php:47
+msgid "IMAP/POP3 Mail Servers"
+msgstr "IMAP/POP3 postiserverid"
+
+#: lib/IMAP/Client.php:283
+msgid "If using SSL or TLS, you must have the PHP openssl extension loaded."
+msgstr "SSL või TLS kasutamiseks peab olema laetud PHP openssl laiendus."
+
+#: templates/folders/folders_confirm.html:12
+msgid "If you continue, all messages in the folder(s) will be lost!"
+msgstr "Kui jätkad, hävivad kõik kirjad kausta(de)s!"
+
+#: saveimage.php:48
+msgid "Image"
+msgstr "Pilt"
+
+#: lib/MIME/Viewer/html.php:156
+msgid "Images have been blocked to protect your privacy."
+msgstr "Pildid on eemaldatud sinu enda kaitseks."
+
+#: templates/folders/import.html:16
+msgid "Import"
+msgstr "Import"
+
+#: templates/pgp/import_key.html:48 templates/smime/import_key.html:69
+msgid "Import Key"
+msgstr "Impordi võti"
+
+#: templates/pgp/pgp.html:137 templates/smime/smime.html:85
+msgid "Import Keypair"
+msgstr "Impordi võtmepaar"
+
+#: templates/folders/actions.html:35
+msgid "Import Messages"
+msgstr "Impordi kirjad"
+
+#: pgp.php:50
+msgid "Import PGP Key"
+msgstr "Impordi PGP võti"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Personal Private PGP Key"
+msgstr "Impordi isiklik salajane PGP võti"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Personal Private PGP Key Here:"
+msgstr "Impordi isiklik salajane PGP võti:"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Personal Public PGP Key"
+msgstr "Impordi isiklik avalik PGP võti"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Personal Public PGP Key Here:"
+msgstr "Impordi isiklik avalik PGP võti:"
+
+#: templates/smime/import_key.html:11
+msgid "Import Personal S/MIME Certificates"
+msgstr "Impordi isiklikud S/MIME sertifikaadid"
+
+#: templates/pgp/pgp.html:54 templates/smime/smime.html:47
+msgid "Import Public Key"
+msgstr "Impordi avalik võti"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Public PGP Key"
+msgstr "Impordi avalik PGP võti"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Public PGP Key Here:"
+msgstr "Impordi avalik PGP võti:"
+
+#: templates/smime/import_key.html:11
+msgid "Import Public S/MIME Key"
+msgstr "Impordi avalik S/MIME võti"
+
+#: smime.php:16
+msgid "Import S/MIME Key"
+msgstr "Impordi S/MIME võti"
+
+#: templates/folders/import.html:6
+msgid "Import mbox File"
+msgstr "Impordi mbox fail"
+
+#: templates/folders/import.html:11
+msgid "Import mbox file"
+msgstr "Impordi mbox fail"
+
+#: lib/Block/mailbox.php:314 templates/mailbox/navbar.html:16
+msgid "Important"
+msgstr "Tähtis"
+
+#: folders.php:142
+#, php-format
+msgid "Imported %d messages from %s."
+msgstr "Importisin %d kirja %s-st."
+
+#: lib/MIME/Viewer/itip.php:937
+msgid "In Process"
+msgstr "Käimas"
+
+#: templates/prefs/initialpageselect.inc:4 lib/IMP.php:685 lib/api.php:217
+#: lib/Folder.php:68 lib/IMAP/Tree.php:553 lib/IMAP/Tree.php:2315
+msgid "Inbox"
+msgstr "Inbox"
+
+#: config/prefs.php.dist:618
+msgid "Include a brief summary of the header in a reply?"
+msgstr "Kaasa vastusesse päiste lühikokkuvõte"
+
+#: config/prefs.php.dist:613
+msgid "Include body text in forward message by default?"
+msgstr "Lisa maili sisu edastavate kirjadesse vaikeväärtusena?"
+
+#: config/prefs.php.dist:585
+msgid "Include original message in a reply?"
+msgstr "Kaasa vastusesse algne kiri"
+
+#: lib/MIME/Viewer/status.php:131 lib/MIME/Viewer/notification.php:59
+msgid "Info"
+msgstr "Teave"
+
+#: pgp.php:405 smime.php:313
+#, php-format
+msgid "Information on %s Public Key"
+msgstr "Teave %s avaliku võtme kohta"
+
+#: pgp.php:434
+msgid "Information on Personal Private Key"
+msgstr "Teave isikliku salajase võtme kohta"
+
+#: pgp.php:428 smime.php:336
+msgid "Information on Personal Public Key"
+msgstr "Teave isikliku avaliku võtme kohta"
+
+#: templates/javascript_defs.php:42 templates/compose/compose.html:267
+#: templates/compose/compose.html:326
+msgid "Inline"
+msgstr "Kirja sees"
+
+#: lib/IMAP/ACL/rfc4314.php:53 lib/IMAP/ACL/rfc2086.php:53
+msgid "Insert"
+msgstr "Sisesta"
+
+#: templates/smime/import_key.html:19
+msgid "Insert Certificate Here:"
+msgstr "Sisesta siia sertifikaat:"
+
+#: lib/MIME/Viewer/itip.php:423
+msgid "Invalid Action selected for this component."
+msgstr "Valiti selle komponendi jaoks sobimatu tegevus."
+
+#: lib/UI/Mailbox.php:61 lib/UI/Mailbox.php:111
+msgid "Invalid Address"
+msgstr "Vigane aadress"
+
+#: lib/Fetchmail/imap.php:225
+msgid "Invalid Remote Mailbox"
+msgstr "Vigane väline postkast"
+
+#: lib/Compose.php:1109 lib/Compose.php:1128
+#, php-format
+msgid "Invalid character in e-mail address: %s."
+msgstr "Lubamatu märk e-posti aadressis: %s."
+
+#: lib/Compose.php:1124
+msgid "Invalid hostname."
+msgstr "Vigane nimi."
+
+#: pgp.php:18 smime.php:96
+msgid "Invalid key"
+msgstr "Vigane võti"
+
+#: lib/Compose.php:282
+msgid "Invalid message, cannot resume draft."
+msgstr "Vigane kiri, ei saa jätkata."
+
+#: pgp.php:202
+msgid "Invalid personal PGP private key."
+msgstr "Vigane isiklik salajane PGP võti."
+
+#: pgp.php:177
+msgid "Invalid personal PGP public key."
+msgstr "Vigane isiklik avalik PGP võti."
+
+#: templates/mailbox/navbar.html:12
+msgid "Invert"
+msgstr "Vastand"
+
+#: templates/compose/compose.html:307 templates/compose/compose.html:315
+msgid "KB"
+msgstr "KB"
+
+#: templates/pgp/pgp.html:110
+msgid "Key Length:"
+msgstr "Võtme pikkus:"
+
+#: pgp.php:448
+msgid ""
+"Key generation may take a long time to complete.  Continue with key "
+"generation?"
+msgstr "Võtme loomine võib võtta tükk aega. Kas jätkata võtme loomisega?"
+
+#: templates/pgp/pgp.html:49 templates/smime/smime.html:42
+msgid "Key import is not available. File upload is not enabled on this server."
+msgstr ""
+"Võtit ei saa importida. Sellesse serverisse pole võimalik faile laadida."
+
+#: templates/pgp/pgp.html:52 templates/smime/smime.html:45
+msgid ""
+"Key import is not available. You have no address book defined to add your "
+"contacts."
+msgstr ""
+"Võtit ei saa importida. Sa pole määranud aadressiraamatut, kuhu soovid "
+"aadresse lisada."
+
+#: pgp.php:344
+msgid "Key successfully sent to the public keyserver."
+msgstr "Võti saadeti avalikku võtmeserverisse."
+
+#: templates/login/login.html:116
+msgid "Language"
+msgstr "Keel"
+
+#: config/prefs.php.dist:1072
+msgid "Last Mailbox Page"
+msgstr "Postkasti viimane lehekülg"
+
+#: mailbox.php:281
+msgid "Last Page"
+msgstr "Viimane lehekülg"
+
+#: compose.php:1107
+msgid "Link Attachments?"
+msgstr "Lingi Manused?"
+
+#: attachment.php:34 lib/Compose.php:2362
+msgid "Linked attachments are forbidden."
+msgstr "Lisandite linkimine on keelatud."
+
+#: lib/Compose.php:2378
+#, php-format
+msgid "Links will expire on %s"
+msgstr "Lingid aeguvad %s"
+
+#: lib/IMAP/ACL/rfc4314.php:49 lib/IMAP/ACL/rfc2086.php:49
+msgid "List"
+msgstr "Nimekiri"
+
+#: config/prefs.php.dist:1261
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+"Aadresside ekraani avamisel näita aadresside loendit (kui välja lülitatud, "
+"näed ainult neid aadresse mida otsid)"
+
+#: config/prefs.php.dist:818
+msgid "Listing in the Header"
+msgstr "Ainult päistes"
+
+#: compose.php:763
+msgid "Loading..."
+msgstr "Laen..."
+
+#: templates/fetchmail/fetchmailprefs.html:72
+msgid "Local Mailbox:"
+msgstr "Kohalik kaust:"
+
+#: lib/MIME/Viewer/itip.php:720
+msgid "Location"
+msgstr "Koht"
+
+#: templates/login/mobile.inc:3 templates/login/mobile.inc:33
+msgid "Log in"
+msgstr "Logi sisse"
+
+#: lib/Block/summary.php:45
+#, php-format
+msgid "Log in to %s"
+msgstr "Logi sisse %s'i"
+
+#: login.php:407
+msgid "Login"
+msgstr "Logi sisse"
+
+#: config/prefs.php.dist:40
+msgid "Login Tasks"
+msgstr "Tööd sisselogimisel"
+
+#: compose.php:987
+msgid "Low"
+msgstr "Madal"
+
+#: mailbox.php:764 message.php:284 lib/Block/mailbox.php:309
+msgid "Low Priority"
+msgstr "Väheoluline"
+
+#: compose.php:988
+msgid "Lowest"
+msgstr "Madalaim"
+
+#: lib/MIME/Viewer/appledouble.php:43
+msgid "Macintosh File"
+msgstr "Macintoshi fail"
+
+#: config/prefs.php.dist:104
+msgid "Mail Previews"
+msgstr "Kirjade eelvaated"
+
+#: templates/fetchmail/fetchmailprefs.html:31
+msgid "Mail server type to connect to:"
+msgstr "Välise postiserveri tüüp:"
+
+#: lib/IMAP/Tree.php:2322 lib/IMAP/Tree.php:2349
+msgid "Mailbox"
+msgstr "Postkast"
+
+#: lib/Block/mailbox.php:6
+msgid "Mailbox View"
+msgstr "Postkasti Vaade"
+
+#: config/prefs.php.dist:119
+msgid "Mailbox and Folder Display Options"
+msgstr "Postkasti ja kaustade esituse seaded"
+
+#: lib/IMAP/ACL/rfc4314.php:52 lib/IMAP/ACL/rfc2086.php:52
+msgid "Mark (Other)"
+msgstr "Märgi (teised)"
+
+#: lib/IMAP/ACL/rfc4314.php:51 lib/IMAP/ACL/rfc2086.php:51
+msgid "Mark (Seen)"
+msgstr "Märgi (loetuks)"
+
+#: templates/folders/actions.html:30
+msgid "Mark All Messages as Seen"
+msgstr "Märgi kõik kirjad kaustas loetuks"
+
+#: templates/folders/actions.html:31
+msgid "Mark All Messages as Unseen"
+msgstr "Märgi kõik kirjad kaustas uuteks"
+
+#: templates/mailbox/navbar.html:27 templates/mailbox/navbar.html:29
+#: templates/message/navbar_navigate.html:6
+#: templates/message/navbar_navigate.html:8
+msgid "Mark as:"
+msgstr "Atribuudid:"
+
+#: config/prefs.php.dist:775
+msgid "Mark different levels of quoting with different colors?"
+msgstr "Tähista erinevad tsiteerimistasemed erineva värviga"
+
+#: templates/fetchmail/fetchmailprefs.html:83
+msgid "Mark messages as seen? (IMAP only)"
+msgstr "Märgi kirjad loetuks (ainult IMAP)"
+
+#: config/prefs.php.dist:783
+msgid "Mark simple markup?"
+msgstr "Näita HTML märgendeid"
+
+#: search.php:214
+msgid "Match All Queries"
+msgstr "kõigile tingimustele"
+
+#: search.php:212
+msgid "Match Any Query"
+msgstr "mõnele tingimusele"
+
+#: templates/compose/compose.html:273
+msgid "Maximum Attachment Size"
+msgstr "Lisandi suuruse piirmäär"
+
+#: lib/api.php:94
+msgid "Maximum Number of Folders"
+msgstr "Kaustade arvu piirmäär"
+
+#: lib/api.php:95
+msgid "Maximum Number of Recipients per Message"
+msgstr "Suurim saajate arv kirja kohta"
+
+#: lib/api.php:96
+msgid "Maximum Number of Recipients per Time Period"
+msgstr "Suurim saajate arv ajaühiku kohta"
+
+#: templates/compose/compose.html:255
+msgid "Maximum number of attachments reached."
+msgstr "Lisandite piirarv on täis."
+
+#: templates/compose/compose.html:252
+msgid "Maximum total attachment size reached."
+msgstr "Lisandite suuruse piirmäär on täis."
+
+#: lib/Block/tree_folders.php:3
+msgid "Menu Folder List"
+msgstr "Kaustade loendi menüü"
+
+#: lib/Compose.php:1461
+msgid "Message"
+msgstr "Kiri"
+
+#: config/prefs.php.dist:54
+msgid "Message Composition"
+msgstr "Kirja koostamine"
+
+#: config/prefs.php.dist:1083
+msgid "Message Date"
+msgstr "Kirja kuupäev"
+
+#: config/prefs.php.dist:53 config/prefs.php.dist:71 config/prefs.php.dist:86
+#: config/prefs.php.dist:95 config/prefs.php.dist:103
+#: config/prefs.php.dist:111
+msgid "Message Options"
+msgstr "Kirja seaded"
+
+#: search.php:407
+msgid "Message Search"
+msgstr "Otsi kirja"
+
+#: config/prefs.php.dist:1087
+msgid "Message Size"
+msgstr "Kirja suurus"
+
+#: message.php:572
+msgid "Message Source"
+msgstr "Kirja algtekst"
+
+#: config/prefs.php.dist:72
+msgid "Message Viewing"
+msgstr "Kirja vaatamine"
+
+#: lib/Compose.php:1459
+#, php-format
+msgid "Message from %s"
+msgstr "Kiri %s-lt"
+
+#: lib/UI/Mailbox.php:148
+msgid "Message has attachments"
+msgstr "Kirjal on lisandeid"
+
+#: lib/UI/Mailbox.php:147
+msgid "Message is encrypted"
+msgstr "Kiri on krüptitud"
+
+#: lib/UI/Mailbox.php:146
+msgid "Message is signed"
+msgstr "Kiri on allkirjastatud"
+
+#: compose.php:355 compose.php:362
+msgid "Message redirected successfully."
+msgstr "Kiri suunati edasi."
+
+#: lib/Compose.php:784
+#, php-format
+msgid "Message sent successfully, but not saved to %s"
+msgstr "Kiri saadeti teele kuid ei salvestatud %s-i"
+
+#: compose.php:420 compose.php:428
+msgid "Message sent successfully."
+msgstr "Kiri saadeti teele."
+
+#: config/prefs.php.dist:1114
+msgid "Messages per page in the mailbox view."
+msgstr "Korraga nähtavate kirjade arv leheküljel."
+
+#: mailbox.php:215
+msgid "Messages to"
+msgstr "märgitud kirjad kausta:"
+
+#: login.php:291
+msgid "Minimalist"
+msgstr "Minimalist"
+
+#: templates/login/login.html:129
+msgid "Mode"
+msgstr "Viis"
+
+#: templates/search/search.html:87
+msgid "Month"
+msgstr "Kuu"
+
+#: mailbox.php:476 mailbox.php:868 message.php:502 message.php:689
+msgid "Move"
+msgstr "Tõsta"
+
+#: templates/prefs/sourceselect.inc:314
+msgid "Move down"
+msgstr "Nihuta alla"
+
+#: config/prefs.php.dist:743
+msgid "Move spam messages to spam folder and innocent messages to INBOX"
+msgstr "Tõsta rämpskirjad rämpskirjade kausta ja korralikud kirjad INBOXi"
+
+#: mailbox.php:476 mailbox.php:868 message.php:502 message.php:689
+msgid "Move to folder"
+msgstr "Tõsta kausta"
+
+#: templates/prefs/sourceselect.inc:312
+msgid "Move up"
+msgstr "Nihuta üles"
+
+#: lib/MIME/Viewer/alternative.php:97
+msgid "Multipart/alternative"
+msgstr "Multipart/alternative"
+
+#: thread.php:158
+msgid "Multiple Message View"
+msgstr "Mitme kirja vaade"
+
+#: templates/pgp/pgp.html:4 templates/fetchmail/fetchmailprefs.html:91
+#: templates/smime/smime.html:4
+msgid "NOTE:"
+msgstr "TÄHELEPANU:"
+
+#: lib/MIME/Viewer/itip.php:726 lib/MIME/Viewer/itip.php:854
+#: templates/contacts/contacts.html:60
+msgid "Name"
+msgstr "Nimi"
+
+#: pgp.php:116
+msgid "Name and/or email cannot be empty"
+msgstr "Nimi ja/või aadress peab olema täidetud"
+
+#: lib/MIME/Viewer/itip.php:942
+msgid "Needs Action"
+msgstr "Vajab tähelepanu"
+
+#: config/prefs.php.dist:707 config/prefs.php.dist:939
+msgid "Never"
+msgstr "Mitte kunagi"
+
+#: config/prefs.php.dist:697
+msgid "Never save attachments"
+msgstr "Ära salvesta kunagi"
+
+#: lib/IMP.php:440
+msgid "New Folder"
+msgstr "Uus kaust"
+
+#: config/prefs.php.dist:96
+msgid "New Mail"
+msgstr "Värske post"
+
+#: compose.php:226 lib/Block/tree_folders.php:36
+msgid "New Message"
+msgstr "Uus kiri"
+
+#: mailbox.php:828 lib/Block/mailbox.php:373 lib/MIME/Headers.php:193
+#, php-format
+msgid "New Message to %s"
+msgstr "Uus kiri %s-le"
+
+#: search.php:325
+msgid "New messages"
+msgstr "Uued kirjad"
+
+#: message.php:518
+msgid "Next Message"
+msgstr "Järgmine kiri"
+
+#: mailbox.php:279
+msgid "Next Page"
+msgstr "Järgmine lehekülg"
+
+#: templates/javascript_defs.php:49 config/prefs.php.dist:655
+#: config/prefs.php.dist:1150 config/prefs.php.dist:1172
+#: templates/compose/compose.html:293
+msgid "No"
+msgstr "Ei"
+
+#: smime.php:241
+msgid "No Certificate found"
+msgstr "Sertifikaati ei leitud"
+
+#: lib/IMP.php:1346
+msgid "No Encryption"
+msgstr "Krüptimata"
+
+#: templates/pgp/pgp.html:29 templates/smime/smime.html:22
+msgid "No Keys in Keyring"
+msgstr "Võtmerõngas pole võtmeid"
+
+#: mailbox.php:258 rss.php:93
+#, php-format
+msgid "No Messages"
+msgstr "Kirju ei ole"
+
+#: pgp.php:143
+msgid "No PGP public key imported."
+msgstr "PGP avalikku võtit pole imporditud."
+
+#: mailbox.php:789 lib/Block/mailbox.php:334
+msgid "No Preview Text"
+msgstr "Eelvaates pole teksti"
+
+#: smime.php:166
+msgid "No S/MIME public key imported."
+msgstr "Avalikku S/MIME võtit pole imporditud."
+
+#: templates/prefs/soundselect.inc:5
+msgid "No Sound"
+msgstr "Heli puudub"
+
+#: lib/MIME/Viewer/tnef.php:91
+msgid "No attachments found."
+msgstr "Lisandeid ei leitud."
+
+#: lib/Crypt/SMIME.php:131
+msgid "No email information located in the public key."
+msgstr "Avalikus võtmes ei leitud e-posti infot."
+
+#: acl.php:76
+msgid "No folder selected."
+msgstr "Kaust pole valitud"
+
+#: lib/Block/summary.php:134
+msgid "No folders are being checked for new mail."
+msgstr "Uusi kirju ei jälgita üheski kaustas."
+
+#: folders.php:191 lib/Folder.php:437 lib/Folder.php:485
+msgid "No folders were specified"
+msgstr "Ühtki kausta ei määratud"
+
+#: lib/Block/summary.php:138
+msgid "No folders with new messages"
+msgstr "Üheski kaustas pole uusi kirju"
+
+#: lib/Block/summary.php:136
+msgid "No folders with unseen messages"
+msgstr "Üheski kaustas pole lugemata kirju"
+
+#: lib/Compose.php:1499
+msgid "No message body text"
+msgstr "Kirjal puudub tekst"
+
+#: lib/IMAP/Client.php:474
+msgid "No message returned."
+msgstr "Kirja ei tagastatud."
+
+#: mailbox.php:230
+msgid "No messages matched your search."
+msgstr "Otsingutingimustele ei vasta ükski kiri."
+
+#: pgp.php:195
+msgid "No personal PGP private key imported."
+msgstr "Isiklikku salajast PGP võtit pole imporditud."
+
+#: pgp.php:171
+msgid "No personal PGP public key imported."
+msgstr "Isiklikku avalikku PGP võtit pole imporditud."
+
+#: smime.php:216
+msgid "No personal S/MIME certificates imported."
+msgstr "Isiklikke S/MIME sertifikaate pole imporditud."
+
+#: lib/MIME/Viewer/pkcs7.php:299
+msgid ""
+"No personal private key exists so the message is unable to be decrypted."
+msgstr "Kirja ei õnnestu dekrüpteerida kuna puudub privaatvõti."
+
+#: lib/IMAP/Client.php:374
+msgid "No supported IMAP authentication method could be found."
+msgstr "Ei leitud ühtki sobivat IMAP autentimise meetodit."
+
+#: acl.php:108
+msgid "No user specified."
+msgstr "Kasutajat pole määratud."
+
+#: lib/MIME/Viewer/itip.php:747 lib/MIME/Viewer/itip.php:875
+msgid "Non Participant"
+msgstr "Mitteosaleja"
+
+#: templates/prefs/folderselect.inc:21 templates/prefs/trashselect.inc:20
+#: templates/prefs/sentmailselect.inc:38 templates/prefs/sourceselect.inc:35
+#: templates/prefs/spamselect.inc:20 lib/MIME/Viewer/itip.php:710
+#: lib/MIME/Viewer/itip.php:837 templates/mailbox/navbar.html:11
+msgid "None"
+msgstr "Mitte midagi"
+
+#: compose.php:986
+msgid "Normal"
+msgstr "Tavaline"
+
+#: templates/mailbox/navbar.html:21 templates/mailbox/navbar.html:38
+msgid "Not Deleted"
+msgstr "Mitte kustutatud"
+
+#: templates/mailbox/navbar.html:23 templates/mailbox/navbar.html:41
+#: templates/message/navbar_navigate.html:15
+msgid "Not Draft"
+msgstr "Mitte mustand"
+
+#: templates/mailbox/navbar.html:33 templates/message/navbar_navigate.html:11
+msgid "Not Flagged"
+msgstr "Mitte lipustatud"
+
+#: templates/mailbox/navbar.html:17
+msgid "Not Important"
+msgstr "Mitte tähtis"
+
+#: templates/mailbox/navbar.html:25
+msgid "Not Personal"
+msgstr "Mitte isiklik"
+
+#: lib/Crypt/SMIME.php:125 lib/Crypt/SMIME.php:140 lib/Crypt/PGP.php:136
+msgid "Not a valid public key."
+msgstr "Avalik võti pole korrektne."
+
+#: config/prefs.php.dist:856
+msgid "Not at all"
+msgstr "Mitte üldse"
+
+#: lib/Maintenance/Task/fetchmail_login.php:70
+msgid "Note that this can take some time"
+msgstr "Arvesta et see võib võtta veidi aega"
+
+#: lib/IMP.php:492
+msgid "Notepads"
+msgstr "Märkmikud"
+
+#: config/hooks.php.dist:420
+msgid "Notes"
+msgstr "Märkmed"
+
+#: config/prefs.php.dist:741
+msgid "Nothing"
+msgstr "Mitte midagi"
+
+#: attachment.php:108
+msgid "Notification: Linked attachment downloaded"
+msgstr "Teade anne: Lingitud manus on allalaetud"
+
+#: lib/Block/mailbox.php:451
+msgid "Number of messages to display"
+msgstr "Mitu kirja näidata"
+
+#: config/prefs.php.dist:405
+msgid "Number of months to keep old linked attachments if deleting monthly."
+msgstr "Mitu kuud säilitada vanu lingitud lisandeid igakuisel kustutamisel"
+
+#: config/prefs.php.dist:359
+msgid "Number of old sent-mail folders to keep if deleting monthly."
+msgstr ""
+"Säilitatavate vanade saadetud kirjade kaustade arv igakuisel kustutamisel"
+
+#: templates/contacts/contacts.html:75
+msgid "OK"
+msgstr "OK"
+
+#: templates/search/search.html:61 templates/pgp/import_key.html:30
+#: templates/smime/import_key.html:31
+msgid "OR"
+msgstr "VÕI"
+
+#: search.php:324
+msgid "Old messages"
+msgstr "Vanad kirjad"
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:51
+msgid "Old sent-mail folders being purged."
+msgstr "Vanad saadetud kirjade kaustad tühjendatakse."
+
+#: lib/Block/summary.php:27
+msgid "Only display folders with unread messages in them?"
+msgstr "Näita ainult kaustu mis sisaldavad lugemata kirju"
+
+#: templates/javascript_defs.php:58
+msgid "Only one folder should be selected for this action."
+msgstr "Palun vali selleks operatsiooniks ainult üks kaust."
+
+#: lib/IMP.php:877 lib/IMP.php:882
+msgid "Open Fo_lder"
+msgstr "A_va kaust"
+
+#: lib/IMP.php:882
+msgid "Open Folder"
+msgstr "Ava kaust"
+
+#: lib/IMAP/Tree.php:2373
+msgid "Opened Folder"
+msgstr "Avatud kaust"
+
+#: lib/MIME/Viewer/itip.php:743 lib/MIME/Viewer/itip.php:871
+msgid "Optional Participant"
+msgstr "Vabatahtlik osaleja"
+
+#: templates/fetchmail/fetchmailprefs.html:3
+msgid "Other Mail Accounts"
+msgstr "Teised e-posti kontod"
+
+#: config/prefs.php.dist:118 config/prefs.php.dist:127
+#: config/prefs.php.dist:134 config/prefs.php.dist:141
+#: config/prefs.php.dist:149 config/prefs.php.dist:158
+msgid "Other Options"
+msgstr "Muud seaded"
+
+#: lib/IMAP/Tree.php:94
+msgid "Other Users' Folders"
+msgstr "Teiste kasutajate kaustad"
+
+#: templates/login/login.html:103
+msgid "Outbound Server"
+msgstr "Väljuva posti server"
+
+#: pgp.php:44 lib/MIME/Viewer/pgp.php:164 lib/MIME/Viewer/pgp.php:212
+#: lib/MIME/Viewer/pgp.php:304
+msgid "PGP"
+msgstr "PGP"
+
+#: lib/IMP.php:1349
+msgid "PGP Encrypt Message"
+msgstr "Krüpti kiri PGP-ga"
+
+#: lib/IMP.php:1354
+msgid "PGP Encrypt Message with passphrase"
+msgstr "Parooliga vajav PGP krüpteeringuga kiri"
+
+#: lib/Compose.php:1241
+msgid "PGP Error: "
+msgstr "PGP viga: "
+
+#: config/prefs.php.dist:150
+msgid "PGP Options"
+msgstr "PGP seaded"
+
+#: pgp.php:30
+msgid "PGP Passphrase Input"
+msgstr "PGP salasõna sisestus"
+
+#: templates/pgp/pgp.html:68
+msgid "PGP Personal Keypair support requires a secure web connection."
+msgstr "PGP võtmete kasutamiseks on vaja turvalist veebiühendust."
+
+#: pgp.php:155
+#, php-format
+msgid "PGP Public Key for \"%s (%s)\" was successfully added."
+msgstr "\"%s (%s)\" avalik võti on lisatud."
+
+#: pgp.php:251
+#, php-format
+msgid "PGP Public Key for \"%s\" was successfully deleted."
+msgstr "\"%s\" PGP avalik võti on kustutatud."
+
+#: templates/pgp/pgp.html:24
+msgid "PGP Public Keyring"
+msgstr "PGP avalike võtmete võtmerõngas"
+
+#: lib/IMP.php:1350
+msgid "PGP Sign Message"
+msgstr "Allkirjasta kiri PGP-ga"
+
+#: lib/IMP.php:1351
+msgid "PGP Sign/Encrypt Message"
+msgstr "Allkirjasta ja krüpti kiri PGP-ga"
+
+#: lib/IMP.php:1355
+msgid "PGP Sign/Encrypt Message with passphrase"
+msgstr "Allkirjasta ja krüpti kiri parooli vajava PGP-ga"
+
+#: compose.php:684
+msgid ""
+"PGP encryption cannot be used by default as public keys cannot be found for "
+"all recipients."
+msgstr ""
+"PGP krüteerimist ei saa kasutada vaike väärtusena kuna kõikidele saajatele "
+"ei leitud avaliku võtit."
+
+#: pgp.php:208
+msgid "PGP private key successfully added."
+msgstr "PGP salajane võti on lisatud."
+
+#: pgp.php:183
+msgid "PGP public key successfully added."
+msgstr "PGP avalik võti on lisatud."
+
+#: templates/pgp/pgp.html:144
+msgid "PGP support is disabled on this system."
+msgstr "PGP on selles serveris välja lülitatud."
+
+#: templates/pgp/pgp.html:4
+msgid ""
+"PGP support requires popup windows to be used.  If your browser is currently "
+"set to disable popup windows, you must change this setting or else the PGP "
+"features will not work correctly."
+msgstr ""
+"PGP kasutamiseks on vaja hüpikaknaid. Kui sinu veebilehitsejas on hüpikaknad "
+"keelatud, pead need lubama, muidu PGP korralikult ei tööta."
+
+#: lib/Compose.php:1201
+msgid "PGP: Need passphrase for personal private key."
+msgstr "PGP: vaja on isikliku salajase võtme parooli."
+
+#: lib/Compose.php:1210
+msgid "PGP: Need passphrase to encrypt your message with."
+msgstr "PGP: vaja on parooli sinu kirja krüpteerimiseks."
+
+#: lib/IMAP.php:281
+msgid "POP3"
+msgstr "POP3"
+
+#: lib/Fetchmail/imap.php:92
+msgid "POP3 (Auto Detect Protocols)"
+msgstr "POP3 (protokolli automaattuvastus)"
+
+#: lib/IMAP.php:293
+msgid "POP3 over SSL"
+msgstr "POP3 üle SSLi"
+
+#: lib/IMAP.php:299
+msgid "POP3 over SSL (self-signed certificate)"
+msgstr "POP3 üle SSLi (iseallkirjastatud sertifikaat)"
+
+#: lib/IMAP.php:287
+msgid "POP3, no TLS"
+msgstr "POP3 ilma TLSita"
+
+#: mailbox.php:431
+#, php-format
+msgid "Page %d of %d"
+msgstr "Lehekülg %d %d-st"
+
+#: config/prefs.php.dist:1069
+msgid "Page with the First Unseen Message"
+msgstr "Esimese lugemata kirjaga lehekülg"
+
+#: config/prefs.php.dist:1070
+msgid "Page with the Last Unseen Message"
+msgstr "Viimase lugemata kirjaga lehekülg"
+
+#: templates/mailbox/navbar.html:67
+msgid "Page:"
+msgstr "Leht:"
+
+#: message.php:670
+msgid "Part(s)"
+msgstr "Osa(d)"
+
+#: templates/pgp/pgp.html:125
+msgid "Passphrase (Again):"
+msgstr "Parool (veel kord)"
+
+#: pgp.php:336 smime.php:250
+msgid "Passphrase successfully unloaded."
+msgstr "Salasõna edukalt eemaldatud."
+
+#: templates/pgp/passphrase.html:19 templates/pgp/pgp.html:120
+#: templates/smime/passphrase.html:21
+msgid "Passphrase:"
+msgstr "Salasõna:"
+
+#: pgp.php:118
+msgid "Passphrases cannot be empty"
+msgstr "Paroolid ei või olla tühjad"
+
+#: pgp.php:120
+msgid "Passphrases do not match"
+msgstr "Salasõnad ei lange kokku"
+
+#: templates/login/login.html:92
+msgid "Password"
+msgstr "Salasõna"
+
+#: templates/fetchmail/fetchmailprefs.html:59
+#: templates/smime/import_key.html:54
+msgid "Password:"
+msgstr "Salasõna:"
+
+#: templates/login/mobile.inc:17
+msgid "Password: "
+msgstr "Salasõna: "
+
+#: mailbox.php:739 message.php:450 lib/Block/mailbox.php:284
+#: templates/mailbox/navbar.html:24
+msgid "Personal"
+msgstr "Isiklik"
+
+#: config/prefs.php.dist:14
+msgid "Personal Information"
+msgstr "Isiklik info"
+
+#: pgp.php:126
+msgid "Personal PGP keypair generated successfully."
+msgstr "Isiklik PGP võtmepaar loodud."
+
+#: pgp.php:133
+msgid "Personal PGP keys deleted successfully."
+msgstr "Isiklikud PGP võtmed kustutatud."
+
+#: smime.php:222
+msgid "Personal S/MIME certificates NOT imported: "
+msgstr "Isiklikku S/MIME sertifikaati EI imporditud: "
+
+#: smime.php:147
+msgid "Personal S/MIME keys deleted successfully."
+msgstr "Isiklikud S/MIME võtmed kustutatud."
+
+#: config/prefs.php.dist:221
+msgid "Place your signature before replies and forwards?"
+msgstr "Paiguta allkiri enne vastust"
+
+#: lib/Compose.php:448
+msgid "Plaintext Version of Message"
+msgstr "Kirja tekstikuju"
+
+#: templates/prefs/soundselect.inc:3
+msgid ""
+"Play a sound on new mail?  This requires your browser to support embedded "
+"sound files.  Almost all do on Windows and Mac, but other platforms may "
+"require a plugin."
+msgstr ""
+"Tee uute kirjade saabumisel häält. Selleks peab su veebilehitseja mõistma "
+"siseseid helifaile. Windowsi ja Maci peal oskavad seda peaaegu kõik, ent "
+"teistel platvormidel on vaja pluginat."
+
+#: templates/javascript_defs.php:81
+msgid "Please enter a name for the new folder:"
+msgstr "Palun sisesta uue kausta nimi:"
+
+#: templates/javascript_defs.php:60 templates/javascript_defs.php:61
+msgid "Please enter the name of the new folder:"
+msgstr "Palun sisesta uue kausta nimi:"
+
+#: templates/javascript_defs.php:65
+msgid "Please enter the new name:"
+msgstr "Palun sisesta uus nimi:"
+
+#: templates/pgp/passphrase.html:12
+msgid "Please enter the passphrase for this message."
+msgstr "Palun sisesta selle kirja parool."
+
+#: templates/pgp/passphrase.html:14
+msgid ""
+"Please enter the passphrase for your PGP private key. You will only need to "
+"enter this passphrase once per session."
+msgstr ""
+"Palun sisesta oma PGP salajase võtme parool. Seda parool pead sisestama "
+"kõigest üks kord sessiooni jooksul."
+
+#: templates/smime/passphrase.html:15
+msgid ""
+"Please enter the passphrase for your S/MIME private key. You will only need "
+"to enter this passphrase once per session."
+msgstr ""
+"Palun sisesta oma S/MIME salajase võtme parool. Seda parooli pead sisestama "
+"kõigest üks kord sessiooni jooksul."
+
+#: login.php:187
+msgid ""
+"Please log in again to resume composing your message. If you are NOT using "
+"cookies AND you are composing messages in popup windows, you will have to "
+"log in again in your main window as well. This is to keep attackers from "
+"hijacking your session ID. We apologize for any inconvenience."
+msgstr ""
+"Kirja koostamise jätkamiseks logi palun uuesti sisse. Kui sa EI kasuta "
+"präänikuid JA kirjutad kirju eraldi aknas, siis pead uuesti sisse logima ka "
+"põhiaknas. Selle otstarve on takistada kurjamitel sinu sessiooni ID "
+"ärandamist. Vabandame ebamugavuse pärast."
+
+#: templates/javascript_defs.php:76
+msgid "Please provide your password."
+msgstr "Palun sisesta oma salasõna."
+
+#: templates/javascript_defs.php:75
+msgid "Please provide your username."
+msgstr "Palun sisesta oma kasutajanimi."
+
+#: lib/Compose.php:2548 lib/UI/Compose.php:26
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Palun paranda vigased või mitmetähenduslikud aadressid."
+
+#: templates/javascript_defs.php:57
+msgid "Please select a folder before you perform this action."
+msgstr "Enne kui midagi teed vali kaust."
+
+#: templates/javascript_defs.php:69
+msgid "Please select at least one folder to search."
+msgstr "Palun vali otsimiseks vähemalt üks kaust."
+
+#: templates/compose/redirect.html:39
+msgid "Please select or edit in the box to the right:"
+msgstr "Tee valik või sisesta parempoolsesse välja:"
+
+#: config/prefs.php.dist:1183
+msgid "Poll all folders for new mail?"
+msgstr "Kontrolli kõigist kausta(de)s värsket posti?"
+
+#: templates/login/login.html:67
+msgid "Port"
+msgstr "Port"
+
+#: lib/IMAP/ACL/rfc4314.php:54 lib/IMAP/ACL/rfc2086.php:54
+msgid "Post"
+msgstr "Saada"
+
+#: config/motd.php.dist:41
+msgid "Powered by Horde"
+msgstr "Kasutame Horde tarkvara"
+
+#: config/prefs.php.dist:213
+msgid "Precede your signature with dashes ('-- ')?"
+msgstr "Paiguta allkirja ette kriipsud ('-- ')"
+
+#: pgp.php:260 smime.php:257 filterprefs.php:53
+msgid "Preferences successfully updated."
+msgstr "Seadistused salvestatud."
+
+#: compose.php:1127
+msgid "Preview"
+msgstr "Eelvaade"
+
+#: message.php:511
+msgid "Previous Message"
+msgstr "Eelmine kiri"
+
+#: mailbox.php:271
+msgid "Previous Page"
+msgstr "Eelmine lehekülg"
+
+#: message.php:585
+msgid "Print"
+msgstr "Prindi"
+
+#: message.php:674
+msgid "Printed By"
+msgstr "Prinditud"
+
+#: message.php:653 lib/MIME/Viewer/itip.php:830
+msgid "Priority"
+msgstr "Prioriteet"
+
+#: templates/smime/import_key.html:59
+msgid "Private Key Password:"
+msgstr "Salajase võtme parool:"
+
+#: config/prefs.php.dist:696
+msgid "Prompt every time an attachment is sent; default to NO"
+msgstr "Küsi iga kord lisandi saatmisel; vaikimisi EI"
+
+#: config/prefs.php.dist:695
+msgid "Prompt every time an attachment is sent; default to YES"
+msgstr "Küsi iga kord lisandi saatmisel; vaikimisi JAH"
+
+#: config/prefs.php.dist:864
+msgid "Prompt to send read receipt when requested by the sender?"
+msgstr "Küsi kas saata lugemis kinnitus kui saatja nõuab seda?"
+
+#: templates/login/login.html:72
+msgid "Protocol"
+msgstr "Protokoll"
+
+#: templates/fetchmail/fetchmailprefs.html:47
+msgid "Protocol:"
+msgstr "Protokoll:"
+
+#: lib/Crypt/PGP.php:489
+msgid "Public PGP keyserver support has been disabled."
+msgstr "Avaliku PGP võtmeserveri tugi on välja lülitatud."
+
+#: mailbox.php:445 mailbox.php:513
+msgid "Pur_ge Deleted"
+msgstr "Eemal_da kustutatud"
+
+#: lib/IMAP/ACL/rfc4314.php:58 templates/folders/actions.html:20
+msgid "Purge"
+msgstr "Eemalda"
+
+#: mailbox.php:445 mailbox.php:513
+msgid "Purge Deleted"
+msgstr "Eemalda kustutatud"
+
+#: config/prefs.php.dist:424
+msgid "Purge Spam how often:"
+msgstr "Kui tihti tühjendada SPAMi:"
+
+#: config/prefs.php.dist:452
+msgid "Purge Trash how often:"
+msgstr "Kui tihti tühjendada prügikasti:"
+
+#: config/prefs.php.dist:433
+msgid "Purge messages in Spam folder older than this amount of days."
+msgstr "Kustuta SPAMi kausta kirjad mis on vanemad kui märgitud arv päevi."
+
+#: config/prefs.php.dist:461
+msgid "Purge messages in Trash folder older than this amount of days."
+msgstr "Kustuta prügikastist kirjad mis on vanemad kui märgitud arv päevi"
+
+#: config/prefs.php.dist:387
+msgid "Purge messages in sent-mail folder(s) older than this amount of days."
+msgstr "Kustuta Sent kausta kirjad mis on vanemad kui märgitud arv päevi."
+
+#: config/prefs.php.dist:414
+msgid "Purge old messages in the Spam folder?"
+msgstr "Kustuta vanad kirjad SPAMi kaustast?"
+
+#: config/prefs.php.dist:442
+msgid "Purge old messages in the Trash folder?"
+msgstr "Kustuta vanad kirjad prügikastist"
+
+#: config/prefs.php.dist:368
+msgid "Purge old messages in the sent-mail folder(s)?"
+msgstr "Kustuta vanad kirjad Sent kaustast?"
+
+#: config/prefs.php.dist:378
+msgid "Purge sent-mail how often:"
+msgstr "Kui tihti tühjendada Sent kausta:"
+
+#: lib/Maintenance/Task/purge_spam.php:64
+#, php-format
+msgid "Purging %d messages from Spam folder."
+msgstr "Kustutan %d kirja SPAMi kaustast."
+
+#: lib/Maintenance/Task/purge_trash.php:63
+#, php-format
+msgid "Purging %d messages from Trash folder."
+msgstr "Kustutan %d kirja prügikastist"
+
+#: lib/Maintenance/Task/purge_sentmail.php:63
+#, php-format
+msgid "Purging %d messages from sent-mail folder."
+msgstr "Kustutan %d kirja Sent kaustast."
+
+#: lib/Maintenance/Task/purge_spam.php:62
+msgid "Purging 1 message from Spam folder."
+msgstr "Kustutan 1 kirja SPAMi kaustast."
+
+#: lib/Maintenance/Task/purge_trash.php:61
+msgid "Purging 1 message from Trash folder."
+msgstr "Kustutan 1 kirja prügikastist"
+
+#: lib/Maintenance/Task/purge_sentmail.php:61
+#, php-format
+msgid "Purging 1 message from sent-mail folder %s."
+msgstr "Kustutan 1 kirja %s kaustast."
+
+#: lib/IMP.php:942
+#, php-format
+msgid "Quota status: %.2fMB / %.2fMB  (%.2f%%)"
+msgstr "Ressursikasutus: %.2fMB / %.2fMB (%.2f%%)"
+
+#: lib/IMP.php:946
+#, php-format
+msgid "Quota status: %.2fMB / NO LIMIT"
+msgstr "Ressursikasutus: %.2fMB / PIIRAMATU"
+
+#: lib/IMP.php:949
+#, php-format
+msgid "Quota status: NO LIMIT"
+msgstr "Ressursikasutus: PIIRAMATU"
+
+#: config/prefs.php.dist:626
+#, php-format
+msgid "Quoting %f:"
+msgstr "%f kirjutas:"
+
+#: lib/IMAP/ACL/rfc4314.php:50 lib/IMAP/ACL/rfc2086.php:50
+msgid "Read"
+msgstr "Loe"
+
+#: templates/folders/actions.html:38
+msgid "Rebuild Folder Tree"
+msgstr "Värskenda kaustapuu"
+
+#: templates/search/search.html:31
+msgid "Recent Searches"
+msgstr "Viimased otsingud"
+
+#: templates/search/search.html:35 templates/search/search.html:37
+msgid "Recent Searches:"
+msgstr "Viimased otsingud:"
+
+#: message.php:556 message.php:599
+msgid "Redirec_t"
+msgstr "Suuna edasi"
+
+#: message.php:556 message.php:599
+msgid "Redirect"
+msgstr "Suuna edasi"
+
+#: templates/compose/redirect.html:82
+msgid "Redirect Message"
+msgstr "Suuna kiri edasi"
+
+#: compose.php:339
+msgid "Redirect this message"
+msgstr "Suuna see kiri edasi"
+
+#: folders.php:346
+msgid "Refresh"
+msgstr "Värskenda"
+
+#: config/prefs.php.dist:945
+msgid "Refresh Folder Views:"
+msgstr "Värskenda kaustade sisu:"
+
+#: mailbox.php:408
+msgid "Reload"
+msgstr "Värskenda"
+
+#: folders.php:336
+msgid "Reload View"
+msgstr "Värskenda vaade"
+
+#: lib/MIME/Viewer/itip.php:542 lib/MIME/Viewer/itip.php:561
+msgid "Remember the free/busy information."
+msgstr "Pea vaba/hõivatud info meeles."
+
+#: config/prefs.php.dist:1152
+msgid "Remember the last view"
+msgstr "Pea viimane vaade meeles"
+
+#: templates/fetchmail/fetchmailprefs.html:68
+msgid "Remote Mailbox:"
+msgstr "Väline postkast:"
+
+#: search.php:320
+msgid "Remove Field From Search"
+msgstr "Eemalda väli otsingust"
+
+#: templates/prefs/sourceselect.inc:302
+msgid "Remove source"
+msgstr "Eemalda allikas"
+
+#: templates/folders/actions.html:16
+msgid "Rename"
+msgstr "Nimeta ümber"
+
+#: config/prefs.php.dist:341
+msgid "Rename sent-mail folder at beginning of month?"
+msgstr "Nimeta saadetud kirjade kaust kuu alguses ümber"
+
+#: lib/Folder.php:373
+#, php-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr "\"%s\" ümbernimetamine \"%s\"-ks ebaõnnestus. Server ütles"
+
+#: message.php:540
+msgid "Reply"
+msgstr "Vasta"
+
+#: lib/MIME/Viewer/itip.php:316 lib/MIME/Viewer/itip.php:420
+msgid "Reply Sent."
+msgstr "Vastus saadetud."
+
+#: compose.php:307
+msgid "Reply to All:"
+msgstr "Vasta kõigile:"
+
+#: compose.php:309
+msgid "Reply to List:"
+msgstr "Vasta listile:"
+
+#: lib/MIME/Viewer/itip.php:544 lib/MIME/Viewer/itip.php:553
+#: lib/MIME/Viewer/itip.php:563
+msgid "Reply with Not Supported Message"
+msgstr "Saada vastuseks teade Pole Võimalik"
+
+#: lib/MIME/Viewer/itip.php:551
+msgid "Reply with free/busy for next 2 months."
+msgstr "Saada vastuseks järgmise kahe kuu vaba/hõivatud info."
+
+#: lib/MIME/Viewer/itip.php:550
+msgid "Reply with requested free/busy information."
+msgstr "Saada vastuseks soovitud vaba/hõivatud info."
+
+#: lib/UI/Message.php:29
+msgid "Reply-To"
+msgstr "Vasta"
+
+#: lib/Compose.php:1739
+msgid "Reply-To: "
+msgstr "Vasta:"
+
+#: compose.php:305
+msgid "Reply:"
+msgstr "Vasta:"
+
+#: mailbox.php:535 message.php:596
+msgid "Report as Innocent"
+msgstr "Tunnista kiri õigeks"
+
+#: mailbox.php:529 message.php:590
+msgid "Report as Spam"
+msgstr "Tunnista kiri rämpspostiks"
+
+#: compose.php:1052
+msgid "Request a _Read Receipt"
+msgstr "Küsi lu_gemiskinnitust"
+
+#: config/prefs.php.dist:710
+msgid "Request read receipts?"
+msgstr "Küsi lugemiskinnitusi"
+
+#: mailbox.php:108
+msgid "Requested message not found."
+msgstr "Soovitud kirja ei leitud."
+
+#: lib/MIME/Viewer/itip.php:735 lib/MIME/Viewer/itip.php:863
+msgid "Required Participant"
+msgstr "Nõutav osaleja"
+
+#: templates/search/search.html:26 templates/search/search.html:201
+#: templates/acl/acl.html:80
+msgid "Reset"
+msgstr "Algväärtused"
+
+#: lib/MIME/Viewer/itip.php:118
+msgid "Respondent Status Updated."
+msgstr "Vastaja olek uuendatud."
+
+#: message.php:579
+msgid "Resume"
+msgstr "Jätka"
+
+#: lib/UI/Compose.php:137
+msgid "Resume Editing"
+msgstr "Jätka"
+
+#: login.php:188
+msgid "Resume your session"
+msgstr "Jätka sessiooni"
+
+#: templates/fetchmail/fetchmailprefs.html:125
+msgid "Return to Fetch Mail"
+msgstr "Tagasi kirjade tirimise juurde"
+
+#: stationery.php:147
+msgid "Return to Message Composition"
+msgstr "Tagasi kirja koostamise juurde"
+
+#: filterprefs.php:65 templates/acl/acl.html:35 templates/acl/acl.html:81
+#: templates/acl/acl.html:95 templates/pgp/pgp.html:155
+#: templates/smime/smime.html:102
+msgid "Return to Options"
+msgstr "Tagasi seadistusse"
+
+#: config/prefs.php.dist:879
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr ""
+"Pärast kirja kustutamist, ümbertõstmist või kopeerimist pöördu tagasi "
+"postkasti nimekirja"
+
+#: acl.php:114
+#, php-format
+msgid "Rights for user \"%s\" cannot be modified."
+msgstr "Kasutaja \"%s\" õigusi pole võimalik muuta."
+
+#: lib/MIME/Viewer/itip.php:726 lib/MIME/Viewer/itip.php:854
+msgid "Role"
+msgstr "Roll"
+
+#: smime.php:67 lib/MIME/Viewer/pkcs7.php:172 lib/MIME/Viewer/pkcs7.php:290
+#: lib/MIME/Viewer/pkcs7.php:478
+msgid "S/MIME"
+msgstr "S/MIME"
+
+#: lib/IMP.php:1359
+msgid "S/MIME Encrypt Message"
+msgstr "Krüpti kiri S/MIME abil"
+
+#: lib/Compose.php:1273
+msgid "S/MIME Error: "
+msgstr "S/MIME viga: "
+
+#: lib/Compose.php:1252
+msgid "S/MIME Error: Need passphrase for personal private key."
+msgstr "S/MIME viga: vaja on isikliku salajase võtme salasõna."
+
+#: config/prefs.php.dist:159
+msgid "S/MIME Options"
+msgstr "S/MIME seadistus"
+
+#: smime.php:54
+msgid "S/MIME Passphrase Input"
+msgstr "S/MIME salasõna sisestus"
+
+#: templates/smime/smime.html:61
+msgid "S/MIME Personal Keypair support requires a secure web connection."
+msgstr ""
+"S/MIME isikliku võtmepaari kasutamiseks on vaja turvalist veebiühendust."
+
+#: smime.php:155
+#, php-format
+msgid "S/MIME Public Key for \"%s\" was successfully deleted."
+msgstr "\"%s\" S/MIME avalik võti on kustutatud."
+
+#: smime.php:177
+msgid "S/MIME Public Key successfully added."
+msgstr "S/MIME avalik võti on lisatud."
+
+#: templates/smime/smime.html:17
+msgid "S/MIME Public Keyring"
+msgstr "S/MIME avalik võtmerõngas"
+
+#: smime.php:226
+msgid "S/MIME Public/Private Keypair successfully added."
+msgstr "S/MIME võtmepaari lisamine õnnestus."
+
+#: lib/IMP.php:1360
+msgid "S/MIME Sign Message"
+msgstr "Allkirjasta kiri S/MIME abil"
+
+#: lib/IMP.php:1361
+msgid "S/MIME Sign/Encrypt Message"
+msgstr "Allkirjasta ja krüpti kiri S/MIME abil"
+
+#: templates/smime/smime.html:91
+msgid "S/MIME support is disabled on this system."
+msgstr "S/MIME võimalused on selles süsteemis välja lülitatud."
+
+#: lib/MIME/Viewer/pkcs7.php:294
+msgid ""
+"S/MIME support is not currently enabled so the message is unable to be "
+"decrypted."
+msgstr ""
+"S/MIME võimalused ei ole sisse lülitatud, seega ei saa kirja krüpteeringut "
+"avada."
+
+#: lib/MIME/Viewer/pkcs7.php:203
+msgid ""
+"S/MIME support is not enabled so the contents of this signed message cannot "
+"be displayed."
+msgstr ""
+"S/MIME võimalused ei ole sisse lülitatud, seega ei saa seda allkirjastatud "
+"kirja näidata."
+
+#: lib/MIME/Viewer/pkcs7.php:176
+msgid ""
+"S/MIME support is not enabled so the digital signature is unable to be "
+"verified."
+msgstr ""
+"S/MIME võimalused ei ole sisse lülitatud, seega ei saa digitaalallkirja "
+"kontrollida."
+
+#: lib/MIME/Viewer/pkcs7.php:133
+msgid "S/MIME support is not enabled."
+msgstr "S/MIME võimalused on selles süsteemis välja lülitatud."
+
+#: templates/smime/smime.html:4
+msgid ""
+"S/MIME support requires popup windows to be used.  If your browser is "
+"currently set to disable popup windows, you must change this setting or else "
+"the S/MIME features will not work correctly."
+msgstr ""
+"S/MIME kasutamiseks on vaja hüpikaknaid. Kui su veebilehitsejas on "
+"hüpikaknad praegu keelatud, pead selle ära muutma, sest muidu ei tööta S/"
+"MIME õieti."
+
+#: templates/login/login.html:108
+msgid "SMTP"
+msgstr "SMTP"
+
+#: templates/login/login.html:107
+msgid "SMTP Port"
+msgstr "SMTP Port"
+
+#: compose.php:961
+msgid "S_ubject"
+msgstr "_Teema"
+
+#: compose.php:1031
+msgid "Sa_ve a copy in "
+msgstr "_Salvesta koopia kausta"
+
+#: message.php:583
+msgid "Sa_ve as"
+msgstr "_Salvesta"
+
+#: templates/search/search.html:25 templates/search/search.html:200
+#: templates/acl/acl.html:79 templates/fetchmail/fetchmailprefs.html:121
+msgid "Save"
+msgstr "Salvesta"
+
+#: compose.php:1103
+msgid "Save Attachments with message in sent-mail folder?"
+msgstr "Säilita saadetud kirjaga koos ka lisand"
+
+#: templates/compose/compose.html:19 templates/compose/compose.html:206
+msgid "Save Draft"
+msgstr "Salvesta mustand"
+
+#: saveimage.php:53
+msgid "Save Image"
+msgstr "Salvesta pilt"
+
+#: lib/MIME/Contents.php:250
+msgid "Save Image in Gallery"
+msgstr "Salvesta pilt galeriisse"
+
+#: filterprefs.php:126 templates/pgp/pgp.html:154
+#: templates/smime/smime.html:101
+msgid "Save Options"
+msgstr "Salvesta seadistus"
+
+#: templates/stationery/stationery.html:42
+msgid "Save Stationery"
+msgstr "Salvesta kirjamall"
+
+#: compose.php:876
+msgid "Save _Draft"
+msgstr "Salvesta _mustand"
+
+#: message.php:583
+msgid "Save as"
+msgstr "Salvesta"
+
+#: config/prefs.php.dist:647
+msgid "Save drafts as unseen?"
+msgstr "Salvesta mustandid lugemata kirjana"
+
+#: config/prefs.php.dist:657
+msgid "Save drafts automatically while composing?"
+msgstr "Salvesta mustand automaatselt kirjutamise ajal?"
+
+#: lib/MIME/Viewer/pkcs7.php:254
+msgid "Save in your Address Book"
+msgstr "Salvesta oma aadressiraamatusse"
+
+#: config/prefs.php.dist:1251
+msgid "Save recipients automatically to the default address book?"
+msgstr "Salvesta adressaadid automaatselt aadressiraamatusse"
+
+#: templates/search/search.html:191
+msgid "Save search as a virtual folder?"
+msgstr "Säilita otsingutulemus virtuaalkaustana"
+
+#: config/prefs.php.dist:229
+msgid "Save sent mail?"
+msgstr "Säilita saadetud kirjad"
+
+#: lib/Compose.php:233
+msgid "Saving the draft failed. Could not create a drafts folder."
+msgstr "Visandi salvestamine ebaõnnestus. Ei õnnestunud luuda Drafts kausta."
+
+#: lib/Compose.php:172
+msgid "Saving the draft failed. No draft folder specified."
+msgstr "Mustandi salvestamine ebaõnnestus. Mustandi kausta pole määratud."
+
+#: lib/Compose.php:203
+#, php-format
+msgid ""
+"Saving the draft failed. The %s header contains an invalid e-mail address: %"
+"s."
+msgstr ""
+"Mustandi salvestamine ebaõnnestus. Päis %s sisaldab vigast aadressi: %s."
+
+#: lib/Compose.php:240
+#, php-format
+msgid "Saving the draft failed. This is what the server said: %s"
+msgstr "Mustandi salvestamine ebaõnnestus. Server ütles: %s"
+
+#: mailbox.php:414 lib/Search.php:533 lib/Block/tree_folders.php:44
+#: templates/contacts/contacts.html:25
+msgid "Search"
+msgstr "Otsing"
+
+#: mailbox.php:414 search.php:207
+#, php-format
+msgid "Search %s"
+msgstr "Otsi %s"
+
+#: templates/search/search.html:46
+msgid "Search Criteria"
+msgstr "Otsingu kriteeriumid"
+
+#: templates/search/search.html:130
+msgid "Search Flags"
+msgstr "Otsi lippe"
+
+#: templates/search/search.html:155
+msgid "Search Folders"
+msgstr "Otsi kaustu"
+
+#: config/prefs.php.dist:128
+msgid "Search Options"
+msgstr "Otsingu seadistus"
+
+#: search.php:154 templates/contacts/contacts.html:31
+msgid "Search Results"
+msgstr "Otsingu tulemus"
+
+#: templates/search/search.html:80
+msgid "Search Text"
+msgstr "Otsingu teksti"
+
+#: templates/mailbox/navbar.html:14 templates/mailbox/navbar.html:30
+msgid "Seen"
+msgstr "Loetud"
+
+#: templates/fetchmail/fetchmailprefs.html:123
+msgid "Select Another Account"
+msgstr "Vali teine konto"
+
+#: search.php:311
+msgid "Select a date"
+msgstr "Vali kuupäev"
+
+#: templates/search/search.html:65 templates/search/search.html:68
+msgid "Select a field"
+msgstr "Vali väli"
+
+#: templates/fetchmail/fetchmail.html:11
+msgid "Select accounts to fetch mail from:"
+msgstr "Vali kontod, kust soovid kirju tirida:"
+
+#: config/prefs.php.dist:143
+msgid "Select address book sources for adding and searching for addresses."
+msgstr "Vali aadressiraamatud aadresside otsimiseks ja lisamiseks."
+
+#: templates/search/search.html:159
+msgid "Select all"
+msgstr "Märgi kõik"
+
+#: templates/prefs/sourceselect.inc:321
+msgid "Select all fields to search when expanding addresses."
+msgstr "Vali kõik väljad mida kasutada aadresside lahendamisel."
+
+#: templates/fetchmail/fetchmailprefs.html:21
+msgid "Select an account:"
+msgstr "Vali konto:"
+
+#: templates/folders/folders.html:3
+msgid "Select mailbox"
+msgstr "Vali postkast"
+
+#: templates/search/search.html:160
+msgid "Select none"
+msgstr "Ära märgi midagi"
+
+#: templates/compose/compose.html:134
+msgid "Select stationery:"
+msgstr "Vali kirjamall:"
+
+#: templates/saveimage/saveimage.html:8
+msgid "Select the gallery to save the image in."
+msgstr "Vali galerii kuhu pilt salvestada."
+
+#: templates/fetchmail/fetchmailprefs.html:34
+msgid "Select the mail server type:"
+msgstr "Vali postiserveri tüüp:"
+
+#: templates/mailbox/navbar.html:7 templates/mailbox/navbar.html:9
+msgid "Select:"
+msgstr "Vali:"
+
+#: templates/prefs/sourceselect.inc:305 templates/prefs/sourceselect.inc:307
+msgid "Selected Address books:"
+msgstr "Valitud aadressiraamatud:"
+
+#: templates/contacts/contacts.html:47
+msgid "Selected Addresses"
+msgstr "Valitud aadressid:"
+
+#: pgp.php:429 templates/pgp/pgp.html:75
+msgid "Send Key to Public Keyserver"
+msgstr "Saada võti avalikku võtmeserverisse"
+
+#: lib/MIME/Viewer/itip.php:646
+msgid "Send Latest Information"
+msgstr "Saada värskeim info"
+
+#: templates/compose/compose.html:17 templates/compose/compose.html:204
+msgid "Send Message"
+msgstr "Saada kiri"
+
+#: templates/javascript_defs.php:39
+msgid "Send message without a Subject?"
+msgstr "Saadan kirja ilma Pealkirjata?"
+
+#: lib/IMAP/Tree.php:2345
+msgid "Sent mail folder"
+msgstr "Saadetud kirjade kaust"
+
+#: templates/prefs/sentmailselect.inc:36
+msgid "Sent mail folder:"
+msgstr "Saadetud kirjade kaust:"
+
+#: templates/login/login.html:36 templates/login/login.html:50
+#: templates/login/login.html:62
+msgid "Server"
+msgstr "Server"
+
+#: config/prefs.php.dist:23
+msgid "Server and Folder Information"
+msgstr "Serveri ja kaustade info"
+
+#: templates/fetchmail/fetchmailprefs.html:63
+msgid "Server:"
+msgstr "Server:"
+
+#: config/prefs.php.dist:88
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr "Määra, mis juhtub kui sa kirju kustutad ja ümber tõstad."
+
+#: config/prefs.php.dist:666
+msgid "Set the X-Priority header when composing messages?"
+msgstr "Lisa uutele kirjadele X-Priority päis"
+
+#: config/prefs.php.dist:32
+msgid "Share Folders"
+msgstr "Kaustade ühiskasutus"
+
+#: templates/acl/acl.html:7
+msgid "Share mail folders"
+msgstr "Kirjakaustade ühiskasutus"
+
+#: config/prefs.php.dist:33
+msgid "Share your mail folders with other users."
+msgstr "Jaga oma kirjakaustu teiste kasutajatega."
+
+#: lib/IMAP/Tree.php:92
+msgid "Shared Folders"
+msgstr "Jagatud kaustad"
+
+#: templates/pgp/pgp.html:15
+msgid "Should PGP signed messages automatically be verified when viewed?"
+msgstr "Kas PGP signeeritud kirjad tuleks automaatselt kinnitada vaatamisel?"
+
+#: templates/smime/smime.html:7
+msgid "Should S/MIME signed messages automatically be verified when viewed?"
+msgstr ""
+"Kas S/MIME signeeritud kirjada tuleks automaatselt kinnitada vaatamisel?"
+
+#: config/prefs.php.dist:794
+msgid ""
+"Should large blocks of quoted text be shown or hidden by default? It can be "
+"toggled easily whichever you choose."
+msgstr ""
+"Kas pikad tsiteeritud lõigud peaks vaikimisi olema nähtaval või peidetud? "
+"Kuidas sa ka ei määraks, on seda lihtne muuta."
+
+#: templates/pgp/pgp.html:11
+msgid "Should the body of text/plain messages be scanned for PGP data?"
+msgstr "Otsi text/plain tüüpi kirjade kehast PGP andmeid"
+
+#: config/prefs.php.dist:639
+msgid "Should the compose window be closed after saving a draft?"
+msgstr "Sule kirja aken pärast mustandi salvestamist"
+
+#: templates/pgp/pgp.html:7
+msgid "Should your PGP public key to be attached to your messages by default?"
+msgstr "Lisa oma kirjadele vaikimisi oma PGP avalik võti"
+
+#: templates/javascript_defs.php:30
+msgid "Show Addresses"
+msgstr "Näita aadresse"
+
+#: templates/search/search.html:162
+msgid "Show All Folders"
+msgstr "Näita kõiki kaustu"
+
+#: message.php:606
+msgid "Show All Headers"
+msgstr "Näita kõiki päiseid"
+
+#: message.php:603
+msgid "Show Common Headers"
+msgstr "Näita tavalisi päiseid"
+
+#: mailbox.php:248
+msgid "Show Deleted"
+msgstr "Näita kustutatud"
+
+#: lib/MIME/Viewer/html.php:156
+msgid "Show Images?"
+msgstr "Näita pilte?"
+
+#: message.php:609
+msgid "Show Mailing List Information"
+msgstr "Näita listi infot"
+
+#: templates/search/search.html:162
+msgid "Show Only Subscribed Folders"
+msgstr "Näita ainult tellitud kaustu"
+
+#: templates/folders/actions.html:37
+msgid "Show Size"
+msgstr "Näita suurust"
+
+#: folders.php:364
+msgid "Show Unsubscribed"
+msgstr "Näita tellimata"
+
+#: config/prefs.php.dist:733
+msgid "Show an icon to allow stripping of attachments from messages?"
+msgstr "Näita ikooni lisandite kirjast väljarookimiseks"
+
+#: config/prefs.php.dist:1162
+msgid "Show non-private mailboxes in separate folders"
+msgstr "Näita mitte privaat mailikaustu eraldi kaustas"
+
+#: config/prefs.php.dist:1006
+msgid "Show previews for unread messages only?"
+msgstr "Näita eelvaadet ainult lugemata kirja korral"
+
+#: config/prefs.php.dist:1014
+msgid "Show previews in tooltips?"
+msgstr "Näita eelvaadet kohtspikrina"
+
+#: config/prefs.php.dist:548
+msgid "Show the Bcc: header field when composing mail?"
+msgstr "Näita Pimekoopia välja kirja koostamisel?"
+
+#: config/prefs.php.dist:539
+msgid "Show the Cc: header field when composing mail?"
+msgstr "Näita koopia välja kirja koostamisel?"
+
+#: config/prefs.php.dist:1043
+msgid "Show the Fetch Mail icon on the menubar?"
+msgstr "Näita menüüribal kirjade tirimise ikooni"
+
+#: filterprefs.php:111
+msgid "Show the filter icon on the menubar?"
+msgstr "Näita menüüribal filtrite ikooni"
+
+#: lib/MIME/Viewer/html.php:171
+msgid "Show this HTML in a new window?"
+msgstr "Näita HTMLi uues aknas?"
+
+#: lib/Block/summary.php:30
+msgid "Show total number of mails in folder?"
+msgstr "Näita kirjade koguarvu kaustas"
+
+#: config/prefs.php.dist:791
+msgid "Shown"
+msgstr "Nähtav"
+
+#: mailbox.php:598 lib/Block/mailbox.php:172
+msgid "Si_ze"
+msgstr "_Suurus"
+
+#: templates/folders/folders_size.html:6
+msgid "Size"
+msgstr "Suurus"
+
+#: templates/compose/compose.html:315
+msgid "Size:"
+msgstr "Suurus:"
+
+#: mailbox.php:567 lib/Block/mailbox.php:141
+msgid "Sort by Arrival"
+msgstr "Järjesta saabumise järjekorras"
+
+#: mailbox.php:572 lib/Block/mailbox.php:146
+msgid "Sort by Date"
+msgstr "Järjesta kuupäeva järgi"
+
+#: mailbox.php:582 lib/Block/mailbox.php:156
+msgid "Sort by From Address"
+msgstr "Järjesta saatja aadressi järgi"
+
+#: mailbox.php:597 lib/Block/mailbox.php:171
+msgid "Sort by Message Size"
+msgstr "Järjesta kirja suuruse järgi"
+
+#: mailbox.php:592 lib/Block/mailbox.php:166
+msgid "Sort by Subject"
+msgstr "Järjesta teema järgi"
+
+#: mailbox.php:587 lib/Block/mailbox.php:161
+msgid "Sort by Thread"
+msgstr "Järjesta jutulõnga järgi"
+
+#: mailbox.php:577 lib/Block/mailbox.php:151
+msgid "Sort by To Address"
+msgstr "Järjesta adressaadi järgi"
+
+#: lib/IMAP/Tree.php:2338
+msgid "Spam folder"
+msgstr "SPAMi kaust"
+
+#: templates/prefs/spamselect.inc:19
+msgid "Spam folder:"
+msgstr "Rämpsposti kaust:"
+
+#: compose.php:1020
+msgid "Special Characters"
+msgstr "Erimärgid"
+
+#: search.php:48
+msgid "Special Virtual Folders cannot be edited."
+msgstr "Erilisi virtuaalkaustu pole võimalik muuta."
+
+#: lib/UI/Compose.php:138
+msgid "Spell Check Failed"
+msgstr "Õigekirja kontroll ebaõnnestus"
+
+#: lib/MIME/Viewer/itip.php:521 lib/MIME/Viewer/itip.php:523
+#: lib/MIME/Viewer/itip.php:691 lib/MIME/Viewer/itip.php:693
+msgid "Start"
+msgstr "Algus"
+
+#: compose.php:1000 templates/stationery/stationery.html:8
+#: templates/stationery/stationery.html:12
+msgid "Stationery"
+msgstr "Kirjamall"
+
+#: stationery.php:139
+msgid "Stationery name:"
+msgstr "Kirjamalli nimi:"
+
+#: stationery.php:141
+msgid "Stationery type:"
+msgstr "Kirjamalli tüüp:"
+
+#: stationery.php:144
+msgid "Stationery:"
+msgstr "Kirjamall:"
+
+#: lib/MIME/Viewer/itip.php:726 lib/MIME/Viewer/itip.php:854
+msgid "Status"
+msgstr "Olek"
+
+#: message.php:667
+msgid "Strip All Attachments"
+msgstr "Eemalda kõik manused"
+
+#: lib/MIME/Contents.php:261
+msgid "Strip Attachment"
+msgstr "Eemalda lisand"
+
+#: message.php:667
+msgid "Strip Attachments"
+msgstr "Eemalda manus"
+
+#: config/prefs.php.dist:998
+msgid "Strip linebreaks?"
+msgstr "Eemalda reavahetused"
+
+#: mailbox.php:593 lib/Block/mailbox.php:167
+msgid "Sub_ject"
+msgstr "_Teema"
+
+#: lib/Search.php:670 lib/UI/Message.php:30 templates/login/recompose.html:41
+msgid "Subject"
+msgstr "Teema"
+
+#: config/prefs.php.dist:1086
+msgid "Subject Field"
+msgstr "Teema väli"
+
+#: templates/thread/thread.html:37
+msgid "Subject:"
+msgstr "Teema:"
+
+#: templates/search/search.html:25 templates/search/search.html:200
+#: templates/pgp/passphrase.html:21 templates/saveimage/saveimage.html:19
+#: templates/smime/passphrase.html:23
+msgid "Submit"
+msgstr "Kinnita"
+
+#: templates/folders/actions.html:23
+msgid "Subscribe"
+msgstr "Subscribe"
+
+#: lib/MIME/Viewer/pgp.php:438 lib/MIME/Viewer/pkcs7.php:438
+#: lib/MIME/Viewer/status.php:86
+msgid "Success"
+msgstr "Õnnestus"
+
+#: templates/folders/folders_size.html:19
+msgid "Sum"
+msgstr "Summa"
+
+#: lib/MIME/Viewer/itip.php:708 lib/MIME/Viewer/itip.php:710
+#: lib/MIME/Viewer/itip.php:835 lib/MIME/Viewer/itip.php:837
+msgid "Summary"
+msgstr "Kokkuvõte"
+
+#: compose.php:1057 compose.php:1058
+msgid "Switch Composition Method"
+msgstr "Vaheta kirjutusreziimi"
+
+#: templates/compose/compose.html:189
+msgid "Switch to HTML composition"
+msgstr "Lülitu HTML reziimile"
+
+#: templates/compose/compose.html:189
+msgid "Switch to plain text composition"
+msgstr "Lülitu tekstireziimile"
+
+#: templates/message/navbar_navigate.html:27
+msgid "Target Folder"
+msgstr "Siht kaust"
+
+#: templates/mailbox/navbar.html:54
+msgid "Target Mailbox:"
+msgstr "Siht postkast:"
+
+#: lib/IMP.php:475
+msgid "Task Lists"
+msgstr "Tööde nimekiri"
+
+#: config/hooks.php.dist:412
+msgid "Tasks"
+msgstr "Tööd"
+
+#: compose.php:1062
+msgid "Te_xt"
+msgstr "_Tekst"
+
+#: lib/MIME/Viewer/itip.php:273
+msgid "Tentative: "
+msgstr "Esialgne: "
+
+#: lib/MIME/Viewer/itip.php:631
+msgid "Tentatively Accept request"
+msgstr "Nõustu esialgselt"
+
+#: lib/MIME/Viewer/itip.php:925
+msgid "Tentatively Accepted"
+msgstr "Esialgselt nõus"
+
+#: lib/Maintenance/Task/tos_agreement.php:46
+#, php-format
+msgid "Terms of Service file not specified in conf.php"
+msgstr "Kasutustingimuste fail pole conf.php failis määratud"
+
+#: templates/stationery/stationery.html:31
+msgid "Text"
+msgstr "Tekst"
+
+#: config/prefs.php.dist:1127
+msgid "The From: column of the message should be linked:"
+msgstr "Kirja Kellelt: väli tuleks linkida:"
+
+#: lib/IMAP/Client.php:432
+msgid ""
+"The IMAP server does not appear to support the authentication method "
+"selected. Please contact your system administrator."
+msgstr ""
+"IMAP server ei näi tunnistavat valitud autentimismoodust. Võta ühendust "
+"süsteemi administraatoriga."
+
+#: lib/MIME/Viewer/appledouble.php:40
+msgid "The Macintosh resource fork"
+msgstr "Macintoshi ressursiharu"
+
+#: lib/MIME/Viewer/appledouble.php:40
+#, php-format
+msgid "The Macintosh resource fork can be downloaded %s."
+msgstr "Macintoshi ressursiharu võid alla laadida %s."
+
+#: lib/MIME/Viewer/pkcs7.php:252
+#, php-format
+msgid "The S/MIME certificate of %s: "
+msgstr "S/MIME sertifikaati %s:"
+
+#: fetchmailprefs.php:85
+#, php-format
+msgid "The account \"%s\" has been deleted."
+msgstr "Konto \"%s\" on kustutatud."
+
+#: fetchmailprefs.php:78
+#, php-format
+msgid "The account \"%s\" has been saved."
+msgstr "Konto \"%s\" on salvestatud."
+
+#: attachment.php:43
+msgid "The attachment was not found."
+msgstr "Lisandit ei leitud."
+
+#: config/prefs.php.dist:518
+msgid "The buttons NOT to show when using Xinha."
+msgstr "Nuppe ei näidata kui kasutatakse Xinha't."
+
+#: lib/MIME/Viewer/itip.php:70
+msgid "The calendar data is invalid"
+msgstr "Kalendriandmed on vigased"
+
+#: lib/MIME/Viewer/appledouble.php:41
+msgid "The contents of the Macintosh file are below."
+msgstr "Macintoshi faili sisu järgneb."
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:73
+#, php-format
+msgid "The current folder(s) \"%s\" will be renamed to \"%s\"."
+msgstr "Käesolev(ad) kaust(ad) \"%s\" nimetatakse ümber \"%s\"-ks"
+
+#: templates/acl/acl.html:29
+msgid ""
+"The current list of users with access to this folder could not be retrieved."
+msgstr ""
+"Sellele kaustale juurdepääsu omavate kasutajate loetelu ei saanud kätte"
+
+#: config/prefs.php.dist:845
+msgid "The default charset for messages with no charset information:"
+msgstr "Vaike koodi tabel mida kasutada kui puudub info:"
+
+#: lib/Compose.php:250
+#, php-format
+msgid "The draft has been saved to the \"%s\" folder."
+msgstr "Mustand salvestati kausta \"%s\"."
+
+#: lib/MIME/Viewer/itip.php:142
+msgid "The event was added to your calendar."
+msgstr "Sündmus lisati sinu kalendrisse."
+
+#: lib/Compose.php:1814
+#, php-format
+msgid "The file %s could not be attached."
+msgstr "Faili %s ei õnnestunud lisada."
+
+#: lib/Folder.php:272
+#, php-format
+msgid "The folder \"%s\" already exists"
+msgstr "Kaust \"%s\" on juba olemas"
+
+#: folders.php:240 lib/Folder.php:190
+#, php-format
+msgid "The folder \"%s\" may not be deleted."
+msgstr "Kaust \"%s\" ei või kustutatud."
+
+#: lib/Folder.php:351
+#, php-format
+msgid "The folder \"%s\" may not be renamed."
+msgstr "Kausta \"%s\" ei või ümber nimetada."
+
+#: lib/Folder.php:294
+#, php-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "Kaust \"%s\" loodi aga sa ei ole seda tellinud."
+
+#: lib/Folder.php:281
+#, php-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr "Kausta \"%s\" ei loodud. Server ütles"
+
+#: lib/Folder.php:194
+#, php-format
+msgid "The folder \"%s\" was not deleted. This is what the server said"
+msgstr "Kausta \"%s\" ei kustutatud. Server ütles"
+
+#: lib/Folder.php:297
+#, php-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "Kaust \"%s\" on edukalt loodud."
+
+#: lib/Folder.php:199
+#, php-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "Kaust \"%s\" on jäädavalt kustutatud."
+
+#: lib/Folder.php:376
+#, php-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "Kaust \"%s\" nimetati ümber \"%s\"-ks"
+
+#: lib/MIME/Viewer/tnef.php:93
+msgid "The following files were attached to this part:"
+msgstr "See kirja osa sisaldab järgnevaid faile:"
+
+#: config/prefs.php.dist:510
+msgid "The javascript editor to use on the compose page."
+msgstr "Javascripti redaktor mida kasutada koostamise aknas."
+
+#: lib/MIME/Viewer/status.php:74
+msgid "The mail server generated the following error message:"
+msgstr "Postiserver tagastas järgmise veateate:"
+
+#: lib/MIME/Viewer/notification.php:50
+msgid "The mail server generated the following informational message:"
+msgstr "Postiserver tagastas järgmise informatsioonilise teadaande:"
+
+#: lib/MIME/Viewer/status.php:89
+msgid "The mail server generated the following message:"
+msgstr "Postiserver tagastas järgmise teate:"
+
+#: lib/Message.php:791
+#, php-format
+msgid "The mailbox %s is already empty."
+msgstr "Kaust %s on juba tühi."
+
+#: lib/Fetchmail.php:238
+#, php-format
+msgid "The message \"%s\" from \"%s\" (%d bytes) exceeds fetch size limit."
+msgstr ""
+"Kiri \"%s\" \"%s\"-lt (%d baiti) ületab tiritava kirja suuruse piirangu."
+
+#: templates/javascript_defs.php:53
+msgid "The message being composed has been closed. Exiting."
+msgstr "Käsilolev kiri suleti. Väljun."
+
+#: lib/MIME/Viewer/pgp.php:363
+msgid ""
+"The message below does not appear to be a valid PGP encrypted message. "
+"Error: "
+msgstr "See ei näi olevat korrektne PGP krüptitud kiri. Viga: "
+
+#: lib/MIME/Viewer/pgp.php:249 lib/MIME/Viewer/pgp.php:398
+msgid ""
+"The message below does not appear to be in the correct PGP format (according "
+"to RFC 2015)."
+msgstr "See kiri ei näi olevat korrektses PGP vormingus (RFC 2015 kohaselt)."
+
+#: lib/MIME/Viewer/pgp.php:358
+msgid "The message below has been compressed with PGP."
+msgstr "See kiri on pakitud PGP abil."
+
+#: lib/MIME/Viewer/pgp.php:200
+msgid ""
+"The message below has been digitally signed and encrypted with PGP, but the "
+"signature cannot be verified."
+msgstr ""
+"Allolev kiri on digitaalselt allkirjastatud ja krüptitud PGP'ga aga allkirja "
+"ei õnnestunud kinnitada."
+
+#: lib/MIME/Viewer/pgp.php:206
+msgid "The message below has been digitally signed and encrypted with PGP."
+msgstr "See kiri on digitaalselt allkirjastatud ja krüpteeritud PGP abil."
+
+#: lib/MIME/Viewer/pgp.php:202
+msgid ""
+"The message below has been digitally signed with PGP, but the signature "
+"cannot be verified."
+msgstr ""
+"See kiri on digitaalselt allkirjastatud PGP abil aga allkirja ei õnnestunud "
+"kinnitada."
+
+#: lib/MIME/Viewer/pgp.php:208
+msgid "The message below has been digitally signed with PGP."
+msgstr "See kiri on digitaalselt allkirjastatud PGP abil."
+
+#: lib/MIME/Viewer/pgp.php:308
+msgid ""
+"The message below has been encrypted with PGP, however, PGP support is "
+"disabled so the message cannot be decrypted."
+msgstr ""
+"All olev kiri on krüpteeritud PGP'ga aga PGP on tugi on välja lülitatud "
+"seega ei saa kirja dekrüptida."
+
+#: lib/MIME/Viewer/pgp.php:346
+msgid ""
+"The message below has been encrypted with PGP, however, no personal private "
+"key exists so the message cannot be decrypted."
+msgstr ""
+"All olev kiri on krüpteeritud PGP'ga aga isiklik privaatvõti on puudu seega "
+"kirja ei saa dekrüptida."
+
+#: lib/MIME/Viewer/pgp.php:358
+msgid "The message below has been encrypted with PGP."
+msgstr "See kiri on krüptitud PGP abil."
+
+#: lib/MIME/Viewer/pgp.php:353
+msgid ""
+"The message below has been encrypted with PGP. You must enter the passphrase "
+"for your PGP private key before it can be decrypted."
+msgstr "Selle kirja vaatamiseks pead sisestama oma PGP salajase võtme salasõna"
+
+#: lib/MIME/Viewer/pgp.php:340
+msgid ""
+"The message below has been encrypted with PGP. You must enter the passphrase "
+"that was used to encrypt this message."
+msgstr ""
+"All olev kiri on krüpteeritud PGP'ga. Sa pead sisestama parooli millega kiri "
+"krüpteeriti."
+
+#: lib/MIME/Viewer/pgp.php:442
+msgid "The message below has been verified."
+msgstr "Kiri on kontrollitud."
+
+#: lib/Crypt/PGP.php:380
+msgid "The message below has not been digitally signed or encrypted with PGP."
+msgstr "See kiri pole digitaalselt allkirjastatud ega krüptitud PGP abil."
+
+#: templates/javascript_defs.php:39
+msgid "The message does not have a Subject entered."
+msgstr "See kiri ei oma Teemat."
+
+#: lib/Filter.php:72 lib/Spam.php:218
+msgid "The message has been deleted."
+msgstr "Kiri on kustutatud."
+
+#: lib/Spam.php:201
+msgid "The message has been reported as not spam to your system administrator."
+msgstr "See kiri on edastatud kui mitte SPAM süsteemi haldurile."
+
+#: lib/Spam.php:181
+msgid "The message has been reported as not spam."
+msgstr "See kiri on märgitud mitte SPAMiks."
+
+#: lib/Spam.php:193
+msgid "The message has been reported as spam to your system administrator."
+msgstr "See kiri on saadetu SPAMina süsteemi haldurile."
+
+#: lib/Spam.php:173
+msgid "The message has been reported as spam."
+msgstr "See kiri on märgitud SPAMiks."
+
+#: lib/MIME/Viewer/pkcs7.php:443
+#, php-format
+msgid "The message has been verified. Sender: %s."
+msgstr "Kiri on kontrollitud. Saatja: %s."
+
+#: lib/Filter.php:74
+msgid "The messages have been deleted."
+msgstr "Kiri on kustutatud."
+
+#: lib/MIME/Viewer/tnef.php:59
+msgid "The requested file does not exist in the MS-TNEF attachment."
+msgstr "MS-TNEF lisand ei sisalda soovitud faili."
+
+#: lib/MIME/Viewer/zip.php:62
+msgid "The requested file does not exist in the Zip attachment."
+msgstr "Zip lisand ei sisalda soovitud faili."
+
+#: message.php:433
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Please click %s to send the "
+"notification message."
+msgstr ""
+"Selle kirja saatja soovib sinult kinnitust, et oled kirja lugenud. Klõpsa %s "
+"kinnituse saatmiseks."
+
+#: templates/javascript_defs.php:38
+msgid "The signature could not be replaced."
+msgstr "Allkirja ei õnnestunud asendada."
+
+#: templates/javascript_defs.php:37
+msgid "The signature was successfully replaced."
+msgstr "Allkiri on asendatud."
+
+#: attachment.php:59
+msgid ""
+"The specified attachment does not exist. It may have been deleted by the "
+"original sender."
+msgstr "Antud manust ei eksisteeri. Saatja võis selle kustutada."
+
+#: attachment.php:128
+msgid "The specified file cannot be read."
+msgstr "Sellist faili ei õnnestu lugeda."
+
+#: stationery.php:87
+#, php-format
+msgid "The stationery \"%s\" has been added."
+msgstr "Kirjamall \"%s\" on lisatud."
+
+#: stationery.php:63
+#, php-format
+msgid "The stationery \"%s\" has been deleted."
+msgstr "Kirjamall \"%s\" on kustutatud."
+
+#: stationery.php:90
+#, php-format
+msgid "The stationery \"%s\" has been updated."
+msgstr "Kirjamall \"%s\" on salvestatud."
+
+#: lib/MIME/Viewer/itip.php:172
+msgid "The task has been added to your tasklist."
+msgstr "Ülesanne lisati sinu ülesannete nimekirja."
+
+#: lib/MIME/Viewer/status.php:94
+msgid "The text of the message"
+msgstr "Kirja tekst"
+
+#: lib/MIME/Viewer/status.php:93
+#, php-format
+msgid "The text of the message can be viewed %s."
+msgstr "Kirja teksti saad vaadata %s."
+
+#: lib/MIME/Viewer/status.php:79
+msgid "The text of the returned message"
+msgstr "Tagastatud kirja tekst"
+
+#: lib/MIME/Viewer/status.php:78
+#, php-format
+msgid "The text of the returned message can be viewed %s."
+msgstr "Tagastatud kirja teksti saad vaadata %s."
+
+#: lib/MIME/Viewer/notification.php:66
+msgid "The text of the sent message"
+msgstr "Saadetud kirja tekst"
+
+#: lib/MIME/Viewer/notification.php:66
+#, php-format
+msgid "The text of the sent message can be viewed %s."
+msgstr "Saadetud kirja teksti saad vaadata %s."
+
+#: lib/MIME/Viewer/itip.php:157
+msgid "The user's free/busy information was sucessfully stored."
+msgstr "Kasutaja vaba/hõivatud info salvestati."
+
+#: lib/MIME/Viewer/alternative.php:56
+msgid "There are no alternative parts that can be displayed."
+msgstr "Vahetult näidatavaid alternatiivseid osi ei ole."
+
+#: templates/mailbox/empty_mailbox.html:2
+msgid "There are no messages in this mailbox."
+msgstr "Selles kaustas ei ole kirju."
+
+#: thread.php:104
+msgid "There is no text that can be displayed inline."
+msgstr "Vahetult näidatavat teksti ei ole."
+
+#: lib/Message.php:140
+#, php-format
+msgid ""
+"There was an error copying messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr "Kirjade kopeerimisel \"%s\"-st \"%s\"-i tekkis viga. Server ütles"
+
+#: lib/Message.php:268
+#, php-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr "Kirjade kustutamisel kaustast \"%s\" tekkis viga. Server ütles"
+
+#: lib/MIME/Viewer/itip.php:102
+#, php-format
+msgid "There was an error deleting the event: %s."
+msgstr "Sündmuse kustutamisel tekkis viga: %s."
+
+#: lib/MIME/Viewer/plain.php:50 lib/MIME/Viewer/enriched.php:36
+msgid "There was an error displaying this message part"
+msgstr "Kirja osa esitamisel tekkis viga"
+
+#: lib/Message.php:630
+#, php-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr "Kirjade märkimisel kaustas \"%s\" tekkis viga. Server ütles"
+
+#: folders.php:140
+#, php-format
+msgid "There was an error importing %s."
+msgstr "%s impordil tekkis viga."
+
+#: lib/MIME/Viewer/itip.php:139
+#, php-format
+msgid "There was an error importing the event: %s."
+msgstr "Sündmuse impordil tekkis viga: %s."
+
+#: lib/MIME/Viewer/itip.php:169
+#, php-format
+msgid "There was an error importing the task: %s."
+msgstr "Ülesande impordil tekkis viga: %s."
+
+#: lib/MIME/Viewer/itip.php:155
+#, php-format
+msgid "There was an error importing user's free/busy information: %s."
+msgstr "Kasutaja vaba/hõivatud info impordil tekkis viga: %s."
+
+#: lib/Message.php:136
+#, php-format
+msgid ""
+"There was an error moving messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"Kirjade tõstmisel kaustast \"%s\" kausta \"%s\" tekkis viga. Server ütles"
+
+#: lib/Compose.php:698
+#, php-format
+msgid "There was an error sending your message: %s"
+msgstr "Kirja saatmisel tekkis viga: %s"
+
+#: lib/MIME/Viewer/itip.php:116
+#, php-format
+msgid "There was an error updating the event: %s."
+msgstr "Sündmuse muutmisel tekkis viga: %s"
+
+#: lib/MIME/Viewer/pgp.php:165
+msgid "This PGP Public Key was attached to the message."
+msgstr "See PGP avalik võti lisati kirjale."
+
+#: lib/MIME/Viewer/itip.php:107 lib/MIME/Viewer/itip.php:121
+#: lib/MIME/Viewer/itip.php:146 lib/MIME/Viewer/itip.php:160
+#: lib/MIME/Viewer/itip.php:176 lib/MIME/Viewer/itip.php:319
+msgid "This action is not supported."
+msgstr "Selline tegevus pole võimalik."
+
+#: lib/MIME/Viewer/itip.php:182 lib/MIME/Viewer/itip.php:430
+msgid "This action is not yet implemented."
+msgstr "Seda tegevust programm veel ei võimalda."
+
+#: templates/javascript_defs.php:66
+msgid "This folder may not be renamed:"
+msgstr "Seda kausta ei või ümber nimetada:"
+
+#: templates/javascript_defs.php:63
+msgid "This may take some time. Are you sure you want to continue?"
+msgstr "See võib võtta natuke aega. Kas oled kindel et soovid jätkata?"
+
+#: lib/MIME/Viewer/appledouble.php:39
+msgid "This message contains a Macintosh file."
+msgstr "See kiri sisaldab Macintoshi faili."
+
+#: lib/MIME/Viewer/pkcs7.php:469
+msgid ""
+"This message contains an attachment that has been digitally signed via S/"
+"MIME."
+msgstr ""
+"See kiri sisaldab lisandit mis on digitaalselt allkirjastatud S/MIME abil."
+
+#: lib/MIME/Viewer/pkcs7.php:473
+msgid "This message contains an attachment that has been encrypted via S/MIME."
+msgstr "See kiri sisaldab lisandit mis on krüptitud S/MIME abil."
+
+#: lib/MIME/Viewer/status.php:159
+msgid ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+msgstr ""
+"See kiri sisaldab kättetoimetamisteavet, aga kirja vorming on tundmatu."
+
+#: lib/MIME/Viewer/pkcs7.php:200
+msgid "This message does not appear to be in the correct S/MIME format."
+msgstr "See kiri ei näi olevat korrektses S/MIME vormingus."
+
+#: lib/MIME/Viewer/pkcs7.php:173
+msgid "This message has been digitally signed via S/MIME."
+msgstr "See kiri on digitaalselt allkirjastatud S/MIME abil."
+
+#: lib/MIME/Viewer/pkcs7.php:169 lib/MIME/Viewer/pkcs7.php:291
+msgid "This message has been encrypted via S/MIME."
+msgstr "See kiri on krüptitud S/MIME abil."
+
+#: lib/MIME/Contents.php:425
+msgid "This message part cannot be viewed because it is too large."
+msgstr "Seda kirja osa ei saa vaadata kuna see on liiga suur."
+
+#: message.php:504
+msgid "This message to"
+msgstr "kiri kausta"
+
+#: lib/Maintenance/Task/create_default_folders.php:22
+msgid ""
+"This process makes sure the default folders are created on your account."
+msgstr "See protseduur kontrollib, et sinu kontol oleks olemas vaikekaustad."
+
+#: acl.php:47
+msgid "This server does not support sharing folders."
+msgstr "See server ei võimalda ühiskaustu."
+
+#: templates/javascript_defs.php:54
+msgid "This window must be called from a compose window."
+msgstr "See aken tuleb avada uue kirja aknast"
+
+#: templates/thread/thread.html:2
+msgid "Thread Display:"
+msgstr "Jutulõnga vaade:"
+
+#: thread.php:158 config/prefs.php.dist:1088
+msgid "Thread View"
+msgstr "Jutulõnga vaade"
+
+#: lib/MIME/Viewer/images.php:172
+msgid "Thumbnail of attached image"
+msgstr "Väike pilt manuses olevast pildist"
+
+#: mailbox.php:578 compose.php:781 lib/Search.php:658
+#: lib/Block/mailbox.php:152 lib/UI/Mailbox.php:88 lib/UI/Message.php:26
+#: templates/contacts/contacts.html:40 templates/login/recompose.html:14
+msgid "To"
+msgstr "Kellele"
+
+#: config/prefs.php.dist:1085
+msgid "To Address"
+msgstr "Saaja aadress"
+
+#: message.php:548
+msgid "To All"
+msgstr "Kõigile"
+
+#: message.php:544
+msgid "To List"
+msgstr "Listi"
+
+#: message.php:541
+msgid "To Sender"
+msgstr "Saatjale"
+
+#: message.php:548
+msgid "To _All"
+msgstr "Kõikile"
+
+#: message.php:544
+msgid "To _List"
+msgstr "Listi"
+
+#: templates/compose/redirect.html:46
+msgid "To field"
+msgstr "Saaja väli"
+
+#: templates/prefs/sourceselect.inc:324
+msgid ""
+"To select multiple fields, hold down the Control (PC) or Command (Mac) while "
+"clicking."
+msgstr ""
+"Mitme välja valimiseks hoia klõpsamise ajal all Control (PC) või Command "
+"(Mac) klahvi."
+
+#: lib/IMAP/Client.php:131
+msgid ""
+"To use a TLS connection, you must be running a version of PHP 5.1.0 or "
+"higher."
+msgstr "TLS kasutamiseks on vaja PHP versioon 5.1.0 või uuemat."
+
+#: thread.php:117 templates/thread/thread.html:32
+msgid "To:"
+msgstr "Kellele:"
+
+#: config/prefs.php.dist:527
+msgid "Top"
+msgstr "Üles"
+
+#: templates/compose/compose.html:307
+msgid "Total Size:"
+msgstr "Kogusuurus:"
+
+#: login.php:286
+msgid "Traditional"
+msgstr "Traditsiooniline"
+
+#: lib/IMAP/Tree.php:2325
+msgid "Trash folder"
+msgstr "Prügikaust"
+
+#: templates/prefs/trashselect.inc:19
+msgid "Trash folder:"
+msgstr "Prügikaust:"
+
+#: lib/Quota/sql.php:79
+msgid "Unable to connect to SQL server."
+msgstr "Ei saa ühendust SQL serveriga."
+
+#: lib/Quota/mercury32.php:78 lib/Quota/imap.php:42 lib/Quota/mdaemon.php:45
+#: lib/Quota/logfile.php:87 lib/Quota/maildir.php:113 lib/Quota/command.php:93
+msgid "Unable to retrieve quota"
+msgstr "Piiranguinfo hankimine nurjus"
+
+#: templates/mailbox/navbar.html:19 templates/mailbox/navbar.html:35
+#: templates/message/navbar_navigate.html:13
+msgid "Unanswered"
+msgstr "Vastamata"
+
+#: search.php:330
+msgid "Unanswered messages"
+msgstr "Vastamata kirjad"
+
+#: mailbox.php:505 message.php:535
+msgid "Undelete"
+msgstr "Taasta"
+
+#: search.php:340
+msgid "Undeleted messages"
+msgstr "Tühistatud kustutamisega kirjad"
+
+#: lib/MIME/Headers.php:213 lib/UI/Mailbox.php:66 lib/UI/Mailbox.php:84
+msgid "Undisclosed Recipients"
+msgstr "Nähtamatud adressaadid"
+
+#: lib/IMAP/Client.php:462
+msgid "Unexpected response from server to AUTHENTICATE command."
+msgstr "Ootamatu AUTHENTICATE käsu vastus serverilt."
+
+#: lib/IMAP/Client.php:428
+msgid "Unexpected response from server to Digest-MD5 response."
+msgstr "Ootamatu Digest-MD5 vastus serverilt."
+
+#: search.php:335
+msgid "Unflagged messages"
+msgstr "Lipustamata kirjad"
+
+#: lib/MIME/Viewer/itip.php:462
+#, php-format
+msgid "Unhandled component of type: %s"
+msgstr "Arusaamatu komponent tüüpi: %s"
+
+#: lib/MIME/Viewer/itip.php:729
+msgid "Unknown"
+msgstr "Tundmatu"
+
+#: lib/UI/Mailbox.php:176
+msgid "Unknown Date"
+msgstr "Tundmatu kuupäev"
+
+#: lib/IMAP/Client.php:205
+#, php-format
+msgid "Unknown IMAP response from the server. Server Responded: %s"
+msgstr "Arusaamatu IMAP vastus serverilt. Server vastas: %s"
+
+#: lib/MIME/Viewer/itip.php:675
+msgid "Unknown Meeting"
+msgstr "Tundmatu koosolek"
+
+#: lib/UI/Mailbox.php:103
+msgid "Unknown Recipient"
+msgstr "Tundmatu adressaat"
+
+#: lib/MIME/Viewer/itip.php:815
+msgid "Unknown Task"
+msgstr "Tundmatu töö"
+
+#: pgp.php:432 smime.php:338
+msgid "Unload Passphrase"
+msgstr "Eemalda salasõna"
+
+#: fetchmailprefs.php:69
+msgid "Unnamed"
+msgstr "Nimetu"
+
+#: mailbox.php:744 message.php:459 lib/Block/mailbox.php:289
+#: templates/mailbox/navbar.html:15 templates/mailbox/navbar.html:31
+#: templates/message/navbar_navigate.html:9
+msgid "Unseen"
+msgstr "Lugemata"
+
+#: templates/folders/actions.html:24
+msgid "Unsubscribe"
+msgstr "Unsubscribe"
+
+#: templates/compose/compose.html:281
+msgid "Update"
+msgstr "Kinnita"
+
+#: lib/MIME/Viewer/itip.php:661
+msgid "Update respondent status"
+msgstr "Värskenda vastaja olek"
+
+#: lib/MIME/Viewer/itip.php:640
+msgid "Update this event on my calendar"
+msgstr "Uuenda seda sündmust minu kalendris"
+
+#: templates/pgp/import_key.html:38 templates/smime/import_key.html:40
+msgid "Upload:"
+msgstr "Lae:"
+
+#: templates/prefs/sentmailselect.inc:39
+msgid "Use Default Value"
+msgstr "Kasuta vaikeväärtust"
+
+#: config/prefs.php.dist:263
+msgid "Use IMAP folder subscriptions?"
+msgstr "Kasuta IMAP kaustade tellimusi"
+
+#: config/prefs.php.dist:896
+msgid "Use Virtual Trash Folder?"
+msgstr "Kasuta virtuaalset prügikausta"
+
+#: templates/acl/acl.html:42
+msgid "User"
+msgstr "Kasutaja"
+
+#: acl.php:90 acl.php:131
+#, php-format
+msgid ""
+"User \"%s\" successfully given the specified rights for the folder \"%s\"."
+msgstr "Kasutajale \"%s\" anti soovitud õigused kaustale \"%s\"."
+
+#: templates/login/login.html:85
+msgid "Username"
+msgstr "Kasutajanimi"
+
+#: templates/fetchmail/fetchmailprefs.html:55
+msgid "Username:"
+msgstr "Kasutajanimi:"
+
+#: templates/login/mobile.inc:14
+msgid "Username: "
+msgstr "Kasutajanimi:"
+
+#: lib/MIME/Viewer/pkcs7.php:253 templates/pgp/pgp.html:38
+#: templates/pgp/pgp.html:75 templates/pgp/pgp.html:80
+#: templates/smime/smime.html:31 templates/smime/smime.html:67
+#: templates/smime/smime.html:71
+msgid "View"
+msgstr "Vaata"
+
+#: lib/MIME/Viewer/tnef.php:109 lib/MIME/Viewer/zip.php:90
+#, php-format
+msgid "View %s"
+msgstr "Vaata %s"
+
+#: pgp.php:404 smime.php:312
+#, php-format
+msgid "View %s Public Key"
+msgstr "Vaata %s avalikku võtit"
+
+#: lib/MIME/Viewer/images.php:162 lib/MIME/Viewer/images.php:167
+msgid "View Attachment"
+msgstr "Vaata manuseid"
+
+#: mailbox.php:538
+msgid "View Messages"
+msgstr "Vaata kirju"
+
+#: pgp.php:433 smime.php:339
+msgid "View Personal Private Key"
+msgstr "Vaata oma salajast võtit"
+
+#: pgp.php:427 smime.php:335
+msgid "View Personal Public Key"
+msgstr "Vaata oma avalikku võtit"
+
+#: message.php:559
+msgid "View Thread"
+msgstr "Vaata jutulõnga"
+
+#: lib/MIME/Viewer/pkcs7.php:477
+msgid "View attachment in a separate window"
+msgstr "Vaata lisandit eraldi aknas."
+
+#: lib/MIME/Viewer/related.php:85
+msgid "View content in a separate window"
+msgstr "Vaata sisu eraldi aknas."
+
+#: lib/MIME/Viewer/itip.php:143
+msgid "View event"
+msgstr "Vaata sündmust"
+
+#: mailbox.php:680 folders.php:420
+#, php-format
+msgid "View messages in %s"
+msgstr "Vaata kirju kaustas %s"
+
+#: templates/prefs/initialpageselect.inc:16
+msgid "View or mailbox to display after login:"
+msgstr "Vaade või kaust mida näidata pärast sisselogimist:"
+
+#: lib/MIME/Viewer/itip.php:173
+msgid "View task"
+msgstr "Vaata ülesannet"
+
+#: mailbox.php:357 mailbox.php:358
+msgid "Virtual Folder"
+msgstr "Virtuaalsed kaustad"
+
+#: search.php:151
+#, php-format
+msgid "Virtual Folder \"%s\" created succesfully."
+msgstr "Virtuaalne kaust \"%s\" loodud."
+
+#: lib/IMAP/Tree.php:88 templates/search/search.html:184
+msgid "Virtual Folders"
+msgstr "Virtuaalsed kaustad"
+
+#: search.php:146
+msgid "Virtual Folders require a label."
+msgstr "Virtuaalsed kaustad vajavad märgendit."
+
+#: lib/Search.php:401
+msgid "Virtual INBOX"
+msgstr "Virtuaalne INBOX"
+
+#: lib/IMAP/Tree.php:2365
+msgid "Virtual INBOX Folder"
+msgstr "Virtuaalne INBOX kaust"
+
+#: lib/Search.php:345
+msgid "Virtual Trash"
+msgstr "Virtuaalne prügikast"
+
+#: lib/IMAP/Tree.php:2361
+msgid "Virtual Trash Folder"
+msgstr "Virtuaalne prügikast"
+
+#: templates/search/search.html:195
+msgid "Virtual folder label:"
+msgstr "Virtuaalse kausta märgend:"
+
+#: lib/MIME/Viewer/pkcs7.php:432 lib/Crypt/PGP.php:380
+msgid "Warning"
+msgstr "Hoiatus"
+
+#: login.php:191 login.php:336 templates/login/mobile.inc:11
+#, php-format
+msgid "Welcome to %s"
+msgstr "Tere tulemast %s-i"
+
+#: config/prefs.php.dist:744
+msgid ""
+"What should we do with spam messages after they have been reported as spam "
+"or innocent?"
+msgstr ""
+"Mida tuleks teha rämpspostiga pärast seda kui selle kohta on teade saadetud?"
+
+#: config/prefs.php.dist:888
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted?"
+msgstr ""
+"Kirjade kustutamisel tõsta need kustutatuks märkimise asemel prügikasti."
+
+#: config/prefs.php.dist:1073
+msgid ""
+"When opening a new mailbox for the first time, which page do you want to "
+"start on?"
+msgstr "Millisele leheküljele minna kausta avamisel?"
+
+#: config/prefs.php.dist:594
+msgid ""
+"When replying/forwarding to a message, should we use the same format as the "
+"original message?"
+msgstr ""
+"Kas kirjale vastates/edastades peaks kasutama sama formaati nagu originaalis?"
+
+#: config/prefs.php.dist:698
+msgid "When saving sent-mail, should we save attachment data?"
+msgstr "Kas saadetud kirja salvestamisel tuleks salvestada ka lisand?"
+
+#: config/prefs.php.dist:482
+msgid ""
+"When sending mail or expanding addresses, what domain should we append to "
+"unqualified addresses (email addresses without \"@\")?"
+msgstr ""
+"Millise domeeninime peaksime lisama kirja saatmisel või aadresside "
+"lahendamisel domeenita aadressidele (aadressidele mis ei sisalda \"@\" "
+"märki)?"
+
+#: config/prefs.php.dist:857
+msgid "Where do you want to display links to alternative formats of a message?"
+msgstr "Kus sa tahad näha linki erinevatele kirja formaatidele?"
+
+#: config/prefs.php.dist:530
+msgid "Where should the cursor be located in the compose text area by default?"
+msgstr "Kus peaks olema kursor kirja koostamise kastis?"
+
+#: mailbox.php:521 message.php:567
+msgid "Whitelist"
+msgstr "Valge nimekiri"
+
+#: config/prefs.php.dist:509
+msgid "Xinha"
+msgstr "Xinha"
+
+#: templates/search/search.html:99
+msgid "Year"
+msgstr "Aasta"
+
+#: templates/javascript_defs.php:48 config/prefs.php.dist:1151
+#: config/prefs.php.dist:1173 templates/compose/compose.html:292
+msgid "Yes"
+msgstr "Jah"
+
+#: lib/Maintenance/Task/fetchmail_login.php:57
+msgid "You are about to fetch email from the following account(s):"
+msgstr "Sa kavatsed tirida kirju järgneva(te)lt konto(de)lt:"
+
+#: templates/folders/folders_confirm.html:10
+msgid ""
+"You are attempting to delete all messages contained in the following folder"
+"(s)."
+msgstr "Sa kavatsed kustutada kõik kirjad järgmis(t)es kausta(de)s."
+
+#: templates/folders/folders_confirm.html:9
+msgid "You are attempting to delete the following folder(s)."
+msgstr "Sa püüad kustutada järgmise(d) kausta(d)."
+
+#: templates/javascript_defs.php:81
+msgid "You are copying/moving to a new folder."
+msgstr "Sa kopeerid/tõstad uude kausta."
+
+#: templates/javascript_defs.php:59
+msgid "You are creating a sub-folder to"
+msgstr "Sa lood alamkausta kaustale "
+
+#: templates/javascript_defs.php:61
+msgid "You are creating a top-level folder."
+msgstr "Sa lood ülemise taseme kausta "
+
+#: lib/Folder.php:253
+msgid "You are not allowed to create folders."
+msgstr "Sul pole lubatud kaustu luua."
+
+#: lib/Folder.php:260
+#, php-format
+msgid "You are not allowed to create more than %d folders."
+msgstr "Sa ei või luua rohkem kui %d kausta."
+
+#: lib/Compose.php:912
+#, php-format
+msgid ""
+"You are not allowed to send messages to more than %d recipients within %d "
+"hours."
+msgstr "Sul ei ole lubatud saata rohkem kui %d saajale %d tunni jooksul."
+
+#: lib/Compose.php:1154
+#, php-format
+msgid "You are not allowed to send messages to more than %d recipients."
+msgstr "Sul ei ole lubatud saata rohkem kui %d saajale maili."
+
+#: templates/javascript_defs.php:64
+msgid "You are renaming the folder:"
+msgstr "Sa nimetad ümber kausta: "
+
+#: templates/stationery/stationery.html:39
+msgid ""
+"You can use the following placeholders in the stationery text: %c for the "
+"current message content; %s for the signature."
+msgstr ""
+"Kirjamalli tekstis võid kasutada järgmisi muutujaid: %c tähistab käesoleva "
+"kirja sisu, %s tähistab allkirja."
+
+#: lib/Folder.php:494
+#, php-format
+msgid "You cannot unsubscribe from \"%s\"."
+msgstr "Sa ei või loobuda kausta \"%s\" tellimusest."
+
+#: lib/Maintenance/Task/tos_agreement.php:33
+msgid ""
+"You did not agree to the Terms of Service agreement, so you were not allowed "
+"to login."
+msgstr ""
+"Sa ei nõustunud kasutustingimustega, seega ei ole sul lubatud sisse logida."
+
+#: templates/acl/acl.html:88
+msgid "You do not have permission to change access to this folder."
+msgstr "Sul pole õigust selle kausta juurdepääsuõiguste muutmiseks."
+
+#: lib/Maillog.php:130
+#, php-format
+msgid "You forwarded this message on %%s to the following recipients: %s."
+msgstr "Sa edastasid selle kirja %%s järgmistele adressaatidele: %s."
+
+#: lib/IMP.php:994
+#, php-format
+msgid "You have %s new messages."
+msgstr "Sulle on %s uut kirja."
+
+#: lib/IMP.php:994
+msgid "You have 1 new message."
+msgstr "Sulle on 1 uus kiri."
+
+#: compose.php:126
+msgid "You have already submitted this page."
+msgstr "Sa juba salvestasid selle lehekülje."
+
+#: templates/newmsg/alert.html:3
+msgid "You have new mail in:"
+msgstr "Sulle on uus kiri:"
+
+#: templates/fetchmail/fetchmail.html:22
+msgid "You have not configured any external mail accounts."
+msgstr "Sa ei ole konfigureerinud ühtki välist maili kontot."
+
+#: lib/Compose.php:1141
+msgid "You must enter at least one recipient."
+msgstr "Kirjal peab olema vähemalt üks saaja."
+
+#: lib/MIME/Viewer/pgp.php:353
+msgid ""
+"You must enter the passphrase for your PGP private key to view this message."
+msgstr "Selle kirja vaatamiseks pead sisestama oma PGP salajase võtme parooli."
+
+#: lib/MIME/Viewer/pkcs7.php:307
+msgid ""
+"You must enter the passphrase for your S/MIME private key to view this "
+"message"
+msgstr ""
+"Selle kirja vaatamiseks pead sisestama oma S/MIME salajase võtme salasõna."
+
+#: lib/MIME/Viewer/pgp.php:340
+msgid "You must enter the passphrase that was used to encrypt this message."
+msgstr ""
+"Selle kirja vaatamiseks pead sisestama oma krüpteerimise kasutatud parooli."
+
+#: templates/javascript_defs.php:82
+msgid "You must select a target mailbox first."
+msgstr "Kõigepealt pead valima kausta."
+
+#: fetchmailprefs.php:89
+msgid "You must select an account to be deleted."
+msgstr "Pead valima konto mida soovid kustutada."
+
+#: templates/javascript_defs.php:52
+msgid "You must select an address first."
+msgstr "Kõigepealt pead valima aadressi."
+
+#: templates/javascript_defs.php:45 templates/javascript_defs.php:47
+msgid "You must select at least one message first."
+msgstr "Kõigepealt pead valima vähemalt ühe kirja."
+
+#: lib/Compose.php:835
+msgid "You must separate e-mail addresses with commas (,) not semicolons (;)."
+msgstr "Aadressid peab eraldama komaga(,) mitte semikooloniga (;)."
+
+#: templates/javascript_defs.php:36
+msgid "You must specify a recipient."
+msgstr "Kirja saaja peab olema määratud."
+
+#: templates/fetchmail/fetchmailprefs.html:91
+msgid ""
+"You need to have \"Perform maintenance operations on login?\" enabled in "
+"your maintenance options."
+msgstr ""
+"Sul peab olema \"Hooldustööde teostamine logimisel?\" sisse lülitatud "
+"seadistustes."
+
+#: lib/Maillog.php:138
+#, php-format
+msgid "You redirected this message to %s on %%s."
+msgstr "Sa suunasid selle kirja %s-le edasi %%s."
+
+#: lib/Maillog.php:142
+#, php-format
+msgid "You replied to this message on %s."
+msgstr "Sa vastasid sellele kirjale %s."
+
+#: lib/Folder.php:446
+#, php-format
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr "Sul ei õnnestunud tellida kausta \"%s\". Server ütles"
+
+#: lib/Folder.php:496
+#, php-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr "Sul ei õnnestunud tühistada kausta \"%s\" tellimust. Server ütles"
+
+#: lib/Folder.php:449
+#, php-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr "Sa tellisid kausta \"%s\"."
+
+#: lib/Folder.php:499
+#, php-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "Sa loobusid kausta \"%s\" tellimusest."
+
+#: templates/pgp/pgp.html:95
+msgid "Your Name:"
+msgstr "Sinu nimi:"
+
+#: templates/pgp/pgp.html:63
+msgid "Your PGP Public/Private Keys"
+msgstr "Sinu PGP võtmepaar"
+
+#: templates/pgp/pgp.html:79 templates/smime/smime.html:70
+msgid "Your Private Key:"
+msgstr "Sinu salajane võti:"
+
+#: templates/pgp/pgp.html:74 templates/smime/smime.html:66
+msgid "Your Public Key:"
+msgstr "Sinu avalik võti:"
+
+#: config/prefs.php.dist:173
+msgid "Your Reply-to: address: <em>(optional)</em>"
+msgstr "Sinu Vasta: aadress: <em>(pole kohustuslik)</em>"
+
+#: templates/smime/smime.html:56
+msgid "Your S/MIME Public/Private Certificates"
+msgstr "Sinu S/MIME avalik ja salajane sertifikaat"
+
+#: fetchmail.php:22
+msgid "Your account does not support fetching external mail."
+msgstr "Sinu konto ei toeta välimisi kontosi."
+
+#: templates/fetchmail/fetchmailprefs.html:18
+msgid "Your accounts:"
+msgstr "Sinu kontod:"
+
+#: config/prefs.php.dist:181
+msgid ""
+"Your alias addresses: <em>(optional, enter each address on a new line)</em>"
+msgstr ""
+"Sinu alias aadressid: <em>(pole kohustuslik, sisesta iga aadress eraldi "
+"reale)</em>"
+
+#: lib/MIME/Viewer/images.php:89
+msgid "Your browser does not support inline display of this image type."
+msgstr "Sinu veebilehitseja ei võimalda seda tüüpi pilti vahetult näidata."
+
+#: config/prefs.php.dist:676
+msgid "Your default charset for sending messages:"
+msgstr "Vaikemärgistik kirjade saatmisel:"
+
+#: templates/prefs/encryptselect.inc:1
+msgid "Your default encryption method for sending messages:"
+msgstr "Vaikimisi krüptimismeetod kirjade saatmisel:"
+
+#: attachment.php:114
+#, php-format
+msgid ""
+"Your linked attachment has been downloaded by at least one user.\n"
+"\n"
+"Attachment name: %s\n"
+"Attachment date: %s\n"
+"\n"
+"Click on the following link to permanently delete the attachment:\n"
+"%s"
+msgstr ""
+"Sinu lingitud manust on vähemalt üks kasutaja vaadanud.\n"
+"\n"
+"Manuse nimi:%s\n"
+"Manuse kuupäev: %s\n"
+"Vajuta alltoodud linki, et see manus jäädavalt kustutda:\n"
+"%s"
+
+#: lib/MIME/Viewer/status.php:88
+msgid "Your message was successfully delivered."
+msgstr "Sinu kiri jõudis õnnelikult pärale."
+
+#: config/prefs.php.dist:205
+msgid "Your signature:"
+msgstr "Sinu allkiri:"
+
+#: lib/Message.php:530
+#, php-format
+msgid "[Attachment stripped: Original attachment type: %s, name: %s]"
+msgstr "[Manus eemaldatud: Algne manuse tüüp %s, nimi: %s]"
+
+#: mailbox.php:704 rss.php:82 message.php:275 lib/Compose.php:1660
+#: lib/Compose.php:2131 lib/Block/mailbox.php:249
+msgid "[No Subject]"
+msgstr "[Teema puudub]"
+
+#: lib/MIME/Viewer/pgp.php:169
+msgid "[Save the key to your Address book]"
+msgstr "[Salvesta võti oma aadressiraamatusse]"
+
+#: lib/MIME/Headers.php:223
+#, php-format
+msgid "[Show addresses - %s recipients]"
+msgstr "[Näita aadresse - %s saajaid]"
+
+#: lib/Compose.php:2745
+msgid "[Truncated Text]"
+msgstr "[Trimmitud tekst]"
+
+#: lib/MIME/Viewer/pgp.php:171
+msgid "[View the raw key]"
+msgstr "[Vaata toorest võtit]"
+
+#: compose.php:912
+msgid "_Bcc"
+msgstr "_Pimekoopia"
+
+#: mailbox.php:517 message.php:563
+msgid "_Blacklist"
+msgstr "_Musta nimekirja"
+
+#: compose.php:909
+msgid "_Cc"
+msgstr "_Koopia"
+
+#: mailbox.php:499 mailbox.php:501 message.php:537
+msgid "_Delete"
+msgstr "Ku_stuta"
+
+#: lib/IMP.php:815
+msgid "_Folders"
+msgstr "_Kaustad"
+
+#: compose.php:889
+msgid "_Identity"
+msgstr "_Identiteet"
+
+#: lib/IMP.php:784
+msgid "_Inbox"
+msgstr "_Inbox"
+
+#: lib/IMP.php:852
+msgid "_Log out"
+msgstr "_Logi välja"
+
+#: message.php:572
+msgid "_Message Source"
+msgstr "Kirja _algtekst"
+
+#: lib/IMP.php:812
+msgid "_New Message"
+msgstr "_Uus kiri"
+
+#: message.php:585
+msgid "_Print"
+msgstr "_Prindi"
+
+#: compose.php:979
+msgid "_Priority"
+msgstr "_Tähtsus"
+
+#: mailbox.php:344 lib/Block/mailbox.php:93
+#, php-format
+msgid "_Refresh %s"
+msgstr "_Värskenda %s"
+
+#: message.php:540
+msgid "_Reply"
+msgstr "V_asta"
+
+#: lib/IMP.php:817
+msgid "_Search"
+msgstr "_Otsing"
+
+#: compose.php:874
+msgid "_Send Message"
+msgstr "_Saada kiri"
+
+#: mailbox.php:588 lib/Block/mailbox.php:162
+msgid "_Thread"
+msgstr "_Jutulõng"
+
+#: compose.php:905 compose.php:907
+msgid "_To"
+msgstr "_Kellele"
+
+#: mailbox.php:505
+msgid "_Undelete"
+msgstr "_Taasta"
+
+#: message.php:559
+msgid "_View Thread"
+msgstr "_Vaata jutulõnga"
+
+#: mailbox.php:521 message.php:567
+msgid "_Whitelist"
+msgstr "Valgesse _nimekirja"
+
+#: lib/Compose.php:939
+msgid "addressee unknown"
+msgstr "adressaat tundmatu"
+
+#: lib/Search.php:542
+msgid "and"
+msgstr "ja"
+
+#: lib/Compose.php:1770
+msgid "attachment"
+msgstr "lisand"
+
+#: view.php:117
+msgid "attachments.zip"
+msgstr "attachments.zip"
+
+#: templates/compose/compose.html:273
+msgid "bytes"
+msgstr "baiti"
+
+#: lib/Compose.php:963
+msgid "cannot create output file"
+msgstr "väljundfaili loomine nurjus"
+
+#: lib/Compose.php:935
+msgid "cannot open input"
+msgstr "sisendi avamine nurjus"
+
+#: lib/Compose.php:927
+msgid "command line usage error"
+msgstr "käsurea vale kasutus"
+
+#: lib/Compose.php:983
+msgid "configuration error"
+msgstr "seadistuse viga"
+
+#: lib/Compose.php:959
+msgid "critical system file missing"
+msgstr "elutähtis süsteemifail puudub"
+
+#: lib/Compose.php:931
+msgid "data format error"
+msgstr "andmete vormingu viga"
+
+#: lib/Compose.php:987
+msgid "entry not found"
+msgstr "kannet ei leitud"
+
+#: templates/contacts/contacts.html:16
+msgid "from"
+msgstr "kellelt"
+
+#: lib/Compose.php:943
+msgid "host name unknown"
+msgstr "hostinimi on tundmatu"
+
+#: lib/Search.php:545
+msgid "in"
+msgstr " sees"
+
+#: lib/Compose.php:967
+msgid "input/output error"
+msgstr "sisend/väljund viga"
+
+#: lib/Compose.php:951
+msgid "internal software error"
+msgstr "tarkvara seesmine viga"
+
+#: templates/folders/import.html:13
+msgid "into folder"
+msgstr "Kopeeri kausta"
+
+#: pgp.php:79 smime.php:39
+msgid "key"
+msgstr "võti"
+
+#: folders.php:136
+msgid "mailbox file"
+msgstr "postkastifail"
+
+#: lib/Compose.php:766
+msgid "name"
+msgstr "nimi"
+
+#: lib/Search.php:539
+msgid "not"
+msgstr "mitte"
+
+#: lib/Search.php:542 templates/fetchmail/fetchmailprefs.html:26
+msgid "or"
+msgstr "või"
+
+#: lib/Compose.php:979
+msgid "permission denied"
+msgstr "juurdepääs puudub"
+
+#: templates/javascript_defs.php:31
+msgid "recipients"
+msgstr "Saaja"
+
+#: lib/Compose.php:975
+msgid "remote error in protocol"
+msgstr "protokolli viga teises otsas"
+
+#: lib/Compose.php:947
+msgid "service unavailable"
+msgstr "teenus pole saadaval"
+
+#: lib/Compose.php:955
+msgid "system error"
+msgstr "süsteemi viga"
+
+#: lib/Compose.php:971
+msgid "temporary failure"
+msgstr "ajutine tõrge"
+
+#: lib/Filter.php:65
+msgid "your blacklist"
+msgstr "oma musta nimekirja"
+
+#: lib/Filter.php:91
+msgid "your whitelist"
+msgstr "oma valge nimekirja"

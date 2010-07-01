@@ -1,0 +1,13 @@
+/**
+ * $Horde: imp/themes/lavander/screen.css,v 1.1 2004-10-17 20:37:46 mdjukic Exp $
+ */
+
+.text {
+    background-color: #F6E7F8;
+}
+.answered {
+    background-color: #F4D7F8;
+}
+.unseen {
+    background-color: #E1C2E7;
+}

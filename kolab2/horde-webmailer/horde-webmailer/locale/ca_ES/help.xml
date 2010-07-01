@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Horde: horde/locale/ca_ES/help.xml,v 1.1.2.2 2007-12-20 15:01:39 jan Exp $ -->
+<help>
+  <entry id="summary" state="uptodate" md5="68ca33f7f0c9aae4c103eb47492cdc15">
+<title>La pàgina del portal</title>
+ <para>
+  Aquesta pàgina del portal proporciona un resum de tota la informació important. Per exemple, pot mostrar quants missatges nous té en la safata d'Entrada, esdeveniments imminents de l'agenda, tasques pendents de la llista de tasques, titulars de serveis de notícies seleccionats, etc. Molts d'aquests resums podrán contenir dreceres a activitats usuals tals com la redacció de nous missatges, la creació d'esdeveniments de l'agenda o tasques noves, etc. 
+ </para>
+ <para>
+Els continguts d'aquesta pàgina del portal es poden personalitzar mitjançant el botó Distribució. Per exemple, pot triar qué elements incloure en aquesta pàgina del portal així com l'ordre en el qual es mostrarán. 
+ </para>
+</entry>
+  <entry id="navbar" state="uptodate" md5="b8cf0ae19e57dfa0c2b962e516782f47">
+<title>La barra de navegació d'aplicacions</title>
+ <para>
+ En el costat esquerre de la pàgina web es troba la barra de navegació d'aplicacions. Premi les icones d'aquesta barra per a canviar ràpid i fácilment entre les aplicacions disponibles.
+ </para>
+</entry>
+  <entry id="prefs-do_maintenance" state="uptodate" md5="dd95df07a03031232baea919288b2d00">
+    <title>Preferències: Manteniment: Realitzar manteniment</title>
+    <para>
+Si desitja realitzar les operacions de manteniment a l'iniciar la sesió, seleccioni aquesta casella.     
+    </para>
+</entry>
+  <entry id="prefs-confirm_maintenance" state="uptodate" md5="a21162cdff3b1d8faeadb7296240036e">
+    <title>Preferències: Manteniment: Confirmar manteniment</title>
+    <para>
+Si volgués confirmar les tasques de manteniment abans que s'executin, seleccioni aquesta casella. Si es deixa sense seleccionar, s'executarán automàticament a l'iniciar la sesió totes les tasques de manteniment pendents sense la possibilitat de cancel·lar-les. 
+    </para>
+</entry>
+</help>

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!-- $Horde: mnemo/config/conf.xml,v 1.17.10.1 2007-12-20 14:17:38 jan Exp $ -->
+<configuration>
+ <configsection name="storage">
+  <configheader>Storage System Settings</configheader>
+
+  <configswitch name="driver" desc="What storage driver should we use?">sql
+   <case name="sql" desc="SQL">
+    <configsection name="params">
+     <configsql switchname="driverconfig">
+      <configstring name="table" desc="Database
+      table">mnemo_memos</configstring>
+     </configsql>
+    </configsection>
+   </case>
+
+   <case name="kolab" desc="Kolab" />
+  </configswitch>
+ </configsection>
+
+ <configsection name="utils">
+  <configheader>External Utilities</configheader>
+  <configstring name="gnupg" required="false" desc="If you want users to have
+  the option of using the GNU Privacy Guard program to decrypt/encrypt notes,
+  enter the location of the 'gpg' binary here.  If this is empty this
+  feature will be disabled."/>
+ </configsection>
+
+ <configsection name="menu">
+  <configheader>Menu settings</configheader>
+  <configboolean name="print" desc="Should we display a Print link in the
+  Horde application menus?">true</configboolean>
+  <configboolean name="import_export" desc="Should we display an Import/Export
+  link in the Mnemo application menus?">true
+  </configboolean>
+  <configmultienum name="apps" desc="Select any applications that should be
+  linked in Mnemo's menu">
+   <values>
+    <configspecial name="list-horde-apps" />
+   </values>
+  </configmultienum>
+ </configsection>
+</configuration>

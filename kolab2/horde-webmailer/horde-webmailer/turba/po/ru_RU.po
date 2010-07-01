@@ -1,0 +1,1227 @@
+# Russian Turba Translation
+# Copyright
+# Ignat Ikryanov <iignat@newmail.ru>, 2001
+# Anton Nekhoroshih <anton@valuehost.ru>, 2001
+# Fedor A. Fetisov <faf@ssc.ru>, 2002
+# Alexey Zakharov <baber@mosga.net>, 2008
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba H3 v2.2\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-02-02 19:43+0200\n"
+"PO-Revision-Date: 2008-02-02 20:00+0200\n"
+"Last-Translator: Alexey Zakharov <baber@mosga.net>\n"
+"Language-Team: Russian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1251\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: lib/Forms/EditContact.php:76
+#, php-format
+msgid "\"%s\" updated, but saving the uploaded file failed: %s"
+msgstr ""
+
+#: lib/Views/Browse.php:190
+#, php-format
+msgid "\"%s\" was not moved because it is a list."
+msgstr ""
+
+#: config/prefs.php.dist:118
+msgid "\"Firstname Lastname\"  (ie. John Doe)"
+msgstr "\"Имя Фамилия\" (Вася Пупкин)"
+
+#: config/prefs.php.dist:117
+msgid "\"Lastname, Firstname\" (ie. Doe, John)"
+msgstr "\"Фамилия, Имя\" (Пупкин, Вася)"
+
+#: lib/Forms/AddContact.php:83
+#, php-format
+msgid "%s added."
+msgstr ""
+
+#: view.php:54
+#, php-format
+msgid "Access denied to %s"
+msgstr "Доступ запрещен для %s"
+
+#: templates/browse/actions.inc:30 lib/Forms/AddContact.php:25
+msgid "Add"
+msgstr "Добавить"
+
+#: lib/Forms/AddContact.php:22
+msgid "Add Contact"
+msgstr "Добавить Контакт"
+
+#: templates/prefs/addressbookselect.inc:173
+#, fuzzy
+msgid "Add address book"
+msgstr "Адресная книга"
+
+#: templates/prefs/columnselect.inc:237
+#, fuzzy
+msgid "Add column"
+msgstr "добавить столбец"
+
+# fuzzy
+#: lib/Forms/EditContact.php:34
+msgid "Add file"
+msgstr "загрузить"
+
+# fuzzy
+#: templates/browse/actions.inc:30
+msgid "Add to"
+msgstr "Добавить"
+
+#: lib/Driver.php:1561 lib/Driver/null.php:57
+#, fuzzy
+msgid "Adding contacts is not available."
+msgstr "Нет доступных настроек."
+
+#: templates/addressbooks.inc:87 templates/addressbook_list.php:15
+msgid "Address Book"
+msgstr "Адресная книга"
+
+#: templates/addressbook_list.php:12
+#, fuzzy
+msgid "Address Book List"
+msgstr "Содержание адресной книги"
+
+#: lib/Views/Browse.php:78 config/prefs.php.dist:106
+msgid "Address Book Listing"
+msgstr "Содержание адресной книги"
+
+#: config/prefs.php.dist:10
+msgid "Address Books"
+msgstr "Адресные книги"
+
+#: data.php:331
+#, fuzzy
+msgid "Address book successfully purged."
+msgstr "Файл %s успешно импортирован"
+
+#: templates/addressbooks.inc:63
+#, fuzzy
+msgid "Address book to delete "
+msgstr "Адресная книга доступна только для чтения."
+
+#: templates/prefs/addressbookselect.inc:167
+#: templates/prefs/addressbookselect.inc:169
+msgid "Address books that will not be displayed:"
+msgstr "Эти адресные книги НЕ будут отображены:"
+
+#: search.php:160 templates/browse/search.inc:47
+msgid "Advanced Search"
+msgstr "Расширенный Поиск"
+
+#: config/attributes.php.dist:83
+msgid "Alias"
+msgstr "Псевдоним"
+
+#: templates/list/alphaPager.inc:7 templates/list/alphaPager.inc:10
+#: templates/browse/footerAlpha.inc:7 templates/browse/footerAlpha.inc:10
+msgid "All"
+msgstr "Все"
+
+#: lib/api.php:729
+msgid "Already Exists"
+msgstr ""
+
+#: config/attributes.php.dist:106
+msgid "Anniversaries"
+msgstr ""
+
+#: config/attributes.php.dist:102
+msgid "Anniversary"
+msgstr ""
+
+# fuzzy, php-format
+#: templates/browse/javascript.inc:85
+#, fuzzy, php-format
+msgid "Are you sure that you want to delete %s?"
+msgstr "Вы уверены, что хотите сделать это?"
+
+# fuzzy
+#: templates/browse/javascript.inc:66
+msgid "Are you sure that you want to delete the selected contacts?"
+msgstr "Вы уверены, что хотите удалить эти контакты?"
+
+#: config/attributes.php.dist:377
+#, fuzzy
+msgid "Assistant"
+msgstr "Настройки пользователя"
+
+# fuzzy
+#: search.php:157 templates/browse/search.inc:46
+msgid "Basic Search"
+msgstr "Поиск"
+
+#: lib/Driver/ldap.php:92 lib/Driver/ldap.php:95
+#, fuzzy, php-format
+msgid "Bind failed: (%s) %s"
+msgstr "Ошибка при удалении"
+
+#: config/attributes.php.dist:95
+msgid "Birthday"
+msgstr "День рождения"
+
+#: config/attributes.php.dist:99
+#, fuzzy
+msgid "Birthdays"
+msgstr "День рождения"
+
+#: contact.php:103 templates/browse/row.inc:6
+#, fuzzy
+msgid "Blank name"
+msgstr "Имя задачи"
+
+#: templates/browse/actions.inc:51
+msgid "Both"
+msgstr "Вместе"
+
+# fuzzy
+#: templates/menu.inc:8
+#, fuzzy
+msgid "Browse"
+msgstr "Выбрать"
+
+#: config/attributes.php.dist:288
+#, fuzzy
+msgid "Business Category"
+msgstr "Новая категория"
+
+#: data.php:60
+msgid "CSV"
+msgstr "CSV-файл"
+
+#: lib/Object/Group.php:68
+msgid "Can't add a group to itself."
+msgstr ""
+
+#: lib/Forms/DeleteAddressBook.php:45 lib/Forms/DeleteAddressBook.php:54
+msgid "Cancel"
+msgstr "Отмена"
+
+# fuzzy, php-format
+# php-format
+#: lib/Driver/kolab.php:620
+#, fuzzy, php-format
+msgid "Cannot delete all address book entries for %s"
+msgstr "Добавить в адресную книгу (%s)"
+
+# fuzzy
+#: config/attributes.php.dist:349
+msgid "Category"
+msgstr "Категория"
+
+#: templates/browse/column_headers.inc:7
+msgid "Check _All/None"
+msgstr "Выделить все"
+
+#: templates/prefs/addressbookselect.inc:163
+msgid "Choose which address books to display, and in what order:"
+msgstr "Какие адресные книги будут отображены, и в каком порядке:"
+
+#: config/prefs.php.dist:11
+msgid "Choose which address books to use."
+msgstr "Выбор адресных книг для использования"
+
+# fuzzy
+#: templates/prefs/columnselect.inc:227
+msgid "Choose which columns to display and in what order:"
+msgstr "Выберите свойства, который будут отображены"
+
+# fuzzy
+#: templates/block/minisearch.inc:27
+msgid "Close"
+msgstr "Закрыть"
+
+#: templates/browse/header.inc:7
+#, fuzzy
+msgid "Close Search"
+msgstr "Очистить"
+
+# fuzzy
+#: config/prefs.php.dist:17
+msgid "Column Options"
+msgstr "Столбцы"
+
+#: templates/prefs/columnselect.inc:231 templates/prefs/columnselect.inc:233
+msgid "Columns that will not be displayed:"
+msgstr "Неотображаемые свойства:"
+
+#: templates/data/import.inc:13 templates/data/export.inc:12
+msgid "Comma separated values"
+msgstr "CSV-файл (разделенный запятыми)"
+
+#: templates/data/export.inc:13
+msgid "Comma separated values (Microsoft Outlook)"
+msgstr "CSV-файл (формат Microsoft Outlook)"
+
+#: config/sources.php.dist:229 config/sources.php.dist:905
+#, fuzzy
+msgid "Communications"
+msgstr "Настройки"
+
+#: config/attributes.php.dist:294
+msgid "Company"
+msgstr "Компания"
+
+#: config/attributes.php.dist:223
+#, fuzzy
+msgid "Company Address"
+msgstr "Домашний адрес"
+
+#: scripts/import_squirrelmail_abook.php:112 lib/api.php:398 lib/api.php:443
+#: lib/api.php:494 lib/api.php:529 lib/api.php:578 lib/api.php:624
+#: lib/api.php:665 lib/api.php:782 lib/api.php:869 lib/api.php:928
+#: lib/api.php:1020 lib/api.php:1229 lib/api.php:1301 lib/api.php:1386
+#, fuzzy, php-format
+msgid "Connection failed: %s"
+msgstr "Ошибка при удалении"
+
+#: lib/Driver/ldap.php:68
+#, fuzzy
+msgid "Connection failure"
+msgstr "Ошибка при удалении"
+
+# fuzzy
+#: lib/Block/minisearch.php:3 lib/Block/minisearch.php:26
+msgid "Contact Search"
+msgstr "Найти контакт"
+
+#: config/sources.php.dist:837
+#, fuzzy
+msgid "Contacts"
+msgstr "Показать Контакты"
+
+#: templates/list/numPager.inc:3
+#, fuzzy
+msgid "Contacts displayed:"
+msgstr "Нет замечаний для отображения"
+
+# fuzzy, php-format
+#: lib/Views/Browse.php:338
+#, php-format
+msgid "Contacts in list: %s"
+msgstr "Контакты в группе: %s"
+
+#: templates/browse/actions.inc:18
+#, fuzzy
+msgid "Copy"
+msgstr "Компания"
+
+#: templates/addressbooks.inc:54 lib/Forms/CreateAddressBook.php:39
+msgid "Create"
+msgstr "Создать"
+
+#: templates/addressbooks.inc:41 lib/Forms/CreateAddressBook.php:34
+#, fuzzy
+msgid "Create Address Book"
+msgstr "Содержание адресной книги"
+
+#: templates/addressbook_list.php:8
+#, fuzzy
+msgid "Create a new Address Book"
+msgstr "Содержание адресной книги"
+
+# fuzzy
+# fuzzy
+#: lib/ListView.php:443
+msgid "Create a new Contact List in:"
+msgstr "Создать новую группу в:"
+
+#: lib/ObjectView.php:133 lib/Views/Contact.php:74
+#, fuzzy
+msgid "Created"
+msgstr "Создать"
+
+#: contact.php:86
+#, fuzzy
+msgid "De_lete"
+msgstr "Удалить"
+
+#: addressbooks/index.php:41 templates/addressbooks.inc:77
+#: templates/addressbook_list.php:33 templates/browse/actions.inc:3
+#: lib/Renderer.php:47 lib/Renderer.php:50 lib/Views/DeleteContact.php:58
+#: lib/Forms/DeleteAddressBook.php:45
+msgid "Delete"
+msgstr "Удалить"
+
+#: lib/Views/DeleteContact.php:28 lib/Forms/DeleteAddressBook.php:40
+#, php-format
+msgid "Delete %s"
+msgstr "Удалить %s"
+
+#: config/attributes.php.dist:300
+#, fuzzy
+msgid "Department"
+msgstr "Прикрепляемое"
+
+# fuzzy
+#: templates/addressbooks.inc:116 lib/Forms/EditAddressBook.php:44
+#: lib/Forms/CreateAddressBook.php:37
+msgid "Description"
+msgstr "Описание"
+
+#: templates/browse/search.inc:125
+msgid "Directory"
+msgstr "Каталог"
+
+#: config/prefs.php.dist:24
+msgid "Display"
+msgstr "Оболочка"
+
+# fuzzy
+#: config/prefs.php.dist:9 config/prefs.php.dist:16 config/prefs.php.dist:23
+#: config/prefs.php.dist:30
+msgid "Display Options"
+msgstr "Основные настройки"
+
+# fuzzy
+#: lib/Object.php:348
+msgid "Download"
+msgstr "Загрузить"
+
+# fuzzy
+#: templates/browse/row.inc:13 templates/browse/contactrow.inc:25
+msgid "Download vCard"
+msgstr "Загрузить vCard"
+
+#: addressbooks/index.php:39 templates/addressbooks.inc:103
+#: templates/addressbook_list.php:29 templates/browse/row.inc:21
+#: templates/browse/column_headers.inc:10 templates/browse/actions.inc:6
+#: templates/browse/contactrow.inc:33 lib/Renderer.php:42
+msgid "Edit"
+msgstr "Редактирование"
+
+#: edit.php:91 templates/browse/contactrow.inc:33
+#, fuzzy, php-format
+msgid "Edit \"%s\""
+msgstr "Редактирование '%s'"
+
+#: lib/Views/EditContact.php:35 lib/Forms/EditAddressBook.php:40
+#, php-format
+msgid "Edit %s"
+msgstr "Редактирование %s"
+
+# fuzzy
+#: templates/addressbooks.inc:82
+#, fuzzy
+msgid "Edit Address Books"
+msgstr "Адресные книги"
+
+#: config/attributes.php.dist:237
+msgid "Email"
+msgstr "E-mail"
+
+#: lib/Views/Browse.php:262 lib/Views/Browse.php:302
+#, php-format
+msgid "Error adding %d contact(s) to list."
+msgstr ""
+
+#: lib/Views/Browse.php:264 lib/Views/Browse.php:304
+#, php-format
+msgid "Error adding %d of %d requested contact(s) to list."
+msgstr ""
+
+#: lib/Views/Browse.php:134
+#, fuzzy, php-format
+msgid "Error deleting %d contact(s)."
+msgstr "Ошибка при импорте данных."
+
+#: lib/Views/Browse.php:136
+#, php-format
+msgid "Error deleting %d of %d requested contacts(s)."
+msgstr ""
+
+#: lib/Views/Browse.php:117
+#, php-format
+msgid "Error removing %d contact(s) from list."
+msgstr ""
+
+#: lib/Views/Browse.php:119
+#, php-format
+msgid "Error removing %d of %d requested contact(s) from list."
+msgstr ""
+
+#: lib/api.php:535
+#, fuzzy, php-format
+msgid "Error searching the address book: %s"
+msgstr "Ошибка при доступе к указанной адресной книге."
+
+#: templates/browse/actions.inc:10 templates/data/export.inc:42
+msgid "Export"
+msgstr "Экспорт"
+
+# fuzzy
+#: templates/data/export.inc:6
+msgid "Export Address Book"
+msgstr "Экспорт адресной книги"
+
+#: templates/data/export.inc:22
+#, fuzzy
+msgid "Export only the selected contacts."
+msgstr "Horde не правильно настроен"
+
+#: templates/data/export.inc:28
+msgid "Export the following address book completely."
+msgstr ""
+
+#: lib/Driver/ldap.php:318
+#, php-format
+msgid "Failed to change name: (%s) %s; Old DN = %s, New DN = %s, Root = %s"
+msgstr ""
+
+#: lib/Views/Browse.php:186
+#, fuzzy, php-format
+msgid "Failed to find object to be added: %s"
+msgstr "Ошибка при поиске в каталоге: %s"
+
+#: search.php:151
+#, fuzzy
+msgid "Failed to search the address book"
+msgstr "Ошибка при доступе к указанной адресной книге."
+
+#: data.php:158
+#, php-format
+msgid "Failed to search the directory: %s"
+msgstr "Ошибка при поиске в каталоге: %s"
+
+#: config/sources.php.dist:536
+#, fuzzy
+msgid "Favourite Recipients"
+msgstr "Нераскрытые получатели"
+
+#: config/attributes.php.dist:264
+msgid "Fax"
+msgstr "Факс"
+
+# fuzzy
+# fuzzy
+#: display.php:99 lib/Forms/Contact.php:41
+msgid "Files"
+msgstr "Файлы"
+
+#: templates/browse/search.inc:104
+msgid "Find"
+msgstr "Найти"
+
+#: lib/Forms/EditContact.php:121 lib/Forms/EditContact.php:159
+#, fuzzy
+msgid "Finish"
+msgstr "Найти"
+
+#: config/attributes.php.dist:53
+#, fuzzy
+msgid "First Name"
+msgstr "Первая страница"
+
+#: config/attributes.php.dist:326
+msgid "Freebusy URL"
+msgstr ""
+
+#: templates/browse/search.inc:98
+msgid "From"
+msgstr "От"
+
+#: config/attributes.php.dist:123
+msgid "Home Address"
+msgstr "Домашний адрес"
+
+#: config/attributes.php.dist:249
+msgid "Home Phone"
+msgstr "Домашний телефон"
+
+#: config/sources.php.dist:653
+msgid "IMSP"
+msgstr ""
+
+# fuzzy, php-format
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Address Book, Step %d"
+msgstr "Импорт адресной книги, Шаг %d"
+
+# fuzzy
+#: data.php:388
+msgid "Import/Export Address Books"
+msgstr "Импорт/Экспорт адресной книги"
+
+# fuzzy
+#: lib/api.php:777 lib/api.php:864
+msgid "Invalid ID"
+msgstr "Некорректное имя."
+
+# fuzzy
+#: scripts/import_squirrelmail_abook.php:105 lib/api.php:310 lib/api.php:524
+#: lib/api.php:573 lib/api.php:619 lib/api.php:660 lib/api.php:773
+#: lib/api.php:860 lib/api.php:918 lib/api.php:1369
+#, fuzzy, php-format
+msgid "Invalid address book: %s"
+msgstr "Некорректная адресная книга."
+
+# fuzzy
+#: lib/api.php:1373 lib/api.php:1447 lib/api.php:1503
+msgid "Invalid email"
+msgstr "Некорректный e-mail."
+
+# fuzzy
+#: lib/api.php:1381
+msgid "Invalid entry"
+msgstr "Некорректное имя."
+
+#: lib/Driver/ldap.php:281
+#, fuzzy
+msgid "Invalid key specified."
+msgstr "Была указана некорректная величина."
+
+# fuzzy
+#: lib/api.php:1377
+msgid "Invalid name"
+msgstr "Некорректное имя."
+
+#: lib/api.php:922
+#, fuzzy
+msgid "Invalid objectId"
+msgstr "Некорректное имя."
+
+#: config/attributes.php.dist:276
+#, fuzzy
+msgid "Job Title"
+msgstr "Заголовок"
+
+#: lib/Driver/kolab.php:855 lib/Driver/kolab.php:877
+#, php-format
+msgid "Key for saving must be a UID not %s!"
+msgstr ""
+
+#: lib/Driver/ldap.php:64
+msgid ""
+"LDAP support is required but the LDAP module is not available or not loaded."
+msgstr ""
+
+#: data.php:65 templates/data/import.inc:18 templates/data/export.inc:16
+msgid "LDIF Address Book"
+msgstr "Адресная книга LDIF"
+
+#: config/attributes.php.dist:389
+msgid "Language"
+msgstr "Язык"
+
+#: config/attributes.php.dist:395
+msgid "Latitude"
+msgstr ""
+
+#: templates/browse/column_headers.inc:16
+msgid "List"
+msgstr "Список"
+
+#: config/sources.php.dist:224 config/sources.php.dist:901
+msgid "Location"
+msgstr "Расположение"
+
+#: templates/browse/search.inc:109
+msgid "Matching"
+msgstr "Совпадение"
+
+#: lib/api.php:285
+#, fuzzy
+msgid "Maximum Number of Contacts"
+msgstr "Максимальное количество страниц"
+
+#: config/prefs.php.dist:88
+msgid "Maximum number of pages"
+msgstr "Максимальное количество страниц"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr ""
+
+#: config/attributes.php.dist:65
+#, fuzzy
+msgid "Middle Names"
+msgstr "Имя файла"
+
+#: lib/Driver/ldap.php:311
+msgid "Missing DN in LDAP source configuration."
+msgstr ""
+
+# fuzzy
+#: config/attributes.php.dist:259
+msgid "Mobile Phone"
+msgstr "Мобильный телефон"
+
+#: lib/Driver/ldap.php:340 lib/Driver/ldap.php:356
+#, fuzzy, php-format
+msgid "Modify failed: (%s) %s"
+msgstr "Ошибка при удалении"
+
+#: templates/browse/header.inc:8
+#, fuzzy
+msgid "More Options..."
+msgstr "Настройки пользователя"
+
+#: lib/api.php:1489
+msgid "More than 1 entry found"
+msgstr ""
+
+#: templates/browse/actions.inc:16
+msgid "Move"
+msgstr "Переместить"
+
+#: templates/prefs/columnselect.inc:248
+#: templates/prefs/addressbookselect.inc:184
+#, fuzzy
+msgid "Move left"
+msgstr "сместить влево"
+
+#: templates/prefs/columnselect.inc:250
+#: templates/prefs/addressbookselect.inc:186
+#, fuzzy
+msgid "Move right"
+msgstr "сместить вправо"
+
+# fuzzy
+#: data.php:63 templates/data/import.inc:16
+msgid "Mulberry Address Book"
+msgstr "Адресная книга Mulberry"
+
+#: lib/api.php:1405
+#, php-format
+msgid ""
+"Multiple persons with address [%s], but none with name [%s] already exist"
+msgstr ""
+
+# fuzzy
+# fuzzy
+#: config/sources.php.dist:161
+msgid "My Address Book"
+msgstr "Адресная книга"
+
+# fuzzy
+# fuzzy
+#: addressbooks.php:119
+#, fuzzy
+msgid "My Address Books"
+msgstr "Адресная книга"
+
+#: templates/addressbooks.inc:108 lib/Forms/EditAddressBook.php:43
+#: lib/Forms/CreateAddressBook.php:36 config/attributes.php.dist:47
+msgid "Name"
+msgstr "Имя"
+
+# fuzzy
+#: config/prefs.php.dist:31
+msgid "Name Format"
+msgstr "Имена"
+
+#: config/attributes.php.dist:71
+#, fuzzy
+msgid "Name Prefixes"
+msgstr "Клеточная радиосвязь"
+
+#: config/attributes.php.dist:77
+msgid "Name Suffixes"
+msgstr ""
+
+# fuzzy
+#: templates/browse/search_vbook.inc:6
+msgid "Name:"
+msgstr "Имя"
+
+# fuzzy
+#: add.php:70 lib/Block/tree_menu.php:27
+msgid "New Contact"
+msgstr "Добавить новую запись"
+
+#: templates/data/import.inc:46 lib/Forms/EditContact.php:112
+#: lib/Forms/EditContact.php:119 lib/Forms/EditContact.php:174
+msgid "Next"
+msgstr "Далее"
+
+#: config/attributes.php.dist:89
+#, fuzzy
+msgid "Nickname"
+msgstr "Имя"
+
+#: lib/api.php:1492 lib/api.php:1543
+#, php-format
+msgid "No %s entry found for %s"
+msgstr ""
+
+#: data.php:52
+msgid ""
+"No Address Books are currently available. Import and Export is disabled."
+msgstr ""
+
+#: search.php:71
+msgid "No Address Books are currently available. Searching is disabled."
+msgstr ""
+
+#: lib/Driver/favourites.php:120
+msgid "No source for favourite recipients exists."
+msgstr ""
+
+#: config/attributes.php.dist:314
+msgid "Notes"
+msgstr "Заметки"
+
+#: config/prefs.php.dist:96
+msgid "Number of items per page"
+msgstr "Кол-во записей на странице"
+
+#: lib/api.php:793 lib/api.php:937
+#, fuzzy
+msgid "Object not found"
+msgstr "Отменить изменения"
+
+#: config/attributes.php.dist:282
+#, fuzzy
+msgid "Occupation"
+msgstr "Настройки"
+
+#: config/attributes.php.dist:306
+#, fuzzy
+msgid "Office"
+msgstr "Заголовок"
+
+#: templates/prefs/imsp_opt.inc:22
+msgid ""
+"Once you save this option page, the address book will be permanently "
+"deleted. If this is not what you want, then you must change your selection "
+"to \"None\"."
+msgstr ""
+
+#: config/sources.php.dist:232 config/sources.php.dist:909
+msgid "Other"
+msgstr ""
+
+#: config/attributes.php.dist:332
+msgid "PGP Public Key"
+msgstr "Публичный ключ PGP"
+
+#: config/attributes.php.dist:269
+#, fuzzy
+msgid "Pager"
+msgstr "Вставить"
+
+# fuzzy
+# fuzzy
+#: lib/Views/DeleteContact.php:57
+#, fuzzy
+msgid "Permanently delete this contact?"
+msgstr "Удалить зту задачу"
+
+#: deletefile.php:36 lib/Driver.php:701 lib/api.php:669 lib/api.php:786
+#: lib/api.php:873 lib/api.php:931 lib/api.php:1390 lib/Driver/sql.php:481
+#, fuzzy
+msgid "Permission denied"
+msgstr "Настройки пользователя"
+
+# fuzzy
+#: templates/addressbooks.inc:100
+msgid "Permissions"
+msgstr "Права доступа"
+
+#: config/sources.php.dist:221 config/sources.php.dist:897
+msgid "Personal"
+msgstr "Личные"
+
+# fuzzy
+#: data.php:64 templates/data/import.inc:17
+msgid "Pine Address Book"
+msgstr "Адресная книга Pine"
+
+# fuzzy
+#: templates/browse/javascript.inc:27
+msgid "Please name the new contact list:"
+msgstr "Пожалуйста введите новое имя:"
+
+#: lib/Forms/EditContact.php:115 lib/Forms/EditContact.php:118
+#: lib/Forms/EditContact.php:166
+#, fuzzy
+msgid "Previous"
+msgstr "Предыдущая страница"
+
+#: lib/Forms/DeleteAddressBook.php:43
+#, php-format
+msgid ""
+"Really delete the address book \"%s\"? This cannot be undone and all "
+"contacts in this address book will be permanently removed."
+msgstr ""
+
+#: templates/browse/footer.inc:2
+msgid "Records displayed:"
+msgstr ""
+
+# fuzzy
+#: templates/browse/actions.inc:3
+msgid "Remove from this list"
+msgstr "Удалить из группы"
+
+#: lib/Driver.php:1591
+msgid ""
+"Removing user data is not supported in the current address book storage "
+"driver."
+msgstr ""
+
+# fuzzy
+#: templates/data/import.inc:22
+msgid ""
+"Replace existing address book with the imported one? <strong>Warning: This "
+"deletes all entries in your current address book.</strong>"
+msgstr ""
+"Полностью заменить существующую адресную книгу. <b>При этом будут удалены "
+"ВСЕ записи из текущей адресной книги</b>"
+
+#: templates/browse/search.inc:120
+msgid "Reset to Defaults"
+msgstr "Сбросить"
+
+#: templates/addressbooks.inc:125 lib/Forms/EditContact.php:26
+#: lib/Forms/EditAddressBook.php:46
+msgid "Save"
+msgstr "Сохранить"
+
+#: templates/browse/search.inc:111 templates/browse/search.inc:119
+#: templates/browse/header.inc:3 templates/block/minisearch.inc:26
+#: lib/Block/tree_menu.php:58 config/prefs.php.dist:107
+msgid "Search"
+msgstr "Поиск"
+
+# fuzzy
+#: templates/data/export.inc:33
+msgid "Select the address book to export from:"
+msgstr "Выберите адресную книгу для экспорта:"
+
+# fuzzy
+#: templates/data/import.inc:27
+msgid "Select the address book to import to:"
+msgstr "Куда Вы хотите импортировать:"
+
+# fuzzy
+# fuzzy
+#: templates/data/import.inc:36
+msgid "Select the charset of the source file:"
+msgstr "Укажите кодировку импортируемого файла:"
+
+# fuzzy
+#: templates/data/export.inc:10
+msgid "Select the export format:"
+msgstr "Выберите формат экспортируемого файла:"
+
+#: templates/data/import.inc:44
+msgid "Select the file to import:"
+msgstr "Импортируемый файл:"
+
+# fuzzy
+#: templates/data/import.inc:11
+msgid "Select the format of the source file:"
+msgstr "Выберите формат импортируемого файла:"
+
+# fuzzy
+#: config/prefs.php.dist:116
+msgid "Select the format used to display names:"
+msgstr "Выберите формат отображения имен:"
+
+# fuzzy
+#: config/prefs.php.dist:25
+msgid "Select view to display by default, sort options, and paging options."
+msgstr "Настройка режима отображения по умолчанию"
+
+# fuzzy
+#: config/prefs.php.dist:18
+msgid "Select which fields to display in the address lists."
+msgstr "Выбор порядка отображения столбцов в списке адресов."
+
+#: config/prefs.php.dist:32
+msgid "Select which format to display names."
+msgstr "Выбор формата отображения имен"
+
+#: templates/browse/actions.inc:50
+msgid "Show Contacts"
+msgstr "Показать Контакты"
+
+#: templates/browse/actions.inc:49
+msgid "Show Lists"
+msgstr "Показать Группы"
+
+# fuzzy, php-format
+#: lib/Views/Browse.php:260 lib/Views/Browse.php:300
+#, php-format
+msgid "Successfully added %d contact(s) to list."
+msgstr "%d был успешно добавлен"
+
+# fuzzy, php-format
+#: lib/Views/Browse.php:214
+#, php-format
+msgid "Successfully added %s to %s"
+msgstr "Добавлено \"%s\" в \"%s\"."
+
+# fuzzy, php-format
+#: lib/Views/Browse.php:290
+#, php-format
+msgid "Successfully created the contact list \"%s\"."
+msgstr "Создана группа '%s'"
+
+#: search.php:126
+#, fuzzy, php-format
+msgid "Successfully created virtual address book \"%s\""
+msgstr "Некорректная адресная книга."
+
+# fuzzy, php-format
+# fuzzy, php-format
+# fuzzy, php-format
+#: lib/Views/Browse.php:132
+#, php-format
+msgid "Successfully deleted %d contact(s)."
+msgstr "Удалено %d контактов"
+
+# fuzzy, php-format
+#: lib/Views/Browse.php:115
+#, php-format
+msgid "Successfully removed %d contact(s) from list."
+msgstr "Удалено %d контактов из группы"
+
+#: data.php:61
+msgid "TSV"
+msgstr ""
+
+#: templates/data/import.inc:14 templates/data/export.inc:14
+msgid "Tab separated values"
+msgstr "TSV-файл (разделенный табуляцией)"
+
+#: view.php:17
+msgid "The VFS backend needs to be configured to enable attachment uploads."
+msgstr ""
+
+#: addressbooks.php:71
+#, php-format
+msgid "The address book \"%s\" was removed successfully."
+msgstr "Папка \"%s\" была успешно удалена."
+
+#: data.php:302
+msgid "The import can be finished despite the warnings."
+msgstr ""
+
+#: lib/Views/EditContact.php:43 lib/Views/Contact.php:59
+#: lib/Views/DeleteContact.php:36
+#, fuzzy
+msgid "The requested contact was not found."
+msgstr "Прикрепленные"
+
+#: lib/Views/Browse.php:80
+msgid "There are no browseable address books."
+msgstr "Нет адресных книг, доступных для выбора."
+
+# fuzzy
+#: templates/prefs/addressbookselect.inc:178
+#: templates/prefs/addressbookselect.inc:180
+msgid "These address books will display in this order:"
+msgstr "Эти книги будут отображены в следующем порядке:"
+
+# fuzzy
+#: templates/prefs/columnselect.inc:242 templates/prefs/columnselect.inc:244
+msgid "These columns will display in this order:"
+msgstr "Эти свойства будут отображены"
+
+#: config/prefs.php.dist:129
+msgid ""
+"This will be the default address book when adding or importing contacts."
+msgstr "Адресная книга по умолчанию для добавления или импорта контактов"
+
+#: lib/Driver.php:1431 lib/Turba.php:643
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Невозможно загрузить определение %s."
+
+#: lib/Forms/EditContact.php:26 lib/Forms/EditContact.php:112
+#: lib/Forms/EditContact.php:115 lib/Forms/EditContact.php:118
+#: lib/Forms/EditContact.php:168
+msgid "Undo Changes"
+msgstr "Отменить изменения"
+
+# fuzzy
+#: config/attributes.php.dist:352
+msgid "Unfiled"
+msgstr "Пустой"
+
+#: lib/api.php:715 lib/api.php:818 lib/api.php:970
+#, fuzzy, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "Некорректное имя."
+
+# fuzzy, php-format
+#: templates/browse/contactrow.inc:27
+#, php-format
+msgid "View \"%s\""
+msgstr "Просмотр %s"
+
+#: minisearch.php:76
+#, fuzzy
+msgid "View Contact"
+msgstr "Добавить новую запись"
+
+#: config/prefs.php.dist:105
+msgid "View to display by default:"
+msgstr "Режим по умолчанию:"
+
+#: config/attributes.php.dist:320
+msgid "Website URL"
+msgstr ""
+
+#: config/attributes.php.dist:173
+msgid "Work Address"
+msgstr "Рабочий адрес"
+
+#: config/attributes.php.dist:254
+msgid "Work Phone"
+msgstr "Рабочий телефон"
+
+#: edit.php:66 display.php:52 view.php:38 lib/Views/EditContact.php:49
+#: lib/Views/DeleteContact.php:42
+msgid "You do not have permission to view this contact."
+msgstr ""
+
+#: vcard.php:37
+msgid "You do not have permission to view this object."
+msgstr ""
+
+#: lib/Driver/ldap.php:705
+msgid ""
+"You must have the Net_LDAP PEAR library installed to use the schema check "
+"function."
+msgstr ""
+
+#: edit.php:70 lib/Views/EditContact.php:52 lib/Views/DeleteContact.php:45
+msgid "You only have permission to view this contact."
+msgstr ""
+
+#: lib/Views/Browse.php:357
+msgid "Your default address book is not browseable."
+msgstr ""
+
+#: templates/browse/contactrow.inc:12
+#, fuzzy
+msgid "[no value]"
+msgstr "Заметки"
+
+# fuzzy
+#: lib/Turba.php:585
+msgid "_Browse"
+msgstr "Выбрать"
+
+#: templates/browse/actions.inc:50
+#, fuzzy
+msgid "_Contacts"
+msgstr "Показать Контакты"
+
+# fuzzy
+#: templates/browse/actions.inc:3
+msgid "_Delete"
+msgstr "Удалить"
+
+# fuzzy
+#: contact.php:82
+msgid "_Edit"
+msgstr "Редактировать"
+
+# fuzzy
+#: lib/Turba.php:594
+msgid "_Import/Export"
+msgstr "Импорт/Экспорт"
+
+#: templates/browse/actions.inc:49
+#, fuzzy
+msgid "_Lists"
+msgstr "Список"
+
+# fuzzy
+# fuzzy
+#: lib/Turba.php:582
+#, fuzzy
+msgid "_My Address Books"
+msgstr "Адресная книга"
+
+# fuzzy
+# fuzzy
+#: lib/Turba.php:588
+msgid "_New Contact"
+msgstr "Добавить"
+
+# fuzzy
+#: lib/Turba.php:599
+msgid "_Print"
+msgstr "Печать"
+
+#: templates/browse/actions.inc:3
+#, fuzzy
+msgid "_Remove from this list"
+msgstr "Удалить пару"
+
+# fuzzy
+#: lib/Turba.php:590
+msgid "_Search"
+msgstr "Поиск"
+
+# fuzzy
+#: contact.php:79
+#, fuzzy
+msgid "_View"
+msgstr "Просмотр"
+
+#: templates/browse/column_headers.inc:24
+#, fuzzy
+msgid "ascending"
+msgstr "По возрастанию"
+
+#: vcard.php:45
+#, fuzzy
+msgid "contact"
+msgstr "Показать Контакты"
+
+#: data.php:208 data.php:213 templates/data/export.inc:1
+msgid "contacts.csv"
+msgstr ""
+
+#: data.php:233
+#, fuzzy
+msgid "contacts.ldif"
+msgstr "Показать Контакты"
+
+#: data.php:218
+msgid "contacts.tsv"
+msgstr ""
+
+#: lib/Block/tree_menu.php:37
+msgid "in %s"
+msgstr "в %s"
+
+#: config/attributes.php.dist:386
+#, fuzzy
+msgid "male"
+msgstr "Заголовок"
+
+#: config/prefs.php.dist:119
+msgid "no formatting"
+msgstr "без форматирования"
+
+#: templates/prefs/imsp_opt.inc:32
+msgid "none"
+msgstr "нет"
+
+# fuzzy
+#: templates/browse/actions.inc:33
+msgid "to a Contact List"
+msgstr "в группу"
+
+#: templates/browse/actions.inc:22
+#, fuzzy
+msgid "to a different Address Book"
+msgstr "Экспорт адресной книги"
+
+#: data.php:62 templates/browse/column_headers.inc:13
+#: templates/data/import.inc:15 templates/data/export.inc:15
+msgid "vCard"
+msgstr "vCard"

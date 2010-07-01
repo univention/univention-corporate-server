@@ -1,0 +1,85 @@
+What is DIMP?
+=============
+
+:Last update:   $Date: 2007-11-14 04:38:56 $
+:Revision:      $Revision: 1.3 $
+:Contact:       imp@lists.horde.org
+
+.. contents:: Contents
+.. section-numbering::
+
+DIMP is the Dynamic IMP (Internet Messaging Program) application, a PHP-based
+webmail system and a component of the Horde project.  DIMP, once installed,
+accesses mail over IMAP thus requiring little to no special preparations on the
+server on which mail is stored.
+
+This software is OSI Certified Open Source Software.  OSI Certified is a
+certification mark of the `Open Source Initiative`_.
+
+.. _`Open Source Initiative`: http://www.opensource.org/
+
+
+Obtaining DIMP
+--------------
+
+Further information on DIMP and the latest version can be obtained at:
+
+  http://www.horde.org/dimp/
+
+
+Documentation
+-------------
+
+The following documentation is available in the DIMP distribution:
+
+:README_:            This file
+:COPYING_:           Copyright and license information
+:`docs/CHANGES`_:    Changes by release
+:`docs/CREDITS`_:    Project developers
+:`docs/INSTALL`_:    Installation instructions and notes
+
+
+Installation
+------------
+
+Instructions for installing DIMP can be found in the file INSTALL_ in the
+``docs/`` directory of the DIMP distribution.
+
+
+Assistance
+----------
+
+If you encounter problems with DIMP, help is available!
+
+The Horde Frequently Asked Questions List (FAQ), available on the Web at
+
+  http://www.horde.org/faq/
+
+The Horde Project runs a number of mailing lists, for individual applications
+and for issues relating to the project as a whole.  Information, archives, and
+subscription information can be found at
+
+  http://www.horde.org/mail/
+
+Lastly, Horde developers, contributors and users also make occasional
+appearances on IRC, on the channel #horde on the freenode Network
+(irc.freenode.net).
+
+
+Licensing
+---------
+
+For licensing and copyright information, please see the file COPYING_ in the
+IMP distribution.
+
+Thanks,
+
+The DIMP team
+
+
+.. _README: ?f=README.html
+.. _COPYING: http://www.horde.org/licenses/gpl.php
+.. _docs/CHANGES: ?f=CHANGES.html
+.. _docs/CREDITS: ?f=CREDITS.html
+.. _docs/INSTALL: ?f=INSTALL.html
+.. _INSTALL:

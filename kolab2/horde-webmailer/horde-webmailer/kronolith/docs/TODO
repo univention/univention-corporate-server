@@ -1,0 +1,44 @@
+=================================
+ Kronolith Development TODO List
+=================================
+
+:Last update:   $Date: 2007-12-20 14:12:24 $
+:Revision:      $Revision: 1.15.4.3 $
+:Contact:       kronolith@lists.horde.org
+
+- Drop down list to select from local users or calendars in the attendees view.
+
+- The option to not have any personal calendars displayed, now with remote
+  calendars this would be a desirable option.
+
+- Remove the assumption that each calendar is using the same backend. Ideally
+  it should be possible to have a local calendar using sql or kolab and a
+  remote calendar using another driver (eg wcap or whatever mozilla uses).
+
+- Drivers should handle the permissions checks instead of accessing shares
+  directly (outside drivers) to get the permissions for an event or calendar.
+  One day we might have a calendar backend that knows about permissions.
+
+- Allow publishing calendars to a remote site as iCalendar files.
+
+- Saving of individual events as .ics files.
+
+- Support for searching a local file system for freebusy info.
+
+- Support for searching freebusy.office.microsoft.com for freebusy info.
+
+- Automatically locate a meeting time.
+
+- Add a quick tool for planning meeting agendas.
+
+- Handle resource scheduling/management somehow, either per-calendar or by
+  kinds of calendars, including rules for when overlapping appointments are
+  allowed, etc.
+
+- lib/Driver/ical.php should be the central location for remote calendar
+  support. Needs to be finished.
+
+- RSS or Atom feed for upcoming events.
+
+- Natural language quick event creation? (ex: 3/26 2am Raid on
+  Ironforge [WoW] +thrall +gromhellscream)

@@ -1,0 +1,680 @@
+# Kronolith Russian translation.
+# Copyright
+# Anton Nekhoroshih <anton@valuehost.ru>, 2001
+# Fedor A. Fetisov <faf@ssc.ru>, 2002
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith v1.0\n"
+"POT-Creation-Date: 2002-11-10 17:45+0300\n"
+"PO-Revision-Date: 2002-11-10 17:45+0300\n"
+"Last-Translator: Fedor A. Fetisov <faf@ssc.ru>\n"
+"Language-Team: Fedor A. Fetisov <faf@ssc.ru>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1251\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%d hour"
+msgstr "%d ч"
+
+#, c-format
+msgid "%d hour, %d minute"
+msgstr "%d ч, %d мин"
+
+#, c-format
+msgid "%d hour, %d minutes"
+msgstr "%d ч, %d мин"
+
+#, c-format
+msgid "%d hours"
+msgstr "%d ч"
+
+#, c-format
+msgid "%d hours, %d minute"
+msgstr "%d ч, %d мин"
+
+#, c-format
+msgid "%d hours, %d minutes"
+msgstr "%d ч, %d мин"
+
+#, c-format
+msgid "%d minute"
+msgstr "%d мин"
+
+#, c-format
+msgid "%d minutes"
+msgstr "%d мин"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "Файл %s успешно импортирован"
+
+#, c-format
+msgid "%s is in progress."
+msgstr "%s в процессе"
+
+#, c-format
+msgid "%s is starting now."
+msgstr "%s начинается."
+
+#, c-format
+msgid "%s starts in %s"
+msgstr "%s начинается в %s"
+
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Описание</b> (не обязательно)"
+
+msgid "<b>Description</b>"
+msgstr "<b>Описание</b>"
+
+msgid "<b>Keywords</b> (optional)"
+msgstr "<b>Ключевые слова</b>"
+
+msgid "<b>Keywords</b>"
+msgstr "<b>Ключевые слова</b> (не обязательно)"
+
+msgid "<b>Recurrence</b> (optional)"
+msgstr "<b>Повторяемость</b> (не обязательно)"
+
+msgid "<b>Recurrence</b>"
+msgstr "<b>Повторяемость</b>"
+
+msgid "Add Event"
+msgstr "Добавить событие"
+
+msgid "Add a new event"
+msgstr "Добавить новое событие"
+
+msgid "Alarm Date"
+msgstr "Дата напоминания"
+
+msgid "Alarm Span (minutes)"
+msgstr "Длительность напоминания (минуты)"
+
+msgid "Alarm Time"
+msgstr "Время напоминания"
+
+msgid "Alarm"
+msgstr "Напоминание"
+
+msgid "All day event"
+msgstr "Ежедневное событие"
+
+msgid "All day"
+msgstr "Каждый день"
+
+msgid "All events"
+msgstr "Все события"
+
+msgid "All"
+msgstr "Все"
+
+msgid "April"
+msgstr "Апрель"
+
+msgid "At"
+msgstr "В"
+
+msgid "August"
+msgstr "Август"
+
+msgid "Birthday"
+msgstr "День рождения"
+
+msgid "Business"
+msgstr "Дела"
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Category"
+msgstr "Категория"
+
+msgid "Change the way dates and times are formatted."
+msgstr "Изменение формата даты и времени."
+
+msgid "Confirm deletion of events?"
+msgstr "Подтверждение удаления событий"
+
+msgid "Create a New Event"
+msgstr "Создать новое событие"
+
+msgid "Current"
+msgstr "Текущее"
+
+msgid "Daily: Recurs every"
+msgstr "Повторяется ежедневно"
+
+msgid "Date and Time Options"
+msgstr "Настройки даты и времени"
+
+msgid "Day"
+msgstr "День"
+
+msgid "Day(s)"
+msgstr "День(дни)"
+
+msgid "December"
+msgstr "Декабрь"
+
+#, c-format
+msgid "Delete %s"
+msgstr "Удалить %s"
+
+#, c-format
+msgid "Delete '%s'"
+msgstr "Удалить '%s'"
+
+msgid "Delete Event"
+msgstr "Удалить событие"
+
+msgid ""
+"Delete the current event only, this occurrence and all future occurences, or "
+"all occurences?"
+msgstr ""
+"Удалить только данное событие, это событие и все будущие события, или все "
+"события?"
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "Description"
+msgstr "Описание"
+
+msgid "Display 24-hour times?"
+msgstr "24-часовой формат времени?"
+
+msgid "Display Options"
+msgstr "Настройки оболочки"
+
+#, c-format
+msgid "Due: %s"
+msgstr "До: %s"
+
+msgid "Duration"
+msgstr "Длительность"
+
+#, c-format
+msgid "Edit %s"
+msgstr "Редактировать %s"
+
+msgid "Edit"
+msgstr "Редактировать"
+
+msgid "End Date"
+msgstr "Дата окончания"
+
+msgid "End On"
+msgstr "Заканчивается"
+
+msgid "End Time"
+msgstr "Время окончания"
+
+msgid "Export Calendar"
+msgstr "Экспортировать календарь"
+
+msgid "Export"
+msgstr "Экспорт"
+
+msgid "February"
+msgstr "Февраль"
+
+msgid "Fr"
+msgstr "Пт"
+
+msgid "Friday"
+msgstr "Пятница"
+
+msgid "Future"
+msgstr "Будущее"
+
+msgid "Game"
+msgstr "Игра"
+
+msgid "Goto"
+msgstr "Перейти"
+
+msgid "Help"
+msgstr "Подсказка"
+
+msgid "Hour(s)"
+msgstr "Час(часы)"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "В случая импорта данных из CSV, содержит ли первая строка имена полей?"
+
+msgid "Illegal or malformed form data."
+msgstr "Некорректные данные из формы."
+
+msgid "Import Calendar"
+msgstr "Импортировать календарь"
+
+msgid "Import"
+msgstr "Импорт"
+
+msgid "Import/Export Calendar"
+msgstr "Импорт/Экспорт календаря"
+
+msgid "Import/Export"
+msgstr "Импорт/Экспорт"
+
+msgid "January"
+msgstr "Январь"
+
+msgid "July"
+msgstr "Июль"
+
+msgid "June"
+msgstr "Июнь"
+
+msgid "Keywords"
+msgstr "Ключевые слова"
+
+msgid "Kronolith is not properly configured"
+msgstr "Kronolith неверно сконфигурирован"
+
+msgid "Language"
+msgstr "Язык"
+
+msgid "Last month"
+msgstr "Прошлый месяц"
+
+msgid "Last week"
+msgstr "Прошлая неделя"
+
+msgid "Lasts"
+msgstr "Длится"
+
+msgid "Limit the time span to export:"
+msgstr "Ограничение экспортируемого временного промежутка:"
+
+msgid "Location"
+msgstr "Расположение"
+
+msgid "March"
+msgstr "Март"
+
+msgid "May"
+msgstr "Май"
+
+msgid "Meeting"
+msgstr "Встреча"
+
+msgid "Minute(s)"
+msgstr "Минута(ы)"
+
+msgid "Minutes before"
+msgstr "Минуты до"
+
+msgid "Minutes"
+msgstr "Минуты"
+
+msgid "Mo"
+msgstr "Пн"
+
+msgid "Monday"
+msgstr "Понедельник"
+
+msgid "Month"
+msgstr "Месяц"
+
+msgid "Monthly: Recurs every"
+msgstr "Повторяется ежемесячно"
+
+msgid "New Event"
+msgstr "Новое событие"
+
+msgid "Next Month"
+msgstr "Следующий месяц"
+
+msgid "Next day"
+msgstr "Следующий день"
+
+msgid "Next week"
+msgstr "Следующая неделя"
+
+msgid "No configuration information specified for SQL Calendar."
+msgstr "Для SQL календаря не было указано конфигурационной информации."
+
+msgid "No end date"
+msgstr "Нет даты окончания"
+
+msgid "None"
+msgstr "Нет"
+
+msgid ""
+"Notice: Importing is not possible with this configuration due to a bug in "
+"the underlying calendar driver."
+msgstr ""
+"Примечание: Импорт не возможен с данной конфигурацией, из-за бага в драйвере "
+"календаря."
+
+msgid "November"
+msgstr "Ноябрь"
+
+msgid "October"
+msgstr "Октябрь"
+
+msgid "Options"
+msgstr "Настройки"
+
+msgid "Pattern"
+msgstr "Образец"
+
+msgid "Permanently delete this event?"
+msgstr "Навсегда удалить это событие?"
+
+msgid "Personal"
+msgstr "Личное"
+
+msgid "Previous day"
+msgstr "Предыдущий день"
+
+msgid "Problem?"
+msgstr "Проблемы?"
+
+msgid "Recur Until"
+msgstr "Повтор до"
+
+msgid "Recurrence Data"
+msgstr "Данные повтора"
+
+msgid "Recurrence End Date"
+msgstr "Дата окончания повтора"
+
+msgid "Recurrence Interval"
+msgstr "Интервал повтора"
+
+msgid "Recurrence Type"
+msgstr "Тип повтора"
+
+msgid "Recurs daily"
+msgstr "Ежедневно"
+
+msgid "Recurs monthly"
+msgstr "Ежемесячно"
+
+msgid "Recurs not"
+msgstr "Не повторяется"
+
+msgid "Recurs weekly"
+msgstr "Еженедельно"
+
+msgid "Recurs yearly"
+msgstr "Ежегодно"
+
+msgid "Required 'database' not specified in calendar configuration."
+msgstr "Необходимый параметр 'database' не определен в конфигурации."
+
+msgid "Required 'hostspec' not specified in calendar configuration."
+msgstr "Необходимый параметр 'hostspec' не определен в конфигурации."
+
+msgid "Required 'password' not specified in calendar configuration."
+msgstr "Необходимый параметр 'password' не определен в конфигурации."
+
+msgid "Required 'phptype' not specified in calendar configuration."
+msgstr "Необходимый параметр 'phptype' не определен в конфигурации."
+
+msgid "Required 'username' not specified in calendar configuration."
+msgstr "Необходимый параметр 'username' не определен в конфигурации."
+
+msgid "Reset to Defaults"
+msgstr "Сброс установок"
+
+msgid "Sa"
+msgstr "Сб"
+
+msgid "Saturday"
+msgstr "Суббота"
+
+msgid "Save As New"
+msgstr "Сохранить как новое"
+
+msgid "Save Event"
+msgstr "Сохранить событие"
+
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr ""
+"Выбор установок подтверждения, как отображать различные виды, выбор вида по "
+"умолчанию."
+
+msgid "Select how to display Dates:"
+msgstr "Выберите формат отображения дат:"
+
+msgid "Select if to show due tasks in the calendar."
+msgstr "Показывать в календаре устаревшие задачи."
+
+msgid "Select the file to import:"
+msgstr "Выберите файл для импорта"
+
+msgid "Select the first weekday:"
+msgstr "Неделя начинается с:"
+
+msgid "Select the format to export to:"
+msgstr "Выберите формат экспорта:"
+
+msgid "Select the source to import from:"
+msgstr "Выберите источник импорта:"
+
+msgid "Select the time span to show:"
+msgstr "Выберите отображаемый промежуток времени:"
+
+msgid "Select the view to display after login:"
+msgstr "Выберите вид после входа в систему:"
+
+msgid "Select what events to show in the Horde summary."
+msgstr "Выберите, какие события показывать на главной странице Horde."
+
+msgid "September"
+msgstr "Сентябрь"
+
+msgid "Set the current time zone."
+msgstr "Задать временную зону."
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Задать язык меню и подсказок."
+
+msgid "Set your preferred display language."
+msgstr "Задать язык интерфейса."
+
+msgid "Show due tasks in the calendar?"
+msgstr "Показывать в календаре устаревшие задачи?"
+
+msgid "Show half hour slots in day and week views?"
+msgstr "Показывать получасовые ячейки при просмотре дней и недель?"
+
+msgid "Show only events that have an alarm set?"
+msgstr "Показывать только события с оповещением?"
+
+msgid "Some of Kronolith's configuration files are missing:"
+msgstr "Некоторые файлы конфигурации Kronolith потеряны:"
+
+msgid "Start Date"
+msgstr "Дата начала"
+
+msgid "Start On"
+msgstr "Начинается"
+
+msgid "Start Time"
+msgstr "Время начала"
+
+msgid "Su"
+msgstr "Вс"
+
+msgid "Summary"
+msgstr "Главная"
+
+msgid "Sunday"
+msgstr "Воскресенье"
+
+msgid "Tasks"
+msgstr "Задачи"
+
+msgid "Th"
+msgstr "Чт"
+
+msgid "The data was lost."
+msgstr "Данные были утеряны."
+
+msgid "The end date must be later than the start date."
+msgstr "Дата окончания должна быть позже даты начала."
+
+msgid "The file contained no data."
+msgstr "Файл не содержит данных."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Ошибка при загрузке файла. Возможно размер файла превышает максимально "
+"разрешенный."
+
+msgid "There was an error importing the data."
+msgstr "Ошибка при импорте данных."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Ошибка при импорте загруженного файла"
+
+msgid "There were no events to export."
+msgstr "События для экспорта не найдены."
+
+msgid ""
+"This file controls the default preferences for Kronolith, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Этот файл определяет установки по умолчанию для Kronolith, а также "
+"определяет, какие параметры пользователи могут изменять."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Этот файл содержит таблицы стилей, использующиеся для задания цветов и "
+"шрифтов в дополнение или вместо установок Horde."
+
+msgid ""
+"This is the main Kronolith configuration file. It contains paths and options "
+"for all Kronolith scripts."
+msgstr ""
+"Это главный конфигурационный файл Kronolith. Он содержит пути и параметры "
+"для всех скриптов Kronolith."
+
+msgid "Thursday"
+msgstr "Четверг"
+
+msgid "Time Zone"
+msgstr "Временная зона"
+
+msgid "Title"
+msgstr "Заголовок"
+
+msgid "Today"
+msgstr "Сегодня"
+
+msgid "Tu"
+msgstr "Вт"
+
+msgid "Tuesday"
+msgstr "Вторник"
+
+msgid "Type"
+msgstr "Тип"
+
+msgid "User Interface"
+msgstr "Пользовательский интерфейс"
+
+msgid "User Options"
+msgstr "Настройки пользователя"
+
+#, c-format
+msgid "View %s"
+msgstr "Вид %s"
+
+msgid "We"
+msgstr "Ср"
+
+msgid "Wednesday"
+msgstr "Среда"
+
+#, c-format
+msgid "Week %d"
+msgstr "Неделя %d"
+
+msgid "Week"
+msgstr "Неделя"
+
+#, c-format
+msgid "Week&nbsp;%d"
+msgstr "Неделя&nbsp;%d"
+
+msgid "Week(s)"
+msgstr "Неделя(и)"
+
+msgid "Weekly: Recurs every"
+msgstr "Повторяется еженедельно"
+
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr ""
+"Каким временем заканчивать отображать день или неделю, при отсутствии более "
+"поздних событий?"
+
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr ""
+"С какого времени начинать отображать день или неделю, при отстутствии более "
+"ранних событий?"
+
+msgid "Work Week"
+msgstr "Рабочая неделя"
+
+msgid "Work&nbsp;Week"
+msgstr "Рабочая&nbsp;неделя"
+
+msgid "Yearly: Recurs every"
+msgstr "Повторяется ежегодно"
+
+msgid "Your Information"
+msgstr "Ваша информация"
+
+msgid "Your current time zone:"
+msgstr "Ваша временная зона:"
+
+msgid "day"
+msgstr "день"
+
+msgid "day(s)"
+msgstr "день(дни)"
+
+msgid "days"
+msgstr "дни"
+
+msgid "iCalendar file successfully imported"
+msgstr "Файл формата iCalendar успешно импортирован"
+
+msgid "month(s)"
+msgstr "месяц(ы)"
+
+msgid "no time"
+msgstr "нет времени"
+
+msgid "on the same date"
+msgstr "в тот же день"
+
+msgid "on the same weekday"
+msgstr "в тот же день недели"
+
+msgid "week"
+msgstr "неделя"
+
+msgid "week(s) on:"
+msgstr "неделя(и):"
+
+msgid "weeks"
+msgstr "недели"
+
+msgid "year(s)"
+msgstr "год(ы)"

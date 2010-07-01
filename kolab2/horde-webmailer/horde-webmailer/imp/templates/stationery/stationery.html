@@ -1,0 +1,49 @@
+<form method="post" name="prefs" action="<tag:action />">
+<tag:forminput />
+<input type="hidden" name="actionID" value="update" />
+<input type="hidden" name="group" value="compose" />
+<input type="hidden" name="app" value="imp" />
+
+<div class="header">
+ <tag:navcell /> <gettext>Stationery</gettext>
+</div>
+
+<p class="item">
+<label for="stationery" class="hidden"><gettext>Stationery</gettext></label>
+<select id="stationery" name="stationery" onchange="document.prefs.edit.click()">
+ <option value=""><gettext>Create new stationery</gettext></option>
+<loop:slist>
+ <option value="<tag:slist.val />"<if:slist.selected> selected="selected"</if:slist.selected>><tag:slist.text /></option>
+</loop:slist>
+</select>
+<input type="submit" name="edit" class="button" value="<gettext>Edit</gettext>" />
+
+<br />
+
+<input type="hidden" name="last_type" value="<tag:last_type />" />
+<tag:name_label />
+<br />
+<input type="text" name="name" id="name" value="<tag:name />" />
+<br />
+<tag:type_label />
+<br />
+<select name="type" id="type" onchange="if (document.prefs.onsubmit) document.prefs.onsubmit(); document.prefs.submit()">
+ <option value="plain"<if:plain> selected="selected"</if:plain>><gettext>Text</gettext></option>
+ <option value="html"<if:html> selected="selected"</if:html>><gettext>HTML</gettext></option>
+</select>
+<br />
+<tag:content_label />
+<br />
+<textarea name="content" id="content" rows="15" cols="80" class="fixed"><tag:content /></textarea>
+<br />
+<em><gettext>You can use the following placeholders in the stationery text: %c for the current message content; %s for the signature.</gettext></em>
+</p>
+
+<input type="submit" name="save" class="button" value="<gettext>Save Stationery</gettext>" />&nbsp;&nbsp;
+<if:selected>
+<input type="submit" name="delete" class="button" value="<gettext>Delete Stationery</gettext>" />&nbsp;&nbsp;
+</if:selected>
+
+<input type="button" name="back" class="button" onclick="document.location.href='<tag:button_href />'" value="<tag:button_val />" />
+
+</form>

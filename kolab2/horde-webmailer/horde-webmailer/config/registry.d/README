@@ -1,0 +1,9 @@
+This directory can hold registry configuration snippets. Any PHP file (*.php)
+is read; all other files are ignored and so are for information only. Snippets
+can contain anything that would go in registry.php - one or more applications,
+tree blocks, conditionals, etc.
+
+Scripts that install or update files in this directory should always touch()
+the registry.d directory after completion to ensure that its modification time
+has changed; that way Horde will know to drop any cached configuration
+information.

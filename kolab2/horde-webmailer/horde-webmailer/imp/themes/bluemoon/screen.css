@@ -1,0 +1,39 @@
+/**
+ * $Horde: imp/themes/bluemoon/screen.css,v 1.1.10.2 2008-04-08 18:13:39 chuck Exp $
+ */
+
+.deleted {
+    background-color: #999;
+}
+.deleted-over {
+    background-color: #777;
+}
+.important, .flagged {
+    background-color: #fcc;
+}
+tr.important:hover, tr.important-over, tr.flagged:hover, tr.flagged-over {
+    background-color: #faa;
+}
+.unseen {
+    background-color: #eef;
+}
+.unseen-over {
+    background-color: #ccf;
+}
+.answered {
+    background-color: #cfc;
+}
+.answered-over {
+    background-color: #9e9;
+}
+.folderunsub {
+    background-color: #bcd;
+}
+.quotawarn {
+    color: #000;
+    background-color: yellow;
+}
+.quotaalert {
+    color: #fff;
+    background-color: red;
+}

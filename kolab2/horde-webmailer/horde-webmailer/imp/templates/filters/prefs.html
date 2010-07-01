@@ -1,0 +1,37 @@
+<div class="header">
+ <tag:navcell /> <gettext>Filter Settings</gettext>
+</div>
+
+<if:notactive>
+<div class="prefsContainer item">
+ <em><gettext>Filter support is disabled on this system.</gettext></em>
+
+ <p><input type="button" name="back" class="button" onclick="document.location.href='<tag:prefsurl />'" value="<tag:return_text />" /></p>
+</div>
+<else:notactive>
+<div class="prefsContainer item">
+<form method="post" name="prefs" action="<tag:selfurl />">
+<tag:forminput />
+<input type="hidden" name="actionID" value="update_prefs" />
+<input type="hidden" name="group" value="<tag:group />" />
+<input type="hidden" name="app" value="<tag:app />" />
+
+<loop:links>
+<tag:links.img /> &nbsp;<tag:links.link /><tag:links.text /></a> &nbsp;<tag:links.help /><br />
+</loop:links>
+
+<if:opts>
+<br />
+<loop:opts>
+<input type="checkbox" id="filter_<tag:opts.key />" name="filter_<tag:opts.key />" <if:opts.checked>checked="checked" </if:opts.checked>/> &nbsp;<tag:opts.label /> &nbsp;<tag:opts.help /><br />
+</loop:opts>
+
+<p>
+ <input type="submit" name="save" class="button" onclick="document.prefs.actionID.value='update_prefs';return true;" value="<tag:save_opts />" />&nbsp;&nbsp;
+ <input id="prefs_return" type="button" name="back" class="button" onclick="document.location.href='<tag:prefsurl />'" value="<tag:return_text />" />
+</p>
+</if:opts>
+
+</form>
+</div>
+</else:notactive></if:notactive>

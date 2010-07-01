@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>name</variable></name>
+ <create>false</create>
+ <overwrite>false</overwrite>
+
+ <table>
+
+  <name>turba_objects</name>
+
+  <declaration>
+
+   <field>
+    <name>object_id</name>
+    <type>text</type>
+    <length>32</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>owner_id</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>object_type</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+    <default>Object</default>
+   </field>
+
+   <field>
+    <name>object_uid</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_members</name>
+    <type>clob</type>
+   </field>
+
+   <field>
+    <name>object_firstname</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_lastname</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_middlenames</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_nameprefix</name>
+    <type>text</type>
+    <length>32</length>
+   </field>
+
+   <field>
+    <name>object_namesuffix</name>
+    <type>text</type>
+    <length>32</length>
+   </field>
+
+   <field>
+    <name>object_alias</name>
+    <type>text</type>
+    <length>32</length>
+   </field>
+
+   <field>
+    <name>object_photo</name>
+    <type>blob</type>
+   </field>
+
+   <field>
+    <name>object_phototype</name>
+    <type>text</type>
+    <length>10</length>
+   </field>
+
+   <field>
+    <name>object_bday</name>
+    <type>text</type>
+    <length>10</length>
+   </field>
+
+   <field>
+    <name>object_homestreet</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_homepob</name>
+    <type>text</type>
+    <length>10</length>
+   </field>
+
+   <field>
+    <name>object_homecity</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_homeprovince</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_homepostalcode</name>
+    <type>text</type>
+    <length>10</length>
+   </field>
+
+   <field>
+    <name>object_homecountry</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_workstreet</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_workpob</name>
+    <type>text</type>
+    <length>10</length>
+   </field>
+
+   <field>
+    <name>object_workcity</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_workprovince</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_workpostalcode</name>
+    <type>text</type>
+    <length>10</length>
+   </field>
+
+   <field>
+    <name>object_workcountry</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_tz</name>
+    <type>text</type>
+    <length>32</length>
+   </field>
+
+   <field>
+    <name>object_geo</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_email</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_homephone</name>
+    <type>text</type>
+    <length>25</length>
+   </field>
+
+   <field>
+    <name>object_workphone</name>
+    <type>text</type>
+    <length>25</length>
+   </field>
+
+   <field>
+    <name>object_cellphone</name>
+    <type>text</type>
+    <length>25</length>
+   </field>
+
+   <field>
+    <name>object_fax</name>
+    <type>text</type>
+    <length>25</length>
+   </field>
+
+   <field>
+    <name>object_pager</name>
+    <type>text</type>
+    <length>25</length>
+   </field>
+
+   <field>
+    <name>object_title</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_role</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_logo</name>
+    <type>blob</type>
+   </field>
+
+   <field>
+    <name>object_logotype</name>
+    <type>text</type>
+    <length>10</length>
+   </field>
+
+   <field>
+    <name>object_company</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_category</name>
+    <type>text</type>
+    <length>80</length>
+   </field>
+
+   <field>
+    <name>object_notes</name>
+    <type>clob</type>
+   </field>
+
+   <field>
+    <name>object_url</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_freebusyurl</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_pgppublickey</name>
+    <type>clob</type>
+   </field>
+
+   <field>
+    <name>object_smimepublickey</name>
+    <type>clob</type>
+   </field>
+
+   <index>
+    <name>turba_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>object_id</name>
+    </field>
+   </index>
+
+   <index>
+    <name>turba_owner</name>
+    <field>
+     <name>owner_id</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>turba_email</name>
+    <field>
+     <name>object_email</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>turba_firstname</name>
+    <field>
+     <name>object_firstname</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>turba_lastname</name>
+    <field>
+     <name>object_lastname</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+  <table>
+
+  <name>turba_shares</name>
+
+  <declaration>
+
+   <field>
+    <name>share_id</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>share_name</name>
+    <type>text</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>share_owner</name>
+    <type>text</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>share_flags</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>perm_creator</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>perm_default</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>perm_guest</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>attribute_name</name>
+    <type>text</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>attribute_desc</name>
+    <type>text</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>attribute_params</name>
+    <type>clob</type>
+   </field>
+
+   <index>
+    <name>turba_shares_name</name>
+    <field>
+     <name>share_name</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>turba_shares_owner</name>
+    <field>
+     <name>share_owner</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>turba_shares_creator</name>
+    <field>
+     <name>perm_creator</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>turba_shares_default</name>
+    <field>
+     <name>perm_default</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>turba_shares_guest</name>
+    <field>
+     <name>perm_guest</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>turba_shares_pKey</name>
+    <primary>true</primary>
+    <field>
+     <name>share_id</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>turba_shares_groups</name>
+
+  <declaration>
+
+   <field>
+    <name>share_id</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>group_uid</name>
+    <type>text</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>perm</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <index>
+    <name>turba_groups_share_id</name>
+    <field>
+     <name>share_id</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>turba_groups_group_uid</name>
+    <field>
+     <name>group_uid</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>turba_groups_perm</name>
+    <field>
+     <name>perm</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>turba_shares_users</name>
+
+  <declaration>
+
+   <field>
+    <name>share_id</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>user_uid</name>
+    <type>text</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>perm</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <index>
+    <name>turba_users_share_id</name>
+    <field>
+     <name>share_id</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>turba_users_user_uid</name>
+    <field>
+     <name>user_uid</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>turba_users_perm</name>
+    <field>
+     <name>perm</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+</database>

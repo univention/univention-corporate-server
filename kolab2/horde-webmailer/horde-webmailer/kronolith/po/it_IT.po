@@ -1,0 +1,2586 @@
+# Kronolith 0.0.3 Italian translation
+# Paola Carpenter <pcarpenter@infvic.it>; Giovanni Meneghetti <gmeneghetti@infvic.it>, 2001.
+# Copyright 2003 Sergio G. Caredda.
+# Sergio G. Caredda <scaredda@tiscali.it>, 2003.
+# Copyright 2007 nethesis srl.
+# Cristian Manoni, Alessio Fattorini, Davide marini 2007
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith v0.0.3\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-05-17 11:04+0200\n"
+"PO-Revision-Date: 2005-02-23 17:23-0100\n"
+"Last-Translator: Nethesis srl <info@nethesis.it>\n"
+"Language-Team: Italian <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: templates/edit/edit.inc:211
+#, php-format
+msgid " until %s"
+msgstr " fino a %s"
+
+#: templates/edit/edit.inc:211
+msgid " without end"
+msgstr " senza termine"
+
+#: templates/search/header.inc:4
+#, php-format
+msgid "%d events"
+msgstr "%d eventi"
+
+#: templates/view/view.inc:124
+#, php-format
+msgid "%d times"
+msgstr "%d volte"
+
+#: templates/edit/edit_timespan.inc:120
+#, php-format
+msgid "%s Day(s) %s Hour(s) %s Minutes"
+msgstr "%s Giorno/i %s Ora/e %s Minuto/i"
+
+#: lib/Driver.php:2267
+#, php-format
+msgid "%s attendees"
+msgstr "%s partecipanti"
+
+#: data.php:310
+#, php-format
+msgid "%s file successfully imported"
+msgstr "File %s importato con successo"
+
+#: lib/Kronolith.php:364 lib/Forms/DeleteCalendar.php:85
+#, php-format
+msgid "%s's Calendar"
+msgstr "Calendario di %s"
+
+#: templates/contacts/contacts.inc:177
+msgid "* Add these by clicking Add *"
+msgstr "* Aggiungi questi cliccando su Aggiungi *"
+
+#: templates/contacts/contacts.inc:162
+msgid "* Please select address(es) *"
+msgstr "* Seleziona Indirizzo/i *"
+
+#: templates/edit/edit.inc:211
+#, php-format
+msgid ", %d times"
+msgstr ", %d volte"
+
+#: lib/Driver.php:2266
+msgid "1 attendee"
+msgstr "1 partecipante"
+
+#: templates/search/header.inc:4
+msgid "1 event"
+msgstr "1 evento"
+
+#: config/prefs.php.dist:154
+msgid "1 hour"
+msgstr "1 ora"
+
+#: config/prefs.php.dist:151
+msgid "15 minutes"
+msgstr "15 minuti"
+
+#: config/prefs.php.dist:152
+msgid "20 minutes"
+msgstr "20 minuti"
+
+#: config/prefs.php.dist:153
+msgid "30 minutes"
+msgstr "30 minuti"
+
+#: templates/data/export.inc:118 templates/data/export.inc:203
+msgid "AM"
+msgstr "AM"
+
+#: lib/Kronolith.php:1169
+msgid "Accepted"
+msgstr "Accettato"
+
+#: templates/search/search.inc:10
+msgid "Ad_vanced Search"
+msgstr "Ricerca A_vanzata"
+
+#: templates/contacts/contacts.inc:171
+msgid "Add"
+msgstr "Aggiungi"
+
+#: templates/edit/edit.inc:23
+msgid "Add Event"
+msgstr "Aggiungi Evento"
+
+#: new.php:65
+msgid "Add a new event"
+msgstr "Aggiungi un nuovo evento"
+
+#: templates/attendees/attendees.inc:78
+msgid "Add attendees"
+msgstr "Aggiungi partecipanti"
+
+#: templates/prefs/sourceselect.inc:298
+msgid "Add source"
+msgstr "Aggiungo sorgente"
+
+#: templates/contacts/contacts.inc:197
+msgid "Add to attendees"
+msgstr "Aggiungi ai partecipanti"
+
+#: contacts.php:76 templates/attendees/attendees.inc:85
+#: templates/contacts/contacts.inc:138
+msgid "Address Book"
+msgstr "Rubrica"
+
+#: config/prefs.php.dist:69
+msgid "Address Books"
+msgstr "Rubriche"
+
+#: templates/search/search_advanced.inc:11 templates/search/search.inc:10
+msgid "Advanced Search"
+msgstr "Ricerca Avanzata"
+
+#: templates/view/view.inc:47
+msgid "Alarm"
+msgstr "Allarme"
+
+#: lib/Driver.php:2233
+#, php-format
+msgid "Alarm %d days before"
+msgstr "Allarme %d giorni prima"
+
+#: lib/Driver.php:2238
+#, php-format
+msgid "Alarm %d hours before"
+msgstr "Allarme %d ore prima"
+
+#: lib/Driver.php:2243
+#, php-format
+msgid "Alarm %d minutes before"
+msgstr "Allarme %d minuti prima"
+
+#: lib/Driver.php:2228
+#, php-format
+msgid "Alarm %d weeks before"
+msgstr "Allarme %d settimane prima"
+
+#: lib/Driver.php:2232
+msgid "Alarm 1 day before"
+msgstr "Allarme 1 giorno prima"
+
+#: lib/Driver.php:2237
+msgid "Alarm 1 hour before"
+msgstr "Allarme 1 ora prima"
+
+#: lib/Driver.php:2242
+msgid "Alarm 1 minute before"
+msgstr "Allarme 1 minuto prima"
+
+#: lib/Driver.php:2227
+msgid "Alarm 1 week before"
+msgstr "Allarme 1 settimana prima"
+
+#: data.php:61
+msgid "Alarm Date"
+msgstr "Data di Allarme"
+
+#: data.php:60
+msgid "Alarm Span (minutes)"
+msgstr "Durata Allarme (minuti)"
+
+#: data.php:62
+msgid "Alarm Time"
+msgstr "Ora Allarme"
+
+#: templates/prefs/default_alarm_management.inc:24 templates/edit/edit.inc:166
+msgid "Alarm Unit"
+msgstr "Unità Allarme"
+
+#: templates/prefs/default_alarm_management.inc:22 templates/edit/edit.inc:164
+msgid "Alarm Value"
+msgstr "Valore Allarme"
+
+#: templates/edit/edit.inc:159
+msgid "Alarm enabled"
+msgstr "Allarme Abilitato"
+
+#: templates/edit/edit.inc:39 templates/delete/delete.inc:27
+msgid "All"
+msgstr "Tutti"
+
+#: lib/FBView.php:129 lib/FBView.php:132 lib/FBView.php:135
+msgid "All Attendees"
+msgstr "Tutti i partecipanti"
+
+#: templates/perms/perms.inc:105
+msgid "All Authenticated Users"
+msgstr "Tutti gli Utenti"
+
+#: lib/Block/month.php:42
+msgid "All Calendars"
+msgstr "Tutti i Calendari"
+
+#: templates/search/search.inc:58
+msgid "All Future"
+msgstr "Tutto il Futuro"
+
+#: templates/search/search.inc:52
+msgid "All Past"
+msgstr "Tutto il Passato"
+
+#: lib/Block/prevmonthlist.php:27 lib/Block/summary.php:28
+#: lib/Block/monthlist.php:30 lib/Block/month.php:24
+msgid "All Visible"
+msgstr "Tutti Visibili"
+
+#: lib/Driver.php:2336 lib/Views/Day.php:99 lib/Views/Day.php:102
+#: lib/Views/Week.php:149 lib/Views/Week.php:156
+#: templates/edit/edit_timespan.inc:119
+msgid "All day"
+msgstr "Tutto il giorno"
+
+#: lib/Block/summary.php:166
+msgid "All day event"
+msgstr "Tutto il giorno"
+
+#: templates/data/export.inc:33
+msgid "All events"
+msgstr "Tutti gli Eventi"
+
+#: lib/api.php:792 lib/api.php:803
+msgid "Already Exists"
+msgstr "Esiste Già"
+
+#: lib/Kronolith.php:1262 templates/search/search_advanced.inc:44
+#: templates/search/search_advanced.inc:65
+msgid "Any"
+msgstr "Qualsiasi"
+
+#: templates/javascript/goto.js:71
+msgid "April"
+msgstr "Aprile"
+
+#: templates/data/export.inc:85 templates/data/export.inc:176
+#: templates/edit/edit_timespan.inc:36 templates/edit/edit_timespan.inc:90
+msgid "At"
+msgstr "Alle"
+
+#: lib/Kronolith.php:1442
+msgid ""
+"Attached is an iCalendar file with more information about the event. If your "
+"mail client supports iTip requests you can use this file to easily update "
+"your local copy of the event."
+msgstr ""
+"L'allegato è un file iCalendar, con più informazoni sull'evento. Se il tuo "
+"client di posta supporta le richieste iTip, puoi usare questo file per "
+"aggiornare la copia locale dell'evento"
+
+#: perms.php:45
+msgid "Attempt to edit a non-existent share."
+msgstr "Tentativo di aggiornare una condivisione inesistente"
+
+#: templates/view/view.inc:172 templates/attendees/attendees.inc:48
+#: templates/attendees/attendees.inc:60
+msgid "Attendance"
+msgstr "Partecipanti"
+
+#: templates/view/view.inc:171 templates/attendees/attendees.inc:47
+msgid "Attendee"
+msgstr "Partecipante"
+
+#: templates/view/view.inc:168 templates/edit/edit.inc:193
+msgid "Attendees"
+msgstr "Partecipanti"
+
+#: lib/Kronolith.php:1436
+msgid "Attendees: %s"
+msgstr "Partecipanti: %s"
+
+#: templates/javascript/goto.js:75
+msgid "August"
+msgstr "Agosto"
+
+#: templates/prefs/sourceselect.inc:291 templates/prefs/sourceselect.inc:293
+msgid "Available Address books:"
+msgstr "Rubriche Disponibili"
+
+#: templates/search/search_advanced.inc:9 templates/search/search.inc:12
+msgid "Basic Search"
+msgstr "Ricerca Veloce"
+
+#: config/keywords.php.dist:17
+msgid "Birthday"
+msgstr "Compleanno"
+
+#: lib/FBView.php:90 lib/FBView.php:112 templates/fbview/legend.html:9
+msgid "Busy"
+msgstr "Impegnato"
+
+#: templates/search/search_advanced.inc:37
+msgid "C_alendar"
+msgstr "C_alendario"
+
+#: templates/edit/edit.inc:67
+msgid "Cal_endar"
+msgstr "Cal_endario"
+
+#: lib/Block/prevmonthlist.php:21 lib/Block/summary.php:22
+#: lib/Block/monthlist.php:21 lib/Block/month.php:21
+#: templates/calendar_list.php:22
+msgid "Calendar"
+msgstr "Calendario"
+
+#: templates/panel.inc:6
+msgid "Calendar Information"
+msgstr "Informazione Calendario"
+
+#: templates/calendar_list.php:19
+msgid "Calendar List"
+msgstr "Lista Calendari"
+
+#: lib/Block/summary.php:3
+msgid "Calendar Summary"
+msgstr "Sommario del Calendario"
+
+#: data.php:254
+msgid "Calendar successfully purged."
+msgstr "Calendario svuotato con successo"
+
+#: templates/panel.inc:23 templates/panel.inc:24 config/prefs.php.dist:27
+#: config/prefs.php.dist:35 config/prefs.php.dist:60
+msgid "Calendars"
+msgstr "Calendari"
+
+#: templates/calendar_titles.inc:8
+msgid "Calendars Printed: "
+msgstr "Calendari Stampati: "
+
+#: data.php:270
+msgid "Can't create a new event."
+msgstr "Impossibile creare un nuovo evento"
+
+#: lib/Forms/DeleteCalendar.php:45 lib/Forms/DeleteCalendar.php:51
+#: lib/Forms/UnsubscribeRemoteCalendar.php:39
+#: lib/Forms/UnsubscribeRemoteCalendar.php:45 templates/edit/edit.inc:51
+#: templates/edit/edit.inc:382 templates/delete/delete.inc:28
+#: templates/delete/one.inc:25
+msgid "Cancel"
+msgstr "Annulla"
+
+#: lib/Kronolith.php:1145
+msgid "Cancelled"
+msgstr "Annullato"
+
+#: lib/Kronolith.php:1403
+#, php-format
+msgid "Cancelled: %s"
+msgstr "Annullato: %s"
+
+#: lib/Driver/kolab.php:1394
+#, php-format
+msgid "Cannot delete event: %s"
+msgstr "Impossibile eliminare l'evento: %s"
+
+#: templates/edit/edit.inc:94 templates/search/search_advanced.inc:58
+msgid "Categor_y"
+msgstr "Categori_a"
+
+#: data.php:64 templates/view/view.inc:6 templates/search/event_headers.inc:4
+msgid "Category"
+msgstr "Categoria"
+
+#: calendars/index.php:69 templates/calendar_list.php:54
+msgid "Change Permissions"
+msgstr "Cambia Permessi"
+
+#: config/prefs.php.dist:52
+msgid ""
+"Choose how you want to be notified about event changes, event alarms and "
+"upcoming events."
+msgstr ""
+"Scegliere come si desidera ricevere le notifiche sulle modifiche di eventi, "
+"allarmi e eventi prossimi"
+
+#: config/prefs.php.dist:383
+msgid "Choose how you want to receive reminders for events with alarms:"
+msgstr ""
+"Scegliere come si desidera ricevere le notifiche per eventi con allarmi:"
+
+#: config/prefs.php.dist:340
+msgid ""
+"Choose if you want to be notified of new, edited, and deleted events by "
+"email:"
+msgstr ""
+"Scegliere se si desidera ricevere le notifiche per eventi nuovi, modificati  "
+"o eliminati via email:"
+
+#: config/prefs.php.dist:353
+msgid "Choose if you want to receive daily agenda email reminders:"
+msgstr "Sscegliere se si desidera ricevere una agenda giornaliera via email:"
+
+#: config/prefs.php.dist:374
+msgid "Choose if you want to receive reminders for events with alarms:"
+msgstr "scegliere se si desidera ricevere notifiche per eventi con allarmi:"
+
+#: templates/prefs/fb_cals_select.inc:28
+msgid "Choose the calendars to include in the above Free/Busy URL:"
+msgstr "Selezionare i calendari da includere nell'URL di Libero/Occupato:"
+
+#: config/prefs.php.dist:440
+msgid "Choose the calendars to include when generating Free/Busy URLs:"
+msgstr ""
+"Selezionare i calendari da includere generando l'URL di Libero/Occupato:"
+
+#: templates/prefs/sourceselect.inc:287
+msgid "Choose the order of address books to search when expanding addresses."
+msgstr ""
+"Seleziona l'ordine delle rubriche per la ricerca quando si espandono gli "
+"indirizzi."
+
+#: config/prefs.php.dist:188
+msgid "Choose the views to show event locations in:"
+msgstr "Mostra il Luogo dell'evento nelle visualizzazioni:"
+
+#: config/prefs.php.dist:176
+msgid "Choose the views to show event start and end times in:"
+msgstr "Mostra la data inizio/fine dell'evento nelle visualizzazioni:"
+
+#: config/prefs.php.dist:37
+msgid "Choose which holidays to display"
+msgstr "Selezionari quali festività mostare"
+
+#: config/prefs.php.dist:29
+msgid "Choose your default calendar."
+msgstr "Scegli il tuo calendario di default"
+
+#: templates/attendees/attendees.inc:95
+msgid "Clear all attendees"
+msgstr "Azzera tutti i partecipanti"
+
+#: templates/prefs/sourceselect.inc:317
+msgid ""
+"Click on one of your selected address books and then select all fields to "
+"search."
+msgstr ""
+"Clicca si una delle rubriche selezionate e selezionare tutti i campi su cui "
+"cercare"
+
+#: templates/calendar_list.php:40 templates/calendar_list.php:41
+#: templates/calendar_list.php:50 templates/calendar_list.php:51
+msgid "Click or copy this URL to display this calendar"
+msgstr "Cliccare o copiare questa URL per visualizzare questo calendario"
+
+#: templates/javascript_defs.php:17
+msgid "Close"
+msgstr "Chiudi"
+
+#: templates/perms/perms.inc:30
+msgid "Close Window"
+msgstr "Chiudi Finestra"
+
+#: templates/contacts/contacts.inc:198
+msgid "Close window"
+msgstr "Chiudi Finestra"
+
+#: data.php:30 templates/data/import.inc:13
+msgid "Comma separated values"
+msgstr "Valori separati da virgola"
+
+#: config/prefs.php.dist:81
+msgid "Confirm deletion of events?"
+msgstr "Conferma cancellazione degli eventi?"
+
+#: lib/Kronolith.php:1142
+msgid "Confirmed"
+msgstr "Confermato"
+
+#: templates/prefs/fb_cals_select.inc:6
+msgid "Copy this URL for use wherever you need your Free/Busy URL:"
+msgstr "Copia l'URL seguente per ottenere le informazioni di Libero/Occupato:"
+
+#: lib/Kronolith.php:456
+#, php-format
+msgid "Could not open %s."
+msgstr "Non è possibile aprire %s."
+
+#: lib/Forms/CreateCalendar.php:39
+msgid "Create"
+msgstr "Crea"
+
+#: lib/Forms/CreateCalendar.php:34
+msgid "Create Calendar"
+msgstr "Crea Calendario"
+
+#: lib/Views/Day.php:99 lib/Views/Day.php:261 lib/Views/Month.php:173
+#: templates/week/head.inc:29
+msgid "Create a New Event"
+msgstr "Crea un nuovo evento"
+
+#: templates/calendar_list.php:10
+msgid "Create a new Local Calendar"
+msgstr "Crea Calendario Locale"
+
+#: templates/view/view.inc:74
+msgid "Created"
+msgstr "Creato"
+
+#: templates/edit/edit.inc:37 templates/delete/delete.inc:25
+msgid "Current"
+msgstr "Corrente"
+
+#: lib/Recurrence.php:192
+msgid "Daily"
+msgstr "Giornaliero"
+
+#: templates/view/view.inc:96 templates/edit/edit.inc:226
+msgid "Daily: Recurs every"
+msgstr "Giornaliero: Si ripete ogni"
+
+#: attendees.php:196 lib/Kronolith.php:1748 lib/Block/tree_menu.php:21
+#: config/prefs.php.dist:90
+msgid "Day"
+msgstr "Giorno"
+
+#: config/prefs.php.dist:50
+msgid "Maintenance"
+msgstr "Manutenzione"
+
+#: templates/prefs/default_alarm_management.inc:28 templates/view/view.inc:56
+#: templates/edit/edit.inc:170
+msgid "Day(s)"
+msgstr "Giorno(i)"
+
+#: lib/Kronolith.php:1798
+msgid "De_lete"
+msgstr "El_imina"
+
+#: templates/javascript/goto.js:79
+msgid "December"
+msgstr "Dicembre"
+
+#: lib/Kronolith.php:1172
+msgid "Declined"
+msgstr "Rifiutato"
+
+#: templates/prefs/default_alarm_management.inc:21
+msgid "Default Alarm Setting:"
+msgstr "Impostazioni di Default Allarmi:"
+
+#: config/prefs.php.dist:28
+msgid "Default Calendar"
+msgstr "Calendario di Default"
+
+#: templates/perms/perms.inc:55 templates/perms/perms.inc:94
+#: templates/perms/perms.inc:111 templates/perms/perms.inc:135
+#: templates/perms/perms.inc:152 templates/perms/perms.inc:176
+#: templates/perms/perms.inc:193 templates/perms/perms.inc:217
+#: templates/perms/perms.inc:234 templates/perms/perms.inc:258
+#: templates/perms/perms.inc:299 templates/perms/perms.inc:316
+#: templates/perms/perms.inc:340 templates/perms/perms.inc:374
+msgid "Delegate"
+msgstr "Delegato"
+
+#: calendars/index.php:70 lib/Driver.php:1329 lib/Driver.php:2295
+#: lib/Forms/DeleteCalendar.php:45 templates/calendar_list.php:56
+#: templates/delete/one.inc:24 templates/perms/perms.inc:54
+#: templates/perms/perms.inc:90 templates/perms/perms.inc:110
+#: templates/perms/perms.inc:131 templates/perms/perms.inc:151
+#: templates/perms/perms.inc:172 templates/perms/perms.inc:192
+#: templates/perms/perms.inc:213 templates/perms/perms.inc:233
+#: templates/perms/perms.inc:254 templates/perms/perms.inc:295
+#: templates/perms/perms.inc:315 templates/perms/perms.inc:336
+#: templates/perms/perms.inc:370
+msgid "Delete"
+msgstr "Elimina"
+
+#: lib/Driver.php:2294 lib/Forms/DeleteCalendar.php:40
+#: lib/Views/DeleteEvent.php:29
+#, php-format
+msgid "Delete %s"
+msgstr "Elimina %s"
+
+#: lib/Driver.php:1328
+#, php-format
+msgid "Delete exception on %s"
+msgstr "Eliminazione eccezione in %s"
+
+#: templates/edit/edit.inc:180 templates/search/search_advanced.inc:101
+#: templates/search/search.inc:27
+msgid "Descri_ption"
+msgstr "Descri_zione"
+
+#: data.php:63 lib/Forms/EditCalendar.php:44 lib/Forms/CreateCalendar.php:37
+#: templates/view/view.inc:155
+msgid "Description"
+msgstr "Descrizione"
+
+#: templates/contacts/contacts.inc:186
+msgid "Display"
+msgstr "Visualizza"
+
+#: config/prefs.php.dist:9 config/prefs.php.dist:20
+msgid "Display Options"
+msgstr "Opzioni Visualizzazione"
+
+#: templates/calendar_list.php:24
+msgid "Display URL"
+msgstr "Mostra URL"
+
+#: lib/Kronolith.php:1110
+msgid "Does not recur"
+msgstr "Non si ripete"
+
+#: config/prefs.php.dist:361
+msgid ""
+"Don't send me a notification if I've added, changed or deleted the event?"
+msgstr "Non mi inviare notifiche se ho cambiato o eliminato un evento?"
+
+#: lib/Kronolith.php:674
+#, php-format
+msgid "Due: %s"
+msgstr "Scadenza: %s"
+
+#: templates/edit/edit_timespan.inc:112
+msgid "Duration"
+msgstr "Durata"
+
+#: lib/Driver.php:2006
+msgid "Duration Day"
+msgstr "Durata Giorni"
+
+#: lib/Driver.php:2018
+msgid "Duration Hour"
+msgstr "Durata Ore"
+
+#: lib/Driver.php:2029
+msgid "Duration Minute"
+msgstr "Durata Minuti"
+
+#: calendars/index.php:68 lib/Driver.php:2288 templates/calendar_list.php:42
+#: templates/calendar_list.php:52 templates/perms/perms.inc:53
+#: templates/perms/perms.inc:86 templates/perms/perms.inc:109
+#: templates/perms/perms.inc:127 templates/perms/perms.inc:150
+#: templates/perms/perms.inc:168 templates/perms/perms.inc:191
+#: templates/perms/perms.inc:209 templates/perms/perms.inc:232
+#: templates/perms/perms.inc:250 templates/perms/perms.inc:291
+#: templates/perms/perms.inc:314 templates/perms/perms.inc:332
+#: templates/perms/perms.inc:366
+msgid "Edit"
+msgstr "Modifica"
+
+#: lib/Driver.php:2287 lib/Forms/EditCalendar.php:40
+#: lib/Forms/EditRemoteCalendar.php:34 lib/Views/EditEvent.php:29
+#: templates/attendees/attendees.inc:57
+#, php-format
+msgid "Edit %s"
+msgstr "Modifica %s"
+
+#: templates/edit/edit.inc:202
+msgid "Edit Attendees"
+msgstr "Modifica Partecipanti"
+
+#: perms.php:237
+msgid "Edit Permissions"
+msgstr "Modifica Permessi"
+
+#: perms.php:239
+#, php-format
+msgid "Edit Permissions for %s"
+msgstr "Modifica Permessi per %s"
+
+#: templates/attendees/attendees.inc:78
+msgid "Edit attendee"
+msgstr "Modifica partecipante"
+
+#: attendees.php:267
+msgid "Edit attendees"
+msgstr "Modifica partecipanti"
+
+#: templates/category_legend.inc:20
+msgid "Edit categories and colors"
+msgstr "Modifica Categorie e Colori"
+
+#: templates/perms/perms.inc:32
+#, php-format
+msgid "Edit permissions for %s"
+msgstr "Modifica Permessi per %s"
+
+#: templates/contacts/contacts.inc:189
+msgid "Email Address"
+msgstr "Indirizzo Email"
+
+#: templates/edit/edit_timespan.inc:57
+msgid "En_d"
+msgstr "Fi_ne"
+
+#: data.php:58
+msgid "End Date"
+msgstr "Data di fine"
+
+#: lib/Driver.php:1977 templates/data/export.inc:161
+msgid "End Day"
+msgstr "Giorno di fine"
+
+#: lib/Driver.php:1990 templates/data/export.inc:178
+msgid "End Hour"
+msgstr "Ora di fine"
+
+#: lib/Driver.php:2001 templates/data/export.inc:190
+msgid "End Minute"
+msgstr "Minuto di fine"
+
+#: lib/Driver.php:1968 templates/data/export.inc:148
+msgid "End Month"
+msgstr "Mese di fine"
+
+#: templates/view/view.inc:41 templates/data/export.inc:125
+#: templates/search/event_headers.inc:8
+msgid "End On"
+msgstr "Finisce il"
+
+#: data.php:59
+msgid "End Time"
+msgstr "Orario di fine"
+
+#: lib/Driver.php:1957 templates/data/export.inc:134
+msgid "End Year"
+msgstr "Anno di fine"
+
+#: attendees.php:246
+#, php-format
+msgid "Error retrieving free/busy information for %s: %s"
+msgstr ""
+"Si è verificato un errore nell'importazione delle informazioni libero/"
+"occupato dell'utente %s: %s."
+
+#: attendees.php:223
+#, php-format
+msgid "Error retrieving your free/busy information: %s"
+msgstr ""
+"Si è verificato un errore nell'importazione delle informazioni libero/"
+"occupato: %s."
+
+#: config/prefs.php.dist:44
+msgid "Event Defaults"
+msgstr "Evento di Default"
+
+#: lib/Kronolith.php:1595
+msgid "Event added:"
+msgstr "Evento aggiunto:"
+
+#: lib/Kronolith.php:1605
+msgid "Event deleted:"
+msgstr "Evento eliminato:"
+
+#: lib/Kronolith.php:1600
+msgid "Event edited:"
+msgstr "Evento modificato:"
+
+#: lib/Driver.php:1456
+#, php-format
+msgid "Event from %s to %s"
+msgstr "Eventi da %s a %s"
+
+#: lib/Driver/sql.php:390
+msgid "Event not found"
+msgstr "Evento non trovato."
+
+#: lib/Driver/kolab.php:453 lib/Driver/kolab.php:1189
+#: lib/Driver/kolab.php:1228 lib/Driver/kolab.php:1372
+#, php-format
+msgid "Event not found: %s"
+msgstr "Evento non trovato: %s"
+
+#: config/prefs.php.dist:43 config/prefs.php.dist:50
+msgid "Events"
+msgstr "Eventi"
+
+#: lib/api.php:279
+msgid "Events from %s"
+msgstr "Eventi da %s"
+
+#: lib/Driver.php:1060
+msgid "Events must have a start date."
+msgstr "Gli Eventi devono avere una data di inizio."
+
+#: lib/Driver.php:1022
+msgid "Events must have a title."
+msgstr "Gli Eventi devono avere un titolo."
+
+#: templates/view/view.inc:130 templates/edit/edit.inc:323
+msgid "Exceptions"
+msgstr "Eccezioni"
+
+#: lib/Kronolith.php:1805 templates/data/export.inc:209
+msgid "Export"
+msgstr "Esporta"
+
+#: templates/data/export.inc:8
+msgid "Export Calendar"
+msgstr "Esporta Calendario"
+
+#: templates/panel.inc:59
+msgid "External Events:"
+msgstr "Eventi Esterni:"
+
+#: templates/javascript/goto.js:69
+msgid "February"
+msgstr "Febbraio"
+
+#: templates/prefs/sourceselect.inc:327
+msgid "Fields to search"
+msgstr "Campi da cercare"
+
+#: templates/contacts/contacts.inc:143
+msgid "Find"
+msgstr "Trova"
+
+#: lib/Block/month.php:107 lib/Views/Year.php:81 templates/edit/edit.inc:239
+#: templates/javascript/goto.js:63
+msgid "Fr"
+msgstr "Ven"
+
+#: lib/Kronolith.php:1148
+msgid "Free"
+msgstr "Libero"
+
+#: config/prefs.php.dist:61
+msgid "Free/Busy Information"
+msgstr "Informazione Libero/Occupato"
+
+#: templates/view/view.inc:103 templates/edit/javascript.inc:71
+#: templates/month/head.inc:21
+msgid "Friday"
+msgstr "Venerdì"
+
+#: templates/edit/edit.inc:38 templates/delete/delete.inc:26
+msgid "Future"
+msgstr "Futuro"
+
+#: config/keywords.php.dist:17
+msgid "Game"
+msgstr "Gioco"
+
+#: templates/search/search_advanced.inc:18
+msgid "General"
+msgstr "Generale"
+
+#: lib/Block/summary.php:153
+#, php-format
+msgid "Goto %s"
+msgstr "Vai a %s"
+
+#: templates/perms/perms.inc:310
+msgid "Groups"
+msgstr "Gruppi"
+
+#: templates/perms/perms.inc:146
+msgid "Guest Permissions"
+msgstr "Permessi Ospiti"
+
+#: templates/edit/javascript.inc:256
+msgid "Hide"
+msgstr "Nascondi"
+
+#: config/prefs.php.dist:36
+msgid "Holidays"
+msgstr "Feste"
+
+#: templates/prefs/default_alarm_management.inc:27 templates/view/view.inc:59
+#: templates/edit/edit.inc:169
+msgid "Hour(s)"
+msgstr "Ora(e)"
+
+#: config/prefs.php.dist:150
+msgid "How long should the time slots on the day and week views be?"
+msgstr ""
+"Che Granularità si desidera nella visualizzazione del calendario per le "
+"viste giornaliera e settimanale?"
+
+#: config/prefs.php.dist:392
+msgid "How many days of Free/Busy information should be generated?"
+msgstr ""
+"Per quanti giorni le informazioni libero/occupato devono essere generate?"
+
+#: lib/Kronolith.php:1446
+#, php-format
+msgid ""
+"If your email client doesn't support iTip requests you can use one of the "
+"following links to accept or decline the event.\n"
+"\n"
+"To accept the event:\n"
+"%s\n"
+"\n"
+"To accept the event tentatively:\n"
+"%s\n"
+"\n"
+"To decline the event:\n"
+"%s\n"
+msgstr ""
+"Se il tuo client di posta non supporta le richieste iTip, puoi usare uno dei "
+"seguenti link per accettare o rifiutare l'evento.\n"
+"\n"
+"Per accettare l'evento:\n"
+"%s\n"
+"\n"
+"Per accettare l'evento con riserva:\n"
+"%s\n"
+"\n"
+"per rifiutare l'evento:\n"
+"%s\n"
+
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Calendar, Step %d"
+msgstr "Importa Calendario, Step %d"
+
+#: data.php:316
+msgid "Import/Export Calendar"
+msgstr "Importa/Esporta Calendario"
+
+#: templates/perms/perms.inc:228
+msgid "Individual Users"
+msgstr "Utente Individuale"
+
+#: templates/javascript/goto.js:68
+msgid "January"
+msgstr "Gennaio"
+
+#: templates/javascript/goto.js:74
+msgid "July"
+msgstr "Luglio"
+
+#: templates/javascript/goto.js:73
+msgid "June"
+msgstr "Giugno"
+
+#: data.php:66 templates/view/view.inc:138 templates/edit/edit.inc:336
+msgid "Keywords"
+msgstr "Parole chiave"
+
+#: templates/calendar_list.php:23
+msgid "Kind"
+msgstr "Tipo"
+
+#: templates/search/search.inc:54
+msgid "Last 24 hours"
+msgstr "Ultime 24 ore"
+
+#: templates/view/view.inc:81
+msgid "Last Modified"
+msgstr "Ultima Modifica"
+
+#: templates/month/head_side_by_side.inc:5 templates/month/head.inc:5
+msgid "Last Month"
+msgstr "Ultimo mese"
+
+#: templates/year/head.inc:3
+msgid "Last Year"
+msgstr "Ultimo anno"
+
+#: templates/week/head.inc:6 templates/search/search.inc:53
+msgid "Last week"
+msgstr "Ultima settimana"
+
+#: templates/data/export.inc:29
+msgid "Limit the time span to export:"
+msgstr "Seleziona il lasso di tempo da esportare:"
+
+#: config/prefs.php.dist:403
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+"Elenca tutti i contatti quando si carica la pagina dei contatti? (se "
+"disabilitato si vedranno solo i contatti cercati esplicitamente)"
+
+#: templates/edit/edit.inc:101 templates/search/search_advanced.inc:81
+msgid "Lo_cation"
+msgstr "Lu_ogo"
+
+#: templates/javascript_defs.php:16
+msgid "Loading ..."
+msgstr "Caricamento..."
+
+#: templates/attendees/attendees.inc:81
+msgid "Loading..."
+msgstr "Caricamento..."
+
+#: templates/calendar_list.php:49
+msgid "Local"
+msgstr "Locale"
+
+#: templates/calendar_info.php:18
+#, php-format
+msgid "Local calendar owned by %s."
+msgstr "Calendario Locale di %s"
+
+#: data.php:65 lib/Driver.php:2318 templates/view/view.inc:14
+#: templates/search/event_headers.inc:5
+msgid "Location"
+msgstr "Indirizzo"
+
+#: lib/Kronolith.php:1427
+msgid "Location: %s"
+msgstr "Luogo: %s"
+
+#: calendars/index.php:74 templates/calendar_list.php:4
+msgid "Manage Calendars"
+msgstr "[Gestisci i Calendari]"
+
+#: templates/javascript/goto.js:70
+msgid "March"
+msgstr "Marzo"
+
+#: lib/api.php:138
+msgid "Maximum Number of Events"
+msgstr "Numero massimo di eventi"
+
+#: lib/Block/summary.php:25 lib/Block/monthlist.php:27
+msgid "Maximum number of events to display (0 = no limit)"
+msgstr "Numero massimo di eventi da visualizzare (0 = nessun limite)"
+
+#: templates/javascript/goto.js:72
+msgid "May"
+msgstr "Maggio"
+
+#: lib/Driver.php:2314
+msgid "Me"
+msgstr "Io"
+
+#: config/keywords.php.dist:17
+msgid "Meeting"
+msgstr "Incontro"
+
+#: lib/Block/tree_alarms.php:3
+msgid "Menu Alarms"
+msgstr "Menu Allarmi"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "Menu Liste"
+
+#: templates/prefs/default_alarm_management.inc:26 templates/view/view.inc:62
+#: templates/edit/edit.inc:168
+msgid "Minute(s)"
+msgstr "Minuti"
+
+#: lib/Block/month.php:107 lib/Views/Year.php:77 templates/edit/edit.inc:235
+#: templates/javascript/goto.js:59
+msgid "Mo"
+msgstr "Lun"
+
+#: templates/view/view.inc:99 templates/edit/javascript.inc:67
+#: templates/month/head.inc:17 config/prefs.php.dist:114
+msgid "Monday"
+msgstr "Lunedì"
+
+#: attendees.php:199 lib/Kronolith.php:1754 lib/Block/tree_menu.php:24
+#: config/prefs.php.dist:93
+msgid "Month"
+msgstr "Mese"
+
+#: config/prefs.php.dist:173 config/prefs.php.dist:185
+msgid "Month, Week, and Day Views"
+msgstr "Visualizzazione Mese, Settimana e Giorno"
+
+#: lib/Recurrence.php:195
+msgid "Monthly"
+msgstr "Mensile"
+
+#: templates/view/view.inc:108 templates/view/view.inc:110
+#: templates/edit/edit.inc:246 templates/edit/edit.inc:252
+msgid "Monthly: Recurs every"
+msgstr "Mensilmente: Si ripete ogni"
+
+#: lib/Block/monthlist.php:24
+msgid "Months Ahead"
+msgstr "Mesi Avanti"
+
+#: lib/Block/prevmonthlist.php:24
+msgid "Months Before"
+msgstr "Mesi Prima"
+
+#: templates/prefs/sourceselect.inc:312
+msgid "Move down"
+msgstr "Sposta Giù"
+
+#: templates/prefs/sourceselect.inc:310
+msgid "Move up"
+msgstr "Sposta Su"
+
+#: lib/api.php:1063
+msgid "Multiple iCalendar components found; only one vEvent is supported."
+msgstr "Trovati diversi compenenti icalendar; solo un vEvent è supportato."
+
+#: templates/panel.inc:41
+msgid "My Calendars:"
+msgstr "Miei Calendari:"
+
+#: templates/prefs/fb_cals_select.inc:2
+msgid "My Free/Busy URL"
+msgstr "URL Libero/Occupato"
+
+#: lib/Forms/EditCalendar.php:43 lib/Forms/SubscribeRemoteCalendar.php:36
+#: lib/Forms/CreateCalendar.php:36 lib/Forms/EditRemoteCalendar.php:36
+#: templates/contacts/contacts.inc:188
+msgid "Name"
+msgstr "Nome"
+
+#: lib/Block/tree_menu.php:20
+msgid "New Event"
+msgstr "Nuovo Evento"
+
+#: lib/Kronolith.php:398
+#, php-format
+msgid ""
+"New calendar created and automatically shared with the following group(s): %"
+"s."
+msgstr ""
+"Il nuovo calendario è stato creato e automaticamente condiviso con i "
+"seguenti gruppo/i: %s."
+
+#: templates/data/import.inc:33
+msgid "Next"
+msgstr "Avanti"
+
+#: templates/search/search.inc:56
+msgid "Next 24 hours"
+msgstr "Prossime 24 ore"
+
+#: lib/FBView/day.php:28
+msgid "Next Day"
+msgstr "Giorno successivo"
+
+#: lib/FBView/month.php:31 templates/month/head_side_by_side.inc:7
+#: templates/month/head.inc:7
+msgid "Next Month"
+msgstr "Mese successivo"
+
+#: lib/FBView/week.php:31
+msgid "Next Week"
+msgstr "Settimana successiva"
+
+#: templates/year/head.inc:5
+msgid "Next Year"
+msgstr "Anno successivo"
+
+#: templates/day/head.inc:5
+msgid "Next day"
+msgstr "Giorno successivo"
+
+#: templates/week/head.inc:8 templates/search/search.inc:57
+msgid "Next week"
+msgstr "Settimana successiva"
+
+#: config/prefs.php.dist:336 config/prefs.php.dist:349
+#: config/prefs.php.dist:370
+msgid "No"
+msgstr "No"
+
+#: templates/fbview/legend.html:13
+msgid "No Information"
+msgstr "Nessuna Informazione"
+
+#: templates/view/view.inc:67 templates/edit/edit.inc:163
+msgid "No alarm"
+msgstr "Nessun Allarme"
+
+#: templates/attendees/attendees.inc:54
+msgid "No attendees"
+msgstr "Nessun partecipante"
+
+#: lib/api.php:1201
+msgid ""
+"No attendees have been updated because none of the provided email addresses "
+"have been found in the event's attendees list."
+msgstr ""
+"Nessun partecipante è stato aggiornato in quanto nessuno degli indirizzi "
+"email forniti è stato trovato nella lista partecipanti."
+
+#: lib/Kronolith.php:1997
+msgid "No calendars are available to guests."
+msgstr "Nessun calendario disponibile per gli ospiti."
+
+#: lib/Driver/sql.php:418
+msgid "No calendars to search"
+msgstr "Nessun calendario da cercare"
+
+#: templates/view/view.inc:124 templates/edit/edit.inc:284
+msgid "No end date"
+msgstr "Nessuna data di fine"
+
+#: lib/Block/prevmonthlist.php:166 lib/Block/summary.php:205
+#: lib/Block/monthlist.php:175
+msgid "No events to display"
+msgstr "Nessun evento da mostrare"
+
+#: lib/FreeBusy.php:225
+#, php-format
+msgid "No free/busy information found at the free/busy url of %s."
+msgstr "Nessuna informazione Libero/Occupato trovato all'URL di %s."
+
+#: lib/Storage/kolab.php:67
+#, php-format
+msgid "No free/busy information is available for %s"
+msgstr "Nessuna informazione Libero/Occupato disponibile per %s."
+
+#: lib/FreeBusy.php:226
+#, php-format
+msgid "No free/busy url found for %s."
+msgstr "Nessuna informazione Libero/Occupato trovata per %s."
+
+#: lib/api.php:491 lib/api.php:778 lib/api.php:816 lib/api.php:1070
+msgid "No iCalendar data was found."
+msgstr "Nessun compleanno trovato."
+
+#: lib/Driver.php:1313 lib/Recurrence.php:191 templates/edit/edit.inc:221
+msgid "No recurrence"
+msgstr "Nessuna Ricorrenza"
+
+#: lib/FreeBusy.php:168
+msgid "No valid email address found"
+msgstr "Nessun indirizzo e-mail valido è stato trovato."
+
+#: lib/Kronolith.php:1179 lib/Kronolith.php:1200
+#: templates/prefs/sourceselect.inc:35
+msgid "None"
+msgstr "Nessuno"
+
+#: lib/Views/EditEvent.php:27 lib/Views/Event.php:26
+#: lib/Views/DeleteEvent.php:27
+msgid "Not Found"
+msgstr "Non trovato"
+
+#: lib/Storage/sql.php:155
+msgid "Not found"
+msgstr "Non trovato"
+
+#: config/prefs.php.dist:51
+msgid "Notifications"
+msgstr "Notifiche"
+
+#: templates/javascript/goto.js:78
+msgid "November"
+msgstr "Novembre"
+
+#: templates/search/search.inc:55
+msgid "Now"
+msgstr "Ora"
+
+#: templates/perms/perms.inc:187
+msgid "Object Creator"
+msgstr "Creatore Oggetto"
+
+#: templates/javascript/goto.js:77
+msgid "October"
+msgstr "Ottobre"
+
+#: templates/edit/edit_timespan.inc:13 templates/edit/edit_timespan.inc:62
+msgid "On"
+msgstr "Su"
+
+#: config/prefs.php.dist:51
+msgid "Set options for deleting old events."
+msgstr "Imposta le opzioni che permettono di cancellare eventi scaduti."
+
+#: config/prefs.php.dist:339 config/prefs.php.dist:352
+#: config/prefs.php.dist:373
+msgid "On all calendars I have read access to"
+msgstr "Su tutti i calendari su cui ho accesso lettura"
+
+#: config/prefs.php.dist:338 config/prefs.php.dist:351
+#: config/prefs.php.dist:372
+msgid "On all shown calendars"
+msgstr "Su tutti i calendari mostrati"
+
+#: config/prefs.php.dist:337 config/prefs.php.dist:350
+#: config/prefs.php.dist:371
+msgid "On my calendars only"
+msgstr "Solo sui miei calendari"
+
+#: perms.php:57
+msgid ""
+"Only the owner or system administrator may change ownership or owner "
+"permissions for a share"
+msgstr ""
+"Solo il proprietario o l'amministrazione di sistema possono cambiare la "
+"proprietà o i permessi del proprietario della condivisione"
+
+#: lib/Kronolith.php:1197
+msgid "Optional"
+msgstr "Opzionale"
+
+#: lib/FBView.php:120
+msgid "Optional Attendees"
+msgstr "Partecipazione facoltativa"
+
+#: config/prefs.php.dist:68
+msgid "Other Options"
+msgstr "Altre Opzioni"
+
+#: lib/FBView.php:155
+msgid "Overview"
+msgstr "Descrizione"
+
+#: templates/view/view.inc:28
+msgid "Owner"
+msgstr "Proprietario"
+
+#: templates/perms/perms.inc:49
+msgid "Owner Permissions"
+msgstr "Permessi Proprietario"
+
+#: templates/perms/perms.inc:61 templates/perms/perms.inc:72
+msgid "Owner:"
+msgstr "Proprietario:"
+
+#: lib/Driver.php:2313
+#, php-format
+msgid "Owner: %s"
+msgstr "Proprietario: %s"
+
+#: templates/data/export.inc:119 templates/data/export.inc:204
+msgid "PM"
+msgstr "PM"
+
+#: lib/Forms/SubscribeRemoteCalendar.php:39
+#: lib/Forms/EditRemoteCalendar.php:39
+msgid "Password"
+msgstr "Password"
+
+#: templates/view/view.inc:93 templates/edit/edit.inc:216
+msgid "Pattern"
+msgstr "Modello"
+
+#: templates/delete/one.inc:22
+msgid "Permanently delete this event?"
+msgstr "Cancella questo evento definitivamente?"
+
+#: lib/Kronolith.php:1899 lib/Kronolith.php:1918 lib/Kronolith.php:1931
+#: lib/Kronolith.php:1952 lib/api.php:648 lib/api.php:692 lib/api.php:724
+#: lib/api.php:757 lib/api.php:855 lib/api.php:908 lib/api.php:1006
+#: lib/api.php:1040 lib/api.php:1131 lib/api.php:1191 lib/api.php:1256
+#: lib/api.php:1286 lib/Driver/sql.php:801
+msgid "Permission Denied"
+msgstr "Permesso Negato"
+
+#: lib/Forms/DeleteCalendar.php:56
+msgid "Permission denied"
+msgstr "Permesso Negato"
+
+#: lib/Imple/ContactAutoCompleter.php:227
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Correggere indirizzi invalidi o ambigui."
+
+#: config/prefs.php.dist:21
+msgid "Portal Options"
+msgstr "Opzioni Portale"
+
+#: templates/fbview/legend.html:11
+msgid "Possible Meeting Time"
+msgstr "Orario possibile Riunione"
+
+#: lib/FBView/day.php:24
+msgid "Previous Day"
+msgstr "Giorno Precedente"
+
+#: lib/FBView/month.php:25
+msgid "Previous Month"
+msgstr "Mese precedente"
+
+#: lib/FBView/week.php:25
+msgid "Previous Week"
+msgstr "Settimana Precedente"
+
+#: templates/day/head.inc:3
+msgid "Previous day"
+msgstr "Giorno precedente"
+
+#: config/prefs.php.dist:174 config/prefs.php.dist:186
+msgid "Print Views"
+msgstr "Stampa Visualizzazioni"
+
+#: lib/Block/prevmonthlist.php:3 lib/Block/prevmonthlist.php:42
+msgid "Prior Events"
+msgstr "Evento Precedente"
+
+#: lib/Driver.php:1452
+#, php-format
+msgid "Private Event from %s to %s"
+msgstr "Evento Riservato Eventi da %s a %s"
+
+#: lib/Driver.php:2258 lib/Driver.php:2259
+msgid "Private event"
+msgstr "Evento Riservato"
+
+#: templates/edit/edit.inc:120
+msgid "Private?"
+msgstr "Riservato?"
+
+#: config/prefs.php.dist:472
+msgid "Purge old events from your calender?"
+msgstr "Eliminare i vecchi eventi dal proprio calendario?"
+
+#: config/prefs.php.dist:481
+msgid "Purge old events how often:"
+msgstr "Frequenza con la quale eliminare i vecchi eventi:"
+
+#: config/prefs.php.dist:489
+msgid "Purge old events older than this amount of days."
+msgstr "Eliminare gli eventi più vecchi del seguente numero di giorni."
+
+#: templates/perms/perms.inc:52 templates/perms/perms.inc:82
+#: templates/perms/perms.inc:108 templates/perms/perms.inc:123
+#: templates/perms/perms.inc:149 templates/perms/perms.inc:164
+#: templates/perms/perms.inc:190 templates/perms/perms.inc:205
+#: templates/perms/perms.inc:231 templates/perms/perms.inc:246
+#: templates/perms/perms.inc:287 templates/perms/perms.inc:313
+#: templates/perms/perms.inc:328 templates/perms/perms.inc:362
+msgid "Read"
+msgstr "Leggi"
+
+#: lib/Forms/DeleteCalendar.php:43
+#, php-format
+msgid ""
+"Really delete the calendar \"%s\"? This cannot be undone and all data on "
+"this calendar will be permanently removed."
+msgstr ""
+"Sei sicuro di eliminare il calendario %s? Questa operazione non può essere "
+"annullata e gli eventi saranno eliminati permanentemente."
+
+#: lib/Forms/UnsubscribeRemoteCalendar.php:37
+#, php-format
+msgid "Really unsubscribe from the calendar \"%s\" (%s)?"
+msgstr "Annullare sottoscrizione del calendario \"%s\" (%s)?"
+
+#: templates/view/view.inc:123 templates/edit/edit.inc:281
+msgid "Recur Until"
+msgstr "Ripeti fino"
+
+#: templates/view/view.inc:90 templates/edit/edit.inc:210
+msgid "Recurrence"
+msgstr "Ricorrenza"
+
+#: data.php:70
+msgid "Recurrence Data"
+msgstr "Data Ricorrenza"
+
+#: data.php:68
+msgid "Recurrence End Date"
+msgstr "Data di Fine ricorrenza"
+
+#: lib/Driver.php:2072
+msgid "Recurrence End Day"
+msgstr "Giorno di Fine ricorrenza"
+
+#: lib/Driver.php:2057
+msgid "Recurrence End Month"
+msgstr "Mese di Fine ricorrenza"
+
+#: lib/Driver.php:2040
+msgid "Recurrence End Year"
+msgstr "Anno di Fine ricorrenza"
+
+#: data.php:69
+msgid "Recurrence Interval"
+msgstr "Intervallo di Ricorrenza"
+
+#: data.php:67
+msgid "Recurrence Type"
+msgstr "Tipo di ricorrenza"
+
+#: lib/Kronolith.php:1113
+msgid "Recurs daily"
+msgstr "Si ripete ogni giorno"
+
+#: lib/Kronolith.php:1120
+msgid "Recurs monthly"
+msgstr "Si ripete ogni mese"
+
+#: lib/Kronolith.php:1116
+msgid "Recurs weekly"
+msgstr "Si ripete ogni settimana"
+
+#: lib/Kronolith.php:1125
+msgid "Recurs yearly"
+msgstr "Si ripete ogni anno"
+
+#: lib/Scheduler/kronolith.php:267
+#, php-format
+msgid "Reminder: %s"
+msgstr "Notifica: %s"
+
+#: templates/calendar_list.php:39
+msgid "Remote"
+msgstr "Remoto"
+
+#: templates/calendar_info.php:5
+msgid "Remote Calendar from: "
+msgstr "Calendario Remoto da: "
+
+#: templates/panel.inc:73
+msgid "Remote Calendars:"
+msgstr "Calendari Remoti:"
+
+#: templates/contacts/contacts.inc:172
+msgid "Remove"
+msgstr "Elimina"
+
+#: templates/attendees/attendees.inc:57
+#, php-format
+msgid "Remove %s"
+msgstr "Elimina %s"
+
+#: attendees.php:189
+msgid "Remove Attendee"
+msgstr "Elimina Partecipante"
+
+#: templates/prefs/sourceselect.inc:300
+msgid "Remove source"
+msgstr "Elimina sogente"
+
+#: lib/Driver.php:258
+msgid ""
+"Removing user data is not supported with the current calendar storage "
+"backend."
+msgstr ""
+"Impossibile eliminare i dati utente con il backend usato dal calendario "
+"corrente."
+
+#: templates/data/import.inc:31
+msgid ""
+"Replace existing calendar with the imported one? <strong>Warning: This "
+"deletes all entries in your current calendar.</strong>"
+msgstr ""
+"Sostituire il calendario esistente con quello importato? <strong>Attenzione: "
+"Questo eliminerà tutti i dati contenuti nell'attuale calendario.</strong>"
+
+#: lib/Kronolith.php:1204
+msgid "Required"
+msgstr "Obbligatorio"
+
+#: lib/FBView.php:98 lib/FBView.php:140 lib/FBView.php:143 lib/FBView.php:146
+msgid "Required Attendees"
+msgstr "Partecipanti Obbligatori"
+
+#: templates/edit/edit.inc:52 templates/edit/edit.inc:383
+msgid "Reset to Defaults"
+msgstr "Torna alle impostazioni di Default"
+
+#: templates/view/view.inc:173 templates/attendees/attendees.inc:49
+msgid "Response"
+msgstr "Risposta"
+
+#: config/prefs.php.dist:141
+msgid ""
+"Restrict day and week views to these time slots, even if there <strong>are</"
+"strong> earlier or later events?"
+msgstr ""
+"Limita le visualizzazioni giornaliera e settimanale a questi intervalli "
+"orari, anche se <strong>ci sono</strong> eventi precedenti o successivi?"
+
+#: lib/Block/month.php:107 lib/Views/Year.php:82 templates/edit/edit.inc:240
+#: templates/javascript/goto.js:64
+msgid "Sa"
+msgstr "Sab"
+
+#: templates/view/view.inc:104 templates/edit/javascript.inc:72
+#: templates/month/head.inc:22
+msgid "Saturday"
+msgstr "Sabato"
+
+#: lib/Forms/EditCalendar.php:46 lib/Forms/EditRemoteCalendar.php:41
+#: templates/panel.inc:83
+msgid "Save"
+msgstr "Salva"
+
+#: templates/perms/perms.inc:385
+#, php-format
+msgid "Save %s"
+msgstr "Salva %s"
+
+#: lib/Kronolith.php:1790 lib/Views/EditEvent.php:79
+#: lib/Views/EditEvent.php:89 templates/edit/edit.inc:40
+msgid "Save As New"
+msgstr "Salva come Nuovo"
+
+#: templates/attendees/attendees.inc:93
+msgid "Save Attendees"
+msgstr "Salva Partecipanti"
+
+#: new.php:56 lib/Views/EditEvent.php:82
+msgid "Save Event"
+msgstr "Salva Evento"
+
+#: templates/attendees/attendees.inc:94
+msgid "Save and Finish"
+msgstr "Salva e Chiudi"
+
+#: search.php:91 lib/Block/tree_menu.php:26
+#: templates/contacts/contacts.inc:155
+#: templates/search/search_advanced.inc:113 templates/search/search.inc:66
+msgid "Search"
+msgstr "Cerca"
+
+#: templates/search/header.inc:6
+msgid "Search Results"
+msgstr "Risultati Rierca"
+
+#: templates/panel.inc:29
+msgid "Search for Calendars:"
+msgstr "Cerca Calendari:"
+
+#: templates/contacts/contacts.inc:160
+msgid "Search results"
+msgstr "Risultati ricerca"
+
+#: lib/Storage.php:135
+msgid "Searching free/busy is not available."
+msgstr "Ricerca di libero/occupato non disponibile"
+
+#: templates/edit/edit_timespan.inc:29 templates/edit/edit_timespan.inc:79
+#: templates/edit/edit.inc:302
+msgid "Select a date"
+msgstr "Seleziona una data"
+
+#: templates/perms/perms.inc:350
+msgid "Select a group to add"
+msgstr "Seleziona un gruppo da aggiungere"
+
+#: templates/perms/perms.inc:348
+msgid "Select a group to add:"
+msgstr "Seleziona un gruppo da aggiungere:"
+
+#: templates/perms/perms.inc:63
+msgid "Select a new owner:"
+msgstr "Seleziona un nuovo proprietario:"
+
+#: templates/perms/perms.inc:267 templates/perms/perms.inc:269
+msgid "Select a user to add:"
+msgstr "Seleziona un utente da aggiungere:"
+
+#: config/prefs.php.dist:70
+msgid "Select address book sources for adding and searching for addresses."
+msgstr "Seleziona una rubrica per aggiungere e cercare indirizzi."
+
+#: templates/prefs/sourceselect.inc:319
+msgid "Select all fields to search when expanding addresses."
+msgstr "Seleziona tutti i campi di ricerca quando si espandono indirizzi."
+
+#: config/prefs.php.dist:11
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr ""
+"Scegli le opzioni di conferma, le  visualizzazioni e scegli la "
+"visualizzazione di default."
+
+#: templates/data/import.inc:18
+msgid "Select the calendar to import to:"
+msgstr "Seleziona il calendario in cui importare:"
+
+#: templates/data/export.inc:19
+msgid "Select the calendar(s) to export from"
+msgstr "Seleziona il calendario da cui esportare"
+
+#: templates/data/export.inc:12
+msgid "Select the export format:"
+msgstr "Seleziona il formato per esportare:"
+
+#: templates/data/import.inc:27
+msgid "Select the file to import:"
+msgstr "Seleziona il file da importare:"
+
+#: config/prefs.php.dist:112
+msgid "Select the first weekday:"
+msgstr "Seleziona il primo giorno feriale:"
+
+#: templates/data/import.inc:11
+msgid "Select the format of the source file:"
+msgstr "Seleziona il formato da cui importare:"
+
+#: config/prefs.php.dist:236
+msgid "Select the time span to show:"
+msgstr "Seleziona il lasso di tempo da mostrare:"
+
+#: config/prefs.php.dist:94
+msgid "Select the view to display on startup:"
+msgstr "Scegli la visualizzazione da mostrare dopo l'accesso:"
+
+#: config/prefs.php.dist:22
+msgid "Select which events to show in the portal."
+msgstr "Seleziona quali eventi mostrare nel portale."
+
+#: templates/prefs/sourceselect.inc:303 templates/prefs/sourceselect.inc:305
+msgid "Selected Address books:"
+msgstr "Rubriche selezionate:"
+
+#: templates/contacts/contacts.inc:175
+msgid "Selected addresses"
+msgstr "Indirizzi selezionati"
+
+#: templates/delete/delete.inc:21 templates/delete/one.inc:19
+msgid "Send a cancel notification to all attendees when deleting this event?"
+msgstr ""
+"Invia una notifica di annullamento a tutti i partecipanti quando si elimina "
+"un evento?"
+
+#: templates/view/view.inc:177
+#, php-format
+msgid "Send an email to %s"
+msgstr "Invia un email a %s"
+
+#: templates/edit/edit.inc:375
+msgid "Send invitations to all attendees?"
+msgstr "Inviare un invito a tutti i partecipanti?"
+
+#: templates/edit/edit.inc:375
+msgid "Send updates to all attendees?"
+msgstr "Inviare l'aggiornamento a tutti i partecipanti?"
+
+#: templates/javascript/goto.js:76
+msgid "September"
+msgstr "Settembre"
+
+#: config/prefs.php.dist:45
+msgid "Set default values for new events."
+msgstr "Imposta i valori di default per i nuovi eventi"
+
+#: templates/edit/edit_timespan.inc:79
+msgid "Set end date"
+msgstr "Imposta la data di fine"
+
+#: templates/edit/edit.inc:302
+msgid "Set recurrence end date"
+msgstr "Imposta la data di fine della ricorrenza"
+
+#: templates/edit/edit_timespan.inc:29
+msgid "Set start date"
+msgstr "Imposta la data d'inizio"
+
+#: config/prefs.php.dist:62
+msgid ""
+"Set your Free/Busy calendars and your own and other users' Free/Busy options."
+msgstr "Imposta i calendari e le opzioni per libero/occupato"
+
+#: templates/panel.inc:50
+msgid "Shared Calendars:"
+msgstr "Calendari Condivisi:"
+
+#: templates/edit/javascript.inc:262 templates/perms/perms.inc:51
+#: templates/perms/perms.inc:78 templates/perms/perms.inc:107
+#: templates/perms/perms.inc:119 templates/perms/perms.inc:148
+#: templates/perms/perms.inc:160 templates/perms/perms.inc:189
+#: templates/perms/perms.inc:201 templates/perms/perms.inc:230
+#: templates/perms/perms.inc:242 templates/perms/perms.inc:283
+#: templates/perms/perms.inc:312 templates/perms/perms.inc:324
+#: templates/perms/perms.inc:358
+msgid "Show"
+msgstr "Visualizza"
+
+#: config/prefs.php.dist:218
+msgid "Show Free/Busy legend?"
+msgstr "Mostra la legenda di libero/occupato?"
+
+#: config/prefs.php.dist:208
+msgid "Show calendar options panel?"
+msgstr "Visualizzare il pannello opzioni del calendario?"
+
+#: config/prefs.php.dist:198
+msgid "Show category legend?"
+msgstr "Mostra la legenda di calendari?"
+
+#: config/prefs.php.dist:164
+msgid "Show delete, alarm, and recurrence icons in calendar views?"
+msgstr "Mostra icone cancella, allarme e ricorrenze nelle viste calendario?"
+
+#: config/prefs.php.dist:265
+msgid "Show external events using category colors?"
+msgstr "Visualizza eventi esterni usando i colori delle categorie?"
+
+#: config/prefs.php.dist:256
+msgid "Show only events that have an alarm set?"
+msgstr "Mostro solo gli eventi con un campanello di allarme?"
+
+#: config/prefs.php.dist:227
+msgid "Show shared calendars side-by-side?"
+msgstr "Visualizza calendari condivisi lato a lato?"
+
+#: config/prefs.php.dist:103
+msgid "Show time of day between each day in week views?"
+msgstr ""
+"Mostra intervalli di mezza ora nella visualizzazione di giorno e settimana?"
+
+#: templates/edit/edit_timespan.inc:11
+msgid "Sta_rt"
+msgstr "Ini_zia"
+
+#: data.php:56
+msgid "Start Date"
+msgstr "Data di Inizio"
+
+#: lib/Driver.php:1932 templates/data/export.inc:68
+msgid "Start Day"
+msgstr "Giorno di Inizio"
+
+#: lib/Driver.php:1943 templates/data/export.inc:87
+msgid "Start Hour"
+msgstr "Ora di Inizio"
+
+#: lib/Driver.php:1953 templates/data/export.inc:102
+msgid "Start Minute"
+msgstr "Minuto di Inizio"
+
+#: lib/Driver.php:1923 templates/data/export.inc:54
+msgid "Start Month"
+msgstr "Mese di Inizio"
+
+#: templates/view/view.inc:35 templates/data/export.inc:37
+#: templates/search/event_headers.inc:7
+msgid "Start On"
+msgstr "Inizia il"
+
+#: data.php:57
+msgid "Start Time"
+msgstr "Orario di Inizio"
+
+#: lib/Driver.php:1912 templates/data/export.inc:39
+msgid "Start Year"
+msgstr "Anno di Inizio"
+
+#: templates/edit/edit.inc:110 templates/search/search_advanced.inc:91
+msgid "Stat_us"
+msgstr "Stato"
+
+#: templates/view/view.inc:21 templates/search/event_headers.inc:6
+msgid "Status"
+msgstr "Stato"
+
+#: lib/Storage.php:143
+msgid "Storing free/busy is not available."
+msgstr "Non è possibile salvare le impostazioni dilibero/occupato"
+
+#: lib/Block/month.php:109 lib/Block/month.php:111 lib/Views/Year.php:75
+#: lib/Views/Year.php:84 templates/edit/edit.inc:241
+#: templates/javascript/goto.js:65
+msgid "Su"
+msgstr "Dom"
+
+#: lib/Forms/SubscribeRemoteCalendar.php:41
+msgid "Subscribe"
+msgstr "Sottoscrivi"
+
+#: lib/Forms/SubscribeRemoteCalendar.php:34 templates/calendar_list.php:15
+msgid "Subscribe to a Remote Calendar"
+msgstr "Sottoscrivi un Calendario Remoto"
+
+#: templates/calendar_list.php:25
+msgid "Subscription URL"
+msgstr "URL di sottoscrizione"
+
+#: templates/view/view.inc:105 templates/edit/javascript.inc:66
+#: templates/month/head.inc:15 templates/month/head.inc:24
+#: config/prefs.php.dist:113
+msgid "Sunday"
+msgstr "Domenica"
+
+#: lib/Kronolith.php:1152 lib/Kronolith.php:1175
+msgid "Tentative"
+msgstr "Con Riserva"
+
+#: lib/Block/month.php:107 lib/Views/Year.php:80 templates/edit/edit.inc:238
+#: templates/javascript/goto.js:62
+msgid "Th"
+msgstr "Gio"
+
+#: data.php:244
+#, php-format
+msgid "The %s file didn't contain any events."
+msgstr "Il file %s non contiene eventi."
+
+#: lib/Driver.php:48
+msgid "The Calendar backend is not currently available."
+msgstr "Il backend del Calendario non è al momento disponibile"
+
+#: lib/Driver.php:203
+#, php-format
+msgid "The Calendar backend is not currently available: %s"
+msgstr "Il backend del Calendario non è al momento disponibile: %s"
+
+#: templates/contacts/contacts.inc:72
+msgid "The Edit Attendees screen is no longer present. Exiting."
+msgstr "La pagina di modifica partecipanti non è presente. Uscita."
+
+#: lib/api.php:1210
+msgid ""
+"The attendee hasn't been updated because the update was not sent from the "
+"attendee."
+msgstr ""
+"Il partecipante non è stato aggiornato in quanto nessun aggiornamento è "
+"stato inviato dal partecipante."
+
+#: calendars/create.php:33
+#, php-format
+msgid "The calendar \"%s\" has been created."
+msgstr "Il calendario \"%s\" è stato creato."
+
+#: calendars/delete.php:50
+#, php-format
+msgid "The calendar \"%s\" has been deleted."
+msgstr "Il calendario \"%s\" è stato eliminato."
+
+#: calendars/edit.php:44
+#, php-format
+msgid "The calendar \"%s\" has been renamed to \"%s\"."
+msgstr "Il calendario \"%s\" è stato rinominato in \"%s\"."
+
+#: calendars/edit.php:46 calendars/remote_edit.php:49
+#, php-format
+msgid "The calendar \"%s\" has been saved."
+msgstr "Il calendario \"%s\" è stato salvato."
+
+#: data.php:252
+#, php-format
+msgid "The calendar could not be purged: %s"
+msgstr "Il calendario non può essere svuotato: %s."
+
+#: templates/edit/javascript.inc:156
+msgid "The end date must be later than the start date."
+msgstr "La data di fine deve essere dopo la data di inizio."
+
+#: lib/Kronolith.php:1596
+#, php-format
+msgid ""
+"The event \"%s\" has been added to \"%s\" calendar, which is on %s at %s."
+msgstr "L'evento %s è stato aggiunto al calendario %s, il %s alle %s."
+
+#: lib/Kronolith.php:1606
+#, php-format
+msgid ""
+"The event \"%s\" has been deleted from \"%s\" calendar, which was on %s at %"
+"s."
+msgstr "L'evento %s è stato eliminato dal calendario %s, il %s alle %s."
+
+#: lib/Kronolith.php:1601
+#, php-format
+msgid ""
+"The event \"%s\" has been edited on \"%s\" calendar, which is on %s at %s."
+msgstr "L'evento %s è stato modificato nel calendario %s, il %s alle %s."
+
+#: lib/Kronolith.php:1486
+#, php-format
+msgid "The event notification to %s was successfully sent."
+msgstr "La notifica dell'evento è stata inviata con successo a %s."
+
+#: lib/Kronolith.php:1440
+msgid "The following is a more detailed description of the event:"
+msgstr "La seguente è una descrizione più dettagliata dell'evento:"
+
+#: lib/FreeBusy.php:193
+#, php-format
+msgid "The free/busy url for %s cannot be retrieved."
+msgstr "Impossibile trovare l'URL libero occupato di %s."
+
+#: calendars/remote_unsubscribe.php:36 calendars/remote_edit.php:36
+msgid "The remote calendar was not found."
+msgstr "Il calendario remoto non è stato trovato."
+
+#: attend.php:43
+msgid ""
+"The request was incomplete. Some parameters that are necessary to accept or "
+"decline an event are missing."
+msgstr ""
+"La richiesta è incompleta. Alcuni parametri necessari per accettare o "
+"l'evento sono mancanti."
+
+#: lib/Views/EditEvent.php:43 lib/Views/Event.php:41
+#: lib/Views/DeleteEvent.php:40
+msgid "The requested event was not found."
+msgstr "L'evento richiesto non è stato trovato."
+
+#: templates/search/empty.inc:3
+msgid "There are no events matching the current criteria."
+msgstr "Non ci sono files in questa directory."
+
+#: add.php:24 edit.php:46 edit.php:68
+#, php-format
+msgid "There was an error accessing the calendar: %s"
+msgstr "Errore nell'importazione dei dati iCalendar: %s."
+
+#: add.php:44
+#, php-format
+msgid "There was an error adding the event: %s"
+msgstr "Si è verificato un errore nell'importazione dell'evento: %s."
+
+#: edit.php:17
+#, php-format
+msgid "There was an error editing the event: %s"
+msgstr "Si è verificato un errore nella visualizzazione dell'evento: %s."
+
+#: lib/api.php:483 lib/api.php:770 lib/api.php:1055
+msgid "There was an error importing the iCalendar data."
+msgstr "Errore nell'importazione dei dati iCalendar."
+
+#: edit.php:145
+#, php-format
+msgid "There was an error moving the event: %s"
+msgstr "Errore nell'eliminazione del evento: %s."
+
+#: lib/Kronolith.php:1491
+#, php-format
+msgid "There was an error sending an event notification to %s: %s"
+msgstr "Errore nell'invio del tuo invito a %s: %s"
+
+#: data.php:109
+msgid "There were no events to export."
+msgstr "Non c'erano eventi da esportare."
+
+#: lib/Block/month.php:3
+msgid "This Month"
+msgstr "Questo mese"
+
+#: calendars/delete.php:26
+msgid "This calendar cannot be deleted."
+msgstr "Il calendario non può essere cancellato."
+
+#: data.php:200
+msgid "This file format is not supported."
+msgstr "Il fomato di questo file non è supportato."
+
+#: templates/delete/delete.inc:18
+msgid ""
+"This is a recurring event. Delete the current event only, this<br /"
+">occurrence and all future occurences, or all occurences?"
+msgstr ""
+"Questo è un evento ricorrente. Eliminare solo l'evento corrente, questo<br /"
+"> e tutti gli eventi futuri o tutti gli eventi (passati e futuri)?"
+
+#: templates/edit/edit.inc:36
+msgid ""
+"This is a recurring event. Edit the current event only, this occurrence<br /"
+">and all future occurences, all occurences, or save this event as new?"
+msgstr ""
+"Questo è un evento ricorrente. Modificare solo l'evento corrente, questo<br /"
+"> e tutti gli eventi futuri o tutti eventi (passati e futuri)?"
+
+#: data.php:272
+#, php-format
+msgid "This is what the server said: %s"
+msgstr "Questo è quello che il sever ha indicato: %s"
+
+#: templates/view/view.inc:102 templates/edit/javascript.inc:70
+#: templates/month/head.inc:20
+msgid "Thursday"
+msgstr "Giovedì"
+
+#: templates/search/search.inc:36
+msgid "Time Sp_an"
+msgstr "Periodo"
+
+#: templates/edit/edit_timespan.inc:4
+msgid "Time span"
+msgstr "Periodo"
+
+#: templates/edit/edit.inc:58 templates/search/search_advanced.inc:28
+msgid "Tit_le"
+msgstr "Tito_lo"
+
+#: data.php:55 templates/search/search.inc:19
+#: templates/search/event_headers.inc:3
+msgid "Title"
+msgstr "Titolo"
+
+#: templates/prefs/sourceselect.inc:322
+msgid ""
+"To select multiple fields, hold down the Control (PC) or Command (Mac) while "
+"clicking."
+msgstr ""
+"Per selezionare campi multipli, cliccare tenere premuto il tasto CTRL (PC) o "
+"Command (Mac)."
+
+#: templates/calendar_info.php:19
+msgid ""
+"To subscribe to this calendar from another calendar program, use this URL: "
+msgstr ""
+"Per sottoscrivere questo calendario da un altra applicazione, usa questo URL:"
+
+#: lib/Block/prevmonthlist.php:125 lib/Block/summary.php:140
+#: lib/Block/monthlist.php:132
+msgid "Today"
+msgstr "Oggi"
+
+#: lib/Block/prevmonthlist.php:127 lib/Block/summary.php:142
+#: lib/Block/monthlist.php:134
+msgid "Tomorrow"
+msgstr "Domani"
+
+#: lib/Block/month.php:107 lib/Views/Year.php:78 templates/edit/edit.inc:236
+#: templates/javascript/goto.js:60
+msgid "Tu"
+msgstr "Mar"
+
+#: templates/view/view.inc:100 templates/edit/javascript.inc:68
+#: templates/month/head.inc:18
+msgid "Tuesday"
+msgstr "Martedì"
+
+#: config/keywords.php.dist:17
+msgid "Type"
+msgstr "Tipo"
+
+#: lib/Forms/SubscribeRemoteCalendar.php:37
+#: lib/Forms/EditRemoteCalendar.php:37
+msgid "URL"
+msgstr "URL"
+
+#: lib/Storage/sql.php:75
+msgid "Unable to connect to SQL server."
+msgstr "Impossibile connettersi al server SQL."
+
+#: lib/Forms/DeleteCalendar.php:62
+#, php-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "Impossibile eliminare \"%s\": %s"
+
+#: lib/api.php:599
+msgid "Unable to delete calendar \"%s\": %s"
+msgstr "Impossibile eliminare il calendario \"%s\": %s"
+
+#: lib/Driver.php:206 lib/Storage.php:58
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Impossibile caricare le definizioni di %s."
+
+#: attendees.php:68
+#, php-format
+msgid "Unable to recognize \"%s\" as an email address."
+msgstr "Impossibile riconoscere \"%s\" come un indirizzo email"
+
+#: lib/Forms/EditCalendar.php:58
+#, php-format
+msgid "Unable to rename \"%s\": %s"
+msgstr "Impossibile eliminare \"%s\": %s"
+
+#: lib/Storage/kolab.php:57
+#, php-format
+msgid "Unable to retrieve free/busy information for %s"
+msgstr "Impossibile ottenere informazioni di libero/occupato per %s"
+
+#: lib/Forms/EditCalendar.php:64
+#, php-format
+msgid "Unable to save calendar \"%s\": %s"
+msgstr "Impossibile Salvare il calendario \"%s\": %s"
+
+#: templates/view/view.inc:8
+msgid "Unfiled"
+msgstr "Non Archiviato"
+
+#: lib/api.php:1352 lib/api.php:1388
+msgid "Unknown calendar protocol"
+msgstr "Protocollo calendario sconosciuto"
+
+#: lib/Forms/UnsubscribeRemoteCalendar.php:39 templates/calendar_list.php:46
+msgid "Unsubscribe"
+msgstr "Annulla sottoscrizione"
+
+#: lib/Forms/UnsubscribeRemoteCalendar.php:34
+#, php-format
+msgid "Unsubscribe from %s"
+msgstr "Annulla sottoscrizione da %s"
+
+#: lib/api.php:550 lib/api.php:823 lib/api.php:879 lib/api.php:942
+#: lib/api.php:1075
+#, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "Content-Type non supportato: %s"
+
+#: lib/Block/monthlist.php:3 lib/Block/monthlist.php:46
+msgid "Upcoming Events"
+msgstr "Eventi Futuri"
+
+#: perms.php:231
+#, php-format
+msgid "Updated \"%s\"."
+msgstr "Aggiornato %s."
+
+#: lib/Kronolith.php:1417
+#, php-format
+msgid "Updated: %s."
+msgstr "Aggiornato: %s."
+
+#: config/prefs.php.dist:10
+msgid "User Interface"
+msgstr "Interfaccia Utente"
+
+#: templates/perms/perms.inc:277
+msgid "User to add:"
+msgstr "Utente da Aggiungere:"
+
+#: lib/Forms/SubscribeRemoteCalendar.php:38
+#: lib/Forms/EditRemoteCalendar.php:38
+msgid "Username"
+msgstr "Nome Utente"
+
+#: lib/Block/month.php:164 lib/Block/month.php:167 lib/Views/Year.php:156
+#: lib/Views/Year.php:162
+msgid "View Day"
+msgstr "Visualizza Giorno"
+
+#: lib/Block/month.php:107 lib/Views/Year.php:79 templates/edit/edit.inc:237
+#: templates/javascript/goto.js:61
+msgid "We"
+msgstr "Mer"
+
+#: lib/Driver.php:1186 lib/Scheduler/kronolith.php:271
+#, php-format
+msgid ""
+"We would like to remind you of this upcoming event.\n"
+"\n"
+"%s\n"
+"\n"
+"Location: %s\n"
+"\n"
+"Date: %s\n"
+"Time: %s\n"
+"\n"
+"%s"
+msgstr ""
+"Notifica del seguente evento imminente.\n"
+"\n"
+"%s\n"
+"\n"
+"Luogo: %s\n"
+"\n"
+"Data: %s\n"
+"Ora: %s\n"
+"\n"
+"%s"
+
+#: templates/view/view.inc:101 templates/edit/javascript.inc:69
+#: templates/month/head.inc:19
+msgid "Wednesday"
+msgstr "Mercoledì"
+
+#: attendees.php:198 lib/Kronolith.php:1752 lib/Block/tree_menu.php:23
+#: config/prefs.php.dist:91
+msgid "Week"
+msgstr "Settimana"
+
+#: week.php:16 workweek.php:16 lib/Views/Month.php:186
+#, php-format
+msgid "Week %d"
+msgstr "Settimana %d"
+
+#: templates/prefs/default_alarm_management.inc:29 templates/view/view.inc:53
+#: templates/edit/edit.inc:171
+msgid "Week(s)"
+msgstr "Settimana(e)"
+
+#: lib/Recurrence.php:193
+msgid "Weekly"
+msgstr "Settimanale"
+
+#: templates/view/view.inc:106 templates/edit/edit.inc:232
+msgid "Weekly: Recurs every"
+msgstr "Settimanalmente: Si ripete ogni"
+
+#: config/prefs.php.dist:132
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr ""
+"A che ora devono finire il giorno e la settimana, quando non ci sono eventi "
+"successivi?"
+
+#: config/prefs.php.dist:123
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr ""
+"A che ora devono iniziare il giorno e la settimana, quando non ci sono "
+"eventi precedenti?"
+
+#: config/prefs.php.dist:286
+msgid "Which kind of holidays do you want to get displayed?"
+msgstr "Che tipo di festività si desidera visualizzare?"
+
+#: attendees.php:197 lib/Kronolith.php:1750 lib/Block/tree_menu.php:22
+#: config/prefs.php.dist:92
+msgid "Work Week"
+msgstr "Settimana lavorativa"
+
+#: lib/Kronolith.php:1756 lib/Block/tree_menu.php:25
+msgid "Year"
+msgstr "Anno"
+
+#: lib/Recurrence.php:198
+msgid "Yearly"
+msgstr "Annuale"
+
+#: templates/view/view.inc:112 templates/view/view.inc:114
+#: templates/view/view.inc:116 templates/edit/edit.inc:258
+#: templates/edit/edit.inc:264 templates/edit/edit.inc:270
+msgid "Yearly: Recurs every"
+msgstr "Annualmente: Si ripete ogni"
+
+#: calendars/edit.php:30
+msgid "You are not allowed to change this calendar."
+msgstr "Non hai il permesso modificare questo calendario."
+
+#: data.php:41 data.php:261 new.php:19 edit.php:27
+#, php-format
+msgid "You are not allowed to create more than %d events."
+msgstr "Non hai il permesso di creare più di %d eventi."
+
+#: calendars/delete.php:37
+msgid "You are not allowed to delete this calendar."
+msgstr "Non hai il permesso di eliminare questo calendario."
+
+#: lib/api.php:154
+msgid "You are not allowed to remove user data."
+msgstr "Non hai il permesso di eliminare dati utente."
+
+#: attend.php:51
+msgid "You are not an attendee of the specified event."
+msgstr "Non sei un partecipante dell'evento specificato."
+
+#: templates/contacts/contacts.inc:78
+msgid "You can only use this form from the Edit Attendees screen."
+msgstr "Puoi solo usare questo form dalla pagina di modifica partecipanti."
+
+#: lib/Kronolith.php:1366
+#, php-format
+msgid ""
+"You do not have an email address configured in your Personal Information "
+"Options. You must set one %shere%s before event notifications can be sent."
+msgstr ""
+"Non hai nessun indirizzo email configurato nelle tue preferenze. Devi "
+"settarne uno %squi%s per poter ricevere le notifiche di eventi."
+
+#: add.php:30
+#, php-format
+msgid "You do not have permission to add events to %s."
+msgstr "Non hai il permesso di aggiungere eventi a %s."
+
+#: data.php:209
+msgid "You do not have permission to add events to the selected calendar."
+msgstr "Non hai il permesso di aggiungere eventi al calendario selezionato."
+
+#: add.php:27 edit.php:162
+#, php-format
+msgid "You do not have permission to delegate events to %s."
+msgstr "Non hai il permesso di delegare eventi a %s."
+
+#: delete.php:28
+msgid "You do not have permission to delete this event."
+msgstr "Non hai il permesso di cancellare l'evento."
+
+#: edit.php:165
+msgid "You do not have permission to edit this event."
+msgstr "Non hai il permesso di modificare questo evento."
+
+#: edit.php:159
+msgid "You do not have permission to move this event."
+msgstr "Non hai il permesso di spostare questo evento."
+
+#: calendars/remote_subscribe.php:33
+#, php-format
+msgid "You have been subscribed to \"%s\" (%s)."
+msgstr "Hai sottoscrtto %s (%s)."
+
+#: calendars/remote_unsubscribe.php:49
+#, php-format
+msgid "You have been unsubscribed from \"%s\" (%s)."
+msgstr "Hai annullato la sottoscrizione da %s (%s)."
+
+#: data.php:206
+msgid "You have specified an invalid calendar."
+msgstr "Hai specificato un calendario non valido."
+
+#: attend.php:23
+msgid "You have successfully accepted attendence to this event."
+msgstr "Hai accettato con successo la partecipazione a questo evento."
+
+#: attend.php:28
+msgid "You have successfully declined attendence to this event."
+msgstr "Hai rifiutato con successo la partecipazione a questo evento."
+
+#: attend.php:33
+msgid "You have tentatively accepted attendence to this event."
+msgstr ""
+"Hai accettato \"con riserva\" con successo la partecipazione a questo evento."
+
+#: templates/contacts/contacts.inc:54
+msgid "You must select an address first."
+msgstr "Devi selezionare un indirizzo prima."
+
+#: lib/Kronolith.php:1596
+msgid "You requested to be notified when events are added to your calendars."
+msgstr ""
+"Hai richiesto di essere informato quando vengono aggiunti eventi sui tuoi "
+"calendari"
+
+#: lib/Kronolith.php:1606
+msgid ""
+"You requested to be notified when events are deleted from your calendars."
+msgstr ""
+"Hai richiesto di essere informato quando vengono eliminati eventi sui tuoi "
+"calendari"
+
+#: lib/Kronolith.php:1601
+msgid "You requested to be notified when events are edited in your calendars."
+msgstr ""
+"Hai richiesto di essere informato quando vengono modificati eventi sui tuoi "
+"calendari"
+
+#: lib/Scheduler/kronolith.php:410 lib/Scheduler/kronolith.php:412
+#, php-format
+msgid "Your daily agenda for %s"
+msgstr "La tua agenda giornaliera per %s"
+
+#: templates/prefs/shareselect.inc:10
+msgid "Your default calendar"
+msgstr "Il tuo calendario di default"
+
+#: templates/panel.inc:36
+msgid "[Manage Calendars]"
+msgstr "[Gestisci i Calendari]"
+
+#: lib/Driver.php:1434 lib/Driver.php:1454
+msgid "[Unnamed event]"
+msgstr "[Evento senza nome]"
+
+#: templates/edit/edit.inc:132
+msgid "_Alarm"
+msgstr "_Allarme"
+
+#: templates/search/search_advanced.inc:9
+msgid "_Basic Search"
+msgstr "_Ricerca Veloce"
+
+#: lib/Kronolith.php:1790
+msgid "_Edit"
+msgstr "_Modifica"
+
+#: lib/Kronolith.php:2012
+msgid "_Goto"
+msgstr "_Vai a"
+
+#: lib/Kronolith.php:2018
+msgid "_Import/Export"
+msgstr "_Importa/Esporta"
+
+#: lib/Kronolith.php:2008
+msgid "_New Event"
+msgstr "_Nuovo Evento"
+
+#: lib/Kronolith.php:2023
+msgid "_Print"
+msgstr "_Stampa"
+
+#: lib/Kronolith.php:2014
+msgid "_Search"
+msgstr "_Cerca"
+
+#: lib/Kronolith.php:2003
+msgid "_Today"
+msgstr "_Oggi"
+
+#: templates/edit/edit.inc:77
+#, php-format
+msgid "as %s"
+msgstr "come %s"
+
+#: templates/edit/edit.inc:173
+msgid "before the event starts"
+msgstr "prima che inizia l'evento"
+
+#: templates/prefs/default_alarm_management.inc:31
+msgid "before the event starts. A value of \"0\" means no default alarms."
+msgstr "prima che l'evento inizi. \"0\" significa nessun allarme di default."
+
+#: lib/Views/Event.php:62 lib/Views/Event.php:71
+msgid "by %s"
+msgstr "da %s"
+
+#: lib/Views/Event.php:64 lib/Views/Event.php:73
+msgid "by me"
+msgstr "da me"
+
+#: config/prefs.php.dist:237
+msgid "day"
+msgstr "giorno"
+
+#: templates/view/view.inc:96 templates/edit/edit.inc:227
+msgid "day(s)"
+msgstr "giorno(i)"
+
+#: config/prefs.php.dist:238 config/prefs.php.dist:239
+#: config/prefs.php.dist:240 config/prefs.php.dist:241
+#: config/prefs.php.dist:242
+msgid "days"
+msgstr "giorni"
+
+#: data.php:158 templates/data/export.inc:1
+msgid "events.csv"
+msgstr "eventi.csv"
+
+#: data.php:185
+msgid "events.ics"
+msgstr "events.ics"
+
+#: templates/contacts/contacts.inc:146
+msgid "in"
+msgstr "in"
+
+#: templates/view/view.inc:108 templates/view/view.inc:110
+#: templates/edit/edit.inc:247 templates/edit/edit.inc:253
+msgid "month(s)"
+msgstr "mese(i)"
+
+#: lib/Kronolith.php:1423
+#, php-format
+msgid "on %s at %s"
+msgstr "su %s alle %s"
+
+#: templates/view/view.inc:108 templates/edit/edit.inc:247
+msgid "on the same date"
+msgstr "alla stessa data"
+
+#: templates/view/view.inc:110 templates/edit/edit.inc:253
+msgid "on the same weekday"
+msgstr "lo stesso giorno feriale"
+
+#: templates/edit/edit.inc:312
+msgid "recurrences"
+msgstr "Ricorrenze"
+
+#: data.php:31 templates/data/import.inc:14
+msgid "vCalendar/iCalendar"
+msgstr "vCalendar/iCalendar"
+
+#: config/prefs.php.dist:243
+msgid "week"
+msgstr "settimana"
+
+#: templates/view/view.inc:106 templates/edit/edit.inc:234
+msgid "week(s) on:"
+msgstr "settimana(e) su:"
+
+#: config/prefs.php.dist:244 config/prefs.php.dist:245
+#: config/prefs.php.dist:246
+msgid "weeks"
+msgstr "settimane"
+
+#: templates/view/view.inc:112 templates/edit/edit.inc:259
+msgid "year(s) on the same date"
+msgstr "Anno(i) alla stessa data"
+
+#: templates/view/view.inc:114 templates/edit/edit.inc:265
+msgid "year(s) on the same day of the year"
+msgstr "Anno(i) allo stesso giorno dell'anno"
+
+#: templates/view/view.inc:116 templates/edit/edit.inc:271
+msgid "year(s) on the same weekday and month of the year"
+msgstr "Anno(i) allo stesso giorno della settimana dell'anno"

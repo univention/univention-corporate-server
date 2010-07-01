@@ -1,0 +1,57 @@
+<br />
+
+<table align="center">
+ <tr>
+  <td colspan="2" class="header">
+   <span class="smallheader">
+    <gettext>Here is the message you were composing:</gettext>
+   </span>
+  </td>
+ </tr>
+
+ <tr>
+  <td width="5%" class="light rightAlign" valign="top">
+   <strong><gettext>To</gettext></strong>&nbsp;
+  </td>
+  <td width="95%" class="text">
+   <tag:to_val />
+  </td>
+ </tr>
+
+ <tr>
+  <td class="light rightAlign" valign="top">
+   <strong><gettext>Cc</gettext></strong>&nbsp;
+  </td>
+  <td class="text">
+   <tag:cc_val />
+  </td>
+ </tr>
+
+ <tr>
+  <td class="light rightAlign" valign="top">
+   <strong><gettext>Bcc</gettext></strong>&nbsp;
+  </td>
+  <td class="text">
+   <tag:bcc_val />
+  </td>
+ </tr>
+
+ <tr>
+  <td class="light rightAlign" valign="top">
+   <strong><gettext>Subject</gettext></strong>&nbsp;
+  </td>
+  <td class="text">
+   <tag:subject_val />
+  </td>
+ </tr>
+
+<if:is_msg>
+ <tr>
+  <td class="text" colspan="2">
+   <span class="fixed"><tag:msg_val /></span>
+  </td>
+ </tr>
+</if:is_msg>
+</table>
+
+<br />

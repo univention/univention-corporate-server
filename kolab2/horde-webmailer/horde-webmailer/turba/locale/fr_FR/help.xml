@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<help>
+
+<entry id="Overview" md5="290506ade4e6f749246f77bbe5d48835" state="uptodate">
+    <title>Vue d'ensemble</title>
+    <heading>Introduction</heading>
+    <para>
+    Le carnet d'adresses fournit une méthode et un endroit convenable pour l'enregistrement et k'utilisation de l'informations sur vos contacts. Selon la façon dont votre administrateur a configuré le système, il permet de gérer un carnet d'adresse privé ainsi que d'accéder à un carnet public.  Il supporte aussi les listes de distribution pour que vous puissiez créer vos propres listes de courriels personnelles.
+    </para>
+
+</entry>
+
+<entry id="menu-add" md5="3c1f92eb1a82839404d11d9b0a20b3ce" state="uptodate">
+    <title>Menu: Ajouter</title>
+    <heading>Ajouter</heading>
+    <para>
+    Ajouter un contact au carnet.  Vous pouvez ajouter un contact dans le carnet nommé «Mon annuaire» car les autres carnets sont en mode lecture seulement.
+    </para>
+
+</entry>
+
+<entry id="menu-search" md5="8daf81ab28602d772358a174571f9ad2" state="uptodate">
+    <title>Menu: Recherche</title>
+    <heading>Recherche</heading>
+    <para>
+    Recherche de l'information dans un carnet d'adresses. Ceci est conçu comme
+    un outil de recherche rapide et permet seulement de rechercher sur un champ
+    à la fois. Vous pouvez choisir le champ sur lequel vous effectuez la
+    recherche dans la liste déroulante. La même chose est possible pour choisir
+    dans quel carnet d'adresses vous effectuez la recherche.
+    Cela peut varier selon la configuration du carnet d'adresses mise en
+    palce par votre administrateur.
+    </para>
+    <para>
+	    Pour faire une recherche plus complexe, vous pouvez utiliser l'outil
+	    de "<ref module="turba" entry="menu-advanced-search">Recherche
+	    avancée</ref>" qui permet de chercher sur plusieurs champs à la
+    fois.
+    </para>
+
+</entry>
+
+
+<entry id="menu-advanced-search" md5="6be703ffeba614f6ada151749fa44ab5" state="uptodate">
+    <title>Menu: Recherche avancée</title>
+    <heading>Recherche avancée</heading>
+    <para>
+    Permet de faire une recherche dans un carnet d'adresses. La recherche
+    avancée permet de faire une recherche sur plusieurs champs à la fois. Les
+    champs disponibles dépendent de la configuration du carnet d'adresses qu'a
+    fait votre administrateur
+    </para>
+    
+</entry>
+
+<entry id="menu-import" md5="3c6c40f2a6213e9fc1f9a77827bfb5d4" state="uptodate">
+    <title>Menu: Importer/Exporter</title>
+    <heading>Importer/Exporter</heading>
+
+    <para>Ce menu vous permet d'importer et d'exporter vos informations
+	de votre carnet d'adresses personnel. Il supporte
+	les formats CSV (variable séparée par virgule) et vCard, ainsi que quelques autres formats populaires.
+</para>
+
+    <heading>Importer</heading>
+    <para>
+	    Pour importer un carnet
+	d'adresses, vous devez avoir le fichier de données du carnet d'adresses à importer sur votre machine
+	locale (la machine sur laquelle votre navigateur fonctionne). Pour faire ceci, vous devrez d'abord exporter l'information de votre logiciel de courrier électronique actuel.
+    </para>
+
+    <para>Si vous utilisez Outlook Express:</para>
+    <para>1) Cliquez Fichier &gt; Exporter &gt; Carnet d'adresses</para>
+    <para>2) Selectionnez " Fichier Texte " (Données séparées par des virgules) dans l'outil d'exportation
+	  Cliquez sur " Exporter ".</para>
+    <para>3) Dans la zone " Enregistrer le fichier sous ", entrez un nom pour votre carnet d'adresse.
+	  Cliquez sur " Suivant ".</para>
+    <para>4) Cochez les champs à exporter.  Cliquez sur "Terminé ".</para>
+    <para>5) Vous devriez recevoir un mesage si l'exportation a réussi.
+	  Cliquez sur "OK ".</para>
+    <para>6) Fermer l'application.</para>
+
+    <tip>
+	    Si le carnet d'adresses exporté n'est pas sur votre bureau, et que vous utilisez le système d'exploitation Windows, cliquez sur Démarrrer &gt; Rechercher &gt; Tous les fichiers et tous les dossiers, et cherchez sur votre disque dur principal le nom du fichier que vous avez utilisé à l'étape 3. Prenez en note l'emplacement exact du fichier.
+    </tip>
+
+
+    <para>Pour importer un carnet d'adresses, ouvrez le carnet d'adresses
+	dans lequel vous voulez importer les informations. Cliquez sur l'icône d'Importer/Exporter.
+	Choisissez le type de fichier que vous voulez importer de la liste de choix. Cliquez sur le
+	bouton «Parcourir» pour ouvrir un navigateur de fichiers. Choisissez le fichier, et cliquez
+	sur le bouton d'importation. Les informations seront importées dans votre carnet d'adresses.
+    </para>
+    <tip>
+	    Certains entrées complexes, ou certaines entrées avec des champs ne correspondant pas à ceux du carnet d'adresses, peuvent ne pas être importées correctement. Vous devriez vérifier les données importées après l'importation.
+    </tip>
+    
+
+</entry>
+
+<entry id="searching-search_results" md5="ffed8d72fa3b710df8e902c2493b254f" state="uptodate">
+    <title>Recherche: Résultat de recherche</title>
+    <heading>Résultat de recherche</heading>
+    <para>
+    Si une recherche est concluante, les résultats seront affichés dans la zone située sous le formulaire de recherche.</para>
+    <para>
+    Cliquer sur le champ " courriel " ouvrira une fenêtre de composition de message pour pouvoir envoyer un courriel à cette adresse.  Si vous cliquez sur le champ Nom, cela affichera les informations contenues dans le carnet d'adresses, vous permettant aussi de modifier ou effacer les informations, si vous en avez le droit.</para>
+    <para>
+    Cliquez sur le lien «Annuler la recherche» si vous désirez effacer le résultat de la recherche.   </para>
+
+    <tip>
+    Vous pouvez trier une liste d'entrées du carnet d'adresse par chacun des champs affichés en cliquant sur l'en-tête de la colonne appropriée. Pour changer l'ordre (croissant-décroissant), cliquez sur la flèche située juste à côté du nom du champ.
+    </tip>
+    
+</entry>
+
+</help>

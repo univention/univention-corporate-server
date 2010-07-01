@@ -1,0 +1,1175 @@
+# Turba Swedish translation
+# Copyright 2002-2005 Andreas Dahlén.
+# Andreas Dahlén <andreas@dahlen.ws>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 2.0-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2005-06-14 22:08+0200\n"
+"PO-Revision-Date: 2005-06-16 08:48+0100\n"
+"Last-Translator: Andreas Dahlén <andreas@dahlen.ws>\n"
+"Language-Team: Swedish <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: templates/prefs/imsp_opt.inc:45
+msgid " Add an IMSP Addressbook"
+msgstr "Lägg till en IMSP-adressbok"
+
+#: templates/prefs/imsp_opt.inc:32
+msgid " Delete IMSP Addressbook"
+msgstr "Radera IMSP-adressbok"
+
+#: data.php:299
+#, php-format
+msgid "\"%s\" already exists and was not imported."
+msgstr "'%s' finns redan och importerades inte."
+
+#: config/prefs.php.dist:135
+msgid "\"Firstname Lastname\"  (ie. John Doe)"
+msgstr "\"Förnamn Efternamn\"  (ie. John Doe)"
+
+#: config/prefs.php.dist:134
+msgid "\"Lastname, Firstname\" (ie. Doe, John)"
+msgstr "\"Efternamn, Förnamn\" (ie. Doe, John)"
+
+#: add.php:108
+#, php-format
+msgid "%s added."
+msgstr "%s lades till."
+
+#: data.php:312
+#, php-format
+msgid "%s file successfully imported"
+msgstr "%s filen är importerad"
+
+#: templates/browse/footer.inc:5
+#, php-format
+msgid "%s to %s of %s"
+msgstr "%s till %s av %s"
+
+#: browse.php:159
+#, php-format
+msgid "'%s' was not copied because it is a list."
+msgstr "'%s' kopierades inte eftersom det är en lista."
+
+#: browse.php:157
+#, php-format
+msgid "'%s' was not moved because it is a list."
+msgstr "'%s' flyttades inte eftersom det är en lista."
+
+#: lib/Block/minisearch.php:45
+msgid "A browser that supports iFrames is required"
+msgstr "En webläsare som stödjer iFrames krävs"
+
+#: config/prefs.php.dist:156
+msgid "Above search form"
+msgstr "Ovanför sökformulär"
+
+#: view.php:51
+#, php-format
+msgid "Access denied to %s"
+msgstr "Access nekades till %s"
+
+#: add.php:59 templates/browse/actions.inc:22
+msgid "Add"
+msgstr "Lägg till"
+
+#: templates/prefs/addressbookselect.inc:174
+msgid "Add address book"
+msgstr "Lägg till en adressbok:"
+
+#: config/prefs.php.dist:46
+msgid "Add and Delete IMSP addressbooks"
+msgstr "Lägg till och radera IMSP-adressböcker"
+
+#: templates/prefs/columnselect.inc:237
+msgid "Add column"
+msgstr "Lägg till kolumn"
+
+#: edit.php:125
+msgid "Add file"
+msgstr "Lägg till fil"
+
+#: templates/browse/actions.inc:22
+msgid "Add to"
+msgstr "Lägg till"
+
+#: browse.php:30 config/prefs.php.dist:123
+msgid "Address Book Listing"
+msgstr "Adressbok"
+
+#: config/prefs.php.dist:10
+msgid "Address Books"
+msgstr "Adressböcker"
+
+#: add.php:107
+msgid "Address book entry"
+msgstr "Adressbokspost"
+
+#: data.php:281
+msgid "Address book successfully purged."
+msgstr "Adressbooken är tömd."
+
+#: templates/prefs/addressbookselect.inc:170
+msgid "Address books that will not be displayed:"
+msgstr "Adressböcker som inte visas:"
+
+#: search.php:102 templates/browse/search.inc:36
+msgid "Advanced Search"
+msgstr "Avancerad sökning"
+
+#: config/attributes.php.dist:64
+msgid "Alias"
+msgstr "Alias"
+
+#: templates/browse/actions.inc:41 templates/browse/footerAlpha.inc:7
+#: templates/browse/footerAlpha.inc:10
+msgid "All"
+msgstr "Alla"
+
+#: lib/api.php:492
+msgid "Already Exists"
+msgstr "Existerar redan"
+
+#: templates/browse/javascript.inc:90
+#, php-format
+msgid "Are you sure that you want to delete %s?"
+msgstr "Är det säkert att du vill radera %s?"
+
+#: templates/browse/javascript.inc:64
+msgid "Are you sure that you want to delete the selected entries?"
+msgstr "Är du säker att du vill radera vald post?"
+
+#: config/prefs.php.dist:94
+msgid "Ascending"
+msgstr "Stigande"
+
+#: search.php:99 templates/browse/search.inc:35
+msgid "Basic Search"
+msgstr "Sökning"
+
+#: config/prefs.php.dist:155
+msgid "Below search form"
+msgstr "Nedanför sökformuläret"
+
+#: lib/Driver/ldap.php:77 lib/Driver/ldap.php:80
+#, php-format
+msgid "Bind failed: (%s) %s"
+msgstr "Bind misslyckades: (%s) %s"
+
+#: config/attributes.php.dist:178
+msgid "Birthday"
+msgstr "Födelsedag"
+
+#: templates/menu.inc:7
+msgid "Browse"
+msgstr "Lista"
+
+#: config/attributes.php.dist:173
+msgid "Business Category"
+msgstr "Affärskategori"
+
+#: data.php:28
+msgid "CSV"
+msgstr "CSV"
+
+#: templates/browse/actions.inc:45
+msgid "C_lear Search"
+msgstr "_Rensa sökning"
+
+#: lib/Object/Group.php:57
+msgid "Can't add a group to itself."
+msgstr "Kan inte lägga till grupp till sig själv."
+
+#: templates/browse/column_headers.inc:6
+msgid "Check _All/None"
+msgstr "Markera _Alla/Ingen"
+
+#: add.php:51
+msgid "Choose an address book"
+msgstr "Välj en adressbok"
+
+#: templates/prefs/columnselect.inc:221
+msgid "Choose an address book:"
+msgstr "Välj en adressbok:"
+
+#: templates/prefs/addressbookselect.inc:165
+msgid "Choose which address books to display, and in what order:"
+msgstr "Välj adressböcker som skall visas och i vilken ordning:"
+
+#: config/prefs.php.dist:11
+msgid "Choose which address books to use."
+msgstr "Välj adressböcker som skall användas."
+
+#: templates/prefs/columnselect.inc:228
+msgid "Choose which columns to display and in what order:"
+msgstr "Välj kolumner som visas och i vilken ordning:"
+
+#: templates/browse/actions.inc:45
+msgid "Clear Search"
+msgstr "Rensa sökning"
+
+#: config/prefs.php.dist:17
+msgid "Column Options"
+msgstr "Kolumn inställningar"
+
+#: templates/prefs/columnselect.inc:233
+msgid "Columns that will not be displayed:"
+msgstr "Kolumner som inte visas:"
+
+#: templates/data/export.inc:12 templates/data/import.inc:13
+msgid "Comma separated values"
+msgstr "Kommaseparerade värden"
+
+#: templates/data/export.inc:13
+msgid "Comma separated values (Microsoft Outlook)"
+msgstr "Kommaseparerade värden (Microsoft Outlook)"
+
+#: config/attributes.php.dist:76
+msgid "Company"
+msgstr "Företag"
+
+#: config/attributes.php.dist:144
+msgid "Company Address"
+msgstr "Adress, företag"
+
+#: lib/api.php:299 lib/api.php:348 lib/api.php:481 lib/api.php:547
+#: lib/api.php:633 lib/api.php:679 lib/api.php:757 lib/api.php:944
+#: lib/api.php:1036
+#, php-format
+msgid "Connection failed: %s"
+msgstr "Förbindelse till server misslyckades: %s"
+
+#: lib/Driver/ldap.php:58
+msgid "Connection failure"
+msgstr "Förbindelse till server misslyckades"
+
+#: browse.php:215 browse.php:249
+msgid "Contact added to list."
+msgstr "Kontakt lades till i listan."
+
+#: browse.php:89
+msgid "Contact removed from list."
+msgstr "Kontakt raderas från listan."
+
+#: browse.php:344
+#, php-format
+msgid "Contacts in list: %s"
+msgstr "Kontakter i listan: %s"
+
+#: templates/browse/actions.inc:12
+msgid "Copy"
+msgstr "Kopiera"
+
+#: browse.php:309
+msgid "Create a new Contact List in:"
+msgstr "Skapa ny kontaktlista i:"
+
+#: lib/ObjectView.php:133
+msgid "Created"
+msgstr "Skapad"
+
+#: config/prefs.php.dist:96
+msgid "Default sorting direction:"
+msgstr "Förvald sorteringsriktning:"
+
+#: lib/Object.php:302 lib/Renderer.php:47 lib/Renderer.php:50
+#: templates/browse/actions.inc:2
+msgid "Delete"
+msgstr "Radera"
+
+#: config/prefs.php.dist:38
+msgid "Delete Confirmation"
+msgstr "Radera bekräftelse"
+
+#: config/prefs.php.dist:39
+msgid "Delete button behaviour"
+msgstr "Funktion för knappen Radera"
+
+#: lib/Driver/ldap.php:270
+#, php-format
+msgid "Delete failed: (%s) %s"
+msgstr "Radering misslyckades: (%s) %s"
+
+#: delete.php:46
+msgid "Deletion failed"
+msgstr "Radering misslyckades"
+
+#: config/attributes.php.dist:213
+msgid "Department"
+msgstr "Avdelning"
+
+#: config/prefs.php.dist:95
+msgid "Descending"
+msgstr "Fallande"
+
+#: templates/browse/search.inc:117
+msgid "Directory"
+msgstr "Katalog"
+
+#: config/prefs.php.dist:24
+msgid "Display"
+msgstr "Visa"
+
+#: config/prefs.php.dist:9 config/prefs.php.dist:16 config/prefs.php.dist:23
+#: config/prefs.php.dist:30
+msgid "Display Options"
+msgstr "Visningsinställningar"
+
+#: config/prefs.php.dist:173
+msgid "Do you want to confirm deleting entries?"
+msgstr "Vill du bekräfta radering av poster?"
+
+#: lib/Object.php:271
+msgid "Download"
+msgstr "Hämta"
+
+#: templates/browse/row.inc:17
+msgid "Download vCard"
+msgstr "Ladda ner vCard"
+
+#: lib/Renderer.php:42 templates/browse/actions.inc:3
+#: templates/browse/column_headers.inc:9 templates/browse/row.inc:25
+msgid "Edit"
+msgstr "Ändra"
+
+#: templates/browse/row.inc:25
+#, php-format
+msgid "Edit '%s'"
+msgstr "Ändra '%s'"
+
+#: edit.php:75 edit.php:151
+#, php-format
+msgid "Edit entry for %s"
+msgstr "Ändra post för %s"
+
+#: config/attributes.php.dist:58
+msgid "Email"
+msgstr "E-post"
+
+#: edit.php:144
+#, php-format
+msgid "Entry for %s updated, but saving the uploaded file failed: %s"
+msgstr ""
+"Posten för '%s' uppdaterades, men den uppladdade filen kunde inte sparas: %s"
+
+#: edit.php:146 edit.php:149
+#, php-format
+msgid "Entry for %s updated."
+msgstr "Posten för %s uppdaterad."
+
+#: browse.php:100
+msgid "Entry successfully deleted."
+msgstr "Posten raderades."
+
+#: templates/browse/actions.inc:6 templates/data/export.inc:41
+msgid "Export"
+msgstr "Exportera"
+
+#: templates/data/export.inc:6
+msgid "Export Address Book"
+msgstr "Exportera adressbok"
+
+#: templates/data/export.inc:21
+msgid "Export only the selected contacts."
+msgstr "Exportera enbart markerade kontakteri."
+
+#: templates/data/export.inc:27
+msgid "Export the following address book completely."
+msgstr "Exportera alla kontakter i adressboken."
+
+#: search.php:48 add.php:70 data.php:110 data.php:204 data.php:273
+#: browse.php:67 browse.php:126 browse.php:148
+#, php-format
+msgid "Failed to access the address book: %s"
+msgstr "Fel vid åtkomst av adressboken: %s"
+
+#: browse.php:167
+#, php-format
+msgid "Failed to add %s to %s: %s"
+msgstr "Misslyckades att lägga till %s till %s: %s"
+
+#: browse.php:350
+msgid "Failed to browse list"
+msgstr "Misslyckades att visa listan"
+
+#: browse.php:389
+msgid "Failed to browse the directory"
+msgstr "Misslyckades att visa katalogen"
+
+#: lib/Driver/ldap.php:308
+#, php-format
+msgid "Failed to change name: (%s) %s; Old DN = %s, New DN = %s, Root = %s"
+msgstr ""
+"Misslyckades att ändra namn: (%s) %s; Gammalt DN = %s, Nytt DN = %s, Root = %"
+"s"
+
+#: browse.php:153
+#, php-format
+msgid "Failed to find object to be added: %s"
+msgstr "Hittade inte objekt som skulle läggas till: %s"
+
+#: search.php:85 data.php:125
+#, php-format
+msgid "Failed to search the directory: %s"
+msgstr "Misslyckades att söka i katalogen: %s"
+
+#: config/attributes.php.dist:167
+msgid "Fax"
+msgstr "Fax"
+
+#: display.php:100 edit.php:121
+msgid "Files"
+msgstr "Filer"
+
+#: templates/browse/search.inc:69
+msgid "Find"
+msgstr "Sök"
+
+#: edit.php:94 edit.php:184
+msgid "Finish"
+msgstr "Slutför"
+
+#: config/attributes.php.dist:48
+msgid "First Name"
+msgstr "Förnamn"
+
+#: config/attributes.php.dist:202
+msgid "Freebusy URL"
+msgstr "Freebusy URL"
+
+#: templates/browse/search.inc:82
+msgid "From"
+msgstr "Från"
+
+#: config/sources.php.dist:666
+msgid "Global Address Book"
+msgstr "Global adressbok"
+
+#: templates/browse/row.inc:43
+msgid "Group"
+msgstr "Grupp"
+
+#: config/attributes.php.dist:82
+msgid "Home Address"
+msgstr "Adress, hem"
+
+#: config/attributes.php.dist:93
+msgid "Home City"
+msgstr "Ort, hem"
+
+#: config/attributes.php.dist:108
+msgid "Home Country"
+msgstr "Land, hem"
+
+#: config/attributes.php.dist:150
+msgid "Home Phone"
+msgstr "Telefon, hem"
+
+#: config/attributes.php.dist:103
+msgid "Home Postal Code"
+msgstr "Postnr, hem"
+
+#: config/attributes.php.dist:98
+msgid "Home State/Province"
+msgstr "Region, hem"
+
+#: config/attributes.php.dist:88
+msgid "Home Street Address"
+msgstr "Gatuadress, hem"
+
+#: config/prefs.php.dist:45
+msgid "IMSP Addressbook Administration"
+msgstr "Administration av IMSP-adressbok"
+
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Address Book, Step %d"
+msgstr "Import adressbok, steg %d"
+
+#: data.php:330
+msgid "Import/Export Address Books"
+msgstr "Importera/Exportera adressböcker"
+
+#: lib/api.php:536 lib/api.php:622
+msgid "Invalid ID"
+msgstr "Felaktigt ID"
+
+#: lib/api.php:220 lib/api.php:435 lib/api.php:532 lib/api.php:618
+#: lib/api.php:669 lib/api.php:1015
+msgid "Invalid address book"
+msgstr "Felaktig adressbok"
+
+#: lib/api.php:1019 lib/api.php:1091 lib/api.php:1144
+msgid "Invalid email"
+msgstr "Felaktig e-post"
+
+#: lib/api.php:1027
+msgid "Invalid entry"
+msgstr "Felaktigt värde"
+
+#: lib/Driver/ldap.php:266
+msgid "Invalid key specified."
+msgstr "Felaktig nyckel angiven."
+
+#: lib/api.php:1023
+msgid "Invalid name"
+msgstr "Felaktigt namn"
+
+#: lib/api.php:673
+msgid "Invalid objectId"
+msgstr "Felaktigt objektId"
+
+#: lib/Driver/ldap.php:30
+msgid ""
+"LDAP support is required but the LDAP module is not available or not loaded."
+msgstr "LDAP-stöd krävs, men LDAP-modulen är inte tillgänglig eller laddad."
+
+#: lib/ObjectView.php:138
+msgid "Last Modified"
+msgstr "Senast ändrad"
+
+#: config/attributes.php.dist:53
+msgid "Last Name"
+msgstr "Efternamn"
+
+#: templates/browse/column_headers.inc:15
+msgid "List"
+msgstr "Lista"
+
+#: templates/browse/search.inc:76
+msgid "Matching"
+msgstr "Matchar"
+
+#: lib/api.php:195
+msgid "Maximum Number of Contacts"
+msgstr "Maximalt antal kontakter"
+
+#: config/prefs.php.dist:105
+msgid "Maximum number of pages"
+msgstr "Maximalt antal sidor"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "Menylista"
+
+#: lib/Block/minisearch.php:3
+msgid "Mini Search"
+msgstr "Mini sök"
+
+#: lib/Driver/ldap.php:302
+msgid "Missing DN in LDAP source configuration."
+msgstr "Saknar DN i LDAP-konfigurationen."
+
+#: config/attributes.php.dist:162
+msgid "Mobile Phone"
+msgstr "Mobiltelefon"
+
+#: lib/Driver/ldap.php:331 lib/Driver/ldap.php:343
+#, php-format
+msgid "Modify failed: (%s) %s"
+msgstr "Ändring misslyckades: (%s) %s"
+
+#: lib/api.php:1130
+msgid "More than 1 entry found"
+msgstr "Mer än 1 värde returnerades"
+
+#: templates/browse/actions.inc:11
+msgid "Move"
+msgstr "Flytta"
+
+#: templates/prefs/columnselect.inc:247
+#: templates/prefs/addressbookselect.inc:184
+msgid "Move left"
+msgstr "Flytta vänster"
+
+#: templates/prefs/columnselect.inc:249
+#: templates/prefs/addressbookselect.inc:186
+msgid "Move right"
+msgstr "Flytta höger"
+
+#: data.php:31 templates/data/import.inc:16
+msgid "Mulberry Address Book"
+msgstr "Mulberry"
+
+#: lib/api.php:1050
+#, php-format
+msgid ""
+"Multiple persons with address [%s], but none with name [%s] already exist"
+msgstr "Flera personer med adressen [%s], men ingen med namnet [%s] existerar"
+
+#: config/sources.php.dist:185
+msgid "My Addressbook"
+msgstr "Min adressbok"
+
+#: config/attributes.php.dist:42
+msgid "Name"
+msgstr "Namn"
+
+#: config/prefs.php.dist:31
+msgid "Name Format"
+msgstr "Namnformatering"
+
+#: config/sources.php.dist:392
+msgid "Netcenter Member Directory"
+msgstr "Netcenter medlemskatalog"
+
+#: add.php:39 add.php:124 lib/Block/minisearch.php:27
+#: lib/Block/tree_menu.php:27
+msgid "New Contact"
+msgstr "Ny kontakt"
+
+#: edit.php:85 edit.php:92 edit.php:199 templates/data/import.inc:45
+msgid "Next"
+msgstr "Nästa"
+
+#: config/attributes.php.dist:218
+msgid "Nickname"
+msgstr "Smeknamn"
+
+#: lib/api.php:1132 lib/api.php:1181
+#, php-format
+msgid "No %s entry found for %s"
+msgstr "Post %s saknas för %s"
+
+#: lib/api.php:1100
+msgid "No address books found."
+msgstr "Ingen dressbok hittades."
+
+#: minisearch.php:83
+msgid "No contacts found"
+msgstr "Inga kontakter hittades."
+
+#: lib/api.php:455 lib/api.php:704
+msgid "No vCard data was found."
+msgstr "Ingen information om vCard hittades."
+
+#: templates/browse/footer.inc:7
+msgid "None"
+msgstr "Ingen"
+
+#: config/attributes.php.dist:184
+msgid "Notes"
+msgstr "Anteckningar"
+
+#: config/prefs.php.dist:113
+msgid "Number of items per page"
+msgstr "Antal poster per sida"
+
+#: lib/api.php:553 lib/api.php:685
+msgid "Object not found"
+msgstr "Objektet hittades inte"
+
+#: config/attributes.php.dist:223
+msgid "Office"
+msgstr "Kontor"
+
+#: lib/api.php:712
+msgid "Only one vcard supported."
+msgstr "Endast ett vCard stöds."
+
+#: config/prefs.php.dist:37 config/prefs.php.dist:44
+msgid "Other Options"
+msgstr "Andra inställningar"
+
+#: config/attributes.php.dist:190
+msgid "PGP Public Key"
+msgstr "Publik PGP-nyckel"
+
+#: lib/api.php:439 lib/api.php:540 lib/api.php:626 lib/api.php:872
+#: lib/api.php:1031
+msgid "Permission Denied"
+msgstr "Behörighet nekades"
+
+#: lib/Driver.php:512
+msgid "Permission denied"
+msgstr "Behörighet nekades"
+
+#: data.php:32 templates/data/import.inc:17
+msgid "Pine Address Book"
+msgstr "Pine"
+
+#: templates/browse/javascript.inc:28
+msgid "Please name the new contact list:"
+msgstr "Skriv in ett namn på den nya kontaktlistan:"
+
+#: edit.php:88 edit.php:91 edit.php:191
+msgid "Previous"
+msgstr "Föregående"
+
+#: lib/Driver/ldap.php:147
+#, php-format
+msgid "Query failed: (%s) %s"
+msgstr "Sökning misslyckades: (%s) %s"
+
+#: templates/block/minisearch.inc:18
+msgid "Quick Search"
+msgstr "Snabbsök"
+
+#: lib/Driver/ldap.php:191 lib/Driver/ldap.php:199 lib/Driver/ldap.php:424
+#, php-format
+msgid "Read failed: (%s) %s"
+msgstr "Läsning misslyckades: (%s) %s"
+
+#: lib/Renderer.php:49
+msgid "Really delete this contact?"
+msgstr "Radera kontakten permanent?"
+
+#: templates/browse/footer.inc:2
+msgid "Records displayed:"
+msgstr "Poster visade:"
+
+#: templates/prefs/addressbookselect.inc:176
+msgid "Remove address book"
+msgstr "Radera adressbok"
+
+#: templates/prefs/columnselect.inc:239
+msgid "Remove column"
+msgstr "Ta bort kolumn"
+
+#: templates/browse/actions.inc:2
+msgid "Remove from this list"
+msgstr "Ta bort från aktuell lista"
+
+#: templates/data/import.inc:21
+msgid ""
+"Replace existing address book with the imported one? <strong>Warning: This "
+"deletes all entries in your current address book.</strong>"
+msgstr ""
+"Ersätt befintlig adressbok med den importerade? <strong>Varning: Alla poster "
+"i aktuell adressbok kommer att raderas.</strong>"
+
+#: lib/Driver.php:414
+msgid "Requested object not found."
+msgstr "Efterfrågat objekt saknas."
+
+#: add.php:40 templates/browse/search.inc:112
+msgid "Reset to Defaults"
+msgstr "Återställ till grundinställningar"
+
+#: config/attributes.php.dist:196
+msgid "S/MIME Public Certificate"
+msgstr "Publikt S/MIME-certifikat"
+
+#: lib/Driver/ldap.php:69
+#, php-format
+msgid "STARTTLS failed: (%s) %s"
+msgstr "STARTTLS misslyckades: (%s) %s"
+
+#: edit.php:96 add.php:40
+msgid "Save"
+msgstr "Spara"
+
+#: lib/Block/tree_menu.php:49 templates/block/minisearch.inc:23
+#: templates/browse/search.inc:95 templates/browse/search.inc:111
+#: config/prefs.php.dist:124
+msgid "Search"
+msgstr "Sök"
+
+#: browse.php:329
+msgid "Search Results"
+msgstr "Sökresultat"
+
+#: minisearch.php:63
+msgid "Search Results:"
+msgstr "Sökresultat:"
+
+#: lib/api.php:949
+msgid "Search failed"
+msgstr "Sökning misslyckades"
+
+#: lib/api.php:1040 lib/api.php:1046 lib/api.php:1055 lib/api.php:1068
+#, php-format
+msgid "Search failed: %s"
+msgstr "Sökning misslyckades: %s"
+
+#: templates/block/minisearch.inc:24
+msgid "Searching..."
+msgstr "Söker..."
+
+#: templates/data/export.inc:32
+msgid "Select the address book to export from:"
+msgstr "Välj adressbok att exportera från:"
+
+#: templates/data/import.inc:26
+msgid "Select the address book to import to:"
+msgstr "Välj adressbok att importera till:"
+
+#: templates/data/import.inc:35
+msgid "Select the charset of the source file:"
+msgstr "Välj teckensnitt på importfilen:"
+
+#: templates/data/export.inc:10
+msgid "Select the export format:"
+msgstr "Välj exportformat:"
+
+#: templates/data/import.inc:43
+msgid "Select the file to import:"
+msgstr "Välj fil som skall importeras:"
+
+#: templates/data/import.inc:11
+msgid "Select the format of the source file:"
+msgstr "Välj format på importfilen:"
+
+#: config/prefs.php.dist:133
+msgid "Select the format used to display names:"
+msgstr "Välj format för visning av namn:"
+
+#: config/prefs.php.dist:25
+msgid "Select view to display by default, sort options, and paging options."
+msgstr ""
+"Välj vy som skall visas som default, sorterings- och sid inställningar."
+
+#: config/prefs.php.dist:18
+msgid "Select which fields to display in the address lists."
+msgstr "Välj vilka fält som visas i adresslistan."
+
+#: config/prefs.php.dist:32
+msgid "Select which format to display names."
+msgstr "Välj hur namn visas."
+
+#: add.php:57
+#, php-format
+msgid "Selected address book '%s'."
+msgstr "Vald adressbok '%s'."
+
+#: templates/browse/actions.inc:39
+#, php-format
+msgid "Show %s"
+msgstr "Visa %s"
+
+#: templates/browse/actions.inc:41
+msgid "Show All"
+msgstr "Visa alla"
+
+#: templates/browse/actions.inc:40
+msgid "Show Contacts"
+msgstr "Visa kontakter"
+
+#: templates/browse/actions.inc:39
+msgid "Show Lists"
+msgstr "Visa listor"
+
+#: templates/browse/column_headers.inc:19
+#: templates/browse/column_headers.inc:30
+msgid "Sort Direction"
+msgstr "Sorteringsriktning"
+
+#: lib/api.php:188
+msgid "Sources"
+msgstr "Källor"
+
+#: config/prefs.php.dist:154
+msgid "Specify where you want advanced search results to appear."
+msgstr "Ange var resultat från avancerad sökning skall visas."
+
+#: browse.php:169
+#, php-format
+msgid "Successfully added %s to %s"
+msgstr "%s lades till i %s"
+
+#: browse.php:242
+#, php-format
+msgid "Successfully created the contact list \"%s\"."
+msgstr "Skapade kontaktlistan '%s'."
+
+#: data.php:29
+msgid "TSV"
+msgstr "TSV"
+
+#: templates/data/export.inc:14 templates/data/import.inc:14
+msgid "Tab separated values"
+msgstr "Tabseparerade värden"
+
+#: view.php:15
+msgid "The VFS backend needs to be configured to enable attachment uploads."
+msgstr ""
+"VFS-backend behöver konfigureras för att aktivera uppladdning av bilagor."
+
+#: lib/Driver.php:984
+#, php-format
+msgid "The address book \"%s\" does not exist."
+msgstr "Adressbok '%s' finns inte."
+
+#: data.php:279
+#, php-format
+msgid "The address book could not be purged: %s"
+msgstr "Adressboken kunde inte tömmas: %s"
+
+#: display.php:23 edit.php:47 vcard.php:22 view.php:26
+msgid "The contact you requested does not exist."
+msgstr "Kontakten du söker existerar inte."
+
+#: edit.php:113
+#, php-format
+msgid "The file \"%s\" has successfully been deleted."
+msgstr "Filen '%s' raderades."
+
+#: data.php:260
+msgid "The import can be finished despite the warnings."
+msgstr "Importen kan avslutas trots varningar."
+
+#: browse.php:63
+msgid "There are no browseable address books."
+msgstr "Det finns inga adressböcker att visa."
+
+#: add.php:32
+msgid ""
+"There are no writeable address books. None of the available address books "
+"are configured to allow you to add new entries to them. If you believe this "
+"is an error, please contact your system administrator."
+msgstr ""
+"Ingen av de tillgängliga adressböckerna är konfigurerade så att du får lägga "
+"till kontakter i dem, Om du tror att det är ett fel, kontakta din system "
+"administratör."
+
+#: add.php:120
+msgid ""
+"There was an error adding the new contact. Contact your system administrator "
+"for further help."
+msgstr ""
+"Det uppstod problem  när kontakten skulle läggas till. Kontakta din "
+"systemadministratör för ytterligare hjälp."
+
+#: browse.php:213 browse.php:247
+msgid "There was an error adding this object."
+msgstr "Det uppstod fel vid skapande av objektet."
+
+#: browse.php:255
+msgid "There was an error creating a new list."
+msgstr "Det uppstod fel vid skapande av ny lista."
+
+#: browse.php:175
+#, php-format
+msgid "There was an error deleting %s from the source address book."
+msgstr "Det uppstod fel vid radering av %s från adressboken."
+
+#: delete.php:45
+#, php-format
+msgid "There was an error deleting this contact: %s"
+msgstr "Det uppstod fel vid radering av kontakten: %s"
+
+#: browse.php:98
+msgid "There was an error deleting this object."
+msgstr "Det uppstod fel vid radering av objektet."
+
+#: browse.php:357
+msgid "There was an error displaying the list"
+msgstr "Det uppstod fel vid visning av listan"
+
+#: data.php:304
+#, php-format
+msgid "There was an error importing the data: %s"
+msgstr "Det uppstod fel vid import av data: %s."
+
+#: lib/api.php:451 lib/api.php:699
+msgid "There was an error importing the iCalendar data."
+msgstr "Fel vid import av iCalendar data."
+
+#: browse.php:87
+msgid "There was an error removing a contact from the list."
+msgstr "Det uppstod fel när kontakter skulle raderas från listan."
+
+#: edit.php:155
+#, php-format
+msgid "There was an error updating this entry: %s"
+msgstr "Det uppstod fel vid uppdatering av posten: %s."
+
+#: data.php:155
+msgid "There were no addresses to export."
+msgstr "Inga adresser att exportera."
+
+#: templates/prefs/addressbookselect.inc:180
+msgid "These address books will display in this order:"
+msgstr "Adressböckerna visas i den här ordningen:"
+
+#: templates/prefs/columnselect.inc:243
+msgid "These columns will display in this order:"
+msgstr "Kolumnerna visas i den här ordningen:"
+
+#: data.php:245
+msgid "This file format is not supported."
+msgstr "Filformatet stöds inte."
+
+#: lib/api.php:1059 lib/api.php:1072
+#, php-format
+msgid "This person already has a %s entry in the address book"
+msgstr "Personen har redan ett värde för %s i adressboken"
+
+#: config/prefs.php.dist:145
+msgid ""
+"This will be the default address book when adding or importing contacts."
+msgstr "Förvald adressbok för nya och importerade kontakter."
+
+#: config/attributes.php.dist:70
+msgid "Title"
+msgstr "Titel"
+
+#: lib/Driver.php:926
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Kan inte ladda definitionen av %s."
+
+#: edit.php:85 edit.php:88 edit.php:91 edit.php:96 edit.php:193
+msgid "Undo Changes"
+msgstr "Ångra ändringar"
+
+#: lib/api.php:475 lib/api.php:582 lib/api.php:717
+#, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "Content-Type stöds inte: %s"
+
+#: config/sources.php.dist:453
+msgid "Verisign Directory"
+msgstr "Verisign katalog"
+
+#: templates/browse/row.inc:19
+#, php-format
+msgid "View '%s'"
+msgstr "Visa '%s'"
+
+#: minisearch.php:78
+msgid "View Contact"
+msgstr "Visa kontakt"
+
+#: config/prefs.php.dist:122
+msgid "View to display by default:"
+msgstr "Vy som skall visas som default:"
+
+#: config/attributes.php.dist:208
+msgid "Website URL"
+msgstr "Websideadress"
+
+#: config/attributes.php.dist:113
+msgid "Work Address"
+msgstr "Adress, arbete"
+
+#: config/attributes.php.dist:124
+msgid "Work City"
+msgstr "Stad, arbete"
+
+#: config/attributes.php.dist:139
+msgid "Work Country"
+msgstr "Land, arbete"
+
+#: config/attributes.php.dist:156
+msgid "Work Phone"
+msgstr "Telefon, arbete"
+
+#: config/attributes.php.dist:134
+msgid "Work Postal Code"
+msgstr "Postnr, arbete"
+
+#: config/attributes.php.dist:129
+msgid "Work State/Province"
+msgstr "Region, arbete"
+
+#: config/attributes.php.dist:119
+msgid "Work Street Address"
+msgstr "Gatuadress, arbete"
+
+#: add.php:76 data.php:213 browse.php:129 browse.php:225
+#, php-format
+msgid "You are not allowed to create more than %d contacts in \"%s\"."
+msgstr "Du har inte behörighet skapa mer än %d kontakter i '%s'."
+
+#: display.php:58 edit.php:66 view.php:36
+msgid "You do not have permission to view this contact."
+msgstr "Du har inte behörig att visa aktuell kontakt."
+
+#: vcard.php:40
+msgid "You do not have permission to view this object."
+msgstr "Du har inte behörighet att visa objektet."
+
+#: templates/browse/javascript.inc:52
+msgid "You must select a target address book."
+msgstr "Du måste välja en adressbok."
+
+#: templates/browse/javascript.inc:23
+msgid "You must select a target list."
+msgstr "Du måste välja en lista."
+
+#: edit.php:32
+msgid "You must select at least one contact first."
+msgstr "Välj minst en kontakt först."
+
+#: templates/browse/javascript.inc:17 templates/browse/javascript.inc:46
+#: templates/browse/javascript.inc:69
+msgid "You must select at least one entry first."
+msgstr "Välj minst en post först."
+
+#: edit.php:70
+msgid "You only have permission to view this contact."
+msgstr "Du har enbart behörighet att visa aktuell kontakt."
+
+#: browse.php:387
+msgid "Your default addressbook is not browseable."
+msgstr "Din förvalda adressbok är inte läsbar."
+
+#: templates/browse/row.inc:6
+msgid "[no value]"
+msgstr "[Inget värde]"
+
+#: lib/Turba.php:352
+msgid "_Browse"
+msgstr "_Lista"
+
+#: templates/browse/actions.inc:40
+msgid "_Contacts"
+msgstr "_Kontakter"
+
+#: templates/browse/actions.inc:2
+msgid "_Delete"
+msgstr "_Radera"
+
+#: lib/Turba.php:358
+msgid "_Import/Export"
+msgstr "_Importera/Exportera"
+
+#: templates/browse/actions.inc:39
+msgid "_Lists"
+msgstr "_Listor"
+
+#: lib/Turba.php:353
+msgid "_New Contact"
+msgstr "_Ny kontakt"
+
+#: templates/browse/actions.inc:2
+msgid "_Remove from this list"
+msgstr "_Radera från listan."
+
+#: lib/Turba.php:354
+msgid "_Search"
+msgstr "_Sök"
+
+#: vcard.php:46
+msgid "contact.vcf"
+msgstr "kontakt.vcf"
+
+#: data.php:175 data.php:180 templates/data/export.inc:1
+msgid "contacts.csv"
+msgstr "kontakter.csv"
+
+#: data.php:185
+msgid "contacts.tsv"
+msgstr "kontakter.tsv"
+
+#: data.php:195
+msgid "contacts.vcf"
+msgstr "kontakter.vcf"
+
+#: templates/browse/actions.inc:24
+msgid "to a Contact List"
+msgstr "till kontaktlista"
+
+#: templates/browse/actions.inc:14
+msgid "to a different Address Book"
+msgstr "till annan adressbok"
+
+#: data.php:30 templates/browse/column_headers.inc:12
+#: templates/data/export.inc:15 templates/data/import.inc:15
+msgid "vCard"
+msgstr "vCard"

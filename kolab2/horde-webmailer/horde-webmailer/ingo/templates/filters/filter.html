@@ -1,0 +1,36 @@
+<loop:filter>
+<tr>
+ <td class="nowrap">
+<if:edit_allowed>
+  <tag:filter.editlink /><tag:filter.editimg /></a>
+</if:edit_allowed>
+<if:delete_allowed>
+<if:filter.dellink>
+  <tag:filter.dellink /><tag:filter.delimg /></a>
+</if:filter.dellink>
+</if:delete_allowed>
+<if:edit_allowed>
+<if:filter.copylink>
+  <tag:filter.copylink /><tag:filter.copyimg /></a>
+</if:filter.copylink>
+</if:edit_allowed>
+ </td>
+ <td>
+  <strong><tag:filter.number />.&nbsp;<if:filter.filterimg><tag:filter.filterimg />&nbsp;&nbsp;</if:filter.filterimg><tag:filter.descriplink /></strong>&nbsp;<if:filter.enablelink><strong>[<tag:filter.enablelink /><span style="color:red"><gettext>disabled - click to enable</gettext></span></a>]</strong></if:filter.enablelink>
+ </td>
+ <td style="text-align:center">
+  <if:filter.disablelink><tag:filter.disablelink /></if:filter.disablelink><tag:filter.disableimg /><if:filter.disablelink></a></if:filter.disablelink><if:filter.enablelink><tag:filter.enablelink /></if:filter.enablelink><tag:filter.enableimg /><if:filter.enablelink></a></if:filter.enablelink>
+ </td>
+<if:edit_allowed>
+ <td class="nowrap">
+  <if:filter.uplink><tag:filter.uplink /><tag:up_img /></a></if:filter.uplink>
+ </td>
+ <td class="nowrap">
+  <if:filter.downlink><tag:filter.downlink /><tag:down_img /></a></if:filter.downlink>
+ </td>
+ <td class="nowrap">
+  <label><gettext>To:</gettext>&nbsp;<input type="text" size="2" onchange="moveFromTo(<tag:filter.number />, this.value, '<tag:filter.upurl />', '<tag:filter.downurl />');"/></label>
+ </td>
+</if:edit_allowed>
+</tr>
+</loop:filter>

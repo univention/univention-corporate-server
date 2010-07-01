@@ -1,0 +1,31 @@
+<form method="post" name="passphrase_dialog" action="<tag:submit_url />">
+<if:reload>
+<input type="hidden" name="reload" value="<tag:reload />" />
+</if:reload>
+<if:action>
+<input type="hidden" name="passphrase_action" value="<tag:action />" />
+</if:action>
+
+<table class="smallheader">
+ <tr>
+  <td>
+   <tag:locked_img />
+  </td>
+  <td>
+   <gettext>Please enter the passphrase for your S/MIME private key. You will only need to enter this passphrase once per session.</gettext>
+  </td>
+ </tr>
+</table>
+
+<div class="nowrap padded">
+ <label for="passphrase"><strong><gettext>Passphrase:</gettext></strong></label>&nbsp;
+ <input type="password" id="passphrase" name="passphrase" size="15" maxlength="60" />&nbsp;
+ <input type="submit" name="submit" class="button" value="<gettext>Submit</gettext>" />
+ <input type="button" class="button" onclick="window.close();" value="<gettext>Cancel</gettext>" />
+</p>
+
+</form>
+
+<script type="text/javascript">
+document.passphrase_dialog.passphrase.focus();
+</script>

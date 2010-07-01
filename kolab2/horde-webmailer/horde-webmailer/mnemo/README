@@ -1,0 +1,89 @@
+What is Mnemo?
+==============
+
+:Last update:   $Date: 2007-12-20 14:17:36 $
+:Revision:      $Revision: 1.7.10.2 $
+:Contact:       horde@lists.horde.org
+
+.. contents:: Contents
+.. section-numbering::
+
+Mnemo is the Horde notes and memos application.  It lets users keep free-text
+notes and other bits of information which doesn't fit as a contact, a todo
+item, an event, etc.  It is very similar in functionality to the Palm Memo
+application.
+
+This software is OSI Certified Open Source Software.  OSI Certified is a
+certification mark of the `Open Source Initiative`_.
+
+.. _`Open Source Initiative`: http://www.opensource.org/
+
+
+Obtaining Mnemo
+---------------
+
+Further information on Mnemo and the latest version can be obtained at
+
+  http://www.horde.org/mnemo/
+
+
+Documentation
+-------------
+
+The following documentation is available in the Mnemo distribution:
+
+:README_:            This file
+:LICENSE_:           Copyright and license information
+:`docs/CHANGES`_:    Changes by release
+:`docs/CREDITS`_:    Project developers
+:`docs/INSTALL`_:    Installation instructions and notes
+:`docs/TODO`_:       Development TODO list
+:`docs/UPGRADING`_:  Pointers on upgrading from previous Mnemo versions
+
+
+Installation
+------------
+
+Instructions for installing Mnemo can be found in the file INSTALL_ in the
+``docs/`` directory of the Mnemo distribution.
+
+
+Assistance
+----------
+
+If you encounter problems with Mnemo, help is available! 
+
+The Horde Frequently Asked Questions List (FAQ), available on the Web at
+ 
+  http://www.horde.org/faq/
+
+The Horde Project runs a number of mailing lists, for individual applications
+and for issues relating to the project as a whole.  Information, archives, and
+subscription information can be found at
+
+  http://www.horde.org/mail/
+
+Lastly, Horde developers, contributors and users also make occasional
+appearances on IRC, on the channel #horde on the Freenode Network
+(irc.freenode.net).
+
+
+Licensing
+---------
+
+For licensing and copyright information, please see the file LICENSE_ in the
+Mnemo distribution.
+
+Thanks,
+
+The Mnemo team
+
+
+.. _README: ?f=README.html
+.. _LICENSE: http://www.horde.org/licenses/asl.php
+.. _docs/CHANGES: ?f=CHANGES.html
+.. _docs/CREDITS: ?f=CREDITS.html
+.. _INSTALL:
+.. _docs/INSTALL: ?f=INSTALL.html
+.. _docs/TODO: ?f=TODO.html
+.. _docs/UPGRADING: ?f=UPGRADING.html

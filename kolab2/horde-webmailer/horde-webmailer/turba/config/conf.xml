@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!-- $Horde: turba/config/conf.xml,v 1.6.2.6 2008-06-25 15:52:54 jan Exp $ -->
+<configuration>
+ <configsection name="menu">
+  <configheader>Menu Settings</configheader>
+  <configboolean name="import_export" desc="Should we display an Import/Export
+  link in Turba's menu?">true</configboolean>
+  <configmultienum name="apps" desc="Select any applications that should be
+  linked in Turba's menu">
+   <values>
+    <configspecial name="list-horde-apps"/>
+   </values>
+  </configmultienum>
+ </configsection>
+
+ <configsection name="client">
+   <configheader>Clients</configheader>
+   <configstring name="addressbook" desc="Name of client addressbook. If this
+   is a shared address book, use the share id, not the source
+   name.">localsql</configstring>
+ </configsection>
+
+ <configsection name="shares">
+  <configheader>Shares</configheader>
+  <configstring name="source" desc="Name of source for creating new
+  shares.&lt;br /&gt; Note that leaving this blank will prevent users from
+  being able to create new address books."
+  required="false">localsql</configstring>
+ </configsection>
+
+ <configsection name="comments">
+  <configheader>Comments</configheader>
+  <configboolean name="allow" desc="Can users comment on
+  contacts?">true</configboolean>
+ </configsection>
+
+ <configsection name="documents">
+  <configheader>Virtual File Storage</configheader>
+  <configvfs switchname="type" />
+ </configsection>
+</configuration>

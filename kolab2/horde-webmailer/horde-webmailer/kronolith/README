@@ -1,0 +1,87 @@
+What is Kronolith?
+==================
+
+:Last update:   $Date: 2007-12-20 14:12:17 $
+:Revision:      $Revision: 1.9.8.2 $
+:Contact:       kronolith@lists.horde.org
+
+.. contents:: Contents
+.. section-numbering::
+
+Kronolith is a web-based calendar system written in PHP and utilizing the
+Horde Application Framework.
+
+This software is OSI Certified Open Source Software.  OSI Certified is a
+certification mark of the `Open Source Initiative`_.
+
+.. _`Open Source Initiative`: http://www.opensource.org/
+
+
+Obtaining Kronolith
+-------------------
+
+Further information on Kronolith and the latest version can be obtained at
+
+  http://www.horde.org/kronolith/
+
+
+Documentation
+-------------
+
+The following documentation is available in the Kronolith distribution:
+
+:README_:            This file
+:COPYING_:           Copyright and license information
+:`docs/CHANGES`_:    Changes by release
+:`docs/CREDITS`_:    Project developers
+:`docs/INSTALL`_:    Installation instructions and notes
+:`docs/TODO`_:       Development TODO list
+:`docs/UPGRADING`_:  Pointers on upgrading from previous Kronolith versions
+
+
+Installation
+------------
+
+Instructions for installing Kronolith can be found in the file INSTALL_ in the
+``docs/`` directory of the Kronolith distribution.
+
+
+Assistance
+----------
+
+If you encounter problems with Skeleton, help is available! 
+
+The Horde Frequently Asked Questions List (FAQ), available on the Web at
+ 
+  http://www.horde.org/faq/
+
+The Horde Project runs a number of mailing lists, for individual applications
+and for issues relating to the project as a whole.  Information, archives, and
+subscription information can be found at
+
+  http://www.horde.org/mail/
+
+Lastly, Horde developers, contributors and users also make occasional
+appearances on IRC, on the channel #horde on the freenode Network
+(irc.freenode.net).
+
+
+Licensing
+---------
+
+For licensing and copyright information, please see the file COPYING_ in the
+Kronolith distribution.
+
+Thanks,
+
+The Kronolith Team
+
+
+.. _README: ?f=README.html
+.. _COPYING: http://www.horde.org/licenses/gpl.php
+.. _docs/CHANGES: ?f=CHANGES.html
+.. _docs/CREDITS: ?f=CREDITS.html
+.. _INSTALL:
+.. _docs/INSTALL: ?f=INSTALL.html
+.. _docs/TODO: ?f=TODO.html
+.. _docs/UPGRADING: ?f=UPGRADING.html

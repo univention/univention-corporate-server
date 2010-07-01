@@ -1,0 +1,15 @@
+/**
+ * $Horde: horde/themes/opera.css,v 1.1.2.5 2007-12-20 15:04:04 jan Exp $
+ *
+ * CSS corrections for Opera.
+ */
+
+.treeRow {
+    overflow: visible;
+    height: 20px;
+}
+
+#menu {
+    overflow: visible;
+    height: 50px;
+}

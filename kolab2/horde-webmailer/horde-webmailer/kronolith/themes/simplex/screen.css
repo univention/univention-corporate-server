@@ -1,0 +1,24 @@
+/**
+ * $Horde: kronolith/themes/simplex/screen.css,v 1.1 2004-10-17 20:37:49 mdjukic Exp $
+ */
+
+.day {
+    color: #FFFFFF;
+    background-color: #7390B9;
+}
+.day:hover {
+    color: #333333;
+    background-color: #7390B9;
+}
+.selected {
+    background-color: #86B4DF;
+}
+.day-eventbox a {
+    color: #000000;
+}
+.week-eventbox a {
+    color: #000000;
+}
+.month-eventbox a {
+    color: #000000;
+}

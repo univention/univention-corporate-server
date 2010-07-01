@@ -1,0 +1,935 @@
+------
+v2.3.3
+------
+
+[jan] Fix syntax of MSSQL scripts (Bug #8664).
+[jan] Add preference for the name format to use for sorting (Request #6721).
+[jan] Condense whitespace in composite fields (Request #8654).
+[jan] Add and fix Oracle-specific SQL scripts.
+[jan] Add Croatian translation (Matej Vela <matej.vela@carnet.hr>,
+      Iva Rumora <iva.rumora@zg.t-com.hr>).
+[mjr] Fix permission checking for virtual address books. 
+[jan] Update deleted attributes during synchronization (lst_hoe02@kwsoft.de,
+      Request #6658).
+[jan] Support X-ANNIVERSARY, X-CHILDREN, and X-SPOUSE vCard fields
+      (Request #8074).
+[jan] Fix copying and moving of image fields (Ryu <ryu@ryux.org>, Bug #8523).
+[jan] Don't return an error on empty LDAP search results (Bug #8595).
+[jan] Replace PHP5-only code from the LDIF exporter (Bug #8586).
+
+
+------
+v2.3.2
+------
+
+[mms] Upgrade prototype.js to v1.6.1.
+[jan] Fix synchronization with output compression enabled (Bug #7769).
+[mjr] Fix contacts being deleted during synchronization when moved from one
+      address book to another (ryu@ryux.org, Bug #8487).
+[mjr] Add new API method for retrieving the default share for a source.
+[jan] Don't overwrite the compositing fields, when importing composite fields.
+[cjh] Fix searches for multiple strict fields and at least one non-strict field
+      (tinu@humbapa.ch, Bug #7876).
+[mjr] Specific timeobject categories are now only advertised when they are
+      present in a configured source.
+
+
+------
+v2.3.1
+------
+
+[jan] SECURITY: Escape output in test.php.
+[jan] Add script to import contacts from SquirrelMail database.
+[gwr] Correct support for the freebusy URL in Kolab.
+[gwr] Add photo support for the Kolab driver.
+[jan] Import broken vCards from Synthesis clients (Bug #7407).
+[cjh] Add two retries to find a contact after adding it (Bug #7478).
+[cjh] Add a PostgreSQL-specific upgrade script for 2.2.1 to 2.3
+      (michael.menge@zdv.uni-tuebingen.de, Bug #7462).
+[jan] Don't overwrite empty address books preference when creating new shares
+      (Bug #7399).
+[mms] Upgrade prototype.js to v1.6.0.3.
+
+
+----
+v2.3
+----
+
+[jan] Change group field in shares table to work with LDAP groups (Bug #6883).
+[jan] Fix exporting address books with country fields as vCards (Bug #7372).
+[mjr] Make sure we use all address books when searching via the api and the
+      user's addressbooks pref is empty (Bug #7357).
+[mjr] Correctly calculate the age of time objects (Bug #7330).
+
+
+--------
+v2.3-RC1
+--------
+
+[jan] Improve vCard EMAIL field parsing (Bug #7281).
+[jan] Correctly import and export address extensions (Bug #7279).
+[jan] Export full country names to vCard addresses.
+[jan] Respect precedence of multiple vCard properties (Request #7122).
+[jan] Remove deleted address books from address book preference (Request #6938).
+[jan] Export LABEL properties to vCard if address fields are available.
+[gwr] Add support for storing public PGP keys when using Kolab.
+[gwr] Add support for adding addresses from IMP when using Kolab.
+[jan] Add configuration option for an alternative name field.
+[jan] Add support for image fields to SQL driver (requires Horde 3.3).
+[jan] Add more default field mappings for CSV import (Request #6901).
+[jan] Update field names for Outlook 2003 export (Request #6901).
+[jan] Improve logic which entries to show in the sidebar menu.
+[jan] Add support for the category form field (Request #6884).
+[jan] Fix sorting so that sort order is always reflected correctly,
+      independent of name format.
+[jan] Add Basque translation (Euskal Herriko Unibertsitatea EHU/UPV
+      <xabier.arrieta@ehu.es>).
+[jan] Add ability to mark a contact as your own and API method to export it.
+[jan] Fix importing phone numbers from Synthesis clients (Bug #7011).
+[mjr] Fix issue with searching composite fields when the number of search terms
+      is less than the number of composed fields (Bug #6796)
+[cjh] Allow importing multiple address into an email field if allow_multi
+      is set to true on the field in attributes.php (Bug #6897).
+[mjr] Remove user permissions on all shares when deleting a user.
+[jan] Fix searching of client address books that have been disabled in the
+      preferences (Bug #6961).
+[mjr] Fix issue with removeUserData api that caused the deleted user's
+      address books to not be deleted as well as remove an erroneous error
+      notification (Bug #6969).
+[cjh] Fix the column selector/sorter in IE (Bug #6912).
+
+
+------
+v2.2.2
+------
+
+[jan] SECURITY: Escape output in test.php.
+
+
+------
+v2.2.1
+------
+
+[cjh] SECURITY: Escape contact names in the contact display view.
+[jan] Fix importing of certain phone numbers from vCard (Bug #6744).
+[mjr] Correct a function declaration in the 2.1_to_2.2_sql_schema.php upgrade
+      script that was causing fatal errors.
+
+
+----
+v2.2
+----
+
+[mjr] Fix importing email addresses from CSV files to be consistent with what
+      we allow to be entered via the UI. (Bug #6725)
+[cjh] Improve resource usage in datatree_to_sql share migration script
+      (Bug #6740).
+
+
+--------
+v2.2-RC4
+--------
+
+[cjh] Fix editing contacts that were accessed by UID (Bug #6672).
+[cjh] Apply fix for http://dev.rubyonrails.org/ticket/11473 to prototype.js
+      (Request #6590).
+[cjh] Add an upgrade script for the new SQL share driver (Request #6109).
+[cjh] Include composite fields in data exports (Bug #6517).
+[gwr] Add distribution list support to the Kolab driver.
+[cjh] Add vCard/syncing support for a large number of additional attributes
+      (horde@ssn.at, Request #6573).
+[cjh] Update composite fields in LDAP DNs (horde@ssn.at, Bug #6575).
+[mjr] Fix paging in search results.
+[cjh] Allow setting default values for attributes.
+[cjh] Show a browse link in the address book list for each address book
+      (thomas.jarosch@intra2net.com, Request #6613).
+[mjr] Fixed a bug that caused field values to get mismatched with the column
+      names when a single DB field is mapped to multiple Turba fields.
+[mjr] Fix changing sort order on the search view.
+[jan] Add preference to choose address books for synchronization.
+[jan] Improved importing of names from vCards (Bug #6568).
+[jan] Fix incomplete copying and moving of attributes to composite fields
+      (Bug #6565).
+[gwr] Fix the relation of key/uid within the Kolab driver.
+[gwr] Export/import of the emails attribute (Bug #6504).
+[mas] Encode DN correctly when exporting to LDIF. (Bug #6518).
+[gwr] Fix virtual address books when using shares.
+[gwr] Fix searching for the Kolab driver.
+[cjh] Replace the address book column sorter with a Scriptaculous-based one;
+      fixes re-ordering columns in some cases (Bug #6444).
+[jan] Always return to the last view after saving a contact.
+[jan] Correctly determine default address books in the API (SyncML, WebDAV).
+[jan] Add categories imported through the API (SyncML, WebDAV).
+[jan] Store categories as strings.
+[cjh] Show who created or made the last change to a contact along with the date
+      (Request #6305).
+[mjr] Prevent overwriting contact entries with the upgrade script (Bug #6308).
+
+
+--------
+v2.2-RC3
+--------
+
+[cjh] SECURITY: Fix unchecked access to contacts in the same SQL table
+      (Bug #6208) (CVE-2008-0807).
+[jan] Add configuration to more flexibly parse full names into the name parts.
+
+
+--------
+v2.2-RC2
+--------
+
+[jan] SECURITY: Fix privilege escalation in Horde API.
+[mjr] Degrade gracefully when no VFS is configured.
+[cjh] Fixed the share flattening upgrade script.
+[mjr] Fixed issue that caused mangling of composite fields when moving or
+      copying contacts from one address book to another (Bug #6058).
+[mjr] Fixed issue that caused listTimeObjects to only return objects from a
+      single address book when using a shared SQL source.
+[cjh] Update address book management UI to match other groupware apps.
+[jan] Trim composite field values before saving to the backend (Bug #5979).
+[mjr] Fixed issue where composite fields with 'attribute' value set were not
+      getting set in the backend when being imported via the API. (Bug #5978)
+[mjr] Time object categories are now automatically detected.
+[mjr] Fix issue that caused listTimeObjects API to miss returning objects when
+      the date range crosses over into the next year.
+[jan] Improved portability of the upgrade script (Bug #5949).
+[mjr] Added anniversary support to the listTimeObjects API.
+
+
+--------
+v2.2-RC1
+--------
+
+[jan] Fix birthday calculation on years before 1970 with DST (Bug #5791).
+[jan] Implement WebDAV DELETE.
+[jan] Change default SQL scheme to match with RFC 2426 (vCard 3.0) as closely
+      as possible.
+[cjh] Add $matchBegin to the clientSearch API method (duck@obala.net,
+      Request #5860).
+[cjh] Avoid variable names that might interfere with function variables in
+      sources.php.dist examples (Bug #5840).
+[jan] Add clientFields() API method.
+[mjr] More efficient fetching of entries when using the listTimeObjects API.
+[jan] Move all Turba-specific hook examples from Horde's config/ directory.
+[cjh] Fix generation of UIDs with PHP 5.2+.
+[cjh] Handle categories when converting to and from vCards
+      (rsalmon@mbpgroup.com, Bug #5648).
+[cjh] Catch searches that seem non-empty but really aren't (Bug #5612).
+[mjr] Fix fatal errors when no share enabled sources are present.
+[mjr] Fix issue with naming new contact lists that was causing database errors,
+      missing part of the contact list name, and other oddities.
+
+
+----------
+v2.2-ALPHA
+----------
+
+[cjh] Add support for approximate searches, if the underlying backend and Horde
+      code support them (Request #2901).
+[cjh] Add a print link for contacts (Request #2800).
+[cjh] Shared Address Books are now stored in a flat namespace so that they
+      do not rely on the hierarchical (i.e. DataTree) properties of the
+      Horde_Share API (Bug #4960).
+[cjh] If names are displayed "Lastname, Firstname", sort composite name
+      fields by lastname (Request #3909).
+[cjh] Show an overlay while running a search (Request #3154).
+[cjh] Add Anniversary, Spouse, and Children fields and support them in
+      vCard import/export (ntai@smartfruit.com, Request #5059).
+[cjh] Add LDIF import/export support (ritaselsky@gmail.com, Request #2506).
+[jan] Provide birthdays as events to external calendars (Request #723).
+[mjr] Add driver to create address books from current user's Horde_Group
+      memberships.
+[jan] Allow to search through API for matches at word boundaries only
+      (requires Horde 3.2).
+[cjh] Phase out old ObjectView class in favor of proper forms in
+      lib/Forms and views in lib/Views.
+[cjh] Support for dereferencing LDAP aliases (aubert@femto-st.fr,
+      Request #4532).
+[mas] Conform to WCAG 1.0 Priority 2/Section 508 accessibility guidelines.
+      (Request #4080)
+[cjh] Support vCard initials and salutation fields if present in the Turba
+      backend (s.heuer@hicom.de, Request #4248).
+[cjh] Don't show empty tabs if a contact does not have a full name (Bug #4243).
+[mjr] Add support for removing user data from backend storage when user is
+      removed from Horde.
+[jmf] Sort listings on multiple columns.
+[cjh] Show numeric and alpha pagers at the top of listings, not the bottom
+      (Bug #1312).
+[jan] Add multidomain support for Kolab servers (tokoe@kde.org, Request #3579).
+[jan] Use the same rendering code for contact details in the list views like
+      in the contact views.
+[jan] Allow editing of composite fields (horde@olen.net,
+      rkean@keanconsulting.com, Request #2529).
+[mjr] IMSP driver now has Horde_Share support.
+[cjh] Add dynamic filtering of lists of contacts.
+[mdj] Add support for split read/write database.
+[mdj] Add failover support for SQL backend.
+[mjr] Add virtual address book support.
+[jan] Add driver to list most favourite recipients.
+
+
+------
+v2.1.7
+------
+
+[cjh] SECURITY: Fix unchecked access to contacts in the same SQL table
+      (Bug #6208) (CVE-2008-0807).
+
+
+------
+v2.1.6
+------
+
+[jan] SECURITY: Fix privilege escalation in Horde API.
+
+
+------
+v2.1.5
+------
+
+[mjr] Fix some fatal errors caused by the IMSP driver when deleting certain
+      contacts and while adding contacts to lists in certain cases.
+[mjr] Fix adding contacts to a new contact list in a source other than the
+      source the contacts being added are from.
+[jan] Fix paging through search results from another than the default address
+      book (Bug #5137).
+[cjh] Fix copy/moving contacts to a new contact list (Bug #5144).
+
+
+------
+v2.1.4
+------
+
+[jan] Fix character set encoding of exported vCards.
+[mjr] Fix fatal error when exporting to vCard.
+[cjh] Organize basic search form from left to right (Request #4914).
+[jan] Fix links to only show contacts or lists, or both.
+[mjr] Don't remember the lastly selected address book in the session, if it
+      was not browseable.
+[mjr] Fix bug that caused counting the number of contacts in a shared SQL
+      source to return the count of the user's default address book instead.
+[mjr] Fix bug that caused the wrong address book to be deleted when replacing
+      an address book during import.
+
+
+------
+v2.1.3
+------
+
+[jan] Support departments in vCard's ORG properties (martin@matuska.org,
+      Request #4285).
+[cjh] Fix LDAP driver check for whether objects need to be renamed (Bug #4468).
+[jan] Fix generation of mailto: links if IMP is not installed (Bug #4334).
+[jan] Show error message if imported file didn't contain contacts (Bug #4260).
+[jan] Remember the lastly selected address book during the session.
+[jan] Add categories from imported contacts to the user's categories.
+
+
+------
+v2.1.2
+------
+
+[mjr] Fix addressbook.php script - don't attempt to submit the form with
+      invalid addressbook selections.
+[cjh] Add documentation for the filter parameter in sources.php.dist and an
+      example for retrieving data from two different tables (Manilal K M
+      <manilal.krishnapillai@ejyothi.com>).
+[cjh] Centralize code for building RDNs (Request #3966).
+[cjh] Pass objects by reference to hooks so modifications can stick (Bug
+      #3957).
+[jan] Fix compose links in portal if using compose popups in IMP (Bug #3923).
+
+
+------
+v2.1.1
+------
+
+[cjh] Be consistent in working with lowercase attribute names for the
+      LDAP driver (Bug #2440).
+[mjr] Fix create_default_histories.php and public_to_horde_share.php scripts
+      to prevent creation of bogus shares.
+[mjr] Fix create_default_histories.php script to work with shared sources.
+[jan] Add 1.2 to 2.x upgrade script for Oracle.
+[jan] Fix script to create default histories, necessary for synchronization.
+[jan] Fix loading of CLI library in the public_to_horde_share.php script.
+[mjr] Fix losing session when editing address books with disabled cookies.
+[cjh] Show the copy/move dropdown any time there is an editable address book
+      that's not the current one (Bug #3588).
+[jan] Don't show warning after dealing with contacts from a non-browseable
+      address book (Bug #3587).
+[jan] Fix configuration example for birthday fields.
+
+
+----
+v2.1
+----
+
+[ben] Better support for MS-SQL
+
+
+--------
+v2.1-RC1
+--------
+
+[mjr] Default to showing the 'A' page when browsing address books that contain
+      more than the 'perpage' number of entries.
+[jan] Add Icelandic translation (Bjorn Davidsson <bjossi@snerpa.is>).
+[mjr] Fix paging when viewing search results.
+[mjr] Only show actions that make sense for the current source.
+[mjr] All IMSP address books, including dynamically configured sources are now
+      uniquely identified across all users internally.
+[jan] Reverse sorting order if clicking on column name (t.zell@gmx.de,
+      Request #2484).
+[jan] Add option to keep name field unformatted (m.zdila@episoftware.com,
+      Request #2441).
+[mas] Use summary notifications for contact changes instead of one notice for
+      each change. (Bug #2764)
+[jan] Add CLI script to import vCard data.
+[cjh] Split checking of LDAP field syntax and checking of required fields
+      (tevans@tachometry.com, Bug #2626).
+[mjr] Horde_Share support added. SQL Driver only for now.
+[cjh] Update objectclasses when saving LDAP entries created by other clients
+      (m.zdila@episoftware.com, Bug #2405).
+[cjh] Charset-aware handling of LDAP DNs (Bug #2395).
+[cjh] Get rid of cached search results entirely, and move more display
+      code into Turba_ListView, simplifying a number of different
+      codepaths and avoiding servercide when using Advanced Search.
+[mjr] Turba_Object and Turba_Driver objects are now responsible for
+      checking permissions for the sources they represent.  This allows
+      concrete Turba_Driver objects to override Horde Perms and perform
+      their own permission checking (by checking ACLs for example).
+[cjh] "readonly" and "admin" source hash entries are deprecated. Permissons
+      are set through the Horde Perms UI now.
+[cjh] Avoid adding exact duplicates during import
+      (kevin_myer@iu13.org, Bug #1892).
+[cjh] Honor the delete confirmation preference when displaying a
+      contact (Bug #1315).
+[cjh] If the comments API is available, comments can be attached to
+      contacts (Request #1492).
+[cjh] Users can select which address books they wish to use, and in
+      which order they will be displayed (Request #1650).
+[cjh] Contacts can now be added to lists stored in any address book
+      (Request #1561).
+[cjh] Introduce a "browse" setting on sources, seperate from the "export"
+      setting, to allow differentiation of browseable and exportable
+      sources.
+[jan] Add permissions to restrict number of contacts per address book.
+[cjh] Add exporting of multiple vCards in one file through the export
+      interface (Frank Rosquin <frank.rosquin@gmail.com>).
+[mjr] Added support for adding and deleting IMSP addressbooks via the options
+      interface (Request #1578)
+[mjr] Show previous search results whenever returning to the search page.
+[cjh] Handle encoding of postalAddress fields to use $ for newlines, going
+      either by attributes.php or by the LDAP schema itself (Edward Rudd
+      <eddie@omegaware.com>, Request #2).
+[mjr] Search terms on composite fields are now taken as a space delimited
+      list of strings that are each OR'd against each field making up the
+      composite field  and then cumulatively AND'd together.
+[jan] Show warnings from CSV imports.
+[jan] Add "Add" and "Search" entries to sidebar menu.
+[jan] Return to original browse view after finishing group editing.
+[jan] Add submenu with address books to sidebar.
+[jan] Allow to specify charset of imported CSV files.
+[cjh] Pass the Turba_AbstractObject to attribute hooks to allow access to
+      other attribute values (for example, to build a field's value out of
+      other fields).
+[jan] Show list of edited contacts below edit form when editing several
+      contacts at once.
+[jan] Add VFS support to attach files to contacts.
+[jan] Allow to edit several contacts at once.
+[jan] Retrieve only required fields from backend.
+
+
+------
+v2.0.5
+------
+
+[cjh] Close several XSS vulnerabilities with address book and contact data.
+
+
+------
+v2.0.4
+------
+
+[jan] Fix source selection in some API methods (tevans@tachometry.com,
+      Bug #2623).
+[jan] Fix warnings in columns preference screen.
+[mjr] Check for global IMSP configuration and use if present.
+[mas] Restore BC in searching using SQL driver. (Bug #2419)
+
+
+------
+v2.0.3
+------
+
+[jan] Add Turkish translation (Servet Güney <sguney@metu.edu.tr>, Ahmet Öztürk
+      <oahmet@metu.edu.tr>).
+
+
+----------
+v2.0.3-RC1
+----------
+
+[jan] Don't show "Add" icon if no writeable address books exist.
+[jan] Don't show "Browse" icon and list if no browseable address books exist.
+[jan] Add example how to use a field for Horde's category system.
+[cjh] Allow uid to be used in key generation (especially useful for LDAP
+      backends that want to use uid in the DN) (Bug #2027).
+[mjr] Fix bug where search results are not displayed when no browseable
+      addressbooks exist and bug where the browse attribute is ignored for
+      addressbooks that are set as default, allowing a non-browseable
+      addressbook to be browsed (Bug #1959).
+[jan] Import and export of birthdays with vCards (thomas@gelf.net, Bug #1269).
+[jan] Fix mini search portal block with non-ascii search strings (Bug #1605).
+[cjh] Add a generic SQL upgrade script, replacing the MySQL-specific
+      version (Bug #1781).
+[mjr] Use addressbook name as part of cache key to prevent breaking similar
+      searches on different IMSP addressbooks.
+[cjh] Use bind variables in the SQL driver (selsky@columbia.edu, Bug #1651).
+[mjr] Fix API search() method to correctly deal with contacts containing
+      multiple email-type fields (Bug #1284).
+[cjh] Fix _read() for multiple objects in the LDAP driver (Bug #1520).
+[mjr] Cache IMSP search results when sending multiple IMSP searchaddress
+      commands for the same search.
+[cjh] Show actions at the top and bottom of contact listings (Bug #1458).
+[jan] Add shortcut icon (favicon.ico).
+[mjr] Show Contacts and Show Groups links now work correctly with IMSP driver.
+[jan] Don't include names in email fields of distribution lists retrieved
+      through the "search" API method (Bug #1384).
+
+
+------
+v2.0.2
+------
+
+[jan] Fixed warning in browse view (Bug #1363).
+
+
+------
+v2.0.1
+------
+
+[jan] Fixed some javascript errors when clicking on the column headers to
+      resort contact listings (Bug #1313).
+[cjh] Quote LDAP DN entries according to RFC 1485 (Bug #1146).
+[cjh] When importing vCard 3.0 ADR fields, try to build a composite entry for
+      workAddress or homeAddress, and keep the street address in workStreet or
+      homeStreet (Bug #1109).
+[jan] Implement OR searches in IMSP driver (Michael Rubinsky
+      <mike@theupstairsroom.com>, Bug #1256).
+
+
+----------
+v2.0.1-RC1
+----------
+
+[jan] Create compose links for all email addresses at once in contact listings
+      (requires IMP 4.0.2).
+[jan] Open compose windows from the portal's minisearch block in the correct
+      frame (Bug #1293).
+[jan] Several performance optimizations.
+[jan] Don't return empty result sets in search API (Bug #1210).
+[cjh] Support TLS connections to LDAP servers (Bug #1149).
+
+
+----
+v2.0
+----
+
+[cjh] UIDs need to be stored in the History system with a turba: prefix and
+      with the contact owner so as not to confuse different instances of the
+      same contact (if two users both have a contact in their seperate
+      addressbooks in a private source, they should have unique histories for
+      those contacts).
+[cjh] Improve error and permission checking.
+
+
+--------
+v2.0-RC3
+--------
+
+[cjh] Prevent copying/moving of groups (Bug #935).
+[cjh] Fix IMSP groups (Michael Rubinsky <mike@theupstairsroom.com>)
+[jan] Fix propagating of monthdayyear fields (Bug #920).
+[jan] Fix SOAP namespace for API method signatures.
+[cjh] Change to Turba::getMenu(), fixes the menu on the Options screen (Bug
+      #898).
+[jan] Fix some javascript errors with IE 5.0.
+
+
+--------
+v2.0-RC2
+--------
+
+[cjh] Don't overwrite form data with object defaults when editing if
+      validation fails (Bug #883).
+[cjh] Use source permissions if they are present, and if not, fall back to the
+      old source admin array (Bug #853).
+[cjh] Ignore any __-prefixed attribute in building search criteria (Bug #877).
+
+
+--------
+v2.0-RC1
+--------
+
+[mms] Fixed the delete API to not exit with error if the item to be deleted
+      is not found in the first source provided.
+[cjh] Removed miniwindow.php; it simply provided a frame around Turba
+      with a close button.
+
+
+---------
+v2.0-BETA
+---------
+
+[jan] Allow to group fields into tabs.
+[mms] Link email address in object view.
+[cjh] Merge the code for Turba_Source and Turba_Driver into simply
+      Turba_Driver.
+[jan] Add Persian (Western) translation (Vahid Ghafarpour
+      <vahid@ghafarpour.com>).
+[jan] Add configuration option to require certain fields in the LDAP driver.
+      (Tarjei Huse <tarjei+a_lists.phpgw@nu.no>).
+[cjh] Support custom field mappings in CSV exports, and add an Outlook export
+      type.
+[cjh] Allow replacing your addressbook with an imported one (Francois Marier
+      <francois@nit.ca>).
+[cjh] Don't show source selection dropdowns in cases where there would only be
+      one choice (Francois Marier <francois@nit.ca>).
+[cjh] Turba's API has been consolidated somewhat, with a unified import method
+      replacing add, addContact, and import_vcard.
+[jan] Add access keys.
+[cjh] Add Kolab drivers (Stuart Bingë <s.binge@codefusion.co.za>).
+[cjh] The alphabetic pager now has an "All" option.
+
+
+----------
+v2.0-ALPHA
+----------
+
+[cjh] Show an alphabetic pager for browsing address books (Mike Bydalek
+      <mbydalek@zivix.com>).
+[cjh] Rename LDAP objects when their DN changes (Tarjei Huse
+      <tarjei+a_lists.phpgw@nu.no>).
+[cjh] Add exporting of VCards from the browse/search view (Mike Bydalek
+      <mbydalek@zivix.com>).
+[cjh] Initial IMSP driver (Michael Rubinsky <mike@theupstairsroom.com>).
+[cjh] Use Horde_UI_Pager to page browse results (Joel Vandal
+      <joel@scopserv.com>).
+[cjh] Basic support for setting permissions on Turba sources (Joel Vandal
+      <joel@scopserv.com>).
+[cjh] Unify search and advanced search code to use a much more similar
+      interface (Joel Vandal <joel@scopserv.com>).
+[cjh] Javascript delete confirmation is now available as a preference ("W.
+      David Betts" <david@populus.com>).
+[cjh] Searching composite fields, and other complex generated searching, now
+      works with the LDAP driver.
+[cjh] Track addition, modification, and deletion of contacts with the Horde
+      History:: API.
+[cjh] Use arbitrary search support to include searching of composite fields.
+[cjh] Turba_Drivers are now capable of arbitrary searches, including unlimited
+      nested combinations of AND and OR searches.
+[cjh] Add the ability to link fields in the backend into a composite field,
+      which is not editable, but which displays the correct value.
+[cjh] Add the ability to move or copy contacts to a separate addressbook.
+[cjh] Display multiple email addresses more intelligently (John Dalbec
+      <jpdalbec@ysu.edu>).
+[cjh] Allow setting a limit on the number of queries returned by an LDAP
+      search (Andrew Morgan <morgan@orst.edu>).
+[cjh] Add edit/delete links in browse views.
+[cjh] Preference for default directory for searches, etc. (Richard Heggs
+      <Richard.Heggs@nottinghamcity.gov.uk>).
+[mms] Add support for listing/adding/retrieval of public keys.
+[cjh] Use the new PrefsUI class.
+[jon] Adapt to the new Horde::img() syntax.
+[cjh] Use the new Notification system.
+[jan] Remove the standard value for the language preference. The language to
+      fall back to should be set Horde wide in lang.php instead.
+
+
+------
+v1.2.5
+------
+
+[jan] Close XSS when setting the parent frame's page title by javascript (cjh).
+[jan] Fix warning with LDAP backends.
+
+
+------
+v1.2.4
+------
+
+[jan] Fix distribution lists.
+
+
+------
+v1.2.3
+------
+
+[cjh] Check permission when adding and deleting objects (Bug #671).
+[jan] Fix bug in LDAP driver with dn values not being UTF8 encoded (Bug #378).
+[jan] Fix sorting by columns in browse view.
+[cjh] Use prepare/execute in the SQL driver to support large fields on Oracle
+      and other databases (Matt Selsky <selsky@columbia.edu>).
+[jan] Don't create distribution list if process gets cancelled (Bug #377).
+
+
+------
+v1.2.2
+------
+
+[jan] Add Galician translation (Rafael Varela Pet <srrafa@usc.es>, Guillermo
+      Mendez <guille@usc.es>).
+
+
+------
+v1.2.1
+------
+
+[jan] Fix importing of vCard 2.1 data that contains commas (needs Horde 2.2.4).
+[jan] Make sorting order dependent of the name format (Sergey Zhukov
+      <sergey@intellij.net>).
+[jan] Add Arabic (Syria) translation (Platinum Development Team
+      <devteam@platinum-sy.net>).
+[jan] Add Macedonian translation (Stojan Pesov <ssp@eureka.com.mk>).
+[jan] Add Romanian translation (Eugen Hoanca <eugenh@urban-grafx.ro>, Marius
+      Dragulescu <mariusd@urban-grafx.ro>).
+[cjh] Remove dependency on class not in Horde 2.x.
+
+
+----
+v1.2
+----
+
+[cjh] Use the 'objectclass' entry from LDAP sources instead of defaulting to
+      'objectclass=*'.
+[jan] Add Catalan translation (Angels Guimerà <angels.Guimera@uab.es>).
+[jan] Add a preference for viewing names as Lastname, Firstname (Marc Jauvin
+      <marc@register4less.com>).
+[jan] Add Latvian translation (Kaspars Kapenieks <kaspars@rcc.lv>).
+[cjh] Close several small XSS vulnerabilities (Mitja Kolsek
+      <mitja.kolsek@acros.si>).
+[cjh] Fix problems with cached search results from different backends.
+[jan] If an LDAP directory is configured to use utf8 encoding, encode
+      attributes when adding them to the directory (cjh).
+[jan] Add Turba_List::remove() (cjh).
+[jan] Add Turba_Object::fromvCard() (cjh).
+[jan] Add a registry script for Turba (Michael Cochrane
+      <mike@graftonhall.co.nz>).
+[jan] Add distribution list support (Michael Cochrane
+      <mike@graftonhall.co.nz>).
+[jan] Add personal LDAP address book HOWTO and example (cjh).
+[jan] Add generic add, delete, get, list API functions for specific fields
+      (mms).
+[jan] Add Turba::addParameter().
+[jan] Add Lithuanian translation (Darius Matuliauskas <darius@lnk.lt>).
+[cjh] Add a miniwindow interface that can be used in popups from other
+      applications.
+[cjh] Add preferences-based addressbook capability for small, private
+      addressbooks.
+[cjh] Make sure vCard email addresses are imported as just the email address,
+      not as Personal Info <address@example.com>.
+[cjh] Add Turba::getBareAddress() for converting "Personal Info
+      <address@example.com>" into just address@example.com.
+[jan] Add Bulgarian translation (Miroslav Pendev <pendev@hotmail.com>).
+[cjh] Add links to MapQuest from address fields.
+[jan] Pass contact name to compose link in display view.
+[jan] Replace <?= with <?php echo to remove the short_open_tags requirement
+      (cjh).
+[jan] Fix preference for default view.
+[jan] Add import/export filter for TSV, Mulberry and Pine (Liam Hoekenga
+      <liamr@umich.edu>).
+
+
+----
+v1.1
+----
+
+[jan] Add Hungarian translation (Laszlo L. Tornoci <torlasz@xenia.sote.hu>).
+[jan] Add Norwegian Nynorsk translation (Per-Stian Vatne <psv@orsta.org>).
+[jan] Add Slovenian translation (Jure Krasovic <jurek@rcc-irc.si>).
+[jan] Add Japanese translation (B.J. Black <william.black@sun.com>).
+[cjh] Add an optional parameter to set the LDAP protocol version.
+[cjh] Close a potential problem with register_globals On and $js_onLoad.
+[jan] Add Portugal Portugues translation (Nuno Loureiro <nuno@eth.pt>).
+[cjh] Add a Browse interface for easily listing all contacts.
+[cjh] Change some button inputs to submits and remove some javascript.
+[cjh] Source-wide filters with LDAP are always AND-ed.
+[cjh] Remove awkward To:, Cc:, Bcc: message composition interface and clean
+      up UI.
+[cjh] Delete empty attributes instead of just leaving them unchanged.
+[cjh] Log SQL and LDAP queries at LOG_DEBUG.
+[cjh] Don't generate LDAP searches with 'attr=**' in them for empty values
+      (use attr=*).
+[cjh] Say "Edit 'entry'" instead of just "entry" in the mouseover text for
+      search results which are editable.
+[cjh] Add a local LDAP directory example.
+[cjh] Don't store objects in the search results session cache; a bit slower,
+      but seems to be much more reliable.
+[cjh] Vastly improve search results handling - store them in the session,
+      don't add duplicate results, let people use the back button, etc.
+[cjh] Fix the column select javascript.
+[cjh] Add list mouseover effect (Ronnie Garcia <ronnie@mk2.net>).
+[cjh] Fix results problem with advanced.php and old results.
+[cjh] Patches to tweak the LDAP driver to handle things a bit more correctly
+      (HiCkS <hicks@666.hn.org>).
+[cjh] Add and use TURBA_TEMPLATES constant.
+[cjh] Use $registry->get() for all Registry information.
+[jan] Add 'admin' entry to the sources hash to give write access on readonly
+      addressbooks to certain logged in users.
+[jon] Enable the "portability" option in the SQL driver.
+[jan] Add preferences page and user preference to select the columns that shall
+      be displayed in the search results.
+[jan] Add Estonian translation (Toomas Aas <toomas.aas@raad.tartu.ee>).
+[jan] Add Slovak translation (Leo Mrafko <leo@oel.sk>).
+[jon] Enable the "portability" option in the SQL driver.
+[jan] Add Ukrainian translation (Andriy Kopystyansky <anri@polynet.lviv.ua>).
+[jan] Add Danish translation (Martin List-Petersen <martin@list-petersen.dk>).
+[jan] Fix bug "This person is already in your addressbook.".
+
+
+----
+v1.0
+----
+
+[jan] Add Norwegian Bookmal translation (Oystein Steimler <oystein@rexta.net>).
+[avsm] Add .htaccess files to deny access to data directories.
+[jan] Add Finnish translation (Leena Heino <liinu@uta.fi>).
+[cjh] Avoid adding duplicate entries through the add API method.
+
+
+--------
+v1.0-RC4
+--------
+
+[rich] Include rewritten and reorganized documentation.
+[rich] License under Horde APL.
+[cjh] Make email addresses clickable in displayed objects.
+[bjn] Change 'en' and 'en_EN' locales to 'en_US' (default).
+[cjh] Vastly improve error reporting when adding an object fails.
+[jan] Add Brazilian Portuguese translation (Carlos Daniel Kibrit
+      <kibrit@terra.com.br>).
+[jan] Add Greek translation (Stefanos I. Dimitriou <sdimitri@teiath.gr>).
+[jan] Add Swedish translation (Andreas Dahlén <andreas@dahlen.ws>).
+[jan] Add Korean translation (J.I Kim <aporie@netian.com>).
+[cjh] Remove duplicate entries from multiple sources from
+      turbaExpandAddresses() results.
+[cjh] Don't show the addressbook select widget on the search page if there's
+      just one to search from.
+
+
+------
+v0.0.3
+------
+
+[cjh] Add an optional 'strict' configuration array definining fields which
+      must always be matched exactly.
+[jan] Add API function to get info about the fields.
+[jan] Add source configuration to select which fields should be searchable by
+      default.
+[cjh] Allow OR searches.
+[cjh] Pass full email addresses (with names) to messages being composed
+      (Lars Nummedal <largs@nummedal.net>).
+[jan] Add Polish translation.
+[jan] Add mapping of date/time fields to the import feature.
+[jan] Add support for date fields (e.g. birthdays).
+[jan] turbaExpandAddresses() now returns all email addresses that belong
+      to a contact.
+[jan] Show the fields in edit and display view dynamically based on what's
+      provided by the backend.
+[jan] Add Italian translation (Giovanni Meneghetti <gmeneghetti@infvic.it>).
+[jan] Add import/export ui based on the new Data class.
+[cjh] Add Traditional Chinese translation (David Chang <david@thbuo.gov.tw>).
+[cjh] Add Czech translation (pchytil@asp.ogi.edu).
+[cjh] Add Russian translation (Ignat Ikryanov <ignat@ibd.ru>).
+[cjh] Add $conf['menu']['apps'] support and a help link.
+[cjh] Make incremental building up of search results works again in both
+      search and advanced search.
+[cjh] Add Alias to default fields (Marc Jauvin <marc@register4less.com>).
+[cjh] Use the *url() functions more consistently to make sure that
+      cookie-less sessions work.
+
+
+------
+v0.0.2
+------
+
+[cjh] Add some more error checking to the searching and LDAP driver.
+[cjh] Add config/attributes.php to provide nice labels for directory
+      attributes.
+[cjh] Adding German translation from Jan Schneider <janmailing@gmx.de>.
+[cjh] Allow LDAP Sources to define a filter always included in searches
+      (rbarnett@neuromics.com).
+[jon] Preserve the search parameters after a search is performed.
+[jon] Allow the registry to handle Turba's configuration values.
+[jon] HORDE_BASE is now defined in lib/base.php instead of config/conf.php.
+[max] Adding source retrieval API function.
+[cjh] Adding Dutch translation from Jan Kuipers <jrkuipers@lauwerscollege.nl>.
+[jon] Adding French translation from Sam Przyswa <samp@arial-concept.com>.
+[cjh] Add gettext infrastructure.
+[cjh] Define the HORDE_BASE constant in config/conf.php, and use it when
+      referring to any of Horde's files.
+[cjh] Bring the advanced search page up to date, and add it to the menu.
+[jon] Retired config/menu.txt in favor of config/menu.php.  This file follows
+      a new format based on native PHP data structures.
+[max] Expand API to allow adding addresses to an addressbook.
+[cjh] Add the first API function (expanding addresses) for Turba in
+      lib/api.php.
+[cjh] Add and Delete now work for the LDAP driver.
+[cjh] Fix wap contacts searching.
+[cjh] Turba now uses Horde authentication instead of its own. This means
+      that whatever auth method you are using for Horde will be used to
+      authenticate to Turba, and in return you get single sign-on with any
+      other apps using Horde authentication.
+[cjh] Working addObject() and removeObject() SQL driver methods.
+[cjh] Move Turba_Source::getMyObject() to Turba_Source::getObject(); nothing
+      was using the old getObject() call anymore.
+[cjh] If you set $params['bind_dn'] and $params['bind_password'] for an LDAP
+      source, Turba will bind as the specified dn to the LDAP server,
+      letting you add/edit entries.
+[cjh] Update capatilization to match Horde/PEAR standards.
+[cjh] register_globals = Off fixes.
+[cmc] Add a display object page, fix a ldap bug with the dn, add
+      a read function to the turba source class (Done by Christian
+      M. Couder (cmc) <christian@alcove.fr>).
+[cjh] Add an advanced search page contributed by Christian Couder
+      <christian@alcove.fr>.
+[cjh] Bring the WML templates up to date with recent changes.
+[cjh] Make the LDAP server port configurable and make sure the parameter
+      appears in the example sources.
+[cjh] Implemented edit functionality for the SQL driver.
+[cjh] Moved the filter() functionality (and supporting functions) into
+      Turba_List, where it really belongs.
+[cjh] We now actually use Turba_List, Turba_AbstractObject, Turba_ListView,
+      and many other pieces of the class hierarchy that were previously only
+      referenced in the object model.
+[cjh] Clean up the sql Driver implementation a bit. Now, if the source is
+      private, the __owner criteria must match the current user, instead of
+      using __key. __key should uniquely identify each object, and shouldn't
+      be what user that object belongs to.
+[cjh] Reorganize the class hierarchy a bit - use Object instead of Contact,
+      and a few other naming changes.
+[cjh] Merged WAP functionality into search.php. If a WAP browser is
+      detected, a slimmed-down wml interface will be used that only displays
+      names and (callable) phone numbers.
+
+
+------
+v0.0.1
+------
+
+[cjh] Fix bug where searches with no results would tack on an empty row.
+[cjh] Conversion to CSS.
+[cjh] Cleanup, modernization.
+[jon] Silence session_start warnings.
+[jon] Use Horde::url() in place of the deprecated buildURL() function.
+[cjh] Use new session model and $horde['session_name'].
+[cjh] Fixed message sending javascript to work with multiple addresses.
+[jon] Allow directory sources to be set 'read-only' (non-editable).
+[jon] Added a 'public' flag to the $cfgSources entries.
+[jon] Contact attributes are configurable via config/attributes.php.
+[jon] Renamed the source configuration hash to $cfgSources (from just
+      $sources).
+[jon] Moved from config/ldap.php to config/sources.php.
+[jon] Converted Chuck's existing class stubs into a PEAR-style lib/ tree.

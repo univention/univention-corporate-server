@@ -1,0 +1,40 @@
+<table width="100%" cellspacing="0">
+ <tr>
+  <td class="mboxcontrol <if:isbottom>topborder<else:isbottom>bottomborder</else:isbottom></if:isbottom>">
+   <ul class="msgactions">
+    <li><tag:delete /></li>
+    <li><tag:reply />
+     <ul>
+      <li><tag:reply_sender /></li>
+      <if:reply_list><li><tag:reply_list /></li></if:reply_list>
+      <if:show_reply_all><li><tag:show_reply_all /></li></if:show_reply_all>
+     </ul>
+    </li>
+    <li><tag:forward />
+     <ul>
+      <li><tag:forwardall /></li>
+      <li><tag:forwardbody /></li>
+      <li><tag:forwardattachments /></li>
+     </ul>
+    </li>
+    <li><tag:redirect /></li>
+    <if:show_thread><li><tag:show_thread /></li></if:show_thread>
+    <if:blacklist><li><tag:blacklist /></li></if:blacklist>
+    <if:whitelist><li><tag:whitelist /></li></if:whitelist>
+    <if:view_source><li><tag:view_source /></li></if:view_source>
+    <if:resume><li><tag:resume /></li></if:resume>
+    <li><tag:save_as /></li>
+    <li><tag:print /></li>
+    <if:spam><li><tag:spam /></li></if:spam>
+    <if:notspam><li><tag:notspam /></li></if:notspam>
+    <li class="lastnavbar"><tag:headers />
+     <ul>
+      <if:common_headers><li><tag:common_headers /></li></if:common_headers>
+      <if:all_headers><li><tag:all_headers /></li></if:all_headers>
+      <if:list_headers><li><tag:list_headers /></li></if:list_headers>
+     </ul>
+    </li>
+   </ul>
+  </td>
+ </tr>
+</table>

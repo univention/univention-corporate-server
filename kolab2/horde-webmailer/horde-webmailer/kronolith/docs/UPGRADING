@@ -1,0 +1,96 @@
+=====================
+ Upgrading Kronolith
+=====================
+
+:Last update:   $Date: 2009-10-15 09:33:53 $
+:Revision:      $Revision: 1.1.8.16 $
+:Contact:       kronolith@lists.horde.org
+
+
+These are instructions to upgrade from earlier Kronolith versions. Please
+backup your existing data before running any of the steps described below. You
+can't use the updated data with your old Kronolith version anymore.
+
+
+Upgrading Kronolith from 2.3 to 2.3.x
+=====================================
+
+Kronolith requires at least version 0.21.0 of Date_Holidays now, which has
+much better support for translations.
+
+
+Upgrading Kronolith from 2.2 to 2.3.x
+=====================================
+
+Some fields in the SQL share driver tables have been changed. Execute the
+provided SQL script to update your database if you are using the native SQL
+share driver.
+
+   mysql --user=root --password=<MySQL-root-password>  <db name> < scripts/upgrades/2.2_to_2.3.sql
+
+
+Upgrading Kronolith from 2.1.x to 2.2.x
+=======================================
+
+
+SQL Backends
+------------
+
+Two new fields have been added to the default SQL table layout.
+
+Execute the provided SQL script to update your data to the new Kronolith
+version, e.g.::
+
+   mysql --user=root --password=<MySQL-root-password> <db name> < scripts/upgrades/2.1_to_2.2.sql
+
+
+New Beta SQL Share Driver Support
+---------------------------------
+
+A new beta-level SQL Horde_Share driver has been added in Horde 3.2. This driver
+offers significant performance improvements over the existing Datatree driver,
+but it has not received the same level of testing, thus the beta designation.
+In order to make use of this driver, you must be using Horde 3.2-RC3 or
+later. The new tables needed for this driver already should have been created
+by the step above.
+
+If you want to use the new SQL Share driver, you must also execute the
+provided PHP script to migrate your existing share data to the new format::
+
+   php scripts/upgrades/convert_datatree_shares_to_sql.php
+
+
+Preferences
+-----------
+
+The preference that stores the address books that are searched for attendees
+with free/busy urls has changed both the name and the format. The preference
+used to be called "search_abook" and contained a serialized PHP array. The new
+preference is called "search_sources", contains a tab-separated list, and goes
+along with the "search_fields" preference.
+
+
+Upgrading Kronolith from 1.1.x to 2.0.x
+=======================================
+
+
+SQL Backends
+------------
+
+Three new fields and a new table have been added to the default SQL table
+layout to provide the scheduling features to Kronolith.
+
+Execute the provided SQL script to update your data to the new Kronolith
+version::
+
+   mysql --user=root --password=<MySQL-root-password> <db name> < scripts/upgrades/1.1_to_2.0.mysql.sql
+
+
+Categories
+----------
+
+Categories are now being maintained centrally for all Horde applications that
+support them.  To convert the old event categories execute the provided PHP
+script::
+
+   php scripts/upgrades/2004-05-19_convert_categories_to_strings.php

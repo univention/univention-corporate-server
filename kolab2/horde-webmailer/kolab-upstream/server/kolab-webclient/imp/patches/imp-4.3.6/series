@@ -3,3 +3,4 @@ t_imp_H_GW_DefaultLoginView.diff
 t_imp_H_GW_AclView.diff
 t_imp_H_GW_FoldersView.diff
 t_imp_HK_GW_ItipHandling.diff
+t_imp_HK_UV_fix_login_by_uid.diff

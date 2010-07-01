@@ -1,0 +1,801 @@
+# translation of fr_FR.po to french
+# French translations for Dimp package.
+# Copyright 2007-2009 The Horde Project
+# This file is distributed under the same license as the Dimp package.
+#
+# Thierry Thomas <thierry@pompo.net>, 2007.
+# Yannick Sebastia <yannick.sebastia@ecole-navale.fr>, 2008, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: fr_FR\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2009-05-22 09:05+0200\n"
+"PO-Revision-Date: 2009-01-13 10:15+0100\n"
+"Last-Translator: Yannick Sebastia <yannick.sebastia@ecole-navale.fr>\n"
+"Language-Team: French <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: lib/Views/ShowMessage.php:295
+#, php-format
+msgid "%d Attachment"
+msgid_plural "%d Attachments"
+msgstr[0] "%d pièce jointe"
+msgstr[1] "%d pièces jointes"
+
+#: imp.php:675
+#, php-format
+msgid "%s messages were purged from \"%s\"."
+msgstr "%s messages ont été effacés de « %s »."
+
+#: lib/Block/newmail.php:70
+#, php-format
+msgid "%s more unseen messages..."
+msgstr "encore %s messages non lus..."
+
+#: imp.php:461
+#, php-format
+msgid "%s was successfully added to your address book."
+msgstr "%s a bien été ajouté à votre carnet d'adresses."
+
+#: templates/index/index.inc:247
+#, php-format
+msgid ""
+"%s will delete the current message and move to the next message if a single "
+"message is selected."
+msgstr ""
+"%s upprimera le(s) message(s) sélectionné(s) et se placera sur le suivant si "
+"un seul message est sélectionné."
+
+#: imp.php:673
+#, php-format
+msgid "1 message was purged from \"%s\"."
+msgstr "1 message a été effacé de « %s »."
+
+#: lib/Block/newmail.php:68
+msgid "1 more unseen message..."
+msgstr "encore 1 message non lu..."
+
+#: lib/DIMP.php:227
+msgid ""
+"A popup window could not be opened. Your browser may be blocking popups."
+msgstr ""
+"Une fenêtre surgissante ne peut pas être ouverte ; votre navigateur doit les "
+"bloquer."
+
+#: templates/chunks/message.php:127 templates/index/index.inc:422
+msgid "Add to Address Book"
+msgstr "Ajouter au carnet d'adresses"
+
+#: templates/index/index.inc:193 templates/index/index.inc:198
+msgid "All"
+msgstr "Tout"
+
+#: templates/index/index.inc:220 templates/index/index.inc:222
+msgid "Arrival"
+msgstr "Arrivée"
+
+#: templates/chunks/message.php:122 templates/index/index.inc:392
+msgid "Attachments Only"
+msgstr "Pièces jointes seules"
+
+#: templates/index/index.inc:126
+msgid "Base Level"
+msgstr "Racine"
+
+#: templates/chunks/compose.php:114
+msgid "Bcc: "
+msgstr "Cci:"
+
+#: templates/index/index.inc:360 templates/index/index.inc:405
+msgid "Blacklist"
+msgstr "Liste noire"
+
+#: templates/chunks/message.php:121 templates/index/index.inc:391
+msgid "Body Text Only"
+msgstr "Corps du texte seul"
+
+#: lib/DIMP.php:219
+msgid "Cancel"
+msgstr "Annuler"
+
+#: lib/DIMP.php:255
+msgid ""
+"Cancelling this message will permanently discard its contents and will "
+"delete auto-saved drafts.\n"
+"Are you sure you want to do this?"
+msgstr ""
+"L'annulation du message entraînera la perte définitive de son contenu et "
+"supprimera le brouillon enregistré.\n"
+"Êtes-vous sûr de vouloir faire ça ?"
+
+#: templates/index/index.inc:293
+msgid "Cc"
+msgstr "Cc"
+
+#: templates/chunks/compose.php:100
+msgid "Cc: "
+msgstr "Cc:"
+
+#: templates/chunks/compose.php:57
+msgid "Check Spelling"
+msgstr "Vérifier l'orthographe"
+
+#: templates/index/index.inc:330
+msgid "Check for New Mail"
+msgstr "Vérifier les nouveaux messages"
+
+#: lib/DIMP.php:221
+msgid "Checking..."
+msgstr "Vérification..."
+
+#: templates/index/index.inc:351 templates/index/index.inc:375
+#: templates/index/index.inc:401
+msgid "Clear Flag"
+msgstr "Effacer l'indicateur"
+
+#: templates/index/index.inc:242
+#, php-format
+msgid ""
+"Click on a message while holding down the %s key to select multiple "
+"messages.  To select a range of messages, click the first message of the "
+"range, navigate to the last message of the range, and then click on the last "
+"message while holding down the %s key."
+msgstr ""
+"Cliquer sur un message en pressant la touche %s pour sélectionner plusieurs "
+"messages non contigus. Pour sélectionner une série de messages, cliquer sur "
+"le premier de la série, déplacer votre curseur jusqu'au dernier de la série, "
+"puis cliquer dessus en pressant la touche %s."
+
+#: templates/index/index.inc:276
+msgid "Collapse Headers"
+msgstr "Replier les en-têtes"
+
+#: templates/index/index.inc:183
+msgid "Compose"
+msgstr "Nouveau message"
+
+#: templates/index/index.inc:234
+msgid "Could not get message list from server"
+msgstr "Impossible d'obtenir une liste de messages du serveur"
+
+#: lib/DIMP.php:231
+msgid "Create folder:"
+msgstr "Créer un dossier"
+
+#: templates/index/index.inc:322 templates/index/index.inc:335
+msgid "Create subfolder"
+msgstr "Créer un sous-dossier"
+
+#: lib/DIMP.php:232
+msgid "Create subfolder:"
+msgstr "Créer un sous-dossier :"
+
+#: templates/index/index.inc:242 templates/index/index.inc:249
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: config/prefs.php.dist:11
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Définir les tâches à exécuter lors de la connexion à %s."
+
+#: templates/index/index.inc:219 templates/index/index.inc:223
+#: templates/index/index.inc:285
+msgid "Date"
+msgstr "Date"
+
+#: templates/index/index.inc:247
+msgid "Del"
+msgstr "Suppr"
+
+#: templates/chunks/message.php:49 templates/index/index.inc:185
+#: templates/index/index.inc:365 templates/index/index.inc:377
+msgid "Delete"
+msgstr "Supprimer"
+
+#: templates/index/index.inc:325
+msgid "Delete Folder"
+msgstr "Détruire le dossier"
+
+#: templates/index/index.inc:247
+msgid "Delete the currently selected message(s)."
+msgstr "Supprimer le(s) message(s) sélectionné(s)."
+
+#: templates/index/index.inc:331
+msgid "Do Not Check for New Mail"
+msgstr "Ne pas scruter l'arrivée de nouveau courrier"
+
+#: templates/index/index.inc:324
+msgid "Empty Folder"
+msgstr "Vider le dossier"
+
+#: templates/index/index.inc:246
+msgid "End"
+msgstr "Fin"
+
+#: templates/index/index.inc:248
+msgid "Enter"
+msgstr "Entrée"
+
+#: templates/chunks/message.php:120 templates/index/index.inc:390
+msgid "Entire Message"
+msgstr "Message complet"
+
+#: templates/index/index.inc:257
+msgid "Expand Headers"
+msgstr "Développer les en-têtes"
+
+#: templates/index/index.inc:350 templates/index/index.inc:374
+#: templates/index/index.inc:400
+msgid "Flag Message"
+msgstr "Marquer le message"
+
+#: config/portal.php.dist:28
+msgid "Folder Summary"
+msgstr "Sommaire du dossier"
+
+#: templates/index/index.inc:191
+msgid "Folders: "
+msgstr "Dossiers : "
+
+#: templates/chunks/message.php:42 templates/index/index.inc:176
+msgid "Forward"
+msgstr "Transfert"
+
+#: templates/index/index.inc:346
+msgid "Forward Attachments Only"
+msgstr "Ne transférer que les pièces jointes"
+
+#: templates/index/index.inc:345
+msgid "Forward Body Text Only"
+msgstr "Ne transférer que le corps du texte seul"
+
+#: templates/index/index.inc:344
+msgid "Forward Entire Message"
+msgstr "Transférer le message complet"
+
+#: templates/index/index.inc:199 templates/index/index.inc:207
+#: templates/index/index.inc:281
+msgid "From"
+msgstr "De"
+
+#: templates/chunks/compose.php:76
+msgid "From: "
+msgstr "De : "
+
+#: config/prefs.php.dist:9
+msgid "General Options"
+msgstr "Options générales"
+
+#: lib/DIMP.php:222 templates/index/index.inc:63 templates/index/index.inc:184
+msgid "Get Mail"
+msgstr "Récupérer le courrier"
+
+#: lib/Block/newmail.php:72
+msgid "Go to your Inbox..."
+msgstr "Aller à votre boîte d'arrivée..."
+
+#: lib/Views/ShowMessage.php:359
+msgid "HERE"
+msgstr "ICI"
+
+#: templates/chunks/compose.php:67
+msgid "HTML composition"
+msgstr "Rédaction en HTML"
+
+#: lib/DIMP.php:228 templates/index/index.inc:396
+msgid "Hide Preview"
+msgstr "Cacher la pré-visualisation"
+
+#: lib/DIMP.php:213
+msgid "Hide Quoted Text"
+msgstr "Cacher les citations"
+
+#: templates/index/index.inc:427
+msgid "High Priority"
+msgstr "Priorité élevée"
+
+#: templates/index/index.inc:246
+msgid "Home"
+msgstr "Accueil"
+
+#: templates/index/index.inc:60
+msgid "Horde"
+msgstr "Horde"
+
+#: config/prefs.php.dist:22
+msgid "Inbox"
+msgstr "Boîte de réception"
+
+#: templates/index/index.inc:181
+msgid "Innocent"
+msgstr "Légitime"
+
+#: lib/DIMP.php:220 templates/chunks/compose.php:20
+#: templates/index/index.inc:34
+msgid "Loading..."
+msgstr "Chargement..."
+
+#: templates/index/index.inc:79
+msgid "Log Out"
+msgstr "Déconnexion"
+
+#: config/prefs.php.dist:10
+msgid "Login Tasks"
+msgstr "Tâches de connexion"
+
+#: templates/index/index.inc:428
+msgid "Low Priority"
+msgstr "Priorité faible"
+
+#: lib/Views/ListMessages.php:160
+#, php-format
+msgid "Mailbox %s does not exist."
+msgstr "La boîte « %s » n'existe pas."
+
+#: templates/index/index.inc:328
+msgid "Mark all as New"
+msgstr "Marquer tout comme Nouveau"
+
+#: templates/index/index.inc:327
+msgid "Mark all as Read"
+msgstr "Marquer tout comme Lu"
+
+#: templates/index/index.inc:357
+msgid "Mark as Innocent"
+msgstr "Déclarer légitime"
+
+#: templates/index/index.inc:349 templates/index/index.inc:399
+msgid "Mark as New"
+msgstr "Marquer comme Nouveau"
+
+#: templates/index/index.inc:348 templates/index/index.inc:398
+msgid "Mark as Read"
+msgstr "Marquer comme Lu"
+
+#: templates/index/index.inc:354
+msgid "Mark as Spam"
+msgstr "Marquer comme Pourriel"
+
+#: lib/DIMP.php:209
+msgid "Message"
+msgstr "Message"
+
+#: compose.php:344
+msgid "Message Composition"
+msgstr "Rédaction de message"
+
+#: compose.php:182
+msgid "Message sent successfully."
+msgstr "Le message a bien été envoyé."
+
+#: templates/chunks/message.php:37 templates/chunks/message.php:105
+msgid "Message:"
+msgstr "Message :"
+
+#: templates/index/index.inc:197
+msgid "Message: "
+msgstr "Message : "
+
+#: lib/DIMP.php:210
+msgid "Messages"
+msgstr "Messages"
+
+#: lib/DIMP.php:217
+#, php-format
+msgid "Move %s to %s"
+msgstr "Déplacer %s vers %s"
+
+#: templates/index/index.inc:245
+msgid "Move one page up/down through the message list."
+msgstr ""
+"De déplacer d'une page vers le haut ou vers le bas dans la liste des "
+"messages."
+
+#: templates/index/index.inc:246
+msgid "Move to the beginning/end of the message list."
+msgstr "Aller au début/à la fin de la liste des messages."
+
+#: templates/index/index.inc:244
+msgid "Move up/down through the message list."
+msgstr "Se déplacer dans la liste des messages."
+
+#: templates/index/index.inc:118
+msgid "My Folders"
+msgstr "Mes Dossiers"
+
+#: templates/index/index.inc:122
+msgid "New Folder"
+msgstr "Nouveau dossier"
+
+#: compose.php:204 templates/chunks/message.php:126
+#: templates/index/index.inc:62 templates/index/index.inc:421
+msgid "New Message"
+msgstr "Nouveau message"
+
+#: lib/DIMP.php:212
+msgid "No Messages"
+msgstr "Pas de messages"
+
+#: lib/Block/foldersummary.php:75
+msgid "No folders are being checked for new mail."
+msgstr "Aucun dossier n'est scruté pour les nouveaux messages."
+
+#: lib/Block/foldersummary.php:79
+msgid "No folders with new messages"
+msgstr "Aucun dossier avec de nouveaux messages"
+
+#: lib/Block/foldersummary.php:77
+msgid "No folders with unseen messages"
+msgstr "Aucun dossier avec des messages non-lus"
+
+#: templates/index/index.inc:233
+msgid "No messages to display"
+msgstr "Aucun message à afficher"
+
+#: lib/Block/newmail.php:41
+msgid "No unread messages"
+msgstr "Aucun message non lu"
+
+#: lib/DIMP.php:216
+msgid "Ok"
+msgstr "Ok"
+
+#: templates/index/index.inc:16 templates/index/index.inc:263
+msgid "Open in new window"
+msgstr "Ouvrir dans une nouvelle fenêtre"
+
+#: templates/index/index.inc:248
+msgid "Open message in a popup window."
+msgstr "Ouvrir le message dans une fenêtre surgissante."
+
+#: templates/index/index.inc:74
+msgid "Options"
+msgstr "Options"
+
+#: templates/index/index.inc:186
+msgid "Other Actions"
+msgstr "Autres actions"
+
+#: lib/DIMP.php:233
+msgid "Permanently delete all messages?"
+msgstr "Effacer tous les messages définitivement ?"
+
+#: lib/DIMP.php:234
+msgid "Permanently delete this folder?"
+msgstr "Effacer ce dossier définitivement ?"
+
+#: templates/index/index.inc:245
+msgid "PgDown"
+msgstr "Vers le bas"
+
+#: templates/index/index.inc:245
+msgid "PgUp"
+msgstr "Vers le haut"
+
+#: lib/DIMP.php:205 templates/index/index.inc:69 templates/index/index.inc:141
+#: config/prefs.php.dist:21
+msgid "Portal"
+msgstr "Portail"
+
+#: templates/chunks/message.php:57 templates/index/index.inc:265
+msgid "Print"
+msgstr "Imprimer"
+
+#: templates/index/index.inc:415
+msgid "Purge Deleted"
+msgstr "Vider la corbeille"
+
+#: templates/chunks/compose.php:52
+msgid "Read Receipt"
+msgstr "Accusé de lecture"
+
+#: lib/DIMP.php:263
+msgid ""
+"Really discard all formatting information? This operation cannot be undone."
+msgstr ""
+"Supprimer réellement toutes les informations de formatage ? Cette opération "
+"ne pourra pas être annulée."
+
+#: templates/index/index.inc:323 templates/index/index.inc:336
+msgid "Rename Folder"
+msgstr "Changer le nom du dossier"
+
+#: lib/DIMP.php:230
+msgid "Rename folder to:"
+msgstr "Changer le nom du dossier :"
+
+#: templates/chunks/message.php:41 templates/index/index.inc:175
+msgid "Reply"
+msgstr "Répondre"
+
+#: templates/index/index.inc:341
+msgid "Reply to All"
+msgstr "Répondre à tous"
+
+#: compose.php:232
+msgid "Reply to All:"
+msgstr "Répondre à tous :"
+
+#: templates/index/index.inc:342
+msgid "Reply to List"
+msgstr "Répondre à la liste"
+
+#: compose.php:234
+msgid "Reply to List:"
+msgstr "Répondre à la liste:"
+
+#: templates/index/index.inc:340
+msgid "Reply to Sender"
+msgstr "Répondre à l'expéditeur"
+
+#: compose.php:230
+msgid "Reply:"
+msgstr "Répondre :"
+
+#: templates/chunks/message.php:47
+msgid "Report Innocent"
+msgstr "Déclarer légitime"
+
+#: templates/chunks/message.php:44
+msgid "Report Spam"
+msgstr "Déclarer comme pourriel"
+
+#: compose.php:214 lib/Views/ShowMessage.php:154
+msgid "Requested message not found."
+msgstr "Message demandé non trouvé."
+
+#: templates/index/index.inc:372
+msgid "Resume Draft"
+msgstr "Reprendre le brouillon"
+
+#: lib/Views/ShowMessage.php:298
+msgid "Save All"
+msgstr "Enregistrer tout"
+
+#: templates/chunks/compose.php:140
+msgid "Save Attachments in sent folder"
+msgstr "Sauvegarder les pièces jointes dans le dossier du courrier envoyé"
+
+#: templates/chunks/compose.php:58
+msgid "Save as Draft"
+msgstr "Enregistrer en tant que brouillon"
+
+#: templates/chunks/compose.php:55
+msgid "Save in "
+msgstr "Enregistrer dans "
+
+#: lib/DIMP.php:262
+msgid "Saving..."
+msgstr "Enregistrement..."
+
+#: lib/DIMP.php:207
+msgid "Search"
+msgstr "Rechercher"
+
+#: lib/Views/ListMessages.php:80
+msgid "Search Results"
+msgstr "Résultats de la recherche"
+
+#: templates/index/index.inc:412
+msgid "Select All"
+msgstr "Tout sélectionner"
+
+#: templates/index/index.inc:249
+msgid "Select all messages in the current mailbox."
+msgstr "Sélectionner tous les messages de la boîte en cours."
+
+#: templates/chunks/compose.php:50
+msgid "Send"
+msgstr "Envoyer"
+
+#: lib/DIMP.php:256
+msgid "Send message without a Subject?"
+msgstr "Envoyer le message sans objet ?"
+
+#: lib/DIMP.php:261
+msgid "Sending..."
+msgstr "Envoi en cours..."
+
+#: templates/index/index.inc:242 templates/index/index.inc:247
+msgid "Shift"
+msgstr "Shift"
+
+#: templates/chunks/compose.php:65
+msgid "Show Bcc"
+msgstr "Montrer les Cci"
+
+#: templates/chunks/compose.php:64
+msgid "Show Cc"
+msgstr "Montrer les Cc"
+
+#: lib/DIMP.php:229 templates/index/index.inc:396
+msgid "Show Preview"
+msgstr "Pré-visualisation"
+
+#: lib/DIMP.php:214
+msgid "Show Quoted Text"
+msgstr "Afficher le texte cité"
+
+#: templates/index/index.inc:226
+msgid "Size"
+msgstr "Taille"
+
+#: templates/index/index.inc:178
+msgid "Spam"
+msgstr "Pourriel"
+
+#: templates/chunks/compose.php:70
+msgid "Special Characters"
+msgstr "Caractères spéciaux"
+
+#: templates/chunks/message.php:67 templates/index/index.inc:201
+#: templates/index/index.inc:211 templates/index/index.inc:215
+#: templates/index/index.inc:276
+msgid "Subject"
+msgstr "Objet"
+
+#: templates/chunks/compose.php:128
+msgid "Subject: "
+msgstr "Objet : "
+
+#: lib/DIMP.php:260
+msgid "The attachment limit has been reached."
+msgstr "Limite des pièces-jointes atteinte."
+
+#: lib/DIMP.php:224
+msgid "The connection to the remote server has been restored."
+msgstr "La connexion au serveur distant a été rétablie."
+
+#: templates/index/index.inc:243
+msgid "The following keyboard shortcuts are available:"
+msgstr "Les raccourcis-clavier suivants sont activés :"
+
+#: lib/DIMP.php:256
+msgid "The message does not have a Subject entered."
+msgstr "Le message ne comporte pas d'objet."
+
+#: config/prefs.php.dist:23
+msgid "The page to view immediately after login."
+msgstr "La page à visualiser immédiatement après la connexion."
+
+#: lib/Views/ShowMessage.php:360
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Click %s to send the notification "
+"message."
+msgstr ""
+"L'expéditeur de ce message vous demande un avis de réception lorsque vous "
+"aurez lu ce message. Cliquez %s pour envoyer l'avis de réception."
+
+#: lib/DIMP.php:225
+msgid "The server is still generating the message list."
+msgstr "Le serveur est encore en train de générer la liste des messages."
+
+#: lib/DIMP.php:226
+msgid ""
+"The server was unable to generate the message list. Please try again later."
+msgstr ""
+"Le serveur n'a pas pu générer la liste des messages. Veuillez réessayer plus "
+"tard."
+
+#: lib/DIMP.php:223
+msgid ""
+"There has been no contact with the remote server for several minutes. The "
+"server may be temporarily unavailable or network problems may be "
+"interrupting your session. You will not see any updates until the connection "
+"is restored."
+msgstr ""
+"Il n'y a plus eu de contact avec le serveur distant depuis plusieurs "
+"minutes ; il peut être momentanément indisponible, ou des problèmes réseau "
+"ont pu interrompre votre session. Vous ne verrez plus aucune mise à jour "
+"jusqu'au rétablissement de la connexion."
+
+#: templates/index/index.inc:212 templates/index/index.inc:214
+msgid "Thread"
+msgstr "Enfilade"
+
+#: templates/index/index.inc:200 templates/index/index.inc:208
+#: templates/index/index.inc:289
+msgid "To"
+msgstr "À"
+
+#: templates/chunks/message.php:113 templates/index/index.inc:385
+msgid "To All"
+msgstr "À tous"
+
+#: templates/chunks/message.php:115 templates/index/index.inc:386
+msgid "To List"
+msgstr "À la liste"
+
+#: templates/chunks/message.php:112 templates/index/index.inc:384
+msgid "To Sender"
+msgstr "À l'expéditeur"
+
+#: templates/index/index.inc:241
+msgid ""
+"To preview a message, select it from the list above. A right-click on the "
+"messages will display available actions."
+msgstr ""
+"Pour pré-visualiser un message, veuillez le sélectionner dans la liste ci-"
+"dessus. Vous pouvez faire un clic droit sur les messages pour voir les "
+"actions disponibles."
+
+#: templates/chunks/compose.php:86
+msgid "To: "
+msgstr "À : "
+
+#: templates/index/index.inc:367 templates/index/index.inc:379
+#: templates/index/index.inc:416
+msgid "Undelete"
+msgstr "Restaurer"
+
+#: lib/Views/ShowMessage.php:87
+msgid "Undisclosed Recipients"
+msgstr "Destinataires cachés"
+
+#: lib/Views/ShowMessage.php:323
+msgid "Unknown Date"
+msgstr "Date inconnue"
+
+#: lib/DIMP.php:259
+msgid "Uploading..."
+msgstr "Chargement..."
+
+#: lib/DIMP.php:206
+msgid "User Options"
+msgstr "Options personnelles"
+
+#: templates/chunks/message.php:60 templates/index/index.inc:268
+msgid "View Message Source"
+msgstr "Voir le message brut"
+
+#: templates/index/index.inc:363 templates/index/index.inc:408
+msgid "Whitelist"
+msgstr "Liste blanche"
+
+#: lib/DIMP.php:257
+msgid ""
+"You have already changed the message body, are you sure you want to drop the "
+"changes?"
+msgstr ""
+"Vous avez déjà changé le corps du message, êtes-vous certain de vouloir "
+"abandonner ces modification ?"
+
+#: lib/Views/ShowMessage.php:95
+msgid "[Hide Addresses]"
+msgstr "[Cacher les adresses]"
+
+#: lib/Block/newmail.php:58 lib/Views/ListMessages.php:296
+#: lib/Views/ShowMessage.php:281
+msgid "[No Subject]"
+msgstr "[Pas d'objet]"
+
+#: lib/DIMP.php:218
+msgid "base level of the folder tree"
+msgstr "Racine de l'arborescence"
+
+#: templates/index/index.inc:258
+msgid "from"
+msgstr "de"
+
+#: lib/DIMP.php:215
+msgid "lines"
+msgstr "lignes"
+
+#: lib/DIMP.php:211
+msgid "of"
+msgstr "de"
+
+#: lib/DIMP.php:258
+msgid "remove"
+msgstr "retirer"
+
+#: lib/DIMP.php:208
+msgid "results found"
+msgstr "résultats trouvés"

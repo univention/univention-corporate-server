@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>name</variable></name>
+ <create>false</create>
+ <overwrite>false</overwrite>
+
+ <table>
+
+  <name>hordetest_turba_objects</name>
+
+  <declaration>
+
+   <field>
+    <name>object_id</name>
+    <type>text</type>
+    <length>32</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>owner_id</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>object_type</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+    <default>Object</default>
+   </field>
+
+   <field>
+    <name>object_uid</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_members</name>
+    <type>clob</type>
+   </field>
+
+   <field>
+    <name>object_name</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_alias</name>
+    <type>text</type>
+    <length>32</length>
+   </field>
+
+   <field>
+    <name>object_email</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_homeaddress</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_workaddress</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_homephone</name>
+    <type>text</type>
+    <length>25</length>
+   </field>
+
+   <field>
+    <name>object_workphone</name>
+    <type>text</type>
+    <length>25</length>
+   </field>
+
+   <field>
+    <name>object_cellphone</name>
+    <type>text</type>
+    <length>25</length>
+   </field>
+
+   <field>
+    <name>object_fax</name>
+    <type>text</type>
+    <length>25</length>
+   </field>
+
+   <field>
+    <name>object_title</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_company</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>object_notes</name>
+    <type>clob</type>
+   </field>
+
+   <field>
+    <name>object_pgppublickey</name>
+    <type>clob</type>
+   </field>
+
+   <field>
+    <name>object_smimepublickey</name>
+    <type>clob</type>
+   </field>
+
+   <field>
+    <name>object_freebusyurl</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <index>
+    <name>hordetest_turba_objects_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>object_id</name>
+    </field>
+   </index>
+
+   <index>
+    <name>hordetest_turba_objects_owner</name>
+    <field>
+     <name>owner_id</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+</database>

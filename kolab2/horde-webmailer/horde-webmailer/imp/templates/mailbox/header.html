@@ -1,0 +1,21 @@
+<div class="header">
+ <div <if:page>style="width:40%" </if:page>class="leftFloat">
+  <span dir="ltr"><tag:pagetitle /></span>
+  <tag:refresh />
+  <if:filter><tag:filter /></if:filter>
+  <if:search><tag:search /></if:search>
+  <if:empty><tag:empty /></if:empty>
+  <if:delete_vfolder><tag:delete_vfolder /></if:delete_vfolder>
+ </div>
+<if:page>
+ <div style="width:20%" class="leftFloat">
+  <tag:page />
+ </div>
+ <div style="width:40%" class="rightFloat rightAlign">
+<else:page>
+ <div class="rightFloat rightAlign">
+</else:page></if:page>
+  <tag:msgcount />
+ </div>
+ <div class="clear"<if:ie6_or_less> style="clear:none"</if:ie6_or_less>></div>
+</div>

@@ -1,0 +1,42 @@
+<?php
+/**
+ * Release focus. Possible values (multiple possible with arrays):
+ * Horde_Release::FOCUS_INITIAL - Initial announcement
+ * Horde_Release::FOCUS_MINORFEATURE - Minor feature enhancement
+ * Horde_Release::FOCUS_MAJORFEATURE - Major feature enhancement
+ * Horde_Release::FOCUS_MINORBUG - Minor bugfixes
+ * Horde_Release::FOCUS_MAJORBUG - Major bugfixes
+ * Horde_Release::FOCUS_MINORSECURITY - Minor security fixes
+ * Horde_Release::FOCUS_MAJORSECURITY - Major security fixes
+ * Horde_Release::FOCUS_DOCS - Documentation improvements
+ */
+$this->notes['fm']['focus'] = array(Horde_Release::FOCUS_MINORFEATURE);
+
+/* Mailing list release notes. */
+$this->notes['ml']['changes'] = <<<ML
+The Horde Team is pleased to announce the final release of the Mobile Internet
+Messaging Program (MIMP) version H3 (1.1.3).
+
+MIMP (or Mobile IMP) is a version of the webmail client IMP suitable for
+mobile devices such as WAP phones or PDAs. Basic IMP functionality is
+implemented including mailbox viewing and paging, viewing messages, deleting,
+replying, forwarding, and composing new messages.
+
+MIMP requires at least Horde version 3.2 and IMP version H3 (4.2) to run.
+Although not required to upgrade either Horde or IMP, it is STRONGLY
+RECOMMENDED you do as any bugfixes to core functionality will occur in
+these applications.
+
+Major changes compared to the MIMP H3 (1.1.2) version are:
+    * Added Croatian translation.
+ML;
+
+/* Freshmeat release notes. */
+$this->notes['fm']['changes'] = <<<FM
+A Croatian translation has been added.
+FM;
+
+$this->notes['name'] = 'MIMP';
+$this->notes['list'] = 'imp';
+$this->notes['fm']['project'] = 'mimp';
+$this->notes['fm']['branch'] = 'Default';

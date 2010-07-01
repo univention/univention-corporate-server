@@ -1,0 +1,998 @@
+# Chinese translations for Ingo package
+# PACKAGE 软件包的简体中文翻译.
+# Copyright 2007-2009 The Horde Project
+# This file is distributed under the same license as the Ingo package.
+# Automatically generated, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Ingo H3 (1.1.3)\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2007-08-07 04:29-0400\n"
+"PO-Revision-Date: 2007-09-03 17:47+0800\n"
+"Last-Translator: Anna Chen <annachen2008@yahoo.com.cn>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=GB2312\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: filters.php:220
+msgid " and"
+msgstr "和"
+
+#: filters.php:220
+msgid " or"
+msgstr "或"
+
+#: templates/blacklist/blacklist.inc:17
+msgid "Action for blacklisted addresses:"
+msgstr "对黑名单上的地址执行的操作："
+
+#: templates/script/activate.inc:10
+msgid "Activate Script"
+msgstr "激活脚本"
+
+#: lib/Driver/ldap.php:229
+#, php-format
+msgid "Activating the script for \"%s\" failed: (%d) %s"
+msgstr "激活“%s”脚本失败：(%d) %s"
+
+#: templates/filters/settings.inc:8
+msgid "Additional Settings"
+msgstr "附加设置"
+
+#: forward.php:41
+msgid "Address(es) to forward to:"
+msgstr "转发地址："
+
+#: vacation.php:50
+msgid "Addresses to not send responses to:"
+msgstr "不发送回复的地址："
+
+#: vacation.php:44
+msgid "Advanced Settings"
+msgstr "高级设置"
+
+#: templates/rule/header.inc:44
+msgid "All of the following"
+msgstr "下列所有项"
+
+#: lib/api.php:54
+msgid "Allow Rules"
+msgstr "应用规则"
+
+#: templates/rule/footer.inc:34
+msgid "Answered"
+msgstr "已回复"
+
+#: templates/rule/header.inc:45
+msgid "Any of the following"
+msgstr "下列任一项"
+
+#: templates/filters/footer.inc:8
+msgid "Apply Filters"
+msgstr "应用过滤器"
+
+#: filters.php:249
+msgid "Are you sure you want to delete this rule?"
+msgstr "您确定要删除此规格吗？"
+
+#: config/prefs.php.dist:33
+msgid "Automatically update the script after each change?"
+msgstr "每次更改后是否自动更新脚本？"
+
+#: vacation.php:39
+msgid "Basic Settings"
+msgstr "基本设置"
+
+#: config/fields.php.dist:47
+msgid "Bcc"
+msgstr "密件抄送"
+
+#: lib/Storage.php:386
+msgid "Begins with"
+msgstr "开始标记"
+
+#: lib/Driver/ldap.php:106 lib/Driver/ldap.php:111
+#, php-format
+msgid "Bind failed: (%s) %s"
+msgstr "绑定失败：(%s) %s"
+
+#: filters.php:171 templates/blacklist/blacklist.inc:7
+#: lib/Block/overview.php:95 lib/Block/overview.php:98
+msgid "Blacklist"
+msgstr "黑名单"
+
+#: blacklist.php:107
+msgid "Blacklist Edit"
+msgstr "编辑黑名单"
+
+#: blacklist.php:17
+msgid "Blacklist is not supported in the current filtering driver."
+msgstr "当前过滤驱动程序不支持黑名单。"
+
+#: lib/Script/procmail.php:207 lib/Script/sieve.php:251
+#: lib/Script/maildrop.php:186
+msgid "Blacklisted Addresses"
+msgstr "黑名单所列地址"
+
+#: config/fields.php.dist:88
+msgid "Body"
+msgstr "正文"
+
+#: filters.php:217 rule.php:298
+msgid "Case Sensitive"
+msgstr "区分大小写"
+
+#: config/fields.php.dist:43
+msgid "Cc"
+msgstr "抄送"
+
+#: spam.php:89 rule.php:128 whitelist.php:36 forward.php:54 vacation.php:71
+#: blacklist.php:73
+msgid "Changes saved."
+msgstr "已保存更改。"
+
+#: lib/Driver/ldap.php:73
+msgid "Connection failure"
+msgstr "连接失败"
+
+#: lib/Storage.php:382
+msgid "Contains"
+msgstr "包含"
+
+#: filters.php:260 filters.php:261
+#, php-format
+msgid "Copy %s"
+msgstr "复制 %s"
+
+#: lib/Storage.php:972 lib/Storage/sql.php:573
+#, php-format
+msgid "Copy of %s"
+msgstr "%s 副本"
+
+#: lib/Template.php:236
+#, php-format
+msgid "Could not save the compiled template file '%s'."
+msgstr "无法保存编辑的模板文件“%s”。"
+
+#: lib/Ingo.php:62
+msgid "Create new folder"
+msgstr "创建新文件夹"
+
+#: lib/Script/procmail.php:336 lib/Script/maildrop.php:317
+msgid "DISABLED: "
+msgstr "已禁用："
+
+#: templates/script/activate.inc:17
+msgid "Deactivate Script"
+msgstr "停用脚本"
+
+#: filters.php:249 filters.php:250
+#, php-format
+msgid "Delete %s"
+msgstr "删除 %s"
+
+#: templates/rule/filter.inc:33
+msgid "Delete Condition"
+msgstr "删除条件"
+
+#: lib/Storage.php:330
+msgid "Delete message completely"
+msgstr "完全删除邮件"
+
+#: templates/rule/footer.inc:36
+msgid "Deleted"
+msgstr "已删除"
+
+#: lib/Storage.php:318
+msgid "Deliver into my Inbox"
+msgstr "发到我的收件箱"
+
+#: lib/Storage.php:344
+msgid "Deliver into my Inbox and copy to"
+msgstr "发到我的收件箱并复制到"
+
+#: lib/Storage.php:339
+msgid "Deliver into my Inbox and redirect to"
+msgstr "发到我的收件箱并转发到"
+
+#: lib/Storage.php:324
+msgid "Deliver to folder"
+msgstr "发到文件夹"
+
+#: filters.php:274 filters.php:275
+#, php-format
+msgid "Disable %s"
+msgstr "禁用 %s"
+
+#: spam.php:148 forward.php:97 vacation.php:134
+#: templates/whitelist/whitelist.inc:10 templates/blacklist/blacklist.inc:10
+#: templates/rule/header.inc:26
+msgid "Disabled"
+msgstr "已禁用"
+
+#: templates/filters/settings.inc:15
+msgid "Display detailed notification when each filter is applied?"
+msgstr "在应用每个过滤器时，是否显示详细通知？"
+
+#: vacation.php:52
+msgid "Do not send responses to bulk or list messages?"
+msgstr "请不要回复群发或列表邮件？"
+
+#: templates/rule/footer.inc:10
+msgid "Do this:"
+msgstr "执行操作"
+
+#: lib/Storage.php:387
+msgid "Doesn't begin with"
+msgstr "不使用开始标记"
+
+#: lib/Storage.php:383
+msgid "Doesn't contain"
+msgstr "不包含"
+
+#: lib/Storage.php:389
+msgid "Doesn't end with"
+msgstr "不使用结束标记"
+
+#: lib/Storage.php:391
+msgid "Doesn't exist"
+msgstr "不存在"
+
+#: lib/Storage.php:394
+msgid "Doesn't match (with placeholders)"
+msgstr "不匹配(与占位符)"
+
+#: templates/filters/header.inc:47 lib/Block/overview.php:63
+#: lib/Block/overview.php:72 lib/Block/overview.php:87
+#: lib/Block/overview.php:97 lib/Block/overview.php:107
+msgid "Edit"
+msgstr "编辑"
+
+#: filters.php:238 filters.php:240 filters.php:244 filters.php:245
+#, php-format
+msgid "Edit %s"
+msgstr "编辑 %s"
+
+#: filters.php:284 filters.php:285
+#, php-format
+msgid "Enable %s"
+msgstr "启用 %s"
+
+#: templates/filters/header.inc:49
+msgid "Enabled"
+msgstr "已启用"
+
+#: lib/Storage.php:388
+msgid "Ends with"
+msgstr "结束标记"
+
+#: lib/Storage.php:399
+msgid "Equal to"
+msgstr "等于"
+
+#: lib/Driver/ldap.php:138 lib/Driver/ldap.php:148 lib/Driver/ldap.php:157
+#: lib/Driver/ldap.php:167
+#, php-format
+msgid "Error retrieving current script: (%d) %s"
+msgstr "检索当前脚本时出错：(%d) %s"
+
+#: blacklist.php:71
+msgid "Error saving changes."
+msgstr "保存更改时出错。"
+
+#: templates/filters/header.inc:41
+msgid "Existing Rules"
+msgstr "现有规则"
+
+#: lib/Storage.php:390
+msgid "Exists"
+msgstr "现有"
+
+#: lib/Driver/ldap.php:143
+#, php-format
+msgid "Expected 1 object, got %d."
+msgstr "预期 1 个对象，得到 %d 个。"
+
+#: lib/Driver/sivtest.php:205
+msgid "Failed to read from socket: "
+msgstr "读取套接字失败："
+
+#: lib/Driver/sivtest.php:200
+msgid "Failed to write to socket: "
+msgstr "写入套接字失败："
+
+#: lib/Driver/sivtest.php:195
+msgid "Failed to write to socket: (connection lost!)"
+msgstr "写入套接字失败：(连接丢失！)"
+
+#: templates/rule/filter.inc:10
+msgid "Field"
+msgstr "字段"
+
+#: templates/filters/settings.inc:22
+msgid "Filter All Messages"
+msgstr "过滤所有邮件"
+
+#: templates/filters/settings.inc:24
+msgid "Filter Only Seen Messages"
+msgstr "仅过滤已读邮件"
+
+#: templates/filters/settings.inc:23
+msgid "Filter Only Unseen Messages"
+msgstr "仅过滤未读邮件"
+
+#: templates/filters/settings.inc:20
+msgid "Filter Options"
+msgstr "过滤选项"
+
+#: templates/rule/header.inc:25
+msgid "Filter Rule"
+msgstr "过滤规则"
+
+#: filters.php:136
+msgid "Filter Rules"
+msgstr "过滤规则"
+
+#: script.php:52
+msgid "Filter Script Display"
+msgstr "显示过滤脚本"
+
+#: lib/Ingo.php:379
+msgid "Filter _Rules"
+msgstr "过滤规则_R"
+
+#: lib/Script/imap.php:342
+#, php-format
+msgid "Filter activity: %s message(s) have been copied to the folder \"%s\"."
+msgstr "过滤器操作：已将 %s 邮件复制到文件夹“%s”中。"
+
+#: lib/Script/imap.php:328
+#, php-format
+msgid "Filter activity: %s message(s) have been deleted."
+msgstr "过滤器操作：已删除 %s 邮件。"
+
+#: lib/Script/imap.php:306
+#, php-format
+msgid "Filter activity: %s message(s) have been moved to the folder \"%s\"."
+msgstr "过滤器操作：已将邮件 %s 移动到文件夹“%s”中。"
+
+#: lib/Script/imap.php:206
+#, php-format
+msgid "Filter activity: %s message(s) that matched the blacklist were deleted."
+msgstr "过滤器操作：已将在黑名单上的 %s 邮件删除。"
+
+#: lib/Script/imap.php:339
+#, php-format
+msgid ""
+"Filter activity: The message \"%s\" from \"%s\" has been copied to the "
+"folder \"%s\"."
+msgstr "过滤器操作：已将来自“%s”的邮件“%s”复制到文件夹“%s”中。"
+
+#: lib/Script/imap.php:323
+#, php-format
+msgid "Filter activity: The message \"%s\" from \"%s\" has been deleted."
+msgstr "过滤器操作：已将来自“%s”的邮件“%s”删除。"
+
+#: lib/Script/imap.php:300
+#, php-format
+msgid ""
+"Filter activity: The message \"%s\" from \"%s\" has been moved to the folder "
+"\"%s\"."
+msgstr "过滤器操作：已将来自“%s”的邮件“%s”移动到文件夹“%s”中。"
+
+#: rule.php:176
+msgid "Filter not found."
+msgstr "未找到过滤器。"
+
+#: spam.php:73
+msgid "Folder to receive spam:"
+msgstr "接收垃圾邮件的文件夹："
+
+#: templates/rule/header.inc:42
+msgid "For an incoming message that matches:"
+msgstr "符合此规则的来件："
+
+#: filters.php:189 forward.php:95 lib/Block/overview.php:71
+#: lib/Block/overview.php:73
+msgid "Forward"
+msgstr "转发"
+
+#: forward.php:16
+msgid "Forward is not supported in the current filtering driver."
+msgstr "当前过滤驱动程序不支持转发功能。"
+
+#: lib/Script/procmail.php:282 lib/Script/sieve.php:211
+#: lib/Script/maildrop.php:235
+msgid "Forwards"
+msgstr "转发"
+
+#: forward.php:102
+msgid "Forwards Edit"
+msgstr "编辑转发邮件"
+
+#: config/fields.php.dist:39
+msgid "From"
+msgstr "发件人"
+
+#: lib/Script/sieve.php:2149
+msgid "From:"
+msgstr "发件人："
+
+#: lib/Script/sieve.php:110
+msgid "Generated by Ingo (http://www.horde.org/ingo/)"
+msgstr "由 Ingo 生成 (http://www.horde.org/ingo/)"
+
+#: lib/Storage.php:397
+msgid "Greater than"
+msgstr "大于"
+
+#: lib/Storage.php:398
+msgid "Greater than or equal to"
+msgstr "大于或等于"
+
+#: templates/rule/footer.inc:32
+msgid "Important"
+msgstr "重要"
+
+#: rule.php:36
+msgid "Individual rules are not supported in the current filtering driver."
+msgstr "当前 过滤启动程序不支持单个规则。"
+
+#: lib/Script/sieve.php:1946
+msgid "Inexistant mailbox specified for message delivery."
+msgstr "指定的发件箱不存在。"
+
+#: lib/Storage.php:384
+msgid "Is"
+msgstr "是"
+
+#: lib/Storage.php:385
+msgid "Isn't"
+msgstr "不是"
+
+#: forward.php:39
+msgid "Keep a copy of messages in this account?"
+msgstr "是否保留此帐户的邮件副本？"
+
+#: lib/Driver/ldap.php:23
+msgid ""
+"LDAP support is required but the LDAP module is not available or not loaded."
+msgstr "需要 LDAP 支持，但 LDAP 模块不可用或未加载。"
+
+#: lib/Storage.php:395
+msgid "Less than"
+msgstr "小于"
+
+#: lib/Storage.php:396
+msgid "Less than or equal to"
+msgstr "小于或等于"
+
+#: config/fields.php.dist:59
+msgid "List-ID"
+msgstr "列表 ID"
+
+#: templates/blacklist/blacklist.inc:20
+msgid "Mar_k message as deleted"
+msgstr "将邮件标记为已删除_K"
+
+#: templates/rule/footer.inc:25
+msgid "Mark message as:"
+msgstr "将邮件标记为："
+
+#: templates/rule/filter.inc:23
+msgid "Match type"
+msgstr "匹配类型"
+
+#: lib/Storage.php:393
+msgid "Matches (with placeholders)"
+msgstr "匹配(与占位符)"
+
+#: lib/api.php:57
+msgid "Maximum Number of Rules"
+msgstr "规则最大数量"
+
+#: lib/Storage.php:520
+#, php-format
+msgid ""
+"Maximum number of blacklisted addresses exceeded (Total addresses: %s, "
+"Maximum addresses: %s).  Could not add new addresses to blacklist."
+msgstr ""
+"超出黑名单所含地址数的最大值(共：%s，地址数最大值：%s)。无法将新地址添加到黑"
+"名单中。"
+
+#: lib/Storage.php:573
+#, php-format
+msgid ""
+"Maximum number of whitelisted addresses exceeded (Total addresses: %s, "
+"Maximum addresses: %s).  Could not add new addresses to whitelist."
+msgstr ""
+"超出白名单所含地址数的最大值(共：%s，地址数最大值：%s)。无法将新地址添加到白"
+"名单中。"
+
+#: spam.php:70
+msgid ""
+"Messages with a likely spam score greater than or equal to this number will "
+"be treated as spam."
+msgstr "将大于或等于此分数的邮件视为垃圾邮件。"
+
+#: lib/Script/sieve.php:2157
+msgid "Missing address to notify"
+msgstr "丢失通知地址"
+
+#: lib/Script/sieve.php:1814
+msgid "Missing address to redirect message to"
+msgstr "丢失重定向邮件地址"
+
+#: lib/Script/sieve.php:1846
+msgid "Missing reason for reject"
+msgstr "丢失拒收原因"
+
+#: lib/Script/sieve.php:2013
+msgid "Missing reason in vacation."
+msgstr "丢失假期原因。"
+
+#: templates/filters/header.inc:51
+msgid "Move"
+msgstr "移动"
+
+#: filters.php:153 filters.php:270
+msgid "Move Rule Down"
+msgstr "下移规则"
+
+#: filters.php:154 filters.php:269
+msgid "Move Rule Up"
+msgstr "上移规则"
+
+#: vacation.php:47
+msgid "My email addresses:"
+msgstr "我的电子邮件地址："
+
+#: templates/filters/filter-none.inc:3 templates/filters/footer.inc:6
+#: lib/Storage.php:868
+msgid "New Rule"
+msgstr "新建规则"
+
+#: lib/Ingo.php:230 lib/Ingo.php:232
+#, php-format
+msgid "No \"%s\" element found in backend configuration."
+msgstr "未在后端配置中找到“%s”元素。"
+
+#: lib/Ingo.php:223
+msgid "No backend configured for this host"
+msgstr "未给此主机配置后端"
+
+#: lib/Ingo.php:199
+msgid "No backends configured in backends.php"
+msgstr "未在 backends.php 中配置后端"
+
+#: templates/filters/filter-none.inc:3
+#, php-format
+msgid "No filters. Click \"%s\" to create a new filter."
+msgstr "无过滤器。请单击“%s”创建新过滤器。"
+
+#: lib/Script/sieve.php:1414 lib/Script/sieve.php:1507
+#: lib/Script/sieve.php:1684
+msgid "No headers specified"
+msgstr "未指定标题"
+
+#: script.php:67
+msgid "No script generated."
+msgstr "未生成脚本。"
+
+#: lib/Script/sieve.php:1700
+msgid "No strings specified"
+msgstr "未指定字符串"
+
+#: lib/Storage.php:400
+msgid "Not equal to"
+msgstr "不等于"
+
+#: lib/Storage.php:360
+msgid "Notify email address"
+msgstr "通知电子邮件地址"
+
+#: vacation.php:54
+msgid "Number of days between vacation replies:"
+msgstr "假期回复邮件所隔的天数："
+
+#: lib/Storage.php:354
+msgid "Only flag the message"
+msgstr "仅标记此邮件"
+
+#: config/prefs.php.dist:19
+msgid "Options about script updating."
+msgstr "脚本更新选项。"
+
+#: config/prefs.php.dist:17
+msgid "Other Options"
+msgstr "其他选项"
+
+#: lib/Block/overview.php:3
+msgid "Overview"
+msgstr "概述"
+
+#: templates/javascript/new_folder.js:7
+msgid "Please enter the name of the new folder:"
+msgstr "请输入新文件夹名称："
+
+#: vacation.php:42
+msgid "Reason:"
+msgstr "原因："
+
+#: config/fields.php.dist:63
+msgid "Received"
+msgstr "已接收"
+
+#: lib/Storage.php:335
+msgid "Redirect to"
+msgstr "重定向到"
+
+#: lib/Storage.php:392
+msgid "Regular expression"
+msgstr "正则表达式"
+
+#: lib/Storage.php:350
+msgid "Reject with reason"
+msgstr "拒收原因"
+
+#: config/fields.php.dist:55
+msgid "Resent To"
+msgstr "重发到"
+
+#: config/fields.php.dist:51
+msgid "Resent-from"
+msgstr "重发此人来件"
+
+#: templates/rule/footer.inc:61
+msgid "Return to Filters List"
+msgstr "返回过滤列表"
+
+#: spam.php:61 spam.php:129 forward.php:32 forward.php:86 vacation.php:32
+#: vacation.php:106 templates/whitelist/whitelist.inc:24
+#: templates/blacklist/blacklist.inc:42
+msgid "Return to Rules List"
+msgstr "返回规则列表"
+
+#: templates/filters/header.inc:48
+msgid "Rule"
+msgstr "规则"
+
+#: filters.php:76
+msgid "Rule Copied"
+msgstr "所复制规则"
+
+#: filters.php:55
+msgid "Rule Deleted"
+msgstr "所删除规则"
+
+#: spam.php:105 filters.php:92 forward.php:70 vacation.php:87
+msgid "Rule Disabled"
+msgstr "所禁用规则"
+
+#: spam.php:96 filters.php:97 forward.php:61 vacation.php:78
+msgid "Rule Enabled"
+msgstr "所启用规则"
+
+#: templates/rule/header.inc:33
+msgid "Rule Name:"
+msgstr "规则名称："
+
+#: lib/Script/sieve.php:2151
+msgid "Rule:"
+msgstr "规则："
+
+#: lib/Driver/ldap.php:86
+#, php-format
+msgid "STARTTLS failed: (%s) %s"
+msgstr "STARTTLS 失败：(%s) %s"
+
+#: lib/Ingo.php:394
+msgid "S_pam"
+msgstr "垃圾邮件_P"
+
+#: spam.php:78 forward.php:43 vacation.php:56
+#: templates/whitelist/whitelist.inc:23 templates/blacklist/blacklist.inc:41
+#: templates/rule/footer.inc:60
+msgid "Save"
+msgstr "保存"
+
+#: templates/filters/settings.inc:31
+msgid "Save Settings"
+msgstr "保存设置"
+
+#: spam.php:99 spam.php:125 forward.php:64 forward.php:82 vacation.php:81
+#: vacation.php:102
+msgid "Save and Disable"
+msgstr "保存和禁用"
+
+#: spam.php:90 spam.php:127 forward.php:55 forward.php:84 vacation.php:72
+#: vacation.php:104
+msgid "Save and Enable"
+msgstr "保存和启用"
+
+#: templates/script/header.inc:2
+msgid "Script"
+msgstr "脚本"
+
+#: config/prefs.php.dist:18
+msgid "Script Updating"
+msgstr "脚本更新"
+
+#: lib/Ingo.php:175
+msgid "Script not updated."
+msgstr "未更新脚本。"
+
+#: lib/Ingo.php:146
+msgid "Script successfully activated."
+msgstr "成功激活脚本。"
+
+#: lib/Ingo.php:145
+msgid "Script successfully deactivated."
+msgstr "成功停用脚本。"
+
+#: templates/rule/footer.inc:30
+msgid "Seen"
+msgstr "已读"
+
+#: rule.php:206
+msgid "Select a field"
+msgstr "选择字段"
+
+#: templates/menu.inc:6 templates/menu.inc:8
+msgid "Select ruleset to display:"
+msgstr "选择要显示的规则集："
+
+#: rule.php:324 templates/blacklist/blacklist.inc:23 lib/Ingo.php:59
+msgid "Select target folder"
+msgstr "选择目标文件夹"
+
+#: rule.php:243
+msgid "Self-Defined Header"
+msgstr "自定义标题"
+
+#: config/fields.php.dist:35
+msgid "Sender"
+msgstr "发件人"
+
+#: filters.php:116
+msgid "Settings successfully updated."
+msgstr "成功更新设置。"
+
+#: templates/script/activate.inc:24
+msgid "Show Active Script"
+msgstr "显示活动脚本"
+
+#: templates/script/activate.inc:31
+msgid "Show Current Script"
+msgstr "显示当前脚本"
+
+#: spam.php:17
+msgid "Simple spam filtering is not supported in the current filtering driver."
+msgstr "当前过滤驱动程序不支持简易型垃圾邮件过滤。"
+
+#: config/fields.php.dist:83
+msgid "Size"
+msgstr "大小"
+
+#: filters.php:195 lib/Script/sieve.php:413 lib/Block/overview.php:105
+#: lib/Block/overview.php:108
+msgid "Spam Filter"
+msgstr "垃圾邮件过滤器"
+
+#: spam.php:146 spam.php:153
+msgid "Spam Filtering"
+msgstr "垃圾邮件过滤器"
+
+#: spam.php:70
+msgid "Spam Level:"
+msgstr "垃圾邮件级别："
+
+#: templates/rule/footer.inc:50
+msgid "Stop checking if this rule matches?"
+msgstr "如果符合此规则，是否停止检查？"
+
+#: config/fields.php.dist:31
+msgid "Subject"
+msgstr "主题"
+
+#: vacation.php:40
+msgid "Subject of vacation message:"
+msgstr "假期邮件主题："
+
+#: lib/Script/sieve.php:2150
+msgid "Subject:"
+msgstr "主题："
+
+#: lib/api.php:89
+#, php-format
+msgid "The address \"%s\" has been added to your blacklist."
+msgstr "已将此地址“%s”添加到黑名单中。"
+
+#: lib/api.php:112
+#, php-format
+msgid "The address \"%s\" has been added to your whitelist."
+msgstr "已将此地址“%s”添加到白名单中。"
+
+#: lib/Ingo.php:141
+msgid "The driver said: "
+msgstr "驱动程序报告："
+
+#: lib/Ingo.php:140
+msgid "There was an error activating the script."
+msgstr "激活脚本时出错。"
+
+#: lib/Ingo.php:139
+msgid "There was an error deactivating the script."
+msgstr "停用脚本时出错。"
+
+#: config/fields.php.dist:27
+msgid "To"
+msgstr "收件人"
+
+#: templates/filters/filter.html:30
+msgid "To:"
+msgstr "收件人："
+
+#: lib/Script.php:126
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "无法加载 %s 定义。"
+
+#: templates/rule/filter.inc:15
+msgid "User header"
+msgstr "用户标题"
+
+#: filters.php:183 vacation.php:132 lib/Script/procmail.php:262
+#: lib/Script/sieve.php:380 lib/Script/maildrop.php:265
+#: lib/Block/overview.php:61 lib/Block/overview.php:64
+msgid "Vacation"
+msgstr "假期"
+
+#: vacation.php:139
+msgid "Vacation Edit"
+msgstr "编辑假期"
+
+#: vacation.php:16
+msgid "Vacation is not supported in the current filtering driver."
+msgstr "当前过滤驱动程序不支持假期功能。"
+
+#: rule.php:330
+msgid "Value"
+msgstr "值"
+
+#: templates/whitelist/whitelist.inc:16
+msgid "Wh_itelist addresses:"
+msgstr "白名单地址_I："
+
+#: filters.php:177 templates/whitelist/whitelist.inc:8
+#: lib/Block/overview.php:85 lib/Block/overview.php:88
+msgid "Whitelist"
+msgstr "白名单"
+
+#: whitelist.php:55
+msgid "Whitelist Edit"
+msgstr "编辑白名单"
+
+#: whitelist.php:18
+msgid "Whitelist is not supported in the current filtering driver."
+msgstr "当前过滤驱动程序不支持白名单。"
+
+#: lib/Script/procmail.php:234 lib/Script/sieve.php:314
+#: lib/Script/maildrop.php:213
+msgid "Whitelisted Addresses"
+msgstr "白名单上的地址"
+
+#: config/fields.php.dist:79
+msgid "X-Priority"
+msgstr "X-优先级"
+
+#: config/fields.php.dist:67
+msgid "X-Spam-Level"
+msgstr "X-垃圾邮件-级别"
+
+#: config/fields.php.dist:71
+msgid "X-Spam-Score"
+msgstr "X-垃圾邮件-分数"
+
+#: config/fields.php.dist:75
+msgid "X-Spam-Status"
+msgstr "X-垃圾邮件-状态"
+
+#: filters.php:69 rule.php:160
+#, php-format
+msgid "You are not allowed to create more than %d rules."
+msgstr "创建的规则不可以超过 %d 条。 "
+
+#: filters.php:61 rule.php:21
+msgid "You are not allowed to create or edit custom rules."
+msgstr "不允许创建或编辑自定义规则。"
+
+#: filters.php:50 rule.php:138
+msgid "You do not have permission to delete filter rules."
+msgstr "您不具有删除过滤规则的权限。"
+
+#: filters.php:43 filters.php:110 filters.php:121 rule.php:56 rule.php:153
+msgid "You do not have permission to edit filter rules."
+msgstr "您不具有编辑过滤规则的权限。"
+
+#: lib/Script/sieve.php:2148
+msgid "You have received a new message"
+msgstr "您有新邮件"
+
+#: lib/Script/imap.php:301 lib/Script/imap.php:324 lib/Script/imap.php:339
+msgid "[No Subject]"
+msgstr "[No Subject]"
+
+#: lib/Ingo.php:384
+msgid "_Blacklist"
+msgstr "黑名单_B"
+
+#: templates/blacklist/blacklist.inc:18
+msgid "_Delete message completely"
+msgstr "完全删除邮件_D"
+
+#: templates/blacklist/blacklist.inc:32
+msgid "_Enter each address on a new line:"
+msgstr "一行输入一个地址_E："
+
+#: lib/Ingo.php:390
+msgid "_Forward"
+msgstr "转发_F"
+
+#: templates/blacklist/blacklist.inc:22
+msgid "_Move message to folder:"
+msgstr "将邮件移动到文件夹_M："
+
+#: lib/Ingo.php:400
+msgid "_Permissions"
+msgstr "权限_P"
+
+#: lib/Ingo.php:397
+msgid "_Script"
+msgstr "脚本_S"
+
+#: lib/Ingo.php:387
+msgid "_Vacation"
+msgstr "休假_V"
+
+#: lib/Ingo.php:381
+msgid "_Whitelist"
+msgstr "白名单_W"
+
+#: lib/Block/overview.php:54
+msgid "active"
+msgstr "启用"
+
+#: templates/rule/filter.inc:4
+msgid "and"
+msgstr "和"
+
+#: templates/filters/filter.html:19
+msgid "disabled - click to enable"
+msgstr "已禁用 - 单击启用"
+
+#: filters.php:215
+msgid "field"
+msgstr "字段"
+
+#: lib/Block/overview.php:52
+msgid "inactive"
+msgstr "禁用"
+
+#: lib/Script/maildrop.php:127
+msgid "maildrop script generated by Ingo"
+msgstr "Ingo 生成的 maildrop 脚本"
+
+#: filters.php:215
+msgid "match"
+msgstr "匹配"
+
+#: templates/rule/filter.inc:4
+msgid "or"
+msgstr "或"
+
+#: lib/Script/procmail.php:128
+msgid "procmail script generated by Ingo"
+msgstr "Ingo 生成的 procmail 脚本"

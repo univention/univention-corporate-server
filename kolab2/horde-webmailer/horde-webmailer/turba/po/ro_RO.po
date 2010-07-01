@@ -1,0 +1,405 @@
+# TURBA Romanian Translation.
+# Copyright 2003-2009 The Horde Project
+# Eugen Hoanca <eugenh@urban-grafx.ro>, 2003.
+# Marius Dragulescu <mariusd@urban-grafx.ro>, 2003.
+#
+
+msgid ""
+msgstr ""
+
+"Project-Id-Version: TURBA 1.1\n"
+"POT-Creation-Date: 2003-02-24 14:50+0200\n"
+"PO-Revision-Date: 2003-03-01 12:00+0200\n"
+"Last-Translator: Eugen Hoanca <eugenh@urban-grafx.ro>\n"
+"Language-Team: Romanian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "Fisierul %s a fost importat cu succes"
+
+msgid "Add Contact ..."
+msgstr "Adauga contact ..."
+
+msgid "Add a new contact"
+msgstr "Adauga contact nou"
+
+msgid "Add failed"
+msgstr "Adaugare esuata"
+
+msgid "Add"
+msgstr "Adaugare"
+
+msgid "Address Book Listing"
+msgstr "Listare agenda"
+
+msgid "Addressbook is read-only."
+msgstr "Agenda doar in citire"
+
+msgid "Advanced Search"
+msgstr "Cautare avansata"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "An illegal value was specified."
+msgstr "S-a specificat o valoare invalida."
+
+msgid "Available Columns:"
+msgstr "Coloane disponibile:"
+
+msgid "Browse"
+msgstr "Rasfoire"
+
+msgid "Cancel"
+msgstr "Renuntare"
+
+msgid "Cell Phone"
+msgstr "Telefon mobil"
+
+msgid "Choose the order of the columns to display in the address list."
+msgstr "Alege ordinea afisarii coloanelor in lista de adrese."
+
+msgid "Clear Search"
+msgstr "Sterge cautare"
+
+msgid "Column Options"
+msgstr "Optiuni coloana"
+
+msgid "Company"
+msgstr "Companie"
+
+#, c-format
+msgid "Contents of %s"
+msgstr "Continut %s"
+
+msgid "Default Display"
+msgstr "Afisaj implicit"
+
+msgid "Delete"
+msgstr "Stergere"
+
+msgid "Deletion failed"
+msgstr "Stergere esuata"
+
+msgid "Directory"
+msgstr "Director"
+
+msgid "Display Options"
+msgstr "Optiuni afisaj "
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "Editare '%s'"
+
+msgid "Edit"
+msgstr "Editare"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Error"
+msgstr "Eroare"
+
+msgid "Export Addressbook"
+msgstr "Exportare agenda"
+
+msgid "Export"
+msgstr "Exportare"
+
+msgid "Failed to access the specified address book."
+msgstr "Nu s-a putut accesa agenda specificata."
+
+#, c-format
+msgid "Failed to browse %s."
+msgstr "Rasfoire esuata pentru %s."
+
+msgid "Failed to connect to the specified directory."
+msgstr "Conectare esuata la directorul specificat."
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Cautare esuata in directorul: %s"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Find"
+msgstr "Cautare"
+
+msgid "From"
+msgstr "De la"
+
+msgid "Help"
+msgstr "Ajutor"
+
+msgid "Home Address"
+msgstr "Adresa acasa"
+
+msgid "Home Phone"
+msgstr "Telefon acasa"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "Daca se importa date CSV: contine primul rand numele campului?"
+
+msgid "Illegal or malformed form data."
+msgstr "Data invalida sau corupta."
+
+msgid "Import Addressbook"
+msgstr "Importare agenda"
+
+msgid "Import"
+msgstr "Importare"
+
+msgid "Import/Export Addressbooks"
+msgstr "Importare/Exportare agende"
+
+msgid "Import/Export"
+msgstr "Importare/Exportare"
+
+msgid "Invalid addressbook."
+msgstr "Agenda invalida."
+
+msgid "Invalid e-mail address."
+msgstr "Adresa de e-mail invalida."
+
+msgid "Invalid name."
+msgstr "Nume invalid."
+
+msgid "Language"
+msgstr "Limba"
+
+msgid "List"
+msgstr "Lista"
+
+msgid "Matching"
+msgstr "Corespunzator(oare)"
+
+msgid "Message"
+msgstr "Mesaj"
+
+msgid "Name"
+msgstr "Nume"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"Mici una din agendele disponibile nu e configurata pentru adaugare de noi "
+"intrari. Daca se considera ca este o greseala, contactati administratorul "
+"de sistem."
+
+msgid "Notes"
+msgstr "Notite"
+
+msgid "Options"
+msgstr "Optiuni"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Alege o agenda in care sa se adauge contactul."
+
+msgid "Please select a directory:"
+msgstr "Selectati un director:"
+
+msgid "Problem?"
+msgstr "Problema?"
+
+msgid "Reset"
+msgstr "Resetare"
+
+msgid "Save Changes"
+msgstr "Salvare schimbari"
+
+msgid "Save"
+msgstr "Salvare"
+
+msgid "Search Results"
+msgstr "Rezultate cautare"
+
+msgid "Search"
+msgstr "Cautare"
+
+msgid "Search&nbsp;Results"
+msgstr "Cautare&nbsp;Rezultate"
+
+msgid "Select the destination to import to:"
+msgstr "Selecteaza destinatia spre care se importa:"
+
+msgid "Select the file to import:"
+msgstr "Selecteaza fisierul care se importa:"
+
+msgid "Select the format to export to:"
+msgstr "Selecteaza formatul in care se exporta:"
+
+msgid "Select the format to import from:"
+msgstr "Selecteaza formatul din care se importa:"
+
+msgid "Select the source to export from:"
+msgstr "Selecteaza sursa din care se exporta:"
+
+msgid "Select view to display by default."
+msgstr "Selecteaza vizualizarea implicita."
+
+msgid "Select which fields to display in the address lists."
+msgstr "Selecteaza campurile ce vor fi afisate in listele de adrese."
+
+msgid "Select your preferred language:"
+msgstr "Selecteaza limba preferata:"
+
+msgid "Selected Columns:"
+msgstr "Coloane selectate:"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "Trimitere mail catre %s"
+
+msgid "Set your preferred display language."
+msgstr "Setare limbaj pentru afisare."
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Anumite fisiere de configurare Turba lipsesc:"
+
+msgid "Success"
+msgstr "Succes"
+
+msgid "The data got lost"
+msgstr "Datele au fost pierdute"
+
+msgid "The data got lost."
+msgstr "Datele au fost pierdute"
+
+msgid "The file contained no data."
+msgstr "Fisierul nu contine date"
+
+msgid "There are no browseable address books."
+msgstr "Nu exista agende pentru rasfoit."
+
+#, c-format
+msgid "There are no entries in %s."
+msgstr "Nu exista intrari in %s."
+
+msgid "There are no writeable address books."
+msgstr "Nu exista agende in care sa se scrie."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"A aparut o problema cu uploadul fisierului. Fisierul s-ar putea sa fie mai "
+"mare decat este acceptat."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"A aparut o problema la aceasta adaugare. Contactati administratorul de "
+"sistem pentru asistenta."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"A aparut o eroare la aceasta stergere. Contactati administratorul de "
+"sistem pentru asistenta."
+
+msgid "There was an error importing the data."
+msgstr "A aparut o eroare la importarea datelor."
+
+msgid "There was an error importing the uploaded file"
+msgstr "A aparut o eroare la uploadul fisierului"
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Acest fisier controleaza preferintele implicite ale Turba, precum si "
+"alte preferinte pentru utilizatori."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Acest fisier controleaza schema de culori si fonturi diferite de cele "
+"implicite Horde."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"Acest fisier defineste atributele globale Turba, nume si tipuri - nume, "
+"e-mail, adrese, etc."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "Acest fisier defineste o lista cu sursele disponibile pentru Turba."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"Acesta e principalul fisier de configurare Turba. Contine caile si optiunile "
+"pentru scripturile Turba."
+
+msgid "This number must be at least one."
+msgstr "Acest numar trebuie sa fie minim 1."
+
+msgid "This person is already in your addressbook."
+msgstr "Aceasta persoana este deja in agenda ta. "
+
+msgid "This value must be a number."
+msgstr "Aceasta valoare trebuie sa fie numerica."
+
+msgid "Title"
+msgstr "Titlu"
+
+msgid "Turba is not properly configured"
+msgstr "Turba nu este configurat corect"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Nu se pot incarca definitiile %s."
+
+msgid "User Options"
+msgstr "Optiuni utilizator"
+
+msgid "View to display by default:"
+msgstr "Afisare implicita:"
+
+msgid "Warning"
+msgstr "Avertisment"
+
+msgid "Work Address"
+msgstr "Adresa birou"
+
+msgid "Work Phone"
+msgstr "Telefon birou"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr ""
+"Nu ati mapat campurile din fisierul importat cu campurile corespunzatoare "
+"in Turba"
+
+msgid "Your Information"
+msgstr "Detalii personale"
+
+msgid "Your options have been updated."
+msgstr "Optiunile tale au fost salvate."
+
+msgid "[Edit]"
+msgstr "[Editare]"
+
+msgid "add column"
+msgstr "adaugare coloana"
+
+msgid "move left"
+msgstr "mutare stanga"
+
+msgid "move right"
+msgstr "mutare dreapta"
+
+msgid "remove column"
+msgstr "stergere coloana"

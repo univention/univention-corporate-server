@@ -1,0 +1,1122 @@
+# Polish translations for Nag package
+# Polskie tlumaczenia dla pakietu Nag.
+# Copyright 2007-2009 The Horde Project
+# This file is distributed under the same license as the Nag package.
+# Automatically generated, 2007.
+# Mariusz Zynel <mariusz@math.uwb.edu.pl>, 2001.
+# Piotr Roszatycki <dexter@debian.org>, 2001.
+# Krzysztof Kozlowski <kozik1@o2.pl>, 2005.
+# Piotr Adamcio <adamcios@o2.pl>, 2007.
+# Tadeusz Lesiecki <lesiecki@tmtsystem.pl>, 2007.
+# Piotr Tarnowski <drfugazi@drfugazi.eu.org>, 2007.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Nag H3 (2.2-cvs)\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2007-06-21 14:43+0200\n"
+"PO-Revision-Date: 2007-03-31 09:57+0200\n"
+"Last-Translator: Piotr Tarnowski <drfugazi@drfugazi.eu.org>\n"
+"Language-Team: Polish <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+
+#: lib/Nag.php:71
+#, php-format
+msgid "%d hour"
+msgstr "%d godzina"
+
+#: lib/Nag.php:73
+#, php-format
+msgid "%d hour, %d minute"
+msgstr "%d godzina, %d minuta"
+
+#: lib/Nag.php:75
+#, php-format
+msgid "%d hour, %d minutes"
+msgstr "%d godzina, %d minut"
+
+#: lib/Nag.php:63
+#, php-format
+msgid "%d hours"
+msgstr "%d godzin"
+
+#: lib/Nag.php:65
+#, php-format
+msgid "%d hours, %d minute"
+msgstr "%d godzin, %d minuta"
+
+#: lib/Nag.php:67
+#, php-format
+msgid "%d hours, %d minutes"
+msgstr "%d godzin, %d minut"
+
+#: lib/Nag.php:81
+#, php-format
+msgid "%d minute"
+msgstr "%d minuta"
+
+#: lib/Nag.php:83
+#, php-format
+msgid "%d minutes"
+msgstr "%d minut"
+
+#: lib/Nag.php:366
+#, php-format
+msgid "%s at %s"
+msgstr "%s o %s"
+
+#: lib/Nag.php:587 lib/Block/summary.php:106 lib/Block/tree_alarms.php:42
+#, php-format
+msgid "%s is due in %s"
+msgstr "%s ma termin %s"
+
+#: lib/Nag.php:585 lib/Block/summary.php:104 lib/Block/tree_alarms.php:44
+#, php-format
+msgid "%s is due now."
+msgstr "%s ma termin teraz."
+
+#: task.php:228
+#, php-format
+msgid "%s is now incomplete."
+msgstr "%s jest teraz niekompletne."
+
+#: data.php:198
+#, php-format
+msgid "%s successfully imported"
+msgstr "%s pomy¶lnie zaimportowano"
+
+#: tasklists.php:100 lib/Nag.php:513
+#, php-format
+msgid "%s's Task List"
+msgstr "Lista zadañ - %s"
+
+#: lib/Nag.php:317 lib/Forms/task.php:55
+msgid "(highest)"
+msgstr "(najwy¿szy)"
+
+#: lib/Nag.php:317 lib/Forms/task.php:56
+msgid "(lowest)"
+msgstr "(najni¿szy)"
+
+#: task.php:212
+#, php-format
+msgid "Access denied completing task %s."
+msgstr "Brak uprawnieñ aby zamkn±æ zadanie %s."
+
+#: task.php:24
+#, php-format
+msgid "Access denied deleting %s"
+msgstr "Brak uprawnieñ aby usun±æ %s."
+
+#: task.php:81 task.php:87
+msgid "Access denied editing task."
+msgstr "Brak uprawnieñ aby edytowaæ zadanie."
+
+#: task.php:79
+#, php-format
+msgid "Access denied editing task: %s"
+msgstr "Brak uprawnieñ aby edytowaæ zadanie: %s"
+
+#: task.php:160
+#, php-format
+msgid "Access denied moving the task to %s."
+msgstr "Brak uprawnieñ aby przenie¶æ zadanie do %s."
+
+#: task.php:163
+#, php-format
+msgid "Access denied removing task from %s."
+msgstr "Brak uprawnieñ aby usun±æ zadanie z %s."
+
+#: task.php:122
+#, php-format
+msgid "Access denied saving task to %s."
+msgstr "Brak uprawnieñ aby zapisaæ zadanie do %s."
+
+#: task.php:118
+#, php-format
+msgid "Access denied saving task: %s"
+msgstr "Brak uprawnieñ aby zapisaæ zadanie: %s"
+
+#: lib/Forms/task.php:85 templates/view/task.inc:26
+msgid "Alarm"
+msgstr "Alarm"
+
+#: config/prefs.php.dist:165
+msgid "All tasks"
+msgstr "Wszystkie zadania"
+
+#: lib/Block/summary.php:63
+msgid "Always show completed tasks?"
+msgstr "Zawsze wy¶wietlaæ zakoñczone zadania?"
+
+#: lib/Block/summary.php:60
+msgid "Always show overdue tasks?"
+msgstr "Zawsze wy¶wietlaæ zaleg³e zadania?"
+
+#: config/prefs.php.dist:111
+msgid "Ascending"
+msgstr "Rosn±co"
+
+#: lib/Block/summary.php:39
+msgid "Block title"
+msgstr "Tytu³ bloku"
+
+#: data.php:30
+msgid "CSV"
+msgstr "CSV"
+
+#: lib/UI/VarRenderer/nag.php:58 lib/UI/VarRenderer/nag.php:93
+msgid "Calendar"
+msgstr "Kalendarz"
+
+#: templates/list/task_headers.inc:53
+msgid "Cat_egory"
+msgstr "Kat_egoria"
+
+#: data.php:54 lib/Forms/task.php:73 lib/Forms/task.php:79
+#: templates/view/task.inc:8 config/prefs.php.dist:83 config/prefs.php.dist:98
+msgid "Category"
+msgstr "Kategoria"
+
+#: templates/tasklists/tasklists.inc:20
+msgid "Change"
+msgstr "Zmieñ"
+
+#: config/prefs.php.dist:15
+msgid "Change your task sorting and display options."
+msgstr "Zmieñ opcje sortowania i wy¶wietlania zadañ."
+
+#: config/prefs.php.dist:144
+msgid "Choose how you want to receive reminders for tasks with alarms:"
+msgstr "Wybierz jak chesz otrzymywaæ przypomnienia o zadaniach z alarmami:"
+
+#: config/prefs.php.dist:135
+msgid ""
+"Choose if you want to be notified of new, edited, and deleted tasks by email:"
+msgstr ""
+"Wybierz, czy chesz byæ powiadamiany email'em o nowych, zmienionych i "
+"usuniêtych zadaniach:"
+
+#: config/prefs.php.dist:36
+msgid "Choose if you want to be notified of task changes and task alarms."
+msgstr ""
+"Wybierz, czy chcesz byæ powiadamiany o zmianach zadañ i alarmach zadañ."
+
+#: config/prefs.php.dist:29
+msgid "Choose your default task list."
+msgstr "Wybierz swoj± domy¶ln± listê zadañ."
+
+#: templates/list/header.inc:8
+msgid "Close Search"
+msgstr "Zamknij wyszukiwanie"
+
+#: view.php:98
+msgid "Complete"
+msgstr "Zakoñcz"
+
+#: lib/Block/summary.php:168 templates/list/task_summaries.inc:11
+#, php-format
+msgid "Complete \"%s\""
+msgstr "Zakoñcz \"%s\""
+
+#: templates/view/task.inc:42
+msgid "Complete Task"
+msgstr "Zakoñcz zadanie"
+
+#: config/prefs.php.dist:167
+msgid "Complete tasks"
+msgstr "Zakoñcz zadania"
+
+#: lib/Nag.php:381 lib/Block/summary.php:166
+msgid "Completed"
+msgstr "Zakoñczono"
+
+#: task.php:226
+#, php-format
+msgid "Completed %s."
+msgstr "Zakoñczono %s."
+
+#: templates/search/search.inc:27
+msgid "Completed Tasks"
+msgstr "Zadania zakoñczone"
+
+#: templates/list/task_summaries.inc:16
+msgid "Completed parent task, mark it as incomplete first"
+msgstr ""
+"Zadanie nadrzêdne jest zakoñczone, zaznacz je najpierw jako niekompletne"
+
+#: lib/Forms/task.php:91 templates/list/task_headers.inc:31
+#: templates/view/task.inc:38 config/prefs.php.dist:85
+#: config/prefs.php.dist:100
+msgid "Completed?"
+msgstr "Zakoñczone?"
+
+#: data.php:57
+msgid "Completion Status"
+msgstr "Status ukoñczenia"
+
+#: lib/api.php:277
+#, php-format
+msgid "Connection failed: %s"
+msgstr "B³±d po³±czenia: %s"
+
+#: templates/tasklists/tasklists.inc:15 templates/tasklists/tasklists.inc:67
+msgid "Create"
+msgstr "Utwórz"
+
+#: templates/view/task.inc:57
+msgid "Created"
+msgstr "Utworzono"
+
+#: lib/UI/VarRenderer/nag.php:51 lib/UI/VarRenderer/nag.php:87
+msgid "Day"
+msgstr "Dzieñ"
+
+#: lib/Nag.php:413 lib/UI/VarRenderer/nag.php:123
+msgid "Day(s)"
+msgstr "Dni"
+
+#: config/prefs.php.dist:28
+msgid "Default Task List"
+msgstr "Domy¶lna lista zadañ"
+
+#: lib/Forms/task.php:84
+msgid "Delay Start Until"
+msgstr "Opó¼nij rozpoczêcie do"
+
+#: view.php:105 templates/tasklists/tasklists.inc:68
+msgid "Delete"
+msgstr "Usuñ"
+
+#: config/prefs.php.dist:21
+msgid "Delete Confirmation"
+msgstr "Potwierdzenie usuwania"
+
+#: config/prefs.php.dist:22
+msgid "Delete button behaviour"
+msgstr "Zachowanie przycisku usuwania"
+
+#: task.php:102 lib/Forms/task.php:96
+msgid "Delete this task"
+msgstr "Usuñ to zadanie"
+
+#: task.php:32
+#, php-format
+msgid "Deleted %s."
+msgstr "Usuniêto %s."
+
+#: config/prefs.php.dist:112
+msgid "Descending"
+msgstr "Malej±co"
+
+#: data.php:53 lib/Forms/task.php:92
+msgid "Description"
+msgstr "Opis"
+
+#: templates/tasklists/tasklists.inc:63
+msgid "Description:"
+msgstr "Opis:"
+
+#: config/prefs.php.dist:14
+msgid "Display Options"
+msgstr "Opcje wy¶wietlania"
+
+#: config/prefs.php.dist:122
+msgid "Do you want to confirm deleting entries?"
+msgstr "Czy chcesz potwierdzaæ usuwanie wpisów?"
+
+#: data.php:55 lib/Forms/task.php:83 templates/view/task.inc:22
+msgid "Due By"
+msgstr "Termin ukoñczenia"
+
+#: config/prefs.php.dist:84 config/prefs.php.dist:99
+msgid "Due Date"
+msgstr "Termin"
+
+#: lib/UI/VarRenderer/nag.php:86
+msgid "Due date specified."
+msgstr "Okre¶lono termin."
+
+#: view.php:101
+msgid "Edit"
+msgstr "Edytuj"
+
+#: lib/Block/summary.php:159 templates/list/task_summaries.inc:38
+#, php-format
+msgid "Edit \"%s\""
+msgstr "Edytuj \"%s\""
+
+#: templates/list/task_headers.inc:42
+msgid "Edit Task"
+msgstr "Edytuj zadanie"
+
+#: templates/list/task_headers.inc:58
+msgid "Edit categories and colors"
+msgstr "Edytuj kategorie i kolory"
+
+#: task.php:92 task.php:106
+#, php-format
+msgid "Edit: %s"
+msgstr "Edytuj: %s"
+
+#: task.php:19
+#, php-format
+msgid "Error deleting task: %s"
+msgstr "B³±d przy usuwaniu zadania: %s"
+
+#: lib/Forms/task.php:90 templates/view/task.inc:34
+msgid "Estimated Time"
+msgstr "Szacowany czas"
+
+#: templates/data/export.inc:17
+msgid "Export"
+msgstr "Eksportuj"
+
+#: templates/data/export.inc:6
+msgid "Export Tasks"
+msgstr "Eksport zadañ"
+
+#: config/prefs.php.dist:50
+msgid "External Data"
+msgstr "Dane zewnêtrzne"
+
+#: config/prefs.php.dist:13 config/prefs.php.dist:20
+msgid "General Options"
+msgstr "G³ówne opcje"
+
+#: lib/UI/VarRenderer/nag.php:98
+msgid "Hour"
+msgstr "Godzina"
+
+#: lib/Nag.php:416 lib/UI/VarRenderer/nag.php:122
+msgid "Hour(s)"
+msgstr "Godzin"
+
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Tasks, Step %d"
+msgstr "Import zadañ, krok %d"
+
+#: data.php:204
+msgid "Import/Export Tasks"
+msgstr "Import/Export zadañ"
+
+#: list.php:113
+msgid "Incom_plete tasks"
+msgstr "Zadania nieukoñczone"
+
+#: templates/search/search.inc:26
+msgid "Incomplete Tasks"
+msgstr "Zadania nieukoñczone"
+
+#: templates/list/task_summaries.inc:8
+msgid "Incomplete sub tasks, complete them first"
+msgstr "Nieukoñczone zadania podrzêdne, zakoñcz je najpierw"
+
+#: config/prefs.php.dist:166
+msgid "Incomplete tasks"
+msgstr "Zadania nieukoñczone"
+
+#: templates/view/task.inc:64
+msgid "Last Modified"
+msgstr "Ostatnio zmodyfikowano"
+
+#: templates/list/task_summaries.inc:19
+#, php-format
+msgid "Mark \"%s\" as incomplete"
+msgstr "Oznacz \"%s\" jako nieukoñczone"
+
+#: templates/view/task.inc:44
+msgid "Mark as incomplete"
+msgstr "Oznacz jako nieukoñczone"
+
+#: lib/api.php:101
+msgid "Maximum Number of Tasks"
+msgstr "Maksymalna ilo¶æ zadañ"
+
+#: lib/Block/tree_alarms.php:3
+msgid "Menu Alarms"
+msgstr "Menu alarmów"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "Lista menu"
+
+#: lib/UI/VarRenderer/nag.php:99
+msgid "Minute"
+msgstr "Minuta"
+
+#: lib/Nag.php:419 lib/UI/VarRenderer/nag.php:122
+msgid "Minute(s)"
+msgstr "Minut"
+
+#: lib/UI/VarRenderer/nag.php:52 lib/UI/VarRenderer/nag.php:88
+msgid "Month"
+msgstr "Miesi±c"
+
+#: templates/list/header.inc:9
+msgid "More Options..."
+msgstr "Wiêcej opcji..."
+
+#: lib/api.php:674
+msgid "Multiple iCalendar components found; only one vTodo is supported."
+msgstr "Znaleziono wiele komponentów iCalendar; wspierany jest tylko vTodo."
+
+#: templates/panel.inc:38
+msgid "My Tasklists:"
+msgstr "Moje listy zadañ:"
+
+#: list.php:34
+msgid "My Tasks"
+msgstr "Moje zadania"
+
+#: templates/search/search.inc:18
+msgid "N_ame"
+msgstr "N_azwa"
+
+#: templates/list/task_headers.inc:45
+msgid "Na_me"
+msgstr "Nazwa"
+
+#: lib/Driver/kolab.php:678
+#, php-format
+msgid "Nag/kolab: Did not find task %s"
+msgstr "Nag/kolab: nie znaleziono zadania %s"
+
+#: data.php:52 lib/Forms/task.php:62
+msgid "Name"
+msgstr "Nazwa"
+
+#: templates/tasklists/tasklists.inc:58
+msgid "Name:"
+msgstr "Nazwa:"
+
+#: task.php:71 task.php:106 lib/Block/tree_menu.php:21
+msgid "New Task"
+msgstr "Nowe zadanie"
+
+#: templates/data/import.inc:39
+msgid "Next"
+msgstr "Dalej"
+
+#: config/prefs.php.dist:131
+msgid "No"
+msgstr "Nie"
+
+#: lib/UI/VarRenderer/nag.php:46
+msgid "No delay"
+msgstr "Brak opó¼nienia"
+
+#: lib/UI/VarRenderer/nag.php:82
+msgid "No due date."
+msgstr "Brak terminu."
+
+#: lib/api.php:455 lib/api.php:511 lib/api.php:667
+msgid "No iCalendar data was found."
+msgstr "Nie znaleziono danych w formacie iCalendar."
+
+#: lib/Forms/task.php:50
+msgid "No parent task"
+msgstr "Brak zadañ nadrzêdnych"
+
+#: lib/Nag.php:602
+msgid "No task lists are available to guests."
+msgstr "Brak listy zadañ dostêpnych dla go¶ci."
+
+#: templates/list/task_footers.inc:5
+msgid "No tasks match"
+msgstr "Brak pasuj±cych zadañ"
+
+#: lib/Block/summary.php:222
+msgid "No tasks to display"
+msgstr "Brak zadañ do wy¶wietlenia"
+
+#: lib/Nag.php:423 lib/UI/VarRenderer/nag.php:138
+msgid "None"
+msgstr "Brak"
+
+#: lib/Nag.php:382
+msgid "Not Completed"
+msgstr "Nie zakoñczone"
+
+#: templates/view/task.inc:14
+msgid "Not Private"
+msgstr "Nie prywatne"
+
+#: lib/Driver/sql.php:100 lib/Driver/sql.php:136
+msgid "Not found"
+msgstr "Nie znaleziono"
+
+#: config/prefs.php.dist:35
+msgid "Notifications"
+msgstr "Powiadomienia"
+
+#: config/prefs.php.dist:133
+msgid "On all shown tasklists"
+msgstr "O wszystkich widocznych listach zadañ"
+
+#: config/prefs.php.dist:134
+msgid "On all tasklists I have read access to"
+msgstr "O wszystkicha listach zadañ, które mogê czytaæ"
+
+#: config/prefs.php.dist:132
+msgid "On my tasklists only"
+msgstr "Tylko o moich listach zadañ"
+
+#: templates/list/task_headers.inc:39
+msgid "P_ri"
+msgstr "P_ri"
+
+#: lib/Forms/task.php:69
+msgid "Parent task"
+msgstr "Zadanie nadrzêdne"
+
+#: templates/tasklists/tasklists.inc:60
+msgid "Permission"
+msgstr "Uprawnienia"
+
+#: lib/api.php:429 lib/api.php:549 lib/api.php:612 lib/api.php:649
+msgid "Permission Denied"
+msgstr "Dostêp zabroniony"
+
+#: lib/api.php:159
+msgid "Permission denied"
+msgstr "Brak uprawnieñ"
+
+#: data.php:56 lib/Forms/task.php:87 templates/view/task.inc:30
+#: config/prefs.php.dist:81 config/prefs.php.dist:96
+msgid "Priority"
+msgstr "Priorytet"
+
+#: lib/Driver.php:765 templates/view/task.inc:14
+msgid "Private"
+msgstr "Prywatne"
+
+#: lib/Driver.php:763
+msgid "Private Task"
+msgstr "Prywatne zadanie"
+
+#: lib/Forms/task.php:82 templates/view/task.inc:12
+msgid "Private?"
+msgstr "Prywatne?"
+
+#: view.php:105
+msgid "Really delete this task?"
+msgstr "Na prawdê usun±æ to zadanie?"
+
+#: lib/Forms/task.php:94 templates/panel.inc:57
+msgid "Save"
+msgstr "Zapisz"
+
+#: task.php:191
+#, php-format
+msgid "Saved %s."
+msgstr "Zapisano %s."
+
+#: search.php:14 lib/Block/tree_menu.php:30 templates/list/header.inc:4
+#: templates/search/search.inc:31
+msgid "Search"
+msgstr "Szukaj"
+
+#: templates/search/search.inc:17
+msgid "Search In:"
+msgstr "Szukaj w:"
+
+#: templates/search/search.inc:12
+msgid "Search _Text:"
+msgstr "Szukaj _tekstu:"
+
+#: templates/search/search.inc:24
+msgid "Search:"
+msgstr "Szukaj:"
+
+#: list.php:73
+#, php-format
+msgid "Search: Results for \"%s\""
+msgstr "Wyszukiwanie: rezultaty dla \"%s\""
+
+#: lib/UI/VarRenderer/nag.php:58 lib/UI/VarRenderer/nag.php:93
+msgid "Select a date"
+msgstr "Wybierz datê"
+
+#: templates/tasklists/tasklists.inc:52
+msgid "Select a tasklist"
+msgstr "Sybierz listê zadañ"
+
+#: templates/data/export.inc:11
+msgid "Select the export format:"
+msgstr "Wybierz format eksportu:"
+
+#: templates/data/import.inc:36
+msgid "Select the file to import:"
+msgstr "Wybierz plik do zaimportowania:"
+
+#: templates/data/import.inc:12
+msgid "Select the format of the source file:"
+msgstr "Wybierz format pliku ¼ród³owego:"
+
+#: templates/panel.inc:48
+msgid "Shared Tasklists:"
+msgstr "Wspó³dzielona lista zadañ:"
+
+#: config/prefs.php.dist:62
+msgid "Should the Task List be shown in its own column in the List view?"
+msgstr ""
+"Czy lista zadañ powinna byæ wy¶wietlana we w³asnej kolumnie w widoku listy?"
+
+#: lib/Block/summary.php:45
+msgid "Show action buttons?"
+msgstr "Wy¶wietlaæ przyciski akcji?"
+
+#: config/prefs.php.dist:168
+msgid "Show complete, incomplete, or all tasks in the task list?"
+msgstr ""
+"Wy¶wietlaæ zakoñczone, nieukoñczone czy wszystkie zadania w li¶cie zadañ?"
+
+#: config/prefs.php.dist:155
+msgid "Show data from any of these other applications in your task list?"
+msgstr ""
+"Wy¶wietlaæ dane z którejkolwiek z tych aplikacji w Twojej li¶cie zadañ?"
+
+#: config/prefs.php.dist:51
+msgid "Show data from other applications or sources."
+msgstr "Wy¶wietlaj dane z innych aplikacji lub ¼róde³."
+
+#: lib/Block/summary.php:48
+msgid "Show due dates?"
+msgstr "Wy¶wietlaæ terminy?"
+
+#: lib/Block/summary.php:42
+msgid "Show priorities?"
+msgstr "Wy¶wietlaæ priorytety?"
+
+#: lib/Block/summary.php:54
+msgid "Show task alarms?"
+msgstr "Wy¶wietlaæ alarmy zadañ?"
+
+#: lib/Block/summary.php:57
+msgid "Show task category?"
+msgstr "Wy¶wietlaæ kategorie zadañ?"
+
+#: config/prefs.php.dist:72
+msgid "Show task list options panel?"
+msgstr "Wy¶wietlaæ panel opcji listy zadañ?"
+
+#: lib/Block/summary.php:51
+msgid "Show tasklist name?"
+msgstr "Wy¶wietlaæ nazwê listy zadañ?"
+
+#: lib/Block/summary.php:70
+msgid "Show tasks from these categories"
+msgstr "Wy¶wietlaj zadania z tych kategori"
+
+#: lib/Block/summary.php:66
+msgid "Show tasks from these tasklists"
+msgstr "Wy¶wietlaj zadania z tych list zadañ"
+
+#: templates/list/task_headers.inc:53
+msgid "Sort by Category"
+msgstr "Sortuj po kategorii"
+
+#: templates/list/task_headers.inc:31
+msgid "Sort by Completion Status"
+msgstr "Sortuj po statusie ukoñczenia"
+
+#: templates/list/task_headers.inc:50
+msgid "Sort by Due Date"
+msgstr "Sortuj po terminie"
+
+#: templates/list/task_headers.inc:45
+msgid "Sort by Name"
+msgstr "Sortuj po nazwie"
+
+#: templates/list/task_headers.inc:39
+msgid "Sort by Priority"
+msgstr "Sortuj po priorytecie"
+
+#: templates/list/task_headers.inc:35
+msgid "Sort by User Name"
+msgstr "Sortuj po nazwie u¿ytkownika"
+
+#: config/prefs.php.dist:113
+msgid "Sort direction:"
+msgstr "Kierunek sortowania:"
+
+#: config/prefs.php.dist:87
+msgid "Sort tasks by:"
+msgstr "Sortuj zadania wed³ug:"
+
+#: templates/view/task.inc:18
+msgid "Start Date"
+msgstr "Data rozpoczêcia"
+
+#: lib/UI/VarRenderer/nag.php:50
+msgid "Start date specified."
+msgstr "Nie okre¶lono daty rozpoczêcia."
+
+#: templates/list/task_summaries.inc:57
+msgid "Task Alarm"
+msgstr "Alarm zadania"
+
+#: templates/list/task_headers.inc:48
+msgid "Task Alarm?"
+msgstr "Alarm zadania?"
+
+#: lib/Forms/task.php:65
+msgid "Task List"
+msgstr "Lista zadañ"
+
+#: config/prefs.php.dist:27 config/prefs.php.dist:34 config/prefs.php.dist:49
+msgid "Task List and Share Options"
+msgstr "Opcje listy zadañ i udzia³ów"
+
+#: tasklists.php:111
+msgid "Task Lists"
+msgstr "Listy zadañ"
+
+#: config/prefs.php.dist:82 config/prefs.php.dist:97
+msgid "Task Name"
+msgstr "Nazwa zadania"
+
+#: templates/list/task_summaries.inc:55
+msgid "Task Note"
+msgstr "Notatka zadania"
+
+#: templates/list/task_headers.inc:47
+msgid "Task Note?"
+msgstr "Notatka zadania?"
+
+#: templates/search/search.inc:6
+msgid "Task Search"
+msgstr "Wyszukiwanie zadañ"
+
+#: lib/Nag.php:627
+msgid "Task added:"
+msgstr "Dodano zadanie:"
+
+#: lib/Nag.php:637
+msgid "Task deleted:"
+msgstr "Usuniêto zadanie:"
+
+#: tasklists.php:28
+msgid "Task lists must have a name."
+msgstr "Lista zadañ musi posiadaæ nazwê."
+
+#: lib/Nag.php:632
+msgid "Task modified:"
+msgstr "Zmodyfikowano zadanie:"
+
+#: view.php:43 task.php:85
+msgid "Task not found."
+msgstr "Nie znaleziono zadania."
+
+#: config/prefs.php.dist:86 config/prefs.php.dist:101
+msgid "Tasklist"
+msgstr "Lista zadañ"
+
+#: templates/panel.inc:30 templates/panel.inc:31
+#: templates/tasklists/tasklists.inc:48
+msgid "Tasklists"
+msgstr "Listy zadañ"
+
+#: templates/tasklists/tasklists.inc:50
+msgid "Tasklists:"
+msgstr "Listy zadañ:"
+
+#: lib/api.php:728
+msgid "Tasks"
+msgstr "Zadania"
+
+#: lib/Block/summary.php:3
+msgid "Tasks Summary"
+msgstr "Podsumowanie zadañ"
+
+#: data.php:192
+#, php-format
+msgid "The %s file didn't contain any tasks."
+msgstr "Plik %s nie zawiera³ ¿adnych zadañ."
+
+#: lib/Driver.php:56
+msgid "The Tasks backend is not currently available."
+msgstr "Backend zadañ nie jest obecnie dostêpny."
+
+#: lib/Driver.php:137
+#, php-format
+msgid "The Tasks backend is not currently available: %s"
+msgstr "Backend zadañ nie jest obecnie dostêpny: %s"
+
+#: lib/Forms/task.php:130
+msgid "The alarm value must not be empty."
+msgstr "Warto¶æ alarmu nie mo¿e byæ pusta."
+
+#: lib/Nag.php:628
+#, php-format
+msgid ""
+"The task \"%s\" has been added to \"%s\" tasklist, with a due date of: %s."
+msgstr "Zadanie \"%s\" zosta³o dodane do listy zadañ \"%s\" z terminem: %s."
+
+#: lib/Nag.php:638
+#, php-format
+msgid ""
+"The task \"%s\" has been deleted from \"%s\" tasklist, with a due date of: %"
+"s."
+msgstr "Zadanie \"%s\" zosta³o usuniête z listy zadañ \"%s\" z terminem: %s."
+
+#: lib/Nag.php:633
+#, php-format
+msgid ""
+"The task \"%s\" has been edited on \"%s\" tasklist, with a due date of: %s."
+msgstr ""
+"Zadanie \"%s\" zosta³o poprawione na li¶cie zadañ \"%s\" z terminem: %s."
+
+#: tasklists.php:45
+#, php-format
+msgid "The task list \"%s\" couldn't be created: %s"
+msgstr "Lista zadañ \"%s\" nie mo¿e zostaæ utworzona: %s"
+
+#: tasklists.php:56
+#, php-format
+msgid "The task list \"%s\" couldn't be saved: %s"
+msgstr "Lista zadañ \"%s\" nie mo¿e zostaæ zapisana: %s"
+
+#: tasklists.php:47
+#, php-format
+msgid "The task list \"%s\" has been created."
+msgstr "Lista zadañ \"%s\" zosta³a utworzona."
+
+#: tasklists.php:81
+#, php-format
+msgid "The task list \"%s\" has been deleted."
+msgstr "Lista zadañ \"%s\" zosta³a usuniêta."
+
+#: tasklists.php:58
+#, php-format
+msgid "The task list \"%s\" has been saved."
+msgstr "Lista zadañ \"%s\" zosta³a zapisana."
+
+#: config/prefs.php.dist:102
+msgid "Then:"
+msgstr "Nastêpnie:"
+
+#: templates/list/empty.inc:2
+msgid "There are no tasks matching the current criteria."
+msgstr "Nie ma zadañ spe³niaj±cych podane kryteria."
+
+#: task.php:222
+#, php-format
+msgid "There was a problem completing %s: %s"
+msgstr "Wyst±pi³ problem przy zmianie statusu %s: %s"
+
+#: task.php:29
+#, php-format
+msgid "There was a problem deleting %s: %s"
+msgstr "Wyst±pi³ problem przy usuwaniu %s: %s"
+
+#: task.php:189
+#, php-format
+msgid "There was a problem saving the task: %s."
+msgstr "Wyst±pi³ problem przy zapisywaniu zadania: %s."
+
+#: data.php:195
+#, php-format
+msgid "There was an error importing the data: %s"
+msgstr "Wyst±pi³ b³±d podczas importu danych: %s"
+
+#: lib/api.php:447 lib/api.php:661
+msgid "There was an error importing the iCalendar data."
+msgstr "Wyst±pi³ b³±d podczas importu danych w formacie iCalendar."
+
+#: data.php:79
+msgid "There were no tasks to export."
+msgstr "Nie by³o zadañ do wyeksportowania."
+
+#: data.php:125
+msgid "This file format is not supported."
+msgstr "Ten format pliku nie jest wspierany."
+
+#: tasklists.php:77
+#, php-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "Nie mo¿na usun±æ \"%s\": %s"
+
+#: lib/Driver.php:140
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Nie mo¿na za³adowaæ definicji %s."
+
+#: lib/Nag.php:847 lib/Nag.php:848 lib/Nag.php:862 lib/Nag.php:863
+#: lib/Forms/task.php:78 lib/Block/summary.php:31 lib/Block/summary.php:215
+#: templates/list/task_summaries.inc:62 templates/view/task.inc:9
+msgid "Unfiled"
+msgstr "Niewype³niona"
+
+#: lib/api.php:518 lib/api.php:576 lib/api.php:698
+#, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "Niewspierany rodzaj zawarto¶ci: %s"
+
+#: lib/Driver.php:930
+#, php-format
+msgid ""
+"We would like to remind you of this due task.\n"
+"\n"
+"%s\n"
+"\n"
+"Date: %s\n"
+"Time: %s\n"
+"\n"
+"%s"
+msgstr ""
+"Chcemy przypomnieæ Ci o tym terminie zadania.\n"
+"\n"
+"%s\n"
+"\n"
+"Data: %s\n"
+"Czas: %s\n"
+"\n"
+"%s"
+
+#: lib/Nag.php:410 lib/UI/VarRenderer/nag.php:123
+msgid "Week(s)"
+msgstr "Tygodni"
+
+#: templates/data/import.inc:21
+msgid "Which tasklist should the tasks be added to?"
+msgstr "Do której listy zadañ powinny zostaæ dodane zadania?"
+
+#: lib/UI/VarRenderer/nag.php:53 lib/UI/VarRenderer/nag.php:89
+msgid "Year"
+msgstr "Rok"
+
+#: task.php:61 data.php:41 data.php:150
+#, php-format
+msgid "You are not allowed to create more than %d tasks."
+msgstr "Nie masz zezwolenia aby utworzyæ wiêcej ni¿ %d zadañ."
+
+#: view.php:51
+msgid "You do not have permission to view this tasklist."
+msgstr "Nie masz uprawnieñ aby wy¶wietliæ tê listê zadañ."
+
+#: tasklists.php:84
+msgid "You must select a task list to be deleted."
+msgstr "Musisz wybraæ listê zadañ do usuniêcia."
+
+#: templates/tasklists/tasklists.inc:37
+msgid "You must select a tasklist to be deleted."
+msgstr "Musisz wybraæ listê zadañ do usuniêcia."
+
+#: lib/Nag.php:628
+msgid "You requested to be notified when tasks are added to your tasklists."
+msgstr ""
+"Za¿±da³e¶ aby Cie poinformowaæ gdy zadania zostan± dodane do Twojej listy "
+"zadañ."
+
+#: lib/Nag.php:638
+msgid ""
+"You requested to be notified when tasks are deleted from your tasklists."
+msgstr ""
+"Za¿±da³e¶ aby Cie poinformowaæ gdy zadania zostan± usuniête z Twojej listy "
+"zadañ."
+
+#: lib/Nag.php:633
+msgid "You requested to be notified when tasks are edited on your tasklists."
+msgstr ""
+"Za¿±da³e¶ aby Cie poinformowaæ gdy zadania zostan± zmienione na Twojej "
+"li¶cie zadañ."
+
+#: templates/prefs/tasklistselect.inc:10
+msgid "Your default task list:"
+msgstr "Twoja domy¶lna lista zadañ:"
+
+#: templates/panel.inc:43
+msgid "[Manage My Tasklists]"
+msgstr "[Zarz±dzaj moimi listami zadañ]"
+
+#: lib/Block/summary.php:101 lib/Block/summary.php:199
+#: templates/list/task_summaries.inc:46
+msgid "[none]"
+msgstr "[brak]"
+
+#: templates/search/search.inc:25
+msgid "_All Tasks"
+msgstr "Wszystkie z_adania"
+
+#: list.php:112
+msgid "_All tasks"
+msgstr "Wszystkie z_adania"
+
+#: templates/search/search.inc:20
+msgid "_Category"
+msgstr "Kategoria"
+
+#: view.php:98
+msgid "_Complete"
+msgstr "Zakoñcz"
+
+#: list.php:115
+msgid "_Completed tasks"
+msgstr "Zadania ukoñczone"
+
+#: view.php:105
+msgid "_Delete"
+msgstr "Usuñ"
+
+#: templates/search/search.inc:19
+msgid "_Description"
+msgstr "Opis"
+
+#: templates/list/task_headers.inc:50
+msgid "_Due Date"
+msgstr "Termin"
+
+#: view.php:101
+msgid "_Edit"
+msgstr "_Edytuj"
+
+#: list.php:114
+msgid "_Future tasks"
+msgstr "Przysz³e zadania"
+
+#: lib/Nag.php:550
+msgid "_Import/Export"
+msgstr "_Import/Eksport"
+
+#: lib/Nag.php:537
+msgid "_List Tasks"
+msgstr "_Lista zadañ"
+
+#: lib/Nag.php:542
+msgid "_New Task"
+msgstr "_Nowe zadanie"
+
+#: lib/Nag.php:555
+msgid "_Print"
+msgstr "Drukuj"
+
+#: lib/Nag.php:546
+msgid "_Search"
+msgstr "_Szukaj"
+
+#: templates/list/task_headers.inc:35
+msgid "_Task List"
+msgstr "Lista zadañ"
+
+#: data.php:31
+msgid "iCalendar (vTodo)"
+msgstr "iCalendar (vTodo)"
+
+#: lib/Nag.php:79
+msgid "no time"
+msgstr "brak czasu"
+
+#: data.php:99 templates/data/export.inc:1
+msgid "tasks.csv"
+msgstr "zadania.csv"
+
+#: data.php:110
+msgid "tasks.ics"
+msgstr "zadania.ics"

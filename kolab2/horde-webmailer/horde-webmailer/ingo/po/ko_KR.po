@@ -1,0 +1,1087 @@
+# Korean translations for horde package
+# horde 패키지에 대한 한국어 번역문.
+# Copyright 2005-2009 The Horde Project
+# This file is distributed under the same license as the horde package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: horde 3\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2005-01-25 18:46+0100\n"
+"PO-Revision-Date: 2005-05-08 16:42+0900\n"
+"Last-Translator: Jinhyok Heo <novembre@ournature.org>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=EUC-KR\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: filters.php:167
+msgid " and"
+msgstr " 그리고"
+
+#: filters.php:167
+msgid " or"
+msgstr " 또는"
+
+#: templates/blacklist/blacklist.inc:19
+msgid "Action for blacklisted addresses:"
+msgstr "수신거부 주소에 대한 명령"
+
+#: templates/script/activate.inc:10
+msgid "Activate Script"
+msgstr ""
+
+#: templates/filters/settings.inc:9
+msgid "Additional Settings"
+msgstr "추가적인 설정"
+
+#: templates/rule/header.inc:53
+msgid "All of the following"
+msgstr "다음의 전부"
+
+#: templates/rule/footer.inc:44
+msgid "Answered"
+msgstr "답장한 메일"
+
+#: templates/rule/header.inc:56
+msgid "Any of the following"
+msgstr "다음 중 하나 이상"
+
+#: templates/filters/footer.inc:16
+msgid "Apply Filters"
+msgstr "필터 적용하기"
+
+#: filters.php:196
+#, fuzzy
+msgid "Are you sure you want to delete this rule?"
+msgstr ""
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"이 메시지를 영원히 삭제하시겠습니까?\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"이 메시지를 영원히 삭제하시겠습니까?\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"이 메시지를 영원히 삭제하시겠습니까?\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"이 메시지를 영원히 삭제하시겠습니까?\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"이 메시지를 영원히 삭제하시겠습니까?"
+
+#: config/prefs.php.dist:33
+msgid "Automatically update the script after each change?"
+msgstr ""
+
+#: config/fields.php.dist:47
+msgid "Bcc"
+msgstr "숨은 참조"
+
+#: lib/Storage.php:349
+msgid "Begins with"
+msgstr ""
+
+#: filters.php:126 templates/blacklist/blacklist.inc:8
+msgid "Blacklist"
+msgstr "수신거부"
+
+#: blacklist.php:100
+msgid "Blacklist Edit"
+msgstr "수신거부 목록 수정"
+
+#: blacklist.php:17
+msgid "Blacklist is not supported in the current filtering driver."
+msgstr ""
+
+#: lib/Script/procmail.php:209
+msgid "Blacklisted Address"
+msgstr "수신거부된 주소"
+
+#: lib/Script/sieve.php:245
+msgid "Blacklisted Addresses"
+msgstr "수신거부된 주소"
+
+#: config/fields.php.dist:88
+msgid "Body"
+msgstr "본문"
+
+#: filters.php:164 rule.php:238
+msgid "Case Sensitive"
+msgstr "대소문자 구분"
+
+#: config/fields.php.dist:43
+msgid "Cc"
+msgstr "참조"
+
+#: rule.php:105 whitelist.php:36 forward.php:33 vacation.php:41
+#: blacklist.php:69
+msgid "Changes saved."
+msgstr "수정사항 저장됨"
+
+#: lib/Storage.php:345
+msgid "Contains"
+msgstr "포함"
+
+#: filters.php:204 filters.php:205
+msgid "Copy %s"
+msgstr "복사 %s"
+
+#: lib/Storage.php:775
+msgid "Copy of %s"
+msgstr "%s 복사"
+
+#: lib/Ingo.php:53
+msgid "Create new folder"
+msgstr "새 폴더 만들기"
+
+#: templates/filters/filter.html:16
+msgid "DISABLED"
+msgstr "사용안함"
+
+#: lib/Script/procmail.php:354
+msgid "DISABLED: "
+msgstr "사용안함:"
+
+#: templates/script/activate.inc:17
+msgid "Deactivate Script"
+msgstr ""
+
+#: filters.php:196 filters.php:197
+msgid "Delete %s"
+msgstr "삭제 %s"
+
+#: templates/rule/filter.inc:30
+msgid "Delete Condition"
+msgstr "삭제 조건"
+
+#: lib/Storage.php:301
+msgid "Delete message completely"
+msgstr "메시지 완전 삭제"
+
+#: templates/rule/footer.inc:47
+msgid "Deleted"
+msgstr "삭제된 메일"
+
+#: lib/Storage.php:289
+msgid "Deliver into my INBOX"
+msgstr "받은편지함으로 전달"
+
+#: lib/Storage.php:315
+msgid "Deliver into my INBOX and copy to"
+msgstr "받은편지함으로 전달하고 다음 편지함으로 복사하기"
+
+#: lib/Storage.php:310
+msgid "Deliver into my INBOX and redirect to"
+msgstr "받은편지함으로 전달하고 다음주소로 전달"
+
+#: lib/Storage.php:295
+msgid "Deliver to folder"
+msgstr "폴더로 이동"
+
+#: filters.php:218 filters.php:219
+msgid "Disable %s"
+msgstr "사용안함: %s"
+
+#: templates/whitelist/whitelist.inc:9 templates/blacklist/blacklist.inc:10
+#: templates/vacation/vacation.inc:9 templates/forward/forward.inc:9
+#: templates/rule/header.inc:30
+msgid "Disabled"
+msgstr "사용안함"
+
+#: templates/filters/settings.inc:21
+msgid "Display detailed notification when each filter is applied?"
+msgstr "필터가 적용될 때 자세한 알림 메시지를 표시합니다."
+
+#: templates/vacation/vacation.inc:38
+msgid "Do _not send responses to bulk or list messages"
+msgstr "_n벌크 혹은 리스트 메시지에 대해 응답을 보내지 않는다"
+
+#: templates/rule/footer.inc:10
+msgid "Do this:"
+msgstr ""
+
+#: lib/Storage.php:350
+msgid "Doesn't begin with"
+msgstr ""
+
+#: lib/Storage.php:346
+msgid "Doesn't contain"
+msgstr ""
+
+#: lib/Storage.php:352
+msgid "Doesn't end with"
+msgstr ""
+
+#: lib/Storage.php:354
+msgid "Doesn't exist"
+msgstr ""
+
+#: lib/Storage.php:357
+msgid "Doesn't match (with placeholders)"
+msgstr ""
+
+#: templates/filters/header.inc:20
+msgid "Edit"
+msgstr "수정"
+
+#: filters.php:185 filters.php:187 filters.php:191 filters.php:192
+msgid "Edit %s"
+msgstr "수정 '%s'"
+
+#: filters.php:222 filters.php:223
+msgid "Enable %s"
+msgstr "사용하기: %s"
+
+#: templates/filters/header.inc:22
+msgid "Enabled"
+msgstr "사용중"
+
+#: lib/Storage.php:351
+#, fuzzy
+msgid "Ends with"
+msgstr "수정"
+
+#: lib/Storage.php:362
+msgid "Equal to"
+msgstr ""
+
+#: templates/filters/header.inc:7
+msgid "Existing Rules"
+msgstr "존재하는 필터링"
+
+#: lib/Storage.php:353
+msgid "Exists"
+msgstr "존재함"
+
+#: templates/filters/settings.inc:30
+msgid "Filter All Messages"
+msgstr "모든 메시지 필터"
+
+#: templates/filters/settings.inc:32
+msgid "Filter Only Seen Messages"
+msgstr "읽은 메일만 필터"
+
+#: templates/filters/settings.inc:31
+msgid "Filter Only Unseen Messages"
+msgstr "읽지 않은 메일만 필터"
+
+#: templates/filters/settings.inc:28
+msgid "Filter Options"
+msgstr "필터 선택사항"
+
+#: templates/rule/header.inc:28
+msgid "Filter Rule"
+msgstr "필터 큐칙"
+
+#: filters.php:92
+msgid "Filter Rules"
+msgstr "필터 큐칙"
+
+#: script.php:52
+#, fuzzy
+msgid "Filter Script Display"
+msgstr "기타 설정"
+
+#: lib/Ingo.php:269
+msgid "Filter _Rules"
+msgstr "_r필터 큐칙"
+
+#: lib/Script/imap.php:321
+#, php-format
+msgid "Filter activity: %s message(s) have been copied to the folder \"%s\"."
+msgstr ""
+
+#: lib/Script/imap.php:308
+#, fuzzy, php-format
+msgid "Filter activity: %s message(s) have been deleted."
+msgstr "%d개 메시지 지워짐. "
+
+#: lib/Script/imap.php:286
+#, php-format
+msgid "Filter activity: %s message(s) have been moved to the folder \"%s\"."
+msgstr ""
+
+#: lib/Script/imap.php:189
+#, php-format
+msgid "Filter activity: %s message(s) that matched the blacklist were deleted."
+msgstr ""
+
+#: lib/Script/imap.php:318
+#, php-format
+msgid ""
+"Filter activity: The message \"%s\" from \"%s\" has been copied to the "
+"folder \"%s\"."
+msgstr ""
+
+#: lib/Script/imap.php:303
+#, fuzzy, php-format
+msgid "Filter activity: The message \"%s\" from \"%s\" has been deleted."
+msgstr "메시지 지워짐"
+
+#: lib/Script/imap.php:280
+#, php-format
+msgid ""
+"Filter activity: The message \"%s\" from \"%s\" has been moved to the folder "
+"\"%s\"."
+msgstr ""
+
+#: rule.php:133
+msgid "Filter not found."
+msgstr "필터 찾지 못함"
+
+#: templates/rule/header.inc:48
+msgid "For an incoming message that matches:"
+msgstr ""
+
+#: filters.php:144 templates/forward/forward.inc:7
+msgid "Forward"
+msgstr "전달"
+
+#: forward.php:16
+msgid "Forward is not supported in the current filtering driver."
+msgstr ""
+
+#: lib/Script/procmail.php:296
+msgid "Forwards"
+msgstr "전달"
+
+#: forward.php:46
+msgid "Forwards Edit"
+msgstr "전달 수정"
+
+#: config/fields.php.dist:39
+msgid "From"
+msgstr "위치"
+
+#: lib/Storage.php:360
+#, fuzzy
+msgid "Greater than"
+msgstr "링크 만들기"
+
+#: lib/Storage.php:361
+msgid "Greater than or equal to"
+msgstr ""
+
+#: templates/rule/footer.inc:41
+msgid "Important"
+msgstr "중요한 메일"
+
+#: rule.php:26
+msgid "Individual rules are not supported in the current filtering driver."
+msgstr ""
+
+#: lib/Script/sieve.php:1783
+msgid "Inexistant mailbox specified for message delivery."
+msgstr ""
+
+#: lib/Storage.php:347
+msgid "Is"
+msgstr ""
+
+#: lib/Storage.php:348
+msgid "Isn't"
+msgstr ""
+
+#: lib/Storage.php:358
+msgid "Less than"
+msgstr ""
+
+#: lib/Storage.php:359
+msgid "Less than or equal to"
+msgstr ""
+
+#: config/fields.php.dist:59
+msgid "List-ID"
+msgstr ""
+
+#: templates/blacklist/blacklist.inc:22
+msgid "Mar_k message as deleted"
+msgstr "_k지워진 메시지로 표시"
+
+#: templates/rule/footer.inc:33
+#, fuzzy
+msgid "Mark message as:"
+msgstr "메시지 구분"
+
+#: lib/Storage.php:356
+msgid "Matches (with placeholders)"
+msgstr ""
+
+#: lib/Storage.php:487
+#, php-format
+msgid ""
+"Maximum number of blacklisted addresses exceeded (Total addresses: %s, "
+"Maximum addresses: %s).  Could not add new addresses to blacklist."
+msgstr ""
+
+#: lib/Storage.php:541
+#, php-format
+msgid ""
+"Maximum number of whitelisted addresses exceeded (Total addresses: %s, "
+"Maximum addresses: %s).  Could not add new addresses to whitelist."
+msgstr ""
+
+#: lib/Script/sieve.php:1646
+msgid "Missing address to redirect message to"
+msgstr ""
+
+#: lib/Script/sieve.php:1680
+msgid "Missing reason for reject"
+msgstr ""
+
+#: lib/Script/sieve.php:1850
+msgid "Missing reason in vacation."
+msgstr ""
+
+#: templates/filters/header.inc:23
+msgid "Move"
+msgstr "이동"
+
+#: filters.php:109 filters.php:215
+msgid "Move Rule Down"
+msgstr "아래로 이동"
+
+#: filters.php:110 filters.php:214
+msgid "Move Rule Up"
+msgstr "위로 이동"
+
+#: templates/vacation/vacation.inc:46
+msgid "N_umber of days between vacation replies:"
+msgstr ""
+
+#: templates/filters/filter-none.inc:4 templates/filters/footer.inc:13
+#: lib/Storage.php:726
+msgid "New Rule"
+msgstr "새로운 규칙"
+
+#: lib/Ingo.php:204 lib/Ingo.php:206
+#, fuzzy, php-format
+msgid "No '%s' element found in backend configuration."
+msgstr "VFS 설정 정보에서 'port'이 없습니다."
+
+#: lib/Ingo.php:202
+msgid "No backend configured for this host"
+msgstr ""
+
+#: lib/Ingo.php:179
+msgid "No backends configured in backends.php"
+msgstr ""
+
+#: templates/filters/filter-none.inc:4
+msgid "No filters. Click '%s' to create a new filter."
+msgstr "필터가 없음. '%s'를 눌러 새 필터를 만드세요."
+
+#: lib/Script/sieve.php:1233 lib/Script/sieve.php:1333
+#: lib/Script/sieve.php:1515
+#, fuzzy
+msgid "No headers specified"
+msgstr "문자열 입력 오류"
+
+#: script.php:67
+#, fuzzy
+msgid "No script generated."
+msgstr "삭제되지 않은 메일"
+
+#: lib/Script/sieve.php:1530
+#, fuzzy
+msgid "No strings specified"
+msgstr "폴더를 선택하세요"
+
+#: lib/Storage.php:363
+#, fuzzy
+msgid "Not equal to"
+msgstr ""
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"제목 없슴\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음\n"
+"#-#-#-#-#  ko_KR.po (Horde 3.0-cvs)  #-#-#-#-#\n"
+"제목 없음"
+
+#: config/prefs.php.dist:19
+msgid "Options about script updating."
+msgstr ""
+
+#: config/prefs.php.dist:17
+msgid "Other Options"
+msgstr "기타 설정"
+
+#: templates/javascript/new_folder.js:6
+msgid "Please enter the name of the new folder:"
+msgstr "\\n새로운 폴더의 이름을 입력하세요:\\n"
+
+#: templates/vacation/vacation.inc:64
+msgid "R_eason"
+msgstr ""
+
+#: config/fields.php.dist:63
+msgid "Received"
+msgstr ""
+
+#: lib/Storage.php:306
+msgid "Redirect to"
+msgstr ""
+
+#: lib/Storage.php:355
+msgid "Regular expression"
+msgstr ""
+
+#: lib/Storage.php:321
+msgid "Reject with reason"
+msgstr ""
+
+#: config/fields.php.dist:55
+msgid "Resent To"
+msgstr ""
+
+#: config/fields.php.dist:51
+msgid "Resent-from"
+msgstr ""
+
+#: templates/rule/footer.inc:72
+msgid "Return to Filters List"
+msgstr "필터 목록으로 돌아가기"
+
+#: templates/whitelist/whitelist.inc:28 templates/blacklist/blacklist.inc:43
+#: templates/vacation/vacation.inc:75 templates/forward/forward.inc:38
+msgid "Return to Rules List"
+msgstr "규칙 목록로 돌아가기"
+
+#: templates/filters/header.inc:21
+msgid "Rule"
+msgstr "규칙"
+
+#: filters.php:45
+msgid "Rule Copied"
+msgstr "규칙 복사됨"
+
+#: filters.php:39
+msgid "Rule Deleted"
+msgstr "규칙 지워짐"
+
+#: filters.php:59
+msgid "Rule Disabled"
+msgstr "규칙 사용안함"
+
+#: filters.php:64
+msgid "Rule Enabled"
+msgstr "규칙 사용함"
+
+#: templates/rule/header.inc:39
+msgid "Rule Name"
+msgstr "규칙 이름"
+
+#: templates/whitelist/whitelist.inc:27 templates/blacklist/blacklist.inc:42
+#: templates/vacation/vacation.inc:74 templates/forward/forward.inc:37
+#: templates/rule/footer.inc:71
+msgid "Save"
+msgstr "저장"
+
+#: templates/filters/settings.inc:47
+msgid "Save Settings"
+msgstr "설정 저장"
+
+#: templates/script/header.inc:3
+#, fuzzy
+msgid "Script"
+msgstr "아래첨자"
+
+#: config/prefs.php.dist:18
+msgid "Script Updating"
+msgstr ""
+
+#: lib/Ingo.php:229
+#, fuzzy
+msgid "Script not updated."
+msgstr "%s 수정됨"
+
+#: lib/Ingo.php:136
+#, fuzzy
+msgid "Script successfully activated."
+msgstr ""
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"메일함 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다."
+
+#: lib/Ingo.php:135
+#, fuzzy
+msgid "Script successfully deactivated."
+msgstr ""
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"메일함 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다.\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"폴더 \"%s\"이 삭제되었습니다."
+
+#: templates/rule/footer.inc:38
+msgid "Seen"
+msgstr "읽은 메일"
+
+#: rule.php:163
+msgid "Select a field"
+msgstr "항목 선택"
+
+#: lib/Ingo.php:50
+msgid "Select target folder"
+msgstr "폴더 선택"
+
+#: rule.php:184
+msgid "Self-Defined Header"
+msgstr ""
+
+#: config/fields.php.dist:35
+msgid "Sender"
+msgstr ""
+
+#: filters.php:78
+msgid "Settings successfully updated."
+msgstr "설정이 성공적으로 저장되었습니다."
+
+#: templates/script/activate.inc:24
+msgid "Show Active Script"
+msgstr ""
+
+#: templates/script/activate.inc:31
+#, fuzzy
+msgid "Show Current Script"
+msgstr "연락처 보기"
+
+#: config/fields.php.dist:83
+msgid "Size"
+msgstr "크기"
+
+#: templates/rule/footer.inc:61
+msgid "Stop checking if this rule matches?"
+msgstr ""
+
+#: templates/vacation/vacation.inc:55
+msgid "Subje_ct of vacation message:"
+msgstr ""
+
+#: config/fields.php.dist:31
+msgid "Subject"
+msgstr "제목"
+
+#: lib/Ingo.php:131
+msgid "The driver said: "
+msgstr ""
+
+#: lib/Ingo.php:130
+#, fuzzy
+msgid "There was an error activating the script."
+msgstr "데이타 임포트 오류"
+
+#: lib/Ingo.php:129
+#, fuzzy
+msgid "There was an error deactivating the script."
+msgstr ""
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"메시지 전송 오류\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"메시지 보내기 오류\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"메시지 보내기 오류\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"메시지 보내기 오류\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"메시지 보내기 오류\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"메시지 보내기 오류\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"메시지 보내기 오류"
+
+#: config/fields.php.dist:27
+msgid "To"
+msgstr "받는 사람"
+
+#: lib/Script.php:116
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "%s 정의를 읽을 수 없습니다."
+
+#: filters.php:138 templates/vacation/vacation.inc:7
+#: lib/Script/procmail.php:272
+#, fuzzy
+msgid "Vacation"
+msgstr "실행"
+
+#: vacation.php:66
+#, fuzzy
+msgid "Vacation Edit"
+msgstr "실행"
+
+#: lib/Script/sieve.php:352
+#, fuzzy
+msgid "Vacation Message"
+msgstr "메시지로 가기"
+
+#: vacation.php:16
+msgid "Vacation is not supported in the current filtering driver."
+msgstr ""
+
+#: templates/whitelist/whitelist.inc:18
+msgid "Wh_itelist addresses:"
+msgstr "_i수신승인 주소"
+
+#: filters.php:132 templates/whitelist/whitelist.inc:7
+msgid "Whitelist"
+msgstr "수신승인"
+
+#: whitelist.php:55
+msgid "Whitelist Edit"
+msgstr "수신승인 목록 수정"
+
+#: whitelist.php:18
+msgid "Whitelist is not supported in the current filtering driver."
+msgstr ""
+
+#: lib/Script/procmail.php:240 lib/Script/sieve.php:299
+msgid "Whitelisted Addresses"
+msgstr "수신승인된 주소"
+
+#: config/fields.php.dist:79
+msgid "X-Priority"
+msgstr ""
+
+#: config/fields.php.dist:67
+msgid "X-Spam-Level"
+msgstr ""
+
+#: config/fields.php.dist:71
+msgid "X-Spam-Score"
+msgstr ""
+
+#: config/fields.php.dist:75
+msgid "X-Spam-Status"
+msgstr ""
+
+#: vacation.php:30
+msgid ""
+"You must specify at least one email address for which the vacation messages "
+"should be activated."
+msgstr ""
+
+#: lib/Script/imap.php:281 lib/Script/imap.php:304 lib/Script/imap.php:318
+msgid "[No Subject]"
+msgstr "[제목 없음]"
+
+#: templates/forward/forward.inc:27
+msgid "_Address(es) to forward to:"
+msgstr ""
+
+#: templates/vacation/vacation.inc:28
+msgid "_Addresses to not send responses to:"
+msgstr ""
+
+#: lib/Ingo.php:274
+msgid "_Blacklist"
+msgstr "_B수신거부"
+
+#: templates/blacklist/blacklist.inc:20
+msgid "_Delete message completely"
+msgstr "_d메시지 완전 삭제"
+
+#: templates/blacklist/blacklist.inc:33
+msgid "_Enter each address on a new line:"
+msgstr "_e한 줄에 주소 하나씩 입력하세요:"
+
+#: lib/Ingo.php:280
+msgid "_Forward"
+msgstr "_f전달"
+
+#: templates/forward/forward.inc:19
+#, fuzzy
+msgid "_Keep a copy of messages in this account?"
+msgstr "이 폴더에 메시지가 없습니다."
+
+#: templates/blacklist/blacklist.inc:24
+msgid "_Move message to folder:"
+msgstr "_m폴더로 이동:"
+
+#: templates/vacation/vacation.inc:18
+msgid "_My email addresses:"
+msgstr "_m나의 이메일 주소:"
+
+#: lib/Ingo.php:283
+#, fuzzy
+msgid "_Script"
+msgstr "아래첨자"
+
+#: lib/Ingo.php:277
+#, fuzzy
+msgid "_Vacation"
+msgstr "실행"
+
+#: lib/Ingo.php:271
+msgid "_Whitelist"
+msgstr "_W수신승인"
+
+#: templates/rule/filter.inc:4
+#, fuzzy
+msgid "and"
+msgstr "확장"
+
+#: filters.php:162
+#, fuzzy
+msgid "field"
+msgstr "필드"
+
+#: filters.php:162
+#, fuzzy
+msgid "match"
+msgstr "찾는 문자열"
+
+#: templates/rule/filter.inc:4
+msgid "or"
+msgstr "또는"
+
+#: lib/Script/procmail.php:126
+msgid "procmail script generated by Ingo"
+msgstr ""
+
+#: lib/Script/sieve.php:111
+msgid "sieve filter generated by Ingo"
+msgstr ""

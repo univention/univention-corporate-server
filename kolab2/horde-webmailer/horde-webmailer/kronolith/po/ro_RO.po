@@ -1,0 +1,451 @@
+# Kronolith 1.0 Romanian translation
+# Copyright 2002-2009 The Horde Project.
+# Eugen Hoanca <eugenh@urban-grafx.ro>, 2003.  
+# Marius Dragulescu<mariusd@urban-grafx.ro>, 2003.
+#
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith 1.0\n"
+"POT-Creation-Date: 2003-02-22 16:33 +0200\n"
+"PO-Revision-Date: 2003-03-01 12:00 +0200\n"
+"Last-Translator: Eugen Hoanca<eugenh@urban-grafx.ro>\n"
+"Language-Team: Romanian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%d hour"
+msgstr "ora %d"
+
+#, c-format
+msgid "%d hour, %d minute"
+msgstr "ora %d, minutul %d"
+
+#, c-format
+msgid "%d hour, %d minutes"
+msgstr "ora %d, %d minute"
+
+#, c-format
+msgid "%d hours"
+msgstr "%d ore"
+
+#, c-format
+msgid "%d hours, %d minute"
+msgstr "%d ore, %d minut"
+
+#, c-format
+msgid "%d hours, %d minutes"
+msgstr "%d ore, %d minute"
+
+#, c-format
+msgid "%d minuto"
+msgstr "minutul %d"
+
+#, c-format
+msgid "%d minutes"
+msgstr "%d minute"
+
+#, c-format
+msgid "%s is in progress."
+msgstr "%s e in desfasurare."
+
+#, c-format
+msgid "%s is starting now."
+msgstr "%s incepe acum."
+
+#, c-format
+msgid "%s starts in %s"
+msgstr "%s incepe in %s"
+
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Descriere</b> (opitona;)"
+
+msgid "<b>Keywords</b> (optional)"
+msgstr "<b>Cuvinte cheie</b> (optional)"
+
+msgid "<b>Recurrence</b> (optional)"
+msgstr "<b>Frecventa</b> (optional)"
+
+msgid "Add Event"
+msgstr "Adauga eveniment"
+
+msgid "Add a new event"
+msgstr "Adauga eveniment nou"
+
+msgid "Alarm"
+msgstr "Alarma"
+
+msgid "All day"
+msgstr "Toata ziua"
+
+msgid "An illegal value was specified."
+msgstr "S-a specificat o valoare invalida."
+
+msgid "At"
+msgstr "La"
+
+msgid "Birthday"
+msgstr "Zi de nastere"
+
+msgid "Business"
+msgstr "Afacere"
+
+msgid "Calendar"
+msgstr "Calendar"
+
+msgid "Cancel"
+msgstr "Renuntare"
+
+msgid "Category"
+msgstr "Categorie"
+
+msgid ""
+"Change the way dates and times are formatted and the timezone difference to "
+"the server."
+msgstr ""
+"Schimba formatul orei si datei si diferentele de fus orar "
+"in server."
+
+msgid "Change the way dates and times are formatted."
+msgstr "Schimba formatul datei si orei."
+
+msgid "Create a New Event"
+msgstr "Creare eveniment nou"
+
+msgid "Daily: Recurs every"
+msgstr "Zilnic: Repetare la fiecare"
+
+msgid "Date and Time Options"
+msgstr "Optiuni de ora si data"
+
+msgid "Day"
+msgstr "Zi"
+
+msgid "Day(s)"
+msgstr "Zi(le)"
+
+#, c-format
+msgid "Delete '%s'"
+msgstr "Sterge '%s'"
+
+msgid "Delete Event"
+msgstr "Sterge eveniment"
+
+msgid "Display 24-hour times?"
+msgstr "Afiseaza formatul de 24 de ore?"
+
+msgid "Display Option"
+msgstr "Afiseaza optiune"
+
+msgid "Display Options"
+msgstr "Afiseaza optiuni"
+
+msgid "Duration"
+msgstr "Durata"
+
+msgid "Edit "
+msgstr "Editeaza "
+
+#, c-format
+msgid "Edit %s"
+msgstr "Editeaza %s"
+
+msgid "End On"
+msgstr "Sfarsit de"
+
+msgid "Error"
+msgstr "Eroare"
+
+msgid "Fr"
+msgstr "Vin"
+
+msgid "Friday"
+msgstr "Vineri"
+
+msgid "Game"
+msgstr "Joc"
+
+msgid "Help"
+msgstr "Ajutor"
+
+msgid "Hour(s)"
+msgstr "Ora(e)"
+
+msgid "Kronolith is not fully configured."
+msgstr "Kronolith nu este configurat."
+
+msgid "Kronolith"
+msgstr "Kronolith"
+
+msgid "Language"
+msgstr "Limba"
+
+msgid "Last month"
+msgstr "Ultima luna"
+
+msgid "Last week"
+msgstr "Ultima saptamana"
+
+msgid "Lasts"
+msgstr "Ultimii"
+
+msgid "Location"
+msgstr "Locatie"
+
+msgid "Meeting"
+msgstr "Intalnire"
+
+msgid "Message"
+msgstr "Mesaj"
+
+msgid "Minutes before"
+msgstr "Minute inainte de"
+
+msgid "Minutes"
+msgstr "Minute"
+
+msgid "Mo"
+msgstr "Lun"
+
+msgid "Monday"
+msgstr "Luni"
+
+msgid "Month"
+msgstr "Luna"
+
+msgid "Monthly: Recurs every"
+msgstr "Lunar: Se repeta la fiecare"
+
+msgid "New Event"
+msgstr "Eveniment nou"
+
+msgid "Next Month"
+msgstr "Luna urmatoare"
+
+msgid "Next day"
+msgstr "Ziua urmatoare"
+
+msgid "Next week"
+msgstr "Saptamana urmatoare"
+
+msgid "No end date"
+msgstr "Fara data de final"
+
+msgid "None"
+msgstr "Nici un"
+
+msgid "Options"
+msgstr "Optiuni"
+
+msgid "Pattern"
+msgstr "Model"
+
+msgid "Personal"
+msgstr "Personal"
+
+msgid "Previous day"
+msgstr "Ziua precedenta"
+
+msgid "Problem?"
+msgstr "Problema?"
+
+msgid "Recur Until"
+msgstr "Repeta pana"
+
+msgid "Reset to Defaults"
+msgstr "Reseteaza la valori implicite"
+
+msgid "Sa"
+msgstr "Sam"
+
+msgid "Saturday"
+msgstr "Sambata"
+
+msgid "Save Event"
+msgstr "Salveaza eveniment"
+
+msgid "Select how to display Dates:"
+msgstr "Selecteaza mod de afisare Date:"
+
+msgid "Select how to display the different views and choose default view."
+msgstr ""
+"Selecteaza modul de afisare al vizualizarilor si alege vizualizare implicita."
+
+
+msgid "Select the first weekday:"
+msgstr "Selecteaza prima zi din saptamana:"
+
+msgid "Select the time span to show:"
+msgstr "Selecteaza interval de timp:"
+
+msgid "Select the view to display after login:"
+msgstr "Selecteaza tip de vizualizare dupa intrare:"
+
+msgid "Select what events to show in the Horde summary."
+msgstr "Selecteaza ce evenimente sa se afiseze in cuprinsul Horde."
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Setare limba in care sunt afisate meniurile, explicatiile si help-ul."
+
+msgid "Set the your preferred display language."
+msgstr "Setare limba preferata."
+
+msgid "Show half hour slots in day and week views?"
+msgstr ""
+"Afisare segmente de jumatati de ora in vizualizarile zilei si saptamanii?"
+
+msgid "Show only events that have an alarm set?"
+msgstr "Afisare numai a evenimentelor care au setata alarma?"
+
+msgid "Some of Kronolith's configuration files are missing:"
+msgstr "Anumite fisiere de configurare Kronolit lipsesc:"
+
+msgid "Start On"
+msgstr "Incepe la"
+
+msgid "Su"
+msgstr "Dum"
+
+msgid "Success"
+msgstr "Succes"
+
+msgid "Summary"
+msgstr "Cuprins"
+
+msgid "Sunday"
+msgstr "Duminica"
+
+msgid "Th"
+msgstr "Joi"
+
+msgid "The end date must be later than the start date."
+msgstr "Data de sfarsit trebuie sa fie mai noua decat data de inceput."
+
+msgid ""
+"This file controls the default preferences for Kronolith, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Acest fisier seteaza preferintele implicite pentru Kronolith, precum si "
+"alte preferinte modficabile."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Acest fisier controleaza schema de culori si fonturi diferita "
+"de aceea stabilita implicit de catre Horde."
+
+msgid ""
+"This is the main Kronolith configuration file. It contains paths and options "
+"for all Kronolith scripts."
+msgstr ""
+"Acesta e fisierul principal de configurare Kronolith. Contine cai si optiuni "
+"pentru scripturile Kronolith."
+
+msgid "This number must be at least one."
+msgstr "Acest numar trebuie sa fie minim 1."
+
+msgid "This value must be a number."
+msgstr "Aceasta valoare trebuie sa fie numerica."
+
+msgid "Thursday"
+msgstr "Joi"
+
+#, c-format
+msgid "Time difference to the server in hours. Current server time is %s:"
+msgstr ""
+"Diferenta de timp fata de server in ore. Ora curenta a serverului este %s:"
+
+msgid "Title"
+msgstr "Titlu"
+
+msgid "Today"
+msgstr "Azi"
+
+msgid "Tu"
+msgstr "Mar"
+
+msgid "Tuesday"
+msgstr "Marti"
+
+msgid "Type"
+msgstr "Tip"
+
+msgid "User Interface"
+msgstr "Interfata utilizator"
+
+msgid "User Preferences"
+msgstr "Preferinte utilizator "
+
+msgid "Warning"
+msgstr "Avertisment"
+
+msgid "We"
+msgstr "Mie"
+
+msgid "Wednesday"
+msgstr "Miercuri"
+
+#, c-format
+msgid "Week %d"
+msgstr "Saptamana %d"
+
+msgid "Week"
+msgstr "Saptamana"
+
+#, c-format
+msgid "Week&nbsp;%d"
+msgstr "Saptamana&nbsp;%d"
+
+msgid "Weekly: Recurs every"
+msgstr "Saptamanal: Se repeta la fiecare"
+
+msgid "Work Week"
+msgstr "Saptamana lucratoare"
+
+msgid "Work&nbsp;Week"
+msgstr "Saptamana&nbsp;Lucratoare"
+
+msgid "Yearly: Recurs every"
+msgstr "Anual: Se repeta la fiecare"
+
+msgid "Your Information"
+msgstr "Informatii personale"
+
+msgid "Your preferences have been updated."
+msgstr "Preferintele au fost salvate."
+
+msgid "day"
+msgstr "zi"
+
+msgid "day(s)"
+msgstr "zi(le)"
+
+msgid "days"
+msgstr "zile"
+
+msgid "month(s)"
+msgstr "luna(i)"
+
+msgid "no time"
+msgstr "nici un orar"
+
+msgid "on the same date"
+msgstr "in aceeasi data"
+
+msgid "on the same weekday"
+msgstr "in aceeasi zi a saptamanii"
+
+msgid "week"
+msgstr "saptamana"
+
+msgid "week(s) on:"
+msgstr "saptamana(i) la:"
+
+msgid "weeks"
+msgstr "saptamani"
+
+msgid "year(s)"
+msgstr "an(i)"

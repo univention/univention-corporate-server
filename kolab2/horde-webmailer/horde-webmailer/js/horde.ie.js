@@ -1,0 +1,1 @@
+ToolTips_Option_Windowed_Controls=1;if(typeof Array.prototype.push=="undefined"){Array.prototype.push=function(){var a=this.length;for(var b=0;b<arguments.length;b++){this[a+b]=arguments[b]}return this.length}};

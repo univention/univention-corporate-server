@@ -1,0 +1,1235 @@
+# Persian translations for Turba package.
+# This file is distributed under the same license as the Turba package.
+# 
+# Copyright 2004 High Concil of Informatics (www.shci.ir)
+# Provided by  Amirkabir Metanetworking Ltd, 2004 <persian-horde@metanetworking.com>
+# Mohsen Nader-Badr       <naderi@metanetworking.com>
+# Chakameh Mortezania     <mortezania@metanetworking.com>
+# Salman Niksefat         <niksefat@metanetworking.com>
+# Hamed Gheybi            <gheybi@metanetworking.com>
+# Vahid Ghafarpour        <ghafarpour@metanetworking.com>
+# Zahra Ahmadi Firouzjaee <ahmadi@metanetworking.com>
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 2 ALPHA\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2005-06-26 10:07+0430\n"
+"PO-Revision-Date: 2005-07-08 12:45+0430\n"
+"Last-Translator: Amirkabir Metanetworking ltd. <persian-horde@metanetworking."
+"com>\n"
+"Language-Team: Persian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: templates/prefs/imsp_opt.inc:45
+msgid " Add an IMSP Addressbook"
+msgstr "اضافه کردن یک کتابچهٔ آدرس IMSP"
+
+#: templates/prefs/imsp_opt.inc:32
+msgid " Delete IMSP Addressbook"
+msgstr "حذف کتابچهٔ آدرس IMSP"
+
+# 
+#: data.php:299
+#, php-format
+msgid "\"%s\" already exists and was not imported."
+msgstr "\"%s\" در حال حاضر موجود می‌باشد و درون‌برد نشده بود."
+
+#: config/prefs.php.dist:135
+msgid "\"Firstname Lastname\"  (ie. John Doe)"
+msgstr "\"نام  نام خانوادگی\""
+
+#: config/prefs.php.dist:134
+msgid "\"Lastname, Firstname\" (ie. Doe, John)"
+msgstr "\"نام خانوادگی  نام\""
+
+# 
+#: add.php:108
+#, php-format
+msgid "%s added."
+msgstr "%s اضافه شد"
+
+# 
+#: data.php:312
+#, php-format
+msgid "%s file successfully imported"
+msgstr "پرونده %s با موفقیّت درون‌برد شد"
+
+# 
+#: templates/browse/footer.inc:5
+#, php-format
+msgid "%s to %s of %s"
+msgstr "%s به %s از %s"
+
+# #-#-#-#-#  compendium.po (Horde 3)  #-#-#-#-#
+# 
+#: browse.php:159
+#, php-format
+msgid "'%s' was not copied because it is a list."
+msgstr "به علّت فهرست بودن '%s' از آن رونوشت تهیّه نشد"
+
+# #-#-#-#-#  compendium.po (Horde 3)  #-#-#-#-#
+# 
+#: browse.php:157
+#, php-format
+msgid "'%s' was not moved because it is a list."
+msgstr "به علّت فهرست بودن '%s' منتقل نشد"
+
+#: lib/Block/minisearch.php:45
+msgid "A browser that supports iFrames is required"
+msgstr "مرورگری که iFrames را پشتیبانی کند لازم است"
+
+#: config/prefs.php.dist:156
+msgid "Above search form"
+msgstr "بالای فرم جستجو"
+
+#: view.php:51
+#, php-format
+msgid "Access denied to %s"
+msgstr "عدم اجازهٔ دسترسی به %s"
+
+#: add.php:59 templates/browse/actions.inc:22
+msgid "Add"
+msgstr "اضافه کردن"
+
+#: templates/prefs/addressbookselect.inc:174
+msgid "Add address book"
+msgstr "اضافه کردن کتابچهٔ آدرس"
+
+#: config/prefs.php.dist:46
+msgid "Add and Delete IMSP addressbooks"
+msgstr "اضافه کردن و یا حذف کتابچه‌های آدرس IMSP"
+
+#: templates/prefs/columnselect.inc:237
+msgid "Add column"
+msgstr "اضافه کردن ستون"
+
+#: edit.php:125
+msgid "Add file"
+msgstr "اضافه کردن پرونده"
+
+#: templates/browse/actions.inc:22
+msgid "Add to"
+msgstr "اضافه کردن به"
+
+#: browse.php:30 config/prefs.php.dist:123
+msgid "Address Book Listing"
+msgstr "فهرست کتابچهٔ آدرس"
+
+#: config/prefs.php.dist:10
+msgid "Address Books"
+msgstr "کتابچه‌های آدرس "
+
+#: add.php:107
+msgid "Address book entry"
+msgstr "ورودی کتابچهٔ آدرس"
+
+# 
+#: data.php:281
+msgid "Address book successfully purged."
+msgstr "کتابچهٔ آدرس باموفقیّت خالی شد"
+
+#: templates/prefs/addressbookselect.inc:170
+msgid "Address books that will not be displayed:"
+msgstr "کتابچه آدرس‌هایی که نمایش داده نخواهند شد:"
+
+#: search.php:102 templates/browse/search.inc:36
+msgid "Advanced Search"
+msgstr "جستجوی پیشرفته"
+
+#: config/attributes.php.dist:64
+msgid "Alias"
+msgstr "نام مستعار"
+
+#: templates/browse/footerAlpha.inc:7 templates/browse/footerAlpha.inc:10
+#: templates/browse/actions.inc:41
+msgid "All"
+msgstr "همه"
+
+#: lib/api.php:492
+msgid "Already Exists"
+msgstr "از قبل موجود می‌باشد"
+
+# 
+#: templates/browse/javascript.inc:90
+#, php-format
+msgid "Are you sure that you want to delete %s?"
+msgstr "آیا مطمئنید که می‌خواهید %s را حذف کنید؟"
+
+#: templates/browse/javascript.inc:64
+msgid "Are you sure that you want to delete the selected entries?"
+msgstr "آیا مطمئنید که می‌خواهید ورودی‌های انتخاب شده را حذف کنید؟"
+
+#: config/prefs.php.dist:94
+msgid "Ascending"
+msgstr "صعودی"
+
+#: search.php:99 templates/browse/search.inc:35
+msgid "Basic Search"
+msgstr "جستجوی ساده"
+
+#: config/prefs.php.dist:155
+msgid "Below search form"
+msgstr "زیر فرم جستجو"
+
+# 
+#: lib/Driver/ldap.php:77 lib/Driver/ldap.php:80
+#, php-format
+msgid "Bind failed: (%s) %s"
+msgstr "پیوستن ناموفّق بود: (%s) %s"
+
+#: config/attributes.php.dist:178
+msgid "Birthday"
+msgstr "روز تولد"
+
+#: templates/menu.inc:7
+msgid "Browse"
+msgstr "مرور"
+
+#: config/attributes.php.dist:173
+msgid "Business Category"
+msgstr "دسته تجاری"
+
+#: data.php:28
+msgid "CSV"
+msgstr "CSV"
+
+#: templates/browse/actions.inc:45
+msgid "C_lear Search"
+msgstr "پاک کردن جستجو"
+
+#: lib/Object/Group.php:57
+msgid "Can't add a group to itself."
+msgstr "نمی‌توان یک گروه را به خودش اضافه کرد."
+
+#: templates/browse/column_headers.inc:6
+msgid "Check _All/None"
+msgstr "بررسی  همه/هیچ‌کدام"
+
+#: add.php:51
+msgid "Choose an address book"
+msgstr "انتخاب یک کتابچهٔ آدرس "
+
+#: templates/prefs/columnselect.inc:221
+msgid "Choose an address book:"
+msgstr "انتخاب یک کتابچهٔ آدرس: "
+
+#: templates/prefs/addressbookselect.inc:165
+msgid "Choose which address books to display, and in what order:"
+msgstr "انتخاب کتابچه‌های آدرس و تعیین ترتیب آنها برای نمایش"
+
+#: config/prefs.php.dist:11
+msgid "Choose which address books to use."
+msgstr "انتخاب کتابچهٔ آدرس‌های مورد استفاده "
+
+#: templates/prefs/columnselect.inc:228
+msgid "Choose which columns to display and in what order:"
+msgstr "انتخاب نام و ترتیب ستونهای نمایش داده شده:"
+
+#: templates/browse/actions.inc:45
+msgid "Clear Search"
+msgstr "پاک کردن جستجو"
+
+#: config/prefs.php.dist:17
+msgid "Column Options"
+msgstr "گزینه‌های ستونی"
+
+#: templates/prefs/columnselect.inc:233
+msgid "Columns that will not be displayed:"
+msgstr "ستونهایی که نمایش داده نخواهند شد:"
+
+#: templates/data/import.inc:13 templates/data/export.inc:12
+msgid "Comma separated values"
+msgstr "مقادیر جدا شده توسط ویرگول"
+
+#: templates/data/export.inc:13
+msgid "Comma separated values (Microsoft Outlook)"
+msgstr "مقادیر جدا شده توسط ویرگول (Microsoft Outlook)"
+
+#: config/attributes.php.dist:76
+msgid "Company"
+msgstr "شرکت"
+
+#: config/attributes.php.dist:144
+msgid "Company Address"
+msgstr "آدرس شرکت"
+
+#: lib/api.php:299 lib/api.php:348 lib/api.php:481 lib/api.php:547
+#: lib/api.php:633 lib/api.php:679 lib/api.php:757 lib/api.php:944
+#: lib/api.php:1036
+#, php-format
+msgid "Connection failed: %s"
+msgstr "اتصال ناموفّق بود: %s"
+
+#: lib/Driver/ldap.php:58
+msgid "Connection failure"
+msgstr "خرابی ارتباط"
+
+#: browse.php:215 browse.php:249
+msgid "Contact added to list."
+msgstr "تماس به فهرست اضافه شد."
+
+#: browse.php:89
+msgid "Contact removed from list."
+msgstr "تماس از فهرست حذف شد."
+
+# 
+#: browse.php:344
+#, php-format
+msgid "Contacts in list: %s"
+msgstr "تماس‌ها در فهرست: %s"
+
+#: templates/browse/actions.inc:12
+msgid "Copy"
+msgstr "رونوشت"
+
+#: browse.php:309
+msgid "Create a new Contact List in:"
+msgstr "ایجاد یک فهرست تماس جدید در:"
+
+#: lib/ObjectView.php:133
+msgid "Created"
+msgstr "ایجاد شده"
+
+#: config/prefs.php.dist:96
+msgid "Default sorting direction:"
+msgstr "جهت مرتب سازی پیش فرض:"
+
+#: lib/Object.php:305 lib/Renderer.php:47 lib/Renderer.php:50
+#: templates/browse/actions.inc:2
+msgid "Delete"
+msgstr "حذف"
+
+#: config/prefs.php.dist:38
+msgid "Delete Confirmation"
+msgstr "تأیید حذف"
+
+#: config/prefs.php.dist:39
+msgid "Delete button behaviour"
+msgstr "رفتار کلید حذف"
+
+# 
+#: lib/Driver/ldap.php:270
+#, php-format
+msgid "Delete failed: (%s) %s"
+msgstr "حذف ناموفّق بود: (%s) %s"
+
+#: delete.php:46
+msgid "Deletion failed"
+msgstr "حذف ناموفّق بود"
+
+#: config/attributes.php.dist:213
+msgid "Department"
+msgstr "اداره"
+
+#: config/prefs.php.dist:95
+msgid "Descending"
+msgstr "نزولی"
+
+#: templates/browse/search.inc:117
+msgid "Directory"
+msgstr "شاخه"
+
+#: config/prefs.php.dist:24
+msgid "Display"
+msgstr "نمایش"
+
+#: config/prefs.php.dist:9 config/prefs.php.dist:16 config/prefs.php.dist:23
+#: config/prefs.php.dist:30
+msgid "Display Options"
+msgstr "گزینه‌های نمایش"
+
+#: config/prefs.php.dist:173
+msgid "Do you want to confirm deleting entries?"
+msgstr "آیا می‌خواهید حذف ورودی‌ها را تأیید کنید؟"
+
+#: lib/Object.php:274
+msgid "Download"
+msgstr "استقرار"
+
+#: templates/browse/row.inc:17
+msgid "Download vCard"
+msgstr "استقرار vCard"
+
+#: lib/Renderer.php:42 templates/browse/actions.inc:3
+#: templates/browse/row.inc:25 templates/browse/column_headers.inc:9
+msgid "Edit"
+msgstr "ویرایش"
+
+# 
+#: templates/browse/row.inc:25
+#, php-format
+msgid "Edit '%s'"
+msgstr "ویرایش '%s'"
+
+# 
+#: edit.php:75 edit.php:151
+#, php-format
+msgid "Edit entry for %s"
+msgstr "ویرایش ورودی برای %s "
+
+#: config/attributes.php.dist:58
+msgid "Email"
+msgstr "پست الکترونیک"
+
+#: edit.php:144
+#, php-format
+msgid "Entry for %s updated, but saving the uploaded file failed: %s"
+msgstr "ورودی برای %s بروزرسانی شد اما حفظ پروندهٔ ارسال شده ناموفّق بود: %s"
+
+# 
+#: edit.php:146 edit.php:149
+#, php-format
+msgid "Entry for %s updated."
+msgstr "ورودی برای %s بروزرسانی شد"
+
+#: browse.php:100
+msgid "Entry successfully deleted."
+msgstr "ورودی با موفقیّت حذف شد"
+
+#: templates/browse/actions.inc:6 templates/data/export.inc:41
+msgid "Export"
+msgstr "برون‌برد"
+
+#: templates/data/export.inc:6
+msgid "Export Address Book"
+msgstr "برون‌برد کتابچهٔ آدرس"
+
+#: templates/data/export.inc:21
+msgid "Export only the selected contacts."
+msgstr "برون‌برد اطلاعات تماس انتخابی"
+
+#: templates/data/export.inc:27
+msgid "Export the following address book completely."
+msgstr "برون‌برد کتابچهٔ آدرس زیر بطور کامل"
+
+# 
+#: browse.php:67 browse.php:126 browse.php:148 data.php:110 data.php:204
+#: data.php:273 search.php:48 add.php:70
+#, php-format
+msgid "Failed to access the address book: %s"
+msgstr "دسترسی به کتابچهٔ آدرس ناموفّق بود: %s"
+
+# 
+#: browse.php:167
+#, php-format
+msgid "Failed to add %s to %s: %s"
+msgstr "اضافه کردن %s به %s ناموفّق بود: %s"
+
+#: browse.php:350
+msgid "Failed to browse list"
+msgstr "مرور فهرست ناموفّق بود"
+
+#: browse.php:389
+msgid "Failed to browse the directory"
+msgstr "مرور شاخه ناموفّق بود"
+
+# 
+#: lib/Driver/ldap.php:308
+#, php-format
+msgid "Failed to change name: (%s) %s; Old DN = %s, New DN = %s, Root = %s"
+msgstr "تغییر نام ناموفّق بود:  (%s) %s؛ DN قبلی= %s ، DN جدید= %s ، ریشه=  %s"
+
+# 
+#: browse.php:153
+#, php-format
+msgid "Failed to find object to be added: %s"
+msgstr "پیدا کردن شیء اضافه‌ شده ناموفّق بود: %s"
+
+# 
+#: data.php:125 search.php:85
+#, php-format
+msgid "Failed to search the directory: %s"
+msgstr "جستجوی شاخه ناموفّق بود: %s"
+
+#: config/attributes.php.dist:167
+msgid "Fax"
+msgstr "دورنگار"
+
+#: display.php:100 edit.php:121
+msgid "Files"
+msgstr "پرونده‌ها‌"
+
+#: templates/browse/search.inc:69
+msgid "Find"
+msgstr "پیداکردن"
+
+#: edit.php:94 edit.php:184
+msgid "Finish"
+msgstr "خاتمه"
+
+#: config/attributes.php.dist:48
+msgid "First Name"
+msgstr "نام"
+
+#: config/attributes.php.dist:202
+msgid "Freebusy URL"
+msgstr "URL آزاد/مشغول"
+
+#: templates/browse/search.inc:82
+msgid "From"
+msgstr "از"
+
+#: config/sources.php.dist:563
+msgid "Global Address Book"
+msgstr "کتابچهٔ آدرس سراسری"
+
+#: templates/browse/row.inc:43
+msgid "Group"
+msgstr "گروه"
+
+#: config/attributes.php.dist:82
+msgid "Home Address"
+msgstr "آدرس منزل"
+
+#: config/attributes.php.dist:93
+msgid "Home City"
+msgstr "شهر محل سکونت"
+
+#: config/attributes.php.dist:108
+msgid "Home Country"
+msgstr "کشور محل اقامت"
+
+#: config/attributes.php.dist:150
+msgid "Home Phone"
+msgstr "شماره تلفن منزل"
+
+#: config/attributes.php.dist:103
+msgid "Home Postal Code"
+msgstr "کد پستی محل سکونت"
+
+#: config/attributes.php.dist:98
+msgid "Home State/Province"
+msgstr "ایالت/استان محل سکونت"
+
+#: config/attributes.php.dist:88
+msgid "Home Street Address"
+msgstr "آدرس خیابان محل سکونت"
+
+#: config/sources.php.dist:479
+msgid "IMSP"
+msgstr "IMSP"
+
+#: config/prefs.php.dist:45
+msgid "IMSP Addressbook Administration"
+msgstr "سرپرستی کتابچهٔ آدرس IMSP"
+
+# 
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Address Book, Step %d"
+msgstr "درون‌برد کتابچهٔ آدرس، گام %d"
+
+#: data.php:330
+msgid "Import/Export Address Books"
+msgstr "درون‌برد/برون‌برد کتابچه‌های آدرس"
+
+#: lib/api.php:536 lib/api.php:622
+msgid "Invalid ID"
+msgstr "ID نامعتبر"
+
+#: lib/api.php:220 lib/api.php:435 lib/api.php:532 lib/api.php:618
+#: lib/api.php:669 lib/api.php:1015
+msgid "Invalid address book"
+msgstr "کتابچهٔ آدرس نامعتبر"
+
+#: lib/api.php:1019 lib/api.php:1091 lib/api.php:1144
+msgid "Invalid email"
+msgstr "پست الکترونیکی نامعتبر"
+
+#: lib/api.php:1027
+msgid "Invalid entry"
+msgstr "ورودی نامعتبر"
+
+#: lib/Driver/ldap.php:266
+msgid "Invalid key specified."
+msgstr "کلید نامعتبر مشخص شد"
+
+#: lib/api.php:1023
+msgid "Invalid name"
+msgstr "نام نامعتبر"
+
+#: lib/api.php:673
+msgid "Invalid objectId"
+msgstr "id شیء نامعتبر"
+
+#: lib/Driver/ldap.php:30
+msgid ""
+"LDAP support is required but the LDAP module is not available or not loaded."
+msgstr ""
+"پشتیبانی LDAP مورد نیاز است. اما مدول LDAP قابل دسترسی نیست و یا اینکه بار "
+"نشده‌است."
+
+#: lib/ObjectView.php:138
+msgid "Last Modified"
+msgstr "آخرین اصلاح"
+
+#: config/attributes.php.dist:53
+msgid "Last Name"
+msgstr "نام خانوادگی"
+
+#: templates/browse/column_headers.inc:15
+msgid "List"
+msgstr "فهرست"
+
+#: templates/browse/search.inc:76
+msgid "Matching"
+msgstr "تطابق"
+
+#: lib/api.php:195
+msgid "Maximum Number of Contacts"
+msgstr "بیشینهٔ تعداد تماسها"
+
+#: config/prefs.php.dist:105
+msgid "Maximum number of pages"
+msgstr "بیشينهٔ تعداد صفحات"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "فهرست گزینگان"
+
+#: lib/Block/minisearch.php:3
+msgid "Mini Search"
+msgstr "جستجوی محدود"
+
+#: lib/Driver/ldap.php:302
+msgid "Missing DN in LDAP source configuration."
+msgstr "عدم وجود DN در پیکربندی LDAP"
+
+#: config/attributes.php.dist:162
+msgid "Mobile Phone"
+msgstr "تلفن همراه"
+
+# 
+#: lib/Driver/ldap.php:331 lib/Driver/ldap.php:343
+#, php-format
+msgid "Modify failed: (%s) %s"
+msgstr "تغییر ناموفّق بود: (%s) %s"
+
+#: lib/api.php:1130
+msgid "More than 1 entry found"
+msgstr "بیش از یک ورودی پیدا شد"
+
+#: templates/browse/actions.inc:11
+msgid "Move"
+msgstr "انتقال"
+
+#: templates/prefs/addressbookselect.inc:184
+#: templates/prefs/columnselect.inc:247
+msgid "Move left"
+msgstr "انتقال به چپ"
+
+#: templates/prefs/addressbookselect.inc:186
+#: templates/prefs/columnselect.inc:249
+msgid "Move right"
+msgstr "انتقال به راست"
+
+#: data.php:31 templates/data/import.inc:16
+msgid "Mulberry Address Book"
+msgstr "کتابچهٔ آدرس Mulberry "
+
+# 
+#: lib/api.php:1050
+#, php-format
+msgid ""
+"Multiple persons with address [%s], but none with name [%s] already exist"
+msgstr ""
+"چند نفر با آدرس [%s], اما هیچ‌کدام با نام [%s] در کتابچهٔ آدرس از قبل موجود "
+"نیست."
+
+#: config/sources.php.dist:86 config/sources.php.dist:220
+msgid "My Addressbook"
+msgstr "کتابچهٔ آدرس من"
+
+#: config/attributes.php.dist:42
+msgid "Name"
+msgstr "نام"
+
+#: config/prefs.php.dist:31
+msgid "Name Format"
+msgstr "قالب نام"
+
+#: config/sources.php.dist:292
+msgid "Netcenter Member Directory"
+msgstr "شاخهٔ اعضای Netcenter"
+
+#: add.php:39 add.php:124 lib/Block/minisearch.php:27
+#: lib/Block/tree_menu.php:27
+msgid "New Contact"
+msgstr "تماس جدید"
+
+#: edit.php:85 edit.php:92 edit.php:199 templates/data/import.inc:45
+msgid "Next"
+msgstr "گام بعد"
+
+#: config/attributes.php.dist:218
+msgid "Nickname"
+msgstr "نام مستعار"
+
+# 
+#: lib/api.php:1132 lib/api.php:1181
+#, php-format
+msgid "No %s entry found for %s"
+msgstr "هیچ ورودی %s برای %s پیدا نشد"
+
+#: lib/api.php:1100
+msgid "No address books found."
+msgstr "کتابچهٔ آدرسی پیدا نشد"
+
+#: minisearch.php:83
+msgid "No contacts found"
+msgstr "هیچ تماسی پیدا نشد"
+
+#: lib/api.php:455 lib/api.php:704
+msgid "No vCard data was found."
+msgstr "هیچ دادهٔ vCard پیدا نشد"
+
+#: templates/browse/footer.inc:7
+msgid "None"
+msgstr "هیچ"
+
+#: config/attributes.php.dist:184
+msgid "Notes"
+msgstr "یادداشتها"
+
+#: config/prefs.php.dist:113
+msgid "Number of items per page"
+msgstr "تعداد موارد در هر صفحه"
+
+#: lib/api.php:553 lib/api.php:685
+msgid "Object not found"
+msgstr "شیء پیدا نشد"
+
+#: config/attributes.php.dist:223
+msgid "Office"
+msgstr "دفتر کار"
+
+#: lib/api.php:712
+msgid "Only one vcard supported."
+msgstr "تنها یک vcard پشتیبانی می‌شود"
+
+#: config/prefs.php.dist:37 config/prefs.php.dist:44
+msgid "Other Options"
+msgstr "گزینه‌های دیگر"
+
+#: config/attributes.php.dist:190
+msgid "PGP Public Key"
+msgstr "کلید عمومی PGP"
+
+#: lib/api.php:439 lib/api.php:540 lib/api.php:626 lib/api.php:872
+#: lib/api.php:1031
+msgid "Permission Denied"
+msgstr "عدم وجود مجوز"
+
+#: lib/Driver.php:519
+msgid "Permission denied"
+msgstr "عدم وجود مجوز"
+
+#: data.php:32 templates/data/import.inc:17
+msgid "Pine Address Book"
+msgstr "کتابچهٔ آدرس Pine"
+
+#: templates/browse/javascript.inc:28
+msgid "Please name the new contact list:"
+msgstr "لطفاً به فهرست تماس جدید نامی دهید:"
+
+#: edit.php:88 edit.php:91 edit.php:191
+msgid "Previous"
+msgstr "قبلی"
+
+#: config/sources.php.dist:393
+msgid "Private Address Book"
+msgstr "کتابچهٔ آدرس خصوصی"
+
+# 
+#: lib/Driver/ldap.php:147
+#, php-format
+msgid "Query failed: (%s) %s"
+msgstr "پرس‌وجو ناموفّق بود: (%s) %s"
+
+#: templates/block/minisearch.inc:18
+msgid "Quick Search"
+msgstr "جستجوی سریع"
+
+# 
+#: lib/Driver/ldap.php:191 lib/Driver/ldap.php:199 lib/Driver/ldap.php:424
+#, php-format
+msgid "Read failed: (%s) %s"
+msgstr "خواندن ناموفّق بود: (%s) %s"
+
+#: lib/Renderer.php:49
+msgid "Really delete this contact?"
+msgstr "آیا واقعاْ این تماس حذف شود؟"
+
+#: templates/browse/footer.inc:2
+msgid "Records displayed:"
+msgstr "رکوردهای نمایش داده شده:"
+
+#: templates/prefs/addressbookselect.inc:176
+msgid "Remove address book"
+msgstr "حذف کتابچهٔ آدرس "
+
+#: templates/prefs/columnselect.inc:239
+msgid "Remove column"
+msgstr "حذف ستون"
+
+#: templates/browse/actions.inc:2
+msgid "Remove from this list"
+msgstr "حذف از این فهرست"
+
+#: templates/data/import.inc:21
+msgid ""
+"Replace existing address book with the imported one? <strong>Warning: This "
+"deletes all entries in your current address book.</strong>"
+msgstr ""
+"آیا کتابچه آدرس موجود با کتابچهٔ آدرس درون‌برد شده جابجا شود؟ <strong>اخطار: "
+"این عمل تمامی ورودی‌های کتابچهٔ آدرس کنونی شما را حذف می‌کند.</strong>"
+
+#: lib/Driver.php:421
+msgid "Requested object not found."
+msgstr "شیء خواسته شده پیدا نشد"
+
+#: add.php:40 templates/browse/search.inc:112
+msgid "Reset to Defaults"
+msgstr "بازنشانی پیش فرض‌ها"
+
+#: config/attributes.php.dist:196
+msgid "S/MIME Public Certificate"
+msgstr "گواهی عمومی S/MIME"
+
+# 
+#: lib/Driver/ldap.php:69
+#, php-format
+msgid "STARTTLS failed: (%s) %s"
+msgstr "STARTTLS ناموفّق بود (%s) %s"
+
+#: edit.php:96 add.php:40
+msgid "Save"
+msgstr "حفظ"
+
+#: lib/Block/tree_menu.php:49 templates/block/minisearch.inc:23
+#: templates/browse/search.inc:95 templates/browse/search.inc:111
+#: config/prefs.php.dist:124
+msgid "Search"
+msgstr "جستجو"
+
+#: browse.php:329
+msgid "Search Results"
+msgstr "نتایج جستجو"
+
+#: minisearch.php:63
+msgid "Search Results:"
+msgstr "نتایج جستجو:"
+
+#: lib/api.php:949
+msgid "Search failed"
+msgstr "جستجو ناموفّق بود"
+
+#: lib/api.php:1040 lib/api.php:1046 lib/api.php:1055 lib/api.php:1068
+#, php-format
+msgid "Search failed: %s"
+msgstr "جستجو ناموفّق بود: %s"
+
+#: templates/block/minisearch.inc:24
+msgid "Searching..."
+msgstr "جستجو..."
+
+#: templates/data/export.inc:32
+msgid "Select the address book to export from:"
+msgstr "انتخاب کتابچهٔ آدرس برای برون‌برد از:"
+
+#: templates/data/import.inc:26
+msgid "Select the address book to import to:"
+msgstr "انتخاب کتابچهٔ آدرس برای درون‌برد به:"
+
+#: templates/data/import.inc:35
+msgid "Select the charset of the source file:"
+msgstr "انتخاب مجموعهٔ نویسه پروندهٔ سرچشمه:"
+
+#: templates/data/export.inc:10
+msgid "Select the export format:"
+msgstr "انتخاب قالب برون‌برد:"
+
+#: templates/data/import.inc:43
+msgid "Select the file to import:"
+msgstr "انتخاب  پرونده برای درون‌برد:"
+
+#: templates/data/import.inc:11
+msgid "Select the format of the source file:"
+msgstr "انتخاب قالب پروندهٔ سرچشمه:"
+
+#: config/prefs.php.dist:133
+msgid "Select the format used to display names:"
+msgstr "انتخاب قالب نمایش اسامی:"
+
+#: config/prefs.php.dist:25
+msgid "Select view to display by default, sort options, and paging options."
+msgstr "انتخاب نحوهٔ نمایش پیش فرض، گزینه‌های مرتب‌ سازی و گزینه‌های صفحه‌بندی"
+
+#: config/prefs.php.dist:18
+msgid "Select which fields to display in the address lists."
+msgstr "انتخاب فیلدهایی که در فهرست آدرسها نمایش داده می‌شوند"
+
+#: config/prefs.php.dist:32
+msgid "Select which format to display names."
+msgstr "انتخاب قالب نمایش اسامی"
+
+# 
+#: add.php:57
+#, php-format
+msgid "Selected address book '%s'."
+msgstr "کتابچهٔ آدرس '%s' انتخاب شده."
+
+#: config/sources.php.dist:152
+msgid "Shared Directory"
+msgstr "شاخهٔ مشترک"
+
+#: templates/browse/actions.inc:39
+#, php-format
+msgid "Show %s"
+msgstr "نمایش %s"
+
+#: templates/browse/actions.inc:41
+msgid "Show All"
+msgstr "نمایش همه"
+
+#: templates/browse/actions.inc:40
+msgid "Show Contacts"
+msgstr "نمایش تماسها"
+
+#: templates/browse/actions.inc:39
+msgid "Show Lists"
+msgstr "نمایش فهرست‌ها"
+
+#: templates/browse/column_headers.inc:19
+#: templates/browse/column_headers.inc:30
+msgid "Sort Direction"
+msgstr "جهت مرتب سازی"
+
+#: lib/api.php:188
+msgid "Sources"
+msgstr "سرچشمه‌ها"
+
+#: config/prefs.php.dist:154
+msgid "Specify where you want advanced search results to appear."
+msgstr "مشخص کردن محل نمایش نتایج جستجوی پیشرفته"
+
+# 
+#: browse.php:169
+#, php-format
+msgid "Successfully added %s to %s"
+msgstr "%s با موفقیّت به %s اضافه شد"
+
+# #-#-#-#-#  compendium.po (Horde 3)  #-#-#-#-#
+# 
+#: browse.php:242
+#, php-format
+msgid "Successfully created the contact list \"%s\"."
+msgstr "فهرست تماس \"%s\" با موفقیّت ایجاد شد"
+
+#: data.php:29
+msgid "TSV"
+msgstr "TSV"
+
+#: templates/data/import.inc:14 templates/data/export.inc:14
+msgid "Tab separated values"
+msgstr "مقادیر جدا شده با فاصلهٔ چندتایی"
+
+#: view.php:15
+msgid "The VFS backend needs to be configured to enable attachment uploads."
+msgstr "پشتیبان VFS باید پیکربندی شود تا پیوستها بتوانند دریافت شوند."
+
+#: lib/Driver.php:991
+#, php-format
+msgid "The address book \"%s\" does not exist."
+msgstr "کتابچهٔ آدرس  \"%s\"موجود نیست"
+
+#: data.php:279
+#, php-format
+msgid "The address book could not be purged: %s"
+msgstr "نمی‌توان کتابچهٔ آدرس را خالی کرد: %s"
+
+#: display.php:23 view.php:26 edit.php:47 vcard.php:22
+msgid "The contact you requested does not exist."
+msgstr "تماس درخواستی شما موجود نیست"
+
+#: edit.php:113
+#, php-format
+msgid "The file \"%s\" has successfully been deleted."
+msgstr "پروندهٔ \"%s\" با موفقیّت حذف شد"
+
+#: data.php:260
+msgid "The import can be finished despite the warnings."
+msgstr "درون‌برد علی‌رغم وجود اخطار می‌تواند خاتمه یابد"
+
+#: browse.php:63
+msgid "There are no browseable address books."
+msgstr "کتابچهٔ آدرس‌ قابل مروری موجود نمی‌باشند"
+
+#: add.php:32
+msgid ""
+"There are no writeable address books. None of the available address books "
+"are configured to allow you to add new entries to them. If you believe this "
+"is an error, please contact your system administrator."
+msgstr ""
+"کتابچهٔ آدرس قابل نوشتن موجود نیست. هیچ یک از کتابچه‌های آدرس قابل دسترسی، "
+"برای اضافه کردن ورودی جدید به آنها، پیکربندی نشده‌اند. اگر فکر می‌کنید این "
+"حالت یک خطاست، لطفاً با سرپرست سامانه خود تماس بگیرید."
+
+#: add.php:120
+msgid ""
+"There was an error adding the new contact. Contact your system administrator "
+"for further help."
+msgstr ""
+"خطایی در اضافه کردن تماس جدید رخ داده است. برای راهنمایی بیشتر با سرپرست "
+"سامانهٔ خود تماس بگیرید."
+
+#: browse.php:213 browse.php:247
+msgid "There was an error adding this object."
+msgstr "خطایی در اضافه کردن این شیء رخ داده است."
+
+#: browse.php:255
+msgid "There was an error creating a new list."
+msgstr "خطایی در ایجاد یک لیست جدید رخ داده است."
+
+# 
+#: browse.php:175
+#, php-format
+msgid "There was an error deleting %s from the source address book."
+msgstr "خطایی در حذف %s از کتابچهٔ آدرس سرچشمه رخ داده است."
+
+# 
+#: delete.php:45
+#, php-format
+msgid "There was an error deleting this contact: %s"
+msgstr "خطایی در حذف تماس رخ داده است: %s."
+
+#: browse.php:98
+msgid "There was an error deleting this object."
+msgstr "خطایی در حذف این شیء رخ داده است."
+
+#: browse.php:357
+msgid "There was an error displaying the list"
+msgstr "خطایی در نمایش فهرست رخ داده است."
+
+# 
+#: data.php:304
+#, php-format
+msgid "There was an error importing the data: %s"
+msgstr "خطایی در درون‌برد داده رخ داده است: %s"
+
+#: lib/api.php:451 lib/api.php:699
+msgid "There was an error importing the iCalendar data."
+msgstr "خطایی در درون‌برد دادهٔ iCalendar رخ داده است."
+
+#: browse.php:87
+msgid "There was an error removing a contact from the list."
+msgstr "خطایی در حذف یک تماس از فهرست رخ داده است."
+
+# 
+#: edit.php:155
+#, php-format
+msgid "There was an error updating this entry: %s"
+msgstr "خطایی در بروزرسانی این ورودی رخ داده است: %s"
+
+#: data.php:155
+msgid "There were no addresses to export."
+msgstr "آدرسی برای برون‌برد نمودن موجود نیست."
+
+#: templates/prefs/addressbookselect.inc:180
+msgid "These address books will display in this order:"
+msgstr "این کتابچه‌های آدرس با این ترتیب نمایش داده خواهند شد:"
+
+#: templates/prefs/columnselect.inc:243
+msgid "These columns will display in this order:"
+msgstr "این ستونها با این ترتیب نمایش داده خواهند شد:"
+
+#: data.php:245
+msgid "This file format is not supported."
+msgstr "قالب این پرونده پشتیبانی نمی‌شود."
+
+# 
+#: lib/api.php:1059 lib/api.php:1072
+#, php-format
+msgid "This person already has a %s entry in the address book"
+msgstr "این فرد هم اکنون یک ورودی %s در کتابچهٔ آدرس دارد."
+
+#: config/attributes.php.dist:70
+msgid "Title"
+msgstr "عنوان"
+
+#: lib/Driver.php:933
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "نمی‌توان تعریف %s را بارکرد."
+
+#: edit.php:85 edit.php:88 edit.php:91 edit.php:96 edit.php:193
+msgid "Undo Changes"
+msgstr "واگرداندن تغییرات"
+
+#: lib/api.php:475 lib/api.php:582 lib/api.php:717
+#, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "نوع متن بدون پشتیبانی: %s"
+
+#: config/sources.php.dist:353
+msgid "Verisign Directory"
+msgstr "شاخهٔ Verisign"
+
+# 
+#: templates/browse/row.inc:19
+#, php-format
+msgid "View '%s'"
+msgstr "نمایش '%s'"
+
+#: minisearch.php:78
+msgid "View Contact"
+msgstr "نمایش تماس"
+
+#: config/prefs.php.dist:122
+msgid "View to display by default:"
+msgstr "نمایش پیش فرض"
+
+#: config/attributes.php.dist:208
+msgid "Website URL"
+msgstr "URL وب‌گاه"
+
+#: config/attributes.php.dist:113
+msgid "Work Address"
+msgstr "آدرس محل کار"
+
+#: config/attributes.php.dist:124
+msgid "Work City"
+msgstr "شهر محل کار"
+
+#: config/attributes.php.dist:139
+msgid "Work Country"
+msgstr "کشور محل کار"
+
+#: config/attributes.php.dist:156
+msgid "Work Phone"
+msgstr "تلفن محل کار"
+
+#: config/attributes.php.dist:134
+msgid "Work Postal Code"
+msgstr "کدپستی محل کار"
+
+#: config/attributes.php.dist:129
+msgid "Work State/Province"
+msgstr "ایالت/استان محل کار"
+
+#: config/attributes.php.dist:119
+msgid "Work Street Address"
+msgstr "آدرس خیابان محل کار"
+
+#: browse.php:129 browse.php:225 data.php:213 add.php:76
+#, php-format
+msgid "You are not allowed to create more than %d contacts in \"%s\"."
+msgstr "شما مجوز ایجاد بیش از %d تماس را در \"%s\" ندارید"
+
+#: display.php:58 view.php:36 edit.php:66
+msgid "You do not have permission to view this contact."
+msgstr "شما مجوز مشاهدهٔ این تماس را ندارید."
+
+#: vcard.php:40
+msgid "You do not have permission to view this object."
+msgstr "شما مجوز مشاهدهٔ این شیء را ندارید."
+
+#: templates/browse/javascript.inc:52
+msgid "You must select a target address book."
+msgstr "شما باید یک کتابچهٔ آدرس مقصد انتخاب کنید."
+
+#: templates/browse/javascript.inc:23
+msgid "You must select a target list."
+msgstr "شما باید یک فهرست مقصد مشخص کنید."
+
+#: edit.php:32
+msgid "You must select at least one contact first."
+msgstr "شما در ابتدا باید حداقل یک تماس انتخاب کنید."
+
+#: templates/browse/javascript.inc:17 templates/browse/javascript.inc:46
+#: templates/browse/javascript.inc:69
+msgid "You must select at least one entry first."
+msgstr "شما در ابتدا باید حداقل یک ورودی انتخاب کنید."
+
+#: edit.php:70
+msgid "You only have permission to view this contact."
+msgstr "شما فقط مجاز به دیدن این تماس هستید."
+
+#: browse.php:387
+msgid "Your default addressbook is not browseable."
+msgstr "کتابچهٔ آدرس پیش فرض شما قابل مرور نیست"
+
+#: templates/browse/row.inc:6
+msgid "[no value]"
+msgstr "[بدون مقدار]"
+
+#: lib/Turba.php:352
+msgid "_Browse"
+msgstr "مرور"
+
+#: templates/browse/actions.inc:40
+msgid "_Contacts"
+msgstr "نماسها"
+
+#: templates/browse/actions.inc:2
+msgid "_Delete"
+msgstr "حذف"
+
+#: lib/Turba.php:358
+msgid "_Import/Export"
+msgstr "درون‌برد/برون‌برد"
+
+#: templates/browse/actions.inc:39
+msgid "_Lists"
+msgstr "فهرست‌ها"
+
+#: lib/Turba.php:353
+msgid "_New Contact"
+msgstr "تماس جدید"
+
+#: templates/browse/actions.inc:2
+msgid "_Remove from this list"
+msgstr "حذف از این فهرست"
+
+#: lib/Turba.php:354
+msgid "_Search"
+msgstr "جستجو"
+
+#: vcard.php:46
+msgid "contact.vcf"
+msgstr "contact.vcf"
+
+#: data.php:175 data.php:180 templates/data/export.inc:1
+msgid "contacts.csv"
+msgstr "contacts.csv"
+
+#: data.php:185
+msgid "contacts.tsv"
+msgstr "contacts.tsv"
+
+#: data.php:195
+msgid "contacts.vcf"
+msgstr "contact.vcf"
+
+#: templates/browse/actions.inc:24
+msgid "to a Contact List"
+msgstr "به یک فهرست تماس"
+
+#: templates/browse/actions.inc:14
+msgid "to a different Address Book"
+msgstr "به کتابچهٔ آدرس متفاوت"
+
+#: data.php:30 templates/browse/column_headers.inc:12
+#: templates/data/import.inc:15 templates/data/export.inc:15
+msgid "vCard"
+msgstr "vCard"
+
+msgid ""
+"Default directory for your personal addressbook, contact lists, and searches."
+msgstr "شاخهٔ پیش فرض برای کتابچهٔ آدرس شخصی، فهرست تماسها و جستجوهای شما"
+
+msgid "Searching Options"
+msgstr "گزینه‌های جستجو"

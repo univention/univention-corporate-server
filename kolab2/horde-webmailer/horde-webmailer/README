@@ -1,0 +1,114 @@
+What is Horde?
+==============
+
+:Last update:   $Date: 2007-12-20 15:01:20 $
+:Revision:      $Revision: 2.13.10.2 $
+:Contact:       horde@lists.horde.org
+
+.. contents:: Contents
+.. section-numbering::
+
+The Horde Project is a group of developers who write Web applications using
+the Horde Application Framework, itself a product of the Project.
+
+The Horde Application Framework is written in PHP, and provides the common
+tools a Web application requires: classes for dealing with preferences,
+compression, browser detection, connection tracking, MIME, and more.
+
+The Horde Framework, by itself, does not provide any significant end user
+functionality; it provides a base for other applications and tools for
+developers. You will probably want to install some of the available Horde
+applications, such as IMP (a webmail client), or Kronolith (a calendar). There
+is a list of Horde applications and projects at
+http://www.horde.org/projects.php.
+
+This software is OSI Certified Open Source Software.  OSI Certified is a
+certification mark of the `Open Source Initiative`_.
+
+.. _`Open Source Initiative`: http://www.opensource.org/
+
+
+Obtaining Horde
+---------------
+
+Further information on Horde and the latest version can be obtained at
+
+  http://www.horde.org/horde/
+
+Information on applications that use the Horde framework can be found at
+
+  http://www.horde.org/projects.php
+
+
+Documentation
+-------------
+
+The following documentation is available in the Horde distribution:
+
+:README_:                   This file
+:COPYING_:                  Copyright and license information
+:`docs/CHANGES`_:           Changes by release
+:`docs/CODING_STANDARDS`_:  Coding standards for Horde projects
+:`docs/CONTRIBUTING`_:      How to contribute to Horde
+:`docs/CREDITS`_:           Project developers
+:`docs/HACKING`_:           How to get Horde via CVS
+:`docs/INSTALL`_:           Installation instructions and notes
+:`docs/PERFORMANCE`_:       Performance guide
+:`docs/RELEASE`_:           Release process notes
+:`docs/SECURITY`_:          Security notes
+:`docs/TODO`_:              Development TODO list
+:`docs/UPGRADING`_:         Pointers on upgrading from previous Horde versions
+
+
+Installation
+------------
+
+Instructions for installing Horde can be found in the file INSTALL_ in the
+``docs/`` directory of the Horde distribution.
+
+
+Assistance
+----------
+
+If you encounter problems with Horde, help is available! 
+
+The Horde Frequently Asked Questions List (FAQ), available on the Web at
+ 
+  http://www.horde.org/faq/
+
+The Horde Project runs a number of mailing lists, for individual applications
+and for issues relating to the project as a whole.  Information, archives, and
+subscription information can be found at
+
+  http://www.horde.org/mail/
+
+Lastly, Horde developers, contributors and users also make occasional
+appearances on IRC, on the channel #horde on the freenode Network
+(irc.freenode.net).
+
+
+Licensing
+---------
+
+For licensing and copyright information, please see the file COPYING_ in the
+Horde distribution.
+
+Thanks,
+
+The Horde team
+
+
+.. _README: ?f=README.html
+.. _COPYING: http://www.horde.org/licenses/lgpl.php
+.. _docs/CHANGES: ?f=CHANGES.html
+.. _docs/CODING_STANDARDS: ?f=CODING_STANDARDS.html
+.. _docs/CONTRIBUTING: ?f=CONTRIBUTING.html
+.. _docs/CREDITS: ?f=CREDITS.html
+.. _docs/HACKING: ?f=HACKING.html
+.. _INSTALL:
+.. _docs/INSTALL: ?f=INSTALL.html
+.. _docs/PERFORMANCE: ?f=PERFORMANCE.html
+.. _docs/RELEASE: ?f=RELEASE.html
+.. _docs/SECURITY: ?f=SECURITY.html
+.. _docs/TODO: ?f=TODO.html
+.. _docs/UPGRADING: ?f=UPGRADING.html

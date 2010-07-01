@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<help>
+  <entry id="Overview" md5="67c67240d4ec4a037b8ae76f371c5ad3" state="uptodate">
+    <title>Pregled</title>
+    <heading>Uvod</heading>
+    <para>
+      Zadaci su klasi&#x10D;na aplikacija za upravljanje popisom zadataka koja
+      podr&#x17E;ava privatne i dijeljene popise zadataka, integraciju s kalendarom,
+      kategorije, prioritete, rokove, pretra&#x17E;ivanje, ispis, te uvoz i izvoz
+      zadataka u standardnom formatu.
+    </para>
+  </entry>
+
+  <entry id="sorting" md5="275a51456e8b440a5bf7afe2af24c777" state="uptodate">
+    <title>Sortiranje zapisa</title>
+    <heading>Sortiranje zapisa</heading>
+    <para>
+      U tablici mo&#x17E;ete sortirati zapise po bilo kojem stupcu tako da kliknete
+      na naslov stupca.  Za prebacivanje stupca izme&#x111;u uzlaznog i silaznog
+      poretka, kliknite na strelicu u naslovu stupca.
+    </para>
+  </entry>
+</help>

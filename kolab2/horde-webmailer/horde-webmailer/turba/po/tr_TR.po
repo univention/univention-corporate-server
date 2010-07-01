@@ -1,0 +1,1630 @@
+# Turkish translations for Turba package
+# Adres Defteri paketi için Türkçe çeviriler.
+# Copyright 2008-2009 The Horde Project
+# This file is distributed under the same license as the Turba package.
+# horde-tr at metu.edu.tr, 2005-2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba H3 (2.2-RC2)\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-04-15 12:57+0300\n"
+"PO-Revision-Date: 2008-10-23 10:24+0200\n"
+"Last-Translator: Altay Þeref Özaygen\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-9\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: templates/prefs/imsp_opt.inc:40
+msgid " Add an IMSP Address Book"
+msgstr "IMSP Adres Defteri ekle"
+
+#: templates/prefs/imsp_opt.inc:29
+msgid " Delete IMSP Address Book"
+msgstr "IMSP Adres Defterini sil"
+
+#: data.php:351
+#, php-format
+msgid "\"%s\" already exists and was not imported."
+msgstr "\"%s\" zaten var. Ýçeri taþýnmadý."
+
+#: lib/Forms/EditContact.php:76
+#, php-format
+msgid "\"%s\" updated, but saving the uploaded file failed: %s"
+msgstr "\"%s\" güncellendi. Fakat yüklenen dosya saklanamadý: %s"
+
+#: lib/Forms/EditContact.php:78 lib/Forms/EditContact.php:81
+#, php-format
+msgid "\"%s\" updated."
+msgstr "%s kaydý güncellendi."
+
+#: lib/Views/Browse.php:192
+#, php-format
+msgid "\"%s\" was not copied because it is a list."
+msgstr "\"%s\" liste olmasýndan dolayý kopyalanamadý."
+
+#: lib/Views/Browse.php:190
+#, php-format
+msgid "\"%s\" was not moved because it is a list."
+msgstr "\"%s\" liste olmasýndan dolayý taþýnamadý."
+
+#: config/prefs.php.dist:118
+msgid "\"Firstname Lastname\"  (ie. John Doe)"
+msgstr "\"Ad Soyad\" (Ör. Ali Yýlmaz)"
+
+#: config/prefs.php.dist:117
+msgid "\"Lastname, Firstname\" (ie. Doe, John)"
+msgstr "\"Soyad, Ad\" (Ör. Yýlmaz, Ali)"
+
+#: lib/Forms/AddContact.php:83
+#, php-format
+msgid "%s added."
+msgstr "%s eklendi"
+
+#: data.php:370
+#, php-format
+msgid "%s file successfully imported."
+msgstr "%s dosyasý baþarýyla (içeri) aktarýldý"
+
+#: lib/Driver.php:529
+#, php-format
+msgid "%s of %s"
+msgstr "%s toplam %s"
+
+#: templates/list/numPager.inc:6
+#, php-format
+msgid "%s to %s of %s"
+msgstr "%s / %s, toplam %s"
+
+#: lib/Turba.php:531
+#, php-format
+msgid "%s's Address Book"
+msgstr "%s Adres Defteri"
+
+#: lib/Block/minisearch.php:42
+msgid "A browser that supports iFrames is required"
+msgstr "iFrames destekleyen bir tarayýcý gerekmektedir"
+
+#: view.php:54
+#, php-format
+msgid "Access denied to %s"
+msgstr "%s için eriþim engellendi"
+
+#: templates/browse/actions.inc:30 lib/Forms/AddContact.php:25
+msgid "Add"
+msgstr "Ekle"
+
+#: lib/Forms/AddContact.php:22
+msgid "Add Contact"
+msgstr "Yeni Kiþi ekle"
+
+#: templates/prefs/addressbookselect.inc:173
+msgid "Add address book"
+msgstr "Adres defteri ekle"
+
+#: templates/prefs/columnselect.inc:237
+msgid "Add column"
+msgstr "Kolon ekle"
+
+#: lib/Forms/EditContact.php:34
+msgid "Add file"
+msgstr "Dosya ekle"
+
+#: templates/browse/actions.inc:30
+msgid "Add to"
+msgstr "Ekle"
+
+#: lib/Driver.php:1561 lib/Driver/null.php:57
+msgid "Adding contacts is not available."
+msgstr "Kiþi ekleme kullanýlabilir deðil."
+
+#: templates/addressbook_list.php:15
+msgid "Address Book"
+msgstr "Adres Defteri"
+
+#: templates/addressbook_list.php:12
+msgid "Address Book List"
+msgstr "Adres Defteri Listesi"
+
+#: lib/Views/Browse.php:78 config/prefs.php.dist:106
+msgid "Address Book Listing"
+msgstr "Adres Defteri Listeleme"
+
+#: config/prefs.php.dist:10
+msgid "Address Books"
+msgstr "Adres Defterleri"
+
+#: data.php:331
+msgid "Address book successfully purged."
+msgstr "Adres defteri baþarýyla boþaltýldý."
+
+#: templates/prefs/addressbookselect.inc:167
+#: templates/prefs/addressbookselect.inc:169
+msgid "Address books that will not be displayed:"
+msgstr "Gösterilemeyen Adres defteri %s"
+
+#: search.php:160 templates/browse/search.inc:47
+msgid "Advanced Search"
+msgstr "Geliþmiþ Arama"
+
+#: config/attributes.php.dist:83
+msgid "Alias"
+msgstr "Öteki Ad"
+
+#: templates/list/alphaPager.inc:7 templates/list/alphaPager.inc:10
+msgid "All"
+msgstr "Tümü"
+
+#: lib/api.php:729
+msgid "Already Exists"
+msgstr "Zaten Var"
+
+#: config/attributes.php.dist:106
+msgid "Anniversaries"
+msgstr "Yýl dönümleri"
+
+#: config/attributes.php.dist:102
+msgid "Anniversary"
+msgstr "Yýl dönümü"
+
+#: templates/browse/javascript.inc:85
+#, php-format
+msgid "Are you sure that you want to delete %s?"
+msgstr "%s silmek istediðinizden emin misiniz?"
+
+#: templates/browse/javascript.inc:66
+msgid "Are you sure that you want to delete the selected contacts?"
+msgstr "Seçilen kiþileri silmek istediðinizden emin misiniz?"
+
+#: config/attributes.php.dist:377
+msgid "Assistant"
+msgstr "Yardýmcý"
+
+#: search.php:157 templates/browse/search.inc:46
+msgid "Basic Search"
+msgstr "Basit Arama"
+
+#: lib/Driver/ldap.php:92 lib/Driver/ldap.php:95
+#, php-format
+msgid "Bind failed: (%s) %s"
+msgstr "Baðlantý kurulamadý (%s) %s"
+
+#: config/attributes.php.dist:95
+msgid "Birthday"
+msgstr "Doðum günü"
+
+#: config/attributes.php.dist:99
+msgid "Birthdays"
+msgstr "Doðum günü"
+
+#: contact.php:103 templates/browse/row.inc:6
+msgid "Blank name"
+msgstr "Boþ isim"
+
+#: templates/browse/actions.inc:51
+msgid "Both"
+msgstr "Her Ýkisi"
+
+#: templates/menu.inc:8
+msgid "Browse"
+msgstr "Gözat"
+
+#: config/attributes.php.dist:288
+msgid "Business Category"
+msgstr "Ýþ Sýnýfý"
+
+#: data.php:60
+msgid "CSV"
+msgstr "CSV"
+
+#: lib/Object/Group.php:68
+msgid "Can't add a group to itself."
+msgstr "Bir grup kendisine eklenemez."
+
+#: lib/Forms/DeleteAddressBook.php:45 lib/Forms/DeleteAddressBook.php:54
+msgid "Cancel"
+msgstr "Ýptal"
+
+#: lib/Driver/kolab.php:620
+#, php-format
+msgid "Cannot delete all address book entries for %s"
+msgstr "%s için tüm adres defteri kayýtlarý silinedi"
+
+#: config/attributes.php.dist:349
+msgid "Category"
+msgstr "Sýnýf"
+
+#: templates/browse/column_headers.inc:24
+#, php-format
+msgid "Change %s sort to %s"
+msgstr "%s sýralamasýný %s olarak deðiþtir"
+
+#: addressbooks/index.php:40 templates/addressbook_list.php:31
+msgid "Change Permissions"
+msgstr "Ýzinleri Deðiþtir"
+
+#: templates/browse/column_headers.inc:7
+msgid "Check All/None"
+msgstr "Tümünü/Hiçbirini Seç"
+
+#: templates/browse/column_headers.inc:7
+msgid "Check _All/None"
+msgstr "_Tümünü/Hiçbirini Seç"
+
+#: config/attributes.php.dist:115
+msgid "Children"
+msgstr "Alt birim"
+
+#: lib/Forms/AddContact.php:36
+msgid "Choose an address book"
+msgstr "Bir adres defteri seçin"
+
+#: templates/prefs/columnselect.inc:218 templates/prefs/columnselect.inc:220
+msgid "Choose an address book:"
+msgstr "Bir adres defteri seçin"
+
+#: templates/prefs/addressbookselect.inc:163
+msgid "Choose which address books to display, and in what order:"
+msgstr "Hangi adres defterinin görüntüleneceðini ve sýralamasýný seçin:"
+
+#: config/prefs.php.dist:11
+msgid "Choose which address books to use."
+msgstr "Kullanmak için bir adres defteri seçin"
+
+#: templates/prefs/columnselect.inc:227
+msgid "Choose which columns to display and in what order:"
+msgstr "Adres listesinde görüntelenecek kolonlarýn sýrasýný seçin."
+
+#: templates/block/minisearch.inc:27
+msgid "Close"
+msgstr "Kapat"
+
+#: templates/browse/header.inc:7
+msgid "Close Search"
+msgstr "Aramayý Kapat"
+
+#: config/prefs.php.dist:17
+msgid "Column Options"
+msgstr "Kolon Seçenekleri"
+
+#: templates/prefs/columnselect.inc:231 templates/prefs/columnselect.inc:233
+msgid "Columns that will not be displayed:"
+msgstr "Görüntülenmeyecek kolonlar:"
+
+#: templates/data/import.inc:13 templates/data/export.inc:12
+msgid "Comma separated values"
+msgstr "Virgül ile ayrýlmýþ deðerler"
+
+#: templates/data/export.inc:13
+msgid "Comma separated values (Microsoft Outlook)"
+msgstr "Virgül ile ayrýlmýþ deðerler (Microsoft Outlook)"
+
+#: config/sources.php.dist:229 config/sources.php.dist:905
+msgid "Communications"
+msgstr "Ýletiþim bilgileri"
+
+#: config/attributes.php.dist:294
+msgid "Company"
+msgstr "Firma"
+
+#: config/attributes.php.dist:223
+msgid "Company Address"
+msgstr "Firma Adresi"
+
+#: scripts/import_squirrelmail_abook.php:112 lib/api.php:398 lib/api.php:443
+#: lib/api.php:494 lib/api.php:529 lib/api.php:578 lib/api.php:624
+#: lib/api.php:665 lib/api.php:782 lib/api.php:869 lib/api.php:928
+#: lib/api.php:1020 lib/api.php:1229 lib/api.php:1301 lib/api.php:1386
+#, php-format
+msgid "Connection failed: %s"
+msgstr "Baðlantý baþarýsýz: %s"
+
+#: lib/Driver/ldap.php:68
+msgid "Connection failure"
+msgstr "Baðlantý baþarýsýz"
+
+#: lib/Block/minisearch.php:3 lib/Block/minisearch.php:26
+msgid "Contact Search"
+msgstr "Kiþi Arama"
+
+#: config/sources.php.dist:837
+msgid "Contacts"
+msgstr "Kiþiler"
+
+#: templates/list/numPager.inc:3
+msgid "Contacts displayed:"
+msgstr "Görüntülenen kiþiler:"
+
+#: lib/Views/Browse.php:338
+#, php-format
+msgid "Contacts in list: %s"
+msgstr "Listedeki kiþiler: %s"
+
+#: templates/browse/actions.inc:18
+msgid "Copy"
+msgstr "Kopyala"
+
+#: lib/Forms/CreateAddressBook.php:39
+msgid "Create"
+msgstr "Yarat"
+
+#: lib/Forms/CreateAddressBook.php:34
+msgid "Create Address Book"
+msgstr "Adres Defteri oluþtur"
+
+#: templates/addressbook_list.php:8
+msgid "Create a new Address Book"
+msgstr "Adres Defteri oluþtur"
+
+#: lib/ListView.php:443
+msgid "Create a new Contact List in:"
+msgstr "Yeni bir adres defteri oluþtur"
+
+#: lib/Views/Contact.php:74
+msgid "Created"
+msgstr "Yaratýldý"
+
+#: contact.php:86
+msgid "De_lete"
+msgstr "Si_l"
+
+#: addressbooks/index.php:41 templates/addressbook_list.php:33
+#: templates/browse/actions.inc:3 lib/Views/DeleteContact.php:58
+#: lib/Forms/DeleteAddressBook.php:45
+msgid "Delete"
+msgstr "Sil"
+
+#: lib/Views/DeleteContact.php:28 lib/Forms/DeleteAddressBook.php:40
+#, php-format
+msgid "Delete %s"
+msgstr "%s Sil"
+
+#: lib/Driver/ldap.php:285
+#, php-format
+msgid "Delete failed: (%s) %s"
+msgstr "Silme baþarýsýz: (%s) %s"
+
+#: lib/Driver.php:1569 lib/Driver/null.php:62
+msgid "Deleting contacts is not available."
+msgstr "Kiþi silmek þu anda mümkün deðil."
+
+#: delete.php:40
+msgid "Deletion failed"
+msgstr "Silme baþarýsýz"
+
+#: config/attributes.php.dist:300
+msgid "Department"
+msgstr "Bölüm"
+
+#: lib/Forms/CreateAddressBook.php:37 lib/Forms/EditAddressBook.php:44
+msgid "Description"
+msgstr "Taným"
+
+#: templates/browse/search.inc:125
+msgid "Directory"
+msgstr "Dizin"
+
+#: config/prefs.php.dist:24
+msgid "Display"
+msgstr "Göster"
+
+#: config/prefs.php.dist:9 config/prefs.php.dist:16 config/prefs.php.dist:23
+#: config/prefs.php.dist:30
+msgid "Display Options"
+msgstr "Görüntüleme Seçenekleri"
+
+#: lib/Object.php:348
+msgid "Download"
+msgstr "Ýndir"
+
+#: templates/browse/contactrow.inc:25 templates/browse/row.inc:13
+msgid "Download vCard"
+msgstr "vCard indir"
+
+#: addressbooks/index.php:39 templates/addressbook_list.php:29
+#: templates/browse/contactrow.inc:33 templates/browse/column_headers.inc:10
+#: templates/browse/row.inc:21 templates/browse/actions.inc:6
+msgid "Edit"
+msgstr "Düzenle"
+
+#: edit.php:91 templates/browse/contactrow.inc:33
+#, php-format
+msgid "Edit \"%s\""
+msgstr "Düzenle \"%s\""
+
+#: lib/Views/EditContact.php:35 lib/Forms/EditAddressBook.php:40
+#, php-format
+msgid "Edit %s"
+msgstr "%s Düzenle"
+
+#: config/attributes.php.dist:237
+msgid "Email"
+msgstr "Eposta"
+
+#: config/attributes.php.dist:243
+msgid "Emails"
+msgstr "E-posta"
+
+#: lib/Views/Browse.php:262 lib/Views/Browse.php:302
+#, php-format
+msgid "Error adding %d contact(s) to list."
+msgstr "Listeye %d kiþi eklerken hata oluþtu."
+
+#: lib/Views/Browse.php:264 lib/Views/Browse.php:304
+#, php-format
+msgid "Error adding %d of %d requested contact(s) to list."
+msgstr "Talep edilen kiþiler listeye ekleniyor (%d / %d)."
+
+#: lib/Views/Browse.php:134
+#, php-format
+msgid "Error deleting %d contact(s)."
+msgstr "%d kiþisi silerken hata oluþtu."
+
+#: lib/Views/Browse.php:136
+#, php-format
+msgid "Error deleting %d of %d requested contacts(s)."
+msgstr "Talep edilen kiþiler silinirken hata oluþtu (%d / %d)."
+
+#: lib/Views/Browse.php:117
+#, php-format
+msgid "Error removing %d contact(s) from list."
+msgstr "Listeden %d kiþi silerken hata oluþtu."
+
+#: lib/Views/Browse.php:119
+#, php-format
+msgid "Error removing %d of %d requested contact(s) from list."
+msgstr "Talep edilen kiþiler silinirken hata oluþtu (%d / %d)."
+
+#: lib/api.php:535
+#, php-format
+msgid "Error searching the address book: %s"
+msgstr "Adres defterinde arama baþarýsýz: %s"
+
+#: templates/data/export.inc:42 templates/browse/actions.inc:10
+msgid "Export"
+msgstr "Dýþarý Aktar"
+
+#: templates/data/export.inc:6
+msgid "Export Address Book"
+msgstr "Adres Defterini Dýþarý Aktar"
+
+#: templates/data/export.inc:22
+msgid "Export only the selected contacts."
+msgstr "Sadece seçilen kiþileri dýþarý aktar."
+
+#: templates/data/export.inc:28
+msgid "Export the following address book completely."
+msgstr "Bu adres defterini tümüyle dýþarý aktar."
+
+#: data.php:143 data.php:242 data.php:320 search.php:85 add.php:42
+#: lib/Views/Browse.php:84 lib/Views/Browse.php:152 lib/Views/Browse.php:180
+#, php-format
+msgid "Failed to access the address book: %s"
+msgstr "Adres defterine eriþim baþarýsýz: %s"
+
+#: lib/Views/Browse.php:210
+#, php-format
+msgid "Failed to add %s to %s: %s"
+msgstr "%s i %s e ekleme baþarýsýz: %s"
+
+#: lib/Views/Browse.php:344
+msgid "Failed to browse list"
+msgstr "Liste görüntüleme baþarýsýz"
+
+#: lib/Views/Browse.php:371
+msgid "Failed to browse the directory"
+msgstr "Dizin görüntüleme baþarýsýz"
+
+#: lib/Driver/ldap.php:318
+#, php-format
+msgid "Failed to change name: (%s) %s; Old DN = %s, New DN = %s, Root = %s"
+msgstr ""
+"Ýsim deðiþtirme baþarýsýz: (%s) %s; Eski DN = %s, Yeni DN = %s, Kök = %s"
+
+#: lib/Views/Browse.php:186
+#, php-format
+msgid "Failed to find object to be added: %s"
+msgstr "Eklenecek nesne bulunamadý: %s"
+
+#: search.php:151
+msgid "Failed to search the address book"
+msgstr "Adres defterinde arama baþarýsýz: %s"
+
+#: data.php:158
+#, php-format
+msgid "Failed to search the directory: %s"
+msgstr "Dizin arama baþarýsýz: %s"
+
+#: config/sources.php.dist:536
+msgid "Favourite Recipients"
+msgstr "Sýkça Kullanýlan Alýcýlar"
+
+#: config/attributes.php.dist:264
+msgid "Fax"
+msgstr "Faks"
+
+#: lib/Forms/Contact.php:41
+msgid "Files"
+msgstr "Dosyalar"
+
+#: templates/browse/search.inc:104
+msgid "Find"
+msgstr "Bul"
+
+#: lib/Forms/EditContact.php:121 lib/Forms/EditContact.php:159
+msgid "Finish"
+msgstr "Bitir"
+
+#: config/attributes.php.dist:53
+msgid "First Name"
+msgstr "Ad"
+
+#: config/attributes.php.dist:326
+msgid "Freebusy URL"
+msgstr "Freebusy Adresi"
+
+#: templates/browse/search.inc:98
+msgid "From"
+msgstr "Kimden"
+
+#: config/attributes.php.dist:383
+msgid "Gender"
+msgstr "Cinsiyet"
+
+#: config/sources.php.dist:762
+msgid "Global Address Book"
+msgstr "Genel Adres Defteri"
+
+#: templates/browse/contactrow.inc:44 templates/browse/row.inc:39
+msgid "Group"
+msgstr "Grup"
+
+#: config/attributes.php.dist:123
+msgid "Home Address"
+msgstr "Ev Adresi"
+
+#: config/attributes.php.dist:141
+msgid "Home City"
+msgstr "Þehir"
+
+#: config/attributes.php.dist:159
+msgid "Home Country"
+msgstr "Ülke"
+
+#: config/attributes.php.dist:249
+msgid "Home Phone"
+msgstr "Ev Telefonu"
+
+#: config/attributes.php.dist:135
+msgid "Home Post Office Box"
+msgstr "Postahane Kutusu"
+
+#: config/attributes.php.dist:153
+msgid "Home Postal Code"
+msgstr "Posta Kodu"
+
+#: config/attributes.php.dist:147
+msgid "Home State/Province"
+msgstr "Bölge"
+
+#: config/attributes.php.dist:129
+msgid "Home Street Address"
+msgstr "Ev Adresi"
+
+#: config/sources.php.dist:653
+msgid "IMSP"
+msgstr "IMSP"
+
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Address Book, Step %d"
+msgstr "Adres Defteri Ýçeri Aktarma, Adým %d"
+
+#: data.php:388
+msgid "Import/Export Address Books"
+msgstr "Adres Defterlerini Ýçeri/Dýþarý Aktar"
+
+#: config/attributes.php.dist:359
+msgid "Initials"
+msgstr "Baþ harfler"
+
+#: config/attributes.php.dist:365
+msgid "Instant Messenger"
+msgstr "Anlýk Ýletiþim"
+
+#: lib/api.php:777 lib/api.php:864
+msgid "Invalid ID"
+msgstr "Geçersiz kimlik"
+
+#: scripts/import_squirrelmail_abook.php:105 lib/api.php:310 lib/api.php:524
+#: lib/api.php:573 lib/api.php:619 lib/api.php:660 lib/api.php:773
+#: lib/api.php:860 lib/api.php:918 lib/api.php:1369
+#, php-format
+msgid "Invalid address book: %s"
+msgstr "Geçersiz adres defteri: %s"
+
+#: lib/api.php:1373 lib/api.php:1447 lib/api.php:1503
+msgid "Invalid email"
+msgstr "Geçersiz e-posta"
+
+#: lib/api.php:1381
+msgid "Invalid entry"
+msgstr "Geçersiz kayýt"
+
+#: lib/Driver/ldap.php:281
+msgid "Invalid key specified."
+msgstr "Geçersiz anahtar belirtildi."
+
+#: lib/api.php:1377
+msgid "Invalid name"
+msgstr "Geçersiz ad"
+
+#: lib/api.php:922
+msgid "Invalid objectId"
+msgstr "Geçersiz nesne kimliði"
+
+#: config/attributes.php.dist:276
+msgid "Job Title"
+msgstr "Ünvan"
+
+#: lib/Driver/kolab.php:855 lib/Driver/kolab.php:877
+#, php-format
+msgid "Key for saving must be a UID not %s!"
+msgstr "Saklama için anahtar %s yenine UID olmalý!"
+
+#: lib/Driver/ldap.php:64
+msgid ""
+"LDAP support is required but the LDAP module is not available or not loaded."
+msgstr ""
+"LDAP desteði gerekiyor ancak LDAP modülü kullanýlabilir deðil ya da "
+"yüklenmedi."
+
+#: data.php:65 templates/data/import.inc:18 templates/data/export.inc:16
+msgid "LDIF Address Book"
+msgstr "LDIF Adres Defteri"
+
+#: config/attributes.php.dist:389
+msgid "Language"
+msgstr "Dil"
+
+#: lib/Views/Contact.php:80
+msgid "Last Modified"
+msgstr "Son Deðiþim"
+
+#: config/attributes.php.dist:59
+msgid "Last Name"
+msgstr "Soyad"
+
+#: config/attributes.php.dist:395
+msgid "Latitude"
+msgstr "Boylam"
+
+#: templates/browse/column_headers.inc:16
+msgid "List"
+msgstr "Liste"
+
+#: config/sources.php.dist:224 config/sources.php.dist:901
+msgid "Location"
+msgstr "Yer"
+
+#: config/attributes.php.dist:400
+msgid "Longitude"
+msgstr "Enlem"
+
+#: addressbooks/index.php:45 templates/addressbook_list.php:2
+msgid "Manage Address Books"
+msgstr "Adres Defterlerini yönet"
+
+#: config/attributes.php.dist:371
+msgid "Manager"
+msgstr "Yönetici"
+
+#: templates/browse/search.inc:109
+msgid "Matching"
+msgstr "Eþleþen"
+
+#: lib/api.php:285
+msgid "Maximum Number of Contacts"
+msgstr "En Fazla kiþi Sayýsý"
+
+#: config/prefs.php.dist:88
+msgid "Maximum number of pages"
+msgstr "Azami sayfa sayýsý"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "Menü Listesi"
+
+#: config/attributes.php.dist:65
+msgid "Middle Names"
+msgstr "Orta Ýsim"
+
+#: lib/Driver/ldap.php:311
+msgid "Missing DN in LDAP source configuration."
+msgstr "LDAP kaynak yapýlandýrmasýnda eksik DN."
+
+#: config/attributes.php.dist:259
+msgid "Mobile Phone"
+msgstr "Mobil Telefon"
+
+#: lib/Driver/ldap.php:340 lib/Driver/ldap.php:356
+#, php-format
+msgid "Modify failed: (%s) %s"
+msgstr "Deðiþiklik baþarýsýz: (%s) %s"
+
+#: templates/browse/header.inc:8
+msgid "More Options..."
+msgstr "Daha Fazla Seçenek..."
+
+#: lib/api.php:1489
+msgid "More than 1 entry found"
+msgstr "Birden fazla kayýt bulundu"
+
+#: templates/browse/actions.inc:16
+msgid "Move"
+msgstr "Taþý"
+
+#: templates/prefs/addressbookselect.inc:184
+#: templates/prefs/columnselect.inc:248
+msgid "Move left"
+msgstr "Sola taþý"
+
+#: templates/prefs/addressbookselect.inc:186
+#: templates/prefs/columnselect.inc:250
+msgid "Move right"
+msgstr "Saða taþý"
+
+#: data.php:63 templates/data/import.inc:16
+msgid "Mulberry Address Book"
+msgstr "Mulberry Adres Defteri"
+
+#: lib/api.php:1405
+#, php-format
+msgid ""
+"Multiple persons with address [%s], but none with name [%s] already exist"
+msgstr "[%s] adresi ile birden fazla kiþi bulundu ancak [%s] isminde biri yok"
+
+#: config/sources.php.dist:161
+msgid "My Address Book"
+msgstr "Adres Defterim"
+
+#: lib/Forms/CreateAddressBook.php:36 lib/Forms/EditAddressBook.php:43
+#: config/attributes.php.dist:47
+msgid "Name"
+msgstr "Ad"
+
+#: config/prefs.php.dist:31
+msgid "Name Format"
+msgstr "Ad Biçimi"
+
+#: config/attributes.php.dist:71
+msgid "Name Prefixes"
+msgstr "Ýsim Ön Ekleri"
+
+#: config/attributes.php.dist:77
+msgid "Name Suffixes"
+msgstr "Ýsim Son Ekleri"
+
+#: templates/browse/search_vbook.inc:6
+msgid "Name:"
+msgstr "Ýsim:"
+
+#: add.php:70 lib/Block/tree_menu.php:27
+msgid "New Contact"
+msgstr "Yeni Kiþi"
+
+#: templates/data/import.inc:46 lib/Forms/EditContact.php:112
+#: lib/Forms/EditContact.php:119 lib/Forms/EditContact.php:174
+msgid "Next"
+msgstr "Sonraki"
+
+#: config/attributes.php.dist:89
+msgid "Nickname"
+msgstr "Takma Ad"
+
+#: lib/api.php:1492 lib/api.php:1543
+#, php-format
+msgid "No %s entry found for %s"
+msgstr "%s giriþi bulunamadý: %s"
+
+#: data.php:52
+msgid ""
+"No Address Books are currently available. Import and Export is disabled."
+msgstr ""
+"Þu anda kullanýlabilir adres defteri yok. Ýçeri/Dýþarý taþýma etkin deðil."
+
+#: search.php:71
+msgid "No Address Books are currently available. Searching is disabled."
+msgstr ""
+"Þu anda kullanýlabilir adres defteri yok. Ýçeri/Dýþarý taþýma etkin deðil."
+
+#: lib/api.php:1456
+msgid "No address books found."
+msgstr "Hiç adres defteri bulunamadý."
+
+#: minisearch.php:81
+msgid "No contacts found"
+msgstr "Hiç Kiþi kaydý bulunamadý"
+
+#: templates/browse/column_headers.inc:43
+msgid "No contacts match the current filter."
+msgstr "Geçerli ölçüte uyan Kiþi kaydý yok."
+
+#: lib/ListView.php:251
+msgid "No matching contacts"
+msgstr "Eþleþen kiþi yok"
+
+#: lib/Driver/favourites.php:120
+msgid "No source for favourite recipients exists."
+msgstr "Sýk kullanýlan alýcý kaynaðý yok."
+
+#: lib/api.php:686 lib/api.php:957
+msgid "No vCard data was found."
+msgstr "Hiç vCard verisi bulunamadý."
+
+#: templates/list/numPager.inc:8
+msgid "None"
+msgstr "Hiçbiri"
+
+#: lib/Views/Contact.php:49 lib/Views/DeleteContact.php:26
+#: lib/Views/EditContact.php:33
+msgid "Not Found"
+msgstr "Bulunamadý"
+
+#: edit.php:48 deletefile.php:22
+msgid "Not found"
+msgstr "Bulunamadý"
+
+#: config/attributes.php.dist:314
+msgid "Notes"
+msgstr "Notlar"
+
+#: config/prefs.php.dist:96
+msgid "Number of items per page"
+msgstr "Sayfa baþýna öðe sayýsý"
+
+#: lib/api.php:793 lib/api.php:937
+msgid "Object not found"
+msgstr "Nesne bulunamadý"
+
+#: config/attributes.php.dist:282
+msgid "Occupation"
+msgstr "Ýþ"
+
+#: config/attributes.php.dist:306
+msgid "Office"
+msgstr "Ofis"
+
+#: templates/prefs/imsp_opt.inc:22
+msgid ""
+"Once you save this option page, the address book will be permanently "
+"deleted. If this is not what you want, then you must change your selection "
+"to \"None\"."
+msgstr ""
+"Bu seçenekler sayfasýný sakladýðýnýzda, adref defteri kalýcý olarak "
+"silinecek Eðer isteðiniz bu deðilse, seçiminizi \"Hiçbiri\" olarak "
+"deðiþtirin."
+
+#: lib/api.php:965
+msgid "Only one vcard supported."
+msgstr "Sadece bir vcard destekleniyor."
+
+#: config/sources.php.dist:231 config/sources.php.dist:907
+msgid "Organization"
+msgstr "Kurum"
+
+#: config/sources.php.dist:232 config/sources.php.dist:909
+msgid "Other"
+msgstr "Diðer"
+
+#: config/attributes.php.dist:332
+msgid "PGP Public Key"
+msgstr "PGP Açýk Anahtarý"
+
+#: config/attributes.php.dist:269
+msgid "Pager"
+msgstr "Çaðrý"
+
+#: lib/Views/DeleteContact.php:57
+msgid "Permanently delete this contact?"
+msgstr "Bu Kiþi kaydý gerçekten silinsin mi?"
+
+#: deletefile.php:36 lib/api.php:669 lib/api.php:786 lib/api.php:873
+#: lib/api.php:931 lib/api.php:1390 lib/Driver.php:701 lib/Driver/sql.php:481
+msgid "Permission denied"
+msgstr "Ýzin yok"
+
+#: config/sources.php.dist:221 config/sources.php.dist:897
+msgid "Personal"
+msgstr "Kiþisel"
+
+#: data.php:64 templates/data/import.inc:17
+msgid "Pine Address Book"
+msgstr "Pine Adres Defteri"
+
+#: templates/browse/javascript.inc:27
+msgid "Please name the new contact list:"
+msgstr "Lütfen yeni listenin adýný girin:"
+
+#: lib/Forms/EditContact.php:115 lib/Forms/EditContact.php:118
+#: lib/Forms/EditContact.php:166
+msgid "Previous"
+msgstr "Önceki"
+
+#: lib/Driver/ldap.php:162
+#, php-format
+msgid "Query failed: (%s) %s"
+msgstr "Sorgu baþarýsýz: (%s) %s"
+
+#: lib/Driver/ldap.php:206 lib/Driver/ldap.php:214 lib/Driver/ldap.php:450
+#, php-format
+msgid "Read failed: (%s) %s"
+msgstr "Okuma baþarýsýz: (%s) %s"
+
+#: lib/Driver.php:1553 lib/Driver/null.php:52
+msgid "Reading contacts is not available."
+msgstr "Kiþi kayýtlarý okunamýyor."
+
+#: lib/Forms/DeleteAddressBook.php:43
+#, php-format
+msgid ""
+"Really delete the address book \"%s\"? This cannot be undone and all "
+"contacts in this address book will be permanently removed."
+msgstr ""
+"\"%s\" adlý not defteri gerçekten silinsin mi? Bu geri çevrilemez. Bu not "
+"defterindeki veriler kalýcý olarak silinecek"
+
+#: templates/prefs/addressbookselect.inc:175
+msgid "Remove address book"
+msgstr "Adres defterini sil"
+
+#: templates/prefs/columnselect.inc:239
+msgid "Remove column"
+msgstr "Kolonu kaldýr"
+
+#: templates/browse/actions.inc:3
+msgid "Remove from this list"
+msgstr "Bu listeden sil"
+
+#: lib/Driver.php:1591
+msgid ""
+"Removing user data is not supported in the current address book storage "
+"driver."
+msgstr ""
+"Geçerli adres defteri  saklama sürücüsü, kullanýcý verisi silmeyi "
+"desteklemiyor."
+
+#: templates/data/import.inc:22
+msgid ""
+"Replace existing address book with the imported one? <strong>Warning: This "
+"deletes all entries in your current address book.</strong>"
+msgstr ""
+"Yüklenen adres defterini varolan ile deðiþtirmek istiyor musunuz? <b>Uyarý: "
+"Bu iþlem þu anki adres defterinizdeki tüm kayýtlarý siler.</b>"
+
+#: lib/Driver.php:595
+msgid "Requested object not found."
+msgstr "Belirtilen nesne bulunamadý."
+
+#: templates/browse/search.inc:120
+msgid "Reset to Defaults"
+msgstr "Öntanýmlý deðerlere geri dön"
+
+#: config/attributes.php.dist:338
+msgid "S/MIME Public Certificate"
+msgstr "S/MIME Açýk Sertifikasý"
+
+#: lib/Driver/ldap.php:84
+#, php-format
+msgid "STARTTLS failed: (%s) %s"
+msgstr "STARTTLS baþarýsýz: (%s) %s"
+
+#: lib/Forms/EditAddressBook.php:46 lib/Forms/EditContact.php:26
+msgid "Save"
+msgstr "Kaydet"
+
+#: templates/browse/search_vbook.inc:4
+msgid "Save search as a virtual address book?"
+msgstr "Arama sonucunu sanal adres defteri olarak kaydet?"
+
+#: lib/Driver.php:1579 lib/Driver/null.php:67
+msgid "Saving contacts is not available."
+msgstr "Kiþilerin saklanmasý kullanýlabilir deðil."
+
+#: templates/browse/search.inc:111 templates/browse/search.inc:119
+#: templates/browse/header.inc:3 templates/block/minisearch.inc:26
+#: lib/Block/tree_menu.php:58 config/prefs.php.dist:107
+msgid "Search"
+msgstr "Arama"
+
+#: lib/api.php:1234
+msgid "Search failed"
+msgstr "Arama baþarýsýz"
+
+#: lib/api.php:1395 lib/api.php:1401 lib/api.php:1410 lib/api.php:1423
+#, php-format
+msgid "Search failed: %s"
+msgstr "Arama baþarýsýz: %s"
+
+#: templates/block/minisearch.inc:24
+msgid "Search for: "
+msgstr "Aranacak kelime:"
+
+#: lib/Driver.php:1538 lib/Driver/null.php:47
+msgid "Searching is not available."
+msgstr "Arama opsiyonu þu anda kullanýlabilir deðil."
+
+#: templates/browse/row.inc:30
+msgid "Select contact"
+msgstr "Kiþi seç"
+
+#: templates/data/export.inc:33
+msgid "Select the address book to export from:"
+msgstr "Verilerin dýþarý aktarýlacaðý adres defterini seçin:"
+
+#: templates/data/import.inc:27
+msgid "Select the address book to import to:"
+msgstr "Verilerin içine aktarýlacaðý adres defterini seçin:"
+
+#: templates/data/import.inc:36
+msgid "Select the charset of the source file:"
+msgstr "Kaynak dosyanýn karakter öbeðini seçin:"
+
+#: templates/data/export.inc:10
+msgid "Select the export format:"
+msgstr "Dýþarý aktarma biçimini seçin:"
+
+#: templates/data/import.inc:44
+msgid "Select the file to import:"
+msgstr "Ýçeri aktarýlacak dosyayý seçin:"
+
+#: templates/data/import.inc:11
+msgid "Select the format of the source file:"
+msgstr "Kaynak dosyanýn biçimini seçin:"
+
+#: config/prefs.php.dist:116
+msgid "Select the format used to display names:"
+msgstr "Ýsimlerin görüntüleneceði biçimi seçin:"
+
+#: config/prefs.php.dist:25
+msgid "Select view to display by default, sort options, and paging options."
+msgstr "Öntanýmlý görünümü seçin, arama ve sayfalama seçenekleri."
+
+#: config/prefs.php.dist:18
+msgid "Select which fields to display in the address lists."
+msgstr "Adres listelerinde hangi alanlarýn görüntüleneceðini seçin."
+
+#: config/prefs.php.dist:32
+msgid "Select which format to display names."
+msgstr "Ýsimlerin görüntüleneceði biçimi seçin."
+
+#: lib/Forms/AddContact.php:42
+#, php-format
+msgid "Selected address book \"%s\"."
+msgstr "Seçilmiþ adres defteri \"%s\"."
+
+#: templates/browse/actions.inc:49
+#, php-format
+msgid "Show %s"
+msgstr "Göster %s"
+
+#: templates/browse/actions.inc:51
+msgid "Show Both"
+msgstr "Her ikisini de göster"
+
+#: templates/browse/actions.inc:50
+msgid "Show Contacts"
+msgstr "Kiþileri Göster"
+
+#: templates/browse/actions.inc:49
+msgid "Show Lists"
+msgstr "Listeleri Göster"
+
+#: lib/ListView.php:319 lib/ListView.php:325
+msgid "Sort Direction"
+msgstr "Sýralama Yönü"
+
+#: templates/browse/column_headers.inc:31
+#, php-format
+msgid "Sort by %s"
+msgstr "%s 'e göre sýrala"
+
+#: templates/browse/column_headers.inc:26
+#, php-format
+msgid "Sort by %s only"
+msgstr "Yalnýz %s'e göre sýrala"
+
+#: templates/browse/column_headers.inc:29
+#, php-format
+msgid "Sort by %s, then by %s"
+msgstr "Önce %s, sonra %s e göre sýrala"
+
+#: templates/menu.inc:6
+msgid "Source:"
+msgstr "Kaynaklar"
+
+#: lib/api.php:278
+msgid "Sources"
+msgstr "Kaynaklar"
+
+#: config/attributes.php.dist:109
+msgid "Spouse"
+msgstr "Eþ"
+
+#: lib/Views/Browse.php:260 lib/Views/Browse.php:300
+#, php-format
+msgid "Successfully added %d contact(s) to list."
+msgstr "%d baþarýyla adres defterinize eklendi eklendi"
+
+#: lib/Views/Browse.php:214
+#, php-format
+msgid "Successfully added %s to %s"
+msgstr "%s %s e baþarýyla eklendi"
+
+#: lib/Views/Browse.php:290
+#, php-format
+msgid "Successfully created the contact list \"%s\"."
+msgstr "\"%s\" adres defteri baþarý ile oluþturuldu."
+
+#: search.php:126
+#, php-format
+msgid "Successfully created virtual address book \"%s\""
+msgstr "\"%s\" sanal adres defteri baþarý ile oluþturuldu ."
+
+#: lib/Views/Browse.php:132
+#, php-format
+msgid "Successfully deleted %d contact(s)."
+msgstr "%d kiþisi baþarý ile silindi."
+
+#: lib/Views/Browse.php:115
+#, php-format
+msgid "Successfully removed %d contact(s) from list."
+msgstr "%d kiþisi baþarý ile silindi."
+
+#: data.php:61
+msgid "TSV"
+msgstr "TSV"
+
+#: templates/data/import.inc:14 templates/data/export.inc:14
+msgid "Tab separated values"
+msgstr "Sekme ile ayrýlmýþ deðerler"
+
+#: templates/browse/actions.inc:20
+msgid "Target Address Book"
+msgstr "Hedef adres defteri"
+
+#: templates/browse/actions.inc:31
+msgid "Target Contact List"
+msgstr "Hedef iletiþim listesi"
+
+#: data.php:322
+#, php-format
+msgid "The %s file didn't contain any contacts."
+msgstr "%s dosyasý herhangi bir iletiþim bilgisi içermiyor."
+
+#: view.php:17
+msgid "The VFS backend needs to be configured to enable attachment uploads."
+msgstr ""
+"Ýliþik yüklenmesinin etkin olmasý için VFS arka aracý yapýlandýrýlmalý."
+
+#: lib/Driver.php:1509
+#, php-format
+msgid "The address book \"%s\" does not exist."
+msgstr "\"%s\" adres defteri yok"
+
+#: addressbooks/create.php:32
+#, php-format
+msgid "The address book \"%s\" has been created."
+msgstr "\"%s\" adres defteri oluþturuldu."
+
+#: data.php:329
+#, php-format
+msgid "The address book could not be purged: %s"
+msgstr "Adres defteri boþaltýlamadý: %s"
+
+#: addressbooks/delete.php:50
+#, php-format
+msgid "The addressbook \"%s\" has been deleted."
+msgstr "\"%s\" adres defteri silindi."
+
+#: addressbooks/edit.php:44
+#, php-format
+msgid "The addressbook \"%s\" has been renamed to \"%s\"."
+msgstr "\"%s\" adres defteri, \"%s\" olarak yeniden adlandýrýldý."
+
+#: addressbooks/edit.php:46
+#, php-format
+msgid "The addressbook \"%s\" has been saved."
+msgstr "Adres defteri \"%s\" sakladý."
+
+#: vcard.php:19 contact.php:23 view.php:28
+msgid "The contact you requested does not exist."
+msgstr "Belirttiðiniz kiþi kaydý yok."
+
+#: deletefile.php:46
+#, php-format
+msgid "The file \"%s\" has been deleted."
+msgstr "Adres defteri \"%s\" silindi."
+
+#: data.php:302
+msgid "The import can be finished despite the warnings."
+msgstr "Uyarýlara raðmen içeri taþýma tamamlanabilir."
+
+#: lib/Views/Contact.php:59 lib/Views/DeleteContact.php:36
+#: lib/Views/EditContact.php:43
+msgid "The requested contact was not found."
+msgstr "Belirtilen kiþi kaydý bulunamadý."
+
+#: lib/Views/Browse.php:80
+msgid "There are no browseable address books."
+msgstr "Gözatýlabilecek bir adres defteri yok"
+
+#: add.php:32
+msgid ""
+"There are no writeable address books. None of the available address books "
+"are configured to allow you to add new entries to them. If you believe this "
+"is an error, please contact your system administrator."
+msgstr ""
+"Yazýlabilir bir adres defteri yok. Varolan adres defterlerinin hiçbiri yeni "
+"giriþler ekleyebileceðiniz þekilde yapýlandýrýlmamýþ. Eðer bunun bir hata "
+"durumu olduðunu düþünüyorsanýz lüften sistem yöneticinize baþvurun."
+
+#: search.php:122
+#, php-format
+msgid "There was a problem creating the virtual address book: %s"
+msgstr "%s adres defteri oluþturulurken hata oluþtu."
+
+#: lib/Forms/AddContact.php:90
+msgid ""
+"There was an error adding the new contact. Contact your system administrator "
+"for further help."
+msgstr ""
+"Yeni kiþi iletiþim bilgileri eklernirken hata oluþtu. Lüften sistem "
+"yöneticinize baþvurun."
+
+#: lib/Views/Browse.php:310
+msgid "There was an error creating a new list."
+msgstr "Yeni liste oluþturulurken hata oluþtu."
+
+#: lib/Views/Browse.php:220
+#, php-format
+msgid "There was an error deleting \"%s\" from the source address book."
+msgstr "Kaynak adres defterinden %s'yi silerken hata oluþtu."
+
+#: delete.php:39
+#, php-format
+msgid "There was an error deleting this contact: %s"
+msgstr "Bu kiþi kaydýný silerken hata oluþtu: %s"
+
+#: lib/Views/Browse.php:350
+msgid "There was an error displaying the list"
+msgstr "Seçilen listeyi görüntülerken hata oluþtu"
+
+#: data.php:356
+#, php-format
+msgid "There was an error importing the data: %s"
+msgstr "Veriyi içeri aktarýrken hata oluþtu: %s"
+
+#: lib/api.php:682 lib/api.php:952
+msgid "There was an error importing the iCalendar data."
+msgstr "iCalendar verisini içeri aktarýlýrken hata oluþtu."
+
+#: lib/api.php:231
+#, php-format
+msgid "There was an error removing an address book for %s"
+msgstr "Adres defteri silinirken hata oluþtu: %s"
+
+#: lib/Forms/EditContact.php:86
+msgid ""
+"There was an error saving the contact. Contact your system administrator for "
+"further help."
+msgstr ""
+"Yeni kiþi kaydý eklenirken hata oluþtu. Lüften sistem yöneticinizebaþvurun."
+
+#: data.php:188
+msgid "There were no addresses to export."
+msgstr "Dýþarý aktarýlacak hiç adres yok."
+
+#: templates/prefs/addressbookselect.inc:178
+#: templates/prefs/addressbookselect.inc:180
+msgid "These address books will display in this order:"
+msgstr "Adres defterleri þu sýra ile görüntülenecek:"
+
+#: templates/prefs/columnselect.inc:242 templates/prefs/columnselect.inc:244
+msgid "These columns will display in this order:"
+msgstr "Kolonlar þu sýra ile görüntülenecek:"
+
+#: addressbooks/delete.php:26
+msgid "This addressbook cannot be deleted"
+msgstr "Bu adres defteri silinemez"
+
+#: data.php:287
+msgid "This file format is not supported."
+msgstr "Bu dosya biçimi desteklenmiyor."
+
+#: lib/api.php:1414 lib/api.php:1427
+#, php-format
+msgid "This person already has a %s entry in the address book"
+msgstr "Bu kiþiye ait %s kayýtý adres defterinde mevcut."
+
+#: config/prefs.php.dist:129
+msgid ""
+"This will be the default address book when adding or importing contacts."
+msgstr ""
+"Kiþi eklerken ya da dýþarýdan taþýrken, bu adres defteri varsayýlan olacak."
+
+#: config/attributes.php.dist:229
+msgid "Time Zone"
+msgstr "Zaman dilimi"
+
+#: lib/Driver/share.php:77
+msgid "Unable to find contact owner."
+msgstr "Kiþi bilgisi sahibi bulunamadý."
+
+#: lib/Turba.php:643 lib/Driver.php:1431
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "%s in tanýmý yüklenemedi."
+
+#: lib/Forms/EditAddressBook.php:55
+#, php-format
+msgid "Unable to save address book \"%s\": %s"
+msgstr "\"%s\" adres defteri saklanamadý: %s"
+
+#: lib/Driver/kolab.php:486
+msgid "Unable to search."
+msgstr "Arama yapýlamýyor."
+
+#: lib/Forms/EditContact.php:26 lib/Forms/EditContact.php:112
+#: lib/Forms/EditContact.php:115 lib/Forms/EditContact.php:118
+#: lib/Forms/EditContact.php:168
+msgid "Undo Changes"
+msgstr "Deðiþiklikleri Geri Al"
+
+#: config/attributes.php.dist:352
+msgid "Unfiled"
+msgstr "Doldurulmamýþ"
+
+#: lib/api.php:715 lib/api.php:818 lib/api.php:970
+#, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "Desteklenmeyen Ýçerik Türü: %s"
+
+#: templates/browse/contactrow.inc:27
+#, php-format
+msgid "View \"%s\""
+msgstr "Görüntüle \"%s\""
+
+#: minisearch.php:76
+msgid "View Contact"
+msgstr "Kiþi kaydýný Görüntüle"
+
+#: config/prefs.php.dist:105
+msgid "View to display by default:"
+msgstr "Öntanýmlý görünüm"
+
+#: config/attributes.php.dist:320
+msgid "Website URL"
+msgstr "Web sayfasý adresi"
+
+#: config/attributes.php.dist:173
+msgid "Work Address"
+msgstr "Ýþ Adresi"
+
+#: config/attributes.php.dist:191
+msgid "Work City"
+msgstr "Þehir"
+
+#: config/attributes.php.dist:209
+msgid "Work Country"
+msgstr "Ülke"
+
+#: config/attributes.php.dist:254
+msgid "Work Phone"
+msgstr "Ýþ Telefonu"
+
+#: config/attributes.php.dist:185
+msgid "Work Post Office Box"
+msgstr "Ýþ Postahane Kutusu"
+
+#: config/attributes.php.dist:203
+msgid "Work Postal Code"
+msgstr "Ýþ Posta Kodu"
+
+#: config/attributes.php.dist:197
+msgid "Work State/Province"
+msgstr "Bölge"
+
+#: config/attributes.php.dist:179
+msgid "Work Street Address"
+msgstr "Ýþ Adresi"
+
+#: addressbooks/edit.php:30
+msgid "You are not allowed to change this addressbook."
+msgstr "Bu adres defterini deðiþtirme izniniz yok."
+
+#: data.php:251 add.php:48 lib/Views/Browse.php:159 lib/Views/Browse.php:273
+#, php-format
+msgid "You are not allowed to create more than %d contacts in \"%s\"."
+msgstr ""
+"%d adetden fazla iletiþim kaydý eklemenize izin yok (\"%s\" içerisine)."
+
+#: addressbooks/delete.php:37
+msgid "You are not allowed to delete this addressbook."
+msgstr "Bu adres defterini silme izniniz yok."
+
+#: lib/api.php:194
+msgid "You are not allowed to remove user data."
+msgstr "Kiþi iletiþim bilgilerini silme izniniz yok."
+
+#: lib/Driver/vbook.php:137
+msgid "You cannot add an entry to a virtual address book."
+msgstr "Bu adres defterine kayýt ekleyemezsiniz."
+
+#: lib/Driver/vbook.php:121
+msgid "You cannot add new contacts to a virtual address book"
+msgstr "BU adres defterine yeni kayýt ekleyemezsiniz."
+
+#: lib/Driver/vbook.php:129
+msgid "You cannot delete contacts from a virtual address book"
+msgstr "BU adres defterinden kayýt silemezsiniz."
+
+#: edit.php:66 view.php:38 lib/Views/DeleteContact.php:42
+#: lib/Views/EditContact.php:49
+msgid "You do not have permission to view this contact."
+msgstr "Bu kiþi iletiþim bilgilerini görüntülemeye izniniz yok."
+
+#: vcard.php:37
+msgid "You do not have permission to view this object."
+msgstr "Bu nesneyi görüntülemeye izniniz yok."
+
+#: lib/Forms/DeleteAddressBook.php:59
+msgid "You do not have permissions to delete this address book."
+msgstr "Bu adres defterini silme izniniz yok."
+
+#: lib/Driver/ldap.php:705
+msgid ""
+"You must have the Net_LDAP PEAR library installed to use the schema check "
+"function."
+msgstr "Þema kontrolü için Net_LDAP PEAR kütüphanesi yüklü olmalý "
+
+#: search.php:109
+msgid "You must provide a name for virtual address books."
+msgstr "Bu adres defteri için bir ad seçmelisiniz."
+
+#: templates/browse/javascript.inc:54
+msgid "You must select a target address book."
+msgstr "Bir hedef adres defteri seçmelisiniz."
+
+#: templates/browse/javascript.inc:22
+msgid "You must select a target contact list."
+msgstr "Bir hedef liste seçmelisiniz."
+
+#: edit.php:31 templates/browse/javascript.inc:16
+#: templates/browse/javascript.inc:48 templates/browse/javascript.inc:71
+msgid "You must select at least one contact first."
+msgstr "Önce en az bir kayýt seçmelisiniz."
+
+#: edit.php:70 lib/Views/DeleteContact.php:45 lib/Views/EditContact.php:52
+msgid "You only have permission to view this contact."
+msgstr "Bu kiþi iletiþim bilgilerini sadece görüntüleme izniniz var."
+
+#: lib/Views/Browse.php:357
+msgid "Your default address book is not browseable."
+msgstr "Varsayýlan adres defteriniz incelenebilir deðil."
+
+#: templates/browse/contactrow.inc:12
+msgid "[no value]"
+msgstr "[deðer yok]"
+
+#: lib/Turba.php:585
+msgid "_Browse"
+msgstr "_Gözat"
+
+#: templates/browse/actions.inc:50
+msgid "_Contacts"
+msgstr "i_letiþim bilgileri"
+
+#: templates/browse/actions.inc:3
+msgid "_Delete"
+msgstr "_Sil"
+
+#: contact.php:82
+msgid "_Edit"
+msgstr "_Düzenle"
+
+#: lib/Turba.php:594
+msgid "_Import/Export"
+msgstr "Ýçeri/Dýþarý _Aktar"
+
+#: templates/browse/actions.inc:49
+msgid "_Lists"
+msgstr "Li_ste"
+
+#: lib/Turba.php:582
+msgid "_My Address Books"
+msgstr "Adres _Defterim"
+
+#: lib/Turba.php:588
+msgid "_New Contact"
+msgstr "_Yeni Ýletiþim bilgisi"
+
+#: lib/Turba.php:599
+msgid "_Print"
+msgstr "_Yazdýr"
+
+#: templates/browse/actions.inc:3
+msgid "_Remove from this list"
+msgstr "B_u listeden sil"
+
+#: lib/Turba.php:590
+msgid "_Search"
+msgstr "_Arama"
+
+#: contact.php:79
+msgid "_View"
+msgstr "_Göster"
+
+#: templates/browse/column_headers.inc:24
+msgid "ascending"
+msgstr "Artan"
+
+#: vcard.php:45
+msgid "contact"
+msgstr "iletiþim"
+
+#: data.php:208 data.php:213 templates/data/export.inc:1
+msgid "contacts.csv"
+msgstr "contacts.csv"
+
+#: data.php:233
+msgid "contacts.ldif"
+msgstr "contacts.ldif"
+
+#: data.php:218
+msgid "contacts.tsv"
+msgstr "contacts.tsv"
+
+#: data.php:228
+msgid "contacts.vcf"
+msgstr "contact.vcf"
+
+#: templates/browse/column_headers.inc:24
+msgid "descending"
+msgstr "Azalan"
+
+#: config/attributes.php.dist:386
+msgid "female"
+msgstr "kadýn"
+
+#: lib/Block/tree_menu.php:37
+#, php-format
+msgid "in %s"
+msgstr "%s içinde"
+
+#: config/attributes.php.dist:386
+msgid "male"
+msgstr "Bay"
+
+#: config/prefs.php.dist:119
+msgid "no formatting"
+msgstr "biçimleme yok"
+
+#: templates/prefs/imsp_opt.inc:32
+msgid "none"
+msgstr "Hiçbiri"
+
+#: templates/browse/actions.inc:33
+msgid "to a Contact List"
+msgstr "iletiþim listesine"
+
+#: templates/browse/actions.inc:22
+msgid "to a different Address Book"
+msgstr "farklý bir Adres Defterine"
+
+#: data.php:62 templates/data/import.inc:15 templates/data/export.inc:15
+#: templates/browse/column_headers.inc:13
+msgid "vCard"
+msgstr "vCard"

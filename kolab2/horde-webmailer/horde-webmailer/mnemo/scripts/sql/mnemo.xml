@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>name</variable></name>
+ <create>false</create>
+ <overwrite>false</overwrite>
+
+ <table>
+
+  <name>mnemo_memos</name>
+
+  <declaration>
+
+   <field>
+    <name>memo_owner</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>memo_id</name>
+    <type>text</type>
+    <length>32</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>memo_uid</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>memo_desc</name>
+    <type>text</type>
+    <length>64</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>memo_body</name>
+    <type>clob</type>
+   </field>
+
+   <field>
+    <name>memo_category</name>
+    <type>text</type>
+    <length>80</length>
+   </field>
+
+   <field>
+    <name>memo_private</name>
+    <type>integer</type>
+    <length>1</length>
+    <notnull>true</notnull>
+    <default>0</default>
+   </field>
+
+   <index>
+    <name>mnemo_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>memo_owner</name>
+    </field>
+    <field>
+     <name>memo_id</name>
+    </field>
+   </index>
+
+   <index>
+    <name>mnemo_notepad</name>
+    <field>
+     <name>memo_owner</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>mnemo_uid</name>
+    <field>
+     <name>memo_uid</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>mnemo_shares</name>
+
+  <declaration>
+
+   <field>
+    <name>share_id</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>share_name</name>
+    <type>text</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>share_owner</name>
+    <type>text</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>share_flags</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>perm_creator</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>perm_default</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>perm_guest</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>attribute_name</name>
+    <type>text</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>attribute_desc</name>
+    <type>text</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>255</length>
+   </field>
+
+   <index>
+    <name>mnemo_shares_name</name>
+    <field>
+     <name>share_name</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>mnemo_shares_owner</name>
+    <field>
+     <name>share_owner</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>mnemo_shares_creator</name>
+    <field>
+     <name>perm_creator</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>mnemo_shares_default</name>
+    <field>
+     <name>perm_default</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>mnemo_shares_guest</name>
+    <field>
+     <name>perm_guest</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>mnemo_shares_pKey</name>
+    <primary>true</primary>
+    <field>
+     <name>share_id</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>mnemo_shares_groups</name>
+
+  <declaration>
+
+   <field>
+    <name>share_id</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>group_uid</name>
+    <type>text</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>perm</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <index>
+    <name>mnemo_groups_share_id</name>
+    <field>
+     <name>share_id</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>mnemo_groups_group_uid</name>
+    <field>
+     <name>group_uid</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>mnemo_groups_perm</name>
+    <field>
+     <name>perm</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>mnemo_shares_users</name>
+
+  <declaration>
+
+   <field>
+    <name>share_id</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>user_uid</name>
+    <type>text</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>perm</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>2</length>
+   </field>
+
+   <index>
+    <name>mnemo_users_share_id</name>
+    <field>
+     <name>share_id</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>mnemo_users_user_uid</name>
+    <field>
+     <name>user_uid</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>mnemo_users_perm</name>
+    <field>
+     <name>perm</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+</database>

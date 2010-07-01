@@ -1,0 +1,240 @@
+=====================
+ Installing DIMP 1.1
+=====================
+
+:Last update:   $Date: 2008-11-24 15:50:43 $
+:Revision:      $Revision: 1.11.2.9 $
+:Contact:       imp@lists.horde.org
+
+.. contents:: Contents
+.. section-numbering::
+
+This document contains instructions for installing the DIMP web-based mail
+client on your system.
+
+For information on the capabilities and features of DIMP, see the file README_
+in the top-level directory of the DIMP distribution.
+
+
+Obtaining DIMP
+==============
+
+Bleeding-edge development versions of DIMP are available via CVS; see the
+file `docs/HACKING`_ in the Horde distribution, or the website
+http://www.horde.org/source/, for information on accessing the Horde CVS
+repository.
+
+
+Prerequisites
+=============
+
+To function properly, DIMP **requires** the following:
+
+1. A working IMP installation.
+
+   DIMP runs on top of IMP.  Therefore, you will need to set-up IMP before you
+   can install DIMP.  Please see the `imp/docs/INSTALL`_ file in IMP for
+   directions on how to install IMP properly.
+
+   .. IMPORTANT:: DIMP requires the Horde Framework version 3.2+ and IMP
+                  version 4.2+ to run. Although not necessary, it is
+                  **STRONGLY RECOMMENDED** that you always upgrade IMP
+                  to the latest version when upgrading DIMP since any bug
+                  fixes to the core libraries occur there.
+
+   The good news is that most configuration needed to run DIMP is accomplished
+   inside of IMP.  In other words, if IMP is working correctly, for the most
+   part DIMP should be also.  DIMP's configuration is limited to user display
+   issues that are different from IMP's base display.
+
+
+The following items are not required, but are strongly **RECOMMENDED**:
+
+1. PHP version 5.2.5+.
+
+   If using the PHP built-in JSON encoder/decoder (highly recommended as it is
+   hundreds of times faster than the fallback PHP code-based version), you
+   should be using the latest version of PHP. The PECL json module is badly
+   out-of-date (as of version 1.2.1) and does not contain many bug fixes
+   for handling message data that contains invalid characters. Using older
+   versions of the JSON encoder may result in the JSON output to the browser
+   being prematurely terminated, resulting in incomplete or blank screens.
+
+   If you still see this problem after upgrading PHP, your server may have
+   incorrect locale information.  See `Bug #5955`_ for further information.
+
+2. A web server with PATH_INFO support.
+
+   DIMP requires a web server that correctly sets the PATH_INFO environment
+   variable for all PHP scripts. Every modern web server supports this, but
+   you might have to enable this feature in the web server configuration.
+   e.g. Apache servers require::
+
+      AcceptPathInfo On
+
+  If the webserver does not provide PATH_INFO information, DIMP attempts to
+  create the information using other server variables, but this process is
+  slower and less reliable.
+
+.. _`Bug #5955`: http://bugs.horde.org/ticket/?id=5955#c13
+
+
+Installing DIMP
+===============
+
+DIMP is written in PHP, and must be installed in a web-accessible directory.
+The precise location of this directory will differ from system to system.
+Conventionally, DIMP is installed directly underneath Horde in the web server's
+document tree.
+
+Since DIMP is written in PHP, there is no compilation necessary; simply expand
+the distribution where you want it to reside and rename the root directory of
+the distribution to whatever you wish to appear in the URL.  For example, with
+the Apache web server's default document root of ``/usr/local/apache/htdocs``,
+you would type::
+
+   cd /usr/local/apache/htdocs/horde
+   tar zxvf /path/to/dimp-x.y.z.tar.gz
+   mv dimp-x.y.z dimp
+
+and would then find DIMP at the URL::
+
+   http://your-server/horde/dimp/
+
+
+Configuring DIMP
+================
+
+1. Configuring Horde for DIMP
+
+   a. Register the application
+
+      In ``horde/config/registry.php``, find the ``applications['dimp']``
+      stanza.  The default settings here should be okay, but you can change
+      them if desired.  If you have changed the location of DIMP relative to
+      Horde, either in the URL, in the filesystem or both, you must update the
+      ``fileroot`` and ``webroot`` settings to their correct values.
+
+   b. Enable IMP authentication [OPTIONAL]
+
+      See IMP's `imp/docs/INSTALL`_ file for details.
+
+2. Configuring DIMP
+
+   To configure DIMP, change to the ``dimp/config/`` directory of the installed
+   distribution, and make copies of all of the configuration ``dist`` files
+   without the ``dist`` suffix::
+
+      cd config/
+      for foo in *.dist; do cp $foo `basename $foo .dist`; done
+
+   Or on Windows::
+
+      copy *.dist *.
+
+   Documentation on the format and purpose of those files can be found in each
+   file.
+
+   You must login to Horde as a Horde Administrator to finish the
+   configuration of DIMP.  Use the Horde ``Administration`` menu item to get
+   to the administration page, and then click on the ``Setup`` icon to get the
+   configuration page.  Select ``Dynamic Mail`` from the selection list of
+   applications.  Fill in or change any configuration values as needed.  When
+   done click on ``Generate Dynamic Mail Configuration`` to generate the
+   ``conf.php`` file.  If your web server doesn't have write permissions to
+   the DIMP configuration directory or file, it will not be able to write the
+   file.  In this case, go back to ``Setup`` and choose one of the other
+   methods to create the configuration file ``dimp/config/conf.php``.
+
+   Note for international users: DIMP uses GNU gettext to provide local
+   translations of text displayed by applications; the translations are found
+   in the ``po/`` directory.  If a translation is not yet available for your
+   locale (and you wish to create one), see the ``horde/po/README`` file, or
+   if you're having trouble using a provided translation, please see the
+   `horde/docs/TRANSLATIONS`_ file for instructions.
+
+3. Securing DIMP
+
+   Before you can secure DIMP, you need a secure Horde installation.  Please
+   read the file in `horde/docs/SECURITY`_ for Horde security information
+   before proceeding.
+
+   See IMP's `imp/docs/INSTALL`_ file for further details on how to secure
+   IMP/DIMP.
+
+4. Tuning DIMP (Performance)
+
+   See `horde/docs/PERFORMANCE`_.
+
+
+DIMP Troubleshooting
+====================
+
+DIMP differs from most traditional Horde applications in that it requires
+javascript support and, in fact, javascript performs the bulk of the page
+display.  As such, debugging DIMP is more complex than with other Horde
+applications.
+
+If you run into problems with DIMP, first follow the troubleshooting steps
+for both Horde and IMP - namely checking PHP error logs and Horde debug logs,
+to determine if the problem is located there.  Since DIMP uses Horde and IMP
+code extensively on the server side, most server-based errors will be logged
+in the traditional manner.
+
+Only if traditional debugging is unsuccessful will you need to move to
+javascript debugging.  It is highly recommended to use Mozilla Firefox with
+the `Firebug`_ extension installed in order to better track javascript errors
+- it is what the developers use and makes deciphering error codes and error
+line numbers much easier.  Next, it is also recommended to set the ``debug``
+parameter in ``dimp/conf/conf.php`` to ``true`` (no quotes) - this will popup
+javascript exceptions that may not be able to be caught by Firebug.  Next you
+will want to turn off javascript caching, if on, in ``dimp/conf/conf.php``.
+Finally, you need to change ``horde/conf/registry.php`` to serve the
+javascript files from the ``js/src/`` directory rather than the ``js/``
+directory (we compress javascript files to reduce network load, but this
+results in all javascript errors occurring on line 1 which is not very useful
+to diagnose the problem).
+
+If you do find a javascript error, it would be great if you could fix the
+issue and provide a patch :)  Absent that, before reporting to the mailing
+list, IRC room, or bug tracker make sure you have a valid javascript error,
+the file the error is being caused in, the line number of the error, and a
+reliable way to reproduce the error.  Developers/other interested folks will
+be much more likely to help you if all this information is provided.
+
+
+Obtaining Support
+=================
+
+If you encounter problems with DIMP, help is available!
+
+The Horde Frequently Asked Questions List (FAQ), available on the Web at
+
+  http://www.horde.org/faq/
+
+The Horde Project runs a number of mailing lists, for individual applications
+and for issues relating to the project as a whole.  Information, archives, and
+subscription information can be found at
+
+  http://www.horde.org/mail/
+
+Lastly, Horde developers, contributors and users may also be found on IRC,
+on the channel #horde on the Freenode Network (irc.freenode.net).
+
+Please keep in mind that DIMP is free software written by volunteers.  For
+information on reasonable support expectations, please read
+
+  http://www.horde.org/support.php
+
+Thanks for using DIMP!
+
+The DIMP team
+
+
+.. _README: ?f=README.html
+.. _`imp/docs/INSTALL`: ../../imp/docs/?f=INSTALL.html
+.. _`docs/HACKING`: ../../horde/docs/?f=HACKING.html
+.. _`horde/docs/PERFORMANCE`: ../../horde/docs/?f=PERFORMANCE.html
+.. _`horde/docs/SECURITY`: ../../horde/docs/?f=SECURITY.html
+.. _`horde/docs/TRANSLATIONS`: ../../horde/docs/?f=TRANSLATIONS.html
+.. _`Firebug`: http://www.getfirebug.com/

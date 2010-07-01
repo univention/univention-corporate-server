@@ -1,0 +1,2275 @@
+# Bulgarian translations for Imp package.
+# Copyright 2002-2009 The Horde Project
+# This file is distributed under the same license as the Imp package.
+# Miroslav Pendev <miro@cybershade.us>  and
+# Atanas Stoyanov <chaos@pzonline.net>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Imp 4.0-cvs\n"
+"POT-Creation-Date: 2002-09-12 20:21-0400\n"
+"PO-Revision-Date: 2002-11-14 00:38-0400\n"
+"Last-Translator: Miroslav Pendev <miro@cybershade.us>\n"
+"Language-Team: BG i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1251\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "      To: "
+msgstr "      До: "
+
+msgid "    Date: "
+msgstr "    Дата: "
+
+msgid "    From: "
+msgstr "      От: "
+
+msgid " - $nm new message"
+msgstr " - $nm ново писмо"
+
+msgid " - $nm new messages"
+msgstr " - $nm нови писма"
+
+msgid " Subject: "
+msgstr "    Тема: "
+
+msgid " in "
+msgstr " в "
+
+#, c-format
+msgid " where the %s contains <b>%s</b>"
+msgstr " където %s съдържа <b>%s</b>"
+
+msgid "#"
+msgstr "#"
+
+#, c-format
+msgid "%d of %d Messages"
+msgstr "%d от %d писма"
+
+#, c-format
+msgid "%d to %d of %d Messages"
+msgstr "%d до %d от %d писма"
+
+#, c-format
+msgid "%s KB"
+msgstr "%s KB"
+
+#, c-format
+msgid "%s PGP Administration"
+msgstr "%s PGP Администриране"
+
+#, c-format
+msgid "%s S/MIME Administration"
+msgstr "%s S/MIME Администриране"
+
+#, c-format
+msgid "%s Standard"
+msgstr "%s Стандарт"
+
+#, c-format
+msgid "%s already exists. Your %s folder was not renamed."
+msgstr "%s вече съществува. Вашата папка %s не беше преименувана."
+
+#, c-format
+msgid "%s does not appear to be a valid mailbox."
+msgstr "%s не е валидна пощенска кутия."
+
+#, c-format
+msgid "%s folder being renamed at the start of the month."
+msgstr "Папка %s беше преименувана в началото на месеца."
+
+#, c-format
+msgid "%s messages were fetched..."
+msgstr "%s писма бяха изтеглени..."
+
+#, c-format
+msgid "%s%s Guest Services</a>"
+msgstr "%s%s Услуги за гости</а>"
+
+#, c-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#, c-format
+msgid "%s: %s (%d&nbsp;of&nbsp;%d)"
+msgstr "%s: %s (%d&nbsp;от&nbsp;%d)"
+
+msgid "(Apply these changes and move to next screen.)"
+msgstr "(Приложи тези промени и продължи към следващия екран.)"
+
+msgid "(Discard all changes and return to the compose screen.)"
+msgstr "Откажи всички промени и се върни към екрана \"Напиши\""
+
+msgid ""
+"(Return to the compose screen after applying all changes made thus far.  "
+"Changes on the current screen will NOT be applied.)"
+msgstr ""
+"(Върни се към екрана \"Напиши\" след като приложиш всички промени до тук."
+"Промените в текущия екран НЯМА да бъдат приложени.)"
+
+msgid "* Add these by clicking OK *"
+msgstr "* Добави тези с \"ОК\" *"
+
+msgid "* Please select address(es) *"
+msgstr "* Моля изберете адрес(и) *"
+
+#, c-format
+msgid "<i>View as %s</i>"
+msgstr "<i>Изглед като %s<i>"
+
+msgid "AND"
+msgstr "и"
+
+msgid "Account's name:"
+msgstr "Име на пощата:"
+
+msgid "Accounts"
+msgstr "Пощи"
+
+msgid "Action"
+msgstr "Действие"
+
+#, c-format
+msgid "Add to Address book (%s)"
+msgstr "Добави към адресна книга (%s)"
+
+#, c-format
+msgid "Added %s as an attachment."
+msgstr "Добавен %s като прикрепен файл."
+
+msgid "Address Book"
+msgstr "Адресен бележник"
+
+msgid "Address Books"
+msgstr "Адресни книги"
+
+msgid "All"
+msgstr "Всички"
+
+#, c-format
+msgid ""
+"All messages in your \"%s\" folder older than %s days will be permanently "
+"deleted."
+msgstr ""
+"Всички писма във Вашата \"%s\" папка по-стари от %s дни ще бъдат изтрити!"
+
+#, c-format
+msgid "All old sent-mail folders more than %s months old will be deleted."
+msgstr ""
+"Всички папки \"Изпратени писма\" по-стари от %s месеца ще бъдат изтрити!"
+
+msgid "Alternative parts for this section:"
+msgstr "Алтернативни части за тази секция:"
+
+msgid "An error occurred when deleting messages from server!"
+msgstr "Грешка при изтриване на писма от сървъра!"
+
+msgid "An error occurred when setting the messages seen from server!"
+msgstr "Грешка при преглеждане на писма от сървъра! "
+
+msgid "An unknown error occured adding the new entry."
+msgstr "Неизвестна грешка при добавяне на нов запис."
+
+msgid "Answered"
+msgstr "С отговор"
+
+msgid "Answered messages"
+msgstr "Писма с отговор"
+
+msgid "Apply Filters on"
+msgstr "Приложи филтрите"
+
+msgid "Apply filter rules upon logging on?"
+msgstr "Да се прилагат ли филтрите след вход?"
+
+msgid "Apply filter rules when mailbox is refreshed?"
+msgstr "Да се прилагат ли филтрите, когато се опреснява пощенската кутия?"
+
+msgid "April"
+msgstr "Април"
+
+msgid "Are you sure you want to delete this public key?"
+msgstr "Сигурни ли сте, че искате да изтриете този публичен ключ?"
+
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "Сигурни ли сте, че искате да изтриете тези писма (невъзвратимо)?"
+
+msgid "Are you sure you wish to empty your trash folder?"
+msgstr "Сигурни ли сте, че искате да изпразните кошчето?"
+
+msgid "Arrival Time"
+msgstr "Време на пристигане"
+
+msgid "Ascending"
+msgstr "Нарастващи"
+
+msgid "Ask for confirmation before doing maintenance operations?"
+msgstr "Да се иска ли потвърждение преди обслужващите операции?"
+
+msgid "Attach a copy of your PGP public key to your message?"
+msgstr "Да се добавя ли Вашият публичен PGP ключ към писмото Ви?"
+
+msgid "Attached File:"
+msgstr "Прикрепен файл:"
+
+msgid "Attachment"
+msgstr "Прикрепен файл"
+
+msgid "Attachments"
+msgstr "Прикрепени файлове"
+
+msgid "August"
+msgstr "Август"
+
+msgid "Available Address books:"
+msgstr "Налични адресни книги:"
+
+#, c-format
+msgid "Back to %s"
+msgstr "Обратно в %s"
+
+msgid "Barbie"
+msgstr "Barbie"
+
+msgid "Bcc"
+msgstr "Bcc"
+
+msgid "Blacklist"
+msgstr "Черен списък"
+
+msgid "Body"
+msgstr "Тяло"
+
+msgid "Both"
+msgstr "Двата"
+
+msgid "Both Header Listing and Body of Message"
+msgstr "Тялото на писмото и headers "
+
+msgid "Brown"
+msgstr "Brown"
+
+msgid "Burnt Orange"
+msgstr "Burnt Orange"
+
+msgid "Camouflage"
+msgstr "Camouflage"
+
+msgid "Can't connect to the Mail Server"
+msgstr "Грешка при свързване с мейл сървъра"
+
+msgid "Cannot move past the beginning"
+msgstr "Не може да се мине преди началото"
+
+msgid "Cannot move past the end"
+msgstr "Не може да се мине след края"
+
+msgid "Cc"
+msgstr "Cc"
+
+msgid "Cc:"
+msgstr "Cc:"
+
+msgid "Change"
+msgstr "Промени"
+
+msgid "Change All"
+msgstr "Промени всички"
+
+msgid ""
+"Change display options such as the color scheme, how many messages you see "
+"on each page and how messages are sorted."
+msgstr ""
+"Смяна на дисплей опциите, като цветна схема, колко писма да се виждат във "
+"всяка страница и как да се сортират писмата."
+
+msgid "Change mail server settings."
+msgstr "Промяна на настройките за мейл сървър."
+
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr ""
+"Променете името, адреса и подписа, които получателите ще виждат, когато четат "
+"и отговарят на писмото Ви."
+
+msgid "Check Folder(s) for New Mail"
+msgstr "Провери папката(ите) за нови писма"
+
+msgid "Checkbox"
+msgstr "Checkbox"
+
+msgid "Cherry"
+msgstr "Cherry"
+
+msgid "Choose Action:"
+msgstr "Избери действие:"
+
+msgid "Choose a mail server:"
+msgstr "Изберете мейл сървър:"
+
+msgid "Choose the address book to use when adding addresses."
+msgstr "Изберете коя адресна книга да се използва при добавяне на адрес."
+
+msgid "Choose the order of address books to search when expanding addresses."
+msgstr "Изберете реда на търсене на адресните книги, при откриването на адреси."
+
+msgid ""
+"Click on one of your selected address books and then select all fields to "
+"search."
+msgstr ""
+"Кликнете на една от избраните адресни книги и след това изберете всички "
+"полета за търсене."
+
+msgid "Click to Save PGP Public Key in your Address book"
+msgstr ""
+"Кликнете, за да запишете Вашият публичен PGP ключ в адресната си книга."
+
+msgid "Close this window"
+msgstr "Затвори прозореца"
+
+msgid "Closed Folder"
+msgstr "Затворена папка"
+
+msgid "Collapse All"
+msgstr "Събери всички"
+
+msgid "Collapse All Folders"
+msgstr "Събери всички папки"
+
+msgid "Collapse Folder"
+msgstr "Събери папка"
+
+msgid "Comment"
+msgstr "коментар"
+
+msgid "Compose"
+msgstr "Напиши"
+
+#, c-format
+msgid "Compose Message (%s)"
+msgstr "Напиши писмо (%s)"
+
+msgid "Compose another message"
+msgstr "Напиши друго писмо"
+
+msgid "Compose messages in a separate window?"
+msgstr "Да се пишат ли писмата в отделен прозорец?"
+
+msgid "Compose messages with an HTML GUI (IE 5.5+ only)?"
+msgstr "Да се пишат ли писмата в HTML редактор (IE 5.5+ само)?"
+
+msgid "Connection to Server failed, check your Username/Password/Protocol"
+msgstr "Грешка при свързване със сървъра, проверете Вашите Име/Парола/Протокол"
+
+msgid "Connection to server failed"
+msgstr "Грешка при свързване със сървър."
+
+msgid "Contact List"
+msgstr "Контакти"
+
+#, c-format
+msgid "Control PGP support for %s."
+msgstr "Контрол на PGP поддръжката за %s."
+
+#, c-format
+msgid "Control S/MIME support for %s."
+msgstr "Контрол на S/MIME поддръжката за %s."
+
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr ""
+"Контролира кога да се проверява за нова поща и дали да бъдете уведомени, "
+"когато тя се получи."
+
+msgid "Copy"
+msgstr "Копирай"
+
+msgid "Correct"
+msgstr "Коригирай"
+
+msgid "Corrected Text"
+msgstr "Коригиран текст"
+
+#, c-format
+msgid "Could not delete messages from %s. The server said: %s"
+msgstr "Грешка при изтриването на писма от %s. Сървъра каза: %s"
+
+msgid "Could not execute maintenance operations."
+msgstr "Грешка при изпълнение на \"Операции по обслужването\""
+
+msgid "Could not extract the requested file from the MS-TNEF attachment."
+msgstr "Грешка при извличането на прикачения файл от MS-TNEF."
+
+msgid "Could not extract the requested file from the Zip archive."
+msgstr "Грешка при извличането на файл от Zip архива."
+
+msgid "Create Folder"
+msgstr "Създай папка"
+
+msgid "Create a new drafts folder"
+msgstr "Създай нова папка \"Чернови\""
+
+msgid "Create a new sent mail folder"
+msgstr "Създай нова папка \"Изпратени\""
+
+msgid "Create a new trash folder"
+msgstr "Създай нова папка \"Кошче\""
+
+msgid ""
+"Create filtering rules to organize your incoming mail, sort it into folders, "
+"and delete spam."
+msgstr ""
+"Създай правила за филтриране и организация на идващата поща, сортирането й в "
+"папките и изтриване на спам"
+
+msgid "Customize accounts for fetching mail from other POP3/IMAP accounts."
+msgstr "Изтегляне на поща от други POP3/IMAP сървъри."
+
+msgid "Customize how you send mail and where drafts are saved."
+msgstr "Определи начина, по който изпращаш поща и къде са черновите."
+
+#, c-format
+msgid "Customize maintenance operations run upon login to %s."
+msgstr "Настрой операциите за обслужване след вход в %s."
+
+#, c-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Определи задачите за изпълнение след вход в %s."
+
+msgid "Date"
+msgstr "Дата"
+
+msgid "December"
+msgstr "Декември"
+
+msgid "Default Identity"
+msgstr "Идентичност по подразбиране"
+
+msgid "Default sorting criteria:"
+msgstr "Критерии за сортиране по подразбиране:"
+
+msgid "Default sorting direction:"
+msgstr "Посока на сортиране по подразбиране:"
+
+msgid "Delete"
+msgstr "Изтрий"
+
+#, c-format
+msgid "Delete %s Public Key"
+msgstr "Изтрий %s публичен ключ"
+
+msgid "Delete Folder(s)"
+msgstr "Изтрий папка(и)"
+
+msgid "Delete Message"
+msgstr "Изтрий писмо"
+
+msgid "Delete fetched messages from server"
+msgstr "Изтрий изтеглените писма от сървъра"
+
+msgid "Delete messages"
+msgstr "Изтрий писма"
+
+msgid "Delete old sent-mail folders at beginning of month?"
+msgstr ""
+"Да се изтриват ли старите папки \"Изпратена поща\" в началото на месеца?"
+
+msgid "Deleted"
+msgstr "Изтрити"
+
+msgid "Deleted messages"
+msgstr "Изтрити писма"
+
+#, c-format
+msgid "Deleted the attachment %s."
+msgstr "Изтрий прикрепеният файл %s."
+
+msgid "Deleting and Moving Messages"
+msgstr "Изтриване и преместване на писма"
+
+msgid "Descending"
+msgstr "Намаляващи"
+
+msgid "Details"
+msgstr "Детайли"
+
+msgid "Dim signatures?"
+msgstr "Да се замъгляват ли подписите?"
+
+msgid "Display"
+msgstr "Покажи"
+
+msgid "Display Options"
+msgstr "Дисплей Опции"
+
+msgid "Display confirmation after sending a message?"
+msgstr "Да се показва ли потвърждение след изпращане на писмо?"
+
+msgid "Display in Body of Message"
+msgstr "Покажи в съдържанието на писмото"
+
+msgid "Display message when filters have been applied?"
+msgstr "Да се показва ли писмото, след като филтрите са били приложени?"
+
+msgid "Display pop-up notification of new mail?"
+msgstr "Да се показва ли pop-up уведомяване за нова поща?"
+
+msgid "Display the 'Empty Trash' link in the menubar?"
+msgstr "Да се показва ли \"Изпразни кошчето\" в меню лентата?"
+
+msgid "Disposition"
+msgstr "Разположение"
+
+msgid "Do Not Check Folder(s) for New Mail"
+msgstr "Не проверявай папка(и) за нова поща"
+
+msgid "Download"
+msgstr "Изтегли"
+
+#, c-format
+msgid "Download %s"
+msgstr "Изтегли %s"
+
+msgid "Download Folder(s)"
+msgstr "Изтегли папка(и)"
+
+msgid "Draft"
+msgstr "Чернова"
+
+msgid "Drafts folder:"
+msgstr "Папка \"Чернови\":"
+
+msgid "E-Mail"
+msgstr "E-Mail"
+
+msgid "E-mail Address"
+msgstr "E-Mail адрес"
+
+msgid "Edit your IMAP/POP3 accounts."
+msgstr "Редакция на Вашите IMAP/POP3 пощи."
+
+msgid "Edit your filter rules"
+msgstr "Редакция на правилата за филтриране"
+
+msgid "Edit your identities"
+msgstr "Редакция на идентичностите"
+
+msgid "Email Address"
+msgstr "Еmail адрес"
+
+#, c-format
+msgid "Emptied all messages from %s."
+msgstr "Заличени бяха всички писма от %s."
+
+msgid "Empty Folder(s)"
+msgstr "Изпразни папка(и)"
+
+msgid "Empty Trash"
+msgstr "Изпразни кошчето"
+
+msgid "Empty Trash folder"
+msgstr "Изпразни кошчето"
+
+msgid "Enable PGP functionality?"
+msgstr "Да се разреши ли PGP функционалността?"
+
+msgid "Enable S/MIME functionality?"
+msgstr "Да се разреши ли S/MIME функционалността?"
+
+msgid "Encrypt Message"
+msgstr "Криптиране на писмо"
+
+msgid "End forwarded message"
+msgstr "Край на препратеното писмо"
+
+msgid "End message"
+msgstr "Край на писмото"
+
+#, c-format
+msgid "End message from %s"
+msgstr "Край на писмото от %s"
+
+msgid "Enter Passphrase"
+msgstr "Въведете ключова фраза"
+
+#, c-format
+msgid "Entry \"%s\" was successfully added to the address book"
+msgstr "Записа \"%s\" беше успешно добавен към адресната книга"
+
+msgid "Error"
+msgstr "Грешка"
+
+msgid "Every 15 minutes"
+msgstr "Всеки 15 минути"
+
+msgid "Every 30 seconds"
+msgstr "Всеки 30 секунди"
+
+msgid "Every 5 minutes"
+msgstr "Всеки 5 минути"
+
+msgid "Every half hour"
+msgstr "На всеки половин час"
+
+msgid "Every minute"
+msgstr "Всяка минута"
+
+msgid "Expand All"
+msgstr "Разтвори всички"
+
+msgid "Expand All Folders"
+msgstr "Разтвори всички папки"
+
+msgid "Expand Folder"
+msgstr "Разтвори папка"
+
+msgid "Expand Names"
+msgstr "Допиши имената"
+
+msgid "Expand names in the compose window automatically in the background?"
+msgstr "Да се дописват ли автоматично имената при писане на ново писмо?"
+
+msgid "Expand the entire folder tree by default in the folders view?"
+msgstr "Да се отваря ли цялото дърво в изглед \"Папки\" по подразбиране?"
+
+msgid "Expanding..."
+msgstr "Отваряне..."
+
+msgid "Expiration Date"
+msgstr "Дата на изтичане"
+
+msgid "Expunge error!"
+msgstr "Грешка при заличаване!"
+
+msgid "February"
+msgstr "Февруари"
+
+msgid "Fetch Mail"
+msgstr "Друга поща"
+
+msgid "Fetch Mail in a separate window?"
+msgstr "Да се изтегля ли пощата в отделен прозорец?"
+
+msgid "Field"
+msgstr "Поле"
+
+msgid "Filename"
+msgstr "Име на файл"
+
+#, c-format
+msgid "Filter Activity: The message \"%s\" from \"%s\" has been deleted."
+msgstr "Филтър активност: Писмото \"%s\" от \"%s\" беше изтрито."
+
+#, c-format
+msgid ""
+"Filter Activity: The message \"%s\" from \"%s\" has been moved to the folder "
+"\"%s\"."
+msgstr ""
+"Филтър Активност: Писмото \"%s\" от \"%s\" беше преместено в папка \"%s\"."
+
+#, c-format
+msgid ""
+"Filter Activity: The message \"%s\" from \"%s\" has been moved to your Trash "
+"folder."
+msgstr "Филтър Активност: Писмото \"%s\" от \"%s\" беше преместено в кошчето."
+
+msgid "Filter Rules"
+msgstr "Правила за филтриране"
+
+msgid "Filter message content for profanity?"
+msgstr "Да се филтрира ли съдържанието на писмата за ругатни?"
+
+msgid "Filters"
+msgstr "Филтър"
+
+msgid "Find"
+msgstr "Търси"
+
+msgid "First Page"
+msgstr "Първа страница"
+
+msgid "Folder Navigator"
+msgstr "Навигатор на папките"
+
+msgid "Folder Prefix"
+msgstr "Папка префикс"
+
+msgid "Folders"
+msgstr "Папки"
+
+msgid "Forward"
+msgstr "Препрати"
+
+msgid "Forward:"
+msgstr "Препрати:"
+
+msgid "Forwarded message"
+msgstr "Препратено писмо"
+
+#, c-format
+msgid "Forwarded message from %s"
+msgstr "Препратено писмо от %s"
+
+msgid "From"
+msgstr "От"
+
+msgid "From Address"
+msgstr "От адрес"
+
+msgid "From:"
+msgstr "От:"
+
+msgid "Fwd:"
+msgstr "Fwd:"
+
+msgid "Fwd: "
+msgstr "Fwd: "
+
+#, c-format
+msgid "Fwd: %u Forwarded Messages"
+msgstr "Fwd: %u Препратено писмо"
+
+msgid "Get only new messages (IMAP only)"
+msgstr "Изтегли само новите писма (само за IMAP)"
+
+msgid "Green"
+msgstr "Green"
+
+msgid "Grey"
+msgstr "Grey"
+
+msgid "Guest Services"
+msgstr "Услуги за гости"
+
+msgid "Hash-Algorithm"
+msgstr "Hash-Алгоритъм"
+
+msgid "Headers"
+msgstr "Заглавни части"
+
+msgid "Help"
+msgstr "Помощ"
+
+msgid "Hide Deleted"
+msgstr "Скрий изтритите"
+
+msgid "Hide Unsubscribed"
+msgstr "Скрий неабонираните"
+
+msgid "High"
+msgstr "Бързо"
+
+msgid "High Priority"
+msgstr "Бърза поща"
+
+msgid "Highest"
+msgstr "Експресно"
+
+msgid "How do you want to display attachments?"
+msgstr "Как искате да се показват прикрепените файлове?"
+
+msgid "How to prefix quoted lines in a reply:"
+msgstr "Какъв да е префикса пред линиите в писмото отговор:"
+
+msgid "IMAP"
+msgstr "IMAP"
+
+msgid "IMAP Auto"
+msgstr "IMAP Ауто"
+
+msgid "IMAP over SSL"
+msgstr "IMAP върху SSL"
+
+msgid "IMAP over SSL (self-signed)"
+msgstr "IMAP върху SSL (самоподписан)"
+
+msgid "IMAP, no TLS"
+msgstr "IMAP, без TLS"
+
+msgid "IMAP/POP3 Accounts"
+msgstr "IMAP/POP3 Пощи"
+
+msgid "IMP is not properly configured"
+msgstr "IMP не е конфигуриран коректно"
+
+msgid "INBOX"
+msgstr "INBOX"
+
+msgid "Identities"
+msgstr "Идентичности"
+
+msgid "Identity"
+msgstr "Идентичност"
+
+msgid "Identity's name:"
+msgstr "Име на идентичността:"
+
+msgid "Ignore"
+msgstr "Игнорирай"
+
+msgid "Ignore All"
+msgstr "Игнорирай всички"
+
+msgid "Import PGP Key"
+msgstr "Импорт на PGP ключ"
+
+msgid "Import Personal Private PGP Key"
+msgstr "Импорт на личен частен PGP ключ"
+
+msgid "Import Personal Private S/MIME Key"
+msgstr "Импорт на личен частен S/MIME ключ"
+
+msgid "Import Personal Public PGP Key"
+msgstr "Импорт на персонален публичен PGP ключ"
+
+msgid "Import Personal Public S/MIME Key"
+msgstr "Импорт на персонален публичен S/MIME ключ"
+
+msgid "Import Public PGP Key"
+msgstr "Импорт на публичен PGP ключ"
+
+msgid "Import S/MIME Key"
+msgstr "Импорт на S/MIME ключ"
+
+msgid "Import mbox File"
+msgstr "Импорт на mbox файл"
+
+msgid "Important"
+msgstr "Важни"
+
+msgid "Important messages"
+msgstr "Важно писмо"
+
+#, c-format
+msgid "Imported %d messages from %s."
+msgstr "Импортирани бяха %d писма от %s."
+
+msgid "Include a brief summary of the header in a reply?"
+msgstr "Да се включва ли кратко обобщение от headers в отговора?"
+
+msgid "Include original message in a reply?"
+msgstr "Да се включи ли и оригиналното писмо в отговора?"
+
+#, c-format
+msgid "Information on %s Public Key"
+msgstr "Информация за %s публичен ключ"
+
+msgid "Information on Personal Private Key"
+msgstr "Информация за персоналния частен ключ"
+
+msgid "Information on Personal Public Key"
+msgstr "Информация за персоналния публичен ключ"
+
+msgid "Inline"
+msgstr "В реда"
+
+msgid "Insert Key Here"
+msgstr "Вмъкнете ключа тук"
+
+msgid "Invalid PGP Key."
+msgstr "Невалиден PGP ключ."
+
+msgid "Invalid Remote Mailbox"
+msgstr "Невалидна отдалечена (нелокална) пощeнска кутия"
+
+msgid "Invalid key"
+msgstr "Невалиден ключ"
+
+msgid "Invalid personal PGP private key."
+msgstr "Невалиден персонален PGP частен ключ."
+
+msgid "Invalid personal PGP public key."
+msgstr "Невалиден персонален PGP публичен ключ."
+
+msgid "January"
+msgstr "Януари"
+
+msgid "July"
+msgstr "Юли"
+
+msgid "June"
+msgstr "Юни"
+
+msgid "Key Creation"
+msgstr "Създаване на ключ"
+
+msgid "Key Fingerprint"
+msgstr "Ключов отпечатък"
+
+msgid "Key Length"
+msgstr "Дължина на ключа"
+
+msgid "Key Type"
+msgstr "Ключ тип"
+
+msgid "Key successfully sent to the public keyserver."
+msgstr "Ключа беше изпратен успешно в публичния ключсървър."
+
+msgid "Language"
+msgstr "Език"
+
+msgid "Last Page"
+msgstr "Последна страница"
+
+#, c-format
+msgid "Last login: %s"
+msgstr "Последно влизане: %s"
+
+msgid "Last login: Never"
+msgstr "Последно влизане: Никога"
+
+msgid "Light Blue"
+msgstr "Light Blue"
+
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr "Да се показват ли всички контакти, когато се зарежда екрана с "
+"контакти? (ако е забранено, ще виждате само контактите които сте търсили)"
+
+msgid "List-Archive"
+msgstr "List-Archive"
+
+msgid "List-Help"
+msgstr "List-Help"
+
+msgid "List-Id"
+msgstr "Списък-Id"
+
+msgid "List-Owner"
+msgstr "List-Owner"
+
+msgid "List-Post"
+msgstr "List-Post"
+
+msgid "List-Subscribe"
+msgstr "List-Subscribe"
+
+msgid "List-Unsubscribe"
+msgstr "List-Unsubscribe"
+
+msgid "Listing in the Header"
+msgstr "Списък в заглавието"
+
+msgid "Local Mailbox:"
+msgstr "Локална поща:"
+
+#, c-format
+msgid "Log in to %s"
+msgstr "Вход в %s"
+
+msgid "Login Tasks"
+msgstr "Задачи при вход"
+
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr ""
+"Регистрирането се провали поради неизвестна причина. Вероятно грешно "
+"въведено потребителско име или парола."
+
+msgid "Logout"
+msgstr "Изход"
+
+msgid "Low"
+msgstr "Обикновенно"
+
+msgid "Low Priority"
+msgstr "Слаб приоритет"
+
+msgid "Lowest"
+msgstr "Без приоритет"
+
+msgid "Mail"
+msgstr "Поща"
+
+msgid "Mail Filters"
+msgstr "Поща Филтри"
+
+msgid "Mail Management"
+msgstr "Поща Управление"
+
+msgid "Mailbox"
+msgstr "Пощенска кутия"
+
+msgid "Maintenance Operations"
+msgstr "Операции по обслужването"
+
+msgid "March"
+msgstr "Март"
+
+msgid "Mark as:"
+msgstr "Маркирай като:"
+
+msgid "Mark different levels of quoting with different colors?"
+msgstr "Да се маркират ли различните нива на отговори с различни цветове?"
+
+msgid "Mark messages as seen (IMAP only)"
+msgstr "Маркирай писмата като прегледани (само за IMAP)"
+
+msgid "May"
+msgstr "Май"
+
+msgid "Message"
+msgstr "Писмо"
+
+msgid "Message Composition"
+msgstr "Написване на писмо"
+
+msgid "Message Composition Options"
+msgstr "Опции при написване на писмо"
+
+msgid "Message Date"
+msgstr "Дата на писмото"
+
+msgid "Message Search"
+msgstr "Търсене на писмо"
+
+msgid "Message Size"
+msgstr "Размер на писмото"
+
+msgid "Message Source"
+msgstr "сорс код на писмото"
+
+msgid "Message Viewing"
+msgstr "Преглед на писмо"
+
+msgid "Message bounced successfully."
+msgstr "Писмото беше отхвърлено успешно."
+
+msgid "Message fields"
+msgstr "Полета на писмото"
+
+msgid "Message flags"
+msgstr "Флагове на писмото"
+
+msgid "Message folders"
+msgstr "Папки за писма"
+
+#, c-format
+msgid "Message from %s"
+msgstr "Писмо от %s"
+
+#, c-format
+msgid "Message sent successfully, but not saved to %s"
+msgstr "Писмото беше изпратено успешно, но не беше записано в %s"
+
+msgid "Message sent successfully."
+msgstr "Писмото беше изпратено успешно."
+
+msgid "Messages per page in the mailbox view."
+msgstr "Писма в страница за пощенската кутия."
+
+msgid "Messages to"
+msgstr "писмата в"
+
+msgid "Mime Type"
+msgstr "Mime тип"
+
+msgid "Move"
+msgstr "Премести"
+
+msgid "Move Message to"
+msgstr "Премести писмо в"
+
+#, c-format
+msgid "Move messages to the <b>%s</b> folder"
+msgstr "Премести писмата в <b>%s</b> папка"
+
+msgid "Mozilla"
+msgstr "Mozilla"
+
+msgid "Name"
+msgstr "Име"
+
+msgid "Name and/or email can not be empty"
+msgstr "Име и/или email не могат да са празни"
+
+msgid "Never"
+msgstr "Никога"
+
+msgid "New"
+msgstr "Нови"
+
+msgid "New Folder"
+msgstr "Нова папка"
+
+msgid "New Mail"
+msgstr "Нова поща"
+
+msgid "New messages"
+msgstr "Нови писма"
+
+msgid "Next Message"
+msgstr "Следващо писмо"
+
+msgid "Next Page"
+msgstr "Следваща страница"
+
+msgid "No"
+msgstr "Не"
+
+msgid "No Encryption"
+msgstr "Без криптиране"
+
+msgid "No Keys in Keyring"
+msgstr "Няма ключове в списъка"
+
+msgid "No PGP public key imported."
+msgstr "Няма импортиран PGP публичен ключ."
+
+msgid "No attachments found."
+msgstr "Няма намерени прикрепени файлове."
+
+msgid "No folder selected"
+msgstr "Няма избрана папка"
+
+msgid "No folders were specified"
+msgstr "Не бяха избрани папки"
+
+msgid "No message body text"
+msgstr "Няма текст в тялото на писмото"
+
+msgid "No messages matched your search."
+msgstr "Няма писма отговарящи на търсенето."
+
+msgid "No messages to fetch..."
+msgstr "Няма писма за изтегляне..."
+
+msgid "No personal PGP private key imported."
+msgstr "Не беше импортиран персонален PGP частен ключ."
+
+msgid "No personal PGP public key imported."
+msgstr "Не беше импортиран персонален PGP публичен ключ."
+
+msgid "No personal S/MIME private key imported."
+msgstr "Не беше импортиран персонален S/MIME частен ключ."
+
+msgid "No personal S/MIME public key imported."
+msgstr "Не беше импортиран персонален S/MIME публичен ключ."
+
+msgid "No rule selected"
+msgstr "Не бяха избрани правила"
+
+msgid "No spelling errors"
+msgstr "Няма правописни грешки"
+
+msgid "No suggestions"
+msgstr "Няма предложения"
+
+msgid "No text specified"
+msgstr "Няма зададен текст"
+
+msgid "None"
+msgstr "Няма"
+
+msgid "Normal"
+msgstr "Нормално"
+
+msgid "Not Deleted"
+msgstr "Неизтрити"
+
+msgid "Not Draft"
+msgstr "Не-чернови"
+
+msgid "Not Important"
+msgstr "Маловажни"
+
+msgid "Not Personal"
+msgstr "Не-лични"
+
+msgid "Not a valid public key."
+msgstr "Невалиден публичен ключ."
+
+msgid "Not deleted messages"
+msgstr "Неизтрити писма"
+
+msgid "Not important messages"
+msgstr "Маловажни писма"
+
+msgid "November"
+msgstr "Ноември"
+
+msgid "Number of old sent-mail folders to keep if deleting monthly."
+msgstr ""
+"Брой на старите папки \"Изпратена поща\" за съхранение, ако се трият месечно."
+
+msgid "October"
+msgstr "Октомври"
+
+msgid "Old messages"
+msgstr "Стари писма"
+
+msgid "Old sent-mail folders being purged."
+msgstr "Стари папки \"Изпратена поща\", който се заличават."
+
+msgid "Open Folder"
+msgstr "Отвори папка"
+
+msgid "Options"
+msgstr "Опции"
+
+msgid "Orange"
+msgstr "Orange"
+
+msgid "Other Header:"
+msgstr "Друга заглавна част:"
+
+msgid "Other Options"
+msgstr "Други Опции"
+
+msgid "PGP"
+msgstr "PGP"
+
+msgid "PGP Digital Signature"
+msgstr "PGP цифров подпис"
+
+msgid "PGP Encrypted Data"
+msgstr "PGP криптирани данни"
+
+#, c-format
+msgid "PGP Error: %s"
+msgstr "PGP грешка: %s"
+
+msgid "PGP Error: For message encryption, there can only be one recipient."
+msgstr "PGP Грешка: При криптирано писмо може да има само един получател."
+
+msgid "PGP Error: Need passphrase for personal private key."
+msgstr "PGP Грешка: Необходима е ключова фраза за частен ключ."
+
+msgid "PGP NOT Active"
+msgstr "PGP НЕ Е активен"
+
+msgid "PGP Options"
+msgstr "PGP Опции"
+
+msgid "PGP Passphrase Input"
+msgstr "Въведете PGP ключова фраза"
+
+msgid "PGP Personal Keypair support requires a secure web connection."
+msgstr "PGP персонална ключова двойка изисква криптирана web връзка."
+
+msgid "PGP Public Key"
+msgstr "PGP Публичен ключ"
+
+#, c-format
+msgid "PGP Public Key for \"%s (%s)\" was successfully added."
+msgstr "PGP публичен ключ за \"%s (%s)\" беше успешно добавен."
+
+#, c-format
+msgid "PGP Public Key for \"%s\" was successfully deleted."
+msgstr "PGP публичен ключ за \"%s\" беше успешно изтрит."
+
+msgid "PGP Public Keyring"
+msgstr "PGP публичен списък"
+
+msgid "PGP Public/Private Keypair successfully added."
+msgstr "PGP двойка публичен/частен ключ беше успешно добавена."
+
+msgid "PGP Sign Message"
+msgstr "Подпиши с PGP "
+
+msgid "PGP Sign/Encrypt Message"
+msgstr "Подпиши/криптирай писмо с PGP"
+
+msgid "PGP Signed/Encrypted Data"
+msgstr "PGP подписани и криптирани данни"
+
+msgid "PGP support is disabled on this system."
+msgstr "Системата е с изключена PGP поддръжка."
+
+msgid ""
+"PGP support is not currently active so the digital signature is unable to be "
+"verified."
+msgstr ""
+"PGP поддръжката не е активна и цифровият подпис не може да бъде проверен."
+
+msgid ""
+"PGP support is not currently active so the message is unable to be decrypted."
+msgstr "PGP поддръжката не е активна и писмото не може да бъде декриптирано."
+
+msgid "POP3"
+msgstr "POP3"
+
+msgid "POP3 Auto"
+msgstr "POP3 Ауто"
+
+msgid "POP3 over SSL (self-signed)"
+msgstr "POP3 върху SSL (самоподписан)"
+
+msgid "POP3, no TLS"
+msgstr "POP3, без TLS"
+
+#, c-format
+msgid "Page %d of %d"
+msgstr "страница %d от %d"
+
+msgid "Part(s)"
+msgstr "Част(и)"
+
+msgid "Passphrase"
+msgstr "Ключова фраза"
+
+msgid "Passphrase (Again)"
+msgstr "Ключова фраза (отново)"
+
+msgid "Passphrase successfully unloaded."
+msgstr "Ключовата фраза беше успешно премахната."
+
+msgid "Passphrase:"
+msgstr "Ключова фраза:"
+
+msgid "Passphrases can not be empty"
+msgstr "Ключовата фраза не може да е празна"
+
+msgid "Passphrases do not match"
+msgstr "Ключовата фраза не съвпада"
+
+msgid "Password"
+msgstr "Парола"
+
+msgid "Password:"
+msgstr "Парола:"
+
+msgid "Perform maintenance operations on login?"
+msgstr "Да се извършват ли обслужващите операции при Вход?"
+
+msgid "Personal"
+msgstr "Персонални"
+
+msgid "Personal Information"
+msgstr "Персонална информация"
+
+msgid "Personal PGP keypair generated successfully."
+msgstr "Персонална PGP ключова двойка беше успешно генерирана."
+
+msgid "Personal PGP keys deleted successfully."
+msgstr "Персонални PGP ключове бяха успешно изтрити."
+
+msgid "Personal S/MIME keys deleted successfully."
+msgstr "Персонални S/MIME ключове бяха успешно изтрити."
+
+msgid "Place your signature before replies and forwards?"
+msgstr "Да се слага ли вашият подпис преди отговор и препращане?"
+
+#, c-format
+msgid ""
+"Please enter the passphrase for your PGP private key. You will only need to "
+"enter this passphrase once per %s session."
+msgstr ""
+"Моля, въведете ключова фраза за Вашият PGP частен ключ. Необходимо е да "
+"въведете тази фраза веднъж за %s сесия."
+
+#, c-format
+msgid ""
+"Please enter the passphrase for your S/MIME private key. You will only need "
+"to enter this passphrase once per %s session."
+msgstr ""
+"Моля, въведете ключова фраза за Вашият S/MIME частен ключ. Необходимо е да "
+"въведете тази фраза веднъж за %s сесия."
+
+msgid "Please fill in the text and choose a field and an action"
+msgstr "Моля, въведете текста и изберете поле и действие"
+
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Моля, коригирайте невалидните или безсмислени адреси."
+
+msgid "Please select or edit right next:"
+msgstr "Моля, изберете или редактирайте:"
+
+msgid "Precede your signature with dashes ('-- ')"
+msgstr "Предхождайте подписа си с тирета ('-- ')"
+
+msgid "Preferences successfully updated."
+msgstr "Настройките бяха обновени успешно."
+
+msgid "Previous Message"
+msgstr "Предишно писмо"
+
+msgid "Previous Page"
+msgstr "Предишна страница"
+
+msgid "Print"
+msgstr "Отпечатай"
+
+msgid "Priority"
+msgstr "Приоритет"
+
+msgid "Private Key"
+msgstr "Частен ключ"
+
+#, c-format
+msgid "Problem with filter rule %d: folder does not exist: %s"
+msgstr "Проблем с филтър %d: не съществува папка: %s"
+
+msgid "Protocol:"
+msgstr "Протокол:"
+
+msgid "Public Key"
+msgstr "Публичен ключ"
+
+msgid "Public PGP keyserver support has been disabled."
+msgstr "Поддръжката за PGP ключов сървър беше забранена."
+
+msgid "Purge Deleted"
+msgstr "Заличи изтритите"
+
+msgid "Purge Trash how often:"
+msgstr "Колко често да се изпразва кошчето:"
+
+msgid "Purge messages in Trash folder older than this amount of days."
+msgstr "Изчисти писмата от кошчето, които са по-стари от толкова дни."
+
+msgid "Purge old message in the Trash folder?"
+msgstr "Да се заличават ли старите писма в кошчето?"
+
+#, c-format
+msgid "Purging %d message(s) from Trash folder."
+msgstr "Заличаване на %d писмо(а) от кошчето"
+
+#, c-format
+msgid "Quota status: %.2fMB / %.2fMB  (%.2f%%)"
+msgstr "Квота статус: %.2fMB / %.2fMB  (%.2f%%)"
+
+msgid "Quota status: NO LIMIT"
+msgstr "Квота статус: БЕЗ ЛИМИТ"
+
+msgid "Quoting"
+msgstr "Отговор"
+
+msgid "Received after"
+msgstr "Получено след"
+
+msgid "Received before"
+msgstr "Получено преди"
+
+msgid "Received on"
+msgstr "Получено на"
+
+msgid "Redirect"
+msgstr "Пренасочи"
+
+msgid "Redirect this message"
+msgstr "Пренасочи това писмо"
+
+msgid "Redirecting failed."
+msgstr "Пренасочването се провали"
+
+msgid "Refresh"
+msgstr "Опресни"
+
+msgid "Refresh Folder Views:"
+msgstr "Опреснявай изгледите на папките"
+
+msgid "Reload View"
+msgstr "Презареди изгледа"
+
+msgid "Remember the last view"
+msgstr "Запомни последния изглед"
+
+msgid "Remote Mailbox:"
+msgstr "Пощенска кутия:"
+
+msgid "Remove Selected"
+msgstr "Премести избраното"
+
+msgid "Rename Folder(s)"
+msgstr "Преименувай папка(и)"
+
+msgid "Rename sent-mail folder at beginning of month?"
+msgstr "Да се преименува ли \"Изпратена поща\" папка в началото на месеца?"
+
+#, c-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr "Преименуването на \"%s\" в \"%s\" се провали. Ето какво каза сървъра"
+
+msgid "Replace with:"
+msgstr "Замени с:"
+
+msgid "Reply"
+msgstr "Отговор"
+
+msgid "Reply to All"
+msgstr "Отговор до всички"
+
+msgid "Reply to All:"
+msgstr "Отговор до всички:"
+
+msgid "Reply to List"
+msgstr "Отговор до списъка"
+
+msgid "Reply to List:"
+msgstr "Отговор до списъка:"
+
+msgid "Reply-To"
+msgstr "Отговор-До"
+
+msgid "Reply-To: "
+msgstr "Отговор-До:"
+
+msgid "Reply:"
+msgstr "Отговор:"
+
+msgid "Report as Spam"
+msgstr "Рапорт за Спам"
+
+msgid "Request a Return Receipt"
+msgstr "Изискай потвърждение за получаване"
+
+msgid "Resume"
+msgstr "Поднови"
+
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr ""
+"Върни се към пощенската кутия след изтриване, местене или копиране на писмо."
+
+msgid "Rule Definition"
+msgstr "Дефиниране на правило"
+
+msgid "S/MIME"
+msgstr "S/MIME"
+
+msgid "S/MIME NOT Active"
+msgstr "S/MIME НЕ Е активен"
+
+msgid "S/MIME Options"
+msgstr "S/MIME Опции"
+
+msgid "S/MIME Passphrase Input"
+msgstr "Въведете S/MIME ключова фраза"
+
+msgid "S/MIME Personal Keypair support requires a secure web connection."
+msgstr ""
+"S/MIME поддръжката за персонална ключова двойка изисква криптирана web "
+"връзка."
+
+msgid "S/MIME Public/Private Keypair successfully added."
+msgstr "S/MIME двойка публичен/частен ключ беше успешно добавена."
+
+msgid "S/MIME support is disabled on this system."
+msgstr "Системата е с изключена S/MIME поддръжка."
+
+msgid ""
+"S/MIME support is not currently active so the message is unable to be "
+"decrypted."
+msgstr "S/MIME поддръжката не е активна и писмото не може да бъде декриптирано."
+
+msgid "Save a copy in "
+msgstr "Запиши копие в "
+
+msgid "Save as"
+msgstr "Запиши като"
+
+msgid "Save sent mail"
+msgstr "Записвай изпратената поща в"
+
+#, c-format
+msgid "Saving the draft failed. This is what the server said: %s"
+msgstr "Записа на черновата се провали. Ето какво каза сървъра: %s"
+
+msgid "Search"
+msgstr "Търси"
+
+msgid "Search Results"
+msgstr "Резултати от търсенето"
+
+msgid "Seen"
+msgstr "Прегледани"
+
+msgid "Select"
+msgstr "Избери"
+
+msgid "Select address book sources for adding and searching for addresses."
+msgstr "Изберете адресна книга за добавяне и търсене на адреси."
+
+msgid "Select all"
+msgstr "Избери всички"
+
+msgid "Select an account"
+msgstr "Изберете поща"
+
+msgid "Select an identity"
+msgstr "Избери идентичност"
+
+msgid "Select charset:"
+msgstr "Избери символен набор:"
+
+msgid "Select none"
+msgstr "Не избирай нищо"
+
+msgid "Select your color scheme."
+msgstr "Изберете вашата схема за цветовете."
+
+msgid "Select your preferred language:"
+msgstr "Изберете предпочитаният от Вас език:"
+
+msgid "Selected Address books:"
+msgstr "Избрана адресна книга:"
+
+msgid "Send Key to Public Keyserver"
+msgstr "Изпрати ключ в публичния ключсървър"
+
+msgid "Sent mail folder:"
+msgstr "Папка \"Изпратена поща\":"
+
+msgid "September"
+msgstr "Септември"
+
+msgid "Server"
+msgstr "Сървър"
+
+msgid "Server Information"
+msgstr "Информация за Сървъра"
+
+msgid "Server:"
+msgstr "Сървър:"
+
+msgid "Set preferences for filtering messages for unwanted content."
+msgstr "Настрой филтрите за нежелано съдържание."
+
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr "Настрой какво да се случва, когато преместиш или изтриеш писмо."
+
+msgid "Set the X-Priority header when composing messages?"
+msgstr "Да се задава ли X-Priority заглавна част при писане на писмо?"
+
+msgid "Set the current time zone."
+msgstr "Настрой часовата зона."
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Изберете езика, на които се показват менюта, обяснения и помощ."
+
+msgid "Should the body of text/plain messages be scanned for PGP data?"
+msgstr "Трябва ли да се проверява съдържанието на обикновени текстови писма за"
+" PGP данни?"
+
+msgid "Should the compose window be closed after saving a draft?"
+msgstr "Трябва ли прозореца \"Напиши\" да се затвори след запис на черновата."
+
+msgid "Should your PGP public key to be attached to your messages by default?"
+msgstr "Да бъде ли прикрепян Вашият публичен PGP ключ към писмата Ви, по "
+"подразбиране?"
+
+msgid "Show All Headers"
+msgstr "Покажи всички заглавни части"
+
+msgid "Show Deleted"
+msgstr "Покажи изтритите"
+
+msgid "Show Limited Headers"
+msgstr "Покажи само избрани заглавни части!"
+
+msgid "Show Mailing List Information"
+msgstr "Покажи информация за Mailing List"
+
+msgid "Show Unsubscribed"
+msgstr "Покажи неабонираните"
+
+msgid "Show last login time when logging in?"
+msgstr "Да се показва ли времето на последното влизане?"
+
+msgid "Show legend in the mailbox view?"
+msgstr "Да се показва ли легенда в пощенската кутия?"
+
+msgid "Show the Fetch Mail icon on the menubar?"
+msgstr "Да се показва ли \"Други пощи\" икона в меню лентата?"
+
+msgid "Size"
+msgstr "Размер"
+
+msgid "Some of IMP's configuration files are missing:"
+msgstr "Някой от конфигурационните файлове на IMP липсват:"
+
+msgid "Sort Direction"
+msgstr "Сортиране"
+
+msgid "Sort by Arrival"
+msgstr "Сортирай по получаване"
+
+msgid "Sort by Date"
+msgstr "Сортирай по дата"
+
+msgid "Sort by From Address"
+msgstr "Сортирай по \"От\" адрес"
+
+msgid "Sort by Message Size"
+msgstr "Сортирай по размер на писмото"
+
+msgid "Sort by Subject"
+msgstr "Сортирай по тема"
+
+msgid "Sort by Thread"
+msgstr "Сортирай по нишки"
+
+msgid "Spam Report from"
+msgstr "Спам Рапорт от"
+
+msgid "Special Characters"
+msgstr "Специални символи"
+
+msgid "Spell Check"
+msgstr "Правопис"
+
+msgid "Spell Checker"
+msgstr "Проверка на правописа"
+
+msgid "Spell check complete"
+msgstr "Правописа беше проверен"
+
+msgid "Spelling errors per screen when spell checking."
+msgstr "Правописни грешки в страница при проверка за правопис."
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Subject"
+msgstr "Тема"
+
+msgid "Subject Field"
+msgstr "Тема на писмото"
+
+msgid "Subject:"
+msgstr "   Тема:"
+
+msgid "Subscribe to Folder(s)"
+msgstr "Абониране за папка(и)"
+
+msgid "Success"
+msgstr "Успех"
+
+msgid "Suggestions"
+msgstr "Предположения"
+
+msgid "Sun"
+msgstr "Sun"
+
+msgid "Terms of Service file not specified in conf.php"
+msgstr "Файл за \"Условия на услугата\" не е зададен в conf.php"
+
+msgid "Text"
+msgstr "Текст"
+
+#, c-format
+msgid "The account \"%s\" has been deleted."
+msgstr "Пощата \"%s\" беше премахната."
+
+#, c-format
+msgid "The account \"%s\" has been saved."
+msgstr "Пощата \"%s\" беше записана."
+
+#, c-format
+msgid "The address %s has been added to your blacklist."
+msgstr "Адреса '%s' беше добавен към Вашият \"черен списък\"."
+
+#, c-format
+msgid "The current folder(s) \"%s\" will be renamed to \"%s\"."
+msgstr "Текущата папка(и) \"%s\" ще бъде преименувана на \"%s\"."
+
+#, c-format
+msgid "The folder \"%s\" already exists"
+msgstr "Папката \"%s\" вече съществува"
+
+#, c-format
+msgid ""
+"The folder \"%s\" contains illegal characters in its name. It may cause "
+"problems. Please see your system administrator."
+msgstr ""
+"Името на папката \"%s\" съдържа некоректни символи. Това може да доведе до "
+"проблеми. Моля консултирайте се със Системния Администратор."
+
+#, c-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "Папката \"%s\" беше създадена, но Вие не сте абонирани за нея. "
+
+#, c-format
+msgid "The folder \"%s\" was deleted but you were not unsubscribed from it."
+msgstr "Папката \"%s\" беше изтрита, но Вие все още сте aабонирани за нея."
+
+#, c-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr "Папката \"%s\" не беше създадена. Ето каква е причината според сървъра"
+
+#, c-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "Папката \"%s\" беше създадена успешно. "
+
+#, c-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "Папката \"%s\" беше изтрита успешно. "
+
+#, c-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "Папката \"%s\" беше успешно преименувана на \"%s\"."
+
+#, c-format
+msgid "The folder '%s' was not deleted. This is what the server said"
+msgstr "Папката '%s' не беше изтрита. Ето какво каза сървъра"
+
+#, c-format
+msgid "The identity \"%s\" has been deleted."
+msgstr "Идентичността \"%s\" беше изтрита."
+
+#, c-format
+msgid "The identity \"%s\" has been saved."
+msgstr "Идентичността \"%s\" беше записана."
+
+#, c-format
+msgid "The mailbox %s is already empty."
+msgstr "Пощенската кутия %s е вече отворена."
+
+msgid "The message has been verified."
+msgstr "Писмото беше проверено."
+
+msgid "The requested file does not exist in the MS-TNEF attachment."
+msgstr "Изискания прикрепен файл не е открит в MS-TNEF."
+
+msgid "The requested file does not exist in the Zip attachment."
+msgstr "Изискания файл не съществува в Zip прикрепения файл."
+
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "Няма алтернативни двойки, които да бъдат показани в линията."
+
+msgid "There are no messages in this mailbox."
+msgstr "Няма писма в тази пощенска кутия."
+
+#, c-format
+msgid "There was a problem expunging %s. This is what the server said"
+msgstr "Имаше проблем при заличаването на %s. Ето каква е причината"
+
+#, c-format
+msgid "There was a problem expunging the mailbox. The server said: %s"
+msgstr "Грешка при заличаване на пощенска кутия. Ето какво каза сървъра: %s"
+
+msgid "There was a problem expunging the mailbox. This is what the server said"
+msgstr "Имаше проблем при заличаването на пощенската кутия. Причината е"
+
+msgid "There was a problem with the file upload."
+msgstr "Грешка при изпращането на файла."
+
+#, c-format
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size (%d MB)."
+msgstr ""
+"Имаше проблем при изпращането на файла. Възможно е файла да е по-голям от "
+"максимално допустимия размер (%d MB)."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Грешка при изпращането на файла. Възможно е файлът да е по-голям от "
+"максимално допустимият размер."
+
+msgid "There was a problem with the file upload: No attachment was uploaded."
+msgstr "Грешка при изпращането на файла: Не беше прикрепен файл."
+
+#, c-format
+msgid ""
+"There was a problem with the file upload: The attachment was larger than the "
+"maximum allowed size (%d MB)."
+msgstr ""
+"Имаше проблем при изпращането на файла: Файла е по-голям от максимално "
+"допустимия размер (%d MB)."
+
+msgid ""
+"There was a problem with the file upload: The attachment was only partially "
+"uploaded."
+msgstr ""
+"Грешка при изпращането на файла: Само част от файла беше изпратена "
+
+#, c-format
+msgid ""
+"There was an error copying messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"Грешка при копирането на писма от \"%s\" в \"%s\". Ето какво каза сървъра"
+
+#, c-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr ""
+"Грешка при изтриването на писмата от папка \"%s\". Според сървъра причината "
+"за това е"
+
+#, c-format
+msgid ""
+"There was an error deleting messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"Грешка при изтриване на писма в папка \"%s\". Причината според сървъра е"
+
+#, c-format
+msgid "There was an error deleting messages. This is what the server said: %s"
+msgstr "Грешка при изтриване на писма. Ето какво каза сървъра: %s"
+
+msgid "There was an error displaying this message part"
+msgstr "Грешка при показване на тази част от писмото"
+
+#, c-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"Грешка при установяване на флагове в папка \"%s\". Причината според сървъра е"
+
+#, c-format
+msgid "There was an error importing %s."
+msgstr "Грешка при импортиране на данните: %s."
+
+#, c-format
+msgid ""
+"There was an error moving messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr "Грешка при преместване на \"%s\" в \"%s\". Ето какво каза сървъра."
+
+msgid ""
+"There was an error moving messages to the trash. This is what the server said"
+msgstr ""
+"Грешка при преместването на писма в кошчето. Сървъра смята, че причината е"
+
+msgid "There was an error saving this message as a draft."
+msgstr "Грешка при записа на това писмо като чернова."
+
+#, c-format
+msgid "There was an error sending your message: %s"
+msgstr "Грешка при изпращането на писмото: %s"
+
+msgid "There was an error viewing the requested message."
+msgstr "Грешка при прегледа на поисканото писмо."
+
+msgid "This PGP Public Key was attached to the message."
+msgstr "Този PGP публичен ключ беше прикрепен към писмото."
+
+msgid ""
+"This file controls local MIME drivers for IMP, specifically what kinds of "
+"attachments are viewable and/or downloadable."
+msgstr ""
+"Този файл контролира локалните MIME драйвери на IMP, по-специално, какви "
+"прикрепени файлове могат да се преглеждат и/или изтеглят."
+
+msgid ""
+"This file controls the default preferences for IMP, and also controls which "
+"preferences users can alter."
+msgstr ""
+"Този файл контролира настройките по подразбиране на IMP, а също и кои "
+"настройки потребителите могат да променят."
+
+msgid ""
+"This file controls the default settings for IMP, and also defines the list "
+"of available servers if you are using the server list."
+msgstr ""
+"Този файл контролира настройките по подразбиране на IMP, а също дефинира "
+"списъка със сървъри, ако използвате такъв."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Този файл контролира стиловете, който се използват за цветовете и шрифтовете "
+"в допълнение към подразбиращите стилове на Horde."
+
+msgid ""
+"This is the main IMP configuration file. It contains paths and options for "
+"the IMP scripts."
+msgstr ""
+"Това е главния файл за конфигуриране на IMP. Той съдържа пътищата и опциите "
+"за IMP скриптовете."
+
+msgid ""
+"This message does not appear to be in the correct PGP format (according to "
+"RFC 2015)."
+msgstr "Това писмо не е в коректен PGP формат (съобразно RFC 2015)."
+
+msgid ""
+"This message does not appear to be in the correct S/MIME format (according "
+"to RFC 2633)."
+msgstr "Това писмо не е в коректен S/MIME формат (съобразно RFC 2015)."
+
+msgid "This message has been digitally signed via PGP."
+msgstr "Това писмо беше цифрово подписано чрез PGP."
+
+msgid "This message has been digitally signed via S/MIME."
+msgstr "Това писмо беше цифрово подписано чрез S/MIME."
+
+msgid "This message has been encrypted with PGP."
+msgstr "Това писмо беше криптирано с PGP."
+
+msgid "This message has been reported as spam to your system administrator."
+msgstr "Това писмо беше изпратено като Спам до Системния Администратор."
+
+msgid "This message has been reported as spam."
+msgstr "Това писмо беше регистрирано като спам."
+
+msgid "This message to"
+msgstr "Това писмо в"
+
+#, c-format
+msgid ""
+"This message was written in a character set other than your own. If it is "
+"not displayed correctly, %s to open it in a new window."
+msgstr ""
+"Това писмо е написано със символи различни от вашите. Ако не е "
+"показано коректно, %s за да го отворите в нов прозорец."
+
+msgid "Thread"
+msgstr "Смислови нишки"
+
+msgid "Thread View"
+msgstr "Изглед по смислови нишки"
+
+msgid "Time Zone"
+msgstr "Часова зона"
+
+msgid "To"
+msgstr "До"
+
+msgid "To:"
+msgstr "До:"
+
+#, c-format
+msgid "Total Size: %s KB"
+msgstr "Общ размер: %s KB"
+
+msgid "Trash folder:"
+msgstr "Папка \"Кошче\":"
+
+msgid "Unable to retrieve quota"
+msgstr "Грешка при проверката за квота"
+
+msgid "Unanswered"
+msgstr "Без отговор"
+
+msgid "Unanswered messages"
+msgstr "Писма без отговор"
+
+msgid "Undelete"
+msgstr "Възстанови"
+
+msgid "Undisclosed Recipients"
+msgstr "Неизвестни Получатели"
+
+msgid "Unknown Protocol Specified"
+msgstr "Зададеният протокол е неизвестен"
+
+msgid "Unload Passphrase"
+msgstr "Премахване на ключова фраза"
+
+msgid "Unnamed"
+msgstr "Безименни"
+
+msgid "Unread"
+msgstr "Непрочетени"
+
+msgid "Unseen"
+msgstr "Непрегледани"
+
+msgid "Unseen Messages"
+msgstr "Непрегледани писма"
+
+msgid "Unsubscribe from Folder(s)"
+msgstr "Отпиши от папка(и)"
+
+msgid "Upload"
+msgstr "Изпрати"
+
+msgid "Use Ctrl/Option+Click to select multiple fields"
+msgstr "Използвай Ctrl/Option+Click за да избереш множество полета"
+
+msgid "Use Default Value"
+msgstr "Използвай подразбиращата се стойност"
+
+msgid "Use IMAP folder subscriptions?"
+msgstr "Да се използват ли IMAP абонаменти за папки?"
+
+msgid "User Options"
+msgstr "Потребителски опции"
+
+msgid "Username"
+msgstr "Име"
+
+msgid "Username:"
+msgstr "Име:"
+
+msgid "View"
+msgstr "Виж"
+
+#, c-format
+msgid "View %s"
+msgstr "Изглед %s"
+
+#, c-format
+msgid "View %s Public Key"
+msgstr "Виж %s публичен ключ"
+
+msgid "View Personal Private Key"
+msgstr "Виж персонален частен ключ"
+
+msgid "View Personal Public Key"
+msgstr "Виж персонален публичен ключ"
+
+msgid "View messages in "
+msgstr "Покажи писма в "
+
+msgid "View or mailbox to display after login:"
+msgstr "Изглед или пощенска кутия да бъде на екрана след вход:"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Добре Дошли в %s"
+
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted?"
+msgstr ""
+"При изтриване на писма, да се преместват ли в кошчето вместо да се маркират "
+"като изтрити."
+
+msgid "Wrap text at this many characters."
+msgstr "Преподреди текста на толкова символа."
+
+msgid "Yes"
+msgstr "Да"
+
+msgid "You didn't specify a Mail Server"
+msgstr "Не въведохте валиден пощенски сървър"
+
+msgid "You didn't specify the password"
+msgstr "Не въведохте парола"
+
+msgid "You didn't specify the username"
+msgstr "Не въведохте потребителско име"
+
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "Вие излязохте.<br />Благодарим Ви, че използвахте системата."
+
+msgid ""
+"You must enter the passphrase for your PGP private key to view this message"
+msgstr ""
+"Трябва да въведете ключовата фраза на Вашия PGP частен ключ за да видите "
+"това писмо"
+
+msgid ""
+"You must enter the passphrase for your S/MIME private key to view this "
+"message"
+msgstr ""
+"Трябва да въведете ключовата фраза на Вашия S/MIME частен ключ за да видите "
+"това писмо"
+
+msgid "You must have at least one recipient."
+msgstr "Трябва да имате поне един получател."
+
+msgid "You must select an account to be deleted."
+msgstr "Трябва да изберете поща, която да бъде изтрита."
+
+msgid "You must select an identity to be deleted."
+msgstr "Трябва да изберете коя идентичност да бъде изтрита, предварително."
+
+#, c-format
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr "Не бяхте абониран за \"%s\". Ето каква е причината"
+
+#, c-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr "Не бяхте отписан от \"%s\". Ето каква е причината според сървъра"
+
+#, c-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr "Бяхте абониран успешно за \"%s\""
+
+#, c-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "Бяхте отписан успешно от \"%s\""
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "Времето за вашата %s сесия изтече. Моля регистрирайте се отново."
+
+msgid "Your From: address:"
+msgstr "Вашият От: адрес:"
+
+msgid "Your Information"
+msgstr "Информация за Вас"
+
+msgid "Your Name"
+msgstr "Вашето име"
+
+msgid "Your PGP Public/Private Keys"
+msgstr "Вашите PGP публичен/частен ключове"
+
+msgid "Your Private Key"
+msgstr "Вашият частен ключ"
+
+msgid "Your Public Key"
+msgstr "Вашият публичен ключ"
+
+msgid "Your Reply-to: address: <i>(optional)</i>"
+msgstr "Вашият Отговора-на: адрес: <i>(optional)</i>"
+
+msgid "Your S/MIME Public/Private Keys"
+msgstr "Вашите S/MIME публичен/частен ключове"
+
+msgid "Your accounts:"
+msgstr "Вашите пощи:"
+
+msgid "Your browser does not support inline display of this image type"
+msgstr "Вашият browser не подържа редово показване на този тип файл"
+
+msgid "Your current time zone:"
+msgstr "Вашата часова зона:"
+
+msgid "Your default identity:"
+msgstr "Вашата идентичност по подразбиране:"
+
+msgid "Your full name:"
+msgstr "Пълното Ви име:"
+
+msgid "Your identities:"
+msgstr "Вашите идентичности:"
+
+msgid "Your signature:"
+msgstr "Вашият подпис:"
+
+msgid "[No Subject]"
+msgstr "[Няма Тема]"
+
+msgid "add source"
+msgstr "добави сорс"
+
+msgid "click here"
+msgstr "кликнете тук"
+
+msgid "from"
+msgstr "от"
+
+msgid "header"
+msgstr "заглавна част"
+
+msgid "move down"
+msgstr "на долу"
+
+msgid "move up"
+msgstr "на горе"
+
+msgid "none"
+msgstr "няма"
+
+msgid "or"
+msgstr "или"
+
+msgid "remove source"
+msgstr "премахни сорса"
+
+msgid "select folder"
+msgstr "избери папка"
+
+msgid "spelling error"
+msgstr "правописна грешка"
+
+msgid "spelling errors"
+msgstr "правописни грешки"

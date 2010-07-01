@@ -1,0 +1,246 @@
+/**
+ * $Horde: horde/themes/tango-blue/screen.css,v 1.13.2.2 2008-06-12 12:37:10 jan Exp $
+ */
+
+*, select, body, a, input, textarea, td, td.light, {
+    font-family: Verdana, sans-serif;
+    font-size: 9pt;
+    line-height: 1.5;
+}
+
+body {
+    background: #5d7cba;
+}
+
+.smallheader {
+    background: #efefef none repeat scroll 0%;
+    font-family: Verdana, sans-serif;
+    font-size: 9pt;
+    line-height: 1.5;
+    color: #204a87;
+}
+
+body {
+    border: 0;
+    margin: 0;
+}
+
+html {
+    height: 100%;
+}
+
+a {
+    color: #343dba;
+}
+
+.linedRow, tr.linedRow td, table.linedRow td {
+    background: #dae6f2 none repeat scroll 0%;
+    border-bottom: 1px solid #ddd;
+    #color: #000;
+}
+
+.text {
+    background: #c9daed none repeat scroll 0% 50%;
+}
+
+.headerbox p, .headerbox em {
+    margin: 6px;
+    padding: 6px;
+}
+
+.header {
+    color: #000;
+    background: #efefef;
+    border-bottom: 1px solid #000;
+    margin-bottom: 6px;
+}
+.header a {
+    color: #343dba;
+}
+.header a:hover, a.header:hover {
+    color: darkblue;
+    text-decoration: underline;
+}
+a.header {
+    border-bottom: 0;
+    background: transparent;
+}
+a.fixed {
+    color: #339;
+}
+
+.light {
+    color: #333;
+}
+
+.control {
+    background: #ddd;
+    padding: 6px;
+}
+
+.widget {
+    color: #224;
+}
+
+/* Form styles. */
+input, select, textarea {
+    font-size: 12px;
+    color: #000;
+    background: #f3f3f9;
+    border: 1px solid #ccc;
+    padding: 2px;
+}
+input:focus, textarea:focus {
+    background: #fff;
+    border: 1px solid #000;
+}
+.button, .button:focus {
+    background: #f3f9f9;
+    border: 1px solid #000;
+    cursor: pointer;
+    padding: 2px;
+    font-weight: bold;
+}
+.button:hover {
+    background: #ddd;
+}
+input[type="reset"] {
+    background-color: #faa;
+}
+input[type="reset"]:hover {
+    background-color: #fcc;
+}
+input[type="submit"] {
+    background-color: #afa;
+}
+input[type="submit"]:hover {
+    background-color: #cfc;
+}
+fieldset {
+    padding: 12px;
+    border: 0;
+    border-top: 3px solid #555;
+}
+legend {
+    padding: 6px;
+    font-weight: bold;
+}
+
+/* Alternating styles. item0, item1 are deprecated. */
+.rowEven, .item0 {
+    background: #eee;
+}
+.rowOdd, .item1, .item {
+    background: #dae6f2;
+}
+
+.selected {
+    background: #C6D3FF;
+}
+
+h1 {
+    margin: 0;
+}
+
+/* Various popup and status layers. */
+.tooltip, div.nicetitle {
+    color: #fff;
+    background: #5d7cba;
+    border: 2px double #fff;
+}
+
+/* Menu styles. */
+#menu {
+    background: #5d7cba;
+    border-bottom: 1px solid #555;
+    padding: 2px;
+    margin: 0;
+}
+#menu a {
+    color: #fff;
+}
+#menu a:hover {
+    background-color: #555;
+}
+#menu a.current {
+    background: #333;
+    padding: 2px;
+}
+#menuBottom {
+    margin: 0;
+    background: #c9daed;
+}
+
+/* Sidebar styles. */
+body.sidebar {
+    border-right: 1px solid #000;
+    background-color: #c9daed;
+    height: 100%;
+}
+body.sidebar #menu {
+    border-right: 1px solid #5d7cba;
+    margin-right: -1px;
+}
+#sidebarPanel {
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    background-color: #c9daed;
+}
+#sidebarPanel span.toggle, #sidebarPanel a {
+    padding-left: 1px;
+    padding-bottom: 2px;
+}
+#sidebarPanel span.toggle {
+    border: 1px none transparent;
+}
+#sidebarPanel a {
+    color: #343dba;
+    padding: 2px;
+}
+#sidebarPanel a:hover {
+    color: #fff;
+    background: #5d7cba;
+    text-decoration: none;
+}
+
+#expandButton {
+    margin-right: 1px;
+}
+
+/* Tab styles. */
+.tabset {
+    background: none;
+    border-bottom: 1px solid #efefef;
+}
+.tabset li a {
+    border: 1px solid #ccc;
+    background-color: #ccc;
+}
+.tabset li.activeTab a, .tabset li.activeTab a:hover {
+    color: #000;
+    background-color: #efefef;
+    border-bottom-color: #efefef;
+}
+
+td.notice {
+    background-color: #faa;
+    padding: 2px;
+    border: 1px solid #000;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+}
+p.notice {
+    background-color: #ffc;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border: 0;
+    border-bottom: 1px solid #000;
+    margin: 0;
+    padding: 6px;
+}
+
+.headerbox {
+    background: #A8C4E1 none repeat scroll 0% 50%;
+    padding: 0;
+    border-top: 1px solid #000;
+}

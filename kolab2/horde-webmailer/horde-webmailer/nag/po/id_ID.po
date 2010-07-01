@@ -1,0 +1,383 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nag v1.0\n"
+"POT-Creation-Date: 2004-01-09 15:43+0700\n"
+"PO-Revision-Date: 2004-01-09 16:30+0700\n"
+"Last-Translator: Slamin <slamin@unej.ac.id>\n"
+"Language-Team: UPT TI UNEJ <uptti@unej.ac.id>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%d tasks"
+msgstr "%d tugas"
+
+msgid "(highest)"
+msgstr "(tertinggi)"
+
+msgid "(lowest)"
+msgstr "(terendah)"
+
+msgid "1 task"
+msgstr "1 tugas"
+
+msgid "Adding A New Task"
+msgstr "Tambahkan Tugas Baru"
+
+msgid "Allows categories to be added/removed/renamed."
+msgstr "Membolehkan kategori untuk ditambah/dihapus/diganti nama."
+
+#, c-format
+msgid "Any tasks in a category that is deleted will become <b>%s</b>."
+msgstr "Tugas pada kategori yang dihapus akan menjadi <b>%s</b>."
+
+msgid "Are you sure you want to permanently delete these tasks?"
+msgstr "Anda yakin ingin menghapus tugas ini secara permanen?"
+
+msgid "Ascending"
+msgstr "Menaik"
+
+msgid "Back to Task List"
+msgstr "Kembali ke Daftar Tugas"
+
+msgid "Cannot be changed."
+msgstr "Tidak dapat diubah."
+
+msgid "Category Management"
+msgstr "Manajemen Kategori"
+
+msgid "Category"
+msgstr "Kategori"
+
+msgid "Change your task sorting and display options."
+msgstr "Ubah urutan tugas anda dan tampilkan pilihan."
+
+#, c-format
+msgid "Changed %d tasks to priority %d."
+msgstr "%d tugas diubah ke prioritas %d."
+
+#, c-format
+msgid "Changed 1 task to priority %d."
+msgstr "1 tugas diubah ke prioritas %d."
+
+msgid "Choose Action:"
+msgstr "Pilih Aksi:"
+
+msgid "Clear Form"
+msgstr "Hapus Formulir"
+
+msgid "Complete Task"
+msgstr "Tugas Selesai"
+
+msgid "Complete Tasks"
+msgstr "Tugas-tugas Selesai"
+
+msgid "Completed?"
+msgstr "Selesai?"
+
+msgid "Completion Status"
+msgstr "Status Penyelesaian"
+
+msgid "Create a New Category"
+msgstr "Buat Kategori Baru"
+
+msgid "Default sorting criteria:"
+msgstr "Kriteria urutan default:"
+
+msgid "Default sorting direction:"
+msgstr "Arah urutan default:"
+
+msgid "Delete Task"
+msgstr "Hapus Tugas"
+
+msgid "Delete Tasks"
+msgstr "Hapus Tugas-tugas"
+
+msgid "Delete"
+msgstr "Hapus"
+
+#, c-format
+msgid "Deleted %d tasks."
+msgstr "%d tugas dihapus."
+
+msgid "Deleted 1 task."
+msgstr "1 tugas dihapus."
+
+msgid "Descending"
+msgstr "Menurun"
+
+msgid "Description"
+msgstr "Diskripsi"
+
+msgid "Display Options"
+msgstr "Tampilkan Pilihan"
+
+msgid "Due By"
+msgstr "Berakhir Pada"
+
+msgid "Due Date"
+msgstr "Batas Akhir"
+
+msgid "Help"
+msgstr "Bantuan"
+
+msgid "Language"
+msgstr "Bahasa"
+
+msgid "List Tasks"
+msgstr "Daftar Tugas"
+
+#, c-format
+msgid "Marked %d tasks as completed."
+msgstr "Tandai %d tugas sebagai selesai."
+
+msgid "Marked 1 task as completed."
+msgstr "Tandai 1 tugas sebagai selesai"
+
+msgid "Modify Task"
+msgstr "Ubah Tugas"
+
+msgid "Modifying:"
+msgstr "Mengubah:"
+
+msgid "Nag is not properly configured"
+msgstr "Nag tidak dikonfigurasi secara sempurna"
+
+msgid "Name"
+msgstr "Nama"
+
+msgid "New Category"
+msgstr "Kategori Baru"
+
+msgid "New Task"
+msgstr "Tugas Baru"
+
+msgid "No configuration information specified for SQL Tasks."
+msgstr "Tidak ada informasi konfigurasi yang dispesifikasi pada Tugas SQL."
+
+msgid "No due date."
+msgstr "Tidak ada batas akhir."
+
+msgid "No tasks were changed."
+msgstr "Tidak ada tugas yang berubah."
+
+msgid "No tasks were deleted."
+msgstr "Tidak tugas yang dihapus."
+
+msgid "No"
+msgstr "Tidak"
+
+msgid "None specified"
+msgstr "Tidak ada yang dispesifikasi"
+
+msgid "Options"
+msgstr "Pilihan"
+
+msgid "Other Options"
+msgstr "Pilihan Lain"
+
+msgid "Please enter a name for the new category:"
+msgstr "Masukkan nama untuk kategori baru:"
+
+msgid "Please enter a new name for this category:"
+msgstr "Masukkan nama baru untuk kategori ini:"
+
+msgid "Please enter the task priority (1-5):"
+msgstr "Masukkan prioritas tugas (1-5):"
+
+msgid "Pri"
+msgstr "Pri"
+
+msgid "Print"
+msgstr "Cetak"
+
+msgid "Priorities must be between 1 and 5. Please enter a valid priority:"
+msgstr "Prioritas harus antara 1 dan 5. Masukkan prioritas yang benar:"
+
+msgid "Priority"
+msgstr "Prioritas"
+
+msgid "Problem?"
+msgstr "Masalah?"
+
+msgid "Refresh List"
+msgstr "Tampilkan Daftar"
+
+msgid "Rename"
+msgstr "Ganti nama"
+
+msgid "Required 'database' not specified in tasks configuration."
+msgstr "'database' yang diperlukan tidak dispesifikasi pada konfigurasi tugas."
+
+msgid "Required 'hostspec' not specified in tasks configuration."
+msgstr "'hostspec' yang diperlukan tidak dispesifikasi pada konfigurasi tugas."
+
+msgid "Required 'password' not specified in tasks configuration."
+msgstr "'password' yang diperlukan tidak dispesifikasi pada konfigurasi tugas."
+
+msgid "Required 'phptype' not specified in tasks configuration."
+msgstr "'phptype' yang diperlukan tidak dispesifikasi pada konfigurasi tugas."
+
+msgid "Required 'table' not specified in tasks configuration."
+msgstr "'table' yang diperlukan tidak dispesifikasi pada konfigurasi tugas."
+
+msgid "Required 'username' not specified in tasks configuration."
+msgstr "'username' yang diperlukan tidak dispesifikasi pada konfigurasi tugas."
+
+msgid "Save Task"
+msgstr "Simpan Tugas"
+
+msgid "Search Results"
+msgstr "Hasil Pencarian"
+
+msgid "Search Scope"
+msgstr "Lingkup Pencarian"
+
+msgid "Search Text"
+msgstr "Teks Pencarian"
+
+msgid "Search"
+msgstr "Cari"
+
+msgid "Select Category"
+msgstr "Pilih Kategori"
+
+msgid "Select your preferred language:"
+msgstr "Pilih bahasa yang diinginkan:"
+
+msgid "Selected?"
+msgstr "Dipilih?"
+
+msgid "Set Task Priority"
+msgstr "Atur Prioritas Tugas"
+
+msgid "Set the your preferred display language."
+msgstr "Atur tampilan bahasa yang diinginkan."
+
+msgid "Show completed tasks in the task list?"
+msgstr "Tunjukkan tugas yang selesai pada daftar tugas?"
+
+msgid "Show due dates in the summary view?"
+msgstr "Tunjukkan batas akhir pada tampilan ringkasan?"
+
+msgid "Show priorities in the summary view?"
+msgstr "Tunjukkan prioritas pada tampilan ringkasan?"
+
+msgid "Some of Nag's configuration files are missing:"
+msgstr "Beberapa file konfigurasi Nag hilang:"
+
+msgid "Sort Direction"
+msgstr "Arah Urutan"
+
+msgid "Sort by Category"
+msgstr "Urut berdasarkan Kategori"
+
+msgid "Sort by Completion Status"
+msgstr "Urut berdasarkan Status Penyelesaian"
+
+msgid "Sort by Due Date"
+msgstr "Urut berdasarkan Batas Akhir"
+
+msgid "Sort by Name"
+msgstr "Urut berdasarkan Nama"
+
+msgid "Sort by Priority"
+msgstr "Urut berdasarkan Prioritas"
+
+msgid "Task Details"
+msgstr "Rincian Tugas"
+
+msgid "Task List"
+msgstr "Daftar Tugas"
+
+msgid "Task Name"
+msgstr "Nama Tugas"
+
+msgid "Task Note"
+msgstr "Catatan Tugas"
+
+msgid "Task Note?"
+msgstr "Catatan Tugas?"
+
+msgid "The requested task does not exist."
+msgstr "Tugas yang diminta tidak ada."
+
+msgid "The task was saved."
+msgstr "Tugas sudah disimpan."
+
+msgid "There was a problem deleting tasks."
+msgstr "Ada masalah saat menghapus tugas."
+
+msgid "There was a problem saving the task."
+msgstr "Ada masalah saat menyimpan tugas."
+
+msgid "There was a problem setting task completion status."
+msgstr "Ada masalah saat mengatur status penyelesaian tugas."
+
+msgid "There was a problem setting task priority."
+msgstr "Ada masalah saat mengatur prioritas tugas."
+
+msgid "These changes can not be undone!"
+msgstr "Perubahan ini tidak bisa dibatalkan!"
+
+msgid "This file contains preferences for Nag."
+msgstr "File ini berisi preference untuk Nag."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"File ini mengontrol stylesheet yang digunakan untuk mengatur warna dan font "
+"dalam penambahan atau penggantian default Horde."
+
+msgid ""
+"This is the main Nag configuration file. It contains options for all Nag "
+"scripts."
+msgstr ""
+"Ini adalah file utama konfigurasi Nag. File ini berisi pilihan untuk semua "
+"scripts Nag"
+
+msgid "Undo Changes"
+msgstr "Batalkan Perubahan"
+
+msgid "Unfiled"
+msgstr "Tidak di file"
+
+msgid "Unknown task"
+msgstr "Tugas tidak diketahui"
+
+msgid "Unknown"
+msgstr "Tidak diketahui"
+
+msgid "User Options"
+msgstr "Pilihan User"
+
+msgid "View Task Details"
+msgstr "Lihat Rincian Tugas"
+
+msgid "Yes"
+msgstr "Ya"
+
+msgid "You are creating a new category."
+msgstr "Anda sedang membuat kategori baru."
+
+msgid "You must choose a category."
+msgstr "Anda harus memilih kategori."
+
+msgid "You must select at least one task first."
+msgstr "Anda harus memilih dulu paling sedikit satu tugas."
+
+msgid "Your Information"
+msgstr "Informasi Anda"
+
+msgid "Your task list is empty."
+msgstr "Daftar tugas anda kosong."
+
+msgid "at"
+msgstr "di"

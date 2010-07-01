@@ -43,15 +43,19 @@ install: build
 	dh_installdirs
 
 	## The Univention patches in debian/patches are applied here:
-	QUILT_PATCH_OPTS="-d $(WEBMAILERSOURCE_DIR)" quilt --quiltrc /dev/null push -a || test $? = 2
+	# QUILT_PATCH_OPTS="-d $(WEBMAILERSOURCE_DIR)" quilt --quiltrc /dev/null push -a || test $? = 2
+	QUILT_PATCHES=debian/patches quilt --quiltrc /dev/null push -a || test $? = 2
 
 	# install
 	mkdir -p `dirname $(HORDESHARE)`
-	cp $(WEBMAILERSOURCE_DIR) $(HORDESHARE)
+	cp -r $(WEBMAILERSOURCE_DIR)/* $(HORDESHARE)
+	find $(HORDESHARE) -type d -name .pc -exec rm -rf {} \; # remove the quilt dirs of upstream-pkgs.sh
+	find $(HORDESHARE) -type d -name .svn -exec rm -rf {} \; # remove the svn dirs
 
 	# translation
 	msgfmt -o ${HORDESHARE}/kronolith/locale/de_DE/LC_MESSAGES/kronolith.mo ${HORDESHARE}/kronolith/po/de_DE.po
 
+	## Horde Demo Cfg files
 	(cd ${HORDESHARE}/config && find . ! -path "*.svn*" -type f -exec install -m 0644 {} $(D)/etc/horde/horde3/{} \;)
 	rm -R ${HORDESHARE}/config
 	#(cd $(D)/etc/horde/horde3/; for f in *.dist; do cp $$f `basename $$f .dist`; done)

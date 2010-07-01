@@ -1,0 +1,44 @@
+<?php
+/**
+ * Release focus. Possible values (multiple possible with arrays):
+ * Horde_Release::FOCUS_INITIAL - Initial announcement
+ * Horde_Release::FOCUS_MINORFEATURE - Minor feature enhancement
+ * Horde_Release::FOCUS_MAJORFEATURE - Major feature enhancement
+ * Horde_Release::FOCUS_MINORBUG - Minor bugfixes
+ * Horde_Release::FOCUS_MAJORBUG - Major bugfixes
+ * Horde_Release::FOCUS_MINORSECURITY - Minor security fixes
+ * Horde_Release::FOCUS_MAJORSECURITY - Major security fixes
+ * Horde_Release::FOCUS_DOCS - Documentation improvements
+ */
+$this->notes['fm']['focus'] = array(Horde_Release::FOCUS_MINORFEATURE, Horde_Release::FOCUS_MINORBUG);
+
+/* Mailing list release notes. */
+$this->notes['ml']['changes'] = <<<ML
+The Horde Team is pleased to announce the final release of the Dynamic
+Internet Messaging Program (DIMP) version H3 (1.1.4).
+
+DIMP (Dynamic Internet Messaging Program, or Dynamic IMP) is a PHP-based
+webmail system and a component of the Horde project.  DIMP is a version of the
+webmail client IMP utilizing AJAX-like technologies to allow a more dynamic
+user experience than traditionally offered via IMP.
+
+DIMP requires at least Horde version 3.2 and IMP version H3 (4.2) to run.
+Although not required to upgrade either Horde or IMP, it is STRONGLY
+RECOMMENDED you do as any bugfixes to core functionality will occur in
+these applications.
+
+The major changes compared to DIMP version H3 (1.1.3) are:
+    * Fixed FCKEditor size in Internet Explorer.
+    * Added Croatian and Basque translations.
+ML;
+
+/* Freshmeat release notes. */
+$this->notes['fm']['changes'] = <<<FM
+The FCKEditor is correctly sized in Internet Explorer now.
+Croatian and Basque translations have been added.
+FM;
+
+$this->notes['name'] = 'DIMP';
+$this->notes['list'] = 'imp';
+$this->notes['fm']['project'] = 'dimp';
+$this->notes['fm']['branch'] = 'Default';

@@ -1,0 +1,1820 @@
+# Croatian translations for turba.
+# Copyright (C) 2006-2008 Horde Project
+# This file is distributed under the same license as the horde package.
+# Iva Rumora <iva.rumora@zg.t-com.hr>, 2006.
+# Matej Vela <Matej.Vela@CARNet.hr>, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: horde 3\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2009-10-14 15:13+0200\n"
+"PO-Revision-Date: 2008-02-24 18:16+0100\n"
+"Last-Translator: Matej Vela <Matej.Vela@CARNet.hr>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: templates/prefs/imsp_opt.inc:40
+msgid " Add an IMSP Address Book"
+msgstr "Dodaj IMSP adresar"
+
+#: templates/prefs/imsp_opt.inc:29
+msgid " Delete IMSP Address Book"
+msgstr "Izbriši IMSP adresar"
+
+#: data.php:455
+#, php-format
+msgid "\"%s\" already exists and was not imported."
+msgstr "\"%s\" već postoji i nije uvezen."
+
+#: lib/Forms/EditContact.php:83
+#, php-format
+msgid "\"%s\" updated, but saving the uploaded file failed: %s"
+msgstr "\"%s\" ažuriran, ali snimanje prenesene datoteke nije uspjelo: %s"
+
+#: lib/Forms/EditContact.php:85 lib/Forms/EditContact.php:88
+#, php-format
+msgid "\"%s\" updated."
+msgstr "\"%s\" ažuriran."
+
+# ..zapisan kao lista, popis
+#: lib/Views/Browse.php:192
+#, php-format
+msgid "\"%s\" was not copied because it is a list."
+msgstr "\"%s\" nije kopiran jer je u obliku liste."
+
+#: lib/Views/Browse.php:190
+#, php-format
+msgid "\"%s\" was not moved because it is a list."
+msgstr "\"%s\" nije premješten jer je u obliku liste."
+
+#: config/prefs.php.dist:127
+msgid "\"Firstname Lastname\"  (ie. John Doe)"
+msgstr "\"Ime Prezime\"  (npr. Ivan Ivic)"
+
+#: config/prefs.php.dist:126
+msgid "\"Lastname, Firstname\" (ie. Doe, John)"
+msgstr "\"Prezime, Ime\" (npr. Ivan Ivic)"
+
+#: lib/Driver.php:632
+#, php-format
+msgid "%d. %s of %s"
+msgstr "%d. %s korisnika %s"
+
+#: lib/Forms/AddContact.php:91
+#, php-format
+msgid "%s added."
+msgstr "%s je dodan."
+
+#: data.php:483
+#, php-format
+msgid "%s file successfully imported."
+msgstr "%s datoteka uspješno uvezena."
+
+#: templates/list/numPager.inc:6
+#, php-format
+msgid "%s to %s of %s"
+msgstr "%s za %s od %s"
+
+#: lib/Turba.php:542
+#, php-format
+msgid "%s's Address Book"
+msgstr "%s Adresar"
+
+#: lib/Block/minisearch.php:44
+msgid "A browser that supports iframes is required"
+msgstr "Potreban je preglednik koji podržava iframe-ove"
+
+#: view.php:54
+#, php-format
+msgid "Access denied to %s"
+msgstr "Odbijen pristup za %s"
+
+#: lib/Forms/AddContact.php:25 templates/browse/actions.inc:30
+msgid "Add"
+msgstr "Dodaj"
+
+#: lib/Forms/AddContact.php:22
+msgid "Add Contact"
+msgstr "Dodaj kontakt"
+
+#: templates/prefs/addressbookselect.inc:173
+msgid "Add address book"
+msgstr "Dodaj adresar"
+
+#: lib/Forms/EditContact.php:34
+msgid "Add file"
+msgstr "Dodaj datoteku"
+
+#: templates/browse/actions.inc:30
+msgid "Add to"
+msgstr "Dodaj u "
+
+#: lib/Driver.php:2135 lib/Driver/null.php:57
+msgid "Adding contacts is not available."
+msgstr "Dodavanje kontakata nije dostupno."
+
+#: templates/addressbook_list.php:16 templates/browse/search.inc:125
+msgid "Address Book"
+msgstr "Adresar"
+
+# prikaz, izlistavanje
+#: templates/addressbook_list.php:12
+msgid "Address Book List"
+msgstr "Popis adresara"
+
+# prikaz, izlistavanje
+#: lib/Views/Browse.php:78 config/prefs.php.dist:115
+msgid "Address Book Listing"
+msgstr "Ispis adresara"
+
+#: config/prefs.php.dist:10
+msgid "Address Books"
+msgstr "Adresari"
+
+#: data.php:435
+msgid "Address book successfully purged."
+msgstr "Adresar je uspješno izbrisan."
+
+#: templates/prefs/addressbookselect.inc:167
+#: templates/prefs/addressbookselect.inc:169
+msgid "Address books that will not be displayed:"
+msgstr "Adresari koji neće biti prikazati:"
+
+#: search.php:184 templates/browse/search.inc:47
+msgid "Advanced Search"
+msgstr "Napredna pretraga"
+
+#: config/attributes.php.dist:83
+msgid "Alias"
+msgstr "Alias"
+
+#: templates/list/alphaPager.inc:7 templates/list/alphaPager.inc:10
+msgid "All"
+msgstr "Svi"
+
+#: lib/api.php:983
+msgid "Already Exists"
+msgstr "Već postoji"
+
+#: config/attributes.php.dist:106
+msgid "Anniversaries"
+msgstr "Godišnjice"
+
+#: config/attributes.php.dist:102
+msgid "Anniversary"
+msgstr "Godišnjica"
+
+#: templates/browse/javascript.inc:85
+#, php-format
+msgid "Are you sure that you want to delete %s?"
+msgstr "Jeste li sigurni da želite izbrisati %s?"
+
+#: templates/browse/javascript.inc:66
+msgid "Are you sure that you want to delete the selected contacts?"
+msgstr "Jeste li sigurni da želite izbrisati označene kontakte?"
+
+#: config/attributes.php.dist:430
+msgid "Assistant"
+msgstr "Pomoćnik"
+
+#: search.php:181 templates/browse/search.inc:46
+msgid "Basic Search"
+msgstr "Osnovna pretraga"
+
+#: lib/Driver/ldap.php:97 lib/Driver/ldap.php:100
+#, php-format
+msgid "Bind failed: (%s) %s"
+msgstr "Povezivanje neuspjelo: (%s) %s"
+
+#: config/attributes.php.dist:95
+msgid "Birthday"
+msgstr "Rođendan"
+
+#: config/attributes.php.dist:99
+msgid "Birthdays"
+msgstr "Rođendani"
+
+#: contact.php:128 templates/browse/row.inc:10
+msgid "Blank name"
+msgstr "Prazno ime"
+
+#: templates/browse/actions.inc:51
+msgid "Both"
+msgstr "Oboje"
+
+#: addressbooks/index.php:39 templates/menu.inc:8
+#: templates/addressbook_list.php:29
+msgid "Browse"
+msgstr "P_regled"
+
+#: config/attributes.php.dist:300
+msgid "Business Category"
+msgstr "Poslovna kategorija"
+
+#: data.php:101
+msgid "CSV"
+msgstr "CSV"
+
+#: lib/Object/Group.php:68
+msgid "Can't add a group to itself."
+msgstr "Nije moguće dodati grupu u samu sebe."
+
+#: lib/Forms/DeleteAddressBook.php:45 lib/Forms/DeleteAddressBook.php:54
+msgid "Cancel"
+msgstr "Odustani"
+
+#: lib/Driver/kolab.php:624
+#, php-format
+msgid "Cannot delete all address book entries for %s"
+msgstr "Nije moguće obrisati sve zapise u adresaru za %s"
+
+#: config/attributes.php.dist:388
+msgid "Category"
+msgstr "Kategorija"
+
+#: templates/browse/column_headers.inc:25
+#, php-format
+msgid "Change %s sort to %s"
+msgstr "Promijeni sortiranje iz %s u %s"
+
+#: addressbooks/index.php:41 templates/addressbook_list.php:33
+msgid "Change Permissions"
+msgstr "Promijeni dozvole"
+
+#: templates/browse/column_headers.inc:8
+msgid "Check All/None"
+msgstr "Uključi sve/ništa"
+
+#: templates/browse/column_headers.inc:8
+msgid "Check _All/None"
+msgstr "Uključi _sve/ništa"
+
+#: config/attributes.php.dist:115
+msgid "Children"
+msgstr "Djeca"
+
+#: lib/Forms/AddContact.php:36
+msgid "Choose an address book"
+msgstr "Izaberite adresar"
+
+#: templates/prefs/addressbookselect.inc:163
+msgid "Choose which address books to display, and in what order:"
+msgstr "Odaberite adresar koji želite prikazati i kojim redoslijedom:"
+
+#: config/prefs.php.dist:11
+msgid "Choose which address books to use."
+msgstr "Izaberite adresar"
+
+#: templates/prefs/columnselect.inc:41
+msgid ""
+"Click an address book to sort its columns. Drag columns to re-arrange them. "
+"Check a column to enable it."
+msgstr ""
+"Kliknite na adresar ako želite sortirati stupce. Povucite stupac ako ga "
+"želite premjestiti. Kliknite na stupac ako ga želite uključiti."
+
+#: templates/block/minisearch.inc:26
+msgid "Close"
+msgstr "Zatvori"
+
+#: templates/browse/header.inc:7
+msgid "Close Search"
+msgstr "Zatvori pretragu"
+
+#: config/prefs.php.dist:17
+msgid "Column Options"
+msgstr "Opcije stupca"
+
+#: templates/data/export.inc:12 templates/data/import.inc:13
+msgid "Comma separated values"
+msgstr "Vrijednosti odvojene zarezom."
+
+#: templates/data/export.inc:13
+msgid "Comma separated values (Microsoft Outlook)"
+msgstr "Vrijednosti odvojene zarezom (Microsoft Outlook)"
+
+#: config/attributes.php.dist:528
+msgid "Common Address Extended"
+msgstr "Zajednička proširena adresa"
+
+# Rodni grad, boravište
+#: config/attributes.php.dist:546
+msgid "Common City"
+msgstr "Zajednički grad"
+
+#: config/attributes.php.dist:564
+msgid "Common Country"
+msgstr "Zajednička država"
+
+#: config/attributes.php.dist:472
+msgid "Common Phone"
+msgstr "Zajednički telefon"
+
+#: config/attributes.php.dist:540
+msgid "Common Post Office Box"
+msgstr "Zajednički poštanski pretinac"
+
+#: config/attributes.php.dist:558
+msgid "Common Postal Code"
+msgstr "Zajednički poštanski broj"
+
+#: config/attributes.php.dist:552
+msgid "Common State/Province"
+msgstr "Zajednička županija/regija"
+
+#: config/attributes.php.dist:534
+msgid "Common Street"
+msgstr "Zajednička ulica"
+
+#: config/attributes.php.dist:497
+msgid "Common Video Call"
+msgstr "Zajednički video poziv"
+
+#: config/sources.php.dist:286 config/sources.php.dist:1013
+msgid "Communications"
+msgstr "Komuniciranje"
+
+#: config/attributes.php.dist:306
+msgid "Company"
+msgstr "Tvrtka"
+
+#: config/attributes.php.dist:235
+msgid "Company Address"
+msgstr "Adresa tvrtke"
+
+#: scripts/import_squirrelmail_file_abook.php:114
+#: scripts/import_squirrelmail_sql_abook.php:125 lib/api.php:587
+#: lib/api.php:641 lib/api.php:694 lib/api.php:742 lib/api.php:797
+#: lib/api.php:857 lib/api.php:908 lib/api.php:1046 lib/api.php:1108
+#: lib/api.php:1179 lib/api.php:1246 lib/api.php:1366 lib/api.php:1610
+#: lib/api.php:1696 lib/api.php:1848
+#, php-format
+msgid "Connection failed: %s"
+msgstr "Povezivanje neuspjelo: %s"
+
+#: lib/Driver/ldap.php:68
+msgid "Connection failure"
+msgstr "Povezivanje neuspjelo."
+
+#: lib/Block/minisearch.php:3 lib/Block/minisearch.php:26
+msgid "Contact Search"
+msgstr "Pretraga kontakata"
+
+#: config/sources.php.dist:929
+msgid "Contacts"
+msgstr "Kontakti"
+
+#: templates/list/numPager.inc:3
+msgid "Contacts displayed:"
+msgstr "Prikazano zapisa:"
+
+#: lib/Views/Browse.php:346
+#, php-format
+msgid "Contacts in list: %s"
+msgstr "Kontakti na popisu: %s"
+
+#: templates/browse/actions.inc:18
+msgid "Copy"
+msgstr "Kopiraj"
+
+#: lib/Forms/CreateAddressBook.php:39
+msgid "Create"
+msgstr "Kreiraj"
+
+#: lib/Forms/CreateAddressBook.php:34
+msgid "Create Address Book"
+msgstr "Kreiraj adresar"
+
+#: templates/addressbook_list.php:8
+msgid "Create a new Address Book"
+msgstr "Kreiraj novi adresar"
+
+#: lib/ListView.php:448
+msgid "Create a new Contact List in:"
+msgstr "Kreiraj novu kontakt-listu u:"
+
+#: lib/Views/Contact.php:80
+msgid "Created"
+msgstr "Kreirano"
+
+#: contact.php:95
+msgid "De_lete"
+msgstr "Obriši"
+
+#: addressbooks/index.php:42 lib/Views/DeleteContact.php:58
+#: lib/Forms/DeleteAddressBook.php:45 templates/addressbook_list.php:35
+#: templates/browse/actions.inc:3
+msgid "Delete"
+msgstr "Izbriši"
+
+#: lib/Views/DeleteContact.php:28 lib/Forms/DeleteAddressBook.php:40
+#, php-format
+msgid "Delete %s"
+msgstr "Obriši %s"
+
+#: lib/api.php:685
+msgid "Delete denied."
+msgstr "Brisanje odbijeno."
+
+#: lib/Driver/ldap.php:326
+#, php-format
+msgid "Delete failed: (%s) %s"
+msgstr "Brisanje neuspjelo: (%s) %s"
+
+#: lib/Driver.php:2143 lib/Driver/null.php:62
+msgid "Deleting contacts is not available."
+msgstr "Brisanje kontakata nije dostupno."
+
+#: delete.php:40
+msgid "Deletion failed"
+msgstr "Brisanje neuspjelo"
+
+#: config/attributes.php.dist:312
+msgid "Department"
+msgstr "Odjel"
+
+#: lib/Forms/CreateAddressBook.php:37 lib/Forms/EditAddressBook.php:44
+msgid "Description"
+msgstr "Opis"
+
+#: config/prefs.php.dist:24
+msgid "Display"
+msgstr "Prikaz"
+
+# ili Prikaži opcije ?
+#: config/prefs.php.dist:9 config/prefs.php.dist:16 config/prefs.php.dist:23
+#: config/prefs.php.dist:30
+msgid "Display Options"
+msgstr "Opcije prikaza"
+
+#: lib/Object.php:360
+msgid "Download"
+msgstr "Preuzimanje"
+
+# posjetnicu
+#: templates/browse/row.inc:27 templates/browse/row.inc:28
+#: templates/browse/contactrow.inc:25
+msgid "Download vCard"
+msgstr "Preuzimi vCard"
+
+#: addressbooks/index.php:40 templates/addressbook_list.php:31
+#: templates/browse/row.inc:40 templates/browse/row.inc:41
+#: templates/browse/contactrow.inc:33 templates/browse/column_headers.inc:11
+#: templates/browse/actions.inc:6
+msgid "Edit"
+msgstr "Uredi"
+
+#: edit.php:91 templates/browse/contactrow.inc:33
+#, php-format
+msgid "Edit \"%s\""
+msgstr "Uredi \"%s\""
+
+#: lib/Views/EditContact.php:35 lib/Forms/EditAddressBook.php:40
+#, php-format
+msgid "Edit %s"
+msgstr "Uredi %s"
+
+# E-pošta ?
+#: config/attributes.php.dist:249
+msgid "Email"
+msgstr "E-mail"
+
+# E-pošta ?
+#: config/attributes.php.dist:255
+msgid "Emails"
+msgstr "E-mailovi"
+
+#: lib/Views/Browse.php:270 lib/Views/Browse.php:310
+#, php-format
+msgid "Error adding %d contact(s) to list."
+msgstr "Greška prilikom dodavanja %d kontakta/ata na listu."
+
+#: lib/Views/Browse.php:272 lib/Views/Browse.php:312
+#, php-format
+msgid "Error adding %d of %d requested contact(s) to list."
+msgstr "Greška prilikom dodavanja %d od %d kontakta/ata na listu."
+
+#: lib/Views/Browse.php:134
+#, php-format
+msgid "Error deleting %d contact(s)."
+msgstr "Greška prilikom brisanja %d kontakta/ata."
+
+#: lib/Views/Browse.php:136
+#, php-format
+msgid "Error deleting %d of %d requested contacts(s)."
+msgstr "Greška prilikom brisanja %d od %d kontakta/ata."
+
+#: lib/Views/Browse.php:117
+#, php-format
+msgid "Error removing %d contact(s) from list."
+msgstr "Greška prilikom uklanjanja %d kontakta/ata sa liste."
+
+#: lib/Views/Browse.php:119
+#, php-format
+msgid "Error removing %d of %d requested contact(s) from list."
+msgstr "Greška prilikom uklanjanja %d od %d kontakta/ata sa liste."
+
+#: lib/api.php:748
+#, php-format
+msgid "Error searching the address book: %s"
+msgstr "Greška prilikom pretraživanja adresara: %s"
+
+#: templates/data/export.inc:42 templates/browse/actions.inc:10
+msgid "Export"
+msgstr "Izvezi"
+
+#: templates/data/export.inc:6
+msgid "Export Address Book"
+msgstr "Izvezi adresar"
+
+#: templates/data/export.inc:22
+msgid "Export only the selected contacts."
+msgstr "Izvezi samo označene kontakte."
+
+#: templates/data/export.inc:28
+msgid "Export the following address book completely."
+msgstr "U potpunosti izvezi sljedeći adresar."
+
+#: add.php:42 data.php:247 data.php:346 data.php:424 search.php:106
+#: lib/Views/Browse.php:84 lib/Views/Browse.php:152 lib/Views/Browse.php:180
+#, php-format
+msgid "Failed to access the address book: %s"
+msgstr "Pristup adresaru nije uspio: %s"
+
+#: lib/Views/Browse.php:211
+#, php-format
+msgid "Failed to add %s to %s: %s"
+msgstr "Neuspjelo dodavanje %s u %s: %s"
+
+#: lib/Views/Browse.php:352
+msgid "Failed to browse list"
+msgstr "Neuspjelo pregledavanje liste"
+
+#: lib/Views/Browse.php:383
+msgid "Failed to browse the directory"
+msgstr "Neuspjelo pregledavanje direktorija"
+
+#: lib/Driver/ldap.php:359
+#, php-format
+msgid "Failed to change name: (%s) %s; Old DN = %s, New DN = %s, Root = %s"
+msgstr "Neuspjela promjena imena: (%s) %s; Old DN = %s, New DN = %s, Root = %s"
+
+#: lib/Views/Browse.php:186
+#, php-format
+msgid "Failed to find object to be added: %s"
+msgstr "Neuspio pronalazak objekta za dodavanje: %s"
+
+#: search.php:175
+msgid "Failed to search the address book"
+msgstr "Neuspjelo pretraživanje adresara"
+
+#: data.php:262
+#, php-format
+msgid "Failed to search the directory: %s"
+msgstr "Neuspjelo pretraživanje direktorija: %s"
+
+#: config/sources.php.dist:626
+msgid "Favourite Recipients"
+msgstr "Omiljeni primatelji"
+
+#: config/attributes.php.dist:276
+msgid "Fax"
+msgstr "Fax"
+
+#: lib/Forms/Contact.php:41
+msgid "Files"
+msgstr "Datoteke"
+
+#: templates/browse/search.inc:104
+msgid "Find"
+msgstr "Pronađi"
+
+#: lib/Forms/EditContact.php:128 lib/Forms/EditContact.php:167
+msgid "Finish"
+msgstr "Završi"
+
+#: config/attributes.php.dist:53
+msgid "First Name"
+msgstr "Ime"
+
+#: config/attributes.php.dist:350
+msgid "Freebusy URL"
+msgstr "Slobodan/zauzet URL"
+
+#: templates/browse/search.inc:98
+msgid "From"
+msgstr "Iz"
+
+#: config/attributes.php.dist:436
+msgid "Gender"
+msgstr "Spol"
+
+#: config/sources.php.dist:852
+msgid "Global Address Book"
+msgstr "Globalni adresar"
+
+#: templates/browse/row.inc:61 templates/browse/contactrow.inc:44
+msgid "Group"
+msgstr "Grupa"
+
+#: config/attributes.php.dist:135
+msgid "Home Address"
+msgstr "Adresa (osobno)"
+
+#: config/attributes.php.dist:598
+msgid "Home Address Extended"
+msgstr "Proširena adresa (osobno)"
+
+# Rodni grad, boravište
+#: config/attributes.php.dist:153
+msgid "Home City"
+msgstr "Grad (osobno)"
+
+#: config/attributes.php.dist:171
+msgid "Home Country"
+msgstr "Država (osobno)"
+
+#: config/attributes.php.dist:466
+msgid "Home Email"
+msgstr "E-mail (osobna adresa)"
+
+#: config/attributes.php.dist:482
+msgid "Home Fax"
+msgstr "Faks (osobno)"
+
+#: config/attributes.php.dist:604
+msgid "Home Latitude"
+msgstr "Zemljopisna širina (osobno)"
+
+#: config/attributes.php.dist:609
+msgid "Home Longitude"
+msgstr "Zemljopisna dužina (osobno)"
+
+#: config/attributes.php.dist:492
+msgid "Home Mobile Phone"
+msgstr "Mobilni telefon (osobno)"
+
+#: config/attributes.php.dist:261
+msgid "Home Phone"
+msgstr "Telefon (osobno)"
+
+#: config/attributes.php.dist:147
+msgid "Home Post Office Box"
+msgstr "Poštanski pretinac (osobno)"
+
+#: config/attributes.php.dist:165
+msgid "Home Postal Code"
+msgstr "Poštanski broj (osobno)"
+
+#: config/attributes.php.dist:159
+msgid "Home State/Province"
+msgstr "Županija/regija (osobno)"
+
+# adresa
+#: config/attributes.php.dist:141
+msgid "Home Street Address"
+msgstr "Ulica (osobno)"
+
+#: config/attributes.php.dist:507
+msgid "Home Video Call"
+msgstr "Video poziv (osobno)"
+
+#: config/attributes.php.dist:592
+msgid "Home Website URL"
+msgstr "Web stranica (osobno)"
+
+#: config/sources.php.dist:743
+msgid "IMSP"
+msgstr "IMSP"
+
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Address Book, Step %d"
+msgstr "Uvezi adresar, korak %d"
+
+#: data.php:501
+msgid "Import/Export Address Books"
+msgstr "Uvezi/izvezi adresar"
+
+#: config/attributes.php.dist:412
+msgid "Initials"
+msgstr "Inicijali"
+
+#: config/attributes.php.dist:418
+msgid "Instant Messenger"
+msgstr "Instant-poruke"
+
+#: lib/api.php:1041 lib/api.php:1174
+msgid "Invalid ID"
+msgstr "Neispravan ID"
+
+#: scripts/import_squirrelmail_file_abook.php:107
+#: scripts/import_squirrelmail_sql_abook.php:118 lib/api.php:373
+#: lib/api.php:737 lib/api.php:792 lib/api.php:852 lib/api.php:901
+#: lib/api.php:1037 lib/api.php:1170 lib/api.php:1236 lib/api.php:1831
+#, php-format
+msgid "Invalid address book: %s"
+msgstr "Neispravni adresar: %s"
+
+#: lib/api.php:1240
+msgid "Invalid contact unique ID"
+msgstr "Neispravna jedinstvena oznaka kontakta"
+
+#: lib/api.php:1835 lib/api.php:1921 lib/api.php:1982
+msgid "Invalid email"
+msgstr "Neispravna e-pošta"
+
+#: lib/api.php:1843
+msgid "Invalid entry"
+msgstr "Neispravni zapis"
+
+#: lib/Driver/ldap.php:322
+msgid "Invalid key specified."
+msgstr "Naveden je neispravni ključ."
+
+#: lib/api.php:1839
+msgid "Invalid name"
+msgstr "Neispravno ime"
+
+#: config/attributes.php.dist:288
+msgid "Job Title"
+msgstr "Opis posla"
+
+#: config/attributes.php.dist:406
+msgid "Kolab Home Server"
+msgstr "Izvorni Kolab poslužitelj"
+
+#: lib/Driver/ldap.php:64
+msgid ""
+"LDAP support is required but the LDAP module is not available or not loaded."
+msgstr ""
+"Potrebna je LDAP podrška, ali LDAP modul nije dostupan ili nije učitan."
+
+#: data.php:106 templates/data/export.inc:16 templates/data/import.inc:18
+msgid "LDIF Address Book"
+msgstr "LDIF adresar"
+
+#: config/attributes.php.dist:442
+msgid "Language"
+msgstr "Jezik"
+
+#: lib/Views/Contact.php:91
+msgid "Last Modified"
+msgstr "Posljednja izmjena"
+
+#: config/attributes.php.dist:59
+msgid "Last Name"
+msgstr "Prezime"
+
+#: config/attributes.php.dist:448
+msgid "Latitude"
+msgstr "Zemljopisna širina"
+
+# Popis
+#: templates/browse/column_headers.inc:17
+msgid "List"
+msgstr "Lista"
+
+#: config/sources.php.dist:281 config/sources.php.dist:1009
+msgid "Location"
+msgstr "Lokacija"
+
+#: config/attributes.php.dist:324
+msgid "Logo"
+msgstr "Logotip"
+
+#: config/attributes.php.dist:330
+msgid "Logo MIME Type"
+msgstr "MIME tip logotipa"
+
+#: config/attributes.php.dist:453
+msgid "Longitude"
+msgstr "Zemljopisna dužina"
+
+#: lib/api.php:657
+msgid "Malformed request."
+msgstr "Neispravan zahtjev."
+
+#: addressbooks/index.php:46 templates/addressbook_list.php:2
+msgid "Manage Address Books"
+msgstr "Upravljanje adresarima"
+
+#: config/attributes.php.dist:424
+msgid "Manager"
+msgstr "Nadređeni"
+
+#: contact.php:109
+msgid "Mark this as your own contact"
+msgstr "Označi kao moj vlastiti kontakt"
+
+#: templates/browse/search.inc:109
+msgid "Matching"
+msgstr "Podudarajući"
+
+#: lib/api.php:334
+msgid "Maximum Number of Contacts"
+msgstr "Maksimalan broj kontakata"
+
+#: config/prefs.php.dist:97
+msgid "Maximum number of pages"
+msgstr "Maksimalan broj stranica"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "Lista izbornika"
+
+#: config/attributes.php.dist:65
+msgid "Middle Names"
+msgstr "Srednja imena"
+
+#: lib/Driver/ldap.php:352
+msgid "Missing DN in LDAP source configuration."
+msgstr "U LDAP izvornoj konfiguraciji nedostaje DN."
+
+#: config/attributes.php.dist:271
+msgid "Mobile Phone"
+msgstr "Mobilni telefon"
+
+#: lib/Driver/ldap.php:381 lib/Driver/ldap.php:397
+#, php-format
+msgid "Modify failed: (%s) %s"
+msgstr "Izmjena neuspjela: (%s) %s"
+
+#: templates/browse/header.inc:8
+msgid "More Options..."
+msgstr "Još opcija..."
+
+# zapisa
+#: lib/api.php:1959
+msgid "More than 1 entry found"
+msgstr "Pronađeno je više od 1 rezultata."
+
+#: templates/browse/actions.inc:16
+msgid "Move"
+msgstr "Premjesti"
+
+#: templates/prefs/addressbookselect.inc:184
+msgid "Move left"
+msgstr "Pomakni ulijevo"
+
+#: templates/prefs/addressbookselect.inc:186
+msgid "Move right"
+msgstr "Pomakni udesno"
+
+#: data.php:104 templates/data/import.inc:16
+msgid "Mulberry Address Book"
+msgstr "Mulberry adresar"
+
+#: lib/api.php:1867
+#, php-format
+msgid ""
+"Multiple persons with address [%s], but none with name [%s] already exist"
+msgstr "Postoji više osoba s adresom [%s], ali niti jedna s imenom [%s]."
+
+#: config/sources.php.dist:197
+msgid "My Address Book"
+msgstr "Moj adresar"
+
+#: lib/Forms/CreateAddressBook.php:36 lib/Forms/EditAddressBook.php:43
+#: config/attributes.php.dist:47
+msgid "Name"
+msgstr "Ime"
+
+#: config/prefs.php.dist:31
+msgid "Name Format"
+msgstr "Format imena"
+
+#: config/attributes.php.dist:71
+msgid "Name Prefixes"
+msgstr "Tekst prije imena"
+
+#: config/attributes.php.dist:77
+msgid "Name Suffixes"
+msgstr "Tekst nakon imena"
+
+#: templates/browse/search_vbook.inc:6
+msgid "Name:"
+msgstr "Ime:"
+
+#: add.php:70 lib/Block/tree_menu.php:28
+msgid "New Contact"
+msgstr "Novi kontakt"
+
+#: lib/Forms/EditContact.php:119 lib/Forms/EditContact.php:126
+#: lib/Forms/EditContact.php:181 templates/data/import.inc:46
+msgid "Next"
+msgstr "Sljedeće"
+
+#: config/attributes.php.dist:89
+msgid "Nickname"
+msgstr "Nadimak"
+
+#: lib/api.php:1962 lib/api.php:2022
+#, php-format
+msgid "No %s entry found for %s"
+msgstr "Nema pronađenih zapisa %s za %s"
+
+#: data.php:93
+msgid ""
+"No Address Books are currently available. Import and Export is disabled."
+msgstr "Trenutno nije dostupan nijedan adresar. Uvoz i Izvoz su isključeni."
+
+#: search.php:92
+msgid "No Address Books are currently available. Searching is disabled."
+msgstr "Trenutno nije dostupan nijedan adresar. Pretraživanje je isključeno."
+
+#: lib/api.php:731 lib/api.php:786 lib/api.php:846 lib/api.php:1032
+#: lib/api.php:1165 lib/api.php:1231
+msgid "No address book specified"
+msgstr "Nije zadan adresar"
+
+#: minisearch.php:80
+msgid "No contacts found"
+msgstr "Nije pronađen nijedan kontakt"
+
+#: templates/browse/column_headers.inc:44
+msgid "No contacts match the current filter."
+msgstr "Nijedan kontakt ne odgovara trenutnom filteru."
+
+#: lib/ListView.php:255
+msgid "No matching contacts"
+msgstr "Nijedan kontakt ne zadovoljava uvjete."
+
+#: lib/Driver/favourites.php:124
+msgid "No source for favourite recipients exists."
+msgstr "Ne postoji izvor za omiljene primatelje."
+
+#: lib/api.php:935 lib/api.php:1277
+msgid "No vCard data was found."
+msgstr "vCard podaci nisu pronađeni."
+
+#: templates/list/numPager.inc:8
+msgid "None"
+msgstr "Ništa"
+
+#: lib/Views/DeleteContact.php:26 lib/Views/EditContact.php:33
+#: lib/Views/Contact.php:49
+msgid "Not Found"
+msgstr "Nije pronađeno"
+
+#: edit.php:48 deletefile.php:22
+msgid "Not found"
+msgstr "Nije pronađeno"
+
+#: config/attributes.php.dist:338
+msgid "Notes"
+msgstr "Bilješke"
+
+#: config/prefs.php.dist:105
+msgid "Number of items per page"
+msgstr "Broj elemenata po stranici"
+
+#: lib/api.php:1083 lib/api.php:1302
+msgid "Object not found"
+msgstr "Objekt nije pronađen"
+
+#: lib/Driver/kolab.php:1207
+#, php-format
+msgid "Object with UID %s does not exist!"
+msgstr "Objekt s jedinstvenom oznakom %s ne postoji!"
+
+#: config/attributes.php.dist:294
+msgid "Occupation"
+msgstr "Zanimanje"
+
+# office?
+#: config/attributes.php.dist:318
+msgid "Office"
+msgstr "Ured"
+
+#: templates/prefs/imsp_opt.inc:22
+msgid ""
+"Once you save this option page, the address book will be permanently "
+"deleted. If this is not what you want, then you must change your selection "
+"to \"None\"."
+msgstr ""
+"Kad spremite ove opcije, adresar će biti trajno obrisan.Ako to nije ono što "
+"želite, morate promijeniti Vaš izbor u \"Ništa\"."
+
+#: lib/api.php:1285
+msgid "Only one vcard supported."
+msgstr "Samo jedan vcard podržan."
+
+#: config/sources.php.dist:288 config/sources.php.dist:1015
+msgid "Organization"
+msgstr "Organizacija"
+
+#: config/sources.php.dist:289 config/sources.php.dist:1017
+msgid "Other"
+msgstr "Ostalo"
+
+#: config/attributes.php.dist:356
+msgid "PGP Public Key"
+msgstr "PGP javni ključ"
+
+#: config/attributes.php.dist:523
+msgid "PTT"
+msgstr "PTT"
+
+#: config/attributes.php.dist:281
+msgid "Pager"
+msgstr "Pager"
+
+#: lib/Views/DeleteContact.php:57
+msgid "Permanently delete this contact?"
+msgstr "Želite li nepovratno izbrisati ovaj kontakt?"
+
+#: deletefile.php:36 lib/Driver.php:817 lib/api.php:912 lib/api.php:1852
+#: lib/Driver/sql.php:521
+msgid "Permission denied"
+msgstr "Pristup odbijen"
+
+#: config/sources.php.dist:278 config/sources.php.dist:1005
+msgid "Personal"
+msgstr "Osobno"
+
+#: config/attributes.php.dist:121
+msgid "Photo"
+msgstr "Slika"
+
+#: config/attributes.php.dist:127
+msgid "Photo MIME Type"
+msgstr "MIME tip slike"
+
+#: data.php:105 templates/data/import.inc:17
+msgid "Pine Address Book"
+msgstr "Pine adresar"
+
+#: templates/browse/javascript.inc:27
+msgid "Please name the new contact list:"
+msgstr "Molimo imenujte novu kontakt-listu:"
+
+#: lib/Forms/EditContact.php:122 lib/Forms/EditContact.php:125
+#: lib/Forms/EditContact.php:174
+msgid "Previous"
+msgstr "Prethodni"
+
+# Tražilice
+#: lib/Driver/ldap.php:202
+#, php-format
+msgid "Query failed: (%s) %s"
+msgstr "Upit neuspio: (%s) %s"
+
+#: lib/Driver/ldap.php:247 lib/Driver/ldap.php:255 lib/Driver/ldap.php:491
+#, php-format
+msgid "Read failed: (%s) %s"
+msgstr "Čitanje nije uspjelo: (%s) %s"
+
+#: lib/Driver.php:2127 lib/Driver/null.php:52
+msgid "Reading contacts is not available."
+msgstr "Čitanje kontakata nije dostupno."
+
+#: lib/Forms/DeleteAddressBook.php:43
+#, php-format
+msgid ""
+"Really delete the address book \"%s\"? This cannot be undone and all "
+"contacts in this address book will be permanently removed."
+msgstr ""
+"Želite li stvarno obrisati adresar \"%s\"? Ovo se ne može opozvati - svi "
+"kontakti u ovom adresaru će biti nepovratno obrisani."
+
+#: templates/prefs/addressbookselect.inc:175
+msgid "Remove address book"
+msgstr "Ukloni adresar"
+
+#: templates/browse/actions.inc:3
+msgid "Remove from this list"
+msgstr "Ukloni s ove liste"
+
+#: lib/Driver.php:2165
+msgid ""
+"Removing user data is not supported in the current address book storage "
+"driver."
+msgstr ""
+"Trenutna metoda pohrane adresara ne podržava brisanje korisničkih podataka."
+
+#: templates/data/import.inc:22
+msgid ""
+"Replace existing address book with the imported one? <strong>Warning: This "
+"deletes all entries in your current address book.</strong>"
+msgstr ""
+"Zamijeniti postojeći adresar s uvezenim? <strong>Upozorenje: Ovime ćete "
+"izbrisati sve kontakte trenutnog adresara.</strong>"
+
+#: lib/Driver.php:711
+msgid "Requested object not found."
+msgstr "Traženi objekti nisu pronađeni."
+
+# resetiraj, ..na zadane postavke
+#: templates/browse/search.inc:120
+msgid "Reset to Defaults"
+msgstr "Povrati na izvorne postavke"
+
+#: config/attributes.php.dist:362
+msgid "S/MIME Public Certificate"
+msgstr "S/MIME javni certifikat"
+
+#: config/attributes.php.dist:517
+msgid "SIP"
+msgstr "SIP"
+
+#: lib/Driver/ldap.php:89
+#, php-format
+msgid "STARTTLS failed: (%s) %s"
+msgstr "STARTTLS neuspio: (%s) %s"
+
+#: lib/Forms/EditAddressBook.php:46 lib/Forms/EditContact.php:26
+msgid "Save"
+msgstr "Spremi"
+
+#: templates/browse/search_vbook.inc:4
+msgid "Save search as a virtual address book?"
+msgstr "Snimiti pretragu kao virtualni adresar?"
+
+#: lib/Driver.php:2153 lib/Driver/null.php:67
+msgid "Saving contacts is not available."
+msgstr "Spremanje kontakata nije dostupno."
+
+#: lib/Block/tree_menu.php:62 templates/block/minisearch.inc:25
+#: templates/browse/search.inc:111 templates/browse/search.inc:119
+#: templates/browse/header.inc:3 config/prefs.php.dist:116
+msgid "Search"
+msgstr "Pretraga"
+
+#: lib/api.php:1615
+msgid "Search failed"
+msgstr "Pretraga nije uspjela"
+
+# Tražilice
+#: lib/api.php:1857 lib/api.php:1863 lib/api.php:1872 lib/api.php:1885
+#, php-format
+msgid "Search failed: %s"
+msgstr "Pretraga nije uspjela: %s"
+
+# Tražilice
+#: templates/block/minisearch.inc:23
+msgid "Search for: "
+msgstr "Traži: "
+
+# nije moguća
+#: lib/Driver.php:2112 lib/Driver/null.php:47
+msgid "Searching is not available."
+msgstr "Pretraživanje nije dostupno."
+
+#: templates/browse/row.inc:52
+msgid "Select contact"
+msgstr "Odaberite kontakt"
+
+#: templates/data/export.inc:33
+msgid "Select the address book to export from:"
+msgstr "Odaberite adresar za izvoz:"
+
+#: templates/data/import.inc:27
+msgid "Select the address book to import to:"
+msgstr "Odaberite adresar za uvoz:"
+
+#: config/prefs.php.dist:61
+msgid ""
+"Select the address books that should be used for synchronization with "
+"external devices:"
+msgstr "Odaberite adresare koje želite sinkronizirati s vanjskim uređajima:"
+
+#: templates/data/import.inc:36
+msgid "Select the charset of the source file:"
+msgstr "Izaberite set znakova izvorne datoteke:"
+
+#: templates/data/export.inc:10
+msgid "Select the export format:"
+msgstr "Izaberite format izvoza:"
+
+#: templates/data/import.inc:44
+msgid "Select the file to import:"
+msgstr "Odaberite datoteku za uvoz:"
+
+#: templates/data/import.inc:11
+msgid "Select the format of the source file:"
+msgstr "Izaberite format izvorne datoteke:"
+
+#: config/prefs.php.dist:125
+msgid "Select the format used to display names:"
+msgstr "Odaberite format za prikazivanje imena:"
+
+#: config/prefs.php.dist:25
+msgid "Select view to display by default and paging options."
+msgstr "Odaberite podrazumijevani pregled i opcije straničenja."
+
+#: config/prefs.php.dist:18
+msgid "Select which fields to display in the address lists."
+msgstr "Odaberite koja polja želite da se prikazuju u popisu adresa."
+
+#: config/prefs.php.dist:32
+msgid "Select which format to display names."
+msgstr "Odaberite koji format želite za prikazivanje imena."
+
+#: lib/Forms/AddContact.php:42
+#, php-format
+msgid "Selected address book \"%s\"."
+msgstr "Izabrani adresar \"%s\"."
+
+#: templates/browse/actions.inc:49
+#, php-format
+msgid "Show %s"
+msgstr "Prikaži %s"
+
+#: templates/browse/actions.inc:51
+msgid "Show Both"
+msgstr "Prikaži oboje"
+
+#: templates/browse/actions.inc:50
+msgid "Show Contacts"
+msgstr "Prikaži kontakte"
+
+#: templates/browse/actions.inc:49
+msgid "Show Lists"
+msgstr "Prikaži liste"
+
+#: lib/ListView.php:323 lib/ListView.php:329
+msgid "Sort Direction"
+msgstr "Smjer sortiranja"
+
+#: templates/browse/column_headers.inc:32
+#, php-format
+msgid "Sort by %s"
+msgstr "Sortiraj prema %s"
+
+#: templates/browse/column_headers.inc:27
+#, php-format
+msgid "Sort by %s only"
+msgstr "Sortiraj samo prema %s"
+
+#: templates/browse/column_headers.inc:30
+#, php-format
+msgid "Sort by %s, then by %s"
+msgstr "Sortiraj prema %s, potom prema %s"
+
+#: templates/menu.inc:6
+msgid "Source:"
+msgstr "Izvor:"
+
+#: lib/api.php:327
+msgid "Sources"
+msgstr "Izvori"
+
+#: config/attributes.php.dist:109
+msgid "Spouse"
+msgstr "Supružnik"
+
+#: lib/Views/Browse.php:268 lib/Views/Browse.php:308
+#, php-format
+msgid "Successfully added %d contact(s) to list."
+msgstr "Uspješno dodavanje %d kontakta/ata na listu."
+
+#: lib/Views/Browse.php:215
+#, php-format
+msgid "Successfully added %s to %s"
+msgstr "%s je uspješno dodan na %s"
+
+#: lib/Views/Browse.php:298
+#, php-format
+msgid "Successfully created the contact list \"%s\"."
+msgstr "Uspješno kreiranje kontakt-liste \"%s\"."
+
+#: search.php:150
+#, php-format
+msgid "Successfully created virtual address book \"%s\""
+msgstr "Uspješno kreiran virtualni adresar \"%s\"."
+
+#: lib/Views/Browse.php:132
+#, php-format
+msgid "Successfully deleted %d contact(s)."
+msgstr "Uspješno brisanje %d kontakta/ata."
+
+#: lib/Views/Browse.php:115
+#, php-format
+msgid "Successfully removed %d contact(s) from list."
+msgstr "Uspješno uklanjanje %d kontakta/ata sa liste."
+
+#: data.php:102
+msgid "TSV"
+msgstr "TSV"
+
+#: templates/data/export.inc:14 templates/data/import.inc:14
+msgid "Tab separated values"
+msgstr "Vrijednosti odvojene tabulatorom"
+
+#: templates/browse/actions.inc:20
+msgid "Target Address Book"
+msgstr "Ciljni adresar"
+
+#: templates/browse/actions.inc:31
+msgid "Target Contact List"
+msgstr "Ciljna kontakt-lista"
+
+#: data.php:426
+#, php-format
+msgid "The %s file didn't contain any contacts."
+msgstr "Datoteka %s ne sadrži kontakte."
+
+#: view.php:17
+msgid "The VFS backend needs to be configured to enable attachment uploads."
+msgstr "Za dodavanje priloga mora biti konfiguriran VFS backend."
+
+#: lib/Driver.php:2083
+#, php-format
+msgid "The address book \"%s\" does not exist."
+msgstr "Adresar \"%s\" ne postoji."
+
+#: addressbooks/create.php:32
+#, php-format
+msgid "The address book \"%s\" has been created."
+msgstr "Adresar \"%s\" je kreiran."
+
+#: data.php:433
+#, php-format
+msgid "The address book could not be purged: %s"
+msgstr "Adresar nije moguće izbrisati: %s"
+
+#: lib/api.php:1103
+msgid "The address book with your own contact doesn't exist anymore."
+msgstr "Adresar s Vašim vlastitim kontaktom više ne postoji."
+
+#: addressbooks/delete.php:50
+#, php-format
+msgid "The addressbook \"%s\" has been deleted."
+msgstr "Adresar \"%s\" je obrisan."
+
+#: addressbooks/edit.php:44
+#, php-format
+msgid "The addressbook \"%s\" has been renamed to \"%s\"."
+msgstr "Adresar \"%s\" je preimenovan u \"%s\"."
+
+#: addressbooks/edit.php:46
+#, php-format
+msgid "The addressbook \"%s\" has been saved."
+msgstr "Adresar \"%s\" je spremljen."
+
+#: vcard.php:19 view.php:28 contact.php:23
+msgid "The contact you requested does not exist."
+msgstr "Kontakt koji ste tražili ne postoji."
+
+#: deletefile.php:46
+#, php-format
+msgid "The file \"%s\" has been deleted."
+msgstr "Datoteka \"%s\" je obrisana."
+
+#: data.php:406
+msgid "The import can be finished despite the warnings."
+msgstr "Uvoz može biti završen usprkos upozorenjima."
+
+#: lib/Views/DeleteContact.php:36 lib/Views/EditContact.php:43
+#: lib/Views/Contact.php:59
+msgid "The requested contact was not found."
+msgstr "Traženi kontakt nije pronađen."
+
+#: lib/Views/Browse.php:80
+msgid "There are no browseable address books."
+msgstr "Nema adresara dostupnih za pregledavanje."
+
+#: add.php:32
+msgid ""
+"There are no writeable address books. None of the available address books "
+"are configured to allow you to add new entries to them. If you believe this "
+"is an error, please contact your system administrator."
+msgstr ""
+"Niti jedan adresar nije dostupan za pisanje, odnosno dodavanje novih "
+"kontakata. Ako mislite da se radi o greški, molimo kontaktirajte svojeg "
+"administratora sustava."
+
+#: lib/Views/Browse.php:356
+#, php-format
+msgid "There is %d contact in this list that is not viewable to you"
+msgid_plural "There are %d contacts in this list that are not viewable to you"
+msgstr[0] "%d kontakt u ovom popisu vam nije vidljiv."
+msgstr[1] "%d kontakta u ovom popisu vam nisu vidljivi."
+msgstr[2] "%d kontakata u ovom popisu vam nije vidljivo."
+
+#: search.php:146
+#, php-format
+msgid "There was a problem creating the virtual address book: %s"
+msgstr "Došlo je do greške prlikom kreiranja virtualnog adresara: %s"
+
+#: lib/Forms/AddContact.php:100
+msgid ""
+"There was an error adding the new contact. Contact your system administrator "
+"for further help."
+msgstr ""
+"Došlo je do pogreške prilikom dodavanja novog kontakta. Kontaktirajte svojeg "
+"administratora sustava za daljnu pomoć."
+
+#: lib/Views/Browse.php:318
+msgid "There was an error creating a new list."
+msgstr "Došlo je do pogreške prilikom kreiranja nove liste."
+
+# ishodišnog ?
+#: lib/Views/Browse.php:221
+#, php-format
+msgid "There was an error deleting \"%s\" from the source address book."
+msgstr "Došlo je do pogreške prilikom brisanja \"%s\" iz izvornog adresara."
+
+#: delete.php:39
+#, php-format
+msgid "There was an error deleting this contact: %s"
+msgstr "Došlo je do pogreške prilikom brisanja ovog kontakta: %s"
+
+#: lib/Views/Browse.php:362
+msgid "There was an error displaying the list"
+msgstr "Došlo je do pogreške kod prikazivanja liste"
+
+#: data.php:469
+#, php-format
+msgid "There was an error importing the data: %s"
+msgstr "Došlo je do pogreške prilikom uvoženja podataka: %s"
+
+#: lib/api.php:931 lib/api.php:1272
+msgid "There was an error importing the iCalendar data."
+msgstr "Došlo je do pogreške prilikom uvoženja iCalendar podataka."
+
+#: lib/api.php:263
+#, php-format
+msgid "There was an error removing an address book for %s"
+msgstr "Došlo je do greške prilikom uklanjanja adresara za %s"
+
+#: lib/Forms/EditContact.php:93
+msgid ""
+"There was an error saving the contact. Contact your system administrator for "
+"further help."
+msgstr ""
+"Došlo je do greške prilikom spremanja kontakta. Kontaktirajte administratora "
+"sustava za daljnu pomoć."
+
+#: data.php:292
+msgid "There were no addresses to export."
+msgstr "Nije bilo adresa za izvoz."
+
+#: templates/prefs/addressbookselect.inc:178
+#: templates/prefs/addressbookselect.inc:180
+msgid "These address books will display in this order:"
+msgstr "Adresari će biti prikazani slijedećim redoslijedom:"
+
+#: addressbooks/delete.php:26
+msgid "This addressbook cannot be deleted"
+msgstr "Ovaj adresar nije moguće obrisati."
+
+#: contact.php:57
+msgid "This contact has been marked as your own."
+msgstr "Ovaj kontakt je označen kao Vaš vlastiti."
+
+#: data.php:391
+msgid "This file format is not supported."
+msgstr "Format ove datoteke nije podržan."
+
+#: lib/api.php:1876 lib/api.php:1889
+#, php-format
+msgid "This person already has a %s entry in the address book"
+msgstr "Ova je osoba već uvedena kao kontakt %s u adresar."
+
+#: config/prefs.php.dist:138
+msgid ""
+"This will be the default address book when adding or importing contacts."
+msgstr "Ovo će biti podrazumijevani adresar za dodavanje i uvoz kontakata."
+
+#: config/attributes.php.dist:241
+msgid "Time Zone"
+msgstr "Vremenska zona"
+
+#: lib/Driver/share.php:77
+msgid "Unable to find contact owner."
+msgstr "Nije pronađen vlasnik kontakta."
+
+#: lib/Turba.php:663 lib/Driver.php:2003
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Nije moguće pokrenuti definiciju od %s."
+
+#: lib/Forms/EditAddressBook.php:55
+#, php-format
+msgid "Unable to save address book \"%s\": %s"
+msgstr "Nije uspjelo spremanje adresara \"%s\": %s"
+
+#: lib/Driver/kolab.php:490
+msgid "Unable to search."
+msgstr "Pretraživanje nije uspjelo."
+
+#: config/attributes.php.dist:391
+msgid "Unfiled"
+msgstr "Ostalo"
+
+#: lib/api.php:969 lib/api.php:1080 lib/api.php:1290
+#, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "Nepodržan Content-Type: %s"
+
+#: templates/browse/contactrow.inc:27
+#, php-format
+msgid "View \"%s\""
+msgstr "Pregledaj \"%s\""
+
+#: minisearch.php:72 minisearch.php:73
+msgid "View Contact"
+msgstr "Pregledaj kontakt"
+
+#: config/prefs.php.dist:114
+msgid "View to display by default:"
+msgstr "Podrazumijevani pregled"
+
+#: config/attributes.php.dist:512
+msgid "VoIP"
+msgstr "VoIP"
+
+#: config/attributes.php.dist:344
+msgid "Website URL"
+msgstr "URL web-stranice"
+
+#: config/attributes.php.dist:185
+msgid "Work Address"
+msgstr "Adresa (posao)"
+
+#: config/attributes.php.dist:576
+msgid "Work Address Extended"
+msgstr "Proširena adresa (posao)"
+
+#: config/attributes.php.dist:203
+msgid "Work City"
+msgstr "Grad (posao)"
+
+#: config/attributes.php.dist:221
+msgid "Work Country"
+msgstr "Država (posao)"
+
+#: config/attributes.php.dist:460
+msgid "Work Email"
+msgstr "E-mail (posao)"
+
+#: config/attributes.php.dist:477
+msgid "Work Fax"
+msgstr "Faks (posao)"
+
+#: config/attributes.php.dist:582
+msgid "Work Latitude"
+msgstr "Zemljopisna širina (posao)"
+
+#: config/attributes.php.dist:587
+msgid "Work Longitude"
+msgstr "Zemljopisna dužina (posao)"
+
+#: config/attributes.php.dist:487
+msgid "Work Mobile Phone"
+msgstr "Mobilni telefon (posao)"
+
+#: config/attributes.php.dist:266
+msgid "Work Phone"
+msgstr "Telefon (posao)"
+
+#: config/attributes.php.dist:197
+msgid "Work Post Office Box"
+msgstr "Poštanski pretinac (posao)"
+
+#: config/attributes.php.dist:215
+msgid "Work Postal Code"
+msgstr "Poštanski broj (posao)"
+
+#: config/attributes.php.dist:209
+msgid "Work State/Province"
+msgstr "Država/županija (posao)"
+
+#: config/attributes.php.dist:191
+msgid "Work Street Address"
+msgstr "Ulica (posao)"
+
+#: config/attributes.php.dist:502
+msgid "Work Video Call"
+msgstr "Video poziv (posao)"
+
+#: config/attributes.php.dist:570
+msgid "Work Website URL"
+msgstr "Web stranica (posao)"
+
+#: addressbooks/edit.php:30
+msgid "You are not allowed to change this addressbook."
+msgstr "Nemate ovlasti za mijenjanje ovog adresara."
+
+#: add.php:48 data.php:355 lib/Views/Browse.php:159 lib/Views/Browse.php:281
+#, php-format
+msgid "You are not allowed to create more than %d contacts in \"%s\"."
+msgstr "Nemate ovlasti za kreiranje više od %d kontakata u \"%s\"."
+
+#: addressbooks/delete.php:37
+msgid "You are not allowed to delete this addressbook."
+msgstr "Nemate ovlasti za brisanje ovog adresara."
+
+#: lib/api.php:209
+msgid "You are not allowed to remove user data."
+msgstr "Nemate ovlasti za brisanje korisničkih podataka."
+
+#: lib/Driver/vbook.php:137
+msgid "You cannot add an entry to a virtual address book."
+msgstr "Ne možete dodavati zapise u virtualni adresar."
+
+#: lib/Driver/vbook.php:121
+msgid "You cannot add new contacts to a virtual address book"
+msgstr "Ne možete dodavati nove kontakte u virtualni adresar."
+
+#: lib/Driver/vbook.php:129
+msgid "You cannot delete contacts from a virtual address book"
+msgstr "Ne možete brisati kontakte iz virtualnog adresara."
+
+#: lib/api.php:1098
+msgid "You didn't mark a contact as your own yet."
+msgstr "Još niste označili svoj kontakt."
+
+#: edit.php:66 view.php:38 lib/Views/DeleteContact.php:42
+#: lib/Views/EditContact.php:49
+msgid "You do not have permission to view this contact."
+msgstr "Nemate dozvole za pregled ovog kontakta."
+
+#: vcard.php:37
+msgid "You do not have permission to view this object."
+msgstr "Nemate dozvole za pregled ovog objekta."
+
+#: lib/Forms/DeleteAddressBook.php:59
+msgid "You do not have permissions to delete this address book."
+msgstr "Nemate dozvole za brisanje ovog adresara."
+
+#: lib/api.php:1112
+msgid ""
+"You don't have sufficient permissions to read the address book that contains "
+"your own contact."
+msgstr "Nemate dozvole za čitanje adresara koji sadrži Vaš vlastiti kontakt."
+
+#: lib/Driver/ldap.php:749
+msgid ""
+"You must have the Net_LDAP PEAR library installed to use the schema check "
+"function."
+msgstr "Za provjeravanje sheme morate instalirati PEAR paket Net_LDAP."
+
+#: search.php:133
+msgid "You must provide a name for virtual address books."
+msgstr "Unesite ime za virtualni adresar."
+
+#: templates/browse/javascript.inc:54
+msgid "You must select a target address book."
+msgstr "Odaberite ciljni adresar."
+
+#: templates/browse/javascript.inc:22
+msgid "You must select a target contact list."
+msgstr "Odaberite ciljnu listu kontakata."
+
+# označiti, selektirati
+#: edit.php:31 templates/browse/javascript.inc:16
+#: templates/browse/javascript.inc:48 templates/browse/javascript.inc:71
+msgid "You must select at least one contact first."
+msgstr "Prvo morate odabrati barem jedan kontakt."
+
+#: edit.php:70 lib/Views/DeleteContact.php:45 lib/Views/EditContact.php:52
+msgid "You only have permission to view this contact."
+msgstr "Imate dozvolu samo za pregled ovog kontakta."
+
+#: lib/Views/Browse.php:369
+msgid "Your default address book is not browseable."
+msgstr "Zadani adresar nije moguće pregledavati."
+
+#: contact.php:101 contact.php:102 templates/browse/row.inc:14
+#: templates/browse/row.inc:15
+msgid "Your own contact"
+msgstr "Vaš vlastiti kontakt"
+
+#: lib/api.php:1117
+msgid "Your own contact cannot be found in the address book."
+msgstr "Vaš vlastiti kontakt nije u adresaru."
+
+# bez vrijednosti ?
+#: templates/browse/contactrow.inc:12
+msgid "[no value]"
+msgstr "[nema vrijednosti]"
+
+#: lib/Turba.php:605
+msgid "_Browse"
+msgstr "P_regled"
+
+#: templates/browse/actions.inc:50
+msgid "_Contacts"
+msgstr "_Kontakti"
+
+#: templates/browse/actions.inc:3
+msgid "_Delete"
+msgstr "O_briši"
+
+#: contact.php:91
+msgid "_Edit"
+msgstr "U_redi"
+
+#: lib/Turba.php:614
+msgid "_Import/Export"
+msgstr "_Uvoz/izvoz"
+
+# Popis
+#: templates/browse/actions.inc:49
+msgid "_Lists"
+msgstr "_Liste"
+
+#: lib/Turba.php:602
+msgid "_My Address Books"
+msgstr "_Moji adresari"
+
+#: lib/Turba.php:608
+msgid "_New Contact"
+msgstr "_Novi kontakt"
+
+#: lib/Turba.php:619
+msgid "_Print"
+msgstr "_Ispiši"
+
+# popisa
+#: templates/browse/actions.inc:3
+msgid "_Remove from this list"
+msgstr "_Ukloni s ove liste"
+
+#: lib/Turba.php:610
+msgid "_Search"
+msgstr "Pre_traga"
+
+#: contact.php:88
+msgid "_View"
+msgstr "_Pregledaj"
+
+#: templates/browse/column_headers.inc:25
+msgid "ascending"
+msgstr "uzlazno"
+
+#: lib/Views/Contact.php:76 lib/Views/Contact.php:87
+#, php-format
+msgid "by %s"
+msgstr "%s"
+
+#: lib/Views/Contact.php:78 lib/Views/Contact.php:89
+msgid "by me"
+msgstr "ja"
+
+#: vcard.php:45
+msgid "contact"
+msgstr "kontakt"
+
+#: data.php:312 data.php:317 templates/data/export.inc:1
+msgid "contacts.csv"
+msgstr "kontakti.csv"
+
+#: data.php:337
+msgid "contacts.ldif"
+msgstr "kontakti.ldif"
+
+#: data.php:322
+msgid "contacts.tsv"
+msgstr "kontakti.tsv"
+
+#: data.php:332
+msgid "contacts.vcf"
+msgstr "kontakti.vcf"
+
+#: templates/browse/column_headers.inc:25
+msgid "descending"
+msgstr "silazno"
+
+#: config/attributes.php.dist:439
+msgid "female"
+msgstr "ženski"
+
+#: lib/Block/tree_menu.php:38
+#, php-format
+msgid "in %s"
+msgstr "u %s"
+
+#: config/attributes.php.dist:439
+msgid "male"
+msgstr "muški"
+
+#: config/prefs.php.dist:128
+msgid "no formatting"
+msgstr "bez formatiranja"
+
+# ničeg
+#: templates/prefs/imsp_opt.inc:32
+msgid "none"
+msgstr "ništa"
+
+#: templates/browse/actions.inc:33
+msgid "to a Contact List"
+msgstr "u kontakt-listu"
+
+#: templates/browse/actions.inc:22
+msgid "to a different Address Book"
+msgstr "u drugi adresar"
+
+#: data.php:103 templates/data/export.inc:15 templates/data/import.inc:15
+#: templates/browse/column_headers.inc:14
+msgid "vCard"
+msgstr "Posjetnica (vCard)"

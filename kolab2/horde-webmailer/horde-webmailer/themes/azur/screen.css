@@ -1,0 +1,77 @@
+/**
+ * Author: Joost De Cock <joost@decock.org>
+ *
+ * $Horde: horde/themes/azur/screen.css,v 1.5.6.6 2007-12-20 15:04:06 jan Exp $
+ */
+
+body {
+    background: #64a7c9;
+}
+a {
+    color: #339;
+}
+a.widget:hover {
+    color: #666;
+    background-color: #fff;
+}
+.header {
+    color: #fff;
+    background: #069;
+}
+.header a {
+    color: #fff;
+}
+.smallheader {
+    color: #fff;
+    background-color: #069;
+}
+a.smallheader {
+    color: #fff;
+}
+.light {
+    color: #fff;
+}
+.button {
+    background-color: #069;
+    color: #fff;
+    border-bottom: 1px solid #224;
+    border-right: 1px solid #224;
+    border-top: 1px solid #99c;
+    border-left: 1px solid #99c;
+}
+
+/* Menu styles. */
+#menu {
+    color: #fff;
+    background-color: #069;
+}
+#menu a {
+    color: #fff;
+}
+#menu a.current {
+    background: #64a7c9;
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #eee;
+    border-left: 1px solid #000;
+    border-top: 1px solid #000;
+    padding: 2px;
+}
+#menu a:hover {
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #eee;
+    border-left: 1px solid #000;
+    border-top: 1px solid #000;
+    padding: 2px;
+}
+
+/* Sidebar styles. */
+#sidebarPanel {
+    border-color: transparent;
+    background-color: #bcd6e2;
+}
+
+/* Tab styles. */
+.tabset li.activeTab a, .tabset li.activeTab a:hover {
+    border-bottom-color: #069;
+    background-color: #069;
+}

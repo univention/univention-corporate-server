@@ -1,0 +1,176 @@
+===============
+ Upgrading IMP
+===============
+
+:Last update:   $Date: 2008-09-11 22:05:08 $
+:Revision:      $Revision: 1.7.8.15 $
+:Contact:       imp@lists.horde.org
+
+
+These are instructions to upgrade from earlier MIMP versions.
+
+
+Upgrading IMP From 4.1.x To 4.2.x
+=================================
+
+This is a non-exhaustive, quick explanation of what has changed between an IMP
+4.1.x installation to IMP 4.2.x.
+
+
+SQL Backend
+-----------
+
+An SQL table has been added that can be used to track sent messages. This is
+necessary to provide users with the "favourite recipients" address book, and
+for message rate throttling.
+
+Execute the provided SQL script to add the table to your database, e.g.::
+
+   mysql --user=root --password=<MySQL-root-password> <db name> < scripts/sql/imp.sql
+
+
+Unified IMAP Quota Driver
+-------------------------
+
+Separate quota drivers for Cyrus and Courier servers are no longer
+necessary. These drivers have been replaced by a generic IMAP driver that
+should also be suitable for other IMAP servers that support the QUOTA
+extension. Update ``config/servers.php`` and change the 'quota' => 'driver'
+setting to 'imap'.
+
+
+Application Hooks
+-----------------
+
+All hooks that are specific to IMP have been moved from the
+``horde/config/hooks.php`` file. Move your existing IMP Hooks from there to
+``imp/config/hooks.php``.
+
+
+User-Defined Mailbox Icons
+--------------------------
+
+The usage of the hook ``_imp_hook_mbox_icons()`` has changed.  If you use this
+hook, make sure you change your implementation so it returns the correct
+value.
+
+
+Changed Preferences
+-------------------
+
+The default values for the folder preferences 'sent_mail_folder',
+'drafts_folder', and 'trash_folder' have been changed and localized. Use the
+old values to prohibit the creation of duplicate folders for users that
+didn't explicitly set the folders in their preferences.
+
+The following preferences are no longer used and may be safely removed from
+your ``config/prefs.php`` file and your preferences backend::
+
+   'auto_expand'
+   'num_words'
+
+The 'mail_hdr' preferences has been moved from the identities to a regular
+preference. Existing user preferences are no longer used and have to be
+re-created by the users.
+
+
+New Message List Format Hook
+----------------------------
+
+The new hook ``_imp_hook_msglist_format()`` has been added which allows the
+formatting of a message entry in the mailbox message list to be altered
+at the time the list is created.  This hook has made the following
+configuration options obsolete::
+
+   $conf['mailbox']['show_attachments']
+   $conf['mailbox']['show_xpriority']
+
+If you wish to continue using the functionality previously provided by these
+options, you should activate the msglist_format hook in ``config/conf.php``.
+The sample hook contained in ``config/hooks.php`` contains the code necessary
+to replicate the previous behavior.
+
+
+Spell Checking
+--------------
+
+The ``pspell`` driver is no longer supported since it does not work with
+HTML messages.  If using pspell, you must upgrade to aspell version 0.60+.
+
+
+Javascript HTML Editor
+----------------------
+
+Support has been added for FCKeditor_ as an option for the javascript HTML
+editor available on the compose page.  You must have Horde 3.2 or later
+installed to use this editor.
+
+
+Upgrading IMP From 4.0.x To 4.1.x
+=================================
+
+This is a non-exhaustive, quick explanation of what has changed between an IMP
+4.0.x installation to IMP 4.1.x.
+
+
+Automatic Namespace Detection
+-----------------------------
+
+The ``namespace``, ``hierarchies``, ``folders``, ``delimiter``, and
+``dotfiles`` parameters were removed from ``config/servers.php``.  Namespaces
+are now automatically configured pursuant to RFC 2342.
+
+If using the UW IMAP daemon, you may notice a bunch of additional namespaces
+that were not displayed before as well as the ability of the user to
+view all files that live in their home directory via the folders screen.
+Information on how to correct your IMAP server configuration can be found at
+
+  http://wiki.horde.org/ImpUWIMAPNamespaces
+
+
+User-Defined Headers
+--------------------
+
+The ``config/headers.txt`` file has been removed and replaced by
+``config/headers.php``.  Any user-defined headers should be migrated to this
+file.  The new file has the advantage of allowing any valid PHP expression
+to be executed at run-time when generating the headers.  See the top of
+the ``headers.php`` file for the new format required.
+
+
+Removed Preferences
+-------------------
+
+The following preferences are no longer used and may be safely removed from
+your ``config/prefs.php`` file and your preferences backend::
+
+   'disposition_request_delivery'
+   'disposition_send_mdn'
+   'wrap_width'
+
+
+Virtual Folders
+---------------
+
+The format for saved Virtual Folders has changed.  To convert to the new
+format you must run the script located at
+``scripts/upgrades/convert_vfolders.php``.
+
+
+Upgrading IMP From 3.x To 4.0.x
+===============================
+
+This is a non-exhaustive, quick explanation of what has changed between an IMP
+3.x installation to IMP 4.0.x.
+
+
+Filters
+-------
+
+Filtering code has been removed from IMP.  To have the same features as the
+old code, you should install the Ingo_ module.  See the INSTALL_ file for more
+information.
+
+.. _Ingo: http://www.horde.org/ingo/
+.. _INSTALL: ?f=INSTALL.html
+.. _FCKeditor: http://www.fckeditor.net/

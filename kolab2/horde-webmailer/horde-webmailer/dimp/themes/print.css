@@ -1,0 +1,52 @@
+/**
+ * DIMP print CSS.
+ *
+ * $Horde: dimp/themes/print.css,v 1.17.2.9 2008-08-08 22:04:53 slusarz Exp $
+ */
+
+body {
+    background: #fff;
+}
+
+a, a:visited {
+    color: #000;
+}
+
+#pageContainer {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#dimpmain {
+    position: relative;
+    left: 0 !important;
+    margin-left: 0;
+    top: 0;
+}
+
+#previewPane {
+    height: auto !important;
+}
+
+#msgHeaders, .dispaddrlist {
+    display: block !important;
+}
+
+.msgfullread .msgBody {
+    border-top: 1px solid silver;
+}
+
+.label {
+    min-width: 60px;
+    text-align: right;
+    font-weight: bold;
+}
+
+#msgHeadersColl, .context, .address img, .noprint, .mimeStatusMessage, .largeaddrlist {
+    display: none !important;
+}
+a.address {
+    left: 0;
+    padding: 0;
+    text-decoration: none;
+}

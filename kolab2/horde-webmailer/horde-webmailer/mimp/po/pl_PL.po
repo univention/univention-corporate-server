@@ -1,0 +1,235 @@
+# Polish translations for Mimp package
+# Polskie tlumaczenia dla pakietu MIMP
+# Copyright 2007-2009 The Horde Project
+# This file is distributed under the same license as the Mimp package.
+# Piotr Tarnowski <drfugazi@drfugazi.eu.org>, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mimp H3 (1.0-cvs)\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2007-06-19 16:47+0200\n"
+"PO-Revision-Date: 2007-06-20 19:38+0200\n"
+"Last-Translator: Piotr Tarnowski <drfugazi@drfugazi.eu.org>\n"
+"Language-Team: Polish <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+
+#: mailbox.php:69
+#, php-format
+msgid "%d to %d of %d"
+msgstr "%d do %d z %d"
+
+#: message.php:264
+#, php-format
+msgid "(%d of %d)"
+msgstr "(%d z %d)"
+
+#: lib/MIME/Contents.php:62
+msgid "Attachment"
+msgstr "Za³±cznik"
+
+#: templates/compose/compose.inc:52
+msgid "Bcc: "
+msgstr "UDW: "
+
+#: templates/compose/compose.inc:49
+msgid "Cc: "
+msgstr "DW: "
+
+#: lib/MIMP.php:33
+msgid "Compose"
+msgstr "Utwórz"
+
+#: config/prefs.php.dist:13
+msgid "Configure how messages are displayed."
+msgstr "Skonfiguruj sposób wy¶wietlania wiadomo¶æi."
+
+#: compose.php:21
+msgid "Could not retrieve the message from the mail server."
+msgstr "Nie mo¿na pobraæ wiadomo¶ci z serwera pocztowego."
+
+#: message.php:227
+msgid "Delete"
+msgstr "Usuñ"
+
+#: config/prefs.php.dist:25
+msgid "Display only the first 250 characters of a message initially?"
+msgstr "Wy¶wietlaæ wstêpnie tylko pierwsze 250 znaków wiadomo¶ci?"
+
+#: compose.php:91 templates/compose/compose.inc:59
+#: templates/compose/redirect.inc:19
+msgid "Expand Names"
+msgstr "Rozwiñ nazwy"
+
+#: mailbox.php:59
+msgid "First Page"
+msgstr "Pierwsza strona"
+
+#: folders.php:26 lib/MIMP.php:36
+msgid "Folders"
+msgstr "Foldery"
+
+#: message.php:244
+msgid "Forward"
+msgstr "Przeka¿"
+
+#: templates/mailbox/mailbox.inc:18
+msgid "From"
+msgstr "Od"
+
+#: templates/compose/compose.inc:39
+msgid "Identity"
+msgstr "To¿samo¶æ"
+
+#: lib/MIMP.php:30
+msgid "Inbox"
+msgstr "Odebrane"
+
+#: mailbox.php:64
+msgid "Last Page"
+msgstr "Ostatnia strona"
+
+#: lib/MIMP.php:44
+msgid "Log out"
+msgstr "Wyloguj"
+
+#: config/prefs.php.dist:11
+msgid "Mail Management"
+msgstr "Zarz±dzanie poczt±"
+
+#: mailbox.php:156 compose.php:239 message.php:221 message.php:265
+#: templates/mailbox/mailbox.inc:4 templates/compose/compose.inc:4
+#: templates/compose/redirect.inc:4 templates/folders/folders.inc:6
+#: templates/folders/folders.inc:27
+msgid "Menu"
+msgstr "Menu"
+
+#: compose.php:224
+msgid "Message Composition"
+msgstr "Tworzenie wiadomo¶ci"
+
+#: config/prefs.php.dist:12
+msgid "Message Viewing"
+msgstr "Przegl±danie wiadomo¶ci"
+
+#: compose.php:149
+msgid "Message redirected successfully."
+msgstr "Wiadomo¶æ zosta³a przekierowana."
+
+#: compose.php:214
+msgid "Message sent successfully."
+msgstr "Wiadomo¶æ zosta³a wys³ana."
+
+#: templates/compose/compose.inc:56
+msgid "Message: "
+msgstr "Wiadomo¶æ: "
+
+#: message.php:252
+msgid "Next"
+msgstr "Nastêpna"
+
+#: mailbox.php:63
+msgid "Next Page"
+msgstr "Nastêpna strona"
+
+#: mailbox.php:70
+#, php-format
+msgid "No Messages"
+msgstr "Brak wiadomo¶ci"
+
+#: message.php:255
+msgid "Prev"
+msgstr "Poprzednia"
+
+#: mailbox.php:60
+msgid "Previous Page"
+msgstr "Poprzednia strona"
+
+#: mailbox.php:152
+msgid "Purge Deleted"
+msgstr "Wyczy¶æ usuniête"
+
+#: compose.php:134 message.php:245 templates/compose/redirect.inc:18
+msgid "Redirect"
+msgstr "Przekieruj"
+
+#: mailbox.php:146 templates/folders/folders.inc:29
+msgid "Refresh"
+msgstr "Od¶wie¿"
+
+#: message.php:234
+msgid "Reply"
+msgstr "Odpowiedz"
+
+#: message.php:241
+msgid "Reply All"
+msgstr "Odpowiedz wszystkim"
+
+#: message.php:237
+msgid "Reply to List"
+msgstr "Odpowiedz na listê"
+
+#: compose.php:158 templates/compose/compose.inc:58
+msgid "Send"
+msgstr "Wy¶lij"
+
+#: message.php:285
+msgid "Show All"
+msgstr "Poka¿ wszystko"
+
+#: folders.php:58
+msgid "Show All Folders"
+msgstr "Poka¿ wszystkie foldery"
+
+#: folders.php:58
+msgid "Show Subscribed Folders"
+msgstr "Poka¿ subskrybowane foldery"
+
+#: templates/mailbox/mailbox.inc:19
+msgid "Subject"
+msgstr "Temat"
+
+#: templates/compose/compose.inc:54
+msgid "Subject: "
+msgstr "Temat: "
+
+#: lib/MIME/Viewer/alternative.php:49
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "Nie ma alternatywnych czê¶ci, które mog± byæ wy¶wietlone w tre¶ci."
+
+#: lib/MIME/Contents.php:91
+msgid "There are no parts that can be displayed inline."
+msgstr "Nie ma czê¶ci, które mog± byæ wy¶wietlone w tre¶ci."
+
+#: lib/MIME/Viewer/html.php:31 lib/MIME/Viewer/plain.php:29
+msgid "There was an error displaying this message part"
+msgstr "Wyst±pi³ b³±d podczas wy¶wietlania czê¶ci wiadomo¶ci"
+
+#: mailbox.php:34
+msgid "There was an error viewing the requested message."
+msgstr "Wyst±pi³ b³±d podczas przegl±dania ¿±danej wiadomo¶ci."
+
+#: message.php:258
+#, php-format
+msgid "To %s"
+msgstr "Do %s"
+
+#: templates/compose/compose.inc:47 templates/compose/redirect.inc:16
+msgid "To: "
+msgstr "Do: "
+
+#: message.php:225
+msgid "Undelete"
+msgstr "Odzyskaj"
+
+#: message.php:217
+msgid "View Full Message"
+msgstr "Zobacz ca³± wiadomo¶æ"
+
+#: mailbox.php:103 message.php:130
+msgid "[No Subject]"
+msgstr "[Brak tematu]"

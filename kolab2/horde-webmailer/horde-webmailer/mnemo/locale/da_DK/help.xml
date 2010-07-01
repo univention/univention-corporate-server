@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!-- $Horde: mnemo/locale/da_DK/help.xml,v 1.2 2002-10-20 16:31:02 jan Exp $ -->
+<help>
+  <entry id="Overview" state="new">
+    <title>Overview</title>
+    <heading>Introduction</heading>
+    <para>
+    <i>Notes</i> is an application which allows you to create the computer equivalent of sticky notes.  Notes can be created, modified, deleted, and printed.  You can also search on your notes to locate information.   Support for importing and exporting notes is also available.
+    </para>
+    <para>
+    Unlike real sticky notes, your computer notes can be shared with others in different physical locations.  Notes can be organized into different notepads, and assigned categories.
+    </para>
+</entry>
+  <entry id="list-actions" state="unknown">
+    <title>Visning for Huskesedler: Handlinger</title>
+    <heading>Handlinger</heading>
+    <para>
+    Slet huskesedler sletter alle markerede huskesedler.
+    </para>
+<!-- English entry:
+<entry id="list-actions">
+    <title>Notes List: Actions</title>
+    <heading>Actions</heading>
+    <para>
+    <i>Delete Note</i> permanently deletes the selected note.
+    </para>
+    <para>
+    <i>Modify Note</i> allows you to modify an existing note.
+    </para>
+    <para>
+    <i>Back to Notepad</i> takes you back from note view to the notepad that contains the current note.
+    </para>
+</entry>--></entry>
+  <entry id="menu-actions" state="new">
+    <title>Menu Items</title>
+    <heading>Menu Items</heading>
+    <para>
+    <i>List Notes</i> lists all the notes in the current notepad.
+    </para>
+    <para>
+    <i>New Note</i> allows you to create a new note in the current notepad.
+    </para>
+    <para>
+    <i>Search</i> allows you to search for text in your notes.  You can search the description field only, or the full text of the notes.
+    </para>
+    <para>
+    <i>Import/Export</i> allows you to import or export notes.  Currently only CSV formatted files are supported.
+    </para>
+    <para>
+    <i>Print</i> allows you to print a note.  The <i>Print</i> icons is only in the menu bar when a note is being viewed.
+    </para>
+</entry>
+  <entry id="sorting" state="new">
+    <title>Sorting Entries</title>
+    <heading>Sorting Entries</heading>
+    <para>
+    When viewing a list of entries, you can sort the entries by any column by clicking on the appropriate column heading title.  To switch a column between ascending and descending sorting order, click on the arrow icon in the column heading.
+    </para>
+</entry>
+</help>

@@ -1,0 +1,788 @@
+# Danish translations for horde package
+# Danske oversættelser for pakke horde.
+# Copyright (C) 2009 Horde Project
+# This file is distributed under the same license as the horde package.
+# Niels Baggesen <nba@users.sourceforge.net>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: horde 33\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2009-05-25 21:21+0200\n"
+"PO-Revision-Date: 2009-04-25 12:32+0200\n"
+"Last-Translator: Niels Baggesen <nba@users.sourceforge.net>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/Views/ShowMessage.php:295
+#, php-format
+msgid "%d Attachment"
+msgid_plural "%d Attachments"
+msgstr[0] "%d vedhæftelse"
+msgstr[1] "%d vedhæftelser"
+
+#: imp.php:674
+#, php-format
+msgid "%s messages were purged from \"%s\"."
+msgstr "%s beskeder blev slettet fra \"%s\"."
+
+#: lib/Block/newmail.php:70
+#, php-format
+msgid "%s more unseen messages..."
+msgstr "Yderligere %s ulæste beskeder..."
+
+#: imp.php:460
+#, php-format
+msgid "%s was successfully added to your address book."
+msgstr "%s blev tilføjet til dit adressekartoteket."
+
+#: templates/index/index.inc:247
+#, php-format
+msgid ""
+"%s will delete the current message and move to the next message if a single "
+"message is selected."
+msgstr ""
+"%s sletter den valgte besked, og flytter til den næste besked, hvis bare en "
+"enkelt besked er valgt."
+
+#: imp.php:672
+#, php-format
+msgid "1 message was purged from \"%s\"."
+msgstr "1 besked blev slettet fra \"%s\"."
+
+#: lib/Block/newmail.php:68
+msgid "1 more unseen message..."
+msgstr "1 yderligere ulæst besked..."
+
+#: lib/DIMP.php:227
+msgid ""
+"A popup window could not be opened. Your browser may be blocking popups."
+msgstr "Et vindue kunne ikke åbnes.  Er din popup-blokker aktiveret?"
+
+#: templates/index/index.inc:422 templates/chunks/message.php:127
+msgid "Add to Address Book"
+msgstr "Tilføj til adressekartotek"
+
+#: templates/index/index.inc:193 templates/index/index.inc:198
+msgid "All"
+msgstr "Alle"
+
+#: templates/index/index.inc:220 templates/index/index.inc:222
+msgid "Arrival"
+msgstr "Modtaget"
+
+#: templates/index/index.inc:392 templates/chunks/message.php:122
+msgid "Attachments Only"
+msgstr "Kun vedhæftelser"
+
+#: templates/index/index.inc:126
+#, fuzzy
+msgid "Base Level"
+msgstr "Niveau"
+
+#: templates/chunks/compose.php:114
+msgid "Bcc: "
+msgstr "Bcc:"
+
+#: templates/index/index.inc:360 templates/index/index.inc:405
+msgid "Blacklist"
+msgstr "Blackliste"
+
+#: templates/index/index.inc:391 templates/chunks/message.php:121
+msgid "Body Text Only"
+msgstr "Kun beskedtekst"
+
+#: lib/DIMP.php:219
+msgid "Cancel"
+msgstr "Annuller"
+
+#: lib/DIMP.php:255
+msgid ""
+"Cancelling this message will permanently discard its contents and will "
+"delete auto-saved drafts.\n"
+"Are you sure you want to do this?"
+msgstr ""
+"Hvis du annullerer denne besked mister du indholdet permanent, også "
+"eventueller kladder.\n"
+"Er du sikker?"
+
+#: templates/index/index.inc:293
+msgid "Cc"
+msgstr "Cc"
+
+#: templates/chunks/compose.php:100
+msgid "Cc: "
+msgstr "Cc:"
+
+#: templates/chunks/compose.php:57
+msgid "Check Spelling"
+msgstr "Kontroller stavning"
+
+#: templates/index/index.inc:330
+msgid "Check for New Mail"
+msgstr "Kontroller for ny e-post"
+
+#: lib/DIMP.php:221
+msgid "Checking..."
+msgstr "Kontrollerer ..."
+
+#: templates/index/index.inc:351 templates/index/index.inc:375
+#: templates/index/index.inc:401
+msgid "Clear Flag"
+msgstr "Fjern markering"
+
+#: templates/index/index.inc:242
+#, php-format
+msgid ""
+"Click on a message while holding down the %s key to select multiple "
+"messages.  To select a range of messages, click the first message of the "
+"range, navigate to the last message of the range, and then click on the last "
+"message while holding down the %s key."
+msgstr ""
+"Klik på en besked mens du trykker på %s for at vælge flere beskeder. For at "
+"vælge en række af beskeder, skal du klikke på den første og derefter klikke "
+"på den sidste mens du holder %s nede."
+
+#: templates/index/index.inc:276
+msgid "Collapse Headers"
+msgstr "Fold hoveder sammen"
+
+#: templates/index/index.inc:183
+msgid "Compose"
+msgstr "Ny besked"
+
+#: templates/index/index.inc:234
+msgid "Could not get message list from server"
+msgstr "Kunne ikke hente beskedliste fra server"
+
+#: lib/DIMP.php:231
+msgid "Create folder:"
+msgstr "Opret mappe:"
+
+#: templates/index/index.inc:322 templates/index/index.inc:335
+msgid "Create subfolder"
+msgstr "Opret undermappe"
+
+#: lib/DIMP.php:232
+msgid "Create subfolder:"
+msgstr "Opret undermappe:"
+
+#: templates/index/index.inc:242 templates/index/index.inc:249
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: config/prefs.php.dist:11
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Tilpas opgaver, der bliver udført, når du logger ind i %s."
+
+#: templates/index/index.inc:219 templates/index/index.inc:223
+#: templates/index/index.inc:285
+msgid "Date"
+msgstr "Dato"
+
+#: templates/index/index.inc:247
+msgid "Del"
+msgstr "Del"
+
+#: templates/index/index.inc:185 templates/index/index.inc:365
+#: templates/index/index.inc:377 templates/chunks/message.php:49
+msgid "Delete"
+msgstr "Slet"
+
+#: templates/index/index.inc:325
+msgid "Delete Folder"
+msgstr "Slet mappe"
+
+#: templates/index/index.inc:247
+msgid "Delete the currently selected message(s)."
+msgstr "Fjern de valgte beskeder"
+
+#: templates/index/index.inc:331
+msgid "Do Not Check for New Mail"
+msgstr "Undlad at checke for ny e-post"
+
+#: templates/index/index.inc:324
+msgid "Empty Folder"
+msgstr "Tom mappe"
+
+#: templates/index/index.inc:246
+msgid "End"
+msgstr "End"
+
+#: templates/index/index.inc:248
+msgid "Enter"
+msgstr "Enter"
+
+#: templates/index/index.inc:390 templates/chunks/message.php:120
+msgid "Entire Message"
+msgstr "Hele beskeden"
+
+#: templates/index/index.inc:257
+msgid "Expand Headers"
+msgstr "Fold hoveder ud"
+
+#: templates/index/index.inc:350 templates/index/index.inc:374
+#: templates/index/index.inc:400
+msgid "Flag Message"
+msgstr "Marker besked"
+
+#: config/portal.php.dist:28
+msgid "Folder Summary"
+msgstr "Opsummering af mappe"
+
+#: templates/index/index.inc:191
+msgid "Folders: "
+msgstr "Mapper: "
+
+#: templates/index/index.inc:176 templates/chunks/message.php:42
+msgid "Forward"
+msgstr "Videresend"
+
+#: templates/index/index.inc:346
+msgid "Forward Attachments Only"
+msgstr "Videresen kun vedhæftelser"
+
+#: templates/index/index.inc:345
+msgid "Forward Body Text Only"
+msgstr "Videresend kun beskedtekst"
+
+#: templates/index/index.inc:344
+msgid "Forward Entire Message"
+msgstr "Videresend hele beskeden"
+
+#: templates/index/index.inc:199 templates/index/index.inc:207
+#: templates/index/index.inc:281
+msgid "From"
+msgstr "Fra"
+
+#: templates/chunks/compose.php:76
+msgid "From: "
+msgstr "Fra: "
+
+#: config/prefs.php.dist:9
+msgid "General Options"
+msgstr "Grundlæggende indstillinger"
+
+#: templates/index/index.inc:63 templates/index/index.inc:184 lib/DIMP.php:222
+msgid "Get Mail"
+msgstr "Hent e-mail"
+
+#: lib/Block/newmail.php:72
+msgid "Go to your Inbox..."
+msgstr "Gå til Indbakke..."
+
+#: lib/Views/ShowMessage.php:359
+msgid "HERE"
+msgstr "HER"
+
+#: templates/chunks/compose.php:67
+msgid "HTML composition"
+msgstr "HTML-skrivning"
+
+#: templates/index/index.inc:396 lib/DIMP.php:228
+msgid "Hide Preview"
+msgstr "Skjul forhåndsvisning"
+
+#: lib/DIMP.php:213
+msgid "Hide Quoted Text"
+msgstr "Skjul citeret tekst"
+
+#: templates/index/index.inc:427
+msgid "High Priority"
+msgstr "Høj prioritet"
+
+#: templates/index/index.inc:246
+msgid "Home"
+msgstr "Home"
+
+#: templates/index/index.inc:60
+msgid "Horde"
+msgstr "Horde"
+
+#: config/prefs.php.dist:22
+msgid "Inbox"
+msgstr "Indbakke"
+
+#: templates/index/index.inc:181
+msgid "Innocent"
+msgstr "Anmeld som ej-spam"
+
+#: templates/index/index.inc:34 templates/chunks/compose.php:20
+#: lib/DIMP.php:220
+msgid "Loading..."
+msgstr "Henter..."
+
+#: templates/index/index.inc:79
+msgid "Log Out"
+msgstr "Log ud"
+
+#: config/prefs.php.dist:10
+msgid "Login Tasks"
+msgstr "Login-opgaver"
+
+#: templates/index/index.inc:428
+msgid "Low Priority"
+msgstr "Lav prioritet"
+
+#: lib/Views/ListMessages.php:160
+#, php-format
+msgid "Mailbox %s does not exist."
+msgstr "Indbakke %s eksisterer ikke."
+
+#: templates/index/index.inc:328
+msgid "Mark all as New"
+msgstr "Marker alle som Ny"
+
+#: templates/index/index.inc:327
+msgid "Mark all as Read"
+msgstr "Marker alle som Læst"
+
+#: templates/index/index.inc:357
+msgid "Mark as Innocent"
+msgstr "Marker som Ej-Spam"
+
+#: templates/index/index.inc:349 templates/index/index.inc:399
+msgid "Mark as New"
+msgstr "Marker som Ny"
+
+#: templates/index/index.inc:348 templates/index/index.inc:398
+msgid "Mark as Read"
+msgstr "Marker som Læst"
+
+#: templates/index/index.inc:354
+msgid "Mark as Spam"
+msgstr "Marker som Spam"
+
+#: lib/DIMP.php:209
+msgid "Message"
+msgstr "Besked"
+
+#: compose.php:344
+msgid "Message Composition"
+msgstr "Skrivning af ny besked"
+
+#: compose.php:182
+msgid "Message sent successfully."
+msgstr "Beskeden er sendt."
+
+#: templates/chunks/message.php:37 templates/chunks/message.php:105
+msgid "Message:"
+msgstr "Besked:"
+
+#: templates/index/index.inc:197
+msgid "Message: "
+msgstr "Besked: "
+
+#: lib/DIMP.php:210
+msgid "Messages"
+msgstr "beskeder"
+
+#: lib/DIMP.php:217
+#, php-format
+msgid "Move %s to %s"
+msgstr "Flyt %s til %s"
+
+#: templates/index/index.inc:245
+msgid "Move one page up/down through the message list."
+msgstr "Flyt en side op/ned i listen."
+
+#: templates/index/index.inc:246
+msgid "Move to the beginning/end of the message list."
+msgstr "Flyt til toppen/bunden af beskedlisten."
+
+#: templates/index/index.inc:244
+msgid "Move up/down through the message list."
+msgstr "Flyt op/ned gennem listen."
+
+#: templates/index/index.inc:118
+msgid "My Folders"
+msgstr "Mine mapper"
+
+#: templates/index/index.inc:122
+msgid "New Folder"
+msgstr "Ny mappe"
+
+#: compose.php:204 templates/index/index.inc:62 templates/index/index.inc:421
+#: templates/chunks/message.php:126
+msgid "New Message"
+msgstr "Ny besked"
+
+#: lib/DIMP.php:212
+msgid "No Messages"
+msgstr "Ingen beskeder"
+
+#: lib/Block/foldersummary.php:75
+msgid "No folders are being checked for new mail."
+msgstr "Ingen mapper bliver checket for ny post."
+
+#: lib/Block/foldersummary.php:79
+msgid "No folders with new messages"
+msgstr "Ingen mapper med nye beskeder"
+
+#: lib/Block/foldersummary.php:77
+msgid "No folders with unseen messages"
+msgstr "Ingen mapper med ulæste beskeder"
+
+#: templates/index/index.inc:233
+msgid "No messages to display"
+msgstr "Ingen beskeder at vise"
+
+#: lib/Block/newmail.php:41
+msgid "No unread messages"
+msgstr "Ingen ulæste beskeder"
+
+#: lib/DIMP.php:216
+msgid "Ok"
+msgstr "OK"
+
+#: templates/index/index.inc:16 templates/index/index.inc:263
+msgid "Open in new window"
+msgstr "Åben i et nyt vindue"
+
+#: templates/index/index.inc:248
+msgid "Open message in a popup window."
+msgstr "Åben besked i et separat vindue."
+
+#: templates/index/index.inc:74
+msgid "Options"
+msgstr "Indstillinger"
+
+#: templates/index/index.inc:186
+msgid "Other Actions"
+msgstr "Andre handlinger"
+
+#: lib/DIMP.php:233
+msgid "Permanently delete all messages?"
+msgstr "Slet alle beskeder uigenkaldeligt?"
+
+#: lib/DIMP.php:234
+msgid "Permanently delete this folder?"
+msgstr "Slet denne mappe uigenkaldeligt?"
+
+#: templates/index/index.inc:245
+msgid "PgDown"
+msgstr "PgDown"
+
+#: templates/index/index.inc:245
+msgid "PgUp"
+msgstr "PgUp"
+
+#: templates/index/index.inc:69 templates/index/index.inc:141 lib/DIMP.php:205
+#: config/prefs.php.dist:21
+msgid "Portal"
+msgstr "Portal"
+
+#: templates/index/index.inc:265 templates/chunks/message.php:57
+msgid "Print"
+msgstr "Udskriv"
+
+#: templates/index/index.inc:415
+msgid "Purge Deleted"
+msgstr "Fjern slettede"
+
+#: templates/chunks/compose.php:52
+msgid "Read Receipt"
+msgstr "Kvittering for læsning"
+
+#: lib/DIMP.php:263
+msgid ""
+"Really discard all formatting information? This operation cannot be undone."
+msgstr "Virkelig slette formattering? Denne operation kan ikke fortrydes."
+
+#: templates/index/index.inc:323 templates/index/index.inc:336
+msgid "Rename Folder"
+msgstr "Omdøb mappe"
+
+#: lib/DIMP.php:230
+msgid "Rename folder to:"
+msgstr "Omdøb mappe til:"
+
+#: templates/index/index.inc:175 templates/chunks/message.php:41
+msgid "Reply"
+msgstr "Svar"
+
+#: templates/index/index.inc:341
+msgid "Reply to All"
+msgstr "Svar til alle"
+
+#: compose.php:232
+msgid "Reply to All:"
+msgstr "Svar til alle:"
+
+#: templates/index/index.inc:342
+msgid "Reply to List"
+msgstr "Svar til liste"
+
+#: compose.php:234
+msgid "Reply to List:"
+msgstr "Svar til liste:"
+
+#: templates/index/index.inc:340
+msgid "Reply to Sender"
+msgstr "Svar til afsender"
+
+#: compose.php:230
+msgid "Reply:"
+msgstr "Reply:"
+
+#: templates/chunks/message.php:47
+msgid "Report Innocent"
+msgstr "Anmeld som ej-spam"
+
+#: templates/chunks/message.php:44
+msgid "Report Spam"
+msgstr "Anmeld som SPAM"
+
+#: compose.php:214 lib/Views/ShowMessage.php:154
+msgid "Requested message not found."
+msgstr "Forespurgte besked ikke fundet."
+
+#: templates/index/index.inc:372
+msgid "Resume Draft"
+msgstr "Fortsæt med kladde"
+
+#: lib/Views/ShowMessage.php:298
+msgid "Save All"
+msgstr "Gem alle"
+
+#: templates/chunks/compose.php:140
+msgid "Save Attachments in sent folder"
+msgstr "Gem vedhæftelser i \"Sendt post\"-mappen?"
+
+#: templates/chunks/compose.php:58
+msgid "Save as Draft"
+msgstr "Gem som kladde"
+
+#: templates/chunks/compose.php:55
+msgid "Save in "
+msgstr "Gem i"
+
+#: lib/DIMP.php:262
+msgid "Saving..."
+msgstr "Gemmer..."
+
+#: lib/DIMP.php:207
+msgid "Search"
+msgstr "Søg"
+
+#: lib/Views/ListMessages.php:80
+msgid "Search Results"
+msgstr "Resultat for søgning"
+
+#: templates/index/index.inc:412
+msgid "Select All"
+msgstr "Vælg alle"
+
+#: templates/index/index.inc:249
+msgid "Select all messages in the current mailbox."
+msgstr "Vælg alle beskeder i denne brevbakke."
+
+#: templates/chunks/compose.php:50
+msgid "Send"
+msgstr "Send"
+
+#: lib/DIMP.php:256
+msgid "Send message without a Subject?"
+msgstr "Afsend besked uden et Emne?"
+
+#: lib/DIMP.php:261
+msgid "Sending..."
+msgstr "Sender..."
+
+#: templates/index/index.inc:242 templates/index/index.inc:247
+msgid "Shift"
+msgstr "Shift"
+
+#: templates/chunks/compose.php:65
+msgid "Show Bcc"
+msgstr "Vis Bcc"
+
+#: templates/chunks/compose.php:64
+msgid "Show Cc"
+msgstr "Vis Cc"
+
+#: templates/index/index.inc:396 lib/DIMP.php:229
+msgid "Show Preview"
+msgstr "Vis forhåndsvisning"
+
+#: lib/DIMP.php:214
+msgid "Show Quoted Text"
+msgstr "Vis citeret tekst"
+
+#: templates/index/index.inc:226
+msgid "Size"
+msgstr "Størrelse"
+
+#: templates/index/index.inc:178
+msgid "Spam"
+msgstr "Skidtpost"
+
+#: templates/chunks/compose.php:70
+msgid "Special Characters"
+msgstr "Specielle tegn"
+
+#: templates/index/index.inc:201 templates/index/index.inc:211
+#: templates/index/index.inc:215 templates/index/index.inc:276
+#: templates/chunks/message.php:67
+msgid "Subject"
+msgstr "Emne"
+
+#: templates/chunks/compose.php:128
+msgid "Subject: "
+msgstr "Emne: "
+
+#: lib/DIMP.php:260
+msgid "The attachment limit has been reached."
+msgstr "Grænsen for vedhæftelser er nået."
+
+#: lib/DIMP.php:224
+msgid "The connection to the remote server has been restored."
+msgstr "Forbindelsen til serveren er genoprettet."
+
+#: templates/index/index.inc:243
+msgid "The following keyboard shortcuts are available:"
+msgstr "Du kan bruge følgende genvejstaster:"
+
+#: lib/DIMP.php:256
+msgid "The message does not have a Subject entered."
+msgstr "Beskeden har ikke noget Emne."
+
+#: config/prefs.php.dist:23
+msgid "The page to view immediately after login."
+msgstr "Side der skal vises efter login."
+
+#: lib/Views/ShowMessage.php:360
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Click %s to send the notification "
+"message."
+msgstr ""
+"Afsenderen af denne besked anmoder om en <em>kvittering (Message Disposition "
+"Notification, MDN)</em> fra dig, når du har læst beskeden.  Click %s for at "
+"afsende kvitteringenen."
+
+#: lib/DIMP.php:225
+msgid "The server is still generating the message list."
+msgstr "Serveren er stadig ved at oprette listen over beskeder."
+
+#: lib/DIMP.php:226
+msgid ""
+"The server was unable to generate the message list. Please try again later."
+msgstr "Serveren kunne ikke oprette beskedlisten. Prøv igen senere."
+
+#: lib/DIMP.php:223
+msgid ""
+"There has been no contact with the remote server for several minutes. The "
+"server may be temporarily unavailable or network problems may be "
+"interrupting your session. You will not see any updates until the connection "
+"is restored."
+msgstr ""
+"der har ikke været kontakt til serveren i flere minutter. Serveren kan være "
+"nede, er der kan være problemer med nettet. Du får ingen opdateringer før "
+"forbindelsen er genoprette."
+
+#: templates/index/index.inc:212 templates/index/index.inc:214
+msgid "Thread"
+msgstr "Tråd"
+
+#: templates/index/index.inc:200 templates/index/index.inc:208
+#: templates/index/index.inc:289
+msgid "To"
+msgstr "Til"
+
+#: templates/index/index.inc:385 templates/chunks/message.php:113
+msgid "To All"
+msgstr "Til alle"
+
+#: templates/index/index.inc:386 templates/chunks/message.php:115
+msgid "To List"
+msgstr "Til liste"
+
+#: templates/index/index.inc:384 templates/chunks/message.php:112
+msgid "To Sender"
+msgstr "Til afsender"
+
+#: templates/index/index.inc:241
+msgid ""
+"To preview a message, select it from the list above. A right-click on the "
+"messages will display available actions."
+msgstr ""
+"Vælg en besked fra listen ovenfor for at se forhåndsvisning af den. Højre-"
+"klik på beskeden vil vise en liste af mulige handlinger."
+
+#: templates/chunks/compose.php:86
+msgid "To: "
+msgstr "To: "
+
+#: templates/index/index.inc:367 templates/index/index.inc:379
+#: templates/index/index.inc:416
+msgid "Undelete"
+msgstr "Fortryd sletning"
+
+#: lib/Views/ShowMessage.php:87
+msgid "Undisclosed Recipients"
+msgstr "Ikke viste modtagere"
+
+#: lib/Views/ShowMessage.php:323
+msgid "Unknown Date"
+msgstr "Ukendt dato"
+
+#: lib/DIMP.php:259
+msgid "Uploading..."
+msgstr "Sender..."
+
+#: lib/DIMP.php:206
+msgid "User Options"
+msgstr "Brugerindstillinger"
+
+#: templates/index/index.inc:268 templates/chunks/message.php:60
+msgid "View Message Source"
+msgstr "Vis kilde"
+
+#: templates/index/index.inc:363 templates/index/index.inc:408
+msgid "Whitelist"
+msgstr "Positivliste"
+
+#: lib/DIMP.php:257
+msgid ""
+"You have already changed the message body, are you sure you want to drop the "
+"changes?"
+msgstr "Du har ændret beskeden. Er du sikker på at du vil opgive ændringerne?"
+
+#: lib/Views/ShowMessage.php:95
+msgid "[Hide Addresses]"
+msgstr "[Skjul adresser]"
+
+#: lib/Views/ListMessages.php:296 lib/Views/ShowMessage.php:281
+#: lib/Block/newmail.php:58
+msgid "[No Subject]"
+msgstr "[Intet emne]"
+
+#: lib/DIMP.php:218
+msgid "base level of the folder tree"
+msgstr ""
+
+#: templates/index/index.inc:258
+msgid "from"
+msgstr "fra"
+
+#: lib/DIMP.php:215
+msgid "lines"
+msgstr "linjer"
+
+#: lib/DIMP.php:211
+msgid "of"
+msgstr "af"
+
+#: lib/DIMP.php:258
+msgid "remove"
+msgstr "fjern"
+
+#: lib/DIMP.php:208
+msgid "results found"
+msgstr "resultater fundet"

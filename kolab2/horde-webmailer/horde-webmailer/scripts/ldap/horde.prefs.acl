@@ -1,0 +1,7 @@
+# ACL section to allow LDAP users to write to all the horde Preferences
+# Please add this to the ACL section of your slapd.conf file somewhere
+# before the access * line.
+
+access to attrs=@hordePerson
+	by self write
+	by * none

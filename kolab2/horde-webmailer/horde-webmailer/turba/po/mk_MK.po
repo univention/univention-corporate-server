@@ -1,0 +1,313 @@
+# translation of mk_MK.po to Macedonian
+# This file is distributed under the same license as the Turba package.
+# Copyright 2003 Eureka Informatika
+# Stojan Pesov <ssp@eureka.com.mk>, 2003
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mk_MK\n"
+"POT-Creation-Date: 2003-06-06 14:30+0200\n"
+"PO-Revision-Date: 2003-06-26 14:59+0200\n"
+"Last-Translator: Stojan Pesov <ssp@eureka.com.mk>\n"
+"Language-Team: Macedonian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-5\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.1\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s документот е успешно импортиран"
+
+msgid "Add Contact ..."
+msgstr "Додади контакт"
+
+msgid "Add a new contact"
+msgstr "Додади нов контакт"
+
+msgid "Add failed"
+msgstr "Додавањето е неуспешно"
+
+msgid "Add"
+msgstr "Додај"
+
+msgid "Addressbook is read-only."
+msgstr "Во адресарот не може да се запишува "
+
+msgid "Advanced Directory Search"
+msgstr "Напредно побарување на директориуми"
+
+msgid "Advanced Search"
+msgstr "Напредно пребарување"
+
+msgid "Alias"
+msgstr "Алиас"
+
+msgid "Bcc"
+msgstr "Невидлива копија"
+
+msgid "Cancel"
+msgstr "Откажи"
+
+msgid "Cc"
+msgstr "Копија"
+
+msgid "Cell Phone"
+msgstr "Мобилен"
+
+msgid "Clear Search"
+msgstr "Ново барање"
+
+msgid "Company"
+msgstr "Фирма"
+
+msgid "Delete"
+msgstr "Избриши"
+
+msgid "Deletion failed"
+msgstr "Додавањето е неуспешно"
+
+msgid "Directory Search"
+msgstr "Пребарување директориум"
+
+msgid "Directory"
+msgstr "Директориум"
+
+msgid "Edit"
+msgstr "Уреди"
+
+msgid "Email"
+msgstr "е-пошта"
+
+msgid "Error"
+msgstr "Грешка"
+
+msgid "Export Addressbook"
+msgstr "Експортирај адресар"
+
+msgid "Export"
+msgstr "Експортирај"
+
+msgid "Failed to connect to the specified directory."
+msgstr "Не можам да го отворам бараниот директориум"
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Не можам да пребарувам по директориумот %s"
+
+msgid "Fax"
+msgstr "Факс"
+
+msgid "Find"
+msgstr "Барај"
+
+msgid "From"
+msgstr "Од"
+
+msgid "Help"
+msgstr "Помош"
+
+msgid "Home Address"
+msgstr "Домашна адреса"
+
+msgid "Home Phone"
+msgstr "Домашен телефон"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "Ако импортирате CSV податоци дали првиот ред ги содржи имињата на сите полиња?"
+
+msgid "Illegal or malformed form data."
+msgstr "Грешка при транспорот на информации"
+
+msgid "Import Addressbook"
+msgstr "Импортирај адресар"
+
+msgid "Import"
+msgstr "Импортирај"
+
+msgid "Import/Export Addressbooks"
+msgstr "Импорт/Експорт на адресар"
+
+msgid "Import/Export"
+msgstr "Импорт/Експорт"
+
+msgid "Invalid addressbook."
+msgstr "Адресарот е невалиден"
+
+msgid "Invalid e-mail address."
+msgstr "Адресата не е валидна"
+
+msgid "Invalid name."
+msgstr "Името не е валидно."
+
+msgid "Language"
+msgstr "Јазик"
+
+msgid "Matching"
+msgstr "Се поклопува"
+
+msgid "Message"
+msgstr "Порака"
+
+msgid "Name"
+msgstr "Име"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr "Ниеден од адресарите не е подесен за воведување нови ставки. Ако мислите дека се работи за грешка, ве молиме контактирајте со вашиот администратор."
+
+msgid "Notes"
+msgstr "Забелешки"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Ве молиме одберете адресар во кој ќе ги сместите контактните податоци."
+
+msgid "Problem?"
+msgstr "Проблем?"
+
+msgid "Reset"
+msgstr "Одново"
+
+msgid "Save Changes"
+msgstr "Зачувај ги промените"
+
+msgid "Save"
+msgstr "Зачувај"
+
+msgid "Search Results"
+msgstr "Резултати од пребарувањето"
+
+msgid "Search"
+msgstr "Пребарувај"
+
+msgid "Search&nbsp;Results"
+msgstr "Резултати&nbsp;од&nbsp;пребарувањето"
+
+msgid "Select the destination to import to:"
+msgstr "Обери дестинација за импортирање:"
+
+msgid "Select the file to import:"
+msgstr "Обери го документот во кој ќе импортираш:"
+
+msgid "Select the format to export to:"
+msgstr "Одбери го форматот за експорт:"
+
+msgid "Select the format to import from:"
+msgstr "Одбери го форматот за импорт:"
+
+msgid "Select the source to export from:"
+msgstr "Одбери од каде ќе експортираш:"
+
+msgid "Select your preferred language:"
+msgstr "Одбери го својот матичен јазик:"
+
+msgid "Send Message"
+msgstr "Испрати порака"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "Испрати порака до %s"
+
+msgid "Set the your preferred display language."
+msgstr "Одбери го својот матичен јазик."
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Дел од конфигурацијата на системот за контакт недостасува:"
+
+msgid "Success"
+msgstr "Успешно"
+
+msgid "The data got lost"
+msgstr "Податоците се загубени"
+
+msgid "The data got lost."
+msgstr "Податоците се загубени."
+
+msgid "The file contained no data."
+msgstr "Документот не содржи податоци."
+
+msgid "There are no writeable address books."
+msgstr "Нема адресар во кој е дозволено запишување."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr "Настана грешка при снимањето на документот. Можеби документот е поголем од максимално дозволената големина."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr "Настана грешка при додавање на објектот. Контактирајте со вашиот администратор за понатамошни инструкции."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr "Настана грешка при бришење на објектот. Контактирајте со вашиот администратор за понатамошни инструкции."
+
+msgid "There was an error importing the data."
+msgstr "Настана грешка при импортирањето на податоците."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Настана грешка во импортирањето на симнатион документ."
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr "Овој документ претставува конфигурација за системот на адресари, а исто така ги содржи корисничките подесувања."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr "Овој документ содржи подесувања кои ги заменуваат или дополнуваат почетните подесувања за Horde."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr "Овој документо ги содржи глобалните имиња и типови на параметрита на системот за адресари."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "Овој документ претставува листа од изворните податоци за системот за адресари."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr "Овој документ е главниот конфигурационен документ на системот за адресари. Ги содржи патеките до скриптите за системот."
+
+msgid "This person is already in your addressbook."
+msgstr "Личноста е веќе внесена во вашиот адресар."
+
+msgid "Title"
+msgstr "Наслов"
+
+msgid "To"
+msgstr "До"
+
+msgid "Turba is not properly configured"
+msgstr "Системот за адресари не е точно конфигуриран."
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Не можам да ги прочитам информациите за %s."
+
+msgid "Warning"
+msgstr "Внимание"
+
+msgid "Work Address"
+msgstr "Адреса на работа"
+
+msgid "Work Phone"
+msgstr "Телефон на работа"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr "Нема совпаѓање помеѓу податоците од импортираниот документ со соодветните податоци во системот за адресари."
+
+msgid "Your Information"
+msgstr "Ваши информации"
+
+msgid "[Edit]"
+msgstr "Уреди"
+

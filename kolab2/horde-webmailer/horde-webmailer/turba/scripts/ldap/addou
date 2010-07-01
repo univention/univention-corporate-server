@@ -1,0 +1,3 @@
+#!/bin/sh
+
+for x in *; do /home/addou.pl $x; done

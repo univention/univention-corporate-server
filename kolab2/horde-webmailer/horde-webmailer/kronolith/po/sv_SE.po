@@ -1,0 +1,1768 @@
+# Kronolith Swedish translation
+# Copyright 2002-2005 Andreas Dahlén.
+# Andreas Dahlén <andreas@dahlen.ws>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith 2.0-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2005-03-29 14:44+0200\n"
+"PO-Revision-Date: 2005-03-30 08:50+0100\n"
+"Last-Translator: Andreas Dahlén <andreas@dahlen.ws>\n"
+"Language-Team: Swedish <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: templates/search/header.inc:8
+#, php-format
+msgid "%d events"
+msgstr "%d händelser"
+
+#: templates/edit/edit_timespan.inc:127
+#, php-format
+msgid "%s Day(s) %s Hour(s) %s Minutes"
+msgstr "%s dag(ar) %s timm(ar) %s minut(er)"
+
+#: lib/Driver.php:1719
+#, php-format
+msgid "%s attendees"
+msgstr "%s deltagare"
+
+#: data.php:241
+#, php-format
+msgid "%s file successfully imported"
+msgstr "%s filen är importerad"
+
+#: calendars.php:105 lib/base.php:126
+#, php-format
+msgid "%s's Calendar"
+msgstr "Kalender för %s"
+
+#: templates/contacts/contacts.inc:164
+msgid "* Add these by clicking Add *"
+msgstr "* Lägg till dem här genom att klicka 'Lägg till' *"
+
+#: templates/contacts/contacts.inc:150
+msgid "* Please select address(es) *"
+msgstr "* Välj adress(er) *"
+
+#: lib/Driver.php:1719
+msgid "1 attendee"
+msgstr "1 deltagare"
+
+#: templates/search/header.inc:8
+msgid "1 event"
+msgstr "1 händelse"
+
+#: templates/edit/edit.inc:159
+msgid "<b>Attendees</b> (optional)"
+msgstr "<b>Deltagare</b> (valfri)"
+
+#: templates/edit/edit.inc:137
+msgid "<b>Descri_ption</b> (optional)"
+msgstr "<b>Beskri_vning</b> (valfri)"
+
+#: templates/edit/edit.inc:261
+msgid "<b>Keywords</b> (optional)"
+msgstr "<b>Nyckelord</b> (valfri)"
+
+#: templates/edit/edit.inc:179
+msgid "<b>Recurrence</b> (optional)"
+msgstr "<b>Upprepning</b> (valfri)"
+
+#: templates/data/export.inc:105 templates/data/export.inc:185
+msgid "AM"
+msgstr "AM"
+
+#: lib/Kronolith.php:525
+msgid "Accepted"
+msgstr "Accepterad"
+
+#: templates/search/search.inc:10
+msgid "Ad_vanced Search"
+msgstr "A_vancerad sökning"
+
+#: templates/contacts/contacts.inc:161 templates/contacts/contacts.inc:190
+msgid "Add"
+msgstr "Lägg till"
+
+#: templates/edit/edit.inc:25
+msgid "Add Event"
+msgstr "Lägg till händelse"
+
+#: templates/prefs/remote_cal_management.inc:35
+msgid "Add a new Remote Calendar"
+msgstr "Lägg till ny fjärrkalender"
+
+#: addevent.php:50
+msgid "Add a new event"
+msgstr "Lägg till en ny händelse"
+
+#: templates/attendees/attendees.inc:81
+msgid "Add attendees"
+msgstr "Lägg till deltagare"
+
+#: templates/attendees/attendees.inc:85
+msgid "Add people from my Address Book"
+msgstr "Lägg till personer från min adressbok"
+
+#: templates/attendees/attendees.inc:89
+msgid "Add these people"
+msgstr "Lägg till dessa personer"
+
+#: contacts.php:82 templates/contacts/contacts.inc:120
+msgid "Address Book"
+msgstr "Adressbok"
+
+#: templates/search/search.inc:10 templates/search/search_advanced.inc:7
+msgid "Advanced Search"
+msgstr "Avancerad sökning"
+
+#: templates/edit/edit.inc:96 templates/view/view.inc:61
+msgid "Alarm"
+msgstr "Alarm"
+
+#: lib/Driver.php:1699
+#, php-format
+msgid "Alarm %d days before"
+msgstr "Alarm %d dagar innan"
+
+#: lib/Driver.php:1704
+#, php-format
+msgid "Alarm %d hours before"
+msgstr "Alarm %d timmar innan"
+
+#: lib/Driver.php:1709
+#, php-format
+msgid "Alarm %d minutes before"
+msgstr "Alarm %d minuter innan"
+
+#: lib/Driver.php:1694
+#, php-format
+msgid "Alarm %d weeks before"
+msgstr "Alarm %d veckor innan"
+
+#: lib/Driver.php:1698
+msgid "Alarm 1 day before"
+msgstr "Alarm 1 dag innan"
+
+#: lib/Driver.php:1703
+msgid "Alarm 1 hour before"
+msgstr "Alarm 1 timma innan"
+
+#: lib/Driver.php:1708
+msgid "Alarm 1 minute before"
+msgstr "Alarm 1 minut innan"
+
+#: lib/Driver.php:1693
+msgid "Alarm 1 week before"
+msgstr "Alarm 1 vecka innan"
+
+#: data.php:50
+msgid "Alarm Date"
+msgstr "Alarmdatum"
+
+#: data.php:49
+msgid "Alarm Span (minutes)"
+msgstr "Tid mellan alarm (minuter)"
+
+#: data.php:51
+msgid "Alarm Time"
+msgstr "Alarmtid"
+
+#: templates/delete/delete.inc:43
+msgid "All"
+msgstr "Alla"
+
+#: lib/FBView.php:124 lib/FBView.php:127 lib/FBView.php:130
+msgid "All Attendees"
+msgstr "Alla deltagare"
+
+#: templates/search/search.inc:58
+msgid "All Future"
+msgstr "Alla framtida"
+
+#: templates/search/search.inc:52
+msgid "All Past"
+msgstr "Hela tidigare"
+
+#: lib/Block/month.php:24 lib/Block/monthlist.php:27
+#: lib/Block/prevmonthlist.php:27 lib/Block/summary.php:25
+msgid "All Visible"
+msgstr "Alla synliga"
+
+#: lib/WeekView.php:110 lib/WeekView.php:120 lib/Driver.php:1623
+#: lib/Driver.php:1649 lib/DayView.php:87 lib/DayView.php:89
+#: templates/edit/edit_timespan.inc:126
+msgid "All day"
+msgstr "Hela dagen"
+
+#: lib/Block/summary.php:148
+msgid "All day event"
+msgstr "Heldagshändelse"
+
+#: templates/data/export.inc:25
+msgid "All events"
+msgstr "Alla händelser"
+
+#: lib/Kronolith.php:615 templates/search/search_advanced.inc:48
+#: templates/search/search_advanced.inc:70
+msgid "Any"
+msgstr "vilken som helst"
+
+#: templates/javascript/goto.inc:71
+msgid "April"
+msgstr "april"
+
+#: templates/edit/edit_timespan.inc:95 templates/data/export.inc:74
+#: templates/data/export.inc:160
+msgid "At"
+msgstr "Kl"
+
+#: lib/Kronolith.php:974
+msgid ""
+"Attached is an iCalendar file with more information about the event. If your "
+"mail client supports iTip requests you can use this file to easily update "
+"your local copy of the event."
+msgstr ""
+"Attached is an iCalendar file with more information about the event. If your "
+"mail client supports iTip requests you can use this file to easily update "
+"your local copy of the event."
+
+#: templates/view/view.inc:181 templates/attendees/attendees.inc:46
+msgid "Attendance"
+msgstr "Deltagande"
+
+#: templates/view/view.inc:177
+msgid "Attendees"
+msgstr "Deltagare"
+
+#: templates/javascript/goto.inc:75
+msgid "August"
+msgstr "augusti"
+
+#: templates/calendars/calendars.inc:126
+msgid "Back to Calendar Options"
+msgstr "Tillbaka till kalenderinställningar"
+
+#: templates/search/search.inc:7 templates/search/search_advanced.inc:10
+msgid "Basic Search"
+msgstr "Sökning"
+
+#: config/keywords.php.dist:17
+msgid "Birthday"
+msgstr "Födelsedag"
+
+#: lib/FBView.php:90 lib/FBView.php:109 templates/fbview/legend.inc:3
+msgid "Busy"
+msgstr "Upptagen"
+
+#: templates/search/search_advanced.inc:43
+msgid "C_alendar"
+msgstr "K_alender"
+
+#: templates/edit/edit.inc:48
+msgid "Cal_endar"
+msgstr "K_alender"
+
+#: lib/Block/month.php:21 lib/Block/monthlist.php:21
+#: lib/Block/prevmonthlist.php:21 lib/Block/summary.php:22
+msgid "Calendar"
+msgstr "Kalender"
+
+#: templates/calendars/calendars.inc:113
+msgid "Calendar Description"
+msgstr "Kalenderbeskrivning"
+
+#: templates/calendars/calendars.inc:97
+msgid "Calendar Name"
+msgstr "Kalendernamn"
+
+#: lib/Block/summary.php:3
+msgid "Calendar Summary"
+msgstr "Kalender sammanfattning"
+
+#: calendars.php:119 config/prefs.php.dist:36 config/prefs.php.dist:43
+#: config/prefs.php.dist:50 config/prefs.php.dist:57
+msgid "Calendars"
+msgstr "Kalendrar"
+
+#: calendars.php:27
+msgid "Calendars must have a name."
+msgstr "Kalendrar måste ha ett namn."
+
+#: templates/menu.inc:31
+msgid "Calendars:"
+msgstr "Kalendrar:"
+
+#: data.php:211
+msgid "Can't create a new event."
+msgstr "Kan inte skapa en ny händelse"
+
+#: templates/delete/delete.inc:44 templates/delete/one.inc:42
+#: templates/edit/edit.inc:32 templates/edit/edit.inc:292
+#: templates/contacts/contacts.inc:191
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: lib/Kronolith.php:504
+msgid "Cancelled"
+msgstr "Avbruten"
+
+#: lib/Kronolith.php:949
+#, php-format
+msgid "Cancelled: %s"
+msgstr "Avbruten: %s"
+
+#: templates/edit/edit.inc:68 templates/search/search_advanced.inc:63
+msgid "Categor_y"
+msgstr "Kategor_i"
+
+#: data.php:53 templates/search/event_headers.inc:4 templates/view/view.inc:21
+msgid "Category"
+msgstr "Kategori"
+
+#: templates/calendars/calendars.inc:22 templates/calendars/calendars.inc:123
+msgid "Change"
+msgstr "Ändra"
+
+#: templates/prefs/search_abook_select.inc:17 config/prefs.php.dist:295
+msgid "Choose the address books to search for free/busy URLs:"
+msgstr "Välj adressbok för sökning av ledig/upptagen URL:"
+
+#: templates/calendars/calendars.inc:138
+msgid ""
+"Choose the calendars that you want to be included in your Free/Busy listings:"
+msgstr "Välj de kalendrar du vill inkludera i listning av ledig/upptagen:"
+
+#: config/prefs.php.dist:38
+msgid "Choose your default calendar."
+msgstr "Välj din förvalda kalender."
+
+#: templates/search/search.inc:68 templates/search/search_advanced.inc:116
+msgid "Clear Form"
+msgstr "Rensa formulär"
+
+#: templates/attendees/attendees.inc:72
+msgid "Clear all attandees"
+msgstr "Rensa alla deltagare"
+
+#: data.php:28 templates/data/import.inc:21
+msgid "Comma separated values"
+msgstr "Kommaseparerade värden"
+
+#: config/prefs.php.dist:73
+msgid "Confirm deletion of events?"
+msgstr "Bekräfta radering av händelser?"
+
+#: lib/Kronolith.php:501
+msgid "Confirmed"
+msgstr "Bekräftad"
+
+#: templates/calendars/calendars.inc:151
+msgid "Copy the URL below for use wherever you need your Free/Busy URL:"
+msgstr "Kopiera länken nedan när du behöver infromation om ledig/upptagen:"
+
+#: lib/Kronolith.php:163
+#, php-format
+msgid "Could not open %s."
+msgstr "Kan inte öppna %s."
+
+#: templates/calendars/calendars.inc:17 templates/calendars/calendars.inc:123
+#: templates/calendars/calendars.inc:125
+msgid "Create"
+msgstr "Skapa"
+
+#: month.php:152 month.php:153 lib/DayView.php:87 lib/DayView.php:185
+#: templates/day/row.inc:6 templates/week/head.inc:20
+#: templates/week/head.inc:21 templates/week/head_side_by_side.inc:20
+#: templates/week/head_side_by_side.inc:21
+msgid "Create a New Event"
+msgstr "Skapa en ny händelse"
+
+#: templates/view/view.inc:88
+msgid "Created"
+msgstr "Skapad"
+
+#: templates/delete/delete.inc:41
+msgid "Current"
+msgstr "Aktuell"
+
+#: templates/edit/edit.inc:194 templates/view/view.inc:122
+msgid "Daily: Recurs every"
+msgstr "Daglig: Upprepa var"
+
+#: attendees.php:106 lib/Kronolith.php:1189 lib/Block/tree_menu.php:21
+#: config/prefs.php.dist:82
+msgid "Day"
+msgstr "Dag"
+
+#: templates/edit/edit.inc:127 templates/view/view.inc:70
+msgid "Day(s)"
+msgstr "Dag(ar)"
+
+#: viewevent.php:103
+msgid "De_lete"
+msgstr "_Radera"
+
+#: templates/javascript/goto.inc:79
+msgid "December"
+msgstr "december"
+
+#: lib/Kronolith.php:528
+msgid "Declined"
+msgstr "Avböjt"
+
+#: config/prefs.php.dist:37
+msgid "Default Calendar"
+msgstr "Förvald kalender"
+
+#: lib/Driver.php:1739 templates/delete/one.inc:41
+#: templates/prefs/remote_cal_management.inc:23
+#: templates/contacts/contacts.inc:181 templates/calendars/calendars.inc:124
+msgid "Delete"
+msgstr "Radera"
+
+#: delevent.php:40 lib/Driver.php:1739 templates/delete/delete.inc:21
+#: templates/delete/one.inc:21
+#, php-format
+msgid "Delete %s"
+msgstr "Radera %s"
+
+#: viewevent.php:103
+#, php-format
+msgid "Delete '%s'"
+msgstr "Radera '%s'"
+
+#: editevent.php:61
+msgid "Delete Event"
+msgstr "Radera händelse"
+
+#: templates/delete/delete.inc:35
+msgid ""
+"Delete the current event only, this occurrence and all future occurences, or "
+"all occurences?"
+msgstr ""
+"Radera enbart aktuell händelse, aktuell samt framtida förekomster eller alla "
+"förekomster?"
+
+#: templates/search/search.inc:27 templates/search/search_advanced.inc:103
+msgid "Descri_ption"
+msgstr "_Beskrivning"
+
+#: data.php:52 templates/view/view.inc:105
+msgid "Description"
+msgstr "Beskrivning"
+
+#: templates/attendees/attendees.inc:102
+msgid "Dismiss"
+msgstr "Avfärda"
+
+#: templates/contacts/contacts.inc:173
+msgid "Display"
+msgstr "Visa"
+
+#: config/prefs.php.dist:9 config/prefs.php.dist:20 config/prefs.php.dist:28
+msgid "Display Options"
+msgstr "Visningsinställningar"
+
+#: config/prefs.php.dist:30
+msgid "Do you want to show tasks which are due on your calendar?"
+msgstr "Vill du visa uppgifter som är klara i din kalender?"
+
+#: lib/Kronolith.php:471
+msgid "Does not recur"
+msgstr "Upprepas inte"
+
+#: lib/Kronolith.php:317
+#, php-format
+msgid "Due: %s"
+msgstr "Klar: %s"
+
+#: templates/edit/edit_timespan.inc:62
+msgid "Duration"
+msgstr "Varaktighet"
+
+#: lib/Driver.php:1733
+msgid "Edit"
+msgstr "Ändra"
+
+#: editevent.php:33 lib/Driver.php:1733 templates/edit/edit.inc:25
+#, php-format
+msgid "Edit %s"
+msgstr "Ändra %s"
+
+#: viewevent.php:119
+#, php-format
+msgid "Edit '%s'"
+msgstr "Ändra '%s'"
+
+#: templates/edit/edit.inc:172
+msgid "Edit Attendees"
+msgstr "Ändra deltagare"
+
+#: config/prefs.php.dist:246
+msgid "Edit Remote Calendars"
+msgstr "Ändra fjärrkalendrar"
+
+#: attendees.php:146
+msgid "Edit attendees"
+msgstr "Ändra deltagare"
+
+#: templates/category_legend.inc:25
+msgid "Edit categories and colors"
+msgstr "Ändra kategorier och färger"
+
+#: templates/contacts/contacts.inc:176 templates/view/view.inc:180
+#: templates/attendees/attendees.inc:45
+msgid "Email Address"
+msgstr "E-post adress"
+
+#: data.php:47
+msgid "End Date"
+msgstr "Slutdatum"
+
+#: templates/edit/edit_timespan.inc:67 templates/search/event_headers.inc:8
+#: templates/view/view.inc:55 templates/data/export.inc:112
+msgid "End On"
+msgstr "Sluta den"
+
+#: data.php:48
+msgid "End Time"
+msgstr "Sluttid"
+
+#: attendees.php:120 attendees.php:131 attendees.php:138
+#, php-format
+msgid "Error retrieving free/busy information for %s: %s"
+msgstr "Kan inte hämta information om ledig/upptagen för %s: %s"
+
+#: lib/Kronolith.php:1040
+msgid "Event added:"
+msgstr "Händelse skapad:"
+
+#: lib/Kronolith.php:1048
+msgid "Event deleted:"
+msgstr "Händelse raderad:"
+
+#: lib/Kronolith.php:1044
+msgid "Event edited:"
+msgstr "Händelse ändrad:"
+
+#: lib/Driver.php:955
+#, php-format
+msgid "Event from %s to %s"
+msgstr "Händelse från %s till %s"
+
+#: lib/Driver.php:674
+msgid "Events must have a start date."
+msgstr "Händelser måste ha ett startdatum."
+
+#: lib/Driver.php:640
+msgid "Events must have a title."
+msgstr "Händelser måste ha en rubrik."
+
+#: lib/Driver.php:677
+msgid "Events must have an end date or a duration."
+msgstr "Händelser måste ha ett slutdatum eller varaktighet"
+
+#: templates/data/export.inc:191
+msgid "Export"
+msgstr "Exportera"
+
+#: templates/data/export.inc:9
+msgid "Export Calendar"
+msgstr "Exportera kalender"
+
+#: templates/javascript/goto.inc:69
+msgid "February"
+msgstr "februari"
+
+#: templates/contacts/contacts.inc:128
+msgid "Find"
+msgstr "Sök"
+
+#: year.php:82 lib/Block/month.php:109 templates/javascript/goto.inc:63
+#: templates/edit/edit.inc:207
+msgid "Fr"
+msgstr "Fr"
+
+#: config/prefs.php.dist:58
+msgid "Free/Busy Information"
+msgstr "Ledig/Upptagen information"
+
+#: templates/month/head.inc:20 templates/edit/javascript.inc:72
+#: templates/view/view.inc:130
+msgid "Friday"
+msgstr "Fredag"
+
+#: templates/delete/delete.inc:42
+msgid "Future"
+msgstr "Framtida"
+
+#: config/keywords.php.dist:17
+msgid "Game"
+msgstr "Spel"
+
+#: templates/search/search_advanced.inc:22
+msgid "General"
+msgstr "Allmän"
+
+#: lib/Block/summary.php:127
+#, php-format
+msgid "Goto %s"
+msgstr "Gå till %s"
+
+#: templates/edit/edit.inc:126 templates/view/view.inc:73
+msgid "Hour(s)"
+msgstr "Timm/e/ar"
+
+#: config/prefs.php.dist:284
+msgid ""
+"How many days into the future should we generate free/busy information for?"
+msgstr ""
+"För hur många dagar in i framtiden vill du generera information om ledig/"
+"upptagen?"
+
+#: lib/Kronolith.php:978
+#, php-format
+msgid ""
+"If your email client doesn't support iTip requests you can use one of the "
+"following links to accept or decline the event.\n"
+"To accept the event:\n"
+"%s\n"
+"To accept the event tentatively:\n"
+"%s\n"
+"To decline the event:\n"
+"%s"
+msgstr ""
+"Om din epost klient inte stödjer iTip, så kan du använda en av följande "
+"länkar att accepetera eller avböja händelsen.\n"
+"För att acceptera:\n"
+"%s\n"
+"För att preliminärt acceptera:\n"
+"%s\n"
+"För att avböja:\n"
+"%s"
+
+#: templates/data/import.inc:9
+#, php-format
+msgid "Import Calendar, Step %d"
+msgstr "Import kalender, steg %d"
+
+#: data.php:286
+msgid "Import/Export Calendar"
+msgstr "Importera/Exportera kalender"
+
+#: templates/javascript/goto.inc:68
+msgid "January"
+msgstr "januari"
+
+#: templates/javascript/goto.inc:74
+msgid "July"
+msgstr "juli"
+
+#: templates/javascript/goto.inc:73
+msgid "June"
+msgstr "juni"
+
+#: data.php:55 templates/view/view.inc:155
+msgid "Keywords"
+msgstr "Nyckelord"
+
+#: templates/search/search.inc:54
+msgid "Last 24 hours"
+msgstr "Senaste 24 timmarna"
+
+#: templates/view/view.inc:95
+msgid "Last Modified"
+msgstr "Senast ändrad"
+
+#: templates/month/head.inc:4 templates/month/head_side_by_side.inc:4
+#: templates/month/head_side_by_side.inc:10
+#: templates/month/head_side_by_side.inc:16
+msgid "Last Month"
+msgstr "Förra månaden"
+
+#: templates/year/head.inc:4
+msgid "Last Year"
+msgstr "Förra året"
+
+#: templates/search/search.inc:53 templates/week/head.inc:4
+#: templates/week/head_side_by_side.inc:4
+msgid "Last week"
+msgstr "Förra veckan"
+
+#: templates/edit/edit_timespan.inc:122
+msgid "Lasts"
+msgstr "Varar"
+
+#: templates/data/export.inc:21
+msgid "Limit the time span to export:"
+msgstr "Begränsa tidsspannet för exporten:"
+
+#: templates/edit/edit.inc:75 templates/search/search_advanced.inc:85
+msgid "Lo_cation"
+msgstr "_Plats"
+
+#: data.php:54 templates/prefs/remote_cal_management.inc:18
+#: templates/prefs/remote_cal_management.inc:52
+#: templates/search/event_headers.inc:5 templates/view/view.inc:29
+msgid "Location"
+msgstr "Plats"
+
+#: config/prefs.php.dist:45
+msgid "Manage remote calendars."
+msgstr "Hantera fjärrkalendrar."
+
+#: templates/javascript/goto.inc:70
+msgid "March"
+msgstr "mars"
+
+#: templates/javascript/goto.inc:72
+msgid "May"
+msgstr "maj"
+
+#: config/keywords.php.dist:17
+msgid "Meeting"
+msgstr "Möte"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "Menylista"
+
+#: templates/edit/edit.inc:125 templates/view/view.inc:76
+msgid "Minute(s)"
+msgstr "Minut(er)"
+
+#: lib/Block/prevmonthlist.php:44
+msgid "Missed Events List"
+msgstr "Missade händelser"
+
+#: year.php:78 lib/Block/month.php:109 templates/javascript/goto.inc:59
+#: templates/edit/edit.inc:203
+msgid "Mo"
+msgstr "Må"
+
+#: templates/month/head.inc:16 templates/edit/javascript.inc:68
+#: templates/view/view.inc:126 config/prefs.php.dist:115
+msgid "Monday"
+msgstr "Måndag"
+
+#: lib/Kronolith.php:1192 lib/Block/tree_menu.php:24 config/prefs.php.dist:85
+msgid "Month"
+msgstr "Månad"
+
+#: lib/Block/month.php:3
+msgid "Month View"
+msgstr "Månadsvy"
+
+#: lib/Block/monthlist.php:3 lib/Block/monthlist.php:44
+msgid "Monthly Events List"
+msgstr "Månatliga händelser"
+
+#: templates/edit/edit.inc:214 templates/edit/edit.inc:220
+#: templates/view/view.inc:136 templates/view/view.inc:138
+msgid "Monthly: Recurs every"
+msgstr "Monatlig: Upprepa var"
+
+#: lib/Block/monthlist.php:24
+msgid "Months Ahead"
+msgstr "Månader frammåt"
+
+#: lib/Block/prevmonthlist.php:24
+msgid "Months Before"
+msgstr "Månader tidigare"
+
+#: lib/api.php:205 lib/api.php:451
+msgid "Multiple iCalendar components found; only one vEvent is supported."
+msgstr "Flera iCaldener-delar hittades; enbart en vEvent stöds."
+
+#: templates/calendars/calendars.inc:84
+msgid "My Calendars"
+msgstr "Mina kalendrar"
+
+#: templates/menu.inc:35 templates/menu.inc:37
+msgid "My Calendars:"
+msgstr "Mina kalendrar:"
+
+#: templates/calendars/calendars.inc:132
+msgid "My Free/Busy URL"
+msgstr "Min ledig/upptagen URL"
+
+#: templates/prefs/remote_cal_management.inc:17
+#: templates/prefs/remote_cal_management.inc:44
+#: templates/contacts/contacts.inc:175
+msgid "Name"
+msgstr "Namn"
+
+#: lib/Block/month.php:43 lib/Block/monthlist.php:45 lib/Block/summary.php:43
+#: lib/Block/tree_menu.php:20
+msgid "New Event"
+msgstr "Ny händelse"
+
+#: templates/data/import.inc:39
+msgid "Next"
+msgstr "Nästa"
+
+#: templates/search/search.inc:56
+msgid "Next 24 hours"
+msgstr "Nästa 24 timmar"
+
+#: lib/FBView/day.php:78
+msgid "Next Day"
+msgstr "Nästa dag"
+
+#: templates/month/head.inc:6 templates/month/head_side_by_side.inc:6
+#: templates/month/head_side_by_side.inc:12
+#: templates/month/head_side_by_side.inc:18
+msgid "Next Month"
+msgstr "Nästa månad"
+
+#: lib/FBView/week.php:32
+msgid "Next Week"
+msgstr "Nästa vecka"
+
+#: templates/year/head.inc:6
+msgid "Next Year"
+msgstr "Nästa år"
+
+#: templates/day/head_side_by_side.inc:7 templates/day/head.inc:7
+msgid "Next day"
+msgstr "Nästa dag"
+
+#: templates/search/search.inc:57 templates/week/head.inc:6
+#: templates/week/head_side_by_side.inc:6
+msgid "Next week"
+msgstr "Nästa vecka"
+
+#: config/prefs.php.dist:271
+msgid "No"
+msgstr "Nej"
+
+#: templates/fbview/legend.inc:7
+msgid "No Information"
+msgstr "Ingen information"
+
+#: templates/edit/edit.inc:121 templates/view/view.inc:81
+msgid "No alarm"
+msgstr "Inget alarm"
+
+#: templates/attendees/attendees.inc:53
+msgid "No attendees"
+msgstr "Inge deltagare"
+
+#: lib/Kronolith.php:1214
+msgid "No calendars are available to guests."
+msgstr "Inga kalendrar tillgängliga för gäster."
+
+#: templates/edit/edit.inc:240 templates/view/view.inc:148
+msgid "No end date"
+msgstr "Inget slutdatum"
+
+#: lib/Block/monthlist.php:176 lib/Block/prevmonthlist.php:180
+#: lib/Block/summary.php:196
+msgid "No events to display"
+msgstr "Inga händelser att visa"
+
+#: lib/Storage/kolab.php:44
+#, php-format
+msgid "No free/busy information is available for %s"
+msgstr "Ingen information om ledig/upptagen tillgänglig för %s"
+
+#: lib/api.php:195 lib/api.php:441
+msgid "No iCalendar data was found."
+msgstr "iCalendar information saknas."
+
+#: templates/edit/edit.inc:189
+msgid "No recurrence"
+msgstr "Ingen upprepning"
+
+#: lib/Kronolith.php:842
+msgid "No valid email address found"
+msgstr "Godkänd ePost-adress sakna."
+
+#: lib/Kronolith.php:535 lib/Kronolith.php:555
+msgid "None"
+msgstr "Ingen"
+
+#: lib/Storage/sql.php:127
+msgid "Not found"
+msgstr "Hittades inte"
+
+#: templates/data/import.inc:17
+msgid ""
+"Notice: Importing is not possible with this configuration due to a bug in "
+"the underlying calendar driver."
+msgstr "Pga en bug i drivrutinen för kalendern, så är import inte möjligt."
+
+#: config/prefs.php.dist:51
+msgid "Notifications"
+msgstr "Notifieringar"
+
+#: templates/javascript/goto.inc:78
+msgid "November"
+msgstr "november"
+
+#: templates/search/search.inc:55
+msgid "Now"
+msgstr "Nu"
+
+#: templates/javascript/goto.inc:77
+msgid "October"
+msgstr "oktober"
+
+#: config/prefs.php.dist:274
+msgid "On all calendars I have read access to"
+msgstr "På alla kalenderar som jag har läsbehörighet till"
+
+#: config/prefs.php.dist:273
+msgid "On all shown calendars"
+msgstr "På alla visade kalendrar"
+
+#: config/prefs.php.dist:272
+msgid "On my calendars only"
+msgstr "Enbart på mina kalendrar"
+
+#: lib/Kronolith.php:552
+msgid "Optional"
+msgstr "Valfri"
+
+#: lib/FBView.php:117
+msgid "Optional to attend"
+msgstr "Valfri att delta"
+
+#: templates/view/view.inc:42
+msgid "Owner"
+msgstr "Ägare"
+
+#: templates/data/export.inc:106 templates/data/export.inc:186
+msgid "PM"
+msgstr "PM"
+
+#: data.php:29 templates/data/import.inc:22
+msgid "Palm DateBook"
+msgstr "Palm datebook"
+
+#: lib/Block/prevmonthlist.php:3
+msgid "Past Events List"
+msgstr "Förflutna händelser"
+
+#: templates/edit/edit.inc:183 templates/view/view.inc:119
+msgid "Pattern"
+msgstr "Mönster"
+
+#: templates/delete/one.inc:35
+msgid "Permanently delete this event?"
+msgstr "Radera händelsen permanent?"
+
+#: lib/api.php:176 lib/api.php:258 lib/api.php:320 lib/api.php:392
+#: lib/api.php:423 lib/api.php:509 lib/api.php:545
+msgid "Permission Denied"
+msgstr "Behörighet nekades"
+
+#: ics.php:41
+msgid "Permission denied"
+msgstr "Behörighet nekades"
+
+#: templates/calendars/calendars.inc:107
+msgid "Permissions"
+msgstr "behörigheter"
+
+#: config/prefs.php.dist:21
+msgid "Portal Options"
+msgstr "Portalinställningar"
+
+#: templates/fbview/legend.inc:5
+msgid "Possible Meeting Time"
+msgstr "Möjlig mötestid"
+
+#: lib/FBView.php:149
+msgid "Possible Meeting Times"
+msgstr "Möjliga mötestider"
+
+#: lib/FBView/day.php:74
+msgid "Previous Day"
+msgstr "Föregående dag"
+
+#: lib/FBView/week.php:26
+msgid "Previous Week"
+msgstr "Föregående sida"
+
+#: templates/day/head_side_by_side.inc:5 templates/day/head.inc:5
+msgid "Previous day"
+msgstr "Föregående dag"
+
+#: templates/edit/edit.inc:237 templates/view/view.inc:147
+msgid "Recur Until"
+msgstr "Upprepa tills"
+
+#: templates/view/view.inc:116
+msgid "Recurrence"
+msgstr "Upprepning"
+
+#: data.php:59
+msgid "Recurrence Data"
+msgstr "Information om upprepning"
+
+#: data.php:57
+msgid "Recurrence End Date"
+msgstr "Slutdatum för upprepning"
+
+#: data.php:58
+msgid "Recurrence Interval"
+msgstr "Intervall för upprepning"
+
+#: data.php:56
+msgid "Recurrence Type"
+msgstr "Typ av upprepning"
+
+#: lib/Kronolith.php:474
+msgid "Recurs daily"
+msgstr "Daglig upprepning"
+
+#: lib/Kronolith.php:481
+msgid "Recurs monthly"
+msgstr "Månatlig upprepning"
+
+#: lib/Kronolith.php:477
+msgid "Recurs weekly"
+msgstr "Veckovis upprepning"
+
+#: lib/Kronolith.php:484
+msgid "Recurs yearly"
+msgstr "Årlig upprepning"
+
+#: lib/Scheduler/kronolith.php:166
+#, php-format
+msgid "Reminder: %s"
+msgstr "Påminnelse: %s"
+
+#: config/prefs.php.dist:44
+msgid "Remote Calendars"
+msgstr "Fjärrkalendrar"
+
+#: templates/menu.inc:61 templates/menu.inc:63
+msgid "Remote Calendars:"
+msgstr "Fjärrkalendrar:"
+
+#: templates/attendees/attendees.inc:57
+#, php-format
+msgid "Remove %s"
+msgstr "Ta bort %s"
+
+#: attendees.php:37
+msgid "Remove Attendee"
+msgstr "Ta bort deltagare"
+
+#: lib/Kronolith.php:559
+msgid "Required"
+msgstr "Obligatoriskt"
+
+#: lib/FBView.php:135 lib/FBView.php:138 lib/FBView.php:141
+msgid "Required Attendees"
+msgstr "Obligatoriska deltagare"
+
+#: lib/FBView.php:98
+msgid "Required to attend"
+msgstr "Obligatoriskt deltagande"
+
+#: templates/calendars/calendars.inc:125
+msgid "Reset"
+msgstr "Återställ"
+
+#: templates/edit/edit.inc:33 templates/edit/edit.inc:293
+msgid "Reset to Defaults"
+msgstr "Återställ till grundinställningar"
+
+#: templates/view/view.inc:182 templates/attendees/attendees.inc:47
+msgid "Response"
+msgstr "Svar"
+
+#: viewevent.php:117
+#, php-format
+msgid "S_ave '%s' As New"
+msgstr "_Spara '%s'som ny"
+
+#: year.php:83 lib/Block/month.php:109 templates/javascript/goto.inc:64
+#: templates/edit/edit.inc:208
+msgid "Sa"
+msgstr "Lö"
+
+#: templates/month/head.inc:21 templates/edit/javascript.inc:73
+#: templates/view/view.inc:131
+msgid "Saturday"
+msgstr "Lördag"
+
+#: editevent.php:44 editevent.php:48 viewevent.php:117
+msgid "Save As New"
+msgstr "Spara som ny"
+
+#: editevent.php:46 addevent.php:41
+msgid "Save Event"
+msgstr "Spara"
+
+#: search.php:14 lib/Block/tree_menu.php:26
+#: templates/contacts/contacts.inc:140 templates/search/search.inc:67
+#: templates/search/search_advanced.inc:115
+msgid "Search"
+msgstr "Sök"
+
+#: templates/calendars/calendars.inc:86
+msgid "Select a calendar"
+msgstr "Välj en kalender"
+
+#: templates/edit/edit.inc:253 templates/edit/edit_timespan.inc:30
+#: templates/edit/edit_timespan.inc:85
+msgid "Select a date"
+msgstr "Välj ett datum"
+
+#: config/prefs.php.dist:11
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr ""
+"Välj inställningar för bekräftelser och hur vyer skall visas samt förvald vy."
+
+#: config/prefs.php.dist:52
+msgid ""
+"Select if you want to get notified about new, edited, or deleted events."
+msgstr ""
+"Välj om du vill bli notifierad om nya, ändrade eller raderade händelser."
+
+#: config/prefs.php.dist:275
+msgid ""
+"Select if you want to get notified of new, edited, and deleted events by "
+"email:"
+msgstr ""
+"Välj om du vill bli notifierad om nya, ändrade eller raderade händelser via "
+"e-post:"
+
+#: templates/data/import.inc:27
+msgid "Select the calendar to import to:"
+msgstr "Välj kalender att importera till:"
+
+#: templates/data/export.inc:16
+msgid "Select the export format:"
+msgstr "Välj exportformat:"
+
+#: templates/data/import.inc:36
+msgid "Select the file to import:"
+msgstr "Välj fil som skall importeras:"
+
+#: config/prefs.php.dist:113
+msgid "Select the first weekday:"
+msgstr "Välj första veckodagen:"
+
+#: templates/data/import.inc:19
+msgid "Select the format of the source file:"
+msgstr "Välj format på importfilen:"
+
+#: config/prefs.php.dist:180
+msgid "Select the time span to show:"
+msgstr "Välj tidsintervall som skall visas:"
+
+#: config/prefs.php.dist:86
+msgid "Select the view to display on startup:"
+msgstr "Välj vy som visas vid start:"
+
+#: config/prefs.php.dist:22
+msgid "Select which events to show in the portal."
+msgstr "Välj vilka händelser som skall visas i portalen."
+
+#: templates/delete/delete.inc:28 templates/delete/one.inc:28
+msgid "Send a cancel notification to all attendees when deleting this event"
+msgstr ""
+"Skicka en annuleringsnotifiering till alla deltagare när händelsen raderas"
+
+#: templates/view/view.inc:186 templates/attendees/attendees.inc:60
+#, php-format
+msgid "Send an email to %s"
+msgstr "Skicka meddelande till %s"
+
+#: templates/edit/edit.inc:166
+msgid "Send updates/invitations to all attendees when saving this event"
+msgstr ""
+"Skicka uppdatering/inbjudningar till alla deltagare när händelsen sparas"
+
+#: templates/javascript/goto.inc:76
+msgid "September"
+msgstr "september"
+
+#: templates/edit/edit_timespan.inc:85
+msgid "Set end date"
+msgstr "Ange slutdatum"
+
+#: templates/edit/edit.inc:253
+msgid "Set recurrence end date"
+msgstr "Ange slutdatum för upprepning"
+
+#: templates/edit/edit_timespan.inc:30
+msgid "Set start date"
+msgstr "Ange startdatum"
+
+#: config/prefs.php.dist:59
+msgid "Set your own and other user's free/busy options."
+msgstr "Ange dina och andras inställningar för ledig/upptagen."
+
+#: calendars.php:77
+#, php-format
+msgid "Share not found: %s"
+msgstr "Utdelning saknas: %s"
+
+#: templates/menu.inc:48 templates/menu.inc:50
+msgid "Shared Calendars:"
+msgstr "Delade kalendrar:"
+
+#: config/prefs.php.dist:152
+msgid "Show category legend?"
+msgstr "Visa örklaring för kategorier?"
+
+#: config/prefs.php.dist:142
+msgid "Show delete, alarm, and recurrence icons in calendar views?"
+msgstr "Visa ikoner för radera, alarm och återkommande i kalendervyer?"
+
+#: config/prefs.php.dist:208
+msgid "Show due tasks in the calendar?"
+msgstr "Visa förfallna uppgifter i kalendern?"
+
+#: config/prefs.php.dist:162
+msgid "Show free/busy legend?"
+msgstr "Visa förklaring för information om ledig/upptagen?"
+
+#: config/prefs.php.dist:95
+msgid "Show half hour slots in day and week views?"
+msgstr "Visa halvtimmes rader i dags- och veckovyer?"
+
+#: config/prefs.php.dist:199
+msgid "Show only events that have an alarm set?"
+msgstr "Visa enbart händelser med alarm?"
+
+#: config/prefs.php.dist:171
+msgid "Show shared calendars side-by-side"
+msgstr "Visa delade kalendrar sida vid sida"
+
+#: config/prefs.php.dist:217
+msgid "Show tasks using category colors?"
+msgstr "Visa uppgifter med kategorifärger?"
+
+#: config/prefs.php.dist:104
+msgid "Show time of day between each day in week views?"
+msgstr "Visa klockslag mellan varje dag i veckovy?"
+
+#: templates/edit/edit_timespan.inc:11
+msgid "Sta_rt On"
+msgstr "Sta_rta den"
+
+#: data.php:45
+msgid "Start Date"
+msgstr "Startdatum"
+
+#: templates/search/event_headers.inc:7 templates/view/view.inc:49
+#: templates/data/export.inc:29
+msgid "Start On"
+msgstr "Starta den"
+
+#: data.php:46
+msgid "Start Time"
+msgstr "Starttid"
+
+#: templates/edit/edit.inc:84 templates/search/search_advanced.inc:94
+msgid "Stat_us"
+msgstr "Stat_us"
+
+#: templates/search/event_headers.inc:6 templates/view/view.inc:35
+msgid "Status"
+msgstr "Status"
+
+#: year.php:76 year.php:85 lib/Block/month.php:111 lib/Block/month.php:113
+#: templates/javascript/goto.inc:65 templates/edit/edit.inc:209
+msgid "Su"
+msgstr "Sö"
+
+#: templates/month/head.inc:14 templates/month/head.inc:23
+#: templates/edit/javascript.inc:67 templates/view/view.inc:132
+#: config/prefs.php.dist:114
+msgid "Sunday"
+msgstr "Söndag"
+
+#: config/prefs.php.dist:29
+msgid "Tasks"
+msgstr "Uppgifter"
+
+#: lib/Kronolith.php:508 lib/Kronolith.php:531
+msgid "Tentative"
+msgstr "Preliminär"
+
+#: year.php:81 lib/Block/month.php:109 templates/javascript/goto.inc:62
+#: templates/edit/edit.inc:206
+msgid "Th"
+msgstr "To"
+
+#: templates/contacts/contacts.inc:70
+msgid "The Edit Attendees screen is no longer present. Exiting."
+msgstr "Vyn för redigering av deltagare är inte tillgänglig längre. Avslutar."
+
+#: calendars.php:70
+#, php-format
+msgid "The calendar \"%s\" cannot be deleted."
+msgstr "Kalender '%s' kunde inte raderas."
+
+#: calendars.php:40
+#, php-format
+msgid "The calendar \"%s\" has been created."
+msgstr "Kalender '%s' skapades."
+
+#: calendars.php:88
+#, php-format
+msgid "The calendar \"%s\" has been deleted."
+msgstr "Kalender '%s' raderades."
+
+#: calendars.php:54
+#, php-format
+msgid "The calendar \"%s\" has been renamed to \"%s\"."
+msgstr "Namnet på kalender '%s' har ändrats till '%s'."
+
+#: calendars.php:56
+#, php-format
+msgid "The calendar \"%s\" has been saved."
+msgstr "Kalendern '%s' sparades."
+
+#: templates/edit/javascript.inc:151
+msgid "The end date must be later than the start date."
+msgstr "Slutdatum måste vara senasre än startdatum"
+
+#: lib/Kronolith.php:1041
+#, php-format
+msgid "The event \"%s\" has been added, which is on %s at %s."
+msgstr "Händelse '%s' har skapats, den %s kl %s."
+
+#: lib/Kronolith.php:1049
+#, php-format
+msgid "The event \"%s\" has been deleted, which was on %s at %s."
+msgstr "Händelse '%s' har raderats, den %s kl %s."
+
+#: lib/Kronolith.php:1045
+#, php-format
+msgid "The event \"%s\" has been edited, which is on %s at %s."
+msgstr "Händelse '%s' har ändrats, den %s kl %s."
+
+#: lib/Kronolith.php:1016
+#, php-format
+msgid "The event notification to %s was successfully sent."
+msgstr "Händelsenotifiering till %s har skickats."
+
+#: lib/Kronolith.php:972
+msgid "The following is a more detailed description of the event:"
+msgstr "Följande är med detaljerad beskriving av händelsen:"
+
+#: attend.php:40
+msgid ""
+"The request was incomplete. Some parameters that are necessary to accept or "
+"decline an event are missing."
+msgstr ""
+"Begäran är inte komplett. Några parametrar som krävs för att acceptera eller "
+"avböja saknas."
+
+#: templates/search/empty.inc:4
+msgid "There are no events matching the current criteria."
+msgstr "Inga händelser matchar aktuellt urval."
+
+#: editeventaction.php:35 addeventaction.php:18
+#, php-format
+msgid "There was an error accessing the calendar: %s"
+msgstr "Fel vid åtkomst av kalendern: %s"
+
+#: addeventaction.php:33
+#, php-format
+msgid "There was an error adding the event: %s"
+msgstr "Det uppstod fel vid tillägg av händelsen: %s"
+
+#: editeventaction.php:73
+#, php-format
+msgid "There was an error editing the event: %s"
+msgstr "Det uppstod fel vid redigering av händelsen: %s"
+
+#: lib/api.php:189 lib/api.php:435
+msgid "There was an error importing the iCalendar data."
+msgstr "Fel vid import av iCalendar data."
+
+#: editeventaction.php:54
+#, php-format
+msgid "There was an error moving the event: %s"
+msgstr "Det uppstod fel vid flytt av händelse: %s."
+
+#: lib/Kronolith.php:1021
+#, php-format
+msgid "There was an error sending an event notification to %s: %s"
+msgstr "Det uppstod fel vid sändning av notifiering till %s: %s"
+
+#: data.php:95
+msgid "There were no events to export."
+msgstr "Inga händelser att exportera."
+
+#: data.php:173
+msgid "This file format is not supported."
+msgstr "Filformatet stöds inte."
+
+#: data.php:213
+#, php-format
+msgid "This is what the server said: %s"
+msgstr "Servern svarade: %s"
+
+#: templates/month/head.inc:19 templates/edit/javascript.inc:71
+#: templates/view/view.inc:129
+msgid "Thursday"
+msgstr "Torsdag"
+
+#: templates/search/search.inc:36
+msgid "Time Sp_an"
+msgstr "Tidssp_ann"
+
+#: templates/edit/edit_timespan.inc:4
+msgid "Time span"
+msgstr "Tidsspann"
+
+#: templates/edit/edit.inc:39 templates/search/search_advanced.inc:35
+msgid "Tit_le"
+msgstr "Tite_l"
+
+#: data.php:44 templates/search/event_headers.inc:3
+#: templates/search/search.inc:19
+msgid "Title"
+msgstr "Titel"
+
+#: lib/Block/monthlist.php:127 lib/Block/prevmonthlist.php:131
+#: lib/Block/summary.php:117
+msgid "Today"
+msgstr "Idag"
+
+#: lib/Block/monthlist.php:129 lib/Block/prevmonthlist.php:133
+#: lib/Block/summary.php:119
+msgid "Tomorrow"
+msgstr "Imorgon"
+
+#: year.php:79 lib/Block/month.php:109 templates/javascript/goto.inc:60
+#: templates/edit/edit.inc:204
+msgid "Tu"
+msgstr "Ti"
+
+#: templates/month/head.inc:17 templates/edit/javascript.inc:69
+#: templates/view/view.inc:127
+msgid "Tuesday"
+msgstr "Tisdag"
+
+#: config/keywords.php.dist:17
+msgid "Type"
+msgstr "Typ"
+
+#: lib/Storage/sql.php:54
+msgid "Unable to connect to SQL server."
+msgstr "Kan inte kontakta SQL-server."
+
+#: calendars.php:84
+#, php-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "Kan inte radera '%s': %s"
+
+#: lib/Driver/mcal.php:145
+#, php-format
+msgid "Unable to delete %s."
+msgstr "Kan inte radera '%s'."
+
+#: lib/Driver.php:174
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Kan inte ladda definitionen av %s."
+
+#: calendars.php:51
+#, php-format
+msgid "Unable to rename \"%s\": %s"
+msgstr "Kan inte byta namn på '%s': %s"
+
+#: lib/Storage/kolab.php:35
+#, php-format
+msgid "Unable to retrieve free/busy information for %s"
+msgstr "Kan inte hämta information om ledig/upptagen för %s"
+
+#: scripts/upgrades/2004-05-19_convert_categories_to_strings.php:53
+#: templates/view/view.inc:23
+msgid "Unfiled"
+msgstr "Ej kategoriserad"
+
+#: lib/FBView/day.php:48 lib/FBView/day.php:58
+msgid "Unknown"
+msgstr "Okänd"
+
+#: lib/api.php:215 lib/api.php:289 lib/api.php:355 lib/api.php:460
+msgid "Unsupported Content-Type."
+msgstr "Content-Type stöds inte."
+
+#: lib/Kronolith.php:962
+#, php-format
+msgid "Updated: %s."
+msgstr "Uppdaterad: %s."
+
+#: config/prefs.php.dist:10
+msgid "User Interface"
+msgstr "Användargränssnitt"
+
+#: year.php:160 year.php:166 lib/Block/month.php:163 lib/Block/month.php:166
+msgid "View Day"
+msgstr "Visa dag"
+
+#: year.php:80 lib/Block/month.php:109 templates/javascript/goto.inc:61
+#: templates/edit/edit.inc:205
+msgid "We"
+msgstr "On"
+
+#: templates/month/head.inc:18 templates/edit/javascript.inc:70
+#: templates/view/view.inc:128
+msgid "Wednesday"
+msgstr "Onsdag"
+
+#: attendees.php:108 lib/Kronolith.php:1191 lib/Block/tree_menu.php:23
+#: config/prefs.php.dist:83
+msgid "Week"
+msgstr "Vecka"
+
+#: month.php:166 week.php:34 workweek.php:30
+#, php-format
+msgid "Week %d"
+msgstr "Vecka %d"
+
+#: templates/edit/edit.inc:128 templates/view/view.inc:67
+msgid "Week(s)"
+msgstr "Veck/a/or"
+
+#: templates/edit/edit.inc:200 templates/view/view.inc:134
+msgid "Weekly: Recurs every"
+msgstr "Veckovis: Upprepa var"
+
+#: config/prefs.php.dist:133
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr ""
+"På vilken tid skall dag- och veckovyer sluta när det inte finns några senare "
+"händelser?"
+
+#: config/prefs.php.dist:124
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr ""
+"På vilken tid skall dag- och veckovyer starta när det inte finns några "
+"tidigare händelser?"
+
+#: attendees.php:107 lib/Kronolith.php:1190 lib/Block/tree_menu.php:22
+#: config/prefs.php.dist:84
+msgid "Work Week"
+msgstr "Arbetsvecka"
+
+#: lib/Kronolith.php:1193 lib/Block/tree_menu.php:25
+msgid "Year"
+msgstr "År"
+
+#: templates/edit/edit.inc:226 templates/view/view.inc:140
+msgid "Yearly: Recurs every"
+msgstr "Årlig: Upprepa varje"
+
+#: attend.php:48
+msgid "You are not an attendee of the specified event."
+msgstr "Du är inte en deltagare till händelsen."
+
+#: templates/contacts/contacts.inc:76
+msgid "You can only use this form from the Edit Attendees screen."
+msgstr "Du kan endast använda det här formuläret från vyn ändra deltagare."
+
+#: lib/Kronolith.php:926
+#, php-format
+msgid ""
+"You do not have an email address configured in your Personal Information "
+"Options. You must set one %shere%s before event notifications can be sent."
+msgstr ""
+"Du har ingen e-postadress konfigurerad i dina inställningar. Du måste ange "
+"en %shär%s innan notifieringar kan skickas."
+
+#: addeventaction.php:20
+#, php-format
+msgid "You do not have permission to add events to %s."
+msgstr "Du har inte behörighet att lägga till händelser till %s."
+
+#: data.php:183
+msgid "You do not have permission to add events to the selected calendar."
+msgstr "Du har inte behörighet att lägga till händelser till aktuell kalender."
+
+#: deleventaction.php:26
+msgid "You do not have permission to delete this event."
+msgstr "Du har inte behörighet att radera aktuell händelse."
+
+#: editeventaction.php:68
+msgid "You do not have permission to edit this event."
+msgstr "Du har inte behörighet att redigera aktuell händelse."
+
+#: data.php:178
+msgid "You have specified an invalid calendar."
+msgstr "Du har angivit en felaktig kalender."
+
+#: attend.php:22
+msgid "You have successfully accepted attendence to this event."
+msgstr "Du har accepterat deltagande till händelsen."
+
+#: attend.php:26
+msgid "You have successfully declined attendence to this event."
+msgstr "Du har avböjt deltagande till händelsen."
+
+#: attend.php:30
+msgid "You have tentatively accepted attendence to this event."
+msgstr "Du har preliminärt accepterat deltagande till händelsen."
+
+#: calendars.php:91
+msgid "You must select a calendar to be deleted."
+msgstr "Du måste ange en kalender som skall raderas."
+
+#: templates/contacts/contacts.inc:54
+msgid "You must select an address first."
+msgstr "Du måste ange en adress först."
+
+#: lib/Kronolith.php:1041
+msgid "You requested to be notified when events are added to your calendars."
+msgstr "Du begärde notifiering när händelser lades till i din kalender."
+
+#: lib/Kronolith.php:1049
+msgid ""
+"You requested to be notified when events are deleted from your calendars."
+msgstr "Du begärde notifiering när händelser raderades från din kalender."
+
+#: lib/Kronolith.php:1045
+msgid "You requested to be notified when events are edited in your calendars."
+msgstr "Du begärde notifiering när händelser ändrades i din kalender."
+
+#: lib/Scheduler/kronolith.php:168
+#, php-format
+msgid "You requested to be reminded about %s, which is at %s."
+msgstr "Du begärde att bli påmind om %s, som är kl %s."
+
+#: templates/prefs/shareselect.inc:10
+msgid "Your default calendar"
+msgstr "Din förvalda kalender"
+
+#: lib/Driver.php:942 lib/Driver.php:952
+msgid "[Unnamed event]"
+msgstr "[Namnlös händelse]"
+
+#: templates/edit/edit_timespan.inc:38
+msgid "_At"
+msgstr "_Kl"
+
+#: templates/search/search_advanced.inc:10
+msgid "_Basic Search"
+msgstr "_Sökning"
+
+#: viewevent.php:119
+msgid "_Edit"
+msgstr "_Ändra"
+
+#: lib/Kronolith.php:1227
+msgid "_Goto"
+msgstr "_Gå till"
+
+#: lib/Kronolith.php:1237
+msgid "_Import/Export"
+msgstr "_Importera/Exportera"
+
+#: lib/Kronolith.php:1232
+msgid "_My Calendars"
+msgstr "_Mina kalendrar"
+
+#: lib/Kronolith.php:1223
+msgid "_New Event"
+msgstr "_Ny händelse"
+
+#: lib/Kronolith.php:1242
+msgid "_Print"
+msgstr "_Skriv ut"
+
+#: lib/Kronolith.php:1229
+msgid "_Search"
+msgstr "_Sök"
+
+#: templates/menu.inc:79
+msgid "_Show"
+msgstr "_Visa"
+
+#: lib/Kronolith.php:1220
+msgid "_Today"
+msgstr "_Idag"
+
+#: templates/edit/edit.inc:130
+msgid "before the event starts"
+msgstr "innan händelsen börjar"
+
+#: config/prefs.php.dist:181
+msgid "day"
+msgstr "dag"
+
+#: templates/edit/edit.inc:195 templates/view/view.inc:122
+msgid "day(s)"
+msgstr "dag(ar)"
+
+#: config/prefs.php.dist:182 config/prefs.php.dist:183
+#: config/prefs.php.dist:184 config/prefs.php.dist:185
+#: config/prefs.php.dist:186
+msgid "days"
+msgstr "dagar"
+
+#: data.php:137 templates/data/export.inc:1
+msgid "events.csv"
+msgstr "händelser.csv"
+
+#: data.php:158
+msgid "events.ics"
+msgstr "händelser.ics"
+
+#: templates/contacts/contacts.inc:131
+msgid "from"
+msgstr "från"
+
+#: templates/edit/edit.inc:215 templates/edit/edit.inc:221
+#: templates/view/view.inc:136 templates/view/view.inc:138
+msgid "month(s)"
+msgstr "månad(er)"
+
+#: lib/Kronolith.php:968
+#, php-format
+msgid "on %s at %s"
+msgstr "den %s kl %s"
+
+#: templates/edit/edit.inc:215 templates/view/view.inc:136
+msgid "on the same date"
+msgstr "på samma dag"
+
+#: templates/edit/edit.inc:221 templates/view/view.inc:138
+msgid "on the same weekday"
+msgstr "på samma veckodag"
+
+#: data.php:30 templates/data/import.inc:23
+msgid "vCalendar/iCalendar"
+msgstr "vCalendar/iCalendar"
+
+#: lib/api.php:200 lib/api.php:446
+msgid "vEvent not found."
+msgstr "vEvent saknas."
+
+#: config/prefs.php.dist:187
+msgid "week"
+msgstr "vecka"
+
+#: templates/edit/edit.inc:202 templates/view/view.inc:134
+msgid "week(s) on:"
+msgstr "vecka på:"
+
+#: config/prefs.php.dist:188 config/prefs.php.dist:189
+#: config/prefs.php.dist:190
+msgid "weeks"
+msgstr "veckor"
+
+#: templates/edit/edit.inc:227 templates/view/view.inc:140
+msgid "year(s)"
+msgstr "år"

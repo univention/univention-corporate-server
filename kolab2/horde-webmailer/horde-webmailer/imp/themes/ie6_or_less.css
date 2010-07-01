@@ -1,0 +1,10 @@
+/**
+ * $Horde: imp/themes/ie6_or_less.css,v 1.1.2.4 2008-06-11 18:11:54 slusarz Exp $
+ *
+ * CSS corrections for IE 6 or below.
+ */
+
+/* Fixes li & ol list numbering issues in HTML messages. */
+#html-message ul li, #html-message ol li {
+    margin-left: 2em;
+}

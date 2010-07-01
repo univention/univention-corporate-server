@@ -1,0 +1,5684 @@
+# IMP Hungarian translation file.
+# Copyright 2002-2008 Laszlo L. Tornoci
+# This file is distributed under the same license as the IMP package.
+# Latest versions: ftp://xenia.sote.hu/pub/linux/horde/
+#
+# Laszlo L. Tornoci <torlasz@xenia.sote.hu>, 2008.
+msgid ""
+msgstr ""
+"Project-Id-Version: IMP-H3-4.2\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-01-23 22:09+0100\n"
+"PO-Revision-Date: 2008-01-23 22:17+0100\n"
+"Last-Translator: Laszlo L. Tornoci <torlasz@xenia.sote.hu>\n"
+"Language-Team: Hungarian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+#: lib/Compose.php:1752
+msgid "      Cc: "
+msgstr "      Cc: "
+
+#: lib/Compose.php:1749
+msgid "      To: "
+msgstr " Címzett: "
+
+#: lib/Compose.php:1737
+msgid "    Date: "
+msgstr "   Dátum: "
+
+#: lib/Compose.php:1740
+msgid "    From: "
+msgstr "  Feladó: "
+
+#: folders.php:344 mailbox.php:347
+#, php-format
+msgid " (Accesskey %s)"
+msgstr " (Alt-billentyû %s)"
+
+#: lib/Compose.php:1746
+msgid " Subject: "
+msgstr "Tartalom: "
+
+#: mailbox.php:567
+msgid "#"
+msgstr "#"
+
+#: lib/IMP.php:982
+#, php-format
+msgid "%.0f MB"
+msgstr "%.0f MB"
+
+#: lib/IMP.php:973
+#, php-format
+msgid "%.0f%% of %.0f MB"
+msgstr "%.0f%% a %.0f MB-ból"
+
+#: folders.php:291 folders.php:302 lib/Message.php:855
+#, php-format
+msgid "%.2fMB"
+msgstr "%.2fMB"
+
+#: thread.php:155
+#, php-format
+msgid "%d Messages"
+msgstr "%d levél"
+
+#: lib/Spam.php:218
+#, php-format
+msgid "%d messages have been deleted."
+msgstr "%d levelet töröltünk."
+
+#: lib/Spam.php:197
+#, php-format
+msgid ""
+"%d messages have been reported as not spam to your system administrator."
+msgstr ""
+"%d levelet minõsített nem spamnek a rendszergazdának küldött jelentésben."
+
+#: lib/Spam.php:177
+#, php-format
+msgid "%d messages have been reported as not spam."
+msgstr "%d levelet minõsített nem spamnek."
+
+#: lib/Spam.php:189
+#, php-format
+msgid "%d messages have been reported as spam to your system administrator."
+msgstr "%d levelet minõsített spamnek a rendszergazdának küldött jelentésben."
+
+#: lib/Spam.php:169
+#, php-format
+msgid "%d messages have been reported as spam."
+msgstr "%d levelet minõsített spamnek."
+
+#: mailbox.php:255
+#, php-format
+msgid "%d to %d of %d Messages"
+msgstr "%d - %d (összesen %d levél)"
+
+#: lib/MIME/Contents.php:564
+#, php-format
+msgid "%s Attachments, %s"
+msgstr "%s melléklet, %s"
+
+#: lib/UI/Mailbox.php:134 lib/MIME/Contents.php:554
+#, php-format
+msgid "%s KB"
+msgstr "%s KB"
+
+#: lib/UI/Mailbox.php:132 lib/MIME/Contents.php:552
+#, php-format
+msgid "%s MB"
+msgstr "%s MB"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:39
+#, php-format
+msgid "%s already exists. Your %s folder was not renamed."
+msgstr "%s már létezik. A %s mappát nem sikerült átnevezni."
+
+#: lib/MIME/Contents.php:557
+#, php-format
+msgid "%s bytes"
+msgstr "%s bájt"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:37
+#, php-format
+msgid "%s folder being renamed at the start of the month."
+msgstr "A %s mappa a hónap elején nevezõdik át."
+
+#: lib/MIME/Viewer/itip.php:260
+#, php-format
+msgid "%s has accepted."
+msgstr "%s elfogadta a meghívást."
+
+#: lib/MIME/Viewer/itip.php:666
+#, php-format
+msgid "%s has cancelled \"%s\"."
+msgstr "%s törölte \"%s\" eseményt."
+
+#: lib/MIME/Viewer/itip.php:266
+#, php-format
+msgid "%s has declined."
+msgstr "%s elutasította a meghívást."
+
+#: lib/MIME/Viewer/itip.php:506
+#, php-format
+msgid "%s has replied to a free/busy request."
+msgstr "%s válaszolt az idõbeosztási adatkérésre."
+
+#: lib/MIME/Viewer/itip.php:658
+#, php-format
+msgid "%s has replied to the invitation to \"%s\"."
+msgstr "%s válaszolt a(z) \"%s\"-re szóló meghívásra."
+
+#: lib/MIME/Viewer/itip.php:497
+#, php-format
+msgid "%s has sent you free/busy information."
+msgstr "%s idõbeosztási információt küldött Önnek."
+
+#: lib/MIME/Viewer/itip.php:272
+#, php-format
+msgid "%s has tentatively accepted."
+msgstr "%s feltételesen elfogadta a meghívást."
+
+#: lib/MIME/Viewer/itip.php:502
+#, php-format
+msgid "%s requests your free/busy information."
+msgstr "%s idõbeosztási adatokat kér Öntõl."
+
+#: lib/MIME/Viewer/itip.php:621
+#, php-format
+msgid "%s requests your presence at \"%s\"."
+msgstr "%s szeretné, ha részt tudna venni a következõ eseményen: \"%s\"."
+
+#: lib/Message.php:466
+#, php-format
+msgid "%s was successfully added to \"%s\"."
+msgstr "%s-t sikeresen hozzátettük \"%s\"-hez."
+
+#: lib/MIME/Viewer/itip.php:638
+#, php-format
+msgid "%s wishes to ammend \"%s\"."
+msgstr "%s változtatást szeretne a(z) \"%s\" eseménnyel kapcsolatosan."
+
+#: lib/MIME/Viewer/itip.php:593 lib/MIME/Viewer/itip.php:622
+#: lib/MIME/Viewer/itip.php:806
+#, php-format
+msgid "%s wishes to make you aware of \"%s\"."
+msgstr "%s tájékoztatni kívánja Önt a következõ eseményrõl: \"%s\"."
+
+#: lib/MIME/Viewer/itip.php:645
+#, php-format
+msgid "%s wishes to receive the latest information about \"%s\"."
+msgstr "%s a legfrissebb információt szeretné megkapni \"%s\" eseményrõl."
+
+#: compose.php:1151
+#, php-format
+msgid "%s%% of allowed size"
+msgstr "a megengedett %s%%-a"
+
+#: message.php:272 message.php:277
+#, php-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#: message.php:494
+#, php-format
+msgid "%s: %s (%d&nbsp;of&nbsp;%d)"
+msgstr "%s: %s (%d&nbsp;a&nbsp;%d-bõl)"
+
+#: lib/Compose.php:1681
+#, php-format
+msgid "%u Forwarded Messages"
+msgstr "%u továbbított levél"
+
+#: rss.php:94
+#, php-format
+msgid "%u of %u messages in %s unread."
+msgstr "%u olvasatlan a %u üzenetbõl a %s mappában."
+
+#: stationery.php:133
+msgid "(HTML)"
+msgstr "(HTML)"
+
+#: stationery.php:133
+msgid "(Plain Text)"
+msgstr "(sima szöveg)"
+
+#: templates/contacts/contacts.html:49
+msgid "* Add these by clicking OK *"
+msgstr "* Az OK gombra kattintva adjuk hozzá ezeket *"
+
+#: templates/contacts/contacts.html:33
+msgid "* Please select address(es) *"
+msgstr "* Kérjük válasszon cím(ek)et *"
+
+#: lib/MIME/Contents.php:562
+#, php-format
+msgid "1 Attachment, %s"
+msgstr "1 melléklet, %s"
+
+#: config/prefs.php.dist:980
+msgid "100 characters"
+msgstr "100 karakter"
+
+#: config/prefs.php.dist:983
+msgid "1000 characters"
+msgstr "1000 karakter"
+
+#: config/prefs.php.dist:981
+msgid "250 characters"
+msgstr "250 karakter"
+
+#: config/prefs.php.dist:982
+msgid "500 characters"
+msgstr "500 karakter"
+
+#: lib/MIME/Viewer/notification.php:49
+msgid ""
+"A message you have sent has resulted in a return notification from the "
+"recipient."
+msgstr "Az elküldött levélre visszajelzés érkezett a címzettõl."
+
+#: templates/javascript_defs.php:72
+msgid ""
+"A popup window could not be opened. Perhaps you have set your browser to "
+"block popup windows?"
+msgstr ""
+"Nem nyitható meg egy új (felbukkanó) ablak. Lehet, hogy a böngészõprogramja "
+"beállításaiban letiltotta a felbukkanó (popup) ablakokat?"
+
+#: templates/search/search.html:61
+msgid "AND"
+msgstr "ÉS"
+
+#: config/prefs.php.dist:848
+msgid "Above the message text"
+msgstr "A levél szövege fölött"
+
+#: lib/MIME/Viewer/itip.php:625
+msgid "Accept and add to my calendar"
+msgstr "Fogadjuk el és adjuk hozzá a naptáramhoz"
+
+#: lib/MIME/Viewer/itip.php:630
+msgid "Accept request"
+msgstr "elfogadom a meghívást"
+
+#: lib/MIME/Viewer/itip.php:917
+msgid "Accepted"
+msgstr "elfogadva"
+
+#: lib/MIME/Viewer/itip.php:261
+msgid "Accepted: "
+msgstr "Elfogadva: "
+
+#: templates/fetchmail/fetchmailprefs.html:43
+msgid "Account's name:"
+msgstr "Az áttöltéshez választott elnevezés:"
+
+#: lib/MIME/Viewer/itip.php:536 lib/MIME/Viewer/itip.php:768
+#: lib/MIME/Viewer/itip.php:769 lib/MIME/Viewer/itip.php:896
+msgid "Actions"
+msgstr "Lehetõségek"
+
+#: lib/MIME/Headers.php:201 lib/MIME/Headers.php:202
+#, php-format
+msgid "Add %s to my Address Book"
+msgstr "Adjuk hozzá %s-t a címjegyzékemhez"
+
+#: templates/prefs/sourceselect.inc:300
+msgid "Add source"
+msgstr "adjuk hozzá"
+
+#: lib/MIME/Viewer/itip.php:595
+msgid "Add this to my calendar"
+msgstr "adjuk hozzá a naptáramhoz"
+
+#: lib/MIME/Viewer/itip.php:808
+msgid "Add this to my tasklist"
+msgstr "Adjuk hozzá a feladatlistámhoz"
+
+#: lib/MIME/Viewer/itip.php:627
+msgid "Add to my calendar"
+msgstr "Adjuk hozzá a naptáramhoz"
+
+#: lib/Compose.php:2694
+#, php-format
+msgid "Added \"%s\" as an attachment."
+msgstr "\"%s\"-t mellékletként csatoltuk."
+
+#: config/prefs.php.dist:825
+msgid ""
+"Additional headers to display when viewing: <em>(optional, enter each header "
+"on a new line)</em>"
+msgstr ""
+"Beérkezõ levelek esetén a szokásosakon kívül mely fejlécsorokat (mail "
+"header) kíván megjeleníttetni <em>(nem kötelezõ, minden fejlécsor külön "
+"sorba kerüljön)</em>"
+
+#: lib/MIME/Viewer/notification.php:60
+#, php-format
+msgid "Additional information can be viewed %s."
+msgstr "További információ látható %s."
+
+#: lib/MIME/Viewer/notification.php:60
+msgid "Additional information details"
+msgstr "További részletes információ"
+
+#: lib/MIME/Viewer/status.php:92
+msgid "Additional message details"
+msgstr "További részletek"
+
+#: lib/MIME/Viewer/status.php:91
+#, php-format
+msgid "Additional message details can be viewed %s."
+msgstr "Az üzenet további részletei láthatók %s."
+
+#: lib/MIME/Viewer/status.php:77
+msgid "Additional message error details"
+msgstr "További részletes hibaüzenet"
+
+#: lib/MIME/Viewer/status.php:76
+#, php-format
+msgid "Additional message error details can be viewed %s."
+msgstr "További részletes hibaüzenet látható %s."
+
+#: compose.php:783 compose.php:1019 contacts.php:119
+#: templates/contacts/contacts.html:8
+msgid "Address Book"
+msgstr "Címjegyzék"
+
+#: config/prefs.php.dist:134
+msgid "Address Books"
+msgstr "Címjegyzékek"
+
+#: templates/prefs/sourceselect.inc:345
+msgid "Address book to add addresses to"
+msgstr "Mely címjegyzékhez adjuk hozzá a címeket"
+
+#: config/prefs.php.dist:189
+msgid ""
+"Addresses to BCC all messages: <em>(optional, enter each address on a new "
+"line)</em>"
+msgstr ""
+"Mely címekre kíván minden elküldött levélrõl \"BCC\" másolatot küldeni: <em>"
+"(nem kötelezõ, minden cím külön sorba kerüljön)</em>"
+
+#: config/prefs.php.dist:181
+msgid ""
+"Addresses to explicitly tie to this identity: <em>(optional, enter each "
+"address on a new line)</em>"
+msgstr ""
+"Azok a címek, melyekre érkezõ leveleket ehhez az azonosítóhoz kíván kötni "
+"<em>(nem kötelezõ, minden cím külön sorba kerüljön)</em>"
+
+#: lib/IMAP/ACL/rfc2086.php:57 lib/IMAP/ACL/rfc4314.php:59
+msgid "Administer"
+msgstr "Jogosultságkezelés"
+
+#: templates/mailbox/navbar.html:10
+msgid "All"
+msgstr "az összeset"
+
+#: lib/Maintenance/Task/purge_sentmail.php:82
+#, php-format
+msgid ""
+"All messages in the folder(s) \"%s\" older than %s days will be permanently "
+"deleted."
+msgstr ""
+"Az \"%s\" mappában az összes %s napnál régebbi levél végérvényesen törlõdni "
+"fog."
+
+#: templates/javascript_defs.php:62
+msgid ""
+"All messages in the following folder(s) will be downloaded into one MBOX "
+"file:"
+msgstr ""
+"A következõ mappa(k) tartalma letölésre kerül egy standard mbox formátumú "
+"fájlba:"
+
+#: lib/Maintenance/Task/purge_spam.php:79
+#: lib/Maintenance/Task/purge_trash.php:78
+#, php-format
+msgid ""
+"All messages in your \"%s\" folder older than %s days will be permanently "
+"deleted."
+msgstr ""
+"Az Ön \"%s\" mappájában az összes %s napnál régebbi levél végérvényesen "
+"törlõdni fog."
+
+#: lib/Maintenance/Task/delete_attachments_monthly.php:59
+#, php-format
+msgid "All old linked attachments more than %s months old will be deleted."
+msgstr ""
+"Az összes, %s hónapnál régebbi, hivatkozás formájában küldött melléklet "
+"eredeti példányát töröljük."
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:72
+#, php-format
+msgid "All old sent-mail folders more than %s months old will be deleted."
+msgstr ""
+"A %s hónaposnál régebbi, elküldött leveleket tartalmazó (sent-mail) mappák "
+"törlésre kerülnek."
+
+#: acl.php:88 acl.php:129
+#, php-format
+msgid "All rights on folder \"%s\" successfully removed for user \"%s\"."
+msgstr ""
+"A(z) \"%s\" mappához történõ hozzáférési jogokat sikeresen megvontuk \"%s\" "
+"felhasználótól."
+
+#: lib/api.php:93
+msgid "Allow Folder Creation?"
+msgstr "Engedjük meg az almappák létrehozását?"
+
+#: filterprefs.php:110
+msgid "Allow filter rules to be applied in any mailbox?"
+msgstr "A szûrési szabályokat bármelyik mappára engedjük alkalmazni?"
+
+#: lib/MIME/Viewer/alternative.php:79
+msgid "Alternative parts for this section:"
+msgstr "Ennek a résznek az alternatív változatai:"
+
+#: config/prefs.php.dist:703
+msgid "Always"
+msgstr "mindig"
+
+#: config/prefs.php.dist:688
+msgid "Always save attachments"
+msgstr "Mindig mentsük el a mellékleteket."
+
+#: lib/Message.php:575
+msgid ""
+"An error occured while attempting to strip the attachment. The IMAP server "
+"said: "
+msgstr ""
+"Hiba történt a mellékletnek a levélrõl történõ leválasztása során. Az IMAP "
+"szerver üzenete: "
+
+#: lib/MIME/Viewer/images.php:153
+#, php-format
+msgid "An image named %s is attached to this message. A thumbnail is below."
+msgstr ""
+"Egy %s nevû kép van csatolva ehhez a levélhez. Lentebb látható kicsiben."
+
+#: lib/Message.php:440
+msgid "An unknown error occured while creating the new note."
+msgstr "Az új feljegyzés létrehozása során valami hiba történt."
+
+#: lib/Message.php:439
+msgid "An unknown error occured while creating the new task."
+msgstr "Az új feladat hozzáadása során valami hiba történt."
+
+#: lib/MIME/Viewer/itip.php:794
+msgid "An unknown person"
+msgstr "Ismeretlen személy"
+
+#: mailbox.php:757 message.php:466 templates/message/navbar_navigate.html:12
+#: templates/mailbox/navbar.html:18 templates/mailbox/navbar.html:34
+msgid "Answered"
+msgstr "Megválaszolt"
+
+#: search.php:329
+msgid "Answered messages"
+msgstr "Megválaszolt levelek"
+
+#: mailbox.php:409
+msgid "Apply Filters"
+msgstr "Kapcsoljuk be a szûrõket"
+
+#: mailbox.php:409
+#, php-format
+msgid "Apply Filters to %s"
+msgstr "Alkalmazzuk a szûrõket %s-re"
+
+#: filterprefs.php:107
+msgid "Apply filter rules upon logging on?"
+msgstr "A szûrési szabályokat a bejelentkezéskor alkalmazzuk?"
+
+#: filterprefs.php:108
+msgid "Apply filter rules whenever Inbox is displayed?"
+msgstr ""
+"Alkalmazzuk a szûrési szabályokat az INBOX mappa minden megjelenítése esetén?"
+
+#: filterprefs.php:109
+msgid "Apply filter rules whenever sidebar is refreshed?"
+msgstr ""
+"Alkalmazzuk a szûrési szabályokat az oldalsó menü minden frissítésekor?"
+
+#: mailbox.php:418
+msgid "Are you sure you want to delete this Virtual Folder Definition?"
+msgstr "Biztos, hogy törölni akarja ezt a virtuális mappa meghatározást?"
+
+#: pgp.php:406 smime.php:314
+msgid "Are you sure you want to delete this public key?"
+msgstr "Biztos, hogy törölni kívánja ezt a nyilvános kulcsot?"
+
+#: pgp.php:436 smime.php:340
+msgid ""
+"Are you sure you want to delete your keypair? (This is NOT recommended!)"
+msgstr "Biztosan törölni akarja a saját kulcspárját? (Ez NEM ajánlatos!)"
+
+#: templates/javascript_defs.php:34
+msgid "Are you sure you want to do this?"
+msgstr "Biztos, hogy ezt kívánja tenni?"
+
+#: message.php:671
+msgid "Are you sure you wish to PERMANENTLY delete all attachments?"
+msgstr "Biztos, hogy VÉGÉRVÉNYESEN törölni kívánja az összes mellékletet?"
+
+#: message.php:541 templates/javascript_defs.php:46
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "Biztos, hogy VÉGÉRVÉNYESEN törölni kívánja ezeket a leveleket?"
+
+#: lib/MIME/Contents.php:262
+msgid "Are you sure you wish to PERMANENTLY delete this attachment?"
+msgstr "Biztos, hogy VÉGÉRVÉNYESEN törölni kívánja ezt a mellékletet?"
+
+#: mailbox.php:414
+msgid "Are you sure you wish to delete all mail in this folder?"
+msgstr "Biztos, hogy ki szeretné üríteni ezt a mappát?"
+
+#: lib/IMP.php:809
+msgid "Are you sure you wish to empty your spam folder?"
+msgstr "Biztos, hogy ki szeretné üríteni a spam a mappáját?"
+
+#: lib/IMP.php:801
+msgid "Are you sure you wish to empty your trash folder?"
+msgstr "Biztos, hogy ki szeretné üríteni a szemetes (Trash) a mappát?"
+
+#: mailbox.php:498
+msgid "Are you sure you wish to permanently delete these messages?"
+msgstr "Biztos abban, hogy végleg törölni kívánja ezeket a leveleket?"
+
+#: templates/javascript_defs.php:80
+msgid "Are you sure you wish to report this message as innocent?"
+msgstr ""
+"Biztos, hogy nemspamnek kívánja minõsíteni ezt a levelet a levelezõrendszer "
+"számára?"
+
+#: templates/javascript_defs.php:79
+msgid "Are you sure you wish to report this message as spam?"
+msgstr ""
+"Biztos, hogy spamnek kívánja minõsíteni ezt a levelet a levelezõrendszer "
+"számára?"
+
+#: config/prefs.php.dist:1076
+msgid "Arrival Time"
+msgstr "Érkezési idõ"
+
+#: config/prefs.php.dist:1091
+msgid "Ascending"
+msgstr "növekvõ"
+
+#: config/prefs.php.dist:702
+msgid "Ask"
+msgstr "Választhassak"
+
+#: compose.php:1089
+msgid "Attach Files"
+msgstr "Fájlok csatolása"
+
+#: compose.php:1082
+msgid "Attach a copy of your PGP public key to your message?"
+msgstr "Mellékeljük az Ön PGP nyilvános kulcsát a levélhez?"
+
+#: lib/MIME/Viewer/tnef.php:110
+msgid "Attached File:"
+msgstr "Csatolt fájl:"
+
+#: lib/Compose.php:1785 lib/Compose.php:1891
+#, php-format
+msgid ""
+"Attached file \"%s\" exceeds the attachment size limits. File NOT attached."
+msgstr ""
+"A mellékelni kívánt \"%s\" állománnyal túllépné a mellékletek méretére "
+"vonatkozó korlátokat. Az fájlt NEM csatoltuk."
+
+#: lib/MIME/Viewer/itip.php:386
+msgid "Attached is a reply to a calendar request you sent."
+msgstr "A mellékletben az Ön idõbeosztási kérésére adott válasz van."
+
+#: templates/javascript_defs.php:41 templates/compose/compose.html:266
+#: templates/compose/compose.html:325
+msgid "Attachment"
+msgstr "Melléklet"
+
+#: attachment.php:72
+#, php-format
+msgid "Attachment %s deleted."
+msgstr "A(z) %s mellékletet töröltük."
+
+#: lib/Compose.php:2408
+msgid "Attachment Information"
+msgstr "Melléklet információ"
+
+#: lib/Compose.php:770
+msgid "Attachment stripped: Original attachment type"
+msgstr "A mellékletet leválasztottuk: az eredeti melléklet típusa"
+
+#: compose.php:1031 lib/Compose.php:2376 templates/compose/compose.html:242
+msgid "Attachments"
+msgstr "Mellékletek"
+
+#: message.php:558 config/prefs.php.dist:598
+msgid "Attachments Only"
+msgstr "Csak mellékletek"
+
+#: lib/MIME/Viewer/itip.php:724 lib/MIME/Viewer/itip.php:849
+msgid "Attendees"
+msgstr "Résztvevõk"
+
+#: lib/MIME/Viewer/notification.php:52
+msgid "Attention"
+msgstr "Figyelmeztetés"
+
+#: lib/Auth/imp.php:33
+msgid "Auth_imp: Required IMAP extension not found."
+msgstr "Auth_imp: a szükéges IMAP bõvítõfunkció nem található."
+
+#: config/prefs.php.dist:759
+msgid ""
+"Automatically show images in HTML messages when the sender is in my address "
+"book?"
+msgstr ""
+"Jelenítsük-e meg automatikusan a HTML formátumú levelekben levõ képeket, ha "
+"a feladó megtalálható az Ön címtárában?"
+
+#: templates/prefs/sourceselect.inc:293 templates/prefs/sourceselect.inc:295
+msgid "Available Address books:"
+msgstr "A rendelkezésre álló címjegyzékek:"
+
+#: lib/MIME/Viewer/itip.php:757 lib/MIME/Viewer/itip.php:885
+msgid "Awaiting Response"
+msgstr "válaszra vár"
+
+#: message.php:511 thread.php:137
+#, php-format
+msgid "Bac_k to %s"
+msgstr "Vissz_a %s-hez"
+
+#: message.php:511 thread.php:137
+#, php-format
+msgid "Back to %s"
+msgstr "Vissza %s-hez"
+
+#: thread.php:134
+msgid "Back to Multiple Message View Index"
+msgstr "Vissza a levelek szokásos megjelenítéséhez"
+
+#: thread.php:132
+msgid "Back to Thread Display"
+msgstr "Vissza a levelek logikai (thread) megjelenítéséhez"
+
+#: lib/IMAP/Client.php:478
+#, php-format
+msgid "Bad login name or password."
+msgstr "Ismeretlen felhasználói név vagy jelszó."
+
+#: lib/IMAP/Client.php:195
+#, php-format
+msgid "Bad or malformed request. Server Responded: %s"
+msgstr "Hibás IMAP parancs. A szerver válasza: %s"
+
+#: lib/IMAP/Client.php:482
+#, php-format
+msgid "Bad request: %s"
+msgstr "Hibás üzenet: %s"
+
+#: lib/Search.php:666 lib/UI/Message.php:28 templates/login/recompose.html:32
+#: templates/contacts/contacts.html:43
+msgid "Bcc"
+msgstr "Bcc"
+
+#: config/prefs.php.dist:523
+msgid "Before Signature"
+msgstr "Az állandó levélvégzõdés (signature) elõtt"
+
+#: lib/MIME/Viewer/status.php:160
+msgid "Below is the raw text of the status information message."
+msgstr "Alább látható a státusz információ nyers, szöveges változata."
+
+#: config/prefs.php.dist:849
+msgid "Below the message text"
+msgstr "A levél szövege alatt"
+
+#: mailbox.php:516 message.php:567
+msgid "Blacklist"
+msgstr "Tiltott címek"
+
+#: config/prefs.php.dist:748
+msgid "Block images in HTML messages unless they are specifically requested?"
+msgstr ""
+"Tiltsuk-e le a HTML formátumú levelekben levõ képek kérés nélküli, "
+"automatikus megjelenítését?"
+
+#: lib/Search.php:674
+msgid "Body"
+msgstr "Levéltörzs"
+
+#: message.php:557 config/prefs.php.dist:597
+msgid "Body Text Only"
+msgstr "Csak a levéltörzs"
+
+#: search.php:326 search.php:331 search.php:336 search.php:341
+msgid "Both"
+msgstr "Mindkettõ"
+
+#: config/prefs.php.dist:814
+msgid "Both Header Listing and Body of Message"
+msgstr "a fejlécben való felsorolás és a levéltörzsben való megjelenítés is"
+
+#: config/prefs.php.dist:522
+msgid "Bottom"
+msgstr "Legalul"
+
+#: lib/IMAP/Client.php:407
+msgid ""
+"CRAM-MD5 or DIGEST-MD5 requires PEAR's Auth_SASL package to be installed."
+msgstr ""
+"A CRAM-MD5 vagy DIGEST-MD5 használatához telepíteni kell a PEAR Auth_SASL "
+"modulját."
+
+#: compose.php:977
+msgid "C_harset"
+msgstr "_Karakterkészlet"
+
+#: search.php:312 config/hooks.php.dist:452
+msgid "Calendar"
+msgstr "Naptár"
+
+#: lib/IMAP/Tree.php:2434
+msgid "Can not directly create mailbox in this folder."
+msgstr "Ebben a mappában nem hozható létre levélláda."
+
+#: lib/Message.php:194
+msgid "Can not move messages to Trash - no Trash mailbox set in preferences."
+msgstr ""
+"A levelek nem tehetõk át a Szemetes mappába - nincs megadva Szemetes mappa a "
+"beállításokban."
+
+#: templates/smime/import_key.html:70 templates/smime/passphrase.html:24
+#: templates/saveimage/saveimage.html:20 templates/pgp/import_key.html:49
+#: templates/pgp/passphrase.html:22 templates/folders/folders_confirm.html:23
+#: templates/folders/import.html:17 templates/contacts/contacts.html:76
+msgid "Cancel"
+msgstr "Mégse"
+
+#: templates/compose/compose.html:21 templates/compose/compose.html:208
+#: templates/compose/redirect.html:83
+msgid "Cancel Message"
+msgstr "Mégsem kell ez a levél"
+
+#: templates/javascript_defs.php:34
+msgid "Cancelling this message will permanently discard its contents."
+msgstr "A kilépés következtében e levél tartalma véglegesen elvész."
+
+#: lib/prefs.php:151
+msgid ""
+"Cannot activate both a Trash folder and Virtual Trash. A Trash folder will "
+"be used."
+msgstr ""
+"A Szemetes mappa és a Virtuális szemetes opció nem használható egyszerre. A "
+"Szemetes mappát fogjuk használni."
+
+#: lib/prefs.php:154
+msgid ""
+"Cannot activate both a Trash folder and Virtual Trash. A Virtual Trash "
+"folder will be used."
+msgstr ""
+"A Szemetes mappa és a Virtuális szemetes opció nem használható egyszerre. A "
+"Virtuális szemetest fogjuk használni."
+
+#: lib/Fetchmail/imap.php:151
+msgid "Cannot connect to the remote mail server."
+msgstr "A távoli levelezõszerver nem érhetõ el."
+
+#: lib/Fetchmail/imap.php:149
+msgid "Cannot connect to the remote mail server: "
+msgstr "A távoli levelezõszerver nem érhetõ el: "
+
+#: lib/prefs.php:165
+msgid "Cannot delete to trash unless a Trash folder is defined."
+msgstr "A Szemetes nem üríthetõ ki, mert nincs szemetes mappa megadva."
+
+#: lib/MIME/Viewer/partial.php:47
+#, php-format
+msgid ""
+"Cannot display - found only %s of %s parts of this message in the current "
+"mailbox."
+msgstr ""
+"Nem jeleníthetõ meg - a levélnek csak %s darabját találni meg a(z) %s-bõl "
+"ebben a mappában."
+
+#: pgp.php:271
+msgid "Cannot retrieve public key from cache."
+msgstr "A nyilvános kulcs nem található a cache-ben."
+
+#: lib/Search.php:662 lib/UI/Message.php:27 templates/login/recompose.html:23
+#: templates/contacts/contacts.html:42
+msgid "Cc"
+msgstr "Cc"
+
+#: templates/smime/smime.html:79
+msgid ""
+"Certificate import is not available. File upload is not enabled on this "
+"server."
+msgstr ""
+"A tanúsítvány importálása nem lehetséges, mert ezen a szerveren nincs "
+"megengedve az állományok feltöltése."
+
+#: lib/MIME/Viewer/itip.php:739 lib/MIME/Viewer/itip.php:867
+msgid "Chair Person"
+msgstr "Elnök"
+
+#: acl.php:173 acl.php:174 templates/acl/acl.html:13
+msgid "Change Folder"
+msgstr "Másik mappa kiválasztása"
+
+#: config/prefs.php.dist:119
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr ""
+"Megjelenítési beállítások, pl. listázáskor hány levél kerül egy oldalra, a "
+"levelek sorrendje stb."
+
+#: config/prefs.php.dist:23
+msgid "Change mail server and folder settings."
+msgstr "A levelezõszerver- ill. mappabeállítások megváltoztatása."
+
+#: config/prefs.php.dist:14
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr ""
+"Az Ön által elküldött leveleken szereplõ név, cím, állandó levélvégzõdés "
+"(signature) beállítása."
+
+#: config/prefs.php.dist:984
+msgid "Characters to display:"
+msgstr "Hány karaktert mutassunk a levél elejérõl:"
+
+#: templates/mailbox/message_headers.html:12 templates/folders/actions.html:6
+msgid "Check All/None"
+msgstr "Jelöljük ki mind/egyiket sem"
+
+#: lib/UI/Compose.php:135
+msgid "Check Spelling"
+msgstr "Helyesírásellenõrzés"
+
+#: folders.php:356 mailbox.php:649
+msgid "Check _All/None"
+msgstr "Jelöljük ki mind/egyiket sem"
+
+#: templates/folders/actions.html:29
+msgid "Check for New Mail"
+msgstr "Ellenõrizzük, hogy jött-e új levél"
+
+#: config/prefs.php.dist:563
+msgid "Check spelling before sending a message?"
+msgstr "Ellenõrizzük a helyesírást a levél elküldése elõtt?"
+
+#: lib/UI/Compose.php:136
+msgid "Checking ..."
+msgstr "Ellenõrzés ..."
+
+#: templates/folders/actions.html:11 templates/folders/actions.html:13
+msgid "Choose Action"
+msgstr "Mi történjen:"
+
+#: config/servers.php.dist:212
+msgid "Choose a mail server:"
+msgstr "Válasszon levelezõszervert:"
+
+#: templates/compose/compose.html:65
+msgid "Choose a match or edit the address to the right:"
+msgstr "Válassza ki a megfelelõt, vagy módosítsa a jobb oldalon levõ címet:"
+
+#: templates/prefs/sourceselect.inc:343
+msgid "Choose the address book to use when adding addresses."
+msgstr "Melyik címjegyzéket kívánja használni új címek rögzítésére."
+
+#: templates/prefs/sourceselect.inc:289
+msgid "Choose the order of address books to search when expanding addresses."
+msgstr ""
+"A címrészlet teljes címmé alakításakor milyen sorrendben keressen a gép a "
+"címjegyzékekben."
+
+#: lib/MIME/Viewer/images.php:103
+#, php-format
+msgid "Click %s to convert the image file into a format your browser can view."
+msgstr ""
+"%s kattintson, ha a képet olyan formátumra kívánja alakítani, amit a "
+"böngészõprogramja meg tud jeleníteni."
+
+#: lib/MIME/Contents.php:426
+#, php-format
+msgid "Click %s to download the data."
+msgstr "Ha le szeretné tölteni, kattintson %s."
+
+#: lib/MIME/Viewer/images.php:92
+#, php-format
+msgid "Click %s to download the image."
+msgstr "Ha le szeretné tölteni a képet, kattintson %s."
+
+#: lib/Filter.php:131
+#, php-format
+msgid "Click %s to go to %s management page."
+msgstr "%s kattintson, ha %s menedzsment oldalára szeretne menni."
+
+#: lib/MIME/Viewer/pkcs7.php:483
+#, php-format
+msgid "Click %s to view the attachment in a separate window."
+msgstr "%s kattintson, a melléklet külön ablakban való megjelenítéséhez."
+
+#: lib/MIME/Viewer/related.php:85
+#, php-format
+msgid "Click %s to view this multipart/related part in a separate window."
+msgstr ""
+"%s kattintson, a többszörös melléklet e darabjának külön ablakban való "
+"megjelenítéséhez."
+
+#: lib/MIME/Viewer/pgp.php:247 lib/MIME/Viewer/pgp.php:274
+#: lib/MIME/Viewer/pkcs7.php:219
+msgid "Click HERE to verify the message."
+msgstr "Kattintson IDE, ha ellenõrizni kívánja a levél digitális aláírását."
+
+#: templates/prefs/sourceselect.inc:319
+msgid ""
+"Click on one of your selected address books and then select all fields to "
+"search."
+msgstr ""
+"Kattintson az egyik kiválasztott címjegyzékre, majd válassza ki, hogy melyik "
+"mezõkben történjen keresés."
+
+#: config/prefs.php.dist:1117
+msgid "Clicking on the address will compose a new message to the sender"
+msgstr "A címre kattintva a új levelet írhatunk a feladónak"
+
+#: config/prefs.php.dist:1118
+msgid "Clicking on the address will open the message to be read"
+msgstr "A címre kattintva megnyílik a levél"
+
+#: templates/newmsg/alert.html:17 templates/fetchmail/fetchmail.html:33
+msgid "Close"
+msgstr "Bezárás"
+
+#: compose.php:34
+msgid "Close this window"
+msgstr "Az ablak bezárása"
+
+#: lib/IMAP/Tree.php:2377
+msgid "Closed Folder"
+msgstr "Zárt mappa"
+
+#: folders.php:437
+msgid "Collapse"
+msgstr "Csukjuk be"
+
+#: folders.php:372
+msgid "Collapse All"
+msgstr "Csukjuk be az összeset"
+
+#: folders.php:372
+msgid "Collapse All Folders"
+msgstr "Csukjuk össze az összes mappát"
+
+#: folders.php:437
+msgid "Collapse Folder"
+msgstr "Csukjuk össze a mappát"
+
+#: templates/fetchmail/fetchmailprefs.html:94
+msgid "Color Indicator:"
+msgstr "Színjelölés:"
+
+#: config/prefs.php.dist:1155
+msgid "Combine all namespaces"
+msgstr "A névterek legyenek egyesítve"
+
+#: templates/pgp/pgp.html:97
+msgid "Comment:"
+msgstr "Megjegyzés:"
+
+#: lib/MIME/Viewer/itip.php:933
+msgid "Completed"
+msgstr "Befejezve"
+
+#: compose.php:33
+msgid "Compose another message"
+msgstr "Újabb levél írása"
+
+#: config/prefs.php.dist:482
+msgid "Compose messages in a separate window?"
+msgstr "A levélírás külön ablakban történjék?."
+
+#: config/prefs.php.dist:492
+msgid ""
+"Compose messages with an HTML GUI by default (if browser supports the "
+"feature)?"
+msgstr ""
+"Leveleit HTML-ben kívánja írni alapértelmezett helyzetben (feltéve, hogy "
+"böngészõprogramja támogatja ezt a lehetõséget)?"
+
+#: config/prefs.php.dist:72
+msgid "Configure how messages are displayed."
+msgstr "A levelek megjelenítésének beállításai."
+
+#: config/prefs.php.dist:104
+msgid "Configure mail preview options."
+msgstr "Elõnézeti (mail preview) beállítások."
+
+#: config/hooks.php.dist:476
+msgid "Contacts"
+msgstr "Partnerek"
+
+#: config/prefs.php.dist:143
+#, php-format
+msgid "Control PGP support for %s."
+msgstr "%s PGP támogatásának beállításai."
+
+#: config/prefs.php.dist:152
+#, php-format
+msgid "Control S/MIME support for %s."
+msgstr "%s S/MIME támogatásának beállításai."
+
+#: config/prefs.php.dist:96
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr ""
+"Mikor ellenõrizzük új levelek érkezését, és kapjon-e értesítést az új "
+"levelek érkezésekor."
+
+#: config/prefs.php.dist:804
+msgid "Convert textual emoticons into graphical ones?"
+msgstr ""
+"Az érzelemtükrözõ szöveges karaktercsoportokat (emoticons, \"smileys\") "
+"cseréljük grafikus ikonokra?"
+
+#: mailbox.php:476 mailbox.php:886 message.php:507 message.php:694
+msgid "Copy"
+msgstr "Másoljuk át"
+
+#: mailbox.php:476 mailbox.php:886 message.php:507 message.php:694
+msgid "Copy to folder"
+msgstr "Másoljuk ide"
+
+#: lib/Compose.php:1866
+#, php-format
+msgid "Could not attach %s to the message."
+msgstr "%s csatolása a levélhez nem sikerült."
+
+#: lib/IMAP/Client.php:189
+#, php-format
+msgid "Could not complete request. Reason Given: %s"
+msgstr "A kérést nem sikerült végrehajtani. Az ok a következõ: %s"
+
+#: attachment.php:50
+#, php-format
+msgid "Could not create the VFS backend: %s"
+msgstr "A VFS háttérprogram nem hozható létre: %s"
+
+#: lib/Message.php:782
+#, php-format
+msgid "Could not delete messages from %s. The server said: %s"
+msgstr "Nem sikerült %s-bõl törölni a leveleket. A szerver üzenete: %s"
+
+#: lib/Session.php:324
+msgid "Could not execute maintenance operations."
+msgstr "Nem sikerült elvégezni a karbantartási feladatokat."
+
+#: lib/MIME/Viewer/tnef.php:53
+msgid "Could not extract the requested file from the MS-TNEF attachment."
+msgstr "A kívánt állományt nem sikerült kinyerni az MS-TNEF mellékletbõl."
+
+#: lib/MIME/Viewer/zip.php:56
+msgid "Could not extract the requested file from the Zip archive."
+msgstr "A kívánt állományt nem sikerült kibontani a Zip fájlból."
+
+#: lib/Spam.php:229
+msgid ""
+"Could not move message to spam mailbox - no spam mailbox defined in "
+"preferences."
+msgstr ""
+"A levelek nem tehetõk át a spam mappába - nincs megadva spam mappa a "
+"beállításokban."
+
+#: lib/IMAP/Client.php:318
+msgid "Could not open secure connection to the IMAP server."
+msgstr "Nem sikerült a titkosított kapcsolat felvétele az IMAP szerverrel."
+
+#: lib/Session.php:279
+msgid "Could not retrieve namespace information from IMAP server."
+msgstr "Az IMAP szervertõl nem sikerült megkapni a \"namespace\" adatokat."
+
+#: compose.php:51
+msgid "Could not retrieve the message from the mail server."
+msgstr "Nem levél tölthetõ le a levelezõszerverrõl."
+
+#: lib/Compose.php:1027
+#, php-format
+msgid "Could not save recipients: %s"
+msgstr "A címzetteket nem sikerült elmenteni: %s"
+
+#: lib/Template.php:230
+#, php-format
+msgid "Could not save the compiled template file '%s'."
+msgstr "Nem sikerült elmenteni a lefordított '%s' sablonfájlt."
+
+#: templates/folders/actions.html:16
+#: templates/fetchmail/fetchmailprefs.html:121
+msgid "Create"
+msgstr "Létrehozás"
+
+#: lib/IMAP/ACL/rfc2086.php:55
+msgid "Create Folder"
+msgstr "Új mappa létrehozása"
+
+#: lib/IMAP/ACL/rfc4314.php:55
+msgid "Create Folders"
+msgstr "Mappák létrehozása"
+
+#: templates/pgp/pgp.html:129
+msgid "Create Keys"
+msgstr "Kulcspár létrehozása"
+
+#: templates/fetchmail/fetchmailprefs.html:28
+msgid "Create a New Account"
+msgstr "Új email-bejelentkezés létrehozása"
+
+#: templates/prefs/spamselect.inc:11 templates/prefs/spamselect.inc:20
+msgid "Create a new Spam folder"
+msgstr "Hozzunk létre új Spam mappát"
+
+#: templates/prefs/folderselect.inc:11 templates/prefs/folderselect.inc:22
+msgid "Create a new drafts folder"
+msgstr "Hozzunk létre új mappát a munkapéldányok (drafts) számára"
+
+#: templates/prefs/sentmailselect.inc:25 templates/prefs/sentmailselect.inc:40
+msgid "Create a new sent mail folder"
+msgstr "Hozzunk létre új mappát az elküldött levelek (sent-mail) számára"
+
+#: templates/prefs/trashselect.inc:11 templates/prefs/trashselect.inc:20
+msgid "Create a new trash folder"
+msgstr "Hozzunk létre új 'Szemetes' (Trash) mappát"
+
+#: templates/fetchmail/fetchmail.html:23
+msgid "Create an account"
+msgstr "Új bejelentkezési azonosító létrehozása"
+
+#: config/prefs.php.dist:128
+msgid ""
+"Create filtering rules to organize your incoming mail, sort it into folders, "
+"and delete spam."
+msgstr ""
+"Szûrõfeltételek adhatók meg, melyekkel a beérkezõ levelek automatikusan "
+"mappákba rendezhetõk."
+
+#: templates/stationery/stationery.html:14
+msgid "Create new stationery"
+msgstr "Új levélpapír létrehozása"
+
+#: config/prefs.php.dist:549
+msgid "Create stationery and form responses."
+msgstr "Levélpapírok, ûrlapok létrehozása."
+
+#: templates/compose/compose.html:307
+msgid "Current Attachments"
+msgstr "A jelenlegi mellékletek"
+
+#: acl.php:176
+#, php-format
+msgid "Current access to %s"
+msgstr "A(z) %s mappához való jelenlegi hozzáférési jogosultságok:"
+
+#: config/prefs.php.dist:1168
+msgid "Current expanded status in the folders view"
+msgstr "Használjuk a mappák nézetének jelenlegi beállítását."
+
+#: config/prefs.php.dist:112
+msgid "Customize accounts for fetching mail from other accounts."
+msgstr ""
+"A levelek idegen levelezõszerverekrõl történõ áttöltésének beállításai."
+
+#: config/prefs.php.dist:54
+msgid "Customize how you send mail."
+msgstr "A levélküldéssel kapcsolatos beállítások."
+
+#: config/prefs.php.dist:40
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr ""
+"Milyen parancsok fussanak le automatikusan a %sbe történõ bejelentkezéskor."
+
+#: mailbox.php:572
+msgid "Dat_e"
+msgstr "Dátum"
+
+#: lib/UI/Message.php:24
+msgid "Date"
+msgstr "Dátum"
+
+#: lib/Search.php:686
+msgid "Date <"
+msgstr "Dátum <"
+
+#: lib/Search.php:682
+msgid "Date ="
+msgstr "Dátum ="
+
+#: lib/Search.php:690
+msgid "Date >="
+msgstr "Dátum >="
+
+#: templates/thread/thread.html:27
+msgid "Date:"
+msgstr "Dátum:"
+
+#: templates/search/search.html:93
+msgid "Day"
+msgstr "nap"
+
+#: lib/MIME/Viewer/itip.php:921
+msgid "Declined"
+msgstr "elutasítva"
+
+#: lib/MIME/Viewer/itip.php:267
+msgid "Declined: "
+msgstr "Elutasítva: "
+
+#: config/prefs.php.dist:668
+msgid "Default"
+msgstr "Alapértelmezett"
+
+#: config/prefs.php.dist:837
+msgid "Default (US-ASCII)"
+msgstr "Alapértelmezett (US-ASCII)"
+
+#: config/prefs.php.dist:599
+msgid "Default forwarding method:"
+msgstr "A levéltovábbítás alapértelmezés szerinti módja:"
+
+#: config/prefs.php.dist:1083
+msgid "Default sorting criteria:"
+msgstr "A sorbarendezés alapértelmezés szerinti szempontja:"
+
+#: config/prefs.php.dist:1093
+msgid "Default sorting direction:"
+msgstr "A sorbarendezés alapértelmezés szerinti iránya:"
+
+#: lib/MIME/Viewer/itip.php:929
+msgid "Delegated"
+msgstr "másnak átadva"
+
+#: folders.php:402 mailbox.php:498 mailbox.php:500 message.php:541
+#: lib/IMAP/ACL/rfc4314.php:57 templates/smime/smime.html:35
+#: templates/pgp/pgp.html:43 templates/folders/actions.html:19
+#: templates/fetchmail/fetchmailprefs.html:122
+#: templates/contacts/contacts.html:66
+msgid "Delete"
+msgstr "Törlés"
+
+#: pgp.php:406 smime.php:314
+#, php-format
+msgid "Delete %s Public Key"
+msgstr "Töröljük %s nyilvános kulcsot"
+
+#: templates/smime/smime.html:75 templates/pgp/pgp.html:86
+msgid "Delete Current Keys"
+msgstr "A jelenlegi kulcsok törlése"
+
+#: lib/IMAP/ACL/rfc4314.php:56
+msgid "Delete Folders"
+msgstr "Mappák törlése"
+
+#: templates/folders/folders_confirm.html:22
+msgid "Delete Selected Folders"
+msgstr "A kiválasztott mappák törlése"
+
+#: templates/stationery/stationery.html:44
+msgid "Delete Stationery"
+msgstr "A levélpapír törlése"
+
+#: folders.php:402
+msgid "Delete Virtual Folder"
+msgstr "Virtuális mappa törlése"
+
+#: mailbox.php:418
+#, php-format
+msgid "Delete Virtual Folder Definition for %s"
+msgstr "A(z) %s virtuális mappa törlése"
+
+#: templates/fetchmail/fetchmailprefs.html:86
+msgid "Delete fetched messages from remote server?"
+msgstr "Töröljük a távoli szerverrõl az áthozott leveleket?"
+
+#: lib/MIME/Viewer/itip.php:668
+msgid "Delete from my calendar"
+msgstr "Töröljük a naptáramból"
+
+#: config/prefs.php.dist:388
+msgid "Delete old linked attachments at beginning of month?"
+msgstr ""
+"Töröljük a hónap elején a régi, hivatkozás formájában küldött mellékletek "
+"tényleges példányait?"
+
+#: config/prefs.php.dist:342
+msgid "Delete old sent-mail folders at beginning of month?"
+msgstr ""
+"Töröljük a régi elküldött leveleket (sent-mail) tartalmazó mappákat a hónap "
+"elején?"
+
+#: config/prefs.php.dist:736
+msgid "Delete spam messages"
+msgstr "Töröljük a spameket"
+
+#: lib/IMAP/ACL/rfc2086.php:56
+msgid "Delete/purge"
+msgstr "Törlés"
+
+#: templates/compose/compose.html:335
+msgid "Delete?"
+msgstr "Töröljük?"
+
+#: mailbox.php:772 message.php:469 templates/mailbox/navbar.html:20
+#: templates/mailbox/navbar.html:37
+msgid "Deleted"
+msgstr "Törölt"
+
+#: search.php:339
+msgid "Deleted messages"
+msgstr "Törölt levelek"
+
+#: compose.php:214
+#, php-format
+msgid "Deleted the attachment \"%s\"."
+msgstr "A \"%s\" mellékletet töröltük."
+
+#: config/prefs.php.dist:86
+msgid "Deleting and Moving Messages"
+msgstr "A levelek törlése és áthelyezése"
+
+#: lib/MIME/Viewer/itip.php:632
+msgid "Deny request"
+msgstr "elutasítom a meghívást"
+
+#: lib/MIME/Viewer/itip.php:556
+msgid "Deny request for free/busy information"
+msgstr "Az idõbeosztási adatkérés elutasítása"
+
+#: config/prefs.php.dist:1092
+msgid "Descending"
+msgstr "csökkenõ"
+
+#: lib/MIME/Viewer/itip.php:715 lib/MIME/Viewer/itip.php:842
+msgid "Description"
+msgstr "Leírás"
+
+#: templates/compose/compose.html:331
+msgid "Description:"
+msgstr "Leírás:"
+
+#: templates/smime/smime.html:35 templates/smime/smime.html:67
+#: templates/pgp/pgp.html:43 templates/pgp/pgp.html:75
+#: templates/pgp/pgp.html:80
+msgid "Details"
+msgstr "Részletesen"
+
+#: lib/Compose.php:2676
+#, php-format
+msgid "Did not attach \"%s\" as it was only partially uploaded."
+msgstr ""
+"\"%s\" csatolása nem történt meg, mert az állomány feltöltése nem fejezõdött "
+"be."
+
+#: lib/Compose.php:2685
+#, php-format
+msgid "Did not attach \"%s\" as the file was empty."
+msgstr "\"%s\" csatolása nem történt meg, mert az állomány üres."
+
+#: lib/Compose.php:2672
+#, php-format
+msgid ""
+"Did not attach \"%s\" as the maximum allowed upload size has been exceeded."
+msgstr ""
+"\"%s\" csatolása nem történt meg, mert túlléptük a feltölés maximális "
+"megengedett méretét."
+
+#: lib/Compose.php:2680
+#, php-format
+msgid ""
+"Did not attach \"%s\" as the server configuration did not allow the file to "
+"be uploaded."
+msgstr ""
+"\"%s\" csatolása nem történt meg, mert a szerver beállításai nem engedik meg "
+"az állomány feltöltését."
+
+#: config/prefs.php.dist:796
+msgid "Dim signatures?"
+msgstr "Az állandó levélvégzõdés (signature) halványan jelenjen meg?"
+
+#: templates/contacts/contacts.html:58
+msgid "Display"
+msgstr "Megjelenítés"
+
+#: config/prefs.php.dist:247
+msgid "Display Virtual Inbox?"
+msgstr "Legyen virtuális Inbox mappa?"
+
+#: config/prefs.php.dist:571
+msgid "Display confirmation after sending a message?"
+msgstr "A levél elküldése után jelenjen meg egy ezt megerõsítõ üzenet?"
+
+#: config/prefs.php.dist:813
+msgid "Display in Body of Message"
+msgstr "a levéltörzsben való megjelenítés"
+
+#: config/prefs.php.dist:948
+msgid "Display pop-up notification of new mail?"
+msgstr "Új levél érkezésérõl külön felbukkanó ablakban kér értesítést?"
+
+#: config/prefs.php.dist:913
+msgid "Display the \"Empty Spam\" link in the menubar?"
+msgstr "Legyen egy \"Spam mappa ürítés\" pontja a menüsornak?"
+
+#: config/prefs.php.dist:905
+msgid "Display the \"Empty Trash\" link in the menubar?"
+msgstr "Legyen egy \"Szemetes mappa ürítés\" pontja a menüsornak?"
+
+#: templates/compose/compose.html:322
+msgid "Disposition:"
+msgstr "Elhelyezés:"
+
+#: templates/search/search.html:82
+msgid "Do NOT match"
+msgstr "NE legyen benne"
+
+#: templates/folders/actions.html:30
+msgid "Do Not Check for New Mail"
+msgstr "Ne ellenõrizzük, hogy jött-e új levél"
+
+#: config/prefs.php.dist:1119
+msgid "Do not generate a link in the From: column"
+msgstr "A Feladó oszlopra kattintva ne történjen semmi"
+
+#: templates/javascript_defs.php:35
+msgid "Doing so will discard this message permanently."
+msgstr "Ezzel a levél tartalma véglegesen elveszik."
+
+#: login.php:414
+msgid "Don't have an account? Sign up."
+msgstr "Nincs bejelentkezési neve? Igényeljen magának."
+
+#: templates/folders/actions.html:34
+msgid "Download"
+msgstr "Letöltés"
+
+#: lib/MIME/Contents.php:240
+#, php-format
+msgid "Download %s in .zip Format"
+msgstr "Töltsük le %s-t .zip formátumban."
+
+#: message.php:666
+msgid "Download All Attachments (in .zip file)"
+msgstr "Az összes melléklet letöltése (egy .zip fájlba)"
+
+#: templates/folders/actions.html:35
+msgid "Download [.zip format]"
+msgstr "Töltsük le [.zip formátumban]"
+
+#: lib/MIME/Contents.php:240
+msgid "Download in .zip Format"
+msgstr "Töltsük le .zip formátumban."
+
+#: mailbox.php:762 message.php:467 templates/message/navbar_navigate.html:14
+#: templates/mailbox/navbar.html:22 templates/mailbox/navbar.html:40
+msgid "Draft"
+msgstr "munkapéldány"
+
+#: lib/IMAP/Tree.php:2332
+msgid "Draft folder"
+msgstr "Munkapéldány mappa"
+
+#: templates/prefs/folderselect.inc:19
+msgid "Drafts folder:"
+msgstr "Munkapéldány mappa:"
+
+#: login.php:290
+msgid "Dynamic"
+msgstr "Dinamikus"
+
+#: templates/pgp/pgp.html:102
+msgid "E-mail Address:"
+msgstr "Email cím:"
+
+#: mailbox.php:825
+msgid "END"
+msgstr "VÉGE"
+
+#: lib/MIME/Viewer/status.php:73
+msgid "ERROR: Your message could not be delivered."
+msgstr "HIBA: levelét nem sikerült kézbesíteni."
+
+#: folders.php:403 templates/stationery/stationery.html:19
+msgid "Edit"
+msgstr "Módosítás"
+
+#: mailbox.php:421
+msgid "Edit Search Query"
+msgstr "A keresés módosítása"
+
+#: folders.php:403 templates/search/search.html:17
+msgid "Edit Virtual Folder"
+msgstr "Virtuális mappa átdefiniálása"
+
+#: mailbox.php:417
+#, php-format
+msgid "Edit Virtual Folder Definition for %s"
+msgstr "A(z) %s virtuális mappa átdefiniálása."
+
+#: filterprefs.php:90
+msgid "Edit your Blacklist"
+msgstr "Az Ön tiltólistájának módosítása"
+
+#: filterprefs.php:89
+msgid "Edit your Filter Rules"
+msgstr "A szûrõfeltételek módosítása"
+
+#: filterprefs.php:91
+msgid "Edit your Whitelist"
+msgstr "Az engedélyezési lista módosítása"
+
+#: config/prefs.php.dist:1021
+msgid "Edit your preferences for accessing other mail accounts."
+msgstr "A külsõ szerverekrõl történõ levéláttöltés beállításai."
+
+#: templates/contacts/contacts.html:61
+msgid "Email Address"
+msgstr "Email cím"
+
+#: lib/Message.php:799
+#, php-format
+msgid "Emptied all messages from %s."
+msgstr "Az össze levelet töröltük %s-bõl."
+
+#: lib/Message.php:775
+msgid "Emptied all messages from Virtual Trash Folder."
+msgstr "Az össze levelet kitöröltük a virtuális szemetesmappából."
+
+#: templates/folders/actions.html:20
+msgid "Empty"
+msgstr "Üres"
+
+#: templates/folders/folders_confirm.html:22
+msgid "Empty Selected Folders"
+msgstr "A kiválasztott mappák kiürítése"
+
+#: lib/IMP.php:809
+msgid "Empty _Spam"
+msgstr "A Spam mappa ürítése"
+
+#: lib/IMP.php:801
+msgid "Empty _Trash"
+msgstr "'Szemetes' ürítés"
+
+#: mailbox.php:414
+msgid "Empty folder"
+msgstr "A mappa kiürítése"
+
+#: pgp.php:457 templates/pgp/pgp.html:2
+msgid "Enable PGP functionality?"
+msgstr "Aktiváljuk a PGP szolgáltatásokat?"
+
+#: smime.php:350 templates/smime/smime.html:2
+msgid "Enable S/MIME functionality?"
+msgstr "Aktiváljuk az S/MIME szolgáltatásokat?"
+
+#: config/prefs.php.dist:972
+msgid "Enable message previews?"
+msgstr "Szeretne belenézni a levelekbe anélkül, hogy rájuk kattintana?"
+
+#: compose.php:1076
+msgid "Encr_yption Options"
+msgstr "T_itkosítási beállítások"
+
+#: lib/MIME/Viewer/itip.php:530 lib/MIME/Viewer/itip.php:532
+#: lib/MIME/Viewer/itip.php:700 lib/MIME/Viewer/itip.php:702
+msgid "End"
+msgstr "Vég"
+
+#: lib/Compose.php:1584
+msgid "End forwarded message"
+msgstr "Vége a továbbított üzenetnek"
+
+#: lib/Compose.php:1474
+msgid "End message"
+msgstr "A levél vége"
+
+#: lib/Compose.php:1472
+#, php-format
+msgid "End message from %s"
+msgstr "%s levelének vége"
+
+#: pgp.php:432 smime.php:338
+msgid "Enter Passphrase"
+msgstr "A jelmondat megadása"
+
+#: templates/prefs/spamselect.inc:8
+msgid "Enter the name for your new Spam folder"
+msgstr "Adja meg az új Spam mappa nevét"
+
+#: templates/prefs/folderselect.inc:8
+msgid "Enter the name for your new drafts folder"
+msgstr "Adja meg a munkapéldányok (drafts) létrehozandó új mappájának nevét"
+
+#: templates/prefs/sentmailselect.inc:22
+msgid "Enter the name for your new sent mail folder"
+msgstr ""
+"Adja meg az elküldött levelek (sent-mail) létrehozandó új mappájának nevét"
+
+#: templates/prefs/trashselect.inc:8
+msgid "Enter the name for your new trash folder"
+msgstr "Adja meg az új 'Szemetes' (Trash) mappa nevét"
+
+#: message.php:556 lib/Search.php:678 config/prefs.php.dist:596
+msgid "Entire Message"
+msgstr "A teljes levél"
+
+#: message.php:168 thread.php:71 lib/Compose.php:1068
+#, php-format
+msgid "Entry \"%s\" was successfully added to the address book"
+msgstr "A címjegyzékhez sikeresen hozzáadtuk \"%s\"-t."
+
+#: lib/MIME/Viewer/pgp.php:447 lib/MIME/Viewer/pkcs7.php:440
+#: lib/MIME/Viewer/status.php:71 lib/MIME/Viewer/status.php:162
+msgid "Error"
+msgstr "Hiba"
+
+#: lib/IMAP/Client.php:303 lib/IMAP/Client.php:323
+#, php-format
+msgid "Error connecting to IMAP server: [%s] %s."
+msgstr "Az IMAP szerver nem érhetõ el: [%s] %s."
+
+#: lib/MIME/Contents.php:143
+msgid "Error displaying message."
+msgstr "A levél megjelenítésekor hiba történt."
+
+#: lib/MIME/Viewer/itip.php:314 lib/MIME/Viewer/itip.php:418
+#, php-format
+msgid "Error sending reply: %s."
+msgstr "A válasz küldésekor hiba történt: %s"
+
+#: templates/smime/smime.html:29 templates/pgp/pgp.html:37
+msgid "Error:"
+msgstr "Hiba:"
+
+#: lib/MIME/Viewer/itip.php:104
+msgid "Event successfully deleted."
+msgstr "Az eseményt sikeresen töröltük."
+
+#: config/prefs.php.dist:937
+msgid "Every 15 minutes"
+msgstr "15 percenként"
+
+#: config/prefs.php.dist:934
+msgid "Every 30 seconds"
+msgstr "30 másodpercenként"
+
+#: config/prefs.php.dist:650 config/prefs.php.dist:936
+msgid "Every 5 minutes"
+msgstr "5 percenként"
+
+#: config/prefs.php.dist:938
+msgid "Every half hour"
+msgstr "félóránként"
+
+#: config/prefs.php.dist:935
+msgid "Every minute"
+msgstr "percenként"
+
+#: folders.php:448
+msgid "Expand"
+msgstr "Nyissuk szét"
+
+#: folders.php:371
+msgid "Expand All"
+msgstr "Nyissuk szét az összeset"
+
+#: folders.php:371
+msgid "Expand All Folders"
+msgstr "Nyissuk szét az összes mappát"
+
+#: folders.php:448
+msgid "Expand Folder"
+msgstr "Nyissuk szét a mappát"
+
+#: compose.php:785 compose.php:1021
+msgid "Expand Names"
+msgstr "A címrészlet teljessé egészítése"
+
+#: config/prefs.php.dist:1147
+msgid "Expand the entire folder tree by default in the folders view?"
+msgstr "A mappák nézetében rögtön kinyitva jelenjen meg az összes mappa?"
+
+#: config/prefs.php.dist:1169
+msgid "Expand the entire folder tree by default in the sidebar?"
+msgstr "Az oldalmenüben rögtön kinyitva jelenjen meg az összes mappa?"
+
+#: lib/IMP.php:820 lib/IMP.php:822
+msgid "F_etch Mail"
+msgstr "Levelek áttöltése"
+
+#: fetchmail.php:50 config/prefs.php.dist:111
+#: templates/fetchmail/fetchmail.html:6 templates/fetchmail/fetchmail.html:30
+msgid "Fetch Mail"
+msgstr "Levelek áttöltése"
+
+#: config/prefs.php.dist:1029
+msgid "Fetch Mail in a separate window?"
+msgstr "A levelek áttöltése külön ablakban történjék?"
+
+#: templates/fetchmail/fetchmailprefs.html:89
+msgid "Fetch messages upon logging on?"
+msgstr "Bejelentkezéskor automatikusan induljon meg a levelek áttöltése?"
+
+#: lib/Fetchmail.php:285
+#, php-format
+msgid "Fetched %d messages from %s"
+msgstr "%d levél töltõdött át %s-rõl."
+
+#: lib/Fetchmail.php:283
+#, php-format
+msgid "Fetched 1 message from %s"
+msgstr "1 levél töltõdött át %s-rõl."
+
+#: lib/Fetchmail.php:281 lib/Fetchmail.php:283 lib/Fetchmail.php:285
+msgid "Fetchmail: "
+msgstr "Levéláttöltés: "
+
+#: lib/Fetchmail.php:287
+msgid "Fetchmail: no new messages."
+msgstr "Levéláttöltés: nincs új levele."
+
+#: lib/IMP.php:826
+msgid "Fi_lters"
+msgstr "Szûrõk"
+
+#: templates/prefs/sourceselect.inc:329
+msgid "Fields to search"
+msgstr "A keresendõ mezõk"
+
+#: templates/javascript_defs.php:40 templates/compose/compose.html:261
+msgid "File"
+msgstr "Fájl"
+
+#: templates/filters/prefs.html:2
+msgid "Filter Settings"
+msgstr "Szûrõfeltételek"
+
+#: config/prefs.php.dist:719
+msgid "Filter message content for profanity?"
+msgstr "Szûrjük ki a közönséges (profán) kifejezéseket a levelek tartalmából?"
+
+#: templates/filters/prefs.html:7
+msgid "Filter support is disabled on this system."
+msgstr "Ez a rendszer nem támogatja a levélszûrést."
+
+#: config/prefs.php.dist:127
+msgid "Filters"
+msgstr "Szûrõk"
+
+#: lib/Filter.php:130
+#, php-format
+msgid "Filters: %s management page"
+msgstr "Szûrõk: %s módosítási oldal"
+
+#: templates/contacts/contacts.html:13
+msgid "Find:"
+msgstr "Keresés:"
+
+#: config/prefs.php.dist:1065
+msgid "First Mailbox Page"
+msgstr "A mappa elsõ oldala"
+
+#: mailbox.php:268
+msgid "First Page"
+msgstr "Elsõ oldal"
+
+#: mailbox.php:767 message.php:468 templates/message/navbar_navigate.html:10
+#: templates/mailbox/navbar.html:32
+msgid "Flagged For Followup"
+msgstr "Követésre megjelölve"
+
+#: search.php:334
+msgid "Flagged messages"
+msgstr "Megjelölt levelek"
+
+#: mailbox.php:523 message.php:555
+msgid "Fo_rward"
+msgstr "Tová_bbítás"
+
+#: lib/IMAP/Tree.php:2377 templates/folders/folders_size.html:6
+msgid "Folder"
+msgstr "Mappa"
+
+#: folders.php:254 templates/folders/folders_confirm.html:5
+msgid "Folder Actions - Confirmation"
+msgstr "Mappák kezelése - Megerõsítés"
+
+#: folders.php:311 templates/prefs/initialpageselect.inc:11
+#: templates/folders/head.html:2
+msgid "Folder Navigator"
+msgstr "Mappák kezelése"
+
+#: folders.php:273 templates/folders/folders_size.html:1
+msgid "Folder Sizes"
+msgstr "Mappa méretek"
+
+#: lib/Block/summary.php:3
+msgid "Folder Summary"
+msgstr "Mappa összefoglalás"
+
+#: acl.php:25
+msgid "Folder sharing is not enabled."
+msgstr ""
+"Nincs megengedve, hogy más felhasználóknak hozzáférési jogot adjunk "
+"mappáinkhoz."
+
+#: folders.php:47
+msgid "Folder use is not enabled."
+msgstr "A mappák használata nincs megengedve."
+
+#: config/prefs.php.dist:1136
+msgid "Format of message dates in the mailbox view for messages dated today"
+msgstr "Az aznap kapott levelek érkezési idõpontjának formátuma"
+
+#: mailbox.php:523 message.php:555 lib/Compose.php:1567
+msgid "Forward"
+msgstr "Továbbítás"
+
+#: lib/Compose.php:1553
+msgid "Forward:"
+msgstr "Továbbítás:"
+
+#: lib/Compose.php:1667
+msgid "Forwarded Message:"
+msgstr "Továbbított levél:"
+
+#: lib/Compose.php:1580
+msgid "Forwarded message"
+msgstr "Továbbított levél"
+
+#: lib/Compose.php:1578
+#, php-format
+msgid "Forwarded message from %s"
+msgstr "Továbbított levél %s címrõl"
+
+#: lib/MIME/Viewer/itip.php:412
+msgid "Free/Busy Request Response"
+msgstr "Válasz elfoglaltsági kérdésre"
+
+#: mailbox.php:582
+msgid "Fro_m"
+msgstr "Feladó"
+
+#: lib/Search.php:654 lib/UI/Mailbox.php:97 lib/UI/Message.php:25
+#: templates/thread/thread.html:32 templates/compose/compose.html:27
+msgid "From"
+msgstr "Feladó"
+
+#: config/prefs.php.dist:1078
+msgid "From Address"
+msgstr "A feladó címe"
+
+#: templates/saveimage/saveimage.html:12
+msgid "Gallery"
+msgstr "Képgaléria"
+
+#: config/prefs.php.dist:12 config/prefs.php.dist:21 config/prefs.php.dist:30
+#: config/prefs.php.dist:38
+msgid "General Options"
+msgstr "Általános beállítások"
+
+#: templates/fetchmail/fetchmailprefs.html:80
+msgid "Get only new messages? (IMAP only)"
+msgstr "Csak az új leveleket hozzuk át? (csak IMAP)"
+
+#: folders.php:358 lib/MIME/Viewer/itip.php:568 lib/MIME/Viewer/itip.php:772
+#: lib/MIME/Viewer/itip.php:899
+msgid "Go"
+msgstr "Mehet"
+
+#: thread.php:136
+msgid "Go to Message"
+msgstr "A levélhez"
+
+#: templates/newmsg/alert.html:11
+msgid "Go to Virtual Inbox"
+msgstr "Menjünk a virtuális Inboxhoz"
+
+#: lib/IMP.php:353
+#, php-format
+msgid "Go to address book entry of \"%s\""
+msgstr "Ugorjunk a címjegyzék \"%s\" adatához"
+
+#: message.php:436 lib/Filter.php:130 lib/MIME/Contents.php:426
+#: lib/MIME/Viewer/appledouble.php:40 lib/MIME/Viewer/images.php:92
+#: lib/MIME/Viewer/images.php:99 lib/MIME/Viewer/images.php:101
+#: lib/MIME/Viewer/notification.php:60 lib/MIME/Viewer/notification.php:66
+#: lib/MIME/Viewer/pkcs7.php:483 lib/MIME/Viewer/related.php:85
+#: lib/MIME/Viewer/status.php:119 lib/MIME/Viewer/status.php:128
+msgid "HERE"
+msgstr "ITT"
+
+#: lib/MIME/Viewer/related.php:86 templates/stationery/stationery.html:32
+msgid "HTML"
+msgstr "HTML"
+
+#: lib/Compose.php:451
+msgid "HTML Version of Message"
+msgstr "A levél HTML változata"
+
+#: message.php:605
+msgid "Headers"
+msgstr "Fejléc"
+
+#: templates/login/recompose.html:7
+msgid "Here is the message you were composing:"
+msgstr "Itt az Ön által fogalmazott levél:"
+
+#: config/prefs.php.dist:787
+msgid "Hidden"
+msgstr "ne mutasssuk"
+
+#: config/prefs.php.dist:786
+msgid "Hidden in Thread View"
+msgstr "logikai (thread) nézetben ne mutassuk"
+
+#: templates/javascript_defs.php:29
+msgid "Hide Addresses"
+msgstr "Rejtsük el a címeket"
+
+#: mailbox.php:249
+msgid "Hide Deleted"
+msgstr "A törölteket ne mutassuk"
+
+#: folders.php:364
+msgid "Hide Unsubscribed"
+msgstr "A használaton kívül helyezett (unsubscribed) mappákat ne mutassuk"
+
+#: compose.php:993
+msgid "High"
+msgstr "nagy"
+
+#: message.php:283
+msgid "High Priority"
+msgstr "Sürgõs"
+
+#: compose.php:992
+msgid "Highest"
+msgstr "legnagyobb"
+
+#: config/prefs.php.dist:815
+msgid "How do you want to display attachments?"
+msgstr "Hogyan kívánja megjeleníttetni a mellékleteket?"
+
+#: config/prefs.php.dist:1157
+msgid "How should namespaces be displayed in the folder tree view?"
+msgstr "Hogyan jelenítsük meg a névtereket a mappák nézetében?"
+
+#: config/prefs.php.dist:624
+msgid "How to attribute quoted lines in a reply"
+msgstr "Válaszoláskor hogyan jelezzük, hogy kitõl idéztünk"
+
+#: lib/IMAP.php:305
+msgid "IMAP"
+msgstr "IMAP"
+
+#: lib/Fetchmail/imap.php:97
+msgid "IMAP (Auto Detect Protocols)"
+msgstr "IMAP (automatikus protokoll meghatározással)"
+
+#: lib/IMAP/Client.php:200
+#, php-format
+msgid "IMAP Server closed the connection. Server Responded: %s"
+msgstr "Az IMAP szerver megszakította a kapcsolatot. A szerver válasza: %s"
+
+#: lib/IMAP.php:317
+msgid "IMAP over SSL"
+msgstr "IMAP SSL fölött"
+
+#: lib/IMAP.php:323
+msgid "IMAP over SSL (self-signed certificate)"
+msgstr "IMAP SSL fölött (öntanúsítvánnyal)"
+
+#: lib/IMAP.php:311
+msgid "IMAP, no TLS"
+msgstr "IMAP, TLS nélkül"
+
+#: lib/Fetchmail/imap.php:47
+msgid "IMAP/POP3 Mail Servers"
+msgstr "IMAP/POP3 levelezõszerverek"
+
+#: lib/IMAP/Client.php:283
+msgid "If using SSL or TLS, you must have the PHP openssl extension loaded."
+msgstr ""
+"Az SSL vagy TSL használatához a PHP openssl bõvítésének be kell töltõdnie."
+
+#: templates/folders/folders_confirm.html:12
+msgid "If you continue, all messages in the folder(s) will be lost!"
+msgstr "Ha folytatja, a mappá(k)ban levõ összes levél törlõdik!"
+
+#: saveimage.php:48
+msgid "Image"
+msgstr "Kép"
+
+#: lib/MIME/Viewer/html.php:156
+msgid "Images have been blocked to protect your privacy."
+msgstr "A képeket nem jelenítettük meg Ön nyugalma érdekében."
+
+#: templates/folders/import.html:16
+msgid "Import"
+msgstr "Importálás"
+
+#: templates/smime/import_key.html:69 templates/pgp/import_key.html:48
+msgid "Import Key"
+msgstr "Kulcs importálása"
+
+#: templates/smime/smime.html:81 templates/pgp/pgp.html:131
+msgid "Import Keypair"
+msgstr "Kulcspár importálása"
+
+#: templates/folders/actions.html:37
+msgid "Import Messages"
+msgstr "Levelek importálása"
+
+#: pgp.php:50
+msgid "Import PGP Key"
+msgstr "PGP kulcs importálása"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Personal Private PGP Key"
+msgstr "Személyes, titkos PGP kulcs importálása"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Personal Private PGP Key Here:"
+msgstr "Személyes, titkos PGP kulcs importálása itt:"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Personal Public PGP Key"
+msgstr "Személyes, nyilvános PGP kulcs importálása"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Personal Public PGP Key Here:"
+msgstr "Személyes, nyilvános PGP kulcs importálása itt:"
+
+#: templates/smime/import_key.html:11
+msgid "Import Personal S/MIME Certificates"
+msgstr "Személyes S/MIME tanúsítványok importálása"
+
+#: templates/smime/smime.html:47 templates/pgp/pgp.html:55
+msgid "Import Public Key"
+msgstr "Nyilvános kulcs importálása"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Public PGP Key"
+msgstr "Nyilvános PGP kulcs importálása"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Public PGP Key Here:"
+msgstr "Nyilvános PGP kulcs importálása itt:"
+
+#: templates/smime/import_key.html:11
+msgid "Import Public S/MIME Key"
+msgstr "Nyilvános S/MIME kulcs importálása"
+
+#: smime.php:16
+msgid "Import S/MIME Key"
+msgstr "S/MIME kulcs importálása"
+
+#: templates/folders/import.html:6
+msgid "Import mbox File"
+msgstr "Standard mbox fájl importálása"
+
+#: templates/folders/import.html:11
+msgid "Import mbox file"
+msgstr "Standard mbox fájl importálása"
+
+#: templates/mailbox/navbar.html:16
+msgid "Important"
+msgstr "Fontos"
+
+#: folders.php:142
+#, php-format
+msgid "Imported %d messages from %s."
+msgstr "%d levelet importáltunk %s-bõl."
+
+#: lib/MIME/Viewer/itip.php:937
+msgid "In Process"
+msgstr "folyamatban"
+
+#: templates/prefs/initialpageselect.inc:4 lib/Folder.php:68 lib/IMP.php:685
+#: lib/api.php:221 lib/IMAP/Tree.php:553 lib/IMAP/Tree.php:2315
+msgid "Inbox"
+msgstr "Inbox"
+
+#: config/prefs.php.dist:612
+msgid "Include a brief summary of the header in a reply?"
+msgstr "Válaszoláskor idézzük-e be a levél fejlécének fontosabb sorait?"
+
+#: config/prefs.php.dist:607
+msgid "Include body text in forward message by default?"
+msgstr ""
+"A levél továbbküldésekor a levéltörzs legyen alapértelmezetten benne a "
+"levélben?"
+
+#: config/prefs.php.dist:579
+msgid "Include original message in a reply?"
+msgstr "Válaszoláskor idézzük be a megválaszolandó levelet?"
+
+#: lib/MIME/Viewer/notification.php:59 lib/MIME/Viewer/status.php:131
+msgid "Info"
+msgstr "Információ"
+
+#: pgp.php:405 smime.php:313
+#, php-format
+msgid "Information on %s Public Key"
+msgstr "Információ %s nyilvános kulcsról"
+
+#: pgp.php:434
+msgid "Information on Personal Private Key"
+msgstr "Információ a személyes, titkos kulcsról"
+
+#: pgp.php:428 smime.php:336
+msgid "Information on Personal Public Key"
+msgstr "Információ a személyes, nyilvános kulcsról"
+
+#: templates/javascript_defs.php:42 templates/compose/compose.html:267
+#: templates/compose/compose.html:326
+msgid "Inline"
+msgstr "Levélbeni"
+
+#: lib/IMAP/ACL/rfc2086.php:53 lib/IMAP/ACL/rfc4314.php:53
+msgid "Insert"
+msgstr "Beillesztés"
+
+#: templates/smime/import_key.html:19
+msgid "Insert Certificate Here:"
+msgstr "Ide másolja be a tanúsítványt:"
+
+#: lib/MIME/Viewer/itip.php:423
+msgid "Invalid Action selected for this component."
+msgstr "Ez a lehetõség nem választható ebben az esetben."
+
+#: lib/UI/Mailbox.php:61 lib/UI/Mailbox.php:111
+msgid "Invalid Address"
+msgstr "Hibás/elfogadhatatlan cím."
+
+#: lib/Fetchmail/imap.php:225
+msgid "Invalid Remote Mailbox"
+msgstr "Hibás/elfogadhatatlan távoli levélláda."
+
+#: lib/Compose.php:1113 lib/Compose.php:1132
+#, php-format
+msgid "Invalid character in e-mail address: %s."
+msgstr "Hibás/elfogadhatalan karakter az email címben: %s."
+
+#: lib/Compose.php:1128
+msgid "Invalid hostname."
+msgstr "Hibás/elfogadhatatlan számítógépnév."
+
+#: pgp.php:18 smime.php:96
+msgid "Invalid key"
+msgstr "Hibás kulcs"
+
+#: lib/Compose.php:282
+msgid "Invalid message, cannot resume draft."
+msgstr "A munkapéldány nem olvasható be, mert érvénytelen a formátuma."
+
+#: pgp.php:202
+msgid "Invalid personal PGP private key."
+msgstr "Hibás PGP személyes, titkos kulcs."
+
+#: pgp.php:177
+msgid "Invalid personal PGP public key."
+msgstr "Hibás PGP személyes, nyilvános kulcs."
+
+#: templates/mailbox/navbar.html:12
+msgid "Invert"
+msgstr "az ellenkezõjét"
+
+#: templates/compose/compose.html:307 templates/compose/compose.html:315
+msgid "KB"
+msgstr "KB"
+
+#: templates/pgp/pgp.html:107
+msgid "Key Length:"
+msgstr "Kulcshosszúság:"
+
+#: pgp.php:448
+msgid ""
+"Key generation may take a long time to complete.  Continue with key "
+"generation?"
+msgstr "A kulcsgenerálás hosszú idõt vehet igénybe. Kívánja folytatni?"
+
+#: templates/smime/smime.html:42 templates/pgp/pgp.html:50
+msgid "Key import is not available. File upload is not enabled on this server."
+msgstr ""
+"A kulcs importálása nem lehetséges. Ezen a szerveren az állományok "
+"feltöltése nincs megengedve."
+
+#: templates/smime/smime.html:45 templates/pgp/pgp.html:53
+msgid ""
+"Key import is not available. You have no address book defined to add your "
+"contacts."
+msgstr ""
+"A kulcs importálása nem lehetséges. Önnek nincs megadva címjegyzéke, amiben "
+"tárolható lenne az információ."
+
+#: pgp.php:344
+msgid "Key successfully sent to the public keyserver."
+msgstr "A kulcsot sikeresen elküldtük a nyilvános kulcsokat tároló szervernek."
+
+#: templates/login/login.html:116
+msgid "Language"
+msgstr "Nyelv"
+
+#: login.php:259
+msgid "Language:"
+msgstr "Nyelv:"
+
+#: config/prefs.php.dist:1066
+msgid "Last Mailbox Page"
+msgstr "A mappa utolsó oldala"
+
+#: mailbox.php:280
+msgid "Last Page"
+msgstr "Utolsó oldal"
+
+#: compose.php:1115
+msgid "Link Attachments?"
+msgstr "A mellékleteket hivatkozás formájában küldjük?"
+
+#: attachment.php:34 lib/Compose.php:2367
+msgid "Linked attachments are forbidden."
+msgstr "A mellékletek hivatkozás formájában való küldése nem megengedett."
+
+#: lib/Compose.php:2383
+#, php-format
+msgid "Links will expire on %s"
+msgstr "A hivatkozások lejáratának dátuma %s"
+
+#: lib/IMAP/ACL/rfc2086.php:49 lib/IMAP/ACL/rfc4314.php:49
+msgid "List"
+msgstr "Lista"
+
+#: config/prefs.php.dist:1255
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+"Listázzuk ki az össze partnert a címjegyzék behívásakor? (ha nem, akkor csak "
+"azok a partnerek jelennek meg, melyekre rákeres)"
+
+#: config/prefs.php.dist:812
+msgid "Listing in the Header"
+msgstr "a fejlécben való felsorolás"
+
+#: compose.php:771
+msgid "Loading..."
+msgstr "Betöltés..."
+
+#: templates/fetchmail/fetchmailprefs.html:72
+msgid "Local Mailbox:"
+msgstr "Helyi mappa:"
+
+#: lib/MIME/Viewer/itip.php:720
+msgid "Location"
+msgstr "Hely"
+
+#: templates/login/mobile.inc:3 templates/login/mobile.inc:33
+msgid "Log in"
+msgstr "Bejelentkezés"
+
+#: lib/Block/summary.php:45
+#, php-format
+msgid "Log in to %s"
+msgstr "Bejelentkezés %s-be"
+
+#: login.php:410
+msgid "Login"
+msgstr "Bejelentkezés"
+
+#: config/prefs.php.dist:39
+msgid "Login Tasks"
+msgstr "Bejelentkezéssel kapcsolatos feladatok"
+
+#: compose.php:995
+msgid "Low"
+msgstr "alacsony"
+
+#: message.php:287
+msgid "Low Priority"
+msgstr "Nem sürgõs"
+
+#: compose.php:996
+msgid "Lowest"
+msgstr "legalacsonyabb"
+
+#: lib/MIME/Viewer/appledouble.php:43
+msgid "Macintosh File"
+msgstr "Macintosh fájl"
+
+#: config/prefs.php.dist:103
+msgid "Mail Previews"
+msgstr "A levelek elõnézete"
+
+#: templates/fetchmail/fetchmailprefs.html:31
+msgid "Mail server type to connect to:"
+msgstr "Az idegen levelezõszerver típusa:"
+
+#: lib/IMAP/Tree.php:2322 lib/IMAP/Tree.php:2349
+msgid "Mailbox"
+msgstr "Levélláda"
+
+#: config/prefs.php.dist:118
+msgid "Mailbox and Folder Display Options"
+msgstr "A levélláda ill. a mappák megjelenítési beállításai"
+
+#: lib/IMAP/ACL/rfc2086.php:52 lib/IMAP/ACL/rfc4314.php:52
+msgid "Mark (Other)"
+msgstr "Jelzet állítása (egyéb)"
+
+#: lib/IMAP/ACL/rfc2086.php:51 lib/IMAP/ACL/rfc4314.php:51
+msgid "Mark (Seen)"
+msgstr "Jelzet állítása (olvasott)"
+
+#: templates/folders/actions.html:32
+msgid "Mark All Messages as Seen"
+msgstr "Az összes levelet olvasottként jelöljük meg"
+
+#: templates/folders/actions.html:33
+msgid "Mark All Messages as Unseen"
+msgstr "Az összes levelet olvasatlanként jelöljük meg"
+
+#: templates/message/navbar_navigate.html:6
+#: templates/message/navbar_navigate.html:8 templates/mailbox/navbar.html:27
+#: templates/mailbox/navbar.html:29
+msgid "Mark as:"
+msgstr "Jelöljük meg, mint:"
+
+#: config/prefs.php.dist:769
+msgid "Mark different levels of quoting with different colors?"
+msgstr "Az idézetek különbözõ szintjeit eltérõ színnel jelezzük?"
+
+#: templates/fetchmail/fetchmailprefs.html:83
+msgid "Mark messages as seen? (IMAP only)"
+msgstr "Olvasottként jelöljük meg a leveleket? (csak IMAP)"
+
+#: config/prefs.php.dist:777
+msgid "Mark simple markup?"
+msgstr "Jelezzük az egyszerûbb HTML kódokat?"
+
+#: search.php:214
+msgid "Match All Queries"
+msgstr "Az összes keresõfeltételt kielégítik"
+
+#: search.php:212
+msgid "Match Any Query"
+msgstr "Bármelyik keresõfeltételt kielégítik"
+
+#: templates/compose/compose.html:273
+msgid "Maximum Attachment Size"
+msgstr "Maximális melléklet méret"
+
+#: lib/api.php:94
+msgid "Maximum Number of Folders"
+msgstr "A mappák maximális száma"
+
+#: lib/api.php:95
+msgid "Maximum Number of Recipients per Message"
+msgstr "Egy levél címzetteinek maximális száma"
+
+#: lib/api.php:96
+msgid "Maximum Number of Recipients per Time Period"
+msgstr "Egy idõegység alatt legfeljebb hány címzettnek küldhetõ levél."
+
+#: templates/compose/compose.html:255
+msgid "Maximum number of attachments reached."
+msgstr "A csatolt mellékletek száma nem növelhetõ tovább."
+
+#: templates/compose/compose.html:252
+msgid "Maximum total attachment size reached."
+msgstr ""
+"A csatolt mellékletek összmérete elérte a maximális megengedett értéket."
+
+#: lib/Block/tree_folders.php:3
+msgid "Menu Folder List"
+msgstr "Mappa lista"
+
+#: lib/Compose.php:1465
+msgid "Message"
+msgstr "Levél"
+
+#: config/prefs.php.dist:53
+msgid "Message Composition"
+msgstr "Levélírás"
+
+#: config/prefs.php.dist:1077
+msgid "Message Date"
+msgstr "A levél dátuma"
+
+#: config/prefs.php.dist:52 config/prefs.php.dist:70 config/prefs.php.dist:85
+#: config/prefs.php.dist:94 config/prefs.php.dist:102
+#: config/prefs.php.dist:110
+msgid "Message Options"
+msgstr "Levelekre vonatkozó beállítások"
+
+#: search.php:407
+msgid "Message Search"
+msgstr "Keresés a levélben"
+
+#: config/prefs.php.dist:1081
+msgid "Message Size"
+msgstr "A levél mérete"
+
+#: message.php:576
+msgid "Message Source"
+msgstr "A levél forrása"
+
+#: config/prefs.php.dist:71
+msgid "Message Viewing"
+msgstr "A levél megtekintése"
+
+#: lib/Compose.php:1463
+#, php-format
+msgid "Message from %s"
+msgstr "Levél %s-tõl"
+
+#: lib/UI/Mailbox.php:148
+msgid "Message has attachments"
+msgstr "A levélnek melléklete is van"
+
+#: lib/UI/Mailbox.php:147
+msgid "Message is encrypted"
+msgstr "A levél kódolt"
+
+#: lib/UI/Mailbox.php:146
+msgid "Message is signed"
+msgstr "A levelet digitális aláírással látták el"
+
+#: compose.php:355 compose.php:362
+msgid "Message redirected successfully."
+msgstr "A levelet sikeresen átirányítottuk."
+
+#: lib/Compose.php:788
+#, php-format
+msgid "Message sent successfully, but not saved to %s"
+msgstr "A levél elment, de nem sikerült elmenteni itt: %s"
+
+#: compose.php:420 compose.php:428
+msgid "Message sent successfully."
+msgstr "A levelet elküldtük."
+
+#: config/prefs.php.dist:1108
+msgid "Messages per page in the mailbox view."
+msgstr "Az egy oldalon megjelenõ levelek száma a levélláda megtekintésekor."
+
+#: mailbox.php:214
+msgid "Messages to"
+msgstr "a leveleket ide..."
+
+#: login.php:294
+msgid "Minimalist"
+msgstr "Minimális (mobilra)"
+
+#: templates/login/login.html:129
+msgid "Mode"
+msgstr "Mód"
+
+#: templates/search/search.html:87
+msgid "Month"
+msgstr "hónap"
+
+#: mailbox.php:475 mailbox.php:885 message.php:506 message.php:693
+msgid "Move"
+msgstr "Tegyük át"
+
+#: templates/prefs/sourceselect.inc:314
+msgid "Move down"
+msgstr "vigyük lejjebb"
+
+#: config/prefs.php.dist:737
+msgid "Move spam messages to spam folder and innocent messages to INBOX"
+msgstr "Tegyük a spameket a spam mappába, a rendes leveleket pedig az INBOX-ba"
+
+#: mailbox.php:475 mailbox.php:885 message.php:506 message.php:693
+msgid "Move to folder"
+msgstr "tegyük át ebbe a mappába"
+
+#: templates/prefs/sourceselect.inc:312
+msgid "Move up"
+msgstr "vigyük följebb"
+
+#: lib/MIME/Viewer/alternative.php:97
+msgid "Multipart/alternative"
+msgstr "Több, alternatív részt tartalmaz"
+
+#: thread.php:161
+msgid "Multiple Message View"
+msgstr "A levelek szokásos nézete"
+
+#: templates/smime/smime.html:4 templates/pgp/pgp.html:4
+#: templates/fetchmail/fetchmailprefs.html:91
+msgid "NOTE:"
+msgstr "MEGJEGYZÉS:"
+
+#: lib/MIME/Viewer/itip.php:726 lib/MIME/Viewer/itip.php:854
+#: templates/contacts/contacts.html:60
+msgid "Name"
+msgstr "Név"
+
+#: pgp.php:116
+msgid "Name and/or email cannot be empty"
+msgstr "A név ill. email cím nem maradhat üresen"
+
+#: lib/MIME/Viewer/itip.php:942
+msgid "Needs Action"
+msgstr "nincs válasz"
+
+#: config/prefs.php.dist:701 config/prefs.php.dist:933
+msgid "Never"
+msgstr "soha"
+
+#: config/prefs.php.dist:691
+msgid "Never save attachments"
+msgstr "A mellékleteket sose mentsük el."
+
+#: lib/IMP.php:440
+msgid "New Folder"
+msgstr "Új mappa"
+
+#: config/prefs.php.dist:95
+msgid "New Mail"
+msgstr "Új levél"
+
+#: compose.php:226 lib/Block/tree_folders.php:35
+msgid "New Message"
+msgstr "Új levél"
+
+#: mailbox.php:845 lib/MIME/Headers.php:193
+#, php-format
+msgid "New Message to %s"
+msgstr "Új levél %s részére"
+
+#: search.php:325
+msgid "New messages"
+msgstr "Új levelek"
+
+#: message.php:522
+msgid "Next Message"
+msgstr "Következõ levél"
+
+#: mailbox.php:278
+msgid "Next Page"
+msgstr "Következõ oldal"
+
+#: templates/javascript_defs.php:49 config/prefs.php.dist:649
+#: config/prefs.php.dist:1144 config/prefs.php.dist:1166
+#: templates/compose/compose.html:293
+msgid "No"
+msgstr "Nem"
+
+#: smime.php:241
+msgid "No Certificate found"
+msgstr "Nem található tanúsítvány"
+
+#: lib/IMP.php:1384
+msgid "No Encryption"
+msgstr "Titkosítás/digitális aláírás nélkül"
+
+#: templates/smime/smime.html:26 templates/pgp/pgp.html:34
+msgid "No Keys in Keyring"
+msgstr "Egy kulcs sincs tárolva"
+
+#: mailbox.php:257 rss.php:93
+#, php-format
+msgid "No Messages"
+msgstr "Nincs levél"
+
+#: pgp.php:143
+msgid "No PGP public key imported."
+msgstr "Nem importáltunk egy nyilvános PGP kulcsot sem."
+
+#: mailbox.php:806
+msgid "No Preview Text"
+msgstr "Nincs betekinthetõ szöveg"
+
+#: smime.php:166
+msgid "No S/MIME public key imported."
+msgstr "Nem importálódott S/MIME nyilvános kulcs."
+
+#: templates/prefs/soundselect.inc:5
+msgid "No Sound"
+msgstr "Nem kell hang"
+
+#: lib/MIME/Viewer/tnef.php:91
+msgid "No attachments found."
+msgstr "Nincs melléklet."
+
+#: lib/Crypt/SMIME.php:131
+msgid "No email information located in the public key."
+msgstr "A nyilvános kulcs nem tartalmaz email információt."
+
+#: acl.php:76
+msgid "No folder selected."
+msgstr "Nincs kijelölt mappa."
+
+#: lib/Block/summary.php:134
+msgid "No folders are being checked for new mail."
+msgstr "Egy mappában sem ellenõrizzük, érkezett-e új levél."
+
+#: folders.php:191 lib/Folder.php:431 lib/Folder.php:479
+msgid "No folders were specified"
+msgstr "Egy mappa sem volt kijelölve"
+
+#: lib/Block/summary.php:138
+msgid "No folders with new messages"
+msgstr "Nincs új levelet tartalmazó mappa"
+
+#: lib/Block/summary.php:136
+msgid "No folders with unseen messages"
+msgstr "Nincs olvasatlan levelet tartalmazó mappa"
+
+#: lib/IMP.php:988
+msgid "No limit"
+msgstr "Nincs limit"
+
+#: lib/Compose.php:1503
+msgid "No message body text"
+msgstr "A levéltörzs üres"
+
+#: lib/IMAP/Client.php:474
+msgid "No message returned."
+msgstr "Nincs levél."
+
+#: mailbox.php:229
+msgid "No messages matched your search."
+msgstr "A keresés nem talált semmit."
+
+#: pgp.php:195
+msgid "No personal PGP private key imported."
+msgstr "Nem importálódott a PGP személyes, titkos kulcs."
+
+#: pgp.php:171
+msgid "No personal PGP public key imported."
+msgstr "Nem importálódott a PGP személyes, nyilvános kulcs."
+
+#: smime.php:216
+msgid "No personal S/MIME certificates imported."
+msgstr "Nem importálódott S/MIME személyes tanúsítvány."
+
+#: lib/MIME/Viewer/pkcs7.php:301
+msgid ""
+"No personal private key exists so the message is unable to be decrypted."
+msgstr ""
+"Nincs személyes titkos kulcs, ezért a kódolt levél tartalma nem fejthetõ "
+"vissza."
+
+#: lib/IMAP/Client.php:374
+msgid "No supported IMAP authentication method could be found."
+msgstr ""
+"Nincs olyan felhasználóazonosítási módszer, amit az IMAP szerver támogat."
+
+#: acl.php:108
+msgid "No user specified."
+msgstr "Nem jelölt meg felhasználót."
+
+#: lib/MIME/Viewer/itip.php:747 lib/MIME/Viewer/itip.php:875
+msgid "Non Participant"
+msgstr "Nem résztvevõ"
+
+#: templates/prefs/folderselect.inc:21 templates/prefs/sentmailselect.inc:38
+#: templates/prefs/sourceselect.inc:35 templates/prefs/spamselect.inc:20
+#: templates/prefs/trashselect.inc:20 lib/MIME/Viewer/itip.php:710
+#: lib/MIME/Viewer/itip.php:837 templates/mailbox/navbar.html:11
+msgid "None"
+msgstr "egyik(et) sem"
+
+#: compose.php:994
+msgid "Normal"
+msgstr "közepes"
+
+#: templates/mailbox/navbar.html:21 templates/mailbox/navbar.html:38
+msgid "Not Deleted"
+msgstr "nem törölt"
+
+#: templates/message/navbar_navigate.html:15 templates/mailbox/navbar.html:23
+#: templates/mailbox/navbar.html:41
+msgid "Not Draft"
+msgstr "nem munkapéldány"
+
+#: templates/message/navbar_navigate.html:11 templates/mailbox/navbar.html:33
+msgid "Not Flagged"
+msgstr "Jelöletlen"
+
+#: templates/mailbox/navbar.html:17
+msgid "Not Important"
+msgstr "nem fontos"
+
+#: templates/mailbox/navbar.html:25
+msgid "Not Personal"
+msgstr "nem személyes"
+
+#: lib/Crypt/SMIME.php:125 lib/Crypt/SMIME.php:140 lib/Crypt/PGP.php:136
+msgid "Not a valid public key."
+msgstr "Nem érvényes nyilvános kulcs."
+
+#: config/prefs.php.dist:850
+msgid "Not at all"
+msgstr "Sehol"
+
+#: lib/Maintenance/Task/fetchmail_login.php:70
+msgid "Note that this can take some time"
+msgstr "Ez eltarthat egy ideig"
+
+#: lib/IMP.php:492
+msgid "Notepads"
+msgstr "Jegyzettömbök"
+
+#: config/hooks.php.dist:468
+msgid "Notes"
+msgstr "Feljegyzések"
+
+#: config/prefs.php.dist:735
+msgid "Nothing"
+msgstr "Semmit"
+
+#: attachment.php:108
+msgid "Notification: Linked attachment downloaded"
+msgstr "Figyelmeztetés: letöltõdött a hivatkozott melléklet"
+
+#: config/prefs.php.dist:397
+msgid "Number of months to keep old linked attachments if deleting monthly."
+msgstr ""
+" hónapig tartsuk meg a hivatkozás formájában küldött mellékletek tényleges "
+"példányát, havi törlés esetén."
+
+#: config/prefs.php.dist:351
+msgid "Number of old sent-mail folders to keep if deleting monthly."
+msgstr ""
+"db régi elküldött leveleket tartalmazó (sent-mail) mappát tartsunk meg, havi "
+"törlés esetén"
+
+#: templates/contacts/contacts.html:75
+msgid "OK"
+msgstr "OK"
+
+#: templates/smime/import_key.html:31 templates/search/search.html:61
+#: templates/pgp/import_key.html:30
+msgid "OR"
+msgstr "VAGY"
+
+#: search.php:324
+msgid "Old messages"
+msgstr "Régi levelek"
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:51
+msgid "Old sent-mail folders being purged."
+msgstr "Törlõdnek a régi elküldött leveleket tartalmazó (sent-mail) mappák."
+
+#: lib/Block/summary.php:27
+msgid "Only display folders with unread messages in them?"
+msgstr "Csak azokat a mappákat mutassuk, melyekben van olvasatlan levél?"
+
+#: templates/javascript_defs.php:58
+msgid "Only one folder should be selected for this action."
+msgstr "Kérem, hogy ehhez a feladathoz csak egy mappát jelöljön ki."
+
+#: lib/IMP.php:877 lib/IMP.php:882
+msgid "Open Fo_lder"
+msgstr "Mappa nyitás"
+
+#: lib/IMP.php:882
+msgid "Open Folder"
+msgstr "Mappa nyitás"
+
+#: lib/IMAP/Tree.php:2373
+msgid "Opened Folder"
+msgstr "Kinyitott mappa"
+
+#: lib/MIME/Viewer/itip.php:743 lib/MIME/Viewer/itip.php:871
+msgid "Optional Participant"
+msgstr "Választható résztvevõ"
+
+#: templates/fetchmail/fetchmailprefs.html:3
+msgid "Other Mail Accounts"
+msgstr "Idegen levelezõszervereken levõ levélládák"
+
+#: config/prefs.php.dist:117 config/prefs.php.dist:126
+#: config/prefs.php.dist:133 config/prefs.php.dist:141
+#: config/prefs.php.dist:150
+msgid "Other Options"
+msgstr "Egyéb beállítások"
+
+#: lib/IMAP/Tree.php:94
+msgid "Other Users' Folders"
+msgstr "Más felhasználók mappái"
+
+#: templates/login/login.html:103
+msgid "Outbound Server"
+msgstr "Kimenõ szerver"
+
+#: pgp.php:44 lib/MIME/Viewer/pgp.php:164 lib/MIME/Viewer/pgp.php:212
+#: lib/MIME/Viewer/pgp.php:308
+msgid "PGP"
+msgstr "PGP"
+
+#: lib/IMP.php:1387
+msgid "PGP Encrypt Message"
+msgstr "Titkosítsuk a levelet PGP-vel"
+
+#: lib/IMP.php:1392
+msgid "PGP Encrypt Message with passphrase"
+msgstr "Titkosítsuk a levelet a PGP segítségevel, egy jelmondattal"
+
+#: lib/Compose.php:1245
+msgid "PGP Error: "
+msgstr "PGP hiba: "
+
+#: config/prefs.php.dist:142
+msgid "PGP Options"
+msgstr "PGP beállítások"
+
+#: pgp.php:30
+msgid "PGP Passphrase Input"
+msgstr "Írja be a PGP jelmondatát"
+
+#: templates/pgp/pgp.html:69
+msgid "PGP Personal Keypair support requires a secure web connection."
+msgstr ""
+"A PGP személyes kulcspár támogatás titkosított web kapcsolatot igényel."
+
+#: pgp.php:155
+#, php-format
+msgid "PGP Public Key for \"%s (%s)\" was successfully added."
+msgstr "\"%s (%s)\" nyivános PGP kulcsát sikeresen felvettük."
+
+#: pgp.php:251
+#, php-format
+msgid "PGP Public Key for \"%s\" was successfully deleted."
+msgstr "\"%s\" nyivános PGP kulcsát sikeresen töröltük."
+
+#: templates/pgp/pgp.html:29
+msgid "PGP Public Keyring"
+msgstr "PGP nyilvános kulcsok"
+
+#: lib/IMP.php:1388
+msgid "PGP Sign Message"
+msgstr "Lássuk el a levelet PGP digitális aláírással"
+
+#: lib/IMP.php:1389
+msgid "PGP Sign/Encrypt Message"
+msgstr "Titkosítsuk és digitálisan írjuk alá a levelet PGP-vel"
+
+#: lib/IMP.php:1393
+msgid "PGP Sign/Encrypt Message with passphrase"
+msgstr ""
+"Titkosítsuk és digitálisan írjuk alá a levelet a PGP segítségével, egy "
+"jelmondattal"
+
+#: compose.php:687
+msgid ""
+"PGP encryption cannot be used by default as public keys cannot be found for "
+"all recipients."
+msgstr ""
+"A PGP titkosítás nem állítható be alapértelmezett módon, mert nem áll "
+"rendelkezésre az összes címzett nyilvános kulcsa."
+
+#: pgp.php:208
+msgid "PGP private key successfully added."
+msgstr "A PGP titkos kulcsot sikeresen felvettük."
+
+#: pgp.php:183
+msgid "PGP public key successfully added."
+msgstr "A PGP nyilvános kulcsot sikeresen felvettük."
+
+#: templates/pgp/pgp.html:138
+msgid "PGP support is disabled on this system."
+msgstr "A PGP támogatás inaktiválva van a rendszerben."
+
+#: templates/pgp/pgp.html:4
+msgid ""
+"PGP support requires popup windows to be used.  If your browser is currently "
+"set to disable popup windows, you must change this setting or else the PGP "
+"features will not work correctly."
+msgstr ""
+"A PGP támogatás felbukkanó (popup) ablakokat igényel. Ha az Ön "
+"böngészõprogramja úgy van beállítva, hogy letiltja a felbukkanó ablakokat, "
+"akkor vagy változtasson a beállításokon, vagy a PGP szolgáltatások nem "
+"fognak megfelelõen mûködni."
+
+#: lib/Compose.php:1205
+msgid "PGP: Need passphrase for personal private key."
+msgstr "PGP: a személyes titkos kulcs használatához jelmondat szükséges."
+
+#: lib/Compose.php:1214
+msgid "PGP: Need passphrase to encrypt your message with."
+msgstr "PGP: a levél titkosításához egy jelmondatot kell megadnia."
+
+#: lib/IMAP.php:281
+msgid "POP3"
+msgstr "POP3"
+
+#: lib/Fetchmail/imap.php:92
+msgid "POP3 (Auto Detect Protocols)"
+msgstr "POP3 (automatikus protokoll meghatározással)"
+
+#: lib/IMAP.php:293
+msgid "POP3 over SSL"
+msgstr "POP3 SSL fölött"
+
+#: lib/IMAP.php:299
+msgid "POP3 over SSL (self-signed certificate)"
+msgstr "POP3 SSL fölött (öntanúsítvánnyal)"
+
+#: lib/IMAP.php:287
+msgid "POP3, no TLS"
+msgstr "POP2, TLS nélkül"
+
+#: mailbox.php:430
+#, php-format
+msgid "Page %d of %d"
+msgstr "%d. oldal a %d-bõl"
+
+#: config/prefs.php.dist:1063
+msgid "Page with the First Unseen Message"
+msgstr "Az elsõ olvasatlan levelet tartalmazó oldal"
+
+#: config/prefs.php.dist:1064
+msgid "Page with the Last Unseen Message"
+msgstr "Az utolsó olvasatlan levelet tartalmazó oldal"
+
+#: templates/mailbox/navbar.html:67
+msgid "Page:"
+msgstr "Oldal:"
+
+#: message.php:674
+msgid "Part(s)"
+msgstr "Rész(ek)"
+
+#: templates/pgp/pgp.html:122
+msgid "Passphrase (Again):"
+msgstr "Jelmondat (még egyszer):"
+
+#: pgp.php:336 smime.php:250
+msgid "Passphrase successfully unloaded."
+msgstr "A jelmondatot sikeresen eltávolítottuk."
+
+#: templates/smime/passphrase.html:21 templates/pgp/passphrase.html:19
+#: templates/pgp/pgp.html:117
+msgid "Passphrase:"
+msgstr "Jelmondat:"
+
+#: pgp.php:118
+msgid "Passphrases cannot be empty"
+msgstr "A jelmondat nem lehet üres"
+
+#: pgp.php:120
+msgid "Passphrases do not match"
+msgstr "A jelmondatok nem egyeznek"
+
+#: templates/login/login.html:92
+msgid "Password"
+msgstr "Jelszó"
+
+#: templates/smime/import_key.html:54
+#: templates/fetchmail/fetchmailprefs.html:59
+msgid "Password:"
+msgstr "Jelszó:"
+
+#: templates/login/mobile.inc:17
+msgid "Password: "
+msgstr "Jelszó: "
+
+#: mailbox.php:745 message.php:454 templates/mailbox/navbar.html:24
+msgid "Personal"
+msgstr "személyes"
+
+#: config/prefs.php.dist:13
+msgid "Personal Information"
+msgstr "Személyes adatok"
+
+#: pgp.php:126
+msgid "Personal PGP keypair generated successfully."
+msgstr "A személyes PGP kulcspárt sikeresen létrehoztuk."
+
+#: pgp.php:133
+msgid "Personal PGP keys deleted successfully."
+msgstr "A személyes PGP kulcsokat sikeresen töröltük."
+
+#: smime.php:222
+msgid "Personal S/MIME certificates NOT imported: "
+msgstr "NEM importálódott S/MIME személyes tanúsítványok: "
+
+#: smime.php:147
+msgid "Personal S/MIME keys deleted successfully."
+msgstr "A személyes S/MIME kulcsokat sikeresen töröltük."
+
+#: config/prefs.php.dist:213
+msgid "Place your signature before replies and forwards?"
+msgstr ""
+"Az Ön állandó levélvégzõdését (signature) válaszoláskor ill. "
+"levéltovábbításkor a beidézett levél elé helyezzük?"
+
+#: lib/Compose.php:448
+msgid "Plaintext Version of Message"
+msgstr "A levél sima text változata"
+
+#: templates/prefs/soundselect.inc:3
+msgid ""
+"Play a sound on new mail?  This requires your browser to support embedded "
+"sound files.  Almost all do on Windows and Mac, but other platforms may "
+"require a plugin."
+msgstr ""
+"Kíván hangjelzést új levél érkezésekor? Ehhez az Ön böngészõprogramjának "
+"támogatnia kell a beágyazott hangállományok lejátszását. Windows és Mac "
+"rendszereken ez szinte mindig teljesül, de más platformokon plugin modulra "
+"lehet szüksége."
+
+#: templates/javascript_defs.php:81
+msgid "Please enter a name for the new folder:"
+msgstr "Kérem adja meg az új mappa nevét:"
+
+#: templates/javascript_defs.php:60 templates/javascript_defs.php:61
+msgid "Please enter the name of the new folder:"
+msgstr "Kérem adja meg az új mappa nevét:"
+
+#: templates/javascript_defs.php:65
+msgid "Please enter the new name:"
+msgstr "Kérem adja meg az új nevet:"
+
+#: templates/pgp/passphrase.html:12
+msgid "Please enter the passphrase for this message."
+msgstr "Kérem adja meg a levélhez szükséges jelmondatot."
+
+#: templates/pgp/passphrase.html:14
+msgid ""
+"Please enter the passphrase for your PGP private key. You will only need to "
+"enter this passphrase once per session."
+msgstr ""
+"Kérem adja meg a személyes, titkos PGP kulcsához tartozó jelmondatot. Ezt "
+"bejelentkezésenként csak egyszer kell beírnia."
+
+#: templates/smime/passphrase.html:15
+msgid ""
+"Please enter the passphrase for your S/MIME private key. You will only need "
+"to enter this passphrase once per session."
+msgstr ""
+"Kérem adja meg a személyes, titkos S/MIME kulcsához tartozó jelmondatot. Ezt "
+"bejelentkezésenként csak egyszer kell beírnia."
+
+#: login.php:181
+msgid ""
+"Please log in again to resume composing your message. If you are NOT using "
+"cookies AND you are composing messages in popup windows, you will have to "
+"log in again in your main window as well. This is to keep attackers from "
+"hijacking your session ID. We apologize for any inconvenience."
+msgstr ""
+"Kérjük jelentkezzen be ismét a levélírás folytatásához. Ha böngészõprogramja "
+"NEM engedélyezi a cookie-k használatát ÉS felbukkanó ablakban írja leveleit "
+"akkor a fõ ablakban is be kell jelentkeznie. Ez az Ön biztonsága érdekében "
+"van így, hogy ne téríthessék el a szerverrel korábban felépített "
+"kapcsolatát. Elnézését kérjük a kellemetlenségért."
+
+#: templates/javascript_defs.php:76
+msgid "Please provide your password."
+msgstr "Kérem adja meg a jelszavát."
+
+#: templates/javascript_defs.php:75
+msgid "Please provide your username."
+msgstr "Kérem adja meg a bejelentkezési nevét."
+
+#: lib/Compose.php:2553 lib/UI/Compose.php:26
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Kérem javítsa ki a hibás vagy nem egyértelmû címeket."
+
+#: templates/javascript_defs.php:57
+msgid "Please select a folder before you perform this action."
+msgstr "Kérem jelöljön ki egy mappát a feladat végrehajtása elõtt."
+
+#: templates/javascript_defs.php:69
+msgid "Please select at least one folder to search."
+msgstr "Kérem jelöljön ki legalább egy mappát, amiben a keresni óhajt."
+
+#: templates/compose/redirect.html:39
+msgid "Please select or edit in the box to the right:"
+msgstr "Kérem, hogy jobb oldali mezõben válassza ki, vagy módosítsa:"
+
+#: config/prefs.php.dist:1177
+msgid "Poll all folders for new mail?"
+msgstr "Az összes mappájában ellenõrizzük, hogy jött-e új levél?"
+
+#: templates/login/login.html:67
+msgid "Port"
+msgstr "Port"
+
+#: lib/IMAP/ACL/rfc2086.php:54 lib/IMAP/ACL/rfc4314.php:54
+msgid "Post"
+msgstr "Levélküldés"
+
+#: config/motd.php.dist:41
+msgid "Powered by Horde"
+msgstr "Ez egy Horde rendszer"
+
+#: config/prefs.php.dist:205
+msgid "Precede your signature with dashes ('-- ')?"
+msgstr ""
+"Legyen az Ön állandó levélvégzõdése (signature) elõtt két kötõjel ('-- ')?"
+
+#: filterprefs.php:53 pgp.php:260 smime.php:257
+msgid "Preferences successfully updated."
+msgstr "A beállításokat sikeresen elmentettük."
+
+#: compose.php:1135
+msgid "Preview"
+msgstr "Betekintés"
+
+#: message.php:515
+msgid "Previous Message"
+msgstr "Elõzõ levél"
+
+#: mailbox.php:270
+msgid "Previous Page"
+msgstr "Elõzõ oldal"
+
+#: message.php:589
+msgid "Print"
+msgstr "Nyomtatás"
+
+#: message.php:678
+msgid "Printed By"
+msgstr "Kinyomtatta"
+
+#: message.php:657 lib/MIME/Viewer/itip.php:830
+msgid "Priority"
+msgstr "Prioritás (sürgõsség)"
+
+#: templates/smime/import_key.html:59
+msgid "Private Key Password:"
+msgstr "A titkos kulcs jelszava:"
+
+#: config/prefs.php.dist:690
+msgid "Prompt every time an attachment is sent; default to NO"
+msgstr "Választhassak, ha melléklet van a levélben; NEM az alapértelmezett"
+
+#: config/prefs.php.dist:689
+msgid "Prompt every time an attachment is sent; default to YES"
+msgstr "Választhassak, ha melléklet van a levélben; IGEN az alapértelmezett"
+
+#: config/prefs.php.dist:858
+msgid "Prompt to send read receipt when requested by the sender?"
+msgstr ""
+"Kérdezzen meg a gép, hogy küldjünk-e a beérkezõ levél elolvasásáról "
+"visszaigazolást, ha kért ilyet a feladó?"
+
+#: templates/login/login.html:72
+msgid "Protocol"
+msgstr "Protokoll"
+
+#: login.php:267 templates/fetchmail/fetchmailprefs.html:47
+msgid "Protocol:"
+msgstr "Protokoll:"
+
+#: lib/Crypt/PGP.php:489
+msgid "Public PGP keyserver support has been disabled."
+msgstr "A nyilvános PGP kulcsszerver támogatás nincs engedélyzve."
+
+#: mailbox.php:444 mailbox.php:512
+msgid "Pur_ge Deleted"
+msgstr "_Végleges törlés"
+
+#: lib/IMAP/ACL/rfc4314.php:58 templates/folders/actions.html:22
+msgid "Purge"
+msgstr "Végleges törlés"
+
+#: mailbox.php:444 mailbox.php:512
+msgid "Purge Deleted"
+msgstr "Végleges törlés"
+
+#: config/prefs.php.dist:416
+msgid "Purge Spam how often:"
+msgstr "Milyen gyakran ürítsük a Spam mappát:"
+
+#: config/prefs.php.dist:444
+msgid "Purge Trash how often:"
+msgstr "Milyen gyakran ürítsük a 'Szemetes' (Trash) mappát?"
+
+#: config/prefs.php.dist:425
+msgid "Purge messages in Spam folder older than this amount of days."
+msgstr "napnál régebbi leveleket ürítsük ki a Spam mappából."
+
+#: config/prefs.php.dist:453
+msgid "Purge messages in Trash folder older than this amount of days."
+msgstr "napnál régebbi leveleket ürítsük ki a 'Szemetes' (Trash) mappából"
+
+#: config/prefs.php.dist:379
+msgid "Purge messages in sent-mail folder(s) older than this amount of days."
+msgstr "napnál régebbi leveleket ürítsük ki az Elküldött levelek mappából"
+
+#: config/prefs.php.dist:406
+msgid "Purge old messages in the Spam folder?"
+msgstr "A Spam mappából töröljük ki a régi leveleket?"
+
+#: config/prefs.php.dist:434
+msgid "Purge old messages in the Trash folder?"
+msgstr "A 'Szemetes' (Trash) mappából töröljük ki a régi leveleket?"
+
+#: config/prefs.php.dist:360
+msgid "Purge old messages in the sent-mail folder(s)?"
+msgstr "Az Elküldött levelek mappából töröljük ki a régi leveleket?"
+
+#: config/prefs.php.dist:370
+msgid "Purge sent-mail how often:"
+msgstr "Milyen gyakran ürítsük az Elküldött levelek mappát?"
+
+#: lib/Maintenance/Task/purge_spam.php:64
+#, php-format
+msgid "Purging %d messages from Spam folder."
+msgstr "%d levél törlõdik a Spam mappából."
+
+#: lib/Maintenance/Task/purge_trash.php:63
+#, php-format
+msgid "Purging %d messages from Trash folder."
+msgstr "%d levél törlõdik a 'Szemetes' (Trash) mappából."
+
+#: lib/Maintenance/Task/purge_sentmail.php:63
+#, php-format
+msgid "Purging %d messages from sent-mail folder."
+msgstr "%d levél törlõdik az Elküldött levelek mappából."
+
+#: lib/Maintenance/Task/purge_spam.php:62
+msgid "Purging 1 message from Spam folder."
+msgstr "1 levél törlõdik a Spam mappából."
+
+#: lib/Maintenance/Task/purge_trash.php:61
+msgid "Purging 1 message from Trash folder."
+msgstr "1 levél törlõdik a 'Szemetes' (Trash) mappából."
+
+#: lib/Maintenance/Task/purge_sentmail.php:61
+#, php-format
+msgid "Purging 1 message from sent-mail folder %s."
+msgstr "1 levél törlõdik a(z) %s elküldött levelek mappából."
+
+#: lib/IMP.php:971
+#, php-format
+msgid "Quota status: %.2f MB / %.2f MB  (%.2f%%)"
+msgstr "Kvóta: %.2f MB / %.2f MB  (%.2f%%)"
+
+#: lib/IMP.php:980
+#, php-format
+msgid "Quota status: %.2f MB / NO LIMIT"
+msgstr "Kvóta: %.2f MB / nincs limit"
+
+#: lib/IMP.php:986
+#, php-format
+msgid "Quota status: NO LIMIT"
+msgstr "Kvóta: nincs limit"
+
+#: config/prefs.php.dist:620
+#, php-format
+msgid "Quoting %f:"
+msgstr "Idézet (%f):"
+
+#: lib/IMAP/ACL/rfc2086.php:50 lib/IMAP/ACL/rfc4314.php:50
+msgid "Read"
+msgstr "Olvasás"
+
+#: templates/folders/actions.html:40
+msgid "Rebuild Folder Tree"
+msgstr "A mappastruktúra újjáépítése"
+
+#: templates/search/search.html:31
+msgid "Recent Searches"
+msgstr "Az utóbbi keresések"
+
+#: templates/search/search.html:35 templates/search/search.html:37
+msgid "Recent Searches:"
+msgstr "Az utóbbi keresések:"
+
+#: message.php:560 message.php:603
+msgid "Redirec_t"
+msgstr "Átirányítás"
+
+#: message.php:560 message.php:603
+msgid "Redirect"
+msgstr "Átirányítás"
+
+#: templates/compose/redirect.html:82
+msgid "Redirect Message"
+msgstr "A levél átirányítása"
+
+#: compose.php:339
+msgid "Redirect this message"
+msgstr "Irányítsuk át ezt a levelet"
+
+#: folders.php:346
+msgid "Refresh"
+msgstr "Frissítés"
+
+#: config/prefs.php.dist:939
+msgid "Refresh Folder Views:"
+msgstr "Frissítsük a mappák listáját:"
+
+#: mailbox.php:407
+msgid "Reload"
+msgstr "Frissítés"
+
+#: folders.php:336
+msgid "Reload View"
+msgstr "Kérjük le újra ezt az oldalt"
+
+#: lib/MIME/Viewer/itip.php:542 lib/MIME/Viewer/itip.php:561
+msgid "Remember the free/busy information."
+msgstr "Tároljuk el az idõbeosztási adatokat."
+
+#: config/prefs.php.dist:1146
+msgid "Remember the last view"
+msgstr "Tároljuk el az utolsó nézetet"
+
+#: templates/fetchmail/fetchmailprefs.html:68
+msgid "Remote Mailbox:"
+msgstr "Távoli levélláda:"
+
+#: search.php:320
+msgid "Remove Field From Search"
+msgstr "Hagyjuk ki a mezõt a keresésbõl"
+
+#: templates/prefs/sourceselect.inc:302
+msgid "Remove source"
+msgstr "távolítsuk el"
+
+#: templates/folders/actions.html:18
+msgid "Rename"
+msgstr "Átnevezés"
+
+#: config/prefs.php.dist:333
+msgid "Rename sent-mail folder at beginning of month?"
+msgstr ""
+"Nevezzük át az elküldött leveleket tartalmazó (sent-mail) mappát a hónap "
+"elején?"
+
+#: lib/Folder.php:385
+#, php-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr ""
+"A  \"%s\"-rõl \"%s\"-re történõ átnevezés nem sikerült. A szerver üzenete"
+
+#: message.php:544
+msgid "Reply"
+msgstr "Válasz"
+
+#: lib/MIME/Viewer/itip.php:316 lib/MIME/Viewer/itip.php:420
+msgid "Reply Sent."
+msgstr "A választ elküldtük."
+
+#: compose.php:307
+msgid "Reply to All:"
+msgstr "Válasz az összes címre:"
+
+#: compose.php:309
+msgid "Reply to List:"
+msgstr "Válasz a listára:"
+
+#: lib/MIME/Viewer/itip.php:544 lib/MIME/Viewer/itip.php:553
+#: lib/MIME/Viewer/itip.php:563
+msgid "Reply with Not Supported Message"
+msgstr "Az adott kérést a rendszer nem támogatja"
+
+#: lib/MIME/Viewer/itip.php:551
+msgid "Reply with free/busy for next 2 months."
+msgstr "Az idõbeosztási adatkérést 2 hónapra teljesítem."
+
+#: lib/MIME/Viewer/itip.php:550
+msgid "Reply with requested free/busy information."
+msgstr "Az idõbeosztási adatkérés teljesítése."
+
+#: lib/UI/Message.php:29
+msgid "Reply-To"
+msgstr "Viszontválasz cím"
+
+#: lib/Compose.php:1743
+msgid "Reply-To: "
+msgstr "Viszontválasz cím: "
+
+#: compose.php:305
+msgid "Reply:"
+msgstr "Válasz:"
+
+#: mailbox.php:534 message.php:600
+msgid "Report as Innocent"
+msgstr "Nem-spam bejelentés"
+
+#: mailbox.php:528 message.php:594
+msgid "Report as Spam"
+msgstr "Spam bejelentés"
+
+#: compose.php:1060
+msgid "Request a _Read Receipt"
+msgstr "Visszaigazolást kérek a levél elolvasásáról"
+
+#: config/prefs.php.dist:704
+msgid "Request read receipts?"
+msgstr "Kér visszaigazolást arról, amikor a címzett elolvassa a levelet?"
+
+#: mailbox.php:107
+msgid "Requested message not found."
+msgstr "A kívánt levél nem található."
+
+#: lib/MIME/Viewer/itip.php:735 lib/MIME/Viewer/itip.php:863
+msgid "Required Participant"
+msgstr "szükséges résztvevõ"
+
+#: templates/search/search.html:26 templates/search/search.html:201
+#: templates/acl/acl.html:80
+msgid "Reset"
+msgstr "Reset"
+
+#: lib/MIME/Viewer/itip.php:118
+msgid "Respondent Status Updated."
+msgstr "A válaszadó státuszát megújítottuk."
+
+#: message.php:583
+msgid "Resume"
+msgstr "Folytatás"
+
+#: lib/UI/Compose.php:137
+msgid "Resume Editing"
+msgstr "A szövegszerkesztés folytatása"
+
+#: login.php:182
+msgid "Resume your session"
+msgstr "Folytassuk a levélírást"
+
+#: templates/fetchmail/fetchmailprefs.html:125
+msgid "Return to Fetch Mail"
+msgstr "Vissza a levéláttöltéshez"
+
+#: templates/folders/folders_size.html:30
+msgid "Return to Folders"
+msgstr "Vissza a mappákhoz"
+
+#: stationery.php:147
+msgid "Return to Message Composition"
+msgstr "Vissza a levélíráshoz"
+
+#: filterprefs.php:65 templates/smime/smime.html:13
+#: templates/smime/smime.html:93 templates/pgp/pgp.html:21
+#: templates/pgp/pgp.html:145 templates/acl/acl.html:35
+#: templates/acl/acl.html:81 templates/acl/acl.html:95
+msgid "Return to Options"
+msgstr "Vissza az opciókhoz"
+
+#: config/prefs.php.dist:873
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr "Térjünk vissza a levéllistához törlés, áthelyezés vagy másolás után?"
+
+#: acl.php:114
+#, php-format
+msgid "Rights for user \"%s\" cannot be modified."
+msgstr "\"%s\" felhasználó jogosultságai nem módosíthatók."
+
+#: lib/MIME/Viewer/itip.php:726 lib/MIME/Viewer/itip.php:854
+msgid "Role"
+msgstr "Szerep"
+
+#: smime.php:67 lib/MIME/Viewer/pkcs7.php:172 lib/MIME/Viewer/pkcs7.php:292
+#: lib/MIME/Viewer/pkcs7.php:484
+msgid "S/MIME"
+msgstr "S/MIME"
+
+#: lib/IMP.php:1397
+msgid "S/MIME Encrypt Message"
+msgstr "A levél titkosítása S/MIME-mal"
+
+#: lib/Compose.php:1277
+msgid "S/MIME Error: "
+msgstr "S/MIME hiba: "
+
+#: lib/Compose.php:1256
+msgid "S/MIME Error: Need passphrase for personal private key."
+msgstr ""
+"S/MIME hiba: a személyes titkos kulcs használatához jelmondat szükséges."
+
+#: config/prefs.php.dist:151
+msgid "S/MIME Options"
+msgstr "S/MIME beállítások"
+
+#: smime.php:54
+msgid "S/MIME Passphrase Input"
+msgstr "Írja be az S/MIME jelmondatát"
+
+#: templates/smime/smime.html:61
+msgid "S/MIME Personal Keypair support requires a secure web connection."
+msgstr ""
+"Az S/MIME személyes kulcspár támogatás titkosított web kapcsolatot igényel."
+
+#: smime.php:155
+#, php-format
+msgid "S/MIME Public Key for \"%s\" was successfully deleted."
+msgstr "\"%s\" nyivános S/MIME kulcsát sikeresen töröltük."
+
+#: smime.php:177
+msgid "S/MIME Public Key successfully added."
+msgstr "A nyivános S/MIME kulcsot sikeresen felvettük."
+
+#: templates/smime/smime.html:21
+msgid "S/MIME Public Keyring"
+msgstr "S/MIME nyilvános kulcsok"
+
+#: smime.php:226
+msgid "S/MIME Public/Private Keypair successfully added."
+msgstr "Az S/MIME nyilvános/titkos kulcspárt sikeresen felvettük."
+
+#: lib/IMP.php:1398
+msgid "S/MIME Sign Message"
+msgstr "Lássuk el a levelet S/MIME digitális aláírással"
+
+#: lib/IMP.php:1399
+msgid "S/MIME Sign/Encrypt Message"
+msgstr "Titkosítsuk és digitálisan írjuk alá a levelet S/MIME-mal"
+
+#: templates/smime/smime.html:86
+msgid "S/MIME support is disabled on this system."
+msgstr "Ezen a rendszeren nincsen S/MIME támogatás."
+
+#: lib/MIME/Viewer/pkcs7.php:296
+msgid ""
+"S/MIME support is not currently enabled so the message is unable to be "
+"decrypted."
+msgstr ""
+"Az S/MIME támogatás jelenleg nincs aktiválva, ezért a kódolt levél tartalma "
+"nem fejthetõ vissza."
+
+#: lib/MIME/Viewer/pkcs7.php:203
+msgid ""
+"S/MIME support is not enabled so the contents of this signed message cannot "
+"be displayed."
+msgstr ""
+"Az S/MIME támogatás jelenleg nincs aktiválva, ezért e levél tartalma nem "
+"jeleníthetõ meg."
+
+#: lib/MIME/Viewer/pkcs7.php:176
+msgid ""
+"S/MIME support is not enabled so the digital signature is unable to be "
+"verified."
+msgstr ""
+"Az S/MIME támogatás jelenleg nincs aktiválva, ezért a levél digitális "
+"aláírásának hitelessége nem ellenõrizhetõ."
+
+#: lib/MIME/Viewer/pkcs7.php:133
+msgid "S/MIME support is not enabled."
+msgstr "Ezen a rendszeren nincs aktiválva az S/MIME támogatás."
+
+#: templates/smime/smime.html:4
+msgid ""
+"S/MIME support requires popup windows to be used.  If your browser is "
+"currently set to disable popup windows, you must change this setting or else "
+"the S/MIME features will not work correctly."
+msgstr ""
+"Az S/MIME támogatás felbukkanó (popup) ablakokat igényel. Ha az Ön "
+"böngészõprogramja úgy van beállítva, hogy letiltja a felbukkanó ablakokat, "
+"akkor vagy változtasson a beállításokon, vagy az S/MIME szolgáltatások nem "
+"fognak megfelelõen mûködni."
+
+#: templates/login/login.html:108
+msgid "SMTP"
+msgstr "SMTP"
+
+#: templates/login/login.html:107
+msgid "SMTP Port"
+msgstr "SMTP port"
+
+#: compose.php:969
+msgid "S_ubject"
+msgstr "_Tárgy"
+
+#: compose.php:1039
+msgid "Sa_ve a copy in "
+msgstr "Mentsünk el egy példányt ebben a mappában: "
+
+#: message.php:587
+msgid "Sa_ve as"
+msgstr "Mentés"
+
+#: templates/search/search.html:25 templates/search/search.html:200
+#: templates/fetchmail/fetchmailprefs.html:121 templates/acl/acl.html:79
+msgid "Save"
+msgstr "Mentés"
+
+#: compose.php:1111
+msgid "Save Attachments with message in sent-mail folder?"
+msgstr ""
+"A mellékleteket a levéllel együtt mentsük el az elküldött levelek mappájában?"
+
+#: templates/compose/compose.html:19 templates/compose/compose.html:206
+msgid "Save Draft"
+msgstr "Mentsük el munkapéldányként"
+
+#: saveimage.php:53
+msgid "Save Image"
+msgstr "A kép mentése"
+
+#: lib/MIME/Contents.php:251
+msgid "Save Image in Gallery"
+msgstr "A kép galériában való elmentése"
+
+#: filterprefs.php:126 templates/smime/smime.html:12
+#: templates/smime/smime.html:92 templates/pgp/pgp.html:20
+#: templates/pgp/pgp.html:144
+msgid "Save Options"
+msgstr "A beállítások mentése"
+
+#: templates/stationery/stationery.html:42
+msgid "Save Stationery"
+msgstr "A levélpapír elmentése"
+
+#: compose.php:884
+msgid "Save _Draft"
+msgstr "Mentsük el mu_nkapéldányként"
+
+#: message.php:587
+msgid "Save as"
+msgstr "Mentés"
+
+#: config/prefs.php.dist:641
+msgid "Save drafts as unseen?"
+msgstr "A munkapéldányként elmentett leveleket olvasatlanként jelöljük meg?"
+
+#: config/prefs.php.dist:651
+msgid "Save drafts automatically while composing?"
+msgstr "Levélírás közben legyen automatikus munkapéldányként történõ mentés?"
+
+#: lib/MIME/Viewer/pkcs7.php:256
+msgid "Save in your Address Book"
+msgstr "Mentsük el a címjegyzékben"
+
+#: config/prefs.php.dist:1245
+msgid "Save recipients automatically to the default address book?"
+msgstr ""
+"Mentsük el automatikusan a címzettek adatait az alapértelmezett "
+"címjegyzékben?"
+
+#: templates/search/search.html:191
+msgid "Save search as a virtual folder?"
+msgstr "Mentsük el a keresést virtuális mappaként?"
+
+#: config/prefs.php.dist:221
+msgid "Save sent mail?"
+msgstr "Mentsük el az elküldött leveleket?"
+
+#: lib/Compose.php:233
+msgid "Saving the draft failed. Could not create a drafts folder."
+msgstr ""
+"Nem mentettük el a munkapéldányként. Nem sikerült a munkapéldányokat "
+"tartalmazó mappát létrehozni."
+
+#: lib/Compose.php:172
+msgid "Saving the draft failed. No draft folder specified."
+msgstr ""
+"A munkapéldányként való mentés nem sikerült. Nincs megadva a munkapéldányok "
+"mappája."
+
+#: lib/Compose.php:203
+#, php-format
+msgid ""
+"Saving the draft failed. The %s header contains an invalid e-mail address: %"
+"s."
+msgstr ""
+"A munkapéldányként való mentés nem sikerült. A %s fejlécben hibás az email "
+"cím: %s"
+
+#: lib/Compose.php:240
+#, php-format
+msgid "Saving the draft failed. This is what the server said: %s"
+msgstr "A munkapéldányként való mentés nem sikerült. A szerver válasza: %s"
+
+#: mailbox.php:413 lib/Search.php:533 lib/Block/tree_folders.php:43
+#: templates/contacts/contacts.html:25
+msgid "Search"
+msgstr "Keresés"
+
+#: mailbox.php:413 search.php:207
+#, php-format
+msgid "Search %s"
+msgstr "Keresés a(z) %s mappában"
+
+#: templates/search/search.html:46
+msgid "Search Criteria"
+msgstr "A keresés megadása"
+
+#: templates/search/search.html:130
+msgid "Search Flags"
+msgstr "Keresési jelzetek"
+
+#: templates/search/search.html:155
+msgid "Search Folders"
+msgstr "Keresési mappák"
+
+#: search.php:154 templates/contacts/contacts.html:31
+msgid "Search Results"
+msgstr "A keresés eredménye"
+
+#: templates/search/search.html:80
+msgid "Search Text"
+msgstr "A keresendõ szöveg"
+
+#: templates/mailbox/navbar.html:14 templates/mailbox/navbar.html:30
+msgid "Seen"
+msgstr "már olvasott"
+
+#: templates/fetchmail/fetchmailprefs.html:123
+msgid "Select Another Account"
+msgstr "Válasszon ki egy másik azonosítót"
+
+#: search.php:311
+msgid "Select a date"
+msgstr "Válasszon ki egy dátumot"
+
+#: templates/search/search.html:65 templates/search/search.html:68
+msgid "Select a field"
+msgstr "Válasszon ki egy mezõt"
+
+#: templates/fetchmail/fetchmail.html:11
+msgid "Select accounts to fetch mail from:"
+msgstr "Jelölje ki, mely levelezõszerverekrõl kíván leveleket áttölteni:"
+
+#: config/prefs.php.dist:135
+msgid "Select address book sources for adding and searching for addresses."
+msgstr ""
+"Kiválasztható, hogy melyik címjegyzékekhez kíván hozzátenni, ill. melyekben "
+"kíván keresni."
+
+#: templates/search/search.html:159
+msgid "Select all"
+msgstr "Mindet kijelöljük"
+
+#: templates/prefs/sourceselect.inc:321
+msgid "Select all fields to search when expanding addresses."
+msgstr ""
+"A címrészlet teljes címmé alakításakor a címjegyzékek minden mezõjében "
+"történjen keresés?"
+
+#: templates/fetchmail/fetchmailprefs.html:21
+msgid "Select an account:"
+msgstr "Válasszon egy azonosítót:"
+
+#: templates/folders/folders.html:3
+msgid "Select mailbox"
+msgstr "A levélláda kiválasztása"
+
+#: templates/search/search.html:160
+msgid "Select none"
+msgstr "Egy se legyen kijelölve"
+
+#: templates/compose/compose.html:134
+msgid "Select stationery:"
+msgstr "Válasszon levélpapírt:"
+
+#: templates/saveimage/saveimage.html:8
+msgid "Select the gallery to save the image in."
+msgstr "Válassza ki, melyik képgalériába kívánja a képeket elmenteni."
+
+#: templates/fetchmail/fetchmailprefs.html:34
+msgid "Select the mail server type:"
+msgstr "Válassza ki a levelezõszerver típusát:"
+
+#: templates/mailbox/navbar.html:7 templates/mailbox/navbar.html:9
+msgid "Select:"
+msgstr "Válasszuk ki, (ami)"
+
+#: templates/prefs/sourceselect.inc:305 templates/prefs/sourceselect.inc:307
+msgid "Selected Address books:"
+msgstr "A kiválasztott címjegyzékek:"
+
+#: templates/contacts/contacts.html:47
+msgid "Selected Addresses"
+msgstr "A kiválasztott címek"
+
+#: pgp.php:429 templates/pgp/pgp.html:75
+msgid "Send Key to Public Keyserver"
+msgstr "Küldjük el a kulcsot egy nyilvános kulcsszerverre"
+
+#: lib/MIME/Viewer/itip.php:646
+msgid "Send Latest Information"
+msgstr "Kérem a legfrissebb információkat"
+
+#: templates/compose/compose.html:17 templates/compose/compose.html:204
+msgid "Send Message"
+msgstr "Küldjük el"
+
+#: templates/javascript_defs.php:39
+msgid "Send message without a Subject?"
+msgstr "Tárgy megadása nélkül küldjük el a levelet?"
+
+#: lib/IMAP/Tree.php:2345
+msgid "Sent mail folder"
+msgstr "Az elküldött levelek mappája"
+
+#: templates/prefs/sentmailselect.inc:36
+msgid "Sent mail folder:"
+msgstr "Az elküldött levelek mappája:"
+
+#: templates/login/login.html:36 templates/login/login.html:50
+#: templates/login/login.html:62
+msgid "Server"
+msgstr "Szerver"
+
+#: config/prefs.php.dist:22
+msgid "Server and Folder Information"
+msgstr "Szerver és mappa információk"
+
+#: login.php:250 templates/fetchmail/fetchmailprefs.html:63
+msgid "Server:"
+msgstr "Szerver:"
+
+#: config/prefs.php.dist:87
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr "A levelek áthelyezésével és törlésével kapcsolatos beállítások."
+
+#: config/prefs.php.dist:660
+msgid "Set the X-Priority header when composing messages?"
+msgstr "Levélíráskor beállítódjék-e a X-Priority fejlécsor?"
+
+#: config/prefs.php.dist:31
+msgid "Share Folders"
+msgstr "Mappáink hozzáférési jogosultságának megosztása"
+
+#: templates/acl/acl.html:7
+msgid "Share mail folders"
+msgstr "Mappáinkhoz való hozzáférési jogosultságok"
+
+#: config/prefs.php.dist:32
+msgid "Share your mail folders with other users."
+msgstr "Hozzáférést adhat más felhasználóknak egyes mappáihoz."
+
+#: lib/IMAP/Tree.php:92
+msgid "Shared Folders"
+msgstr "Közös mappák"
+
+#: templates/pgp/pgp.html:15
+msgid "Should PGP signed messages automatically be verified when viewed?"
+msgstr ""
+"Kivánja a PGP digitális aláírással ellátott levelek hitelességét "
+"automatikusan ellenõrizni?"
+
+#: templates/smime/smime.html:7
+msgid "Should S/MIME signed messages automatically be verified when viewed?"
+msgstr ""
+"Kivánja az S/MIME digitális aláírással ellátott levelek hitelességét "
+"automatikusan ellenõrizni?"
+
+#: config/prefs.php.dist:788
+msgid ""
+"Should large blocks of quoted text be shown or hidden by default? It can be "
+"toggled easily whichever you choose."
+msgstr ""
+"A hosszú beidézett levélrészleteket alapértelmezésként ne mutassuk? Bárhogy "
+"válaszol, ez könnyen ki/bekapcsolható."
+
+#: templates/pgp/pgp.html:11
+msgid "Should the body of text/plain messages be scanned for PGP data?"
+msgstr "A text/plain levelek törzsét vizsgáljuk végig PGP adatokat keresve?"
+
+#: config/prefs.php.dist:633
+msgid "Should the compose window be closed after saving a draft?"
+msgstr ""
+"Csukódjon-e be az ablak, ha levélíráskor munkapéldányként elmentjük az "
+"addigi munkánkat?"
+
+#: templates/pgp/pgp.html:7
+msgid "Should your PGP public key to be attached to your messages by default?"
+msgstr "Küldjük el az Ön PGP nyilvános kulcsát mellékletként minden levéllel?"
+
+#: templates/javascript_defs.php:30
+msgid "Show Addresses"
+msgstr "Mutassuk a címeket"
+
+#: templates/search/search.html:162
+msgid "Show All Folders"
+msgstr "Mutassuk az összes mappát"
+
+#: message.php:610
+msgid "Show All Headers"
+msgstr "Mutassuk a levél teljes fejlécét"
+
+#: message.php:607
+msgid "Show Common Headers"
+msgstr "Mutassuk a levél szokásos fejléceit"
+
+#: mailbox.php:247
+msgid "Show Deleted"
+msgstr "A törölteket is mutassuk"
+
+#: lib/MIME/Viewer/html.php:156
+msgid "Show Images?"
+msgstr "Mutassuk a képeket?"
+
+#: message.php:613
+msgid "Show Mailing List Information"
+msgstr "A levelezési listára vonatkozó információk"
+
+#: templates/search/search.html:162
+msgid "Show Only Subscribed Folders"
+msgstr "Csak a használatba helyezett (subscribed) mappá(ka)t mutassuk"
+
+#: templates/folders/actions.html:39
+msgid "Show Size"
+msgstr "A méret megjelenítése"
+
+#: folders.php:364
+msgid "Show Unsubscribed"
+msgstr "A használaton kívül helyezett (unsubscribed) mappákat is mutassuk"
+
+#: config/prefs.php.dist:727
+msgid "Show an icon to allow stripping of attachments from messages?"
+msgstr "Szüksége van-e olyan ikonra, amivel kitörölhetõ egy levél melléklete?"
+
+#: config/prefs.php.dist:1156
+msgid "Show non-private mailboxes in separate folders"
+msgstr "A nem saját mappákat külön rendezve mutassuk"
+
+#: config/prefs.php.dist:1000
+msgid "Show previews for unread messages only?"
+msgstr "Csak az olvasatlan leveleknek legyen elõnézete?"
+
+#: config/prefs.php.dist:1008
+msgid "Show previews in tooltips?"
+msgstr ""
+"Az elõnézet akkor jelenjen meg, ha az egeret a levél sora fölé visszük?"
+
+#: config/prefs.php.dist:542
+msgid "Show the Bcc: header field when composing mail?"
+msgstr "Levélíráskor mutassuk a Bcc: fejlécsort?"
+
+#: config/prefs.php.dist:533
+msgid "Show the Cc: header field when composing mail?"
+msgstr "Levélíráskor mutassuk a Cc: fejlécsort?"
+
+#: config/prefs.php.dist:1037
+msgid "Show the Fetch Mail icon on the menubar?"
+msgstr "Legyen a menüben egy Levéláttöltés ikon?"
+
+#: filterprefs.php:111
+msgid "Show the filter icon on the menubar?"
+msgstr "Legyen egy ikon a levélszûréshez a menüsorban?"
+
+#: lib/MIME/Viewer/html.php:171
+msgid "Show this HTML in a new window?"
+msgstr "Külön ablakban mutassuk ezt a HTML tartalmat?"
+
+#: lib/Block/summary.php:30
+msgid "Show total number of mails in folder?"
+msgstr "Mutassuk a mappa összes leveleinek számát?"
+
+#: config/prefs.php.dist:785
+msgid "Shown"
+msgstr "mutassuk"
+
+#: mailbox.php:597
+msgid "Si_ze"
+msgstr "Méret"
+
+#: templates/folders/folders_size.html:7
+msgid "Size"
+msgstr "Méret"
+
+#: templates/compose/compose.html:315
+msgid "Size:"
+msgstr "Méret:"
+
+#: mailbox.php:566
+msgid "Sort by Arrival"
+msgstr "Beérkezés szerinti sorrend"
+
+#: mailbox.php:571
+msgid "Sort by Date"
+msgstr "Idõpont szerinti sorrend"
+
+#: mailbox.php:581
+msgid "Sort by From Address"
+msgstr "Feladó szerinti sorrend"
+
+#: mailbox.php:596
+msgid "Sort by Message Size"
+msgstr "Levélméret szerinti sorrend"
+
+#: mailbox.php:591
+msgid "Sort by Subject"
+msgstr "Tárgy szerinti sorrend"
+
+#: mailbox.php:586
+msgid "Sort by Thread"
+msgstr "Logikai (thread) sorrend"
+
+#: mailbox.php:576
+msgid "Sort by To Address"
+msgstr "Címzett szerinti sorrend"
+
+#: lib/IMAP/Tree.php:2338
+msgid "Spam folder"
+msgstr "Spam mappa"
+
+#: templates/prefs/spamselect.inc:19
+msgid "Spam folder:"
+msgstr "Spam mappa:"
+
+#: compose.php:1028
+msgid "Special Characters"
+msgstr "Speciális karakterek"
+
+#: search.php:48
+msgid "Special Virtual Folders cannot be edited."
+msgstr "A különleges virtuális mappák nem módosíthatók."
+
+#: lib/UI/Compose.php:138
+msgid "Spell Check Failed"
+msgstr "A helyesírásellenõrzés nem sikerült"
+
+#: lib/MIME/Viewer/itip.php:521 lib/MIME/Viewer/itip.php:523
+#: lib/MIME/Viewer/itip.php:691 lib/MIME/Viewer/itip.php:693
+msgid "Start"
+msgstr "Kezdet"
+
+#: compose.php:1008 templates/stationery/stationery.html:8
+#: templates/stationery/stationery.html:12
+msgid "Stationery"
+msgstr "Levélpapír"
+
+#: stationery.php:139
+msgid "Stationery name:"
+msgstr "A levélpapír neve:"
+
+#: stationery.php:141
+msgid "Stationery type:"
+msgstr "A levélpapír típusa:"
+
+#: stationery.php:144
+msgid "Stationery:"
+msgstr "Levélpapír:"
+
+#: lib/MIME/Viewer/itip.php:726 lib/MIME/Viewer/itip.php:854
+msgid "Status"
+msgstr "Státusz"
+
+#: message.php:671
+msgid "Strip All Attachments"
+msgstr "Az összes melléklet eltávolítása"
+
+#: lib/MIME/Contents.php:262
+msgid "Strip Attachment"
+msgstr "A melléklet eltávolítása"
+
+#: message.php:671
+msgid "Strip Attachments"
+msgstr "A mellékletek eltávolítása"
+
+#: config/prefs.php.dist:992
+msgid "Strip linebreaks?"
+msgstr "Hagyjuk figyelmen kívül a sortöréseket?"
+
+#: mailbox.php:592
+msgid "Sub_ject"
+msgstr "Tárgy"
+
+#: lib/Search.php:670 lib/UI/Message.php:30 templates/login/recompose.html:41
+msgid "Subject"
+msgstr "Tárgy"
+
+#: config/prefs.php.dist:1080
+msgid "Subject Field"
+msgstr "Tárgy mezõ"
+
+#: templates/thread/thread.html:37
+msgid "Subject:"
+msgstr "Tárgy:"
+
+#: templates/smime/passphrase.html:23 templates/search/search.html:25
+#: templates/search/search.html:200 templates/saveimage/saveimage.html:19
+#: templates/pgp/passphrase.html:21
+msgid "Submit"
+msgstr "Küldjük el"
+
+#: templates/folders/actions.html:25
+msgid "Subscribe"
+msgstr "Használatba vétel (subscribe)"
+
+#: lib/MIME/Viewer/pgp.php:450 lib/MIME/Viewer/pkcs7.php:444
+#: lib/MIME/Viewer/status.php:86
+msgid "Success"
+msgstr "Sikerült"
+
+#: templates/folders/folders_size.html:22
+msgid "Sum"
+msgstr "Összeg"
+
+#: lib/MIME/Viewer/itip.php:708 lib/MIME/Viewer/itip.php:710
+#: lib/MIME/Viewer/itip.php:835 lib/MIME/Viewer/itip.php:837
+msgid "Summary"
+msgstr "Összefoglalás"
+
+#: compose.php:1065 compose.php:1066
+msgid "Switch Composition Method"
+msgstr "Váltsunk levélírási módot"
+
+#: templates/compose/compose.html:189
+msgid "Switch to HTML composition"
+msgstr "Váltsunk HTML formátumú levélírásra"
+
+#: templates/compose/compose.html:189
+msgid "Switch to plain text composition"
+msgstr "Váltsunk sima text formátumú levélírásra"
+
+#: templates/message/navbar_navigate.html:27
+msgid "Target Folder"
+msgstr "A célmappa kiválasztása"
+
+#: templates/mailbox/navbar.html:54
+msgid "Target Mailbox:"
+msgstr "A célmappa:"
+
+#: lib/IMP.php:475
+msgid "Task Lists"
+msgstr "Feladatlisták"
+
+#: config/hooks.php.dist:460
+msgid "Tasks"
+msgstr "Feladatok"
+
+#: compose.php:1070
+msgid "Te_xt"
+msgstr "_Szöveg"
+
+#: lib/MIME/Viewer/itip.php:273
+msgid "Tentative: "
+msgstr "Tervezett: "
+
+#: lib/MIME/Viewer/itip.php:631
+msgid "Tentatively Accept request"
+msgstr "feltételesen elfogadom a meghívást"
+
+#: lib/MIME/Viewer/itip.php:925
+msgid "Tentatively Accepted"
+msgstr "feltételesen elfogadva"
+
+#: lib/Maintenance/Task/tos_agreement.php:46
+#, php-format
+msgid "Terms of Service file not specified in conf.php"
+msgstr ""
+"A conf.php-ben nincs megadva a Szolgáltatás Feltételeit tartalmazó fájl."
+
+#: templates/stationery/stationery.html:31
+msgid "Text"
+msgstr "Szöveg"
+
+#: config/prefs.php.dist:1121
+msgid "The From: column of the message should be linked:"
+msgstr "A levél Feladó oszlopára kattintva mi történjen:"
+
+#: lib/IMAP/Client.php:432
+msgid ""
+"The IMAP server does not appear to support the authentication method "
+"selected. Please contact your system administrator."
+msgstr ""
+"Az IMAP szerver úgy tûnik, nem támogatja a kiválasztott "
+"felhasználóazonosítási módszert. Forduljon a rendszergazdához."
+
+#: lib/MIME/Viewer/appledouble.php:40
+msgid "The Macintosh resource fork"
+msgstr "Macintosh \"resource fork\""
+
+#: lib/MIME/Viewer/appledouble.php:40
+#, php-format
+msgid "The Macintosh resource fork can be downloaded %s."
+msgstr "A Macintosh \"resource fork\" letölthetõ %s."
+
+#: lib/MIME/Viewer/pkcs7.php:254
+#, php-format
+msgid "The S/MIME certificate of %s: "
+msgstr "%s S/MIME tanúsítványa: "
+
+#: fetchmailprefs.php:85
+#, php-format
+msgid "The account \"%s\" has been deleted."
+msgstr "A(z) \"%s\" azonosítót kitöröltük."
+
+#: fetchmailprefs.php:78
+#, php-format
+msgid "The account \"%s\" has been saved."
+msgstr "A(z) \"%s\" azonosítót elmentettük."
+
+#: attachment.php:43
+msgid "The attachment was not found."
+msgstr "A melléklet nem található."
+
+#: config/prefs.php.dist:512
+msgid "The buttons NOT to show when using Xinha."
+msgstr "Mely gombok NE jelenjenek meg a Xinha használatakor."
+
+#: lib/MIME/Viewer/itip.php:70
+msgid "The calendar data is invalid"
+msgstr "A naptár adatok hibásak/elfogadhatatlanok"
+
+#: lib/MIME/Viewer/appledouble.php:41
+msgid "The contents of the Macintosh file are below."
+msgstr "A Macintosh fájl tartalma alább tekinthetõ meg."
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:73
+#, php-format
+msgid "The current folder(s) \"%s\" will be renamed to \"%s\"."
+msgstr "A \"%s\" mappa(ka)t átnevezzük \"%s\"-re."
+
+#: templates/acl/acl.html:29
+msgid ""
+"The current list of users with access to this folder could not be retrieved."
+msgstr ""
+"Nem sikerült meghatározni azoknak a felhasználóknak a listáját akik "
+"hozzáférnek ehhez a mappához."
+
+#: config/prefs.php.dist:839
+msgid "The default charset for messages with no charset information:"
+msgstr ""
+"Milyen karakterkészletet tételezzünk fel azokról a levelekrõl, amikbõl "
+"hiányzik ez az információ:"
+
+#: lib/Compose.php:250
+#, php-format
+msgid "The draft has been saved to the \"%s\" folder."
+msgstr "A munkapéldányt a(z) \"%s\" mappában mentettük el."
+
+#: lib/MIME/Viewer/itip.php:142
+msgid "The event was added to your calendar."
+msgstr "Az eseményt beírtuk a naptárába."
+
+#: lib/Compose.php:1819
+#, php-format
+msgid "The file %s could not be attached."
+msgstr "A(z) %s állományt nem sikerült csatolni."
+
+#: lib/Folder.php:284
+#, php-format
+msgid "The folder \"%s\" already exists"
+msgstr "A \"%s\" nevû mappa már létezik"
+
+#: folders.php:240 lib/Folder.php:190
+#, php-format
+msgid "The folder \"%s\" may not be deleted."
+msgstr "A(z) \"%s\" mappa nem törölhetõ."
+
+#: lib/Folder.php:363
+#, php-format
+msgid "The folder \"%s\" may not be renamed."
+msgstr "A(z) \"%s\" mappa nem nevezhetõ át."
+
+#: lib/Folder.php:306
+#, php-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr ""
+"A \"%s\" mappát létrehoztuk, de nincs használatba helyezve (státusza "
+"unsubscribed)"
+
+#: lib/Folder.php:293
+#, php-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr "A \"%s\" mappát nem sikerült létrehozni. A szerver üzenete"
+
+#: lib/Folder.php:194
+#, php-format
+msgid "The folder \"%s\" was not deleted. This is what the server said"
+msgstr "A(z) \"%s\" mappát nem sikerült törölni. A szerver üzenete"
+
+#: lib/Folder.php:309
+#, php-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "A \"%s\" mappát sikeresen létrehoztuk."
+
+#: lib/Folder.php:199
+#, php-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "A \"%s\" mappát sikeresen töröltük."
+
+#: lib/Folder.php:388
+#, php-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "A \"%s\" mappát sikeresen átneveztük \"%s\"-re."
+
+#: lib/MIME/Viewer/tnef.php:93
+msgid "The following files were attached to this part:"
+msgstr "Ehhez a részhez a következõ fájlokat csatolták:"
+
+#: templates/javascript/popup.js:59
+msgid ""
+"The image save window can not be opened. Perhaps you have set your browser "
+"to block popup windows?"
+msgstr ""
+"A mentéshez nem nyitható meg egy új ablak. Lehet, hogy a böngészõprogramja "
+"beállításaiban letiltotta a felbukkanó (popup) ablakokat?"
+
+#: config/prefs.php.dist:502
+msgid "The javascript editor to use on the compose page."
+msgstr "A levélíráskor használt javascript editor."
+
+#: lib/MIME/Viewer/status.php:74
+msgid "The mail server generated the following error message:"
+msgstr "A levelezõszerver a következõ hibaüzenetet küldte:"
+
+#: lib/MIME/Viewer/notification.php:50
+msgid "The mail server generated the following informational message:"
+msgstr "A levelezõszerver a következõ tájékoztatást küldte:"
+
+#: lib/MIME/Viewer/status.php:89
+msgid "The mail server generated the following message:"
+msgstr "A levelezõszerver a következõ üzenetet küldte:"
+
+#: lib/Message.php:789
+#, php-format
+msgid "The mailbox %s is already empty."
+msgstr "A \"%s\" nevû mappa már üres."
+
+#: lib/Fetchmail.php:238
+#, php-format
+msgid "The message \"%s\" from \"%s\" (%d bytes) exceeds fetch size limit."
+msgstr ""
+"A \"%s\" levél (innen: %s, mérete: %d bájt) nagyobb, mint a megengedett "
+"legnagyobb áttölthetõ levél."
+
+#: templates/javascript_defs.php:53
+msgid "The message being composed has been closed. Exiting."
+msgstr "Az éppen fogalmazott levél bezárodott. Kilépés következik."
+
+#: lib/MIME/Viewer/pgp.php:375
+msgid ""
+"The message below does not appear to be a valid PGP encrypted message. "
+"Error: "
+msgstr "Úgy tûnik ez a levél nem PGP szabvány szerint van titkosítva. A hiba: "
+
+#: lib/MIME/Viewer/pgp.php:251 lib/MIME/Viewer/pgp.php:410
+msgid ""
+"The message below does not appear to be in the correct PGP format (according "
+"to RFC 2015)."
+msgstr ""
+"Ez a levél nem felel meg a pontos PGP szabványnak (az RFC 2015 szerint)."
+
+#: lib/MIME/Viewer/pgp.php:370
+msgid "The message below has been compressed with PGP."
+msgstr "Ezt a levelet PGP-vel tömörítették."
+
+#: lib/MIME/Viewer/pgp.php:200
+msgid ""
+"The message below has been digitally signed and encrypted with PGP, but the "
+"signature cannot be verified."
+msgstr ""
+"Ezt a levelet PGP szabvány szerint titkosították és digitális aláírással "
+"látták el, ezt azonban nem sikerült ellenõrizni."
+
+#: lib/MIME/Viewer/pgp.php:206
+msgid "The message below has been digitally signed and encrypted with PGP."
+msgstr ""
+"Ezt a levelet a PGP szabvány szerint titkosították és digitális aláírással "
+"látták el."
+
+#: lib/MIME/Viewer/pgp.php:202
+msgid ""
+"The message below has been digitally signed with PGP, but the signature "
+"cannot be verified."
+msgstr ""
+"Ez a levél PGP szabványú digitális aláírást tartalmaz, ezt azonban nem "
+"sikerült ellenõrizni."
+
+#: lib/MIME/Viewer/pgp.php:208
+msgid "The message below has been digitally signed with PGP."
+msgstr "Ez a levél PGP szabványú digitális aláírást tartalmaz."
+
+#: lib/MIME/Viewer/pgp.php:312
+msgid ""
+"The message below has been encrypted with PGP, however, PGP support is "
+"disabled so the message cannot be decrypted."
+msgstr ""
+"Ezt a levelet PGP-vel titkosították. Megtekintése nem lehetséges, mert a "
+"rendszerben a PGP támogatás nincs aktiválva."
+
+#: lib/MIME/Viewer/pgp.php:354
+msgid ""
+"The message below has been encrypted with PGP, however, no personal private "
+"key exists so the message cannot be decrypted."
+msgstr ""
+"Ezt a levelet PGP-vel titkosították. Mivel azonban nem áll rendelkezésre az "
+"Ön személyes titkos kulcsa, a levél nem tekinthetõ meg."
+
+#: lib/MIME/Viewer/pgp.php:370
+msgid "The message below has been encrypted with PGP."
+msgstr "Ezt a levelet PGP szabvány szerint titkosították."
+
+#: lib/MIME/Viewer/pgp.php:364
+msgid ""
+"The message below has been encrypted with PGP. You must enter the passphrase "
+"for your PGP private key before it can be decrypted."
+msgstr ""
+"Ezt a levelet PGP-vel titkosították. Megtekintéséhez meg kell adnia az Ön "
+"titkos PGP kulcsához tartozó jelmondatot."
+
+#: lib/MIME/Viewer/pgp.php:347
+msgid ""
+"The message below has been encrypted with PGP. You must enter the passphrase "
+"that was used to encrypt this message."
+msgstr ""
+"Ezt a levelet PGP-vel titkosították. Megtekintéséhez meg kell adnia azt a "
+"jelmondatot amivel a titkosítás történt."
+
+#: lib/MIME/Viewer/pgp.php:454
+msgid "The message below has been verified."
+msgstr "A levél tartalma megfelel a digitális aláírásnak."
+
+#: lib/Crypt/PGP.php:380
+msgid "The message below has not been digitally signed or encrypted with PGP."
+msgstr ""
+"Az alábbi levelet nem titkosították PGP-vel ill. nem tartalmaz ilyen "
+"digitális aláírást."
+
+#: templates/javascript_defs.php:39
+msgid "The message does not have a Subject entered."
+msgstr "A levél Tárgy mezõje üresen maradt."
+
+#: lib/Filter.php:72 lib/Spam.php:216
+msgid "The message has been deleted."
+msgstr "A levelet kitöröltük."
+
+#: lib/Spam.php:199
+msgid "The message has been reported as not spam to your system administrator."
+msgstr ""
+"A levelet nem spamnek minõsítette a rendszergazdának küldött jelentésben."
+
+#: lib/Spam.php:179
+msgid "The message has been reported as not spam."
+msgstr "A levél nem spamnek lett minõsítve."
+
+#: lib/Spam.php:191
+msgid "The message has been reported as spam to your system administrator."
+msgstr "A levelet spamnek minõsítette a rendszergazdának küldött jelentésben."
+
+#: lib/Spam.php:171
+msgid "The message has been reported as spam."
+msgstr "A levél spamnek lett minõsítve."
+
+#: lib/MIME/Viewer/pkcs7.php:449
+#, php-format
+msgid "The message has been verified. Sender: %s."
+msgstr "A levél tartalma megfelel a digitális aláírásnak. A feladó: %s."
+
+#: lib/Filter.php:74
+msgid "The messages have been deleted."
+msgstr "A leveleket kitöröltük."
+
+#: lib/MIME/Viewer/tnef.php:59
+msgid "The requested file does not exist in the MS-TNEF attachment."
+msgstr "A kívánt állomány nincs benne az MS-TNEF mellékletben."
+
+#: lib/MIME/Viewer/zip.php:62
+msgid "The requested file does not exist in the Zip attachment."
+msgstr "A kívánt állomány nincs benne a Zip mellékletben."
+
+#: message.php:437
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Please click %s to send the "
+"notification message."
+msgstr ""
+"A feladó visszaigazolást kér arról, hogy Ön elolvasta ezt a levelet. Kérem %"
+"s kattintson, ha teljesíteni kívánja ezt a kérést."
+
+#: templates/javascript_defs.php:38
+msgid "The signature could not be replaced."
+msgstr "Az állandó levélvégzõdést (signature) nem sikerült felülírni."
+
+#: templates/javascript_defs.php:37
+msgid "The signature was successfully replaced."
+msgstr "Az állandó levélvégzõdést (signature) sikeresen megváltoztattuk."
+
+#: attachment.php:59
+msgid ""
+"The specified attachment does not exist. It may have been deleted by the "
+"original sender."
+msgstr ""
+"A megadott melléklet nem létezik. Lehet, hogy az eredeti feladó már törölte."
+
+#: attachment.php:128
+msgid "The specified file cannot be read."
+msgstr "A megadott fájl nem olvasható."
+
+#: stationery.php:87
+#, php-format
+msgid "The stationery \"%s\" has been added."
+msgstr "A(z) \"%s\" levélpapírt elmentettük."
+
+#: stationery.php:63
+#, php-format
+msgid "The stationery \"%s\" has been deleted."
+msgstr "A(z) \"%s\" levélpapírt kitöröltük."
+
+#: stationery.php:90
+#, php-format
+msgid "The stationery \"%s\" has been updated."
+msgstr "A(z) \"%s\" levélpapírt módosítottuk."
+
+#: lib/MIME/Viewer/itip.php:172
+msgid "The task has been added to your tasklist."
+msgstr "A feladatot hozzáírtuk a listához."
+
+#: lib/MIME/Viewer/status.php:94
+msgid "The text of the message"
+msgstr "A levél szövege"
+
+#: lib/MIME/Viewer/status.php:93
+#, php-format
+msgid "The text of the message can be viewed %s."
+msgstr "A levél szövege megtekinthetõ %s."
+
+#: lib/MIME/Viewer/status.php:79
+msgid "The text of the returned message"
+msgstr "A válasz szövege"
+
+#: lib/MIME/Viewer/status.php:78
+#, php-format
+msgid "The text of the returned message can be viewed %s."
+msgstr "A válasz szövege megtekinthetõ %s."
+
+#: lib/MIME/Viewer/notification.php:66
+msgid "The text of the sent message"
+msgstr "Az elküldött levél szövege"
+
+#: lib/MIME/Viewer/notification.php:66
+#, php-format
+msgid "The text of the sent message can be viewed %s."
+msgstr "Az elküldött levél szövege megtekinthetõ %s."
+
+#: lib/MIME/Viewer/itip.php:157
+msgid "The user's free/busy information was sucessfully stored."
+msgstr "A felhasználó elfoglaltsági adatait sikeresen elmentettük."
+
+#: lib/MIME/Viewer/alternative.php:56
+msgid "There are no alternative parts that can be displayed."
+msgstr ""
+"A levélnek nincs olyan alternatív része, mely a böngészõprogramjában "
+"megjeleníthetõ lenne."
+
+#: templates/mailbox/empty_mailbox.html:2
+msgid "There are no messages in this mailbox."
+msgstr "Ebben a mappában nincs levél."
+
+#: thread.php:104
+msgid "There is no text that can be displayed inline."
+msgstr "Nincs a levél belsejében megjeleníthetõ szöveg."
+
+#: lib/Message.php:140
+#, php-format
+msgid ""
+"There was an error copying messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"A levelek \"%s\"-bõl \"%s\" mappába történõ másolásakor hiba történt. A "
+"szerver üzenete"
+
+#: lib/Message.php:266
+#, php-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr "A levelek \"%s\" mappából való törlése nem sikerült. A szerver üzenete"
+
+#: lib/MIME/Viewer/itip.php:102
+#, php-format
+msgid "There was an error deleting the event: %s."
+msgstr "Hiba történt az esemény törlésekor: %s."
+
+#: lib/MIME/Viewer/enriched.php:36 lib/MIME/Viewer/plain.php:50
+msgid "There was an error displaying this message part"
+msgstr "A levél e részének megjelenítésekor hiba történt"
+
+#: lib/Message.php:628
+#, php-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"A levelek \"%s\" mappában való megjelölése során hiba történt. A szerver "
+"üzenete"
+
+#: folders.php:140
+#, php-format
+msgid "There was an error importing %s."
+msgstr "%s importálása során hiba történt."
+
+#: lib/MIME/Viewer/itip.php:139
+#, php-format
+msgid "There was an error importing the event: %s."
+msgstr "Az esemény importálása során hiba történt: %s."
+
+#: lib/MIME/Viewer/itip.php:169
+#, php-format
+msgid "There was an error importing the task: %s."
+msgstr "A feladat importálása során hiba történt: %s."
+
+#: lib/MIME/Viewer/itip.php:155
+#, php-format
+msgid "There was an error importing user's free/busy information: %s."
+msgstr ""
+"A felhasználó elfoglaltsági adtainak importálása során hiba történt: %s."
+
+#: lib/Message.php:136
+#, php-format
+msgid ""
+"There was an error moving messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"A levelek \"%s\"-bõl \"%s\" mappába való áthelyezése során hiba történt. A "
+"szerver üzenete"
+
+#: lib/Compose.php:702
+#, php-format
+msgid "There was an error sending your message: %s"
+msgstr "A levél küldésekor hiba történt: %s"
+
+#: lib/MIME/Viewer/itip.php:116
+#, php-format
+msgid "There was an error updating the event: %s."
+msgstr "Az esemény adatainak felülírásakor hiba történt: %s"
+
+#: lib/MIME/Viewer/pgp.php:165
+msgid "This PGP Public Key was attached to the message."
+msgstr "A levélhez ezt a PGP nyilvános kulcsot csatolták."
+
+#: lib/MIME/Viewer/itip.php:107 lib/MIME/Viewer/itip.php:121
+#: lib/MIME/Viewer/itip.php:146 lib/MIME/Viewer/itip.php:160
+#: lib/MIME/Viewer/itip.php:176 lib/MIME/Viewer/itip.php:319
+msgid "This action is not supported."
+msgstr "Ezt a választási lehetõséget a rendszer nem támogatja."
+
+#: lib/MIME/Viewer/itip.php:182 lib/MIME/Viewer/itip.php:430
+msgid "This action is not yet implemented."
+msgstr "Ezt a választási lehetõséget a rendszer egyelõre nem támogatja."
+
+#: templates/javascript_defs.php:66
+msgid "This folder may not be renamed:"
+msgstr "Ez a mappa nem nevezhetõ át:"
+
+#: templates/javascript_defs.php:63
+msgid "This may take some time. Are you sure you want to continue?"
+msgstr "Ez hosszabb idõt vehet igénybe. Biztosan folytatni kívánja?"
+
+#: lib/MIME/Viewer/appledouble.php:39
+msgid "This message contains a Macintosh file."
+msgstr "Ez a levél egy Macintosh állományt tartalmaz."
+
+#: lib/MIME/Viewer/pkcs7.php:475
+msgid ""
+"This message contains an attachment that has been digitally signed via S/"
+"MIME."
+msgstr ""
+"Ez a levél S/MIME szabványú digitális aláírással ellátott mellékletet "
+"tartalmaz."
+
+#: lib/MIME/Viewer/pkcs7.php:479
+msgid "This message contains an attachment that has been encrypted via S/MIME."
+msgstr ""
+"A levél mellékletet tartalmaz, melyet az S/MIME szabvány szerint "
+"titkosítottak."
+
+#: lib/MIME/Viewer/status.php:159
+msgid ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+msgstr ""
+"Ez a levél kézbesítési visszaigazolást tartalmaz, de ismeretlen formátumban."
+
+#: lib/MIME/Viewer/pkcs7.php:200
+msgid "This message does not appear to be in the correct S/MIME format."
+msgstr "Ez a levél nem felel meg a pontos S/MIME szabványnak."
+
+#: lib/MIME/Viewer/pkcs7.php:173
+msgid "This message has been digitally signed via S/MIME."
+msgstr "Ez a levél S/MIME szabványú digitális aláírást tartalmaz."
+
+#: lib/MIME/Viewer/pkcs7.php:169 lib/MIME/Viewer/pkcs7.php:293
+msgid "This message has been encrypted via S/MIME."
+msgstr "Ezt a levelet S/MIME szabvány szerint titkosították."
+
+#: lib/MIME/Contents.php:426
+msgid "This message part cannot be viewed because it is too large."
+msgstr "Az üzenet nem jeleníthetõ meg, mert túl nagy."
+
+#: message.php:508
+msgid "This message to"
+msgstr "Ezt a levelet ide..."
+
+#: acl.php:47
+msgid "This server does not support sharing folders."
+msgstr ""
+"Ez a szerver nem teszi lehetõvé, hogy más felhasználóknak hozzáférési jogot "
+"adjunk mappáinkhoz."
+
+#: templates/javascript_defs.php:54
+msgid "This window must be called from a compose window."
+msgstr "Ezt az ablak csak az új levél fogalmazásakor hívható."
+
+#: templates/thread/thread.html:2
+msgid "Thread Display:"
+msgstr "Logikai (thread) megjelenítés:"
+
+#: thread.php:161 config/prefs.php.dist:1082
+msgid "Thread View"
+msgstr "Logikai (thread) nézet"
+
+#: lib/MIME/Viewer/images.php:172
+msgid "Thumbnail of attached image"
+msgstr "A csatolt kép kicsiben"
+
+#: compose.php:789 mailbox.php:577 lib/Search.php:658 lib/UI/Mailbox.php:88
+#: lib/UI/Message.php:26 templates/login/recompose.html:14
+#: templates/contacts/contacts.html:40
+msgid "To"
+msgstr "Címzett"
+
+#: config/prefs.php.dist:1079
+msgid "To Address"
+msgstr "A címzett"
+
+#: message.php:552
+msgid "To All"
+msgstr "Minden címzettnek"
+
+#: message.php:548
+msgid "To List"
+msgstr "A listának"
+
+#: message.php:545
+msgid "To Sender"
+msgstr "A feladónak"
+
+#: message.php:552
+msgid "To _All"
+msgstr "Minden címzettnek"
+
+#: message.php:548
+msgid "To _List"
+msgstr "A listának"
+
+#: templates/compose/redirect.html:46
+msgid "To field"
+msgstr "címzett"
+
+#: templates/prefs/sourceselect.inc:324
+msgid ""
+"To select multiple fields, hold down the Control (PC) or Command (Mac) while "
+"clicking."
+msgstr ""
+"Ha több mezõt kíván kijelölni, akkor tartsa nyomva a Control (PC-n) ill. "
+"Command (Mac-en) billentyût, és úgy kattintson az egérrel a további mezõkre."
+
+#: lib/IMAP/Client.php:131
+msgid ""
+"To use a TLS connection, you must be running a version of PHP 5.1.0 or "
+"higher."
+msgstr ""
+"TLS kapcsolat használatához a PHP 5.1.0-s, vagy újabb verziójára van szükség."
+
+#: thread.php:117 templates/thread/thread.html:32
+msgid "To:"
+msgstr "Címzett:"
+
+#: config/prefs.php.dist:521
+msgid "Top"
+msgstr "Legfölül"
+
+#: templates/compose/compose.html:307
+msgid "Total Size:"
+msgstr "Mellékletek összmérete:"
+
+#: login.php:287
+msgid "Traditional"
+msgstr "Hagyományos"
+
+#: lib/IMAP/Tree.php:2325
+msgid "Trash folder"
+msgstr "A 'Szemetes' (Trash) mappa"
+
+#: templates/prefs/trashselect.inc:19
+msgid "Trash folder:"
+msgstr "A 'Szemetes' (Trash) mappa:"
+
+#: lib/Quota/sql.php:79
+msgid "Unable to connect to SQL server."
+msgstr "Az SQL szerver nem érhetõ el."
+
+#: lib/Quota/command.php:93 lib/Quota/imap.php:42 lib/Quota/logfile.php:87
+#: lib/Quota/maildir.php:113 lib/Quota/mdaemon.php:45
+#: lib/Quota/mercury32.php:78
+msgid "Unable to retrieve quota"
+msgstr "A kvóta információ nem érhetõ el"
+
+#: templates/message/navbar_navigate.html:13 templates/mailbox/navbar.html:19
+#: templates/mailbox/navbar.html:35
+msgid "Unanswered"
+msgstr "megválaszolatlan"
+
+#: search.php:330
+msgid "Unanswered messages"
+msgstr "Megválaszolatlan levelek"
+
+#: mailbox.php:504 message.php:539
+msgid "Undelete"
+msgstr "Törlés vissza"
+
+#: search.php:340
+msgid "Undeleted messages"
+msgstr "Nem törölt levelek"
+
+#: lib/UI/Mailbox.php:66 lib/UI/Mailbox.php:84 lib/MIME/Headers.php:213
+msgid "Undisclosed Recipients"
+msgstr "A címzettek listája nem ismert"
+
+#: lib/IMAP/Client.php:462
+msgid "Unexpected response from server to AUTHENTICATE command."
+msgstr "A szerver váratlan választ adott az AUTHENTICATE parancsra."
+
+#: lib/IMAP/Client.php:428
+msgid "Unexpected response from server to Digest-MD5 response."
+msgstr "A szerver váratlan választ adott a Digest-MD5 üzenetre."
+
+#: search.php:335
+msgid "Unflagged messages"
+msgstr "Jelzetlen levelek"
+
+#: lib/MIME/Viewer/itip.php:462
+#, php-format
+msgid "Unhandled component of type: %s"
+msgstr "Ismeretlen típus: %s"
+
+#: lib/MIME/Viewer/itip.php:729
+msgid "Unknown"
+msgstr "Ismeretlen"
+
+#: lib/UI/Mailbox.php:203
+msgid "Unknown Date"
+msgstr "Ismeretlen dátum"
+
+#: lib/IMAP/Client.php:205
+#, php-format
+msgid "Unknown IMAP response from the server. Server Responded: %s"
+msgstr "Az IMAP szervertõl ismeretlen válasz érkezett. A szerver válasza: %s"
+
+#: lib/MIME/Viewer/itip.php:675
+msgid "Unknown Meeting"
+msgstr "Ismeretlen megbeszélés"
+
+#: lib/UI/Mailbox.php:103
+msgid "Unknown Recipient"
+msgstr "Ismeretlen címzett"
+
+#: lib/MIME/Viewer/itip.php:815
+msgid "Unknown Task"
+msgstr "Ismeretlen feladat"
+
+#: pgp.php:432 smime.php:338
+msgid "Unload Passphrase"
+msgstr "A megadott jelmondat visszavétele"
+
+#: fetchmailprefs.php:69
+msgid "Unnamed"
+msgstr "Nincs elnevezve"
+
+#: mailbox.php:750 message.php:463 templates/message/navbar_navigate.html:9
+#: templates/mailbox/navbar.html:15 templates/mailbox/navbar.html:31
+msgid "Unseen"
+msgstr "nem olvasott"
+
+#: templates/folders/actions.html:26
+msgid "Unsubscribe"
+msgstr "A használatba vétel megszüntetése (unsubscribe)"
+
+#: templates/compose/compose.html:281
+msgid "Update"
+msgstr "Módosítás"
+
+#: lib/MIME/Viewer/itip.php:661
+msgid "Update respondent status"
+msgstr "Módosítsuk a válaszadó státuszát"
+
+#: lib/MIME/Viewer/itip.php:640
+msgid "Update this event on my calendar"
+msgstr "Adjuk hozzá ezt a naptáramhoz"
+
+#: templates/smime/import_key.html:40 templates/pgp/import_key.html:38
+msgid "Upload:"
+msgstr "Feltöltés:"
+
+#: templates/prefs/sentmailselect.inc:39
+msgid "Use Default Value"
+msgstr "Az alapértelmezett érték"
+
+#: config/prefs.php.dist:255
+msgid "Use IMAP folder subscriptions?"
+msgstr "Alkalmazzuk az IMAP használatba vételi (subscription) mechanizmusát?"
+
+#: config/prefs.php.dist:890
+msgid "Use Virtual Trash Folder?"
+msgstr "Használjunk Virtuális szemetesmappát?"
+
+#: templates/acl/acl.html:42
+msgid "User"
+msgstr "Felhasználói név"
+
+#: acl.php:90 acl.php:131
+#, php-format
+msgid ""
+"User \"%s\" successfully given the specified rights for the folder \"%s\"."
+msgstr ""
+"\"%s\" felhasználónak sikeresen megadtuk a kiválasztott \"%s\" mappához "
+"történõ hozzáférési jogokat."
+
+#: templates/login/login.html:85
+msgid "Username"
+msgstr "Felhasználói név"
+
+#: templates/fetchmail/fetchmailprefs.html:55
+msgid "Username:"
+msgstr "Felhasználói név:"
+
+#: templates/login/mobile.inc:14
+msgid "Username: "
+msgstr "Felhasználói név: "
+
+#: lib/MIME/Viewer/pkcs7.php:255 templates/smime/smime.html:35
+#: templates/smime/smime.html:67 templates/smime/smime.html:71
+#: templates/pgp/pgp.html:43 templates/pgp/pgp.html:75
+#: templates/pgp/pgp.html:80
+msgid "View"
+msgstr "Megtekintés"
+
+#: lib/MIME/Viewer/tnef.php:109 lib/MIME/Viewer/zip.php:90
+#, php-format
+msgid "View %s"
+msgstr "%s megtekintése"
+
+#: pgp.php:404 smime.php:312
+#, php-format
+msgid "View %s Public Key"
+msgstr "%s nyilvános kulcs megtekintése"
+
+#: lib/MIME/Viewer/images.php:162 lib/MIME/Viewer/images.php:167
+msgid "View Attachment"
+msgstr "A melléklet megtekintése"
+
+#: mailbox.php:537
+msgid "View Messages"
+msgstr "A levelek megtekintése"
+
+#: pgp.php:433 smime.php:339
+msgid "View Personal Private Key"
+msgstr "A személyes titkos kulcs megtekintése"
+
+#: pgp.php:427 smime.php:335
+msgid "View Personal Public Key"
+msgstr "A személyes nyilvános kulcs megtekintése"
+
+#: message.php:563
+msgid "View Thread"
+msgstr "Viszontválaszokkal együtt"
+
+#: lib/MIME/Viewer/pkcs7.php:483
+msgid "View attachment in a separate window"
+msgstr "A melléklet külön ablakban történõ megtekintése"
+
+#: lib/MIME/Viewer/related.php:85
+msgid "View content in a separate window"
+msgstr "A tartalmat külön ablakban szeretném látni"
+
+#: lib/MIME/Viewer/itip.php:143
+msgid "View event"
+msgstr "Az elfoglaltság megtekintése"
+
+#: folders.php:420 mailbox.php:687
+#, php-format
+msgid "View messages in %s"
+msgstr "A(z) %s mappa megtekintése"
+
+#: templates/prefs/initialpageselect.inc:16
+msgid "View or mailbox to display after login:"
+msgstr "Bejelentkezés után milyen képernyõvel kíván kezdeni:"
+
+#: lib/MIME/Viewer/itip.php:173
+msgid "View task"
+msgstr "A feladat megtekintése"
+
+#: mailbox.php:356 mailbox.php:357
+msgid "Virtual Folder"
+msgstr "Virtuális mappa"
+
+#: search.php:151
+#, php-format
+msgid "Virtual Folder \"%s\" created succesfully."
+msgstr "A(z) \"%s\" virtuális mappát sikeresen létrehoztuk."
+
+#: lib/IMAP/Tree.php:88 templates/search/search.html:184
+msgid "Virtual Folders"
+msgstr "Virtuális mappák"
+
+#: search.php:146
+msgid "Virtual Folders require a label."
+msgstr "A virtuális mappákat el kell nevezni."
+
+#: lib/Search.php:401
+msgid "Virtual INBOX"
+msgstr "Virtuális INBOX"
+
+#: lib/IMAP/Tree.php:2365
+msgid "Virtual INBOX Folder"
+msgstr "Virtuális INBOX mappa"
+
+#: lib/Search.php:345
+msgid "Virtual Trash"
+msgstr "Virtuális szemetes"
+
+#: lib/IMAP/Tree.php:2361
+msgid "Virtual Trash Folder"
+msgstr "Virtuális szemetesmappa"
+
+#: templates/search/search.html:195
+msgid "Virtual folder label:"
+msgstr "A virtuális mappa elnevezése:"
+
+#: lib/MIME/Viewer/pkcs7.php:438 lib/Crypt/PGP.php:380
+msgid "Warning"
+msgstr "Figyelmeztetés"
+
+#: login.php:185 login.php:339 templates/login/mobile.inc:11
+#, php-format
+msgid "Welcome to %s"
+msgstr "Üdvözöljük! Ez a %s levelezõrendszere"
+
+#: config/prefs.php.dist:738
+msgid ""
+"What should we do with spam messages after they have been reported as spam "
+"or innocent?"
+msgstr "Mi történjen a spamekkel a bejelentésüket követõen?"
+
+#: config/prefs.php.dist:882
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted?"
+msgstr ""
+"Törléskor a törlésre való kijelölés helyett rakjuk át a leveleket a "
+"'Szemetes' (Trash) mappába?"
+
+#: config/prefs.php.dist:1067
+msgid ""
+"When opening a new mailbox for the first time, which page do you want to "
+"start on?"
+msgstr "Új mappa megnyitásakor melyik oldalt kívánja megjeleníteni?"
+
+#: config/prefs.php.dist:588
+msgid ""
+"When replying/forwarding to a message, should we use the same format as the "
+"original message?"
+msgstr ""
+"Egy levél megválaszolásakor ill. továbbküldésekor használjuk az eredeti "
+"levél formátumát?"
+
+#: config/prefs.php.dist:692
+msgid "When saving sent-mail, should we save attachment data?"
+msgstr ""
+"Az elküldött levelek külön mappába történõ mentésekor mentsük-e el a "
+"mellékleteket is?"
+
+#: config/prefs.php.dist:474
+msgid ""
+"When sending mail or expanding addresses, what domain should we append to "
+"unqualified addresses (email addresses without \"@\")?"
+msgstr ""
+"Levél küldésekor, ill. címrészletek kiegészítésekor milyen domain kerüljön a "
+"\"@\" utáni részre azokban a címekben, amikben nincs \"@\"?"
+
+#: config/prefs.php.dist:851
+msgid "Where do you want to display links to alternative formats of a message?"
+msgstr "Hol legyenek a levelet alternatív formában megjelenítõ linkek?"
+
+#: config/prefs.php.dist:524
+msgid "Where should the cursor be located in the compose text area by default?"
+msgstr "A szövegmezõn belül hová kerüljön a kurzor a levélírás megkezdésekor?"
+
+#: mailbox.php:520 message.php:571
+msgid "Whitelist"
+msgstr "Engedélyezett címek"
+
+#: config/prefs.php.dist:501
+msgid "Xinha"
+msgstr "Xinha"
+
+#: templates/search/search.html:99
+msgid "Year"
+msgstr "év"
+
+#: templates/javascript_defs.php:48 config/prefs.php.dist:1145
+#: config/prefs.php.dist:1167 templates/compose/compose.html:292
+msgid "Yes"
+msgstr "Igen"
+
+#: lib/Maintenance/Task/fetchmail_login.php:57
+msgid "You are about to fetch email from the following account(s):"
+msgstr "Ön a következõ azonosító(k) leveleit készül áttölteni:"
+
+#: templates/folders/folders_confirm.html:10
+msgid ""
+"You are attempting to delete all messages contained in the following folder"
+"(s)."
+msgstr "Ön a következõ mappák tartalmát kívánja törölni."
+
+#: templates/folders/folders_confirm.html:9
+msgid "You are attempting to delete the following folder(s)."
+msgstr "Ön a következõ mappákat kívánja törölni."
+
+#: templates/javascript_defs.php:81
+msgid "You are copying/moving to a new folder."
+msgstr "Új mappába kíván másolni/áthelyezni."
+
+#: templates/javascript_defs.php:59
+msgid "You are creating a sub-folder to"
+msgstr "Almappát kíván nyitni a következõ mappából"
+
+#: templates/javascript_defs.php:61
+msgid "You are creating a top-level folder."
+msgstr "Új (legfelsõ szintû) mappát hoz létre."
+
+#: lib/Folder.php:265
+msgid "You are not allowed to create folders."
+msgstr "Ön nem jogosult almappákat létrehozni."
+
+#: lib/Folder.php:272
+#, php-format
+msgid "You are not allowed to create more than %d folders."
+msgstr "Ön nem jogosult több, mint %d almappát létrehozni."
+
+#: lib/Compose.php:916
+#, php-format
+msgid ""
+"You are not allowed to send messages to more than %d recipients within %d "
+"hours."
+msgstr "Ön legfeljebb %d címzettnek írhat levelet %d óra idõtartamon belül."
+
+#: lib/Compose.php:1158
+#, php-format
+msgid "You are not allowed to send messages to more than %d recipients."
+msgstr "Ön egyszerre legfeljebb %d címzettnek írhat levelet."
+
+#: templates/javascript_defs.php:64
+msgid "You are renaming the folder:"
+msgstr "A következõ mappát kívánja átnevezni:"
+
+#: templates/stationery/stationery.html:39
+msgid ""
+"You can use the following placeholders in the stationery text: %c for the "
+"current message content; %s for the signature."
+msgstr ""
+"A levélpapírok készítésekor a következõ szimbólumokat használhatja: %c a "
+"levél tartalmát, %s a levélvégzõdést helyettesíti."
+
+#: lib/Folder.php:488
+#, php-format
+msgid "You cannot unsubscribe from \"%s\"."
+msgstr ""
+"Nem sikerült használaton kívülre helyeznie (unsubscribe) a(z) \"%s\" mappát."
+
+#: lib/Maintenance/Task/tos_agreement.php:33
+msgid ""
+"You did not agree to the Terms of Service agreement, so you were not allowed "
+"to login."
+msgstr ""
+"Ön nem egyezett bele a Szolgáltatás Feltételeibe, ezért nem jelentkezhet be."
+
+#: templates/acl/acl.html:88
+msgid "You do not have permission to change access to this folder."
+msgstr "Ön nem jogosult megváltoztatni ennek a mappának a hozzáférhetõségét."
+
+#: lib/Maillog.php:130
+#, php-format
+msgid "You forwarded this message on %%s to the following recipients: %s."
+msgstr ""
+"Ön továbbította ezt a levelet (ekkor: %%s) a következõ címzetteknek: %s."
+
+#: lib/IMP.php:1031
+#, php-format
+msgid "You have %s new messages."
+msgstr "%s új levele érkezett."
+
+#: lib/IMP.php:1031
+msgid "You have 1 new message."
+msgstr "Érkezett egy új levele."
+
+#: compose.php:126
+msgid "You have already submitted this page."
+msgstr "Ezt az oldalt már egyszer bejelentette."
+
+#: templates/newmsg/alert.html:3
+msgid "You have new mail in:"
+msgstr "Levele érkezett ide:"
+
+#: templates/fetchmail/fetchmail.html:22
+msgid "You have not configured any external mail accounts."
+msgstr "Ön nem adott meg egyetlen külsõ levélládát sem."
+
+#: lib/Compose.php:1145
+msgid "You must enter at least one recipient."
+msgstr "Legalább egy címzettet meg kell adnia."
+
+#: lib/MIME/Viewer/pgp.php:364
+msgid ""
+"You must enter the passphrase for your PGP private key to view this message."
+msgstr ""
+"Ennek a levélnek a megtekintéséhez meg kell adnia az Ön titkos PGP kulcsához "
+"tartozó jelmondatot."
+
+#: lib/MIME/Viewer/pkcs7.php:312
+msgid ""
+"You must enter the passphrase for your S/MIME private key to view this "
+"message"
+msgstr ""
+"Ennek a levélnek a megtekintéséhez meg kell adnia az Ön titkos S/MIME "
+"kulcsához tartozó jelmondatot."
+
+#: lib/MIME/Viewer/pgp.php:347
+msgid "You must enter the passphrase that was used to encrypt this message."
+msgstr ""
+"Ennek a levélnek a megtekintéséhez meg kell adnia a levél titkosításához "
+"használt jelmondatot."
+
+#: templates/javascript_defs.php:82
+msgid "You must select a target mailbox first."
+msgstr "Elõször célként ki kell választania egy mappát."
+
+#: fetchmailprefs.php:89
+msgid "You must select an account to be deleted."
+msgstr "Elõször ki kell választania a törlendõ azonosítót."
+
+#: templates/javascript_defs.php:52
+msgid "You must select an address first."
+msgstr "Elõször ki kell választania egy címet."
+
+#: templates/javascript_defs.php:45 templates/javascript_defs.php:47
+msgid "You must select at least one message first."
+msgstr "Elõbb legalább egy levelet ki kell választania."
+
+#: lib/Compose.php:839
+msgid "You must separate e-mail addresses with commas (,) not semicolons (;)."
+msgstr ""
+"A levélcímeket vesszõvel (,) és nem pontosvesszõvel (;) kell elválasztani."
+
+#: templates/javascript_defs.php:36
+msgid "You must specify a recipient."
+msgstr "Meg kell adnia a címzettet."
+
+#: templates/fetchmail/fetchmailprefs.html:91
+msgid ""
+"You need to have \"Perform maintenance operations on login?\" enabled in "
+"your maintenance options."
+msgstr ""
+"A karbantartási feladatok beállításaiban engedélyeznie kell a "
+"\"Bejelentkezéskor végre a karbantartási feladatokat\" opciót."
+
+#: lib/Maillog.php:138
+#, php-format
+msgid "You redirected this message to %s on %%s."
+msgstr "Ön %s-re irányította át ezt a levelet %%s-en."
+
+#: lib/Maillog.php:142
+#, php-format
+msgid "You replied to this message on %s."
+msgstr "Erre a levélre válaszolt ekkor: %s."
+
+#: lib/Folder.php:440
+#, php-format
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr ""
+"A \"%s\" mappa nem volt használatba véve (státusza unsubscribed). A szerver "
+"üzenete:"
+
+#: lib/Folder.php:490
+#, php-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr ""
+"A \"%s\" mappa használatra volt kijelölve (státusza subscribed). A szerver "
+"üzenete:"
+
+#: lib/Folder.php:443
+#, php-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr "Sikeresen jelölte ki használatra (subscribed) a \"%s\" mappát."
+
+#: lib/Folder.php:493
+#, php-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "Sikeresen helyezte használaton kívülre (unsubscribed) a \"%s\" mappát."
+
+#: templates/pgp/pgp.html:92
+msgid "Your Name:"
+msgstr "Az Ön neve:"
+
+#: templates/pgp/pgp.html:64
+msgid "Your PGP Public/Private Keys"
+msgstr "Az Ön nyilvános/titkos PGP kulcsai"
+
+#: templates/smime/smime.html:70 templates/pgp/pgp.html:79
+msgid "Your Private Key:"
+msgstr "Az Ön személyes, titkos kulcsa:"
+
+#: templates/smime/smime.html:66 templates/pgp/pgp.html:74
+msgid "Your Public Key:"
+msgstr "Az Ön nyilvános kulcsa:"
+
+#: config/prefs.php.dist:165
+msgid "Your Reply-to: address: <em>(optional)</em>"
+msgstr "Az Ön viszontválasz (Reply-to:) címe: <em>(opcionális)</em>"
+
+#: templates/smime/smime.html:56
+msgid "Your S/MIME Public/Private Certificates"
+msgstr "Az Ön nyilvános/titkos S/MIME tanúsítványai"
+
+#: fetchmail.php:22
+msgid "Your account does not support fetching external mail."
+msgstr "Ön nem jogosult távoli levélládákból leveleket áttölteni."
+
+#: templates/fetchmail/fetchmailprefs.html:18
+msgid "Your accounts:"
+msgstr "Az Ön azonosítói:"
+
+#: config/prefs.php.dist:173
+msgid ""
+"Your alias addresses: <em>(optional, enter each address on a new line)</em>"
+msgstr ""
+"Az Ön alias címei: <em>(nem kötelezõ, minden cím külön sorba kerüljön)</em>"
+
+#: lib/MIME/Viewer/images.php:89
+msgid "Your browser does not support inline display of this image type."
+msgstr ""
+"Az Ön böngészõprogramja nem támogatja ennek a képtípusnak a közvetlen "
+"megjelenítését."
+
+#: config/prefs.php.dist:670
+msgid "Your default charset for sending messages:"
+msgstr "Az Ön alapértelmezett karakterkészlete a levélíráshoz:"
+
+#: templates/prefs/encryptselect.inc:1
+msgid "Your default encryption method for sending messages:"
+msgstr "Az Ön alapértelmezett titkosítási módja a levelezéshez:"
+
+#: attachment.php:114
+#, php-format
+msgid ""
+"Your linked attachment has been downloaded by at least one user.\n"
+"\n"
+"Attachment name: %s\n"
+"Attachment date: %s\n"
+"\n"
+"Click on the following link to permanently delete the attachment:\n"
+"%s"
+msgstr ""
+"Az Ön hivatkozás formájában küldött mellékletét legalább egy ember már "
+"letöltötte.\n"
+"\n"
+"A melléklet neve: %s\n"
+"A melléklet dátuma: %s\n"
+"\n"
+"Kattintson a következõ linkre, ha végleg törölni kívánja az állományt:\n"
+"%s"
+
+#: lib/MIME/Viewer/status.php:88
+msgid "Your message was successfully delivered."
+msgstr "Az Ön levele sikeresen kézbesítésre került."
+
+#: config/prefs.php.dist:197
+msgid "Your signature:"
+msgstr "Az Ön állandó levélvégzõdése (signature):"
+
+#: lib/Message.php:528
+#, php-format
+msgid "[Attachment stripped: Original attachment type: %s, name: %s]"
+msgstr ""
+"[A mellékletet leválasztottuk: az eredeti melléklet típusa: %s, neve: %s]"
+
+#: templates/javascript/addressesBlocks.js:7
+msgid "[Hide Addresses]"
+msgstr "[Rejtsük el a címeket]"
+
+#: mailbox.php:711 message.php:275 rss.php:82 lib/Compose.php:1664
+#: lib/Compose.php:2136
+msgid "[No Subject]"
+msgstr "[Tárgy nélkül]"
+
+#: lib/MIME/Viewer/pgp.php:169
+msgid "[Save the key to your Address book]"
+msgstr "[A kulcs elmentése a Címjegyzékben]"
+
+#: templates/javascript/addressesBlocks.js:8
+msgid "[Show Addresses -"
+msgstr "[Mutassuk a címeket -"
+
+#: lib/MIME/Headers.php:223
+#, php-format
+msgid "[Show addresses - %s recipients]"
+msgstr "[Mutassuk a címeket - %s címzett]"
+
+#: lib/Compose.php:2750
+msgid "[Truncated Text]"
+msgstr "[Csonkolt szöveg]"
+
+#: lib/MIME/Viewer/pgp.php:171
+msgid "[View the raw key]"
+msgstr "[A kulcs megjelenítése eredeti formájában]"
+
+#: compose.php:920
+msgid "_Bcc"
+msgstr "_Bcc"
+
+#: mailbox.php:516 message.php:567
+msgid "_Blacklist"
+msgstr "Tiltott címek"
+
+#: compose.php:917
+msgid "_Cc"
+msgstr "_Cc"
+
+#: mailbox.php:498 mailbox.php:500 message.php:541
+msgid "_Delete"
+msgstr "_Törlés"
+
+#: lib/IMP.php:815
+msgid "_Folders"
+msgstr "_Mappák"
+
+#: compose.php:897
+msgid "_Identity"
+msgstr "_Azonosító"
+
+#: lib/IMP.php:784
+msgid "_Inbox"
+msgstr "_Inbox"
+
+#: lib/IMP.php:852
+msgid "_Log out"
+msgstr "_Kijelentkezés"
+
+#: message.php:576
+msgid "_Message Source"
+msgstr "A levél forrása"
+
+#: lib/IMP.php:812
+msgid "_New Message"
+msgstr "Levélírás"
+
+#: message.php:589
+msgid "_Print"
+msgstr "_Nyomtatás"
+
+#: compose.php:987
+msgid "_Priority"
+msgstr "Prioritás (sürgõsség)"
+
+#: mailbox.php:343
+#, php-format
+msgid "_Refresh %s"
+msgstr "%s frissítése"
+
+#: message.php:544
+msgid "_Reply"
+msgstr "_Válasz"
+
+#: lib/IMP.php:817
+msgid "_Search"
+msgstr "Kere_sés"
+
+#: compose.php:882
+msgid "_Send Message"
+msgstr "Küldjük _el"
+
+#: mailbox.php:587
+msgid "_Thread"
+msgstr "Logikai sorrend"
+
+#: compose.php:913 compose.php:915
+msgid "_To"
+msgstr "Cí_mzett"
+
+#: mailbox.php:504
+msgid "_Undelete"
+msgstr "Törlés vissza"
+
+#: message.php:563
+msgid "_View Thread"
+msgstr "Viszontválaszokkal _együtt"
+
+#: mailbox.php:520 message.php:571
+msgid "_Whitelist"
+msgstr "Engedélyezett címek"
+
+#: lib/Compose.php:943
+msgid "addressee unknown"
+msgstr "a címzett ismeretlen"
+
+#: lib/Search.php:542
+msgid "and"
+msgstr "és"
+
+#: lib/Compose.php:1774
+msgid "attachment"
+msgstr "melléklet"
+
+#: view.php:122
+msgid "attachments.zip"
+msgstr "mellekletek.zip"
+
+#: templates/compose/compose.html:273
+msgid "bytes"
+msgstr "bájt"
+
+#: lib/Compose.php:967
+msgid "cannot create output file"
+msgstr "a kimeneti állomány nem hozható létre"
+
+#: lib/Compose.php:939
+msgid "cannot open input"
+msgstr "a bemenõ állomány nem nyitható meg"
+
+#: lib/Compose.php:931
+msgid "command line usage error"
+msgstr "parancssori hiba"
+
+#: lib/Compose.php:987
+msgid "configuration error"
+msgstr "konfigurációs hiba"
+
+#: lib/Compose.php:963
+msgid "critical system file missing"
+msgstr "hiányzik egy fontos rendszerállomány"
+
+#: lib/Compose.php:935
+msgid "data format error"
+msgstr "adatformátum hiba"
+
+#: lib/Compose.php:991
+msgid "entry not found"
+msgstr "az adat nem található"
+
+#: templates/contacts/contacts.html:16
+msgid "from"
+msgstr "itt"
+
+#: lib/Compose.php:947
+msgid "host name unknown"
+msgstr "a gép neve nem ismert"
+
+#: lib/Search.php:545
+msgid "in"
+msgstr "Keresés"
+
+#: lib/Compose.php:971
+msgid "input/output error"
+msgstr "input/output hiba"
+
+#: lib/Compose.php:955
+msgid "internal software error"
+msgstr "belsõ programhiba"
+
+#: templates/folders/import.html:13
+msgid "into folder"
+msgstr "ebbe a mappába"
+
+#: pgp.php:79 smime.php:39
+msgid "key"
+msgstr "kulcs"
+
+#: folders.php:136
+msgid "mailbox file"
+msgstr "mailbox fájl"
+
+#: lib/Compose.php:770
+msgid "name"
+msgstr "név"
+
+#: lib/Search.php:539
+msgid "not"
+msgstr "nem"
+
+#: lib/Search.php:542 templates/fetchmail/fetchmailprefs.html:26
+msgid "or"
+msgstr "vagy"
+
+#: lib/Compose.php:983
+msgid "permission denied"
+msgstr "nincs megfelelõ jogosultsága"
+
+#: templates/javascript_defs.php:31
+msgid "recipients"
+msgstr "címzettek"
+
+#: templates/javascript/addressesBlocks.js:8
+msgid "recipients]"
+msgstr "címzettek]"
+
+#: lib/Compose.php:979
+msgid "remote error in protocol"
+msgstr "adatátviteli (protokoll) hiba"
+
+#: lib/Compose.php:951
+msgid "service unavailable"
+msgstr "a szolgáltatás nem áll rendelkezésre"
+
+#: lib/Compose.php:959
+msgid "system error"
+msgstr "rendszerhiba"
+
+#: lib/Compose.php:975
+msgid "temporary failure"
+msgstr "átmeneti hiba"
+
+#: lib/Filter.php:65
+msgid "your blacklist"
+msgstr "tiltólistája"
+
+#: lib/Filter.php:91
+msgid "your whitelist"
+msgstr "engedélyezési listája"

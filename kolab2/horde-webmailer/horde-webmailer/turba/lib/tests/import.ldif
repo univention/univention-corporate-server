@@ -1,0 +1,51 @@
+dn: cn=John Smith,mail=js23@school.edu
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+objectclass: mozillaAbPersonAlpha
+givenName: John
+sn: Smith
+cn: John Smith
+mail: js23@school.edu
+modifytimestamp: 0Z
+
+dn: cn=Charlie Brown,mail=brown@school.edu
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+objectclass: mozillaAbPersonAlpha
+givenName: Charles
+sn: Brown
+cn: Charlie Brown
+mozillaNickname: Chuck
+mail: brown@school.edu
+mozillaSecondEmail: brown@gmail.com
+nsAIMid: CharlieBrown
+mozillaUseHtmlMail: false
+modifytimestamp: 0Z
+telephoneNumber: +1 212 876 5432
+homePhone: +1 203 234 5678
+fax: +1 203 999 9999
+pager: +1 203 111 1111
+mobile: +1 917 321 0987
+homeStreet: 12 west 57 street
+mozillaHomeStreet2: Apt 2076
+mozillaHomeLocalityName: New York
+mozillaHomeState: New York
+mozillaHomePostalCode: 10001
+mozillaHomeCountryName: USA
+street: 12 West 55th Street
+mozillaWorkStreet2: Room 22
+l: New York
+st: New York
+postalCode: 10001
+c: USA
+title: Senior Systems Programmer
+department: CUIT
+company: School University
+mozillaWorkUrl: http://www.school.edu/
+mozillaHomeUrl: http://www.school.edu/~brown/
+description:: aGkgbW9tCg==
+

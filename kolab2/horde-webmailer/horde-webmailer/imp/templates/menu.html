@@ -1,0 +1,36 @@
+<form action="mailbox.php" method="get" name="menuform">
+<tag:forminput />
+<div id="menu">
+<if:use_folders>
+ <div class="rightFloat">
+  <input type="hidden" name="no_newmail_popup" value="1" />
+  <label for="mailbox"<if:accesskey> accesskey="<tag:accesskey />"</if:accesskey>>
+  <select id="mailbox" name="mailbox" onchange="folderSubmit()"><tag:flist /></select>
+  </label>
+ </div>
+ <div class="rightFloat">
+  <tag:flink />
+ </div>
+</if:use_folders>
+ <div class="leftFloat">
+  <tag:menu_string />
+ </div>
+ <br class="clear" />
+</div>
+<if:webkit><div class="clear"></div></if:webkit>
+</form>
+
+<if:use_folders>
+<script type="text/javascript">
+var loading;
+function folderSubmit(clear)
+{
+    if (document.menuform.mailbox[document.menuform.mailbox.selectedIndex].value != '') {
+        if ((loading == null) || (clear != null)) {
+            loading = true;
+            document.menuform.submit();
+        }
+    }
+}
+</script>
+</if:use_folders>

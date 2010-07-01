@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<!-- $Horde: turba/locale/fi_FI/help.xml,v 1.4.10.6 2009-02-03 00:16:10 jan Exp $ -->
+<help>
+  <entry id="Overview" md5="290506ade4e6f749246f77bbe5d48835" state="uptodate">
+    <title>Yleiskuva</title>
+    <heading>Esittely</heading>
+    <para>
+    Osoitekirjaan voit tallettaa kaikki yhteystiedot siten ett&#xE4; ne
+    ovat aina k&#xE4;tev&#xE4;sti saatavilla ja k&#xE4;ytett&#xE4;viss&#xE4;. Riippuen miten
+    ohjelmisto on asennettu, sinun on mahdollista tehd&#xE4;
+    henkil&#xF6;kohtainen osoitekirja tai k&#xE4;ytt&#xE4;&#xE4; julkisia osoitekirjoja
+    tai hakemistopalveluja. Voit my&#xF6;s tehd&#xE4; omia listoja, jotka ovat
+    k&#xE4;yt&#xE4;nn&#xF6;ss&#xE4; sinun omia s&#xE4;hk&#xF6;postilistoja.
+    </para>
+</entry>
+  <entry id="menu-add" md5="3c1f92eb1a82839404d11d9b0a20b3ce" state="uptodate">
+    <title>Valikko: Lis&#xE4;&#xE4;</title>
+    <heading>Lis&#xE4;&#xE4;</heading>
+    <para>
+    Voit lis&#xE4;t&#xE4; k&#xE4;ytt&#xE4;j&#xE4;n tiedot osoitekirjaan. Voit lis&#xE4;t&#xE4; osoitteita vain
+    niihin osoitekirjoihin, joihin sinulla on kirjoitusoikeus. Jos
+    k&#xE4;yt&#xF6;ss&#xE4; on jaettuja tai julkisia osoitekirjoja, niin n&#xE4;m&#xE4; on
+    yleens&#xE4; jaettu vain luku/selausoikeuksilla ja et voi lis&#xE4;t&#xE4; niihin
+    osoitteita.
+    </para>
+</entry>
+  <entry id="menu-search" md5="8daf81ab28602d772358a174571f9ad2" state="uptodate">
+    <title>Valikko: Haku</title>
+    <heading>Haku</heading>
+    <para>
+    Voit hakea tietoja osoitekirjasta. T&#xE4;m&#xE4; on pikahaku ja voit etsi&#xE4;
+    tietoja vain muutaman kent&#xE4;n perusteella. K&#xE4;yt&#xE4;nn&#xF6;ss&#xE4; n&#xE4;m&#xE4;
+    etsitt&#xE4;v&#xE4;t kent&#xE4;t ovat nimi tai s&#xE4;hk&#xF6;postiosoite, mutta riippuen
+    yll&#xE4;pidon asettamista asetuksista k&#xE4;yt&#xF6;ss&#xE4; voi olla my&#xF6;s
+    muita kentti&#xE4;.
+    </para>
+    <para>
+    Jos sinun pit&#xE4;&#xE4; etsi&#xE4; osoitekirjasta k&#xE4;ytt&#xE4;en tarkempia
+    hakutermej&#xE4;, niin voit k&#xE4;ytt&#xE4;&#xE4; "<ref module="turba" entry="menu-advanced-search">Tarkempi haku</ref>" -toimintoa.
+    </para>
+</entry>
+  <entry id="menu-advanced-search" md5="6be703ffeba614f6ada151749fa44ab5" state="uptodate">
+    <title>Valikko: Tarkempi haku</title>
+    <heading>Tarkempi haku</heading>
+    <para>
+    Voit hakea tietoja osoitekirjasta. T&#xE4;ll&#xE4; toiminnolla voit hakea
+    osoitekirjasta k&#xE4;ytt&#xE4;en monia kentti&#xE4;. K&#xE4;ytett&#xE4;viss&#xE4; olevat kent&#xE4;t
+    riippuvat siit&#xE4; mist&#xE4; osoitekirjasta tietoja haetaan.
+    </para>
+</entry>
+  <entry id="menu-import" md5="3c6c40f2a6213e9fc1f9a77827bfb5d4" state="uptodate">
+    <title>Valikko: Tuo/Vie</title>
+    <heading>Tuo/Vie</heading>
+
+    <para>
+    T&#xE4;st&#xE4; valikosta voit tuoda tai vied&#xE4; tietoja henkil&#xF6;kohtaisesta
+    osoitekirjaasta. Voit k&#xE4;ytt&#xE4;&#xE4;&#xE4; CSV (Comma Separated Variable),
+    Outlook tai vCard tiedostomuotoja.
+    </para>
+
+    <heading>Tuonti</heading>
+    <para>
+    Tuodaksesi tietoja osoitekirjaan, sinulla pit&#xE4;&#xE4; olla tuotavat
+    tiedot tiedostona paikallisella tietokoneella (sill&#xE4; koneella,
+    jolla k&#xE4;yt&#xE4;t www-selainta). Ensin sinun kuitenkin pit&#xE4;&#xE4; vied&#xE4;
+    osoitekirjatiedot k&#xE4;ytt&#xE4;m&#xE4;st&#xE4;si s&#xE4;hk&#xF6;postiohjelmasta.
+    </para>
+
+    <para>
+    Jos k&#xE4;yt&#xE4;t Outlook Express -ohjelmaa:
+    </para>
+    <para>
+    1) Napsauta File &gt; Export &gt; Address Book
+    </para>
+    <para>
+    2) Valitse "Text File" (Comma Separated Values) "Address Book Export Tool" apuohjelmassa. Napsauta "Export".
+    </para>
+    <para>
+    3) "Save exported files as" kentt&#xE4;&#xE4;n, kirjoita osoitekirjasi nimi. Napsauta "Next".
+    </para>
+    <para>
+    4) Valitse vasemmalla olevasta valintalaatikolla kaikki ne kent&#xE4;t, jotka haluat vied&#xE4;. Napsauta "Finish".
+    </para>
+    <para>
+    5) Sinulle pit&#xE4;isi nyt tulla viesti 'Address book export process has completed'. Napsauta 'OK'.
+    </para>
+    <para>
+    6) Napsauta 'Close' apuohjelmassa 'Address Book Export Tool' ja sulje Outlook Express -ohjelma.
+    </para>
+
+    <tip>
+    Jos viety osoitekirjatiedosto ei ole sinun ty&#xF6;p&#xF6;yd&#xE4;ll&#xE4;si, ja k&#xE4;yt&#xE4;t Windows k&#xE4;ytt&#xF6;j&#xE4;rjestelm&#xE4;&#xE4;, niin napsauta Start &gt; Find or Search &gt; Files or Folders ja hae 3. kohdassa kalenteritiedostolle antamaasti tiedoston nime&#xE4; kiintolevylt&#xE4;. Ota talteen tieto siit&#xE4; mihin tuo tiedosto on talletettu.
+    </tip>
+
+    <para>
+    Tuodaksesi osoitekirjan ohjelmaan, niin avaa ensin osoitekirja
+    johon tuot tietoja. Napsauta "Tuo/Vie" -ikonia. Valitse tuonnissa
+    k&#xE4;ytett&#xE4;v&#xE4; tiedostomuoto. Napsauta "Selaa" -painiketta ja valitse
+    paikalliselta tietokoneelta tuotava osoitekirjatiedosto. Valitse
+    tiedosto ja napsauta "Tuo" -painiketta. T&#xE4;m&#xE4;n j&#xE4;lkeen tiedot
+    pit&#xE4;isi ilmesty&#xE4; osoitekirjaasi.
+    </para>
+    <tip>
+    Jos tiedostossa on monimutkaisempia merkint&#xF6;j&#xE4; tai kentti&#xE4;, jotka
+    eiv&#xE4;t t&#xE4;sm&#xE4;&#xE4; osoitekirjan kenttien kanssa, niin tieto ei
+    v&#xE4;ltt&#xE4;m&#xE4;tt&#xE4; siirry oikein. Sinun kannattaa aina tarkistaa
+    osoitekirjaan tuodut tiedot.
+    </tip>
+</entry>
+  <entry id="searching-search_results" md5="ffed8d72fa3b710df8e902c2493b254f" state="uptodate">
+    <title>Haku: Haun tulokset</title>
+    <heading>Haun tulokset</heading>
+    <para>
+    Jos haku onnistui, niin tulokset pit&#xE4;isi n&#xE4;ky&#xE4; kohdassa "Haun tulokset".
+    </para>
+    <para>
+    Napsauttamalla "S&#xE4;hk&#xF6;postiosoite" -kent&#xE4;&#xE4; avautuu viestinkirjotusikkuna, ja voit l&#xE4;hett&#xE4;&#xE4; viestin siihen osoitteeseen. Napsauttamalla "Nimi" -kentt&#xE4;&#xE4; tulee n&#xE4;kyviin osoitekirjamerkinn&#xE4;n tiedot ja voit muokata tai poistaa merkinn&#xE4;n.
+    </para>
+    <para>
+    Riippuen yll&#xE4;pidon asettamista asetuksista hakutulos voi olla kumulatiivinen. T&#xE4;m&#xE4; tarkoittaa ett&#xE4; jokaisen haun tulos lis&#xE4;t&#xE4;&#xE4;n olemassa oleviin tuloksiin. T&#xE4;m&#xE4; voi olla k&#xE4;tev&#xE4;&#xE4;, jos esimerkiksi olet tekem&#xE4;ss&#xE4; listoja. Voit poistaa hakujen tulokset napsauttamalla "Tyhjenn&#xE4; haku" -linkki&#xE4;.
+    </para>
+
+    <tip>
+    Listaa on mahdollista lajitella mink&#xE4; tahansa sarakkeen mukaan napsauttamalla sarakkeen otsikkoa. Voit muuttaa lajittelua nousevaksi tai laskevaksi napsauttamalla otsikon vieress&#xE4; olevaa nuoli ikonia.
+    </tip>
+</entry>
+</help>

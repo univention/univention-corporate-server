@@ -1,0 +1,264 @@
+# Danish translations for horde package
+# Danske oversættelser for pakke horde.
+# Copyright (C) 2009 Horde Project
+# This file is distributed under the same license as the horde package.
+# Niels Baggesen <nba@users.sourceforge.net>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: horde 33\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2009-04-17 07:16+0200\n"
+"PO-Revision-Date: 2009-04-26 12:11+0200\n"
+"Last-Translator: Niels Baggesen <nba@users.sourceforge.net>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: message.php:295
+#, php-format
+msgid "(%d of %d)"
+msgstr "(%d af %d)"
+
+#: lib/MIME/Contents.php:62
+msgid "Attachment"
+msgstr "Vedhæftelse"
+
+#: templates/compose/compose.inc:52
+msgid "Bcc: "
+msgstr "Bcc:"
+
+#: templates/compose/compose.inc:49
+msgid "Cc: "
+msgstr "Cc:"
+
+#: config/prefs.php.dist:11
+msgid "Configure how messages are displayed."
+msgstr "Indstil hvordan beskeder skal vises."
+
+#: compose.php:22
+msgid "Could not retrieve the message from the mail server."
+msgstr "Kunne ikke hente beskeden fra post-serveren."
+
+#: message.php:258
+msgid "Delete"
+msgstr "Slet"
+
+#: config/prefs.php.dist:23
+msgid "Display only the first 250 characters of a message initially?"
+msgstr "Start at vise de første 250 tegn af beskeden?"
+
+#: mailbox.php:189
+msgid "Do Not Sort by Thread"
+msgstr "Sorter IKKE efter tråd"
+
+#: lib/MIME/Viewer/status.php:69
+msgid "ERROR: Your message could not be delivered."
+msgstr "FEJL: Din besked kunne ikke afleveres."
+
+#: compose.php:88 templates/compose/compose.inc:59
+#: templates/compose/redirect.inc:19
+msgid "Expand Names"
+msgstr "Lav et opslag på navnene"
+
+#: mailbox.php:66
+msgid "First Page"
+msgstr "Første side"
+
+#: folders.php:60 lib/MIMP.php:36
+msgid "Folders"
+msgstr "Mapper"
+
+#: message.php:275
+msgid "Forward"
+msgstr "Videresend"
+
+#: mailbox.php:171
+msgid "From"
+msgstr "Fra"
+
+#: templates/compose/compose.inc:39
+msgid "Identity"
+msgstr "Profil"
+
+#: lib/MIMP.php:30
+msgid "Inbox"
+msgstr "Indbakke"
+
+#: mailbox.php:71
+msgid "Last Page"
+msgstr "Sidste side"
+
+#: lib/MIMP.php:44
+msgid "Log out"
+msgstr "Log ud"
+
+#: config/prefs.php.dist:9
+msgid "Mail Management"
+msgstr "Beskedhåndtering"
+
+#: compose.php:240 mailbox.php:201 message.php:252 message.php:296
+#: templates/mailbox/mailbox.inc:10 templates/folders/folders.inc:6
+#: templates/folders/folders.inc:29 templates/compose/compose.inc:4
+#: templates/compose/redirect.inc:4
+msgid "Menu"
+msgstr "Menu"
+
+#: compose.php:225
+msgid "Message Composition"
+msgstr "Skrivning af ny besked"
+
+#: config/prefs.php.dist:10
+msgid "Message Viewing"
+msgstr "Visning"
+
+#: compose.php:142
+msgid "Message redirected successfully."
+msgstr "Besked omadresseret."
+
+#: compose.php:215
+msgid "Message sent successfully."
+msgstr "Beskeden er sendt."
+
+#: templates/compose/compose.inc:56
+msgid "Message: "
+msgstr "Besked: "
+
+#: lib/MIMP.php:33
+msgid "New Message"
+msgstr "Ny besked"
+
+#: message.php:283
+msgid "Next"
+msgstr "Næste"
+
+#: mailbox.php:70
+msgid "Next Page"
+msgstr "Næste side"
+
+#: message.php:286
+msgid "Prev"
+msgstr "Forrige"
+
+#: mailbox.php:67
+msgid "Previous Page"
+msgstr "Forrige side"
+
+#: mailbox.php:164
+msgid "Purge Deleted"
+msgstr "Fjern slettede"
+
+#: compose.php:129 message.php:276 templates/compose/redirect.inc:18
+msgid "Redirect"
+msgstr "Omadresser"
+
+#: mailbox.php:158 templates/folders/folders.inc:31
+msgid "Refresh"
+msgstr "Opdater"
+
+#: message.php:265
+msgid "Reply"
+msgstr "Svar"
+
+#: message.php:272
+msgid "Reply All"
+msgstr "Svar til alle"
+
+#: message.php:268
+msgid "Reply to List"
+msgstr "Svar til liste"
+
+#: compose.php:151 templates/compose/compose.inc:58
+msgid "Send"
+msgstr "Send"
+
+#: message.php:316
+msgid "Show All"
+msgstr "Vis alle"
+
+#: folders.php:56
+msgid "Show All Folders"
+msgstr "Vis alle mapper"
+
+#: folders.php:56
+msgid "Show Subscribed Folders"
+msgstr "Vis kun aktiverede mapper"
+
+#: mailbox.php:186
+msgid "Sort by Thread"
+msgstr "Sorter efter tråd"
+
+#: mailbox.php:172
+msgid "Subject"
+msgstr "Emne"
+
+#: templates/compose/compose.inc:54
+msgid "Subject: "
+msgstr "Emne: "
+
+#: lib/MIME/Viewer/status.php:70
+msgid "The mail server generated the following error message:"
+msgstr "Mail-serveren genererede følgende fejl-besked:"
+
+#: lib/MIME/Viewer/status.php:79
+msgid "The mail server generated the following message:"
+msgstr "Mail-serveren genererede følgende besked:"
+
+#: lib/MIME/Viewer/alternative.php:49
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "Der er ikke nogen alternativ del, som kan vises indlejret."
+
+#: lib/MIME/Contents.php:91
+msgid "There are no parts that can be displayed inline."
+msgstr "Der er ingen dele, som kan vises indlejret."
+
+#: lib/MIME/Viewer/html.php:31 lib/MIME/Viewer/plain.php:29
+msgid "There was an error displaying this message part"
+msgstr "Der opstod en fejl under visning af denne beskeddel"
+
+#: mailbox.php:36
+msgid "There was an error viewing the requested message."
+msgstr "Der opstod en fejl under visning af den ønskede besked."
+
+#: lib/MIME/Viewer/status.php:114
+msgid ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+msgstr ""
+"Beskeden indeholder <em>mail delivery status</em> information, men formatet "
+"af beskeden er ukendt."
+
+#: message.php:289
+#, php-format
+msgid "To %s"
+msgstr "Til %s"
+
+#: templates/compose/compose.inc:47 templates/compose/redirect.inc:16
+msgid "To: "
+msgstr "To: "
+
+#: message.php:256
+msgid "Undelete"
+msgstr "Fortryd sletning"
+
+#: message.php:41
+msgid "Undisclosed Recipients"
+msgstr "Ikke viste modtagere"
+
+#: message.php:248
+msgid "View Full Message"
+msgstr "Vis hele beskeden"
+
+#: lib/MIME/Viewer/status.php:78
+msgid "Your message was successfully delivered."
+msgstr "Din besked er afleveret."
+
+#: mailbox.php:117 message.php:159
+msgid "[No Subject]"
+msgstr "[Intet emne]"
+
+#: templates/mailbox/mailbox.inc:7
+msgid "of"
+msgstr "af"

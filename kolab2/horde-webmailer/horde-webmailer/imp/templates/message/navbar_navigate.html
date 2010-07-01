@@ -1,0 +1,46 @@
+<table style="width:100%;border-collapse:collapse">
+ <tr class="mboxcontrol">
+  <td>
+<if:usepop><else:usepop>
+   <div class="leftFloat">
+    <label for="flag<tag:id />" class="hidden"><gettext>Mark as:</gettext></label>
+    <select id="flag<tag:id />" name="flag<tag:id />" onchange="flagMessage(<tag:id />);">
+     <option value="" selected="selected"><gettext>Mark as:</gettext></option>
+     <option value="0Seen"><gettext>Unseen</gettext></option>
+     <option value="Flagged"><gettext>Flagged For Followup</gettext></option>
+     <option value="0Flagged"><gettext>Not Flagged</gettext></option>
+     <option value="Answered"><gettext>Answered</gettext></option>
+     <option value="0Answered"><gettext>Unanswered</gettext></option>
+     <option value="Draft"><gettext>Draft</gettext></option>
+     <option value="0Draft"><gettext>Not Draft</gettext></option>
+    </select>
+   </div>
+</else:usepop></if:usepop>
+<if:move>
+   <div class="leftFloat" style="padding-left:15px">
+    <ul class="msgactions">
+     <li><tag:move /></li>
+     <li class="lastnavbar"><tag:copy /></li>
+    </ul>
+   </div>
+   <div class="leftFloat">
+    <label for="target<tag:id />" class="hidden"><gettext>Target Folder</gettext></label>
+    <select id="target<tag:id />" name="target<tag:id />" onchange="updateFolders(<tag:id />);">
+     <tag:options />
+    </select>
+   </div>
+ </if:move>
+   <div class="rightFloat nowrap">
+    <tag:back_to />&nbsp;
+    <if:prev><tag:prev /></if:prev><tag:prev_img /><if:prev></a></if:prev>
+    <if:next><tag:next /></if:next><tag:next_img /><if:next></a></if:next>
+   </div>
+  </td>
+ </tr>
+<if:isbottom>
+ <tr>
+  <td class="bottomborder" style="padding:0" colspan="3"></td>
+ </tr>
+</if:isbottom>
+</table>
+<if:isbottom></form></if:isbottom>

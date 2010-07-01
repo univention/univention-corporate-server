@@ -1,0 +1,494 @@
+# Romanian translations for Ingo package.
+# Copyright 2003-2009 The Horde Project
+# This file is distributed under the same license as the Ingo package.
+# Eugen Hoanca <eugenh@urban-grafx.ro>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Ingo 0.1\n"
+"POT-Creation-Date: 2003-03-04 13:46+0100\n"
+"PO-Revision-Date: 2005-05-28 13:01+0200\n"
+"Last-Translator: Eugen Hoanca <eugenh@urban-grafx.ro>\n"
+"Language-Team: Romanian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: templates/script/header.inc:13
+msgid "Activate this script"
+msgstr "Activeaza acest script"
+
+#: templates/vacation/vacation.inc:34
+msgid "Addresses not to send responses to"
+msgstr "Adresele la care sa nu se trimita raspunsuri"
+
+#: templates/rules/header.inc:26
+msgid "All of the following"
+msgstr "Toate din cele urmatoare"
+
+#: templates/rules/footer.inc:36
+msgid "Answered"
+msgstr "Raspunse"
+
+#: templates/rules/header.inc:29
+msgid "Any of the following"
+msgstr "Oricare din urmatoarele"
+
+#: config/prefs.php.dist:80
+msgid "Automatically update the script after each change?"
+msgstr "Improspatare automata a scriptului dupa fiecare schimbare?"
+
+#: config/tests.php.dist:71
+msgid "Bcc"
+msgstr "Bcc"
+
+#: config/tests.php.dist:18
+msgid "Begins With"
+msgstr "Incepe cu"
+
+#: templates/menu/menu.inc:7
+msgid "Blacklist"
+msgstr "Lista neagra"
+
+#: lib/Ingo.php:233
+msgid "Blacklisted Addresses"
+msgstr "Adrese din lista neagra"
+
+#: rule.php:127
+msgid "Case Sensitive"
+msgstr "Caz senzitiv"
+
+#: config/tests.php.dist:68
+msgid "Cc"
+msgstr "Cc"
+
+#: rule.php:168 vacation.php:25 blacklist.php:61
+msgid "Changes Saved"
+msgstr "Modificari salvate"
+
+#: config/tests.php.dist:6
+msgid "Contains"
+msgstr "Contin(e)"
+
+#: templates/filters/filter.inc:18
+msgid "Copy %s"
+msgstr "Copiere %s"
+
+#: templates/filters/footer.inc:11
+msgid "Copy Rule"
+msgstr "Regula copiere"
+
+#: filters.php:59
+msgid "Copy of %s"
+msgstr "Copie a %s"
+
+#: templates/filters/filter.inc:17
+msgid "Delete %s"
+msgstr "Stergere %s"
+
+#: templates/rules/filter.inc:27
+msgid "Delete Condition"
+msgstr "Stergere conditie"
+
+#: templates/filters/footer.inc:12
+msgid "Delete Rule"
+msgstr "Stergere regula"
+
+#: templates/blacklist/blacklist.inc:17
+msgid "Delete message completely"
+msgstr "Stergere completa mesaj"
+
+#: templates/rules/footer.inc:39
+msgid "Deleted"
+msgstr "Sters(e)"
+
+#: rule.php:42
+msgid "Deliver into my INBOX and Redirect to"
+msgstr "Livrare in INBOX si redirectare catre"
+
+#: rule.php:28
+msgid "Deliver this message into my INBOX"
+msgstr "Livrare a acestui mesaj in INBOX"
+
+#: rule.php:32
+msgid "Deliver to this mailbox"
+msgstr "Livrare inspre acest mailbox"
+
+#: rule.php:36
+msgid "Discard this message"
+msgstr "Renuntare la mesaj"
+
+#: templates/rules/footer.inc:8
+msgid "Do This:"
+msgstr "Fa asta:"
+
+#: templates/vacation/vacation.inc:44
+msgid "Do not send responses to messages that contain List-* headers"
+msgstr "Nu trimite raspunsuri catre mesaje care contin headere List-*"
+
+#: config/tests.php.dist:21
+msgid "Doesn't Begin With"
+msgstr "Nu incepe cu"
+
+#: config/tests.php.dist:9
+msgid "Doesn't Contain"
+msgstr "Nu contine"
+
+#: config/tests.php.dist:27
+msgid "Doesn't End With"
+msgstr "Nu se termina cu"
+
+#: config/tests.php.dist:33
+msgid "Doesn't Exist"
+msgstr "Nu exista"
+
+#: templates/filters/filter.inc:16 templates/filters/filter.inc:24
+msgid "Edit %s"
+msgstr "Editare %s"
+
+#: templates/filters/footer.inc:10
+msgid "Edit Rule"
+msgstr "Editare regula"
+
+#: templates/vacation/vacation.inc:19
+msgid "Enable Vacation messages"
+msgstr "Activare mesaje vacanta"
+
+#: config/tests.php.dist:24
+msgid "Ends With"
+msgstr "Se termina cu"
+
+#: templates/vacation/vacation.inc:29 templates/vacation/vacation.inc:38
+#: templates/blacklist/blacklist.inc:26
+msgid "Enter each address on a new line"
+msgstr "Introduceti fiecare adresa pe linie noua"
+
+#: templates/filters/header.inc:7
+msgid "Existing Rules"
+msgstr "Reguli existente"
+
+#: config/tests.php.dist:30
+msgid "Exists"
+msgstr "Exista"
+
+#: templates/rules/header.inc:8
+msgid "Filter Rule"
+msgstr "Regula filtru"
+
+#: templates/rules/header.inc:21
+msgid "For incoming message that match:"
+msgstr "Pentru mesaje care vin si se potrivesc:"
+
+#: config/tests.php.dist:65
+msgid "From"
+msgstr "De la"
+
+#: config/tests.php.dist:39
+msgid "Greater Than"
+msgstr "Mai mare ca"
+
+#: templates/menu/menu.inc:21
+msgid "Help"
+msgstr "Ajutor"
+
+#: templates/vacation/vacation.inc:28
+msgid ""
+"If you have more than one email address coming to this mailbox then specify "
+"them here."
+msgstr ""
+"Daca aveti mai multe adrese de email inspre acest mailbox trebuie "
+"specificate aici."
+
+#: templates/rules/footer.inc:33
+msgid "Important"
+msgstr "Important"
+
+#: templates/index/notconfigured.inc:4
+msgid "Ingo is not properly configured"
+msgstr "Ingo nu este corect configurat"
+
+#: config/tests.php.dist:12
+msgid "Is"
+msgstr "Este"
+
+#: config/tests.php.dist:15
+msgid "Isn't"
+msgstr "Nu este"
+
+#: config/prefs.php.dist:6
+msgid "Language"
+msgstr "Limba"
+
+#: config/tests.php.dist:36
+msgid "Less Than"
+msgstr "Mai putin decat"
+
+#: config/tests.php.dist:80
+msgid "List-ID"
+msgstr "Id-lista"
+
+#: lib/Sieve_Script.php:1082
+msgid "Mailbox Missing to deliver the message into"
+msgstr "Nu exista mailbox in care sa se livreze mesajul"
+
+#: templates/rules/footer.inc:26
+msgid "Mark Message as:"
+msgstr "Marcare mesaj ca:"
+
+#: templates/blacklist/blacklist.inc:18
+msgid "Mark message as deleted"
+msgstr "Marcare mesaj ca sters"
+
+#: lib/Sieve_Script.php:945
+msgid "Missing Address to Redirect message to"
+msgstr "Nu exista adresa pentru redirectare mesaj"
+
+#: lib/Sieve_Script.php:979
+msgid "Missing Reason for Reject"
+msgstr "Nu exista explicatie pentru respingere"
+
+#: lib/Sieve_Script.php:1149
+msgid "Missing reason in vacation."
+msgstr "Nu exista explicatie pentru vacanta."
+
+#: templates/filters/filter.inc:31
+msgid "Move Rule Down"
+msgstr "Muta regula in jos"
+
+#: templates/filters/filter.inc:28
+msgid "Move Rule Up"
+msgstr "Muta regula in sus"
+
+#: templates/blacklist/blacklist.inc:19
+msgid "Move message to folder:"
+msgstr "Muta mesaje in dosar:"
+
+#: templates/vacation/vacation.inc:24
+msgid "My email addresses"
+msgstr "Adresele mele de e-mail"
+
+#: rule.php:18 templates/filters/filter-none.inc:4
+#: templates/filters/footer.inc:9
+msgid "New Rule"
+msgstr "Regula noua"
+
+#: templates/filters/filter-none.inc:4
+msgid "No Filters. Click '%s' to create a new filter"
+msgstr "Nici un filtru. Clic pe '%s' pentru creare de filtru nou"
+
+#: lib/Sieve_Script.php:822
+msgid "No Headers Specified"
+msgstr "Headere nespecificate"
+
+#: lib/Sieve_Script.php:837
+msgid "No Strings Specified"
+msgstr "Siruri nespecificate"
+
+#: script.php:33
+msgid "No backend configured for this host"
+msgstr "Nu exista suport configurat pentru acest host"
+
+#: lib/Ingo.php:177
+msgid "No backend configured for this host - script not updated."
+msgstr "Nu exista suport pentru acest host - script neimprospatat."
+
+#: lib/Sieve_Script.php:648
+msgid "Not headers specified"
+msgstr "Headere nespecificate"
+
+#: templates/menu/menu.inc:13
+msgid "Options"
+msgstr "Optiuni"
+
+#: config/prefs.php.dist:13
+msgid "Options about script updating."
+msgstr "Optiuni pentru improspatare script."
+
+#: config/prefs.php.dist:11
+msgid "Other Options"
+msgstr "Alte optiuni"
+
+#: templates/vacation/vacation.inc:55
+msgid "Reason"
+msgstr "Explicatie"
+
+#: rule.php:39
+msgid "Redirect this message to"
+msgstr "Redirectare mesaj catre"
+
+#: rule.php:46
+msgid "Reject this message with reason"
+msgstr "Respingere acest mesaj cu explicatie"
+
+#: config/tests.php.dist:77
+msgid "Resent To"
+msgstr "Retrimitere catre"
+
+#: config/tests.php.dist:74
+msgid "Resent-from"
+msgstr "Retrimitere-de la"
+
+#: filters.php:42
+msgid "Rule Deleted"
+msgstr "Regula stearsa"
+
+#: templates/rules/header.inc:14
+msgid "Rule Name"
+msgstr "Nume regula"
+
+#: templates/menu/menu.inc:6
+msgid "Rules"
+msgstr "Reguli"
+
+#: templates/rules/footer.inc:58 templates/vacation/vacation.inc:67
+#: templates/blacklist/blacklist.inc:36
+msgid "Save"
+msgstr "Salvare"
+
+#: templates/menu/menu.inc:10 templates/script/header.inc:4
+msgid "Script"
+msgstr "Script"
+
+#: config/prefs.php.dist:12
+msgid "Script Updating"
+msgstr "Improspatare script"
+
+#: lib/Ingo.php:119
+msgid "Script successfully activated."
+msgstr "Script activat cu succes."
+
+#: templates/rules/footer.inc:30
+msgid "Seen"
+msgstr "Vazut(e)"
+
+#: lib/Ingo.php:80
+msgid "Select Target Folder"
+msgstr "Selectare dosar tinta"
+
+#: rule.php:87
+msgid "Select a field"
+msgstr "Selectare camp"
+
+#: templates/blacklist/blacklist.inc:16
+msgid "Select what should happen to mails from blacklisted addresses:"
+msgstr "Selectare comportament in caz de emailuri din lista neagra de adrese:"
+
+#: config/prefs.php.dist:22
+msgid "Select your preferred language:"
+msgstr "Selectare limba favorita:"
+
+#: config/tests.php.dist:62
+msgid "Sender"
+msgstr "Expeditor"
+
+#: config/prefs.php.dist:7
+msgid "Set your preferred display language."
+msgstr "Setare limba favorita."
+
+#: config/prefs.php.dist:71
+msgid "Show the script icon?"
+msgstr "Afisare pictograma script?"
+
+#: config/tests.php.dist:92
+msgid "Size"
+msgstr "Marime"
+
+#: templates/index/notconfigured.inc:39
+msgid "Some of Ingo's configuration files are missing:"
+msgstr "Anumite fisiere de configurare Ingo lipsesc:"
+
+#: templates/rules/footer.inc:51
+msgid "Stop Checking if this rule matches"
+msgstr "Nu verifica in caz ca regula se potriveste"
+
+#: config/tests.php.dist:59
+msgid "Subject"
+msgstr "Subiect"
+
+#: templates/vacation/vacation.inc:49
+msgid "Subject of response message:"
+msgstr "Subiect mesaj raspuns:"
+
+#: lib/Ingo.php:121
+msgid "There was an error activating this script. The driver said: %s"
+msgstr "S-a produs o eroare in activarea acestui script. Driverul raporteaza: %s"
+
+#: templates/index/notconfigured.inc:65
+msgid ""
+"This file contains all possible mail header tests that can be selected by "
+"the users."
+msgstr ""
+"Acest fisier contine toate testele posibile de headere de e-mail ce pot "
+"fi selectate de utilizatori."
+
+#: templates/index/notconfigured.inc:51
+msgid "This file contains preferences for Ingo."
+msgstr "Acest fisier contine preferinte pentru Ingo."
+
+#: templates/index/notconfigured.inc:58
+msgid "This file controls what backends are available from Ingo."
+msgstr "Acest fisier verifica ce suporturi exista pentru Ingo."
+
+#: templates/index/notconfigured.inc:44
+msgid ""
+"This is the main Sieve configuration file. It contains options for all Ingo "
+"scripts."
+msgstr ""
+"Acesta este principalul fisier de configurare Sieve. Contine optiunile pentru "
+"toate scripturile Ingo."
+
+#: config/tests.php.dist:56
+msgid "To"
+msgstr "Catre"
+
+#: prefs.php:33
+msgid "User Options"
+msgstr "Optiuni utilizator"
+
+#: templates/menu/menu.inc:8 templates/vacation/vacation.inc:7
+msgid "Vacation"
+msgstr "Vacanta"
+
+#: lib/Ingo.php:322
+msgid "Vacation Message"
+msgstr "Mesaj vacanta"
+
+#: templates/vacation/vacation.inc:13
+msgid ""
+"Vacation messages are automatic responses sent to people when they email "
+"you. They are normally used when you are away for a long period of time."
+msgstr ""
+"Mesajele de vacanta sunt raspunsuri automate catre cei care v-au trimis "
+"e-mail. Sunt folositoare atunci cand sunteti plecat mult timp."
+
+#: templates/blacklist/blacklist.inc:27
+msgid "Wildcard addresses are okay but use carefully! (eg *@example.com)"
+msgstr "Adresele generale sunt ok, dar utilizate cu grija! (eg *@exemplu.ro)"
+
+#: config/tests.php.dist:89
+msgid "X-Priority"
+msgstr "X-Prioritate"
+
+#: config/tests.php.dist:83
+msgid "X-Spam-Level"
+msgstr "X-Nivel-Spam"
+
+#: config/tests.php.dist:86
+msgid "X-Spam-Status"
+msgstr "X-Stare-Spam"
+
+#: config/prefs.php.dist:5
+msgid "Your Information"
+msgstr "Detalii personale"
+
+#: templates/rules/filter.inc:7
+msgid "and the"
+msgstr "si"
+
+#: templates/rules/filter.inc:7
+msgid "or the"
+msgstr "sau"
+
+#: templates/rules/filter.inc:9
+msgid "the"
+msgstr " "

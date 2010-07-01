@@ -1,0 +1,1024 @@
+# INGO ESTONIAN TRANSLATION 
+#
+# Toomas Aas <toomas.aas@mail.ee>, 2006
+msgid ""
+msgstr ""
+"Project-Id-Version: Ingo 1.1-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-05-29 15:49+0300\n"
+"PO-Revision-Date: 2008-07-30 19:05+0200\n"
+"Last-Translator: Alar SIng <alar.sing@err.ee>\n"
+"Language-Team: Estonian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-13\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: filters.php:223
+msgid " and"
+msgstr " ja"
+
+#: filters.php:223
+msgid " or"
+msgstr " või"
+
+#: templates/blacklist/blacklist.inc:17
+msgid "Action for blacklisted addresses:"
+msgstr "Tegevus mustas nimekirjas oleva aadressi korral:"
+
+#: templates/script/activate.inc:10
+msgid "Activate Script"
+msgstr "Aktiveeri skript"
+
+#: lib/Driver/ldap.php:229
+#, php-format
+msgid "Activating the script for \"%s\" failed: (%d) %s"
+msgstr "\"%s\" skripti aktiveerimine nurjus: (%d) %s"
+
+#: templates/filters/settings.inc:8
+msgid "Additional Settings"
+msgstr "Lisaseadistus"
+
+#: forward.php:43
+msgid "Address(es) to forward to:"
+msgstr "Aadress(id), kuhu edastada:"
+
+#: vacation.php:56
+msgid "Addresses to not send responses to:"
+msgstr "Ära saada teadet aadressidele:"
+
+#: vacation.php:50
+msgid "Advanced Settings"
+msgstr "Põhjalikud seadistused"
+
+#: templates/rule/header.inc:44
+msgid "All of the following"
+msgstr "Kõigile järgnevaist"
+
+#: lib/api.php:68
+msgid "Allow Rules"
+msgstr "Luba reeglid"
+
+#: templates/rule/footer.inc:34
+msgid "Answered"
+msgstr "Vastatud"
+
+#: templates/rule/header.inc:45
+msgid "Any of the following"
+msgstr "Mõnele järgnevaist"
+
+#: templates/filters/footer.inc:8
+msgid "Apply Filters"
+msgstr "Rakenda filtreid"
+
+#: filters.php:252
+msgid "Are you sure you want to delete this rule?"
+msgstr "Kas oled kindel, et soovid selle reegli kustutada?"
+
+#: config/prefs.php.dist:33
+msgid "Automatically update the script after each change?"
+msgstr "Uuenda skript automaatselt pärast iga muudatust"
+
+#: vacation.php:41
+msgid "Basic Settings"
+msgstr "Seadistused"
+
+#: config/fields.php.dist:47
+msgid "Bcc"
+msgstr "Pimekoopia"
+
+#: lib/Storage.php:346
+msgid "Begins with"
+msgstr "Algab"
+
+#: lib/Driver/ldap.php:106 lib/Driver/ldap.php:111
+#, php-format
+msgid "Bind failed: (%s) %s"
+msgstr "Sisenemine nurjus: (%s) %s"
+
+#: filters.php:174 templates/blacklist/blacklist.inc:7
+#: lib/Block/overview.php:95 lib/Block/overview.php:98
+msgid "Blacklist"
+msgstr "Must nimekiri"
+
+#: blacklist.php:104
+msgid "Blacklist Edit"
+msgstr "Musta nimekirja muutmine"
+
+#: blacklist.php:19
+msgid "Blacklist is not supported in the current filtering driver."
+msgstr "See filtridraiver ei võimalda musta nimekirja."
+
+#: lib/Script/sieve.php:269 lib/Script/procmail.php:209
+#: lib/Script/maildrop.php:197
+msgid "Blacklisted Addresses"
+msgstr "Aadressid mustas nimekirjas"
+
+#: config/fields.php.dist:100
+msgid "Body"
+msgstr "Sisu"
+
+#: filters.php:220 rule.php:322
+msgid "Case Sensitive"
+msgstr "Tõstutundlik"
+
+#: config/fields.php.dist:43
+msgid "Cc"
+msgstr "Koopia"
+
+#: forward.php:56 rule.php:141 spam.php:90 whitelist.php:38 blacklist.php:70
+#: vacation.php:81
+msgid "Changes saved."
+msgstr "Muudatused salvestatud."
+
+#: lib/Driver/ldap.php:73
+msgid "Connection failure"
+msgstr "Ühendus nurjus"
+
+#: lib/Storage.php:342
+msgid "Contains"
+msgstr "Sisaldab"
+
+#: filters.php:263 filters.php:264
+#, php-format
+msgid "Copy %s"
+msgstr "Kopeeri %s"
+
+#: lib/Storage.php:993 lib/Storage/sql.php:621
+#, php-format
+msgid "Copy of %s"
+msgstr "%s koopia"
+
+#: lib/Template.php:235
+#, php-format
+msgid "Could not save the compiled template file '%s'."
+msgstr "Ei õnnestunud salvestaja ja kompileerida malli faili '%s'."
+
+#: lib/Ingo.php:62
+msgid "Create new folder"
+msgstr "Loo uus kaust"
+
+#: lib/Script/procmail.php:342 lib/Script/maildrop.php:362
+msgid "DISABLED: "
+msgstr "VÄLJA LÜLITATUD:"
+
+#: templates/script/activate.inc:17
+msgid "Deactivate Script"
+msgstr "Deaktiveeri skript"
+
+#: filters.php:252 filters.php:253
+#, php-format
+msgid "Delete %s"
+msgstr "Kustuta %s"
+
+#: templates/rule/filter.inc:33
+msgid "Delete Condition"
+msgstr "Kustuta tingimus"
+
+#: lib/Storage.php:290
+msgid "Delete message completely"
+msgstr "Kustuta kiri tervenisti"
+
+#: templates/rule/footer.inc:36
+msgid "Deleted"
+msgstr "Kustutatud"
+
+#: lib/Storage.php:278
+msgid "Deliver into my Inbox"
+msgstr "Pane kiri minu INBOXi"
+
+#: lib/Storage.php:304
+msgid "Deliver into my Inbox and copy to"
+msgstr "Pane kiri minu INBOXi ja kopeeri kausta"
+
+#: lib/Storage.php:299
+msgid "Deliver into my Inbox and redirect to"
+msgstr "Pane kiri minu INBOXi ja saada aadressile"
+
+#: lib/Storage.php:284
+msgid "Deliver to folder"
+msgstr "Pane kiri kausta"
+
+#: config/fields.php.dist:83
+msgid "Destination (To,Cc,Bcc,etc)"
+msgstr "Siht (Kellele, Koopja, jne)"
+
+#: filters.php:277 filters.php:278
+#, php-format
+msgid "Disable %s"
+msgstr "Lülita välja %s"
+
+#: forward.php:99 spam.php:149 vacation.php:153 templates/rule/header.inc:26
+#: templates/whitelist/whitelist.inc:10 templates/blacklist/blacklist.inc:10
+msgid "Disabled"
+msgstr "Välja lülitatud"
+
+#: templates/filters/settings.inc:15
+msgid "Display detailed notification when each filter is applied?"
+msgstr "Näita iga reegli rakendamisel üksikasjalikku teadet"
+
+#: vacation.php:58
+msgid "Do not send responses to bulk or list messages?"
+msgstr "Ära saada vastuseid listidest tulnud kirjadele?"
+
+#: templates/rule/footer.inc:10
+msgid "Do this:"
+msgstr "Tee nii:"
+
+#: lib/Storage.php:347
+msgid "Doesn't begin with"
+msgstr "Ei alga"
+
+#: lib/Storage.php:343
+msgid "Doesn't contain"
+msgstr "Ei sisalda"
+
+#: lib/Storage.php:349
+msgid "Doesn't end with"
+msgstr "Ei lõpe"
+
+#: lib/Storage.php:351
+msgid "Doesn't exist"
+msgstr "Pole olemas"
+
+#: lib/Storage.php:354
+msgid "Doesn't match (with placeholders)"
+msgstr "Ei vasta tingimusele (koos muutujatega)"
+
+#: templates/filters/header.inc:26 lib/Block/overview.php:63
+#: lib/Block/overview.php:72 lib/Block/overview.php:87
+#: lib/Block/overview.php:97 lib/Block/overview.php:107
+msgid "Edit"
+msgstr "Muuda"
+
+#: filters.php:241 filters.php:243 filters.php:247 filters.php:248
+#, php-format
+msgid "Edit %s"
+msgstr "Muuda %s"
+
+#: filters.php:287 filters.php:288
+#, php-format
+msgid "Enable %s"
+msgstr "Lülita sisse %s"
+
+#: templates/filters/header.inc:28
+msgid "Enabled"
+msgstr "Toimib"
+
+#: vacation.php:45
+msgid "End of vacation:"
+msgstr "Äraoleku lõpp:"
+
+#: lib/Storage.php:348
+msgid "Ends with"
+msgstr "Lõpeb"
+
+#: lib/Storage.php:359
+msgid "Equal to"
+msgstr "Võrdub"
+
+#: lib/Driver/ldap.php:138 lib/Driver/ldap.php:148 lib/Driver/ldap.php:157
+#: lib/Driver/ldap.php:167
+#, php-format
+msgid "Error retrieving current script: (%d) %s"
+msgstr "Viga aktiivse skripti laadimisel: (%d) %s"
+
+#: blacklist.php:68
+msgid "Error saving changes."
+msgstr "Viga muudatuste salvestamisel."
+
+#: templates/filters/header.inc:20
+msgid "Existing Rules"
+msgstr "Olemasolevad reeglid"
+
+#: lib/Storage.php:350
+msgid "Exists"
+msgstr "On olemas"
+
+#: lib/Driver/ldap.php:143
+#, php-format
+msgid "Expected 1 object, got %d."
+msgstr "Oodati 1 objekti, aga on %d."
+
+#: lib/Driver/sivtest.php:204
+msgid "Failed to read from socket: "
+msgstr "Ebaõnnestus lugeda soklist:"
+
+#: lib/Driver/sivtest.php:199
+msgid "Failed to write to socket: "
+msgstr "Ebaõnnestus kirjutada soklisse:"
+
+#: lib/Driver/sivtest.php:194
+msgid "Failed to write to socket: (connection lost!)"
+msgstr "Ebaõnnestus kirjutada soklisse: (ühendus katkes!)"
+
+#: templates/rule/filter.inc:10
+msgid "Field"
+msgstr "Väli"
+
+#: templates/filters/settings.inc:22
+msgid "Filter All Messages"
+msgstr "Filtreeri kõik kirjad"
+
+#: templates/filters/settings.inc:24
+msgid "Filter Only Seen Messages"
+msgstr "Filtreeri ainult loetud kirjad"
+
+#: templates/filters/settings.inc:23
+msgid "Filter Only Unseen Messages"
+msgstr "Filtreeri ainult lugemata kirjad"
+
+#: templates/filters/settings.inc:20
+msgid "Filter Options"
+msgstr "Filtreerimise seadistus"
+
+#: templates/rule/header.inc:25
+msgid "Filter Rule"
+msgstr "Filtreerimisreegel"
+
+#: filters.php:139
+msgid "Filter Rules"
+msgstr "Filtreerimis reeglid"
+
+#: script.php:54
+msgid "Filter Script Display"
+msgstr "Filtreerimisskripti esitus"
+
+#: lib/Ingo.php:379
+msgid "Filter _Rules"
+msgstr "Filtreerimis_reeglid"
+
+#: lib/Script/imap.php:348
+#, php-format
+msgid "Filter activity: %s message(s) have been copied to the folder \"%s\"."
+msgstr "Filtreerimine: %s kirja kopeeritud kausta \"%s\"."
+
+#: lib/Script/imap.php:334
+#, php-format
+msgid "Filter activity: %s message(s) have been deleted."
+msgstr "Filtreerimine: %s kirja kustutatud."
+
+#: lib/Script/imap.php:312
+#, php-format
+msgid "Filter activity: %s message(s) have been moved to the folder \"%s\"."
+msgstr "Filtreerimine: %s kirja tõstetud kausta \"%s\"."
+
+#: lib/Script/imap.php:206
+#, php-format
+msgid "Filter activity: %s message(s) that matched the blacklist were deleted."
+msgstr "Filtreerimine: %s kirja kustutatud musta nimekirja alusel."
+
+#: lib/Script/imap.php:345
+#, php-format
+msgid ""
+"Filter activity: The message \"%s\" from \"%s\" has been copied to the "
+"folder \"%s\"."
+msgstr "Filtreerimine: Kiri \"%s\" aadressilt \"%s\" kopeeritud kausta \"%s\"."
+
+#: lib/Script/imap.php:329
+#, php-format
+msgid "Filter activity: The message \"%s\" from \"%s\" has been deleted."
+msgstr "Filtreerimine: Kiri \"%s\" aadressilt \"%s\" kustutatud."
+
+#: lib/Script/imap.php:306
+#, php-format
+msgid ""
+"Filter activity: The message \"%s\" from \"%s\" has been moved to the folder "
+"\"%s\"."
+msgstr "Filtreerimine: Kiri \"%s\" aadressilt \"%s\" tõstetud kausta \"%s\"."
+
+#: rule.php:188
+msgid "Filter not found."
+msgstr "Filtrit ei leitud."
+
+#: templates/rule/footer.inc:32
+msgid "Flagged For Followup"
+msgstr "Lipustatud järgnevuseks"
+
+#: spam.php:74
+msgid "Folder to receive spam:"
+msgstr "Kaust kuhu SPAM tuleb:"
+
+#: templates/rule/header.inc:42
+msgid "For an incoming message that matches:"
+msgstr "Saabuva kirjaga, mis vastab:"
+
+#: forward.php:97 filters.php:192 lib/Block/overview.php:71
+#: lib/Block/overview.php:73
+msgid "Forward"
+msgstr "Edastus"
+
+#: lib/Script/sieve.php:222
+msgid "Forward Keep Action"
+msgstr "Edastamise tegevus"
+
+#: forward.php:18
+msgid "Forward is not supported in the current filtering driver."
+msgstr "Kasutatav filtridraiver ei võimalda edastamist."
+
+#: lib/Script/sieve.php:232 lib/Script/procmail.php:288
+#: lib/Script/maildrop.php:246
+msgid "Forwards"
+msgstr "Edastused"
+
+#: forward.php:104
+msgid "Forwards Edit"
+msgstr "Edastuste muutmine"
+
+#: config/fields.php.dist:39
+msgid "From"
+msgstr "Kellelt"
+
+#: lib/Script/sieve.php:2927
+msgid "From:"
+msgstr "Kellelt:"
+
+#: lib/Script/sieve.php:118
+msgid "Generated by Ingo (http://www.horde.org/ingo/)"
+msgstr "Tehtud Ingo (http://www.horde.org/ingo/) poolt"
+
+#: lib/Storage.php:357
+msgid "Greater than"
+msgstr "Suurem kui"
+
+#: lib/Storage.php:358
+msgid "Greater than or equal to"
+msgstr "Suurem või võrdne"
+
+#: rule.php:38
+msgid "Individual rules are not supported in the current filtering driver."
+msgstr "Kasutatav filtridraiver ei võimalda üksikuid reegleid."
+
+#: lib/Script/sieve.php:2521
+msgid "Inexistant mailbox specified for message delivery."
+msgstr "Püüad panna kirju olematusse kausta."
+
+#: lib/Storage.php:344
+msgid "Is"
+msgstr "On"
+
+#: lib/Storage.php:345
+msgid "Isn't"
+msgstr "Ei ole"
+
+#: forward.php:41
+msgid "Keep a copy of messages in this account?"
+msgstr "Jäta kirja koopia oma postkasti"
+
+#: lib/Driver/ldap.php:23
+msgid ""
+"LDAP support is required but the LDAP module is not available or not loaded."
+msgstr "Vajalik on LDAP toetus, kuid LDAP moodul puudub või pole laetud."
+
+#: lib/Storage.php:355
+msgid "Less than"
+msgstr "Väiksem kui"
+
+#: lib/Storage.php:356
+msgid "Less than or equal to"
+msgstr "Väiksem või võrdne"
+
+#: config/fields.php.dist:59
+msgid "List-ID"
+msgstr "List-ID"
+
+#: templates/blacklist/blacklist.inc:20
+msgid "Mar_k message as deleted"
+msgstr "Mär_gi kiri kustutatuks"
+
+#: templates/rule/footer.inc:25
+msgid "Mark message as:"
+msgstr "Märgi kiri:"
+
+#: templates/rule/filter.inc:23
+msgid "Match type"
+msgstr "Vastavus tüüp"
+
+#: lib/Storage.php:353
+msgid "Matches (with placeholders)"
+msgstr "Vastab (koos muutujatega)"
+
+#: lib/api.php:71
+msgid "Maximum Number of Rules"
+msgstr "Reeglite suurim arv"
+
+#: lib/Storage.php:507
+#, php-format
+msgid ""
+"Maximum number of blacklisted addresses exceeded (Total addresses: %s, "
+"Maximum addresses: %s).  Could not add new addresses to blacklist."
+msgstr ""
+"Musta nimekirja suuruse piirang ületatud (Aadresse kokku: %s, piirang %s). "
+"Rohkem aadresse ei saanud lisada."
+
+#: lib/Storage.php:560
+#, php-format
+msgid ""
+"Maximum number of whitelisted addresses exceeded (Total addresses: %s, "
+"Maximum addresses: %s).  Could not add new addresses to whitelist."
+msgstr ""
+"Valge nimekirja suuruse piirang ületatud (Aadresse kokku: %s, piirang %s). "
+"Rohkem aadresse ei saanud lisada."
+
+#: spam.php:71
+msgid ""
+"Messages with a likely spam score greater than or equal to this number will "
+"be treated as spam."
+msgstr ""
+"Kiri oletava spami tunnustega rohkem või sama selle numbriga koheldakse kui "
+"spami."
+
+#: lib/Script/sieve.php:2941
+msgid "Missing address to notify"
+msgstr "Teavituse aadress puudub"
+
+#: lib/Script/sieve.php:2322
+msgid "Missing address to redirect message to"
+msgstr "Edastamise aadress puudub"
+
+#: lib/Script/sieve.php:2368
+msgid "Missing reason for reject"
+msgstr "Puudub tagasilükkamise põhjus"
+
+#: lib/Script/sieve.php:2671
+msgid "Missing reason in vacation."
+msgstr "Äraoleku põhjendus puudub."
+
+#: templates/filters/header.inc:32
+msgid "Move"
+msgstr "Järjesta"
+
+#: filters.php:156 filters.php:273
+msgid "Move Rule Down"
+msgstr "Nihuta reeglit allapoole"
+
+#: filters.php:157 filters.php:272
+msgid "Move Rule Up"
+msgstr "Nihuta reeglit ülespoole"
+
+#: vacation.php:53
+msgid "My email addresses:"
+msgstr "Minu e-posti aadressid:"
+
+#: templates/filters/filter-none.inc:3 templates/filters/footer.inc:6
+#: lib/Storage.php:889
+msgid "New Rule"
+msgstr "Uus reegel"
+
+#: lib/Ingo.php:230 lib/Ingo.php:232
+#, php-format
+msgid "No \"%s\" element found in backend configuration."
+msgstr "Alusrakenduse seadistuses ei leitud elementi \"%s\"."
+
+#: lib/Ingo.php:223
+msgid "No backend configured for this host"
+msgstr "Alusrakendus ei ole sellel serveril seadistatud"
+
+#: lib/Ingo.php:199
+msgid "No backends configured in backends.php"
+msgstr "Failis backends.php pole ühtki alusrakendust seadistatud"
+
+#: templates/filters/filter-none.inc:3
+#, php-format
+msgid "No filters. Click \"%s\" to create a new filter."
+msgstr "Reegleid ei ole. Uue reegli loomiseks klõpsa \"%s\"."
+
+#: lib/Script/sieve.php:1679 lib/Script/sieve.php:1828
+#: lib/Script/sieve.php:2044
+msgid "No headers specified"
+msgstr "Päiseid pole määratud"
+
+#: script.php:69
+msgid "No script generated."
+msgstr "Skripti ei loodud."
+
+#: lib/Script/sieve.php:2060 lib/Script/sieve.php:2144
+msgid "No strings specified"
+msgstr "Sõnu pole määratud"
+
+#: lib/Storage.php:360
+msgid "Not equal to"
+msgstr "Erineb"
+
+#: lib/Storage.php:320
+msgid "Notify email address"
+msgstr "Saada teavitus aadressile"
+
+#: vacation.php:60
+msgid "Number of days between vacation replies:"
+msgstr "Päe_vade arv äraolekuteadete vahel:"
+
+#: lib/Storage.php:314
+msgid "Only flag the message"
+msgstr "Muuda ainult kirja atribuute"
+
+#: config/prefs.php.dist:19
+msgid "Options about script updating."
+msgstr "Skriptis muudatuste tegemise seaded."
+
+#: config/prefs.php.dist:17
+msgid "Other Options"
+msgstr "Muud seaded"
+
+#: lib/Block/overview.php:3
+msgid "Overview"
+msgstr "Ülevaade"
+
+#: config/fields.php.dist:91
+msgid "Participant (From,To,etc)"
+msgstr "Osavõtjad (Kellelt, Kellele, jne)"
+
+#: templates/javascript/new_folder.js:7
+msgid "Please enter the name of the new folder:"
+msgstr "Sisesta uue kausta nimi:"
+
+#: vacation.php:48
+msgid "Reason:"
+msgstr "Põhjus"
+
+#: config/fields.php.dist:63
+msgid "Received"
+msgstr "Saabunud"
+
+#: lib/Storage.php:295
+msgid "Redirect to"
+msgstr "Edasta aadressile"
+
+#: lib/Storage.php:352
+msgid "Regular expression"
+msgstr "Regulaaravaldis"
+
+#: lib/Storage.php:310
+msgid "Reject with reason"
+msgstr "Lükka tagasi põhjusega"
+
+#: config/fields.php.dist:51
+msgid "Resent-From"
+msgstr "Saada uuesti Kellelt"
+
+#: config/fields.php.dist:55
+msgid "Resent-To"
+msgstr "Saada uuesti kellele"
+
+#: templates/rule/footer.inc:61
+msgid "Return to Filters List"
+msgstr "Tagasi filtrite nimekirja"
+
+#: forward.php:34 forward.php:88 spam.php:62 spam.php:130 vacation.php:34
+#: vacation.php:117 templates/whitelist/whitelist.inc:24
+#: templates/blacklist/blacklist.inc:42
+msgid "Return to Rules List"
+msgstr "Tagasi reeglite nimekirja"
+
+#: templates/filters/header.inc:27
+msgid "Rule"
+msgstr "Reegel"
+
+#: filters.php:78
+msgid "Rule Copied"
+msgstr "Reegel kopeeritud"
+
+#: filters.php:57
+msgid "Rule Deleted"
+msgstr "Reegel kustutatud"
+
+#: forward.php:72 filters.php:94 spam.php:106 vacation.php:97
+msgid "Rule Disabled"
+msgstr "Reegel välja lülitatud"
+
+#: forward.php:63 filters.php:99 spam.php:97 vacation.php:88
+msgid "Rule Enabled"
+msgstr "Reegel sisse lülitatud"
+
+#: templates/rule/header.inc:33
+msgid "Rule Name:"
+msgstr "Reegli nimi:"
+
+#: lib/Script/sieve.php:2929
+msgid "Rule:"
+msgstr "Reegel:"
+
+#: lib/Driver/ldap.php:86
+#, php-format
+msgid "STARTTLS failed: (%s) %s"
+msgstr "STARTTLS nurjus: (%s) %s"
+
+#: lib/Ingo.php:393
+msgid "S_pam"
+msgstr "Spam"
+
+#: forward.php:45 spam.php:79 vacation.php:62 templates/rule/footer.inc:60
+#: templates/whitelist/whitelist.inc:23 templates/blacklist/blacklist.inc:41
+msgid "Save"
+msgstr "Salvesta"
+
+#: templates/filters/settings.inc:31
+msgid "Save Settings"
+msgstr "Salvesta seadistus"
+
+#: forward.php:66 forward.php:84 spam.php:100 spam.php:126 vacation.php:91
+#: vacation.php:113
+msgid "Save and Disable"
+msgstr "Salvesta ja Lülita välja"
+
+#: forward.php:57 forward.php:86 spam.php:91 spam.php:128 vacation.php:82
+#: vacation.php:115
+msgid "Save and Enable"
+msgstr "Salvesta ja Aktiveeri"
+
+#: templates/script/header.inc:2
+msgid "Script"
+msgstr "Skript"
+
+#: config/prefs.php.dist:18
+msgid "Script Updating"
+msgstr "Skripti uuendamine"
+
+#: lib/Ingo.php:175
+msgid "Script not updated."
+msgstr "Skripti ei muudetud."
+
+#: lib/Ingo.php:146
+msgid "Script successfully activated."
+msgstr "Skripti aktiveerimine õnnestus."
+
+#: lib/Ingo.php:145
+msgid "Script successfully deactivated."
+msgstr "Skripti deaktiveerimine õnnestus."
+
+#: templates/rule/footer.inc:30
+msgid "Seen"
+msgstr "Loetud"
+
+#: rule.php:218
+msgid "Select a field"
+msgstr "Vali väli"
+
+#: templates/menu.inc:6 templates/menu.inc:8
+msgid "Select ruleset to display:"
+msgstr "Vali reeglid mida näidata:"
+
+#: rule.php:347 templates/blacklist/blacklist.inc:23 lib/Ingo.php:59
+msgid "Select target folder"
+msgstr "Vali sihtkaust"
+
+#: rule.php:255
+msgid "Self-Defined Header"
+msgstr "Muu päis"
+
+#: config/fields.php.dist:35
+msgid "Sender"
+msgstr "Saatja"
+
+#: filters.php:118
+msgid "Settings successfully updated."
+msgstr "Seadistus muudetud."
+
+#: templates/script/activate.inc:24
+msgid "Show Active Script"
+msgstr "Näita aktiivset skripti"
+
+#: templates/script/activate.inc:31
+msgid "Show Current Script"
+msgstr "Näita kehtivat skripti"
+
+#: spam.php:18
+msgid "Simple spam filtering is not supported in the current filtering driver."
+msgstr "Spami eemaldamine ei ole toeatud hetkege reegli draiveri poolt."
+
+#: config/fields.php.dist:95
+msgid "Size"
+msgstr "Suurus"
+
+#: config/fields.php.dist:87
+msgid "Source (From,Reply-to,etc)"
+msgstr "Lähe (Kelletl, Vastus, jne)"
+
+#: filters.php:198 lib/Block/overview.php:105 lib/Block/overview.php:108
+#: lib/Script/sieve.php:425 lib/Script/maildrop.php:301
+msgid "Spam Filter"
+msgstr "Spami filter"
+
+#: spam.php:147 spam.php:154
+msgid "Spam Filtering"
+msgstr "Spami filtrid"
+
+#: spam.php:71
+msgid "Spam Level:"
+msgstr "Spami Level:"
+
+#: vacation.php:43
+msgid "Start of vacation:"
+msgstr "Äraoleku algus:"
+
+#: templates/rule/footer.inc:50
+msgid "Stop checking if this rule matches?"
+msgstr "Kui vastab sellele reeglile, katkesta kontroll"
+
+#: config/fields.php.dist:31
+msgid "Subject"
+msgstr "Teema"
+
+#: vacation.php:46
+msgid "Subject of vacation message:"
+msgstr "Äraolekuteate teema:"
+
+#: lib/Script/sieve.php:2928
+msgid "Subject:"
+msgstr "Teema:"
+
+#: lib/api.php:103
+#, php-format
+msgid "The address \"%s\" has been added to your blacklist."
+msgstr "Aadress \"%s\" lisati musta nimekirja."
+
+#: lib/api.php:126
+#, php-format
+msgid "The address \"%s\" has been added to your whitelist."
+msgstr "Aadress \"%s\" lisati valgesse nimekirja."
+
+#: lib/Ingo.php:141
+msgid "The driver said: "
+msgstr "Draiver ütles: "
+
+#: lib/Ingo.php:140
+msgid "There was an error activating the script."
+msgstr "Skripti aktiveerimisel tekkis viga."
+
+#: lib/Ingo.php:139
+msgid "There was an error deactivating the script."
+msgstr "Skripti deaktiveerimisel tekkis viga."
+
+#: config/fields.php.dist:27
+msgid "To"
+msgstr "Kellele"
+
+#: templates/filters/filter.html:32
+msgid "To:"
+msgstr "Kellele:"
+
+#: lib/Script.php:126
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "%s kirjelduse laadimine nurjus."
+
+#: templates/rule/filter.inc:15
+msgid "User header"
+msgstr "Kasutaja päis"
+
+#: filters.php:186 vacation.php:151 lib/Block/overview.php:61
+#: lib/Block/overview.php:64 lib/Script/sieve.php:399
+#: lib/Script/procmail.php:268 lib/Script/maildrop.php:276
+msgid "Vacation"
+msgstr "Äraolek"
+
+#: vacation.php:158
+msgid "Vacation Edit"
+msgstr "Äraolekuteate muutmine"
+
+#: vacation.php:18
+msgid "Vacation is not supported in the current filtering driver."
+msgstr "Kasutatav filtreerimisdraiver ei võimalda äraolekuteadet."
+
+#: rule.php:353
+msgid "Value"
+msgstr "Väärtus"
+
+#: templates/whitelist/whitelist.inc:16
+msgid "Wh_itelist addresses:"
+msgstr "Aadressid valges nimekirjas:"
+
+#: filters.php:180 templates/whitelist/whitelist.inc:8
+#: lib/Block/overview.php:85 lib/Block/overview.php:88
+msgid "Whitelist"
+msgstr "Valgenimekiri"
+
+#: whitelist.php:57
+msgid "Whitelist Edit"
+msgstr "Valge nimekirja muutmine"
+
+#: whitelist.php:20
+msgid "Whitelist is not supported in the current filtering driver."
+msgstr "Kasutatav filtreerimisdraiver ei võimalda valget nimekirja."
+
+#: lib/Script/sieve.php:329 lib/Script/procmail.php:236
+#: lib/Script/maildrop.php:224
+msgid "Whitelisted Addresses"
+msgstr "Aadressid valges nimekirjas"
+
+#: config/fields.php.dist:79
+msgid "X-Priority"
+msgstr "X-Priority"
+
+#: config/fields.php.dist:67
+msgid "X-Spam-Level"
+msgstr "X-Spam-Level"
+
+#: config/fields.php.dist:71
+msgid "X-Spam-Score"
+msgstr "X-Spam-Score"
+
+#: config/fields.php.dist:75
+msgid "X-Spam-Status"
+msgstr "X-Spam-Status"
+
+#: filters.php:71 rule.php:172
+#, php-format
+msgid "You are not allowed to create more than %d rules."
+msgstr "Sa ei saa luua rohkem kui %d reeglit."
+
+#: filters.php:63 rule.php:23
+msgid "You are not allowed to create or edit custom rules."
+msgstr "Sa ei saa luua või muuta kohandatud reegleid."
+
+#: rule.php:96
+#, php-format
+msgid "You cannot create empty conditions. Please fill in a value for \"%s\"."
+msgstr "Ei saa tekkitada tühja vastet. Palun täida väärtus \"%s\"."
+
+#: filters.php:52 rule.php:151
+msgid "You do not have permission to delete filter rules."
+msgstr "Sul puuduvad õigused filtrite kustutamiseks."
+
+#: filters.php:45 filters.php:112 filters.php:123 rule.php:58 rule.php:165
+msgid "You do not have permission to edit filter rules."
+msgstr "Sul puuduvad õigused filtrite muutmiseks"
+
+#: lib/Script/sieve.php:2926
+msgid "You have received a new message"
+msgstr "Sulle on uus kiri"
+
+#: lib/Script/imap.php:307 lib/Script/imap.php:330 lib/Script/imap.php:345
+msgid "[No Subject]"
+msgstr "[Teema puudub]"
+
+#: lib/Ingo.php:384
+msgid "_Blacklist"
+msgstr "_Mustnimekiri"
+
+#: templates/blacklist/blacklist.inc:18
+msgid "_Delete message completely"
+msgstr "_Kustuta kiri tervenisti"
+
+#: templates/blacklist/blacklist.inc:32
+msgid "_Enter each address on a new line:"
+msgstr "_Kirjuta iga aadress omaette reale:"
+
+#: lib/Ingo.php:390
+msgid "_Forward"
+msgstr "_Edastus"
+
+#: templates/blacklist/blacklist.inc:22
+msgid "_Move message to folder:"
+msgstr "_Tõsta kiri kausta:"
+
+#: lib/Ingo.php:399
+msgid "_Permissions"
+msgstr "Õig_used"
+
+#: lib/Ingo.php:396
+msgid "_Script"
+msgstr "_Skript"
+
+#: lib/Ingo.php:387
+msgid "_Vacation"
+msgstr "Äraoleku teade"
+
+#: lib/Ingo.php:381
+msgid "_Whitelist"
+msgstr "_Valgenimekiri"
+
+#: lib/Block/overview.php:54
+msgid "active"
+msgstr "aktiivne"
+
+#: templates/rule/filter.inc:4
+msgid "and"
+msgstr "ja"
+
+#: templates/filters/filter.html:19
+msgid "disabled - click to enable"
+msgstr "välja lülitatud - klõpsa sisse lülitamiseks"
+
+#: filters.php:218
+msgid "field"
+msgstr "väli"
+
+#: lib/Block/overview.php:52
+msgid "inactive"
+msgstr "mitteaktiivne"
+
+#: lib/Script/maildrop.php:134
+msgid "maildrop script generated by Ingo"
+msgstr "Ingo genereeritud maildrop skript"
+
+#: filters.php:218
+msgid "match"
+msgstr "vastab"
+
+#: templates/rule/filter.inc:4
+msgid "or"
+msgstr "või"
+
+#: lib/Script/procmail.php:130
+msgid "procmail script generated by Ingo"
+msgstr "Ingo genereeritud procmail skript"

@@ -1,7 +1,7 @@
 # Macros
 %define         V_package turba
 %define         V_version 2.3.3
-%define         V_release 20100228
+%define         V_release 20100607
 
 # Package Information
 Name:		%{V_package}
@@ -24,7 +24,7 @@ Source5:        webclient-turba_mime_drivers.php.template
 Source6:        webclient-turba_prefs.php.template
 Source7:        webclient-turba_sources.php.template
 Source8:        10-kolab_conf_base.php
-Source9:        10-kolab_conf_base.php
+Source9:        10-kolab_sources_base.php
 Source10:       conf.php
 
 # List of Patches
@@ -39,6 +39,7 @@ BuildPreReq:  OpenPKG, openpkg >= 20070603
 BuildPreReq:  php, php::with_pear = yes
 PreReq:       horde >= 3.3.6
 PreReq:       PEAR-Net_LDAP
+PreReq:       Horde_VFS
 
 AutoReq:      no
 AutoReqProv:  no

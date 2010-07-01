@@ -1,0 +1,1694 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: IMP v3.2.2\n"
+"POT-Creation-Date: 2004-01-09 09:37+0700\n"
+"PO-Revision-Date: 2004-01-09 13:56+0700\n"
+"Last-Translator: Slamin <slamin@unej.ac.id>\n"
+"Language-Team: UPT TI UNEJ <uptti@unej.ac.id>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "      To: "
+msgstr "      Kepada: "
+
+msgid "    Date: "
+msgstr "    Tanggal: "
+
+msgid "    From: "
+msgstr "    Dari: "
+
+msgid " - $nm new message"
+msgstr " - $nm pesan baru"
+
+msgid " - $nm new messages"
+msgstr " - $nm pesan-pesan baru"
+
+msgid " Subject: "
+msgstr " Perihal: "
+
+msgid " in "
+msgstr " pada "
+
+msgid "#"
+msgstr "#"
+
+#, c-format
+msgid "%d of %d Messages"
+msgstr "%d dari %d Pesan"
+
+#, c-format
+msgid "%d to %d of %d Messages"
+msgstr "%d ke %d dari %d Pesan"
+
+#, c-format
+msgid "%s already exists. Your %s folder was not renamed."
+msgstr "%s sudah ada. Nama folder %s anda tidak berubah."
+
+#, c-format
+msgid "%s does not appear to be a valid mailbox."
+msgstr "%s tidak muncul sebagai mailbox yang benar."
+
+#, c-format
+msgid "%s folder being renamed at the start of the month."
+msgstr "Nama folder %s sedang diubah pada awal bulan."
+
+#, c-format
+msgid "%s is already empty."
+msgstr "%s sudah kosong."
+
+#, c-format
+msgid "%s: %s (%d&nbsp;of&nbsp;%d)"
+msgstr "%s: %s (%d&nbsp;of&nbsp;%d)"
+
+msgid "(Apply these changes and move to next screen.)"
+msgstr "(Lakukan perubahan dan pindah ke layar berikutnya.)"
+
+msgid "(Discard all changes and return to the compose screen.)"
+msgstr "(Abaikan semua perubahan dan kembali ke layar pengiriman.)"
+
+msgid ""
+"(Return to the compose screen after applying all changes made thus far.  "
+"Changes on the current screen will NOT be applied.)"
+msgstr ""
+"(Kembali ke layar pengiriman setelah melakukan semua perubahan. Perubahan "
+"pada layar ini tidak akan dilakukan.)"
+
+msgid "* Add these by clicking OK *"
+msgstr "* Tambah dengan klik OK *"
+
+msgid "* Please select address(es) *"
+msgstr "* Silakan pilih alamat *"
+
+#, c-format
+msgid ""
+"<p><i>This message was written in a character set other than your own. If it "
+"is not displayed correctly, %sclick here</a> to open it in a new window.</"
+"i></p>\n"
+msgstr ""
+"<p><i>Pesan ini ditulis dengan kumpulan karakter selain punya anda. Jika "
+"tidak tampil dengan benar, %sklik disini</a> untuk membukanya pada sebuah "
+"window baru.</i></p>\n"
+
+msgid "Action"
+msgstr "Aksi"
+
+#, c-format
+msgid "Add to Addressbook (%s)"
+msgstr "Tambahkan ke Buku Alamat (%s)"
+
+msgid "Added an attachment."
+msgstr "Attachment ditambahkan."
+
+msgid "Address Book"
+msgstr "Buku Alamat"
+
+msgid "Addressbooks"
+msgstr "Buku alamat-alamat"
+
+msgid "All messages in the folder(s) will be lost!"
+msgstr "Semua pesan dalam folder itu akan hilang!"
+
+msgid ""
+"All messages in the following folder(s) will be downloaded into one MBOX "
+"file:"
+msgstr "Semua pesan dalam folder berikut akan didownload pada satu file MBOX: "
+
+#, c-format
+msgid ""
+"All messages in your \"%s\" folder older than %s days will be permanently "
+"deleted."
+msgstr ""
+"Semua pesan dalam folder \"%s\" yang lebih dari %s hari akan dihapus secara "
+"permanen."
+
+#, c-format
+msgid "All old sent-mail folders more than %s months old will be deleted."
+msgstr "Semua folder sent-mail lama yang lebih dari %s bulan akan dihapus."
+
+msgid "All"
+msgstr "Semua"
+
+msgid "Alternative"
+msgstr "Alternatif"
+
+msgid "An illegal value was specified."
+msgstr "Nilai ilegal telah terspesifikasi."
+
+msgid "An unknown error occured adding the new entry."
+msgstr "Kesalahan aneh terjadi pada penambahan entri baru."
+
+msgid "Answered messages"
+msgstr "Jawab pesan"
+
+msgid "Answered"
+msgstr "Jawab"
+
+msgid "Apply All Rules"
+msgstr "Lakukan Semua Aturan"
+
+msgid "Apply Filters on"
+msgstr "Aktifkan Filter"
+
+msgid "Apply filter rules upon logging on?"
+msgstr "Lakukan aturan filter pada saat login?"
+
+msgid "Apply filter rules when mailbox is refreshed?"
+msgstr "Lakukan aturan filter ketika mailbox dibuka ulang?"
+
+msgid "April"
+msgstr "April"
+
+msgid "Are you SURE you want to continue?"
+msgstr "Anda yakin ingin melanjutkan?"
+
+msgid "Are you completely sure you wish to continue?"
+msgstr "Anda sangat yakin ingin melanjutkan?"
+
+msgid "Are you sure you want to do this?"
+msgstr "Anda yakin ingin melakukan ini?"
+
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "Anda yakin ingin menghapus pesan-pesan ini secara PERMANEN?"
+
+msgid "Are you sure you wish to empty this folder?"
+msgstr "Anda yakin ingin mengosongkan folder ini?"
+
+msgid "Are you sure you wish to empty your trash folder?"
+msgstr "Anda yakin ingin mengosongkan folder trash ini?"
+
+msgid "Arrival Time"
+msgstr "Waktu Kedatangan"
+
+msgid "Ascending"
+msgstr "Urutan menaik"
+
+msgid "Attach"
+msgstr "Lampirkan"
+
+msgid "Attachment"
+msgstr "Lampiran"
+
+msgid "Attachments"
+msgstr "Lampiran-lampiran"
+
+msgid "August"
+msgstr "Agustus"
+
+msgid "Available Addressbooks:"
+msgstr "Buku alamat yang tersedia:"
+
+#, c-format
+msgid "Back to %s"
+msgstr "Kembali ke %s"
+
+msgid "Bcc"
+msgstr "Bcc"
+
+msgid "Blacklist"
+msgstr "Blacklist"
+
+msgid "Body"
+msgstr "Body"
+
+msgid "Both"
+msgstr "Keduanya"
+
+msgid "Cancel Message"
+msgstr "Batalkan Pesan"
+
+msgid "Cancel"
+msgstr "Batalkan"
+
+msgid "Cancelling this message will permanently discard its contents."
+msgstr "Membatalkan pesan ini akan mengabaikan isinya secara permanen."
+
+msgid "Cc"
+msgstr "Cc"
+
+msgid "Cc:"
+msgstr "Cc:"
+
+msgid "Change All"
+msgstr "Ubah Semua"
+
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr ""
+"Ubah pilihan tampilan seperti banyaknya pesan yang anda lihat pada masing-"
+"masing halaman dan bagaimana pesan-pesan diurutkan."
+
+msgid "Change mail server settings."
+msgstr "Ubah pengaturan mail server"
+
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr ""
+"Ubah nama, alamat, dan tandatangan yang dilihat orang ketika membaca dan "
+"membalas email anda."
+
+msgid "Change"
+msgstr "Ubah"
+
+msgid "Check Folder(s) for New Mail"
+msgstr "Cek Folder untuk Mail Baru"
+
+msgid "Checkbox"
+msgstr "Checkbox"
+
+msgid "Choose Action:"
+msgstr "Pilih Aksi:"
+
+msgid "Choose a mail server:"
+msgstr "Pilih mail server:"
+
+msgid "Choose the addressbook to use when adding addresses."
+msgstr "Pilih buku alamat yang digunakan ketika menambah alamat."
+
+msgid "Choose the order of addressbooks to search when expanding addresses."
+msgstr "Pilih urutan dari buku alamat yang dicari ketika mengembangkan alamat."
+
+#, c-format
+msgid "Cleared all messages from %s."
+msgstr "Kosongkan semua pesan dari %s."
+
+msgid "Click here for Secure HTTPS"
+msgstr "Klik disini untuk Secure HTTPS"
+
+msgid "Click here for Standard HTTP"
+msgstr "Klik disini untuk HTTP Standar"
+
+msgid ""
+"Click on one of your selected addressbooks and then select all fields to "
+"search."
+msgstr ""
+"Klik pada salah satu buku alamat pilihan anda kemudian pilih semua field "
+"untuk mencari."
+
+msgid "Closed Folder"
+msgstr "Folder Tertutup"
+
+msgid "Collapse All Folders"
+msgstr "Hapus Semua Folder"
+
+msgid "Collapse All"
+msgstr "Hapus Semua"
+
+msgid "Collapse Folder"
+msgstr "Hapus Folder"
+
+#, c-format
+msgid "Compose Message (%s)"
+msgstr "Kirim Pesan (%s)"
+
+msgid "Compose a message"
+msgstr "Kirim sebuah pesan"
+
+msgid "Compose messages in a separate window?"
+msgstr "Kirim pesan pada window terpisah?"
+
+msgid "Compose"
+msgstr "Kirim"
+
+msgid "Contact List"
+msgstr "Daftar Kontak"
+
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr ""
+"Kontrol jika mail baru akan dicek, dan apakah memberi tahu anda atau tidak "
+"jika mail datang."
+
+msgid "Copy"
+msgstr "Copy"
+
+msgid "Correct"
+msgstr "Benar"
+
+msgid "Corrected Text"
+msgstr "Teks Benar"
+
+#, c-format
+msgid "Could not delete messages from %s: %s"
+msgstr "Tidak bisa menghapus pesan dari %s: %s"
+
+msgid "Create Folder"
+msgstr "Buat Folder"
+
+msgid "Create a new drafts folder"
+msgstr "Buat folder drafts baru"
+
+msgid "Create a new sent mail folder"
+msgstr "Buat folder sent mail baru"
+
+msgid "Create a new trash folder"
+msgstr "Buat folder trash baru"
+
+msgid ""
+"Create filtering rules to organize your incoming mail, sort it into folders, "
+"and delete spam."
+msgstr ""
+"Buat aturan filter untuk mengatur pesan masuk anda, urutkan ke folder, dan "
+"hapus spam."
+
+msgid "Create"
+msgstr "Buat"
+
+msgid "Customize how you send mail and where drafts are saved."
+msgstr "Atur bagaimana anda kirim mail dan dimana drafts disimpan."
+
+#, c-format
+msgid "Customize maintenance operations run upon login to %s."
+msgstr "Atur operasi perawatan saat login pada %s."
+
+#, c-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Atur tugas yang dijalankan saat logon pada %s."
+
+msgid "Date"
+msgstr "Tanggal"
+
+msgid "December"
+msgstr "Desember"
+
+msgid "Default Identity"
+msgstr "Identitas Default"
+
+msgid "Default sorting criteria:"
+msgstr "Kriteria urutan yang default"
+
+msgid "Default sorting direction:"
+msgstr "Arah urutan yang default"
+
+msgid "Delete Folder(s)"
+msgstr "Hapus Folder"
+
+msgid "Delete messages"
+msgstr "Hapus pesan"
+
+msgid "Delete old sent-mail folders at beginning of month?"
+msgstr "Hapus folder sent-mail lama pada awal bulan?"
+
+msgid "Delete"
+msgstr "Hapus"
+
+msgid "Deleted an attachment."
+msgstr "Hapus lampiran."
+
+msgid "Deleted messages"
+msgstr "Pesan terhapus"
+
+msgid "Deleted"
+msgstr "Dihapus"
+
+msgid "Deleting and Moving Messages"
+msgstr "Menghapus dan Memindah Pesan"
+
+msgid "Descending"
+msgstr "Urut menurun"
+
+msgid "Dim signatures?"
+msgstr "Dim tandatangan?"
+
+msgid "Display Options"
+msgstr "Pilihan Tampilan"
+
+msgid ""
+"Display confirmation after sending a message? (only when not using a pop-up "
+"compose window)"
+msgstr ""
+"Tampilkan konfirmasi setelah mengirim pesan? (hanya jika tidak menggunakan "
+"window pengiriman pop-up)"
+
+msgid "Display message when filters have been applied?"
+msgstr "Tampilkan pesan jika sudah difilter?"
+
+msgid "Display pop-up notification of new mail?"
+msgstr "Tampilkan pemberitahuan pop-up dari mail baru?"
+
+msgid "Display"
+msgstr "Tampilkan"
+
+msgid "Do Not Check Folder(s) for New Mail"
+msgstr "Jangan Tandai Folder untuk Mail Baru"
+
+msgid "Do you want to open that folder?"
+msgstr "Apakah anda ingin membuka folder itu?"
+
+msgid "Done"
+msgstr "Sudah"
+
+#, c-format
+msgid "Download %s"
+msgstr "Download %s"
+
+msgid "Download Folder(s)"
+msgstr "Download Folder"
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Draft"
+msgstr "Draft"
+
+msgid "Drafts folder:"
+msgstr "Folder drafts"
+
+msgid "Edit your filter rules"
+msgstr "Edit aturan filter"
+
+msgid "Edit your identities"
+msgstr "Edit identitas anda"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Email Address"
+msgstr "Alamat Email"
+
+msgid "Empty Folder(s)"
+msgstr "Kosongkan Folder"
+
+msgid "Empty Trash folder"
+msgstr "Kosongkan folder Trash"
+
+msgid "Empty Trash"
+msgstr "Kosongkan Trash"
+
+msgid "End forwarded message"
+msgstr "Akhir pesan yang diteruskan"
+
+msgid "Enter the name for your new drafts folder"
+msgstr "Masukkan nama untuk folder drafts baru"
+
+msgid "Enter the name for your new sent mail folder"
+msgstr "Masukkan nama untuk folder sent mail baru"
+
+msgid "Enter the name for your new trash folder"
+msgstr "Masukkan nama untuk folder trash baru"
+
+#, c-format
+msgid "Entry \"%s\" was successfully added to the addressbook"
+msgstr "Entri \"%s\" telah ditambahkan ke buku alamat dengan sukses"
+
+msgid "Error"
+msgstr "Salah"
+
+msgid "Every 15 minutes"
+msgstr "Setiap 15 menit"
+
+msgid "Every 30 seconds"
+msgstr "Setiap 30 detik"
+
+msgid "Every 5 minutes"
+msgstr "Setiap 5 menit"
+
+msgid "Every half hour"
+msgstr "Setiap setengah jam"
+
+msgid "Every minute"
+msgstr "Setiap menit"
+
+msgid "Expand All Folders"
+msgstr "Kembangkan Semua Folder"
+
+msgid "Expand All"
+msgstr "Kembangkan Semua"
+
+msgid "Expand Folder"
+msgstr "Kembangkan Folder"
+
+msgid "Expand Names"
+msgstr "Kembangkan Nama"
+
+msgid "Expand the entire folder tree by default in the folders view?"
+msgstr "Kembangkan seluruh hirarki folder secara default pada tampilan folder?"
+
+msgid "February"
+msgstr "Pebruari"
+
+msgid "Field"
+msgstr "Field"
+
+msgid "Filename"
+msgstr "Namafile"
+
+#, c-format
+msgid "Filter Activity: The message \"%s\" from \"%s\" has been deleted."
+msgstr "Aktifitas Filter: Pesan \"%s\" dari \"%s\" sudah dihapus."
+
+#, c-format
+msgid ""
+"Filter Activity: The message \"%s\" from \"%s\" has been moved to the folder "
+"\"%s\"."
+msgstr ""
+"Aktifitas Filter: Pesan \"%s\" dari \"%s\" sudah dipindah ke folder \"%s\"."
+
+#, c-format
+msgid ""
+"Filter Activity: The message \"%s\" from \"%s\" has been moved to your Trash "
+"folder."
+msgstr ""
+"Aktifitas Filter: Pesan \"%s\" dari \"%s\" sudah dipindah ke folder Trash "
+
+msgid "Filter Rules"
+msgstr "Aturan Filter"
+
+msgid "Filter message content for profanity?"
+msgstr "Filter isi pesan untuk profanity?"
+
+msgid "Filters"
+msgstr "Filter"
+
+msgid "Find"
+msgstr "Cari"
+
+msgid "First Page"
+msgstr "Halaman Pertama"
+
+msgid "Folder Navigator"
+msgstr "Navigator Folder"
+
+msgid "Folder Prefix"
+msgstr "Prefix Folder"
+
+msgid "Folders"
+msgstr "Folder"
+
+msgid "Forward"
+msgstr "Teruskan"
+
+msgid "Forward:"
+msgstr "Teruskan:"
+
+#, c-format
+msgid "Forwarded message from %s"
+msgstr "Teruskan pesan dari %s"
+
+msgid "From Address"
+msgstr "Dari Alamat"
+
+msgid "From"
+msgstr "Dari"
+
+msgid "From:"
+msgstr "Dari:"
+
+msgid "Fwd:"
+msgstr "Fwd:"
+
+msgid "Help"
+msgstr "Bantuan"
+
+msgid "Hide Deleted"
+msgstr "Sembunyikan yang Dihapus"
+
+msgid "Hide Unsubscribed"
+msgstr "Sembunyikan tidak langganan"
+
+msgid "How to prefix quoted lines in a reply:"
+msgstr "Bagaimana baris diprefik dalam balasan:"
+
+msgid "IMP is not properly configured"
+msgstr "IMP tidak dikonfigurasi dengan sempurna"
+
+msgid "INBOX"
+msgstr "INBOX"
+
+msgid "Identities"
+msgstr "Identitas-identitas"
+
+msgid "Identity"
+msgstr "Identitas"
+
+msgid "Identity's name:"
+msgstr "Nama Indentitas"
+
+msgid "Ignore All"
+msgstr "Abaikan Semua"
+
+msgid "Ignore"
+msgstr "Abaikan"
+
+msgid "Important messages"
+msgstr "Pesan penting"
+
+msgid "Important"
+msgstr "Penting"
+
+msgid "Include original message in a reply?"
+msgstr "Masukkan pesan asli pada balasan?"
+
+msgid "Invalid character in e-mail address."
+msgstr "Karakter salah pada alamat e-mail."
+
+msgid "January"
+msgstr "Januari"
+
+msgid "July"
+msgstr "Juli"
+
+msgid "June"
+msgstr "Juni"
+
+msgid "Language"
+msgstr "Bahasa"
+
+msgid "Last Page"
+msgstr "Halaman Terakhir"
+
+#, c-format
+msgid "Last login: %s"
+msgstr "Login terakhir: %s"
+
+msgid "Last login: Never"
+msgstr "Login terakhir: Tidak pernah"
+
+#, c-format
+msgid "Log in to %s"
+msgstr "Masuk pada %s"
+
+msgid "Log in"
+msgstr "Masuk"
+
+msgid "Login Tasks"
+msgstr "Login Tugas"
+
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr ""
+"Login gagal karena beberapa alasan. Sangat mungkin username atau password "
+"yang anda masukkan salah."
+
+msgid "Logout"
+msgstr "Keluar"
+
+msgid "Mail Filters"
+msgstr "Filter Mail"
+
+msgid "Mail Management"
+msgstr "Manajemen Mail"
+
+msgid "Mailbox"
+msgstr "Mailbox"
+
+msgid "Maintenance Operations"
+msgstr "Operasi Perawatan"
+
+msgid "March"
+msgstr "Maret"
+
+msgid "Mark as:"
+msgstr "Tandai sebagai:"
+
+msgid "Mark different levels of quoting with different colors?"
+msgstr "Tandai perbedaan tingkat dengan warna yang berbeda?"
+
+msgid "May"
+msgstr "Mei"
+
+msgid "Message Composition"
+msgstr "Pengiriman Pesan"
+
+msgid "Message Date"
+msgstr "Tanggal Pesan"
+
+msgid "Message Search"
+msgstr "Cari Pesan"
+
+msgid "Message Size"
+msgstr "Ukuran Pesan"
+
+msgid "Message Source"
+msgstr "Sumber Pesan"
+
+msgid "Message Viewing"
+msgstr "Lihat Pesan"
+
+msgid "Message fields"
+msgstr "Field pesan"
+
+msgid "Message flags"
+msgstr "Flag pesan"
+
+msgid "Message folders"
+msgstr "Folder Pesan"
+
+msgid "Message sent successfully"
+msgstr "Pesan dikirim dengan sukses"
+
+msgid "Message sent successfully, but not saved to"
+msgstr "Pesan dikirim dengan sukses, tapi tidak disimpan"
+
+msgid "Message"
+msgstr "Pesan"
+
+msgid "Messages per page in the mailbox view."
+msgstr "Pesan per halaman pada tampilan mailbox."
+
+msgid "Messages to"
+msgstr "Pesan ke"
+
+msgid "Mime Type"
+msgstr "Jenis Mime"
+
+msgid "Modify"
+msgstr "Ubah"
+
+msgid "Move Down"
+msgstr "Kebawah"
+
+msgid "Move Up"
+msgstr "Keatas"
+
+#, c-format
+msgid "Move messages to the <b>%s</b> folder"
+msgstr "Pindah pesan ke folder <b>%s</b>"
+
+msgid "Move"
+msgstr "Pindah"
+
+msgid "Name"
+msgstr "Nama"
+
+msgid "Never"
+msgstr "Tidak pernah"
+
+msgid "New Folder"
+msgstr "Folder Baru"
+
+msgid "New Mail"
+msgstr "Mail Baru"
+
+msgid "New messages"
+msgstr "Pesan baru"
+
+msgid "New"
+msgstr "Baru"
+
+msgid "Next Message"
+msgstr "Pesan Berikutnya"
+
+msgid "Next Page"
+msgstr "Halam Berikutnya"
+
+msgid "Next"
+msgstr "Berikutnya"
+
+msgid "No Subject"
+msgstr "Tidak ada Perihal"
+
+msgid "No folders were specified"
+msgstr "Tidak ada folder yang terspesifikasi"
+
+msgid "No messages matched your search"
+msgstr "Tidak ada pesan yang anda cari"
+
+msgid "No spelling errors"
+msgstr "Tidak ada kesalahan pengejaan"
+
+msgid "No suggestions"
+msgstr "Tidak ada saran"
+
+msgid "No"
+msgstr "Tidak"
+
+msgid "None"
+msgstr "Tidak ada"
+
+msgid "Not Deleted"
+msgstr "Tidak Dihapus"
+
+msgid "Not Draft"
+msgstr "Bukan Draft"
+
+msgid "Not Important"
+msgstr "Tidak Penting"
+
+msgid "Not Personal"
+msgstr "Tidak Pribadi"
+
+msgid "Not deleted messages"
+msgstr "Pesan tidak terhapus"
+
+msgid "Not important messages"
+msgstr "Pesan tidak penting"
+
+msgid "November"
+msgstr "Nopember"
+
+msgid "Number of old sent-mail folders to keep if deleting monthly."
+msgstr "Jumlah folder sent-mail lama yang tetap ada jika dihapus bulanan."
+
+msgid "OK"
+msgstr "OK"
+
+msgid "October"
+msgstr "Oktober"
+
+msgid "Old messages"
+msgstr "Pesan Lama"
+
+msgid "Old sent-mail folders being purged."
+msgstr "Folder sent-mail lama sedang dibuang."
+
+msgid "Open Folder"
+msgstr "Buka Folder"
+
+msgid "Options"
+msgstr "Pilihan"
+
+msgid "Other Options"
+msgstr "Pilihan Lain"
+
+#, c-format
+msgid "Page %d of %d"
+msgstr "Halaman %d dari %d"
+
+msgid "Part(s)"
+msgstr "Bagian"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Path to your mail folders:"
+msgstr "Path ke folder mail anda:"
+
+msgid "Perform maintenance operations on login?"
+msgstr "Lakukan operasi perawatan pada login?"
+
+msgid "Personal Information"
+msgstr "Informasi Pribadi"
+
+msgid "Personal"
+msgstr "Pribadi"
+
+msgid "Place your signature before replies and forwards?"
+msgstr "Letakkan tandatangan anda sebelum membalas dan meneruskan?"
+
+msgid "Please enter a name for the new folder:"
+msgstr "Masukkan nama untuk folder baru:"
+
+msgid "Please enter the name of the new folder:"
+msgstr "Masukkan nama dari folder baru:"
+
+msgid "Please enter the new name:"
+msgstr "Masukkan nama baru:"
+
+msgid "Please enter valid search criteria."
+msgstr "Masukkan kriteria pencarian yang benar."
+
+msgid "Please provide your username and password"
+msgstr "Berikan username dan password anda"
+
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Betulkan alamat yang rancu dan tidak benar."
+
+msgid "Please select a folder before you perform any actions."
+msgstr "Pilih sebuah folder sebelum melakukan aksi."
+
+msgid "Please select at least one folder to search."
+msgstr "Pilih sedikitnya satu folder untuk pencarian."
+
+msgid "Please select only one folder for this operation."
+msgstr "Pilih hanya satu folder untuk operasi ini."
+
+msgid "Please select or edit right next:"
+msgstr "Pilih atau edit tepat berikutnya:"
+
+msgid "Precede your signature with dashes ('-- ')"
+msgstr "Awali tandatangan anda dengan dash ('-- ')"
+
+msgid "Previous Message"
+msgstr "Pesan Sebelumnya"
+
+msgid "Previous Page"
+msgstr "Halaman Sebelumnya"
+
+msgid "Print"
+msgstr "Cetak"
+
+#, c-format
+msgid "Problem with filter rule %d: folder does not exist: %s"
+msgstr "Masalah dengan aturan filter %d: folder tidak ada: %s"
+
+msgid "Problem?"
+msgstr "Masalah?"
+
+msgid "Purge Deleted"
+msgstr "Buang yang Dihapus"
+
+msgid "Purge Trash how often:"
+msgstr "Buang Trash selama:"
+
+msgid "Purge messages in Trash folder older than this amount of days."
+msgstr "Buang pesan lama dalam folder Trash yang lebih dari jumlah jatah hari."
+
+msgid "Purge old message in the Trash folder?"
+msgstr "Buang pesan lama dalam folder Trash?"
+
+#, c-format
+msgid "Purging %d message(s) from Trash folder."
+msgstr "%d pesan sedang dibuang dari folder Trash."
+
+msgid "Quoting"
+msgstr "Quoting"
+
+msgid "Received after"
+msgstr "Diterima setelah"
+
+msgid "Received before"
+msgstr "Diterima sebelum"
+
+msgid "Received on"
+msgstr "Diterima pada"
+
+msgid "Redirect Message"
+msgstr "Arahkan Pesan"
+
+msgid "Redirect this message"
+msgstr "Arahkan pesan ini"
+
+msgid "Redirect"
+msgstr "Arahkan"
+
+msgid "Redirecting failed."
+msgstr "Pengarahan gagal"
+
+msgid "Refresh Folder Views:"
+msgstr "Tampil Ulang Folder:"
+
+msgid "Refresh"
+msgstr "Tampil Ulang"
+
+msgid "Reload View"
+msgstr "Tampil Lagi"
+
+msgid "Remember the last view"
+msgstr "Ingat tampilan terakhir"
+
+msgid "Remove Selected"
+msgstr "Pindah yang Dipilih"
+
+msgid "Rename Folder"
+msgstr "Ubah Nama Folder"
+
+msgid "Rename sent-mail folder at beginning of month?"
+msgstr "Ubah nama folder sent-mail pada awal bulan?"
+
+#, c-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said."
+msgstr "Perubahan nama \"%s\" ke \"%s\" gagal. Itulah yang dikatakan server."
+
+msgid "Replace with:"
+msgstr "Ganti dengan:"
+
+msgid "Reply to All"
+msgstr "Balas ke Semua"
+
+msgid "Reply to All:"
+msgstr "Balas ke Semua:"
+
+msgid "Reply"
+msgstr "Balas"
+
+msgid "Reply-To: "
+msgstr "Balas-Kepada:"
+
+msgid "Reply-to"
+msgstr "Balas-kepada"
+
+msgid "Reply:"
+msgstr "Balas:"
+
+msgid "Report as Spam"
+msgstr "Laporkan sebagai Spam"
+
+msgid "Request a Return Receipt"
+msgstr "Minta Tanda Terima"
+
+msgid "Reset"
+msgstr "Reset"
+
+msgid "Resume"
+msgstr "Ulangi"
+
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr ""
+"Kembali ke mailbox setelah penghapusan, pemindahan dan pengcopyan pesan?"
+
+msgid "Rule Definition"
+msgstr "Definisi Aturan"
+
+msgid "Save Draft"
+msgstr "Simpan Draft"
+
+msgid "Save a copy in "
+msgstr "Simpan copy dalam "
+
+msgid "Save as"
+msgstr "Simpan sebagai"
+
+msgid "Save sent mail"
+msgstr "Simpan mail yang dikirim"
+
+#, c-format
+msgid "Saving the draft failed. This is what the server said: %s"
+msgstr "Penyimpanan draft gagal. Ini yang dikatakan server: %s"
+
+msgid "Search Results"
+msgstr "Hasil Pencarian"
+
+msgid "Search"
+msgstr "Cari"
+
+msgid "Seen"
+msgstr "Dilihat"
+
+msgid "Select addressbook sources for adding and searching for addresses."
+msgstr "Pilih sumber buku alamat untuk penambahan dan pencarian alamat."
+
+msgid "Select all"
+msgstr "Pilih semua"
+
+msgid "Select an identity"
+msgstr "Pilih identitas"
+
+msgid "Select charset:"
+msgstr "Pilih charset:"
+
+msgid "Select none"
+msgstr "Pilih tidak ada"
+
+msgid "Select your preferred language:"
+msgstr "Pilih bahasa yang anda diinginkan:"
+
+msgid "Select"
+msgstr "Pilih"
+
+msgid "Selected Addressbooks:"
+msgstr "Buku Alamat yang Dipilih"
+
+msgid "Send Message"
+msgstr "Kirim Pesan"
+
+msgid "Sent mail folder:"
+msgstr "Folder sent mail:"
+
+msgid "September"
+msgstr "September"
+
+msgid "Server Information"
+msgstr "Informasi Server"
+
+msgid "Server"
+msgstr "Server"
+
+msgid "Set preferences for filtering messages for unwanted content."
+msgstr "Set preference untuk memfilter pesan pada isi yang tidak diinginkan."
+
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr ""
+"Set preference apa yang terjadi jika anda memindah dan menghapus pesan."
+
+msgid "Set the current time zone."
+msgstr "Set zona waktu yang berlaku."
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Set bahasa pada item menu, penjelasan dan bantuan yang ada."
+
+msgid "Should the compose window be closed after saving a draft?"
+msgstr "Haruskah window pengiriman ditutup setelah menyimpan draft?"
+
+msgid "Show Deleted"
+msgstr "Tunjukkan yang Dihapus"
+
+msgid "Show Unsubscribed"
+msgstr "Tunjukkan tidak langganan"
+
+msgid "Show last login time when logging in?"
+msgstr "Tunjukkan waktu login terakhir jika login?"
+
+msgid "Show legend in the mailbox view?"
+msgstr "Tunjukkan legenda pada tampilan mailbox?"
+
+msgid "Size"
+msgstr "Ukuran"
+
+msgid "Some of IMP's configuration files are missing:"
+msgstr "Beberapa file konfigurasi IMP hilang:"
+
+msgid "Sort Direction"
+msgstr "Arah Urutan"
+
+msgid "Spam Report from"
+msgstr "Laporan Spam dari"
+
+msgid "Special Characters"
+msgstr "Karakter Spesial"
+
+msgid "Spell Check"
+msgstr "Cek Ejaan"
+
+msgid "Spell Checker"
+msgstr "Pengecek Ejaan"
+
+msgid "Spell check complete"
+msgstr "Cek ejaan selesai"
+
+msgid "Spelling errors per screen when spell checking."
+msgstr "Eja kesalahan per layar jika mengecek ejaan"
+
+msgid "Subject Field"
+msgstr "Field Perihal"
+
+msgid "Subject"
+msgstr "Perihal"
+
+msgid "Subject:"
+msgstr "Perihal:"
+
+msgid "Subscribe to Folder(s)"
+msgstr "Subscribe ke Folder"
+
+msgid "Success"
+msgstr "Sukses"
+
+msgid "Suggestions"
+msgstr "Saran"
+
+msgid "Text"
+msgstr "Teks"
+
+#, c-format
+msgid "The current folder(s) \"%s\" will be renamed to \"%s\"."
+msgstr "Folder \"%s\" yang berlaku akan diubah nama ke \"%s\"."
+
+#, c-format
+msgid "The folder \"%s\" already exists"
+msgstr "Folder \"%s\" sudah ada"
+
+#, c-format
+msgid ""
+"The folder \"%s\" contains illegal characters in its name. It may cause "
+"problems. Please see your system administrator."
+msgstr ""
+"Folder \"%s\" berisi karakter ilegal pada namanya. Ini mungkin menjadi "
+"masalah. Silakan tanya pada administrator sistem anda."
+
+#, c-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "Folder \"%s\" sudah dibuat tetapi anda tidak melanggan padanya."
+
+#, c-format
+msgid "The folder \"%s\" was deleted but you were not unsubscribed from it."
+msgstr "Folder \"%s\" sudah dihapus tetapi anda tidak tidak melanggan darinya."
+
+#, c-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr "Folder \"%s\" sudah dibuat. Ini yang dikatakan server"
+
+#, c-format
+msgid "The folder \"%s\" was not deleted. This is what the server said"
+msgstr "Folder \"%s\" tidak dihapus. Ini yang dikatakan server"
+
+#, c-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "Folder \"%s\" sudah dibuat dengan sukses."
+
+#, c-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "Folder \"%s\" sudah dihapus dengan sukses."
+
+#, c-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "Folder \"%s\" sudah diubah nama ke \"%s\" dengan sukses."
+
+#, c-format
+msgid "The identity \"%s\" has been deleted."
+msgstr "Identitas \"%s\" sudah dihapus."
+
+#, c-format
+msgid "The identity \"%s\" has been saved."
+msgstr "Identitas \"%s\" sudah disimpan."
+
+msgid "The message being composed has been closed.  Exiting."
+msgstr "Pesan yang sedang dikirim sudah ditutup. Keluar."
+
+msgid "The signature couldn't be replaced."
+msgstr "Tandatangan tidak dapat diganti."
+
+msgid "The signature was successfully replaced."
+msgstr "Tandatangan sudah diganti dengan sukses."
+
+msgid "There are no messages in this mailbox."
+msgstr "Tidak ada pesan dalam mailbox ini."
+
+#, c-format
+msgid "There was a problem expunging %s. This is what the server said"
+msgstr "Ada masalah expunging %s. Ini yang dikatakan server"
+
+msgid "There was a problem expunging the mailbox. This is what the server said"
+msgstr "Ada masalah expunging mailbox. Ini yang dikatakan server"
+
+#, c-format
+msgid ""
+"There was a problem expunging the mailbox. This is what the server said: %s"
+msgstr "Ada masalah expunging mailbox. Ini yang dikatakan server: %s"
+
+#, c-format
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size (%d MB)."
+msgstr ""
+"Ada masalah dengan upload file. File tersebut mungkin lebih besar dari "
+"ukuran maksimum yang dibolehkan (%d MB)."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Ada masalah dengan upload file. File tersebut mungkin lebih besar dari "
+"ukuran maksimum yang dibolehkan."
+
+#, c-format
+msgid ""
+"There was an error copying messages to \"%s\". This is what the server said"
+msgstr "Ada kesalahan saat mengcopy pesan ke \"%s\". Ini yang dikatakan server"
+
+#, c-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr ""
+"Ada kesalahan saat menghapus pesan dari folder \"%s\". Ini yang dikatakan "
+"server"
+
+#, c-format
+msgid ""
+"There was an error deleting messages in the folder \"%s\". This is what the "
+"server said"
+msgstr "Ada kesalahan mengcopy pesan ke \"%s\". Ini yang dikatakan server"
+
+msgid "There was an error deleting messages. This is what the server said"
+msgstr "Ada kesalahan saat menghapus pesan. Ini yang dikatakan server"
+
+msgid "There was an error displaying this message part"
+msgstr "Ada kesalahan saat menampilkan bagian pesan ini"
+
+#, c-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"Ada kesalahan saat memflag pesan dari folder \"%s\". Ini yang dikatakan "
+"server"
+
+msgid "There was an error flagging messages. This is what the server said"
+msgstr "Ada kesalahan saat memflag pesan. Ini yang dikatakan server"
+
+#, c-format
+msgid ""
+"There was an error moving messages to \"%s\". This is what the server said"
+msgstr "Ada kesalahan saat memindah pesan ke \"%s\". Ini yang dikatakan server"
+
+msgid ""
+"There was an error moving messages to the trash. This is what the server said"
+msgstr "Ada kesalahan saat memindah pesan ke trash. Ini yang dikatakan server"
+
+msgid "There was an error saving a draft."
+msgstr "Ada kesalahan saat menyimpan draft."
+
+#, c-format
+msgid "There was an error sending your message: %s"
+msgstr "Ada kesalahan saat mengirim pesan anda: %s"
+
+msgid "There was an error undeleting messages. This is what the server said"
+msgstr ""
+"Ada kesalahan saat membatalkan penghapusan pesan. Ini yang dikatakan server"
+
+msgid "There was an error viewing the requested message."
+msgstr "Ada kesalahan saat melihat pesan yang diminta."
+
+msgid ""
+"This file controls local MIME drivers for IMP, specifically what kinds of "
+"attachments are viewable and/or downloadable."
+msgstr ""
+"File ini mengontrol driver MIME lokal untuk IMP, khususnya jenis dari "
+"lampiran apa yang bisa dilihat dan/atau didownload."
+
+msgid ""
+"This file controls the default preferences for IMP, and also controls which "
+"preferences users can alter."
+msgstr ""
+"File ini mengontrol preference default untuk IMP, dan juga mengontrol "
+"preferences mana yang bisa diubah pemakai."
+
+msgid ""
+"This file controls the default settings for IMP, and also defines the list "
+"of available servers if you are using the server list."
+msgstr ""
+"File ini mengontrol setting default untuk IMP, dan juga mendefinisikan "
+"daftar server yang tersedia jika anda menggunakan daftar server."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"File ini mengontrol stylesheet yang digunakan untuk mengatur warna dan font "
+"dalam penambahan atau penggantian default Horde."
+
+msgid ""
+"This is the main IMP configuration file. It contains paths and options for "
+"the IMP scripts."
+msgstr ""
+"Ini adalah file utama konfigurasi IMP. File ini berisi path dan pilihan "
+"untuk scripts IMP."
+
+msgid "This may take some time. Are you sure you want to continue?"
+msgstr "Ini mungkin butuh waktu. Anda yakin ingin melanjutkan?"
+
+msgid "This message has been reported as spam to your system administrator."
+msgstr ""
+"Pesan ini sudah dilaporkan sebagai spam kepada administrator sistem anda."
+
+msgid "This message has been reported as spam."
+msgstr "Pesan ini sudah dilaporkan sebagai spam."
+
+msgid "This message to"
+msgstr "Pesan ini kepada"
+
+msgid "This number must be at least one."
+msgstr "Angka ini paling sedikit harus satu."
+
+msgid "This value must be a number."
+msgstr "Nilai ini harus angka."
+
+msgid "This window must be called from compose window"
+msgstr "Window ini harus dipanggil dari window pengiriman"
+
+msgid "Thread View"
+msgstr "Lihat Thread"
+
+msgid "Thread"
+msgstr "Thread"
+
+msgid "Time Zone"
+msgstr "Zona Waktu"
+
+msgid "To"
+msgstr "Kepada"
+
+msgid "To:"
+msgstr "Kepada:"
+
+#, c-format
+msgid "Total Size: %s KB"
+msgstr "Ukuran Total: %s KB"
+
+msgid "Trash folder:"
+msgstr "Folder Trash:"
+
+msgid "Unanswered messages"
+msgstr "Pesan tidak dijawab"
+
+msgid "Unanswered"
+msgstr "Tidak dijawab"
+
+msgid "Undelete"
+msgstr "Tidak dihapus"
+
+msgid "Undisclosed Recipients"
+msgstr "Penerima rahasia"
+
+msgid "Unnamed"
+msgstr "Tidak dinamai"
+
+msgid "Unread"
+msgstr "Tidak dibaca"
+
+msgid "Unseen Messages"
+msgstr "Pesan tidak dilihat"
+
+msgid "Unseen"
+msgstr "Tidak dilihat"
+
+msgid "Unsubscribe from Folder(s)"
+msgstr "Tidak langganan dari Folder"
+
+msgid "Use Ctrl/Option+Click to select multiple fields"
+msgstr "Gunakan Ctrl/Option+Klik untuk memilih field ganda"
+
+msgid "Use Default Value"
+msgstr "Gunakan Nilai Default"
+
+msgid "Use IMAP folder subscriptions?"
+msgstr "Gunakan folder IMAP langganan?"
+
+msgid "User Options"
+msgstr "Pilihan Pemakai"
+
+msgid "Username"
+msgstr "Username"
+
+#, c-format
+msgid "View %s"
+msgstr "Lihat %s"
+
+msgid "View messages in "
+msgstr "Lihat pesan dalam "
+
+msgid "View or mailbox to display after login:"
+msgstr "Lihat atau tampilkan mailbox setelah login:"
+
+msgid "Warning"
+msgstr "Peringatan"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Selamat Datang di %s"
+
+msgid "Welcome to UNEJ Mail"
+msgstr "Selamat Datang di UNEJ Mail"
+
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted?"
+msgstr ""
+"Jika pesan dihapus, pindahkan mereka ke folder Trash anda daripada menandai "
+"mereka dengan terhapus?"
+
+msgid "Whitelist"
+msgstr "Whitelist"
+
+msgid "Wrap text at this many characters."
+msgstr "Kumpulkan teks pada karakter ini."
+
+msgid "Yes"
+msgstr "Ya"
+
+msgid "You are attempting to delete the following folders:"
+msgstr "Anda sedang mencoba menghapus folder berikut ini:"
+
+msgid "You are copying/moving to a new folder."
+msgstr "Anda sedang mengcopy/memindah ke folder baru."
+
+msgid "You are creating a sub-folder to "
+msgstr "Anda sedang membuat sub-folder ke "
+
+msgid "You are creating a top-level folder."
+msgstr "Anda sedang membuat folder tingkat-atas."
+
+msgid "You are currently using Secure HTTPS<br/>"
+msgstr "Anda sedang menggunakan Secure HTTPS<br/>"
+
+msgid "You are currently using Standard HTTP<br/>"
+msgstr "Anda sedang menggunakan HTTP Standar<br/>"
+
+msgid "You are renaming the folder: "
+msgstr "Anda sedang mengubah nama folder: "
+
+msgid "You can not have the '\\' character in your full name."
+msgstr "Anda tidak bisa menggunakan karakter '\\' pada nama lengkap anda."
+
+#, c-format
+msgid "You have %s new messages."
+msgstr "Anda punya %s pesan baru."
+
+msgid "You have 1 new message."
+msgstr "Anda punya 1 pesan baru."
+
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "Anda sudah keluar.<br />Terima kasih telah menggunakan sistem ini."
+
+msgid "You have new mail in the following folder:"
+msgstr "Anda punya mail dalam folder berikut ini:"
+
+msgid "You have new mail in the following folders:"
+msgstr "Anda punya mail dalam folder-folder berikut ini:"
+
+msgid "You must first select the attachment(s) to delete."
+msgstr "Anda harus memilih dulu lampiran yang akan dihapus."
+
+msgid "You must first specify the file to attach."
+msgstr "Anda harus menspesifikasi dulu file yang akan dilampirkan."
+
+msgid "You must have at least one recipient."
+msgstr "Anda harus punya paling sedikitnya satu penerima."
+
+msgid "You must select a target mailbox first."
+msgstr "Anda harus memilih mailbox target dulu."
+
+msgid "You must select an address first."
+msgstr "Anda harus memilih alamat dulu."
+
+msgid "You must select an identity to be deleted."
+msgstr "Anda harus memilih identitas yang akan dihapus."
+
+msgid "You must select at least one message first."
+msgstr "Anda harus memilih dulu paling sedikitnya satu pesan"
+
+msgid "You must specify a recipient."
+msgstr "Anda harus menspesifikasi penerima."
+
+#, c-format
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr "Anda tidak langganan ke \"%s\". Ini yang dikatakan server"
+
+#, c-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr "Anda tidak tidak-langganan dari \"%s\". Ini yang dikatakan server"
+
+#, c-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr "Anda sudah langganan ke \"%s\" dengan sukses"
+
+#, c-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "Anda sudah tidak-langganan dari \"%s\" dengan sukses"
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "Sesi %s anda sudah habis. Silakan login lagi."
+
+msgid "Your From: address:"
+msgstr "Dari Anda: alamat:"
+
+msgid "Your Information"
+msgstr "Informasi Anda"
+
+msgid "Your Reply-to: address: <i>(optional)</i>"
+msgstr "Balasan kepada Anda: alamat: <i>(pilihan)</i>"
+
+msgid "Your browser does not support inline display of this image type"
+msgstr "Browser anda tidak mendukung penampilan inline dari jenis gambar ini"
+
+msgid ""
+"Your browser does not support this print option. Press Control/Option + P to "
+"print."
+msgstr ""
+"Browser anda tidak mendukung pilihan cetak ini. Tekan Control/Option + P "
+"untuk mencetak."
+
+msgid "Your current time zone:"
+msgstr "Zona waktu anda saat ini:"
+
+msgid "Your default identity:"
+msgstr "Identitas default anda:"
+
+msgid "Your full name:"
+msgstr "Nama lengkap anda:"
+
+msgid "Your identities:"
+msgstr "Identitas anda:"
+
+msgid "Your options have been updated."
+msgstr "Pilihan anda sudah diperbarui."
+
+msgid ""
+"Your session will expire in 1 minute. Do you want to reload the page to "
+"prevent losing your work?"
+msgstr ""
+"Sesi anda akan habis dalam 1 menit. Apakah anda ingin mengambil ulang "
+"halaman tersebut untuk menghindari kesia-siaan kerja anda?"
+
+msgid ""
+"Your session will expire in 5 minutes. Do you want to reload the page to "
+"prevent losing your work?"
+msgstr ""
+"Sesi anda akan habis dalam 5 menit. Apakah anda ingin mengambil ulang "
+"halaman tersebut untuk menghindari kesia-siaan kerja anda?"
+
+msgid "Your signature:"
+msgstr "Tandatangan Anda"
+
+msgid "[No Subject]"
+msgstr "[Tidak ada Perihal]"
+
+msgid "add source"
+msgstr "tambahkan sumber"
+
+msgid "cannot move past the beginning"
+msgstr "tidak bisa pindah ke awal"
+
+msgid "cannot move past the end"
+msgstr "tidak bisa pindah ke akhir"
+
+msgid "delete message"
+msgstr "hapus pesan"
+
+msgid "from"
+msgstr "dari"
+
+msgid "move down"
+msgstr "turun"
+
+msgid "move message to"
+msgstr "pindah pesan ke"
+
+msgid "move up"
+msgstr "naik"
+
+msgid "no folder selected"
+msgstr "tidak ada folder yang dipilih"
+
+msgid "no rule selected"
+msgstr "tidak ada aturan yang dipilih"
+
+msgid "no text specified"
+msgstr "tidak ada teks yang dispesifikasi"
+
+msgid "none"
+msgstr "tidak ada"
+
+msgid "or"
+msgstr "atau"
+
+msgid "please fill in the text and choose a field and an action"
+msgstr "silakan isi teks dan pilih field dan aksi"
+
+msgid "remove source"
+msgstr "hapus sumber"
+
+msgid "select folder"
+msgstr "pilih folder"
+
+msgid "spelling error"
+msgstr "kesalahan ejaan"
+
+msgid "spelling errors"
+msgstr "kesalahan-kesalahan ejaan"
+
+#, c-format
+msgid "where the %s field contains <b>%s</b>"
+msgstr "dimana field %s berisi <b>%s</b>"

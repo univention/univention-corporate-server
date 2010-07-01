@@ -1,0 +1,24 @@
+================
+ Upgrading MIMP
+================
+
+:Last update:   $Date: 2008-09-11 22:05:09 $
+:Revision:      $Revision: 1.1.2.2 $
+:Contact:       imp@lists.horde.org
+
+
+These are instructions to upgrade from earlier MIMP versions.
+
+
+Upgrading MIMP From 1.0.x To 1.1.x
+==================================
+
+This is a non-exhaustive, quick explanation of what has changed between an
+MIMP 1.0.x installation to MIMP 1.1.x.
+
+
+IMP Dependency
+--------------
+
+MIMP now runs on top of IMP.  Therefore, you will need to set-up the Horde
+Framework version 3.2+ and IMP version 4.2+ before you can install MIMP.

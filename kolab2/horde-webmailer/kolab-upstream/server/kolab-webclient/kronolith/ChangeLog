@@ -1,3 +1,30 @@
+2010-05-16  Gunnar Wrobel  <p@rdus.de>
+
+	* patches/kronolith-2.3.3/t_kronolith_HK_GW_SendInvitationsByDefault.diff:
+
+	kolab/issue2966 (A created/edited event doesn't send mails to all
+	attendee as default.)
+
+2010-05-06  Gunnar Wrobel  <p@rdus.de>
+
+	* patches/kronolith-2.3.3/t_kronolith_HK_GW_ZpushAnnotations.diff:
+
+	Support setting Zpush configuration values.
+
+2010-03-08  Gunnar Wrobel  <p@rdus.de>
+
+	* patches/kronolith-2.3.3/t_kronolith_HK_GW_AdaptStartDateOfRecurrencesWhenEditing.diff:
+
+	kolab/issue3885 (Modifying start date of recurring events does not
+	update recurrance dates)
+
+2010-03-05  Gunnar Wrobel  <p@rdus.de>
+
+	* patches/kronolith-2.3.3/t_kronolith_HK_GW_FbviewRelevance.diff:
+	* patches/kronolith-2.3.3/t_kronolith_HK_GW_XfbAccess.diff:
+
+	kolab/issue4048 (Some German translations missing in kronolith)
+
 2010-03-02  Gunnar Wrobel  <p@rdus.de>
 
 	* patches/kronolith-2.3.3/t_kronolith_HK_UV_searchTabs.diff:

@@ -1,0 +1,24 @@
+<table width="100%" cellspacing="0">
+ <tr>
+  <td class="mboxcontrol <if:isbottom>topborder<else:isbottom>bottombordercollapse</else:isbottom></if:isbottom>">
+   <div class="rightFloat">
+    <ul class="msgactions">
+     <if:hide_deleted><li<if:purge_deleted><else:purge_deleted> class="lastnavbar"</else:purge_deleted></if:purge_deleted>><tag:hide_deleted /></li></if:hide_deleted>
+     <if:purge_deleted><li class="lastnavbar"><tag:purge_deleted /></li></if:purge_deleted>
+    </ul>
+   </div>
+   <div class="leftFloat">
+    <ul class="msgactions">
+     <li><tag:delete /></li>
+     <if:undelete><li><tag:undelete /></li></if:undelete>
+     <if:blacklist><li><tag:blacklist /></li></if:blacklist>
+     <if:whitelist><li><tag:whitelist /></li></if:whitelist>
+     <li><tag:forward /></li>
+     <if:spam><li><tag:spam /></li></if:spam>
+     <if:notspam><li><tag:notspam /></li></if:notspam>
+     <li class="lastnavbar"><tag:view_messages /></li>
+    </ul>
+   </div>
+  </td>
+ </tr>
+</table>

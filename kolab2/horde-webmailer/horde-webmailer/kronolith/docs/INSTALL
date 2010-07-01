@@ -1,0 +1,267 @@
+==========================
+ Installing Kronolith 2.3
+==========================
+
+:Last update:   $Date: 2009-01-27 00:43:18 $
+:Revision:      $Revision: 1.16.10.14 $
+:Contact:       kronolith@lists.horde.org
+
+.. contents:: Contents
+.. section-numbering::
+
+This document contains instructions for installing the Kronolith web-based
+calendar application on your system.
+
+For information on the capabilities and features of Kronolith, see the file
+README_ in the top-level directory of the Kronolith distribution.
+
+
+Obtaining Kronolith
+===================
+
+Kronolith can be obtained from the Horde website and FTP server, at
+
+   http://www.horde.org/kronolith/
+
+   ftp://ftp.horde.org/pub/kronolith/
+
+Bleeding-edge development versions of Kronolith are available via CVS; see the
+file `horde/docs/HACKING`_ in the Horde distribution for information on
+accessing the Horde CVS repository.
+
+
+Prerequisites
+=============
+
+To function properly, Kronolith requires the following:
+
+1. A working Horde installation.
+
+   Kronolith runs within the `Horde Application Framework`_, a set of common
+   tools for Web applications written in PHP.  You must install Horde before
+   installing Kronolith.  You must use a version of Horde 3.1 or greater.
+
+   .. _`Horde Application Framework`: http://www.horde.org/horde/
+
+   The Horde Framework can be obtained from the Horde website and FTP server,
+   at
+
+      http://www.horde.org/horde/
+
+      ftp://ftp.horde.org/pub/horde/
+
+   Many of Kronolith's prerequisites are also Horde prerequisites.
+
+   .. Important:: Be sure to have completed all of the steps in the
+                  `horde/docs/INSTALL`_ file for the Horde Framework before
+                  installing Kronolith.
+
+2. SQL support in PHP, or Kolab support in Horde
+
+   Kronolith store its data in a backend - either an SQL database or a
+   Kolab server. Build PHP with whichever SQL driver you require; see
+   the Horde `horde/docs/INSTALL`_ file for more details on using databases
+   with Horde, or the Kolab webclient documentation for how to set up
+   Kronolith for Kolab.
+
+   Note to MS-SQL users:
+   In order to successfully use kronolith with MS-SQL from a linux server,
+   you need to have mssql support compiled into php AND mssql support
+   compiled into freetds AND mssql.datetimeconvert = Off in your php.ini.
+
+3. Operating System with support for dates before 1970-01-01 [OPTIONAL]
+
+   If you want to use dates earlier the January 1st 1970, for example
+   birthdays, you need an Operating Systems that supports negative
+   timestamps. Microsoft Windows does **not** support such dates.
+
+4. The following PEAR package:
+   (See `horde/docs/INSTALL`_ for instructions on installing PEAR package)
+
+   a. Date
+
+      Kronolith uses the Date package for various date calculations.
+
+   b. XML_Serializer [OPTIONAL]
+
+      The XML_Serializer package is needed by the Date_Holidays package for
+      the translation of holiday names::
+
+         pear install XML_Serializer-beta
+
+   c. Date_Holidays 0.21.0 [OPTIONAL]
+
+      Kronolith can use the Date_Holidays package to show several sets of
+      national and religious holidays and memorial days. Since Date_Holidays
+      consists of a number of sub-packages, one for each country, you should
+      install all packages at once::
+
+         pear install Date_Holidays-alpha#all
+
+
+Installing Kronolith
+====================
+
+Kronolith is written in PHP, and must be installed in a web-accessible
+directory.  The precise location of this directory will differ from system to
+system.  Conventionally, Kronolith is installed directly underneath Horde in
+the webserver's document tree.
+
+Since Kronolith is written in PHP, there is no compilation necessary; simply
+expand the distribution where you want it to reside and rename the root
+directory of the distribution to whatever you wish to appear in the URL.  For
+example, with the Apache webserver's default document root of
+``/usr/local/apache/htdocs``, you would type::
+
+   cd /usr/local/apache/htdocs/horde
+   tar zxvf /path/to/kronolith-x.y.z.tar.gz
+   mv kronolith-x.y.z kronolith
+
+and would then find Kronolith at the URL
+
+   http://your-server/horde/kronolith/
+
+
+Configuring Kronolith
+=====================
+
+1. Configuring Horde for Kronolith
+
+   a. Register the application
+
+      In ``horde/config/registry.php``, find the ``applications['kronolith']``
+      stanza.  The ``show`` parameter should already be marked ``=> true``.
+      If you have changed the location of Kronolith relative to Horde, either
+      in the URL or in the filesystem or both, you must update the
+      ``fileroot`` and ``webroot`` settings to their correct values.
+
+2. Creating the database tables
+
+   The specific steps to create the Kronolith database tables depend on which
+   database you've chosen to use.
+
+   First, look in ``scripts/sql/`` to see if a script already exists for your
+   database type. If so, you should be able to simply execute that script as
+   superuser in your database. (Note that executing the script as the "horde"
+   user will probably fail when granting privileges.)
+
+   If such a script does not exist, you'll need to build your own, using the
+   file ``kronolith.sql`` as a starting point. If you need assistance in
+   creating database tables, you may wish to let us know on the Kronolith
+   mailing list.
+
+   You will also need to make sure that the "horde" user in your database has
+   table-creation privileges, so that the tables that `PEAR DB`_ uses to
+   provide portable sequences can be created.
+
+   .. _`PEAR DB`: http://pear.php.net/DB
+
+3. Configuring Kronolith
+
+   To configure Kronolith, change to the ``config/`` directory of the
+   installed distribution, and make copies of all of the configuration
+   ``dist`` files without the ``dist`` suffix::
+
+      cd config/
+      for foo in *.dist; do cp $foo `basename $foo .dist`; done
+
+   Documentation on the format of those files can be found in each file; open
+   each in an editor and make changes as suggested within.  The default values
+   are reasonable, but may not be appropriate for your site, so it is best to
+   check them before preceeding.
+
+   You must login to Horde as a Horde Administrator to finish the
+   configuration of Kronolith.  Use the Horde ``Administration`` menu item to
+   get to the administration page, and then click on the ``Configuration``
+   icon to get the configuration page.  Select ``Calendar`` from the selection
+   list of applications.  Fill in or change any configuration values as
+   needed.  When done click on ``Generate Calendar Configuration`` to generate
+   the ``conf.php`` file.  If your web server doesn't have write permissions
+   to the Kronolith configuration directory or file, it will not be able to
+   write the file.  In this case, go back to ``Configuration`` and choose one
+   of the other methods to create the configuration file
+   ``kronolith/config/conf.php``.
+
+   Note for international users: Nag uses GNU gettext to provide local
+   translations of text displayed by applications; the translations are found
+   in the po/ directory.  If a translation is not yet available for your
+   locale (and you wish to create one), see the ``horde/po/README`` file, or
+   if you're having trouble using a provided translation, please see the
+   `horde/docs/TRANSLATIONS`_ file for instructions.
+
+4. Setting up reminder emails
+
+   There are two kind of reminders sent to users, reminders on individual
+   events with alarms, and daily agendas. How to set them up correctly depends
+   on whether you are using Horde 3.2 and have enabled the Alarm system there.
+   Generally, if you set up cron jobs, you must have the PHP CLI installed (a
+   CGI binary is not supported - ``php -v`` will report what kind of PHP
+   binary you have).
+
+   a. If you are using Horde 3.2 and the Alarm system, you have to set up a
+      cron entry for the Horde alarm script to sent out reminders on
+      individual events, see `horde/docs/INSTALL`_. You still have to set up a
+      cron entry for ``kronolith/scripts/reminders.php``, and running the job
+      once a day is recommended, e.g. at 2 a.m.::
+
+         # Kronolith reminders
+         0 2 * * * /usr/bin/php /var/www/horde/kronolith/scripts/reminders.php
+
+   b. If you are using Horde versions older than 3.2 or not using the Alarm
+      system, you have to set up a cron entry for
+      ``kronolith/scripts/reminders.php``, and running the job every 5 minutes
+      is recommended::
+
+         # Kronolith reminders
+         */5 * * * * /usr/bin/php /var/www/horde/kronolith/scripts/reminders.php
+
+   In all examples replace ``/usr/bin/php`` with the path to your PHP CLI and
+   ``/var/www/horde/kronolith`` with the path to your Kronolith installation)
+
+   The user who runs these cron jobs **MUST** be able to write to the Horde
+   VFS backend, or the script will not be able to remember which reminders it
+   has already sent.
+
+5. Testing Kronolith
+
+   Use Kronolith to create, modify, and delete events. Test at least the
+   following:
+
+   - Creating a new event
+   - Creating a recurring event
+   - Modifying an event
+   - Deleting an event
+
+
+Obtaining Support
+=================
+
+If you encounter problems with Kronolith, help is available!
+
+The Horde Frequently Asked Questions List (FAQ), available on the Web at
+
+  http://www.horde.org/faq/
+
+The Horde Project runs a number of mailing lists, for individual applications
+and for issues relating to the project as a whole.  Information, archives, and
+subscription information can be found at
+
+  http://www.horde.org/mail/
+
+Lastly, Horde developers, contributors and users may also be found on IRC,
+on the channel #horde on the Freenode Network (irc.freenode.net).
+
+Please keep in mind that Kronolith is free software written by volunteers.
+For information on reasonable support expectations, please read
+
+  http://www.horde.org/support.php
+
+Thanks for using Kronolith!
+
+The Horde team
+
+
+.. _README: ?f=README.html
+.. _`horde/docs/INSTALL`: ../../horde/docs/?f=INSTALL.html
+.. _`horde/docs/HACKING`: ../../horde/docs/?f=HACKING.html
+.. _`horde/docs/TRANSLATIONS`: ../../horde/docs/?f=TRANSLATIONS.html

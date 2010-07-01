@@ -1,0 +1,886 @@
+<?xml version="1.0"?>
+<!-- $Horde: imp/locale/es_ES/help.xml,v 1.24.4.14 2009-02-21 11:16:16 jan Exp $ -->
+<help>
+
+<entry id="keyboard-navigation" md5="885a83e5ce7c455f8d7d40a17ca901df" state="uptodate">
+	<title>Teclado: Navegaci&#xF3;n</title>
+	<para>
+		Puede usar el teclado para desplazarse entre mensajes del listado del buz&#xF3;n; al mensaje anterior o al siguiente mientras lee un mensaje; y entre p&#xE1;ginas del listado del buz&#xF3;n.
+	</para>
+	<heading>Navegaci&#xF3;n de teclado de listado de mensajes</heading>
+	<para>
+		Puede utilizar el teclado para seleccionar y ver mensajes en el listado de mensajes. Para desplazarse entre los mensajes, utilice las teclas de flecha Arriba y Abajo mientras mantiene presionada la tecla Control (Ctrl). Si pulsa la la tecla de flecha Arriba empezar&#xE1; en la parte inferior de la p&#xE1;gina (&#xFA;ltimo mensaje mostrado) y si pulsa Abajo empezar&#xE1; en la parte superior de la p&#xE1;gina (primer mensaje mostrado).
+	</para>
+	<para>
+		El mensaje actual se realza exactamente como si hubiera desplazado el rat&#xF3;n sobre &#xE9;l. Mientras se desplaza arriba y abajo a lo largo del listado del buz&#xF3;n, puede pulsar la tecla espaciadora para seleccionar o anular la selecci&#xF3;n de un mensaje, y puede pulsar la tecla Retorno para ver el mensaje actual.
+	</para>
+	<heading>Listado de mensajes: P&#xE1;gina anterior/siguiente</heading>
+	<para>
+		Utilice las teclas de flecha Izquierda y Derecha del teclado para ir a las p&#xE1;ginas de mensajes anterior o siguiente de su buz&#xF3;n, respectivamente.
+	</para>
+	<heading>Vista de mensajes: Mensaje anterior/siguiente</heading>
+	<para>
+		Utilice las teclas de flecha Izquierda y Derecha del teclado para ir a los mensajes anterior o siguiente, respectivamente.
+	</para>
+</entry>
+
+<!--
+<entry id="keyboard-shortcuts">
+    <title>Keyboard: Shortcuts</title>
+    <heading>Using Keyboard Shortcuts</heading>
+</entry>
+-->
+
+<entry id="message-forward" md5="54e9d9dcf21964f5f81bc6c23e48cdea" state="uptodate">
+	<title>Reenv&#xED;o de correo</title>
+	<para>Al reenviar un correo, se dispone de varias opciones.</para>
+	
+	<heading>Reenv&#xED;o desde el listado del buz&#xF3;n</heading>
+	<para>En el listado del buz&#xF3;n, puede reenviar varios mensajes a la vez. Cada uno de los mensajes que seleccione se enviar&#xE1;, en toda su integridad, a sus destinatarios. Ver&#xE1; en la ventana de redacci&#xF3;n cada mensaje como un adjunto. A su recepci&#xF3;n el/los destinatario(s) ver&#xE1;(n) cada mensaje como un correo incluido dentro del mensaje.</para>
+	
+	<heading>Reenv&#xED;o desde la vista de mensajes</heading>
+	<para>Al reenviar mensajes individuales en la vista de mensajes, puede optar por una de tres opciones distintas:</para>
+	<para><b>1. Mensaje completo</b>: Esta opci&#xF3;n adjuntar&#xE1; el mensaje completo en el nuevo mensaje. El &#xE1;rea de redacci&#xF3;n no contendr&#xE1; ning&#xFA;n texto del mensaje reenviado. Es igual que reenviar un &#xFA;nico mensaje desde el listado del buz&#xF3;n excepto en que la l&#xED;nea Asunto: se rellenar&#xE1; de forma autom&#xE1;tica.</para>
+	<para><b>2. S&#xF3;lo el texto del cuerpo</b>: Si s&#xF3;lo desea enviar el cuerpo del mensaje, seleccione esta opci&#xF3;n. En el reenv&#xED;o no se incluir&#xE1; ning&#xFA;n adjunto del mensaje original. El texto aparecer&#xE1; en el &#xE1;rea de redacci&#xF3;n y podr&#xE1; modificarlo si lo desea o a&#xF1;adir sus propios comentarios.</para>
+	<para><b>3. Texto del cuerpo con adjuntos</b>: Utilice esta opci&#xF3;n para reenviar los adjuntos de un mensaje junto el texto del cuerpo como se describi&#xF3; en #2 S&#xF3;lo el texto del cuerpo. El cuerpo del texto se incluir&#xE1; en el &#xE1;rea de redacci&#xF3;n para que puede modificarlo y todos los adjuntos del mensaje original se copiar&#xE1;n al reenv&#xED;o.</para>
+	
+</entry>
+
+<entry id="compose-buttons" md5="bd0e2b0eff15d7c5cf7df9b7ef4ac40a" state="uptodate">
+	<title>Redacci&#xF3;n del mensaje: Acciones</title>
+	<heading>Acciones</heading>
+	<para>
+		"Enviar mensaje" manda el mensaje al/los destinatario(s) previsto(s). Aseg&#xFA;rese de que desea enviarlo ya que esta acci&#xF3;n es irreversible.
+	</para>
+	<para>
+		"Guardar borrador" coloca un mensaje inacabado en una carpeta llamada "Borradores" accesible mediante el men&#xFA; desplegable de carpetas de la esquina superior derecha de la pantalla. Puede terminar el mensaje con posterioridad cambiando a la carpeta "Borradores", pulsando el mensaje guardado para abrirlo y haciendo click en "Reanudar". Aseg&#xFA;rese de a&#xF1;adir un asunto al mensaje antes de guardarlo como borrador de forma que pueda identificarlo f&#xE1;cilmente dentro de la carpeta de Borradores.
+	</para>
+	<tip>
+		Dependiendo de la instalaci&#xF3;n, puede cambiar en las preferencias si, tras guardar un mensaje como borrador, volver&#xE1; a la &#xFA;ltima carpeta que estaba visualizando o si seguir&#xE1; en el mismo mensaje.
+	</tip>
+	<para>
+		"Cancelar mensaje" interrumpe la redacci&#xF3;n del mensaje y le devuelve a la &#xFA;ltima carpeta que estaba visualizando
+	</para>
+</entry>
+
+<entry id="compose-identity" md5="6b2272c5440c753e783d000db88fea07" state="uptodate">
+	<title>Redacci&#xF3;n del mensaje: Identidad</title>
+	<heading>Identidad</heading>
+	<para>
+		Elija la identidad mediante la que env&#xED;a el correo de una lista desplegable de las identidades introducidas en <qt>Opciones-&gt;Informaci&#xF3;n personal</qt>.
+	</para>
+</entry>
+
+<entry id="compose-from" md5="4395043c22323cc80d50709c5d20637e" state="uptodate">
+	<title>Redacci&#xF3;n del mensaje: Remitente</title>
+	<heading>Remitente</heading>
+	<para>
+		Introduzca la direcci&#xF3;n de correo desde la que quiere enviar este mensaje.
+	</para>
+</entry>
+
+<entry id="compose-to" md5="31cba17f169572c367aa8014831eb8f8" state="uptodate">
+	<title>Redacci&#xF3;n del mensaje: Para</title>
+	<heading>Para</heading>
+	<para>
+		Introduzca la direcci&#xF3;n de correo v&#xE1;lida del destinatario del mensaje. Para introducir varios destinatarios, separe las direcciones mediante comas. El uso de cualquier otro signo de puntuaci&#xF3;n para separar varias direcciones de correo provocar&#xE1; un error.
+	</para>
+</entry>
+
+<entry id="compose-cc" md5="97571433ab037ef9c4d101a56bf74e25" state="uptodate">
+	<title>Redacci&#xF3;n del mensaje: Cc</title>
+	<heading>Cc</heading>
+	<para>
+		Introduzca la direcci&#xF3;n de correo v&#xE1;lida del destinatario adicional del mensaje. Para introducir varios destinatarios, separe las direcciones mediante comas. El uso de cualquier otro signo de puntuaci&#xF3;n para separar varias direcciones de correo provocar&#xE1; un error.
+	</para>
+	<para>
+		Las copias se suelen enviar a destinatarios que no tienen por qu&#xE9; ser los destinatarios directos del mensaje, pero que precisen recibirlo como informaci&#xF3;n, generalmente por que est&#xE9;n indirectamente interesados en el asunto del correo. Todos los destinatarios "Para:" y "Cc:" pueden ver la lista completa de ambos tipos de destinatarios.
+	</para>
+</entry>
+
+<entry id="compose-bcc" md5="aa8f9e2d44fdb74def0fa15240ff687b" state="uptodate">
+	<title>Redacci&#xF3;n del mensaje: Bcc</title>
+	<heading>Bcc</heading>
+	<para>
+		Introduzca la direcci&#xF3;n de correo v&#xE1;lida del destinatario adicional oculto del mensaje. Para introducir varios destinatarios, separe las direcciones mediante comas. El uso de cualquier otro signo de puntuaci&#xF3;n para separar varias direcciones de correo provocar&#xE1; un error.
+	</para>
+	<para>
+		Las copias ocultas se suelen enviar a destinatarios que puedan necesitar leer lo que se haya escrito SIN que el resto de los destinatarios sepan que tambi&#xE9;n han recibido el mensaje. As&#xED; "oculta" significa que la identidad de estos destinatarios se les oculta al resto de los destinatarios del correo. S&#xF3;lo el remitente y los destinatarios "Bcc" sabr&#xE1;n que han recibido una copia.
+	</para>
+</entry>
+
+<entry id="compose-subject" md5="0639a8790e306acc9e19b4d1ce342d53" state="uptodate">
+	<title>Redacci&#xF3;n del mensaje: Asunto</title>
+	<heading>Asunto</heading>
+	<para>
+		Introduzca el asunto del mensaje. Es conveniente que sea corto, simple y descriptivo. La l&#xED;nea de asunto es la manera m&#xE1;s sencilla de recordar el contenido de un mensaje por lo que es muy importante en la organizaci&#xF3;n del correo y en la posterior localizaci&#xF3;n de los mensajes importantes.
+	</para>
+	<para>
+		Adem&#xE1;s, si "Responde" o "Reenv&#xED;a" un mensaje, la l&#xED;nea de asunto se copia en el nuevo mensaje de forma que se convierte en una valiosa manera de identificar qu&#xE9; mensajes se agrupan para formar una "secuencia" de una conversaci&#xF3;n por correo. Como sugerencia, si una respuesta o mensaje reenviado contiene ideas nuevas, puede ser conveniente alterar ligeramente la l&#xED;nea de "Asunto" de forma que los destinatarios puedan seguir la progresi&#xF3;n de la "secuencia".
+	</para>
+</entry>
+
+<entry id="compose-charset" md5="c2c878070445af81407da5bfc4083ea3" state="uptodate">
+	<title>Redacci&#xF3;n del mensaje: Codificaci&#xF3;n</title>
+	<heading>Codificaci&#xF3;n (Conjunto de caracteres)</heading>
+	<para>
+		Selecciona el conjunto de caracteres con el que se enviar&#xE1; el mensaje.
+	</para>
+</entry>
+
+<entry id="compose-options" md5="5f1d50a733c8b7e46aecece28822ff70" state="uptodate">
+	<title>Redacci&#xF3;n del mensaje: Opciones</title>
+	<heading>Opciones</heading>
+	<para>
+		Estas opciones le ayudan a preparar el mensaje.
+	</para>
+	<para>
+		Pulse "Correcci&#xF3;n ortogr&#xE1;fica" para comprobar la ortograf&#xED;a.
+	</para>
+	<para>
+		Pulse "Adjuntos" para ir a la parte inferior de la p&#xE1;gina donde puede adjuntar archivos al mensaje.
+	</para>
+	<para>
+		Si el administrador ha habilitado la conservaci&#xF3;n del correo enviado, podr&#xE1; activar la casilla junto a "Guardar una copia" para conservar una copia del mensaje que va a enviar. La carpeta de destino ser&#xE1; la carpeta por omisi&#xF3;n o aquella que haya seleccionado para este prop&#xF3;sito en "Opciones-&gt;Informaci&#xF3;n personal-&gt;Identidades". Si el administrador ha habilitado la selecci&#xF3;n de destino del correo enviado, podr&#xE1; elegir una carpeta de una lista desplegable junto a esta opci&#xF3;n.
+	</para>
+	<para>
+		Almacenar copias de los correos importantes que env&#xED;e puede resultar &#xFA;til para mantenerse al tanto de lo que se ha dicho. Puede, no obstante, "activar" esta opci&#xF3;n por omisi&#xF3;n para su identidad en "Opciones-&gt;Informaci&#xF3;n personal-&gt;Modificar identidad". En las opciones tambi&#xE9;n se pueden establecer tareas de mantenimiento que vac&#xED;en o renombren estas carpetas de forma peri&#xF3;dica.
+	</para>
+	<warn>
+		Puede que no desee almacenar todos y cada uno de los correos que env&#xED;e puesto que podr&#xED;a tener problemas con el r&#xE1;pido agotamiento del espacio asignado en disco, sobre todo al enviar adjuntos de gran tama&#xF1;o. Un buz&#xF3;n que haya agotado el espacio asignado en disco no podr&#xE1; recibir correo nuevo.
+	</warn>
+</entry>
+
+<entry id="compose-attach">
+	<title>Redacci&#xF3;n del mensaje: Adición de adjuntos</title>
+	<heading>Adición de adjuntos</heading>
+	<para>
+		Puede adjuntar archivos a los mensajes si el navegador soporta la carga de archivos. Se puede cargar m&#xE1;s de un archivo cada vez.
+	</para>
+	<para>
+		Paso 1: Bien escriba la v&#xED;a de acceso y nombre del archivo que quiera adjuntar al mensaje o pulse el bot&#xF3;n "Examinar" y seleccione el archivo que desee adjuntar. La v&#xED;a de acceso y nombre del archivo aparecer&#xE1;n en el recuadro de adjuntos. Si su navegador soporta JavaScript, ver&#xE1; un cuadro de entrada de carga adicional para cargar otros archivos al mismo tiempo.
+	</para>
+	<para>
+		Paso 2: Elija si desea que el archivo se vea como un adjunto o directamente en l&#xED;nea en el cuerpo del mensaje. El cliente de correo del destinatario tendr&#xE1; que poder manejar la visualizaci&#xF3;n en l&#xED;nea del tipo de archivo adjuntado o de lo contrario lo ver&#xE1; como un adjunto.
+	</para>
+	<para>
+		A menos que quiera cambiar la descripci&#xF3;n de un adjunto o indicar que tiene que mostrarse en l&#xED;nea al destinatario, ya est&#xE1; listo. Los adjuntos se cargar&#xE1;n cuando env&#xED;e el mensaje. Sin embargo, si quisiera cambiar la descripci&#xF3;n o la disposici&#xF3;n del adjunto, puede pulsar el bot&#xF3;n &quot;Actualizar&quot; para cargar los adjuntos inmediatamente y guardar cualquier otro cambio realizado a los adjuntos existentes.
+	</para>
+	<tip>
+		Tenga en cuenta que en el caso de archivos grandes o conexiones a Internet lentas, el proceso de carga y adjuntado del archivo al mensaje puede llevar bastante tiempo. Tenga paciencia y no pulse otros v&#xED;nculos o botones mientras est&#xE9; esperando la carga de un archivo.
+	</tip>
+</entry>
+
+<entry id="compose-attachments">
+	<title>Redacci&#xF3;n del mensaje: Adjuntos</title>
+	<heading>Adjuntos</heading>
+	<para>
+		Esta secci&#xF3;n muestra un listado de archivos ya adjuntados al mensaje.
+	</para>
+	<heading>Eliminar archivo(s) adjunto(s)</heading>
+	<para>
+		Para borrar archivo(s) adjunto(s):
+	</para>
+	<para>
+		Paso 1: Active la(s) casilla(s) "&#xBF;Eliminar?" del/los archivo(s) adjunto(s) que desea eliminar.
+	</para>
+	<para>
+		Paso 2: Pulse "Actualizar" para ver inmediatamente los cambios, o &#xE9;stos se ejecutar&#xE1;n autom&#xE1;ticamente cuando se env&#xED;e el mensaje.
+	</para>
+	<heading>Cambiar la disposici&#xF3;n de los adjuntos</heading>
+	<para>
+		Para cambiar la disposici&#xF3;n de los adjuntos:
+	</para>
+	<para>
+		Paso 1: Cambie la disposici&#xF3;n de cada adjunto al valor deseado: "En l&#xED;nea" o "Adjunto".
+	</para>
+	<para>
+		Paso 2: Pulse el bot&#xF3;n &quot;Actualizar&quot; sobre la secci&#xF3;n Adjuntos para ver inmediatamente los cambios o &#xE9;stos se ejecutar&#xE1;n autom&#xE1;ticamente cuando se env&#xED;e el mensaje.
+	</para>
+	<heading>Cambiar la descripci&#xF3;n de los adjuntos</heading>
+	<para>
+		Para cambiar la descripci&#xF3;n de los adjuntos (el texto que ver&#xE1; el destinatario describiendo el adjunto):
+	</para>
+	<para>
+		Paso 1: Introduzca una descripci&#xF3;n en el campo de Descripci&#xF3;n.
+	</para>
+	<para>
+		Paso 2: Pulse el bot&#xF3;n &quot;Actualizar&quot; sobre la secci&#xF3;n Adjuntos para ver inmediatamente los cambios o &#xE9;stos se ejecutar&#xE1;n autom&#xE1;ticamente cuando se env&#xED;e el mensaje.
+	</para>
+</entry>
+
+<entry id="compose-priority" md5="b023367c36de3ce1567d27ccaa45640c" state="uptodate">
+	<title>Redacci&#xF3;n del mensaje: Prioridad</title>
+	<heading>Prioridad</heading>
+	<para>
+		&#xC9;sto establece la cabecera "X-Priority" del mensaje a enviar. La etiqueta "X-Priority" es un tipo de "pseudo est&#xE1;ndar" que la mayor&#xED;a de los clientes de correo aceptan (Netscape, Mozilla, Opera, Outlook). Cualquier cliente de correo que no la gestione simplemente la ignorar&#xE1;.
+	</para>
+</entry>
+
+<entry id="compose-save-attachments" md5="db89972c4ebb0b41ab691b6a7744a81d" state="uptodate">
+	<title>Redacci&#xF3;n del mensaje: Guardar adjuntos</title>
+	<para>
+		Determina si los adjuntos del mensaje se guardar&#xE1;n con el mismo en la carpeta de correo enviado. Si se selecciona "S&#xED;", se guardar&#xE1;n los datos de los adjuntos. Si se selecciona "No", los datos de los adjuntos se eliminar&#xE1;n del mensaje tras enviarlo a los destinatarios. Seleccionar "No" le ayudar&#xE1; a conservar el espacio de disco al eliminar la informaci&#xF3;n de los adjuntos (potencialmente grande) de los mensajes almacenados.
+	</para>
+</entry>
+
+<entry id="compose-link-attachments" md5="63b3841c95aed31b5372f0fa770ee382" state="uptodate">
+	<title>Redacci&#xF3;n del mensaje: Vincular adjuntos</title>
+	<para>
+		Determina si los adjuntos del mensaje se enviar&#xE1;n como una parte del mensaje de correo o si dichos adjuntos se dejar&#xE1;n en el servidor local. Si los adjuntos se vinculan, se le proporcionar&#xE1; al/los destinatario(s) del mensaje un v&#xED;nculo web mediante el que podr&#xE1;(n) descargar el/los adjunto(s). Vincular adjuntos tiene la ventaja de reducir enormemente el tama&#xF1;o de los mensajes enviados. Por el contrario tiene la desventaja de que no se puede garantizar que el contenido de los adjuntos est&#xE9; disponible en el futuro ya que los datos adjuntos no est&#xE1;n incluidos dentro del mensaje de correo.
+	</para>
+</entry>
+
+<entry id="search">
+	<title>B&#xFA;squeda de mensajes</title>
+	<heading>Criterio de b&#xFA;squeda</heading>
+	<para>
+		Puede buscar mensajes en las carpetas mediante distintos criterios de b&#xFA;squeda.
+	</para>
+	<para>
+		Paso 1: Seleccione si quiere que se cumplan <b>todas</b> las consultas (una b&#xFA;squeda Y ) o <b>cualquiera</b> de ellas (una b&#xFA;squeda O ).
+	</para>
+	<para>
+		Paso 2: Elija lo(s) campo(s) que desee a&#xF1;adir al criterio de b&#xFA;squeda y, si fuera necesario, identifique los par&#xE1;metros de b&#xFA;squeda de esos campos.
+	</para>
+	<para>
+		Paso 3: Elija la(s) carpeta(s) en la(s) que desee buscar.
+	</para>
+	<para>
+		Paso 4: Pulse "Enviar".
+	</para>
+	<para>
+		Si alg&#xFA;n mensaje cumple el criterio de b&#xFA;squeda, los asuntos de esos mensajes se mostrar&#xE1;n en la vista de "Resultados de la b&#xFA;squeda".
+	</para>
+</entry>
+
+<entry id="folder-options" md5="08ee3e450a82431727763b9db082ec08" state="uptodate">
+	<title>Carpetas: Acciones</title>
+	<para>
+		Puede seleccionar carpetas mediante las casillas de selecci&#xF3;n de la izquierda. Una vez lo haya hecho, elija la opci&#xF3;n que desee realizar en las carpetas mediante la lista desplegable de la izquierda.
+	</para>
+	<heading>Crear</heading>
+	<para>
+		Crea una carpeta, de ser posible. Para crear una carpeta en el primer nivel, seleccione 'Crear' sin seleccionar ninguna carpeta en la columna izquierda. Para crear una subcarpeta en una carpeta existente, seleccione la carpeta existente en la columna izquierda antes de seleccionar 'Crear'.
+	</para>
+	<heading>Renombrar</heading>
+	<para>
+		Cambia el nombre de una carpeta. Para renombrar una carpeta selecci&#xF3;nela en la columna izquierda y pulse 'Renombrar'. Al renombrar todas las subcarpetas se renombrar&#xE1;n de forma autom&#xE1;tica.
+	</para>
+	<heading>Eliminar</heading>
+	<para>
+		Elimina una carpeta y todos los mensajes que contenga. Para eliminar, seleccione las carpetas a eliminar en la columna izquierda y pulse 'Eliminar'. Al eliminar carpetas con subcarpetas &#xE9;stas no se eliminar&#xE1;n autom&#xE1;ticamente. Para eliminarlas, tendr&#xE1; que seleccionar todas las subcarpetas de forma manual mediante la columna izquierda.
+	</para>
+	<heading>Vaciar</heading>
+	<para>
+		Para eliminar todos los mensajes de una carpeta, sin eliminar la carpeta, seleccione las carpetas en la columna izquierda y pulse 'Vaciar'.
+	</para>
+	<heading>Purgar</heading>
+	<para>
+		Para eliminar todos los mensajes de una carpeta marcados como eliminados, sin eliminar la carpeta, seleccione las carpetas en la columna izquierda y pulse 'Purgar'. Esta opci&#xF3;n s&#xF3;lo aparece si no se usa una Papelera.
+	</para>
+	<heading>Suscribir/Anular suscripci&#xF3;n</heading>
+	<para>
+		Marca una carpeta como suscrita o anula su suscripci&#xF3;n. Cuando se ha suscrito a una carpeta, &#xE9;sta aparecer&#xE1; en todas las listas desplegables de carpetas. Estas opciones s&#xF3;lo aparecen si se utiliza la suscripci&#xF3;n a carpetas IMAP.
+	</para>
+	<para>
+		Para suscribirse, seleccione las carpetas en la columna de la izquierda y pulse 'Suscribir'. Para anular las suscripciones, seleccione las carpetas en la columna de la izquierda y pulse 'Anular suscripci&#xF3;n'.
+	</para>
+	<heading>Comprobar correo nuevo/No comprobar correo nuevo</heading>
+	<para>
+		Marca una carpeta para comprobar si contiene correo nuevo cuando se est&#xE1; en el navegador de carpetas y en el panel lateral (si est&#xE1; activo).
+	</para>
+	<para>
+		Para definir esta bandera, seleccione las carpetas a comprobar en la columna de la izquierda y pulse 'Comprobar correo nuevo'. Para anular esta bandera, seleccione las carpetas que no quiere comprobar en la columna de la izquierda y pulse 'No comprobar correo nuevo'.
+	</para>
+	<heading>Marcar todos los mensajes como le&#xED;dos/Marcar todos los mensajes como sin leer</heading>
+	<para>
+		Para marcar todos los mensajes de una carpeta como le&#xED;dos, seleccione las carpetas en la columna de la izquierda y pulse 'Marcar todos los mensajes como le&#xED;dos'. Para marcar todos los mensajes de una carpeta como sin leer, seleccione las carpetas en la columna de la izquierda y pulse 'Marcar todos los mensajes como sin leer'.
+	</para>
+	<heading>Descargar</heading>
+	<para>
+		Para descargar todos los mensajes de una carpeta en un &#xFA;nico archivo (en formato mbox), seleccione la carpeta en la columna de la izquierda y pulse 'Descargar'. Para descargar el archivo en formato comprimido de tipo ZIP, seleccione en su lugar 'Descargar [formato .zip]'.
+	</para>
+	<heading>Importar mensajes</heading>
+	<para>
+		Esta opci&#xF3;n importar&#xE1; archivos de formato mbox o .eml a la carpeta de su elecci&#xF3;n. Elija una carpeta a la que importar los mensajes mediante la columna de la izquierda y seleccione esta opci&#xF3;n. Se le dirigir&#xE1; a una p&#xE1;gina en la que se le pedir&#xE1; el archivo mbox o .eml a importar.
+	</para>
+	<heading>Actualizar &#xE1;rbol de carpetas</heading>
+	<para>
+		Actualiza la representaci&#xF3;n gr&#xE1;fica del &#xE1;rbol de carpetas volviendo a consultar al servidor de correo. Normalmente no deber&#xED;a necesitar &#xE9;sto a menos que est&#xE9; accediendo al servidor de correo simult&#xE1;neamente con otro cliente de correo y haya hecho cambios en la estructura de las carpetas mediante &#xE9;ste.
+	</para>	
+	<heading>Mostrar/Ocultar no suscritas</heading>
+	<para>
+		Si se utiliza la suscripci&#xF3;n a carpetas IMAP, muestra/oculta las carpetas no suscritas. Para suscribirse/anular la suscripci&#xF3;n a una carpeta, seleccione la casilla junto al nombre de la carpeta y utilice las acciones Suscribir/Anular suscripci&#xF3;n del men&#xFA; desplegable de acciones de carpetas.
+	</para>
+	<heading>Expandir todas</heading>
+	<para>
+		Expande todas las entradas de carpetas.
+	</para>
+	<heading>Collapsar todas</heading>
+	<para>
+		Collapsa todas las entradas de carpetas.
+	</para>
+</entry>
+
+<entry id="filters" md5="5ef60786767e638fbf5ba8fc5bd5d9d2" state="uptodate">
+	<title>Filtros: Aplicar</title>
+	<heading>Aplicar reglas de filtrado</heading>
+	<para>
+		Pulse el icono "Aplicar filtros" junto al nombre del buz&#xF3;n de ENTRADA en la vista de buzones para filtrar todos los mensajes conforme a las reglas especificadas.
+	</para>
+</entry>
+
+<entry id="filter-edit-rules" md5="5baa5708ac9449e797f967313a9e1a27" state="uptodate">
+	<title>Filtros: Modificar sus reglas de filtrado</title>
+	<heading>Modificar sus reglas de filtrado</heading>
+	<para>
+		Pulse "Modificar sus reglas de filtrado" para pasar a la p&#xE1;gina en la que puede a&#xF1;adir, eliminar y modificar el conjunto activo de reglas de filtrado.
+	</para>
+</entry>
+
+<entry id="filter-edit-blacklist" md5="80ff7803c66599c7035f7f8811d218cc" state="uptodate">
+	<title>Filtros: Modificar su lista negra</title>
+	<heading>Modificar su lista negra</heading>
+	<para>
+		Pulse "Modificar su lista negra" para pasar a la p&#xE1;gina en la que puede a&#xF1;adir, eliminar y modificar la lista de direcciones de correo de las que SIEMPRE va a rechazar los env&#xED;os.
+	</para>
+</entry>
+
+<entry id="filter-edit-whitelist" md5="330c3a8fad198c7afe855c101c63cd0f" state="uptodate">
+	<title>Filtros: Modificar su lista blanca</title>
+	<heading>Modificar su lista blanca</heading>
+	<para>
+		Pulse "Modificar su lista blanca" para pasar a la p&#xE1;gina en la que puede a&#xF1;adir, eliminar y modificar la lista de direcciones de correo de las que SIEMPRE va a aceptar env&#xED;os.
+	</para>
+</entry>
+
+<entry id="filter-on-login" md5="37d9297d1cca46435e36b6e38e45dcdb" state="uptodate">
+	<title>Filtros: Filtrar al iniciar</title>
+	<heading>&#xBF;Aplicar reglas de filtrado al iniciar sesi&#xF3;n?</heading>
+	<para>
+		Active esta opci&#xF3;n para aplicar siempre los filtros al iniciar sesi&#xF3;n en IMP.
+	</para>
+</entry>
+
+<entry id="filter-on-display" md5="f5afc305402ef52bad108933f3f33291" state="uptodate">
+	<title>Filtros: Filtrar al actualizar</title>
+	<heading>&#xBF;Aplicar reglas de filtrado siempre que se muestre la carpeta de ENTRADA?</heading>
+	<para>
+		Active esta opci&#xF3;n para aplicar los filtros siempre que vea la carpeta de Entrada.
+	</para>
+</entry>
+
+<entry id="filter-any-mailbox" md5="71c51e83909f9d0bd440d220772ee3c6" state="uptodate">
+	<title>Filtros: Filtrar cualquier buz&#xF3;n</title>
+	<heading>&#xBF;Aplicar reglas de filtrado a cualquier buz&#xF3;n?</heading>
+	<para>
+		Active esta opci&#xF3;n si desea aplicar las reglas de filtrado a cualquier buz&#xF3;n. Normalmente las reglas de filtrado se aplican s&#xF3;lo al correo nuevo que llega a la carpeta de ENTRADA. Si se activa esta opci&#xF3;n, aparecer&#xE1; un icono en todas las p&#xE1;ginas de buzones que le permitir&#xE1; aplicar las reglas de filtrado a los mensajes del buz&#xF3;n actual. OBSERVACI&#xD3;N: Filtrar otros buzones distintos del de ENTRADA puede producir resultados extra&#xF1;os (p.e. el filtro puede hacer que se env&#xED;e al mismo buz&#xF3;n una copia de los mensajes a enviar) y/o no deseados (p.e. puede ocasionar que se trasladen o eliminen mensajes si se han a&#xF1;adido nuevas reglas de filtrado despu&#xE9;s de que un mensaje ya se hab&#xED;a enviado al buz&#xF3;n actual).
+	</para>
+</entry>
+
+<entry id="pgp-compose-attach-pubkey" md5="97446dbbb27616b4fa39be801e10df2d" state="uptodate">
+	<title>PGP: Adjuntar clave p&#xFA;blica</title>
+	<heading>Adjuntar clave p&#xFA;blica</heading>
+	<para>
+		Si se selecciona, se adjuntar&#xE1; al mensaje una copia de la clave PGP p&#xFA;blica, si existe. Se puede configurar el comportamiento por omisi&#xF3;n mediante la pantalla de opciones PGP.
+	</para>
+</entry>
+
+<entry id="pgp-option-scan-body" md5="6baaada0d46dc1ab0941087f235f359b" state="uptodate">
+	<title>PGP: Analizar texto del cuerpo</title>
+	<heading>&#xBF;Buscar datos PGP en el cuerpo de los mensajes de texto/plano?</heading>
+	<para>
+		Si se selecciona, IMP buscar&#xE1; datos PGP en el cuerpo de los mensajes de texto y mostrar&#xE1; los resultados si los encuentra. Observe que &#xE9;sto puede ralentizar el sistema ya que cada mensaje tiene que comprobarse en su totalidad.
+	</para>
+</entry>
+
+<entry id="compose-options-encrypt" md5="78ff9bd91687efb91d2798ca0458b5cb" state="uptodate">
+	<title>Redacci&#xF3;n: Opciones de cifrado</title>
+	<heading>Sin cifrar</heading>
+	<para>
+		Env&#xED;a el mensaje sin cifrado (texto plano).
+	</para>
+	<heading>Cifrar mensaje con PGP</heading>
+	<para>
+		Esta opci&#xF3;n cifrar&#xE1; el mensaje mediante PGP y la clave personal p&#xFA;blica del destinatario y lo enviar&#xE1;. Tiene que DISPONER de la clave p&#xFA;blica del destinatario almacenada en la libreta de direcciones o la opci&#xF3;n fallar&#xE1;. Si dispone de la clave p&#xFA;blica del destinatario en la libreta de direcciones y sigue teniendo errores, compruebe que la direcci&#xF3;n de correo electr&#xF3;nico del destinatario coincide con la direcci&#xF3;n en la que est&#xE1; almacenada la clave p&#xFA;blica. Los datos cifrados se adjuntar&#xE1;n al mensaje de salida.
+	</para>
+	<heading>Mensaje con firma PGP</heading>
+	<para>
+		Esta opci&#xF3;n firmar&#xE1; digitalmente el mensaje actual mediante PGP y su clave personal privada. Si a&#xFA;n no hab&#xED;a introducido la frase clave de su clave personal privada durante la sesi&#xF3;n actual, se le pedir&#xE1;. El destinatario tiene que tener una copia de su clave p&#xFA;blica para verificar digitalmente la firma.
+	</para>
+	<heading>Mensaje firmado/cifrado con PGP</heading>
+	<para>
+		Esta opci&#xF3;n firmar&#xE1; digitalmente el mensaje en primer lugar y luego cifrar&#xE1; el resultado. Consulte los apartados "Cifrar mensaje con PGP" y "Mensaje con firma PGP" para m&#xE1;s informaci&#xF3;n.
+	</para>
+	<heading>Cifrar mensaje con frase clave PGP</heading>
+	<para>
+		Esta opci&#xF3;n cifrar&#xE1; el mensaje actual mediante PGP y una frase clave y lo enviar&#xE1;. Se le pedir&#xE1; la frase clave que se utilizar&#xE1; para el cifrado. Comunique la frase clave al destinatario a trav&#xE9; de un canal seguro, p.e. personalmente, por tel&#xE9;fono, etc. Los datos cifrados se adjuntar&#xE1;n al mensaje de salida.
+	</para>
+	<heading>Mensaje firmado/cifrado con frase clave PGP</heading>
+	<para>
+		Esta opci&#xF3;n firmar&#xE1; digitalmente el mensaje en primer lugar y luego cifrar&#xE1; el resultado con una frase clave. Consulte los apartados "Cifrar mensaje con frase clave PGP" y "Mensaje con firma PGP" para m&#xE1;s informaci&#xF3;n.
+	</para>
+	<heading>Mensaje cifrado en S/MIME</heading>
+	<para>
+		Esta opci&#xF3;n cifrar&#xE1; el mensaje actual mediante S/MIME y el certificado del destinatario y lo enviar&#xE1;. Tiene que DISPONER del certificado del destinatario almacenado en la libreta de direcciones o la opci&#xF3;n fallar&#xE1;. Si dispone del certificado del destinatario en la libreta de direcciones y sigue teniendo errores, compruebe que la direcci&#xF3;n de correo electr&#xF3;nico del destinatario coincide con la direcci&#xF3;n en la que est&#xE1; almacenada el certificado. Los datos cifrados se adjuntar&#xE1;n al mensaje de salida.
+	</para>
+	<heading>Mensaje con firma S/MIME</heading>
+	<para>
+		Esta opci&#xF3;n firmar&#xE1; digitalmente el mensaje actual mediante S/MIME y su certificado. Si a&#xFA;n no hab&#xED;a introducido la frase clave de su certificado durante la sesi&#xF3;n, se le pedir&#xE1;.
+	</para>
+	<heading>Mensaje firmado/cifrado en S/MIME</heading>
+	<para>
+		Esta opci&#xF3;n firmar&#xE1; digitalmente el mensaje en primer lugar y luego cifrar&#xE1; el resultado. Consulte los apartados "Mensaje cifrado en S/MIME" y "Mensaje con firma S/MIME" para m&#xE1;s informaci&#xF3;n.
+	</para>
+</entry>
+
+<entry id="pgp-overview" md5="24b5138b4b53f73b5f2f2739e4c1858d" state="uptodate">
+	<title>PGP: Introducci&#xF3;n</title>
+	<heading>&#xBF;Qu&#xE9; es PGP?</heading>
+	<para>
+		PGP es una herramienta para comunicaciones y almacenamiento de datos seguros, especialmente para su uso con el correo electr&#xF3;nico. Se puede utilizar para cifrar datos y para crear firmas digitales. IMP utiliza GnuPG (GNU Privacy Guard/Guardi&#xE1;n de Privacidad GNU) para proporcionar esta funcionalidad.
+	</para>
+	<heading>&#xBF;Activar capacidad PGP?</heading>
+	<para>
+		Si se selecciona esta opci&#xF3;n, podr&#xE1; crear/ver sus claves PGP personales, a&#xF1;adir/eliminar claves p&#xFA;blicas de otras personas, leer correo cifrado, comprobar correo firmado digitalmente y cifrar/firmar el correo que env&#xED;e.
+	</para>
+</entry>
+
+<entry id="pgp-option-attach-pubkey" md5="561ce43370ac4afbcc3f9818c8fbc2f6" state="uptodate">
+	<title>PGP: Opciones - Adjuntar clave p&#xFA;blica</title>
+	<heading>Opciones - Adjuntar clave p&#xFA;blica</heading>
+	<para>
+		Si se selecciona, por omisi&#xF3;n se adjuntar&#xE1; a los mensajes una copia de su clave PGP p&#xFA;blica si la tiene.
+	</para>
+</entry>
+
+<entry id="pgp-manage-pubkey" md5="b289ea5824b7f69f35c0751497f4e1c3" state="uptodate">
+	<title>PGP: Gestionar claves p&#xFA;blicas</title>
+	<heading>Introducci&#xF3;n</heading>
+	<para>
+		Esta pantalla enumera todos los usuarios actuales de su libreta de direcciones que tienen claves PGP p&#xFA;blicas. Esos usuarios son los &#xDA;NICOS a los que puede 1) enviar un mensaje cifrado -O- 2) comprobar la firma digital.
+	</para>
+	<heading>Ver</heading>
+	<para>
+		Abre una ventana para visualizar la clave PGP p&#xFA;blica.
+	</para>
+	<heading>Detalles</heading>
+	<para>
+		Muestra varios detalles sobre la clave PGP p&#xFA;blica.
+	</para>
+	<heading>Eliminar</heading>
+	<para>
+		Elimina la clave p&#xFA;blica de la libreta de direcciones.
+	</para>
+</entry>
+
+<entry id="pgp-import-pubkey" md5="6ee1130b46e9ff1ca9ad3a3a47e7b382" state="uptodate">
+	<title>PGP: Gestionar claves p&#xFA;blicas - Importar</title>
+	<heading>Importar claves</heading>
+	<para>
+		Este bot&#xF3;n abrir&#xE1; una ventana en la que puede importar de forma manual una clave PGP p&#xFA;blica. La clave se puede pegar en un campo de texto o, si se encuentra en un archivo en el ordenador local, puede importarla. Si la clave es v&#xE1;lida se insertar&#xE1; en la libreta de direcciones y la ventana se cerrar&#xE1;; si no es v&#xE1;lida se mostrar&#xE1; un mensaje de error explicando la raz&#xF3;n.
+	</para>
+</entry>
+
+<entry id="pgp-overview-personalkey" md5="220af2b74a58f430efd72d6d6b1f993f" state="uptodate">
+	<title>PGP: Gestionar claves personales</title>
+	<heading>Introducci&#xF3;n</heading>
+	<para>
+		Si desea firmar digitalmente mensajes o permitir que otros le env&#xED;en mensajes cifrados, tiene que disponer de sus propias claves PGP p&#xFA;blica/privada.
+	</para>
+	<heading>La clave p&#xFA;blica</heading>
+	<para>
+		La clave p&#xFA;blica tiene que ponerla a disposici&#xF3;n de cualquier persona que desee que pueda enviarle mensajes cifrados que s&#xF3;lo USTED podr&#xE1; descifrar (mediante su clave privada). Adem&#xE1;s, la clave p&#xFA;blica tiene que estar disponible para todo aquel al que quiera enviar un mensaje firmado digitalmente - la clave p&#xFA;blica hace falta para comprobar la firma digital.
+	</para>
+	<heading>La clave privada</heading>
+	<para>
+		La clave privada hace falta para descifrar cualquier mensaje cifrado mediante su clave p&#xFA;blica. Adem&#xE1;s la clave privada hace falta si quiere firmar digitalmente un mensaje. La clave privada se proteger&#xE1; mediante una frase clave creada al generar las claves por lo que, para realizar cualquier actividad que precise la clave privada, IMP le pedir&#xE1; la frase clave. S&#xF3;lo tendr&#xE1; que introducirla una vez por sesi&#xF3;n - IMP la almacenar&#xE1; hasta que salga de la sesi&#xF3;n (Por lo que &#xA1;aseg&#xFA;rese de salir de la sesi&#xF3;n!).
+	</para>
+</entry>
+
+<entry id="pgp-personalkey-public" md5="3c844d4ff8fdda3e0d446b47a63117e0" state="uptodate">
+	<title>PGP: Gestionar claves personales - Clave p&#xFA;blica</title>
+	<heading>Ver</heading>
+	<para>
+		Abre una ventana para visualizar la clave PGP p&#xFA;blica.
+	</para>
+	<heading>Detalles</heading>
+	<para>
+		Muestra varios detalles sobre la clave PGP p&#xFA;blica.
+	</para>
+</entry>
+
+<entry id="pgp-personalkey-private" md5="1851b67a1aeef1242fc3a2b94af75c03" state="uptodate">
+	<title>PGP: Gestionar claves personales - Clave privada</title>
+	<heading>Introduzca la frase clave</heading>
+	<para>
+		Abre el cuadro de di&#xE1;logo de frase clave. Si la frase clave introducida es correcta se almacenar&#xE1; hasta que se termine la sesi&#xF3;n.
+	</para>
+	<heading>Olvidar frase clave</heading>
+	<para>
+		Elimina la frase clave almacenada - cualquier uso adicional de la clave privada precisar&#xE1; la reintroducci&#xF3;n de la frase clave.
+	</para>
+	<heading>Ver</heading>
+	<para>
+		Abre una ventana para visualizar la clave PGP privada. NO ENV&#xCD;E ESTA CLAVE A NADIE - esta opci&#xF3;n es estrictamente s&#xF3;lo para exportar su clave personal privada de IMP para usarla en otro programa.
+	</para>
+	<heading>Detalles</heading>
+	<para>
+		Muestra varios detalles sobre la clave PGP privada.
+	</para>
+</entry>
+
+<entry id="pgp-personalkey-delete" md5="dbd8cbe6bce71c4fb592dd1b3b27b7ce" state="uptodate">
+	<title>PGP: Gestionar claves personales - Eliminar</title>
+	<heading>Eliminar claves personales</heading>
+	<para>
+		Este bot&#xF3;n eliminar&#xE1; las claves personales p&#xFA;blica/privada de las preferencias de IMP.
+	</para>
+</entry>
+
+<entry id="pgp-personalkey-create-name" md5="748cb124b7ff52820792e278037a8c27" state="uptodate">
+	<title>PGP: Crear claves personales - Nombre</title>
+	<heading>Su nombre</heading>
+	<para>
+		Es el nombre que desea que se incluya en sus claves personales. Es un campo necesario.
+	</para>
+</entry>
+
+<entry id="pgp-personalkey-create-comment" md5="e666eb9f0ee4b49fe04f74fc18db8640" state="uptodate">
+	<title>PGP: Crear claves personales - Comentario</title>
+	<heading>Comentario</heading>
+	<para>
+		Un comentario que desee que se incluya en sus claves personales. Es un campo opcional.
+	</para>
+</entry>
+
+<entry id="pgp-personalkey-create-email" md5="c729f70fdb3a73cbb7ba5ef5888e3092" state="uptodate">
+	<title>PGP: Crear claves personales - Correo electr&#xF3;nico</title>
+	<heading>Correo electr&#xF3;nico</heading>
+	<para>
+		La direcci&#xF3;n de correo que quiere asociar con sus claves personales. Es un campo necesario.
+	</para>
+</entry>
+
+<entry id="pgp-personalkey-create-keylength" md5="24ca641c63fb5ff310a39ee0d3b1ee55" state="uptodate">
+	<title>PGP: Crear claves personales - Tama&#xF1;o de clave</title>
+	<heading>Tama&#xF1;o de clave</heading>
+	<para>
+		El tama&#xF1;o, en bits, de la clave generada. Cuanto mayor sea el valor, mayor ser&#xE1; la protecci&#xF3;n (y tambi&#xE9;n mayor ser&#xE1; el tiempo de generaci&#xF3;n y de cifrado). 1024 bits es la opci&#xF3;n por omisi&#xF3;n - este valor ofrece una protecci&#xF3;n excelente.
+	</para>
+</entry>
+
+<entry id="pgp-personalkey-create-passphrase" md5="2fb9372970bf33f51e988ba39dbd7193" state="uptodate">
+	<title>PGP: Crear claves personales - Frase clave</title>
+	<heading>Frase clave</heading>
+	<para>
+		La frase clave utilizada para proteger/cifrar su clave personal privada. Deber&#xED;a tener AL MENOS 6 caracteres, NO deber&#xED;a ser igual a su contrase&#xF1;a de acceso, NO debe basarse en una palabra incluida en un diccionario y deber&#xED;a contener tanto n&#xFA;meros como letras. Tendr&#xE1; que introducir la frase clave dos veces con objeto de verificarla. Es un campo necesario.
+	</para>
+</entry>
+
+<entry id="pgp-personalkey-create-actions" md5="0f8234935b964c83533b4ec4c15eb712" state="uptodate">
+	<title>PGP: Crear claves personales - Acciones</title>
+	<heading>Crear claves</heading>
+	<para>
+		Crea y almacena sus claves personales p&#xFA;blica/privada.
+	</para>
+	<heading>Importar claves</heading>
+	<para>
+		Importa un par de claves personales p&#xFA;blica/privada. Este bot&#xF3;n abre una ventana en la que puede importar de forma manual sus claves personales p&#xFA;blica/privada existentes. Las claves se pueden pegar en un campo de texto o, si est&#xE1;n disponibles en un archivo en el ordenador local, puede importarlas desde el mismo. Si las claves son v&#xE1;lidas se insertar&#xE1;n en las preferencias y la ventana se cerrar&#xE1;; si no son v&#xE1;lidas se mostrar&#xE1; un mensaje de error indicando la raz&#xF3;n.
+	</para>
+</entry>
+
+<entry id="smime-overview" md5="d3c752b1345fb2eccfe575c07461963f" state="uptodate">
+	<title>S/MIME: Introducci&#xF3;n</title>
+	<heading>&#xBF;Qu&#xE9; es S/MIME?</heading>
+	<para>
+		S/MIME es un sistema de claves privada/p&#xFA;blica que proporciona firmas digitales, privacidad de mensajes y detecci&#xF3;n de falsificaci&#xF3;n de una forma abierta e interoperable. S/MIME puede proporcionar privacidad a los mensajes cifr&#xE1;ndolos de forma que s&#xF3;lo el remitente y los destinatarios previstos puedan descifrarlos. Le permite identificar al remitente de un mensaje mediante una firma digital. En conjunto, esta ayuda de cifrado y firma digital proporciona detecci&#xF3;n de falsificaci&#xF3;n, permitiendo a los destinatarios determinar si un mensaje se ha modificado despu&#xE9;s de haber sido enviado.
+	</para>
+	<heading>&#xBF;Activar capacidad S/MIME?</heading>
+	<para>
+		Si se selecciona esta opci&#xF3;n, podr&#xE1; importar sus claves personales S/MIME, leer correo cifrado, comprobar correo firmado digitalmente y cifrar/firmar el correo que env&#xED;e.
+	</para>
+</entry>
+
+<entry id="smime-overview-personalkey" md5="9f4f36ae72cb4abc731067d338be3b98" state="uptodate">
+	<title>S/MIME: Claves personales</title>
+	<heading>Introducci&#xF3;n</heading>
+	<para>
+		Si desea firmar digitalmente o cifrar los mensajes, tiene que disponer de sus propias claves S/MIME p&#xFA;blica/privada.
+	</para>
+</entry>
+
+<entry id="smime-import-personal-certs" md5="cf0ed2e3e24d30dedf8cfef2c2645759" state="uptodate">
+	<title>S/MIME: Importar certificados personales</title>
+	<heading>Importar claves</heading>
+	<para>
+		Importa los certificados personales desde un archivo de formato PKCS #12. Al exportar una clave desde un navegador (p.e. Internet Explorer, Firefox) o al exportar un certificado almacenado por el Sistema Operativo (p.e. Windows XP) se suele generar un archivo de tipo PKCS #12. Si las claves son v&#xE1;lidas, se insertar&#xE1;n en las preferencias y se cerrar&#xE1; la ventana; si no son v&#xE1;lidas se mostrar&#xE1; un mensaje de error explicando la raz&#xF3;n.
+	</para>
+</entry>
+
+<entry id="smime-delete-personal-certs" md5="018bb6b61a7e416892de288ad1c880f4" state="uptodate">
+	<title>S/MIME: Eliminar certificados personales</title>
+	<heading>Eliminar certificados personales</heading>
+	<para>
+		Elimina sus certificados personales de las preferencias. No podr&#xE1; volver a firmar mensajes en S/MIME ni ver ning&#xFA;n mensaje cifrado en S/MIME que se le env&#xED;e.
+	</para>
+</entry>
+
+<entry id="smime-manage-pubkey" md5="8b6c63684d3d73b3d084025a78fe7e88" state="uptodate">
+	<title>S/MIME: Gestionar claves p&#xFA;blicas</title>
+	<heading>S/MIME: Gestionar claves p&#xFA;blicas</heading>
+	<para>
+		Gestiona su listado de claves S/MIME p&#xFA;blicas.
+	</para>
+	<heading>Ver</heading>
+	<para>
+		Ver el texto en bruto de una clave p&#xFA;blica.
+	</para>
+	<heading>Detalles</heading>
+	<para>
+		Ver datos t&#xE9;cnicos de una clave p&#xFA;blica.
+	</para>
+	<heading>Eliminar</heading>
+	<para>
+		Elimina del almacenamiento la clave p&#xFA;blica seleccionada. Eliminar la clave p&#xFA;blica de un usuario le impedir&#xE1; enviarle mensajes cifrados a dicho usuario.
+	</para>
+</entry>
+
+<entry id="printing" md5="f233c11b6b4a6bedeb68f1d5a2a976db" state="uptodate">
+	<title>Impresi&#xF3;n</title>
+	<heading>Imprimir un mensaje</heading>
+	<para>
+		Para imprimir un mensaje que est&#xE9; visualizando, pulse cualquiera de los v&#xED;nculos "Imprimir" de la parte superior o inferior del mensaje. El mensaje se abrir&#xE1; en una nueva ventana con un formato preparado para la impresi&#xF3;n. Dependiendo del navegador y sistema operativo que est&#xE9; utilizando, puede abrirse el cuadro de di&#xE1;logo de impresi&#xF3;n. Si no se abre, despliegue el men&#xFA; "Archivo" del navegador y seleccione "Imprimir" para abrir el cuadro de di&#xE1;logo de impresi&#xF3;n.
+	</para>
+</entry>
+
+<entry id="sorting" md5="18cdeac38027fe5c42bab693f2a4260a" state="uptodate">
+	<title>Ordenaci&#xF3;n y secuenciaci&#xF3;n</title>
+	<heading>Ordenaci&#xF3;n de entradas</heading>
+	<para>
+		Al visualizar un listado de mensajes, puede ordenarlo por cualquiera de las columnas pulsando sobre la cabecera de la columna correspondiente. Para conmutar el sentido de la clasificaci&#xF3;n de las columnas entre ascendente y descendente, pulse el icono de flecha de la cabecera de la columna.
+	</para>
+	<heading>Secuenciaci&#xF3;n</heading>
+	<para>
+		Para agrupar los mensajes por conversaciones (asuntos), de forma que cada mensaje se agrupe con todas sus respuestas, pulse el v&#xED;nculo [Conversaci&#xF3;n] de la cabecera de la columna asunto. Para volver a la ordenaci&#xF3;n normal por asuntos, pulse el v&#xED;nculo [Asunto] de la cabecera de la columna asunto.
+	</para>
+</entry>
+
+<entry id="alternative-msg" md5="4978073f76977b6af6b69810e4d22a65" state="uptodate">
+	<title>Mensajes Multipart/Alternative</title>
+	<para>
+		Los remitentes env&#xED;an en ocasiones mensajes de tipo "multipart/alternative". Estos mensajes tienen varias partes, todas mostrando EL MISMO CONTENIDO pero en FORMATOS DISTINTOS. El agente de correo mostrar&#xE1; la &#xFA;ltima parte de la lista que pueda visualizarse correctamente en l&#xED;nea en el navegador, si la hay. El resto de los formatos aparecer&#xE1;n bajo el ep&#xED;grafe "Partes alternativas de esta secci&#xF3;n" y se podr&#xE1;n visualizar o descargar de forma separada. Es importante tener en cuenta que todas las partes alternativas tienen EL MISMO CONTENIDO que la parte mostrada - simplemente est&#xE1;n en formatos distintos (p.e. texto frente a HTML).
+	</para>
+</entry>
+
+<entry id="prefs-rename_sentmail_monthly" md5="530fa20e0afbc25ffd40877948832899" state="uptodate">
+	<title>Preferencias: Mantenimiento: Renombrar la carpeta sent-mail mensualmente</title>
+	<para>
+		Active esta opci&#xF3;n si quiere renombrar la carpeta sent-mail al comienzo de cada mes. La carpeta se renombrar&#xE1; (con un nombre que contenga el mes y el a&#xF1;o) y se crear&#xE1; una nueva carpeta sent-mail.
+	</para>
+</entry>
+
+<entry id="prefs-delete_sentmail_monthly" md5="0beed16dfd68e2f25e0c66871fd546df" state="uptodate">
+	<title>Preferencias: Mantenimiento: Eliminar carpetas sent-mail mensualmente</title>
+	<para>
+		Active esta opci&#xF3;n si quiere eliminar las carpetas sent-mail antiguas al comienzo de cada mes. Puede ser de utilidad, por ejemplo, si tiene un l&#xED;mite de espacio de disco asignado.
+	</para>
+</entry>
+
+<entry id="prefs-delete_sentmail_monthly_keep" md5="71ed1c2eab48b91a25b5bcd4b14ccea9" state="uptodate">
+	<title>Preferencias: Mantenimiento: Eliminar carpetas sent-mail mensualmente - # carpetas conservadas</title>
+	<para>
+		Si est&#xE1; borrando mensualmente las carpetas sent-mail antiguas, &#xBF;cu&#xE1;ntos meses de correo antiguo quiere conservar? Cualquier carpeta m&#xE1;s antigua que este n&#xFA;mero de meses se eliminar&#xE1;.
+	</para>
+</entry>
+
+<entry id="prefs-purge_sentmail" md5="7b37c534aaaec6b43589f15845cf0273" state="uptodate">
+	<title>Preferencias: Mantenimiento: Vaciar sent-mail</title>
+	<para>
+		Indique si quiere eliminar de la(s) carpeta(s) sent-mail los mensajes antiguos.
+	</para>
+</entry>
+
+<entry id="prefs-purge_sentmail_interval" md5="423f3c1b0645cee1bc58e6e22a6d8b68" state="uptodate">
+	<title>Preferencias: Mantenimiento: Frecuencia de vaciado</title>
+	<para>
+		Si desea eliminar de la(s) carpeta(s) sent-mail los mensajes antiguos, &#xBF;cu&#xE1;n a menudo deber&#xED;an vaciarse?
+	</para>
+</entry>
+
+<entry id="prefs-purge_sentmail_keep" md5="fcba2b7e5da61a7fdda7970f926f8d8a" state="uptodate">
+	<title>Preferencias: Mantenimiento: Antig&#xFC;edad de los mensajes enviados a eliminar</title>
+	<para>
+		Si desea eliminar de la(s) carpeta(s) sent-mail los mensajes antiguos, &#xBF;cu&#xE1;l deber&#xED;a ser la antig&#xFC;edad m&#xED;nima de los mensajes a eliminar?
+	</para>
+</entry>
+
+<entry id="prefs-delete_attachments_monthly" md5="373ea02ede6df5fc345caf632e19a75f" state="uptodate">
+	<title>Preferencias: Mantenimiento: Eliminar adjuntos vinculados mensualmente</title>
+	<para>
+		Active esta opci&#xF3;n si desea eliminar adjuntos vinculados antiguos al comienzo de cada mes. Puede ser de utilidad, por ejemplo, si tiene un l&#xED;mite de espacio de disco asignado.
+	</para>
+</entry>
+
+<entry id="prefs-delete_attachments_monthly_keep" md5="1b340a60214dffd04aec02cc1127df5d" state="uptodate">
+	<title>Preferencias: Mantenimiento: Eliminar adjuntos vinculados mensualmente - # meses conservados</title>
+	<para>
+		Si est&#xE1; eliminando mensualmente los adjuntos vinculados antiguos, &#xBF;cu&#xE1;ntos meses de adjuntos antiguos desea conservar? Cualquier adjunto m&#xE1;s antiguo que este n&#xFA;mero de meses se eliminar&#xE1;.
+	</para>
+</entry>
+
+<entry id="prefs-purge_trash" md5="dc71871146be3e46ade0087a8cf18273" state="uptodate">
+	<title>Preferencias: Mantenimiento: Vaciar papelera</title>
+	<para>
+		Desea vaciar la papelera a menudo.
+	</para>
+</entry>
+
+<entry id="prefs-purge_trash_interval" md5="7be91fbeb05b2d87289d4c5602d5a32f" state="uptodate">
+	<title>Preferencias: Mantenimiento: Frecuencia de vaciado de la papelera</title>
+	<para>
+		Si est&#xE1; vaciando la papelera, &#xBF;con qu&#xE9; frecuencia hacerlo?
+	</para>
+</entry>
+
+<entry id="prefs-purge_trash_keep" md5="3cb5a2b5b80b7ac1179ae005f983970e" state="uptodate">
+	<title>Preferencias: Mantenimiento: Antig&#xFC;edad de los mensajes borrados a eliminar</title>
+	<para>
+		Si est&#xE1; vaciando la papelera, &#xBF;antig&#xFC;edad m&#xED;nima de los mensajes a eliminar?
+	</para>
+</entry>
+
+<entry id="prefs-purge_spam" md5="9cabaf3500d3316054db045cf5339f5e" state="uptodate">
+	<title>Preferencias: Mantenimiento: Vaciar Spam</title>
+	<para>
+		Desea vaciar la carpeta de spam a menudo.
+	</para>
+</entry>
+
+<entry id="prefs-purge_spam_interval" md5="fe0f7289693d19bd386638e25beeb276" state="uptodate">
+	<title>Preferencias: Mantenimiento: Frecuencia de vaciado de Spam</title>
+	<para>
+		Si est&#xE1; vaciando la carpeta de spam, &#xBF;con qu&#xE9; frecuencia hacerlo?
+	</para>
+</entry>
+
+<entry id="prefs-purge_spam_keep" md5="f4748aba20cf4a9b6ce92822bd185de6" state="uptodate">
+	<title>Preferencias: Mantenimiento: Antig&#xFC;edad del Spam a eliminar</title>
+	<para>
+		Si est&#xE1; vaciando la carpeta de spam, &#xBF;antig&#xFC;edad m&#xED;nima de los mensajes a eliminar?
+	</para>
+</entry>
+
+<entry id="prefs-attrib_text" md5="721a09d7ca028c97e3bd2b38c597fff7" state="uptodate">
+	<title>Preferencias: Redacci&#xF3;n del mensaje: Texto de cita</title>
+	<para>
+		Aqu&#xED; se puede introducir la frase que quiere que aparezca antes de cualquier texto citado en la respuesta que env&#xED;e.
+	</para>
+	<para>
+		Puede incluir uno o m&#xE1;s comodines para insertar informaci&#xF3;n sobre el mensaje al que est&#xE1; respondiendo. Los comodines se componen de un '%' seguido de una &#xFA;nica letra. Se dispone de los siguientes:
+	</para>
+	<para> %f : Nombre y direcci&#xF3;n de correo del remitente</para>
+	<para> %a : Direcci&#xF3;n de correo del remitente</para>
+	<para> %p : Nombre del remitente</para>
+	<para> %r : Fecha y zona horaria en estilo RFC 2822 completo</para>
+	<para> %d : Fecha como www, dd mmm AAAA</para>
+	<para> %x : Fecha en formato local por omisi&#xF3;n</para>
+	<para> %c : Fecha y hora en formato local por omisi&#xF3;n</para>
+	<para> %m : ID del mensaje</para>
+	<para> %s : Asunto del mensaje</para>
+	<para> %n : Una nueva l&#xED;nea</para>
+	<para> %% : El car&#xE1;cter '%'</para>
+</entry>
+
+<entry id="prefs-default_msg_charset" md5="4ef4fb2090e703f6f8e03f39ab96e717" state="uptodate">
+	<title>Preferencias: Juego de caracteres por omisi&#xF3;n del mensaje</title>
+	<para>
+		Define el juego de caracteres por omisi&#xF3;n utilizado para las partes de texto del mensaje que no contengan informaci&#xF3;n expl&#xED;cita del juego de caracteres. Seg&#xFA;n la RFC 2045 los mensajes sin dicho par&#xE1;metro se mostrar&#xE1;n mediante el juego de caracteres 'US-ASCII'. Sin embargo algunos agentes de correo ciertamente defectuosos pueden enviar mensajes de texto en juegos de caracteres distintos sin definir los par&#xE1;metros apropiados en la cabecera del mensaje. Defina este par&#xE1;metro con la cadena de juego de caracteres por omisi&#xF3;n que se usar&#xE1; de forma local. Seleccione "Por omisi&#xF3;n" para usar los valores MIME por omisi&#xF3;n.
+	</para>
+</entry>
+
+<entry id="prefs-disposition_request_read" md5="89e92c4d68224b2345b59959878a7174" state="uptodate">
+	<title>Preferencias: Solicitar acuses de recibo</title>
+	<para>
+		"Solicitar acuses de recibo" env&#xED;a a los destinatarios del mensaje la petici&#xF3;n de que le informen cuando abran el mensaje. No todos los clientes soportan / tienen en cuenta &#xE9;sto.
+	</para>
+</entry>
+
+<entry id="prefs-disposition_send_mdn" md5="1fe04e5dc3de68d172da284895973ea9" state="uptodate">
+	<title>Preferencias: Enviar NCM</title>
+	<para>
+		"Enviar NCM si lo solicita el remitente" env&#xED;a una Notificaci&#xF3;n de Consulta del Mensaje (tambi&#xE9;n conocida como una confirmaci&#xF3;n de lectura) cuando lea un mensaje en el que el usuario ha solicitado recibir una notificaci&#xF3;n de que lo ha le&#xED;do. En la mayor&#xED;a de los casos &#xE9;sto se realizar&#xE1; de forma autom&#xE1;tica sin preguntarle. En algunos casos aislados puede tener que decidir enviar la notificaci&#xF3;n pulsando un v&#xED;nculo.
+	</para>
+</entry>
+
+<entry id="prefs-disposition_request_delivery" md5="26598e29af05a07de5e13644669be712" state="uptodate">
+	<title>Preferencias: Solicitar confirmaci&#xF3;n del env&#xED;o</title>
+	<para>
+		"Solicitar confirmaci&#xF3;n del env&#xED;o" env&#xED;a una solicitud al servidor del destinatario de que le informe cuando haya distribuido el mensaje al buz&#xF3;n de destino. No significa que el mensaje haya sido le&#xED;do, simplemente que ha llegado a un buz&#xF3;n en alguna parte. No todos los servidores de correo soportan &#xE9;sto.
+	</para>
+</entry>
+
+<entry id="prefs-delete_spam_after_report" md5="cefa8b52e09b0ada90e0889a3959efea" state="uptodate">
+	<title>Preferencias: Eliminar Spam tras comunicarlo</title>
+	<para>
+		Puede optar por hacer un de estas tres cosas tras comunicar un mensaje como spam o como inofensivo.
+	</para>
+	<para>
+		En primer lugar, puede decidir no hacer nada - el mensaje se comunicar&#xE1; como spam o como inofensivo pero se mantendr&#xE1; sin cambios en su buz&#xF3;n.
+	</para>
+	<para>
+		En segundo lugar, si se comunica un mensaje como spam, puede optar por eliminarlo inmediatamente. Esta opci&#xF3;n carece de efectos al comunicar un mensaje como inofensivo.
+	</para>
+	<para>
+		En tercer lugar, tras comunicar un mensaje como spam, el mensaje se eliminar&#xE1; de la carpeta actual y se trasladar&#xE1; a la carpeta de spam. De forma alternativa, si se comunica un mensaje como inofensivo, se eliminar&#xE1; de la carpeta actual y se trasladar&#xE1; al buz&#xF3;n de entrada.
+	</para>
+</entry>
+
+<entry id="prefs-html_image_replacement" md5="28e1cf08e328345a8e7274c853492d4f" state="uptodate">
+	<title>Preferencias: Sustituci&#xF3;n de im&#xE1;genes HTML</title>
+	<para>
+		En el caso de mensajes HTML mostrados en l&#xED;nea, &#xBF;habr&#xED;a que bloquear todas las etiquetas de im&#xE1;genes hasta que decida expl&#xED;citamente verlas? Tenga en cuenta que si est&#xE1; visualizando un adjunto HTML las im&#xE1;genes se ver&#xE1;n siempre.
+	</para>
+</entry>
+
+<entry id="prefs-html_image_addrbook" md5="759fa3df24e0a3cd89f320102252f91a" state="uptodate">
+	<title>Preferencias: Sustituci&#xF3;n de im&#xE1;genes HTML/Mostrar si en Direcciones</title>
+	<para>
+		Si se est&#xE1;n bloqueando las im&#xE1;genes de los mensajes HTML en l&#xED;nea, &#xBF;habr&#xED;a que mostrarlas autom&#xE1;ticamente si el remitente aparece en la libreta de direcciones?
+	</para>
+</entry>
+
+<entry id="prefs-mailbox_start" md5="62fcc38a15f54dae7eb8bdafa93ed341" state="uptodate">
+	<title>Preferencias: P&#xE1;gina de inicio del buz&#xF3;n</title>
+	<para>
+		Decide qu&#xE9; p&#xE1;gina del listado del buz&#xF3;n se mostrar&#xE1; cuando acceda a un buz&#xF3;n por primera vez.
+	</para>
+</entry>
+
+<entry id="prefs-save_attachments" md5="35b46334cdcc7fa416b9f9fca5874e80" state="uptodate">
+	<title>Preferencias: Guardar adjuntos de mensajes enviados</title>
+	<para>
+		Si se est&#xE1; guardando un mensaje en una carpeta sent-mail, decide si se guardan todos los datos de adjuntos. Se dispone de las opciones siguientes:
+	</para>
+	<para>* "Guardar siempre los adjuntos" - NUNCA consultar el almacenamiento de los adjuntos en la ventana de redacci&#xF3;n; los adjuntos se guardar&#xE1;n SIEMPRE con el mensaje.</para>
+	<para>* "Consultar cada vez que se env&#xED;e un adjunto; S&#xCD; por omisi&#xF3;n" - Consultar SIEMPRE el almacenamiento de los adjuntos en la ventana de redacci&#xF3;n; por omisi&#xF3;n se guardar&#xE1;n los adjuntos.</para>
+	<para>* "Consultar cada vez que se env&#xED;e un adjunto; NO por omisi&#xF3;n" - Consultar SIEMPRE el almacenamiento de los adjuntos en la ventana de redacci&#xF3;n; por omisi&#xF3;n los adjuntos no se guardar&#xE1;n.</para>
+	<para>* "Nunca guardar adjuntos" - NUNCA consultar el almacenamiento de los adjuntos en la ventana de redacci&#xF3;n; los adjuntos no se guardar&#xE1;n NUNCA con el mensaje.</para>
+</entry>
+
+<entry id="virtual_inbox" md5="a91e01732bb8129cbc6a7f5c6dca3ab3" state="uptodate">
+	<title>Carpetas: Buz&#xF3;n de entrada Virtual</title>
+	<para>
+		El buz&#xF3;n de entrada Virtual es una b&#xFA;squeda almacenada que elimina la necesidad de buscar en cada buz&#xF3;n los mensajes marcados como nuevos. En su lugar se buscan mensajes nuevos en todos los buzones suscritos y los resultados se muestran en un &#xFA;nico buz&#xF3;n.
+	</para>
+</entry>
+
+<entry id="virtual_trash" md5="b83f73ed56dff0addcbd4702e5a21a3d" state="uptodate">
+	<title>Carpetas: Papelera Virtual</title>
+	<para>
+		La Papelera Virtual es una b&#xFA;squeda almacenada que elimina la necesidad de una Papelera separada. En vez de trasladar los mensajes a una carpeta papelera centralizada, simplemente se marcan como eliminados en el buz&#xF3;n en el que est&#xE9;n. Si se desactiva 'mostrar mensajes eliminados', esos mensajes no aparecer&#xE1;n en el listado de un buz&#xF3;n. Cuando un usuario pulse la Papelera Virtual, se buscan mensajes marcados como eliminados en *todos* los buzones y se muestran en un &#xFA;nico buz&#xF3;n.
+	</para>
+</entry>
+
+</help>

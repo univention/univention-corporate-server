@@ -1,0 +1,793 @@
+# Croatian translations for DIMP.
+# Copyright (C) 2008 Horde Project
+# This file is distributed under the same license as the horde package.
+# Matej Vela <Matej.Vela@CARNet.hr>, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: horde 3\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2009-10-14 15:13+0200\n"
+"PO-Revision-Date: 2008-02-24 22:47+0100\n"
+"Last-Translator: Matej Vela <Matej.Vela@CARNet.hr>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: lib/Views/ShowMessage.php:295
+#, php-format
+msgid "%d Attachment"
+msgid_plural "%d Attachments"
+msgstr[0] "%d prilog"
+msgstr[1] "%d priloga"
+msgstr[2] "%d priloga"
+
+#: imp.php:674
+#, php-format
+msgid "%s messages were purged from \"%s\"."
+msgstr "%s poruka očišćeno iz \"%s\"."
+
+#: lib/Block/newmail.php:70
+#, php-format
+msgid "%s more unseen messages..."
+msgstr "Još %s nepregledanih poruka..."
+
+#: imp.php:460
+#, php-format
+msgid "%s was successfully added to your address book."
+msgstr "%s je uspješno dodan u vaš adresar."
+
+#: templates/index/index.inc:247
+#, php-format
+msgid ""
+"%s will delete the current message and move to the next message if a single "
+"message is selected."
+msgstr ""
+"%s će obrisati trenutnu poruku i prijeći na sljedeću ako je odabrana jedna "
+"poruka."
+
+#: imp.php:672
+#, php-format
+msgid "1 message was purged from \"%s\"."
+msgstr "1 poruka očišćena iz \"%s\"."
+
+#: lib/Block/newmail.php:68
+msgid "1 more unseen message..."
+msgstr "Još 1 nepregledana poruka..."
+
+#: lib/DIMP.php:227
+msgid ""
+"A popup window could not be opened. Your browser may be blocking popups."
+msgstr ""
+"Pop-up prozor se ne može otvoriti. Možda vaš preglednik blokira pop-upe."
+
+#: templates/chunks/message.php:127 templates/index/index.inc:422
+msgid "Add to Address Book"
+msgstr "Dodaj u adresar"
+
+#: templates/index/index.inc:193 templates/index/index.inc:198
+msgid "All"
+msgstr "Sve"
+
+#: templates/index/index.inc:220 templates/index/index.inc:222
+msgid "Arrival"
+msgstr "Isporučeno"
+
+#: templates/chunks/message.php:122 templates/index/index.inc:392
+msgid "Attachments Only"
+msgstr "Samo prilozi"
+
+#: templates/index/index.inc:126
+msgid "Base Level"
+msgstr "Osnovna razina"
+
+#: templates/chunks/compose.php:114
+msgid "Bcc: "
+msgstr "Bcc: "
+
+#: templates/index/index.inc:360 templates/index/index.inc:405
+msgid "Blacklist"
+msgstr "Crna lista"
+
+#: templates/chunks/message.php:121 templates/index/index.inc:391
+msgid "Body Text Only"
+msgstr "Samo tijelo poruke"
+
+#: lib/DIMP.php:219
+msgid "Cancel"
+msgstr "Odustani"
+
+#: lib/DIMP.php:255
+msgid ""
+"Cancelling this message will permanently discard its contents and will "
+"delete auto-saved drafts.\n"
+"Are you sure you want to do this?"
+msgstr ""
+"Odustajanje od ove poruke će nepovratno obrisati njen sadržaj i automatski "
+"snimljene koncepte.\n"
+"Jeste li sigurni da to želite učiniti?"
+
+#: templates/index/index.inc:293
+msgid "Cc"
+msgstr "Cc"
+
+#: templates/chunks/compose.php:100
+msgid "Cc: "
+msgstr "Cc: "
+
+#: templates/chunks/compose.php:57
+msgid "Check Spelling"
+msgstr "Provjeri pravopis"
+
+#: templates/index/index.inc:330
+msgid "Check for New Mail"
+msgstr "Provjeri ima li novih poruka"
+
+#: lib/DIMP.php:221
+msgid "Checking..."
+msgstr "Provjera u toku..."
+
+#: templates/index/index.inc:351 templates/index/index.inc:375
+#: templates/index/index.inc:401
+msgid "Clear Flag"
+msgstr "Makni zastavicu"
+
+#: templates/index/index.inc:242
+#, php-format
+msgid ""
+"Click on a message while holding down the %s key to select multiple "
+"messages.  To select a range of messages, click the first message of the "
+"range, navigate to the last message of the range, and then click on the last "
+"message while holding down the %s key."
+msgstr ""
+"Za odabir više poruka kliknite na poruku držeći tipku %s. Za odabir bloka "
+"poruka kliknite na prvu poruku bloka, pomaknite se do zadnje poruke bloka i "
+"kliknite na nju držeći tipku %s."
+
+#: templates/index/index.inc:276
+msgid "Collapse Headers"
+msgstr "Smanji zaglavlje"
+
+#: templates/index/index.inc:183
+msgid "Compose"
+msgstr "Sastavi"
+
+#: templates/index/index.inc:234
+msgid "Could not get message list from server"
+msgstr "Nije uspjelo listanje poruka na poslužitelju"
+
+#: lib/DIMP.php:231
+msgid "Create folder:"
+msgstr "Kreiraj mapu:"
+
+#: templates/index/index.inc:322 templates/index/index.inc:335
+msgid "Create subfolder"
+msgstr "Kreiraj pod-mapu"
+
+#: lib/DIMP.php:232
+msgid "Create subfolder:"
+msgstr "Kreiraj pod-mapu:"
+
+#: templates/index/index.inc:242 templates/index/index.inc:249
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: config/prefs.php.dist:11
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Pokretanje zadataka nakon prijave u %s."
+
+#: templates/index/index.inc:219 templates/index/index.inc:223
+#: templates/index/index.inc:285
+msgid "Date"
+msgstr "Datum"
+
+#: templates/index/index.inc:247
+msgid "Del"
+msgstr "Del"
+
+#: templates/chunks/message.php:49 templates/index/index.inc:185
+#: templates/index/index.inc:365 templates/index/index.inc:377
+msgid "Delete"
+msgstr "Obriši"
+
+#: templates/index/index.inc:325
+msgid "Delete Folder"
+msgstr "Obriši mapu"
+
+#: templates/index/index.inc:247
+msgid "Delete the currently selected message(s)."
+msgstr "Obriši trenutno odabrane poruke."
+
+#: templates/index/index.inc:331
+msgid "Do Not Check for New Mail"
+msgstr "Ne provjeravaj novu poštu"
+
+#: templates/index/index.inc:324
+msgid "Empty Folder"
+msgstr "Isprazni mapu"
+
+#: templates/index/index.inc:246
+msgid "End"
+msgstr "End"
+
+#: templates/index/index.inc:248
+msgid "Enter"
+msgstr "Enter"
+
+#: templates/chunks/message.php:120 templates/index/index.inc:390
+msgid "Entire Message"
+msgstr "Cijela poruka"
+
+#: templates/index/index.inc:257
+msgid "Expand Headers"
+msgstr "Raširi zaglavlje"
+
+#: templates/index/index.inc:350 templates/index/index.inc:374
+#: templates/index/index.inc:400
+msgid "Flag Message"
+msgstr "Dodaj zastavicu"
+
+#: config/portal.php.dist:28
+msgid "Folder Summary"
+msgstr "Pregled mape"
+
+#: templates/index/index.inc:191
+msgid "Folders: "
+msgstr "Mape: "
+
+#: templates/chunks/message.php:42 templates/index/index.inc:176
+msgid "Forward"
+msgstr "Proslijedi"
+
+#: templates/index/index.inc:346
+msgid "Forward Attachments Only"
+msgstr "Proslijedi samo priloge"
+
+#: templates/index/index.inc:345
+msgid "Forward Body Text Only"
+msgstr "Proslijedi samo tekst tijela"
+
+#: templates/index/index.inc:344
+msgid "Forward Entire Message"
+msgstr "Proslijedi cijelu poruku"
+
+#: templates/index/index.inc:199 templates/index/index.inc:207
+#: templates/index/index.inc:281
+msgid "From"
+msgstr "Od"
+
+#: templates/chunks/compose.php:76
+msgid "From: "
+msgstr "Od: "
+
+#: config/prefs.php.dist:9
+msgid "General Options"
+msgstr "Općenite opcije"
+
+#: lib/DIMP.php:222 templates/index/index.inc:63 templates/index/index.inc:184
+msgid "Get Mail"
+msgstr "Skini poštu"
+
+#: lib/Block/newmail.php:72
+msgid "Go to your Inbox..."
+msgstr "Povratak na Inbox..."
+
+#: lib/Views/ShowMessage.php:359
+msgid "HERE"
+msgstr "OVDJE"
+
+#: templates/chunks/compose.php:67
+msgid "HTML composition"
+msgstr "Sastavljanje HTML-a"
+
+#: lib/DIMP.php:228 templates/index/index.inc:396
+msgid "Hide Preview"
+msgstr "Sakrij brzi pregled"
+
+#: lib/DIMP.php:213
+msgid "Hide Quoted Text"
+msgstr "Sakrij citirani tekst"
+
+#: templates/index/index.inc:427
+msgid "High Priority"
+msgstr "Visoki prioritet"
+
+#: templates/index/index.inc:246
+msgid "Home"
+msgstr "Home"
+
+#: templates/index/index.inc:60
+msgid "Horde"
+msgstr "Horde"
+
+#: config/prefs.php.dist:22
+msgid "Inbox"
+msgstr "Inbox"
+
+#: templates/index/index.inc:181
+msgid "Innocent"
+msgstr "Ne-spam"
+
+#: lib/DIMP.php:220 templates/chunks/compose.php:20
+#: templates/index/index.inc:34
+msgid "Loading..."
+msgstr "Učitava se..."
+
+#: templates/index/index.inc:79
+msgid "Log Out"
+msgstr "Odjavi se"
+
+#: config/prefs.php.dist:10
+msgid "Login Tasks"
+msgstr "Zadaci nakon prijave"
+
+#: templates/index/index.inc:428
+msgid "Low Priority"
+msgstr "Nizak prioritet"
+
+#: lib/Views/ListMessages.php:160
+#, php-format
+msgid "Mailbox %s does not exist."
+msgstr "Sandučić %s ne postoji."
+
+#: templates/index/index.inc:328
+msgid "Mark all as New"
+msgstr "Označi sve kao novo"
+
+#: templates/index/index.inc:327
+msgid "Mark all as Read"
+msgstr "Označi sve kao pročitano"
+
+#: templates/index/index.inc:357
+msgid "Mark as Innocent"
+msgstr "Označi kao ne-spam"
+
+#: templates/index/index.inc:349 templates/index/index.inc:399
+msgid "Mark as New"
+msgstr "Označi kao novo"
+
+#: templates/index/index.inc:348 templates/index/index.inc:398
+msgid "Mark as Read"
+msgstr "Označi kao pročitano"
+
+#: templates/index/index.inc:354
+msgid "Mark as Spam"
+msgstr "Označi kao spam"
+
+#: lib/DIMP.php:209
+msgid "Message"
+msgstr "Poruka"
+
+#: compose.php:344
+msgid "Message Composition"
+msgstr "Sastavljanje poruke"
+
+#: compose.php:182
+msgid "Message sent successfully."
+msgstr "Poruka uspješno poslana."
+
+#: templates/chunks/message.php:37 templates/chunks/message.php:105
+msgid "Message:"
+msgstr "Poruka:"
+
+#: templates/index/index.inc:197
+msgid "Message: "
+msgstr "Poruka: "
+
+#: lib/DIMP.php:210
+msgid "Messages"
+msgstr "Poruke"
+
+#: lib/DIMP.php:217
+#, php-format
+msgid "Move %s to %s"
+msgstr "Premjesti %s u %s"
+
+#: templates/index/index.inc:245
+msgid "Move one page up/down through the message list."
+msgstr "Pomakni popis poruka za stranicu gore/dolje."
+
+#: templates/index/index.inc:246
+msgid "Move to the beginning/end of the message list."
+msgstr "Pomakni popis poruka na početak/kraj."
+
+#: templates/index/index.inc:244
+msgid "Move up/down through the message list."
+msgstr "Pomakni popis poruka gore/dolje."
+
+#: templates/index/index.inc:118
+msgid "My Folders"
+msgstr "Moje mape"
+
+#: templates/index/index.inc:122
+msgid "New Folder"
+msgstr "Nova mapa"
+
+#: compose.php:204 templates/chunks/message.php:126
+#: templates/index/index.inc:62 templates/index/index.inc:421
+msgid "New Message"
+msgstr "Nova poruka"
+
+#: lib/DIMP.php:212
+msgid "No Messages"
+msgstr "Nema poruka"
+
+#: lib/Block/foldersummary.php:75
+msgid "No folders are being checked for new mail."
+msgstr "Nijedna mapa se ne provjerava za novu poštu."
+
+#: lib/Block/foldersummary.php:79
+msgid "No folders with new messages"
+msgstr "Nema mapa s novim porukama"
+
+#: lib/Block/foldersummary.php:77
+msgid "No folders with unseen messages"
+msgstr "Nema mapa s nepregledanim porukama"
+
+#: templates/index/index.inc:233
+msgid "No messages to display"
+msgstr "Nema poruke za prikaz"
+
+#: lib/Block/newmail.php:41
+msgid "No unread messages"
+msgstr "Nema nepročitanih poruka"
+
+#: lib/DIMP.php:216
+msgid "Ok"
+msgstr "OK"
+
+#: templates/index/index.inc:16 templates/index/index.inc:263
+msgid "Open in new window"
+msgstr "Otvori u novom prozoru"
+
+#: templates/index/index.inc:248
+msgid "Open message in a popup window."
+msgstr "Otvori poruku u pop-up prozoru."
+
+#: templates/index/index.inc:74
+msgid "Options"
+msgstr "Opcije"
+
+#: templates/index/index.inc:186
+msgid "Other Actions"
+msgstr "Ostale akcije"
+
+#: lib/DIMP.php:233
+msgid "Permanently delete all messages?"
+msgstr "Nepovratno obrisati sve poruke?"
+
+#: lib/DIMP.php:234
+msgid "Permanently delete this folder?"
+msgstr "Nepovratno obrisati ovu mapu?"
+
+#: templates/index/index.inc:245
+msgid "PgDown"
+msgstr "PgDown"
+
+#: templates/index/index.inc:245
+msgid "PgUp"
+msgstr "PgUp"
+
+#: lib/DIMP.php:205 templates/index/index.inc:69 templates/index/index.inc:141
+#: config/prefs.php.dist:21
+msgid "Portal"
+msgstr "Portal"
+
+#: templates/chunks/message.php:57 templates/index/index.inc:265
+msgid "Print"
+msgstr "Ispiši"
+
+#: templates/index/index.inc:415
+msgid "Purge Deleted"
+msgstr "Isprazni obrisano"
+
+#: templates/chunks/compose.php:52
+msgid "Read Receipt"
+msgstr "Potvrda o pročitanoj poruci"
+
+#: lib/DIMP.php:263
+msgid ""
+"Really discard all formatting information? This operation cannot be undone."
+msgstr ""
+"Zaista odbaciti sve podatke o formatiranju? Ovaj postupak se ne može "
+"opozvati."
+
+#: templates/index/index.inc:323 templates/index/index.inc:336
+msgid "Rename Folder"
+msgstr "Preimenuj mapu"
+
+#: lib/DIMP.php:230
+msgid "Rename folder to:"
+msgstr "Preimenuj mapu u:"
+
+#: templates/chunks/message.php:41 templates/index/index.inc:175
+msgid "Reply"
+msgstr "Odgovori"
+
+#: templates/index/index.inc:341
+msgid "Reply to All"
+msgstr "Odgovori svima"
+
+#: compose.php:232
+msgid "Reply to All:"
+msgstr "Odgovori svima:"
+
+#: templates/index/index.inc:342
+msgid "Reply to List"
+msgstr "Odgovori na listu"
+
+#: compose.php:234
+msgid "Reply to List:"
+msgstr "Odaberite na listu:"
+
+#: templates/index/index.inc:340
+msgid "Reply to Sender"
+msgstr "Odgovori pošiljatelju"
+
+#: compose.php:230
+msgid "Reply:"
+msgstr "Odgovori:"
+
+#: templates/chunks/message.php:47
+msgid "Report Innocent"
+msgstr "Prijavi kao ne-spam"
+
+#: templates/chunks/message.php:44
+msgid "Report Spam"
+msgstr "Prijavi kao spam"
+
+#: compose.php:214 lib/Views/ShowMessage.php:154
+msgid "Requested message not found."
+msgstr "Tražena poruka nije pronađena."
+
+#: templates/index/index.inc:372
+msgid "Resume Draft"
+msgstr "Nastavi koncept"
+
+#: lib/Views/ShowMessage.php:298
+msgid "Save All"
+msgstr "Spremi sve"
+
+#: templates/chunks/compose.php:140
+msgid "Save Attachments in sent folder"
+msgstr "Spremi priloge u mapu s poslanom poštom"
+
+#: templates/chunks/compose.php:58
+msgid "Save as Draft"
+msgstr "Spremi kao koncept"
+
+#: templates/chunks/compose.php:55
+msgid "Save in "
+msgstr "Spremi u "
+
+#: lib/DIMP.php:262
+msgid "Saving..."
+msgstr "Spremanje u toku..."
+
+#: lib/DIMP.php:207
+msgid "Search"
+msgstr "Traži"
+
+#: lib/Views/ListMessages.php:80
+msgid "Search Results"
+msgstr "Rezultati pretrage"
+
+#: templates/index/index.inc:412
+msgid "Select All"
+msgstr "Odaberi sve"
+
+#: templates/index/index.inc:249
+msgid "Select all messages in the current mailbox."
+msgstr "Odaberi sve poruke u trenutnom sandučiću."
+
+#: templates/chunks/compose.php:50
+msgid "Send"
+msgstr "Šalji"
+
+#: lib/DIMP.php:256
+msgid "Send message without a Subject?"
+msgstr "Poslati poruku bez naslova?"
+
+#: lib/DIMP.php:261
+msgid "Sending..."
+msgstr "Slanje u toku..."
+
+#: templates/index/index.inc:242 templates/index/index.inc:247
+msgid "Shift"
+msgstr "Shift"
+
+#: templates/chunks/compose.php:65
+msgid "Show Bcc"
+msgstr "Pokaži Bcc"
+
+#: templates/chunks/compose.php:64
+msgid "Show Cc"
+msgstr "Pokaži Cc"
+
+#: lib/DIMP.php:229 templates/index/index.inc:396
+msgid "Show Preview"
+msgstr "Pokaži brzi pregled"
+
+#: lib/DIMP.php:214
+msgid "Show Quoted Text"
+msgstr "Pokaži citirani tekst"
+
+#: templates/index/index.inc:226
+msgid "Size"
+msgstr "Veličina"
+
+#: templates/index/index.inc:178
+msgid "Spam"
+msgstr "Spam"
+
+#: templates/chunks/compose.php:70
+msgid "Special Characters"
+msgstr "Posebni znakovi"
+
+#: templates/chunks/message.php:67 templates/index/index.inc:201
+#: templates/index/index.inc:211 templates/index/index.inc:215
+#: templates/index/index.inc:276
+msgid "Subject"
+msgstr "Naslov"
+
+#: templates/chunks/compose.php:128
+msgid "Subject: "
+msgstr "Naslov: "
+
+#: lib/DIMP.php:260
+msgid "The attachment limit has been reached."
+msgstr "Dosegnuta je granica broja priloga."
+
+#: lib/DIMP.php:224
+msgid "The connection to the remote server has been restored."
+msgstr "Konekcija na poslužitelj je ponovo uspostavljena."
+
+#: templates/index/index.inc:243
+msgid "The following keyboard shortcuts are available:"
+msgstr "Preko tipkovnice su dostupne sljedeće prečice:"
+
+#: lib/DIMP.php:256
+msgid "The message does not have a Subject entered."
+msgstr "Poruka nema naslov (Subject)."
+
+#: config/prefs.php.dist:23
+msgid "The page to view immediately after login."
+msgstr "Stranica koja će se prikazati nakon prijave."
+
+#: lib/Views/ShowMessage.php:360
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Click %s to send the notification "
+"message."
+msgstr ""
+"Pošiljatelj traži vašu potvrdu da ste pročitali ovu poruku. Kliknite %s ako "
+"mu želite poslati potvrdu."
+
+#: lib/DIMP.php:225
+msgid "The server is still generating the message list."
+msgstr "Poslužitelj još generira popis poruka."
+
+#: lib/DIMP.php:226
+msgid ""
+"The server was unable to generate the message list. Please try again later."
+msgstr ""
+"Poslužitelj nije uspio generirati popis poruka. Molimo pokušajte kasnije."
+
+#: lib/DIMP.php:223
+msgid ""
+"There has been no contact with the remote server for several minutes. The "
+"server may be temporarily unavailable or network problems may be "
+"interrupting your session. You will not see any updates until the connection "
+"is restored."
+msgstr ""
+"Nije bilo kontakta s poslužiteljom u zadnjih nekoliko minuta. Možda je "
+"poslužitelj privremeno nedostupan ili mrežni problemi prekidaju vašu sesiju. "
+"Nećete vidjeti promjene dok se ne uspostavi konekcija."
+
+#: templates/index/index.inc:212 templates/index/index.inc:214
+msgid "Thread"
+msgstr "Niz"
+
+#: templates/index/index.inc:200 templates/index/index.inc:208
+#: templates/index/index.inc:289
+msgid "To"
+msgstr "Za"
+
+#: templates/chunks/message.php:113 templates/index/index.inc:385
+msgid "To All"
+msgstr "Za sve"
+
+#: templates/chunks/message.php:115 templates/index/index.inc:386
+msgid "To List"
+msgstr "Na listu"
+
+#: templates/chunks/message.php:112 templates/index/index.inc:384
+msgid "To Sender"
+msgstr "Za pošiljatelja"
+
+#: templates/index/index.inc:241
+msgid ""
+"To preview a message, select it from the list above. A right-click on the "
+"messages will display available actions."
+msgstr ""
+"Odaberite poruku s popisa za brzi pregled. Desni klik na poruke će prikazati "
+"moguće akcije."
+
+#: templates/chunks/compose.php:86
+msgid "To: "
+msgstr "Za: "
+
+#: templates/index/index.inc:367 templates/index/index.inc:379
+#: templates/index/index.inc:416
+msgid "Undelete"
+msgstr "Vrati obrisano"
+
+#: lib/Views/ShowMessage.php:87
+msgid "Undisclosed Recipients"
+msgstr "Nenavedeni primatelji"
+
+#: lib/Views/ShowMessage.php:323
+msgid "Unknown Date"
+msgstr "Nepoznat datum"
+
+#: lib/DIMP.php:259
+msgid "Uploading..."
+msgstr "Prijenos u toku..."
+
+#: lib/DIMP.php:206
+msgid "User Options"
+msgstr "Korisničke opcije"
+
+#: templates/chunks/message.php:60 templates/index/index.inc:268
+msgid "View Message Source"
+msgstr "Pregledaj izvorni tekst poruke"
+
+#: templates/index/index.inc:363 templates/index/index.inc:408
+msgid "Whitelist"
+msgstr "Bijela lista"
+
+#: lib/DIMP.php:257
+msgid ""
+"You have already changed the message body, are you sure you want to drop the "
+"changes?"
+msgstr ""
+"Već ste promijenili tijelo poruke, jeste li sigurni da želite izgubiti "
+"promjene?"
+
+#: lib/Views/ShowMessage.php:95
+msgid "[Hide Addresses]"
+msgstr "[Sakrij adrese]"
+
+#: lib/Block/newmail.php:58 lib/Views/ShowMessage.php:281
+#: lib/Views/ListMessages.php:296
+msgid "[No Subject]"
+msgstr "[Bez naslova]"
+
+#: lib/DIMP.php:218
+msgid "base level of the folder tree"
+msgstr "osnovna razina stabla"
+
+#: templates/index/index.inc:258
+msgid "from"
+msgstr "od"
+
+#: lib/DIMP.php:215
+msgid "lines"
+msgstr "redova"
+
+#: lib/DIMP.php:211
+msgid "of"
+msgstr "od"
+
+#: lib/DIMP.php:258
+msgid "remove"
+msgstr "obrisati"
+
+#: lib/DIMP.php:208
+msgid "results found"
+msgstr "nađenih rezultata"

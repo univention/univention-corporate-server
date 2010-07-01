@@ -1,0 +1,1310 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>name</variable></name>
+ <create><variable>create</variable></create>
+
+ <table>
+
+  <name>horde_alarms</name>
+
+  <declaration>
+
+   <field>
+    <name>alarm_id</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>alarm_uid</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>alarm_start</name>
+    <type>timestamp</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>alarm_end</name>
+    <type>timestamp</type>
+   </field>
+
+   <field>
+    <name>alarm_methods</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>alarm_params</name>
+    <type>clob</type>
+   </field>
+
+   <field>
+    <name>alarm_title</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>alarm_text</name>
+    <type>clob</type>
+   </field>
+
+   <field>
+    <name>alarm_snooze</name>
+    <type>timestamp</type>
+   </field>
+
+   <field>
+    <name>alarm_dismissed</name>
+    <type>integer</type>
+    <length>1</length>
+    <notnull>true</notnull>
+    <default>0</default>
+   </field>
+
+   <field>
+    <name>alarm_internal</name>
+    <type>clob</type>
+   </field>
+
+   <index>
+    <name>alarm_id_idx</name>
+    <field>
+     <name>alarm_id</name>
+    </field>
+   </index>
+
+   <index>
+    <name>alarm_user_idx</name>
+    <field>
+     <name>alarm_uid</name>
+    </field>
+   </index>
+
+   <index>
+    <name>alarm_start_idx</name>
+    <field>
+     <name>alarm_start</name>
+    </field>
+   </index>
+
+   <index>
+    <name>alarm_end_idx</name>
+    <field>
+     <name>alarm_end</name>
+    </field>
+   </index>
+
+   <index>
+    <name>alarm_snooze_idx</name>
+    <field>
+     <name>alarm_snooze</name>
+    </field>
+   </index>
+
+   <index>
+    <name>alarm_dismissed_idx</name>
+    <field>
+     <name>alarm_dismissed</name>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>horde_cache</name>
+
+  <declaration>
+
+   <field>
+    <name>cache_id</name>
+    <type>text</type>
+    <length>32</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>cache_timestamp</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>cache_expiration</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>cache_data</name>
+    <type>blob</type>
+   </field>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>horde_datatree</name>
+
+  <declaration>
+
+   <field>
+    <name>datatree_id</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>group_uid</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>user_uid</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>datatree_name</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>datatree_parents</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>datatree_order</name>
+    <type>integer</type>
+   </field>
+
+   <field>
+    <name>datatree_data</name>
+    <type>clob</type>
+   </field>
+
+   <field>
+    <name>datatree_serialized</name>
+    <type>integer</type>
+    <length>2</length>
+    <notnull>true</notnull>
+   </field>
+
+   <index>
+    <name>datatree_datatree_name</name>
+    <field>
+     <name>datatree_name</name>
+    </field>
+   </index>
+
+   <index>
+    <name>datatree_group</name>
+    <field>
+     <name>group_uid</name>
+    </field>
+   </index>
+
+   <index>
+    <name>datatree_user</name>
+    <field>
+     <name>user_uid</name>
+    </field>
+   </index>
+
+   <index>
+    <name>datatree_serialized</name>
+    <field>
+     <name>datatree_serialized</name>
+    </field>
+   </index>
+
+   <index>
+    <name>datatree_parents</name>
+    <field>
+     <name>datatree_parents</name>
+    </field>
+   </index>
+
+   <index>
+    <name>datatree_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>datatree_id</name>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>horde_datatree_attributes</name>
+
+  <declaration>
+
+   <field>
+    <name>datatree_id</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>attribute_name</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>attribute_key</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>attribute_value</name>
+    <type>clob</type>
+   </field>
+
+   <index>
+    <name>datatree_attribute</name>
+    <field>
+     <name>datatree_id</name>
+    </field>
+   </index>
+
+   <index>
+    <name>datatree_attribute_name</name>
+    <field>
+     <name>attribute_name</name>
+    </field>
+   </index>
+
+   <index>
+    <name>datatree_attribute_key</name>
+    <field>
+     <name>attribute_key</name>
+    </field>
+   </index>
+
+   <index>
+    <name>datatree_attribute_value</name>
+    <field>
+     <name>attribute_value</name>
+     <length>255</length>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>horde_histories</name>
+
+  <declaration>
+
+   <field>
+    <name>history_id</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>object_uid</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>history_action</name>
+    <type>text</type>
+    <length>32</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>history_ts</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>history_desc</name>
+    <type>clob</type>
+   </field>
+
+   <field>
+    <name>history_who</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>history_extra</name>
+    <type>clob</type>
+   </field>
+
+   <index>
+    <name>history_action</name>
+    <field>
+     <name>history_action</name>
+    </field>
+   </index>
+
+   <index>
+    <name>history_ts</name>
+    <field>
+     <name>history_ts</name>
+    </field>
+   </index>
+
+   <index>
+    <name>history_uid</name>
+    <field>
+     <name>object_uid</name>
+    </field>
+   </index>
+
+   <index>
+    <name>history_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>history_id</name>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>horde_prefs</name>
+
+  <declaration>
+
+   <field>
+    <name>pref_uid</name>
+    <type>text</type>
+    <length>200</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>pref_scope</name>
+    <type>text</type>
+    <length>16</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>pref_name</name>
+    <type>text</type>
+    <length>32</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>pref_value</name>
+    <type>clob</type>
+   </field>
+
+   <index>
+    <name>pref_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>pref_uid</name>
+    </field>
+    <field>
+     <name>pref_scope</name>
+    </field>
+    <field>
+     <name>pref_name</name>
+    </field>
+   </index>
+
+   <index>
+    <name>pref_uid</name>
+    <field>
+     <name>pref_uid</name>
+    </field>
+   </index>
+
+   <index>
+    <name>pref_scope</name>
+    <field>
+     <name>pref_scope</name>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>horde_sessionhandler</name>
+
+  <declaration>
+
+   <field>
+    <name>session_id</name>
+    <type>text</type>
+    <length>32</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>session_lastmodified</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>session_data</name>
+    <type>blob</type>
+   </field>
+
+   <index>
+    <name>session_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>session_id</name>
+    </field>
+   </index>
+
+   <index>
+    <name>session_lastmodified</name>
+    <field>
+     <name>session_lastmodified</name>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>horde_signups</name>
+
+  <declaration>
+
+   <field>
+    <name>user_name</name>
+    <type>text</type>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>signup_date</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>signup_host</name>
+    <type>text</type>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>signup_data</name>
+    <type>clob</type>
+    <notnull>true</notnull>
+   </field>
+
+   <index>
+    <name>signup_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>user_name</name>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>horde_syncml_anchors</name>
+
+  <declaration>
+
+   <field>
+    <name>syncml_syncpartner</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>syncml_db</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>syncml_uid</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>syncml_clientanchor</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>syncml_serveranchor</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <index>
+    <name>syncml_anchors_syncpartner_idx</name>
+    <field>
+     <name>syncml_syncpartner</name>
+    </field>
+   </index>
+
+   <index>
+    <name>syncml_anchors_db_idx</name>
+    <field>
+     <name>syncml_db</name>
+    </field>
+   </index>
+
+   <index>
+    <name>syncml_anchors_uid_idx</name>
+    <field>
+     <name>syncml_uid</name>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>horde_syncml_map</name>
+
+  <declaration>
+
+   <field>
+    <name>syncml_syncpartner</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>syncml_db</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>syncml_uid</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>syncml_cuid</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>syncml_suid</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>syncml_timestamp</name>
+    <type>integer</type>
+   </field>
+
+   <index>
+    <name>syncml_syncpartner_idx</name>
+    <field>
+     <name>syncml_syncpartner</name>
+    </field>
+   </index>
+
+   <index>
+    <name>syncml_db_idx</name>
+    <field>
+     <name>syncml_db</name>
+    </field>
+   </index>
+
+   <index>
+    <name>syncml_uid_idx</name>
+    <field>
+     <name>syncml_uid</name>
+    </field>
+   </index>
+
+   <index>
+    <name>syncml_cuid_idx</name>
+    <field>
+     <name>syncml_cuid</name>
+    </field>
+   </index>
+
+   <index>
+    <name>syncml_suid_idx</name>
+    <field>
+     <name>syncml_suid</name>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>horde_tokens</name>
+
+  <declaration>
+
+   <field>
+    <name>token_address</name>
+    <type>text</type>
+    <length>100</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>token_id</name>
+    <type>text</type>
+    <length>32</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>token_timestamp</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <index>
+    <name>token_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>token_address</name>
+    </field>
+    <field>
+     <name>token_id</name>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>horde_users</name>
+
+  <declaration>
+
+   <field>
+    <name>user_uid</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>user_pass</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>user_soft_expiration_date</name>
+    <type>integer</type>
+   </field>
+
+   <field>
+    <name>user_hard_expiration_date</name>
+    <type>integer</type>
+   </field>
+
+   <index>
+    <name>user_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>user_uid</name>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>horde_groups</name>
+
+  <declaration>
+
+   <field>
+    <name>group_uid</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>group_name</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>group_parents</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>group_email</name>
+    <type>text</type>
+    <length>255</length>
+   </field>
+
+   <index>
+    <name>group_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>group_uid</name>
+    </field>
+   </index>
+
+   <index>
+    <name>group_unique</name>
+    <unique>true</unique>
+    <field>
+     <name>group_name</name>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>horde_groups_members</name>
+
+  <declaration>
+
+   <field>
+    <name>group_uid</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>user_uid</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <index>
+    <name>group_uid</name>
+    <field>
+     <name>group_uid</name>
+    </field>
+   </index>
+
+   <index>
+    <name>user_uid</name>
+    <field>
+     <name>user_uid</name>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>horde_locks</name>
+
+  <declaration>
+
+   <field>
+    <name>lock_id</name>
+    <type>text</type>
+    <length>36</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>lock_owner</name>
+    <type>text</type>
+    <length>32</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>lock_scope</name>
+    <type>text</type>
+    <length>32</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>lock_principal</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>lock_origin_timestamp</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>lock_update_timestamp</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>lock_expiry_timestamp</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>lock_type</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <index>
+    <name>lock_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>lock_id</name>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>horde_perms</name>
+
+  <declaration>
+
+   <field>
+    <name>perm_id</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>perm_name</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>perm_parents</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>perm_data</name>
+    <type>clob</type>
+   </field>
+
+   <index>
+    <name>perms_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>perm_id</name>
+    </field>
+   </index>
+
+   <index>
+    <name>perms_unique</name>
+    <unique>true</unique>
+    <field>
+     <name>perm_name</name>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>horde_vfs</name>
+
+  <declaration>
+
+   <field>
+    <name>vfs_id</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>vfs_type</name>
+    <type>integer</type>
+    <length>1</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>vfs_path</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>vfs_name</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>vfs_modified</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>vfs_owner</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>vfs_data</name>
+    <type>blob</type>
+   </field>
+
+   <index>
+    <name>vfs_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>vfs_id</name>
+    </field>
+   </index>
+
+   <index>
+    <name>vfs_path</name>
+    <field>
+     <name>vfs_path</name>
+    </field>
+   </index>
+
+   <index>
+    <name>vfs_name</name>
+    <field>
+     <name>vfs_name</name>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>metarAirports</name>
+
+  <declaration>
+
+   <field>
+    <name>id</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>block</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>station</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>icao</name>
+    <type>text</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>name</name>
+    <type>text</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>80</length>
+   </field>
+
+   <field>
+    <name>state</name>
+    <type>text</type>
+    <fixed>true</fixed>
+    <default></default>
+    <notnull>false</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>country</name>
+    <type>text</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>50</length>
+   </field>
+
+   <field>
+    <name>wmo</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>latitude</name>
+    <type>float</type>
+    <default></default>
+    <notnull>false</notnull>
+   </field>
+
+   <field>
+    <name>longitude</name>
+    <type>float</type>
+    <default></default>
+    <notnull>false</notnull>
+   </field>
+
+   <field>
+    <name>elevation</name>
+    <type>float</type>
+    <default></default>
+    <notnull>false</notnull>
+   </field>
+
+   <field>
+    <name>x</name>
+    <type>float</type>
+    <default></default>
+    <notnull>false</notnull>
+   </field>
+
+   <field>
+    <name>y</name>
+    <type>float</type>
+    <default></default>
+    <notnull>false</notnull>
+   </field>
+
+   <field>
+    <name>z</name>
+    <type>float</type>
+    <default></default>
+    <notnull>false</notnull>
+   </field>
+
+  </declaration>
+
+ </table>
+
+ <table>
+
+  <name>metarLocations</name>
+
+  <declaration>
+
+   <field>
+    <name>id</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>block</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>station</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>icao</name>
+    <type>text</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>name</name>
+    <type>text</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>80</length>
+   </field>
+
+   <field>
+    <name>state</name>
+    <type>text</type>
+    <fixed>true</fixed>
+    <default></default>
+    <notnull>false</notnull>
+    <length>2</length>
+   </field>
+
+   <field>
+    <name>country</name>
+    <type>text</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>50</length>
+   </field>
+
+   <field>
+    <name>wmo</name>
+    <type>integer</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>4</length>
+   </field>
+
+   <field>
+    <name>latitude</name>
+    <type>float</type>
+    <default></default>
+    <notnull>false</notnull>
+   </field>
+
+   <field>
+    <name>longitude</name>
+    <type>float</type>
+    <default></default>
+    <notnull>false</notnull>
+   </field>
+
+   <field>
+    <name>elevation</name>
+    <type>float</type>
+    <default></default>
+    <notnull>false</notnull>
+   </field>
+
+   <field>
+    <name>x</name>
+    <type>float</type>
+    <default></default>
+    <notnull>false</notnull>
+   </field>
+
+   <field>
+    <name>y</name>
+    <type>float</type>
+    <default></default>
+    <notnull>false</notnull>
+   </field>
+
+   <field>
+    <name>z</name>
+    <type>float</type>
+    <default></default>
+    <notnull>false</notnull>
+   </field>
+
+  </declaration>
+
+ </table>
+
+</database>

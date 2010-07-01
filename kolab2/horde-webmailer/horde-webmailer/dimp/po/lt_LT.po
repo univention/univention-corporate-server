@@ -1,0 +1,738 @@
+# Lithuanian translations for Dimp package.
+# Copyright 2007-2009 The Horde Project
+# This file is distributed under the same license as the Dimp package.
+# Vilius Sumskas <vilius@lnk.lt>, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Dimp H3 (1.0-cvs)\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2007-11-23 15:34+0200\n"
+"PO-Revision-Date: 2007-11-23 15:33+0200\n"
+"Last-Translator: Vilius Sumskas <vilius@lnk.lt>\n"
+"Language-Team: Vilius Sumskas <vilius@lnk.lt>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-13\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%"
+"100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: templates/chunks/quota.php:17
+#, php-format
+msgid "%s Mb"
+msgstr "%s Mb"
+
+#: imp.php:625
+#, php-format
+msgid "%s messages were purged from \"%s\"."
+msgstr "Iðvalyti(a) %s laiðkai(ø) ið \"%s\"."
+
+#: lib/Block/newmail.php:69
+#, php-format
+msgid "%s more unseen messages..."
+msgstr "Dar %s neperskaitytø laiðkø..."
+
+#: imp.php:399
+#, php-format
+msgid "%s was successfully added to your address book."
+msgstr "%s sëkmingai átrauktas á jûsø adresø knygelæ."
+
+#: templates/chunks/quota.php:13
+#, php-format
+msgid "%s%% of %s Mb"
+msgstr "%s%% ið %s Mb"
+
+#: imp.php:623
+#, php-format
+msgid "1 message was purged from \"%s\"."
+msgstr "Ið \"%s\" iðvalytas 1 laiðkas."
+
+#: lib/Block/newmail.php:67
+msgid "1 more unseen message..."
+msgstr "Dar 1 neperskaitytas laiðkas..."
+
+#: lib/DIMP.php:186
+msgid ""
+"A popup window could not be opened. Your browser may be blocking popups."
+msgstr ""
+"Nepavyko atidaryti raðymo lango. Galbût jûsø narðyklë blokuoja naujus langus."
+
+#: lib/Views/ShowMessage.php:301
+msgid "Add to Address Book"
+msgstr "Átraukti á adresø knygelæ"
+
+#: templates/index/index.inc:177 templates/index/index.inc:181
+msgid "All"
+msgstr "Viskà"
+
+#: lib/DIMP.php:179
+msgid "Arrival"
+msgstr "Gauta"
+
+#: templates/chunks/fullmessage.php:53 templates/index/index.inc:280
+msgid "Attachments Only"
+msgstr "Tik prikabintus failus"
+
+#: templates/chunks/compose.php:85
+msgid "Bcc: "
+msgstr "Bcc: "
+
+#: templates/index/index.inc:249 templates/index/index.inc:293
+msgid "Blacklist"
+msgstr "Blokuoti"
+
+#: templates/chunks/fullmessage.php:52 templates/index/index.inc:279
+msgid "Body Text Only"
+msgstr "Tik tekstà"
+
+#: templates/chunks/compose.php:38
+msgid "Cancel"
+msgstr "Atðaukti"
+
+#: lib/DIMP.php:213
+msgid ""
+"Cancelling this message will permanently discard its contents and will "
+"delete auto-saved drafts.\n"
+"Are you sure you want to do this?"
+msgstr ""
+"Atsisakydami laiðko jûs prarasite visà jo turiná ir jis bus iðtrintas ið "
+"paruoðiniø katalogo.\n"
+"Ar tikrai norite tai padaryti?"
+
+#: templates/chunks/compose.php:74
+msgid "Cc: "
+msgstr "Cc: "
+
+#: templates/chunks/compose.php:35
+msgid "Check Spelling"
+msgstr "Patikrinti raðybà"
+
+#: templates/index/index.inc:220
+msgid "Check for New Mail"
+msgstr "Tikrinti ar yra naujø laiðkø"
+
+#: lib/DIMP.php:180
+msgid "Checking..."
+msgstr "Tikrinama..."
+
+#: templates/index/index.inc:240 templates/index/index.inc:264
+#: templates/index/index.inc:289
+msgid "Clear Flag"
+msgstr "Atþymëti"
+
+#: templates/index/index.inc:309
+msgid ""
+"Click on a message while holding down the Ctrl key to select multiple "
+"individual messages.  To select a range of messages, click the first message "
+"of the range, navigate to the last message of the range, and then click on "
+"the last message while holding down the Shift key."
+msgstr ""
+"Jeigu norite pasirinkti daugiau nei vienà laiðkà, paspauskite ant laiðko "
+"laikydami Ctrl mygtukà. Norëdami pasirinkti laiðkø eilæ, paspauskite pele "
+"ant pirmo laiðko, prasukite sàraðà iki paskutinio norimo laiðko ir laikydami "
+"Shift mygtukà paspauskite pele ant jo."
+
+#: templates/imp/message.html:29
+msgid "Collapse Headers"
+msgstr "Suskleisti antraðtes"
+
+#: config/prefs.php.dist:9
+msgid "Compose Options"
+msgstr "Raðymo nustatymai"
+
+#: config/prefs.php.dist:11
+msgid "Control the behavior of the javascript HTML editor."
+msgstr "Javascript HTML redaktoriaus elgsenos valdymas."
+
+#: templates/index/index.inc:200
+msgid "Could not get message list from server"
+msgstr "Nepavyko gauti laiðkø sàraðo ið serverio"
+
+#: templates/index/index.inc:212 templates/index/index.inc:225
+msgid "Create subfolder"
+msgstr "Sukurti pakatalogá"
+
+#: templates/index/index.inc:316
+msgid "Ctrl-A: Will select all messages in the current mailbox."
+msgstr "Ctrl-A: Paþymi visus laiðkus kataloge."
+
+#: lib/DIMP.php:178
+msgid "Date"
+msgstr "Data"
+
+#: templates/index/index.inc:170 templates/index/index.inc:254
+#: templates/index/index.inc:266
+msgid "Delete"
+msgstr "Iðtrinti"
+
+#: templates/index/index.inc:215
+msgid "Delete Folder"
+msgstr "Iðtrinti katalogà"
+
+#: templates/index/index.inc:314
+msgid ""
+"Delete key: Delete the currently selected message(s). Shift-Delete will "
+"delete the current message and move to the next message if only one message "
+"is selected."
+msgstr ""
+"Delete mygtukas: iðtrina paþymëtà(us) laiðkà(us). Jeigu paþymëtas tik vienas "
+"laiðkas, Shift-Delete iðtrina paþymëtà laiðkà ir pereina prie kito laiðko."
+
+#: templates/index/index.inc:221
+msgid "Do Not Check for New Mail"
+msgstr "Netikrinti naujø laiðkø"
+
+#: templates/index/index.inc:214
+msgid "Empty Folder"
+msgstr "Iðvalyti katalogà"
+
+#: templates/index/index.inc:315
+msgid "Enter key: Will open the message in a popup window."
+msgstr "Enter mygtukas: atidarys laiðkà naujame lange."
+
+#: templates/chunks/fullmessage.php:51 templates/index/index.inc:278
+msgid "Entire Message"
+msgstr "Visà laiðkà"
+
+#: templates/imp/message.html:9
+msgid "Expand Headers"
+msgstr "Iðskleisti antraðtes"
+
+#: config/prefs.php.dist:21
+msgid "FCKeditor"
+msgstr "FCKeditor"
+
+#: templates/index/index.inc:239 templates/index/index.inc:263
+#: templates/index/index.inc:288
+msgid "Flag Message"
+msgstr "Paþymëti laiðkà"
+
+#: config/portal.php.dist:28
+msgid "Folder Summary"
+msgstr "Trumpas turinys"
+
+#: templates/index/index.inc:176
+msgid "Folders: "
+msgstr "Katalogai: "
+
+#: templates/index/index.inc:163
+msgid "Forward"
+msgstr "Persiøsti"
+
+#: templates/index/index.inc:235
+msgid "Forward Attachments Only"
+msgstr "Persiøsti tik prikabintus failus"
+
+#: templates/index/index.inc:234
+msgid "Forward Body Text Only"
+msgstr "Persiøsti tik tekstà"
+
+#: templates/index/index.inc:233
+msgid "Forward Entire Message"
+msgstr "Persiøsti visà laiðkà"
+
+#: lib/DIMP.php:175 templates/index/index.inc:182
+msgid "From"
+msgstr "Nuo"
+
+#: templates/chunks/compose.php:53
+msgid "From: "
+msgstr "Nuo: "
+
+#: lib/DIMP.php:181 templates/index/index.inc:54
+msgid "Get Mail"
+msgstr "Paimti laiðkus"
+
+#: lib/Block/newmail.php:71
+msgid "Go to your Inbox..."
+msgstr "Eiti á Inbox..."
+
+#: lib/Views/ShowMessage.php:370
+msgid "HERE"
+msgstr "ÈIA"
+
+#: templates/chunks/compose.php:47
+msgid "HTML composition"
+msgstr "HTML raðymas"
+
+#: lib/DIMP.php:169
+msgid "Hide Addresses"
+msgstr "Paslëpti adresus"
+
+#: lib/DIMP.php:187 templates/index/index.inc:284
+msgid "Hide Preview"
+msgstr "Paslëpti perþiûrà"
+
+#: lib/DIMP.php:166
+msgid "Hide Quoted Text"
+msgstr "Paslëpti cituojamà tekstà"
+
+#: lib/Views/ShowMessage.php:225
+msgid "High Priority"
+msgstr "Svarbu"
+
+#: templates/index/index.inc:130
+msgid "Home"
+msgstr "Namai"
+
+#: templates/index/index.inc:313
+msgid "Home/End keys: Move to the beginning/end of the message list."
+msgstr "Home/End mygtukai: perkelia á laiðkø sàraðo pradþià/pabaigà."
+
+#: templates/index/index.inc:51
+msgid "Horde"
+msgstr "Portalas"
+
+#: templates/index/index.inc:168
+msgid "Innocent"
+msgstr "Ne nepageidaujamas"
+
+#: config/prefs.php.dist:10
+msgid "Javascript HTML Editor Options"
+msgstr "Javascript HTML redaktoriaus nustatymai"
+
+#: lib/DIMP.php:173 templates/index/index.inc:46 templates/index/index.inc:73
+#: templates/index/index.inc:324
+msgid "Loading..."
+msgstr "Krauna..."
+
+#: lib/Views/ShowMessage.php:227
+msgid "Low Priority"
+msgstr "Nesvarbûs"
+
+#: lib/Views/ListMessages.php:124
+#, php-format
+msgid "Mailbox %s does not exist."
+msgstr "Katalogas %s neegzistuoja."
+
+#: templates/index/index.inc:218
+msgid "Mark all as New"
+msgstr "Paþymëti visus kaip naujus"
+
+#: templates/index/index.inc:217
+msgid "Mark all as Read"
+msgstr "Paþymëti visus kaip skaitytus"
+
+#: templates/index/index.inc:246
+msgid "Mark as Innocent"
+msgstr "Paþymëti kaip ne nepageidaujamà"
+
+#: templates/index/index.inc:238 templates/index/index.inc:287
+msgid "Mark as New"
+msgstr "Paþymëti kaip naujà"
+
+#: templates/index/index.inc:237 templates/index/index.inc:286
+msgid "Mark as Read"
+msgstr "Paþymëti kaip skaitytà"
+
+#: templates/index/index.inc:243
+msgid "Mark as Spam"
+msgstr "Paþymëti kaip nepageidaujamà (spam)"
+
+#: compose.php:304
+msgid "Message Composition"
+msgstr "Laiðko raðymas"
+
+#: compose.php:154
+msgid "Message sent successfully."
+msgstr "Laiðkas iðsiøstas sëkmingai."
+
+#: templates/chunks/fullmessage.php:16 templates/chunks/fullmessage.php:39
+msgid "Message:"
+msgstr "Laiðkas:"
+
+#: templates/index/index.inc:180
+msgid "Message: "
+msgstr "Laiðkas: "
+
+#: lib/DIMP.php:163
+msgid "Messages"
+msgstr "Þinutës"
+
+#: templates/index/index.inc:110
+msgid "New Folder"
+msgstr "Naujas katalogas"
+
+#: compose.php:176 lib/Views/ShowMessage.php:299
+msgid "New Message"
+msgstr "Naujas laiðkas"
+
+#: lib/DIMP.php:165
+msgid "No Messages"
+msgstr "Laiðkø nëra"
+
+#: lib/Block/foldersummary.php:73
+msgid "No folders are being checked for new mail."
+msgstr "Nei vienas katalogas nenustatytas tikrinti naujus laiðkus."
+
+#: lib/Block/foldersummary.php:77
+msgid "No folders with new messages"
+msgstr "Naujø laiðkø nëra"
+
+#: lib/Block/foldersummary.php:75
+msgid "No folders with unseen messages"
+msgstr "Neperskaitytø laiðkø nëra"
+
+#: templates/chunks/quota.php:20
+msgid "No limit"
+msgstr "Neribojama"
+
+#: templates/index/index.inc:199
+msgid "No messages to display"
+msgstr "Laiðkø nëra"
+
+#: lib/Block/newmail.php:40
+msgid "No unread messages"
+msgstr "Neperskaitytø laiðkø nëra"
+
+#: lib/Views/ShowMessage.php:258 lib/Views/ShowMessage.php:262
+msgid "Open in new window"
+msgstr "Atidaryti naujame lange"
+
+#: options.php:17
+msgid "Options"
+msgstr "Nustatymai"
+
+#: templates/index/index.inc:171
+msgid "Other Actions"
+msgstr "Kiti veiksmai"
+
+#: templates/index/index.inc:312
+msgid "Page Up/Page Down keys: Move one page up/down through the message list."
+msgstr ""
+"Page Up/Page Down mygtukai: ðiek tiek perkelia laiðkø sàraðo virðun/apaèion."
+
+#: templates/index/index.inc:214
+msgid "Permanently delete all messages?"
+msgstr "Visiðkai iðtrinti visus laiðkus?"
+
+#: templates/index/index.inc:215
+msgid "Permanently delete this folder?"
+msgstr "Visiðkai iðtrinti ðá katalogà?"
+
+#: lib/DIMP.php:159
+msgid "Portal"
+msgstr "Portalas"
+
+#: lib/Views/ShowMessage.php:271
+msgid "Print"
+msgstr "Spausdinti"
+
+#: templates/index/index.inc:303
+msgid "Purge Deleted"
+msgstr "Iðvalyti iðtrintus"
+
+#: templates/chunks/compose.php:29
+msgid "Read Receipt"
+msgstr "Reikalauti perskaitymo patvirtinimo"
+
+#: templates/chunks/compose.php:47
+msgid ""
+"Really discard all formatting information? This operation cannot be undone."
+msgstr ""
+"Tikrai atðaukti visus formatavimo duomenis? Graþinti atgal nebegalësite."
+
+#: templates/index/index.inc:213 templates/index/index.inc:226
+msgid "Rename Folder"
+msgstr "Pervadinti katalogà"
+
+#: templates/index/index.inc:162
+msgid "Reply"
+msgstr "Atsakyti"
+
+#: templates/index/index.inc:231
+msgid "Reply to All"
+msgstr "Atsakyti visiems"
+
+#: compose.php:203
+msgid "Reply to All:"
+msgstr "Atsakyti visiems:"
+
+#: templates/index/index.inc:230
+msgid "Reply to Sender"
+msgstr "Atsakyti siuntëjui"
+
+#: compose.php:201
+msgid "Reply:"
+msgstr "Atsakymas:"
+
+#: templates/chunks/fullmessage.php:26
+msgid "Report Innocent"
+msgstr "Paskelbti ne nepageidaujamu"
+
+#: templates/chunks/fullmessage.php:23
+msgid "Report Spam"
+msgstr "Paskelbti nepageidaujamu (spam)"
+
+#: compose.php:187 lib/Views/ShowMessage.php:112 lib/Views/ShowMessage.php:122
+msgid "Requested message not found."
+msgstr "Nurodytas laiðkas nerastas."
+
+#: templates/index/index.inc:261
+msgid "Resume Draft"
+msgstr "Tæsti paruoðiná"
+
+#: lib/Views/ShowMessage.php:238
+msgid "Save All"
+msgstr "Iðsaugoti viskà"
+
+#: templates/chunks/compose.php:108
+msgid "Save Attachments in sent folder"
+msgstr "Iðsaugoti prikabintus failus siøstø laiðkø kataloge?"
+
+#: templates/chunks/compose.php:37
+msgid "Save as Draft"
+msgstr "Iðsaugoti kaip paruoðiná"
+
+#: templates/chunks/compose.php:32
+msgid "Save in "
+msgstr "Iðsaugoti kataloge "
+
+#: lib/DIMP.php:219
+msgid "Saving..."
+msgstr "Iðsaugoma..."
+
+#: templates/chunks/compose.php:27
+msgid "Se_nd"
+msgstr "Siøsti"
+
+#: lib/DIMP.php:161
+msgid "Search"
+msgstr "Ieðkoti"
+
+#: lib/Views/ListMessages.php:87
+msgid "Search Results"
+msgstr "Paieðkos rezultatai"
+
+#: templates/index/index.inc:300
+msgid "Select All"
+msgstr "Paþymëti viskà"
+
+#: lib/DIMP.php:218
+msgid "Sending..."
+msgstr "Siunèiama..."
+
+#: lib/DIMP.php:170
+msgid "Show Addresses"
+msgstr "Parodyti adresus"
+
+#: templates/chunks/compose.php:45
+msgid "Show Bcc"
+msgstr "Rodyti Bcc"
+
+#: templates/chunks/compose.php:44
+msgid "Show Cc"
+msgstr "Rodyti Cc"
+
+#: lib/DIMP.php:188 templates/index/index.inc:284
+msgid "Show Preview"
+msgstr "Rodyti perþiûrà"
+
+#: lib/DIMP.php:167
+msgid "Show Quoted Text"
+msgstr "Rodyti cituojamà tekstà"
+
+#: templates/index/index.inc:165
+msgid "Spam"
+msgstr "Spamas"
+
+#: lib/DIMP.php:177 lib/Views/ShowMessage.php:214
+#: templates/index/index.inc:184
+msgid "Subject"
+msgstr "Tema"
+
+#: templates/chunks/compose.php:96
+msgid "Subject: "
+msgstr "Tema: "
+
+#: lib/DIMP.php:217
+msgid "The attachment limit has been reached."
+msgstr "Pasiekta prikabintø failø riba."
+
+#: config/prefs.php.dist:39
+msgid "The buttons NOT to show when using Xinha."
+msgstr "Kuriø mygtukø NERODYTI Xinha tekstø redaktoriuje."
+
+#: config/prefs.php.dist:31
+msgid "The buttons to show when using FCKeditor."
+msgstr "Kuriuos mygtukus rodyti FCKeditor tekstø redaktoriuje."
+
+#: lib/DIMP.php:183
+msgid "The connection to the remote server has been restored."
+msgstr "Prisijungimas á nutolusá serverá atstatytas."
+
+#: templates/index/index.inc:310
+msgid "The following keyboard shortcuts are available:"
+msgstr "Galimi ðie greitieji mygtukai:"
+
+#: config/prefs.php.dist:23
+msgid "The javascript editor to use on the compose page."
+msgstr "Javascript redaktorius, kurá naudosite laiðko raðymo lange."
+
+#: lib/Views/ShowMessage.php:371
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Please click %s to send the "
+"notification message."
+msgstr ""
+"Laiðko siuntëjas reikalauja atsakymo apie laiðko gavimà, kai tik já "
+"perskaitysite. Norëdami taip padaryti, spauskite %s."
+
+#: lib/DIMP.php:184
+msgid "The server is still generating the message list."
+msgstr "Serveris vis dar generuoja laiðkø sàraðà."
+
+#: lib/DIMP.php:185
+msgid ""
+"The server was unable to generate the message list. Please try again later."
+msgstr "Serveris negali sugeneruoti laiðkø sàraðo. Pabandykite vëliau."
+
+#: lib/DIMP.php:182
+msgid ""
+"There has been no contact with the remote server for several minutes. The "
+"server may be temporarily unavailable or network problems may be "
+"interrupting your session. You will not see any updates until the connection "
+"is restored."
+msgstr ""
+"Nutolæs serveris neatsakë jau keletà minuèiø. Serveris gali bûti laikinai "
+"nepasiekiamas arba yra problemø su tinklu. Kol prisijungimas nebus "
+"atstatytas, jûs nematysite jokiø atnaujinimø."
+
+#: lib/DIMP.php:176
+msgid "Thread"
+msgstr "Temø grupës"
+
+#: lib/DIMP.php:174 templates/index/index.inc:183
+msgid "To"
+msgstr "Kam"
+
+#: templates/chunks/fullmessage.php:47 templates/index/index.inc:274
+msgid "To All"
+msgstr "Visiems"
+
+#: templates/chunks/fullmessage.php:46 templates/index/index.inc:273
+msgid "To Sender"
+msgstr "Siuntëjui"
+
+#: templates/index/index.inc:308
+msgid ""
+"To preview a message, please select it from the list above. You can right-"
+"click on the messages to view available actions."
+msgstr ""
+"Norëdami perþiûrëti laiðkà, pasirinkite já ið sàraðo virðuje. Jeigu ant "
+"laiðko paspausite deðiná pelës mygtukà, pamatysite galimus veiksmus."
+
+#: templates/chunks/compose.php:63
+msgid "To: "
+msgstr "Kam: "
+
+#: templates/index/index.inc:256 templates/index/index.inc:268
+msgid "Undelete"
+msgstr "Atstatyti iðtrintus"
+
+#: lib/Views/ShowMessage.php:77
+msgid "Undisclosed Recipients"
+msgstr "Adresatai nerodomi"
+
+#: lib/Views/ShowMessage.php:318
+msgid "Unknown Date"
+msgstr "Data neþinoma"
+
+#: templates/index/index.inc:311
+msgid "Up/Down Arrow keys: Move up/down through the message list."
+msgstr ""
+"Up/Down rodykliø mygtukai: parodo tolesná/ankstesná laiðkà laiðkø sàraðe."
+
+#: lib/DIMP.php:216
+msgid "Uploading..."
+msgstr "Siunèiama..."
+
+#: lib/DIMP.php:160
+msgid "User Options"
+msgstr "Vartotojo nustatymai"
+
+#: lib/Views/ShowMessage.php:284 lib/Views/ShowMessage.php:285
+msgid "View Message Source"
+msgstr "Rodyti laiðko kodà"
+
+#: templates/index/index.inc:252 templates/index/index.inc:296
+msgid "Whitelist"
+msgstr "Visada leisti"
+
+#: config/prefs.php.dist:22
+msgid "Xinha"
+msgstr "Xinha"
+
+#: lib/DIMP.php:214
+msgid ""
+"You have already changed the message body, are you sure you want to drop the "
+"changes?"
+msgstr ""
+"Jûs jau pakeitëte laiðko turiná. Ar tikrai norite atsisakyti pakeitimø?"
+
+#: lib/Block/newmail.php:57 lib/Views/ShowMessage.php:219
+#: lib/Views/ListMessages.php:255
+msgid "[No Subject]"
+msgstr "[be pavadinimo]"
+
+#: lib/Views/ShowMessage.php:83
+#, php-format
+msgid "[Show addresses - %s recipients]"
+msgstr "[Rodyti adresus - %s adresatø]"
+
+#: templates/index/index.inc:53
+msgid "_Compose"
+msgstr "_Raðyti naujà"
+
+#: templates/chunks/fullmessage.php:28
+msgid "_Delete"
+msgstr "_Iðtrinti"
+
+#: templates/chunks/fullmessage.php:21
+msgid "_Forward"
+msgstr "_Persiøsti"
+
+#: templates/index/index.inc:68
+msgid "_Log Out"
+msgstr "Atsi_jungti"
+
+#: templates/index/index.inc:63
+msgid "_Options"
+msgstr "_Nustatymai"
+
+#: templates/index/index.inc:59
+msgid "_Portal"
+msgstr "P_ortalas"
+
+#: templates/chunks/fullmessage.php:20
+msgid "_Reply"
+msgstr "_Atsakyti"
+
+#: templates/imp/message.html:13
+msgid "from"
+msgstr "nuo"
+
+#: lib/DIMP.php:168
+msgid "lines"
+msgstr "eilutës"
+
+#: lib/DIMP.php:164
+msgid "of"
+msgstr "ið"
+
+#: lib/DIMP.php:172
+msgid "ok"
+msgstr "gerai"
+
+#: lib/DIMP.php:171
+msgid "recipients"
+msgstr "gavëjai"
+
+#: lib/DIMP.php:215
+msgid "remove"
+msgstr "iðtrinti"
+
+#: lib/DIMP.php:162
+msgid "results found"
+msgstr "rezultatai"

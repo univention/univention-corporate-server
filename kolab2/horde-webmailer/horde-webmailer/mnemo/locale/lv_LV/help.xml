@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Horde: mnemo/locale/lv_LV/help.xml,v 1.2 2004-11-24 15:28:29 jan Exp $ -->
+<help>
+
+<entry id="Overview" md5="16d3b188ccff84364f6f1514de6655b0" state="uptodate">
+    <title>Pârskats</title>
+    <heading>Ievads</heading>
+    <para>
+    [Piezîmes] ir aplikâcija, kas ïauj radît lîmlapiòu datorizçtu ekvivalentu. Piezîmes var ierakstît, labot, dzçst un drukât. Bez tam ir iespçjams meklçt piezîmçs nepiecieðamo informâciju un klasificçt tâs.
+    </para>
+</entry>
+
+<entry id="list-actions" md5="c2a38907c08e1f9794a6e3c92b5a03f1" state="uptodate">
+    <title>Piezîmju saraksts: Darbîbas</title>
+    <heading>Darbîbas</heading>
+    <para>
+    [Dzçst] ïauj izdzçst izvçlçto piezîmi.
+    </para>
+    <para>
+    [Labot] ïauj labot izvçlçto piezîmi.
+    </para>
+    <para>
+    [Atgriezties Grâmatâ] ïauj atgriezties no piezîmes apskates Piezîmju grâmatâ.
+    </para>
+</entry>
+
+<entry id="menu-actions" md5="b8b85dd42f833ae172805eddf237dd12" state="uptodate">
+    <title>Rîku josla</title>
+    <heading>Rîku josla</heading>
+    <para>
+    [Parâdît] parâda visas piezîmes piezîmju grâmatâ.
+    </para>
+    <para>
+    [Rakstît] ïauj ierakstît jaunas piezîmes piezîmju grâmatâ.
+    </para>
+    <para>
+    [Meklçt] ïauj meklçt tekstu piezîmçs. Ir iespçjams meklçt tikai apraksta laukâ vai arî izdarît pilno meklçðanu piezîmju tekstâ.
+    </para>
+    <para>
+    [Drukât] ïauj izdrukât piezîmi. [Drukât] ikona ir redzama rîku joslâ tikai piezîmes apskates laikâ.
+    </para>
+</entry>
+
+
+<entry id="sorting" md5="cca3b1d1c9ed0ec5ab385f82469ddc8f" state="uptodate">
+    <title>Ierakstu ðíiroðana</title>
+    <heading>Ierakstu ðíiroðana</heading>
+    <para>
+    Apskatot ierakstu uzskaitîjumu ir iespçjams ðíirot ierakstus pçc jebkuras kolonnas, uzklikðíinot atbilstoðâ stabiòa nosaukumam. Lai pârslçgtos no augoðâs uz dilstoðo ðíiroðanas kârtîbu, uzklikðíiniet bultas ikonai blakus atbilstoðâ stabiòa nosaukumam.
+    </para>
+</entry>
+</help>

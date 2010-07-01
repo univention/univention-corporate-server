@@ -1,0 +1,75 @@
+=================
+ Upgrading Mnemo
+=================
+
+:Last update:   $Date: 2008-09-23 15:18:24 $
+:Revision:      $Revision: 1.1.8.13 $
+:Contact:       horde@lists.horde.org
+
+
+These are instructions to upgrade from earlier Mnemo versions. Please
+backup your existing data before running any of the steps described below.
+
+
+Upgrading Mnemo from 2.2.1 to 2.2.2
+===================================
+
+The group_uid field in the SQL share driver groups table has been changed from
+an INT to a VARCHAR(255). Execute the provided SQL script to update your
+database if you are using the native SQL share driver.
+
+   mysql --user=root --password=<MySQL-root-password>  <db name> < scripts/upgrades/2.2.1_to_2.2.2.sql
+
+
+Upgrading Mnemo from 2.2 to 2.2.1
+=================================
+
+The share_owner field in the SQL share driver table has been changed from a
+VARCHAR(32) to a VARCHAR(255). Execute the provided SQL script to update your
+database if you are using the native SQL share driver.
+
+   mysql --user=root --password=<MySQL-root-password>  <db name> < scripts/upgrades/2.2_to_2.2.1.sql
+
+
+Upgrading Mnemo from 2.x to 2.2
+===============================
+
+
+New Beta SQL Share Driver Support
+---------------------------------
+
+A new beta-level SQL Horde_Share driver has been added in Horde 3.2. This driver
+offers significant performance improvements over the existing Datatree driver,
+but it has not received the same level of testing, thus the beta designation.
+In order to make use of this driver, you must be using Horde 3.2-RC3 or
+later. To create the new tables needed for this driver, execute the provided SQL
+script::
+
+   mysql --user=root --password=<MySQL-root-password> <db name> < scripts/upgrades/2.1_to_2.2.sql
+
+If you want to use the new SQL Share driver, you must also execute the
+provided PHP script to migrate your existing share data to the new format::
+
+   php scripts/upgrades/convert_datatree_shares_to_sql.php
+
+
+Upgrading Mnemo from 1.1.x to 2.0
+=================================
+
+
+SQL Backends
+============
+
+Execute the provided SQL script to update your data to the new Mnemo version::
+
+   mysql --user=root --password=<MySQL-root-password> <db name> < scripts/upgrades/1.1_to_2.0.mysql.sql
+
+
+Categories
+==========
+
+Categories are now being maintained centrally for all Horde applications that
+support them.  To convert the old memo categories execute the provided PHP
+script::
+
+   php scripts/upgrades/2004-05-19_convert_categories_to_strings.php

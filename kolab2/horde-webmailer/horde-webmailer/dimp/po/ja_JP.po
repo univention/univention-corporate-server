@@ -1,0 +1,776 @@
+# apanese translation for DIMP.
+# Copyright 2008-2009 Horde Project
+# This file is distributed under the same license as the DIMP package.
+# Hiromi Kimura <hiromi@tac.tsukuba.ac.jp>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DIMP 1.1\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-09-25 12:32+0200\n"
+"PO-Revision-Date: 2009-02-04 20:59+0900\n"
+"Last-Translator: Hiromi Kimura <hiromi@tac.tsukuba.ac.jp>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=SHIFT_JIS\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/Views/ShowMessage.php:295
+#, php-format
+msgid "%d Attachment"
+msgid_plural "%d Attachments"
+msgstr[0] "%d 添付"
+
+#: imp.php:661
+#, php-format
+msgid "%s messages were purged from \"%s\"."
+msgstr "%s 通のメッセージを \"%s\" から削除しました。"
+
+#: lib/Block/newmail.php:70
+#, php-format
+msgid "%s more unseen messages..."
+msgstr "更に %s 通の未読メッセージ..."
+
+#: imp.php:447
+#, php-format
+msgid "%s was successfully added to your address book."
+msgstr "%s があなたのアドレス帳に追加されました。"
+
+#: templates/index/index.inc:247
+#, php-format
+msgid ""
+"%s will delete the current message and move to the next message if a single "
+"message is selected."
+msgstr ""
+"%s は、メッセージが１つだけ選択されているなら、削除して次のメッセージに移動し"
+"ます。"
+
+#: imp.php:659
+#, php-format
+msgid "1 message was purged from \"%s\"."
+msgstr "１通のメッセージを \"%s\" から削除しました。"
+
+#: lib/Block/newmail.php:68
+msgid "1 more unseen message..."
+msgstr "１通の未読メッセージ..."
+
+#: lib/DIMP.php:210
+msgid ""
+"A popup window could not be opened. Your browser may be blocking popups."
+msgstr ""
+"ポップアップウインドーが開けません。ブラウザがポップアップウインドーをブロッ"
+"クしているようです。"
+
+#: templates/chunks/message.php:127 templates/index/index.inc:421
+msgid "Add to Address Book"
+msgstr "アドレス帳に追加"
+
+#: templates/index/index.inc:193 templates/index/index.inc:198
+msgid "All"
+msgstr "全て"
+
+#: templates/index/index.inc:220 templates/index/index.inc:222
+msgid "Arrival"
+msgstr "到着"
+
+#: templates/chunks/message.php:122 templates/index/index.inc:392
+msgid "Attachments Only"
+msgstr "添付のみ"
+
+#: templates/index/index.inc:126
+msgid "Base Level"
+msgstr "ベースレベル"
+
+#: templates/chunks/compose.php:114
+msgid "Bcc: "
+msgstr "Bcc: "
+
+#: templates/index/index.inc:360 templates/index/index.inc:405
+msgid "Blacklist"
+msgstr "ブラックリスト"
+
+#: templates/chunks/message.php:121 templates/index/index.inc:391
+msgid "Body Text Only"
+msgstr "本文のみ"
+
+#: lib/DIMP.php:202
+msgid "Cancel"
+msgstr "予定表"
+
+#: lib/DIMP.php:238
+msgid ""
+"Cancelling this message will permanently discard its contents and will "
+"delete auto-saved drafts.\n"
+"Are you sure you want to do this?"
+msgstr ""
+"このメッセージをキャンセルすると、内容と下書きは全て廃棄されます。\n"
+"本当に実行しますか？"
+
+#: templates/index/index.inc:293
+msgid "Cc"
+msgstr "Cc"
+
+#: templates/chunks/compose.php:100
+msgid "Cc: "
+msgstr "Cc: "
+
+#: templates/chunks/compose.php:57
+msgid "Check Spelling"
+msgstr "スペルチェック"
+
+#: templates/index/index.inc:330
+msgid "Check for New Mail"
+msgstr "新着メールを確認"
+
+#: lib/DIMP.php:204
+msgid "Checking..."
+msgstr "チェック中..."
+
+#: templates/index/index.inc:351 templates/index/index.inc:375
+#: templates/index/index.inc:401
+msgid "Clear Flag"
+msgstr "印を解除"
+
+#: templates/index/index.inc:242
+#, php-format
+msgid ""
+"Click on a message while holding down the %s key to select multiple "
+"messages.  To select a range of messages, click the first message of the "
+"range, navigate to the last message of the range, and then click on the last "
+"message while holding down the %s key."
+msgstr ""
+"%s キイを押しながらメッセージをクリックすると、複数のメッセージを選択できま"
+"す。範囲で選択したいなら、先ず最初のメッセージをクリックし、%s キイを押しなが"
+"ら、最後のメッセージをクリックします。"
+
+#: templates/index/index.inc:276
+msgid "Collapse Headers"
+msgstr "ヘッダーを畳む"
+
+#: templates/index/index.inc:62 templates/index/index.inc:183
+msgid "Compose"
+msgstr "メール作成"
+
+#: templates/index/index.inc:234
+msgid "Could not get message list from server"
+msgstr "メッセージ一覧をサーバから取得できません"
+
+#: lib/DIMP.php:214
+msgid "Create folder:"
+msgstr "フォルダー作成："
+
+#: templates/index/index.inc:322 templates/index/index.inc:335
+msgid "Create subfolder"
+msgstr "サブフォルダー作成"
+
+#: lib/DIMP.php:215
+msgid "Create subfolder:"
+msgstr "サブフォルダー作成："
+
+#: templates/index/index.inc:242 templates/index/index.inc:249
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: config/prefs.php.dist:11
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "%s へのログオン時に実行するタスクを設定します。"
+
+#: templates/index/index.inc:219 templates/index/index.inc:223
+#: templates/index/index.inc:285
+msgid "Date"
+msgstr "日付"
+
+#: templates/index/index.inc:247
+msgid "Del"
+msgstr "Del"
+
+#: templates/chunks/message.php:49 templates/index/index.inc:185
+#: templates/index/index.inc:247 templates/index/index.inc:365
+#: templates/index/index.inc:377
+msgid "Delete"
+msgstr "削除"
+
+#: templates/index/index.inc:325
+msgid "Delete Folder"
+msgstr "フォルダを削除"
+
+#: templates/index/index.inc:247
+msgid "Delete the currently selected message(s)."
+msgstr "選択されたメッセージを削除する。"
+
+#: templates/index/index.inc:331
+msgid "Do Not Check for New Mail"
+msgstr "新着メールを確認しない"
+
+#: templates/index/index.inc:324
+msgid "Empty Folder"
+msgstr "フォルダを空にする"
+
+#: templates/index/index.inc:246
+msgid "End"
+msgstr "End"
+
+#: templates/index/index.inc:248
+msgid "Enter"
+msgstr "Enter"
+
+#: templates/chunks/message.php:120 templates/index/index.inc:390
+msgid "Entire Message"
+msgstr "メッセージ全体"
+
+#: templates/index/index.inc:257
+msgid "Expand Headers"
+msgstr "ヘッダを展開"
+
+#: templates/index/index.inc:350 templates/index/index.inc:374
+#: templates/index/index.inc:400
+msgid "Flag Message"
+msgstr "印を付ける"
+
+#: config/portal.php.dist:28
+msgid "Folder Summary"
+msgstr "フォルダ概要"
+
+#: templates/index/index.inc:191
+msgid "Folders: "
+msgstr "フォルダ："
+
+#: templates/chunks/message.php:42 templates/index/index.inc:176
+msgid "Forward"
+msgstr "転送"
+
+#: templates/index/index.inc:346
+msgid "Forward Attachments Only"
+msgstr "添付のみ転送"
+
+#: templates/index/index.inc:345
+msgid "Forward Body Text Only"
+msgstr "本文のみ転送"
+
+#: templates/index/index.inc:344
+msgid "Forward Entire Message"
+msgstr "メッセージ全体を転送"
+
+#: templates/index/index.inc:199 templates/index/index.inc:207
+#: templates/index/index.inc:281
+msgid "From"
+msgstr "From"
+
+#: templates/chunks/compose.php:76
+msgid "From: "
+msgstr "From: "
+
+#: config/prefs.php.dist:9
+msgid "General Options"
+msgstr "一般オプション"
+
+#: templates/index/index.inc:63 templates/index/index.inc:184 lib/DIMP.php:205
+msgid "Get Mail"
+msgstr "メール取得"
+
+#: lib/Block/newmail.php:72
+msgid "Go to your Inbox..."
+msgstr "INBOX に移動..."
+
+#: lib/Views/ShowMessage.php:359
+msgid "HERE"
+msgstr "ここ"
+
+#: templates/chunks/compose.php:67
+msgid "HTML composition"
+msgstr "HTML メール作成"
+
+#: templates/index/index.inc:396 lib/DIMP.php:211
+msgid "Hide Preview"
+msgstr "プレビューを隠す"
+
+#: lib/DIMP.php:196
+msgid "Hide Quoted Text"
+msgstr "引用した文章を隠す"
+
+#: templates/index/index.inc:426
+msgid "High Priority"
+msgstr "優先度高"
+
+#: templates/index/index.inc:141 templates/index/index.inc:246
+msgid "Home"
+msgstr "Home"
+
+#: templates/index/index.inc:60
+msgid "Horde"
+msgstr "Horde"
+
+#: config/prefs.php.dist:22
+msgid "Inbox"
+msgstr "INBOX"
+
+#: templates/index/index.inc:181
+msgid "Innocent"
+msgstr "無害"
+
+#: templates/chunks/compose.php:20 templates/index/index.inc:34
+#: lib/DIMP.php:203
+msgid "Loading..."
+msgstr "ロード中..."
+
+#: templates/index/index.inc:79
+msgid "Log Out"
+msgstr "ログアウト"
+
+#: config/prefs.php.dist:10
+msgid "Login Tasks"
+msgstr "ログイン処理"
+
+#: templates/index/index.inc:427
+msgid "Low Priority"
+msgstr "優先度低"
+
+#: lib/Views/ListMessages.php:161
+#, php-format
+msgid "Mailbox %s does not exist."
+msgstr "メールボックス %s がありません。"
+
+#: templates/index/index.inc:328
+msgid "Mark all as New"
+msgstr "全てを新着とする"
+
+#: templates/index/index.inc:327
+msgid "Mark all as Read"
+msgstr "全てを既読とする"
+
+#: templates/index/index.inc:357
+msgid "Mark as Innocent"
+msgstr "無害とする"
+
+#: templates/index/index.inc:349 templates/index/index.inc:399
+msgid "Mark as New"
+msgstr "新着とする"
+
+#: templates/index/index.inc:348 templates/index/index.inc:398
+msgid "Mark as Read"
+msgstr "既読とする"
+
+#: templates/index/index.inc:354
+msgid "Mark as Spam"
+msgstr "SPAM とする"
+
+#: lib/DIMP.php:192
+msgid "Message"
+msgstr "メッセージ"
+
+#: compose.php:344
+msgid "Message Composition"
+msgstr "メッセージ作成"
+
+#: compose.php:182
+msgid "Message sent successfully."
+msgstr "メッセージは送信されました。"
+
+#: templates/chunks/message.php:37 templates/chunks/message.php:105
+msgid "Message:"
+msgstr "メッセージ："
+
+#: templates/index/index.inc:197
+msgid "Message: "
+msgstr "メッセージ："
+
+#: lib/DIMP.php:193
+msgid "Messages"
+msgstr "メッセージ"
+
+#: lib/DIMP.php:200
+#, php-format
+msgid "Move %s to %s"
+msgstr "%s を %s に移動"
+
+#: templates/index/index.inc:245
+msgid "Move one page up/down through the message list."
+msgstr "１ページ分上下に移動します"
+
+#: templates/index/index.inc:246
+msgid "Move to the beginning/end of the message list."
+msgstr "メッセージ一覧の先頭／末尾に移動"
+
+#: templates/index/index.inc:244
+msgid "Move up/down through the message list."
+msgstr "メッセージ一覧中で上下に移動"
+
+#: templates/index/index.inc:118
+msgid "My Folders"
+msgstr "私のフォルダー"
+
+#: templates/index/index.inc:122
+msgid "New Folder"
+msgstr "新規フォルダ"
+
+#: compose.php:204 templates/chunks/message.php:126
+#: templates/index/index.inc:420
+msgid "New Message"
+msgstr "新規メッセージ"
+
+#: lib/DIMP.php:195
+msgid "No Messages"
+msgstr "メッセージ無し"
+
+#: lib/Block/foldersummary.php:75
+msgid "No folders are being checked for new mail."
+msgstr "どのフォルダも新着メールの確認をしない。"
+
+#: lib/Block/foldersummary.php:79
+msgid "No folders with new messages"
+msgstr "どのフォルダも新着メッセージなし"
+
+#: lib/Block/foldersummary.php:77
+msgid "No folders with unseen messages"
+msgstr "どのフォルダも未読メッセージなし"
+
+#: templates/index/index.inc:233
+msgid "No messages to display"
+msgstr "表示するメッセージ無し"
+
+#: lib/Block/newmail.php:41
+msgid "No unread messages"
+msgstr "未読メッセージ無し"
+
+#: lib/DIMP.php:199
+msgid "Ok"
+msgstr "Ok"
+
+#: templates/index/index.inc:16 templates/index/index.inc:263
+msgid "Open in new window"
+msgstr "新しいウインドーで開く"
+
+#: templates/index/index.inc:248
+msgid "Open message in a popup window."
+msgstr "メッセージをポップアップウインドーで開く"
+
+#: templates/index/index.inc:74
+msgid "Options"
+msgstr "オプション"
+
+#: templates/index/index.inc:186
+msgid "Other Actions"
+msgstr "その他の操作"
+
+#: lib/DIMP.php:216
+msgid "Permanently delete all messages?"
+msgstr "全てのメッセージを削除しますか？"
+
+#: lib/DIMP.php:217
+msgid "Permanently delete this folder?"
+msgstr "このフォルダを削除しますか？"
+
+#: templates/index/index.inc:245
+msgid "PgDown"
+msgstr "PageDown"
+
+#: templates/index/index.inc:245
+msgid "PgUp"
+msgstr "PageUp"
+
+#: templates/index/index.inc:69 lib/DIMP.php:188 config/prefs.php.dist:21
+msgid "Portal"
+msgstr "ポータル"
+
+#: templates/chunks/message.php:57 templates/index/index.inc:265
+msgid "Print"
+msgstr "印刷"
+
+#: templates/index/index.inc:415
+msgid "Purge Deleted"
+msgstr "削除"
+
+#: templates/chunks/compose.php:52
+msgid "Read Receipt"
+msgstr "開封確認"
+
+#: lib/DIMP.php:245
+msgid ""
+"Really discard all formatting information? This operation cannot be undone."
+msgstr "書式情報を本当に廃棄しますか？この操作は取り消せません。"
+
+#: templates/index/index.inc:323 templates/index/index.inc:336
+msgid "Rename Folder"
+msgstr "フォルダ名変更"
+
+#: lib/DIMP.php:213
+msgid "Rename folder to:"
+msgstr "フォルダ名変更："
+
+#: templates/chunks/message.php:41 templates/index/index.inc:175
+msgid "Reply"
+msgstr "返信"
+
+#: templates/index/index.inc:341
+msgid "Reply to All"
+msgstr "全員に返信"
+
+#: compose.php:232
+msgid "Reply to All:"
+msgstr "全員に返信："
+
+#: templates/index/index.inc:342
+msgid "Reply to List"
+msgstr "リストに返信"
+
+#: compose.php:234
+msgid "Reply to List:"
+msgstr "リストに返信："
+
+#: templates/index/index.inc:340
+msgid "Reply to Sender"
+msgstr "送信者に返信"
+
+#: compose.php:230
+msgid "Reply:"
+msgstr "返信："
+
+#: templates/chunks/message.php:47
+msgid "Report Innocent"
+msgstr "無害と報告"
+
+#: templates/chunks/message.php:44
+msgid "Report Spam"
+msgstr "SPAM 報告"
+
+#: compose.php:214 lib/Views/ShowMessage.php:154
+msgid "Requested message not found."
+msgstr "要求されたメッセージは見つかりません。"
+
+#: templates/index/index.inc:372
+msgid "Resume Draft"
+msgstr "下書き再開"
+
+#: lib/Views/ShowMessage.php:298
+msgid "Save All"
+msgstr "全て保存"
+
+#: templates/chunks/compose.php:140
+msgid "Save Attachments in sent folder"
+msgstr "添付を送信控えフォルダに保存"
+
+#: templates/chunks/compose.php:58
+msgid "Save as Draft"
+msgstr "下書きとして保存"
+
+#: templates/chunks/compose.php:55
+msgid "Save in "
+msgstr "保存"
+
+#: lib/DIMP.php:244
+msgid "Saving..."
+msgstr "保存中..."
+
+#: lib/DIMP.php:190
+msgid "Search"
+msgstr "検索"
+
+#: lib/Views/ListMessages.php:80
+msgid "Search Results"
+msgstr "検索結果"
+
+#: templates/index/index.inc:412
+msgid "Select All"
+msgstr "全て選択"
+
+#: templates/index/index.inc:249
+msgid "Select all messages in the current mailbox."
+msgstr "現在のメールボックス内の全メッセージを選択"
+
+#: templates/chunks/compose.php:50
+msgid "Send"
+msgstr "送信"
+
+#: lib/DIMP.php:243
+msgid "Sending..."
+msgstr "送信中..."
+
+#: templates/index/index.inc:242 templates/index/index.inc:247
+msgid "Shift"
+msgstr "Shift"
+
+#: templates/chunks/compose.php:65
+msgid "Show Bcc"
+msgstr "Bcc 表示"
+
+#: templates/chunks/compose.php:64
+msgid "Show Cc"
+msgstr "Cc 表示"
+
+#: templates/index/index.inc:396 lib/DIMP.php:212
+msgid "Show Preview"
+msgstr "プレビュー表示"
+
+#: lib/DIMP.php:197
+msgid "Show Quoted Text"
+msgstr "引用文を表示"
+
+#: templates/index/index.inc:226
+msgid "Size"
+msgstr "サイズ"
+
+#: templates/index/index.inc:178
+msgid "Spam"
+msgstr "SPAM"
+
+#: templates/chunks/compose.php:70
+msgid "Special Characters"
+msgstr "特殊文字"
+
+#: templates/chunks/message.php:67 templates/index/index.inc:201
+#: templates/index/index.inc:211 templates/index/index.inc:215
+#: templates/index/index.inc:276
+msgid "Subject"
+msgstr "件名"
+
+#: templates/chunks/compose.php:128
+msgid "Subject: "
+msgstr "件名："
+
+#: lib/DIMP.php:242
+msgid "The attachment limit has been reached."
+msgstr "添付の上限に達しています。"
+
+#: lib/DIMP.php:207
+msgid "The connection to the remote server has been restored."
+msgstr "リモートサーバへの接続は再開されました。"
+
+#: templates/index/index.inc:243
+msgid "The following keyboard shortcuts are available:"
+msgstr "以下のようなショートカットキイが使用できます："
+
+#: config/prefs.php.dist:23
+msgid "The page to view immediately after login."
+msgstr "ログイン直後に表示するページ"
+
+#: lib/Views/ShowMessage.php:360
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Click %s to send the notification "
+"message."
+msgstr ""
+"このメッセージの送り主は、あなたがこれを読んだ事の開封通知を要求しています。%"
+"s をクリックして通知を送信して下さい。"
+
+#: lib/DIMP.php:208
+msgid "The server is still generating the message list."
+msgstr "サーバはメッセージ一覧の作成中です。"
+
+#: lib/DIMP.php:209
+msgid ""
+"The server was unable to generate the message list. Please try again later."
+msgstr "サーバはメッセージ一覧が作成できませんでした。後で再度試して下さい。"
+
+#: lib/DIMP.php:206
+msgid ""
+"There has been no contact with the remote server for several minutes. The "
+"server may be temporarily unavailable or network problems may be "
+"interrupting your session. You will not see any updates until the connection "
+"is restored."
+msgstr ""
+"しばらくの間リモートサーバとの接続が途絶えています。サーバかネットワークに問"
+"題があって、セッションが中断するでしょう。接続が再開されるまで、何の更新もで"
+"きません。"
+
+#: templates/index/index.inc:212 templates/index/index.inc:214
+msgid "Thread"
+msgstr "スレッド"
+
+#: templates/index/index.inc:200 templates/index/index.inc:208
+#: templates/index/index.inc:289
+msgid "To"
+msgstr "To"
+
+#: templates/chunks/message.php:113 templates/index/index.inc:385
+msgid "To All"
+msgstr "全員へ"
+
+#: templates/chunks/message.php:115 templates/index/index.inc:386
+msgid "To List"
+msgstr "リストへ"
+
+#: templates/chunks/message.php:112 templates/index/index.inc:384
+msgid "To Sender"
+msgstr "送信者へ"
+
+#: templates/index/index.inc:241
+msgid ""
+"To preview a message, select it from the list above. A right-click on the "
+"messages will display available actions."
+msgstr ""
+"表示するメッセージを上の一覧から選んで下さい。右クリックで操作メニューが表示"
+"されます。"
+
+#: templates/chunks/compose.php:86
+msgid "To: "
+msgstr "To: "
+
+#: templates/index/index.inc:367 templates/index/index.inc:379
+msgid "Undelete"
+msgstr "削除取り消し"
+
+#: lib/Views/ShowMessage.php:87
+msgid "Undisclosed Recipients"
+msgstr "未公開の宛先"
+
+#: lib/Views/ShowMessage.php:323
+msgid "Unknown Date"
+msgstr "不明な日付"
+
+#: lib/DIMP.php:241
+msgid "Uploading..."
+msgstr "更新中..."
+
+#: lib/DIMP.php:189
+msgid "User Options"
+msgstr "ユーザオプション"
+
+#: templates/chunks/message.php:60 templates/index/index.inc:268
+msgid "View Message Source"
+msgstr "原文を表示"
+
+#: templates/index/index.inc:363 templates/index/index.inc:408
+msgid "Whitelist"
+msgstr "ホワイトリスト"
+
+#: lib/DIMP.php:239
+msgid ""
+"You have already changed the message body, are you sure you want to drop the "
+"changes?"
+msgstr "あなたは本文を編集しています。本当に変更部分を破棄して良いですか？"
+
+#: lib/Views/ShowMessage.php:95
+msgid "[Hide Addresses]"
+msgstr "[アドレスを隠す]"
+
+#: lib/Views/ShowMessage.php:281 lib/Views/ListMessages.php:297
+#: lib/Block/newmail.php:58
+msgid "[No Subject]"
+msgstr "[件名なし]"
+
+#: lib/DIMP.php:201
+msgid "base level of the folder tree"
+msgstr "フォルダーツリーのベースレベル"
+
+#: templates/index/index.inc:258
+msgid "from"
+msgstr "from"
+
+#: lib/DIMP.php:198
+msgid "lines"
+msgstr "行"
+
+#: lib/DIMP.php:194
+msgid "of"
+msgstr "of"
+
+#: lib/DIMP.php:240
+msgid "remove"
+msgstr "削除"
+
+#: lib/DIMP.php:191
+msgid "results found"
+msgstr "結果あり"

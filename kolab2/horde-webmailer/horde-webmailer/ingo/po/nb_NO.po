@@ -1,0 +1,820 @@
+# Norwegian translations for Ingo package.
+# Copyright 2005-2009 The Horde Project
+# This file is distributed under the same license as the Ingo package.
+# Automatically generated, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Ingo H3 (1.0)\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2005-01-11 15:38+0100\n"
+"PO-Revision-Date: 2005-01-11 15:38+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: filters.php:167
+msgid " and"
+msgstr "og"
+
+#: filters.php:167
+msgid " or"
+msgstr "eller"
+
+#: templates/blacklist/blacklist.inc:19
+msgid "Action for blacklisted addresses:"
+msgstr "Aksjon for svartelistede adresser:"
+
+#: templates/script/activate.inc:10
+msgid "Activate Script"
+msgstr "Aktiver script"
+
+#: templates/filters/settings.inc:9
+msgid "Additional Settings"
+msgstr "Andre valg"
+
+#: templates/rule/header.inc:53
+msgid "All of the following"
+msgstr "Alle de følgende"
+
+#: templates/rule/footer.inc:44
+msgid "Answered"
+msgstr "Besvart"
+
+#: templates/rule/header.inc:56
+msgid "Any of the following"
+msgstr "Noen av de følgende"
+
+#: templates/filters/footer.inc:16
+msgid "Apply Filters"
+msgstr "Ta filter i bruk"
+
+#: filters.php:196
+msgid "Are you sure you want to delete this rule?"
+msgstr "Er du SIKKER på at du ønsker å slette denne regelen?"
+
+#: config/prefs.php.dist:33
+msgid "Automatically update the script after each change?"
+msgstr "Automatisk oppdater scriptet etter hver forandring?"
+
+#: config/fields.php.dist:47
+msgid "Bcc"
+msgstr "Blind kopi"
+
+#: lib/Storage.php:346
+msgid "Begins with"
+msgstr "Begynner med"
+
+#: filters.php:126 templates/blacklist/blacklist.inc:8
+msgid "Blacklist"
+msgstr "Svarteliste"
+
+#: blacklist.php:100
+msgid "Blacklist Edit"
+msgstr "Svarteliste"
+
+#: blacklist.php:17
+msgid "Blacklist is not supported in the current filtering driver."
+msgstr "Svartelisting er ikke støttet i denne filter driveren"
+
+#: lib/Script/procmail.php:209
+msgid "Blacklisted Address"
+msgstr "Svartelistet adresse"
+
+#: lib/Script/sieve.php:245
+msgid "Blacklisted Addresses"
+msgstr "Svartelistet adresser"
+
+#: config/fields.php.dist:88
+msgid "Body"
+msgstr "Meldingstekst"
+
+#: rule.php:238 filters.php:164
+msgid "Case Sensitive"
+msgstr ""
+
+#: config/fields.php.dist:43
+msgid "Cc"
+msgstr "Kopi til"
+
+#: blacklist.php:69 vacation.php:41 rule.php:105 forward.php:33
+#: whitelist.php:36
+msgid "Changes saved."
+msgstr "Endringer lagret"
+
+#: lib/Storage.php:342
+msgid "Contains"
+msgstr "Inneholder"
+
+#: filters.php:204 filters.php:205
+msgid "Copy %s"
+msgstr "Kopier %s"
+
+#: lib/Storage.php:778
+msgid "Copy of %s"
+msgstr "Kopi av %s"
+
+#: lib/Ingo.php:53
+msgid "Create new folder"
+msgstr "Opprett ny mappe"
+
+#: templates/filters/filter.html:16
+msgid "DISABLED"
+msgstr "Deaktivert"
+
+#: lib/Script/procmail.php:354
+msgid "DISABLED: "
+msgstr "Deaktivert: "
+
+#: templates/script/activate.inc:17
+msgid "Deactivate Script"
+msgstr "Deaktiver script"
+
+#: filters.php:196 filters.php:197
+msgid "Delete %s"
+msgstr "Slett %s"
+
+#: templates/rule/filter.inc:30
+msgid "Delete Condition"
+msgstr "Fjern regel"
+
+#: lib/Storage.php:298
+msgid "Delete message completely"
+msgstr "Slett melding helt"
+
+#: templates/rule/footer.inc:47
+msgid "Deleted"
+msgstr "Slettet"
+
+#: lib/Storage.php:286
+msgid "Deliver into my INBOX"
+msgstr "Lever til min Innboks"
+
+#: lib/Storage.php:312
+msgid "Deliver into my INBOX and copy to"
+msgstr "Lever til min Innboks og kopier til"
+
+#: lib/Storage.php:307
+msgid "Deliver into my INBOX and redirect to"
+msgstr "Lever til min Innboks og rederiger til"
+
+#: lib/Storage.php:292
+msgid "Deliver to folder"
+msgstr "Lever til mappe"
+
+#: filters.php:218 filters.php:219
+msgid "Disable %s"
+msgstr "Deaktiver %s"
+
+#: templates/blacklist/blacklist.inc:10 templates/vacation/vacation.inc:9
+#: templates/whitelist/whitelist.inc:9 templates/forward/forward.inc:9
+#: templates/rule/header.inc:30
+msgid "Disabled"
+msgstr "Deaktivert"
+
+#: templates/filters/settings.inc:21
+msgid "Display detailed notification when each filter is applied?"
+msgstr "Vis detaljert melding når hvert filter blir tatt i bruk?"
+
+#: templates/vacation/vacation.inc:38
+msgid "Do _not send responses to bulk or list messages"
+msgstr "Ikke send respons til bulk eller liste meldinger"
+
+#: templates/rule/footer.inc:10
+msgid "Do this:"
+msgstr "Gjør dette:"
+
+#: lib/Storage.php:347
+msgid "Doesn't begin with"
+msgstr "Som ikke begynner med"
+
+#: lib/Storage.php:343
+msgid "Doesn't contain"
+msgstr "Som ikke inneholder"
+
+#: lib/Storage.php:349
+msgid "Doesn't end with"
+msgstr "Som ikke slutter med"
+
+#: lib/Storage.php:351
+msgid "Doesn't exist"
+msgstr "Eksisterer ikke"
+
+#: lib/Storage.php:354
+msgid "Doesn't match (with placeholders)"
+msgstr ""
+
+#: templates/filters/header.inc:20
+msgid "Edit"
+msgstr "Rediger"
+
+#: filters.php:185 filters.php:187 filters.php:191 filters.php:192
+msgid "Edit %s"
+msgstr "Rediger %s"
+
+#: filters.php:222 filters.php:223
+msgid "Enable %s"
+msgstr "Aktiver %s"
+
+#: templates/filters/header.inc:22
+msgid "Enabled"
+msgstr "Aktivert"
+
+#: lib/Storage.php:348
+msgid "Ends with"
+msgstr "Slutter med"
+
+#: lib/Storage.php:359
+msgid "Equal to"
+msgstr "Lik som"
+
+msgid "Existing Rules"
+msgstr "Eksisterende regler"
+
+#: lib/Storage.php:350
+msgid "Exists"
+msgstr "Eksisterer"
+
+#: templates/filters/settings.inc:30
+msgid "Filter All Messages"
+msgstr "Filtrer alle meldinger"
+
+#: templates/filters/settings.inc:32
+msgid "Filter Only Seen Messages"
+msgstr "Filtrer bare leste meldinger"
+
+#: templates/filters/settings.inc:31
+msgid "Filter Only Unseen Messages"
+msgstr "Filtrer bare uleste meldinger"
+
+#: templates/filters/settings.inc:28
+msgid "Filter Options"
+msgstr "Filter valg"
+
+#: templates/rule/header.inc:28
+msgid "Filter Rule"
+msgstr "Filterregler"
+
+#: filters.php:92
+msgid "Filter Rules"
+msgstr "Filterregler"
+
+#: script.php:52
+msgid "Filter Script Display"
+msgstr "Filter script visning"
+
+#: lib/Ingo.php:269
+msgid "Filter _Rules"
+msgstr "Filterregler"
+
+#: lib/Script/imap.php:321
+msgid "Filter activity: %s message(s) have been copied to the folder \"%s\"."
+msgstr ""
+"Filtrering: Meldingen \"%s\" fra \"%s\" har blitt flyttet til mappen \"%s\"."
+
+#: lib/Script/imap.php:308
+msgid "Filter activity: %s message(s) have been deleted."
+msgstr "Filtreromg: %s melding(en) ble slettet."
+
+#: lib/Script/imap.php:286
+msgid "Filter activity: %s message(s) have been moved to the folder \"%s\"."
+msgstr ""
+"Filtrering: Meldingen \"%s\" fra \"%s\" har blitt flyttet til mappen \"%s\"."
+
+#: lib/Script/imap.php:189
+#, fuzzy, php-format
+msgid "Filter activity: %s message(s) that matched the blacklist were deleted."
+msgstr "Filtrering: Meldingen \"%s\" fra \"%s\" har blitt slettet."
+
+#: lib/Script/imap.php:318
+#, fuzzy, php-format
+msgid ""
+"Filter activity: The message \"%s\" from \"%s\" has been copied to the "
+"folder \"%s\"."
+msgstr ""
+"Filtrering: Meldingen \"%s\" fra \"%s\" har blitt flyttet til mappen \"%s\"."
+
+#: lib/Script/imap.php:303
+#, fuzzy, php-format
+msgid "Filter activity: The message \"%s\" from \"%s\" has been deleted."
+msgstr "Filtrering: Meldingen \"%s\" fra \"%s\" har blitt slettet."
+
+#: lib/Script/imap.php:280
+#, fuzzy, php-format
+msgid ""
+"Filter activity: The message \"%s\" from \"%s\" has been moved to the folder "
+"\"%s\"."
+msgstr ""
+"Filtrering: Meldingen \"%s\" fra \"%s\" har blitt flyttet til mappen \"%s\"."
+
+#: rule.php:133
+msgid "Filter not found."
+msgstr "Filter ikke funnet"
+
+#: templates/rule/header.inc:48
+msgid "For an incoming message that matches:"
+msgstr "For en innkommende melding som passer:"
+
+#: filters.php:144 templates/forward/forward.inc:7
+msgid "Forward"
+msgstr "Videresend"
+
+#: forward.php:16
+msgid "Forward is not supported in the current filtering driver."
+msgstr "Videresend er ikke støttet i valgt filter driver"
+
+#: lib/Script/procmail.php:296
+msgid "Forwards"
+msgstr "Videresendinger"
+
+#: forward.php:46
+msgid "Forwards Edit"
+msgstr "Videresendings valg"
+
+#: config/fields.php.dist:39
+msgid "From"
+msgstr "Fra"
+
+#: lib/Storage.php:357
+msgid "Greater than"
+msgstr "Større enn"
+
+#: lib/Storage.php:358
+msgid "Greater than or equal to"
+msgstr "Større enn eller lik som"
+
+#: templates/rule/footer.inc:41
+msgid "Important"
+msgstr "Viktig"
+
+#: rule.php:26
+msgid "Individual rules are not supported in the current filtering driver."
+msgstr ""
+
+#: lib/Script/sieve.php:1783
+msgid "Inexistant mailbox specified for message delivery."
+msgstr "Ikke eksisterende mailboks spesifisert for meldings levering"
+
+#: lib/Storage.php:344
+msgid "Is"
+msgstr "Er"
+
+#: lib/Storage.php:345
+msgid "Isn't"
+msgstr "Er ikke"
+
+#: lib/Storage.php:355
+msgid "Less than"
+msgstr "Mindre enn"
+
+#: lib/Storage.php:356
+msgid "Less than or equal to"
+msgstr "Mindre enn eller lik som"
+
+#: config/fields.php.dist:59
+msgid "List-ID"
+msgstr "Liste-ID"
+
+#: templates/blacklist/blacklist.inc:22
+msgid "Mar_k message as deleted"
+msgstr "Marker melding som slettet"
+
+#: templates/rule/footer.inc:33
+msgid "Mark message as:"
+msgstr "Marker melding som:"
+
+#: lib/Storage.php:353
+msgid "Matches (with placeholders)"
+msgstr ""
+
+#: lib/Storage.php:486
+#, php-format
+msgid ""
+"Maximum number of blacklisted addresses exceeded (Total addresses: %s, "
+"Maximum addresses: %s).  Could not add new addresses to blacklist."
+msgstr ""
+
+#: lib/Storage.php:541
+#, php-format
+msgid ""
+"Maximum number of whitelisted addresses exceeded (Total addresses: %s, "
+"Maximum addresses: %s).  Could not add new addresses to whitelist."
+msgstr ""
+
+#: lib/Script/sieve.php:1646
+msgid "Missing address to redirect message to"
+msgstr ""
+
+#: lib/Script/sieve.php:1680
+msgid "Missing reason for reject"
+msgstr ""
+
+#: lib/Script/sieve.php:1850
+msgid "Missing reason in vacation."
+msgstr ""
+
+#: templates/filters/header.inc:23
+msgid "Move"
+msgstr "Flytt"
+
+#: filters.php:109 filters.php:215
+msgid "Move Rule Down"
+msgstr "Flytt regel ned"
+
+#: filters.php:110 filters.php:214
+msgid "Move Rule Up"
+msgstr "Flytt regel opp"
+
+#: templates/vacation/vacation.inc:46
+msgid "N_umber of days between vacation replies:"
+msgstr "Antall dager mellom svar på feriemelding"
+
+#: templates/filters/filter-none.inc:4 templates/filters/footer.inc:13
+#: lib/Storage.php:729
+msgid "New Rule"
+msgstr "Ny regel"
+
+#: lib/Ingo.php:204 lib/Ingo.php:206
+msgid "No '%s' element found in backend configuration."
+msgstr "Ingen '%s' elementer funnet i oppsettet"
+
+#: lib/Ingo.php:202
+msgid "No backend configured for this host"
+msgstr "Ingen backend konfigurert for denne hosten"
+
+#: lib/Ingo.php:179
+msgid "No backends configured in backends.php"
+msgstr ""
+
+#: templates/filters/filter-none.inc:4
+msgid "No filters. Click '%s' to create a new filter."
+msgstr "Ingen filter. Klikk '%s' for å lage ett nytt filter."
+
+#: lib/Script/sieve.php:1233 lib/Script/sieve.php:1333
+#: lib/Script/sieve.php:1515
+msgid "No headers specified"
+msgstr "Ingen header spesifisert"
+
+#: script.php:67
+msgid "No script generated."
+msgstr "Ingen script generert"
+
+#: lib/Script/sieve.php:1530
+msgid "No strings specified"
+msgstr "Ingen strenger spesifisert"
+
+#: lib/Storage.php:360
+msgid "Not equal to"
+msgstr "Ikke lik som"
+
+#: config/prefs.php.dist:19
+msgid "Options about script updating."
+msgstr ""
+
+#: config/prefs.php.dist:17
+msgid "Other Options"
+msgstr "Andre valg"
+
+#: templates/javascript/new_folder.js:6
+msgid "Please enter the name of the new folder:"
+msgstr "Vennligst skriv inn navnet p den nye mappen:"
+
+#: templates/vacation/vacation.inc:64
+msgid "R_eason"
+msgstr "Grunn"
+
+#: config/fields.php.dist:63
+#, fuzzy
+msgid "Received"
+msgstr "Mottatt:"
+
+#: lib/Storage.php:303
+#, fuzzy
+msgid "Redirect to"
+msgstr "Omadressr"
+
+#: lib/Storage.php:352
+msgid "Regular expression"
+msgstr "Vanlig utrykk"
+
+#: lib/Storage.php:318
+msgid "Reject with reason"
+msgstr "Ikke motta med grunn"
+
+#: config/fields.php.dist:55
+#, fuzzy
+msgid "Resent To"
+msgstr ""
+"#-#-#-#-#  compendium.po (Turba 1.2)  #-#-#-#-#\n"
+"Nullstill\n"
+"#-#-#-#-#  nb_NO.po (Kronolith 1.1)  #-#-#-#-#\n"
+"Tm"
+
+#: config/fields.php.dist:51
+#, fuzzy
+msgid "Resent-from"
+msgstr ""
+"#-#-#-#-#  compendium.po (Turba 1.2)  #-#-#-#-#\n"
+"Nullstill\n"
+"#-#-#-#-#  nb_NO.po (Kronolith 1.1)  #-#-#-#-#\n"
+"Tm"
+
+#: templates/rule/footer.inc:72
+msgid "Return to Filters List"
+msgstr "Tilbake til Filter liste"
+
+#: templates/blacklist/blacklist.inc:43 templates/vacation/vacation.inc:75
+#: templates/whitelist/whitelist.inc:28 templates/forward/forward.inc:38
+msgid "Return to Rules List"
+msgstr "Tilbake til Regel liste"
+
+#: templates/filters/header.inc:21
+msgid "Rule"
+msgstr "Regel"
+
+#: filters.php:45
+msgid "Rule Copied"
+msgstr "Regel kopiert"
+
+#: filters.php:39
+msgid "Rule Deleted"
+msgstr "Regel slettet"
+
+#: filters.php:59
+msgid "Rule Disabled"
+msgstr "Regel deaktivert"
+
+#: filters.php:64
+msgid "Rule Enabled"
+msgstr "Regel aktivert"
+
+#: templates/rule/header.inc:39
+msgid "Rule Name"
+msgstr "Regel navn"
+
+#: templates/blacklist/blacklist.inc:42 templates/vacation/vacation.inc:74
+#: templates/whitelist/whitelist.inc:27 templates/forward/forward.inc:37
+#: templates/rule/footer.inc:71
+msgid "Save"
+msgstr "Lagre"
+
+#: templates/filters/settings.inc:47
+msgid "Save Settings"
+msgstr "Lagre instillinger"
+
+#: templates/script/header.inc:3
+msgid "Script"
+msgstr "Script"
+
+#: config/prefs.php.dist:18
+msgid "Script Updating"
+msgstr "Script oppdatering"
+
+#: lib/Ingo.php:229
+msgid "Script not updated."
+msgstr "Script ikke oppdatert"
+
+#: lib/Ingo.php:136
+msgid "Script successfully activated."
+msgstr "Script aktivert"
+
+#: lib/Ingo.php:135
+#, fuzzy
+msgid "Script successfully deactivated."
+msgstr "Mappen \"%s\" ble slettet."
+
+#: templates/rule/footer.inc:38
+msgid "Seen"
+msgstr "Lest"
+
+#: rule.php:163
+msgid "Select a field"
+msgstr "Velg ett felt"
+
+#: lib/Ingo.php:50
+msgid "Select target folder"
+msgstr "velg mappe"
+
+#: rule.php:184
+msgid "Self-Defined Header"
+msgstr ""
+
+#: config/fields.php.dist:35
+msgid "Sender"
+msgstr "Sender"
+
+#: filters.php:78
+#, fuzzy
+msgid "Settings successfully updated."
+msgstr "Mappen \"%s\" ble opprettet."
+
+#: templates/script/activate.inc:24
+msgid "Show Active Script"
+msgstr ""
+
+#: templates/script/activate.inc:31
+msgid "Show Current Script"
+msgstr "Vis script som er i bruk"
+
+#: config/fields.php.dist:83
+msgid "Size"
+msgstr "Størrelse"
+
+#: templates/rule/footer.inc:61
+msgid "Stop checking if this rule matches?"
+msgstr "Stopp sjekk dersom denne regelen stemmer?"
+
+#: templates/vacation/vacation.inc:55
+msgid "Subje_ct of vacation message:"
+msgstr ""
+
+#: config/fields.php.dist:31
+msgid "Subject"
+msgstr "Emne"
+
+#: lib/Ingo.php:131
+msgid "The driver said: "
+msgstr ""
+
+#: lib/Ingo.php:130
+#, fuzzy
+msgid "There was an error activating the script."
+msgstr ""
+"#-#-#-#-#  compendium.po (Turba 1.2)  #-#-#-#-#\n"
+"Det oppstod en feil ved import av dataene.\n"
+"#-#-#-#-#  nb_NO.po (Kronolith 1.1)  #-#-#-#-#\n"
+"Det skjedde en feil ved import av data."
+
+#: lib/Ingo.php:129
+#, fuzzy
+msgid "There was an error deactivating the script."
+msgstr ""
+"#-#-#-#-#  compendium.po (Turba 1.2)  #-#-#-#-#\n"
+"Det oppstod en feil ved import av dataene.\n"
+"#-#-#-#-#  nb_NO.po (Kronolith 1.1)  #-#-#-#-#\n"
+"Det skjedde en feil ved import av data."
+
+#: config/fields.php.dist:27
+msgid "To"
+msgstr "Til"
+
+#: lib/Script.php:116
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Kan ikke laste detfinisjonen av %s."
+
+#: filters.php:138 templates/vacation/vacation.inc:7
+#: lib/Script/procmail.php:272
+#, fuzzy
+msgid "Vacation"
+msgstr "Plassering"
+
+#: vacation.php:66
+#, fuzzy
+msgid "Vacation Edit"
+msgstr "Plassering"
+
+#: lib/Script/sieve.php:352
+#, fuzzy
+msgid "Vacation Message"
+msgstr "Neste melding"
+
+#: vacation.php:16
+msgid "Vacation is not supported in the current filtering driver."
+msgstr ""
+
+#: templates/whitelist/whitelist.inc:18
+msgid "Wh_itelist addresses:"
+msgstr "Hvitlistete adresser:"
+
+#: filters.php:132 templates/whitelist/whitelist.inc:7
+msgid "Whitelist"
+msgstr "Hvitlistet"
+
+#: whitelist.php:55
+#, fuzzy
+msgid "Whitelist Edit"
+msgstr "Hvitlistet"
+
+#: whitelist.php:18
+msgid "Whitelist is not supported in the current filtering driver."
+msgstr ""
+
+#: lib/Script/procmail.php:240 lib/Script/sieve.php:299
+#, fuzzy
+msgid "Whitelisted Addresses"
+msgstr "Velg adressebker:"
+
+#: config/fields.php.dist:79
+#, fuzzy
+msgid "X-Priority"
+msgstr "Prioritet"
+
+#: config/fields.php.dist:67
+msgid "X-Spam-Level"
+msgstr ""
+
+#: config/fields.php.dist:71
+msgid "X-Spam-Score"
+msgstr ""
+
+#: config/fields.php.dist:75
+msgid "X-Spam-Status"
+msgstr ""
+
+#: vacation.php:30
+msgid ""
+"You must specify at least one email address for which the vacation messages "
+"should be activated."
+msgstr ""
+
+#: lib/Script/imap.php:281 lib/Script/imap.php:304 lib/Script/imap.php:318
+msgid "[No Subject]"
+msgstr "[Intet emne]"
+
+#: templates/forward/forward.inc:27
+msgid "_Address(es) to forward to:"
+msgstr ""
+
+#: templates/vacation/vacation.inc:28
+msgid "_Addresses to not send responses to:"
+msgstr ""
+
+#: lib/Ingo.php:274
+msgid "_Blacklist"
+msgstr "Svartelist avsender"
+
+#: templates/blacklist/blacklist.inc:20
+msgid "_Delete message completely"
+msgstr "Slett melding helt"
+
+#: templates/blacklist/blacklist.inc:33
+msgid "_Enter each address on a new line:"
+msgstr "Skriv inn hver adresse på en ny linje:"
+
+#: lib/Ingo.php:280
+#, fuzzy
+msgid "_Forward"
+msgstr "Videresend"
+
+#: templates/forward/forward.inc:19
+#, fuzzy
+msgid "_Keep a copy of messages in this account?"
+msgstr "Det er ingen meldinger i denne postboksen."
+
+#: templates/blacklist/blacklist.inc:24
+msgid "_Move message to folder:"
+msgstr "Flytt melding til mappe:"
+
+#: templates/vacation/vacation.inc:18
+#, fuzzy
+msgid "_My email addresses:"
+msgstr ""
+"#-#-#-#-#  compendium.po (Turba 1.2)  #-#-#-#-#\n"
+"E-postadresse\n"
+"#-#-#-#-#  nb_NO.po (Kronolith 1.1)  #-#-#-#-#\n"
+"E-post adresse"
+
+#: lib/Ingo.php:283
+#, fuzzy
+msgid "_Script"
+msgstr "Emne"
+
+#: lib/Ingo.php:277
+#, fuzzy
+msgid "_Vacation"
+msgstr "Plassering"
+
+#: lib/Ingo.php:271
+msgid "_Whitelist"
+msgstr "Hvitlist avsender"
+
+#: templates/rule/filter.inc:4
+#, fuzzy
+msgid "and"
+msgstr "Kalender"
+
+#: filters.php:162
+#, fuzzy
+msgid "field"
+msgstr "Felt"
+
+#: filters.php:162
+#, fuzzy
+msgid "match"
+msgstr "til"
+
+#: templates/rule/filter.inc:4
+msgid "or"
+msgstr "eller"
+
+#: lib/Script/procmail.php:126
+msgid "procmail script generated by Ingo"
+msgstr ""
+
+#: lib/Script/sieve.php:111
+msgid "sieve filter generated by Ingo"
+msgstr ""

@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!-- $Horde: dimp/config/conf.xml,v 1.30.2.6 2008-08-08 17:00:47 slusarz Exp $ -->
+<configuration>
+ <configheader>Custom Hooks</configheader>
+ <configsection name="hooks">
+  <configboolean name="mailboxarray" required="false" desc="Should we
+  run a custom function in which array elements can be added to use in the
+  template file, while processing the message lists? If so, make sure
+  you define _dimp_hook_mailboxarray() in config/hooks.php. The elements
+  will be available as template tags in the dimp/templates/imp/mailbox.html
+  template file.">false</configboolean>
+  <configboolean name="previewview" required="false" desc="Should we
+  run a custom function in which array elements can be modified, and javascript
+  code be provided to dynamically update page elements in the preview pane?
+  If so, make sure you define _dimp_hook_previewview() in config/hooks.php. The
+  sample documentation in that file can better explain what can be accomplished
+  with this hook.">false</configboolean>
+  <configboolean name="messageview" required="false" desc="Should we
+  run a custom function in which array elements can be added to use in the
+  template file, while displaying the message text? If so, make sure
+  you define _dimp_hook_messageview() in config/hooks.php. The elements
+  will be available as template tags in the dimp/templates/imp/message.html
+  template file.">false</configboolean>
+  <configboolean name="addressformatting" required="false" desc="Should we
+  run a custom function that is used to format email addresses in message
+  headers? If so, make sure you define _dimp_hook_addressformatting() in
+  config/hooks.php.">false</configboolean>
+  <configboolean name="msglist_format" required="false" desc="Should we use
+  a custom function to provide additional information/custom formatting of
+  messages in the mailbox message list? If so, make sure you define
+  _dimp_hook_msglist_format() in config/hooks.php.">false</configboolean>
+ </configsection>
+
+ <configlist name="css_files" required="false" desc="A list of additional CSS
+ files to load from the dimp/themes/ directory."/>
+
+ <configheader>JavaScript Settings</configheader>
+ <configsection name="js">
+  <configboolean name="debug" required="false" desc="Turn on javascript
+  debugging?  Will cause popup alert windows to appear on various errors.
+  This should be turned off for all production servers.">false</configboolean>
+ </configsection>
+
+ <configheader>ViewPort Settings</configheader>
+ <configsection name="viewport">
+  <configinteger name="buffer_pages" desc="The number of viewable pages to
+  send to the browser per server access when listing
+  messages.">5</configinteger>
+  <configinteger name="limit_factor" desc="When browsing through a message
+  list, if a user comes within this percentage of the end of the current
+  cached viewport, the browser will send a background request to the server
+  to retrieve the next slice of the message list.">35</configinteger>
+  <configinteger name="viewport_wait" desc="How long, in seconds, to wait
+  before displaying an informational message to users that the message list is
+  still being built. Set to 0 to disable messages.">12</configinteger>
+  <configboolean name="background_inbox" required="false" desc="On initial
+  login to the portal page, load the INBOX in the
+  background?">true</configboolean>
+ </configsection>
+
+ <configheader>Search Settings</configheader>
+ <configsection name="search">
+  <configboolean name="search_all" desc="Allow user to search all mailboxes at
+  a single time? Unless your mail server is optimized to perform searches,
+  enabling this can cause massive server load if a user has a large
+  mailbox.">false</configboolean>
+ </configsection>
+
+ <configsection name="menu" desc="Menu Settings">
+  <configheader>Menu Settings</configheader>
+  <configmultienum name="apps" desc="Select any applications that should be
+  linked in DIMP's menu">
+   <values>
+    <configspecial name="list-horde-apps" />
+   </values>
+  </configmultienum>
+ </configsection>
+</configuration>

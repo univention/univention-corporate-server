@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!-- $Horde: horde/admin/locale/fi_FI/help.xml,v 1.1.12.4 2008-03-18 17:48:10 jan Exp $ -->
+<help>
+  <entry id="admin-phpshell" md5="d5017591ef4a3f39d9787b581a0abba5" state="uptodate">
+    <title>Yll&#xE4;pidon ty&#xF6;kalut: PHP-komentotulkki</title>
+    <heading>Miten PHP-komentotulkkia k&#xE4;ytet&#xE4;&#xE4;n</heading>
+    <para>
+    PHP-komentotulkkissa voi suorittaa palvelimella mit&#xE4; tahansa
+    PHP-komentoja. N&#xE4;m&#xE4; komennot suoritetaan <code>eval()</code>
+    funktion sis&#xE4;ll&#xE4; ja nykyisen istunnon kontekstissa. T&#xE4;m&#xE4;
+    komentotulkki on ensisijaisesti tarkoitettu syntaksin
+    tarkistukseen ja yksinkertaisen koodin suoritukseen. Huomaa,
+    ett&#xE4; tulostaaksesi jotakin, niin sinun pit&#xE4;&#xE4; k&#xE4;ytt&#xE4;&#xE4; echo ja
+    print komentoja.
+    </para>
+</entry>
+  <entry id="admin-sqlshell" md5="5bd2fcb9c9678e62ca141566ab8f4c4f" state="uptodate">
+    <title>Yll&#xE4;pidon ty&#xF6;kalut: SQL-komentotulkki</title>
+    <heading>Miten SQL-komentotulkkia k&#xE4;ytet&#xE4;&#xE4;n</heading>
+    <para>
+    SQL-komentotulkissa voi suorittaa mit&#xE4; tahansa SQL-lausekkeita, jotka
+    suoritetaan tietokannassa. K&#xE4;ytett&#xE4;v&#xE4; tietokanta on
+    m&#xE4;&#xE4;ritelty $conf['sql'] ja sit&#xE4; k&#xE4;ytet&#xE4;&#xE4;n PEAR:DB-luokan
+    avulla.  Voit k&#xE4;ytt&#xE4;&#xE4; t&#xE4;t&#xE4; ty&#xF6;kaluja tehd&#xE4;ksesi kyselyj&#xE4;
+    tietokantaan, p&#xE4;ivitt&#xE4;&#xE4;ksesi tietoja tietokannassa,
+    poistaaksesi tietoja tietokannasta jne. tai hakea tietoja
+    tietokannasta. SQL-komennot l&#xE4;hetet&#xE4;&#xE4;n suoraan tietokannalle
+    ja paluuarvona tulee statuskoodi ja kyselyn palauttama
+    arvo.
+    </para>
+</entry>
+  <entry id="admin-cmdshell" md5="9dbbe593735eebbb34de991a57b98b9f" state="uptodate">
+    <title>Yll&#xE4;pidon ty&#xF6;kalut: Komentotulkki</title>
+    <heading>Miten komentotulkkia k&#xE4;ytet&#xE4;&#xE4;n</heading>
+    <para>
+    Komentotulkin avulla voit suorittaa komentoja www-palvelimella. Voit k&#xE4;ytt&#xE4;&#xE4; t&#xE4;t&#xE4; toimintoa kun haluat nopeasti suorittaa jonkun komennon palvelimella ja komentotulkki ei ole muuten k&#xE4;ytett&#xE4;viss&#xE4;.
+    </para>
+</entry>
+</help>

@@ -1,0 +1,87 @@
+/* Sort arrow styles, added for BC. */
+.sortup, .sortdown {
+    padding-left: 0;
+    padding-right: 10px;
+    background-position: center right;
+}
+
+/* RTL styles, added for BC. */
+.leftAlign {
+    text-align: right;
+}
+.rightAlign {
+    text-align: left;
+}
+.leftFloat {
+    float: right;
+}
+.rightFloat {
+    float: left;
+}
+
+.noteArea p select {
+    margin-right: 0;
+    margin-left: 5px;
+}
+.noteArea .button {
+    margin-right: 0;
+    margin-left: 1em;
+}
+
+body.rightPanel #page {
+    margin-right: 0;
+    margin-left: 10em;
+}
+body #sbarShow, body #sbarHide {
+    padding-left: 0;
+    padding-right: 18px;
+}
+body #sbarShow {
+    background-position: center right;
+}
+body #sbarHide {
+    background-position: center right;
+}
+
+#pageControls {
+    right: auto;
+    left: 0;
+    -moz-border-radius-bottomleft: 0;
+    -moz-border-radius-bottomright: 10px;
+    -webkit-border-bottom-left-radius: 0;
+    -webkit-border-bottom-right-radius: 10px;
+}
+#pageControls #notepadSearch {
+    background-position: 98% center;
+    padding: 2px 20px 2px 0;
+}
+
+#quicksearch input {
+    padding: 1px 20px 1px 0;
+}
+
+/* Tables. */
+table#notepad-list {
+    margin: 0 5px 8px 0;
+    border-left: 0;
+    border-right: 1px solid #ddd;
+}
+table#notepad-list th {
+    border-right: 0;
+    border-left: 1px solid #ccc;
+    text-align: right;
+}
+table#notepad-list td {
+    border-right: 0;
+    border-left: 1px solid #ddd;
+}
+table#notepad-list th.sortup {
+    padding-left: 0;
+    padding-right: 10px;
+    background-position: center right;
+}
+table#notepad-list th.sortdown {
+    padding-left: 0;
+    padding-right: 10px;
+    background-position: center right;
+}

@@ -1,0 +1,575 @@
+# Horde Romanian translation.
+# Copyright 2002-2009 The Horde Project (http://www.horde.org/)
+# Corneliu MUSAT <cmusat@keysys.ro>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: HORDE 2.1\n"
+"POT-Creation-Date: 2002-07-31 04:12-0700\n"
+"PO-Revision-Date: 2002-08-01 09:34+02:00\n"
+"Last-Translator: Corneliu MUSAT <cmusat@keysys.ro>\n"
+"Language-Team: ROMANIAN <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "%s Operatiuni de mentenanta - Confirmare"
+
+#, c-format
+msgid "%s is ready to perform the maintenance operations checked below."
+msgstr "%s este gata sa execute operatiunile de mentenanta selectate mai jos."
+
+#, c-format
+msgid "'%s' is not configured in the Horde Registry."
+msgstr "'%s' nu este configurat in Horde Registry"
+
+msgid "24 hours"
+msgstr "24 de ore"
+
+msgid "<b>A fatal error has occurred:</b>"
+msgstr "<b>A aparut o eroare fatala:</b>"
+
+msgid "AM/PM"
+msgstr "AM/PM"
+
+msgid "Add pair"
+msgstr "Adauga perechea"
+
+msgid "Address"
+msgstr "Adresa"
+
+msgid "Addressbook"
+msgstr "Agenda"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "An illegal value was specified."
+msgstr "S-a specificat o valoare incorecta."
+
+msgid "Available fields:"
+msgstr "Cimpuri disponibile:"
+
+msgid "Birthday"
+msgstr "Ziua de nastere"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Calendar"
+msgstr "Calendar"
+
+msgid "Cancel Problem Report"
+msgstr "Renunta la Raport"
+
+msgid "Cell Phone"
+msgstr "Telefon Mobil"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "Bifati operatiun(ea/ile) pe care doriti sa le faceti acum."
+
+msgid "Close Help Window"
+msgstr "Inchide fereastra de Help"
+
+msgid "Close Help"
+msgstr "Inchide Helpul"
+
+msgid "Close Window"
+msgstr "Inchide fereastra"
+
+msgid "Company"
+msgstr "Compania"
+
+#, c-format
+msgid "Contents of '%s'"
+msgstr "Continutul lui '%s' - de tradus"
+
+msgid "Contents of the RAR archive"
+msgstr "Continutul arhivei RAR"
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "Nu pot deschide modulul de Mentenanta %s"
+
+msgid "DD"
+msgstr "ZZ"
+
+msgid "Daily"
+msgstr "Zilnic"
+
+msgid "Database query failed."
+msgstr "Eroare in interogarea bazei de date."
+
+msgid "Default Identity"
+msgstr "Identitate Implicita"
+
+msgid "Describe the Problem"
+msgstr "Descrie problema"
+
+msgid "Details have been logged for the administrator."
+msgstr "Detalii inregistrate in LOG pentru administrator."
+
+msgid "Display Options"
+msgstr "Optiuni de Afisare"
+
+msgid "Do not directly access maintenance.php"
+msgstr "Te rog nu accesa direct maintenance.php"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Empty result."
+msgstr "Empty result. - de tradus"
+
+msgid "Error"
+msgstr "Eroare"
+
+msgid "Every 15 minutes"
+msgstr "O data la 15 minute"
+
+msgid "Every 30 seconds"
+msgstr "O data la 30 secunde"
+
+msgid "Every 5 minutes"
+msgstr "La fiecare 5 minute"
+
+msgid "Every Login"
+msgstr "La fiecare Conectare"
+
+msgid "Every half hour"
+msgstr "O data la 30 minute"
+
+msgid "Every minute"
+msgstr "In fiecare minut"
+
+msgid "Example values:"
+msgstr "Exemple de valori:"
+
+#, c-format
+msgid "Expected \"BEGIN\" in the line %d."
+msgstr "Ma asteptam la \"BEGIN\" pe linia %d"
+
+#, c-format
+msgid "Expected \"END:%s\" in line %d."
+msgstr "Ma asteptam la \"END:%s\" pe linia %d"
+
+msgid "Failed retrieving preferences."
+msgstr "Nu pot citi preferintele."
+
+msgid "Failed to connect to LDAP server."
+msgstr "Nu ma pot conecta la serverul de LDAP."
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Full Description:"
+msgstr "Descriere completa:"
+
+msgid "Help"
+msgstr "Help"
+
+msgid "Home Address"
+msgstr "Adresa de acasa"
+
+msgid "Home Phone"
+msgstr "Telefonul de acasa"
+
+msgid "Horde Login"
+msgstr "Conectare la Horde"
+
+msgid "Horde System"
+msgstr "Sistemul Horde"
+
+msgid "Horde Wireless"
+msgstr "Horde Wireless"
+
+msgid "Horde is not properly configured"
+msgstr "Horde nu este configurat corespunzator"
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "Import Error: "
+msgstr "Eroare de intrare:"
+
+msgid "Import"
+msgstr "Import"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Cimp importat: %s"
+
+msgid "Imported fields:"
+msgstr "Cimpuri importate:"
+
+msgid "Language"
+msgstr "Limba"
+
+msgid "List Help Topics"
+msgstr "Lista subiectelor din Help"
+
+msgid "Log in"
+msgstr "Conectare"
+
+msgid "Log out"
+msgstr "Deconectare"
+
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr ""
+"Problema cu Conectarea. Probabil numele de Utilizator sau/si Parola sint gresite."
+
+msgid "MM"
+msgstr "LL"
+
+msgid "Mail"
+msgstr "Corespondenta"
+
+msgid "Map Date and Time Fields"
+msgstr "Map Date and Time Fields - de tradus"
+
+msgid "Map Import Fields"
+msgstr "Map Import Fields - de tradus"
+
+msgid "Matching fields"
+msgstr "Cimpuri potrivite - de tradus"
+
+msgid "Memos"
+msgstr "Note"
+
+msgid "Message"
+msgstr "Mesaj"
+
+msgid "Monthly"
+msgstr "Lunar"
+
+msgid "My Summary"
+msgstr "Sumarul Meu"
+
+msgid "Name"
+msgstr "Nume"
+
+msgid "Never"
+msgstr "Niciodata"
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr "Nu sint configurate Preferintele LDAP"
+
+msgid "No configuration information specified for SQL Categories."
+msgstr "Nu este configurata Categoria SQL"
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr "Nu sint configurate Preferintele SQL"
+
+msgid "No configuration information specified for SQL authentication."
+msgstr "Nu este configurata autentificarea SQL"
+
+msgid "No preferences are available."
+msgstr "Nu exista preferinte disponibile."
+
+msgid "Notes"
+msgstr "Note"
+
+#, c-format
+msgid "Notification listener %s not found."
+msgstr "Notification listener %s not found. - de tradus"
+
+msgid "Options"
+msgstr "Optiuni"
+
+msgid "Other Information"
+msgstr "Alte informatii"
+
+msgid "Password"
+msgstr "Parola"
+
+msgid "Perform Maintenance Operations"
+msgstr "Executa Operatiunile de Mentenanta"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Please provide a summary of the problem."
+msgstr "Te rog specifica un sumar al problemei."
+
+msgid "Please provide your username and password"
+msgstr "Te rog introdu un nume de utilizator si o parola"
+
+msgid "Problem Description"
+msgstr "Descrierea problemei"
+
+msgid "Refresh Summary View:"
+msgstr "Reimprospateaza Sumarul - de tradus"
+
+msgid "Remove pair"
+msgstr "Sterge perechea"
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr "'basedn' nespecificat in configuratia de autentificare."
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr "'basedn' nespecificat in configuratia de preferinte."
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr "'database' nespecificat in configuratia de autentificare."
+
+msgid "Required 'database' not specified in categories configuration."
+msgstr "'database' nespecificat in configuratia de categorii."
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr "'database' nespecificat in configuratia de preferinte."
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr "'hostspec' nespecificat in configuratia de autentificare."
+
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr "'hostspec' nespecificat in configuratia de categorii."
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr "'hostspec' nespecificat in configuratia de preferinte."
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr "'password' nespecificat in configuratia de autentificare."
+
+msgid "Required 'password' not specified in categories configuration."
+msgstr "'password' nespecificat in configuratia de categorii."
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr "'password' nespecificat in configuratia de preferinte."
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr "'username' nespecificat in configuratia de autentificare."
+
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr "'phptype' nespecificat in configuratia de categorii."
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr "'phptype' nespecificat in configuratia de preferinte."
+
+msgid "Required 'table' not specified in authentication configuration."
+msgstr "'table' nespecificat in configuratia de autentificare."
+
+msgid "Required 'table' not specified in categories configuration."
+msgstr "'table' nespecificat in configuratia de categorii."
+
+msgid "Required 'table' not specified in preferences configuration."
+msgstr "'table' nespecificat in configuratia de preferinte."
+
+msgid "Required 'tableRelations' not specified in categories configuration."
+msgstr "'tableRelations' nespecificat in configuratia de categorii."
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr "'uid' nespecificat in configuratia de autentificare."
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr "'uid' nespecificat in configuratia de preferinte."
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr "'username' nespecificat in configuratia de autentificare."
+
+msgid "Required 'username' not specified in categories configuration."
+msgstr "'username' nespecificat in configuratia de categorii."
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr "'username' nespecificat in configuratia de preferinte."
+
+msgid "Return to Options"
+msgstr "Inapoi la optiuni"
+
+msgid "Role"
+msgstr "Role - de tradus"
+
+msgid "Save Options"
+msgstr "Salvaza Optiuni"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr ""
+"Alege caracterele de care ai nevoie din casutele de mai jos. Vei putea apoi"
+" sa le copiezi in zona de text."
+
+msgid "Select the date delimiter:"
+msgstr "Delimitator de data:"
+
+msgid "Select the date format:"
+msgstr "Formatul de afisare a datei:"
+
+msgid "Select the time format:"
+msgstr "Formatul de afisare a orei:"
+
+msgid "Select two matching fields."
+msgstr "Selecteaza doua cimpuri potrivite."
+
+msgid "Select your preferred language:"
+msgstr "Selecteaza limba preferata:"
+
+msgid "Send Problem Report"
+msgstr "Trimite Raport de Eroare"
+
+msgid "Set your page refreshing, and other display options."
+msgstr "Alege timpul de reimprospatare a paginii si alte optiuni de afisare."
+
+msgid "Set your preferred display language."
+msgstr "Selecteaza limba de afisare preferata."
+
+msgid "Short Summary:"
+msgstr "Sumar scurt:"
+
+msgid "Skip Maintenance"
+msgstr "Sari peste Mentenanta"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Unele fisiere de configurare lipsesc din Horde."
+
+msgid "Special Character Input"
+msgstr "Caractere Speciale ..."
+
+msgid "Success"
+msgstr "Succes"
+
+msgid "Tasks"
+msgstr "Sarcini"
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+"Registryul determina cum sint interconectate diferitele aplicatii Horde."
+"Ar trebui sa specifici toate aplicatiile instalate aici."
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+"Acest fisier contine driverele MIME globale pentru aplicatiile Horde permitind"
+"folosirea de programe cum sint encript sau mswordview pentru a randa diferitele"
+"elemente in pagina HTML pentru a le putea vizualiza in browser."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings."
+msgstr ""
+"Acest fisier controleaza Stylesheetul folosit pentru selectarea culorilor"
+"si fonturilor pentru aplicatiile Horde care nu au definite stiluri proprii."
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+"Acest fisier contine extensiile logice pentru tipurile MIME, dind posibilitatea"
+"ca Horde sa recunoasca cum sa trateze anumite elemente cum sint atasamente Email"
+"sau checkouturi CVS."
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+"Acesta este principalul fisier de conficurare Horde. Contine cai si elemente de baza"
+"care sint valabie pentru toate aplicatiile din pachetul Horde."
+
+msgid "This number must be at least one."
+msgstr "Valoarea minima este 1"
+
+msgid "This value must be a number."
+msgstr "Aceasta valoare trebuie sa fie numerica."
+
+msgid "Title"
+msgstr "Titlu"
+
+msgid "Type mismatch."
+msgstr "Tip gresit."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to connect to SQL server."
+msgstr "Nu ma pot conecta la serverul SQL."
+
+msgid "Unable to register preferences in session."
+msgstr "Nu pot inregistra preferintele in sesiune - de tradus"
+
+msgid "Unable to translate this Word document"
+msgstr "Nu pot traduce acest document Word - de tradus"
+
+msgid "Undo Changes"
+msgstr "Anuleaza Schimbarile"
+
+msgid "Unexpected end of file."
+msgstr "Sfirsit de fisier neasteptat."
+
+msgid "Use Default Value"
+msgstr "Utilizeaza Valori Implicite"
+
+msgid "User Options"
+msgstr "Optiuni Utilizator"
+
+msgid "Username"
+msgstr "Utilizator"
+
+msgid "Warning!"
+msgstr "Atentie!"
+
+msgid "Warning"
+msgstr "Atentie"
+
+msgid "Weekly"
+msgstr "Saptaminal"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Bine ai venit in sistemul %s"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "Bine ai venit, %s"
+
+msgid "Work Address"
+msgstr "Adresa la Serviciu"
+
+msgid "Work Phone"
+msgstr "Telefon la Serviciu"
+
+msgid "YY"
+msgstr "AA"
+
+msgid "Yearly"
+msgstr "Anual"
+
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "Ai fost deconectat.<br />Multumesc ca folosesti sistemul."
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Trebuie sa descrii problema inainte de a trimite raportul."
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "Sesiunea ta de %s a expirat. Te rog sa faci Log In din nou."
+
+msgid "Your Email Address:"
+msgstr "Adresa ta de Email:"
+
+msgid "Your Information"
+msgstr "Informatii despre tine"
+
+msgid "Your Name:"
+msgstr "Numele tau:"
+
+msgid "Your options have been updated."
+msgstr "Optiunile au fost salvate."
+
+msgid "[Problem Report]"
+msgstr "[Raport Problema]"
+
+#, c-format
+msgid "[line %s of %s]"
+msgstr "[linia %s din %s]"
+
+msgid "vCard"
+msgstr "vCard - de tradus"

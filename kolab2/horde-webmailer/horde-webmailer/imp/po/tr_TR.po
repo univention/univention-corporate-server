@@ -1,0 +1,5805 @@
+# Turkish translations for Ýmp package
+# Posta paketi için Türkçe çeviriler.
+# Copyright 2008-2009 The Horde Project
+# This file is distributed under the same license as the Ýmp package.
+# horde-tr at metu.edu.tr, 2005-2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Ýmp H3 (4.2-RC3)\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-04-15 12:57+0300\n"
+"PO-Revision-Date: 2008-04-15 12:57+0300\n"
+"Last-Translator: Altay Þeref Özaygen\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-9\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/Compose.php:1775
+msgid "      Cc: "
+msgstr "   Kopya: "
+
+#: lib/Compose.php:1772
+msgid "      To: "
+msgstr "   Kime: "
+
+#: lib/Compose.php:1760
+msgid "    Date: "
+msgstr "  Tarih: "
+
+#: lib/Compose.php:1763
+msgid "    From: "
+msgstr " Kimden:  "
+
+#: folders.php:358 mailbox.php:358
+#, php-format
+msgid " (Accesskey %s)"
+msgstr "(Eriþim Anahtarý %s)"
+
+#: lib/Compose.php:1769
+msgid " Subject: "
+msgstr "   Konu: "
+
+#: mailbox.php:578
+msgid "#"
+msgstr "#"
+
+#: lib/IMP.php:1008
+#, php-format
+msgid "%.0f MB"
+msgstr "%.0f MB"
+
+#: lib/IMP.php:999
+#, php-format
+msgid "%.0f%% of %.0f MB"
+msgstr "%.0f%%/%.0f MB"
+
+#: folders.php:299 folders.php:310 lib/Message.php:858
+#, php-format
+msgid "%.2fMB"
+msgstr "%.2fMB"
+
+#: thread.php:155
+#, php-format
+msgid "%d Messages"
+msgstr "%d Ýletiler"
+
+#: lib/Spam.php:222
+#, php-format
+msgid "%d messages have been deleted."
+msgstr "%d ileti silindi."
+
+#: lib/Spam.php:201
+#, php-format
+msgid ""
+"%d messages have been reported as not spam to your system administrator."
+msgstr ""
+"%d iletinin istenmeyen ileti olmadýðý sistem yöneticisine rapor edildi."
+
+#: lib/Spam.php:181
+#, php-format
+msgid "%d messages have been reported as not spam."
+msgstr "%d iletinin istenmeyen ileti olmadýðý rapor edildi."
+
+#: lib/Spam.php:193
+#, php-format
+msgid "%d messages have been reported as spam to your system administrator."
+msgstr "%d iletinin istenmeyen ileti olduðu sistem yöneticisine rapor edildi."
+
+#: lib/Spam.php:173
+#, php-format
+msgid "%d messages have been reported as spam."
+msgstr "%d iletinin istenmeyen ileti olduðu rapor edildi."
+
+#: mailbox.php:266
+#, php-format
+msgid "%d to %d of %d Messages"
+msgstr "%d - %d / %d ileti"
+
+#: lib/UI/Mailbox.php:134
+#, php-format
+msgid "%s KB"
+msgstr "%s KB"
+
+#: lib/UI/Mailbox.php:132
+#, php-format
+msgid "%s MB"
+msgstr "%s MB"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:39
+#, php-format
+msgid "%s already exists. Your %s folder was not renamed."
+msgstr "%s zaten var. Dizininiz %s yeniden adlandýrýlamadý."
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:37
+#, php-format
+msgid "%s folder being renamed at the start of the month."
+msgstr "%s dizin ay baþýnda yeniden adlandýrýldý."
+
+#: lib/MIME/Viewer/itip.php:262
+#, php-format
+msgid "%s has accepted."
+msgstr "%s onaylandý"
+
+#: lib/MIME/Viewer/itip.php:666
+#, php-format
+msgid "%s has cancelled \"%s\"."
+msgstr "%s iptal edildi \"%s\"."
+
+#: lib/MIME/Viewer/itip.php:268
+#, php-format
+msgid "%s has declined."
+msgstr "%s reddedildi."
+
+#: lib/MIME/Viewer/itip.php:511
+#, php-format
+msgid "%s has replied to a free/busy request."
+msgstr "%s serbest/meþgul isteði yanýtladý."
+
+#: lib/MIME/Viewer/itip.php:658
+#, php-format
+msgid "%s has replied to the invitation to \"%s\"."
+msgstr "%s \"%s\" davetini yanýtladý."
+
+#: lib/MIME/Viewer/itip.php:502
+#, php-format
+msgid "%s has sent you free/busy information."
+msgstr "%s size serbest/meþgul bilgi gönderdi. "
+
+#: lib/MIME/Viewer/itip.php:274
+#, php-format
+msgid "%s has tentatively accepted."
+msgstr "%s geçici olarak onaylandi"
+
+#: lib/MIME/Viewer/itip.php:507
+#, php-format
+msgid "%s requests your free/busy information."
+msgstr "%s serbest/meþgul bilginizi istedi."
+
+#: lib/MIME/Viewer/itip.php:625
+#, php-format
+msgid "%s requests your presence at \"%s\"."
+msgstr "%s \"%s\"de bulunmanýzý istedi."
+
+#: lib/Message.php:466
+#, php-format
+msgid "%s was successfully added to \"%s\"."
+msgstr "%s \"%s\"e baþarýyla eklendi."
+
+#: lib/MIME/Viewer/itip.php:638
+#, php-format
+msgid "%s wishes to ammend \"%s\"."
+msgstr "%s \"%s\" deðiþimini istemektedir."
+
+#: lib/MIME/Viewer/itip.php:602 lib/MIME/Viewer/itip.php:626
+#: lib/MIME/Viewer/itip.php:810
+#, php-format
+msgid "%s wishes to make you aware of \"%s\"."
+msgstr "%s   \"%s\" konusunda haberdar olmanýzý istemektedir."
+
+#: lib/MIME/Viewer/itip.php:645
+#, php-format
+msgid "%s wishes to receive the latest information about \"%s\"."
+msgstr "%s \"%s\" hakkýnda son haberleri almanýzý istemektedir."
+
+#: compose.php:1151
+#, php-format
+msgid "%s%% of allowed size"
+msgstr "izin verilen boyut %s%%"
+
+#: message.php:282 message.php:287
+#, php-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#: message.php:506
+#, php-format
+msgid "%s: %s (%d&nbsp;of&nbsp;%d)"
+msgstr "%s: %s (%d&nbsp;/&nbsp;%d)"
+
+#: lib/Compose.php:1704
+#, php-format
+msgid "%u Forwarded Messages"
+msgstr "%u Yönlendirilen Ýleti"
+
+#: rss.php:94
+#, php-format
+msgid "%u of %u messages in %s unread."
+msgstr "%u / %u ileti (%s içerisinde) okunmayanlar."
+
+#: stationery.php:128
+msgid "(HTML)"
+msgstr "(HTML)"
+
+#: stationery.php:128
+msgid "(Plain Text)"
+msgstr "(Düz Metin)"
+
+#: templates/contacts/contacts.html:49
+msgid "* Add these by clicking OK *"
+msgstr "* Evete basarak ekleyin *"
+
+#: templates/contacts/contacts.html:33
+msgid "* Please select address(es) *"
+msgstr "* Lütfen adres seçin *"
+
+#: config/prefs.php.dist:1037
+msgid "100 characters"
+msgstr "100 karakter"
+
+#: config/prefs.php.dist:1040
+msgid "1000 characters"
+msgstr "1000 karakter"
+
+#: config/prefs.php.dist:1038
+msgid "250 characters"
+msgstr "250 karakter"
+
+#: config/prefs.php.dist:1039
+msgid "500 characters"
+msgstr "500 karakter"
+
+#: lib/MIME/Viewer/notification.php:49
+msgid ""
+"A message you have sent has resulted in a return notification from the "
+"recipient."
+msgstr "Gönderdiðiniz ileti alýcýdan bir doðrulamanýn gelmesi ile sonuçlandý."
+
+#: templates/javascript_defs.php:73
+msgid ""
+"A popup window could not be opened. Perhaps you have set your browser to "
+"block popup windows?"
+msgstr ""
+"Pop-up pencere açýlamadý. Tarayýcýnýzýn pop-up pencere "
+"açýlmasýnýengellemediðinden emin olunuz."
+
+#: templates/search/search.html:61
+msgid "AND"
+msgstr "VE"
+
+#: config/prefs.php.dist:567
+msgid "About this editor"
+msgstr "Bu düzenleyici hakkýnda"
+
+#: config/prefs.php.dist:905
+msgid "Above the message text"
+msgstr "Ýleti metninin üstünde"
+
+#: lib/MIME/Viewer/itip.php:628
+msgid "Accept and add to my calendar"
+msgstr "Takvimime eklemeyi kabul ediyorum"
+
+#: lib/MIME/Viewer/itip.php:631
+msgid "Accept request"
+msgstr "Ýsteði onayla"
+
+#: lib/MIME/Viewer/itip.php:925
+msgid "Accepted"
+msgstr "Onaylandý"
+
+#: lib/MIME/Viewer/itip.php:263
+msgid "Accepted: "
+msgstr "Onaylandý:"
+
+#: templates/fetchmail/fetchmailprefs.html:43
+msgid "Account's name:"
+msgstr "Hesap Ýsmi:"
+
+#: lib/MIME/Viewer/itip.php:545 lib/MIME/Viewer/itip.php:772
+#: lib/MIME/Viewer/itip.php:773 lib/MIME/Viewer/itip.php:904
+msgid "Actions"
+msgstr "Eylemler"
+
+#: lib/MIME/Headers.php:208 lib/MIME/Headers.php:209
+#, php-format
+msgid "Add %s to my Address Book"
+msgstr "Adres defterine %s ekle"
+
+#: templates/prefs/sourceselect.inc:300
+msgid "Add source"
+msgstr "Kaynak Ekle"
+
+#: lib/MIME/Viewer/itip.php:604
+msgid "Add this to my calendar"
+msgstr "Bunu takvimime Ekle"
+
+#: lib/MIME/Viewer/itip.php:812
+msgid "Add this to my tasklist"
+msgstr "Bunu yapýlacaklar listesine ekle"
+
+#: lib/MIME/Viewer/itip.php:629
+msgid "Add to my calendar"
+msgstr "Bunu takvimime ekle"
+
+#: lib/Compose.php:2716
+#, php-format
+msgid "Added \"%s\" as an attachment."
+msgstr "\"%s\" ek olarak eklendi."
+
+#: config/prefs.php.dist:882
+msgid ""
+"Additional headers to display when viewing: <em>(optional, enter each header "
+"on a new line)</em>"
+msgstr ""
+"Görüntülenecek ilave baþlýklar: <em> (seçimli, herbir baþlýðý yeni bir "
+"satýrda girin.)</em>"
+
+#: lib/MIME/Viewer/notification.php:60
+#, php-format
+msgid "Additional information can be viewed %s."
+msgstr "Ýlave bilgi %s görülebilir."
+
+#: lib/MIME/Viewer/notification.php:60
+msgid "Additional information details"
+msgstr "Ýlave bilgi ayrýntýlarý"
+
+#: lib/MIME/Viewer/status.php:92
+msgid "Additional message details"
+msgstr "Ýlave ileti ayrýntýlarý"
+
+#: lib/MIME/Viewer/status.php:91
+#, php-format
+msgid "Additional message details can be viewed %s."
+msgstr "Ýlave ileti ayrýntýlarý %s görülebilir."
+
+#: lib/MIME/Viewer/status.php:77
+msgid "Additional message error details"
+msgstr "Ýlave ileti hata ayrýntýlarý"
+
+#: lib/MIME/Viewer/status.php:76
+#, php-format
+msgid "Additional message error details can be viewed %s."
+msgstr "Ýlave ileti hata ayrýntýlarý %s görüntülenebilir."
+
+#: contacts.php:119 compose.php:783 compose.php:1019
+#: templates/contacts/contacts.html:8
+msgid "Address Book"
+msgstr "Adres Defteri"
+
+#: config/prefs.php.dist:135
+msgid "Address Books"
+msgstr "Adres Defterleri"
+
+#: templates/prefs/sourceselect.inc:345
+msgid "Address book to add addresses to"
+msgstr "Adreslerin ekleneceði adres defteri"
+
+#: config/prefs.php.dist:190
+msgid ""
+"Addresses to BCC all messages: <em>(optional, enter each address on a new "
+"line)</em>"
+msgstr ""
+"Bütün iletilerin Gizli K.K. gönderileceði adresler: <em>(seçimli, herbir "
+"adresi yeni satýrda girin.)</em>"
+
+#: config/prefs.php.dist:182
+msgid ""
+"Addresses to explicitly tie to this identity: <em>(optional, enter each "
+"address on a new line)</em>"
+msgstr ""
+"Adresler açýkca bu kimliðe baðlanacak: <em>(seçimli,herbir adresi yeni "
+"satýrda girin.)</em>"
+
+#: lib/IMAP/ACL/rfc2086.php:57 lib/IMAP/ACL/rfc4314.php:59
+msgid "Administer"
+msgstr "Yönet"
+
+#: templates/mailbox/navbar.html:10
+msgid "All"
+msgstr "Tümü"
+
+#: lib/Maintenance/Task/purge_sentmail.php:82
+#, php-format
+msgid ""
+"All messages in the folder(s) \"%s\" older than %s days will be permanently "
+"deleted."
+msgstr ""
+"\"%s\" dizinindeki %s günden daha eski olan bütün iletiler kalýcý olarak "
+"silinecektir."
+
+#: templates/javascript_defs.php:63
+msgid ""
+"All messages in the following folder(s) will be downloaded into one MBOX "
+"file:"
+msgstr "Dizin(ler)deki bütün iletiler bir tane MBOX dosyasina indirilecektir:"
+
+#: lib/Maintenance/Task/purge_trash.php:78
+#: lib/Maintenance/Task/purge_spam.php:79
+#, php-format
+msgid ""
+"All messages in your \"%s\" folder older than %s days will be permanently "
+"deleted."
+msgstr ""
+"\"%s\" dizinindeki %s günden daha eski olan bütün iletiler kalýcý olarak "
+"silinecektir."
+
+#: lib/Maintenance/Task/delete_attachments_monthly.php:59
+#, php-format
+msgid "All old linked attachments more than %s months old will be deleted."
+msgstr "%s aydan daha eski olan bütün eski baðlý ekler silinecektir. "
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:72
+#, php-format
+msgid "All old sent-mail folders more than %s months old will be deleted."
+msgstr "%s aydan daha eski olan bütün gönderilmiþ posta dizinleri silinecek."
+
+#: acl.php:88 acl.php:129
+#, php-format
+msgid "All rights on folder \"%s\" successfully removed for user \"%s\"."
+msgstr ""
+"\"%s\" dizin üzerindeki \"%s\" kullanýcýsýnýn bütün haklarý baþarýyla "
+"kaldýrýlmýþtýr."
+
+#: lib/api.php:95
+msgid "Allow Folder Creation?"
+msgstr "Dizin Yaratýlmasýna Ýzin Verilsin mi?"
+
+#: filterprefs.php:110
+msgid "Allow filter rules to be applied in any mailbox?"
+msgstr "Süzgeç kurallarý herhangi bir posta kutusuna uygulansýn mý? "
+
+#: lib/MIME/Viewer/alternative.php:79
+msgid "Alternative parts for this section:"
+msgstr "Bu bölüm için öteki ekler:"
+
+#: config/prefs.php.dist:760
+msgid "Always"
+msgstr "Her zaman"
+
+#: config/prefs.php.dist:745
+msgid "Always save attachments"
+msgstr "Her zaman ekleri sakla"
+
+#: lib/Message.php:578
+msgid ""
+"An error occured while attempting to strip the attachment. The IMAP server "
+"said: "
+msgstr "Ek çýkartýlmaya çalýþýlýrken bir hata meydana geldi. IMAP sunucu: "
+
+#: lib/MIME/Viewer/images.php:153
+#, php-format
+msgid "An image named %s is attached to this message. A thumbnail is below."
+msgstr "%s adýnda görüntü dosyasý bu iletiye ekli. Pul boyutu aþaðýdadýr."
+
+#: lib/Message.php:440
+msgid "An unknown error occured while creating the new note."
+msgstr "Yeni not yaratýlýrken bilinmeyen bir hata meydana geldi."
+
+#: lib/Message.php:439
+msgid "An unknown error occured while creating the new task."
+msgstr "Yeni görev yaratýlýrken bilinmeyen bir hata meydana geldi."
+
+#: lib/MIME/Viewer/itip.php:798
+msgid "An unknown person"
+msgstr "Bilinmeyen bir kiþi"
+
+#: message.php:478 mailbox.php:769 templates/mailbox/navbar.html:18
+#: templates/mailbox/navbar.html:34 templates/message/navbar_navigate.html:12
+msgid "Answered"
+msgstr "Cevaplanmýþ"
+
+#: search.php:329
+msgid "Answered messages"
+msgstr "Cevaplanmýþ Ýletiler"
+
+#: mailbox.php:420
+msgid "Apply Filters"
+msgstr "Süzgeçleri Uygula"
+
+#: mailbox.php:420
+#, php-format
+msgid "Apply Filters to %s"
+msgstr "%s için Süzgeçleri Uygula"
+
+#: filterprefs.php:107
+msgid "Apply filter rules upon logging on?"
+msgstr "Günlük kayýtlar sýrasýnda süzgeç kurallarý uygulansýn mý?"
+
+#: filterprefs.php:108
+msgid "Apply filter rules whenever Inbox is displayed?"
+msgstr "Süzgeç kurallarý GELEN KUTUSU her görüntülendiðinde uygunlansýn mý?"
+
+#: filterprefs.php:109
+msgid "Apply filter rules whenever sidebar is refreshed?"
+msgstr "Süzgeç kurallarý yankolon her yenilendiðinde uygunlansýn mý?"
+
+#: mailbox.php:429
+msgid "Are you sure you want to delete this Virtual Folder Definition?"
+msgstr "Bu Sanal Dizin Tanýmýný silmek istediðinize emin misiniz?"
+
+#: smime.php:314 pgp.php:407
+msgid "Are you sure you want to delete this public key?"
+msgstr "Bu açýk anahtarý silmek istediðinize emin misiniz?"
+
+#: smime.php:340 pgp.php:437
+msgid ""
+"Are you sure you want to delete your keypair? (This is NOT recommended!)"
+msgstr ""
+"Anahtar ikilinizi silmek istediðinizden emin misiniz? (Tavsiye "
+"EDÝLMEMEKTEDÝR!)"
+
+#: templates/javascript_defs.php:35
+msgid "Are you sure you want to do this?"
+msgstr "Bunu yapmak istediðinizden emin misiniz?"
+
+#: message.php:684
+msgid "Are you sure you wish to PERMANENTLY delete all attachments?"
+msgstr "Butün ekleri KALICI olarak silmek istediðinizden emin misiniz?"
+
+#: message.php:554 templates/javascript_defs.php:47
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "Bu iletileri KALICI olarak silmek istediðizden emin misiniz?"
+
+#: lib/MIME/Contents.php:273
+msgid "Are you sure you wish to PERMANENTLY delete this attachment?"
+msgstr "Bu eki KALICI olarak silmek istediðinizden emin misiniz?"
+
+#: mailbox.php:425
+msgid "Are you sure you wish to delete all mail in this folder?"
+msgstr "Bu dizindeki tüm iletileri silmek istediðinizden emin misiniz?"
+
+#: lib/IMP.php:835
+msgid "Are you sure you wish to empty your spam folder?"
+msgstr "Spam kutunuzu boþaltmak istediðinizden emin misiniz?"
+
+#: lib/IMP.php:827
+msgid "Are you sure you wish to empty your trash folder?"
+msgstr "Çöp kutunuzu boþaltmak istediðinizden emin misiniz?"
+
+#: mailbox.php:509
+msgid "Are you sure you wish to permanently delete these messages?"
+msgstr "Bu iletileri kalýcý olarak silmek istediðinizden emin misiniz?"
+
+#: templates/javascript_defs.php:81
+msgid "Are you sure you wish to report this message as innocent?"
+msgstr "Bu iletiyi temiz olarak rapor etmek istediðinizden emin misiniz?"
+
+#: templates/javascript_defs.php:80
+msgid "Are you sure you wish to report this message as spam?"
+msgstr "Bu iletiyi istenmeyen ileti olarak bildirmek istiyor musunuz?"
+
+#: config/prefs.php.dist:1133
+msgid "Arrival Time"
+msgstr "Geliþ Zamaný"
+
+#: config/prefs.php.dist:1148
+msgid "Ascending"
+msgstr "Artan"
+
+#: config/prefs.php.dist:759
+msgid "Ask"
+msgstr "Sor"
+
+#: compose.php:1089
+msgid "Attach Files"
+msgstr "Dosya Ekle"
+
+#: compose.php:1082
+msgid "Attach a copy of your PGP public key to your message?"
+msgstr "PGP açýk anahtarýnýz iletinize eklensin mi?"
+
+#: lib/MIME/Viewer/tnef.php:110
+msgid "Attached File:"
+msgstr "Dosya Ekle:"
+
+#: lib/Compose.php:1808 lib/Compose.php:1914
+#, php-format
+msgid ""
+"Attached file \"%s\" exceeds the attachment size limits. File NOT attached."
+msgstr ""
+"Eklenmek istenen dosya \"%s\" ek boyut limitini aþýyor.Dosya EKLENMEYECEK "
+
+#: lib/MIME/Viewer/itip.php:387
+msgid "Attached is a reply to a calendar request you sent."
+msgstr "Ekteki sizin takvim isteðinize yanýttýr."
+
+#: templates/javascript_defs.php:42 templates/compose/compose.html:266
+#: templates/compose/compose.html:325
+msgid "Attachment"
+msgstr "Ek Olarak"
+
+#: attachment.php:72
+#, php-format
+msgid "Attachment %s deleted."
+msgstr "%s eki silindi."
+
+#: lib/Compose.php:2431
+msgid "Attachment Information"
+msgstr "Ek Bilgisini"
+
+#: lib/Compose.php:770
+msgid "Attachment stripped: Original attachment type"
+msgstr "Ek bölündü: Özgün ek türü"
+
+#: compose.php:1031 lib/Compose.php:2399 templates/compose/compose.html:242
+msgid "Attachments"
+msgstr "Ekler"
+
+#: lib/MIME/Viewer/itip.php:724 lib/MIME/Viewer/itip.php:853
+msgid "Attendees"
+msgstr "Katýlýmcýlar"
+
+#: lib/MIME/Viewer/notification.php:52
+msgid "Attention"
+msgstr "Uyarý"
+
+#: lib/Auth/imp.php:33
+msgid "Auth_imp: Required IMAP extension not found."
+msgstr "Auth_imp: Gerekli IMAP uzantýsý bulunamadý."
+
+#: config/hooks.php.dist:510
+msgid "Authentication failed."
+msgstr "Doðrulama baþarýsýz oldu."
+
+#: config/prefs.php.dist:816
+msgid ""
+"Automatically show images in HTML messages when the sender is in my address "
+"book?"
+msgstr ""
+"Gönderen adres defterimde ise görüntüler otomatik olarak HTML iletilerinin "
+"içinde gösterilsin mi?"
+
+#: templates/prefs/sourceselect.inc:293 templates/prefs/sourceselect.inc:295
+msgid "Available Address books:"
+msgstr "Mevcut Adres Defteri:"
+
+#: lib/MIME/Viewer/itip.php:757 lib/MIME/Viewer/itip.php:889
+msgid "Awaiting Response"
+msgstr "Yanýt Bekliyor"
+
+#: thread.php:137 message.php:524
+#, php-format
+msgid "Bac_k to %s"
+msgstr "_Geri dön %s"
+
+#: thread.php:137 message.php:524
+#, php-format
+msgid "Back to %s"
+msgstr "Geri dön %s"
+
+#: thread.php:134
+msgid "Back to Multiple Message View Index"
+msgstr "Toplu Ýleti Gösteri Ýndexine Geri Dön"
+
+#: thread.php:132
+msgid "Back to Thread Display"
+msgstr "Ýzlek Görüntüsüne Geri Dön"
+
+#: config/prefs.php.dist:533
+msgid "Background Color"
+msgstr "Arkaplan Rengi"
+
+#: lib/IMAP/Client.php:478
+#, php-format
+msgid "Bad login name or password."
+msgstr "Yanlýþ kullanýcý ismi veya þifre."
+
+#: lib/IMAP/Client.php:195
+#, php-format
+msgid "Bad or malformed request. Server Responded: %s"
+msgstr "Yanlýþ veya kötü yapýlandýrýlmýþ istek. Sunucu Cevabý: %s"
+
+#: lib/IMAP/Client.php:482
+#, php-format
+msgid "Bad request: %s"
+msgstr "Yanlýþ istek: %s"
+
+#: lib/Search.php:670 lib/UI/Message.php:28
+#: templates/contacts/contacts.html:43 templates/login/recompose.html:32
+msgid "Bcc"
+msgstr "Gizli kk"
+
+#: config/prefs.php.dist:579
+msgid "Before Signature"
+msgstr "Ýmza Öncesi"
+
+#: lib/MIME/Viewer/status.php:160
+msgid "Below is the raw text of the status information message."
+msgstr "Durum bilgi iletisinin ham metin hali aþaðýdadýr."
+
+#: config/prefs.php.dist:906
+msgid "Below the message text"
+msgstr "Ýleti gövdesi altýnda"
+
+#: message.php:580 mailbox.php:527
+msgid "Blacklist"
+msgstr "Kara Liste"
+
+#: config/prefs.php.dist:805
+msgid "Block images in HTML messages unless they are specifically requested?"
+msgstr ""
+"Özellikle istenmemiþse HTML iletilerinin içindeki görüntüler engellensin mi?"
+
+#: lib/Search.php:678
+msgid "Body"
+msgstr "Ýçerik"
+
+#: message.php:570 config/prefs.php.dist:653
+msgid "Body Text Only"
+msgstr "Sadece Gövde"
+
+#: message.php:571 config/prefs.php.dist:654
+msgid "Body Text with Attachments"
+msgstr "Eklerle Birlikte Metin"
+
+#: config/prefs.php.dist:528
+msgid "Bold"
+msgstr "Kalýn"
+
+#: search.php:326 search.php:331 search.php:336 search.php:341
+msgid "Both"
+msgstr "Her Ýkisi"
+
+#: config/prefs.php.dist:871
+msgid "Both Header Listing and Body of Message"
+msgstr "Baþlýk Bilgileri ve Ýleti Ýçeriðinin her ikiside"
+
+#: config/prefs.php.dist:578
+msgid "Bottom"
+msgstr "Alt"
+
+#: config/prefs.php.dist:542
+msgid "Bulleted List"
+msgstr "Maddeler Halinde Liste"
+
+#: lib/IMAP/Client.php:407
+msgid ""
+"CRAM-MD5 or DIGEST-MD5 requires PEAR's Auth_SASL package to be installed."
+msgstr ""
+"CRAM-MD5 veya DIGEST-MD5 PEAR'in Auth_SASL paketinin kurulmasýný "
+"gerektiriyor."
+
+#: compose.php:977
+msgid "C_harset"
+msgstr "Karakter _Seti"
+
+#: search.php:312 config/hooks.php.dist:452
+msgid "Calendar"
+msgstr "Takvim"
+
+#: lib/IMAP/Tree.php:2434
+msgid "Can not directly create mailbox in this folder."
+msgstr "Bu dizinde doðrudan postakutusu yaratamýyor."
+
+#: lib/Message.php:194
+msgid "Can not move messages to Trash - no Trash mailbox set in preferences."
+msgstr ""
+"Ýletileri Çöp'e göderemiyor - Çöp Posta Kutusu tercihleri ayarlanmamýþ."
+
+#: templates/folders/import.html:18 templates/folders/folders_confirm.html:24
+#: templates/contacts/contacts.html:76 templates/saveimage/saveimage.html:20
+#: templates/smime/passphrase.html:24 templates/smime/import_key.html:70
+#: templates/pgp/passphrase.html:22 templates/pgp/import_key.html:49
+msgid "Cancel"
+msgstr "Ýptal"
+
+#: templates/compose/compose.html:21 templates/compose/compose.html:208
+#: templates/compose/redirect.html:83
+msgid "Cancel Message"
+msgstr "Ýletiden Vazgeç"
+
+#: templates/javascript_defs.php:35
+msgid "Cancelling this message will permanently discard its contents."
+msgstr ""
+"Bu iletiyi iptal etmek,içeriðinin kalýcý olarak yok olmasina yol açacaktýr."
+
+#: lib/prefs.php:150
+msgid ""
+"Cannot activate both a Trash folder and Virtual Trash. A Trash folder will "
+"be used."
+msgstr ""
+"Ayný anda hem Çöp, hem de Sanal Çöp dizinleri etkinleþtirilemez. Çöp dizini "
+"kullanýlacaktýr."
+
+#: lib/prefs.php:153
+msgid ""
+"Cannot activate both a Trash folder and Virtual Trash. A Virtual Trash "
+"folder will be used."
+msgstr ""
+"Ayný anda hem Çöp, hem de Sanal Çöp dizinleri etkinleþtirilemez. Sanal Çöp "
+"dizini kullanýlacaktýr."
+
+#: lib/Fetchmail/imap.php:151
+msgid "Cannot connect to the remote mail server."
+msgstr "Uzaktaki eposta sunucusuna baðlanýlamýyor."
+
+#: lib/Fetchmail/imap.php:149
+msgid "Cannot connect to the remote mail server: "
+msgstr "Uzaktaki eposta sunucusuna baðlanýlamýyor: "
+
+#: lib/prefs.php:164
+msgid "Cannot delete to trash unless a Trash folder is defined."
+msgstr "Çöp dizini tanýmlanana kadar çöpe yollanarak silinemiyor."
+
+#: lib/MIME/Viewer/partial.php:47
+#, php-format
+msgid ""
+"Cannot display - found only %s of %s parts of this message in the current "
+"mailbox."
+msgstr ""
+"Görüntülenemiyor - Þu andaki posta kutusunda iletinin sadece %s/%s parçasý "
+"bulundu."
+
+#: pgp.php:271
+msgid "Cannot retrieve public key from cache."
+msgstr "Açýk anahtarý bellekten çekilemiyor."
+
+#: lib/Search.php:666 lib/UI/Message.php:27
+#: templates/contacts/contacts.html:42 templates/login/recompose.html:23
+msgid "Cc"
+msgstr "Kk"
+
+#: templates/smime/smime.html:79
+msgid ""
+"Certificate import is not available. File upload is not enabled on this "
+"server."
+msgstr ""
+"Sertifika içeri alýnamýyor. Bu sunucuda dosya yükleme etkinleþtirilmemiþtir."
+
+#: lib/MIME/Viewer/itip.php:739 lib/MIME/Viewer/itip.php:871
+msgid "Chair Person"
+msgstr "Baþkan"
+
+#: acl.php:173 acl.php:174 templates/acl/acl.html:13
+msgid "Change Folder"
+msgstr "Dizini Deðiþtir"
+
+#: config/prefs.php.dist:120
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr ""
+"Her sayfada kaç ileti görüneceði,iletilerin nasýl sýralanacaðý gibi "
+"görüntüleme seçeneklerini deðiþtirin"
+
+#: config/prefs.php.dist:23
+msgid "Change mail server and folder settings."
+msgstr "Elektronik posta sunucu ve dizin ayarlarýný deðiþtirin."
+
+#: config/prefs.php.dist:14
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr ""
+"Ýnsanlarýn gönderdiðiniz elektronik postalarý okurken ve cevaplarken "
+"görecekleri adýnýzý,adresinizi ve imzanýzý deðiþtirin."
+
+#: config/prefs.php.dist:1041
+msgid "Characters to display:"
+msgstr "Görüntülenecek Karakterler:"
+
+#: templates/folders/actions.html:6 templates/mailbox/message_headers.html:13
+msgid "Check All/None"
+msgstr "Tümünü/Hiçbirini Seç"
+
+#: lib/UI/Compose.php:135
+msgid "Check Spelling"
+msgstr "Ýmla Denetimi"
+
+#: folders.php:371 mailbox.php:660
+msgid "Check _All/None"
+msgstr "Tümü_nü Ýþaretle/Ýþaretleme"
+
+#: templates/folders/actions.html:29
+msgid "Check for New Mail"
+msgstr "Yeni Ýleti için Denetle"
+
+#: config/prefs.php.dist:619
+msgid "Check spelling before sending a message?"
+msgstr "Ýleti göndermeden önce yazým denetimi uygulansýn mý?"
+
+#: lib/UI/Compose.php:136
+msgid "Checking ..."
+msgstr "Denetleniyor ..."
+
+#: templates/folders/actions.html:11 templates/folders/actions.html:13
+msgid "Choose Action"
+msgstr "Ýþlem Seç"
+
+#: config/servers.php.dist:213
+msgid "Choose a mail server:"
+msgstr "Eposta sunucusu seçin:"
+
+#: templates/compose/compose.html:65
+msgid "Choose a match or edit the address to the right:"
+msgstr "Eþleþtirmek veya düzenlemek için saða bir adres seçin:"
+
+#: templates/prefs/sourceselect.inc:343
+msgid "Choose the address book to use when adding addresses."
+msgstr "Adres eklerken kullanýlcak adres defterini seçin."
+
+#: templates/prefs/sourceselect.inc:289
+msgid "Choose the order of address books to search when expanding addresses."
+msgstr "Adresleri açarken aranacak adres defterini seçin."
+
+#: config/prefs.php.dist:559
+msgid "Clear Inline Font Specifications"
+msgstr "Ýçsel Harf Tanýmlarýný Temizle"
+
+#: config/prefs.php.dist:558
+msgid "Clear MSOffice tags"
+msgstr "MSOffice iþaretlerini temizle"
+
+#: lib/MIME/Viewer/images.php:103
+#, php-format
+msgid "Click %s to convert the image file into a format your browser can view."
+msgstr ""
+"Tarayýcýnýzýn gösterebileceði bir biçime çevirmek için %s üzerine týklayýn."
+
+#: lib/MIME/Contents.php:437
+#, php-format
+msgid "Click %s to download the data."
+msgstr "Veriyi indirmek için %s üzerine týklayýn."
+
+#: lib/MIME/Viewer/images.php:92
+#, php-format
+msgid "Click %s to download the image."
+msgstr "Görüntü dosyasýný indirmek için %s üzerine týklayýn."
+
+#: lib/Filter.php:131
+#, php-format
+msgid "Click %s to go to %s management page."
+msgstr "%s yönetim sayfasýna gitmek için %s üzerine týklayýn."
+
+#: lib/MIME/Viewer/pkcs7.php:487
+#, php-format
+msgid "Click %s to view the attachment in a separate window."
+msgstr "Eki ayrý bir pencerede görmek için %s üzerine týklayýn."
+
+#: lib/MIME/Viewer/related.php:85
+#, php-format
+msgid "Click %s to view this multipart/related part in a separate window."
+msgstr ""
+"Bu çoklu/ilgili parçayý ayrý bir pencerede görmek için %s üzerine týklayýn."
+
+#: lib/MIME/Viewer/pkcs7.php:223 lib/MIME/Viewer/pgp.php:251
+#: lib/MIME/Viewer/pgp.php:278
+msgid "Click HERE to verify the message."
+msgstr "Ýletiyi doðrualamak için BURAYA týklayýnýz."
+
+#: templates/prefs/sourceselect.inc:319
+msgid ""
+"Click on one of your selected address books and then select all fields to "
+"search."
+msgstr ""
+"Seçilmiþ adres defterlerinizden birine týklayýn ve bütün alanlarý aramak "
+"için seçin."
+
+#: config/prefs.php.dist:1174
+msgid "Clicking on the address will compose a new message to the sender"
+msgstr "Adreslere týklamak, gönderene kiþiye yeni bir ileti oluþturacaktýr"
+
+#: config/prefs.php.dist:1175
+msgid "Clicking on the address will open the message to be read"
+msgstr "Adreslere týklamak,iletinin okunmak için açýlmasýný saðlayacaktýr."
+
+#: templates/newmsg/alert.html:17 templates/fetchmail/fetchmail.html:33
+msgid "Close"
+msgstr "Kapat"
+
+#: compose.php:34
+msgid "Close this window"
+msgstr "Pencereyi kapat"
+
+#: lib/IMAP/Tree.php:2377
+msgid "Closed Folder"
+msgstr "Dizini Kapat."
+
+#: folders.php:452
+msgid "Collapse"
+msgstr "Daralt"
+
+#: folders.php:387
+msgid "Collapse All"
+msgstr "Hepsini Daralt"
+
+#: folders.php:387
+msgid "Collapse All Folders"
+msgstr "Bütün Dizinleri Daralt"
+
+#: folders.php:452
+msgid "Collapse Folder"
+msgstr "Dizini Daralt"
+
+#: templates/fetchmail/fetchmailprefs.html:94
+msgid "Color Indicator:"
+msgstr "Renk Göstergesi:"
+
+#: config/prefs.php.dist:1212
+msgid "Combine all namespaces"
+msgstr "Bütün isim alanlarýný birleþtir"
+
+#: templates/pgp/pgp.html:97
+msgid "Comment:"
+msgstr "Yorum:"
+
+#: lib/MIME/Viewer/itip.php:941
+msgid "Completed"
+msgstr "Tamamlandý"
+
+#: config/prefs.php.dist:483
+msgid "Compose messages in a separate window?"
+msgstr "Ýletiyi yeni pencerede oluþturmak ister misiniz?"
+
+#: config/prefs.php.dist:493
+msgid ""
+"Compose messages with an HTML GUI by default (if browser supports the "
+"feature)?"
+msgstr ""
+"Varsayýlan olarak iletileri HTML kullanýcý arabirimiyle oluþturmak ister "
+"misiniz?(Eðer tarayýcýnýz bu özelliði destekliyorsa)"
+
+#: config/prefs.php.dist:73
+msgid "Configure how messages are displayed."
+msgstr "Ýletilerin nasýl görüntüleneceðini yapýlandýrýn"
+
+#: config/prefs.php.dist:105
+msgid "Configure mail preview options."
+msgstr "Postalarýn önizleme seçeneklerini yapýlandýrýn."
+
+#: config/hooks.php.dist:506
+msgid "Connection to server failed."
+msgstr "Sunucuya baðlantý baþarýsýz oldu."
+
+#: config/hooks.php.dist:476
+msgid "Contacts"
+msgstr "Kiþiler"
+
+#: config/prefs.php.dist:144
+#, php-format
+msgid "Control PGP support for %s."
+msgstr "%s için PGP desteðini denetle."
+
+#: config/prefs.php.dist:153
+#, php-format
+msgid "Control S/MIME support for %s."
+msgstr "%s için S/MIME desteðini denetle."
+
+#: config/prefs.php.dist:97
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr ""
+"Yeni postanýn ,ne zaman denetleneceðini ve yeni postlalarýn size bildirilip "
+"bildirilmeyeceðinikontol edin"
+
+#: config/prefs.php.dist:861
+msgid "Convert textual emoticons into graphical ones?"
+msgstr ""
+"Metin duygu simgelerini görüntüsel duygu simgelerine dönüþtürmek ister "
+"misiniz?"
+
+#: message.php:520 message.php:707 mailbox.php:487 mailbox.php:898
+msgid "Copy"
+msgstr "Kopyala"
+
+#: config/prefs.php.dist:554
+msgid "Copy selection"
+msgstr "Seçimi kopyala"
+
+#: message.php:520 message.php:707 mailbox.php:487 mailbox.php:898
+msgid "Copy to folder"
+msgstr "Dizini Kopyala"
+
+#: lib/Compose.php:1889
+#, php-format
+msgid "Could not attach %s to the message."
+msgstr "%s iletiye eklenemiyor."
+
+#: lib/IMAP/Client.php:189
+#, php-format
+msgid "Could not complete request. Reason Given: %s"
+msgstr "Ýstek gerçekleþtirilemiyor. Nedeni: %s"
+
+#: attachment.php:50
+#, php-format
+msgid "Could not create the VFS backend: %s"
+msgstr "VFS son aþamasý yaratýlamadý: %s"
+
+#: lib/Message.php:785
+#, php-format
+msgid "Could not delete messages from %s. The server said: %s"
+msgstr "%s içindeki iletiler silinemedi. Sunucu: %s"
+
+#: lib/Session.php:324
+msgid "Could not execute maintenance operations."
+msgstr "Bakým iþlemleri yürütülemedi."
+
+#: lib/MIME/Viewer/tnef.php:53
+msgid "Could not extract the requested file from the MS-TNEF attachment."
+msgstr "Ýstenen dosya MS-TNEF ekinden seçip çýkartýlamadý."
+
+#: lib/MIME/Viewer/zip.php:56
+msgid "Could not extract the requested file from the Zip archive."
+msgstr "Istenen dosya Zip arþivinden seçip çýkartýlamadý."
+
+#: lib/Spam.php:233
+msgid ""
+"Could not move message to spam mailbox - no spam mailbox defined in "
+"preferences."
+msgstr ""
+"Ýstenmeye Ýleti kutusuna gönderilemiyor - istenmeyen ileti kutusu "
+"tanýmlanamamýþ."
+
+#: lib/IMAP/Client.php:318
+msgid "Could not open secure connection to the IMAP server."
+msgstr "IMAP sunucusuna güvenli þekilde baðlanýlamýyor."
+
+#: lib/Session.php:279
+msgid "Could not retrieve namespace information from IMAP server."
+msgstr "IMAP sunucudan namespace bilgisi çekilemiyor."
+
+#: compose.php:51
+msgid "Could not retrieve the message from the mail server."
+msgstr "Eposta sunucusundan ileti çekilemiyor."
+
+#: lib/Compose.php:1027
+#, php-format
+msgid "Could not save recipients: %s"
+msgstr "Alýcýlar kaydedilemiyor: %s"
+
+#: lib/Template.php:230
+#, php-format
+msgid "Could not save the compiled template file '%s'."
+msgstr "Derlenen geçici dosya, '%s' saklanamadý."
+
+#: templates/folders/actions.html:16
+#: templates/fetchmail/fetchmailprefs.html:121
+msgid "Create"
+msgstr "Oluþtur"
+
+#: lib/IMAP/ACL/rfc2086.php:55
+msgid "Create Folder"
+msgstr "Dizin Yarat"
+
+#: lib/IMAP/ACL/rfc4314.php:55
+msgid "Create Folders"
+msgstr "Dizin Oluþtur"
+
+#: templates/pgp/pgp.html:129
+msgid "Create Keys"
+msgstr "Anahtar Yarat"
+
+#: templates/fetchmail/fetchmailprefs.html:28
+msgid "Create a New Account"
+msgstr "Yeni bir Hesap Yarat"
+
+#: templates/prefs/spamselect.inc:11 templates/prefs/spamselect.inc:20
+msgid "Create a new Spam folder"
+msgstr "Yeni bir Ýstenmeyen Ýleti dizini yarat"
+
+#: templates/prefs/folderselect.inc:11 templates/prefs/folderselect.inc:22
+msgid "Create a new drafts folder"
+msgstr "Yeni taslak dizini yarat"
+
+#: templates/prefs/sentmailselect.inc:25 templates/prefs/sentmailselect.inc:40
+msgid "Create a new sent mail folder"
+msgstr "Yeni gönderilmiþ posta dizini yarat"
+
+#: templates/prefs/trashselect.inc:11 templates/prefs/trashselect.inc:20
+msgid "Create a new trash folder"
+msgstr "Yeni çöp kutusu yarat"
+
+#: templates/fetchmail/fetchmail.html:23
+msgid "Create an account"
+msgstr "Bir hesap yarat"
+
+#: config/prefs.php.dist:129
+msgid ""
+"Create filtering rules to organize your incoming mail, sort it into folders, "
+"and delete spam."
+msgstr ""
+"Gelen postalarýnýzý düzenlemek, dizinlerin içine atmak ve istenmeyen "
+"iletileri silmek için süzgeç kurallari yaratýn."
+
+#: templates/stationery/stationery.html:14
+msgid "Create new stationery"
+msgstr "Yeni kýrtasiye yarat"
+
+#: config/prefs.php.dist:605
+msgid "Create stationery and form responses."
+msgstr "Kýrtasiye ve cevap formu yarat"
+
+#: templates/compose/compose.html:307
+msgid "Current Attachments"
+msgstr "Etkin Ekler"
+
+#: acl.php:176
+#, php-format
+msgid "Current access to %s"
+msgstr "%s için yürürlükteki eriþim"
+
+#: config/prefs.php.dist:1225
+msgid "Current expanded status in the folders view"
+msgstr "Dizin görüntüsünde etkin geniþleme durumu"
+
+#: config/prefs.php.dist:534
+msgid "Current style"
+msgstr "Geçerli biçim"
+
+#: config/prefs.php.dist:113
+msgid "Customize accounts for fetching mail from other accounts."
+msgstr ""
+"Diðer elektronik posta hesaplarýnýzdan postalarýn getirilmesini "
+"kiþiselleþtirin."
+
+#: config/prefs.php.dist:54
+msgid "Customize how you send mail."
+msgstr "Nasýl posta gönderdiðinizi kiþiselleþtirin"
+
+#: config/prefs.php.dist:40
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "%s giriþinde çalýþacak görevleri kiþiselleþtirin"
+
+#: config/prefs.php.dist:553
+msgid "Cut selection"
+msgstr "Seçimi kes"
+
+#: mailbox.php:583
+msgid "Dat_e"
+msgstr "Tari_h"
+
+#: lib/UI/Message.php:24
+msgid "Date"
+msgstr "Tarih"
+
+#: lib/Search.php:690
+msgid "Date <"
+msgstr "Tarih <"
+
+#: lib/Search.php:686
+msgid "Date ="
+msgstr "Tarih ="
+
+#: lib/Search.php:694
+msgid "Date >="
+msgstr "Tarih >="
+
+#: templates/thread/thread.html:27
+msgid "Date:"
+msgstr "Tarih:"
+
+#: templates/search/search.html:93
+msgid "Day"
+msgstr "Gün"
+
+#: lib/MIME/Viewer/itip.php:929
+msgid "Declined"
+msgstr "Reddedildi"
+
+#: lib/MIME/Viewer/itip.php:269
+msgid "Declined: "
+msgstr "Reddedildi"
+
+#: config/prefs.php.dist:543
+msgid "Decrease Indent"
+msgstr "Girintiyi Azalt"
+
+#: config/prefs.php.dist:725
+msgid "Default"
+msgstr "Ön tanýmlý"
+
+#: config/prefs.php.dist:894
+msgid "Default (US-ASCII)"
+msgstr "Öntanýmlý (US-ASCII)"
+
+#: config/prefs.php.dist:655
+msgid "Default forwarding method:"
+msgstr "Varsayýlan yönlendirme yöntemi:"
+
+#: config/prefs.php.dist:1140
+msgid "Default sorting criteria:"
+msgstr "Varsayýlan sýralama ölçütü:"
+
+#: config/prefs.php.dist:1150
+msgid "Default sorting direction:"
+msgstr "Varsayýlan sýralama yönü:"
+
+#: lib/MIME/Viewer/itip.php:937
+msgid "Delegated"
+msgstr "Yetkili"
+
+#: folders.php:417 message.php:554 mailbox.php:509 mailbox.php:511
+#: lib/IMAP/ACL/rfc4314.php:57 templates/folders/actions.html:19
+#: templates/contacts/contacts.html:66 templates/smime/smime.html:35
+#: templates/fetchmail/fetchmailprefs.html:122 templates/pgp/pgp.html:43
+msgid "Delete"
+msgstr "Sil"
+
+#: smime.php:314 pgp.php:407
+#, php-format
+msgid "Delete %s Public Key"
+msgstr "%s Açýk Anahtarýný Sil"
+
+#: templates/smime/smime.html:75 templates/pgp/pgp.html:86
+msgid "Delete Current Keys"
+msgstr "Yürürlükteki Anahtarlarý Sil"
+
+#: lib/IMAP/ACL/rfc4314.php:56
+msgid "Delete Folders"
+msgstr "Dizinleri Sil"
+
+#: templates/folders/folders_confirm.html:23
+msgid "Delete Selected Folders"
+msgstr "Seçili Dizinleri Sil"
+
+#: templates/stationery/stationery.html:44
+msgid "Delete Stationery"
+msgstr "Kýrtasiyeyi Sil"
+
+#: folders.php:417
+msgid "Delete Virtual Folder"
+msgstr "Sanal Dizini Sil"
+
+#: mailbox.php:429
+#, php-format
+msgid "Delete Virtual Folder Definition for %s"
+msgstr "%s için Sanal Dizin Tanýmýný Sil"
+
+#: templates/fetchmail/fetchmailprefs.html:86
+msgid "Delete fetched messages from remote server?"
+msgstr "Uzaktaki sunucudan getirilen iletileri sil"
+
+#: lib/MIME/Viewer/itip.php:668
+msgid "Delete from my calendar"
+msgstr "Takvimimden sil"
+
+#: config/prefs.php.dist:389
+msgid "Delete old linked attachments at beginning of month?"
+msgstr "Eski baðlý ekler ay baþýnda silinsin mi?"
+
+#: config/prefs.php.dist:343
+msgid "Delete old sent-mail folders at beginning of month?"
+msgstr "Eski gönderilmiþ posta dizinleri ay baþýnda silinsin mi?"
+
+#: config/prefs.php.dist:793
+msgid "Delete spam messages"
+msgstr "Ýstenmeyen iletileri sil"
+
+#: lib/IMAP/ACL/rfc2086.php:56
+msgid "Delete/purge"
+msgstr "Sil/tasfiye"
+
+#: templates/compose/compose.html:335
+msgid "Delete?"
+msgstr "Silinsin mi?"
+
+#: message.php:481 mailbox.php:784 templates/mailbox/navbar.html:20
+#: templates/mailbox/navbar.html:37
+msgid "Deleted"
+msgstr "Silindi"
+
+#: search.php:339
+msgid "Deleted messages"
+msgstr "Silinecek Ýletiler"
+
+#: compose.php:215
+#, php-format
+msgid "Deleted the attachment \"%s\"."
+msgstr "Ek \"%s\" silindi."
+
+#: config/prefs.php.dist:87
+msgid "Deleting and Moving Messages"
+msgstr "Ýletilerin Silinmesi ve Taþýnmasý"
+
+#: lib/MIME/Viewer/itip.php:633
+msgid "Deny request"
+msgstr "Ýsteði reddet"
+
+#: lib/MIME/Viewer/itip.php:565
+msgid "Deny request for free/busy information"
+msgstr "Serbest/meþgul bilgi isteklerini reddet"
+
+#: config/prefs.php.dist:1149
+msgid "Descending"
+msgstr "Azalan"
+
+#: lib/MIME/Viewer/itip.php:715 lib/MIME/Viewer/itip.php:846
+msgid "Description"
+msgstr "Açýklama"
+
+#: templates/compose/compose.html:331
+msgid "Description:"
+msgstr "Açýklama:"
+
+#: templates/smime/smime.html:35 templates/smime/smime.html:67
+#: templates/pgp/pgp.html:43 templates/pgp/pgp.html:75
+#: templates/pgp/pgp.html:80
+msgid "Details"
+msgstr "Ayrýntýlar"
+
+#: lib/Compose.php:2698
+#, php-format
+msgid "Did not attach \"%s\" as it was only partially uploaded."
+msgstr "Tam olarak yüklenemediðinden \"%s\" iletiye eklenemiyor."
+
+#: lib/Compose.php:2707
+#, php-format
+msgid "Did not attach \"%s\" as the file was empty."
+msgstr "Dosya ismi boþ olduðu için \"%s\" eklenemedi."
+
+#: lib/Compose.php:2694
+#, php-format
+msgid ""
+"Did not attach \"%s\" as the maximum allowed upload size has been exceeded."
+msgstr "En fazla dosya yükleme boyutu aþýldýðý için \"%s\" eklenemedi."
+
+#: lib/Compose.php:2702
+#, php-format
+msgid ""
+"Did not attach \"%s\" as the server configuration did not allow the file to "
+"be uploaded."
+msgstr ""
+"Sunucu ayarlarýnda dosyanýn yüklenmesine izin verilmediði için \"%s\" "
+"yüklenemedi."
+
+#: config/prefs.php.dist:853
+msgid "Dim signatures?"
+msgstr "Ýmzalar gizlesin mi?"
+
+#: config/prefs.php.dist:563
+msgid "Direction left to right"
+msgstr "Yön soldan saða"
+
+#: config/prefs.php.dist:564
+msgid "Direction right to left"
+msgstr "Yön saðdan sola"
+
+#: templates/contacts/contacts.html:58
+msgid "Display"
+msgstr "Göster"
+
+#: config/prefs.php.dist:248
+msgid "Display Virtual Inbox?"
+msgstr "Sanal Gelen Kutusu Gösterilsin mi?"
+
+#: config/prefs.php.dist:627
+msgid "Display confirmation after sending a message?"
+msgstr "Ýleti gönderdikten sonra doðrulama görüntülensin mi?"
+
+#: config/prefs.php.dist:870
+msgid "Display in Body of Message"
+msgstr "Ýletinin içinde görüntülensin"
+
+#: config/prefs.php.dist:1005
+msgid "Display pop-up notification of new mail?"
+msgstr "Yeni ileti bilgisi beliren hatýrlatma olarak görüntülensin mi?"
+
+#: config/prefs.php.dist:970
+msgid "Display the \"Empty Spam\" link in the menubar?"
+msgstr ""
+"'Ýstenmeyen Ýleti Kutusunu Boþalt' baðlantýsý menü çubuðunda görüntülensin "
+"mi?"
+
+#: config/prefs.php.dist:962
+msgid "Display the \"Empty Trash\" link in the menubar?"
+msgstr "'Çöp Kutusu Boþalt' baðlantýsý menü çubuðunda görüntülensin mi?"
+
+#: templates/compose/compose.html:322
+msgid "Disposition:"
+msgstr "Düzen:"
+
+#: templates/search/search.html:82
+msgid "Do NOT match"
+msgstr "Eþleþmeyen"
+
+#: templates/folders/actions.html:30
+msgid "Do Not Check for New Mail"
+msgstr "Yeni Posta için Denetleme"
+
+#: config/prefs.php.dist:1176
+msgid "Do not generate a link in the From: column"
+msgstr "Gelen: kolonunda baðlantý yaratma"
+
+#: templates/javascript_defs.php:36
+msgid "Doing so will discard this message permanently."
+msgstr "Böyle yapmak, bu iletiyi kalýcý olarak yok edecek."
+
+#: login.php:413
+msgid "Don't have an account? Sign up."
+msgstr "Hesabýnýz yok mu? Kayýt olun."
+
+#: templates/folders/actions.html:34
+msgid "Download"
+msgstr "Ýndir"
+
+#: lib/MIME/Contents.php:250
+#, php-format
+msgid "Download %s in .zip Format"
+msgstr ".Zip Biçiminde indir:%s"
+
+#: message.php:679
+msgid "Download All Attachments (in .zip file)"
+msgstr "Bütün Ekleri (.zip dosyasý olarak) indir"
+
+#: templates/folders/actions.html:35
+msgid "Download [.zip format]"
+msgstr "[.zip biçiminde] indir"
+
+#: lib/MIME/Contents.php:250
+msgid "Download in .zip Format"
+msgstr ".Zip biçiminde indir"
+
+#: message.php:479 mailbox.php:774 templates/mailbox/navbar.html:22
+#: templates/mailbox/navbar.html:40 templates/message/navbar_navigate.html:14
+msgid "Draft"
+msgstr "Taslak"
+
+#: lib/IMAP/Tree.php:2332
+msgid "Draft folder"
+msgstr "Taslak Dizini"
+
+#: config/prefs.php.dist:264
+msgid "Drafts"
+msgstr "Taslaklar"
+
+#: templates/prefs/folderselect.inc:19
+msgid "Drafts folder:"
+msgstr "Taslaklar Dizini:"
+
+#: login.php:292
+msgid "Dynamic"
+msgstr "Dinamik"
+
+#: templates/pgp/pgp.html:102
+msgid "E-mail Address:"
+msgstr "Eposta Adresi:"
+
+#: mailbox.php:837
+msgid "END"
+msgstr "SON"
+
+#: lib/MIME/Viewer/status.php:73
+msgid "ERROR: Your message could not be delivered."
+msgstr "HATA: Ýletininiz teslim edilemedi."
+
+#: folders.php:418 templates/stationery/stationery.html:19
+msgid "Edit"
+msgstr "Düzenle"
+
+#: mailbox.php:432
+msgid "Edit Search Query"
+msgstr "Arama Sorgusunu Düzenle"
+
+#: folders.php:418 templates/search/search.html:17
+msgid "Edit Virtual Folder"
+msgstr "Sanal Dizinleri Düzenle"
+
+#: mailbox.php:428
+#, php-format
+msgid "Edit Virtual Folder Definition for %s"
+msgstr "%s için Sanal Dizin Tanýmýný Düzenle"
+
+#: filterprefs.php:90
+msgid "Edit your Blacklist"
+msgstr "Kara Listenizi Düzenleyin"
+
+#: filterprefs.php:89
+msgid "Edit your Filter Rules"
+msgstr "Süzgeç Kurallarýnýzý Düzenleyin"
+
+#: filterprefs.php:91
+msgid "Edit your Whitelist"
+msgstr "Beyaz Listenizi Düzenleyin"
+
+#: config/prefs.php.dist:1078
+msgid "Edit your preferences for accessing other mail accounts."
+msgstr "Diðer posta hesaplarýna eriþim için tercihlerinizi düzenleyin."
+
+#: templates/contacts/contacts.html:61
+msgid "Email Address"
+msgstr "Elektronik Posta Adresi"
+
+#: lib/Message.php:802
+#, php-format
+msgid "Emptied all messages from %s."
+msgstr "%s içindeki tüm iletiler boþaltýldý."
+
+#: lib/Message.php:778
+msgid "Emptied all messages from Virtual Trash Folder."
+msgstr "Sanal Çöp Dizini içindeki tüm iletiler boþaltýldý."
+
+#: templates/folders/actions.html:20
+msgid "Empty"
+msgstr "Boþalt"
+
+#: templates/folders/folders_confirm.html:23
+msgid "Empty Selected Folders"
+msgstr "Seçilmiþ Dizinleri Boþalt"
+
+#: lib/IMP.php:835
+msgid "Empty _Spam"
+msgstr "Ýstenmeyen Ýleti Kutusunu _Boþalt"
+
+#: lib/IMP.php:827
+msgid "Empty _Trash"
+msgstr "Çöp Kutusunu _Boþalt"
+
+#: mailbox.php:425
+msgid "Empty folder"
+msgstr "Dizini Boþalt"
+
+#: pgp.php:458 templates/pgp/pgp.html:2
+msgid "Enable PGP functionality?"
+msgstr "PGP iþlevi etkinleþtirilsin mi?"
+
+#: smime.php:350 templates/smime/smime.html:2
+msgid "Enable S/MIME functionality?"
+msgstr "S/MIME iþlevi etkinleþtirilsin mi?"
+
+#: config/prefs.php.dist:1029
+msgid "Enable message previews?"
+msgstr "Ýleti önizleme etkinleþtirilsin mi?"
+
+#: compose.php:1076
+msgid "Encr_yption Options"
+msgstr "Þi_freleme Seçenekleri"
+
+#: lib/MIME/Viewer/itip.php:535 lib/MIME/Viewer/itip.php:537
+#: lib/MIME/Viewer/itip.php:700 lib/MIME/Viewer/itip.php:702
+msgid "End"
+msgstr "Son"
+
+#: lib/Compose.php:1609
+msgid "End forwarded message"
+msgstr "Ýletilen iletinin sonu"
+
+#: lib/Compose.php:1501
+msgid "End message"
+msgstr "Ýletiyi bitir"
+
+#: lib/Compose.php:1499
+#, php-format
+msgid "End message from %s"
+msgstr "%s den iletiyi bitir"
+
+#: smime.php:338 pgp.php:433
+msgid "Enter Passphrase"
+msgstr "Geçiþ Tümcesini Girin"
+
+#: templates/prefs/spamselect.inc:8
+msgid "Enter the name for your new Spam folder"
+msgstr "Yeni Ýstenmeyen Ýleti dizini  "
+
+#: templates/prefs/folderselect.inc:8
+msgid "Enter the name for your new drafts folder"
+msgstr "Yeni taslak dizinin adýný girin"
+
+#: templates/prefs/sentmailselect.inc:22
+msgid "Enter the name for your new sent mail folder"
+msgstr "Yeni gönderilmiþ posta dizininin adýný girin"
+
+#: templates/prefs/trashselect.inc:8
+msgid "Enter the name for your new trash folder"
+msgstr "Yeni çöp kutusunun adýný girin"
+
+#: message.php:569 lib/Search.php:682 config/prefs.php.dist:652
+msgid "Entire Message"
+msgstr "Bütün Ýleti"
+
+#: thread.php:71 message.php:175 lib/Compose.php:1068
+#, php-format
+msgid "Entry \"%s\" was successfully added to the address book"
+msgstr "\"%s\" kayýtý baþarýyla adres defterine eklendi"
+
+#: lib/MIME/Viewer/pkcs7.php:444 lib/MIME/Viewer/status.php:71
+#: lib/MIME/Viewer/status.php:162 lib/MIME/Viewer/pgp.php:451
+msgid "Error"
+msgstr "Hata"
+
+#: lib/IMAP/Client.php:303 lib/IMAP/Client.php:323
+#, php-format
+msgid "Error connecting to IMAP server: [%s] %s."
+msgstr "IMAP sunucusun baðlantýda sorun var: [%s] %s."
+
+#: lib/MIME/Contents.php:150
+msgid "Error displaying message."
+msgstr "Ýletinin görüntülenmesinde hata oluþtu."
+
+#: lib/MIME/Viewer/itip.php:316 lib/MIME/Viewer/itip.php:419
+#, php-format
+msgid "Error sending reply: %s."
+msgstr "Yanýtý göndermede hata: %s."
+
+#: templates/smime/smime.html:29 templates/pgp/pgp.html:37
+msgid "Error:"
+msgstr "Hata:"
+
+#: lib/MIME/Viewer/itip.php:103
+msgid "Event successfully deleted."
+msgstr "Olay baþarýyla silindi."
+
+#: config/prefs.php.dist:994
+msgid "Every 15 minutes"
+msgstr "Her 15 dakika"
+
+#: config/prefs.php.dist:991
+msgid "Every 30 seconds"
+msgstr "Her 30 saniye"
+
+#: config/prefs.php.dist:707 config/prefs.php.dist:993
+msgid "Every 5 minutes"
+msgstr "Her 5 dakika"
+
+#: config/prefs.php.dist:995
+msgid "Every half hour"
+msgstr "Her yarým saat"
+
+#: config/prefs.php.dist:992
+msgid "Every minute"
+msgstr "Her dakika"
+
+#: folders.php:463
+msgid "Expand"
+msgstr "Geniþlet"
+
+#: folders.php:386
+msgid "Expand All"
+msgstr "Hepsini Geniþlet"
+
+#: folders.php:386
+msgid "Expand All Folders"
+msgstr "Bütün Dizinleri Geniþlet"
+
+#: folders.php:463
+msgid "Expand Folder"
+msgstr "Dizini Geniþlet"
+
+#: compose.php:785 compose.php:1021
+msgid "Expand Names"
+msgstr "Ýsimleri Göster"
+
+#: config/prefs.php.dist:1204
+msgid "Expand the entire folder tree by default in the folders view?"
+msgstr "Bütün dizin aðacýný varsayýlan olarak geniþlet"
+
+#: config/prefs.php.dist:1226
+msgid "Expand the entire folder tree by default in the sidebar?"
+msgstr "Bütün dizin aðacýný varsayýlan olarak yankolonda geniþlesin mi?"
+
+#: config/prefs.php.dist:503
+msgid "FCKeditor"
+msgstr "FCK düzenleyici"
+
+#: lib/IMP.php:846 lib/IMP.php:848
+msgid "F_etch Mail"
+msgstr "Posta _Getir"
+
+#: fetchmail.php:50 config/prefs.php.dist:112
+#: templates/fetchmail/fetchmail.html:6 templates/fetchmail/fetchmail.html:30
+msgid "Fetch Mail"
+msgstr "Posta Getir"
+
+#: config/prefs.php.dist:1086
+msgid "Fetch Mail in a separate window?"
+msgstr "Posta Ayrý Bir Pencerede Getirilsin mi?"
+
+#: templates/fetchmail/fetchmailprefs.html:89
+msgid "Fetch messages upon logging on?"
+msgstr "Giriþ sýrasýnda iletiler getirilsin mi?"
+
+#: lib/Fetchmail.php:285
+#, php-format
+msgid "Fetched %d messages from %s"
+msgstr "%d ileti %s'den getirildi."
+
+#: lib/Fetchmail.php:283
+#, php-format
+msgid "Fetched 1 message from %s"
+msgstr " %s den 1 ileti getirildi"
+
+#: lib/Fetchmail.php:281 lib/Fetchmail.php:283 lib/Fetchmail.php:285
+msgid "Fetchmail: "
+msgstr "Posta Getir:"
+
+#: lib/Fetchmail.php:287
+msgid "Fetchmail: no new messages."
+msgstr "Posta Getir: Yeni ileti yok."
+
+#: lib/IMP.php:852
+msgid "Fi_lters"
+msgstr "Sü_zgeçler"
+
+#: templates/prefs/sourceselect.inc:329
+msgid "Fields to search"
+msgstr "Aranacak alanlar"
+
+#: templates/javascript_defs.php:41 templates/compose/compose.html:261
+msgid "File"
+msgstr "Dosya"
+
+#: templates/filters/prefs.html:2
+msgid "Filter Settings"
+msgstr "Süzgeç Ayarlarý"
+
+#: config/prefs.php.dist:776
+msgid "Filter message content for profanity?"
+msgstr "Ýletiler küfür için süzülsün mü?"
+
+#: templates/filters/prefs.html:7
+msgid "Filter support is disabled on this system."
+msgstr "Süzgeç destegi bu sistemde seçilir kýlýnmamýþtýr."
+
+#: config/prefs.php.dist:128
+msgid "Filters"
+msgstr "Süzgeçler"
+
+#: lib/Filter.php:130
+#, php-format
+msgid "Filters: %s management page"
+msgstr "Süzgeçler: %s yönetim sayfasý"
+
+#: templates/contacts/contacts.html:13
+msgid "Find:"
+msgstr "Bul:"
+
+#: config/prefs.php.dist:1122
+msgid "First Mailbox Page"
+msgstr "Ýlk Posta Kutusu Sayfasý"
+
+#: mailbox.php:279
+msgid "First Page"
+msgstr "Ýlk Sayfa"
+
+#: message.php:480 mailbox.php:779 templates/mailbox/navbar.html:32
+#: templates/message/navbar_navigate.html:10
+msgid "Flagged For Followup"
+msgstr "Ýzleme Ýçin Ýþaretlendi"
+
+#: search.php:334
+msgid "Flagged messages"
+msgstr "Ýþaretlenmiþ Ýletiler"
+
+#: message.php:568 mailbox.php:534
+msgid "Fo_rward"
+msgstr "Ýle_t"
+
+#: lib/IMAP/Tree.php:2377 templates/folders/folders_size.html:6
+msgid "Folder"
+msgstr "Dizin"
+
+#: folders.php:261 templates/folders/folders_confirm.html:6
+msgid "Folder Actions - Confirmation"
+msgstr "Dizin Eylemleri - Onaylama"
+
+#: folders.php:324 templates/prefs/initialpageselect.inc:11
+#: templates/folders/head.html:2
+msgid "Folder Navigator"
+msgstr "Dizin Dolaþýmý"
+
+#: folders.php:281 templates/folders/folders_size.html:1
+msgid "Folder Sizes"
+msgstr "Dizin Boyutlarý"
+
+#: lib/Block/summary.php:3
+msgid "Folder Summary"
+msgstr "Dizin Özeti"
+
+#: acl.php:25
+msgid "Folder sharing is not enabled."
+msgstr "Dizin paylaþýmý seçilir kýlýnmamýþ."
+
+#: folders.php:46
+msgid "Folder use is not enabled."
+msgstr "Dizin kullanýmý seçilir kýlýnmamýþ."
+
+#: config/prefs.php.dist:532
+msgid "Font Color"
+msgstr "Harf Rengi"
+
+#: config/prefs.php.dist:1193
+msgid "Format of message dates in the mailbox view for messages dated today"
+msgstr "Posta kutusundaki ileti tarihlerinin biçimi bugüne tarihlenmiþ"
+
+#: message.php:568 mailbox.php:534 lib/Compose.php:1592
+msgid "Forward"
+msgstr "Ýlet"
+
+#: lib/Compose.php:1578
+msgid "Forward:"
+msgstr "Ýlet:"
+
+#: lib/Compose.php:1690
+msgid "Forwarded Message:"
+msgstr "Yönlendirilen Ýleti:"
+
+#: lib/Compose.php:1605
+msgid "Forwarded message"
+msgstr "Ýletilen Ýleti"
+
+#: lib/Compose.php:1603
+#, php-format
+msgid "Forwarded message from %s"
+msgstr "%s tarafýndan iletilen ileti"
+
+#: lib/MIME/Viewer/itip.php:413
+msgid "Free/Busy Request Response"
+msgstr "Serbest/Meþgul Ýstek Yanýtý"
+
+#: mailbox.php:593
+msgid "Fro_m"
+msgstr "Kim_den"
+
+#: lib/Search.php:658 lib/UI/Message.php:25 lib/UI/Mailbox.php:97
+#: templates/thread/thread.html:32 templates/compose/compose.html:27
+msgid "From"
+msgstr "Kimden"
+
+#: config/prefs.php.dist:1135
+msgid "From Address"
+msgstr "Gelen Adres"
+
+#: templates/saveimage/saveimage.html:12
+msgid "Gallery"
+msgstr "Galeri"
+
+#: config/prefs.php.dist:12 config/prefs.php.dist:21 config/prefs.php.dist:30
+#: config/prefs.php.dist:38
+msgid "General Options"
+msgstr "Genel Seçenekler"
+
+#: templates/fetchmail/fetchmailprefs.html:80
+msgid "Get only new messages? (IMAP only)"
+msgstr "Sadece yeni ileti al (Sadece IMAP)"
+
+#: folders.php:373 lib/MIME/Viewer/itip.php:577 lib/MIME/Viewer/itip.php:776
+#: lib/MIME/Viewer/itip.php:907
+msgid "Go"
+msgstr "Git"
+
+#: thread.php:136
+msgid "Go to Message"
+msgstr "Ýletiye git"
+
+#: templates/newmsg/alert.html:11
+msgid "Go to Virtual Inbox"
+msgstr "Sanal Gelen Kutusuna Git"
+
+#: lib/IMP.php:384
+#, php-format
+msgid "Go to address book entry of \"%s\""
+msgstr "\"%s\" adres kaydýna git"
+
+#: message.php:448 lib/Filter.php:130 lib/MIME/Contents.php:437
+#: lib/MIME/Viewer/related.php:85 lib/MIME/Viewer/images.php:92
+#: lib/MIME/Viewer/images.php:99 lib/MIME/Viewer/images.php:101
+#: lib/MIME/Viewer/pkcs7.php:487 lib/MIME/Viewer/notification.php:60
+#: lib/MIME/Viewer/notification.php:66 lib/MIME/Viewer/appledouble.php:40
+#: lib/MIME/Viewer/status.php:119 lib/MIME/Viewer/status.php:128
+msgid "HERE"
+msgstr "BURAYA"
+
+#: lib/MIME/Viewer/related.php:86 templates/stationery/stationery.html:32
+msgid "HTML"
+msgstr "HTML"
+
+#: lib/Compose.php:451
+msgid "HTML Version of Message"
+msgstr "Ýletinin HTML Sürümü"
+
+#: message.php:618
+msgid "Headers"
+msgstr "Baþlýk Bilgisi"
+
+#: config/prefs.php.dist:566
+msgid "Help using editor"
+msgstr "Düzenleyici kullaným yardýmý"
+
+#: templates/login/recompose.html:7
+msgid "Here is the message you were composing:"
+msgstr "Oluþturuyor olduðunuz ileti:"
+
+#: config/prefs.php.dist:844
+msgid "Hidden"
+msgstr "Gizli"
+
+#: config/prefs.php.dist:843
+msgid "Hidden in Thread View"
+msgstr "Konu Öbeði Görüntüsünün içinde Gizle"
+
+#: templates/javascript_defs.php:30
+msgid "Hide Addresses"
+msgstr "Adresleri Sakla"
+
+#: mailbox.php:260
+msgid "Hide Deleted"
+msgstr "Silinenleri Gizle"
+
+#: folders.php:379
+msgid "Hide Unsubscribed"
+msgstr "Üye Olunmayanlarý Gizle"
+
+#: compose.php:993
+msgid "High"
+msgstr "Yüksek"
+
+#: message.php:293
+msgid "High Priority"
+msgstr "Yüksek Öncelik"
+
+#: compose.php:992
+msgid "Highest"
+msgstr "En yüksek"
+
+#: config/prefs.php.dist:545
+msgid "Horizontal Rule"
+msgstr "Yatay Cetvel"
+
+#: config/prefs.php.dist:872
+msgid "How do you want to display attachments?"
+msgstr "Ekleri nasýl görüntülemek istiyorsunuz?"
+
+#: config/prefs.php.dist:1214
+msgid "How should namespaces be displayed in the folder tree view?"
+msgstr "Dizin aðacýnda isimalanlarý nasýl gösterilsin?"
+
+#: config/prefs.php.dist:681
+msgid "How to attribute quoted lines in a reply"
+msgstr "Yanýtlarda alýntý yapýlan satýrlarýn niteliði"
+
+#: lib/IMAP.php:305
+msgid "IMAP"
+msgstr "IMAP"
+
+#: lib/Fetchmail/imap.php:97
+msgid "IMAP (Auto Detect Protocols)"
+msgstr "IMAP (Ýletiþim Kurallarýný Özdevinimli olarak Bul)"
+
+#: lib/IMAP/Client.php:200
+#, php-format
+msgid "IMAP Server closed the connection. Server Responded: %s"
+msgstr "IMAP Sunucu baðlantýyý kapattý. Sunucu Diyorki: %s"
+
+#: lib/IMAP.php:317
+msgid "IMAP over SSL"
+msgstr "SSL üzerinden IMAP"
+
+#: lib/IMAP.php:323
+msgid "IMAP over SSL (self-signed certificate)"
+msgstr "SSL üzerinden IMAP (kendinden imzalý onay belgesi)"
+
+#: lib/IMAP.php:311
+msgid "IMAP, no TLS"
+msgstr "IMAP, TLS yok"
+
+#: lib/Fetchmail/imap.php:47
+msgid "IMAP/POP3 Mail Servers"
+msgstr "IMAP/POP3 Elektronik Posta Sunucularý"
+
+#: lib/IMAP/Client.php:283
+msgid "If using SSL or TLS, you must have the PHP openssl extension loaded."
+msgstr ""
+"Eðer SSL veya TLS kullanýyorsanýz PHP'nin openssl uzantýsýný yüklemelisiniz."
+
+#: templates/folders/folders_confirm.html:13
+msgid "If you continue, all messages in the folder(s) will be lost!"
+msgstr "Eðer devam ederseniz, bu dizin(ler)deki bütün iletiler kaybolacaktýr!"
+
+#: saveimage.php:48
+msgid "Image"
+msgstr "Resim"
+
+#: lib/MIME/Viewer/html.php:159
+msgid "Images have been blocked to protect your privacy."
+msgstr ""
+"Kiþisel gizliliðiniz korunmasý için resimlerin gösterilmesi engellenmiþtir."
+
+#: templates/folders/import.html:17
+msgid "Import"
+msgstr "(Ýçeri) Aktar"
+
+#: templates/smime/import_key.html:69 templates/pgp/import_key.html:48
+msgid "Import Key"
+msgstr "(Ýçeri) Aktarma Anahtarý"
+
+#: templates/smime/smime.html:81 templates/pgp/pgp.html:131
+msgid "Import Keypair"
+msgstr "(Ýçeri) Aktarma Anahtar Ýkilisi"
+
+#: templates/folders/actions.html:37
+msgid "Import Messages"
+msgstr "Ýletileri (Ýçeri) Aktar"
+
+#: pgp.php:50
+msgid "Import PGP Key"
+msgstr "PGP Anahtarýný (Ýçeri) Aktar"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Personal Private PGP Key"
+msgstr "Kiþisel Özel PGP Anahatarý (Ýçeri) Aktar"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Personal Private PGP Key Here:"
+msgstr "Kiþisel Özel PGP Anahatarý Buraya Aktar:"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Personal Public PGP Key"
+msgstr "Kiþisel Açýk PGP Anahtarý (Ýçeri) Aktar"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Personal Public PGP Key Here:"
+msgstr "Kiþisel Açýk PGP Anahtarý Burya Aktar:"
+
+#: templates/smime/import_key.html:11
+msgid "Import Personal S/MIME Certificates"
+msgstr "Kiþisel S/MIME Onay Belgelerini (Ýçeri) Aktar"
+
+#: templates/smime/smime.html:47 templates/pgp/pgp.html:55
+msgid "Import Public Key"
+msgstr "Açýk Anahtarý (Ýçeri) Aktar"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Public PGP Key"
+msgstr "Açýk PGP Açýk Anahtarýný (Ýçeri) Aktar"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Public PGP Key Here:"
+msgstr "Açýk PGP Açýk Anahtarýný Buraya Aktar:"
+
+#: templates/smime/import_key.html:11
+msgid "Import Public S/MIME Key"
+msgstr "Açýk S/MIME Anahtarýný (Ýçeri) Aktar"
+
+#: smime.php:16
+msgid "Import S/MIME Key"
+msgstr "S/MIME Anahtarýný (Ýçeri) Aktar"
+
+#: templates/folders/import.html:7
+msgid "Import mbox File"
+msgstr "mbox dosyasýný (Ýçeri) Aktar"
+
+#: templates/folders/import.html:12
+msgid "Import mbox file"
+msgstr "mbox dosyasýný (Ýçeri) Aktar"
+
+#: templates/mailbox/navbar.html:16
+msgid "Important"
+msgstr "Önemli"
+
+#: folders.php:149
+#, php-format
+msgid "Imported %d messages from %s."
+msgstr "%d ileti %s konumundan (içeri) aktarýldý."
+
+#: lib/MIME/Viewer/itip.php:945
+msgid "In Process"
+msgstr "Sürüyor"
+
+#: templates/prefs/initialpageselect.inc:4 lib/api.php:225 lib/Folder.php:68
+#: lib/IMP.php:711 lib/IMAP/Tree.php:553 lib/IMAP/Tree.php:2315
+msgid "Inbox"
+msgstr "Gelen Kutusu"
+
+#: config/prefs.php.dist:669
+msgid "Include a brief summary of the header in a reply?"
+msgstr "Baþlýk bilgilerinin kýsa bir özeti yanýta eklensin mi?"
+
+#: config/prefs.php.dist:664
+msgid "Include body text in forward message by default?"
+msgstr "Ýleti gövde metni yönlendirilen iletinin içinde öntanýmlý bulunsun mu?"
+
+#: config/prefs.php.dist:635
+msgid "Include original message in a reply?"
+msgstr "Özgün ileti yanýta eklensin mi?"
+
+#: lib/Quota/hook.php:51
+msgid "Incorrect number of return values from quota hook."
+msgstr "Kota eklentisinden, hatalý sayýda deðer dönüyor."
+
+#: config/prefs.php.dist:544
+msgid "Increase Indent"
+msgstr "Girintiyi Arttýr"
+
+#: lib/MIME/Viewer/notification.php:59 lib/MIME/Viewer/status.php:131
+msgid "Info"
+msgstr "Bilgi"
+
+#: smime.php:313 pgp.php:406
+#, php-format
+msgid "Information on %s Public Key"
+msgstr "%s Açýk Anahtarý Hakkýnda Bilgisi"
+
+#: pgp.php:435
+msgid "Information on Personal Private Key"
+msgstr "Kiþisel Özel Anahtar Hakkýnda Bilgi"
+
+#: smime.php:336 pgp.php:429
+msgid "Information on Personal Public Key"
+msgstr "Kiþisel Açýk Anahtar Hakkýnda Bilgi"
+
+#: templates/javascript_defs.php:43 templates/compose/compose.html:267
+#: templates/compose/compose.html:326
+msgid "Inline"
+msgstr "Metine Gömülü"
+
+#: lib/IMAP/ACL/rfc2086.php:53 lib/IMAP/ACL/rfc4314.php:53
+msgid "Insert"
+msgstr "Ekle"
+
+#: templates/smime/import_key.html:19
+msgid "Insert Certificate Here:"
+msgstr "Sertifikayý Buraya Yerleþtir:"
+
+#: config/prefs.php.dist:548
+msgid "Insert Table"
+msgstr "Tablo Ekle"
+
+#: config/prefs.php.dist:546
+msgid "Insert Web Link"
+msgstr "Web Baðý Ekle"
+
+#: config/prefs.php.dist:547
+msgid "Insert/Modify Image"
+msgstr "Resim Ekle/Deðiþtir"
+
+#: config/prefs.php.dist:556
+msgid "Insert/Overwrite"
+msgstr "Ekle/Üzerine Yaz"
+
+#: lib/MIME/Viewer/itip.php:424
+msgid "Invalid Action selected for this component."
+msgstr "Bu bileþen için geçersiz bir eylem seçildi."
+
+#: lib/UI/Mailbox.php:61 lib/UI/Mailbox.php:111
+msgid "Invalid Address"
+msgstr "Geçersiz Adres"
+
+#: lib/Fetchmail/imap.php:225
+msgid "Invalid Remote Mailbox"
+msgstr "Geçersiz Uzak Elektronik Posta Kutusu"
+
+#: lib/Compose.php:1113 lib/Compose.php:1132
+#, php-format
+msgid "Invalid character in e-mail address: %s."
+msgstr "Elektronik Posta adresinde geçersiz karakter: %s."
+
+#: lib/Compose.php:1128
+msgid "Invalid hostname."
+msgstr "Geçersiz alanismi."
+
+#: smime.php:96 pgp.php:18
+msgid "Invalid key"
+msgstr "Geçersiz Anahtar"
+
+#: lib/Compose.php:282
+msgid "Invalid message, cannot resume draft."
+msgstr "Geçersiz ileti, müsveddeye devam edilemiyor."
+
+#: pgp.php:202
+msgid "Invalid personal PGP private key."
+msgstr "Geçersiz kiþisel özel PGP anahtarý."
+
+#: pgp.php:177
+msgid "Invalid personal PGP public key."
+msgstr "Geçersiz kiþisel açýk PGP anahtarý."
+
+#: templates/mailbox/navbar.html:12
+msgid "Invert"
+msgstr "Ters Çevir"
+
+#: lib/IMP.php:314
+msgid ""
+"It cannot be verified that this request was really sent by you. It could be "
+"a potentially malicious request."
+msgstr ""
+"Bu isteðin sizin tarafýnýzdan gönderildiði doðrulanamadý. Potansiyel olarak "
+"zararlý bir istek olabilir."
+
+#: config/prefs.php.dist:529
+msgid "Italic"
+msgstr "Eðik"
+
+#: config/prefs.php.dist:538
+msgid "Justify Center"
+msgstr "Ortalý"
+
+#: config/prefs.php.dist:540
+msgid "Justify Full"
+msgstr "Saða ve Sola Dayalý"
+
+#: config/prefs.php.dist:537
+msgid "Justify Left"
+msgstr "Sola Dayalý"
+
+#: config/prefs.php.dist:539
+msgid "Justify Right"
+msgstr "Saða Dayalý"
+
+#: templates/compose/compose.html:307 templates/compose/compose.html:315
+msgid "KB"
+msgstr "KB"
+
+#: templates/pgp/pgp.html:107
+msgid "Key Length:"
+msgstr "Anahtar Uzunluðu:"
+
+#: pgp.php:449
+msgid ""
+"Key generation may take a long time to complete.  Continue with key "
+"generation?"
+msgstr ""
+"Anahtar oluþturmak uzun zaman alabilir. Anahtar oluþturmaya devam edilsin mi?"
+
+#: templates/smime/smime.html:42 templates/pgp/pgp.html:50
+msgid "Key import is not available. File upload is not enabled on this server."
+msgstr ""
+"Anahtarý içeri aktarmak mümkün deðil. Dosya yükleme bu sunucuda çalýþmýyor."
+
+#: templates/smime/smime.html:45 templates/pgp/pgp.html:53
+msgid ""
+"Key import is not available. You have no address book defined to add your "
+"contacts."
+msgstr ""
+"Anahtarý içeri aktarmak mümkün deðil. Baðlantýlarýnýzý eklemek için "
+"tanýmlanmýþ adres defteriniz bulunmamaktadýr."
+
+#: pgp.php:344
+msgid "Key successfully sent to the public keyserver."
+msgstr "Anahtar baþarýyla açýk anahtar sunucusuna gönderildi."
+
+#: templates/login/login.html:116
+msgid "Language"
+msgstr "Dil"
+
+#: login.php:261
+msgid "Language:"
+msgstr "Dil:"
+
+#: config/prefs.php.dist:1123
+msgid "Last Mailbox Page"
+msgstr "Son Posta Kutusu Sayfasý"
+
+#: mailbox.php:291
+msgid "Last Page"
+msgstr "Son Sayfa"
+
+#: compose.php:1115
+msgid "Link Attachments?"
+msgstr "Ekler Baðlasýn mý?"
+
+#: attachment.php:34 lib/Compose.php:2390
+msgid "Linked attachments are forbidden."
+msgstr "Baðlanmýþ ekler yasaklanmýþtýr."
+
+#: lib/Compose.php:2406
+#, php-format
+msgid "Links will expire on %s"
+msgstr "%s tarihinde baðlarýn süresi dolacak"
+
+#: lib/IMAP/ACL/rfc2086.php:49 lib/IMAP/ACL/rfc4314.php:49
+msgid "List"
+msgstr "Liste"
+
+#: config/prefs.php.dist:1312
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+"Iletiþim noktalarý ekranýný yüklerken tüm iletiþim noktalarýda listelensin "
+"mi? (Eðer  seçilmez kýlýnmýþsa, sadece açýkça aradýðýnýz iletiþim "
+"noktalarýný göreceksiniz. "
+
+#: config/prefs.php.dist:869
+msgid "Listing in the Header"
+msgstr "Baþlýkta Listeleme"
+
+#: compose.php:771
+msgid "Loading..."
+msgstr "Yükleniyor..."
+
+#: templates/fetchmail/fetchmailprefs.html:72
+msgid "Local Mailbox:"
+msgstr "Yerel Posta Kutusu:"
+
+#: lib/MIME/Viewer/itip.php:720
+msgid "Location"
+msgstr "Yer"
+
+#: templates/login/mobile.inc:3 templates/login/mobile.inc:33
+msgid "Log in"
+msgstr "Giriþ"
+
+#: lib/Block/summary.php:45
+#, php-format
+msgid "Log in to %s"
+msgstr "%s Giriþi"
+
+#: login.php:409
+msgid "Login"
+msgstr "Giriþ"
+
+#: config/prefs.php.dist:39
+msgid "Login Tasks"
+msgstr "Giriþ Görevleri"
+
+#: compose.php:995
+msgid "Low"
+msgstr "Düþük"
+
+#: message.php:297
+msgid "Low Priority"
+msgstr "Düþük Öncelik"
+
+#: compose.php:996
+msgid "Lowest"
+msgstr "En düþük"
+
+#: lib/MIME/Viewer/appledouble.php:43
+msgid "Macintosh File"
+msgstr "Macintosh Dosyasý"
+
+#: config/prefs.php.dist:104
+msgid "Mail Previews"
+msgstr "Posta Önizleme"
+
+#: templates/fetchmail/fetchmailprefs.html:31
+msgid "Mail server type to connect to:"
+msgstr "Baðlanýlacak elektronik posta sunucu türü:"
+
+#: lib/IMAP/Tree.php:2322 lib/IMAP/Tree.php:2349
+msgid "Mailbox"
+msgstr "Posta Kutusu"
+
+#: config/prefs.php.dist:119
+msgid "Mailbox and Folder Display Options"
+msgstr "Posta Kutusu ve Dizin Görüntüleme Seçenekleri"
+
+#: lib/IMAP/ACL/rfc2086.php:52 lib/IMAP/ACL/rfc4314.php:52
+msgid "Mark (Other)"
+msgstr "Ýþaretle (Diðer)"
+
+#: lib/IMAP/ACL/rfc2086.php:51 lib/IMAP/ACL/rfc4314.php:51
+msgid "Mark (Seen)"
+msgstr "Ýþaretle (Görüldü)"
+
+#: templates/folders/actions.html:32
+msgid "Mark All Messages as Seen"
+msgstr "Bütün Ýletileri Okunmuþ Olarak Ýþaretle "
+
+#: templates/folders/actions.html:33
+msgid "Mark All Messages as Unseen"
+msgstr "Bütün Ýletileri Okunmamýþ Olarak Ýþaretle"
+
+#: templates/mailbox/navbar.html:27 templates/mailbox/navbar.html:29
+#: templates/message/navbar_navigate.html:6
+#: templates/message/navbar_navigate.html:8
+msgid "Mark as:"
+msgstr "Ýþaretle:"
+
+#: config/prefs.php.dist:826
+msgid "Mark different levels of quoting with different colors?"
+msgstr "Farklý düzeydeki alýntýlar farklý renklerle iþaretlensin mi?"
+
+#: templates/fetchmail/fetchmailprefs.html:83
+msgid "Mark messages as seen? (IMAP only)"
+msgstr "Ýletiler görülmüþ olarak iþaretlensin mi?(Sadece IMAP)"
+
+#: config/prefs.php.dist:834
+msgid "Mark simple markup?"
+msgstr "Basit biçimleme iþaretlensin mi?"
+
+#: search.php:214
+msgid "Match All Queries"
+msgstr "Bütün Sorgularla Eþleþ"
+
+#: search.php:212
+msgid "Match Any Query"
+msgstr "Herhangi Bir Sorguyla Eþleþ"
+
+#: config/prefs.php.dist:524
+msgid "Maximize/Minimize Editor"
+msgstr "Düzenleyiciyi Büyült/Küçük"
+
+#: templates/compose/compose.html:273
+msgid "Maximum Attachment Size"
+msgstr "En Büyük Ek Boyutu"
+
+#: lib/api.php:96
+msgid "Maximum Number of Folders"
+msgstr "En Fazla Dizin Sayýsý"
+
+#: lib/api.php:97
+msgid "Maximum Number of Recipients per Message"
+msgstr "Ýleti Baþýna En Fazla Alýcý Sayýsý"
+
+#: lib/api.php:98
+msgid "Maximum Number of Recipients per Time Period"
+msgstr "Zaman Aralýðý Baþýna En Fazla Alýcý Sayýsý"
+
+#: templates/compose/compose.html:255
+msgid "Maximum number of attachments reached."
+msgstr "En fazla ek sayýsýna ulaþýldý."
+
+#: templates/compose/compose.html:252
+msgid "Maximum total attachment size reached."
+msgstr "En büyük ek boyutuna ulaþýldý."
+
+#: lib/Block/tree_folders.php:3
+msgid "Menu Folder List"
+msgstr "Dizin Liste Menüsü"
+
+#: lib/Compose.php:1492
+msgid "Message"
+msgstr "Ýleti"
+
+#: config/prefs.php.dist:53
+msgid "Message Composition"
+msgstr "Ýleti Oluþturma"
+
+#: config/prefs.php.dist:1134
+msgid "Message Date"
+msgstr "Ýleti Tarihi"
+
+#: config/prefs.php.dist:52 config/prefs.php.dist:71 config/prefs.php.dist:86
+#: config/prefs.php.dist:95 config/prefs.php.dist:103
+#: config/prefs.php.dist:111
+msgid "Message Options"
+msgstr "Ýleti Seçenekleri"
+
+#: search.php:407
+msgid "Message Search"
+msgstr "Ýleti Arama"
+
+#: config/prefs.php.dist:1138
+msgid "Message Size"
+msgstr "Ýleti Boyutu"
+
+#: message.php:589
+msgid "Message Source"
+msgstr "Ýleti Kaynaðý"
+
+#: config/prefs.php.dist:72
+msgid "Message Viewing"
+msgstr "Ýleti Görünümü"
+
+#: lib/Compose.php:1490
+#, php-format
+msgid "Message from %s"
+msgstr "%s den ileti"
+
+#: lib/UI/Mailbox.php:148
+msgid "Message has attachments"
+msgstr "Ýletinin ekleri bulunmaktadýr"
+
+#: lib/UI/Mailbox.php:147
+msgid "Message is encrypted"
+msgstr "Ýleti þifrelidir"
+
+#: lib/UI/Mailbox.php:146
+msgid "Message is signed"
+msgstr "Ýleti imzalýdýr"
+
+#: compose.php:359 compose.php:366
+msgid "Message redirected successfully."
+msgstr "Ýleti baþarýyla yönlendirilmiþtir."
+
+#: lib/Compose.php:788
+#, php-format
+msgid "Message sent successfully, but not saved to %s"
+msgstr "Ýleti baþarýyla gönderildi, fakat %s içine kaydedilemedi."
+
+#: compose.php:424 compose.php:432
+msgid "Message sent successfully."
+msgstr "Ýleti baþarýyla gönderildi."
+
+#: config/prefs.php.dist:1165
+msgid "Messages per page in the mailbox view."
+msgstr "Posta kutusu görüntüsünde sayfa baþýna ileti"
+
+#: mailbox.php:225
+msgid "Messages to"
+msgstr "Ýletileri"
+
+#: login.php:296
+msgid "Minimalist"
+msgstr "Minimalist"
+
+#: templates/login/login.html:129
+msgid "Mode"
+msgstr "Durum"
+
+#: templates/search/search.html:87
+msgid "Month"
+msgstr "Ay"
+
+#: message.php:519 message.php:706 mailbox.php:486 mailbox.php:897
+msgid "Move"
+msgstr "Taþý"
+
+#: templates/prefs/sourceselect.inc:314
+msgid "Move down"
+msgstr "Aþagý taþý"
+
+#: config/prefs.php.dist:794
+msgid "Move spam messages to spam folder and innocent messages to INBOX"
+msgstr ""
+"Ýstenmeyen iletileri istenmeyen ileti kutusuna taþý, temiz iletileri de "
+"Gelenlere"
+
+#: message.php:519 message.php:706 mailbox.php:486 mailbox.php:897
+msgid "Move to folder"
+msgstr "Dizine taþý"
+
+#: templates/prefs/sourceselect.inc:312
+msgid "Move up"
+msgstr "Yukarý taþý"
+
+#: lib/MIME/Viewer/alternative.php:97
+msgid "Multipart/alternative"
+msgstr "Çok Parçalý/Seçenekli"
+
+#: thread.php:161
+msgid "Multiple Message View"
+msgstr "Çoklu Ýleti Görünümü"
+
+#: templates/smime/smime.html:4 templates/fetchmail/fetchmailprefs.html:91
+#: templates/pgp/pgp.html:4
+msgid "NOTE:"
+msgstr "NOT:"
+
+#: lib/MIME/Viewer/itip.php:726 lib/MIME/Viewer/itip.php:858
+#: templates/contacts/contacts.html:60
+msgid "Name"
+msgstr "Ad"
+
+#: pgp.php:116
+msgid "Name and/or email cannot be empty"
+msgstr "Ad ve/veya eposta boþ olamaz"
+
+#: lib/MIME/Viewer/itip.php:950
+msgid "Needs Action"
+msgstr "Eylem Gerekiyor"
+
+#: config/prefs.php.dist:758 config/prefs.php.dist:990
+msgid "Never"
+msgstr "Asla"
+
+#: config/prefs.php.dist:748
+msgid "Never save attachments"
+msgstr "Ekleri asla saklama"
+
+#: lib/IMP.php:471
+msgid "New Folder"
+msgstr "Yeni Dizin"
+
+#: config/prefs.php.dist:96
+msgid "New Mail"
+msgstr "Yeni Posta"
+
+#: compose.php:33 compose.php:227 lib/Block/tree_folders.php:35
+msgid "New Message"
+msgstr "Yeni Ýleti"
+
+#: mailbox.php:857 lib/MIME/Headers.php:201
+#, php-format
+msgid "New Message to %s"
+msgstr "%s'e Yeni Ýleti"
+
+#: search.php:325
+msgid "New messages"
+msgstr "Yeni iletiler"
+
+#: message.php:535
+msgid "Next Message"
+msgstr "Sonraki Ýleti"
+
+#: mailbox.php:289
+msgid "Next Page"
+msgstr "Sonraki Sayfa"
+
+#: templates/javascript_defs.php:50 config/prefs.php.dist:706
+#: config/prefs.php.dist:1201 config/prefs.php.dist:1223
+#: templates/compose/compose.html:293
+msgid "No"
+msgstr "Hayýr"
+
+#: smime.php:241
+msgid "No Certificate found"
+msgstr "Onay Belgesi Bulunamadý"
+
+#: lib/IMP.php:1410
+msgid "No Encryption"
+msgstr "Þifreleme Yok"
+
+#: templates/smime/smime.html:26 templates/pgp/pgp.html:34
+msgid "No Keys in Keyring"
+msgstr "Anahtar zincirinde anahtar yok"
+
+#: rss.php:93 mailbox.php:268
+#, php-format
+msgid "No Messages"
+msgstr "Ýleti Yok"
+
+#: pgp.php:143
+msgid "No PGP public key imported."
+msgstr "Hiçbir PGP Açýk Anahtarý (içeri) aktarýlamadý"
+
+#: mailbox.php:818
+msgid "No Preview Text"
+msgstr "Önizleme Metni Yok"
+
+#: smime.php:166
+msgid "No S/MIME public key imported."
+msgstr "Hiçbir S/MIME açýk anahtarý (içeri) aktarýlamadý."
+
+#: templates/prefs/soundselect.inc:5
+msgid "No Sound"
+msgstr "Ses Yok"
+
+#: lib/MIME/Viewer/tnef.php:91
+msgid "No attachments found."
+msgstr "Hiçbir ek bulunamadý."
+
+#: lib/Crypt/SMIME.php:131
+msgid "No email information located in the public key."
+msgstr "Açýk Anahtarda elektronik posta adresi bulunamadý."
+
+#: acl.php:76
+msgid "No folder selected."
+msgstr "Hiçbir dizin seçili deðil."
+
+#: lib/Block/summary.php:134
+msgid "No folders are being checked for new mail."
+msgstr "Hiçbir dizin yeni posta için denetlenemedi."
+
+#: folders.php:198 lib/Folder.php:431 lib/Folder.php:479
+msgid "No folders were specified"
+msgstr "Hiçbir dizin belirtilmedi"
+
+#: lib/Block/summary.php:138
+msgid "No folders with new messages"
+msgstr "Hiçbir dizinde yeni ileti yok"
+
+#: lib/Block/summary.php:136
+msgid "No folders with unseen messages"
+msgstr "Hiçbir dizinde görülmemiþ ileti yok"
+
+#: lib/IMP.php:1014
+msgid "No limit"
+msgstr "Sýnýrsýz"
+
+#: lib/Compose.php:1528
+msgid "No message body text"
+msgstr "Ýleti gövdesinde metin yok"
+
+#: lib/IMAP/Client.php:474
+msgid "No message returned."
+msgstr "Geri gelen ileti yok"
+
+#: mailbox.php:240
+msgid "No messages matched your search."
+msgstr "Hiçbir ileti aramanýzla eþleþmedi."
+
+#: pgp.php:195
+msgid "No personal PGP private key imported."
+msgstr "Hiçbir kiþisel özel PGP anahtarý (içeri) aktarýlamadý."
+
+#: pgp.php:171
+msgid "No personal PGP public key imported."
+msgstr "Hiçbir kiþisel açýk PGP anahtarý (içeri) aktarýlamadý."
+
+#: smime.php:216
+msgid "No personal S/MIME certificates imported."
+msgstr "Hiçbir kiþisel S/MIME onay belgesi (içeri) aktarýlamadý."
+
+#: lib/MIME/Viewer/pkcs7.php:305
+msgid ""
+"No personal private key exists so the message is unable to be decrypted."
+msgstr "Kiþisel gizli anahtar bulunmadýðýndan ileti çözülemiyor."
+
+#: lib/IMAP/Client.php:374
+msgid "No supported IMAP authentication method could be found."
+msgstr "Desteklenen IMAP doðtulama yöntemi bulunamadý."
+
+#: acl.php:108
+msgid "No user specified."
+msgstr "Kullanýcý belirtilmedi."
+
+#: lib/MIME/Viewer/itip.php:747 lib/MIME/Viewer/itip.php:879
+msgid "Non Participant"
+msgstr "Katýlýmcý Deðil"
+
+#: templates/prefs/trashselect.inc:20 templates/prefs/spamselect.inc:20
+#: templates/prefs/folderselect.inc:21 templates/prefs/sourceselect.inc:35
+#: templates/prefs/sentmailselect.inc:38 lib/MIME/Viewer/itip.php:710
+#: lib/MIME/Viewer/itip.php:841 templates/mailbox/navbar.html:11
+msgid "None"
+msgstr "Hiçbiri"
+
+#: compose.php:994
+msgid "Normal"
+msgstr "Olaðan"
+
+#: templates/mailbox/navbar.html:21 templates/mailbox/navbar.html:38
+msgid "Not Deleted"
+msgstr "Silinmeyecek"
+
+#: templates/mailbox/navbar.html:23 templates/mailbox/navbar.html:41
+#: templates/message/navbar_navigate.html:15
+msgid "Not Draft"
+msgstr "Taslak Deðil"
+
+#: templates/mailbox/navbar.html:33 templates/message/navbar_navigate.html:11
+msgid "Not Flagged"
+msgstr "Ýþaretlenmemiþ"
+
+#: templates/mailbox/navbar.html:17
+msgid "Not Important"
+msgstr "Önemsiz"
+
+#: templates/mailbox/navbar.html:25
+msgid "Not Personal"
+msgstr "Kiþisel Deðil"
+
+#: lib/Crypt/PGP.php:136 lib/Crypt/SMIME.php:125 lib/Crypt/SMIME.php:140
+msgid "Not a valid public key."
+msgstr "Geçerli bir açýk anahtar deðil."
+
+#: config/prefs.php.dist:907
+msgid "Not at all"
+msgstr "Kesinlikle deðil"
+
+#: lib/Maintenance/Task/fetchmail_login.php:70
+msgid "Note that this can take some time"
+msgstr "Bu biraz zaman alabilir"
+
+#: lib/IMP.php:523
+msgid "Notepads"
+msgstr "Not Defterleri"
+
+#: config/hooks.php.dist:468
+msgid "Notes"
+msgstr "Notlar"
+
+#: config/prefs.php.dist:792
+msgid "Nothing"
+msgstr "Hiç"
+
+#: attachment.php:108
+msgid "Notification: Linked attachment downloaded"
+msgstr "Bildirim: Baðlý ek indirildi"
+
+#: config/prefs.php.dist:398
+msgid "Number of months to keep old linked attachments if deleting monthly."
+msgstr ""
+"Eðer aylýk olarak siliniyorsa, eski baðlý eklerin saklanacaðý ay sayýsý."
+
+#: config/prefs.php.dist:352
+msgid "Number of old sent-mail folders to keep if deleting monthly."
+msgstr ""
+"Eðer aylýk olarak siliniyorsa, eski gönderilmiþ posta dizinlerinin "
+"saklanacaðý ay sayýsý."
+
+#: templates/contacts/contacts.html:75
+msgid "OK"
+msgstr "Tamam"
+
+#: templates/smime/import_key.html:31 templates/pgp/import_key.html:30
+#: templates/search/search.html:61
+msgid "OR"
+msgstr "VEYA"
+
+#: search.php:324
+msgid "Old messages"
+msgstr "Eski Ýletiler"
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:51
+msgid "Old sent-mail folders being purged."
+msgstr "Eksi gönderilmiþ posta dizinleri silinecek."
+
+#: lib/Block/summary.php:27
+msgid "Only display folders with unread messages in them?"
+msgstr "Sadece okunmamýþ ileti içeren dizinler görüntülensin mi?"
+
+#: templates/javascript_defs.php:59
+msgid "Only one folder should be selected for this action."
+msgstr "Bu eylem için sadece bir dizin seçilmelidir."
+
+#: lib/IMP.php:903 lib/IMP.php:908
+msgid "Open Fo_lder"
+msgstr "Dizi_n Aç"
+
+#: lib/IMP.php:908
+msgid "Open Folder"
+msgstr "Dizin Aç"
+
+#: lib/IMAP/Tree.php:2373
+msgid "Opened Folder"
+msgstr "Görüntülenen Dizin"
+
+#: lib/MIME/Viewer/itip.php:743 lib/MIME/Viewer/itip.php:875
+msgid "Optional Participant"
+msgstr "Seçimli Katýlýmcý"
+
+#: config/prefs.php.dist:541
+msgid "Ordered List"
+msgstr "Sýralý Liste"
+
+#: templates/fetchmail/fetchmailprefs.html:3
+msgid "Other Mail Accounts"
+msgstr "Diðer Posta Hesaplarý"
+
+#: config/prefs.php.dist:118 config/prefs.php.dist:127
+#: config/prefs.php.dist:134 config/prefs.php.dist:142
+#: config/prefs.php.dist:151
+msgid "Other Options"
+msgstr "Diðer Seçenekler"
+
+#: lib/IMAP/Tree.php:94
+msgid "Other Users' Folders"
+msgstr "Diðer Kullanýcýlarýn Dizinleri"
+
+#: templates/login/login.html:103
+msgid "Outbound Server"
+msgstr "Dýþa Giden Sunucu"
+
+#: pgp.php:44 lib/MIME/Viewer/pgp.php:168 lib/MIME/Viewer/pgp.php:216
+#: lib/MIME/Viewer/pgp.php:312
+msgid "PGP"
+msgstr "PGP"
+
+#: lib/IMP.php:1413
+msgid "PGP Encrypt Message"
+msgstr "PGP ile Þifrelenmiþ Ýleti"
+
+#: lib/IMP.php:1418
+msgid "PGP Encrypt Message with passphrase"
+msgstr "Geçiþ Tümcecikli PGP ile Þifrelenmiþ Ýleti"
+
+#: lib/Compose.php:1245
+msgid "PGP Error: "
+msgstr "PGP Hatasý: "
+
+#: config/prefs.php.dist:143
+msgid "PGP Options"
+msgstr "PGP Seçenekleri"
+
+#: pgp.php:30
+msgid "PGP Passphrase Input"
+msgstr "PGP Geçiþ Tümceciði Giriþi"
+
+#: templates/pgp/pgp.html:69
+msgid "PGP Personal Keypair support requires a secure web connection."
+msgstr ""
+"PGP Kiþisel Anahtar Ýkilisi desteði güvenli bir web baðlantýsý "
+"gerektirmektedir. "
+
+#: pgp.php:155
+#, php-format
+msgid "PGP Public Key for \"%s (%s)\" was successfully added."
+msgstr "\"%s (%s)\" için PGP Açýk Anahtarý baþarýyla eklendi."
+
+#: pgp.php:251
+#, php-format
+msgid "PGP Public Key for \"%s\" was successfully deleted."
+msgstr "\"%s\" PGP Açýk Anahtarý baþarýyla silindi."
+
+#: templates/pgp/pgp.html:29
+msgid "PGP Public Keyring"
+msgstr "PGP Açýk Anahtar Zinciri"
+
+#: lib/IMP.php:1414
+msgid "PGP Sign Message"
+msgstr "PGP Ýmza Mesajý"
+
+#: lib/IMP.php:1415
+msgid "PGP Sign/Encrypt Message"
+msgstr "PGP Ýmza/Þifreleme Mesajý"
+
+#: lib/IMP.php:1419
+msgid "PGP Sign/Encrypt Message with passphrase"
+msgstr "Geçiþ Tümcecikli PGP Ýmza/Þifreli Mesaj"
+
+#: compose.php:691
+msgid ""
+"PGP encryption cannot be used by default as public keys cannot be found for "
+"all recipients."
+msgstr ""
+"Bütün alýcýlarýn açýk anahtarlarý bulunmadýðý için öntanýmlý olarak PGP ile "
+"þifreleme kullanýlamaz."
+
+#: pgp.php:208
+msgid "PGP private key successfully added."
+msgstr "PGP özel anahtarý baþarýyla eklendi."
+
+#: pgp.php:183
+msgid "PGP public key successfully added."
+msgstr "PGP açýk anahtarý baþarýyla eklendi."
+
+#: templates/pgp/pgp.html:138
+msgid "PGP support is disabled on this system."
+msgstr "PGP desteði bu sistemde seçilemez kýlýnmýþtýr."
+
+#: templates/pgp/pgp.html:4
+msgid ""
+"PGP support requires popup windows to be used.  If your browser is currently "
+"set to disable popup windows, you must change this setting or else the PGP "
+"features will not work correctly."
+msgstr ""
+"PGP desteði beliren pencereleri kullanmak istemektedir. Eðer tarayýcýnýz "
+"beliren pencereleri seçimsiz kýldýysa, bu ayarý deðiþtirmelisiniz, aksi "
+"taktirde PGP özellikleri doðru çalýþmayacaktýr"
+
+#: lib/Compose.php:1205
+msgid "PGP: Need passphrase for personal private key."
+msgstr "PGP Hatasý: Kiþisel özel anahtar için geçiþ tümceciði gerekmektedir."
+
+#: lib/Compose.php:1214
+msgid "PGP: Need passphrase to encrypt your message with."
+msgstr ""
+"PGP Hatasý: Ýletinizin þifrelenmesi için geçiþ tümceciði gerekmektedir."
+
+#: lib/IMAP.php:281
+msgid "POP3"
+msgstr "POP3"
+
+#: lib/Fetchmail/imap.php:92
+msgid "POP3 (Auto Detect Protocols)"
+msgstr "POP3 (Ýletiþim Kurallarýný Özdevinimli Algýla)"
+
+#: lib/IMAP.php:293
+msgid "POP3 over SSL"
+msgstr "SSL üzerinden POP3"
+
+#: lib/IMAP.php:299
+msgid "POP3 over SSL (self-signed certificate)"
+msgstr "SSL üzerinden SSL (kendinden imzalý onay belgesi)"
+
+#: lib/IMAP.php:287
+msgid "POP3, no TLS"
+msgstr "POP3,TLS yok"
+
+#: mailbox.php:441
+#, php-format
+msgid "Page %d of %d"
+msgstr "Sayfa %d - %d"
+
+#: config/prefs.php.dist:1120
+msgid "Page with the First Unseen Message"
+msgstr "Ýlk Okunmamýþ Ýletinin Bulunduðu Sayfa"
+
+#: config/prefs.php.dist:1121
+msgid "Page with the Last Unseen Message"
+msgstr "Son Okunmamýþ Ýletinin Bulunduðu Sayfa"
+
+#: templates/mailbox/navbar.html:67
+msgid "Page:"
+msgstr "Sayfa:"
+
+#: message.php:687
+msgid "Part(s)"
+msgstr "Bölüm(ler)"
+
+#: templates/pgp/pgp.html:122
+msgid "Passphrase (Again):"
+msgstr "Geçiþ Tümceciði (Tekrar):"
+
+#: smime.php:250 pgp.php:336
+msgid "Passphrase successfully unloaded."
+msgstr "Geçiþ Tümceciði baþarýyla çýkartýldý."
+
+#: templates/smime/passphrase.html:21 templates/pgp/passphrase.html:19
+#: templates/pgp/pgp.html:117
+msgid "Passphrase:"
+msgstr "Geçiþ Tümceciði:"
+
+#: pgp.php:118
+msgid "Passphrases cannot be empty"
+msgstr "Geçiþ Tümcecikleri boþ olamaz"
+
+#: pgp.php:120
+msgid "Passphrases do not match"
+msgstr "Geçiþ Tümcecikleri eþleþmemektedir"
+
+#: templates/login/login.html:92
+msgid "Password"
+msgstr "Þifre"
+
+#: templates/smime/import_key.html:54
+#: templates/fetchmail/fetchmailprefs.html:59
+msgid "Password:"
+msgstr "Þifre:"
+
+#: templates/login/mobile.inc:17
+msgid "Password: "
+msgstr "Þifre: "
+
+#: config/prefs.php.dist:555
+msgid "Paste from clipboard"
+msgstr "Panodan yapýþtýr"
+
+#: message.php:466 mailbox.php:757 templates/mailbox/navbar.html:24
+msgid "Personal"
+msgstr "Kiþisel"
+
+#: config/prefs.php.dist:13
+msgid "Personal Information"
+msgstr "Kiþisel Bilgiler"
+
+#: pgp.php:126
+msgid "Personal PGP keypair generated successfully."
+msgstr "Kiþisel PGP anahtar ikilisi baþarýyla üretildi."
+
+#: pgp.php:133
+msgid "Personal PGP keys deleted successfully."
+msgstr "Kiþisel PGP anahtarlarý baþarýyla silindi."
+
+#: smime.php:222
+msgid "Personal S/MIME certificates NOT imported: "
+msgstr "Kiþisel S/MIME onay belgesi (içeri) AKTARILAMADI: "
+
+#: smime.php:147
+msgid "Personal S/MIME keys deleted successfully."
+msgstr "Kiþisel S/MIME anahtarlarý baþarýyla silindi."
+
+#: config/prefs.php.dist:214
+msgid "Place your signature before replies and forwards?"
+msgstr "Ýmzanýz yanýtlardan ve iletileceklerden önce yerleþtirilsin mi?"
+
+#: lib/Compose.php:448
+msgid "Plaintext Version of Message"
+msgstr "Ýletinin Düz Metin Sürümü"
+
+#: templates/prefs/soundselect.inc:3
+msgid ""
+"Play a sound on new mail?  This requires your browser to support embedded "
+"sound files.  Almost all do on Windows and Mac, but other platforms may "
+"require a plugin."
+msgstr ""
+"Yeni iletide ses çýksýn mý? Bu tarayýcýnýzýn gömülü ses dosyalarýna destek "
+"vermesini gerektirir. Windows ve Mac'de hepsi oluyor ancak baþka "
+"platformlarda plugin gerektirebilir."
+
+#: templates/javascript_defs.php:82
+msgid "Please enter a name for the new folder:"
+msgstr "Lütfen yeni posta kutusu için bir ad girin:"
+
+#: templates/javascript_defs.php:61 templates/javascript_defs.php:62
+msgid "Please enter the name of the new folder:"
+msgstr "Lütfen yeni dizin için bir ad girin:"
+
+#: templates/javascript_defs.php:66
+msgid "Please enter the new name:"
+msgstr "Lütfen yeni adý girin:"
+
+#: templates/pgp/passphrase.html:12
+msgid "Please enter the passphrase for this message."
+msgstr "Bu ileti için geçiþ tümceciðini girmelisiniz."
+
+#: templates/pgp/passphrase.html:14
+msgid ""
+"Please enter the passphrase for your PGP private key. You will only need to "
+"enter this passphrase once per session."
+msgstr ""
+"Lütfen PGP özel anahtarýnýz için geçiþ tümceciðini girin. Bu geçiþ "
+"tümceciðini heroturum için bir kere girmeniz gerekiyor."
+
+#: templates/smime/passphrase.html:15
+msgid ""
+"Please enter the passphrase for your S/MIME private key. You will only need "
+"to enter this passphrase once per session."
+msgstr ""
+"Lütfen S/MIME özel anahtarýnýz için geçiþ tümceciðini girin. Bu geçiþ "
+"tümceciðini her oturum için bir kere girmeniz gerekiyor."
+
+#: login.php:183
+msgid ""
+"Please log in again to resume composing your message. If you are NOT using "
+"cookies AND you are composing messages in popup windows, you will have to "
+"log in again in your main window as well. This is to keep attackers from "
+"hijacking your session ID. We apologize for any inconvenience."
+msgstr ""
+"Lütfen yeniden giriþ yapýn ve yeni ileti oluþturmaya devam edin.Eðer çerez "
+"KULLANMIYORSANIZ ve yeni iletinizi beliren pencerede oluþturuyorsanýz, "
+"yeniden ana pencereye de giriþ yapmanýz gerekecektir.Bu, saldýrganlarýn "
+"oturum kimlik numaranýzý ele geçirmesini önlemek içindir.Rahatsýzlýk için "
+"özür dileriz."
+
+#: templates/javascript_defs.php:77
+msgid "Please provide your password."
+msgstr "Lütfen þifrenizi girin."
+
+#: templates/javascript_defs.php:76
+msgid "Please provide your username."
+msgstr "Lütfen kullanýcý adýnýzý girin."
+
+#: lib/Compose.php:2576 lib/UI/Compose.php:26
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Lütfen geçersiz yada belirsiz adresleri çözün."
+
+#: templates/javascript_defs.php:58
+msgid "Please select a folder before you perform this action."
+msgstr "Lütfen herhangi bir eylem gerçekleþtirmeden önce bir dizin seçin. "
+
+#: templates/javascript_defs.php:70
+msgid "Please select at least one folder to search."
+msgstr "Lütfen arama için en az bir dizin seçin."
+
+#: templates/compose/redirect.html:39
+msgid "Please select or edit in the box to the right:"
+msgstr "Lütfen kutunun içinden saða doðru seçim yada düzenleme yapýn:"
+
+#: config/prefs.php.dist:1234
+msgid "Poll all folders for new mail?"
+msgstr "Yeni ileti için tüm dizinleri yoklasýn mý?"
+
+#: templates/login/login.html:67
+msgid "Port"
+msgstr "Kapý"
+
+#: lib/IMAP/ACL/rfc2086.php:54 lib/IMAP/ACL/rfc4314.php:54
+msgid "Post"
+msgstr "Gönder"
+
+#: config/motd.php.dist:41
+msgid "Powered by Horde"
+msgstr "Horde Desktekli"
+
+#: config/prefs.php.dist:206
+msgid "Precede your signature with dashes ('-- ')?"
+msgstr "Ýmzanýz öncesinde kesikli çizgi ('--') bulunsun mu?"
+
+#: smime.php:257 filterprefs.php:53 pgp.php:260
+msgid "Preferences successfully updated."
+msgstr "Tercihleriniz baþarýyla güncellendi."
+
+#: compose.php:1135
+msgid "Preview"
+msgstr "Önizleme"
+
+#: message.php:528
+msgid "Previous Message"
+msgstr "Önceki Ýleti"
+
+#: mailbox.php:281
+msgid "Previous Page"
+msgstr "Önceki Sayfa"
+
+#: message.php:602
+msgid "Print"
+msgstr "Yazdýr"
+
+#: config/prefs.php.dist:552
+msgid "Print document"
+msgstr "Belge yazdýrma"
+
+#: message.php:691
+msgid "Printed By"
+msgstr "Yazdýran"
+
+#: message.php:670 lib/MIME/Viewer/itip.php:834
+msgid "Priority"
+msgstr "Öncelik"
+
+#: templates/smime/import_key.html:59
+msgid "Private Key Password:"
+msgstr "Özel Anahtar Þifresi:"
+
+#: config/prefs.php.dist:747
+msgid "Prompt every time an attachment is sent; default to NO"
+msgstr "Her ek gönderilirken sor; öntanýmlý deðer HAYIR"
+
+#: config/prefs.php.dist:746
+msgid "Prompt every time an attachment is sent; default to YES"
+msgstr "Her ek gönderilirken sor; öntanýmlý deðer EVET"
+
+#: config/prefs.php.dist:915
+msgid "Prompt to send read receipt when requested by the sender?"
+msgstr "Gönderen tarafýndan istendiðinde okundu bilgisi gönderilsin mi?"
+
+#: templates/login/login.html:72
+msgid "Protocol"
+msgstr "Ýletiþim Kurallarý"
+
+#: login.php:269 templates/fetchmail/fetchmailprefs.html:47
+msgid "Protocol:"
+msgstr "Ýletiþim Kurallarý:"
+
+#: lib/Crypt/PGP.php:489
+msgid "Public PGP keyserver support has been disabled."
+msgstr "Açýk PGP anahtar sunucusu desteði seçilemez kýlýndý."
+
+#: mailbox.php:455 mailbox.php:523
+msgid "Pur_ge Deleted"
+msgstr "Silinecekleri _Temizle"
+
+#: lib/IMAP/ACL/rfc4314.php:58 templates/folders/actions.html:22
+msgid "Purge"
+msgstr "Temizle"
+
+#: mailbox.php:455 mailbox.php:523
+msgid "Purge Deleted"
+msgstr "Silinecekleri Temizle"
+
+#: config/prefs.php.dist:417
+msgid "Purge Spam how often:"
+msgstr "Ýstenmeyen Ýleti Kutusu temizleme sýklýðý:"
+
+#: config/prefs.php.dist:445
+msgid "Purge Trash how often:"
+msgstr "Çöp Kutusu temizleme sýklýðý:"
+
+#: config/prefs.php.dist:426
+msgid "Purge messages in Spam folder older than this amount of days."
+msgstr ""
+"Bu kadar günden daha eski Ýstenmeyen Ýleti kutusundaki iletileri temizle."
+
+#: config/prefs.php.dist:454
+msgid "Purge messages in Trash folder older than this amount of days."
+msgstr "Bu kadar günden daha eski çöp kutusundaki iletileri temizle."
+
+#: config/prefs.php.dist:380
+msgid "Purge messages in sent-mail folder(s) older than this amount of days."
+msgstr "Bu kadar günden daha eski Gönderilen kutusundaki iletileri temizle."
+
+#: config/prefs.php.dist:407
+msgid "Purge old messages in the Spam folder?"
+msgstr "Ýstenmeyen Ýleti kutusundaki eski iletiler temizlensin mi?"
+
+#: config/prefs.php.dist:435
+msgid "Purge old messages in the Trash folder?"
+msgstr "Çöp kutusundaki eski iletiler temizlensin mi?"
+
+#: config/prefs.php.dist:361
+msgid "Purge old messages in the sent-mail folder(s)?"
+msgstr "Gönderilen kutusundaki eski iletiler temizlensin mi?"
+
+#: config/prefs.php.dist:371
+msgid "Purge sent-mail how often:"
+msgstr "Gönderilen Kutusu temizleme sýklýðý:"
+
+#: lib/Maintenance/Task/purge_spam.php:64
+#, php-format
+msgid "Purging %d messages from Spam folder."
+msgstr "%d ileti Ýstenmeyen Ýleti Kutusundan temizleniyor."
+
+#: lib/Maintenance/Task/purge_trash.php:63
+#, php-format
+msgid "Purging %d messages from Trash folder."
+msgstr "%d ileti Çöp Kutusundan silindi."
+
+#: lib/Maintenance/Task/purge_sentmail.php:63
+#, php-format
+msgid "Purging %d messages from sent-mail folder."
+msgstr "%d ileti Gönderilen Kutusundan temizleniyor."
+
+#: lib/Maintenance/Task/purge_spam.php:62
+msgid "Purging 1 message from Spam folder."
+msgstr "Bir ileti Ýstenmeyen Ýleti Kutusundan temizleniyor."
+
+#: lib/Maintenance/Task/purge_trash.php:61
+msgid "Purging 1 message from Trash folder."
+msgstr "1 ileti Çöp Kutusundan silindi."
+
+#: lib/Maintenance/Task/purge_sentmail.php:61
+#, php-format
+msgid "Purging 1 message from sent-mail folder %s."
+msgstr "Bir ileti Gönderilen Kutusundan temizleniyor %s."
+
+#: lib/IMP.php:997
+#, php-format
+msgid "Quota status: %.2f MB / %.2f MB  (%.2f%%)"
+msgstr "Kota Durumu: %.2f MB / %.2f MB (%.2f%%)"
+
+#: lib/IMP.php:1006
+#, php-format
+msgid "Quota status: %.2f MB / NO LIMIT"
+msgstr "Kota Durumu: %.2f MB / SINIRSIZ"
+
+#: lib/IMP.php:1012
+#, php-format
+msgid "Quota status: NO LIMIT"
+msgstr "Kota Durumu: SINIRSIZ"
+
+#: config/prefs.php.dist:677
+#, php-format
+msgid "Quoting %f:"
+msgstr "Alinti %f"
+
+#: lib/IMAP/ACL/rfc2086.php:50 lib/IMAP/ACL/rfc4314.php:50
+msgid "Read"
+msgstr "Okuma"
+
+#: templates/folders/actions.html:40
+msgid "Rebuild Folder Tree"
+msgstr "Dizin Aðacýný Oluþtur"
+
+#: templates/search/search.html:31
+msgid "Recent Searches"
+msgstr "Son Aramalar"
+
+#: templates/search/search.html:35 templates/search/search.html:37
+msgid "Recent Searches:"
+msgstr "Son Aramalar:"
+
+#: message.php:573 message.php:616
+msgid "Redirec_t"
+msgstr "Yönlen_dir"
+
+#: message.php:573 message.php:616
+msgid "Redirect"
+msgstr "Yönlendir"
+
+#: templates/compose/redirect.html:82
+msgid "Redirect Message"
+msgstr "Iletiyi Yönlerdir"
+
+#: compose.php:343
+msgid "Redirect this message"
+msgstr "Bu iletiyi yönlendir"
+
+#: config/prefs.php.dist:550
+msgid "Redoes your last action"
+msgstr "Geri alýnmýþ son hareketi tekrarlar"
+
+#: folders.php:360
+msgid "Refresh"
+msgstr "Yenile"
+
+#: config/prefs.php.dist:996
+msgid "Refresh Folder Views:"
+msgstr "Dizini Görünümlerini Yenile:"
+
+#: mailbox.php:418
+msgid "Reload"
+msgstr "Yeniden Yükle"
+
+#: folders.php:350
+msgid "Reload View"
+msgstr "Görünümü Yeniden Yükle"
+
+#: lib/MIME/Viewer/itip.php:551 lib/MIME/Viewer/itip.php:570
+msgid "Remember the free/busy information."
+msgstr "Serbest/Meþgul bilgiyi hatýrla."
+
+#: config/prefs.php.dist:1203
+msgid "Remember the last view"
+msgstr "Son görünümü hatýrla"
+
+#: templates/fetchmail/fetchmailprefs.html:68
+msgid "Remote Mailbox:"
+msgstr "Uzaktaki Posta Kutusu:"
+
+#: search.php:320
+msgid "Remove Field From Search"
+msgstr "Alaný Aramadan Çýkar"
+
+#: config/prefs.php.dist:560
+msgid "Remove formatting"
+msgstr "Biçimlemeyi kaldýr"
+
+#: templates/prefs/sourceselect.inc:302
+msgid "Remove source"
+msgstr "Kaynaðý çýkar"
+
+#: templates/folders/actions.html:18
+msgid "Rename"
+msgstr "Ýsim deðiþtir"
+
+#: config/prefs.php.dist:334
+msgid "Rename sent-mail folder at beginning of month?"
+msgstr "Gönderilmiþ-posta dizini ayýn baþýnda yeniden adlandýrýlsýn mý?"
+
+#: lib/Folder.php:385
+#, php-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr ""
+"\"%s\" \"%s\" olarak yeniden adlandýrýlmasý baþarýsýz oldu.Sunucunun "
+"belirttiði budur "
+
+#: message.php:557
+msgid "Reply"
+msgstr "Yanýtla"
+
+#: lib/MIME/Viewer/itip.php:318 lib/MIME/Viewer/itip.php:421
+msgid "Reply Sent."
+msgstr "Yanýt Gönderildi."
+
+#: compose.php:310
+msgid "Reply to All:"
+msgstr "Herkese Yanýtla:"
+
+#: compose.php:312
+msgid "Reply to List:"
+msgstr "Listeye Yanýtla:"
+
+#: lib/MIME/Viewer/itip.php:553 lib/MIME/Viewer/itip.php:562
+#: lib/MIME/Viewer/itip.php:572
+msgid "Reply with Not Supported Message"
+msgstr "Desteklenmeyen Ýleti ile Yanýtla"
+
+#: lib/MIME/Viewer/itip.php:560
+msgid "Reply with free/busy for next 2 months."
+msgstr "Gelecek 2 ay için serbest/meþgul ile yanýtla."
+
+#: lib/MIME/Viewer/itip.php:559
+msgid "Reply with requested free/busy information."
+msgstr "Ýstenen serbest/meþgul bilgisi ile yanýtla."
+
+#: lib/UI/Message.php:29
+msgid "Reply-To"
+msgstr "Yanýt-Adresi"
+
+#: lib/Compose.php:1766
+msgid "Reply-To: "
+msgstr "Yanýt Adresi:"
+
+#: compose.php:308
+msgid "Reply:"
+msgstr "Yanýtla:"
+
+#: message.php:613 mailbox.php:545
+msgid "Report as Innocent"
+msgstr "Temiz Olarak Rapor Et"
+
+#: message.php:607 mailbox.php:539
+msgid "Report as Spam"
+msgstr "Ýstenmeyen Ýleti Olarak Rapor Et"
+
+#: compose.php:1060
+msgid "Request a _Read Receipt"
+msgstr "Okunma _Bilgisi Ýste"
+
+#: config/prefs.php.dist:761
+msgid "Request read receipts?"
+msgstr "Okundu alýndýsý istensin mi?"
+
+#: mailbox.php:115
+msgid "Requested message not found."
+msgstr "Ýstenen ileti bulunamadý."
+
+#: lib/MIME/Viewer/itip.php:735 lib/MIME/Viewer/itip.php:867
+msgid "Required Participant"
+msgstr "Gereken Katýlýmcý"
+
+#: templates/acl/acl.html:80 templates/search/search.html:26
+#: templates/search/search.html:201
+msgid "Reset"
+msgstr "Sýfýrla"
+
+#: lib/MIME/Viewer/itip.php:117
+msgid "Respondent Status Updated."
+msgstr "Karþýlýk Gelen Durum Güncellendi."
+
+#: message.php:596
+msgid "Resume"
+msgstr "Devam Et"
+
+#: lib/UI/Compose.php:137
+msgid "Resume Editing"
+msgstr "Düzenlemeye Devam Et"
+
+#: login.php:184
+msgid "Resume your session"
+msgstr "Oturumunuza devam edin"
+
+#: templates/fetchmail/fetchmailprefs.html:125
+msgid "Return to Fetch Mail"
+msgstr "Posta Getirmeye Dönün"
+
+#: templates/folders/folders_size.html:30
+msgid "Return to Folders"
+msgstr "Seçeneklere Dön"
+
+#: stationery.php:142
+msgid "Return to Message Composition"
+msgstr "Ýleti Oluþturmaya Geri Dön"
+
+#: filterprefs.php:65 templates/acl/acl.html:35 templates/acl/acl.html:81
+#: templates/acl/acl.html:95 templates/smime/smime.html:13
+#: templates/smime/smime.html:93 templates/pgp/pgp.html:21
+#: templates/pgp/pgp.html:145
+msgid "Return to Options"
+msgstr "Seçeneklere Dönün"
+
+#: config/prefs.php.dist:930
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr ""
+"Ýletinin silinmesinden,taþýnmasýndan veya kopyalanmasýndan sonra posta "
+"kutusu listesine dönülsün mü?"
+
+#: acl.php:114
+#, php-format
+msgid "Rights for user \"%s\" cannot be modified."
+msgstr "\"%s\" kullanýcýsýnýn haklarý deðiþtirilemez."
+
+#: lib/MIME/Viewer/itip.php:726 lib/MIME/Viewer/itip.php:858
+msgid "Role"
+msgstr "Görev"
+
+#: smime.php:67 lib/MIME/Viewer/pkcs7.php:176 lib/MIME/Viewer/pkcs7.php:296
+#: lib/MIME/Viewer/pkcs7.php:488
+msgid "S/MIME"
+msgstr "S/MIME"
+
+#: lib/IMP.php:1423
+msgid "S/MIME Encrypt Message"
+msgstr "S/MIME Þifrelenmiþ Ýleti"
+
+#: lib/Compose.php:1277
+msgid "S/MIME Error: "
+msgstr "S/MIME Hatasý:"
+
+#: lib/Compose.php:1256
+msgid "S/MIME Error: Need passphrase for personal private key."
+msgstr "S/MIME Hatasý: Kiþisel özel anahtar için geçiþ tümceciði gerekiyor."
+
+#: config/prefs.php.dist:152
+msgid "S/MIME Options"
+msgstr "S/MIME Seçenekleri"
+
+#: smime.php:54
+msgid "S/MIME Passphrase Input"
+msgstr "S/MIME Geçiþ Tümceciði Giriþi"
+
+#: templates/smime/smime.html:61
+msgid "S/MIME Personal Keypair support requires a secure web connection."
+msgstr ""
+"S/MIME Kiþisel Anahtar Ýkilisi desteði güvenli bir web baðlantýsý "
+"istemektedir."
+
+#: smime.php:155
+#, php-format
+msgid "S/MIME Public Key for \"%s\" was successfully deleted."
+msgstr "\"%s\" için S/MIME Açýk Anahtarý baþarýyla silindi. "
+
+#: smime.php:177
+msgid "S/MIME Public Key successfully added."
+msgstr "S/MIME Açýk Anahtarý baþarýyla eklendi."
+
+#: templates/smime/smime.html:21
+msgid "S/MIME Public Keyring"
+msgstr "S/MIME Açýk Anahtar Zinciri"
+
+#: smime.php:226
+msgid "S/MIME Public/Private Keypair successfully added."
+msgstr "S/MIME Açýk/Özel Anahtar Ýkilisi baþarýyla eklendi."
+
+#: lib/IMP.php:1424
+msgid "S/MIME Sign Message"
+msgstr "S/MIME Ýmza Mesajý"
+
+#: lib/IMP.php:1425
+msgid "S/MIME Sign/Encrypt Message"
+msgstr "S/MIME Imza/Þifre Mesajý"
+
+#: templates/smime/smime.html:86
+msgid "S/MIME support is disabled on this system."
+msgstr "S/MIME desteði bu sistemde seçilemez kýlýnmýþtýr."
+
+#: lib/MIME/Viewer/pkcs7.php:300
+msgid ""
+"S/MIME support is not currently enabled so the message is unable to be "
+"decrypted."
+msgstr ""
+"S/MIME desteði yürürlükte deðil bu nedenle iletinin þifresinin çözülmesi "
+"olanaksýz."
+
+#: lib/MIME/Viewer/pkcs7.php:207
+msgid ""
+"S/MIME support is not enabled so the contents of this signed message cannot "
+"be displayed."
+msgstr ""
+"S/MIME desteði yürürlükte deðil bu nedenle imzalanmýþ ileti "
+"görüntülenemeyecektir."
+
+#: lib/MIME/Viewer/pkcs7.php:180
+msgid ""
+"S/MIME support is not enabled so the digital signature is unable to be "
+"verified."
+msgstr ""
+"S/MIME desteði yürürlükte deðil bu nedenle sayýsal imzanýn doðrulanmasý "
+"olanaksýz."
+
+#: lib/MIME/Viewer/pkcs7.php:137
+msgid "S/MIME support is not enabled."
+msgstr "S/MIME desteði çalýþmýyor."
+
+#: templates/smime/smime.html:4
+msgid ""
+"S/MIME support requires popup windows to be used.  If your browser is "
+"currently set to disable popup windows, you must change this setting or else "
+"the S/MIME features will not work correctly."
+msgstr ""
+"S/MIME desteði beliren pencereleri kullanmak istemektedir. Eðer tarayýcýnýz "
+"beliren pencereleri seçimsiz kýldýysa, bu ayarý deðiþtirmelisiniz, aksi "
+"takdirde S/MIME özellikleri doðru çalýþmayacaktýr"
+
+#: templates/login/login.html:108
+msgid "SMTP"
+msgstr "SMTP"
+
+#: templates/login/login.html:107
+msgid "SMTP Port"
+msgstr "SMTP Kapýsý"
+
+#: compose.php:969
+msgid "S_ubject"
+msgstr "Ko_nu"
+
+#: compose.php:1039
+msgid "Sa_ve a copy in "
+msgstr "Kopyasini ka_ydet"
+
+#: message.php:600
+msgid "Sa_ve as"
+msgstr "_Farklý Kaydet"
+
+#: templates/acl/acl.html:79 templates/fetchmail/fetchmailprefs.html:121
+#: templates/search/search.html:25 templates/search/search.html:200
+msgid "Save"
+msgstr "Kaydet"
+
+#: compose.php:1111
+msgid "Save Attachments with message in sent-mail folder?"
+msgstr "Ekler, ileti ile birlikte gönderilmiþ posta dizinine kaydedilsin mi?"
+
+#: templates/compose/compose.html:19 templates/compose/compose.html:206
+msgid "Save Draft"
+msgstr "Taslak Kaydet"
+
+#: saveimage.php:53
+msgid "Save Image"
+msgstr "Resimi Kaydet"
+
+#: lib/MIME/Contents.php:262
+msgid "Save Image in Gallery"
+msgstr "Resimi Galeriye Kaydet"
+
+#: filterprefs.php:126 templates/smime/smime.html:12
+#: templates/smime/smime.html:92 templates/pgp/pgp.html:20
+#: templates/pgp/pgp.html:144
+msgid "Save Options"
+msgstr "Seçenekleri Kaydet"
+
+#: templates/stationery/stationery.html:42
+msgid "Save Stationery"
+msgstr "Kýrtasiyeyi Kaydet"
+
+#: compose.php:884
+msgid "Save _Draft"
+msgstr "_Taslak Kaydet"
+
+#: message.php:600 config/prefs.php.dist:557
+msgid "Save as"
+msgstr "Farklý Kaydet"
+
+#: config/prefs.php.dist:698
+msgid "Save drafts as unseen?"
+msgstr "Taslaklar görülmemiþ olarak kaydedilsin mi? "
+
+#: config/prefs.php.dist:708
+msgid "Save drafts automatically while composing?"
+msgstr "Taslaklar oluþturulurken özdevinimli olarak kaydedilsin mi?"
+
+#: lib/MIME/Viewer/pkcs7.php:260
+msgid "Save in your Address Book"
+msgstr "Adres Defterinize Kaydet"
+
+#: config/prefs.php.dist:1302
+msgid "Save recipients automatically to the default address book?"
+msgstr "Alýcýlar özdevinimli olarak varsayýlan adres defterine kaydedilsin mi?"
+
+#: templates/search/search.html:191
+msgid "Save search as a virtual folder?"
+msgstr "Aramayý sanal dizin olarak sakla"
+
+#: config/prefs.php.dist:222
+msgid "Save sent mail?"
+msgstr "Gönderilmiþ posta kaydedilsin mi?"
+
+#: lib/Compose.php:233
+msgid "Saving the draft failed. Could not create a drafts folder."
+msgstr "Taslak kaydedilemiyor. Taslak dizini oluþturulamýyor."
+
+#: lib/Compose.php:172
+msgid "Saving the draft failed. No draft folder specified."
+msgstr "Taslak kayýdý baþarýsýz. Taslak dizini belirtilmemiþ."
+
+#: lib/Compose.php:203
+#, php-format
+msgid ""
+"Saving the draft failed. The %s header contains an invalid e-mail address: %"
+"s."
+msgstr ""
+"Taslaðýn kaydedilmesi baþarýsýz oldu. %s baþlýðý geçersiz eposta adresi "
+"bulunduruyor: %s"
+
+#: lib/Compose.php:240
+#, php-format
+msgid "Saving the draft failed. This is what the server said: %s"
+msgstr "Taslaðýn kaydedilmesi baþarýsýz oldu. Sunucu: %s"
+
+#: mailbox.php:424 lib/Search.php:533 lib/Block/tree_folders.php:43
+#: templates/contacts/contacts.html:25
+msgid "Search"
+msgstr "Arama"
+
+#: search.php:207 mailbox.php:424
+#, php-format
+msgid "Search %s"
+msgstr "Ara: %s"
+
+#: templates/search/search.html:46
+msgid "Search Criteria"
+msgstr "Arama Ölçütü"
+
+#: templates/search/search.html:130
+msgid "Search Flags"
+msgstr "Arama Belirteçleri"
+
+#: templates/search/search.html:155
+msgid "Search Folders"
+msgstr "Arama Dizinleri"
+
+#: search.php:154 templates/contacts/contacts.html:31
+msgid "Search Results"
+msgstr "Arama Sonuçlarý"
+
+#: templates/search/search.html:80
+msgid "Search Text"
+msgstr "Arama Metni"
+
+#: templates/mailbox/navbar.html:14 templates/mailbox/navbar.html:30
+msgid "Seen"
+msgstr "Görülmüþ"
+
+#: templates/fetchmail/fetchmailprefs.html:123
+msgid "Select Another Account"
+msgstr "Baþka Bir Hesap Seç"
+
+#: search.php:311
+msgid "Select a date"
+msgstr "Bir tarih Seçin"
+
+#: templates/search/search.html:65 templates/search/search.html:68
+msgid "Select a field"
+msgstr "Bir alan seçin"
+
+#: templates/fetchmail/fetchmail.html:11
+msgid "Select accounts to fetch mail from:"
+msgstr "Ýleti çekmek istediðiniz hesaplarý seçiniz:"
+
+#: config/prefs.php.dist:136
+msgid "Select address book sources for adding and searching for addresses."
+msgstr "Adres ekleme ve arama için adres defteri kaynaklarýný seçin."
+
+#: config/prefs.php.dist:551 templates/search/search.html:159
+msgid "Select all"
+msgstr "Hepsi"
+
+#: templates/prefs/sourceselect.inc:321
+msgid "Select all fields to search when expanding addresses."
+msgstr "Adresleri geniþletirken arama için bütün alanlarý seç."
+
+#: templates/fetchmail/fetchmailprefs.html:21
+msgid "Select an account:"
+msgstr "Bir hesap seçiniz:"
+
+#: templates/folders/folders.html:3
+msgid "Select mailbox"
+msgstr "Ýleti kutusu seçiniz"
+
+#: templates/search/search.html:160
+msgid "Select none"
+msgstr "Hiçbiri"
+
+#: templates/compose/compose.html:134
+msgid "Select stationery:"
+msgstr "Kýrtasiye seçiniz:"
+
+#: templates/saveimage/saveimage.html:8
+msgid "Select the gallery to save the image in."
+msgstr "Resimi kaydedeceðiniz galeriyi seçiniz."
+
+#: templates/fetchmail/fetchmailprefs.html:34
+msgid "Select the mail server type:"
+msgstr "Posta sunucusu türünü seçiniz:"
+
+#: templates/mailbox/navbar.html:7 templates/mailbox/navbar.html:9
+msgid "Select:"
+msgstr "Seçiniz:"
+
+#: templates/prefs/sourceselect.inc:305 templates/prefs/sourceselect.inc:307
+msgid "Selected Address books:"
+msgstr "Seçilmiþ Adres Defterleri:"
+
+#: templates/contacts/contacts.html:47
+msgid "Selected Addresses"
+msgstr "Seçilmiþ Adresler"
+
+#: pgp.php:430 templates/pgp/pgp.html:75
+msgid "Send Key to Public Keyserver"
+msgstr "Anahtarý Açýk Anahtar Sunucusuna Gönder"
+
+#: lib/MIME/Viewer/itip.php:646
+msgid "Send Latest Information"
+msgstr "Son Bilgileri Gönder"
+
+#: templates/compose/compose.html:17 templates/compose/compose.html:204
+msgid "Send Message"
+msgstr "Ýleti Gönder"
+
+#: templates/javascript_defs.php:40
+msgid "Send message without a Subject?"
+msgstr "Ýleti Konu olmaksýzýn gönderilsin mi?"
+
+#: config/prefs.php.dist:226
+msgid "Sent"
+msgstr "Gönderilmiþ"
+
+#: lib/IMAP/Tree.php:2345
+msgid "Sent mail folder"
+msgstr "Gönderilmiþ posta dizini"
+
+#: templates/prefs/sentmailselect.inc:36
+msgid "Sent mail folder:"
+msgstr "Gönderilmiþ posta dizini:"
+
+#: templates/login/login.html:36 templates/login/login.html:50
+#: templates/login/login.html:62
+msgid "Server"
+msgstr "Sunucu"
+
+#: config/prefs.php.dist:22
+msgid "Server and Folder Information"
+msgstr "Sunucu ve Dizin Bilgileri"
+
+#: login.php:252 templates/fetchmail/fetchmailprefs.html:63
+msgid "Server:"
+msgstr "Sunucu:"
+
+#: config/prefs.php.dist:88
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr ""
+"Ýletileri taþýmanýz yada silmeniz durumundaki tercihlerinizi belirleyin"
+
+#: config/prefs.php.dist:717
+msgid "Set the X-Priority header when composing messages?"
+msgstr "Ýleti oluþtururken X-Priority baþlýðý konsun mu?"
+
+#: config/prefs.php.dist:31
+msgid "Share Folders"
+msgstr "Paylaþým Dizinleri"
+
+#: templates/acl/acl.html:7
+msgid "Share mail folders"
+msgstr "Paylaþýlan posta dizinleri"
+
+#: config/prefs.php.dist:32
+msgid "Share your mail folders with other users."
+msgstr "Diðer kullanýcýlarla posta dizinlerini paylaþ."
+
+#: lib/IMAP/Tree.php:92
+msgid "Shared Folders"
+msgstr "Paylaþýlan Dizinler"
+
+#: templates/pgp/pgp.html:15
+msgid "Should PGP signed messages automatically be verified when viewed?"
+msgstr ""
+"PGP ile imzalanmýþ iletiler gösterilirken otomatik olarak doðrulansýn mý?"
+
+#: templates/smime/smime.html:7
+msgid "Should S/MIME signed messages automatically be verified when viewed?"
+msgstr ""
+"S/MIME olarak imzalanmýþ iletiler gösterilirken otomatik olarak doðrulansýn "
+"mý?"
+
+#: config/prefs.php.dist:845
+msgid ""
+"Should large blocks of quoted text be shown or hidden by default? It can be "
+"toggled easily whichever you choose."
+msgstr ""
+"Büyük öbekli alýntý yapýlmýþ satýrlar öntanýmlý olarak gösterilsin yada "
+"gizlensin mi?.Hangisi seçilirse seçilsin diðerine kolaylýkla geçilebilir."
+
+#: templates/pgp/pgp.html:11
+msgid "Should the body of text/plain messages be scanned for PGP data?"
+msgstr "Düz metin iletilerin içeriði PGP verisi için taransýn mý?"
+
+#: config/prefs.php.dist:690
+msgid "Should the compose window be closed after saving a draft?"
+msgstr "Bir taslak kaydedildikten sonra oluþturma penceresi kapansýn mý?"
+
+#: templates/pgp/pgp.html:7
+msgid "Should your PGP public key to be attached to your messages by default?"
+msgstr "Varsayýlan olarak PGP açýk anahtarý iletinize eklensin mi?"
+
+#: templates/javascript_defs.php:31
+msgid "Show Addresses"
+msgstr "Adresleri Göster"
+
+#: templates/search/search.html:162
+msgid "Show All Folders"
+msgstr "Bütün Dizinleri Göster"
+
+#: message.php:623
+msgid "Show All Headers"
+msgstr "Bütün Baþlýk Bilgisini Göster"
+
+#: message.php:620
+msgid "Show Common Headers"
+msgstr "Bütün Baþlýk Bilgisini Göster"
+
+#: mailbox.php:258
+msgid "Show Deleted"
+msgstr "Silinecekleri Göster"
+
+#: lib/MIME/Viewer/html.php:159
+msgid "Show Images?"
+msgstr "Resimler Gösterilsin mi?"
+
+#: message.php:626
+msgid "Show Mailing List Information"
+msgstr "Elektronik Posta Liste Bilgisini Göster"
+
+#: templates/search/search.html:162
+msgid "Show Only Subscribed Folders"
+msgstr "Sadece Üye Olunmuþ Dizinleri Göster"
+
+#: templates/folders/actions.html:39
+msgid "Show Size"
+msgstr "Boyutu Göster"
+
+#: folders.php:379
+msgid "Show Unsubscribed"
+msgstr "Üye Olunmamýþlarý Göster"
+
+#: config/prefs.php.dist:784
+msgid "Show an icon to allow stripping of attachments from messages?"
+msgstr "Ýletilerden ekleri almaya izin vermek için bir simge gösterilsin mi?"
+
+#: config/prefs.php.dist:1213
+msgid "Show non-private mailboxes in separate folders"
+msgstr "Kiþisel olmayan posta kutularýný ayrý dizinlere taþý"
+
+#: config/prefs.php.dist:1057
+msgid "Show previews for unread messages only?"
+msgstr "Sadece okunmamýþ iletiler için mi önizleme gösterilsin?"
+
+#: config/prefs.php.dist:1065
+msgid "Show previews in tooltips?"
+msgstr "Araç ipuçlarýnda önizleme gösterilsin mi?"
+
+#: config/prefs.php.dist:598
+msgid "Show the Bcc: header field when composing mail?"
+msgstr "Ýleti oluþtururken Gizli KK baþlýk alaný gösterilsin mi?"
+
+#: config/prefs.php.dist:589
+msgid "Show the Cc: header field when composing mail?"
+msgstr "Ýleti oluþtururken Kk baþlýk alaný gösterilsin mi?"
+
+#: config/prefs.php.dist:1094
+msgid "Show the Fetch Mail icon on the menubar?"
+msgstr "Menü çubuðunda Posta Getir simgesi gösterilsin mi?"
+
+#: filterprefs.php:111
+msgid "Show the filter icon on the menubar?"
+msgstr "Menü çubuðunda süzgeç simgesi gösterilsin mi?"
+
+#: lib/MIME/Viewer/html.php:174
+msgid "Show this HTML in a new window?"
+msgstr "Bu HTML'yi yeni bir pencerede gösterilsin mi?"
+
+#: lib/Block/summary.php:30
+msgid "Show total number of mails in folder?"
+msgstr "Dizindeki toplam posta sayýsý gösterilsin mi?"
+
+#: config/prefs.php.dist:842
+msgid "Shown"
+msgstr "Gösterilen"
+
+#: mailbox.php:608
+msgid "Si_ze"
+msgstr "Bo_yut"
+
+#: templates/folders/folders_size.html:7
+msgid "Size"
+msgstr "Boyut"
+
+#: templates/compose/compose.html:315
+msgid "Size:"
+msgstr "Boyut:"
+
+#: mailbox.php:577
+msgid "Sort by Arrival"
+msgstr "Geliþ Zamanýna Göre Sýrala"
+
+#: mailbox.php:582
+msgid "Sort by Date"
+msgstr "Tarihe Göre Sýrala"
+
+#: mailbox.php:592
+msgid "Sort by From Address"
+msgstr "Gelen Adrese Göre Sýrala"
+
+#: mailbox.php:607
+msgid "Sort by Message Size"
+msgstr "Ileti Boyutuna Göre Sýrala"
+
+#: mailbox.php:602
+msgid "Sort by Subject"
+msgstr "Konuya Göre Sýrala"
+
+#: mailbox.php:597
+msgid "Sort by Thread"
+msgstr "Konu Öbeðine Göre Sýrala"
+
+#: mailbox.php:587
+msgid "Sort by To Address"
+msgstr "Adrese Göre Sýrala"
+
+#: config/prefs.php.dist:288
+msgid "Spam"
+msgstr "Ýstenmeyen Ýleti"
+
+#: lib/IMAP/Tree.php:2338
+msgid "Spam folder"
+msgstr "Ýstenmeyen ileti dizini"
+
+#: templates/prefs/spamselect.inc:19
+msgid "Spam folder:"
+msgstr "Ýstenmeyen ileti dizini:"
+
+#: compose.php:1028
+msgid "Special Characters"
+msgstr "Özel Karakterler"
+
+#: search.php:48
+msgid "Special Virtual Folders cannot be edited."
+msgstr "Özel Sanal Dizinler düzenlenemez."
+
+#: lib/UI/Compose.php:138
+msgid "Spell Check Failed"
+msgstr "Yazým Denetçisi Baþarýsýz"
+
+#: config/prefs.php.dist:562
+msgid "Split Block"
+msgstr "Bloðu Böl"
+
+#: lib/MIME/Viewer/itip.php:526 lib/MIME/Viewer/itip.php:528
+#: lib/MIME/Viewer/itip.php:691 lib/MIME/Viewer/itip.php:693
+msgid "Start"
+msgstr "Baþlat"
+
+#: compose.php:1008 templates/stationery/stationery.html:8
+#: templates/stationery/stationery.html:12
+msgid "Stationery"
+msgstr "Kýrtasiye"
+
+#: stationery.php:134
+msgid "Stationery name:"
+msgstr "Kýrtasiye ismi:"
+
+#: stationery.php:136
+msgid "Stationery type:"
+msgstr "Kýrtasiye türü:"
+
+#: stationery.php:139
+msgid "Stationery:"
+msgstr "Kýrtasiye:"
+
+#: lib/MIME/Viewer/itip.php:726 lib/MIME/Viewer/itip.php:858
+msgid "Status"
+msgstr "Durum"
+
+#: config/prefs.php.dist:531
+msgid "Strikethrough"
+msgstr "Ortadan çizgili"
+
+#: message.php:684
+msgid "Strip All Attachments"
+msgstr "Tüm Ekleri Çýkart"
+
+#: lib/MIME/Contents.php:273
+msgid "Strip Attachment"
+msgstr "Ekleri Çýkart"
+
+#: message.php:684
+msgid "Strip Attachments"
+msgstr "Ekleri Çýkart"
+
+#: config/prefs.php.dist:1049
+msgid "Strip linebreaks?"
+msgstr "Satýr sonlarý çýkartýlsýn mý?"
+
+#: mailbox.php:603
+msgid "Sub_ject"
+msgstr "Kon_u"
+
+#: lib/Search.php:674 lib/UI/Message.php:30 templates/login/recompose.html:41
+msgid "Subject"
+msgstr "Konu"
+
+#: config/prefs.php.dist:1137
+msgid "Subject Field"
+msgstr "Konu Alaný"
+
+#: templates/thread/thread.html:37
+msgid "Subject:"
+msgstr "Konu:"
+
+#: templates/saveimage/saveimage.html:19 templates/smime/passphrase.html:23
+#: templates/pgp/passphrase.html:21 templates/search/search.html:25
+#: templates/search/search.html:200
+msgid "Submit"
+msgstr "Gönder"
+
+#: templates/folders/actions.html:25
+msgid "Subscribe"
+msgstr "Üye ol"
+
+#: config/prefs.php.dist:535
+msgid "Subscript"
+msgstr "Alt Simge"
+
+#: lib/MIME/Viewer/pkcs7.php:448 lib/MIME/Viewer/status.php:86
+#: lib/MIME/Viewer/pgp.php:454
+msgid "Success"
+msgstr "Baþarý"
+
+#: templates/folders/folders_size.html:22
+msgid "Sum"
+msgstr "Toplam"
+
+#: lib/MIME/Viewer/itip.php:708 lib/MIME/Viewer/itip.php:710
+#: lib/MIME/Viewer/itip.php:839 lib/MIME/Viewer/itip.php:841
+msgid "Summary"
+msgstr "Özet"
+
+#: config/prefs.php.dist:536
+msgid "Superscript"
+msgstr "Üst Simge"
+
+#: compose.php:1065 compose.php:1066
+msgid "Switch Composition Method"
+msgstr "Oluþturma Yöntemini Deðiþtir"
+
+#: templates/compose/compose.html:189
+msgid "Switch to HTML composition"
+msgstr "HTML Olarak Oluþturmaya Geç"
+
+#: templates/compose/compose.html:189
+msgid "Switch to plain text composition"
+msgstr "Sade Metin Olarak Oluþturmaya Geç"
+
+#: templates/message/navbar_navigate.html:27
+msgid "Target Folder"
+msgstr "Hedef Dizin"
+
+#: templates/mailbox/navbar.html:54
+msgid "Target Mailbox:"
+msgstr "Hedef Posta Kutusu:"
+
+#: lib/IMP.php:506
+msgid "Task Lists"
+msgstr "Görev Listeleri"
+
+#: config/hooks.php.dist:460
+msgid "Tasks"
+msgstr "Görevler"
+
+#: compose.php:1070
+msgid "Te_xt"
+msgstr "M_etin"
+
+#: lib/MIME/Viewer/itip.php:275
+msgid "Tentative: "
+msgstr "Geçici:"
+
+#: lib/MIME/Viewer/itip.php:632
+msgid "Tentatively Accept request"
+msgstr "Ýsteði geçici olarak kabul et"
+
+#: lib/MIME/Viewer/itip.php:933
+msgid "Tentatively Accepted"
+msgstr "Geçici olarak kabul edildi"
+
+#: lib/Maintenance/Task/tos_agreement.php:46
+#, php-format
+msgid "Terms of Service file not specified in conf.php"
+msgstr "Hizmet Koþullarý dosyasý conf.php dosyasýnda belirtilmemiþ"
+
+#: templates/stationery/stationery.html:31
+msgid "Text"
+msgstr "Metin"
+
+#: config/prefs.php.dist:526
+msgid "Text Font"
+msgstr "Metin Harfi"
+
+#: config/prefs.php.dist:525
+msgid "Text Format"
+msgstr "Metin Biçimi"
+
+#: config/prefs.php.dist:527
+msgid "Text Size"
+msgstr "Metin Boyutu"
+
+#: config/prefs.php.dist:1178
+msgid "The From: column of the message should be linked:"
+msgstr "Ýletinin Kimden: kolonu baðlanmalý:"
+
+#: lib/IMAP/Client.php:432
+msgid ""
+"The IMAP server does not appear to support the authentication method "
+"selected. Please contact your system administrator."
+msgstr ""
+"IMAP sunucusu seçilen doðrulama yöntemini desteklemiyor. Sistem "
+"yöneticinizle baðlantýya geçiniz."
+
+#: lib/MIME/Viewer/appledouble.php:40
+msgid "The Macintosh resource fork"
+msgstr "Macintosh dosyasýnýn kaynak kýsmý"
+
+#: lib/MIME/Viewer/appledouble.php:40
+#, php-format
+msgid "The Macintosh resource fork can be downloaded %s."
+msgstr "Macintosh dosyasýnýn kaynak kýsmý yüklenebilir: %s"
+
+#: lib/MIME/Viewer/pkcs7.php:258
+#, php-format
+msgid "The S/MIME certificate of %s: "
+msgstr "%s'nin S/MIME onay belgesi: "
+
+#: fetchmailprefs.php:85
+#, php-format
+msgid "The account \"%s\" has been deleted."
+msgstr "\"%s\" hesabý silindi."
+
+#: fetchmailprefs.php:78
+#, php-format
+msgid "The account \"%s\" has been saved."
+msgstr "\"%s\" hesabý kaydedildi."
+
+#: attachment.php:43
+msgid "The attachment was not found."
+msgstr "Ek bulunamadý."
+
+#: config/prefs.php.dist:568
+msgid "The buttons NOT to show when using Xinha."
+msgstr "Xinha kullanýrken NOT düðmeleri göstermek için."
+
+#: config/prefs.php.dist:514
+msgid "The buttons to show when using FCKeditor."
+msgstr "FCKeditor kullanýlýrken gösterilecek düðmeler."
+
+#: lib/MIME/Viewer/itip.php:70
+msgid "The calendar data is invalid"
+msgstr "Takvim verisi geçersiz."
+
+#: lib/MIME/Viewer/appledouble.php:41
+msgid "The contents of the Macintosh file are below."
+msgstr "Macintosh dosyasýnýn içeriði aþaðýdadýr."
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:73
+#, php-format
+msgid "The current folder(s) \"%s\" will be renamed to \"%s\"."
+msgstr "Yürülükteki \"%s\" dizini \"%s\" olarak yeniden adlandýrýlacak."
+
+#: templates/acl/acl.html:29
+msgid ""
+"The current list of users with access to this folder could not be retrieved."
+msgstr "Bu dizine eriþimi olan kullanýcý listesi getirilemedi."
+
+#: config/prefs.php.dist:896
+msgid "The default charset for messages with no charset information:"
+msgstr "Karakter seti bilgisi olmayan mesajlarýn öntanýmlý karakter seti:"
+
+#: lib/Compose.php:250
+#, php-format
+msgid "The draft has been saved to the \"%s\" folder."
+msgstr "Taslak \"%s\" dizinine kaydedildi."
+
+#: lib/MIME/Viewer/itip.php:141
+msgid "The event was added to your calendar."
+msgstr "Olay takviminize eklendi."
+
+#: lib/Compose.php:1842
+#, php-format
+msgid "The file %s could not be attached."
+msgstr "%s dosyasý eklenemedi."
+
+#: lib/Folder.php:284
+#, php-format
+msgid "The folder \"%s\" already exists"
+msgstr "\"%s\" dizini zaten var."
+
+#: folders.php:247 lib/Folder.php:190
+#, php-format
+msgid "The folder \"%s\" may not be deleted."
+msgstr "\"%s\" dizini silinemeyebilir."
+
+#: lib/Folder.php:363
+#, php-format
+msgid "The folder \"%s\" may not be renamed."
+msgstr "\"%s\" dizinine yeniden isimlendiremeyebilirsiniz."
+
+#: lib/Folder.php:306
+#, php-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "\"%s\" dizini yaratýldý ama dizine üye deðilsiniz."
+
+#: lib/Folder.php:293
+#, php-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr "\"%s\" dizini yaratýlamadý. Sunucu bunu belirtmektedir."
+
+#: lib/Folder.php:194
+#, php-format
+msgid "The folder \"%s\" was not deleted. This is what the server said"
+msgstr "\"%s\" dizini silinemedi.Sunucu bunu belirtmektedir"
+
+#: lib/Folder.php:309
+#, php-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "\"%s\" dizini baþarýyla yaratýldý."
+
+#: lib/Folder.php:199
+#, php-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "\"%s\" dizini baþarýyla silindi."
+
+#: lib/Folder.php:388
+#, php-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "\"%s\" dizini \"%s\" olarak baþarýyla yeniden adlandýrýldý."
+
+#: lib/MIME/Viewer/tnef.php:93
+msgid "The following files were attached to this part:"
+msgstr "Takip eden dosyalar bu kýsma eklendi:"
+
+#: templates/javascript/popup.js:59
+msgid ""
+"The image save window can not be opened. Perhaps you have set your browser "
+"to block popup windows?"
+msgstr ""
+"Resimi kaydet penceresi açýlamadý.Tarayýcýnýz beliren pencereleri "
+"engellemeye ayarlanmýþ olabilir."
+
+#: config/prefs.php.dist:505
+msgid "The javascript editor to use on the compose page."
+msgstr ""
+"Ýleti oluþturma sayfasýnda kullanýlacak Javascript metin düzenleyicisi."
+
+#: lib/MIME/Viewer/status.php:74
+msgid "The mail server generated the following error message:"
+msgstr "Elektronik posta sunucusu takip eden hata mesajýný üretti:"
+
+#: lib/MIME/Viewer/notification.php:50
+msgid "The mail server generated the following informational message:"
+msgstr "Elektronik posta sunucu takip eden bilgi mesajýný üretti:"
+
+#: lib/MIME/Viewer/status.php:89
+msgid "The mail server generated the following message:"
+msgstr "Elektronik posta sunucusu takip eden mesajý üretti:"
+
+#: lib/Message.php:792
+#, php-format
+msgid "The mailbox %s is already empty."
+msgstr "%s posta kutusu zaten boþ."
+
+#: lib/Fetchmail.php:238
+#, php-format
+msgid "The message \"%s\" from \"%s\" (%d bytes) exceeds fetch size limit."
+msgstr ""
+"Ýleti \"%s\" (\"%s\" den gelen) (%d byte) getirme boyut limitini aþmaktadýr."
+
+#: templates/javascript_defs.php:54
+msgid "The message being composed has been closed. Exiting."
+msgstr "Oluþturulan ileti kapatýldý.Çýkýþ yapýlýyor."
+
+#: lib/MIME/Viewer/pgp.php:379
+msgid ""
+"The message below does not appear to be a valid PGP encrypted message. "
+"Error: "
+msgstr ""
+"Bu ileti geçerli bir PGP þifrelenmiþ ileti olarak görünmemektedir. Hata: "
+
+#: lib/MIME/Viewer/pgp.php:255 lib/MIME/Viewer/pgp.php:414
+msgid ""
+"The message below does not appear to be in the correct PGP format (according "
+"to RFC 2015)."
+msgstr "Bu ileti doðru PGP biçiminde deðildir. (RFC 2015'e göre)"
+
+#: lib/MIME/Viewer/pgp.php:374
+msgid "The message below has been compressed with PGP."
+msgstr "Bu ileti PGP ile sýkýþtýrýlmýþtýr."
+
+#: lib/MIME/Viewer/pgp.php:204
+msgid ""
+"The message below has been digitally signed and encrypted with PGP, but the "
+"signature cannot be verified."
+msgstr ""
+"Aþaðýdaki ileti sayýsal olarak PGP yoluyla imzalanmýþ ve þifrelenmiþ ancak "
+"imzasý doðrulanamýyor."
+
+#: lib/MIME/Viewer/pgp.php:210
+msgid "The message below has been digitally signed and encrypted with PGP."
+msgstr ""
+"Aþaðýdaki ileti sayýsal olarak PGP yoluyla imzalanmýþ ve þifrelenmiþtir."
+
+#: lib/MIME/Viewer/pgp.php:206
+msgid ""
+"The message below has been digitally signed with PGP, but the signature "
+"cannot be verified."
+msgstr ""
+"Aþaðýdaki ileti sayýsal olarak PGP yoluyla imzalanmýþ ancak imzasý "
+"doðrulanamýyor."
+
+#: lib/MIME/Viewer/pgp.php:212
+msgid "The message below has been digitally signed with PGP."
+msgstr "Bu ileti sayýsal olarak PGP yoluyla imzalanmýþtýr."
+
+#: lib/MIME/Viewer/pgp.php:316
+msgid ""
+"The message below has been encrypted with PGP, however, PGP support is "
+"disabled so the message cannot be decrypted."
+msgstr ""
+"Aþaðýdaki ileti sayýsal olarak PGP yoluyla imzalanmýþ ama PGP desteði "
+"olmadýðýndan iletinin þifresi açýlamamaktadýr."
+
+#: lib/MIME/Viewer/pgp.php:358
+msgid ""
+"The message below has been encrypted with PGP, however, no personal private "
+"key exists so the message cannot be decrypted."
+msgstr ""
+"Aþaðýdaki ileti sayýsal olarak PGP yoluyla imzalanmýþ ama kiþisel gizlý "
+"anahtar olmadýðý için iletinin þifresi açýlamamaktadýr."
+
+#: lib/MIME/Viewer/pgp.php:374
+msgid "The message below has been encrypted with PGP."
+msgstr "Aþaðýdaki ileti PGP ile þifrelenmiþtir."
+
+#: lib/MIME/Viewer/pgp.php:368
+msgid ""
+"The message below has been encrypted with PGP. You must enter the passphrase "
+"for your PGP private key before it can be decrypted."
+msgstr ""
+"Bu iletiyi görüntüleyebilmek için PGP özel anahtarýnýzýn geçiþ tümceciðini "
+"girmelisiniz."
+
+#: lib/MIME/Viewer/pgp.php:351
+msgid ""
+"The message below has been encrypted with PGP. You must enter the passphrase "
+"that was used to encrypt this message."
+msgstr ""
+"Aþaðýdaki ileti PGP ile þifrelenmiþtir. Bu iletiyi görüntüleyebilmek için "
+"PGP özel anahtarýnýzýn geçiþ tümceciðini girmelisiniz."
+
+#: lib/MIME/Viewer/pgp.php:458
+msgid "The message below has been verified."
+msgstr "Aþaðýdaki ileti doðrulandý."
+
+#: lib/Crypt/PGP.php:380
+msgid "The message below has not been digitally signed or encrypted with PGP."
+msgstr ""
+"Aþaðýdaki ileti sayýsal olarak PGP yoluyla ne imzalanmýþ ne de "
+"þifrelenmiþtir."
+
+#: templates/javascript_defs.php:40
+msgid "The message does not have a Subject entered."
+msgstr "Ýletiye konu girilmemiþtir."
+
+#: lib/Spam.php:220 lib/Filter.php:72
+msgid "The message has been deleted."
+msgstr "Ýleti silindi."
+
+#: lib/Spam.php:203
+msgid "The message has been reported as not spam to your system administrator."
+msgstr ""
+"Ýletinin istenmeyen ileti olmadýðý sistem yöneticinize rapor edilmiþtir."
+
+#: lib/Spam.php:183
+msgid "The message has been reported as not spam."
+msgstr "Ýleti istenen ileti olarak rapor edilmiþtir."
+
+#: lib/Spam.php:195
+msgid "The message has been reported as spam to your system administrator."
+msgstr "Ýleti istenmeyen ileti olduðu sistem yöneticinize rapor edilmiþtir."
+
+#: lib/Spam.php:175
+msgid "The message has been reported as spam."
+msgstr "Ýleti istenmeyen ileti olarak rapor edilmiþtir."
+
+#: lib/MIME/Viewer/pkcs7.php:453
+#, php-format
+msgid "The message has been verified. Sender: %s."
+msgstr "Ýleti doðrulandý. Gönderen: %s."
+
+#: lib/Filter.php:74
+msgid "The messages have been deleted."
+msgstr "Ýleti silinmiþti."
+
+#: lib/MIME/Viewer/tnef.php:59
+msgid "The requested file does not exist in the MS-TNEF attachment."
+msgstr "Ýstenen dosya MS-TNEF ekinde bulunmamaktadýr."
+
+#: lib/MIME/Viewer/zip.php:62
+msgid "The requested file does not exist in the Zip attachment."
+msgstr "Ýstenen dosya Zip ekinde bulunmamaktadýr."
+
+#: message.php:449
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Please click %s to send the "
+"notification message."
+msgstr ""
+"Bu iletiyi gönderen sizden iletinin baþarýyla ulaþtýðýný ve sizin okuðunuzu "
+"bildiren bir uyarý göndermenizi istemektedir.Lütfen göndermek için %s "
+"üzerine týklayýn."
+
+#: templates/javascript_defs.php:39
+msgid "The signature could not be replaced."
+msgstr "Ýmza yerine konamadý."
+
+#: templates/javascript_defs.php:38
+msgid "The signature was successfully replaced."
+msgstr "Ýmza baþarýyla yerine kondu."
+
+#: attachment.php:59
+msgid ""
+"The specified attachment does not exist. It may have been deleted by the "
+"original sender."
+msgstr "Belirtilen ek yok. Gönderi sahibi tarafýndan silinmiþ olabilir."
+
+#: attachment.php:128
+msgid "The specified file cannot be read."
+msgstr "Belirtilen dosya okunamamaktadýr."
+
+#: stationery.php:84
+#, php-format
+msgid "The stationery \"%s\" has been added."
+msgstr "\"%s\" kýrtasiyesi eklendi."
+
+#: stationery.php:74
+#, php-format
+msgid "The stationery \"%s\" has been deleted."
+msgstr "\"%s\" kýrtasiyesi silindi."
+
+#: stationery.php:87
+#, php-format
+msgid "The stationery \"%s\" has been updated."
+msgstr "\"%s\" kýrtasiyesi güncellendi."
+
+#: lib/MIME/Viewer/itip.php:171
+msgid "The task has been added to your tasklist."
+msgstr "Bu görev görev listenize eklendi."
+
+#: lib/MIME/Viewer/status.php:94
+msgid "The text of the message"
+msgstr "Ýletinin metni"
+
+#: lib/MIME/Viewer/status.php:93
+#, php-format
+msgid "The text of the message can be viewed %s."
+msgstr "Ýletinin metni görülebilir: %s."
+
+#: lib/MIME/Viewer/status.php:79
+msgid "The text of the returned message"
+msgstr "Dönen iletinin metni"
+
+#: lib/MIME/Viewer/status.php:78
+#, php-format
+msgid "The text of the returned message can be viewed %s."
+msgstr "Dönen iletinin metni  görülebilir: %s."
+
+#: lib/MIME/Viewer/notification.php:66
+msgid "The text of the sent message"
+msgstr "Gönderilmiþ iletinin metni"
+
+#: lib/MIME/Viewer/notification.php:66
+#, php-format
+msgid "The text of the sent message can be viewed %s."
+msgstr "Gönderilmiþ iletinin metni görülebilir: %s."
+
+#: lib/MIME/Viewer/itip.php:156
+msgid "The user's free/busy information was sucessfully stored."
+msgstr "Kullanýcýnýn serbest/meþgul bilgisi baþarýyla depolandý."
+
+#: lib/MIME/Viewer/alternative.php:56
+msgid "There are no alternative parts that can be displayed."
+msgstr "Gösterilecek baþka seçenek bulunamýyor."
+
+#: templates/mailbox/empty_mailbox.html:2
+msgid "There are no messages in this mailbox."
+msgstr "Bu posta kutusunda ileti bulunmamaktadýr."
+
+#: thread.php:104
+msgid "There is no text that can be displayed inline."
+msgstr "Metne Gömülü olarak gösterilebilecek metin bulunmamaktadýr."
+
+#: lib/Message.php:140
+#, php-format
+msgid ""
+"There was an error copying messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"Ýletileri \"%s\" konumundan \"%s\" konumuna kopyalarken hata oluþtu.Sunucu "
+"bunu bildirmektedir."
+
+#: lib/Message.php:266
+#, php-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr ""
+"Ýletiler \"%s\" dizinden silinirken hata oluþtu.Sunucu bunu bildirmektedir."
+
+#: lib/MIME/Viewer/itip.php:101
+msgid "There was an error deleting the event:"
+msgstr "Olayýn silinmesinde hata oluþtu:"
+
+#: lib/MIME/Viewer/plain.php:50 lib/MIME/Viewer/enriched.php:36
+msgid "There was an error displaying this message part"
+msgstr "Ýletinin bu kýsmýný görüntülenmesinde hata oluþtu."
+
+#: lib/Message.php:631
+#, php-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"\"%s\" dizinindeki iletileri iþaretlerken hata oluþtu.Sunucu bunu "
+"bildirmektedir."
+
+#: folders.php:147
+#, php-format
+msgid "There was an error importing %s."
+msgstr "%s (içeri) aktarýlýrken hata oluþtu"
+
+#: lib/MIME/Viewer/itip.php:138
+msgid "There was an error importing the event:"
+msgstr "Olayýn (içeri) aktarýmý sýrasýnda hata oluþtu:"
+
+#: lib/MIME/Viewer/itip.php:168
+msgid "There was an error importing the task:"
+msgstr "Görevin (içeri) aktarýmý sýrasýnda hata oluþtu:"
+
+#: lib/MIME/Viewer/itip.php:154
+msgid "There was an error importing user's free/busy information:"
+msgstr ""
+"Kullanýcýnýn serbest/meþgul bilgilerinin içeri aktarýmý sýrasýnda hata "
+"oluþtu:"
+
+#: lib/Message.php:136
+#, php-format
+msgid ""
+"There was an error moving messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"Ýletileri \"%s\" konumundan \"%s\" konumuna taþýrken hata oluþtu.Sunucu bunu "
+"bildirmektedir."
+
+#: lib/Compose.php:702
+#, php-format
+msgid "There was an error sending your message: %s"
+msgstr "Ýleti gönderilerken hata oluþtu: %s"
+
+#: lib/MIME/Viewer/itip.php:115
+msgid "There was an error updating the event:"
+msgstr "Olay güncellenirken hata oluþtu:"
+
+#: lib/MIME/Viewer/pgp.php:169
+msgid "This PGP Public Key was attached to the message."
+msgstr "Bu PGP Açýk Anahtarý iletiye eklenmiþtir."
+
+#: lib/MIME/Viewer/itip.php:106 lib/MIME/Viewer/itip.php:120
+#: lib/MIME/Viewer/itip.php:145 lib/MIME/Viewer/itip.php:159
+#: lib/MIME/Viewer/itip.php:175 lib/MIME/Viewer/itip.php:321
+msgid "This action is not supported."
+msgstr "Bu eylem desteklenmemektedir."
+
+#: lib/MIME/Viewer/itip.php:181 lib/MIME/Viewer/itip.php:431
+msgid "This action is not yet implemented."
+msgstr "Bu eylem henüz gerçekleþtirilmemiþtir."
+
+#: templates/javascript_defs.php:67
+msgid "This folder may not be renamed:"
+msgstr "Bu dizinin ismi deðiþtirilemez:"
+
+#: templates/javascript_defs.php:64
+msgid "This may take some time. Are you sure you want to continue?"
+msgstr "Bu iþlem zaman alabilir.Devam etmek istediðinize emin misiniz?"
+
+#: lib/MIME/Viewer/appledouble.php:39
+msgid "This message contains a Macintosh file."
+msgstr "Bu ileti Macintosh dosyasý içermektedir."
+
+#: lib/MIME/Viewer/pkcs7.php:479
+msgid ""
+"This message contains an attachment that has been digitally signed via S/"
+"MIME."
+msgstr "Bu ileti sayýsal olarak S/MIME yoluyla imzalanmýþ bir ek içermektedir."
+
+#: lib/MIME/Viewer/pkcs7.php:483
+msgid "This message contains an attachment that has been encrypted via S/MIME."
+msgstr "Bu ileti S/MIME yoluyla þifrelenmiþ bir ek içermektedir."
+
+#: lib/MIME/Viewer/status.php:159
+msgid ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+msgstr ""
+"Bu ileti teslim durum bilgisi içermektedir ama iletinin biçimi "
+"bilinmemektedir."
+
+#: lib/MIME/Viewer/pkcs7.php:204
+msgid "This message does not appear to be in the correct S/MIME format."
+msgstr "Bu ileti doðru  S/MIME biçiminde deðildir."
+
+#: lib/MIME/Viewer/pkcs7.php:177
+msgid "This message has been digitally signed via S/MIME."
+msgstr "Bu ileti sayýsal olarak S/MIME yoluyla imzalanmýþtýr."
+
+#: lib/MIME/Viewer/pkcs7.php:173 lib/MIME/Viewer/pkcs7.php:297
+msgid "This message has been encrypted via S/MIME."
+msgstr "Bu ileti S/MIME yoluyla þifrelenmiþtir."
+
+#: lib/MIME/Contents.php:437
+msgid "This message part cannot be viewed because it is too large."
+msgstr "Ýleti kýsmý çok büyük olduðu için gösterilemiyor."
+
+#: message.php:521
+msgid "This message to"
+msgstr "Bu iletiyi"
+
+#: lib/IMP.php:318
+msgid ""
+"This request cannot completed because the link you followed or the form you "
+"submitted was only valid for half an hour."
+msgstr ""
+"Talebiniz yerine getirilemiyor. Takip ettiðiniz bað ya da gönderdiðiniz "
+"formi, sadece yarým saat için geçerliydi."
+
+#: acl.php:47
+msgid "This server does not support sharing folders."
+msgstr "Bu sunucu dizin paylaþýmýný desteklememektedir."
+
+#: templates/javascript_defs.php:55
+msgid "This window must be called from a compose window."
+msgstr "Bu pencere bir oluþturma penceresi tarafýndan açýlmalýdýr."
+
+#: templates/thread/thread.html:2
+msgid "Thread Display:"
+msgstr "Konu Öbeði Göster:"
+
+#: thread.php:161 config/prefs.php.dist:1139
+msgid "Thread View"
+msgstr "Konu Öbeði Görüntüsü"
+
+#: lib/MIME/Viewer/images.php:172
+msgid "Thumbnail of attached image"
+msgstr "Ekli resimin pul görüntüsü"
+
+#: compose.php:789 mailbox.php:588 lib/Search.php:662 lib/UI/Message.php:26
+#: lib/UI/Mailbox.php:88 templates/contacts/contacts.html:40
+#: templates/login/recompose.html:14
+msgid "To"
+msgstr "Kime"
+
+#: config/prefs.php.dist:1136
+msgid "To Address"
+msgstr "Adres"
+
+#: message.php:565
+msgid "To All"
+msgstr "Tümüne"
+
+#: message.php:561
+msgid "To List"
+msgstr "Listeye"
+
+#: message.php:558
+msgid "To Sender"
+msgstr "Göndericiye"
+
+#: message.php:565
+msgid "To _All"
+msgstr "Tümü_ne"
+
+#: message.php:561
+msgid "To _List"
+msgstr "_Listeye"
+
+#: templates/compose/redirect.html:46
+msgid "To field"
+msgstr "Alana"
+
+#: templates/prefs/sourceselect.inc:324
+msgid ""
+"To select multiple fields, hold down the Control (PC) or Command (Mac) while "
+"clicking."
+msgstr ""
+"Birden fazla alan seçebilmek için, týklarken Control(PC) yada Command(Mac) "
+"tuþlarýný basýlý tutun."
+
+#: lib/IMAP/Client.php:131
+msgid ""
+"To use a TLS connection, you must be running a version of PHP 5.1.0 or "
+"higher."
+msgstr ""
+"TLS baðlantýsý kullanmak için PHP 5.1.0 veya daha üst sürümünükullanmanýz "
+"gerekiyor."
+
+#: thread.php:117 templates/thread/thread.html:32
+msgid "To:"
+msgstr "Kime:"
+
+#: config/prefs.php.dist:561
+msgid "Toggle Borders"
+msgstr "Çerçeveleri Deðiþtir"
+
+#: config/prefs.php.dist:565
+msgid "Toggle HTML Source"
+msgstr "HTML Kaynaðý Deðiþtir"
+
+#: config/prefs.php.dist:577
+msgid "Top"
+msgstr "Üst"
+
+#: templates/compose/compose.html:307
+msgid "Total Size:"
+msgstr "Toplam Boyut:"
+
+#: login.php:289
+msgid "Traditional"
+msgstr "Geleneksel"
+
+#: config/prefs.php.dist:277
+msgid "Trash"
+msgstr "Çöp"
+
+#: lib/IMAP/Tree.php:2325
+msgid "Trash folder"
+msgstr "Çöp Kutusu"
+
+#: templates/prefs/trashselect.inc:19
+msgid "Trash folder:"
+msgstr "Çöp Kutusu:"
+
+#: lib/Quota/sql.php:79
+msgid "Unable to connect to SQL server."
+msgstr "SQL sunucuya baðlantý kurulamadý."
+
+#: lib/Quota/imap.php:42 lib/Quota/maildir.php:113 lib/Quota/mdaemon.php:45
+#: lib/Quota/logfile.php:87 lib/Quota/mercury32.php:78
+#: lib/Quota/command.php:93
+msgid "Unable to retrieve quota"
+msgstr "Kota belirlenemedi"
+
+#: templates/mailbox/navbar.html:19 templates/mailbox/navbar.html:35
+#: templates/message/navbar_navigate.html:13
+msgid "Unanswered"
+msgstr "Cevaplanmamýþ"
+
+#: search.php:330
+msgid "Unanswered messages"
+msgstr "Cevaplanmamýþ Ýletiler"
+
+#: message.php:552 mailbox.php:515
+msgid "Undelete"
+msgstr "Silme"
+
+#: search.php:340
+msgid "Undeleted messages"
+msgstr "Silinmemiþ iletiler"
+
+#: config/prefs.php.dist:530
+msgid "Underline"
+msgstr "Altýný Çiz"
+
+#: lib/UI/Mailbox.php:66 lib/UI/Mailbox.php:84 lib/MIME/Headers.php:220
+msgid "Undisclosed Recipients"
+msgstr "Gösterilmeyen Alýcýlar"
+
+#: config/prefs.php.dist:549
+msgid "Undoes your last action"
+msgstr "Son geri aldýðýnýz deðiþikliði tekrarlar"
+
+#: lib/IMAP/Client.php:462
+msgid "Unexpected response from server to AUTHENTICATE command."
+msgstr "AUTHENTICATE komutu için sunucudan beklenmedik cevap."
+
+#: lib/IMAP/Client.php:428
+msgid "Unexpected response from server to Digest-MD5 response."
+msgstr "Digest-MD5 için sunucudan beklenmedik cevap."
+
+#: search.php:335
+msgid "Unflagged messages"
+msgstr "Ýþaretlenmemiþ iletiler"
+
+#: lib/MIME/Viewer/itip.php:465
+#, php-format
+msgid "Unhandled component of type: %s"
+msgstr "Bilinmeyen bileþen tipi: %s"
+
+#: lib/MIME/Viewer/itip.php:729
+msgid "Unknown"
+msgstr "Bilinmeyen"
+
+#: lib/UI/Mailbox.php:203
+msgid "Unknown Date"
+msgstr "Bilinmeyen Tarih"
+
+#: lib/IMAP/Client.php:205
+#, php-format
+msgid "Unknown IMAP response from the server. Server Responded: %s"
+msgstr "Sunucudan bilinmeyen IMAP cevabý. Sunucunun Cevabý: %s "
+
+#: lib/MIME/Viewer/itip.php:675
+msgid "Unknown Meeting"
+msgstr "Bilinmeyen Toplantý"
+
+#: lib/UI/Mailbox.php:103
+msgid "Unknown Recipient"
+msgstr "Bilinmeyen Alýcý"
+
+#: lib/MIME/Viewer/itip.php:819
+msgid "Unknown Task"
+msgstr "Bilinmeyen Görev"
+
+#: smime.php:338 pgp.php:433
+msgid "Unload Passphrase"
+msgstr "Geçiþ Tümceciðini Kaldýr"
+
+#: fetchmailprefs.php:69
+msgid "Unnamed"
+msgstr "Ýsimsiz"
+
+#: message.php:475 mailbox.php:762 templates/mailbox/navbar.html:15
+#: templates/mailbox/navbar.html:31 templates/message/navbar_navigate.html:9
+msgid "Unseen"
+msgstr "Okunmamýþ"
+
+#: templates/folders/actions.html:26
+msgid "Unsubscribe"
+msgstr "Üyelikten Çýk"
+
+#: templates/compose/compose.html:281
+msgid "Update"
+msgstr "Yükle"
+
+#: lib/MIME/Viewer/itip.php:661
+msgid "Update respondent status"
+msgstr "Cevaplayýcý durumunu güncelle"
+
+#: lib/MIME/Viewer/itip.php:640
+msgid "Update this event on my calendar"
+msgstr "Bu etkinliði takvimimde güncelle"
+
+#: templates/smime/import_key.html:40 templates/pgp/import_key.html:38
+msgid "Upload:"
+msgstr "Yükle:"
+
+#: templates/prefs/sentmailselect.inc:39
+msgid "Use Default Value"
+msgstr "Ön tanýmlý Deðeri Kullan"
+
+#: config/prefs.php.dist:256
+msgid "Use IMAP folder subscriptions?"
+msgstr "IMAP dizininin üyelikleri kullanýlsýn mý?"
+
+#: config/prefs.php.dist:947
+msgid "Use Virtual Trash Folder?"
+msgstr "Sanal Çöp Dizinleri Kullanýlsýn mý?"
+
+#: templates/acl/acl.html:42
+msgid "User"
+msgstr "Kullanýcý"
+
+#: acl.php:90 acl.php:131
+#, php-format
+msgid ""
+"User \"%s\" successfully given the specified rights for the folder \"%s\"."
+msgstr ""
+"\"%s\" kullanýcýsýna  \"%s\" dizini için belirtilen haklar baþarýyla verildi."
+
+#: templates/login/login.html:85
+msgid "Username"
+msgstr "Kullanýcý Adý"
+
+#: templates/fetchmail/fetchmailprefs.html:55
+msgid "Username:"
+msgstr "Kullanýcý Adý:"
+
+#: templates/login/mobile.inc:14
+msgid "Username: "
+msgstr "Kullanýcý adý: "
+
+#: lib/MIME/Viewer/pkcs7.php:259 templates/smime/smime.html:35
+#: templates/smime/smime.html:67 templates/smime/smime.html:71
+#: templates/pgp/pgp.html:43 templates/pgp/pgp.html:75
+#: templates/pgp/pgp.html:80
+msgid "View"
+msgstr "Görüntüle"
+
+#: lib/MIME/Viewer/zip.php:90 lib/MIME/Viewer/tnef.php:109
+#, php-format
+msgid "View %s"
+msgstr "Görüntüle %s"
+
+#: smime.php:312 pgp.php:405
+#, php-format
+msgid "View %s Public Key"
+msgstr "%s Açýk Anahtarýný Görüntüle"
+
+#: lib/MIME/Viewer/images.php:162 lib/MIME/Viewer/images.php:167
+msgid "View Attachment"
+msgstr "Eki Göster"
+
+#: mailbox.php:548
+msgid "View Messages"
+msgstr "Ýletileri Göster"
+
+#: smime.php:339 pgp.php:434
+msgid "View Personal Private Key"
+msgstr "Kiþisel Özel Anahtarý Görüntüle"
+
+#: smime.php:335 pgp.php:428
+msgid "View Personal Public Key"
+msgstr "Kiþisel Açýk Anahtarý Görüntüle"
+
+#: message.php:576
+msgid "View Thread"
+msgstr "Konu Öbeðini Görüntüle"
+
+#: lib/MIME/Viewer/pkcs7.php:487
+msgid "View attachment in a separate window"
+msgstr "Eki ayrý bir pencerede görüntüle"
+
+#: lib/MIME/Viewer/related.php:85
+msgid "View content in a separate window"
+msgstr "Ýçeriði ayrý bir pencerede görüntüle"
+
+#: lib/MIME/Viewer/itip.php:142
+msgid "View event"
+msgstr "Olayý Görüntüle"
+
+#: folders.php:435 mailbox.php:699
+#, php-format
+msgid "View messages in %s"
+msgstr "%s içindeki iletileri görüntüle"
+
+#: templates/prefs/initialpageselect.inc:16
+msgid "View or mailbox to display after login:"
+msgstr "Giriþten sonra gösterilecek görünüm yada posta kutusu:"
+
+#: lib/MIME/Viewer/itip.php:172
+msgid "View task"
+msgstr "Görevi Görüntüle"
+
+#: mailbox.php:367 mailbox.php:368
+msgid "Virtual Folder"
+msgstr "Sanal Dizin"
+
+#: search.php:151
+#, php-format
+msgid "Virtual Folder \"%s\" created succesfully."
+msgstr "Sanal Dizin \"%s\" baþarýyla yaratýldý."
+
+#: lib/IMAP/Tree.php:88 templates/search/search.html:184
+msgid "Virtual Folders"
+msgstr "Sanal Dizinler"
+
+#: search.php:146
+msgid "Virtual Folders require a label."
+msgstr "Sanal Dizinler bir etiket gerektirmektedir."
+
+#: lib/Search.php:401
+msgid "Virtual INBOX"
+msgstr "Sanal Gelen Kutusu"
+
+#: lib/IMAP/Tree.php:2365
+msgid "Virtual INBOX Folder"
+msgstr "Sanal Gelen Kutusu Dizini"
+
+#: lib/Search.php:345
+msgid "Virtual Trash"
+msgstr "Sanal Çöp"
+
+#: lib/IMAP/Tree.php:2361
+msgid "Virtual Trash Folder"
+msgstr "Sanal Çöp Dizini"
+
+#: templates/search/search.html:195
+msgid "Virtual folder label:"
+msgstr "Sanal dizin etiketi:"
+
+#: lib/Crypt/PGP.php:380 lib/MIME/Viewer/pkcs7.php:442
+msgid "Warning"
+msgstr "Uyarý"
+
+#: login.php:187 login.php:338 templates/login/mobile.inc:11
+#, php-format
+msgid "Welcome to %s"
+msgstr "%s Hoþgeldiniz"
+
+#: config/prefs.php.dist:795
+msgid ""
+"What should we do with spam messages after they have been reported as spam "
+"or innocent?"
+msgstr ""
+"Ýstenmeyen iletiler, istenmeyen ileti veya temiz olarak rapor edildikten "
+"sonra ne yapýlsýn?"
+
+#: config/prefs.php.dist:939
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted?"
+msgstr ""
+"Ýletileri silerken, silinecek olarak iþaretlemek yerine Çöp Kutusuna "
+"taþýnsýn mý?"
+
+#: config/prefs.php.dist:1124
+msgid ""
+"When opening a new mailbox for the first time, which page do you want to "
+"start on?"
+msgstr ""
+"Yeni bir posta kutusunu ilk defa açýlýrken, hangi sayfadan baþlamak "
+"istersiniz?"
+
+#: config/prefs.php.dist:644
+msgid ""
+"When replying/forwarding to a message, should we use the same format as the "
+"original message?"
+msgstr ""
+"Bir iletiyi cevaplarken/yönlendirirken özgün iletinin yapýsý mý kullanýlsýn?"
+
+#: config/prefs.php.dist:749
+msgid "When saving sent-mail, should we save attachment data?"
+msgstr "Gönderilmiþ postalarý kaydederken, eklerde kaydedilsin mi?"
+
+#: config/prefs.php.dist:475
+msgid ""
+"When sending mail or expanding addresses, what domain should we append to "
+"unqualified addresses (email addresses without \"@\")?"
+msgstr ""
+"Elektronik posta gönderirken yada adresleri geniþletirken, hangi etki alaný "
+"belirsiz adreslere eklensin (\"@\" içermeyen adresler)"
+
+#: config/prefs.php.dist:908
+msgid "Where do you want to display links to alternative formats of a message?"
+msgstr ""
+"Bir iletinin farklý yapýlardaki baðlantýlarýný nerede görüntülenmesini "
+"istersiniz?"
+
+#: config/prefs.php.dist:580
+msgid "Where should the cursor be located in the compose text area by default?"
+msgstr "Ýmleç, metin düzenleme pencerisinde öntanýmlý olarak nerede bulunsun?"
+
+#: message.php:584 mailbox.php:531
+msgid "Whitelist"
+msgstr "Beyaz Liste"
+
+#: lib/prefs.php:230 config/prefs.php.dist:504
+msgid "Xinha"
+msgstr "Xinha"
+
+#: templates/search/search.html:99
+msgid "Year"
+msgstr "Yýl"
+
+#: templates/javascript_defs.php:49 config/prefs.php.dist:1202
+#: config/prefs.php.dist:1224 templates/compose/compose.html:292
+msgid "Yes"
+msgstr "Evet"
+
+#: lib/Maintenance/Task/fetchmail_login.php:57
+msgid "You are about to fetch email from the following account(s):"
+msgstr "Takip eden hesaplardan posta getirmek üzeresiniz."
+
+#: templates/folders/folders_confirm.html:11
+msgid ""
+"You are attempting to delete all messages contained in the following folder"
+"(s)."
+msgstr "Seçilmiþ dizin(ler)deki bütün iletileri silinmesini deniyorsunuz"
+
+#: templates/folders/folders_confirm.html:10
+msgid "You are attempting to delete the following folder(s)."
+msgstr "Seçilmiþ dizin(ler)in silinmesini deniyorsunuz."
+
+#: templates/javascript_defs.php:82
+msgid "You are copying/moving to a new folder."
+msgstr "Yeni bir dizine kopyalýyorsunuz/taþýyosunuz."
+
+#: templates/javascript_defs.php:60
+msgid "You are creating a sub-folder to"
+msgstr "Altdizin yaratýyorsunuz: "
+
+#: templates/javascript_defs.php:62
+msgid "You are creating a top-level folder."
+msgstr "Üstdüzey bir dizin yaratýyorsunuz."
+
+#: lib/Folder.php:265
+msgid "You are not allowed to create folders."
+msgstr "Dizin oluþturma hakkýnýz yok."
+
+#: lib/Folder.php:272
+#, php-format
+msgid "You are not allowed to create more than %d folders."
+msgstr "%d'den fazla dizin yaratmanýza izin verilmiyor."
+
+#: lib/Compose.php:916
+#, php-format
+msgid ""
+"You are not allowed to send messages to more than %d recipients within %d "
+"hours."
+msgstr "%d alýcýdan daha fazlaya %d saat içinde ileti gönderemezsiniz."
+
+#: lib/Compose.php:1158
+#, php-format
+msgid "You are not allowed to send messages to more than %d recipients."
+msgstr "%d alýcýdan daha fazlaya ileti gönderemezsiniz."
+
+#: templates/javascript_defs.php:65
+msgid "You are renaming the folder:"
+msgstr "Yeniden adlandýrýlan dizin:"
+
+#: templates/stationery/stationery.html:39
+msgid ""
+"You can use the following placeholders in the stationery text: %c for the "
+"current message content; %s for the signature."
+msgstr ""
+"Kýrtasiye metninde sayýlan alanlarý kullanabilirsiniz: %c etkin ileti "
+"içerikleri için; %s de imzalar için."
+
+#: lib/Folder.php:488
+#, php-format
+msgid "You cannot unsubscribe from \"%s\"."
+msgstr "\"%s\" üyeliðinden çýkamazsýnýz."
+
+#: lib/Maintenance/Task/tos_agreement.php:33
+msgid ""
+"You did not agree to the Terms of Service agreement, so you were not allowed "
+"to login."
+msgstr ""
+"Hizmet Koþullarý anlaþmasýný onaylamadýnýz, bu sebeble giriþ yapmanýza izin "
+"verilmemektedir."
+
+#: templates/acl/acl.html:88
+msgid "You do not have permission to change access to this folder."
+msgstr "Bu dizinin eriþim haklarýný deðiþtirmek için izniniz yok."
+
+#: lib/Maillog.php:130
+#, php-format
+msgid "You forwarded this message on %%s to the following recipients: %s."
+msgstr "Bu iletiyi takip eden alýcýlara %%s de ilettiniz: %s."
+
+#: lib/IMP.php:1057
+#, php-format
+msgid "You have %s new messages."
+msgstr "%s yeni iletiniz var."
+
+#: lib/IMP.php:1057
+msgid "You have 1 new message."
+msgstr "1 yeni iletiniz var."
+
+#: compose.php:126
+msgid "You have already submitted this page."
+msgstr "Bu sayfayý zaten iletmiþsiniz."
+
+#: templates/newmsg/alert.html:3
+msgid "You have new mail in:"
+msgstr "Yeni iletinizin yeri:"
+
+#: templates/fetchmail/fetchmail.html:22
+msgid "You have not configured any external mail accounts."
+msgstr "Dýþ eposta hesabý tanýmlamamýþsýnýz."
+
+#: lib/Compose.php:1145
+msgid "You must enter at least one recipient."
+msgstr "En az bir tane alýcý girmelisiniz."
+
+#: lib/MIME/Viewer/pgp.php:368
+msgid ""
+"You must enter the passphrase for your PGP private key to view this message."
+msgstr ""
+"Bu iletiyi görüntüleyebilmek için PGP özel anahtarýnýzýn geçiþ tümceciðini "
+"girmelisiniz."
+
+#: lib/MIME/Viewer/pkcs7.php:316
+msgid ""
+"You must enter the passphrase for your S/MIME private key to view this "
+"message"
+msgstr ""
+"Bu iletiyi görüntüleyebilmek için S/MIME özel anahtarýnýzýn geçiþ "
+"tümceciðini girmelisiniz."
+
+#: lib/MIME/Viewer/pgp.php:351
+msgid "You must enter the passphrase that was used to encrypt this message."
+msgstr ""
+"Bu iletiyi þifrelemek için kullanýlmýþ olan geçiþ tümceceðini girmelisiniz."
+
+#: templates/javascript_defs.php:83
+msgid "You must select a target mailbox first."
+msgstr "Önce bir hedef posta kutusu seçmelisiniz."
+
+#: fetchmailprefs.php:89
+msgid "You must select an account to be deleted."
+msgstr "Silinecek bir hesap seçmelisiniz."
+
+#: templates/javascript_defs.php:53
+msgid "You must select an address first."
+msgstr "Önce bir adres seçmelisiniz."
+
+#: templates/javascript_defs.php:46 templates/javascript_defs.php:48
+msgid "You must select at least one message first."
+msgstr "Önce en az bir ileti seçmelisiniz."
+
+#: lib/Compose.php:839
+msgid "You must separate e-mail addresses with commas (,) not semicolons (;)."
+msgstr ""
+"Eposta adreslerini ayýrmak için virgül (,) kullanmalýsýnýz,  noktalý virgül "
+"(;) deðil."
+
+#: templates/javascript_defs.php:37
+msgid "You must specify a recipient."
+msgstr "Bir alýcý belirtmelisiniz."
+
+#: templates/fetchmail/fetchmailprefs.html:91
+msgid ""
+"You need to have \"Perform maintenance operations on login?\" enabled in "
+"your maintenance options."
+msgstr ""
+"\"Giriþ sýrasýnda bakým iþlemleri yapýlsýn mý?\" etkinleþtirilmesi gerekiyor."
+
+#: lib/Maillog.php:138
+#, php-format
+msgid "You redirected this message to %s on %%s."
+msgstr "Bu iletiyi %s e %%s de yönlendirdiniz."
+
+#: lib/Maillog.php:142
+#, php-format
+msgid "You replied to this message on %s."
+msgstr "Bu iletiye %s de cevap verdiniz."
+
+#: lib/Folder.php:440
+#, php-format
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr "\"%s\" dizinine üye deðilsiniz.Sunucu bunu belirtmektedir"
+
+#: lib/Folder.php:490
+#, php-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr "\"%s\" üyeliðiniz devam ediyor.Sunucu bunu belirtmektedir"
+
+#: lib/Folder.php:443
+#, php-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr "\"%s\" dizinine baþarýyla üye oldunuz."
+
+#: lib/Folder.php:493
+#, php-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "\"%s\" üyeliðinden baþarýyla çýktýnýz."
+
+#: templates/pgp/pgp.html:92
+msgid "Your Name:"
+msgstr "Adýnýz:"
+
+#: templates/pgp/pgp.html:64
+msgid "Your PGP Public/Private Keys"
+msgstr "PGP Açýk/Özel Anahtarlarýnýz"
+
+#: templates/smime/smime.html:70 templates/pgp/pgp.html:79
+msgid "Your Private Key:"
+msgstr "Özel Anahtarýnýz:"
+
+#: templates/smime/smime.html:66 templates/pgp/pgp.html:74
+msgid "Your Public Key:"
+msgstr "Açýk Anahtarýnýz:"
+
+#: config/prefs.php.dist:166
+msgid "Your Reply-to: address: <em>(optional)</em>"
+msgstr "Yanýt adresiniz: <em>(seçimli)</em>"
+
+#: templates/smime/smime.html:56
+msgid "Your S/MIME Public/Private Certificates"
+msgstr "S/MIME Açýk/Özel Onay Belgeniz"
+
+#: fetchmail.php:22
+msgid "Your account does not support fetching external mail."
+msgstr "Hesabýnýz dýþardan ileti çekmenizi desteklemiyor."
+
+#: templates/fetchmail/fetchmailprefs.html:18
+msgid "Your accounts:"
+msgstr "Hesaplarýnýz:"
+
+#: config/prefs.php.dist:174
+msgid ""
+"Your alias addresses: <em>(optional, enter each address on a new line)</em>"
+msgstr "Öteki ad adresleri: <em>(seçimli, her adres için bir satýr girin)</em>"
+
+#: lib/MIME/Viewer/images.php:89
+msgid "Your browser does not support inline display of this image type."
+msgstr ""
+"Tarayýcýnýz bu görüntü türünü metne gömülü gösterimini desteklememektedir."
+
+#: config/prefs.php.dist:727
+msgid "Your default charset for sending messages:"
+msgstr "Ön tanýmlý karakter kümeniz:"
+
+#: templates/prefs/encryptselect.inc:1
+msgid "Your default encryption method for sending messages:"
+msgstr "Ýleti göndermek için ön tanýmlý þifreleme yönteminiz:"
+
+#: attachment.php:114
+#, php-format
+msgid ""
+"Your linked attachment has been downloaded by at least one user.\n"
+"\n"
+"Attachment name: %s\n"
+"Attachment date: %s\n"
+"\n"
+"Click on the following link to permanently delete the attachment:\n"
+"%s"
+msgstr ""
+"Baðlantýlý eklentiniz en azýndan bir kullanýcý tarafýndan indirilmiþtir.\n"
+"\n"
+"Eklenti ismi: %s\n"
+"Eklenti tarihi: %s\n"
+"\n"
+"Eklentiyi tamamen silmek için baðlantýyý týklayýnýz:\n"
+"%s"
+
+#: lib/MIME/Viewer/status.php:88
+msgid "Your message was successfully delivered."
+msgstr "Ýletiniz baþarýyla teslim edilmiþtir."
+
+#: config/prefs.php.dist:198
+msgid "Your signature:"
+msgstr "Ýmzanýz:"
+
+#: lib/Message.php:531
+#, php-format
+msgid "[Attachment stripped: Original attachment type: %s, name: %s]"
+msgstr "[Ek alýnmýþtýr: Özgün eklenti türü: %s, ismi: %s]"
+
+#: templates/javascript/addressesBlocks.js:7
+msgid "[Hide Addresses]"
+msgstr "[Adresleri Sakla]"
+
+#: rss.php:82 message.php:285 mailbox.php:723 lib/Compose.php:1687
+#: lib/Compose.php:2159
+msgid "[No Subject]"
+msgstr "[Konu Yok]"
+
+#: lib/MIME/Viewer/pgp.php:173
+msgid "[Save the key to your Address book]"
+msgstr "[Anahtarý Adres defterinize saklasýn]"
+
+#: templates/javascript/addressesBlocks.js:8
+msgid "[Show Addresses -"
+msgstr "[Adresleri Göster -"
+
+#: lib/MIME/Headers.php:230
+#, php-format
+msgid "[Show addresses - %s recipients]"
+msgstr "[Adresleri Göster - %s alýcý]"
+
+#: lib/Compose.php:2773
+msgid "[Truncated Text]"
+msgstr "[Kesilmiþ Metin]"
+
+#: lib/MIME/Viewer/pgp.php:175
+msgid "[View the raw key]"
+msgstr "[Ham anahtarlarý görüntüle]"
+
+#: compose.php:920
+msgid "_Bcc"
+msgstr "Giz_li K.K."
+
+#: message.php:580 mailbox.php:527
+msgid "_Blacklist"
+msgstr "_Kara Liste"
+
+#: compose.php:917
+msgid "_Cc"
+msgstr "K. Ko_pya"
+
+#: message.php:554 mailbox.php:509 mailbox.php:511
+msgid "_Delete"
+msgstr "_Sil"
+
+#: lib/IMP.php:841
+msgid "_Folders"
+msgstr "_Dizinler"
+
+#: compose.php:897
+msgid "_Identity"
+msgstr "Ki_mlik"
+
+#: lib/IMP.php:810
+msgid "_Inbox"
+msgstr "_Gelen Kutusu"
+
+#: lib/IMP.php:878
+msgid "_Log out"
+msgstr "Çý_kýþ"
+
+#: message.php:589
+msgid "_Message Source"
+msgstr "Ý_leti Kaynaðý"
+
+#: lib/IMP.php:838
+msgid "_New Message"
+msgstr "_Yeni Ýleti"
+
+#: message.php:602
+msgid "_Print"
+msgstr "Yaz_dýr"
+
+#: compose.php:987
+msgid "_Priority"
+msgstr "Ön_celik"
+
+#: mailbox.php:354
+#, php-format
+msgid "_Refresh %s"
+msgstr "_Yenile %s"
+
+#: message.php:557
+msgid "_Reply"
+msgstr "_Cevap Yaz"
+
+#: lib/IMP.php:843
+msgid "_Search"
+msgstr "_Arama"
+
+#: compose.php:882
+msgid "_Send Message"
+msgstr "Ýleti _Gönder"
+
+#: mailbox.php:598
+msgid "_Thread"
+msgstr "Konu Öbeði"
+
+#: compose.php:913 compose.php:915
+msgid "_To"
+msgstr "_Kime"
+
+#: mailbox.php:515
+msgid "_Undelete"
+msgstr "Sil_me"
+
+#: message.php:576
+msgid "_View Thread"
+msgstr "_Konu Öbeðini Gör"
+
+#: message.php:584 mailbox.php:531
+msgid "_Whitelist"
+msgstr "_Beyaz Liste"
+
+#: lib/Compose.php:943
+msgid "addressee unknown"
+msgstr "adres bilinmiyor"
+
+#: lib/Search.php:542
+msgid "and"
+msgstr "ve"
+
+#: lib/Compose.php:1797
+msgid "attachment"
+msgstr "Ek"
+
+#: view.php:122
+msgid "attachments.zip"
+msgstr "Ek.zip"
+
+#: templates/compose/compose.html:273
+msgid "bytes"
+msgstr "byte"
+
+#: lib/Compose.php:967
+msgid "cannot create output file"
+msgstr "çýktý dosyasý yaratamýyor"
+
+#: lib/Compose.php:939
+msgid "cannot open input"
+msgstr "girdi açamýyor"
+
+#: lib/Compose.php:931
+msgid "command line usage error"
+msgstr "komut satýrý kullaným hatasý"
+
+#: lib/Compose.php:987
+msgid "configuration error"
+msgstr "yapýlandýrma hatasý"
+
+#: lib/Compose.php:963
+msgid "critical system file missing"
+msgstr "önemli sistem dosyasý eksik"
+
+#: lib/Compose.php:935
+msgid "data format error"
+msgstr "veri yapýsý hatasý"
+
+#: lib/Compose.php:991
+msgid "entry not found"
+msgstr "giriþ bulunamadý"
+
+#: templates/contacts/contacts.html:16
+msgid "from"
+msgstr "kimden"
+
+#: lib/Compose.php:947
+msgid "host name unknown"
+msgstr "alan ismi bilinmiyor"
+
+#: lib/Search.php:545
+msgid "in"
+msgstr "içinde"
+
+#: lib/Compose.php:971
+msgid "input/output error"
+msgstr "girdi/çýktý hatasý"
+
+#: lib/Compose.php:955
+msgid "internal software error"
+msgstr "iç yazýlým hatasý"
+
+#: templates/folders/import.html:14
+msgid "into folder"
+msgstr "dizinine"
+
+#: smime.php:39 pgp.php:79
+msgid "key"
+msgstr "anahtar"
+
+#: folders.php:143
+msgid "mailbox file"
+msgstr "posta kutusu dosyasý"
+
+#: lib/Compose.php:770
+msgid "name"
+msgstr "ad"
+
+#: lib/Search.php:539
+msgid "not"
+msgstr "deðil"
+
+#: lib/Search.php:542 templates/fetchmail/fetchmailprefs.html:26
+msgid "or"
+msgstr "veya"
+
+#: lib/Compose.php:983
+msgid "permission denied"
+msgstr "izin yok"
+
+#: templates/javascript_defs.php:32
+msgid "recipients"
+msgstr "alýcýlar"
+
+#: templates/javascript/addressesBlocks.js:8
+msgid "recipients]"
+msgstr "alýcýlar]"
+
+#: lib/Compose.php:979
+msgid "remote error in protocol"
+msgstr "protokolde uzaktan hata"
+
+#: lib/Compose.php:951
+msgid "service unavailable"
+msgstr "servis bulunamýyor"
+
+#: lib/Compose.php:959
+msgid "system error"
+msgstr "sistem hatasý"
+
+#: lib/Compose.php:975
+msgid "temporary failure"
+msgstr "geçici hata"
+
+#: lib/Filter.php:65
+msgid "your blacklist"
+msgstr "kara listeniz"
+
+#: lib/Filter.php:91
+msgid "your whitelist"
+msgstr "beyaz listeniz"

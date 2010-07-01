@@ -1,0 +1,322 @@
+# Norwegian Nag Translation.
+# Copyright 2002-2009 The Horde Project.
+# This file is distributed under the same license as the Mnemo package.
+# Torstein S. Hansen <huleboer@techbee.no>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nag 2.0-cvs\n"
+"POT-Creation-Date: 2002-07-22 13:04+0200\n"
+"PO-Revision-Date: 2002-07-22 14:17+0100\n"
+"Last-Translator: Torstein S. Hansen <huleboer@techbee.no>\n"
+"Language-Team: Norwegian (Bokmal) <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%d tasks"
+msgstr "%d Oppgave"
+
+msgid "1 task"
+msgstr "1 oppgave"
+
+msgid "Adding A New Task"
+msgstr "Legg til en ny oppgave"
+
+msgid "Are you sure you want to permanently delete these tasks?"
+msgstr "Er du sikker på at du vil slette disse oppgavene for godt?"
+
+msgid "Ascending"
+msgstr "Oppstigenede"
+
+msgid "Back to Task List"
+msgstr "Tilbake til oppgave listen"
+
+msgid "Category"
+msgstr "Kategori"
+
+msgid "Change your task sorting and display options."
+msgstr "Endre din oppgave sortering og visnings valg."
+
+#, c-format
+msgid "Changed %d tasks to priority %d."
+msgstr "Endre %d oppgave etter prioritet %d."
+
+#, c-format
+msgid "Changed 1 task to priority %d."
+msgstr "Endre 1 oppgave etter prioritet %d."
+
+msgid "Choose Action:"
+msgstr "Velg handling:"
+
+msgid "Clear Form"
+msgstr "Tøm blankett"
+
+msgid "Complete Task"
+msgstr "Fullfør oppgave"
+
+msgid "Complete Tasks"
+msgstr "Fullfør oppgavene"
+
+msgid "Completed?"
+msgstr "Fullført?"
+
+msgid "Completion Status"
+msgstr "Fullførings status"
+
+msgid "Default sorting criteria:"
+msgstr "Standar sorterings criteria:"
+
+msgid "Default sorting direction:"
+msgstr "Standar sorterings adresse:"
+
+msgid "Delete Task"
+msgstr "Slett oppgave"
+
+msgid "Delete Tasks"
+msgstr "Slett oppgaver"
+
+#, c-format
+msgid "Deleted %d tasks."
+msgstr "Slett %d oppgaver."
+
+msgid "Deleted 1 task."
+msgstr "Slett 1 oppgave."
+
+msgid "Descending"
+msgstr "Synkende"
+
+msgid "Description"
+msgstr "Beskrivelse"
+
+msgid "Display Options"
+msgstr "Visnings valg"
+
+msgid "Due By"
+msgstr "Forfall ved"
+
+msgid "Due Date"
+msgstr "Forfall dato"
+
+msgid "Help"
+msgstr "Hjelp"
+
+msgid "Language"
+msgstr "Språk"
+
+msgid "List Tasks"
+msgstr "Vis oppgaver"
+
+#, c-format
+msgid "Marked %d tasks as completed."
+msgstr "Merk %d oppgave som fullført."
+
+msgid "Marked 1 task as completed."
+msgstr "Merk 1 oppgave som fullført."
+
+msgid "Modify Task"
+msgstr "Endre oppgave"
+
+msgid "Modifying:"
+msgstr "Endrer:"
+
+msgid "Nag is not properly configured"
+msgstr "Nag er ikke fullstendig konfigurerert"
+
+msgid "Name"
+msgstr "Navn"
+
+msgid "New Task"
+msgstr "Ny oppgave"
+
+msgid "No configuration information specified for SQL Tasks."
+msgstr "Ingen konfigurasjons informasjon er spesifisert for SQL oppgavene."
+
+msgid "No due date."
+msgstr "Ingen fullførings dato."
+
+msgid "No tasks were changed."
+msgstr "Ingen oppgaver ble forandret."
+
+msgid "No tasks were deleted."
+msgstr "Ingen oppgaver ble slettet."
+
+msgid "No"
+msgstr "Nei"
+
+msgid "None specified"
+msgstr "Ikke noe spesifisert."
+
+msgid "Options"
+msgstr "Valg"
+
+msgid "Other Options"
+msgstr "Andre valg"
+
+msgid "Please enter the task priority (1-5):"
+msgstr "Vennligs sett inn oppgavenes prioritet (1-5):"
+
+msgid "Pri"
+msgstr "Prioritet"
+
+msgid "Priorities must be between 1 and 5. Please enter a valid priority:"
+msgstr "Prioritetet må være mellom 1 og 5. Vennligst sett inn et gydlig valg:"
+
+msgid "Priority"
+msgstr "Prioritet"
+
+msgid "Problem?"
+msgstr "Problemer?"
+
+msgid "Refresh List"
+msgstr "Oppdater listen"
+
+msgid "Required 'database' not specified in tasks configuration."
+msgstr "Nødvendig 'database' er ikke spesifisert i oppgave konfigurasjon."
+
+msgid "Required 'hostspec' not specified in tasks configuration."
+msgstr "Nødvendig 'hotspec' er ikke spesifisert i oppgave konfigurasjon."
+
+msgid "Required 'password' not specified in tasks configuration."
+msgstr "Nødvendig 'passord' er ikke spesifisert i oppgave konfigurasjon."
+
+msgid "Required 'phptype' not specified in tasks configuration."
+msgstr "Nødvendig 'phptype' er ikke spesifisert i oppgave konfigurasjon."
+
+msgid "Required 'table' not specified in tasks configuration."
+msgstr "Nødvendig 'tabell' er ikke spesifisert i oppgave konfigurasjon."
+
+msgid "Required 'username' not specified in tasks configuration."
+msgstr "Nødvendig 'brukernavn' er ikke spesifisert i oppgave konfigurasjon."
+
+msgid "Save Task"
+msgstr "Lagre oppgave"
+
+msgid "Search Results"
+msgstr "Søke resultat"
+
+msgid "Search Scope"
+msgstr "Søk rekkevidde"
+
+msgid "Search Text"
+msgstr "Søke tekst"
+
+msgid "Search"
+msgstr "Søk"
+
+msgid "Select your preferred language:"
+msgstr "Velg språk:"
+
+msgid "Selected?"
+msgstr "Valgt?"
+
+msgid "Set Task Priority"
+msgstr "Sett oppgave prioritet."
+
+msgid "Set the your preferred display language."
+msgstr "Sett visnings språk."
+
+msgid "Show completed tasks in the task list?"
+msgstr "Vis fullførte oppgaver i oppgave listen?"
+
+msgid "Some of Nag's configuration files are missing:"
+msgstr "Noen av Nag's konfigurasjons filer mangler:"
+
+msgid "Sort Direction"
+msgstr "Sortering rettning"
+
+msgid "Sort by Category"
+msgstr "Sorter på kategori"
+
+msgid "Sort by Completion Status"
+msgstr "Sorter på sluttførelse status"
+
+msgid "Sort by Due Date"
+msgstr "Sorter på slutt dato"
+
+msgid "Sort by Name"
+msgstr "Sorter på navn"
+
+msgid "Sort by Priority"
+msgstr "Sort etter prioritet"
+
+msgid "Task Details"
+msgstr "Oppgave detaljer"
+
+msgid "Task List"
+msgstr "Oppgave liste"
+
+msgid "Task Name"
+msgstr "Oppgave navn"
+
+msgid "Task Note"
+msgstr "Oppgave notater"
+
+msgid "Task Note?"
+msgstr "Oppgave notat?"
+
+msgid "The requested task does not exist."
+msgstr "Det forespurte oppgaven eksisterer ikke."
+
+msgid "There was a problem deleting tasks."
+msgstr "Det var et problem å slette oppgavene."
+
+msgid "There was a problem saving the task."
+msgstr "Det var et problem å lagre oppgaven."
+
+msgid "There was a problem setting task completion status."
+msgstr "Det var et problem å sette oppgave fullførelse satus."
+
+msgid "There was a problem setting task priority."
+msgstr "Det var er problem å sette oppgave prioriteten."
+
+msgid "This file contains preferences for Nag."
+msgstr "Denne filen inneholder innstillinger for Nag."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Denne fila kontrollerer stilarket som blir brukt til å definere farger og "
+"skrifttyper, og legg til eller overstyrer standardverdiane til Horde."
+
+msgid ""
+"This is the main Nag configuration file. It contains options for all Nag "
+"scripts."
+msgstr ""
+"Dette er hovedkonfigurasjonsfila for Nag. Den inneholder katalognavn og "
+"alternativ for alle Nag-skripta."
+
+msgid "Undo Changes"
+msgstr "Angre endringene"
+
+msgid "Unfiled"
+msgstr "Uutfyllt"
+
+msgid "Unknown task"
+msgstr "Ukjent oppgave"
+
+msgid "Unknown"
+msgstr "Ukjent"
+
+msgid "User Options"
+msgstr "Bruker valg"
+
+msgid "View Task Details"
+msgstr "Vis oppgave detaljene"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "You must select at least one task first."
+msgstr "Do må minst velge en oppgave først."
+
+msgid "Your Information"
+msgstr "Din informasjon"
+
+msgid "Your task list is empty."
+msgstr "Din oppgave liste er tom."
+
+msgid "at"
+msgstr "til"

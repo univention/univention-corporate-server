@@ -1,0 +1,262 @@
+# Finnish translation for Mimp.
+# Copyright
+# Leena Heino <liinu@uta.fi>, 2004-2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mimp 1.1-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-08-10 21:20+0300\n"
+"PO-Revision-Date: 2008-08-24 12:59+0200\n"
+"Last-Translator: Leena Heino <liinu@uta.fi>\n"
+"Language-Team: Finnish <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: message.php:295
+#, php-format
+msgid "(%d of %d)"
+msgstr "(%d / %d)"
+
+#: lib/MIME/Contents.php:62
+msgid "Attachment"
+msgstr "Liite"
+
+#: templates/compose/compose.inc:52
+msgid "Bcc: "
+msgstr "Piilokopio: "
+
+#: templates/compose/compose.inc:49
+msgid "Cc: "
+msgstr "Kopio: "
+
+#: config/prefs.php.dist:11
+msgid "Configure how messages are displayed."
+msgstr "Voit m‰‰ritell‰ miten viestit n‰ytet‰‰n."
+
+#: compose.php:22
+msgid "Could not retrieve the message from the mail server."
+msgstr "Ei voitu hakea viesti‰ postipalvelimelta."
+
+#: message.php:258
+msgid "Delete"
+msgstr "Poista"
+
+#: config/prefs.php.dist:23
+msgid "Display only the first 250 characters of a message initially?"
+msgstr "N‰yt‰ viestist‰ aluksi vain viestin ensimm‰iset 250 merkki‰."
+
+#: mailbox.php:189
+msgid "Do Not Sort by Thread"
+msgstr "ƒl‰ j‰rjest‰ s‰ikeitt‰in"
+
+#: lib/MIME/Viewer/status.php:69
+msgid "ERROR: Your message could not be delivered."
+msgstr "VIRHE: Viesti‰si ei voitu l‰hett‰‰."
+
+#: compose.php:88 templates/compose/redirect.inc:19
+#: templates/compose/compose.inc:59
+msgid "Expand Names"
+msgstr "Laajenna nimet"
+
+#: mailbox.php:66
+msgid "First Page"
+msgstr "Ensimm‰inen sivu"
+
+#: folders.php:60 lib/MIMP.php:36
+msgid "Folders"
+msgstr "Kansiot"
+
+#: message.php:275
+msgid "Forward"
+msgstr "V‰lit‰"
+
+#: mailbox.php:171
+msgid "From"
+msgstr "L‰hett‰j‰"
+
+#: templates/compose/compose.inc:39
+msgid "Identity"
+msgstr "Profiili"
+
+#: lib/MIMP.php:30
+msgid "Inbox"
+msgstr "Inbox"
+
+#: mailbox.php:71
+msgid "Last Page"
+msgstr "Viimeinen sivu"
+
+#: lib/MIMP.php:44
+msgid "Log out"
+msgstr "Kirjaudu ulos"
+
+#: config/prefs.php.dist:9
+msgid "Mail Management"
+msgstr "Postin hallinta"
+
+#: compose.php:240 message.php:252 message.php:296 mailbox.php:201
+#: templates/mailbox/mailbox.inc:10 templates/folders/folders.inc:6
+#: templates/folders/folders.inc:29 templates/compose/redirect.inc:4
+#: templates/compose/compose.inc:4
+msgid "Menu"
+msgstr "Valikko"
+
+#: compose.php:225
+msgid "Message Composition"
+msgstr "Viestin kirjoitus"
+
+#: config/prefs.php.dist:10
+msgid "Message Viewing"
+msgstr "Viestin luku"
+
+#: compose.php:142
+msgid "Message redirected successfully."
+msgstr "Viestin uudelleenohjaus onnistui."
+
+#: compose.php:215
+msgid "Message sent successfully."
+msgstr "Viestin l‰hetys onnistui."
+
+#: templates/compose/compose.inc:56
+msgid "Message: "
+msgstr "Viesti: "
+
+#: lib/MIMP.php:33
+msgid "New Message"
+msgstr "Uusi viesti"
+
+#: message.php:283
+msgid "Next"
+msgstr "Seuraava"
+
+#: mailbox.php:70
+msgid "Next Page"
+msgstr "Seuraava sivu"
+
+#: message.php:286
+msgid "Prev"
+msgstr "Edellinen"
+
+#: mailbox.php:67
+msgid "Previous Page"
+msgstr "Edellinen sivu"
+
+#: mailbox.php:164
+msgid "Purge Deleted"
+msgstr "Tuhoa poistetut"
+
+#: compose.php:129 message.php:276 templates/compose/redirect.inc:18
+msgid "Redirect"
+msgstr "Ohjaa"
+
+#: mailbox.php:158 templates/folders/folders.inc:31
+msgid "Refresh"
+msgstr "P‰ivit‰"
+
+#: message.php:265
+msgid "Reply"
+msgstr "Vastaa"
+
+#: message.php:272
+msgid "Reply All"
+msgstr "Vastaa kaikille"
+
+#: message.php:268
+msgid "Reply to List"
+msgstr "Vastaa listalle"
+
+#: compose.php:151 templates/compose/compose.inc:58
+msgid "Send"
+msgstr "L‰het‰"
+
+#: message.php:316
+msgid "Show All"
+msgstr "N‰yt‰ kaikki"
+
+#: folders.php:56
+msgid "Show All Folders"
+msgstr "N‰yt‰ kaikki kansiot"
+
+#: folders.php:56
+msgid "Show Subscribed Folders"
+msgstr "N‰yt‰ tilatut kansiot"
+
+#: mailbox.php:186
+msgid "Sort by Thread"
+msgstr "J‰rjest‰ s‰ikeitt‰in"
+
+#: mailbox.php:172
+msgid "Subject"
+msgstr "Otsikko"
+
+#: templates/compose/compose.inc:54
+msgid "Subject: "
+msgstr "Otsikko: "
+
+#: lib/MIME/Viewer/status.php:70
+msgid "The mail server generated the following error message:"
+msgstr "Postipalvelimen virheilmoitus oli:"
+
+#: lib/MIME/Viewer/status.php:79
+msgid "The mail server generated the following message:"
+msgstr "Postipalvelimen ilmoitus oli:"
+
+#: lib/MIME/Viewer/alternative.php:49
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "Ei ole vaihtoehtoisia osia, jotka voidaan n‰ytt‰‰ viestien yhteydess‰."
+
+#: lib/MIME/Contents.php:91
+msgid "There are no parts that can be displayed inline."
+msgstr "Ei ole osioita, jotka voidaan n‰ytt‰‰ viestien yhteydess‰."
+
+#: lib/MIME/Viewer/html.php:31 lib/MIME/Viewer/plain.php:29
+msgid "There was an error displaying this message part"
+msgstr "Tapahtui virhe n‰ytett‰ess‰ viestin t‰t‰ osiota"
+
+#: mailbox.php:36
+msgid "There was an error viewing the requested message."
+msgstr "Tapahtui virhe n‰ytett‰essa pyydetty‰ viesti‰."
+
+#: lib/MIME/Viewer/status.php:114
+msgid ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+msgstr ""
+"T‰m‰ viesti sis‰lt‰‰ viestin perillemenoa koskevaa tietoa, mutta viestin "
+"muoto on tuntematon."
+
+#: message.php:289
+#, php-format
+msgid "To %s"
+msgstr "Vastaanottajalle %s"
+
+#: templates/compose/redirect.inc:16 templates/compose/compose.inc:47
+msgid "To: "
+msgstr "Vastaanottaja: "
+
+#: message.php:256
+msgid "Undelete"
+msgstr "Palauta"
+
+#: message.php:41
+msgid "Undisclosed Recipients"
+msgstr "Salatuille vastaanottajille"
+
+#: message.php:248
+msgid "View Full Message"
+msgstr "N‰yt‰ viesti kokonaisuudessaan"
+
+#: lib/MIME/Viewer/status.php:78
+msgid "Your message was successfully delivered."
+msgstr "Viestin l‰hetys onnistui."
+
+#: message.php:159 mailbox.php:117
+msgid "[No Subject]"
+msgstr "[Ei otsikkoa]"
+
+#: templates/mailbox/mailbox.inc:7
+msgid "of"
+msgstr " "

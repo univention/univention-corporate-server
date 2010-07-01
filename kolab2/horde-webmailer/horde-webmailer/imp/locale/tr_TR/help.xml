@@ -1,0 +1,2431 @@
+<?xml version="1.0" encoding="iso-8859-9"?>
+<!-- $Horde: imp/locale/tr_TR/help.xml,v 1.3.2.8 2008-02-12 12:23:24 jan Exp $ -->
+<help>
+  <entry id="keyboard-navigation" state="new">
+    <title>Keyboard: Navigation</title>
+    <para>You may use your keyboard to move between messages in the mailbox list, to the previous or next messages while viewing a message, and between pages of your mailbox list.</para>
+    <heading>Message List Keyboard Navigation</heading>
+    <para>You can use your keyboard to select and view messages in your message list. In order to move between messages, use the Up and Down arrow keys while holding the Control (Ctrl) key. You will start at the bottom of the page (last displayed message) if you press Up, and at the top of the page (first displayed message) if you press Down.</para>
+    <para>The current message is highlighted just as if you were mousing over it. While you are moving up and down through the mailbox list, you can press Space to select or deselect that message, and you can press Return to view that message.</para>
+    <heading>Message List: Previous/Next Page</heading>
+    <para>Use the Left and Right keys on your keyboard to go to the previous page of messages in your mailbox or the next page of messages, respectively.</para>
+    <heading>Message View: Previous/Next Message</heading>
+    <para>Use the Left and Right keys on your keyboard to go to the previous message or the next message, respectively.</para>
+</entry>
+  <entry id="message-forward" state="new">
+  <title>Forwarding Email</title>
+  <para>When forwarding an email, you have several choices.</para>
+
+  <heading>Forwarding from the Mailbox View</heading>
+  <para>In the mailbox view, you can forward multiple messages at the same time. Each message that you select will be sent, in its entirety, to your recipients. You will see each message as an attachment in your compose window. On the receiving end, the recipient(s) will see each email as an embedded email.</para>
+
+  <heading>Forwarding from the Message View</heading>
+  <para>When forwarding individual messages in the message view, you can choose three different options:</para>
+  <para><b>1. Entire Message</b>: This option will attach the entire message to your email. The compose area will not contain any text from the forwarded message. This is the same as forwading a single email from the mailbox view, except that the Subject: line will be set for you.</para>
+  <para><b>2. Body Text Only</b>: If you only want to forward the body of the email, choose this option. Any attachments to the original email will not be included in your forward. The text will appear in the compose area, and you can edit it if you wish or add your own comments.</para>
+  <para><b>3. Body Text with Attachments</b>: To forward the attachments of an email along, along with the body as described in #2 Body Text Only, use this option. The body text will be placed in the compose area for you to edit, and all attachments to the original message will be copied to your forward.</para>
+
+</entry>
+  <entry id="compose-buttons" md5="3259ba00a198559c7faa76e7867600d9" state="changed">
+    <title>Mesaj Düzenlenmesi: İşlemler</title>
+    <heading>İşlemler</heading>
+    <para>
+    Mesaj Gönder" e-posta mesajınızı alıcı(ları)nıza gönderir. Bu işlem geri alınamayacağından işlem bitmeden mesajınızı göndermek istediğinizden emin olunuz.  
+</para>
+    <para>
+    Taslağı Kaydet" bitirilmemiş bir mesajı ekranınızın sağ üst köşesinde bulunan aşağı doğru açılan kutudaki "Taslaklar" klasörüne koyar. Mesajınızı daha sonra "Taslaklar" klasöründeki kaydedilmiş halinden açarak ve "Devam Etme" tuşuna tıklayarak bitirebilirsiniz. Mesajınızı taslak olarak kaydetmeden önce konusunu yazmış olmanız Taslaklar klasöründe mesajınızı kolaylıkla bulmanızı sağlayacaktır." 
+</para>
+    <para>
+     Mesajı İptal Et" sözkonusu mesajı iptal eder ve en son görüntülemekte olduğunuz klasöre döner."
+</para>
+<!-- English entry:
+<entry id="compose-buttons">
+    <title>Message Composition: Actions</title>
+    <heading>Actions</heading>
+    <para>
+    "Send Message" transmits your email message to the intended recipient(s). Make sure you do want to send your message as this action is final and cannot be reversed.
+    </para>
+    <para>
+    "Save Draft" places an unfinished message in a folder called "Drafts" accessible through the folder drop-down box at the top-right of your screen. You can then finish the message later by switching to the "Drafts" folder, clicking on the saved message to open it, and then clicking on "Resume". Be sure to put a subject on the email before you save the draft so that you can easily identify which message you want within the Drafts folder.
+    </para>
+    <tip>
+    Depending on your installation, you can change in your preferences whether you are returned to the last folder you were viewing or back to the same message after saving a message as a draft.
+    </tip>
+    <para>
+    "Cancel Message" drops the message in progress and simply returns you to the last folder you were viewing.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-buttons">
+    <title>Message Composition: Actions</title>
+    <heading>Actions</heading>
+    <para>
+    "Send Message" transmits your email message to the intended recipient(s). Make sure you do want to send your message as this action is final and cannot be reversed.
+    </para>
+    <para>
+    "Save Draft" places an unfinished message in a folder called "Drafts" accessible through the folder drop-down box at the top-right of your screen. You can then finish the message later by switching to the "Drafts" folder, clicking on the saved message to open it, and then clicking on "Resume". Be sure to put a subject on the email before you save the draft so that you can easily identify which message you want within the Drafts folder.
+    </para>
+    <tip>
+    Depending on your installation, you can change in your preferences whether you are returned to the last folder you were viewing or back to the same message after saving a message as a draft.
+    </tip>
+    <para>
+    "Cancel Message" drops the message in progress and simply returns you to the last folder you were viewing.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-buttons">
+    <title>Message Composition: Actions</title>
+    <heading>Actions</heading>
+    <para>
+    "Send Message" transmits your email message to the intended recipient(s). Make sure you do want to send your message as this action is final and cannot be reversed.
+    </para>
+    <para>
+    "Save Draft" places an unfinished message in a folder called "Drafts" accessible through the folder drop-down box at the top-right of your screen. You can then finish the message later by switching to the "Drafts" folder, clicking on the saved message to open it, and then clicking on "Resume". Be sure to put a subject on the email before you save the draft so that you can easily identify which message you want within the Drafts folder.
+    </para>
+    <tip>
+    Depending on your installation, you can change in your preferences whether you are returned to the last folder you were viewing or back to the same message after saving a message as a draft.
+    </tip>
+    <para>
+    "Cancel Message" drops the message in progress and simply returns you to the last folder you were viewing.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-buttons">
+    <title>Message Composition: Actions</title>
+    <heading>Actions</heading>
+    <para>
+    "Send Message" transmits your email message to the intended recipient(s). Make sure you do want to send your message as this action is final and cannot be reversed.
+    </para>
+    <para>
+    "Save Draft" places an unfinished message in a folder called "Drafts" accessible through the folder drop-down box at the top-right of your screen. You can then finish the message later by switching to the "Drafts" folder, clicking on the saved message to open it, and then clicking on "Resume". Be sure to put a subject on the email before you save the draft so that you can easily identify which message you want within the Drafts folder.
+    </para>
+    <tip>
+    Depending on your installation, you can change in your preferences whether you are returned to the last folder you were viewing or back to the same message after saving a message as a draft.
+    </tip>
+    <para>
+    "Cancel Message" drops the message in progress and simply returns you to the last folder you were viewing.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-buttons">
+    <title>Message Composition: Actions</title>
+    <heading>Actions</heading>
+    <para>
+    "Send Message" transmits your email message to the intended recipient(s). Make sure you do want to send your message as this action is final and cannot be reversed.
+    </para>
+    <para>
+    "Save Draft" places an unfinished message in a folder called "Drafts" accessible through the folder drop-down box at the top-right of your screen. You can then finish the message later by switching to the "Drafts" folder, clicking on the saved message to open it, and then clicking on "Resume". Be sure to put a subject on the email before you save the draft so that you can easily identify which message you want within the Drafts folder.
+    </para>
+    <tip>
+    Depending on your installation, you can change in your preferences whether you are returned to the last folder you were viewing or back to the same message after saving a message as a draft.
+    </tip>
+    <para>
+    "Cancel Message" drops the message in progress and simply returns you to the last folder you were viewing.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-buttons">
+    <title>Message Composition: Actions</title>
+    <heading>Actions</heading>
+    <para>
+    "Send Message" transmits your email message to the intended recipient(s). Make sure you do want to send your message as this action is final and cannot be reversed.
+    </para>
+    <para>
+    "Save Draft" places an unfinished message in a folder called "Drafts" accessible through the folder drop-down box at the top-right of your screen. You can then finish the message later by switching to the "Drafts" folder, clicking on the saved message to open it, and then clicking on "Resume". Be sure to put a subject on the email before you save the draft so that you can easily identify which message you want within the Drafts folder.
+    </para>
+    <tip>
+    Depending on your installation, you can change in your preferences whether you are returned to the last folder you were viewing or back to the same message after saving a message as a draft.
+    </tip>
+    <para>
+    "Cancel Message" drops the message in progress and simply returns you to the last folder you were viewing.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-buttons">
+    <title>Message Composition: Actions</title>
+    <heading>Actions</heading>
+    <para>
+    "Send Message" transmits your email message to the intended recipient(s). Make sure you do want to send your message as this action is final and cannot be reversed.
+    </para>
+    <para>
+    "Save Draft" places an unfinished message in a folder called "Drafts" accessible through the folder drop-down box at the top-right of your screen. You can then finish the message later by switching to the "Drafts" folder, clicking on the saved message to open it, and then clicking on "Resume". Be sure to put a subject on the email before you save the draft so that you can easily identify which message you want within the Drafts folder.
+    </para>
+    <tip>
+    Depending on your installation, you can change in your preferences whether you are returned to the last folder you were viewing or back to the same message after saving a message as a draft.
+    </tip>
+    <para>
+    "Cancel Message" drops the message in progress and simply returns you to the last folder you were viewing.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-buttons">
+    <title>Message Composition: Actions</title>
+    <heading>Actions</heading>
+    <para>
+    "Send Message" transmits your email message to the intended recipient(s). Make sure you do want to send your message as this action is final and cannot be reversed.
+    </para>
+    <para>
+    "Save Draft" places an unfinished message in a folder called "Drafts" accessible through the folder drop-down box at the top-right of your screen. You can then finish the message later by switching to the "Drafts" folder, clicking on the saved message to open it, and then clicking on "Resume". Be sure to put a subject on the email before you save the draft so that you can easily identify which message you want within the Drafts folder.
+    </para>
+    <tip>
+    Depending on your installation, you can change in your preferences whether you are returned to the last folder you were viewing or back to the same message after saving a message as a draft.
+    </tip>
+    <para>
+    "Cancel Message" drops the message in progress and simply returns you to the last folder you were viewing.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-buttons">
+    <title>Message Composition: Actions</title>
+    <heading>Actions</heading>
+    <para>
+    "Send Message" transmits your email message to the intended recipient(s). Make sure you do want to send your message as this action is final and cannot be reversed.
+    </para>
+    <para>
+    "Save Draft" places an unfinished message in a folder called "Drafts" accessible through the folder drop-down box at the top-right of your screen. You can then finish the message later by switching to the "Drafts" folder, clicking on the saved message to open it, and then clicking on "Resume". Be sure to put a subject on the email before you save the draft so that you can easily identify which message you want within the Drafts folder.
+    </para>
+    <tip>
+    Depending on your installation, you can change in your preferences whether you are returned to the last folder you were viewing or back to the same message after saving a message as a draft.
+    </tip>
+    <para>
+    "Cancel Message" drops the message in progress and simply returns you to the last folder you were viewing.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-buttons">
+    <title>Message Composition: Actions</title>
+    <heading>Actions</heading>
+    <para>
+    "Send Message" transmits your email message to the intended recipient(s). Make sure you do want to send your message as this action is final and cannot be reversed.
+    </para>
+    <para>
+    "Save Draft" places an unfinished message in a folder called "Drafts" accessible through the folder drop-down box at the top-right of your screen. You can then finish the message later by switching to the "Drafts" folder, clicking on the saved message to open it, and then clicking on "Resume". Be sure to put a subject on the email before you save the draft so that you can easily identify which message you want within the Drafts folder.
+    </para>
+    <tip>
+    Depending on your installation, you can change in your preferences whether you are returned to the last folder you were viewing or back to the same message after saving a message as a draft.
+    </tip>
+    <para>
+    "Cancel Message" drops the message in progress and simply returns you to the last folder you were viewing.
+    </para>
+</entry>--></entry>
+  <entry id="compose-identity" state="new">
+    <title>Message Composition: Identity</title>
+    <heading>Identity</heading>
+    <para>
+    Choose the identity to send email as from a drop-down list of identities that you entered under <qt>Options-&gt;Personal Information</qt>.
+    </para>
+</entry>
+  <entry id="compose-from" md5="82cf24d31a667a5b94e481cd5179c529" state="changed">
+    <title>Mesaj Düzenlenmesi: Kimden</title>
+    <heading>"Kimden"</heading>
+    <para>
+    Kurulumunuza bağlı olarak, aşağı akan bir listeden Seçenekler-&gt;Kişisel Bilgiler kısmına girdiğiniz bir kimliği seçebilir, veya mesajın gönderildiği adres olarak gözükmesini istediğiniz mail adresini metin alanına girebilirsiniz."
+    </para>
+<!-- English entry:
+<entry id="compose-from">
+    <title>Message Composition: Identity</title>
+    <heading>From</heading>
+    <para>
+    Choose the identity to send email as from a drop-down list of identities that you entered under <qt>Options-&gt;Personal Information</qt>.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-from">
+    <title>Message Composition: From</title>
+    <heading>From</heading>
+    <para>
+    Enter the email address that you want to send this message as.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-from">
+    <title>Message Composition: From</title>
+    <heading>From</heading>
+    <para>
+    Enter the email address that you want to send this message as.
+    </para>
+</entry>--></entry>
+  <entry id="compose-to" md5="31cba17f169572c367aa8014831eb8f8" state="uptodate">
+    <title>Mesaj Düzenlenmesi: Kime</title>
+    <heading>Kime</heading>
+    <para>
+    Mesajınızın alıcısı için doğru email adresini girin. Fazla alıcı girmek için, email adreslerini virgüllerle ayırın. Herhangi diğer noktalama işaretlerinin email adreslerini ayırmak için kullanımı hataya sebep olur."
+    </para>
+</entry>
+  <entry id="compose-cc" md5="97571433ab037ef9c4d101a56bf74e25" state="uptodate">
+    <title>Mesaj Düzenlenmesi: Kopya</title>
+    <heading>Kopya</heading>
+    <para>
+Mesajınızın karbon kopya alıcısı için doğru email adresini girin. Fazla alıcı girmek için, email adreslerini virgüllerle ayırın.
+     </para>
+    <para>
+Karbon Kopyalar genellikle mesajın direkt alıcısı olmayan kişilere gönderilir, ama bilgilenmek açısından mesajı almaya gereksinim duyabilirler, genellikle emailin konusu ile dolaylı olarak ilgilidirler. Bütün "Kime:" alıcıları ve "Kopya:" alıcıları her iki tür alıcı listesinin tamamını görebilirler."
+    </para>
+</entry>
+  <entry id="compose-bcc" md5="aa8f9e2d44fdb74def0fa15240ff687b" state="uptodate">
+    <title>Mesaj Düzenlenmesi: Gizli Kopya</title>
+    <heading>"Gizli Kopya"</heading>
+    <para>
+Mesajınızın görünmez karbon kopya alıcısı için doğru email adresini girin. Fazla alıcı girmek için, email adreslerini virgüllerle ayırın.  Herhangi diğer noktalama işretlerinin email adreslerini ayırmak için kullanımı hataya sebep olur."  
+      </para>
+    <para>
+Görünmez karbon kopyalar genellikle diğer alıcıların da o emaili aldığını BİLMEDEN yazılanı okuması gereken alıcılara gönderilir. Böylece "görünmez" bu alıcıların kimliğinin emailin bütün diğer alıcılarından saklandığı anlamına gelir. Sadece siz gönderen ve "Gizli Kopya" alıcıları bir kopya aldıklarını bilecekler."
+     </para>
+</entry>
+  <entry id="compose-subject" md5="0639a8790e306acc9e19b4d1ce342d53" state="uptodate">
+    <title>Mesaj Düzenlenmesi: Konu</title>
+    <heading>"Konu"</heading>
+    <para>
+   Mesajınızın konusunu girin. Konuyu kısa, yalın ve açıklayıcı tutmak iyidir. Konu satırı sizin ve yazıştığınız kişi için emailin içinde ne olduğunu en kolay şekilde hatırlatır, bu yüzden emaillerinizi düzenlemede ve sonradan önemli olanlarını bulmanızı sağlamada önemlidir."
+     </para>
+    <para>
+   Ayrıca , bir emaili "Reply" veya "Forward" ederken, bu konu satırı yeni mesajınkine kopyalanır bu email konuşmasında hangi mesajların birlikte giderek bir "akıcılık" oluşturduğunu fark etmek açısından çok yararlı bir yoldur. Bir öneri olarak, eğer replied veya forwarded mesajlar yeni fikirler içeriyorsa, "Konu" satırını alıcıların "akıcılık" ilerlemesini takip edebilmeleri için biraz değiştirmek isteyebilirsiniz."
+     </para>
+</entry>
+  <entry id="compose-charset" state="new">
+    <title>Message Composition: Charset</title>
+    <heading>Character Set</heading>
+    <para>
+    Selects the character set to send the outgoing message with.
+    </para>
+</entry>
+  <entry id="compose-options" md5="5f1d50a733c8b7e46aecece28822ff70" state="uptodate">
+    <title>Mesaj Düzenlenmesi: Seçenekler</title>
+    <heading>Seçenekler</heading>
+    <para>
+Bu Seçenekler mesajınızı hazırlamak için size yardım eder."
+      </para>
+    <para>
+İmlanızı kontrol etmek için "Spell Check" e tıklayın."
+     </para>
+    <para>
+Mesaja dosya ekleyebileceğiniz sayfanın alt kısmına gitmek için "Ekler" e tıklayın.
+    </para>
+<para>
+Eğer gönderilmiş postanın saklanmasına yöneticiniz tarafından izin verilmişse, "Kopyasını al" nin yanındaki kutuyu işaretleyerek gönderdiğiniz mesajın bir kopyasını saklamayı aktif duruma getirmiş olursunuz. Bu hedef klasör kendi hazır klasörü de olabilir veya sizin bu amaç için "Seçenekler-&gt;Kişisel Bilgiler-&gt;Kimlikler". Eğer yöneticiniz gönderilen maillerin gönderileceği yeri seçmeyi aktif ettiyse, klasörünüzü bu seçeneğin yanındaki aşağı akan bir listeden seçebiliyor olacaksınız." 
+</para>
+<para>
+Gönderdiğiniz önemli e-postaların kopyalarını saklamak ne görüşüldüğünü kaydetmek için önemlidir. Bununla birlikte, "Seçenekler-&gt;Kişisel Bilgiler-&gt;Kimliği düzenle"a giderek, bu özelliği sizin kimliğiniz içinde otomatik olarak "açık" yapın. Seçeneklerinizde ayrıca bakım görevleri olan klasörleri periyodik olarak boşaltma veya yeniden adlandırmayı düzenleyebilirsiniz."
+</para>
+</entry>
+  <entry id="compose-attach" md5="98dd30f32af1fa86a9f0fea3124c4ee1" state="changed">
+    <title>Mesaj Düzenlenmesi: Ek</title>
+    <heading>"Ek"</heading>
+    <para>
+Eğer tarayıcınız dosya yüklemeyi destekliyorsa mesajınıza dosya ekleyebilirsiniz. Bir kerede 1 den fazla dosya yükleyebilirsiniz."
+      </para>
+    <para>
+Adım 1: Bu mesaja eklemek istediğiniz dosyanın yolunu ve ismini yazın veya "Gözat" tuşuna tıklayın ve eklemek istediğiniz dosyayı seçin. Dosyanın yolu ve adı şimdi Ekler kutusunda görünüyor."
+     </para>
+    <para>
+Adım 2: Dosyanızın ek olarak mı yoksa mesajın devamı halinde satıriçi mi olmasını istediğinize karar verin. Alıcıların mail okudukları yazılımın mesajın inline görüntülenen dosya tipini bulundurması gerekir, aksi halde bu kısım ek olarak gözükür."
+    </para>
+   <para>
+Adım 3: "Ekle" tuşuna basın. Dosya adı ve büyüklüğü Ekler listenize eklenecektir."
+   </para>
+<!-- English entry:
+<entry id="compose-attach">
+    <title>Message Composition: Attach</title>
+    <heading>Attach</heading>
+    <para>
+    You may attach files to your message if your browser supports uploading of files. More than 1 file can be uploaded at once.
+    </para>
+    <para>Step 1: Either type the path and name of a file that you want attached to this message or click the "Browse" button and select the file to be attatched. The path and name of that file now appears in the Attachment box.
+    </para>
+    <para>Step 2: Decide whether you want the file to be viewed as an attachment or inline with the rest of the message. The recipient's mail reading software must be able to handle the inline display of the file type, otherwise this part will be viewed as an attachment instead.
+    </para>
+    <tip>
+    Please note that for large files and/or slower Internet connections, the process of uploading and attaching your file to the email may take a while. Please be patient and do not click other links or buttons while you are waiting for a file to upload.
+    </tip>
+</entry>--><!-- English entry:
+<entry id="compose-attach">
+    <title>Message Composition: Attach</title>
+    <heading>Attach</heading>
+    <para>
+    You may attach files to your message if your browser supports uploading of files. More than 1 file can be uploaded at once.
+    </para>
+    <para>Step 1: Either type the path and name of a file that you want attached to this message or click the "Browse" button and select the file to be attatched. The path and name of that file now appears in the Attachment box.
+    </para>
+    <para>Step 2: Decide whether you want the file to be viewed as an attachment or inline with the rest of the message. The recipient's mail reading software must be able to handle the inline display of the file type, otherwise this part will be viewed as an attachment instead.
+    </para>
+    <tip>
+    Please note that for large files and/or slower Internet connections, the process of uploading and attaching your file to the email may take a while. Please be patient and do not click other links or buttons while you are waiting for a file to upload.
+    </tip>
+</entry>--><!-- English entry:
+<entry id="compose-attach">
+    <title>Message Composition: Attach</title>
+    <heading>Attach</heading>
+    <para>
+    You may attach files to your message if your browser supports uploading of files. More than 1 file can be uploaded at once.
+    </para>
+    <para>Step 1: Either type the path and name of a file that you want attached to this message or click the "Browse" button and select the file to be attatched. The path and name of that file now appears in the Attachment box.
+    </para>
+    <para>Step 2: Decide whether you want the file to be viewed as an attachment or inline with the rest of the message. The recipient's mail reading software must be able to handle the inline display of the file type, otherwise this part will be viewed as an attachment instead.
+    </para>
+    <tip>
+    Please note that for large files and/or slower Internet connections, the process of uploading and attaching your file to the email may take a while. Please be patient and do not click other links or buttons while you are waiting for a file to upload.
+    </tip>
+</entry>--><!-- English entry:
+<entry id="compose-attach">
+    <title>Message Composition: Attach</title>
+    <heading>Attach</heading>
+    <para>
+    You may attach files to your message if your browser supports uploading of files. More than 1 file can be uploaded at once.
+    </para>
+    <para>Step 1: Either type the path and name of a file that you want attached to this message or click the "Browse" button and select the file to be attatched. The path and name of that file now appears in the Attachment box.
+    </para>
+    <para>Step 2: Decide whether you want the file to be viewed as an attachment or inline with the rest of the message. The recipient's mail reading software must be able to handle the inline display of the file type, otherwise this part will be viewed as an attachment instead.
+    </para>
+    <tip>
+    Please note that for large files and/or slower Internet connections, the process of uploading and attaching your file to the email may take a while. Please be patient and do not click other links or buttons while you are waiting for a file to upload.
+    </tip>
+</entry>--><!-- English entry:
+<entry id="compose-attach">
+    <title>Message Composition: Attach</title>
+    <heading>Attach</heading>
+    <para>
+    You may attach files to your message if your browser supports uploading of files. More than 1 file can be uploaded at once.
+    </para>
+    <para>Step 1: Either type the path and name of a file that you want attached to this message or click the "Browse" button and select the file to be attatched. The path and name of that file now appears in the Attachment box.
+    </para>
+    <para>Step 2: Decide whether you want the file to be viewed as an attachment or inline with the rest of the message. The recipient's mail reading software must be able to handle the inline display of the file type, otherwise this part will be viewed as an attachment instead.
+    </para>
+    <tip>
+    Please note that for large files and/or slower Internet connections, the process of uploading and attaching your file to the email may take a while. Please be patient and do not click other links or buttons while you are waiting for a file to upload.
+    </tip>
+</entry>--><!-- English entry:
+<entry id="compose-attach">
+    <title>Message Composition: Attach</title>
+    <heading>Attach</heading>
+    <para>
+    You may attach files to your message if your browser supports uploading of files. More than 1 file can be uploaded at once.
+    </para>
+    <para>Step 1: Either type the path and name of a file that you want attached to this message or click the "Browse" button and select the file to be attatched. The path and name of that file now appears in the Attachment box.
+    </para>
+    <para>Step 2: Decide whether you want the file to be viewed as an attachment or inline with the rest of the message. The recipient's mail reading software must be able to handle the inline display of the file type, otherwise this part will be viewed as an attachment instead.
+    </para>
+    <tip>
+    Please note that for large files and/or slower Internet connections, the process of uploading and attaching your file to the email may take a while. Please be patient and do not click other links or buttons while you are waiting for a file to upload.
+    </tip>
+</entry>--><!-- English entry:
+<entry id="compose-attach">
+    <title>Message Composition: Attach</title>
+    <heading>Attach</heading>
+    <para>
+    You may attach files to your message if your browser supports uploading of files. More than 1 file can be uploaded at once.
+    </para>
+    <para>Step 1: Either type the path and name of a file that you want attached to this message or click the "Browse" button and select the file to be attatched. The path and name of that file now appears in the Attachment box.
+    </para>
+    <para>Step 2: Decide whether you want the file to be viewed as an attachment or inline with the rest of the message. The recipient's mail reading software must be able to handle the inline display of the file type, otherwise this part will be viewed as an attachment instead.
+    </para>
+    <tip>
+    Please note that for large files and/or slower Internet connections, the process of uploading and attaching your file to the email may take a while. Please be patient and do not click other links or buttons while you are waiting for a file to upload.
+    </tip>
+</entry>--><!-- English entry:
+<entry id="compose-attach">
+    <title>Message Composition: Attach</title>
+    <heading>Attach</heading>
+    <para>
+    You may attach files to your message if your browser supports uploading of files. More than 1 file can be uploaded at once.
+    </para>
+    <para>Step 1: Either type the path and name of a file that you want attached to this message or click the "Browse" button and select the file to be attatched. The path and name of that file now appears in the Attachment box.
+    </para>
+    <para>Step 2: Decide whether you want the file to be viewed as an attachment or inline with the rest of the message. The recipient's mail reading software must be able to handle the inline display of the file type, otherwise this part will be viewed as an attachment instead.
+    </para>
+    <tip>
+    Please note that for large files and/or slower Internet connections, the process of uploading and attaching your file to the email may take a while. Please be patient and do not click other links or buttons while you are waiting for a file to upload.
+    </tip>
+</entry>--><!-- English entry:
+<entry id="compose-attach">
+    <title>Message Composition: Attach</title>
+    <heading>Attach</heading>
+    <para>
+    You may attach files to your message if your browser supports uploading of files. More than 1 file can be uploaded at once.
+    </para>
+    <para>Step 1: Either type the path and name of a file that you want attached to this message or click the "Browse" button and select the file to be attatched. The path and name of that file now appears in the Attachment box.
+    </para>
+    <para>Step 2: Decide whether you want the file to be viewed as an attachment or inline with the rest of the message. The recipient's mail reading software must be able to handle the inline display of the file type, otherwise this part will be viewed as an attachment instead.
+    </para>
+    <tip>
+    Please note that for large files and/or slower Internet connections, the process of uploading and attaching your file to the email may take a while. Please be patient and do not click other links or buttons while you are waiting for a file to upload.
+    </tip>
+</entry>--><!-- English entry:
+<entry id="compose-attach">
+    <title>Message Composition: Attach</title>
+    <heading>Attach</heading>
+    <para>
+    You may attach files to your message if your browser supports uploading of files. More than 1 file can be uploaded at once.
+    </para>
+    <para>Step 1: Either type the path and name of a file that you want attached to this message or click the "Browse" button and select the file to be attatched. The path and name of that file now appears in the Attachment box.
+    </para>
+    <para>Step 2: Decide whether you want the file to be viewed as an attachment or inline with the rest of the message. The recipient's mail reading software must be able to handle the inline display of the file type, otherwise this part will be viewed as an attachment instead.
+    </para>
+    <tip>
+    Please note that for large files and/or slower Internet connections, the process of uploading and attaching your file to the email may take a while. Please be patient and do not click other links or buttons while you are waiting for a file to upload.
+    </tip>
+</entry>--><!-- English entry:
+<entry id="compose-attach">
+    <title>Message Composition: Attach</title>
+    <heading>Attach</heading>
+    <para>
+    You may attach files to your message if your browser supports uploading of files. More than 1 file can be uploaded at once.
+    </para>
+    <para>Step 1: Either type the path and name of a file that you want attached to this message or click the "Browse" button and select the file to be attatched. The path and name of that file now appears in the Attachment box.
+    </para>
+    <para>Step 2: Decide whether you want the file to be viewed as an attachment or inline with the rest of the message. The recipient's mail reading software must be able to handle the inline display of the file type, otherwise this part will be viewed as an attachment instead.
+    </para>
+    <tip>
+    Please note that for large files and/or slower Internet connections, the process of uploading and attaching your file to the email may take a while. Please be patient and do not click other links or buttons while you are waiting for a file to upload.
+    </tip>
+</entry>--><!-- English entry:
+<entry id="compose-attach">
+    <title>Message Composition: Attach</title>
+    <heading>Attach</heading>
+    <para>
+    You may attach files to your message if your browser supports uploading of files. More than 1 file can be uploaded at once.
+    </para>
+    <para>Step 1: Either type the path and name of a file that you want attached to this message or click the "Browse" button and select the file to be attatched. The path and name of that file now appears in the Attachment box.
+    </para>
+    <para>Step 2: Decide whether you want the file to be viewed as an attachment or inline with the rest of the message. The recipient's mail reading software must be able to handle the inline display of the file type, otherwise this part will be viewed as an attachment instead.
+    </para>
+    <tip>
+    Please note that for large files and/or slower Internet connections, the process of uploading and attaching your file to the email may take a while. Please be patient and do not click other links or buttons while you are waiting for a file to upload.
+    </tip>
+</entry>--><!-- English entry:
+<entry id="compose-attach">
+    <title>Message Composition: Attach</title>
+    <heading>Attach</heading>
+    <para>
+    You may attach files to your message if your browser supports uploading of files. More than 1 file can be uploaded at once.
+    </para>
+    <para>Step 1: Either type the path and name of a file that you want attached to this message or click the "Browse" button and select the file to be attatched. The path and name of that file now appears in the Attachment box.
+    </para>
+    <para>Step 2: Decide whether you want the file to be viewed as an attachment or inline with the rest of the message. The recipient's mail reading software must be able to handle the inline display of the file type, otherwise this part will be viewed as an attachment instead.
+    </para>
+    <tip>
+    Please note that for large files and/or slower Internet connections, the process of uploading and attaching your file to the email may take a while. Please be patient and do not click other links or buttons while you are waiting for a file to upload.
+    </tip>
+</entry>--><!-- English entry:
+<entry id="compose-attach">
+    <title>Message Composition: Attach</title>
+    <heading>Attach</heading>
+    <para>
+    You may attach files to your message if your browser supports uploading of files. More than 1 file can be uploaded at once.
+    </para>
+    <para>Step 1: Either type the path and name of a file that you want attached to this message or click the "Browse" button and select the file to be attatched. The path and name of that file now appears in the Attachment box.
+    </para>
+    <para>Step 2: Decide whether you want the file to be viewed as an attachment or inline with the rest of the message. The recipient's mail reading software must be able to handle the inline display of the file type, otherwise this part will be viewed as an attachment instead.
+    </para>
+    <tip>
+    Please note that for large files and/or slower Internet connections, the process of uploading and attaching your file to the email may take a while. Please be patient and do not click other links or buttons while you are waiting for a file to upload.
+    </tip>
+</entry>--><!-- English entry:
+<entry id="compose-attach">
+    <title>Message Composition: Attach</title>
+    <heading>Attach</heading>
+    <para>
+    You may attach files to your message if your browser supports uploading of files. More than 1 file can be uploaded at once.
+    </para>
+    <para>Step 1: Either type the path and name of a file that you want attached to this message or click the "Browse" button and select the file to be attatched. The path and name of that file now appears in the Attachment box.
+    </para>
+    <para>Step 2: Decide whether you want the file to be viewed as an attachment or inline with the rest of the message. The recipient's mail reading software must be able to handle the inline display of the file type, otherwise this part will be viewed as an attachment instead.
+    </para>
+    <tip>
+    Please note that for large files and/or slower Internet connections, the process of uploading and attaching your file to the email may take a while. Please be patient and do not click other links or buttons while you are waiting for a file to upload.
+    </tip>
+</entry>--></entry>
+  <entry id="compose-attachments" md5="8ac032c4ac182f3f0d6446c20f0089dd" state="changed">
+    <title>Mesaj Düzenlenmesi: Ekler</title>
+    <heading>"Ekler"</heading>
+<para>
+Bu bölüm mesaja önceden eklenmiş olan dosyaların listesini gösterir."
+     </para>
+<heading>Eklenmiş dosyayı/dosyaları silme</heading>
+<para>
+Eklenmiş dosyayı/dosyaları silmek için:
+    </para>
+<para>
+Adım 1: Silmek istediğiniz eklenmiş dosya(lar)ın yanındaki işaretleme düğmesini aktive edin.
+    </para>
+<para>
+Adım 2: "Eklenti Bilgisini Sil" i tıkla."
+    </para>
+<heading>Ekin Yapısını Değiştirme</heading>
+<para>
+Ekinizin yapısını değiştirmek için:
+    </para>
+<para>
+Adım 1: Her ekin yapısını değiştirin - "satıriçi" veya "ek" olarak - istenilen değere."
+    </para>
+<para>
+Adım 2: "Eklenti Bilgisini Yenile" yi tıkla.
+    </para>
+<heading>Ekin Açıklamasını Değiştirmek</heading>
+<para>
+Eklerinizin açıklamasını değiştirmek için (alıcının göreceği eki açıklayan metin):
+    </para>
+<para>
+Adım 1: Açıklama alanına bir açıklama girin.
+   </para>
+<para>
+Adım 2: "Eklenti Bilgisini Yenile" yi tıkla."
+   </para>
+<!-- English entry:
+<entry id="compose-attachments">
+    <title>Message Composition: Attachments</title>
+    <heading>Attachments</heading>
+    <para>
+    This section displays a list of files already attached to your message.
+    </para>
+    <heading>Delete attached file(s)</heading>
+    <para>
+    To delete an attached file(s):
+    </para>
+    <para>
+    Step 1: Activate the check-button next to the attached filename(s) you want to delete.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+    <heading>Change Attachment Disposition</heading>
+    <para>
+    To change the disposition for your attachments:
+    </para>
+    <para>
+    Step 1: Change each attachment's disposition - either "inline" or "attachment" - to the desired value.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+    <heading>Change Attachment Description</heading>
+    <para>
+    To change the description for your attachments (the text the recipient will see that describes the attachment):
+    </para>
+    <para>
+    Step 1: Enter a description into the Description field.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-attachments">
+    <title>Message Composition: Attachments</title>
+    <heading>Attachments</heading>
+    <para>
+    This section displays a list of files already attached to your message.
+    </para>
+    <heading>Delete attached file(s)</heading>
+    <para>
+    To delete an attached file(s):
+    </para>
+    <para>
+    Step 1: Activate the check-button next to the attached filename(s) you want to delete.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+    <heading>Change Attachment Disposition</heading>
+    <para>
+    To change the disposition for your attachments:
+    </para>
+    <para>
+    Step 1: Change each attachment's disposition - either "inline" or "attachment" - to the desired value.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+    <heading>Change Attachment Description</heading>
+    <para>
+    To change the description for your attachments (the text the recipient will see that describes the attachment):
+    </para>
+    <para>
+    Step 1: Enter a description into the Description field.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-attachments">
+    <title>Message Composition: Attachments</title>
+    <heading>Attachments</heading>
+    <para>
+    This section displays a list of files already attached to your message.
+    </para>
+    <heading>Delete attached file(s)</heading>
+    <para>
+    To delete an attached file(s):
+    </para>
+    <para>
+    Step 1: Activate the check-button next to the attached filename(s) you want to delete.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+    <heading>Change Attachment Disposition</heading>
+    <para>
+    To change the disposition for your attachments:
+    </para>
+    <para>
+    Step 1: Change each attachment's disposition - either "inline" or "attachment" - to the desired value.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+    <heading>Change Attachment Description</heading>
+    <para>
+    To change the description for your attachments (the text the recipient will see that describes the attachment):
+    </para>
+    <para>
+    Step 1: Enter a description into the Description field.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-attachments">
+    <title>Message Composition: Attachments</title>
+    <heading>Attachments</heading>
+    <para>
+    This section displays a list of files already attached to your message.
+    </para>
+    <heading>Delete attached file(s)</heading>
+    <para>
+    To delete an attached file(s):
+    </para>
+    <para>
+    Step 1: Activate the check-button next to the attached filename(s) you want to delete.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+    <heading>Change Attachment Disposition</heading>
+    <para>
+    To change the disposition for your attachments:
+    </para>
+    <para>
+    Step 1: Change each attachment's disposition - either "inline" or "attachment" - to the desired value.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+    <heading>Change Attachment Description</heading>
+    <para>
+    To change the description for your attachments (the text the recipient will see that describes the attachment):
+    </para>
+    <para>
+    Step 1: Enter a description into the Description field.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-attachments">
+    <title>Message Composition: Attachments</title>
+    <heading>Attachments</heading>
+    <para>
+    This section displays a list of files already attached to your message.
+    </para>
+    <heading>Delete attached file(s)</heading>
+    <para>
+    To delete an attached file(s):
+    </para>
+    <para>
+    Step 1: Activate the check-button next to the attached filename(s) you want to delete.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+    <heading>Change Attachment Disposition</heading>
+    <para>
+    To change the disposition for your attachments:
+    </para>
+    <para>
+    Step 1: Change each attachment's disposition - either "inline" or "attachment" - to the desired value.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+    <heading>Change Attachment Description</heading>
+    <para>
+    To change the description for your attachments (the text the recipient will see that describes the attachment):
+    </para>
+    <para>
+    Step 1: Enter a description into the Description field.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-attachments">
+    <title>Message Composition: Attachments</title>
+    <heading>Attachments</heading>
+    <para>
+    This section displays a list of files already attached to your message.
+    </para>
+    <heading>Delete attached file(s)</heading>
+    <para>
+    To delete an attached file(s):
+    </para>
+    <para>
+    Step 1: Activate the check-button next to the attached filename(s) you want to delete.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+    <heading>Change Attachment Disposition</heading>
+    <para>
+    To change the disposition for your attachments:
+    </para>
+    <para>
+    Step 1: Change each attachment's disposition - either "inline" or "attachment" - to the desired value.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+    <heading>Change Attachment Description</heading>
+    <para>
+    To change the description for your attachments (the text the recipient will see that describes the attachment):
+    </para>
+    <para>
+    Step 1: Enter a description into the Description field.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-attachments">
+    <title>Message Composition: Attachments</title>
+    <heading>Attachments</heading>
+    <para>
+    This section displays a list of files already attached to your message.
+    </para>
+    <heading>Delete attached file(s)</heading>
+    <para>
+    To delete an attached file(s):
+    </para>
+    <para>
+    Step 1: Activate the check-button next to the attached filename(s) you want to delete.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+    <heading>Change Attachment Disposition</heading>
+    <para>
+    To change the disposition for your attachments:
+    </para>
+    <para>
+    Step 1: Change each attachment's disposition - either "inline" or "attachment" - to the desired value.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+    <heading>Change Attachment Description</heading>
+    <para>
+    To change the description for your attachments (the text the recipient will see that describes the attachment):
+    </para>
+    <para>
+    Step 1: Enter a description into the Description field.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-attachments">
+    <title>Message Composition: Attachments</title>
+    <heading>Attachments</heading>
+    <para>
+    This section displays a list of files already attached to your message.
+    </para>
+    <heading>Delete attached file(s)</heading>
+    <para>
+    To delete an attached file(s):
+    </para>
+    <para>
+    Step 1: Activate the check-button next to the attached filename(s) you want to delete.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+    <heading>Change Attachment Disposition</heading>
+    <para>
+    To change the disposition for your attachments:
+    </para>
+    <para>
+    Step 1: Change each attachment's disposition - either "inline" or "attachment" - to the desired value.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+    <heading>Change Attachment Description</heading>
+    <para>
+    To change the description for your attachments (the text the recipient will see that describes the attachment):
+    </para>
+    <para>
+    Step 1: Enter a description into the Description field.
+    </para>
+    <para>
+    Step 2: Either click "Update" to immediately view changes or the changes will automatically be performed when the message is sent.
+    </para>
+</entry>--></entry>
+  <entry id="compose-priority" md5="b023367c36de3ce1567d27ccaa45640c" state="uptodate">
+    <title>Mesaj Düzenlenmesi: Öncelik</title>
+    <heading>Öncelik</heading>
+    <para>
+  Bu giden mesajlarınıza "X-Priority" başlığı koyar. "X-Priority" etiketi Netscape, Mozilla, Opera, ve Outlook mail istemcilerinin kabul ettiği bir tür "yalancı standart"tır. Bu başlığı kullanmayan bütün mail istemcileri önemsemeyecektir."
+      </para>    
+</entry>
+  <entry id="compose-save-attachments" md5="db89972c4ebb0b41ab691b6a7744a81d" state="uptodate">
+    <title>Mesaj Düzenlemesi: Ekleri Kaydet</title>
+    <para>
+Düzenlemenizdeki eklerin mesajlarla birlikte  gönderilmiş-posta klasörüne kaydedilip kaydedilmedigine karar verir."Evet" ise,ekli veri kaydedilecektir. "Hayır" ise, ekli veritüm alıcılara gönderildikten sonra mesajdan çıkartılır."Hayır" ı seçmek, kaydedilmiş mesajlardan ekli bilgileri (genelde büyük olur) kaldırarak disk alanınızdan tasarruf sağlar."
+      </para>
+</entry>
+  <entry id="compose-link-attachments" state="new">
+    <title>Message Composition: Link Attachments</title>
+    <para>
+    Determines whether the attachments in your composition are sent as a part of the mail message or whether those attachments are kept on a local server.  If attachments are linked, the recipient(s) of your message will be provided a weblink where they can download the attachment(s).  Linking attachments has the advantage of tremendously reducing the size of outgoing messages.  Linking attachments has the disadvantage that the content of the attachments can not be guaranteed to be available in the future since the attachment data is not located within the e-mail message.
+    </para>
+</entry>
+  <entry id="search" md5="86b2ef57b1194890833d9dd49ebc9b32" state="uptodate">
+    <title>Mesaj Düzenlemesi: Mesaj Arama</title>
+    <heading>Arama Kriteri</heading>
+    <para>
+   Farklı arama kriterleri kullanarak klasörlerinizde mesajlarınızı arayabilirsiniz
+      </para>
+    <para>
+   Adım 1: Arama kriterinize eklemek istediğiniz alanlara metin giriniz.
+     </para>
+    <para>
+  Adım 2: Arama kriterinize eklemek istediğiniz mesaj bayraklarını seçiniz.
+    </para>
+<para>
+  Adım 3: Mesaj aramak istediğiniz klasörü seçiniz.
+    </para>
+<para>
+  Adım 4: "Ara" yı tıklayınız.
+    </para>
+<para>
+  Eğer herhangi bir mesaj arama kriterinize uyuyorsa, bu mesajların konuları "Arama Sonuçları" ekranında görüntülenecektir.
+    </para>
+</entry>
+  <entry id="folder-options" md5="30687ec475765ba4467d2ef6dcec40c3" state="changed">
+    <title>Klasör Yönetimi: Seçenekler</title>
+    <heading>Klasör Seçenekleri</heading>
+    <para>
+Sol sütundaki butonları kullanarak bir klasör seçebilirsiniz.Bunu bir kez yaptıktan sonra,klasör üzerinde gerçekleştirmek istediğiniz tercihi soldaki seçenek kutusu ile seçiniz  " 
+      </para>
+    <para>
+Sonraki seçenekler için uyarılacaksınız.Silme seçeneği konusunda dikkatli olunuz, yanlışlıkla silerek klasördeki tüm mesajlarınızı kaybedebilirsiniz!"
+     </para>
+<heading>mbox Dosyası Almak</heading>
+    <para>
+Bu seçenek seçtiğiniz bir klasöre mbox formatında dosya almanızı sağlar. Mesajları almak için 1(bir) klasör seçiniz ve daha sonra bu tercihi seçiniz.Daha sonra mbox dosyasını almak için uyaran bir sayfaya yönlendirileceksiniz. "
+    </para>
+<!-- English entry:
+<entry id="folder-options">
+    <title>Folder Navigator: Actions</title>
+    <para>
+      You can select folders by using the buttons along the left column. Once you have done this, select the action you wish to perform on the folders via the select box to the left.
+    </para>
+    <heading>Create</heading>
+    <para>
+      Create a new folder, if possible. To create a folder in the base level, select 'Create' without selecting a folder in the left column. To create a subfolder in a currently existing folder, select the existing folder in the left column before selecting 'Create'.
+    </para>
+    <heading>Rename</heading>
+    <para>
+      Rename a folder. To rename, select the folders in the left column to rename and click 'Rename'. When renaming, all subfolders will automatically be renamed.
+    </para>
+    <heading>Delete</heading>
+    <para>
+      Delete a folder and all messages inside the folder. To delete, select the folders in the left column to delete and click 'Rename'. When deleting a folder with children, these subfolders will not be automatically deleted. To remove these children, you must manually select all folders to delete using the left column.
+    </para>
+    <heading>Empty</heading>
+    <para>
+       To delete all messages inside a folder, but not delete the folder itself, select the folders in the left column and click 'Empty'.
+    </para>
+    <heading>Purge</heading>
+    <para>
+       To delete all messages inside a folder marked as deleted, but not delete the folder itself, select the folders in the left column and click 'Empty'. This option only appears if not using a trash folder.
+    </para>
+    <heading>Subscribe/Unsubscribe</heading>
+    <para>
+      Flags a folder as either subscribed or unsubscribed. When a folder is subscribed, it will appear in all drop down folder lists. These options only appear if using IMAP folder subscriptions.
+    </para>
+    <para>
+      To subscribe, select the folders in the left column to delete and click 'Subscribe'. To unsubscribe, select the folders in the left column to delete and click 'Unsubscribe'.
+    </para>
+    <heading>Check for New Mail/Do Not Check for New Mail</heading>
+    <para>
+      Flags a folder to be checked for new mail in the Folder Navigator and the sidebar (if activated).
+    </para>
+    <para>
+       To set this flag, select the folders in the left column to check and click 'Check for New Mail'. To unset this flag, select the folders in the left column to check and click 'Do Not Check for New Mail'.
+    </para>
+    <heading>Mark All Messages as Seen/Unseen</heading>
+    <para>
+       To mark all messages in a folder as seen, select the folders in the left column and click 'Mark All Messages as Seen'. To mark all messages in a folder as unseen, select the folders in the left column and click 'Mark All Messages as Unseen'.
+    </para>
+    <heading>Download</heading>
+    <para>
+       To download all messages in a folder in a single file (mbox format), select the folder in the left column and click 'Download'. To download the file in ZIP compressed format, instead select 'Download [.zip format].
+    </para>
+    <heading>Import Messages</heading>
+    <para>
+      This option will import mbox format or .eml files into the folder of your choice. Choose one folder via the left column to import the messages into and then select this option. You will then be taken to a page that will prompt for the mbox or .eml file to import.
+    </para>
+    <heading>Rebuild Folder Tree</heading>
+    <para>
+      Rebuild the graphical representation of the folder tree by requerying the mail server. You should not normally need to do this unless you are simultaneously accessing the mail server with another mail client and that mail client has made changes to the folder structure.
+    </para>
+</entry>--><!-- English entry:
+<entry id="folder-options">
+    <title>Folder Navigator: Actions</title>
+    <para>
+      You can select folders by using the buttons along the left column. Once you have done this, select the action you wish to perform on the folders via the select box to the left.
+    </para>
+    <heading>Create</heading>
+    <para>
+      Create a new folder, if possible. To create a folder in the base level, select 'Create' without selecting a folder in the left column. To create a subfolder in a currently existing folder, select the existing folder in the left column before selecting 'Create'.
+    </para>
+    <heading>Rename</heading>
+    <para>
+      Rename a folder. To rename, select the folders in the left column to rename and click 'Rename'. When renaming, all subfolders will automatically be renamed.
+    </para>
+    <heading>Delete</heading>
+    <para>
+      Delete a folder and all messages inside the folder. To delete, select the folders in the left column to delete and click 'Rename'. When deleting a folder with children, these subfolders will not be automatically deleted. To remove these children, you must manually select all folders to delete using the left column.
+    </para>
+    <heading>Empty</heading>
+    <para>
+       To delete all messages inside a folder, but not delete the folder itself, select the folders in the left column and click 'Empty'.
+    </para>
+    <heading>Purge</heading>
+    <para>
+       To delete all messages inside a folder marked as deleted, but not delete the folder itself, select the folders in the left column and click 'Empty'. This option only appears if not using a trash folder.
+    </para>
+    <heading>Subscribe/Unsubscribe</heading>
+    <para>
+      Flags a folder as either subscribed or unsubscribed. When a folder is subscribed, it will appear in all drop down folder lists. These options only appear if using IMAP folder subscriptions.
+    </para>
+    <para>
+      To subscribe, select the folders in the left column to delete and click 'Subscribe'. To unsubscribe, select the folders in the left column to delete and click 'Unsubscribe'.
+    </para>
+    <heading>Check for New Mail/Do Not Check for New Mail</heading>
+    <para>
+      Flags a folder to be checked for new mail in the Folder Navigator and the sidebar (if activated).
+    </para>
+    <para>
+       To set this flag, select the folders in the left column to check and click 'Check for New Mail'. To unset this flag, select the folders in the left column to check and click 'Do Not Check for New Mail'.
+    </para>
+    <heading>Mark All Messages as Seen/Unseen</heading>
+    <para>
+       To mark all messages in a folder as seen, select the folders in the left column and click 'Mark All Messages as Seen'. To mark all messages in a folder as unseen, select the folders in the left column and click 'Mark All Messages as Unseen'.
+    </para>
+    <heading>Download</heading>
+    <para>
+       To download all messages in a folder in a single file (mbox format), select the folder in the left column and click 'Download'. To download the file in ZIP compressed format, instead select 'Download [.zip format].
+    </para>
+    <heading>Import Messages</heading>
+    <para>
+      This option will import mbox format or .eml files into the folder of your choice. Choose one folder via the left column to import the messages into and then select this option. You will then be taken to a page that will prompt for the mbox or .eml file to import.
+    </para>
+    <heading>Rebuild Folder Tree</heading>
+    <para>
+      Rebuild the graphical representation of the folder tree by requerying the mail server. You should not normally need to do this unless you are simultaneously accessing the mail server with another mail client and that mail client has made changes to the folder structure.
+    </para>
+</entry>--><!-- English entry:
+<entry id="folder-options">
+    <title>Folder Navigator: Actions</title>
+    <para>
+      You can select folders by using the buttons along the left column. Once you have done this, select the action you wish to perform on the folders via the select box to the left.
+    </para>
+    <heading>Create</heading>
+    <para>
+      Create a new folder, if possible. To create a folder in the base level, select 'Create' without selecting a folder in the left column. To create a subfolder in a currently existing folder, select the existing folder in the left column before selecting 'Create'.
+    </para>
+    <heading>Rename</heading>
+    <para>
+      Rename a folder. To rename, select the folders in the left column to rename and click 'Rename'. When renaming, all subfolders will automatically be renamed.
+    </para>
+    <heading>Delete</heading>
+    <para>
+      Delete a folder and all messages inside the folder. To delete, select the folders in the left column to delete and click 'Delete'. When deleting a folder with children, these subfolders will not be automatically deleted. To remove these children, you must manually select all folders to delete using the left column.
+    </para>
+    <heading>Empty</heading>
+    <para>
+       To delete all messages inside a folder, but not delete the folder itself, select the folders in the left column and click 'Empty'.
+    </para>
+    <heading>Purge</heading>
+    <para>
+       To delete all messages inside a folder marked as deleted, but not delete the folder itself, select the folders in the left column and click 'Purge'. This option only appears if not using a trash folder.
+    </para>
+    <heading>Subscribe/Unsubscribe</heading>
+    <para>
+      Flags a folder as either subscribed or unsubscribed. When a folder is subscribed, it will appear in all drop down folder lists. These options only appear if using IMAP folder subscriptions.
+    </para>
+    <para>
+      To subscribe, select the folders in the left column to delete and click 'Subscribe'. To unsubscribe, select the folders in the left column to delete and click 'Unsubscribe'.
+    </para>
+    <heading>Check for New Mail/Do Not Check for New Mail</heading>
+    <para>
+      Flags a folder to be checked for new mail in the Folder Navigator and the sidebar (if activated).
+    </para>
+    <para>
+       To set this flag, select the folders in the left column to check and click 'Check for New Mail'. To unset this flag, select the folders in the left column to check and click 'Do Not Check for New Mail'.
+    </para>
+    <heading>Mark All Messages as Seen/Unseen</heading>
+    <para>
+       To mark all messages in a folder as seen, select the folders in the left column and click 'Mark All Messages as Seen'. To mark all messages in a folder as unseen, select the folders in the left column and click 'Mark All Messages as Unseen'.
+    </para>
+    <heading>Download</heading>
+    <para>
+       To download all messages in a folder in a single file (mbox format), select the folder in the left column and click 'Download'. To download the file in ZIP compressed format, instead select 'Download [.zip format].
+    </para>
+    <heading>Import Messages</heading>
+    <para>
+      This option will import mbox format or .eml files into the folder of your choice. Choose one folder via the left column to import the messages into and then select this option. You will then be taken to a page that will prompt for the mbox or .eml file to import.
+    </para>
+    <heading>Rebuild Folder Tree</heading>
+    <para>
+      Rebuild the graphical representation of the folder tree by requerying the mail server. You should not normally need to do this unless you are simultaneously accessing the mail server with another mail client and that mail client has made changes to the folder structure.
+    </para>
+</entry>--><!-- English entry:
+<entry id="folder-options">
+    <title>Folder Navigator: Actions</title>
+    <para>
+      You can select folders by using the buttons along the left column. Once you have done this, select the action you wish to perform on the folders via the select box to the left.
+    </para>
+    <heading>Create</heading>
+    <para>
+      Create a new folder, if possible. To create a folder in the base level, select 'Create' without selecting a folder in the left column. To create a subfolder in a currently existing folder, select the existing folder in the left column before selecting 'Create'.
+    </para>
+    <heading>Rename</heading>
+    <para>
+      Rename a folder. To rename, select the folders in the left column to rename and click 'Rename'. When renaming, all subfolders will automatically be renamed.
+    </para>
+    <heading>Delete</heading>
+    <para>
+      Delete a folder and all messages inside the folder. To delete, select the folders in the left column to delete and click 'Delete'. When deleting a folder with children, these subfolders will not be automatically deleted. To remove these children, you must manually select all folders to delete using the left column.
+    </para>
+    <heading>Empty</heading>
+    <para>
+       To delete all messages inside a folder, but not delete the folder itself, select the folders in the left column and click 'Empty'.
+    </para>
+    <heading>Purge</heading>
+    <para>
+       To delete all messages inside a folder marked as deleted, but not delete the folder itself, select the folders in the left column and click 'Purge'. This option only appears if not using a trash folder.
+    </para>
+    <heading>Subscribe/Unsubscribe</heading>
+    <para>
+      Flags a folder as either subscribed or unsubscribed. When a folder is subscribed, it will appear in all drop down folder lists. These options only appear if using IMAP folder subscriptions.
+    </para>
+    <para>
+      To subscribe, select the folders in the left column to delete and click 'Subscribe'. To unsubscribe, select the folders in the left column to delete and click 'Unsubscribe'.
+    </para>
+    <heading>Check for New Mail/Do Not Check for New Mail</heading>
+    <para>
+      Flags a folder to be checked for new mail in the Folder Navigator and the sidebar (if activated).
+    </para>
+    <para>
+       To set this flag, select the folders in the left column to check and click 'Check for New Mail'. To unset this flag, select the folders in the left column to check and click 'Do Not Check for New Mail'.
+    </para>
+    <heading>Mark All Messages as Seen/Unseen</heading>
+    <para>
+       To mark all messages in a folder as seen, select the folders in the left column and click 'Mark All Messages as Seen'. To mark all messages in a folder as unseen, select the folders in the left column and click 'Mark All Messages as Unseen'.
+    </para>
+    <heading>Download</heading>
+    <para>
+       To download all messages in a folder in a single file (mbox format), select the folder in the left column and click 'Download'. To download the file in ZIP compressed format, instead select 'Download [.zip format].
+    </para>
+    <heading>Import Messages</heading>
+    <para>
+      This option will import mbox format or .eml files into the folder of your choice. Choose one folder via the left column to import the messages into and then select this option. You will then be taken to a page that will prompt for the mbox or .eml file to import.
+    </para>
+    <heading>Rebuild Folder Tree</heading>
+    <para>
+      Rebuild the graphical representation of the folder tree by requerying the mail server. You should not normally need to do this unless you are simultaneously accessing the mail server with another mail client and that mail client has made changes to the folder structure.
+    </para>
+</entry>--><!-- English entry:
+<entry id="folder-options">
+    <title>Folder Navigator: Actions</title>
+    <para>
+      You can select folders by using the buttons along the left column. Once you have done this, select the action you wish to perform on the folders via the select box to the left.
+    </para>
+    <heading>Create</heading>
+    <para>
+      Create a new folder, if possible. To create a folder in the base level, select 'Create' without selecting a folder in the left column. To create a subfolder in a currently existing folder, select the existing folder in the left column before selecting 'Create'.
+    </para>
+    <heading>Rename</heading>
+    <para>
+      Rename a folder. To rename, select the folders in the left column to rename and click 'Rename'. When renaming, all subfolders will automatically be renamed.
+    </para>
+    <heading>Delete</heading>
+    <para>
+      Delete a folder and all messages inside the folder. To delete, select the folders in the left column to delete and click 'Delete'. When deleting a folder with children, these subfolders will not be automatically deleted. To remove these children, you must manually select all folders to delete using the left column.
+    </para>
+    <heading>Empty</heading>
+    <para>
+       To delete all messages inside a folder, but not delete the folder itself, select the folders in the left column and click 'Empty'.
+    </para>
+    <heading>Purge</heading>
+    <para>
+       To delete all messages inside a folder marked as deleted, but not delete the folder itself, select the folders in the left column and click 'Purge'. This option only appears if not using a trash folder.
+    </para>
+    <heading>Subscribe/Unsubscribe</heading>
+    <para>
+      Flags a folder as either subscribed or unsubscribed. When a folder is subscribed, it will appear in all drop down folder lists. These options only appear if using IMAP folder subscriptions.
+    </para>
+    <para>
+      To subscribe, select the folders in the left column to delete and click 'Subscribe'. To unsubscribe, select the folders in the left column to delete and click 'Unsubscribe'.
+    </para>
+    <heading>Check for New Mail/Do Not Check for New Mail</heading>
+    <para>
+      Flags a folder to be checked for new mail in the Folder Navigator and the sidebar (if activated).
+    </para>
+    <para>
+       To set this flag, select the folders in the left column to check and click 'Check for New Mail'. To unset this flag, select the folders in the left column to check and click 'Do Not Check for New Mail'.
+    </para>
+    <heading>Mark All Messages as Seen/Unseen</heading>
+    <para>
+       To mark all messages in a folder as seen, select the folders in the left column and click 'Mark All Messages as Seen'. To mark all messages in a folder as unseen, select the folders in the left column and click 'Mark All Messages as Unseen'.
+    </para>
+    <heading>Download</heading>
+    <para>
+       To download all messages in a folder in a single file (mbox format), select the folder in the left column and click 'Download'. To download the file in ZIP compressed format, instead select 'Download [.zip format].
+    </para>
+    <heading>Import Messages</heading>
+    <para>
+      This option will import mbox format or .eml files into the folder of your choice. Choose one folder via the left column to import the messages into and then select this option. You will then be taken to a page that will prompt for the mbox or .eml file to import.
+    </para>
+    <heading>Rebuild Folder Tree</heading>
+    <para>
+      Rebuild the graphical representation of the folder tree by requerying the mail server. You should not normally need to do this unless you are simultaneously accessing the mail server with another mail client and that mail client has made changes to the folder structure.
+    </para>
+</entry>--><!-- English entry:
+<entry id="folder-options">
+    <title>Folder Navigator: Actions</title>
+    <para>
+      You can select folders by using the buttons along the left column. Once you have done this, select the action you wish to perform on the folders via the select box to the left.
+    </para>
+    <heading>Create</heading>
+    <para>
+      Create a new folder, if possible. To create a folder in the base level, select 'Create' without selecting a folder in the left column. To create a subfolder in a currently existing folder, select the existing folder in the left column before selecting 'Create'.
+    </para>
+    <heading>Rename</heading>
+    <para>
+      Rename a folder. To rename, select the folders in the left column to rename and click 'Rename'. When renaming, all subfolders will automatically be renamed.
+    </para>
+    <heading>Delete</heading>
+    <para>
+      Delete a folder and all messages inside the folder. To delete, select the folders in the left column to delete and click 'Delete'. When deleting a folder with children, these subfolders will not be automatically deleted. To remove these children, you must manually select all folders to delete using the left column.
+    </para>
+    <heading>Empty</heading>
+    <para>
+       To delete all messages inside a folder, but not delete the folder itself, select the folders in the left column and click 'Empty'.
+    </para>
+    <heading>Purge</heading>
+    <para>
+       To delete all messages inside a folder marked as deleted, but not delete the folder itself, select the folders in the left column and click 'Purge'. This option only appears if not using a trash folder.
+    </para>
+    <heading>Subscribe/Unsubscribe</heading>
+    <para>
+      Flags a folder as either subscribed or unsubscribed. When a folder is subscribed, it will appear in all drop down folder lists. These options only appear if using IMAP folder subscriptions.
+    </para>
+    <para>
+      To subscribe, select the folders in the left column to delete and click 'Subscribe'. To unsubscribe, select the folders in the left column to delete and click 'Unsubscribe'.
+    </para>
+    <heading>Check for New Mail/Do Not Check for New Mail</heading>
+    <para>
+      Flags a folder to be checked for new mail in the Folder Navigator and the sidebar (if activated).
+    </para>
+    <para>
+       To set this flag, select the folders in the left column to check and click 'Check for New Mail'. To unset this flag, select the folders in the left column to check and click 'Do Not Check for New Mail'.
+    </para>
+    <heading>Mark All Messages as Seen/Unseen</heading>
+    <para>
+       To mark all messages in a folder as seen, select the folders in the left column and click 'Mark All Messages as Seen'. To mark all messages in a folder as unseen, select the folders in the left column and click 'Mark All Messages as Unseen'.
+    </para>
+    <heading>Download</heading>
+    <para>
+       To download all messages in a folder in a single file (mbox format), select the folder in the left column and click 'Download'. To download the file in ZIP compressed format, instead select 'Download [.zip format].
+    </para>
+    <heading>Import Messages</heading>
+    <para>
+      This option will import mbox format or .eml files into the folder of your choice. Choose one folder via the left column to import the messages into and then select this option. You will then be taken to a page that will prompt for the mbox or .eml file to import.
+    </para>
+    <heading>Rebuild Folder Tree</heading>
+    <para>
+      Rebuild the graphical representation of the folder tree by requerying the mail server. You should not normally need to do this unless you are simultaneously accessing the mail server with another mail client and that mail client has made changes to the folder structure.
+    </para>
+
+    <heading>Show/Hide Unsubscribed</heading>
+    <para>
+    If using IMAP folder subscriptions, show/hide the unsubscribed folders. To subscribe/unsubscribe to a folder, select the checkbox next to the foldername and use the Subscribe/Unsubscribe action in the Folder Action drop-down menu.
+    </para>
+    <heading>Expand All</heading>
+    <para>
+    Expand all folder entries.
+    </para>
+    <heading>Collapse All</heading>
+    <para>
+    Collapse all folder entries.
+    </para>
+</entry>--><!-- English entry:
+<entry id="folder-options">
+    <title>Folders: Folder Actions</title>
+    <para>
+      You can select folders by using the buttons along the left column. Once you have done this, select the action you wish to perform on the folders via the select box to the left.
+    </para>
+    <heading>Create</heading>
+    <para>
+      Create a new folder, if possible. To create a folder in the base level, select 'Create' without selecting a folder in the left column. To create a subfolder in a currently existing folder, select the existing folder in the left column before selecting 'Create'.
+    </para>
+    <heading>Rename</heading>
+    <para>
+      Rename a folder. To rename, select the folders in the left column to rename and click 'Rename'. When renaming, all subfolders will automatically be renamed.
+    </para>
+    <heading>Delete</heading>
+    <para>
+      Delete a folder and all messages inside the folder. To delete, select the folders in the left column to delete and click 'Delete'. When deleting a folder with children, these subfolders will not be automatically deleted. To remove these children, you must manually select all folders to delete using the left column.
+    </para>
+    <heading>Empty</heading>
+    <para>
+       To delete all messages inside a folder, but not delete the folder itself, select the folders in the left column and click 'Empty'.
+    </para>
+    <heading>Purge</heading>
+    <para>
+       To delete all messages inside a folder marked as deleted, but not delete the folder itself, select the folders in the left column and click 'Purge'. This option only appears if not using a trash folder.
+    </para>
+    <heading>Subscribe/Unsubscribe</heading>
+    <para>
+      Flags a folder as either subscribed or unsubscribed. When a folder is subscribed, it will appear in all drop down folder lists. These options only appear if using IMAP folder subscriptions.
+    </para>
+    <para>
+      To subscribe, select the folders in the left column to delete and click 'Subscribe'. To unsubscribe, select the folders in the left column to delete and click 'Unsubscribe'.
+    </para>
+    <heading>Check for New Mail/Do Not Check for New Mail</heading>
+    <para>
+      Flags a folder to be checked for new mail in the Folder Navigator and the sidebar (if activated).
+    </para>
+    <para>
+       To set this flag, select the folders in the left column to check and click 'Check for New Mail'. To unset this flag, select the folders in the left column to check and click 'Do Not Check for New Mail'.
+    </para>
+    <heading>Mark All Messages as Seen/Unseen</heading>
+    <para>
+       To mark all messages in a folder as seen, select the folders in the left column and click 'Mark All Messages as Seen'. To mark all messages in a folder as unseen, select the folders in the left column and click 'Mark All Messages as Unseen'.
+    </para>
+    <heading>Download</heading>
+    <para>
+       To download all messages in a folder in a single file (mbox format), select the folder in the left column and click 'Download'. To download the file in ZIP compressed format, instead select 'Download [.zip format].
+    </para>
+    <heading>Import Messages</heading>
+    <para>
+      This option will import mbox format or .eml files into the folder of your choice. Choose one folder via the left column to import the messages into and then select this option. You will then be taken to a page that will prompt for the mbox or .eml file to import.
+    </para>
+    <heading>Rebuild Folder Tree</heading>
+    <para>
+      Rebuild the graphical representation of the folder tree by requerying the mail server. You should not normally need to do this unless you are simultaneously accessing the mail server with another mail client and that mail client has made changes to the folder structure.
+    </para>
+
+    <heading>Show/Hide Unsubscribed</heading>
+    <para>
+    If using IMAP folder subscriptions, show/hide the unsubscribed folders. To subscribe/unsubscribe to a folder, select the checkbox next to the foldername and use the Subscribe/Unsubscribe action in the Folder Action drop-down menu.
+    </para>
+    <heading>Expand All</heading>
+    <para>
+    Expand all folder entries.
+    </para>
+    <heading>Collapse All</heading>
+    <para>
+    Collapse all folder entries.
+    </para>
+</entry>--><!-- English entry:
+<entry id="folder-options">
+    <title>Folders: Folder Actions</title>
+    <para>
+      You can select folders by using the buttons along the left column. Once you have done this, select the action you wish to perform on the folders via the select box to the left.
+    </para>
+    <heading>Create</heading>
+    <para>
+      Create a new folder, if possible. To create a folder in the base level, select 'Create' without selecting a folder in the left column. To create a subfolder in a currently existing folder, select the existing folder in the left column before selecting 'Create'.
+    </para>
+    <heading>Rename</heading>
+    <para>
+      Rename a folder. To rename, select the folders in the left column to rename and click 'Rename'. When renaming, all subfolders will automatically be renamed.
+    </para>
+    <heading>Delete</heading>
+    <para>
+      Delete a folder and all messages inside the folder. To delete, select the folders in the left column to delete and click 'Delete'. When deleting a folder with children, these subfolders will not be automatically deleted. To remove these children, you must manually select all folders to delete using the left column.
+    </para>
+    <heading>Empty</heading>
+    <para>
+       To delete all messages inside a folder, but not delete the folder itself, select the folders in the left column and click 'Empty'.
+    </para>
+    <heading>Purge</heading>
+    <para>
+       To delete all messages inside a folder marked as deleted, but not delete the folder itself, select the folders in the left column and click 'Purge'. This option only appears if not using a trash folder.
+    </para>
+    <heading>Subscribe/Unsubscribe</heading>
+    <para>
+      Flags a folder as either subscribed or unsubscribed. When a folder is subscribed, it will appear in all drop down folder lists. These options only appear if using IMAP folder subscriptions.
+    </para>
+    <para>
+      To subscribe, select the folders in the left column to delete and click 'Subscribe'. To unsubscribe, select the folders in the left column to delete and click 'Unsubscribe'.
+    </para>
+    <heading>Check for New Mail/Do Not Check for New Mail</heading>
+    <para>
+      Flags a folder to be checked for new mail in the Folder Navigator and the sidebar (if activated).
+    </para>
+    <para>
+       To set this flag, select the folders in the left column to check and click 'Check for New Mail'. To unset this flag, select the folders in the left column to check and click 'Do Not Check for New Mail'.
+    </para>
+    <heading>Mark All Messages as Seen/Unseen</heading>
+    <para>
+       To mark all messages in a folder as seen, select the folders in the left column and click 'Mark All Messages as Seen'. To mark all messages in a folder as unseen, select the folders in the left column and click 'Mark All Messages as Unseen'.
+    </para>
+    <heading>Download</heading>
+    <para>
+       To download all messages in a folder in a single file (mbox format), select the folder in the left column and click 'Download'. To download the file in ZIP compressed format, instead select 'Download [.zip format].
+    </para>
+    <heading>Import Messages</heading>
+    <para>
+      This option will import mbox format or .eml files into the folder of your choice. Choose one folder via the left column to import the messages into and then select this option. You will then be taken to a page that will prompt for the mbox or .eml file to import.
+    </para>
+    <heading>Rebuild Folder Tree</heading>
+    <para>
+      Rebuild the graphical representation of the folder tree by requerying the mail server. You should not normally need to do this unless you are simultaneously accessing the mail server with another mail client and that mail client has made changes to the folder structure.
+    </para>
+
+    <heading>Show/Hide Unsubscribed</heading>
+    <para>
+    If using IMAP folder subscriptions, show/hide the unsubscribed folders. To subscribe/unsubscribe to a folder, select the checkbox next to the foldername and use the Subscribe/Unsubscribe action in the Folder Action drop-down menu.
+    </para>
+    <heading>Expand All</heading>
+    <para>
+    Expand all folder entries.
+    </para>
+    <heading>Collapse All</heading>
+    <para>
+    Collapse all folder entries.
+    </para>
+</entry>--><!-- English entry:
+<entry id="folder-options">
+    <title>Folders: Folder Actions</title>
+    <para>
+      You can select folders by using the buttons along the left column. Once you have done this, select the action you wish to perform on the folders via the select box to the left.
+    </para>
+    <heading>Create</heading>
+    <para>
+      Create a new folder, if possible. To create a folder in the base level, select 'Create' without selecting a folder in the left column. To create a subfolder in a currently existing folder, select the existing folder in the left column before selecting 'Create'.
+    </para>
+    <heading>Rename</heading>
+    <para>
+      Rename a folder. To rename, select the folders in the left column to rename and click 'Rename'. When renaming, all subfolders will automatically be renamed.
+    </para>
+    <heading>Delete</heading>
+    <para>
+      Delete a folder and all messages inside the folder. To delete, select the folders in the left column to delete and click 'Delete'. When deleting a folder with children, these subfolders will not be automatically deleted. To remove these children, you must manually select all folders to delete using the left column.
+    </para>
+    <heading>Empty</heading>
+    <para>
+       To delete all messages inside a folder, but not delete the folder itself, select the folders in the left column and click 'Empty'.
+    </para>
+    <heading>Purge</heading>
+    <para>
+       To delete all messages inside a folder marked as deleted, but not delete the folder itself, select the folders in the left column and click 'Purge'. This option only appears if not using a trash folder.
+    </para>
+    <heading>Subscribe/Unsubscribe</heading>
+    <para>
+      Flags a folder as either subscribed or unsubscribed. When a folder is subscribed, it will appear in all drop down folder lists. These options only appear if using IMAP folder subscriptions.
+    </para>
+    <para>
+      To subscribe, select the folders in the left column to delete and click 'Subscribe'. To unsubscribe, select the folders in the left column to delete and click 'Unsubscribe'.
+    </para>
+    <heading>Check for New Mail/Do Not Check for New Mail</heading>
+    <para>
+      Flags a folder to be checked for new mail in the Folder Navigator and the sidebar (if activated).
+    </para>
+    <para>
+       To set this flag, select the folders in the left column to check and click 'Check for New Mail'. To unset this flag, select the folders in the left column to check and click 'Do Not Check for New Mail'.
+    </para>
+    <heading>Mark All Messages as Seen/Unseen</heading>
+    <para>
+       To mark all messages in a folder as seen, select the folders in the left column and click 'Mark All Messages as Seen'. To mark all messages in a folder as unseen, select the folders in the left column and click 'Mark All Messages as Unseen'.
+    </para>
+    <heading>Download</heading>
+    <para>
+       To download all messages in a folder in a single file (mbox format), select the folder in the left column and click 'Download'. To download the file in ZIP compressed format, instead select 'Download [.zip format].
+    </para>
+    <heading>Import Messages</heading>
+    <para>
+      This option will import mbox format or .eml files into the folder of your choice. Choose one folder via the left column to import the messages into and then select this option. You will then be taken to a page that will prompt for the mbox or .eml file to import.
+    </para>
+    <heading>Rebuild Folder Tree</heading>
+    <para>
+      Rebuild the graphical representation of the folder tree by requerying the mail server. You should not normally need to do this unless you are simultaneously accessing the mail server with another mail client and that mail client has made changes to the folder structure.
+    </para>
+
+    <heading>Show/Hide Unsubscribed</heading>
+    <para>
+    If using IMAP folder subscriptions, show/hide the unsubscribed folders. To subscribe/unsubscribe to a folder, select the checkbox next to the foldername and use the Subscribe/Unsubscribe action in the Folder Action drop-down menu.
+    </para>
+    <heading>Expand All</heading>
+    <para>
+    Expand all folder entries.
+    </para>
+    <heading>Collapse All</heading>
+    <para>
+    Collapse all folder entries.
+    </para>
+</entry>--><!-- English entry:
+<entry id="folder-options">
+    <title>Folders: Folder Actions</title>
+    <para>
+      You can select folders by using the buttons along the left column. Once you have done this, select the action you wish to perform on the folders via the select box to the left.
+    </para>
+    <heading>Create</heading>
+    <para>
+      Create a new folder, if possible. To create a folder in the base level, select 'Create' without selecting a folder in the left column. To create a subfolder in a currently existing folder, select the existing folder in the left column before selecting 'Create'.
+    </para>
+    <heading>Rename</heading>
+    <para>
+      Rename a folder. To rename, select the folders in the left column to rename and click 'Rename'. When renaming, all subfolders will automatically be renamed.
+    </para>
+    <heading>Delete</heading>
+    <para>
+      Delete a folder and all messages inside the folder. To delete, select the folders in the left column to delete and click 'Delete'. When deleting a folder with children, these subfolders will not be automatically deleted. To remove these children, you must manually select all folders to delete using the left column.
+    </para>
+    <heading>Empty</heading>
+    <para>
+       To delete all messages inside a folder, but not delete the folder itself, select the folders in the left column and click 'Empty'.
+    </para>
+    <heading>Purge</heading>
+    <para>
+       To delete all messages inside a folder marked as deleted, but not delete the folder itself, select the folders in the left column and click 'Purge'. This option only appears if not using a trash folder.
+    </para>
+    <heading>Subscribe/Unsubscribe</heading>
+    <para>
+      Flags a folder as either subscribed or unsubscribed. When a folder is subscribed, it will appear in all drop down folder lists. These options only appear if using IMAP folder subscriptions.
+    </para>
+    <para>
+      To subscribe, select the folders in the left column to delete and click 'Subscribe'. To unsubscribe, select the folders in the left column to delete and click 'Unsubscribe'.
+    </para>
+    <heading>Check for New Mail/Do Not Check for New Mail</heading>
+    <para>
+      Flags a folder to be checked for new mail in the Folder Navigator and the sidebar (if activated).
+    </para>
+    <para>
+       To set this flag, select the folders in the left column to check and click 'Check for New Mail'. To unset this flag, select the folders in the left column to check and click 'Do Not Check for New Mail'.
+    </para>
+    <heading>Mark All Messages as Seen/Unseen</heading>
+    <para>
+       To mark all messages in a folder as seen, select the folders in the left column and click 'Mark All Messages as Seen'. To mark all messages in a folder as unseen, select the folders in the left column and click 'Mark All Messages as Unseen'.
+    </para>
+    <heading>Download</heading>
+    <para>
+       To download all messages in a folder in a single file (mbox format), select the folder in the left column and click 'Download'. To download the file in ZIP compressed format, instead select 'Download [.zip format].
+    </para>
+    <heading>Import Messages</heading>
+    <para>
+      This option will import mbox format or .eml files into the folder of your choice. Choose one folder via the left column to import the messages into and then select this option. You will then be taken to a page that will prompt for the mbox or .eml file to import.
+    </para>
+    <heading>Rebuild Folder Tree</heading>
+    <para>
+      Rebuild the graphical representation of the folder tree by requerying the mail server. You should not normally need to do this unless you are simultaneously accessing the mail server with another mail client and that mail client has made changes to the folder structure.
+    </para>
+
+    <heading>Show/Hide Unsubscribed</heading>
+    <para>
+    If using IMAP folder subscriptions, show/hide the unsubscribed folders. To subscribe/unsubscribe to a folder, select the checkbox next to the foldername and use the Subscribe/Unsubscribe action in the Folder Action drop-down menu.
+    </para>
+    <heading>Expand All</heading>
+    <para>
+    Expand all folder entries.
+    </para>
+    <heading>Collapse All</heading>
+    <para>
+    Collapse all folder entries.
+    </para>
+</entry>--><!-- English entry:
+<entry id="folder-options">
+    <title>Folders: Folder Actions</title>
+    <para>
+      You can select folders by using the buttons along the left column. Once you have done this, select the action you wish to perform on the folders via the select box to the left.
+    </para>
+    <heading>Create</heading>
+    <para>
+      Create a new folder, if possible. To create a folder in the base level, select 'Create' without selecting a folder in the left column. To create a subfolder in a currently existing folder, select the existing folder in the left column before selecting 'Create'.
+    </para>
+    <heading>Rename</heading>
+    <para>
+      Rename a folder. To rename, select the folders in the left column to rename and click 'Rename'. When renaming, all subfolders will automatically be renamed.
+    </para>
+    <heading>Delete</heading>
+    <para>
+      Delete a folder and all messages inside the folder. To delete, select the folders in the left column to delete and click 'Delete'. When deleting a folder with children, these subfolders will not be automatically deleted. To remove these children, you must manually select all folders to delete using the left column.
+    </para>
+    <heading>Empty</heading>
+    <para>
+       To delete all messages inside a folder, but not delete the folder itself, select the folders in the left column and click 'Empty'.
+    </para>
+    <heading>Purge</heading>
+    <para>
+       To delete all messages inside a folder marked as deleted, but not delete the folder itself, select the folders in the left column and click 'Purge'. This option only appears if not using a trash folder.
+    </para>
+    <heading>Subscribe/Unsubscribe</heading>
+    <para>
+      Flags a folder as either subscribed or unsubscribed. When a folder is subscribed, it will appear in all drop down folder lists. These options only appear if using IMAP folder subscriptions.
+    </para>
+    <para>
+      To subscribe, select the folders in the left column to delete and click 'Subscribe'. To unsubscribe, select the folders in the left column to delete and click 'Unsubscribe'.
+    </para>
+    <heading>Check for New Mail/Do Not Check for New Mail</heading>
+    <para>
+      Flags a folder to be checked for new mail in the Folder Navigator and the sidebar (if activated).
+    </para>
+    <para>
+       To set this flag, select the folders in the left column to check and click 'Check for New Mail'. To unset this flag, select the folders in the left column to check and click 'Do Not Check for New Mail'.
+    </para>
+    <heading>Mark All Messages as Seen/Unseen</heading>
+    <para>
+       To mark all messages in a folder as seen, select the folders in the left column and click 'Mark All Messages as Seen'. To mark all messages in a folder as unseen, select the folders in the left column and click 'Mark All Messages as Unseen'.
+    </para>
+    <heading>Download</heading>
+    <para>
+       To download all messages in a folder in a single file (mbox format), select the folder in the left column and click 'Download'. To download the file in ZIP compressed format, instead select 'Download [.zip format].
+    </para>
+    <heading>Import Messages</heading>
+    <para>
+      This option will import mbox format or .eml files into the folder of your choice. Choose one folder via the left column to import the messages into and then select this option. You will then be taken to a page that will prompt for the mbox or .eml file to import.
+    </para>
+    <heading>Rebuild Folder Tree</heading>
+    <para>
+      Rebuild the graphical representation of the folder tree by requerying the mail server. You should not normally need to do this unless you are simultaneously accessing the mail server with another mail client and that mail client has made changes to the folder structure.
+    </para>
+
+    <heading>Show/Hide Unsubscribed</heading>
+    <para>
+    If using IMAP folder subscriptions, show/hide the unsubscribed folders. To subscribe/unsubscribe to a folder, select the checkbox next to the foldername and use the Subscribe/Unsubscribe action in the Folder Action drop-down menu.
+    </para>
+    <heading>Expand All</heading>
+    <para>
+    Expand all folder entries.
+    </para>
+    <heading>Collapse All</heading>
+    <para>
+    Collapse all folder entries.
+    </para>
+</entry>--><!-- English entry:
+<entry id="folder-options">
+    <title>Folders: Folder Actions</title>
+    <para>
+      You can select folders by using the buttons along the left column. Once you have done this, select the action you wish to perform on the folders via the select box to the left.
+    </para>
+    <heading>Create</heading>
+    <para>
+      Create a new folder, if possible. To create a folder in the base level, select 'Create' without selecting a folder in the left column. To create a subfolder in a currently existing folder, select the existing folder in the left column before selecting 'Create'.
+    </para>
+    <heading>Rename</heading>
+    <para>
+      Rename a folder. To rename, select the folders in the left column to rename and click 'Rename'. When renaming, all subfolders will automatically be renamed.
+    </para>
+    <heading>Delete</heading>
+    <para>
+      Delete a folder and all messages inside the folder. To delete, select the folders in the left column to delete and click 'Delete'. When deleting a folder with children, these subfolders will not be automatically deleted. To remove these children, you must manually select all folders to delete using the left column.
+    </para>
+    <heading>Empty</heading>
+    <para>
+       To delete all messages inside a folder, but not delete the folder itself, select the folders in the left column and click 'Empty'.
+    </para>
+    <heading>Purge</heading>
+    <para>
+       To delete all messages inside a folder marked as deleted, but not delete the folder itself, select the folders in the left column and click 'Purge'. This option only appears if not using a trash folder.
+    </para>
+    <heading>Subscribe/Unsubscribe</heading>
+    <para>
+      Flags a folder as either subscribed or unsubscribed. When a folder is subscribed, it will appear in all drop down folder lists. These options only appear if using IMAP folder subscriptions.
+    </para>
+    <para>
+      To subscribe, select the folders in the left column to delete and click 'Subscribe'. To unsubscribe, select the folders in the left column to delete and click 'Unsubscribe'.
+    </para>
+    <heading>Check for New Mail/Do Not Check for New Mail</heading>
+    <para>
+      Flags a folder to be checked for new mail in the Folder Navigator and the sidebar (if activated).
+    </para>
+    <para>
+       To set this flag, select the folders in the left column to check and click 'Check for New Mail'. To unset this flag, select the folders in the left column to check and click 'Do Not Check for New Mail'.
+    </para>
+    <heading>Mark All Messages as Seen/Unseen</heading>
+    <para>
+       To mark all messages in a folder as seen, select the folders in the left column and click 'Mark All Messages as Seen'. To mark all messages in a folder as unseen, select the folders in the left column and click 'Mark All Messages as Unseen'.
+    </para>
+    <heading>Download</heading>
+    <para>
+       To download all messages in a folder in a single file (mbox format), select the folder in the left column and click 'Download'. To download the file in ZIP compressed format, instead select 'Download [.zip format].
+    </para>
+    <heading>Import Messages</heading>
+    <para>
+      This option will import mbox format or .eml files into the folder of your choice. Choose one folder via the left column to import the messages into and then select this option. You will then be taken to a page that will prompt for the mbox or .eml file to import.
+    </para>
+    <heading>Rebuild Folder Tree</heading>
+    <para>
+      Rebuild the graphical representation of the folder tree by requerying the mail server. You should not normally need to do this unless you are simultaneously accessing the mail server with another mail client and that mail client has made changes to the folder structure.
+    </para>
+
+    <heading>Show/Hide Unsubscribed</heading>
+    <para>
+    If using IMAP folder subscriptions, show/hide the unsubscribed folders. To subscribe/unsubscribe to a folder, select the checkbox next to the foldername and use the Subscribe/Unsubscribe action in the Folder Action drop-down menu.
+    </para>
+    <heading>Expand All</heading>
+    <para>
+    Expand all folder entries.
+    </para>
+    <heading>Collapse All</heading>
+    <para>
+    Collapse all folder entries.
+    </para>
+</entry>--></entry>
+  <entry id="filters" md5="5ef60786767e638fbf5ba8fc5bd5d9d2" state="uptodate">
+    <title>Filtreler: Uygula</title>
+    <heading>Filtre Kurallarını Uygula</heading>
+    <para>
+Tüm mesajlarınızı belirlenmiş kurallara göre filtrelemek için posta kutusu görünümündeyken GELEN KUTUSU adının yanındaki "Filtre Uygula" ikonunu tıklayınız."
+    </para>
+</entry>
+  <entry id="filter-edit-rules" state="new">
+    <title>Filters: Edit Filter Rules</title>
+    <heading>Edit Your Filter Rules</heading>
+    <para>
+    Click on "Edit your filter rules" to proceed to the page where you can add, delete, and edit the currently active set of filter rules.
+    </para>
+</entry>
+  <entry id="filter-edit-blacklist" md5="80ff7803c66599c7035f7f8811d218cc" state="uptodate">
+    <title>Filtreler: Karalisteyi düzenle</title>
+    <heading>Karalistenizi düzenleyiniz</heading>
+    <para>
+   ASLA posta almak istemediğiniz e-posta adreslerini ekleyebileceğiniz, silebileceğiniz, düzenleyebileceginiz sayfaya yönlendirilmek için "Karalistenizi düzenleyiniz" i tıklayınız."
+    </para>
+</entry>
+  <entry id="filter-edit-whitelist" md5="330c3a8fad198c7afe855c101c63cd0f" state="uptodate">
+    <title>Filtreler: Beyazlisteyi düzenle</title>
+    <heading>Beyazlistenizi düzenleyiniz</heading>
+    <para>
+    HER ZAMAN posta almak istediğiniz e-posta adreslerini ekleyebileceğiniz, silebileceğiniz, düzenleyebileceginiz sayfaya yönlendirilmek için "Beyazlistenizi düzenleyiniz" i tıklayınız."
+     </para>
+</entry>
+  <entry id="filter-on-login" md5="37d9297d1cca46435e36b6e38e45dcdb" state="uptodate">
+    <title>Filtreler: Oturum Açarken Filtrelemek</title>
+    <heading>Filtre Kurallarını Oturum Açarken Uygula</heading>
+    <para>
+     Her zaman IMP de ilk oturum açılırken filtreleri uygulamak için bu seçeneği işaretle.
+     </para>
+</entry>
+  <entry id="filter-on-display" md5="f5afc305402ef52bad108933f3f33291" state="uptodate">
+    <title>Fİltreler: Yenilerken filtrele</title>
+    <heading>GELEN KUTUSU'nu her görüntülemede filtreleri uygula</heading>
+    <para>
+    GELEN KUTUSU'nu her görüntülemede filtreleri uygulamak için bu seçeneği işaretle.
+    </para>
+</entry>
+  <entry id="filter-any-mailbox" md5="71c51e83909f9d0bd440d220772ee3c6" state="uptodate">
+    <title>Filtreler: Herhangi Bir Posta Kutusunu Fitrelemek</title>
+    <heading>Filtre kurallarını herhangi bir posta kutusuna uygulamak</heading>
+    <para>
+    Herhangi bir posta kutusu için filtre kurallarnı uygulayabilmek içim bu seçeneği işaretleyiniz.Aslında,filtre kuralları sadece GELEN KUTUNUZA gelen yeni postalara uygulanır. Eğer bu seçenek işaretliyse, tüm posta kutularınızın sayfalarında o kutudaki mesajlara filtre kurallarını uygulamanızı sağlayacak ikonlar yer alacaktır.NOT: GELEN KUTUSU dışındaki posta kutularında filtrelemek garip (örnek: Filtre mesajın bir kopyasının daha bu kutuya gelmesine sebep olabilir) ve/veya istenmeyen sonuçlar üretebilir(örnek: Mesaj bu kutuya geldikten sonra yeni filtre kuralları üretilirse mesajların silinmesine/taşınmasına sebep olabilir)."
+    </para>
+</entry>
+  <entry id="pgp-compose-attach-pubkey" md5="97446dbbb27616b4fa39be801e10df2d" state="uptodate">
+    <title>PGP: Yerel Anahtar Ekle</title>
+    <heading>Yerel Anahtar Ekle</heading>
+    <para>
+   Eğer seçiliyse PGP yerel anahtarınızın bir kopyası, eğer mevcutsa, gönderilen mesaja eklenecektir. PGP Ayarları ekranından varsayılan hareketi ayarlayabilirsiniz.
+    </para>
+</entry>
+  <entry id="pgp-option-scan-body" md5="6baaada0d46dc1ab0941087f235f359b" state="uptodate">
+    <title>PGP: Metin gövdelerini tara</title>
+    <heading>Metin gövdelerini tara</heading>
+    <para>
+   Eğer IMP seçildiyse, metin mesajlarının gövdelerini PGP bilgisi için arayacaktır ve herhangi bir bilgi bulunduğunda görüntüleyecektir. Bu işlem tüm metin mesajları içeriğinde PGP bilgisi olup olmadığı kontrol edileceği için sistemi 
+   yavaşlatabilir.
+      </para>
+</entry>
+  <entry id="compose-options-encrypt" md5="1012144f749f19f5a24cef38601daa71" state="changed">
+    <title>Oluştur: Şifreleme Seçenekleri</title>
+    <heading>Şifreleme yok</heading>
+    <para>
+    Mesajı şifreleme olmadan yolla (sade metin).
+      </para>
+    <heading>PGP Mesajı Şifrele</heading>
+    <para>
+    Bu seçenek aktif mesajı, PGP ve alıcıların kişisel genel anahtarlarını kullanarak şifreler ve yollar. Bu seçeneği kullanarak sadece bir kişiye mesaj yollayabilirsiniz. Alıcının genel anahtarının adres defterinizde olması gerekir aksi takdirde bu 
+    seçenek çalışmayacaktır. Alıcının genel anahtarı adres defterinizde olduğu halde hala hatalar alıyorsanız, alıcı alanındaki e-posta adresiyle genel anahtarın tutulduğu yerdeki e-posta adresinin eşleştiğini kontrol ediniz."
+    </para>
+    <heading>PGP Mesajı İmzala</heading>
+    <para>
+    Bu seçenek aktif mesajı ve kişisel genel anahtarınızı PGP kullanarak dijital olarak imzalayacaktır. Bu devrede genel anahtarınız için şifre girmediyseniz, sizden şifre girmeniz istenecektir. Alıcının sizin imzanızı dijital olarak doğrulaması 
+    için genel anahtarınızın bir kopyasına sahip olmalıdır.
+    </para>
+    <heading>PGP İmzalama/Şifreleme Mesajı</heading>
+    <para>Bu seçenek ilk olarak mesajınızı dijital olarak imzalayacak ve sonra çıktıyı şifreleyecektir. Daha fazla bilgi için "PGP Mesajı Şifrele" ve "PGP Mesajı İmzala" başlıklarına bakınız."
+    </para>
+    <heading>S/MIME Mesajı Şifrele</heading>
+    <para>
+     TODO
+    </para>
+   <heading>S/MIME Mesajı İmzala</heading>
+    <para>
+     TODO
+    </para>
+   <heading>S/MIME Mesajı İmzala/Şifrele</heading>
+    <para>
+     TODO
+    </para>
+<!-- English entry:
+<entry id="compose-options-encrypt">
+    <title>Message Composition: Encryption Options</title>
+    <heading>No Encryption</heading>
+    <para>
+    Send the message with no encryption (cleartext).
+    </para>
+    <heading>PGP Encrypt Message</heading>
+    <para>
+    This option will encrypt the current message, using PGP and the recipients personal public key, and then send it. You can only send a message to a single person using this option. You MUST have the public key of the recipient stored in your addressbook or else this option will fail. If you have the public key for the recipient in your addressbook and are still receiving errors, verify that the e-mail address in the recipient field matches the e-mail address where the public key is stored. The encrypted data will be attached to the outgoing message.
+    </para>
+    <heading>PGP Sign Message</heading>
+    <para>
+    This option will digitally sign the current message using PGP and your personal private key. If you have not already entered the passphrase for your private key during this session you will be prompted for it. The receipient must have a copy of your public key to digitally verify your
+    signature.
+    </para>
+    <heading>PGP Sign/Encrypt Message</heading>
+    <para>
+    This option will first digitally sign your message and then will encrypt the resulting output. See the "PGP Encrypt Message" and "PGP Sign Message" entries for further information.
+    </para>
+    <heading>S/MIME Encrypt Message</heading>
+    <para>
+    TODO
+    </para>
+    <heading>S/MIME Sign Message</heading>
+    <para>
+    TODO
+    </para>
+    <heading>S/MIME Sign/Encrypt Message</heading>
+    <para>
+    TODO
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-options-encrypt">
+    <title>Message Composition: Encryption Options</title>
+    <heading>No Encryption</heading>
+    <para>
+    Send the message with no encryption (cleartext).
+    </para>
+    <heading>PGP Encrypt Message</heading>
+    <para>
+    This option will encrypt the current message, using PGP and the recipients personal public key, and then send it. You can only send a message to a single person using this option. You MUST have the public key of the recipient stored in your addressbook or else this option will fail. If you have the public key for the recipient in your addressbook and are still receiving errors, verify that the e-mail address in the recipient field matches the e-mail address where the public key is stored. The encrypted data will be attached to the outgoing message.
+    </para>
+    <heading>PGP Sign Message</heading>
+    <para>
+    This option will digitally sign the current message using PGP and your personal private key. If you have not already entered the passphrase for your private key during this session you will be prompted for it. The receipient must have a copy of your public key to digitally verify your
+    signature.
+    </para>
+    <heading>PGP Sign/Encrypt Message</heading>
+    <para>
+    This option will first digitally sign your message and then will encrypt the resulting output. See the "PGP Encrypt Message" and "PGP Sign Message" entries for further information.
+    </para>
+    <heading>S/MIME Encrypt Message</heading>
+    <para>
+    TODO
+    </para>
+    <heading>S/MIME Sign Message</heading>
+    <para>
+    TODO
+    </para>
+    <heading>S/MIME Sign/Encrypt Message</heading>
+    <para>
+    TODO
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-options-encrypt">
+    <title>Message Composition: Encryption Options</title>
+    <heading>No Encryption</heading>
+    <para>
+    Send the message with no encryption (cleartext).
+    </para>
+    <heading>PGP Encrypt Message</heading>
+    <para>
+    This option will encrypt the current message, using PGP and the recipients personal public key, and then send it. You can only send a message to a single person using this option. You MUST have the public key of the recipient stored in your addressbook or else this option will fail. If you have the public key for the recipient in your addressbook and are still receiving errors, verify that the e-mail address in the recipient field matches the e-mail address where the public key is stored. The encrypted data will be attached to the outgoing message.
+    </para>
+    <heading>PGP Sign Message</heading>
+    <para>
+    This option will digitally sign the current message using PGP and your personal private key. If you have not already entered the passphrase for your private key during this session you will be prompted for it. The receipient must have a copy of your public key to digitally verify your
+    signature.
+    </para>
+    <heading>PGP Sign/Encrypt Message</heading>
+    <para>
+    This option will first digitally sign your message and then will encrypt the resulting output. See the "PGP Encrypt Message" and "PGP Sign Message" entries for further information.
+    </para>
+    <heading>S/MIME Encrypt Message</heading>
+    <para>
+    TODO
+    </para>
+    <heading>S/MIME Sign Message</heading>
+    <para>
+    TODO
+    </para>
+    <heading>S/MIME Sign/Encrypt Message</heading>
+    <para>
+    TODO
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-options-encrypt">
+    <title>Message Composition: Encryption Options</title>
+    <heading>No Encryption</heading>
+    <para>
+    Send the message with no encryption (cleartext).
+    </para>
+    <heading>PGP Encrypt Message</heading>
+    <para>
+    This option will encrypt the current message, using PGP and the recipients personal public key, and then send it. You MUST have the public key of the recipient stored in your addressbook or else this option will fail. If you have the public key for the recipient in your addressbook and are still receiving errors, verify that the e-mail address in the recipient field matches the e-mail address where the public key is stored. The encrypted data will be attached to the outgoing message.
+    </para>
+    <heading>PGP Sign Message</heading>
+    <para>
+    This option will digitally sign the current message using PGP and your personal private key. If you have not already entered the passphrase for your private key during this session you will be prompted for it. The recipient must have a copy of your public key to digitally verify your signature.
+    </para>
+    <heading>PGP Sign/Encrypt Message</heading>
+    <para>
+    This option will first digitally sign your message and then will encrypt the resulting output. See the "PGP Encrypt Message" and "PGP Sign Message" entries for further information.
+    </para>
+    <heading>PGP Encrypt Message with passphrase</heading>
+    <para>
+    This option will encrypt the current message, using PGP and a passphrase, and then send it. You will be prompted for the passphrase that should be used for the encryption. Give the passphrase to the recipient through a secure channel e.g. personally, by phone, etc. The encrypted data will be attached to the outgoing message.
+    </para>
+    <heading>PGP Sign/Encrypt Message with passphrase</heading>
+    <para>
+    This option will first digitally sign your message and then will encrypt the resulting output with a passphrase. See the "PGP Encrypt Message with passphrase" and "PGP Sign Message" entries for further information.
+    </para>
+    <heading>S/MIME Encrypt Message</heading>
+    <para>
+    This option will encrypt the current message, using S/MIME and the recipients certificate, and then send it. You MUST have the certificate of the recipient stored in your addressbook or else this option will fail. If you have the certificate for the recipient in your addressbook and are still receiving errors, verify that the e-mail address in the recipient field matches the e-mail address where the certificate is stored. The encrypted data will be attached to the outgoing message.
+    </para>
+    <heading>S/MIME Sign Message</heading>
+    <para>
+    This option will digitally sign the current message using S/MIME and your certificate. If you have not already entered the passphrase for your certificate during this session you will be prompted for it.
+    </para>
+    <heading>S/MIME Sign/Encrypt Message</heading>
+    <para>
+    This option will first digitally sign your message and then will encrypt the resulting output. See the "S/MIME Encrypt Message" and "S/MIME Sign Message" entries for further information.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-options-encrypt">
+    <title>Message Composition: Encryption Options</title>
+    <heading>No Encryption</heading>
+    <para>
+    Send the message with no encryption (cleartext).
+    </para>
+    <heading>PGP Encrypt Message</heading>
+    <para>
+    This option will encrypt the current message, using PGP and the recipients personal public key, and then send it. You MUST have the public key of the recipient stored in your addressbook or else this option will fail. If you have the public key for the recipient in your addressbook and are still receiving errors, verify that the e-mail address in the recipient field matches the e-mail address where the public key is stored. The encrypted data will be attached to the outgoing message.
+    </para>
+    <heading>PGP Sign Message</heading>
+    <para>
+    This option will digitally sign the current message using PGP and your personal private key. If you have not already entered the passphrase for your private key during this session you will be prompted for it. The recipient must have a copy of your public key to digitally verify your signature.
+    </para>
+    <heading>PGP Sign/Encrypt Message</heading>
+    <para>
+    This option will first digitally sign your message and then will encrypt the resulting output. See the "PGP Encrypt Message" and "PGP Sign Message" entries for further information.
+    </para>
+    <heading>PGP Encrypt Message with passphrase</heading>
+    <para>
+    This option will encrypt the current message, using PGP and a passphrase, and then send it. You will be prompted for the passphrase that should be used for the encryption. Give the passphrase to the recipient through a secure channel e.g. personally, by phone, etc. The encrypted data will be attached to the outgoing message.
+    </para>
+    <heading>PGP Sign/Encrypt Message with passphrase</heading>
+    <para>
+    This option will first digitally sign your message and then will encrypt the resulting output with a passphrase. See the "PGP Encrypt Message with passphrase" and "PGP Sign Message" entries for further information.
+    </para>
+    <heading>S/MIME Encrypt Message</heading>
+    <para>
+    This option will encrypt the current message, using S/MIME and the recipients certificate, and then send it. You MUST have the certificate of the recipient stored in your addressbook or else this option will fail. If you have the certificate for the recipient in your addressbook and are still receiving errors, verify that the e-mail address in the recipient field matches the e-mail address where the certificate is stored. The encrypted data will be attached to the outgoing message.
+    </para>
+    <heading>S/MIME Sign Message</heading>
+    <para>
+    This option will digitally sign the current message using S/MIME and your certificate. If you have not already entered the passphrase for your certificate during this session you will be prompted for it.
+    </para>
+    <heading>S/MIME Sign/Encrypt Message</heading>
+    <para>
+    This option will first digitally sign your message and then will encrypt the resulting output. See the "S/MIME Encrypt Message" and "S/MIME Sign Message" entries for further information.
+    </para>
+</entry>--><!-- English entry:
+<entry id="compose-options-encrypt">
+    <title>Message Composition: Encryption Options</title>
+    <heading>No Encryption</heading>
+    <para>
+    Send the message with no encryption (cleartext).
+    </para>
+    <heading>PGP Encrypt Message</heading>
+    <para>
+    This option will encrypt the current message, using PGP and the recipients personal public key, and then send it. You MUST have the public key of the recipient stored in your addressbook or else this option will fail. If you have the public key for the recipient in your addressbook and are still receiving errors, verify that the e-mail address in the recipient field matches the e-mail address where the public key is stored. The encrypted data will be attached to the outgoing message.
+    </para>
+    <heading>PGP Sign Message</heading>
+    <para>
+    This option will digitally sign the current message using PGP and your personal private key. If you have not already entered the passphrase for your private key during this session you will be prompted for it. The recipient must have a copy of your public key to digitally verify your signature.
+    </para>
+    <heading>PGP Sign/Encrypt Message</heading>
+    <para>
+    This option will first digitally sign your message and then will encrypt the resulting output. See the "PGP Encrypt Message" and "PGP Sign Message" entries for further information.
+    </para>
+    <heading>PGP Encrypt Message with passphrase</heading>
+    <para>
+    This option will encrypt the current message, using PGP and a passphrase, and then send it. You will be prompted for the passphrase that should be used for the encryption. Give the passphrase to the recipient through a secure channel e.g. personally, by phone, etc. The encrypted data will be attached to the outgoing message.
+    </para>
+    <heading>PGP Sign/Encrypt Message with passphrase</heading>
+    <para>
+    This option will first digitally sign your message and then will encrypt the resulting output with a passphrase. See the "PGP Encrypt Message with passphrase" and "PGP Sign Message" entries for further information.
+    </para>
+    <heading>S/MIME Encrypt Message</heading>
+    <para>
+    This option will encrypt the current message, using S/MIME and the recipients certificate, and then send it. You MUST have the certificate of the recipient stored in your addressbook or else this option will fail. If you have the certificate for the recipient in your addressbook and are still receiving errors, verify that the e-mail address in the recipient field matches the e-mail address where the certificate is stored. The encrypted data will be attached to the outgoing message.
+    </para>
+    <heading>S/MIME Sign Message</heading>
+    <para>
+    This option will digitally sign the current message using S/MIME and your certificate. If you have not already entered the passphrase for your certificate during this session you will be prompted for it.
+    </para>
+    <heading>S/MIME Sign/Encrypt Message</heading>
+    <para>
+    This option will first digitally sign your message and then will encrypt the resulting output. See the "S/MIME Encrypt Message" and "S/MIME Sign Message" entries for further information.
+    </para>
+</entry>--></entry>
+  <entry id="pgp-overview" md5="24b5138b4b53f73b5f2f2739e4c1858d" state="uptodate">
+    <title>PGP: Genel Bakış</title>
+    <heading>PGP nedir?</heading>
+    <para>
+    PGP güvenli bağlantı ve bilgi depolama için bir araçtır özellikle e-posta ile kullanmak için. Bilgiyi şifrelemek ve dijital imzalar hazırlamak için kullanılabilir. IMP bu özelliği sağlamak için GNU Güvenlik Bekçisini kullanır.
+      </para>
+    <heading>PGP özelliğini aktif et?</heading>
+    <para>
+    Eğer bu seçenek seçilirse, kişisel PGP anahtarları yaratabilir/görüntüleyebilir, diğer bireylerden genel anahtarlar ekleyebilr/silebilir, şifreli postaları okuyabilir, dijital olarak imzalanmış mailleri doğrulayabilir, ve giden maillerinizi şifreleyebilir/imzalayabilirsiniz.
+     </para>
+</entry>
+  <entry id="pgp-option-attach-pubkey" md5="561ce43370ac4afbcc3f9818c8fbc2f6" state="uptodate">
+    <title>PGP: Seçenekler - Genel Anahtar Ekle</title>
+    <heading>Seçenekler - Genel Anahtar Ekle</heading>
+    <para>
+    Eğer seçilirse PGP genel anahtarınızın bir kopyası, eğer varsa, varsayılan olarak tüm giden postalarınıza eklenecektir.
+    </para>
+</entry>
+  <entry id="pgp-manage-pubkey" md5="b289ea5824b7f69f35c0751497f4e1c3" state="uptodate">
+    <title>PGP: Genel Anahtarları Yönet</title>
+    <heading>Ganel Bakış</heading>
+    <para>
+    Bu ekran adres defterinizde PGP genel anahtarı olan aktif kullanıcıları listeler. Bu kullanıcılar ya 1) şifreli mesaj yolladığınız ya da 2) dijital imza doğruladığınız kullanıcılardır.
+      </para>
+    <heading>Görüntüle</heading>
+    <para>
+    PGP genel anahtarını görüntülemek için bir pencere açar.
+    </para>
+    <heading>Ayrıntılar</heading>
+    <para>
+    PGP genel anahtarı hakkında bazı ayrıntılar gösterir.
+    </para>
+    <heading>Sil</heading>
+    <para>
+    Adres defterinizden genel anahtarı siler.
+    </para>
+</entry>
+  <entry id="pgp-import-pubkey" md5="6ee1130b46e9ff1ca9ad3a3a47e7b382" state="uptodate">
+    <title>PGP: Genel Anahtarları Yönet - Dışalım</title>
+    <heading>Genel anahtarları al</heading>
+    <para>
+    Bu tuş manuel olarak PGP genel anahtarı alabileceğiniz bir pencere açar. Anahtar metin alanına kopyalanmış olabilir yada bilgisayarınızda bir dosyada ise, dışarıdan alım yapabilirsiniz. Anahtar geçerliyse adres defterinize girilcek ve pencere kapanacak; eğer geçerli değilse, nedenini açıklayan bir hata mesajı dönecektir.
+     </para>
+</entry>
+  <entry id="pgp-overview-personalkey" md5="220af2b74a58f430efd72d6d6b1f993f" state="uptodate">
+    <title>PGP: Kişisel Anahtarları Yönet</title>
+    <heading>Genel Bakış</heading>
+    <para>
+Eğer mesajları dijital olarak imzalamak istiyorsanız veya diğerlerinin size şifreli mesaj göndermesini aktif etmek istiyorsanız, kişisel genel/özel PGP anahtar çiftine sahip olmalısınız."
+      </para>
+    <heading>Genel Anahtarınız</heading>
+    <para>
+    Genel anahtarınız size şifreli mesaj gödermesini istediğiniz kişliere açık olmalıdır ki bu mesajı sadece siz çözebilirsiniz(özel anahtarınızı kullanarak.) Ek olarak genel anahtarınız dijital mesaj yolladığınız kişilere açık olmalıdır - genel anahtar dijital imzayı doğrulamak için gereklidir.
+     </para>
+     <heading>Özel Anahtarınız</heading>
+    <para>
+    Özel anahtarınız genel şifrenizi kullanarak şifrelenmiş mesajları çözmek için gereklidir. Ek olarak, özel anahtarınız dijital olarak mesaj imzalamak istiyorsanız gereklidir. Özel anahtarınız anahtarlar oluşturulduğunda bir şifreyle korunacaktır. Bu yüzden özel anahtarınızı gerektirensbir aktivite olduğunda, IMP şifrenizi soracaktır. Her oturumda şifrenizi bir kere girmeniz gerekmektedir - IMP oturumu kapatana kadar şifrenizi saklar.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-public" md5="3c844d4ff8fdda3e0d446b47a63117e0" state="uptodate">
+    <title>PGP: Kişisel Anahtarları Yönet - Genel Anahtar</title>
+    <heading>Görüntüle</heading>
+    <para>
+    PGP genel anahtarı görüntülemek için bir pencere açar.
+      </para>
+    <heading>Ayrıntılar</heading>
+    <para>
+    PGP genel anahtarı ile ilgili bazı ayrıntılar görüntüler.
+     </para>
+</entry>
+  <entry id="pgp-personalkey-private" state="new">
+    <title>PGP: Manage Personal Keys - Private Key</title>
+    <heading>Enter Passphrase</heading>
+    <para>
+    Opens the passphrase dialog window. The passphrase entered, if correct, will be stored by IMP until your session ends.
+    </para>
+    <heading>Unload Passphrase</heading>
+    <para>
+    Removes the stored passphrase from IMP - any additional usage of the private key will require you to reenter the passphease.
+    </para>
+    <heading>View</heading>
+    <para>
+    Opens a window to view the PGP private key. DO NOT SEND THIS KEY TO ANYONE - this option is strictly so that you can export your IMP personal private key for use in another program.
+    </para>
+    <heading>Details</heading>
+    <para>
+    Displays some details about the PGP private key.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-delete" md5="dbd8cbe6bce71c4fb592dd1b3b27b7ce" state="uptodate">
+    <title>PGP: Kişisel Anahtarları Yönetin - Sil</title>
+    <heading>Kişisel Anahtarları sil</heading>
+    <para>
+    Bu tuş kişisel genel/özel anahtar çiftinizi IMP seçeneklerinden siler.
+     </para>
+</entry>
+  <entry id="pgp-personalkey-create-name" md5="748cb124b7ff52820792e278037a8c27" state="uptodate">
+    <title>PGP: Kişisel Anahtar yarat - İsim</title>
+    <heading>İsim</heading>
+    <para>
+    Kişisel anahtarlarınıza eklemek istediğiniz isim. Gerekli bir alan.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-create-comment" md5="e666eb9f0ee4b49fe04f74fc18db8640" state="uptodate">
+    <title>PGP: Kişisel Anahtar yarat - Yorum</title>
+    <heading>Yorum</heading>
+    <para>
+    Kişisel anahtarlarınıza eklemek istediğiniz karakter dizisi. Opsiyonel bir alan.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-create-email" md5="c729f70fdb3a73cbb7ba5ef5888e3092" state="uptodate">
+    <title>PGP: Kişisel Anahtar yarat - E-posta adresi</title>
+    <heading>E-posta adresi</heading>
+    <para>
+     Kişisel Anantarınızla eşleştirmek istediğiniz e-posta adresi. Gerekli bir alan.
+      </para>
+</entry>
+  <entry id="pgp-personalkey-create-keylength" md5="24ca641c63fb5ff310a39ee0d3b1ee55" state="uptodate">
+    <title>PGP: Kişisel Anahtar yarat - Anahtar Uzunluğu</title>
+    <heading>Anahtar Uzunluğu</heading>
+    <para>
+Üretilen anahtarınızın anahtar Uzunluğu (byte olarak). Değer ne kadar yüksekse koruma o kadar yüksektir (ve ayrıca yüksek üretim ve şifreleme süresi). Varsayılan 1024 byte - bu değer mükemmmel koruma sağlar.
+      </para>
+</entry>
+  <entry id="pgp-personalkey-create-passphrase" md5="2fb9372970bf33f51e988ba39dbd7193" state="uptodate">
+    <title>PGP: Kişisel Anahtar yarat - Şifre</title>
+    <heading>Şifre</heading>
+    <para>
+    Kişisel özel anahtarınızı şifrelemek ve korumak için kullanılan şifre. Bu en az 6 karakter olmalı, oturum açma şifrenizle aynı olmamalı, anlamlı bir sözcük içermemeli, ayrıca hem numara hem harf içermeli. Onaylama süreci için bu şifreyi iki kez girmeniz gerekir. Gerekli bir alan.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-create-actions" md5="0f8234935b964c83533b4ec4c15eb712" state="uptodate">
+    <title>PGP: Kişisel Anahtar yarat - Aksiyon</title>
+    <heading>Anahtarlar Yarat</heading>
+    <para>
+    Kişisel Genel/özel anahtar çiftinizi yaratın ve saklayın.
+      </para>
+    <heading>Anahtar Çifti Al</heading>
+    <para>
+    Kişisel/özel anahtar çifti al. Bu tuş varolan PGP kişisel genel/özel anahtar çiftinizi almanız için bir pencere açar. Anahtarlar metin alanına yapıştırılmış veya lokal bilgisayarınızda bir dosyada olabilir, onları alabilirsiniz. Anahtarlar geçerli ise seçeneklerinize eklenir ve pencere kapanır; eğer geçersizse neden geçersiz olduğunu açıklayan bir mesaj döner."
+     </para>
+</entry>
+  <entry id="smime-overview" md5="d3c752b1345fb2eccfe575c07461963f" state="uptodate">
+    <title>S/MIME: Genel Bakış</title>
+    <heading>S/MIME Nedir?</heading>
+    <para>
+S/MIME bir açık ve kontrol edilebilir bir yolla dijital imzalar, mesaj gizliliği ve izinsiz erişim kontrolcüsü sağlayan özel/genel anahtar çifti sistemidir. S/MIME sadece yollayan ve istenen alıcıların çözebileceği şifreleme sağlar. Mesajı yollayan kişiyi dijital imza aracılığıyla tanımanızı sağlar. Bu şifreleme ve dijital imzalama, alıcıların mesajın yollandıktan sonra değiştirilip değiştirilmediğini kontrol etmelerini sağlar."
+      </para>
+    <heading>S/MIME özelliklerini aktif et?</heading>
+    <para>
+Eğer bu seçenek seçilirse, kişisel S/MIME anahtarlarınızı almaya, şifrelenmiş posta okumaya, dijital olarak imzalanmış postları doğrulamaya ve giden postalarınızı şifreleme/imzalamanıza olanak verir."
+     </para>
+</entry>
+  <entry id="smime-overview-personalkey" md5="9f4f36ae72cb4abc731067d338be3b98" state="uptodate">
+    <title>S/MIME: Kişisel Anahtarlar</title>
+    <heading>Genel Bakış</heading>
+    <para>Eğer mesajları dijital olarak imzalamak veya şifrelemek istiyorsanız, kendi kişisel genel/özel S/MIME anahtar çiftine sahip olmalısınız."
+      </para>
+</entry>
+  <entry id="smime-import-personal-certs" state="uptodate" md5="cf0ed2e3e24d30dedf8cfef2c2645759">
+    <title>S/MIME: Import Personal Certificates</title>
+    <heading>Import Personal Certificates</heading>
+    <para>
+    Import personal certificates from a PKCS #12 format file. PKCS #12 files is the file usually generated when exporting a key from a browser (e.g. Internet Explorer, Firefox) or from a certificate store maintained by an Operating System (e.g. Windows XP). If the keys are valid they will be inserted into your preferences and the window will close; if not valid, an error message will be returned explaining why.
+    </para>
+</entry>
+  <entry id="smime-delete-personal-certs" md5="018bb6b61a7e416892de288ad1c880f4" state="uptodate">
+    <title>S/MIME: Kişisel Sertifikaları Sil</title>
+    <heading>Kişisel Sertifikaları Sil</heading>
+    <para>Kişisel Sertifikalarınızı seçeneklerinizden silin. Bundan sonra S/MIME mesajlarınızı onaylayamaz veya size göderilen S/MIME ile şifrelenmiş postaları göremezsiniz."
+      </para>
+</entry>
+  <entry id="smime-manage-pubkey" md5="8b6c63684d3d73b3d084025a78fe7e88" state="uptodate">
+    <title>S/MIME: Genel Anahtarları Yönet</title>
+    <heading>S/MIME: Genel Anahtarları Yönet</heading>
+    <para>S/MIME genel anahtar listesini yönet.
+      </para>
+     <heading>Görünüm</heading>
+    <para>Genel Anahtarın yalın metnini gör.
+      </para>
+<heading>Ayrıntılar</heading>
+    <para>Genel anahtarın teknik ayrıntılarını görüntüle.
+      </para>
+<heading>Sil</heading>
+    <para>Seçili genel anahtarı kayıttan sil. Bir kullanıcı için genel anahtarı silmek, o kişiye şifrelenmiş posta göndermenizi engeller.
+      </para>
+</entry>
+  <entry id="printing" state="uptodate" md5="f233c11b6b4a6bedeb68f1d5a2a976db">
+    <title>Printing</title>
+    <heading>Print a message</heading>
+    <para>
+    To print a message you are viewing, click on the "Print" link at either the top or bottom of the message. The message will open in a new window formated for printing.  Depending on your web browser and operating system, the print dialog box may open for you.  If it does not open, then pull down the web browser's "File" menu and choose "Print" to open the print dialog box.
+    </para>
+</entry>
+  <entry id="sorting" md5="18cdeac38027fe5c42bab693f2a4260a" state="uptodate">
+    <title>Sınıflandırma ve Gruplama</title>
+    <heading>Girişleri Sınıflandırma</heading>
+    <para>Bir mesaj listesi görüntülerken,mesajlarınızı uygun sütun başlığına tıklayarak her sütun için sınıflandırabilirsiniz. Sütunları azalan ve artan sıra arasında değiştirmek için sütun başlığıdaki ok simgesine tıklayın."
+      </para>
+    <heading>Gruplama</heading>
+    <para>Mesajları kendi cevaplarıyla birlikte konularına göre gruplamak için konu sütununun başındaki [Thread] bağlantısına tıklayın. Normal konu sıralamasına dönmek için konu sütununun başındaki [Subject] bağlantısına tıklayın."
+    </para>
+</entry>
+  <entry id="alternative-msg" md5="4978073f76977b6af6b69810e4d22a65" state="uptodate">
+    <title>Çokparçalı/Alternatif mesajlar</title>
+    <para>Kullanıcılar bazı mesajları çokparçalı/alternatif olarak yollayabilirler.Bu mesajlar,AYNI içeriği DEĞİŞİK formatlarda gösterirler.
+    </para>
+</entry>
+  <entry id="prefs-rename_sentmail_monthly" md5="530fa20e0afbc25ffd40877948832899" state="uptodate">
+    <title>Seçenekler: Bakım: Gönderilmiş-postalar klasörünü aylık olarak yeniden adlandır</title>
+    <para>Bu seçeneği her ayın başında göderilmiş-postalar klasörünü yeniden adlandırmak istiyorsanız seçin. Klasör yeniden adlandırılacak ve yeni gönderilmiş-postalar klasörü yaratılacaktır."
+      </para>
+</entry>
+  <entry id="prefs-delete_sentmail_monthly" md5="0beed16dfd68e2f25e0c66871fd546df" state="uptodate">
+    <title>Seçenekler: Bakım: Gönderilmiş-postalar klasörünü aylık olarak sil</title>
+    <para>Bu seçeneği her ayın başında göderilmiş-postalar klasörünü silmek istiyorsanız seçin. Bu kotanız varsa kullanışlı olabilir.
+    </para>
+</entry>
+  <entry id="prefs-delete_sentmail_monthly_keep" md5="71ed1c2eab48b91a25b5bcd4b14ccea9" state="uptodate">
+    <title>Seçenekler: Bakım: Gönderilmiş-postalar klasörünü aylık olarak sil - saklanacak klasör sayısı</title>
+    <para>eğer eski-gönderilmiş postalar klasörünü her ay siliyorsanız, bu dosyaları kaç ay daha saklamak istiyorsunuz? Bu süreden daha eski klasörleriniz silinecektir."
+    </para>
+</entry>
+  <entry id="prefs-purge_sentmail" state="new">
+    <title>Preferences: Maintenance: Purge Sent-Mail</title>
+    <para>
+    Do you want to purge your sent-mail folder(s) every so often.
+    </para>
+</entry>
+  <entry id="prefs-purge_sentmail_interval" state="new">
+    <title>Preferences: Maintenance: Purge Sent-Mail Interval</title>
+    <para>
+    If you are purging your sent-mail folder(s), how often should it be purged?
+    </para>
+</entry>
+  <entry id="prefs-purge_sentmail_keep" state="new">
+    <title>Preferences: Maintenance: Purge Sent-Mail Keep</title>
+    <para>
+    If you are purging your sent-mail folder(s), message older than how many days should be purged?
+    </para>
+</entry>
+  <entry id="prefs-delete_attachments_monthly" md5="373ea02ede6df5fc345caf632e19a75f" state="uptodate">
+    <title>"Seçenekler: Bakım: Bağlı eklentileri aylık olarak sil</title>
+    <para>Bu seçeneği her ay başında eski eklentilerinizi silmek istiyorsanız seçin. Bu kotanız varsa kullanışlı olabilir.
+    </para>
+</entry>
+  <entry id="prefs-delete_attachments_monthly_keep" state="uptodate" md5="1b340a60214dffd04aec02cc1127df5d">
+    <title>Preferences: Maintenance: Delete Linked Attachments Monthly - # of Months to Keep</title>
+    <para>
+    If you are deleting old linked attachments every month, how many months of old attachments do you  want to keep?  Any attachments older than this many months will be deleted.
+    </para>
+</entry>
+  <entry id="prefs-purge_trash" md5="dc71871146be3e46ade0087a8cf18273" state="uptodate">
+    <title>Seçenekler: Bakım: Çöp kutusunu temizle</title>
+    <para>Çöp kutunuzu bu kadar sık temizlemek istiyor musunuz?
+    </para>
+</entry>
+  <entry id="prefs-purge_trash_interval" md5="7be91fbeb05b2d87289d4c5602d5a32f" state="uptodate">
+    <title>Seçenekler: Bakım: Çöp kutusunu temizleme aralığı</title>
+    <para>Çöp kutunuzu ne kadar sıklıkla temizliyorsunuz?
+    </para>
+</entry>
+  <entry id="prefs-purge_trash_keep" md5="3cb5a2b5b80b7ac1179ae005f983970e" state="uptodate">
+    <title>Seçenekler: Bakım: Çöp kutusunu temizlerken tut</title>
+    <para>Çöp kutunuzu temizlerken kaç günlük mailler silinmelidir.
+    </para>
+</entry>
+  <entry id="prefs-purge_spam" state="new">
+    <title>Preferences: Maintenance: Purge Spam</title>
+    <para>
+    Do you want to purge your spam folder every so often.
+    </para>
+</entry>
+  <entry id="prefs-purge_spam_interval" state="new">
+    <title>Preferences: Maintenance: Purge Spam Interval</title>
+    <para>
+    If you are purging your spam folder, how often should it be purged?
+    </para>
+</entry>
+  <entry id="prefs-purge_spam_keep" state="new">
+    <title>Preferences: Maintenance: Purge Spam Keep</title>
+    <para>
+    If you are purging your spam folder, message older than how many days should be purged?
+    </para>
+</entry>
+  <entry id="prefs-attrib_text" md5="721a09d7ca028c97e3bd2b38c597fff7" state="uptodate">
+    <title>Seçenekler: Mesaj Kompozisyonu : simgesel Metin</title>
+    <para>Burda postalara cevap verirken görünmesini istediğiniz sözcüğü yazın.
+      </para>
+    <para>Cevap verdiğiniz postada mesajla ilgili bilgiler vermek için yertutucular kullanabilirsiniz. yertutucular '%' ve takip eden bir karakterden oluşur. bazı yer tutucular şunlardır:"
+     </para>
+    <para>%f : Gönderenin adı ve e-posta adresi
+    </para>
+<para>%a : Gönderenin e-posta adresi
+    </para>
+<para>%p : Gönderenin adı
+    </para>
+<para>%r : tüm RFC 2822 stili tarih ve zaman dilimi
+    </para>
+<para>%d : Tarih www, gg aaa yyyy
+    </para>
+<para>%x : Varsayılan yerel tarih
+    </para>
+<para>%c : Varsayılan yerel tarih ve zaman
+    </para>
+<para>%m : Mesaj-kimliği
+    </para>
+<para>%s : Konu
+    </para>
+<para>%n : Yeni Bir satır
+    </para>
+<para>%% : '%' karakteri
+    </para>
+</entry>
+  <entry id="prefs-default_msg_charset" state="new">
+    <title>Preferences: Default Message Character Set</title>
+    <para>
+    Define the default character set to use for text message parts that do not contain explicit character set information. Per RFC 2045, messages without a character set parameter are displayed using the 'US-ASCII' character set. However, certain badly broken mailers may send out text messages in other character sets without setting the proper parameters in the message header. Set this parameter to the default character set string to use locally. Select "Default" to use the MIME defaults.
+    </para>
+</entry>
+  <entry id="prefs-disposition_request_read" md5="89e92c4d68224b2345b59959878a7174" state="uptodate">
+    <title>Seçenekler: Okundu bilgisi isteği</title>
+    <para>'Okundu Bilgisi İstegi' Alıcılardan mailin okunduğuna dair bilgi dönmesi. Her zaman desteklenmez.
+    </para>
+</entry>
+  <entry id="prefs-disposition_send_mdn" md5="1fe04e5dc3de68d172da284895973ea9" state="uptodate">
+    <title>Seçenekler: MDN yolla</title>
+    <para>'MDN yolla' Mesaj Ulaşım Uyarısı (Message Disposition Notification), bir mesaj okuduğunuzda yollanan mesajı okuduğunuza dair bir uyarı iletisi, mesajı yolayan kişiye, yollayan kişi okundu bilgisi almak istediyse, iletilir. Çoğu durumda bu işlem size bir uyarı verilmeden yapılır. Bazı özel durumlarda ise uyarı mailini bir linke tıklayarak  yollamayı tercih edebilirsiniz."
+    </para>
+</entry>
+  <entry id="prefs-disposition_request_delivery" state="new">
+    <title>Preferences: Request Delivery Confirmation</title>
+    <para>
+    "Request Delivery Confirmation" sends a request to the recipient's e-mail server to notify you when it has delivered the message to the recipient's mailbox. It doesn't mean the message has been seen, just that it's sitting in a mailbox somewhere. Not all mail servers support this.
+    </para>
+</entry>
+  <entry id="prefs-delete_spam_after_report" state="new">
+    <title>Preferences: Delete Spam After Reporting</title>
+    <para>
+    You may elect to do one of three items after reporting a message as either spam or innocent.
+    </para>
+    <para>
+    First, you can decide to do nothing - the message will be reported as either spam or innocent but will otherwise remain unchanged in your mailbox.
+    </para>
+    <para>
+    Second, if reporting a message as spam, you can instead have the message be immediately deleted.  This setting has no effect on reporting a message as innocent.
+    </para>
+    <para>
+    Third, after reporting a message as spam the message will be deleted from the current mailbox and moved to your spam folder.  Alternatively, if reporting a message as innocent the message will be deleted from the current mailbox and moved to your INBOX.
+    </para>
+</entry>
+  <entry id="prefs-html_image_replacement" md5="28e1cf08e328345a8e7274c853492d4f" state="uptodate">
+    <title>Seçenekler: HTML Resim Engelleme</title>
+    <para>HTML olarak atılan mesajlardaki resimlerin görüntülenmesi, siz aksini belirtene kadar engellenir. Unutmayın ki eklenti olarak gönderilen HTML dosyalarındaki resimler herzaman görüntülenir."
+    </para>
+</entry>
+  <entry id="prefs-html_image_addrbook" md5="759fa3df24e0a3cd89f320102252f91a" state="uptodate">
+    <title>Seçenekler: Adres Defterinde Değilse HTML Resim Engelleme</title>
+    <para>Gönderen kişi adres defterinizde yer alıyorsa, HTML biçiminde gönderdiği mesajlardaki resimler görüntülensin mi?"
+    </para>
+</entry>
+  <entry id="prefs-mailbox_start" md5="3d1196f265d8b7cc465ebf21512acc05" state="changed">
+    <title>Seçenekler: Posta Kutusu Başlangıç Safyası</title>
+    <para>Posta kutunuza ilk eriştiğinizde görüntülenmesini istediğiniz sayfayı belirler. Unutmayın ki okunmamış mesaj seçeneği, konuya göre sıralama seçeneği ile birlikte çalışmaz." 
+    </para>
+<!-- English entry:
+<entry id="prefs-mailbox_start">
+    <title>Preferences: Mailbox Start Page</title>
+    <para>
+    Determines which page in the mailbox view will be displayed when you access a mailbox for the first time.
+    </para>
+</entry>--><!-- English entry:
+<entry id="prefs-mailbox_start">
+    <title>Preferences: Mailbox Start Page</title>
+    <para>
+    Determines which page in the mailbox view will be displayed when you access a mailbox for the first time.
+    </para>
+</entry>--><!-- English entry:
+<entry id="prefs-mailbox_start">
+    <title>Preferences: Mailbox Start Page</title>
+    <para>
+    Determines which page in the mailbox view will be displayed when you access a mailbox for the first time.
+    </para>
+</entry>--><!-- English entry:
+<entry id="prefs-mailbox_start">
+    <title>Preferences: Mailbox Start Page</title>
+    <para>
+    Determines which page in the mailbox view will be displayed when you access a mailbox for the first time.
+    </para>
+</entry>--><!-- English entry:
+<entry id="prefs-mailbox_start">
+    <title>Preferences: Mailbox Start Page</title>
+    <para>
+    Determines which page in the mailbox view will be displayed when you access a mailbox for the first time.
+    </para>
+</entry>--><!-- English entry:
+<entry id="prefs-mailbox_start">
+    <title>Preferences: Mailbox Start Page</title>
+    <para>
+    Determines which page in the mailbox view will be displayed when you access a mailbox for the first time.
+    </para>
+</entry>--><!-- English entry:
+<entry id="prefs-mailbox_start">
+    <title>Preferences: Mailbox Start Page</title>
+    <para>
+    Determines which page in the mailbox view will be displayed when you access a mailbox for the first time.
+    </para>
+</entry>--><!-- English entry:
+<entry id="prefs-mailbox_start">
+    <title>Preferences: Mailbox Start Page</title>
+    <para>
+    Determines which page in the mailbox view will be displayed when you access a mailbox for the first time.
+    </para>
+</entry>--><!-- English entry:
+<entry id="prefs-mailbox_start">
+    <title>Preferences: Mailbox Start Page</title>
+    <para>
+    Determines which page in the mailbox view will be displayed when you access a mailbox for the first time.
+    </para>
+</entry>--></entry>
+  <entry id="prefs-save_attachments" md5="35b46334cdcc7fa416b9f9fca5874e80" state="uptodate">
+    <title>Seçenekler: Gönderilmiş Mesajlardaki Eklentileri Kaydet.</title>
+    <para>Eğer gönderdiğiniz mesajı kaydedecekseniz aşağıdaki seçenekleri kullanabilirsiniz:
+      </para>
+    <para>* 'Her zaman eklentileri kaydet' - Asla mesaj gönderme ekranında sizden bilgi istenmez. Eklentiler her zaman mesajla birlikte kaydedilir." 
+     </para>
+    <para>* 'Her eklenti gönderildiğinde sizden bilgi istenir' - Her zaman mesaj gönderme ekranında sizden bilgi istenir; Aksi belirtilmedikçe eklentiler kaydedilir."
+    </para>
+    <para>* 'Her eklenti gönderildiğinde sizden bilgi istenir' - Her zaman mesaj gönderme ekranında sizden bilgi istenir; Aksi belirtilmedikçe eklentiler kaydedilmez."
+    </para>
+    <para>* 'Hiçbir zaman eklentileri kaydetme' - Asla mesaj gönderme ekranında sizden bilgi istenmez. Eklentiler hiçbir zaman mesajla birlikte kaydedilmez."  
+</para>
+</entry>
+  <entry id="virtual_inbox" state="new">
+    <title>Virtual Folders: Virtual Inbox</title>
+    <para>
+    Virutal Inbox is a saved search that does away with the need to search every mailbox for messages marked as new.  Instead, all currently subscribed mailboxes are searched for new messages and the results are displayed in a single mailbox.
+    </para>
+</entry>
+  <entry id="virtual_trash" state="new">
+    <title>Virtual Folders: Virtual Trash</title>
+    <para>
+    Virtual Trash is a saved search that does away with the need for a separate Trash folder.  Instead of moving messages to a centralized trash folder, messages are simply marked as deleted in the current folder they live in.  When 'show deleted messages' is turned off, this results in these messages not appearing in a mailbox view.  When a user clicks on Virtual Trash, *all* mailboxes all searched for messages that are flagged deleted and these messages are displayed in a single mailbox.
+    </para>
+</entry>
+</help>

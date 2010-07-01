@@ -1,0 +1,1 @@
+var isMSIE=false;if(isMSIE){window.attachEvent("onload",guard)}function guard(){var a=document.all.tags("TEXTAREA");for(var c=0;c<a.length;c++){a[c].attachEvent("onkeydown",disableEscape)}var b=document.all.tags("INPUT");for(c=0;c<b.length;c++){if(b[c].type=="text"){b[c].attachEvent("onkeydown",disableEscape)}}}function disableEscape(){return window.event.keyCode!=27};

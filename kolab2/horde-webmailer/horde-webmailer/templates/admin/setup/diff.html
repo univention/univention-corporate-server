@@ -1,0 +1,11 @@
+<if:diffs>
+<loop:diffs>
+<h1 class="header" id="<tag:diffs.app />">
+ <tag:diffs.app /> <small>[ <tag:diffs.toggle_renderer /> ]</small>
+</h1>
+<pre class="text"><tag:diffs.diff /></pre>
+</loop:diffs>
+<else:diffs>
+<p class="notice"><gettext>No available configuration data to show differences for.</gettext></p>
+</else:diffs>
+</if:diffs>

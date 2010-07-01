@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<help>
+
+<entry id="summary" md5="68ca33f7f0c9aae4c103eb47492cdc15" state="uptodate">
+<title>Stranica portala</title>
+ <para>
+  Stranica portala daje kratak pregled svih va&#x161;ih bitnih informacija.
+  Na primjer, mo&#x17E;e prikazati koliko imate novih poruka u INBOX-u, koji
+  su predstoje&#x107;i doga&#x111;aji u kalendaru, zadaci na to-do listi, naslovi
+  iz odabranih novina, i tako dalje. Mnogi od ovih sa&#x17E;etaka &#x107;e
+  sadr&#x17E;avati pre&#x10D;ice do &#x10D;estih funkcija kao &#x161;to je sastavljanje nove
+  poruke, dodavanje kalendarskog doga&#x111;aja ili zadatka, i sl.
+ </para>
+ <para>
+  Sadr&#x17E;aj stranice portala se mo&#x17E;e prilagoditi preko gumba Izgled. Na
+  primjer, mo&#x17E;ete izabrati stavke koje &#x107;e biti dio stranice, kao i
+  poredak u kojem &#x107;e biti prikazane.
+ </para>
+</entry>
+
+<entry id="navbar" md5="b8cf0ae19e57dfa0c2b962e516782f47" state="uptodate">
+<title>Traka za biranje aplikacija</title>
+ <para>
+  Na lijevoj strani ove stranice je traka za biranje aplikacija.
+  Kliknite na ikonu u ovoj traci za brzo i jednostavno prebacivanje
+  izme&#x111;u dostupnih aplikacija.
+ </para>
+</entry>
+
+<entry id="prefs-do_maintenance" md5="dd95df07a03031232baea919288b2d00" state="uptodate">
+    <title>Postavke: Odr&#x17E;avanje: Raditi odr&#x17E;avanje</title>
+    <para>
+    Ako &#x17E;elite da se nakon prijave izvr&#x161;avaju postupci odr&#x17E;avanja,
+    ozna&#x10D;ite ovu ku&#x107;icu.
+    </para>
+</entry>
+
+<entry id="prefs-confirm_maintenance" md5="a21162cdff3b1d8faeadb7296240036e" state="uptodate">
+    <title>Postavke: Odr&#x17E;avanje: Potvrditi odr&#x17E;avanje</title>
+    <para>
+    Ako &#x17E;elite odobriti sve postupke odr&#x17E;avanja prije nego se izvr&#x161;e,
+    ozna&#x10D;ite ovu ku&#x107;icu. Ako je ne ozna&#x10D;ite, svi potrebni postupci
+    odr&#x17E;avanja &#x107;e se automatski izvr&#x161;iti nakon prijave, bez prilike za
+    otkazivanje.
+    </para>
+</entry>
+
+</help>

@@ -1,0 +1,1055 @@
+# Croatian translations for Ingo.
+# Copyright (C) 2008 Horde Project
+# This file is distributed under the same license as the horde package.
+# Matej Vela <Matej.Vela@CARNet.hr>, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: horde 3\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2009-10-14 15:13+0200\n"
+"PO-Revision-Date: 2008-02-26 18:08+0100\n"
+"Last-Translator: Matej Vela <Matej.Vela@CARNet.hr>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: filters.php:223
+msgid " and"
+msgstr " i"
+
+#: filters.php:223
+msgid " or"
+msgstr " ili"
+
+#: templates/blacklist/blacklist.inc:17
+msgid "Action for blacklisted addresses:"
+msgstr "Akcija za adrese na crnoj listi:"
+
+#: templates/script/activate.inc:10
+msgid "Activate Script"
+msgstr "Aktiviraj skriptu"
+
+#: lib/Driver/ldap.php:229
+#, php-format
+msgid "Activating the script for \"%s\" failed: (%d) %s"
+msgstr "Aktiviranje skripte za \"%s\" nije uspjelo: (%d) %s"
+
+#: templates/filters/settings.inc:8
+msgid "Additional Settings"
+msgstr "Dodatne postavke"
+
+#: forward.php:43
+msgid "Address(es) to forward to:"
+msgstr "Adresa/e na koju se proslijeđuje:"
+
+#: vacation.php:56
+msgid "Addresses to not send responses to:"
+msgstr "Adrese kojima ne treba slati odgovor:"
+
+#: vacation.php:50
+msgid "Advanced Settings"
+msgstr "Napredne postavke"
+
+#: templates/rule/header.inc:44
+msgid "All of the following"
+msgstr "Sve od sljedećeg"
+
+#: lib/api.php:78
+msgid "Allow Rules"
+msgstr "Pravila za propuštanje"
+
+#: templates/rule/footer.inc:34
+msgid "Answered"
+msgstr "Odgovoreno"
+
+#: templates/rule/header.inc:45
+msgid "Any of the following"
+msgstr "Bilo koje od sljedećeg"
+
+#: templates/filters/footer.inc:8
+msgid "Apply Filters"
+msgstr "Primijeni filtere"
+
+#: filters.php:252
+msgid "Are you sure you want to delete this rule?"
+msgstr "Jeste li sigurni da želite obrisati ovo pravilo?"
+
+#: config/prefs.php.dist:32
+msgid "Automatically update the script after each change?"
+msgstr "Automatski ažurirati skriptu nakon svake promjene?"
+
+#: vacation.php:41
+msgid "Basic Settings"
+msgstr "Osnovne postavke"
+
+#: config/fields.php.dist:47
+msgid "Bcc"
+msgstr "Bcc"
+
+#: lib/Storage.php:346
+msgid "Begins with"
+msgstr "Počinje sa"
+
+#: lib/Driver/ldap.php:106 lib/Driver/ldap.php:111
+#, php-format
+msgid "Bind failed: (%s) %s"
+msgstr "Autentikacija nije uspjela: (%s) %s"
+
+#: filters.php:174 lib/Block/overview.php:95 lib/Block/overview.php:98
+#: templates/blacklist/blacklist.inc:7
+msgid "Blacklist"
+msgstr "Crna lista"
+
+#: blacklist.php:105
+msgid "Blacklist Edit"
+msgstr "Uredi crnu listu"
+
+#: blacklist.php:19
+msgid "Blacklist is not supported in the current filtering driver."
+msgstr "Crna lista nije podržana u trenutnoj metodi filtriranja."
+
+#: lib/Script/maildrop.php:197 lib/Script/sieve.php:276
+#: lib/Script/procmail.php:219
+msgid "Blacklisted Addresses"
+msgstr "Adrese na crnoj listi"
+
+#: config/fields.php.dist:100
+msgid "Body"
+msgstr "Tijelo"
+
+#: filters.php:220 rule.php:322
+msgid "Case Sensitive"
+msgstr "Razlikuje velika/mala slova"
+
+#: config/fields.php.dist:43
+msgid "Cc"
+msgstr "Cc"
+
+#: vacation.php:81 blacklist.php:71 rule.php:141 forward.php:56
+#: whitelist.php:38 spam.php:106
+msgid "Changes saved."
+msgstr "Promjene spremljene."
+
+#: lib/Driver/ldap.php:73
+msgid "Connection failure"
+msgstr "Greška u povezivanju"
+
+#: lib/Storage.php:342
+msgid "Contains"
+msgstr "Sadrži"
+
+#: filters.php:263 filters.php:264
+#, php-format
+msgid "Copy %s"
+msgstr "Kopiraj %s"
+
+#: lib/Storage.php:991 lib/Storage/sql.php:678
+#, php-format
+msgid "Copy of %s"
+msgstr "Kopija %s"
+
+#: lib/Template.php:235
+#, php-format
+msgid "Could not save the compiled template file '%s'."
+msgstr "Nije uspjelo spremanje kompajliranog predloška '%s'."
+
+#: lib/Ingo.php:62
+msgid "Create new folder"
+msgstr "Kreiraj novu mapu"
+
+#: lib/Script/maildrop.php:363 lib/Script/procmail.php:352
+msgid "DISABLED: "
+msgstr "ISKLJUČENO: "
+
+#: templates/script/activate.inc:17
+msgid "Deactivate Script"
+msgstr "Deaktiviraj skriptu"
+
+#: filters.php:252 filters.php:253
+#, php-format
+msgid "Delete %s"
+msgstr "Obriši %s"
+
+#: templates/rule/filter.inc:33
+msgid "Delete Condition"
+msgstr "Obriši uvjet"
+
+#: lib/Storage.php:290
+msgid "Delete message completely"
+msgstr "Obriši poruku u potpunosti"
+
+#: templates/rule/footer.inc:36
+msgid "Deleted"
+msgstr "Obrisano"
+
+#: lib/Storage.php:278
+msgid "Deliver into my Inbox"
+msgstr "Isporuči u moj Inbox"
+
+#: lib/Storage.php:304
+msgid "Deliver into my Inbox and copy to..."
+msgstr "Isporuči u moj Inbox i kopiraj na..."
+
+#: lib/Storage.php:299
+msgid "Deliver into my Inbox and redirect to..."
+msgstr "Isporuči u moj Inbox i preusmjeri na..."
+
+#: lib/Storage.php:284
+msgid "Deliver to folder..."
+msgstr "Isporuči u mapu..."
+
+#: config/fields.php.dist:83
+msgid "Destination (To,Cc,Bcc,etc)"
+msgstr "Odredište (Za, Cc, Bcc, itd.)"
+
+#: filters.php:277 filters.php:278
+#, php-format
+msgid "Disable %s"
+msgstr "Isključi %s"
+
+#: vacation.php:153 forward.php:99 spam.php:160 templates/rule/header.inc:26
+#: templates/whitelist/whitelist.inc:8 templates/blacklist/blacklist.inc:10
+msgid "Disabled"
+msgstr "Isključeno"
+
+#: templates/filters/settings.inc:15
+msgid "Display detailed notification when each filter is applied?"
+msgstr "Prikazati detaljnu obavijest prilikom primjene svakog filtera?"
+
+#: vacation.php:58
+msgid "Do not send responses to bulk or list messages?"
+msgstr "Ne odgovarati na masovne poruke i mailing liste?"
+
+#: templates/rule/footer.inc:10
+msgid "Do this:"
+msgstr "Učini sljedeće:"
+
+#: lib/Storage.php:347
+msgid "Doesn't begin with"
+msgstr "Ne počinje sa"
+
+#: lib/Storage.php:343
+msgid "Doesn't contain"
+msgstr "Ne sadrži"
+
+#: lib/Storage.php:349
+msgid "Doesn't end with"
+msgstr "Ne završava sa"
+
+#: lib/Storage.php:351
+msgid "Doesn't exist"
+msgstr "Ne postoji"
+
+#: lib/Storage.php:354
+msgid "Doesn't match (with placeholders)"
+msgstr "Ne odgovara (sa zamjenicama)"
+
+#: lib/Block/overview.php:63 lib/Block/overview.php:72
+#: lib/Block/overview.php:87 lib/Block/overview.php:97
+#: lib/Block/overview.php:107 templates/filters/header.inc:23
+msgid "Edit"
+msgstr "Uredi"
+
+#: filters.php:241 filters.php:243 filters.php:247 filters.php:248
+#, php-format
+msgid "Edit %s"
+msgstr "Uredi %s"
+
+#: filters.php:287 filters.php:288
+#, php-format
+msgid "Enable %s"
+msgstr "Uključi %s"
+
+#: templates/filters/header.inc:25
+msgid "Enabled"
+msgstr "Uključeno"
+
+#: vacation.php:45
+msgid "End of vacation:"
+msgstr "Kraj godišnjeg:"
+
+#: lib/Storage.php:348
+msgid "Ends with"
+msgstr "Završava sa"
+
+#: lib/Storage.php:359
+msgid "Equal to"
+msgstr "Jednako"
+
+#: lib/Driver/ldap.php:138 lib/Driver/ldap.php:148 lib/Driver/ldap.php:157
+#: lib/Driver/ldap.php:167
+#, php-format
+msgid "Error retrieving current script: (%d) %s"
+msgstr "Greška prilikom dohvaćanja trenutne skripte: (%d) %s"
+
+#: blacklist.php:69
+msgid "Error saving changes."
+msgstr "Greška prilikom spremanja promjena."
+
+#: templates/filters/header.inc:17
+msgid "Existing Rules"
+msgstr "Postojeća pravila"
+
+#: lib/Storage.php:350
+msgid "Exists"
+msgstr "Postoji"
+
+#: lib/Driver/ldap.php:143
+#, php-format
+msgid "Expected 1 object, got %d."
+msgstr "Očekivan 1 objekt, dobiveno %d."
+
+#: lib/Driver/sivtest.php:204
+msgid "Failed to read from socket: "
+msgstr "Nije uspjelo čitanje iz konekcije: "
+
+#: lib/Driver/sivtest.php:199
+msgid "Failed to write to socket: "
+msgstr "Nije uspjelo pisanje na konekciju: "
+
+#: lib/Driver/sivtest.php:194
+msgid "Failed to write to socket: (connection lost!)"
+msgstr "Nije uspjelo pisanje na konekciju: (konekcija izgubljena!)"
+
+#: templates/rule/filter.inc:10
+msgid "Field"
+msgstr "Polje"
+
+#: templates/filters/settings.inc:22
+msgid "Filter All Messages"
+msgstr "Filtriraj sve poruke"
+
+#: templates/filters/settings.inc:24
+msgid "Filter Only Seen Messages"
+msgstr "Filtriraj samo pregledane poruke"
+
+#: templates/filters/settings.inc:23
+msgid "Filter Only Unseen Messages"
+msgstr "Filtriraj samo nepregledane poruke"
+
+#: templates/filters/settings.inc:20
+msgid "Filter Options"
+msgstr "Opcije filtriranja"
+
+#: templates/rule/header.inc:25
+msgid "Filter Rule"
+msgstr "Pravilo filtriranja"
+
+#: filters.php:139
+msgid "Filter Rules"
+msgstr "Pravila filtriranja"
+
+#: script.php:54
+msgid "Filter Script Display"
+msgstr "Prikaz skripte za filtriranje"
+
+#: lib/Ingo.php:399
+msgid "Filter _Rules"
+msgstr "_Pravila filtriranja"
+
+#: lib/Script/imap.php:357
+#, php-format
+msgid "Filter activity: %s message(s) have been copied to the folder \"%s\"."
+msgstr "Učinak filtera: %s poruka kopirano u mapu \"%s\"."
+
+#: lib/Script/imap.php:338
+#, php-format
+msgid "Filter activity: %s message(s) have been deleted."
+msgstr "Učinak filtera: %s poruka obrisano."
+
+#: lib/Script/imap.php:314
+#, php-format
+msgid "Filter activity: %s message(s) have been moved to the folder \"%s\"."
+msgstr "Učinak filtera: %s poruka premješteno u mapu \"%s\"."
+
+#: lib/Script/imap.php:206
+#, php-format
+msgid "Filter activity: %s message(s) that matched the blacklist were deleted."
+msgstr "Učinak filtera: %s poruka nađeno na crnoj listi i obrisano."
+
+#: lib/Script/imap.php:350
+#, php-format
+msgid ""
+"Filter activity: The message \"%s\" from \"%s\" has been copied to the "
+"folder \"%s\"."
+msgstr ""
+"Učinak filtera: Poruka \"%s\" pošiljatelja \"%s\" kopirana u mapu \"%s\"."
+
+#: lib/Script/imap.php:332
+#, php-format
+msgid "Filter activity: The message \"%s\" from \"%s\" has been deleted."
+msgstr "Učinak filtera: Poruka \"%s\" pošiljatelja \"%s\" obrisana."
+
+#: lib/Script/imap.php:307
+#, php-format
+msgid ""
+"Filter activity: The message \"%s\" from \"%s\" has been moved to the folder "
+"\"%s\"."
+msgstr ""
+"Učinak filtera: Poruka \"%s\" pošiljatelja \"%s\" premještena u mapu \"%s\"."
+
+#: rule.php:188
+msgid "Filter not found."
+msgstr "Filter nije nađen."
+
+#: templates/rule/footer.inc:32
+msgid "Flagged For Followup"
+msgstr "Dodana zastavica za odgovor"
+
+#: spam.php:74
+msgid "Folder to receive spam:"
+msgstr "Mapa za primanje spama:"
+
+#: templates/rule/header.inc:42
+msgid "For an incoming message that matches:"
+msgstr "Za dolaznu poruku koja zadovoljava:"
+
+#: filters.php:192 forward.php:97 lib/Block/overview.php:71
+#: lib/Block/overview.php:73
+msgid "Forward"
+msgstr "Proslijedi"
+
+#: lib/Script/sieve.php:229
+msgid "Forward Keep Action"
+msgstr "Zadržavanje proslijeđenog"
+
+#: forward.php:18
+msgid "Forward is not supported in the current filtering driver."
+msgstr "Proslijeđivanje nije podržano u trenutnoj metodi filtriranja."
+
+#: lib/Script/maildrop.php:246 lib/Script/sieve.php:239
+#: lib/Script/procmail.php:298
+msgid "Forwards"
+msgstr "Proslijeđivanja"
+
+#: forward.php:104
+msgid "Forwards Edit"
+msgstr "Uredi proslijeđivanja"
+
+#: config/fields.php.dist:39
+msgid "From"
+msgstr "Od"
+
+#: lib/Script/sieve.php:2971
+msgid "From:"
+msgstr "Od:"
+
+#: lib/Script/sieve.php:123
+msgid "Generated by Ingo (http://www.horde.org/ingo/)"
+msgstr "Generirao Ingo (http://www.horde.org/ingo/)"
+
+#: lib/Storage.php:357
+msgid "Greater than"
+msgstr "Veće od"
+
+#: lib/Storage.php:358
+msgid "Greater than or equal to"
+msgstr "Veće ili jednako"
+
+#: rule.php:38
+msgid "Individual rules are not supported in the current filtering driver."
+msgstr "Pojedinačna pravila nisu podržana u trenutnoj metodi filtriranja."
+
+#: lib/Script/sieve.php:2565
+msgid "Inexistant mailbox specified for message delivery."
+msgstr "Sandučić naveden za isporuku ne postoji."
+
+#: lib/Storage.php:344
+msgid "Is"
+msgstr "Je"
+
+#: lib/Storage.php:345
+msgid "Isn't"
+msgstr "Nije"
+
+#: forward.php:41
+msgid "Keep a copy of messages in this account?"
+msgstr "Zadržati kopije poruka na ovom računu?"
+
+#: lib/Driver/ldap.php:23
+msgid ""
+"LDAP support is required but the LDAP module is not available or not loaded."
+msgstr ""
+"Potrebna je podrška za LDAP, ali LDAP modul nije dostupan ili nije učitan."
+
+#: lib/Storage.php:355
+msgid "Less than"
+msgstr "Manje od"
+
+#: lib/Storage.php:356
+msgid "Less than or equal to"
+msgstr "Manje ili jednako"
+
+#: config/fields.php.dist:59
+msgid "List-ID"
+msgstr "List-ID"
+
+#: templates/blacklist/blacklist.inc:20
+msgid "Mar_k message as deleted"
+msgstr "O_znači poruku kao obrisanu"
+
+#: templates/rule/footer.inc:25
+msgid "Mark message as:"
+msgstr "Označi poruku kao:"
+
+#: templates/rule/filter.inc:23
+msgid "Match type"
+msgstr "Vrsta podudaranja"
+
+#: lib/Storage.php:353
+msgid "Matches (with placeholders)"
+msgstr "Podudara se (sa zamjenicama)"
+
+#: lib/api.php:81
+msgid "Maximum Number of Rules"
+msgstr "Maksimalni broj pravila"
+
+#: lib/Storage.php:520
+#, php-format
+msgid ""
+"Maximum number of blacklisted addresses exceeded (Total addresses: %s, "
+"Maximum addresses: %s).  Could not add new addresses to blacklist."
+msgstr ""
+"Prekoračen maksimalni broj adresa na crnoj listi (ukupno adresa: %s, "
+"maksimalno adresa: %s). Nije moguće dodati nove adrese na crnu listu."
+
+#: lib/Storage.php:573
+#, php-format
+msgid ""
+"Maximum number of whitelisted addresses exceeded (Total addresses: %s, "
+"Maximum addresses: %s).  Could not add new addresses to whitelist."
+msgstr ""
+"Prekoračen maksimalni broj adresa na bijeloj listi (ukupno adresa: %s, "
+"maksimalno adresa: %s). Nije moguće dodati nove adrese na bijelu listu."
+
+#: spam.php:71
+msgid ""
+"Messages with a likely spam score greater than or equal to this number will "
+"be treated as spam."
+msgstr ""
+"Poruke čija je spam ocjena veća ili jednaka ovom broju će biti tretirane kao "
+"spam."
+
+#: lib/Script/sieve.php:2985
+msgid "Missing address to notify"
+msgstr "Nedostaje adresa koju treba obavijestiti"
+
+#: lib/Script/sieve.php:2366
+msgid "Missing address to redirect message to"
+msgstr "Nedostaje adresa na koju treba preusmjeravati"
+
+#: lib/Script/sieve.php:2412
+msgid "Missing reason for reject"
+msgstr "Nedostaje razlog za odbijanje"
+
+#: lib/Script/sieve.php:2715
+msgid "Missing reason in vacation."
+msgstr "Nedostaje razlog za godišnji odmor."
+
+#: templates/filters/header.inc:29
+msgid "Move"
+msgstr "Pomakni"
+
+#: filters.php:156 filters.php:273
+msgid "Move Rule Down"
+msgstr "Pomakni pravilo dolje"
+
+#: filters.php:157 filters.php:272
+msgid "Move Rule Up"
+msgstr "Pomakni pravilo gore"
+
+#: vacation.php:53
+msgid "My email addresses:"
+msgstr "Moje e-mail adrese:"
+
+#: lib/Storage.php:887 templates/filters/footer.inc:6
+#: templates/filters/filter-none.inc:3
+msgid "New Rule"
+msgstr "Novo pravilo"
+
+#: lib/Ingo.php:250 lib/Ingo.php:252
+#, php-format
+msgid "No \"%s\" element found in backend configuration."
+msgstr "U konfiguraciji metode filtriranja nedostaje element \"%s\"."
+
+#: lib/Ingo.php:243
+msgid "No backend configured for this host"
+msgstr "Za ovaj stroj nije podešena metoda filtriranja."
+
+#: lib/Ingo.php:219
+msgid "No backends configured in backends.php"
+msgstr "U backends.php nije podešena nijedna metoda filtriranja."
+
+#: templates/filters/filter-none.inc:3
+#, php-format
+msgid "No filters. Click \"%s\" to create a new filter."
+msgstr "Nema filtera. Kliknite \"%s\" za dodavanje filtera."
+
+#: lib/Script/sieve.php:1715 lib/Script/sieve.php:1864
+#: lib/Script/sieve.php:2088
+msgid "No headers specified"
+msgstr "Nije navedeno nijedno zaglavlje"
+
+#: script.php:69
+msgid "No script generated."
+msgstr "Skripta nije generirana."
+
+#: lib/Script/sieve.php:2104 lib/Script/sieve.php:2188
+msgid "No strings specified"
+msgstr "Nije naveden nijedan niz znakova"
+
+#: lib/Storage.php:360
+msgid "Not equal to"
+msgstr "Nije jednako"
+
+#: lib/Storage.php:320
+msgid "Notify email address..."
+msgstr "Obavijesti e-mail adresu..."
+
+#: vacation.php:60
+msgid "Number of days between vacation replies:"
+msgstr "Broj dana između obavijesti o godišnjem odmoru:"
+
+#: lib/Storage.php:314
+msgid "Only flag the message"
+msgstr "Samo dodaj zastavicu poruci"
+
+#: config/prefs.php.dist:18
+msgid "Options about script updating."
+msgstr "Opcije za ažuriranje skripti."
+
+#: config/prefs.php.dist:16
+msgid "Other Options"
+msgstr "Ostale opcije"
+
+#: lib/Block/overview.php:3
+msgid "Overview"
+msgstr "Pregled"
+
+#: config/fields.php.dist:91
+msgid "Participant (From,To,etc)"
+msgstr "Sudionik (Od, Za, itd.)"
+
+#: lib/Storage/sql.php:410
+msgid "Permission Denied"
+msgstr "Pristup odbijen"
+
+#: templates/javascript/new_folder.js:7
+msgid "Please enter the name of the new folder:"
+msgstr "Unesite ime nove mape:"
+
+#: vacation.php:48
+msgid "Reason:"
+msgstr "Razlog:"
+
+#: config/fields.php.dist:63
+msgid "Received"
+msgstr "Primljeno"
+
+#: lib/Storage.php:295
+msgid "Redirect to..."
+msgstr "Preusmjeri na..."
+
+#: lib/Storage.php:352
+msgid "Regular expression"
+msgstr "Regularni izraz"
+
+#: lib/Storage.php:310
+msgid "Reject with reason..."
+msgstr "Odbij s razlogom..."
+
+#: lib/Storage.php:402
+msgid ""
+"Removing user data is not supported with the current filter storage backend."
+msgstr ""
+"Uklanjanje korisničkih podataka nije podržano u trenutnoj metodi pohrane "
+"kalendara."
+
+#: config/fields.php.dist:51
+msgid "Resent-From"
+msgstr "Resent-From"
+
+#: config/fields.php.dist:55
+msgid "Resent-To"
+msgstr "Resent-To"
+
+#: templates/rule/footer.inc:61
+msgid "Return to Filters List"
+msgstr "Natrag na popis filtera"
+
+#: vacation.php:34 vacation.php:117 forward.php:34 forward.php:88 spam.php:62
+#: spam.php:141 templates/whitelist/whitelist.inc:24
+#: templates/blacklist/blacklist.inc:42
+msgid "Return to Rules List"
+msgstr "Natrag na popis pravila"
+
+#: templates/filters/header.inc:24
+msgid "Rule"
+msgstr "Pravilo"
+
+#: filters.php:78
+msgid "Rule Copied"
+msgstr "Pravilo kopirano"
+
+#: filters.php:57
+msgid "Rule Deleted"
+msgstr "Pravilo obrisano"
+
+#: vacation.php:97 filters.php:94 forward.php:72 spam.php:122
+msgid "Rule Disabled"
+msgstr "Pravilo isključeno"
+
+#: vacation.php:88 filters.php:99 forward.php:63 spam.php:113
+msgid "Rule Enabled"
+msgstr "Pravilo uključeno"
+
+#: templates/rule/header.inc:33
+msgid "Rule Name:"
+msgstr "Ime pravila:"
+
+#: lib/Script/sieve.php:2973
+msgid "Rule:"
+msgstr "Pravilo:"
+
+#: lib/Driver/ldap.php:86
+#, php-format
+msgid "STARTTLS failed: (%s) %s"
+msgstr "STARTTLS nije uspio: (%s) %s"
+
+#: lib/Ingo.php:413
+msgid "S_pam"
+msgstr "S_pam"
+
+#: vacation.php:62 forward.php:45 spam.php:79 templates/rule/footer.inc:60
+#: templates/whitelist/whitelist.inc:23 templates/blacklist/blacklist.inc:41
+msgid "Save"
+msgstr "Spremi"
+
+#: templates/filters/settings.inc:31
+msgid "Save Settings"
+msgstr "Postavke spremanja"
+
+#: vacation.php:91 vacation.php:113 forward.php:66 forward.php:84 spam.php:116
+#: spam.php:137
+msgid "Save and Disable"
+msgstr "Spremi i isključi"
+
+#: vacation.php:82 vacation.php:115 forward.php:57 forward.php:86 spam.php:107
+#: spam.php:139
+msgid "Save and Enable"
+msgstr "Spremi i uključi"
+
+#: templates/script/header.inc:2
+msgid "Script"
+msgstr "Skripta"
+
+#: config/prefs.php.dist:17
+msgid "Script Updating"
+msgstr "Ažuriranje skripti"
+
+#: lib/Ingo.php:195
+msgid "Script not updated."
+msgstr "Skripta nije ažurirana."
+
+#: lib/Ingo.php:166
+msgid "Script successfully activated."
+msgstr "Skripta uspješno aktivirana."
+
+#: lib/Ingo.php:165
+msgid "Script successfully deactivated."
+msgstr "Skripta uspješno deaktivirana."
+
+#: templates/rule/footer.inc:30
+msgid "Seen"
+msgstr "Viđeno"
+
+#: rule.php:218
+msgid "Select a field"
+msgstr "Odaberite polje"
+
+#: templates/menu.inc:6 templates/menu.inc:8
+msgid "Select ruleset to display:"
+msgstr "Odaberite skup pravila za prikaz:"
+
+#: rule.php:347 templates/blacklist/blacklist.inc:23
+msgid "Select target folder"
+msgstr "Odaberite ciljnu mapu"
+
+#: lib/Ingo.php:59
+msgid "Select target folder:"
+msgstr "Odaberite ciljnu mapu:"
+
+#: rule.php:255
+msgid "Self-Defined Header"
+msgstr "Korisničko zaglavlje"
+
+#: config/fields.php.dist:35
+msgid "Sender"
+msgstr "Sender"
+
+#: filters.php:118
+msgid "Settings successfully updated."
+msgstr "Postavke uspješno ažurirane."
+
+#: templates/script/activate.inc:24
+msgid "Show Active Script"
+msgstr "Prikaži aktivnu skriptu"
+
+#: templates/script/activate.inc:31
+msgid "Show Current Script"
+msgstr "Prikaži trenutnu skriptu"
+
+#: spam.php:18
+msgid "Simple spam filtering is not supported in the current filtering driver."
+msgstr ""
+"Jednostavno filtriranje spama nije podržano u trenutnoj metodi filtriranja."
+
+#: config/fields.php.dist:95
+msgid "Size"
+msgstr "Veličina"
+
+#: config/fields.php.dist:87
+msgid "Source (From,Reply-to,etc)"
+msgstr "Izvor (Od, Reply-to, itd.)"
+
+#: filters.php:198 lib/Script/maildrop.php:302 lib/Script/sieve.php:438
+#: lib/Block/overview.php:105 lib/Block/overview.php:108
+msgid "Spam Filter"
+msgstr "Spam filter"
+
+#: spam.php:158 spam.php:165
+msgid "Spam Filtering"
+msgstr "Filtriranje spama"
+
+#: spam.php:71
+msgid "Spam Level:"
+msgstr "Razina spama:"
+
+#: vacation.php:43
+msgid "Start of vacation:"
+msgstr "Početak godišnjeg:"
+
+#: templates/rule/footer.inc:50
+msgid "Stop checking if this rule matches?"
+msgstr "Prestati provjere ako se zadovolji ovo pravilo?"
+
+#: config/fields.php.dist:31
+msgid "Subject"
+msgstr "Naslov"
+
+#: vacation.php:46
+msgid "Subject of vacation message:"
+msgstr "Naslov obavijesti o godišnjem:"
+
+#: lib/Script/sieve.php:2972
+msgid "Subject:"
+msgstr "Naslov:"
+
+#: lib/api.php:180
+#, php-format
+msgid "The address \"%s\" has been added to your blacklist."
+msgstr "Adresa \"%s\" je dodana na vašu crnu listu."
+
+#: lib/api.php:208
+#, php-format
+msgid "The address \"%s\" has been added to your whitelist."
+msgstr "Adresa \"%s\" je dodana na vašu bijelu listu."
+
+#: lib/Ingo.php:161
+msgid "The driver said: "
+msgstr "Metoda filtriranja je vratila: "
+
+#: lib/Ingo.php:160
+msgid "There was an error activating the script."
+msgstr "Došlo je do greške prilikom aktiviranja skripte."
+
+#: lib/Ingo.php:159
+msgid "There was an error deactivating the script."
+msgstr "Došlo je do greške prilikom deaktiviranja skripte."
+
+#: config/fields.php.dist:27
+msgid "To"
+msgstr "Za"
+
+#: templates/filters/filter.html:32
+msgid "To:"
+msgstr "Na:"
+
+#: lib/Script.php:126
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Nije uspjelo učitavanje definicije %s."
+
+#: templates/rule/filter.inc:15
+msgid "User header"
+msgstr "Korisničko zaglavlje"
+
+#: vacation.php:151 filters.php:186 lib/Script/maildrop.php:278
+#: lib/Script/sieve.php:412 lib/Script/procmail.php:278
+#: lib/Block/overview.php:61 lib/Block/overview.php:64
+msgid "Vacation"
+msgstr "Godišnji odmor"
+
+#: vacation.php:158
+msgid "Vacation Edit"
+msgstr "Uredi godišnji odmor"
+
+#: vacation.php:18
+msgid "Vacation is not supported in the current filtering driver."
+msgstr "Godišnji odmor nije podržan u trenutnoj metodi filtriranja."
+
+#: rule.php:353
+msgid "Value"
+msgstr "Vrijednost"
+
+#: templates/whitelist/whitelist.inc:14
+msgid "Wh_itelist addresses:"
+msgstr "Adrese na _bijeloj listi:"
+
+#: filters.php:180 lib/Block/overview.php:85 lib/Block/overview.php:88
+#: templates/whitelist/whitelist.inc:5
+msgid "Whitelist"
+msgstr "Bijela lista"
+
+#: whitelist.php:57
+msgid "Whitelist Edit"
+msgstr "Uredi bijelu listu"
+
+#: whitelist.php:20
+msgid "Whitelist is not supported in the current filtering driver."
+msgstr "Bijela lista nije podržana u trenutnoj metodi filtriranja."
+
+#: lib/Script/maildrop.php:224 lib/Script/sieve.php:336
+#: lib/Script/procmail.php:246
+msgid "Whitelisted Addresses"
+msgstr "Adrese na bijeloj listi"
+
+#: config/fields.php.dist:79
+msgid "X-Priority"
+msgstr "X-Priority"
+
+#: config/fields.php.dist:67
+msgid "X-Spam-Level"
+msgstr "X-Spam-Level"
+
+#: config/fields.php.dist:71
+msgid "X-Spam-Score"
+msgstr "X-Spam-Score"
+
+#: config/fields.php.dist:75
+msgid "X-Spam-Status"
+msgstr "X-Spam-Status"
+
+#: filters.php:71 rule.php:172
+#, php-format
+msgid "You are not allowed to create more than %d rules."
+msgstr "Nemate ovlasti za kreiranje više od %d pravila."
+
+#: filters.php:63 rule.php:23
+msgid "You are not allowed to create or edit custom rules."
+msgstr "Nemate ovlasti za kreiranje ili uređivanje vlastitih pravila."
+
+#: lib/api.php:97
+msgid "You are not allowed to remove user data."
+msgstr "Nemate ovlasti za brisanje korisničkih podataka."
+
+#: rule.php:96
+#, php-format
+msgid "You cannot create empty conditions. Please fill in a value for \"%s\"."
+msgstr "Ne možete dodati prazan uvjet. Ispunite vrijednost za \"%s\"."
+
+#: filters.php:52 rule.php:151
+msgid "You do not have permission to delete filter rules."
+msgstr "Nemate dozvole za brisanje pravila filtriranja."
+
+#: filters.php:45 filters.php:112 filters.php:123 rule.php:58 rule.php:165
+msgid "You do not have permission to edit filter rules."
+msgstr "Nemate dozvole za uređivanje pravila filtriranja."
+
+#: lib/Script/sieve.php:2970
+msgid "You have received a new message"
+msgstr "Primili ste novu poruku"
+
+#: lib/Script/imap.php:309 lib/Script/imap.php:334 lib/Script/imap.php:352
+msgid "[No Sender]"
+msgstr "[Bez pošiljatelja]"
+
+#: lib/Script/imap.php:308 lib/Script/imap.php:333 lib/Script/imap.php:351
+msgid "[No Subject]"
+msgstr "[Bez naslova]"
+
+#: lib/Ingo.php:404
+msgid "_Blacklist"
+msgstr "_Crna lista"
+
+#: templates/blacklist/blacklist.inc:18
+msgid "_Delete message completely"
+msgstr "_Obriši poruku u potpunosti"
+
+#: templates/blacklist/blacklist.inc:32
+msgid "_Enter each address on a new line:"
+msgstr "_Upišite svaku adresu u posebnom redu:"
+
+#: lib/Ingo.php:410
+msgid "_Forward"
+msgstr "P_roslijedi"
+
+#: templates/blacklist/blacklist.inc:22
+msgid "_Move message to folder:"
+msgstr "_Premjesti poruku u mapu:"
+
+#: lib/Ingo.php:421
+msgid "_Permissions"
+msgstr "_Dozvole"
+
+#: lib/Ingo.php:418
+msgid "_Script"
+msgstr "_Skripta"
+
+#: lib/Ingo.php:407
+msgid "_Vacation"
+msgstr "_Godišnji odmor"
+
+#: lib/Ingo.php:401
+msgid "_Whitelist"
+msgstr "_Bijela lista"
+
+#: lib/Block/overview.php:54
+msgid "active"
+msgstr "aktivno"
+
+#: templates/rule/filter.inc:4
+msgid "and"
+msgstr "i"
+
+#: templates/filters/filter.html:19
+msgid "disabled - click to enable"
+msgstr "isključeno - kliknite za uključenje"
+
+#: filters.php:218
+msgid "field"
+msgstr "Polje"
+
+#: lib/Block/overview.php:52
+msgid "inactive"
+msgstr "neaktivno"
+
+#: lib/Script/maildrop.php:134
+msgid "maildrop script generated by Ingo"
+msgstr "maildrop skriptu generirao Ingo"
+
+#: filters.php:218
+msgid "match"
+msgstr "Podudarajući"
+
+#: templates/rule/filter.inc:4
+msgid "or"
+msgstr "ili"
+
+#: lib/Script/procmail.php:140
+msgid "procmail script generated by Ingo"
+msgstr "procmail skriptu generirao Ingo"

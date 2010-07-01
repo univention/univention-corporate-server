@@ -1,0 +1,38 @@
+<?php
+/**
+ * Release focus. Possible values (multiple possible with arrays):
+ * Horde_Release::FOCUS_INITIAL - Initial announcement
+ * Horde_Release::FOCUS_MINORFEATURE - Minor feature enhancement
+ * Horde_Release::FOCUS_MAJORFEATURE - Major feature enhancement
+ * Horde_Release::FOCUS_MINORBUG - Minor bugfixes
+ * Horde_Release::FOCUS_MAJORBUG - Major bugfixes
+ * Horde_Release::FOCUS_MINORSECURITY - Minor security fixes
+ * Horde_Release::FOCUS_MAJORSECURITY - Major security fixes
+ * Horde_Release::FOCUS_DOCS - Documentation improvements
+ */
+$this->notes['fm']['focus'] = array(Horde_Release::FOCUS_MINORFEATURE);
+
+/* Mailing list release notes. */
+$this->notes['ml']['changes'] = <<<ML
+The Horde Team is pleased to announce the final release of the Mnemo Note
+Manager version H3 (2.2.3).
+
+The Mnemo Note Manager is the Horde notes/memos application.  It provides
+web-based notes and freeform text, similar to the PalmOS Note application and
+shared notepads.  It requires the Horde Application Framework and an SQL
+database or Kolab server for backend storage.
+
+Major changes compared to the Mnemo H3 (2.2.2) version are:
+    * Improved Oracle compatibility.
+    * Added Croatian translation.
+ML;
+
+/* Freshmeat release notes. */
+$this->notes['fm']['changes'] = <<<FM
+Oracle compatibility has been improved. A Croatian translation has been added.
+FM;
+
+$this->notes['name'] = 'Mnemo';
+$this->notes['list'] = 'horde';
+$this->notes['fm']['project'] = 'mnemo';
+$this->notes['fm']['branch'] = 'Horde 3';

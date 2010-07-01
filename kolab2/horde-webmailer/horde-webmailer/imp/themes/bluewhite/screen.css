@@ -1,0 +1,38 @@
+/**
+ * $Horde: imp/themes/bluewhite/screen.css,v 1.1.10.3 2007-12-20 14:00:43 jan Exp $
+ */
+
+.folders {
+    font-size: 90%;
+}
+.folders select {
+    font-size: 112%;
+}
+
+form#search div.smallheader {
+    font-family: Verdana,Helvetica,sans-serif;
+}
+
+.answered {
+    background: #aca;
+}
+.important, .flagged {
+    background: #fcc;
+}
+tr.important:hover, tr.important-over, tr.flagged:hover, tr.flagged-over {
+    background: #faa;
+}
+.deleted {
+    background: #999;
+}
+.deleted:hover, .deleted-over {
+    background: #777;
+}
+.deleted * {
+    text-decoration: line-through;
+}
+
+div.composebody {
+    background: #f3f3f9;
+    border: 1px solid #669;
+}

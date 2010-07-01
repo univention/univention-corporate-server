@@ -1,0 +1,353 @@
+<?xml version="1.0"?>
+<!-- $Horde: ingo/locale/fi_FI/help.xml,v 1.1.2.8 2009-08-18 22:35:05 jan Exp $ -->
+<help>
+  <entry id="blacklist" state="uptodate" md5="5c12e162f66f68c6c2d84cc7c280d710">
+    <title>Musta lista</title>
+    <para>
+    Musta lista on lista s&#xE4;hk&#xF6;postiosoitteista, joista tulevia viestej&#xE4; et halua n&#xE4;hd&#xE4; INBOX (saapuneiden viestien) -postilaatikossasi.
+    </para>
+</entry>
+  <entry id="blacklist-action" state="uptodate" md5="1701f4152c090004e3b40205439f9108">
+    <title>Musta lista: Toiminto</title>
+    <para>
+    T&#xE4;ss&#xE4; m&#xE4;&#xE4;ritell&#xE4;&#xE4;n mit&#xE4; tehd&#xE4;&#xE4;n niille viesteille, joiden l&#xE4;hett&#xE4;j&#xE4;n on sellainen osoite, joka on mustalla listalla. Vaihtoehtoina on "Poista" tai "Siirr&#xE4; kansioon". Jos valitset "Poista", niin viestit poistetaan ennenkuin ne on jaettu INBOX postikansioosi. Jos valitset "Siirr&#xE4; kansioon", niin viesti toimitetaan suoraan valitsemaasi kansioon.
+    </para>
+</entry>
+  <entry id="blacklist-addresses" state="uptodate" md5="3431e98a8d15bfa645af394cefd8346d">
+    <title>Musta lista: Osoitteet</title>
+    <para>
+    Lista osoitteista, joista ei oteta viestej&#xE4; vastaan. Jokainen osoite pit&#xE4;&#xE4; olla omalla rivill&#xE4;&#xE4;n.
+    </para>
+</entry>
+  <entry id="filters_rules" state="uptodate" md5="d84617a2f5002d24ef11509e5f4eb6c0">
+    <title>S&#xE4;&#xE4;nn&#xF6;t: Suodatins&#xE4;&#xE4;nn&#xF6;t</title>
+    <para>
+    T&#xE4;m&#xE4; on suodantins&#xE4;&#xE4;nt&#xF6;jen p&#xE4;&#xE4;sivu. Voit tehd&#xE4; uusia suodatins&#xE4;&#xE4;nt&#xF6;j&#xE4; napauttamalla "Uusi s&#xE4;&#xE4;nt&#xF6;" -painiketta; Muuttaa s&#xE4;&#xE4;nt&#xF6;jen j&#xE4;rjestyst&#xE4; napauttamalla nuoli alas ja nuoli yl&#xF6;s painikkeita tai laittamalla numeron "Siirr&#xE4;" sarakkeeseen; Laittaa s&#xE4;&#xE4;nn&#xF6;n p&#xE4;&#xE4;lle tai poistaa p&#xE4;&#xE4;lt&#xE4; s&#xE4;&#xE4;nn&#xF6;n napauttamalla ikonia "P&#xE4;&#xE4;ll&#xE4;" sarakkeessa; muokata yksitt&#xE4;isi&#xE4; s&#xE4;&#xE4;nt&#xF6;j&#xE4; napauttamalla ikonia "Muokkaa" sarakkeessa tai napauttamalla s&#xE4;&#xE4;nn&#xF6;n nime&#xE4;.
+    </para>
+    <para>
+      <tip>Huomioithan, ett&#xE4; s&#xE4;&#xE4;nn&#xF6;t suoritetaan siin&#xE4; j&#xE4;rjestyksess&#xE4;, jossa ne n&#xE4;kyy t&#xE4;ss&#xE4; listassa. Esimerkiksi jos viesti poistetaan mustassa listass&#xE4;, niin siihen ei en&#xE4;&#xE4; p&#xE4;de t&#xE4;m&#xE4;n mustan listan j&#xE4;lkeiset s&#xE4;&#xE4;nn&#xF6;t.</tip>
+    </para>
+</entry>
+  <entry id="forward" state="uptodate" md5="c9664b960ceef87cab4af83e8f33412c">
+    <title>Uudelleenohjaa</title>
+    <para>
+    Voit automaattisesti uudelleenohjata tulevat viestit yhteen tai useampaan s&#xE4;hk&#xF6;postiosoitteeseen.
+    </para>
+</entry>
+  <entry id="forward-addresses" state="uptodate" md5="817c5f002f99c0afd0010aabaf07c91c">
+    <title>Uudelleenohjaa: Osoitteet</title>
+    <para>
+    Voit ohjata sinulle tulevat viestit toiseen osoitteeseen. Voit ohjata viestit yhteen tai useampaa osoitteeseen. Jokainen osoite pit&#xE4;&#xE4; olla omalla rivill&#xE4;&#xE4;n.
+    </para>
+</entry>
+  <entry id="forward-keepcopy" state="uptodate" md5="be1f36c2f9a8dcba7517b8edf5319d64">
+    <title>Uudelleenohjaa: J&#xE4;t&#xE4; kopio</title>
+    <para>
+    Jos valitset t&#xE4;m&#xE4;n asetuksen, niin jokaisesta sinulle saapuvasta viestist&#xE4; j&#xE4;tet&#xE4;&#xE4;n kopio palvelimelle ja viesti ohjataan edelleen m&#xE4;&#xE4;rittelemiisi osoitteisiin.
+    </para>
+</entry>
+  <entry id="pref-show_filter_msg" state="uptodate" md5="d8795e5b71c6287ed7bfe3f8dc4f4861">
+    <title>Asetus: N&#xE4;yt&#xE4; yksityiskohtaiset tilatiedot viestien suodatuksesta.</title>
+    <para>
+    Jos k&#xE4;yt&#xE4;t IMAP-ajurin suodatusta, niin t&#xE4;m&#xE4; asetus m&#xE4;&#xE4;r&#xE4;&#xE4; miten paljon suodatinprosessista n&#xE4;ytet&#xE4;&#xE4;n tietoja. Jos valitset kyll&#xE4;, niin jokainen suodatettu viesti tulostaa aina yhden ilmoituksen ruudulle. Jos valitset ei, niin viestien suodatuksesta n&#xE4;ytet&#xE4;&#xE4;n vain yhteenvetotiedot.
+    </para>
+</entry>
+  <entry id="pref-filter_seen" state="uptodate" md5="85687c69db6145d77053a8b6302e5ad2">
+    <title>Asetus: Suodata vain Uudet/Vanhat viestit.</title>
+    <para>
+    T&#xE4;m&#xE4; asetus m&#xE4;&#xE4;rittele mit&#xE4; viestej&#xE4; IMAP-ajurin suodatus koskee. Voit m&#xE4;&#xE4;ritell&#xE4; koskeeko suodatus kaikkia viestej&#xE4;, uusia viestej&#xE4; tai viestej&#xE4; jotka on merkitty vanhoiksi.
+    </para>
+</entry>
+  <entry id="rule" state="uptodate" md5="cf211ec97956e9adc3b8f01b2a40888f">
+    <title>Suodatins&#xE4;&#xE4;nt&#xF6;</title>
+    <para>
+    Suodatins&#xE4;&#xE4;nt&#xF6; on peruskomponentti, joista muodostetaan suodatins&#xE4;&#xE4;nn&#xF6;st&#xF6;. S&#xE4;&#xE4;nt&#xF6; koostuu yhdest&#xE4; tai useammasta ehdosta ja yhdest&#xE4; tai useammasta toiminnosta. Kun sinulle tulee viesti, niin jokainen viesti menee suodatinprosessin l&#xE4;vitse. Jos viesti t&#xE4;ytt&#xE4;&#xE4; m&#xE4;&#xE4;rittelem&#xE4;si ehdot, niin sille suoritetaan m&#xE4;&#xE4;rittelem&#xE4;si toiminto. Voit esimerkiksi poistaa viestit, joita et halua vastaanottaa tai ohjata tietyt viestit automaattisesti tiettyihin kansioihin.
+    </para>
+</entry>
+  <entry id="rule-action" state="uptodate" md5="0f66574fec21645147b3cbb967cc23b1">
+    <title>Suodatins&#xE4;&#xE4;nt&#xF6;: Toiminto</title>
+    <para>
+    Jos viesti t&#xE4;ytt&#xE4;&#xE4; m&#xE4;&#xE4;ritellyt ehdot, niin voit m&#xE4;&#xE4;ritell&#xE4; mit&#xE4; viestille tehd&#xE4;&#xE4;n. Kaikki toiminnot eiv&#xE4;t ole k&#xE4;ytett&#xE4;viss&#xE4;si vaan ne m&#xE4;&#xE4;r&#xE4;ytyv&#xE4;t sen mukaan mit&#xE4; toimintoja suodatusohjelmistolla on mahdollista k&#xE4;ytt&#xE4;&#xE4;.
+    </para>
+    <heading>Laita viesti INBOX postikansiooni</heading>
+    <para>
+    Viesti talletetaan INBOX postikansioosi. T&#xE4;m&#xE4; on oletusasetus.
+    </para>
+    <heading>Laita viesti t&#xE4;h&#xE4;n kansioon</heading>
+    <para>
+    Viesti toimitetaan m&#xE4;&#xE4;rittelem&#xE4;&#xE4;si kansioon.
+    </para>
+    <heading>Poista viesti kokonaan</heading>
+    <para>
+    Viesti poistetaan. Sinulle tai viestin vastaanottajalle ei tule mit&#xE4;&#xE4;n ilmoitusta siit&#xE4; ett&#xE4; jokin viesti on poistettu.
+    </para>
+    <heading>Uudelleenohjaa osoitteeseen</heading>
+    <para>
+    Viesti ohjataan edelleen m&#xE4;&#xE4;rittelem&#xE4;&#xE4;si osoitteeseen, palvelimelle ei j&#xE4;&#xE4; viestist&#xE4; kopiota.
+    </para>
+    <heading>Laita viesti INBOX postikansiooni ja uudelleenohjaa osoitteeseen</heading>
+    <para>
+    Viesti ohjataan edelleen m&#xE4;&#xE4;rittelem&#xE4;&#xE4;si osoitteeseen, mutta viestist&#xE4; j&#xE4;&#xE4; kopio my&#xF6;s INBOX postikansioosi.
+    </para>
+    <heading>Hylk&#xE4;&#xE4; viesti vastauksella</heading>
+    <para>
+    Alkuper&#xE4;inen viesti h&#xE4;vitet&#xE4;&#xE4;n ja l&#xE4;hett&#xE4;j&#xE4;lle l&#xE4;hetetet&#xE4;&#xE4;n ilmoitus siit&#xE4; ett&#xE4; viesti on hyl&#xE4;tty. Voit itse m&#xE4;&#xE4;ritell&#xE4; vastausviestin tekstin.
+    </para>
+</entry>
+  <entry id="rule-combine" state="uptodate" md5="29484c1ebdd7ce71edc34fc8100ef69c">
+    <title>Suodatins&#xE4;&#xE4;nt&#xF6;: Yhdist&#xE4; asetuksia</title>
+    <para>
+    Yksi suodatins&#xE4;&#xE4;nt&#xF6; voi koostua monesta ehdosta. Voit yhdist&#xE4;&#xE4; ehtoja loogisilla "ja"/"tai" operaattoreilla. Et voi tehd&#xE4; suodatins&#xE4;&#xE4;nt&#xF6;&#xE4;, jossa olisi sek&#xE4; "ja" ett&#xE4; "tai" operaattoreita.
+    </para>
+    <heading>Ja</heading>
+    <para>
+    Jos valitset JA, niin tulevan viestin pit&#xE4;&#xE4; t&#xE4;ytt&#xE4;&#xE4; kaikki sille m&#xE4;&#xE4;rittelem&#xE4;si ehdot, jotta sille suoritetaan m&#xE4;&#xE4;ritellyt toimenpiteet.
+    </para>
+    <heading>Tai</heading>
+    <para>
+    Jos valitset TAI, niin m&#xE4;&#xE4;ritellyt toimenpiteet suoritetaan jos v&#xE4;hint&#xE4;&#xE4;n yksi ehto t&#xE4;yttyy.
+    </para>
+</entry>
+  <entry id="rule-mark" state="uptodate" md5="e8bdb30d1c1c1cdc5ec1e5e4804f9300">
+    <title>Suodatins&#xE4;&#xE4;nt&#xF6;: Merkitse viesti</title>
+    <para>
+    Yhten&#xE4; toimintona voit valita viestin merkinn&#xE4;n, jolloin voit merkit&#xE4; viestin yhdell&#xE4; tai useammalla IMAP tilatiedolla. K&#xE4;ytett&#xE4;viss&#xE4; on tilatiedot: Vanha, T&#xE4;rke&#xE4;, Vastattu ja Poistettu.
+    </para>
+</entry>
+  <entry id="rule-matches" state="changed" md5="517e24971f2c5443b2ed04e9c504e7eb">
+    <title>Suodatins&#xE4;&#xE4;nt&#xF6;: T&#xE4;sm&#xE4;ys</title>
+    <para>
+    Jokainen suodatins&#xE4;&#xE4;nt&#xF6; koostuu kolmesta komponentista. Ensimm&#xE4;inen on tutkittava kentt&#xE4;. Toinen on vertailutapa. Kolmas on arvo johon kent&#xE4;&#xE4; verrataan.
+    Kentti&#xE4; voidaan vertailla eri tavoilla. K&#xE4;ytett&#xE4;viss&#xE4; olevat vertailutavat riippuvat kent&#xE4;n tyypist&#xE4; ja siit&#xE4; millaisia vertailutapoja taustaj&#xE4;rjestelm&#xE4;ss&#xE4; on mahdollista k&#xE4;ytt&#xE4;&#xE4;. Eli, vaikka alla on lueteltu monta erilaista vertailutapaa, niin riippuen kent&#xE4;n tyypist&#xE4; vain jotkut vertailutavat ovat mahdollisia.
+    </para>
+    <heading>Sis&#xE4;lt&#xE4;&#xE4;</heading>
+    <para>
+    Tosi, jos merkkijono l&#xF6;ytyy jostakin kohtaa rivi&#xE4;. Esimerkki: user@example t&#xE4;sm&#xE4;&#xE4; joe_user@example.com
+    </para>
+    <heading>Ei sis&#xE4;ll&#xE4;</heading>
+    <para>
+    Tosi, jos merkkijonoa ei l&#xF6;ydy mist&#xE4;&#xE4;n kohtaa rivilt&#xE4;. Esimerkki: user@example ei t&#xE4;sm&#xE4;&#xE4; joe_user@example.com
+    </para>
+    <heading>On</heading>
+    <para>
+    Tosi, jos m&#xE4;&#xE4;ritelty merkkijono t&#xE4;sm&#xE4;&#xE4; t&#xE4;ydellisesti riviin. Esimerkki: user@example.com t&#xE4;sm&#xE4;&#xE4; user@example.com
+    </para>
+    <heading>Ei ole</heading>
+    <para>
+    Tosi, jos m&#xE4;&#xE4;ritelty merkkijono ei t&#xE4;sm&#xE4;&#xE4; t&#xE4;ydellisesti riviin. Esimerkki: user@example ei t&#xE4;sm&#xE4;&#xE4; user@example.com
+    </para>
+    <heading>Alkaa</heading>
+    <para>
+    Tosi, jos m&#xE4;&#xE4;ritelty merkkijono aloitaa rivin. Esimerkki: user@example t&#xE4;sm&#xE4;&#xE4; user@example.com
+    </para>
+    <heading>Ei ala</heading>
+    <para>
+    Tosi, jos m&#xE4;&#xE4;ritelty merkkijono ei aloita rivi&#xE4;. Esimerkki: user@example.com ei t&#xE4;sm&#xE4;&#xE4; user@example
+    </para>
+    <heading>P&#xE4;&#xE4;ttyy</heading>
+    <para>
+    Tosi, jos rivi p&#xE4;&#xE4;ttyy m&#xE4;&#xE4;riteltyyn merkkijonoon. Esimerkki: example.com t&#xE4;sm&#xE4;&#xE4; user@example.com
+    </para>
+    <heading>Ei p&#xE4;&#xE4;ty</heading>
+    <para>
+    Tosi, jos rivi ei p&#xE4;&#xE4;ty m&#xE4;&#xE4;riteltyyn merkkijonoon. Esimerkki: horde.org ei t&#xE4;sm&#xE4;&#xE4; riviin user@example.com
+    </para>
+    <heading>Olemassa</heading>
+    <para>
+    Tosi, jos viestiss&#xE4; on m&#xE4;&#xE4;ritelty otsake.
+    </para>
+    <heading>Ei ole olemassa</heading>
+    <para>
+    Tosi, jos viestiss&#xE4; ei ole m&#xE4;&#xE4;ritelty&#xE4; otsaketta.
+    </para>
+    <heading>S&#xE4;&#xE4;nn&#xF6;llinen lauseke</heading>
+    <para>
+    S&#xE4;&#xE4;nn&#xF6;llisella lausekkeella voit m&#xE4;&#xE4;ritell&#xE4; POSIX-yhteensopiva s&#xE4;&#xE4;nn&#xF6;llisi&#xE4; lausekkeita, joita verrataan viestin otsakkeihin. Esimerkiksi: "Received from [*\.*\.*\.*] by (hosta|hostb).example.com*" sopii riviin "Received from [172.16.100.1] by hosta.example.com on Tuesday"
+    </para>
+    <heading>T&#xE4;sm&#xE4;&#xE4;</heading>
+    <para>
+    T&#xE4;sm&#xE4;&#xE4; on samankaltainen sis&#xE4;lt&#xE4;&#xE4; kanssa, mutta sill&#xE4; erotuksella ett&#xE4; voit k&#xE4;ytt&#xE4;&#xE4; * ja ?-merkkej&#xE4; jokereina. *-merkki vastaa mihin tahansa merkkiin miten monta kertaa tahansa ja ?-merkki vastaa mit&#xE4; tahansa yht&#xE4; merkki&#xE4; tahansa. Esimerkiksi: "*user?@example.com" sopii osoitteeseen "user1@example.com" tai "otheruser2@example.com".
+    </para>
+    <heading>Ei t&#xE4;sm&#xE4;&#xE4;</heading>
+    <para>
+    Ei t&#xE4;sm&#xE4;&#xE4; on muuten sama kuin t&#xE4;sm&#xE4;&#xE4;, paitsi ett&#xE4; se palauttaa arvon ep&#xE4;tosi, jos merkkijono l&#xF6;ytyy viestin otsakkeista.
+    </para>
+    <heading>Pienempi kuin</heading>
+    <para>
+    T&#xE4;m&#xE4; vertaa antaamasi lukua ja viestin otsakkeissa olevaa lukuarvoa numeerisesti kesken&#xE4;&#xE4;n.
+    </para>
+    <heading>Pienempi tai yht&#xE4;suuri kuin</heading>
+    <para>
+    T&#xE4;m&#xE4; vertaa antaamasi lukua ja viestin otsakkeissa olevaa lukuarvoa numeerisesti kesken&#xE4;&#xE4;n.
+    </para>
+    <heading>Yht&#xE4;suuri kuin</heading>
+    <para>
+    T&#xE4;m&#xE4; vertaa antaamasi lukua ja viestin otsakkeissa olevaa lukuarvoa numeerisesti kesken&#xE4;&#xE4;n.
+    </para>
+    <heading>Suurempi tai yht&#xE4;suuri kuin</heading>
+    <para>
+    T&#xE4;m&#xE4; vertaa antaamasi lukua ja viestin otsakkeissa olevaa lukuarvoa numeerisesti kesken&#xE4;&#xE4;n.
+    </para>
+    <heading>Suurempi kuin</heading>
+    <para>
+    T&#xE4;m&#xE4; vertaa antaamasi lukua ja viestin otsakkeissa olevaa lukuarvoa numeerisesti kesken&#xE4;&#xE4;n.
+    </para>
+<!-- English entry:
+<entry id="rule-matches">
+    <title>Filter Rule: Matches</title>
+    <para>There are 3 components to each condition in a rule. The first is the
+    field to examine. The second is the type of comparison to perform. The
+    third is the value to which the field should be compared. There are a few
+    different types of comparisons that can be performed. The comparisons
+    available for any given field will depend on both the type of the field and
+    what the underlying filtering software can handle. Thus, all potential
+    matching options listed below may not appear for a given field.</para>
+    <heading>Contains</heading>
+    <para>Will be considered to be true if the specified string is found
+    anywhere on the line. Example: user@example would match
+    joe_user@example.com</para>
+    <heading>Doesn't Contain</heading>
+    <para>Will be considered to be true if the specified string is not found
+    anywhere on the line. Example: user@example would not match
+    joe_user@example.com</para>
+    <heading>Is</heading>
+    <para>Will be considered to be true if the specified string matches the
+    line exactly. Example: user@example.com is user@example.com</para>
+    <heading>Isn't</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the line exactly. Example: user@example is not user@example.com</para>
+    <heading>Begins with</heading>
+    <para>Will be considered to be true if the specified string matches the
+    beginning of the line. Example: user@example will match
+    user@example.com</para>
+    <heading>Doesn't begin with</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the beginning of the line. Example: user@example.com will not match
+    user@example</para>
+    <heading>Ends with</heading>
+    <para>Will be considered to be true if the specified string matches the end
+    of the line. Example: example.com will match user@example.com</para>
+    <heading>Doesn't end with</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the end of the line. Example: horde.org will not match
+    user@example.com</para>
+    <heading>Exists</heading>
+    <para>Will be considered to be true if the specified header exists in the
+    message, regardless of what its value is.</para>
+    <heading>Doesn't Exist</heading>
+    <para>Will be considered to be true if the specified header does not exist
+    in the message.</para>
+    <heading>Regex</heading>
+    <para>Regex allows you to use complex POSIX compatible regular expressions
+    to compare against message headers. Example: "Received from [*\.*\.*\.*] by
+    (hosta|hostb).example.com*" would match "Received from [172.16.100.1] by
+    hosta.example.com on Tuesday"</para>
+    <heading>Matches</heading>
+    <para>Matches is similar to contains, with the exception that you may use *
+    and ? as wildcards. An * will match any number of characters, and a ? will
+    match exactly one charater. Example: "*user?@example.com" will match both
+    "user1@example.com" and "otheruser2@example.com"</para>
+    <heading>Doesn't match</heading>
+    <para>Doesn't match is the same as matches except that it will evaluate to
+    false if the specified value matches the string in the message
+    header.</para>
+    <heading>Less than</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Less than or equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Greater than or equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Greater than</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Limitation with Sieve filtering</heading>
+    <warn>The Sieve specification doesn't support comparions with negative
+    numbers. If you enter a negative value in one of the relational tests,
+    your rule won't work correctly.</warn>
+  </entry>--></entry>
+  <entry id="rule-name" state="uptodate" md5="8faaf71e4bf2f91d943d77f803f9a2d5">
+    <title>Suodatins&#xE4;&#xE4;nt&#xF6;: Nimi</title>
+    <para>
+    T&#xE4;m&#xE4; on sinun s&#xE4;&#xE4;nn&#xF6;lle antamasi kuvaava nimi. Voit k&#xE4;ytt&#xE4;&#xE4; t&#xE4;t&#xE4; tunnistamaan eri s&#xE4;&#xE4;nt&#xF6;j&#xE4; suodatins&#xE4;&#xE4;nt&#xF6;listassa.
+    </para>
+</entry>
+  <entry id="rule-stop" state="uptodate" md5="677c920effca959123b7d539b3b0d864">
+    <title>Suodatins&#xE4;&#xE4;nt&#xF6;: Lopeta tarkistus</title>
+    <para>
+    Jos t&#xE4;m&#xE4; asetus on valittuna ja jos viesti t&#xE4;sm&#xE4;&#xE4; s&#xE4;&#xE4;nt&#xF6;&#xF6;n, niin t&#xE4;m&#xE4;n j&#xE4;lkeen tulevia suodatuksia ei en&#xE4;&#xE4; huomioida.
+    </para>
+</entry>
+  <entry id="vacation" state="uptodate" md5="2c9e12973d36fe94aeb73b32db9a64e6">
+    <title>Poissaoloviesti</title>
+    <para>
+    Poissaoloviesti on automaattisesti l&#xE4;hetett&#xE4;v&#xE4; vastausviesti, joka l&#xE4;hetet&#xE4;&#xE4;n niille henkil&#xF6;ille, jotka ovat l&#xE4;hett&#xE4;neet sinulle s&#xE4;hk&#xF6;postia. Poissaoloviesti&#xE4; k&#xE4;ytet&#xE4;&#xE4;n yleens&#xE4; silloin kun olet poissa pidemm&#xE4;n aikaa tai et p&#xE4;&#xE4;se lukemaan viestej&#xE4;si pidemp&#xE4;&#xE4;n aikaan.
+    </para>
+</entry>
+  <entry id="vacation-period" state="uptodate" md5="531accb93b707d39b2986a779b260dbf">
+     <title>Poissaoloaika</title>
+     <para>Poissaoloviesti l&#xE4;hetet&#xE4;&#xE4;n vain m&#xE4;&#xE4;ritellyn ajanjakson aikana.</para>
+  </entry>
+  <entry id="vacation-bulk" state="uptodate" md5="6f6e4178e80f46e7876c7ee5d0ac53b7">
+    <title>Poissaoloviesti: &#xC4;l&#xE4; vastaa joukkoviesteihin</title>
+    <para>
+    Valitsemalla t&#xE4;m&#xE4;n asetuksen vastausviestej&#xE4; ei l&#xE4;hetet&#xE4;, jos viesti on tullut postilistan kautta tai jos viesti on merkitty joukkoviestiksi.
+    </para>
+</entry>
+  <entry id="vacation-days" state="uptodate" md5="25ba74c0e79ce72237795eb809ee4585">
+    <title>Poissaoloviesti: Vastausv&#xE4;li</title>
+    <para>
+    Jos osoitteeseen on l&#xE4;hetetty automaattinen vastausviesti, niin seuraava viesti samaan osoitteeseen l&#xE4;hetet&#xE4;&#xE4;n vasta t&#xE4;ss&#xE4; m&#xE4;&#xE4;ritellyn p&#xE4;iv&#xE4;n p&#xE4;&#xE4;st&#xE4;.
+    </para>
+</entry>
+  <entry id="vacation-myemail" state="uptodate" md5="ef3fa70e940ed1472276c0fde5ae2aed">
+    <title>Poissaoloviesti: Omat osoitteet</title>
+    <para>
+    Jos postikansioosi tulee viestej&#xE4; useammalla eri osoitteella, niin m&#xE4;&#xE4;rittele t&#xE4;ss&#xE4; ne osoitteet.
+    </para>
+</entry>
+  <entry id="vacation-noresponse" state="uptodate" md5="2b72e12b6989c9ef1667a59040c70310">
+    <title>Poissaoloviesti: Ei vastauksia</title>
+    <para>
+    &#xC4;l&#xE4; l&#xE4;het&#xE4; vastauksia n&#xE4;ihin osoitteisiin. Jokainen osoite pit&#xE4;&#xE4; laittaa omalle rivilleen.
+    </para>
+</entry>
+  <entry id="vacation-reason" state="uptodate" md5="d4da2f3a0d357e00950ec57d984cbcee">
+    <title>Poissaoloviesti:: Poissaolon syy</title>
+    <para>
+    T&#xE4;t&#xE4; teksti&#xE4; k&#xE4;ytet&#xE4;&#xE4;n poissaoloviestien tekstin&#xE4;.
+    </para>
+</entry>
+  <entry id="vacation-subject" state="uptodate" md5="ce16c7c6a08993821208cfbee0b188a0">
+    <title>Poissaoloviesti:: Viestin otsikko</title>
+    <para>
+    T&#xE4;t&#xE4; teksti&#xE4; k&#xE4;ytet&#xE4;&#xE4;n poissaoloviestien otsikkona.
+    </para>
+</entry>
+  <entry id="whitelist" state="uptodate" md5="ecbf7000f107832d68bd7ba8f5121909">
+    <title>Valkoinen lista</title>
+    <para>
+    Valkoinen lista on lista niist&#xE4; osoitteista, joiden haluat tulevan aina perille postikansioosi. Jokainen osoite pit&#xE4;&#xE4; laittaa omalle rivilleen.
+    </para>
+</entry>
+  <entry id="whitelist-addresses" state="uptodate" md5="8fe054c1b55e6adc81d1d8525c131637">
+    <title>Valkoinen lista: Osoitteet</title>
+    <para>
+    Jokainen osoite pit&#xE4;&#xE4; laittaa omalle rivilleen.
+    </para>
+</entry>
+  <entry id="spam-level" state="uptodate" md5="6f00c30a45b0acaef4ae9dba56d58013">
+    <title>Roskapostisuodatus: Roskapostitaso</title>
+    <para>J&#xE4;rjestelm&#xE4; tulkitsee roskapostiksi viestit, joiden roskapostitaso on suurempi tai yht&#xE4;suuri kuin t&#xE4;m&#xE4; arvo</para>
+    <para>Mit&#xE4; pienempi arvo, niin sen enemm&#xE4;n viestej&#xE4; k&#xE4;sitell&#xE4;&#xE4;n roskapostina, mutta vastaavasti my&#xF6;s virhetunnistusten m&#xE4;&#xE4;r&#xE4; lis&#xE4;&#xE4;ntyy. Jos j&#xE4;rjestelm&#xE4; k&#xE4;ytt&#xE4;&#xE4; SpamAssassin ohjelmistoa, niin tyypillinen arvo ja sopiva arvo on "5".</para>
+  </entry>
+  <entry id="spam-folder" state="uptodate" md5="1639e6d1cfcd6706f93920f2c63f4a00">
+    <title>Roskapostisuodatus: Roskapostikansio</title>
+    <para>J&#xE4;rjestelm&#xE4; siirt&#xE4;&#xE4; roskapostiksi tunnistetut viestit automaattisesti t&#xE4;h&#xE4;n kansioon.</para>
+  </entry>
+</help>

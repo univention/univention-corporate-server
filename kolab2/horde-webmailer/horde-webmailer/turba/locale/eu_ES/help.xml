@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!-- $Horde: turba/locale/eu_ES/help.xml,v 1.1.2.2 2009-11-18 14:05:06 jan Exp $ -->
+<help>
+
+<entry id="Overview" md5="290506ade4e6f749246f77bbe5d48835" state="uptodate">
+    <title>Ikuspegi orokorra</title>
+    <heading>Sarrera</heading> <para>Helbide-liburuak kontaktuen informazioa gordetzeko metodo eta leku egokia eskaintzen dizu, informazio hori erraz eskuratzeko eta erabiltzeko. Administratzaileak sistema konfiguratzeko erabilitako moduaren arabera, helbide-liburu pribatu bat nahiz sareko direktorio-zerbitzu publikoetarako sarbidea izan dezakezu. Banaketa-zerrendak ere onartzen dituenez, zure "posta-zerrendak" sor ditzakezu.</para></entry>
+
+<entry id="menu-add" md5="3c1f92eb1a82839404d11d9b0a20b3ce" state="uptodate">
+    <title>Menua: Kontaktu berria</title>
+    <heading>Kontaktu berria</heading> <para>Helbide-liburuan beste erabiltzaile bat sartzen du. Helbide-liburuan, idazteko baimena eman dizuten erabiltzaileak sar ditzakezu soilik. Partekatutako helbide-liburuak edo helbide-liburu publikoak gaitu badira, askotan irakurtzeko soilik izaten dira; kasu horretan, ezingo duzu kontakturik sartu.</para></entry>
+
+<entry id="menu-search" md5="8daf81ab28602d772358a174571f9ad2" state="uptodate">
+    <title>Menua: Bilatu</title>
+    <heading>Bilatu</heading> <para>Helbide-liburu batean bilaketak egin ditzakezu informazioa eskuratzeko. Hori bilaketa erraza da, eta oinarrizko eremu batzuetan informazioa bilatzeko balio du. Askotan izena eta helbide elektronikoa eremuak erabili ohi dira, baina alda daitezke administratzaileak helbide-liburua konfiguratzeko erabilitako moduaren arabera.</para> <para>Bilaketa konplexuagoa egiteko "<ref module="turba" entry="menu-advanced-search">Bilaketa aurreratua</ref>" erabil dezakezu, eta horrela beste eremu batzuetan ere bilaketak egin ahal izango dituzu.</para></entry>
+
+<entry id="menu-advanced-search" md5="6be703ffeba614f6ada151749fa44ab5" state="uptodate">
+    <title>Menua: Bilaketa aurreratua</title>
+    <heading>Bilaketa aurreratua</heading> <para>Helbide-liburu batean bilaketak egin ditzakezu informazioa eskuratzeko. Bilaketa aurreratuaren bidez, hainbat eremutan egin ditzakezu bilaketak. Bilaketak egiteko zein eremu egongo diren erabilgarri, bilaketak egingo diren helbide-liburuaren arabera dago.</para></entry>
+
+<entry id="menu-import" md5="3c6c40f2a6213e9fc1f9a77827bfb5d4" state="uptodate">
+    <title>Menua: Inportatu/Esportatu</title>
+    <heading>Inportatu/Esportatu</heading>
+
+    <para>Menu honen bidez, helbide-liburura inportatu eta helbide-liburutik esporta dezakezu. Formatu hauek onartzen ditu: CSV (komaz bereizitako balioak), Outlook eta vCard formatuak, baita beste formatu ezagun batzuk ere.</para>
+
+    <heading>Inportatu helbide-liburua</heading> <para>Helbide-liburu bat inportatzeko, helbide-liburuko datuak makina lokalean eduki behar dituzu (web-arakatzailea bertan exekutatzen baita). Hori egiteko, aurrena helbide-liburuko informazioa esportatu behar duzu uneko posta elektronikotik.</para>
+
+    <para>Outlook Express erabiltzen baduzu:</para> <para>1) Hautatu Fitxategia &gt; Esportatu &gt; Helbide-liburua</para> <para>2) Hautatu "Testu-fitxategia" (Komaz bereizitako balioak) "Helbide-liburua esportatzeko tresna". Egin klik "Esportatu" botoian.</para> <para>3) "Gorde honela esportatutako fitxategia" eremuan, idatzi zure helbide-liburuaren izena. Egin klik "Hurrengoa" botoian.</para> <para>4) Jarri hautamarka bat esportatu nahi duzun eremu bakoitzaren ezkerrean dagoen laukian. Egin klik "Amaitu" aukeran.</para> <para>5) 'Helbide-liburuaren esportazio-prozesua amaitu da' adierazten duen mezu bat jasoko duzu. Sakatu 'Ados'.</para> <para>6) Sakatu ''Helbide-liburua esportatzeko tresnak" aukerako "Itxi" botoia, eta itxi Outlook Express.</para>
+
+    <tip>Esportatutako helbide-liburuko fitxategia ez badago zure mahaigainean eta Windows sistema eragilea erabiltzen ari bazara, sakatu Hasi &gt; Bilatu&gt; Karpetak eta bilatu 3. urratsean idatzi duzun fitxategi-izena disko gogorrean. Idatzi ohar batean fitxategiaren kokapena.</tip>
+
+    <para>Helbide-liburu bat inportatzeko, ireki inportatu nahi duzun helbide-liburua, informazioa bertan jartzeko. Egin klik "Inportatu/Esportatu" ikonoan. Hautatu hautapen-zerrendatik inportatu nahi duzun datu-fitxategiko helbidearen informazioa. Egin klik "arakatu" botoian, helbidearen datu-fitxategia bilatzeko ordenagailuan. Hautatu fitxategia, eta egin klik "Inportatu" botoian. Fitxategiko informazioa helbide-liburura inportatuko da.</para> <tip>Sarrera konplexu batzuk edo zure helbide-liburuko eremuekin bat ez datozen eremuak dauzkaten sarrera batzuk, agian, ez dira behar bezala inportatuko. Inportazio bat egin ondoren, inportatutako datuak egiaztatu beharko zenituzke.</tip></entry>
+
+<entry id="searching-search_results" md5="ffed8d72fa3b710df8e902c2493b254f" state="uptodate">
+    <title>Bilaketa: Bilaketaren emaitzak</title>
+    <heading>Bilaketaren emaitzak</heading> <para>Bilaketak emaitzaren bat ematen badu, "Bilaketaren emaitzak" arean azalduko dira.</para> <para>"Posta elektronikoa" sarreraren eremuan klik eginez, mezu berria idazteko leiho bat irekiko da, helbide horretara mezu bat bidaltzeko. "Izena" sarreraren eremuan klik eginez, izen horren helbide-liburua bistaratuko da. Horrela, sarrera hori editatu edo ezabatu ahal izango duzu.</para> <para>Administratzaileak sistema konfiguratutako moduaren arabera, emaitzak metagarriak izan daitezke. Bilaketa bakoitzak ematen duen edozein emaitza lehendik dauden emaitzekin batera agertuko da. Hori oso ondo etortzen da zerrendak eraikitzean. Metatutako bilaketen emaitzak kentzeko eta beste bilaketa bat egiteko, egin klik "Garbitu bilaketa" estekan.</para>
+
+    <tip>Sarreren zerrenda bat ikustean, eremuen arabera ordena ditzakezu sarrerak, zutabearen goiburu egokian klik eginez. Goranzko edo beheranzko ordenara aldatzeko, egin klik zutabearen izenburuko geziaren ikonoan.</tip></entry>
+
+</help>

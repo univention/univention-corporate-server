@@ -1,0 +1,437 @@
+/**
+ * $Horde: imp/themes/screen.css,v 1.2.2.37 2009-09-21 13:30:36 jan Exp $
+ */
+
+/* Align styles, added for BC. */
+.leftAlign {
+    text-align: left;
+}
+.rightAlign {
+    text-align: right;
+}
+.leftFloat {
+    float: left;
+}
+.rightFloat {
+    float: right;
+}
+
+/* Added for BC. */
+.hidden {
+    display: none;
+}
+
+/* Menu bottom margin, added for BC. */
+#menu {
+    margin-bottom: 8px;
+}
+
+/* Image submit styles, added for BC. */
+.image {
+    border: none;
+    vertical-align: middle;
+    background: transparent;
+}
+input[type=image] {
+    border: none;
+    vertical-align: middle;
+    background: transparent;
+}
+
+/* Message list table styles. */
+.searchfolder a.smallheader {
+    display: block;
+}
+.messageList {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+}
+.messageList tr {
+    height: 20px;
+}
+.messageList th {
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+    border: 1px solid #eee;
+    overflow: hidden;
+}
+.messageList td {
+    padding-top: 0;
+    padding-bottom: 0;
+    text-indent: 1px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+}
+.messageList img {
+    vertical-align: middle;
+}
+
+/* Newmail alerts. */
+#newmail {
+    padding: 1em;
+    background: #ffc;
+    border: 2px solid #ccc;
+}
+#newmail ul {
+    list-style: none;
+    margin-bottom: 1em;
+}
+
+/* Fetchmail styling. */
+#fetchmail {
+    padding: 1em;
+}
+#fetchmail ul {
+    list-style: none;
+}
+
+/* Navbar action styling. */
+ul.msgactions, ul.msgactions ul {
+    list-style: none;
+}
+.msgactions li {
+    float: left;
+    padding: 1px 3px;
+    border-right: 1px solid #888;
+    position: relative;
+}
+.msgactions li.lastnavbar {
+    border-right: 0;
+}
+.msgactions a.hasmenu {
+    padding-right: 11px;
+    background: url("graphics/popdown.png") no-repeat center right;
+}
+.msgactions li a {
+    font-size: 90%;
+    white-space: nowrap;
+}
+.folders .msgactions li a {
+    font-size: 100%;
+}
+.msgactions li ul {
+    display: none;
+    position: absolute;
+    left: -1px;
+    margin-top: -2px;
+    padding: 2px;
+    background: #f4f4f4;
+    border: 1px solid #d4d4d4;
+    z-index: 99;
+}
+.bottomborder .msgactions li ul {
+    top: 1.25em;
+}
+.topborder .msgactions li ul {
+    bottom: 1.25em;
+}
+.msgactions li ul a:hover, .msgactions li ul a:active {
+    background: gray;
+    color: #fff;
+}
+.msgactions li:hover ul, .msgactions li.hover ul {
+    display: block;
+}
+.msgactions li ul li {
+    float: none;
+    padding: 0;
+    border: none;
+    display: inline;
+}
+.msgactions li ul li a {
+    display: block;
+    padding: 2px;
+}
+.mboxcontrol {
+    color: #000;
+    background: #ccc;
+}
+.bottomborder {
+    border-bottom: 1px solid #999;
+}
+.bottombordercollapse {
+    border-bottom: 2px solid #999;
+}
+.topborder {
+    border-top: 1px solid #999;
+}
+
+#msgheaders {
+    clear: left;
+}
+
+/* Message body styling. */
+.messageBody {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    background: #fff;
+    padding: 8px;
+}
+.signedvalid td {
+    background: #cfc;
+}
+.signedinvalid td {
+    background: #ffd0af;
+}
+.signedinvalid td .signature {
+    color: #999;
+}
+
+/* Search page styling. */
+form#search div {
+    padding: 1px;
+}
+
+/* Style for div that fixes KHTML browsers. */
+.ohide {
+    overflow: hidden;
+}
+
+/* Based on the Mozilla default definitions */
+#html-message td {
+    padding: 0;
+}
+#html-message ul {
+    display: block;
+    list-style-type: disc;
+    margin: 1em 0;
+    -moz-padding-start: 40px;
+}
+#html-message ol {
+    display: block;
+    list-style-type: decimal;
+    margin: 1em 0;
+    -moz-padding-start: 40px;
+}
+#html-message p {
+    display: block;
+    margin: 1em 0;
+}
+#html-message blockquote {
+    margin: 1em 40px;
+}
+#html-message blockquote[type="cite"] {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 1em;
+}
+
+/* Compose view */
+.composebody {
+    font-family: "Lucida Console",Courier,"Courier New";
+    font-size: 100%;
+    padding: 2px;
+}
+#text_identity, #to, #cc, #bcc, #subject {
+    width: 550px;
+}
+.spellcheck {
+    white-space: pre;
+    white-space: -moz-pre-wrap;
+    white-space: -hp-pre-wrap;
+    white-space: -o-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: pre-wrap;
+    white-space: pre-line;
+    word-wrap: break-word;
+}
+
+.folders {
+    font-size: 100%;
+}
+.folderselect {
+    padding-top: 5px;
+}
+.seen {
+    background: #fff;
+}
+.seen:hover, .seen-over {
+    background: #f3f3f3;
+}
+.unseen {
+    font-weight: bold;
+    background: #eef;
+}
+tr.unseen:hover, tr.unseen-over {
+    font-weight: bold;
+    background: #ccf;
+}
+.answered {
+    background: #cfc;
+}
+tr.answered:hover, tr.answered-over {
+    background: #9e9;
+}
+.important, .flagged {
+    background: #fcc;
+}
+tr.important:hover, tr.important-over, tr.flagged:hover, tr.flagged-over {
+    background: #faa;
+}
+.unimportant {
+    font-weight: normal;
+}
+.deleted {
+    background: #999;
+}
+tr.deleted:hover, tr.deleted-over {
+    background: #777;
+}
+.deleted * {
+    text-decoration: line-through;
+}
+.folderunsub {
+    background: #bbb;
+    font-style: italic;
+}
+.quotawarn {
+    color: #000;
+    background: yellow;
+}
+.quotaalert {
+    color: #fff;
+    background: #f00;
+}
+
+/* Pad the addressbook icon in header compose links. */
+.msgheader img {
+    vertical-align: middle;
+    padding: 1px 1px 1px 2px;
+}
+
+/* Autocomplete styles. */
+.autocomplete {
+    background: #f4f4f4;
+    border: 1px solid #d4d4d4;
+    position: absolute;
+    padding: 2px 2px 2px 2px;
+}
+.autocomplete ul {
+    margin: 1px;
+    padding: 1px;
+    list-style-type: none;
+}
+.autocomplete ul li {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    cursor: pointer;
+    text-decoration: underline;
+    color: #000;
+}
+.autocomplete ul .selected {
+    background: gray;
+    color: #fff;
+}
+.addressTr {
+    width: 580px;
+}
+.addressTr span {
+    vertical-align: top;
+}
+
+/* SpellChecker styles. */
+.Checking {
+    color: #f00;
+}
+.incorrect {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #f00;
+}
+.corrected {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #090;
+}
+
+/* Popdown styles. */
+a.popdown {
+    cursor: pointer;
+    background: url("graphics/popdown.png") no-repeat center center;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+a.popdown:hover {
+    padding-left: 5px;
+    padding-right: 5px;
+    border-left: 1px solid #fff;
+    border-top: 1px solid #fff;
+    border-right: 1px solid #000;
+    border-bottom: 1px solid #000;
+}
+
+/* Other styles used in IMP. */
+.padded {
+    padding: 1px;
+}
+
+/* Audio selection */
+ul.nav-audio {
+    list-style: none;
+}
+.nav-audio li {
+    height: 24px;
+}
+.nav-audio embed {
+    vertical-align: middle;
+    height: 24px;
+}
+
+/* Redbox styles. */
+#RB_overlay {
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-height: 100%;
+    background-color: #000;
+    opacity: .6;
+    filter: alpha(opacity=60);
+}
+#RB_loading {
+    z-index: 101;
+    width: 66;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 200px;
+    padding-bottom: 66px;
+    text-align: center;
+    background: url("graphics/redbox_spinner.gif") no-repeat bottom center;
+}
+#RB_window {
+    z-index: 102;
+    background-color: #fff;
+    display: block;
+    text-align: left;
+    overflow: hidden;
+    margin: 20px auto 0 auto;
+    position: absolute;
+}
+
+#RB_confirm {
+    width: 20em;
+    padding: 1em;
+    border: 1px solid #ccc;
+    background: #ffc;
+}
+#RB_confirm input {
+    margin: .2em;
+}
+
+.largeaddrlist {
+    cursor: pointer;
+    background: #aaa;
+    margin-right: 5px;
+}
+.largeaddrlist:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,260 @@
+# Basque translation for mimp package.
+# This file is distributed under the same license as the mimp package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mimp\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2009-03-19 10:37+0100\n"
+"PO-Revision-Date: 2009-11-20 12:25+0100\n"
+"Last-Translator: Euskal Herriko Unibertsitatea <webmaster@ehu.es>\n"
+"Language-Team: Euskal Herriko Unibertsitatea <webmaster@ehu.es>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: message.php:295
+#, php-format
+msgid "(%d of %d)"
+msgstr "(%d of %d)"
+
+#: lib/MIME/Contents.php:62
+msgid "Attachment"
+msgstr "Attachment"
+
+#: templates/compose/compose.inc:52
+msgid "Bcc: "
+msgstr "Bcc: "
+
+#: templates/compose/compose.inc:49
+msgid "Cc: "
+msgstr "Cc: "
+
+#: config/prefs.php.dist:11
+msgid "Configure how messages are displayed."
+msgstr "Configure how messages are displayed."
+
+#: compose.php:22
+msgid "Could not retrieve the message from the mail server."
+msgstr "Could not retrieve the message from the mail server."
+
+#: message.php:258
+msgid "Delete"
+msgstr "Delete"
+
+#: config/prefs.php.dist:23
+msgid "Display only the first 250 characters of a message initially?"
+msgstr "Display only the first 250 characters of a message initially?"
+
+#: mailbox.php:189
+msgid "Do Not Sort by Thread"
+msgstr "Do Not Sort by Thread"
+
+#: lib/MIME/Viewer/status.php:69
+msgid "ERROR: Your message could not be delivered."
+msgstr "ERROR: Your message could not be delivered."
+
+#: compose.php:88 templates/compose/compose.inc:59
+#: templates/compose/redirect.inc:19
+msgid "Expand Names"
+msgstr "Expand Names"
+
+#: mailbox.php:66
+msgid "First Page"
+msgstr "First Page"
+
+#: folders.php:60 lib/MIMP.php:36
+msgid "Folders"
+msgstr "Folders"
+
+#: message.php:275
+msgid "Forward"
+msgstr "Forward"
+
+#: mailbox.php:171
+msgid "From"
+msgstr "From"
+
+#: templates/compose/compose.inc:39
+msgid "Identity"
+msgstr "Identity"
+
+#: lib/MIMP.php:30
+msgid "Inbox"
+msgstr "Inbox"
+
+#: mailbox.php:71
+msgid "Last Page"
+msgstr "Last Page"
+
+#: lib/MIMP.php:44
+msgid "Log out"
+msgstr "Log out"
+
+#: config/prefs.php.dist:9
+msgid "Mail Management"
+msgstr "Mail Management"
+
+#: message.php:252 message.php:296 compose.php:240 mailbox.php:201
+#: templates/folders/folders.inc:6 templates/folders/folders.inc:29
+#: templates/mailbox/mailbox.inc:10 templates/compose/compose.inc:4
+#: templates/compose/redirect.inc:4
+msgid "Menu"
+msgstr "Menu"
+
+#: compose.php:225
+msgid "Message Composition"
+msgstr "Message Composition"
+
+#: config/prefs.php.dist:10
+msgid "Message Viewing"
+msgstr "Message Viewing"
+
+#: compose.php:142
+msgid "Message redirected successfully."
+msgstr "Message redirected successfully."
+
+#: compose.php:215
+msgid "Message sent successfully."
+msgstr "Message sent successfully."
+
+#: templates/compose/compose.inc:56
+msgid "Message: "
+msgstr "Message: "
+
+#: lib/MIMP.php:33
+msgid "New Message"
+msgstr "New Message"
+
+#: message.php:283
+msgid "Next"
+msgstr "Next"
+
+#: mailbox.php:70
+msgid "Next Page"
+msgstr "Next Page"
+
+#: message.php:286
+msgid "Prev"
+msgstr "Prev"
+
+#: mailbox.php:67
+msgid "Previous Page"
+msgstr "Previous Page"
+
+#: mailbox.php:164
+msgid "Purge Deleted"
+msgstr "Purge Deleted"
+
+#: message.php:276 compose.php:129 templates/compose/redirect.inc:18
+msgid "Redirect"
+msgstr "Redirect"
+
+#: mailbox.php:158 templates/folders/folders.inc:31
+msgid "Refresh"
+msgstr "Refresh"
+
+#: message.php:265
+msgid "Reply"
+msgstr "Reply"
+
+#: message.php:272
+msgid "Reply All"
+msgstr "Reply All"
+
+#: message.php:268
+msgid "Reply to List"
+msgstr "Reply to List"
+
+#: compose.php:151 templates/compose/compose.inc:58
+msgid "Send"
+msgstr "Send"
+
+#: message.php:316
+msgid "Show All"
+msgstr "Show All"
+
+#: folders.php:56
+msgid "Show All Folders"
+msgstr "Show All Folders"
+
+#: folders.php:56
+msgid "Show Subscribed Folders"
+msgstr "Show Subscribed Folders"
+
+#: mailbox.php:186
+msgid "Sort by Thread"
+msgstr "Sort by Thread"
+
+#: mailbox.php:172
+msgid "Subject"
+msgstr "Subject"
+
+#: templates/compose/compose.inc:54
+msgid "Subject: "
+msgstr "Subject: "
+
+#: lib/MIME/Viewer/status.php:70
+msgid "The mail server generated the following error message:"
+msgstr "The mail server generated the following error message:"
+
+#: lib/MIME/Viewer/status.php:79
+msgid "The mail server generated the following message:"
+msgstr "The mail server generated the following message:"
+
+#: lib/MIME/Viewer/alternative.php:49
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "There are no alternative parts that can be displayed inline."
+
+#: lib/MIME/Contents.php:91
+msgid "There are no parts that can be displayed inline."
+msgstr "There are no parts that can be displayed inline."
+
+#: lib/MIME/Viewer/plain.php:29 lib/MIME/Viewer/html.php:31
+msgid "There was an error displaying this message part"
+msgstr "There was an error displaying this message part"
+
+#: mailbox.php:36
+msgid "There was an error viewing the requested message."
+msgstr "There was an error viewing the requested message."
+
+#: lib/MIME/Viewer/status.php:114
+msgid ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+msgstr ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+
+#: message.php:289
+#, php-format
+msgid "To %s"
+msgstr "To %s"
+
+#: templates/compose/compose.inc:47 templates/compose/redirect.inc:16
+msgid "To: "
+msgstr "To: "
+
+#: message.php:256
+msgid "Undelete"
+msgstr "Undelete"
+
+#: message.php:41
+msgid "Undisclosed Recipients"
+msgstr "Undisclosed Recipients"
+
+#: message.php:248
+msgid "View Full Message"
+msgstr "View Full Message"
+
+#: lib/MIME/Viewer/status.php:78
+msgid "Your message was successfully delivered."
+msgstr "Your message was successfully delivered."
+
+#: message.php:159 mailbox.php:117
+msgid "[No Subject]"
+msgstr "[No Subject]"
+
+#: templates/mailbox/mailbox.inc:7
+msgid "of"
+msgstr "of"

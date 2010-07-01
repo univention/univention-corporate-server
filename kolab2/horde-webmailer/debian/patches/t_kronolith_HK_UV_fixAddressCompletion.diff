@@ -5,8 +5,8 @@ kronolith: fixes automatic address completion for event attendees
 Most of the time address completion returns only very few or no hits if
 n characters are given but returns a lot more hits on n+1 characters.
 
---- a/horde-webmail/kronolith/lib/Imple/ContactAutoCompleter.php
-+++ b/horde-webmail/kronolith/lib/Imple/ContactAutoCompleter.php
+--- a/horde-webmailer/kronolith/lib/Imple/ContactAutoCompleter.php
++++ b/horde-webmailer/kronolith/lib/Imple/ContactAutoCompleter.php
 @@ -175,46 +175,30 @@ class Imple_ContactAutoCompleter extends Imple {
                  }
              } else {

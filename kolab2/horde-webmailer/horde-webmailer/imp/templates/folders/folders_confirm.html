@@ -1,0 +1,27 @@
+<form name="fmanager" method="post" action="<tag:folders_url />">
+<input type="hidden" name="actionID" value="<if:delete>delete_folder</if:delete><if:empty>folders_empty_mailbox</if:empty>" />
+<input type="hidden" id="folders_token" name="folders_token" value="<tag:folders_token />" />
+
+<div class="header leftAlign">
+ <gettext>Folder Actions - Confirmation</gettext>
+</div>
+
+<div class="control leftAlign">
+ <if:delete><gettext>You are attempting to delete the following folder(s).</gettext></if:delete>
+ <if:empty><gettext>You are attempting to delete all messages contained in the following folder(s).</gettext></if:empty>
+ <br />
+ <gettext>If you continue, all messages in the folder(s) will be lost!</gettext>
+</div>
+
+<loop:folders>
+<div class="<tag:folders.class />">
+ &nbsp;<label><input type="checkbox" class="checkbox" name="folder_list[]" value="<tag:folders.val />" checked="checked" /> <tag:folders.name /></label>
+</div>
+</loop:folders>
+
+<div class="control leftAlign">
+ <input type="submit" name="submit" class="button" value="<if:delete><gettext>Delete Selected Folders</gettext></if:delete><if:empty><gettext>Empty Selected Folders</gettext></if:empty>" />&nbsp;
+ <input type="button" class="button" onclick="self.location.href='<tag:folders_url />';" value="<gettext>Cancel</gettext>" />
+</div>
+
+</form>

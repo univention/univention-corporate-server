@@ -1,0 +1,1265 @@
+# Nag Russian translation.
+# Copyright 
+# Ignat Ikryanov <iignat@newmail.ru>, 2001.
+# Alexey Zakharov <baber@mosga.net>, 2008
+msgid ""
+msgstr ""
+"Project-Id-Version: Nag H3 2.2\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-02-02 20:07+0200\n"
+"PO-Revision-Date: 2008-02-02 23:15+0200\n"
+"Last-Translator: Alexey Zakharov <baber@mosga.net>\n"
+"Language-Team: Russian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1251\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: templates/view/task.inc:35
+#, php-format
+msgid " (%s including sub-tasks)"
+msgstr ""
+
+# fuzzy, php-format
+#: lib/Nag.php:71
+#, php-format
+msgid "%d hour"
+msgstr "%d часа"
+
+#: lib/Nag.php:73
+#, fuzzy, php-format
+msgid "%d hour, %d minute"
+msgstr "Каждые 5 минут"
+
+#: lib/Nag.php:75
+#, fuzzy, php-format
+msgid "%d hour, %d minutes"
+msgstr "Каждые 5 минут"
+
+#: lib/Nag.php:63
+#, fuzzy, php-format
+msgid "%d hours"
+msgstr "24 часа"
+
+#: lib/Nag.php:65
+#, fuzzy, php-format
+msgid "%d hours, %d minute"
+msgstr "Каждые 5 минут"
+
+#: lib/Nag.php:67
+#, fuzzy, php-format
+msgid "%d hours, %d minutes"
+msgstr "Каждые 5 минут"
+
+#: lib/Nag.php:81
+#, fuzzy, php-format
+msgid "%d minute"
+msgstr "Каждые 5 минут"
+
+#: lib/Nag.php:83
+#, fuzzy, php-format
+msgid "%d minutes"
+msgstr "Каждые 5 минут"
+
+#: lib/Nag.php:590 lib/Block/summary.php:106 lib/Block/tree_alarms.php:41
+#, php-format
+msgid "%s is due in %s"
+msgstr ""
+
+#: lib/Nag.php:588 lib/Block/summary.php:104 lib/Block/tree_alarms.php:43
+#, php-format
+msgid "%s is due now."
+msgstr ""
+
+#: task.php:231
+#, fuzzy, php-format
+msgid "%s is now incomplete."
+msgstr ""
+"#-#-#-#-#  ru_RU.po (Horde v2.1)  #-#-#-#-#\n"
+"#-#-#-#-#  ru_RU.po (IMP v3.1)  #-#-#-#-#\n"
+"Новое сообщение"
+
+#: data.php:199
+#, fuzzy, php-format
+msgid "%s successfully imported"
+msgstr "Файл %s успешно импортирован"
+
+# fuzzy, php-format
+#: tasklists.php:100 lib/Nag.php:516 lib/Forms/DeleteTaskList.php:86
+#, php-format
+msgid "%s's Task List"
+msgstr "Мои Задачи (%s)"
+
+#: lib/Nag.php:315 lib/Forms/task.php:58
+msgid "(highest)"
+msgstr "(высший)"
+
+#: lib/Nag.php:315 lib/Forms/task.php:59
+msgid "(lowest)"
+msgstr "(низший)"
+
+# fuzzy, php-format
+#: task.php:215
+#, php-format
+msgid "Access denied completing task %s."
+msgstr "Недостаточно прав чтобы завершить задачу %s"
+
+# fuzzy, php-format
+#: task.php:24
+#, fuzzy, php-format
+msgid "Access denied deleting %s"
+msgstr "Недостаточно прав чтобы удалить %s"
+
+# fuzzy, php-format
+#: task.php:84 task.php:90
+#, fuzzy
+msgid "Access denied editing task."
+msgstr "Недостаточно прав чтобы завершить задачу %s"
+
+# fuzzy, php-format
+#: task.php:82
+#, fuzzy, php-format
+msgid "Access denied editing task: %s"
+msgstr "Недостаточно прав записать задачу: %s"
+
+# fuzzy, php-format
+#: task.php:163
+#, php-format
+msgid "Access denied moving the task to %s."
+msgstr "Недостаточно прав чтобы переместить задачу в %s"
+
+# fuzzy, php-format
+#: task.php:166
+#, php-format
+msgid "Access denied removing task from %s."
+msgstr "Недостаточно прав удалить задачу из %s"
+
+# fuzzy, php-format
+#: task.php:125
+#, php-format
+msgid "Access denied saving task to %s."
+msgstr "Недостаточно прав записать задачу в %s"
+
+# fuzzy, php-format
+#: task.php:121
+#, php-format
+msgid "Access denied saving task: %s"
+msgstr "Недостаточно прав записать задачу: %s"
+
+#: templates/task/task.inc:67
+msgid "Ala_rm"
+msgstr "Уведомить за"
+
+# fuzzy
+#: templates/view/task.inc:26 lib/Forms/task.php:88
+msgid "Alarm"
+msgstr "Уведомить"
+
+# fuzzy
+#: config/prefs.php.dist:200
+msgid "All tasks"
+msgstr "Все задачи"
+
+# fuzzy
+# fuzzy
+#: lib/Block/summary.php:63
+msgid "Always show completed tasks?"
+msgstr "Показывать завершенные"
+
+#: lib/Block/summary.php:60
+msgid "Always show overdue tasks?"
+msgstr "Показывать пропущенные"
+
+#: config/prefs.php.dist:117
+msgid "Ascending"
+msgstr "Возрастание"
+
+# fuzzy
+#: templates/tasklists/tasklists.inc:102
+msgid "Back to Task List Options"
+msgstr "Вернуться к списку задач"
+
+#: lib/Block/summary.php:39
+#, fuzzy
+msgid "Block title"
+msgstr "Расширение"
+
+#: data.php:30
+msgid "CSV"
+msgstr "CSV-файл"
+
+#: templates/task/task.inc:56 lib/UI/VarRenderer/nag.php:58
+#: lib/UI/VarRenderer/nag.php:106
+msgid "Calendar"
+msgstr "Календарь"
+
+#: lib/Forms/DeleteTaskList.php:45 lib/Forms/DeleteTaskList.php:51
+msgid "Cancel"
+msgstr "Отмена"
+
+# fuzzy
+# fuzzy
+#: templates/list/task_headers.inc:53
+msgid "Cat_egory"
+msgstr "Категория"
+
+# fuzzy
+#: data.php:54 templates/view/task.inc:8 lib/Forms/task.php:76
+#: lib/Forms/task.php:82 config/prefs.php.dist:89 config/prefs.php.dist:104
+msgid "Category"
+msgstr "Категория"
+
+#: templates/tasklists/tasklists.inc:22
+msgid "Change"
+msgstr "Изменить"
+
+#: tasklists/index.php:56 templates/tasklist_list.php:35
+#, fuzzy
+msgid "Change Permissions"
+msgstr "Настройки пользователя"
+
+# fuzzy
+#: config/prefs.php.dist:14
+msgid "Change your task sorting and display options."
+msgstr "Изменить опции отображения и поиска в списке задач"
+
+#: config/prefs.php.dist:179
+msgid "Choose how you want to receive reminders for tasks with alarms:"
+msgstr "Каким образом вы желаете получить уведомление:"
+
+#: config/prefs.php.dist:170
+msgid ""
+"Choose if you want to be notified of new, edited, and deleted tasks by email:"
+msgstr "Уведомлять о новой, измененной или удаленной задаче по e-mail:"
+
+#: config/prefs.php.dist:42
+msgid "Choose if you want to be notified of task changes and task alarms."
+msgstr "Настройка оповещений в случае изменения задачи и сигналов напоминания"
+
+# fuzzy
+#: config/prefs.php.dist:35
+msgid "Choose your default task list."
+msgstr "Выбрать ваш список задач по умолчанию"
+
+#: templates/tasklist_list.php:31 templates/tasklist_list.php:32
+msgid "Click or copy this URL to display this task list"
+msgstr "Нажмите или скопируйте эту ссылку для отображение списка задач"
+
+# fuzzy
+#: templates/panel.inc:43
+msgid "Close"
+msgstr "Закрыть"
+
+#: templates/list/header.inc:8
+#, fuzzy
+msgid "Close Search"
+msgstr "Очистить"
+
+# fuzzy
+#: templates/task/task.inc:88
+msgid "Co_mpleted?"
+msgstr "Завершено?"
+
+# fuzzy
+#: templates/view/task.inc:42
+msgid "Complete Task"
+msgstr "Завершить задачу"
+
+# fuzzy
+#: templates/search/search.inc:27
+msgid "Completed Tasks"
+msgstr "Завершенные"
+
+#: templates/list/task_summaries.inc:16
+msgid "Completed parent task, mark it as incomplete first"
+msgstr ""
+
+# fuzzy
+#: templates/view/task.inc:38 templates/list/task_headers.inc:31
+#: lib/Forms/task.php:94 config/prefs.php.dist:91 config/prefs.php.dist:106
+msgid "Completed?"
+msgstr "Завершена?"
+
+#: data.php:58
+#, fuzzy
+msgid "Completion Status"
+msgstr "Дата создания"
+
+#: lib/api.php:317 lib/api.php:544
+#, fuzzy, php-format
+msgid "Connection failed: %s"
+msgstr "Неудачное соединение с сервером LDAP."
+
+#: templates/tasklists/tasklists.inc:17 templates/tasklists/tasklists.inc:99
+#: templates/tasklists/tasklists.inc:101 lib/Forms/CreateTaskList.php:39
+msgid "Create"
+msgstr "Создать"
+
+#: lib/Forms/CreateTaskList.php:34
+msgid "Create a new Task List"
+msgstr "Создать новый список задач"
+
+#: templates/view/task.inc:57
+msgid "Created"
+msgstr "Создана"
+
+#: lib/UI/VarRenderer/nag.php:51 lib/UI/VarRenderer/nag.php:100
+#, fuzzy
+msgid "Day"
+msgstr "Ежедневно"
+
+# fuzzy
+#: templates/task/task.inc:76 lib/Nag.php:411 lib/UI/VarRenderer/nag.php:136
+msgid "Day(s)"
+msgstr "Дней"
+
+# fuzzy
+#: config/prefs.php.dist:34
+msgid "Default Task List"
+msgstr "Cписок задач по умолчанию"
+
+# fuzzy
+#: config/prefs.php.dist:28
+msgid "Defaults for new tasks"
+msgstr "Значения по умолчанию для новых задач"
+
+#: lib/Forms/task.php:87
+msgid "Delay Start Until"
+msgstr "Отложить начало до"
+
+#: view.php:106 tasklists/index.php:57 templates/tasklist_list.php:37
+#: templates/tasklists/tasklists.inc:100 lib/Forms/DeleteTaskList.php:45
+msgid "Delete"
+msgstr "Удалить"
+
+#: lib/Forms/DeleteTaskList.php:40
+#, php-format
+msgid "Delete %s"
+msgstr "Удалить %s"
+
+# fuzzy
+#: config/prefs.php.dist:20
+msgid "Delete Confirmation"
+msgstr "Удаление"
+
+#: config/prefs.php.dist:21
+msgid "Delete button behaviour"
+msgstr "Подтверждение операции удаления"
+
+# fuzzy
+# fuzzy
+#: task.php:105 templates/task/task.inc:110 lib/Forms/task.php:99
+msgid "Delete this task"
+msgstr "Удалить зту задачу"
+
+# fuzzy, php-format
+#: task.php:32
+#, php-format
+msgid "Deleted %s."
+msgstr "Задача %s удалена"
+
+#: config/prefs.php.dist:118
+msgid "Descending"
+msgstr "Убывание"
+
+#: data.php:53 lib/Forms/EditTaskList.php:44 lib/Forms/CreateTaskList.php:37
+#: lib/Forms/task.php:95
+msgid "Description"
+msgstr "Описание"
+
+# fuzzy
+# fuzzy
+#: templates/tasklists/tasklists.inc:90
+msgid "Description:"
+msgstr "Описание"
+
+#: config/prefs.php.dist:13
+msgid "Display Options"
+msgstr "Отображение"
+
+#: templates/tasklist_list.php:16
+msgid "Display URL"
+msgstr "Ссылка для отображения"
+
+# fuzzy
+#: config/prefs.php.dist:128
+msgid "Do you want to confirm deleting entries?"
+msgstr "Запрашивать подтверждение при удалении записей?"
+
+#: data.php:55 templates/view/task.inc:22 lib/Forms/task.php:86
+msgid "Due By"
+msgstr "Завершить до"
+
+#: config/prefs.php.dist:90 config/prefs.php.dist:105
+msgid "Due Date"
+msgstr "Дата завершения"
+
+# fuzzy
+#: templates/task/task.inc:45
+msgid "Due _By"
+msgstr "Завершить до"
+
+#: lib/UI/VarRenderer/nag.php:99
+#, fuzzy
+msgid "Due date specified."
+msgstr "Было указано некорректное значение."
+
+#: templates/list/task_summaries.inc:38 lib/Block/summary.php:166
+#, fuzzy, php-format
+msgid "Edit \"%s\""
+msgstr "Редактирование '%s'"
+
+#: lib/Forms/EditTaskList.php:40
+#, php-format
+msgid "Edit %s"
+msgstr "Редактирование %s"
+
+# fuzzy
+#: templates/list/task_headers.inc:42
+msgid "Edit Task"
+msgstr "Редактировать"
+
+# fuzzy
+#: templates/list/task_headers.inc:58
+msgid "Edit categories and colors"
+msgstr "Категории и метки"
+
+#: task.php:95 task.php:109
+#, fuzzy, php-format
+msgid "Edit: %s"
+msgstr "Редактирование %s"
+
+#: task.php:19
+#, fuzzy, php-format
+msgid "Error deleting task: %s"
+msgstr "Ошибка при импорте данных."
+
+#: templates/view/task.inc:34 lib/Forms/task.php:93
+msgid "Estimated Time"
+msgstr "Временые затраты"
+
+#: templates/data/export.inc:17
+msgid "Export"
+msgstr "Экспорт"
+
+# fuzzy
+#: templates/data/export.inc:6
+msgid "Export Tasks"
+msgstr "Экспорт задач"
+
+#: config/prefs.php.dist:56
+msgid "External Data"
+msgstr ""
+
+# fuzzy
+#: config/prefs.php.dist:12 config/prefs.php.dist:19 config/prefs.php.dist:26
+msgid "General Options"
+msgstr "Общие настройки"
+
+#: lib/UI/VarRenderer/nag.php:111
+#, fuzzy
+msgid "Hour"
+msgstr "Часов"
+
+#: templates/task/task.inc:75 lib/Nag.php:414 lib/UI/VarRenderer/nag.php:135
+msgid "Hour(s)"
+msgstr "Часов"
+
+# fuzzy, php-format
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Tasks, Step %d"
+msgstr "Импортирование задач, Шаг %d"
+
+# fuzzy
+# fuzzy
+#: data.php:205
+msgid "Import/Export Tasks"
+msgstr "Импорт/Экспорт"
+
+# fuzzy
+#: list.php:112
+msgid "Incom_plete tasks"
+msgstr "Незавершенные"
+
+# fuzzy
+#: templates/search/search.inc:26
+msgid "Incomplete Tasks"
+msgstr "Незавершенные"
+
+#: templates/list/task_summaries.inc:8
+msgid "Incomplete sub tasks, complete them first"
+msgstr ""
+
+# fuzzy
+#: config/prefs.php.dist:201
+msgid "Incomplete tasks"
+msgstr "Незавершенные"
+
+#: templates/view/task.inc:64
+msgid "Last Modified"
+msgstr "Исправлена"
+
+# fuzzy
+#: tasklists/index.php:61 templates/tasklist_list.php:2
+msgid "Manage Task Lists"
+msgstr "Управление списками задач"
+
+#: templates/list/task_summaries.inc:19
+#, php-format
+msgid "Mark \"%s\" as incomplete"
+msgstr ""
+
+#: templates/view/task.inc:44
+msgid "Mark as incomplete"
+msgstr ""
+
+#: lib/api.php:120
+#, fuzzy
+msgid "Maximum Number of Tasks"
+msgstr "Максимальное количество страниц"
+
+# fuzzy
+#: lib/Block/tree_alarms.php:3
+#, fuzzy
+msgid "Menu Alarms"
+msgstr "Уведомить"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr ""
+
+# fuzzy
+#: lib/UI/VarRenderer/nag.php:112
+#, fuzzy
+msgid "Minute"
+msgstr "Минут"
+
+# fuzzy
+#: templates/task/task.inc:74 lib/Nag.php:417 lib/UI/VarRenderer/nag.php:135
+msgid "Minute(s)"
+msgstr "Минут"
+
+#: lib/UI/VarRenderer/nag.php:52 lib/UI/VarRenderer/nag.php:101
+#, fuzzy
+msgid "Month"
+msgstr "Ежемесячно"
+
+#: templates/list/header.inc:9
+#, fuzzy
+msgid "More Options..."
+msgstr "Настройки пользователя"
+
+#: lib/api.php:1001
+msgid "Multiple iCalendar components found; only one vTodo is supported."
+msgstr ""
+
+# fuzzy
+#: templates/panel.inc:70
+msgid "My Task Lists:"
+msgstr "Мои списки задач:"
+
+# fuzzy
+#: list.php:34
+msgid "My Tasks"
+msgstr "Мои Задачи"
+
+# fuzzy
+#: templates/search/search.inc:18 templates/task/task.inc:17
+msgid "N_ame"
+msgstr "Название"
+
+# fuzzy
+#: templates/list/task_headers.inc:45
+msgid "Na_me"
+msgstr "Задача"
+
+#: lib/Driver/kolab.php:741
+#, php-format
+msgid "Nag/kolab: Did not find task %s"
+msgstr ""
+
+#: data.php:52 lib/Forms/EditTaskList.php:43 lib/Forms/CreateTaskList.php:36
+#: lib/Forms/task.php:65
+msgid "Name"
+msgstr "Название"
+
+#: task.php:74 task.php:109 lib/Block/tree_menu.php:26
+msgid "New Task"
+msgstr "Новая задача"
+
+#: templates/data/import.inc:39
+msgid "Next"
+msgstr "Далее"
+
+#: config/prefs.php.dist:166
+msgid "No"
+msgstr "Нет"
+
+#: lib/UI/VarRenderer/nag.php:46
+msgid "No delay"
+msgstr "Не откладывать"
+
+#: templates/task/task.inc:48 lib/UI/VarRenderer/nag.php:95
+msgid "No due date."
+msgstr "Нет даты завершения."
+
+#: lib/api.php:405 lib/api.php:724 lib/api.php:782 lib/api.php:994
+#, fuzzy
+msgid "No iCalendar data was found."
+msgstr "Прикрепленные"
+
+#: lib/Forms/task.php:50
+msgid "No parent task"
+msgstr "Нет родительской задачи"
+
+#: lib/Nag.php:605
+msgid "No task lists are available to guests."
+msgstr ""
+
+#: templates/list/task_footers.inc:5
+#, fuzzy
+msgid "No tasks match"
+msgstr "НЕ совпадает"
+
+#: lib/Block/summary.php:229
+#, fuzzy
+msgid "No tasks to display"
+msgstr "Список задач пуст."
+
+#: templates/task/task.inc:70 lib/Nag.php:421 lib/UI/VarRenderer/nag.php:151
+msgid "None"
+msgstr "Нет"
+
+#: lib/Driver/sql.php:100 lib/Driver/sql.php:136
+#, fuzzy
+msgid "Not found"
+msgstr "Отменить изменения"
+
+#: config/prefs.php.dist:41
+msgid "Notifications"
+msgstr "Настройки оповещения"
+
+#: config/prefs.php.dist:168
+msgid "On all shown tasklists"
+msgstr "По всему списку задач"
+
+#: config/prefs.php.dist:169
+msgid "On all tasklists I have read access to"
+msgstr "По всем спискам задач, которые я могу читать"
+
+# fuzzy
+#: config/prefs.php.dist:167
+msgid "On my tasklists only"
+msgstr "Только по моему списку задач"
+
+# fuzzy
+#: templates/list/task_headers.inc:39
+msgid "P_ri"
+msgstr "Пр"
+
+#: lib/Forms/task.php:72
+msgid "Parent task"
+msgstr "Родительская задача"
+
+#: templates/tasklists/tasklists.inc:87
+msgid "Permission"
+msgstr "Изменить права доступа"
+
+#: lib/api.php:591 lib/api.php:629 lib/api.php:662 lib/api.php:698
+#: lib/api.php:820 lib/api.php:875 lib/api.php:939 lib/api.php:976
+#: lib/api.php:1087 lib/api.php:1134
+#, fuzzy
+msgid "Permission Denied"
+msgstr "Изменить права доступа"
+
+#: lib/api.php:178 lib/Forms/DeleteTaskList.php:56
+#, fuzzy
+msgid "Permission denied"
+msgstr "Изменить права доступа"
+
+#: data.php:57 templates/view/task.inc:30 lib/Forms/task.php:90
+#: config/prefs.php.dist:87 config/prefs.php.dist:102
+msgid "Priority"
+msgstr "Приоритет"
+
+#: templates/view/task.inc:14 lib/Driver.php:907
+msgid "Private"
+msgstr "Личная"
+
+#: lib/Driver.php:905
+msgid "Private Task"
+msgstr "Личная задача"
+
+#: templates/view/task.inc:12 lib/Forms/task.php:85
+msgid "Private?"
+msgstr "Личная"
+
+#: lib/Forms/DeleteTaskList.php:43
+#, php-format
+msgid ""
+"Really delete the task list \"%s\"? This cannot be undone and all data on "
+"this task list will be permanently removed."
+msgstr ""
+
+# fuzzy
+# fuzzy
+#: view.php:106
+#, fuzzy
+msgid "Really delete this task?"
+msgstr "Удалить зту задачу"
+
+#: templates/tasklists/tasklists.inc:101
+msgid "Reset"
+msgstr "Сбросить"
+
+# fuzzy
+#: templates/panel.inc:88 templates/task/task.inc:102
+#: lib/Forms/EditTaskList.php:46 lib/Forms/task.php:97
+msgid "Save"
+msgstr "Записать"
+
+# fuzzy, php-format
+# fuzzy, php-format
+#: task.php:194
+#, php-format
+msgid "Saved %s."
+msgstr "Задача '%s' сохранена"
+
+#: search.php:14 templates/search/search.inc:31 templates/list/header.inc:4
+#: lib/Block/tree_menu.php:46
+msgid "Search"
+msgstr "Поиск"
+
+#: templates/search/search.inc:17
+msgid "Search In:"
+msgstr "Искать в:"
+
+# fuzzy
+#: templates/search/search.inc:12
+msgid "Search _Text:"
+msgstr "Что ищем"
+
+#: templates/panel.inc:58
+msgid "Search for Task Lists:"
+msgstr "Искать задачу:"
+
+#: templates/search/search.inc:24
+msgid "Search:"
+msgstr "Искать:"
+
+# fuzzy
+#: templates/tasklists/tasklists.inc:72
+msgid "Select a task list"
+msgstr "Выберите список задач:"
+
+# fuzzy
+#: templates/data/export.inc:11
+msgid "Select the export format:"
+msgstr "Выберите формат файла для экспорта:"
+
+#: templates/data/import.inc:36
+msgid "Select the file to import:"
+msgstr "Импортируемый файл:"
+
+# fuzzy
+#: templates/data/import.inc:12
+msgid "Select the format of the source file:"
+msgstr "Выберите формат файла для импорта:"
+
+# fuzzy
+# fuzzy
+#: templates/panel.inc:79
+#, fuzzy
+msgid "Shared Task Lists:"
+msgstr "Списки задач:"
+
+#: config/prefs.php.dist:68
+msgid "Should the Task List be shown in its own column in the List view?"
+msgstr "Отобразить название списка задач отдельной колонкой при выборе задачи?"
+
+# fuzzy
+#: lib/Block/summary.php:45
+msgid "Show action buttons?"
+msgstr "Кнопки"
+
+#: config/prefs.php.dist:203
+msgid "Show complete, incomplete, or all tasks in the task list?"
+msgstr ""
+
+#: config/prefs.php.dist:190
+msgid "Show data from any of these other applications in your task list?"
+msgstr ""
+
+#: config/prefs.php.dist:57
+msgid "Show data from other applications or sources."
+msgstr ""
+
+# fuzzy
+#: lib/Block/summary.php:48
+msgid "Show due dates?"
+msgstr "Даты завершения"
+
+# fuzzy
+#: lib/Block/summary.php:42
+msgid "Show priorities?"
+msgstr "Приоритеты"
+
+# fuzzy
+#: lib/Block/summary.php:54
+msgid "Show task alarms?"
+msgstr "Напоминания"
+
+# fuzzy
+#: lib/Block/summary.php:57
+msgid "Show task category?"
+msgstr "Категории"
+
+# fuzzy
+#: config/prefs.php.dist:78
+msgid "Show task list options panel?"
+msgstr "Показывать панель опций для списка задач?"
+
+# fuzzy
+#: lib/Block/summary.php:51
+msgid "Show tasklist name?"
+msgstr "Название списка задач"
+
+# fuzzy
+#: lib/Block/summary.php:70
+msgid "Show tasks from these categories"
+msgstr "Показать категории:"
+
+# fuzzy
+#: lib/Block/summary.php:66
+#, fuzzy
+msgid "Show tasks from these tasklists"
+msgstr "Показать категории:"
+
+#: templates/list/task_headers.inc:53
+#, fuzzy
+msgid "Sort by Category"
+msgstr "Сортировать по теме"
+
+#: templates/list/task_headers.inc:31
+#, fuzzy
+msgid "Sort by Completion Status"
+msgstr "Дата создания"
+
+#: templates/list/task_headers.inc:50
+msgid "Sort by Due Date"
+msgstr "Сортировать по дате завершения"
+
+#: templates/list/task_headers.inc:45
+msgid "Sort by Name"
+msgstr "Сортировать по имени"
+
+#: templates/list/task_headers.inc:39
+msgid "Sort by Priority"
+msgstr "Сортировать по приоритету"
+
+#: templates/list/task_headers.inc:35
+#, fuzzy
+msgid "Sort by User Name"
+msgstr "Сортировать по имени"
+
+# fuzzy
+#: config/prefs.php.dist:119
+msgid "Sort direction:"
+msgstr "Порядок сортировки:"
+
+#: config/prefs.php.dist:93
+msgid "Sort tasks by:"
+msgstr "Сортировать по:"
+
+# fuzzy
+#: templates/tasklist_list.php:17
+msgid "Subscription URL"
+msgstr "Ссылка для подписки"
+
+#: templates/list/task_summaries.inc:57
+#, fuzzy
+msgid "Task Alarm"
+msgstr "Имя задачи"
+
+#: templates/list/task_headers.inc:48
+#, fuzzy
+msgid "Task Alarm?"
+msgstr "Имя задачи"
+
+#: config/prefs.php.dist:27
+msgid "Task Defaults"
+msgstr "Умолчания"
+
+# fuzzy
+#: templates/tasklist_list.php:15 templates/tasklists/tasklists.inc:66
+#: lib/Forms/task.php:68
+msgid "Task List"
+msgstr "Список задач"
+
+# fuzzy
+#: templates/tasklist_list.php:12
+#, fuzzy
+msgid "Task List List"
+msgstr "Задачи"
+
+# fuzzy
+#: config/prefs.php.dist:33 config/prefs.php.dist:40 config/prefs.php.dist:55
+msgid "Task List and Share Options"
+msgstr "Прочие настройки"
+
+# fuzzy
+#: templates/tasklist_info.php:6
+#, fuzzy, php-format
+msgid "Task List owned by %s."
+msgstr "Задачи"
+
+# fuzzy
+#: templates/tasklists/tasklists.inc:84
+msgid "Task List's name:"
+msgstr "Название списка задач"
+
+# fuzzy
+#: tasklists.php:111 templates/panel.inc:52 templates/panel.inc:53
+msgid "Task Lists"
+msgstr "Задачи"
+
+#: config/prefs.php.dist:88 config/prefs.php.dist:103
+msgid "Task Name"
+msgstr "Имя задачи"
+
+#: templates/list/task_summaries.inc:55
+#, fuzzy
+msgid "Task Note"
+msgstr "Имя задачи"
+
+#: templates/list/task_headers.inc:47
+#, fuzzy
+msgid "Task Note?"
+msgstr "Имя задачи"
+
+# fuzzy
+#: templates/search/search.inc:6
+msgid "Task Search"
+msgstr "Поиск задачи"
+
+# fuzzy
+#: tasklists.php:28
+msgid "Task lists must have a name."
+msgstr "Вы не задали название списка задач"
+
+# fuzzy
+#: config/prefs.php.dist:92 config/prefs.php.dist:107
+msgid "Tasklist"
+msgstr "Список задач"
+
+#: lib/api.php:1056
+msgid "Tasks"
+msgstr "Задачи"
+
+# fuzzy
+#: lib/Block/summary.php:3
+msgid "Tasks Summary"
+msgstr "Состояние"
+
+#: data.php:193
+#, php-format
+msgid "The %s file didn't contain any tasks."
+msgstr ""
+
+#: lib/Driver.php:56
+#, fuzzy
+msgid "The Tasks backend is not currently available."
+msgstr "Нет доступных настроек."
+
+#: lib/Driver.php:137
+#, fuzzy, php-format
+msgid "The Tasks backend is not currently available: %s"
+msgstr "Нет доступных настроек."
+
+#: lib/Forms/task.php:133
+#, fuzzy
+msgid "The alarm value must not be empty."
+msgstr ""
+"#-#-#-#-#  compendium.po (IMP H3 v4.0.4)  #-#-#-#-#\n"
+"Это значение должно быть числом.\n"
+"#-#-#-#-#  ru_RU.po (0.0.2-cvs)  #-#-#-#-#\n"
+" Значение должно быть числом."
+
+#: templates/prefs/defaultduetimeselect.inc:8
+msgid "The current hour"
+msgstr "Текущий час"
+
+#: lib/Nag.php:641
+#, php-format
+msgid ""
+"The task \"%s\" has been deleted from \"%s\" tasklist, with a due date of: %"
+"s."
+msgstr ""
+
+# fuzzy, php-format
+# fuzzy, php-format
+#: tasklists.php:45
+#, php-format
+msgid "The task list \"%s\" couldn't be created: %s"
+msgstr "Список задач '%s' не может быть создан: %s"
+
+# fuzzy, php-format
+# fuzzy, php-format
+#: tasklists.php:56
+#, php-format
+msgid "The task list \"%s\" couldn't be saved: %s"
+msgstr "Список задач '%s' не может быть сохранен: %s"
+
+# fuzzy, php-format
+# fuzzy, php-format
+#: tasklists.php:47 tasklists/create.php:31
+#, php-format
+msgid "The task list \"%s\" has been created."
+msgstr "Список задач '%s' был успешно создан"
+
+# fuzzy, php-format
+#: tasklists.php:81 tasklists/delete.php:48
+#, php-format
+msgid "The task list \"%s\" has been deleted."
+msgstr "Список задач '%s' был удален."
+
+# fuzzy, php-format
+# fuzzy, php-format
+#: tasklists/edit.php:42
+#, fuzzy, php-format
+msgid "The task list \"%s\" has been renamed to \"%s\"."
+msgstr "Список задач '%s' был успешно создан"
+
+# fuzzy, php-format
+#: tasklists.php:58 tasklists/edit.php:44
+#, php-format
+msgid "The task list \"%s\" has been saved."
+msgstr "Список задач '%s' был сохранен."
+
+#: config/prefs.php.dist:108
+msgid "Then:"
+msgstr "Затем по:"
+
+# fuzzy
+#: templates/list/empty.inc:2
+msgid "There are no tasks matching the current criteria."
+msgstr "Подходящих задач не найдено"
+
+#: templates/tasklist_info.php:7
+msgid "To subscribe to this task list from another program, use this URL: "
+msgstr ""
+
+#: lib/Driver.php:140
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Невозможно загрузить определение %s."
+
+#: lib/Forms/EditTaskList.php:55
+#, fuzzy, php-format
+msgid "Unable to save task list \"%s\": %s"
+msgstr "Ошибка при доступе к указанной адресной книге."
+
+# fuzzy
+#: templates/task/task.inc:103
+msgid "Undo changes"
+msgstr "Отменить изменения"
+
+# fuzzy
+# fuzzy
+#: templates/view/task.inc:9 templates/list/task_summaries.inc:62
+#: lib/Nag.php:850 lib/Nag.php:851 lib/Nag.php:865 lib/Nag.php:866
+#: lib/Forms/task.php:81 lib/Block/summary.php:31 lib/Block/summary.php:222
+msgid "Unfiled"
+msgstr "Отсутствует"
+
+#: lib/api.php:502 lib/api.php:789 lib/api.php:847 lib/api.php:901
+#: lib/api.php:1026
+#, fuzzy, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "Некорректное имя."
+
+#: lib/Driver.php:1084
+#, php-format
+msgid ""
+"We would like to remind you of this due task.\n"
+"\n"
+"%s\n"
+"\n"
+"Date: %s\n"
+"Time: %s\n"
+"\n"
+"%s"
+msgstr ""
+
+# fuzzy
+#: templates/task/task.inc:77 lib/Nag.php:408 lib/UI/VarRenderer/nag.php:136
+msgid "Week(s)"
+msgstr "Недель"
+
+#: templates/prefs/defaultduetimeselect.inc:6
+msgid "What do you want to be the default due time for tasks?"
+msgstr "В какое время по умолчанию задача должна считаться завершенной?"
+
+#: config/prefs.php.dist:146
+msgid ""
+"When creating a new task, how many days in the future should the default due "
+"date be (0 means today)?"
+msgstr ""
+"При создании новой задачи, сколько дней по умолчанию требуется для ее "
+"завершения(0 означает завершение сегодня)"
+
+#: config/prefs.php.dist:137
+msgid "When creating a new task, should it default to having a due date?"
+msgstr "При создании новой задачи, задавать по умолчанию дату завершения?"
+
+#: templates/data/import.inc:21
+msgid "Which tasklist should the tasks be added to?"
+msgstr ""
+
+#: lib/Nag.php:641
+msgid ""
+"You requested to be notified when tasks are deleted from your tasklists."
+msgstr ""
+
+#: lib/Nag.php:636
+msgid "You requested to be notified when tasks are edited on your tasklists."
+msgstr ""
+
+# fuzzy
+#: templates/prefs/tasklistselect.inc:10
+msgid "Your default task list:"
+msgstr "Список задач умолчанию:"
+
+# fuzzy
+#: templates/tasklists/tasklists.inc:70
+msgid "Your task lists:"
+msgstr "Ваш список задач:"
+
+# fuzzy
+#: templates/panel.inc:65
+msgid "[Manage Task Lists]"
+msgstr "[Управление задачами]"
+
+#: templates/list/task_summaries.inc:46 lib/Block/summary.php:101
+#: lib/Block/summary.php:206
+#, fuzzy
+msgid "[none]"
+msgstr "нет"
+
+# fuzzy
+#: templates/search/search.inc:25
+msgid "_All Tasks"
+msgstr "Все задачи"
+
+# fuzzy
+#: list.php:111
+msgid "_All tasks"
+msgstr "Все"
+
+# fuzzy
+#: templates/search/search.inc:20 templates/task/task.inc:41
+msgid "_Category"
+msgstr "Категория"
+
+# fuzzy
+#: view.php:99
+msgid "_Complete"
+msgstr "Завершить"
+
+# fuzzy
+#: list.php:114
+msgid "_Completed tasks"
+msgstr "Завершенные"
+
+# fuzzy
+#: view.php:106
+msgid "_Delete"
+msgstr "Удалить"
+
+# fuzzy
+#: templates/search/search.inc:19 templates/task/task.inc:94
+msgid "_Description"
+msgstr "Описание"
+
+# fuzzy
+#: templates/list/task_headers.inc:50
+msgid "_Due Date"
+msgstr "Срок"
+
+# fuzzy
+#: view.php:102
+msgid "_Edit"
+msgstr "Редактировать"
+
+# fuzzy
+#: list.php:113
+msgid "_Future tasks"
+msgstr "Будущие"
+
+# fuzzy
+#: lib/Nag.php:553
+msgid "_Import/Export"
+msgstr "Импорт/Экспорт"
+
+# fuzzy
+#: lib/Nag.php:540
+msgid "_List Tasks"
+msgstr "Выбрать"
+
+# fuzzy
+#: lib/Nag.php:545
+msgid "_New Task"
+msgstr "Добавить"
+
+# fuzzy
+#: lib/Nag.php:558
+msgid "_Print"
+msgstr "Печать"
+
+#: templates/task/task.inc:82
+msgid "_Priority"
+msgstr "Приоритет"
+
+# fuzzy
+#: lib/Nag.php:549
+msgid "_Search"
+msgstr "Поиск"
+
+# fuzzy
+#: templates/task/task.inc:26 templates/list/task_headers.inc:35
+msgid "_Task List"
+msgstr "Список задач"
+
+#: templates/prefs/defaultduetimeselect.inc:15
+#, fuzzy
+msgid "am"
+msgstr "Имя"
+
+#: data.php:31
+#, fuzzy
+msgid "iCalendar (vTodo)"
+msgstr "Календарь"
+
+#: lib/Block/tree_menu.php:36
+#, php-format
+msgid "in %s"
+msgstr "в %s"
+
+# fuzzy
+#: lib/Nag.php:79
+#, fuzzy
+msgid "no time"
+msgstr "1 заметка"
+
+#: templates/prefs/defaultduetimeselect.inc:15
+#, fuzzy
+msgid "pm"
+msgstr "Внимание"
+
+#: data.php:100 templates/data/export.inc:1
+msgid "tasks.csv"
+msgstr ""
+
+#: data.php:111
+msgid "tasks.ics"
+msgstr ""

@@ -1,7 +1,7 @@
 # Macros
 %define         V_package mnemo
 %define         V_version 2.2.3
-%define         V_release 20100228
+%define         V_release 20100607
 
 # Package Information
 Name:		%{V_package}

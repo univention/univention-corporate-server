@@ -1,0 +1,149 @@
+<if:pgpactive>
+ <input type="checkbox" id="use_pgp" name="use_pgp" checked="checked" /> <label for="use_pgp"><gettext>Enable PGP functionality?</gettext></label>&nbsp;<tag:overview-help />
+ <br />
+ <em style="color:red"><gettext>NOTE:</gettext></em> <gettext>PGP support requires popup windows to be used.  If your browser is currently set to disable popup windows, you must change this setting or else the PGP features will not work correctly.</gettext>
+ <br />
+<if:attach_pubkey_notlocked>
+ <input type="checkbox" id="pgp_attach_pubkey" name="pgp_attach_pubkey"<if:attach_pubkey> checked="checked"</if:attach_pubkey> /> <label for="pgp_attach_pubkey"><gettext>Should your PGP public key to be attached to your messages by default?</gettext></label>&nbsp;<tag:attach_pubkey-help />
+ <br />
+</if:attach_pubkey_notlocked>
+<if:scan_body_notlocked>
+ <input type="checkbox" id="pgp_scan_body" name="pgp_scan_body"<if:scan_body> checked="checked"</if:scan_body> /> <label for="pgp_scan_body"><gettext>Should the body of text/plain messages be scanned for PGP data?</gettext></label>&nbsp;<tag:scan_body-help />
+ <br />
+</if:scan_body_notlocked>
+<if:verify_notlocked>
+ <input type="checkbox" id="pgp_verify" name="pgp_verify"<if:pgp_verify> checked="checked"</if:pgp_verify> /> <label for="pgp_verify"><gettext>Should PGP signed messages automatically be verified when viewed?</gettext></label>&nbsp;<tag:pgp_verify-help />
+ <br />
+</if:verify_notlocked>
+
+ <p>
+  <input type="submit" name="save" class="button" onclick="document.prefs.actionID.value='save_options'; return true;" value="<gettext>Save Options</gettext>" />
+  <input id="prefs_return" type="button" name="back" class="button" onclick="document.location.href='<tag:prefsurl />'" value="<gettext>Return to Options</gettext>" />
+ </p>
+</div>
+
+<br class="spacer" />
+
+<div class="header">
+ <ul><li><tag:manage_pubkey-help /></li></ul>
+ <gettext>PGP Public Keyring</gettext>
+</div>
+
+<div class="prefsContainer item">
+<if:empty_pubkey_list>
+ <em><gettext>No Keys in Keyring</gettext></em><br />
+<else:empty_pubkey_list>
+<if:pubkey_error>
+ <em style="color:red"><gettext>Error:</gettext></em> <tag:pubkey_error /><br />
+<else:pubkey_error>
+ <table>
+<loop:pubkey_list>
+  <tr>
+   <td><tag:pubkey_list.name /> (<tag:pubkey_list.email />)</td>
+   <td>&nbsp;&nbsp;[<tag:pubkey_list.view /><gettext>View</gettext></a>]&nbsp;[<tag:pubkey_list.info /><gettext>Details</gettext></a>]&nbsp;[<tag:pubkey_list.delete /><gettext>Delete</gettext></a>]</td>
+  </tr>
+</loop:pubkey_list>
+ </table>
+</else:pubkey_error></if:pubkey_error></else:empty_pubkey_list></if:empty_pubkey_list>
+
+<if:no_file_upload>
+ <br /><span style="color:red"><gettext>Key import is not available. File upload is not enabled on this server.</gettext></span><br />
+<else:no_file_upload>
+<if:no_source>
+ <br /><em><gettext>Key import is not available. You have no address book defined to add your contacts.</gettext></em><br />
+<else:no_source>
+ <br /><input type="submit" name="save" class="button" onclick="popup_imp('<tag:public_import_url />',750,275); return false;" value="<gettext>Import Public Key</gettext>" />
+ <tag:import_pubkey-help />
+</else:no_source></if:no_source></else:no_file_upload></if:no_file_upload>
+</div>
+
+<br class="spacer" />
+
+<div class="header">
+ <ul><li><tag:personalkey-help /></li></ul>
+ <gettext>Your PGP Public/Private Keys</gettext>
+</div>
+
+<div class="prefsContainer item">
+<if:secure_check>
+ <em><gettext>PGP Personal Keypair support requires a secure web connection.</gettext></em>
+<else:secure_check>
+<if:has_key>
+ <table>
+  <tr>
+   <td><gettext>Your Public Key:</gettext></td>
+   <td>&nbsp;&nbsp;[<tag:viewpublic /><gettext>View</gettext></a>]&nbsp;[<tag:infopublic /><gettext>Details</gettext></a>]&nbsp;[<tag:sendkey /><gettext>Send Key to Public Keyserver</gettext></a>]</td>
+   <td><tag:personalkey-public-help /></td>
+  </tr>
+  <tr>
+   <td><gettext>Your Private Key:</gettext></td>
+   <td>&nbsp;&nbsp;[<tag:passphrase /></a>]&nbsp;[<tag:viewprivate /><gettext>View</gettext></a>]&nbsp;[<tag:infoprivate /><gettext>Details</gettext></a>]</td>
+   <td><tag:personalkey-private-help /></td>
+  </tr>
+ </table>
+
+ <p>
+  <input type="submit" name="delete" class="button" onclick="if (confirm('<tag:deletekeypair />')) { document.prefs.actionID.value='delete_key'; return true; } else { return false; }" value="<gettext>Delete Current Keys</gettext>" />
+  <tag:personalkey-delete-help />
+ </p>
+<else:has_key>
+ <table>
+  <tr>
+   <td><label for="generate_realname"><gettext>Your Name:</gettext></label></td>
+   <td>&nbsp;&nbsp;<input type="text" id="generate_realname" name="generate_realname" size="30" maxlength="60" value="<tag:fullname />"/></td>
+   <td><tag:personalkey-create-name-help /></td>
+  </tr>
+  <tr>
+   <td><label for="generate_comment"><gettext>Comment:</gettext></label></td>
+   <td>&nbsp;&nbsp;<input type="text" id="generate_comment" name="generate_comment" size="30" maxlength="60" /></td>
+   <td><tag:personalkey-create-comment-help /></td>
+  </tr>
+  <tr>
+   <td><label for="generate_email"><gettext>E-mail Address:</gettext></label></td>
+   <td>&nbsp;&nbsp;<input type="text" id="generate_email" name="generate_email" size="30" maxlength="60" value="<tag:fromaddr />"/></td>
+   <td><tag:personalkey-create-email-help /></td>
+  </tr>
+  <tr>
+   <td><label for="generate_keylength"><gettext>Key Length:</gettext></label></td>
+   <td>&nbsp;
+    <select id="generate_keylength" name="generate_keylength">
+     <option value="1024">1024</option>
+     <option value="2048">2048</option>
+    </select>
+   </td>
+   <td><tag:personalkey-create-keylength-help /></td>
+  </tr>
+  <tr>
+   <td><label for="generate_passphrase1"><gettext>Passphrase:</gettext></label></td>
+   <td>&nbsp;&nbsp;<input type="password" id="generate_passphrase1" name="generate_passphrase1" size="30" maxlength="60" /></td>
+   <td><tag:personalkey-create-passphrase-help /></td>
+  </tr>
+  <tr>
+   <td><label for="generate_passphrase2"><gettext>Passphrase (Again):</gettext></label></td>
+   <td>&nbsp;&nbsp;<input type="password" id="generate_passphrase2" name="generate_passphrase2" size="30" maxlength="60" /></td>
+   <td></td>
+  </tr>
+ </table>
+
+ <p>
+  <input type="submit" name="save" class="button" onclick="if (confirm('<tag:keygen />')) { document.prefs.actionID.value='generate_key';return true; } else { return false; }" value="<gettext>Create Keys</gettext>" />
+<if:no_file_upload><else:no_file_upload>
+  <input type="submit" name="save" class="button" onclick="popup_imp('<tag:personal_import_url />',750,275);return false;" value="<gettext>Import Keypair</gettext>" />
+</else:no_file_upload></if:no_file_upload>
+  <tag:personalkey-create-actions-help />
+</p>
+</else:has_key></if:has_key></else:secure_check></if:secure_check>
+<else:pgpactive>
+<if:use_pgp_locked>
+ <em><gettext>PGP support is disabled on this system.</gettext></em>
+<else:use_pgp_locked>
+ <input type="checkbox" id="use_pgp" name="use_pgp" /> <tag:use_pgp_label /> <tag:use_pgp_help /><br />
+</else:use_pgp_locked></if:use_pgp_locked>
+
+ <p>
+  <input type="submit" name="save" class="button" onclick="document.prefs.actionID.value='save_options'; return true;" value="<gettext>Save Options</gettext>" />
+  <input id="prefs_return" type="button" name="back" class="button" onclick="document.location.href='<tag:prefsurl />'" value="<gettext>Return to Options</gettext>" />
+ </p>
+</else:pgpactive></if:pgpactive>
+</div>
+</form>

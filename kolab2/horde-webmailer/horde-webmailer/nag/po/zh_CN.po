@@ -1,0 +1,322 @@
+# NAG Simplified Chinese Translation
+# Copyright 2002 Peter Wang
+# Peter Wang <whw@oulink.net>, 2002
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nag 2.0-cvs\n"
+"POT-Creation-Date: 2002-05-30 16:34+0800\n"
+"PO-Revision-Date: 2002-05-30 16:34+0800\n"
+"Last-Translator: Peter Wang <whw@oulink.net>\n"
+"Language-Team: Simplified Chinese <whw@oulink.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=GB2312\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%d tasks"
+msgstr "%d 个待办事项"
+
+msgid "1 task"
+msgstr "1 个待办事项"
+
+msgid "Adding A New Task"
+msgstr "新增待办事项中"
+
+msgid "Are you sure you want to permanently delete these tasks?"
+msgstr "你确定要永远的删除这些待办事项?"
+
+msgid "Ascending"
+msgstr "升幂"
+
+msgid "Back to Task List"
+msgstr "返回待办事项清单"
+
+msgid "Category"
+msgstr "类别"
+
+msgid "Change your task sorting and display options."
+msgstr "改变你的待办事项排序方式以及显示选项."
+
+#, c-format
+msgid "Changed %d tasks to priority %d."
+msgstr "已改变 %d 个待办事项的优先权为 %d."
+
+#, c-format
+msgid "Changed 1 task to priority %d."
+msgstr "已改变 1 个待办事项的优先权为 %d."
+
+msgid "Choose Action:"
+msgstr "选择操作:"
+
+msgid "Clear Form"
+msgstr "清除表单"
+
+msgid "Complete Task"
+msgstr "完成待办事项"
+
+msgid "Complete Tasks"
+msgstr "完成待办事项"
+
+msgid "Completed?"
+msgstr "完成?"
+
+msgid "Completion Status"
+msgstr "完成状态"
+
+msgid "Default sorting criteria:"
+msgstr "默认排序标准:"
+
+msgid "Default sorting direction:"
+msgstr "默认排序方向:"
+
+msgid "Delete Task"
+msgstr "删除待办事项"
+
+msgid "Delete Tasks"
+msgstr "删除待办事项"
+
+#, c-format
+msgid "Deleted %d tasks."
+msgstr "%d 个待办事项已删除."
+
+msgid "Deleted 1 task."
+msgstr "已删除 1 个待办事项."
+
+msgid "Descending"
+msgstr "降序"
+
+msgid "Description"
+msgstr "描述"
+
+msgid "Display Options"
+msgstr "显示选项"
+
+msgid "Due By"
+msgstr "到期时间"
+
+msgid "Due Date"
+msgstr "有效期"
+
+msgid "Help"
+msgstr "帮助"
+
+msgid "Language"
+msgstr "语言"
+
+msgid "List Tasks"
+msgstr "列出待办事项"
+
+#, c-format
+msgid "Marked %d tasks as completed."
+msgstr "已变更 %d 个待办事项的完成状态为."
+
+msgid "Marked 1 task as completed."
+msgstr "已变更 1 个待办事项的完成状态."
+
+msgid "Modify Task"
+msgstr "修改待办事项"
+
+msgid "Modifying:"
+msgstr "修改中:"
+
+msgid "Nag is not properly configured"
+msgstr "Nag 尚未完成设定."
+
+msgid "Name"
+msgstr "名称"
+
+msgid "New Task"
+msgstr "新增待办事项"
+
+msgid "No configuration information specified for SQL Tasks."
+msgstr "没有待办事项(SQL型态)的设定资讯."
+
+msgid "No due date."
+msgstr "永远."
+
+msgid "No tasks were changed."
+msgstr "没有待办事项被修改."
+
+msgid "No tasks were deleted."
+msgstr "没有待办事项被删除."
+
+msgid "No"
+msgstr "无"
+
+msgid "None specified"
+msgstr "未指定"
+
+msgid "Options"
+msgstr "选项"
+
+msgid "Other Options"
+msgstr "其他选项"
+
+msgid "Please enter the task priority (1-5):"
+msgstr "请输入待办事项的优先权(1-5):"
+
+msgid "Pri"
+msgstr "优先"
+
+msgid "Priorities must be between 1 and 5. Please enter a valid priority:"
+msgstr "优先权必须介於 1 到 5 .请重新输入:"
+
+msgid "Priority"
+msgstr "优先权"
+
+msgid "Problem?"
+msgstr "问题?"
+
+msgid "Refresh List"
+msgstr "重新整理清单"
+
+msgid "Required 'database' not specified in tasks configuration."
+msgstr "待办事项设定资料中,找不到关於 'database'设定资料."
+
+msgid "Required 'hostspec' not specified in tasks configuration."
+msgstr "待办事项设定资料中,找不到关於 'hostspec'设定资料."
+
+msgid "Required 'password' not specified in tasks configuration."
+msgstr "待办事项设定资料中,找不到关於 'password'设定资料."
+
+msgid "Required 'phptype' not specified in tasks configuration."
+msgstr "待办事项设定资料中,找不到关於 'phptype'设定资料."
+
+msgid "Required 'table' not specified in tasks configuration."
+msgstr "待办事项设定资料中,找不到关於 'table'设定资料."
+
+msgid "Required 'username' not specified in tasks configuration."
+msgstr "待办事项设定资料中,找不到关於 'username'设定资料."
+
+msgid "Save Task"
+msgstr "储存待办事项"
+
+msgid "Search Results"
+msgstr "搜寻结果"
+
+msgid "Search Scope"
+msgstr "搜寻范围"
+
+msgid "Search Text"
+msgstr "搜寻本文"
+
+msgid "Search"
+msgstr "搜寻"
+
+msgid "Select your preferred language:"
+msgstr "选择偏好语言:"
+
+msgid "Selected?"
+msgstr "已选择?"
+
+msgid "Set Task Priority"
+msgstr "设定待办事项的优先权"
+
+msgid "Set the your preferred display language."
+msgstr " 设定显示偏好语系."
+
+msgid "Show completed tasks in the task list?"
+msgstr "显示已完成事项於清单中?"
+
+msgid "Some of Nag's configuration files are missing:"
+msgstr "部分的 NAG 设定档案遗失:"
+
+msgid "Sort Direction"
+msgstr "排序方向"
+
+msgid "Sort by Category"
+msgstr "以类别排序"
+
+msgid "Sort by Completion Status"
+msgstr "依完成状态排序"
+
+msgid "Sort by Due Date"
+msgstr "依有效期排序"
+
+msgid "Sort by Name"
+msgstr "以名称排序"
+
+msgid "Sort by Priority"
+msgstr "以优先权排序"
+
+msgid "Task Details"
+msgstr "待办事项细节"
+
+msgid "Task List"
+msgstr "显示待办事项"
+
+msgid "Task Name"
+msgstr "待办事项名称"
+
+msgid "Task Note"
+msgstr "待办事项备注"
+
+msgid "Task Note?"
+msgstr "待办事项注解?"
+
+msgid "The requested task does not exist."
+msgstr "须要的待办事项并不存在."
+
+msgid "The task was saved."
+msgstr "此事项已储存."
+
+msgid "There was a problem deleting tasks."
+msgstr "删除待办事项时发生错误."
+
+msgid "There was a problem saving the task."
+msgstr "储存待办事项时发生错误."
+
+msgid "There was a problem setting task completion status."
+msgstr "设定待办事项完成状态时发生一些问题."
+
+msgid "There was a problem setting task priority."
+msgstr "设定待办事项优先权时发生一些问题."
+
+msgid "This file contains preferences for Nag."
+msgstr "这个档案包含待办事项的一些偏好设定资料."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"这个档案控制文件中关於颜色与字体的展现风格.并以新增或覆盖 Horde 的方式为预设"
+"值."
+
+msgid ""
+"This is the main Nag configuration file. It contains options for all Nag "
+"scripts."
+msgstr "这是 NAG 的主要设定档.并包含其程式所需的路径与选项."
+
+msgid "Undo Changes"
+msgstr "恢复变更"
+
+msgid "Unfiled"
+msgstr "未归档"
+
+msgid "Unknown task"
+msgstr "未知的待办事项"
+
+msgid "Unknown"
+msgstr "未知"
+
+msgid "User Options"
+msgstr "用户选项"
+
+msgid "View Task Details"
+msgstr "检视待办事项细节"
+
+msgid "Yes"
+msgstr "是"
+
+msgid "You must select at least one task first."
+msgstr "你必须选择至少一个待办事项."
+
+msgid "Your Information"
+msgstr "你的个人资料"
+
+msgid "Your task list is empty."
+msgstr "你的待办事项清单空白."
+
+msgid "at"
+msgstr "在"

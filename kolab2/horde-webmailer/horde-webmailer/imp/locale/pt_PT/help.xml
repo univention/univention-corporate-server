@@ -1,0 +1,793 @@
+<?xml version="1.0"?>
+<!-- $Horde: imp/locale/pt_PT/help.xml,v 1.16.6.9 2008-02-12 12:23:24 jan Exp $ -->
+<help>
+  <entry id="keyboard-navigation" state="new">
+    <title>Keyboard: Navigation</title>
+    <para>You may use your keyboard to move between messages in the mailbox list, to the previous or next messages while viewing a message, and between pages of your mailbox list.</para>
+    <heading>Message List Keyboard Navigation</heading>
+    <para>You can use your keyboard to select and view messages in your message list. In order to move between messages, use the Up and Down arrow keys while holding the Control (Ctrl) key. You will start at the bottom of the page (last displayed message) if you press Up, and at the top of the page (first displayed message) if you press Down.</para>
+    <para>The current message is highlighted just as if you were mousing over it. While you are moving up and down through the mailbox list, you can press Space to select or deselect that message, and you can press Return to view that message.</para>
+    <heading>Message List: Previous/Next Page</heading>
+    <para>Use the Left and Right keys on your keyboard to go to the previous page of messages in your mailbox or the next page of messages, respectively.</para>
+    <heading>Message View: Previous/Next Message</heading>
+    <para>Use the Left and Right keys on your keyboard to go to the previous message or the next message, respectively.</para>
+</entry>
+  <entry id="message-forward" state="new">
+  <title>Forwarding Email</title>
+  <para>When forwarding an email, you have several choices.</para>
+
+  <heading>Forwarding from the Mailbox View</heading>
+  <para>In the mailbox view, you can forward multiple messages at the same time. Each message that you select will be sent, in its entirety, to your recipients. You will see each message as an attachment in your compose window. On the receiving end, the recipient(s) will see each email as an embedded email.</para>
+
+  <heading>Forwarding from the Message View</heading>
+  <para>When forwarding individual messages in the message view, you can choose three different options:</para>
+  <para><b>1. Entire Message</b>: This option will attach the entire message to your email. The compose area will not contain any text from the forwarded message. This is the same as forwading a single email from the mailbox view, except that the Subject: line will be set for you.</para>
+  <para><b>2. Body Text Only</b>: If you only want to forward the body of the email, choose this option. Any attachments to the original email will not be included in your forward. The text will appear in the compose area, and you can edit it if you wish or add your own comments.</para>
+  <para><b>3. Body Text with Attachments</b>: To forward the attachments of an email along, along with the body as described in #2 Body Text Only, use this option. The body text will be placed in the compose area for you to edit, and all attachments to the original message will be copied to your forward.</para>
+
+</entry>
+  <entry id="compose-buttons" state="unknown">
+    <title>Message Composition: Actions</title>
+    <heading>Actions</heading>
+    <para>
+    Send Message launches your email to the intended recipient(s). Be sure you want to send before clicking here as once sent it cannot be taken back.
+    </para>
+    <para>
+    Save Draft places an unfinished message in a folder called 'Drafts'
+accessible by the pop-down box on the right side of the blue navigation bar at top. You can then finish the message later by switching to the 'Drafts' folder, clicking on the saved message to open it, and then clicking on 'Resume'. Be sure to put a subject on the email before you save the draft so that you can easily identify which message you want within the Drafts folder. After saving as a Draft, you are returned to your INBOX or whatever folder you were viewing last.
+    </para>
+    <para>
+    Cancel Message drops the message in progress and simply returns you to the INBOX or whatever folder you were viewing last.
+    </para>
+<!-- English entry:
+<entry id="compose-buttons">
+    <title>Message Composition: Actions</title>
+    <heading>Actions</heading>
+    <para>
+    Send Message launches your email to the intended recipient(s). Be sure you want to send before clicking here as once sent it cannot be taken back.
+    </para>
+    <para>
+    Save Draft places an unfinished message in a folder called 'Drafts'
+accessible by the pop-down box on the right side of the blue navigation bar at top. You can then finish the message later by switching to the 'Drafts' folder, clicking on the saved message to open it, and then clicking on 'Resume'. Be sure to put a subject on the email before you save the draft so that you can easily identify which message you want within the Drafts folder. After saving as a Draft, you are returned to your INBOX or whatever folder you were viewing last.
+    </para>
+    <para>
+    Cancel Message drops the message in progress and simply returns you to the INBOX or whatever folder you were viewing last.
+    </para>
+</entry>--></entry>
+  <entry id="compose-identity" state="new">
+    <title>Message Composition: Identity</title>
+    <heading>Identity</heading>
+    <para>
+    Choose the identity to send email as from a drop-down list of identities that you entered under <qt>Options-&gt;Personal Information</qt>.
+    </para>
+</entry>
+  <entry id="compose-from" state="unknown">
+    <title>Message Composition: From</title>
+    <heading>"From"</heading>
+    <para>
+    Enter your correct email address. Your email address is automatically entered for you following "From:" in outgoing email.
+    </para>
+<!-- English entry:
+<entry id="compose-from">
+    <title>Message Composition: From</title>
+    <heading>&quot;From&quot;</heading>
+    <para>
+    Enter your correct email address. Your email address is automatically entered for you following &quot;From:&quot; in outgoing email.
+    </para>
+</entry>--></entry>
+  <entry id="compose-to" state="unknown">
+    <title>Message Composition: To</title>
+    <heading>"To"</heading>
+    <para>
+    Enter the correct email address(es) of those to receive your message. You must separate each address with a comma; other punctuation will result in an error. Your entry follows "To:" in outgoing mail.  
+    </para>
+<!-- English entry:
+<entry id="compose-to">
+    <title>Message Composition: To</title>
+    <heading>&quot;To&quot;</heading>
+    <para>
+    Enter the correct email address(es) of those to receive your message. You must separate each address with a comma; other punctuation will result in an error. Your entry follows &quot;To:&quot; in outgoing mail.  
+    </para>
+</entry>--></entry>
+  <entry id="compose-cc" state="unknown">
+    <title>Message Composition: Cc</title>
+    <heading>"Cc"</heading>
+    <para>
+    Enter the correct email address(es) of those to receive a carbon copy of your message. Separate each address with a comma. Your entry follows "Cc:" in outgoing mail. Carbon copies are usually sent to people other than the one(s) being written to directly but are important recipients of the email as well, usually someone indirectly concerned about the subject of the email.  All 'To:' recipients and 'Cc:' recipients can see the entire list of both kinds of recipients.
+    </para>
+<!-- English entry:
+<entry id="compose-cc">
+    <title>Message Composition: Cc</title>
+    <heading>&quot;Cc&quot;</heading>
+    <para>
+    Enter the correct email address(es) of those to receive a carbon copy of your message. Separate each address with a comma. Your entry follows &quot;Cc:&quot; in outgoing mail. Carbon copies are usually sent to people other than the one(s) being written to directly but are important recipients of the email as well, usually someone indirectly concerned about the subject of the email.  All 'To:' recipients and 'Cc:' recipients can see the entire list of both kinds of recipients.
+    </para>
+</entry>--></entry>
+  <entry id="compose-bcc" state="unknown">
+    <title>Message Composition: Bcc</title>
+    <heading>"Bcc"</heading>
+    <para>
+    Enter the correct email address(es) of those to receive a blind carbon copy of your message. You must separate each address with a comma; other punctuation will result in an error. Your entry follows "Bcc:" in outgoing mail. Blind carbon copies are usually sent to people other than direct and indirect recipients ("To:" and "Cc:" recipients) who need to read what is being written as well WITHOUT the other recipients knowing that they are receiving the email. Thus 'blind' means that the identity of these recipients is hidden from all other recipients of the email, and only you and they know they got a copy. You typically use this to tell an authority figure that you are telling someone something without alarming the person you are sending the actual email to.
+    </para>
+<!-- English entry:
+<entry id="compose-bcc">
+    <title>Message Composition: Bcc</title>
+    <heading>&quot;Bcc&quot;</heading>
+    <para>
+    Enter the correct email address(es) of those to receive a blind carbon copy of your message. You must separate each address with a comma; other punctuation will result in an error. Your entry follows &quot;Bcc:&quot; in outgoing mail. Blind carbon copies are usually sent to people other than direct and indirect recipients (&quot;To:&quot; and &quot;Cc:&quot; recipients) who need to read what is being written as well WITHOUT the other recipients knowing that they are receiving the email. Thus 'blind' means that the identity of these recipients is hidden from all other recipients of the email, and only you and they know they got a copy. You typically use this to tell an authority figure that you are telling someone something without alarming the person you are sending the actual email to.
+    </para>
+</entry>--></entry>
+  <entry id="compose-subject" state="unknown">
+    <title>Message Composition: Subject</title>
+    <heading>"Subject"</heading>
+    <para>
+    Enter the subject of your message. Your entry follows "Subject:" in outgoing mail. Keep it short, simple and descriptive.  The subject line is the easiest way for you and your correspondents to remember what was in the email and thus is very important in organizing your email and finding important ones later.  Also, when you 'Reply' or 'Forward' and email this subject line is copied over into the new message and so is a valuable way of telling what messages go together to form a "thread" of a conversation.  However, if the 'Reply' or 'Forward' contains new ideas, you may want to add simple modifications to the 'Subject' line so the recipient(s) can follow the progression of the "thread."
+    </para>
+<!-- English entry:
+<entry id="compose-subject">
+    <title>Message Composition: Subject</title>
+    <heading>&quot;Subject&quot;</heading>
+    <para>
+    Enter the subject of your message. Your entry follows &quot;Subject:&quot; in outgoing mail. Keep it short, simple and descriptive.  The subject line is the easiest way for you and your correspondents to remember what was in the email and thus is very important in organizing your email and finding important ones later.  Also, when you 'Reply' or 'Forward' and email this subject line is copied over into the new message and so is a valuable way of telling what messages go together to form a &quot;thread&quot; of a conversation.  However, if the 'Reply' or 'Forward' contains new ideas, you may want to add simple modifications to the 'Subject' line so the recipient(s) can follow the progression of the &quot;thread.&quot;
+    </para>
+</entry>--></entry>
+  <entry id="compose-charset" state="new">
+    <title>Message Composition: Charset</title>
+    <heading>Character Set</heading>
+    <para>
+    Selects the character set to send the outgoing message with.
+    </para>
+</entry>
+  <entry id="compose-options" state="unknown">
+    <title>Message Composition: Options</title>
+    <heading>"Options"</heading>
+    <para>
+    These Options help you prepare your message.
+    </para>
+    <para>
+    Click "Spell Check" to check your spelling.
+    </para>
+    <para>
+    Click "Attachments" to view at the bottom of the page a list of files attached to this message.
+    </para>
+    <para>
+    Activate the check-button next to "Save copy" to save a copy of this message in your "Sent Mail" folder. Save copies of important emails you send so that you have something to refer back to later and to keep an accurate record of what was said. We do not recommend you save every email since then your disk storage quota will be used up quickly (especially when you send attachments) and your mailbox will be full and unable to receive new incoming email. You can, however, turn this feature 'on' as your default within your Identity, by going to Options-&gt;Personal Information-&gt;Edit your identities. Be careful when using this modified default as you will need to periodically purge your "Sent Mail" folder or it will eventually make your mailbox full and unuseable.
+    </para>
+<!-- English entry:
+<entry id="compose-options">
+    <title>Message Composition: Options</title>
+    <heading>&quot;Options&quot;</heading>
+    <para>
+    These Options help you prepare your message.
+    </para>
+    <para>
+    Click &quot;Spell Check&quot; to check your spelling.
+    </para>
+    <para>
+    Click &quot;Attachments&quot; to view at the bottom of the page a list of files attached to this message.
+    </para>
+    <para>
+    Activate the check-button next to &quot;Save copy&quot; to save a copy of this message in your &quot;Sent Mail&quot; folder. Save copies of important emails you send so that you have something to refer back to later and to keep an accurate record of what was said. We do not recommend you save every email since then your disk storage quota will be used up quickly (especially when you send attachments) and your mailbox will be full and unable to receive new incoming email. You can, however, turn this feature 'on' as your default within your Identity, by going to Options-&gt;Personal Information-&gt;Edit your identities. Be careful when using this modified default as you will need to periodically purge your &quot;Sent Mail&quot; folder or it will eventually make your mailbox full and unuseable.
+    </para>
+</entry>--></entry>
+  <entry id="compose-attach" state="unknown">
+    <title>Message Composition: Attach</title>
+    <heading>"Attach"</heading>
+    <para>
+        You may attach files to your message.
+    </para>
+    <para>Step 1: Either, type the path and name of a file that you want attached to this message or click "Browse" button and select the file to be attatched. The path and name of that file now appears in the Attachment box. Now proceed to
+Step 2.
+    </para>
+    <para>Step 2: Click "Attach" button. The file name and size will be added to your list of Attachments. Please note that for large files and/or slower Internet connections, the process of uploading and attaching your file to the email may take a while. Please be patient and do not click on other things while you are waiting.
+    </para>
+<!-- English entry:
+<entry id="compose-attach">
+    <title>Message Composition: Attach</title>
+    <heading>&quot;Attach&quot;</heading>
+    <para>
+    You may attach files to your message; only one file may be attached at a time.
+    </para>
+    <para>Step 1: Either, type the path and name of a file that you want attached to this message or click &quot;Browse&quot; button and select the file to be attatched. The path and name of that file now appears in the Attachment box.
+    </para>
+    <para>Step 2: Decide whether you want the file to be viewed as an attachment or inlined with the rest of the message. The receiving person(s) mail reading software must be able to handle the file type inline; if not, this part will be viewed as an attachment instead.
+    </para>
+    <para>Step 3: Click &quot;Attach&quot; button. The file name and size will be added to your list of Attachments. Please note that for large files and/or slower Internet connections, the process of uploading and attaching your file to the email may take a while. Please be patient and do not click other things while you are waiting.
+    </para>
+</entry>--></entry>
+  <entry id="compose-attachments" state="unknown">
+    <title>Message Composition: Attachments</title>
+    <heading>"Attachments"</heading>
+    <para>
+    This section displays a list of files already attached to your message. To Delete an attached file:
+    </para>
+    <para>Step 1: Activate the check-button next to the attached filename you want to Delete.
+    </para> 
+    <para>Step 2: Click "Delete Attachment(s)".
+    </para>
+<!-- English entry:
+<entry id="compose-attachments">
+    <title>Message Composition: Attachments</title>
+    <heading>&quot;Attachments&quot;</heading>
+    <para>
+    This section displays a list of files already attached to your message. To Delete an attached file:
+    </para>
+    <para>Step 1: Activate the check-button next to the attached filename you want to Delete.
+    </para> 
+    <para>Step 2: Click &quot;Delete Attachment(s)&quot;.
+    </para>
+</entry>--></entry>
+  <entry id="compose-priority" state="new">
+    <title>Message Composition: Priority</title>
+    <heading>"Priority"</heading>
+    <para>
+    This sets the "X-Priority" header on your outgoing message. The "X-Priority" tag is a sort of "pseudo standard" that Netscape, Mozilla, Opera, and Outlook mail clients appear to agree on. Any mail clients that do not handle this header will simply ignore it.
+    </para>
+</entry>
+  <entry id="compose-save-attachments" state="new">
+    <title>Message Composition: Save Attachments</title>
+    <para>
+    Determines whether the attachments in your composition are saved with the message when stored in the sent-mail folder.  If "Yes", the attachment data will be saved.  If "No", the attachment data will be stripped from the message after it is sent to all recipients.  Choosing "No" will help conserve disk space by removing (potentially large) attachment information from the saved messages.
+    </para>
+</entry>
+  <entry id="compose-link-attachments" state="new">
+    <title>Message Composition: Link Attachments</title>
+    <para>
+    Determines whether the attachments in your composition are sent as a part of the mail message or whether those attachments are kept on a local server.  If attachments are linked, the recipient(s) of your message will be provided a weblink where they can download the attachment(s).  Linking attachments has the advantage of tremendously reducing the size of outgoing messages.  Linking attachments has the disadvantage that the content of the attachments can not be guaranteed to be available in the future since the attachment data is not located within the e-mail message.
+    </para>
+</entry>
+  <entry id="search" state="unknown">
+    <title>Message Search</title>
+    <heading>Search Criteria</heading>
+    <para>
+        Help text to be written.
+    </para>
+<!-- English entry:
+<entry id="search">
+    <title>Message Search</title>
+    <heading>Search Criteria</heading>
+    <para>
+    You may search for messages from your folders using different search criteria.
+    </para>
+    <para>Step 1: Enter text to the fields you want to add to your search criteria.
+    </para>
+    <para>Step 2: Choose the message flag(s) to add to your search criteria.
+    </para>
+    <para>Step 3: Choose the folder(s) from which to search for the messages.
+    </para>
+    <para>Step 4: Click &quot;Search&quot;.
+    </para>
+    <para>
+    If any messages matched your search criteria, then the subjects of these messages will be shown in the &quot;Search Results&quot; view.
+    </para>
+</entry>--></entry>
+  <entry id="folder-options" state="unknown">
+    <title>Folder Management</title>
+    <heading>Folder Options</heading>
+    <para>
+      You can select a folder by using the radio buttons along the left column.  Once you have done this, select the option you wish to perform on the folder via the select box to the left.
+    </para>
+    <para>
+      You will be prompted for further options.  Be careful with the delete option, as you can lose all the messages in a folder if you delete it by mistake!
+    </para>
+<!-- English entry:
+<entry id="folder-options">
+    <title>Folder Management</title>
+    <heading>Folder Options</heading>
+    <para>
+      You can select a folder by using the radio buttons along the left column.  Once you have done this, select the option you wish to perform on the folder via the select box to the left.
+    </para>
+    <para>
+      You will be prompted for further options.  Be careful with the delete option, as you can lose all the messages in a folder if you delete it by mistake!
+    </para>
+    <heading>Import mbox File</heading>
+    <para>
+      This option will import a mbox format file into the folder of your choice. Choose 1 (one) folder to import the messages into and then select this option. You will then be taken to a page that will prompt for the mbox file to import.
+    </para>
+</entry>--></entry>
+  <entry id="filters" state="unknown">
+    <title>Filters: Apply</title>
+    <heading>Apply Filter Rules</heading>
+    <para>
+    Click on the "Apply Filter" icon next to the INBOX name in the mailbox view to filter all undeleted messages according to the specified rules.  Or, alternatevly, click on "Apply All Rules" in the filter menu.  Note that filtering is not done automatically.
+    </para>
+<!-- English entry:
+<entry id="filters">
+    <title>Filters: Apply</title>
+    <heading>Apply Filter Rules</heading>
+    <para>
+    Click on the &quot;Apply Filter&quot; icon next to the INBOX name in the mailbox view to filter all undeleted messages according to the specified rules.  Or, alternatevly, click on &quot;Apply All Rules&quot; in the filter menu.  Note that filtering is not done automatically.
+    </para>
+</entry>--></entry>
+  <entry id="filter-edit-rules" state="new">
+    <title>Filters: Edit Filter Rules</title>
+    <heading>Edit Your Filter Rules</heading>
+    <para>
+    Click on "Edit your filter rules" to proceed to the page where you can add, delete, and edit the currently active set of filter rules.
+    </para>
+</entry>
+  <entry id="filter-edit-blacklist" state="new">
+    <title>Filters: Edit Blacklist</title>
+    <heading>Edit Your Blacklist</heading>
+    <para>
+    Click on "Edit your blacklist" to proceed to the page where you can add, delete, and edit the list of e-mail addresses you ALWAYS refuse mail from.
+    </para>
+</entry>
+  <entry id="filter-edit-whitelist" state="new">
+    <title>Filters: Edit Whitelist</title>
+    <heading>Edit Your Whitelist</heading>
+    <para>
+    Click on "Edit your whitelist" to proceed to the page where you can add, delete, and edit the list of e-mail addresses you ALWAYS accept mail from.
+    </para>
+</entry>
+  <entry id="filter-on-login" state="new">
+    <title>Filters: Filter on Login</title>
+    <heading>Apply Filter Rules Upon Logon?</heading>
+    <para>
+    Check this option to always apply filters when first logging onto IMP.
+    </para>
+</entry>
+  <entry id="filter-on-display" state="new">
+    <title>Filters: Filter on Refresh</title>
+    <heading>Apply filter rules whenever INBOX is displayed?</heading>
+    <para>
+    Check this option to always apply filters whenever your view the INBOX?
+    </para>
+</entry>
+  <entry id="filter-any-mailbox" state="new">
+    <title>Filters: Filter any Mailbox</title>
+    <heading>Apply filter rules to any mailbox?</heading>
+    <para>
+    Check this option if you want to be allowed to apply filter rules to any mailbox. Normally, filtering rules are only applied to new mail that is delivered to your INBOX.  If this option is checked, an icon will appear on all mailbox pagges that will allow you to apply filter rules to the messages in the current mailbox.  NOTE: Filtering in mailboxes other than INBOX may produce strange (e.g. the filter may cause a copy of messages to be delivered to the same mailbox) and/or undesired results (e.g. it may cause messages to be moved/deleted if new filtering rules have been implemented since the message has been delivered to the current mailbox).
+    </para>
+</entry>
+  <entry id="pgp-compose-attach-pubkey" state="new">
+    <title>PGP: Attach Public Key</title>
+    <heading>Attach Public Key</heading>
+    <para>
+    If selected then a copy of your PGP public key, if it exists, will be attached to the outgoing message.  You can set the default behavior via the PGP Options screen.
+    </para>
+</entry>
+  <entry id="pgp-option-scan-body" state="new">
+    <title>PGP: Scan Text Bodies</title>
+    <heading>Scan Text Bodies</heading>
+    <para>
+    If selected then IMP will scan the body of all text messages for PGP data, and display the results if any data is found.  Note that this may slow down the system as every text message must be scanned in its entirety for PGP data.
+    </para>
+</entry>
+  <entry id="compose-options-encrypt" state="new">
+    <title>Compose: Encryption Options</title>
+    <heading>No Encryption</heading>
+    <para>
+    Send the message with no encryption (cleartext).
+    </para>
+    <heading>PGP Encrypt Message</heading>
+    <para>
+    This option will encrypt the current message, using PGP and the recipients personal public key, and then send it. You can only send a message to a single person using this option. You MUST have the public key of the recipient stored in your addressbook or else this option will fail. If you have the public key for the recipient in your addressbook and are still receiving errors, verify that the e-mail address in the recipient field matches the e-mail address where the public key is stored. The encrypted data will be attached to the outgoing message.
+    </para>
+    <heading>PGP Sign Message</heading>
+    <para>
+    This option will digitally sign the current message using PGP and your personal private key. If you have not already entered the passphrase for your private key during this session you will be prompted for it.  The receipient must have a copy of your public key to digitally verify your
+    signature.
+    </para>
+    <heading>PGP Sign/Encrypt Message</heading>
+    <para>
+    This option will first digitally sign your message and then will encrypt the resulting output. See the 'PGP Encrypt Message' and 'PGP Sign Message' entries for further information.
+    </para>
+    <heading>S/MIME Encrypt Message</heading>
+    <para>
+    TODO
+    </para>
+    <heading>S/MIME Sign Message</heading>
+    <para>
+    TODO
+    </para>
+    <heading>S/MIME Sign/Encrypt Message</heading>
+    <para>
+    TODO
+    </para>
+</entry>
+  <entry id="pgp-overview" state="new">
+    <title>PGP: Overview</title>
+    <heading>What is PGP?</heading>
+    <para>
+    PGP is a tool for secure communication and data storage, especially for use with e-mail. It can be used to encrypt data and to create digital signatures. IMP uses GnuPG (GNU Privacy Guard) to provide this functionality.
+    </para>
+    <heading>Enable PGP functionality?</heading>
+    <para>
+    If this option is selected, you will be able to create/view your personal PGP keys, add/delete public keys from other individuals, read encrypted mail, verify digitally signed mail, and encrypt/sign your outgoing mail.
+    </para>
+</entry>
+  <entry id="pgp-option-attach-pubkey" state="new">
+    <title>PGP: Options - Attach Public Key</title>
+    <heading>Options - Attach Public Key</heading>
+    <para>
+    If selected then a copy of your PGP public key, if it exists, will by default be attached to all outgoing messages.
+    </para>
+</entry>
+  <entry id="pgp-manage-pubkey" state="new">
+    <title>PGP: Manage Public Keys</title>
+    <heading>Overview</heading>
+    <para>
+    This screen lists all of the current users in your addressbook that have PGP public keys. These users are the ONLY users that you can either 1) send an encrypted message to -OR- 2) verify a digital signature.
+    </para>
+    <heading>View</heading>
+    <para>
+    Opens a window to view the PGP public key.
+    </para>
+    <heading>Details</heading>
+    <para>
+    Displays some details about the PGP public key.
+    </para>
+    <heading>Delete</heading>
+    <para>
+    Deletes the public key from your addressbook.
+    </para>
+</entry>
+  <entry id="pgp-import-pubkey" state="new">
+    <title>PGP: Manage Public Keys - Import</title>
+    <heading>Import Public Keys</heading>
+    <para>
+    This button will open a window where you can manually import a PGP public key.  The key can either be pasted into a textfield or, if the key resides in a file on your local computer, you can import it.  If the key is valid it will be inserted into your addressbook and the window will close; if not valid, an error message will be returned explaining why.
+    </para>
+</entry>
+  <entry id="pgp-overview-personalkey" state="new">
+    <title>PGP: Manage Personal Keys</title>
+    <heading>Overview</heading>
+    <para>
+    If you want to digitally sign messages or enable others to send you encrypted messages, you must have your own personal public/private PGP keypair.
+    </para>
+    <heading>Your Public Key</heading>
+    <para>
+    Your public key should be made available to any person that you want to be able to send you encrypted messages that only YOU can decrypt (using your private key). Additionally, your public key needs to be made available to anybody you send a ddigitally signed message to - the public key is required to verify the digital signature.
+    </para>
+    <heading>Your Private Key</heading>
+    <para>
+    Your private key is necessary to decrypt any message encrypted using your public key. Additionally, your private key is needed if you want to digitally sign a message. Your private key will be protected via a passphrase created when the keys are generated. Thus, to perform any activity that requires your private key, IMP will prompt you for your passphrase. You only need to insert your passphrase once per session - IMP will store your passphrase until you logout (So be sure to logout!).
+    </para>
+</entry>
+  <entry id="pgp-personalkey-public" state="new">
+    <title>PGP: Manage Personal Keys - Public Key</title>
+    <heading>View</heading>
+    <para>
+    Opens a window to view the PGP public key.
+    </para>
+    <heading>Details</heading>
+    <para>
+    Displays some details about the PGP public key.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-private" state="new">
+    <title>PGP: Manage Personal Keys - Private Key</title>
+    <heading>Enter Passphrase</heading>
+    <para>
+    Opens the passphrase dialog window. The passphrase entered, if correct, will be stored by IMP until your session ends.
+    </para>
+    <heading>Unload Passphrase</heading>
+    <para>
+    Removes the stored passphrase from IMP - any additional usage of the private key will require you to reenter the passphease.
+    </para>
+    <heading>View</heading>
+    <para>
+    Opens a window to view the PGP private key. DO NOT SEND THIS KEY TO ANYONE - this option is strictly so that you can export your IMP personal private key for use in another program.
+    </para>
+    <heading>Details</heading>
+    <para>
+    Displays some details about the PGP private key.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-delete" state="new">
+    <title>PGP: Manage Personal Keys - Delete</title>
+    <heading>Delete Personal Keys</heading>
+    <para>
+    This button will delete your personal public/private keypair from IMP's preferences.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-create-name" state="new">
+    <title>PGP: Create Personal Key - Name</title>
+    <heading>Name</heading>
+    <para>
+    The name you want embedded in your personal keys. A required field.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-create-comment" state="new">
+    <title>PGP: Create Personal Key - Comment</title>
+    <heading>Comment</heading>
+    <para>
+    A comment string you want embedded in your personal keys. An optional field.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-create-email" state="new">
+    <title>PGP: Create Personal Key - E-mail Address</title>
+    <heading>E-mail Address</heading>
+    <para>
+    The e-mail address you want associated with your personal keys. A required field.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-create-keylength" state="new">
+    <title>PGP: Create Personal Key - Keylength</title>
+    <heading>Keylength</heading>
+    <para>
+    The keylength, in bytes, of your generated key. The greater the value, the greater the protection (and also greater generation time and encryption time). 1024 bytes is the default - this value provides excellent protection.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-create-passphrase" state="new">
+    <title>PGP: Create Personal Key - Passphrase</title>
+    <heading>Name</heading>
+    <para>
+    The passphrase used to protect/encrypt your personal private key. This should be AT LEAST 6 characters, should NOT be the same as your login password, should NOT be based on a dictionary word, and should include both numbers and letters. You must enter this passphrase twice for verification purposes. A required field.
+    </para>
+</entry>
+  <entry id="pgp-personalkey-create-actions" state="new">
+    <title>PGP: Create Personal Key - Actions</title>
+    <heading>Create Keys</heading>
+    <para>
+    Create and store your personal/private keypair.
+    </para>
+    <heading>Import Keypair</heading>
+    <para>
+    Import a personal/private keypair. This button opens a window where you can manually import your existing PGP personal public/private keypair.  The keys can either be pasted into a textfield or, if the keys reside in a file on your local computer, you can import them.  If the keys are valid they will be inserted into your preferences and the window will close; if not valid, an error message will be returned explaining why.
+    </para>
+</entry>
+  <entry id="smime-overview" state="new">
+    <title>S/MIME: Overview</title>
+    <heading>What is S/MIME?</heading>
+    <para>
+    S/MIME is a private/public key pair system which provides digital signatures, message privacy, and tamper detection in a open, interoperable way.  S/MIME can provide message privacy by encrypting messages that only the sender and the intended recipients can decode.  It allows you to identify the sender of a message via a digital signature.  Together, this encryption and digital signing help provide tamper detection, allowing recipients to determine whether a message was altered after it was sent.
+    </para>
+    <heading>Enable S/MIME functionality?</heading>
+    <para>
+    If this option is selected, you will be able to import your personal S/MIME keys, read encrypted mail, verify digitally signed mail, and encrypt/sign your outgoing mail.
+    </para>
+</entry>
+  <entry id="smime-overview-personalkey" state="new">
+    <title>S/MIME: Personal Keys</title>
+    <heading>Overview</heading>
+    <para>
+    If you want to digitally sign or encrypt messages you must have your own personal public/private S/MIME keypair.
+    </para>
+</entry>
+  <entry id="smime-import-personal-certs" state="new">
+    <title>S/MIME: Import Personal Certificates</title>
+    <heading>Import Personal Certificates</heading>
+    <para>
+    Import personal certificates from a PKCS #12 format file. PKCS #12 files is the file usually generated when exporting a key from a browser (e.g. Internet Explorer, Firefox) or from a certificate store maintained by an Operating System (e.g. Windows XP). If the keys are valid they will be inserted into your preferences and the window will close; if not valid, an error message will be returned explaining why.
+    </para>
+</entry>
+  <entry id="smime-delete-personal-certs" state="new">
+    <title>S/MIME: Delete Personal Certificates</title>
+    <heading>Delete Personal Certificates</heading>
+    <para>
+    Delete your personal certificates from your preferences.  You will no longer be able to sign S/MIME messages or view any S/MIME encrypted messages addressed to you.
+    </para>
+</entry>
+  <entry id="smime-manage-pubkey" state="new">
+    <title>S/MIME: Manage Public Keys</title>
+    <heading>S/MIME: Manage Public Keys</heading>
+    <para>
+    Manage your S/MIME public key list.
+    </para>
+    <heading>View</heading>
+    <para>
+    View the raw text of the public key.
+    </para>
+    <heading>Details</heading>
+    <para>
+    View technical details of the public key.
+    </para>
+    <heading>Delete</heading>
+    <para>
+    Deletes the selected public key from storage.  Deleting a public key for a user will prevent your from encrypting a message to that user.
+    </para>
+</entry>
+  <entry id="printing" state="new">
+    <title>Printing</title>
+    <heading>Print a message</heading>
+    <para>
+    To print a message you are viewing, click on the "Print" link at either the top or bottom of the message. The message will open in a new window formated for printing.  Depending on your web browser and operating system, the print dialog box may open for you.  If it does not open, then pull down the web browser's "File" menu and choose "Print" to open the print dialog box.
+    </para>
+</entry>
+  <entry id="sorting" state="new">
+    <title>Sorting and Threading</title>
+    <heading>Sorting Entries</heading>
+    <para>
+    When viewing a list of messages, you can sort the messages by any column by clicking on the appropriate column heading.  To switch columns between ascending and descending order, click on the arrow icon in the column heading.
+    </para>
+    <heading>Threading</heading>
+    <para>
+    To group messages by threads (subject), so each message is grouped with all its replies, click the [Thread] link in the subject column heading.  To return to normal subject sorting, click on the [Subject] link in the subject column heading.
+    </para>
+</entry>
+  <entry id="alternative-msg" state="new">
+    <title>Multipart/Alternative Messages</title>
+    <para>
+    Some message have been sent as a "multipart/alternative" type by the sender. These messages have several parts, all displaying the SAME CONTENT but in DIFFERENT FORMATS. The mail agent will display the last part in the list that can be successfully displayed inline in the browser, if any. All other formats will appear under the heading "Alternative parts for this section" and can be viewed or downloaded separately. It is important to note that these alternative parts contain the SAME CONTENTS as the part that is shown - they are simply in a different media format (e.g. text vs. HTML output).
+    </para>
+</entry>
+  <entry id="prefs-rename_sentmail_monthly" state="new">
+    <title>Preferences: Maintenance: Rename Sent-mail Folder Monthly</title>
+    <para>
+    Turn this option on if you would like to rename your sent-mail folder at the beginning of every month.  The folder will be renamed (to a name that contains the month and year) and a new sent-mail folder will be created.
+    </para>
+</entry>
+  <entry id="prefs-delete_sentmail_monthly" state="new">
+    <title>Preferences: Maintenance: Delete Sent-mail Folder Monthly</title>
+    <para>
+    Turn this option on if you would like to delete old sent-mail folders at the beginning of every month.  This may be useful if you have a quota, for example.
+    </para>
+</entry>
+  <entry id="prefs-delete_sentmail_monthly_keep" state="new">
+    <title>Preferences: Maintenance: Delete Sent-mail Folder Monthly - # of Folders to Keep</title>
+    <para>
+    If you are deleting old sent-mail folders every month, how many months of old folders do you  want to keep?  Any folders older than this many months will be deleted.
+    </para>
+</entry>
+  <entry id="prefs-purge_sentmail" state="new">
+    <title>Preferences: Maintenance: Purge Sent-Mail</title>
+    <para>
+    Do you want to purge your sent-mail folder(s) every so often.
+    </para>
+</entry>
+  <entry id="prefs-purge_sentmail_interval" state="new">
+    <title>Preferences: Maintenance: Purge Sent-Mail Interval</title>
+    <para>
+    If you are purging your sent-mail folder(s), how often should it be purged?
+    </para>
+</entry>
+  <entry id="prefs-purge_sentmail_keep" state="new">
+    <title>Preferences: Maintenance: Purge Sent-Mail Keep</title>
+    <para>
+    If you are purging your sent-mail folder(s), message older than how many days should be purged?
+    </para>
+</entry>
+  <entry id="prefs-delete_attachments_monthly" state="new">
+    <title>Preferences: Maintenance: Delete Linked Attachments Monthly</title>
+    <para>
+    Turn this option on if you would like to delete old linked attachments at the beginning of every month.  This may be useful if you have a quota, for example.
+    </para>
+</entry>
+  <entry id="prefs-delete_attachments_monthly_keep" state="new">
+    <title>Preferences: Maintenance: Delete Linked Attachments Monthly - # of Months to Keep</title>
+    <para>
+    If you are deleting old linked attachments every month, how many months of old attachments do you  want to keep?  Any attachments older than this many months will be deleted.
+    </para>
+</entry>
+  <entry id="prefs-purge_trash" state="new">
+    <title>Preferences: Maintenance: Purge Trash</title>
+    <para>
+    Do you want to purge your trash folder every so often.
+    </para>
+</entry>
+  <entry id="prefs-purge_trash_interval" state="new">
+    <title>Preferences: Maintenance: Purge Trash Interval</title>
+    <para>
+    If you are purging your trash folder, how often should it be purged?
+    </para>
+</entry>
+  <entry id="prefs-purge_trash_keep" state="new">
+    <title>Preferences: Maintenance: Purge Trash Keep</title>
+    <para>
+    If you are purging your trash folder, message older than how many days should be purged?
+    </para>
+</entry>
+  <entry id="prefs-purge_spam" state="new">
+    <title>Preferences: Maintenance: Purge Spam</title>
+    <para>
+    Do you want to purge your spam folder every so often.
+    </para>
+</entry>
+  <entry id="prefs-purge_spam_interval" state="new">
+    <title>Preferences: Maintenance: Purge Spam Interval</title>
+    <para>
+    If you are purging your spam folder, how often should it be purged?
+    </para>
+</entry>
+  <entry id="prefs-purge_spam_keep" state="new">
+    <title>Preferences: Maintenance: Purge Spam Keep</title>
+    <para>
+    If you are purging your spam folder, message older than how many days should be purged?
+    </para>
+</entry>
+  <entry id="prefs-attrib_text" state="new">
+     <title>Preferences: Message Composition: Attribution Text</title>
+     <para>
+     Here you can enter the phrase that you wish to appear before any quoted text in a reply that you send.
+     </para>
+     <para>
+     You can include one or more special placeholders to insert information about the message to which you are replying. Placeholders consist of a '%' followed by a single letter. The following placeholders are available:
+     </para>
+
+     <para> %f : The sender's name and email address</para>
+     <para> %a : The sender's email address</para>
+     <para> %p : The sender's name</para>
+     <para> %r : The full RFC 2822 style date and time zone</para>
+     <para> %d : The date as www, dd mmm YYYY</para>
+     <para> %x : The date in the locale's default</para>
+     <para> %c : The date and time in the locale's default</para>
+     <para> %m : The Message-ID</para>
+     <para> %s : The subject</para>
+     <para> %n : A new line</para>
+     <para> %% : The '%' character</para>
+
+</entry>
+  <entry id="prefs-default_msg_charset" state="new">
+    <title>Preferences: Default Message Character Set</title>
+    <para>
+    Define the default character set to use for text message parts that do not contain explicit character set information. Per RFC 2045, messages without a character set parameter are displayed using the 'US-ASCII' character set. However, certain badly broken mailers may send out text messages in other character sets without setting the proper parameters in the message header. Set this parameter to the default character set string to use locally. Select "Default" to use the MIME defaults.
+    </para>
+</entry>
+  <entry id="prefs-disposition_request_read" state="new">
+    <title>Preferences: Request Read Receipts</title>
+    <para>
+    "Request a Read Receipt" sends a request to the recipients of this message to notify you when this message is opened by the recipients. Not all clients support / honor this.
+    </para>
+</entry>
+  <entry id="prefs-disposition_send_mdn" state="new">
+    <title>Preferences: Send MDN</title>
+    <para>
+    "Send a MDN" sends a Message Disposition Notification (also known as a read receipt) when you view a message in which the user has requested that they receive notification that you have read the message. In most cases, this will happen automatically without prompting you. In certain isolated cases, you may have to manually decide to send the notification by clicking on a link.
+    </para>
+</entry>
+  <entry id="prefs-disposition_request_delivery" state="new">
+    <title>Preferences: Request Delivery Confirmation</title>
+    <para>
+    "Request Delivery Confirmation" sends a request to the recipient's e-mail server to notify you when it has delivered the message to the recipient's mailbox. It doesn't mean the message has been seen, just that it's sitting in a mailbox somewhere. Not all mail servers support this. 
+    </para>
+</entry>
+  <entry id="prefs-delete_spam_after_report" state="new">
+    <title>Preferences: Delete Spam After Reporting</title>
+    <para>
+    You may elect to do one of three items after reporting a message as either spam or innocent.
+    </para>
+    <para>
+    First, you can decide to do nothing - the message will be reported as either spam or innocent but will otherwise remain unchanged in your mailbox.
+    </para>
+    <para>
+    Second, if reporting a message as spam, you can instead have the message be immediately deleted.  This setting has no effect on reporting a message as innocent.
+    </para>
+    <para>
+    Third, after reporting a message as spam the message will be deleted from the current mailbox and moved to your spam folder.  Alternatively, if reporting a message as innocent the message will be deleted from the current mailbox and moved to your INBOX.
+    </para>
+</entry>
+  <entry id="prefs-html_image_replacement" state="new">
+    <title>Preferences: HTML Image Replacement</title>
+    <para>
+    For HTML messages displayed inline, should all image tags be blocked until you specifically decide to view those images? Note that, if viewing an HTML attachment, the images will always be displayed.
+    </para>
+</entry>
+  <entry id="prefs-html_image_addrbook" state="new">
+    <title>Preferences: HTML Image Replacement/Addressbook Show</title>
+    <para>
+    If blocking images for inline HTML messages, should we automatically display them instead if the sender appears in your addressbook?
+    </para>
+</entry>
+  <entry id="prefs-mailbox_start" state="new">
+    <title>Preferences: Mailbox Start Page</title>
+    <para>
+    Determines which page in the mailbox view will be displayed when you access a mailbox for the first time. Note that the 'unseen' message options do not work with the 'Thread' sorting option - instead, you will be sent to the last page.
+    </para>
+</entry>
+  <entry id="prefs-save_attachments" state="new">
+    <title>Preferences: Save Attachments on Sent Messages</title>
+    <para>
+    If saving a composed message in a sent-mail folder, determine if all attachment data is saved. The following options are available:
+    </para>
+
+    <para>* "Always save attachments" - NEVER prompt to save attachments in compose screen; the attachments are ALWAYS saved with the message.</para>
+     <para>* "Prompt every time an attachment is sent; default to YES" - ALWAYS prompt to save attachments in the compose screen; the default is to save attachments.</para>
+     <para>* "Prompt every time an attachment is sent; default to NO" - ALWAYS prompt to save attachments in the compose screen; the default is to not save attachments.</para>
+     <para>* "Never save attachments" - NEVER prompt to save attachments in compose screen; the attachments are NEVER saved with the message.</para>
+</entry>
+  <entry id="virtual_inbox" state="new">
+    <title>Virtual Folders: Virtual Inbox</title>
+    <para>
+    Virutal Inbox is a saved search that does away with the need to search every mailbox for messages marked as new.  Instead, all currently subscribed mailboxes are searched for new messages and the results are displayed in a single mailbox.
+    </para>
+</entry>
+  <entry id="virtual_trash" state="new">
+    <title>Virtual Folders: Virtual Trash</title>
+    <para>
+    Virtual Trash is a saved search that does away with the need for a separate Trash folder.  Instead of moving messages to a centralized trash folder, messages are simply marked as deleted in the current folder they live in.  When 'show deleted messages' is turned off, this results in these messages not appearing in a mailbox view.  When a user clicks on Virtual Trash, *all* mailboxes all searched for messages that are flagged deleted and these messages are displayed in a single mailbox.
+    </para>
+</entry>
+</help>

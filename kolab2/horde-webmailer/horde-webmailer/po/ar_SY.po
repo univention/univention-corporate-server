@@ -1,0 +1,1390 @@
+# HORDE Arabic translation
+# This file is distributed under the same license as the Horde package.
+# Copyright 2003 Platinum Inc. <pl@tinum.info>
+# Custom Web Applications <http://platinum-sy.com>
+# Platinum Development Team <devteam@platinum-sy.net>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: HORDE v2.0.0\n"
+"Report-Msgid-Bugs-To: <i18n@lists.horde.org>\n"
+"POT-Creation-Date: 2003-04-30 12:00+0200\n"
+"PO-Revision-Date: 2003-04-30 12:00+0200\n"
+"Last-Translator: Platinum Development Team <devteam@platinum-sy.net>\n"
+"Language-Team: Arabic <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/html; charset=CP1256\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: po/translation.php:65
+msgid ""
+"  -M, --message=MESSAGE  Use this commit message instead of the default ones."
+msgstr ""
+
+#: po/translation.php:69
+msgid ""
+"  -a, --add=FILE        Add this PO file to the compendium. Useful to\n"
+"                        include a compendium from a different branch to\n"
+"                        the generated compendium."
+msgstr ""
+
+#: po/translation.php:125
+msgid ""
+"  -b, --base=/PATH  Full path to the (Horde) base directory that should be\n"
+"                    used."
+msgstr ""
+
+#: po/translation.php:83
+msgid ""
+"  -c, --compendium=FILE  Merge new translations to this compendium file\n"
+"                         instead of the default one (compendium.po in the\n"
+"                         horde/po directory."
+msgstr ""
+
+#: po/translation.php:94 po/translation.php:100
+msgid ""
+"  -c, --compendium=FILE  Use this compendium file instead of the default\n"
+"                         one (compendium.po in the horde/po directory)."
+msgstr ""
+
+#: po/translation.php:126
+msgid "  -d, --debug       Show error messages from the executed binaries."
+msgstr ""
+
+#: po/translation.php:70
+msgid "  -d, --directory=DIR   Create compendium in this directory."
+msgstr ""
+
+#: po/translation.php:127
+msgid "  -h, --help        Show this help message."
+msgstr ""
+
+#: po/translation.php:81 po/translation.php:88
+msgid "  -l, --locale=ll_CC     Use only this locale."
+msgstr ""
+
+#: po/translation.php:63 po/translation.php:92 po/translation.php:98
+msgid "  -l, --locale=ll_CC     Use this locale."
+msgstr ""
+
+#: po/translation.php:71 po/translation.php:77
+msgid "  -l, --locale=ll_CC    Use this locale."
+msgstr ""
+
+#: po/translation.php:82
+msgid "  -m, --module=MODULE    Build MO files only for this (Horde) module."
+msgstr ""
+
+#: po/translation.php:64
+msgid ""
+"  -m, --module=MODULE    Commit translations only for this (Horde) module."
+msgstr ""
+
+#: po/translation.php:93
+msgid "  -m, --module=MODULE    Merge PO files only for this (Horde) module."
+msgstr ""
+
+#: po/translation.php:89
+msgid ""
+"  -m, --module=MODULE    Update help files only for this (Horde) module."
+msgstr ""
+
+#: po/translation.php:99
+msgid "  -m, --module=MODULE    Update only this (Horde) module."
+msgstr ""
+
+#: po/translation.php:78
+msgid "  -m, --module=MODULE   Create a PO file only for this (Horde) module."
+msgstr ""
+
+#: po/translation.php:74
+msgid "  -m, --module=MODULE  Generate POT file only for this (Horde) module."
+msgstr ""
+
+#: po/translation.php:66
+msgid ""
+"  -n, --new              This is a new translation, commit also CREDITS,\n"
+"                         CHANGES and lang.php.dist."
+msgstr ""
+
+#: po/translation.php:84
+msgid ""
+"  -n, --no-compendium    Don't merge new translations to the compendium."
+msgstr ""
+
+#: po/translation.php:95 po/translation.php:101
+msgid "  -n, --no-compendium    Don't use a compendium."
+msgstr ""
+
+#: po/translation.php:128
+msgid "  -t, --test        Show the executed commands but don't run anything."
+msgstr ""
+
+#: po/translation.php:120
+msgid "  commit      Commit translations to the CVS server."
+msgstr ""
+
+#: po/translation.php:121
+msgid "  commit-help Commit help files to the CVS server."
+msgstr ""
+
+#: po/translation.php:112
+msgid ""
+"  compendium  Rebuild the compendium file. Warning: This overwrites the\n"
+"              current compendium."
+msgstr ""
+
+#: po/translation.php:113
+msgid "  extract     Generate PO template (.pot) files."
+msgstr ""
+
+#: po/translation.php:111
+msgid "  help        Show this help message."
+msgstr ""
+
+#: po/translation.php:114
+msgid ""
+"  init        Create one or more PO files for a new locale. Warning: This\n"
+"              overwrites the existing PO files of this locale."
+msgstr ""
+
+#: po/translation.php:118
+msgid "  make        Build binary MO files from the specified PO files."
+msgstr ""
+
+#: po/translation.php:119
+msgid ""
+"  make-help   Mark all entries in the XML help file being up-to-date and\n"
+"              prepare the file for the next execution of update-help. You\n"
+"              should only run make-help AFTER update-help and revising the\n"
+"              help file."
+msgstr ""
+
+#: po/translation.php:115
+msgid ""
+"  merge       Merge the current PO file with the current PO template file."
+msgstr ""
+
+#: po/translation.php:116
+msgid "  update      Run extract and merge sequent."
+msgstr ""
+
+#: po/translation.php:117
+msgid ""
+"  update-help Extract all new and changed entries from the English XML help\n"
+"              file and merge them with the existing ones."
+msgstr ""
+
+#: templates/maintenance/confirm_top.inc:14
+#, php-format
+msgid ""
+" &#151; %s is ready to perform the maintenance operations checked below."
+msgstr ""
+
+#: po/translation.php:858
+#, php-format
+msgid "%d bytes written."
+msgstr ""
+
+#: po/translation.php:959
+#, php-format
+msgid "%d of %d entries marked as up-to-date"
+msgstr ""
+
+#: templates/maintenance/confirm_top.inc:7
+#, php-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr ""
+
+#: po/translation.php:368
+#, php-format
+msgid "%s not found. Run 'translation extract' first."
+msgstr ""
+
+#: po/translation.php:155
+#, php-format
+msgid ""
+"%sWarning:%s This program was only tested on gettext 0.11. There is no\n"
+"guarantee that it will work with your version of gettext."
+msgstr ""
+
+#: po/translation.php:140
+#, php-format
+msgid "%sfound:%s %s"
+msgstr ""
+
+#: lib/Registry.php:453 lib/Registry.php:753
+#, php-format
+msgid "'%s' is not configured in the Horde Registry."
+msgstr ""
+
+#: po/translation.php:167
+msgid ", trying C++ instead"
+msgstr ""
+
+#: po/translation.php:1014 po/translation.php:1016
+msgid "---------------------------"
+msgstr ""
+
+#: templates/data/datemap.inc:102
+msgid "24 hours"
+msgstr "24 ÓÇÚÉ"
+
+#: lib/Horde.php:227
+msgid "<b>A fatal error has occurred:</b>"
+msgstr "<b> ÍÕá ÎØÃ: "
+
+#: templates/data/datemap.inc:103
+msgid "AM/PM"
+msgstr "äåÇÑÇğ/áíáÇğ"
+
+#: templates/data/csvmap.inc:94
+msgid "Add pair"
+msgstr "ÃÖİ ËäÇÆí"
+
+#: po/translation.php:647
+msgid "Adding new files to repository:"
+msgstr ""
+
+#: lib/MIME/Viewer/vcard.php:86
+msgid "Address"
+msgstr "ÇáÚäæÇä"
+
+#: config/registry.php.dist:123
+msgid "Address Book"
+msgstr "ÏİÊÑ ÚäÇæíä"
+
+#: lib/MIME/Viewer/vcard.php:64
+msgid "Alias"
+msgstr ""
+
+#: lib/PrefsUI.php:100
+msgid "An illegal value was specified."
+msgstr "Êã ÊÍÏíÏ ŞíãÉ ÛíÑ ãŞÈæáÉ"
+
+#: config/prefs.php.dist:70
+msgid "Ask for confirmation before doing maintenance operations?"
+msgstr "ÊÃßíÏ ÇáØáÈ ŞÈá ÇáÈÏÁ ÈÚãáíÇÊ ÇáÕíÇäÉ¿"
+
+#: lib/Auth/radius.php:219
+msgid "Authentication rejected by RADIUS server."
+msgstr "Êã ÑİÖ ÇáÊÍŞŞ ãä ÇáåæíÉ ãä ŞÈá ÇáãÎÏã ÑÇÏíæÓ."
+
+#: templates/data/csvmap.inc:84
+msgid "Available fields:"
+msgstr "ÇáÍŞæá ÇáãÊæİÑÉ:"
+
+#: lib/Auth/krb5.php:100
+msgid "Bad kerberos password."
+msgstr "ßáãÉ ãÑæÑ ÛÈÑ ãŞÈæáÉ (ßíÑÈíÑæÓ)"
+
+#: lib/Auth/krb5.php:102
+msgid "Bad kerberos username."
+msgstr "ÇÓã ÇáãÓÊÎÏã ÛÈÑ ãŞÈæá (ßíÑÈíÑæÓ)"
+
+#: lib/MIME/Viewer/vcard.php:71
+msgid "Birthday"
+msgstr "íæã ÇáãíáÇÏ"
+
+#: po/translation.php:441
+#, php-format
+msgid "Building MO files for module %s%s%s..."
+msgstr "ÅäÔÇÁ ãáİÇÊ MO ááÈÑíãÌÇÊ %s%s%s..."
+
+#: po/translation.php:458
+#, php-format
+msgid "Building locale %s%s%s... "
+msgstr "ÅäÔÇÁ ÇáãáİÇÊ ÇáãÍáíÉ %s%s%s..."
+
+#: config/registry.php.dist:159
+msgid "CVS"
+msgstr "CVS"
+
+#: config/registry.php.dist:132
+msgid "Calendar"
+msgstr "ÃÌäÏÉ"
+
+#: templates/problem/problem.inc:35
+msgid "Cancel Problem Report"
+msgstr "ÅáÛÇÁ ÇáÈáÇÛ Úä ãÔßáÉ"
+
+#: lib/MIME/Viewer/vcard.php:103
+msgid "Cell Phone"
+msgstr "ÇáåÇÊİ ÇáÌæÇá"
+
+#: templates/maintenance/confirm_top.inc:16
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "ÖÚ ÚáÇãÉ İí ãÑÈÚ ÇáÚãáíÉ (ÇáÚãáíÇÊ) ÇáÊí ÊÑíÏ ÊäİíĞåÇ ÍÇáÇğ."
+
+#: templates/help/menu.inc:12
+msgid "Close Help"
+msgstr "ÅÛáÇŞ ÇáãÓÇÚÏÉ"
+
+#: templates/help/menu.inc:12
+msgid "Close Help Window"
+msgstr "ÅÛáÇŞ äÇİĞÉ ÇáãÓÇÚÏÉ"
+
+#: util/special_characters.php:147
+msgid "Close Window"
+msgstr "ÅÛáÇŞ ÇáäÇİĞÉ"
+
+#: config/registry.php.dist:168
+msgid "Comics"
+msgstr "ÑÓæãÇÊ"
+
+#: po/translation.php:58
+msgid "Command options:"
+msgstr ""
+
+#: po/translation.php:110
+msgid "Commands:"
+msgstr "ÇáÃæÇãÑ:"
+
+#: po/translation.php:685
+msgid "Committing:"
+msgstr "ÊäİíĞ"
+
+#: lib/MIME/Viewer/vcard.php:152
+msgid "Company"
+msgstr "ÇáÔÑßÉ"
+
+#: lib/VFS/ftp.php:422
+msgid "Connection to ftp server failed."
+msgstr "ÍÕá ÎØÃ ÎáÇá ÇáÅÊÕÇá ÈãÎÏã ÇáÜ FTP."
+
+#: po/translation.php:1032
+msgid "Console_Getopt not found."
+msgstr "áã íÚËÑ Úáì Console_Getopt."
+
+#: lib/MIME/Viewer/zip.php:45 lib/MIME/Viewer/tgz.php:50
+#, php-format
+msgid "Contents of '%s'"
+msgstr "ãÍÊæíÇÊ '%s'"
+
+#: lib/MIME/Viewer/rar.php:46
+msgid "Contents of the RAR archive"
+msgstr "ãÍÊæíÇÊ ÇáÃÑÔíİ RAR"
+
+#: po/translation.php:766
+#, php-format
+msgid "Copying %s to %s"
+msgstr "äÓÎ %s Åáì %s"
+
+#: lib/SessionHandler/mysql.php:268
+msgid "Could not connect to database for SQL SessionHandler."
+msgstr "áã íÊã ÇáÅÊÕÇá ãÚ ŞÇÚÏ ÇáÈíÇäÇÊ áÜ SQL SessionHandler."
+
+#: lib/SessionHandler/mysql.php:272
+#, php-format
+msgid "Could not connect to table '%s' for SQL SessionHandler."
+msgstr "áÇ íÊã ÇáÅÊÕÇá ãÚ ÌÏæá '%s' İí SQL SessionHandler."
+
+#: po/translation.php:769
+#, php-format
+msgid "Could not copy %s to %s"
+msgstr "áÇ ÅãßÇäíÉ áäÓÎ %s Åáì %s"
+
+#: po/translation.php:467 po/translation.php:759
+#, php-format
+msgid "Could not create locale directory for locale %s:"
+msgstr "áÇÅãßÇäíÉ áÅäÔÇÁ ãÌáÏ ãÍáí (local) ãä ÃÌá ãáİ ÇááÛÉ %s:"
+
+#: lib/Maintenance.php:397
+#, php-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "áÇÅãßÇäíÉ áİÊÍ Maintenance_Task ááÈÑíãÌ %s"
+
+#: templates/data/datemap.inc:67 templates/data/datemap.inc:68
+#: templates/data/datemap.inc:69 templates/data/datemap.inc:70
+msgid "DD"
+msgstr "íæã - ÑŞãíä"
+
+#: lib/Maintenance.php:30
+msgid "Daily"
+msgstr "íæãí"
+
+#: lib/Auth/sql.php:226 lib/Auth/sql.php:256 lib/Auth/sql.php:284
+msgid "Database query failed."
+msgstr "ÎØÃ İí ÇáÇÊÕÇá ãÚ ŞÇÚÏÉ ÇáÈíÇäÇÊ"
+
+#: lib/Identity.php:75
+msgid "Default Identity"
+msgstr "ÇáÊÍŞŞ ÇáÇİÊÑÇÖí"
+
+#: problem.php:92 problem.php:96 problem.php:107
+msgid "Describe the Problem"
+msgstr "ÔÑÍ ÇáãÔßáÉ"
+
+#: lib/Horde.php:235
+msgid "Details have been logged for the administrator."
+msgstr "Êã ÍİÙ ÇáÊİÇÕíá áãÏíÑ ÇáäÙÇã"
+
+#: config/prefs.php.dist:12
+msgid "Display Options"
+msgstr "ÎíÇÑÇÊ ÇáÚÑÖ"
+
+#: maintenance.php:26
+msgid "Do not directly access maintenance.php"
+msgstr "áÇ ÊÏÎá ãÈÇÔÑÉğ Åáì Çáãáİ maintenance.php"
+
+#: lib/MIME/Viewer/vcard.php:137
+msgid "Email"
+msgstr "ÇáÈÑíÏ ÇáÅáßÊÑæäí"
+
+#: lib/Auth/ldap.php:120
+msgid "Empty result."
+msgstr "áÇÊæÌÏ äÊÇÆÌ."
+
+#: po/translation.php:845
+#, php-format
+msgid "Entries: %d total, %d up-to-date, %d new, %d changed, %d unknown"
+msgstr "ÇáÅÏÎÇáÇÊ: ÇáãÌãæÚ %d¡ ÇáÍÏíËÉ %d¡ ÇáÌÏíÏÉ %d¡ ÇáãÚÏáÉ %d¡ ÛíÑ ãÚÑæİÉ %d"
+
+#: status.php:16 lib/Notification/status.php:41
+msgid "Error"
+msgstr "ÎØÃ"
+
+#: po/translation.php:260 po/translation.php:305 po/translation.php:1054
+#: po/translation.php:1111 po/translation.php:1176
+msgid "Error: "
+msgstr "ÍÕá ÎØÃ:"
+
+#: config/prefs.php.dist:41
+msgid "Every 15 minutes"
+msgstr "ßá 15 ÏŞíŞÉ"
+
+#: config/prefs.php.dist:38
+msgid "Every 30 seconds"
+msgstr "ßá 30 ÏŞíŞÉ"
+
+#: config/prefs.php.dist:40
+msgid "Every 5 minutes"
+msgstr "ßá 5 ÏŞíŞÉ"
+
+#: lib/Maintenance.php:31
+msgid "Every Login"
+msgstr "ßá ÏÎæá"
+
+#: config/prefs.php.dist:42
+msgid "Every half hour"
+msgstr "ßá äÕİ ÓÇÚÉ"
+
+#: config/prefs.php.dist:39
+msgid "Every minute"
+msgstr "ßá ÏŞíŞÉ"
+
+#: templates/data/datemap.inc:28
+msgid "Example values:"
+msgstr "ÃãËáÉ Úáì ÇáŞíã:"
+
+#: po/translation.php:210 po/translation.php:221 po/translation.php:271
+#: po/translation.php:324 po/translation.php:383 po/translation.php:394
+#: po/translation.php:445 po/translation.php:478 po/translation.php:487
+#: po/translation.php:495 po/translation.php:524 po/translation.php:553
+#: po/translation.php:565 po/translation.php:622 po/translation.php:679
+#: po/translation.php:701 po/translation.php:734 po/translation.php:890
+#: po/translation.php:1124
+msgid "Executing:"
+msgstr "ÊäİíĞ:"
+
+#: lib/Data.php:264
+#, php-format
+msgid "Expected \"BEGIN\" in the line %d."
+msgstr "äÊæŞÚ \"BEGIN\"  İí ÇáÓØÑ %d."
+
+#: lib/Data.php:285
+#, php-format
+msgid "Expected \"END:%s\" in line %d."
+msgstr "äÊæŞÚ \"END:%s\" İí ÇáÓØÑ %d."
+
+#: po/translation.php:196
+#, php-format
+msgid "Extracting from %s... "
+msgstr "íÊã ÇáÇÓÊÎáÇÕ ãä %s..."
+
+#: lib/Prefs/sql.php:312
+msgid "Failed retrieving preferences."
+msgstr "áÇÅãßÇäíÉ ááÚËæÑ Úáì ÇáÊİÖíáÇÊ."
+
+#: lib/Auth/ldap.php:109
+msgid "Failed to connect to LDAP server."
+msgstr "áÇÅãßÇäíÉ ááÅÊÕÇá ÈÇáãÎÏã LDAP."
+
+#: lib/Auth/smb.php:125
+msgid "Failed to connect to SMB server."
+msgstr "áÇÅãßÇäíÉ ááÅÊÕÇá ÈÇáãÎÏã SMB."
+
+#: lib/MIME/Viewer/vcard.php:108
+msgid "Fax"
+msgstr "İÇßÓ"
+
+#: po/translation.php:1139
+#, php-format
+msgid "Found applications: %s"
+msgstr "ÇáÊØÈíŞÇÊ ÇáãæÌæÏÉ: %s"
+
+#: po/translation.php:1131
+msgid "Found directories:"
+msgstr "ÇáãÌáÏÇÊ ÇáãæÌæÏÉ:"
+
+#: templates/problem/problem.inc:26
+msgid "Full Description:"
+msgstr "ÇáÔÑÍ ÇáÊİÕíáí:"
+
+#: po/translation.php:1048
+msgid "Getopt Error: "
+msgstr "ÎØÃ İí Getopt:"
+
+#: help.php:15 lib/Help.php:426 lib/Help.php:427 templates/help/index.inc:13
+#: templates/navbar/menu.inc:19
+msgid "Help"
+msgstr "ÇáãÓÇÚÏÉ"
+
+#: po/translation.php:108
+msgid ""
+"Helper application to create and maintain translations for the Horde\n"
+"framework and its applications.\n"
+"For an introduction read the file README in this directory."
+msgstr "ãä ÃÌá áãÍÉ ÚÇãÉ¡ ÇáÑÌÇÁ ŞÑÇÁÉ ãáİ Readme İí åĞÇ ÇáãÌáÏ."
+
+#: templates/navbar/menu.inc:8
+msgid "Home"
+msgstr "ÇáÈÏÇíÉ"
+
+#: lib/MIME/Viewer/vcard.php:82
+msgid "Home Address"
+msgstr "ÚäæÇä ÇáãäÒá"
+
+#: lib/MIME/Viewer/vcard.php:99
+msgid "Home Phone"
+msgstr "åÇÊİ ÇáãäÒá"
+
+#: templates/index/wap.inc:7 config/registry.php.dist:86
+msgid "Horde"
+msgstr "åæÑÏí"
+
+#: login.php:97
+msgid "Horde Login"
+msgstr "ÏÎæá Åáì åæÑÏí"
+
+#: menu.php:20
+msgid "Horde System"
+msgstr "äÙÇã åæÑÏí"
+
+#: templates/index/wap.inc:13
+msgid "Horde Wireless"
+msgstr "åæÑÏí ááÇÓáßí"
+
+#: templates/index/notconfigured.inc:4
+msgid "Horde is not properly configured"
+msgstr "áã íÊã ÅÚÏÇÏ åæÑÏí ÈÔßá ÕÍíÍ"
+
+#: po/translation.php:1015
+msgid "Horde translation generator"
+msgstr "ãæáÏ åæÑÏí ÇÇÊÑÌãÉ"
+
+#: config/prefs.php.dist:51
+msgid "Icons Only"
+msgstr "ÃíŞæäÇÊ İŞØ"
+
+#: config/prefs.php.dist:52
+msgid "Icons with text"
+msgstr "ÃíŞæäÇÊ ãÚ äÕæÕ"
+
+#: templates/data/datemap.inc:117 templates/data/csvmap.inc:128
+msgid "Import"
+msgstr "ÇÓÊíÑÇÏ"
+
+#: lib/Data.php:264 lib/Data.php:281 lib/Data.php:285
+msgid "Import Error: "
+msgstr "ÎØÃ İí ÇáÇÓÊíÑÇÏ:"
+
+#: templates/data/datemap.inc:20
+#, php-format
+msgid "Imported field: %s"
+msgstr "ÇáÍŞæá ÇáãÓÊæÑÏÉ: %s"
+
+#: templates/data/csvmap.inc:74
+msgid "Imported fields:"
+msgstr "ÇáÍŞæá ÇáãÓÊæÑÏÉ:"
+
+#: po/translation.php:365
+#, php-format
+msgid "Initializing module %s... "
+msgstr "ÊÌåíÒ ÇáÈÑíãÌ %s..."
+
+#: lib/Auth/krb5.php:104
+msgid "Kerberos server rejected authentication."
+msgstr "ÇáãÎÏã ßíÑÈíÑæÓ ÑİÖ ÇáÊÍŞŞ ãä ÇáåæíÉ."
+
+#: config/prefs.php.dist:6
+msgid "Language"
+msgstr "ÇááÛÉ"
+
+#: templates/help/menu.inc:9
+msgid "List Help Topics"
+msgstr "ŞÇÆãÉ ÚäÇæíä ÇáãÓÇÚÏÉ"
+
+#: po/translation.php:1026
+msgid "Loading libraries..."
+msgstr "ÊÍãíá ÇáãßÊÈÇÊ..."
+
+#: templates/login/login.inc:76 templates/navbar/menu.inc:14
+msgid "Log in"
+msgstr "ÏÎæá"
+
+#: menu.php:47 templates/login/user.inc:9
+msgid "Log out"
+msgstr "ÎÑæÌ"
+
+#: login.php:62
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr ""
+"ÍÕá ÎØÃ áÓÈÈ ãÇ ÃËäÇÁ ÇáÏÎæá. Úáì ÇáÃÑÌÍ Ãä ÇÓã ÇáãÓÊÎÏã Ãæ ßáãÉ ÇáãÑæÑ"
+"áíÓÊ ÕÍíÍÉ"
+
+#: config/registry.php.dist:105
+msgid "Logout"
+msgstr "ÎÑæÌ"
+
+#: templates/data/datemap.inc:67 templates/data/datemap.inc:68
+#: templates/data/datemap.inc:69 templates/data/datemap.inc:70
+msgid "MM"
+msgstr "ÔåÑ - ÑŞãíä"
+
+#: config/registry.php.dist:114
+msgid "Mail"
+msgstr "ÇáÈÑíÏ"
+
+#: po/translation.php:1034
+msgid "Make sure that you have PEAR installed and in your include path."
+msgstr "ÊÃßÏ ãä Ãä PEAR ãÑßÈÉ æãÚÑİÉ Öãä ÇáãÓÇÑ."
+
+#: po/translation.php:464 po/translation.php:756
+#, php-format
+msgid "Making directory %s"
+msgstr "ÅäÔÇÁ ÇáãÌáÏ %s"
+
+#: templates/data/datemap.inc:10
+msgid "Map Date and Time Fields"
+msgstr "ÅÏÑÇÌ ÍŞæá ÇáÊÇÑíÎ æÇáæŞÊ."
+
+#: templates/data/csvmap.inc:57
+msgid "Map Import Fields"
+msgstr "ÅÏÑÇÌ ÇáÍŞæá ÇáãÓÊæÑÏÉ"
+
+#: templates/data/csvmap.inc:102
+msgid "Matching fields"
+msgstr "ãØÇÈŞÉ ÇáÍŞæá"
+
+#: config/registry.php.dist:141
+msgid "Memos"
+msgstr "ãĞßÑÇÊ"
+
+#: config/prefs.php.dist:53
+msgid "Menu mode:"
+msgstr "æÖÚ ÇáãĞßÑÇÊ:"
+
+#: po/translation.php:310
+#, php-format
+msgid "Merging all %s.po files to the compendium... "
+msgstr "ÏãÌ ÌãíÚ ÇáãáİÇÊ %s.po Åáì ÇáÎáÇÕÉ..."
+
+#: po/translation.php:543
+#, php-format
+msgid "Merging the PO file for %s%s%s to the compendium... "
+msgstr "ÏãÌ ãáİ PO ãä ÃÌá %s%s%s Åáì ÇáÎáÇÕÉ..."
+
+#: po/translation.php:267
+#, php-format
+msgid "Merging translation for module %s..."
+msgstr "ÏãÌ ÇáÊáÑÌãÉ ááÈÑíãÌ %s..."
+
+#: status.php:29 lib/Notification/status.php:54
+msgid "Message"
+msgstr "ÑÓÇáÉ"
+
+#: lib/Maintenance.php:28
+msgid "Monthly"
+msgstr "ÔåÑíÇğ"
+
+#: login.php:65
+msgid "My Summary"
+msgstr "ÇáÎáÇÕÉ"
+
+#: lib/MIME/Viewer/vcard.php:56
+msgid "Name"
+msgstr "ÇáÇÓã"
+
+#: config/prefs.php.dist:37
+msgid "Never"
+msgstr "ÃÈÏÇğ"
+
+#: po/translation.php:167
+msgid "No"
+msgstr "áÇ"
+
+#: lib/VFS/ftp.php:402
+msgid "No configuration information specified for FTP VFS."
+msgstr "áÇÊæÌÏ ãÚáæãÇÊ Íæá ÅÚÏÇÏÇÊ ÇáÜ FTP VFS."
+
+#: lib/Prefs/ldap.php:100
+msgid "No configuration information specified for LDAP Preferences."
+msgstr "áÇÊæÌÏ ãÚáæãÇÊ Íæá ÊİÖíáÇÊ LDAP."
+
+#: lib/Category/sql.php:73
+msgid "No configuration information specified for SQL Categories."
+msgstr "áÇÊæÌÏ ãÚáæãÇÊ Íæá ÊÕäíİÇÊ SQL."
+
+#: lib/Prefs/sql.php:83
+msgid "No configuration information specified for SQL Preferences."
+msgstr "áÇÊæÌÏ ãÚáæãÇÊ Íæá äİÖíáÇÊ SQL."
+
+#: lib/SessionHandler/sql.php:183 lib/SessionHandler/pgsql.php:213
+#: lib/SessionHandler/mysql.php:244
+msgid "No configuration information specified for SQL SessionHandler."
+msgstr "áÇÊæÌÏ ãÚáæãÇÊ Íæá SessionHandler ãä ÃÌá SQL."
+
+#: lib/VFS/sql.php:450
+msgid "No configuration information specified for SQL VFS."
+msgstr "áÇÊæÌÏ ãÚáæãÇÊ Íæá ÅÚÏÇÏÇÊ ÇáÜ SQL VFS."
+
+#: lib/Auth/sql.php:105
+msgid "No configuration information specified for SQL authentication."
+msgstr "áÇÊæÌÏ ãÚáæãÇÊ Íæá ÇáÊÍŞŞ ãä ÇáåæíÉ áÜ SQL."
+
+#: lib/VFS/sql_file.php:471
+msgid "No configuration information specified for SQL-File VFS."
+msgstr "áÇÊæÌÏ ãÚáæãÇÊ Íæá ÅÚÏÇÏÇÊ ãáİÇÊ SQL VFS."
+
+#: po/translation.php:946
+#, php-format
+msgid "No entry with the id '%s' exists in the original help file."
+msgstr "áÇÊæÌÏ ÈíÇäÇÊ ÊÍÊ ÇáãÚÑİ '%s' İí ãáİ ÇáãÓÇÚÏÉ ÇáÃÓÇÓí."
+
+#: po/translation.php:260 po/translation.php:305
+msgid "No locale specified."
+msgstr "áã íÊã ÊÍÏíÏ áÛÉ ãÍáíÉ."
+
+#: lib/Auth/imap.php:103
+msgid "No password provided for IMAP authentication."
+msgstr ""
+
+#: lib/Auth/krb5.php:91
+msgid "No password provided for Kerberos authentication."
+msgstr "áÇÊæÌÏ ßáãÉ ãÑæÑ ááÊÍŞŞ ßíÑÈíÑæÓ"
+
+#: lib/Auth/ldap.php:103
+msgid "No password provided for LDAP authentication."
+msgstr "áÇÊæÌÏ ßáãÉ ãÑæÑ ááÊÍŞŞ LDAP."
+
+#: lib/Auth/radius.php:154
+msgid "No password provided for RADIUS authentication."
+msgstr "áÇÊæÌÏ ßáãÉ ãÑæÑ ááÊÍŞŞ ÑÇÏíæÓ."
+
+#: lib/Auth/smb.php:111
+msgid "No password provided for SMB authentication."
+msgstr "áÇÊæÌÏ ßáãÉ ãÑæÑ ááÊÍŞŞ SMB>"
+
+#: lib/Prefs/ldap.php:322 lib/Prefs/ldap.php:430 lib/Prefs/sql.php:193
+#: lib/Prefs/sql.php:269 lib/Prefs/session.php:53
+msgid "No preferences are available."
+msgstr "áÇÊæÌÏ ÃíÉ ÊİÖíáÇÊ."
+
+#: lib/MIME/Viewer/vcard.php:157
+msgid "Notes"
+msgstr "ãáÇÍÙÇÊ"
+
+#: templates/maintenance/confirm_top.inc:13
+msgid "Notice"
+msgstr "ÊäÈíå"
+
+#: lib/Notification.php:105
+#, php-format
+msgid "Notification listener %s not found."
+msgstr "áã íÚËÑ Úáì ÇáãÓÊãÚ %s."
+
+#: config/prefs.php.dist:30
+msgid "Number of columns in the summary view:"
+msgstr "ÚÏÏ ÇáÃÚãÏÉ İí ÇáãáÎÕ:"
+
+#: po/translation.php:157 po/translation.php:1030
+msgid "OK"
+msgstr "ãæÇİŞ"
+
+#: templates/login/user.inc:7 templates/navbar/menu.inc:11
+msgid "Options"
+msgstr "ÎíÇÑÇÊ"
+
+#: po/translation.php:124
+msgid "Options:"
+msgstr "ÎíÇÑÇÊ:"
+
+#: config/prefs.php.dist:11
+msgid "Other Information"
+msgstr "ãÚáæãÇÊ ÂÎÑì"
+
+#: po/translation.php:160
+msgid "PHP support in xgettext: "
+msgstr "ÏÚã PHP İí xgettext:"
+
+#: templates/login/login.inc:71
+msgid "Password"
+msgstr "ßáãÉ ÇáãÑæÑ"
+
+#: templates/maintenance/confirm_bottom.inc:6
+msgid "Perform Maintenance Operations"
+msgstr "ÊäİíĞ ÚãáíÇÊ ÇáÕíÇäÉ"
+
+#: lib/MIME/Viewer/vcard.php:105
+msgid "Phone"
+msgstr "åÇÊİ"
+
+#: templates/problem/javascript.inc:7
+msgid "Please provide a summary of the problem."
+msgstr "ÇáÑÌÇÁ ÊÒæíÏäÇ ãáÎÕ ÇáãÔßáÉ."
+
+#: templates/login/login.inc:14 templates/login/login.inc:18
+msgid "Please provide your username and password"
+msgstr "ÇáÑÌÇÁ ÊÒæíÏäÇ ÈÇÓã ÇáãÓÊÎÏã æßáãÉ ÇáÓÑ."
+
+#: po/translation.php:39
+msgid "Please report any bugs to i18n@lists.horde.org."
+msgstr "ÇáÑÌÇÁ ÅÑÓÇá Ãí ãÔßáÉ Ãæ ÎØÃ İí ÇáÈÑäÇãÌ Åáì i18n@lists.horde.org."
+
+#: problem.php:110
+msgid "Problem Description"
+msgstr "ÔÑÍ ÇáãÔßáÉ"
+
+#: config/prefs.php.dist:43
+msgid "Refresh Summary View:"
+msgstr ""
+
+#: templates/data/csvmap.inc:127
+msgid "Remove pair"
+msgstr "ÅÒáÉ ÇáËäÇÆí"
+
+#: lib/SessionHandler/mysql.php:250
+#, php-format
+msgid "Required '%s' not specified in SessionHandler configuration."
+msgstr "áã íÚËÑ Úáì '%s' İí ÅÚÏÇÏÇÊ ÇáÜ SessionHandler."
+
+#: lib/Auth/ldap.php:81
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr "áã íÚËÑ Úáì 'basedn' İí ÅÚÏÇÏÇÊ ÇáÊÍŞŞ ãä ÇáåæíÉ."
+
+#: lib/Prefs/ldap.php:106
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr "áã íÚËÑ Úáì 'basedn' İí ÅÚÏÇÏÇÊ ÇáÊİÖíáÇÊ."
+
+#: lib/Auth/smb.php:89
+msgid "Required 'bdc_hostspec' not specified in authentication configuration."
+msgstr "áã íÚËÑ Úáì 'bdc_hostspec' İí ÅÚÏÇÏÇÊ ÇáÊÍŞŞ ãä ÇáåæíÉ."
+
+#: lib/SessionHandler/sql.php:198 lib/SessionHandler/pgsql.php:225
+msgid "Required 'database' not specified in SessionHandler configuration."
+msgstr "áã íÚËÑ Úáì 'database' İí ÅÚÏÇÏÇÊ ÇáÜ SessionHandler."
+
+#: lib/VFS/sql.php:465 lib/VFS/sql_file.php:486
+msgid "Required 'database' not specified in VFS configuration."
+msgstr "áã íÚËÑ Úáì 'database' İí ÅÚÏÇÏÇÊ ÇáÜ VFS."
+
+#: lib/Auth/sql.php:120
+msgid "Required 'database' not specified in authentication configuration."
+msgstr "áã íÚËÑ Úáì 'database' İí ÅÚÏÇÏÇÊ ÇáÊÍŞŞ ãä ÇáåæíÉ."
+
+#: lib/Category/sql.php:88
+msgid "Required 'database' not specified in categories configuration."
+msgstr "áã íÚËÑ Úáì 'database' İí ÅÚÏÇÏÇÊ ÇáÊÕäíİÇÊ."
+
+#: lib/Prefs/sql.php:98
+msgid "Required 'database' not specified in preferences configuration."
+msgstr "áã íÚËÑ Úáì 'database' İí ÅÚÏÇÏÇÊ ÇáÊİÖíáÇÊ."
+
+#: lib/Auth/smb.php:92
+msgid "Required 'domain' not specified in authentication configuration."
+msgstr "áã íÚËÑ Úáì 'domain' İí ÅÚÏÇÏÇÊ ÇáÊÍŞŞ ãä ÇáåæíÉ."
+
+#: lib/SessionHandler/sql.php:189 lib/SessionHandler/pgsql.php:216
+msgid "Required 'hostspec' not specified in SessionHandler configuration."
+msgstr "áã íÚËÑ Úáì 'hostspec' İí ÅÚÏÇÏÇÊ ÇáÜ SessionHandler."
+
+#: lib/VFS/sql.php:456 lib/VFS/ftp.php:411 lib/VFS/sql_file.php:477
+msgid "Required 'hostspec' not specified in VFS configuration."
+msgstr "áã íÚËÑ Úáì 'hostspec' İí ÅÚÏÇÏÇÊ ÇáÜ VFS."
+
+#: lib/Auth/ldap.php:78 lib/Auth/sql.php:111
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr "áã íÚËÑ Úáì 'hostspec' İí ÅÚÏÇÏÇÊ ÇáÊÍŞŞ ãä ÇáåæíÉ."
+
+#: lib/Category/sql.php:79
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr "áã íÚËÑ Úáì 'hostspec' İí ÅÚÏÇÏÇÊ ÇáÊÕäíİÇÊ."
+
+#: lib/Prefs/ldap.php:103 lib/Prefs/sql.php:89
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr "áã íÚËÑ Úáì 'hostspec' İí ÅÚÏÇÏÇÊ ÇáÊİÖíáÇÊ."
+
+#: lib/SessionHandler/sql.php:195 lib/SessionHandler/pgsql.php:222
+msgid "Required 'password' not specified in SessionHandler configuration."
+msgstr "áã íÚËÑ Úáì 'password' İí ÅÚÏÇÏÇÊ ÇáÜ SessionHandler."
+
+#: lib/VFS/sql.php:462 lib/VFS/ftp.php:408 lib/VFS/sql_file.php:483
+msgid "Required 'password' not specified in VFS configuration."
+msgstr "áã íÚËÑ Úáì'password' İí ÅÚÏÇÏÇÊ ÇáÜ VFS."
+
+#: lib/Auth/sql.php:117
+msgid "Required 'password' not specified in authentication configuration."
+msgstr "áã íÚËÑ Úáì 'password' İí ÅÚÏÇÏÇÊ ÇáÊÍŞŞ ãä ÇáåæíÉ."
+
+#: lib/Category/sql.php:85
+msgid "Required 'password' not specified in categories configuration."
+msgstr "áã íÚËÑ Úáì 'password'' İí ÅÚÏÇÏÇÊ ÇáÊÕäíİÇÊ."
+
+#: lib/Prefs/ldap.php:115 lib/Prefs/sql.php:95
+msgid "Required 'password' not specified in preferences configuration."
+msgstr "áã íÚËÑ Úáì 'password'' İí ÅÚÏÇÏÇÊ ÇáÊİÖíáÇÊ."
+
+#: lib/Auth/smb.php:86
+msgid "Required 'pdc_hostspec' not specified in authentication configuration."
+msgstr "áã íÚËÑ Úáì 'pdc_hostspec' İí ÅÚÏÇÏÇÊ ÇáÊÍŞŞ ãä ÇáåæíÉ."
+
+#: lib/SessionHandler/sql.php:186
+msgid "Required 'phptype' not specified in SessionHandler configuration."
+msgstr "áã íÚËÑ Úáì 'phptype' İí ÅÚÏÇÏÇÊ ÇáÜ SessionHandler."
+
+#: lib/VFS/sql.php:453 lib/VFS/sql_file.php:474
+msgid "Required 'phptype' not specified in VFS configuration."
+msgstr "áã íÚËÑ Úáì 'phptype' İí ÅÚÏÇÏÇÊ VFS."
+
+#: lib/Auth/sql.php:108
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr "áã íÚËÑ Úáì 'phptype' İí ÅÚÏÇÏÇÊ ÇáÊÍŞŞ ãä ÇáåæíÉ."
+
+#: lib/Category/sql.php:76
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr "áã íÚËÑ Úáì 'phptype' İí ÅÚÏÇÏÇÊ ÇáÊÕäíİÇÊ."
+
+#: lib/Prefs/sql.php:86
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr "áã íÚËÑ Úáì  'phptype' İí ÅÚÏÇÏÇÊ ÇáÊİÖíáÇÊ"
+
+#: lib/VFS/ftp.php:414
+msgid "Required 'port' not specified in VFS configuration."
+msgstr "áã íÚËÑ Úáì 'port' İí ÅÚÏÇÏÇÊ VFS."
+
+#: lib/Category/sql.php:91
+msgid "Required 'table' not specified in categories configuration."
+msgstr "áã íÚËÑ Úáì 'hostspec' İí ÅÚÏÇÏÇÊ ÇáÊÍŞŞ ãä ÇáåæíÉ."
+
+#: lib/Prefs/sql.php:101
+msgid "Required 'table' not specified in preferences configuration."
+msgstr "áã íÚËÑ Úáì 'hostspec' İí ÅÚÏÇÏÇÊ ÇáÊÍŞŞ ãä ÇáåæíÉ."
+
+#: lib/Auth/ldap.php:84
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr "áã íÚËÑ Úáì 'uid' İí ÅÚÏÇÏÇÊ ÇáÊÍŞŞ ãä ÇáåæíÉ."
+
+#: lib/Prefs/ldap.php:109
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr "áã íÚËÑ Úáì 'uid' İí ÅÚÏÇÏÇÊ ÇáÊİÖíáÇÊ."
+
+#: lib/SessionHandler/sql.php:192 lib/SessionHandler/pgsql.php:219
+msgid "Required 'username' not specified in SessionHandler configuration."
+msgstr "áã íÚËÑ Úáì 'username' İí ÅÚÏÇÏÇÊ ÇáÜ SessionHandler."
+
+#: lib/VFS/sql.php:459 lib/VFS/ftp.php:405 lib/VFS/sql_file.php:480
+msgid "Required 'username' not specified in VFS configuration."
+msgstr "áã íÚËÑ Úáì 'username' İí ÅÚÏÇÏÇÊ VFS."
+
+#: lib/Auth/sql.php:114
+msgid "Required 'username' not specified in authentication configuration."
+msgstr "áã íÚËÑ Úáì 'username' İí ÅÚÏÇÏÇÊ ÇáÊÍŞŞ ãä ÇáåæíÉ."
+
+#: lib/Category/sql.php:82
+msgid "Required 'username' not specified in categories configuration."
+msgstr "áã íÚËÑ Úáì 'username' İí ÅÚÏÇÏÇÊ ÇáÊÕäíİÇÊ."
+
+#: lib/Prefs/ldap.php:112 lib/Prefs/sql.php:92
+msgid "Required 'username' not specified in preferences configuration."
+msgstr "áã íÚËÑ Úáì 'username' İí ÅÚÏÇÏÇÊ ÇáÊİÖíáÇÊ."
+
+#: lib/VFS/sql_file.php:489
+msgid "Required 'vfsroot' not specified in VFS configuration."
+msgstr "áã íÚËÑ Úáì 'vfsroot' İí ÅÚÏÇÏÇÊ VFS."
+
+#: templates/prefs/end.inc:7
+msgid "Return to Options"
+msgstr "ÚæÏÉ Åáì ÇáÎíÇÑÇÊ"
+
+#: lib/MIME/Viewer/vcard.php:147
+msgid "Role"
+msgstr "ÇáÏæÑ"
+
+#: templates/prefs/end.inc:5
+msgid "Save Options"
+msgstr "ÍİÙ ÇáÎíÇÑÇÊ"
+
+#: po/translation.php:1121
+msgid "Searching Horde applications..."
+msgstr "ÈÍË Úä ÊØÈíŞÇÊ åæÑÏí..."
+
+#: po/translation.php:135
+msgid "Searching gettext binaries..."
+msgstr "ÈÍË Úä ÇáÊÑãíÒ ÇáËäÇÆí áÜ gettext"
+
+#: util/special_characters.php:38
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr "ÍÏÏ ÇáÍÑæİ/ÇáÑãæÒ ÇáÊí ÊÑíÏåÇ ÃÏäÇå. æãä Ëã íãßä äÓÎåÇ"
+"æáÕŞåÇ Öãä ÇáäÕ."
+
+#: templates/data/datemap.inc:54 templates/data/datemap.inc:90
+msgid "Select the date delimiter:"
+msgstr "ÇÎÊÑ ÇáİæÇÕá ááÊÇÑíÎ:"
+
+#: templates/data/datemap.inc:64
+msgid "Select the date format:"
+msgstr "ÇÎÊÑ ÊäÓíŞ ÇáÊÇÑíÎ:"
+
+#: templates/data/datemap.inc:99
+msgid "Select the time format:"
+msgstr "ÇÎÊÑ ÊäÓíŞ ÇáæŞÊ:"
+
+#: templates/data/csvmap.inc:65
+msgid "Select two matching fields."
+msgstr "ÅÎÊÑ ÍŞáíä ãÊãÇËáíä."
+
+#: config/prefs.php.dist:23
+msgid "Select your preferred language:"
+msgstr "ÅÎÊÑ áÛÊß ÇáãİÖáÉ:"
+
+#: templates/problem/problem.inc:34
+msgid "Send Problem Report"
+msgstr "ÃÑÓá ÊŞÑíÑÇğ ÈãÔßáÉ ÍÕáÊ"
+
+#: config/prefs.php.dist:13
+msgid "Set your page refreshing, and other display options."
+msgstr "ÇÎÊÑ ÊÍÏíË ÇáÕİÍÉ æÎíÇÑÇÊ ÇáÔÇÔÉ ÇáÃÎÑì."
+
+#: config/prefs.php.dist:7
+msgid "Set your preferred display language."
+msgstr "ÇÎÊÑ áÛÊß ÇáãİÖáÉ ááÅÙåÇÑ"
+
+#: templates/problem/problem.inc:21
+msgid "Short Summary:"
+msgstr "ÇáäÊíÌÉ ÇáãÎÊÕÑÉ:"
+
+#: templates/maintenance/confirm_bottom.inc:9
+msgid "Skip Maintenance"
+msgstr "Ååãá ÇáÕíÇäÉ"
+
+#: po/translation.php:451
+msgid "Skipped..."
+msgstr "ÅåãÇá..."
+
+#: templates/index/notconfigured.inc:9
+msgid "Some of Horde's configuration files are missing:"
+msgstr "ÈÚÖ ãáİÇÊ ÇáÅÚÏÇÏÇÊ ÇáÎÕÉ ÈåæÑÏí ãİŞæÏÉ."
+
+#: util/special_characters.php:14
+msgid "Special Character Input"
+msgstr "ÅÏÎÇÑ ÍÑæİ ÎÇÕÉ"
+
+#: status.php:20 lib/Notification/status.php:45
+msgid "Success"
+msgstr "Êã ÈäÌÇÍ"
+
+#: config/registry.php.dist:150
+msgid "Tasks"
+msgstr "ÇáãåãÇÊ"
+
+#: config/prefs.php.dist:50
+msgid "Text Only"
+msgstr "äÕ İŞØ"
+
+#: po/translation.php:779 po/translation.php:910
+#, php-format
+msgid "The help file %s didn't start with <?xml"
+msgstr "ãáİ ÇáãÓÇÚÏÉ %s áÇ íÈÏÃ ÈÜ <?xml"
+
+#: lib/MIME/Viewer/deb.php:33 lib/MIME/Viewer/rar.php:35
+#: lib/MIME/Viewer/enscript.php:34 lib/MIME/Viewer/mspowerpoint.php:34
+#: lib/MIME/Viewer/msword.php:35 lib/MIME/Viewer/rpm.php:33
+#: lib/MIME/Viewer/zip.php:35 lib/MIME/Viewer/tgz.php:35
+#: lib/MIME/Viewer/msexcel.php:34
+#, php-format
+msgid ""
+"The program used to view this message type (%s) was not found on the system."
+msgstr ""
+"áã íÊã ÇáÚËæÑ Úáì ÇáÈÑäÇãÌ ÇáãÓÊÎÏã áÅÙåÇÑ ÇáÑÓÇÆá ãä äæÚ (%s) Öãä äÙÇãß."
+
+#: templates/index/notconfigured.inc:42
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+"ÇáÊÓÌíá íÚäí ØÑíŞÉ ÇáÊÎÇØÈ Èíä ÇáÈÑÇãÌ ÇáãßæäÉ áäÙÇã åæÑÏí"
+"íÌÈ ÅÏÑÇÌ Ãí ÈÑäÇãÌ íÚãá ãÚ åæÑÏí ŞÏ Êã ÊÑßíÈå Úäßã."
+
+#: po/translation.php:743
+#, php-format
+msgid "There doesn't yet exist a help file for %s."
+msgstr "áÇ íæÌÏ ÍÇáíÇğ ãáİ ãÓÇÚÏÉ ãä ÃÌá %s."
+
+#: po/translation.php:789 po/translation.php:795 po/translation.php:920
+#: po/translation.php:926
+#, php-format
+msgid ""
+"There was an error opening the file %s. Try running translation.php with the "
+"flag -d to see any error messages from the xml parser."
+msgstr ""
+"ÍÕá ÎØÃ ÎáÇá İÊÍ ãáİ ÇáÊÑÌãÉ %s. ÍÇæá ÊÔÛíá translation.php ãÚ"
+"(flag -d) áÚÑÖ ÑÓÇáÉ ÇáÎØÃ ãä ãÚÇáÌ ÇáÜ xml."
+
+#: templates/index/notconfigured.inc:28
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+"íÊÍßã åĞÇ Çáãáİ ÈÇáÅÚÏÇÏÇÊ ÇáÚÇãÉ áÈÑÇãÌ ÇáŞíÇÏÉ ááÜ MIME ááåæÑÏí"
+"áÅÙåÇÑ ÇáãáİÇÊ ÇáãÑİŞÉ Öãä ÕİÍÉ ÇáæíÈ İí ÇáãÊÕİÍ."
+
+#: templates/index/notconfigured.inc:21
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings."
+msgstr "íÊÍßã åĞÇ Çáãáİ İí ÔÑíÍÉ  ÇáÓãÇÊ ÇáÊí ÊÓÊÎÏã áÖÈØ ÇáÃáæÇä æÇáÎØæØ"
+"ááÅØÇÑ ÇáÚÇã áåæÑÏí Ãæ ÇáÈÑÇãÌ ÇáÚÇãáÉ Öãäå ÇáÊí áÇ Êãáß ãáİåÇ ÇáÎÇÕ"
+"áåĞÇ ÇáäæÚ ãä ÇáÅÚÏÇÏÇÊ."
+
+#: templates/index/notconfigured.inc:35
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr "íÍÊæí åĞÇ Çáãáİ Úáì ãÎØØ ÇáÅãÊÏÇÏÇÊ ááÃäæÇÚ ÇáãäØŞíÉ ááãáİÇÊ ÇáÊí ÊÌÚá ÈÑÇãÌ"
+"åæÑÏí ŞÇÏÑÉ Úáì ÇáÊÚÇãá ãÚ ÈÚÖ ÇáÃäæÇÚ ãä ÇáãÍÊæíÇÊ ááÈÑíÏ"
+"ãËá ÈÚÖ ãÑİŞÇÊ ÇáÑÓÇÆá Ãæ ãáİÇÊ ãä äæÚ CVS."
+
+#: templates/index/notconfigured.inc:14
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+"åĞÇ Çáãáİ íÍæí ÇáÅÚÏÇÏÇÊ ÇáÑÆíÓíÉ áåæÑÏí. íÍÊæí Úáì ÇáãÓÇÑÇÊ æÇáãßæäÇÊ ÇáÃÓÇÓíÉ"
+"ááÅØÇÑ ÇáÚÇã æÌãíÚ ÇáÈÑÇãÌ ÇáÊí ÊÚãá Öãä ÅØÇÑ åæÑÏí."
+
+#: lib/PrefsUI.php:109
+msgid "This number must be at least one."
+msgstr "íÌÈ Ãä íßæä åĞÇ ÇáÑŞã ÃßÈÑ ãä ÇáÕİÑ"
+
+#: lib/PrefsUI.php:107
+msgid "This value must be a number."
+msgstr "íÌÈ Ãä Êßæä åĞå ÇáŞíãÉ ÑŞã."
+
+#: lib/MIME/Viewer/vcard.php:142
+msgid "Title"
+msgstr "ÇááŞÈ"
+
+#: lib/Data.php:285
+msgid "Type mismatch."
+msgstr "ÎØÃ İí ÇáäæÚ"
+
+#: lib/MIME/Viewer/vcard.php:162
+msgid "URL"
+msgstr "ÚäæÇä ÇáÅäÊÑäíÊ"
+
+#: lib/VFS/file.php:208 lib/VFS/musql.php:430 lib/VFS/ftp.php:254
+#, php-format
+msgid "Unable to change permission for VFS file %s/%s."
+msgstr "áÇ ÅãßÇäíÉ áÊÛííÑ ÇáÓãÇÍíÇÊ áãáİ VFS %s/%s."
+
+#: lib/Auth/sql.php:130
+msgid "Unable to connect to SQL server."
+msgstr "áÇ ÅãßÇäíÉ ááÅÊÕÇá ÈãÎÏã SQL."
+
+#: lib/VFS/file.php:452
+msgid "Unable to read the vfsroot directory."
+msgstr "áÇ ÅãßÇäíÉ áŞÑÇÁÉ ãÌáÏ vfsroot."
+
+#: lib/Prefs/session.php:92
+msgid "Unable to register preferences in session."
+msgstr "áÇ ÅãßÇäíÉ áÊÓÌíá ÇáÈíÇäÇÊ İí åĞÇ ÇáÇÊÕÇá."
+
+#: lib/VFS/file.php:379 lib/VFS/musql.php:215 lib/VFS/ftp.php:210
+#, php-format
+msgid "Unable to rename VFS file %s/%s."
+msgstr "áÇ ÊæÌÏ ÅãßÇäíÉ áÊÛííÑ ÇÓã  ãáİ ÇáÜ VFS %s/%s."
+
+#: lib/MIME/Viewer/msword.php:57
+msgid "Unable to translate this Word document"
+msgstr "ÛíÑ ŞÇÏÑ Úáì ÊÑÌãÉ ãÓÊäÏ ÇáæÑÏ åĞÇ"
+
+#: templates/prefs/end.inc:6
+msgid "Undo Changes"
+msgstr "ÊÑÇÌÚ Úä ÇáÊÛííÑÇÊ"
+
+#: lib/Data.php:281
+msgid "Unexpected end of file."
+msgstr "äåÇíÉ ÛíÑ ãŞÈæáÉ ááãáİ."
+
+#: po/translation.php:1176
+#, php-format
+msgid "Unknown command: %s"
+msgstr "ÃãÑ ÛíÑ ãÚÑæİ %s:"
+
+#: po/translation.php:774 po/translation.php:905
+#, php-format
+msgid "Updating %s help file for %s."
+msgstr "ÊÍÏíË ãáİ ÇáãÓÇÚÏÉ %s ãä ÃÌá %s."
+
+#: po/translation.php:55 po/translation.php:105 po/translation.php:106
+msgid "Usage:"
+msgstr "ÍÌã ÇáÇÓÊÎÏÇã:"
+
+#: templates/prefs/select.inc:3
+msgid "Use Default Value"
+msgstr "ÇÓÊÎÏã ÇáŞíã ÇáÅİÊÑÇÖíÉ"
+
+#: prefs.php:61
+msgid "User Options"
+msgstr "ÎíÇÑÇÊ ÇáãÓÊÎÏã"
+
+#: templates/login/login.inc:67
+msgid "Username"
+msgstr "ÇÓã ÇáãÓÊÎÏã"
+
+#: lib/Auth.php:389
+msgid "Username and/or password not correct."
+msgstr "ÎØÃ İí ÇÓã ÇáãÓÊÎÏã æ/Ãæ ßáãÉ ÇáÓÑ."
+
+#: status.php:24 lib/Notification/status.php:49
+msgid "Warning"
+msgstr "ÊäÈíå"
+
+#: po/translation.php:467 po/translation.php:504 po/translation.php:513
+#: po/translation.php:743 po/translation.php:752 po/translation.php:759
+#: po/translation.php:769 po/translation.php:779 po/translation.php:789
+#: po/translation.php:795 po/translation.php:910 po/translation.php:920
+#: po/translation.php:926 po/translation.php:946
+msgid "Warning: "
+msgstr "ÊäÈíå:"
+
+#: lib/Maintenance.php:29
+msgid "Weekly"
+msgstr "ÃÓÈæÚíÇğ"
+
+#: templates/login/login.inc:59
+#, php-format
+msgid "Welcome to %s"
+msgstr "ÃåáÇ Èßã Åáì %s"
+
+#: templates/wml/login/user.inc:1 templates/login/user.inc:4
+#, php-format
+msgid "Welcome, %s"
+msgstr "ÃåáÇ æÓåáÇ %s"
+
+#: config/prefs.php.dist:61
+msgid "What application should Horde display after login?"
+msgstr "ãÇ ÇáÈÑäÇãÌ ÇáãÊÑÖ ÚÑÖå ãä åæÑÏí ÈÚÏ ÇáÏÎæá¿"
+
+#: lib/MIME/Viewer/vcard.php:84
+msgid "Work Address"
+msgstr "ÚäæÇä ÇáÚãá"
+
+#: lib/MIME/Viewer/vcard.php:101
+msgid "Work Phone"
+msgstr "åÇÊİ ÇáÚãá"
+
+#: po/translation.php:851
+#, php-format
+msgid "Writing updated help file to %s."
+msgstr "ßÊÇÈÉ ãáİ ÇáãÓÇÚÏÉ ÇáãÚÏá Åáì %s."
+
+#: templates/data/datemap.inc:67 templates/data/datemap.inc:68
+#: templates/data/datemap.inc:69 templates/data/datemap.inc:70
+msgid "YY"
+msgstr "ÓäÉ - ××"
+
+#: lib/Maintenance.php:27
+msgid "Yearly"
+msgstr "ÓäæíÇğ"
+
+#: po/translation.php:164
+msgid "Yes"
+msgstr "äÚã"
+
+#: login.php:61
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "Êã ÇáÎÑæÌ ÈäÌÇÍ. <br /> ÔßÑÇğ áÇÓÊÎÏÇãßã åĞÇ ÇáäÙÇã."
+
+#: templates/problem/javascript.inc:11
+msgid "You must describe the problem before you can send the problem report."
+msgstr "íÌÈ ÔÑÍ ÇáãÔßáÉ ŞÈá ÇÑÓÇá ÊŞÑíÑÇğ ÈåÇ."
+
+#: login.php:60
+#, php-format
+msgid "Your %s session has expired. Please login again."
+msgstr "ÇäÊåÊ ÕáÇÍíÉ ÇáÇÊÕÇá %s. ÇáÑÌÇÁ ÅÚÇÏÉ ÇáÏÎæá."
+
+#: templates/problem/problem.inc:16
+msgid "Your Email Address:"
+msgstr "ÚäæÇä ÈÑíÏß ÇáÅáßÊÑæäí:"
+
+#: config/prefs.php.dist:5
+msgid "Your Information"
+msgstr "ÈíÇäÇÊß:"
+
+#: templates/problem/problem.inc:11
+msgid "Your Name:"
+msgstr "ÇÓãß:"
+
+#: lib/PrefsUI.php:146
+msgid "Your options have been updated."
+msgstr "Êã ÊÍÏíË ÇáÎíÇÑÇÊ"
+
+#: problem.php:67
+msgid "[Problem Report]"
+msgstr "[ÊŞÑíÑ ÇáãÔßáÉ]"
+
+#: lib/Horde.php:231
+#, php-format
+msgid "[line %s of %s]"
+msgstr "[ÇáÓØÑ %s ãä %s]"
+
+#: po/translation.php:504
+msgid "an error has occured:"
+msgstr "ÍÕá ÎØÃ:"
+
+#: po/translation.php:226 po/translation.php:333 po/translation.php:403
+#: po/translation.php:534 po/translation.php:574
+msgid "done"
+msgstr "Êã ÈäÌÇÍ"
+
+#: po/translation.php:335 po/translation.php:367 po/translation.php:405
+#: po/translation.php:536 po/translation.php:576
+msgid "failed"
+msgstr "İÔá"
+
+#: menu.php:37 menu.php:39
+msgid "name"
+msgstr "ÇáÇÓã"
+
+#: po/translation.php:142
+msgid "not found"
+msgstr "ÛíÑ ãæÌæÏ"
+
+#: po/translation.php:513
+#, php-format
+msgid "the Horde PO file for the locale %s does not exist:"
+msgstr "Åä ãáİÇÊ PO ááÛÉ %s ÛíÑ ãæÌæÏÉ"
+
+#: lib/MIME/Viewer/vcard.php:36
+msgid "vCard"
+msgstr "vCard"

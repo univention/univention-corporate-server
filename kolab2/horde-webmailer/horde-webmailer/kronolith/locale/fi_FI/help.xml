@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<!-- $Horde: kronolith/locale/fi_FI/help.xml,v 1.2.12.6 2008-10-13 08:45:48 jan Exp $ -->
+<help>
+  <entry id="Overview" md5="1585927d48e4627c792fe0332c41fd39" state="uptodate">
+    <title>Kronolith: Yleiskuva</title>
+    <heading>Mik&#xE4; on Kronolith?</heading>
+    <para>
+    Kronolith www-pohjainen kalenterisovellus. Ohjelmisto tukee
+    perustoimintojen kuten tapahtuman lis&#xE4;ys, muokkaus ja poisto
+    lis&#xE4;ksi my&#xF6;s toistuvia tapahtumia (jotka voivat sis&#xE4;lt&#xE4;&#xE4;
+    poikkeuksia), h&#xE4;lytyksi&#xE4;, tuonti ja vienti toimintoja (iCalendar
+    tai CSV-muodossa), iCalendar pohjaisia kutsuja, monia
+    kalenterin&#xE4;kymi&#xE4;, jaettuja kalentereita, teht&#xE4;v&#xE4;listan (Nag)
+    teht&#xE4;vien n&#xE4;ytt&#xE4;misen (Jos Teht&#xE4;v&#xE4;t ohjelma on asennettu) ja
+    yhteenvedon tapahtumista voi my&#xF6;s lis&#xE4;t&#xE4; Horde yhteenveton&#xE4;kym&#xE4;&#xE4;n.
+    </para>
+</entry>
+  <entry id="menu-today" md5="c6d0c0f366175a38d0655ed9969ed4a6" state="uptodate">
+    <title>Valikko: T&#xE4;n&#xE4;&#xE4;n</title>
+    <para>
+    <i>T&#xE4;n&#xE4;&#xE4;n</i> valikkotoiminto n&#xE4;ytt&#xE4;&#xE4; asetuksissa valitsemasi
+    oletusn&#xE4;kym&#xE4;n (kuukausi, viikko, p&#xE4;iv&#xE4;) kuluvalle p&#xE4;iv&#xE4;lle.
+    </para>
+</entry>
+  <entry id="menu-Goto" md5="566191775ba90b769f2e3f7cdf24cbfa" state="uptodate">
+    <title>Valikko: Mene</title>
+    <para>
+    <i>Mene</i> valikkotoiminto avaa pienen ponnahdusikkunan, jossa voit
+    nopeasti valita kuukauden, viikon tai p&#xE4;iv&#xE4;n, jonka kohdalle
+    haluat <i>menn&#xE4;</i>. T&#xE4;m&#xE4; on usein nopein tapa siirty&#xE4;
+    kalenterissa.
+    </para>
+</entry>
+  <entry id="menu-Day" md5="3cd62e10116058db52a15fecd7ddbcb0" state="uptodate">
+    <title>Valikko: P&#xE4;iv&#xE4;</title>
+    <para>
+    <i>P&#xE4;iv&#xE4;</i> valikkolehti n&#xE4;ytt&#xE4;&#xE4;&#xE4; valitun p&#xE4;iv&#xE4;n tiedot.
+    </para>
+</entry>
+  <entry id="menu-work-week" md5="f9a63585c81dca63887e130dbbea91de" state="uptodate">
+    <title>Valikko: Ty&#xF6;viikko</title>
+    <para>
+    <i>Ty&#xF6;viikko</i> valikkolehti avaa ty&#xF6;viikkon&#xE4;kym&#xE4;n (maanantaista
+    perjantaihin), joka on l&#xE4;hinn&#xE4; valittua p&#xE4;iv&#xE4;&#xE4;.
+    </para>
+</entry>
+  <entry id="menu-week" state="uptodate" md5="3d8a3bfda629bb6e09819b2e660546e5">
+    <title>Valikko: Viikko</title>
+    <para>
+    <i>Viikko</i> valikkolehti n&#xE4;ytt&#xE4;&#xE4; viikkon&#xE4;kym&#xE4;n (n&#xE4;kyviss&#xE4;
+    seitsem&#xE4;n p&#xE4;iv&#xE4;&#xE4;) siten ett&#xE4; se sis&#xE4;lt&#xE4;&#xE4; valitun p&#xE4;iv&#xE4;n.
+    </para>
+</entry>
+  <entry id="menu-month" md5="4be2056875775ec1f5b0f920a1dab608" state="uptodate">
+    <title>Valikko: Kuukausi</title>
+    <para>
+    <i>Kuukausi</i> valikkolehti n&#xE4;ytt&#xE4;&#xE4; kuukausin&#xE4;kym&#xE4;n siten ett&#xE4; se sis&#xE4;lt&#xE4;en valitun p&#xE4;iv&#xE4;n.
+    </para>
+</entry>
+  <entry id="menu-new-event" md5="37406cc2ee51040862df1eaa2f645d4e" state="uptodate">
+    <title>Valikko: Uusi tapahtuma</title>
+    <para>
+    <i>Uusi tapahtuma</i> valikkotoiminnolla voit lis&#xE4;t&#xE4; kalenteriin
+    uuden tapahtuman.
+    </para>
+</entry>
+  <entry id="menu-options" md5="d7df2c0cda84c89c638d9d6e59307976" state="uptodate">
+    <title>Valikko: Asetukset</title>
+    <para>
+    <i>Asetukset</i> valikkotoiminnolla voit muokata ohjelman
+    <i>asetuksia</i> (tai vaihtoehtoja). N&#xE4;ill&#xE4; asetuksilla voit
+    vaikuttaa Kronolith ohjelman ulkon&#xE4;k&#xF6;&#xF6;n ja toimintaaan, ohjelman
+    tapaan toimia Horden tai muiden Horde ohjelmien kanssa ja
+    hallinnoida jaettuja kalentereita.
+    </para>
+</entry>
+  <entry id="menu-import-export" md5="34bc9dfc4d6302fc1011696a1b8d1ca8" state="uptodate">
+    <title>Valikko: Tuo/Vie</title>
+    <para>
+    <i>Tuo/Vie</i> valikkotoiminnolla voit tuoda ja vied&#xE4;
+    kalenteritapahtumia. T&#xE4;ll&#xE4; hetkell&#xE4; voit tuoda tapahtumia CSV,
+    Microsoft Outlook tai vCalendar/iCalendar muodoissa. Tapahtumia
+    voi vied&#xE4; vain CSV tai iCalendar muodoissa.
+    </para>
+</entry>
+  <entry id="alarms" md5="4c1c6f3eb13a416031ffbee4fce99ea1" state="uptodate">
+    <title>H&#xE4;lytykset</title>
+    <para>
+    Kronolith ohjelmassa voi asettaa h&#xE4;lytyksi&#xE4;
+    kalenteritapahtumille. Oletuksena ensimm&#xE4;inen h&#xE4;lytys tulee 15
+    minuuttia ennen kuin tapahtuma on merkitty alkavaksi, mutta voit
+    my&#xF6;s itse m&#xE4;&#xE4;ritell&#xE4; h&#xE4;lytyksen
+    tapahtumakohtaisesti.
+    </para>
+</entry>
+  <entry id="recurring-events" md5="83a0c3a8a2d2f5ce8b5510bda255643d" state="changed">
+    <title>Toistuvat tapahtumat</title>
+    <para>
+    Tapahtumia voi toistaa monella eri tavalla. Useimmat toistuvat
+    tapahtumat toistuvat esimerkiksi <i>kuukausittain</i> (tapahtuu
+    kerran kuukaudessa) tai <i>viikoittain</i> (tapahtuu kerran
+    viikossa). Toiston voi my&#xF6;s m&#xE4;&#xE4;ritell&#xE4; monimutkaisemmaksi
+    esimerkiksi tapahtuma voi toistua kuukausittain vain joka kolmas
+    perjantai tai viikoittain, mutta vain maanantaisin,
+    keskiviikkoisin ja perjantaisin.
+    </para>
+    <para>
+    Voit m&#xE4;&#xE4;ritell&#xE4; miten kauan tapahtumaan toistetaan m&#xE4;&#xE4;ritelem&#xE4;ll&#xE4; sille toiston <i>loppup&#xE4;iv&#xE4;m&#xE4;&#xE4;r&#xE4;n</i>.
+    </para>
+    <para>
+    Jos muokkaat toistuvan tapahtuman toistuvuutta, niin muutos tulee
+    voimaan tapahtuman kaikissa toistoissa. Voit kuitenkin muuttaa
+    toistuvan tapahtuman yht&#xE4; merkint&#xE4;&#xE4; siten ett&#xE4; muokkaat
+    tapahtumaa ja valitset <i>Tallenna uutena</i> toistuvuus
+    valikosta. T&#xE4;m&#xE4;n j&#xE4;lkeen voit muuttaa tapahtumaa itsen&#xE4;isesti,
+    ilman ett&#xE4; muutokset koskisivat my&#xF6;s muita tapahtuman toistoja.
+    </para>
+<!-- English entry:
+<entry id="recurring-events">
+    <title>Recurring Events</title>
+    <para>
+    Events can be made to repeat in various ways. Many events repeat in
+    certain frequently used ways. For example, the <i>Monthly</i> recurrence
+    types make the selected item repeat each month and the <i>Weekly</i>
+    recurrence type makes the selected item repeat each per week. These can be
+    made to represent events that repeat in complex ways: for example, an item
+    that occurs on the third Friday of each month, or an item that occurs on
+    Monday, Wednesday, and Friday every week.
+    </para>
+    <para>
+    You can also restrict how long an event repeats by selecting the <i>end
+    date</i> for the event's recurrence.
+    </para>
+    <para>
+    Normally, a modification to a repeating event applies to all occurrences
+    of that event. A single occurrence of a repeating event can be modified by
+    editing the occurrence, removing its recurrence information, and then
+    choosing the <i>Save as New</i> option from the Repeat menu. The selected
+    occurrence can now be modified independently of the other occurences.
+    </para>
+</entry>--></entry>
+  <entry id="Printing" md5="2f90d14e34b715a054fb52bb919ac5f8" state="uptodate">
+    <title>Tulosta</title>
+    <heading>Kalentereiden ja tapahtumien tulostus</heading>
+    <para>
+    Jotkut n&#xE4;kym&#xE4;t on suunniteltu tulostettaviksi. Kun olet jossakin t&#xE4;ll&#xE4;isess&#xE4; n&#xE4;kym&#xE4;ss&#xE4;, niin <i>Tulosta</i> -ikoni tulee n&#xE4;kyviin ruudun yl&#xE4;osan toimintovalikkoon. Voit <i>Tulosta</i> -ikonia napsauttamalla tulostaa n&#xE4;kym&#xE4;n.
+    </para>
+</entry>
+  <entry id="shares" state="uptodate" md5="bf3a44d08a824979ba8dd8fd0e661eee">
+  <title>Kalenterin oikeudet</title>
+  <para>
+  TODO
+  </para>
+  <para>
+  TODO
+  </para>
+</entry>
+  <entry id="embed" state="new">
+  <title>Embedding</title>
+  <para>
+    It is possible to embed small views of your calendars in external websites.
+    You can embed the same views that you can place on Horde's portal page. The
+    following are examples of code to use to embed each view on an external
+    blog or website. You should obviously edit the code with the correct server
+    address and calendar name.  The 'container' parameter is arbitrary, but must
+    both match the DOM id of the the div element and be unique across the whole
+    page you are embedding in.
+  </para>
+  <para>
+    To embed a small Month View of the current month:
+  </para>
+    <i>&lt;div id="kronocalendar"&gt;&lt;/div&gt;&lt;script
+    src="http://hostname.example.com/horde/kronolith/imple.php?imple=Embed
+    /container=kronocalendar/view=month/calendar=calendar_name"
+    type="text/javascript"&gt;&lt;/script&gt;</i>
+  <para>
+    To embed an Upcoming Events View (note the 'months' and 'maxevents'
+    parameters):
+  </para>
+    <i>&lt;div id="kronolist"&gt;&lt;/div&gt;&lt;script
+    src="http://hostname.example.com/horde/kronolith/imple.php?imple=Embed
+    /view=monthlist/calendar=calendar_name/container=kronolist/months=2/
+    maxevents=10" type="text/javascript"&gt;&lt;/script&gt;</i>
+  <para>
+    To embed a Summary View:
+  </para>
+    <i>&lt;div id="kronosummary"&gt;
+    &lt;/div&gt;&lt;script type="text/javascript"
+    src="http://hostname.example.com/horde/kronolith/imple.php?imple=Embed
+    /container=kronosummary/view=summary/calendar=calendar_name
+    "&gt;&lt;/script&gt;</i>
+</entry>
+</help>

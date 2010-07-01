@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!-- $Horde: mnemo/locale/es_ES/help.xml,v 1.1 2004-12-11 11:55:56 jan Exp $ -->
+<help>
+
+<entry id="Overview" md5="50ee76138fb08b04b029006053bbadbc" state="uptodate">
+    <title>Introducci&#xF3;n</title>
+    <heading>Introducci&#xF3;n</heading>
+    <para>
+    <i>Notas</i> es una aplicaci&#xF3;n que le permite crear en el ordenador el equivalente a las notas adhesivas. Las notas se pueden crear, modificar, eliminar e imprimir. Tambi&#xE9;n puede buscar en ellas para localizar informaci&#xF3;n. Se dispone igualmente de soporte para la importaci&#xF3;n y exportaci&#xF3;n de las notas.
+    </para>
+    <para>
+    A diferencia de las notas adhesivas reales, las del ordenador pueden compartirse con otros usuarios en distintas ubicaciones f&#xED;sicas. Las notas pueden organizarse en distintas libretas y se les puede asignar categor&#xED;as.
+    </para>
+</entry>
+
+<entry id="list-actions" md5="6d592f153bfb5c296de5dfebb428e1ba" state="uptodate">
+    <title>Vista de notas: Acciones</title>
+    <heading>Acciones</heading>
+    <para>
+    <i>Eliminar</i> suprime de forma permanente la nota seleccionada.
+    </para>
+    <para>
+    <i>Modificar</i> le permite modificar una nota existente.
+    </para>
+    <para>
+    <i>Regresar a la libreta</i> le devuelve desde la vista de notas a la vista de la libreta que contenga la nota actual.
+    </para>
+</entry>
+
+<entry id="menu-actions" md5="715a853d93cd3330e4d730b9112c8a82" state="uptodate">
+    <title>Elementos del men&#xFA;</title>
+    <heading>Elementos del men&#xFA;</heading>
+    <para>
+    <i>Listar</i> muestra todas las notas de la libreta actual.
+    </para>
+    <para>
+    <i>A&#xF1;adir</i> le permite crear una nota en la libreta actual.
+    </para>
+    <para>
+    <i>Buscar</i> le permite buscar texto en las notas. Puede buscar s&#xF3;lo por el campo descripci&#xF3;n o en el texto completo de las notas.
+    </para>
+    <para>
+    <i>Importar/Exportar</i> le permite importar o exportar notas. Actualmente est&#xE1;n soportados los formatos de archivo CSV y vNote.
+    </para>
+    <para>
+    <i>Imprimir</i> le permite imprimir una nota. El icono <i>Imprimir</i> s&#xF3;lo ser&#xE1; visible en la barra del men&#xFA; cuando se est&#xE9; visualizando una nota.
+    </para>
+</entry>
+
+
+<entry id="sorting" md5="cca3b1d1c9ed0ec5ab385f82469ddc8f" state="uptodate">
+    <title>Ordenaci&#xF3;n de entradas</title>
+    <heading>Ordenaci&#xF3;n de entradas</heading>
+    <para>
+    Al visualizar un listado de entradas, puede ordenarlas por cualquiera de las columnas pulsando en el t&#xED;tulo de la cabecera de la columna apropiada. Para conmutar el sentido de la clasificaci&#xF3;n de una columna entre ascendente y descendente, pulse el icono de flecha de la cabecera de la columna.
+    </para>
+</entry>
+</help>

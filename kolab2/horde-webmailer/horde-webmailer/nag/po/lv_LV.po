@@ -1,0 +1,782 @@
+# Latvian translations for Nag package.
+# Copyright 2004-2009 The Horde Project
+# This file is distributed under the same license as the Nag package.
+# Automatically generated, 2004.
+#
+# Current version for Latvian does not contain shortcuts!!!
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nag 1.1.1\n"
+"POT-Creation-Date: 2004-11-17 12:36+0100\n"
+"PO-Revision-Date: 2004-11-19 15:50+0200\n"
+"Last-Translator: Janis Eisaks <jancs@dv.lv>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1257\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
+"2);\n"
+
+#: lib/Nag.php:48
+msgid "%d hour"
+msgstr "%d stunda"
+
+#: lib/Nag.php:50
+msgid "%d hour, %d minute"
+msgstr "%d stunda, %d minûte"
+
+#: lib/Nag.php:52
+msgid "%d hour, %d minutes"
+msgstr "%d stunda, %d minûtes"
+
+#: lib/Nag.php:40
+msgid "%d hours"
+msgstr "%d stundas"
+
+#: lib/Nag.php:42
+msgid "%d hours, %d minute"
+msgstr "%d stundas, %d minûte"
+
+#: lib/Nag.php:44
+msgid "%d hours, %d minutes"
+msgstr "%d stundas, %d minûtes"
+
+#: lib/Nag.php:58
+msgid "%d minute"
+msgstr "%d minûte"
+
+#: lib/Nag.php:60
+msgid "%d minutes"
+msgstr "%d minûtes"
+
+#: templates/list/header.inc:9
+msgid "%d tasks"
+msgstr "%d uzdevumi"
+
+#: lib/Nag.php:341
+msgid "%s at %s"
+msgstr "%s plkst. %s"
+
+#: lib/Nag.php:458 lib/Block/summary.php:92
+msgid "%s is due in %s"
+msgstr "%s sâkas pçc %s"
+
+#: lib/Nag.php:456 lib/Block/summary.php:90
+#, fuzzy
+msgid "%s is due now."
+msgstr "%s jau sâkas"
+
+#: data.php:140
+msgid "%s successfully imported"
+msgstr "%s veiksmîgi importçts"
+
+#: tasklists.php:121 lib/base.php:97
+msgid "%s's Task List"
+msgstr "%s: uzdevumu saraksts"
+
+#: lib/Nag.php:289
+msgid "(highest)"
+msgstr "(augstâkâ)"
+
+#: lib/Nag.php:289
+msgid "(lowest)"
+msgstr "(zemâkâ)"
+
+#: templates/list/header.inc:9
+msgid "1 task"
+msgstr "1 uzdevums"
+
+#: task.php:258
+msgid "Access denied completing task %s."
+msgstr ""
+
+#: task.php:232
+msgid "Access denied deleting %s."
+msgstr ""
+
+#: task.php:198
+msgid "Access denied moving the task to %s."
+msgstr ""
+
+#: task.php:201
+msgid "Access denied removing task from %s."
+msgstr ""
+
+#: task.php:133
+msgid "Access denied saving task to %s."
+msgstr ""
+
+#: task.php:131
+msgid "Access denied saving task: %s"
+msgstr ""
+
+#: task.php:58
+msgid "Adding A New Task"
+msgstr "Pievienot uzdevumu"
+
+#: templates/task/task.inc:70
+msgid "Ala_rm"
+msgstr "Atgâdinâjums"
+
+#: templates/view/task.inc:37
+msgid "Alarm"
+msgstr "Atgâdinâjums"
+
+#: config/prefs.php.dist:101
+msgid "All tasks"
+msgstr "Visi uzdevumi"
+
+#: lib/Block/summary.php:55
+msgid "Always show completed tasks?"
+msgstr "Vienmçr radît pabeigtos uzdevumus?"
+
+#: lib/Block/summary.php:52
+msgid "Always show overdue tasks?"
+msgstr "Vienmçr râdît iekavçtos uzdevumus?"
+
+#: config/prefs.php.dist:78
+msgid "Ascending"
+msgstr "Augoði"
+
+#: templates/tasklists/tasklists.inc:106
+msgid "Back to Task List Options"
+msgstr "Atgriezties pie Uzdevumu opcijâm"
+
+#: data.php:28
+msgid "CSV"
+msgstr "CSV"
+
+#: templates/task/task.inc:59
+msgid "Calendar"
+msgstr "Kalendârs"
+
+#: templates/list/task_headers.inc:30
+msgid "Cat_egory"
+msgstr "Kategorija"
+
+#: data.php:42 templates/view/task.inc:29 config/prefs.php.dist:50
+#: config/prefs.php.dist:65
+msgid "Category"
+msgstr "Kategorija"
+
+#: templates/tasklists/tasklists.inc:22 templates/tasklists/tasklists.inc:103
+msgid "Change"
+msgstr "Mainît"
+
+#: templates/list/task_headers.inc:4 templates/list/task_headers.inc:8
+#: templates/list/task_headers.inc:12 templates/list/task_headers.inc:19
+#: templates/list/task_headers.inc:25 templates/list/task_headers.inc:29
+msgid "Change sort direction"
+msgstr "Mainît ðíiroðanas kârtîbu"
+
+#: config/prefs.php.dist:15
+msgid "Change your task sorting and display options."
+msgstr "Mainît uzdevumu ðíiroðanas un ekrâna iestatîjumus."
+
+#: templates/search/search.inc:33
+msgid "Clear Form"
+msgstr "Notîrît formu"
+
+#: templates/task/task.inc:91
+msgid "Co_mpleted?"
+msgstr "Izpildîts?"
+
+#: templates/view/task.inc:13
+msgid "Complete"
+msgstr "Izpildît"
+
+#: templates/list/task_summaries.inc:4 lib/Block/summary.php:146
+msgid "Complete Task"
+msgstr "Beigt uzdevumu"
+
+#: config/prefs.php.dist:103
+msgid "Complete tasks"
+msgstr "Beigt uzdevumus"
+
+#: lib/Nag.php:356 lib/Block/summary.php:144
+msgid "Completed"
+msgstr "Izpildîts"
+
+#: task.php:267
+msgid "Completed %s."
+msgstr "%s izpildîts."
+
+#: templates/view/task.inc:45 templates/list/task_headers.inc:5
+#: config/prefs.php.dist:52 config/prefs.php.dist:67
+msgid "Completed?"
+msgstr "Izpildîts?"
+
+#: data.php:45
+msgid "Completion Status"
+msgstr "Izpildes statuss"
+
+#: templates/tasklists/tasklists.inc:17 templates/tasklists/tasklists.inc:103
+#: templates/tasklists/tasklists.inc:105
+msgid "Create"
+msgstr "Izveidot"
+
+#: templates/view/task.inc:51
+msgid "Created"
+msgstr "Izveidots"
+
+#: templates/task/task.inc:79 lib/Nag.php:387
+msgid "Day(s)"
+msgstr "Diena(s)"
+
+#: templates/tasklists/tasklists.inc:104 templates/view/task.inc:18
+msgid "Delete"
+msgstr "Dzçst"
+
+#: task.php:240
+msgid "Deleted %s."
+msgstr "%s izdzçsts."
+
+#: config/prefs.php.dist:79
+msgid "Descending"
+msgstr "Dilstoði"
+
+#: data.php:41
+msgid "Description"
+msgstr "Apraksts"
+
+#: templates/tasklists/tasklists.inc:88
+msgid "Description:"
+msgstr "Apraksts:"
+
+#: config/prefs.php.dist:14
+msgid "Display Options"
+msgstr "Ekrâna iestatîjumi"
+
+#: data.php:43 templates/view/task.inc:33
+msgid "Due By"
+msgstr "Izpildît lîdz"
+
+#: config/prefs.php.dist:51 config/prefs.php.dist:66
+msgid "Due Date"
+msgstr "Izpildît lîdz"
+
+#: templates/task/task.inc:45
+msgid "Due _By"
+msgstr "Izpildît lîdz"
+
+#: templates/view/task.inc:15
+msgid "Edit"
+msgstr "Labot"
+
+#: templates/list/task_summaries.inc:15 templates/list/task_headers.inc:16
+#: lib/Block/summary.php:142
+msgid "Edit Task"
+msgstr "Labot uzdevumu"
+
+#: config/prefs.php.dist:133
+msgid "Edit your task lists."
+msgstr "Labot uzdevumu sarakstus."
+
+#: templates/data/export.inc:22
+msgid "Export"
+msgstr "Eksportçt"
+
+#: templates/data/export.inc:8
+msgid "Export Tasks"
+msgstr "Eksportçt uzdevumus"
+
+#: config/prefs.php.dist:36
+msgid "External Data"
+msgstr "Ârçjie dati"
+
+#: config/prefs.php.dist:13
+msgid "General Options"
+msgstr "Vispârçjâs opcijas"
+
+#: templates/task/task.inc:78 lib/Nag.php:390
+msgid "Hour(s)"
+msgstr "Stunda(s)"
+
+#: templates/data/import.inc:9
+msgid "Import Tasks, Step %d"
+msgstr "Uzdevumu imports, %d. solis"
+
+#: data.php:146
+msgid "Import/Export Tasks"
+msgstr "Uzdevumu imports/eksports"
+
+#: list.php:77
+msgid "Incom_plete tasks"
+msgstr "Neizpildîtie uzdevumi"
+
+#: config/prefs.php.dist:102
+msgid "Incomplete tasks"
+msgstr "Neizpildîtie uzdevumi"
+
+#: templates/view/task.inc:58
+msgid "Last Modified"
+msgstr "Pçdçjâs izmaiòas"
+
+#: config/prefs.php.dist:22
+msgid "Manage multiple task lists."
+msgstr "Vadît vairâkus uzdevumu sarakstus."
+
+#: templates/task/task.inc:77 lib/Nag.php:393
+msgid "Minute(s)"
+msgstr "Minûte(s)"
+
+#: task.php:115
+msgid "Modifying:"
+msgstr "Labojam:"
+
+#: lib/api.php:282 lib/api.php:465
+msgid "Multiple iCalendar components found; only one vTodo is supported."
+msgstr "Atrasti vairâki iCalendar komponenti; atbalstîts ir tikai vTodo."
+
+#: list.php:40
+msgid "My Tasks"
+msgstr "Uzdevumi"
+
+#: templates/search/search.inc:21 templates/task/task.inc:14
+msgid "N_ame"
+msgstr "Vârds"
+
+#: templates/list/task_headers.inc:20
+#, fuzzy
+msgid "Na_me"
+msgstr "Vârds"
+
+#: data.php:40
+msgid "Name"
+msgstr "Nosaukums"
+
+#: lib/Block/summary.php:18
+msgid "New Task"
+msgstr "Jauns"
+
+#: templates/data/import.inc:43
+msgid "Next"
+msgstr "Nâkamais"
+
+#: lib/Nag.php:19
+msgid "No"
+msgstr "Nav"
+
+#: templates/task/task.inc:48
+msgid "No due date."
+msgstr "Nav beigu datuma."
+
+#: lib/api.php:275 lib/api.php:458
+msgid "No iCalendar data was found."
+msgstr "iCalendar dati netika atrasti."
+
+#: lib/Nag.php:472
+msgid "No task lists are available to guests."
+msgstr "Nav viesiem pieejamu uzdevumu sarakstu."
+
+#: lib/Block/summary.php:186
+msgid "No tasks to display"
+msgstr "Jûsu uzdevumu saraksts ir tukðs."
+
+#: templates/task/task.inc:73 lib/Nag.php:397
+msgid "None"
+msgstr "Nav"
+
+#: lib/Nag.php:357
+msgid "Not Completed"
+msgstr "Neizpildîts"
+
+#: config/prefs.php.dist:53 config/prefs.php.dist:68
+msgid "Owner"
+msgstr "Îpaðnieks"
+
+#: templates/list/task_headers.inc:13
+#, fuzzy
+msgid "P_ri"
+msgstr "Pri"
+
+#: templates/tasklists/tasklists.inc:94
+msgid "Permission"
+msgstr "Pieejas tiesîbas"
+
+#: lib/api.php:254 lib/api.php:339 lib/api.php:410 lib/api.php:441
+msgid "Permission Denied"
+msgstr "Pieeja liegta"
+
+#: lib/api.php:86
+msgid "Permission denied"
+msgstr "Pieeja liegta"
+
+#: data.php:44 templates/view/task.inc:41 config/prefs.php.dist:48
+#: config/prefs.php.dist:63
+msgid "Priority"
+msgstr "Prioritâte"
+
+#: templates/list/header.inc:5 templates/list/header.inc:6
+msgid "Refresh List"
+msgstr "Atjaunot sarakstu"
+
+#: templates/tasklists/tasklists.inc:105
+msgid "Reset"
+msgstr "Atsâkt"
+
+#: templates/task/task.inc:108
+msgid "Save Task"
+msgstr "Saglabât uzdevumu"
+
+#: task.php:215
+msgid "Saved %s."
+msgstr "%s saglabâts."
+
+#: search.php:14 templates/search/search.inc:5 templates/search/search.inc:32
+msgid "Search"
+msgstr "Meklçt"
+
+#: list.php:63
+msgid "Search Results"
+msgstr "Meklçðanas rezultâti"
+
+#: templates/search/search.inc:18
+msgid "Search Scope"
+msgstr "Meklçðanas sfçra"
+
+#: templates/search/search.inc:10
+msgid "Search _Text"
+msgstr "Meklçt tekstu"
+
+#: templates/task/task.inc:59
+msgid "Select a date"
+msgstr "Izvçlieties datumu"
+
+#: templates/tasklists/tasklists.inc:72
+msgid "Select a task list"
+msgstr "Izvçlies uzdevumu sarakstu"
+
+#: templates/data/export.inc:15
+msgid "Select the export format:"
+msgstr "Izvçlieties eksporta formâtu:"
+
+#: templates/data/import.inc:40
+msgid "Select the file to import:"
+msgstr "Izvçlieties importçjamo failu:"
+
+#: templates/data/import.inc:16
+#, fuzzy
+msgid "Select the format of the source file:"
+msgstr "Izvçlieties importçjamâ faila formâtu:"
+
+#: templates/menu.inc:8
+msgid "Show"
+msgstr "Râdît"
+
+#: templates/menu.inc:14
+msgid "Show Tasklists:"
+msgstr "Râdît sarakstus:"
+
+#: lib/Block/summary.php:37
+msgid "Show action buttons?"
+msgstr "Râdît darbîbu pogas?"
+
+#: config/prefs.php.dist:104
+msgid "Show complete, incomplete, or all tasks in the task list?"
+msgstr "Radît izpildîtos, neizpildîtos vai visus uzdevumus kopçjâ sarakstâ?"
+
+#: config/prefs.php.dist:91
+msgid "Show data from any of these other applications in your task list?"
+msgstr "Vai râdît Jûsu uzdevu sarakstâ datus no kâda no ðiem moduïiem?"
+
+#: config/prefs.php.dist:37
+msgid "Show data from other applications or sources."
+msgstr "Râdît citu moduïu vai avotu datus."
+
+#: lib/Block/summary.php:40
+msgid "Show due dates?"
+msgstr "Râdît beigu datumus?"
+
+#: lib/Block/summary.php:34
+msgid "Show priorities?"
+msgstr "Râdît uzdevumu prioritâti?"
+
+#: lib/Block/summary.php:46
+msgid "Show task alarms?"
+msgstr "Râdît uzdevumu atgâdinâjumus??"
+
+#: lib/Block/summary.php:49
+msgid "Show task category?"
+msgstr "Râdît uzdevumu kategorijas?"
+
+#: lib/Block/summary.php:43
+msgid "Show tasklist name?"
+msgstr "Râdît uzdevumu saraksta nosaukumu?"
+
+#: lib/Block/summary.php:58
+msgid "Show tasks from these categories"
+msgstr "Râdît ðo kategoriju uzdevumus?"
+
+#: templates/list/task_headers.inc:30
+msgid "Sort by Category"
+msgstr "Ðíirot pçc kategorijâm"
+
+#: templates/list/task_headers.inc:5
+msgid "Sort by Completion Status"
+msgstr "Ðíirot pçc izpildes statusa"
+
+#: templates/list/task_headers.inc:26
+msgid "Sort by Due Date"
+msgstr "Ðíirot pçc beigu datuma"
+
+#: templates/list/task_headers.inc:20
+msgid "Sort by Name"
+msgstr "Ðíirot pçc nosaukuma"
+
+#: templates/list/task_headers.inc:13
+msgid "Sort by Priority"
+msgstr "Ðíirot pçc prioritâtes"
+
+#: templates/list/task_headers.inc:9
+msgid "Sort by User Name"
+msgstr "Ðíirot pçc lietotâja vârda"
+
+#: config/prefs.php.dist:80
+msgid "Sort direction:"
+msgstr "Ðíiroðanas kârtîba"
+
+#: config/prefs.php.dist:54
+msgid "Sort tasks by:"
+msgstr "Ðíirot uzdevumus pçc:"
+
+#: templates/list/task_summaries.inc:22
+msgid "Task Alarm"
+msgstr "Uzdevuma atgâdinâjums"
+
+#: templates/list/task_headers.inc:23
+msgid "Task Alarm?"
+msgstr "Uzdevuma atgâdinâjums?"
+
+#: view.php:73
+msgid "Task Details"
+msgstr "Uzdevuma izklâsts"
+
+#: templates/tasklists/tasklists.inc:66
+msgid "Task List"
+msgstr "Uzdevumu saraksts"
+
+#: config/prefs.php.dist:20 config/prefs.php.dist:35
+msgid "Task List and Share Options"
+msgstr "Uzdevumu saraksta un koplietoðanas opcijas"
+
+#: templates/tasklists/tasklists.inc:84
+msgid "Task List's name:"
+msgstr "Uzdevumu saraksta nosaukums:"
+
+#: tasklists.php:132 config/prefs.php.dist:21
+msgid "Task Lists"
+msgstr "Uzdevumu saraksti"
+
+#: config/prefs.php.dist:49 config/prefs.php.dist:64
+msgid "Task Name"
+msgstr "Uzdevuma nosaukums"
+
+#: templates/list/task_summaries.inc:20
+msgid "Task Note"
+msgstr "Uzdevuma piezîme"
+
+#: templates/list/task_headers.inc:22
+msgid "Task Note?"
+msgstr "Uzdevuma piezîme?"
+
+#: task.php:117 view.php:43
+msgid "Task not found."
+msgstr "Uzdevums nav atrasts"
+
+#: lib/Block/summary.php:3
+msgid "Tasks Summary"
+msgstr "Kopsavilkums"
+
+#: tasklists.php:66
+msgid "The task list \"%s\" couldn't be created: %s"
+msgstr "Uzdevumu \"%s\" nevar radît: %s "
+
+#: tasklists.php:77
+msgid "The task list \"%s\" couldn't be saved: %s"
+msgstr "Uzdevumu sarakstu \"%s\" nevar saglabât: %s"
+
+#: tasklists.php:68
+msgid "The task list \"%s\" has been created."
+msgstr "Uzdevumu saraksts \"%s\" radîts."
+
+#: tasklists.php:102
+msgid "The task list \"%s\" has been deleted."
+msgstr "Uzdevumu saraksts \"%s\" izdzçsts."
+
+#: tasklists.php:79
+msgid "The task list \"%s\" has been saved."
+msgstr "Uzdevumu saraksts \"%s\" saglabâts."
+
+#: tasklists.php:49
+msgid "The task list name is empty."
+msgstr "Uzdevumu saraksta nosaukums ir tukðs."
+
+#: config/prefs.php.dist:69
+msgid "Then:"
+msgstr "Tad:"
+
+#: templates/list/empty.inc:3
+msgid "There are no tasks matching the current criteria."
+msgstr "Neviens uzdevums neatbilst ðim kritçrijam."
+
+#: task.php:264
+msgid "There was a problem completing %s: %s"
+msgstr "Kïûme reìistrçjot izpildi %s: %s"
+
+#: task.php:237
+#, fuzzy
+msgid "There was a problem deleting %s: %s"
+msgstr "Kïûme dzçðot %s: %s"
+
+#: task.php:213
+#, fuzzy
+msgid "There was a problem saving the task: %s."
+msgstr "Kïûme pierakstot uzdevumu: %s."
+
+#: data.php:137
+#, fuzzy
+msgid "There was an error importing the data: %s"
+msgstr "Kïûda importçjot datus: %s"
+
+#: lib/api.php:269 lib/api.php:452
+#, fuzzy
+msgid "There was an error importing the iCalendar data."
+msgstr "Kïûda importçjot iCalendar datus."
+
+#: data.php:66
+msgid "There were no tasks to export."
+msgstr "Nav eksportçjamu uzdevumu."
+
+#: data.php:105
+msgid "This file format is not supported."
+msgstr "Faila formâts netiek atbalstîts."
+
+#: tasklists.php:98
+msgid "Unable to delete \"%s\": %s"
+msgstr "Nevar izdzçst \"%s\": %s"
+
+#: templates/task/task.inc:109
+msgid "Undo Changes"
+msgstr "Atcelt izmaiòas"
+
+#: templates/view/task.inc:30 templates/list/task_summaries.inc:27
+#: scripts/upgrades/2004-05-13_convert_categories_to_strings.php:50
+#: lib/Block/summary.php:179
+msgid "Unfiled"
+msgstr "Neklasificçts"
+
+#: lib/api.php:301 lib/api.php:374 lib/api.php:485
+msgid "Unsupported Content-Type."
+msgstr "Neatbalstîts datu tips."
+
+#: templates/list/task_summaries.inc:19
+msgid "View Task Details"
+msgstr "Skatît uzdevuma aprakstu"
+
+#: templates/task/task.inc:80 lib/Nag.php:384
+msgid "Week(s)"
+msgstr "Nedçïa(s)"
+
+#: templates/data/import.inc:24
+msgid "Which tasklist should the tasks be added to?"
+msgstr "Kuram uzdevumu sarakstam pievienot importçtos uzdevumus?"
+
+#: lib/Nag.php:20
+msgid "Yes"
+msgstr "Jâ"
+
+#: view.php:51
+msgid "You do not have permission to view this tasklist."
+msgstr "Jums nav tiesîbu piekïût ðim uzdevumu sarakstam."
+
+#: tasklists.php:105 templates/tasklists/tasklists.inc:48
+msgid "You must select a task list to be deleted."
+msgstr "Jâizvçlas dzçðamais uzdevumu saraksts."
+
+#: templates/prefs/tasklistselect.inc:10
+msgid "Your default task list:"
+msgstr "Jûsu pamata uzdevumu saraksts:"
+
+#: templates/tasklists/tasklists.inc:70
+msgid "Your task lists:"
+msgstr "Jûsu uzdevumu saraksti:"
+
+#: templates/list/task_summaries.inc:19 lib/Block/summary.php:88
+#: lib/Block/summary.php:169
+msgid "[none]"
+msgstr "[nav]"
+
+#: list.php:76
+msgid "_All tasks"
+msgstr "Visi uzdevumi"
+
+#: templates/search/search.inc:23 templates/task/task.inc:41
+msgid "_Category"
+msgstr "Kategorija"
+
+#: templates/view/task.inc:13
+msgid "_Complete"
+msgstr "Izpildît"
+
+#: list.php:78
+msgid "_Completed tasks"
+msgstr "Izpildîtie uzdevumi"
+
+#: templates/view/task.inc:18
+msgid "_Delete"
+msgstr "Dzçst"
+
+#: templates/search/search.inc:22 templates/task/task.inc:97
+msgid "_Description"
+msgstr "Apraksts"
+
+#: templates/list/task_headers.inc:26
+msgid "_Due Date"
+msgstr "Izpildes datums"
+
+#: templates/view/task.inc:15
+msgid "_Edit"
+msgstr "Labot"
+
+#: lib/Nag.php:422
+#, fuzzy
+msgid "_Import/Export"
+msgstr "Importçt/Eksportçt"
+
+#: lib/Nag.php:414
+msgid "_List Tasks"
+msgstr "Saraksts"
+
+#: lib/Nag.php:416
+msgid "_New Task"
+msgstr "Jauns"
+
+#: lib/Nag.php:427
+msgid "_Print"
+msgstr "Drukât"
+
+#: templates/task/task.inc:85
+msgid "_Priority"
+msgstr "Prioritâte"
+
+#: lib/Nag.php:418
+msgid "_Search"
+msgstr "Meklçt"
+
+#: templates/task/task.inc:22 templates/list/task_headers.inc:9
+msgid "_Task List"
+msgstr "Uzdevumu saraksts"
+
+#: data.php:29
+msgid "iCalendar (vTodo)"
+msgstr "iCalendar (vTodo)"
+
+#: lib/Nag.php:56
+msgid "no time"
+msgstr "laiks nav norâdîts"
+
+#: data.php:78 templates/data/export.inc:1
+msgid "tasks.csv"
+msgstr "uzdevumi.csv"

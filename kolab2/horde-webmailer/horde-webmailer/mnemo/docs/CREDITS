@@ -1,0 +1,70 @@
+========================
+ Mnemo Development Team
+========================
+
+
+Core Developers
+===============
+
+- Chuck Hagenbuch <chuck@horde.org>
+- Jan Schneider <jan@horde.org>
+
+
+Localization
+============
+
+=====================   ======================================================
+Basque                  Euskal Herriko Unibertsitatea <xabier.arrieta@ehu.es>
+Brazilian Portuguese    Antonio Dias <accdias-horde-i18n@sst.com.br>
+                        Fabio Gomes <flgomes@fazenda.sp.gov.br>
+                        Luis Felipe Marzagao <duli@fedoraproject.org>
+                        Eduardo de Carli <carliedu@ig.com.br>
+Bulgarian               Miroslav Pendev <miro@cybershade.us>
+Chinese (Simplified)    Peter Wang <whw@oulink.net>
+                        Anna Chen <annachen2008@yahoo.com.cn>
+Chinese (Traditional)   Chih-Wei Yeh <cwyeh@ccca.nctu.edu.tw>
+Croatian                Matej Vela <matej.vela@carnet.hr>
+Czech                   Pavel Chytil <pavel@chytil.tk>
+Danish                  Martin List-Petersen <martin@list-petersen.dk>
+                        Brian Truelsen <horde+i18n@briantruelsen.dk>
+                        Niels Baggesen <nba@users.sourceforge.net>
+Dutch                   Jan Kuipers <jrkuipers@lauwerscollege.nl>
+Finnish                 Leena Heino <liinu@uta.fi>
+French                  Thierry Thomas <thierry@pompo.net>
+                        Patrick Abiven <patrick.abiven@apitech.fr>
+                        Vincent Vinet <vvinet@revolutionlinux.com>
+                        Yannick Sebastia <yannick.sebastia@ecole-navale.fr>
+German                  Jan Schneider <jan@horde.org>
+Greek                   Stefanos I. Dimitriou <support_webmail@teiath.gr>
+                        Silligardos Xristoforos
+                        Anagnostopoulos Apostolis
+                        Konstantinos C. Milosis <kmilosis@yahoo.com>
+Hungarian               Laszlo L. Tornoci <torlasz@xenia.sote.hu>
+Italian                 Sergio G. Caredda <scaredda@tiscali.it>
+                        Marko Djukic <tech@oblo.com>
+                        Marco Pirovano <marco.pirovano@uni-bocconi.it>
+                        Cristian Manoni <cristian.manoni@nethesis.it>
+Japanese                Hiromi Kimura <hiromi@tac.tsukuba.ac.jp>
+Latvian                 Janis Eisaks <jancs@dv.lv>
+Lithuanian              Darius Matuliauskas <darius@lnk.lt>
+                        Vilius Šumskas <vilius@lnk.lt>
+Norwegian Bokmaal       Torstein S. Hansen <huleboer@techbee.no>
+Norwegian Nynorsk       Per-Stian Vatne <psv@orsta.org>
+Polish                  Mateusz Kaminski <matipl@ds.pg.gda.pl>
+                        Piotr Tarnowski <drfugazi@drfugazi.eu.org>
+Portuguese              Nuno Loureiro <nuno@co.eth.pt>
+                        Manuel Menezes de Sequeira <Manuel.Sequeira>
+Romanian                Eugen Hoanca <eugenh@urban-grafx.ro>
+                        Marius Dragulescu <mariusd@urban-grafx.ro>
+Russian                 Alexey Zakharov <baber@mosga.net>
+Slovak                  Ivan Noris <vix@vazka.sk>
+                        Martin Matuška <martin@matuska.org>
+Slovenian               Duck <duck@obala.net>
+Spanish                 Raul Alvarez Venegas <rav@tecoman.ucol.mx>
+                        Manuel Perez Ayala <mperaya@alcazaba.unex.es>
+Swedish                 Andreas Dahlén <andreas@dahlen.ws>
+                        Joaquim Homrighausen <joho@webbplatsen.se>
+Turkish                 Istanbul Technical University IT Department
+                        <itubim@itu.edu.tr>
+                        Middle East Technical University <horde-tr@metu.edu.tr>
+=====================   ======================================================

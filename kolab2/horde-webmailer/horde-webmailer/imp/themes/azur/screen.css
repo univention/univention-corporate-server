@@ -1,0 +1,52 @@
+/**
+ * Author: Joost De Cock <joost@decock.org>
+ *
+ * $Horde: imp/themes/azur/screen.css,v 1.1.10.3 2008-04-08 18:13:39 chuck Exp $
+ */
+
+.deleted {
+    background-color: #bbb;
+    color: #eee;
+}
+.important, .flagged {
+    background-color: #fcd3ff;
+    color: #f00;
+}
+.unseen {
+    background-color: #bec0dd;
+    color: #000;
+}
+.answered {
+    background-color: #e8e8ff;
+    color: #666;
+}
+.quoted1 {
+    color: #606;
+}
+.quoted2 {
+    color: #077;
+}
+.quoted3 {
+    color: #900;
+}
+.quoted4 {
+    color: #009;
+}
+.quoted5 {
+    color: #b60;
+}
+.signature {
+    color: #bbb;
+}
+.signature .fixed {
+    color: #bbb;
+    font-size: 110%;
+}
+.quotawarn {
+    color: #000;
+    background-color: yellow;
+}
+.quotaalert {
+    color: #fff;
+    background-color: red;
+}

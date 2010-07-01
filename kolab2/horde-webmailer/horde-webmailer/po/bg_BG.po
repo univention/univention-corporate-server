@@ -1,0 +1,1818 @@
+# Bulgarian translations for Horde package.
+# Copyright 2002-2009 The Horde Project (http://www.horde.org/)
+# This file is distributed under the same license as the Horde package.
+# Miroslav Pendev <miro@cybershade.us>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde 3.0-cvs\n"
+"POT-Creation-Date: 2002-09-14 00:38-0400\n"
+"PO-Revision-Date: 2002-11-19 20:44-0500\n"
+"Last-Translator: Miroslav Pendev <miro@cybershade.us>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1251\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid ""
+"  -M, --message=MESSAGE  Use this commit message instead of the default ones."
+msgstr ""
+"-M, --message=MESSAGE  Използвай това като съобщение, вместо подразбиращото "
+"  се."
+
+msgid ""
+"  -a, --add=FILE        Add this PO file to the compendium. Useful to\n"
+"                        include a compendium from a different branch to\n"
+"                        the generated compendium."
+msgstr ""
+"  -a, --add=FILE        Добави този PO файл към compendium. Полезно е при\n"
+"                        добавяне на compendium от различен бранш към общ\n"
+"                        compendium."
+
+msgid ""
+"  -b, --base=/PATH  Full path to the (Horde) base directory that should be\n"
+"                    used."
+msgstr ""
+"  -b, --base=/PATH  Пълен път до базовата директория на Horde"
+
+msgid ""
+"  -c, --compendium=FILE  Merge new translations to this compendium file\n"
+"                         instead of the default one (compendium.po in the\n"
+"                         horde/po directory."
+msgstr ""
+"  -c, --compendium=FILE  Смеси новите преводи с този compendium файл\n."
+"                         вместо с подразбиращият се (compendium.po в\n"
+"                         horde/po директория."
+
+msgid ""
+"  -c, --compendium=FILE  Use this compendium file instead of the default\n"
+"                         one (compendium.po in the horde/po directory)."
+msgstr ""
+"  -c, --compendium=FILE  Използвай този compendium файл вмeсто \n"
+"                         подразбиращият се compendium.po в horde/po."
+
+msgid "  -d, --debug       Show error messages from the executed binaries."
+msgstr "  -d, --debug      Показвай съобщенията за грешки от изпълнените "
+"                          файлове."
+
+msgid "  -d, --directory=DIR   Create compendium in this directory."
+msgstr "  -d, --directory=DIR   Създай compendium в тази директория."
+
+msgid "  -h, --help        Show this help message."
+msgstr "  -h, --help        Покажи това помощно съобщение."
+
+msgid "  -l, --locale=ll_CC     Use only this locale."
+msgstr "  -l, --locale=ll_CC     Използвай само това локализиране."
+
+msgid "  -l, --locale=ll_CC     Use this locale."
+msgstr "  -l, --locale=ll_CC     Използвай това локализиране."
+
+msgid "  -l, --locale=ll_CC    Use this locale."
+msgstr "  -l, --locale=ll_CC    Използвай това локализиране."
+
+msgid "  -m, --module=MODULE    Build MO files only for this (Horde) module."
+msgstr "  -m, --module=MODULE    Компилирай MO файлове само за този модул."
+
+msgid ""
+"  -m, --module=MODULE    Commit translations only for this (Horde) module."
+msgstr ""
+"  -m, --module=MODULE    Изпрати преводи само за този модул."
+
+msgid "  -m, --module=MODULE    Merge PO files only for this (Horde) module."
+msgstr "  -m, --module=MODULE    Смеси PO файлове само за този модул."
+
+msgid ""
+"  -m, --module=MODULE    Update help files only for this (Horde) module."
+msgstr ""
+"  -m, --module=MODULE    Опресни помощните файлове само за този модул."
+
+msgid "  -m, --module=MODULE    Update only this (Horde) module."
+msgstr "  -m, --module=MODULE    Опресни само този модул."
+
+msgid "  -m, --module=MODULE   Create a PO file only for this (Horde) module."
+msgstr "  -m, --module=MODULE   Създай PO файл само за този модул."
+
+msgid "  -m, --module=MODULE  Generate POT file only for this (Horde) module."
+msgstr "  -m, --module=MODULE  Генерирай POT файл само за този модул."
+
+msgid ""
+"  -n, --new              This is a new translation, commit also CREDITS,\n"
+"                         CHANGES and lang.php.dist or nls.php.dist."
+msgstr ""
+"  -n, --new               Това е нов превод, изпратете също CREDITS, CHANGES\n"
+"                           и lang.php.dist или nls.php.dist."
+
+msgid ""
+"  -n, --no-compendium    Don't merge new translations to the compendium."
+msgstr ""
+"  -n, --no-compendium    Не смесвай нови преводи към compendium."
+
+msgid "  -n, --no-compendium    Don't use a compendium."
+msgstr "  -n, --no-compendium    Не използвай compendium."
+
+msgid "  -t, --test        Show the executed commands but don't run anything."
+msgstr "  -t, --test        Показвай изпълнените команди, но не изпълнявай нищо"
+
+msgid "  commit      Commit translations to the CVS server."
+msgstr "  commit      Изпрати преводите в CVS сървър."
+
+msgid "  commit-help Commit help files to the CVS server."
+msgstr "  commit-help Изпрати помощните файлове в CVS сървър"
+
+msgid ""
+"  compendium  Rebuild the compendium file. Warning: This overwrites the\n"
+"              current compendium."
+msgstr ""
+"  compendium  Изгради наново compendium файла. Внимание: това ще заличи\n "
+"              текущия compendium."
+
+msgid "  extract     Generate PO template (.pot) files."
+msgstr "  extract     Генерирай PO шаблонен (.pot) файл."
+
+msgid "  help        Show this help message."
+msgstr "  help        Покажи това помощно съобщение."
+
+msgid ""
+"  init        Create one or more PO files for a new locale. Warning: This\n"
+"              overwrites the existing PO files of this locale."
+msgstr ""
+"  init        Създай един или повече PO файла за нова локализация.Внимание:\n"
+"              това ще покрие съществуващите PO файлове за тази локализация."
+
+msgid "  make        Build binary MO files from the specified PO files."
+msgstr "  make        Компилирай бинарни MO файлове от зададените PO файлове."
+
+msgid ""
+"  make-help   Mark all entries in the XML help file being up-to-date and\n"
+"              prepare the file for the next execution of update-help. You\n"
+"              should only run make-help AFTER update-help and revising the\n"
+"              help file."
+msgstr ""
+"  make-help   Маркирай всичко в XML помощният файл като опреснени и \n"
+"              подготви файла за следващо изпълнение на update-help\n"
+"              Необходимо е да стартирате make-help САМО след update-help и\n"
+"              и редактиране на help файла."
+
+msgid ""
+"  merge       Merge the current PO file with the current PO template file."
+msgstr ""
+"  merge       Смесване на текущ PO файл с текущ PO шаблонен файл."
+
+msgid "  update      Run extract and merge sequent."
+msgstr "  update      Изпълни extract и merge последователно."
+
+msgid ""
+"  update-help Extract all new and changed entries from the English XML help\n"
+"              file and merge them with the existing ones."
+msgstr ""
+" update-help Екстракт на всички нови и променени редове от English XML help\n"
+"              файл и ги смеси със съществуващите."
+
+#, c-format
+msgid ""
+" &#151; %s is ready to perform the maintenance operations checked below."
+msgstr ""
+" &#151; %s е готов за извършване на избраните операции по обслужването."
+
+#, c-format
+msgid " (%s days ago)"
+msgstr " (%s дни назад)"
+
+msgid " (today)"
+msgstr " (днес)"
+
+msgid " (yesterday)"
+msgstr " (вчера)"
+
+#, c-format
+msgid "%d bytes written."
+msgstr "%d записани байта."
+
+#, c-format
+msgid "%d of %d entries marked as up-to-date"
+msgstr "%d от %d маркирани като опреснени"
+
+#, c-format
+msgid "%s - Notice"
+msgstr "%s - Забележка"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "%s Обслужващи операции - Потвърждение"
+
+#, c-format
+msgid "%s Standard"
+msgstr "%s Стандарт"
+
+#, c-format
+msgid "%s Terms of Agreement"
+msgstr "%s Условия по Споразумението"
+
+#, c-format
+msgid "%s is required"
+msgstr "%s необходим"
+
+#, c-format
+msgid "%s not found. Run 'translation extract' first."
+msgstr "%s не е намерен. Изпълнете 'translation extract'"
+
+#, c-format
+msgid "%s%s Guest Services</a>"
+msgstr "%s%s Услуги за гости</а>"
+
+#, c-format
+msgid ""
+"%sWarning:%s This program was only tested on gettext 0.11. There is no\n"
+"guarantee that it will work with your version of gettext."
+msgstr ""
+"%sВнимание:%s Тази програма е тествана само с gettext 0.11. Няма гаранция,\n"
+"че ще работи с вашата версия на gettext"
+
+#, c-format
+msgid "%sfound:%s %s"
+msgstr "%sнамерен:%s %s"
+
+#, c-format
+msgid "'%s' is not configured in the Horde Registry."
+msgstr "'%s' не е конфигуриран в Horde Registry."
+
+#, c-format
+msgid "'%s' was added to the groups system."
+msgstr "'%s'беше добавена към групите."
+
+#, c-format
+msgid "'%s' was added to the permissions system."
+msgstr "'%s' беше добавен към системата за права на потребителите."
+
+#, c-format
+msgid "'%s' was not created: %s."
+msgstr "'%s'не беше създаден: %s."
+
+msgid ", trying C++ instead"
+msgstr ", опит със C++"
+
+msgid "---------------------------"
+msgstr "---------------------------"
+
+msgid "24 hours"
+msgstr "24 часа"
+
+msgid "<b>A fatal error has occurred:</b>"
+msgstr "<b>Непреодолима грешка:</b>"
+
+#, c-format
+msgid "<b>The calendar data is invalid:<br />%s</b>"
+msgstr "<b>Данните за календара са невалидни:<br />%s</b>"
+
+msgid "A public PGP key is required to encrypt a message."
+msgstr "За да криптирате писмо е необходим публичен PGP ключ."
+
+msgid "A public PGP key is required to verify a signed message."
+msgstr "За да проверите подписано писмо е необходим PGP ключ."
+
+msgid ""
+"A public PGP key, private PGP key, and passphrase are required to decrypt a "
+"message."
+msgstr ""
+"За да декриптирате писмо са необходими: публичен ключ, личен ключ и ключова "
+"фраза."
+
+msgid ""
+"A public PGP key, private PGP key, and passphrase are required to sign a "
+"message."
+msgstr ""
+"За да подпишете писмо са необходими: публичен ключ, личен ключ и ключова "
+"фраза."
+
+msgid "A public SMIME key is required to encrypt a message."
+msgstr "За да криптирате писмо е необходим публичен SMIME ключ."
+
+msgid "A public SMIME key is required to verify a signed message."
+msgstr "За да проверите подписано писмо е необходим публичен SMIME ключ."
+
+msgid ""
+"A public SMIME key, private SMIME key, and passphrase are required to "
+"decrypt a message."
+msgstr ""
+"За да декриптирате писмо са необходими: публичен SMIME ключ, личен SMIME "
+"ключ и ключова фраза."
+
+msgid ""
+"A public SMIME key, private SMIME key, and passphrase are required to sign a "
+"message."
+msgstr ""
+"За да подпишете писмо са необходими: публичен SMIME ключ, личен SMIME ключ и "
+"ключова фраза."
+
+msgid "AM/PM"
+msgstr "AM/PM"
+
+msgid "Add New Group"
+msgstr "Добавяне на нова група"
+
+msgid "Add New Permission"
+msgstr "Добавяне на нови права"
+
+msgid "Add Sub-group"
+msgstr "Добавяне на под група"
+
+msgid "Add Sub-permission"
+msgstr "Добави под-права"
+
+#, c-format
+msgid "Add a child group to '%s'"
+msgstr "Добави наследена група към '%s'"
+
+#, c-format
+msgid "Add a child permission to '%s'"
+msgstr "Добави наследени права към '%s'"
+
+msgid "Add a new member"
+msgstr "Добави нов член"
+
+msgid "Add a new user:"
+msgstr "Добави нов потребител:"
+
+msgid "Add summary"
+msgstr "Добави резюме"
+
+msgid "Add this to my calendar"
+msgstr "Добави това към моя календар"
+
+msgid "Add to my address book:"
+msgstr "Добави към моята адресна книга:"
+
+msgid "Adding new files to repository:"
+msgstr "Добавяне на нови файлове към хранилището:"
+
+msgid "Adding users is disabled."
+msgstr "Добавянето на потребители е забранено."
+
+msgid "Address"
+msgstr "Адрес"
+
+msgid "Address Book"
+msgstr "Адресен бележник"
+
+msgid "Administration"
+msgstr "Администриране"
+
+msgid "Ads"
+msgstr "Добавки"
+
+msgid "Alias"
+msgstr "Псевдоним"
+
+msgid "All Groups"
+msgstr "Всички групи"
+
+msgid "All Permissions"
+msgstr "Всички права"
+
+msgid "An illegal value was specified."
+msgstr "Въведената стойност не е допустима."
+
+msgid "Archive File Size"
+msgstr "Размер на архивния файл"
+
+msgid "Archive Name"
+msgstr "Име на архива"
+
+#, c-format
+msgid "Are you sure you wish to delete '%s' and any sub-groups?"
+msgstr "Сигурни ли сте, че искате да изтриете '%s' и всички подгрупи?"
+
+#, c-format
+msgid "Are you sure you wish to delete '%s' and any sub-permissions?"
+msgstr "Сигурни ли сте, че искате да изтриете '%s' и всички подправа?"
+
+msgid "Ask for confirmation before doing maintenance operations?"
+msgstr "Да се иска ли потвърждение преди обслужващите операции?"
+
+msgid "Attempt to delete a non-existent group."
+msgstr "Грешка при изтриване на несъществуваща група."
+
+msgid "Attempt to delete a non-existent permission."
+msgstr "Грешка при изтриване не несъществуващи права."
+
+msgid "Attempt to edit a non-existent permission."
+msgstr "Грешка при редактиране на несъществуващи права."
+
+msgid "Attributes"
+msgstr "Атрибути"
+
+msgid "Authentication failed"
+msgstr "Грешка при идентификация"
+
+msgid "Authentication rejected by RADIUS server."
+msgstr "Идентификацията беше отхвърлена от RADIUS сървъра."
+
+msgid "Available Columns:"
+msgstr "Налични колони:"
+
+msgid "Available fields:"
+msgstr "Налични полета:"
+
+msgid "Bad kerberos password."
+msgstr "Невалидна kerberos  парола."
+
+msgid "Bad kerberos username."
+msgstr "Невалидно kerberos потребителско име."
+
+msgid "Barbie"
+msgstr "Barbie"
+
+msgid "Birthday"
+msgstr "Рожден ден"
+
+msgid "Bold"
+msgstr "Удебелени"
+
+msgid "Bookmarks"
+msgstr "Отметки"
+
+msgid "Brown"
+msgstr "Brown"
+
+msgid "Bugs"
+msgstr "Бъгове"
+
+#, c-format
+msgid "Building MO files for module %s%s%s..."
+msgstr "Компилирай MO файлове за модул %s%s%s..."
+
+#, c-format
+msgid "Building locale %s%s%s... "
+msgstr "Компилиране на локализация %s%s%s..."
+
+msgid "Burnt Orange"
+msgstr "Burnt Orange"
+
+msgid "CMS"
+msgstr "CMS"
+
+msgid "CRC"
+msgstr "CRC"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Calendar"
+msgstr "Календар"
+
+msgid "Camouflage"
+msgstr "Camouflage"
+
+#, c-format
+msgid "Can't connect to IMAP server: %s"
+msgstr "Грешка при свързване с мейл сървър: %s"
+
+#, c-format
+msgid "Can't connect to RPC server: %s"
+msgstr "Грешка при свързване с RPC сървър: %s"
+
+#, c-format
+msgid "Can't get summary list from the server %s: %s"
+msgstr "Грешка при изтегляне на обобщения списък от сървъра %s: %s"
+
+msgid "Cancel"
+msgstr "Откажи"
+
+#, c-format
+msgid "Cannot remove; children exist (%s)"
+msgstr "Грешка при премахване; (%s) вече съществува"
+
+msgid "Cell Phone"
+msgstr "Мобилен телефон"
+
+msgid "Centered"
+msgstr "Центриран"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "Изберете операциите, който искате да извършите сега."
+
+msgid "Checkbook"
+msgstr "Checkbook"
+
+msgid "Cherry"
+msgstr "Cherry"
+
+msgid "Choose the order of the summaries to display in the summary page."
+msgstr "Изберете реда на показване на извлеченията в резюме страницата."
+
+msgid "Close Help"
+msgstr "Затвори Помощ"
+
+msgid "Close Help Window"
+msgstr "Затвори прозорец \"Помощ\""
+
+msgid "Color Picker"
+msgstr "Избиране на цвят"
+
+msgid "Comics"
+msgstr "Комикси"
+
+msgid "Command options:"
+msgstr "Командни опции:"
+
+msgid "Commands:"
+msgstr "Команди:"
+
+msgid "Committing:"
+msgstr "Изпращане:"
+
+msgid "Company"
+msgstr "Компания"
+
+msgid "Configuration"
+msgstr "Конфигурация"
+
+msgid "Confirm Password"
+msgstr "Потвърдете паролата"
+
+msgid "Connection refused to the public keyserver."
+msgstr "Достъпа до публичния сървър беше отказан."
+
+msgid "Connection to ftp server failed."
+msgstr "Връзката със FTP сървъра се провали."
+
+msgid "Console_Getopt not found."
+msgstr "Console_Getopt не е намерен."
+
+#, c-format
+msgid "Contents of '%s'"
+msgstr "Съдържание на '%s'"
+
+msgid "Copy"
+msgstr "Копирай"
+
+#, c-format
+msgid "Copying %s to %s"
+msgstr "копиране на %s от %s"
+
+msgid "Could not PGP encrypt message."
+msgstr "Грешка при PGP криптирането на писмо."
+
+msgid "Could not PGP sign message."
+msgstr "Грешка при PGP подписването на писмо."
+
+msgid "Could not SMIME encrypt message."
+msgstr "Грешка при SMIME криптирането на писмо."
+
+msgid "Could not SMIME sign message."
+msgstr "Грешка при SMIME подписването на писмо."
+
+#, c-format
+msgid "Could not copy %s to %s"
+msgstr "Невъзможност да се копира %s то %s."
+
+#, c-format
+msgid "Could not create locale directory for locale %s:"
+msgstr "Грешка при създаване на локална директория за локализация %s"
+
+msgid "Could not decrypt PGP data."
+msgstr "Грешка при декриптирането на PGP данни."
+
+msgid "Could not decrypt SMIME data."
+msgstr "Грешка при декриптирането на SMIME данни."
+
+msgid "Could not determine the recipient's e-mail address."
+msgstr "Некоректен email адрес на получателя."
+
+msgid "Could not obtain public key from the keyserver."
+msgstr "Грешка при получаването на публичния ключ от ключ-сървъра."
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "Невъзможност да се отвори Обслужващи_задачи модул %s "
+
+msgid "Cut"
+msgstr "изрежи"
+
+msgid "DD"
+msgstr "ДД"
+
+msgid "DHTML Rich Text Editor"
+msgstr "DHTML Rich Text редактор"
+
+msgid "Daily"
+msgstr "Ежедневно"
+
+msgid "Data"
+msgstr "Данни"
+
+msgid "Decrease Indentation"
+msgstr "Намали уеднаквяването"
+
+msgid "Default Identity"
+msgstr "Идентичност по подразбиране"
+
+msgid "Default Permissions"
+msgstr "Права по подразбиране"
+
+msgid "Delete"
+msgstr "Изтрий"
+
+msgid "Deny"
+msgstr "Забрани"
+
+msgid "Details have been logged for the administrator."
+msgstr "Детайлите бяха регистрирани за администратора."
+
+msgid "Discussions"
+msgstr "Дискусии"
+
+msgid "Display Options"
+msgstr "Дисплей Опции"
+
+msgid "Edit"
+msgstr "Редакция"
+
+#, c-format
+msgid "Edit permissions for '%s'"
+msgstr "Редакция на правата за '%s'"
+
+msgid "Edit remote content for the Horde summary."
+msgstr "Редакция на нелокалното съдържание за обобщението на Horde."
+
+msgid "Email"
+msgstr "Писмо"
+
+msgid "Email Address"
+msgstr "Еmail адрес"
+
+msgid "Email addresses must match."
+msgstr "Email адресите трябва да съвпадат."
+
+msgid "Empty result."
+msgstr "Празен резултат."
+
+msgid "End this row"
+msgstr "Край на реда"
+
+#, c-format
+msgid "Entries: %d total, %d up-to-date, %d new, %d changed, %d unknown"
+msgstr "Редове: %d общо, %d опреснени, %d нови, %d променени, %d неизвестни"
+
+msgid "Error"
+msgstr "Грешка"
+
+msgid "Error: "
+msgstr "Грешка"
+
+msgid "Every 15 minutes"
+msgstr "Всеки 15 минути"
+
+msgid "Every 30 seconds"
+msgstr "Всеки 30 секунди"
+
+msgid "Every 5 minutes"
+msgstr "Всеки 5 минути"
+
+msgid "Every Login"
+msgstr "Всяко логване"
+
+msgid "Every half hour"
+msgstr "На всеки половин час"
+
+msgid "Every minute"
+msgstr "Всяка минута"
+
+msgid "Example values:"
+msgstr "Примерни стойности:"
+
+msgid "Executing:"
+msgstr "Изпълняване на:"
+
+#, c-format
+msgid "Extracting from %s... "
+msgstr "Екстракт от %s ..."
+
+msgid "Failed retrieving preferences."
+msgstr "Невъзможност да се заредят преференциите."
+
+msgid "Failed to connect to LDAP server."
+msgstr "Невъзможност да се осъществи връзка с LDAP сървър."
+
+msgid "Failed to connect to SMB server."
+msgstr "Грешка при свързване със SMB сървър."
+
+msgid "Fax"
+msgstr "Факс"
+
+#, c-format
+msgid "File Count: %s file"
+msgstr "Брой файлове: %s файл"
+
+#, c-format
+msgid "File Count: %s files"
+msgstr "Брой файлове: %s файла"
+
+msgid "File Manager"
+msgstr "Файл менажер"
+
+msgid "File Name"
+msgstr "Име на файл"
+
+msgid "File uploads not supported."
+msgstr "Изпращането на файлове не се поддържа."
+
+msgid "Filters"
+msgstr "Филтър"
+
+msgid "Forums"
+msgstr "Форуми"
+
+msgid "Forwardings"
+msgstr "Препращания"
+
+#, c-format
+msgid "Found applications: %s"
+msgstr "Намерени приложения: %s"
+
+msgid "Found directories:"
+msgstr "Намерени директории:"
+
+msgid "Full Description:"
+msgstr "Пълно описание:"
+
+msgid "Full Name"
+msgstr "Име на файл"
+
+msgid "Getopt Error: "
+msgstr "Getopt грешка: "
+
+msgid "Green"
+msgstr "Green"
+
+msgid "Grey"
+msgstr "Grey"
+
+msgid "Group Administration"
+msgstr "Администриране на групи"
+
+msgid "Groups"
+msgstr "Групи"
+
+msgid "Guest Permissions"
+msgstr "Права за гости"
+
+msgid "Guest Services"
+msgstr "Услуги за гости"
+
+msgid "HTTP Authentication not found."
+msgstr "HTTP идентификация не е намерена."
+
+msgid "HTTPS is currently not supported."
+msgstr "HTTPS не се поддържа."
+
+msgid "Headlines"
+msgstr "Заглавия"
+
+msgid "Help"
+msgstr "Помощ"
+
+msgid ""
+"Helper application to create and maintain translations for the Horde\n"
+"framework and its applications.\n"
+"For an introduction read the file README in this directory."
+msgstr ""
+"Помощно приложение за създаване на преводи за Horde\n"
+"и съпътстващите приложения. За въведение прочетете README в тази директория."
+
+msgid "Home"
+msgstr "Начало"
+
+msgid "Home Address"
+msgstr "Домашен адрес"
+
+msgid "Home Phone"
+msgstr "Домашен телефон"
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "Horde Administration"
+msgstr "Horde Администриране"
+
+msgid "Horde is not properly configured"
+msgstr "Horde не е конфигуриран коректно"
+
+msgid "Horde translation generator"
+msgstr "Horde генератор на преводи"
+
+#, c-format
+msgid "IMAP mailbox creation failed: %s"
+msgstr "Грешка при създаване на IMAP пощенска кутия: %s"
+
+#, c-format
+msgid "IMAP mailbox deletion failed: %s"
+msgstr "Грешка при изтриване на IMAP пощенска кутия: %s"
+
+#, c-format
+msgid "IMAP mailbox quota creation failed: %s"
+msgstr "Грешка поради квота при създаване на IMAP пощенска кутия: %s"
+
+msgid "IP Address not within allowed CIDR block."
+msgstr "IP адреса не е в позволения CIDR блок."
+
+msgid "Icons Only"
+msgstr "Само икони"
+
+msgid "Icons with text"
+msgstr "Икони с текст"
+
+#, c-format
+msgid "Import Error: Expected \"BEGIN\" on line %d."
+msgstr "Грешка при импорт: Очаква се \"BEGIN\" на ред %d."
+
+#, c-format
+msgid "Import Error: Expected \"BEGIN\" on the line %d."
+msgstr "Грешка при импорт: Очаква се \"BEGIN\" в реда %d."
+
+msgid "Import Error: Malformed line."
+msgstr "Грешка при импорт: Лошо форматиран ред."
+
+#, c-format
+msgid "Import Error: Type mismatch. Expected \"END:%s\" on line %d."
+msgstr "Грешка при импорт: Некоректен тип. Очакван \"END:%s\" на ред %d."
+
+msgid "Import Error: Unexpected end of file."
+msgstr "Грешка при импорт: Неочакван край на файла."
+
+msgid "Import to my calendar"
+msgstr "Импортирай в моя календар"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Импортирано поле: %s"
+
+msgid "Imported fields:"
+msgstr "Импортирани полета:"
+
+msgid "Increase Indentation"
+msgstr "Увеличаване на уеднаквяването"
+
+#, c-format
+msgid "Initializing module %s... "
+msgstr "Инициализиране на модул %s..."
+
+msgid "Insert Ruler"
+msgstr "Вмъкни подравнител"
+
+msgid "Invalid data submitted."
+msgstr "Изпратените данни са невалидни."
+
+msgid "Invalid response from server"
+msgstr "Невалиден отговор от сървъра"
+
+msgid "Italic"
+msgstr "Наклонени"
+
+msgid "Justify Full"
+msgstr "пълно подравняване"
+
+msgid "Justify Left"
+msgstr "ляво подравняване"
+
+msgid "Justify Right"
+msgstr "дясно подравняване"
+
+msgid "Kerberos server rejected authentication."
+msgstr "Kerberos сървъра отхвърли идентификацията."
+
+msgid "Key already exists on the public keyserver."
+msgstr "Ключа вече съществува в публичния ключсървър."
+
+msgid "Language"
+msgstr "Език"
+
+msgid "Light Blue"
+msgstr "Light Blue"
+
+msgid "List Help Topics"
+msgstr "Помощ теми"
+
+msgid "Listing users is disabled."
+msgstr "Списъка с потребители е забранен."
+
+msgid "Loading libraries..."
+msgstr "зареждане на библиотеките..."
+
+msgid "Log in"
+msgstr "Вход"
+
+msgid "Log out"
+msgstr "Изход"
+
+msgid "Logout"
+msgstr "Изход"
+
+msgid "MM"
+msgstr "ММ"
+
+msgid "MS-TNEF Attachment contained no data."
+msgstr "MS-TNEF прикрепеният файл не съдържаше данни."
+
+msgid "Mail"
+msgstr "Поща"
+
+msgid "Make sure that you have PEAR installed and in your include path."
+msgstr "Уверете се, че имате PEAR инсталиран и достъпен."
+
+#, c-format
+msgid "Making directory %s"
+msgstr "Създаване на директория %s"
+
+msgid "Map Date and Time Fields"
+msgstr "Съвпадащи Дата и Час Полета"
+
+msgid "Map Import Fields"
+msgstr "Съвпадащи Импорт Полета"
+
+msgid "Matching fields"
+msgstr "Съвпадащи полета"
+
+msgid "Members"
+msgstr "Членове"
+
+msgid "Menu mode:"
+msgstr "Вид на менюто:"
+
+#, c-format
+msgid "Merging all %s.po files to the compendium... "
+msgstr "Смесване на всички %s.po файлове в compendium..."
+
+#, c-format
+msgid "Merging the PO file for %s%s%s to the compendium... "
+msgstr "Смесване на PO файлове за %s%s%s в compendium..."
+
+#, c-format
+msgid "Merging translation for module %s..."
+msgstr "Смесване на преводите за модул %s..."
+
+msgid "Message"
+msgstr "Писмо"
+
+msgid ""
+"Message Verified Successfully but the signer's certificated could not be "
+"verified."
+msgstr ""
+"Писмото беше проверено успешно, но сертификата на подписа не беше потвърден."
+
+msgid "Method"
+msgstr "Метод"
+
+#, c-format
+msgid "Method '%s' is not defined"
+msgstr "Метод '%s' не е дефиниран"
+
+msgid "Mime Type"
+msgstr "Mime тип"
+
+msgid "Modified Date"
+msgstr "Дата на променяне"
+
+msgid "Monthly"
+msgstr "Месечно"
+
+msgid "Move down/right"
+msgstr "премести на долу/дясно"
+
+msgid "Move up/left"
+msgstr "премести на горе/ляво"
+
+msgid "Mozilla"
+msgstr "Mozilla"
+
+msgid "My Account"
+msgstr "Моята Поща"
+
+msgid "Name"
+msgstr "Име"
+
+msgid "NeXT"
+msgstr "NeXt"
+
+msgid "Network"
+msgstr "Мрежа"
+
+msgid "Never"
+msgstr "Никога"
+
+msgid "New Username (optional)"
+msgstr "Ново потребителско име (опционално)"
+
+msgid "No"
+msgstr "Не"
+
+msgid "No configuration information specified for FTP VFS."
+msgstr "Няма зададена конфигурация за FTP VFS."
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr "Няма зададена конфигурация за LDAP преференции."
+
+msgid "No configuration information specified for SQL Categories."
+msgstr "Няма конфигурационна информация за SQL категориите"
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr "Няма конфигурационна информация за SQL преференции."
+
+msgid "No configuration information specified for SQL SessionHandler."
+msgstr "Няма зададена конфигурация за SQL SessionHandler."
+
+msgid "No configuration information specified for SQL Tokens."
+msgstr "Няма зададена конфигурация за SQL Tokens."
+
+msgid "No configuration information specified for SQL VFS."
+msgstr "Няма зададена конфигурация за SQL VFS."
+
+msgid "No configuration information specified for SQL authentication."
+msgstr "Няма конфигурационна информация за SQL идентификация."
+
+msgid "No configuration information specified for SQL-File VFS."
+msgstr "Няма зададена конфигурация за SQL-File VFS."
+
+#, c-format
+msgid "No entry with the id '%s' exists in the original help file."
+msgstr "Няма ред с това id '%s' в оригиналния help файл."
+
+msgid "No locale specified."
+msgstr "Няма зададена локализация."
+
+msgid "No password provided for IMAP authentication."
+msgstr "Няма зададена парола за IMAP идентификация."
+
+msgid "No password provided for Kerberos authentication."
+msgstr "Няма зададена парола за Kerberos идентификация."
+
+msgid "No password provided for LDAP authentication."
+msgstr "Няма конфигурационна информация за LDAP идентификация."
+
+msgid "No password provided for RADIUS authentication."
+msgstr "Няма конфигурационна информация за RADIUS идентификация."
+
+msgid "No password provided for SMB authentication."
+msgstr "Няма конфигурационна информация за SMB идентификация."
+
+msgid "No preferences are available."
+msgstr "Няма налични преференции."
+
+msgid "No valid XML data returned"
+msgstr "Върнатите данни не са XML"
+
+msgid "No values"
+msgstr "Няма стойности"
+
+msgid "Notes"
+msgstr "Бележки"
+
+msgid "Notice"
+msgstr "Съобщение"
+
+#, c-format
+msgid "Notification listener %s not found."
+msgstr "Слушателят %s не е намерен."
+
+msgid "OK"
+msgstr "ОК"
+
+msgid "Off"
+msgstr "Изкл."
+
+msgid "On"
+msgstr "Вкл."
+
+msgid "Options"
+msgstr "Опции"
+
+msgid "Options:"
+msgstr "Опции:"
+
+msgid "Orange"
+msgstr "Orange"
+
+msgid "Ordered List"
+msgstr "Подреден списък"
+
+msgid "Other Information"
+msgstr "Друга информация"
+
+msgid "Owner Permissions"
+msgstr "Права на притежателя"
+
+msgid "PHP Shell"
+msgstr "PGP Shell"
+
+msgid "PHP support in xgettext: "
+msgstr "PHP поддръжка в xgettext: "
+
+msgid "Password"
+msgstr "Парола"
+
+msgid "Password:"
+msgstr "Парола:"
+
+msgid "Password: "
+msgstr "Парола: "
+
+msgid "Passwords cannot be blank."
+msgstr "Паролата не може да е празна."
+
+msgid "Passwords must match."
+msgstr "Некоректна парола."
+
+msgid "Paste"
+msgstr "Вмъкни"
+
+msgid "Perform maintenance operations on login?"
+msgstr "Да се извършват ли обслужващите операции при Вход?"
+
+msgid "Permissions"
+msgstr "Права"
+
+msgid "Permissions Administration"
+msgstr "Администриране на правата"
+
+msgid "Phone"
+msgstr "Телефон"
+
+msgid "Please enter a month and a year."
+msgstr "Моля, въведете месец и година."
+
+msgid "Please enter a month, day, and year."
+msgstr "Моля, въведете месец, ден и година."
+
+msgid ""
+"Please read the following text.  You MUST agree with the terms to use the "
+"system."
+msgstr ""
+"Моля, прочетете следният текст.  Вие ТРЯБВА да се съгласите с условията за "
+"използване на системата."
+
+msgid "Please report any bugs to i18n@lists.horde.org."
+msgstr "Моля, изпращайте информацията за бъгове в i18n@lists.horde.orг"
+
+msgid "Presentations"
+msgstr "Презентации"
+
+msgid "Problem?"
+msgstr "Проблем?"
+
+msgid "Public/Private keypair not generated successfully."
+msgstr "Ключова двойка публичен/частен ключ не беше генерирана."
+
+msgid "Ratio"
+msgstr "Коефициент"
+
+msgid "Read"
+msgstr "Четене"
+
+#, c-format
+msgid "Really delete %s? This operation cannot be undone."
+msgstr "Искате да изтриете %s ли? Тази операция не може да се върне назад."
+
+msgid "Refresh Summary View:"
+msgstr "Опресни Резюме изгледа:"
+
+msgid "Remote URL (http://www.example.com/horde):"
+msgstr "Адрес URL (http://www.example.com/horde):"
+
+msgid "Remote summaries"
+msgstr "Премахни обобщенията"
+
+msgid "Remove"
+msgstr "Премахни"
+
+msgid "Remove summary"
+msgstr "Премахни резюме"
+
+#, c-format
+msgid "Remove user: %s"
+msgstr "Премахни потребител: %s"
+
+msgid "Request couldn't be answered: "
+msgstr "На запитването не беше отговорено: "
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr "Необходимия 'basedn' не е зададен в идентификациите."
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr "Необходимия 'basedn' не е зададен в преференциите."
+
+msgid "Required 'bdc_hostspec' not specified in authentication configuration."
+msgstr "Необходимия 'bdc_hostspec' не е зададен в идентификациите."
+
+msgid "Required 'database' not specified in SessionHandler configuration."
+msgstr "Необходимата 'database' не е зададена в конфигурацията на "
+" SessionHandler."
+
+msgid "Required 'database' not specified in VFS configuration."
+msgstr "Необходимата 'database' не е зададена във конфигурацията на VFS."
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr "Необходимата 'database'не е зададена в идентификациите."
+
+msgid "Required 'database' not specified in categories configuration."
+msgstr "Необходимата 'database' не е зададена в категориите."
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr "Необходимата 'database' не е зададена в преференциите."
+
+msgid "Required 'database' not specified in token configuration."
+msgstr "Необходимата 'database' не е зададена във token конфигурацията."
+
+msgid "Required 'domain' not specified in authentication configuration."
+msgstr "Необходимият 'domain' не е зададен в конфигурацията за идентификация."
+
+msgid "Required 'hostspec' not specified in SessionHandler configuration."
+msgstr ""
+"Необходимата 'hostspec' не е зададена в конфигурацията на SessionHandler."
+
+msgid "Required 'hostspec' not specified in VFS configuration."
+msgstr "Необходимия 'hostspec' не е указан в VFS конфигурацията."
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr "Необходимия 'hostspec' не е зададен в конфигурацията за идентификация."
+
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr "Необходимия 'hostspec' не е зададен в категориите"
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr "Нeобходимия 'hostspec' не е зададен в префенрециите."
+
+msgid "Required 'hostspec' not specified in token configuration."
+msgstr "Необходимия 'hostspec' не е указан в token конфигурацията."
+
+msgid "Required 'password' not specified in SessionHandler configuration."
+msgstr ""
+"Необходимата 'password' не е зададена в конфигурацията на SessionHandler."
+
+msgid "Required 'password' not specified in VFS configuration."
+msgstr "Необходимата 'password' не съществува във VFS конфигурация."
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr "Необходимата 'password' не е зададена в идентификациите."
+
+msgid "Required 'password' not specified in categories configuration."
+msgstr "Необходимата 'password' не е зададена в категориите."
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr "Необходимата 'password' не е зададена в преференциите."
+
+msgid "Required 'password' not specified in token configuration."
+msgstr "Необходимата 'password' не съществува в token конфигурация."
+
+msgid "Required 'pdc_hostspec' not specified in authentication configuration."
+msgstr "Необходимия 'pdc_hostspec'не е зададен в идентификациите."
+
+msgid "Required 'phptype' not specified in SessionHandler configuration."
+msgstr ""
+"Необходимият 'phptype' не е зададен в конфигурацията на SessionHandler."
+
+msgid "Required 'phptype' not specified in VFS configuration."
+msgstr "Необходимия 'phptype' не е зададен във VFS конфигурацията."
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr "Необходимия 'phptype' не е зададен в идентификациите."
+
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr "Необходимия 'phptype' не е зададен в категориите."
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr "Необходимия 'phptype' не е зададен в преференциите."
+
+msgid "Required 'phptype' not specified in token configuration."
+msgstr "Необходимия 'phptype' не е зададен във token конфигурацията."
+
+msgid "Required 'port' not specified in VFS configuration."
+msgstr "Необходимия 'port' не е зададен във VFS конфигурацията."
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr "Необходимия 'uid' не е зададен в идентификациите."
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr "Необходимия 'uid' не е зададен преференциите."
+
+msgid "Required 'username' not specified in SessionHandler configuration."
+msgstr ""
+"Необходимото 'username' не е зададено в конфигурацията на SessionHandler."
+
+msgid "Required 'username' not specified in VFS configuration."
+msgstr "Необходимото 'username' не е зададено в VFS конфигурацията."
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr "Необходимия 'username' не е зададен в идентификациите."
+
+msgid "Required 'username' not specified in categories configuration."
+msgstr "Необходимия 'username' не е зададен в конфигурациите."
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr "Необходимия 'username' не е зададен в преференциите."
+
+msgid "Required 'username' not specified in token configuration."
+msgstr "Необходимото 'username' не е зададено в token конфигурацията."
+
+msgid "Required 'vfsroot' not specified in VFS configuration."
+msgstr "Необходимия 'vfsroot' не е зададен във VFS конфигурацията."
+
+msgid "Role"
+msgstr "Роля"
+
+msgid "SQL Shell"
+msgstr "SQL Shell"
+
+msgid "SSH"
+msgstr "SSH"
+
+msgid "Searching Horde applications..."
+msgstr "Търсене на Horde приложенията..."
+
+msgid "Searching gettext binaries..."
+msgstr "Търсене на gettext изпълними файлове..."
+
+msgid "Select"
+msgstr "Избери"
+
+msgid "Select a group to add"
+msgstr "Изберете група за добавяне"
+
+msgid "Select a new owner"
+msgstr "Изберете нов притежател на група"
+
+msgid "Select a server"
+msgstr "Изберете сървър"
+
+msgid "Select a user to add"
+msgstr "Избери потребител за добавяне"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr ""
+"Изберете необходимите Ви символи. След това ги копирайте от текстовото поле."
+
+msgid "Select the date delimiter:"
+msgstr "Изберете Дата разделител:"
+
+msgid "Select the date format:"
+msgstr "Изберете формат за Датата:"
+
+msgid "Select the time format:"
+msgstr "Изберете формат за Часа:"
+
+msgid "Select two matching fields."
+msgstr "Изберете две съвпадащи полета:"
+
+msgid "Select your color scheme."
+msgstr "Изберете вашата схема за цветовете."
+
+msgid "Select your preferred language:"
+msgstr "Изберете предпочитаният от Вас език:"
+
+msgid "Selected Columns:"
+msgstr "Изберете колони:"
+
+msgid "Set your preferred display language."
+msgstr "Изберете предпочитаният от Вас език за дисплея."
+
+msgid ""
+"Set your startup application, color scheme, page refreshing, and other "
+"display options."
+msgstr ""
+"Задайте Вашето начално приложение, схема за цветове, опресняване на "
+"страницата и други опции за дисплея."
+
+msgid "Short Summary:"
+msgstr "Кратко резюме:"
+
+msgid "Show"
+msgstr "Показване"
+
+msgid "Size"
+msgstr "Размер"
+
+msgid "Skipped..."
+msgstr "Прескочено..."
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Някои от конфигурационните файлове на Horde липсват:"
+
+msgid "SpamAssassin"
+msgstr "Унищожител на Спам"
+
+msgid "Special Character Input"
+msgstr "Въвеждане на специални символи"
+
+msgid "Submit"
+msgstr "Изпрати"
+
+msgid "Success"
+msgstr "Успех"
+
+#, c-format
+msgid "Successfully added '%s' to the system."
+msgstr "Успешно добавен '%s' към системата."
+
+#, c-format
+msgid "Successfully deleted '%s'."
+msgstr "Успешно изтрит '%s'."
+
+#, c-format
+msgid "Successfully removed '%s' from the system."
+msgstr "Успешно премахнат '%s' от системата."
+
+#, c-format
+msgid "Successfully updated '%s'"
+msgstr "Успешно беше обновен '%s'."
+
+msgid "Sun"
+msgstr "Sun"
+
+msgid "Tasks"
+msgstr "Задачи"
+
+msgid "Text Only"
+msgstr "Само текст"
+
+#, c-format
+msgid "The %s help file for %s doesn't yet exist. Creating a new one."
+msgstr "%s help файл за %s не съществува все още. Създаване на нов."
+
+msgid ""
+"The detached PGP signature block is required to verify the signed message."
+msgstr ""
+"Прикрепеният PGP подпис е необходим за да се провери подписаното писмо."
+
+msgid ""
+"The detached SMIME signature block is required to verify the signed message."
+msgstr ""
+"Прикрепеният SMIME подпис е необходим за да се провери подписаното писмо."
+
+msgid "The encryption features require a secure web connection."
+msgstr "Криптирането изисква криптирана web връзка."
+
+#, c-format
+msgid "The help file %s didn't start with <?xml"
+msgstr "Help файла %s не започва с <?xml"
+
+msgid ""
+"The location of the GnuPG binary must be given to the Crypt_pgp:: class."
+msgstr "Местоположението на GnuPG файла трябва да бъде даденo на "
+"Crypt_pgp:: clas"
+
+msgid "The openssl module is required for the Crypt_smime:: class."
+msgstr "Модулът OpenSSL е необходим за Crypt_smime:: class."
+
+#, c-format
+msgid ""
+"The program used to view this data type (%s) was not found on the system."
+msgstr ""
+"Програмата, която служи за показване на този тип данни (%s) не беше открита "
+"в системата"
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+"The Registry (Регистратурата) е начинът по който Horde приложенията разбират "
+"как да комуникират по между си. Би трябвало да опишете инсталираните "
+"приложения тук."
+
+msgid "There are no parts that can be displayed inline."
+msgstr "Няма двойки, които да бъдат показани в линията."
+
+#, c-format
+msgid ""
+"There are too many characters in this field. You have entered %s characters; "
+"you must enter less than %s."
+msgstr ""
+"Има твърде много символи в това поле. Въвели сте %s символа; трябва да "
+"въведете по-малко от %s."
+
+#, c-format
+msgid "There doesn't yet exist a help file for %s."
+msgstr "Не съществува help файл с това име за %s."
+
+#, c-format
+msgid "There was a problem adding '%s' to the system."
+msgstr "Грешка при добавяне на '%s' към системата."
+
+#, c-format
+msgid "There was a problem removing '%s' from the system."
+msgstr "Грешка при премахването на '%s' от системата."
+
+#, c-format
+msgid "There was a problem updating '%s': %s"
+msgstr "Грешка при опресняване на '%s': %s"
+
+#, c-format
+msgid "There was a problem with the file upload: No %s was uploaded."
+msgstr "Грешка при изпращането на файла: %s не беше изпратен."
+
+#, c-format
+msgid ""
+"There was a problem with the file upload: The %s was larger than the maximum "
+"allowed size (%d bytes)."
+msgstr ""
+"Имаше проблем при изпращането на файла. %s е по-голям от максимално "
+"допустимия размер (%d байта)."
+
+#, c-format
+msgid ""
+"There was a problem with the file upload: The %s was only partially uploaded."
+msgstr ""
+"Грешка при изпращането на файла. %s беше само отчасти изпратен."
+
+msgid "There was an error importing the calendar data."
+msgstr "Грешка при импортиране на избраните данни за календар."
+
+msgid "There was an error importing the contact data."
+msgstr "Грешка при импорт на данни за контакти."
+
+#, c-format
+msgid ""
+"There was an error opening the file %s. Try running translation.php with the "
+"flag -d to see any error messages from the xml parser."
+msgstr ""
+"Грешка при отварянето на файл %s. Опитайте да стартирате translation.php с "
+"опция -d за да видите съобщениeто за грешка от xml парсерa."
+
+msgid "There was an unknown error verifying this message."
+msgstr "Грешка при проверката на това писмо."
+
+msgid ""
+"This calendar data has been successfully added to your schedule. Click below "
+"to view:"
+msgstr ""
+"Тези данни за календара бяха успешно добавени към Вашата програма. Кликнете "
+"по-долу за да видите:"
+
+msgid ""
+"This contact data has been successfully added to your address book. Click "
+"below to view:"
+msgstr ""
+"Тези данни за контакт бяха успешно добавени към Вашата програма. Кликнете по-"
+"долу за да видите:"
+
+msgid "This does not appear to be a valid rar archive."
+msgstr "Това не е валиден rar архив."
+
+msgid "This does not appear to be a valid zip file."
+msgstr "Това не е валиден zip файл."
+
+msgid "This field is required."
+msgstr "Това поле е необходимо."
+
+msgid "This field may only contain integers."
+msgstr "Това поле може да съдържа само цели числа."
+
+msgid "This field may only contain numbers and the colon."
+msgstr "Това поле може да съдържа само числа и двоеточие."
+
+msgid "This field may only contain numbers."
+msgstr "Това поле може да съдържа само номера."
+
+msgid "This field must be a comma or space separated list of integers"
+msgstr "Това поле трябва да е запетая или интервал разделен списък променливи"
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+"Този файл контролира Глобалните настройки за MIME типовете за Horde, което е "
+"необходимо за да могат програми като enscript или mswordview да показват "
+"съдържанието като HTML във вашия браузер (IE, Netscape и т.н.)"
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings."
+msgstr ""
+"Този файл съдържа стиловете определящи цветовете и шрифтовете за Horde, "
+"както и за всички приложения, които нямат свои настройки."
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+"Този файл съпоставя файловите разширения на логични MIME типове позволявайки "
+"на Horde да определи как да се справи със закачени към писмото файлове или "
+"CVS проверки."
+
+msgid "This form has already been processed."
+msgstr "Тази форма вече беше обработена."
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+"Това е главния конфигурационен файл на Horde. Той съдържа пътища и основните "
+"неща както за Horde така и за целият пакет приложения."
+
+msgid "This number must be at least one."
+msgstr "Това число трябва да е поне единица."
+
+msgid "This server can't uncompress zip and gzip files."
+msgstr "Този сървър не може да декомпресира zip и gzip файлове."
+
+msgid "This value must be a number."
+msgstr "Тази стойност трябва да е число."
+
+msgid "Time Tracking"
+msgstr "Проследяване не време"
+
+msgid "Title"
+msgstr "Длъжност"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to connect to SQL server."
+msgstr "Невъзможност за връзка с SQL сървър."
+
+#, c-format
+msgid "Unable to delete '%s': %s."
+msgstr "Грешка при изтриване '%s': %s."
+
+msgid "Unable to open compressed archive."
+msgstr "Грешка при отварянето на компресиран архив."
+
+msgid "Unable to read the vfsroot directory."
+msgstr "Грешка при четенето на vfsroot папка."
+
+msgid "Unable to translate this Word document"
+msgstr "Грешка при превода на този Word документ"
+
+msgid "Underline"
+msgstr "Подчертани"
+
+#, c-format
+msgid "Unknown command: %s"
+msgstr "Неизвестна команда: %s"
+
+msgid "Unordered List"
+msgstr "Неподреден списък"
+
+msgid "Update"
+msgstr "Опресни"
+
+#, c-format
+msgid "Update %s"
+msgstr "Опресни %s"
+
+#, c-format
+msgid "Updated '%s'."
+msgstr "Опресненa '%s'."
+
+#, c-format
+msgid "Updating %s help file for %s."
+msgstr "Опресняване на %s help файл за %s."
+
+msgid "Usage:"
+msgstr "Използване::"
+
+msgid "Use Default Value"
+msgstr "Използвай подразбиращата се стойност"
+
+msgid "User Administration"
+msgstr "Администриране на потребителите"
+
+msgid "Username"
+msgstr "Име"
+
+msgid "Username and/or password not correct."
+msgstr "Некоректна парола или потребителско име!"
+
+msgid "Username:"
+msgstr "Име:"
+
+msgid "Username: "
+msgstr "Име: "
+
+msgid "Users"
+msgstr "Потребители"
+
+msgid "Users in the system:"
+msgstr "Потребители в системата:"
+
+msgid "Vacation"
+msgstr "Ваканция"
+
+msgid "Verification failed - this message may have been tampered with."
+msgstr "Грешка при проверката - това писмо може да е било подправено."
+
+msgid "Warning"
+msgstr "Внимание"
+
+msgid "Warning: "
+msgstr "Внимание: "
+
+msgid "Weekly"
+msgstr "Седмично"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Добре Дошли в %s"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "Добре дошли, %s"
+
+#, c-format
+msgid "What application should %s display after login?"
+msgstr "Изберете приложението, което %s да покаже след вход."
+
+msgid "Work Address"
+msgstr "Бизнес адрес"
+
+msgid "Work Phone"
+msgstr "Бизнес телефон"
+
+#, c-format
+msgid "Writing updated help file to %s."
+msgstr "Запис на опресненият помощен файл в %s."
+
+msgid "YY"
+msgstr "ГГ"
+
+msgid "Yearly"
+msgstr "Годишно"
+
+msgid "Yes"
+msgstr "Да"
+
+msgid "You did not enter a valid email address."
+msgstr "Не въведохте валиден email адрес."
+
+msgid "You must specify a username to remove."
+msgstr "Трябва да зададете потребител за изтриване."
+
+msgid "You must specify the username to add."
+msgstr "Трябва да зададете потребител за добавяне."
+
+msgid "You must specify the username to update."
+msgstr "Трябва да зададете потребител за опресняване."
+
+msgid "Your Email Address:"
+msgstr "Вашия Email адрес:"
+
+msgid "Your Information"
+msgstr "Информация за Вас"
+
+msgid "Your Name:"
+msgstr "Вашето име:"
+
+msgid ""
+"Your authentication backend does not support adding users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Вашият идентификационен драйвер не поддържа добавяне на потребители, или "
+"тази възможност е забранена."
+
+msgid ""
+"Your authentication backend does not support listing users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Вашият идентификационен драйвер не поддържа списък на потребителите, или "
+"тази възможност е забранена."
+
+msgid "Your options have been updated."
+msgstr "Вашите конфигурационни опции бяха обновени."
+
+msgid "Your remote servers:"
+msgstr "Вашите сървъри:"
+
+#, c-format
+msgid "[line %s of %s]"
+msgstr "[линия %s от %s]"
+
+msgid "an error has occured:"
+msgstr "непреодолима грешка:"
+
+msgid "done"
+msgstr "Направено"
+
+msgid "failed"
+msgstr "провалено"
+
+msgid "file"
+msgstr "файл"
+
+msgid "i18n"
+msgstr "i18n"
+
+msgid "not found"
+msgstr "не беше намерен"
+
+#, c-format
+msgid "the Horde PO file for the locale %s does not exist:"
+msgstr "Horde PO файл за локализация %s не съществува:"
+
+msgid "unnamed"
+msgstr "без име"
+
+msgid "vCard"
+msgstr "vCard"

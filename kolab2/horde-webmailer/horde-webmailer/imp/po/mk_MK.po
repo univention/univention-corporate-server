@@ -1,0 +1,1559 @@
+# translation of mk_MK.po to Macedonian
+# This file is distributed under the same license as the IMP package.
+# Copyright 2003 Eureka Informatika
+# Stojan Pesov <ssp@eureka.com.mk>, 2003
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mk_MK\n"
+"POT-Creation-Date: 2003-06-05 18:13+0200\n"
+"PO-Revision-Date: 2003-06-26 14:53+0200\n"
+"Last-Translator: Stojan Pesov <ssp@eureka.com.mk>\n"
+"Language-Team: Macedonian <i18n@list.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-5\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.1\n"
+
+msgid "      To: "
+msgstr "      До: "
+
+msgid "    Date: "
+msgstr "    Датум: "
+
+msgid "    From: "
+msgstr "    Од: "
+
+msgid " - $nm new message"
+msgstr " - $nm нова порака"
+
+msgid " - $nm new messages"
+msgstr " - $nm нови пораки"
+
+msgid " Subject: "
+msgstr " Наслов: "
+
+msgid " in "
+msgstr " во "
+
+msgid "%A, %B %e, %Y, %I:%M:%S %p %Z"
+msgstr "%A, %B %e, %Y, %I:%M:%S %p %Z"
+
+#, c-format
+msgid "%d of %d Messages"
+msgstr "%d од %d пораки"
+
+#, c-format
+msgid "%d to %d of %d Messages"
+msgstr "%d до %d од %d пораки"
+
+#, c-format
+msgid "%s already exists. Your %s folder was not renamed."
+msgstr "%s веќе постои. Вашата %s папка не е реименувана."
+
+#, c-format
+msgid "%s folder being renamed at the start of the month."
+msgstr "%s е реименувана на почетокот на месецот."
+
+#, c-format
+msgid "%s: %s (%d&nbsp;of&nbsp;%d)"
+msgstr "%s: %s (%d&nbsp;од&nbsp;%d)"
+
+msgid "(Apply these changes and move to next screen.)"
+msgstr "(Примени ги промените и оди на следниот прозор.)"
+
+msgid "(Discard all changes and return to the compose screen.)"
+msgstr "(Отфрли ги промените и врати се на Состави прозорот.)"
+
+msgid ""
+"(Return to the compose screen after applying all changes made thus far.  "
+"Changes on the current screen will NOT be applied.)"
+msgstr ""
+"(Врати се на Состави прозорот по применување на сите промени направени до сега. "
+"Промените од тековниот прозор НЕМА да бидат применети.)"
+
+#, c-format
+msgid ""
+"<p><i>This message was written in a character set other than your own. If it "
+"is not displayed correctly, %sclick here</a> to open it in a new window.</"
+"i></p>\n"
+msgstr ""
+"<p><i>Оваа порака беше напишана во поинаков character set од твојот. Ако не "
+"е прикажан правилно, %sclick овде</a> за да го отворете во нов прозор.</"
+"i></p>\n"
+
+msgid "Action"
+msgstr "Дејствие"
+
+#, c-format
+msgid "Add to Addressbook (%s)"
+msgstr "Додади во адресар (%s)"
+
+msgid "Added an attachment."
+msgstr "Прикачен е фајл."
+
+msgid "Addressbooks"
+msgstr "Адресари"
+
+msgid ""
+"All messages in the folder(s) will be lost!\\nAre you completely sure you "
+"wish to continue?\\n"
+msgstr "Сите пораки од папката ќе бидат изгубени\\nДали сте сигурни дека сакате да продолжите?\\n"
+
+msgid ""
+"All messages in the following folder(s) will be downloaded into one MBOX "
+"file:"
+msgstr "Сите пораки од папкава ќе бидат префрлени во еден MBOX фајл:"
+
+#, c-format
+msgid ""
+"All messages in your \"%s\" folder older than %s days will be permanently "
+"deleted."
+msgstr "Сите пораки од вашата \"%s\" папка постари од %s денови ќе бидат целосно избришани."
+
+#, c-format
+msgid "All old sent-mail folders more than %s months old will be deleted."
+msgstr "Сите sent-mail папки постари од %s месеци ќе бидат избришани."
+
+msgid ""
+"All sessions begin at the Login screen.  Before you can use any of the "
+"webmail features, you must connect to your IMAP account using the username "
+"and password assigned to you by your network administrator."
+msgstr "Сите сесии започнуваат"
+
+msgid "All"
+msgstr "Сите"
+
+msgid "An illegal value was specified."
+msgstr "Внесена е невалидна вредност."
+
+msgid "An unknown error occured adding the new entry."
+msgstr "Се појави недефинирана грешка при додавање нова вредност."
+
+msgid "Answered messages"
+msgstr "Одговорени пораки"
+
+msgid "Answered"
+msgstr "Одговорени"
+
+msgid "Apply All Rules"
+msgstr "Примени ги сите правила"
+
+msgid "Apply Filters on"
+msgstr "Примени филтри"
+
+msgid "Apply filter rules upon logging on."
+msgstr "Примени правила на филтрирање при пријавување."
+
+msgid "April"
+msgstr "Април"
+
+msgid "Are you SURE you want to continue?"
+msgstr "Дали сте СИГУРНИ дека сакате да продолжите?"
+
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "Дали сакате КОМПЛЕТНО да ги избришете поракиве?"
+
+msgid "Arrival Time"
+msgstr "Време на пристигнување"
+
+msgid "Ascending"
+msgstr "Растечки"
+
+msgid "Attach"
+msgstr "Прикачи"
+
+msgid "Attachment"
+msgstr "Прикачен фајл"
+
+msgid "Attachments"
+msgstr "Прикачени фајлови"
+
+msgid "August"
+msgstr "Август"
+
+msgid "Available Addressbooks:"
+msgstr "Достапни адресари:"
+
+#, c-format
+msgid "Back to %s"
+msgstr "Назад до %s"
+
+msgid "Bcc"
+msgstr "Невидлива копија"
+
+msgid ""
+"Begin by entering your user and password in the appropriate fields.  You'll "
+"then need to select the IMAP mail server to which you'd like to connect."
+msgstr "Започнете со внесување на вашето корисничко име и лозинка во соодветните полиња."
+
+msgid "Blacklist"
+msgstr "Црна листа"
+
+msgid "Body"
+msgstr "Тело"
+
+msgid "Body:"
+msgstr "Тело:"
+
+msgid "Both"
+msgstr "И двете"
+
+msgid "Cancel Message"
+msgstr "Откажи ја пораката"
+
+msgid "Cancel"
+msgstr "Откажи"
+
+msgid ""
+"Cancelling this message will permanently discard its contents.\\nAre you "
+"sure you want to do this?"
+msgstr "Со откажување на поракава ја губите и нејзината содршина.\\nДали сте сигурни дека го сакате тоа?"
+
+msgid "Cc"
+msgstr "Копија"
+
+msgid "Cc:"
+msgstr "Копија:"
+
+msgid "Change All"
+msgstr "Промени ги сите"
+
+msgid "Change Folder"
+msgstr "Промени папка"
+
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr "Промени ги опциите за приказ на бројот на пораки по страна и правилата за сортирање."
+
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr "Промени ги името, адресата и потписот што луѓето ги гледаат кога ги читаат и одговараат на твоите пораки."
+
+msgid "Change your mail server and folder information."
+msgstr "Промени ги информациите за серверот и папката."
+
+msgid "Change"
+msgstr "Промени"
+
+msgid "Check Folder(s) for New Mail"
+msgstr "Назначи папка(и) за нова пошта"
+
+msgid "Checkbox"
+msgstr "Поле за селектирање"
+
+msgid "Choose Action:"
+msgstr "Избери дејствие:"
+
+msgid "Choose the addressbook to use when adding addresses."
+msgstr "Избери адресар за додавање нови адреси."
+
+msgid "Choose the order of addressbooks to search when expanding addresses."
+msgstr "Избери по кој ред да се пребаруваат адресарите при раширување на адресите."
+
+msgid ""
+"Click on one of your selected addressbooks and then select all fields to "
+"search."
+msgstr "Притиснете на еден од избраните адресари и потоа изберете ги полињата за пребарување."
+
+msgid "Closed Folder"
+msgstr "Затворена папка"
+
+msgid "Collapse All Folders"
+msgstr "Собери ги сите папки"
+
+msgid "Collapse All"
+msgstr "Собери ги сите"
+
+msgid "Collapse Folder"
+msgstr "Собери папка"
+
+#, c-format
+msgid "Compose Message (%s)"
+msgstr "Состави порака (%s)"
+
+msgid "Compose a message"
+msgstr "Состави порака"
+
+msgid "Compose messages in a separate window."
+msgstr "Составување на пораки во нов (посебен) прозорец."
+
+msgid "Compose"
+msgstr "Состави"
+
+msgid "Conclusion"
+msgstr "Заклучок"
+
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr "Контрола над фреквентност на проверување дали има нови пораки и дали да се врши известување за нивното пристигнување."
+
+msgid "Copy"
+msgstr "Копирај"
+
+msgid "Correct"
+msgstr "Корегирај"
+
+msgid "Corrected Text"
+msgstr "Корегиран текст"
+
+msgid "Create Folder"
+msgstr "Креирај папка"
+
+msgid "Create a new drafts folder"
+msgstr "Креирај нова папка за незавршени пораки"
+
+msgid "Create a new sent mail folder"
+msgstr "Креирај нова папка за пратени пораки"
+
+msgid "Create a new trash folder"
+msgstr "Креирај нова папка за отпадоци"
+
+msgid ""
+"Create filtering rules to organize your incoming mail, sort it into folders, "
+"and delete spam."
+msgstr "Креирај правила за филтрирање и организирање на пораките што се примаат, сортирање на истите во папки и бришење на непожелните пораки."
+
+msgid "Create"
+msgstr "Креирај"
+
+msgid "Customize how you send mail and where drafts are saved."
+msgstr "Избери како да се праќаат пораките и каде ќе се чуваат незавршените пораки."
+
+msgid "Customize maintenance operations run upon login to IMP."
+msgstr "Избери операции за одржување кои ќе се извршуваат при пријавување."
+
+msgid "Customize tasks to run upon logon to IMP."
+msgstr "Избери задачи кои ќе се извршуваат при пријавување."
+
+msgid "Date"
+msgstr "Датум"
+
+msgid "December"
+msgstr "Декември"
+
+msgid "Default sorting criteria:"
+msgstr "Стандарден критерум за сортирање:"
+
+msgid "Default sorting direction:"
+msgstr "Стандарден редослед за сортирање:"
+
+msgid "Delete Folder(s)"
+msgstr "Избриши папка(и)"
+
+msgid "Delete messages"
+msgstr "Избриши пораки"
+
+msgid "Delete old sent-mail folders at beginning of month"
+msgstr "Избриши ги старите sent-mail папки на почетокот на месецот"
+
+msgid "Delete"
+msgstr "Избриши"
+
+msgid "Deleted an attachment."
+msgstr "Избриши прикачен фајл"
+
+msgid "Deleted messages"
+msgstr "Избришани пораки"
+
+msgid "Deleted"
+msgstr "Избришани"
+
+msgid "Deleting and Moving Messages"
+msgstr "Бришење и преместување пораки"
+
+msgid "Descending"
+msgstr "Опаѓачки"
+
+msgid "Display Options"
+msgstr "Подесувања за приказ"
+
+msgid "Display message when filters have been applied."
+msgstr "Прикажи порака кога филтрите се применети."
+
+msgid "Display pop-up notification of new mail."
+msgstr "Прикажи известување за нова порака."
+
+msgid "Do Not Check Folder(s) for New Mail"
+msgstr "Не ја проверувај папката за нова пошта"
+
+#, c-format
+msgid "Do you want to open %s?"
+msgstr "Сакате ли да ја отворите %s?"
+
+msgid "Done"
+msgstr "Заврши"
+
+#, c-format
+msgid "Download %s"
+msgstr "Превземи %s"
+
+msgid "Download Folder(s)"
+msgstr "Превземи папка(и)"
+
+msgid "Download"
+msgstr "Превземи"
+
+msgid "Draft"
+msgstr "Незавршени"
+
+msgid "Drafts folder:"
+msgstr "Папка Незавршени:"
+
+msgid "Edit my filter rules"
+msgstr "Уреди ги моите правила за филтрирање"
+
+msgid "Edit your identities"
+msgstr "Уреди ги идентитетите"
+
+msgid "Edit"
+msgstr "Уреди"
+
+msgid "End forwarded message"
+msgstr "Заврши ја препратената порака"
+
+msgid "Enter the name for your new drafts folder"
+msgstr "Внесете име за новата папка за незавршени пораки"
+
+msgid "Enter the name for your new sent mail folder"
+msgstr "Внесете име за новата папка за пратени пораки"
+
+msgid "Enter the name for your new trash folder"
+msgstr "Внесете име за новата папка за отпадоци"
+
+#, c-format
+msgid "Entry \"%s\" was successfully added to the addressbook"
+msgstr "Внесот \"%s\" е успешно додаден во адресарот"
+
+msgid "Error"
+msgstr "Грешка"
+
+msgid "Every 15 minutes"
+msgstr "Секои 15 минути"
+
+msgid "Every 30 seconds"
+msgstr "Секои 30 секунди"
+
+msgid "Every 5 minutes"
+msgstr "Секои 5 минути"
+
+msgid "Every half hour"
+msgstr "Секој пола час"
+
+msgid "Every minute"
+msgstr "Секоја минута"
+
+msgid "Expand All Folders"
+msgstr "Рашири ги сите папки"
+
+msgid "Expand All"
+msgstr "Рашири ги сите"
+
+msgid "Expand Folder"
+msgstr "Рашири фолдер"
+
+msgid "Expand Names"
+msgstr "Рашири имиња"
+
+msgid "Expand the entire folder tree by default in the folders view."
+msgstr "Рашири го целото дрво од папки при приказ на папките."
+
+msgid "February"
+msgstr "Февруари"
+
+msgid "Field"
+msgstr "Поле"
+
+msgid "Filename"
+msgstr "Име на фајл"
+
+msgid "Filter Rules"
+msgstr "Правила за филтрирање"
+
+msgid "Filter message content for profanity."
+msgstr "Филтрирај ја содржината на пораката според содржина."
+
+msgid "Filter"
+msgstr "Филтер"
+
+msgid "Filters"
+msgstr "Филтри"
+
+msgid "First Page"
+msgstr "Прва страна"
+
+msgid "Folder Navigator"
+msgstr "Навигатор за папки"
+
+msgid "Folder Prefix"
+msgstr "Префикс на папка"
+
+msgid "Folders"
+msgstr "Папки"
+
+msgid "Forward"
+msgstr "Препрати"
+
+msgid "Forward:"
+msgstr "Препрати:"
+
+#, c-format
+msgid "Forwarded message from %s"
+msgstr "Препратена порака од %s"
+
+msgid "From Address"
+msgstr "Од адреса"
+
+msgid "From"
+msgstr "Од"
+
+msgid "From:"
+msgstr "Од:"
+
+msgid "Fwd:"
+msgstr "Препрати:"
+
+msgid "Getting Started"
+msgstr "Да започнеме"
+
+msgid "Help"
+msgstr "Помош"
+
+msgid "Hide Deleted"
+msgstr "Скриј ги избришаните"
+
+msgid "Hide Unsubscribed"
+msgstr "Скриј ги непревземаните"
+
+msgid "How to prefix quoted lines in a reply:"
+msgstr "Префикс пред цитираниот текст при одговор:"
+
+msgid "IMP is not properly configured"
+msgstr "IMP не е правилно конфигуриран"
+
+msgid "INBOX"
+msgstr "Сандаче"
+
+msgid "Identities"
+msgstr "Идентитетите"
+
+msgid "Identity's name:"
+msgstr "Име на идентитетот:"
+
+msgid "Ignore All"
+msgstr "Игнорирај се"
+
+msgid "Ignore"
+msgstr "Игнорирај"
+
+msgid "Important messages"
+msgstr "Важни пораки"
+
+msgid "Important"
+msgstr "Важни"
+
+#, c-format
+msgid "Introduction to %s"
+msgstr "Вовед во %s"
+
+msgid "Introduction"
+msgstr "Вовед"
+
+msgid "January"
+msgstr "Јануари"
+
+msgid "July"
+msgstr "Јули"
+
+msgid "June"
+msgstr "Јуни"
+
+msgid "Language"
+msgstr "Јазик"
+
+msgid "Last Page"
+msgstr "Последна страна"
+
+#, c-format
+msgid "Last login: %s"
+msgstr "Последно пријавување: %s"
+
+msgid "Last login: Never"
+msgstr "Последно пријавување: никогаш"
+
+#, c-format
+msgid "Log in to %s"
+msgstr "Пријави се во %s"
+
+msgid "Log in"
+msgstr "Пријавување"
+
+msgid "Logging In"
+msgstr "Пријавување"
+
+msgid "Login Tasks"
+msgstr "Задачи при пријавување"
+
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr "Пријавувањето не беше успешно, најверојатно поради неправилно внесување на корисничкото име или лозинката."
+
+msgid "Logout"
+msgstr "Одјава"
+
+msgid "Mail Filters"
+msgstr "Поштенски филтри"
+
+msgid "Mail Management"
+msgstr "Поштенски менаџмент"
+
+msgid "Mailbox"
+msgstr "Поштенско сандаче"
+
+msgid "Maintenance Operations"
+msgstr "Операции за одржување"
+
+msgid "March"
+msgstr "Март"
+
+msgid "Mark as:"
+msgstr "Маркирај како:"
+
+msgid "May"
+msgstr "Мај"
+
+msgid "Message Composition"
+msgstr "Составување порака"
+
+msgid "Message Date"
+msgstr "Датум на порака"
+
+msgid "Message Search"
+msgstr "Барај порака"
+
+msgid "Message Size"
+msgstr "Големина на порака"
+
+msgid "Message Source"
+msgstr "Извор на порака"
+
+msgid "Message Viewing"
+msgstr "Прегледување пораки"
+
+msgid "Message fields"
+msgstr "Полиња на порака"
+
+msgid "Message flags"
+msgstr "Атрибути на порака"
+
+msgid "Message folders"
+msgstr "Папки за пораки"
+
+msgid "Message sent successfully, but not saved to"
+msgstr "Пораката е успешно пратена, но не е зачувана во"
+
+msgid "Message"
+msgstr "Порака"
+
+msgid "Messages per page in the mailbox view."
+msgstr "Број на пораки по страна при приказ на поштенското сандаче"
+
+msgid "Messages to"
+msgstr "Пораки до"
+
+msgid "Modify"
+msgstr "Модифицирај"
+
+msgid "Move Down"
+msgstr "Оди доле"
+
+msgid "Move Up"
+msgstr "Оди горе"
+
+#, c-format
+msgid "Move messages to the <b>%s</b> folder"
+msgstr "Премести ги пораките во <b>%s</b> папката"
+
+msgid "Move"
+msgstr "Премести"
+
+msgid "Never"
+msgstr "Никогаш"
+
+msgid "New Mail"
+msgstr "Нова порака"
+
+msgid "New User Introduction"
+msgstr "Вовед за нови корисници"
+
+msgid "New messages"
+msgstr "Нови пораки"
+
+msgid "New"
+msgstr "Нов"
+
+msgid "Next Message"
+msgstr "Следна порака"
+
+msgid "Next Page"
+msgstr "Следна страна"
+
+msgid "Next"
+msgstr "Следно"
+
+msgid "No folders were specified"
+msgstr "Не се наведени папки"
+
+msgid "No messages matched your search"
+msgstr "Не е пронајдена ниту една порака"
+
+msgid "No spelling errors"
+msgstr "Нема правописни грешки"
+
+msgid "No subject"
+msgstr "Без тема"
+
+msgid "No"
+msgstr "Не"
+
+msgid "None"
+msgstr "Ниедна"
+
+msgid "Not Deleted"
+msgstr "Не избришани"
+
+msgid "Not Draft"
+msgstr "Не незавршени (Draft)"
+
+msgid "Not Important"
+msgstr "Неважни"
+
+msgid "Not Personal"
+msgstr "Не лични"
+
+msgid "Not deleted messages"
+msgstr "Не избришани пораки"
+
+msgid "Not important messages"
+msgstr "Неважни пораки"
+
+msgid "November"
+msgstr "Ноември"
+
+msgid "Number of old sent-mail folders to keep if deleting monthly"
+msgstr "Број на стари sent-mail папки да се чуваат, ако се брише еднаш месечно"
+
+msgid "October"
+msgstr "Октомври"
+
+msgid "Old messages"
+msgstr "Стари пораки"
+
+msgid "Old sent-mail folders being purged."
+msgstr "Старите sent-mail папки се исчистени."
+
+msgid ""
+"Once you've filled in these three fields, click the \"Login\" button to "
+"proceed."
+msgstr "По пополнување на овие три полиња, притисни на копчето \"Пријавување\" за да влезете во системот."
+
+msgid "Open Folder"
+msgstr "Отвори папка"
+
+msgid "Options"
+msgstr "Опции"
+
+msgid "Other Options"
+msgstr "Други опции"
+
+#, c-format
+msgid "Page %d of %d"
+msgstr "Страна %d од %d"
+
+msgid "Part(s)"
+msgstr "Дел(ови)"
+
+msgid "Password"
+msgstr "Лозинка"
+
+msgid "Path to your mail folders:"
+msgstr "Патека до вашите поштенски папки:"
+
+msgid "Personal Information"
+msgstr "Лични информации"
+
+msgid "Personal"
+msgstr "Лично"
+
+msgid "Place your signature before replies and forwards?"
+msgstr "Вметни потпис пред текстот на кој се одговара или препраќа?"
+
+msgid "Please enter the new name:"
+msgstr "Внесете го новото име:"
+
+msgid "Please enter valid search criteria."
+msgstr "Внесете валиден критериум за пребарување."
+
+msgid "Please provide your username and password"
+msgstr "Ве молиме наведете ваше корисничко име и лозинка"
+
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Разреши двосмислени или невалидни адреси."
+
+msgid "Please select a folder before you perform any actions."
+msgstr "Избери папка пред извршување на било која акција."
+
+msgid "Please select at least one folder to search."
+msgstr "Избери барем една папка за пребарување."
+
+msgid "Please select only one folder for this operation."
+msgstr "Избери само една папка за оваа операција."
+
+msgid "Please select or edit right next:"
+msgstr "Избери или уреди следно:"
+
+msgid "Preceed your signature with dashes ('-- ')"
+msgstr "Оддели го потписот со црти ('-- ')"
+
+msgid "Previous Message"
+msgstr "Претходна порака"
+
+msgid "Previous Page"
+msgstr "Претходна страна"
+
+msgid "Print"
+msgstr "Печати"
+
+msgid "Problem?"
+msgstr "Проблем?"
+
+msgid "Purge Deleted"
+msgstr "Острани избришани"
+
+msgid "Purge Trash how often:"
+msgstr "Колку често да ги отстранувам избришаните од папката за отпадоци:"
+
+msgid "Purge messages in Trash folder older than this amount of days"
+msgstr "дена старите пораки отстрани ги од папката за отпадоци"
+
+msgid "Purge old message in the Trash folder"
+msgstr "Purge old message in the Trash folder"
+
+msgid "Purging "
+msgstr "Отстранување"
+
+msgid " message(s) from Trash folder."
+msgstr " порака(и) од папката за отпадоци."
+
+msgid "Quoting"
+msgstr "Цитат"
+
+msgid "Received after:"
+msgstr "Примени после:"
+
+msgid "Received before:"
+msgstr "Примени пред:"
+
+msgid "Received on:"
+msgstr "Примени на:"
+
+msgid "Redirect Message"
+msgstr "Пренасочи порака:"
+
+msgid "Redirect this message"
+msgstr "Пренасочи ја поракава:"
+
+msgid "Redirect"
+msgstr "Пренасочи"
+
+msgid "Redirecting failed."
+msgstr "Не успешно пренасочување."
+
+msgid "Refresh Folder Views:"
+msgstr "Освежи приказ на папки:"
+
+msgid "Refresh"
+msgstr "Освежи"
+
+msgid "Reload View"
+msgstr "Освежи приказ"
+
+msgid "Remember the last view"
+msgstr "Запамети последен приказ"
+
+msgid "Remove Selected"
+msgstr "Одстрани селектирани"
+
+msgid "Rename Folder"
+msgstr "Преименувај папка"
+
+msgid "Rename sent-mail folder at beginning of month"
+msgstr "Преименувај ја папката Пратени на почетокот од месецот"
+
+#, c-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr "Преименувањето на \"%s\" во \"%s\" не успеа. Ова го врати серверот"
+
+msgid "Replace with:"
+msgstr "Замени со:"
+
+msgid "Reply to All"
+msgstr "Одговори на сите"
+
+msgid "Reply to All:"
+msgstr "Одговори на сите:"
+
+msgid "Reply"
+msgstr "Одговори"
+
+msgid "Reply-To: "
+msgstr "Одговори на: "
+
+msgid "Reply-to"
+msgstr "Одговори на"
+
+msgid "Reply:"
+msgstr "Одговори:"
+
+msgid "Report as Spam"
+msgstr "Дефинирај како Непожелна порака"
+
+msgid "Request a Return Receipt"
+msgstr "Побарај потврда за примена порака"
+
+msgid "Reset"
+msgstr "Одново"
+
+msgid "Resume"
+msgstr "Продолжи"
+
+msgid "Return to Welcome Screen"
+msgstr "Вратете се на страната Добредојде"
+
+msgid "Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr "Врати се на поштенското сандаче по бришење, преместување или копирање пораки?"
+
+msgid "Rule Definition"
+msgstr "Дефиниција на правило"
+
+msgid "Save Draft"
+msgstr "Зачувај незавршена"
+
+msgid "Save a copy in "
+msgstr "Зачувај копија во "
+
+msgid "Save as"
+msgstr "Зачувај како"
+
+msgid "Save as..."
+msgstr "Зачувај.како..."
+
+msgid "Save sent mail"
+msgstr "Зачувај пратена порака"
+
+#, c-format
+msgid "Saving the draft failed. This is what the server said: %s"
+msgstr "Неуспешно зачувување во папката Незавршени. Ова го врати серверот: %s"
+
+msgid "Search Results"
+msgstr "Резултати од пребарувањето"
+
+msgid "Search"
+msgstr "Пребарувај"
+
+msgid "Seen"
+msgstr "Прочитани"
+
+msgid "Select addressbook sources for adding and searching for addresses."
+msgstr "Избери извор за барање и додавање адреси во адресарот."
+
+msgid "Select all"
+msgstr "Избери ги сите"
+
+msgid "Select an identity"
+msgstr "Избери идентитет"
+
+msgid "Select charset:"
+msgstr "Избери charset:"
+
+msgid "Select none"
+msgstr "Избери ниедно"
+
+msgid "Select your preferred language:"
+msgstr "Одбери го својот матичен јазик:"
+
+msgid "Select"
+msgstr "Избери"
+
+msgid "Selected Addressbooks:"
+msgstr "Избрани адресари:"
+
+msgid "Send Message"
+msgstr "Испрати порака"
+
+msgid "Sent mail folder:"
+msgstr "Папка Пратени:"
+
+msgid "September"
+msgstr "Септември"
+
+msgid "Server Information"
+msgstr "Информација за серверот"
+
+msgid "Server"
+msgstr "Сервер"
+
+msgid "Set preferences for filtering messages for unwanted content."
+msgstr "Изберете подесувања за филтрирање пораки со несакана содржина."
+
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr "Изберете подесувања за она што се случува при преместување и бришење пораки."
+
+msgid "Set the current time zone."
+msgstr "Избери тековна временска зона"
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Наведи јазик за менијата, објаснувањата и помошта."
+
+msgid "Should the compose window be closed after saving a draft?"
+msgstr "Дали да го затворам прозорот Состави по зачувување на пораката во Незавршени?"
+
+msgid "Show Deleted"
+msgstr "Прикажи избришани"
+
+msgid "Show Unsubscribed"
+msgstr "Прикажи непревземани"
+
+msgid "Show last login time when logging in"
+msgstr "Прикажи кога последен пат сте се пријавиле при пријавување"
+
+msgid "Size"
+msgstr "Големина"
+
+msgid "Some of IMP's configuration files are missing:"
+msgstr "Некои од конфигурационите фајлови на IMPнедостасуваат:"
+
+msgid "Sort Direction"
+msgstr "Сортирачки редослед"
+
+msgid "Spam Report from"
+msgstr "Известување за непожелни пораки од"
+
+msgid "Special Characters"
+msgstr "Специјални знаци"
+
+msgid "Spell Check"
+msgstr "Проверка на правопис"
+
+msgid "Spell Checker"
+msgstr "Проверувач на правопис"
+
+msgid "Spell check complete"
+msgstr "Заврши проверката на правопис"
+
+msgid "Spelling errors per screen when spell checking."
+msgstr "Правописни грешки по прозор при проверка на правописот."
+
+msgid "Subject Field"
+msgstr "Тема на порака"
+
+msgid "Subject"
+msgstr "Тема"
+
+msgid "Subject:"
+msgstr "Тема:"
+
+msgid "Subscribe to Folder(s)"
+msgstr "Превземи папка(и)"
+
+msgid "Success"
+msgstr "Успешно"
+
+msgid "Suggestions"
+msgstr "Предлози"
+
+msgid "Text"
+msgstr "Текст"
+
+msgid ""
+"The Compose Window allows you to set, among other things, the message "
+"recipient's address (who you're sending mail to), the message subject, and "
+"the message contents.  Simply fill out the appropriate fields at the top of "
+"the window (only the To: address is required, but the Subject: is suggested) "
+"and type your message in the large lower field.  Once you've completed "
+"entering your message, you may choose to Spell Check your message text.  "
+"Once you're done composing your new message, click the \"Send\" button to "
+"send the message to the recipient."
+msgstr "Состави прозорецот овозможува да наведете примач (адреса кому ја праќате пораката), тема на пораката и нејзина содржина.  Едноставно пополнете ги соодветните полиња (задолжително е само полето До:, додека полето Тема: е препорачливо) и напишете ја вашата порака во големото поле за текст.  Потоа можете да изберете проверка на правописот.  На крај претиснете на копчето \"Испрати\" за да ја пратите пораката."
+
+msgid "The Compose Window"
+msgstr "Состави прозорецот"
+
+msgid "The Mailbox Listing"
+msgstr "Преглед на поштенско сандаче"
+
+msgid ""
+"The Message Screen display the contents of the selected message.  From here, "
+"you can browse message attachments, reply to the current message, delete the "
+"current message, or advance to the next message in your current mailbox."
+msgstr "Прозорецот за преглед на пораката ја прикажува содржината на избраната порака.  Од овде можете да ги прегледате прикачените фајлови, да одговорите на пораката, да ја избришете истата, или да преминете на следната порака од тековната папка."
+
+msgid "The Message Screen"
+msgstr "Прозорец за преглед на порака"
+
+msgid ""
+"The contents of your Inbox folder will be displayed immediately upon logging "
+"in.  The Mailbox Listing shows the contents of each message's header "
+"(message status, date sent, sender, subject, and size).  Each column has a "
+"heading.  Clicking on the heading will cause the listing to be sorted by "
+"that column."
+msgstr "Содржината на вашата папка Сандаче ќе биде автоматски прикажана по пријавување во системо.  Во поштенското сандаче ќе можете да ја видите содржината од заглавјето на секоја порака (статус, датум на испраќање, испраќач, тема и големина). Секоја колона содржи наслов. Со кликање на насловот ќе предизвикате сортирање по таа колона."
+
+#, c-format
+msgid "The current folder(s) \"%s\" will be renamed to \"%s\"."
+msgstr "Папката(ите) \"%s\" ќе бидат преименувани во \"%s\"."
+
+#, c-format
+msgid "The folder \"%s\" already exists"
+msgstr "Папката \"%s\" веќе постои"
+
+#, c-format
+msgid ""
+"The folder \"%s\" contains illegal characters in its name. It may cause "
+"problems. Please see your system administrator."
+msgstr "Папката \"%s\" содржи невалидни знаци во името, што може да предизвика проблеми. Обратете се до вашиот систем администратор."
+
+#, c-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "Папката \"%s\" е креирана, но се уште ја немате превземано."
+
+#, c-format
+msgid "The folder \"%s\" was deleted but you were not unsubscribed from it."
+msgstr "Папката \"%s\" е избришана, но се уште ја имате превземано."
+
+#, c-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr "Папката \"%s\" не е креирана. Ова го врати серверот"
+
+#, c-format
+msgid "The folder \"%s\" was not deleted. This is what the server said"
+msgstr "Папката \"%s\" не е избришана. Ова го врати серверот"
+
+#, c-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "Папката \"%s\" е успешно креирана."
+
+#, c-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "Папката \"%s\" е успешно избришана."
+
+#, c-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "Папката \"%s\" е успешно преименувана во \"%s\"."
+
+#, c-format
+msgid "The identity \"%s\" has been deleted."
+msgstr "Идентитетот \"%s\" е избришан."
+
+#, c-format
+msgid "The identity \"%s\" has been saved."
+msgstr "Идентитетот \"%s\" е зачуван."
+
+msgid "The signature couldn't be replaced."
+msgstr "Потписот не може да биде заменет."
+
+msgid "The signature was successfully replaced."
+msgstr "Потписот е успешно заменет."
+
+msgid "There are no messages in this mailbox."
+msgstr "Нема пораки во ова поштенско сандаче."
+
+#, c-format
+msgid "There was a problem expunging %s. This is what the server said"
+msgstr "Настана проблем при бришење на %s. Ова го врати серверот"
+
+msgid "There was a problem expunging the mailbox. This is what the server said"
+msgstr "Настана проблем при бришење на поштенското сандаче. Ова го врати серверот"
+
+#, c-format
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size (%d MB)."
+msgstr "Настана грешка при снимање на документот. Можеби фајлот е поголем од максимално дозволената големина (%d MB)."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr "Настана грешка при снимање на документот. Можеби документот е поголем од максимално дозволената големина."
+
+#, c-format
+msgid "There was an error copying messages to \"%s\". This is what the server said"
+msgstr "Настана грешка при копирање на пораките во \"%s\". Ова го врати серверот"
+
+#, c-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr "Настана грешка при бришење на пораките од папката \"%s\". Ова го врати серверот"
+
+#, c-format
+msgid ""
+"There was an error deleting messages in the folder \"%s\". This is what the "
+"server said"
+msgstr "Настана грешка при бришење на пораките во папката \"%s\". Ова го врати серверот"
+
+msgid "There was an error deleting messages. This is what the server said"
+msgstr "Настана грешка при бришење на пораките. Ова го врати серверот"
+
+#, c-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr "Настана грешка при поставување атрибути на пораките во папката \"%s\". Ова го врати серверот"
+
+msgid "There was an error flagging messages. This is what the server said"
+msgstr "Настана грешка при поставување атрибути на пораките. Ова го врати серверот"
+
+#, c-format
+msgid "There was an error moving messages to \"%s\". This is what the server said"
+msgstr "Настана грешка при преместување на пораките во \"%s\". Ова го врати серверот"
+
+msgid "There was an error moving messages to the trash. This is what the server said"
+msgstr "Настана грешка при преместување на пораките во Отпадок папката. Ова го врати серверот"
+
+msgid "There was an error saving a draft."
+msgstr "Настана грешка при зачувување на незавршена порака."
+
+msgid "There was an error sending your message"
+msgstr "Настана грешка при праќање на пораката"
+
+msgid "There was an error undeleting messages. This is what the server said"
+msgstr "Настана грешка при реставрација на пораките. Ова го врати серверот"
+
+msgid "There was an error viewing the requested message."
+msgstr "Настана грешка при приказ на бараната порака."
+
+msgid ""
+"This file controls local MIME drivers for IMP, specifically what kinds of "
+"attachments are viewable and/or downloadable."
+msgstr "Овој фајл ги контролира локалните MIME драјвери за IMP, односно какви типови на прикачени фајлови се прикажливи и/или можат да се превземат."
+
+msgid ""
+"This file controls the default preferences for IMP, and also controls which "
+"preferences users can alter."
+msgstr "Овој фајл ги контролира стандардните подесувања за IMP како и тоа кои подесувања можат да бидат изменети од страна на корисниците."
+
+msgid ""
+"This file controls the default settings for IMP, and also defines the list "
+"of available servers if you are using the server list."
+msgstr "Овој фајл ги контролира стандардните подесувања за IMP и содржи листа на достапни сервери, ако користите листа на сервери."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr "Овој документ содржи подесувања кои ги заменуваат или дополнуваат почетните подесувања за Horde."
+
+msgid ""
+"This has hopefully given you a general understanding of how to web mail "
+"interface works.  You'll surely become comfortable with it after seeing how "
+"easy and convenient it is for reading and sending mail, as well as managing "
+"your IMAP mail account."
+msgstr "Се надеваме дека во глобала сфативте како web mail системот функционира.  Полесно ќе ви биде откако ќе проверите колку е лесно да се чита и праќа пошта, како и уредување на вашиот IMAP систем."
+
+msgid ""
+"This is the main IMP configuration file. It contains paths and options for "
+"the IMP scripts."
+msgstr "Ова е главниот конфигурационен фајл за IMP системот. Содржи патеки и опции за неговите скрипти."
+
+msgid "This may take some time. Are you sure you want to continue?"
+msgstr "Ова може да потрае. Дали сте сигурни дека сакате да продолжите?"
+
+msgid "This message has been reported as spam to your system administrator."
+msgstr "Администраторот беше известен дека оваа порака е непожелна."
+
+msgid "This message to"
+msgstr "Оваа порака до"
+
+msgid "This number must be at least one."
+msgstr "Овој број мора да биде барем еден."
+
+msgid "This value must be a number."
+msgstr "Оваа вредност мора да биде број."
+
+msgid "Time Zone"
+msgstr "Временска зона"
+
+msgid ""
+"To view the contents of a message, click on the message's subject.  You'll "
+"be taken to the Message screen."
+msgstr "За приказ на содржината на пораката, кликнете на темата на пораката."
+
+msgid "To"
+msgstr "До"
+
+msgid "To:"
+msgstr "До:"
+
+#, c-format
+msgid "Total Size: %s KB"
+msgstr "Вкупна големина: %s KB"
+
+msgid "Trash folder:"
+msgstr "Папка Отпадок:"
+
+msgid "Unanswered messages"
+msgstr "Неодговорени пораки"
+
+msgid "Unanswered"
+msgstr "Неодговорени"
+
+msgid "Undelete"
+msgstr "Поврати"
+
+msgid "Undisclosed Recipients"
+msgstr "Непознат примател"
+
+msgid "Unnamed"
+msgstr "Неименуван"
+
+msgid "Unread"
+msgstr "Непрочитана"
+
+msgid "Unseen Messages"
+msgstr "Непрочитани пораки"
+
+msgid "Unseen"
+msgstr "Непрочитани"
+
+msgid "Unsubscribe from Folder(s)"
+msgstr "Сокриј папка(и)"
+
+msgid "Use Ctrl/Option+Click to select multiple fields"
+msgstr "Користете Use Ctrl/Опција+Click за да изберете повеќе полиња"
+
+msgid "Use IMAP folder subscriptions"
+msgstr "Користете папки превземени од IMAP"
+
+msgid "User Preferences"
+msgstr "Кориснички подесувања"
+
+msgid "Username"
+msgstr "Корисничко име"
+
+#, c-format
+msgid "View %s"
+msgstr "Прикажи %s"
+
+msgid "View messages in "
+msgstr "Прикажи пораки во "
+
+msgid "Warning"
+msgstr "Внимание"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Добредојдовте во %s"
+
+msgid ""
+"Welcome to the Internet Message Program (IMP)!  Through IMP's intuitive "
+"interface, you'll be able to access and manage your IMAP mail account using "
+"the simplicity of a standard web browser."
+msgstr ""
+"Добредојдовте во Internet Message Program (IMP)!  Преку интуитивниот IMP"
+"изглед, можете да пристапите и да го уредите вашата IMAP сервис"
+"користејќи ја едноставноста на стандарден интернет претражувач."
+
+msgid "Welcome"
+msgstr "Добредојде"
+
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted."
+msgstr "При бришење на пораки, премести ги во папката Отпадок наместо да ги означуваш како избришани."
+
+msgid "Wrap text at this many characters."
+msgstr "Подреди го текстот на волку знаци."
+
+msgid "Yes"
+msgstr "Да"
+
+msgid "You are attempting to delete the following folders:"
+msgstr "Се обидувате да ги избришете следниве папки:"
+
+msgid "You are creating a sub-folder to "
+msgstr "Креирате нова папка во "
+
+msgid ""
+"You are creating a top-level folder.\\nPlease enter the name of the new "
+"folder:\\n"
+msgstr "Креирате папка во највисокото ниво.\\nВнесете име за новата папка.\\n"
+
+msgid "You are renaming the folder: "
+msgstr "Ја реименувате папката: "
+
+msgid ""
+"You can send mail in a variety ways.  You might choose to compose a new "
+"message or perhaps to reply to an existing message.  Whichever method you "
+"choose, however, will open the standard Compose Window."
+msgstr ""
+"Можете да праќате пошта на различни начини.  Можете да изберете да составете "
+"нова порака или можеби да одговорите на постоечка порака.  Кој метод и да го "
+"одберете, ќе ви се отвори стандардниот прозорец Состави."
+
+#, c-format
+msgid "You have %s new messages."
+msgstr "Имате %s нови пораки."
+
+msgid "You have 1 new message."
+msgstr "Имате една нова порака."
+
+#, c-format
+msgid ""
+"You have been logged out of %s. Thank you for using the system. If you wish "
+"to log in again, please use the form below."
+msgstr "Вие се одјавивте од %s. Благодариме што го користевте нашиот систем. Ако сакате повторно да се пријавите, користете ја формата долу."
+
+msgid "You have new mail in the following folders:\\n"
+msgstr "Имате нови пораки во следниве папки:\\n"
+
+msgid "You must first select the attachment(s) to delete."
+msgstr "Изберете прво кој прикачен фајл да се избрише."
+
+msgid "You must first specify the file to attach."
+msgstr "Изберете прво кој фајл да се прикачи."
+
+msgid "You must have at least one recipient."
+msgstr "Мора да внесете барем еден примач."
+
+msgid "You must select a target mailbox first."
+msgstr "Мора прво да селектирате целно поштенско сандаче."
+
+msgid "You must select an identity to be deleted."
+msgstr "Мора да изберете кој идентитет да се избрише."
+
+msgid "You must select at least one message first."
+msgstr "Мора прво да изберете барем една порака."
+
+msgid "You must specify a recipient."
+msgstr "Мора да внесете примач."
+
+#, c-format
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr "Не ја имате превземано папката \"%s\". Ова го врати серверот"
+
+#, c-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr "Не ја имате скриено папката \"%s\". Ова го врати серверот"
+
+#, c-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr "Успешно ја превземавте папката \"%s\"."
+
+#, c-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "Успешно ја сокривте папката \"%s\"."
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "Вашата %s сесија заврши. Пријавете се повторно."
+
+msgid "Your From: address:"
+msgstr "Адреса од која праќате:"
+
+msgid "Your Information"
+msgstr "Ваши информации"
+
+msgid "Your Reply-to: address: <i>(optional)</i>"
+msgstr "Адреса на која ќе ви одговораат: <i>(незадолжително)</i>"
+
+msgid ""
+"Your browser does not support this print option. Press Control/Option + P to "
+"print."
+msgstr "Вашиот претражувач не подржува вакво печатење. Притиснете Control/Опција + P за да печатете."
+
+msgid "Your current time zone:"
+msgstr "Моментална временска зона:"
+
+msgid "Your default identity:"
+msgstr "Ваш стандарден идентитет:"
+
+msgid "Your full name:"
+msgstr "Име и презиме:"
+
+msgid "Your identities:"
+msgstr "Ваши идентитети:"
+
+msgid "Your preferences have been updated."
+msgstr "Вашите подесувања се прифатени и применети."
+
+msgid "Your signature:"
+msgstr "Потпис:"
+
+msgid "[No subject]"
+msgstr "[Без тема]"
+
+msgid "\\nPlease enter the name of the new folder:\\n"
+msgstr "\\nВнесете име на новата папка:\\n"
+
+msgid "add source"
+msgstr "додади извор"
+
+msgid "cannot move past the beginning"
+msgstr "cannot move past the beginning"
+
+msgid "cannot move past the end"
+msgstr "cannot move past the end"
+
+msgid "delete message"
+msgstr "избриши порака"
+
+msgid "move down"
+msgstr "оди доле"
+
+msgid "move message to"
+msgstr "премести порака во"
+
+msgid "move up"
+msgstr "премести горе"
+
+msgid "no folder selected"
+msgstr "не е избрана папка"
+
+msgid "no rule selected"
+msgstr "не е избрано правило"
+
+msgid "no text specified"
+msgstr "не е наведен текст"
+
+msgid "none"
+msgstr "ниедна"
+
+msgid "or"
+msgstr "или"
+
+msgid "or:"
+msgstr "или:"
+
+msgid "please fill in the text and choose a field and an action"
+msgstr "внеси текст и избери поле и акција"
+
+msgid "remove source"
+msgstr "одстрани извор"
+
+msgid "select folder"
+msgstr "избери папка"
+
+msgid "spelling error"
+msgstr "правописна грешка"
+
+msgid "spelling errors"
+msgstr "правописни грешки"
+
+#, c-format
+msgid "where the %s field contains <b>%s</b>"
+msgstr "каде што %s полето содржи <b>%s</b>"
+

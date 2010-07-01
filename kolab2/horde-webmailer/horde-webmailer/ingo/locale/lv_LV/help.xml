@@ -1,0 +1,1511 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Horde: ingo/locale/lv_LV/help.xml,v 1.1.8.4 2009-08-18 22:35:05 jan Exp $ -->
+<help>
+  <entry id="blacklist" md5="74bee567c19947a8c9de526f92137256" state="changed">
+    <title>Melnais saraksts</title>
+    <heading>Melnais saraksts</heading>
+    <para>
+    [Melnais saraksts] ir E-pasta adreðu saraksts, no kurâm saòemtâs vçstules Jûs nevçlaties redzçt savâ pastkastîtç (INBOX).
+    </para>
+<!-- English entry:
+<entry id="blacklist">
+    <title>Blacklist</title>
+    <para>The blacklist is a list of email addresses known to send email that
+    you do not wish to see in your INBOX.</para>
+  </entry>--><!-- English entry:
+<entry id="blacklist">
+    <title>Blacklist</title>
+    <para>The blacklist is a list of email addresses known to send email that
+    you do not wish to see in your INBOX.</para>
+  </entry>--><!-- English entry:
+<entry id="blacklist">
+    <title>Blacklist</title>
+    <para>The blacklist is a list of email addresses known to send email that
+    you do not wish to see in your INBOX.</para>
+  </entry>--><!-- English entry:
+<entry id="blacklist">
+    <title>Blacklist</title>
+    <para>The blacklist is a list of email addresses known to send email that
+    you do not wish to see in your INBOX.</para>
+  </entry>--><!-- English entry:
+<entry id="blacklist">
+    <title>Blacklist</title>
+    <para>The blacklist is a list of email addresses known to send email that
+    you do not wish to see in your INBOX.</para>
+  </entry>--></entry>
+  <entry id="blacklist-action" md5="d11ed07f0671f3a374d3307ecd71b6f2" state="changed">
+    <title> Melnais saraksts: Darbîba</title>
+    <para>
+    Ðî darbîba nosaka rîcîbu, ja ir saòemta vçstule no Melnajâ sarakstâ uzskaitîtajiem nosûtîtâjiem. Iespçjamâs darbîbas ir [Dzçst] vai [Pârcelt uz]. Ja ir izvçlçts [Dzçst], vçstules tiks izdzçstas vçl pirms nonâkðanas Jûsu INBOX. Ja Jûsu izvçle ir [Pârvietot uz], ienâkusî vçstule tiks pârvietota uz norâdîto mapi.
+    </para>
+<!-- English entry:
+<entry id="blacklist-action">
+    <title>Blacklist: Action</title>
+    <para>This action defines what to do when a message from a blocked sender
+    is sent to you. The possible values are "delete" or "move to folder". If
+    "delete" is selected, the messages will be discarded before ever being
+    stored in your Inbox. If "move to folder" is selected, they will be
+    delivered to the selected folder.</para>
+  </entry>--><!-- English entry:
+<entry id="blacklist-action">
+    <title>Blacklist: Action</title>
+    <para>This action defines what to do when a message from a blocked sender
+    is sent to you. The possible values are "delete" or "move to folder". If
+    "delete" is selected, the messages will be discarded before ever being
+    stored in your Inbox. If "move to folder" is selected, they will be
+    delivered to the selected folder.</para>
+  </entry>--><!-- English entry:
+<entry id="blacklist-action">
+    <title>Blacklist: Action</title>
+    <para>This action defines what to do when a message from a blocked sender
+    is sent to you. The possible values are "delete" or "move to folder". If
+    "delete" is selected, the messages will be discarded before ever being
+    stored in your Inbox. If "move to folder" is selected, they will be
+    delivered to the selected folder.</para>
+  </entry>--><!-- English entry:
+<entry id="blacklist-action">
+    <title>Blacklist: Action</title>
+    <para>This action defines what to do when a message from a blocked sender
+    is sent to you. The possible values are "delete" or "move to folder". If
+    "delete" is selected, the messages will be discarded before ever being
+    stored in your Inbox. If "move to folder" is selected, they will be
+    delivered to the selected folder.</para>
+  </entry>--><!-- English entry:
+<entry id="blacklist-action">
+    <title>Blacklist: Action</title>
+    <para>This action defines what to do when a message from a blocked sender
+    is sent to you. The possible values are "delete" or "move to folder". If
+    "delete" is selected, the messages will be discarded before ever being
+    stored in your Inbox. If "move to folder" is selected, they will be
+    delivered to the selected folder.</para>
+  </entry>--></entry>
+  <entry id="blacklist-addresses" md5="1cbd05d7cb651fdbccc9181be6a789d8" state="changed">
+    <title>Melnais saraksts: Adreses</title>
+    <para>
+    E-pasta adreses, no kurâm Jûs noteikti nevçlaties saòemt vçstules. Katru adresi ir jâievada atseviðíâ rindâ.
+    </para>
+<!-- English entry:
+<entry id="blacklist-addresses">
+    <title>Blacklist: Addresses</title>
+    <para>The list of addresses to block. Each address should be entered on a
+    separate line.</para>
+  </entry>--><!-- English entry:
+<entry id="blacklist-addresses">
+    <title>Blacklist: Addresses</title>
+    <para>The list of addresses to block. Each address should be entered on a
+    separate line.</para>
+  </entry>--><!-- English entry:
+<entry id="blacklist-addresses">
+    <title>Blacklist: Addresses</title>
+    <para>The list of addresses to block. Each address should be entered on a
+    separate line.</para>
+  </entry>--><!-- English entry:
+<entry id="blacklist-addresses">
+    <title>Blacklist: Addresses</title>
+    <para>The list of addresses to block. Each address should be entered on a
+    separate line.</para>
+  </entry>--><!-- English entry:
+<entry id="blacklist-addresses">
+    <title>Blacklist: Addresses</title>
+    <para>The list of addresses to block. Each address should be entered on a
+    separate line.</para>
+  </entry>--></entry>
+  <entry id="filters_rules" md5="6683bfda1a3eb627ac02b4ec1c486c87" state="changed">
+    <title>Likumi: Filtru likumi</title>
+    <para>
+    Tas ir galvenais likumu ekrâns. No ðejienes Jûs varat radît jaunu likumu, uzklikðíinot pogai "Jauns likums"; mainît pielietojamo filtru secîbu, uzklikðíinot bultiòu ikonâm stabiòâ "Pârvietot"; ieslçgt vai izslçgt atseviðíus likumus, uzklikðíinot ikonai stabiòâ "Ieslçgts"; labot atseviðíus likumus, uzklikðíinot ikonai stabiòâ "Labot" vai likuma nosaukumam.
+    </para>
+<!-- English entry:
+<entry id="filters_rules">
+    <title>Rules: Filter Rules</title>
+    <para>This is the main rules screen. From here you can create new rules by
+    clicking on the "New Rule" button; rearrange the rule order by clicking on
+    the up and down arrows in the "Move" column; enable and disable specific
+    rules by clicking on the icon in the "Enabled" column; and edit individual
+    rules by clicking on the icon in the "Edit" column or on the rule
+    name.</para>
+    <para>
+      <tip>Please note, that the rules are executed in the order displayed
+      here. For example, if an email is deleted by the blacklist, the following
+      rules will not have any influence on this email.</tip>
+    </para>
+  </entry>--><!-- English entry:
+<entry id="filters_rules">
+    <title>Rules: Filter Rules</title>
+    <para>This is the main rules screen. From here you can create new rules by
+    clicking on the "New Rule" button; rearrange the rule order by clicking on
+    the up and down arrows or entering new rule positions in the "Move" column;
+    enable and disable specific rules by clicking on the icon in the "Enabled"
+    column; and edit individual rules by clicking on the icon in the "Edit"
+    column or on the rule name.</para>
+    <para>
+      <tip>Please note, that the rules are executed in the order displayed
+      here. For example, if an email is deleted by the blacklist, the following
+      rules will not have any influence on this email.</tip>
+    </para>
+  </entry>--><!-- English entry:
+<entry id="filters_rules">
+    <title>Rules: Filter Rules</title>
+    <para>This is the main rules screen. From here you can create new rules by
+    clicking on the "New Rule" button; rearrange the rule order by clicking on
+    the up and down arrows or entering new rule positions in the "Move" column;
+    enable and disable specific rules by clicking on the icon in the "Enabled"
+    column; and edit individual rules by clicking on the icon in the "Edit"
+    column or on the rule name.</para>
+    <para>
+      <tip>Please note, that the rules are executed in the order displayed
+      here. For example, if an email is deleted by the blacklist, the following
+      rules will not have any influence on this email.</tip>
+    </para>
+  </entry>--><!-- English entry:
+<entry id="filters_rules">
+    <title>Rules: Filter Rules</title>
+    <para>This is the main rules screen. From here you can create new rules by
+    clicking on the "New Rule" button; rearrange the rule order by clicking on
+    the up and down arrows or entering new rule positions in the "Move" column;
+    enable and disable specific rules by clicking on the icon in the "Enabled"
+    column; and edit individual rules by clicking on the icon in the "Edit"
+    column or on the rule name.</para>
+    <para>
+      <tip>Please note, that the rules are executed in the order displayed
+      here. For example, if an email is deleted by the blacklist, the following
+      rules will not have any influence on this email.</tip>
+    </para>
+  </entry>--><!-- English entry:
+<entry id="filters_rules">
+    <title>Rules: Filter Rules</title>
+    <para>This is the main rules screen. From here you can create new rules by
+    clicking on the "New Rule" button; rearrange the rule order by clicking on
+    the up and down arrows or entering new rule positions in the "Move" column;
+    enable and disable specific rules by clicking on the icon in the "Enabled"
+    column; and edit individual rules by clicking on the icon in the "Edit"
+    column or on the rule name.</para>
+    <para>
+      <tip>Please note, that the rules are executed in the order displayed
+      here. For example, if an email is deleted by the blacklist, the following
+      rules will not have any influence on this email.</tip>
+    </para>
+  </entry>--></entry>
+  <entry id="forward" md5="876cd0cf20642eab9a06d58a2eaad95c" state="changed">
+    <title>Pârsûtît</title>
+    <heading>Pârsûtît</heading>
+    <para>
+    Jûs varat noradît E-pasta adresi(-es), kurp automâtiski pârsûtît jaunpienâkuðâs vçstules.
+    </para>
+<!-- English entry:
+<entry id="forward">
+    <title>Forward</title>
+    <para>You may choose to automatically forward your incoming mail to a
+    number of other mail addresses.</para>
+  </entry>--><!-- English entry:
+<entry id="forward">
+    <title>Forward</title>
+    <para>You may choose to automatically forward your incoming mail to a
+    number of other mail addresses.</para>
+  </entry>--><!-- English entry:
+<entry id="forward">
+    <title>Forward</title>
+    <para>You may choose to automatically forward your incoming mail to a
+    number of other mail addresses.</para>
+  </entry>--><!-- English entry:
+<entry id="forward">
+    <title>Forward</title>
+    <para>You may choose to automatically forward your incoming mail to a
+    number of other mail addresses.</para>
+  </entry>--><!-- English entry:
+<entry id="forward">
+    <title>Forward</title>
+    <para>You may choose to automatically forward your incoming mail to a
+    number of other mail addresses.</para>
+  </entry>--></entry>
+  <entry id="forward-addresses" md5="ab4033b99005075d3d099ca8c879c7d1" state="changed">
+    <title>Pârsûtît: Adreses</title>
+    <heading>Pârsûtît: Adreses</heading>
+    <para>
+    Jûs varat izvçlçties pârsûtît jaunpienâkuðâs vçstules uz citu E-pasta adresi. Jûs varat norâdît neierobeþotu adreðu skaitu, katru adresi ievadot atseviðíâ rindâ.
+    </para>
+<!-- English entry:
+<entry id="forward-addresses">
+    <title>Forward: Addresses</title>
+    <para>You may choose to have your incoming mail redirected to another
+    account. You may enter as many addresses as you like. Enter each address on
+    a new line.</para>
+  </entry>--><!-- English entry:
+<entry id="forward-addresses">
+    <title>Forward: Addresses</title>
+    <para>You may choose to have your incoming mail redirected to another
+    account. You may enter as many addresses as you like. Enter each address on
+    a new line.</para>
+  </entry>--><!-- English entry:
+<entry id="forward-addresses">
+    <title>Forward: Addresses</title>
+    <para>You may choose to have your incoming mail redirected to another
+    account. You may enter as many addresses as you like. Enter each address on
+    a new line.</para>
+  </entry>--><!-- English entry:
+<entry id="forward-addresses">
+    <title>Forward: Addresses</title>
+    <para>You may choose to have your incoming mail redirected to another
+    account. You may enter as many addresses as you like. Enter each address on
+    a new line.</para>
+  </entry>--><!-- English entry:
+<entry id="forward-addresses">
+    <title>Forward: Addresses</title>
+    <para>You may choose to have your incoming mail redirected to another
+    account. You may enter as many addresses as you like. Enter each address on
+    a new line.</para>
+  </entry>--></entry>
+  <entry id="forward-keepcopy" md5="3b755b6dc934d2a5e75c74d577ae3a8f" state="changed">
+    <title>Pârsûtît: Saglabât kopiju</title>
+    <heading>Pârsûtît: Saglabât kopiju</heading>
+    <para>
+    Ja Jûs izvçlçsieties ðo opciju, jaunpienâkuðo vçstuïu kopijas tiks saglabâtas ðajâ pastkastîtç, kâ arî tiks pârsûtîtas uz Jûsu norâdîtajâm pârsûtîðanas adresçm.
+    </para>
+<!-- English entry:
+<entry id="forward-keepcopy">
+    <title>Forward: Keep Copy</title>
+    <para>If you select this option, a copy of your incoming messages will be
+    saved in this account as well as being sent to the addresses to which you
+    have your mail forwarded.</para>
+  </entry>--><!-- English entry:
+<entry id="forward-keepcopy">
+    <title>Forward: Keep Copy</title>
+    <para>If you select this option, a copy of your incoming messages will be
+    saved in this account as well as being sent to the addresses to which you
+    have your mail forwarded.</para>
+  </entry>--><!-- English entry:
+<entry id="forward-keepcopy">
+    <title>Forward: Keep Copy</title>
+    <para>If you select this option, a copy of your incoming messages will be
+    saved in this account as well as being sent to the addresses to which you
+    have your mail forwarded.</para>
+  </entry>--><!-- English entry:
+<entry id="forward-keepcopy">
+    <title>Forward: Keep Copy</title>
+    <para>If you select this option, a copy of your incoming messages will be
+    saved in this account as well as being sent to the addresses to which you
+    have your mail forwarded.</para>
+  </entry>--><!-- English entry:
+<entry id="forward-keepcopy">
+    <title>Forward: Keep Copy</title>
+    <para>If you select this option, a copy of your incoming messages will be
+    saved in this account as well as being sent to the addresses to which you
+    have your mail forwarded.</para>
+  </entry>--></entry>
+  <entry id="pref-show_filter_msg" md5="8ae1c08eeabece935b2b4f212c42361a" state="changed">
+    <title>Izvçle: Râdît detalizçtus filtru statusa paziòojumus?</title>
+    <para>
+    Ja tiek lietots IMAP filtrçðanas dzinis, ðî izvçle nosaka, cik pïâpîgs ir filtrçðanas process. Ja ir uzstâdîts "Jâ", katra caur filtriem izgâjusî vçstule izsauks uz ekrâna atseviðíu informatîvo paziòojumu uzreiz pçc vçstules apstrâdes. Ja ir uzstâdîts "Nç", tiks parâdîts tikai filtru darbîbas kopsavilkums.
+    </para>
+<!-- English entry:
+<entry id="pref-show_filter_msg">
+    <title>Preference: Show detailed filter status messages?</title>
+    <para>If using the IMAP filtering driver, this preference controls how
+    verbose the filtering process is. If set to yes, every message filtered
+    will result in a separate notification message output to the screen
+    immediately after the message is processed. If set to no, only a summary of
+    filter actions will be output to the screen.</para>
+  </entry>--><!-- English entry:
+<entry id="pref-show_filter_msg">
+    <title>Preference: Show detailed filter status messages?</title>
+    <para>If using the IMAP filtering driver, this preference controls how
+    verbose the filtering process is. If set to yes, every message filtered
+    will result in a separate notification message output to the screen
+    immediately after the message is processed. If set to no, only a summary of
+    filter actions will be output to the screen.</para>
+  </entry>--><!-- English entry:
+<entry id="pref-show_filter_msg">
+    <title>Preference: Show detailed filter status messages?</title>
+    <para>If using the IMAP filtering driver, this preference controls how
+    verbose the filtering process is. If set to yes, every message filtered
+    will result in a separate notification message output to the screen
+    immediately after the message is processed. If set to no, only a summary of
+    filter actions will be output to the screen.</para>
+  </entry>--><!-- English entry:
+<entry id="pref-show_filter_msg">
+    <title>Preference: Show detailed filter status messages?</title>
+    <para>If using the IMAP filtering driver, this preference controls how
+    verbose the filtering process is. If set to yes, every message filtered
+    will result in a separate notification message output to the screen
+    immediately after the message is processed. If set to no, only a summary of
+    filter actions will be output to the screen.</para>
+  </entry>--><!-- English entry:
+<entry id="pref-show_filter_msg">
+    <title>Preference: Show detailed filter status messages?</title>
+    <para>If using the IMAP filtering driver, this preference controls how
+    verbose the filtering process is. If set to yes, every message filtered
+    will result in a separate notification message output to the screen
+    immediately after the message is processed. If set to no, only a summary of
+    filter actions will be output to the screen.</para>
+  </entry>--></entry>
+  <entry id="pref-filter_seen" md5="d8ed2a21acac08d50d0c0e2e27ae5d54" state="changed">
+    <title>Izvçle: Filtrçt tikai [ne]lasîtâs vçstules?</title>
+    <para>
+    Ðî izvçle nosaka, kad IMAP filtrçðanas dzinis apstrâdâs INBOX esoðâs vçstules. Jûs varat apstrâdât visas INBOX esoðâs vçstules vai TIKAI tâs, kas atzîmçtas kâ nelasîtas vai arî TIKAI tâs, kas atzîmçtas kâ lasîtas.
+    </para>
+<!-- English entry:
+<entry id="pref-filter_seen">
+    <title>Preference: Filter only [un]seen messages?</title>
+    <para>This preference identifies when the IMAP filtering driver will
+    attempt to apply rules to the INBOX. You can either apply filters to all
+    messages, apply filters ONLY to messages that are marked unseen, or apply
+    filters ONLY to message that have been marked seen.</para>
+  </entry>--><!-- English entry:
+<entry id="pref-filter_seen">
+    <title>Preference: Filter only [un]seen messages?</title>
+    <para>This preference identifies when the IMAP filtering driver will
+    attempt to apply rules to the INBOX. You can either apply filters to all
+    messages, apply filters ONLY to messages that are marked unseen, or apply
+    filters ONLY to message that have been marked seen.</para>
+  </entry>--><!-- English entry:
+<entry id="pref-filter_seen">
+    <title>Preference: Filter only [un]seen messages?</title>
+    <para>This preference identifies when the IMAP filtering driver will
+    attempt to apply rules to the INBOX. You can either apply filters to all
+    messages, apply filters ONLY to messages that are marked unseen, or apply
+    filters ONLY to message that have been marked seen.</para>
+  </entry>--><!-- English entry:
+<entry id="pref-filter_seen">
+    <title>Preference: Filter only [un]seen messages?</title>
+    <para>This preference identifies when the IMAP filtering driver will
+    attempt to apply rules to the INBOX. You can either apply filters to all
+    messages, apply filters ONLY to messages that are marked unseen, or apply
+    filters ONLY to message that have been marked seen.</para>
+  </entry>--><!-- English entry:
+<entry id="pref-filter_seen">
+    <title>Preference: Filter only [un]seen messages?</title>
+    <para>This preference identifies when the IMAP filtering driver will
+    attempt to apply rules to the INBOX. You can either apply filters to all
+    messages, apply filters ONLY to messages that are marked unseen, or apply
+    filters ONLY to message that have been marked seen.</para>
+  </entry>--></entry>
+  <entry id="rule" md5="70b8b9599c0a68a262f01fbd71c4dd7a" state="changed">
+    <title>Filtra likumi</title>
+    <heading>Filtra likumi</heading>
+    <para>
+    Likums ir Jûsu pasta filtru uzbûves stûrakmens. Tas sastâv no viena vai vairâkiem nosacîjumiem un vienas vai vairâkâm darbîbâm. Kad jums pienâk jauna vçstule, tâ tiek apstrâdâta atbilstoði Jûsu filtru nosacîjumiem. Ja tiek konstatçta atbilstîba filtra nosacîjumiem, vçstule tiek apstrâdâta atbilstoði likumâ noteiktajâm darbîbâm. Filtri ir ïoti noderîgi, lai atbrîvotos no nevçlamâm vçstulçm vai organizçtu Jûsu pastkastîti, uzglabâjot vçstules tematiskâs mapçs.
+    </para>
+<!-- English entry:
+<entry id="rule">
+    <title>Filter Rule</title>
+    <para>A rule is the basic building block of your mail filters, it consists
+    of one or more conditions and one or more actions. When a message is sent
+    to you, it is processed through the conditions of your filter rules, if the
+    conditions that you specify are met, then the actions that you specify will
+    be performed on that message. Filters can be very useful for automatically
+    deleting unwanted mail, or making your mail account more managable by
+    storing related messages into different folders.</para>
+  </entry>--><!-- English entry:
+<entry id="rule">
+    <title>Filter Rule</title>
+    <para>A rule is the basic building block of your mail filters, it consists
+    of one or more conditions and one or more actions. When a message is sent
+    to you, it is processed through the conditions of your filter rules, if the
+    conditions that you specify are met, then the actions that you specify will
+    be performed on that message. Filters can be very useful for automatically
+    deleting unwanted mail, or making your mail account more managable by
+    storing related messages into different folders.</para>
+  </entry>--><!-- English entry:
+<entry id="rule">
+    <title>Filter Rule</title>
+    <para>A rule is the basic building block of your mail filters, it consists
+    of one or more conditions and one or more actions. When a message is sent
+    to you, it is processed through the conditions of your filter rules, if the
+    conditions that you specify are met, then the actions that you specify will
+    be performed on that message. Filters can be very useful for automatically
+    deleting unwanted mail, or making your mail account more managable by
+    storing related messages into different folders.</para>
+  </entry>--><!-- English entry:
+<entry id="rule">
+    <title>Filter Rule</title>
+    <para>A rule is the basic building block of your mail filters, it consists
+    of one or more conditions and one or more actions. When a message is sent
+    to you, it is processed through the conditions of your filter rules, if the
+    conditions that you specify are met, then the actions that you specify will
+    be performed on that message. Filters can be very useful for automatically
+    deleting unwanted mail, or making your mail account more managable by
+    storing related messages into different folders.</para>
+  </entry>--><!-- English entry:
+<entry id="rule">
+    <title>Filter Rule</title>
+    <para>A rule is the basic building block of your mail filters, it consists
+    of one or more conditions and one or more actions. When a message is sent
+    to you, it is processed through the conditions of your filter rules, if the
+    conditions that you specify are met, then the actions that you specify will
+    be performed on that message. Filters can be very useful for automatically
+    deleting unwanted mail, or making your mail account more managable by
+    storing related messages into different folders.</para>
+  </entry>--></entry>
+  <entry id="rule-action" md5="774acc549f6ddfd52871f957de2deee5" state="changed">
+    <title>Filtra likums: Darbîba</title>
+    <para>
+    Ir iespçjamas vairâkas darbîbas, ja pienâkusî vçstule atbilst filtra likuma nosacîjumiem. Ievçrojiet, ka visas zemâk uzskaitîtâs darbîbas var nebût Jums pieejamas, darbîbu sarakstâ parâdîsies tikai sistçmas filtrçjoðâs programmatûras atbalstîtâs.
+    </para>
+    <heading>Nogâdât manâ INBOX</heading>
+    <para>
+    Vçstule tiks saglabâta Jûsu INBOX. Tâ ir noklusçtâ opcija.
+    </para>
+    <heading>Nogâdât ðajâ mapç</heading>
+    <para>
+    Vçstule tiks nogâdâta norâdîtajâ mapç.
+    </para>
+    <heading>Atmest vçstuli</heading>
+    <para>
+    Vçstule tiks klusîtçm izdzçsta. Nedz Jûs, nedz nosûtîtâjs nesaòems paziòojumu par notikuðo.
+    </para>
+    <heading>Pâradresçt vçstuli</heading>
+    <para>
+    Vçstule tiks pârsûtîta uz Jûsu norâdîto E-pasta adresi, nesaglabâjot vçstules kopiju Jûsu pastkastîtç.
+    </para>
+    <heading>Piegâdât manâ INBOX un pâradresçt</heading>
+    <para>
+    Vçstule tiks pârsûtîta uz Jûsu norâdîto E-pasta adresi, saglabâjot vçstules kopiju Jûsu pastkastîtç.
+    </para>
+    <heading>Noraidît vçstuli ar pamatojumu</heading>
+    <para>
+    Oriìinâlâ vçstule tiks klusîtçm izdzçsta, nosûtot tâs autoram jaunu vçstuli ar Jûsu norâdîto tekstu.
+    </para>
+<!-- English entry:
+<entry id="rule-action">
+    <title>Filter Rule: Action</title>
+    <para>These are the possible actions to take if an incoming message matches
+    the specified conditions. Note that all of these options may not be
+    available to you - only the options that work with the underlying filtering
+    software will be shown.</para>
+    <heading>Deliver this message into my INBOX</heading>
+    <para>The message will be saved in your INBOX. This is the default
+    option.</para>
+    <heading>Deliver to this mailbox</heading>
+    <para>The message will be delivered to the specified folder.</para>
+    <heading>Discard this message</heading>
+    <para>The message will be silently deleted. Neither you nor the sender will
+    receive notification that this has happened.</para>
+    <heading>Redirect this message to</heading>
+    <para>The message will be sent to the email address that you specify. No
+    copy of the message will remain in this account.</para>
+    <heading>Deliver to my INBOX and redirect to</heading>
+    <para>The message will be sent to the email address that you specify, and a
+    copy of the message will remain in your INBOX.</para>
+    <heading>Reject this message with reason</heading>
+    <para>The original message will be discarded, and a new message will be
+    sent to the sender with the text that you specify.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-action">
+    <title>Filter Rule: Action</title>
+    <para>These are the possible actions to take if an incoming message matches
+    the specified conditions. Note that all of these options may not be
+    available to you - only the options that work with the underlying filtering
+    software will be shown.</para>
+    <heading>Deliver this message into my INBOX</heading>
+    <para>The message will be saved in your INBOX. This is the default
+    option.</para>
+    <heading>Deliver to this mailbox</heading>
+    <para>The message will be delivered to the specified folder.</para>
+    <heading>Discard this message</heading>
+    <para>The message will be silently deleted. Neither you nor the sender will
+    receive notification that this has happened.</para>
+    <heading>Redirect this message to</heading>
+    <para>The message will be sent to the email address that you specify. No
+    copy of the message will remain in this account.</para>
+    <heading>Deliver to my INBOX and redirect to</heading>
+    <para>The message will be sent to the email address that you specify, and a
+    copy of the message will remain in your INBOX.</para>
+    <heading>Reject this message with reason</heading>
+    <para>The original message will be discarded, and a new message will be
+    sent to the sender with the text that you specify.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-action">
+    <title>Filter Rule: Action</title>
+    <para>These are the possible actions to take if an incoming message matches
+    the specified conditions. Note that all of these options may not be
+    available to you - only the options that work with the underlying filtering
+    software will be shown.</para>
+    <heading>Deliver this message into my INBOX</heading>
+    <para>The message will be saved in your INBOX. This is the default
+    option.</para>
+    <heading>Deliver to this mailbox</heading>
+    <para>The message will be delivered to the specified folder.</para>
+    <heading>Discard this message</heading>
+    <para>The message will be silently deleted. Neither you nor the sender will
+    receive notification that this has happened.</para>
+    <heading>Redirect this message to</heading>
+    <para>The message will be sent to the email address that you specify. No
+    copy of the message will remain in this account.</para>
+    <heading>Deliver to my INBOX and redirect to</heading>
+    <para>The message will be sent to the email address that you specify, and a
+    copy of the message will remain in your INBOX.</para>
+    <heading>Reject this message with reason</heading>
+    <para>The original message will be discarded, and a new message will be
+    sent to the sender with the text that you specify.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-action">
+    <title>Filter Rule: Action</title>
+    <para>These are the possible actions to take if an incoming message matches
+    the specified conditions. Note that all of these options may not be
+    available to you - only the options that work with the underlying filtering
+    software will be shown.</para>
+    <heading>Deliver this message into my INBOX</heading>
+    <para>The message will be saved in your INBOX. This is the default
+    option.</para>
+    <heading>Deliver to this mailbox</heading>
+    <para>The message will be delivered to the specified folder.</para>
+    <heading>Discard this message</heading>
+    <para>The message will be silently deleted. Neither you nor the sender will
+    receive notification that this has happened.</para>
+    <heading>Redirect this message to</heading>
+    <para>The message will be sent to the email address that you specify. No
+    copy of the message will remain in this account.</para>
+    <heading>Deliver to my INBOX and redirect to</heading>
+    <para>The message will be sent to the email address that you specify, and a
+    copy of the message will remain in your INBOX.</para>
+    <heading>Reject this message with reason</heading>
+    <para>The original message will be discarded, and a new message will be
+    sent to the sender with the text that you specify.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-action">
+    <title>Filter Rule: Action</title>
+    <para>These are the possible actions to take if an incoming message matches
+    the specified conditions. Note that all of these options may not be
+    available to you - only the options that work with the underlying filtering
+    software will be shown.</para>
+    <heading>Deliver this message into my INBOX</heading>
+    <para>The message will be saved in your INBOX. This is the default
+    option.</para>
+    <heading>Deliver to this mailbox</heading>
+    <para>The message will be delivered to the specified folder.</para>
+    <heading>Discard this message</heading>
+    <para>The message will be silently deleted. Neither you nor the sender will
+    receive notification that this has happened.</para>
+    <heading>Redirect this message to</heading>
+    <para>The message will be sent to the email address that you specify. No
+    copy of the message will remain in this account.</para>
+    <heading>Deliver to my INBOX and redirect to</heading>
+    <para>The message will be sent to the email address that you specify, and a
+    copy of the message will remain in your INBOX.</para>
+    <heading>Reject this message with reason</heading>
+    <para>The original message will be discarded, and a new message will be
+    sent to the sender with the text that you specify.</para>
+  </entry>--></entry>
+  <entry id="rule-combine" md5="15a1cee3a778b72560a03aea738c4b28" state="changed">
+    <title>Filtra likums: Kombinçt opcijas</title>
+    <para>
+    Ir iespçjams norâdît vairâkus nosacîjumus viena likuma ietvaros, tos loìiski grupçjot (un/vai). Nav iespçjams radît kompleksus filtrus, izmantojot vienlaicîgi abus loìiskos nosacîjumus.
+    </para>
+    <heading>Un</heading>
+    <para>
+    Ja izvçlçsieties UN, ienâkoðai vçstulei ir jâatbilst visiem norâdîtajiem nosacîjumiem, lai izpildîtos Jûsu norâdîtâs darbîbas. 
+    </para>
+    <heading>Vai</heading>
+    <para>
+    Ja izvçlçsieties VAI, filtrâ norâdîtâs darbîbas tiks izpildîtas, ja tiks konstatçta atbilstîba vismaz vienam filtra nosacîjumam.
+    </para>
+<!-- English entry:
+<entry id="rule-combine">
+    <title>Filter Rule: Combine Options</title>
+    <para>You may define multiple conditions within a single rule. You may
+    group them together logically using "and"/"or". You may not create complex
+    filters containg both types of conditions.</para>
+    <heading>And</heading>
+    <para>If you select AND, an incoming message must match every condition
+    that you specify in order for the actions to be executed.</para>
+    <heading>Or</heading>
+    <para>If you select OR, the specified actions will be executed if at least
+    one of the conditions is met.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-combine">
+    <title>Filter Rule: Combine Options</title>
+    <para>You may define multiple conditions within a single rule. You may
+    group them together logically using "and"/"or". You may not create complex
+    filters containg both types of conditions.</para>
+    <heading>And</heading>
+    <para>If you select AND, an incoming message must match every condition
+    that you specify in order for the actions to be executed.</para>
+    <heading>Or</heading>
+    <para>If you select OR, the specified actions will be executed if at least
+    one of the conditions is met.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-combine">
+    <title>Filter Rule: Combine Options</title>
+    <para>You may define multiple conditions within a single rule. You may
+    group them together logically using "and"/"or". You may not create complex
+    filters containg both types of conditions.</para>
+    <heading>And</heading>
+    <para>If you select AND, an incoming message must match every condition
+    that you specify in order for the actions to be executed.</para>
+    <heading>Or</heading>
+    <para>If you select OR, the specified actions will be executed if at least
+    one of the conditions is met.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-combine">
+    <title>Filter Rule: Combine Options</title>
+    <para>You may define multiple conditions within a single rule. You may
+    group them together logically using "and"/"or". You may not create complex
+    filters containg both types of conditions.</para>
+    <heading>And</heading>
+    <para>If you select AND, an incoming message must match every condition
+    that you specify in order for the actions to be executed.</para>
+    <heading>Or</heading>
+    <para>If you select OR, the specified actions will be executed if at least
+    one of the conditions is met.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-combine">
+    <title>Filter Rule: Combine Options</title>
+    <para>You may define multiple conditions within a single rule. You may
+    group them together logically using "and"/"or". You may not create complex
+    filters containg both types of conditions.</para>
+    <heading>And</heading>
+    <para>If you select AND, an incoming message must match every condition
+    that you specify in order for the actions to be executed.</para>
+    <heading>Or</heading>
+    <para>If you select OR, the specified actions will be executed if at least
+    one of the conditions is met.</para>
+  </entry>--></entry>
+  <entry id="rule-mark" md5="ecabf7aaede106b7dd32a2aee05cee57" state="changed">
+    <title>Filtra likums: Atzîmçt vçstuli</title>
+    <para>
+    Ir iespçjams kâ vienu no filtra darbîbâm norâdît vçstules atzîmçðanu ar vienu vai vairâkiem IMAP karodziòiem. Iespçjamâs vçrtîbas ir Lasîts, Svarîgs, Atbildçts un Dzçsts.
+    </para>
+<!-- English entry:
+<entry id="rule-mark">
+    <title>Filter Rule: Mark Message</title>
+    <para>You may specify marking a message with one or more IMAP flags as one
+    of the actions in a rule. The possible values are Seen, Important,
+    Answered, and Deleted.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-mark">
+    <title>Filter Rule: Mark Message</title>
+    <para>You may specify marking a message with one or more IMAP flags as one
+    of the actions in a rule. The possible values are Seen, Important,
+    Answered, and Deleted.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-mark">
+    <title>Filter Rule: Mark Message</title>
+    <para>You may specify marking a message with one or more IMAP flags as one
+    of the actions in a rule. The possible values are Seen, Flagged For Followup,
+    Answered, and Deleted.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-mark">
+    <title>Filter Rule: Mark Message</title>
+    <para>You may specify marking a message with one or more IMAP flags as one
+    of the actions in a rule. The possible values are Seen, Flagged For Followup,
+    Answered, and Deleted.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-mark">
+    <title>Filter Rule: Mark Message</title>
+    <para>You may specify marking a message with one or more IMAP flags as one
+    of the actions in a rule. The possible values are Seen, Flagged For Followup,
+    Answered, and Deleted.</para>
+  </entry>--></entry>
+  <entry id="rule-matches" md5="2fe0ccfd87fca17aea372e9829ca0e21" state="changed">
+    <title>Filtra likums: Atbilstîbas</title>
+    <para>
+    Ikviens likuma nosacîjums sastâv no 3 komponentiem: pirmais ir pârbaudâmais lauks, otrais - veicamâs salîdzinâðanas veids, treðais - informâcija, atbilstîba kurai ir jâpârbauda.
+    Ir vairâki atðíirîgi veicamâs salîdzinâðanas veidi. Izmantojamie veidi ikvienam laukam ir atkarîgi no lauka tipa un filtrçjoðâs programmatûras spçjâm. Tâdçjâdi, visas zemâk uzskaitîtâs atbilstîbas opcijas var neparâdîties laukam piemçrojamo veidu sarakstâ. </para>
+    <heading>Satur</heading>
+    <para>
+    Tiks uzskatîts par patiesu, ja norâdîtais teksts tiks atrasts jebkur laukâ. Piemçram: user@example bûs patiess joe_user@example.com gadîjumâ.
+    </para>
+    <heading>Nesatur</heading>
+    <para>
+    Tiks uzskatîts par patiesu, ja norâdîtais teksts netiks atrasts jebkur laukâ. Piemçram: user@example bûs patiess user_joe@example.com gadîjumâ.
+    </para>
+    <heading>Ir</heading>
+    <para>
+    Tiks uzskatîts par patiesu, ja norâdîtais teksts precîzi atbildîs lauka saturam. Piemçram: user@example.com ir patiess tikai user@example.com gadîjumâ.
+    </para>
+    <heading>Nav</heading>
+    <para>
+    Tiks uzskatîts par patiesu, ja norâdîtais teksts precîzi neatbildîs lauka saturam. Piemçram: user@example nav user@example.com.
+    </para>
+    <heading>Sâkas ar</heading>
+    <para>
+    Tiks uzskatîts par patiesu, ja norâdîtais teksts atradîsies lauka sâkumâ. Piemçram: user@example ir patiess user@example.com gadîjumâ.
+    </para>
+    <heading>Nesâkas ar</heading>
+    <para>
+    Tiks uzskatîts par patiesu, ja norâdîtais teksts neatradîsies lauka sâkumâ. Piemçram: @example.com ir patiess user@example.com gadîjumâ.
+    </para>
+    <heading>Beidzas ar</heading>
+    <para>
+    Tiks uzskatîts par patiesu, ja norâdîtais teksts atradîsies lauka beigâs. Piemçram: @example.com ir patiess user@example.com gadîjumâ.
+    </para>
+    <heading>Nebeidzas ar</heading>
+    <para>
+    Tiks uzskatîts par patiesu, ja norâdîtais teksts neatradîsies lauka beigâs. Piemçram: @horde.org ir patiess user@example.com gadîjumâ.
+    </para>
+    <heading>Eksistç</heading>
+    <para>
+    Tiks uzskatîts par patiesu, ja norâdîtâ galvene (header) vçstulç eksistç, neatkarîgi no tâ satura.
+    </para>
+    <heading>Neeksistç</heading>
+    <para>
+    Tiks uzskatîts par patiesu, ja norâdîtâ galvene (header) vçstulç neeksistç.
+    </para>
+    <heading>Regex</heading>
+    <para>
+    Regex ïauj lietot kompleksas POSIX savietojamas loìiskâs izteiksmes vçstuïu galveòu salîdzinâðanai. Piemçram: "Received from [*\.*\.*\.*] by (hosta|hostb).example.com*" atbilst "Received from [172.16.100.1] by hosta.example.com on Tuesday"
+    </para>
+    <heading>Atbilstîba</heading>
+    <para>
+    [Atbilstîba] ir lîdzîga [Satur], izòemot iespçju lietot "*" un "?" kâ aizstâjçjzîmes. "*" aizstâj jebkuru zîmju skaitu, "?" aizvieto tikai vienu zîmi. Piemçram, "*user?@example.com" atbildîs gan "user1@example.com" gan "otheruser2@example.com"
+    </para>
+    <heading>Neatbilst</heading>
+    <para>
+    [Neatbilst] ir lîdzîgs [Atbilst], tikai tas iegûs noliedzoðu vçrtîbu, ja norâdîtais teksts atbildîs galvenes lauka saturam.
+    </para>
+    <heading>Mazâks</heading>
+    <para>
+    Ðî pârbaude ïauj salîdzinât Jûsu norâdîto skaitlisko lielumu ar vçrtîbu vçstules galvenes laukâ.
+    </para>
+    <heading>Mazâks vai vienâds</heading>
+    <para>
+    Ðî pârbaude ïauj salîdzinât Jûsu norâdîto skaitlisko lielumu ar vçrtîbu vçstules galvenes laukâ.
+    </para>
+    <heading>Vienâds</heading>
+    <para>
+    Ðî pârbaude ïauj salîdzinât Jûsu norâdîto skaitlisko lielumu ar vçrtîbu vçstules galvenes laukâ.
+    </para>
+    <heading>Lielâks vai vienâds</heading>
+    <para>
+    Ðî pârbaude ïauj salîdzinât Jûsu norâdîto skaitlisko lielumu ar vçrtîbu vçstules galvenes laukâ.
+    </para>
+    <heading>Lielâks</heading>
+    <para>
+    Ðî pârbaude ïauj salîdzinât Jûsu norâdîto skaitlisko lielumu ar vçrtîbu vçstules galvenes laukâ.
+    </para>
+<!-- English entry:
+<entry id="rule-matches">
+    <title>Filter Rule: Matches</title>
+    <para>There are 3 components to each condition in a rule. The first is the
+    field to examine. The second is the type of comparison to perform. The
+    third is the value to which the field should be compared. There are a few
+    different types of comparisons that can be performed. The comparisons
+    available for any given field will depend on both the type of the field and
+    what the underlying filtering software can handle. Thus, all potential
+    matching options listed below may not appear for a given field.</para>
+    <heading>Contains</heading>
+    <para>Will be considered to be true if the specified string is found
+    anywhere on the line. Example: user@example would match
+    joe_user@example.com</para>
+    <heading>Doesn't Contain</heading>
+    <para>Will be considered to be true if the specified string is not found
+    anywhere on the line. Example: user@example would not match
+    joe_user@example.com</para>
+    <heading>Is</heading>
+    <para>Will be considered to be true if the specified string matches the
+    line exactly. Example: user@example.com is user@example.com</para>
+    <heading>Isn't</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the line exactly. Example: user@example is not user@example.com</para>
+    <heading>Begins with</heading>
+    <para>Will be considered to be true if the specified string matches the
+    beginning of the line. Example: user@example will match
+    user@example.com</para>
+    <heading>Doesn't begin with</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the beginning of the line. Example: user@example.com will not match
+    user@example</para>
+    <heading>Ends with</heading>
+    <para>Will be considered to be true if the specified string matches the end
+    of the line. Example: example.com will match user@example.com</para>
+    <heading>Doesn't end with</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the end of the line. Example: horde.org will not match
+    user@example.com</para>
+    <heading>Exists</heading>
+    <para>Will be considered to be true if the specified header exists in the
+    message, regardless of what its value is.</para>
+    <heading>Doesn't Exist</heading>
+    <para>Will be considered to be true if the specified header does not exist
+    in the message.</para>
+    <heading>Regex</heading>
+    <para>Regex allows you to use complex POSIX compatible regular expressions
+    to compare against message headers. Example: "Received from [*\.*\.*\.*] by
+    (hosta|hostb).example.com*" would match "Received from [172.16.100.1] by
+    hosta.example.com on Tuesday"</para>
+    <heading>Matches</heading>
+    <para>Matches is similar to contains, with the exception that you may use *
+    and ? as wildcards. An * will match any number of characters, and a ? will
+    match exactly one charater. Example: "*user?@example.com" will match both
+    "user1@example.com" and "otheruser2@example.com"</para>
+    <heading>Doesn't match</heading>
+    <para>Doesn't match is the same as matches except that it will evaluate to
+    false if the specified value matches the string in the message
+    header.</para>
+    <heading>Less than</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Less than or equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Greater than or equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Greater than</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-matches">
+    <title>Filter Rule: Matches</title>
+    <para>There are 3 components to each condition in a rule. The first is the
+    field to examine. The second is the type of comparison to perform. The
+    third is the value to which the field should be compared. There are a few
+    different types of comparisons that can be performed. The comparisons
+    available for any given field will depend on both the type of the field and
+    what the underlying filtering software can handle. Thus, all potential
+    matching options listed below may not appear for a given field.</para>
+    <heading>Contains</heading>
+    <para>Will be considered to be true if the specified string is found
+    anywhere on the line. Example: user@example would match
+    joe_user@example.com</para>
+    <heading>Doesn't Contain</heading>
+    <para>Will be considered to be true if the specified string is not found
+    anywhere on the line. Example: user@example would not match
+    joe_user@example.com</para>
+    <heading>Is</heading>
+    <para>Will be considered to be true if the specified string matches the
+    line exactly. Example: user@example.com is user@example.com</para>
+    <heading>Isn't</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the line exactly. Example: user@example is not user@example.com</para>
+    <heading>Begins with</heading>
+    <para>Will be considered to be true if the specified string matches the
+    beginning of the line. Example: user@example will match
+    user@example.com</para>
+    <heading>Doesn't begin with</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the beginning of the line. Example: user@example.com will not match
+    user@example</para>
+    <heading>Ends with</heading>
+    <para>Will be considered to be true if the specified string matches the end
+    of the line. Example: example.com will match user@example.com</para>
+    <heading>Doesn't end with</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the end of the line. Example: horde.org will not match
+    user@example.com</para>
+    <heading>Exists</heading>
+    <para>Will be considered to be true if the specified header exists in the
+    message, regardless of what its value is.</para>
+    <heading>Doesn't Exist</heading>
+    <para>Will be considered to be true if the specified header does not exist
+    in the message.</para>
+    <heading>Regex</heading>
+    <para>Regex allows you to use complex POSIX compatible regular expressions
+    to compare against message headers. Example: "Received from [*\.*\.*\.*] by
+    (hosta|hostb).example.com*" would match "Received from [172.16.100.1] by
+    hosta.example.com on Tuesday"</para>
+    <heading>Matches</heading>
+    <para>Matches is similar to contains, with the exception that you may use *
+    and ? as wildcards. An * will match any number of characters, and a ? will
+    match exactly one charater. Example: "*user?@example.com" will match both
+    "user1@example.com" and "otheruser2@example.com"</para>
+    <heading>Doesn't match</heading>
+    <para>Doesn't match is the same as matches except that it will evaluate to
+    false if the specified value matches the string in the message
+    header.</para>
+    <heading>Less than</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Less than or equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Greater than or equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Greater than</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-matches">
+    <title>Filter Rule: Matches</title>
+    <para>There are 3 components to each condition in a rule. The first is the
+    field to examine. The second is the type of comparison to perform. The
+    third is the value to which the field should be compared. There are a few
+    different types of comparisons that can be performed. The comparisons
+    available for any given field will depend on both the type of the field and
+    what the underlying filtering software can handle. Thus, all potential
+    matching options listed below may not appear for a given field.</para>
+    <heading>Contains</heading>
+    <para>Will be considered to be true if the specified string is found
+    anywhere on the line. Example: user@example would match
+    joe_user@example.com</para>
+    <heading>Doesn't Contain</heading>
+    <para>Will be considered to be true if the specified string is not found
+    anywhere on the line. Example: user@example would not match
+    joe_user@example.com</para>
+    <heading>Is</heading>
+    <para>Will be considered to be true if the specified string matches the
+    line exactly. Example: user@example.com is user@example.com</para>
+    <heading>Isn't</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the line exactly. Example: user@example is not user@example.com</para>
+    <heading>Begins with</heading>
+    <para>Will be considered to be true if the specified string matches the
+    beginning of the line. Example: user@example will match
+    user@example.com</para>
+    <heading>Doesn't begin with</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the beginning of the line. Example: user@example.com will not match
+    user@example</para>
+    <heading>Ends with</heading>
+    <para>Will be considered to be true if the specified string matches the end
+    of the line. Example: example.com will match user@example.com</para>
+    <heading>Doesn't end with</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the end of the line. Example: horde.org will not match
+    user@example.com</para>
+    <heading>Exists</heading>
+    <para>Will be considered to be true if the specified header exists in the
+    message, regardless of what its value is.</para>
+    <heading>Doesn't Exist</heading>
+    <para>Will be considered to be true if the specified header does not exist
+    in the message.</para>
+    <heading>Regex</heading>
+    <para>Regex allows you to use complex POSIX compatible regular expressions
+    to compare against message headers. Example: "Received from [*\.*\.*\.*] by
+    (hosta|hostb).example.com*" would match "Received from [172.16.100.1] by
+    hosta.example.com on Tuesday"</para>
+    <heading>Matches</heading>
+    <para>Matches is similar to contains, with the exception that you may use *
+    and ? as wildcards. An * will match any number of characters, and a ? will
+    match exactly one charater. Example: "*user?@example.com" will match both
+    "user1@example.com" and "otheruser2@example.com"</para>
+    <heading>Doesn't match</heading>
+    <para>Doesn't match is the same as matches except that it will evaluate to
+    false if the specified value matches the string in the message
+    header.</para>
+    <heading>Less than</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Less than or equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Greater than or equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Greater than</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-matches">
+    <title>Filter Rule: Matches</title>
+    <para>There are 3 components to each condition in a rule. The first is the
+    field to examine. The second is the type of comparison to perform. The
+    third is the value to which the field should be compared. There are a few
+    different types of comparisons that can be performed. The comparisons
+    available for any given field will depend on both the type of the field and
+    what the underlying filtering software can handle. Thus, all potential
+    matching options listed below may not appear for a given field.</para>
+    <heading>Contains</heading>
+    <para>Will be considered to be true if the specified string is found
+    anywhere on the line. Example: user@example would match
+    joe_user@example.com</para>
+    <heading>Doesn't Contain</heading>
+    <para>Will be considered to be true if the specified string is not found
+    anywhere on the line. Example: user@example would not match
+    joe_user@example.com</para>
+    <heading>Is</heading>
+    <para>Will be considered to be true if the specified string matches the
+    line exactly. Example: user@example.com is user@example.com</para>
+    <heading>Isn't</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the line exactly. Example: user@example is not user@example.com</para>
+    <heading>Begins with</heading>
+    <para>Will be considered to be true if the specified string matches the
+    beginning of the line. Example: user@example will match
+    user@example.com</para>
+    <heading>Doesn't begin with</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the beginning of the line. Example: user@example.com will not match
+    user@example</para>
+    <heading>Ends with</heading>
+    <para>Will be considered to be true if the specified string matches the end
+    of the line. Example: example.com will match user@example.com</para>
+    <heading>Doesn't end with</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the end of the line. Example: horde.org will not match
+    user@example.com</para>
+    <heading>Exists</heading>
+    <para>Will be considered to be true if the specified header exists in the
+    message, regardless of what its value is.</para>
+    <heading>Doesn't Exist</heading>
+    <para>Will be considered to be true if the specified header does not exist
+    in the message.</para>
+    <heading>Regex</heading>
+    <para>Regex allows you to use complex POSIX compatible regular expressions
+    to compare against message headers. Example: "Received from [*\.*\.*\.*] by
+    (hosta|hostb).example.com*" would match "Received from [172.16.100.1] by
+    hosta.example.com on Tuesday"</para>
+    <heading>Matches</heading>
+    <para>Matches is similar to contains, with the exception that you may use *
+    and ? as wildcards. An * will match any number of characters, and a ? will
+    match exactly one charater. Example: "*user?@example.com" will match both
+    "user1@example.com" and "otheruser2@example.com"</para>
+    <heading>Doesn't match</heading>
+    <para>Doesn't match is the same as matches except that it will evaluate to
+    false if the specified value matches the string in the message
+    header.</para>
+    <heading>Less than</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Less than or equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Greater than or equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Greater than</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-matches">
+    <title>Filter Rule: Matches</title>
+    <para>There are 3 components to each condition in a rule. The first is the
+    field to examine. The second is the type of comparison to perform. The
+    third is the value to which the field should be compared. There are a few
+    different types of comparisons that can be performed. The comparisons
+    available for any given field will depend on both the type of the field and
+    what the underlying filtering software can handle. Thus, all potential
+    matching options listed below may not appear for a given field.</para>
+    <heading>Contains</heading>
+    <para>Will be considered to be true if the specified string is found
+    anywhere on the line. Example: user@example would match
+    joe_user@example.com</para>
+    <heading>Doesn't Contain</heading>
+    <para>Will be considered to be true if the specified string is not found
+    anywhere on the line. Example: user@example would not match
+    joe_user@example.com</para>
+    <heading>Is</heading>
+    <para>Will be considered to be true if the specified string matches the
+    line exactly. Example: user@example.com is user@example.com</para>
+    <heading>Isn't</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the line exactly. Example: user@example is not user@example.com</para>
+    <heading>Begins with</heading>
+    <para>Will be considered to be true if the specified string matches the
+    beginning of the line. Example: user@example will match
+    user@example.com</para>
+    <heading>Doesn't begin with</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the beginning of the line. Example: user@example.com will not match
+    user@example</para>
+    <heading>Ends with</heading>
+    <para>Will be considered to be true if the specified string matches the end
+    of the line. Example: example.com will match user@example.com</para>
+    <heading>Doesn't end with</heading>
+    <para>Will be considered to be true if the specified string does not match
+    the end of the line. Example: horde.org will not match
+    user@example.com</para>
+    <heading>Exists</heading>
+    <para>Will be considered to be true if the specified header exists in the
+    message, regardless of what its value is.</para>
+    <heading>Doesn't Exist</heading>
+    <para>Will be considered to be true if the specified header does not exist
+    in the message.</para>
+    <heading>Regex</heading>
+    <para>Regex allows you to use complex POSIX compatible regular expressions
+    to compare against message headers. Example: "Received from [*\.*\.*\.*] by
+    (hosta|hostb).example.com*" would match "Received from [172.16.100.1] by
+    hosta.example.com on Tuesday"</para>
+    <heading>Matches</heading>
+    <para>Matches is similar to contains, with the exception that you may use *
+    and ? as wildcards. An * will match any number of characters, and a ? will
+    match exactly one charater. Example: "*user?@example.com" will match both
+    "user1@example.com" and "otheruser2@example.com"</para>
+    <heading>Doesn't match</heading>
+    <para>Doesn't match is the same as matches except that it will evaluate to
+    false if the specified value matches the string in the message
+    header.</para>
+    <heading>Less than</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Less than or equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Greater than or equal to</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Greater than</heading>
+    <para>This is a relational test which will compare the value you specify
+    and the value in the message header numerically.</para>
+    <heading>Limitation with Sieve filtering</heading>
+    <warn>The Sieve specification doesn't support comparions with negative
+    numbers. If you enter a negative value in one of the relational tests,
+    your rule won't work correctly.</warn>
+  </entry>--></entry>
+  <entry id="rule-name" md5="ed8e3b8044b7e1a681b259fa605dc9ee" state="changed">
+    <title>Filtra likums: Nosaukums</title>
+    <para>
+    Filtra likuma nosaukums. To var lietot, lai identificçtu likumu filtru sarakstâ.
+    </para>
+<!-- English entry:
+<entry id="rule-name">
+    <title>Filter Rule: Name</title>
+    <para>This is a descriptive name for a rule. You may use it to identify a
+    rule in your filter listing.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-name">
+    <title>Filter Rule: Name</title>
+    <para>This is a descriptive name for a rule. You may use it to identify a
+    rule in your filter listing.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-name">
+    <title>Filter Rule: Name</title>
+    <para>This is a descriptive name for a rule. You may use it to identify a
+    rule in your filter listing.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-name">
+    <title>Filter Rule: Name</title>
+    <para>This is a descriptive name for a rule. You may use it to identify a
+    rule in your filter listing.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-name">
+    <title>Filter Rule: Name</title>
+    <para>This is a descriptive name for a rule. You may use it to identify a
+    rule in your filter listing.</para>
+  </entry>--></entry>
+  <entry id="rule-stop" md5="042f935941275ddff92d53259118a2d2" state="changed">
+    <title>Filtra likums: Beigt pârbaudi</title>
+    <para>
+    Ja ir atzîmçta ðî opcija un vçstule atbilst ðim likumam, pârçjie filtri netiks pielietoti. 
+    </para>
+<!-- English entry:
+<entry id="rule-stop">
+    <title>Filter Rule: Stop Checking</title>
+    <para>If this option is checked, and a message matches this rule, the
+    remaining filters will not be processed.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-stop">
+    <title>Filter Rule: Stop Checking</title>
+    <para>If this option is checked, and a message matches this rule, the
+    remaining filters will not be processed.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-stop">
+    <title>Filter Rule: Stop Checking</title>
+    <para>If this option is checked, and a message matches this rule, the
+    remaining filters will not be processed.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-stop">
+    <title>Filter Rule: Stop Checking</title>
+    <para>If this option is checked, and a message matches this rule, the
+    remaining filters will not be processed.</para>
+  </entry>--><!-- English entry:
+<entry id="rule-stop">
+    <title>Filter Rule: Stop Checking</title>
+    <para>If this option is checked, and a message matches this rule, the
+    remaining filters will not be processed.</para>
+  </entry>--></entry>
+  <entry id="vacation" md5="330bb029e3e07392bc1c127bb1d9b94c" state="changed">
+    <title>Brîvdienas</title>
+    <heading>Brîvdienas</heading>
+    <para>
+    Brîvdienu ziòas ir automâtiski nosûtîtas atbildes cilvçkiem, kas ir rakstîjuði Jums. Tâs parasti lieto, ja atrodaties ilgstoðâ prombûtnç. 
+    </para>
+<!-- English entry:
+<entry id="vacation">
+    <title>Vacation</title>
+    <para>Vacation messages are automatic responses sent to people when they
+    email you. They are normally used when you are away for a long period of
+    time.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation">
+    <title>Vacation</title>
+    <para>Vacation messages are automatic responses sent to people when they
+    email you. They are normally used when you are away for a long period of
+    time.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation">
+    <title>Vacation</title>
+    <para>Vacation messages are automatic responses sent to people when they
+    email you. They are normally used when you are away for a long period of
+    time.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation">
+    <title>Vacation</title>
+    <para>Vacation messages are automatic responses sent to people when they
+    email you. They are normally used when you are away for a long period of
+    time.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation">
+    <title>Vacation</title>
+    <para>Vacation messages are automatic responses sent to people when they
+    email you. They are normally used when you are away for a long period of
+    time.</para>
+  </entry>--></entry>
+  <entry id="vacation-period" state="new">
+     <title>Vacation Period</title>
+     <para>Vacation messages will only be sent during the period of time that you are on vacation.</para>
+  </entry>
+  <entry id="vacation-bulk" md5="a92a7ab8ec7be826f90e544fe64e9d3a" state="changed">
+    <title>Brîvdienas: Neatbildçt uz vairumvestulçm</title>
+    <para>
+    Ðî opcija ïauj izvairîties no Brîvdienu paziòojuma nosûtîðanu, ja vçstule nâk no vçstkopâm vai arî ir identificçta kâ vairumvçstule (bulk mail).
+    </para>
+<!-- English entry:
+<entry id="vacation-bulk">
+    <title>Vacation: No Respond to Bulk</title>
+    <para>Checking this option will cause vacation responses to not be sent to
+    messages that appear to come from mailing lists or that are marked as bulk
+    mail.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-bulk">
+    <title>Vacation: No Respond to Bulk</title>
+    <para>Checking this option will cause vacation responses to not be sent to
+    messages that appear to come from mailing lists or that are marked as bulk
+    mail.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-bulk">
+    <title>Vacation: No Respond to Bulk</title>
+    <para>Checking this option will cause vacation responses to not be sent to
+    messages that appear to come from mailing lists or that are marked as bulk
+    mail.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-bulk">
+    <title>Vacation: No Respond to Bulk</title>
+    <para>Checking this option will cause vacation responses to not be sent to
+    messages that appear to come from mailing lists or that are marked as bulk
+    mail.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-bulk">
+    <title>Vacation: No Respond to Bulk</title>
+    <para>Checking this option will cause vacation responses to not be sent to
+    messages that appear to come from mailing lists or that are marked as bulk
+    mail.</para>
+  </entry>--></entry>
+  <entry id="vacation-days" md5="2a24527a223d1e1338e4f739826d2e2b" state="changed">
+    <title>Brîvdienas: Atbildes intervâls</title>
+    <para>
+    Nosaka, cik dienas jâgaida lîdz atkârtota Brîvdienu paziòojuma nosûtîðanai adresâtam, kas tâdu jau ir saòçmis.
+    </para>
+<!-- English entry:
+<entry id="vacation-days">
+    <title>Vacation: Reply Interval</title>
+    <para>This is the number of days to wait before sending an autoresponse to
+    an address that has already received one.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-days">
+    <title>Vacation: Reply Interval</title>
+    <para>This is the number of days to wait before sending an autoresponse to
+    an address that has already received one.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-days">
+    <title>Vacation: Reply Interval</title>
+    <para>This is the number of days to wait before sending an autoresponse to
+    an address that has already received one.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-days">
+    <title>Vacation: Reply Interval</title>
+    <para>This is the number of days to wait before sending an autoresponse to
+    an address that has already received one.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-days">
+    <title>Vacation: Reply Interval</title>
+    <para>This is the number of days to wait before sending an autoresponse to
+    an address that has already received one.</para>
+  </entry>--></entry>
+  <entry id="vacation-myemail" md5="23c118b29b383ba5abf70269cc7d7227" state="changed">
+    <title>Brîvdienas: Manas adreses</title>
+    <para>
+    Ja uz Jûsu pastkastîti pienâk vçstules vairâk nekâ vienai adresei, norâdiet tâs ðeit. Piemçram, Jums ir E-pasta adreses user@server1.net un user@server2.com, kurâm adresçtâs vçstules pienâk ðajâ pastkastîtç.
+    </para>
+<!-- English entry:
+<entry id="vacation-myemail">
+    <title>Vacation: My Email Addresses</title>
+    <para>If you have more than one email address coming to this mailbox then
+    specify them here.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-myemail">
+    <title>Vacation: My Email Addresses</title>
+    <para>If you have more than one email address coming to this mailbox then
+    specify them here.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-myemail">
+    <title>Vacation: My Email Addresses</title>
+    <para>If you have more than one email address coming to this mailbox then
+    specify them here.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-myemail">
+    <title>Vacation: My Email Addresses</title>
+    <para>If you have more than one email address coming to this mailbox then
+    specify them here.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-myemail">
+    <title>Vacation: My Email Addresses</title>
+    <para>If you have more than one email address coming to this mailbox then
+    specify them here.</para>
+  </entry>--></entry>
+  <entry id="vacation-noresponse" md5="9e7ace4ab8394b8d6e70bb399bee4022" state="changed">
+    <title>Brîvdienas: Nesûtît</title>
+    <para>
+    Nesûtît Brîvdienu paziòojumu ðeit norâdîtajiem adresâtiem. Katru adresi jânorâda jaunaâ rindâ.
+    </para>
+<!-- English entry:
+<entry id="vacation-noresponse">
+    <title>Vacation: No Responses</title>
+    <para>Don't send the vacation message to these recipients. Each address
+    should be on its own line.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-noresponse">
+    <title>Vacation: No Responses</title>
+    <para>Don't send the vacation message to these recipients. Each address
+    should be on its own line.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-noresponse">
+    <title>Vacation: No Responses</title>
+    <para>Don't send the vacation message to these recipients. Each address
+    should be on its own line.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-noresponse">
+    <title>Vacation: No Responses</title>
+    <para>Don't send the vacation message to these recipients. Each address
+    should be on its own line.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-noresponse">
+    <title>Vacation: No Responses</title>
+    <para>Don't send the vacation message to these recipients. Each address
+    should be on its own line.</para>
+  </entry>--></entry>
+  <entry id="vacation-reason" md5="0c9d695636f409eb71c217e299bf2edc" state="changed">
+    <title>Brîvdienas: Iemesls</title>
+    <para>
+    Ðeit ievadîtais teksts tiks nosûtîts Jûsu Brîvdienu paziòojumâ.
+    </para>
+<!-- English entry:
+<entry id="vacation-reason">
+    <title>Vacation: Vacation Reason</title>
+    <para>This is the text that will be sent in your vacation responses.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-reason">
+    <title>Vacation: Vacation Reason</title>
+    <para>This is the text that will be sent in your vacation responses.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-reason">
+    <title>Vacation: Vacation Reason</title>
+    <para>This is the text that will be sent in your vacation responses.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-reason">
+    <title>Vacation: Vacation Reason</title>
+    <para>This is the text that will be sent in your vacation responses.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-reason">
+    <title>Vacation: Vacation Reason</title>
+    <para>This is the text that will be sent in your vacation responses.</para>
+  </entry>--></entry>
+  <entry id="vacation-subject" md5="7333282ece05b30157750357a399ec09" state="changed">
+    <title>Brîvdienas: Temats</title>
+    <para>
+    Ðeit ievadîtais teksts tiks izmantots kâ Jûsu Brîvdienu paziòojuma temats.
+    </para>
+<!-- English entry:
+<entry id="vacation-subject">
+    <title>Vacation: Vacation Subject</title>
+    <para>This is the subject that will be used for vacation responses.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-subject">
+    <title>Vacation: Vacation Subject</title>
+    <para>This is the subject that will be used for vacation responses.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-subject">
+    <title>Vacation: Vacation Subject</title>
+    <para>This is the subject that will be used for vacation responses.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-subject">
+    <title>Vacation: Vacation Subject</title>
+    <para>This is the subject that will be used for vacation responses.</para>
+  </entry>--><!-- English entry:
+<entry id="vacation-subject">
+    <title>Vacation: Vacation Subject</title>
+    <para>This is the subject that will be used for vacation responses.</para>
+  </entry>--></entry>
+  <entry id="whitelist" md5="cbde7a6e185b29269376d1514163d21f" state="changed">
+    <title>Baltais saraksts</title>
+    <heading>Baltais saraksts</heading>
+    <para>
+    [Baltais saraksts] ir E-pasta adreðu saraksts, no kurâm saòemtâs vçstules Jûs noteikti vçlaties redzçt savâ pastkastîtç (INBOX). Katru adresi ir jâievada atseviðíâ rindâ.
+    </para>
+<!-- English entry:
+<entry id="whitelist">
+    <title>Whitelist</title>
+    <para>The whitelist is a list of (legitimate) email addresses that you
+    always wish to see in your INBOX. Each address should be entered on a
+    separate line.</para>
+  </entry>--><!-- English entry:
+<entry id="whitelist">
+    <title>Whitelist</title>
+    <para>The whitelist is a list of (legitimate) email addresses that you
+    always wish to see in your INBOX. Each address should be entered on a
+    separate line.</para>
+  </entry>--><!-- English entry:
+<entry id="whitelist">
+    <title>Whitelist</title>
+    <para>The whitelist is a list of (legitimate) email addresses that you
+    always wish to see in your INBOX. Each address should be entered on a
+    separate line.</para>
+  </entry>--><!-- English entry:
+<entry id="whitelist">
+    <title>Whitelist</title>
+    <para>The whitelist is a list of (legitimate) email addresses that you
+    always wish to see in your INBOX. Each address should be entered on a
+    separate line.</para>
+  </entry>--><!-- English entry:
+<entry id="whitelist">
+    <title>Whitelist</title>
+    <para>The whitelist is a list of (legitimate) email addresses that you
+    always wish to see in your INBOX. Each address should be entered on a
+    separate line.</para>
+  </entry>--></entry>
+  <entry id="whitelist-addresses" md5="22fc837888f4e6b1e97f860eaee256e9" state="changed">
+    <title> Baltais saraksts: Adreses</title>
+    <para>
+    (Darbs turpinâs) Katra adrese ir jâievada atseviðíâ rindâ.
+    </para>
+<!-- English entry:
+<entry id="whitelist-addresses">
+    <title>Whitelist: Addresses</title>
+    <para>TODO. Each address should be entered on a separate line.</para>
+  </entry>--><!-- English entry:
+<entry id="whitelist-addresses">
+    <title>Whitelist: Addresses</title>
+    <para>TODO. Each address should be entered on a separate line.</para>
+  </entry>--><!-- English entry:
+<entry id="whitelist-addresses">
+    <title>Whitelist: Addresses</title>
+    <para>TODO. Each address should be entered on a separate line.</para>
+  </entry>--><!-- English entry:
+<entry id="whitelist-addresses">
+    <title>Whitelist: Addresses</title>
+    <para>TODO. Each address should be entered on a separate line.</para>
+  </entry>--><!-- English entry:
+<entry id="whitelist-addresses">
+    <title>Whitelist: Addresses</title>
+    <para>TODO. Each address should be entered on a separate line.</para>
+  </entry>--></entry>
+  <entry id="spam-level" state="new">
+    <title>Spam Filtering: Spam Level</title>
+    <para>The system will consider messages with a likely spam score greater
+    than or equal to the number entered here as spam.</para>
+    <para>Lower numbers will catch more messages, with the drawback that there
+    is a greater chance of catching real messages.  "5" is a typical value
+    if your system is using SpamAssassin.</para>
+  </entry>
+  <entry id="spam-folder" state="new">
+    <title>Spam Filtering: Folder to receive spam</title>
+    <para>The system will file messages which it determines to be spam into
+    this folder.</para>
+  </entry>
+</help>

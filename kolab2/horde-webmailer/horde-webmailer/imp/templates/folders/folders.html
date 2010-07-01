@@ -1,0 +1,5 @@
+<loop:rows>
+<div class="<tag:rows.class />">
+ &nbsp;<label><input type="checkbox" class="checkbox" name="folder_list[]" <if:rows.nocheckbox>disabled="disabled" </if:rows.nocheckbox>value="<tag:rows.mbox_val />" /><span style="display: none;"><gettext>Select mailbox</gettext></span></label> <tag:rows.line /> <tag:rows.name /><if:rows.polled> (<tag:rows.unseen />/<tag:rows.msgs />)</if:rows.polled> <if:rows.editvfolder>&nbsp;&nbsp;[<tag:rows.delvfolder />] [<tag:rows.editvfolder />]</if:rows.editvfolder>
+</div>
+</loop:rows>

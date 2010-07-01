@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="<tag:charset />"?>
+<?xml-stylesheet href="<tag:xsl />" type="text/xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><tag:calendar_name /></title>
+  <if:calendar_desc>
+  <subtitle><tag:calendar_desc /></subtitle>
+  </if:calendar_desc>
+  <id><tag:self_url /></id>
+  <link rel="self" href="<tag:self_url />"/>
+  <author>
+    <name><tag:calendar_owner /></name>
+    <if:calendar_email>
+    <email><tag:calendar_email /></email>
+    </if:calendar_email>
+  </author>
+  <generator uri="<tag:kronolith_uri />" version="<tag:kronolith_version />"><tag:kronolith_name /></generator>
+  <icon><tag:kronolith_icon /></icon>
+  <updated><tag:updated /></updated>
+
+  <loop:entries>
+  <entry>
+    <title><tag:entries.title /></title>
+    <link href="<tag:entries.url />"/>
+    <id><tag:entries.url /></id>
+    <updated><tag:entries.modified /></updated>
+    <summary type="html"><tag:entries.desc /></summary>
+    <if:entries.category>
+    <category term="<tag:entries.category />" />
+    </if:entries.category>
+  </entry>
+  </loop:entries>
+
+</feed>

@@ -1,0 +1,24 @@
+BEGIN:VCARD
+VERSION:2.1
+N:Norris;David
+FN:David Norris
+TITLE:Web Master
+ORG:Midwest Spectrum Management Alliance, Inc.
+ADR:;;4532 W 30th St.;Indianapolis;IN;46222-1504;United States of America
+NOTE:ICQ - 412039
+TEL;HOME:+1 (317) 291-5774
+EMAIL:kg9ae@geocities.com
+END:VCARD
+
+BEGIN:VCARD
+VERSION:2.1
+N:Sica;Lawrence
+FN:Lawrence Sica
+TITLE:Systems Administrator
+ORG:Interactivate, Inc.
+ADR:;;2444b Carmel Valley Rd;Del Mar;CA;92014;USA
+TEL;FAX:858-793-4069
+TEL;WORK:858-793-4060
+EMAIL:larry@interactivate.com
+END:VCARD
+

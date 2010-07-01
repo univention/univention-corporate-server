@@ -1,0 +1,2248 @@
+------
+v4.3.6
+------
+
+[cjh] Fix the default value for the nav_audio preference
+      (sistemisti-posta@csi.it, Bug #8725).
+[mms] Make sure sent-mail folders exist if using the drop-down selection list
+      on the compose page (Bug #8520).
+[mms] When replying to list, correctly extract e-mail address if multiple
+      entries exist in the List-Post header (Bug #8719).
+[mms] For messages marked as innocent but not moved to Inbox, don't report
+      them as deleted within the current mailbox (Bug #8221).
+[jan] Don't show address book preference group if address books are disabled
+      (Bug #8692).
+[mms] Save References/In-Reply-To header info when saving a draft (Bug #8661).
+[jan] Fix viewing S/MIME encrypted and signed messages from Outlook (Express)
+      (Bug #8629).
+[jan] Add Oracle-specific SQL script.
+[jan] Add Croatian translation (Matej Vela <matej.vela@carnet.hr>,
+      Iva Rumora <iva.rumora@zg.t-com.hr>).
+[mms] Don't use translated folder prefixes in rename dialog (Bug #8554).
+[jan] Add hook to retrieve public S/MIME and PGP keys.
+
+
+------
+v4.3.5
+------
+
+[mms] Upgrade prototype.js to v1.6.1.
+[jan] Add example hook for the search_sources preference (dom.lalot@gmail.com,
+      Request #7796).
+[mms] Fix renaming shared folders contained in empty namespaces (Bug #8468).
+[mms] Correctly handle NO untagged responses on login (Bug #8478).
+[mms] Correctly set charset of Bcc header in sent mail copy (Bug #8362).
+[mms] Fix spellcheck in text-mode for certain words in non-English locales
+      (Bug #8330).
+[mms] Fix some javascript if using IE 8 (uses IE 7 compatibility mode) (Bug
+      #8345).
+[jan] Allow to lock default_encrypt preference.
+[mjr] Add example hook for the add_source preference (Bug #8285).
+[mms] Fix unqualified domain preference (Bug #8272).
+[jan] Highlight signed messages depending on the signature verification.
+[mms] Fix display_folder hook (m.gabriel@das-netzwerkteam.de, Bug #8254).
+[jan] Use correct charset when rendering inline PGP data.
+
+
+------
+v4.3.4
+------
+
+[mms] SECURITY: Don't cache local PGP public keys retrieved from the
+      addressbook (found by Peter Meier <peter.meier@immerda.ch>).
+[mms] If using spellcheck on send, automatically send if no spelling errors
+      exist (Request #6892).
+[jan] Show all addresses when printing messages.
+[mms] Fix cache issues in folder tree when deleting a mailbox (Bug #7745).
+[mms] Fix updating POP3 indices when deleting in mailbox view (Bug #8035).
+[jan] If updating a calendar event fails, try to import it instead (Bug #7589).
+[mms] Fix [un]escaping of various URLs on message screen caused by security
+      fixes in v4.3.3 (Bug #7926).
+[jan] Fix rendering of subjects in RTL scripts when using LTR translations
+      (vilius@lnk.lt, Bug #3511).
+[mms] Add hook to allow hiding of IMAP folders (Gunnar Wrobel <p@rdus.de>,
+      Request #7353).
+[jan] Fix logging of messages forwarded with attachments (Bug #7911).
+
+
+------
+v4.3.3
+------
+
+[cjh] SECURITY: Escape output in message.php, pgp.php and smime.php
+      (found by Gunnar Wrobel <p@rdus.de>).
+[jan] Use all credentials and mailer settings for iTip replies (Bug #7388).
+[mms] Show translated 'INBOX' prefix for subfolders (Request #7759).
+[mms] Workaround obsolete 'UT' date format (Request #5717).
+[mms] Fix tracking folder changes when renaming (Bug #7772).
+[cjh] Suppress browser autocomplete when redirecting messages (Bug #7767).
+
+
+------
+v4.3.2
+------
+
+[mms] Fix prototypejs regression on IE (Bug #6590).
+
+
+------
+v4.3.1
+------
+
+[jan] SECURITY: Escape output in test.php.
+[mms] Don't include Virtual Folder information in when tracking folder
+      tree changes (Bug #7739).
+[mms] Marked stripped parts as 'attachment', not 'inline' (Request #4664).
+[mms] Fix linking from addresses in mailbox to compose screen (Bug #7432).
+[jan] Use mailer configuration when sending iTip replies (Bug #7388).
+[jan] Always display multipart/appledouble attachments.
+[mms] Upgrade prototype.js to v1.6.0.3.
+
+
+----
+v4.3
+----
+
+[jan] Add compose token to redirect view (Bug #7383).
+[jan] Don't resize window if not composing messages in a popup.
+
+
+--------
+v4.3-RC2
+--------
+
+[mms] Fix loading of print stylesheets when printing a message (Bug #7310).
+[mjr] Fix redirect loop when conf[server][change_server] is true (Bug #6978).
+[mms] Fix message caching and optimize storage.
+[mms] Fix autocomplete address positioning on IE (Bug #7074).
+[cjh] When the selected view doesn't match the type of browser's default view
+      (IMP or DIMP for a mobile browser, MIMP or DIMP for a desktop browser),
+      explicitly redirect to that view and disable the frameset (Bug #6332).
+[jan] Add support for updating exsting events and cancelled recurring event
+      instances to iTip viewer (Bug #6636).
+[mms] Fix uploaded compose attachment names if magic quoting is on (Bug #7215).
+[mms] Cache results of address formatting.
+[jan] Show name and email address in the address book popup (Request #6937).
+[mms] Messages from lists can now have large quotes automatically hidden.
+
+
+---------------------------------
+v4.3-RC1 (released as v4.2.1-RC1)
+---------------------------------
+
+[mms] Fix incorrect autocomplete replacement in certain cases (Bug #6819).
+[mms] Use optimized autocomplete javascript library.
+[mms] Handle ';' to delimit addresses when composing.
+[jan] Don't allow adding private PGP keys as public keys (Bug #7080).
+[jan] Add Basque translation (Euskal Herriko Unibertsitatea EHU/UPV
+      <xabier.arrieta@ehu.es>).
+[mms] Search by size now displayed in KB (Request #6921).
+[jan] Add option to attach personal vCard to message (requires Turba 2.2.2).
+[jan] Fix maildir quota driver (Bug #7014).
+[jan] Add configuration for quota message format.
+[mms] Maintain original header encoding on redirect (Bug #7006).
+[cjh] Add CSRF tokens to the Compose screen (Kris Steinhoff
+      <steinhof@umich.edu>).
+[jan] Fix adding vhost specific trailer.txt.
+[jan] Add more flexible placeholders to SQL quota driver.
+[jan] Fix passing passwords to quota drivers.
+[mms] Improved folder list generation (Bug #6972).
+[cjh] Allow hiding quota messages when quota is unlimited
+      (Thomas Jarosch <thomas.jarosch@intra2net.com>, Request #6934).
+[jan] Add mailto: handler for Firefox 3+.
+[mms] Fix address MIME encoding issues when saving a draft (Bug #6986).
+[cjh] Include a hint about fixing invalid From addresses in the error message
+      (steinhof@umich.edu, Bug #6941).
+[cjh] Fix overwriting $params in _imp_adminDo API call (Bug #6955).
+[mms] Never wrap flowed lines in text/plain messages.
+[mms] Fix broken spellcheck when using fckeditor on Safari 3 (Bug #6909).
+[mms] Fix unescaping URL parameters passed to popup windows (Bug #6834).
+[jan] Fix logging of forwarded messages.
+[mms] Fix creation of subfolders in certain namespaces
+      (thomas.jarosch@intra2net.com, Bug #6827).
+[mms] Improve search page by moving flags into search criteria section
+      (Request #6825).
+[mms] If using imagemagick, allow creation of PDF thumbnails.
+[mms] Strip quotation marks and backslashes from displayed addresses.
+[mms] Fix spellcheck in HTML mode when using Xinha on IE (Bug #6799).
+[mms] Fix rare case when spellchecking HTML input could result in the HTML
+      tags being recognized as misspelled words.
+[jan] Fix parsing for Token System configuration parameters.
+[mms] Add ability to search by size.
+
+
+------
+v4.2.2
+------
+
+[cjh] SECURITY: Escape output in message.php, pgp.php and smime.php
+      (found by Gunnar Wrobel <p@rdus.de>).
+
+
+------
+v4.2.1
+------
+
+[jan] SECURITY: Escape output in test.php.
+
+
+----
+v4.2
+----
+
+[cjh] Fix display of email groups in received messages.
+[cjh] Fix sending email to contact lists (Bug #6732).
+[cjh] Make sure that email addresses entered in the Identities screen pass
+      basic well-formedness validation (Bug #6654).
+[cjh] Fix default server selection on the login screen
+      (adrieder@sbox.tugraz.at, Bug #6738).
+[cjh] Fix defaulting to the wrong address book in the Contacts popup
+      (steinhof@umich.edu, Bug #6723).
+
+
+--------
+v4.2-RC4
+--------
+
+[mms] Add ability to cache JS/CSS files to static files to improve performance
+      and to fix problems when updating JS/CSS files.
+[cjh] Apply fix for http://dev.rubyonrails.org/ticket/11473 to prototype.js
+      (Request #6590).
+[cjh] Make request token lifetime configurable (faurep@agr.gc.ca, Request
+      #6679).
+[mms] If using SMTP, send messages using 8BITMIME (RFC 1652) or BINARYMIME
+      (RFC 3030) if appropriate (Request #6645).
+[cjh] Work around a spellchecking issue with proc_close and --enable-sigchild
+      (Bug #6625).
+[jan] Show user drop down list in ACL screen if possible.
+[mms] Redirect after doing maintenance to the proper view (Bug #6179).
+[mms] Allow switching views in mobile login mode (Request #6332).
+[jan] Support vhosts setting when loading header.php, servers.php,
+      spelling.php and trailer.txt configuration files.
+[mas] Use delete icon on search page to remove elements. (Liam Hoekenga
+      <liamr@umich.edu>, Request #6515).
+[mms] Add link to delete entire thread on thread screen (Request #5884).
+[mms] Hide trash-related options when trash is disabled.
+[jan] Allow users to specify server name and login credentials in Horde's
+      preferences (requires Horde 3.2).
+[mms] Message cache now stored in configurable chunks to reduce memory usage.
+[mms] Fix mailbox list caching when hiding deleted messages.
+
+
+--------
+v4.2-RC3
+--------
+
+[mas] Replace %l and %d with the current short username and domain name in spam
+      reporting shell calls. (Bug #6364)
+[cjh] Add a hook quota driver (Michael.Redinger@uibk.ac.at, Request #6322).
+[mms] Make xinha add BR tag instead of P tag on enter keypress (Mozilla only).
+[mms] Add fckeditor to list of supported javascript editors.
+[jan] Hide iTip actions if not using IMP frontend (Bug #6116).
+[cjh] Fix showing suggestions for the second or subsequent misspelled word
+      (Bug #6081).
+[jan] Add configuration option to force users to a certain view.
+[jan] Localize default folder names.
+[jan] Call a contacts/add API method to create links for adding contacts if
+      available.
+[jan] Filter HTML body when replying to HTML messages with the WYIWYG editor.
+[jan] Allow users to set the HTML editor toolbar buttons in their preferences.
+[jan] Fix charset of composed HTML messages (Bug #6268).
+[cjh] Protect mailbox, message, and folder actions with CSRF tokens.
+[cjh] Fix action dropdowns in IE6 (Bug #6177).
+[cjh] Make sure to call Event.extend() when using inline event handlers, for
+      IE6's benefit.
+[cjh] Fix improper enabling of HTML composition on replies (Bug #6176).
+[jan] Use subject's CN instead of OU for storing public keys (Bug #6169).
+[cjh] Make sure that custom checkbox preferences are stored as 0 or 1 instead
+      of 'on' or ''.
+[jan] Fix popup URL generation (Bug #6139).
+
+
+--------
+v4.2-RC2
+--------
+
+[mms] SECURITY: When sending linked attachments, protect against JAR attacks
+      in some Mozilla browsers (Bug #5892).
+[cjh] Fix the bottom Select: menu in the mailbox view (Bug #6128).
+[mms] Add hook for adding formatting information to a message list row
+      (Request #5234).
+[mms] If javascript is available, automatically size the popup compose window.
+[jan] Allow to write outside of HTML signatures in WYSIWYG editor (Bug #3753).
+[jan] Highlight HTML signatures in WYSIWYG editor.
+[jan] Remember webmail mode selected on the last login.
+[mms] Compress download data.
+
+
+--------
+v4.2-RC1
+--------
+
+[jan] Fix broken <area> tags in HTML messages.
+[mms] When sending notification that linked attachment has been downloaded,
+      correctly set timezone in download time (Bug #4609).
+[cjh] If encrypting a message, encrypt an attached public key as well
+      (Bug #5733).
+[jan] Remove "default search field" preference, show all common fields instead.
+[cjh] Rename IMP_IMAP_Client::namespace to getNamespace() for PHP 5.3
+      compatibility.
+[cjh] Cache PGP public keys for one hour (adrieder@sbox.tugraz.at,
+      Request #5773).
+[mms] Add mailbox list caching across sessions.
+[cjh] Don't translate "Fwd:" in email subjects (Request #5674).
+[jan] Add link to strip all attachments from a message.
+[jan] Show owner of S/MIME cert in signed messages, not the message sender.
+[jan] Allow maintenance tasks to rename and delete fixed folders (Bug #5592).
+[mms] Allow all javascript and CSS in a page to be served in a single browser
+      request.
+[jan] Move all IMP-specific hook examples from Horde's config/ directory.
+[jan] Fix compose window widgets with certain translations (Bug #5638).
+[jan] Fix sidebar tree generation with certain translations (Bug #5525).
+[cjh] Fix spellchecking HTML messages with active links (Bug #5629).
+[cjh] Fix a fatal error when composing for users with no signature (Bug #5682).
+[cjh] The pspell extension is no longer supported for spell checking since
+      it doesn't work with HTML composition at all (Bug #5516).
+[cjh] Fix switching signatures when using HTML composition (Bugs #3753, #5594).
+
+
+----------
+v4.2-ALPHA
+----------
+
+[jan] Add configuration for folders that may not be modified.
+[mms] Inline PHP-generated javascript to avoid cross-domain leaking
+      (Bug #5307).
+[cjh] Preserve current mailbox when composing in the main window (Bug #5415).
+[cjh] Add a few more new mail sounds and allow the user to choose
+      between them (Request #3260).
+[mms] Preserve URL anchor information when performing login.
+[jan] Fetch public PGP keys from keyserver if not available in address book
+      (Requires Horde 3.2).
+[mms] Add compose support for e-mails containing Internationalized Domain
+      Names (Request #5180).
+[jan] Add a hook for post sending actions, after a message has been sent.
+[mms] Add option to login screen to allow user to select the application mode
+      if either DIMP or MIMP is also installed.
+[jan] Add unified IMAP quota driver to obsolete the Cyrus and Courier drivers.
+[mms] Don't allow namespace delimiters in new mailbox names.
+[mms] Change 'Important' flag to 'Flagged For Followup' and clear the flag
+      after a reply (Request #4867).
+[mms] Allow display of shared/public folders separate from a user's personal
+      folders (Request #3581).
+[mms] Allow thumbnails to be generated for all attached images, regardless
+      of image size.
+[cjh] Add a modal confirmation dialog for emptying a folder (Request #4812).
+[mms] Add ability for admin to limit size of reply text.
+[mms] Add RSS/Atom feed for mailboxes (Eric Garrido <ekg2002@columbia.edu>,
+      Request #2733).
+[mms] If tidy is available, use it to clean up outgoing HTML messages.
+[mms] Automatically delete blacklisted messages (Request #4569).
+[cjh] Implement non-modal newmail popups (Request #3327).
+[mms] Add option to restrict size of MIME message parts that can be displayed
+      inline.
+[cjh] Add a Help entry for keyboard navigation (Bug #4716).
+[mms] Most javascript code now uses the Prototype library.
+[jan] Address auto-completion searches only at beginning of names and
+      addresses.
+[jan] Add button to empty the current folder.
+[jan] Show percentage of attachment limit usage in compose window
+      (Eric Garrido <ekg2002@columbia.edu>, Request #3434).
+[jan] Add SQL driver for quotas (Tomas Simonaitis <haden@homelan.lt>,
+      Request #4053).
+[mms] Allow user to view PGP encrypted messages sent by themself (Bug #4332).
+[mas] Make ACL editor more intuitive (Eric Garrido <ekg2002@columbia.edu>,
+      Request #3808).
+[mas] Conform to WCAG 1.0 Priority 2/Section 508 accessibility guidelines.
+      (Request #4080)
+[mms] Added preference to allow composition in reply/forward based on
+      "richest" format available in original message (Request #4270).
+[mms] Added preferences to determine default forwarding method and whether
+      to include body text in forwards by default.
+[mms] Add preference to only verify PGP & S/MIME signed data upon user
+      request (Request #4022).
+[mms] Add preference to indicate default cursor location in compose text
+      area (Request #3245).
+[jan] Add support for symmetric PGP encryption (Requires Horde 3.2).
+[cjh] Add an onbeforeunload handler so Firefox and IE users can be prompted
+      before accidentally closing a compose window (phyre@rogers.com,
+      Request #4271).
+[jan] Move mail_hdr preference from identities to a regular preference.
+[mms] Remove current mailbox information from session - allows multiple
+      simultaneous open IMP windows (Request #3171).
+[mms] Add folder size display to folders screen (Request #4065).
+[mms] Add ability to filter HTML message output with tidy (Request #388).
+[cjh] Show thumbnails of large images instead of linking to them
+      (Eric Garrido <ekg2002@columbia.edu>, Request #3808).
+[mms] Page location in mailbox is remembered for subsequent mailbox visits.
+[mas] Add maintenance task to purge old messages from spam folder (Request
+      #3860).
+[mms] Implement mailbox message list caching.
+[mms] Port AJAX spell checking code from DIMP.
+[mms] Port auto-complete contacts AJAX code from DIMP.
+[mms] Add preference to poll all folders for new mail (Request #2197).
+[mms] Allow admins to add "Printed By" headers to the top of all printed
+      messages (Request #1965).
+[mms] Allow user to save per-folder sort preferences (Request #1483).
+[jan] Add multidomain support for Kolab servers (tokoe@kde.org, Request #3579).
+[cjh] Add a hook for post-login actions, after the session is established
+      but before redirection.
+[mms] Recent search queries can be retrieved on the search page (Request
+      #3337).
+[mms] Convert all templates to Horde_Template::.
+[cjh] Show vTodo parts in the iTip driver (Request #3344).
+[jan] Add maintenance task to purge old messages from sent-mail folders.
+[cjh] Move allow_cc and allow_bcc to compose_cc and compose_bcc preferences.
+[ben] Better support for MS-SQL.
+[jan] Whether and where to show alternative mime parts is now a preference
+      instead of MIME configuration.
+[mms] Split out custom spelling dictionary into separate configuration file.
+[jan] Delete original message after saving a resumed draft.
+[cjh] If the browser supports the necessary javascript, unblock images in HTML
+      messages without a page reload.
+[cjh] Do all message styling based on flags with CSS.
+[mms] Implement message caching.
+[jan] Add permissions to restrict maximum number of recipients per message and
+      time.
+[jan] Add API method "contacts/favouriteRecipients".
+[jan] Add logging of sent messages.
+
+
+------
+v4.1.6
+------
+
+[jan] Fix sentmail folder not being updated in the preference interface after
+      updating to Horde 3.1.5 (Bug #5842).
+[jan] Fix broken <area> tags in HTML messages.
+
+
+------
+v4.1.5
+------
+
+[cjh] Lower memory usage when downloading folders
+      (Andrew Morgan <morgan@orst.edu>).
+[mms] Fix detection of default namespace information when no namespaces are
+      defined on the server (Bug #5538).
+[mms] Don't lose message bodies When moving messages to trash when over quota
+      (Bug #5470).
+[cjh] Remove unused defaults in Fetchmail_imap (Bug #2799).
+[jan] Fix empty folder name appearing on Cyrus and servers with similar
+      namespaces (Bug #5138).
+[jan] Only show reply options in iCalendar viewer if a reply is requested.
+[cjh] Remove non-responsive www.keyserver.net and wwwkeys.pgp.net from
+      PGP options (Bug #5323).
+[jan] Fix moving messages when over quota on Dovecot servers (Bug #5270).
+[jan] Fix parsing of certain distribution lists (Bug #5134).
+[mms] Fix rare occurrence where an action perfomed on the mailbox screen would
+      instead be performed on the INBOX (Bug #5202).
+[mms] Don't show save attachments prompt in compose screen if configured to
+      automatically link all attachments (Request #5189).
+
+
+------
+v4.1.4
+------
+
+[jan] SECURITY: Fix XSS vulnerabilities in the search screen and thread view.
+[jan] Improve displaying of PGP messages (requires Horde 3.1.4 partially).
+[mms] Make sure we pass a read/write IMAP stream to the filters API (Bug
+      #5054).
+[mms] Do not allow move to trash unless trash folder is defined (Bug #5012).
+[jan] Fix an encoding issue with the address book popup (Bug #5050).
+
+
+----------
+v4.1.4-RC1
+----------
+
+[cjh] "Ignore All" spellchecking fixes (technology@pmi-portland.org, Bug
+      #4922).
+[cjh] Absolute restriction on the width of the contacts window select elements
+      (Request #1985).
+[cjh] Send lowercase mailto: attributes in iCalendar replies (Bug #4872).
+[cjh] Don't improperly increment iCalendar SEQUENCE values (Bug #4863).
+[mms] Always subscribe to created folders.
+[mms] Don't allow both trash folder and Virtual Trash to be selected in the
+      options (Bug #4698).
+[cjh] Turn mailto: links in HTML emails into IMP compose links (Bug #3079).
+[cjh] Attempt to calculate the actual filesystem block size in the
+      IMP_Quota_command driver (Eric Rostetter
+      <eric.rostetter@physics.utexas.edu>, Request #4360).
+[cjh] Make sure to honor user date format preferences in iTip viewer
+      (Bug #4635).
+[cjh] Fix message list header underflow in IE7 (Bug #4608).
+[cjh] Don't return empty sent-mail folders from the identity (Bug #4380).
+[cjh] Don't rename folders from or to an empty string (Bug #4380).
+[mas] Don't replace spaces with '.' when expanding addresses. (Bug #4236)
+
+
+------
+v4.1.3
+------
+
+[mms] Add 'login_tries' server configuration option.
+[jan] Fix toggling compose mode if folders are turned off (Bug #4216).
+[mms] Fix blacklist/whitelist reporting (Bug #4160).
+[jan] Add link to view attached S/MIME key details.
+[cjh] Correctly escape all folder names.
+[mjr] Correctly restrict gallery list when saving images to a gallery program.
+[jan] Send notifications about downloaded attachments to address from identity.
+[mms] Escape group names pursuant to RFC 2822 (Bug #4018).
+[mms] Fix saving images to gallery program (e.g. Ansel) from search mailboxes
+      (Bug #4046).
+
+
+------
+v4.1.2
+------
+
+[mas] Check Cyrus quota for current mailbox, instead of always showing INBOX.
+      (Eric Garrido <ekg2002@columbia.edu>)
+[cjh] Send linked attachment notifications in the language of the user who
+      sent the attachment (Bug #3712).
+[mms] Fix appending default personal namespace to default sent-mail folder
+      (Bug #3873).
+[mms] Fix IMAP logins for some servers that throw in extraneous server
+      information (Bug #3793).
+[mms] Quote IMAP usernames when using LOGIN authentication to allow usernames
+      with spaces to login (Bug #3778).
+[jan] Fix creating folders through the api (Bug #3787).
+[mms] Added preference to toggle display of Virtual Inbox.
+[mms] Fix display of Virtual Trash (Bug #3665).
+
+
+------
+v4.1.1
+------
+
+[mms] Silence some undefined warnings if folders are off (Bug #3755).
+[cjh] Escape X-color data (Bug #3751).
+[mms] Never open connection to specific mailbox unless we need it.
+[mms] Don't allow IMP preference access unless authenticated.
+[mms] Fix moving message to trash folder when over quota (Bug #3687).
+[mms] Add preference for default charset to be used for messages with improper
+      charset information (requires Horde 3.1.1) (Request #2702).
+[mms] Fix stripping attachments (Bug #3510).
+[mms] Fix creation of duplicate Virtual INBOXes.
+[mms] Fix displaying Show/Hide/Purge links for deleted messages in certain
+      cases.
+[jan] Fix downloading of all attachments from certain messages in a ZIP file
+      with Internet Explorer.
+[mms] Use other login methods in IMP_IMAPClient:: if the first method is
+      unsuccessful, to make Exchange working again.
+[mms] If an IMP maintenance task is activated, make sure the Horde preference
+      controlling maintenance is also activated (Bug #2987).
+[mms] Fix spellcheck on send (Bug #3589).
+[mms] Allow user to select sent-mail folder in public namespace if public
+      namespace is blank (Bug #3603).
+[mms] Add preference to define how we want to expand folder list in sidebar.
+
+
+----
+v4.1
+----
+
+[mms] Correctly expunge current mailbox when deleting messages on a POP3
+      server (Bug #3156).
+
+
+--------
+v4.1-RC3
+--------
+
+[mas] Add Hebrew translation.
+[mms] Attempt to login to mail server multiple times on non-auth failure to
+      eliminate some "random" session timeouts (ag@netside.de, Bug #3404).
+[mms] Allow configuration of server timeouts in servers.php.
+[jan] Less intrusive notification when expanding of addresses in the compose
+      view fails (Dmitriy MiksIr <miksir@maker.ru>).
+[mms] IMP_IMAPClient:: now uses the Auth_SASL PEAR module during CRAM-MD5 and
+      DIGEST-MD5 authentication.
+
+
+--------
+v4.1-RC2
+--------
+
+[jan] Add Khmer translation (Leang Chumsoben <soben@khmeros.info>).
+[mms] Make Linked attachments work in multipart/alternative messages
+      (Bug #3335).
+[mms] Allow selection of Virtual Folder for login mailbox (Bug #3315).
+[mms] Prompt user before sending messages with empty subjects (Bug #3333).
+[mms] Add ability to edit search queries.
+[jan] Log correct address in login success message if connecting through a
+      proxy (Bug #3289).
+[jan] Fix forwarding of multiple messages.
+[jan] Fix confirmations after successfully sending messages (Bug #3233).
+[jan] Apply _imp_hook_mbox_icons hook to the sidebar folder tree (Bug #3132).
+[mms] Re-add option to rebuild folder tree from IMAP server.
+[mms] Fix sent-mail folder selection in compose view (Bug #2802).
+[cjh] Fix redirection to initial_application preference after running
+      Maintenance tasks.
+
+
+--------
+v4.1-RC1
+--------
+
+[mms] Removed 'dotfiles' server parameter.
+[mms] Allow PHP expressions to be executed for user-defined headers (Bug
+      #3093).
+[mms] Support 'DelSp' parameter in flowed text messages (requires Horde 3.1).
+[mms] Remove outdated, non-standards request for delivery confirmation.
+[mms] Hide lengthy address lists by default in message view and allow the user
+      to toggle viewing (flachapelle@inverse.ca, Bug #3028).
+[cjh] Account for changes to strtotime() in PHP 5.1.
+[mms] It is not possible to hide deleted messages when using thread sort.
+[mms] Option to send notification that linked attachment has been downloaded,
+      and link to delete the attachment (Bug #696).
+[mms] After fetching mail, return to the local mailbox where mail is
+      downloaded to (Bug #2211).
+[mms] Check the IMAP server to see if it supports searches in the current
+      charset.
+[mms] Do not require users to click on 'Attach' button when attaching files
+      in the compose screen (Bug #2848).
+[mms] Don't display unsubscribed folders in sidebar (Bug #2869).
+[mms] Rename folders from top of tree to bottom to prevent errors on IMAP
+      servers that automatically rename all child folders (Bug #2882).
+[mms] Fix opening compose popups when the mailbox contains urlencoded
+      characters (Bug #2872).
+[mms] Fix refresh of folders when not using IMAP subscriptions (Bug #2878).
+[cjh] Skip results with empty email addresses when expanding names
+      (Bug #2757).
+[cjh] Replace %u with the current username in spam reporting shell calls
+      (Dmitriy MiksIr <miksir@maker.ru>).
+[mms] Don't ask for password for decryption when the user does not have a
+      personal private key (Bug #2771).
+[mms] Add API method to return logged in server hostname.
+[mms] PGP encrypted messages now encrypted to all recipients in the same
+      message (Bug #2670) (requires Horde 3.1).
+[mms] Added preference to define the default search field (Bug #2650).
+[jan] Add ability to create notes from email messages.
+[jmf] Add support for changing SMTP server/port on login (Bug #327).
+[mms] Removed 'folders', 'namespace, and 'hierarchies' server parameters.
+[mms] Add auto-detection of namespace information from IMAP server.
+[cjh] Support configuring where the "Report as" spam/innocent links appear
+      (dustin@ywlcs.org, Bug #1096).
+[mms] Add preference to move spam/innocent messages to appropriate mailbox
+      after reporting.
+[mms] Add multiple message view page (Bug #481).
+[jan] Add stationery and form responses.
+[cjh] Differentiate between signed and encrypted attachments (Bug #1712).
+[jmf] Ability to play sound on new mail.
+[jan] Add permissions to restrict creation of folders.
+[mms] Add configuration option to allow message bodies to be cached across
+      page loads.
+[ben] Honor horde's alternate_login and redirect_on_logout settings.
+[jan] Add "Empty Spam" menu item (Bug #1765, jens@peino.de).
+[mms] Add Virtual INBOX to Virtual Folders.
+[mms] Make sure special Virtual Folders can never be edited.
+[mms] Allow import of photo attachments into a gallery application.
+[mms] Fix IMAP thread display when the base level contains more than one
+      message.
+[mms] Better/more complete preview message generation.
+[mms] Graphical representation of thread on thread view screen.
+[mms] Virtual Trash folder support (Todd Merritt <tmerritt@email.arizona.edu>).
+[mms] All composed messages are now sent in "flowed" format. The "wrap_width"
+      preference has been eliminated.
+[mms] Success messages are not shown when adding a blacklist/whitelist address
+      if an error in adding the address(es) occurred.
+[mms] No need to show a "Hide HTML images" link if the images have already
+      been displayed.
+[mms] Include Cc: header information in the header text we display for forward
+      and reply messages (Bug #1079).
+[jan] Show ZIP icon with "Download all attachments" link.
+[mms] S/MIME parts should always attempt to be viewed inline, notwithstanding
+      the Content-Disposition for the part (requires Horde 3.1).
+
+
+------
+v4.0.5
+------
+
+[cjh] Correctly escape all folder names.
+[jan] Fix French translation.
+
+
+------
+v4.0.4
+------
+
+[mms] Add warning that PGP key generation may take awhile (Bug #2672).
+[mas] Add confirmation when reporting spam/innocent from message view.
+      (kevin_myer@iu13.org, Bug #2285)
+[cjh] Fix check for duplicate addresses when automatically saving
+      recipients (Bug #2663).
+
+
+----------
+v4.0.4-RC2
+----------
+
+[mms] Fix additional newlines being added to forwarded messages when using
+      sendmail on *NIX (Bug #2449, t.zell@gmx.de).
+[mms] Fix BCC addressess disappearing when resuming a message (Bug #2558).
+[mas] Fix reporting multiple messages as spam at once.
+      (horde.org@spamvrij.kicks-ass.org, Bug #2549)
+[mms] Add entire message search to search page.
+[jan] Fix warnings if expanding names with spaces (Bug #2334).
+[mms] Don't display body text in thread view if inline viewing of the content
+      is disabled.
+[jwm] Renamed Accounts menu item to Fetch Mail for more consistency.
+
+
+----------
+v4.0.4-RC1
+----------
+
+[jan] Decode folder name when importing messages (ddibox@mail.ru, Bug #2479).
+[jan] Send iTip replies with the correct identity (Bug #1507).
+[jan] Name downloaded ZIP file with all attachments after the message subject.
+[jan] Allow to accept invitations and add them to the calendar at once.
+[jan] Show iTip attachments (event invitations) inline (Request #2032).
+[mms] Fix display of localized INBOX name in folder list/sidebar (Bug #2368).
+[mms] Fix display of linked attachments when the attachment filename contains
+      characters that need to be escaped.
+[mms] Fix OR searches when user is hiding deleted messages.
+[mms] Save drafts so any images added via the HTML editor will correctly
+      reappear when the message is resumed (Bug #1977).
+[mms] Allow HTML formatting to be retained when resuming a draft (Bug #2328).
+[mms] Work around broken c-client sort by arrival. Turns out to be more
+      efficient anyway (Bug #2139).
+[jan] Add Bosnian translation (Vedran Ljubovic <vljubovic@smartnet.ba>).
+[mms] If user selects a non-default sentmail folder on the compose screen, make
+      sure this is saved through any intervening spelling check (Bug #2093).
+[mms] Ensure that no maintenance tasks may be skipped (Bug #1926).
+[mas] Protect against special characters at the beginning of a line when using
+      aspell. (Bug #2060)
+[cjh] Generate only one Select All checkbox on search results listings
+      spanning multiple mailboxes (Bug #1991).
+[jan] Block embedded images if viewing HTML messages in a popup.
+[cjh] Don't lose incomplete addresses after expansion is attempted.
+      (Bug #1900).
+[jan] Fix background expansion of non-ascii names in compose view (Bug #1575).
+[jan] Allow non-ascii searches (requires Horde 3.0.5).
+[mms] Don't pass server information via login page if not being altered by
+      the user. (Bug #1883)
+[mms] Add separate confirmation page when deleting/emptying folders (Bug #783).
+[cjh] Allow sending blank searches to Turba even if the display_contact
+      preference is false (Bug #1854).
+[mms] Encode attachment parameters with the same character set used in the
+      base message (Bug #1591).
+[mms] Don't allow user to unsubscribe from INBOX.
+[mms] Don't alter header encodings when redirecting messages (Bug #1823).
+[mms] Fix charset issues with strip attachment message (Bug #1861).
+[cjh] Add missing binary.png for the TNEF MIME Viewer (Bug #1873).
+[jan] Localize all remaining INBOX strings in the interface.
+[mms] Fix drop down lists in folder preferences (Bug #1794).
+[jan] Fix compose links with non-ascii characters in email header links on
+      Internet Explorer (Bug #1726).
+[mms] Ignore empty lines in config/header.txt (Bug #1770).
+[cjh] Don't trigger the left/right key message navigation if the user is
+      holding down any modifier keys - let those bubble up to the browser
+      (Bug #1763).
+[cjh] Only use a Refresh: header if we need to, and if the URL is under 160
+      characters, to prevent triggering browser bugs that cause hangs
+      (Bug #1728).
+[cjh] Prevent IE from clearing compose window fields if the user presses
+      ESC (Bug #1686).
+
+
+------
+v4.0.3
+------
+
+[jan] Ignore quoted text if spellchecking with aspell (Bug #1673,
+      kevin_myer@iu13.org).
+[cjh] Fix typo in attachment.php that caused a PHP warning
+      (Xavier Montagutelli <xavier.montagutelli@unilim.fr>).
+[mms] Correctly store all data from the compose screen when spell checking a
+      message (Bug #1425).
+
+
+----------
+v4.0.3-RC1
+----------
+
+[cjh] Validate outgoing email addresses before sending mail (Bug #1543).
+[mms] Added automatic detection of some mail server parameters to the test
+      script.
+[mms] Fix Show/Hide Deleted links on search results screen (Bug #1587).
+[mms] Correctly process 'Report and Spam' and Blacklist/Whitelist additions
+      from a search results mailbox view.
+[mms] Correctly sort the contents of the Virtual Folder.
+[mms] Fix viewing mailboxes in shared hierarchies in subscribe mode in the
+      IMAP_Tree lists (Bug #1550).
+[jan] Return to current folder after emptying the trash folder (Bug #1563).
+[mms] Display the attachment expiration date when sending linked attachments.
+[mms] Fix editing virtual folders from the mailbox screen (Bug #1490).
+[cjh] Log logouts at the same level Horde does (Bug #1499).
+[jan] Don't lose session if clicking on link after blacklisting or
+      whitelisting addresses (Bug #1417).
+[mms] Fix refresh of folder screen when viewing unsubscribed folders.
+[mms] Added optional 'delimiter' parameter to servers.php to aid login times
+      for certain IMAP servers (selsky@columbia.edu, Bug #1485).
+[mms] Don't link emails in HTML message compositions (Bug #1472).
+[mms] Make sure we can create thumbnails/convert images before prompting user.
+[mms] Ensure multipart/related and multipart/alternative messages can be viewed
+      if not viewable inline or if they contain only one part;
+      multipart/related parts are now viewed with their correct charset
+      (Bug #1433).
+[mms] Fix display of IMAP hierarchies in the folder view (Bug #1403).
+[jan] Fix viewing of multipart S/MIME or PGP signed messages (Bug #1393).
+[jan] Mark sent-mail checkbox when changing the sent-mail folder in the
+      compose screen.
+[mms] Be smarter about we we consider to be downloadable/forwardable.
+      Make sure text isn't both forwarded and attached in a forward message.
+[jan] Fix success screen after redirecting a message (Bug #1374).
+[jan] Fix "undefined index" warning (Bug #1367).
+
+
+------
+v4.0.2
+------
+
+[mms] Don't wrap flowed text in print view (Bug #1318).
+[jan] Don't append trailer text twice if sending a message resumed from a
+      draft (Bug #1306).
+[mms] Fix display of attachment names when forwarding messages (Bug #1300).
+
+
+----------
+v4.0.2-RC1
+----------
+
+[mms] Decode the contents of preview messages.
+[mms] Fix reload of underlying window after entering PGP or S/MIME passphrase
+      (Bug #1145).
+[cjh] Fix recompose recovery of messages written before a session timeout
+      (Bug #1209).
+[mms] Don't escape 'From' at the beginning of the line in text messages.
+[mms] Fix 'smtphost' and 'smtpport' configuration parameters.
+[jan] Add batchCompose API method.
+[mms] Fix a (very rare) situation where a base64 encoded message is not decoded
+      correctly in forwards/replies (Bug #1077).
+[mms] Fix forwarding as a digest from search folders (Bug #1263).
+[cjh] Fix PHP notice after forwarding a message (Bug #1283).
+[mms] Show, but don't activate current folder in "Move/Copy To" folder list
+      (Bug #1240).
+[mms] Make sure we show container folders in the search screen folder list.
+[mms] Don't show address book save link for PGP and S/MIME keys if no default
+      address book is configured (Bug #1144).
+[mms] Require virtual folders to have a label (Bug #1160).
+[jan] Speed up mailbox loading by caching processed email addresses.
+[jan] Fix new mail notification popups in mailbox views (Bug #876).
+[jan] Fix custom_login.php example script.
+[cjh] Don't insert entries for emails that already exist when gathering
+      addresses from outgoing emails (Bug #1054).
+[jan] Fix wrapping of header in mailbox view with IE (Bug #1110).
+
+
+------
+v4.0.1
+------
+
+[cjh] Fix columns running in to each other with Safari/KHTML in the mailbox
+      view (requires Horde 3.0.1) (Bug #1026).
+[mms] Allow signed messages sent via multipart/encrypted to be displayed on non
+      S/MIME enabled installations (Bug #1037).
+[cjh] Fix for login_compose when IMP does not provide authentication
+      (Bug #892).
+
+
+----
+v4.0
+----
+
+[mms] Messages sent in HTML format no longer link email addresses to
+      non-existant javascript calls.
+[jan] Use short, indented folder names in search form.
+[jan] Return to correct mailbox page when clicking "Back to" link in threaded
+      view.
+[jan] Fix sorting of folder names in summary block (Bug #987).
+[mms] Determine the default IMAP delimiter according to RFC 3501.
+[mms] Added 'smtpport' parameter to server configuration (bergonz@labs.it).
+[jan] Correctly wrap quoted headers in message replies (Bug #962).
+[jan] Show buttons on "message sent" screen as menu again.
+
+
+--------
+v4.0-RC3
+--------
+
+[jan] Fix link generation in HTML composer (Bug #941).
+[cjh] Always honor the login_compose action (Bug #892).
+[cjh] Save messages with a "message/rfc822" mime type (Bug #922).
+[mms] Don't require to configure an e-mail address if using a spam hook.
+[mms] Fix expansion of e-mail addresses (Bug #889).
+[mms] Fix display of user-defined headers if the message contains more than
+      one of those headers (Bug #912).
+[jan] Set one global date format in Horde's preferences (Bug #788).
+[jan] Fix some javascript errors with IE 5.0.
+
+
+--------
+v4.0-RC2
+--------
+
+[mms] Allow more than one recipient for encrypted messages; store encrypted
+      messages locally using the local user's encryption (Bug #865).
+[mms] Fix various S/MIME issues and update the code to more closely match the
+      look and feel of the PGP code.
+[jan] Fix automatic spell checking on send, cutting off parts of the message
+      (Bugs #227, #259).
+
+
+--------
+v4.0-RC1
+--------
+
+[jan] Fix HTML message editor in IE (Bugs #692, #793).
+[cjh] Search only the preferred address books for senders allowed to send HTML
+      messages with images.
+[jan] Disable Kolab servers if Kolab has been disabled globally.
+[mms] Allow all subscribed folders to be viewed in the IMP menu tree interface.
+[mms] Only scan for emoticons in the body of text MIME parts.
+[mms] Fix message saving and attachment ZIP file generation.
+[mms] Allow the spam reporting system to bounce a message to an email address.
+[mms] Move spam handling to a separate class.
+
+
+---------
+v4.0-BETA
+---------
+
+[mms] Added virtual folder support.
+[mms] Allow all messages in an entire folder to be marked as seen or unseen.
+[mms] Allow attaching files from local VFS filesystems.
+[mms] Allow quick and easy access to unsubscribed folders on the search
+      screen.
+[jan] Add quota driver for Mercury/32 servers (Frank Lupo
+      <frank_lupo@email.it>).
+[mms] Add support for Message Disposition Notifications (RFC 2298).
+[jan] Dynamically add new attachment fields if all are used.
+[jan] Add special black-on-white styles for message printing.
+[mms] Added preference that allows user to strip attachment information for
+      messages saved in the sent-mail folder after composing a message.
+[mms] Improve message threading display in the mailbox screen.
+[jan] Add Persian (Western) translation (Vahid Ghafarpour
+      <vahid@ghafarpour.com>).
+[cjh] Allow quoted parts of messages to get hidden.
+[mms] Add messages thread view.
+[jan] Allow navigation through mailbox pages with left and right keys.
+[jan] Allow purging of multiple folders in the folders view (Todd Merritt
+      <tmerritt@email.arizona.edu>).
+[jan] Allow turning off of the links to alternative parts in
+      multipart/alternative messages.
+[cjh] Hide unnecessary UI elements when there's only one address book
+      (Francois Marier <francois@nit.ca>).
+[cjh] Trap adding the same address multiple times in the Contacts window
+      (Francois Marier <francois@nit.ca>).
+[cjh] Make the header checkbox on the folders page toggle selection of
+      all folders (Francois Marier <francois@nit.ca>).
+[cjh] Add the basis for sending attachments as links to hosted files
+      (Andrew Coleman <mercury@appisolutions.net>).
+[cjh] INBOX is now localized for display.
+[jan] Show warning when compose or passphrase popups are blocked by the
+      browser.
+[mms] Allow which headers to view by default to be defined for each identity
+      (Vijay Mahrra <vijay.mahrra@es.easynet.net>).
+[jan] Add mailbox management for supported servers like Cyrus.
+[cjh] Add option for reporting email as not spam (Liam Hoekenga
+      <liamr@umich.edu>).
+[jon] Added a new preference that will cause a message to be spell checked
+      before it is sent.
+[max] Add 'mail_domain' pref which overrides the server's maildomain setting.
+[mms] Added hooks for dynamic mailbox redirection and custom mailbox/folder
+      icons on the folder page (Stuart Binge <s.binge@codefusion.co.za>).
+[mms] Use the MIME_Viewer system to generate 'previews' for composition
+      attachments.
+
+
+----------
+v4.0-ALPHA
+----------
+
+[mms] Added addressbook lookup and expand names feature to the redirect screen.
+[jon] Added the ability to create new tasks from received email messages.
+[mms] Rewrote fetchmail to use subclasses/drivers to do all the work - this
+      allows support for accessing more mail server types in the future.
+[mms] When renaming folders, all subfolders below the folder being rennamed
+      are now renamed also.
+[mms] Handle creation/display of RFC 2646 format text messages (flowed text).
+[mms] Rewrite of IMP_Tree code - now uses cache results for all folder and
+      mailbox updates instead of requerying the server for the folder tree.
+[jan] Add Indonesian language (Slamin <slamin@unej.ac.id>).
+[jan] Add check if the user has selected but not yet uploaded attachments.
+[mms] Configuration option to disable Mail logging.
+[jan] Add preference to automatically save all recipients in the default
+      address book.
+[mms] Use NLS:: hostname->country lookup to show country-of-origin for e-mail
+      messages on the message screen.
+[mms] Support for auto-BCC addresses during compose for each identity
+      (Nicholas Sushkin <nsushkin@users.sourceforge.net>).
+[mms] Support multiple file uploads on an individual compose page.
+[mms] HTML composed messages with image links now have the images downloaded
+      and sent inline with the message in a multipart/related part.
+[jan] Show graphical emoticons.
+[mms] For images that cannot be viewed directly by the browser, IMP can
+      automatically convert to a format that can be viewed.
+[cjh] Log reply/forward/redirect actions and display these logs when viewing
+      the messages.
+[cjh] IMP now supports a hordeauth setting in servers.php, a la Gollem and
+      other applications (Vijay Mahrra <vijay.mahrra@es.easynet.net>).
+[mms] Add on-demand generation of thumbnails for image attachments.
+[mms] Added 'Download All Attachments' link on message page to allow all
+      attachments to be downloaded in a single zip file.
+[mms] Improved HTML to text conversion when replying/forwarding to a HTML
+      message.
+[mms] Add 'tie to' ability to allow a specific identity to be explicitly tied
+      to a message sent from a certain address.
+[mms] Maximum subject/from lengths, From: field link options, and mailbox
+      time display formats are now user configurable preferences
+      (Robert Ribnitz <ribnitz@linuxbourg.ch>).
+[jan] Add aliases to the user's identities to find messages sent to one of
+      his identities but not directly to one of his email addresses.
+[mms] Preference to allow spam messages to be automatically deleted after
+      reporting (Rudi Heitbaum <rudi@darx.com>).
+[mms] Moved IMP authentication code to Auth_imp::.
+[mms] Added configuration options allowing admin to limit (per message) both
+      the total size of attachments and the number of attachments.
+[mms] Added preference allowing user to choose where to start browsing in a
+      mailbox when first opening the mailbox.
+[mms] The guts of the IMP filtering code has been removed and ported to
+      'ingo'. Thus, filtering is now handled via Horde API calls instead
+      of internally.
+[mms] The IMP search page now handles NOT searches, as well as basic AND/OR
+      searches via the IMAP_Search:: library.
+[cjh] Add shift-click selection/deselection of ranges of messages
+      (Andrew Johnson <horde@lastaccess.com>).
+[mms] Allow caching of folder list generation.
+[mms] Added IMP_IMAP:: class to handle IMAP/POP3 connections.
+[jan] Allow spam reporting from the mailbox view (Ahmed <ashihab@alcahest.com>).
+[jan] Add preference to store drafts marked unseen
+      (Ahmed <ashihab@alcahest.com>).
+[cjh] The last_login preference is now entirely handled by Horde.
+[jan] Let the users select the message's charset while they are composing a
+      message.
+[cjh] When a user's session times out while they are composing a message,
+      give them a special login screen which displays the message and
+      allows them to log in again to resume their message with all data
+      intact.
+[cjh] Remove javascript refresh popups in the compose window.
+[mms] Allow display of uuencoded attachments.
+[cjh] Add flag-setting options on the message view
+      (Dan Wilson <dan@acucore.com>).
+[mms] Allow blocking of images in HTML messages by default (Amith Varghese
+      <amith@xalan.com>).
+[mms] Support for showing mail previews in javascript 'tooltips'.
+[mms] Added message/partial MIME_Viewer.
+[cjh] Add whitelist links to the mailbox view
+      (Amith Varghese <amith@xalan.com>).
+[jan] Make fetchmail on login a maintenance task (Nuno Loureiro
+      <nuno@co.sapo.pt>).
+[mms] Add VFS garbage collection for temporary attachment data.
+[mms] Add a default encryption preference for sending messages.
+[mms] Add 'Nuke Message' action to filters.
+[mms] Add quick search links to search the current mailbox.
+[mms] Scan messages for X-Priority and display results in the mailbox
+      view (Florent AIDE <faide@alphacent.com>).
+[mms] Allow quicker access to large mailboxes on slower IMAP systems.
+[mms] Added multipart/appledouble MIME_Viewer.
+[jan] Add preference that lets users change the access control lists of
+      their imap folders (Chris Hastie <lists@oak-wood.co.uk>).
+[mms] Split return receipt requests into 'delivered' and 'read' options
+      (Ryan Malloy <rmalloy@meridianschools.org>).
+[mms] Implement fetchmail on login and fetchmail coloring to distinguish
+      between remote servers (Nuno Loureiro <nuno@co.sapo.pt>).
+[mms] User configurable attribution text for replies
+      (Chris Hastie <lists@oak-wood.co.uk>).
+[mms] Added support for message/disposition-notification messages.
+[jan] Folder names in any encoding can now be created/read through PHP's
+      multibyte support.
+[mms] The "Reply" link for list messages will always send a message to the
+      original poster, never the list (Chris Hastie <lists@oak-wood.co.uk>).
+[mms] Don't show "Reply All" link if user is the only recipient.
+[mms] Added a multipart/report MIME_Viewer to make undelivered mail reports
+      easier to read.
+[jan] Add Turkish translation (Genco Yilmaz <gencoyilmaz@yahoo.com>).
+[mms] Convert IMP_Folder:: into an OO-interface.
+[mms] Allow attachment descriptions to be altered
+      (Cliff Green <green@UMDNJ.EDU>).
+[mms] Set the local character set for all text/* composed messages.
+[mms] The full MIME_Contents:: object is now cached when viewing a message
+      rather than the individual MIME_Parts.
+[jan] Add UTF-8 support. Any content with any charset can now be displayed with
+      any translation.
+[cjh] The mail/compose method is now a full call, not a link. This means,
+      aside from a bit less code duplication, that we now honor the
+      compose_popup preference in $registry calls.
+[mms] Added hostname to information saved about user's last login.
+[mms] Added support for stripping attachments from messages.
+[mms] Better determination of MIME content-type for attachments when browser
+      does not send good information (using MIME_Magic::).
+[mms] PGP messages are now rendered via the MIME embedded in the message.
+[mms] Move composition related functions to IMP_Compose::.
+[mms] Now, when reaching the end of the mailbox in the message screen,
+      directly load the mailbox script instead of redirecting via a URL.
+[mms] Allow user to change disposition type of all attachments.
+[jan] Add a preference to display message previews in the mailbox view
+      (Stephen Sherlock <stevesherlock@es-net.co.uk>).
+[cjh] Add a preference for whether or not to display the entire addressbook
+      when first loading the contacts screen
+      (Etienne Goyer <etienne.goyer@linuxquebec.com>).
+[ejr] Add command line driver for quotas.
+[mms] Allow multiple messages to be forwarded as rfc822 parts from the
+      mailbox screen.
+[jan] Add logfile driver for quotas (Tim Gorter <email@teletechnics.com>).
+[cjh] Add searching by Bcc header.
+[mir] Add hook option to filter mail fetched by the Accounts (lib/Fetchmail)
+      feature.  Example added in horde/config/hooks.php.dist
+[cjh] Migrate to the new hooks API, removing the last need for
+      conf.php.dist (instead of conf.xml).
+[mac] Add S/MIME support.
+[avsm] Folders action bar only shows up at bottom if more than ten folders
+      are displayed on the screen.
+[cjh] All hook functions that set preferences are now handled by the generic
+      preferences hook system; see horde/config/hooks.php.dist.
+[mac] Don't modify the actual field name on auto-expand.
+[mms] Created an IMP_Mailbox:: class to deal with building mailbox information
+      and, eventually, all message indexing.
+[mac] Quota display now handled by the IMP_Quota API.
+[mms] Can now filter by any header.
+[cjh] Clean up the filter_on_login code, so that it is _always_ run on login.
+[mac] Added an IMP specific ZIP MIME_Viewer.
+[cjh] Use new &Identity::singleton() method and application-specific
+      driver implementations to load IMP's Identity_imp:: class.
+[mms] Moved IMP session creation functions to IMP_Session::.
+[mms] Added an IMP_Search:: class to handle mailbox searching.
+[mms] Message sending now handled by IMP::sendMessage().
+[mms] Move text filtering to IMP:: class.
+[mms] Added an IMP_Filter:: class to handle all filtering activity.
+[mms] Spam reporting sends a message in message/rfc822 format.
+[mms] Allow the users PGP public key to be uploaded to a keyserver.
+[mms] The compose script makes sure to clean up all attachment files that
+      are generated during a message composition. even if cancelled.
+[mms] Attachment disposition can now be set to either inline or attachment.
+[mms] Improved handling of attachment data.
+[mms] Added the multipart/related viewer.
+[mms] Moved the message index tracking mechanism in the message.php script to
+      IMP_Message::.
+[cjh] Add an option (preference controlled) to use IE's designmode
+      and send multipart/alternative messages.
+[jan] Use a seperate textarea field for blacklisted email addresses in the
+      filters preference.
+[mms] Add an option to allow for header summaries to be inserted when replying
+      to a message (Quinn Wilson <qwilson@midworld.org>).
+[mms] Created an IMP_Headers:: class to deal with all header manipulation
+      required in IMP.
+[mms] Added a generic multipart/* MIME_Viewer.
+[mms] Added a multipart/alternative MIME_Viewer.
+[mms] Moved all common functions dealing with displaying the content of
+      mail messages to lib/Contents.php.
+[cjh] Add an option to see a confirmation that messages were succesfully sent.
+[cjh] Add option to delete fetched messages when using the fetchmail code.
+[mms] Added application/ms-tnef MIME_Viewer.
+[mms] Search for PGP public keys on a public keyserver for signed messages
+      if no key found locally.
+[mms] Can now send messages with "X-Priority" set.
+[mms] Add option to search for PGP data in 'text/plain' messages.
+[mms] Add "Show All/Limited Headers" to message view.
+[jan] Add fetchmail feature (Nuno Loureiro <nuno@co.eth.pt>).
+[mms] Added MIME_Viewer to allow attached images to be viewed inline.
+[mms] Add link for "Reply to List" for mailing lists.
+[mms] Now recognize RFC 2369 headers (messages from mailing lists) and output
+      the relevant information.
+[mms] Add message/rfc822 MIME_Viewer.
+[jon] Set the username and password parameters when SMTP authentication is
+      requested.
+[mms] Handle the new behavior of MIME_Structure::parse().
+[mms] Add OpenPGP functionality.
+[ejr] Add text/enriched MIME_Viewer.
+[cjh] If the server list is being used, users shouldn't be changing
+      the folder prefix.
+[max] Add Brown IMP theme (Marco Obaid <marco@muw.edu>)
+[cjh] Make it possible to call IMP::authenticate() with arguments coming from
+      somewhere other than GET or POST vars.
+[jan] Re-enable to select no sent mail folder for an identity.
+[jan] Add method IMP::stripPreambleString().
+[jan] Fix problems with sent mail folder maintenance not being executed.
+[cjh] Fix problems with the mailbox displayed after login if there is a
+      folders prefix set.
+[cjh] Use the new PrefsUI class.
+[cjh] Revert to not storing the folder prefix as part of user preferences.
+[cjh] Fix problems with double Last Login: message and maintenance.
+[jon] Adapt to the new Horde::img() syntax.
+[cjh] Use the new Notification system.
+[jan] Remove the standard value for the language preference. The language to
+      fall back to should be set Horde wide in lang.php instead.
+[jon] Honor the "save sent mail" checkbox on the compose screen.
+[jon] Print the language type in the <html> entity.
+[jon] Add <link> entity support.
+[jon] Add <link> support to the mailbox and message views.
+[mms] Move the quote prefix character from conf.php to the preferences.
+[mms] Move the maintenace framework to Horde.
+
+
+------
+v3.2.8
+------
+
+[jan] Close XSS when setting the parent frame's page title by javascript (cjh).
+[mms] Fix display of MIME parts less than 1K when local number format uses
+      ',' as the decimal separator.
+[jan] Don't use trash folder on POP3 servers under certain circumstances
+      (Bug #1373).
+[jan] Fix "Save as" link to save message sources (Bug #1233).
+
+
+------
+v3.2.7
+------
+
+[mms] Determine the default IMAP delimiter according to RFC 3501.
+[mms] Fix the folders screen hanging if there was only one folder (Bug #504).
+[jan] Correctly cancel messages composition in all cases (Rich Bartell
+      <rwb@bartellonline.com).
+[mms] Don't convert colons in user-defined headers to underscores (Bug #676).
+[jan] Don't blacklist already blacklisted addresses again (Bug #530).
+
+
+------
+v3.2.6
+------
+
+[jan] SECURITY: Remove tags with -moz-binding: styles in the HTML MIME viewer.
+[cjh] SECURITY: Remove scripts from <base> tags in the HTML MIME viewer.
+[jan] SECURITY: Remove scripts from obfuscated "on..." attributes in the HTML
+      MIME viewer.
+
+
+------
+v3.2.5
+------
+
+[jan] SECURITY: Close an XSS hole in the HTML viewer, a variation to the one
+      reported in http://www.greymagic.com/security/advisories/gm005-mc/.
+[cjh] Fix escaped double quotes on some broken mail servers (Bug #292).
+[jan] Comment complete <style> tags out in the HTML viewer to avoid CSS code
+      appearing in the message.
+
+
+------
+v3.2.4
+------
+
+[cjh] SECURITY: Close an XSS hole exploited via the Content-type header
+      of malicious emails.
+[jan] Fix conversion of folder names in some non-ascii charsets with buggy
+      iconv implementations (Wenzhuo Zhang <wenzhuo@zhmail.com>).
+[jan] Filter out <base> tags when viewing HTML messages (Bug #10).
+[mms] Encode subject when saving as draft (Tero Matinlassi
+      <tero.matinlassi@edu.vantaa.fi>).
+
+
+------
+v3.2.3
+------
+
+[jan] Fix the 'undefined index direct_access' error still occuring in obscure
+      cases.
+[jan] Add Indonesian language (Slamin <slamin@unej.ac.id>).
+[jan] <style> and <link> tags get commented out in HTML messages to not
+      allow them breaking the page layout.
+[jan] Add Galician translation (Rafael Varela Pet <srrafa@usc.es>, Guillermo
+      Mendez <guille@usc.es>).
+[jan] Remove HTML tags showing up in some error messages.
+[mms] The spell check feature now keeps lines wrapped and correctly handles
+      apostrophes in words on all architectures.
+
+
+------
+v3.2.2
+------
+
+[mms] XSS vulnerabilities in the HTML viewer fixed (Ulf Harnhammar
+      <ulf@update.uu.se>).
+[jan] Add Arabic (Syria) translation (Platinum Development Team
+      <devteam@platinum-sy.net>).
+[jan] Add Arabic (Oman) translation (Said Al-Hosni <admin@wabhosting.com>).
+[jan] Add Macedonian translation (Stojan Pesov <ssp@eureka.com.mk>).
+[jon] Allow the spam reporting system to also use an external program.
+[jan] Add IMP::rfc822WriteAddress() as a replacement for the buggy
+      imap_rfc822_write_address() function.
+[jan] Add Thai translation (Surasak Srisawan <surasak@rirc.ac.th>).
+[jan] Add Icelandic translation (Bjorn Davidsson <bjossi@snerpa.is>).
+[mms] Correct display of filter rules with "special" HTML characters.
+
+
+------
+v3.2.1
+------
+
+[mms] Search results page fixed to correctly link to message compose if
+      from_link set to 'compose'.
+[mms] Cancel now works correctly on the redirect screen when not composing
+      in a new window.
+[jan] Fix an 'undefined index direct_access' error for first time users in
+      conjunction with Horde 2.1.
+[mms] Don't show popup new mail windows on login.
+[jan] Fix bug causing some MIME parts to not be displayed correctly.
+
+
+----
+v3.2
+----
+
+[jan] Add Catalan translation (Angels Guimerà <angels.Guimera@uab.es>).
+[mms] Check for invalid 8bit characters in email addresses.
+[mms] Improved download links that handles various browser quirks much
+      better than before.
+[mms] Workaround for multipart/form-data and IE 6+ browsers on the compose
+      page.
+[mms] Do not allow the '\' character in full names (see RFC 2822 [3.2.5]).
+[jan] Add IMP::utf7[En|De]code() methods that allow not only iso-8859-1 encoded
+      folder names but every name in the charset of the current language.
+[mms] Check for invalid character sets when parsing text/plain messages.
+[mms] Allow filter on refresh from IMP summary view.
+[jan] Fix attachment downloads with Opera.
+[jan] Add Latvian translation (Kaspars Kapenieks <kaspars@rcc.lv>).
+[mms] Don't show addressbook icon for e-mail addresses on print screen.
+[jan] Add Romanian translation (Corneliu MUSAT <cmusat@tiamat.keysys.ro>).
+[cjh] Close several small XSS vulnerabilities
+      (Mitja Kolsek <mitja.kolsek@acros.si>).
+[jan] Fix attachment downloads with IE over https
+      (Leena Heino <Leena.Heino@uta.fi>).
+[cjh] Add an option to use a VFS for attachment storage if an appropriate
+      Horde version (2.2 or later) is installed.
+[cjh] Add an option to display a confirmation of sending messages, if you are
+      not using a pop-up compose window.
+[jon] The spam reporting link now sends the complete message body, not just
+      the first 10k.
+[mac] Add the ability to move/copy messages to a new folder.
+[jan] Show timeout warning if session is about to expire.
+[jan] Add IMP::addParameter().
+[jan] Add Lithuanian translation (Darius Matuliauskas <darius@lnk.lt>).
+[jan] Add Bulgarian translation (Miroslav Pendev <pendev@hotmail.com>).
+[mms] Received header generation now compliant to the pseudo-standard defined
+      in RFC 2181.
+[cjh] User preferences, unless locked, override the from and fullname hooks.
+[mms] Added images MIME_Viewer.
+[mms] Invalid addresses identified by the c-client library are now handled
+      more cleanly.
+[mms] Search results were not always working with all features - this has been
+      fixed (Geoff Hort <g.hort@unsw.edu.au>).
+
+
+----
+v3.1
+----
+
+[jan] Add Hungarian translation (Laszlo L. Tornoci <torlasz@xenia.sote.hu>).
+[cjh] Clean up the Empty Trash action, and return you to the screen you were on
+      when you clicked the menu item.
+[jan] Use SMTP authentication if $conf['mailer']['params']['auth'] in
+      horde/config/horde.php is set.
+[jan] Add IMP::prepareMailerHeaders().
+[jan] Add Norwegian Nynorsk translation (Per-Stian Vatne <psv@orsta.org>).
+[jan] Add Slovenian translation (Jure Krasovic <jurek@rcc-irc.si>).
+[cjh] Add an option for allowing resuming of all messages in the Drafts folder
+      (Liam Hoekenga <liamr@umich.edu>).
+[cjh] Fix problems with javascript, IE, and # in folder names.
+[mir] Add Empty Trash menu item.
+[mir] Add option to empty a mailbox on the folders screen.
+[jan] Add Japanese translation (B.J. Black <william.black@sun.com>).
+[cjh] Protect against modified login forms.
+[mir] Add preferences to control quote and signature highlighting.
+[cjh] Don't make the user select an addressbook if there's just one in
+      the contacts interface.
+[cjh] Close a potential problem with register_globals On and $js_onLoad.
+[cjh] Add do_maintenance preference (Julian Jares <julian@jares.com.ar>).
+[cjh] Fix errors when there are no subscribed folders.
+[cjh] Fix a problem with sorting by thread, POP3, and deleting messages.
+[cjh] Fix IMP summary with POP3 if the user polls folders other than INBOX.
+[cjh] Change to lib/Tree.php that fixes folder problems for some Cyrus users
+      (David Kerry <imp@snti.com>).
+[cjh] Add constants.php so that the SORTTHREAD constant can be used in
+      config/prefs.php.
+[jon] Make displaying the mailbox legend a personal preference.
+[cjh] Add compose link to the summary (Quinn Wilson <qwilson@midworld.org>).
+[cjh] Improve the LOGIN_COMPOSE functionality to pass along To:, Cc:, etc.
+[mir] Add addressbook interface popup to the compose window.
+[mac] Add sort-by-thread.
+[jon] Add <link> entity support.
+[cjh] Simplify a lot of the spelling logic and fix problems with the Change
+      All option.
+[cjh] Use Horde::getFormData() in folders.php and fix problems with folder
+      names involving quotes.
+[cjh] Fix IMP_Folder::exists() for names with wildcards in them.
+[cjh] Fix a problem with passwords that end or begin with spaces.
+[cjh] Prefix lines passed to ispell with a '^'.
+[jan] Add preference that selects the view or mailbox to display after login.
+[cjh] Don't imap_utf7_decode() folders until they are displayed to the user;
+      always pass around and store encoded values.
+[cjh] Don't call session_start() again in login.php.
+[cjh] Get rid of the server_list_hidden option and change the server_list
+      option to be either 'shown', 'hidden', or 'none'.
+[cjh] Set the align To:, Cc:, and Bcc: label cells to top.
+[jan] Remove the 'folders' preference in favour of a new 'change_folder'
+      configuration that sets if a folders field is displayed on login.
+[cjh] Remove the "or: " from box in the compose screen if identities are
+      being used.
+[cjh] Fix a problem with folder prefixes beginning with a '.' and
+      show_dotfiles set to false.
+[jan] Add preference: include message in reply (Ramon Kagan <rkagan@yorku.ca>).
+[cjh] Fix the printing javascript.
+[jan] Add Estonian translation (Toomas Aas <toomas.aas@raad.tartu.ee>).
+[cjh] Trim long subjects in the message screen header so that navigation
+      elements remain in a consistent place from message to message.
+[jan] Add Slovak translation (Leo Mrafko <leo@oel.sk>).
+[jan] Fix shifting of selected checkboxes if cookies are disabled.
+[cjh] Fix lots of folder issues and get rid of unnecessary urlencoding().
+[cjh] Make the folder navigator work with additional folder hierarchies
+      (such as UW's #shared/).
+[jan] Include print functions and error handling only in the print window
+      to prevent "Your browser does not support this print option" messages.
+[cjh] Add rfc822_explode() to handle exploding of addresses ignoring quoted
+      or escaped commas - e.g., "Lastname, Firstname" <address@example.com>.
+[cjh] Folder names need to be urlencoded in compose links so that folder
+      names with '#' and other characters in them - like UW's #shared/
+      hierarchy - work correctly.
+[cjh] Make sure $conf['server']['show_dotfiles'] is honored by the folders
+      screen as well as by the drop-down lists.
+[cjh] Switch output compression to ob_gzhandler().
+[cjh] Use IMP_TEMPLATES constant for all template paths.
+[cjh] Use $registry->get() for all Registry information.
+[cjh] Get rid of unnecessary IMP_NAME constant.
+[jan] Add Portugues translation (Nuno Loureiro <nuno@eth.pt>).
+[jan] Fix bug with maintenance and login to the framework.
+[jan] Fix problems with folder names that contain special characters.
+[jan] Fix spell checking to work with the changed str_tok() behaviour.
+[jan] Add mailbox action "Empty Trash folder".
+[jan] Add Date: header when saving a draft.
+[jan] Move the form variable handling from the libraries to the pages.
+[jan] Show a more detailed error message if sending a message fails. (Michael
+      Redinger <Michael.Redinger@uibk.ac.at>)
+[jan] Escape login data correctly.
+[jan] Preselect correct identity when resuming drafts.
+[jan] Fix bug if IMP doesn't "remember" the trash folder in the preferences.
+[jan] Preferences are now consistently called options in the whole ui.
+[jan] Add comments for search_sources and search_fields preferences.
+[jan] Fix bug in the maintenance section if IMP is not in the default directory.
+[jan] Add Danish translation (Martin List-Petersen <martin@list-petersen.dk>).
+[jan] Keep the state of all form elements in the compose window during page
+      reloads (expanding name, spell checking).
+
+
+----
+v3.0
+----
+
+[jan] Use the 'use_trash' preference instead of the 'expunge_on_move'
+      configuration to decide if we have to expunge the folders.
+[avsm] Add .htaccess files to deny access to data directories.
+[jan] Add Swedish translation (Andreas Dahlén <andreas@dahlen.ws>).
+[jan] Add Finnish translation (Leena Heino <liinu@uta.fi>).
+[cjh] Re-add Save As feature.
+[jan] Add Swedish translation (Andreas Dahlén <andreas@dahlen.ws>).
+[cjh] Fix problems when $prefix or $namespace is also a substring within
+      folder names.
+
+
+--------
+v3.0-RC4
+--------
+
+[rich] Include rewritten and reorganized documentation.
+[jan] Add preferences: close window after saving draft, quote prefix.
+[jan] Add comments on how to use the quota hook with Courier (Joshua E Warchol
+      <jwarchol@dsl.net>).
+[avsm] Disable monthly maintainance operations by default.
+[bjn] Change 'en' and 'en_EN' locales to 'en_US' (default).
+[cjh] Fix first page calculation.
+
+
+--------
+v3.0-RC3
+--------
+
+[cjh] Remove onclick events in the mailbox view for consistency and
+      simplicity.
+[cjh] Better error reporting when an attachment upload fails.
+[cjh] If a text part is in a different character set, try displaying it
+      inline, but give the user a link to open it in a new window.
+[cjh] Filter out iframes and meta tags in HTML attachments.
+[cjh] Check to see if sent-mail-mth-year already exists, and give a warning,
+      instead of failing the rename, if it does.
+[mms] Add new preference to display if any filters have been applied to
+      any message.
+
+
+--------
+v3.0-RC1
+--------
+
+[jan] Add Greek translation (Stefanos I. Dimitriou <sdimitri@teiath.gr>).
+[jan] Add Korean translation (J.I Kim <aporie@netian.com>).
+
+
+------
+v2.3.7
+------
+
+[jon] Rename the 'append_header' configuration variable to 'prepend_header'.
+[cjh] Use "redirect" instead of "bounce".
+[cjh] Introduce an Identity_IMP subclass to hide all of the IMP-specific
+      hooks and utility functions.
+[cjh] Highlight messages in the mailbox view as they are moused over (Alex
+      Leverington <admin@networkessence.net>).
+[cjh] Leave session_start() to the Registry.
+[cjh] Let the Registry handle retrieving preferences.
+[cjh] If using a language that needs it, allow selection of the charset to
+      view messages in (<anton@valuehost.ru>).
+[jan] Extend 'nav_expanded' preference: Expand folders like they were the
+      last time.
+[jan] Move all the identity stuff into a seperate class and add sent-mail
+      options to the identities.
+[cjh] Fix changing identities after using Expand Names.
+[cjh] Make the textareas for signature and message body use the width set in
+      the user's preferences.
+[cjh] Fix Bounce, Move, and Copy from within a search results set.
+[cjh] IMP now uses Horde::logMessage() for all logging activity.
+[jan] Rename sent-mail folder based on the old name and recreate sent-mail
+      folder after renaming during the maintenance tasks.
+[jan] Add selection fields after expanding names on Cc: and Bcc:
+[cjh] Remove the 'mailhost' and associated preferences, and add
+      $conf['server']['change_<foo>'] switches so allow control of the login
+      screen.
+[jan] Add Russian translation (Anton Nekhoroshih <anton@valuehost.ru>).
+[jan] Add a new field after expending names to allow adding more addresses.
+[max] Add several search criteria to and change the UI of the search screen.
+[jan] Add Italian translation (Giovanni Meneghetti <gmeneghetti@infvic.it>).
+[mms] Add maintenance operations.
+[cjh] Add French help file.
+[jan] Add select field if "expand names" returns more than one matching
+      name/address.
+[jan] Choose correct identity if replying to, forwarding or resuming a
+      message.
+[jan] Add Polish translation.
+[jan] Show personal flag for all identities.
+[jan] Add support for identities to the compose window.
+[cjh] Handle a couple of cases where the mailbox in the session has changed
+      more gracefully.
+[jan] Add French translation (Frederic Trudeau <ftrudeau@CAM.ORG>).
+[cjh] Fix spam reports, and give the user an error message letting them know
+      that the message was successfully reported.
+[cjh] Add Czech translation (pchytil@asp.ogi.edu).
+[jan] Add new timezone handling with select box in prefs.
+[cjh] Handle moving messages correctly when Hide Deleted is on.
+[cjh] Add blacklisting capability (generates filters to block senders).
+[avsm] The "not configured" page no longer depends on Horde.
+[cjh] Tweak the message UI a bit.
+[avsm] Replace $conf['paths'] with the $registry equivalents.
+[avsm] Switch IMP over to the Horde MIME_Viewer framework.
+[avsm] Identity editing now allows switching between create/edit mode.
+[cjh] Add quota hook (Marc Jauvin <marc@register4less.com>).
+[cjh] Use onclick="" for the javascript that opens attachment windows.
+[cjh] Support printing in older browsers through VBScript.
+[cjh] Add $HTTP_HOST based virtual hosting hooks (Marc Jauvin
+      <marc@register4less.com>).
+[cjh] Catch a few more sneaky things in the html sanitizing regexps.
+[cjh] Make sure to encode 8-bit recipients.
+[cjh] Make the folder tree more robust in dealing with folder prefixes.
+[cjh] Add a signature hook to dynamically set part or all of a user's
+      signature (Marc Jauvin <marc@register4less.com>).
+[jon] Changed $conf['hooks']['from_hook'] to $conf['hooks']['from'].  It now
+      accepts a function name for a value.
+[cjh] Clear the whole session when the user logs out and IMP is the Horde
+      auth controlller.
+[jon] Added support for an optional 'smtphost' $servers parameter.
+[cjh] Use the *url() functions more consistently to make sure that
+      cookie-less sessions work.
+[cjh] Add Simplified Chinese translation (WangHengWen <whw@my169.com).
+[jon] Renamed the 'delete_return' user preference to 'mailbox_return'.
+[jon] Honor the 'delete_return' preference after moving and copying messages.
+[cjh] Don't display the folder prefix in the folder tree (Egan
+      <egan@sevenkings.net>).
+[cjh] Add $conf['menu']['apps'] to add links to other Horde applications in
+      the menu bar.
+[cjh] Allow for prompts in the server list (entries whose keys begin with
+      '_') and clean up some of the server list/login logic.
+[cjh] Fix the LOGIN_COMPOSE action.
+[cjh] Use imap_fetch_overview() to build the mailbox index. Should be a lot
+      nicer to the IMAP server.
+[cjh] Sort the folder drop-down with a natural-order algorithm, case
+      insensitive, to match the folders screen.
+[cjh] Add UI for folder download.
+[cjh] Use prefs.gif and generic prefs templates from Horde.
+[cjh] Don't wrap forwarded messages; they should be already wrapped.
+[cjh] Add actual Spanish translation (Raul Alvarez Venegas
+      <rav@tecoman.ucol.mx>).
+[jan] Allow opening folders with new mail from the notification popup.
+[jon] Merge doctype.inc into common-header.inc.
+[cjh] Use is_uploaded_file() and Horde temp file routines to make sure that
+      uploaded files are valid and are stored in random temp file names.
+[jon] Allow the registry to handle IMP's configuration values.
+[jon] HORDE_BASE is now defined in lib/base.php instead of config/conf.php.
+[max] Add search and add addressbook user preferences.
+[jon] Add Dutch translation from Jan Kuipers <jrkuipers@lauwerscollege.nl>.
+[jon] Add a new user preference to determine whether a user is returned to
+      the mailbox listing after a message is deleted.
+[max] Add powerpoint-viewer.
+[jon] Add a time zone user preference.  It is only used for outbound messages.
+[jon] Make the text wrapping width configurable on a per-user basis.
+[cjh] Add French translation (Christophe Ruelle <ruelle@echo.fr>).
+[cjh] Clean up the spelling code, fixing some problems with form data,
+      multiple htmlspecialchars() calls, and losing text when finishing the
+      spell check.
+[cjh] Make whether or not to use a trash folder a user preference.
+[cjh] Check for undefined 'size' attribute of attachments; normally
+      indicates that the file was too large to be uploaded sucessfully.
+[cjh] Show KB for attachments in the compose window, instead of bytes.
+[jon] Cleanup preferences upon logout.
+[cjh] Add Brazilian Portuguese translation (hostmaster@sbs.srv.br).
+[cjh] Add new mail popup (if the pref is enabled) in the mailbox view (Nick
+      Ustinov <Nick.Ustinov@videinfra.lv>).
+[max] Add the realm field to make logins unique on multi-server configurations
+      for preferences and authentication.
+[max] Allow IMP to be an authentication handler for Horde.
+[cjh] Define the HORDE_BASE constant in config/conf.php, and use it when
+      referring to any of Horde's files.
+[max] Remove connection tracking, made obsolete by redirect.php.
+[cjh] Handle multipart/alternative correctly.
+[jon] Don't print the Bcc: list in the viewable message headers.
+[jon] Retired config/menu.txt in favor of config/menu.php.  This file follows
+      a new format based on native PHP data structures.
+[jon] Changed compose.php's caching to 'private, must-revalidate' for Netscape.
+[max] Use Horde's raiseMessage on compose screen.
+[jon] Use Horde's temporary file routines.
+[max] Use the new Registry:: framework to add addresses to Turba.
+[cjh] Allow purging of deleted messages from search results.
+[cjh] Use the new Registry:: framework to expand addresses from Turba
+      addressbooks (or anything else that implements the contacts/expand API).
+[cjh] Fix some problems with mailto: generated links, support
+      mailto:address?subject=foo, etc., and make compose message mouseovers
+      more consistent in all parts of the UI.
+[cjh] Rename MOTD.html to motd.php, and move to a .dist file.
+[cjh] Re-added onchange javascript for the menu select, but with a
+      javascript guard to avoid repeated page loads when accidentally
+      scrolling through with a wheel mouse.
+[jon] Fixed In-reply-to: and References: headers.  Reply threading works again.
+[cjh] Remove password changing code; it belongs in Gollem.
+[cjh] Convert tabs in text parts to 8 spaces for proper display.
+[cjh] Fix deletion/undeletion of messages in search results from message view.
+[cjh] Fix first new message detection, hopefully for real this time.
+[cjh] Visual tweaks to the folder tree to make things line up better.
+[cjh] Sort search results according to preferences.
+[cjh] Rename get_from() to getFromAddress(), and clean up the logic so that
+      if users are allowed to change their addresses or fullnames, they can
+      do them on a one-time basis by editing the From: line in the compose
+      screen.
+[jon] Retired $conf['user']['allow_filters'].  Administratively locking the
+      'filters' preference produces the same behavior.
+[cjh] $conf['user']['allow_directory_search'] is gone; we now just check and
+      see if a contact manager is registered with Horde, and link to it if
+      it is.
+[cjh] Nuke almost all <font> tags
+[cjh] Fix all checks against the protocol to use strstr, so they work
+      against either imap or imap/ssl and pop3 or pop3/ssl.
+[cjh] Simplify a bit of the MIME stuff - go off of the Content-Disposition
+      of parts most of the time, with just an option to never show parts
+      inline in the conf file. Also, remove the override_text option, and a
+      few other cleanups.
+[cjh] A few changes so that we can properly support the newly-working
+      imap/ssl and pop3/ssl support in php.
+[jon] Updated preferences functions to match the new Horde preferences API.
+[cjh] Trim some unused javascript from the compose screen, and fix the IE
+      subject field keypress hack.
+[cjh] Modify the default mime.php configuration so that things like icons
+      are assigned to file types even if we don't have a viewer for that
+      file type.
+[cjh] Allow '+' to terminate URLs.
+[cjh] The preferences GUI is now built almost entirely on the fly, with only
+      a few bits that are specific to IMP.
+[cjh] Fix an infinite loop with invalid folder prefixes in the folder view.
+[cjh] Reorganize the preferences into multiple, small screens. Change
+      password and Filters are both accessible through the options screen now.
+[cjh] Close a hole in the html attachment cleaning code.
+[cjh] Fix spam reporting to use the new MIME api.
+[cjh] Use array_slice() instead of a for loop in IMP_Message::range().
+[cjh] Use message lists and FT_UID when deleting/undeleting messages.
+[cjh] Safeguards against errors if a message does not exist or is
+      incorrectly requested.
+[cjh] $conf['server']['to_domain'] is now gone, along with
+      $servers['foo']['to_host'], $servers['foo']['from_host'], and
+      the maildomain prefs value. These are all now represented by
+      $servers['foo']['maildomain']. Update your configurations accordingly.
+[cjh] $conf['server']['namespace'] is gone, in favor of the use of
+      $servers['foo']['namespace'].
+[max] Allow selecting multiple fields in filters.
+[cjh] When fetching a mime part from the ObjectStore fails, correctly fall
+      back and parse the message to find it.
+[cjh] When resuming or forwarding messages with attachments, don't duplicate
+      parts.
+[cjh] Everything in lib/IMP.php now lives inside the IMP:: class, and the
+      phpdoc documentation is up to spec.
+[cjh] Define an IMP_BASE constant used wherever including files to make sure
+      that files are included relative to where IMP is in the filesystem. This
+      allows IMP scripts to be included from other scripts in completely
+      different hierarchies and still work.
+[jon] Make sure ./config/trailer.txt is readable before we try to use it.
+[cjh] Fix a couple of problems with imap subscriptions and utf7-encoded
+      mailbox names.
+[cjh] Move IMP_Folder::displayName() to IMP_Util::displayFolder(), as it is
+      used in places that don't use the rest of the folders code.
+[cjh] The login form now posts to redirect.php (renamed from
+      remote_login.php) so as to avoid posting directly to the mailbox page.
+      This avoids some problems with "Page Expired" errors.
+
+
+------
+v2.3.6
+------
+
+[jon] Added $conf['compose']['allow_receipts'] to control whether a user can
+      request a return receipt from the compose screen.
+[cjh] Revamp the attachment downloading code. At the moment, it works with
+      every browser I can test.
+[max] Make IMP XHTML 1.0 compliant.
+[cjh] Pass the results of get_barefrom() to the problem reporting page as
+      the email address to use.
+[cjh] Move navigator.php to folders.php.
+[max] Add number of words per spelling screen user preference and bring
+      spelling up to horde coding standard.
+[cjh] Make IMP work with register_globals = Off and magic_quotes_gpc = On.
+      (IN PROGRESS)
+[avsm] Move navigator refreshing to a user-preference, and apply it to
+       the mailbox view as well.
+[cjh] Fix viewing HTML messages with inline images.
+[cjh] Add IMP::partSummary() (formerly mime_summary()) since it is
+      IMP-specific.
+[cjh] Add the ability to search by To: field.
+[cjh] Add Horde::raiseMessage() error reporting to the IMP_message:: class.
+[cjh] Allow creation of top-level folders in navigator.php.
+[max] Move javascript functions on the filters screen to the beginning
+      of the page.
+[avsm] Allow a user-defined set of folders to be polled for new mail
+      in the navigator
+[jon] Make inline email addresses into compose links.
+[jon] Added $conf['user']['allow_resume_all'].  Unless it's true, only
+      messages marked as 'drafts' can be resumed.
+[avsm] Add 'subscribe/unsubscribe' to the actions list in the navigator
+[avsm] When using subscribe mode, show a toggle in the navigator to allow
+      the user to view unsubscribed folders also.
+[cjh] Remove NNTP support for now since it's not really functional, and we
+      have Troll.
+[cjh] Add imap/ssl as a protocol option.
+[cjh] Add javascript to the preferences screen to let users create new
+      folders for sent-mail and drafts.
+[max] Javascript usability changes to the filters screen.
+[max] Add mail filtering rules functionality and the associated preferences.
+[cjh] Add IMP_Folder::displayName() and use it for any user messages.
+[cjh] Handle more options on search sets (replying, etc.) more gracefully.
+[cjh] Hide the folders prefix from the user in folder navigator javascript
+      messages.
+[cjh] Remove the $preamble argument from IMP_Folder::rename().
+[cjh] Clean up trash folder functionality; it _should_ work now.
+[avsm] Add success messages for the create/rename/delete folder operations.
+[avsm] Convert the navigator to checkboxes to allow multiple operations.
+[cjh] Use the new Horde::raiseMessage() method in the IMP_Folder:: class, and
+      display message and IMAP alerts right after the menu.
+[cjh] Use select lists to pick the sent-mail and drafts folders.
+[cjh] UI tweaks on the preferences screen, and use compression if it's enabled.
+[cjh] UI tweaks to the folder navigator to include actions at the bottom of
+      the page as well.
+[cjh] Make use of new Registry:: features to not hardcode the path to
+      compose.php in lib/js/open_compose_win.js.
+[cjh] Heavily commented config/conf.php.dist.
+[avsm] Make folder subscriptions a per-user preference, instead of global.
+[cjh] Encrypt passwords in session data, using a key stored in a cookie or
+      mildly obscured from the session id and sitename setting.
+[cjh] Fix bouncing of messages.
+[cjh] Make searching work under pop3.
+[cjh] Attempt to provide better compose window tab behavior for MSIE (Max
+      Kalika).
+[cjh] Use imap_utf7_encode|decode properly in the folder navigator.
+[jon] Cleanly handle the 'undisclosed-recipients' case.
+[jon] Consider a composed message valid if it has a To: field or a Cc: field
+      or a Bcc: field defined.
+[jon] Re-introduced the 'sig_dashes' preference.  If enabled, the user's
+      signature will be preceded with the standard courtesy dashes ('-- ').
+[jon] Added a 'sig_first' preference that will place the signature text above
+      the message body in replies and forwards. (max@the-triumvirate.net)
+[cjh] Make sure to imap_utf7_encode() the sent-mail and drafts folders.
+[cjh] Fixed display of search results from multiple mailboxes.
+[cjh] Started to comment our config files more thoroughly.
+[cjh] Remove $conf['use_horde_auth'] from IMP 2.3.
+[cjh] Adjust the conf files, message.php (spam reports) and compose.php to
+      use the PEAR Mail:: interface.
+[cjh] Fixed search.
+[cjh] Fixed select all/select none for pop3.
+[cjh] Cleaned up the paging logic a little bit and tweaked the descending
+      sort code to hopefully fix a bug.
+[jon] Automatically set the focus to the username field on the login screen.
+[cjh] Use buttons for Next, Cancel, and Done in spellcheck, and change the
+      name of the config option to $conf['utils']['spellchecker'].
+[cjh] When we delete a folder in the navigator, just splice that folder out
+      of the tree instead of reinitializing everything.
+[cjh] Updates to the navigator to handle more situations - folder prefixes,
+      etc. Seems to work well now with UW and Exchange, at least.
+[cjh] Remove fetchmail functionality until a later release.
+[cjh] Fix a bug when forwarding certain kinds of MIME messages.
+[cjh] When composing in the same window, carry information about where we
+      are in the mailbox around so that we can return to the same place.
+[cjh] Fixed a silly bug in mime_view_text() that added ampersands to the
+      beginning of some messages.
+[avsm] Add an 'Undelete' option to the message view, for deleted messages.
+[avsm] Shift Navigator UI around to bring it more in line with the rest of IMP.
+[jon] Don't display the 'Spell Check' link if $conf['utils']['ispell'] is empty.
+[cjh] Use the new optional argument to imap_sort (added to php4 2000-10-18)
+      to implement the "Hide Deleted" functionality cleanly.
+[cjh] If a user is behind a proxy that provides an HTTP_X_FORWARDED_FOR
+      variable, log it in the case of failed logins.
+[cjh] Allow selecting of personal/not personal messages, and define contants
+      for all of the flags so that they're not hardcoded anywhere.
+[cjh] Add functionality to remote_login.php and mailbox.php to allow a user
+      to go right to the compose window (or to pop one up) on login.
+[cjh] Forward-port the excel-viewing code from 2.2.
+[cjh] Make the wordview utility $conf['utils']['wordviewer'] to make it more
+      program agnostic.
+[jon] Adding Help link to the menubar.
+[cjh] Decode MIME attachment filenames.
+[cjh] Tweak message saving to be more correct: Mathieu CLABAUT
+      <mathieu.clabaut@free.fr>.
+[cjh] Moved the session and authentication functions inside IMP::.
+[cjh] Started using HTTP_POST_VARS, HTTP_GET_VARS, etc.
+[cjh] Added an option to use Max Kalika's Connection:: tracking class.
+[jon] Added a simple spam reporting mechanism ($conf['spam']['reporting']).
+[jon] Standardize on the rfcdate() function in lib/Horde.php.
+[jon] Changed some of the wording in the "Change Flags:" dropdown list.
+[cjh] Form-uniqifying javascript to prevent caching problems with spellcheck.
+[cjh] Inherit options from Horde, merging $horde into $conf.
+[cjh] Make use of the HTTP_Cache class, if $conf['compress_content'] is true.
+[cjh] Replace $conf['localhost'] with $HTTP_SERVER_VARS['SERVER_NAME'].
+[cjh] Use buttons for send message, save draft, and cancel.
+[jon] Message content filtering is now a user-specific preference.
+[cjh] respect the value of the TMPDIR environment variable in tmpdir().
+[cjh] view.php now checks for browsers which require downloads to be
+      cacheable (like MSIE).
+[jon] Remove our address from the Cc: list when "replying to all".
+[jon] Move the filtering code around a bit and add a sample filter.txt.dist.
+[jon] Added some simple message content filtering options.
+[jon] Use the 'public' cache limiter for compose.php.
+[cjh] Add a received header for the hop from the browser to the web server.
+[cjh] Denote personal mail with an icon (what pine marks with '+') (Max
+      Kalika <max@the-triumvirate.net>).
+[cjh] Protect us from possible file-reading exploits through file attachment.
+[jon] Silence session_start warnings.
+[avsm] Navigator control bar now has options to create/delete/rename folders
+[jon] Control of the compose window is now determined by the 'compose_popup'
+      user preference.
+[jon] Replace buildURL() with Horde::url().
+[jon] Restructured the SQL preferences schema.
+[cjh] Use $horde['session_name'].
+[cjh] Session:: doesn't really buy us anything, so we've moved the utility
+      methods that do into Horde::, and are just using php4 session calls
+      elsewhere.
+[jon] Updated session functions to use Horde's new Session instances.
+[cjh] Add a mime function for viewing php code.
+[cjh] Added the beginnings of a fetch-mail-from-remote-server piece.
+[jon] Removed the last few references to the newuser code.
+[jon] Removed the MailServer class used in config/servers.php in favor of a
+      hash-based system.  See config/servers.php.dist for examples.
+[avsm] Added $conf['navigator']['alert'] to support javascript alert popups
+[jon] Use the new Lang class to select the current language.
+[avsm] Added $conf['navigator'] to control the auto-refreshing navigator
+[cjh] Fixed spell checker javascript, and spell checking now only shows
+      the spell checking form.
+[cjh] Spell checking no longer loses attachments.
+[cjh] Starting to remove all uses of call-time pass-by-reference.
+[cjh] Include the actual mime type in the munged mime type when downloading
+      attachments.
+[jon] Turned the IMP version footer into a link to http://www.horde.org/imp/.
+[cjh] Tweak the wordwrapping in mime_view_text() a little bit.
+[cjh] Remove all references to $doc and the HTMLDocument class.
+[cjh] Use the new css.php Horde script to generate our stylesheets.
+[jon] Specifying an absolute URL for $conf['user']['alternate_login'] will
+      redirect a new user to that URL instead of the login screen.  This is
+      useful in portal situations in combination with remote_login.php.
+[cjh] Gracefully handle empty search results.
+[cjh] Only show the personal information (if we have it) when we show To: in
+      the From column.
+[jon] Added $conf['user']['online_help'] toggle to disable the online help
+      links.
+[jon] Removed the $conf['user']['change_*'] settings in favor of the
+      "changeable" bit in config/prefs.php.
+[jon] Retired the newuser.php code.
+[jon] Explicitly change the permissions on uploaded attachments to 0600.
+[jon] New XML-based help subsystem.
+[cjh] Renamed package.imp.php to IMP.php.
+[cjh] Made folder navigator work with cookies disabled.
+[avsm] New option to inline CSS; toggled by $conf['layout']['css_inline']
+[jon] Add mouseover status text for the menu items.
+[cjh] Center the IMP version footer and make it more readable in color.
+[cjh] Work on the look and stylesheet conversion of the compose screen.
+[jon] Updated the copyright information in the header comments.
+[jon] Renamed config/{header,trailer}.txt to config/{header,trailer}.txt.dist
+      in the distribution.
+[jon] Force a leading plus sign on the GMT offset part of the rfcdate.
+[jon] Enlarged the default size of the compose window.
+[jon] Set the default cursor focus in the compose screen depending on the
+      action.
+[jon] Renamed $conf['msg']['append_footer'] to $conf['msg']['append_trailer'].
+[jon] New configuration directive: $conf['sitename']
+[jon] Renamed generic-{header,footer}.inc to common-{header,footer}.inc.
+[jon] Preferences that aren't user-changeable are now disabled (only works
+      under Internet Explorer).
+[jon] Use Chris Russel's wordwrap function, if it exists.
+[jon] Rewrote and cleaned-up a lot of the menu.php code.  Improved the
+      usage comments in config/menu.txt.
+[jon] If the user does not have Javascript capabilities, a submit button
+      will be displayed next to the folder listing in the menu.
+[jon] For improved code clarity, renamed $conf['server']['personal_folders']
+      to $conf['server']['namespace'].
+[avsm] Updated the navigator to fit into the new frameless layout
+[jon] Display the IMP version string in the footer.
+[jon] Converted all of the pages to the new frameless layout.
+[jon] IMP now uses the gettext functions exclusively.
+[cjh] Wrap long lines in messages using str_replace. Should be efficient.
+[cjh] Changed view.php to use an array for the cached mime info instead of
+      an object, to match Horde change.
+[jon] Discontinued the use of the $_html['compose*'] sizing parameters.
+[jon] Setting $conf['user']['select_sentmail_folder'] to true will allow the
+      user to choose the folder into which they'd like to save a copy of their
+      current message.
+[jon] Renaming the "Expunge" action to "Purge Deleted".
+[jon] Saving sent mail is settable on a per-composition basis.  The default
+      setting is based on the user's current preference ('save_sent_mail').
+[cjh] Fixed errors when postponing a message without attachments.
+[jon] Upgraded the doctype to XHTML 1.0 Transitional.
+[jon] Renamed the IMAPServer class to MailServer.  Also renamed the
+	  $IMAPServers hash in config/servers.php to $servers.
+[cjh] Lots of new icons!
+[cjh] Fix the problem with mailboxes seeming to only have 1000 messages in
+      the message view.
+[cjh] Fix the preferences system to be a bit more consistent, and to still
+      allow use of config/servers.php
+[jon] A newer, better preference system implementation.  This uses
+      the new Prefs classes from Horde 1.3.
+
+------
+v2.3.5
+------
+
+[cjh] Pass attachment types that have been marked viewable on to the browser
+      untouched if there isn't a custom view function defined.
+[cjh] Fix bug deleting the most recently selected folder.
+[cjh] Don't require a message body before sending a message.
+[avsm] Added a simple text toolbar to the top of the navigator view.
+[cjh] Use the &singleton() pattern to make sure we only create one $log
+      instance.
+[jon] Make use of Horde's Log abstraction interface.
+[cjh] handle "Lastname, Firstname" style addresses correctly when replying.
+[cjh] Use login.inc in both login.php and remote_login.php
+[jon] The compose window's date format is now configurable.
+[jon] The text for intro.php is now inlined using gettext().
+[cjh] Kludge to fix the deletion of messages over pop3.
+[cjh] Use a different icon to denote multipart/alternative messages.
+[cjh] Make the from_link to view messages consistent with the subject link
+      to view messages.
+[cjh] Don't enable the mswordview mimetype if $conf['utils']['mswordview']
+      is empty, false, or unset.
+[cjh] Add an option to log sending of mail, from
+	  Samuel D. Nicolary <sdn@isc.upenn.edu>
+[avsm] Added code to update message info in navigator.php.
+[jon] The time and date formats for the mailbox listing are now configurable.
+[cjh] Do some handling of badly-typed addresses (seperated by spaces, etc).
+[jon] Removed the Contacts links from the compose window.
+[jon] The configuration toggle $conf['user']['allow_ldap_search'] has been
+      renamed $conf['user']['allow_directory_search'] to reflect the
+      abstract nature of Turba's search capabilities.
+[jon] Removed the folder-replying capabilities.
+[jon] Removed IMP's contacts code. We'll use Turba's from now on.
+[cjh] Use the new horde_cleanup() function to make sure that files generated
+      by viewing mime parts will always be cleaned up at the end of the
+      request, no matter how the request is terminated.
+[cjh] Remove phplib dependancy in favor of php4 sessions/PEAR.
+[jon] Added a "Print" action to the message view.
+[cjh] Replace use with require_once since use isn't supported for php4.
+[cjh] All $h->*address references are gone, and we have two new functions in
+      package.imp.php - IMP::addrObject2String() and IMP::addrArray2String()
+      - to make working with the $h->from[], etc arrays easier.
+[cjh] Selecting a language on the login screen now actually has an effect
+[jon] Setting $conf['user']['initial_subscribe'] will automatically
+      subscribe all of the folders in the user's folder path at the end
+      of the newuser welcome process. Note that this also requires
+      $conf['user']['newuser_setup'] to be true.
+[jon] Set the umask ($conf['umask']) globally in package.imp.php.
+[jon] The "cancel message" confirmation now cancel's the message if the user
+      chooses "Ok" instead of "cancel" in the alert box.
+
+------
+v2.3.4
+------
+
+[cjh] The mailbox selects in the mailbox and message views now update in
+      tandem (ie, if you change one, the other updates to the same selection).
+[cjh] The login screen does not reload when you choose a new language, if a
+      username or password has been entered.
+[cjh] Changing the protocol selected changes the port to the default port
+      for that protocol.
+[jon] Got rid of those nasty '---------'s in the folder selects and replaced
+      them with blank spaces instead.
+[cjh] Message flags are now displayed in the message.php screen.
+[cjh] There is now a menu to change the flags of messages.
+[cjh] Signed/Encrypted messages are shown with a different icon than other
+      messages with attachments.
+[cjh] Mailbox sorting works again (impSetupSession wasn't calling _setPref).
+[cjh] Folder subscriptions are correctly kept up to date on folder renaming.
+[cjh] Once again you are asked to confirm before deleting folders
+[cjh] The menu now properly refreshes on ALL folder changes. =)
+[jon] The menu now properly refreshes on folder subscription changes.
+[cjh] If an attachment is not set to disposition: inline, don't display it
+      inline regardless of other settings. (text_parts_inline, type, etc).
+[jon] The To: address is now listed in the window.status on mouse over.
+[cjh] Addresses are now listed individually in the message screen, with a
+      compose link and "add to contacts" link for each.
+[cjh] Added $conf['hooks']['from_hook'] which implements building a from
+      address based on a site-specific function. Yes, the implication is
+      that there might be more "hooks" in the future.
+[cjh] Added $conf['compose']['allow_(b)cc'] to control the availability of
+      the cc: and bcc: fields.
+[cjh] Added javascript to the message screen to make sure that a folder is
+      selected before moving/copying a message
+[jon] All generated URL's are now relative (URI's only), except for the
+      Location: headers used for redirection.  They require fully-qualified
+      URL's.
+[cjh] If mailfrom() returns false, compose.php3 now at least tells the user
+      there was an error instead of silently reloading.
+[jon] Improved the entire newuser login procedure so that we correctly
+      initialize their preferences with all of the default values.
+[jon] Added checks for null preference results that would previously cause a
+      a plethora of warnings and errors.
+[cjh] Added a $conf['server']['show_shared_hierarchy'] option to display the
+      UW-imapd #shared/ folder hierarchy.
+[cjh] POP3 support should now be fully functional for 2.3.
+[cjh] Added $conf['user']['redirect_on_logout'] as an option for sending
+      users to an arbitrary page when they log out.
+[cjh] Fixed a problem with IE caching the bounce form.
+[cjh] The attachment icon for messages with attachments is back in the
+      mailbox view (in it's own new column).
+[cjh] Started weeding out unneccesary uses of imap_msgno() when the function
+      in question takes the FT_UID flag.
+[cjh] Vastly improved the MIME attachment code. IMP now passes the MIME
+      torture test.
+[cjh] Fixed a javascript problem in the compose window where the last
+      character before a space would be deleted incorrectly.
+[cjh] Doctored the clickable-url functions for performance, and to not
+      butcher included html code.
+[cjh] Replaced all calls to ereg* functions with preg* functions, for speed.
+      Because of this we now require php 3.0.12 or later.
+
+
+------
+v2.3.2
+------
+
+BUG: submitting a non-existant file as an attachment is now safely ignored (cjh)
+BUG: the message select popup in the mailbox view works again now. IE doesn't let you use "type" as a form element name. (cjh)
+BUG: encoding of 8-bit headers should now be _very_ close to following the RFC, if it doesn't completely. long headers are split up into atoms smaller than 76 chars (cjh)
+CHANGE: using YYYY-MM-DD for dates in mailbox.php3 for days other than today (cjh)
+CHANGE: multiple folders can now be deleted at once (jon)
+CHANGE: cancelling a message now waits for the user to confirm (cjh)
+CHANGE: new user preferences screen with more options (jon)
+CHANGE: retired the $default object (in favor of $conf) from IMP (jon)
+CHANGE: newuser.php3 has been renamed intro.php3 (jon)
+CHANGE: improved the unsubscribed folder listing a bit (jon)
+LANGUAGE: updated Italian translation from Federico Giannici <giannici@neomedia.it>
+ENHANCEMENT: adding patches from Michael Smith <michael@csuite.ns.ca> to save some information on failed logins (username, etc)
+ENHANCEMENT: IMP no longer requires cookies to be enabled on the client (jon)
+ENHANCEMENT: added $conf['use_ssl'] to force 'https://' in generated URL's (jon)
+ENHANCEMENT: if locale/local/intro.{begin,main,end}.txt exists, it will be
+used in place of the locale/$language/ version (jon)
+ENHANCEMENT: added the ability to hide the server list, providing nice transparency for virtual hosting.
+ENHANCEMENT: added ability to generate From: addresses like <user+folder> (jon)
+ENHANCEMENT: new user setup screen for initial prefs configuration (jon)
+ENHANCEMENT: preferences support both ldap and sql storage sources (jon)
+
+
+------
+v2.3.1
+------
+
+NEW: Debian Package mime viewing (iem)
+NEW: x-tar mime viewing (iem)
+NEW: GPG signature checking (iem)
+FIXED: tgz mime viewing (iem)
+UPDATE: new pine2imp.pl script from murley@murley.com
+CHANGE: Removed config/defaults.php3 and replaced it with config/conf.php (jon)
+CHANGE: Reworked the way some of the contacts popup works (jon)
+CHANGE: User-Agent: 'IMP PHP/IMAP webmail program' > 'IMP webmail program' (jon)
+CHANGE: Added the "signature dashes" user preference (jon)
+CHANGE: New preferences system implemented (jon)
+CHANGE: Removed all help from the login screen (jon)
+CHANGE: The "New User Introduction" link is no longer optional (jon)
+CHANGE: $default->localhost is deprecated in favor of $SERVER_NAME
+CHANGE: INBOX is no longer shown on the folders page
+LANGUAGE: Czech updated
+LANGUAGE: German updated
+LANGUAGE: French updated
+ENANCEMENT: Rebuilt the preferences sub-system (see config/prefs.php) (jon)
+
+
+------
+v2.3.0
+------
+
+CHANGE: Changed all of the SQL scripts to use "horde" db instead of "imp" (jch)
+CHANGE: Fixed German translation bugs in the newuser start file (jch)
+CHANGE: All locale/ strings default to English ('en') now.  If another language is selected, it will be loaded on top of the English strings.  This should solve the problem of some localizations missing a string here and there. (jon)
+CHANGE: The top and bottom mailbox listing navbars are now symmetrical (jon)
+CHANGE: removed deprecated Errors-To: header (cjh)
+CHANGE: Changed X-Mailer to User-Agent (ref: draft-ietf-usefor-article-02) (jon)
+CHANGE: Removed some more unused files and cleaned up build scripts accordingly. (cjh)
+CHANGE: Moved config/README to docs/CONFIGS
+CHANGE: Removed old config/scripts/*.txt files in leiu of docs/DATABASE
+CHANGE: Went back to $h->udate for message dates (cjh)
+BUG: 8bit headers should now be properly encoded (Roy-Magne Mo & cjh)
+BUG: Poppassd should work now ("Charles P. Wright" <cpwright@cpwright.com>)
+BUG: LDAP searches can now be against fields other than 'cn'
+BUG: Fixed the folders screen and some mailbox listing code
+BUG: Changing languages now refreshes login screen under Internet Explorer
+BUG: Fixed small bug with $to_domain and empty address strings (jon)
+BUG: Misinterpretted result from imp_get_lang() fixed <rmo@www.hivolda.no>
+BUG: Mime-encoded headers are now handled much more consistently. There *shouldn't* be issues with these left. Please report any you find.
+BUG: Quoted printable messages are now decoded when being forwarded and replied to.
+BUG: Fixed French and Brazilian Portuguese language problems
+BUG: Fixed a bug when forwarding without a from address <alan@halachmi.net>
+BUG: Fixed a bug opening contacts window on compose page
+BUG: Fixed violation of the spec for URL when downloading files with name spaces
+BUG: Fixed a misidentification of Microsoft web browsers
+BUG: Fixed a missing </TABLE> tag breaking menu positioning
+BUG: Bouncing a message doesn't ruin attachments anymore
+BUG: Correctly handles missing subject when you forward mail
+BUG: Fixed Nynorks-Norwegian language (Roy-Magne Mo<rmo@www.hivolda.no>)
+BUG: Fixed cosmetic counting problem when deleting messages
+ENHANCEMENT: now prints a messages when the mailbox is empty (jon)
+ENHANCEMENT: sets the html charset according to the language selection (jon)
+ENHANCEMENT: added support for cascading stylesheets (jon)
+ENHANCEMENT: fix for extremely long folder names in select.php3 (jon)
+ENHANCEMENT: added the option to hide deleted messages from mailbox listing (jon)
+ENHANCEMENT: syslog stats courtesy of Michael Smith <michael@csuite.ns.ca>
+ENHANCEMENT: Forwarding a message with attachments sends the attachments along, and you can also delete parts if you wish.
+ENHANCEMENT: Unknown browsers are simply asked to send info; IMP assumes that they work
+ENHANCEMENT: Multiple compose windows are now supported
+ENHANCEMENT: Added a simple cron.daily file that will clean up stranded attachments
+ENHANCEMENT: Changed setup's defaults to be more for internal-use sites
+ENHANCEMENT: Sybase support has been added to IMP <slack@cc.utah.edu>
+ENHANCEMENT: new $default->to_domain tacked onto bare compose addresses
+ENHANCEMENT: Login language pull-down can now be disabled (jon)
+ENHANCEMENT: Debian package build scripts included
+ENHANCEMENT: Sent-mail now marked as read (\\Seen)
+ENHANCEMENT: New Danish locales
+LANGUAGE: Norwegian language support - Hans Morten Kind <Kind@it.uib.no>
+LANGUAGE: Estonian language support (Jaanus Toomsalu <jaanus@matti.ee>
+LANGUAGE: Finnish language support (leo.jaaskelainen@kolumbus.fi)
+LANGUAGE: Czech language support Peter Cech <cech@atrey.karlin.mff.cuni.cz>
+LANGUAGE: Polish language support -_ sergio _- <ser@serek.arch.pwr.wroc.pl>
+LANGUAGE: Norwegian Bokmål language support - Terje Lunndal <terje.lunndal@norway.eu.net>
+LANGUAGE: Icelandic language support - Kristofer Arnar Einarsson <kristofe@kristofer.com>
+LANGUAGE: French updated - Jean Charles Delepine <delepine@u-picardie.fr>
+SECURITY: We should now be immune to the {} and mocha javascript exploits recently described on Bugtraq - Charles Wright.
+
+
+------
+v2.1.2
+------
+
+cjh: whomp. here we go.
+
+Biggest change: session support through dbm files. YOU MUST touch the dbm
+file (by default imp/lib/sessions) and give the webserver user read/write
+permissions to it (actually, you don't have to create it if the webserver
+has write access to the lib/ directory).
+
+I've tested this will everything I can think of - server list, languages,
+every page, etc. I think it works. I probably missed something. So please,
+pound on it, fix it, make suggestions.
+
+
+Also: I've taken a lot of cruft that wasn't being used out. imp.lib was
+under 1000 lines for the first time in a while after this! I may prune more
+v2 stuff if it's not used soon; that would trim us even more. I didn't trim
+a whole lot from horde.
+
+
+Cosmetic: the 'check inbox' option on the menu is gone (should probably
+remove the lang strings - haven't done that) and it's replaced with a cute
+little reload graphic at the top left of mailbox pages that lets you refresh
+any mailbox that you're in. this is more consistent from a ui point of view.
+
+
+Everything else: reformatting, minor changes/fixes/etc. Nothing noteworthy
+enough to remember off of the top of my head.
+
+
+To do: dump the mailbox_list functions into the new ImapSession object, or
+*at least* rewrite them to take advantage of the new namespace objects that
+are available. I haven't touched this one yet.
+
+Comments?
+
+------
+v2.1.1
+------
+
+Enhancements:
+  * Imp now undestands French (thanks to Mathieu Clabaut <clabault@multimania.com>)
+  * Attachments are now indicated with a paperclip in the regular status column
+  * New mail for each folder is listed in folder listing
+  * You can configure the "from" server on a per-server basis w/servers.php3 now
+  * Imp has help links in the contacts window
+
+Bug Fixes:
+  * Fixed a bug in the contacts that was causing Javascript errors
+  * Fixed bug in forward mail case with mail that was missing headers
+  * Fixed a bug where replying to mail caused errors and warnings
+
+------
+v2.0.3
+------
+
+There were a bunch of changes, but nobody updated this file
+
+-------------------------
+New and notable in 2.0.1:
+-------------------------
+
+Several pieces of IMP have been moved into the Horde module.  They include the
+signup feature, problem reporting, the help functions, and faq management.
+
+A new motd feature has been added.  You can now use the file called MOTD.html
+and put in information you want shown under the login screen.  This file sits
+in the config directory.
+
+Extendable menus.  You can now easily add menu items by adding items to the
+menu.txt file which resides in the config directory.
+
+You can now set your session language at login.
+
+A "new-user information" piece has been added to the login screen.  This
+function provides new users with some basic background on using IMP.
+
+A function was added to the compose window which does not allow you to send
+a piece of email if you have browsed a file attachment but haven't attached
+it yet.
+
+Help items were added to the compose window.
+
+Fixed several issues with multiple read/write imap openings. Now only
+calls that require read/write use read/write.
+
+Fixed multiple append trailer/footer bugs.
+
+Localized the setup.php3 process.
+
+Updated lynx pages so lynx works again with IMP

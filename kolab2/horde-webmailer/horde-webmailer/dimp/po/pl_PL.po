@@ -1,0 +1,675 @@
+# Polish translations for Dimp package
+# Polskie tlumaczenia dla pakietu Dimp.
+# Copyright 2007-2009 The Horde Project
+# This file is distributed under the same license as the Dimp package.
+# Automatically generated, 2007.
+# Tadeusz Lesiecki <lesiecki@tmtsystem.pl>, 2007.
+# Piotr Tarnowski <drfugazi@drfugazi.eu.org>, 2007.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Dimp H3 (0.1-cvs)\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2007-06-27 12:36+0200\n"
+"PO-Revision-Date: 2007-03-31 09:57+0200\n"
+"Last-Translator: Piotr Tarnowski <drfugazi@drfugazi.eu.org>\n"
+"Language-Team: Polish <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+
+#: lib/Block/newmail.php:69
+#, php-format
+msgid "%s more unseen messages..."
+msgstr "%s wiêcej niewidzianych wiadomo¶ci..."
+
+#: imp.php:394
+#, php-format
+msgid "%s was successfully added to your address book."
+msgstr "%s zosta³ pomy¶lnie dodany do ksi±¿ki adresowej."
+
+#: lib/Block/newmail.php:67
+msgid "1 more unseen message..."
+msgstr "1 wiêcej nie widziana wiadomo¶æ..."
+
+#: lib/DIMP.php:183
+msgid ""
+"A popup window could not be opened. Your browser may be blocking popups."
+msgstr ""
+"Wyskakuj±ce okienko nie mo¿e zostaæ otwarte. Twoja przegl±darka mo¿e "
+"blokowaæ wyskakuj±ce okna."
+
+#: lib/Views/ShowMessage.php:315
+msgid "Add to Address Book"
+msgstr "Dodaj do ksi±¿ki adresowej"
+
+#: templates/index/index.inc:164 templates/index/index.inc:168
+msgid "All"
+msgstr "Wszystkie"
+
+#: lib/Block/calendar.php:141
+msgid "All day"
+msgstr "Ca³y dzieñ"
+
+#: templates/chunks/fullmessage.php:46 templates/index/index.inc:262
+msgid "Attachments Only"
+msgstr "Tylko za³±czniki"
+
+#: templates/chunks/compose.php:85
+msgid "Bcc: "
+msgstr "UDW: "
+
+#: templates/index/index.inc:232 templates/index/index.inc:274
+msgid "Blacklist"
+msgstr "Czarna lista"
+
+#: templates/chunks/fullmessage.php:45 templates/index/index.inc:261
+msgid "Body Text Only"
+msgstr "Tylko tekst"
+
+#: lib/Block/calendar.php:3 config/portal.php.dist:44
+msgid "Calendar"
+msgstr "Kalendarz"
+
+#: templates/chunks/compose.php:38
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: lib/DIMP.php:208
+msgid ""
+"Cancelling this message will permanently discard its contents and will "
+"delete auto-saved drafts.\n"
+"Are you sure you want to do this?"
+msgstr ""
+"Anulowanie tej wiadomo¶ci spowoduje bezpowrotn± utratê jej zawarto¶ci i "
+"usuniêcie automatycznie zapisanych szablonów.\n"
+"Czy na pewno chcesz to zrobiæ?"
+
+#: templates/chunks/compose.php:74
+msgid "Cc: "
+msgstr "DW: "
+
+#: templates/chunks/compose.php:35
+msgid "Check Spelling"
+msgstr "Sprawd¼ pisowniê"
+
+#: lib/DIMP.php:177
+msgid "Checking..."
+msgstr "Sprawdzam..."
+
+#: templates/index/index.inc:223 templates/index/index.inc:247
+#: templates/index/index.inc:271
+msgid "Clear Flag"
+msgstr "Wyczy¶æ znacznik"
+
+#: templates/imp/message.html:31
+msgid "Collapse Headers"
+msgstr "Zwiñ nag³ówki"
+
+#: config/prefs.php.dist:9
+msgid "Compose Options"
+msgstr "Opcje komponowania"
+
+#: config/portal.php.dist:38
+msgid "Contact Search"
+msgstr "Wyszukiwanie kontaktów"
+
+#: config/prefs.php.dist:11
+msgid "Control the behavior of the javascript HTML editor."
+msgstr "Kontrola zachowania edytora HTML."
+
+#: templates/index/index.inc:186
+msgid "Could not get message list from server"
+msgstr "Nie mo¿na pobraæ listy wiadomo¶ci z serwera"
+
+#: templates/index/index.inc:198 templates/index/index.inc:208
+msgid "Create subfolder"
+msgstr "Utwórz podfolder"
+
+#: templates/index/index.inc:178
+msgid "Date"
+msgstr "Data"
+
+#: templates/index/index.inc:157 templates/index/index.inc:237
+#: templates/index/index.inc:249
+msgid "Delete"
+msgstr "Usuñ"
+
+#: templates/index/index.inc:201
+msgid "Delete Folder"
+msgstr "Usuñ folder"
+
+#: templates/index/index.inc:200
+msgid "Empty Folder"
+msgstr "Opró¿nij folder"
+
+#: templates/chunks/fullmessage.php:44 templates/index/index.inc:260
+msgid "Entire Message"
+msgstr "Ca³± wiadomo¶æ"
+
+#: templates/imp/message.html:7
+msgid "Expand Headers"
+msgstr "Rozwiñ nag³ówki"
+
+#: config/prefs.php.dist:22
+msgid "FCKeditor"
+msgstr "FCKeditor"
+
+#: templates/index/index.inc:222 templates/index/index.inc:246
+#: templates/index/index.inc:270
+msgid "Flag Message"
+msgstr "Oznacz wiadomo¶æ"
+
+#: config/portal.php.dist:26
+msgid "Folder Summary"
+msgstr "Podsumowanie folderów"
+
+#: templates/index/index.inc:163
+msgid "Folders: "
+msgstr "Foldery: "
+
+#: templates/index/index.inc:150
+msgid "Forward"
+msgstr "Przeka¿"
+
+#: templates/index/index.inc:218
+msgid "Forward Attachments Only"
+msgstr "Przeka¿ tylko za³±czniki"
+
+#: templates/index/index.inc:217
+msgid "Forward Body Text Only"
+msgstr "Przeka¿ tylko tre¶æ"
+
+#: templates/index/index.inc:216
+msgid "Forward Entire Message"
+msgstr "Przeka¿ ca³± wiadomo¶æ"
+
+#: lib/DIMP.php:174 templates/index/index.inc:169
+msgid "From"
+msgstr "Od"
+
+#: templates/chunks/compose.php:53
+msgid "From: "
+msgstr "Od: "
+
+#: lib/DIMP.php:178 templates/index/index.inc:54
+msgid "Get Mail"
+msgstr "Pobierz pocztê"
+
+#: lib/Block/newmail.php:71
+msgid "Go to your Inbox..."
+msgstr "Id¼ do skrzynki odbiorczej..."
+
+#: templates/chunks/compose.php:47
+msgid "HTML composition"
+msgstr "Formatowanie HTML"
+
+#: lib/DIMP.php:168
+msgid "Hide Addresses"
+msgstr "Ukryj adresy"
+
+#: lib/DIMP.php:184 templates/index/index.inc:266
+msgid "Hide Preview"
+msgstr "Ukryj podgl±d"
+
+#: lib/DIMP.php:165
+msgid "Hide Quoted Text"
+msgstr "Ukryj cytowany tekst"
+
+#: lib/Views/ShowMessage.php:239
+msgid "High Priority"
+msgstr "Wysoki priorytet"
+
+#: templates/index/index.inc:121
+msgid "Home"
+msgstr "Start"
+
+#: templates/index/index.inc:50
+msgid "Horde"
+msgstr "Horde"
+
+#: templates/index/index.inc:155
+msgid "Innocent"
+msgstr "Niewinna"
+
+#: config/prefs.php.dist:10
+msgid "Javscript HTML Editor Options"
+msgstr "Opcje edytora HTML"
+
+#: lib/DIMP.php:172 templates/index/index.inc:46 templates/index/index.inc:63
+#: templates/index/index.inc:293
+msgid "Loading..."
+msgstr "£adowanie..."
+
+#: lib/Views/ShowMessage.php:241
+msgid "Low Priority"
+msgstr "Niski priorytet"
+
+#: lib/Views/ListMessages.php:119
+#, php-format
+msgid "Mailbox %s does not exist."
+msgstr "Skrzynka %s nie istnieje."
+
+#: templates/index/index.inc:204
+msgid "Mark all as New"
+msgstr "Oznacz wszystkie jako nowe"
+
+#: templates/index/index.inc:203
+msgid "Mark all as Read"
+msgstr "Oznacz wszystkie jako przeczytane"
+
+#: templates/index/index.inc:229
+msgid "Mark as Innocent"
+msgstr "Oznacz jako niewinn±"
+
+#: templates/index/index.inc:221 templates/index/index.inc:269
+msgid "Mark as New"
+msgstr "Oznacz jako now±"
+
+#: templates/index/index.inc:220 templates/index/index.inc:268
+msgid "Mark as Read"
+msgstr "Oznacz jako przeczytan±"
+
+#: templates/index/index.inc:226
+msgid "Mark as Spam"
+msgstr "Oznacz jako spam"
+
+#: templates/chunks/fullmessage.php:14
+msgid "Message"
+msgstr "Wiadomo¶æ"
+
+#: compose.php:290
+msgid "Message Composition"
+msgstr "Tworzenie wiadomo¶ci"
+
+#: compose.php:150
+msgid "Message sent successfully."
+msgstr "Wiadomo¶æ zosta³a wys³ana."
+
+#: templates/index/index.inc:167
+msgid "Message: "
+msgstr "Wiadomo¶æ: "
+
+#: lib/DIMP.php:162
+msgid "Messages"
+msgstr "Wiadomo¶ci"
+
+#: templates/index/index.inc:100
+msgid "New Folder"
+msgstr "Nowy folder"
+
+#: compose.php:176 lib/Views/ShowMessage.php:313
+msgid "New Message"
+msgstr "Nowa wiadomo¶æ"
+
+#: lib/DIMP.php:164
+msgid "No Messages"
+msgstr "Brak wiadomo¶ci"
+
+#: lib/Block/calendar.php:152
+msgid "No events to display"
+msgstr "Brak wydarzeñ do wy¶wietlenia"
+
+#: lib/Block/foldersummary.php:73
+msgid "No folders are being checked for new mail."
+msgstr "Brak folderów, w których jest sprawdzana nowa poczta."
+
+#: lib/Block/foldersummary.php:77
+msgid "No folders with new messages"
+msgstr "Brak folderów z nowymi wiadomo¶ciami"
+
+#: lib/Block/foldersummary.php:75
+msgid "No folders with unseen messages"
+msgstr "Brak folderów z niewidzianymi wiadomo¶ciami"
+
+#: templates/chunks/quota.php:22
+msgid "No limit"
+msgstr "Brak limitu"
+
+#: templates/index/index.inc:185
+msgid "No messages to display"
+msgstr "Brak wiadomo¶ci do wy¶wietlenia"
+
+#: lib/Block/newmail.php:40
+msgid "No unread messages"
+msgstr "Brak nieczytanych wiadomo¶ci"
+
+#: lib/Views/ShowMessage.php:272 lib/Views/ShowMessage.php:276
+msgid "Open in new window"
+msgstr "Otwórz w nowym oknie"
+
+#: options.php:17
+msgid "Options"
+msgstr "Opcje"
+
+#: templates/index/index.inc:158
+msgid "Other Actions"
+msgstr "Inne operacje"
+
+#: templates/index/index.inc:200
+msgid "Permanently delete all messages?"
+msgstr "Trwale usun±æ wszystkie wiadomo¶ci?"
+
+#: templates/index/index.inc:201
+msgid "Permanently delete this folder?"
+msgstr "Trwale usun±æ ten folder?"
+
+#: lib/DIMP.php:159
+msgid "Portal"
+msgstr "Portal"
+
+#: lib/Views/ShowMessage.php:285
+msgid "Print"
+msgstr "Drukuj"
+
+#: templates/chunks/compose.php:29
+msgid "Read Receipt"
+msgstr "Potwierdzenie odczytu"
+
+#: templates/chunks/compose.php:47
+msgid ""
+"Really discard all formatting information? This operation cannot be undone."
+msgstr ""
+"Rzeczywi¶cie usun±æ informacje o formatowaniu? Ta operacja nie mo¿e byæ "
+"cofniêta."
+
+#: templates/index/index.inc:199 templates/index/index.inc:209
+msgid "Rename Folder"
+msgstr "Zmieñ nazwê folderu"
+
+#: templates/index/index.inc:149 templates/index/index.inc:213
+msgid "Reply"
+msgstr "Odpowiedz"
+
+#: templates/chunks/fullmessage.php:40
+msgid "Reply To All"
+msgstr "Odpowiedz wszystkim"
+
+#: templates/index/index.inc:214 templates/index/index.inc:256
+msgid "Reply to All"
+msgstr "Odpowiedz wszystkim"
+
+#: compose.php:201
+msgid "Reply to All:"
+msgstr "Odpowiedz wszystkim:"
+
+#: compose.php:199
+msgid "Reply:"
+msgstr "Odpowied¼:"
+
+#: templates/chunks/fullmessage.php:24
+msgid "Report Innocent"
+msgstr "Zg³o¶ jako niewinn±"
+
+#: templates/chunks/fullmessage.php:21
+msgid "Report Spam"
+msgstr "Zg³o¶ jako spam"
+
+#: compose.php:187 lib/Views/ShowMessage.php:122 lib/Views/ShowMessage.php:132
+msgid "Requested message not found."
+msgstr "¯±dana wiadomo¶æ nie zosta³a znaleziona"
+
+#: templates/index/index.inc:244
+msgid "Resume Draft"
+msgstr "Przywróæ brudnopis"
+
+#: lib/Views/ShowMessage.php:252
+msgid "Save All"
+msgstr "Zapisz wszystko"
+
+#: templates/chunks/compose.php:108
+msgid "Save Attachments in sent folder"
+msgstr "Zapisz za³±czniki w folderze wys³anych"
+
+#: templates/chunks/compose.php:37
+msgid "Save as Draft"
+msgstr "Zapisz jako szablon"
+
+#: templates/chunks/compose.php:32
+msgid "Save in "
+msgstr "Zapisz w "
+
+#: lib/DIMP.php:214
+msgid "Saving..."
+msgstr "Zapisujê..."
+
+#: templates/chunks/compose.php:27
+msgid "Se_nd"
+msgstr "Wy¶lij"
+
+#: lib/DIMP.php:160
+msgid "Search"
+msgstr "Szukaj"
+
+#: lib/Views/ListMessages.php:85
+msgid "Search Results"
+msgstr "Wyniki wyszukiwania"
+
+#: templates/index/index.inc:280
+msgid "Select All"
+msgstr "Zaznacz wszystko"
+
+#: lib/DIMP.php:213
+msgid "Sending..."
+msgstr "Wysy³am..."
+
+#: lib/DIMP.php:169
+msgid "Show Addresses"
+msgstr "Poka¿ adresy"
+
+#: templates/chunks/compose.php:45
+msgid "Show Bcc"
+msgstr "Poka¿ pole UDW"
+
+#: templates/chunks/compose.php:44
+msgid "Show Cc"
+msgstr "Poka¿ pole DW"
+
+#: lib/DIMP.php:185 templates/index/index.inc:266
+msgid "Show Preview"
+msgstr "Poka¿ podgl±d"
+
+#: lib/DIMP.php:166
+msgid "Show Quoted Text"
+msgstr "Poka¿ cytowany tekst"
+
+#: templates/index/index.inc:152
+msgid "Spam"
+msgstr "Spam"
+
+#: lib/DIMP.php:176 lib/Views/ShowMessage.php:228
+#: templates/index/index.inc:171
+msgid "Subject"
+msgstr "Temat"
+
+#: templates/chunks/compose.php:96
+msgid "Subject: "
+msgstr "Temat: "
+
+#: lib/DIMP.php:212
+msgid "The attachment limit has been reached."
+msgstr "Osi±gniêto limit za³±czników."
+
+#: config/prefs.php.dist:49
+msgid "The buttons NOT to show when using Xinha."
+msgstr "Przyciski, które NIE bêd± widoczne je¶li u¿ywasz Xinha."
+
+#: config/prefs.php.dist:33
+msgid "The buttons to show when using FCKeditor."
+msgstr "Przyciski widoczne je¶li u¿ywasz FCKeditor."
+
+#: config/prefs.php.dist:41
+msgid "The buttons to show when using TinyMCE."
+msgstr "Przyciski widoczne je¶li u¿ywasz TinyMCE."
+
+#: lib/DIMP.php:180
+msgid "The connection to the remote server has been restored."
+msgstr "Po³±czenie ze zdalnym serwerem poczty zosta³o przywrócone."
+
+#: config/prefs.php.dist:25
+msgid "The javascript editor to use on the compose page."
+msgstr "Edytor javascript do u¿ycia na stronie komponowania."
+
+#: lib/DIMP.php:181
+msgid "The server is still generating the message list."
+msgstr "Serwer pocztowy jeszcze generuje listê wiadomo¶ci."
+
+#: lib/DIMP.php:182
+msgid ""
+"The server was unable to generate the message list. Please try again later."
+msgstr ""
+"Serwer nie by³ w stanie wygenerowaæ listy wiadomo¶æi. Spróbuj ponownie "
+"pó¼niej."
+
+#: lib/DIMP.php:179
+msgid ""
+"There has been no contact with the remote server for several minutes. The "
+"server may be temporarily unavailable or network problems may be "
+"interrupting your session. You will not see any updates until the connection "
+"is restored."
+msgstr ""
+"Nie by³o kontaktu ze zdalnym serwerem przez kilka minut. Serwer mo¿e byæ "
+"chwilowo nieosi±galny, lub problemy w sieci mog³y przerwaæ Twoj± sesjê. Nie "
+"zobaczysz ¿adnych aktualizacji, dopóki po³±czenie nie zostanie przywrócone."
+
+#: lib/DIMP.php:175
+msgid "Thread"
+msgstr "W±tek"
+
+#: config/prefs.php.dist:23
+msgid "TinyMCE"
+msgstr "TinyMCE"
+
+#: lib/DIMP.php:173 templates/index/index.inc:170
+msgid "To"
+msgstr "Do"
+
+#: templates/index/index.inc:284
+msgid "To preview a message, please select it from the list above."
+msgstr "Aby obejrzeæ wiadomo¶æ, proszê wybraæ j± z powy¿szej listy."
+
+#: templates/chunks/compose.php:63
+msgid "To: "
+msgstr "Do: "
+
+#: lib/Block/calendar.php:111
+msgid "Today"
+msgstr "Dzi¶"
+
+#: lib/Block/calendar.php:113
+msgid "Tomorrow"
+msgstr "Jutro"
+
+#: templates/index/index.inc:239 templates/index/index.inc:251
+msgid "Undelete"
+msgstr "Przywróæ"
+
+#: lib/Views/ShowMessage.php:87
+msgid "Undisclosed Recipients"
+msgstr "Nieujawnienie odbiorcy"
+
+#: lib/Views/ShowMessage.php:332
+msgid "Unknown Date"
+msgstr "Nieznana data"
+
+#: lib/DIMP.php:211
+msgid "Uploading..."
+msgstr "Wgrywam..."
+
+#: templates/chunks/quota.php:19
+#, php-format
+msgid "Used %s Mb"
+msgstr "U¿ywane %s Mb"
+
+#: templates/chunks/quota.php:13
+#, php-format
+msgid "Used %s%% of %s Mb"
+msgstr "U¿ywane %s%% z %s Mb"
+
+#: lib/Views/ShowMessage.php:298 lib/Views/ShowMessage.php:299
+msgid "View Message Source"
+msgstr "Poka¿ ¼ród³o wiadomo¶ci"
+
+#: templates/index/index.inc:235 templates/index/index.inc:277
+msgid "Whitelist"
+msgstr "Bia³a lista"
+
+#: config/prefs.php.dist:24
+msgid "Xinha"
+msgstr "Xinha"
+
+#: templates/index/index.inc:285
+msgid ""
+"You can right-click on the messages to see the options available and use the "
+"Shift and Ctrl keys to select multiple messages and drag them to a folder "
+"listed on the left."
+msgstr ""
+"Mo¿esz klikn±æ prawym przyciskiem na wiadomo¶ci aby zobaczyæ dostêpne opcje, "
+"u¿ywaæ klawiszy Shift i Ctrl do zaznaczenia wielu wiadomo¶ci i przeci±gaæ je "
+"do listy folderów po lewej stronie."
+
+#: lib/DIMP.php:209
+msgid ""
+"You have already changed the message body, are you sure you want to drop the "
+"changes?"
+msgstr "Zmieniono tre¶æ wiadomo¶ci, czy na pewno chcesz odrzuciæ zmiany?"
+
+#: lib/Block/newmail.php:57 lib/Views/ListMessages.php:253
+#: lib/Views/ShowMessage.php:233
+msgid "[No Subject]"
+msgstr "[brak tematu]"
+
+#: lib/Views/ShowMessage.php:93
+#, php-format
+msgid "[Show addresses - %s recipients]"
+msgstr "[Poka¿ adresy - %s odbiorców]"
+
+#: templates/index/index.inc:53
+msgid "_Compose"
+msgstr "Utwórz"
+
+#: templates/chunks/fullmessage.php:26
+msgid "_Delete"
+msgstr "Usuñ"
+
+#: templates/chunks/fullmessage.php:19
+msgid "_Forward"
+msgstr "Przeka¿"
+
+#: templates/index/index.inc:59
+msgid "_Log Out"
+msgstr "Wy_loguj"
+
+#: templates/chunks/fullmessage.php:18
+msgid "_Reply"
+msgstr "Odpowiedz"
+
+#: templates/imp/message.html:11
+msgid "from"
+msgstr "od"
+
+#: lib/DIMP.php:167
+msgid "lines"
+msgstr "lini"
+
+#: lib/DIMP.php:163
+msgid "of"
+msgstr "z"
+
+#: lib/DIMP.php:171
+msgid "ok"
+msgstr "ok"
+
+#: lib/DIMP.php:170
+msgid "recipients"
+msgstr "odbiorcy"
+
+#: lib/DIMP.php:210
+msgid "remove"
+msgstr "usuñ"
+
+#: lib/DIMP.php:161
+msgid "results found"
+msgstr "znaleziono"

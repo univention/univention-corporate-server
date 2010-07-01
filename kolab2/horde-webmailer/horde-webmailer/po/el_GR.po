@@ -1,0 +1,6616 @@
+# Horde Greek translation.
+# Copyright 2002 Stefanos I. Dimitriou.
+# Stefanos I. Dimitriou <support_webmail@teiath.gr>, 2002.
+# Silligardos Xristoforos, 2002.
+# Anagnostopoulos Apostolis, 2002.
+# Milosis C. Konstantinos, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde: 3.0-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2002-11-07 12:06+0200\n"
+"PO-Revision-Date: 2005-04-26 11:13+0200\n"
+"Last-Translator: Konstantinos C. Milosis <kmilosis@yahoo.com>\n"
+"Language-Team: Greek <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-7\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid ""
+" &#151; %s is ready to perform the maintenance operations checked below."
+msgstr ""
+" &#151; %s Είναι η στιγμή να γίνουν οι λειτουργίες συντήρησης που είναι "
+"επιλεγμένες παρακάτω."
+
+msgid "  The mailbox trash is already empty."
+msgstr "  Η γραμματοθυρίδα 'κάδος' είναι ήδη άδεια."
+
+#: framework/Form/Form.php:2351
+msgid " (%s days ago)"
+msgstr " (πριν από %s ημέρες)"
+
+#: framework/Horde/Horde.php:1277
+msgid " (Accesskey %s)"
+msgstr " (Κλειδί πρόσβασης %s)"
+
+#: framework/Form/Form.php:2359
+msgid " (in %s days)"
+msgstr " (σε %s ημέρες)"
+
+#: framework/Form/Form.php:2355
+msgid " (today)"
+msgstr " (σήμερα)"
+
+#: framework/Form/Form.php:2357
+msgid " (tomorrow)"
+msgstr " (αύριο)"
+
+#: framework/Form/Form.php:2353
+msgid " (yesterday)"
+msgstr " (χθες)"
+
+#: lib/Block/weatherdotcom.php:200
+msgid " at "
+msgstr " στις "
+
+#: lib/Block/weatherdotcom.php:186
+msgid "%d %s and %s"
+msgstr "%d %s και %s"
+
+#: lib/Block/weatherdotcom.php:227
+msgid "%d-day forecast"
+msgstr "%d-μερη πρόβλεψη"
+
+#: templates/maintenance/notice_top.inc:4
+msgid "%s - Notice"
+msgstr "%s - Σημείωση"
+
+#: templates/admin/common-header.inc:29
+msgid "%s Administration"
+msgstr "%s-Διαχείριση"
+
+#: framework/Crypt/Crypt/smime.php:728
+msgid "%s Fingerprint"
+msgstr "%s Δακτυλικό αποτύπωμα"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "%s Λειτουργίες Συντήρησης - Επιβεβαίωση"
+
+#: admin/setup/config.php:30 admin/setup/index.php:209
+msgid "%s Setup"
+msgstr "%s-Παραμετροποίηση"
+
+#: framework/Auth/Auth/Signup.php:276
+msgid "%s Sign Up"
+msgstr "%s Εγγραφή"
+
+#: templates/maintenance/agreement_top.inc:4
+msgid "%s Terms of Agreement"
+msgstr "%s Οροι χρήσης"
+
+#: framework/VFS/VFS/ftp.php:596 framework/VFS/VFS/ftp.php:666
+msgid "%s already exists."
+msgstr "%s ήδη υπάρχει."
+
+#: lib/Block/metar.php:157 lib/Block/metar.php:163 lib/Block/metar.php:237
+#: lib/Block/metar.php:343 lib/Block/metar.php:349
+msgid "%s at %s %s"
+msgstr "%s σε %s %s"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:530
+msgid "%s has cancelled %s."
+msgstr "%s ακυρώθηκε %s."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:426
+msgid "%s has replied to a free/busy request."
+msgstr "%s απάντησε σε ερώτημα διαθεσιμότητας."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:524
+msgid "%s has replied to the invitation to %s."
+msgstr "%s απάντησε στην πρόσκληση για %s."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:416
+msgid "%s has sent you free/busy information."
+msgstr "%s σας έστειλε πληροφορίες διαθεσιμότητας."
+
+#: framework/Form/Form.php:2321
+msgid "%s is required"
+msgstr "%s είναι απαιτούμενο"
+
+#: lib/Block/metar.php:284
+msgid "%s minutes"
+msgstr "%s λεπτά"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:421
+msgid "%s requests your free/busy information."
+msgstr "%s σας ζήτησε πληροφορίες διαθεσιμότητας."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:508
+msgid "%s requests your presence at %s."
+msgstr "%s ζήτησε την παρουσία σας στις %s."
+
+#: templates/admin/user/list.inc:6
+msgid "%s to %s of %s"
+msgstr "%s ως %s από %s"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:513
+msgid "%s wishes to add to %s."
+msgstr "%s επιθυμεί την προσθήκη στο %s."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:502
+msgid "%s wishes to make you aware of %s."
+msgstr "%s επιθυμεί να σας ενημερώσει για %s."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:518
+msgid "%s wishes to receive the latest information about %s."
+msgstr "%s επιθυμεί να λάβει τις τελευταίες πληροφορίες για %s."
+
+#: framework/Kolab/Kolab.php:912
+msgid "%s's Address Book"
+msgstr "%s's Διευθυνσιογράφος"
+
+#: framework/Kolab/Kolab.php:904
+msgid "%s's Calendar"
+msgstr "%s's Ημερολόγιο"
+
+#: framework/Kolab/Kolab.php:896
+msgid "%s's Notepad"
+msgstr "%ss Σημειωματάριο"
+
+#: framework/Kolab/Kolab.php:920
+msgid "%s's Tasklist"
+msgstr "%ss Λίστα Εργασιών"
+
+#: framework/CLI/CLI.php:270
+msgid "'%s' is not a valid choice."
+msgstr "'%s' δεν είναι έγκυρη επιλογή."
+
+#: framework/Horde/Horde/Registry.php:582
+#: framework/Horde/Horde/Registry.php:982
+msgid "'%s' is not configured in the Horde Registry."
+msgstr "'%s' δεν έχει ρυθμιστεί στο registry της εφαρμογής Horde"
+
+#: framework/Tree/Tree.php:160
+msgid "'%s' tree renderer not found."
+msgstr "%s αναπαραστάτης δενδρικής δομής δεν βρέθηκε."
+
+#: admin/groups.php:57
+msgid "'%s' was added to the groups system."
+msgstr "'%s' προστέθηκε στις ομάδες συστήματος."
+
+#: admin/perms/addchild.php:85
+msgid "'%s' was added to the permissions system."
+msgstr "'%s' προστέθηκε στις άδειες του συστήματος."
+
+#: admin/groups.php:55 admin/perms/addchild.php:83
+msgid "'%s' was not created: %s."
+msgstr "'%s' δεν δημιουργήθηκε: %s."
+
+#: lib/Block/metar.php:186 lib/Block/metar.php:191
+msgid ", gusting %s %s"
+msgstr ", gusting %s %s"
+
+#: lib/Block/metar.php:199
+msgid ", variable from %s to %s"
+msgstr ", μεταβλητή από %s σε %s"
+
+#: framework/Form/Form.php:2052 framework/Form/Form.php:2111
+#: framework/UI/UI/VarRenderer/html.php:691
+msgid "-- select --"
+msgstr "-- επιλογή --"
+
+#: lib/Block/time.php:20
+msgid "12 Hour Format"
+msgstr "12ωρη μορφή"
+
+#: lib/Block/time.php:19
+msgid "24 Hour Format"
+msgstr "24ωρη μορφή"
+
+#: templates/data/time.inc:28
+msgid "24 hours"
+msgstr "24 ώρες"
+
+msgid "<b>A fatal error has occurred:</b>"
+msgstr "<b>Παρουσιάστηκε ένα σοβαρό λάθος:</b>"
+
+#: framework/Horde/Horde.php:166
+msgid "A fatal error has occurred"
+msgstr "Παρουσιάσθηκε κρίσιμο λάθος"
+
+#: framework/Crypt/Crypt/pgp.php:941
+msgid "A public PGP key is required to encrypt a message."
+msgstr "Απαιτείται δημόσιο κλειδί PGP για την κρυπτογράφηση ενός μηνύματος."
+
+#: framework/Crypt/Crypt/pgp.php:1167
+msgid "A public PGP key is required to verify a signed message."
+msgstr ""
+"Απαιτείται δημόσιο κλειδί PGP για επιβεβαίωση ενός υπογεγραμμένου μηνύματος."
+
+#: framework/Crypt/Crypt/pgp.php:1098
+msgid ""
+"A public PGP key, private PGP key, and passphrase are required to decrypt a "
+"message."
+msgstr ""
+"Απαιτείται δημόσιο, προσωπικό PGP κλειδί και λέξη-κωδικός για να "
+"αποκρυπτογραφήσετε ένα μήνυμα."
+
+#: framework/Crypt/Crypt/pgp.php:1017
+msgid ""
+"A public PGP key, private PGP key, and passphrase are required to sign a "
+"message."
+msgstr ""
+"Απαιτείται δημόσιο, προσωπικό PGP κλειδί και λέξη-κωδικός για να υπογράψετε "
+"ψηφιακά ένα μήνυμα."
+
+#: framework/Crypt/Crypt/smime.php:523
+msgid ""
+"A public S/MIME key, private S/MIME key, and passphrase are required to "
+"decrypt a message."
+msgstr ""
+"Απαιτείται δημόσιο, προσωπικό S/MIME κλειδί και λέξη-κωδικός για να "
+"αποκρυπτογραφήσετε ένα μήνυμα."
+
+#: framework/Crypt/Crypt/smime.php:449
+msgid ""
+"A public S/MIME key, private S/MIME key, and passphrase are required to sign "
+"a message."
+msgstr ""
+"Απαιτείται δημόσιο, προσωπικό S/MIME κλειδί και λέξη-κωδικός για να "
+"υπογράψετε ψηφιακά ένα μήνυμα."
+
+#: framework/Crypt/Crypt/smime.php:382
+msgid "A public SMIME key is required to encrypt a message."
+msgstr "Απαιτείται δημόσιο κλειδί S/MIME για την κρυπτογράφηση ενός μηνύματος."
+
+msgid "AM/PM"
+msgstr "πμ/μμ"
+
+#: templates/javascript/htmlarea_lang.js:30
+msgid "About this editor"
+msgstr "Περί αυτού του Κειμενογράφου"
+
+#: services/help/index.php:52
+msgid "About..."
+msgstr "Περί..."
+
+#: templates/javascript/htmlarea_lang.js:74
+msgid "Absbottom"
+msgstr "Απόλυτο τέλος"
+
+#: templates/javascript/htmlarea_lang.js:72
+msgid "Absmiddle"
+msgstr "Απόλυτη Μέση"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:640
+msgid "Accept request"
+msgstr "Αποδοχή αιτήματος"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:681
+msgid "Accepted"
+msgstr "Εγινε αποδεκτό"
+
+#: framework/VFS/VFS/musql.php:285
+msgid "Access denied creating VFS directory."
+msgstr "Η πρόσβαση απορρίφθηκε κατά τη δημιουργία VFS καταλόγου."
+
+#: framework/VFS/VFS/musql.php:138
+msgid "Access denied creating VFS file."
+msgstr "Η πρόσβαση απορρίφθηκε κατά τη δημιουργία VFS αρχείου."
+
+#: config/prefs.php.dist:75
+msgid "Account Password"
+msgstr "Κωδικός Λογαριασμού"
+
+#: framework/Net_SMS/SMS/clickatell_http.php:302
+msgid "Account frozen."
+msgstr "Ο λογαριασμός πάγωσε."
+
+#: config/registry.php.dist:320
+msgid "Accounting"
+msgstr "Καταγραφή"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:451
+#: framework/MIME/MIME/Viewer/icalendar.php:625
+msgid "Actions"
+msgstr "Ενέργειες"
+
+#: admin/perms/addchild.php:54 framework/Perms/Perms/UI.php:136
+#: templates/portal/add.inc:14 templates/admin/groups/addchild.inc:16
+msgid "Add"
+msgstr "Προσθήκη"
+
+#: admin/groups.php:214 admin/groups.php:215
+msgid "Add Child Group"
+msgstr "Προσθήκη υποομάδας"
+
+#: framework/Perms/Perms/UI.php:81 framework/Perms/Perms/UI.php:82
+msgid "Add Child Permission"
+msgstr "Προσθήκη άδειας υποομάδας (child permission)"
+
+#: templates/portal/add.inc:5
+msgid "Add Here:"
+msgstr "Προσθήκη εδώ:"
+
+#: admin/groups.php:208 admin/groups.php:209
+msgid "Add New Group"
+msgstr "Προσθήκη Νέας Ομάδας"
+
+#: framework/Perms/Perms/UI.php:70 framework/Perms/Perms/UI.php:71
+msgid "Add New Permission"
+msgstr "Προσθήκη νέας άδειας"
+
+#: templates/admin/groups/addchild.inc:9
+msgid "Add a child group to '%s'"
+msgstr "Προσθήκη υποομάδας στο '%s'"
+
+#: admin/perms/addchild.php:53 framework/Perms/Perms/UI.php:135
+msgid "Add a child permission to '%s'"
+msgstr "Προσθήκη άδειας (permission) υποομάδας στο '%s'"
+
+#: admin/user.php:30
+msgid "Add a new user:"
+msgstr "Προσθήκη νέου χρήστη:"
+
+#: framework/UI/UI/VarRenderer/html.php:529
+msgid "Add column"
+msgstr "Προσθήκη στήλης"
+
+#: templates/admin/groups/edit.inc:35
+msgid "Add new members"
+msgstr "Προσθήκη νέου μέλους"
+
+#: templates/data/csvmap.inc:103
+msgid "Add pair"
+msgstr "Προσθήκη ζεύγους"
+
+#: config/prefs.php.dist:351
+msgid "Add the %s Menu as a Mozilla Sidebar"
+msgstr "Προσθήκη του %s στο μενού του Mozilla"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:631
+#: framework/MIME/MIME/Viewer/icalendar.php:637
+msgid "Add this to my calendar"
+msgstr "Προσθήκη αυτού στο ημερολόγιό μου"
+
+#: framework/MIME/MIME/Viewer/vcard.php:74
+msgid "Add to address book:"
+msgstr "Προσθήκη στο Διευθυνσιογράφο:"
+
+#: framework/MIME/MIME/Viewer/vcard.php:81
+msgid "Add to my address book"
+msgstr "Προσθήκη στο Διευθυνσιογράφο μου"
+
+#: admin/user.php:31
+msgid "Add user"
+msgstr "Προσθήκη χρήστη"
+
+#: admin/user.php:79
+msgid ""
+"Added '%s' to the system, but could not add additional signup information: %"
+"s."
+msgstr ""
+"Προστέθηκε '%s' στο σύστημα, αλλά δεν μπόρεσα να προσθέσω συμπληρωματικές "
+"πληροφορίες"
+
+#: signup.php:46
+msgid "Added '%s' to the system. You can log in now."
+msgstr "Προστέθηκε '%s' στο σύστημα. Μπορείτε να συνδεθείτε τώρα."
+
+#: templates/admin/user/noadd.inc:4
+msgid "Adding users is disabled."
+msgstr "Η προσθήκη χρηστών έχει απενεργοποιηθεί."
+
+#: framework/MIME/MIME/Viewer/vcard.php:129
+#: framework/MIME/MIME/Viewer/vcard.php:176 framework/Form/Form.php:1437
+msgid "Address"
+msgstr "Διεύθυνση"
+
+msgid "Address Book"
+msgstr "Διευθυνσιογράφος"
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:97
+msgid "Administer - set permissions for other users"
+msgstr "Διαχείριση - Δώστε δικαιώματα σε άλλους χρήστες"
+
+#: admin/index.php:19 services/portal/sidebar.php:113
+msgid "Administration"
+msgstr "Διαχείριση"
+
+msgid "Aktion Airport"
+msgstr "Αερολιμένας Ακτίου"
+
+msgid "Alexandroupoli Airport"
+msgstr "Αερολιμήν Αλεξανδρούπολης"
+
+msgid "Alias"
+msgstr "Ψευδώνυμο"
+
+#: templates/javascript/htmlarea_table_lang.js:16
+msgid "Align"
+msgstr "Ευθυγράμμισε"
+
+#: templates/javascript/htmlarea_lang.js:67
+msgid "Alignment:"
+msgstr "Ευθυγράμμιση:"
+
+#: lib/Block/fortune.php:87
+msgid "All"
+msgstr "Ολα"
+
+#: admin/perms/edit.php:118 templates/shares/edit.inc:71
+msgid "All Authenticated Users"
+msgstr "Ολοι οι έγκυροι χρήστες"
+
+#: admin/groups.php:33 admin/groups.php:212
+msgid "All Groups"
+msgstr "Ολες οι Ομάδες"
+
+#: admin/perms/addchild.php:38 framework/Perms/Perms/UI.php:74
+msgid "All Permissions"
+msgstr "Ολα τα δικαιώματα"
+
+#: templates/javascript/htmlarea_table_lang.js:17
+msgid "All four sides"
+msgstr "Και οι τέσσερις (4) πλευρές"
+
+#: framework/Form/Form.php:1854
+msgid "Allow multiple addresses"
+msgstr "Να επιτρέπονται πολλαπλές διευθύνσεις"
+
+#: config/prefs.php.dist:517
+msgid "Allow setting of ordered list type?"
+msgstr "Να επιτρέπονται ρυθμίσεις ταξινομιμένων λιστών;"
+
+#: framework/DataTree/DataTree/sql.php:401
+msgid "Already exists"
+msgstr "Ηδη υπάρχει"
+
+msgid "Alternate IMSP Login"
+msgstr "Εναλλακτική IMSP Είσοδος"
+
+msgid "Alternate IMSP Password"
+msgstr "Εναλλακτικός IMSP Κωδικός"
+
+#: config/prefs.php.dist:482
+msgid "Alternate IMSP Username"
+msgstr "Εναλλακτικό IMSP Όνομα Χρήστη"
+
+#: services/resetpassword.php:35
+msgid "Alternate email address"
+msgstr "Εναλλακτική διεύθυνση email"
+
+#: admin/templates.php:142
+msgid "Alternate templates"
+msgstr "Εναλλακτικά πρότυπα"
+
+#: templates/javascript/htmlarea_lang.js:122
+#: templates/javascript/htmlarea_anselimage_lang.js:25
+msgid "Alternate text:"
+msgstr "Εναλλακτικό κείμενο:"
+
+msgid "An illegal value was specified."
+msgstr "Ορίστηκε μία μη επιτρεπόμενη τιμή."
+
+msgid "Anchialos Airport"
+msgstr "Αερολιμένας Αγχίαλου."
+
+msgid "Andravida Airport"
+msgstr "Αερολιμένας Ανδραβίδας."
+
+#: framework/NLS/NLS/GeoIP.php:120
+msgid "Anonymous Proxy"
+msgstr "Ανώνυμος Διαμμεσολαβητής (Proxy)"
+
+#: services/resetpassword.php:49
+msgid "Answer"
+msgstr "Απάντηση"
+
+#: admin/templates.php:74 admin/phpshell.php:30
+#: framework/Block/Block/UI.php:59 templates/admin/setup/index.html:6
+msgid "Application"
+msgstr "Εφαρμογή"
+
+#: util/icon_browser.php:42
+msgid "Application List"
+msgstr "Λίστα Εφαρμογής"
+
+#: admin/setup/index.php:130
+msgid "Application is ready."
+msgstr "Η εφαρμογή είναι έτοιμη."
+
+#: templates/shares/edit.inc:224
+msgid "Apply to Child Shares"
+msgstr "Εφαρμογή και στα εξαρτώμενα κοινόχρηστα"
+
+#: templates/admin/user/approve.inc:33
+msgid "Approve"
+msgstr "Εγκρίνω"
+
+#: framework/UI/UI/VarRenderer/html.php:377
+#: framework/UI/UI/VarRenderer/html.php:414
+#: templates/javascript/open_calendar.js:68
+msgid "April"
+msgstr "Απρίλιος"
+
+msgid "Araxos Airport"
+msgstr "Αερολιμένας Αράξου"
+
+#: framework/MIME/MIME/Viewer/rar.php:62 framework/MIME/MIME/Viewer/zip.php:66
+#: framework/MIME/MIME/Viewer/tgz.php:81
+msgid "Archive File Size"
+msgstr "Μέγεθος αρχείου αρχειοθέτησης"
+
+#: framework/MIME/MIME/Viewer/rar.php:61 framework/MIME/MIME/Viewer/zip.php:65
+#: framework/MIME/MIME/Viewer/tgz.php:80
+msgid "Archive Name"
+msgstr "Ονομα αρχείου αρχειθέτησης"
+
+#: templates/admin/user/removequeued.inc:9
+msgid "Are you sure you want to remove the signup request for %s ?"
+msgstr "Είστε σίγουρη για τη διαγραφή της αίτησης υπογραφής για %s ?"
+
+#: templates/admin/groups/delete.inc:9
+msgid "Are you sure you wish to delete '%s' and any sub-groups?"
+msgstr "Είστε σίγουροι ότι θέλετε να διαγράψετε '%s' και όλες τις υποομάδες?"
+
+#: lib/Block/fortune.php:28
+msgid "Art"
+msgstr "Τέχνη"
+
+#: lib/Block/fortune.php:29
+msgid "Ascii Art"
+msgstr "ASCII Τέχνη"
+
+#: config/prefs.php.dist:409
+msgid "Ask for confirmation before doing maintenance operations?"
+msgstr "Να ζητείτε επιβεβαίωση πρίν από κάθε ενέργεια διαχείρισης;"
+
+#: framework/Form/Form.php:3097
+msgid "Assignment columns"
+msgstr "Ανάθεση στηλών"
+
+msgid "Athinai Airport"
+msgstr "Αερολιμένας Αθηνών"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:166
+#: framework/MIME/MIME/Viewer/icalendar.php:249
+#: framework/MIME/MIME/Viewer/icalendar.php:318
+msgid "Attached is an iCalendar file reply to a request you sent"
+msgstr "Το συνημμένο είναι ένα αρχείο ημερολογίου σε απάντηση αιτήματός σας"
+
+#: admin/groups.php:75
+msgid "Attempt to delete a non-existent group."
+msgstr "Προσπάθεια διαγραφής μη υπαρκτής ομάδας."
+
+#: admin/perms/delete.php:38
+msgid "Attempt to delete a non-existent permission."
+msgstr "Προσπάθεια διαγραφής μη υπαρκτού δικαιώματος."
+
+#: admin/perms/edit.php:98
+msgid "Attempt to edit a non-existent permission."
+msgstr "Προσπάθεια επεξεργασίας μη υπαρκτού δικαιώματος."
+
+#: services/shares/edit.php:53
+msgid "Attempt to edit a non-existent share."
+msgstr "Προσπάθεια επεξεργασίας μη υπαρκτού διαμοιρασμένου."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:577
+msgid "Attendees"
+msgstr "Παρευρισκόμενοι"
+
+#: framework/MIME/MIME/Viewer/rar.php:67 framework/MIME/MIME/Viewer/zip.php:71
+#: framework/MIME/MIME/Viewer/tgz.php:86
+msgid "Attributes"
+msgstr "Ιδιότητες"
+
+#: framework/UI/UI/VarRenderer/html.php:381
+#: framework/UI/UI/VarRenderer/html.php:418
+#: templates/javascript/open_calendar.js:72
+msgid "August"
+msgstr "Αύγουστος"
+
+#: framework/Net_SMS/SMS/clickatell_http.php:299
+msgid "Authentication failed"
+msgstr "Η αυθεντικοποίηση απέτυχε"
+
+#: framework/Net_SMS/SMS/clickatell_http.php:69
+#: framework/Net_SMS/SMS/clickatell_http.php:78
+msgid "Authentication failed. %s"
+msgstr "Η αυθεντικοποίηση απέτυχε. %s"
+
+#: framework/Auth/Auth/radius.php:181
+msgid "Authentication rejected by RADIUS server."
+msgstr "Η αυθεντικοποίηση απορρίφθηκε από τον RADIUS server."
+
+#: framework/VFS/VFS/ftp.php:800
+msgid "Authentication to FTP server failed."
+msgstr "Η αυθεντικοποίηση στον FTP-Server απέτυχε."
+
+msgid "Available fields:"
+msgstr "Διαθέσιμα Πεδία:"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:614
+msgid "Awaiting Response"
+msgstr "Αναμένοντας απάντηση"
+
+#: templates/javascript/htmlarea_table_lang.js:18
+msgid "Background"
+msgstr "Υπόβαθρο"
+
+#: templates/javascript/htmlarea_lang.js:23
+msgid "Background Color"
+msgstr "Χρώμα υπόβαθρου"
+
+#: framework/Auth/Auth/krb5.php:83
+msgid "Bad kerberos password."
+msgstr "Λάθος Kerberos-κωδικός."
+
+#: framework/Auth/Auth/krb5.php:85
+msgid "Bad kerberos username."
+msgstr "Λάθος Kerberos-Όνομα Χρήστη."
+
+#: framework/Form/Form.php:2592
+msgid "Bare"
+msgstr "Αδειο"
+
+#: util/icon_browser.php:31
+msgid "Base graphics directory '%s' not found."
+msgstr "Ο κύριος κατάλογος γραφικών '%s' δεν βρέθηκε."
+
+#: templates/javascript/htmlarea_table_lang.js:19
+#: templates/javascript/htmlarea_lang.js:73
+msgid "Baseline"
+msgstr "Βασική γραμμή"
+
+msgid "Birthday"
+msgstr "Γενέθλια"
+
+#: templates/portal/layout.inc:89
+msgid "Block Settings"
+msgstr "Ρυθμίσεις τμήματος"
+
+#: templates/portal/layout.inc:74
+msgid "Block Type"
+msgstr "Τύπος τμήματος"
+
+#: framework/Block/Block/Collection.php:326
+msgid "Block \"%s\" of application \"%s\" not found."
+msgstr "Το τμήμα \"%s\" της εφαρμογής \"%s\" δεν βρέθηκε."
+
+#: templates/javascript/htmlarea_lang.js:8
+msgid "Bold"
+msgstr "Έντονα"
+
+#: templates/javascript/htmlarea_table_lang.js:21
+msgid "Borders"
+msgstr "Όρια"
+
+#: lib/Block/fortune.php:96
+msgid "Both"
+msgstr "Και τα δύο"
+
+#: templates/javascript/htmlarea_table_lang.js:22
+#: templates/javascript/htmlarea_lang.js:75
+msgid "Bottom"
+msgstr "Κατώτατο"
+
+#: templates/javascript/htmlarea_lang.js:19
+msgid "Bulleted List"
+msgstr "Λίστα με τελείες"
+
+#: framework/Crypt/Crypt/smime.php:621
+msgid "CRL Distribution Points"
+msgstr "Σημεία διανομής CRL"
+
+msgid "CVS"
+msgstr "Αρχείο κειμένου χωρισμένο με κόμμα (CVS)"
+
+#: templates/javascript/htmlarea_context_lang.js:27
+msgid "C_ell Properties..."
+msgstr "Ιδιότητες Κελιών..."
+
+#: framework/UI/UI/VarRenderer/html.php:456 config/registry.php.dist:143
+msgid "Calendar"
+msgstr "Ημερολόγιο"
+
+msgid "Calendar:"
+msgstr "Ημερολόγιο:"
+
+msgid "Calendar Summary"
+msgstr "Περίληψη Ημερολόγιου"
+
+#: lib/Block/weatherdotcom.php:195
+msgid "Calm"
+msgstr "Ηρεμία"
+
+#: services/resetpassword.php:20
+msgid "Can not reset password automatically, contact your administrator."
+msgstr ""
+"Αδύνατη η αρχικοποίηση του κωδικού αυτόματα, επικοινωνήστε με το διαχειριστή"
+
+#: framework/Auth/Auth/cyrus.php:241 framework/Auth/Auth/cyrsql.php:312
+msgid "Can't connect to IMAP server: %s"
+msgstr "Αδύνατη η σύνδεση με τον IMAP-Server: %s"
+
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+#: templates/problem/problem.inc:59
+msgid "Cancel Problem Report"
+msgstr "Ακύρωση Αναφοράς Προβλήματος"
+
+#: framework/VFS/VFS/ftp.php:269
+msgid "Cannot delete file \"%s\"."
+msgstr "Αδύνατη η διαγραφή του αρχείου \"%s\"."
+
+#: framework/VFS_ISOWriter/ISOWriter/RealInputStrategy/copy.php:47
+#: framework/VFS_ISOWriter/ISOWriter/RealOutputStrategy/copy.php:53
+msgid "Cannot find a temporary directory."
+msgstr "Δε βρίσκω προσωρινό φάκελο (temp dir)."
+
+#: framework/VFS_ISOWriter/ISOWriter.php:97
+msgid "Cannot proceed without 'targetFile' parameter."
+msgstr "Αδύνατη η συνέχεια χωρίς την παράμετρο \"targetFile\"."
+
+#: framework/VFS/VFS/ftp.php:265
+msgid "Cannot remove directory \"%s\"."
+msgstr "Αδύνατη η διαγραφή του φακέλου \"%s\"."
+
+#: framework/DataTree/DataTree.php:112 framework/DataTree/DataTree/sql.php:576
+msgid "Cannot remove, %d children exist."
+msgstr "Αδύνατη η διαγραφή, %d υπφάκελος υπάρχει."
+
+#: framework/DataTree/DataTree/sql.php:502
+msgid ""
+"Cannot reorder, number of entries supplied for reorder does not match number "
+"stored."
+msgstr ""
+"Αδύνατη η επαναταξινόμηση, ο αριθμός των εγγραφών που δώσατε για "
+"επαναταξινόμηση, δεν ταιριάζει με τον αριθμό των αποθηκευμένων."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:318
+msgid "Cannot route message to specified number."
+msgstr "Δε μπορώ να δρομολογήσω μήνυμα στον αριθμό που ορίσατε."
+
+#: templates/javascript/htmlarea_table_lang.js:24
+msgid "Caption"
+msgstr "Επικεφαλίδα"
+
+#: config/prefs.php.dist:90
+msgid "Categories and Labels"
+msgstr "Κατηγορίες και Ετικέτες"
+
+#: framework/MIME/MIME/Viewer/vcard.php:197
+msgid "Cell Phone"
+msgstr "Κινητό Τηλέφωνο"
+
+#: templates/javascript/htmlarea_table_lang.js:25
+msgid "Cell Properties"
+msgstr "Ιδιότητες Κελιού"
+
+#: templates/javascript/htmlarea_lang.js:114
+msgid "Cell padding:"
+msgstr "Γέμισμα Κελιού:"
+
+#: templates/javascript/htmlarea_table_lang.js:61
+msgid "Cell properties"
+msgstr "Ιδιότητες Κελιού"
+
+#: templates/javascript/htmlarea_lang.js:112
+msgid "Cell spacing:"
+msgstr "Διάκενο Κελιών:"
+
+#: framework/Form/Form.php:1265
+msgid "Cellphone"
+msgstr "Κινητό Τηλέφωνο"
+
+#: templates/javascript/htmlarea_table_lang.js:26
+msgid "Center"
+msgstr "Κέντρο"
+
+#: framework/Crypt/Crypt/smime.php:723
+msgid "Certificate Details"
+msgstr "Λεπτομέρειες Πιστοποιητικού"
+
+#: framework/Crypt/Crypt/smime.php:620
+msgid "Certificate Policies"
+msgstr "Πολιτική Πιστοποιητικού"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:596 ???
+msgid "Chair Person"
+msgstr "Πρόεδρος"
+
+#: templates/rpcsum/rpcsum.inc:24 templates/rpcsum/rpcsum.inc:97
+msgid "Change"
+msgstr "Αλλαγή"
+
+msgid "Change Password"
+msgstr "Αλλαγή κωδικού"
+
+msgid ""
+"Change the name and address that people see when they read and reply to your "
+"emails."
+msgstr ""
+"Αλλάξτε το όνομα και τη διεύθυνση που θα βλέπουν όταν διαβάζουν ή απαντούν "
+"σε μηνύματά σας"
+
+#: templates/javascript/htmlarea_table_lang.js:27
+msgid "Char"
+msgstr "Χαρακτήρας"
+
+#: templates/javascript/htmlarea_context_lang.js:25
+msgid "Chec_k Link..."
+msgstr "Έλεγχος σύνδεσης..."
+
+#: templates/maintenance/confirm_top.inc:13
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr ""
+"Σημειώστε το τετραγωνίδιο για οποιαδήποτε εργασία(ες) θέλετε να εκτελεστούν "
+"αυτή τη στιγμή."
+
+msgid "Chios Airport"
+msgstr "Αερολιμένας Χίου"
+
+#: templates/prefs/app.inc:7
+msgid "Choose Application:"
+msgstr "Επιλέξτε Εφαρμογή:"
+
+#: framework/Auth/Auth/Signup.php:282
+msgid "Choose a password"
+msgstr "Επιλέξτε κωδικό"
+
+#: framework/Auth/Auth/Signup.php:281
+msgid "Choose a username"
+msgstr "Επιλέξτε όνομα χρήστη"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:452
+#: framework/MIME/MIME/Viewer/icalendar.php:626
+msgid "Choose an action:"
+msgstr "Επιλέξτε μια ενέργεια:"
+
+#: config/prefs.php.dist:282
+msgid "Choose how to display dates:"
+msgstr "Επιλέξτε πως θα εμφανίζονται οι ημερομηνίες:"
+
+#: templates/javascript/htmlarea_listtype_lang.js:22
+msgid "Choose list style type (for ordered lists)"
+msgstr "Επιλέξτε τύπο λίστας (για ταξινομημένες λίστες)"
+
+msgid "Chrysoupoli Airport"
+msgstr "Αερολιμένας Χρυσούπολης"
+
+#: framework/Net_SMS/SMS.php:311 framework/VFS/VFS.php:655
+msgid "Class definition of %s not found."
+msgstr "Δεν βρέθηκε ορισμός κλάσης του %s."
+
+#: lib/Block/weatherdotcom.php:314
+msgid "Clear"
+msgstr "Καθάρισε"
+
+#: templates/javascript/htmlarea_lang.js:42
+msgid "Clear MSOffice tags"
+msgstr "Καθαρισμός ετικετών (tags) MS-Office"
+
+#: templates/admin/user/clear.inc:7
+msgid "Clear out user: %s"
+msgstr "'Αδειασμα' Χρήστη: %s"
+
+#: templates/admin/user/clear.inc:16
+msgid "Clear user"
+msgstr "Καθαρισμός Χρήστη"
+
+#: templates/admin/user/list.inc:37
+msgid "Clear user data"
+msgstr "Καθαρισμός δεδομένων χρήστη"
+
+#: templates/maintenance/notice_bottom.inc:6
+msgid "Click to Continue"
+msgstr "Κάντε κλικ για συνέχεια"
+
+msgid "Close Help Window"
+msgstr "Κλείσιμο Παράθυρου Βοήθειας"
+
+msgid "Close Help"
+msgstr "Κλείσιμο Βοήθειας"
+
+msgid "Close Window"
+msgstr "Κλείσιμο Παράθυρου"
+
+#: templates/portal/sidebar.inc:4
+msgid "Collapse Sidebar"
+msgstr "Αναδίπλωση Πλευρικής Μπάρας"
+
+#: templates/javascript/htmlarea_table_lang.js:28
+msgid "Collapsed borders"
+msgstr "Αναδιπλωμένα Περιθώρια"
+
+#: lib/Block/color.php:18 lib/Block/color.php:29
+#: templates/javascript/htmlarea_table_lang.js:29
+msgid "Color"
+msgstr "Χρώμα"
+
+#: framework/Block/Block/Collection.php:297
+#: framework/Block/Block/Collection.php:298
+#: framework/UI/UI/VarRenderer/html.php:472 services/images/colorpicker.php:14
+#: templates/prefs/categorymanagement.inc:51
+#: templates/prefs/categorymanagement.inc:52
+#: templates/prefs/categorymanagement.inc:68
+#: templates/prefs/categorymanagement.inc:69
+#: templates/prefs/categorymanagement.inc:85
+#: templates/prefs/categorymanagement.inc:86
+msgid "Color Picker"
+msgstr "Επιλέκτης Χρώματος"
+
+#: framework/Form/Form.php:2834
+msgid "Colour selection"
+msgstr "Επιλογή Χρώματος"
+
+#: templates/javascript/htmlarea_lang.js:103
+msgid "Cols:"
+msgstr "Στήλες:"
+
+#: framework/Form/Form.php:1929
+msgid "Column titles"
+msgstr "Τίτλοι Στηλών"
+
+#: config/registry.php.dist:289
+msgid "Comics"
+msgstr "Comics"
+
+#: admin/cmdshell.php:25
+msgid "Command"
+msgstr "Εντολή"
+
+#: admin/cmdshell.php:20
+msgid "Command Shell"
+msgstr "Κέλυφος Εντολών"
+
+#: framework/Crypt/Crypt/pgp.php:399
+msgid "Comment"
+msgstr "Σχόλιο"
+
+#: framework/Crypt/Crypt/smime.php:590
+msgid "Common Name"
+msgstr "Κοινό Όνομα"
+
+#: framework/MIME/MIME/Viewer/vcard.php:242
+msgid "Company"
+msgstr "Εταιρεία"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:697
+msgid "Completed"
+msgstr "Ολοκληρώθηκε"
+
+#: framework/Text_Filter/Filter/emails.php:81
+#: framework/Text_Filter/Filter/emails.php:87
+#: framework/Text_Filter/Filter/emails.php:97
+#: framework/Text_Filter/Filter/emails.php:101
+msgid "Compose Message (%s)"
+msgstr "Σύνθεση Μηνύματος (%s)"
+
+#: lib/Block/fortune.php:31
+msgid "Computers"
+msgstr "Υπολογιστές"
+
+#: lib/Block/metar.php:247
+msgid "Conditions"
+msgstr "Συνθήκες"
+
+#: admin/setup/diff.php:89
+msgid "Configuration Differences"
+msgstr "Διαφορές Παραμετροποίησης"
+
+#: config/prefs.php.dist:146
+msgid "Configuration for syncing with PDAs, Smartphones and Outlook."
+msgstr "Επιλογές για συγχρονισμό με PDAs, έξυπνα Τηλέφωνα και Outlook."
+
+#: admin/setup/index.php:135
+msgid "Configuration is out of date."
+msgstr "Die Konfiguration muss aktualisiert werden."
+
+#: admin/setup/index.php:125
+msgid "Configuration needs updating."
+msgstr "Η παραμετροποίηση χρειάζεται ενημέρωση."
+
+#: admin/setup/index.php:99
+msgid "Configure %s"
+msgstr "Παραμετροποίηση %s"
+
+#: templates/admin/user/update.inc:37
+msgid "Confirm Password"
+msgstr "Επιβεβαίωση Κωδικού"
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:206
+#: framework/IMAP/IMAP/ACL/rfc2086.php:319
+msgid "Connection failed."
+msgstr "Η σύνδεση απέτυχε."
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:206
+#: framework/IMAP/IMAP/ACL/rfc2086.php:319
+msgid "Connection failed: "
+msgstr "Η σύνδεση απέτυχε: "
+
+#: framework/Crypt/Crypt/pgp.php:793
+msgid "Connection refused to the public keyserver."
+msgstr "Αρνηση σύνδεσης από το δημόσιο εξυπηρετητή κλειδιών."
+
+#: framework/Crypt/Crypt/pgp.php:795
+msgid "Connection refused to the public keyserver. Reason: %s (%s)"
+msgstr "Αρνηση σύνδεσης από το δημόσιο εξυπηρετητή κλειδιών. Λόγος : %s (%s)"
+
+#: framework/VFS/VFS/ftp.php:794
+msgid "Connection to FTP server failed."
+msgstr "Η σύνδεση με το FTP-Server απέτυχε."
+
+msgid "Contact Search"
+msgstr "Αναζήτηση Επαφής"
+
+#: framework/MIME/MIME/Viewer/vcard.php:56
+msgid "Contacts were successfully added to your address book."
+msgstr "Οι επαφές προστέθηκαν επιτυχώς στο Διευθυνσιογράφο σας."
+
+#: framework/MIME/MIME/Viewer/rar.php:59 framework/MIME/MIME/Viewer/zip.php:63
+#: framework/MIME/MIME/Viewer/tgz.php:78
+msgid "Contents of '%s'"
+msgstr "Περιεχόμενα του '%s'"
+
+msgid "Contents of the RAR archive"
+msgstr "Περιεχόμενα των αρχείων RAR"
+
+#: services/resetpassword.php:29
+msgid "Continue"
+msgstr "Συνέχεια"
+
+#: templates/javascript/htmlarea_context_lang.js:21
+msgid "Copy"
+msgstr "Αντιγραφή"
+
+#: templates/javascript/htmlarea_lang.js:36
+msgid "Copy selection"
+msgstr "Αντιγραφή Επιλογής"
+
+#: framework/Crypt/Crypt/pgp.php:977
+msgid "Could not PGP encrypt message."
+msgstr "Αδύνατη η κρυπτογράφηση του μηνύματος με PGP."
+
+#: framework/Crypt/Crypt/pgp.php:1055
+msgid "Could not PGP sign message."
+msgstr "Αδύνατη η υπογραφή του μηνύματος με PGP."
+
+#: framework/Crypt/Crypt/smime.php:411
+msgid "Could not S/MIME encrypt message."
+msgstr "Αδύνατη η κρυπτογράφηση του μηνύματος με S/MIME."
+
+#: framework/Crypt/Crypt/smime.php:485
+msgid "Could not S/MIME sign message."
+msgstr "Αδύνατη η υπογραφή του μηνύματος με S/MIME."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:184
+msgid "Could not add contact. %s"
+msgstr "Δεν μπόρεσα να προσθέσω την επαφή. %s"
+
+#: framework/Auth/Auth/ldap.php:113
+msgid "Could not bind to LDAP server."
+msgstr "Αδύνατη η σύνδεση με το LDAP-Server."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:154
+#: framework/Net_SMS/SMS/clickatell_http.php:173
+msgid "Could not check balance. %s"
+msgstr "Αδύνατος ο έλεγος υπολοίπου. %s"
+
+#: admin/setup/index.php:48
+msgid "Could not connect to server '%s' using FTP: %s"
+msgstr "Αδύνατη η σύνδεση στον εξυπηρετητή '%s' χρησιμποιώντας FTP: %s"
+
+#: framework/Net_SMS/SMS/sms2email_http.php:329
+msgid "Could not create distribution list. %s"
+msgstr "Αδύνατη η δημιουργία λίστασ διανομής. %s"
+
+#: framework/Crypt/Crypt/pgp.php:1126
+msgid "Could not decrypt PGP data."
+msgstr "Αδύνατη η αποκρυπτογράφηση PGP δεδομένων."
+
+#: framework/Crypt/Crypt/smime.php:540
+msgid "Could not decrypt S/MIME data."
+msgstr "Αδύνατη η αποκρυπτογράφηση S/MIME δεδομένων."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:250
+msgid "Could not delete contact. %s"
+msgstr "Αδύνατη η διαγραφή επαφής. %s"
+
+#: framework/Net_SMS/SMS/sms2email_http.php:365
+msgid "Could not delete distribution list. %s"
+msgstr "Αδύνατη η διαγραφή λίστας διανομής. %s"
+
+#: admin/setup/scripts.php:37
+msgid "Could not delete setup upgrade script '%s'."
+msgstr "Αδύνατη η διαγραφή setup upgrade script '%s' ."
+
+#: framework/Crypt/Crypt/smime.php:399 framework/Crypt/Crypt/pgp.php:959
+msgid "Could not determine the recipient's e-mail address."
+msgstr "Δε μπορώ να διευκρινήσω τη διεύθυνση του παραλήπτη."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:288
+msgid "Could not fetch complete address book."
+msgstr "Αδύνατη η πλήρης πρόσβαση του Διευθυνσιογράφου."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:510
+msgid "Could not fetch complete distribution list."
+msgstr "Αδύνατη η πλήρης πρόσβαση της λίστας διανομής."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:461
+msgid "Could not fetch the complete list of distribution lists."
+msgstr "Αδύνατη η πλήρης πρόσβαση λίστας από λίστες διανομής."
+
+#: framework/VFS_ISOWriter/ISOWriter/RealOutputStrategy.php:69
+#: framework/VFS_ISOWriter/ISOWriter/RealInputStrategy.php:85
+msgid "Could not load strategy '%s'."
+msgstr "Αδύνατο το φόρτωμα στρατηγικής \"%s\"."
+
+#: framework/VFS_ISOWriter/ISOWriter/RealInputStrategy/copy.php:111
+#: framework/VFS_ISOWriter/ISOWriter/RealOutputStrategy/direct.php:31
+msgid "Could not mkdir '%s'."
+msgstr "Αδύνατη η δημιουργία φακέλου \"%s\"."
+
+#: framework/Crypt/Crypt/pgp.php:720
+msgid "Could not obtain public key from the keyserver."
+msgstr "Αδύνατη η ανάκτηση δημόσιου κλειδιού από τον εξυπηρετητή Δημ.Κλειδιών."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:702
+#: framework/Net_SMS/SMS/clickatell_http.php:354
+msgid "Could not open %s."
+msgstr "Αδύνατο το άνοιγμα %s."
+
+#: framework/VFS_ISOWriter/ISOWriter/RealInputStrategy/copy.php:140
+msgid "Could not open '%s' for writing."
+msgstr "Αδύνατο το άνοιγμα \"%s\" για εγγραφή."
+
+#: framework/Maintenance/Maintenance.php:415 c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "Αδύνατο το άνοιγμα του μέρους Διαχείρισης %s"
+
+#: framework/VFS_ISOWriter/ISOWriter/RealInputStrategy/copy.php:71
+msgid "Could not open directory '%s'."
+msgstr "Δεν μπορώ να ανοίξω το φάκελο \"%s\"."
+
+#: framework/VFS/VFS/Object.php:270
+msgid "Could not read %s."
+msgstr "Δεν μπορώ να διαβάσω %s."
+
+#: services/resetpassword.php:85
+msgid ""
+"Could not reset the password for the requested user. Some or all of the "
+"details are not correct. Try again or contact your administrator if you need "
+"further help."
+msgstr ""
+"Αδύνατη η αρχικοποίηση του κωδικού για τον αιτούμενο χρήστη. Κάποια ή όλες "
+"οι λεπτομέρειες δεν είναι σωστές. Ξαναδοκιμάστε ή επικοινωνήστε με το διαχει-"
+"ριστή αν χρειάσεσθε περισσότερη βοήθεια."
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:318
+#: framework/IMAP/IMAP/ACL/rfc2086.php:349
+#: framework/IMAP/IMAP/ACL/rfc2086.php:386
+#: framework/IMAP/IMAP/ACL/rfc2086.php:392
+#: framework/IMAP/IMAP/ACL/rfc2086.php:398
+msgid "Could not retrieve ACL"
+msgstr "Αδύνατη η ανάκτηση Λίστας Κανόνων Πρόσβασης (ACL)"
+
+#: framework/Net_SMS/SMS/sms2email_http.php:279
+msgid "Could not retrieve address book. %s"
+msgstr "Αδύνατη η ανάκτηση Διευθυνσιογράφου. %s"
+
+#: framework/Net_SMS/SMS/sms2email_http.php:501
+msgid "Could not retrieve distribution list. %s"
+msgstr "Αδύνατη η ανάκτηση Λίστας Διανομής. %s"
+
+#: framework/Net_SMS/SMS/sms2email_http.php:452
+msgid "Could not retrieve distribution lists. %s"
+msgstr "Αδύνατη η ανάκτηση Λιστών Διανομής. %s"
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:226
+#: framework/IMAP/IMAP/ACL/rfc2086.php:230
+msgid "Could not retrieve server's capabilities"
+msgstr "Αδύνατη η ανάκτηση των ιδιοτήτων του εξυπηρετητή"
+
+#: admin/setup/config.php:54
+msgid "Could not revert configuration."
+msgstr "Αδύνατη η επαναφορά ρυθμίσεων."
+
+#: framework/VFS_ISOWriter/ISOWriter/RealInputStrategy/copy.php:95
+msgid "Could not rmdir '%s'."
+msgstr "Αδύνατη η διαγραφή φακέλου (rmdir) \"%s\"."
+
+#: admin/setup/scripts.php:71
+msgid "Could not save %s configuration."
+msgstr "Δε μπορώ να αποθηκεύσω %s ρυθμίσεις."
+
+#: admin/setup/index.php:63 admin/setup/scripts.php:57
+msgid "Could not save a backup configuation."
+msgstr "Δε μπορώ να κάνω εφεδρικό αντίγραφο των ρυθμίσεων."
+
+#: admin/setup/index.php:61
+msgid "Could not save a backup configuation: %s"
+msgstr "Δε μπορώ να κάνω εφεδρικό αντίγραφο των ρυθμίσεων: %s"
+
+#: admin/setup/scripts.php:92
+msgid "Could not save setup upgrade script to: '%s'."
+msgstr "Δε μπορώ να αποθηκεύσω πρόγραμμα ενημέρωσης στο '%s'."
+
+#: admin/setup/config.php:64
+msgid "Could not save the backup configuration file %s."
+msgstr "Δε μπορώ να αποθηκεύσω εφεδρικό αρχείο ρυθμίσεων %s."
+
+#: admin/setup/config.php:74
+msgid ""
+"Could not save the configuration file %s. You can either use one of the "
+"options to save the code back on %s or copy manually the code below to %s."
+msgstr ""
+"Δε μπορώ να αποθηκεύσω το αρχείο ρυθμίσεων %s. Μπορείτε είτε να χρησιμοποιή-"
+"σετε μια από τις επιλογές για να αποθηκεύσετε πίσω στο %s ή αντιγράψτε με το "
+"χέρι τον κώδικα πίσω στο %s."
+
+#: framework/Auth/Auth/ldap.php:123
+msgid "Could not search the LDAP server."
+msgstr "Αδύνατη η αναζήτηση στον εξυπηρετητή LDAP."
+
+#: framework/VFS_ISOWriter/ISOWriter/RealInputStrategy/copy.php:87
+msgid "Could not unlink '%s'."
+msgstr "Δε μπορώ να αποσυνδέσω \"%s\"."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:221
+msgid "Could not update contact. %s"
+msgstr "Δε μπορώ να ενημερώσω την επαφή. %s"
+
+#: framework/Net_SMS/SMS/sms2email_http.php:409
+msgid "Could not update distribution list. %s"
+msgstr "Δε μπορώ να ενημερώσω τη Λίστα Διανομής. %s"
+
+#: admin/setup/index.php:70
+msgid "Could not write configuration for '%s': %s"
+msgstr "Δε μπορώ να γράψω τις ρυμίσεις για '%s': %s"
+
+#: config/prefs.php.dist:350
+msgid "Couldn't find the Mozilla Sidebar. Make sure the sidebar is open."
+msgstr ""
+"Δε μπορώ να βρώ τη πλευρική μπάρα του Mozilla. Βεβαιωθείται ότι είναι "
+"ανοικτή."
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:159
+msgid "Couldn't give user '%s' the following rights for the folder '%s': %s"
+msgstr ""
+"Δε μπορώ να δώσω στο χρήστη '%s' τα παρακάτω δικαιώματα στο φάκελο '%s': %s"
+
+#: framework/Form/Form.php:1415
+msgid "Counted text"
+msgstr "Μετρημένο κείμενο"
+
+#: framework/Crypt/Crypt/smime.php:593
+msgid "Country"
+msgstr "Χώρα"
+
+#: config/registry.php.dist:273
+msgid "Courses"
+msgstr "Πορείες"
+
+#: templates/rpcsum/rpcsum.inc:21 templates/rpcsum/rpcsum.inc:97
+#: templates/rpcsum/rpcsum.inc:101
+msgid "Create"
+msgstr "Δημιουργία"
+
+#: templates/javascript/htmlarea_context_lang.js:67
+msgid "Create a link"
+msgstr "Δημιουργία ενός συνδέσμου"
+
+msgid "Create a new one"
+msgstr "Δημιουργία μιας νέας"
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:95
+msgid "Create sub folders"
+msgstr "Δημιουργία υποφακέλων"
+
+#: admin/perms/edit.php:136 framework/Perms/Perms/UI.php:222
+msgid "Creator Permissions"
+msgstr "Εξουσιοδοτήσεις Δημιουργού"
+
+#: framework/Form/Form.php:3214
+msgid "Credit card number"
+msgstr "Αριθμός Πιστωτικής Κάρτας"
+
+msgid "Credits"
+msgstr "Ευχαριστίες"
+
+#: lib/Block/moon.php:26
+msgid "Current Phase"
+msgstr "Τρέχουσα Φάση"
+
+#: lib/Block/time.php:3 lib/Block/time.php:30
+msgid "Current Time"
+msgstr "Τρέχουσα ώρα"
+
+#: templates/javascript/htmlarea_context_lang.js:53
+msgid "Current URL is"
+msgstr "Το τρέχον URL είναι"
+
+#: lib/Block/metar.php:25
+msgid "Current Weather"
+msgstr "Τρέχον Καιρός"
+
+#: lib/Block/weatherdotcom.php:219
+msgid "Current condition: "
+msgstr "Τρέχουσα συνθήκη: "
+
+#: templates/javascript/htmlarea_lang.js:32
+msgid "Current style"
+msgstr "Τρέχων στύλ"
+
+#: config/prefs.php.dist:108
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Παραμετροποίηση διαδικασιών που εκτελούνται κατά την είσοδο %s."
+
+#: templates/javascript/htmlarea_context_lang.js:20
+msgid "Cut"
+msgstr "Αποκοπή"
+
+#: templates/javascript/htmlarea_lang.js:35
+msgid "Cut selection"
+msgstr "Αποκοπή επιλογής"
+
+msgid "DD"
+msgstr "ΜΜ"
+
+msgid "Daily"
+msgstr "Ημερήσια"
+
+#: config/registry.php.dist:423
+msgid "Data"
+msgstr "Δεδομένα"
+
+#: admin/datatree.php:65
+msgid "DataTree Browser"
+msgstr "Εμφάνιση (Browser) DataTree"
+
+msgid "Database query failed."
+msgstr "Η αναζήτηση στη Βάση Δεδομένων απέτυχε."
+
+#: framework/MIME/MIME/Viewer/rfc822.php:77 framework/Form/Form.php:2381
+msgid "Date"
+msgstr "Ημερομηνία"
+
+#: templates/admin/user/approve.inc:12
+msgid "Date Received"
+msgstr "Ημερομηνία παραλαβής"
+
+#: framework/Form/Form.php:2795
+msgid "Date selection"
+msgstr "Επιλογή Ημερομηνίας"
+
+#: lib/Block/weatherdotcom.php:263
+msgid "Day"
+msgstr "Ημέρα"
+
+#: templates/javascript/htmlarea_context_lang.js:35
+msgid "De_lete Column"
+msgstr "Διαγραφή Στήλης"
+
+#: framework/UI/UI/VarRenderer/html.php:385
+#: framework/UI/UI/VarRenderer/html.php:422
+#: templates/javascript/open_calendar.js:76
+msgid "December"
+msgstr "Δεκέμβριος"
+
+#: templates/javascript/htmlarea_listtype_lang.js:16
+msgid "Decimal numbers"
+msgstr "Δεκαδικοί αριθμοί"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:685
+msgid "Declined"
+msgstr "Έχουν αρνηθεί"
+
+#: templates/javascript/htmlarea_lang.js:20
+msgid "Decrease Indent"
+msgstr "Μείωση Περιθωρίου"
+
+#: framework/Prefs/Prefs/UI.php:192 lib/prefs.php:108
+msgid "Default"
+msgstr "Προκαθορισμένο"
+
+#: templates/prefs/categorymanagement.inc:47
+#: templates/prefs/categorymanagement.inc:81
+msgid "Default Color"
+msgstr "Προεπιλεγμένο Χρώμα"
+
+msgid "Default Identity"
+msgstr "Προεπιλεγμένη Ταυτότητα"
+
+#: admin/perms/edit.php:119 framework/Perms/Perms/UI.php:204
+msgid "Default Permissions"
+msgstr "Προκαθορισμένες Εξουσιοδοτήσεις"
+
+#: framework/Perms/Perms/UI.php:205
+msgid "Default permissions"
+msgstr "Προκαθορισμένες Εξουσιοδοτήσεις"
+
+#: lib/Block/fortune.php:33
+msgid "Definitions"
+msgstr "Ορισμοί"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:643
+msgid "Delegate position"
+msgstr "Θέση αντιπροσώπου"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:693
+msgid "Delegated"
+msgstr "Αντιπροσωπημένο"
+
+#: admin/groups.php:72 admin/perms/delete.php:46 admin/perms/delete.php:52
+#: framework/Perms/Perms.php:297 framework/Perms/Perms/UI.php:327
+#: framework/Perms/Perms/UI.php:347 templates/shares/edit.inc:42
+#: templates/shares/edit.inc:76 templates/shares/edit.inc:99
+#: templates/shares/edit.inc:122 templates/shares/edit.inc:145
+#: templates/shares/edit.inc:188 templates/rpcsum/rpcsum.inc:73
+#: templates/rpcsum/rpcsum.inc:99 templates/admin/groups/delete.inc:13
+#: templates/admin/user/list.inc:34
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#: admin/groups.php:189 admin/groups.php:217
+msgid "Delete Group"
+msgstr "Διαγραφή Ομάδας"
+
+#: framework/Perms/Perms/UI.php:60 framework/Perms/Perms/UI.php:84
+msgid "Delete Permission"
+msgstr "Διαγραφή Εξουσιοδότησης"
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:96
+msgid "Delete and purge messages"
+msgstr "Διαγραφή και εκκένωση μηνυμάτων"
+
+#: templates/javascript/htmlarea_table_lang.js:57
+msgid "Delete cell"
+msgstr "Διαγραφή κελιού"
+
+#: templates/javascript/htmlarea_table_lang.js:63
+msgid "Delete column"
+msgstr "Διαγραφή Στήλης"
+
+#: admin/templates.php:148
+msgid "Delete existing alternate template"
+msgstr "Διαγραφή υπάρχοντος εναλλακτικού προτύπου"
+
+#: admin/perms/delete.php:50 framework/Perms/Perms/UI.php:326
+msgid "Delete permissions for '%s'"
+msgstr "Διαγραφή εξουσιοδοτήσεων για '%s'"
+
+#: framework/Perms/Perms/UI.php:329
+msgid "Delete permissions for '%s' and any sub-permissions?"
+msgstr "Διαγραφή εξουσιοδοτήσεων για '%s' και κάθε υπο-εξουσιοδότηση;"
+
+#: templates/javascript/htmlarea_table_lang.js:67
+msgid "Delete row"
+msgstr "Διαγραφή στήλης"
+
+#: templates/prefs/deleteidentity.inc:15
+msgid "Delete selected identity"
+msgstr "Προεπιλεγμένη Ταυτότητα"
+
+#: templates/javascript/htmlarea_context_lang.js:66
+msgid "Delete the current column"
+msgstr "Διαγραφή τρέχουσας στήλης"
+
+#: templates/javascript/htmlarea_context_lang.js:62
+msgid "Delete the current row"
+msgstr "Διαγραφή τρέχουσας γραμμής"
+
+#: admin/perms/delete.php:48
+msgid "Delete this permission and any sub-permissions?"
+msgstr "Διαγραφή αυτής της εξουσιοδότησης και κάθε υπο-εξουσιοδότησης;"
+
+#: admin/setup/scripts.php:35
+msgid "Deleted setup upgrade script '%s'."
+msgstr "Διαγράφηκε το setup upgrade script '%s'."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:585
+#: framework/Net_SMS/SMS/sms2email_http.php:619
+#: framework/Net_SMS/SMS/clickatell_http.php:227
+#: framework/Net_SMS/SMS/clickatell_http.php:261
+msgid "Delivery time"
+msgstr "Ώρα άφιξης"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:642
+msgid "Deny request"
+msgstr "Αρνηση αιτήματος"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:471
+msgid "Deny request for free/busy information"
+msgstr "Αρνηση αιτήματος για πληροφορίες διαθεσιμότητας"
+
+#: services/problem.php:95 services/problem.php:99 services/problem.php:109
+msgid "Describe the Problem"
+msgstr "Περιγραφή του Προβλήματος"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:565 framework/Form/Form.php:932
+#: templates/javascript/htmlarea_table_lang.js:30
+msgid "Description"
+msgstr "Περιγραφή"
+
+#: framework/Horde/Horde.php:201
+msgid "Details (also in Horde's logfile):"
+msgstr "Λεπτομέρειες (επίσης και στο αρχείο καταγραφής του Horde):"
+
+#: framework/Horde/Horde.php:205
+msgid "Details have been logged for the administrator."
+msgstr "Οι λεπτομέρειες έχουν καταγραφεί για τον διαχειριστή."
+
+#: config/registry.php.dist:193
+msgid "Development"
+msgstr "Ανάπτυξη"
+
+#: lib/Block/metar.php:215
+msgid "Dew Point"
+msgstr "Σημείο Δροσιάς"
+
+#: lib/Block/weatherdotcom.php:176
+msgid "Dew point: "
+msgstr "Σημείο Δροσιάς: "
+
+#: lib/Block/metar.php:292
+msgid "Dew Point for last hour: "
+msgstr "Σημείο Δροσιάς για την τελευταία ώρα: "
+
+#: templates/javascript/htmlarea_lang.js:38
+msgid "Direction left to right"
+msgstr "Κατεύθυνση από αριστερά προς τα δεξιά"
+
+#: templates/javascript/htmlarea_lang.js:39
+msgid "Direction right to left"
+msgstr "Κατεύθυνση από τα δεξιά προς τα αριστερά"
+
+#: lib/Block/google.php:39
+msgid "Directory"
+msgstr "Κατάλογος"
+
+#: config/prefs.php.dist:250
+msgid "Display 24-hour times?"
+msgstr "Εμφάνιση ώρας σε 24ωρη μορφή;"
+
+msgid "Display Options"
+msgstr "Επιλογές Εμφάνισης"
+
+#: lib/Block/metar.php:83
+msgid "Display forecast (TAF)"
+msgstr "Εμφάνιση προβλέψεων (TAF)"
+
+#: framework/Form/Form.php:2805
+msgid "Display format"
+msgstr "Μορφή Εμφάνισης"
+
+#: framework/MIME/MIME/MDN.php:203
+msgid "Disposition Notification"
+msgstr "Ενημέρωση Διάταξης"
+
+#: admin/perms/delete.php:46 framework/Perms/Perms/UI.php:327
+msgid "Do not delete"
+msgstr "Μη διαγράφεις"
+
+#: services/maintenance.php:24
+msgid "Do not directly access maintenance.php"
+msgstr "Μην επιχειρήσετε να ανοίξετε απευθείας το αρχείο maintenance.php"
+
+#: templates/data/tsvinfo.inc:19 templates/data/csvinfo.inc:19
+msgid "Does the first row contain the field names? If yes, check this box:"
+msgstr "Περιέχει η πρώτη γραμμή ονόματα πεδίων; Αν ναι τσεκάρετε αυτό:"
+
+#: framework/MIME/MIME/Contents.php:866
+msgid "Download"
+msgstr "Κατέβασμα"
+
+#: framework/MIME/MIME/Contents.php:866
+msgid "Download %s"
+msgstr "Κατέβασμα %s"
+
+#: admin/setup/index.php:156
+msgid "Download generated configuration as PHP script."
+msgstr "Κατέβασμα του αρχείου παραμέτρων σαν PHP-script."
+
+#: framework/Form/Form.php:2090
+msgid "Drop down list"
+msgstr "Λίστα Καταράκτης"
+
+#: lib/Block/fortune.php:34
+msgid "Drugs"
+msgstr "Φάρμακα-ναρκωτικά"
+
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+#: framework/Block/Block/UI.php:51 templates/portal/edit.inc:22
+msgid "Edit Block"
+msgstr "Επεξεργασία Block"
+
+#: admin/groups.php:188 admin/groups.php:216
+msgid "Edit Group"
+msgstr "Επεξεργασία Ομάδας"
+
+#: framework/Perms/Perms/UI.php:59 framework/Perms/Perms/UI.php:83
+msgid "Edit Permission"
+msgstr "Επεξεργασία Εξουσιοδότησης"
+
+#: services/shares/edit.php:237
+msgid "Edit Permissions"
+msgstr "Επεξεργασία Εξουσιοδοτήσεων"
+
+#: services/shares/edit.php:239
+msgid "Edit Permissions for %s"
+msgstr "Επεξεργασία Εξουσιοδοτήσεων για %s"
+
+#: templates/prefs/app.inc:9
+msgid "Edit options for:"
+msgstr "Επεξεργασία επιλογών για:"
+
+#: templates/shares/edit.inc:14
+msgid "Edit permissions for %s"
+msgstr "Επεξεργασία Εξουσιοδοτήσεων για %s"
+
+#: admin/perms/edit.php:204 framework/Perms/Perms/UI.php:288
+msgid "Edit permissions for '%s'"
+msgstr "Επεξεργασία Εξουσιοδοτήσεων για '%s'"
+
+msgid "Elefsis Airport"
+msgstr "Αερολιμένας Ελευσίνας"
+
+msgid "Heraklion Airport"
+msgstr "Αερολιμένας Ηρακλείου"
+
+#: templates/javascript/htmlarea_context_lang.js:42
+msgid "Element..."
+msgstr "Στοιχείο..."
+
+msgid "Email"
+msgstr "Αλληλογραφία"
+
+#: framework/Crypt/Crypt/smime.php:589 templates/admin/groups/edit.inc:12
+#: templates/admin/user/update.inc:40
+msgid "Email Address"
+msgstr "Διεύθυνση Email"
+
+#: framework/Form/Form.php:1946
+msgid "Email addresses must match."
+msgstr "Η διεύθυνση Email πρέπει να ταιριάζει."
+
+#: framework/Form/Form.php:1972
+msgid "Email with confirmation"
+msgstr "Μήνυμα με ρυθμίσεις"
+
+#: framework/UI/UI/VarRenderer/html.php:280
+msgid "Emoticons"
+msgstr "Αισθήματα"
+
+#: framework/Net_SMS/SMS/clickatell_http.php:311
+msgid "Empty message."
+msgstr "Κενό μήνυμα."
+
+#: framework/Auth/Auth/ldap.php:131
+msgid "Empty result."
+msgstr "Δεν επιστράφηκαν Αποτελέσματα."
+
+#: framework/SQL/SQL/Keywords.php:114
+msgid "Empty search terms"
+msgstr "Αδειες συνθήκες αναζήτησης"
+
+#: config/prefs.php.dist:526
+msgid "Enable insertion of images from Photo Galleries in text?"
+msgstr "Ενεργοποίηση εισαγωγής εικόνων απο Photo Calleriew στο κείμενο;"
+
+#: config/prefs.php.dist:501
+msgid "Enable right click context menu?"
+msgstr "Να ενεργοποιηθεί το μενού με δεξί κλικ;"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:448
+#: framework/MIME/MIME/Viewer/icalendar.php:553
+msgid "End"
+msgstr "Τέλος"
+
+#: framework/Form/Form.php:2590 framework/Form/Form.php:2799
+msgid "End year"
+msgstr "Έτος Τέλους"
+
+#: templates/javascript/htmlarea_lang.js:29
+msgid "Enlarge Editor"
+msgstr "Μεγένθυση Κειμενογράφου"
+
+#: config/prefs.php.dist:205
+msgid ""
+"Enter a security question which you will be asked if you need to reset your "
+"password, e.g. 'what is the name of your pet?':"
+msgstr ""
+"Δώστε μια ερώτηση ασφαλείας, η οποία θα σας ζητηθεί αν χρειασθεί να αλλάξε-"
+"τε τον κωδικό σας, π.χ. 'Ποιό είναι το όνομα του κατοικιδίου σας;':"
+
+#: templates/javascript/htmlarea_lang.js:119
+#: templates/javascript/htmlarea_anselimage_lang.js:22
+msgid "Enter the image URL here"
+msgstr "Δώστε τη σύνδεση της εικόνας εδώ"
+
+msgid "Error"
+msgstr "Λάθος"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:195
+#: framework/MIME/MIME/Viewer/icalendar.php:278
+#: framework/MIME/MIME/Viewer/icalendar.php:347
+msgid "Error sending reply: %s."
+msgstr "Λάθος αποστέλλοντας απάντηση: %s"
+
+#: framework/Net_SMS/SMS/clickatell_http.php:314
+msgid "Error with email message."
+msgstr "Λάθος με μήνυμα email."
+
+#: framework/VFS_ISOWriter/ISOWriter/RealInputStrategy/copy.php:143
+msgid "Error writing '%s'."
+msgstr "Λάθος γράφοντας \"%s\"."
+
+#: lib/Block/fortune.php:36
+msgid "Ethnic"
+msgstr "Εθνικό"
+
+#: framework/NLS/NLS/GeoIP.php:56
+msgid "Europe"
+msgstr "Ευρώπη"
+
+#: config/prefs.php.dist:323
+msgid "Every 15 minutes"
+msgstr "Κάθε 15 λεπτά"
+
+#: config/prefs.php.dist:373
+msgid "Every 2 minutes"
+msgstr "Κάθε 2 Λεπτά"
+
+msgid "Every 30 seconds"
+msgstr "Κάθε 30 δευτερόλεπτα"
+
+msgid "Every 5 minutes"
+msgstr "Κάθε 5 λεπτά"
+
+msgid "Every Login"
+msgstr "Κάθε φορά που μπαίνετε στην υπηρεσία"
+
+msgid "Every half hour"
+msgstr "Κάθε μισή ώρα"
+
+msgid "Every minute"
+msgstr "Κάθε λεπτό"
+
+msgid "Example values:"
+msgstr "Παραδειγματικές τιμές:"
+
+#: admin/phpshell.php:76 admin/cmdshell.php:50 admin/sqlshell.php:136
+msgid "Execute"
+msgstr "Εκτέλεση"
+
+#: framework/Block/Block/Layout.php:386
+msgid "Expand"
+msgstr "Επέκταση"
+
+#: templates/portal/sidebar.inc:31
+msgid "Expand Sidebar"
+msgstr "Επέκταση Πλευρικής Μπάρας"
+
+#: framework/SQL/SQL/Keywords.php:169
+msgid "Expected ')'"
+msgstr "Αναμένονταν ')'"
+
+#: c-format
+msgid "Expected \"BEGIN\" in the line %d."
+msgstr "Αναμενόμενο \"BEGIN\" στη γραμμή %d."
+
+#: c-format
+msgid "Expected \"END:%s\" in line %d."
+msgstr "Αναμενόμενο \"END:%s\" στη γραμμή %d."
+
+#: framework/SQL/SQL/Keywords.php:176
+msgid "Expected bare word or quoted search term"
+msgstr "Αναμένονταν απλή λέξη ή συνθήκη αναζήτησης σε εισαγωγικά"
+
+#: framework/Crypt/Crypt/pgp.php:398
+msgid "Expiration Date"
+msgstr "Ημερομηνία Λήξης"
+
+#: framework/Crypt/Crypt/smime.php:700
+msgid "Exponent"
+msgstr "Εκθέτης"
+
+#: templates/javascript/htmlarea_table_lang.js:31
+msgid "FG Color"
+msgstr "Χρώμα προσκήνιου"
+
+#: admin/setup/index.php:171
+msgid "FTP upload of setup"
+msgstr "Ρυθμίσεις για FTP upload"
+
+#: framework/Prefs/Prefs/sql.php:240
+msgid "Failed retrieving preferences."
+msgstr "Αποτυχία κατά την προσπάθεια ανάκτησης των προτιμήσεων."
+
+msgid "Failed to connect to LDAP server."
+msgstr "Αποτυχία σύνδεσης στον διακομιστή Καταλόγου."
+
+#: framework/Auth/Auth/smb.php:103
+msgid "Failed to connect to SMB server."
+msgstr "Αποτυχία σύνδεσης στον SMB-Server."
+
+#: framework/VFS/VFS/ftp.php:631
+msgid "Failed to copy from \"%s\"."
+msgstr "Αποτυχία αντιγραφής από \"%s\"."
+
+#: framework/VFS/VFS/ftp.php:636
+msgid "Failed to copy to \"%s\"."
+msgstr "Αποτυχία αντιγραφής σε \"%s\"."
+
+#: framework/Auth/Auth/sasl.php:92
+msgid "Failed to create new SASL connection."
+msgstr "Αποτυχία δημιουργίας σύνδεσης SASL."
+
+#: framework/VFS/VFS/ftp.php:671
+msgid "Failed to move to \"%s\"."
+msgstr "Αποτυχία μεταφοράς σε \"%s\"."
+
+msgid "Failure in changing password for user %s from client %s, reason %s"
+msgstr ""
+"Αποτυχία κατά την αλλαγή κωδικού για τον χρήστη %s από το σταθμό %s, λόγος %s"
+
+#: lib/Block/weatherdotcom.php:316
+msgid "Fair"
+msgstr "Αίθριος"
+
+#: framework/CLI/CLI.php:235
+msgid "Fatal Error:"
+msgstr "Πολύ σοβαρό Λάθος:"
+
+msgid "Fax"
+msgstr "ΦΑΞ"
+
+#: framework/UI/UI/VarRenderer/html.php:375
+#: framework/UI/UI/VarRenderer/html.php:412
+#: templates/javascript/open_calendar.js:66
+msgid "February"
+msgstr "Φεβρουάριος"
+
+#: lib/Block/metar.php:218
+msgid "Feels Like"
+msgstr "Διάθεση για"
+
+#: lib/Block/weatherdotcom.php:180
+msgid "Feels like: "
+msgstr "Διάθεση για: "
+
+#: lib/Block/weatherdotcom.php:317
+msgid "Few Showers"
+msgstr "Λίγες βροχές"
+
+#: lib/Block/weatherdotcom.php:318
+msgid "Few Snow Showers"
+msgstr "Λίγες χιονοπτώσεις"
+
+#: framework/Form/Form.php:1927
+msgid "Field matrix"
+msgstr "Πίνακας Πεδίου"
+
+#: framework/MIME/MIME/Viewer/rar.php:63 framework/MIME/MIME/Viewer/zip.php:67
+#: framework/MIME/MIME/Viewer/tgz.php:82
+msgid "File Count: %s file"
+msgstr "Αριθμός αρχείου: %s αρχείο"
+
+#: framework/MIME/MIME/Viewer/rar.php:63 framework/MIME/MIME/Viewer/zip.php:67
+#: framework/MIME/MIME/Viewer/tgz.php:82
+msgid "File Count: %s files"
+msgstr "Αριθμός αρχείου: %s αρχεία"
+
+#: config/registry.php.dist:349
+msgid "File Manager"
+msgstr "Διαχειριστής Αρχείων"
+
+#: framework/MIME/MIME/Viewer/rar.php:66 framework/MIME/MIME/Viewer/zip.php:70
+#: framework/MIME/MIME/Viewer/tgz.php:85
+msgid "File Name"
+msgstr "Όνομα Αρχείου"
+
+#: framework/Form/Form.php:2979
+msgid "File selection"
+msgstr "Επιλογή Αρχείου"
+
+#: framework/Form/Form.php:1482
+msgid "File upload"
+msgstr "'Ανέβασμα' Αρχείου"
+
+#: framework/Browser/Browser.php:874
+msgid "File uploads not supported."
+msgstr "'Ανέβασμα' Αρχείου δεν υποστηρίζεται."
+
+#: config/registry.php.dist:86
+msgid "Filters"
+msgstr "Φίλτρα"
+
+#: lib/Block/moon.php:171
+msgid "First Half"
+msgstr "Πρώτο Μισό"
+
+#: lib/Block/moon.php:74 lib/Block/moon.php:76
+msgid "First Quarter"
+msgstr "Πρώτο Τέταρτο"
+
+#: framework/UI/UI/VarRenderer/html.php:239
+msgid "Fix ratio"
+msgstr "Σταθερός λόγος"
+
+#: framework/UI/UI/VarRenderer/html.php:214
+msgid "Flip"
+msgstr "Flip"
+
+#: templates/javascript/htmlarea_table_lang.js:32
+msgid "Float"
+msgstr "Float"
+
+#: lib/Block/weatherdotcom.php:319
+msgid "Fog"
+msgstr "Ομίχλη"
+
+#: framework/VFS/VFS/sql.php:163 framework/VFS/VFS/musql.php:108
+msgid "Folder %s does not exist"
+msgstr "Ο φάκελος %s δεν υπάρχει"
+
+#: templates/javascript/htmlarea_lang.js:22
+msgid "Font Color"
+msgstr "Χρώμα γράμματος"
+
+#: lib/Block/fortune.php:37
+msgid "Food"
+msgstr "Τροφή"
+
+#: templates/javascript/htmlarea_lang.js:123
+#: templates/javascript/htmlarea_anselimage_lang.js:26
+msgid "For browsers that don't support images"
+msgstr "Για Browsers, που δεν υποστηρίζουν εικόνες"
+
+#: templates/login/login.inc:95
+msgid "Forgot your password?"
+msgstr "Ξεχάσατε τον κωδικό σας;"
+
+#: config/registry.php.dist:431
+msgid "Forms"
+msgstr "Φόρμες"
+
+#: lib/Block/fortune.php:21
+msgid "Fortune"
+msgstr "Πρόβλεψη"
+
+#: lib/Block/fortune.php:99
+msgid "Fortune type"
+msgstr "Τύπος Πρόβλεψης"
+
+#: lib/Block/fortune.php:38
+msgid "Fortunes"
+msgstr "Προβλέψεις"
+
+#: lib/Block/fortune.php:39
+msgid "Fortunes 2"
+msgstr "Προβλέψεις 2"
+
+#: config/registry.php.dist:414
+msgid "Forums"
+msgstr "Forums"
+
+#: config/registry.php.dist:358
+msgid "Forwards"
+msgstr "Προωθήσεις"
+
+#: templates/javascript/open_calendar.js:60
+msgid "Fr"
+msgstr "Πα"
+
+#: templates/javascript/htmlarea_table_lang.js:33
+msgid "Frames"
+msgstr "Πλαίσια"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:417
+msgid "Free/Busy Information"
+msgstr "Πληροφορίες Διαθεσιμότητας"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:427
+msgid "Free/Busy Reply"
+msgstr "Απάντηση Διαθεσιμότητας"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:422
+msgid "Free/Busy Request"
+msgstr "Αίτημα Διαθεσιμότητας"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:272
+#: framework/MIME/MIME/Viewer/icalendar.php:341
+msgid "Free/Busy Request Response"
+msgstr "Απάντηση σε αίτημα Διαθεσιμότητας"
+
+#: framework/MIME/MIME/Viewer/rfc822.php:79
+msgid "From"
+msgstr "Από"
+
+#: lib/Block/weatherdotcom.php:197
+msgid "From the "
+msgstr "Από το "
+
+#: templates/problem/problem.inc:48
+msgid "Full Description"
+msgstr "Αναλυτική Περιγραφή"
+
+msgid "Full Description:"
+msgstr "Αναλυτική Περιγραφή:"
+
+#: lib/Block/moon.php:82 lib/Block/moon.php:181
+msgid "Full Moon"
+msgstr "Πλήρης Σελήνη"
+
+#: templates/admin/user/update.inc:39
+msgid "Full Name"
+msgstr "Πλήρες Όνομα"
+
+#: templates/javascript/htmlarea_anselimage_lang.js:30
+msgid "Gallery to take image from"
+msgstr "Gallery από την οποία θα παίρνονται οι εικόνες"
+
+#: templates/javascript/htmlarea_anselimage_lang.js:29
+msgid "Gallery:"
+msgstr "Gallery:"
+
+#: framework/Crypt/Crypt/smime.php:599
+msgid "Given Name"
+msgstr "Μικρό Όνομα"
+
+#: services/portal/sidebar.php:175 templates/prefs/app.inc:10
+#: templates/prefs/app.inc:19
+msgid "Global Options"
+msgstr "Γενικές Επιλογές"
+
+#: templates/prefs/app.inc:16
+msgid "Go"
+msgstr "Μετάβαση"
+
+#: framework/NLS/NLS/tld.php:100 framework/NLS/NLS/countries.php:93
+#: framework/NLS/NLS/GeoIP.php:77
+msgid "Greece"
+msgstr "Ελλάδα"
+
+#: config/nls.php.dist:181
+msgid "Greek (ISO-8859-7)"
+msgstr "Ελληνικά (ISO-8859-7)"
+
+#: admin/groups.php:170
+msgid "Group Administration"
+msgstr "Διαχείριση Ομάδων"
+
+#: framework/Group/Group.php:57
+msgid "Group names must be non-empty"
+msgstr "Τα ονόματα των ομάδων δεν πρέπει να είναι κενά"
+
+#: admin/perms/edit.php:201 framework/Perms/Perms/UI.php:285
+msgid "Group permissions"
+msgstr "Εξουσιοδοτήσεις Ομάδων"
+
+#: admin/perms/edit.php:176 framework/Perms/Perms/UI.php:258
+#: lib/Block/google.php:38 templates/shares/edit.inc:183
+msgid "Groups"
+msgstr "Ομάδες"
+
+#: admin/perms/edit.php:127 framework/Perms/Perms/UI.php:213
+#: templates/shares/edit.inc:94
+msgid "Guest Permissions"
+msgstr "Ιδιότητες Guest"
+
+#: admin/perms/edit.php:128 framework/Perms/Perms/UI.php:214
+msgid "Guest permissions"
+msgstr "Ιδιότητες Guest"
+
+#: config/registry.php.dist:439
+msgid "Guestbook"
+msgstr "Guestbook"
+
+#: framework/Auth/Auth/http.php:164
+msgid "HTTP Authentication not found."
+msgstr "Το σύστημα αυθεντικοποίησης HTTP δε βρέθηκε."
+
+#: templates/javascript/htmlarea_table_lang.js:34
+msgid "Height"
+msgstr "Ύψος"
+
+#: framework/Horde/Horde/Help.php:179 framework/Horde/Horde/Help.php:186
+#: services/help/index.php:17 templates/help/index.inc:3
+msgid "Help"
+msgstr "Βοήθεια"
+
+#: templates/javascript/htmlarea_lang.js:31
+msgid "Help using editor"
+msgstr "Βοήθεια για τη χρήση του κειμενογράφου"
+
+#: framework/Form/Form.php:1367
+msgid "Helper"
+msgstr "Βοηθός"
+
+#: lib/Block/moon.php:29
+msgid "Hemisphere"
+msgstr "Ημισφαίριο"
+
+#: templates/data/tsvinfo.inc:17 templates/data/csvinfo.inc:17
+msgid "Here is the beginning of the file:"
+msgstr "Εδώ είναι η αρχή του αρχείου:"
+
+#: lib/Block/weatherdotcom.php:361
+msgid "High"
+msgstr "Ψηλά"
+
+#: framework/History/History.php:322
+msgid "History entry names must be non-empty"
+msgstr "Η εγγραφή ιστορικού δεν πρέπει να είναι κενή"
+
+#: templates/portal/menu.inc:6 templates/admin/common-header.inc:4
+msgid "Ho_me"
+msgstr "Αρχική Σελίδα"
+
+#: framework/Horde/Horde.php:1460
+msgid "Home"
+msgstr "Αρχική Σελίδα"
+
+#: framework/MIME/MIME/Viewer/vcard.php:125
+#: framework/MIME/MIME/Viewer/vcard.php:158
+msgid "Home Address"
+msgstr "Διεύθυνση Σπιτιού"
+
+msgid "Home Phone"
+msgstr "Τηλέφωνο Σπιτιού"
+
+msgid "Horde"
+msgstr "Αρχική Σελίδα"
+
+msgid "Horde Login"
+msgstr "Είσοδος στην Υπηρεσία ΗΛεκτρονικού Ταχυδρομείου"
+
+msgid "Horde System"
+msgstr "Σύστημα 'Horde'"
+
+msgid "Horde Wireless"
+msgstr "'Horde' Ασύρματη"
+
+msgid "Horde is not properly configured"
+msgstr "Το πρόγραμμα 'Horde' δεν έχει ρυθμιστεί σωστά"
+
+#: templates/javascript/htmlarea_lang.js:24
+msgid "Horizontal Rule"
+msgstr "Οριζόντιος Κανόνας"
+
+#: templates/javascript/htmlarea_lang.js:82
+msgid "Horizontal padding"
+msgstr "Οριζόντιο 'γέμισμα'"
+
+#: templates/javascript/htmlarea_lang.js:81
+msgid "Horizontal:"
+msgstr "Οριζόντιο:"
+
+#: templates/javascript/htmlarea_context_lang.js:50
+msgid "How did you get here? (Please report!)"
+msgstr "Πως φθάσατε εδώ; (παρακαλώ να το αναφέρετε στο διαχειριστή!)"
+
+#: templates/javascript/htmlarea_table_lang.js:35
+msgid "How many columns would you like to merge?"
+msgstr "Πόσες στήλες θέλετε να ενοποιήσετε;"
+
+#: templates/data/csvinfo.inc:28
+msgid "How many fields (columns) are there?"
+msgstr "Πόσα πεδία (στήλες) είναι εκεί;"
+
+#: templates/javascript/htmlarea_table_lang.js:36
+msgid "How many rows would you like to merge?"
+msgstr "Πόσες γραμμές θέλετε να ενοποιήσετε;"
+
+#: lib/Block/metar.php:228
+msgid "Humidity"
+msgstr "Υγρασία"
+
+#: lib/Block/weatherdotcom.php:203
+msgid "Humidity: "
+msgstr "Υγρασία:"
+
+#: lib/Block/fortune.php:41
+msgid "Humorists"
+msgstr "Χιουμορίστας"
+
+#: framework/Auth/Auth/cyrus.php:176 framework/Auth/Auth/cyrsql.php:223
+msgid "IMAP mailbox creation failed: %s"
+msgstr "Η Δημιουργία γραμματοθυρίδας IMAP απέτυχε: %s"
+
+#: framework/Auth/Auth/cyrus.php:220 framework/Auth/Auth/cyrsql.php:288
+msgid "IMAP mailbox deletion failed: %s"
+msgstr "Η διαγραφή γραμματοθυρίδας IMAP απέτυχε: %s"
+
+#: framework/Auth/Auth/cyrus.php:183 framework/Auth/Auth/cyrsql.php:230
+msgid "IMAP mailbox quota creation failed: %s"
+msgstr "Η Δημιουργία πειρορισμών (quota) γραμματοθυρίδας IMAP απέτυχε: %s"
+
+msgid "INBOX"
+msgstr "Εισερχόμενα"
+
+#: framework/Form/Form.php:1311
+msgid "IP Address"
+msgstr "IP-Διεύθυνση"
+
+#: framework/Auth/Auth/ipbasic.php:82
+msgid "IP Address not available."
+msgstr "IP-Διεύθυνση δεν είναι διαθέσιμη."
+
+#: framework/Auth/Auth/ipbasic.php:94
+msgid "IP Address not within allowed CIDR block."
+msgstr "IP-Διεύθυνση μη επιτρεπτή μέσα σε CIDR-Block."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:304
+msgid "IP lockdown violation."
+msgstr "Κλείδωμα-Παραβίαση IP."
+
+msgid "I_nbox"
+msgstr "Εισερχόμενα"
+
+#: templates/javascript/htmlarea_context_lang.js:29
+msgid "I_nsert Row Before"
+msgstr "Εισαγωγή Γραμμής Πριν"
+
+msgid "Icons Only"
+msgstr "Μόνο Εικονίδια"
+
+#: util/icon_browser.php:49
+msgid "Icons for %s"
+msgstr "Εικονίδια για %s"
+
+#: config/prefs.php.dist:361
+msgid "Icons with text"
+msgstr "Εικονίδια και Κείμενο"
+
+msgid "Identity's name:"
+msgstr "Ονομα ταυτότητας:"
+
+#: framework/MIME/MIME/Contents.php:608
+msgid "If it is not displayed correctly, %s to open it in a new window."
+msgstr "Αν δεν εμφανίζεται σωστά, %s για να ανοίξει σε νέο παράθυρο."
+
+#: config/prefs.php.dist:439
+msgid ""
+"If you don't see any icons using Internet Explorer, you may need to check "
+"this box to turn off PNG transparency."
+msgstr ""
+"Αν δε βλέπετε κανένα εικονίδιο χρησιμοποιώντας τον Internet Explorer, ίσως "
+"πρέπει να τσεκάρετε εδώ για να απενεργοποιήσετε τη διαφάνεια PNG."
+
+#: framework/UI/UI/VarRenderer/html.php:158
+msgid ""
+"If you see this message but no image, the image you want to upload can't be "
+"displayed by your browser."
+msgstr ""
+"Αν βλέπετε αυτό το μήνυμα χωρίς εικόνα, η εικόνα που θέλετε να κατεβάσετε δε "
+"μπορεί να εμφανισθεί από τον browser σας."
+
+#: templates/javascript/htmlarea_lang.js:125
+#: templates/javascript/htmlarea_anselimage_lang.js:28
+msgid "Image Preview:"
+msgstr "Προεπισκόπιση Εικόνας:"
+
+#: templates/javascript/htmlarea_table_lang.js:37
+msgid "Image URL"
+msgstr "URL Εικόνας"
+
+#: templates/javascript/htmlarea_anselimage_lang.js:32
+msgid "Image from gallery"
+msgstr "Εικόνα από Gallery"
+
+#: templates/javascript/htmlarea_anselimage_lang.js:31
+msgid "Image from gallery:"
+msgstr "Εικόνα από Gallery:"
+
+#: framework/Form/Form.php:1748
+msgid "Image upload"
+msgstr "Αποστολή Εικόνας"
+
+#: lib/Block/google.php:37
+msgid "Images"
+msgstr "Εικόνες"
+
+msgid "Import"
+msgstr "Εισαγωγή"
+
+msgid "Import Error: "
+msgstr "Λάθος κατά την Εισαγωγή: "
+
+#: templates/data/tsvinfo.inc:10 templates/data/datemap.inc:10
+#: templates/data/csvmap.inc:57 templates/data/csvinfo.inc:10
+msgid "Import, Step %d"
+msgstr "Εισαγωγή, Βήμα %d"
+
+# templates/data/datemap.inc:20, c-format
+#: templates/data/datemap.inc:20
+msgid "Imported field: %s"
+msgstr "Πεδίο που εισήχθη: %s"
+
+msgid "Imported fields:"
+msgstr "Πεδία που εισήχθησαν:"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:701
+msgid "In Process"
+msgstr "Σε Επεξεργασία"
+
+#: templates/javascript/htmlarea_context_lang.js:30
+msgid "In_sert Row After"
+msgstr "Εισαγωγή Γραμμής Μετά"
+
+#: framework/Compress/Compress/zip.php:141
+msgid "Incorrect action code given."
+msgstr "Δόθηκε λάθος κωδικός ενέργειας."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:657
+msgid "Incorrect username and/or password."
+msgstr "Λάθος όνομα χρήστη ή/και κωδικός."
+
+#: services/resetpassword.php:51
+msgid ""
+"Incorrect username or alternate address. Try again or contact your "
+"administrator if you need further help."
+msgstr ""
+"Λάθος όνομα χρήστη ή εναλλακτική διεύθυνση. Ξαναδοκιμάστε ή επικοινωνήστε με "
+"το διαχειριστή για περαιτέρω βοήθεια."
+
+#: templates/javascript/htmlarea_lang.js:21
+msgid "Increase Indent"
+msgstr "Αύξηση Περιθωρίου"
+
+#: admin/perms/edit.php:141 templates/shares/edit.inc:140
+msgid "Individual Users"
+msgstr "Ιδιαίτεροι Χρήστες"
+
+#: framework/MIME/MIME/Viewer/rfc822.php:72
+msgid "Info"
+msgstr "Πληροφορίες"
+
+#: config/registry.php.dist:249
+msgid "Information"
+msgstr "Πληροφορίες"
+
+#: templates/javascript/htmlarea_context_lang.js:34
+msgid "Insert C_olumn After"
+msgstr "Εισαγωγή Στήλης Μετά"
+
+#: templates/javascript/htmlarea_lang.js:117
+#: templates/javascript/htmlarea_anselimage_lang.js:20
+msgid "Insert Image"
+msgstr "Εισαγωγή Εικόνας"
+
+#: templates/javascript/htmlarea_lang.js:27
+#: templates/javascript/htmlarea_lang.js:100
+msgid "Insert Table"
+msgstr "Εισαγωγή Πίνακα"
+
+#: templates/javascript/htmlarea_lang.js:25
+msgid "Insert Web Link"
+msgstr "Εισαγωγή σύνδεσης Web"
+
+#: templates/javascript/htmlarea_context_lang.js:33
+msgid "Insert _Column Before"
+msgstr "Εισαγωγή Στήλης Πριν"
+
+#: templates/javascript/htmlarea_context_lang.js:65
+msgid "Insert a new column after the current one"
+msgstr "Εισαγωγή νέας στήλης μετά την τρέχουσα"
+
+#: templates/javascript/htmlarea_context_lang.js:64
+msgid "Insert a new column before the current one"
+msgstr "Εισαγωγή νέας στήλης πριν από την τρέχουσα"
+
+#: templates/javascript/htmlarea_context_lang.js:61
+msgid "Insert a new row after the current one"
+msgstr "Εισαγωγή νέας γραμμής μετά την τρέχουσα"
+
+#: templates/javascript/htmlarea_context_lang.js:60
+msgid "Insert a new row before the current one"
+msgstr "Εισαγωγή νέας γραμμής μετά την τρέχουσα"
+
+#: templates/javascript/htmlarea_context_lang.js:69
+msgid "Insert a paragraph after the current node"
+msgstr "Ειαγωγή παραγράφου μετά τον τρέχοντα κόμβο"
+
+#: templates/javascript/htmlarea_context_lang.js:68
+msgid "Insert a paragraph before the current node"
+msgstr "Εισαγωγή παραγράφου πριν τον τρέχοντα κόμβο"
+
+#: admin/templates.php:150
+msgid "Insert alternate template"
+msgstr "Εισαγωγή εναλλακτικού προτύπου"
+
+#: config/prefs.php.dist:223
+msgid "Insert an email address to which you can receive the new password:"
+msgstr ""
+"Δώστε email διεύθυνση στην οποία επιθυμείτε να παραλάβετε το νέο σας κωδικό:"
+
+#: templates/javascript/htmlarea_table_lang.js:58
+msgid "Insert cell after"
+msgstr "Εισαγωγή κελιού μετά"
+
+#: templates/javascript/htmlarea_table_lang.js:59
+msgid "Insert cell before"
+msgstr "Εισαγωγή κελιού πριν"
+
+#: templates/javascript/htmlarea_table_lang.js:64
+msgid "Insert column after"
+msgstr "Εισαγωγή στήλης μετά"
+
+#: templates/javascript/htmlarea_table_lang.js:65
+msgid "Insert column before"
+msgstr "Εισαγωγή στήλης πριν"
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:93
+msgid "Insert messages"
+msgstr "Εισαγωγή μηνύματος"
+
+#: templates/javascript/htmlarea_context_lang.js:44
+msgid "Insert paragraph after"
+msgstr "Εισαγωγή παραγράφου μετά"
+
+#: templates/javascript/htmlarea_context_lang.js:43
+msgid "Insert paragraph before"
+msgstr "Εισαγωγή παραγράφου πριν"
+
+#: templates/javascript/htmlarea_table_lang.js:69
+msgid "Insert row after"
+msgstr "Εισαγωγή γραμμής μετά"
+
+#: templates/javascript/htmlarea_table_lang.js:68
+msgid "Insert row before"
+msgstr "Εισαγωγή γραμμής πριν"
+
+#: config/prefs.php.dist:214
+msgid "Insert the required answer to the security question:"
+msgstr "Εισαγωγή της απαιτούμενης απάντησης στην ερώτηση ασφαλείας:"
+
+#: templates/javascript/htmlarea_lang.js:26
+msgid "Insert/Modify Image"
+msgstr "Εισαγωγή/Διόρθωση Εικόνας"
+
+#: templates/javascript/htmlarea_lang.js:89
+msgid "Insert/Modify Link"
+msgstr "Εισαγωγή/Διόρθωση Σύνδεσης"
+
+#: framework/Net_SMS/SMS/sms2email_http.php:668
+msgid "Insufficient credit to send to the distribution list."
+msgstr "Μη επαρκές υπόλοιπο για αποστολή στη λίστα διανομής."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:660
+msgid "Insufficient credit."
+msgstr "Μη επαρκές υπόλοιπο."
+
+#: framework/Form/Form.php:1069
+msgid "Integer"
+msgstr "Ακέραιος"
+
+#: framework/Form/Form.php:1127
+msgid "Integer list"
+msgstr "Λίστα Ακεραίων"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:283
+#: framework/MIME/MIME/Viewer/icalendar.php:352
+msgid "Invalid Action selected for this component."
+msgstr "Επιλέξατε Λάθος Ενέργεια γι' αυτό το συστατικό."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:306
+msgid "Invalid UDH. (User Data Header)."
+msgstr "Ακυρο UDH. (User Data Header)."
+
+#: admin/setup/config.php:34
+msgid "Invalid application."
+msgstr "Μη έγκυρη εφαρμογή."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:321
+msgid "Invalid batch ID."
+msgstr "Ακυρο Batch-ID."
+
+#: framework/Form/Form.php:2070 framework/Form/Form.php:2141
+#: framework/Form/Form.php:2215 framework/Form/Form.php:2280
+msgid "Invalid data submitted."
+msgstr "Στάλθηκαν λάθος δεδομένα."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:309
+msgid "Invalid destination address."
+msgstr "Ακυρη διεύθυνση προορισμού."
+
+#: framework/Compress/Compress/dbx.php:84
+#: framework/Compress/Compress/dbx.php:103
+#: framework/Compress/Compress/dbx.php:223
+msgid "Invalid file format"
+msgstr "Μη έγκυρη μορφή αρχείου"
+
+#: framework/Net_SMS/SMS/clickatell_http.php:316
+msgid "Invalid msg_type."
+msgstr "Μη έγκυρο msg_type."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:312
+msgid "Invalid or missing api_id."
+msgstr "Μη έγκυρο ή λείπει api_id."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:305
+msgid "Invalid or missing parameters."
+msgstr "Μη έγκυρες ή ελλιπείς παράμετροι."
+
+#: admin/perms/addchild.php:43
+msgid "Invalid parent permission."
+msgstr "Invalid parent permission."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:315
+msgid "Invalid protocol."
+msgstr "Μη έγκυρο πρωτόκολλο."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:91
+msgid "Invalid recipient: '%s'"
+msgstr "Μη έγκυρος παραλήπτης: '%s'"
+
+#: framework/Kolab/Kolab.php:1071 framework/Kolab/Kolab.php:1248
+msgid "Invalid share object"
+msgstr "Μη έγκυρο κοινόχρηστο αντικείμενο"
+
+#: framework/Net_SMS/SMS/clickatell_http.php:310
+msgid "Invalid source address."
+msgstr "Μη έγκυρη αρχική διεύθυνση."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:320
+msgid "Invalid unicode data."
+msgstr "Μη έγκυρα δεδομένα Unicode."
+
+#: config/registry.php.dist:328
+msgid "Inventory"
+msgstr "Κατάλογος Υπαρχόντων"
+
+#: templates/javascript/htmlarea_lang.js:9
+msgid "Italic"
+msgstr "Πλαγια"
+
+#: framework/UI/UI/VarRenderer/html.php:374
+#: framework/UI/UI/VarRenderer/html.php:411
+#: templates/javascript/open_calendar.js:65
+msgid "January"
+msgstr "Ιανουάριος"
+
+#: framework/UI/UI/VarRenderer/html.php:380
+#: framework/UI/UI/VarRenderer/html.php:417
+#: templates/javascript/open_calendar.js:71
+msgid "July"
+msgstr "Ιούλιος"
+
+#: framework/UI/UI/VarRenderer/html.php:379
+#: framework/UI/UI/VarRenderer/html.php:416
+#: templates/javascript/open_calendar.js:70
+msgid "June"
+msgstr "Ιούνιος"
+
+#: templates/javascript/htmlarea_table_lang.js:38
+msgid "Justify"
+msgstr "Ευθυγράμμιση"
+
+#: templates/javascript/htmlarea_context_lang.js:37
+#: templates/javascript/htmlarea_lang.js:15
+msgid "Justify Center"
+msgstr "Ευθυγράμμιση στο Κέντρο"
+
+#: templates/javascript/htmlarea_context_lang.js:39
+#: templates/javascript/htmlarea_lang.js:17
+msgid "Justify Full"
+msgstr "Πλήρης Ευθυγράμμιση"
+
+#: templates/javascript/htmlarea_context_lang.js:36
+#: templates/javascript/htmlarea_lang.js:14
+msgid "Justify Left"
+msgstr "Ευθυγράμμιση Αριστερά"
+
+#: templates/javascript/htmlarea_context_lang.js:38
+#: templates/javascript/htmlarea_lang.js:16
+msgid "Justify Right"
+msgstr "Ευθυγράμμιση Δεξιά"
+
+msgid "Kalamata Airport"
+msgstr "Αερολιμένας Καλαμάτας"
+
+msgid "Karpathos Airport"
+msgstr "Αερολιμένας Καρπάθου"
+
+msgid "Kastoria Airport"
+msgstr "Αερολιμένας Καστοριάς"
+
+#: framework/UI/UI/VarRenderer/html.php:246
+msgid "Keep original?"
+msgstr "Να κρατήσω το αυθεντικό;"
+
+msgid "Kefalhnia Airport"
+msgstr "Αερολιμένας Κεφαλονιάς"
+
+#: framework/Auth/Auth/krb5.php:87
+msgid "Kerberos server rejected authentication."
+msgstr "Kerberos-Server αρνήθηκε την αυθεντικοποίηση."
+
+msgid "Kerkyra Airport"
+msgstr "Αερολιμένας Κέρκυρας"
+
+#: lib/Block/fortune.php:42
+msgid "Kernel Newbies"
+msgstr "Νέα από Kernel"
+
+#: framework/Crypt/Crypt/pgp.php:397
+msgid "Key Creation"
+msgstr "Δημιουργία Κλειδιού"
+
+#: framework/Crypt/Crypt/pgp.php:400
+msgid "Key Fingerprint"
+msgstr "Αποτύπωμα Κλειδιού"
+
+#: framework/Crypt/Crypt/pgp.php:398
+msgid "Key Length"
+msgstr "Μήκος Κλειδιού"
+
+#: framework/Crypt/Crypt/pgp.php:397
+msgid "Key Type"
+msgstr "Τύπος Κλειδιού"
+
+#: framework/Crypt/Crypt/smime.php:622
+msgid "Key Usage"
+msgstr "Χρήση Κλειδιού"
+
+#: framework/Crypt/Crypt/pgp.php:743
+msgid "Key already exists on the public keyserver."
+msgstr "Το κλειδί υπάρχει ήδη στον εξυπηρετητή δημόσιων κλειδιών."
+
+#: lib/Block/fortune.php:43
+msgid "Kids"
+msgstr "Παιδιά"
+
+msgid "Kos Airport"
+msgstr "Αερολιμένας Κω"
+
+msgid "Kozani Airport"
+msgstr "Αερολιμένας Κοζάνης"
+
+#: templates/portal/menu.inc:8
+msgid "La_yout"
+msgstr "Διάταξη"
+
+msgid "Larisa Airport"
+msgstr "Αερολιμένας Λάρισας"
+
+#: lib/Block/moon.php:174
+msgid "Last Half"
+msgstr "Τελευταίο Μισό"
+
+#: lib/Block/moon.php:88 lib/Block/moon.php:90
+msgid "Last Quarter"
+msgstr "Τελευταίο Τέταρτο"
+
+#: lib/Block/metar.php:149
+msgid "Last Updated:"
+msgstr "Τελευταία Ενημέρωση:"
+
+#: framework/Auth/Auth.php:691
+msgid "Last login: %s"
+msgstr "Τελευταία Είσοδος στην υπηρεσία: %s"
+
+#: framework/Auth/Auth.php:693
+msgid "Last login: %s from %s"
+msgstr "Τελευταία Είσοδος στην υπηρεσία: %s από %s"
+
+#: framework/Auth/Auth.php:688
+msgid "Last login: Never"
+msgstr "Τελευταία Είσοδος στην υπηρεσία: Ποτέ"
+
+#: lib/Block/fortune.php:44
+msgid "Law"
+msgstr "Νόμος"
+
+#: templates/javascript/htmlarea_table_lang.js:39
+#: templates/javascript/htmlarea_lang.js:79
+msgid "Layout"
+msgstr "Διάταξη"
+
+#: templates/javascript/htmlarea_lang.js:86
+msgid "Leave empty for no border"
+msgstr "Αφήστε κενό για να μην υπάρχουν περιθώρια"
+
+#: templates/javascript/htmlarea_table_lang.js:40
+#: templates/javascript/htmlarea_lang.js:69
+msgid "Left"
+msgstr "Αριστερά"
+
+#: framework/Form/Form.php:3103
+msgid "Left header"
+msgstr "Αριστερή Επικεφαλίδα"
+
+#: framework/Form/Form.php:3099
+msgid "Left values"
+msgstr "Αριστερές Τιμές"
+
+#: lib/Block/fortune.php:45
+msgid "Limerick"
+msgstr "Πεντάστιχο"
+
+msgid "Limnos Airport"
+msgstr "Αερολιμένας Λήμνου"
+
+#: framework/Form/Form.php:1801
+msgid "Link"
+msgstr "Σύνδεση"
+
+#: templates/javascript/htmlarea_context_lang.js:56
+msgid "Link points to:"
+msgstr "Σύνδεση που δείχνει σε:"
+
+#: framework/Form/Form.php:1858
+msgid "Link the email address to the compose page when displaying"
+msgstr "Σύνδεση της διεύθυνση για άνοιγμα παραθύρου σύνθεσης;"
+
+#: framework/Text_Filter/Filter/html2text.php:162
+msgid "Links"
+msgstr "Συνδέσεις"
+
+#: lib/Block/fortune.php:46
+msgid "Linux Cookie"
+msgstr "Linux-Cookie"
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:89
+msgid "List - user can see the folder"
+msgstr "List - Ο χρήστης μπορεί να δεί το φάκελο"
+
+#: admin/sqlshell.php:138
+msgid "List Databases"
+msgstr "Λίστα Βάσεων Δεδομένων"
+
+#: services/help/index.php:50
+msgid "List Help Topics"
+msgstr "Λίστα θεμάτων Βοήθειας"
+
+#: admin/sqlshell.php:137
+msgid "List Tables"
+msgstr "Λίστα Πινάκων"
+
+#: templates/admin/user/nolist.inc:4
+msgid "Listing users is disabled."
+msgstr "Η δημιουργία λίστας χρηστών έχει απενεργοποιηθεί."
+
+#: framework/MIME/MIME/Viewer/images.php:86
+msgid "Loading..."
+msgstr "Φόρτωση..."
+
+#: lib/Block/weatherdotcom.php:160
+msgid "Local time: "
+msgstr "Τοπική Ώρα: "
+
+#: config/prefs.php.dist:83
+msgid "Locale and Time"
+msgstr "Τόπος και ώρα"
+
+#: framework/Crypt/Crypt/smime.php:595
+#: framework/MIME/MIME/Viewer/icalendar.php:570 lib/Block/weatherdotcom.php:50
+#: lib/Block/sunrise.php:22 lib/Block/metar.php:63
+msgid "Location"
+msgstr "Τόποθεσία"
+
+msgid "Log in"
+msgstr "Είσοδος"
+
+msgid "Log out"
+msgstr "Έξοδος"
+
+#: config/prefs.php.dist:107
+msgid "Login Tasks"
+msgstr "Διεργασίες εισόδου"
+
+#: framework/Auth/Auth.php:952
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr ""
+"Η είσοδος Απέτυχε. Πιθανότατα δόθηκε λάθος το Όνομα Χρήστη ή ο Κωδικός."
+
+#: framework/Auth/Auth.php:948
+msgid "Login failed."
+msgstr "Είσοδος Απέτυχε."
+
+msgid "Logout"
+msgstr "Έξοδος"
+
+#: framework/Form/Form.php:1361
+msgid "Long text"
+msgstr "Μεγάλο Κείμενο"
+
+#: lib/Block/fortune.php:48
+msgid "Love"
+msgstr "Αγάπη"
+
+#: lib/Block/weatherdotcom.php:359
+msgid "Low"
+msgstr "Χαμηλό"
+
+#: templates/javascript/htmlarea_listtype_lang.js:21
+msgid "Lower greek letters"
+msgstr "Μικρά Ελληνικά γράμματα"
+
+#: templates/javascript/htmlarea_listtype_lang.js:19
+msgid "Lower latin letters"
+msgstr "Μικρά λατινικά γράμματα"
+
+#: templates/javascript/htmlarea_listtype_lang.js:17
+msgid "Lower roman numbers"
+msgstr "Μικρά Ρωμαϊκή Αρίθμηση"
+
+msgid "MM"
+msgstr "ΜΜ"
+
+#: lib/Block/fortune.php:49
+msgid "Magic"
+msgstr "Μαγικό"
+
+#: config/registry.php.dist:71
+msgid "Mail"
+msgstr "Αλληλογραφία"
+
+#: config/registry.php.dist:114
+msgid "Mail Admin"
+msgstr "Διαχείριση Email"
+
+#: templates/javascript/htmlarea_context_lang.js:40
+msgid "Make lin_k..."
+msgstr "Δημιουργία Σύνδεσης..."
+
+msgid ""
+"Manage the list of categories you have to label items with, and colors "
+"associated with those categories."
+msgstr "Διαχείριση κατηγοριών και χρωμάτων που θα εμφανίζονται αυτές."
+
+msgid "Manual"
+msgstr "Εγχειρίδιο"
+
+msgid "Map Date and Time Fields"
+msgstr "Πεδία Ημερομηνίας και Ώρας"
+
+msgid "Map Import Fields"
+msgstr "Πεδία εισαγωγής"
+
+#: framework/UI/UI/VarRenderer/html.php:376
+#: framework/UI/UI/VarRenderer/html.php:413
+#: templates/javascript/open_calendar.js:67
+msgid "March"
+msgstr "Μάρτιος"
+
+#: templates/javascript/htmlarea_table_lang.js:41
+msgid "Margin"
+msgstr "Όριο"
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:91
+msgid "Mark with Seen/Unseen flags"
+msgstr "Μαρκάρισμα με ένδειξη Αναγνωσμένου/Μη αναγνωσμένου"
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:92
+msgid "Mark with other flags (e.g. Important/Answered)"
+msgstr "Μαρκάρισμα με άλλη ένδειξη (π.χ. Σημαντικό/Απαντημένο)"
+
+msgid "Matching fields"
+msgstr "Πεδία που ταιριάζουν"
+
+#: framework/Net_SMS/SMS/clickatell_http.php:324
+msgid "Max allowed credit."
+msgstr "Μέγιστη επιτρεπτή πίστωση."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:317
+msgid "Max message parts exceeded."
+msgstr "Υπέρβαση ορίου μηνύματος."
+
+#: lib/Block/metar.php:304
+msgid "Max temp last 24 hours: "
+msgstr "Μέγιστη θερμοκρασία τελευταίων 24 ωρών: "
+
+#: lib/Block/metar.php:296
+msgid "Max temp last 6 hours: "
+msgstr "Μέγιστη θερμοκρασία τελευταίων 6 ωρών: "
+
+#: framework/Form/Form.php:892 framework/Form/Form.php:1208
+#: framework/Form/Form.php:1230
+msgid "Maximum length"
+msgstr "Μέγιστο μήκος"
+
+#: framework/UI/UI/VarRenderer/html.php:378
+#: framework/UI/UI/VarRenderer/html.php:415
+#: templates/javascript/open_calendar.js:69
+msgid "May"
+msgstr "Μάιος"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:531
+msgid "Meeting Cancellation"
+msgstr "Ακύρωση Συνάντησης"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:503
+msgid "Meeting Information"
+msgstr "Πληροφορίες Συνάντησης"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:509
+msgid "Meeting Proposal"
+msgstr "Πρόταση για Συνάντηση"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:525
+msgid "Meeting Reply"
+msgstr "Απάντηση για Συνάντηση"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:514
+msgid "Meeting Update"
+msgstr "Ενημέρωση για Συνάντηση"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:519
+msgid "Meeting Update Request"
+msgstr "Αίτημα ενημέρωσης για Συνάντηση"
+
+#: templates/admin/groups/edit.inc:19
+msgid "Members"
+msgstr "Μέλη"
+
+msgid "Memos"
+msgstr "Σημειώσεις"
+
+#: config/prefs.php.dist:362
+msgid "Menu mode:"
+msgstr "Κατάσταση Μενού:"
+
+#: templates/javascript/htmlarea_table_lang.js:60
+msgid "Merge cells"
+msgstr "Συγχώνευση κελιών"
+
+#: framework/Notification/Notification/Listener/status.php:32
+msgid "Message"
+msgstr "Μήνυμα"
+
+#: framework/Crypt/Crypt/smime.php:226
+msgid ""
+"Message Verified Successfully but the signer's certificate could not be "
+"verified."
+msgstr ""
+"Το μήνυμα επιβεβαιώθηκε επιτυχώς, αλλά το πιστοποιητικό του υπογράφοντα δε "
+"μπορεί να επιβεβαιωθεί."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:319
+msgid "Message expired."
+msgstr "Το μήνυμα έληξε."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:591
+#: framework/Net_SMS/SMS/sms2email_http.php:626
+#: framework/Net_SMS/SMS/clickatell_http.php:233
+#: framework/Net_SMS/SMS/clickatell_http.php:268
+msgid "Message type"
+msgstr "Τύπος μηνύματος"
+
+#: lib/Block/metar.php:3
+msgid "Metar Weather"
+msgstr "Καιρός από Metar"
+
+#: lib/Block/metar.php:37
+msgid "Metar block not available."
+msgstr "Metar block not available."
+
+#: lib/Block/metar.php:110
+msgid ""
+"Metar block not available. Details have been logged for the administrator."
+msgstr ""
+"Metar block not available. Details have been logged for the administrator."
+
+#: framework/MIME/MIME/Viewer/rar.php:70 framework/MIME/MIME/Viewer/zip.php:74
+msgid "Method"
+msgstr "Μέθοδος"
+
+#: framework/RPC/RPC/xmlrpc.php:82 framework/RPC/RPC/soap.php:117
+msgid "Method '%s' is not defined"
+msgstr "Η Μέθοδος '%s' δεν ορίσθηκε"
+
+#: lib/Block/weatherdotcom.php:59 lib/Block/metar.php:73
+msgid "Metric"
+msgstr "Μετρικό"
+
+#: templates/javascript/htmlarea_table_lang.js:42
+#: templates/javascript/htmlarea_lang.js:76
+msgid "Middle"
+msgstr "Μεσαίο"
+
+#: framework/MIME/MIME/Viewer/tnef.php:41
+msgid "Mime Type"
+msgstr "Mime Type"
+
+#: lib/Block/metar.php:308
+msgid "Min temp last 24 hours: "
+msgstr "Μικρότερη θερμοκρασία τελευταίων 24 ωρών: "
+
+#: lib/Block/metar.php:300
+msgid "Min temp last 6 hours: "
+msgstr "Μικρότερη θερμοκρασία τελευταίων 6 ωρών: "
+
+#: framework/UI/UI/VarRenderer/html.php:217
+msgid "Mirror"
+msgstr "Καθρέπτης"
+
+#: lib/Block/fortune.php:51
+msgid "Miscellaneous"
+msgstr "Διάφορα"
+
+#: framework/Net_SMS/SMS/sms2email_http.php:697
+#: framework/Net_SMS/SMS/clickatell_http.php:349
+msgid "Missing PEAR package HTTP_Request."
+msgstr "Missing PEAR package HTTP_Request."
+
+#: admin/setup/index.php:105
+msgid ""
+"Missing configuration. You have to generate it now if you want to use this "
+"application."
+msgstr ""
+"Λείπει το configuration. Πρέπει να το δημιουργήσετε αν θέλετε να χρησι-"
+"μοποιήσετε αυτή την εφαρμογή."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:313
+msgid "Missing message ID."
+msgstr "Λείπει το ID του μηνύματος."
+
+#: framework/Net_SMS/SMS/vodafoneitaly_smtp.php:57
+msgid "Missing required PEAR package Mail."
+msgstr "Missing required PEAR package Mail."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:303
+msgid "Missing session ID."
+msgstr "Λείπει το ID της σύνδεσης."
+
+#: templates/javascript/open_calendar.js:56
+msgid "Mo"
+msgstr "Δε"
+
+#: config/registry.php.dist:122
+msgid "Mobile Mail"
+msgstr "Email Κινητής Τηλεφωνίας"
+
+#: lib/Block/weatherdotcom.php:360
+msgid "Moderate"
+msgstr "Μέτριος"
+
+#: framework/MIME/MIME/Viewer/rar.php:69 framework/MIME/MIME/Viewer/zip.php:73
+#: framework/MIME/MIME/Viewer/tgz.php:88
+msgid "Modified Date"
+msgstr "Ημερομηνία τροποποίησης"
+
+#: templates/javascript/htmlarea_context_lang.js:52
+msgid "Modify URL"
+msgstr "Τροποποίηση URL"
+
+msgid "Month View"
+msgstr "Εμφάνιση Μήνα"
+
+#: framework/Form/Form.php:2586
+msgid "Month and year"
+msgstr "Μήνας και έτος"
+
+msgid "Monthly Events List"
+msgstr "Μηνιαία Λίστα Γεγονότων"
+
+#: framework/Maintenance/Maintenance.php:36
+msgid "Monthly"
+msgstr "Μηνιαία"
+
+#: lib/Block/moon.php:3 lib/Block/moon.php:16
+msgid "Moon Phases"
+msgstr "Φάσεις Σελήνης"
+
+#: framework/Block/Block/Layout.php:420
+msgid "Move Down"
+msgstr "Κίνηση κάτω"
+
+#: framework/Block/Block/Layout.php:424
+msgid "Move Left"
+msgstr "Κίνηση αριστερά"
+
+#: framework/Block/Block/Layout.php:428
+msgid "Move Right"
+msgstr "Κίνηση δεξιά"
+
+#: framework/Block/Block/Layout.php:416
+msgid "Move Up"
+msgstr "Κίνηση πάνω"
+
+#: framework/UI/UI/VarRenderer/html.php:497
+msgid "Move down"
+msgstr "Κίνηση κάτω"
+
+#: framework/UI/UI/VarRenderer/html.php:496
+#: framework/UI/UI/VarRenderer/html.php:497
+msgid "Move up"
+msgstr "Κίνηση πάνω"
+
+#: framework/Form/Form.php:2167
+msgid "Multi-level drop down lists"
+msgstr "Πολλαπλές λίστες επιλογής (καταρράκτες)"
+
+#: framework/Form/Form.php:2225
+msgid "Multiple selection"
+msgstr "Πολλαπλή επιλογή"
+
+#: config/registry.php.dist:334 config/registry.php.dist:341
+msgid "My Account"
+msgstr "Ο Λογαριασμός μου"
+
+#: services/portal/index.php:51
+msgid "My Portal"
+msgstr "Ο ιστότοπός μου (portal)"
+
+#: services/portal/edit.php:124
+msgid "My Portal Layout"
+msgstr "Η εμφάνιση του ιστότοπού μου (portal)"
+
+msgid "My Summary"
+msgstr "Η Περίληψη μου:"
+
+msgid "Mytilini Airport"
+msgstr "Αερολιμένας Μυτηλήνης"
+
+#: templates/maintenance/agreement_bottom.inc:7
+msgid "NO, I Do NOT Agree"
+msgstr "ΟΧΙ, ΔΕ συμφωνώ"
+
+#: framework/Crypt/Crypt/pgp.php:397 framework/MIME/MIME/Viewer/vcard.php:105
+#: framework/MIME/MIME/Viewer/tnef.php:41
+#: framework/MIME/MIME/Viewer/icalendar.php:583
+msgid "Name"
+msgstr "Όνομα"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:706
+msgid "Needs Action"
+msgstr "Απαιτείται ενέργεια"
+
+#: config/registry.php.dist:242
+msgid "Network"
+msgstr "Δίκτυο"
+
+#: framework/Crypt/Crypt/pgp.php:411 config/prefs.php.dist:319
+#: config/prefs.php.dist:370
+msgid "Never"
+msgstr "Ποτέ"
+
+#: framework/Prefs/Prefs/CategoryManager.php:51
+#: templates/prefs/categorymanagement.inc:27
+msgid "New Category"
+msgstr "Νέα Κατηγορία"
+
+#: lib/Block/moon.php:46 lib/Block/moon.php:68 lib/Block/moon.php:179
+msgid "New Moon"
+msgstr "Νέα Σελήνη"
+
+msgid "New Password"
+msgstr "Νέος Κωδικός"
+
+msgid "New Password (again)"
+msgstr "Νέος Κωδικός (ξανά)"
+
+#: templates/admin/user/update.inc:35
+msgid "New Username (optional)"
+msgstr "Νέο όνομα Χρήστη (προαιρετικό)"
+
+#: templates/javascript/htmlarea_lang.js:91
+msgid "New window (_blank)"
+msgstr "Νέο παράθυρο (κενό)"
+
+#: lib/Block/google.php:40 lib/Block/fortune.php:52
+#: config/registry.php.dist:264
+msgid "News"
+msgstr "Νέα"
+
+#: config/registry.php.dist:106
+msgid "Newsgroups"
+msgstr "Ομάδες για νέα (newsgroups)"
+
+#: templates/data/tsvinfo.inc:21 templates/data/datemap.inc:46
+#: templates/data/csvmap.inc:137 templates/data/csvinfo.inc:32
+msgid "Next"
+msgstr "Επόμενο"
+
+#: framework/UI/UI/Pager.php:115 framework/UI/UI/Pager.php:116
+msgid "Next Page"
+msgstr "Επόμενη Σελίδα"
+
+#: lib/Block/moon.php:27
+msgid "Next Phase"
+msgstr "Επόμενη Φάση"
+
+#: framework/Prefs/Prefs/UI.php:366 framework/Prefs/Prefs/UI.php:370
+msgid "Next options"
+msgstr "Επόμενες Επιλογές"
+
+#: framework/UI/UI/VarRenderer/html.php:888
+msgid "No"
+msgstr "Οχι"
+
+#: templates/admin/setup/diff.html:16
+msgid "No available configuration data to show differences for."
+msgstr "Δεν υπάρχει διαθέσιμο configuration για να δείξω διαφορές."
+
+#: framework/VFS_ISOWriter/ISOWriter.php:111
+msgid "No available strategy for making ISO images."
+msgstr "Δεν υπάρχει διαθέσιμη στρατηγική για δημιουργία ISO images."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:322
+msgid "No batch template."
+msgstr "Δεν υπάρχει πρότυπο για Batch."
+
+#: framework/Block/Block/Layout.php:78 framework/Block/Block/Layout.php:224
+#: framework/Block/Block/Layout.php:246
+msgid "No block exists at the requested position"
+msgstr "Δεν υπάρχει Block στην αιτούμενη θέση"
+
+#: framework/Auth/Auth/mcal.php:54
+msgid "No calendar name provided for MCAL authentication."
+msgstr "Δε δόθηκε όνομα για αυθεντικοποίηση MCAL."
+
+#: admin/setup/diff.php:55
+msgid "No change."
+msgstr "Δεν υπάρχουν αλλαγές."
+
+#: framework/Perms/Perms/UI.php:144
+msgid "No child permissions are to be added below this level."
+msgstr "Δε μπορούν να προστεθούν εξουσιοδοτήσεις κάτω απ' αυτό το επίπεδο."
+
+#: admin/perms/addchild.php:61
+msgid "No children can be added to this permission."
+msgstr "Δεν μπορούν να προστεθούν υποκατηγορίες σε αυτή την εξουσιοδότηση."
+
+#: framework/Horde/Horde.php:173 framework/Horde/Horde.php:493
+#: framework/Util/Util.php:753
+msgid "No configuration information specified for %s."
+msgstr "Δεν ορίσθηκαν πληροφορίες ρυθμίσεων για %s."
+
+#: framework/VFS/VFS/ftp.php:773
+msgid "No configuration information specified for FTP VFS."
+msgstr "Δεν ορίσθηκαν πληροφορίες ρυθμίσεων για FTP VFS."
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr "Δεν έχουν ρυθμιστεί οι πληροφορίες για την υπηρεσία Καταλόγου."
+
+msgid "No configuration information specified for SQL Categories."
+msgstr "Δεν έχουν ρυθμιστεί οι πληροφορίες για τις κατηγορίες της SQL."
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr "Δεν έχουν ρυθμιστεί οι πληροφορίες για τις προτιμήσεις της SQL."
+
+#: framework/VFS/VFS/sql.php:595
+msgid "No configuration information specified for SQL VFS."
+msgstr "Δεν έχουν ρυθμιστεί οι πληροφορίες για SQL VFS."
+
+#: framework/VFS/VFS/sql_file.php:749
+msgid "No configuration information specified for SQL-File VFS."
+msgstr "Δεν έχουν ρυθμιστεί οι πληροφορίες για SQL-File VFS."
+
+msgid "No configuration information specified for SQL authentication."
+msgstr "Δεν έχουν ρυθμιστεί οι πληροφορίες για την αυθεντικοποίηση στην SQL."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:323
+msgid "No credit left."
+msgstr "Δεν έμεινε πίστωση."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:659
+msgid "No destination supplied."
+msgstr "Δε δώσατε προορισμό."
+
+#: framework/Browser/Browser.php:892
+msgid "No file uploaded"
+msgstr "Δε φορτώθηκαν αρχεία"
+
+#: util/icon_browser.php:71
+msgid "No icons found."
+msgstr "Δε βρέθηκαν εικονίδια."
+
+#: lib/Block/weatherdotcom.php:102 lib/Block/sunrise.php:40
+#: lib/Block/metar.php:121
+msgid "No location is set."
+msgstr "Δεν ορίσθηκε τοποθεσία."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:658
+msgid "No message supplied."
+msgstr "Δε δώσατε μήνυμα."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:661
+msgid "No name specified."
+msgstr "Δεν ορίσθηκε όνομα."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:662
+msgid "No number specified."
+msgstr "Δεν ορίσθηκε αριθμός."
+
+#: lib/Block/fortune.php:94
+msgid "No offensive fortunes"
+msgstr "Δεν υπάρχουν δυσάρεστες προβλέψεις"
+
+#: templates/admin/user/approve.inc:19
+msgid "No pending signups."
+msgstr "Δεν εκκρεμούν είσοδοι."
+
+msgid "No preferences are available."
+msgstr "Οι προτιμήσεις δεν είναι διαθέσιμες."
+
+#: templates/javascript/htmlarea_table_lang.js:43
+msgid "No rules"
+msgstr "Δεν υπάρχουν κανόνες"
+
+#: templates/javascript/htmlarea_table_lang.js:44
+msgid "No sides"
+msgstr "Δεν υπάρχουν πλευρές"
+
+#: lib/Block/weatherdotcom.php:112
+msgid "No temporary directory available for cache."
+msgstr "Δεν υπάρχει προσωρινός χώρος για μνήμη cache."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:656
+msgid "No username and/or password sent."
+msgstr "Δεν δόθηκε όνομα χρήστη ή/και κωδικός."
+
+#: framework/RPC/RPC/xmlrpc.php:141
+msgid "No valid XML data returned"
+msgstr "Δεν επιστράφηκαν έγγυρα XML δεδομένα"
+
+#: framework/UI/UI/VarRenderer/html.php:896
+#: framework/UI/UI/VarRenderer/html.php:906
+#: framework/UI/UI/VarRenderer/html.php:917
+#: framework/UI/UI/VarRenderer/html.php:934
+msgid "No values"
+msgstr "Δεν υπάρχουν τιμές"
+
+#: admin/setup/index.php:110
+msgid "No version found in original configuration. Regenerate configuration."
+msgstr "Δε βρέθηκε έκδοση στο αρχικό configuration. Ξαναδημιουργήστε το."
+
+#: admin/setup/index.php:118
+msgid "No version found in your configuration. Regenerate configuration."
+msgstr "Δε βρέθηκε έκδοση στο αρχικό σας configuration. Ξαναδημιουργήστε το."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:604
+msgid "Non Participant"
+msgstr "Κανένας Συμμετέχων"
+
+#: framework/Crypt/Crypt/pgp.php:413
+#: framework/MIME/MIME/Viewer/icalendar.php:560
+#: templates/javascript/htmlarea_table_lang.js:45
+#: templates/prefs/identityselect.inc:88
+msgid "None"
+msgstr "Καμμία"
+
+#: templates/javascript/htmlarea_lang.js:90
+msgid "None (use implicit)"
+msgstr "Κανένα (Χρήση προκαθορισμένου)"
+
+#: lib/Block/moon.php:32 lib/Block/moon.php:60
+msgid "Northern Hemisphere"
+msgstr "Βόρειο Ημισφαίριο"
+
+#: framework/Crypt/Crypt/smime.php:664
+msgid "Not After"
+msgstr "Όχι Μετά"
+
+#: framework/Crypt/Crypt/smime.php:663
+msgid "Not Before"
+msgstr "Όχι Πριν"
+
+#: framework/VFS/VFS/file.php:357
+msgid "Not a directory"
+msgstr "Δεν είναι κατάλογος"
+
+#: framework/VFS_ISOWriter/ISOWriter.php:67
+#: framework/VFS_ISOWriter/ISOWriter/RealOutputStrategy.php:84
+#: framework/VFS_ISOWriter/ISOWriter/RealOutputStrategy.php:95
+#: framework/VFS_ISOWriter/ISOWriter/RealInputStrategy.php:49
+#: framework/VFS_ISOWriter/ISOWriter/RealInputStrategy.php:60
+msgid "Not implemented."
+msgstr "Δεν έχει ολοκληρωθεί."
+
+#: templates/javascript/htmlarea_lang.js:68
+msgid "Not set"
+msgstr "Δεν έχιε τεθεί"
+
+#: framework/VFS/VFS.php:184 framework/VFS/VFS.php:203
+#: framework/VFS/VFS.php:221 framework/VFS/VFS.php:238
+#: framework/VFS/VFS.php:255 framework/VFS/VFS.php:271
+#: framework/VFS/VFS.php:289 framework/VFS/VFS.php:325
+#: framework/VFS/VFS.php:388 framework/VFS/VFS.php:472
+#: framework/VFS/VFS.php:544 framework/VFS/VFS.php:562
+msgid "Not supported."
+msgstr "Δεν υποστηρίζετε."
+
+#: framework/MIME/MIME/Viewer/vcard.php:247 config/registry.php.dist:159
+msgid "Notes"
+msgstr "Σημειώσεις"
+
+msgid "Notes:"
+msgstr "Σημειώσεις:"
+
+msgid "Notes Summary"
+msgstr "Σημειώσεις - Περίληψη"
+
+msgid ""
+"Notes is an application which allows you to create the computer equivalent "
+"of sticky notes. Notes can be created, modified, deleted, and printed. You "
+"can also search on your notes to locate information. Support for importing "
+"and exporting notes is also available."
+msgstr ""
+"Οι σημειώσεις είναι μια εφαρμογή που σας επιτρέπει να δημιουργήσετε το "
+"αντίστοιχο των κίτρινων μικρών χαρτιών στον υπολογιστή. Μπορείτε να "
+"δημιουργήσετε, να τροποποιήσετε, να διαγράψετε και να τυπώσετε. Μπορείτε "
+"επίσης να ψάξετε στις σημείωσεις σας για να εντοπίσετε μια πληροφορία. "
+"Υποστηρίζεται και εισαγωγή - εξαγωγή των σημειώσεων."
+
+#: services/obrowser/index.php:36
+msgid "Nothing to browse, go back."
+msgstr "Τίποτα για εμφάνιση, επιστροφή."
+
+#: templates/maintenance/confirm_top.inc:10
+msgid "Notice"
+msgstr "Ανακοινώσεις"
+
+#, c-format
+msgid "Notification listener %s not found."
+msgstr "Το πρόγραμμα που διαχειρίζεται τις ειδοποιήσεις %s δεν βρέθηκε."
+
+#: framework/UI/UI/VarRenderer/html.php:384
+#: framework/UI/UI/VarRenderer/html.php:421
+#: templates/javascript/open_calendar.js:75
+msgid "November"
+msgstr "Νοέμβριος"
+
+#: framework/Form/Form.php:1040
+msgid "Number"
+msgstr "Αριθμός"
+
+#: framework/Form/Form.php:1421
+msgid "Number of characters"
+msgstr "Αριθμός χαρακτήρων"
+
+#: framework/Form/Form.php:1365 framework/Form/Form.php:1419
+#: framework/Form/Form.php:1441 templates/javascript/htmlarea_lang.js:104
+msgid "Number of columns"
+msgstr "Αριθμός στηλών"
+
+msgid "Number of columns in the summary view:"
+msgstr "Αριθμός στηλών στην εμφάνιση της περίληψης:"
+
+#: framework/Form/Form.php:1363 framework/Form/Form.php:1417
+#: framework/Form/Form.php:1439 templates/javascript/htmlarea_lang.js:102
+msgid "Number of rows"
+msgstr "Αριθμός γραμμών"
+
+#: framework/Net_SMS/SMS/sms2email_http.php:669
+msgid "Numbers not specified for updating in distribution list."
+msgstr "Δεν ορίσθηκε αριθμός για ενημέρωση των λιστών διανομής."
+
+#: framework/UI/UI/VarRenderer/html.php:814
+msgid "Object"
+msgstr "Αντικείμενο"
+
+#: templates/shares/edit.inc:117
+msgid "Object Creator"
+msgstr "Δημιουργός Αντικειμένου"
+
+#: admin/perms/edit.php:137 framework/Perms/Perms/UI.php:223
+msgid "Object creator permissions"
+msgstr "Εξουσιοδοτήσεις Δημιουργού Αντικειμένου"
+
+#: framework/Form/Form.php:1098
+msgid "Octal"
+msgstr "Οκταδικός"
+
+#: framework/UI/UI/VarRenderer/html.php:383
+#: framework/UI/UI/VarRenderer/html.php:420
+#: templates/javascript/open_calendar.js:74
+msgid "October"
+msgstr "Οκτώβριος"
+
+#: lib/Block/fortune.php:92
+msgid "Offense filter"
+msgstr "Φίλτρο προσβολών"
+
+#: config/registry.php.dist:304
+msgid "Office"
+msgstr "Γραφείο"
+
+msgid "Old Password"
+msgstr "Παλιός Κωδικός"
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:76
+msgid "Only IMAP servers support shared folders."
+msgstr "Μόνο IMAP-Servers υποστηρίζουν κουνόχρηστους φακέλλους."
+
+#: lib/Block/fortune.php:95
+msgid "Only offensive fortunes"
+msgstr "Μόνο δυσάρεστες προβλέψεις"
+
+#: framework/Form/Form.php:1834 framework/Form/Form.php:1954
+msgid "Only one email address allowed."
+msgstr "Μόνο μια Email διεύθυνση επιτρέπεται."
+
+#: services/shares/edit.php:65
+msgid ""
+"Only the owner or system administrator may change ownership or owner "
+"permissions for a share"
+msgstr ""
+"Μόνο ο ιδιοκτήτης ή ο διαχειριστής συστήματος μπορεί να αλλάξει την "
+"ιδιοκτησία ή τις εξουσιοδοτήσεις του ιδιοκτήτη για κοινή χρήση."
+
+#: lib/Block/iframe.php:35
+msgid "Open in a new window"
+msgstr "Ανοιγμα σε νέο παράθυρο"
+
+#: framework/Crypt/Crypt/smime.php:257
+msgid "OpenSSL error: Could not extract data from signed S/MIME part."
+msgstr ""
+"OpenSSL-Λάθος: Δεν μπορώ να βγάλω δεδομένα από S/MIME υπογεγραμμένο μέρος."
+
+#: templates/javascript/htmlarea_context_lang.js:54
+msgid "Opens this link in a new window"
+msgstr "Ανοιγμα αυτής της σύνδεσης σε νέο παράθυρο"
+
+#: lib/Block/fortune.php:53
+msgid "Operating System"
+msgstr "Λειτουργικό Σύστημα"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:600
+msgid "Optional Participant"
+msgstr "Προεραιτικός Συμμετέχων"
+
+#: services/portal/sidebar.php:151
+msgid "Options"
+msgstr "Επιλογές"
+
+msgid "Options for"
+msgstr "Επιλογές για"
+
+#: services/prefs.php:29 templates/prefs/app.inc:4
+msgid "Options for %s"
+msgstr "Επιλογές για %s"
+
+#: templates/javascript/htmlarea_lang.js:18
+msgid "Ordered List"
+msgstr "Ταξινομημένη Λίστα"
+
+#: framework/Crypt/Crypt/smime.php:591
+msgid "Organisation"
+msgstr "Οργανισμός"
+
+#: framework/Crypt/Crypt/smime.php:592
+msgid "Organisational Unit"
+msgstr "Τμήμα Οργανισμού"
+
+#: config/registry.php.dist:127
+msgid "Organizing"
+msgstr "Οργάνωση"
+
+#: admin/templates.php:135
+msgid "Original application template"
+msgstr "Αυθεντικό πρότυπο εφαρμογής"
+
+#: admin/templates.php:117
+msgid "Original templates in %s:"
+msgstr "Αυθεντικά πρότυπα σe %s:"
+
+#: framework/NLS/NLS/GeoIP.php:120 services/keyboard.php:117
+#: templates/javascript/htmlarea_lang.js:94
+msgid "Other"
+msgstr "Αλλο"
+
+#: config/prefs.php.dist:96 config/prefs.php.dist:106
+#: config/prefs.php.dist:113 config/prefs.php.dist:121
+#: config/prefs.php.dist:129
+msgid "Other Information"
+msgstr "Αλλες Πληροφορίες"
+
+#: templates/shares/edit.inc:37
+msgid "Owner Permissions"
+msgstr "Εξουσιοδοτήσεις Ιδιοκτήτη"
+
+#: framework/Auth/Auth/pam.php:83
+msgid "PAM authentication is not available."
+msgstr "Η Αυθεντικοποίηση PAM δεν είναι διαθέσιμη."
+
+#: framework/Crypt/Crypt/pgp.php:1279
+msgid "PGP Digital Signature"
+msgstr "Ψηφιακή Υπογραφή PGP"
+
+#: framework/Crypt/Crypt/pgp.php:1328
+msgid "PGP Encrypted Data"
+msgstr "Κρυπτογραφημένα δεδομένα PGP"
+
+#: framework/Crypt/Crypt/pgp.php:1387
+msgid "PGP Public Key"
+msgstr "Δημόσιο Κλειδί PGP"
+
+#: framework/Crypt/Crypt/pgp.php:1366
+msgid "PGP Signed/Encrypted Data"
+msgstr "Υπογεγραμμένα/Κρυπτογραφημένα PGP δεδομένα"
+
+#: admin/phpshell.php:63
+msgid "PHP Code"
+msgstr "PHP Κώδικας"
+
+#: admin/phpshell.php:20
+msgid "PHP Shell"
+msgstr "PHP Κέλυφος"
+
+#: lib/api.php:126
+msgid "P_HP Shell"
+msgstr "PHP Κέλυφος"
+
+#: templates/javascript/htmlarea_table_lang.js:46
+msgid "Padding"
+msgstr "Γέμισμα"
+
+#: admin/user.php:36 admin/setup/index.php:174
+#: framework/Net_SMS/SMS/sms2email_http.php:557
+#: framework/Net_SMS/SMS/clickatell_http.php:203 framework/Form/Form.php:2001
+#: templates/login/login.inc:70 templates/admin/user/update.inc:36
+#: config/registry.php.dist:367
+msgid "Password"
+msgstr "Κωδικός"
+
+msgid "Password changed for user %s from client %s"
+msgstr "Ο κωδικός άλλαξε για τον χρήστη %s από το σταθμό %s"
+
+#: framework/Crypt/Crypt/smime.php:1354
+msgid "Password incorrect"
+msgstr "Λάθος κωδικός"
+
+#: framework/Auth/Auth/radius.php:157
+msgid "Password required for RADIUS authentication."
+msgstr "Απαιτείται κωδικός για αυθεντικοποίηση RADIUS."
+
+#: framework/Form/Form.php:2036
+msgid "Password with confirmation"
+msgstr "Κωδικός με επιβεβαίωση"
+
+#: templates/rpcsum/rpcsum.inc:90
+msgid "Password:"
+msgstr "Κωδικός:"
+
+#: templates/login/mobile.inc:11
+msgid "Password: "
+msgstr "Κωδικός: "
+
+#: admin/user.php:150 framework/Form/Form.php:2017
+#: templates/admin/user/update.inc:15
+msgid "Passwords must match."
+msgstr "Ο κωδικός πρέπει να ταιριάζει."
+
+msgid "Past Events List"
+msgstr "Λίστα Περασμένων γεγονότων"
+
+#: admin/sqlshell.php:128 templates/javascript/htmlarea_context_lang.js:22
+msgid "Paste"
+msgstr "Επικόλληση"
+
+#: templates/javascript/htmlarea_lang.js:37
+msgid "Paste from clipboard"
+msgstr "Επικόλληση από το clipboard"
+
+#: templates/javascript/htmlarea_lang.js:51
+msgid "Path"
+msgstr "Διαδρομή"
+
+#: templates/admin/user/approve.inc:4 templates/admin/user/removequeued.inc:4
+msgid "Pending Signups:"
+msgstr "Είσοδοι που εκκρεμούν:"
+
+#: lib/Block/fortune.php:54
+msgid "People"
+msgstr "Ανθρωποι"
+
+#: templates/javascript/htmlarea_lang.js:107
+msgid "Percent"
+msgstr "Ποσοστό"
+
+#: templates/maintenance/confirm_bottom.inc:6
+msgid "Perform Maintenance Operations"
+msgstr "Εκτέλεση Λειτουργιών Συντήρησης"
+
+#: config/prefs.php.dist:390
+msgid "Perform maintenance operations on login?"
+msgstr "Εκτέλεση Λειτουργιών Συντήρησης κατά την είσοδο;"
+
+#: admin/perms/addchild.php:61 admin/perms/addchild.php:64
+#: admin/perms/addchild.php:67
+msgid "Permission"
+msgstr "Εξουσιοδότηση"
+
+#: admin/perms/delete.php:68
+msgid "Permission '%s' not deleted."
+msgstr "Εξουσιοδότηση για '%s' δε διαγράφηκε."
+
+#: admin/perms/edit.php:224 admin/perms/addchild.php:93
+#: admin/perms/index.php:22 admin/perms/delete.php:74
+msgid "Permissions Administration"
+msgstr "Διαχείριση Εξουσιοδοτήσεων"
+
+#: framework/Perms/Perms/UI.php:149 framework/Perms/Perms/UI.php:152
+#: framework/Perms/Perms/UI.php:156
+msgid "Permissions for"
+msgstr "Εξουσιοδοτήσεις για"
+
+#: config/prefs.php.dist:65
+msgid "Personal Information"
+msgstr "Προσωπικές πληροφορίες"
+
+#: lib/Block/fortune.php:55
+msgid "Pets"
+msgstr "Κατοικίδια"
+
+#: framework/MIME/MIME/Viewer/vcard.php:199
+msgid "Phone"
+msgstr "Τηλέφωνο"
+
+#: config/registry.php.dist:447
+msgid "Photos"
+msgstr "Φωτογραφίες"
+
+#: templates/javascript/htmlarea_lang.js:108
+msgid "Pixels"
+msgstr "Εικονοστοιχεία"
+
+#: lib/Block/fortune.php:56
+msgid "Platitudes"
+msgstr "Κοινοτυπίες"
+
+#: templates/javascript/htmlarea_table_lang.js:47
+msgid "Please click into some cell"
+msgstr "Παρακαλώ κάντε κλικ σε κάποιο κελί"
+
+#: templates/javascript/htmlarea_context_lang.js:48
+msgid "Please confirm that you want to remove this element:"
+msgstr "Παρακαλώ επιβεβαιώστε ότι θέλετε να διαγράψετε αυτό το στοιχείο:"
+
+#: templates/javascript/htmlarea_context_lang.js:55
+msgid "Please confirm that you want to unlink this element."
+msgstr "Παρακαλώ επιβεβαιώστε ότι θέλετε να αποσυνδέσετε αυτό το στοιχείο."
+
+#: framework/Form/Form.php:2555
+msgid "Please enter a month and a year."
+msgstr "Παρακαλώ δώστε μήνα και έτος."
+
+#: templates/prefs/categorymanagement.inc:12
+msgid "Please enter a name for the new category:"
+msgstr "Παρακαλώ δώστε ένα όνομα για τη νέα κατηγορία:"
+
+#: framework/Form/Form.php:1298
+msgid "Please enter a valid IP address."
+msgstr "Παρακαλώ δώστε μια έγκυρη IP διεύθυνση."
+
+#: framework/Form/Form.php:2651
+msgid "Please enter a valid date, check the number of days in the month."
+msgstr ""
+"Παρακαλώ δώστε μια έγκυρη ημερομηνία, ελέξτε τον αριθμό των ημερών του μήνα."
+
+#: framework/Form/Form.php:2433
+msgid "Please enter a valid time."
+msgstr "Παρακαλώ δώστε έγκυρη ώρα."
+
+msgid "Please provide a new password"
+msgstr "Παρακαλώ δώστε το νέο κωδικό σας"
+
+#: templates/problem/problem.inc:7
+msgid "Please provide a summary of the problem."
+msgstr "Παρακαλώ δώστε μια περίληψη του προβλήματος."
+
+msgid "Please provide your password"
+msgstr "Παρακαλώ δώστε τον κωδικό σας"
+
+msgid "Please provide your username"
+msgstr "Παρακαλώ δώστε το Όνομα Χρήστη"
+
+#: templates/login/login.inc:18 templates/login/login.inc:22
+msgid "Please provide your username and password"
+msgstr "Παρακαλώ δώστε το όνομα και τον κωδικό σας"
+
+msgid "Please provide your username with @domain"
+msgstr "Συμπληρώστε το όνομα χρήστη με τον τομέα (@ermis.ydt)"
+
+#: templates/maintenance/agreement_top.inc:12
+msgid ""
+"Please read the following text.  You MUST agree with the terms to use the "
+"system."
+msgstr ""
+"Παρακαλώ διαβάστε το ακόλουθο κείμεον. Πρέπει να συμφωνείτε με τους όρους "
+"για να χρησιμοποιήσετε αυτό το σύστημα."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:540
+msgid ""
+"Please review the following information, and then select an action from the "
+"menu below."
+msgstr ""
+"Παρακαλώ δείτε τις ακόλουθες πληροφορίες και επιλέξτε μια ενέργεια από το "
+"παρακάτω μενού."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:435
+msgid "Please select an action from the menu below."
+msgstr "Παρακαλώ επιλέξτε μια ενέργεια από το παρακάτω μενού."
+
+#: framework/Prefs/Prefs/CategoryManager.php:72
+msgid "Please type the new category name:"
+msgstr "Παρακαλώ δώστε το όνομα της νέας κατηγορίας:"
+
+msgid "Please verify your new password"
+msgstr "Παρακαλώ επιβεβαιώστε το νέο κωδικό σας"
+
+msgid "Precede your signature with dashes ('-- ')?"
+msgstr "Να προτάσσονται δύο παύλες πρίν την υπογραφή σας ('--');"
+
+#: templates/javascript/htmlarea_lang.js:124
+#: templates/javascript/htmlarea_anselimage_lang.js:27
+msgid "Positioning of this image"
+msgstr "Θέση αυτής της εικόνας"
+
+#: templates/javascript/htmlarea_lang.js:111
+msgid "Positioning of this table"
+msgstr "Τοποθετώντας αυτό τον πίνακα"
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:94
+msgid "Post to this folder (not enforced by IMAP)"
+msgstr "Αποστολή σε αυτό το φάκελο (δεν υποστηρίζεται από το IMAP)"
+
+#: lib/Block/metar.php:264 lib/Block/metar.php:269
+msgid "Precipitation for last %s hour(s): "
+msgstr "Κατακρήμνιση για τις τελευταίες %s ώρα(ες): "
+
+#: framework/Prefs/Prefs/ldap.php:99
+msgid "Prefs_ldap: Required LDAP extension not found."
+msgstr "Prefs_ldap: Δε βρέθηκε η απαιτούμενη επέκταση LDAP."
+
+#: framework/Prefs/Prefs/session.php:36
+msgid "Prefs_session: Required session extension not found."
+msgstr "Prefs_session: Δε βρέθηκε η απαιτούμενη επέκταση συνεδρίας."
+
+#: config/registry.php.dist:298
+msgid "Presentations"
+msgstr "Παρουσιάσεις"
+
+#: lib/Block/metar.php:223
+msgid "Pressure"
+msgstr "Πίεση"
+
+#: lib/Block/metar.php:257
+msgid "Pressure at sea level: "
+msgstr "Πίεση στο επίπεδο της θάλασσας: "
+
+#: lib/Block/weatherdotcom.php:184
+msgid "Pressure: "
+msgstr "Πίεση: "
+
+#: framework/UI/UI/VarRenderer/html.php:188
+#: templates/javascript/htmlarea_lang.js:120
+#: templates/javascript/htmlarea_anselimage_lang.js:23
+msgid "Preview"
+msgstr "Προεπισκόπιση"
+
+#: templates/javascript/htmlarea_lang.js:121
+#: templates/javascript/htmlarea_anselimage_lang.js:24
+msgid "Preview the image in a new window"
+msgstr "Προεπισκόπιση της εικόνοας σε νέο παράθυρο"
+
+#: framework/UI/UI/Pager.php:71 framework/UI/UI/Pager.php:72
+msgid "Previous Page"
+msgstr "Προηγούμενη Σελίδα"
+
+#: framework/Prefs/Prefs/UI.php:356 framework/Prefs/Prefs/UI.php:360
+msgid "Previous options"
+msgstr "Προηγούμενες Επιλογές"
+
+#: templates/javascript/htmlarea_lang.js:41
+msgid "Print document"
+msgstr "Εκτύπωση εγγράφου"
+
+#: framework/Crypt/Crypt/pgp.php:409
+msgid "Private Key"
+msgstr "Προσωπικό Κλειδί"
+
+#: framework/Horde/Horde/Menu.php:175
+msgid "Problem"
+msgstr "Πρόβλημα"
+
+#: services/problem.php:112
+msgid "Problem Description"
+msgstr "Περιγραφή Προβλήματος"
+
+#: config/registry.php.dist:216
+msgid "Projects"
+msgstr "Έργο (project)"
+
+#: framework/Form/Form.php:2094 framework/Form/Form.php:2171
+msgid "Prompt text"
+msgstr "Κείμενο προτροπής"
+
+#: framework/Crypt/Crypt/pgp.php:409
+msgid "Public Key"
+msgstr "Δημόσιο Κλειδί"
+
+#: framework/Crypt/Crypt/smime.php:669
+msgid "Public Key Algorithm"
+msgstr "Αλγόριθμος Δημόσιου Κλειδιού"
+
+#: framework/Crypt/Crypt/pgp.php:223
+msgid "Public/Private keypair not generated successfully."
+msgstr "Το ζεύγος Δημόσιου/Προσωπικού κλειδιού δε δημιουργήθηκε επιτυχώς."
+
+#: admin/sqlshell.php:70
+msgid "Query"
+msgstr "Ερώτηση"
+
+#: framework/Crypt/Crypt/smime.php:687
+msgid "RSA Public Key (%d bit)"
+msgstr "Δημόσιο Κλειδί RSA (%d Bit)"
+
+#: framework/Form/Form.php:2247
+msgid "Radio selection"
+msgstr "Επιλογί ενός"
+
+#: lib/Block/fortune.php:3
+msgid "Random Fortune"
+msgstr "Τυχαία Πρόβλεψη"
+
+#: framework/MIME/MIME/Viewer/rar.php:71 framework/MIME/MIME/Viewer/zip.php:76
+msgid "Ratio"
+msgstr "Λόγος"
+
+#: framework/Perms/Perms.php:295 templates/shares/edit.inc:40
+#: templates/shares/edit.inc:74 templates/shares/edit.inc:97
+#: templates/shares/edit.inc:120 templates/shares/edit.inc:143
+#: templates/shares/edit.inc:186
+msgid "Read"
+msgstr "Ανάγνωση"
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:90
+msgid "Read messages"
+msgstr "Ανάγνωση μηνύματος"
+
+#: templates/admin/user/remove.inc:12
+msgid "Really delete %s? This operation cannot be undone."
+msgstr "Είστε βέβαιος για τη διαγραφή %s; Αυτό δεν μπορεί να επανέλθει."
+
+#: templates/admin/user/clear.inc:12
+msgid "Really remove user data for user %s? This operation cannot be undone."
+msgstr ""
+"Είστε σίγουρος για τη διαγραφή των δεδομένων του χρήστη %s; Αυτό δεν μπορεί "
+"να επανέλθει."
+
+#: templates/javascript/htmlarea_lang.js:34
+msgid "Redoes your last action"
+msgstr "Επανεκτέλεση της τελευταίας εργασίας σας"
+
+#: config/prefs.php.dist:375
+msgid "Refresh Dynamic Menu Elements:"
+msgstr "Ανανέωση των δυναμικών στοιχείων του Μενού:"
+
+#: config/prefs.php.dist:325
+msgid "Refresh Portal View:"
+msgstr "Ανανέωση της εμφάνισης του Portal:"
+
+msgid "Refresh Summary View:"
+msgstr "Ανανέωση της Προβολής Περίληψης:"
+
+#: framework/Form/Form.php:888 framework/Form/Form.php:1204
+#: framework/Form/Form.php:1226
+msgid "Regex"
+msgstr "Regex"
+
+#: framework/Form/Form.php:3233
+msgid "Relationship Browser"
+msgstr "Εμφάνιση Σχέσεων"
+
+#: lib/Block/metar.php:324
+msgid "Remarks"
+msgstr "Σχόλια"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:457
+#: framework/MIME/MIME/Viewer/icalendar.php:476
+msgid "Remember the free/busy information."
+msgstr "Απομνημόνευση πληροφοριών διαθεσιμότητας."
+
+#: config/prefs.php.dist:114
+msgid "Remote Servers"
+msgstr "Απομακρυσμένοι Εξυπηρετητές"
+
+#: templates/rpcsum/rpcsum.inc:84
+msgid "Remote URL (http://www.example.com/horde):"
+msgstr "Απομακρυσμένη διεύθυνση (http://www.example.com/horde):"
+
+#: templates/admin/groups/edit.inc:21 templates/admin/user/approve.inc:40
+#: templates/admin/user/removequeued.inc:15
+msgid "Remove"
+msgstr "Αφαίρεση"
+
+#: templates/portal/layout.inc:11
+msgid "Remove Block"
+msgstr "Αφαίρεση Μπλόκ"
+
+#: framework/UI/UI/VarRenderer/html.php:532
+msgid "Remove column"
+msgstr "Αφαίρεση Στήλης"
+
+#: templates/javascript/htmlarea_lang.js:40
+msgid "Remove formatting"
+msgstr "Αφαίρεση μορφοποίησης"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:658
+msgid "Remove from my calendar"
+msgstr "Αφαίρεση από το ημερολόγιό μου"
+
+#: templates/data/csvmap.inc:136
+msgid "Remove pair"
+msgstr "Αφαίρεση ζεύγους"
+
+#: admin/setup/index.php:196
+msgid "Remove saved script from server's temporary directory."
+msgstr ""
+"Αφαίρεση αποθηκευμένου script από τον προσωρινό κατάλογο του εξυπηρετητή."
+
+#: templates/javascript/htmlarea_context_lang.js:41
+msgid "Remove the"
+msgstr "Αφαίρεση του"
+
+#: templates/javascript/htmlarea_context_lang.js:49
+msgid "Remove this node from the document"
+msgstr "Αφαίρεση αυτού του κόμβου από το έγγραφο"
+
+#: templates/admin/user/remove.inc:16
+msgid "Remove user"
+msgstr "Διαγραφή χρήστη"
+
+#: templates/admin/user/remove.inc:7
+msgid "Remove user: %s"
+msgstr "Διαγραφή Χρήστη: %s"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:197
+#: framework/MIME/MIME/Viewer/icalendar.php:280
+#: framework/MIME/MIME/Viewer/icalendar.php:349
+msgid "Reply Sent."
+msgstr "Στάλθηκε Απάντηση."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:459
+#: framework/MIME/MIME/Viewer/icalendar.php:468
+#: framework/MIME/MIME/Viewer/icalendar.php:478
+msgid "Reply with Not Supported Message"
+msgstr "Απάντηση με ΜΗ υποστηριζόμενο μήνυμα."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:466
+msgid "Reply with free/busy for next 2 months."
+msgstr "Απάντηση με πληροφορίες διαθεσιμότητας για τους επόμενους δύο μήνες."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:465
+msgid "Reply with requested free/busy information."
+msgstr "Απάντηση με τις ζητούμενες πληροφορίες διαθεσιμότητας."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:189
+msgid "Reply: %s"
+msgstr "Απάντηση: %s"
+
+#: framework/RPC/RPC/xmlrpc.php:139
+msgid "Request couldn't be answered. Returned errorcode: "
+msgstr "Το αίτημα δε μπορεί να απαντηθεί. Επιστρεφόμενος κωδικός λάθους: "
+
+#: framework/Horde/Horde.php:180 framework/Horde/Horde.php:503
+msgid "Required '%s' not specified in %s configuration."
+msgstr "Το απαιτούμενο '%s' δεν καθορίσθηκε στο %s configuration."
+
+#: framework/VFS/VFS/sql.php:601 framework/VFS/VFS/ftp.php:779
+#: framework/VFS/VFS/sql_file.php:755
+msgid "Required '%s' not specified in VFS configuration."
+msgstr "Το απαιτούμενο '%s' δεν καθορίσθηκε στο VFS configuration."
+
+#: framework/Util/Util.php:761
+msgid "Required '%s' not specified in configuration."
+msgstr "Το απαιτούμενο '%s' δεν καθορίσθηκε στο configuration."
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr ""
+"Το απαιτούμενο 'basedn' δεν έχει καθοριστεί στις ρυθμίσεις αυθεντικοποίησης."
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr ""
+"Το απαιτούμενο 'basedn' δεν έχει καθοριστεί στις ρυθμίσεις των προτιμήσεων."
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr ""
+"Το απαιτούμενο 'database' δεν έχει καθοριστεί στις ρυθμίσεις "
+"αυθεντικοποίησης."
+
+msgid "Required 'database' not specified in categories configuration."
+msgstr ""
+"Το απαιτούμενο 'database' δεν έχει καθοριστεί στις ρυθμίσεις κατηγοριών."
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr ""
+"Το απαιτούμενο 'database' δεν έχει καθοριστεί στις ρυθμίσεις των προτιμήσεων."
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr ""
+"Το απαιτούμενο 'hostspec' δεν έχει καθοριστεί στις ρυθμίσεις "
+"αυθεντικοποίησης."
+
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr ""
+"Το απαιτούμενο 'hostspec' δεν έχει καθοριστεί στις ρυθμίσεις κατηγοριών."
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr ""
+"Το απαιτούμενο 'hostspec' δεν έχει καθοριστεί στις ρυθμίσεις των προτιμήσεων."
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr ""
+"Το απαιτούμενο 'password' δεν έχει καθοριστεί στις ρυθμίσεις "
+"αυθεντικοποίησης."
+
+msgid "Required 'password' not specified in categories configuration."
+msgstr ""
+"Το απαιτούμενο 'password' δεν έχει καθοριστεί στις ρυθμίσεις κατηγοριών."
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr ""
+"Το απαιτούμενο 'password' δεν έχει καθοριστεί στις ρυθμίσεις των προτιμήσεων."
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr ""
+"Το απαιτούμενο 'phptype' δεν έχει καθοριστεί στις ρυθμίσεις αυθεντικοποίησης."
+
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr ""
+"Το απαιτούμενο 'phptype' δεν έχει καθοριστεί στις ρυθμίσεις κατηγοριών."
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr ""
+"Το απαιτούμενο 'phptype' δεν έχει καθοριστεί στις ρυθμίσεις των προτιμήσεων."
+
+msgid "Required 'table' not specified in authentication configuration."
+msgstr ""
+"Το απαιτούμενο 'table' δεν έχει καθοριστεί στις ρυθμίσεις αυθεντικοποίησης."
+
+msgid "Required 'table' not specified in categories configuration."
+msgstr "Το απαιτούμενο 'table' δεν έχει καθοριστεί στις ρυθμίσεις κατηγοριών."
+
+msgid "Required 'table' not specified in preferences configuration."
+msgstr ""
+"Το απαιτούμενο 'table' δεν έχει καθοριστεί στις ρυθμίσεις των προτιμήσεων."
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr ""
+"Το απαιτούμενο 'uid' δεν έχει καθοριστεί στις ρυθμίσεις αυθεντικοποίησης."
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr ""
+"Το απαιτούμενο 'uid' δεν έχει καθοριστεί στις ρυθμίσεις των προτιμήσεων."
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr ""
+"Το απαιτούμενο 'username' δεν έχει καθοριστεί στις ρυθμίσεις "
+"αυθεντικοποίησης."
+
+msgid "Required 'username' not specified in categories configuration."
+msgstr ""
+"Το απαιτούμενο 'username' δεν έχει καθοριστεί στις ρυθμίσεις κατηγοριών."
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr ""
+"Το απαιτούμενο 'username' δεν έχει καθοριστεί στις ρυθμίσεις των προτιμήσεων."
+
+#: framework/Form/Form/Renderer.php:328
+msgid "Required Field"
+msgstr "Απαιτούμενο Πεδίο"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:592
+msgid "Required Participant"
+msgstr "Απαιτούμενος Συμμετέχων"
+
+#: admin/user.php:31 framework/Form/Form.php:339
+#: framework/Form/Form/Renderer.php:315 templates/rpcsum/rpcsum.inc:101
+#: templates/admin/user/update.inc:44
+msgid "Reset"
+msgstr "Επαναφορά"
+
+#: services/resetpassword.php:46
+msgid "Reset Password"
+msgstr "Αλλαγή Κωδικού"
+
+#: services/resetpassword.php:27
+msgid "Reset Your Password"
+msgstr "Αλλάξτε τον Κωδικό σας"
+
+#: admin/phpshell.php:66 admin/cmdshell.php:28 admin/sqlshell.php:73
+msgid "Results"
+msgstr "Αποτελέσματα"
+
+#: templates/rpcsum/rpcsum.inc:102 templates/prefs/end.inc:7
+msgid "Return to Options"
+msgstr "Επιστροφή στις Επιλογές"
+
+msgid "Return to mail"
+msgstr "Επιστροφή στην αλληλογραφία"
+
+#: framework/NLS/NLS/tld.php:197 framework/NLS/NLS/countries.php:185
+#: framework/NLS/NLS/GeoIP.php:103
+msgid "Reunion"
+msgstr "Επανένωση"
+
+#: admin/setup/config.php:44 admin/setup/config.php:48
+msgid "Revert Configuration"
+msgstr "Επαναφορά Configuration"
+
+msgid "Rhodes Airport"
+msgstr "Αερολιμένας Ρόδου"
+
+#: config/prefs.php.dist:130
+msgid "Rich Text Editor Options"
+msgstr "Επιλογές επεξεργαστή εμπλουτισμένου κειμένου"
+
+#: lib/Block/fortune.php:58
+msgid "Riddles"
+msgstr "Αινίγματα"
+
+#: templates/javascript/htmlarea_table_lang.js:48
+#: templates/javascript/htmlarea_lang.js:70
+msgid "Right"
+msgstr "Δεξιά"
+
+#: framework/Form/Form.php:3105
+msgid "Right header"
+msgstr "Δεξιά επικεφαλίδα"
+
+#: framework/Form/Form.php:3101
+msgid "Right values"
+msgstr "Δεξιές τιμές"
+
+#: templates/javascript/htmlarea_context_lang.js:28
+msgid "Ro_w Properties..."
+msgstr "Ιδιότητες γραμμής..."
+
+#: framework/MIME/MIME/Viewer/vcard.php:237
+#: framework/MIME/MIME/Viewer/icalendar.php:583
+msgid "Role"
+msgstr "Ρόλος"
+
+#: framework/UI/UI/VarRenderer/html.php:208
+msgid "Rotate 180"
+msgstr "Περιστροφή 180°"
+
+#: framework/UI/UI/VarRenderer/html.php:205
+msgid "Rotate Left"
+msgstr "Περιστροφή Αριστερά"
+
+#: framework/UI/UI/VarRenderer/html.php:211
+msgid "Rotate Right"
+msgstr "Περιστροφή Δεξιά"
+
+#: templates/javascript/htmlarea_table_lang.js:49
+msgid "Row Properties"
+msgstr "Ιδιότητες Γραμμής"
+
+#: templates/javascript/htmlarea_table_lang.js:70
+msgid "Row properties"
+msgstr "Ιδιότητες Γραμμής"
+
+#: templates/javascript/htmlarea_lang.js:101
+msgid "Rows:"
+msgstr "Γραμμές:"
+
+#: templates/javascript/htmlarea_table_lang.js:53
+msgid "Rules"
+msgstr "Κανόνες"
+
+#: templates/javascript/htmlarea_table_lang.js:50
+msgid "Rules will appear between all rows and columns"
+msgstr "Οι κανόνες θα εμφανίζονται μεταξύ όλων των γραμμών και των στηλών"
+
+#: templates/javascript/htmlarea_table_lang.js:51
+msgid "Rules will appear between columns only"
+msgstr "Οι κανόνες θα εμφανίζονται μεταξύ των στηλών μόνο"
+
+#: templates/javascript/htmlarea_table_lang.js:52
+msgid "Rules will appear between rows only"
+msgstr "Οι κανόνες θα εμφανίζονται μεταξύ των γραμμών μόνο"
+
+#: admin/sqlshell.php:129
+msgid "Run"
+msgstr "Εκτέλεση"
+
+#: framework/Crypt/Crypt/smime.php:300
+msgid "S/MIME Cryptographic Signature"
+msgstr "Υπογραφή Κρυπτογράφησης S/MIME"
+
+#: framework/Crypt/Crypt/smime.php:341
+msgid "S/MIME Encrypted Message"
+msgstr "Κρυπτογραφημένο μήνυμα S/MIME"
+
+#: framework/Auth/Auth/sasl.php:86
+msgid "SASL authentication is not available."
+msgstr "Η αυθεντικοποίηση SASL δεν είναι διαθέσιμη."
+
+#: config/registry.php.dist:481
+msgid "SMS Messaging"
+msgstr "Μηνύματα SMS"
+
+#: admin/sqlshell.php:21
+msgid "SQL Shell"
+msgstr "SQL Κέλυφος"
+
+#: framework/Notification/Notification/Listener/mobile.php:38
+msgid "SUCCESS"
+msgstr "ΕΠΙΤΥΧΩΣ"
+
+#: lib/api.php:130
+msgid "S_QL Shell"
+msgstr "S_QL Κέλυφος"
+
+#: templates/javascript/open_calendar.js:61
+msgid "Sa"
+msgstr "Σα"
+
+#: templates/javascript/htmlarea_lang.js:92
+msgid "Same frame (_self)"
+msgstr "Ίδιο πλαίσιο (_self)"
+
+msgid "Samos Airport"
+msgstr "Αερολιμένας Σάμου"
+
+#: framework/NLS/NLS/GeoIP.php:120
+msgid "Satellite Provider"
+msgstr "Πάροχος Δορυφόρου"
+
+#: templates/portal/layout.inc:98
+msgid "Save"
+msgstr "Αποθήκευση"
+
+#: templates/shares/edit.inc:222
+msgid "Save %s"
+msgstr "Αποθήκευση %s"
+
+#: templates/admin/groups/edit.inc:49
+msgid "Save '%s'"
+msgstr "Αποθήκευση '%s'"
+
+#: templates/prefs/end.inc:5
+msgid "Save Options"
+msgstr "Αποθήκευση Επιλογών"
+
+#: admin/setup/index.php:161
+msgid ""
+"Save generated configuration as a PHP script to your server's temporary "
+"directory."
+msgstr ""
+"Αποθήκευση του configuration που δημιουργήθηκε σαν PHP Script στον προσωρινό "
+"κατάλογο του εξυπηρετητή."
+
+#: admin/setup/scripts.php:69
+msgid "Saved %s configuration."
+msgstr "Αποθηκευμένο %s configuration."
+
+#: admin/setup/scripts.php:90
+msgid "Saved setup upgrade script to: '%s'."
+msgstr "Το script ενημέρωσης το setup αποθηκεύθηκε στο: '%s'."
+
+#: lib/Block/fortune.php:59
+msgid "Science"
+msgstr "Επιστήμη"
+
+#: templates/admin/user/list.inc:15 templates/admin/user/list.inc:17
+msgid "Search"
+msgstr "Αναζήτηση"
+
+#: config/registry.php.dist:281
+msgid "Search Engines"
+msgstr "Μηχανές Αναζήτησης"
+
+msgid "Search Mail"
+msgstr "Αναζήτηση Μηνυμάτων"
+
+msgid "Search Results"
+msgstr "Αποτελέσματα Αναζήτησης"
+
+#: framework/Form/Form.php:2957
+msgid "Select Files"
+msgstr "Επιλογή Αρχείων"
+
+#: framework/UI/UI/VarRenderer/html.php:456
+msgid "Select a date"
+msgstr "Επιλέξτε μια ημερομηνία"
+
+#: templates/shares/edit.inc:204
+msgid "Select a group to add"
+msgstr "Επιλέξτε ομάδα για προσθήκη"
+
+#: templates/shares/edit.inc:49
+msgid "Select a new owner"
+msgstr "Επιλέξτε νέο Ιδιοκτήτη"
+
+#: templates/rpcsum/rpcsum.inc:60
+msgid "Select a server"
+msgstr "Επιλέξτε εξυπηρετητή"
+
+#: templates/shares/edit.inc:162
+msgid "Select a user to add"
+msgstr "Επιλέξτε χρήστη για προσθήκη"
+
+#: framework/Form/Form.php:2654
+msgid "Select all date components."
+msgstr "Επιλογή όλων των ημερομηνιών."
+
+#: framework/UI/UI/VarRenderer/html.php:814
+msgid "Select an object"
+msgstr "Επιλογή ενός αντικειμένου"
+
+#: services/keyboard.php:37
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr ""
+"Επιλέξτε τους χαρακτήρες που θέλετε από τις παρακάτω λίστες. Κατόπινμπορείτε "
+"να τα αντιγράψετε και να τα επικολλήσετε στο μήνυμα σας."
+
+msgid "Select the date delimiter:"
+msgstr "Επιλογή του διαχωριστή ημερομηνίας:"
+
+msgid "Select the date format:"
+msgstr "Επιλογή της μορφής που θα έχει η ημερομηνία:"
+
+msgid "Select the identity you want to change:"
+msgstr "Επιλέξτε τη ταυτότητα που θέλετε να αλλάξετε:"
+
+#: templates/data/time.inc:16
+msgid "Select the time delimiter:"
+msgstr "Επιλέξτε το διαχωριστή ώρας:"
+
+#: templates/data/time.inc:25
+msgid "Select the time format:"
+msgstr "Επιλέξτε τη μορφή που θα έχει η ώρα:"
+
+msgid "Select two matching fields."
+msgstr "Επιλέξτε δύο πεδία που ταιριάζουν."
+
+#: config/prefs.php.dist:290
+msgid "Select your color scheme."
+msgstr "Επιλέξτε το χρωματικό 'σχήμα'."
+
+#: config/prefs.php.dist:232
+msgid "Select your preferred language:"
+msgstr "Επιλέξτε τη γλώσσα σας:"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:653
+msgid "Send Latest Information"
+msgstr "Αποστολή των πιο πρόσφατων πληροφοριών"
+
+#: templates/problem/problem.inc:58
+msgid "Send Problem Report"
+msgstr "Αποστολή Αναφοράς Προβλήματος"
+
+#: framework/UI/UI/VarRenderer/html.php:964
+msgid "Send SMS"
+msgstr "Αποστολή SMS"
+
+#: lib/Block/metar.php:314
+msgid "Sensor: "
+msgstr "Αισθητήρας: "
+
+#: framework/UI/UI/VarRenderer/html.php:382
+#: framework/UI/UI/VarRenderer/html.php:419
+#: templates/javascript/open_calendar.js:73
+msgid "September"
+msgstr "Σεπτέμβριος"
+
+#: framework/Crypt/Crypt/smime.php:725
+msgid "Serial Number"
+msgstr "Σειριακός Αριθμός"
+
+#: framework/Net_SMS/SMS/clickatell_http.php:301
+msgid "Session ID expired."
+msgstr "Το ID της σύνδεσης έληξε."
+
+#: framework/Form/Form.php:2295
+msgid "Set"
+msgstr "Θέσε"
+
+#: config/prefs.php.dist:76
+msgid "Set options to allow you to reset your password if you ever forget it."
+msgstr ""
+"Θέστε επιλογές που θα σας επιτρέπουν να αλλάζετε τον κωδικό σας, ακόμη και "
+"αν τον έχετε ξεχάσει."
+
+#: config/prefs.php.dist:115
+msgid "Set up remote servers that you want to access from your portal."
+msgstr "Παραμετροποίηση απομακρυσμένων εξυπηρετητών που θέλετε πρόσβαση."
+
+msgid "Set your page refreshing, and other display options."
+msgstr ""
+"Ρυθμίστε διάφορες επιλογές εμφάνισης και το χρόνο ανανέωσης των σελίδων."
+
+msgid "Set your preferred display language."
+msgstr "Επιλογή της προτιμούμενης γλώσσας."
+
+msgid "Set your preferred language, timezone and date options."
+msgstr "Καθορίστε την προτιμώμενη γλώσσα, ζώνη ώρας και μορφή ημερομηνίας."
+
+msgid ""
+"Set your startup application, color scheme, page refreshing, and other "
+"display options."
+msgstr ""
+"Καθορίστε την εφαρμογή εκκίνησης, τα προτιμώμενα χρώματα, τη περίοδο "
+"ανανέωσης της σελίδας και άλλες επιλογές εμφάνισης."
+
+#: admin/setup/config.php:74
+msgid "Setup"
+msgstr "Ρύθμιση"
+
+#: templates/admin/setup/index.html:38
+msgid "Setup upgrade scripts available"
+msgstr "Είναι διαθέσιμα Scripts ενημέρωσης ρυθμίσεων"
+
+#: lib/Block/weatherdotcom.php:135
+msgid "Several locations possible with the parameter: "
+msgstr "Πολλές τοποθεσίες είναι πιθανές με αυτή τη παράμετρο: "
+
+#: config/registry.php.dist:473
+msgid "Shopping"
+msgstr "Αγορές"
+
+#: templates/problem/problem.inc:43
+msgid "Short Summary"
+msgstr "Σύντομη Περίληψη"
+
+msgid "Short Summary:"
+msgstr "Σύντομη Περίληψη:"
+
+#: config/prefs.php.dist:430
+msgid "Should access keys be defined for most links?"
+msgstr "Πρέπει το κλειδί πρόσβασης να ορισθεί για περισσότερες συνδέσεις;"
+
+#: framework/Perms/Perms.php:294 templates/shares/edit.inc:39
+#: templates/shares/edit.inc:73 templates/shares/edit.inc:96
+#: templates/shares/edit.inc:119 templates/shares/edit.inc:142
+#: templates/shares/edit.inc:185
+msgid "Show"
+msgstr "Εμφάνιση"
+
+#: admin/setup/index.php:149
+msgid ""
+"Show differences between currently saved and the newly generated "
+"configuration."
+msgstr ""
+"Εμφάνιση διαφορών μεταξύ του αποθηκευμένου και του δημιουργηθέντος "
+"configuration."
+
+#: config/prefs.php.dist:474
+msgid "Show last login time when logging in?"
+msgstr "Εμφάνιση της ώρας τελευταίας εισόδου όταν μπαίνουμε στο σύστημα;"
+
+#: framework/Form/Form.php:1752
+msgid "Show option to keep original"
+msgstr "Εμφάνιση επιλογής για αποθήκευση του αυθεντικού"
+
+#: framework/Form/Form.php:2801
+msgid "Show picker"
+msgstr "Εμφάνιση συλλέκτη"
+
+#: config/prefs.php.dist:509
+msgid "Show table operations menu bar?"
+msgstr "Να εμφανίζεται το μενού με εργασίες πίνακα;"
+
+#: config/prefs.php.dist:333
+msgid "Show the %s Menu on the left?"
+msgstr "Εμφάνιση του %s Μενού στα αριστερά;"
+
+#: templates/javascript/htmlarea_context_lang.js:58
+msgid "Show the Table Cell Properties dialog"
+msgstr "Εμφάνιση του διαλόγου Ιδιοτήτων Κελιών Πίνακα"
+
+#: templates/javascript/htmlarea_context_lang.js:63
+msgid "Show the Table Properties dialog"
+msgstr "Εμφάνιση του διαλόγου Ιδιοτήτων Πίνακα"
+
+#: templates/javascript/htmlarea_context_lang.js:59
+msgid "Show the Table Row Properties dialog"
+msgstr "Εμφάνιση του διαλόγου Ιδιοτήτων Γραμμών Πίνακα"
+
+#: templates/javascript/htmlarea_context_lang.js:51
+msgid "Show the image properties dialog"
+msgstr "Εμφάνιση του διαλόγου Ιδιοτήτων Εικόνας"
+
+#: framework/Form/Form.php:1750
+msgid "Show upload"
+msgstr "Εμφάνιση φόρτωσης (upload)"
+
+#: framework/Block/Block/Layout.php:391
+msgid "Shrink"
+msgstr "Συρρίκνωση"
+
+#: framework/Block/Block/Layout.php:684 framework/Block/Block/Layout.php:746
+#: framework/Block/Block/Layout.php:804 framework/Block/Block/Layout.php:866
+#: framework/Block/Block/Layout.php:901 framework/Block/Block/Layout.php:938
+#: framework/Block/Block/Layout.php:966 framework/Block/Block/Layout.php:996
+msgid "Shrink or move neighbouring block(s) out of the way first"
+msgstr "Πρώτα συρρίκνωση ή μετακίνηση γειτονικών τμημάτων"
+
+#: framework/Auth/Auth/Signup.php:278
+msgid "Sign up"
+msgstr "Είσοδος-Υπογραφή"
+
+#: templates/login/login.inc:89
+msgid "Sign up if not registered"
+msgstr "Η Είσοδος-Υπογραφή δεν έχει καταχωρηθεί."
+
+#: framework/Crypt/Crypt/smime.php:736
+msgid "Signature"
+msgstr "Υπογραφή"
+
+#: framework/Crypt/Crypt/smime.php:735
+msgid "Signature Algorithm"
+msgstr "Αλγόριθμος Υπογραφής"
+
+#: framework/MIME/MIME/Viewer/rar.php:68 framework/MIME/MIME/Viewer/zip.php:72
+#: framework/MIME/MIME/Viewer/tgz.php:87 framework/Form/Form.php:890
+#: framework/Form/Form.php:1206 framework/Form/Form.php:1228
+#: framework/Form/Form.php:2229 framework/Form/Form.php:2918
+#: framework/Form/Form.php:3107
+msgid "Size"
+msgstr "Μέγεθος"
+
+#: templates/maintenance/confirm_bottom.inc:9
+msgid "Skip Maintenance"
+msgstr "Ακύρωση Συντήρησης"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Μερικά από τα αρχεία διαχείρισης του Horde έχουν χαθεί:"
+
+#: framework/Form/Form.php:2914
+msgid "Sort order selection"
+msgstr "Επιλογή κατεύθυνσης ταξινόμησης"
+
+msgid "Souda Airport"
+msgstr "Αερολιμένας Σούδας"
+
+#: framework/Net_SMS/SMS/sms2email_http.php:581
+#: framework/Net_SMS/SMS/sms2email_http.php:613
+#: framework/Net_SMS/SMS/clickatell_http.php:223
+#: framework/Net_SMS/SMS/clickatell_http.php:255
+msgid "Source address"
+msgstr "Διεύθυνση Πηγής"
+
+#: lib/Block/moon.php:33 lib/Block/moon.php:62
+msgid "Southern Hemisphere"
+msgstr "Νότιο Ημισφαίριο"
+
+#: templates/javascript/htmlarea_lang.js:113
+msgid "Space between adjacent cells"
+msgstr "Διάστημα μεταξύ γειτονικών κελιών"
+
+#: templates/javascript/htmlarea_lang.js:115
+msgid "Space between content and border in cell"
+msgstr "Διάστημα μεταξύ περιεχομένου και γραμμής κελιών"
+
+#: framework/Form/Form.php:814
+msgid "Spacer"
+msgstr "Πλήκτρο Διαστήματος"
+
+#: templates/javascript/htmlarea_table_lang.js:55
+#: templates/javascript/htmlarea_lang.js:80
+msgid "Spacing"
+msgstr "Αραίωση"
+
+#: templates/javascript/htmlarea_table_lang.js:54
+msgid "Spacing and padding"
+msgstr "Αραίωση και γέμισμα"
+
+#: config/registry.php.dist:95
+msgid "Spam"
+msgstr "Spam"
+
+#: services/keyboard.php:14
+msgid "Special Character Input"
+msgstr "Εισαγωγή Ειδικών Χαρακτήρων"
+
+#: templates/javascript/htmlarea_table_lang.js:62
+msgid "Split cell"
+msgstr "Διαίρεση κελιού"
+
+#: templates/javascript/htmlarea_table_lang.js:66
+msgid "Split column"
+msgstr "Διαίρεση στήλης"
+
+#: templates/javascript/htmlarea_table_lang.js:71
+msgid "Split row"
+msgstr "Διαίρεση γραμμής"
+
+#: lib/Block/fortune.php:61
+msgid "Sports"
+msgstr "Αθλήματα"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:443
+#: framework/MIME/MIME/Viewer/icalendar.php:548
+msgid "Start"
+msgstr "Έναρξη"
+
+#: framework/Form/Form.php:2588 framework/Form/Form.php:2797
+msgid "Start year"
+msgstr "Έτος Έναρξης"
+
+#: framework/Crypt/Crypt/smime.php:594
+msgid "State or Province"
+msgstr "Πολιτεία ή Επαρχία"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:583
+#: templates/admin/setup/index.html:12
+msgid "Status"
+msgstr "Κατάσταση"
+
+#: framework/Form/Form.php:2803
+msgid "Storage format"
+msgstr "Μορφή αποθήκευσης"
+
+#: framework/Crypt/Crypt/smime.php:596
+msgid "Street Address"
+msgstr "Διεύθυνση-Οδός"
+
+#: templates/javascript/htmlarea_lang.js:11
+msgid "Strikethrough"
+msgstr "Διαγραμμισμένα"
+
+#: framework/Form/Form.php:1224
+msgid "String list"
+msgstr "Λίστα λέξεων"
+
+#: framework/Form/Form.php:1856
+msgid "Strip domain from the address"
+msgstr "Αφαίρεση του domain από τη διεύθυνση"
+
+#: templates/javascript/htmlarea_table_lang.js:23
+msgid "Style [CSS]"
+msgstr "Στύλ [CSS]"
+
+#: templates/javascript/open_calendar.js:62
+msgid "Su"
+msgstr "Κυ"
+
+#: util/icon_browser.php:37
+msgid "Subdirectory '%s' not found."
+msgstr "Ο υποφάκελος '%s' δε βρέθηκε."
+
+#: framework/Crypt/Crypt/smime.php:635
+#: framework/MIME/MIME/Viewer/rfc822.php:78
+msgid "Subject"
+msgstr "Θέμα"
+
+#: framework/Crypt/Crypt/smime.php:668
+msgid "Subject Public Key Info"
+msgstr "Θέμα 'Πληροφορίες Δημόσιου Κλειδιού'"
+
+#: framework/Form/Form.php:332 framework/Form/Form/Renderer.php:312
+msgid "Submit"
+msgstr "Αποστολή"
+
+#: signup.php:50
+msgid ""
+"Submitted request to add '%s' to the system. You can not log in until your "
+"request has been approved."
+msgstr ""
+"Το αίτημα για προσθήκη '%s' στο σύστημα απεστάλη. Δε μπορείτε να ξαναμπείτε "
+"μέχρι να εγκριθεί το αίτημά σας."
+
+#: templates/javascript/htmlarea_lang.js:12
+msgid "Subscript"
+msgstr "Υποδείκτης"
+
+#: admin/sqlshell.php:113
+#: framework/Notification/Notification/Listener/status.php:30
+msgid "Success"
+msgstr "Επιτυχία"
+
+#: admin/user.php:85
+msgid "Successfully added '%s' to the system."
+msgstr "Επιτυχής προσθήκη '%s' στο σύστημα."
+
+#: admin/user.php:124
+msgid "Successfully cleared data for user '%s' from the system."
+msgstr "Τα δεδομένα του χρήστη '%s' διαγράφηκαν επιτυχώς από το σύστημα."
+
+#: admin/groups.php:81 admin/perms/delete.php:61
+msgid "Successfully deleted '%s'."
+msgstr "Επιτυχής διαγραφή '%s'."
+
+#: admin/user.php:105
+msgid "Successfully removed '%s' from the system."
+msgstr "Επιτυχής διαγραφή '%s' από το σύστημα."
+
+#: admin/setup/config.php:51
+msgid "Successfully reverted configuration. Reload to see changes."
+msgstr ""
+"Οι ρυθμίσεις επαναφέρθηκαν επιτυχώς. Κάντε επαναφόρτωση για να δείτε τις "
+"αλλαγές."
+
+#: admin/setup/index.php:59 admin/setup/scripts.php:55
+msgid "Successfully saved backup configuration."
+msgstr "Επιτυχής εποθήκευση εφεδρικού configuration."
+
+#: admin/setup/config.php:62
+msgid "Successfully saved the backup configuration file %s."
+msgstr "Επιτυχής αποθήκευση του εφεδρικού αρχείου configuration %s."
+
+#: admin/user.php:168
+msgid "Successfully updated '%s'"
+msgstr "Επιτυχής ενημέρωση '%s'"
+
+#: admin/setup/config.php:71 admin/setup/index.php:72
+msgid "Successfully wrote %s"
+msgstr "Επιτυχής εγγραφή %s"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:558
+#: framework/MIME/MIME/Viewer/icalendar.php:560
+#: templates/javascript/htmlarea_table_lang.js:56
+msgid "Summary"
+msgstr "Σύνοψη - Περίληψη"
+
+#: lib/Block/sunrise.php:66
+msgid "Sun Rise"
+msgstr "Ανατολή"
+
+#: lib/Block/sunrise.php:71
+msgid "Sun Set"
+msgstr "Δύση"
+
+#: lib/Block/weatherdotcom.php:165
+msgid "Sunrise"
+msgstr "Ανατολή"
+
+#: lib/Block/sunrise.php:3 lib/Block/sunrise.php:16
+msgid "Sunrise/Sunset"
+msgstr "Ανατολή/Δύση"
+
+#: lib/Block/weatherdotcom.php:164
+msgid "Sunrise: "
+msgstr "Ανατολή: "
+
+#: lib/Block/weatherdotcom.php:168
+msgid "Sunset"
+msgstr "Δύση"
+
+#: lib/Block/weatherdotcom.php:167
+msgid "Sunset: "
+msgstr "Δύση: "
+
+#: templates/javascript/htmlarea_lang.js:13
+msgid "Superscript"
+msgstr "Υπερδείκτες"
+
+#: config/registry.php.dist:465
+msgid "Support"
+msgstr "Υποστήριξη"
+
+#: framework/Crypt/Crypt/smime.php:598
+msgid "Surname"
+msgstr "Επίθετο"
+
+#: services/portal/syncml.php:86
+msgid "Sync log deleted"
+msgstr "Το αρχείο καταγραφής συγχρονισμού διαγράφηκε"
+
+#: config/prefs.php.dist:145
+msgid "SyncML"
+msgstr "SyncML"
+
+#: framework/SQL/SQL/Keywords.php:98
+msgid "Syntax error in search terms"
+msgstr "Λάθος σύνταξης στους όρους αναζήτησης"
+
+#: framework/UI/UI/Table.php:135
+msgid "Table"
+msgstr "Πίνακας"
+
+#: templates/javascript/htmlarea_table_lang.js:73
+msgid "Table Properties"
+msgstr "Ιδιότητες Πίνακα"
+
+#: templates/javascript/htmlarea_table_lang.js:72
+msgid "Table properties"
+msgstr "Ιδιότητες Πίνακα"
+
+msgid "Tanagra Airport"
+msgstr "Αερολιμένας Τανάγρας"
+
+#: templates/javascript/htmlarea_lang.js:95
+msgid "Target:"
+msgstr "Στόχος:"
+
+#: config/registry.php.dist:168
+msgid "Tasks"
+msgstr "Εργασίες"
+
+msgid "Tatoi Airport"
+msgstr "Αερολιμένας Τατοϊου"
+
+#: framework/Crypt/Crypt/smime.php:597
+msgid "Telephone Number"
+msgstr "Αριθμός Τηλεφώνου"
+
+#: lib/Block/metar.php:288
+msgid "Temp for last hour: "
+msgstr "Θερμοκρασία την τελευταία ώρα: "
+
+#: lib/Block/metar.php:212
+msgid "Temperature"
+msgstr "Θερμοκρασία"
+
+#: lib/Block/weatherdotcom.php:172
+msgid "Temperature: "
+msgstr "Θερμοκρασία: "
+
+#: framework/Template/Template.php:211
+msgid "Template '%s' not found."
+msgstr "Το πρότυπο '%s' δε βρέθηκε."
+
+#: admin/templates.php:169
+msgid "Template Administration"
+msgstr "Διαχείριση Προτύπου"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:641
+msgid "Tentatively Accept request"
+msgstr "Προσωρινή Αποδοχή αιτήματος"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:689
+msgid "Tentatively Accepted"
+msgstr "Προσωρινά Αποδεκτό"
+
+#: framework/Form/Form.php:1202
+msgid "Text"
+msgstr "Κείμενο"
+
+#: config/prefs.php.dist:359
+msgid "Text Only"
+msgstr "Μόνο Κείμενο"
+
+#: templates/javascript/htmlarea_table_lang.js:74
+msgid "Text align"
+msgstr "Στοίχηση κειμένου"
+
+#: templates/javascript/htmlarea_lang.js:71
+msgid "Texttop"
+msgstr "Κορυφή κειμένου"
+
+#: templates/javascript/open_calendar.js:59
+msgid "Th"
+msgstr "Τε"
+
+#: framework/Auth/Auth.php:944
+msgid "Thank you for using the system."
+msgstr "Ευχαριστούμε που χρησιμοποιήσατε το Σύστημά μας."
+
+#: framework/VFS/VFS/ftp.php:769
+msgid "The FTP extension is not available."
+msgstr "Η επέκταση FTP δεν είναι ακόμη διαθέσιμη."
+
+#: framework/Kolab/Kolab.php:924
+msgid "The Horde/Kolab integration engine does not support \"%s\""
+msgstr "Το σύστημα Horde/Kolab δεν υποστηρίζει \"%s\""
+
+#: services/maintenance.php:29
+msgid "The Maintenance:: class did not load successfully"
+msgstr "Διαχείριση:: Η κλάση δε φορτώθηκε επιτυχώς"
+
+#: services/images/colorpicker.php:29
+msgid "The Options window has closed. Exiting."
+msgstr "Το παράθυρο επιλογών έκλεισε. Έξοδος."
+
+#: framework/Perms/Perms.php:160 framework/Perms/Perms.php:171
+#: framework/Perms/Perms.php:182 framework/Perms/Perms.php:194
+#: framework/Perms/Perms.php:205 framework/Perms/Perms.php:223
+#: framework/Perms/Perms.php:235 framework/Perms/Perms.php:274
+msgid ""
+"The administrator needs to configure a permanent Permissions backend if you "
+"want to use Permissions."
+msgstr ""
+"Ο διαχειριστής πρέπει να ρυθμίσει ένα μόνιμο πλαίσιο Εξουσιοδοτήσεων, για να "
+"μπορείτε να χρησιμοποιήσετε εξουσιοδοτήσεις."
+
+#: templates/javascript/htmlarea_table_lang.js:75
+msgid "The bottom side only"
+msgstr "Η κάτω πλευρά μόνο"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:49
+msgid "The calendar data is invalid"
+msgstr "Τα δεδομένα ημερολογίου δεν είναι έγκυρα"
+
+#: framework/Net_SMS/SMS/sms2email_http.php:664
+msgid ""
+"The contact ID number was not specified, left blank or was not found in the "
+"database."
+msgstr ""
+"Το ID της επαφής δεν καθορίσθηκε, ήταν κενό ή δε βρέθηκε στη βάση δεδομένων."
+
+#: framework/MIME/MIME/Viewer/vcard.php:54
+msgid "The contact was successfully added to your address book."
+msgstr "Η επαφή προστέθηκε επιτυχώς στο Διευθυνσιογράφο σας."
+
+#: framework/Crypt/Crypt/pgp.php:1171
+msgid ""
+"The detached PGP signature block is required to verify the signed message."
+msgstr ""
+"Το τμήμα PGP που αποσπάσθηκε απαιτείτο για την επαλήθευση του υπογεγραμμένου "
+"μηνήματος."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:666
+msgid ""
+"The distribution list ID was either not specified, left blank or not found "
+"in the database."
+msgstr ""
+"Το ID της λίστας διανομής δεν ορίσθηκε, ήταν κενό ή δε βρέθηκε στη βάση "
+"δεδομένων."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:667
+msgid "The distribution list was not specified."
+msgstr "Η λίστα διανομής δεν καθορίσθηκε."
+
+#: framework/Crypt/Crypt.php:127
+msgid "The encryption features require a secure web connection."
+msgstr "Οι δυνατότητες κρυπτογράφησης απαιτούν ασφαλή σύνδεση WEB."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:78
+msgid "The event has been added to your calendar."
+msgstr "Το γεγονός προστέθηκε στο ημερολόγιό σας."
+
+#: framework/Horde/Horde.php:181 framework/Horde/Horde.php:504
+msgid "The file %s should contain a %s setting."
+msgstr "Το αρχείο %s πρέπει να περιέχει μια %s ρύθμιση."
+
+#: framework/Horde/Horde.php:174 framework/Horde/Horde.php:494
+msgid "The file %s should contain some %s settings."
+msgstr "Το αρχείο %s πρέπει να περιέχει κάποιες %s ρυθμίσεις."
+
+#: framework/VFS/VFS/file.php:165
+msgid "The file can not be copied onto itself."
+msgstr "Το αρχείο δε μπορεί να αντιγραφεί στον εαυτό του."
+
+#: framework/Data/Data.php:264
+msgid "The file contained no data."
+msgstr "Το αρχείο δεν περιέχει δεδομένα."
+
+#: framework/MIME/MIME/Viewer/rfc822.php:72
+msgid "The following are the headers for this message/rfc822 message."
+msgstr "Τα παρακάτω είναι επικεφαλίδες για αυτό το μήνυμα/rfc822 μήνυμα."
+
+#: templates/javascript/htmlarea_lang.js:56
+msgid ""
+"The full screen mode is known to cause problems with Internet Explorer, due "
+"to browser bugs that we weren't able to workaround.  You might experience "
+"garbage display, lack of editor functions and/or random browser crashes.  If "
+"your system is Windows 9x it's very likely that you'll get a 'General "
+"Protection Fault' and need to reboot.\\n\\nYou have been warned.  Please "
+"press OK if you still want to try the full screen editor."
+msgstr ""
+"Η κατάσταση πλήρους οθόνης είναι γνωστό ότι δημιουργεί πρόβλημα με τον "
+"Internet Explorer, εξαιτίας προβλημάτων (bugs) του browser, τα οποία δεν "
+"είαι δυνατό να ξεπερασθούν. Μπορεί να δείτε 'σκουπίδια' στην οθόνη, "
+"προβλήματα στη λειτουργία του browser ή και κόλημά του. Αν το σύστημά σας "
+"είναι Window 9x είναι πολύ πιθανό να δείτε 'Γενική Αποτυχία Προστασίας' και "
+"να πρέπει να επανεκκινήσετε (reboot).\\n\\Αυτή είναι προειδοποίηση. Πατήστε "
+"ΟΚ αν θέλετε ακόμη να δουλέψετε σε κατάσταση πλήρους οθόνης."
+
+#: services/prefs.php:88
+msgid "The identity \"%s\" has been deleted."
+msgstr "Η ταυτότητα \"%s\" διαγράφηκε."
+
+#: templates/javascript/htmlarea_table_lang.js:76
+msgid "The left-hand side only"
+msgstr "Η αριστερή πλευρά μόνο"
+
+#: framework/Crypt/Crypt/pgp.php:136
+msgid ""
+"The location of the GnuPG binary must be given to the Crypt_pgp:: class."
+msgstr ""
+"Η θέση του προγράμματος GnuPG πρέπει να δοθεί για τη Crypt_pgp:: κλάση."
+
+msgid "The mailbox trash is already empty."
+msgstr "Η γραμματοθυρίδα 'κάδος' είναι ήδη άδεια."
+
+#: framework/MIME/MIME/MDN.php:214
+msgid ""
+"The message sent on %s to %s with subject \"%s\" has been displayed.\n"
+"This is no guarantee that the message has been read or understood."
+msgstr ""
+"Το μήνυμα που στάλθηκε στις %s στον %s με θέμα %s εμφανίσθηκε.\n"
+"Αυτό δεν αποτελεί επιβεβαίωση ότι διαβάσθηκε και έγινε κατανοητό."
+
+#: framework/Form/Form.php:1860
+msgid "The name to use when linking to the compose page"
+msgstr "Το όνομα που θα χρησιμοποιείται όταν συνδέεστε στη σελίδα σύνθεσης."
+
+#: framework/Crypt/Crypt/smime.php:1259
+msgid "The openssl module is required for the Horde_Crypt_smime:: class."
+msgstr "Η βιβλιοθήκη OpenSSL απαιτείται για Horde_Crypt_smime:: κλάση."
+
+#: framework/Prefs/Prefs.php:291
+msgid ""
+"The preference \"%s\" could not be saved because its data exceeded the "
+"maximum allowable size"
+msgstr ""
+"Η προτίμηση \"%s\" δεν μπόρεσε να αποθηκευθεί γιατί τα δεδομένα της "
+"υπερβαίνουν το μέγιστο επιτρεπτό μέγεθος"
+
+# framework/MIME/MIME/Viewer/msexcel.php:35, c-format
+#: framework/MIME/MIME/Viewer/deb.php:35
+#: framework/MIME/MIME/Viewer/enscript.php:37
+#: framework/MIME/MIME/Viewer/mspowerpoint.php:35
+#: framework/MIME/MIME/Viewer/msword.php:35
+#: framework/MIME/MIME/Viewer/rpm.php:35
+#: framework/MIME/MIME/Viewer/webcpp.php:40
+#: framework/MIME/MIME/Viewer/srchighlite.php:39
+#: framework/MIME/MIME/Viewer/msexcel.php:35
+msgid ""
+"The program used to view this message type (%s) was not found on the system."
+msgstr ""
+"Το πρόγραμμα που χρησιμοποιείτε για την εμφάνιση αυτού του είδους μηνυμάτων "
+"(%s) δεν βρέθηκε στο σύστημα."
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+"Η registry είναι ο τρόπος με τον οποίο οι εφαρμογές του Horde επικοινωνούν. "
+"μεταξύ τους. Εδώ πρέπει να γράψετε ότι εφαρμογές του Horde έχετε "
+"εγκαταστήσει."
+
+#: templates/javascript/htmlarea_table_lang.js:77
+msgid "The right and left sides only"
+msgstr "Η αριστερή και δεξιά πλευρές μόνο"
+
+#: templates/javascript/htmlarea_table_lang.js:78
+msgid "The right-hand side only"
+msgstr "Η δεξιά πλευρά μόνο"
+
+#: services/portal/rpcsum.php:78
+msgid "The server \"%s\" has been deleted."
+msgstr "Ο εξυπηρετητής \"%s\" διαγράηκε."
+
+#: services/portal/rpcsum.php:49
+msgid "The server \"%s\" has been saved."
+msgstr "Ο εξυπηρετής \"%s\" αποθηκεύθηκε."
+
+#: admin/user.php:198
+msgid "The signup request for %s has been removed."
+msgstr "Το αίτημα εισόδου για %s διαγράφηκε."
+
+#: framework/Block/Block/Layout.php:284
+msgid "The specified row does not exist."
+msgstr "Η γραμμή που ορίσατε δεν υπάρχει."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:108
+msgid "The task has been added to your tasklist."
+msgstr "Η εργασία προστέθηκε στη λίστα εργασιών σας."
+
+#: framework/VFS/VFS/sql.php:111
+msgid "The temporary file \"%s\" does not exist."
+msgstr "Το προσωρινό αρχείο \"%s\" δεν υπάρχει."
+
+#: templates/javascript/htmlarea_table_lang.js:79
+msgid "The top and bottom sides only"
+msgstr "Η πάνω και κάτω πλευρές μόνο"
+
+#: templates/javascript/htmlarea_table_lang.js:80
+msgid "The top side only"
+msgstr "Η πάνω πλευρά μόνο"
+
+#: framework/Data/Data.php:311
+msgid "The uploaded data was lost since the previous step."
+msgstr "Τα δεδομένα που στέλνατε χάθηκαν από το προηγούμενο βήμα."
+
+#: framework/Data/Data/csv.php:250 framework/Data/Data/tsv.php:177
+msgid "The uploaded file could not be saved."
+msgstr "Το αρχείο που στείλατε δε μπόρεσε να σωθεί."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:93
+msgid "The user's free/busy information was sucessfully stored."
+msgstr "Οι πληροφορίες διαθεσιμότητας αποθηκεύθηκαν επιτυχώς."
+
+#: util/icon_browser.php:25
+msgid "Themes directory '%s' not found."
+msgstr "Ο κατάλογος θεμάτων '%s' δε βρέθηκε."
+
+#: framework/Prefs/Prefs/UI.php:183
+msgid "There are no options available."
+msgstr "Δεν υπάρχουν Επιλογές διαθέσιμες."
+
+#: framework/MIME/MIME/Contents.php:340
+msgid "There are no parts that can be displayed inline."
+msgstr "Δεν υπάρχουν τμήματα που δε μπορούν να εμφανισθούν ενσωματωμένα."
+
+#: framework/Form/Form.php:1397
+msgid ""
+"There are too many characters in this field. You have entered %s characters; "
+"you must enter less than %s."
+msgstr ""
+"Υπάρχουν πολλοί χαρακτήρες σε αυτό το πεδίο. Εισαγάγατε %s χαρακτήρες, "
+"πρέπει να υπάρχουν λιγότεροι από %s."
+
+#: signup.php:55
+msgid "There was a problem adding '%s' to the system. %s."
+msgstr "Πρόβλημα κατά την προσθήκη '%s' στο σύστημα. %s."
+
+#: admin/user.php:73
+msgid "There was a problem adding '%s' to the system: %s"
+msgstr "Πρόβλημα κατά την προσθήκη '%s' στο σύστημα: %s."
+
+#: admin/user.php:122
+msgid "There was a problem clearing data for user '%s' from the system: "
+msgstr "Πρόβλημα κατά τη διαγραφή δεδομένων του χρήστη '%s' από το σύστημα: "
+
+#: admin/user.php:103
+msgid "There was a problem removing '%s' from the system: "
+msgstr "Πρόβλημα κατά τη διαγραφή '%s' από το σύστημα: "
+
+#: admin/user.php:159
+msgid "There was a problem updating '%s': %s"
+msgstr "Πρόβλημα κατά την ενημέρωση '%s': %s"
+
+#: framework/Browser/Browser.php:899
+msgid "There was a problem with the file upload: No %s was uploaded."
+msgstr "Πρόβλημα κατά την αποστολή αρχείου: Δεν στάλθηκε %s."
+
+#: framework/Browser/Browser.php:904
+msgid ""
+"There was a problem with the file upload: The %s was larger than the maximum "
+"allowed size (%d bytes)."
+msgstr ""
+"Παρουσιάσθηκε πρόβλημα κατά την αποστολή του αρχείου: Το %s είναι μεγαλύτερο "
+"από το μέγιστο επιτρεπόμενο μέγεθος (%d Bytes)."
+
+#: framework/Browser/Browser.php:906
+msgid ""
+"There was a problem with the file upload: The %s was only partially uploaded."
+msgstr ""
+"Παρουσιάσθηκε πρόβλημα κατά την αποστολή του αρχείου: Στάλθηκε μόνο ένα "
+"τμήμα του %s."
+
+#: framework/MIME/MIME/Viewer/rfc822.php:38
+msgid "There was an error displaying this message part"
+msgstr ""
+"Παρουσιάσθηκε σφάλμα κατά την εμφάνιση αυτού του τμήματος του μηνύματος."
+
+#: framework/MIME/MIME/Viewer/vcard.php:42
+#: framework/MIME/MIME/Viewer/vcard.php:51
+msgid "There was an error importing the contact data."
+msgstr "Παρουσιάσθηκε σφάλμα κατά την εισαγωγή δεδομένων Διευθυνσιογράφου."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:75
+msgid "There was an error importing the event: %s."
+msgstr "Παρουσιάσθηκε σφάλμα κατά την εισαγωγή του γεγονοτος: %s."
+
+#: framework/Data/Data/imc.php:32
+msgid "There was an error importing the iCalendar data."
+msgstr "Παρουσιάσθηκε σφάλμα κατά την εισαγωγή δεδομένων ημερολογίου."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:105
+msgid "There was an error importing the task: %s."
+msgstr "Παρουσιάσθηκε σφάλμα κατά την εισαγωγή της εργασίας: %s."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:91
+msgid "There was an error importing user's free/busy information: %s."
+msgstr "Παρουσιάσθηκε σφάλμα κατά την εισαγωγή πληροφοριών διαθεσιμότητας: %s."
+
+#: admin/setup/config.php:79
+msgid ""
+"There was an error in the configuration form. Perhaps you left out a "
+"required field."
+msgstr ""
+"Παρουσιάσθηκε σφάλμα στη φόρμα ρυθμίσεων. Ίσως αφήσατε κενό κάποιο "
+"απαιτούμενο πεδίο."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:663
+msgid ""
+"There was an error performing the specified address book function. Please "
+"try again later."
+msgstr ""
+"Παρουσιάσθηκε σφάλμα στην εκτέλεση της καθορισμένης λειτουργίας του "
+"Διευθυνσιογράφου. Παρακαλώ δοκιμάστε αργότερα."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:665
+msgid ""
+"There was an error updating the contact details. Please try again later."
+msgstr ""
+"Bei der Aktualisierung der Kontaktdetails ist ein Fehler aufgetreten. Bitte "
+"versuchen Sie es spδter noch einmal."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:670
+msgid ""
+"There was an error updating the distribution list. Please try again later."
+msgstr ""
+"Παρουσιάσθηκε σφάλμα κατά την ενημέρωση της λίστας διανομής. Παρακαλώ "
+"δοκιμάστε αργότερα."
+
+msgid "Thessaloniki Airport"
+msgstr "Αερολιμένας Θεσσαλονίκης"
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:153
+msgid "This IMAP server does not support sharing folders."
+msgstr "Ο εξυπηρετητής IMAP δεν υποστηρίζει κοινόχρηστους φακέλους."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:82
+#: framework/MIME/MIME/Viewer/icalendar.php:96
+#: framework/MIME/MIME/Viewer/icalendar.php:112
+#: framework/MIME/MIME/Viewer/icalendar.php:200
+msgid "This action is not supported."
+msgstr "Αυτή η ενέργεια δεν υποστηρίζεται."
+
+#: framework/MIME/MIME/Viewer/icalendar.php:118
+#: framework/MIME/MIME/Viewer/icalendar.php:359
+msgid "This action is not yet implemented."
+msgstr "Αυτή η λειτουργία δεν έχει ολοκληρωθεί ακόμη."
+
+#: framework/MIME/MIME/Viewer/rar.php:51
+msgid "This does not appear to be a valid rar archive."
+msgstr "Αυτό δε φαίνεται να είναι έγκυρο αρχείο rar."
+
+#: framework/MIME/MIME/Viewer/zip.php:55
+msgid "This does not appear to be a valid zip file."
+msgstr "Αυτό δε φαίνεται να είναι έγκυρο αρχείο zip."
+
+#: framework/Form/Form.php:3129
+msgid "This does not seem to be a valid card number."
+msgstr "Αυτό δε φαίνεται να είναι έγκυρος αριθμός κάρτας."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:187
+msgid ""
+"This driver allows sending of messages through the Clickatell (http://"
+"clickatell.com) gateway, using the HTTP API"
+msgstr ""
+"Αυτός ο οδηγός σας επιτρέπει να στέλνετε μηνύματα μέσω Clickatell-(http://"
+"clickatell.com) μέσω HTTP-API."
+
+#: framework/Net_SMS/SMS/sms2email_http.php:534
+msgid ""
+"This driver allows sending of messages through the sms2email (http://"
+"sms2email.com) gateway, using the HTTP API"
+msgstr ""
+"Αυτός ο οδηγός σας επιτρέπει να στέλνετε μηνύματα μέσω sms2email-(http://"
+"sms2mail.com) μέσω HTTP-API."
+
+#: framework/Net_SMS/SMS/vodafoneitaly_smtp.php:82
+msgid ""
+"This driver allows sending of messages via SMTP through the Vodafone Italy "
+"gateway, only to Vodafone numbers. It requires an email account with "
+"Vodafone Italy (http://www.190.it)."
+msgstr ""
+"Αυτός ο οδηγός σας επιτρέπει να στέλνετε μηνύματα μέσω SMTP  και της "
+"Vodafone-Italy μόνο σε αριθμούς Vodafone. Απαιτεί ένα λογαριασμό email στη "
+"Vodafone Italy (http://www.190.it)."
+
+#: framework/Form/Form.php:1173 framework/Form/Form.php:1247
+#: framework/Form/Form.php:1281 framework/Form/Form.php:1394
+#: framework/Form/Form.php:1546 framework/Form/Form.php:1826
+#: framework/Form/Form.php:1941 framework/Form/Form.php:1988
+#: framework/Form/Form.php:2012 framework/Form/Form.php:2061
+#: framework/Form/Form.php:2132 framework/Form/Form.php:2204
+#: framework/Form/Form.php:2392 framework/Form/Form.php:2436
+#: framework/Form/Form.php:2648 framework/Form/Form.php:2816
+#: framework/Form/Form.php:3121 framework/Form/Form.php:3386
+#: framework/Form/Form.php:3394
+msgid "This field is required."
+msgstr "Το πεδίο αυτό απαιτείται."
+
+#: framework/Form/Form.php:1059
+msgid "This field may only contain integers."
+msgstr "Το πεδίο αυτό μπορεί να έχει μόνο ακέραιους."
+
+#: framework/Form/Form.php:2400
+msgid "This field may only contain numbers and the colon."
+msgstr ""
+"Αυτό το πεδίου μπορεί να περιέχει μόνο αριθμούς και άνω κάτω τελεία (:)."
+
+#: framework/Form/Form.php:1088
+msgid "This field may only contain octal values."
+msgstr "Αυτό το πεδίο μπορεί να περιέχει μόνο οκταδικές τιμές."
+
+#: framework/Form/Form.php:1117
+msgid "This field must be a comma or space separated list of integers"
+msgstr ""
+"Αυτό το πεδίο μπορεί να περιέχει μόνο λίστα αριθμών χωρισμένων με κενό ή "
+"ελληνικό ερωτηματικό"
+
+#: framework/Form/Form.php:983
+msgid "This field must be a valid number."
+msgstr "Αυτό το πεδίο πρέπει να είναι ένας έγκυρος αριθμός."
+
+#: framework/Form/Form.php:2824
+msgid ""
+"This field must contain a color code in the RGB Hex format, for example "
+"'#1234af'."
+msgstr ""
+"Αυτό το πεδίο πρέπει να περιέχει κωδικό χρώματος σε RGB δεκαεξαδική μορφή, π."
+"χ. '#1234af'."
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+"Αυτό το αρχείο περιέχει τους MIME drivers που χρησιμοποιούνται από την "
+"υπηρεσία επιτρέποντας διάφορα προγράμματα να διαχειρίζονται τα περιεχόμενα "
+"των email και να τα εμφανίζουν με τον κατάλληλο τρόπο."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings."
+msgstr ""
+"Αυτό το αρχείο ελέγχει τις ρυθμίσεις των χρωμάτων και των γραμματοσειρών για "
+"όλα το πρόγραμμα του Horde, και για τις εφαρμογές που είναι εγκατεστημένες "
+"σε αυτό και δεν παρέχουν δικές τους επιλογές για αυτές τις ρυθμίσεις."
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+"Αυτό το αρχείο καταγράφει τις επεκτάσεις των τύπων ΜΙΜΕ, ώστε τα περιεχόμενα "
+"ορισμένων mail να εμφανίζονται με τον κατάλληλο τρόπο."
+
+#: framework/Form/Form.php:562
+msgid "This form has already been processed."
+msgstr "Αυτή η φόρμα έχει ήδη επεξεργασθεί."
+
+#: templates/help/about.inc:1
+msgid "This is %s."
+msgstr "Αυτό είναι %s."
+
+#: framework/Kolab/Kolab.php:437
+msgid ""
+"This is a Kolab Groupware object. To view this object you will need an email "
+"client that understands the Kolab Groupware format. For a list of such email "
+"clients please visit %s"
+msgstr ""
+"Αυτό είναι Kolab Groupware object. Για να δείτε το αντικείμενο αυτό "
+"χρειάζεσθε ένα πρόγραμμα email που καταλαβαίνει αυτή τη μορφή. Για λίστα "
+"τέτοιων προγραμμάτων μπορείτε να επισκευθείτε το %s"
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+"Αυτό είναι το βασικό αρχείο ρυθμίσεων του προγράμματος 'Horde'. Περιέχει τα "
+"μονοπάτια και τα βασικά μέρη που χρησιμοποιούνται από τον πυρήνα και τις "
+"εφαρμογές του συστήματος. "
+
+#: framework/MIME/MIME/Contents.php:607
+msgid "This message was written in a character set (%s) other than your own."
+msgstr ""
+"Το μήνυμα αυτό γράφθηκε με κωδικοσελίδα (%s) διαφορετική από τη δική σας."
+
+#: framework/Prefs/Prefs/UI.php:129
+msgid "This number must be at least one."
+msgstr "Αυτός ο αριθμός πρέπει να είναι τουλάχιστον ένα."
+
+msgid ""
+"This problem report was received from %s. The user clicked the problem "
+"report link from the following location:%s and is using the following "
+"browser:%s"
+msgstr ""
+"Το πρόβλημα αυτό αναφέρθηκε από %s. Ο χρήστης κάλεσε την<br/>αναφορά "
+"προβλήματος από το παρακάτω URL:<br/>%s και χρησιμοποιεί τον ακόλουθο "
+"browser:<br/>%s"
+
+#: framework/Compress/Compress/gzip.php:48
+msgid "This server can't uncompress zip and gzip files."
+msgstr "Αυτός ο εξυπηρετητής δε μπορεί να αποσυμπιέσει zip και gzip αρχεία."
+
+#: framework/Horde/Horde/Registry.php:147
+msgid "This system is currently deactivated."
+msgstr "Το σύστημα αυτό έχει απενεργοποιηθεί."
+
+#: framework/Prefs/Prefs/UI.php:127
+msgid "This value must be a number."
+msgstr "Αυτή η τιμή πρέπει να είναι αριθμός."
+
+#: config/registry.php.dist:225
+msgid "Tickets"
+msgstr "Εισιτήρια"
+
+#: framework/Form/Form.php:2410
+msgid "Time"
+msgstr "Ωρα"
+
+#: config/registry.php.dist:311
+msgid "Time Tracking"
+msgstr "Ιχνηλατώντας την ώρα"
+
+#: lib/Block/time.php:17
+msgid "Time format"
+msgstr "Μορφή ώρας"
+
+#: framework/Form/Form.php:2521
+msgid "Time selection"
+msgstr "Επιλογή ώρας"
+
+#: framework/MIME/MIME/Viewer/vcard.php:232 lib/Block/iframe.php:20
+msgid "Title"
+msgstr "Τίτλος"
+
+#: templates/javascript/htmlarea_lang.js:96
+msgid "Title (tooltip):"
+msgstr "Τίτλος (Tooltip):"
+
+#: framework/MIME/MIME/Viewer/rfc822.php:80
+msgid "To"
+msgstr "Πρός"
+
+#: framework/UI/UI/VarRenderer/html.php:629
+msgid ""
+"To select multiple items, hold down the Control (PC) or Command (Mac) key "
+"while clicking."
+msgstr ""
+"Για να κρατήσετε πολλαπλά αντικείμενα, κρατήστε πατημάνο το Control (PC) ή "
+"το Command (Mac) πλήκτρο, ενώ κάνετε κλικ."
+
+#: lib/Block/weatherdotcom.php:237
+msgid "Today"
+msgstr "Σήμερα"
+
+#: templates/javascript/htmlarea_lang.js:28
+msgid "Toggle HTML Source"
+msgstr "Εναλλαγή σε πηγαίο HTML"
+
+#: lib/Block/weatherdotcom.php:239
+msgid "Tomorrow"
+msgstr "Αύριο"
+
+#: templates/javascript/htmlarea_table_lang.js:81
+#: templates/javascript/htmlarea_lang.js:77
+msgid "Top"
+msgstr "Κορυφή"
+
+#: templates/javascript/htmlarea_lang.js:93
+msgid "Top frame (_top)"
+msgstr "Πάνω πλαίσιο (_top)"
+
+#: lib/Block/fortune.php:63
+msgid "Translations"
+msgstr "Μεταφράσεις"
+
+msgid "Tripolis Airport"
+msgstr "Αερολιμένας Τρίπολης"
+
+#: framework/Form/Form.php:1777
+msgid "True or false"
+msgstr "Αληθές ή ψευδές"
+
+#: templates/javascript/open_calendar.js:57
+msgid "Tu"
+msgstr "Τρ"
+
+msgid "Type mismatch."
+msgstr "Λανθασμένος τύπος δεδομένων."
+
+#: framework/CLI/CLI.php:262
+msgid "Type your choice: "
+msgstr "Πληκτρολογήστε την επιλογή σας: "
+
+msgid "URL"
+msgstr "Ηλεκτρονική Διεύθυνση"
+
+#: framework/Net_SMS/SMS/sms2email_http.php:561
+msgid "URL for your script delivery status report"
+msgstr ""
+"Ηλεκτρονική Διεύθυνση για επιστροφή αναφοράς κατάστασης του προγράμματός σας"
+
+msgid "URL:"
+msgstr "Ηλεκτρονική Διεύθυνση:"
+
+#: framework/VFS/VFS/file.php:361
+msgid "Unable to access VFS directory."
+msgstr "Αδύνατη η πρόσβαση στον VFS κατάλογο."
+
+#: framework/Auth/Auth/Signup.php:100
+msgid "Unable to add extra user information when signing up."
+msgstr "Αδύνατη η προσθήκε επιπλέον πληροφοριών κατά την είσοδο του χρήστη."
+
+#: framework/VFS/VFS/ftp.php:346
+msgid "Unable to change permission for VFS file \"%s\"."
+msgstr "Αδύνατη η αλλαγή εξουσιοδοτήσεων για το VFS αρχείο \"%s\"."
+
+#: framework/VFS/VFS/file.php:331 framework/VFS/VFS/musql.php:502
+msgid "Unable to change permission for VFS file %s/%s."
+msgstr "Αδύνατη η αλλαγή εξουσιοδοτήσεων για το VFS αρχείο %s/%s."
+
+#: framework/VFS/VFS/ftp.php:704
+msgid "Unable to change to %s."
+msgstr "Αδύνατη η αλλαγή του %s."
+
+#: framework/Auth/Auth/sql.php:375
+msgid "Unable to connect to SQL server."
+msgstr "Δεν είναι δυνατή η σύνδεση στο διακομιστή SQL."
+
+#: framework/VFS/VFS/ftp.php:788
+msgid "Unable to connect with SSL."
+msgstr "Δεν είναι δυνατή η σύνδεση με SSL."
+
+#: framework/VFS/VFS/file.php:171 framework/VFS/VFS/file.php:176
+#: framework/VFS/VFS/sql_file.php:196 framework/VFS/VFS/sql_file.php:201
+#: framework/VFS/VFS/sql_file.php:209
+msgid "Unable to copy VFS file."
+msgstr "Αδύνατη η αντιγραφή VFS αρχείου."
+
+#: framework/VFS/VFS/ftp.php:320
+msgid "Unable to create VFS directory \"%s\"."
+msgstr "Αδύνατη η δημιουργία καταλόγου VFS \"%s\"."
+
+#: framework/VFS/VFS/file.php:296 framework/VFS/VFS/musql.php:273
+#: framework/VFS/VFS/sql_file.php:269
+msgid "Unable to create VFS directory."
+msgstr "Αδύνατη η δημιουργία καταλόγου VFS."
+
+#: framework/VFS/VFS/musql.php:126
+msgid "Unable to create VFS file."
+msgstr "Αδύνατη η δημιουργία VFS αρχείου."
+
+#: framework/VFS/VFS/file.php:213
+msgid "Unable to create empty VFS file."
+msgstr "Αδύνατη η δημιουργία κενού VFS αρχείου."
+
+#: framework/Compress/Compress/tar.php:79
+#: framework/Compress/Compress/gzip.php:82
+msgid "Unable to decompress data."
+msgstr "Αδύνατη η αποσυμπίεση δεδομένων."
+
+#: framework/VFS/VFS/ftp.php:249
+msgid "Unable to delete \"%s\", the directory is not empty."
+msgstr "Αδύνατη η διαγραφή \"%s\", ο φάκελος δεν είναι κενός."
+
+#: framework/VFS/VFS/file.php:271 framework/VFS/VFS/sql.php:323
+#: framework/VFS/VFS/musql.php:335 framework/VFS/VFS/sql_file.php:361
+msgid "Unable to delete %s, the directory is not empty"
+msgstr "Αδύνατη η διαγραφή %s, ο φάκελος δεν είναι κενός"
+
+#: admin/groups.php:79 admin/perms/delete.php:59
+msgid "Unable to delete '%s': %s."
+msgstr "Αδύνατη η διαγραφή '%s': %s."
+
+#: framework/VFS/VFS/sql_file.php:377 framework/VFS/VFS/sql_file.php:381
+msgid "Unable to delete VFS directory recursively."
+msgstr "Αδύνατη η διαγραφή καταλόγου VFS επαναλμβανόμενα (recursively)."
+
+#: framework/VFS/VFS/file.php:277 framework/VFS/VFS/musql.php:348
+#: framework/VFS/VFS/musql.php:361 framework/VFS/VFS/musql.php:369
+#: framework/VFS/VFS/sql_file.php:373
+msgid "Unable to delete VFS directory."
+msgstr "Αδύνατη η διαγραφή καταλόγου VFS."
+
+#: framework/VFS/VFS/sql.php:348 framework/VFS/VFS/sql.php:360
+msgid "Unable to delete VFS directory: %s."
+msgstr "Das VFS-Verzeichnis konnte nicht gelφscht werden: %s."
+
+#: framework/VFS/VFS/ftp.php:179
+msgid "Unable to delete VFS file \"%s\"."
+msgstr "Αδύνατη η διαγραφή του VFS αρχείου \"%s\"."
+
+#: framework/VFS/VFS/file.php:243 framework/VFS/VFS/sql.php:213
+#: framework/VFS/VFS/musql.php:173 framework/VFS/VFS/musql.php:186
+#: framework/VFS/VFS/musql.php:193 framework/VFS/VFS/sql_file.php:411
+#: framework/VFS/VFS/sql_file.php:419
+msgid "Unable to delete VFS file."
+msgstr "Αδύνατη η διαγραφή του VFS αρχείου."
+
+#: framework/VFS/VFS/sql.php:337
+msgid "Unable to delete VFS recursively: %s."
+msgstr "Αδύνατη η διαγραφή VFS επαναλαμβανόμενα (recursively): %s."
+
+#: framework/VFS/VFS/ftp.php:752
+msgid "Unable to determine current directory."
+msgstr "Δε μπορώ να προσδιορίσω τον τρέχοντα κατάλογο."
+
+#: framework/Crypt/Crypt/smime.php:627
+msgid "Unable to extract certificate details"
+msgstr "Δε μπορώ να εξάγω πληροφορίες πιστοποιητικού"
+
+#: framework/Net_IMSP/IMSP.php:460 framework/Net_IMSP/IMSP/Auth.php:119
+msgid "Unable to load the definition of %s."
+msgstr "Αδύνατη η φόρτωση ορισμού του %s."
+
+#: framework/VFS/VFS/file.php:140 framework/VFS/VFS/file.php:145
+#: framework/VFS/VFS/sql_file.php:164 framework/VFS/VFS/sql_file.php:169
+msgid "Unable to move VFS file."
+msgstr "Αδύνατη η μετακίνηση του VFS αρχίου."
+
+#: framework/VFS/VFS/ftp.php:79
+msgid "Unable to open VFS file \"%s\"."
+msgstr "Αδύνατο το άνοιγμα του VFS αρχείου \"%s\"."
+
+#: framework/VFS/VFS/file.php:220 framework/VFS/VFS/sql_file.php:127
+#: framework/VFS/VFS/sql_file.php:130
+msgid "Unable to open VFS file for writing."
+msgstr "Αδύνατο το άνοιγμα του VFS αρχείου για γράψιμο."
+
+#: framework/VFS/VFS/file.php:74 framework/VFS/VFS/sql_file.php:73
+msgid "Unable to open VFS file."
+msgstr "Αδύνατο το άνοιγμα του VFS αρχείου."
+
+#: framework/MIME/MIME/Viewer/tgz.php:47
+msgid "Unable to open compressed archive."
+msgstr "Δε μπορώ να ανοίξω το συμπιεσμένο αρχείο."
+
+#: framework/VFS/VFS/file.php:623
+msgid "Unable to read the vfsroot directory."
+msgstr "Δε μπορώ να διαβάσω τον κύριο κατάλογο VFS (vfsroot)."
+
+msgid "Unable to register preferences in session."
+msgstr "Δεν είναι δυνατόν να καταχωρηθούν οι προτιμήσεις για αυτή την σύνδεση."
+
+#: framework/Kolab/Kolab.php:1095
+msgid "Unable to rename %s to %s: destination folder already exists"
+msgstr "Αδύνατη η μετονομασία του %s σε %s: ο φάκελλος υπάρχει ήδη"
+
+#: framework/VFS/VFS/sql_file.php:315
+msgid "Unable to rename VFS directory."
+msgstr "Αδύνατη η μετονομασία του VFS καταλόγου."
+
+#: framework/VFS/VFS/sql.php:255
+msgid "Unable to rename VFS directory: %s."
+msgstr "Αδύνατη η μετονομασία του VFS καταλόγου: %s."
+
+#: framework/VFS/VFS/ftp.php:296
+msgid "Unable to rename VFS file \"%s\"."
+msgstr "Αδύνατη η μετονομασία του VFS αρχείου \"%s\"."
+
+#: framework/VFS/VFS/file.php:564 framework/VFS/VFS/musql.php:241
+msgid "Unable to rename VFS file %s/%s."
+msgstr "Αδύνατη η μετονομασία του VFS αρχείου %s/%s."
+
+#: framework/VFS/VFS/sql.php:249 framework/VFS/VFS/musql.php:222
+#: framework/VFS/VFS/musql.php:485 framework/VFS/VFS/sql_file.php:304
+#: framework/VFS/VFS/sql_file.php:326
+msgid "Unable to rename VFS file."
+msgstr "Αδύνατη η μετονομασία του VFS αρχείου."
+
+#: framework/VFS_ISOWriter/ISOWriter/mkisofs.php:51
+msgid "Unable to run 'mkisofs'."
+msgstr "Αδύνατη η εκτέλεση του \"mkisofs\"."
+
+#: framework/MIME/MIME/Viewer/msword.php:62
+msgid "Unable to translate this Word document"
+msgstr "Δεν μπόρεσε να μεταφραστεί αυτό το έγγραφο Word"
+
+#: framework/VFS/VFS/ftp.php:127 framework/VFS/VFS/ftp.php:130
+msgid "Unable to write VFS file \"%s\"."
+msgstr "Δε μπορώ να γράψω στο VFS αρχείο \"%s\"."
+
+#: framework/VFS/VFS/file.php:121
+msgid "Unable to write VFS file (copy() failed)."
+msgstr "Δε μπορώ να γράψη στο VFS αρχείο (copy() απέτυχε)."
+
+#: framework/VFS/VFS/file.php:224 framework/VFS/VFS/sql_file.php:134
+#: framework/VFS/VFS/sql_file.php:139
+msgid "Unable to write VFS file data."
+msgstr "Δε μπορώ να γράψω δεδομένα του VFS αρχείου."
+
+#: templates/javascript/htmlarea_lang.js:10
+msgid "Underline"
+msgstr "Υπογραμμισμένα"
+
+#: templates/prefs/end.inc:6
+msgid "Undo Changes"
+msgstr "Ακύρωση Αλλαγών"
+
+#: templates/javascript/htmlarea_lang.js:33
+msgid "Undoes your last action"
+msgstr "Ακυρώνει τη τελευταία σας ενέργεια"
+
+msgid "Unexpected end of file."
+msgstr "Μη αναμενόμενο τέλος του αρχείου."
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:230
+#: framework/IMAP/IMAP/ACL/rfc2086.php:399
+msgid "Unexpected response from server on connection: "
+msgstr "Μη αναμενόμενη απάντηση από τον εξυπηρετητή στη σύνδεση: "
+
+#: framework/IMAP/IMAP/ACL/rfc2086.php:226
+#: framework/IMAP/IMAP/ACL/rfc2086.php:350
+#: framework/IMAP/IMAP/ACL/rfc2086.php:387
+#: framework/IMAP/IMAP/ACL/rfc2086.php:393
+msgid "Unexpected response from server to: "
+msgstr "Μη αναμενόμενη απάντηση από τον εξυπηρετητή στο: "
+
+#: framework/Prefs/Prefs/CategoryManager.php:58
+#: templates/prefs/categorymanagement.inc:64
+msgid "Unfiled"
+msgstr "Μη Αρχειοθετημένο"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:384
+msgid "Unhandled component of type: %s"
+msgstr "Μη χειριζόμενο στοιχείο τύπου: %s"
+
+#: lib/Block/weatherdotcom.php:55 lib/Block/metar.php:69
+msgid "Units"
+msgstr "Μονάδες"
+
+#: framework/Crypt/Crypt/pgp.php:415 framework/Crypt/Crypt/pgp.php:416
+msgid "Unknown"
+msgstr "Αγνωστο"
+
+#: framework/Net_SMS/SMS/clickatell_http.php:307
+msgid "Unknown apimsgid (API Message ID)."
+msgstr "Unknown apimsgid (API Message ID)."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:308
+msgid "Unknown climsgid (Client Message ID)."
+msgstr "Unknown climsgid (Client Message ID)."
+
+#: framework/Net_SMS/SMS/clickatell_http.php:300
+msgid "Unknown username or password."
+msgstr "Αγνωστο όνομα χρήστη ή κωδικός."
+
+#: templates/javascript/htmlarea_context_lang.js:57
+msgid "Unlink the current element"
+msgstr "Αποσύνδεση τρέχοντος στοιχείου"
+
+#: framework/Identity/Identity.php:298
+msgid "Unnamed"
+msgstr "Ανώνυμο"
+
+#: templates/javascript/htmlarea_lang.js:59
+msgid ""
+"Unprivileged scripts cannot access Cut/Copy/Paste programatically for "
+"security reasons.  Click OK to see a technical note at mozilla.org which "
+"shows you how to allow a script to access the clipboard."
+msgstr ""
+"Μη εξουσιοδοτημένα προγράμματα δε μπορούν να έχουν πρόσβαση σε λειτουργίες "
+"αποκοπής/αντιγραφής/επικόλησης για λόγους ασφαλείας. Πατήστε ΟΚ για να δείτε "
+"τεχνικές σημειώσεις στο mozilla.org που σας δείχνουν πως να επιτρέψετε σε "
+"προγράμματα τη πρόσβαση στο clipboard"
+
+#: templates/javascript/htmlarea_table_lang.js:82
+msgid "Unset color"
+msgstr "Μη ορισμένο χρώμα"
+
+#: framework/Crypt/Crypt/smime.php:710 framework/Crypt/Crypt/smime.php:952
+#: framework/Crypt/Crypt/smime.php:958
+msgid "Unsupported Extension"
+msgstr "Μη υποστηριζόμενη επέκταση"
+
+#: admin/perms/edit.php:106 framework/Perms/Perms/UI.php:191
+#: templates/admin/user/list.inc:36
+msgid "Update"
+msgstr "Ενημέρωση"
+
+#: templates/admin/user/update.inc:31
+msgid "Update %s"
+msgstr "Ενημέρωση %s"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:648
+msgid "Update respondent status"
+msgstr "Ενημέρωση κατάστασης απαντημένου"
+
+#: templates/admin/user/update.inc:43
+msgid "Update user"
+msgstr "Ενημέρωση χρήστη"
+
+#: admin/groups.php:137 admin/perms/edit.php:217 services/shares/edit.php:230
+msgid "Updated '%s'."
+msgstr "'%s' Ενημερώθηκε."
+
+#: admin/setup/scripts.php:81
+msgid "Upgrade script deleted."
+msgstr "Το πρόγραμμα αναβάθμισης διαγράφηκε."
+
+#: admin/setup/index.php:172 framework/UI/UI/VarRenderer/html.php:182
+msgid "Upload"
+msgstr "Αποστολή"
+
+#: admin/setup/index.php:180
+msgid "Uploaded all application setup files to the server."
+msgstr "Αποστολή όλων των αρχείων ρυθμίσεων στον εξυπηρετητή."
+
+#: templates/javascript/htmlarea_listtype_lang.js:20
+msgid "Upper latin letters"
+msgstr "Κεφαλαία λατινικά γράμματα"
+
+#: templates/javascript/htmlarea_listtype_lang.js:18
+msgid "Upper roman numbers"
+msgstr "Ρωμαϊκοί αριθμοί-Κεφαλαία"
+
+#: framework/Prefs/Prefs/CategoryManager.php:46
+msgid "Use Current: %s"
+msgstr "Χρήση τρέχοντος: %s"
+
+#: framework/Net_SMS/SMS/sms2email_http.php:558
+msgid "Use SSL"
+msgstr "Χρήση SSL"
+
+msgid "Use Default Value"
+msgstr "Να χρησιμοποιηθεί η προεπιλεγμένη τιμή"
+
+msgid "Use if name/password is different for IMSP server."
+msgstr "Χρησιμοποιείται αν το όνομα/κωδικός είναι διαφορετικά."
+
+#: framework/Horde/Horde/Registry.php:651
+msgid "User %s is not authorised for %s."
+msgstr "Ο χρήστης %s δεν είναι εξουσιοδοτημένος για %s."
+
+#: admin/user.php:204
+msgid "User Administration"
+msgstr "Διαχείριση Χρηστών"
+
+#: framework/Prefs/Prefs/UI.php:251
+msgid "User Options"
+msgstr "Επιλογές Χρήστη"
+
+#: signup.php:64
+msgid "User Registration"
+msgstr "Εγγραφή Χρήστη"
+
+#: signup.php:19
+msgid "User Registration has been disabled for this site."
+msgstr "Η εγγραφή χρήστη έχει απενεργοποιηθεί γι' αυτό το site."
+
+msgid "User password change"
+msgstr "Αλλαγή κωδικού χρήστη"
+
+#: admin/perms/edit.php:172 framework/Perms/Perms/UI.php:254
+msgid "User permissions"
+msgstr "Εξουσιοδοτήσεις Χρήστη"
+
+#: framework/Net_SMS/SMS/clickatell_http.php:202 services/resetpassword.php:33
+#: templates/login/login.inc:65 templates/admin/user/approve.inc:11
+msgid "Username"
+msgstr "Όνομα Χρήστη"
+
+#: framework/Auth/Auth/Signup.php:131
+msgid "Username '%s' already exists."
+msgstr "Το όνομα χρήστη '%s' υπάρχει ήδη."
+
+#: templates/rpcsum/rpcsum.inc:87
+msgid "Username:"
+msgstr "Όνομα Χρήστη:"
+
+#: templates/login/mobile.inc:8
+msgid "Username: "
+msgstr "Όνομα Χρήστη: "
+
+#: framework/Perms/Perms/UI.php:227
+msgid "Users"
+msgstr "Χρήστες"
+
+#: templates/admin/user/list.inc:4
+msgid "Users in the system:"
+msgstr "Χρήστες στο Σύστημα:"
+
+#: framework/VFS/VFS/file.php:110 framework/VFS/VFS/file.php:203
+msgid "VFS directory does not exist."
+msgstr "Ο κατάλογος VFS δεν υπάρχει."
+
+#: config/registry.php.dist:383
+msgid "Vacation"
+msgstr "Διακοπές"
+
+#: framework/Form/Form.php:860
+msgid "Valid locations found include: "
+msgstr "Έγκυρες τοποθεσίες που βρέθηκαν συμπεριλαμβάνονται: "
+
+#: framework/Crypt/Crypt/smime.php:662
+msgid "Validity"
+msgstr "Εγκυρότητα"
+
+#: framework/Net_SMS/SMS/sms2email_http.php:621
+#: framework/Net_SMS/SMS/clickatell_http.php:263
+msgid "Value in minutes from now."
+msgstr "Τιμή σε λεπτά από τώρα."
+
+#: framework/Form/Form.php:2227 framework/Form/Form.php:2249
+#: framework/Form/Form.php:2297 framework/Form/Form.php:2916
+msgid "Values"
+msgstr "Τιμές"
+
+#: framework/Form/Form.php:2092 framework/Form/Form.php:2169
+msgid "Values to select from"
+msgstr "Δώστε τιμές για να επιλέξω"
+
+#: lib/Block/weatherdotcom.php:193
+msgid "Variable"
+msgstr "Μεταβλητή"
+
+#: framework/Crypt/Crypt/smime.php:228
+msgid "Verification failed - this message may have been tampered with."
+msgstr "Η επιβεβαίωση απέτυχε - αυτό το μήνυμα μπορεί να άλλαξε με."
+
+#: framework/Crypt/Crypt/smime.php:724
+msgid "Version"
+msgstr "Έκδοση"
+
+#: config/registry.php.dist:200
+msgid "Version Control"
+msgstr "Έλεγχος Έκδοσης"
+
+#: templates/javascript/htmlarea_table_lang.js:83
+msgid "Vertical align"
+msgstr "Κάθετη Ευθυγράμμιση"
+
+#: templates/javascript/htmlarea_lang.js:84
+msgid "Vertical padding"
+msgstr "Κάθετο γέμισμα"
+
+#: templates/javascript/htmlarea_lang.js:83
+msgid "Vertical:"
+msgstr "Κάθετα:"
+
+#: lib/Block/weatherdotcom.php:362
+msgid "Very High"
+msgstr "Πολύ ψηλή"
+
+#: framework/MIME/MIME/Contents.php:992
+msgid "View %s"
+msgstr "Εμφάνιση %s"
+
+#: lib/Block/iframe.php:3
+msgid "View an external web page"
+msgstr "Εμφάνιση εξωτερικής ιστοσελίδας"
+
+#: framework/MIME/MIME/Contents.php:845
+msgid "View as %s"
+msgstr "Εμφάνιση σαν %s"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:79
+msgid "View event"
+msgstr "Εμφάνιση γεγονότος"
+
+#: framework/MIME/MIME/Viewer/icalendar.php:109
+msgid "View task"
+msgstr "Εμφάνιση εργασίας"
+
+#: lib/Block/metar.php:207
+msgid "Visibility"
+msgstr "Ορατότητα"
+
+#: lib/Block/weatherdotcom.php:207
+msgid "Visibility: "
+msgstr "Ορατότητα:"
+
+#: framework/Net_SMS/SMS/vodafoneitaly_smtp.php:81
+msgid "Vodafone Italy via SMTP"
+msgstr "Vodafone Ιταλίας μέσω SMTP"
+
+#: framework/Notification/Notification/Listener/mobile.php:39
+msgid "WARN"
+msgstr "ΠΡΟΣΟΧΗ"
+
+#: admin/setup/scripts.php:83
+msgid "WARNING!!! REMOVE SCRIPT MANUALLY FROM %s."
+msgstr "ΠΡΟΣΟΧΗ!!! ΑΦΑΙΡΕΣΤΕ ΤΟ ΠΡΟΓΡΑΜΜΑ ΜΟΝΟΙ ΣΑΣ ΑΠΟ %s."
+
+#: framework/Notification/Notification/Listener/status.php:31
+msgid "Warning"
+msgstr "Προειδοποίηση"
+
+#: templates/javascript/open_calendar.js:58
+msgid "We"
+msgstr "Τε"
+
+#: framework/Maintenance/Maintenance.php:37
+msgid "Weekly"
+msgstr "Εβδομαδιαία"
+
+#: services/portal/mobile.php:28
+msgid "Welcome"
+msgstr "Καλωσήλθατε"
+
+#: templates/login/mobile.inc:4 templates/login/login.inc:50
+msgid "Welcome to %s"
+msgstr "Καλωσήλθατε στο %s"
+
+#: services/portal/mobile.php:29 templates/portal/menu.inc:2
+msgid "Welcome, %s"
+msgstr "Καλωσήλθατε, %s"
+
+#: config/prefs.php.dist:421
+msgid "What application should %s display after login?"
+msgstr "Ποιά εφαρμογή θα εμφαμίζει το %s αφού συνδεθείτε στην υπηρεσία;"
+
+msgid "What application should Horde display after login?"
+msgstr "Ποια εφαρμογή να εμφανίζεται αφού συνδεθείτε στην υπηρεσία;"
+
+#: templates/data/csvinfo.inc:21
+msgid "What is the delimiter character?"
+msgstr "Ποιός είναι ο διαχωριστικός χαρακτήρας;"
+
+#: templates/data/csvinfo.inc:24
+msgid "What is the quote character?"
+msgstr "Ποιός είναι ο χαρακτήρας εισαγωγικών;"
+
+#: lib/Block/moon.php:23
+msgid "Which phases"
+msgstr "Ποιές Φάσεις"
+
+#: config/prefs.php.dist:131
+msgid "Which plugins to enable for the Rich Text editor."
+msgstr ""
+"Καθορίστε ποιά πρόσθετα θα ενεργοποιηθούν στον επεξεργαστή εμπλουτισμένου "
+"κειμένου."
+
+#: templates/javascript/htmlarea_table_lang.js:84
+msgid "Width"
+msgstr "Πλάτος"
+
+#: framework/Form/Form.php:3109
+msgid "Width in CSS units"
+msgstr "Πλάτος σε μονάδες CSS"
+
+#: config/prefs.php.dist:341
+msgid "Width of the %s menu on the left (takes effect on next log-in):"
+msgstr "Πλάτος του %s μενού στα αριστερά (θα εφαρμοσθεί στην επόμενη είσοδο):"
+
+#: templates/javascript/htmlarea_lang.js:106
+msgid "Width of the table"
+msgstr "Πλάτος του πίνακα"
+
+#: templates/javascript/htmlarea_lang.js:110
+msgid "Width unit"
+msgstr "Μονάδα πλάτους"
+
+#: templates/javascript/htmlarea_lang.js:105
+msgid "Width:"
+msgstr "Πλάτος:"
+
+#: lib/Block/metar.php:78
+msgid "Wind speed in knots"
+msgstr "Ένταση ανέμου σε κόμβους"
+
+#: lib/Block/metar.php:154
+msgid "Wind:"
+msgstr "Ανεμος:"
+
+#: lib/Block/weatherdotcom.php:191
+msgid "Wind: "
+msgstr "Ανεμος: "
+
+#: lib/Block/fortune.php:64
+msgid "Wisdom"
+msgstr "Σοφία"
+
+#: config/registry.php.dist:177
+msgid "Wishlists"
+msgstr "Λίστα επιθυμιών"
+
+#: lib/Block/fortune.php:65
+msgid "Work"
+msgstr "Εργασία"
+
+#: framework/MIME/MIME/Viewer/vcard.php:127
+#: framework/MIME/MIME/Viewer/vcard.php:167
+msgid "Work Address"
+msgstr "Διεύθυνση Εργασίας"
+
+#: framework/MIME/MIME/Viewer/vcard.php:195
+msgid "Work Phone"
+msgstr "Τηλέφωνο Εργασίας"
+
+#: config/registry.php.dist:234
+msgid "X-Ref"
+msgstr "X-Ref"
+
+#: framework/Crypt/Crypt/smime.php:617
+msgid "X509v3 Basic Constraints"
+msgstr "X509v3 Βασικοί Περιορισμοί"
+
+#: framework/Crypt/Crypt/smime.php:616
+msgid "X509v3 Extended Key Usage"
+msgstr "X509v3 Χρήση επεκταμένου κλειδιού"
+
+#: framework/Crypt/Crypt/smime.php:618
+msgid "X509v3 Subject Alternative Name"
+msgstr "X509v3 Εναλακτικό Όνομα Θέματος"
+
+#: framework/Crypt/Crypt/smime.php:619
+msgid "X509v3 Subject Key Identifier"
+msgstr "X509v3 Αναγνωριστικό Κλειδί Θέματος"
+
+#: framework/Crypt/Crypt/smime.php:706
+msgid "X509v3 extensions"
+msgstr "X509v3 Επεκτάσεις"
+
+#: templates/data/date.inc:47 templates/data/date.inc:48
+#: templates/data/date.inc:49 templates/data/date.inc:50
+msgid "YY"
+msgstr "ΕΕ"
+
+#: framework/UI/UI/VarRenderer/html.php:386
+#: framework/UI/UI/VarRenderer/html.php:427
+msgid "YYYY"
+msgstr "ΕΕΕΕ"
+
+#: framework/Maintenance/Maintenance.php:35
+msgid "Yearly"
+msgstr "Ετήσια"
+
+#: framework/UI/UI/VarRenderer/html.php:888
+msgid "Yes"
+msgstr "Ναί"
+
+#: templates/maintenance/agreement_bottom.inc:6
+msgid "Yes, I Agree"
+msgstr "Ναι, Συμφωνώ"
+
+#: templates/javascript/htmlarea_lang.js:52
+msgid "You are in TEXT MODE.  Use the [<>] button to switch back to WYSIWYG."
+msgstr ""
+"Είστε σε κατάσταση ΚΕΙΜΕΝΟΥ. Χρησιμοποιείστε το [<>] πλήκτρο για να "
+"επιστρέψετε σε κατάσταση WYSIWIG."
+
+#: framework/Horde/Horde.php:1320
+msgid "You are not authenticated."
+msgstr "Δεν έχετε αυθεντικοποιηθεί."
+
+#: framework/Identity/Identity.php:304
+msgid "You can not have the '\\' character in your full name."
+msgstr "Δεν επιτρέπεται να έχετε το χαρακτήρα '\\' στο Όνομά σας."
+
+#: framework/Form/Form.php:1838 framework/Form/Form.php:1958
+msgid "You did not enter a valid email address."
+msgstr "Δε δώσατε έγγυρη διεύθυνση email."
+
+#: framework/Data/Data.php:274
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in %s."
+msgstr ""
+"Δεν αντιστοιχίσατε κανένα πεδίο από το αρχείο εισαγωγής σε αντίστοιχα πεδία "
+"στο %s."
+
+#: framework/Auth/Auth.php:944
+msgid "You have been logged out."
+msgstr "Έχετε αποσυνδεθεί."
+
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "Έχετε αποσυνδεθεί.<br />Ευχαριστούμε που χρησιμοποιήσατε την υπηρεσία."
+
+#: framework/Form/Form.php:1179
+msgid "You have to enter a valid value."
+msgstr "Πρέπει να δώσετε μια έγκυρη τιμή."
+
+#: framework/Auth/Auth/Signup.php:38
+msgid "You must configure a DataTree backend to use Signups."
+msgstr "Πρέπει να ρυθμίσετε το DataTree για να χρησιμοποιείτε Signups."
+
+#: framework/Horde/Horde.php:447
+msgid "You must configure a VFS backend."
+msgstr "Πρέπει να ρυθμίσετε το VFS-Backend."
+
+#: templates/problem/problem.inc:11
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Πρέπει να περιγράψετε το πρόβλημα πριν στείλετε αναφορά για αυτό."
+
+#: templates/javascript/htmlarea_lang.js:98
+msgid "You must enter the URL where this link points to"
+msgstr "Πρέπει να συμπληρώσετε το URL που δείχνει αυτή η σύνδεση"
+
+#: services/portal/rpcsum.php:80
+msgid "You must select an server to be deleted."
+msgstr "Πρέπει να επιλέξετε τον εξυπηρετητή για διαγραφή."
+
+#: admin/user.php:119
+msgid "You must specify a username to clear out."
+msgstr "Πρέπει να ορίσετε ένα όνομα χρήστη για διαγραφή."
+
+#: admin/user.php:100
+msgid "You must specify a username to remove."
+msgstr "Πρέπει να ορίσετε ένα όνομα χρήστη για διαγραφή."
+
+#: admin/user.php:62 templates/admin/user/update.inc:8
+msgid "You must specify the username to add."
+msgstr "Πρέπει να ορίσετε ένα όνομα χρήστη για προσθήκη."
+
+#: admin/user.php:146
+msgid "You must specify the username to update."
+msgstr "Πρέπει να ορίσετε ένα όνομα χρήστη για ενημέρωση."
+
+#: framework/Compress/Compress/zip.php:144
+msgid "You must specify what action to perform."
+msgstr "Πρέπει να ορίσετε μια ενέργεια για εκτέλεση."
+
+#: framework/Prefs/Prefs/CategoryManager.php:73
+msgid "You must type a new category name."
+msgstr "Πρέπει να δώσετε ένα όνομα για τη νέα κατηγορία."
+
+# framework/Auth/Auth.php:932, c-format
+#: framework/Auth/Auth.php:932
+msgid "Your %s session has expired. Please login again."
+msgstr "Η σύνδεση σας %s διακόπηκε. Παρακαλώ δοκιμάστε να ξανασυνδεθείτε."
+
+#: templates/problem/problem.inc:38
+msgid "Your Email Address"
+msgstr "Η Ηλεκτρονική σας Διεύθυνση"
+
+msgid "Your Email Address:"
+msgstr "Η Ηλεκτρονική σας Διεύθυνση:"
+
+#: config/prefs.php.dist:196
+msgid "Your From: address:"
+msgstr "Η Από: Διεύθυνση:"
+
+#: config/prefs.php.dist:64 config/prefs.php.dist:74 config/prefs.php.dist:82
+#: config/prefs.php.dist:89
+msgid "Your Information"
+msgstr "Οι Πληροφορίες σας"
+
+#: framework/Auth/Auth.php:936
+msgid ""
+"Your Internet Address has changed since the beginning of your %s session. To "
+"protect your security, you must login again."
+msgstr ""
+"Η Internet διεύθυνσή σας άλλαξε από την έναρξη της %s σύνδεσής σας. Για την "
+"προστασία της ασφάλειας πρέπει να ξανασυνδεθείτε."
+
+#: templates/problem/problem.inc:33
+msgid "Your Name"
+msgstr "Το όνομά σας"
+
+#: templates/admin/user/noadd.inc:9
+msgid ""
+"Your authentication backend does not support adding users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Το σύστημα αυθεντικοποίησης δεν υποστηρίζει προσθήκη χρηστών, ή η λειτουργία "
+"αυτή έχει απενεργοποιηθεί για κάποιο λόγο."
+
+#: templates/admin/user/nolist.inc:9
+msgid ""
+"Your authentication backend does not support listing users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Το σύστημα αυθεντικοποίησης δεν υποστηρίζει λίστα χρηστών, ή η λειτουργία "
+"αυτή έχει απενεργοποιηθεί για κάποιο λόγο."
+
+#: framework/Auth/Auth.php:940
+msgid ""
+"Your browser appears to have changed since the beginning of your %s session. "
+"To protect your security, you must login again."
+msgstr ""
+"Ο Browser σας φαίνεται να έχει αλλάξει από την έναρξη της %s σύνδεσής σας. "
+"Για την προστασία της ασφάλειας, θα πρέπει να ξανασυνδεθείτε."
+
+#: lib/Block/iframe.php:50
+msgid "Your browser does not support this feature."
+msgstr "Ο Browser σας δεν υποστηρίζει αυτή τη λειτουργία."
+
+#: templates/javascript/print.js:27
+msgid ""
+"Your browser does not support this print option. Press Control/Option + P to "
+"print."
+msgstr ""
+"Ο Browser σας δεν υποστηρίζει αυτή την επιλογή εκτύπωσης. Πατήστε Control/"
+"Option + P για εκτύπωση."
+
+#: config/prefs.php.dist:241
+msgid "Your current time zone:"
+msgstr "Η τρέχουσα ζώνη ώρας:"
+
+#: config/prefs.php.dist:148
+msgid "Your default identity:"
+msgstr "Η προκαθορισμένη σας ταυτότητα:"
+
+#: config/prefs.php.dist:187
+msgid "Your full name:"
+msgstr "Το πλήρες όνομά σας:"
+
+#: services/resetpassword.php:76
+msgid "Your new password for %s is: %s"
+msgstr "Ο νέος σας κωδικός για %s είναι: %s"
+
+#: framework/Prefs/Prefs/UI.php:157
+msgid "Your options have been updated for the duration of this session."
+msgstr "Οι επιλογές σας έχουν ενημερωθεί για τη διάρκεια αυτής της σύνδεσης."
+
+#: framework/Prefs/Prefs/UI.php:159
+msgid "Your options have been updated."
+msgstr "Οι επιλογές σας έχουν ενημερωθεί."
+
+msgid "Your passwords do not match"
+msgstr "Οι νέοι κωδικοί δεν ταιριάζουν"
+
+#: services/resetpassword.php:75
+msgid "Your password has been reset"
+msgstr "Ο κωδικός σας άλλαξε"
+
+#: services/resetpassword.php:79
+msgid ""
+"Your password has been reset, check your email and log in with your new "
+"password."
+msgstr ""
+"Ο κωδικός σας άλλαξε, ελέγξτε τα μηνύματά σας και κάντε είσοδο με το νέο σας "
+"κωδικό."
+
+#: templates/rpcsum/rpcsum.inc:58
+msgid "Your remote servers:"
+msgstr "Οι απομακρυσμένοι σας εξυπηρετητές:"
+
+#: framework/Text_Filter/Filter/highlightquotes.php:172
+#: templates/javascript/quoteBlocks.js:12
+msgid "[Hide Quoted Text]"
+msgstr "[Απόκρυψη κειμένου σε εισαγωγικά]"
+
+#: services/problem.php:56
+msgid "[Problem Report]"
+msgstr "[Αναφορά Προβλήματος]"
+
+#: templates/javascript/quoteBlocks.js:13
+msgid "[Show Quoted Text -"
+msgstr "[Εμφάνιση κειμένου σε εισαγωγικά -"
+
+#: framework/Text_Filter/Filter/highlightquotes.php:172
+msgid "[Show Quoted Text - %s lines]"
+msgstr "[Εμφάνιση κειμένου σε εισαγωγικά - %s γραμμές]"
+
+# framework/Horde/Horde.php:199, c-format
+#: framework/Horde/Horde.php:199
+msgid "[line %s of %s]"
+msgstr "[γραμμή %s από %s]"
+
+msgid "_Administration"
+msgstr "Διαχείριση"
+
+#: templates/javascript/htmlarea_context_lang.js:31
+msgid "_Delete Row"
+msgstr "Διαγραφή Γραμμής"
+
+#: lib/api.php:114
+msgid "_Groups"
+msgstr "Ομάδες"
+
+#: framework/Horde/Horde/Menu.php:181
+msgid "_Help"
+msgstr "Βοήθεια"
+
+#: templates/javascript/htmlarea_context_lang.js:23
+msgid "_Image Properties..."
+msgstr "Ιδιότητες Εικόνας..."
+
+#: framework/Horde/Horde/Menu.php:200
+msgid "_Log in"
+msgstr "Είσοδος"
+
+#: framework/Horde/Horde/Menu.php:196
+msgid "_Log out"
+msgstr "Εξοδος"
+
+#: templates/javascript/htmlarea_context_lang.js:24
+msgid "_Modify Link..."
+msgstr "Τροποποίηση Σύνδεσμου..."
+
+#: framework/Horde/Horde/Menu.php:170
+msgid "_Options"
+msgstr "Επιλογές"
+
+#: lib/api.php:118
+msgid "_Permissions"
+msgstr "Εξουσιοδοτήσεις"
+
+#: templates/javascript/htmlarea_context_lang.js:26
+msgid "_Remove Link..."
+msgstr "Διαγραφή Συνδέσμου..."
+
+#: lib/api.php:106
+msgid "_Setup"
+msgstr "Ρυθμίσεις"
+
+#: templates/javascript/htmlarea_context_lang.js:32
+msgid "_Table Properties..."
+msgstr "Ιδιότητες Πίνακα..."
+
+#: lib/api.php:110
+msgid "_Users"
+msgstr "Χρήστες"
+
+#: framework/Kolab/Kolab.php:911
+msgid "address book"
+msgstr "Διευθυνσιογράφος"
+
+#: framework/Kolab/Kolab.php:903
+msgid "calendar"
+msgstr "Ημερολόγιο"
+
+#: lib/Block/metar.php:170 lib/Block/metar.php:356
+msgid "calm"
+msgstr "ηρεμία"
+
+#: framework/MIME/MIME/Contents.php:608
+msgid "click here"
+msgstr "πατήστε εδώ"
+
+#: framework/Browser/Browser.php:870
+msgid "file"
+msgstr "αρχείο"
+
+#: lib/Block/metar.php:172 lib/Block/metar.php:358 lib/Block/metar.php:384
+msgid "from the %s (%s) at %s %s"
+msgstr "από το %s (%s) στις %s %s"
+
+#: framework/UI/UI/VarRenderer/html.php:232
+msgid "h:"
+msgstr "h:"
+
+#: framework/Net_SMS/SMS/sms2email_http.php:587
+#: framework/Net_SMS/SMS/clickatell_http.php:229
+msgid "immediate"
+msgstr "άμεσα"
+
+#: admin/setup/diff.php:68 admin/setup/diff.php:76
+msgid "inline"
+msgstr "ενσωματωμένο"
+
+#: templates/javascript/quoteBlocks.js:13
+msgid "lines]"
+msgstr "γραμμές]"
+
+#: framework/VFS_ISOWriter/ISOWriter/mkisofs.php:54
+msgid "mkisofs error code %d while making ISO."
+msgstr "mkisofs-κωδικός λάθους %d κατά τη δημιουργία ISO."
+
+#: framework/Prefs/Prefs/UI.php:288 services/portal/sidebar.php:206
+msgid "name"
+msgstr "όνομα"
+
+#: framework/RPC/RPC.php:122
+msgid "not implemented"
+msgstr "δεν έχει εγκατασταθεί"
+
+#: framework/Crypt/Crypt/smime.php:1245
+msgid "not yet implemented"
+msgstr "δεν έχει εγκατασταθεί ακόμη"
+
+#: framework/Kolab/Kolab.php:895
+msgid "notepad"
+msgstr "σημειωματάριο"
+
+#: templates/javascript/htmlarea_table_lang.js:88
+msgid "percent"
+msgstr "τοις εκατό"
+
+#: templates/javascript/htmlarea_table_lang.js:89
+msgid "pixels"
+msgstr "εικονοστοιχεία"
+
+#: admin/setup/config.php:98
+msgid "show differences"
+msgstr "εμφάνιση διαφορών"
+
+#: framework/Net_SMS/SMS/sms2email_http.php:533
+msgid "sms2email via HTTP"
+msgstr "sms σε email μέσω HTTP"
+
+#: lib/Block/weatherdotcom.php:364
+msgid "steady"
+msgstr "σταθερός"
+
+#: framework/Kolab/Kolab.php:919
+msgid "task list"
+msgstr "λίστα εργασιών"
+
+msgid "trash"
+msgstr "κάδος"
+
+#: admin/user.php:36 framework/Auth/Auth/Signup.php:282
+msgid "type the password twice to confirm"
+msgstr "Γράψτε τον κωδικό δύο φορές για επιβεβαίωση"
+
+#: admin/setup/diff.php:68 admin/setup/diff.php:76
+msgid "unified"
+msgstr "ενοποιημένα"
+
+#: framework/MIME/MIME/Part.php:17
+msgid "unnamed"
+msgstr "ανώνυμα"
+
+#: framework/Net_SMS/SMS/sms2email_http.php:587
+#: framework/Net_SMS/SMS/clickatell_http.php:229
+msgid "user select"
+msgstr "επιλογή χρήστη"
+
+msgid "vCard"
+msgstr "Ψηφιακή Κάρτα"

@@ -1,0 +1,320 @@
+# Nag 1.0 Arabic translation.
+# This file is distributed under the same license as the Nag package.
+# Copyright 2003 Platinum Inc. <pl@tinum.info>
+# Custom Web Applications <http://platinum-sy.com>
+# Platinum Development Team <devteam@platinum-sy.net>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nag 1.0\n"
+"POT-Creation-Date: 2003-04-30 12:00+0200\n"
+"PO-Revision-Date: 2003-04-30 12:00+0200\n"
+"Last-Translator:  Platinum Development Team <devteam@platinum-sy.com>\n"
+"Language-Team: Arabic <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1256\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%d tasks"
+msgstr "%d ãåÇã"
+
+msgid "1 task"
+msgstr "1 ãåãÉ"
+
+msgid "Adding A New Task"
+msgstr "ÅÖÇİÉ ãåãÉ ÌÏíÏÉ"
+
+msgid "Are you sure you want to permanently delete these tasks?"
+msgstr "åá ÃäÊ ãÊÃßÏ ãä ÍĞİ åĞå ÇáãåãÇÊ (ÛíÑ ŞÇÈá ááÊÑÇÌÚ)¿"
+
+msgid "Ascending"
+msgstr "ÊäÇÒáí"
+
+msgid "Back to Task List"
+msgstr "ÚæÏÉ Åáì ŞÇÆãÉ ÇáãåãÇÊ"
+
+msgid "Category"
+msgstr "ÇáÊÕäíİ"
+
+msgid "Change your task sorting and display options."
+msgstr "ÊÛííÑ ØÑíŞÉ İÑÒ ÇáãåãÇÊ æÎíÇÑÇÊ ÇáÚÑÖ"
+
+#, c-format
+msgid "Changed %d tasks to priority %d."
+msgstr "ÊÛííÑ ÇáãåãÇÊ %d Åáì ÇáÃæáæíÉ %d."
+
+#, c-format
+msgid "Changed 1 task to priority %d."
+msgstr "ÊÛííÑ ãåãÉ 1 Åáì ÇáÃæáæíÉ %d."
+
+msgid "Choose Action:"
+msgstr "ÇÎÊÑ ÚãáíÉ :"
+
+msgid "Clear Form"
+msgstr "ãÓÍ ÇáÅÓÊãÇÑÉ"
+
+msgid "Complete Task"
+msgstr "ÅäåÇÁ ÇáãåãÉ"
+
+msgid "Complete Tasks"
+msgstr "ÅäåÇÁ ÇáãåãÇÊ"
+
+msgid "Completed?"
+msgstr "åá Êã ÇáÃãÑ¿"
+
+msgid "Completion Status"
+msgstr "æÖÚ ÇáÅäÌÇÒ"
+
+msgid "Default sorting criteria:"
+msgstr "äæãĞÌ ÇáİÑÒ ÇáÅİÊÑÇÖí:"
+
+msgid "Default sorting direction:"
+msgstr "ÇÊÌÇå ÇáİÑÒ ÇáÇİÊÑÇÖí:"
+
+msgid "Delete Task"
+msgstr "ãåãÉ ãÍĞæİÉ"
+
+msgid "Delete Tasks"
+msgstr "ãåãÇÊ ãÍĞæİÉ"
+
+#, c-format
+msgid "Deleted %d tasks."
+msgstr "ÇáãåãÇÊ %d ãÍĞæİÉ."
+
+msgid "Deleted 1 task."
+msgstr "ÇáãåãÉ d% ãÍĞæİÉ."
+
+msgid "Descending"
+msgstr "ÊäÇÒáí"
+
+msgid "Description"
+msgstr "ÇáÔÑÍ"
+
+msgid "Display Options"
+msgstr "Options d'affichage"
+
+msgid "Due By"
+msgstr "ÊÓÊÍŞ"
+
+msgid "Due Date"
+msgstr "ÊÇÑíÎ ÇáÅÓÊÍŞÇŞ"
+
+msgid "Help"
+msgstr "ãÓÇÚÏÉ"
+
+msgid "Language"
+msgstr "ÇááÛÉ"
+
+msgid "List Tasks"
+msgstr "ŞÇÆãÉ ÇáãåãÇÊ"
+
+#, c-format
+msgid "Marked %d tasks as completed."
+msgstr "ÇáãåãÇÊ %d ãÍÏÏÉ ßãåãÇÊ ãäÌÒÉ"
+
+msgid "Marked 1 task as completed."
+msgstr "ÇáãåãÉ ãÍÏÏÉ ßãåãÉ ãäÌÒÉ"
+
+msgid "Modify Task"
+msgstr "ÊÚÏíá ÇáãåãÉ"
+
+msgid "Modifying:"
+msgstr "ÇáÊÚÏíá :"
+
+msgid "Nag is not properly configured"
+msgstr "áã íÊã ÅÚÏÇÏ NagÈÔßá ÕÍíÍ "
+
+msgid "Name"
+msgstr "ÇáÇÓã"
+
+msgid "New Task"
+msgstr "ãåãÉ ÌÏíÏÉ"
+
+msgid "No configuration information specified for SQL Tasks."
+msgstr "Aucune information de configuration pour la base de données."
+
+msgid "No due date."
+msgstr "áÇíæÌÏ ÊÍÏíÏ áÊÇÑíÎ ÇáÇÓÊÍŞÇŞ"
+
+msgid "No tasks were changed."
+msgstr "áã íÊã ÊÛííÑ Ãí ãä ÇáãåãÇÊ"
+
+msgid "No tasks were deleted."
+msgstr "áã íÊã ÍĞİ Ãí ãä ÇáãåãÇÊ"
+
+msgid "No"
+msgstr "áÇ"
+
+msgid "None specified"
+msgstr "ÛíÑ ãÍÏÏ (É)"
+
+msgid "Options"
+msgstr "ÇáÎíÇÑÇÊ"
+
+msgid "Other Options"
+msgstr "ÎíÇÑÇÊ ÃÎÑì"
+
+msgid "Please enter the task priority (1-5):"
+msgstr "ÇáÑÌÇÁ ÊÍÏíÏ ÃæáæíÉ ÇáãåãÉ (1-5)"
+
+msgid "Pri"
+msgstr "Pri"
+
+msgid "Priorities must be between 1 and 5. Please enter a valid priority:"
+msgstr "ÊÍÏÏ ÇáÃæáæíÇÊ Èíä 1 ÍÊì 5. ÇáÑÌÇÁ ÊÍÏíÏ ÃæáæíÉ ÕÍíÍÉ."
+
+msgid "Priority"
+msgstr "ÇáÃæáæíÉ"
+
+msgid "Problem?"
+msgstr "åá åäÇß ãÔßáÉ¿"
+
+msgid "Refresh List"
+msgstr "ÊÍÏíË ÇáŞÇÆãÉ"
+
+msgid "Required 'database' not specified in tasks configuration."
+msgstr "áã íÊã ÊÍÏíÏ ŞÇÚÏÉ ÇáÈíÇäÇÊ İí ÅÚÏÇÏÇÊ ÇáãåãÇÊ"
+
+msgid "Required 'hostspec' not specified in tasks configuration."
+msgstr "áã íÊã ÊÍÏíÏ 'hostspec' İí ÅÚÏÇÏÇÊ ÇáãåãÇÊ"
+
+msgid "Required 'password' not specified in tasks configuration."
+msgstr "áã íÊã ÊÍÏíÏ ßáãÉ ÇáãÑæÑ İí ÅÚÏÇÏÇÊ ÇáãåãÇÊ"
+
+msgid "Required 'phptype' not specified in tasks configuration."
+msgstr "áã íÊã ÊÍÏíÏ 'phptype' İí ÅÚÏÇÏÇÊ ÇáãåãÇÊ"
+
+msgid "Required 'table' not specified in tasks configuration."
+msgstr "áã íÊã ÊÍÏíÏ 'table' İí ÅÚÏÇÏÇÊ ÇáãåãÇÊ"
+
+msgid "Required 'username' not specified in tasks configuration."
+msgstr "áã íÊã ÊÍÏíÏ ÇÓã ÇáãÓÊÎÏã İí ÅÚÏÇÏÇÊ ÇáãåãÇÊ"
+
+msgid "Save Task"
+msgstr "ÍİÙ ÇáãåãÉ"
+
+msgid "Search Results"
+msgstr "äÊÇÆÌ ÇáÈÍË"
+
+msgid "Search Scope"
+msgstr "ãÌÇá ÇáÈÍË"
+
+msgid "Search Text"
+msgstr "ÈÍË İí ÇáäÕ"
+
+msgid "Search"
+msgstr "ÈÍË"
+
+msgid "Select your preferred language:"
+msgstr "ÇÎÊÑ ÇááÛÉ ÇáãİÖáÉ"
+
+msgid "Selected?"
+msgstr "ãÍÏÏ¿"
+
+msgid "Set Task Priority"
+msgstr "ÇÎÊÑ ÃæáæíÉ ÇáãåãÉ"
+
+msgid "Set the your preferred display language."
+msgstr "ÇÎÊÑ áÛÉ ÇáÅÙåÇÑ ÇáãİÖáÉ áÏíß"
+
+msgid "Show completed tasks in the task list?"
+msgstr "ÅÙåÇÑ ÇáãåãÇÊ ÇáãäÌÒÉ İí ŞÇÆãÉ ÇáãåãÇÊ¿"
+
+msgid "Some of Nag's configuration files are missing:"
+msgstr "ÈÚÖ ãáİÇÊ ÅÚÏÇÏÇÊ Nag ãİŞæÏÉ"
+
+msgid "Sort Direction"
+msgstr "ÇÊÌÇå ÇáİÑÒ"
+
+msgid "Sort by Category"
+msgstr "İÑÒ ÍÓÈ ÇáÊÕäíİ"
+
+msgid "Sort by Completion Status"
+msgstr "İÑÒ ÍÓÈ ÓäÈÉ ÇáÅäÌÇÒ"
+
+msgid "Sort by Due Date"
+msgstr "İÑÒ ÍÓÈ ÊÇÑíÎ ÇáÇÓÊÍŞÇŞ"
+
+msgid "Sort by Name"
+msgstr "İÑÒ ÍÓÈ ÇáÇÓã"
+
+msgid "Sort by Priority"
+msgstr "İÑÒ ÍÓÈ ÇáÃæáæíÉ"
+
+msgid "Task Details"
+msgstr "ÊİÕíáÇÊ ÇáãåãÉ"
+
+msgid "Task List"
+msgstr "ŞÇÆãÉ ÇáãåãÇÊ"
+
+msgid "Task Name"
+msgstr "ÇÓã ÇáãåãÉ"
+
+msgid "Task Note"
+msgstr "ãáÇÍÙÇÊ Íæá ÇáãåãÉ"
+
+msgid "Task Note?"
+msgstr "ãáÇÍÙÇÊ Íæá ÇáãåãÉ¿"
+
+msgid "The requested task does not exist."
+msgstr "ÇáãåãÉ ÇáãØáæÈÉ ÛíÑ ãæÌæÏÉ."
+
+msgid "There was a problem deleting tasks."
+msgstr "ÍÕá ÎØÃ ÎáÇá ÍĞİ ÇáãåãÇÊ."
+
+msgid "There was a problem setting task completion status."
+msgstr "ÍÕá ÎØÃ ÎáÇá ÅÚÏÇÏ äÓÈÉ ÅäÌÇÒ ÇáãåãÉ."
+
+msgid "There was a problem setting task priority."
+msgstr "ÍÕá ÎØÃ ÎáÇá ÅÚÏÇÏ ÃæáæíÉ ÇáãåãÉ."
+
+msgid "This file contains preferences for Nag."
+msgstr "íÍÊæí åĞÇ Çáãáİ Úáì ÅÚÏÇÏÇÊ Nag."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"íŞæã åĞÇ Çáãáİ ÈÇáÊÍßã ÈŞæÇÆã ÇáÃáæÇä æÇáÎØæØ "
+"ÅÖÇİÉ Åáì ÅÚÏÇÏÇÊ Horde Ãæ ÈáÇ ãäåÇ"
+
+msgid ""
+"This is the main Nag configuration file. It contains options for all Nag "
+"scripts."
+msgstr ""
+"åĞÇ Çáãáİ åæ ãáİ ÅÚÏÇÏÇÊ Nag ÇáÑÆíÓí. íÍÊæí ÌãíÚ ÇáÎíÇÑÇÊ áÌãíÚ "
+"ÈÑíãÌÇÊ Nag."
+
+msgid "Undo Changes"
+msgstr "ÊÑÇÌÚ Úä ÇáÊÛííÑÇÊ"
+
+msgid "Unfiled"
+msgstr "ÛíÑ ãÊãã"
+
+msgid "Unknown task"
+msgstr "ãåãÉ ÛíÑ ãÍÏÏÉ"
+
+msgid "Unknown"
+msgstr "ÛíÑ ãÚÑæİ"
+
+msgid "User Options"
+msgstr "ÎíÇÑÇÊ ÇáãÓÊÎÏã"
+
+msgid "View Task Details"
+msgstr "ÇÓÊÚÑÇÖ ÊİÕíáÇÊ ÇáãåãÉ"
+
+msgid "Yes"
+msgstr "äÚã"
+
+msgid "You must select at least one task first."
+msgstr "íÌÈ ÊÍÏíÏ ãåãÉ æÇÍÏÉ Úáì ÇáÃŞá ÃæáÇğ"
+
+msgid "Your Information"
+msgstr "ÇáãÚáæãÇÊ ÇáÔÎÕíÉ"
+
+msgid "Your task list is empty."
+msgstr "ŞÇÆãÉ ÇáãåãÇÊ İÇÑÛÉ"
+
+msgid "at"
+msgstr "İí"

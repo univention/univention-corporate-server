@@ -1,0 +1,13 @@
+# Log rotation for horde3
+# On a debian system this should be copied to /etc/logrotate.d
+# Om other systems the user and group names below should be
+# changed to the user that is running the web server
+
+/var/log/horde.log {
+	monthly
+	missingok
+	rotate 4
+	compress
+	create 640 www-data www-data
+	notifempty
+}

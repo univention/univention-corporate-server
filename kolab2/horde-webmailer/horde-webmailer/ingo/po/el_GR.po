@@ -1,0 +1,793 @@
+# German translations for Ingo package
+# German messages for Ingo.
+# Copyright 2003-2009 The Horde Project
+# This file is distributed under the same license as the Ingo package.
+# Milosis C. Konstantinos, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Ingo 0.1-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2005-01-13 11:57+0100\n"
+"PO-Revision-Date: 2005-01-07 22:36+0100\n"
+"Last-Translator: Konstantinos C. Milosis <kmilosis@yahoo.com>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-7\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: filters.php:167
+msgid " and"
+msgstr " και"
+
+#: filters.php:167
+msgid " or"
+msgstr " ή"
+
+#: templates/blacklist/blacklist.inc:19
+msgid "Action for blacklisted addresses:"
+msgstr "Ενέργεια για διευθύνσεις μαύρης λίστας:"
+
+#: templates/script/activate.inc:10
+msgid "Activate Script"
+msgstr "Ενεργοποίηση προγράμματος (script)"
+
+#: templates/filters/settings.inc:9
+msgid "Additional Settings"
+msgstr "Πρόσθετες Ρυθμίσεις"
+
+#: templates/rule/header.inc:53
+msgid "All of the following"
+msgstr "Ολα τα παρακάτω"
+
+#: templates/rule/footer.inc:44
+msgid "Answered"
+msgstr "Απαντημένο"
+
+#: templates/rule/header.inc:56
+msgid "Any of the following"
+msgstr "Οποιοδήποτε από τα παρακάτω"
+
+#: templates/filters/footer.inc:16
+msgid "Apply Filters"
+msgstr "Εφαρμογή Φίλτρων"
+
+#: filters.php:196
+msgid "Are you sure you want to delete this rule?"
+msgstr "Είστε σίγουροι για τη διαγραφή αυτού του κανόνα;"
+
+#: config/prefs.php.dist:33
+msgid "Automatically update the script after each change?"
+msgstr "Αυτόματη ενημέρωση του προγράμματος (script) μετά από κάθε αλλαγή;"
+
+#: config/fields.php.dist:47
+msgid "Bcc"
+msgstr "Κ.Κοιν"
+
+#: lib/Storage.php:349
+msgid "Begins with"
+msgstr "Αρχίζει με"
+
+#: filters.php:126 templates/blacklist/blacklist.inc:8
+msgid "Blacklist"
+msgstr "Μαύρη Λίστα"
+
+#: blacklist.php:100
+msgid "Blacklist Edit"
+msgstr "Επεξεργασία Μαύρης Λίστας"
+
+#: blacklist.php:17
+msgid "Blacklist is not supported in the current filtering driver."
+msgstr "Δεν υποστηρίζεται Μαύρη Λίστα με τον τρέχοντα οδηγό φίλτρων."
+
+#: lib/Script/procmail.php:209
+msgid "Blacklisted Address"
+msgstr "Διεύθυνση σε Μαύρη Λίστα"
+
+#: lib/Script/sieve.php:245
+msgid "Blacklisted Addresses"
+msgstr "Διευθύνσεις σε Μαύρη Λίστα"
+
+#: config/fields.php.dist:88
+msgid "Body"
+msgstr "Σώμα Κειμένου"
+
+#: filters.php:164 rule.php:238
+msgid "Case Sensitive"
+msgstr "Διαχωρισμός Πεζών/Κεφαλαίων"
+
+#: config/fields.php.dist:43
+msgid "Cc"
+msgstr "Κοιν."
+
+#: rule.php:105 whitelist.php:36 forward.php:33 vacation.php:41
+#: blacklist.php:69
+msgid "Changes saved."
+msgstr "Οι αλλαγές αποθηκέυθηκαν."
+
+#: lib/Storage.php:345
+msgid "Contains"
+msgstr "Περιέχει"
+
+msgid "Compose"
+msgstr "Σύνθεση"
+
+#: filters.php:204 filters.php:205
+msgid "Copy %s"
+msgstr "Αντιγραφή %s"
+
+#: lib/Storage.php:775
+msgid "Copy of %s"
+msgstr "Αντιγραφή του %s"
+
+#: lib/Ingo.php:53
+msgid "Create new folder"
+msgstr "Δημιουργία νέου φακέλου"
+
+#: templates/filters/filter.html:16
+msgid "DISABLED"
+msgstr "ΑΠΕΝΕΡΓΟΠΟΙΗΜΕΝΟ"
+
+#: lib/Script/procmail.php:354
+msgid "DISABLED: "
+msgstr "ΑΠΕΝΕΡΓΟΠΟΙΗΜΕΝΟ: "
+
+#: templates/script/activate.inc:17
+msgid "Deactivate Script"
+msgstr "Απενεργοποίηση προγράμματος (Script)"
+
+#: filters.php:196 filters.php:197
+msgid "Delete %s"
+msgstr "Διαγραφή %s"
+
+#: templates/rule/filter.inc:30
+msgid "Delete Condition"
+msgstr "Διαγραφή Συνθήκης"
+
+#: lib/Storage.php:301
+msgid "Delete message completely"
+msgstr "Πλήρης διαγραφή μηνύματος"
+
+#: templates/rule/footer.inc:47
+msgid "Deleted"
+msgstr "Διαγράφηκε"
+
+#: lib/Storage.php:289
+msgid "Deliver into my INBOX"
+msgstr "Αποθήκευση στα Εισερχόμενα (INBOX)"
+
+#: lib/Storage.php:315
+msgid "Deliver into my INBOX and copy to"
+msgstr "Αποθήκευση στα Εισερχόμενα (INBOX) και αντιγραφή σε"
+
+#: lib/Storage.php:310
+msgid "Deliver into my INBOX and redirect to"
+msgstr "Αποθήκευση στα Εισερχόμενα (ΙΝΒΟΧ) και ανακατεύθυνση σε"
+
+#: lib/Storage.php:295
+msgid "Deliver to folder"
+msgstr "Αποθήκευση στο φάκελλο"
+
+#: filters.php:218 filters.php:219
+msgid "Disable %s"
+msgstr "Απενεργοποίηση %s"
+
+#: templates/whitelist/whitelist.inc:9 templates/blacklist/blacklist.inc:10
+#: templates/vacation/vacation.inc:9 templates/forward/forward.inc:9
+#: templates/rule/header.inc:30
+msgid "Disabled"
+msgstr "Απενεργοποιήθηκε"
+
+#: templates/filters/settings.inc:21
+msgid "Display detailed notification when each filter is applied?"
+msgstr "Να εμφανίζονται λεπτομερείς πληροφορίες όταν εφαρμόζεται κάθε φίλτρο;"
+
+#: templates/vacation/vacation.inc:38
+msgid "Do _not send responses to bulk or list messages"
+msgstr "Να μη στέλνονται απαντήσεις μαζικά ή σε λίστες μηνυμάτων"
+
+#: templates/rule/footer.inc:10
+msgid "Do this:"
+msgstr "Κάνε αυτό:"
+
+#: lib/Storage.php:350
+msgid "Doesn't begin with"
+msgstr "Δεν αρχίζει με"
+
+#: lib/Storage.php:346
+msgid "Doesn't contain"
+msgstr "Δεν περιέχει"
+
+#: lib/Storage.php:352
+msgid "Doesn't end with"
+msgstr "Δεν τελειώνει σε"
+
+#: lib/Storage.php:354
+msgid "Doesn't exist"
+msgstr "Δεν υπάρχει"
+
+#: lib/Storage.php:357
+msgid "Doesn't match (with placeholders)"
+msgstr "Δεν ταιριάζει (με αντικαταστάσεις)"
+
+msgid "Due _By"
+msgstr "Διάρκεια ως"
+
+#: templates/filters/header.inc:20
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+#: filters.php:185 filters.php:187 filters.php:191 filters.php:192
+msgid "Edit %s"
+msgstr "Επεξεργασία %s"
+
+#: filters.php:222 filters.php:223
+msgid "Enable %s"
+msgstr "Ενεργοποίηση %s"
+
+#: templates/filters/header.inc:22
+msgid "Enabled"
+msgstr "Ενεργοποιήθηκε"
+
+#: lib/Storage.php:351
+msgid "Ends with"
+msgstr "Τελειώνει σε"
+
+#: lib/Storage.php:362
+msgid "Equal to"
+msgstr "Ισο με"
+
+#: templates/filters/header.inc:7
+msgid "Existing Rules"
+msgstr "Υπάρχοντες Κανόνες"
+
+#: lib/Storage.php:353
+msgid "Exists"
+msgstr "Υπάρχει"
+
+#: templates/filters/settings.inc:30
+msgid "Filter All Messages"
+msgstr "Φιλτράρισε όλα τα Μηνύματα"
+
+#: templates/filters/settings.inc:32
+msgid "Filter Only Seen Messages"
+msgstr "Φιλτράρισμα μόνο των αναγνωσμένων Μηνύματα"
+
+#: templates/filters/settings.inc:31
+msgid "Filter Only Unseen Messages"
+msgstr "Φιλτράρισμα μόνο των μη αναγνωσμένων Μηνυμάτων"
+
+#: templates/filters/settings.inc:28
+msgid "Filter Options"
+msgstr "Επιλογές Φίλτρων"
+
+#: templates/rule/header.inc:28
+msgid "Filter Rule"
+msgstr "Κανόνας Φίλτρων"
+
+#: filters.php:92
+msgid "Filter Rules"
+msgstr "Κανόνες Φίλτρων"
+
+#: script.php:52
+msgid "Filter Script Display"
+msgstr "Εμφάνιση προγράμματος (script) φίλτρου"
+
+#: lib/Ingo.php:269
+msgid "Filter _Rules"
+msgstr "Κανόνες Φίλτρων"
+
+#: lib/Script/imap.php:321
+msgid "Filter activity: %s message(s) have been copied to the folder \"%s\"."
+msgstr "Δραστηριότητα Φίλτρου: %s Μήνυμα(τα) αντιγράφθηκαν στο φάκελο \"%s\"."
+
+#: lib/Script/imap.php:308
+msgid "Filter activity: %s message(s) have been deleted."
+msgstr "Δραστηριότητα Φίλτρου: %s Μήνυμα(τα) διαγράφηκαν."
+
+#: lib/Script/imap.php:286
+msgid "Filter activity: %s message(s) have been moved to the folder \"%s\"."
+msgstr "Δραστηριότητα Φίλτρου: %s Μήνυμα(τα) μεταφέρθηκαν στο φάκελο \"%s\"."
+
+#: lib/Script/imap.php:189
+msgid "Filter activity: %s message(s) that matched the blacklist were deleted."
+msgstr ""
+"Δραστηριότητα Φίλτρου: %s Μήνυμα(τα) που ταίριαζαν στη Μαύρη Λίστα "
+"διαγράφηκαν."
+
+#: lib/Script/imap.php:318
+msgid ""
+"Filter activity: The message \"%s\" from \"%s\" has been copied to the "
+"folder \"%s\"."
+msgstr ""
+"Δραστηριότητα Φίλτρου: Το μήνυμα \"%s\" από \"%s\" αντιγράφηκε στο φάκελο \"%"
+"s\"."
+
+#: lib/Script/imap.php:303
+msgid "Filter activity: The message \"%s\" from \"%s\" has been deleted."
+msgstr "Δραστηριότητα Φίλτρου: Το μήνυμα \"%s\" από \"%s\" διαγράφηκε."
+
+#: lib/Script/imap.php:280
+msgid ""
+"Filter activity: The message \"%s\" from \"%s\" has been moved to the folder "
+"\"%s\"."
+msgstr ""
+"Δραστηριότητα Φίλτρου: Το μήνυμα \"%s\" από \"%s\" μεταφέρθηκε στο φάκελο \"%"
+"s\"."
+
+#: rule.php:133
+msgid "Filter not found."
+msgstr "Το φίλτρο δεν βρέθηκε."
+
+#: templates/rule/header.inc:48
+msgid "For an incoming message that matches:"
+msgstr "Για ένα εισερχόμενο μήνυμα που ταιριάζει:"
+
+#: filters.php:144 templates/forward/forward.inc:7
+msgid "Forward"
+msgstr "Προώθηση"
+
+#: forward.php:16
+msgid "Forward is not supported in the current filtering driver."
+msgstr "Η προώθηση δεν υποστηρίζεται από τον τρέχοντα οδηγό φίλτρων."
+
+#: lib/Script/procmail.php:296
+msgid "Forwards"
+msgstr "Προωθήσεις"
+
+#: forward.php:46
+msgid "Forwards Edit"
+msgstr "Επεξεργασία Προωθήσεων"
+
+#: config/fields.php.dist:39
+msgid "From"
+msgstr "Από"
+
+#: lib/Storage.php:360
+msgid "Greater than"
+msgstr "Μεγαλύτερο από"
+
+#: lib/Storage.php:361
+msgid "Greater than or equal to"
+msgstr "Μεγαλύτερο ή ίσο με"
+
+#: templates/rule/footer.inc:41
+msgid "Important"
+msgstr "Σημαντικό"
+
+#: rule.php:26
+msgid "Individual rules are not supported in the current filtering driver."
+msgstr "Μεμονωμένοι κανονες δεν υποστηρίζονται από τον τρέχοντα οδηγό φίλτρων."
+
+#: lib/Script/sieve.php:1783
+msgid "Inexistant mailbox specified for message delivery."
+msgstr ""
+"Καθορίσατε ανύπαρκτη γραμματοθυρίδα (mailbox) για αποθήκευση μηνυμάτων."
+
+#: lib/Storage.php:347
+msgid "Is"
+msgstr "Είναι"
+
+#: lib/Storage.php:348
+msgid "Isn't"
+msgstr "Δεν είναι"
+
+#: lib/Storage.php:358
+msgid "Less than"
+msgstr "Μιγρότερο από"
+
+#: lib/Storage.php:359
+msgid "Less than or equal to"
+msgstr "Μικρότερο ή ίσο με"
+
+#: config/fields.php.dist:59
+msgid "List-ID"
+msgstr "Αναγνωριστικό (ID) Λίστας"
+
+#: templates/blacklist/blacklist.inc:22
+msgid "Mar_k message as deleted"
+msgstr "Μαρκάρισμα μηνύματος για διαγραφή"
+
+#: templates/rule/footer.inc:33
+msgid "Mark message as:"
+msgstr "Μαρκάρισμα μηνύματος σαν:"
+
+#: lib/Storage.php:356
+msgid "Matches (with placeholders)"
+msgstr "Ταιριάζει (με αντικαταστάσεις)"
+
+#: lib/Storage.php:487
+msgid ""
+"Maximum number of blacklisted addresses exceeded (Total addresses: %s, "
+"Maximum addresses: %s).  Could not add new addresses to blacklist."
+msgstr ""
+"Ξεπεράσθηκε ο μέγιστος αριθμός διευθύνσεων Μαύρης Λίστας (Σύνολο "
+"διευθύνσεων: %s, Μέγιστος αριθμός: %s). Δεν μπορούν να προστεθούν νέες "
+"διευθύνσεις στη Μαύρη Λίστα."
+
+#: lib/Storage.php:541
+msgid ""
+"Maximum number of whitelisted addresses exceeded (Total addresses: %s, "
+"Maximum addresses: %s).  Could not add new addresses to whitelist."
+msgstr ""
+"Ξεπεράσθηκε ο μέγιστος αριθμός διευθύνσεων Λευκής Λίστας (Σύνολο "
+"διευθύνσεων: %s, Μέγιστος αριθμός: %s). Δεν μπορούν να προστεθούν νέες "
+"διευθύνσεις στη Λευκή Λίστα."
+
+#: lib/Script/sieve.php:1646
+msgid "Missing address to redirect message to"
+msgstr "Λείπει η διεύθυνση για ανακατεύθυνση μηνύματος"
+
+#: lib/Script/sieve.php:1680
+msgid "Missing reason for reject"
+msgstr "Λείπει λόγος για απόρριψη"
+
+#: lib/Script/sieve.php:1850
+msgid "Missing reason in vacation."
+msgstr "Λείπει λόγος 'σε διακοπές'"
+
+#: templates/filters/header.inc:23
+msgid "Move"
+msgstr "Μετακίνηση"
+
+#: filters.php:109 filters.php:215
+msgid "Move Rule Down"
+msgstr "Μετακίνηση κανόνα Κάτω"
+
+#: filters.php:110 filters.php:214
+msgid "Move Rule Up"
+msgstr "Μετακίνηση κανόνα Πάνω"
+
+#: templates/vacation/vacation.inc:46
+msgid "N_umber of days between vacation replies:"
+msgstr "Αριθμός ημερών μεταξύ απαντήσεων 'διακοπών':"
+
+#: templates/filters/filter-none.inc:4 templates/filters/footer.inc:13
+#: lib/Storage.php:726
+msgid "New Rule"
+msgstr "Νέος Κανόνας"
+
+#: lib/Ingo.php:204 lib/Ingo.php:206
+msgid "No '%s' element found in backend configuration."
+msgstr "Κανένα '%s' αντικείμενο δεν βρέθηκε στη διαμόρφωση backend."
+
+#: lib/Ingo.php:202
+msgid "No backend configured for this host"
+msgstr "Δεν υπάρχει διαμόρφωση backend για αυτόν τον εξυπηρετητή"
+
+#: lib/Ingo.php:179
+msgid "No backends configured in backends.php"
+msgstr "Δεν έχουν διαμορφωθεί backends in backends.php"
+
+#: templates/filters/filter-none.inc:4
+msgid "No filters. Click '%s' to create a new filter."
+msgstr "Δεν υπάρχουν κανόνες. Κάντε κλικ στο '%s', για να δημιουργήσετε."
+
+#: lib/Script/sieve.php:1233 lib/Script/sieve.php:1333
+#: lib/Script/sieve.php:1515
+msgid "No headers specified"
+msgstr "Δεν καθορίσθηκαν επικεφαλίδες"
+
+#: script.php:67
+msgid "No script generated."
+msgstr "Δεν δημιουργήθηκε πρόγραμμα (script)."
+
+#: lib/Script/sieve.php:1530
+msgid "No strings specified"
+msgstr "Δεν καθορίσθηκαν συμβολοσειρές (strings)"
+
+#: lib/Storage.php:363
+msgid "Not equal to"
+msgstr "Δεν είναι ίσο με"
+
+#: config/prefs.php.dist:19
+msgid "Options about script updating."
+msgstr "Επιλογές για ενημέρωση προγραμμάτων (scripts)"
+
+#: config/prefs.php.dist:17
+msgid "Other Options"
+msgstr "Αλλες επιλογές"
+
+#: templates/javascript/new_folder.js:6
+msgid "Please enter the name of the new folder:"
+msgstr "Παρακαλώ δώστε το όνομα του νέου φακέλου:"
+
+#: templates/vacation/vacation.inc:64
+msgid "R_eason"
+msgstr "Λόγος"
+
+#: config/fields.php.dist:63
+msgid "Received"
+msgstr "Παραλήφθηκε"
+
+#: lib/Storage.php:306
+msgid "Redirect to"
+msgstr "Ανακατεύθυνση προς"
+
+#: lib/Storage.php:355
+msgid "Regular expression"
+msgstr "Κανονική συνθήκη"
+
+#: lib/Storage.php:321
+msgid "Reject with reason"
+msgstr "Απόρριψη με λόγο"
+
+#: config/fields.php.dist:55
+msgid "Resent To"
+msgstr "Ξαναστείλτο προς"
+
+#: config/fields.php.dist:51
+msgid "Resent-from"
+msgstr "Ξαναστείλτο-από (Resent-from)"
+
+#: templates/rule/footer.inc:72
+msgid "Return to Filters List"
+msgstr "Επιστροφή στη Λίστα Φίλτρων"
+
+#: templates/whitelist/whitelist.inc:28 templates/blacklist/blacklist.inc:43
+#: templates/vacation/vacation.inc:75 templates/forward/forward.inc:38
+msgid "Return to Rules List"
+msgstr "Επιστροφή στη Λίστα Κανόνων"
+
+#: templates/filters/header.inc:21
+msgid "Rule"
+msgstr "Κανόνας"
+
+#: filters.php:45
+msgid "Rule Copied"
+msgstr "Ο Κανόνας αντιγράφηκε"
+
+#: filters.php:39
+msgid "Rule Deleted"
+msgstr "Ο κανόνας διαγράφηκε"
+
+#: filters.php:59
+msgid "Rule Disabled"
+msgstr "Ο κανόνας απενεργοποιήθηκε"
+
+#: filters.php:64
+msgid "Rule Enabled"
+msgstr "Ο κανόνας ενεργοποιήθηκε"
+
+#: templates/rule/header.inc:39
+msgid "Rule Name"
+msgstr "Ονομα Κανόνα"
+
+#: templates/whitelist/whitelist.inc:27 templates/blacklist/blacklist.inc:42
+#: templates/vacation/vacation.inc:74 templates/forward/forward.inc:37
+#: templates/rule/footer.inc:71
+msgid "Save"
+msgstr "Αποθήκευση"
+
+#: templates/filters/settings.inc:47
+msgid "Save Settings"
+msgstr "Αποθήκευση Ρυθμίσεων"
+
+#: templates/script/header.inc:3
+msgid "Script"
+msgstr "Πρόγραμμα (Script)"
+
+#: config/prefs.php.dist:18
+msgid "Script Updating"
+msgstr "Ενημερώνοντας Πρόγραμμα (Script)"
+
+#: lib/Ingo.php:229
+msgid "Script not updated."
+msgstr "Το πρόγραμμα (script) δεν ενημερώθηκε."
+
+#: lib/Ingo.php:136
+msgid "Script successfully activated."
+msgstr "Το πρόγραμμα (script) ενεργοποιήθηκε επιτυχώς."
+
+#: lib/Ingo.php:135
+msgid "Script successfully deactivated."
+msgstr "Το πρόγραμμα (script) απενεργοποιήθηκε επιτυχώς."
+
+#: templates/rule/footer.inc:38
+msgid "Seen"
+msgstr "Αναγνωσμένα"
+
+#: rule.php:163
+msgid "Select a field"
+msgstr "Επιλέξτε ένα πεδίο"
+
+#: lib/Ingo.php:50
+msgid "Select target folder"
+msgstr "Επιλέξτε φάκελο προορισμού"
+
+#: rule.php:184
+msgid "Self-Defined Header"
+msgstr "Αυτόματα οριζόμενη Επικεφαλίδα"
+
+#: config/fields.php.dist:35
+msgid "Sender"
+msgstr "Αποστολέας"
+
+#: filters.php:78
+msgid "Settings successfully updated."
+msgstr "Οι ρυθμίσεις ενημερώθηκαν επιτυχώς."
+
+#: templates/script/activate.inc:24
+msgid "Show Active Script"
+msgstr "Εμφάνιση Ενεργών Προγραμμάτων (Scripts)"
+
+#: templates/script/activate.inc:31
+msgid "Show Current Script"
+msgstr "Εμφάνιση τρέχοντος προγράμματος (script)"
+
+#: config/fields.php.dist:83
+msgid "Size"
+msgstr "Μέγεθος"
+
+#: templates/rule/footer.inc:61
+msgid "Stop checking if this rule matches?"
+msgstr "Να σταματήσει ο έλεγχος για ταίριασμα αυτού του κανόνα;"
+
+#: templates/vacation/vacation.inc:55
+msgid "Subje_ct of vacation message:"
+msgstr "Θέμα του μηνύματος διακοπών:"
+
+#: config/fields.php.dist:31
+msgid "Subject"
+msgstr "Θέμα"
+
+msgid "The address \"%s\" has been added to your whitelist."
+msgstr "Η διεύθυνση \"%σ\" προστέθηκε στη Λευκή Λίστα σας."
+
+#: lib/Ingo.php:131
+msgid "The driver said: "
+msgstr "Ο οδηγός (driver) λέει: "
+
+#: lib/Ingo.php:130
+msgid "There was an error activating the script."
+msgstr "Υπήρξε λάθος κατά την ενεργοποίηση του προγράμματος (script)."
+
+#: lib/Ingo.php:129
+msgid "There was an error deactivating the script."
+msgstr "Υπήρξε λάθος κατά την απενεργοποίηση του προγράμματος (script)."
+
+#: config/fields.php.dist:27
+msgid "To"
+msgstr "Προς"
+
+#: lib/Script.php:116
+msgid "Unable to load the definition of %s."
+msgstr "Αδύνατη η φόρτωση του ορισμού %s."
+
+#: filters.php:138 templates/vacation/vacation.inc:7
+#: lib/Script/procmail.php:272
+msgid "Vacation"
+msgstr "Διακοπές"
+
+#: vacation.php:66
+msgid "Vacation Edit"
+msgstr "Επεξεργασία Διακοπών"
+
+#: lib/Script/sieve.php:352
+msgid "Vacation Message"
+msgstr "Μήνυμα Διακοπών"
+
+#: vacation.php:16
+msgid "Vacation is not supported in the current filtering driver."
+msgstr "Οι Διακοπές δεν υποστηρίζονται από τον τρέχοντα οδηγό φίλτρων."
+
+#: templates/whitelist/whitelist.inc:18
+msgid "Wh_itelist addresses:"
+msgstr "Διευθύνσεις Λευκής Λίστας:"
+
+#: filters.php:132 templates/whitelist/whitelist.inc:7
+msgid "Whitelist"
+msgstr "Λευκή Λίστα"
+
+#: whitelist.php:55
+msgid "Whitelist Edit"
+msgstr "Επεξεργασία Λευκής Λίστας"
+
+#: whitelist.php:18
+msgid "Whitelist is not supported in the current filtering driver."
+msgstr "Η Λευκή Λίστα δεν υποστηρίζεται από τον τρέχοντα οδηγό φίλτρων."
+
+#: lib/Script/procmail.php:240 lib/Script/sieve.php:299
+msgid "Whitelisted Addresses"
+msgstr "Διευθύνσεις που υπάρχουν στη Λευκή Λίστα"
+
+#: config/fields.php.dist:79
+msgid "X-Priority"
+msgstr "Προτεραιότητα"
+
+#: config/fields.php.dist:67
+msgid "X-Spam-Level"
+msgstr "X-Spam-Level"
+
+#: config/fields.php.dist:71
+msgid "X-Spam-Score"
+msgstr "X-Spam-Score"
+
+#: config/fields.php.dist:75
+msgid "X-Spam-Status"
+msgstr "X-Spam-Status"
+
+#: vacation.php:30
+msgid ""
+"You must specify at least one email address for which the vacation messages "
+"should be activated."
+msgstr ""
+"Πρέπει να ορίσετε τουλάχιστον μια διεύθυνση email για την οποία θα "
+"ενεργοποιηθούν τα μηνύματα διακοπών."
+
+#: lib/Script/imap.php:281 lib/Script/imap.php:304 lib/Script/imap.php:318
+msgid "[No Subject]"
+msgstr "[Χωρίς Θέμα]"
+
+#: templates/forward/forward.inc:27
+msgid "_Address(es) to forward to:"
+msgstr "Διευθύνσεις για προώθηση προς:"
+
+#: templates/vacation/vacation.inc:28
+msgid "_Addresses to not send responses to:"
+msgstr "Διευθύνσεις για τις οποιες δεν θα αποστέλλονται απαντήσεις:"
+
+#: lib/Ingo.php:274
+msgid "_Blacklist"
+msgstr "Μαύρη Λίστα"
+
+#: templates/blacklist/blacklist.inc:20
+msgid "_Delete message completely"
+msgstr "Πλήρης διαγραφή μηνύματος"
+
+#: templates/blacklist/blacklist.inc:33
+msgid "_Enter each address on a new line:"
+msgstr "Εισαγωγή κάθε διεύθυνσης σε νέα γραμμή:"
+
+#: lib/Ingo.php:280
+msgid "_Forward"
+msgstr "Προώθηση"
+
+#: templates/forward/forward.inc:19
+msgid "_Keep a copy of messages in this account?"
+msgstr "Διατήρηση αντιγράφων των μηνυμάτων σε αυτό το λογαριασμό;"
+
+#: templates/blacklist/blacklist.inc:24
+msgid "_Move message to folder:"
+msgstr "Μετακίνηση μηνυμάτων στο φάκελο:"
+
+#: templates/vacation/vacation.inc:18
+msgid "_My email addresses:"
+msgstr "Η email διεύθυνσή μου:"
+
+#: lib/Ingo.php:283
+msgid "_Script"
+msgstr "Πρόγραμμα (Script)"
+
+#: lib/Ingo.php:277
+msgid "_Vacation"
+msgstr "Διακοπές"
+
+#: lib/Ingo.php:271
+msgid "_Whitelist"
+msgstr "Λευκή Λίστα"
+
+#: templates/rule/filter.inc:4
+msgid "and"
+msgstr "και"
+
+#: filters.php:162
+msgid "field"
+msgstr "Πεδίο"
+
+#: filters.php:162
+msgid "match"
+msgstr "ταιριάζει"
+
+#: templates/rule/filter.inc:4
+msgid "or"
+msgstr "ή"
+
+#: lib/Script/procmail.php:126
+msgid "procmail script generated by Ingo"
+msgstr "Πρόγραμμα (script) που δημιουργήθηκε από το Ingo"
+
+#: lib/Script/sieve.php:111
+msgid "sieve filter generated by Ingo"
+msgstr "Φίλτρο 'κόσκινο' που δημιουργήθηκε από το Ingo"

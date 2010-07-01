@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name><variable>name</variable></name>
+ <create>false</create>
+ <overwrite>false</overwrite>
+
+ <table>
+
+  <name>imp_sentmail</name>
+
+  <declaration>
+
+   <field>
+    <name>sentmail_id</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>sentmail_who</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>sentmail_ts</name>
+    <type>integer</type>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>sentmail_messageid</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>sentmail_action</name>
+    <type>text</type>
+    <length>32</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>sentmail_recipient</name>
+    <type>text</type>
+    <length>255</length>
+    <notnull>true</notnull>
+   </field>
+
+   <field>
+    <name>sentmail_success</name>
+    <type>integer</type>
+    <length>1</length>
+    <notnull>true</notnull>
+   </field>
+
+   <index>
+    <name>imp_primary</name>
+    <primary>true</primary>
+    <field>
+     <name>sentmail_id</name>
+    </field>
+   </index>
+
+   <index>
+    <name>sentmail_ts</name>
+    <field>
+     <name>sentmail_ts</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>sentmail_who</name>
+    <field>
+     <name>sentmail_who</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+   <index>
+    <name>sentmail_success</name>
+    <field>
+     <name>sentmail_success</name>
+     <sorting>ascending</sorting>
+    </field>
+   </index>
+
+  </declaration>
+
+ </table>
+
+</database>

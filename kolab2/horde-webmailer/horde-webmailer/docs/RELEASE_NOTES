@@ -1,0 +1,54 @@
+<?php
+/**
+ * Release focus. Possible values (multiple possible with arrays):
+ * Horde_Release::FOCUS_INITIAL - Initial announcement
+ * Horde_Release::FOCUS_MINORFEATURE - Minor feature enhancement
+ * Horde_Release::FOCUS_MAJORFEATURE - Major feature enhancement
+ * Horde_Release::FOCUS_MINORBUG - Minor bugfixes
+ * Horde_Release::FOCUS_MAJORBUG - Major bugfixes
+ * Horde_Release::FOCUS_MINORSECURITY - Minor security fixes
+ * Horde_Release::FOCUS_MAJORSECURITY - Major security fixes
+ * Horde_Release::FOCUS_DOCS - Documentation improvements
+ */
+$this->notes['fm']['focus'] = array(Horde_Release::FOCUS_MINORSECURITY, Horde_Release::FOCUS_MINORFEATURE, Horde_Release::FOCUS_MINORBUG);
+
+/* Mailing list release notes. */
+$this->notes['ml']['changes'] = <<<ML
+The Horde Team is pleased to announce the final release of the Horde
+Application Framework version 3.3.6.
+
+This is a bugfix release that also fixes an XSS vulnerability in the
+administration interface and improves the XSS filter to work around an XSS
+vulnerability in Firefox browsers.
+
+Thanks to Juan Galiana Lara and Daniel Fernández Bleda from Internet Security
+Auditors for finding the XSS vulnerability in the administration interface.
+
+The Horde Application Framework is a modular, general-purpose web application
+framework written in PHP.  It provides an extensive array of classes that are
+targeted at the common problems and tasks involved in developing modern web
+applications.
+
+The major changes compared to Horde version 3.3.5 are:
+    * Fixed XSS vulnerability in administrator scripts.
+    * Improved XSS filter for HTML messages.
+    * Several synchronization improvements.
+    * Improved Oracle and MSSQL compatibility.
+    * Fixed access keys on Mac browsers.
+    * Fixed "white screen" issue with Internet Explorer.
+    * Added Croatian translation.
+    * Multiple other small bug fixes and improvements.
+ML;
+
+/* Freshmeat release notes, not more than 600 characters. */
+$this->notes['fm']['changes'] = <<<FM
+This is a bugfix release that fixes an XSS vulnerability in the administration interface and further improves the XSS filter.
+Synchronization and Oracle and MSSQL compatibility have been improved.
+Access keys on Mac browsers and a "white screen" issue with Internet Explorer have been fixed.
+A Croatian translation has been added.
+Multiple other small bug fixes and improvements have been made.
+FM;
+
+$this->notes['name'] = 'Horde';
+$this->notes['fm']['project'] = 'horde';
+$this->notes['fm']['branch'] = 'Horde 3';

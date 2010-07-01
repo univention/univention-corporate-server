@@ -1,0 +1,2641 @@
+# Turkish translations for Kronolith package
+# PACKAGE paketi için Türkçe çeviriler.
+# Copyright 2008-2009 The Horde Project
+# This file is distributed under the same license as the Kronolith package.
+# Automatically generated, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith H3 (2.2-RC2)\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-04-15 12:57+0300\n"
+"PO-Revision-Date: 2008-04-15 12:57+0300\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-9\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: templates/edit/edit.inc:211
+#, php-format
+msgid " until %s"
+msgstr "%s tarihine kadar"
+
+#: templates/edit/edit.inc:211
+msgid " without end"
+msgstr "sonu yok"
+
+#: templates/calendars/search.inc:16
+#, php-format
+msgid "%d calendars found"
+msgstr "%d takvim bulundu"
+
+#: templates/search/header.inc:4
+#, php-format
+msgid "%d events"
+msgstr "%d etkinlik"
+
+#: templates/view/view.inc:124
+#, php-format
+msgid "%d times"
+msgstr "%d kez"
+
+#: templates/edit/edit_timespan.inc:120
+#, php-format
+msgid "%s Day(s) %s Hour(s) %s Minutes"
+msgstr "%s Gün %s Saat %s Dakika"
+
+#: lib/Driver.php:2218
+#, php-format
+msgid "%s attendees"
+msgstr "%s katýlýmcý"
+
+#: data.php:310
+#, php-format
+msgid "%s file successfully imported"
+msgstr "%s dosyasý baþarýyla içeri aktarýldý"
+
+#: calendars.php:123 lib/api.php:221 lib/Kronolith.php:367
+#: lib/Forms/DeleteCalendar.php:85
+#, php-format
+msgid "%s's Calendar"
+msgstr "%s Takvim"
+
+#: templates/calendars/search.inc:17
+msgid ""
+"(Click on calendar name to switch the calendar's visibility in the main "
+"window)"
+msgstr ""
+"(Takvimin görünürlüðünü deðiþtirmek için ana pencerede takvim adýna "
+"týklayýnýz)"
+
+#: templates/contacts/contacts.inc:177
+msgid "* Add these by clicking Add *"
+msgstr "* Ekleye basarak ekleyin *"
+
+#: templates/contacts/contacts.inc:162
+msgid "* Please select address(es) *"
+msgstr "* Lütfen adres seçin *"
+
+#: templates/edit/edit.inc:211
+#, php-format
+msgid ", %d times"
+msgstr ", %d kez"
+
+#: lib/Driver.php:2217
+msgid "1 attendee"
+msgstr "1 katýlýmcý"
+
+#: templates/search/header.inc:4
+msgid "1 event"
+msgstr "1 etkinlik"
+
+#: config/prefs.php.dist:154
+msgid "1 hour"
+msgstr "1 saat"
+
+#: config/prefs.php.dist:151
+msgid "15 minutes"
+msgstr "15 dakika"
+
+#: config/prefs.php.dist:152
+msgid "20 minutes"
+msgstr "20 dakika"
+
+#: config/prefs.php.dist:153
+msgid "30 minutes"
+msgstr "30 dakika"
+
+#: templates/data/export.inc:118 templates/data/export.inc:203
+msgid "AM"
+msgstr "AM"
+
+#: lib/Kronolith.php:1172
+msgid "Accepted"
+msgstr "Onaylandý"
+
+#: templates/search/search.inc:11
+msgid "Ad_vanced Search"
+msgstr "Geliþm_iþ Arama"
+
+#: templates/contacts/contacts.inc:171
+msgid "Add"
+msgstr "Ekle"
+
+#: templates/edit/edit.inc:23
+msgid "Add Event"
+msgstr "Ekle"
+
+#: templates/prefs/remote_cal_management.inc:35
+msgid "Add a new Remote Calendar"
+msgstr "Uzak Takvim Ekle"
+
+#: addevent.php:64 new.php:65
+msgid "Add a new event"
+msgstr "Yeni etkinlik ekle:"
+
+#: templates/attendees/attendees.inc:78
+msgid "Add attendees"
+msgstr "Katýlýmcý ekle"
+
+#: templates/prefs/sourceselect.inc:298
+msgid "Add source"
+msgstr "Kaynak Ekle"
+
+#: templates/contacts/contacts.inc:197
+msgid "Add to attendees"
+msgstr "Katýlýmcýlara ekle"
+
+#: contacts.php:76 templates/contacts/contacts.inc:138
+#: templates/attendees/attendees.inc:85
+msgid "Address Book"
+msgstr "Adres Defteri"
+
+#: config/prefs.php.dist:69
+msgid "Address Books"
+msgstr "Adres Defterleri"
+
+#: templates/search/search.inc:11 templates/search/search_advanced.inc:8
+msgid "Advanced Search"
+msgstr "Geliþmiþ Arama"
+
+#: templates/view/view.inc:47
+msgid "Alarm"
+msgstr "Alarm"
+
+#: lib/Driver.php:2184
+#, php-format
+msgid "Alarm %d days before"
+msgstr "%d gün önce alarm"
+
+#: lib/Driver.php:2189
+#, php-format
+msgid "Alarm %d hours before"
+msgstr "%d saat önce alarm"
+
+#: lib/Driver.php:2194
+#, php-format
+msgid "Alarm %d minutes before"
+msgstr "%d dakika önce alarm"
+
+#: lib/Driver.php:2179
+#, php-format
+msgid "Alarm %d weeks before"
+msgstr "%d hafta önce alarm"
+
+#: lib/Driver.php:2183
+msgid "Alarm 1 day before"
+msgstr "Bir gün önce alarm"
+
+#: lib/Driver.php:2188
+msgid "Alarm 1 hour before"
+msgstr "Bir saat önce alarm"
+
+#: lib/Driver.php:2193
+msgid "Alarm 1 minute before"
+msgstr "Bir dakika önce alarm"
+
+#: lib/Driver.php:2178
+msgid "Alarm 1 week before"
+msgstr "Bir hafta önce alarm"
+
+#: data.php:61
+msgid "Alarm Date"
+msgstr "Alarm Günü"
+
+#: data.php:60
+msgid "Alarm Span (minutes)"
+msgstr "Alarm Aralýðý (dakika)"
+
+#: data.php:62
+msgid "Alarm Time"
+msgstr "Alarm Zamaný"
+
+#: templates/prefs/default_alarm_management.inc:24 templates/edit/edit.inc:166
+msgid "Alarm Unit"
+msgstr "Alarm Birimi"
+
+#: templates/prefs/default_alarm_management.inc:22 templates/edit/edit.inc:164
+msgid "Alarm Value"
+msgstr "Alarm Deðeri"
+
+#: templates/edit/edit.inc:159
+msgid "Alarm enabled"
+msgstr "Alarm etkin"
+
+#: templates/edit/edit.inc:39 templates/delete/delete.inc:27
+msgid "All"
+msgstr "Tümü"
+
+#: lib/FBView.php:127 lib/FBView.php:130 lib/FBView.php:133
+msgid "All Attendees"
+msgstr "Tüm Katýlýmcýlar"
+
+#: templates/perms/perms.inc:84
+msgid "All Authenticated Users"
+msgstr "Tüm Doðrulanmýþ Kullanýcýlar"
+
+#: lib/Block/month.php:42
+msgid "All Calendars"
+msgstr "Tüm Takvimler"
+
+#: templates/search/search.inc:59
+msgid "All Future"
+msgstr "Tüm Gelecek"
+
+#: templates/search/search.inc:53
+msgid "All Past"
+msgstr "Tüm Geçmiþ"
+
+#: lib/Block/month.php:24 lib/Block/summary.php:28 lib/Block/monthlist.php:30
+#: lib/Block/prevmonthlist.php:27
+msgid "All Visible"
+msgstr "Tüm Görünenler"
+
+#: templates/edit/edit_timespan.inc:119 lib/Driver.php:2287 lib/DayView.php:90
+#: lib/DayView.php:93 lib/WeekView.php:127 lib/WeekView.php:134
+#: lib/Views/Week.php:148 lib/Views/Week.php:155 lib/Views/Day.php:97
+#: lib/Views/Day.php:100
+msgid "All day"
+msgstr "Tüm gün"
+
+#: lib/Block/summary.php:177
+msgid "All day event"
+msgstr "Tüm etkinlik günü"
+
+#: templates/data/export.inc:33
+msgid "All events"
+msgstr "Tüm etkinlikler"
+
+#: lib/api.php:664 lib/api.php:675
+msgid "Already Exists"
+msgstr "Zaten Var"
+
+#: templates/search/search_advanced.inc:48
+#: templates/search/search_advanced.inc:70 lib/Kronolith.php:1265
+msgid "Any"
+msgstr "Herhangi"
+
+#: templates/javascript/goto.js:71
+msgid "April"
+msgstr "Nisan"
+
+#: templates/data/export.inc:85 templates/data/export.inc:176
+#: templates/edit/edit_timespan.inc:36 templates/edit/edit_timespan.inc:90
+msgid "At"
+msgstr "Tam zaman olarak"
+
+#: lib/Kronolith.php:1432
+msgid ""
+"Attached is an iCalendar file with more information about the event. If your "
+"mail client supports iTip requests you can use this file to easily update "
+"your local copy of the event."
+msgstr ""
+"Ekte etkinlik hakkýnda daha fazla bilginin yer aldýðý iCalendar dosyasý "
+"bulunmaktadýr.Eðer eposta istemciniz iTip isteklerini destekliyorsa bu dosya "
+"ile kolayca etkinliðin yerel kopyanýsýný düzenleyebilirsiniz."
+
+#: perms.php:45
+msgid "Attempt to edit a non-existent share."
+msgstr "Varolmayan bir paylaþýmý silmeye çalýþýyorsunuz."
+
+#: templates/attendees/attendees.inc:48 templates/attendees/attendees.inc:60
+#: templates/view/view.inc:172
+msgid "Attendance"
+msgstr "Katýlým"
+
+#: templates/attendees/attendees.inc:47 templates/view/view.inc:171
+msgid "Attendee"
+msgstr "Katýlýmcýlar"
+
+#: templates/edit/edit.inc:193 templates/view/view.inc:168
+msgid "Attendees"
+msgstr "Katýlýmcýlar"
+
+#: templates/javascript/goto.js:75
+msgid "August"
+msgstr "Aðustos"
+
+#: templates/prefs/sourceselect.inc:291 templates/prefs/sourceselect.inc:293
+msgid "Available Address books:"
+msgstr "Mevcut Adres Defteri:"
+
+#: templates/search/search.inc:8 templates/search/search_advanced.inc:11
+msgid "Basic Search"
+msgstr "Basit Arama"
+
+#: config/keywords.php.dist:17
+msgid "Birthday"
+msgstr "Doðum günü"
+
+#: lib/FBView.php:89 lib/FBView.php:110 templates/fbview/legend.html:9
+msgid "Busy"
+msgstr "Meþgul"
+
+#: templates/search/search_advanced.inc:42
+msgid "C_alendar"
+msgstr "T_akvim"
+
+#: templates/edit/edit.inc:67
+msgid "Cal_endar"
+msgstr "Tak_vim"
+
+#: templates/calendar_list.php:22 templates/calendars/calendars.inc:150
+#: lib/Block/month.php:21 lib/Block/summary.php:22 lib/Block/monthlist.php:21
+#: lib/Block/prevmonthlist.php:21
+msgid "Calendar"
+msgstr "Takvim"
+
+#: templates/panel.inc:6
+msgid "Calendar Information"
+msgstr "Takvim Bilgisi"
+
+#: templates/calendar_list.php:19
+msgid "Calendar List"
+msgstr "Takvim Listesi"
+
+#: lib/Block/summary.php:3
+msgid "Calendar Summary"
+msgstr "Takvim Özeti"
+
+#: data.php:254
+msgid "Calendar successfully purged."
+msgstr "Takvim baþarýyla boþaltýldý."
+
+#: templates/panel.inc:23 templates/panel.inc:24 config/prefs.php.dist:27
+#: config/prefs.php.dist:35 config/prefs.php.dist:60
+msgid "Calendars"
+msgstr "Takvimler"
+
+#: templates/calendar_titles.inc:8
+msgid "Calendars Printed: "
+msgstr "Yazdýrýlan Takvimler: "
+
+#: calendars.php:27
+msgid "Calendars must have a name."
+msgstr "Takvimlerin baþlýðý olmalý."
+
+#: data.php:270
+msgid "Can't create a new event."
+msgstr "Yeni etkinlik yaratýlamýyor."
+
+#: templates/edit/edit.inc:51 templates/edit/edit.inc:382
+#: templates/delete/one.inc:25 templates/delete/delete.inc:28
+#: lib/Forms/DeleteCalendar.php:45 lib/Forms/DeleteCalendar.php:51
+#: lib/Forms/UnsubscribeRemoteCalendar.php:39
+#: lib/Forms/UnsubscribeRemoteCalendar.php:45
+msgid "Cancel"
+msgstr "Ýptal"
+
+#: lib/Kronolith.php:1148
+msgid "Cancelled"
+msgstr "Ýptal edildi"
+
+#: lib/Kronolith.php:1406
+#, php-format
+msgid "Cancelled: %s"
+msgstr "%s iptal edildi."
+
+#: lib/Driver/kolab.php:1332
+#, php-format
+msgid "Cannot delete event: %s"
+msgstr "%s etkinliði silinemedi"
+
+#: templates/edit/edit.inc:94 templates/search/search_advanced.inc:63
+msgid "Categor_y"
+msgstr "Katego_ri"
+
+#: data.php:64 templates/view/view.inc:6 templates/search/event_headers.inc:4
+msgid "Category"
+msgstr "Kategori"
+
+#: calendars/index.php:65 templates/calendar_list.php:54
+msgid "Change Permissions"
+msgstr "Ýzinleri Deðiþtir"
+
+#: config/prefs.php.dist:52
+msgid ""
+"Choose how you want to be notified about event changes, event alarms and "
+"upcoming events."
+msgstr ""
+"Etkinlik deðiþimleri, etkinlik alarmlarý ve yaklaþan etkinliklere iliþkin ne "
+"þekilde bildirim almak istediðinizi seçiniz."
+
+#: config/prefs.php.dist:383
+msgid "Choose how you want to receive reminders for events with alarms:"
+msgstr "Alarm kurulmuþ etkinlikler için hatýrlatma yöntemini seçin:"
+
+#: config/prefs.php.dist:340
+msgid ""
+"Choose if you want to be notified of new, edited, and deleted events by "
+"email:"
+msgstr ""
+"Eposta aracýlýðý ile yeni, düzenlenmiþ veya silinmiþ takvimlerden haberdar "
+"edilmek için seçiniz."
+
+#: config/prefs.php.dist:353
+msgid "Choose if you want to receive daily agenda email reminders:"
+msgstr "Günlük olarak eposta ile ajanda hatýrlatmasý için seçiniz:"
+
+#: config/prefs.php.dist:374
+msgid "Choose if you want to receive reminders for events with alarms:"
+msgstr "Alarmlý etkinlikler için hatýrlatma iletilmesi için seçiniz:"
+
+#: templates/prefs/search_abook_select.inc:19
+msgid "Choose the address books to search for free/busy URLs:"
+msgstr "Serbest/meþgul URL lerinin aranacaðý adres defterlerini seçin."
+
+#: templates/prefs/fb_cals_select.inc:28
+msgid "Choose the calendars to include in the above Free/Busy URL:"
+msgstr "Yukarýdaki serbest/meþgul URL sine eklenecek takvimleri seçiniz:"
+
+#: config/prefs.php.dist:440
+msgid "Choose the calendars to include when generating Free/Busy URLs:"
+msgstr "Serbest/meþgul URL yaratýrken eklenecek takvimleri seçiniz:"
+
+#: templates/prefs/sourceselect.inc:287
+msgid "Choose the order of address books to search when expanding addresses."
+msgstr "Adresleri açarken aranacak adres defterini seçin."
+
+#: config/prefs.php.dist:188
+msgid "Choose the views to show event locations in:"
+msgstr "Etkinlik yerlerini göstermek için görünüm seçin:"
+
+#: config/prefs.php.dist:176
+msgid "Choose the views to show event start and end times in:"
+msgstr "Etkinlik baþlama ve bitiþ saatlerini göstermek için görünüm seçin:"
+
+#: config/prefs.php.dist:37
+msgid "Choose which holidays to display"
+msgstr "Gösterilecek tatilleri seçin"
+
+#: config/prefs.php.dist:29
+msgid "Choose your default calendar."
+msgstr "Öntanýmlý takviminizi seçiniz."
+
+#: templates/attendees/attendees.inc:95
+msgid "Clear all attendees"
+msgstr "Bütün katýlýmcýlarý sil"
+
+#: templates/prefs/sourceselect.inc:317
+msgid ""
+"Click on one of your selected address books and then select all fields to "
+"search."
+msgstr ""
+"Seçilmiþ adres defterlerinizden birine týklayýn ve bütün alanlarý aramak "
+"için seçin."
+
+#: templates/calendar_list.php:40 templates/calendar_list.php:41
+#: templates/calendar_list.php:50 templates/calendar_list.php:51
+msgid "Click or copy this URL to display this calendar"
+msgstr "Bu takvimi görüntülemek için týklayýnýz ya da bu URL'yi kopyalayýn"
+
+#: templates/javascript_defs.php:17
+msgid "Close"
+msgstr "Kapat"
+
+#: templates/perms/perms.inc:9
+msgid "Close Window"
+msgstr "Pencereyi Kapat"
+
+#: templates/contacts/contacts.inc:198
+msgid "Close window"
+msgstr "Pencereyi Kapat"
+
+#: data.php:30 templates/data/import.inc:13
+msgid "Comma separated values"
+msgstr "Virgül ile ayrýlmýþ deðerler"
+
+#: config/prefs.php.dist:81
+msgid "Confirm deletion of events?"
+msgstr "Silinecek etkinliði doðruluyor musunuz?"
+
+#: lib/Kronolith.php:1145
+msgid "Confirmed"
+msgstr "Onaylandý"
+
+#: templates/calendars/calendars.inc:220
+msgid "Copy the URL below for use wherever you need your Free/Busy URL:"
+msgstr "Heryerden ulaþabildiðiniz bu Serbest/Meþgul URLnizi yapýþtýrýnýz:"
+
+#: templates/prefs/fb_cals_select.inc:6
+msgid "Copy this URL for use wherever you need your Free/Busy URL:"
+msgstr "Her yerden ulaþabileceðiniz bu Serbest/Meþgul URL nizi kopyalayýn:"
+
+#: lib/Kronolith.php:459
+#, php-format
+msgid "Could not open %s."
+msgstr "%s açýlamadý."
+
+#: templates/calendars/calendars.inc:129 lib/Forms/CreateCalendar.php:39
+msgid "Create"
+msgstr "Yarat"
+
+#: templates/calendars/calendars.inc:115 lib/Forms/CreateCalendar.php:34
+msgid "Create Calendar"
+msgstr "Takvim yarat"
+
+#: templates/week/head.inc:29 lib/DayView.php:90 lib/DayView.php:192
+#: lib/Views/Day.php:97 lib/Views/Day.php:256 lib/Views/Month.php:173
+msgid "Create a New Event"
+msgstr "Yeni Bir Etkinlik Yarat"
+
+#: templates/calendar_list.php:10
+msgid "Create a new Local Calendar"
+msgstr "Yeni bir Yerel Takvim yarat"
+
+#: templates/view/view.inc:74
+msgid "Created"
+msgstr "Yaratýldý"
+
+#: templates/edit/edit.inc:37 templates/delete/delete.inc:25
+msgid "Current"
+msgstr "Þu Anki Zaman"
+
+#: lib/Recurrence.php:192
+msgid "Daily"
+msgstr "Günlük"
+
+#: templates/edit/edit.inc:226 templates/view/view.inc:96
+msgid "Daily: Recurs every"
+msgstr "Günlük: Tekrarlama sýklýðý"
+
+#: attendees.php:170 lib/Kronolith.php:1738 lib/Block/tree_menu.php:21
+#: config/prefs.php.dist:90
+msgid "Day"
+msgstr "Gün"
+
+#: templates/prefs/default_alarm_management.inc:28 templates/edit/edit.inc:170
+#: templates/view/view.inc:56
+msgid "Day(s)"
+msgstr "Gün"
+
+#: viewevent.php:113 lib/Kronolith.php:1780
+msgid "De_lete"
+msgstr "Si_l"
+
+#: templates/javascript/goto.js:79
+msgid "December"
+msgstr "Aralýk"
+
+#: lib/Kronolith.php:1175
+msgid "Declined"
+msgstr "Reddedildi"
+
+#: templates/prefs/default_alarm_management.inc:21
+msgid "Default Alarm Setting:"
+msgstr "Varsayýlan Alarm Ayarlarý:"
+
+#: config/prefs.php.dist:28
+msgid "Default Calendar"
+msgstr "Ön Tanýmlý Takvim"
+
+#: templates/perms/perms.inc:34 templates/perms/perms.inc:73
+#: templates/perms/perms.inc:90 templates/perms/perms.inc:114
+#: templates/perms/perms.inc:131 templates/perms/perms.inc:155
+#: templates/perms/perms.inc:172 templates/perms/perms.inc:196
+#: templates/perms/perms.inc:213 templates/perms/perms.inc:237
+#: templates/perms/perms.inc:278 templates/perms/perms.inc:295
+#: templates/perms/perms.inc:319 templates/perms/perms.inc:353
+msgid "Delegate"
+msgstr "Yetkili"
+
+#: calendars/index.php:66 templates/calendar_list.php:56
+#: templates/prefs/remote_cal_management.inc:23
+#: templates/calendars/calendars.inc:205 templates/delete/one.inc:24
+#: templates/perms/perms.inc:33 templates/perms/perms.inc:69
+#: templates/perms/perms.inc:89 templates/perms/perms.inc:110
+#: templates/perms/perms.inc:130 templates/perms/perms.inc:151
+#: templates/perms/perms.inc:171 templates/perms/perms.inc:192
+#: templates/perms/perms.inc:212 templates/perms/perms.inc:233
+#: templates/perms/perms.inc:274 templates/perms/perms.inc:294
+#: templates/perms/perms.inc:315 templates/perms/perms.inc:349
+#: lib/Driver.php:1303 lib/Driver.php:2246 lib/Forms/DeleteCalendar.php:45
+msgid "Delete"
+msgstr "Sil"
+
+#: delevent.php:40 lib/Driver.php:2245 lib/Views/DeleteEvent.php:29
+#: lib/Forms/DeleteCalendar.php:40
+#, php-format
+msgid "Delete %s"
+msgstr "%s Sil"
+
+#: editevent.php:72
+msgid "Delete Event"
+msgstr "Etkinliði Sil"
+
+#: lib/Driver.php:1302
+#, php-format
+msgid "Delete exception on %s"
+msgstr "%s için istisnalarý sil"
+
+#: templates/edit/edit.inc:180 templates/search/search_advanced.inc:103
+msgid "Descri_ption"
+msgstr "Açýk_lama"
+
+#: templates/search/search.inc:28
+msgid "Descri_ption:"
+msgstr "_Taným:"
+
+#: data.php:63 templates/calendars/calendars.inc:179
+#: templates/view/view.inc:155 lib/Forms/CreateCalendar.php:37
+#: lib/Forms/EditCalendar.php:44
+msgid "Description"
+msgstr "Taným"
+
+#: templates/contacts/contacts.inc:186
+msgid "Display"
+msgstr "Göster"
+
+#: templates/calendars/calendars.inc:61
+msgid "Display Calendars"
+msgstr "Takvimleri Görüntüle"
+
+#: config/prefs.php.dist:9 config/prefs.php.dist:20
+msgid "Display Options"
+msgstr "Görüntüleme Seçenekleri"
+
+#: templates/calendar_list.php:24
+msgid "Display URL"
+msgstr "URL'i Göster"
+
+#: lib/Kronolith.php:1113
+msgid "Does not recur"
+msgstr "Özyinelemiyor"
+
+#: config/prefs.php.dist:361
+msgid ""
+"Don't send me a notification if I've added, changed or deleted the event?"
+msgstr ""
+"Etkinlik eklediðimde, deðiþtirdiðimde ya da sildiðimde bildirim "
+"gönderilmesin mi?"
+
+#: lib/Kronolith.php:677
+#, php-format
+msgid "Due: %s"
+msgstr "Gereken: %s"
+
+#: templates/edit/edit_timespan.inc:112
+msgid "Duration"
+msgstr "Süre"
+
+#: lib/Driver.php:1976
+msgid "Duration Day"
+msgstr "Süre (gün)"
+
+#: lib/Driver.php:1988
+msgid "Duration Hour"
+msgstr "Süre (saat)"
+
+#: lib/Driver.php:1999
+msgid "Duration Minute"
+msgstr "Süre"
+
+#: calendars/index.php:64 templates/calendar_list.php:42
+#: templates/calendar_list.php:52 templates/calendars/calendars.inc:174
+#: templates/perms/perms.inc:32 templates/perms/perms.inc:65
+#: templates/perms/perms.inc:88 templates/perms/perms.inc:106
+#: templates/perms/perms.inc:129 templates/perms/perms.inc:147
+#: templates/perms/perms.inc:170 templates/perms/perms.inc:188
+#: templates/perms/perms.inc:211 templates/perms/perms.inc:229
+#: templates/perms/perms.inc:270 templates/perms/perms.inc:293
+#: templates/perms/perms.inc:311 templates/perms/perms.inc:345
+#: lib/Driver.php:2239
+msgid "Edit"
+msgstr "Düzenle"
+
+#: editevent.php:33 templates/attendees/attendees.inc:57 lib/Driver.php:2238
+#: lib/Views/EditEvent.php:29 lib/Forms/EditCalendar.php:40
+#: lib/Forms/EditRemoteCalendar.php:34
+#, php-format
+msgid "Edit %s"
+msgstr "Düzenle %s"
+
+#: templates/edit/edit.inc:202
+msgid "Edit Attendees"
+msgstr "Katýlýmcýlarý Düzenle"
+
+#: templates/calendars/calendars.inc:144
+msgid "Edit Calendars"
+msgstr "Takvimleri Düzenle"
+
+#: perms.php:262
+msgid "Edit Permissions"
+msgstr "Ýzinleri Düzenle"
+
+#: perms.php:264
+#, php-format
+msgid "Edit Permissions for %s"
+msgstr "'%s' için izinleri düzenle"
+
+#: templates/attendees/attendees.inc:78
+msgid "Edit attendee"
+msgstr "Katýlýmcýlarý düzenle"
+
+#: attendees.php:234
+msgid "Edit attendees"
+msgstr "Katýlýmcýlarý Düzenle"
+
+#: templates/category_legend.inc:20
+msgid "Edit categories and colors"
+msgstr "Sýnýf ve renkleri düzenle"
+
+#: templates/perms/perms.inc:11
+#, php-format
+msgid "Edit permissions for %s"
+msgstr "%s için izinleri düzenle"
+
+#: templates/contacts/contacts.inc:189
+msgid "Email Address"
+msgstr "Eposta Adresi"
+
+#: templates/edit/edit_timespan.inc:57
+msgid "En_d"
+msgstr "S_on"
+
+#: data.php:58
+msgid "End Date"
+msgstr "Bitiþ Tarihi"
+
+#: templates/data/export.inc:161 lib/Driver.php:1947
+msgid "End Day"
+msgstr "Bitiþ Tarihi"
+
+#: templates/data/export.inc:178 lib/Driver.php:1960
+msgid "End Hour"
+msgstr "Bitiþ Saati"
+
+#: templates/data/export.inc:190 lib/Driver.php:1971
+msgid "End Minute"
+msgstr "Bitiþ Dakikasý"
+
+#: templates/data/export.inc:148 lib/Driver.php:1938
+msgid "End Month"
+msgstr "Bitiþ Ayý"
+
+#: templates/data/export.inc:125 templates/view/view.inc:41
+#: templates/search/event_headers.inc:8
+msgid "End On"
+msgstr "Bitiþ"
+
+#: data.php:59
+msgid "End Time"
+msgstr "Bitiþ Tarihi"
+
+#: templates/data/export.inc:134 lib/Driver.php:1927
+msgid "End Year"
+msgstr "Bitiþ yýlý"
+
+#: attendees.php:216
+#, php-format
+msgid "Error retrieving free/busy information for %s: %s"
+msgstr "%s için serbest/meþgul bilgilerinin aktarýmý sýrasýnda hata oluþtu: %s"
+
+#: attendees.php:196
+#, php-format
+msgid "Error retrieving your free/busy information: %s"
+msgstr "Serbest/meþgul bilgirinin aktarýmýnda hata oluþtur: %s"
+
+#: config/prefs.php.dist:44
+msgid "Event Defaults"
+msgstr "Etkinlik Varsayýlan Ayarlarý"
+
+#: lib/Kronolith.php:1585
+msgid "Event added:"
+msgstr "Eklenen etkinlik:"
+
+#: lib/Kronolith.php:1595
+msgid "Event deleted:"
+msgstr "Silinen etkinlik:"
+
+#: lib/Kronolith.php:1590
+msgid "Event edited:"
+msgstr "Düzenlenen etkinlik:"
+
+#: lib/Driver.php:1426
+#, php-format
+msgid "Event from %s to %s"
+msgstr "%sden itibaren %se kadar etkinlik"
+
+#: lib/Driver/sql.php:390
+msgid "Event not found"
+msgstr "Etkinlik bulunamadý"
+
+#: lib/Driver/kolab.php:431 lib/Driver/kolab.php:1158
+#: lib/Driver/kolab.php:1185 lib/Driver/kolab.php:1314
+#, php-format
+msgid "Event not found: %s"
+msgstr "Etkinlik bulunamadý: %s"
+
+#: config/prefs.php.dist:43 config/prefs.php.dist:50
+msgid "Events"
+msgstr "Etkinlikler"
+
+#: lib/Driver.php:1034
+msgid "Events must have a start date."
+msgstr "Etkinliðin baþlangýç tarihi olmalý."
+
+#: lib/Driver.php:996
+msgid "Events must have a title."
+msgstr "Etkinliðin baþlýðý olmalý."
+
+#: templates/edit/edit.inc:323 templates/view/view.inc:130
+msgid "Exceptions"
+msgstr "Ýstisnalar"
+
+#: templates/data/export.inc:209
+msgid "Export"
+msgstr "Dýþarý Aktar"
+
+#: templates/data/export.inc:8
+msgid "Export Calendar"
+msgstr "Takvimi Dýþarý Aktar"
+
+#: templates/panel.inc:59
+msgid "External Events:"
+msgstr "Dýþ Etkinlikler:"
+
+#: templates/javascript/goto.js:69
+msgid "February"
+msgstr "Þubat"
+
+#: templates/prefs/sourceselect.inc:327
+msgid "Fields to search"
+msgstr "Aranacak alanlar"
+
+#: templates/contacts/contacts.inc:143
+msgid "Find"
+msgstr "Bul"
+
+#: templates/edit/edit.inc:239 templates/javascript/goto.js:63
+#: lib/Block/month.php:107 lib/Views/Year.php:81
+msgid "Fr"
+msgstr "Cu"
+
+#: lib/Kronolith.php:1151
+msgid "Free"
+msgstr "Serbest"
+
+#: config/prefs.php.dist:61
+msgid "Free/Busy Information"
+msgstr "Serbest/Meþgul Bilgisi"
+
+#: templates/month/head.inc:21 templates/edit/javascript.inc:71
+#: templates/view/view.inc:103
+msgid "Friday"
+msgstr "Cuma"
+
+#: templates/edit/edit.inc:38 templates/delete/delete.inc:26
+msgid "Future"
+msgstr "Gelecek"
+
+#: config/keywords.php.dist:17
+msgid "Game"
+msgstr "Oyun"
+
+#: templates/search/search_advanced.inc:23
+msgid "General"
+msgstr "General"
+
+#: lib/Block/summary.php:153
+#, php-format
+msgid "Goto %s"
+msgstr "%s Git"
+
+#: templates/perms/perms.inc:289
+msgid "Groups"
+msgstr "Gruplar"
+
+#: templates/perms/perms.inc:125
+msgid "Guest Permissions"
+msgstr "Konuk Ýzinleri"
+
+#: templates/edit/javascript.inc:256
+msgid "Hide"
+msgstr "Sakla"
+
+#: config/prefs.php.dist:36
+msgid "Holidays"
+msgstr "Tatiller"
+
+#: templates/prefs/default_alarm_management.inc:27 templates/edit/edit.inc:169
+#: templates/view/view.inc:59
+msgid "Hour(s)"
+msgstr "Saat"
+
+#: config/prefs.php.dist:150
+msgid "How long should the time slots on the day and week views be?"
+msgstr "Gün ve Hafta görüntülerinde zaman aralýklarý ne kadar uzun olsun?"
+
+#: config/prefs.php.dist:392
+msgid "How many days of Free/Busy information should be generated?"
+msgstr "Kaç günlük Serbest/Meþgul bilgisi yaratýlmalý?"
+
+#: lib/Kronolith.php:1436
+#, php-format
+msgid ""
+"If your email client doesn't support iTip requests you can use one of the "
+"following links to accept or decline the event.\n"
+"\n"
+"To accept the event:\n"
+"%s\n"
+"\n"
+"To accept the event tentatively:\n"
+"%s\n"
+"\n"
+"To decline the event:\n"
+"%s\n"
+msgstr ""
+"Eðer eposta istemciniz iTip isteklerine cevap veremiyorsa baðlantýlardan "
+"birini etkinliði kabul veya red için kullanabilirsiniz.\n"
+"\n"
+"Etkinliði kabul etmek için:\n"
+"%s\n"
+"\n"
+"Etkinliði geçici olarak kabul etmek için:\n"
+"%s\n"
+"\n"
+"Etkinliði reddetmek için:\n"
+"%s\n"
+
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Calendar, Step %d"
+msgstr "Ýçeri Aktar, Adým %d"
+
+#: data.php:316
+msgid "Import/Export Calendar"
+msgstr "Ýçeri/Dýþarý Takvim Aktar"
+
+#: templates/perms/perms.inc:207
+msgid "Individual Users"
+msgstr "Bireysel Kullanýcýlar"
+
+#: templates/javascript/goto.js:68
+msgid "January"
+msgstr "Ocak"
+
+#: templates/javascript/goto.js:74
+msgid "July"
+msgstr "Temmuz"
+
+#: templates/javascript/goto.js:73
+msgid "June"
+msgstr "Haziran"
+
+#: data.php:66 templates/edit/edit.inc:336 templates/view/view.inc:138
+msgid "Keywords"
+msgstr "Anahtar Kelimeler"
+
+#: templates/calendar_list.php:23
+msgid "Kind"
+msgstr "Tür"
+
+#: templates/search/search.inc:55
+msgid "Last 24 hours"
+msgstr "Son 24 saat"
+
+#: templates/view/view.inc:81
+msgid "Last Modified"
+msgstr "Son Deðiþim"
+
+#: templates/month/head_side_by_side.inc:5 templates/month/head.inc:5
+msgid "Last Month"
+msgstr "Son Ay"
+
+#: templates/year/head.inc:3
+msgid "Last Year"
+msgstr "Son Yýl"
+
+#: templates/week/head.inc:6 templates/search/search.inc:54
+msgid "Last week"
+msgstr "Son hafta"
+
+#: templates/data/export.inc:29
+msgid "Limit the time span to export:"
+msgstr "Dýþarý aktarýlacak zaman aralýðýný sýnýrlandýrýnýz:"
+
+#: config/prefs.php.dist:403
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+"Iletiþim noktalarý ekranýný yüklerken tüm iletiþim noktalarýda listelensin "
+"mi? (Eðer  seçilmez kýlýnmýþsa, sadece açýkça aradýðýnýz iletiþim "
+"noktalarýný göreceksiniz. "
+
+#: templates/edit/edit.inc:101 templates/search/search_advanced.inc:85
+msgid "Lo_cation"
+msgstr "Ye_r"
+
+#: templates/javascript_defs.php:16
+msgid "Loading ..."
+msgstr "Yükleniyor..."
+
+#: templates/attendees/attendees.inc:81
+msgid "Loading..."
+msgstr "Yükleniyor..."
+
+#: templates/calendar_list.php:49
+msgid "Local"
+msgstr "Yerel"
+
+#: templates/calendar_info.php:16
+#, php-format
+msgid "Local calendar owned by %s."
+msgstr "Yerel takvimin sahibi %s."
+
+#: data.php:65 templates/prefs/remote_cal_management.inc:18
+#: templates/prefs/remote_cal_management.inc:52 templates/view/view.inc:14
+#: templates/search/event_headers.inc:5 lib/Driver.php:2269
+msgid "Location"
+msgstr "Yer"
+
+#: calendars/index.php:70 templates/calendar_list.php:4
+msgid "Manage Calendars"
+msgstr "Takvimleri Yönet"
+
+#: templates/javascript/goto.js:70
+msgid "March"
+msgstr "Mart"
+
+#: lib/api.php:133
+msgid "Maximum Number of Events"
+msgstr "Azami Etkinlik Sayýsý"
+
+#: lib/Block/summary.php:25 lib/Block/monthlist.php:27
+msgid "Maximum number of events to display (0 = no limit)"
+msgstr "Gösterilecek azami etkinlik sayýsý (0 = sýnýrsýz)"
+
+#: templates/javascript/goto.js:72
+msgid "May"
+msgstr "Mayýs"
+
+#: lib/Driver.php:2265
+msgid "Me"
+msgstr "Ben"
+
+#: config/keywords.php.dist:17
+msgid "Meeting"
+msgstr "Toplantý"
+
+#: lib/Block/tree_alarms.php:3
+msgid "Menu Alarms"
+msgstr "Menü Alarmlarý"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "Menü Listesi"
+
+#: templates/prefs/default_alarm_management.inc:26 templates/edit/edit.inc:168
+#: templates/view/view.inc:62
+msgid "Minute(s)"
+msgstr "Dakika"
+
+#: templates/edit/edit.inc:235 templates/javascript/goto.js:59
+#: lib/Block/month.php:107 lib/Views/Year.php:77
+msgid "Mo"
+msgstr "Pzt"
+
+#: templates/month/head.inc:17 templates/edit/javascript.inc:67
+#: templates/view/view.inc:99 config/prefs.php.dist:114
+msgid "Monday"
+msgstr "Pazartesi"
+
+#: attendees.php:173 lib/Kronolith.php:1744 lib/Block/tree_menu.php:24
+#: config/prefs.php.dist:93
+msgid "Month"
+msgstr "Ay"
+
+#: config/prefs.php.dist:173
+msgid "Month and Week Views"
+msgstr "Ay ve Hafta Görünümleri"
+
+#: config/prefs.php.dist:185
+msgid "Month, Week, and Day Views"
+msgstr "Ay, Hafta ve Gün Görünümleri"
+
+#: lib/Recurrence.php:195
+msgid "Monthly"
+msgstr "Aylýk"
+
+#: templates/edit/edit.inc:246 templates/edit/edit.inc:252
+#: templates/view/view.inc:108 templates/view/view.inc:110
+msgid "Monthly: Recurs every"
+msgstr "Aylýk: Tekrarlama sýklýðý"
+
+#: lib/Block/monthlist.php:24
+msgid "Months Ahead"
+msgstr "Gelecek Aylar"
+
+#: lib/Block/prevmonthlist.php:24
+msgid "Months Before"
+msgstr "Önceki Aylar"
+
+#: templates/prefs/sourceselect.inc:312
+msgid "Move down"
+msgstr "Aþagý taþý"
+
+#: templates/prefs/sourceselect.inc:310
+msgid "Move up"
+msgstr "Yukarý taþý"
+
+#: lib/api.php:935
+msgid "Multiple iCalendar components found; only one vEvent is supported."
+msgstr "Birçok iCalendar bileþeni bulundu; sadece bir vEvent destekleniyor."
+
+#: calendars.php:146 templates/calendars/calendars.inc:68
+msgid "My Calendars"
+msgstr "Takvimlerim:"
+
+#: templates/panel.inc:41
+msgid "My Calendars:"
+msgstr "Takvimlerim:"
+
+#: templates/prefs/fb_cals_select.inc:2 templates/calendars/calendars.inc:216
+msgid "My Free/Busy URL"
+msgstr "Serbest/Meþgul URLlerim"
+
+#: templates/prefs/remote_cal_management.inc:17
+#: templates/prefs/remote_cal_management.inc:44
+#: templates/contacts/contacts.inc:188 templates/calendars/calendars.inc:120
+#: templates/calendars/calendars.inc:163 lib/Forms/CreateCalendar.php:36
+#: lib/Forms/EditCalendar.php:43 lib/Forms/EditRemoteCalendar.php:36
+#: lib/Forms/SubscribeRemoteCalendar.php:36
+msgid "Name"
+msgstr "Ad"
+
+#: lib/Block/tree_menu.php:20
+msgid "New Event"
+msgstr "Yeni Etkinlik"
+
+#: lib/Kronolith.php:401
+#, php-format
+msgid ""
+"New calendar created and automatically shared with the following group(s): %"
+"s."
+msgstr ""
+"Yeni takvim yaratýldý ve otomatik olarak þu gruplarla paylaþtýrýldý: %s"
+
+#: templates/data/import.inc:33
+msgid "Next"
+msgstr "Sonraki"
+
+#: templates/search/search.inc:57
+msgid "Next 24 hours"
+msgstr "Gelecek 24 saat"
+
+#: lib/FBView/day.php:28
+msgid "Next Day"
+msgstr "Sonraki Gün"
+
+#: templates/month/head_side_by_side.inc:7 templates/month/head.inc:7
+#: lib/FBView/month.php:31
+msgid "Next Month"
+msgstr "Sonraki Ay"
+
+#: lib/FBView/week.php:31
+msgid "Next Week"
+msgstr "Sonraki Hafta"
+
+#: templates/year/head.inc:5
+msgid "Next Year"
+msgstr "Sonraki Sene"
+
+#: templates/day/head.inc:5
+msgid "Next day"
+msgstr "Sonraki gün"
+
+#: templates/week/head.inc:8 templates/search/search.inc:58
+msgid "Next week"
+msgstr "Sonraki hafta"
+
+#: config/prefs.php.dist:336 config/prefs.php.dist:349
+#: config/prefs.php.dist:370
+msgid "No"
+msgstr "Hayýr"
+
+#: templates/fbview/legend.html:13
+msgid "No Information"
+msgstr "Bilgi Yok"
+
+#: templates/edit/edit.inc:163 templates/view/view.inc:67
+msgid "No alarm"
+msgstr "Alarm yok"
+
+#: templates/attendees/attendees.inc:54
+msgid "No attendees"
+msgstr "Katýlýmcý yok"
+
+#: lib/api.php:1084
+msgid ""
+"No attendees have been updated because none of the provided email addresses "
+"have been found in the event's attendees list."
+msgstr ""
+"Hiçbir katýlýmcý güncellenemedi çünkü saðlanan eposta adreslerininhiçbiri "
+"etkinliðin katýlýmcý listesinde yer almýyordu."
+
+#: lib/Kronolith.php:1937
+msgid "No calendars are available to guests."
+msgstr "Konuklar için takvim bulunamamýþtýr."
+
+#: templates/edit/edit.inc:284 templates/view/view.inc:124
+msgid "No end date"
+msgstr "Son tarih yok"
+
+#: lib/Block/summary.php:208 lib/Block/monthlist.php:175
+#: lib/Block/prevmonthlist.php:166
+msgid "No events to display"
+msgstr "Görüntülenecek etkinlik yok"
+
+#: lib/FreeBusy.php:223
+#, php-format
+msgid "No free/busy information found at the free/busy url of %s."
+msgstr "%s'nin serbest/meþgul urlsinde hiç serbest/meþgul bilgisi bulunamadý."
+
+#: lib/Storage/kolab.php:67
+#, php-format
+msgid "No free/busy information is available for %s"
+msgstr "%s için serbest/meþgul bilgisi bulunamadý."
+
+#: lib/FreeBusy.php:224
+#, php-format
+msgid "No free/busy url found for %s."
+msgstr "%s için serbest/meþgul url bulunamadý."
+
+#: lib/api.php:391 lib/api.php:649 lib/api.php:688 lib/api.php:942
+msgid "No iCalendar data was found."
+msgstr "Hiç iCalendar verisi bulunamadý."
+
+#: templates/edit/edit.inc:221 lib/Driver.php:1287 lib/Recurrence.php:191
+msgid "No recurrence"
+msgstr "Tekrar yok"
+
+#: lib/FreeBusy.php:166
+msgid "No valid email address found"
+msgstr "Geçerli eposta adresi bulunamadý."
+
+#: templates/prefs/sourceselect.inc:35 lib/Kronolith.php:1182
+#: lib/Kronolith.php:1203
+msgid "None"
+msgstr "Hiçbiri"
+
+#: lib/Views/Event.php:26 lib/Views/DeleteEvent.php:27
+#: lib/Views/EditEvent.php:27
+msgid "Not Found"
+msgstr "Bulunamadý"
+
+#: lib/Storage/sql.php:155
+msgid "Not found"
+msgstr "Bulunamadý"
+
+#: config/prefs.php.dist:51
+msgid "Notifications"
+msgstr "Bildirimler"
+
+#: templates/javascript/goto.js:78
+msgid "November"
+msgstr "Kasým"
+
+#: templates/search/search.inc:56
+msgid "Now"
+msgstr "Þimdi"
+
+#: templates/perms/perms.inc:166
+msgid "Object Creator"
+msgstr "Nesne Yaratýcýsý"
+
+#: templates/javascript/goto.js:77
+msgid "October"
+msgstr "Ekim"
+
+#: templates/edit/edit_timespan.inc:13 templates/edit/edit_timespan.inc:62
+msgid "On"
+msgstr "Tam"
+
+#: config/prefs.php.dist:339 config/prefs.php.dist:352
+#: config/prefs.php.dist:373
+msgid "On all calendars I have read access to"
+msgstr "Tüm takvimlerde okuma hakkýna sahibim"
+
+#: config/prefs.php.dist:338 config/prefs.php.dist:351
+#: config/prefs.php.dist:372
+msgid "On all shown calendars"
+msgstr "Gösterilen tüm takvimlerde"
+
+#: config/prefs.php.dist:337 config/prefs.php.dist:350
+#: config/prefs.php.dist:371
+msgid "On my calendars only"
+msgstr "Sadece benim takviminde"
+
+#: perms.php:57
+msgid ""
+"Only the owner or system administrator may change ownership or owner "
+"permissions for a share"
+msgstr ""
+"Yalnýzca paylaþýmýn sahibi ya da sistem yöneticisi, paylaþým için sahiplik "
+"haklarý ve izinlerini deðiþtirebilir"
+
+#: lib/Kronolith.php:1200
+msgid "Optional"
+msgstr "Seçimli"
+
+#: lib/FBView.php:118
+msgid "Optional Attendees"
+msgstr "Seçimli Katýlýmcýlar"
+
+#: config/prefs.php.dist:68
+msgid "Other Options"
+msgstr "Diðer Seçenekler"
+
+#: lib/FBView.php:153
+msgid "Overview"
+msgstr "Önizleme"
+
+#: templates/view/view.inc:28
+msgid "Owner"
+msgstr "Sahip"
+
+#: templates/perms/perms.inc:28
+msgid "Owner Permissions"
+msgstr "Sahip izinleri"
+
+#: templates/perms/perms.inc:40 templates/perms/perms.inc:51
+msgid "Owner:"
+msgstr "Sahip:"
+
+#: lib/Driver.php:2264
+#, php-format
+msgid "Owner: %s"
+msgstr "Sahip: %s"
+
+#: templates/data/export.inc:119 templates/data/export.inc:204
+msgid "PM"
+msgstr "PM"
+
+#: lib/Forms/EditRemoteCalendar.php:39
+#: lib/Forms/SubscribeRemoteCalendar.php:39
+msgid "Password"
+msgstr "Þifre"
+
+#: templates/edit/edit.inc:216 templates/view/view.inc:93
+msgid "Pattern"
+msgstr "Tekrar Þekli"
+
+#: templates/delete/one.inc:22
+msgid "Permanently delete this event?"
+msgstr "Daimi olarak etkinlik silinsin mi?"
+
+#: lib/api.php:519 lib/api.php:563 lib/api.php:595 lib/api.php:628
+#: lib/api.php:727 lib/api.php:780 lib/api.php:878 lib/api.php:912
+#: lib/api.php:1003 lib/api.php:1059 lib/api.php:1119 lib/api.php:1149
+#: lib/Kronolith.php:1866 lib/Kronolith.php:1881 lib/Kronolith.php:1892
+#: lib/Driver/sql.php:782
+msgid "Permission Denied"
+msgstr "Ýzin Yok"
+
+#: lib/Forms/DeleteCalendar.php:56
+msgid "Permission denied"
+msgstr "Ýzin yok"
+
+#: templates/calendars/calendars.inc:171
+msgid "Permissions"
+msgstr "Ýzinler"
+
+#: lib/Imple/ContactAutoCompleter.php:227
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Lütfen geçersiz yada belirsiz adresleri çözün."
+
+#: config/prefs.php.dist:21
+msgid "Portal Options"
+msgstr "Genel Seçenekler"
+
+#: templates/fbview/legend.html:11
+msgid "Possible Meeting Time"
+msgstr "Olasý Toplantý Saati"
+
+#: lib/FBView/day.php:24
+msgid "Previous Day"
+msgstr "Önceki Gün"
+
+#: lib/FBView/month.php:25
+msgid "Previous Month"
+msgstr "Önceki Ay"
+
+#: lib/FBView/week.php:25
+msgid "Previous Week"
+msgstr "Önceki Hafta"
+
+#: templates/day/head.inc:3
+msgid "Previous day"
+msgstr "Önceki gün"
+
+#: config/prefs.php.dist:174 config/prefs.php.dist:186
+msgid "Print Views"
+msgstr "Baský Görünümleri"
+
+#: lib/Block/prevmonthlist.php:3 lib/Block/prevmonthlist.php:42
+msgid "Prior Events"
+msgstr "Önceki Etkinlikler"
+
+#: lib/Driver.php:1422
+#, php-format
+msgid "Private Event from %s to %s"
+msgstr "%s ile %s arasýnda Özel Etkinlik"
+
+#: lib/Driver.php:2209 lib/Driver.php:2210
+msgid "Private event"
+msgstr "Özel Etkinlik"
+
+#: templates/edit/edit.inc:120
+msgid "Private?"
+msgstr "Kiþisel?"
+
+#: templates/perms/perms.inc:31 templates/perms/perms.inc:61
+#: templates/perms/perms.inc:87 templates/perms/perms.inc:102
+#: templates/perms/perms.inc:128 templates/perms/perms.inc:143
+#: templates/perms/perms.inc:169 templates/perms/perms.inc:184
+#: templates/perms/perms.inc:210 templates/perms/perms.inc:225
+#: templates/perms/perms.inc:266 templates/perms/perms.inc:292
+#: templates/perms/perms.inc:307 templates/perms/perms.inc:341
+msgid "Read"
+msgstr "Okuma"
+
+#: lib/Forms/DeleteCalendar.php:43
+#, php-format
+msgid ""
+"Really delete the calendar \"%s\"? This cannot be undone and all data on "
+"this calendar will be permanently removed."
+msgstr ""
+"\"%s\" adlý takvim gerçekten silinsin mi? Bu geri çevrilemez. Bu "
+"takvimdekiveriler kalýcý olarak silinecek."
+
+#: lib/Forms/UnsubscribeRemoteCalendar.php:37
+#, php-format
+msgid "Really unsubscribe from the calendar \"%s\" (%s)?"
+msgstr "Gerçekten \"%s\" (%s) takvim üyeliðinizi sonlandýrmak istiyor musunuz?"
+
+#: templates/edit/edit.inc:281 templates/view/view.inc:123
+msgid "Recur Until"
+msgstr "Tekrarýn Sonlanacaðý Tarih"
+
+#: templates/edit/edit.inc:210 templates/view/view.inc:90
+msgid "Recurrence"
+msgstr "Tekrar"
+
+#: data.php:70
+msgid "Recurrence Data"
+msgstr "Tekrar Eden Veri"
+
+#: data.php:68
+msgid "Recurrence End Date"
+msgstr "Tekrar Son Tarihi"
+
+#: lib/Driver.php:2042
+msgid "Recurrence End Day"
+msgstr "Tekrarýn Son Günü"
+
+#: lib/Driver.php:2027
+msgid "Recurrence End Month"
+msgstr "Tekrarýn Son Ayý"
+
+#: lib/Driver.php:2010
+msgid "Recurrence End Year"
+msgstr "Tekrarýn Son Yýlý"
+
+#: data.php:69
+msgid "Recurrence Interval"
+msgstr "Tekrarlama Aralýðý"
+
+#: data.php:67
+msgid "Recurrence Type"
+msgstr "Tekrar Türü"
+
+#: lib/Kronolith.php:1116
+msgid "Recurs daily"
+msgstr "Günlük tekrar"
+
+#: lib/Kronolith.php:1123
+msgid "Recurs monthly"
+msgstr "Aylýk tekrar"
+
+#: lib/Kronolith.php:1119
+msgid "Recurs weekly"
+msgstr "Haftalýk tekrar"
+
+#: lib/Kronolith.php:1128
+msgid "Recurs yearly"
+msgstr "Yýllýk tekrar"
+
+#: lib/Scheduler/kronolith.php:261
+#, php-format
+msgid "Reminder: %s"
+msgstr "Hatýrlatma: %s"
+
+#: templates/calendar_list.php:39
+msgid "Remote"
+msgstr "Uzak"
+
+#: templates/calendar_info.php:5
+msgid "Remote Calendar from: "
+msgstr "Uzaktaki Takvimler:"
+
+#: templates/calendars/calendars.inc:92
+msgid "Remote Calendars"
+msgstr "Uzaktaki Takvimler:"
+
+#: templates/panel.inc:73
+msgid "Remote Calendars:"
+msgstr "Uzaktaki Takvimler:"
+
+#: templates/calendars/calendars.inc:195
+msgid "Remote Subscription URL"
+msgstr "Uzak Üyelik URLsi"
+
+#: templates/contacts/contacts.inc:172
+msgid "Remove"
+msgstr "Sil"
+
+#: templates/attendees/attendees.inc:57
+#, php-format
+msgid "Remove %s"
+msgstr "%s Sil"
+
+#: attendees.php:164
+msgid "Remove Attendee"
+msgstr "Katýlýmcýyý Sil"
+
+#: templates/prefs/sourceselect.inc:300
+msgid "Remove source"
+msgstr "Kaynaðý çýkar"
+
+#: lib/Driver.php:258
+msgid ""
+"Removing user data is not supported with the current calendar storage "
+"backend."
+msgstr ""
+"Geçerli takvim saklama sürücüsü, kullanýcý verisi silmeyi desteklemiyor."
+
+#: templates/data/import.inc:31
+msgid ""
+"Replace existing calendar with the imported one? <strong>Warning: This "
+"deletes all entries in your current calendar.</strong>"
+msgstr ""
+"Dýþarýdan aktarýlan takvimi varolan ile deðiþtirilsin mi? <b>Uyarý: Bu iþlem "
+"þu anki takviminizdeki tüm giriþleri siler.</b>"
+
+#: lib/Kronolith.php:1207
+msgid "Required"
+msgstr "Gerekli Alan"
+
+#: lib/FBView.php:97 lib/FBView.php:138 lib/FBView.php:141 lib/FBView.php:144
+msgid "Required Attendees"
+msgstr "Gereken Katýlýmcýlar"
+
+#: templates/edit/edit.inc:52 templates/edit/edit.inc:383
+msgid "Reset to Defaults"
+msgstr "Öntanýmlý deðerlere geri dön"
+
+#: templates/attendees/attendees.inc:49 templates/view/view.inc:173
+msgid "Response"
+msgstr "Yanýt"
+
+#: config/prefs.php.dist:141
+msgid ""
+"Restrict day and week views to these time slots, even if there <strong>are</"
+"strong> earlier or later events?"
+msgstr ""
+"Daha önce ya da daha sonra etkinlikler olsa da, gün ve hafta görünümlerini "
+"buzaman aralýðýna kýsýtlamak istediðinizden emin misiniz?"
+
+#: templates/edit/edit.inc:240 templates/javascript/goto.js:64
+#: lib/Block/month.php:107 lib/Views/Year.php:82
+msgid "Sa"
+msgstr "Cts"
+
+#: templates/month/head.inc:22 templates/edit/javascript.inc:72
+#: templates/view/view.inc:104
+msgid "Saturday"
+msgstr "Cumartesi"
+
+#: templates/panel.inc:83 templates/calendars/calendars.inc:204
+#: lib/Forms/EditCalendar.php:46 lib/Forms/EditRemoteCalendar.php:41
+msgid "Save"
+msgstr "Kaydet"
+
+#: templates/perms/perms.inc:364
+#, php-format
+msgid "Save %s"
+msgstr "Sakla: %s"
+
+#: viewevent.php:135 editevent.php:49 editevent.php:57
+#: templates/edit/edit.inc:40 lib/Kronolith.php:1775
+#: lib/Views/EditEvent.php:78 lib/Views/EditEvent.php:88
+msgid "Save As New"
+msgstr "Yeni Olarak Kaydet"
+
+#: templates/attendees/attendees.inc:93
+msgid "Save Attendees"
+msgstr "Katýlýmcýlarý Kaydet"
+
+#: addevent.php:55 editevent.php:52 new.php:56 lib/Views/EditEvent.php:81
+msgid "Save Event"
+msgstr "Etkinliði kaydet"
+
+#: templates/attendees/attendees.inc:94
+msgid "Save and Finish"
+msgstr "Kaydet ve Sonlandýr"
+
+#: search.php:91 templates/contacts/contacts.inc:155
+#: templates/calendars/search.inc:8 templates/search/search.inc:67
+#: templates/search/search_advanced.inc:114 lib/Block/tree_menu.php:26
+msgid "Search"
+msgstr "Arama"
+
+#: templates/calendars/search.inc:1
+msgid "Search Calendars"
+msgstr "Takvimleri Ara"
+
+#: templates/search/header.inc:6
+msgid "Search Results"
+msgstr "Arama Sonuçlarý"
+
+#: templates/panel.inc:29
+msgid "Search for Calendars:"
+msgstr "Takvim Ara"
+
+#: templates/calendars/search.inc:6
+msgid "Search for calendars containing:"
+msgstr "Þu sözü içeren takvimleri ara:"
+
+#: templates/contacts/contacts.inc:160
+msgid "Search results"
+msgstr "Arama Sonuçlarý"
+
+#: lib/Storage.php:135
+msgid "Searching free/busy is not available."
+msgstr "Serbest/meþgul aramasý þu anda kullanýlabilir deðil."
+
+#: templates/calendars/calendars.inc:154
+msgid "Select a calendar to edit"
+msgstr "Düzenlenecek takvimi seçiniz"
+
+#: templates/edit/edit.inc:302 templates/edit/edit_timespan.inc:29
+#: templates/edit/edit_timespan.inc:79
+msgid "Select a date"
+msgstr "Bir tarih seçin"
+
+#: templates/perms/perms.inc:329
+msgid "Select a group to add"
+msgstr "Eklenecek grubu seçin:"
+
+#: templates/perms/perms.inc:327
+msgid "Select a group to add:"
+msgstr "Eklenecek grubu seçin:"
+
+#: templates/perms/perms.inc:42
+msgid "Select a new owner:"
+msgstr "Bir sahip seçin:"
+
+#: templates/perms/perms.inc:246 templates/perms/perms.inc:248
+msgid "Select a user to add:"
+msgstr "Eklenecek kullanýcýyý seçin"
+
+#: config/prefs.php.dist:70
+msgid "Select address book sources for adding and searching for addresses."
+msgstr "Adres ekleme ve arama için adres defteri kaynaklarýný seçin."
+
+#: templates/prefs/sourceselect.inc:319
+msgid "Select all fields to search when expanding addresses."
+msgstr "Adresleri geniþletirken arama için bütün alanlarý seç."
+
+#: config/prefs.php.dist:11
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr ""
+"Onay seçeneklerini belirleyiniz (farklý olan gösterme þekllerini ve "
+"öntanýmlý olaný seçiniz)."
+
+#: templates/data/import.inc:18
+msgid "Select the calendar to import to:"
+msgstr "Ýçeri aktarýlacak bir takvim seçiniz:"
+
+#: templates/data/export.inc:19
+msgid "Select the calendar(s) to export from"
+msgstr "Dýþarý aktarýlacak takvim(ler)i seçiniz:"
+
+#: templates/data/export.inc:12
+msgid "Select the export format:"
+msgstr "Dýþarý aktarma biçimini seçin:"
+
+#: templates/data/import.inc:27
+msgid "Select the file to import:"
+msgstr "Ýçeri aktarýlacak dosyayý seçin:"
+
+#: config/prefs.php.dist:112
+msgid "Select the first weekday:"
+msgstr "Haftanýn ilk gününü seçiniz:"
+
+#: templates/data/import.inc:11
+msgid "Select the format of the source file:"
+msgstr "Kaynak dosyanýn biçimini seçin:"
+
+#: config/prefs.php.dist:236
+msgid "Select the time span to show:"
+msgstr "Gösterilecek saat aralýðýný seçiniz:"
+
+#: config/prefs.php.dist:94
+msgid "Select the view to display on startup:"
+msgstr "Baþlangýçta yer alacak görüntüyü seçiniz:"
+
+#: config/prefs.php.dist:22
+msgid "Select which events to show in the portal."
+msgstr "Portalda gösterilecek etkinlikleri seçiniz."
+
+#: templates/prefs/sourceselect.inc:303 templates/prefs/sourceselect.inc:305
+msgid "Selected Address books:"
+msgstr "Seçilmiþ Adres Defterleri:"
+
+#: templates/contacts/contacts.inc:175
+msgid "Selected addresses"
+msgstr "Seçilmiþ Adresler"
+
+#: templates/delete/one.inc:19 templates/delete/delete.inc:21
+msgid "Send a cancel notification to all attendees when deleting this event?"
+msgstr ""
+"Etkinliðin silinmesi ile bütün katýlýmcýlara iptal bilgilendirmesi yollansýn "
+"mý?"
+
+#: templates/view/view.inc:177
+#, php-format
+msgid "Send an email to %s"
+msgstr "%s'e eposta yollansýn"
+
+#: templates/edit/edit.inc:375
+msgid "Send invitations to all attendees?"
+msgstr "Tüm katýlýmcýlara davetiye gönderilsin mi?"
+
+#: templates/edit/edit.inc:375
+msgid "Send updates to all attendees?"
+msgstr "Tüm katýlýmcýlara güncelleme bilgisi gönderilsin mi?"
+
+#: templates/javascript/goto.js:76
+msgid "September"
+msgstr "Eylül"
+
+#: config/prefs.php.dist:45
+msgid "Set default values for new events."
+msgstr "Yeni görevler için öntanýmlý deðerleri ayarla."
+
+#: templates/edit/edit_timespan.inc:79
+msgid "Set end date"
+msgstr "Bitiþ tarihi belirtiniz"
+
+#: templates/edit/edit.inc:302
+msgid "Set recurrence end date"
+msgstr "Özyilemeli son tarihi belirtiniz"
+
+#: templates/edit/edit_timespan.inc:29
+msgid "Set start date"
+msgstr "Baþlama tarihi belirtiniz"
+
+#: config/prefs.php.dist:62
+msgid ""
+"Set your Free/Busy calendars and your own and other users' Free/Busy options."
+msgstr ""
+"Kendinizin ve diðerlerinin serbest/meþgul seçeneklerini ve kendinizin "
+"serbest/meþgul takvimlerini ayarlayýnýz."
+
+#: calendars.php:91
+#, php-format
+msgid "Share not found: %s"
+msgstr "Paylaþým bulunamadý: %s"
+
+#: templates/calendars/calendars.inc:80
+msgid "Shared Calendars"
+msgstr "Paylaþýlan Takvimler"
+
+#: templates/panel.inc:50
+msgid "Shared Calendars:"
+msgstr "Paylaþýlan Takvimler:"
+
+#: templates/edit/javascript.inc:262 templates/perms/perms.inc:30
+#: templates/perms/perms.inc:57 templates/perms/perms.inc:86
+#: templates/perms/perms.inc:98 templates/perms/perms.inc:127
+#: templates/perms/perms.inc:139 templates/perms/perms.inc:168
+#: templates/perms/perms.inc:180 templates/perms/perms.inc:209
+#: templates/perms/perms.inc:221 templates/perms/perms.inc:262
+#: templates/perms/perms.inc:291 templates/perms/perms.inc:303
+#: templates/perms/perms.inc:337
+msgid "Show"
+msgstr "Göster"
+
+#: calendar_search.php:25
+msgid "Show Calendar"
+msgstr "Takvimi Göster"
+
+#: config/prefs.php.dist:218
+msgid "Show Free/Busy legend?"
+msgstr "Serbest/meþgul göstergesi gösterilsin mi?"
+
+#: config/prefs.php.dist:208
+msgid "Show calendar options panel?"
+msgstr "Takvim seçenek paneli gösterilsin mi?"
+
+#: config/prefs.php.dist:198
+msgid "Show category legend?"
+msgstr "Kategori açýklamasý gösterilsin mi?"
+
+#: config/prefs.php.dist:164
+msgid "Show delete, alarm, and recurrence icons in calendar views?"
+msgstr "Sil, alarm ve tekrar simgeleri takvimde görünsün mü?"
+
+#: config/prefs.php.dist:265
+msgid "Show external events using category colors?"
+msgstr "Dýþ etkinlikler kategori renkleri kullanýlarak gösterilsin mi?"
+
+#: config/prefs.php.dist:256
+msgid "Show only events that have an alarm set?"
+msgstr "Sadece alarmý kurulmuþ etkinlikler mi gösterilsin?"
+
+#: config/prefs.php.dist:227
+msgid "Show shared calendars side-by-side?"
+msgstr "Paylaþtýrýlan takvimler yan yana gösterilsin mi?"
+
+#: config/prefs.php.dist:103
+msgid "Show time of day between each day in week views?"
+msgstr "Hafta görüntüsü içinde her gün içi zamanlarý göstersin mi?"
+
+#: templates/edit/edit_timespan.inc:11
+msgid "Sta_rt"
+msgstr "Baþla_ma"
+
+#: data.php:56
+msgid "Start Date"
+msgstr "Baþlama Tarihi"
+
+#: templates/data/export.inc:68 lib/Driver.php:1902
+msgid "Start Day"
+msgstr "Baþlama Günü"
+
+#: templates/data/export.inc:87 lib/Driver.php:1913
+msgid "Start Hour"
+msgstr "Baþlangýç Saati"
+
+#: templates/data/export.inc:102 lib/Driver.php:1923
+msgid "Start Minute"
+msgstr "Baþlangýç Dakikasý"
+
+#: templates/data/export.inc:54 lib/Driver.php:1893
+msgid "Start Month"
+msgstr "Baþlangýç Ayý"
+
+#: templates/data/export.inc:37 templates/view/view.inc:35
+#: templates/search/event_headers.inc:7
+msgid "Start On"
+msgstr "Baþlama"
+
+#: data.php:57
+msgid "Start Time"
+msgstr "Baþlama Zamaný"
+
+#: templates/data/export.inc:39 lib/Driver.php:1882
+msgid "Start Year"
+msgstr "Baþlangýç yýlý"
+
+#: templates/edit/edit.inc:110 templates/search/search_advanced.inc:94
+msgid "Stat_us"
+msgstr "_Durum"
+
+#: templates/view/view.inc:21 templates/search/event_headers.inc:6
+msgid "Status"
+msgstr "Durum"
+
+#: lib/Storage.php:143
+msgid "Storing free/busy is not available."
+msgstr "Serbest/meþgul bilgisinin saklanmasý kullanýlabilir deðil."
+
+#: templates/edit/edit.inc:241 templates/javascript/goto.js:65
+#: lib/Block/month.php:109 lib/Block/month.php:111 lib/Views/Year.php:75
+#: lib/Views/Year.php:84
+msgid "Su"
+msgstr "Pzr"
+
+#: lib/Forms/SubscribeRemoteCalendar.php:41
+msgid "Subscribe"
+msgstr "Üye ol"
+
+#: templates/calendar_list.php:15 lib/Forms/SubscribeRemoteCalendar.php:34
+msgid "Subscribe to a Remote Calendar"
+msgstr "Uzaktaki Bir Takvime Abone Ol"
+
+#: templates/calendar_list.php:25
+msgid "Subscription URL"
+msgstr "Abonelik URL'si"
+
+#: templates/month/head.inc:15 templates/month/head.inc:24
+#: templates/edit/javascript.inc:66 templates/view/view.inc:105
+#: config/prefs.php.dist:113
+msgid "Sunday"
+msgstr "Pazar"
+
+#: lib/Kronolith.php:1155 lib/Kronolith.php:1178
+msgid "Tentative"
+msgstr "Geçici"
+
+#: templates/edit/edit.inc:238 templates/javascript/goto.js:62
+#: lib/Block/month.php:107 lib/Views/Year.php:80
+msgid "Th"
+msgstr "Prþ"
+
+#: data.php:244
+#, php-format
+msgid "The %s file didn't contain any events."
+msgstr "%s dosyasý herhangi bir etkinlik içermiyor."
+
+#: lib/Driver.php:48
+msgid "The Calendar backend is not currently available."
+msgstr "Alarm arka aracý þu anda kullanýlabilir deðil."
+
+#: lib/Driver.php:203
+#, php-format
+msgid "The Calendar backend is not currently available: %s"
+msgstr "Takvim arka aracý þu anda kullanýlabilir deðil: %s"
+
+#: templates/contacts/contacts.inc:72
+msgid "The Edit Attendees screen is no longer present. Exiting."
+msgstr "Katýlýmcýlarý Düzenle ekraný bulunmuyor. Çýkýyorum."
+
+#: calendars.php:84
+#, php-format
+msgid "The calendar \"%s\" cannot be deleted."
+msgstr "Takvim \"%s\" silinemiyor."
+
+#: calendars.php:45 calendars/create.php:33
+#, php-format
+msgid "The calendar \"%s\" has been created."
+msgstr "\"%s\" takvimi yaratýldý."
+
+#: calendars.php:106 calendars/delete.php:50
+#, php-format
+msgid "The calendar \"%s\" has been deleted."
+msgstr "\"%s\" takvimi silindi."
+
+#: calendars.php:68 calendars/edit.php:44
+#, php-format
+msgid "The calendar \"%s\" has been renamed to \"%s\"."
+msgstr "\"%s\" takvimi %s ismi adýnda kaydedildi."
+
+#: calendars.php:70 calendars/edit.php:46 calendars/remote_edit.php:49
+#, php-format
+msgid "The calendar \"%s\" has been saved."
+msgstr "\"%s\" takvimi kaydedildi."
+
+#: data.php:252
+#, php-format
+msgid "The calendar could not be purged: %s"
+msgstr "Takvim boþaltýlamadý: %s"
+
+#: templates/edit/javascript.inc:156
+msgid "The end date must be later than the start date."
+msgstr "Sonlandýrma tarihi baþlama tarihinden sonra olmalý."
+
+#: lib/Kronolith.php:1586
+#, php-format
+msgid ""
+"The event \"%s\" has been added to \"%s\" calendar, which is on %s at %s."
+msgstr ""
+"Saat %s'de ve yer olarak %s'de yer alan \"%s\" etkinliði \"%s\" takvimine "
+"eklendi. "
+
+#: lib/Kronolith.php:1596
+#, php-format
+msgid ""
+"The event \"%s\" has been deleted from \"%s\" calendar, which was on %s at %"
+"s."
+msgstr ""
+"Saat %s'de ve yer olarak %s'de yer alan \"%s\" etkinliði \"%s\" takviminden "
+"silindi. "
+
+#: lib/Kronolith.php:1591
+#, php-format
+msgid ""
+"The event \"%s\" has been edited on \"%s\" calendar, which is on %s at %s."
+msgstr ""
+"Saat %s'de ve yer olarak %s'de yer alan \"%s\" etkinliði \"%s\" takviminde "
+"düzenlendi. "
+
+#: lib/Kronolith.php:1476
+#, php-format
+msgid "The event notification to %s was successfully sent."
+msgstr "%s'e etkinlik bilgisi baþarýlý bir þekide gönderildi."
+
+#: lib/Kronolith.php:1430
+msgid "The following is a more detailed description of the event:"
+msgstr "Etkinliðin daha detaylý açýklamasý:"
+
+#: lib/FreeBusy.php:191
+#, php-format
+msgid "The free/busy url for %s cannot be retrieved."
+msgstr "%s için olan serbest/meþgul url bulunamadý."
+
+#: calendars/remote_edit.php:36 calendars/remote_unsubscribe.php:36
+msgid "The remote calendar was not found."
+msgstr "Uzaktaki takvim bulunamadý."
+
+#: attend.php:43
+msgid ""
+"The request was incomplete. Some parameters that are necessary to accept or "
+"decline an event are missing."
+msgstr ""
+"Ýstek eksik. Bir etkinliði kabul veya red için gerekli olan bazý "
+"parametreler bulunmuyor."
+
+#: lib/Views/Event.php:41 lib/Views/DeleteEvent.php:40
+#: lib/Views/EditEvent.php:43
+msgid "The requested event was not found."
+msgstr "Belirtilen etkinlik bulunamadý."
+
+#: templates/search/empty.inc:3
+msgid "There are no events matching the current criteria."
+msgstr "Geçerli ölçütlere uyan bir etkinlik bulunamadý."
+
+#: addeventaction.php:18 edit.php:46 edit.php:68 editeventaction.php:35
+#: add.php:24
+#, php-format
+msgid "There was an error accessing the calendar: %s"
+msgstr "Takvime eriþimde hata oluþtu: %s."
+
+#: addeventaction.php:34 add.php:44
+#, php-format
+msgid "There was an error adding the event: %s"
+msgstr "Etkinliðin eklenmesinde hata oluþtu: %s."
+
+#: edit.php:17 editeventaction.php:82
+#, php-format
+msgid "There was an error editing the event: %s"
+msgstr "Etkinliðin düzenlenmesinde hata oluþtu: %s."
+
+#: lib/api.php:383 lib/api.php:641 lib/api.php:927
+msgid "There was an error importing the iCalendar data."
+msgstr "iCalendar verisini içeri aktarýlýrken hata oluþtu."
+
+#: edit.php:145 editeventaction.php:62
+#, php-format
+msgid "There was an error moving the event: %s"
+msgstr "Etkinliðin aktarýmý sýrasýnda hata oluþtu: %s"
+
+#: lib/Kronolith.php:1481
+#, php-format
+msgid "There was an error sending an event notification to %s: %s"
+msgstr "%s'e etkinlik bildiriminin gönderiminde sorun çýktý: %s."
+
+#: data.php:109
+msgid "There were no events to export."
+msgstr "Dýþarý aktarýlacak bir etkinlik bulunamadý."
+
+#: lib/Block/month.php:3
+msgid "This Month"
+msgstr "Bu Ay"
+
+#: calendars/delete.php:26
+msgid "This calendar cannot be deleted."
+msgstr "Bu takvim silinemez."
+
+#: data.php:200
+msgid "This file format is not supported."
+msgstr "Bu dosya biçimi desteklenmiyor."
+
+#: templates/delete/delete.inc:18
+msgid ""
+"This is a recurring event. Delete the current event only, this<br /"
+">occurrence and all future occurences, or all occurences?"
+msgstr ""
+"Bu tekrar eden bir etkinliktir. Sadece bu etkinlik mi silisin,<br>yoksa "
+"gelecek tüm tekrarlarý ile beraber mi silinsin?"
+
+#: templates/edit/edit.inc:36
+msgid ""
+"This is a recurring event. Edit the current event only, this occurrence<br /"
+">and all future occurences, all occurences, or save this event as new?"
+msgstr ""
+"Bu tekrar eden bir etkinliktir. Sadece seçilen etkinlik ve gelecek tüm "
+"tekrarlarý , tüm tekrarlarý düzenlenebilir. Ya da bu, yeni bir etkinlik "
+"olarak saklanabilir. Seçiniz."
+
+#: data.php:272
+#, php-format
+msgid "This is what the server said: %s"
+msgstr "Sunucunun verdiði bilgi: %s"
+
+#: templates/month/head.inc:20 templates/edit/javascript.inc:70
+#: templates/view/view.inc:102
+msgid "Thursday"
+msgstr "Perþembe"
+
+#: templates/search/search.inc:37
+msgid "Time Sp_an:"
+msgstr "Zaman Ar_alýðý:"
+
+#: templates/edit/edit_timespan.inc:4
+msgid "Time span"
+msgstr "Zaman Aralýðý"
+
+#: templates/edit/edit.inc:58 templates/search/search_advanced.inc:34
+msgid "Tit_le"
+msgstr "Baþ_lýk"
+
+#: data.php:55 templates/search/event_headers.inc:3
+msgid "Title"
+msgstr "Baþlýk"
+
+#: templates/search/search.inc:20
+msgid "Title:"
+msgstr "Baþlýk:"
+
+#: templates/prefs/sourceselect.inc:322
+msgid ""
+"To select multiple fields, hold down the Control (PC) or Command (Mac) while "
+"clicking."
+msgstr ""
+"Birden fazla alan seçebilmek için, týklarken Control(PC) yada Command(Mac) "
+"tuþlarýný basýlý tutun."
+
+#: templates/calendar_info.php:17
+msgid ""
+"To subscribe to this calendar from another calendar program, use this URL: "
+msgstr "Bu takvime baþka bir uygulamadan üye olmak için; bu URL'i kullanýnýz: "
+
+#: lib/Block/summary.php:140 lib/Block/monthlist.php:132
+#: lib/Block/prevmonthlist.php:125
+msgid "Today"
+msgstr "Bugün"
+
+#: lib/Block/summary.php:142 lib/Block/monthlist.php:134
+#: lib/Block/prevmonthlist.php:127
+msgid "Tomorrow"
+msgstr "Yarýn"
+
+#: templates/edit/edit.inc:236 templates/javascript/goto.js:60
+#: lib/Block/month.php:107 lib/Views/Year.php:78
+msgid "Tu"
+msgstr "Sa"
+
+#: templates/month/head.inc:18 templates/edit/javascript.inc:68
+#: templates/view/view.inc:100
+msgid "Tuesday"
+msgstr "Salý"
+
+#: config/keywords.php.dist:17
+msgid "Type"
+msgstr "Tür"
+
+#: templates/calendars/calendars.inc:187 lib/Forms/EditRemoteCalendar.php:37
+#: lib/Forms/SubscribeRemoteCalendar.php:37
+msgid "URL"
+msgstr "URL"
+
+#: lib/Storage/sql.php:75
+msgid "Unable to connect to SQL server."
+msgstr "SQL sunucusuna baðlanýlamýyor."
+
+#: calendars.php:102 lib/Forms/DeleteCalendar.php:62
+#, php-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "\"%s\" silinemiyor: %s"
+
+#: lib/Storage.php:58 lib/Driver.php:206
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "%s in tanýmý yüklenemedi."
+
+#: attendees.php:57
+#, php-format
+msgid "Unable to recognize \"%s\" as an email address."
+msgstr "\"%s\" bir eposta adresi olarak tanýnamadý."
+
+#: calendars.php:65 lib/Forms/EditCalendar.php:58
+#, php-format
+msgid "Unable to rename \"%s\": %s"
+msgstr "\"%s\" yeniden isimlendirilemiyor: %s"
+
+#: lib/Storage/kolab.php:57
+#, php-format
+msgid "Unable to retrieve free/busy information for %s"
+msgstr "%s için serbest/meþgul bilgisi aktarýlamýyor."
+
+#: lib/Forms/EditCalendar.php:64
+#, php-format
+msgid "Unable to save calendar \"%s\": %s"
+msgstr "Takvim \"%s\" saklanamadý: %s"
+
+#: scripts/upgrades/2004-05-19_convert_categories_to_strings.php:53
+#: templates/view/view.inc:8
+msgid "Unfiled"
+msgstr "Doldurulmamýþ"
+
+#: lib/api.php:1215 lib/api.php:1244
+msgid "Unknown calendar protocol"
+msgstr "Bilinmeyen takvim iletiþim kuralý"
+
+#: templates/calendar_list.php:46 lib/Forms/UnsubscribeRemoteCalendar.php:39
+msgid "Unsubscribe"
+msgstr "Üyelikten Çýk"
+
+#: lib/Forms/UnsubscribeRemoteCalendar.php:34
+#, php-format
+msgid "Unsubscribe from %s"
+msgstr "%s üyeliðinden çýk"
+
+#: lib/api.php:456 lib/api.php:695 lib/api.php:751 lib/api.php:814
+#: lib/api.php:947
+#, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "Desteklenmeyen Ýçerik Türü: %s"
+
+#: lib/Block/monthlist.php:3 lib/Block/monthlist.php:46
+msgid "Upcoming Events"
+msgstr "Yaklaþan Etkinlikler"
+
+#: perms.php:256
+#, php-format
+msgid "Updated \"%s\"."
+msgstr "\"%s\" Güncellendi."
+
+#: lib/Kronolith.php:1420
+#, php-format
+msgid "Updated: %s."
+msgstr "\"%s\": Güncellendi."
+
+#: config/prefs.php.dist:10
+msgid "User Interface"
+msgstr "Kullanýcý Ara Yüzü"
+
+#: templates/perms/perms.inc:256
+msgid "User to add:"
+msgstr "Eklenecek kullanýcý:"
+
+#: lib/Forms/EditRemoteCalendar.php:38
+#: lib/Forms/SubscribeRemoteCalendar.php:38
+msgid "Username"
+msgstr "Kullanýcý Adý"
+
+#: lib/Block/month.php:164 lib/Block/month.php:167 lib/Views/Year.php:156
+#: lib/Views/Year.php:162
+msgid "View Day"
+msgstr "Günü Görüntüle"
+
+#: templates/edit/edit.inc:237 templates/javascript/goto.js:61
+#: lib/Block/month.php:107 lib/Views/Year.php:79
+msgid "We"
+msgstr "Çrþ"
+
+#: lib/Driver.php:1160 lib/Scheduler/kronolith.php:265
+#, php-format
+msgid ""
+"We would like to remind you of this upcoming event.\n"
+"\n"
+"%s\n"
+"\n"
+"Location: %s\n"
+"\n"
+"Date: %s\n"
+"Time: %s\n"
+"\n"
+"%s"
+msgstr ""
+"Size yaklaþan þu etkinliði hatýrlatmak istiyoruz:\n"
+"\n"
+"%s\n"
+"\n"
+"Yer: %s\n"
+"\n"
+"Tarih: %s\n"
+"Zaman: %s\n"
+"\n"
+"%s"
+
+#: templates/month/head.inc:19 templates/edit/javascript.inc:69
+#: templates/view/view.inc:101
+msgid "Wednesday"
+msgstr "Çarþamba"
+
+#: attendees.php:172 lib/Kronolith.php:1742 lib/Block/tree_menu.php:23
+#: config/prefs.php.dist:91
+msgid "Week"
+msgstr "Hafta"
+
+#: workweek.php:16 week.php:16 lib/Views/Month.php:186
+#, php-format
+msgid "Week %d"
+msgstr "Hafta %d"
+
+#: templates/prefs/default_alarm_management.inc:29 templates/edit/edit.inc:171
+#: templates/view/view.inc:53
+msgid "Week(s)"
+msgstr "Hafta"
+
+#: lib/Recurrence.php:193
+msgid "Weekly"
+msgstr "Haftalýk"
+
+#: templates/edit/edit.inc:232 templates/view/view.inc:106
+msgid "Weekly: Recurs every"
+msgstr "Haftalýk: Tekrarlama sýklýðý"
+
+#: config/prefs.php.dist:132
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr ""
+"Eðer daha sonrasýnda bir etkinlik bulunmuyorsa, gün ve hafta görüntüleri "
+"hangi zamanda bitsin."
+
+#: config/prefs.php.dist:123
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr ""
+"Eðer daha öncesinde bir etkinlik bulunmuyorsa, gün ve hafta görüntüleri "
+"hangi zamanda baþlasýn."
+
+#: config/prefs.php.dist:286
+msgid "Which kind of holidays do you want to get displayed?"
+msgstr "Ne tür tatillerin görüntülenmesini istiyorsunuz?"
+
+#: attendees.php:171 lib/Kronolith.php:1740 lib/Block/tree_menu.php:22
+#: config/prefs.php.dist:92
+msgid "Work Week"
+msgstr "Hafta içi"
+
+#: lib/Kronolith.php:1746 lib/Block/tree_menu.php:25
+msgid "Year"
+msgstr "Yýl"
+
+#: lib/Recurrence.php:198
+msgid "Yearly"
+msgstr "Yýllýk"
+
+#: templates/edit/edit.inc:258 templates/edit/edit.inc:264
+#: templates/edit/edit.inc:270 templates/view/view.inc:112
+#: templates/view/view.inc:114 templates/view/view.inc:116
+msgid "Yearly: Recurs every"
+msgstr "Yýllýk: Tekrar sýklýðý"
+
+#: calendars.php:54 calendars/edit.php:30
+msgid "You are not allowed to change this calendar."
+msgstr "Bu takvimi deðiþtirme hakkýnýz bulunmuyor."
+
+#: addevent.php:17 edit.php:27 data.php:41 data.php:261 editeventaction.php:45
+#: new.php:19
+#, php-format
+msgid "You are not allowed to create more than %d events."
+msgstr "%dden fazla etkinlik yaratamazsýnýz."
+
+#: calendars.php:95 calendars/delete.php:37
+msgid "You are not allowed to delete this calendar."
+msgstr "Bu takvimi silme hakkýnýz bulunmuyor."
+
+#: lib/api.php:142
+msgid "You are not allowed to remove user data."
+msgstr "Kiþi iletiþim bilgilerini silme izniniz yok."
+
+#: attend.php:51
+msgid "You are not an attendee of the specified event."
+msgstr "Belirtilen etkinliðe davetli deðilsiniz."
+
+#: templates/contacts/contacts.inc:78
+msgid "You can only use this form from the Edit Attendees screen."
+msgstr "Bu formu sadece Katýlýmcýlarý Düzenle sayfasýndan kullanabilirsiniz."
+
+#: lib/Kronolith.php:1369
+#, php-format
+msgid ""
+"You do not have an email address configured in your Personal Information "
+"Options. You must set one %shere%s before event notifications can be sent."
+msgstr ""
+"Kiþisel Bilgiler Seçeneklerinde bir eposta adresi belirtilmemiþ.Bir %stane%s "
+"etkinlik duyurusu gönderilmesi için burada belirtilmesi gerekmektedir."
+
+#: addeventaction.php:20 add.php:30
+#, php-format
+msgid "You do not have permission to add events to %s."
+msgstr "%s içine etkinlik eklemeye hakkýnýz yok."
+
+#: data.php:209
+msgid "You do not have permission to add events to the selected calendar."
+msgstr "Seçilmiþ takvime etkinlik eklemeye hakkýnýz bulunamamaktadýr."
+
+#: edit.php:162 add.php:27
+#, php-format
+msgid "You do not have permission to delegate events to %s."
+msgstr "%s içine etkinlik eklemeye hakkýnýz yok."
+
+#: delete.php:28 deleventaction.php:26
+msgid "You do not have permission to delete this event."
+msgstr "Bu etkinliði silmeye hakkýnýz yok."
+
+#: edit.php:165 editeventaction.php:77
+msgid "You do not have permission to edit this event."
+msgstr "Bu etkiniði düzenlemeye hakkýnýz yok."
+
+#: edit.php:159
+msgid "You do not have permission to move this event."
+msgstr "Bu etkiniði taþýmaya hakkýnýz yok."
+
+#: calendars/remote_subscribe.php:33
+#, php-format
+msgid "You have been subscribed to \"%s\" (%s)."
+msgstr "\"%s\" (%s) üyeliðiniz baþladý."
+
+#: calendars/remote_unsubscribe.php:49
+#, php-format
+msgid "You have been unsubscribed from \"%s\" (%s)."
+msgstr "\"%s\" (%s) üyeliðinden çýktýnýz."
+
+#: data.php:206
+msgid "You have specified an invalid calendar."
+msgstr "Geçersiz bir takvim belirttiniz."
+
+#: attend.php:23
+msgid "You have successfully accepted attendence to this event."
+msgstr "Baþarýlý bir þekilde etkinliðe katýlýmý kabul ettiniz."
+
+#: attend.php:28
+msgid "You have successfully declined attendence to this event."
+msgstr "Baþarýlý bir þekilde etkinliðe katýlýmý reddettiniz."
+
+#: attend.php:33
+msgid "You have tentatively accepted attendence to this event."
+msgstr "Geçici olarak etkinliðe katýlýmý kabul ettiniz."
+
+#: calendars.php:109
+msgid "You must select a calendar to be deleted."
+msgstr "Silinecek bir takvim seçmelisiniz."
+
+#: templates/contacts/contacts.inc:54
+msgid "You must select an address first."
+msgstr "Önce bir adres seçmelisiniz."
+
+#: templates/calendars/calendars.inc:174
+msgid "You need to select a calendar first"
+msgstr "Önce bir takvim seçmelisiniz."
+
+#: lib/Kronolith.php:1586
+msgid "You requested to be notified when events are added to your calendars."
+msgstr "Takviminize etkinlik eklenince bildirimde bulunulmasýný istediniz."
+
+#: lib/Kronolith.php:1596
+msgid ""
+"You requested to be notified when events are deleted from your calendars."
+msgstr "Takviminizden etkinlik silinince bildirimde bulunulmasýný istediniz."
+
+#: lib/Kronolith.php:1591
+msgid "You requested to be notified when events are edited in your calendars."
+msgstr ""
+"Takviminizde bir etkinlik düzenlenince bildirimde bulunulmasýný istediniz."
+
+#: lib/Scheduler/kronolith.php:406 lib/Scheduler/kronolith.php:408
+#, php-format
+msgid "Your daily agenda for %s"
+msgstr "%s için gündeminiz"
+
+#: templates/prefs/shareselect.inc:10
+msgid "Your default calendar"
+msgstr "Ön tanýmlý takviminiz"
+
+#: templates/panel.inc:36
+msgid "[Manage Calendars]"
+msgstr "[Takvimleri Yönet]"
+
+#: lib/Driver.php:1408 lib/Driver.php:1424
+msgid "[Unnamed event]"
+msgstr "[Ýsimsiz etkinlik]"
+
+#: templates/edit/edit.inc:132
+msgid "_Alarm"
+msgstr "_Alarm"
+
+#: templates/search/search_advanced.inc:11
+msgid "_Basic Search"
+msgstr "_Basit Arama"
+
+#: viewevent.php:137 lib/Kronolith.php:1775
+msgid "_Edit"
+msgstr "_Düzenle"
+
+#: lib/Kronolith.php:1952
+msgid "_Goto"
+msgstr "_Git"
+
+#: lib/Kronolith.php:1958
+msgid "_Import/Export"
+msgstr "Ýçeri/_Dýþarý Aktar"
+
+#: lib/Kronolith.php:1948
+msgid "_New Event"
+msgstr "Ye_ni Etkinlik"
+
+#: lib/Kronolith.php:1963
+msgid "_Print"
+msgstr "_Yazdýr"
+
+#: lib/Kronolith.php:1954
+msgid "_Search"
+msgstr "_Arama"
+
+#: lib/Kronolith.php:1943
+msgid "_Today"
+msgstr "_Bugün"
+
+#: templates/edit/edit.inc:77
+#, php-format
+msgid "as %s"
+msgstr "%s de"
+
+#: templates/edit/edit.inc:173
+msgid "before the event starts"
+msgstr "etkinlik baþlamadan önce"
+
+#: templates/prefs/default_alarm_management.inc:31
+msgid "before the event starts. A value of \"0\" means no default alarms."
+msgstr ""
+"etkinlik baþlamadan önce.  \"0\" deðeri öntanýmlý alarm olmadýðý anlamýný "
+"taþýr."
+
+#: config/prefs.php.dist:237
+msgid "day"
+msgstr "gün"
+
+#: templates/edit/edit.inc:227 templates/view/view.inc:96
+msgid "day(s)"
+msgstr "günde bir"
+
+#: config/prefs.php.dist:238 config/prefs.php.dist:239
+#: config/prefs.php.dist:240 config/prefs.php.dist:241
+#: config/prefs.php.dist:242
+msgid "days"
+msgstr "gün"
+
+#: data.php:158 templates/data/export.inc:1
+msgid "events.csv"
+msgstr "etkinlik.csv"
+
+#: data.php:185
+msgid "events.ics"
+msgstr "etkinlik.ics"
+
+#: templates/contacts/contacts.inc:146
+msgid "in"
+msgstr "içinde"
+
+#: templates/edit/edit.inc:247 templates/edit/edit.inc:253
+#: templates/view/view.inc:108 templates/view/view.inc:110
+msgid "month(s)"
+msgstr "ayda bir"
+
+#: lib/Kronolith.php:1426
+#, php-format
+msgid "on %s at %s"
+msgstr "%sde %sde"
+
+#: templates/edit/edit.inc:247 templates/view/view.inc:108
+msgid "on the same date"
+msgstr ", ayýn ayný gününde"
+
+#: templates/edit/edit.inc:253 templates/view/view.inc:110
+msgid "on the same weekday"
+msgstr ", haftanýn ayný günü"
+
+#: templates/edit/edit.inc:312
+msgid "recurrences"
+msgstr "tekrarlar"
+
+#: data.php:31 templates/data/import.inc:14
+msgid "vCalendar/iCalendar"
+msgstr "vCalendar/iCalendar"
+
+#: config/prefs.php.dist:243
+msgid "week"
+msgstr "hafta"
+
+#: templates/edit/edit.inc:234 templates/view/view.inc:106
+msgid "week(s) on:"
+msgstr "haftada bir, haftanýn þu günleri:"
+
+#: config/prefs.php.dist:244 config/prefs.php.dist:245
+#: config/prefs.php.dist:246
+msgid "weeks"
+msgstr "haftalar"
+
+#: templates/edit/edit.inc:259 templates/view/view.inc:112
+msgid "year(s) on the same date"
+msgstr "ayný tarihte, yýl(lar)"
+
+#: templates/edit/edit.inc:265 templates/view/view.inc:114
+msgid "year(s) on the same day of the year"
+msgstr "yýlýn ayný günü, yýl(lar)"
+
+#: templates/edit/edit.inc:271 templates/view/view.inc:116
+msgid "year(s) on the same weekday and month of the year"
+msgstr "ayný hafta günü ve ay, yýl(lar)"

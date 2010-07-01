@@ -1,0 +1,883 @@
+# Horde Norwegian Nynorsk translation
+# Copyright 2002 Per-Stian Vatne
+# This file is distributed under the same license as the Horde package.
+# Per-Stian Vatne <psv@orsta.org>, 2002.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde 3.0-cvs\n"
+"POT-Creation-Date: 2002-06-08 22:13+0200\n"
+"PO-Revision-Date: 2002-06-08 22:30+0100\n"
+"Last-Translator: Per-Stian Vatne <psv@orsta.org>\n"
+"Language-Team: Norwegian Nynorsk <nynorsk@orsta.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s - Notice"
+msgstr "%s - Notis"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "%s vedlikehaldsoperasjonar - Stadfesting"
+
+#, c-format
+msgid "%s Standard"
+msgstr "%s Standard"
+
+#, c-format
+msgid "%s Terms of Agreement"
+msgstr "%s Vilkår for avtale"
+
+#, c-format
+msgid "%s is ready to perform the maintenance operations checked below."
+msgstr "%s er klar til å køyre vedlikehaldsoperasjonane som er valde under."
+
+#, c-format
+msgid "'%s' is not configured in the Horde Registry."
+msgstr "'%s' er ikkje konfigurert i registeret til Horde."
+
+#, c-format
+msgid "'%s' was added to the groups system."
+msgstr "'%s' vart lagt til gruppesystemet."
+
+#, c-format
+msgid "'%s' was added to the permissions system."
+msgstr "'%s' vart lagt til tilgangssystemet."
+
+#, c-format
+msgid "'%s' was not created: %s."
+msgstr "'%s' vart ikkje oppretta: %s"
+
+msgid "24 hours"
+msgstr "24 timar"
+
+msgid "<b>A fatal error has occurred:</b>"
+msgstr "<b>Det skjedde ein katastrofal feil:</b>"
+
+msgid "AM/PM"
+msgstr "AM/PM"
+
+msgid "Add Child"
+msgstr "Legg til underordna objekt"
+
+#, c-format
+msgid "Add a child group to '%s'"
+msgstr "Legg til underordna objektgruppe til '%s'"
+
+#, c-format
+msgid "Add a child permission to '%s'"
+msgstr "Legg til underordna objekttilgang til '%s'"
+
+msgid "Add a new member"
+msgstr "Legg til nytt medlem"
+
+msgid "Add a new user:"
+msgstr "Legg til ny brukar:"
+
+msgid "Add pair"
+msgstr "Legg til par"
+
+msgid "Add user"
+msgstr "Legg til brukar"
+
+msgid "Add"
+msgstr "Legg til"
+
+msgid "Adding users is disabled."
+msgstr "Legg til brukarar er slått av."
+
+msgid "Address Book"
+msgstr "Adressebok"
+
+msgid "Address"
+msgstr "Adresse"
+
+msgid "Addressbook"
+msgstr "Adressebok"
+
+msgid "Administration"
+msgstr "Administrering"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "An illegal value was specified."
+msgstr "Ein ulovleg verdi vart spesifisert."
+
+#, c-format
+msgid "Are you sure you wish to delete '%s'?"
+msgstr "Er du sikker på at du vil slette '%s'?"
+
+msgid "Ask for confirmation before doing maintenance operations?"
+msgstr "Spør om stadfesting før køyring av vedlikehaldsoperasjonar?"
+
+msgid "Attempt to delete a non-existent group."
+msgstr "Prøvde å slette ei ikkje-eksisterande gruppe."
+
+msgid "Attempt to delete a non-existent permission."
+msgstr "Prøvde å slette ein ikkje-eksisterande tilgang."
+
+msgid "Attempt to edit a non-existent permission."
+msgstr "Prøvde å endre ein ikkje-eksisterande tilgang."
+
+msgid "Available fields:"
+msgstr "Tilgjengelege felt:"
+
+msgid "Barbie"
+msgstr "Barbie"
+
+msgid "Birthday"
+msgstr "Bursdag"
+
+msgid "Brown"
+msgstr "Brun"
+
+msgid "Bugs"
+msgstr "Lus"
+
+msgid "Burnt Orange"
+msgstr "Brent oransje"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Calendar"
+msgstr "Kalender"
+
+msgid "Camouflage"
+msgstr "Kamuflasje"
+
+msgid "Cancel Problem Report"
+msgstr "Avbryt problemrapport"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Cell Phone"
+msgstr "Mobiltelefon"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "Kryss av for operasjon(ar) du vil køyre no."
+
+msgid "Cherry"
+msgstr "Kirsebær"
+
+msgid "Click to Continue"
+msgstr "Klikk for å halde fram"
+
+msgid "Close Help Window"
+msgstr "Lukk Hjelp-vindauget"
+
+msgid "Close Help"
+msgstr "Lukk Hjelp"
+
+msgid "Close Window"
+msgstr "Lukk vindauget"
+
+msgid "Company"
+msgstr "Firma"
+
+msgid "Confirm Password"
+msgstr "Stadfest passord"
+
+msgid "Connection refused to the public keyserver."
+msgstr "Oppkopling mot offentleg nøkkeltenar nekta."
+
+#, c-format
+msgid "Contents of '%s'"
+msgstr "Innhald i '%s'"
+
+msgid "Contents of the RAR archive"
+msgstr "Innhald i RAR-arkivet"
+
+msgid "Could not PGP encrypt message."
+msgstr "Kunne ikkje PGP-kode melding."
+
+msgid "Could not PGP sign message."
+msgstr "Kunne ikkje PGP-signere melding."
+
+msgid "Could not decrypt PGP data."
+msgstr "Kunne ikkje dekode PGP-data."
+
+msgid "Could not determine the recipient's e-mail address."
+msgstr "Kunne ikkje avgjere mottakaren si e-postadresse."
+
+msgid "Could not obtain public key from the keyserver."
+msgstr "Kunne ikkje skaffe offentleg nøkkel frå nøkkeltenaren."
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "Kunne ikkje opne Maintenance_Task-modulen %s"
+
+msgid "DD"
+msgstr "DD"
+
+msgid "Daily"
+msgstr "Dagleg"
+
+msgid "Database query failed."
+msgstr "Databasespørjing feila."
+
+msgid "Default Identity"
+msgstr "Standardidentitet"
+
+msgid "Delete"
+msgstr "Slette"
+
+msgid "Deny"
+msgstr "Nekt"
+
+msgid "Describe the Problem"
+msgstr "Skildre problemet"
+
+msgid "Details have been logged for the administrator."
+msgstr "Detaljar er logga for administratoren."
+
+msgid "Discussions"
+msgstr "Diskusjon"
+
+msgid "Display Options"
+msgstr "Visingsalternativ"
+
+msgid "Do not directly access maintenance.php"
+msgstr "Ikkje bruk maintenance.php direkte."
+
+#, c-format
+msgid "Edit permissions for '%s'"
+msgstr "Endre tilgang for '%s'"
+
+msgid "Edit"
+msgstr "Endre"
+
+msgid "Email"
+msgstr "E-post"
+
+msgid "Empty result."
+msgstr "Tomt resultat."
+
+msgid "Error"
+msgstr "Feil"
+
+msgid "Every 15 minutes"
+msgstr "Kvart 15. minutt"
+
+msgid "Every 30 seconds"
+msgstr "Kvart 30. sekund"
+
+msgid "Every 5 minutes"
+msgstr "Kvart 5. minutt"
+
+msgid "Every Login"
+msgstr "Kvar innlogging"
+
+msgid "Every half hour"
+msgstr "Kvar halve time"
+
+msgid "Every minute"
+msgstr "Kvart minutt"
+
+msgid "Example values:"
+msgstr "Eksempelverdiar:"
+
+#, c-format
+msgid "Expected \"BEGIN\" in the line %d."
+msgstr "Venta \"BEGIN\" på linje %d."
+
+#, c-format
+msgid "Expected \"END:%s\" in line %d."
+msgstr "Venta \"END:%s\" på linje %d."
+
+msgid "Failed retrieving preferences."
+msgstr "Kunne ikkje hente innstillingar"
+
+msgid "Failed to connect to LDAP server."
+msgstr "Kunne ikkje kople til LDAP-tenaren."
+
+msgid "Fax"
+msgstr "Faks"
+
+msgid "File Manager"
+msgstr "Filhandsaming"
+
+msgid "Fnorre"
+msgstr "Fnorre"
+
+msgid "Full Description:"
+msgstr "Full skildring:"
+
+msgid "Green"
+msgstr "Grøn"
+
+msgid "Grey"
+msgstr "Grå"
+
+msgid "Group Administration"
+msgstr "Gruppeadministrering"
+
+msgid "Groups"
+msgstr "Grupper"
+
+msgid "Headlines"
+msgstr "Overskrifter"
+
+msgid "Help"
+msgstr "Hjelp"
+
+msgid "Home Address"
+msgstr "Adresse, privat"
+
+msgid "Home Phone"
+msgstr "Telefon, privat"
+
+msgid "Horde Administration"
+msgstr "Horde Administrering"
+
+msgid "Horde Group Administration"
+msgstr "Horde Gruppeadministrering"
+
+msgid "Horde Login"
+msgstr "Horde Innlogging"
+
+msgid "Horde Permissions Administration"
+msgstr "Horde Tilgangsadministrering"
+
+msgid "Horde User Administration"
+msgstr "Horde Brukaradministrering"
+
+msgid "Horde Wireless"
+msgstr "Horde Trådlaus"
+
+msgid "Horde is not properly configured"
+msgstr "Horde er ikkje ordentleg konfigurert"
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "Import Error: "
+msgstr "Importfeil: "
+
+msgid "Import"
+msgstr "Import"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Importerte felt: %s"
+
+msgid "Imported fields:"
+msgstr "Importerte felt:"
+
+msgid "Invalid response from server"
+msgstr "Ugyldig svar frå tenar"
+
+msgid "Language"
+msgstr "Språk"
+
+msgid "Light Blue"
+msgstr "Lys blå"
+
+msgid "List Help Topics"
+msgstr "Vis emne frå Hjelp"
+
+msgid "Listing users is disabled."
+msgstr "Listing av brukarar er slått av."
+
+msgid "Log in"
+msgstr "Logg inn"
+
+msgid "Log out"
+msgstr "Logg ut"
+
+msgid "Login failed for some reason. Most likely your username or password was entered incorrectly."
+msgstr "Kunne av ein eller annan grunn ikkje logge inn. Sannsynlegvis er brukarnamn eller passord tasta inn feil."
+
+msgid "MM"
+msgstr "MM"
+
+msgid "MS-TNEF Attachment contained no data."
+msgstr "MS-TNEF-vedlegg inneheldt ingen data."
+
+msgid "Mail"
+msgstr "E-post"
+
+msgid "Map Date and Time Fields"
+msgstr "Kople felt for dato og tid"
+
+msgid "Map Import Fields"
+msgstr "Kople importfelta"
+
+msgid "Matching fields"
+msgstr "Samsvarande felt"
+
+msgid "Members"
+msgstr "Medlemmar"
+
+msgid "Memos"
+msgstr "Notat"
+
+msgid "Message"
+msgstr "Melding"
+
+#, c-format
+msgid "Method '%s' is not defined"
+msgstr "Metode '%s' ikkje definert"
+
+msgid "Mime Type"
+msgstr "MIME-type"
+
+msgid "Monthly"
+msgstr "Månadleg"
+
+msgid "My Summary"
+msgstr "Mitt samandrag"
+
+msgid "NO, I Do NOT Agree"
+msgstr "NEI, eg er IKKJE samd"
+
+msgid "Name"
+msgstr "Namn"
+
+msgid "Network"
+msgstr "Nettverk"
+
+msgid "Never"
+msgstr "Aldri"
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr "Ingen konfigurasjonsinformasjon spesifisert for LDAP-innstillingar."
+
+msgid "No configuration information specified for SQL Categories."
+msgstr "Ingen konfigurasjonsinformasjon spesifisert for SQL-kategoriar."
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr "Ingen konfigurasjonsinformasjon spesifisert for SQL-innstillingar."
+
+msgid "No configuration information specified for SQL VFS."
+msgstr "Ingen konfigurasjonsinformasjon spesifisert for SQL VFS."
+
+msgid "No configuration information specified for SQL authentication."
+msgstr "Ingen konfigurasjonsinformasjon spesifisert for SQL-autentisering."
+
+msgid "No preferences are available."
+msgstr "Ingen innstillingar er tilgjengelege."
+
+msgid "No valid XML data returned"
+msgstr "Ingen gyldige XML-data returnert"
+
+msgid "Notes"
+msgstr "Notatar"
+
+#, c-format
+msgid "Notification listener %s not found."
+msgstr "Fann ikkje varsellyttar %s."
+
+msgid "Options"
+msgstr "Alternativ"
+
+msgid "Orange"
+msgstr "Oransje"
+
+msgid "Other Information"
+msgstr "Annan informasjon"
+
+msgid "Password"
+msgstr "Passord"
+
+msgid "Passwords cannot be blank."
+msgstr "Passord kan ikkje vere blanke."
+
+msgid "Passwords must match."
+msgstr "Passorda må samsvare."
+
+msgid "Perform Maintenance Operations"
+msgstr "Køyr vedlikehaldsoperasjonar"
+
+msgid "Perform maintenance operations on login?"
+msgstr "Køyr vedlikehaldsoperasjonar ved innlogging?"
+
+msgid "Permissions Administration"
+msgstr "Tilgangsadministrering"
+
+msgid "Permissions"
+msgstr "Tilgang"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Please provide a summary of the problem."
+msgstr "Skriv inn eit samandrag av problemet."
+
+msgid "Please provide your username and password"
+msgstr "Skriv inn ditt brukarnamn og passord"
+
+msgid "Please read the following text.  You MUST agree with the terms to use the system."
+msgstr "Ver venleg og les følgjande tekst. Du MÅ vere samd med vilkåra for å bruke systemet."
+
+msgid "Presentations"
+msgstr "Presentasjonar"
+
+msgid "Problem Description"
+msgstr "Skildring av problemet"
+
+msgid "Public/Private keypair not generated successfully."
+msgstr "Offentleg/privat nøkkelpar vart ikkje generert."
+
+msgid "Read"
+msgstr "Les"
+
+msgid "Refresh Summary View:"
+msgstr "Frisk opp oversiktvising:"
+
+msgid "Remove pair"
+msgstr "Fjern par"
+
+msgid "Remove"
+msgstr "Fjern"
+
+msgid "Request couldn't be answered"
+msgstr "Kunne ikkje svare på førespurnad"
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr "Nødvendig variabel 'basedn' ikkje spesifisert i konfigurasjon for autentisering."
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr "Nødvendig 'basedn' ikkje spesifisert i konfigurasjon for innstillingar."
+
+msgid "Required 'database' not specified in VFS configuration."
+msgstr "Nødvendig 'database' ikkje spesifisert i konfigurasjon for VFS."
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr "Nødvendig 'database' ikkje spesifisert i konfigurasjon for autentisering."
+
+msgid "Required 'database' not specified in categories configuration."
+msgstr "Nødvendig 'database' ikkje spesifisert i konfigurasjon for kategoriar."
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr "Nødvendig 'database' ikkje spesifisert i konfigurasjon for innstillingar."
+
+msgid "Required 'hostspec' not specified in VFS configuration."
+msgstr "Nødvendig 'hostspec' ikkje spesifisert i konfigurasjon for VFS."
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr "Nødvendig 'hostspec' ikkje spesifisert i konfigurasjon for autentisering."
+
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr "Nødvendig 'hostspec' ikkje spesifisert i konfigurasjon for kategoriar."
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr "Nødvendig 'hostspec' ikkje spesifisert i konfigurasjon for innstillingar."
+
+msgid "Required 'password' not specified in VFS configuration."
+msgstr "Nødvendig 'password' ikkje spesifisert i konfigurasjon for VFS."
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr "Nødvendig 'password' ikkje spesifisert i konfigurasjon for autentisering."
+
+msgid "Required 'password' not specified in categories configuration."
+msgstr "Nødvendig 'password' ikkje spesifisert i konfigurasjon for kategoriar."
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr "Nødvendig 'password' ikkje spesifisert i konfigurasjon for innstillingar."
+
+msgid "Required 'phptype' not specified in VFS configuration."
+msgstr "Nødvendig 'phptype' ikkje spesifisert i konfigurasjon for VFS."
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr "Nødvendig 'phptype' ikkje spesifisert i konfigurasjon for autentisering."
+
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr "Nødvendig 'phptype' ikkje spesifisert i konfigurasjon for kategoriar."
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr "Nødvendig 'phptype' ikkje spesifisert i konfigurasjon for innstillingar."
+
+msgid "Required 'table' not specified in VFS configuration."
+msgstr "Nødvendig 'table' ikkje spesifisert i konfigurasjon for VFS."
+
+msgid "Required 'table' not specified in authentication configuration."
+msgstr "Nødvendig 'table' ikkje spesifisert i konfigurasjon for autentisering."
+
+msgid "Required 'table' not specified in categories configuration."
+msgstr "Nødvendig 'table' ikkje spesifisert i konfigurasjon for kategoriar."
+
+msgid "Required 'table' not specified in preferences configuration."
+msgstr "Nødvendig 'table' ikkje spesifisert i konfigurasjon for innstillingar."
+
+msgid "Required 'tableRelations' not specified in categories configuration."
+msgstr "Nødvendig 'tableRelations' ikkje spesifisert i konfigurasjon for kategoriar."
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr "Nødvendig 'uid' ikkje spesifisert i konfigurasjon for autentisering."
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr "Nødvendig 'uid' ikkje spesifisert i konfigurasjon for innstillingar."
+
+msgid "Required 'username' not specified in VFS configuration."
+msgstr "Nødvendig 'username' ikkje spesifisert i konfigurasjon for VFS."
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr "Nødvendig 'username' ikkje spesifisert i konfigurasjon for autentisering."
+
+msgid "Required 'username' not specified in categories configuration."
+msgstr "Nødvendig 'username' ikkje spesifisert i konfigurasjon for kategoriar."
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr "Nødvendig 'username' ikkje spesifisert i konfigurasjon for innstillingar."
+
+msgid "Reset"
+msgstr "Nullstill"
+
+msgid "Return to Options"
+msgstr "Tilbake til alternativ"
+
+msgid "Role"
+msgstr "Rolle"
+
+#, c-format
+msgid "Save '%s'"
+msgstr "Lagre '%s'"
+
+msgid "Save Options"
+msgstr "Lagre alternativ"
+
+msgid "Select the characters you need from the boxes below. You can then copy and paste them from the textarea."
+msgstr "Vel teikna du treng frå boksane under. Du kan så kopiere og lime dei inn frå tekstboksa."
+
+msgid "Select the date delimiter:"
+msgstr "Vel skiljeteikn for dato:"
+
+msgid "Select the date format:"
+msgstr "Vel datoformat:"
+
+msgid "Select the time format:"
+msgstr "Vel tidsformat:"
+
+msgid "Select two matching fields."
+msgstr "Vel to samsvarande felt."
+
+msgid "Select your color scheme."
+msgstr "Vel fargeskjema."
+
+msgid "Select your preferred language:"
+msgstr "Vel ønska språk:"
+
+msgid "Send Problem Report"
+msgstr "Send problemrapport"
+
+msgid "Set your color scheme, page refreshing, and other display options."
+msgstr "Set fargeskjema, sideoppfrisking og andre visingsalternativ."
+
+msgid "Set your preferred display language."
+msgstr "Vel ønska språk."
+
+msgid "Short Summary:"
+msgstr "Kort samandrag:"
+
+msgid "Show"
+msgstr "Vis"
+
+msgid "Skip Maintenance"
+msgstr "Hopp over vedlikehald"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Nokre av Horde sine konfigurasjonsfiler manglar:"
+
+msgid "SpamAssassin"
+msgstr "Søppelpostmordar"
+
+msgid "Special Character Input"
+msgstr "Inntasting av spesialteikn"
+
+msgid "Success"
+msgstr "Suksess"
+
+#, c-format
+msgid "Successfully added '%s' to the system."
+msgstr "La til '%s' til systemet."
+
+#, c-format
+msgid "Successfully deleted '%s'."
+msgstr "Sletta '%s'."
+
+#, c-format
+msgid "Successfully removed '%s' from the system."
+msgstr "Fjerna '%s' frå systemet."
+
+msgid "Sun"
+msgstr "Sol"
+
+msgid "Tasks"
+msgstr "Oppgåver"
+
+msgid "The Maintenance:: class did not load successfully"
+msgstr "Klassa Maintenance:: vart ikkje lasta inn"
+
+msgid "The encryption features require a secure web connection."
+msgstr "Krypteringsfunksjonane krev ei sikker nettoppkopling."
+
+#, c-format
+msgid "The program used to view this message type (%s) was not found on the system."
+msgstr "Fann ikkje programmet som brukast til å vise denne typen meldingar (%s)."
+
+msgid "The registry is how Horde applications find out how to talk to each other. You should list any installed Horde applications that you have here."
+msgstr "Registeret er der Horde-applikasjonar finn ut korleis dei skal snakke med kvarandre. Skriv opp alle dei Horde-applikasjonane du har installert her."
+
+#, c-format
+msgid "There was a problem adding '%s' to the system."
+msgstr "Problem med å legge til '%s' til systemet."
+
+#, c-format
+msgid "There was a problem removing '%s' from the system."
+msgstr "Problem ved fjerning av '%s' frå systemet."
+
+msgid "This file controls the global set of MIME drivers for the Horde framework, allowing applications to make use of programs such as enscript or mswordview to render content into HTML for viewing in a browser."
+msgstr "Denne fila kontrollerer det globale settet med MIME-koplingar for rammeverket til Horde. Dette gjer at applikasjonar kan bruke program som enscript eller mswordview for å gjere om innhald til HTML som kan visast i ein nettlesar."
+
+msgid "This file controls the stylesheet that is used to set colors and fonts for the Horde framework and all applications that do not provide their own settings."
+msgstr "Denne fila kontrollerer stilarket som blir brukt til å definere fargar og skrifttypar for rammeverket til Horde, og til alle applikasjonar som ikkje har sine eigne definisjonar."
+
+msgid "This file maps file extensions to logical MIME types, enabling Horde applications to figure out how to handle some content such as email attachments or CVS checkouts."
+msgstr "Denne fila koplar filetternamn til logiske MIME-typar, slik at Horde-applikasjonar kan finne ut korleis innhald som e-postvedlegg eller CVS-utsjekk skal handsamast."
+
+msgid "This is the main Horde configuration file. It contains paths and basic items that apply to the core framework and all Horde applications."
+msgstr "Dette er hovedkonfigurasjonsfila for Horde. Den inneheld katalognamn og grunnleggjande element som gjeld kjerna av rammeverket og alle Horde-applikasjonar."
+
+msgid "This number must be at least one."
+msgstr "Dette talet må vere minst ein."
+
+msgid "This value must be a number."
+msgstr "Denne verdien må vere eit tal."
+
+msgid "Title"
+msgstr "Tittel"
+
+msgid "Type mismatch."
+msgstr "Typekonflikt."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to connect to SQL server."
+msgstr "Kan ikkje kople til SQL-tenar."
+
+#, c-format
+msgid "Unable to delete '%s': %s."
+msgstr "Kunne ikkje slette '%s': %s."
+
+msgid "Unable to register preferences in session."
+msgstr "Kan ikkje registrere innstillingar i økta."
+
+msgid "Unable to translate this Word document"
+msgstr "Kan ikkje omsetje dette Word-dokumentet."
+
+msgid "Undo Changes"
+msgstr "Angre endringar"
+
+msgid "Unexpected end of file."
+msgstr "Uventa slutt på fila."
+
+msgid "Update"
+msgstr "Oppdater"
+
+#, c-format
+msgid "Updated '%s'."
+msgstr "Oppdaterte '%s'."
+
+msgid "Use Default Value"
+msgstr "Bruk standardverdi"
+
+msgid "User Administration"
+msgstr "Brukaradministrering"
+
+msgid "User Options"
+msgstr "Brukaralternativ"
+
+msgid "Username"
+msgstr "Brukarnamn"
+
+msgid "Users in the system:"
+msgstr "Brukarar i systemet:"
+
+msgid "Users"
+msgstr "Brukarar"
+
+msgid "Warning!"
+msgstr "Åtvaring!"
+
+msgid "Warning"
+msgstr "Åtvaring"
+
+msgid "Weekly"
+msgstr "Kvar veke"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Velkomen til %s"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "Velkomen, %s"
+
+msgid "Work Address"
+msgstr "Adresse, arbeid"
+
+msgid "Work Phone"
+msgstr "Telefon, arbeid"
+
+msgid "YY"
+msgstr "ÅÅ"
+
+msgid "Yearly"
+msgstr "Årleg"
+
+msgid "Yes, I Agree"
+msgstr "Ja, eg er samd"
+
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "Du er logga ut.<br />Takk for at du brukar dette systemet."
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Du må skildre problemet før du kan sende problemrapporten."
+
+msgid "You must specify a username to remove."
+msgstr "Du må spesifisere eit brukarnamn å fjerne."
+
+msgid "You must specify the username to add."
+msgstr "Du må spesifisere eit brukarnamn å legge til."
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "Økta di (%s) har gått ut på tid. Logg inn på nytt."
+
+msgid "Your Email Address:"
+msgstr "Di e-postadresse:"
+
+msgid "Your Information"
+msgstr "Din informasjon"
+
+msgid "Your Name:"
+msgstr "Ditt namn:"
+
+msgid "Your authentication backend does not support adding users, or the feature has been disabled for some other reason."
+msgstr "Autentiseringsbakdeln"
+
+msgid "Your authentication backend does not support listing users, or the feature has been disabled for some other reason."
+msgstr "Listing av brukarar er ikkje støtta av bakre autentisering, eller funksjonen har av ein eller annan grunn blitt slått av."
+
+msgid "Your options have been updated."
+msgstr "Alternativa dine har blitt oppdaterte."
+
+msgid "[Problem Report]"
+msgstr "[Problemrapport]"
+
+#, c-format
+msgid "[line %s of %s]"
+msgstr "[linje %s av %s]"
+
+msgid "i18n"
+msgstr "i18n"
+
+msgid "vCard"
+msgstr "vCard"
+

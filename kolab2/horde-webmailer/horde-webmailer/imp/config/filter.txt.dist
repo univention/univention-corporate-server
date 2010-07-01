@@ -1,0 +1,7 @@
+# $Horde: imp/config/filter.txt.dist,v 1.1 2000-09-15 02:20:37 jon Exp $
+#
+# Enter a list of words that will be filtered.  Only put one word on each
+# line.  Comments are allowed.  A comment starts with a '#' and ends at the
+# end of the line.
+#
+poop

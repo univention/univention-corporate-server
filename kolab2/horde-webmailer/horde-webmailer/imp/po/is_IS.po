@@ -1,0 +1,4634 @@
+# Íslenska fyrir IMP 4.0.4
+# Copyright 2002-2009 The Horde Project.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: IMP 4.0.4\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2002-01-10 19:00+0100\n"
+"PO-Revision-Date: 2005-11-19 20:33+0000\n"
+"Last-Translator: Bjorn Davidsson <bjossi@snerpa.is>\n"
+"Language-Team: Icelandic <support@snerpa.is>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: lib/Compose.php:265 lib/Compose.php:317
+msgid "      To: "
+msgstr "      Til: "
+
+#: lib/Compose.php:253 lib/Compose.php:305
+msgid "    Date: "
+msgstr "   Dags.: "
+
+#: lib/Compose.php:256 lib/Compose.php:308
+msgid "    From: "
+msgstr "     Frá: "
+
+#: mailbox.php:406 templates/folders/head.inc:7
+#, php-format
+msgid " (Accesskey %s)"
+msgstr ""
+
+#: lib/Compose.php:262 lib/Compose.php:314
+msgid " Subject: "
+msgstr " Efnislína: "
+
+#: templates/compose/spelling.inc:74
+msgid " in "
+msgstr " í "
+
+#: templates/mailbox/message_headers.inc:12
+msgid "#"
+msgstr ""
+
+#: lib/Block/summary.php:71
+#, php-format
+msgid "%.2fMB / %.2fMB  (%.2f%%)"
+msgstr ""
+
+#: mailbox.php:196
+#, php-format
+msgid "%d messages have been deleted."
+msgstr "%d skeytum hefur verið eytt."
+
+#: lib/Spam.php:178
+#, php-format
+msgid ""
+"%d messages have been reported as not spam to your system administrator."
+msgstr ""
+"Tilkynning um %d skeyti merkt sem ekki ruslpóstur hefur verið send "
+"kerfisumsjón."
+
+#: lib/Spam.php:158
+#, php-format
+msgid "%d messages have been reported as not spam."
+msgstr "Tilkynning um %d skeyti merkt sem ekki ruslpóstur hefur verið send."
+
+#: lib/Spam.php:170
+#, php-format
+msgid "%d messages have been reported as spam to your system administrator."
+msgstr ""
+"Tilkynning um %d skeyti merkt sem ruslpóstur hefur verið send kerfisumsjón."
+
+#: lib/Spam.php:150
+#, php-format
+msgid "%d messages have been reported as spam."
+msgstr "Tilkynning um %d skeyti merkt sem ruslpóstur hefur verið send."
+
+#: mailbox.php:369
+#, php-format
+msgid "%d to %d of %d Messages"
+msgstr "%d til %d af %d skeytum"
+
+#: mailbox.php:619
+#, php-format
+msgid "%s KB"
+msgstr ""
+
+#: pgp.php:332
+#, php-format
+msgid "%s PGP Administration"
+msgstr ""
+
+#: smime.php:254
+#, php-format
+msgid "%s S/MIME Administration"
+msgstr ""
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:46
+#, php-format
+msgid "%s already exists. Your %s folder was not renamed."
+msgstr "%s er nú þegar til. Mappan %s var ekki endurnefnd."
+
+#: lib/Message.php:612
+#, php-format
+msgid "%s does not appear to be a valid mailbox."
+msgstr ""
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:44
+#, php-format
+msgid "%s folder being renamed at the start of the month."
+msgstr "Mappan %s verður umnefnd í upphafi hvers mánaðar."
+
+#: lib/MIME/Viewer/itip.php:256
+#, php-format
+msgid "%s has accepted."
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:625
+#, php-format
+msgid "%s has cancelled %s."
+msgstr "%s hefur ihætt við %s."
+
+#: lib/MIME/Viewer/itip.php:262
+#, php-format
+msgid "%s has declined."
+msgstr "%s hefur hafnað."
+
+#: lib/MIME/Viewer/itip.php:493
+#, php-format
+msgid "%s has replied to a free/busy request."
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:616
+#, php-format
+msgid "%s has replied to the invitation to %s."
+msgstr "%s hefur svarað boðinu til %s."
+
+#: lib/MIME/Viewer/itip.php:482
+#, php-format
+msgid "%s has sent you free/busy information."
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:268
+#, php-format
+msgid "%s has tentatively accepted."
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:487
+#, php-format
+msgid "%s requests your free/busy information."
+msgstr "%s óskar eftir upplýsingum um hvort þú ert viðlátinn."
+
+#: lib/MIME/Viewer/itip.php:584
+#, php-format
+msgid "%s requests your presence at %s."
+msgstr ""
+
+#: lib/Message.php:377
+#, php-format
+msgid "%s was successfully added to %s."
+msgstr "%s var bætt í %s."
+
+#: lib/MIME/Viewer/itip.php:597
+#, php-format
+msgid "%s wishes to ammend %s."
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:574
+#, php-format
+msgid "%s wishes to make you aware of %s."
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:602
+#, php-format
+msgid "%s wishes to receive the latest information about %s."
+msgstr ""
+
+#: message.php:269 message.php:274
+#, php-format
+msgid "%s: %s"
+msgstr ""
+
+#: templates/message/navbar_top.inc:13
+#, php-format
+msgid "%s: %s (%d&nbsp;of&nbsp;%d)"
+msgstr "%s: %s (%d&nbsp;af&nbsp;%d)"
+
+#: templates/compose/spelling.inc:140
+msgid "(Apply these changes and move to next screen.)"
+msgstr "(Samþykkja breytingar og fara í næsta glugga.)"
+
+#: templates/compose/spelling.inc:127
+msgid "(Discard all changes and return to the compose screen.)"
+msgstr "(Hundsa allar breytingar og fara til baka í að skrifa skeyti.)"
+
+#: spelling.php:280
+msgid ""
+"(Return to the compose screen after applying all changes made thus far.  "
+"Changes on the current screen will NOT be applied.)"
+msgstr ""
+"(Fara til baka í að skrifa skeyti eftir að hafa vistað breytingar sem gerðar "
+"hafa verið hingað til. Breytingar sem ekki hafa verið skráðar verða ekki "
+"geymdar.)"
+
+#: spelling.php:277
+msgid ""
+"(Send message after applying all changes made thus far.  Changes on the "
+"current screen will NOT be applied.)"
+msgstr ""
+
+#: templates/contacts/contacts.inc:227
+msgid "* Add these by clicking OK *"
+msgstr "* Bættu þessum við með því að smella á OK *"
+
+#: templates/contacts/contacts.inc:206
+msgid "* Please select address(es) *"
+msgstr "* Veldu netföng *"
+
+#: mailbox.php:194
+msgid "1 message has been deleted."
+msgstr "Einu skeyti var eytt."
+
+#: lib/Spam.php:180
+msgid "1 message has been reported as not spam to your system administrator."
+msgstr ""
+"Tilkynning um eitt skeyti sem ekki ruslpóstur hefur verið send kerfisumsjón."
+
+#: lib/Spam.php:160
+msgid "1 message has been reported as not spam."
+msgstr "Tilkynning um eitt skeyti sem ruslpóstur hefur verið send."
+
+#: lib/Spam.php:172
+msgid "1 message has been reported as spam to your system administrator."
+msgstr ""
+"Tilkynning um eitt skeyti sem ruslpóstur hefur verið send kerfisumsjón."
+
+#: lib/Spam.php:152
+msgid "1 message has been reported as spam."
+msgstr "Tilkynning um eitt skeyti sem ruslpóstur hefur verið send."
+
+#: config/prefs.php.dist:788
+msgid "100 characters"
+msgstr ""
+
+#: config/prefs.php.dist:791
+msgid "1000 characters"
+msgstr ""
+
+#: config/prefs.php.dist:789
+msgid "250 characters"
+msgstr ""
+
+#: config/prefs.php.dist:790
+msgid "500 characters"
+msgstr ""
+
+#: lib/MIME/Viewer/images.php:162
+#, php-format
+msgid "A large image named %s is attached to this message."
+msgstr "Stór mynd nefnd %s er hengd við þetta skeyti."
+
+#: lib/MIME/Viewer/notification.php:50
+msgid ""
+"A message you have sent has resulted in a return notification from the "
+"recipient."
+msgstr ""
+
+#: templates/search/fields.inc:5
+msgid "AND"
+msgstr "OG"
+
+#: lib/MIME/Viewer/itip.php:590
+msgid "Accept request"
+msgstr "Samþykkja beiðni"
+
+#: lib/MIME/Viewer/itip.php:587
+msgid "Accept request and add it to my calendar"
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:753
+msgid "Accepted"
+msgstr "Samþykkt"
+
+#: lib/MIME/Viewer/itip.php:257
+msgid "Accepted: "
+msgstr "Samþykkt: "
+
+#: templates/fetchmail/manage.inc:7
+msgid "Account's name:"
+msgstr "Notandanafn:"
+
+#: lib/MIME/Viewer/itip.php:520 lib/MIME/Viewer/itip.php:730
+msgid "Actions"
+msgstr "Aðgerðir"
+
+#: templates/prefs/sourceselect.inc:303
+msgid "Add source"
+msgstr "bæta við handriti"
+
+#: lib/MIME/Viewer/itip.php:577 lib/MIME/Viewer/itip.php:588
+msgid "Add this to my calendar"
+msgstr ""
+
+#: lib/MIME/Headers.php:200 lib/MIME/Headers.php:201
+#, php-format
+msgid "Add to Address book (%s)"
+msgstr "Bæta í netfangabók (%s)"
+
+#: compose.php:1191
+#, php-format
+msgid "Added \"%s\" as an attachment."
+msgstr "Viðhenginu \"%s\" bætt við."
+
+#: config/prefs.php.dist:190
+msgid ""
+"Additional headers to display when viewing: <i>(optional, enter each header "
+"on a new line)</i>"
+msgstr ""
+
+#: lib/MIME/Viewer/notification.php:62
+#, php-format
+msgid "Additional information can be viewed %s."
+msgstr ""
+
+#: lib/MIME/Viewer/notification.php:62
+msgid "Additional information details"
+msgstr ""
+
+#: lib/MIME/Viewer/status.php:93
+msgid "Additional message details"
+msgstr ""
+
+#: lib/MIME/Viewer/status.php:92
+#, php-format
+msgid "Additional message details can be viewed %s."
+msgstr ""
+
+#: lib/MIME/Viewer/status.php:78
+msgid "Additional message error details"
+msgstr ""
+
+#: lib/MIME/Viewer/status.php:77
+#, php-format
+msgid "Additional message error details can be viewed %s."
+msgstr ""
+
+#: contacts.php:90 templates/contacts/contacts.inc:180
+#: templates/compose/redirect.inc:55 templates/compose/compose.inc:330
+msgid "Address Book"
+msgstr "Netfangabók"
+
+#: config/prefs.php.dist:126
+msgid "Address Books"
+msgstr "Netfangabækur"
+
+#: config/prefs.php.dist:181
+msgid ""
+"Addresses to BCC all messages: <i>(optional, enter each address on a new "
+"line)</i>"
+msgstr ""
+
+#: config/prefs.php.dist:173
+msgid ""
+"Addresses to explicitly tie to this identity: <i>(optional, enter each "
+"address on a new line)</i>"
+msgstr ""
+
+#: templates/mailbox/navbar.inc:10 config/prefs.php.dist:792
+msgid "All"
+msgstr "Öll skeyti"
+
+#: templates/folders/javascript.inc:5
+msgid ""
+"All messages in the following folder(s) will be downloaded into one MBOX "
+"file:"
+msgstr ""
+"Öll skeyti í þessari möppu / þessum möppunum verða geymd í stakri MBOX skrá:"
+
+#: lib/Maintenance/Task/purge_trash.php:81
+#, php-format
+msgid ""
+"All messages in your \"%s\" folder older than %s days will be permanently "
+"deleted."
+msgstr "Öllum skeytum í möppunni \"%s\" sem eru eldri en %s daga verður eytt."
+
+#: lib/Maintenance/Task/delete_attachments_monthly.php:59
+#, php-format
+msgid "All old linked attachments more than %s months old will be deleted."
+msgstr ""
+"Öllum eldri skeytum sem þú hefur sent frá þér, og eru eldri en %s mánaða "
+"verður eytt."
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:73
+#, php-format
+msgid "All old sent-mail folders more than %s months old will be deleted."
+msgstr "Öllum sent-mail möppum sem eru eldri en %s mánaða verður eytt."
+
+#: acl.php:85
+#, php-format
+msgid "All rights on folder \"%s\" successfully removed for user \"%s\"."
+msgstr ""
+
+#: templates/filters/prefs.inc:55
+msgid "Allow filter rules to be applied in any mailbox?"
+msgstr ""
+
+#: lib/MIME/Viewer/alternative.php:110
+msgid "Alternative parts for this section:"
+msgstr ""
+
+#: config/prefs.php.dist:565 config/prefs.php.dist:577
+msgid "Always"
+msgstr ""
+
+#: config/prefs.php.dist:550
+msgid "Always save attachments"
+msgstr "Altaf geyma viðhengi."
+
+#: lib/Message.php:468
+msgid ""
+"An error occured while attempting to strip the attachment. The IMAP server "
+"said: "
+msgstr ""
+
+#: lib/Message.php:364
+msgid "An unknown error occured while creating the new task."
+msgstr "Óþekkt villa kom upp þegar reynt var að framkvæma skráninguna."
+
+#: message.php:484 mailbox.php:693 templates/mailbox/legend.inc:6
+#: templates/mailbox/navbar.inc:18 templates/mailbox/navbar.inc:35
+#: templates/message/navbar_navigate.inc:9
+msgid "Answered"
+msgstr "Svarað"
+
+#: templates/search/main.inc:31
+msgid "Answered messages"
+msgstr "Skeyti sem búið er að svara"
+
+#: templates/mailbox/header.inc:7
+msgid "Apply Filters"
+msgstr "Virkja síur"
+
+#: templates/mailbox/header.inc:7
+#, php-format
+msgid "Apply Filters to %s"
+msgstr "Virkja síur fyrir %s"
+
+#: templates/filters/prefs.inc:43
+msgid "Apply filter rules upon logging on?"
+msgstr "Virkja síur þegar þú tengist."
+
+#: templates/filters/prefs.inc:49
+msgid "Apply filter rules whenever INBOX is displayed?"
+msgstr "Virkja síur þegar INBOX er uppfært."
+
+#: templates/pgp/pgp.inc:93 templates/smime/smime.inc:65
+msgid "Are you sure you want to delete this public key?"
+msgstr "Ert þú viss um að þú viljir gera þetta?"
+
+#: templates/pgp/pgp.inc:169 templates/smime/smime.inc:128
+msgid ""
+"Are you sure you want to delete your keypair? (This is NOT recommended!)"
+msgstr "Ert þú viss um að þú viljir gera þetta?"
+
+#: templates/compose/compose.js:6 templates/compose/redirect.inc:5
+msgid "Are you sure you want to do this?"
+msgstr "Ert þú viss um að þú viljir gera þetta?"
+
+#: message.php:391 templates/mailbox/javascript.inc:68
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "Ert þú viss um að þú viljir ENDANLEGA eyða þessum skeytum?"
+
+#: lib/MIME/Contents.php:202
+msgid "Are you sure you wish to PERMANENTLY delete this attachment?"
+msgstr "Ert þú viss um að þú viljir ENDANLEGA eyða þessum viðhengjum?"
+
+#: templates/mailbox/actions.inc:39
+msgid "Are you sure you wish to empty this folder?"
+msgstr "Ert þú viss um að þú viljir tæma þessa möppu?"
+
+#: lib/IMP.php:931
+msgid "Are you sure you wish to empty your trash folder?"
+msgstr "Ert þú viss um að þú viljir tæma ruslakörfuna?"
+
+#: templates/mailbox/actions.inc:8
+msgid "Are you sure you wish to permanently delete these messages?"
+msgstr "Ert þú viss um að þú viljir ENDANLEGA eyða þessum skeytum?"
+
+#: templates/mailbox/javascript.inc:79 templates/message/javascript.inc:80
+msgid "Are you sure you wish to report this message as innocent?"
+msgstr "Ert þú viss um að þú viljir tilkynna þetta skeyti sem ekki ruslpóst?"
+
+#: templates/mailbox/javascript.inc:74 templates/message/javascript.inc:75
+msgid "Are you sure you wish to report this message as spam?"
+msgstr "Ert þú viss um að þú viljir tilkynna þetta skeyti sem ruslpóst?"
+
+#: config/prefs.php.dist:887
+msgid "Arrival Time"
+msgstr "Komutími"
+
+#: config/prefs.php.dist:902
+msgid "Ascending"
+msgstr "Hækkandi"
+
+#: config/prefs.php.dist:564 config/prefs.php.dist:576
+msgid "Ask"
+msgstr ""
+
+#: templates/compose/compose.inc:509
+msgid "Attach"
+msgstr "Hengja skrá við"
+
+#: templates/compose/compose.inc:466
+msgid "Attach Files"
+msgstr "Bæta við viðhengjum"
+
+#: templates/compose/compose.inc:447
+msgid "Attach a copy of your PGP public key to your message?"
+msgstr ""
+
+#: lib/MIME/Viewer/tnef.php:109
+msgid "Attached File:"
+msgstr "Viðhengi:"
+
+#: lib/Compose.php:362 lib/Compose.php:447
+#, php-format
+msgid ""
+"Attached file \"%s\" exceeds the attachment size limits. File NOT attached."
+msgstr "Viðhengið \"%s\" er of stórt. Skráin var EKKI viðhengd."
+
+#: lib/MIME/Viewer/itip.php:376
+msgid "Attached is a reply to a calendar request you sent."
+msgstr ""
+
+#: mailbox.php:729 templates/mailbox/legend.inc:16
+#: templates/compose/attachments.inc:14 templates/compose/compose.inc:496
+#: templates/compose/attachments.js:98
+msgid "Attachment"
+msgstr "Viðhengi"
+
+#: compose.php:1001 lib/Message.php:429
+msgid "Attachment stripped: Original attachment type"
+msgstr ""
+
+#: templates/compose/compose.inc:340 templates/compose/compose.inc:464
+#: lib/Compose.php:984
+msgid "Attachments"
+msgstr "Viðhengi"
+
+#: lib/MIME/Viewer/itip.php:682
+msgid "Attendees"
+msgstr "Viðstaddir"
+
+#: lib/MIME/Viewer/notification.php:53
+msgid "Attention"
+msgstr "Athugaðu"
+
+#: lib/Auth/imp.php:44
+msgid "Auth_imp: Required IMAP extension not found."
+msgstr ""
+
+#: config/prefs.php.dist:634
+msgid ""
+"Automatically show images in HTML messages when the sender is in my "
+"addressbook?"
+msgstr ""
+
+#: templates/prefs/sourceselect.inc:298
+msgid "Available Address books:"
+msgstr "Tiltækar netfangabækur:"
+
+#: lib/MIME/Viewer/itip.php:719
+msgid "Awaiting Response"
+msgstr ""
+
+#: templates/message/navbar_navigate.inc:26
+#, php-format
+msgid "Bac_k to %s"
+msgstr "Tilbaka í %s"
+
+#: thread.php:86 templates/message/navbar_navigate.inc:26
+#, php-format
+msgid "Back to %s"
+msgstr "Tilbaka í %s"
+
+#: search.php:147 message.php:250 templates/contacts/contacts.inc:222
+#: templates/compose/recompose.inc:20
+msgid "Bcc"
+msgstr ""
+
+#: lib/MIME/Viewer/status.php:161
+msgid "Below is the raw text of the status information message."
+msgstr "Hér að neðan er hrár texti af stöðuuplýsingaskeytinu."
+
+#: templates/mailbox/actions.inc:16 templates/message/navbar_actions.inc:19
+msgid "Blacklist"
+msgstr "Svartlisti"
+
+#: config/prefs.php.dist:622
+msgid "Block images in HTML messages unless they are specifically requested?"
+msgstr ""
+
+#: search.php:155
+msgid "Body"
+msgstr "Meginmál"
+
+#: templates/search/main.inc:23 templates/search/main.inc:39
+#: templates/search/main.inc:55 templates/search/main.inc:71
+msgid "Both"
+msgstr "Bæði"
+
+#: config/prefs.php.dist:681
+msgid "Both Header Listing and Body of Message"
+msgstr ""
+
+#: templates/compose/compose.inc:283
+msgid "C_harset"
+msgstr "Stafasett"
+
+#: templates/search/fields.inc:36
+msgid "Calendar"
+msgstr "Dagatal"
+
+#: lib/Fetchmail/imap.php:201
+msgid "Can not connect to the remote mail server."
+msgstr "Get ekki tengst póstþjóni."
+
+#: lib/Fetchmail/imap.php:199
+msgid "Can not connect to the remote mail server: "
+msgstr "Gat ekki tengst póstþjóni á fjarenda: "
+
+#: lib/MIME/Viewer/partial.php:50
+#, php-format
+msgid ""
+"Can not display - found only %s of %s parts of this message in the current "
+"mailbox."
+msgstr ""
+
+#: folders.php:273 templates/pgp/import_key.inc:66
+#: templates/pgp/passphrase.inc:32 templates/folders/import.inc:21
+#: templates/smime/import_key.inc:85 templates/smime/passphrase.inc:22
+#: templates/contacts/contacts.inc:255 templates/compose/spelling.inc:127
+msgid "Cancel"
+msgstr "Hætta við"
+
+#: templates/compose/redirect.inc:116 templates/compose/compose.inc:70
+#: templates/compose/compose.inc:426
+msgid "Cancel Message"
+msgstr "Hætta við skeyti"
+
+#: templates/compose/compose.js:6 templates/compose/redirect.inc:5
+msgid "Cancelling this message will permanently discard its contents."
+msgstr "Ef þú hættir við þá er öllu efni skeytisins fargað."
+
+#: search.php:143 message.php:249 templates/contacts/contacts.inc:221
+#: templates/compose/recompose.inc:15
+msgid "Cc"
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:701
+msgid "Chair Person"
+msgstr ""
+
+#: templates/compose/spelling.inc:86
+msgid "Change"
+msgstr "Breyta"
+
+#: templates/compose/spelling.inc:87
+msgid "Change All"
+msgstr "Breyta öllum"
+
+#: templates/acl/acl.inc:97 templates/acl/acl.inc:98
+msgid "Change Folder"
+msgstr "Skipta um möppu"
+
+#: config/prefs.php.dist:111
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr ""
+"Hér getur þú breytt því á hvaða hátt skeytum er raðað upp og hversu margar "
+"skeytalínur sjást í hverjum glugga."
+
+#: config/prefs.php.dist:24
+msgid "Change mail server and folder settings."
+msgstr "Breyta póstþjóns og möppustillingum."
+
+#: config/prefs.php.dist:15
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr ""
+"Hér getur þú breytt því hvaða nafn, netfang og skeytisbotn kemur fram í "
+"skeytum þínum."
+
+#: config/prefs.php.dist:793
+msgid "Characters to display:"
+msgstr ""
+
+#: templates/folders/actions.inc:13
+msgid "Check Folder(s) for New Mail"
+msgstr "Hvaða möppur á að athuga með nýjan póst í"
+
+#: templates/mailbox/message_headers.inc:71 templates/folders/actions.inc:2
+msgid "Check _All/None"
+msgstr ""
+
+#: templates/fetchmail/fetchmail.inc:14
+msgid "Check all mail servers you want to fetch mail from:"
+msgstr ""
+
+#: config/prefs.php.dist:454
+msgid "Check spelling before sending a message?"
+msgstr "Athuga stafsetningu fyrir sendingu?"
+
+#: templates/folders/actions.inc:4
+msgid "Choose Action:"
+msgstr "Veldu aðgerð:"
+
+#: config/servers.php.dist:195
+msgid "Choose a mail server:"
+msgstr "Veldu póstþjón:"
+
+#: templates/compose/compose.inc:127 templates/compose/compose.inc:177
+#: templates/compose/compose.inc:228
+msgid "Choose a match or edit the address to the right:"
+msgstr "Veldu eða breyttu til hægri:"
+
+#: lib/MIME/Viewer/itip.php:521 lib/MIME/Viewer/itip.php:731
+msgid "Choose an action:"
+msgstr "Veldu aðgerð:"
+
+#: templates/prefs/sourceselect.inc:349
+msgid "Choose the address book to use when adding addresses."
+msgstr "Veldu netfangabók sem á að nota þegar nýjum netföngum er bætt við."
+
+#: templates/prefs/sourceselect.inc:293
+msgid "Choose the order of address books to search when expanding addresses."
+msgstr ""
+"Veldu uppröðun netfangabóka sem á að leita í, þegar leitað er að netföngum."
+
+#: lib/MIME/Viewer/images.php:106
+#, php-format
+msgid "Click %s to convert the image file into a format your browser can view."
+msgstr ""
+
+#: lib/MIME/Viewer/images.php:95
+#, php-format
+msgid "Click %s to download the image."
+msgstr ""
+
+#: lib/Filter.php:107
+#, php-format
+msgid "Click %s to go to %s management page."
+msgstr ""
+
+#: lib/MIME/Viewer/html.php:128
+#, php-format
+msgid "Click %s to view HTML content in a separate window."
+msgstr "Smellu á %s til að skoða HTML innihald í sér glugga."
+
+#: lib/MIME/Viewer/images.php:163
+#, php-format
+msgid "Click %s to view a thumbnail of this image."
+msgstr "Smelltu %s til að skoða hana sem smámynd."
+
+#: lib/MIME/Viewer/pkcs7.php:407
+#, php-format
+msgid "Click %s to view the attachment in a separate window."
+msgstr "Smelltu á %s til að skoða viðhengi í sér glugga."
+
+#: lib/MIME/Viewer/related.php:79
+#, php-format
+msgid "Click %s to view this multipart/related part in a separate window."
+msgstr "Smelltu á %s til að skoða þennan hluta í sér glugga."
+
+#: lib/MIME/Viewer/html.php:104
+msgid "Click here to HIDE the Images"
+msgstr ""
+
+#: lib/MIME/Viewer/html.php:108
+msgid "Click here to SHOW the Images"
+msgstr ""
+
+#: templates/prefs/sourceselect.inc:321
+msgid ""
+"Click on one of your selected address books and then select all fields to "
+"search."
+msgstr ""
+"Smelltu á eina af völdum netfangabókum og veldu þá reiti sem á að leita í."
+
+#: lib/MIME/Viewer/pgp.php:171
+msgid "Click to Save PGP Public Key in your Address book"
+msgstr ""
+
+#: lib/MIME/Viewer/pkcs7.php:191
+#, php-format
+msgid "Click to Save S/MIME certificate of %s in your Address Book"
+msgstr ""
+
+#: config/prefs.php.dist:921
+msgid "Clicking on the address will compose a new message to the sender"
+msgstr ""
+
+#: config/prefs.php.dist:922
+msgid "Clicking on the address will open the message to be read"
+msgstr ""
+
+#: templates/fetchmail/fetchmail.inc:30
+msgid "Close"
+msgstr "Loka"
+
+#: compose.php:775 compose.php:1082
+msgid "Close this window"
+msgstr "Loka þessum glugga"
+
+#: folders.php:416
+msgid "Closed Folder"
+msgstr "Lokuð mappa"
+
+#: folders.php:436
+msgid "Collapse"
+msgstr "Loka"
+
+#: templates/folders/actions.inc:34
+msgid "Collapse All"
+msgstr "Loka öllum"
+
+#: templates/folders/actions.inc:34
+msgid "Collapse All Folders"
+msgstr "Loka öllum möppum"
+
+#: folders.php:436
+msgid "Collapse Folder"
+msgstr "Loka möppu"
+
+#: templates/fetchmail/manage.inc:51
+msgid "Color Indicator: "
+msgstr ""
+
+#: templates/pgp/pgp.inc:191
+msgid "Comment"
+msgstr "Athugasemd"
+
+#: lib/MIME/Viewer/itip.php:769
+msgid "Completed"
+msgstr "Lokið"
+
+#: lib/Block/tree_folders.php:42 lib/Block/summary.php:19
+msgid "Compose"
+msgstr "Semja"
+
+#: mailbox.php:756 lib/MIME/Headers.php:192
+#, php-format
+msgid "Compose Message (%s)"
+msgstr "Semja skeyti (%s)"
+
+#: compose.php:774 compose.php:1081
+msgid "Compose another message"
+msgstr "Semja nýtt skeyti"
+
+#: config/prefs.php.dist:429
+msgid "Compose messages in a separate window?"
+msgstr "Semja skeyti í sér glugga?"
+
+#: config/prefs.php.dist:446
+msgid ""
+"Compose messages with an HTML GUI by default (if browser supports the "
+"feature)?"
+msgstr ""
+
+#: config/prefs.php.dist:67
+msgid "Configure how messages are displayed."
+msgstr ""
+
+#: config/prefs.php.dist:96
+msgid "Configure mail preview options."
+msgstr ""
+
+#: lib/Fetchmail/imap.php:234
+msgid "Connection to server failed"
+msgstr ""
+
+#: config/prefs.php.dist:135
+#, php-format
+msgid "Control PGP support for %s."
+msgstr ""
+
+#: config/prefs.php.dist:144
+#, php-format
+msgid "Control S/MIME support for %s."
+msgstr ""
+
+#: config/prefs.php.dist:88
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr ""
+"Stjórna hvenær athugað er um póst, og hvernig á að gera viðvart um nýjan "
+"póst."
+
+#: config/prefs.php.dist:691
+msgid "Convert textual emoticons into graphical ones?"
+msgstr ""
+
+#: templates/mailbox/navbar.inc:51 templates/message/navbar_navigate.inc:19
+msgid "Copy"
+msgstr "Afrit"
+
+#: templates/mailbox/navbar.inc:51 templates/message/navbar_navigate.inc:19
+msgid "Copy to folder"
+msgstr "Afrita í möppu"
+
+#: templates/compose/spelling.inc:66
+msgid "Correct"
+msgstr "Leiðrétta"
+
+#: templates/compose/spelling.inc:145
+msgid "Corrected Text"
+msgstr "Leiðréttur texti"
+
+#: attachment.php:50
+#, php-format
+msgid "Could not create the VFS backend: %s"
+msgstr ""
+
+#: lib/Message.php:603
+#, php-format
+msgid "Could not delete messages from %s. The server said: %s"
+msgstr "Gat ekki eytt skeytum frá %s: %s"
+
+#: lib/Session.php:293
+msgid "Could not execute maintenance operations."
+msgstr "Gat ekki framkvæmt viðhaldsaðgerðir"
+
+#: lib/MIME/Viewer/tnef.php:54
+msgid "Could not extract the requested file from the MS-TNEF attachment."
+msgstr ""
+
+#: lib/MIME/Viewer/zip.php:58
+msgid "Could not extract the requested file from the Zip archive."
+msgstr ""
+
+#: search.php:361 templates/acl/acl.inc:39 templates/acl/acl.inc:157
+#: templates/fetchmail/manage.inc:67
+msgid "Create"
+msgstr "Búa til"
+
+#: templates/folders/actions.inc:5
+msgid "Create Folder"
+msgstr "Búa til möppu"
+
+#: templates/pgp/pgp.inc:252
+msgid "Create Keys"
+msgstr "Búa til lykla"
+
+#: templates/search/header.inc:14
+msgid "Create Virtual Folder"
+msgstr "Búa til sýndarmöppu"
+
+#: templates/fetchmail/account_select.inc:26
+msgid "Create a New Account"
+msgstr ""
+
+#: templates/prefs/spamselect.inc:12 templates/prefs/spamselect.inc:24
+msgid "Create a new Spam folder"
+msgstr "Búa til nýja möppu undir ruslpóst"
+
+#: templates/prefs/folderselect.inc:12 templates/prefs/folderselect.inc:24
+msgid "Create a new drafts folder"
+msgstr "Búa til nýja möppu undir uppköst"
+
+#: templates/prefs/sentmailselect.inc:27 templates/prefs/sentmailselect.inc:43
+msgid "Create a new sent mail folder"
+msgstr "Búa til nýja möppu undur send skeyti"
+
+#: templates/prefs/trashselect.inc:12 templates/prefs/trashselect.inc:24
+msgid "Create a new trash folder"
+msgstr "Búa til nýja möppu (ruslakörfu) undir eydd skeyti"
+
+#: config/prefs.php.dist:120
+msgid ""
+"Create filtering rules to organize your incoming mail, sort it into folders, "
+"and delete spam."
+msgstr ""
+"Búa til síureglur sem stjórna meðferð innkomandi pósts, færa hann í "
+"tilteknar möppur eða eyða ruslpósti."
+
+#: templates/acl/acl.inc:95
+#, php-format
+msgid "Current access to %s"
+msgstr ""
+
+#: config/prefs.php.dist:104
+msgid "Customize accounts for fetching mail from other accounts."
+msgstr ""
+
+#: config/prefs.php.dist:51
+msgid "Customize how you send mail."
+msgstr "Stilla hvernig póstur er sendur."
+
+#: config/prefs.php.dist:40
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Stilla aðgerðir sem eru framkvæmdar þegar þú tengist %s."
+
+#: templates/mailbox/message_headers.inc:17
+msgid "Dat_e"
+msgstr "Dags"
+
+#: message.php:246 thread.php:92
+msgid "Date"
+msgstr "Dags"
+
+#: lib/MIME/Viewer/itip.php:757
+msgid "Declined"
+msgstr "Hafnað"
+
+#: lib/MIME/Viewer/itip.php:263
+msgid "Declined: "
+msgstr "Hafnað: "
+
+#: config/prefs.php.dist:530
+msgid "Default"
+msgstr "Sjálfgefið"
+
+#: config/prefs.php.dist:894
+msgid "Default sorting criteria:"
+msgstr "Sjálfgefin röðunaraðferð:"
+
+#: config/prefs.php.dist:904
+msgid "Default sorting direction:"
+msgstr "Sjálfgefin uppröðun:"
+
+#: lib/MIME/Viewer/itip.php:765
+msgid "Delegated"
+msgstr "Ráðstafað"
+
+#: folders.php:407 templates/mailbox/actions.inc:8
+#: templates/mailbox/actions.inc:10 templates/pgp/pgp.inc:93
+#: templates/message/navbar_actions.inc:6 templates/smime/smime.inc:65
+#: templates/contacts/contacts.inc:244 templates/fetchmail/manage.inc:68
+#: templates/compose/attachments.inc:28
+msgid "Delete"
+msgstr "Eyða"
+
+#: templates/pgp/pgp.inc:93 templates/smime/smime.inc:65
+#, php-format
+msgid "Delete %s Public Key"
+msgstr "Eyða opinbera lyklinum %s"
+
+#: templates/pgp/pgp.inc:169 templates/smime/smime.inc:128
+msgid "Delete Current Keys"
+msgstr "Eyða virkum lyklum"
+
+#: templates/folders/actions.inc:7
+msgid "Delete Folder(s)"
+msgstr "Eyða möppu(m)"
+
+#: folders.php:274
+msgid "Delete Selected Folders"
+msgstr "Eyða völdum möppum"
+
+#: folders.php:407
+msgid "Delete Virtual Folder"
+msgstr "Eyða sýndarmöppu"
+
+#: templates/fetchmail/manage.inc:43
+msgid "Delete fetched messages from remote server?"
+msgstr "Hreinsa út sótt skeyti á póstþjóni á fjarenda?"
+
+#: lib/MIME/Viewer/itip.php:628
+msgid "Delete from my calendar"
+msgstr ""
+
+#: config/prefs.php.dist:362
+msgid "Delete old linked attachments at beginning of month?"
+msgstr ""
+
+#: config/prefs.php.dist:344
+msgid "Delete old sent-mail folders at beginning of month?"
+msgstr "Eyða gömlum möppum með sendum pósti í upphafi hvers mánaðar"
+
+#: config/prefs.php.dist:612
+msgid "Delete spam messages after they have been reported as spam?"
+msgstr ""
+
+#: message.php:487 mailbox.php:719 templates/mailbox/legend.inc:8
+#: templates/mailbox/navbar.inc:20 templates/mailbox/navbar.inc:38
+msgid "Deleted"
+msgstr "Eytt"
+
+#: templates/search/main.inc:63
+msgid "Deleted messages"
+msgstr "Eydd skeyti"
+
+#: compose.php:280
+#, php-format
+msgid "Deleted the attachment \"%s\"."
+msgstr "Eyddi viðhenginu \"%s\"."
+
+#: config/prefs.php.dist:79
+msgid "Deleting and Moving Messages"
+msgstr "Eyðing og flutningur skeyta"
+
+#: lib/MIME/Viewer/itip.php:592
+msgid "Deny request"
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:540
+msgid "Deny request for free/busy information"
+msgstr ""
+
+#: config/prefs.php.dist:903
+msgid "Descending"
+msgstr "Lækkandi"
+
+#: templates/compose/attachments.inc:21 lib/MIME/Viewer/itip.php:669
+msgid "Description"
+msgstr "Lýsing"
+
+#: templates/pgp/pgp.inc:93 templates/pgp/pgp.inc:147
+#: templates/pgp/pgp.inc:151 templates/smime/smime.inc:65
+#: templates/smime/smime.inc:113
+msgid "Details"
+msgstr "Atriði"
+
+#: config/prefs.php.dist:671
+msgid "Dim signatures?"
+msgstr "Hafa undirskriftir með daufum lit?"
+
+#: templates/contacts/contacts.inc:236
+msgid "Display"
+msgstr "Útlit"
+
+#: config/prefs.php.dist:470
+msgid "Display confirmation after sending a message?"
+msgstr "Sýna staðfestingu að sendingu lokinni?"
+
+#: config/prefs.php.dist:680
+msgid "Display in Body of Message"
+msgstr ""
+
+#: config/prefs.php.dist:768
+msgid "Display pop-up notification of new mail?"
+msgstr "Sýna PopUp glugga þegar nýr póstur berst."
+
+#: config/prefs.php.dist:733
+msgid "Display the 'Empty Trash' link in the menubar?"
+msgstr ""
+
+#: templates/compose/attachments.inc:11
+msgid "Disposition"
+msgstr ""
+
+#: templates/search/fields.inc:26
+msgid "Do NOT match"
+msgstr "Sem passar ekki við"
+
+#: templates/folders/actions.inc:14
+msgid "Do Not Check Folder(s) for New Mail"
+msgstr "Ekki athuga um nýjan póst í möppu(m)"
+
+#: config/prefs.php.dist:923
+msgid "Do not generate a link in the From: column"
+msgstr ""
+
+#: lib/IMP.php:1031
+msgid "Do you want to open that folder?"
+msgstr "Viltu opna þessa möppu?"
+
+#: templates/compose/spelling.inc:133
+msgid "Done"
+msgstr "Lokið"
+
+#: lib/MIME/Contents.php:191
+#, php-format
+msgid "Download %s in .zip Format"
+msgstr "Sækja %s sem .zip skrá"
+
+#: templates/message/headers.inc:52
+msgid "Download All Attachments (in .zip file)"
+msgstr "Sækja öll viðhengi (í .zip skrá)"
+
+#: templates/folders/actions.inc:18
+msgid "Download Folder(s)"
+msgstr "Sækja möppu(r) yfir á vinnustöð"
+
+#: templates/folders/actions.inc:19
+msgid "Download Folder(s) [.zip format]"
+msgstr "Sækja möppu(r) [.zip skrá]"
+
+#: lib/MIME/Contents.php:191
+msgid "Download in .zip Format"
+msgstr "Sækja sem .zip skrá"
+
+#: message.php:485 mailbox.php:698 templates/mailbox/legend.inc:9
+#: templates/mailbox/navbar.inc:22 templates/mailbox/navbar.inc:41
+#: templates/message/navbar_navigate.inc:11
+msgid "Draft"
+msgstr "Uppkast"
+
+#: folders.php:387
+msgid "Draft folder"
+msgstr "Mappa fyrir uppköst:"
+
+#: templates/prefs/folderselect.inc:23
+msgid "Drafts folder:"
+msgstr "Mappa fyrir uppköst:"
+
+#: templates/pgp/pgp.inc:196
+msgid "E-mail Address"
+msgstr "Netfang"
+
+#: lib/Mailbox.php:303
+msgid "END"
+msgstr ""
+
+#: lib/MIME/Viewer/status.php:74
+msgid "ERROR: Your message could not be delivered."
+msgstr "VILLA: Það tókst ekki a senda skeytið."
+
+#: folders.php:408
+msgid "Edit"
+msgstr "Breyta"
+
+#: templates/filters/prefs.inc:21
+msgid "Edit Blacklist"
+msgstr "Vinna í svartlista"
+
+#: templates/filters/prefs.inc:16
+msgid "Edit Filters"
+msgstr "Vinna í síum fyrir póst"
+
+#: folders.php:408 templates/search/header.inc:16
+#: templates/mailbox/header.inc:13
+msgid "Edit Virtual Folder"
+msgstr "Breyta sýndarmöppu"
+
+#: templates/mailbox/header.inc:13
+#, php-format
+msgid "Edit Virtual Folder Definition for %s"
+msgstr ""
+
+#: templates/filters/prefs.inc:26
+msgid "Edit Whitelist"
+msgstr "Vinna í hvítlista"
+
+#: templates/filters/prefs.inc:21
+msgid "Edit your blacklist"
+msgstr "Vinna í þínum svartlista"
+
+#: templates/filters/prefs.inc:16
+msgid "Edit your filter rules"
+msgstr "Breyta þínum síureglum"
+
+#: config/prefs.php.dist:830
+msgid "Edit your preferences for accessing other mail accounts."
+msgstr ""
+
+#: templates/filters/prefs.inc:26
+msgid "Edit your whitelist"
+msgstr "Vinna í þínum hvítlista"
+
+#: templates/contacts/contacts.inc:239
+msgid "Email Address"
+msgstr "Netfang"
+
+#: lib/Message.php:620
+#, php-format
+msgid "Emptied all messages from %s."
+msgstr "Öll skeyti frá %s hreinsuð út."
+
+#: templates/folders/actions.inc:20
+msgid "Empty Folder(s)"
+msgstr "Tæma möppu(r)"
+
+#: folders.php:275
+msgid "Empty Selected Folders"
+msgstr "Tæma valdar möppur"
+
+#: templates/mailbox/actions.inc:39
+msgid "Empty Trash folder"
+msgstr "Tæma ruslakörfumöppu"
+
+#: lib/IMP.php:931
+msgid "Empty _Trash"
+msgstr "Tæma ruslmöppu"
+
+#: templates/pgp/pgp.inc:20 templates/pgp/notactive.inc:16
+msgid "Enable PGP functionality?"
+msgstr ""
+
+#: templates/smime/notactive.inc:16 templates/smime/smime.inc:20
+msgid "Enable S/MIME functionality?"
+msgstr ""
+
+#: config/prefs.php.dist:780
+msgid "Enable message previews?"
+msgstr "Virkja forskoðun skeyta?"
+
+#: templates/compose/compose.inc:433
+msgid "Encr_yption Options"
+msgstr "Dulkóðunarvalkostir"
+
+#: lib/MIME/Viewer/itip.php:517 lib/MIME/Viewer/itip.php:657
+msgid "End"
+msgstr ""
+
+#: lib/Compose.php:330
+msgid "End forwarded message"
+msgstr "Ljúka framsendu skeyti"
+
+#: lib/Compose.php:271
+msgid "End message"
+msgstr "Ljúka skeyti"
+
+#: lib/Compose.php:269
+#, php-format
+msgid "End message from %s"
+msgstr "Enda framsent skeyti frá %s"
+
+#: templates/pgp/pgp.inc:151 templates/smime/smime.inc:117
+msgid "Enter Passphrase"
+msgstr "Skráðu inn lykilkóða"
+
+#: templates/prefs/spamselect.inc:9
+msgid "Enter the name for your new Spam folder"
+msgstr "Sláðu inn nafn á nýju möppunni fyrir ruslpóst"
+
+#: templates/prefs/folderselect.inc:9
+msgid "Enter the name for your new drafts folder"
+msgstr "Sláðu inn nafn á nýju möppunni fyrir uppköst"
+
+#: templates/prefs/sentmailselect.inc:24
+msgid "Enter the name for your new sent mail folder"
+msgstr "Sláðu inn nafn á nýju möppunni fyrir send skeyti"
+
+#: templates/prefs/trashselect.inc:9
+msgid "Enter the name for your new trash folder"
+msgstr "Sláðu inn nafn á nýju möppunni (ruslakörfu) fyrir eydd skeyti"
+
+#: search.php:159
+msgid "Entire Message"
+msgstr "Skeyti í heild sinni"
+
+#: message.php:178 compose.php:1068 thread.php:39
+#, php-format
+msgid "Entry \"%s\" was successfully added to the address book"
+msgstr "Netfangið \"%s\" var skráð í netfangabókina"
+
+#: templates/pgp/pgp.inc:84 templates/smime/smime.inc:58
+#: lib/MIME/Viewer/pgp.php:386 lib/MIME/Viewer/status.php:72
+#: lib/MIME/Viewer/status.php:163 lib/MIME/Viewer/pkcs7.php:365
+msgid "Error"
+msgstr "Villa"
+
+#: lib/MIME/Viewer/itip.php:309 lib/MIME/Viewer/itip.php:407
+#, php-format
+msgid "Error sending reply: %s."
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:101
+msgid "Event successfully deleted."
+msgstr "Viðburðinum var eytt."
+
+#: config/prefs.php.dist:758
+msgid "Every 15 minutes"
+msgstr "Á korters fresti"
+
+#: config/prefs.php.dist:755
+msgid "Every 30 seconds"
+msgstr "Á 30 sek. fresti"
+
+#: config/prefs.php.dist:757
+msgid "Every 5 minutes"
+msgstr "Á fimm mínútna fresti"
+
+#: config/prefs.php.dist:759
+msgid "Every half hour"
+msgstr "Á hálftíma fresti"
+
+#: config/prefs.php.dist:756
+msgid "Every minute"
+msgstr "Á mínútu fresti"
+
+#: folders.php:445
+msgid "Expand"
+msgstr "Opna allar"
+
+#: templates/folders/actions.inc:33
+msgid "Expand All"
+msgstr "Opna allar"
+
+#: templates/folders/actions.inc:33
+msgid "Expand All Folders"
+msgstr "Opna allar möppur"
+
+#: folders.php:445
+msgid "Expand Folder"
+msgstr "Opna möppu"
+
+#: templates/compose/redirect.inc:56 templates/compose/compose.inc:331
+msgid "Expand Names"
+msgstr "Opna nafnaskrá"
+
+#: config/prefs.php.dist:1021
+msgid "Expand names in the compose window automatically in the background?"
+msgstr ""
+
+#: config/prefs.php.dist:951
+msgid "Expand the entire folder tree by default in the folders view?"
+msgstr "Opna allt möpputréð sjálfgefið í möppuham."
+
+#: templates/compose/redirect.inc:104 templates/compose/compose.inc:155
+#: templates/compose/compose.inc:205 templates/compose/compose.inc:256
+msgid "Expanding"
+msgstr "Opna allar"
+
+#: lib/IMP.php:940 lib/IMP.php:942
+msgid "F_etch Mail"
+msgstr "Sækja póst"
+
+#: templates/fetchmail/fetchmail.inc:29 config/prefs.php.dist:103
+msgid "Fetch Mail"
+msgstr "Sækja póst"
+
+#: config/prefs.php.dist:839
+msgid "Fetch Mail in a separate window?"
+msgstr "Sækja skeyti í sér glugga?"
+
+#: templates/fetchmail/manage.inc:46
+msgid "Fetch messages upon logging on?"
+msgstr "Sækja skeyti þegar þú tengist?"
+
+#: lib/Fetchmail.php:289
+#, php-format
+msgid "Fetched %d messages from %s"
+msgstr "Sótti %d skeyti frá %s"
+
+#: lib/Fetchmail.php:287
+#, php-format
+msgid "Fetched 1 message from %s"
+msgstr "Sótti eitt skeyti frá %s"
+
+#: lib/Fetchmail.php:285 lib/Fetchmail.php:287 lib/Fetchmail.php:289
+msgid "Fetchmail: "
+msgstr ""
+
+#: lib/Fetchmail.php:291
+msgid "Fetchmail: no new messages."
+msgstr "Þú átt engin ný skeyti."
+
+#: lib/IMP.php:946
+msgid "Fi_lters"
+msgstr "Síur"
+
+#: templates/compose/compose.inc:492 templates/compose/attachments.js:83
+msgid "File"
+msgstr "Skrá"
+
+#: templates/filters/prefs.inc:35
+msgid "Filter Options"
+msgstr "Síuvalkostir"
+
+#: templates/filters/prefs.inc:8
+msgid "Filter Settings"
+msgstr "Síustillingar"
+
+#: config/prefs.php.dist:594
+msgid "Filter message content for profanity?"
+msgstr "Sía skeyti gagnvart ruddalegu orðalagi?"
+
+#: templates/filters/notactive.inc:8
+msgid "Filter support is disabled on this system."
+msgstr ""
+
+#: config/prefs.php.dist:119
+msgid "Filters"
+msgstr "Síur"
+
+#: templates/filters/notactive.inc:2
+msgid "Filters NOT Active"
+msgstr "Síur EKKI virkar"
+
+#: lib/Filter.php:106
+#, php-format
+msgid "Filters: %s management page"
+msgstr ""
+
+#: templates/contacts/contacts.inc:186
+msgid "Find"
+msgstr "Finna"
+
+#: config/prefs.php.dist:876
+msgid "First Mailbox Page"
+msgstr "Fyrsta síða"
+
+#: mailbox.php:341
+msgid "First Page"
+msgstr "Fyrsta síða"
+
+#: templates/mailbox/actions.inc:21 templates/message/navbar_actions.inc:15
+msgid "Fo_rward"
+msgstr "Áframsenda"
+
+#: folders.php:255 templates/folders/folders_confirm.html:5
+msgid "Folder Actions - Confirmation"
+msgstr ""
+
+#: folders.php:292 templates/folders/head.inc:9
+#: templates/prefs/initialpageselect.inc:6
+#: templates/prefs/initialpageselect.inc:10
+msgid "Folder Navigator"
+msgstr "Möppuvísir"
+
+#: templates/login/login.inc:175
+msgid "Folder Prefix"
+msgstr "Forskeyti fyrir möppur"
+
+#: lib/Block/summary.php:3
+msgid "Folder Summary"
+msgstr "Möppuyfirlit"
+
+#: acl.php:24
+msgid "Folder sharing is not enabled."
+msgstr ""
+
+#: folders.php:52
+msgid "Folder use is not enabled."
+msgstr ""
+
+#: config/prefs.php.dist:940
+msgid "Format of message dates in the mailbox view for messages dated today"
+msgstr ""
+
+#: compose.php:727 templates/mailbox/actions.inc:21
+#: templates/message/navbar_actions.inc:15
+msgid "Forward"
+msgstr "Áframsenda"
+
+#: compose.php:712
+msgid "Forward:"
+msgstr "Áframsenda:"
+
+#: lib/Compose.php:299
+msgid "Forwarded message"
+msgstr "Áframsent skeyti"
+
+#: lib/Compose.php:297
+#, php-format
+msgid "Forwarded message from %s"
+msgstr "Áframsent skeyti frá %s"
+
+#: lib/MIME/Viewer/itip.php:483
+msgid "Free/Busy Information"
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:494
+msgid "Free/Busy Reply"
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:488
+msgid "Free/Busy Request"
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:401
+msgid "Free/Busy Request Response"
+msgstr ""
+
+#: templates/mailbox/message_headers.inc:27
+msgid "Fro_m"
+msgstr "Frá"
+
+#: search.php:135 message.php:247 thread.php:93
+#: templates/compose/compose.inc:98
+msgid "From"
+msgstr "Frá"
+
+#: config/prefs.php.dist:889
+msgid "From Address"
+msgstr "Sendandanetfang"
+
+#: compose.php:724 compose.php:728
+msgid "Fwd:"
+msgstr "Áframs.:"
+
+#: compose.php:1229
+msgid "Fwd: "
+msgstr "Áframs.:"
+
+#: compose.php:1231
+#, php-format
+msgid "Fwd: %u Forwarded Messages"
+msgstr "Frams.: %u framsend skeyti"
+
+#: config/prefs.php.dist:13 config/prefs.php.dist:22 config/prefs.php.dist:30
+#: config/prefs.php.dist:38
+msgid "General Options"
+msgstr "Valkostir notanda"
+
+#: templates/fetchmail/manage.inc:37
+msgid "Get only new messages? (IMAP only)"
+msgstr "Sækja bara ný skeyti? (IMAP)"
+
+#: thread.php:85
+msgid "Go to Message"
+msgstr "Opna skeyti"
+
+#: lib/IMP.php:553
+#, php-format
+msgid "Go to address book entry of \"%s\""
+msgstr "Fara í netfangabókarskráningu fyrir \"%s\""
+
+#: templates/acl/acl.inc:135
+msgid "Grant access"
+msgstr ""
+
+#: message.php:530 lib/Filter.php:106 lib/MIME/Viewer/pgp.php:173
+#: lib/MIME/Viewer/related.php:79 lib/MIME/Viewer/images.php:95
+#: lib/MIME/Viewer/images.php:102 lib/MIME/Viewer/images.php:104
+#: lib/MIME/Viewer/images.php:163 lib/MIME/Viewer/html.php:128
+#: lib/MIME/Viewer/notification.php:62 lib/MIME/Viewer/notification.php:68
+#: lib/MIME/Viewer/appledouble.php:41 lib/MIME/Viewer/status.php:120
+#: lib/MIME/Viewer/status.php:127 lib/MIME/Viewer/pkcs7.php:407
+msgid "HERE"
+msgstr "hér"
+
+#: lib/MIME/Viewer/related.php:80 lib/MIME/Viewer/html.php:129
+msgid "HTML"
+msgstr ""
+
+#: compose.php:229
+msgid "HTML Version of Message"
+msgstr "HTML útgáfa skeytis"
+
+#: templates/message/headers.inc:58
+msgid "Headers"
+msgstr "Hausar"
+
+#: templates/compose/recompose.inc:5
+msgid "Here is the message you were composing:"
+msgstr ""
+
+#: config/prefs.php.dist:662
+msgid "Hidden"
+msgstr "Falið"
+
+#: config/prefs.php.dist:661
+msgid "Hidden in Thread View"
+msgstr "Falið í efnisþráðsham"
+
+#: mailbox.php:363
+msgid "Hide Deleted"
+msgstr "Fela eydd skeyti"
+
+#: folders.php:287
+msgid "Hide Unsubscribed"
+msgstr "Fela óvirka(r) línu(r)"
+
+#: lib/MIME/Viewer/html.php:104
+msgid "Hide the Images"
+msgstr "Fela myndirnar"
+
+#: templates/compose/compose.inc:305
+msgid "High"
+msgstr "Hár"
+
+#: message.php:281 mailbox.php:703 templates/mailbox/legend.inc:12
+msgid "High Priority"
+msgstr "Hár forgangur"
+
+#: templates/compose/compose.inc:304
+msgid "Highest"
+msgstr "Hæsti"
+
+#: config/prefs.php.dist:682
+msgid "How do you want to display attachments?"
+msgstr "Hvrnig viltu sýna viðhengi?"
+
+#: config/prefs.php.dist:496
+msgid "How to attribute quoted lines in a reply"
+msgstr "Hvernig á að merkja texta sem er verið að vísa í í svari:"
+
+#: lib/Fetchmail/imap.php:134
+msgid "IMAP"
+msgstr ""
+
+#: lib/Fetchmail/imap.php:129
+msgid "IMAP (Auto Detect Protocols)"
+msgstr ""
+
+#: templates/login/login.inc:163 lib/Fetchmail/imap.php:146
+msgid "IMAP over SSL"
+msgstr ""
+
+#: lib/Fetchmail/imap.php:152
+msgid "IMAP over SSL (self-signed certificate)"
+msgstr ""
+
+#: templates/login/login.inc:164
+msgid "IMAP over SSL (self-signed)"
+msgstr ""
+
+#: templates/login/login.inc:162 lib/Fetchmail/imap.php:140
+msgid "IMAP, no TLS"
+msgstr ""
+
+#: lib/Fetchmail/imap.php:49
+msgid "IMAP/POP3 Mail Servers"
+msgstr ""
+
+#: lib/IMP.php:886
+msgid "INBOX"
+msgstr "Innbox"
+
+#: templates/folders/folders_confirm.html:12
+msgid "If you continue, all messages in the folder(s) will be lost!"
+msgstr "Öllum skeytum í möppunni/möppunum verður eytt!"
+
+#: templates/compose/spelling.inc:88
+msgid "Ignore"
+msgstr "Hundsa"
+
+#: templates/compose/spelling.inc:89
+msgid "Ignore All"
+msgstr "Hundsa allt"
+
+#: templates/folders/import.inc:20
+msgid "Import"
+msgstr "Flytja inn"
+
+#: templates/pgp/import_key.inc:65 templates/smime/import_key.inc:84
+msgid "Import Key"
+msgstr ""
+
+#: templates/pgp/pgp.inc:254
+msgid "Import Keypair"
+msgstr ""
+
+#: templates/folders/actions.inc:25
+msgid "Import Messages"
+msgstr "Flytja inn skeyti"
+
+#: pgp.php:42
+msgid "Import PGP Key"
+msgstr ""
+
+#: templates/smime/smime.inc:148
+msgid "Import Personal Certificates"
+msgstr ""
+
+#: templates/pgp/import_key.inc:14
+msgid "Import Personal Private PGP Key"
+msgstr ""
+
+#: templates/pgp/import_key.inc:9
+msgid "Import Personal Public PGP Key"
+msgstr ""
+
+#: templates/smime/import_key.inc:4
+msgid "Import Personal S/MIME Certificates"
+msgstr ""
+
+#: templates/pgp/pgp.inc:107 templates/smime/smime.inc:79
+msgid "Import Public Key"
+msgstr ""
+
+#: templates/pgp/import_key.inc:4
+msgid "Import Public PGP Key"
+msgstr ""
+
+#: templates/smime/import_key.inc:8
+msgid "Import Public S/MIME Key"
+msgstr ""
+
+#: smime.php:16
+msgid "Import S/MIME Key"
+msgstr ""
+
+#: templates/folders/import.inc:9
+msgid "Import mbox File"
+msgstr "Flytja inn mbox skrá"
+
+#: templates/folders/import.inc:16
+#, php-format
+msgid "Import mbox file %s into folder %s."
+msgstr "Flytja inn mbox skrána %s í möppuna %s."
+
+#: message.php:486 mailbox.php:713 templates/mailbox/legend.inc:7
+#: templates/mailbox/navbar.inc:16 templates/mailbox/navbar.inc:33
+#: templates/message/navbar_navigate.inc:7
+msgid "Important"
+msgstr "Áríðandi"
+
+#: templates/search/main.inc:47
+msgid "Important messages"
+msgstr "Áríðandi skeyti"
+
+#: folders.php:157
+#, php-format
+msgid "Imported %d messages from %s."
+msgstr "%d skeyti frá %s innsett."
+
+#: lib/MIME/Viewer/itip.php:773
+msgid "In Process"
+msgstr ""
+
+#: folders.php:379 lib/Folder.php:227 lib/IMP.php:358 lib/IMAP/Tree.php:105
+#: lib/IMAP/Tree.php:204
+msgid "Inbox"
+msgstr "Innbox"
+
+#: config/prefs.php.dist:484
+msgid "Include a brief summary of the header in a reply?"
+msgstr ""
+
+#: config/prefs.php.dist:478
+msgid "Include original message in a reply?"
+msgstr "Á að sýna efni upprunalega bréfsins í svari?"
+
+#: lib/MIME/Viewer/notification.php:61 lib/MIME/Viewer/status.php:130
+msgid "Info"
+msgstr "Uppl."
+
+#: templates/pgp/pgp.inc:93 templates/smime/smime.inc:65
+#, php-format
+msgid "Information on %s Public Key"
+msgstr ""
+
+#: templates/pgp/pgp.inc:151
+msgid "Information on Personal Private Key"
+msgstr ""
+
+#: templates/pgp/pgp.inc:147 templates/smime/smime.inc:113
+msgid "Information on Personal Public Key"
+msgstr ""
+
+#: templates/compose/attachments.inc:15 templates/compose/compose.inc:497
+#: templates/compose/attachments.js:99
+msgid "Inline"
+msgstr "Skeytt inn"
+
+#: templates/smime/import_key.inc:9
+msgid "Insert Certificate Here"
+msgstr ""
+
+#: templates/pgp/import_key.inc:15
+msgid "Insert Personal Private PGP Key Here"
+msgstr ""
+
+#: templates/pgp/import_key.inc:10
+msgid "Insert Personal Public PGP Key Here"
+msgstr ""
+
+#: templates/pgp/import_key.inc:5
+msgid "Insert Public PGP Key Here"
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:412
+msgid "Invalid Action selected for this component."
+msgstr ""
+
+#: mailbox.php:563 mailbox.php:605
+msgid "Invalid Address"
+msgstr "Ógilt netfang"
+
+#: lib/Fetchmail/imap.php:307
+msgid "Invalid Remote Mailbox"
+msgstr ""
+
+#: compose.php:131
+#, php-format
+msgid "Invalid character in e-mail address: %s."
+msgstr ""
+
+#: pgp.php:16 smime.php:82
+msgid "Invalid key"
+msgstr "Ógildur lykill"
+
+#: pgp.php:196
+msgid "Invalid personal PGP private key."
+msgstr ""
+
+#: pgp.php:171
+msgid "Invalid personal PGP public key."
+msgstr ""
+
+#: templates/mailbox/navbar.inc:12
+msgid "Invert"
+msgstr "Viðsnúið"
+
+#: templates/compose/compose.inc:567
+msgid "KB"
+msgstr "KB"
+
+#: templates/pgp/pgp.inc:201
+msgid "Key Length"
+msgstr ""
+
+#: templates/pgp/pgp.inc:252
+msgid ""
+"Key generation may take a long time to complete.  Continue with key "
+"generation?"
+msgstr ""
+
+#: pgp.php:318
+msgid "Key successfully sent to the public keyserver."
+msgstr ""
+
+#: templates/login/login.inc:199
+msgid "Language"
+msgstr "Tungumál"
+
+#: config/prefs.php.dist:877
+msgid "Last Mailbox Page"
+msgstr "síðasta bls."
+
+#: mailbox.php:354
+msgid "Last Page"
+msgstr "síðasta bls."
+
+#: templates/compose/compose.inc:380
+msgid "Li_nk Attachments"
+msgstr "Tengja viðhengi með vefslóð"
+
+#: attachment.php:34 lib/Compose.php:974
+msgid "Linked attachments are forbidden."
+msgstr "Ekki er hægt að tengja viðhengi með vefslóð"
+
+#: lib/Compose.php:991
+#, php-format
+msgid "Links will expire on %s"
+msgstr "Tenglar ógildir þann %s"
+
+#: config/prefs.php.dist:1040
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+
+#: config/prefs.php.dist:679
+msgid "Listing in the Header"
+msgstr ""
+
+#: templates/fetchmail/manage.inc:30
+msgid "Local Mailbox:"
+msgstr "Póstmappa"
+
+#: lib/MIME/Viewer/itip.php:674
+msgid "Location"
+msgstr "Staðsetning"
+
+#: templates/login/login.inc:207
+msgid "Log in"
+msgstr "Tengjast"
+
+#: lib/Block/summary.php:117
+#, php-format
+msgid "Log in to %s"
+msgstr "Tengjast %s"
+
+#: templates/login/login.inc:136
+msgid "Login"
+msgstr "Tengjast"
+
+#: config/prefs.php.dist:39
+msgid "Login Tasks"
+msgstr "Verkefni við tengingu"
+
+#: templates/compose/compose.inc:307
+msgid "Low"
+msgstr "Lágur"
+
+#: message.php:283 mailbox.php:706 templates/mailbox/legend.inc:13
+msgid "Low Priority"
+msgstr "Lágur forgangur"
+
+#: templates/compose/compose.inc:308
+msgid "Lowest"
+msgstr "Lægsti"
+
+#: lib/MIME/Viewer/appledouble.php:44
+msgid "Macintosh File"
+msgstr "Macintosh skrá"
+
+#: pgp.php:332 smime.php:254 templates/smime/passphrase.inc:13
+msgid "Mail"
+msgstr "Póstur"
+
+#: config/prefs.php.dist:95
+msgid "Mail Previews"
+msgstr "Forskoðun pósts"
+
+#: templates/fetchmail/driver_select.inc:16
+msgid "Mail server type to connect to:"
+msgstr ""
+
+#: folders.php:397
+msgid "Mailbox"
+msgstr "Póstmappa"
+
+#: config/prefs.php.dist:110
+msgid "Mailbox and Folder Display Options"
+msgstr "Útlitsstillingar"
+
+#: templates/folders/actions.inc:16
+msgid "Mark All Messages in Folder as Seen"
+msgstr "Merkja öll skeyti í möppu sem lesin"
+
+#: templates/folders/actions.inc:17
+msgid "Mark All Messages in Folder as Unseen"
+msgstr "Merkja öll skeyti í möppu sem ólesin"
+
+#: templates/mailbox/navbar.inc:30 templates/message/navbar_navigate.inc:5
+msgid "Mark as:"
+msgstr "merkja sem:"
+
+#: config/prefs.php.dist:644
+msgid "Mark different levels of quoting with different colors?"
+msgstr "Á að merkja eldri tilvitnanir í texta með mismunandi litum?"
+
+#: templates/fetchmail/manage.inc:40
+msgid "Mark messages as seen? (IMAP only)"
+msgstr ""
+
+#: config/prefs.php.dist:652
+msgid "Mark simple markup?"
+msgstr ""
+
+#: templates/search/header.inc:46
+msgid "Match All Queries"
+msgstr "Allt þarf að passa"
+
+#: templates/search/header.inc:42
+msgid "Match Any Query"
+msgstr "Eitthvað þarf að passa"
+
+#: templates/compose/compose.inc:503
+msgid "Maximum Attachment Size"
+msgstr "Hámarksstærð viðhengis"
+
+#: templates/compose/compose.inc:484
+msgid "Maximum number of attachments reached."
+msgstr "Hámarksfjölda viðhengja náð."
+
+#: templates/compose/compose.inc:479
+msgid "Maximum total attachment size reached."
+msgstr "Viðhengi er of stórt"
+
+#: lib/MIME/Viewer/itip.php:626
+msgid "Meeting Cancellation"
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:575
+msgid "Meeting Information"
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:585
+msgid "Meeting Proposal"
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:617
+msgid "Meeting Reply"
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:598
+msgid "Meeting Update"
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:603
+msgid "Meeting Update Request"
+msgstr ""
+
+#: lib/Block/tree_folders.php:3
+msgid "Menu Folder List"
+msgstr ""
+
+#: lib/Compose.php:246
+msgid "Message"
+msgstr "Skeyti"
+
+#: compose.php:507 compose.php:534 compose.php:588 config/prefs.php.dist:50
+msgid "Message Composition"
+msgstr "Semja nýtt skeyti"
+
+#: config/prefs.php.dist:888
+msgid "Message Date"
+msgstr "Dags."
+
+#: config/prefs.php.dist:49 config/prefs.php.dist:65 config/prefs.php.dist:78
+#: config/prefs.php.dist:86 config/prefs.php.dist:94 config/prefs.php.dist:102
+msgid "Message Options"
+msgstr "Valkostir skeyta"
+
+#: search.php:359
+msgid "Message Search"
+msgstr "Leita í skeytum"
+
+#: config/prefs.php.dist:892
+msgid "Message Size"
+msgstr "Stærð skeytis"
+
+#: message.php:368
+msgid "Message Source"
+msgstr "Handrit"
+
+#: config/prefs.php.dist:66
+msgid "Message Viewing"
+msgstr "Skoða skeyti"
+
+#: templates/search/header.inc:55
+msgid "Message fields"
+msgstr "Svæði"
+
+#: templates/search/main.inc:6
+msgid "Message flags"
+msgstr "Flögg"
+
+#: templates/search/main.inc:83
+msgid "Message folders"
+msgstr "Möppur"
+
+#: lib/Compose.php:244
+#, php-format
+msgid "Message from %s"
+msgstr "Skeyti frá %s"
+
+#: mailbox.php:646
+msgid "Message has attachments"
+msgstr "Skeytið er með viðhengjum"
+
+#: mailbox.php:637
+msgid "Message is encrypted"
+msgstr "Skeytið er dulritað"
+
+#: mailbox.php:632
+msgid "Message is signed"
+msgstr "Skeytið er undirritað"
+
+#: templates/search/header.inc:33
+msgid "Message matches"
+msgstr "Leitarskilyrði"
+
+#: compose.php:771 compose.php:785
+msgid "Message redirected successfully."
+msgstr ""
+
+#: compose.php:1018
+#, php-format
+msgid "Message sent successfully, but not saved to %s"
+msgstr "Skeytið var sent, en ekki var hægt að geyma það í %s"
+
+#: compose.php:1077 compose.php:1092
+msgid "Message sent successfully."
+msgstr "Skeytið var sent."
+
+#: config/prefs.php.dist:912
+msgid "Messages per page in the mailbox view."
+msgstr "Fjöldi skeytalína á bls. í skoðun pósthólfs."
+
+#: mailbox.php:318
+msgid "Messages to"
+msgstr "Skeyti til"
+
+#: templates/acl/acl.inc:29
+msgid "Modify"
+msgstr "Breyta"
+
+#: templates/compose/expand.inc:12
+#, php-format
+msgid "More than one address found for field \"%s\"."
+msgstr "Fleiri en eitt netfang fannst fyrir svæðið \"%s\""
+
+#: templates/mailbox/navbar.inc:50 templates/message/navbar_navigate.inc:18
+msgid "Move"
+msgstr "Flytja"
+
+#: templates/prefs/sourceselect.inc:316
+msgid "Move down"
+msgstr "færa niður"
+
+#: templates/mailbox/navbar.inc:50 templates/message/navbar_navigate.inc:18
+msgid "Move to folder"
+msgstr "færa í möppu"
+
+#: templates/prefs/sourceselect.inc:314
+msgid "Move up"
+msgstr "færa upp"
+
+#: lib/MIME/Viewer/alternative.php:127
+msgid "Multipart/alternative"
+msgstr ""
+
+#: templates/pgp/pgp.inc:24 templates/smime/smime.inc:24
+#: templates/fetchmail/manage.inc:48
+msgid "NOTE"
+msgstr ""
+
+#: templates/contacts/contacts.inc:238 lib/MIME/Viewer/itip.php:688
+msgid "Name"
+msgstr "Nafn"
+
+#: pgp.php:110
+msgid "Name and/or email can not be empty"
+msgstr "Nafn og/eða netfang má ekki vanta"
+
+#: lib/MIME/Viewer/itip.php:778
+msgid "Needs Action"
+msgstr ""
+
+#: config/prefs.php.dist:563 config/prefs.php.dist:575
+#: config/prefs.php.dist:754
+msgid "Never"
+msgstr "Aldrei"
+
+#: config/prefs.php.dist:553
+msgid "Never save attachments"
+msgstr "Aldrei geyma viðhengi."
+
+#: templates/acl/acl.inc:126
+msgid "New"
+msgstr "Nýtt"
+
+#: lib/IMP.php:615
+msgid "New Folder"
+msgstr "Ný mappa"
+
+#: config/prefs.php.dist:87
+msgid "New Mail"
+msgstr "Nýr póstur"
+
+#: templates/search/main.inc:19
+msgid "New messages"
+msgstr "Ný skeyti"
+
+#: templates/compose/spelling.inc:140
+msgid "Next"
+msgstr "Næsta"
+
+#: templates/message/navbar_navigate.inc:33
+msgid "Next Message"
+msgstr "Næsta skeyti"
+
+#: mailbox.php:352
+msgid "Next Page"
+msgstr "Næsta síða"
+
+#: templates/compose/compose.inc:532 config/prefs.php.dist:948
+msgid "No"
+msgstr "Nei"
+
+#: smime.php:226
+msgid "No Certificate found"
+msgstr ""
+
+#: templates/compose/encrypt_list.inc:5
+msgid "No Encryption"
+msgstr "Engin dulkóðun"
+
+#: templates/pgp/pgp.inc:80
+msgid "No Keys in Keyring"
+msgstr ""
+
+#: mailbox.php:371
+#, php-format
+msgid "No Messages"
+msgstr "Engin skeyti"
+
+#: pgp.php:137
+msgid "No PGP public key imported."
+msgstr ""
+
+#: templates/smime/smime.inc:140
+msgid "No Personal Certificate Present"
+msgstr ""
+
+#: lib/Mailbox.php:323
+msgid "No Preview Text"
+msgstr "Enginn forskoðunartexti"
+
+#: templates/smime/smime.inc:54
+msgid "No Public Keys Found"
+msgstr "Engir opinberir dulritunarlyklar fundust"
+
+#: smime.php:151
+msgid "No S/MIME public key imported."
+msgstr ""
+
+#: lib/MIME/Viewer/tnef.php:90
+msgid "No attachments found."
+msgstr "Engin viðhengi fundust."
+
+#: lib/Crypt/SMIME.php:140
+msgid "No email information located in the public key."
+msgstr ""
+
+#: acl.php:72 acl.php:98
+msgid "No folder selected."
+msgstr "engin mappa valin"
+
+#: lib/Block/summary.php:130
+msgid "No folders are being checked for new mail."
+msgstr ""
+
+#: folders.php:207 lib/Folder.php:480 lib/Folder.php:530
+msgid "No folders were specified"
+msgstr "Engin mappa var tilgreind"
+
+#: lib/Block/summary.php:136
+msgid "No folders with new messages"
+msgstr "Engar möppur með nýjum skeytum"
+
+#: lib/Block/summary.php:133
+msgid "No folders with unseen messages"
+msgstr "Engar möppur með ólesnum skeytum"
+
+#: lib/Compose.php:240
+msgid "No message body text"
+msgstr "Enginn texti skeyti"
+
+#: lib/Mailbox.php:365
+msgid "No messages matched your search."
+msgstr "Leitin bar ekki árangur"
+
+#: pgp.php:189
+msgid "No personal PGP private key imported."
+msgstr ""
+
+#: pgp.php:165
+msgid "No personal PGP public key imported."
+msgstr ""
+
+#: smime.php:201
+msgid "No personal S/MIME certificates imported."
+msgstr ""
+
+#: spelling.php:220
+msgid "No spellchecking program configured."
+msgstr ""
+
+#: templates/compose/spelling.inc:50
+msgid "No spelling errors"
+msgstr "Engar stafsetningarvillur"
+
+#: templates/compose/spelling.inc:106
+msgid "No suggestions"
+msgstr "Engar tillögur"
+
+#: acl.php:68 acl.php:94
+msgid "No user specified."
+msgstr "Enginn notandi tilgreindur."
+
+#: lib/MIME/Viewer/itip.php:709
+msgid "Non Participant"
+msgstr ""
+
+#: templates/mailbox/navbar.inc:11 templates/prefs/sourceselect.inc:35
+#: templates/prefs/spamselect.inc:24 templates/prefs/sentmailselect.inc:41
+#: lib/MIME/Viewer/itip.php:664
+msgid "None"
+msgstr "Engin"
+
+#: templates/compose/compose.inc:306
+msgid "Normal"
+msgstr "Venjulegt"
+
+#: templates/mailbox/navbar.inc:21 templates/mailbox/navbar.inc:39
+msgid "Not Deleted"
+msgstr "Ekki eytt"
+
+#: templates/mailbox/navbar.inc:23 templates/mailbox/navbar.inc:42
+#: templates/message/navbar_navigate.inc:12
+msgid "Not Draft"
+msgstr "Ekki uppkast"
+
+#: templates/mailbox/navbar.inc:17 templates/mailbox/navbar.inc:34
+#: templates/message/navbar_navigate.inc:8
+msgid "Not Important"
+msgstr "Ekki áríðandi"
+
+#: templates/mailbox/navbar.inc:25
+msgid "Not Personal"
+msgstr "Ekki persónulegt"
+
+#: lib/Crypt/PGP.php:139 lib/Crypt/SMIME.php:134 lib/Crypt/SMIME.php:149
+msgid "Not a valid public key."
+msgstr ""
+
+#: templates/search/main.inc:67
+msgid "Not deleted messages"
+msgstr "Ekki eydd skeyti"
+
+#: templates/search/main.inc:51
+msgid "Not important messages"
+msgstr "Ekki áríðandi skeyti"
+
+#: lib/Maintenance/Task/fetchmail_login.php:71
+msgid "Note that this can take some time"
+msgstr ""
+
+#: config/prefs.php.dist:371
+msgid "Number of months to keep old linked attachments if deleting monthly."
+msgstr ""
+"Aldur í mánuðum fyrir viðtengdar vefslóðir, sem skulu geymast, þegar "
+"mánaðarleg tiltekt er gerð"
+
+#: config/prefs.php.dist:353
+msgid "Number of old sent-mail folders to keep if deleting monthly."
+msgstr ""
+"Fjöldi af möppum fyrir send skeyti, sem skulu geymast, þegar mánaðarleg "
+"tiltekt er gerð"
+
+#: templates/contacts/contacts.inc:254 lib/MIME/Viewer/itip.php:552
+#: lib/MIME/Viewer/itip.php:733
+msgid "OK"
+msgstr "Í lagi"
+
+#: templates/search/fields.inc:5 templates/pgp/import_key.inc:48
+#: templates/smime/import_key.inc:47
+msgid "OR"
+msgstr "EÐA"
+
+#: templates/search/main.inc:15
+msgid "Old messages"
+msgstr "Gömul skeyti"
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:52
+msgid "Old sent-mail folders being purged."
+msgstr "Gömlum skeytum eytt..."
+
+#: lib/Block/summary.php:27
+msgid "Only display folders with unread messages in them?"
+msgstr "Einungis sýna möppur sem innihalda ólesin skeyti?"
+
+#: templates/folders/javascript.inc:71
+msgid "Only one folder should be selected for this action."
+msgstr "Það er einungis hægt að veja eina möppu fyrir þessa aðgerð."
+
+#: templates/menu.inc:7 templates/menu.inc:27
+msgid "Ope_n Folder"
+msgstr "Opna möppu"
+
+#: templates/menu.inc:23
+msgid "Open Folder"
+msgstr "Opna möppu"
+
+#: folders.php:414
+msgid "Opened Folder"
+msgstr "Opin mappa"
+
+#: lib/MIME/Viewer/itip.php:705
+msgid "Optional Participant"
+msgstr ""
+
+#: fetchmail.php:33 templates/fetchmail/top.inc:2
+#: templates/fetchmail/fetchmail.inc:6
+msgid "Other Mail Accounts"
+msgstr ""
+
+#: config/prefs.php.dist:109 config/prefs.php.dist:118
+#: config/prefs.php.dist:125 config/prefs.php.dist:133
+#: config/prefs.php.dist:142
+msgid "Other Options"
+msgstr "Aðrar stillingar"
+
+#: templates/pgp/passphrase.inc:16 lib/MIME/Viewer/pgp.php:165
+#: lib/MIME/Viewer/pgp.php:204 lib/MIME/Viewer/pgp.php:290
+msgid "PGP"
+msgstr "PGP"
+
+#: templates/compose/encrypt_list.inc:7
+msgid "PGP Encrypt Message"
+msgstr "Dulkóða skeyti með PGP"
+
+#: compose.php:331
+msgid "PGP Error: "
+msgstr "PGP villa"
+
+#: compose.php:310
+msgid "PGP Error: Need passphrase for personal private key."
+msgstr "PGP villa: Vantar lykilkóða fyrir persónulegan lykil."
+
+#: templates/pgp/notactive.inc:6
+msgid "PGP NOT Active"
+msgstr "PGP er ekki virkt"
+
+#: templates/pgp/pgp.inc:6 config/prefs.php.dist:134
+msgid "PGP Options"
+msgstr "PGP valkostir"
+
+#: pgp.php:30
+msgid "PGP Passphrase Input"
+msgstr "PGP lykilkóði"
+
+#: templates/pgp/pgp.inc:128
+msgid "PGP Personal Keypair support requires a secure web connection."
+msgstr ""
+
+#: lib/MIME/Viewer/pgp.php:173
+msgid "PGP Public Key Text"
+msgstr ""
+
+#: pgp.php:149
+#, php-format
+msgid "PGP Public Key for \"%s (%s)\" was successfully added."
+msgstr ""
+
+#: pgp.php:245
+#, php-format
+msgid "PGP Public Key for \"%s\" was successfully deleted."
+msgstr "Opinbera PGP lyklinum fyrir \"%s\" var eytt."
+
+#: templates/pgp/pgp.inc:72
+msgid "PGP Public Keyring"
+msgstr ""
+
+#: templates/compose/encrypt_list.inc:8
+msgid "PGP Sign Message"
+msgstr "Undirrita með PGP"
+
+#: templates/compose/encrypt_list.inc:9
+msgid "PGP Sign/Encrypt Message"
+msgstr "Undirrita/dulrita með PGP"
+
+#: pgp.php:202
+msgid "PGP private key successfully added."
+msgstr ""
+
+#: pgp.php:177
+msgid "PGP public key successfully added."
+msgstr ""
+
+#: templates/pgp/notactive.inc:11
+msgid "PGP support is disabled on this system."
+msgstr ""
+
+#: lib/MIME/Viewer/pgp.php:208
+msgid ""
+"PGP support is not currently active so the digital signature is unable to be "
+"verified."
+msgstr ""
+
+#: lib/MIME/Viewer/pgp.php:295
+msgid ""
+"PGP support is not currently active so the message is unable to be decrypted."
+msgstr ""
+
+#: templates/pgp/pgp.inc:24
+msgid ""
+"PGP support requires popup windows to be used.  If your browser is currently "
+"set to disable popup windows, you must change this setting or else the PGP "
+"features will not work correctly"
+msgstr ""
+
+#: lib/Fetchmail/imap.php:105
+msgid "POP3"
+msgstr ""
+
+#: lib/Fetchmail/imap.php:100
+msgid "POP3 (Auto Detect Protocols)"
+msgstr ""
+
+#: lib/Fetchmail/imap.php:117
+msgid "POP3 over SSL"
+msgstr ""
+
+#: lib/Fetchmail/imap.php:123
+msgid "POP3 over SSL (self-signed certificate)"
+msgstr ""
+
+#: templates/login/login.inc:166
+msgid "POP3 over SSL (self-signed)"
+msgstr ""
+
+#: lib/Fetchmail/imap.php:111
+msgid "POP3, no TLS"
+msgstr ""
+
+#: templates/mailbox/header.inc:19
+#, php-format
+msgid "Page %d of %d"
+msgstr "Bls. %d af %d"
+
+#: config/prefs.php.dist:874
+msgid "Page with the First Unseen Message"
+msgstr ""
+
+#: config/prefs.php.dist:875
+msgid "Page with the Last Unseen Message"
+msgstr ""
+
+#: templates/message/headers.inc:43
+msgid "Part(s)"
+msgstr "Hlutar"
+
+#: templates/pgp/pgp.inc:211
+msgid "Passphrase"
+msgstr ""
+
+#: templates/pgp/pgp.inc:216
+msgid "Passphrase (Again)"
+msgstr ""
+
+#: pgp.php:310 smime.php:235
+msgid "Passphrase successfully unloaded."
+msgstr ""
+
+#: templates/pgp/passphrase.inc:29 templates/smime/passphrase.inc:19
+msgid "Passphrase:"
+msgstr ""
+
+#: pgp.php:112
+msgid "Passphrases can not be empty"
+msgstr ""
+
+#: pgp.php:114
+msgid "Passphrases do not match"
+msgstr ""
+
+#: templates/login/login.inc:193 templates/smime/import_key.inc:69
+#: templates/fetchmail/manage.inc:20
+msgid "Password"
+msgstr "Lykilorð"
+
+#: templates/fetchmail/manage.inc:48
+msgid "Perform maintenance operations on login?"
+msgstr "Framkvæma viðhaldsaðgerðir við tengingu"
+
+#: acl.php:76 acl.php:102
+msgid "Permissions for this user can not be changed."
+msgstr ""
+
+#: message.php:477 mailbox.php:682 templates/mailbox/legend.inc:10
+#: templates/mailbox/navbar.inc:24
+msgid "Personal"
+msgstr "Til mín"
+
+#: config/prefs.php.dist:14
+msgid "Personal Information"
+msgstr "Upplýsingar um notanda"
+
+#: pgp.php:120
+msgid "Personal PGP keypair generated successfully."
+msgstr ""
+
+#: pgp.php:127
+msgid "Personal PGP keys deleted successfully."
+msgstr ""
+
+#: smime.php:207
+msgid "Personal S/MIME certificates NOT imported: "
+msgstr ""
+
+#: smime.php:132
+msgid "Personal S/MIME keys deleted successfully."
+msgstr ""
+
+#: config/prefs.php.dist:214
+msgid "Place your signature before replies and forwards?"
+msgstr "Setja undirskrift undir svar og áframsendingar?"
+
+#: compose.php:227
+msgid "Plaintext Version of Message"
+msgstr ""
+
+#: templates/mailbox/javascript.inc:192 templates/message/javascript.inc:55
+msgid "Please enter a name for the new folder:"
+msgstr "Sláðu inn nýtt möppunafn:"
+
+#: templates/folders/javascript.inc:94 templates/folders/javascript.inc:96
+msgid "Please enter the name of the new folder:"
+msgstr "Sláðu inn nýtt möppunafn:"
+
+#: templates/folders/javascript.inc:129
+msgid "Please enter the new name:"
+msgstr "Sláðu inn nýja nafnið:"
+
+#: templates/pgp/passphrase.inc:19
+#, php-format
+msgid ""
+"Please enter the passphrase for your PGP private key. You will only need to "
+"enter this passphrase once per %s session."
+msgstr ""
+
+#: templates/smime/passphrase.inc:13
+#, php-format
+msgid ""
+"Please enter the passphrase for your S/MIME private key. You will only need "
+"to enter this passphrase once per %s session."
+msgstr ""
+
+#: recompose.php:97
+msgid ""
+"Please log in again to resume composing your message. If you are NOT using "
+"cookies AND you are composing messages in popup windows, you will have to "
+"log in again in your main window as well. This is to keep attackers from "
+"hijacking your session ID. We apologize for any inconvenience."
+msgstr ""
+
+#: templates/login/login.inc:72
+msgid "Please provide your password."
+msgstr "Sláðu inn lykilorð þitt."
+
+#: templates/login/login.inc:68
+msgid "Please provide your username."
+msgstr "Sláðu inn notandanafn þitt."
+
+#: compose.php:79 lib/IMP.php:509
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Leiðréttu hugsanlegar vitleysur í netfangi eða netföngum."
+
+#: lib/MIME/Viewer/itip.php:642
+msgid ""
+"Please review the following information, and then select an action from the "
+"menu below."
+msgstr ""
+
+#: templates/folders/javascript.inc:53
+msgid "Please select a folder before you perform any actions."
+msgstr "Þú þarft að velja möppu áður en þú getur hafið aðrar aðgerðir."
+
+#: lib/MIME/Viewer/itip.php:502
+msgid "Please select an action from the menu below."
+msgstr "Veldu aðgerð af valmyndinni hér að neðan."
+
+#: templates/search/javascript.inc:41
+msgid "Please select at least one folder to search."
+msgstr "Veldu a.m.k eina möppu til að leita í."
+
+#: templates/folders/javascript.inc:4
+msgid "Please select only one folder for this operation."
+msgstr "Það er einungis hægt að veja eina möppu fyrir þessa aðgerð."
+
+#: templates/compose/redirect.inc:76
+msgid "Please select or edit in the box to the right:"
+msgstr "Veldu eða breyttu til hægri:"
+
+#: config/motd.php.dist:41
+msgid "Powered by Horde"
+msgstr ""
+
+#: config/prefs.php.dist:206
+msgid "Precede your signature with dashes ('-- ')?"
+msgstr "Setja skilmerki ('-- ') ofan við undirskrift"
+
+#: pgp.php:257 filterprefs.php:40 smime.php:241
+msgid "Preferences successfully updated."
+msgstr ""
+
+#: templates/compose/attachments.inc:3
+msgid "Preview"
+msgstr "Forskoða"
+
+#: templates/message/navbar_navigate.inc:28
+msgid "Previous Message"
+msgstr "Fyrra skeyti"
+
+#: mailbox.php:343
+msgid "Previous Page"
+msgstr "Fyrri blaðsíða"
+
+#: templates/message/navbar_actions.inc:31
+msgid "Print"
+msgstr "Prenta"
+
+#: templates/message/headers.inc:38
+msgid "Priority"
+msgstr "Forgangur"
+
+#: templates/smime/import_key.inc:74
+msgid "Private Key Password"
+msgstr ""
+
+#: config/prefs.php.dist:552
+msgid "Prompt every time an attachment is sent; default to NO"
+msgstr ""
+
+#: config/prefs.php.dist:551
+msgid "Prompt every time an attachment is sent; default to YES"
+msgstr ""
+
+#: templates/fetchmail/manage.inc:10
+msgid "Protocol:"
+msgstr ""
+
+#: lib/Crypt/PGP.php:429
+msgid "Public PGP keyserver support has been disabled."
+msgstr ""
+
+#: templates/mailbox/actions_deleted.inc:8 templates/mailbox/actions.inc:36
+msgid "Pur_ge Deleted"
+msgstr "Fjarlægja eydd"
+
+#: templates/mailbox/actions_deleted.inc:8 templates/mailbox/actions.inc:36
+msgid "Purge Deleted"
+msgstr "Fjarlægja eydd"
+
+#: templates/folders/actions.inc:22
+msgid "Purge Folder(s)"
+msgstr "Eyða möppu(m)"
+
+#: config/prefs.php.dist:390
+msgid "Purge Trash how often:"
+msgstr "Hversu oft á að tæma ruslafötuna:"
+
+#: config/prefs.php.dist:399
+msgid "Purge messages in Trash folder older than this amount of days."
+msgstr "Eyða skeytum í ruslakörfu sem eru eldri í dögum en"
+
+#: config/prefs.php.dist:380
+msgid "Purge old messages in the Trash folder?"
+msgstr "Fjarlægja gömul skeyti í ruslakörfu?"
+
+#: lib/Maintenance/Task/purge_trash.php:66
+#, php-format
+msgid "Purging %d messages from Trash folder."
+msgstr "Fjarlægi %d skeyti úr ruslakörfunni."
+
+#: lib/Maintenance/Task/purge_trash.php:64
+msgid "Purging 1 message from Trash folder."
+msgstr "Fjarlægi eitt skeyti úr ruslakörfunni."
+
+#: templates/quota/quota.inc:17
+#, php-format
+msgid "Quota status: %.2fMB / %.2fMB  (%.2f%%)"
+msgstr ""
+
+#: templates/quota/quota.inc:21
+#, php-format
+msgid "Quota status: %.2fMB / NO LIMIT"
+msgstr ""
+
+#: templates/quota/quota.inc:24
+#, php-format
+msgid "Quota status: NO LIMIT"
+msgstr "Kvóti: Ótakmarkaður"
+
+#: config/prefs.php.dist:492
+#, php-format
+msgid "Quoting %f:"
+msgstr "Vísa til %f:"
+
+#: templates/compose/compose.inc:377
+msgid "Re_quest Delivery Confirmation"
+msgstr "Óska eftir staðfestingu á afhendingu"
+
+#: search.php:163
+msgid "Received On"
+msgstr "Móttekið þann:"
+
+#: search.php:171
+msgid "Received Since"
+msgstr "Móttekið síðan:"
+
+#: search.php:167
+msgid "Received Until"
+msgstr "Móttekið þangað til:"
+
+#: templates/message/navbar_actions.inc:16
+msgid "Redirec_t"
+msgstr "Endurvísa"
+
+#: templates/message/navbar_actions.inc:16
+msgid "Redirect"
+msgstr "Endurvísa"
+
+#: templates/compose/redirect.inc:115
+msgid "Redirect Message"
+msgstr "Endurvísa skeyti"
+
+#: compose.php:734
+msgid "Redirect this message"
+msgstr "Endurvísa þessu skeyti"
+
+#: compose.php:794
+msgid "Redirecting failed."
+msgstr "Endurvísun misheppaðist."
+
+#: templates/compose/compose.inc:573
+msgid "Refresh"
+msgstr "Endurhlaða"
+
+#: config/prefs.php.dist:760
+msgid "Refresh Folder Views:"
+msgstr "Endurhlaða möppuham:"
+
+#: templates/mailbox/header.inc:4 templates/folders/head.inc:9
+msgid "Reload"
+msgstr "Endurhlaða"
+
+#: templates/folders/head.inc:3
+msgid "Reload View"
+msgstr "Endurhlaða ham"
+
+#: lib/MIME/Viewer/itip.php:526 lib/MIME/Viewer/itip.php:545
+msgid "Remember the free/busy information."
+msgstr ""
+
+#: config/prefs.php.dist:950
+msgid "Remember the last view"
+msgstr "Muna síðasta ham"
+
+#: templates/fetchmail/manage.inc:27
+msgid "Remote Mailbox:"
+msgstr "Pósthólf á fjarenda:"
+
+#: templates/search/fields.inc:41
+msgid "Remove Field From Search"
+msgstr "Ekki nota svæði í leit"
+
+#: templates/prefs/sourceselect.inc:305
+msgid "Remove source"
+msgstr "fjarlægja handrit"
+
+#: templates/folders/actions.inc:6
+msgid "Rename Folder(s)"
+msgstr "Endurnefna möppu"
+
+#: config/prefs.php.dist:335
+msgid "Rename sent-mail folder at beginning of month?"
+msgstr "Endurnefna möppu með sendum skeytum í byrjun hvers mánaðar"
+
+#: lib/Folder.php:440
+#, php-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr ""
+"Endurnefning úr nafninu \"%s\" í \"%s\" misheppnaðist. Netþjónninn kom með "
+"eftirfarandi villu"
+
+#: templates/message/navbar_actions.inc:10
+msgid "Repl_y to List"
+msgstr "Svara öllum"
+
+#: templates/compose/spelling.inc:111
+msgid "Replace with:"
+msgstr "Skipta út fyrir:"
+
+#: templates/message/navbar_actions.inc:8
+msgid "Reply"
+msgstr "Svara"
+
+#: lib/MIME/Viewer/itip.php:311 lib/MIME/Viewer/itip.php:409
+msgid "Reply Sent."
+msgstr "Svar sent."
+
+#: templates/message/navbar_actions.inc:13
+msgid "Reply to All"
+msgstr "Svara öllum"
+
+#: compose.php:680
+msgid "Reply to All:"
+msgstr "Svara öllum:"
+
+#: templates/message/navbar_actions.inc:10
+msgid "Reply to List"
+msgstr "Svara á lista"
+
+#: compose.php:682
+msgid "Reply to List:"
+msgstr "Svara á lista:"
+
+#: templates/message/navbar_actions.inc:13
+msgid "Reply to _All"
+msgstr "Svara öllum"
+
+#: lib/MIME/Viewer/itip.php:528 lib/MIME/Viewer/itip.php:537
+#: lib/MIME/Viewer/itip.php:547
+msgid "Reply with Not Supported Message"
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:535
+msgid "Reply with free/busy for next 2 months."
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:534
+msgid "Reply with requested free/busy information."
+msgstr ""
+
+#: message.php:251
+msgid "Reply-To"
+msgstr "Svara-Til"
+
+#: lib/Compose.php:259 lib/Compose.php:311
+msgid "Reply-To: "
+msgstr "Svara-Til: "
+
+#: compose.php:678
+msgid "Reply:"
+msgstr "Svar:"
+
+#: templates/mailbox/actions.inc:26 templates/message/navbar_actions.inc:36
+msgid "Report as Innocent"
+msgstr "Tilkynna sem ekki ruslpóst"
+
+#: templates/mailbox/actions.inc:24 templates/message/navbar_actions.inc:33
+msgid "Report as Spam"
+msgstr "Tilkynna sem ruslpóst (SPAM)"
+
+#: templates/compose/compose.inc:374
+msgid "Request a _Read Receipt"
+msgstr "Óska eftir kvittun fyrir móttöku"
+
+#: config/prefs.php.dist:578
+msgid "Request delivery confirmation?"
+msgstr ""
+
+#: config/prefs.php.dist:566
+msgid "Request read receipts?"
+msgstr "Óska eftir kvittun fyrir móttöku"
+
+#: mailbox.php:204
+msgid "Requested message not found."
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:697
+msgid "Required Participant"
+msgstr ""
+
+#: templates/acl/acl.inc:158 templates/search/header.inc:26
+#: templates/search/main.inc:143
+msgid "Reset"
+msgstr "Endursetja"
+
+#: lib/MIME/Viewer/itip.php:115
+msgid "Respondent Status Updated."
+msgstr ""
+
+#: templates/message/navbar_actions.inc:28
+msgid "Resume"
+msgstr "Halda áfram"
+
+#: recompose.php:98
+msgid "Resume your session"
+msgstr ""
+
+#: templates/fetchmail/driver_select.inc:31
+#: templates/fetchmail/account_select.inc:32 templates/fetchmail/manage.inc:69
+msgid "Return to Fetch Mail"
+msgstr ""
+
+#: templates/acl/acl.inc:159 templates/acl/acl.inc:169
+#: templates/pgp/pgp.inc:268 templates/pgp/notactive.inc:33
+#: templates/filters/notactive.inc:13 templates/filters/prefs.inc:70
+#: templates/smime/notactive.inc:33 templates/smime/smime.inc:158
+msgid "Return to Options"
+msgstr "Valkostir notanda"
+
+#: config/prefs.php.dist:714
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr ""
+"Á að fara til baka í pósthólfalista eftir að skeytum er eytt, þau flutt eða "
+"afrituð?"
+
+#: lib/MIME/Viewer/itip.php:688
+msgid "Role"
+msgstr ""
+
+#: lib/MIME/Viewer/pkcs7.php:131 lib/MIME/Viewer/pkcs7.php:226
+#: lib/MIME/Viewer/pkcs7.php:408
+msgid "S/MIME"
+msgstr ""
+
+#: templates/compose/encrypt_list.inc:12
+msgid "S/MIME Encrypt Message"
+msgstr "S/MIME dulkóða skeyti"
+
+#: compose.php:367
+msgid "S/MIME Error: "
+msgstr "S/MIME villa: "
+
+#: compose.php:346
+msgid "S/MIME Error: Need passphrase for personal private key."
+msgstr ""
+
+#: templates/smime/notactive.inc:6
+msgid "S/MIME NOT Active"
+msgstr "S/MIME er ekki virkt"
+
+#: templates/smime/smime.inc:6 config/prefs.php.dist:143
+msgid "S/MIME Options"
+msgstr "S/MIME valstillingar"
+
+#: smime.php:49
+msgid "S/MIME Passphrase Input"
+msgstr "S/MIME lykilkóði"
+
+#: templates/smime/smime.inc:100
+msgid "S/MIME Personal Keypair support requires a secure web connection."
+msgstr ""
+
+#: smime.php:140
+#, php-format
+msgid "S/MIME Public Key for \"%s\" was successfully deleted."
+msgstr ""
+
+#: smime.php:162
+msgid "S/MIME Public Key successfully added."
+msgstr ""
+
+#: templates/smime/smime.inc:45
+msgid "S/MIME Public Keyring"
+msgstr ""
+
+#: smime.php:211
+msgid "S/MIME Public/Private Keypair successfully added."
+msgstr ""
+
+#: templates/compose/encrypt_list.inc:13
+msgid "S/MIME Sign Message"
+msgstr "S/MIME undirrita skeyti"
+
+#: templates/compose/encrypt_list.inc:14
+msgid "S/MIME Sign/Encrypt Message"
+msgstr "S/MIME dulrita skeyti"
+
+#: templates/smime/notactive.inc:11
+msgid "S/MIME support is disabled on this system."
+msgstr "S/MIME stuðmingur er óvirkur á þessu kerfi."
+
+#: lib/MIME/Viewer/pkcs7.php:230
+msgid ""
+"S/MIME support is not currently enabled so the message is unable to be "
+"decrypted."
+msgstr ""
+
+#: lib/MIME/Viewer/pkcs7.php:162
+msgid ""
+"S/MIME support is not enabled so the contents of this signed message can not "
+"be displayed."
+msgstr ""
+
+#: lib/MIME/Viewer/pkcs7.php:135
+msgid ""
+"S/MIME support is not enabled so the digital signature is unable to be "
+"verified."
+msgstr ""
+
+#: templates/smime/smime.inc:24
+msgid ""
+"S/MIME support requires popup windows to be used.  If your browser is "
+"currently set to disable popup windows, you must change this setting or else "
+"the S/MIME features will not work correctly"
+msgstr ""
+
+#: templates/compose/compose.inc:266
+msgid "S_ubject"
+msgstr "Efni"
+
+#: templates/compose/compose.inc:354
+msgid "Sa_ve a copy in "
+msgstr "Vista afrit í "
+
+#: templates/message/navbar_actions.inc:30
+msgid "Sa_ve as"
+msgstr "Vista sem"
+
+#: search.php:363 templates/fetchmail/manage.inc:67
+msgid "Save"
+msgstr "Vista"
+
+#: templates/compose/compose.inc:528
+msgid "Save Attachments with message in sent-mail folder?"
+msgstr ""
+
+#: templates/compose/compose.inc:68 templates/compose/compose.inc:424
+msgid "Save Draft"
+msgstr "Vista uppkast"
+
+#: templates/pgp/pgp.inc:64 templates/pgp/notactive.inc:23
+#: templates/filters/prefs.inc:69 templates/smime/notactive.inc:23
+#: templates/smime/smime.inc:37
+msgid "Save Options"
+msgstr "Valkostir við vistun"
+
+#: templates/compose/compose.inc:68 templates/compose/compose.inc:424
+msgid "Save _Draft"
+msgstr "Vista uppkast"
+
+#: templates/message/navbar_actions.inc:30
+msgid "Save as"
+msgstr "Vista sem"
+
+#: config/prefs.php.dist:513
+msgid "Save drafts as unseen?"
+msgstr ""
+
+#: config/prefs.php.dist:1030
+msgid "Save recipients automatically to the default address book?"
+msgstr ""
+
+#: templates/search/main.inc:127
+msgid "Save search as a virtual folder?"
+msgstr "Geyma leit sem sýndarmöppu?"
+
+#: config/prefs.php.dist:223
+msgid "Save sent mail?"
+msgstr "Vista send skeyti?"
+
+#: compose.php:1162
+#, php-format
+msgid "Saving the draft failed. This is what the server said: %s"
+msgstr ""
+"Vistun uppkastsins mistókst. Netþjónninn kom með eftirfarandi villu: %s"
+
+#: templates/mailbox/header.inc:11 templates/contacts/contacts.inc:199
+#: lib/Block/tree_folders.php:50
+msgid "Search"
+msgstr "Leita"
+
+#: templates/search/header.inc:18 templates/mailbox/header.inc:11
+msgid "Search %s"
+msgstr "Leita í %s"
+
+#: search.php:316
+msgid "Search Results"
+msgstr "Niðurstaða leitar"
+
+#: templates/mailbox/navbar.inc:14 templates/mailbox/navbar.inc:31
+msgid "Seen"
+msgstr "Lesið"
+
+#: templates/mailbox/navbar.inc:9
+msgid "Select"
+msgstr "Velja"
+
+#: templates/fetchmail/manage.inc:70
+msgid "Select Another Account"
+msgstr "Veldu annan aðgang"
+
+#: templates/search/fields.inc:36
+msgid "Select a date"
+msgstr "Veldu degsetningu"
+
+#: templates/search/fields.inc:10
+msgid "Select a field"
+msgstr "Veldu reit"
+
+#: config/prefs.php.dist:127
+msgid "Select address book sources for adding and searching for addresses."
+msgstr "Veldu netfangabók(bækur) fyrir viðbætur og leitarmöguleika."
+
+#: templates/search/main.inc:88
+msgid "Select all"
+msgstr "Velja allt"
+
+#: templates/prefs/sourceselect.inc:323
+msgid "Select all fields to search when expanding addresses."
+msgstr ""
+"Veldu reiti í netfangabók sem á að leita í, þegar leitað er að netföngum."
+
+#: templates/fetchmail/account_select.inc:21
+msgid "Select an account"
+msgstr "Veldu aðgang"
+
+#: templates/search/main.inc:89
+msgid "Select none"
+msgstr "Velja ekkert"
+
+#: templates/fetchmail/driver_select.inc:21
+msgid "Select the mail server type"
+msgstr ""
+
+#: templates/prefs/sourceselect.inc:309
+msgid "Selected Address books:"
+msgstr "Valdar netfangabækur:"
+
+#: templates/pgp/pgp.inc:147
+msgid "Send Key to Public Keyserver"
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:604
+msgid "Send Latest Information"
+msgstr ""
+
+#: templates/compose/compose.inc:66 templates/compose/compose.inc:422
+msgid "Send Message"
+msgstr "Senda skeyti"
+
+#: config/prefs.php.dist:698
+msgid "Send read receipt when requested by the sender?"
+msgstr ""
+
+#: folders.php:392
+msgid "Sent mail folder"
+msgstr "Mappa fyrir send skeyti:"
+
+#: templates/prefs/sentmailselect.inc:39
+msgid "Sent mail folder:"
+msgstr "Mappa fyrir send skeyti:"
+
+#: templates/login/login.inc:132 templates/login/login.inc:145
+#: templates/login/login.inc:152
+msgid "Server"
+msgstr "Netþjónn"
+
+#: config/prefs.php.dist:23
+msgid "Server and Folder Information"
+msgstr ""
+
+#: templates/fetchmail/manage.inc:23
+msgid "Server:"
+msgstr "Póstþjónn:"
+
+#: config/prefs.php.dist:80
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr "Stilla forskrift um hvað gerist, þegar skeyti er eytt eða það flutt."
+
+#: config/prefs.php.dist:522
+msgid "Set the X-Priority header when composing messages?"
+msgstr ""
+
+#: config/prefs.php.dist:31
+msgid "Share Folders"
+msgstr ""
+
+#: templates/acl/acl.inc:86
+msgid "Share mail folders"
+msgstr ""
+
+#: config/prefs.php.dist:32
+msgid "Share your mail folders with other users."
+msgstr ""
+
+#: config/prefs.php.dist:663
+msgid ""
+"Should large blocks of quoted text be shown or hidden by default? It can be "
+"toggled easily whichever you choose."
+msgstr ""
+
+#: templates/pgp/pgp.inc:52
+msgid "Should the body of text/plain messages be scanned for PGP data?"
+msgstr ""
+
+#: config/prefs.php.dist:505
+msgid "Should the compose window be closed after saving a draft?"
+msgstr ""
+"Á að loka glugganum sem ný skeyti eru samin í eftir að uppkast er vistað?"
+
+#: templates/pgp/pgp.inc:40
+msgid "Should your PGP public key to be attached to your messages by default?"
+msgstr ""
+
+#: templates/search/main.inc:92
+msgid "Show All Folders"
+msgstr "Sýna allar möppur"
+
+#: templates/message/headers.inc:67
+msgid "Show All Headers"
+msgstr "Sýna alla hausa"
+
+#: mailbox.php:361
+msgid "Show Deleted"
+msgstr "Sýna eydd skeyti"
+
+#: templates/message/headers.inc:61
+msgid "Show Limited Headers"
+msgstr "Sýna einungis helstu hausa"
+
+#: templates/message/headers.inc:70
+msgid "Show Mailing List Information"
+msgstr "Sýna uppl. um póstlista"
+
+#: templates/search/main.inc:92
+msgid "Show Only Subscribed Folders"
+msgstr ""
+
+#: folders.php:287
+msgid "Show Unsubscribed"
+msgstr "Sýna óvirka"
+
+#: config/prefs.php.dist:603
+msgid "Show an icon to allow stripping of attachments from messages?"
+msgstr ""
+
+#: config/prefs.php.dist:974
+msgid "Show legend in the mailbox view?"
+msgstr "Sýna tákn í póstmöppuham?"
+
+#: config/prefs.php.dist:809
+msgid "Show previews for unread messages only?"
+msgstr ""
+
+#: config/prefs.php.dist:817
+msgid "Show previews in tooltips?"
+msgstr ""
+
+#: config/prefs.php.dist:848
+msgid "Show the Fetch Mail icon on the menubar?"
+msgstr ""
+
+#: lib/MIME/Viewer/html.php:108
+msgid "Show the Images"
+msgstr "Sýna myndirnar"
+
+#: templates/filters/prefs.inc:61
+msgid "Show the filter icon on the menubar?"
+msgstr ""
+
+#: lib/Block/summary.php:30
+msgid "Show total number of mails in folder?"
+msgstr ""
+
+#: config/prefs.php.dist:660
+msgid "Shown"
+msgstr ""
+
+#: templates/mailbox/message_headers.inc:42
+msgid "Si_ze"
+msgstr "Stærð"
+
+#: templates/login/login.inc:213
+msgid "Sign up if not registered"
+msgstr ""
+
+#: templates/mailbox/legend.inc:17
+msgid "Signed"
+msgstr "Undirritað"
+
+#: templates/compose/attachments.inc:3
+msgid "Size"
+msgstr "Stærð"
+
+#: templates/mailbox/message_headers.inc:81
+msgid "Sort Direction"
+msgstr "Röðunarátt"
+
+#: templates/mailbox/message_headers.inc:11
+msgid "Sort by Arrival"
+msgstr "Flokka eftir komutíma"
+
+#: templates/mailbox/message_headers.inc:16
+msgid "Sort by Date"
+msgstr "Flokka eftir dags."
+
+#: templates/mailbox/message_headers.inc:26
+msgid "Sort by From Address"
+msgstr "Flokka eftir sendandanetfangi"
+
+#: templates/mailbox/message_headers.inc:41
+msgid "Sort by Message Size"
+msgstr "Flokka eftir stærð skeytis"
+
+#: templates/mailbox/message_headers.inc:36
+msgid "Sort by Subject"
+msgstr "Flokka eftir efnislínu"
+
+#: templates/mailbox/message_headers.inc:31
+msgid "Sort by Thread"
+msgstr "Flokka eftir efnisþræði"
+
+#: templates/mailbox/message_headers.inc:21
+msgid "Sort by To Address"
+msgstr "Flokka eftir viðtakandanetfangi"
+
+#: templates/prefs/spamselect.inc:23
+msgid "Spam folder:"
+msgstr "Ruslpóstmappa:"
+
+#: templates/compose/compose.inc:337
+msgid "Special Characters"
+msgstr "Sértákn"
+
+#: templates/compose/compose.inc:334
+msgid "Spell Check"
+msgstr "Prófarkarlestur"
+
+#: templates/compose/spelling.inc:48
+msgid "Spell Checker"
+msgstr "Prófarkalesari"
+
+#: templates/compose/spelling.inc:50 templates/compose/spelling.inc:58
+msgid "Spell check complete"
+msgstr "Prófarkarlestri lokið"
+
+#: config/prefs.php.dist:462
+msgid "Spelling errors per screen when spell checking."
+msgstr "Fjöldi villna pr. glugga þegar prófarkalestur er keyrður."
+
+#: lib/MIME/Viewer/itip.php:512 lib/MIME/Viewer/itip.php:652
+msgid "Start"
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:688
+msgid "Status"
+msgstr ""
+
+#: lib/MIME/Contents.php:202
+msgid "Strip Attachment"
+msgstr "Eyða viðhengi"
+
+#: config/prefs.php.dist:801
+msgid "Strip linebreaks?"
+msgstr ""
+
+#: templates/mailbox/message_headers.inc:37
+msgid "Sub_ject"
+msgstr "Efni"
+
+#: search.php:151 message.php:252 templates/compose/recompose.inc:25
+msgid "Subject"
+msgstr "Efni"
+
+#: config/prefs.php.dist:891
+msgid "Subject Field"
+msgstr "Efnislína"
+
+#: search.php:365 templates/pgp/passphrase.inc:31
+#: templates/smime/passphrase.inc:21
+msgid "Submit"
+msgstr "Áfram"
+
+#: templates/folders/actions.inc:9
+msgid "Subscribe to Folder(s)"
+msgstr "Virkja möppu(r)"
+
+#: lib/MIME/Viewer/pgp.php:389 lib/MIME/Viewer/status.php:87
+#: lib/MIME/Viewer/pkcs7.php:369
+msgid "Success"
+msgstr "Framkvæmt"
+
+#: templates/compose/spelling.inc:92
+msgid "Suggestions"
+msgstr "Tillögur"
+
+#: lib/MIME/Viewer/itip.php:662 lib/MIME/Viewer/itip.php:664
+msgid "Summary"
+msgstr "Samantekt"
+
+#: templates/compose/compose.inc:391 templates/compose/compose.inc:394
+msgid "Switch Composition Method"
+msgstr ""
+
+#: templates/compose/compose.inc:395
+msgid "Switch to HTML composition"
+msgstr "Skipta í HTML ritil"
+
+#: templates/compose/compose.inc:395
+msgid "Switch to plain text composition"
+msgstr "Skipta í textaritil"
+
+#: templates/compose/compose.inc:410
+msgid "Te_xt"
+msgstr "Texti"
+
+#: lib/MIME/Viewer/itip.php:269
+msgid "Tentative: "
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:591
+msgid "Tentatively Accept request"
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:761
+msgid "Tentatively Accepted"
+msgstr ""
+
+#: lib/Maintenance/Task/tos_agreement.php:49
+#, php-format
+msgid "Terms of Service file not specified in conf.php"
+msgstr ""
+
+#: config/prefs.php.dist:925
+msgid "The From: column of the message should be linked:"
+msgstr ""
+
+#: lib/MIME/Viewer/appledouble.php:41
+msgid "The Macintosh resource fork"
+msgstr ""
+
+#: lib/MIME/Viewer/appledouble.php:41
+#, php-format
+msgid "The Macintosh resource fork can be downloaded %s."
+msgstr ""
+
+#: fetchmailprefs.php:81
+msgid "The account \"%s\" has been deleted."
+msgstr "Aðganginum \"%s\" hefur verið eytt."
+
+#: fetchmailprefs.php:74
+#, php-format
+msgid "The account \"%s\" has been saved."
+msgstr "Aðgangurinn  \"%s\" hefur verið vistaður."
+
+#: lib/Filter.php:97
+#, php-format
+msgid "The address \"%s\" has been added to %s."
+msgstr "Netfanginu  \"%s\" hefur verið bætt í %s."
+
+#: attachment.php:43
+msgid "The attachment was not found."
+msgstr "Viðhengið fannst ekki."
+
+#: lib/MIME/Viewer/itip.php:69
+msgid "The calendar data is invalid"
+msgstr ""
+
+#: templates/javascript/open_compose_win.js:37
+msgid ""
+"The compose window can't be opened. Perhaps you have set your browser to "
+"block popup windows?"
+msgstr ""
+
+#: lib/MIME/Viewer/appledouble.php:42
+msgid "The contents of the Macintosh file are below."
+msgstr ""
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:91
+#, php-format
+msgid "The current folder(s) \"%s\" will be renamed to \"%s\"."
+msgstr "The current folder(s) \"%s\" will be renamed to \"%s\"."
+
+#: templates/acl/acl.inc:112
+msgid ""
+"The current list of users with access to this folder could not be retrieved"
+msgstr ""
+
+#: compose.php:1171
+#, php-format
+msgid "The draft has been saved to the \"%s\" folder."
+msgstr "Uppkastið hefur verið vistað í \"%s\" möppunni."
+
+#: lib/MIME/Viewer/itip.php:139
+msgid "The event was added to your calendar."
+msgstr ""
+
+#: templates/compose/expand.inc:9
+#, php-format
+msgid "The field \"%s\" can't be expanded."
+msgstr "Ekki tókst að fylla sjálfvirkt í svæðið \"%s\"."
+
+#: lib/Folder.php:328
+#, php-format
+msgid "The folder \"%s\" already exists"
+msgstr "Mappan \"%s\" er nú þegar til"
+
+#: lib/Folder.php:171
+#, php-format
+msgid ""
+"The folder \"%s\" contains illegal characters in its name. It may cause "
+"problems. Please see your system administrator."
+msgstr ""
+"Mappan \"%s\" er með sértákn eða íslenska stafi í nafninu. Þetta getur leitt "
+"til vandamála sem þarf að leysa með aðstoð þjónustuaðila."
+
+#: lib/Folder.php:347
+#, php-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "Mappan \"%s\" var búin til en er ekki virk."
+
+#: lib/Folder.php:285
+#, php-format
+msgid "The folder \"%s\" was deleted but you were not unsubscribed from it."
+msgstr "Möppunni \"%s\" var eytt, en hún var virk."
+
+#: lib/Folder.php:334
+#, php-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr ""
+"Mappan \"%s\" var ekki búin til. Villutilkynning netþjónsins fylgir hér á "
+"eftir"
+
+#: lib/Folder.php:278
+#, php-format
+msgid "The folder \"%s\" was not deleted. This is what the server said"
+msgstr ""
+"Möppunni \"%s\" var ekki eytt. Villutilkynning netþjónsins fylgir hér á eftir"
+
+#: lib/Folder.php:350
+#, php-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "Mappan \"%s\" var búin til."
+
+#: lib/Folder.php:288
+#, php-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "Möppunni \"%s\" var eytt."
+
+#: lib/Folder.php:438
+#, php-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "Mappan \"%s\" var endurnefnd \"%s\"."
+
+#: lib/MIME/Viewer/tnef.php:92
+msgid "The following files were attached to this part:"
+msgstr ""
+
+#: lib/MIME/Viewer/html.php:96
+msgid ""
+"The images will be displayed because the sender is present in your "
+"addressbook."
+msgstr ""
+
+#: lib/MIME/Viewer/status.php:75
+msgid "The mail server generated the following error message:"
+msgstr ""
+
+#: lib/MIME/Viewer/notification.php:51
+msgid "The mail server generated the following informational message:"
+msgstr ""
+
+#: lib/MIME/Viewer/status.php:90
+msgid "The mail server generated the following message:"
+msgstr ""
+
+#: lib/Message.php:614
+#, php-format
+msgid "The mailbox %s is already empty."
+msgstr "Mappan \"%s\" er nú þegar tóm"
+
+#: lib/Fetchmail.php:245
+#, php-format
+msgid "The message \"%s\" from \"%s\" (%d bytes) exceeds fetch size limit."
+msgstr ""
+
+#: templates/contacts/contacts.inc:103
+msgid "The message being composed has been closed. Exiting."
+msgstr "Skeytinu sem verið var að semja hefur verið lokað."
+
+#: message.php:142
+msgid "The message has been deleted."
+msgstr "Skeytinu hefur verið eytt."
+
+#: lib/MIME/Viewer/pgp.php:393
+msgid "The message has been verified."
+msgstr "Skeytið hefur verið sannprófað."
+
+#: lib/MIME/Viewer/pkcs7.php:373
+#, php-format
+msgid "The message has been verified. Sender: %s."
+msgstr "Skeytið hefur verið sannprófað. Sendandi: %s."
+
+#: templates/pgp/open_pgp_win.js:10 templates/smime/open_smime_win.js:10
+msgid ""
+"The passphrase window can't be opened. Perhaps you have set your browser to "
+"block popup windows?"
+msgstr ""
+
+#: lib/MIME/Viewer/pgp.php:173
+#, php-format
+msgid "The raw text of the PGP Public Key can be viewed %s."
+msgstr ""
+
+#: lib/MIME/Viewer/tnef.php:60
+msgid "The requested file does not exist in the MS-TNEF attachment."
+msgstr ""
+
+#: lib/MIME/Viewer/zip.php:64
+msgid "The requested file does not exist in the Zip attachment."
+msgstr ""
+
+#: message.php:531
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Please click %s to send the "
+"notification message."
+msgstr ""
+
+#: lib/MIME/Viewer/images.php:69
+msgid "The server was not able to create a thumbnail of this image."
+msgstr ""
+
+#: templates/compose/compose.js:104
+msgid "The signature could not be replaced."
+msgstr "Ekki var hægt að skipta um undirskrift."
+
+#: templates/compose/compose.js:102
+msgid "The signature was successfully replaced."
+msgstr "Undirskrift hefur verið breytt."
+
+#: attachment.php:59
+msgid "The specified file does not exist."
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:169
+msgid "The task has been added to your tasklist."
+msgstr "Verkefninu \"%s\" hefur verið bætt við verkefnalistann."
+
+#: lib/MIME/Viewer/status.php:95
+msgid "The text of the message"
+msgstr "Texti skeytisins"
+
+#: lib/MIME/Viewer/status.php:94
+#, php-format
+msgid "The text of the message can be viewed %s."
+msgstr ""
+
+#: lib/MIME/Viewer/status.php:80
+msgid "The text of the returned message"
+msgstr ""
+
+#: lib/MIME/Viewer/status.php:79
+#, php-format
+msgid "The text of the returned message can be viewed %s."
+msgstr ""
+
+#: lib/MIME/Viewer/notification.php:68
+msgid "The text of the sent message"
+msgstr ""
+
+#: lib/MIME/Viewer/notification.php:68
+#, php-format
+msgid "The text of the sent message can be viewed %s."
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:154
+msgid "The user's free/busy information was sucessfully stored."
+msgstr ""
+
+#: lib/MIME/Viewer/alternative.php:86
+msgid "There are no alternative parts that can be displayed inline."
+msgstr ""
+
+#: templates/mailbox/empty_mailbox.inc:3
+msgid "There are no messages in this mailbox."
+msgstr "Það eru engin skeyti í þessu pósthólfi."
+
+#: thread.php:69
+msgid "There is no text that can be displayed inline."
+msgstr ""
+
+#: lib/Message.php:575
+#, php-format
+msgid "There was a problem expunging %s. This is what the server said"
+msgstr ""
+"Vandamál kom upp við tæmingu á %s. Villutilkynning netþjónsins fylgir hér á "
+"eftir"
+
+#: lib/Message.php:616
+#, php-format
+msgid "There was a problem expunging the mailbox. The server said: %s"
+msgstr ""
+"Vandamál kom upp við tæmingu pósthólfs. Villutilkynning netþjónsins fylgir "
+"hér á eftir: %s"
+
+#: lib/Message.php:584
+msgid "There was a problem expunging the mailbox. This is what the server said"
+msgstr ""
+"Vandamál kom upp við tæmingu pósthólfs. Villutilkynning netþjónsins fylgir "
+"hér á eftir"
+
+#: lib/Message.php:92
+#, php-format
+msgid ""
+"There was an error copying messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"Vandamál kom upp við afritun frá \"%s\" til  \"%s\". Villutilkynning "
+"netþjónsins fylgir hér á eftir"
+
+#: lib/Message.php:200 lib/Message.php:215
+#, php-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr ""
+"Villa kom upp þegar átti að eyða skeytum úr möppunni \"%s\". Villutilkynning "
+"netþjónsins fylgir hér á eftir"
+
+#: lib/Message.php:277
+#, php-format
+msgid ""
+"There was an error deleting messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"Villa kom upp þegar átti að eyða skeytum í möppunni \"%s\". Villutilkynning "
+"netþjónsins fylgir hér á eftir"
+
+#: lib/Message.php:213
+#, php-format
+msgid "There was an error deleting messages. This is what the server said: %s"
+msgstr ""
+"Villa kom upp þegar átti að eyða skeytum. Villutilkynning netþjónsins fylgir "
+"hér á eftir: %s"
+
+#: lib/MIME/Viewer/itip.php:99
+#, php-format
+msgid "There was an error deleting the event: %s."
+msgstr ""
+
+#: lib/MIME/Viewer/plain.php:52 lib/MIME/Viewer/enriched.php:37
+msgid "There was an error displaying this message part"
+msgstr "Villa kom upp við birtingu þessa hluta skeytisins"
+
+#: lib/Message.php:508 lib/Message.php:548
+#, php-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"Villa kom upp þegar átti að merkja skeyti í möppunni \"%s\". Villutilkynning "
+"netþjónsins fylgir hér á eftir"
+
+#: folders.php:155
+#, php-format
+msgid "There was an error importing %s."
+msgstr "Villa kom upp við að flytja inn %s."
+
+#: lib/MIME/Viewer/itip.php:136
+#, php-format
+msgid "There was an error importing the event: %s."
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:166
+#, php-format
+msgid "There was an error importing the task: %s."
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:152
+#, php-format
+msgid "There was an error importing user's free/busy information: %s."
+msgstr ""
+
+#: lib/Message.php:87
+#, php-format
+msgid ""
+"There was an error moving messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"Villa kom upp þegar átti að færa skeyti frá \"%s\" til \"%s\". "
+"Villutilkynning netþjónsins fylgir hér á eftir"
+
+#: compose.php:1179
+msgid "There was an error saving this message as a draft."
+msgstr "Villa kom upp við vistun þessa skeytis sem uppkasts."
+
+#: compose.php:940
+#, php-format
+msgid "There was an error sending your message: %s"
+msgstr "Ekki tókst að senda skeytið: %s"
+
+#: lib/MIME/Viewer/itip.php:113
+#, php-format
+msgid "There was an error updating the event: %s."
+msgstr ""
+
+#: lib/MIME/Viewer/plain.php:59
+msgid "There was no text in this message part"
+msgstr "Það var engin texti í þessum hluta skeytisins"
+
+#: lib/MIME/Viewer/html.php:94
+msgid "This HTML message has images embedded in it."
+msgstr "Þetta HTML skeyti er iniheldur myndir.."
+
+#: lib/MIME/Viewer/html.php:90
+msgid ""
+"This HTML message has images embedded in it. Blocked images appear like "
+"this: "
+msgstr ""
+
+#: lib/MIME/Viewer/pgp.php:166
+msgid "This PGP Public Key was attached to the message."
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:104 lib/MIME/Viewer/itip.php:118
+#: lib/MIME/Viewer/itip.php:143 lib/MIME/Viewer/itip.php:157
+#: lib/MIME/Viewer/itip.php:173 lib/MIME/Viewer/itip.php:314
+msgid "This action is not supported."
+msgstr ""
+
+#: lib/MIME/Viewer/itip.php:179 lib/MIME/Viewer/itip.php:419
+msgid "This action is not yet implemented."
+msgstr ""
+
+#: templates/folders/javascript.inc:6
+msgid "This may take some time. Are you sure you want to continue?"
+msgstr ""
+"Þetta gæti tekið nokkurn tíma. Ert þú viss um að þú viljir halda áfram?"
+
+#: lib/MIME/Viewer/appledouble.php:40
+msgid "This message contains a Macintosh file."
+msgstr ""
+
+#: lib/MIME/Viewer/pkcs7.php:399
+msgid ""
+"This message contains an attachment that has been digitally signed via S/"
+"MIME."
+msgstr ""
+
+#: lib/MIME/Viewer/pkcs7.php:403
+msgid "This message contains an attachment that has been encrypted via S/MIME."
+msgstr ""
+
+#: lib/MIME/Viewer/status.php:160
+msgid ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+msgstr ""
+
+#: lib/MIME/Viewer/pgp.php:315
+msgid ""
+"This message does not appear to be a valid PGP encrypted message. Error: "
+msgstr ""
+
+#: lib/MIME/Viewer/pgp.php:240 lib/MIME/Viewer/pgp.php:350
+msgid ""
+"This message does not appear to be in the correct PGP format (according to "
+"RFC 2015)."
+msgstr ""
+
+#: lib/MIME/Viewer/pkcs7.php:159
+msgid "This message does not appear to be in the correct S/MIME format."
+msgstr ""
+
+#: lib/MIME/Viewer/pgp.php:205 lib/MIME/Viewer/pgp.php:416
+msgid "This message has been digitally signed via PGP."
+msgstr "Þetta skeyti er með PGP rafræna undirskrift."
+
+#: lib/MIME/Viewer/pkcs7.php:132
+msgid "This message has been digitally signed via S/MIME."
+msgstr "Þetta skeyti er með S/MIME rafræna undirskrift."
+
+#: lib/MIME/Viewer/pkcs7.php:128 lib/MIME/Viewer/pkcs7.php:227
+msgid "This message has been encrypted via S/MIME."
+msgstr "Þetta skeyti er dulritað með S/MIME."
+
+#: lib/MIME/Viewer/pgp.php:201 lib/MIME/Viewer/pgp.php:291
+msgid "This message has been encrypted with PGP."
+msgstr "Þetta skeyti er dulritað með PGP."
+
+#: message.php:195
+msgid "This message to"
+msgstr "Þetta skeyti til"
+
+#: acl.php:46
+msgid "This server does not support sharing folders."
+msgstr ""
+
+#: templates/contacts/contacts.inc:109
+msgid "This window must be called from a compose window."
+msgstr ""
+"Þessi gluggi þarf að vera vísun frá glugganum þar sem ný skeyti eru samin."
+
+#: thread.php:44 templates/thread/top.inc:3 config/prefs.php.dist:893
+msgid "Thread View"
+msgstr "Efnisþráðshamur"
+
+#: search.php:139 message.php:248 mailbox.php:585
+#: templates/mailbox/message_headers.inc:22
+#: templates/contacts/contacts.inc:219 templates/compose/recompose.inc:10
+#: templates/compose/redirect.inc:64
+msgid "To"
+msgstr "Til"
+
+#: config/prefs.php.dist:890
+msgid "To Address"
+msgstr "Móttökunetfang"
+
+#: templates/prefs/sourceselect.inc:326
+msgid ""
+"To select multiple fields, hold down the Control (PC) or Command (Mac) while "
+"clicking."
+msgstr ""
+
+#: templates/compose/compose.inc:567
+msgid "Total Attachments Size:"
+msgstr "Heildarstærð viðhengja:"
+
+#: folders.php:383
+msgid "Trash folder"
+msgstr "Ruslakarfa"
+
+#: templates/prefs/trashselect.inc:23
+msgid "Trash folder:"
+msgstr "Ruslakarfa:"
+
+#: lib/Quota/courier.php:53 lib/Quota/cyrus.php:65 lib/Quota/logfile.php:88
+#: lib/Quota/command.php:72 lib/Quota/mdaemon.php:48
+#: lib/Quota/mercury32.php:79
+msgid "Unable to retrieve quota"
+msgstr ""
+
+#: templates/mailbox/navbar.inc:19 templates/mailbox/navbar.inc:36
+#: templates/message/navbar_navigate.inc:10
+msgid "Unanswered"
+msgstr "Ósvarað"
+
+#: templates/search/main.inc:35
+msgid "Unanswered messages"
+msgstr "Ósvöruð skeyti"
+
+#: templates/mailbox/actions.inc:13 templates/message/navbar_actions.inc:4
+msgid "Undelete"
+msgstr "Endurvekja"
+
+#: mailbox.php:568 mailbox.php:581 lib/MIME/Headers.php:212
+msgid "Undisclosed Recipients"
+msgstr "Móttakendur sem ekki sjást"
+
+#: lib/MIME/Viewer/itip.php:447
+#, php-format
+msgid "Unhandled component of type: %s"
+msgstr ""
+
+#: mailbox.php:544
+msgid "Unknown Date"
+msgstr "Óþekkt dags."
+
+#: lib/MIME/Viewer/itip.php:635
+msgid "Unknown Meeting"
+msgstr ""
+
+#: mailbox.php:597
+msgid "Unknown Recipient"
+msgstr "Óþekktur móttakandi"
+
+#: templates/pgp/pgp.inc:151 templates/smime/smime.inc:117
+msgid "Unload Passphrase"
+msgstr ""
+
+#: fetchmailprefs.php:65
+msgid "Unnamed"
+msgstr "Ónefnt"
+
+#: message.php:483 mailbox.php:687 templates/mailbox/legend.inc:5
+#: templates/mailbox/navbar.inc:15 templates/mailbox/navbar.inc:32
+#: templates/message/navbar_navigate.inc:6
+msgid "Unseen"
+msgstr "Ólesið"
+
+#: templates/folders/actions.inc:10
+msgid "Unsubscribe from Folder(s)"
+msgstr "Afvirkja möppu(r)"
+
+#: templates/compose/compose.inc:574
+msgid "Update Attachment Information"
+msgstr "Uppfæra uppl. um viðhengi"
+
+#: lib/MIME/Viewer/itip.php:620
+msgid "Update respondent status"
+msgstr ""
+
+#: templates/pgp/import_key.inc:56 templates/smime/import_key.inc:56
+msgid "Upload"
+msgstr "Innsenda"
+
+#: templates/prefs/sentmailselect.inc:42
+msgid "Use Default Value"
+msgstr "Nota sjálfgefið gildi"
+
+#: config/prefs.php.dist:250
+msgid "Use IMAP folder subscriptions?"
+msgstr "Nota virkar IMAP möppur"
+
+#: templates/acl/acl.inc:140
+msgid "User"
+msgstr "Notandi"
+
+#: acl.php:87
+#, php-format
+msgid ""
+"User \"%s\" successfully given the specified rights for the folder \"%s\"."
+msgstr ""
+
+#: templates/login/login.inc:181
+msgid "Username"
+msgstr "Notandanafn"
+
+#: templates/fetchmail/manage.inc:17
+msgid "Username:"
+msgstr "Notandanafn:"
+
+#: templates/pgp/pgp.inc:93 templates/pgp/pgp.inc:147
+#: templates/pgp/pgp.inc:151 templates/smime/smime.inc:65
+#: templates/smime/smime.inc:113 templates/smime/smime.inc:117
+msgid "View"
+msgstr "Skoða"
+
+#: lib/MIME/Viewer/tnef.php:108 lib/MIME/Viewer/zip.php:92
+#, php-format
+msgid "View %s"
+msgstr "Sýna %s"
+
+#: templates/pgp/pgp.inc:93 templates/smime/smime.inc:65
+#, php-format
+msgid "View %s Public Key"
+msgstr "iSkoða opinberan lykil fyrir %s"
+
+#: lib/MIME/Viewer/html.php:128
+msgid "View HTML content in a separate window"
+msgstr "Skoða HTML-efni í sér glugga."
+
+#: templates/pgp/pgp.inc:151 templates/smime/smime.inc:117
+msgid "View Personal Private Key"
+msgstr ""
+
+#: templates/pgp/pgp.inc:147 templates/smime/smime.inc:113
+msgid "View Personal Public Key"
+msgstr ""
+
+#: templates/message/navbar_actions.inc:17
+msgid "View Thread"
+msgstr "Skoða efnisþráð"
+
+#: lib/MIME/Viewer/images.php:163 lib/MIME/Viewer/images.php:165
+msgid "View Thumbnail"
+msgstr "Skoða smámynd"
+
+#: lib/MIME/Viewer/pkcs7.php:407
+msgid "View attachment in a separate window"
+msgstr "koða viðhengi í sér glugga."
+
+#: lib/MIME/Viewer/related.php:79
+msgid "View content in a separate window"
+msgstr "Skoða innihald í sér glugga."
+
+#: lib/MIME/Viewer/itip.php:140
+msgid "View event"
+msgstr "Sýna atburð"
+
+#: mailbox.php:513 folders.php:375
+#, php-format
+msgid "View messages in %s"
+msgstr "Sýna skeyti í %s"
+
+#: templates/prefs/initialpageselect.inc:26
+msgid "View or mailbox to display after login:"
+msgstr "Mappa eða hamur sem á að sýna í upphafi:"
+
+#: lib/MIME/Viewer/itip.php:170
+msgid "View task"
+msgstr "Sýna verkefni"
+
+#: lib/MIME/Viewer/html.php:113
+msgid "View the Images"
+msgstr "Skoða myndirnar"
+
+#: search.php:314
+#, php-format
+msgid "Virtual Folder \"%s\" created succesfully."
+msgstr "Sýndarmappan \"%s\" var stofnuð."
+
+#: templates/search/main.inc:111 lib/IMAP/Tree.php:129 lib/IMAP/Tree.php:142
+#: lib/IMAP/Tree.php:144 lib/IMAP/Tree.php:148 lib/IMAP/Tree.php:149
+#: lib/IMAP/Tree.php:354 lib/IMAP/Tree.php:378 lib/IMAP/Tree.php:418
+msgid "Virtual Folders"
+msgstr "Sýndarmöppur"
+
+#: search.php:296
+msgid "Virtual Folders require a label."
+msgstr "Sýndarmöppur þurfa auðkenni."
+
+#: templates/search/main.inc:133
+msgid "Virtual folder label"
+msgstr "Auðkenni sýndarmöppu"
+
+#: lib/MIME/Viewer/pkcs7.php:363
+msgid "Warning"
+msgstr "Aðvörun"
+
+#: login.php:130
+#, php-format
+msgid "Welcome to %s"
+msgstr "Velkomin(n) í %s"
+
+#: config/prefs.php.dist:724
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted?"
+msgstr ""
+
+#: config/prefs.php.dist:878
+msgid "When opening a new mailbox, which page do you want to start on?"
+msgstr ""
+
+#: config/prefs.php.dist:554
+msgid "When saving sent-mail, should we save attachment data?"
+msgstr ""
+
+#: config/prefs.php.dist:421
+msgid ""
+"When sending mail or expanding addresses, what domain should we append to "
+"unqualified addresses (email addresses without \"@\")?"
+msgstr ""
+
+#: templates/mailbox/actions.inc:19 templates/message/navbar_actions.inc:22
+msgid "Whitelist"
+msgstr ""
+
+#: config/prefs.php.dist:437
+msgid "Wrap text at this many characters."
+msgstr "Færa bendil sjáfkrafa í næstu línu þegar þessum stafafjölda er náð."
+
+#: templates/compose/compose.inc:531 config/prefs.php.dist:949
+msgid "Yes"
+msgstr "Já"
+
+#: lib/Maintenance/Task/fetchmail_login.php:58
+msgid "You are about to fetch email from the following account(s):"
+msgstr "Þú ert um það bil að sækja póst fyrir eftirfarandi aðganga:"
+
+#: templates/folders/folders_confirm.html:10
+msgid ""
+"You are attempting to delete all messages contained in the following folder"
+"(s)."
+msgstr "Þú ert um það bil að eyða öllum skeytum í eftirfarandi möppu(m):"
+
+#: templates/folders/folders_confirm.html:9
+msgid "You are attempting to delete the following folder(s)."
+msgstr "Þú ert um það bil að eyða eftirfarandi möpppu(m):"
+
+#: templates/mailbox/javascript.inc:192 templates/message/javascript.inc:55
+msgid "You are copying/moving to a new folder."
+msgstr "Þú ert að afrita/færa í nýja möppu."
+
+#: templates/folders/javascript.inc:94
+msgid "You are creating a sub-folder to "
+msgstr "Þú ert um það bil að búa til undirmöppu í "
+
+#: templates/folders/javascript.inc:96
+msgid "You are creating a top-level folder."
+msgstr "Þú ert að búa til nýja aðalmöppu.\\nSláðu inn nafn möppunnar:\\n"
+
+#: templates/folders/javascript.inc:127
+msgid "You are renaming the folder: "
+msgstr "Þú ert að endurnefna möppuna: "
+
+#: lib/Folder.php:537
+#, php-format
+msgid "You can not unsubscribe from \"%s\"."
+msgstr "Þú getur ekki aftengt frá \"%s\""
+
+#: lib/Maintenance/Task/tos_agreement.php:34
+msgid ""
+"You did not agree to the Terms of Service agreement, so you were not allowed "
+"to login."
+msgstr ""
+
+#: templates/acl/acl.inc:165
+msgid "You do not have permission to change access to this folder"
+msgstr ""
+
+#: lib/Maillog.php:129
+#, php-format
+msgid "You forwarded this message on %%s to the following recipients: %s."
+msgstr ""
+
+#: templates/mailbox/alert.inc:3
+#, php-format
+msgid "You have %s new messages."
+msgstr "Þú átt %s ný skeyti."
+
+#: templates/mailbox/alert.inc:3
+msgid "You have 1 new message."
+msgstr "Þú átt 1 nýtt skeyti."
+
+#: templates/compose/attachments.js:116
+msgid ""
+"You have at least one attachment selected that you didn't upload yet. Are "
+"you sure you want to send this message without these attachments?"
+msgstr ""
+
+#: lib/IMP.php:1030
+msgid "You have new mail in the following folder:"
+msgstr "Þú átt nýjan póst í möppunni:\\n"
+
+#: lib/IMP.php:1035
+msgid "You have new mail in the following folders:"
+msgstr "Þú átt nýjan póst í þessum möppum:\\n"
+
+#: compose.php:126
+msgid "You must enter at least one recipient."
+msgstr "Það þarf að tilgreina a.m.k. einn viðtakanda."
+
+#: lib/MIME/Viewer/pgp.php:302
+msgid ""
+"You must enter the passphrase for your PGP private key to view this message"
+msgstr ""
+
+#: lib/MIME/Viewer/pkcs7.php:238
+msgid ""
+"You must enter the passphrase for your S/MIME private key to view this "
+"message"
+msgstr ""
+
+#: templates/mailbox/javascript.inc:201 templates/message/javascript.inc:64
+msgid "You must select a target mailbox first."
+msgstr "Þú þarft að velja í hvaða möppu pósturinn á að fara fyrst."
+
+#: fetchmailprefs.php:85
+msgid "You must select an account to be deleted."
+msgstr "Veldu hvaða aðgangi þú vilt eyða."
+
+#: templates/contacts/contacts.inc:81
+msgid "You must select an address first."
+msgstr "Þú þarft að velja netfang fyrst."
+
+#: templates/mailbox/javascript.inc:62 templates/mailbox/javascript.inc:208
+#: templates/mailbox/javascript.inc:263
+msgid "You must select at least one message first."
+msgstr "Veldu a.m.k. eitt skeyti fyrst."
+
+#: templates/compose/redirect.inc:13
+msgid "You must specify a recipient."
+msgstr "Tilgreindu viðtakanda."
+
+#: templates/compose/attachments.js:29
+msgid "You must specify at least one file to attach."
+msgstr "Þú þarft fyrst að velja viðhengið."
+
+#: templates/fetchmail/manage.inc:48
+#, php-format
+msgid "You need to have \"%s\" enabled in your maintenance options."
+msgstr ""
+
+#: lib/Maillog.php:137
+#, php-format
+msgid "You redirected this message to %s on %%s."
+msgstr "Þú endurvísaðir þessu skeyti til %s þann %%s."
+
+#: lib/Maillog.php:141
+#, php-format
+msgid "You replied to this message on %s."
+msgstr "Þú svaraðir þessu skeyti þann %s."
+
+#: lib/Folder.php:487
+#, php-format
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr "\"%s\" var ekki gerð virk. Hér er tilkynningin sem kom frá netþjóninum"
+
+#: lib/Folder.php:539
+#, php-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr ""
+"\"%s\" var ekki gerð óvirk. Hér er tilkynningin sem kom frá netþjóninum"
+
+#: lib/Folder.php:490
+#, php-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr "\"%s\" var gerð virk"
+
+#: lib/Folder.php:542
+#, php-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "\"%s\" var gerð óvirk"
+
+#: templates/pgp/pgp.inc:186
+msgid "Your Name"
+msgstr "Fullt nafn þitt:"
+
+#: templates/pgp/pgp.inc:119
+msgid "Your PGP Public/Private Keys"
+msgstr "PGP opinberir/einka lyklar"
+
+#: templates/pgp/pgp.inc:150 templates/smime/smime.inc:116
+msgid "Your Private Key"
+msgstr "Einka dulritunarlykill þinn"
+
+#: templates/pgp/pgp.inc:146 templates/smime/smime.inc:112
+msgid "Your Public Key"
+msgstr "Opinber dulritunarlykill þinn"
+
+#: config/prefs.php.dist:157
+msgid "Your Reply-to: address: <i>(optional)</i>"
+msgstr ""
+"Svarnetfang þitt ef annað en fullt netfang (Reply-to:) <i>(valfrjálst)</i>"
+
+#: templates/smime/smime.inc:91
+msgid "Your S/MIME Public/Private Certificates"
+msgstr ""
+
+#: templates/fetchmail/account_select.inc:16
+msgid "Your accounts:"
+msgstr "Aðgangar þínir:"
+
+#: config/prefs.php.dist:165
+msgid ""
+"Your alias addresses: <i>(optional, enter each address on a new line)</i>"
+msgstr ""
+
+#: lib/MIME/Viewer/images.php:92
+msgid "Your browser does not support inline display of this image type."
+msgstr "Vefskoari þinn styður ekki birtingu á þessarri gerð myndar."
+
+#: config/prefs.php.dist:532
+msgid "Your default charset for sending messages:"
+msgstr "Sjálfgefið stafasett í sendum skeytum:"
+
+#: templates/prefs/encryptselect.inc:1
+msgid "Your default encryption method for sending messages:"
+msgstr "Sjálfvalin dulkóðunaraðferð fyrir send skeyti:"
+
+#: lib/MIME/Viewer/status.php:89
+msgid "Your message was successfully delivered."
+msgstr "Skeytið var sent."
+
+#: config/prefs.php.dist:198
+msgid "Your signature:"
+msgstr "Undirskrift þín:"
+
+#: message.php:272 mailbox.php:528 compose.php:1219 lib/Compose.php:729
+msgid "[No Subject]"
+msgstr "[Ekkert efni]"
+
+#: templates/compose/compose.inc:216
+msgid "_Bcc"
+msgstr ""
+
+#: templates/mailbox/actions.inc:16 templates/message/navbar_actions.inc:19
+msgid "_Blacklist"
+msgstr "Svartlisti"
+
+#: templates/compose/compose.inc:165
+msgid "_Cc"
+msgstr ""
+
+#: lib/IMP.php:933
+msgid "_Compose"
+msgstr "Semja"
+
+#: templates/mailbox/actions.inc:8 templates/mailbox/actions.inc:10
+#: templates/message/navbar_actions.inc:6
+msgid "_Delete"
+msgstr "Eyða"
+
+#: lib/IMP.php:935
+msgid "_Folders"
+msgstr "Möppur"
+
+#: templates/compose/compose.inc:80
+msgid "_Identity"
+msgstr "Auðkenni"
+
+#: lib/IMP.php:926
+msgid "_Inbox"
+msgstr "Innbox"
+
+#: lib/IMP.php:976
+msgid "_Log out"
+msgstr "Útskrá"
+
+#: message.php:368
+msgid "_Message Source"
+msgstr "Handrit"
+
+#: templates/message/navbar_actions.inc:31
+msgid "_Print"
+msgstr "Prenta"
+
+#: templates/compose/compose.inc:283 templates/compose/compose.inc:300
+msgid "_Priority"
+msgstr "Forgangur"
+
+#: mailbox.php:402
+#, php-format
+msgid "_Refresh %s"
+msgstr "Endurhlaða %s"
+
+#: templates/message/navbar_actions.inc:8
+msgid "_Reply"
+msgstr "Svara"
+
+#: lib/IMP.php:937
+msgid "_Search"
+msgstr "Leita"
+
+#: templates/compose/compose.inc:66 templates/compose/compose.inc:422
+msgid "_Send Message"
+msgstr "Senda skeyti"
+
+#: templates/mailbox/message_headers.inc:32
+msgid "_Thread"
+msgstr "Efnisþráður"
+
+#: templates/compose/compose.inc:115
+msgid "_To"
+msgstr "Til"
+
+#: templates/mailbox/actions.inc:13
+msgid "_Undelete"
+msgstr "Endurvekja"
+
+#: templates/message/navbar_actions.inc:17
+msgid "_View Thread"
+msgstr "Skoða efnisþráð"
+
+#: templates/mailbox/actions.inc:19 templates/message/navbar_actions.inc:22
+msgid "_Whitelist"
+msgstr "Hvítlisti"
+
+#: lib/Compose.php:351
+msgid "attachment"
+msgstr "Viðhengi"
+
+#: view.php:99
+msgid "attachments.zip"
+msgstr ""
+
+#: templates/compose/compose.inc:503
+msgid "bytes"
+msgstr "bæti"
+
+#: templates/contacts/contacts.inc:190
+msgid "from"
+msgstr "frá"
+
+#: pgp.php:69 smime.php:29
+msgid "key"
+msgstr ""
+
+#: folders.php:151
+msgid "mailbox file"
+msgstr "Póstmappa"
+
+#: compose.php:1001 lib/Message.php:429
+msgid "name"
+msgstr "Nafn"
+
+#: templates/compose/spelling.inc:80
+msgid "none"
+msgstr "enginn"
+
+#: templates/compose/spelling.inc:111
+msgid "or"
+msgstr "eða"
+
+#: templates/compose/spelling.inc:48
+msgid "spelling error"
+msgstr "stafsetningarvilla"
+
+#: templates/compose/spelling.inc:48
+msgid "spelling errors"
+msgstr "stafsetningarvillur"
+
+#: lib/Filter.php:51
+msgid "your blacklist"
+msgstr "Svartlisti þinn"
+
+#: lib/Filter.php:61
+msgid "your whitelist"
+msgstr "Hvítlisti þinn"

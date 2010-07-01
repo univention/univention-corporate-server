@@ -1,0 +1,396 @@
+# Mnemo Romanian Translation
+# Copyright 2003-2009 The Horde Project
+# Eugen Hoanca <eugenh@urban-grafx.ro>, 2003.
+# Marius Dragulescu <mariusd@urban-grafx.ro>, 2003.
+#
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Mnemo 1.1\n"
+"POT-Creation-Date: 2003-02-28 02:28+0200\n"
+"PO-Revision-Date: 2003-02-28 02:29+0200\n"
+"Last-Translator: Eugen Hoanca <eugenh@urban-grafx.ro>\n"
+"Language-Team: Romanian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: templates/list/header.inc:17
+#, php-format
+msgid "%d notes"
+msgstr "%d note"
+
+#: templates/list/header.inc:17
+msgid "1 note"
+msgstr "1 nota"
+
+#: config/prefs.php.dist:22
+msgid "Add, remove, and edit categories."
+msgstr "Adaugare, stergere si editare categorii."
+
+#: memo.php:39
+msgid "Adding A New Note"
+msgstr "Adaugare de nota noua"
+
+#: templates/prefs/category_management.inc:41
+#, php-format
+msgid "Any notes in a category that is deleted will become %s."
+msgstr "Orice nota din categoria stearsa va deveni %s"
+
+#: config/prefs.php.dist:49
+msgid "Ascending"
+msgstr "Crescator"
+
+#: templates/view/navbar.inc:9 templates/view/headers.inc:17
+msgid "Back to Notepad"
+msgstr "Inapoi in Notepad"
+
+#: templates/list/memo_headers.inc:14 templates/memo/memo.inc:9
+#: templates/view/headers.inc:10
+msgid "Category"
+msgstr "Categorie"
+
+#: config/prefs.php.dist:21 config/prefs.php.dist:82
+msgid "Category Management"
+msgstr "Administrare categorii"
+
+#: config/prefs.php.dist:16
+msgid "Change your note sorting and display options."
+msgstr "Schimbare sortate de note shi optiuni afisaj"
+
+#: templates/list/memo_headers.inc:7
+msgid "Checkbox"
+msgstr "Casuta selectie"
+
+#: templates/list/actions.inc:6
+msgid "Choose Action:"
+msgstr "Selecteaza actiune:"
+
+#: config/prefs.php.dist:66
+msgid "Choose Color"
+msgstr "Selecteaza culoare:"
+
+#: templates/search/end.inc:6
+msgid "Clear Form"
+msgstr "Sterge Formular"
+
+#: util/colorpicker.php:14 templates/prefs/category_management.inc:63
+#: templates/prefs/category_management.inc:64
+msgid "Color Picker"
+msgstr "Alegere culoare"
+
+#: templates/prefs/category_management.inc:47
+msgid "Create New Category"
+msgstr "Creaza categorie noua"
+
+#: list.php:37
+msgid "Current Notes"
+msgstr "Note curente"
+
+#: config/prefs.php.dist:41
+msgid "Default sorting criteria:"
+msgstr "Criteriu de sortare implicit:"
+
+#: config/prefs.php.dist:51
+msgid "Default sorting direction:"
+msgstr "Directie de sortare implicita:"
+
+#: templates/prefs/category_management.inc:61
+msgid "Delete"
+msgstr "Sterge"
+
+#: templates/view/navbar.inc:6 templates/view/headers.inc:16
+msgid "Delete Note"
+msgstr "Sterge nota"
+
+#: templates/list/actions.inc:7
+msgid "Delete Notes"
+msgstr "Sterge notele"
+
+#: list.php:54
+#, php-format
+msgid "Deleted %d notes."
+msgstr "%d note sterse"
+
+#: list.php:52
+msgid "Deleted 1 note."
+msgstr "O nota stearsa"
+
+#: config/prefs.php.dist:50
+msgid "Descending"
+msgstr "Descrescator"
+
+#: templates/list/memo_headers.inc:10 templates/search/search.inc:15
+msgid "Description"
+msgstr "Descriere"
+
+#: config/prefs.php.dist:15
+msgid "Display Options"
+msgstr "Optiuni afisare"
+
+#: templates/search/search.inc:16
+msgid "Full Text"
+msgstr "Numai text"
+
+#: templates/menu/menu.inc:32
+msgid "Help"
+msgstr "Ajutor"
+
+#: config/prefs.php.dist:9
+msgid "Language"
+msgstr "Limba"
+
+#: templates/menu/menu.inc:10
+msgid "List Notes"
+msgstr "Listeaza note"
+
+#: templates/index/notconfigured.inc:4
+msgid "Mnemo is not properly configured"
+msgstr "Mnemo nu este configurat corect"
+
+#: templates/view/navbar.inc:5 templates/view/headers.inc:15
+msgid "Modify Note"
+msgstr "Modifica nota"
+
+#: memo.php:49
+#, php-format
+msgid "Modifying %s"
+msgstr "Modificare %s"
+
+#: lib/Mnemo.php:69
+msgid "New Category"
+msgstr "Categorie noua"
+
+#: lib/api.php:73 templates/menu/menu.inc:11
+msgid "New Note"
+msgstr "Nota noua"
+
+#: lib/Driver/sql.php:61
+msgid "No configuration information specified for SQL Memos."
+msgstr "Configurari nespecificate pentru Memo-uri SQL"
+
+#: templates/list/header.inc:17
+msgid "No notes"
+msgstr "Nici o nota"
+
+#: list.php:56
+msgid "No notes were deleted."
+msgstr "Nici o nota n-a fost stearsa"
+
+#: templates/view/description.inc:6
+msgid "None specified"
+msgstr "Nimic specificat"
+
+#: config/prefs.php.dist:40
+msgid "Note Category"
+msgstr "Categorie de note"
+
+#: config/prefs.php.dist:39
+msgid "Note Description"
+msgstr "Descrierea notei"
+
+#: view.php:31 templates/view/headers.inc:4
+msgid "Note Details"
+msgstr "Detalii nota"
+
+#: templates/memo/memo.inc:3
+msgid "Note Text"
+msgstr "Text nota"
+
+#: templates/menu/menu.inc:14
+msgid "Options"
+msgstr "Optiuni"
+
+#: config/prefs.php.dist:14 config/prefs.php.dist:20
+msgid "Other Options"
+msgstr "Alte optiuni"
+
+#: templates/memo/begin.inc:5 templates/prefs/category_management.inc:24
+msgid "Please enter a name for the new category:"
+msgstr "Introdu nume pentru categorie noua:"
+
+#: templates/prefs/category_management.inc:12
+msgid "Please enter a new name for this category:"
+msgstr "Introdu nume nou pentru aceasta categorie:"
+
+#: templates/menu/menu.inc:19
+msgid "Print"
+msgstr "Tipareste"
+
+#: templates/menu/menu.inc:24
+msgid "Problem?"
+msgstr "Problema?"
+
+#: templates/list/header.inc:12 templates/list/header.inc:13
+msgid "Refresh List"
+msgstr "Improspateaza lista"
+
+#: templates/prefs/category_management.inc:62
+msgid "Rename"
+msgstr "Redenumeste"
+
+#: lib/Driver/sql.php:76
+msgid "Required 'database' not specified in memos configuration."
+msgstr "'database' e necesara dar nespecificata in configurarea memo-urilor."
+
+#: lib/Driver/sql.php:67
+msgid "Required 'hostspec' not specified in memos configuration."
+msgstr "'hostspec' nespecificata in configurare."
+
+#: lib/Driver/sql.php:73
+msgid "Required 'password' not specified in memos configuration."
+msgstr "'password' nespecificata in configurare."
+
+#: lib/Driver/sql.php:64
+msgid "Required 'phptype' not specified in memos configuration."
+msgstr "'phptype' nespecificat in configurare."
+
+#: lib/Driver/sql.php:79
+msgid "Required 'table' not specified in memos configuration."
+msgstr "'table' nespecificata in configurare."
+
+#: lib/Driver/sql.php:70
+msgid "Required 'username' not specified in memos configuration."
+msgstr "'username' nespecificat in configurare."
+
+#: templates/memo/end.inc:5
+msgid "Save Note"
+msgstr "Salveaza nota"
+
+#: templates/menu/menu.inc:12 templates/search/end.inc:5
+#: templates/search/begin.inc:4
+msgid "Search"
+msgstr "Cautare"
+
+#: list.php:84
+msgid "Search Results"
+msgstr "Rezultate cautare"
+
+#: templates/search/search.inc:12
+msgid "Search Scope"
+msgstr "Scop cautare"
+
+#: templates/search/search.inc:4
+msgid "Search Text"
+msgstr "Text cautare"
+
+#: lib/Mnemo.php:65
+msgid "Select Category"
+msgstr "Selecteaza categorie"
+
+#: config/prefs.php.dist:31
+msgid "Select your preferred language:"
+msgstr "Selecteaza limba preferata:"
+
+#: config/prefs.php.dist:10
+msgid "Set the your preferred display language."
+msgstr "Setare limba preferata"
+
+#: config/prefs.php.dist:74
+msgid "Show highlight colors in the summary view?"
+msgstr "Punere in valoare a sumarului?"
+
+#: templates/index/notconfigured.inc:13
+msgid "Some of Mnemo's configuration files are missing:"
+msgstr "Anumite fisiere de configurare Mnemo lipsesc:"
+
+#: templates/list/memo_headers.inc:9 templates/list/memo_headers.inc:13
+msgid "Sort Direction"
+msgstr "Directie sortare"
+
+#: templates/list/memo_headers.inc:14
+msgid "Sort by Category"
+msgstr "Sortare dupa categorie"
+
+#: templates/list/memo_headers.inc:10
+msgid "Sort by Description"
+msgstr "Sortare dupa descriere"
+
+#: util/colorpicker.php:29
+msgid "The Options window has closed. Exiting."
+msgstr "Fereastra de optiuni a fost inchisa. Iesire."
+
+#: templates/view/no-memo.inc:3
+msgid "The requested note does not exist."
+msgstr "Nota ceruta nu exista."
+
+#: list.php:60
+msgid "There was a problem deleting notes."
+msgstr "A aparut o problema la stergerea notelor."
+
+#: templates/prefs/category_management.inc:71
+msgid "These changes can not be undone!"
+msgstr "Aceste schimbari nu pot fi recuperate!"
+
+#: templates/index/notconfigured.inc:25
+msgid "This file contains preferences for Mnemo."
+msgstr "Acest fisier contine preferintele pentru Mnemo."
+
+#: templates/index/notconfigured.inc:32
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Acest fisier determina schema de culori si fonturi ce vor inlocui setarile "
+"implicite furnizate de Horde."
+
+#: templates/index/notconfigured.inc:18
+msgid ""
+"This is the main Mnemo configuration file. It contains options for all Mnemo "
+"scripts."
+msgstr ""
+"Acesta este fisierul principal de configurare al Mnemo. Contine optiuni "
+"pentru toate scripturile Mnemo."
+
+#: util/colorpicker.php:35
+msgid "This window must be called from an Options window"
+msgstr "Aceasta fereastra trebuie deschisa din fereastra de optiuni"
+
+#: memo.php:65
+#, php-format
+msgid "Unable to create the category: %s"
+msgstr "Creare a categoriei %s esuata"
+
+#: templates/memo/end.inc:6
+msgid "Undo Changes"
+msgstr "Refa schimbarile"
+
+#: lib/Mnemo.php:97 templates/prefs/category_management.inc:41
+msgid "Unfiled"
+msgstr "Necompletat"
+
+#: memo.php:51
+msgid "Unknown note"
+msgstr "Nota necunoscuta"
+
+#: prefs.php:81
+msgid "User Options"
+msgstr "Optiuni utilizator"
+
+#: templates/list/memo_summaries.inc:6
+msgid "View Note Details"
+msgstr "Vizualizare detalii nota"
+
+#: templates/memo/begin.inc:5
+msgid "You are creating a new category."
+msgstr "Creare de categorie noua."
+
+#: templates/list/empty.inc:1
+msgid "You have no notes."
+msgstr "Nu aveti note."
+
+#: templates/memo/begin.inc:9
+msgid "You must enter a new category name."
+msgstr "Introduceti un nume de categorie noua."
+
+#: templates/memo/begin.inc:13
+msgid "You must select a category."
+msgstr "Selectati o categorie."
+
+#: templates/list/javascript.inc:15
+msgid "You must select at least one note first."
+msgstr "Selectati cel putin o nota."
+
+#: config/prefs.php.dist:8
+msgid "Your Information"
+msgstr "Detalii personale"

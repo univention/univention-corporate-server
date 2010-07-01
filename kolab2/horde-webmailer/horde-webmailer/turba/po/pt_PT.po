@@ -1,0 +1,1334 @@
+# TURBA Portugal Portuguese translation.
+# Manuel Menezes de Sequeira <Manuel.Sequeira>, 2005.
+# Based on a previous
+# Turba Portugal Portuguese translation.
+# Nuno Loureiro <nuno@eth.pt>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 2.0-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2006-12-26 23:59+0000\n"
+"PO-Revision-Date: 2007-01-06 11:07-0000\n"
+"Last-Translator: Manuel Menezes de Sequeira <Manuel.Sequeira@iscte.pt>\n"
+"Language-Team: Portuguese of Portugal <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: templates/prefs/imsp_opt.inc:40
+msgid " Add an IMSP Address Book"
+msgstr "Adicionar um Livro de Endereços IMSP"
+
+#: templates/prefs/imsp_opt.inc:29
+msgid " Delete IMSP Address Book"
+msgstr "Remover um Livro de Endereços IMSP"
+
+#: data.php:333
+#, php-format
+msgid "\"%s\" already exists and was not imported."
+msgstr "\"%s\" já existe e, por isso, não foi importado."
+
+#: browse.php:140
+#, php-format
+msgid "\"%s\" was not copied because it is a list."
+msgstr "\"%s\" não foi copiado por ser uma lista."
+
+#: browse.php:138
+#, php-format
+msgid "\"%s\" was not moved because it is a list."
+msgstr "\"%s\" não foi movido por ser uma lista."
+
+#: config/prefs.php.dist:137
+msgid "\"Firstname Lastname\"  (ie. John Doe)"
+msgstr "\"Próprio Apelido\" (e.g., José Silva)"
+
+#: config/prefs.php.dist:136
+msgid "\"Lastname, Firstname\" (ie. Doe, John)"
+msgstr "\"Apelido, Próprio\" (e.g., Silva, José)"
+
+#: add.php:112
+#, php-format
+msgid "%s added."
+msgstr "%s adicionado."
+
+#: data.php:357
+#, php-format
+msgid "%s file successfully imported"
+msgstr "Ficheiro %s importado com sucesso"
+
+#: templates/browse/footer.inc:5
+#, php-format
+msgid "%s to %s of %s"
+msgstr "%s a %s de %s"
+
+#: lib/Turba.php:458
+#, php-format
+msgid "%s's Address Book"
+msgstr "Contactos de %s"
+
+#: lib/Block/minisearch.php:42
+msgid "A browser that supports iFrames is required"
+msgstr "É necessário um navegador que suporte iFrames"
+
+#: config/prefs.php.dist:160
+msgid "Above search form"
+msgstr "Sobre o formulário de procura"
+
+#: view.php:52
+#, php-format
+msgid "Access denied to %s"
+msgstr "Acesso a %s negado"
+
+#: add.php:56 templates/browse/actions.inc:29
+msgid "Add"
+msgstr "Adicionar"
+
+#: templates/prefs/addressbookselect.inc:174
+msgid "Add address book"
+msgstr "Adicionar livro de endereços"
+
+#: config/prefs.php.dist:48
+msgid "Add and Delete IMSP address books"
+msgstr "Adicionar e Remover livros de endereços IMSP"
+
+#: templates/prefs/columnselect.inc:237
+msgid "Add column"
+msgstr "Adicionar coluna"
+
+#: edit.php:135
+msgid "Add file"
+msgstr "Adicionar arquivo"
+
+#: templates/browse/actions.inc:29
+msgid "Add to"
+msgstr "Adicionar a"
+
+#: lib/Driver/null.php:57
+msgid "Adding contacts is not available."
+msgstr "Adição de contactos indisponível."
+
+#: templates/addressbooks.inc:93
+msgid "Address Book"
+msgstr "Livro de Endereços"
+
+#: browse.php:28 config/prefs.php.dist:125
+msgid "Address Book Listing"
+msgstr "Listagem dos Contactos"
+
+#: config/prefs.php.dist:10
+msgid "Address Books"
+msgstr "Livros de Endereços"
+
+#: add.php:111
+msgid "Address book entry"
+msgstr "Contacto"
+
+#: data.php:313
+msgid "Address book successfully purged."
+msgstr "Livro de endereços purgado com sucesso."
+
+#: templates/addressbooks.inc:69
+msgid "Address book to delete "
+msgstr "Livro de endereços a remover"
+
+#: templates/prefs/addressbookselect.inc:170
+msgid "Address books that will not be displayed:"
+msgstr "Livros de endereços que não serão mostrados:"
+
+#: search.php:88 templates/browse/search.inc:38
+msgid "Advanced Search"
+msgstr "Pesquisa Avançada"
+
+#: config/attributes.php.dist:64
+msgid "Alias"
+msgstr "Alcunha"
+
+#: templates/browse/footerAlpha.inc:7 templates/browse/footerAlpha.inc:10
+#: templates/browse/actions.inc:48
+msgid "All"
+msgstr "Tudo"
+
+#: lib/api.php:607
+msgid "Already Exists"
+msgstr "Já Existe"
+
+#: templates/browse/javascript.inc:93
+#, php-format
+msgid "Are you sure that you want to delete %s?"
+msgstr "Quer mesmo remover %s?"
+
+#: templates/browse/javascript.inc:67
+msgid "Are you sure that you want to delete the selected entries?"
+msgstr "Quer mesmo remover as entradas seleccionadas?"
+
+#: config/prefs.php.dist:96
+msgid "Ascending"
+msgstr "Crescente"
+
+#: search.php:85 templates/browse/search.inc:37
+msgid "Basic Search"
+msgstr "Procura Básica"
+
+#: config/prefs.php.dist:159
+msgid "Below search form"
+msgstr "Sob o formulário de procura"
+
+#: lib/Driver/ldap.php:77 lib/Driver/ldap.php:80
+#, php-format
+msgid "Bind failed: (%s) %s"
+msgstr "Ligação falhou: (%s) %s"
+
+#: config/attributes.php.dist:178
+msgid "Birthday"
+msgstr "Aniversário"
+
+#: templates/menu.inc:7
+msgid "Browse"
+msgstr "Navegar"
+
+#: config/attributes.php.dist:173
+msgid "Business Category"
+msgstr "Categoria de Negócio"
+
+#: data.php:49
+msgid "CSV"
+msgstr "CSV"
+
+#: lib/Object/Group.php:57
+msgid "Can't add a group to itself."
+msgstr "Não se pode adicionar um grupo a si mesmo."
+
+#: templates/browse/column_headers.inc:7
+msgid "Check _All/None"
+msgstr "Marcar _Tudo/Nada"
+
+#: templates/addressbooks.inc:51
+msgid "Choose a name"
+msgstr "Escolha um nome"
+
+#: add.php:48
+msgid "Choose an address book"
+msgstr "Escolha o livro de endereços"
+
+#: templates/prefs/columnselect.inc:221
+msgid "Choose an address book:"
+msgstr "Escolha um livro de endereços:"
+
+#: templates/prefs/addressbookselect.inc:165
+msgid "Choose which address books to display, and in what order:"
+msgstr "Escolha os livros de endereços a mostrar e a sua ordem:"
+
+#: config/prefs.php.dist:11
+msgid "Choose which address books to use."
+msgstr "Escolha os livros de endereços a usar."
+
+#: templates/prefs/columnselect.inc:228
+msgid "Choose which columns to display and in what order:"
+msgstr "Escolha as colunas a mostrar e a sua ordem:"
+
+#: config/prefs.php.dist:17
+msgid "Column Options"
+msgstr "Opções de Coluna"
+
+#: templates/prefs/columnselect.inc:233
+msgid "Columns that will not be displayed:"
+msgstr "Colunas que não serão mostradas:"
+
+#: templates/data/import.inc:13 templates/data/export.inc:12
+msgid "Comma separated values"
+msgstr "Valores separados por vírgulas"
+
+#: templates/data/export.inc:13
+msgid "Comma separated values (Microsoft Outlook)"
+msgstr "Valores separados por vírgulas (Microsoft Outlook)"
+
+#: config/attributes.php.dist:76
+msgid "Company"
+msgstr "Empresa"
+
+#: config/attributes.php.dist:144
+msgid "Company Address"
+msgstr "Morada na Empresa"
+
+#: lib/api.php:319 lib/api.php:364 lib/api.php:414 lib/api.php:546
+#: lib/api.php:660 lib/api.php:747 lib/api.php:805 lib/api.php:886
+#: lib/api.php:1086 lib/api.php:1175
+#, php-format
+msgid "Connection failed: %s"
+msgstr "Ligação falhou: %s"
+
+#: lib/Driver/ldap.php:58
+msgid "Connection failure"
+msgstr "Falha de ligação"
+
+#: lib/Block/minisearch.php:3 lib/Block/minisearch.php:26
+msgid "Contact Search"
+msgstr "Procura de Contactos"
+
+#: browse.php:306
+#, php-format
+msgid "Contacts in list: %s"
+msgstr "Contactos na lista: %s"
+
+#: templates/browse/actions.inc:18
+msgid "Copy"
+msgstr "Copiar"
+
+#: templates/addressbooks.inc:60
+msgid "Create"
+msgstr "Criar"
+
+#: templates/addressbooks.inc:47
+msgid "Create Address Book"
+msgstr "Criar Livro de Endereços"
+
+#: lib/ListView.php:348
+msgid "Create a new Contact List in:"
+msgstr "Criar uma nova Lista de Contactos em:"
+
+#: lib/ObjectView.php:133
+msgid "Created"
+msgstr "Criado"
+
+#: config/prefs.php.dist:98
+msgid "Default sorting direction:"
+msgstr "Direcção de ordenação por omissão:"
+
+#: templates/addressbooks.inc:83 templates/browse/actions.inc:3
+#: lib/Object.php:328 lib/Renderer.php:47 lib/Renderer.php:50
+msgid "Delete"
+msgstr "Remover"
+
+#: templates/addressbooks.inc:65
+msgid "Delete Address Book"
+msgstr "Remover Livro de Endereços"
+
+#: config/prefs.php.dist:38
+msgid "Delete Confirmation"
+msgstr "Confirmação de Remoção"
+
+#: config/prefs.php.dist:39
+msgid "Delete button behaviour"
+msgstr "Comportamento do botão de remoção."
+
+#: lib/Driver/ldap.php:270
+#, php-format
+msgid "Delete failed: (%s) %s"
+msgstr "Remoção falhou: (%s) %s"
+
+#: lib/Driver/null.php:62
+msgid "Deleting contacts is not available."
+msgstr "Remoção de contactos indisponível."
+
+#: delete.php:38
+msgid "Deletion failed"
+msgstr "Remoção falhou"
+
+#: config/attributes.php.dist:213
+msgid "Department"
+msgstr "Departamento"
+
+#: config/prefs.php.dist:97
+msgid "Descending"
+msgstr "Decrescente"
+
+#: templates/addressbooks.inc:122
+msgid "Description"
+msgstr "Descrição"
+
+#: templates/browse/search.inc:119
+msgid "Directory"
+msgstr "Directório"
+
+#: config/prefs.php.dist:24
+msgid "Display"
+msgstr "Mostrar"
+
+#: config/prefs.php.dist:9 config/prefs.php.dist:16 config/prefs.php.dist:23
+#: config/prefs.php.dist:30
+msgid "Display Options"
+msgstr "Opções de Visualização"
+
+#: config/prefs.php.dist:177
+msgid "Do you want to confirm deleting entries?"
+msgstr "Deseja confirmar a remoção de entradas?"
+
+#: lib/Object.php:297
+msgid "Download"
+msgstr "Receber"
+
+#: templates/browse/row.inc:17 templates/browse/contactrow.inc:25
+msgid "Download vCard"
+msgstr "Descarregar vCard"
+
+#: templates/addressbooks.inc:109 templates/browse/row.inc:25
+#: templates/browse/column_headers.inc:10 templates/browse/actions.inc:6
+#: templates/browse/contactrow.inc:33 lib/Renderer.php:42
+msgid "Edit"
+msgstr "Editar"
+
+#: templates/browse/row.inc:25 templates/browse/contactrow.inc:33
+#, php-format
+msgid "Edit \"%s\""
+msgstr "Editar \"%s\""
+
+#: templates/addressbooks.inc:88
+msgid "Edit Address Books"
+msgstr "Editar Livros de Endereços"
+
+#: edit.php:85 edit.php:161
+#, php-format
+msgid "Edit entry for %s"
+msgstr "Editar entrada de %s"
+
+#: config/attributes.php.dist:58
+msgid "Email"
+msgstr "Correio Electrónico"
+
+#: edit.php:154
+#, php-format
+msgid "Entry for %s updated, but saving the uploaded file failed: %s"
+msgstr ""
+"Entrada de %s actualizada, mas o arquivo carregado não foi guardado: %s"
+
+#: edit.php:156 edit.php:159
+#, php-format
+msgid "Entry for %s updated."
+msgstr "Entrada de %s actualizada."
+
+#: browse.php:216 browse.php:264
+#, php-format
+msgid "Error adding %d contact(s) to list."
+msgstr "Erro ao adicionar à lista %d contacto(s)."
+
+#: browse.php:218 browse.php:266
+#, php-format
+msgid "Error adding %d of %d requested contact(s) to list."
+msgstr "Erro ao adicionar à lista %d contacto(s) de %d pretendidos(s)."
+
+#: browse.php:86
+#, php-format
+msgid "Error deleting %d contact(s)."
+msgstr "Erro ao remover %d contacto(s)."
+
+#: browse.php:88
+#, php-format
+msgid "Error deleting %d of %d requested contacts(s)."
+msgstr "Erro ao remover %d contacto(s) de %d pretendidos(s)."
+
+#: browse.php:66
+#, php-format
+msgid "Error removing %d contact(s) from list."
+msgstr "Erro ao remover da lista %d contacto(s)."
+
+#: browse.php:68
+#, php-format
+msgid "Error removing %d of %d requested contact(s) from list."
+msgstr "Erro ao remover da lista %d contacto(s) de %d pretendidos(s)."
+
+#: lib/api.php:420
+#, php-format
+msgid "Error searching the address book: %s"
+msgstr "Erro ao procurar no livro de endereços: %s"
+
+#: templates/browse/actions.inc:10 templates/data/export.inc:41
+msgid "Export"
+msgstr "Exportar"
+
+#: templates/data/export.inc:6
+msgid "Export Address Book"
+msgstr "Exportar Livro de Endereços"
+
+#: templates/data/export.inc:21
+msgid "Export only the selected contacts."
+msgstr "Exportar apenas os contactos seleccionados"
+
+#: templates/data/export.inc:27
+msgid "Export the following address book completely."
+msgstr "Exportar na íntegrar o livro de endereços que se segue."
+
+#: data.php:134 data.php:228 data.php:302 browse.php:35 browse.php:103
+#: browse.php:130 add.php:67 search.php:37
+#, php-format
+msgid "Failed to access the address book: %s"
+msgstr "Falhou acesso ao livro de endereços: %s"
+
+#: browse.php:158
+#, php-format
+msgid "Failed to add %s to %s: %s"
+msgstr "Falhou adição de %s a %s: %s"
+
+#: browse.php:312
+msgid "Failed to browse list"
+msgstr "Falhou navegação da lista"
+
+#: browse.php:350
+msgid "Failed to browse the directory"
+msgstr "Falhou navegação do directório"
+
+#: lib/Driver/ldap.php:303
+#, php-format
+msgid "Failed to change name: (%s) %s; Old DN = %s, New DN = %s, Root = %s"
+msgstr "Falhou a mudança do nome: (%s) %s; Old DN = %s, New DN = %s, Root = %s"
+
+#: browse.php:134
+#, php-format
+msgid "Failed to find object to be added: %s"
+msgstr "Procura do objecto a adicionar falhou: %s"
+
+#: search.php:79
+msgid "Failed to search the address book"
+msgstr "Procura no livro de endereços falhada"
+
+#: data.php:149
+#, php-format
+msgid "Failed to search the directory: %s"
+msgstr "Pesquisa no directório falhou: %s"
+
+#: config/attributes.php.dist:167
+msgid "Fax"
+msgstr "Fax"
+
+#: edit.php:131 display.php:99
+msgid "Files"
+msgstr "Arquivos"
+
+#: templates/browse/search.inc:71
+msgid "Find"
+msgstr "Procurar"
+
+#: edit.php:104 edit.php:195
+msgid "Finish"
+msgstr "Terminar."
+
+#: config/attributes.php.dist:48
+msgid "First Name"
+msgstr "Nome Próprio"
+
+#: config/attributes.php.dist:202
+msgid "Freebusy URL"
+msgstr "URL de livre/ocupado"
+
+#: templates/browse/search.inc:84
+msgid "From"
+msgstr "De"
+
+#: config/sources.php.dist:589
+msgid "Global Address Book"
+msgstr "Lista de Endereços Global"
+
+#: templates/browse/row.inc:43 templates/browse/contactrow.inc:44
+msgid "Group"
+msgstr "Grupo"
+
+#: config/attributes.php.dist:82
+msgid "Home Address"
+msgstr "Morada de Casa"
+
+#: config/attributes.php.dist:93
+msgid "Home City"
+msgstr "Cidade de Casa"
+
+#: config/attributes.php.dist:108
+msgid "Home Country"
+msgstr "País de Casa"
+
+#: config/attributes.php.dist:150
+msgid "Home Phone"
+msgstr "Telefonei de Casa"
+
+#: config/attributes.php.dist:103
+msgid "Home Postal Code"
+msgstr "Código Postal de Casa"
+
+#: config/attributes.php.dist:98
+msgid "Home State/Province"
+msgstr "Estado/Província de Casa"
+
+#: config/attributes.php.dist:88
+msgid "Home Street Address"
+msgstr "Rua de Casa"
+
+#: config/sources.php.dist:491
+msgid "IMSP"
+msgstr "IMSP"
+
+#: config/prefs.php.dist:47
+msgid "IMSP Address Book Administration"
+msgstr "Administração de Livros de Endereços IMSP"
+
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Address Book, Step %d"
+msgstr "Importar Lista de Endereços, Passo %d"
+
+#: data.php:375
+msgid "Import/Export Address Books"
+msgstr "Importar/Exportar Listas de Endereços"
+
+#: lib/api.php:655 lib/api.php:742
+msgid "Invalid ID"
+msgstr "ID Inválido."
+
+#: lib/api.php:231 lib/api.php:1158
+msgid "Invalid address book"
+msgstr "Livro de endereços inválido."
+
+#: lib/api.php:409 lib/api.php:541 lib/api.php:651 lib/api.php:738
+#: lib/api.php:795
+#, php-format
+msgid "Invalid address book: %s"
+msgstr "Livro de endereços inválido: %s"
+
+#: lib/api.php:1162 lib/api.php:1236 lib/api.php:1292
+msgid "Invalid email"
+msgstr "Endereço de correio electrónico inválido."
+
+#: lib/api.php:1170
+msgid "Invalid entry"
+msgstr "Entrada Inválida."
+
+#: lib/Driver/ldap.php:266
+msgid "Invalid key specified."
+msgstr "Chave inválida especificada."
+
+#: lib/api.php:1166
+msgid "Invalid name"
+msgstr "Nome Inválido."
+
+#: lib/api.php:799
+msgid "Invalid objectId"
+msgstr "objectID Inválido."
+
+#: lib/Driver/ldap.php:30
+msgid ""
+"LDAP support is required but the LDAP module is not available or not loaded."
+msgstr ""
+"Suporte LDAP é necessário mas o módulo LDAP não está disponível ou não está "
+"carregado."
+
+#: lib/ObjectView.php:138
+msgid "Last Modified"
+msgstr "Modificado"
+
+#: config/attributes.php.dist:53
+msgid "Last Name"
+msgstr "Último Nome"
+
+#: templates/browse/column_headers.inc:16
+msgid "List"
+msgstr "Lista"
+
+#: templates/browse/search.inc:78
+msgid "Matching"
+msgstr "Correspondente"
+
+#: lib/api.php:206
+msgid "Maximum Number of Contacts"
+msgstr "Número Máximo de Contactos"
+
+#: config/prefs.php.dist:107
+msgid "Maximum number of pages"
+msgstr "Número máximo de páginas"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "Lista de Menus"
+
+#: lib/Driver/ldap.php:296
+msgid "Missing DN in LDAP source configuration."
+msgstr "Falta DN na configuração do LDAP fonte"
+
+#: config/attributes.php.dist:162
+msgid "Mobile Phone"
+msgstr "Telemóvel"
+
+#: lib/Driver/ldap.php:325 lib/Driver/ldap.php:341
+#, php-format
+msgid "Modify failed: (%s) %s"
+msgstr "Modificação falhou: (%s) %s"
+
+#: lib/api.php:1277
+msgid "More than 1 entry found"
+msgstr "Encontrada mais que uma entrada."
+
+#: templates/browse/actions.inc:16
+msgid "Move"
+msgstr "Mover"
+
+#: templates/prefs/columnselect.inc:247
+#: templates/prefs/addressbookselect.inc:184
+msgid "Move left"
+msgstr "Mover à esquerda"
+
+#: templates/prefs/columnselect.inc:249
+#: templates/prefs/addressbookselect.inc:186
+msgid "Move right"
+msgstr "Mover à direita"
+
+#: data.php:52 templates/data/import.inc:16
+msgid "Mulberry Address Book"
+msgstr "Livro de Endereços Mulberry"
+
+#: lib/api.php:1194
+#, php-format
+msgid ""
+"Multiple persons with address [%s], but none with name [%s] already exist"
+msgstr "Há várias pessoas com o endereço [%s], mas nenhuma com o nome [%s]"
+
+#: config/sources.php.dist:114
+msgid "My Address Book"
+msgstr "O Meu Livro de Endereços"
+
+#: addressbooks.php:119
+msgid "My Address Books"
+msgstr "Os Meus Livros de Endereços"
+
+#: templates/addressbooks.inc:114 config/attributes.php.dist:42
+msgid "Name"
+msgstr "Nome"
+
+#: config/prefs.php.dist:31
+msgid "Name Format"
+msgstr "Formato do Nome"
+
+#: add.php:36 add.php:127 lib/Block/tree_menu.php:27
+msgid "New Contact"
+msgstr "Novo Contacto"
+
+#: edit.php:95 edit.php:102 edit.php:210 templates/data/import.inc:45
+msgid "Next"
+msgstr "Próxima"
+
+#: config/attributes.php.dist:218
+msgid "Nickname"
+msgstr "Alcunha"
+
+#: lib/api.php:1280 lib/api.php:1329
+#, php-format
+msgid "No %s entry found for %s"
+msgstr "Não se encontrou entrada %s para %s"
+
+#: lib/api.php:1245
+msgid "No address books found."
+msgstr "Não se encontrou livros de endereços."
+
+#: minisearch.php:81
+msgid "No contacts found"
+msgstr "Não se encontrou contactos"
+
+#: lib/api.php:566 lib/api.php:830
+msgid "No vCard data was found."
+msgstr "Não se encontrou dados vCard."
+
+#: templates/browse/footer.inc:7
+msgid "None"
+msgstr "Nenhuma"
+
+#: config/attributes.php.dist:184
+msgid "Notes"
+msgstr "Notas"
+
+#: config/prefs.php.dist:115
+msgid "Number of items per page"
+msgstr "Número de itens por página"
+
+#: lib/api.php:671 lib/api.php:811
+msgid "Object not found"
+msgstr "Objecto não encontrado."
+
+#: config/attributes.php.dist:223
+msgid "Office"
+msgstr "Escritório"
+
+#: templates/prefs/imsp_opt.inc:22
+msgid ""
+"Once you save this option page, the address book will be permanently "
+"deleted. If this is not what you want, then you must change your selection "
+"to \"None\"."
+msgstr ""
+"Logo que guarde esta página de opções o livro de endereços será "
+"permanentemente removido. Se não é isso que deseja, deverá alterar a sua "
+"selecção para \"Nenhum\"."
+
+#: lib/api.php:838
+msgid "Only one vcard supported."
+msgstr "Apenas um vcard suportado."
+
+#: config/prefs.php.dist:37 config/prefs.php.dist:46
+msgid "Other Options"
+msgstr "Outras Opções"
+
+#: config/attributes.php.dist:190
+msgid "PGP Public Key"
+msgstr "Chave Pública PGP"
+
+#: lib/api.php:550 lib/api.php:664 lib/api.php:751 lib/api.php:1014
+#: lib/api.php:1179
+msgid "Permission Denied"
+msgstr "Permissão Negada"
+
+#: lib/Driver.php:554
+msgid "Permission denied"
+msgstr "Permissão Negada"
+
+#: templates/addressbooks.inc:106
+msgid "Permissions"
+msgstr "Permissões"
+
+#: data.php:53 templates/data/import.inc:17
+msgid "Pine Address Book"
+msgstr "Livro de Endereços Pine"
+
+#: templates/browse/javascript.inc:28
+msgid "Please name the new contact list:"
+msgstr "Por favor dê um nome à nova lista de contactos:"
+
+#: edit.php:98 edit.php:101 edit.php:202
+msgid "Previous"
+msgstr "Anterior"
+
+#: lib/Driver/ldap.php:147
+#, php-format
+msgid "Query failed: (%s) %s"
+msgstr "A interrogação falhou: (%s) %s"
+
+#: templates/block/minisearch.inc:15
+msgid "Quick Search"
+msgstr "Procura Rápida"
+
+#: lib/Driver/ldap.php:191 lib/Driver/ldap.php:199 lib/Driver/ldap.php:435
+#, php-format
+msgid "Read failed: (%s) %s"
+msgstr "A leitura falhou: (%s) %s"
+
+#: lib/Driver/null.php:52
+msgid "Reading contacts is not available."
+msgstr "Leitura de contactos indisponível."
+
+#: lib/Renderer.php:49
+msgid "Really delete this contact?"
+msgstr "Deseja mesmo remover este contacto?"
+
+#: templates/browse/footer.inc:2
+msgid "Records displayed:"
+msgstr "Registos mostrados:"
+
+#: templates/prefs/addressbookselect.inc:176
+msgid "Remove address book"
+msgstr "Remover livro de endereços"
+
+#: templates/prefs/columnselect.inc:239
+msgid "Remove column"
+msgstr "Remover coluna"
+
+#: templates/browse/actions.inc:3
+msgid "Remove from this list"
+msgstr "Remover desta lista"
+
+#: templates/data/import.inc:21
+msgid ""
+"Replace existing address book with the imported one? <strong>Warning: This "
+"deletes all entries in your current address book.</strong>"
+msgstr ""
+"Substituir livro de endereços existente pelo importado? <strong>Aviso: Isso "
+"removerá todas as entradas no seu livro de endereços corrente.</strong>"
+
+#: lib/Driver.php:442
+msgid "Requested object not found."
+msgstr "Objecto pedido não encontrado."
+
+#: add.php:37 templates/browse/search.inc:114
+msgid "Reset to Defaults"
+msgstr "Voltar a Valores por Omissão"
+
+#: config/attributes.php.dist:196
+msgid "S/MIME Public Certificate"
+msgstr "Certificado Público S/MIME"
+
+#: lib/Driver/ldap.php:69
+#, php-format
+msgid "STARTTLS failed: (%s) %s"
+msgstr "STARTLS falhou: (%s) %s"
+
+#: edit.php:106 add.php:37 templates/addressbooks.inc:131
+msgid "Save"
+msgstr "Guardar"
+
+#: lib/Driver/null.php:67
+msgid "Saving contacts is not available."
+msgstr "Não é possível guardar contactos."
+
+#: templates/browse/search.inc:97 templates/browse/search.inc:113
+#: templates/block/minisearch.inc:18 lib/Block/tree_menu.php:49
+#: config/prefs.php.dist:126
+msgid "Search"
+msgstr "Procurar"
+
+#: lib/api.php:1091
+msgid "Search failed"
+msgstr "Procura falhou"
+
+#: lib/api.php:1184 lib/api.php:1190 lib/api.php:1199 lib/api.php:1212
+#, php-format
+msgid "Search failed: %s"
+msgstr "Procura falhou: %s"
+
+#: lib/Driver/null.php:47
+msgid "Searching is not available."
+msgstr "Procura indisponível."
+
+#: templates/block/minisearch.inc:19
+msgid "Searching..."
+msgstr "Procurando..."
+
+#: templates/addressbooks.inc:73
+msgid "Select an address book to delete"
+msgstr "Seleccione o livro de endereços a remover"
+
+#: templates/addressbooks.inc:97
+msgid "Select an address book to edit"
+msgstr "Seleccione o livro de endereços a modificar"
+
+#: templates/data/export.inc:32
+msgid "Select the address book to export from:"
+msgstr "Seleccione o livro de endereços do qual exportar:"
+
+#: templates/data/import.inc:26
+msgid "Select the address book to import to:"
+msgstr "Seleccione o livro de endereços para o qual importar:"
+
+#: templates/data/import.inc:35
+msgid "Select the charset of the source file:"
+msgstr "Seleccione o conjunto de caracteres (charset) do ficheiro fonte:"
+
+#: templates/data/export.inc:10
+msgid "Select the export format:"
+msgstr "Seleccione o formato de exportação:"
+
+#: templates/data/import.inc:43
+msgid "Select the file to import:"
+msgstr "Seleccione o ficheiro a importar:"
+
+#: templates/data/import.inc:11
+msgid "Select the format of the source file:"
+msgstr "Seleccione o formato do ficheiro fonte:"
+
+#: config/prefs.php.dist:135
+msgid "Select the format used to display names:"
+msgstr "Seleccione o formato usado para mostrar nomes:"
+
+#: config/prefs.php.dist:25
+msgid "Select view to display by default, sort options, and paging options."
+msgstr ""
+"Escolha a vizualização por omissão e as opções de ordenação e paginação."
+
+#: config/prefs.php.dist:18
+msgid "Select which fields to display in the address lists."
+msgstr "Escolher os campos visíveis nas listas de contactos."
+
+#: config/prefs.php.dist:32
+msgid "Select which format to display names."
+msgstr "Escolher com que formato mostrar os nomes."
+
+#: add.php:54
+#, php-format
+msgid "Selected address book \"%s\"."
+msgstr "Seleccionado o livro de endereços \"%s\"."
+
+#: templates/browse/actions.inc:46
+#, php-format
+msgid "Show %s"
+msgstr "Mostrar %s"
+
+#: templates/browse/actions.inc:48
+msgid "Show All"
+msgstr "Mostrar Tudo"
+
+#: templates/browse/actions.inc:47
+msgid "Show Contacts"
+msgstr "Mostrar Contactos"
+
+#: templates/browse/actions.inc:46
+msgid "Show Lists"
+msgstr "Mostrar Listas"
+
+#: templates/browse/column_headers.inc:21
+#: templates/browse/column_headers.inc:36
+msgid "Sort Direction"
+msgstr "Direcção de Ordenação"
+
+#: lib/api.php:199
+msgid "Sources"
+msgstr "Fontes"
+
+#: config/prefs.php.dist:158
+msgid "Specify where you want advanced search results to appear."
+msgstr "Especifique onde pretende que apareçam os resultados da procura."
+
+#: browse.php:214 browse.php:262
+#, php-format
+msgid "Successfully added %d contact(s) to list."
+msgstr "A adição de %d contactos à lista teve sucesso."
+
+#: browse.php:160
+#, php-format
+msgid "Successfully added %s to %s"
+msgstr "Adicação de %s a %s teve sucesso"
+
+#: browse.php:248
+#, php-format
+msgid "Successfully created the contact list \"%s\"."
+msgstr "A criação da lista de contactos \"%s\" teve sucesso."
+
+#: browse.php:84
+#, php-format
+msgid "Successfully deleted %d contact(s)."
+msgstr "A remoção de %d contactos teve sucesso."
+
+#: browse.php:64
+#, php-format
+msgid "Successfully removed %d contact(s) from list."
+msgstr "A remoção de %d contactos da lista teve sucesso."
+
+#: data.php:50
+msgid "TSV"
+msgstr "TSV"
+
+#: templates/data/import.inc:14 templates/data/export.inc:14
+msgid "Tab separated values"
+msgstr "Valores separados por tabulações"
+
+#: data.php:304
+#, php-format
+msgid "The %s file didn't contain any contacts."
+msgstr "O ficheiro %s não continha quaisquer contactos."
+
+#: view.php:15
+msgid "The VFS backend needs to be configured to enable attachment uploads."
+msgstr ""
+"O mecanismo VFS precisa de ser configurado para suportar o carregamento de "
+"anexos."
+
+#: lib/Driver.php:1157
+#, php-format
+msgid "The address book \"%s\" does not exist."
+msgstr "O livro de endereços \"%s\" não existe."
+
+#: addressbooks.php:48
+#, php-format
+msgid "The address book \"%s\" was created successfully."
+msgstr "O livro de endereços \"%s\" foi criado com sucesso."
+
+#: addressbooks.php:71
+#, php-format
+msgid "The address book \"%s\" was removed successfully."
+msgstr "O livro de endereços \"%s\" foi removido com sucesso."
+
+#: addressbooks.php:89
+#, php-format
+msgid "The address book \"%s\" was successfully updated."
+msgstr "O livro de endereços \"%s\" foi actualizado com sucesso."
+
+#: data.php:311
+#, php-format
+msgid "The address book could not be purged: %s"
+msgstr "O livro de endereços não pôde ser purgado: %s"
+
+#: edit.php:51 vcard.php:22 display.php:23 view.php:26
+msgid "The contact you requested does not exist."
+msgstr "O contacto pedido não existe."
+
+#: edit.php:123
+#, php-format
+msgid "The file \"%s\" has successfully been deleted."
+msgstr "O arquivo \"%s\" foi removido com sucesso."
+
+#: data.php:284
+msgid "The import can be finished despite the warnings."
+msgstr "A importação pode ser concluída apesar dos avisos."
+
+#: browse.php:31
+msgid "There are no browseable address books."
+msgstr "Não há livros de endereços navegáveis."
+
+#: add.php:29
+msgid ""
+"There are no writeable address books. None of the available address books "
+"are configured to allow you to add new entries to them. If you believe this "
+"is an error, please contact your system administrator."
+msgstr ""
+"Não há livros de endereços alteráveis. Nenhum dos livros de endereços "
+"disponíveis está configurado para permitir a adição de novas entradas. Se "
+"achar que isto é um erro, por favor contacte o administrador do sistema."
+
+#: add.php:124
+msgid ""
+"There was an error adding the new contact. Contact your system administrator "
+"for further help."
+msgstr ""
+"Ocorreu um erro ao adicionar este contacto. Contacte o seu administrador de "
+"sistema para obter ajuda."
+
+#: browse.php:271
+msgid "There was an error creating a new list."
+msgstr "Ocorreu um erro ao criar uma nova lista."
+
+#: addressbooks.php:38
+#, php-format
+msgid "There was an error creating this address book: %s"
+msgstr "Ocorreu um erro ao criar o livro de endereços: %s"
+
+#: browse.php:166
+#, php-format
+msgid "There was an error deleting \"%s\" from the source address book."
+msgstr "Ocorreu um erro ao remover \"%s\" do livro de endereços de origem."
+
+#: delete.php:37
+#, php-format
+msgid "There was an error deleting this contact: %s"
+msgstr "Ocorreu um erro ao remover este contacto: %s"
+
+#: browse.php:318
+msgid "There was an error displaying the list"
+msgstr "Ocorreu um erro ao mostrar a lista"
+
+#: data.php:343
+#, php-format
+msgid "There was an error importing the data: %s"
+msgstr "Ocorreu um erro na importação de dados: %s"
+
+#: lib/api.php:562 lib/api.php:825
+msgid "There was an error importing the iCalendar data."
+msgstr "Ocorreu um erro na importação de dados iCalendar."
+
+#: addressbooks.php:58 addressbooks.php:63 addressbooks.php:69
+#, php-format
+msgid "There was an error removing this address book: %s"
+msgstr "Ocorreu um erro ao remover o livro de endereços: %s"
+
+#: addressbooks.php:87
+#, php-format
+msgid "There was an error updating this address book: %s"
+msgstr "Ocorreu um erro ao actualizar o livro de endereços: %s"
+
+#: edit.php:165
+#, php-format
+msgid "There was an error updating this entry: %s"
+msgstr "Ocorreu um erro ao actualizar esta entrada: %s"
+
+#: data.php:179
+msgid "There were no addresses to export."
+msgstr "Não havia endereços a exportar."
+
+#: templates/prefs/addressbookselect.inc:180
+msgid "These address books will display in this order:"
+msgstr "Os livros de endereços serão mostrados por esta ordem:"
+
+#: templates/prefs/columnselect.inc:243
+msgid "These columns will display in this order:"
+msgstr "As colunas serão mostradas por esta ordem:"
+
+#: data.php:269
+msgid "This file format is not supported."
+msgstr "Este formato de ficheiro não é suportado."
+
+#: lib/api.php:1203 lib/api.php:1216
+#, php-format
+msgid "This person already has a %s entry in the address book"
+msgstr "Esta pessoa já tem uma entrada %s no seu livro de endereços."
+
+#: config/prefs.php.dist:148
+msgid ""
+"This will be the default address book when adding or importing contacts."
+msgstr ""
+"Este será o livro de endereços a usar, por omissão, quando adicionando ou "
+"importando contactos."
+
+#: config/attributes.php.dist:70
+msgid "Title"
+msgstr "Título"
+
+#: lib/Turba.php:443
+#, php-format
+msgid "Unable to create new share. Missing source type."
+msgstr "Impossível criar a nova partilha. Tipo da fonte em falta."
+
+#: lib/Driver.php:1081
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Impossível ler a definição de %s."
+
+#: edit.php:95 edit.php:98 edit.php:101 edit.php:106 edit.php:204
+msgid "Undo Changes"
+msgstr "Voltar atrás nas alterações"
+
+#: lib/api.php:595 lib/api.php:696 lib/api.php:843
+#, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "Tipo de conteúdo (Content-Type) não é suportado: %s"
+
+#: templates/browse/row.inc:19 templates/browse/contactrow.inc:27
+#, php-format
+msgid "View \"%s\""
+msgstr "Ver \"%s\""
+
+#: minisearch.php:76
+msgid "View Contact"
+msgstr "Ver Contacto"
+
+#: config/prefs.php.dist:124
+msgid "View to display by default:"
+msgstr "Visualização a mostrar por defeito:"
+
+#: config/attributes.php.dist:208
+msgid "Website URL"
+msgstr "URL da página Web"
+
+#: config/attributes.php.dist:113
+msgid "Work Address"
+msgstr "Endereço do Emprego"
+
+#: config/attributes.php.dist:124
+msgid "Work City"
+msgstr "Cidade do Emprego"
+
+#: config/attributes.php.dist:139
+msgid "Work Country"
+msgstr "País do Emprego"
+
+#: config/attributes.php.dist:156
+msgid "Work Phone"
+msgstr "Telefone do Emprego"
+
+#: config/attributes.php.dist:134
+msgid "Work Postal Code"
+msgstr "Código Postal do Emprego"
+
+#: config/attributes.php.dist:129
+msgid "Work State/Province"
+msgstr "Estado/Província do Emprego"
+
+#: config/attributes.php.dist:119
+msgid "Work Street Address"
+msgstr "Rua do Emprego"
+
+#: data.php:237 browse.php:106 browse.php:227 add.php:73
+#, php-format
+msgid "You are not allowed to create more than %d contacts in \"%s\"."
+msgstr "Não está autorizado a criar mais do que %d contactos em \"%s\"."
+
+#: edit.php:73 display.php:52 view.php:36
+msgid "You do not have permission to view this contact."
+msgstr "Não tem permissão para ver este contacto."
+
+#: vcard.php:40
+msgid "You do not have permission to view this object."
+msgstr "Não tem permissão para ver este objecto."
+
+#: lib/Turba.php:534
+msgid "You do not have permissions to delete this source."
+msgstr "Não tem permissão para remover esta fonte."
+
+#: templates/browse/javascript.inc:55
+msgid "You must select a target address book."
+msgstr "Tem de seleccionar um livro de endereços alvo."
+
+#: templates/browse/javascript.inc:23
+msgid "You must select a target list."
+msgstr "Tem de seleccionar uma lista alvo."
+
+#: edit.php:32
+msgid "You must select at least one contact first."
+msgstr "Tem de seleccionar primeiro pelo menos um contacto."
+
+#: templates/browse/javascript.inc:17 templates/browse/javascript.inc:49
+#: templates/browse/javascript.inc:72
+msgid "You must select at least one entry first."
+msgstr "Tem de seleccionar primeiro pelo menos uma entrada."
+
+#: edit.php:77
+msgid "You only have permission to view this contact."
+msgstr "Só tem permissão para ver este contacto."
+
+#: browse.php:325
+msgid "Your default address book is not browseable."
+msgstr "O seu livro de endereços por omissão não é navegável."
+
+#: templates/browse/row.inc:6 templates/browse/contactrow.inc:12
+msgid "[no value]"
+msgstr "[sem valor]"
+
+#: lib/Turba.php:557
+msgid "_Browse"
+msgstr "_Navegar"
+
+#: templates/browse/actions.inc:47
+msgid "_Contacts"
+msgstr "_Contactos"
+
+#: templates/browse/actions.inc:3
+msgid "_Delete"
+msgstr "_Remover"
+
+#: lib/Turba.php:566
+msgid "_Import/Export"
+msgstr "_Importar/Exportar"
+
+#: templates/browse/actions.inc:46
+msgid "_Lists"
+msgstr "_Listas"
+
+#: lib/Turba.php:554
+msgid "_My Address Books"
+msgstr "Os _Meus Livros de Endereços"
+
+#: lib/Turba.php:560
+msgid "_New Contact"
+msgstr "_Novo Contacto"
+
+#: templates/browse/actions.inc:3
+msgid "_Remove from this list"
+msgstr "Remov_er desta lista"
+
+#: lib/Turba.php:562
+msgid "_Search"
+msgstr "_Procurar"
+
+#: vcard.php:46
+msgid "contact.vcf"
+msgstr "contacto.vcf"
+
+#: data.php:199 data.php:204 templates/data/export.inc:1
+msgid "contacts.csv"
+msgstr "contactos.csv"
+
+#: data.php:209
+msgid "contacts.tsv"
+msgstr "contactos.tsv"
+
+#: data.php:219
+msgid "contacts.vcf"
+msgstr "contactos.vcf"
+
+#: config/prefs.php.dist:138
+msgid "no formatting"
+msgstr "sem formatação"
+
+#: templates/prefs/imsp_opt.inc:32
+msgid "none"
+msgstr "nenhum"
+
+#: templates/browse/actions.inc:31
+msgid "to a Contact List"
+msgstr "a uma Lista Contactos"
+
+#: templates/browse/actions.inc:21
+msgid "to a different Address Book"
+msgstr "a um outro Livro de Endereços"
+
+#: data.php:51 templates/browse/column_headers.inc:13
+#: templates/data/import.inc:15 templates/data/export.inc:15
+msgid "vCard"
+msgstr "vCard"

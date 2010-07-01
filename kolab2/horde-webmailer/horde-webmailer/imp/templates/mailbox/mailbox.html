@@ -1,0 +1,15 @@
+<loop:messages>
+ <tr id="row<tag:messages.id />" class="<tag:messages.bg />">
+  <td>
+   <tag:overflow_begin /><label><input id="check<tag:messages.id />" type="checkbox" class="checkbox" name="indices[]" onclick="selectRange(event);" value="<tag:messages.uid />" /><tag:messages.status />&nbsp;</label><tag:overflow_end />
+  </td>
+  <td<if:messages.color> style="background:<tag:messages.color />"</if:messages.color>>
+   <tag:overflow_begin /><tag:messages.number /><tag:overflow_end />
+  </td>
+  <td><tag:overflow_begin /><tag:messages.date />&nbsp;<tag:overflow_end /></td>
+  <td><tag:overflow_begin /><tag:messages.from />&nbsp;<tag:overflow_end /></td>
+  <td><tag:overflow_begin /><tag:messages.subject /><tag:overflow_end /></td>
+  <td class="rightAlign"><tag:overflow_begin /><tag:messages.size /><tag:overflow_end /></td>
+ </tr>
+</loop:messages>
+</table>

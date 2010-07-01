@@ -1,0 +1,1055 @@
+# Nag Greek translation
+# Copyright 2002 Stefanos I. Dimitriou.
+# Stefanos I. Dimitriou <support_webmail@teiath.gr>, 2002.
+# Silligardos Xristoforos, 2002.
+# Anagnostopoulos Apostolis, 2002.
+# Milosis C. Konstantinos, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nag: 1.1-cvs\n"
+"POT-Creation-Date: 2002-11-07 12:15+0200\n"
+"PO-Revision-Date: 2002-11-12 12:15+0200\n"
+"Last-Translator: Konstantinos C. Milosis <kmilosis@yahoo.com>\n"
+"Language-Team: Greek <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-7\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: lib/Nag.php:39
+msgid "%d hour"
+msgstr "%d ώρα"
+
+#: lib/Nag.php:41
+msgid "%d hour, %d minute"
+msgstr "%d ώρα, %d λεπτό"
+
+#: lib/Nag.php:43
+msgid "%d hour, %d minutes"
+msgstr "%d ώρα, %d λεπτά"
+
+#: lib/Nag.php:31
+msgid "%d hours"
+msgstr "%d ώρες"
+
+msgid "%d hours, %d minute"
+msgstr "%d ώρες, %d λεπτό"
+
+#: lib/Nag.php:35
+msgid "%d hours, %d minutes"
+msgstr "%d ώρες, %d λεπτά"
+
+#: lib/Nag.php:49
+msgid "%d minute"
+msgstr "%d λεπτό"
+
+#: lib/Nag.php:51
+msgid "%d minutes"
+msgstr "%d λεπτά"
+
+# StundeStundenn, c-format
+msgid "%d tasks"
+msgstr "%d εργασίες"
+
+#: lib/Nag.php:322
+msgid "%s at %s"
+msgstr "%s σε %s"
+
+#: /home/httpd/html/horde_cvs/po/../nag/data.php:127
+#, c-format
+msgid "%s file successfully imported"
+msgstr "Το αρχείο %s εισήχθηκε επιτυχώς"
+
+#: lib/Nag.php:443 lib/Block/summary.php:92
+msgid "%s is due in %s"
+msgstr "%s λήγει σε %s"
+
+#: lib/Nag.php:441 lib/Block/summary.php:90
+msgid "%s is due now."
+msgstr "%s λήγει τώρα."
+
+#: data.php:140
+msgid "%s successfully imported"
+msgstr "%s εισήχθη επιτυχώς"
+
+#: tasklists.php:100 lib/base.php:101
+msgid "%s's Task List"
+msgstr "Λίστα εργασιών του %s"
+
+#: lib/Nag.php:280
+msgid "(highest)"
+msgstr "(Υψηλότατο)"
+
+#: lib/Nag.php:280
+msgid "(lowest)"
+msgstr "(Χαμηλότατο)"
+
+msgid "1 task"
+msgstr "1 εργασία"
+
+#: task.php:258
+msgid "Access denied completing task %s."
+msgstr "Πρόσβαση απορρίφθηκε κατά την ολοκλήρωση της εργασίας %s."
+
+#: task.php:232
+msgid "Access denied deleting %s."
+msgstr "Πρόσβαση απορρίφθηκε κατά την διαγραφή της εργασίας %s."
+
+#: /home/httpd/html/horde_cvs/po/../nag/task.php:207
+#, c-format
+msgid "Access denied deleteing task: %s"
+msgstr "Αρνηση πρόσβασης κατά τη διαγραφή της εργασίας: %s"
+
+#: /home/httpd/html/horde_cvs/po/../nag/task.php:236
+#, c-format
+msgid "Access denied modifying task: %s"
+msgstr "Αρνηση πρόσβασης κατά τη μεταβολή της εργασίας: %s"
+
+#: task.php:198
+msgid "Access denied moving the task to %s."
+msgstr "Πρόσβαση απορρίφθηκε κατά την μεταφορά της εργασίας %s."
+
+#: task.php:201
+msgid "Access denied removing task from %s."
+msgstr "Πρόσβαση απορρίφθηκε κατά τη διαγραφή εργασίας από τον %s."
+
+#: task.php:133
+msgid "Access denied saving task to %s."
+msgstr "Πρόσβαση απορρίφθηκε κατά την αποθήκευση εργασίας στον %s."
+
+#: task.php:131
+msgid "Access denied saving task: %s"
+msgstr "Πρόσβαση απορρίφθηκε κατά την αποθήκευση εργασίας: %s."
+
+msgid "Adding A New Task"
+msgstr "Προσθήκη μίας Νέας Εργασίας"
+
+#: templates/task/task.inc:68
+msgid "Ala_rm"
+msgstr "Συναγερμός"
+
+#: templates/view/task.inc:37
+msgid "Alarm"
+msgstr "Συναγερμός"
+
+#: config/prefs.php.dist:98
+msgid "All tasks"
+msgstr "Ολες οι εργασίες"
+
+msgid "Allows categories to be added/removed/renamed."
+msgstr "Επεξεργασία των κατηγοριών Δημιουργία/Διαγραφή/Μετονομασία."
+
+#: lib/Block/summary.php:55
+msgid "Always show completed tasks?"
+msgstr "Να εμφανίζονται πάντα οι ολοκληρωμένες εργασίες;"
+
+#: lib/Block/summary.php:52
+msgid "Always show overdue tasks?"
+msgstr "Να εμφανίζονται πάντα οι ληξιπρόθεσμες εργασίες;"
+
+# /home/httpd/html/horde_cvs/po/../nag/templates/prefs/category_management.inc 41
+#: /home/httpd/html/horde_cvs/po/../nag/templates/prefs/category_management.inc
+msgid "Any tasks in a category that is deleted will become %s."
+msgstr "Όλες οι εργασίες μιας κατηγορίας που διαγράφετε θα γίνουν %s."
+
+msgid "Are you sure you want to permanently delete these tasks?"
+msgstr "Είστε σίγουροι ότι θέλετε να διαγράψετε ΜΟΝΙΜΑ αυτές τις εργασίες;"
+
+msgid "Ascending"
+msgstr "Αύξουσα"
+
+msgid "Back to Task List"
+msgstr "Επιστροφή στη λίστα με τις εργασίες"
+
+msgid "Category Management"
+msgstr "Διαχείριση Κατηγοριών"
+
+#: templates/task/task.inc:57
+msgid "Calendar"
+msgstr "Ημερολόγιο"
+
+#: templates/list/task_headers.inc:30
+msgid "Cat_egory"
+msgstr "Κατηγορία"
+
+msgid "Category"
+msgstr "Κατηγορία"
+
+msgid "Change"
+msgstr "Αλλαγή"
+
+#: templates/list/task_headers.inc:4 templates/list/task_headers.inc:8
+#: templates/list/task_headers.inc:12 templates/list/task_headers.inc:19
+#: templates/list/task_headers.inc:25 templates/list/task_headers.inc:29
+msgid "Change sort direction"
+msgstr "Αλλαγή κατεύθυνσης Ταξινόμησης"
+
+msgid "Change your task sorting and display options."
+msgstr "Αλλαγή της ταξινόμησης και των επιλογών εμφάνισης."
+
+#, c-format
+msgid "Changed %d tasks to priority %d."
+msgstr "Αλλάχτηκαν σε %d εργασίες η προτεραιότητα σε %d."
+
+#, c-format
+msgid "Changed 1 task to priority %d."
+msgstr "Αλλάχτηκε μία εργασία σε προτεραιότητα %d."
+
+msgid "Choose Action:"
+msgstr "Επιλέξτε Ενέργεια:"
+
+#: config/prefs.php.dist:22
+msgid "Choose your default task list."
+msgstr "Επιλέξτε την προκαθορισμένη σας λίστα εργασιών."
+
+msgid "Clear Form"
+msgstr "Καθαρισμός Φόρμας"
+
+#: templates/task/task.inc:89
+msgid "Co_mpleted?"
+msgstr "Ολοκληρώθηκε;"
+
+#: templates/view/task.inc:13
+msgid "Complete"
+msgstr "Ολοκλήρωση"
+
+msgid "Complete Task"
+msgstr "Ολοκλήρωση Εργασίας"
+
+msgid "Complete Tasks"
+msgstr "Ολοκλήρωση Εργασιών"
+
+msgid "Completed %s."
+msgstr "Ολοκληρώθηκε %s."
+
+msgid "Completed?"
+msgstr "Ολοκληρώθηκε;"
+
+msgid "Completion Status"
+msgstr "Κατάσταση προόδου εργασίας"
+
+#: templates/tasklists/tasklists.inc:17 templates/tasklists/tasklists.inc:99
+#: templates/tasklists/tasklists.inc:101
+msgid "Create"
+msgstr "Δημιουργία"
+
+#: templates/view/task.inc:51
+msgid "Created"
+msgstr "Δημιουργήθηκε"
+
+msgid "Create New Category"
+msgstr "Δημιουργία Νέας Κατηγορίας"
+
+#: templates/task/task.inc:77 lib/Nag.php:368
+msgid "Day(s)"
+msgstr "Ημέρα(ες)"
+
+#: config/prefs.php.dist:21
+msgid "Default Task List"
+msgstr "Προκαθορισμένη Λίστα Εργασιών"
+
+msgid "Default sorting criteria:"
+msgstr "Προεπιλεγμένο κριτήριο ταξινόμησης:"
+
+msgid "Default sorting direction:"
+msgstr "Προεπιλεγμένη κατεύθυνση ταξινόμησης:"
+
+msgid "Delete Task"
+msgstr "Διαγραφή Εργασίας"
+
+msgid "Delete Tasks"
+msgstr "Διαγραφή Εργασιών"
+
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#: task.php:240
+msgid "Deleted %s."
+msgstr "Διαγράφηκε %s."
+
+#, c-format
+msgid "Deleted %d tasks."
+msgstr "Διαγράφηκαν %d εργασίες."
+
+msgid "Deleted 1 task."
+msgstr "Διαγράφηκε 1 εργασία."
+
+msgid "Descending"
+msgstr "Φθίνουσα"
+
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgid "Description:"
+msgstr "Περιγραφή:"
+
+msgid "Display Options"
+msgstr "Επιλογές Εμφάνισης"
+
+msgid "Due By"
+msgstr "Λήξη"
+
+msgid "Due Date"
+msgstr "Ημερομηνία Λήξης"
+
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+msgid "Edit Task"
+msgstr "Επεξεργασία Εργασίας"
+
+#: /home/httpd/html/horde_cvs/po/../nag/config/prefs.php.dist:121
+msgid "Edit your task lists."
+msgstr "Επεξεργασία της λίστας εργασιών σας."
+
+#: templates/data/export.inc:22
+msgid "Export"
+msgstr "Εξαγωγή"
+
+#: templates/data/export.inc:8
+msgid "Export Tasks"
+msgstr "Εξαγωγή Εργασιών"
+
+#: config/prefs.php.dist:33
+msgid "External Data"
+msgstr "Εξωτερικά Δεδομένα"
+
+#: /home/httpd/html/horde_cvs/po/../nag/data.php:158
+msgid "Flags"
+msgstr "'Σημαίες' σήμανσης (flags)"
+
+#: config/prefs.php.dist:13
+msgid "General Options"
+msgstr "Γενικές Επιλογές"
+
+msgid "Help"
+msgstr "Βοήθεια"
+
+#: templates/task/task.inc:76 lib/Nag.php:371
+msgid "Hour(s)"
+msgstr "Ωρα(ες)"
+
+#: /home/httpd/html/horde_cvs/po/../nag/templates/data/import.inc:19
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr ""
+"Αν εισάγετε CSV δεδομένα: Περιέχει η πρώτη γραμμή τα ονόματα των πεδίων;"
+
+#: /home/httpd/html/horde_cvs/po/../nag/data.php:136
+msgid "Illegal or malformed form data."
+msgstr "Μή έγκυρα ή μη σωστής μορφής δεδομένα."
+
+#: /home/httpd/html/horde_cvs/po/../nag/templates/data/import.inc:7
+msgid "Import Tasks"
+msgstr "Εισαγωγή Εργασιών"
+
+#: templates/data/import.inc:9
+msgid "Import Tasks, Step %d"
+msgstr "Εισαγωγή Εργασιών, Βήμα %d"
+
+msgid "Import/Export"
+msgstr "Εισαγωγή/Εξαγωγή"
+
+#: data.php:146
+msgid "Import/Export Tasks"
+msgstr "Εισαγωγή/Εξαγωγή Εργασιών"
+
+#: list.php:77
+msgid "Incom_plete tasks"
+msgstr "Ανολοκλήρωτες εργασίες"
+
+#: config/prefs.php.dist:99
+msgid "Incomplete tasks"
+msgstr "Ανολοκλήρωτες εργασίες"
+
+msgid "Language"
+msgstr "Γλώσσα"
+
+#: templates/view/task.inc:58
+msgid "Last Modified"
+msgstr "Τελευταία τροποποίηση"
+
+msgid "List Tasks"
+msgstr "Λίστα Εργασιών"
+
+#: /home/httpd/html/horde_cvs/po/../nag/config/prefs.php.dist:22
+msgid "Manage multiple task lists."
+msgstr "Διαχείριση πολλαπλών λιστών εργασιών."
+
+#, c-format
+msgid "Marked %d tasks as completed."
+msgstr "Σημειώθηκαν %d εργασίες ως ολοκληρωμένες."
+
+msgid "Marked 1 task as completed."
+msgstr "Σημειώθηκε 1 εργασία ως ολοκληρωμένη."
+
+msgid "Marked task as completed."
+msgstr "Σημείωση εργασίας ως ολοκληρωμένης."
+
+#: /home/httpd/html/horde_cvs/po/../nag/templates/tasklists/members/manage.inc:36
+msgid "Member's Permission:"
+msgstr "Εξουσιοδοτήσεις Μελών:"
+
+#: /home/httpd/html/horde_cvs/po/../nag/templates/tasklists/members/manage.inc:25
+msgid "Member's email address:"
+msgstr "email διεύθυνση Μελών:"
+
+#: /home/httpd/html/horde_cvs/po/../nag/tasklists/members.php:111
+msgid "Members List"
+msgstr "Λίστα Μελών"
+
+#: /home/httpd/html/horde_cvs/po/../nag/templates/tasklists/members/manage.inc:6
+msgid "Members List for Task List"
+msgstr "Λίστα Μελών για Λίστα Εργασιών"
+
+#: templates/task/task.inc:75 lib/Nag.php:374
+msgid "Minute(s)"
+msgstr "Λεπτό(α)"
+
+msgid "Modify Task"
+msgstr "Επεξεργασία Εργασίας"
+
+msgid "Modifying:"
+msgstr "Επεξεργασία:"
+
+#: /home/httpd/html/horde_cvs/po/../nag/lib/base.php:97
+#: /home/httpd/html/horde_cvs/po/../nag/tasklists/prefs.php:108
+msgid "My Task List"
+msgstr "Η Λίστα Εργασιών μου"
+
+#: list.php:40
+msgid "My Tasks"
+msgstr "Οι Εργασίες μου"
+
+msgid "Nag is not properly configured"
+msgstr "Το πρόγραμμα Nag δεν έχει ρυθμιστεί σωστά"
+
+#: templates/search/search.inc:21 templates/task/task.inc:12
+msgid "N_ame"
+msgstr "Ονομα"
+
+#: templates/list/task_headers.inc:20
+msgid "Na_me"
+msgstr "Ονομα"
+
+msgid "Name"
+msgstr "Όνομα"
+
+msgid "New Category"
+msgstr "Νέα Κατηγορία"
+
+msgid "New Task"
+msgstr "Νέα Εργασία"
+
+msgid "Next"
+msgstr "Επόμενο"
+
+msgid "No configuration information specified for SQL Tasks."
+msgstr "Δεν έχουν ρυθμιστεί οι πληροφορίες για τις εργασίες στην SQL."
+
+msgid "No due date."
+msgstr "Χωρίς Ημερομηνία Λήξης"
+
+#: lib/Nag.php:457
+msgid "No task lists are available to guests."
+msgstr "Δεν υπάρχει διαθέσιμη λίστα εργασιών για φιλοξενουμενους (guests)."
+
+#: lib/Block/summary.php:186
+msgid "No tasks to display"
+msgstr "Δεν υπάρχουν εργασίες για εμφάνιση"
+
+msgid "No tasks were changed."
+msgstr "Καμία εργασία δεν τροποποιήθηκε."
+
+msgid "No tasks were deleted."
+msgstr "Καμία εργασία δεν διαγράφηκε."
+
+msgid "No"
+msgstr "Όχι"
+
+#: templates/task/task.inc:71 lib/Nag.php:378
+msgid "None"
+msgstr "Κανένα"
+
+#: lib/Nag.php:338
+msgid "Not Completed"
+msgstr "Δεν Ολοκληρώθηκε"
+
+msgid "None specified"
+msgstr "Δεν Προσδιορίστηκε Κανένα"
+
+msgid "Options"
+msgstr "Επιλογές"
+
+msgid "Other Options"
+msgstr "Αλλες Επιλογές"
+
+#: config/prefs.php.dist:50 config/prefs.php.dist:65
+msgid "Owner"
+msgstr "Ιδιοκτήτης"
+
+#: templates/tasklists/tasklists.inc:87
+msgid "Permission"
+msgstr "Rechte"
+
+#: lib/api.php:254 lib/api.php:339 lib/api.php:410 lib/api.php:441
+msgid "Permission Denied"
+msgstr "Αρνηση Πρόσβασης"
+
+#: lib/api.php:86
+msgid "Permission denied"
+msgstr "Αρνηση Πρόσβασης"
+
+msgid "Please enter a name for the new category:"
+msgstr "Παρακαλώ δώστε ένα το όνομα για την νέα Κατηγορία:"
+
+msgid "Please enter a new name for this category:"
+msgstr "Παρακαλώ δώστε ένα νέο όνομα για αυτή την Κατηγορία:"
+
+msgid "Please enter the task priority (1-5):"
+msgstr "Δώστε την Προτεραιότητα της Εργασίας (1-5):"
+
+#: templates/list/task_headers.inc:13
+msgid "P_ri"
+msgstr "Προτ"
+
+msgid "Pri"
+msgstr "Προτ"
+
+msgid "Print"
+msgstr "Εκτύπωση"
+
+msgid "Priorities must be between 1 and 5. Please enter a valid priority:"
+msgstr ""
+"Οι προτεραιότητες πρέπει να είναι μεταξύ του 1 και του 5. Παρακαλώ δώστε μία "
+"έγκυρη τιμή:"
+
+msgid "Priority"
+msgstr "Προτεραιότητα"
+
+msgid "Problem?"
+msgstr "Πρόβλημα;"
+
+#: /home/httpd/html/horde_cvs/po/../nag/templates/tasklists/members/manage.inc:42
+msgid "Read"
+msgstr "Ανάγνωση"
+
+msgid "Refresh List"
+msgstr "Ανανέωση Λίστας"
+
+msgid "Rename"
+msgstr "Μετονομασία"
+
+msgid "Required 'database' not specified in tasks configuration."
+msgstr "Η απαιτούμενη βάση δεδομένων δεν έχει καθοριστεί για τις εργασίες."
+
+msgid "Required 'hostspec' not specified in tasks configuration."
+msgstr "Το απαιτούμενο 'hostspec' δεν έχει καθοριστεί για τις εργασίες."
+
+msgid "Required 'password' not specified in tasks configuration."
+msgstr "Το απαιτούμενο 'password' δεν έχει καθοριστεί για τις εργασίες."
+
+msgid "Required 'phptype' not specified in tasks configuration."
+msgstr "Το απαιτούμενο 'phptype' δεν έχει καθοριστεί για τις εργασίες."
+
+msgid "Required 'table' not specified in tasks configuration."
+msgstr "Το απαιτούμενο 'table' δεν έχει καθοριστεί για τις εργασίες."
+
+msgid "Required 'username' not specified in tasks configuration."
+msgstr "Το απαιτούμενο 'username' δεν έχει καθοριστεί για τις εργασίες."
+
+msgid "Reset"
+msgstr "Επαναφορά"
+
+msgid "Save Task"
+msgstr "Αποθήκευση Εργασίας"
+
+#: task.php:215
+msgid "Saved %s."
+msgstr "Αποθηκεύθυκε %s."
+
+msgid "Search Results"
+msgstr "Αποτέλεσματα Αναζήτησης"
+
+#: templates/search/search.inc:10
+msgid "Search _Text"
+msgstr "Αναζήτηση Κειμένου"
+
+msgid "Search Scope"
+msgstr "Ευρος Αναζήτησης"
+
+msgid "Search Text"
+msgstr "Κείμενο που θα αναζητηθεί"
+
+msgid "Search"
+msgstr "Αναζήτηση"
+
+msgid "Select Category"
+msgstr "Επιλογή Κατηγορίας"
+
+#: templates/task/task.inc:57
+msgid "Select a date"
+msgstr "Επιλέξτε ημερομηνία"
+
+#: templates/tasklists/tasklists.inc:72
+msgid "Select a task list"
+msgstr "Επιλέξτε μια λίστα εργασιών"
+
+#: templates/data/export.inc:15
+msgid "Select the export format:"
+msgstr "Επιλέξτε τη μορφή εξαγωγής:"
+
+#: templates/data/import.inc:40
+msgid "Select the file to import:"
+msgstr "Επιλέξτε το αρχείο για εισαγωγή:"
+
+#: templates/data/import.inc:16
+msgid "Select the format of the source file:"
+msgstr "Επιλέξτε τη μορφή του εισαγώμενου αρχείου:"
+
+#: /home/httpd/html/horde_cvs/po/../nag/templates/data/import.inc:14
+msgid "Select the source to import from:"
+msgstr "Επιλέξτε το αρχείο από το οποίο θα γίνει η εισαγωγή:"
+
+msgid "Select your preferred language:"
+msgstr "Επιλογή της προτιμούμενης γλώσσας"
+
+msgid "Selected?"
+msgstr "Επιλεγμένο;"
+
+msgid "Set Task Priority"
+msgstr "Καθορισμός Προτεραιότητας Εργασίας"
+
+msgid "Set the your preferred display language."
+msgstr "Καθορίστε την προτιμούμενη γλώσσα εμφάνισης."
+
+#: /home/httpd/html/horde_cvs/po/../nag/templates/tasklists/manage.inc:36
+msgid "Shared"
+msgstr "Κοινόχρηστο"
+
+msgid "Show"
+msgstr "Εμφάνιση"
+
+msgid "Show:"
+msgstr "Εμφάνιση:"
+
+#: templates/menu.inc:14
+msgid "Show Tasklists:"
+msgstr "Εμφάνιση Λίστας Εργασιών:"
+
+#: lib/Block/summary.php:37
+msgid "Show action buttons?"
+msgstr "Εμφάνιση πλήκτρων ενεργειών;"
+
+#: config/prefs.php.dist:101
+msgid "Show complete, incomplete, or all tasks in the task list?"
+msgstr "Εμφάνιση ολοκληρωμένων, ανολοκλήρωτων, ή όλων των εργασιών στη λίστα;"
+
+msgid "Show completed tasks in the task list?"
+msgstr ""
+"Να εμφανίζονται οι εργασίες που έχουν ολοκληρωθεί στη λίστα με τις εργασίες;"
+
+#: config/prefs.php.dist:88
+msgid "Show data from any of these other applications in your task list?"
+msgstr ""
+"Εμφάνιση δεδομένων από οποιαδήποτε από αυτές τις εφαρμογές στη λίστα "
+"εργασιών σας;"
+
+#: config/prefs.php.dist:34
+msgid "Show data from other applications or sources."
+msgstr "Εμφάνιση δεδομένων από άλλες εφαρμογές ή πηγές."
+
+#: lib/Block/summary.php:40
+msgid "Show due dates?"
+msgstr "Εμφάνιση ημερομηνιών λήξης;"
+
+msgid "Show due dates in the summary view?"
+msgstr "Να εμφανίζονται οι ημερομηνίες ολοκλήρωσης στην περίληψη της εργασίας;"
+
+msgid "Show priorities in the summary view?"
+msgstr "Να εμφανίζονται οι προτεραιότητες στην περίληψη της εργασίας;"
+
+#: lib/Block/summary.php:34
+msgid "Show priorities?"
+msgstr "Εμφάνιση προτεραιοτήτων;"
+
+#: lib/Block/summary.php:46
+msgid "Show task alarms?"
+msgstr "Εμφάνιση συναγερμών εργασιών;"
+
+#: lib/Block/summary.php:49
+msgid "Show task category?"
+msgstr "Εμφάνιση κατηγορίας εργασίας;"
+
+#: lib/Block/summary.php:43
+msgid "Show tasklist name?"
+msgstr "Εμφάνιση ονόματος λίστας εργασιών"
+
+#: lib/Block/summary.php:58
+msgid "Show tasks from these categories"
+msgstr "Εμφάνιση εργασιών αυτών των κατηγοριών"
+
+msgid "Some of Nag's configuration files are missing:"
+msgstr "Κάποια από τα αρχεία ρυθμίσεων του προγράμματος Nag έχουν χαθεί:"
+
+msgid "Sort Direction"
+msgstr "Κατεύθυνση Ταξινόμησης"
+
+msgid "Sort by Category"
+msgstr "Ταξινόμηση Κατά Κατηγορία"
+
+msgid "Sort by Completion Status"
+msgstr "Ταξινόμηση Κατά Κατάσταση Ολοκλήρωσης"
+
+msgid "Sort by Due Date"
+msgstr "Ταξινόμηση Κατά Ημερομηνία Λήξης"
+
+msgid "Sort by Name"
+msgstr "Ταξινόμηση Κατά Όνομα"
+
+msgid "Sort by Priority"
+msgstr "Ταξινόμηση Κατά Προτεραιότητα"
+
+#: templates/list/task_headers.inc:9
+msgid "Sort by User Name"
+msgstr "Ταξινόμηση κατά όνομα χρήστη"
+
+#: config/prefs.php.dist:77
+msgid "Sort direction:"
+msgstr "Κατεύθυνση ταξινόμησης:"
+
+#: config/prefs.php.dist:51
+msgid "Sort tasks by:"
+msgstr "Ταξινόμηση εργασιών κατά:"
+
+#: templates/list/task_summaries.inc:22
+msgid "Task Alarm"
+msgstr "Συναγερμός Εργασίας"
+
+#: templates/list/task_headers.inc:23
+msgid "Task Alarm?"
+msgstr "Συναγερμός Εργασίας;"
+
+msgid "Task Details"
+msgstr "Λεπτομέρειες Εργασίας"
+
+msgid "Task List"
+msgstr "Λίστα Εργασιών"
+
+#: config/prefs.php.dist:20 config/prefs.php.dist:32
+msgid "Task List and Share Options"
+msgstr "Λίστες εργασιών και Επιλογές Διαμοιρασμού"
+
+#: /home/httpd/html/horde_cvs/po/../nag/templates/tasklists/manage.inc:33
+msgid "Task Lists's Type:"
+msgstr "Τύπος Λίστας Εργασιών:"
+
+#: templates/tasklists/tasklists.inc:84
+msgid "Task List's name:"
+msgstr "Ονομα Λίστας Εργασιών:"
+
+#: tasklists.php:111
+msgid "Task Lists"
+msgstr "Λίστες Εργασιών"
+
+msgid "Task Name"
+msgstr "Όνομα Εργασίας"
+
+msgid "Task Note"
+msgstr "Σημειώσεις Εργασίας"
+
+msgid "Task Note?"
+msgstr "Σημείωση Εργασίας;"
+
+#: tasklists.php:28
+msgid "Task lists must have a name."
+msgstr "Οι λίστες Εργασιών πρέπει να έχουν όνομα."
+
+#: task.php:117 view.php:43
+msgid "Task not found."
+msgstr "Η εργασία δεν βρέθηκε."
+
+#: lib/Block/summary.php:3
+msgid "Tasks Summary"
+msgstr "Περίληψη Εργασιών"
+
+#: /home/httpd/html/horde_cvs/po/../nag/data.php:44
+#: /home/httpd/html/horde_cvs/po/../nag/data.php:77
+msgid "The data was lost."
+msgstr "Τα δεδομένα χάθηκαν."
+
+#: /home/httpd/html/horde_cvs/po/../nag/data.php:167
+msgid "The file contained no data."
+msgstr "Το αρχείο δεν περιέχει δεδομένα."
+
+#: /home/httpd/html/horde_cvs/po/../nag/tasklists/members.php:104
+#, c-format
+msgid "The member \"%s\" has been deleted."
+msgstr "Το μέλος '%s' διαγράφηκε."
+
+#: /home/httpd/html/horde_cvs/po/../nag/tasklists/members.php:94
+#, c-format
+msgid "The member \"%s\" has been saved."
+msgstr "Το μέλος '%s' αποθηκεύθηκε."
+
+#: /home/httpd/html/horde_cvs/po/../nag/templates/view/no-task.inc:3
+msgid "The requested task does not exist."
+msgstr "Η εργασία που ζητήθηκε δεν υπάρχει."
+
+#: tasklists.php:45
+msgid "The task list \"%s\" couldn't be created: %s"
+msgstr "Η λίστα εργασιών \"%s\" δεν μπόρεσε να δημιουργηθεί: %s"
+
+#: tasklists.php:56
+msgid "The task list \"%s\" couldn't be saved: %s"
+msgstr "Η λίστα εργασιών \"%s\" δεν μπόρεσε να αποθηκευθεί: %s"
+
+#: tasklists.php:47
+msgid "The task list \"%s\" has been created."
+msgstr "Η λίστα εργασιών \"%s\" δημιουργήθηκε."
+
+#: tasklists.php:81
+msgid "The task list \"%s\" has been deleted."
+msgstr "Η λίστα εργασιών \"%s\" διαγράφηκε."
+
+#: tasklists.php:58
+msgid "The task list \"%s\" has been saved."
+msgstr "Η λίστα εργασιών \"%s\" αποθηκεύθηκε."
+
+#: /home/httpd/html/horde_cvs/po/../nag/tasklists/prefs.php:50
+msgid "The task list name is empty."
+msgstr "Το όνομα της λίστας εργασιών είναι κενό."
+
+msgid "The task was saved."
+msgstr "Η εργασία αποθηκεύτηκε."
+
+#: config/prefs.php.dist:66
+msgid "Then:"
+msgstr "Τότε:"
+
+#: templates/list/empty.inc:3
+msgid "There are no tasks matching the current criteria."
+msgstr "Δεν υπάρχουν εργασίες που να πληρούν αυτά τα κριτήρια."
+
+#: task.php:264
+msgid "There was a problem completing %s: %s"
+msgstr "Υπήρξε πρόβλημα κατά την ολοκλήρωση %s: %s"
+
+#: task.php:237
+msgid "There was a problem deleting %s: %s"
+msgstr "Υπήρξε πρόβλημα κατά την διαγραφή %s: %s"
+
+msgid "There was a problem deleting tasks."
+msgstr "Παρουσιάστηκε σφάλμα κατά τη διαγραφή των εργασιών."
+
+#: /home/httpd/html/horde_cvs/po/../nag/task.php:137
+msgid "There was a problem removing the task from %s."
+msgstr "Παρουσιάσθηκε σφάλμα κατά τη διαγραφή της εργασίας από %s."
+
+msgid "There was a problem saving the task."
+msgstr "Παρουσιάστηκε σφάλμα κατά την αποθήκευση της εργασίας."
+
+#: task.php:213
+msgid "There was a problem saving the task: %s."
+msgstr "Παρουσιάστηκε σφάλμα κατά την αποθήκευση της εργασίας: %s."
+
+msgid "There was a problem setting task completion status."
+msgstr ""
+"Παρουσιάστηκε σφάλμα κατά την αλλαγή της κατάστασης ολοκλήρωσης της εργασίας."
+
+msgid "There was a problem setting task priority."
+msgstr "Παρουσιάστηκε σφάλμα κατά την αλλαγή της προτεραιότητας της εργασίας."
+
+#: /home/httpd/html/horde_cvs/po/../nag/data.php:133
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Επάρχει πρόβλημα με τη φόρτωση του αρχείου. Μάλλον το αρχείο είναι "
+"μεγαλύτερο από το μέγιστο επιτρεπόμενο μέγεθος."
+
+msgid "There was an error importing the data."
+msgstr "Παρουσιάσθηκε σφάλμα κατά την εισαγωγή δεδομένων."
+
+#: data.php:137
+msgid "There was an error importing the data: %s"
+msgstr "Παρουσιάσθηκε σφάλμα κατά την εισαγωγή δεδομένων: %s"
+
+#: /home/httpd/html/horde_cvs/po/../nag/data.php:147
+msgid "There was an error importing the uploaded file"
+msgstr "Παρουσιάσθηκε σφάλμα κατά την εισαγωγή του φορτωμένου αρχείου"
+
+#: data.php:66
+msgid "There were no tasks to export."
+msgstr "Δεν υπάρχουν εργασίες για εξαγωγή."
+
+msgid "These changes can not be undone!"
+msgstr "Δεν θα μπορείτε να επαναφέρετε αυτές τις αλλαγές!"
+
+msgid "This file contains preferences for Nag."
+msgstr "Αυτό το αρχείο περιέχει τις προτιμήσεις για το πρόγραμμα Nag."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Αυτό το αρχείο περιέχει τις ρυθμίσεις για τα χρώματα και τις γραμματοσειρές, "
+"με τα οποία μπορούν να παρακαμφθούν τα προκαθορισμένα από το σύστημα."
+
+#: data.php:105
+msgid "This file format is not supported."
+msgstr "Αυτή η μορφή αρχείου δεν υποστηρίζεται."
+
+msgid ""
+"This is the main Nag configuration file. It contains options for all Nag "
+"scripts."
+msgstr ""
+"Αυτό είναι το βασικό αρχείο ρυθμίσεων του Nag. Περιέχει τα μονοπάτια και τις "
+"επιλογές για τα Nag scripts."
+
+#: tasklists.php:77
+msgid "Unable to delete \"%s\": %s"
+msgstr "Αδύνατη η διαγραφή \"%s\": %s"
+
+msgid "Undo Changes"
+msgstr "Ακύρωση Αλλαγών"
+
+msgid "Unfiled"
+msgstr "Μη Κατηγοριοποιημένο"
+
+msgid "Unknown task"
+msgstr "Αγνωστη εργασία"
+
+msgid "Unknown"
+msgstr "Αγνωστη"
+
+msgid "User Options"
+msgstr "Επιλογές Χρήστη"
+
+msgid "View Task Details"
+msgstr "Εμφάνιση Λεπτομερειών Εργασίας"
+
+#: templates/task/task.inc:78 lib/Nag.php:365
+msgid "Week(s)"
+msgstr "Εβδομάδα(ες)"
+
+#: templates/data/import.inc:24
+msgid "Which tasklist should the tasks be added to?"
+msgstr "Σε ποιά λίστα εργασιών θα προστεθούν οι εργασίες;"
+
+msgid "Yes"
+msgstr "Ναι"
+
+msgid "You are creating a new category."
+msgstr "Δημιουργείτε μία νέα Κατηγορία."
+
+#: /home/httpd/html/horde_cvs/po/../nag/tasklists/prefs.php:99
+msgid "You must select a task list to be deleted."
+msgstr "Πρέπει να επιλέξετε μια λίστα εργασιών για διαγραφή."
+
+#: /home/httpd/html/horde_cvs/po/../nag/tasklists/members.php:106
+msgid "You must select an member to be deleted."
+msgstr "Πρέπει να επιλέξετε ένα μέλος για διαγραφή."
+
+msgid "You must select at least one task first."
+msgstr "Πρέπει πρώτα να επιλέξετε μία εργασία."
+
+msgid "Your Information"
+msgstr "Οι Πληροφορίες Σας"
+
+#: templates/prefs/tasklistselect.inc:10
+msgid "Your default task list:"
+msgstr "Η προκαθορισμένη σας λίστα εργασιών:"
+
+#: /home/httpd/html/horde_cvs/po/../nag/templates/tasklists/members/manage.inc:10
+msgid "Your members:"
+msgstr "Τα μέλη σας:"
+
+#: /home/httpd/html/horde_cvs/po/../nag/templates/list/empty.inc:2
+msgid "Your task list is empty."
+msgstr "Η λίστα με τις εργασίες είναι άδεια."
+
+#: templates/tasklists/tasklists.inc:70
+msgid "Your task lists:"
+msgstr "Οι λίστες εργασιών σας:"
+
+#: /home/httpd/html/horde_cvs/po/../nag/lib/Nag.php:501
+#: /home/httpd/html/horde_cvs/po/../nag/templates/task/task.inc:44
+msgid "at"
+msgstr "σε"
+
+#: data.php:29
+msgid "iCalendar (vTodo)"
+msgstr "iCalendar (vTodo)"
+
+#: lib/Nag.php:47
+msgid "no time"
+msgstr "χωρίς χρόνο"
+
+#: templates/list/task_summaries.inc:19 lib/Block/summary.php:88
+#: lib/Block/summary.php:169
+msgid "[none]"
+msgstr "[κανένα]"
+
+#: list.php:76
+msgid "_All tasks"
+msgstr "Ολες οι εργασίες"
+
+#: templates/search/search.inc:23 templates/task/task.inc:39
+msgid "_Category"
+msgstr "Κατηγορία"
+
+#: templates/view/task.inc:13
+msgid "_Complete"
+msgstr "Ολοκλήρωση"
+
+#: list.php:78
+msgid "_Completed tasks"
+msgstr "Ολοκληρωμένες εργασίες"
+
+#: templates/view/task.inc:18
+msgid "_Delete"
+msgstr "Διαγραφή"
+
+#: templates/search/search.inc:22 templates/task/task.inc:95
+msgid "_Description"
+msgstr "Περιγραφή"
+
+#: templates/list/task_headers.inc:26
+msgid "_Due Date"
+msgstr "Ημερομηνία Ολοκλήρωσης"
+
+#: templates/view/task.inc:15
+msgid "_Edit"
+msgstr "Επεξεργασία"
+
+#: lib/Nag.php:407
+msgid "_Import/Export"
+msgstr "Εισαγωγή/Εξαγωγή"
+
+#: lib/Nag.php:395
+msgid "_List Tasks"
+msgstr "Εμφάνιση Εργασιών"
+
+#: lib/Nag.php:402
+msgid "_My Tasklists"
+msgstr "Οι Εργασίες μου"
+
+#: lib/Nag.php:397
+msgid "_New Task"
+msgstr "Νέα Εργασία"
+
+#: lib/Nag.php:412
+msgid "_Print"
+msgstr "Εκτύπωση"
+
+#: templates/task/task.inc:83
+msgid "_Priority"
+msgstr "Προτεραιότητα"
+
+#: lib/Nag.php:399
+msgid "_Search"
+msgstr "Αναζήτηση"
+
+#: templates/task/task.inc:20 templates/list/task_headers.inc:9
+msgid "_Task List"
+msgstr "Λίστα Εργασιών"

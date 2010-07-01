@@ -1,0 +1,505 @@
+# Bulgarian translations for Turba package.
+# Copyright 2002-2009 The Horde Project
+# This file is distributed under the same license as the Turba package.
+# Miroslav Pendev <miro@cybershade.us>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 2.0-cvs\n"
+"POT-Creation-Date: 2002-09-14 00:38-0400\n"
+"PO-Revision-Date: 2002-11-19 20:44-0500\n"
+"Last-Translator: Miroslav Pendev <miro@cybershade.us>\n"
+"Language-Team: BG i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1251\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s файл беше импортиран успешно"
+
+msgid "Add"
+msgstr "Добави"
+
+msgid "Add a new contact"
+msgstr "Добави нов контакт"
+
+msgid "Add failed"
+msgstr "Грешка при добавяне"
+
+msgid "Address Book Listing"
+msgstr "Адресен списък"
+
+msgid "Address book is read-only."
+msgstr "Адресната книга е в режим четене."
+
+#, c-format
+msgid "Addresses in list: %s"
+msgstr "Адреси в списък: %s"
+
+msgid "Advanced Search"
+msgstr "Разширено търсене"
+
+msgid "Alias"
+msgstr "Псевдоним"
+
+msgid "All"
+msgstr "Всички"
+
+msgid "Ascending"
+msgstr "Нарастващи"
+
+msgid "Available Columns:"
+msgstr "Налични колони:"
+
+#, c-format
+msgid "Back to %s"
+msgstr "Обратно в %s"
+
+msgid "Browse"
+msgstr "Прегледай"
+
+msgid "Checkbox"
+msgstr "Checkbox"
+
+msgid "Choose the order of the columns to display in the address list."
+msgstr "Изберете реда на показване на колоните в адресния списък."
+
+msgid "Clear Search"
+msgstr "Изчисти търсене"
+
+msgid "Column Options"
+msgstr "Опции за колоните"
+
+msgid "Comma separated values"
+msgstr "CSV - разделени със запетая стойности"
+
+msgid "Company"
+msgstr "Компания"
+
+msgid "Contact removed from list."
+msgstr "Контактът беше премахнат от списъка."
+
+#, c-format
+msgid "Contents of %s"
+msgstr "Съдържание на %s"
+
+msgid "Default Display"
+msgstr "Изглед по подразбиране"
+
+msgid "Default sorting direction:"
+msgstr "Посока на сортиране по подразбиране:"
+
+msgid "Delete"
+msgstr "Изтрий"
+
+msgid "Deletion failed"
+msgstr "Грешка при триене"
+
+msgid "Descending"
+msgstr "Намаляващи"
+
+msgid "Directory"
+msgstr "Директория"
+
+msgid "Display Options"
+msgstr "Дисплей Опции"
+
+msgid "Edit"
+msgstr "Редакция"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "Редактирай '%s'"
+
+msgid "Email"
+msgstr "Писмо"
+
+msgid "Error while searching directory."
+msgstr "Грешка при търсенето в каталога."
+
+msgid "Exit Address Book"
+msgstr "Изход адресна книга"
+
+msgid "Export Address Book"
+msgstr "Експорт на адресна книга"
+
+msgid "Failed to access the specified address book."
+msgstr "Грешка при достъпа до зададената адресна книга"
+
+msgid "Failed to browse list"
+msgstr "Грешка при преглеждане на списъка"
+
+msgid "Failed to browse the directory"
+msgstr "Грешка при преглеждане на папката"
+
+msgid "Failed to connect to the specified directory."
+msgstr "Грешка при свързване към зададената директория"
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Невъзможност за търсене в директория: %s"
+
+msgid "Failed to search the specified directory."
+msgstr "Грешка при търсене в зададената папка."
+
+msgid "Fax"
+msgstr "Факс"
+
+msgid "Find"
+msgstr "Търси"
+
+msgid "From"
+msgstr "От"
+
+msgid "Group"
+msgstr "Група"
+
+msgid "Help"
+msgstr "Помощ"
+
+msgid "Home Address"
+msgstr "Домашен адрес"
+
+msgid "Home Phone"
+msgstr "Домашен телефон"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "При импорт на CSV данни: първия ли ред съдържа имената на полетата?"
+
+msgid "Illegal or malformed form data."
+msgstr "Недопустими или повредени данни."
+
+msgid "Import Address Book"
+msgstr "Импорт на адресна книга"
+
+msgid "Import/Export"
+msgstr "Импорт/Експорт"
+
+msgid "Import/Export Address books"
+msgstr "Импорт/Експорт на адресни книги"
+
+msgid "Invalid address book."
+msgstr "Невалидна адресна книга."
+
+msgid "Invalid e-mail address."
+msgstr "Невалиден e-mail адрес."
+
+msgid "Invalid email."
+msgstr "Невалиден email"
+
+msgid "Invalid entry."
+msgstr "Невалидни данни."
+
+msgid "Invalid name."
+msgstr "Невалидно име."
+
+msgid "Language"
+msgstr "Език"
+
+msgid "Matching"
+msgstr "Съдържащи"
+
+msgid "Mobile Phone"
+msgstr "Мобилен телефон"
+
+msgid "More than 1 entry returned."
+msgstr "Беше върнат повече от 1 ред."
+
+msgid "Mulberry Address Book"
+msgstr "Mulberry адресна книга"
+
+msgid "Mulberry address book sucessfully imported"
+msgstr "Mulberry адресна книга беше импортирана успешно"
+
+msgid "My Addressbook"
+msgstr "Моята адресна книга"
+
+msgid "Name"
+msgstr "Име"
+
+msgid "Netcenter Member Directory"
+msgstr "Netcenter Member Directory"
+
+msgid "New List"
+msgstr "Нов списък"
+
+#, c-format
+msgid "No %s entry found for %s."
+msgstr "Няма %s намерени данни  за %s."
+
+msgid "None"
+msgstr "Няма"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"Никоя от наличните адресни книги не е конфигурирана да добавяте данни към "
+"нея. Ако смятате, че това не е вярно, моля консултирайте се със Системния "
+"Администратор."
+
+msgid "Notes"
+msgstr "Бележки"
+
+msgid "Options"
+msgstr "Опции"
+
+msgid "Outlook"
+msgstr "Outlook"
+
+msgid "PGP Public Key"
+msgstr "PGP Публичен ключ"
+
+msgid "Pine Address Book"
+msgstr "Pine Адресна книга"
+
+msgid "Pine address book sucessfully imported"
+msgstr "Pine адресна книга беше импортирана успешно"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Моля, изберете към коя адресна книга да добавите контакт."
+
+msgid "Please select a directory:"
+msgstr "Моля, изберете директория:"
+
+msgid "Private Address Book"
+msgstr "Частна Адресна книга"
+
+msgid "Remove from this list"
+msgstr "Премахване от този списък."
+
+msgid "Search"
+msgstr "Търси"
+
+msgid "Search Results"
+msgstr "Резултати от търсенето"
+
+msgid "Search&nbsp;Results"
+msgstr "Резултати&nbsp;от&nbsp;търсенето"
+
+msgid "Select"
+msgstr "Избери"
+
+msgid "Select Address Book"
+msgstr "Избери адресна книга"
+
+msgid "Select List"
+msgstr "Избери списък"
+
+msgid "Select the destination to import to:"
+msgstr "Изберете къде да се извърши импорта:"
+
+msgid "Select the file to import:"
+msgstr "Изберете файл за импорт:"
+
+msgid "Select the format to export to:"
+msgstr "Изберете формат, към който да се експортира:"
+
+msgid "Select the format to import from:"
+msgstr "Изберете формат, от който да се импортира:"
+
+msgid "Select the source to export from:"
+msgstr "Изберете източник за експорт:"
+
+msgid "Select view to display by default."
+msgstr "Изберете изглед по подразбиране."
+
+msgid "Select which fields to display in the address lists."
+msgstr "Изберете кои полета да са показани в списъка с адреси."
+
+msgid "Select your preferred language:"
+msgstr "Изберете предпочитаният от Вас език:"
+
+msgid "Selected Columns:"
+msgstr "Изберете колони:"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "Изпрати писмо до %s"
+
+msgid "Set your preferred display language."
+msgstr "Изберете предпочитаният от Вас език за дисплея."
+
+msgid "Shared Directory"
+msgstr "Споделена Директория"
+
+msgid "Show All"
+msgstr "Покажи всички"
+
+msgid "Show Contacts"
+msgstr "Покажи контактите"
+
+msgid "Show Lists"
+msgstr "Покажи списъците"
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Някои от конфигурационните файлове на Turba липсват:"
+
+msgid "Sort Direction"
+msgstr "Сортиране"
+
+msgid "Tab separated values"
+msgstr "Tab (табулация) разделени стойности"
+
+msgid "The data got lost."
+msgstr "Данните бяха загубени."
+
+msgid "The data was lost"
+msgstr "Данните бяха загубени"
+
+msgid "The file contained no data."
+msgstr "Файлът не съдържа данни."
+
+msgid "The object you requested does not exist."
+msgstr "Обекта, който изисквате не съществува."
+
+msgid "There are no browseable address books."
+msgstr "Няма адресни книги за преглеждане."
+
+msgid "There are no writeable address books."
+msgstr "Няма адресни книги, в които можете да пишете."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Грешка при изпращането на файла. Възможно е файлът да е по-голям от "
+"максимално допустимият размер."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"Грешка при добавянето на този обект. Консултирайте се със Системния "
+"Администратор."
+
+msgid "There was an error creating a new list."
+msgstr "Грешка при създаване на нов списък."
+
+msgid "There was an error deleting this object."
+msgstr "Грешка при изтриването на този обект."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"Грешка при изтриването на този обект. Консултирайте се със Системния "
+"Администратор."
+
+msgid "There was an error displaying the select List"
+msgstr "Грешка при показването на избрания списък"
+
+msgid "There was an error importing the data."
+msgstr "Грешка при импорт на данните."
+
+#, c-format
+msgid "There was an error importing the data: %s."
+msgstr "Грешка при импортиране на данните: %s."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Грешка при импортиране на изпратения файл"
+
+msgid "There was an error importing the vCard data."
+msgstr "Грешка при импорт на vCard данни."
+
+msgid "There was an error removing this object."
+msgstr "Грешка при преместване на обекта."
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Този файл съдържа настройките по подразбиране на Turba и контролира кои от "
+"тях потребителят може да променя."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Този файл контролира стиловете, който се използват за цветовете и шрифтовете "
+"в допълнение към подразбиращите стилове на Horde."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"Този файл задава глобалните стойности за имена и типовe - имена, email "
+"адреси и т.н."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "Този файл задава списъка с наличните сорсове за Turba."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"Това е главния конфигурационен файл на Turba. Той съдържа пътища и опции за "
+"скриптовете на Turba."
+
+#, c-format
+msgid "This person already has a %s entry in the address book."
+msgstr "Този човек вече съществува като %s във адресната книга."
+
+msgid "This person is already in your address book."
+msgstr "Този човек вече съществува във Вашата адресна книга."
+
+msgid "Title"
+msgstr "Длъжност"
+
+msgid "Turba is not properly configured"
+msgstr "Turba не е конфигурирана коректно"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Грешка при зареждане на дефинициите на %s."
+
+msgid "Unnamed Contact"
+msgstr "Безименен контакт"
+
+msgid "User Options"
+msgstr "Потребителски опции"
+
+msgid "Verisign Directory"
+msgstr "Verisign Directory"
+
+msgid "View map"
+msgstr "Виж карта"
+
+msgid "View to display by default:"
+msgstr "Изглед, които да бъде показан по подразбиране:"
+
+msgid "Work Address"
+msgstr "Бизнес адрес"
+
+msgid "Work Phone"
+msgstr "Бизнес телефон"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr ""
+"Вие не съпоставихте никакви полета от импортирания файл към съответните "
+"полета в Turba."
+
+msgid "Your Information"
+msgstr "Информация за Вас"
+
+msgid "[Edit]"
+msgstr "[Редакция]"
+
+msgid "add column"
+msgstr "добави колона"
+
+msgid "move left"
+msgstr "премести на ляво"
+
+msgid "move right"
+msgstr "премести на дясно"
+
+msgid "remove column"
+msgstr "премахни колона"
+
+msgid "vCard"
+msgstr "vCard"

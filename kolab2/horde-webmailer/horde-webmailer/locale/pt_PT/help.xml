@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Horde: horde/locale/pt_PT/help.xml,v 1.2.10.2 2007-12-20 15:02:08 jan Exp $ -->
+<help>
+  <entry id="summary" state="uptodate" md5="68ca33f7f0c9aae4c103eb47492cdc15">
+<title>A Página do Portal</title>
+ <para>
+Esta página fornece um breve sumário de toda a sua informação importante.
+Por exemplo, pode mostrar quantas mensagens novas de e-mail existem na sua INBOX, 
+os eventos agendados no seu calendário, tarefas na sua lista de afazeres,os cabeçalhos dos 
+serviços de notícias seleccionados, e muito mais.
+Muitos destes sumários contêm atalhos rápidos para as funções mais comuns, como composição
+de uma nova mensagem de e-mail, criação de um novo calendário de eventos ou tarefas, etc.
+   </para>
+ <para>
+Os conteúdos deste portal são personalizáveis através de um botão de Layout.
+Por exemplo, pode escolher quais os items a incluir neste portal e a sua ordem de apresentação
+ </para>
+</entry>
+  <entry id="navbar" state="uptodate" md5="b8cf0ae19e57dfa0c2b962e516782f47">
+<title>The Application Navigation Bar</title>
+ <para>
+No lado esquerdo da página web está a barra de navegação.
+Clique nos ícones desta barra de navegação para rápida e fácilmente escolher 
+as aplicações disponíveis. 
+ </para>
+</entry>
+  <entry id="prefs-do_maintenance" state="uptodate" md5="dd95df07a03031232baea919288b2d00">
+    <title>Preferences: Maintenance: Do Maintenance</title>
+    <para>
+Se pretender realizar operações de manutenção no login, seleccione esta caixa.
+ </para>
+</entry>
+  <entry id="prefs-confirm_maintenance" state="uptodate" md5="a21162cdff3b1d8faeadb7296240036e">
+    <title>Preferências: Manutenção: Confirmar Manutenção</title>
+    <para>
+Se pretender confirmar todas as tarefas de manutenção antes de serem aplicadas, seleccione esta caixa.
+Se não seleccionar esta caixa, todas as operações de manutenção serão realizadas automáticamente sem a opção de
+cancelar no login.
+    </para>
+</entry>
+</help>

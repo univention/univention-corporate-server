@@ -1,0 +1,81 @@
+/**
+ * $Horde: horde/themes/lavander/screen.css,v 1.9.4.4 2007-12-20 15:04:30 jan Exp $
+ */
+
+body {
+    background: #eee;
+}
+a {
+    color: #710f96;
+}
+a.widget {
+    color: #742a82;
+}
+a.widget:hover {
+    color: #fff;
+    background: #742a82;
+}
+.header {
+    background: #e1c2e7;
+    font-size: 100%;
+}
+a.header {
+    background-image: none;
+    background-color: transparent;
+}
+.light {
+    color: #6e4e72;
+}
+.smallheader {
+    color: #eee;
+    background: #e1c2e7;
+}
+.control {
+    background-color: #eccaf2;
+}
+.item {
+    background-color: #f6e7f8;
+}
+.button {
+    color: #fff;
+    background-color: #9a78a0;
+    border: 1px solid #000;
+    padding: 0 2px;
+}
+.button:hover {
+    background-color: #6d0aa0;
+}
+.selected {
+    background-color: #c6a1cd;
+}
+select {
+    background-color: #e0c3e5;
+    color: #000;
+}
+
+/* Menu styles. */
+#menu {
+    color: #fff;
+    background-color: #f4e5f7;
+}
+#menu a {
+    color: #000;
+}
+#menu a.current {
+    background: #e1c2e7;
+}
+#menu h1 {
+    color: #000;
+}
+
+/* Sidebar styles. */
+#sidebarPanel {
+    background-color: #eee;
+}
+
+/* Tab styles. */
+.tabset li.activeTab a, .tabset li.activeTab a:hover {
+    border-bottom-color: #e1c2e7;
+    background-color: #e1c2e7;
+    color: #000;
+}

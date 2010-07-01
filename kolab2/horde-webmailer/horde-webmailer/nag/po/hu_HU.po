@@ -1,0 +1,1225 @@
+# Nag Hungarian translation file.
+# Copyright 2002-2008 Laszlo L. Tornoci
+# This file is distributed under the same license as the Nag package.
+# Latest versions: ftp://xenia.sote.hu/pub/linux/horde/
+#
+# Laszlo L. Tornoci <torlasz@xenia.sote.hu>, 2008.
+msgid ""
+msgstr ""
+"Project-Id-Version: Nag-h3-2.2\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-01-22 17:27+0100\n"
+"PO-Revision-Date: 2008-01-26 17:55+0100\n"
+"Last-Translator: Laszlo L. Tornoci <torlasz@xenia.sote.hu>\n"
+"Language-Team: Hungarian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+#: templates/view/task.inc:35
+#, php-format
+msgid " (%s including sub-tasks)"
+msgstr " (%s alfeladatokkal együtt)"
+
+#: lib/Nag.php:71
+#, php-format
+msgid "%d hour"
+msgstr "%d óra"
+
+#: lib/Nag.php:73
+#, php-format
+msgid "%d hour, %d minute"
+msgstr "%d óra, %d perc"
+
+#: lib/Nag.php:75
+#, php-format
+msgid "%d hour, %d minutes"
+msgstr "%d óra, %d perc"
+
+#: lib/Nag.php:63
+#, php-format
+msgid "%d hours"
+msgstr "%d óra"
+
+#: lib/Nag.php:65
+#, php-format
+msgid "%d hours, %d minute"
+msgstr "%d óra, %d perc"
+
+#: lib/Nag.php:67
+#, php-format
+msgid "%d hours, %d minutes"
+msgstr "%d óra, %d perc"
+
+#: lib/Nag.php:81
+#, php-format
+msgid "%d minute"
+msgstr "%d perc"
+
+#: lib/Nag.php:83
+#, php-format
+msgid "%d minutes"
+msgstr "%d perc"
+
+#: lib/Nag.php:364
+#, php-format
+msgid "%s at %s"
+msgstr "%s, %s"
+
+#: lib/Nag.php:590 lib/Block/tree_alarms.php:41 lib/Block/summary.php:106
+#, php-format
+msgid "%s is due in %s"
+msgstr "%s %s múlva kezdõdik"
+
+#: lib/Nag.php:588 lib/Block/tree_alarms.php:43 lib/Block/summary.php:104
+#, php-format
+msgid "%s is due now."
+msgstr "%s most kezdõdik."
+
+#: task.php:231
+#, php-format
+msgid "%s is now incomplete."
+msgstr "%s nem teljes."
+
+#: data.php:199
+#, php-format
+msgid "%s successfully imported"
+msgstr "A %s fájl importálása sikeresen megtörtént"
+
+#: lib/Nag.php:516 lib/Forms/DeleteTaskList.php:86
+#, php-format
+msgid "%s's Task List"
+msgstr "%s feladatlistája"
+
+#: lib/Nag.php:315 lib/Forms/task.php:58
+msgid "(highest)"
+msgstr "(legsürgõsebb)"
+
+#: lib/Nag.php:315 lib/Forms/task.php:59
+msgid "(lowest)"
+msgstr "(legkevésbé sürgõs)"
+
+#: task.php:215
+#, php-format
+msgid "Access denied completing task %s."
+msgstr "Nincs jogosultsága %s feladatot befejezetté nyilvánítani."
+
+#: task.php:24
+#, php-format
+msgid "Access denied deleting %s"
+msgstr "Nincs jogosultsága %s feladatot törölni."
+
+#: task.php:84 task.php:90
+msgid "Access denied editing task."
+msgstr "Nincs jogosultsága %s feladatot módosítani."
+
+#: task.php:82
+#, php-format
+msgid "Access denied editing task: %s"
+msgstr "Nincs jogosultsága a feladatot módosítani: %s"
+
+#: task.php:163
+#, php-format
+msgid "Access denied moving the task to %s."
+msgstr "Nincs jogosultsága %s feladatot áthelyezni."
+
+#: task.php:166
+#, php-format
+msgid "Access denied removing task from %s."
+msgstr "Nincs jogosultsága a feladatot eltávolítani %s-bõl."
+
+#: task.php:125
+#, php-format
+msgid "Access denied saving task to %s."
+msgstr "Nincs jogosultsága a feladatot elmenteni %s-be."
+
+#: task.php:121
+#, php-format
+msgid "Access denied saving task: %s"
+msgstr "Nincs jogosultsága a feladatot elmenteni: %s"
+
+#: templates/view/task.inc:26 lib/Forms/task.php:88
+msgid "Alarm"
+msgstr "Figyelmeztetés"
+
+#: config/prefs.php.dist:200
+msgid "All tasks"
+msgstr "Az összes feladat"
+
+#: lib/Block/summary.php:63
+msgid "Always show completed tasks?"
+msgstr "Mindig mutassuk a kész feladatokat?"
+
+#: lib/Block/summary.php:60
+msgid "Always show overdue tasks?"
+msgstr "A határidõig el nem végzett feladatokat mindig mutassuk?"
+
+#: config/prefs.php.dist:117
+msgid "Ascending"
+msgstr "növekvõ"
+
+#: lib/Block/summary.php:39
+msgid "Block title"
+msgstr "A képernyõmodul neve"
+
+#: data.php:30
+msgid "CSV"
+msgstr "CSV"
+
+#: lib/UI/VarRenderer/nag.php:58 lib/UI/VarRenderer/nag.php:106
+msgid "Calendar"
+msgstr "Naptár"
+
+#: lib/Forms/DeleteTaskList.php:45 lib/Forms/DeleteTaskList.php:51
+msgid "Cancel"
+msgstr "Mégse"
+
+#: templates/list/task_headers.inc:53
+msgid "Cat_egory"
+msgstr "Kategória"
+
+#: data.php:54 templates/view/task.inc:8 lib/Forms/task.php:76
+#: lib/Forms/task.php:82 config/prefs.php.dist:89 config/prefs.php.dist:104
+msgid "Category"
+msgstr "Kategória"
+
+#: templates/tasklist_list.php:35 tasklists/index.php:56
+msgid "Change Permissions"
+msgstr "A jogosultságok módosítása"
+
+#: config/prefs.php.dist:14
+msgid "Change your task sorting and display options."
+msgstr "Sorbarendezési és megjelenítési beállítások."
+
+#: config/prefs.php.dist:179
+msgid "Choose how you want to receive reminders for tasks with alarms:"
+msgstr ""
+"Válassza ki, milyen módon szeretné megkapni a feladatokra való "
+"figyelmeztetéseket:"
+
+#: config/prefs.php.dist:170
+msgid ""
+"Choose if you want to be notified of new, edited, and deleted tasks by email:"
+msgstr ""
+"Válassza ki, hogy szeretne-e emailben értesítést kapni az új, módosított "
+"vagy törölt feladatokról:"
+
+#: config/prefs.php.dist:42
+msgid "Choose if you want to be notified of task changes and task alarms."
+msgstr ""
+"Válassza ki, hogy szeretne-e értesítést kapni a feladatok megváltozásáról "
+"ill. a figyelmeztetésekrõl."
+
+#: config/prefs.php.dist:35
+msgid "Choose your default task list."
+msgstr "Válassza ki az Ön alapértelmezés szerinti feladatlistáját."
+
+#: templates/tasklist_list.php:31 templates/tasklist_list.php:32
+msgid "Click or copy this URL to display this task list"
+msgstr ""
+"Kattintson rá vagy másolja le ezt az URL-t a feladatlista megjelenítéséhez"
+
+#: templates/panel.inc:43
+msgid "Close"
+msgstr "Bezárás"
+
+#: templates/list/header.inc:8
+msgid "Close Search"
+msgstr "A keresés bezárása"
+
+#: view.php:99
+msgid "Complete"
+msgstr "Kész"
+
+#: templates/list/task_summaries.inc:11 lib/Block/summary.php:175
+#, php-format
+msgid "Complete \"%s\""
+msgstr "\"%s\" készen van"
+
+#: templates/view/task.inc:42
+msgid "Complete Task"
+msgstr "A feladat késszé nyilvánítása"
+
+#: config/prefs.php.dist:202
+msgid "Complete tasks"
+msgstr "A feladatok befejezése"
+
+#: lib/Nag.php:379 lib/Block/summary.php:173
+msgid "Completed"
+msgstr "Kész"
+
+#: task.php:229
+#, php-format
+msgid "Completed %s."
+msgstr "%s készen van."
+
+#: templates/search/search.inc:27
+msgid "Completed Tasks"
+msgstr "Az elkészült feladatok"
+
+#: templates/list/task_summaries.inc:16
+msgid "Completed parent task, mark it as incomplete first"
+msgstr "A fõfeladat kész, elõször állítsa át befejezetlenre"
+
+#: templates/view/task.inc:38 templates/list/task_headers.inc:31
+#: lib/Forms/task.php:94 config/prefs.php.dist:91 config/prefs.php.dist:106
+msgid "Completed?"
+msgstr "Elkészült a feladat?"
+
+#: data.php:58
+msgid "Completion Status"
+msgstr "Státusz"
+
+#: lib/api.php:317 lib/api.php:544
+#, php-format
+msgid "Connection failed: %s"
+msgstr "A kapcsolat nem sikerült: %s"
+
+#: lib/Forms/CreateTaskList.php:39
+msgid "Create"
+msgstr "Létrehozás"
+
+#: lib/Forms/CreateTaskList.php:34
+msgid "Create Task List"
+msgstr "Feladatlista létrehozása"
+
+#: templates/tasklist_list.php:8
+msgid "Create a new Task List"
+msgstr "Új feladatlista létrehozása"
+
+#: templates/view/task.inc:57
+msgid "Created"
+msgstr "Létrehozva"
+
+#: lib/UI/VarRenderer/nag.php:51 lib/UI/VarRenderer/nag.php:100
+msgid "Day"
+msgstr "nap"
+
+#: lib/Nag.php:411 lib/UI/VarRenderer/nag.php:136
+msgid "Day(s)"
+msgstr "nap"
+
+#: config/prefs.php.dist:34
+msgid "Default Task List"
+msgstr "Az alapértelmezés szerinti feladatlista"
+
+#: config/prefs.php.dist:28
+msgid "Defaults for new tasks"
+msgstr "Az új feladatok alapértelmezett beállításai"
+
+#: lib/Forms/task.php:87
+msgid "Delay Start Until"
+msgstr "A kezdést módosítsuk erre"
+
+#: view.php:106 templates/tasklist_list.php:37 tasklists/index.php:57
+#: lib/Forms/DeleteTaskList.php:45
+msgid "Delete"
+msgstr "Törlés"
+
+#: lib/Forms/DeleteTaskList.php:40
+#, php-format
+msgid "Delete %s"
+msgstr "%s törlése"
+
+#: config/prefs.php.dist:20
+msgid "Delete Confirmation"
+msgstr "A törlés megerõsítése"
+
+#: config/prefs.php.dist:21
+msgid "Delete button behaviour"
+msgstr "A törlés gomb viselkedése"
+
+#: task.php:105 lib/Forms/task.php:99
+msgid "Delete this task"
+msgstr "A feljegyzés törlése"
+
+#: task.php:32
+#, php-format
+msgid "Deleted %s."
+msgstr "%s-t kitöröltük."
+
+#: config/prefs.php.dist:118
+msgid "Descending"
+msgstr "csökkenõ"
+
+#: data.php:53 lib/Forms/EditTaskList.php:44 lib/Forms/CreateTaskList.php:37
+#: lib/Forms/task.php:95
+msgid "Description"
+msgstr "Leírás"
+
+#: config/prefs.php.dist:13
+msgid "Display Options"
+msgstr "Megjelenítési beállítások"
+
+#: templates/tasklist_list.php:16
+msgid "Display URL"
+msgstr "Az URL megjelenítése"
+
+#: config/prefs.php.dist:128
+msgid "Do you want to confirm deleting entries?"
+msgstr "Az adatok törlését megelõzõen óhajt-e egy megerõsítõ kérdést?"
+
+#: data.php:55 templates/view/task.inc:22 lib/Forms/task.php:86
+msgid "Due By"
+msgstr "Határidõ"
+
+#: config/prefs.php.dist:90 config/prefs.php.dist:105
+msgid "Due Date"
+msgstr "A határidõ napja"
+
+#: lib/UI/VarRenderer/nag.php:99
+msgid "Due date specified."
+msgstr "A határidõ napja."
+
+#: view.php:102 templates/tasklist_list.php:33 tasklists/index.php:55
+msgid "Edit"
+msgstr "Módosítás"
+
+#: templates/list/task_summaries.inc:38 lib/Block/summary.php:166
+#, php-format
+msgid "Edit \"%s\""
+msgstr "\"%s\" módosítása"
+
+#: lib/Forms/EditTaskList.php:40
+#, php-format
+msgid "Edit %s"
+msgstr "%s módosítása"
+
+#: templates/list/task_headers.inc:42
+msgid "Edit Task"
+msgstr "A feladat módosítása"
+
+#: templates/list/task_headers.inc:58
+msgid "Edit categories and colors"
+msgstr "A kategóriák és színeik módosítása"
+
+#: task.php:95 task.php:109
+#, php-format
+msgid "Edit: %s"
+msgstr "\"%s\" módosítása"
+
+#: task.php:19
+#, php-format
+msgid "Error deleting task: %s"
+msgstr "Nem sikerült a feladat törlése: %s"
+
+#: templates/view/task.inc:34 lib/Forms/task.php:93
+msgid "Estimated Time"
+msgstr "Becsült idõtartam"
+
+#: templates/data/export.inc:17
+msgid "Export"
+msgstr "Exportálás"
+
+#: templates/data/export.inc:6
+msgid "Export Tasks"
+msgstr "Feladatok exportálása"
+
+#: config/prefs.php.dist:56
+msgid "External Data"
+msgstr "Külsõ adat"
+
+#: config/prefs.php.dist:12 config/prefs.php.dist:19 config/prefs.php.dist:26
+msgid "General Options"
+msgstr "Általános beállítások"
+
+#: lib/UI/VarRenderer/nag.php:111
+msgid "Hour"
+msgstr "óra"
+
+#: lib/Nag.php:414 lib/UI/VarRenderer/nag.php:135
+msgid "Hour(s)"
+msgstr "óra"
+
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Tasks, Step %d"
+msgstr "Feladatok importálása, %d. lépés"
+
+#: data.php:205
+msgid "Import/Export Tasks"
+msgstr "Feladatok importálása/exportálása"
+
+#: list.php:112
+msgid "Incom_plete tasks"
+msgstr "Elvégzetlen feladatok"
+
+#: templates/search/search.inc:26
+msgid "Incomplete Tasks"
+msgstr "Elvégzetlen feladatok"
+
+#: templates/list/task_summaries.inc:8
+msgid "Incomplete sub tasks, complete them first"
+msgstr "Az alfeladatok befejezetlenek, elõször végezze el õket"
+
+#: config/prefs.php.dist:201
+msgid "Incomplete tasks"
+msgstr "Elvégzetlen feladatok"
+
+#: templates/view/task.inc:64
+msgid "Last Modified"
+msgstr "Utolsó módosítás"
+
+#: templates/tasklist_list.php:2 tasklists/index.php:61
+msgid "Manage Task Lists"
+msgstr "Feladatlisták kezelése"
+
+#: templates/list/task_summaries.inc:19
+#, php-format
+msgid "Mark \"%s\" as incomplete"
+msgstr "Jelöljük meg \"%s\"-t, mint elvégzetlent"
+
+#: templates/view/task.inc:44
+msgid "Mark as incomplete"
+msgstr "Jelöljük meg, mint elvégzetlent"
+
+#: lib/api.php:120
+msgid "Maximum Number of Tasks"
+msgstr "A feladatok maximális száma"
+
+#: lib/Block/tree_alarms.php:3
+msgid "Menu Alarms"
+msgstr "Figyelmeztetések menü"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "Menülista"
+
+#: lib/UI/VarRenderer/nag.php:112
+msgid "Minute"
+msgstr "perc"
+
+#: lib/Nag.php:417 lib/UI/VarRenderer/nag.php:135
+msgid "Minute(s)"
+msgstr "perc"
+
+#: lib/UI/VarRenderer/nag.php:52 lib/UI/VarRenderer/nag.php:101
+msgid "Month"
+msgstr "hónap"
+
+#: templates/list/header.inc:9
+msgid "More Options..."
+msgstr "További beállítások..."
+
+#: lib/api.php:1001
+msgid "Multiple iCalendar components found; only one vTodo is supported."
+msgstr ""
+"Több iCalendar komponens van jelen; csak egy vTodo használata támogatott."
+
+#: templates/panel.inc:70
+msgid "My Task Lists:"
+msgstr "Feladatlistáim:"
+
+#: list.php:34
+msgid "My Tasks"
+msgstr "Feladataim"
+
+#: templates/search/search.inc:18
+msgid "N_ame"
+msgstr "Elnevezés"
+
+#: templates/list/task_headers.inc:45
+msgid "Na_me"
+msgstr "Elnevezés"
+
+#: lib/Driver/kolab.php:741
+#, php-format
+msgid "Nag/kolab: Did not find task %s"
+msgstr "Nag/kolab: %s feladat nem található"
+
+#: data.php:52 lib/Forms/EditTaskList.php:43 lib/Forms/CreateTaskList.php:36
+#: lib/Forms/task.php:65
+msgid "Name"
+msgstr "Elnevezés"
+
+#: task.php:74 task.php:109 lib/Block/tree_menu.php:26
+msgid "New Task"
+msgstr "Új feladat"
+
+#: templates/data/import.inc:39
+msgid "Next"
+msgstr "Következõ"
+
+#: config/prefs.php.dist:166
+msgid "No"
+msgstr "nem"
+
+#: lib/UI/VarRenderer/nag.php:46
+msgid "No delay"
+msgstr "Nincs késleltetés"
+
+#: lib/UI/VarRenderer/nag.php:95
+msgid "No due date."
+msgstr "Nincs határidõ."
+
+#: lib/api.php:405 lib/api.php:724 lib/api.php:782 lib/api.php:994
+msgid "No iCalendar data was found."
+msgstr "Nem található iCalendar adat."
+
+#: lib/Forms/task.php:50
+msgid "No parent task"
+msgstr "Nincs fõfeladat"
+
+#: lib/Nag.php:605
+msgid "No task lists are available to guests."
+msgstr "A vendég felhasználók részére nem áll rendelkezésre feladatlista."
+
+#: templates/list/task_footers.inc:5
+msgid "No tasks match"
+msgstr "Nincs ilyen feladat"
+
+#: lib/Block/summary.php:229
+msgid "No tasks to display"
+msgstr "Nincs megjeleníthetõ feladat"
+
+#: lib/Nag.php:421 lib/UI/VarRenderer/nag.php:151
+msgid "None"
+msgstr "nincs"
+
+#: lib/Nag.php:380
+msgid "Not Completed"
+msgstr "Elvégzetlen"
+
+#: templates/view/task.inc:14
+msgid "Not Private"
+msgstr "nem titkos"
+
+#: lib/Driver/sql.php:100 lib/Driver/sql.php:136
+msgid "Not found"
+msgstr "nem található"
+
+#: config/prefs.php.dist:41
+msgid "Notifications"
+msgstr "Értesítések"
+
+#: config/prefs.php.dist:168
+msgid "On all shown tasklists"
+msgstr "Az összes megjelenített feladatlistán"
+
+#: config/prefs.php.dist:169
+msgid "On all tasklists I have read access to"
+msgstr "Az összes feladatlistán, amihez hozzáférek"
+
+#: config/prefs.php.dist:167
+msgid "On my tasklists only"
+msgstr "Csak a saját feladatlistáimon"
+
+#: templates/list/task_headers.inc:39
+msgid "P_ri"
+msgstr "Pri"
+
+#: lib/Forms/task.php:72
+msgid "Parent task"
+msgstr "Fõfeladat"
+
+#: lib/api.php:591 lib/api.php:629 lib/api.php:662 lib/api.php:698
+#: lib/api.php:820 lib/api.php:875 lib/api.php:939 lib/api.php:976
+#: lib/api.php:1087 lib/api.php:1134
+msgid "Permission Denied"
+msgstr "Önnek nincs ehhez elegendõ jogosultsága"
+
+#: lib/api.php:178 lib/Forms/DeleteTaskList.php:56
+msgid "Permission denied"
+msgstr "Önnek nincs ehhez elegendõ jogosultsága"
+
+#: data.php:57 templates/view/task.inc:30 lib/Forms/task.php:90
+#: config/prefs.php.dist:87 config/prefs.php.dist:102
+msgid "Priority"
+msgstr "Prioritás (sürgõsség)"
+
+#: templates/view/task.inc:14 lib/Driver.php:907
+msgid "Private"
+msgstr "Titkos"
+
+#: lib/Driver.php:905
+msgid "Private Task"
+msgstr "Titkos feladat"
+
+#: templates/view/task.inc:12 lib/Forms/task.php:85
+msgid "Private?"
+msgstr "Titkos?"
+
+#: lib/Forms/DeleteTaskList.php:43
+#, php-format
+msgid ""
+"Really delete the task list \"%s\"? This cannot be undone and all data on "
+"this task list will be permanently removed."
+msgstr ""
+"Valóban törölni kívánja ezt a(z) \"%s\" feladatlistát? Ez nem "
+"visszafordítható lépés, és a feladatlista adatait véglegesen törli."
+
+#: view.php:106
+msgid "Really delete this task?"
+msgstr "Valóban törölni kívánja ezt a feladatot?"
+
+#: templates/panel.inc:88 lib/Forms/EditTaskList.php:46 lib/Forms/task.php:97
+msgid "Save"
+msgstr "Mentés"
+
+#: task.php:194
+#, php-format
+msgid "Saved %s."
+msgstr "%s-t elmentettük."
+
+#: search.php:14 templates/search/search.inc:31 templates/list/header.inc:4
+#: lib/Block/tree_menu.php:46
+msgid "Search"
+msgstr "Keresés"
+
+#: templates/search/search.inc:17
+msgid "Search In:"
+msgstr "Keresés:"
+
+#: templates/search/search.inc:12
+msgid "Search _Text:"
+msgstr "A keresendõ szöveg:"
+
+#: templates/panel.inc:58
+msgid "Search for Task Lists:"
+msgstr "Feladatlisták keresése:"
+
+#: templates/search/search.inc:24
+msgid "Search:"
+msgstr "Keresés:"
+
+#: list.php:73
+#, php-format
+msgid "Search: Results for \"%s\""
+msgstr "Keresés: \"%s\" eredménye"
+
+#: lib/UI/VarRenderer/nag.php:58 lib/UI/VarRenderer/nag.php:106
+msgid "Select a date"
+msgstr "Válasszon ki egy dátumot"
+
+#: templates/data/export.inc:11
+msgid "Select the export format:"
+msgstr "Válassza ki az exportálás formátumát:"
+
+#: templates/data/import.inc:36
+msgid "Select the file to import:"
+msgstr "Válassza ki az importálandó fájlt:"
+
+#: templates/data/import.inc:12
+msgid "Select the format of the source file:"
+msgstr "Válassza ki, milyen formátumú fájlból kíván importálni:"
+
+#: templates/panel.inc:79
+msgid "Shared Task Lists:"
+msgstr "Megosztott feladatlisták:"
+
+#: config/prefs.php.dist:68
+msgid "Should the Task List be shown in its own column in the List view?"
+msgstr "Jelenjen meg a Feladatlista egy külön oszlopban listázáskor?"
+
+#: lib/Block/summary.php:45
+msgid "Show action buttons?"
+msgstr "Legyenek funkcióval ellátott ikonok?"
+
+#: config/prefs.php.dist:203
+msgid "Show complete, incomplete, or all tasks in the task list?"
+msgstr "A kész, az elvégzetlen vagy az összes feladatot mutassuk a listában?"
+
+#: config/prefs.php.dist:190
+msgid "Show data from any of these other applications in your task list?"
+msgstr "Feladatlistájában jelenjenek-e meg ezen más programok adatai?"
+
+#: config/prefs.php.dist:57
+msgid "Show data from other applications or sources."
+msgstr "Mutassuk más programok ill. adatforrások adatait."
+
+#: lib/Block/summary.php:48
+msgid "Show due dates?"
+msgstr "Mutassuk a határidõt?"
+
+#: lib/Block/summary.php:42
+msgid "Show priorities?"
+msgstr "Mutassuk a prioritást?"
+
+#: lib/Block/summary.php:54
+msgid "Show task alarms?"
+msgstr "Mutassuk a feladatokra figyelmeztetõ jelzéseket?"
+
+#: lib/Block/summary.php:57
+msgid "Show task category?"
+msgstr "Mutassuk a kategóriát?"
+
+#: config/prefs.php.dist:78
+msgid "Show task list options panel?"
+msgstr "Mutassuk a feladatlista beállítási lehetõségeit?"
+
+#: lib/Block/summary.php:51
+msgid "Show tasklist name?"
+msgstr "Mutassuk a feladatlista nevét?"
+
+#: lib/Block/summary.php:70
+msgid "Show tasks from these categories"
+msgstr "A következõ kategóriákba sorolt feladatokat mutassuk"
+
+#: lib/Block/summary.php:66
+msgid "Show tasks from these tasklists"
+msgstr "A következõ feladatlisták tartalmát mutassuk"
+
+#: templates/list/task_headers.inc:53
+msgid "Sort by Category"
+msgstr "Kategória szerinti sorrend"
+
+#: templates/list/task_headers.inc:31
+msgid "Sort by Completion Status"
+msgstr "A befejezettség szerinti sorrend"
+
+#: templates/list/task_headers.inc:50
+msgid "Sort by Due Date"
+msgstr "Határidõ szerinti sorrend"
+
+#: templates/list/task_headers.inc:45
+msgid "Sort by Name"
+msgstr "Elnevezés szerinti sorrend"
+
+#: templates/list/task_headers.inc:39
+msgid "Sort by Priority"
+msgstr "Prioritás szerinti sorrend"
+
+#: templates/list/task_headers.inc:35
+msgid "Sort by User Name"
+msgstr "Felhasználói név szerinti sorrend"
+
+#: config/prefs.php.dist:119
+msgid "Sort direction:"
+msgstr "A sorbarendezés iránya:"
+
+#: config/prefs.php.dist:93
+msgid "Sort tasks by:"
+msgstr "A sorbarendezés elsõ szempontja:"
+
+#: data.php:56
+msgid "Start"
+msgstr "Kezdet"
+
+#: templates/view/task.inc:18
+msgid "Start Date"
+msgstr "Kezdõ dátum"
+
+#: lib/UI/VarRenderer/nag.php:50
+msgid "Start date specified."
+msgstr "Kezdõ dátum."
+
+#: templates/tasklist_list.php:17
+msgid "Subscription URL"
+msgstr "Elérési URL"
+
+#: templates/list/task_summaries.inc:57
+msgid "Task Alarm"
+msgstr "Figyelmeztetõ jelzés"
+
+#: templates/list/task_headers.inc:48
+msgid "Task Alarm?"
+msgstr "Tartozik a feladathoz figyelmeztetés?"
+
+#: config/prefs.php.dist:27
+msgid "Task Defaults"
+msgstr "A feladat alapértelmezett beállításai"
+
+#: templates/tasklist_list.php:15 lib/Forms/task.php:68
+msgid "Task List"
+msgstr "Feladatlista"
+
+#: templates/panel.inc:5
+msgid "Task List Information"
+msgstr "Feladatlista információk"
+
+#: templates/tasklist_list.php:12
+msgid "Task List List"
+msgstr "Feladatlisták"
+
+#: config/prefs.php.dist:33 config/prefs.php.dist:40 config/prefs.php.dist:55
+msgid "Task List and Share Options"
+msgstr "Feladatlisták és megosztásuk"
+
+#: templates/tasklist_info.php:6
+#, php-format
+msgid "Task List owned by %s."
+msgstr "A feladatlista tulajdonosa %s."
+
+#: templates/panel.inc:52 templates/panel.inc:53
+msgid "Task Lists"
+msgstr "Feladatlisták"
+
+#: config/prefs.php.dist:88 config/prefs.php.dist:103
+msgid "Task Name"
+msgstr "A feladat elnevezése"
+
+#: templates/list/task_summaries.inc:55
+msgid "Task Note"
+msgstr "Megjegyzés a feladathoz"
+
+#: templates/list/task_headers.inc:47
+msgid "Task Note?"
+msgstr "Van megjegyzés?"
+
+#: templates/search/search.inc:6
+msgid "Task Search"
+msgstr "Keresés a feladatlistában"
+
+#: lib/Nag.php:630
+msgid "Task added:"
+msgstr "Feladat hozzáadása:"
+
+#: lib/Nag.php:640
+msgid "Task deleted:"
+msgstr "Feladat törlése: "
+
+#: lib/Nag.php:635
+msgid "Task modified:"
+msgstr "Feladat módosítása:"
+
+#: task.php:88 view.php:44
+msgid "Task not found."
+msgstr "A feladat nem található."
+
+#: config/prefs.php.dist:92 config/prefs.php.dist:107
+msgid "Tasklist"
+msgstr "Feladatlista"
+
+#: lib/api.php:1056
+msgid "Tasks"
+msgstr "Feladatok"
+
+#: lib/Block/summary.php:3
+msgid "Tasks Summary"
+msgstr "Feladatlista összefoglalás"
+
+#: data.php:193
+#, php-format
+msgid "The %s file didn't contain any tasks."
+msgstr "A(z) \"%s\" állományban nem volt feladat."
+
+#: lib/Driver.php:56
+msgid "The Tasks backend is not currently available."
+msgstr "A Feladatlista alrendszer jelenleg nem áll rendelkezésre."
+
+#: lib/Driver.php:137
+#, php-format
+msgid "The Tasks backend is not currently available: %s"
+msgstr "A Feladatlista alrendszer jelenleg nem áll rendelkezésre: %s"
+
+#: lib/Forms/task.php:133
+msgid "The alarm value must not be empty."
+msgstr "A figyelmeztetés nem lehet üres."
+
+#: templates/prefs/defaultduetimeselect.inc:8
+msgid "The current hour"
+msgstr "A mostani óra"
+
+#: lib/Nag.php:631
+#, php-format
+msgid ""
+"The task \"%s\" has been added to \"%s\" tasklist, with a due date of: %s."
+msgstr ""
+"\"%s\" feladatot hozzáadtuk a(z) \"%s\" feladatlistához a következõ "
+"határidõvel: %s."
+
+#: lib/Nag.php:641
+#, php-format
+msgid ""
+"The task \"%s\" has been deleted from \"%s\" tasklist, with a due date of: %"
+"s."
+msgstr ""
+"\"%s\" feladatot töröltük a(z) \"%s\" feladatlistából. A határidõ ez volt: %"
+"s."
+
+#: lib/Nag.php:636
+#, php-format
+msgid ""
+"The task \"%s\" has been edited on \"%s\" tasklist, with a due date of: %s."
+msgstr ""
+"\"%s\" feladatot módosítottuk a(z) \"%s\" feladatlistában. A határidõvel ez "
+"volt: %s."
+
+#: tasklists/create.php:31
+#, php-format
+msgid "The task list \"%s\" has been created."
+msgstr "A(z) \"%s\" feladatlistát létrehoztuk."
+
+#: tasklists/delete.php:48
+#, php-format
+msgid "The task list \"%s\" has been deleted."
+msgstr "A(z) \"%s\" feladatlistát töröltük."
+
+#: tasklists/edit.php:42
+#, php-format
+msgid "The task list \"%s\" has been renamed to \"%s\"."
+msgstr "\"%s\" feladatlistát átneveztük erre: \"%s\"."
+
+#: tasklists/edit.php:44
+#, php-format
+msgid "The task list \"%s\" has been saved."
+msgstr "A(z) \"%s\" feladatlistát elmentettük."
+
+#: config/prefs.php.dist:108
+msgid "Then:"
+msgstr "a második szempont:"
+
+#: templates/list/empty.inc:2
+msgid "There are no tasks matching the current criteria."
+msgstr "Nincs a feltételeknek megfelelõ feladat."
+
+#: task.php:225
+#, php-format
+msgid "There was a problem completing %s: %s"
+msgstr "A(z) %s feladat késszé nyilvánítása során hiba lépett fel: %s"
+
+#: task.php:29
+#, php-format
+msgid "There was a problem deleting %s: %s"
+msgstr "A(z) %s feladat törlése során hiba lépett fel: %s"
+
+#: task.php:192
+#, php-format
+msgid "There was a problem saving the task: %s."
+msgstr "A feladat mentése során hiba lépett fel: %s"
+
+#: data.php:196
+#, php-format
+msgid "There was an error importing the data: %s"
+msgstr "Az importálás során hiba történt: %s"
+
+#: lib/api.php:397 lib/api.php:716 lib/api.php:988
+msgid "There was an error importing the iCalendar data."
+msgstr "Az iCalendar adatok importálása során hiba történt."
+
+#: data.php:80
+msgid "There were no tasks to export."
+msgstr "Nem volt exportálható feladat."
+
+#: data.php:126
+msgid "This file format is not supported."
+msgstr "Ismeretlen fájlformátum."
+
+#: tasklists/delete.php:24
+msgid "This task list cannot be deleted."
+msgstr "Ez a feladatlista nem törölhetõ."
+
+#: templates/tasklist_info.php:7
+msgid "To subscribe to this task list from another program, use this URL: "
+msgstr ""
+"Ha ezt a feladatlistát egy másik programból kívánja elérni, ezt az URL-t "
+"használja: "
+
+#: lib/Forms/DeleteTaskList.php:63
+#, php-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "\"%s\" törlése nem lehetséges: %s"
+
+#: lib/Driver.php:140
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Nem sikerült beolvasni %s definícióját."
+
+#: lib/Forms/EditTaskList.php:55
+#, php-format
+msgid "Unable to save task list \"%s\": %s"
+msgstr "\"%s\" feladatlista mentése nem sikerült: %s"
+
+#: templates/view/task.inc:9 templates/list/task_summaries.inc:62
+#: lib/Nag.php:850 lib/Nag.php:851 lib/Nag.php:865 lib/Nag.php:866
+#: lib/Forms/task.php:81 lib/Block/summary.php:31 lib/Block/summary.php:222
+msgid "Unfiled"
+msgstr "besorolatlan"
+
+#: lib/api.php:502 lib/api.php:789 lib/api.php:847 lib/api.php:901
+#: lib/api.php:1026
+#, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "Nem támogatott tartalomtípus: %s"
+
+#: lib/Driver.php:1084
+#, php-format
+msgid ""
+"We would like to remind you of this due task.\n"
+"\n"
+"%s\n"
+"\n"
+"Date: %s\n"
+"Time: %s\n"
+"\n"
+"%s"
+msgstr ""
+"Szeretnénk emlékeztetni erre a határidõs feladatra.\n"
+"\n"
+"%s\n"
+"\n"
+"Dátum: %s\n"
+"Idõ: %s\n"
+"\n"
+"%s"
+
+#: lib/Nag.php:408 lib/UI/VarRenderer/nag.php:136
+msgid "Week(s)"
+msgstr "Hét"
+
+#: templates/prefs/defaultduetimeselect.inc:6
+msgid "What do you want to be the default due time for tasks?"
+msgstr "Mi legyen a feladatok alapértelmezett határideje?"
+
+#: config/prefs.php.dist:146
+msgid ""
+"When creating a new task, how many days in the future should the default due "
+"date be (0 means today)?"
+msgstr ""
+"Új feladat létrehozásakor, hány nappal késõbb legyen a határidõ (0 az "
+"aznapot jelenti)?"
+
+#: config/prefs.php.dist:137
+msgid "When creating a new task, should it default to having a due date?"
+msgstr "Új feladat létrehozásakor, legyen határideje?"
+
+#: templates/data/import.inc:21
+msgid "Which tasklist should the tasks be added to?"
+msgstr "Melyik listába vegyük föl a feladatokat?"
+
+#: lib/UI/VarRenderer/nag.php:53 lib/UI/VarRenderer/nag.php:102
+msgid "Year"
+msgstr "év"
+
+#: tasklists/edit.php:28
+msgid "You are not allowed to change this task list."
+msgstr "Ön nem jogosult ezt a feladatlistát megváltoztatni."
+
+#: data.php:41 data.php:151 task.php:61
+#, php-format
+msgid "You are not allowed to create more than %d tasks."
+msgstr "Ön legfeljebb %d feladatot hozhat létre."
+
+#: tasklists/delete.php:35
+msgid "You are not allowed to delete this task list."
+msgstr "Ön nem jogosult törölni ezt a feladatlistát."
+
+#: view.php:52
+msgid "You do not have permission to view this tasklist."
+msgstr "Ön nem jogosult megtekinteni ezt a feladatlistát."
+
+#: lib/Nag.php:631
+msgid "You requested to be notified when tasks are added to your tasklists."
+msgstr ""
+"Ön értesítést kért arra az esetre, ha új feladatok kerülnek a "
+"feladatlistáira."
+
+#: lib/Nag.php:641
+msgid ""
+"You requested to be notified when tasks are deleted from your tasklists."
+msgstr ""
+"Ön értesítést kért arra az esetre, ha feladatok törlõdnek a feladatlistáiról."
+
+#: lib/Nag.php:636
+msgid "You requested to be notified when tasks are edited on your tasklists."
+msgstr ""
+"Ön értesítést kért arra az esetre, ha módosulnak a feladatok  a "
+"feladatlistáin."
+
+#: templates/prefs/tasklistselect.inc:10
+msgid "Your default task list:"
+msgstr "Az Ön alapértelmezés szerinti feladatlistája:"
+
+#: templates/panel.inc:65
+msgid "[Manage Task Lists]"
+msgstr "[Feladatlisták kezelése]"
+
+#: templates/list/task_summaries.inc:46 lib/Block/summary.php:101
+#: lib/Block/summary.php:206
+msgid "[none]"
+msgstr "[egy sem]"
+
+#: templates/search/search.inc:25
+msgid "_All Tasks"
+msgstr "Az összes feladat"
+
+#: list.php:111
+msgid "_All tasks"
+msgstr "Az összes feladat"
+
+#: templates/search/search.inc:20
+msgid "_Category"
+msgstr "Kategória"
+
+#: view.php:99
+msgid "_Complete"
+msgstr "Elkészült"
+
+#: list.php:114
+msgid "_Completed tasks"
+msgstr "Kész feladatok"
+
+#: view.php:106
+msgid "_Delete"
+msgstr "Törlés"
+
+#: templates/search/search.inc:19
+msgid "_Description"
+msgstr "Megjegyzés"
+
+#: templates/list/task_headers.inc:50
+msgid "_Due Date"
+msgstr "A határidõ napja"
+
+#: view.php:102
+msgid "_Edit"
+msgstr "Módosítás"
+
+#: list.php:113
+msgid "_Future tasks"
+msgstr "Jövõbeli feladatok"
+
+#: lib/Nag.php:553
+msgid "_Import/Export"
+msgstr "Import/_Export"
+
+#: lib/Nag.php:540
+msgid "_List Tasks"
+msgstr "_Lista"
+
+#: lib/Nag.php:545
+msgid "_New Task"
+msgstr "Ú_j feladat"
+
+#: lib/Nag.php:558
+msgid "_Print"
+msgstr "_Nyomtatás"
+
+#: lib/Nag.php:549
+msgid "_Search"
+msgstr "Kere_sés"
+
+#: templates/list/task_headers.inc:35
+msgid "_Task List"
+msgstr "Feladatlista"
+
+#: templates/prefs/defaultduetimeselect.inc:15
+msgid "am"
+msgstr "de."
+
+#: data.php:31
+msgid "iCalendar (vTodo)"
+msgstr ""
+
+#: lib/Block/tree_menu.php:36
+#, php-format
+msgid "in %s"
+msgstr "%s jegyzettömbben"
+
+#: lib/Nag.php:79
+msgid "no time"
+msgstr "nincs idõpont"
+
+#: templates/prefs/defaultduetimeselect.inc:15
+msgid "pm"
+msgstr "du."
+
+#: data.php:100 templates/data/export.inc:1
+msgid "tasks.csv"
+msgstr "feladatlista.csv"
+
+#: data.php:111
+msgid "tasks.ics"
+msgstr "feladatlista.ics"

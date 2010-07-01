@@ -1,0 +1,10 @@
+/**
+ * Ideas theme by Roel Gloudemans <r.gloudemans@i-to-i.nl>
+ * Based on the Ideas to Interconnect BV website (http://www.i-to-i.nl)
+ */
+
+.text:hover td {
+    background-color: #bad0e7;
+}
+
+

@@ -1,0 +1,132 @@
+======================
+ IMP Development Team
+======================
+
+
+Core Developers
+===============
+
+- Chuck Hagenbuch <chuck@horde.org>
+- Jan Schneider <jan@horde.org>
+- Michael Slusarz <slusarz@horde.org>
+
+
+Localization
+============
+
+=====================   ======================================================
+Arabic (Oman)           Said Al-Hosni <admin@wabhosting.com>
+Arabic (Syria)          Platinum Development Team <devteam@platinum-sy.net>
+Basque                  Euskal Herriko Unibertsitatea <xabier.arrieta@ehu.es>
+Bosnian                 Alen Sarkinovic <alen@linux.org.ba>
+                        Vedran Ljubovic <vljubovic@smartnet.ba>
+Brazilian Portuguese    <hostmaster@sbs.srv.br>
+                        Antonio Dias <accdias@sst.com.br>
+                        Fabio Gomes <flgoms@uol.com.br>
+                        Luis Felipe Marzagao <duli@fedoraproject.org>
+                        Eduardo de Carli <carliedu@ig.com.br>
+Bulgarian               Miroslav Pendev <pendev@hotmail.com>
+Catalan                 Angels Guimerà <angels.Guimera@uab.es>
+                        Jordi Giralt <projecte.k2@upcnet.es>
+Chinese (Simplified)    WangHengWen <whw@my169.com>
+                        Anna Chen <annachen2008@yahoo.com.cn>
+Chinese (Traditional)   FL KOF <kof_fl@hotmail.com>
+                        David Chang <david@tmv.gov.tw>
+Croatian                Iva Rumora <iva.rumora@zg.t-com.hr>
+                        Matej Vela <matej.vela@carnet.hr>
+Czech                   Pavel Chytil <pchytil@asp.ogi.edu>
+                        Jan Krivanek <honza@atack.cz>
+Danish                  Martin List-Petersen <martin@list-petersen.dk>
+                        Brian Truelsen <horde+i18n@briantruelsen.dk>
+                        Niels Baggesen <nba@users.sourceforge.net>
+Dutch                   Jan Kuipers <jrkuipers@lauwerscollege.nl>
+                        Peter Arien <peter.arien@cc.kuleuven.ac.be>
+                        Han Spruyt <han.spruyt@ijsselgroep.nl>
+Estonian                Toomas Aas <toomas.aas@raad.tartu.ee>
+                        Alar Sing <alar.sing@err.ee>
+Finnish                 Leena Heino <liinu@uta.fi>
+French                  Christophe Ruelle <ruelle@echo.fr>
+                        Frederic Trudeau <ftrudeau@CAM.ORG>
+                        Benoit St-André <ben@benoitst-andre.net>
+                        Pierre Lachance <pl@pierrelachance.net>
+                        Thierry Thomas <thierry@pompo.net>
+                        Vincent Vinet <vvinet@revolutionlinux.com>
+                        Yannick Sebastia <yannick.sebastia@ecole-navale.fr>
+Galician                Rafael Varela <rafael.varela@usc.es>
+                        Guillermo Mendez <guille@usc.es>
+German                  Carsten Guenther <cguenther@guenthers.net>
+                        Jan Schneider <jan@horde.org>
+Greek                   Stefanos I. Dimitriou <support@teiath.gr>
+                        Silligardos Xristoforos
+                        Anagnostopoulos Apostolis
+                        Konstantinos C. Milosis <kmilosis@yahoo.com>
+Hebrew                  Matt Selsky <selsky@columbia.edu>
+Hungarian               Laszlo L. Tornoci <torlasz@xenia.sote.hu>
+Icelandic               Bjorn Davidsson <bjossi@snerpa.is>
+Indonesian              Slamin <slamin@unej.ac.id>
+Italian                 Giovanni Meneghetti <gmeneghetti@infvic.it>
+                        Marco Pirovano <marco.pirovano@unibocconi.it>
+                        Cristian Manoni <cristian.manoni@nethesis.it>
+Japanese                B.J. Black <william.black@sun.com>
+                        Takeshi Morishima <tm@onepost.net>
+                        Hiromi Kimura <hiromi@tac.tsukuba.ac.jp>
+Khmer                   Leang Chumsoben <soben@khmeros.info>
+Korean                  J.I Kim <aporie@netian.com>
+                        Jinhyok Heo <novembre@ournature.org>
+Latvian                 Kaspars Kapenieks <kaspars@rcc.lv>
+Lithuanian              Darius Matuliauskas <darius@lnk.lt>
+                        Vilius Šumskas <vilius@lnk.lt>
+Macedonian              Stojan Pesov <ssp@eureka.com.mk>
+Norwegian Bokmaal       Øyvind Monsløp <omonslop@online.no>
+                        Oystein Steimler <oystein@rexta.net>
+                        Torbjorn Grindhaug <grindhaug@gmail.com>
+                        Torstein S. Hansen <huleboer@techbee.no>
+                        Andreas Gunleikskaas <andreas@gunleikskaas.no>
+                        Trond Bjørstad <trb@ndn.no>
+                        Thomas Chr. Dahl <tcd@ndn.no>
+                        Geir O. Hogberg <horde@skydiver.no>
+Norwegian Nynorsk       Per-Stian Vatne <psv@orsta.org>
+Persian                 MetaNET Amirkabir <persian-horde@metanetworking.com>
+Polish                  Mariusz Zynel <mariusz@math.uwb.edu.pl>
+                        Piotr Roszatycki <dexter@debian.org>
+                        Przemyslaw "Primo" Witek <primo@npl.pl>
+                        Mateusz Kaminski <matipl@pld-linux.org>
+                        Krzysztof Kozlowski <kozik1@o2.pl>
+                        Piotr Adamcio <adamcios@o2.pl>
+                        Tadeusz Lesiecki <lesiecki@tmtsystem.pl>
+                        Piotr Tarnowski <drfugazi@drfugazi.eu.org>
+Portuguese              Nuno Loureiro <nuno@eth.pt>
+                        Manuel Menezes de Sequeira <Manuel.Sequeira>
+Romanian                Corneliu Musat <cmusat@tiamat.keysys.ro>
+Russian                 Anton Nekhoroshih <anton@valuehost.ru>
+                        Fedor A. Fetisov <faf@ssc.ru>
+                        Alexey Zakharov <baber@mosga.net>
+Slovak                  Leo Mrafko <leo@oel.sk>
+                        Ivan Noris <noris@bgs.sk>
+                        Martin Matuška <martin@matuska.org>
+Slovenian               Jure Krasovic <jurek@rcc-irc.si>
+                        Matic Dolar <matic@medium.si>
+Spanish                 Raul Alvarez Venegas <rav@tecoman.ucol.mx>
+                        Manuel Perez Ayala <mperaya@alcazaba.unex.es>
+Swedish                 Andreas Dahlén <andreas@dahlen.ws>
+                        Joaquim Homrighausen <joho@webbplatsen.se>
+Thai                    Surasak Srisawan <surasak@rirc.ac.th>
+Turkish                 Genco Yilmaz <gencoyilmaz@yahoo.com>
+                        Istanbul Technical University IT Department
+                        <itubim@itu.edu.tr>
+                        Middle East Technical University <horde-tr@metu.edu.tr>
+Ukrainian               Andriy Kopystyansky <anri@polynet.lviv.ua>
+=====================   ======================================================
+
+
+Inactive Developers
+===================
+
+- Jon Parise <jon@csh.rit.edu>
+- Mike Cochrane <mike@graftonhall.co.nz>
+- Anil Madhavapeddy <anil@recoil.org>
+- Jason Orcutt <zerodiv@zerodivide.net>
+- Brian Jones <cbj@gnu.org>
+- Mike Hardy <mike@itsprojects.com>
+- Ivan E. Moore II <rkrusty@tdyc.com>
+- Chris Hyde <chris@jeks.net>

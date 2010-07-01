@@ -1,0 +1,1283 @@
+# Turba Greek translation.
+# Copyright 2002 Stefanos I. Dimitriou.
+# Stefanos I. Dimitriou <support_webmail@teiath.gr>, 2002.
+# Silligardos Xristoforos, 2002.
+# Anagnostopoulos Apostolis, 2002.
+# Milosis C. Konstantinos, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba: 1.2-cvs\n"
+"POT-Creation-Date: 2002-11-07 12:11+0200\n"
+"PO-Revision-Date: 2001-07-26 11:36+0200\n"
+"Last-Translator: Konstantinos C. Milosis <kmilosis@yahoo.com>\n"
+"Language-Team: Greek <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-7\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+msgid "\"Firstname Lastname\"  (ie. John Doe)"
+msgstr "\"Όνομα Επώνυμο\" (π.χ. Κώστας Μυλώσης)"
+
+msgid "\"Lastname, Firstname\" (ie. Doe, John)"
+msgstr "\"Επώνυμο, Όνομα\" (π.χ. Μυλώσης, Κώστας)"
+
+msgid "%s added"
+msgstr "%s Επιτυχώς εισαγωγή του αρχείου"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "Το αρχείο %s εισάχθηκε επιτυχώς"
+
+#: templates/browse/footer.inc:9
+msgid "%s to %s of %s"
+msgstr "%s σε %s από %s"
+
+msgid "A"
+msgstr "Α"
+
+#: lib/Block/minisearch.php:45
+msgid "A browser that supports iFrames is required"
+msgstr "Απαιτείται εξερευνητής (browser) που να υποστηρίζει iFrames"
+
+msgid "Above search form"
+msgstr "Μετά τη φόρμα αναζήτησης"
+
+msgid "Ad_vanced Search"
+msgstr "Ειδική Αναζήτηση"
+
+msgid "Add"
+msgstr "Προσθήκη"
+
+msgid "Add Contact ..."
+msgstr "Νέα καρτέλα ..."
+
+msgid "Add a new contact"
+msgstr "Προσθήκη νέας καρτέλας"
+
+#: templates/prefs/columnselect.inc:238
+msgid "Add column"
+msgstr "Προσθήκη στήλης"
+
+msgid "Add failed"
+msgstr "Η προσθήκη απέτυχε"
+
+msgid "Add to"
+msgstr "Προσθήκη στο"
+
+msgid "Address Book Listing"
+msgstr "Λίστα Διευθύνσεων"
+
+msgid "Address Book entry"
+msgstr "Εγγραφή Διευθυνσιογράφου"
+
+msgid "Address Books"
+msgstr "Διευθυνσιογράφοι"
+
+msgid "Address book is read-only."
+msgstr "Ο διευθυνσιογράφος είναι μόνο για ανάγνωση."
+
+#: data.php:236
+msgid "Address book successfully purged."
+msgstr "Ο Διευθυνσιογράφος διαγράφηκε επιτυχώς."
+
+#, c-format
+msgid "Addresses in list: %s"
+msgstr "Διευθύνσεις στη λίστα: %s"
+
+msgid "Advanced Search"
+msgstr "Ειδική Αναζήτηση"
+
+msgid "Alias"
+msgstr "Ψευδώνυμο"
+
+msgid "All"
+msgstr "Όλα"
+
+#: lib/api.php:372
+msgid "Already Exists"
+msgstr "Υπάρχει ήδη"
+
+msgid "An illegal value was specified."
+msgstr "Ορίστηκε μία μη επιτρεπόμενη τιμή."
+
+#: templates/browse/javascript.inc:79
+msgid "Are you sure that you want to delete %s?"
+msgstr "Είστε βέβαιοι ότι θέλετε να διαγράψετε %s;"
+
+#: templates/browse/javascript.inc:53
+msgid "Are you sure that you want to delete the selected entries?"
+msgstr "Είστε βέβαιοι ότι θέλετε να διαγράψετε τις επιλεγμένες εγγραφές;"
+
+msgid "Ascending"
+msgstr "Αύξουσα"
+
+msgid "Available Columns:"
+msgstr "Διαθέσιμα Πεδία:"
+
+msgid "B"
+msgstr "Β"
+
+#, c-format
+msgid "Ba_ck to %s"
+msgstr "Επιστροφή στο %s"
+
+#, c-format
+msgid "Back to %s"
+msgstr "Επιστροφή στο %s"
+
+msgid "Basi_c Search"
+msgstr "Απλή Αναζήτηση"
+
+msgid "Basic Search"
+msgstr "Απλή Αναζήτηση"
+
+msgid "Below search form"
+msgstr "Πριν από τη φόρμα αναζήτησης"
+
+#: lib/Driver/ldap.php:75 lib/Driver/ldap.php:78
+msgid "Bind failed: (%s) %s"
+msgstr "Η σύνδεση απέτυχε: (%s) %s"
+
+#: config/attributes.php.dist:168
+msgid "Birthday"
+msgstr "Γενέθλια"
+
+msgid "Browse"
+msgstr "Λίστα"
+
+msgid "Browse..."
+msgstr "Λίστα..."
+
+#: config/attributes.php.dist:163
+msgid "Business Category"
+msgstr "Επαγγελματική Κατηγορία"
+
+msgid "C"
+msgstr "Γ"
+
+#: templates/browse/actions.inc:59
+msgid "C_lear Search"
+msgstr "Καθαρισμός Αναζήτησης"
+
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+#: templates/browse/column_headers.inc:7
+msgid "Check _All/None"
+msgstr "Επιλογή Όλων/Κανενός"
+
+msgid "Checkbox"
+msgstr "Επιλογή των διευθύνσεων"
+
+msgid ""
+"Choose a default directory for your personal addressbook, contact lists, and "
+"searches."
+msgstr ""
+"Επιλέξτε τον προκαθορισμένο κατάλογο για τον προσωπικό σας Διευθυνσιογράφο, "
+"τις ομάδες και τις αναζητήσεις."
+
+#: templates/addressbooks.inc:44
+msgid "Choose a name"
+msgstr "Επιλέξτε ένα όνομα"
+
+msgid "Choose an address book"
+msgstr "Επιλέξτε Διευθυνσιογράφο"
+
+msgid "Choose an address book:"
+msgstr "Επιλέξτε Διευθυνσιογράφο:"
+
+msgid "Choose the order of the columns to display in the address list."
+msgstr ""
+"Επιλογή της σειράς των στηλών κατά την προβολή της λίστας των διευθύνσεων."
+
+#: templates/prefs/addressbookselect.inc:165
+msgid "Choose which address books to display, and in what order:"
+msgstr "Επιλέξτε ποιοί διευθυνσιογράφοι θα εμφανίζονται και με ποιά σειρά:"
+
+#: config/prefs.php.dist:11
+msgid "Choose which address books to use."
+msgstr "Επιλέξτε ποιούς διευθυνσιογράφους θα χρησιμοποιείτε."
+
+#: templates/prefs/columnselect.inc:228
+msgid "Choose which columns to display and in what order:"
+msgstr "Επιλέξτε ποιές στήλες θα εμφανίζονται και με ποιά σειρά:"
+
+msgid "Clear Search"
+msgstr "Ακύρωση Αναζήτησης"
+
+msgid "Column Options"
+msgstr "Επιλογές Στηλών"
+
+#: templates/prefs/columnselect.inc:233
+msgid "Columns that will not be displayed:"
+msgstr "Στήλες που δε θα εμφανίζονται:"
+
+msgid "Comma separated values"
+msgstr "Τιμές διαχωρισμένες με κόμμα"
+
+#: templates/data/export.inc:17
+msgid "Comma separated values (Microsoft Outlook)"
+msgstr "Τιμές διαχωρισμένες με κόμμα (Microsoft Outlook)"
+
+msgid "Company"
+msgstr "Εταιρία"
+
+msgid "Company Address"
+msgstr "Διεύθυνση Εταιρίας"
+
+#: lib/api.php:611 lib/api.php:781
+msgid "Connection failed: %s"
+msgstr "Η Σύνδεση απέτυχε: %s"
+
+#: lib/Driver/ldap.php:64
+msgid "Connection failure"
+msgstr "Αποτυχία Σύνδεσης"
+
+msgid "Contact removed from list."
+msgstr "Η καρτέλα αφαιρέθηκε από τη λίστα."
+
+#: browse.php:267
+msgid "Contacts in list: %s"
+msgstr "Επαφές στη Λίστα: %s"
+
+#, c-format
+msgid "Contents of %s"
+msgstr "Περιεχόμενα του %s"
+
+msgid "Copy"
+msgstr "Αντιγραφή"
+
+#: templates/addressbooks.inc:53
+msgid "Create"
+msgstr "Δημιουργία"
+
+#: templates/addressbooks.inc:40
+msgid "Create Address Book"
+msgstr "Δημιουργία Διευθυνσιογράφου"
+
+#: lib/ListView.php:348
+msgid "Create a new Contact List in:"
+msgstr "Δημιουργία νέας Λίστας Επαφών σε:"
+
+msgid "Created"
+msgstr "Δημιουργήθηκε"
+
+msgid "Default Display"
+msgstr "Προεπιλεγμένη Εμφάνιση"
+
+msgid ""
+"Default directory for your personal addressbook, contact lists, and searches."
+msgstr ""
+"Προεπιλεγμένη εμφάνιση για τον προσωπικό σας Διευθυνσιογράφο, ομάδες,και "
+"αναζητήσεις."
+
+msgid "Default sorting direction:"
+msgstr "Προεπιλεγμένη κατεύθυνση ταξινόμησης:"
+
+msgid "Delete"
+msgstr "Διαγραφή"
+
+msgid "Delete Confirmation"
+msgstr "Επιβεβαίωση Διαγραφής"
+
+msgid "Delete button behaviour"
+msgstr "Συμπεριφορά πλήκτρου Διαγραφής"
+
+#: lib/Driver/ldap.php:267
+msgid "Delete failed: (%s) %s"
+msgstr "Διαγραφή απέτυχε: (%s) %s"
+
+msgid "Deletion failed"
+msgstr "Διαγραφή απέτυχε"
+
+#: config/attributes.php.dist:203
+msgid "Department"
+msgstr "Τμήμα"
+
+msgid "Descending"
+msgstr "Φθίνουσα"
+
+msgid "Directory"
+msgstr "Κατάλογος"
+
+msgid "Display"
+msgstr "Εμφάνιση"
+
+msgid "Display Options"
+msgstr "Επιλογές Εμφάνισης"
+
+msgid "Do you want to confirm deleting entries?"
+msgstr "Να ζητείται επιβεβαίωση κατά τη διαγραφή επαφών;"
+
+msgid "Does the first row contain the field names? If yes, check this box:"
+msgstr "Περιέχει η πρώτη γραμμή τα ονόματα των πεδίων; Αν ναι επέλεξε αυτό:"
+
+#: templates/browse/contactrow.inc:29
+msgid "Download VCard"
+msgstr "Κατέβασμα στο PC σε μορφή VCard"
+
+#: templates/browse/contactrow.inc:25
+msgid "Download vCard"
+msgstr "Κατέβασμα στο PC σε μορφή vCard"
+
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "Επεξεργασία '%s'"
+
+#: templates/addressbooks.inc:81
+msgid "Edit Address Books"
+msgstr "Επεξεργασία Διευθυνσιογράφων"
+
+#: edit.php:53 edit.php:80
+msgid "Edit entry for %s"
+msgstr "Επεξεργασία εγγραφής για %s"
+
+msgid "Edit options for:"
+msgstr "Επεξεργασία επιλογών για:"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Entry for %s updated."
+msgstr "Η εγγραφή για %s ενημερώθηκε."
+
+msgid "Error while searching directory."
+msgstr "Παρουσιάστηκε σφάλμα κατά την αναζήτηση στον κατάλογο."
+
+msgid "Error"
+msgstr "Λάθος"
+
+msgid "Exit Address Book"
+msgstr "Έξοδος από το Διευθυνσιογράφο"
+
+msgid "Export"
+msgstr "Εξαγωγή"
+
+msgid "Export Address Book"
+msgstr "Εξαγωγή Βιβλίου Διευθύνσεων"
+
+#: templates/data/export.inc:26
+msgid "Export only the selected contacts."
+msgstr "Εξαγωγή μόνο των επιλεγμένων επαφών."
+
+#: templates/data/export.inc:32
+msgid "Export the following address book completely."
+msgstr "Η εξαγωγή των παρακάτω Διευθυνσιογράφων ολοκληρώθηκε."
+
+msgid "Failed to access the address book: %s"
+msgstr "Αποτυχία κατά τη σύνδεση στον διευθυνσιογράφο: %s"
+
+msgid "Failed to access the specified address book."
+msgstr "Αποτυχία κατά τη σύνδεση στον επιλεγμένο διευθυνσιογράφο."
+
+#: browse.php:145
+msgid "Failed to add %s to %s: %s"
+msgstr "Αποτυχία προσθήκης %s σε %s: %s"
+
+msgid "Failed to browse list"
+msgstr "Αποτυχία κατά την εμφάνιση της λίστας"
+
+msgid "Failed to browse the directory"
+msgstr "Αποτυχία κατά την προβολή του καταλόγου"
+
+#: lib/Driver/ldap.php:304
+msgid "Failed to change name: (%s) %s, %s"
+msgstr "Αποτυχία αλλαγής του ονόματος (%s) %s, %s"
+
+msgid "Failed to connect to the specified directory."
+msgstr "Αποτυχία σύνδεσης στον επιλεγμένο κατάλογο."
+
+#: browse.php:140
+msgid "Failed to find object to be added: %s"
+msgstr "Αποτυχία ανεύρεσης αντικειμένου για προσθήκη: %s"
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Αποτυχία κατά την αναζήτηση στον κατάλογο : %s"
+
+msgid "Failed to search the specified directory."
+msgstr "Αποτυχία κατά την αναζήτηση στον επιλεγμένο κατάλογο."
+
+msgid "Fax"
+msgstr "Φαξ"
+
+msgid "Find"
+msgstr "Αναζήτηση"
+
+#: config/attributes.php.dist:48
+msgid "First Name"
+msgstr "Μικρό Όνομα"
+
+msgid "Freebusy URL"
+msgstr "Ιστοσελίδα Διαθεσιμότητας"
+
+msgid "From"
+msgstr "Από"
+
+#: config/sources.php.dist:521
+msgid "Global Address Book"
+msgstr "Κοινός Διευθυνσιογράφος"
+
+msgid "Group"
+msgstr "Ομάδα"
+
+msgid "Help"
+msgstr "Βοήθεια"
+
+msgid " Here is the beginning of the file:"
+msgstr "Αυτή είναι η αρχή του αρχείου:"
+
+msgid "Home Address"
+msgstr "Διεύθυνση Κατοικίας"
+
+#: config/attributes.php.dist:88
+msgid "Home City"
+msgstr "Πόλη (Κατοικίας)"
+
+#: config/attributes.php.dist:103
+msgid "Home Country"
+msgstr "Χώρα (Κατοικίας)"
+
+#: config/attributes.php.dist:140
+msgid "Home Phone"
+msgstr "Τηλέφωνο Κατοικίας"
+
+#: config/attributes.php.dist:98
+msgid "Home Postal Code"
+msgstr "Ταχ. Κώδικας (Κατοικίας)"
+
+#: config/attributes.php.dist:93
+msgid "Home State/Province"
+msgstr "Επαρχία (Κατοικίας)"
+
+msgid "How many fields (columns) are there?"
+msgstr "Πόσα πεδία (στήλες) υπάρχουν;"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr ""
+"Αν εισάγετε διευθύνσεις από αρχείο CVS, η πρώτη γραμμή περιέχει τα ονόματα "
+"των πεδίων;"
+
+msgid "Illegal or malformed form data."
+msgstr "Λανθασμένη μορφή ή τύπος δεδομένων."
+
+msgid "Import"
+msgstr "Εισαγωγή"
+
+msgid "Import Address Book"
+msgstr "Εισαγωγή Βιβλίου Διευθύνσεων"
+
+msgid "Import Address Book, Step %s"
+msgstr "Εισαγωγή Βιβλίου Διευθύνσεων, Βήμα %s"
+
+msgid "Import/Export Addressbooks"
+msgstr "Εισαγωγή/Εξαγωγή Διευθυνσιογράφου"
+
+msgid "Import/Export"
+msgstr "Εισαγωγή/Εξαγωγή"
+
+#: lib/api.php:358 lib/api.php:577
+msgid "Invalid Content-Type"
+msgstr "Μη έγκυρος τύπος περιεχομένων"
+
+#: lib/api.php:419 lib/api.php:508
+msgid "Invalid ID"
+msgstr "Μη έγκυρο ID"
+
+#: lib/api.php:191 lib/api.php:316 lib/api.php:415 lib/api.php:504
+#: lib/api.php:556 lib/api.php:852
+msgid "Invalid address book."
+msgstr "Λανθασμένο Βιβλίο Διευθύνσεων."
+
+msgid "Invalid e-mail address."
+msgstr "Λάθος 'e-mail' διεύθυνση"
+
+msgid "Invalid email."
+msgstr "Λάθος email."
+
+msgid "Invalid entry."
+msgstr "Λάθος Καταχώριση."
+
+#: lib/Driver/ldap.php:263
+msgid "Invalid key specified."
+msgstr "Καθορίσθηκε μη έγκυρο κλειδί."
+
+#: lib/api.php:860
+msgid "Invalid name."
+msgstr "Λάθος όνομα"
+
+#: lib/api.php:560
+msgid "Invalid objectId"
+msgstr "Μη έγκυρο ID αντικειμένου"
+
+#: lib/Driver/ldap.php:39
+msgid ""
+"LDAP support is required but the LDAP module is not available or not loaded."
+msgstr ""
+"Απαιτείται υποστήριξη LDAP. Η μονάδα αυτή δεν είναι διαθέσιμη, ηδεν έχει "
+"φορτωθεί."
+
+msgid "Language"
+msgstr "Γλώσσα"
+
+msgid "Last Modified"
+msgstr "Τελευταία Τροποποίηση"
+
+#: config/attributes.php.dist:53
+msgid "Last Name"
+msgstr "Επίθετο"
+
+msgid "Matching"
+msgstr "Ταιριάζει με"
+
+msgid "Maximum number of pages"
+msgstr "Μέγιστος αριθμός σελίδων"
+
+msgid "Message"
+msgstr "Μήνυμα"
+
+#: lib/Block/minisearch.php:3
+msgid "Mini Search"
+msgstr "Γρήγορη Αναζήτηση"
+
+#: lib/Driver/ldap.php:298
+msgid "Missing DN in LDAP source configuration."
+msgstr "Λείπει το DN από την παραμετροποίηση του LDAP"
+
+msgid "Mobile Phone"
+msgstr "Κινητό Τηλέφωνο"
+
+#: lib/Driver/ldap.php:326 lib/Driver/ldap.php:343
+msgid "Modify failed: (%s) %s"
+msgstr "Η αλλαγή απέτυχε: (%s) %s"
+
+#: lib/api.php:965
+msgid "More than 1 entry found"
+msgstr "Βρέθηκαν περισσότερες από 1 εγγραφές"
+
+msgid "More than 1 entry returned."
+msgstr "Επιστράφηκαν περισσότερες από μία καταχωρήσεις."
+
+msgid "Move"
+msgstr "Μετακίνηση"
+
+#: templates/prefs/columnselect.inc:248
+msgid "Move left"
+msgstr "Μετακίνηση αριστερά"
+
+#: templates/prefs/columnselect.inc:250
+msgid "Move right"
+msgstr "Μετακίνηση δεξιά"
+
+#: data.php:31 templates/data/import.inc:21
+msgid "Mulberry Address Book"
+msgstr "Διευθυνσιογράφος Mulberry"
+
+msgid "Mulberry addressbook sucessfully imported"
+msgstr "Έγινε επιτυχώς εισαγωγή του διευθυνσιογράφου Mulberry"
+
+#: lib/api.php:886
+msgid ""
+"Multiple persons with address [%s], but none with name [%s] already exist"
+msgstr "Υπάρχουν πολλά άτομα με διεύθυνση [%s], κανένα όμως με όνομα [%s]"
+
+#: config/sources.php.dist:165 config/sources.php.dist:294
+msgid "My Addressbook"
+msgstr "Ο Διευθυνσιογράφος μου"
+
+#: addressbooks.php:119
+msgid "My Address Books"
+msgstr "Οι Διευθυνσιογράφοι μου"
+
+msgid "Name"
+msgstr "Όνομα"
+
+msgid "Name Format"
+msgstr "Μορφή Ονομάτων"
+
+#: config/sources.php.dist:72
+msgid "Netcenter Member Directory"
+msgstr "Διευθυνσιογράφος μέλους Netcenter"
+
+msgid "New Contact"
+msgstr "Νέα Επαφή"
+
+msgid "New List"
+msgstr "Νέα Λίστα"
+
+msgid "Next"
+msgstr "Επόμενο"
+
+#: config/attributes.php.dist:208
+msgid "Nickname"
+msgstr "Ψευδώνυμο"
+
+#, c-format
+msgid "No %s entry found for %s."
+msgstr "Δε βρέθηκε %s καταχώριση για %s."
+
+#: lib/api.php:936
+msgid "No address books found."
+msgstr "Δε βρέθηκε Διευθυνσιογράφος."
+
+msgid "No contacts found"
+msgstr "Δε βρέθηκαν επαφές"
+
+#: lib/api.php:338
+msgid "No vCard data was found."
+msgstr "Δε βρέθηκαν δεδομένα vCard."
+
+msgid "None"
+msgstr "Κανένα"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"Κανένας από τους διαθέσιμους διευθυνσιογράφους δεν έχει ρυθμιστεί ώστε να "
+"μπορεί να καταχωρεί εγγραφές. Μπορείτε να ενημερώσετε το διαχειριστή του "
+"συστήματος σας."
+
+msgid "Notes"
+msgstr "Σημειώσεις"
+
+msgid "Number of items per page"
+msgstr "Αριθμός ονομάτων ανά σελίδα"
+
+#: lib/api.php:436
+msgid "Object not found"
+msgstr "Δε βρέθηκε το αντικείμενο"
+
+#: config/attributes.php.dist:213
+msgid "Office"
+msgstr "Γραφείο"
+
+msgid "Options"
+msgstr "Επιλογές"
+
+msgid "Options for"
+msgstr "Επιλογές για"
+
+msgid "Other Options"
+msgstr "Αλλες Επιλογές"
+
+msgid "Outlook"
+msgstr "Πρόγραμμα Outlook"
+
+#: config/attributes.php.dist:180
+msgid "PGP Public Key"
+msgstr "Δημόσιο κλειδί PGP"
+
+#: lib/Driver.php:453
+msgid "Permission denied"
+msgstr "Αρνηση πρόσβασης"
+
+msgid "Pine Address Book"
+msgstr "Διευθυνσιογράφος Pine"
+
+msgid "Pine addressbook sucessfully imported"
+msgstr "Έγινε επιτυχώς εισαγωγή του διευθυνσιογράφου Pine"
+
+msgid "Please choose an address book to add a contact to."
+msgstr ""
+"Παρακαλώ επιλέξτε ένα διευθυνσιογράφο για να προσθέσετε μία καρτέλα σε αυτόν."
+
+msgid "Please enter the name of the new list:"
+msgstr "Παρακαλώ δώστε το όνομα για τη νέα λίστα:"
+
+msgid "Please select a directory:"
+msgstr "Παρακαλώ επιλέξτε ένα κατάλογο:"
+
+#: config/sources.php.dist:373
+msgid "Private Address Book"
+msgstr "Προσωπικός Διευθυνσιογράφος"
+
+msgid "Problem"
+msgstr "Πρόβλημα"
+
+msgid "Problem?"
+msgstr "Πρόβλημα;"
+
+#: lib/Driver/ldap.php:139
+msgid "Query failed: (%s) %s"
+msgstr "Η αναζήτηση απέτυχε: (%s) %s"
+
+msgid "Quick Search"
+msgstr "Γρήγορη Αναζήτηση"
+
+#: lib/Driver/ldap.php:183 lib/Driver/ldap.php:191 lib/Driver/ldap.php:423
+msgid "Read failed: (%s) %s"
+msgstr "Η ανάγνωση απέτυχε: (%s) %s"
+
+#: templates/browse/footer.inc:6
+msgid "Records displayed:"
+msgstr "Εμφανίσθηκαν εγγραφές:"
+
+#: templates/prefs/columnselect.inc:240
+msgid "Remove column"
+msgstr "Αφαίρεση στήλης"
+
+#: templates/browse/actions.inc:5
+msgid "Remove from this list"
+msgstr "Αφαίρεση από τη Λίστα"
+
+#: templates/data/import.inc:26
+msgid ""
+"Replace existing address book with the imported one? <strong>Warning: This "
+"deletes all entries in your current address book.</strong>"
+msgstr ""
+"Να αντικατασταθεί ο υπάρχων Διευθυνσιογράφος με αυτόν που εισάγετε; "
+"<strong>ΠΡΟΣΟΧΗ: Αυτό θα διαγράψει όλες τις εγγραφές σε αυτό το "
+"Διευθυνσιογράφο.</strong>"
+
+#: lib/Driver.php:343
+msgid "Requested object not found."
+msgstr "Το αντικείμενο που ζητήθηκε δεν βρέθηκε."
+
+msgid "Reset"
+msgstr "Επαναφορά"
+
+#: add.php:46 templates/browse/search.inc:126
+msgid "Reset to Defaults"
+msgstr "Επαναφορά στα Προκαθορισμένα"
+
+#: config/attributes.php.dist:186
+msgid "S/MIME Public Certificate"
+msgstr "Δημόσιο Πιστοποιητικό S/MIME"
+
+#: add.php:46 edit.php:57
+msgid "Save"
+msgstr "Αποθήκευση"
+
+msgid "Save Changes"
+msgstr "Αποθήκευση αλλαγών"
+
+msgid "Search"
+msgstr "Αναζήτηση"
+
+msgid "Search Results"
+msgstr "Αποτελέσματα Αναζήτησης"
+
+msgid "Search failed"
+msgstr "Αναζήτηση απέτυχε"
+
+msgid "Search failed %s"
+msgstr "Αναζήτηση απέτυχε %s"
+
+msgid "Searching Options"
+msgstr "Επιλογές Αναζήτησης"
+
+msgid "Searching ..."
+msgstr "Αναζήτηση ..."
+
+msgid "Search&nbsp;Results"
+msgstr "Αποτελέσματα&nbsp;Αναζήτησης"
+
+msgid "Select"
+msgstr "Επιλογή"
+
+msgid "Select Address Book"
+msgstr "Επιλέξτε Διευθυνσιογράφο"
+
+msgid "Select List"
+msgstr "Λίστα Επιλογής"
+
+#: templates/addressbooks.inc:66
+msgid "Select an address book to delete"
+msgstr "Επιλέξτε ένα διευθυνσιογράφο για διαγραφή"
+
+#: templates/addressbooks.inc:90
+msgid "Select an address book to edit"
+msgstr "Επιλέξτε ένα διευθυνσιογράφο για επεξεργασία"
+
+msgid "Select the address book to export from:"
+msgstr "Επιλέξτε το Διευθυνσιογράφο από τον οποίο θα γίνει η εξαγωγή:"
+
+msgid "Select the address book to import to:"
+msgstr "Επιλέξτε το Διευθυνσιογράφο που θα εισαχθούν:"
+
+msgid "Select the destination to import to:"
+msgstr "Επιλέξτε που θα γίνει η εισαγωγή:"
+
+msgid "Select the export format:"
+msgstr "Επιλέξτε τη μορφή του αρχείου Εξαγωγής:"
+
+msgid "Select the file to import:"
+msgstr "Επιλέξτε το αρχείο που θα εισαχθεί:"
+
+msgid "Select the format of the source file:"
+msgstr "Επιλέξτε την μορφή του αρχείου Εισαγωγής:"
+
+msgid "Select the format to export to:"
+msgstr "Επιλέξτε την μορφή εξαγωγής των δεδομένων:"
+
+msgid "Select the format to import from:"
+msgstr "Επιλέξτε τη μορφή εισαγωγής των δεδομένων:"
+
+msgid "Select the format used to display names:"
+msgstr "Επιλέξτε τη μορφή που θα εμφανίζονται τα ονόματα:"
+
+msgid "Select the source to export from:"
+msgstr "Επιλέξτε από που θα εξάγετε τα δεδομένα:"
+
+msgid "Select view to display by default."
+msgstr "Επιλογή της προεπιλεγμένης προβολής."
+
+#: config/prefs.php.dist:25
+msgid "Select view to display by default, sort options, and paging options."
+msgstr "Επιλογή της προεπιλεγμένης προγολής, ταξινόμησης και σελιδοποίησης."
+
+msgid "Select which fields to display in the address lists."
+msgstr "Επιλογή των πεδίων που θα εμφανίζονται στη λίστα των διευθύνσεων."
+
+msgid "Select which format to display names."
+msgstr "Επιλέξτε με ποιά μορφή θα εμφανίζονται τα ονόματα:"
+
+msgid "Select your preferred language:"
+msgstr "Επιλέξτε την προτιμούμενη γλώσσα:"
+
+msgid "Selected Columns:"
+msgstr "Επιλεγμένες Στήλες:"
+
+#: add.php:59
+msgid "Selected address book '%s'."
+msgstr "Επιλεγμένος Διευθυνσιογράφος '%s'."
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "Αποστολή email προς %s"
+
+msgid "Set your preferred display language."
+msgstr "Ρυθμίστε την γλώσσα προτίμησης σας."
+
+#: config/sources.php.dist:230
+msgid "Shared Directory"
+msgstr "Κοινόχρηστος Κατάλογος"
+
+msgid "Sho_w All"
+msgstr "Εμφάνιση Όλων"
+
+msgid "Show"
+msgstr "Εμφάνιση"
+
+msgid "Show All"
+msgstr "Εμφάνιση Όλων"
+
+msgid "Show Contacts"
+msgstr "Εμφάνιση Επαφών"
+
+msgid "Show Lists"
+msgstr "Εμφάνιση Ομάδων"
+
+msgid "Show _Contacts"
+msgstr "Εμφάνιση Επαφών"
+
+msgid "Show _Lists"
+msgstr "Εμφάνιση Ομάδων"
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Κάποια από τα αρχεία ρυθμίσεων του Turba's λείπουν:"
+
+msgid "Sort Direction"
+msgstr "Κατεύθυνση Ταξινόμησης"
+
+#: lib/api.php:154
+msgid "Sources"
+msgstr "Πηγές"
+
+msgid "Specify where you want advanced search results to appear."
+msgstr ""
+"Καθορίστε που θα εμφανίζονται τα αποτελέσματα των ειδικών (advanced) "
+"αναζητήσεων."
+
+msgid "Success"
+msgstr "Επιτυχία"
+
+#: browse.php:147
+msgid "Successfully added %s to %s"
+msgstr "%s προστέθηκε επιτυχώς στο %s"
+
+msgid "Tab separated values"
+msgstr "Τιμής διαχωρισμένες με 'Tab'"
+
+#: data.php:234
+msgid "The address book could not be purged: %s"
+msgstr "Ο Διευθυνσιογράφος δεν μπορεί να διαγραφεί: %s"
+
+#: display.php:23 edit.php:24 vcard.php:22
+msgid "The contact you requested does not exist."
+msgstr "Η επαφή που ζητήσατε δεν υπάρχει."
+
+msgid "The data got lost"
+msgstr "Τα δεδομένα χάθηκαν"
+
+msgid "The data got lost."
+msgstr "Τα δεδομένα χάθηκαν."
+
+msgid "The file contained no data."
+msgstr "Το αρχείο δεν περιείχε δεδομένα."
+
+msgid "There are no browseable address books."
+msgstr "Δεν υπάρχουν διευθυνσιογράφοι τους οποίους μπορείτε να δείτε."
+
+msgid "There are no writeable address books."
+msgstr "Δεν υπάρχουν διευθυνσιογράφοι στους οποίους μπορείτε να γράψετε."
+
+#: add.php:38
+msgid ""
+"There are no writeable address books. None of the available address books "
+"are configured to allow you to add new entries to them. If you believe this "
+"is an error, please contact your system administrator."
+msgstr ""
+"Δεν υπάρχουν διευθυνσιογράφοι στους οποίους μπορείτε να γράψετε. Κανένας από "
+"τους διαθέσιμους Διευθυνσιογράφους δεν έχει ρυθμιστεί να σας επιτρέπει να "
+"προσθέσετε εγγραφές. Αν νομίζεται ότι αυτό είναι λάθος, παρακαλώ "
+"επικοινωνήστε με το διαχειριστή του συστήματος."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Υπήρξε πρόβλημα κατά την μεταφορά του αρχείου. Το αρχείο μπορεί να είναι "
+"μεγαλύτερο από το επιτρεπόμενο μέγεθος."
+
+#: add.php:107
+msgid ""
+"There was an error adding the new contact. Contact your system administrator "
+"for further help."
+msgstr ""
+"Πρόβλημα κατά την προσθήκη της νέας επαφής. Επικοινωνήστε με το διαχειριστή "
+"του συστήματος."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"Υπήρξε πρόβλημα στην προσθήκη του αντικειμένου. Επικοινωνήστε με τον "
+"διαχειριστή."
+
+msgid "There was an error creating a new list."
+msgstr "Παρουσιάστηκε σφάλμα κατά την δημιουργία της νέας λίστας."
+
+#: browse.php:154
+msgid "There was an error deleting %s from the source address book."
+msgstr "Πρόβλημα κατά τη διαγραφή %s από το Διευθυνσιογράφο."
+
+# 
+#: delete.php:31
+msgid "There was an error deleting this contact: %s"
+msgstr "Πρόβλημα κατά τη διαγραφή αυτής της επαφής: %s."
+
+#: browse.php:93
+msgid "There was an error deleting this object."
+msgstr "Παρουσιάστηκε σφάλμα κατά την διαγραφή αυτού του αντικειμένου."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"Παρουσιάστηκε πρόβλημα κατά την διαγραφή αυτού του αντικειμένου. "
+"Επικοινωνήστε με τον διαχειριστή για περισσότερες πληροφορίες."
+
+msgid "There was an error displaying the select List"
+msgstr "Παρουσιάστηκε σφάλμα κατά εμφάνιση της λίστας"
+
+msgid "There was an error importing the data."
+msgstr "Παρουσιάστηκε σφάλμα κατά την εισαγωγή δεδομένων."
+
+#: data.php:249
+msgid "There was an error importing the data: %s"
+msgstr "Πρόβλημα κατά την εισαγωγή δεδομένων: %s"
+
+#: lib/api.php:334
+msgid "There was an error importing the iCalendar data."
+msgstr "Παρουσιάσθηκε σφάλμα κατά την εισαγωγή δεδομένων iCalendar."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Παρουσιάστηκε σφάλμα κατά μεταφορά του αρχείου στον server"
+
+msgid "There was an error importing the vCard data."
+msgstr "Παρουσιάστηκε σφάλμα κατά την εισαγωγή της Ψηφιακής Κάρτας."
+
+msgid "There was an error removing this object."
+msgstr "Παρουσιάστηκε σφάλμα κατά την διαγραφή αυτού του αντικειμένου."
+
+#: edit.php:84
+msgid "There was an error updating this entry: %s"
+msgstr "Παρουσιάσθηκε σφάλμα κατά την ενημέρωση αυτής της εγγραφής: %s"
+
+#: data.php:151
+msgid "There were no addresses to export."
+msgstr "Δεν υπάρχουν διευθύνσεις για εξαγωγή."
+
+#: templates/prefs/addressbookselect.inc:180
+msgid "These address books will display in this order:"
+msgstr "Αυτοί οι διευθυνσιογράφοι θα εμφανίζονται και με αυτή τη σειρά:"
+
+#: templates/prefs/columnselect.inc:243
+msgid "These columns will display in this order:"
+msgstr "Αυθές οι στήλες θα εμφανίζονται και με αυτή τη σειρά:"
+
+#: lib/Driver.php:403 lib/Driver.php:444
+msgid "This address book is read-only"
+msgstr "Αυτός ο Διευθυνσιογράφος είναι μόνο για ανάγνωση"
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Αυτό το αρχείο ελέγχει τις προκαθορισμένες ρυθμίσεις του Turba, και επίσης "
+"ποιες από αυτές μπορούν να τροποποιήσουν οι χρήστες."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Αυτό το αρχείο περιέχει τις ρυθμίσεις για τα χρώματα και τις γραμματοσειρές."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"Αυτό το αρχείο ορίζει τις γενικές ιδιότητες του προγράμματος Turba - τους "
+"τύπους, το όνομα, το email, κ.τ.λ"
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "Αυτό το αρχείο ορίζει την λίστα με τις διαθέσιμες πηγές του Turba."
+
+#: data.php:211
+msgid "This file format is not supported."
+msgstr "Αυτη η μορφή αρχείου δεν υποστηρίζεται."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"Αυτό είναι το βασικό αρχείο ρυθμίσεων του προγράμματος Turba. Περιλαμβάνει "
+"τα μονοπάτια και τις επιλογές για όλα του τα script."
+
+msgid "This number must be at least one."
+msgstr "Αυτός ο αριθμός πρέπει να είναι τουλάχιστον ένα."
+
+#, c-format
+msgid "This person already has a %s entry in the address book."
+msgstr "Αυτή η επαφή %s έχει ήδη καταχωρηθεί στο διευθυνσιογράφο."
+
+msgid "This person is already in your address book."
+msgstr "Αυτή η επαφή υπάρχει ήδη στο διευθυνσιογράφο σας."
+
+msgid "This value must be a number."
+msgstr "Αυτή η τιμή πρέπει να είναι αριθμός."
+
+msgid "Title"
+msgstr "Τίτλος"
+
+msgid "Turba is not properly configured"
+msgstr "Το πρόγραμμα Turba δεν έχει ρυθμιστεί πλήρως."
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Δεν μπορούν να γίνουν οι ρυθμίσεις του %s."
+
+#: edit.php:57
+msgid "Undo Changes"
+msgstr "Αναίρεση Αλλαγών"
+
+msgid "Unnamed Contact"
+msgstr "Στην επαφή δεν έχει συμπληρωθεί όνομα."
+
+#: lib/api.php:466
+msgid "Unsupported Content-Type."
+msgstr "Μή υποστηριζόμενος τύπος Περιεχομένου."
+
+msgid "User Options"
+msgstr "Επιλογές Χρήστη"
+
+#: config/sources.php.dist:131
+msgid "Verisign Directory"
+msgstr "Κατάλογος Verisign"
+
+#: templates/browse/contactrow.inc:31
+msgid "View '%s'"
+msgstr "Εμφάνιση '%s'"
+
+#: minisearch.php:80
+msgid "View Contact"
+msgstr "Εμφάνιση Επαφής"
+
+msgid "View map"
+msgstr "Εμφάνιση Χάρτη"
+
+msgid "View to display by default:"
+msgstr "Η προβολή που θα εμφανίζεται:"
+
+msgid "Warning"
+msgstr "Προειδοποίηση"
+
+msgid "Warning: This deletes all entries in your current address book."
+msgstr ""
+"ΠΡΟΣΟΧΗ: Αυτό θα διαγράψει όλες τις εγγραφές στον επιλεγμένο Διευθυνσιογράφο."
+
+msgid "Web Site"
+msgstr "Ηλεκτρονική Διεύθυνση(URL)"
+
+#: config/attributes.php.dist:198
+msgid "Website URL"
+msgstr "Σύνδεση Δικτυακού Τόπου (Website)"
+
+msgid "What is the delimiter character?"
+msgstr "Ποιός είναι ο διαχωριστικός χαρακτήρας;"
+
+msgid "Work Address"
+msgstr "Διεύθυνση Εργασίας"
+
+#: config/attributes.php.dist:114
+msgid "Work City"
+msgstr "Πόλη Εργασίας"
+
+#: config/attributes.php.dist:129
+msgid "Work Country"
+msgstr "Χώρα Εργασίας"
+
+#: config/attributes.php.dist:146
+msgid "Work Phone"
+msgstr "Τηλέφωνο Εργασίας"
+
+#: config/attributes.php.dist:124
+msgid "Work Postal Code"
+msgstr "Ταχ. Κώδικας Εργασίας"
+
+#: config/attributes.php.dist:119
+msgid "Work State/Province"
+msgstr "Επαρχία Εργασίας"
+
+msgid "You are creating a distribution list."
+msgstr "Δημιουργείτε μία λίστα διανομής."
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr ""
+"Δεν αντιστοιχήθηκαν πεδία από το αρχείο που εισήχθη στα αντίστοιχα του "
+"διευθυνσιογράφου."
+
+#: display.php:48 edit.php:44
+msgid "You do not have permission to view this contact."
+msgstr "Δεν έχετε εξουσιοδότηση να δείτε αυτή την επαφή."
+
+#: vcard.php:40
+msgid "You do not have permission to view this object."
+msgstr "Δεν έχετε εξουσιοδότηση να δείτε αυτό το αντικείμενο."
+
+#: templates/browse/javascript.inc:41
+msgid "You must select a target address book."
+msgstr "Πρέπει να επιλέξετε το Διευθυνσιογράφο κατεύθυνσης."
+
+#: templates/browse/javascript.inc:18
+msgid "You must select a target list."
+msgstr "Πρέπει να επιλέξετε Λίστα κατεύθυνσης."
+
+msgid "You must select at least one contact first."
+msgstr "Πρέπει πρώτα να επιλέξετε μία επαφή."
+
+#: templates/browse/javascript.inc:58
+msgid "You must select at least one entry first."
+msgstr "Πρέπει να επιλέξετε πρώτα τουλάχιστον μια εγγραφή."
+
+#: edit.php:48
+msgid "You only have permission to view this contact."
+msgstr "Έχετε εξουσιοδότηση να δείτε μόνο αυτή την επαφή."
+
+msgid "Your Information"
+msgstr "Οι πληροφορίες Σας"
+
+msgid "Your options have been updated."
+msgstr "Οι επιλογές σας έχουν αποθηκευτεί."
+
+msgid "[Edit]"
+msgstr "[Επεξεργασία]"
+
+#: templates/browse/contactrow.inc:12
+msgid "[no value]"
+msgstr "[χωρίς τιμή]"
+
+msgid "_Add"
+msgstr "Προσθήκη"
+
+msgid "_Browse"
+msgstr "Λίστα"
+
+msgid "_Delete"
+msgstr "Διαγραφή"
+
+msgid "_Help"
+msgstr "Βοήθεια"
+
+msgid "_Import/Export"
+msgstr "Εισαγωγή/Εξαγωγή"
+
+#: templates/browse/actions.inc:46
+msgid "_Lists"
+msgstr "Λίστες"
+
+#: lib/IMP.php:947
+msgid "_Log out"
+msgstr "Εξοδος"
+
+#: lib/Turba.php:551
+msgid "_My Address Books"
+msgstr "Οι Διευθυνσιογράφοι μου"
+
+#: lib/Turba.php:557
+msgid "_New Contact"
+msgstr "Νέα Επαφή"
+
+#: templates/message/navbar_actions.inc:31
+msgid "_Options"
+msgstr "Επιλογές"
+
+#: templates/browse/actions.inc:5
+msgid "_Remove from this list"
+msgstr "Αφαίρεση από αυτή τη λίστα"
+
+msgid "_Search"
+msgstr "Αναζήτηση"
+
+msgid "add column"
+msgstr "προσθήκη στήλης"
+
+msgid "businesscategory"
+msgstr "Κατηγορία Εργασίας"
+
+msgid "move left"
+msgstr "Μετακίνηση Αριστερά"
+
+msgid "move right"
+msgstr "Μετακίνηση Δεξιά"
+
+#: config/prefs.php.dist:138
+msgid "no formatting"
+msgstr "Χωρίς μορφοποίηση"
+
+msgid "remove column"
+msgstr "Αφαίρεση Στήλης"
+
+#: templates/browse/actions.inc:22
+msgid "to Selected Address Book"
+msgstr "στον επιλεγμένο Διευθυνσιογράφο"
+
+#: templates/browse/actions.inc:31
+msgid "to a Contact List"
+msgstr "σε λίστα Επαφών"
+
+#: templates/browse/actions.inc:21
+msgid "to a different Address Book"
+msgstr "σε διαφορετικό Διευθυνσιογράφο"
+
+msgid "vCard"
+msgstr "Ψηφιακή Κάρτα"

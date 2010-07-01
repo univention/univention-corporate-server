@@ -1,0 +1,541 @@
+# Norwegian Turba Translation.
+# Copyright 2001-2009 The Horde Project.
+# Oystein Steimler <oystein@rexta.net>, 2001.
+# Torstein S. Hansen <huleboer@techbee.no>, 2002.
+# Andreas Gunleikskaas <andreas@gunleikskaas.no>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 1.2\n"
+"POT-Creation-Date: 2002-07-22 13:11+0200\n"
+"PO-Revision-Date: 2004-05-18 23:37+0200\n"
+"Last-Translator: Andreas Gunleikskaas <andreas@gunleikskaas.no>\n"
+"Language-Team: Norwegian (Bokmal) <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "Import av %s filen var vellykket"
+
+msgid "Add Contact ..."
+msgstr "Legg til kontakt ..."
+
+msgid "Add a new contact"
+msgstr "Legg til en ny kontakt"
+
+msgid "Add failed"
+msgstr "Kunne ikke legge til"
+
+msgid "Add"
+msgstr "Legg til"
+
+msgid "Address Book Listing"
+msgstr "Adressebokliste"
+
+msgid "Addressbook is read-only."
+msgstr "Adresseboken er skrivebeskyttet."
+
+msgid "Advanced Search"
+msgstr "Avansert søk"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "An illegal value was specified."
+msgstr "En ugyldig verdi var valgt."
+
+msgid "Available Columns:"
+msgstr "Tilgjengelige kolonner:"
+
+msgid "Browse"
+msgstr "Liste"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Cell Phone"
+msgstr "Mobiltelefon"
+
+msgid "Choose the order of the columns to display in the address list."
+msgstr "Velg rekkefølgen av kolonnene som skal bli vist i adresse listen."
+
+msgid "Clear Search"
+msgstr "Nytt søk"
+
+msgid "Column Options"
+msgstr "Kolonnevalg"
+
+msgid "Company"
+msgstr "Firma"
+
+#, c-format
+msgid "Contents of %s"
+msgstr "Inneholdet av %s"
+
+msgid "Default Display"
+msgstr "Standardvisning"
+
+msgid "Delete"
+msgstr "Slett"
+
+msgid "Deletion failed"
+msgstr "Slettingen feilet"
+
+msgid "Directory"
+msgstr "Katalog"
+
+msgid "Display Options"
+msgstr "Visnings valg"
+
+msgid "Edit '%s'"
+msgstr "Rediger"
+
+msgid "Edit"
+msgstr "Rediger"
+
+msgid "Email"
+msgstr "Epost"
+
+msgid "Error"
+msgstr "Feil"
+
+msgid "Export Addressbook"
+msgstr "Eksporter adressebok"
+
+msgid "Export"
+msgstr "Eksporter"
+
+msgid "Failed to access the specified address book."
+msgstr "Kunne ikke koble til den angitte katalogen."
+
+#, c-format
+msgid "Failed to browse %s."
+msgstr "Feilet å søke etter %s."
+
+msgid "Failed to connect to the specified directory."
+msgstr "Kunne ikke koble til den angitte katalogen."
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Kunne ikke søke i katalogen: %s"
+
+msgid "Fax"
+msgstr "Telefaks"
+
+msgid "Find"
+msgstr "Finn"
+
+msgid "From"
+msgstr "Fra"
+
+msgid "Help"
+msgstr "Hjelp"
+
+msgid "Home Address"
+msgstr "Hjemmeadresse"
+
+msgid "Home Phone"
+msgstr "Telefon hjemme"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "Ved import av CSV-data: Inneholder den første raden feltnavn?"
+
+msgid "Illegal or malformed form data."
+msgstr "Ulovlige eller misutformede data."
+
+msgid "Import Addressbook"
+msgstr "Importer adressebok"
+
+msgid "Import"
+msgstr "Importer"
+
+msgid "Import/Export Addressbooks"
+msgstr "Importer/Eksporter adressebok"
+
+msgid "Import/Export"
+msgstr "Import/Eksport"
+
+msgid "Invalid addressbook."
+msgstr "Ugyldig adressebok."
+
+msgid "Invalid e-mail address."
+msgstr "Ugyldig epostadresse."
+
+msgid "Invalid name."
+msgstr "Ugyldig navn."
+
+msgid "Language"
+msgstr "Språk"
+
+msgid "List"
+msgstr "Liste"
+
+msgid "Matching"
+msgstr "Kobling"
+
+msgid "Message"
+msgstr "Melding"
+
+msgid "Name"
+msgstr "Navn"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"Ingen av de tilgjengelige adressebøkene tillater deg å legge til nye "
+"oppføringer. Hvis du mener dette er feil, vennlist kontakt system "
+"administratoren din."
+
+msgid "Notes"
+msgstr "Notater"
+
+msgid "Options"
+msgstr "Valg"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Vennligst velg adresseboken du vil legge kontakten til."
+
+msgid "Please select a directory:"
+msgstr "Kunne ikke søke i katalogen: %s"
+
+msgid "Problem?"
+msgstr "Problem?"
+
+msgid "Reset"
+msgstr "Nullstill"
+
+msgid "Save Changes"
+msgstr "Lagre endringer"
+
+msgid "Save"
+msgstr "Lagre"
+
+msgid "Search Results"
+msgstr "Søkeresultater"
+
+msgid "Search"
+msgstr "Søk"
+
+msgid "Search&nbsp;Results"
+msgstr "Søkeresultat"
+
+msgid "Select the destination to import to:"
+msgstr "Velg mål å importere til:"
+
+msgid "Select the file to import:"
+msgstr "Velg filen som skal importeres:"
+
+msgid "Select the format to export to:"
+msgstr "Velg format på eksporten:"
+
+msgid "Select the format to import from:"
+msgstr "Velg format på importen:"
+
+msgid "Select the format of the source file:"
+msgstr "Velg format på kilden:"
+
+msgid "Select the source to export from:"
+msgstr "Velg kilde som det skal eksporteres fra:"
+
+msgid "Select view to display by default."
+msgstr "Velg standardvisning."
+
+msgid "Select which fields to display in the address lists."
+msgstr "Velg hvilke felter som skal vises i adresse listen."
+
+msgid "Select your preferred language:"
+msgstr "Velg ditt foretrukne språk:"
+
+msgid "Selected Columns:"
+msgstr "Velg kolonner:"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "Send epost til %s"
+
+msgid "Set your preferred display language."
+msgstr "Sett ditt foretrukne visnings-språk."
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Noen av Turbas konfigurasjonsfiler mangler:"
+
+msgid "Success"
+msgstr "Suksess"
+
+msgid "The data got lost"
+msgstr "Dataene ble borte"
+
+msgid "The data got lost."
+msgstr "Dataene ble borte."
+
+msgid "The file contained no data."
+msgstr "Filen inneholdt ikke data."
+
+msgid "There are no browseable address books."
+msgstr "Det finnes ingen skrivbare adressebøker."
+
+msgid "There are no entries in %s."
+msgstr "Det finnes ingen skrivbare adressebøker."
+
+msgid "There are no writeable address books."
+msgstr "Det finnes ingen skrivbare adressebøker."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Det oppstod et problem med filopplastingen. Filen kan ha vært større enn "
+"maksimalt tillatt størrelse."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"Det oppstod en feil idet objektet skulle legges til. Kontakt "
+"systemadministratoren din for ytterligerere hjelp."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"Det oppstod en feil idet objektet skulle slettes. Kontakt "
+"systemadministratoren din for ytterligerere hjelp."
+
+msgid "There was an error importing the data."
+msgstr "Det oppstod en feil ved import av dataene."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Det oppstod en feil når den opplastede filen skulle importeres"
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Denne filen kontrollerer standardinstillinger for Turba, og kontrollerer "
+"hvilke instillinger brukerne kan endre."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Denne filen kontrollerer stilarket som bestemmer farger og skrifttyper. I "
+"tillegg overstyrer den standardinstillingene i Horde."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"Denne filen definerer de globale navnene og typene på atributtene i Turba - "
+"navn, epost, adresser, osv."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "Denne filen definerer listen over tilgjengelige kilder for Turba."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"Dette er Turbas hovedkonfigurasjonsfil. Den inneholder stier og valg for "
+"Turbaskriptene."
+
+msgid "This number must be at least one."
+msgstr "Dette nummeret må være minst 1."
+
+msgid "This person is already in your addressbook."
+msgstr "Denne personen finnes allerede i adresseboken din."
+
+msgid "This value must be a number."
+msgstr "Dette valget må være et nummer."
+
+msgid "Title"
+msgstr "Tittel"
+
+msgid "Turba is not properly configured"
+msgstr "Turba er ikke ordentlig satt opp"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Kan ikke laste detfinisjonen av %s."
+
+msgid "User Options"
+msgstr "Bruker valg"
+
+msgid "View to display by default:"
+msgstr "Standardvisning:"
+
+msgid "Warning"
+msgstr "Advarsel"
+
+msgid "Work Address"
+msgstr "Firmaadresse"
+
+msgid "Work Phone"
+msgstr "Telefon Arbeid"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr ""
+"Du koblet ikke noen felt fra den importerte filen mot de korresponderende "
+"feltene i Turba."
+
+msgid "Your Information"
+msgstr "Din informasjon"
+
+msgid "Your options have been updated."
+msgstr "Dine valg har blitt oppdatert:"
+
+msgid "[Edit]"
+msgstr "[Rediger]"
+
+msgid "add column"
+msgstr "Legg til kolonne"
+
+msgid "move left"
+msgstr "Flytt til venstre"
+
+msgid "move right"
+msgstr "Flytt til høyre"
+
+msgid "remove column"
+msgstr "fjern kolonne"
+
+msgid "Show Lists"
+msgstr "Vis lister"
+
+msgid "Show Contacts"
+msgstr "Vis kontakter"
+
+msgid "Show All"
+msgstr "Vis alle"
+
+msgid "Select"
+msgstr "Velg"
+
+msgid "All"
+msgstr "Alle"
+
+msgid "Add to"
+msgstr "Legg til..."
+
+msgid "None"
+msgstr "Ingen"
+
+msgid "Name Format"
+msgstr "Navneformat"
+
+msgid "Select which format to display names."
+msgstr "Velg hva slags visningsformat navn skal ha."
+
+msgid "Select the format used to display names:"
+msgstr "Velg visningsformatet som skal benyttes:"
+
+msgid "Select List"
+msgstr "Velg liste"
+
+msgid "New List"
+msgstr "Ny liste"
+
+msgid "Remove from this list"
+msgstr "Slett fra denne listen"
+
+msgid "Mobile Phone"
+msgstr "Mobiltelefon"
+
+msgid "Date of Birth (dd/mm/yyyy)"
+msgstr "Fødselsdag (dd/mm/åååå)"
+
+msgid "Category"
+msgstr "Kategori"
+
+msgid "_Add"
+msgstr "Legg til"
+
+msgid "_Browse"
+msgstr "Bla gjennom"
+
+msgid "_Search"
+msgstr "Søk"
+
+msgid "_Import/Export"
+msgstr "Importer/Eksporter"
+
+msgid "_Options"
+msgstr "Valg"
+
+msgid "_Help"
+msgstr "Hjelp"
+
+msgid "_Log out"
+msgstr "Logg ut"
+
+msgid "Basic Search"
+msgstr "Standard søk"
+
+msgid "Ad_vanced Search"
+msgstr "Avansert søk"
+
+msgid "_Delete"
+msgstr "Slett"
+
+msgid "Records displayed:"
+msgstr "Antal i visning:"
+
+msgid "Download vCard"
+msgstr "Last ned vCard"
+
+msgid "New Contact"
+msgstr "Ny kontakt"
+
+msgid "Reset to Defaults"
+msgstr "Tøm skjema"
+
+msgid "Copy"
+msgstr "Kopier"
+
+msgid "Move"
+msgstr "Flytt"
+
+msgid "to Selected Address Book"
+msgstr "til valgt adressebok"
+
+msgid "Show _Lists"
+msgstr "Vis lister"
+
+msgid "Show _Contacts"
+msgstr "Vis kontakter"
+
+msgid "Sho_w All"
+msgstr "Vis alt"
+
+msgid "Select Address Book"
+msgstr "Velg adressebok"
+
+msgid "Show"
+msgstr "Vis"
+
+msgid "PGP Public Key"
+msgstr "PGP offentlig nøkkel"
+
+msgid "C_lear Search"
+msgstr "Tøm søk"
+
+msgid ""
+"Replace existing address book with the imported one? <b>Warning: This "
+"deletes all entries in your current address book.</b>"
+msgstr ""
+"Erstatt ekisterende adressebok med den importerte ? <b>Advarsel: Dette "
+"sletter alt innhold i din adressebok.</b>"
+
+msgid "Next"
+msgstr "Neste"
+
+msgid "Select the export format:"
+msgstr "Velg formatet du vil eksportere til:"
+
+msgid "Import Address Book, Step %d"
+msgstr "Importer adressebok, steg %d"

@@ -1,0 +1,5564 @@
+# Polish translations for Imp package
+# Polskie tlumaczenia dla pakietu Imp.
+# Copyright 2007-2009 The Horde Project
+# This file is distributed under the same license as the Imp package.
+# Automatically generated, 2007.
+# Mariusz Zynel <mariusz@math.uwb.edu.pl>, 2001.
+# Piotr Roszatycki <dexter@debian.org>, 2001.
+# Krzysztof Kozlowski <kozik1@o2.pl>, 2005.
+# Piotr Adamcio <adamcios@o2.pl>, 2007.
+# Tadeusz Lesiecki <lesiecki@tmtsystem.pl>, 2007.
+# Piotr Tarnowski <drfugazi@drfugazi.eu.org>, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Imp H3 (4.2-cvs)\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2007-06-27 12:14+0200\n"
+"PO-Revision-Date: 2007-03-31 09:57+0200\n"
+"Last-Translator: Piotr Tarnowski <drfugazi@drfugazi.eu.org>\n"
+"Language-Team: Polish <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+
+#: lib/Compose.php:1774
+msgid "      Cc: "
+msgstr "      DW: "
+
+#: lib/Compose.php:1771
+msgid "      To: "
+msgstr "      Do: "
+
+#: lib/Compose.php:1759
+msgid "    Date: "
+msgstr "    Data: "
+
+#: lib/Compose.php:1762
+msgid "    From: "
+msgstr "      Od: "
+
+#: folders.php:342 mailbox.php:345 lib/Block/mailbox.php:93
+#, php-format
+msgid " (Accesskey %s)"
+msgstr " (klawisz skrótu %s)"
+
+#: lib/Compose.php:1768
+msgid " Subject: "
+msgstr "   Temat: "
+
+#: mailbox.php:566 lib/Block/mailbox.php:138
+msgid "#"
+msgstr "#"
+
+#: folders.php:289 folders.php:300 lib/Message.php:841
+#, php-format
+msgid "%.2fMB"
+msgstr "%.2fMB"
+
+#: thread.php:151
+#, php-format
+msgid "%d Messages"
+msgstr "%d wiadomo¶ci"
+
+#: lib/Spam.php:215
+#, php-format
+msgid "%d messages have been deleted."
+msgstr "%d wiadomo¶ci zosta³o skasowanych."
+
+#: lib/Spam.php:194
+#, php-format
+msgid ""
+"%d messages have been reported as not spam to your system administrator."
+msgstr ""
+"%d wiadomo¶ci zosta³o zaraportowanych jako nie spam do administratora "
+"systemu."
+
+#: lib/Spam.php:174
+#, php-format
+msgid "%d messages have been reported as not spam."
+msgstr "%d wiadomo¶ci zosta³o zaraportowanych jako nie spam."
+
+#: lib/Spam.php:186
+#, php-format
+msgid "%d messages have been reported as spam to your system administrator."
+msgstr ""
+"%d wiadomo¶ci zosta³o zaraportowanych jako spam do administratora systemu."
+
+#: lib/Spam.php:166
+#, php-format
+msgid "%d messages have been reported as spam."
+msgstr "%d wiadomo¶ci zosta³o zaraportowanych jako spam."
+
+#: mailbox.php:253
+#, php-format
+msgid "%d to %d of %d Messages"
+msgstr "%d do %d z %d wiadomo¶ci"
+
+#: lib/MIME/Contents.php:556
+#, php-format
+msgid "%s Attachments, %s"
+msgstr "%s za³±czników, %s"
+
+#: lib/MIME/Contents.php:546 lib/UI/Mailbox.php:134
+#, php-format
+msgid "%s KB"
+msgstr "%s KB"
+
+#: lib/MIME/Contents.php:544 lib/UI/Mailbox.php:132
+#, php-format
+msgid "%s MB"
+msgstr "%s MB"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:39
+#, php-format
+msgid "%s already exists. Your %s folder was not renamed."
+msgstr "%s ju¿ istnieje. Nie zmieniono nazwy Twojego folderu %s."
+
+#: lib/MIME/Contents.php:549
+#, php-format
+msgid "%s bytes"
+msgstr "%s bajtów"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:37
+#, php-format
+msgid "%s folder being renamed at the start of the month."
+msgstr "Nazwa folderu %s zosta³a zmieniona na pocz±tku miesi±ca."
+
+#: lib/MIME/Viewer/itip.php:260
+#, php-format
+msgid "%s has accepted."
+msgstr "%s zosta³ zaakceptowany"
+
+#: lib/MIME/Viewer/itip.php:666
+#, php-format
+msgid "%s has cancelled \"%s\"."
+msgstr "%s zosta³ anulowany \"%s\"."
+
+#: lib/MIME/Viewer/itip.php:266
+#, php-format
+msgid "%s has declined."
+msgstr "%s zosta³ odrzucony."
+
+#: lib/MIME/Viewer/itip.php:506
+#, php-format
+msgid "%s has replied to a free/busy request."
+msgstr "%s odpowiedzia³ na pytanie o dostêpno¶æ."
+
+#: lib/MIME/Viewer/itip.php:658
+#, php-format
+msgid "%s has replied to the invitation to \"%s\"."
+msgstr "%s odpowiedzia³ na zaproszenie do \"%s\"."
+
+#: lib/MIME/Viewer/itip.php:497
+#, php-format
+msgid "%s has sent you free/busy information."
+msgstr "%s wys³a³ Ci informacjê o dostêpno¶ci."
+
+#: lib/MIME/Viewer/itip.php:272
+#, php-format
+msgid "%s has tentatively accepted."
+msgstr "%s zosta³o wstêpnie zaakceptowane."
+
+#: lib/MIME/Viewer/itip.php:502
+#, php-format
+msgid "%s requests your free/busy information."
+msgstr "%s wys³a³ zapytanie o Twoj± dostêpno¶æ."
+
+#: lib/MIME/Viewer/itip.php:621
+#, php-format
+msgid "%s requests your presence at \"%s\"."
+msgstr "%s prosi o Twoj± obecno¶æ w \"%s\"."
+
+#: lib/Message.php:468
+#, php-format
+msgid "%s was successfully added to \"%s\"."
+msgstr "%s zosta³ pomy¶lnie dodany do \"%s\"."
+
+#: lib/MIME/Viewer/itip.php:638
+#, php-format
+msgid "%s wishes to ammend \"%s\"."
+msgstr "%s chce poprawiæ \"%s\"."
+
+#: lib/MIME/Viewer/itip.php:593 lib/MIME/Viewer/itip.php:622
+#: lib/MIME/Viewer/itip.php:806
+#, php-format
+msgid "%s wishes to make you aware of \"%s\"."
+msgstr "%s chce, ¿eby¶ zwróci³(a) uwagê na \"%s\"."
+
+#: lib/MIME/Viewer/itip.php:645
+#, php-format
+msgid "%s wishes to receive the latest information about \"%s\"."
+msgstr "%s chce otrzymaæ aktualne informacje o \"%s\"."
+
+#: compose.php:1120
+#, php-format
+msgid "%s%% of allowed size"
+msgstr "%s%% dozwolonej wielko¶ci"
+
+#: message.php:262 message.php:267
+#, php-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#: message.php:504
+#, php-format
+msgid "%s: %s (%d&nbsp;of&nbsp;%d)"
+msgstr "%s: %s (%d&nbsp;z&nbsp;%d)"
+
+#: rss.php:94
+#, php-format
+msgid "%u of %u messages in %s unread."
+msgstr "%u z %u wiadomo¶ci w %s nieprzeczytanych."
+
+#: stationery.php:132
+msgid "(HTML)"
+msgstr "(HTML)"
+
+#: stationery.php:132
+msgid "(Plain Text)"
+msgstr "(Czysty tekst)"
+
+#: templates/contacts/contacts.html:49
+msgid "* Add these by clicking OK *"
+msgstr "* Dodaj klikaj±c OK *"
+
+#: templates/contacts/contacts.html:33
+msgid "* Please select address(es) *"
+msgstr " * Proszê wybraæ adres(y) *"
+
+#: lib/MIME/Contents.php:554
+#, php-format
+msgid "1 Attachment, %s"
+msgstr "1 za³±cznik, %s"
+
+#: config/prefs.php.dist:968
+msgid "100 characters"
+msgstr "100 znaków"
+
+#: config/prefs.php.dist:971
+msgid "1000 characters"
+msgstr "1000 znaków"
+
+#: config/prefs.php.dist:969
+msgid "250 characters"
+msgstr "250 znaków"
+
+#: config/prefs.php.dist:970
+msgid "500 characters"
+msgstr "500 znaków"
+
+#: lib/MIME/Viewer/notification.php:49
+msgid ""
+"A message you have sent has resulted in a return notification from the "
+"recipient."
+msgstr "Wiadomo¶æ, któr± wys³a³e¶, zwróci³a potwierdzenie odbioru."
+
+#: templates/javascript_defs.php:70
+msgid ""
+"A popup window could not be opened. Perhaps you have set your browser to "
+"block popup windows?"
+msgstr ""
+"Wyskakuj±ce okienko nie mo¿e zostaæ otwarte. Mo¿e ustawi³e¶ swoj± "
+"przegl±darkê aby blokowa³a wyskakuj±ce okienka?"
+
+#: templates/search/search.html:61
+msgid "AND"
+msgstr "I"
+
+#: config/prefs.php.dist:836
+msgid "Above the message text"
+msgstr "Nad tre¶ci± wiadomo¶ci"
+
+#: lib/MIME/Viewer/itip.php:625
+msgid "Accept and add to my calendar"
+msgstr "Zaakceptuj i dodaj do mojego kalendarza"
+
+#: lib/MIME/Viewer/itip.php:630
+msgid "Accept request"
+msgstr "Zaakceptuj pro¶bê"
+
+#: lib/MIME/Viewer/itip.php:917
+msgid "Accepted"
+msgstr "Zaakceptowano"
+
+#: lib/MIME/Viewer/itip.php:261
+msgid "Accepted: "
+msgstr "Zaakceptowano: "
+
+#: templates/fetchmail/fetchmailprefs.html:43
+msgid "Account's name:"
+msgstr "Nazwa konta:"
+
+#: lib/MIME/Viewer/itip.php:536 lib/MIME/Viewer/itip.php:768
+#: lib/MIME/Viewer/itip.php:769 lib/MIME/Viewer/itip.php:896
+msgid "Actions"
+msgstr "Operacje"
+
+#: lib/MIME/Headers.php:201 lib/MIME/Headers.php:202
+#, php-format
+msgid "Add %s to my Address Book"
+msgstr "Dodaj %s do mojej ksi±¿ki adresowej"
+
+#: templates/prefs/sourceselect.inc:300
+msgid "Add source"
+msgstr "Dodaj ¼ród³o"
+
+#: lib/MIME/Viewer/itip.php:595
+msgid "Add this to my calendar"
+msgstr "Dodaj to do mojego kalendarza"
+
+#: lib/MIME/Viewer/itip.php:808
+msgid "Add this to my tasklist"
+msgstr "Dodaj to do mojej listy zadañ"
+
+#: lib/MIME/Viewer/itip.php:627
+msgid "Add to my calendar"
+msgstr "Dodaj do mojego kalendarza"
+
+#: lib/Compose.php:2704
+#, php-format
+msgid "Added \"%s\" as an attachment."
+msgstr "Dodaj \"%s\" jako za³±cznik."
+
+#: config/prefs.php.dist:813
+msgid ""
+"Additional headers to display when viewing: <em>(optional, enter each header "
+"on a new line)</em>"
+msgstr ""
+"Dodatkowe nag³ówki do wy¶wietlenie podczas przegl±dania: <em>(opcjonalne, "
+"ka¿dy nag³ówek w nowej linii)</em>"
+
+#: lib/MIME/Viewer/notification.php:60
+#, php-format
+msgid "Additional information can be viewed %s."
+msgstr "Mo¿na zobaczyæ dodatkowe informacje %s."
+
+#: lib/MIME/Viewer/notification.php:60
+msgid "Additional information details"
+msgstr "Informacje dodatkowe - szczegó³y"
+
+#: lib/MIME/Viewer/status.php:92
+msgid "Additional message details"
+msgstr "Szczegó³y wiadomo¶ci"
+
+#: lib/MIME/Viewer/status.php:91
+#, php-format
+msgid "Additional message details can be viewed %s."
+msgstr "Mo¿na zobaczyæ szczegó³y wiadomo¶ci %s."
+
+#: lib/MIME/Viewer/status.php:77
+msgid "Additional message error details"
+msgstr "Szczegó³owe informacje o b³êdzie"
+
+#: lib/MIME/Viewer/status.php:76
+#, php-format
+msgid "Additional message error details can be viewed %s."
+msgstr "Mo¿na zobaczyæ szczegó³owe informacje o b³êdzie %s."
+
+#: contacts.php:118 compose.php:753 compose.php:988
+#: templates/contacts/contacts.html:8
+msgid "Address Book"
+msgstr "Ksi±¿ka adresowa"
+
+#: config/prefs.php.dist:142
+msgid "Address Books"
+msgstr "Ksi±¿ki adresowe"
+
+#: templates/prefs/sourceselect.inc:345
+msgid "Address book to add addresses to"
+msgstr "Ksi±¿ka adresowa do której dodawaæ adresy"
+
+#: config/prefs.php.dist:197
+msgid ""
+"Addresses to BCC all messages: <em>(optional, enter each address on a new "
+"line)</em>"
+msgstr ""
+"Adresy na które bêdzie wysy³ana ukryta kopia wszystkich wiadomo¶ci: <em>"
+"(opcjonalne, wprowad¼ ka¿dy adres w nowej linii)</em>"
+
+#: config/prefs.php.dist:189
+msgid ""
+"Addresses to explicitly tie to this identity: <em>(optional, enter each "
+"address on a new line)</em>"
+msgstr ""
+"Adresy powi±zane wprost z t± to¿samo¶ci±: <em>(opcjonalne, wprowad¼ ka¿dy "
+"adres w nowej linii)</em>"
+
+#: lib/IMAP/ACL/rfc2086.php:57 lib/IMAP/ACL/rfc4314.php:59
+msgid "Administer"
+msgstr "Administruj"
+
+#: templates/mailbox/navbar.html:10
+msgid "All"
+msgstr "Wszystko"
+
+#: lib/Maintenance/Task/purge_sentmail.php:82
+#, php-format
+msgid ""
+"All messages in the folder(s) \"%s\" older than %s days will be permanently "
+"deleted."
+msgstr ""
+"Wszystkie wiadomo¶ci w folderze \"%s\" starsze ni¿ %s dni zostan± "
+"bezpowrotnie usuniête."
+
+#: templates/javascript_defs.php:60
+msgid ""
+"All messages in the following folder(s) will be downloaded into one MBOX "
+"file:"
+msgstr ""
+"Wszystkie wiadomo¶ci w nastêpuj±cych folderach zostan± pobrane do jednego "
+"pliku MBOX:"
+
+#: lib/Maintenance/Task/purge_spam.php:79
+#: lib/Maintenance/Task/purge_trash.php:78
+#, php-format
+msgid ""
+"All messages in your \"%s\" folder older than %s days will be permanently "
+"deleted."
+msgstr ""
+"Wszystkie wiadomo¶ci w Twoim folderze \"%s\" starsze ni¿ %s dni zostan± "
+"bezpowrotnie usuniête."
+
+#: lib/Maintenance/Task/delete_attachments_monthly.php:59
+#, php-format
+msgid "All old linked attachments more than %s months old will be deleted."
+msgstr ""
+"Wszystkie stare za³±czniki z odno¶nikami starsze ni¿ %s miesiêcy zostan± "
+"skasowane."
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:72
+#, php-format
+msgid "All old sent-mail folders more than %s months old will be deleted."
+msgstr "Wszystkie foldery sent-mail starsze ni¿ %s miesiêci zostan± usuniête."
+
+#: acl.php:85 acl.php:126
+#, php-format
+msgid "All rights on folder \"%s\" successfully removed for user \"%s\"."
+msgstr "Usuniêto wszystkie prawa do folderu \"%s\" dla u¿ytkownika \"%s\"."
+
+#: lib/api.php:93
+msgid "Allow Folder Creation?"
+msgstr "Zezwoliæ na tworzenie folderów?"
+
+#: filterprefs.php:108
+msgid "Allow filter rules to be applied in any mailbox?"
+msgstr "Umo¿liwiæ stosowanie filtrów w dowolnej skrzynce?"
+
+#: lib/MIME/Viewer/alternative.php:79
+msgid "Alternative parts for this section:"
+msgstr "Czê¶ci alternatywne dla tej sekcji:"
+
+#: config/prefs.php.dist:691
+msgid "Always"
+msgstr "Zawsze"
+
+#: config/prefs.php.dist:676
+msgid "Always save attachments"
+msgstr "Zawsze zapisuj za³±czniki"
+
+#: lib/Message.php:566
+msgid ""
+"An error occured while attempting to strip the attachment. The IMAP server "
+"said: "
+msgstr ""
+"Wyst±pi³ b³±d przy próbie odciêcia za³±cznika. Serwer IMAP odpowiedzia³: "
+
+#: lib/MIME/Viewer/images.php:153
+#, php-format
+msgid "An image named %s is attached to this message. A thumbnail is below."
+msgstr ""
+"Do tej wiadomo¶ci do³±czony jest obraz o nazwie %s. Poni¿ej jest miniaturka."
+
+#: lib/Message.php:442
+msgid "An unknown error occured while creating the new note."
+msgstr "Wyst±pi³ nieznany b³±d podczas tworzenia nowej notatki."
+
+#: lib/Message.php:441
+msgid "An unknown error occured while creating the new task."
+msgstr "Wyst±pi³ nieznany b³±d podczas tworzenia nowego zadania."
+
+#: lib/MIME/Viewer/itip.php:794
+msgid "An unknown person"
+msgstr "Nieznana osoba"
+
+#: message.php:476 mailbox.php:749 lib/Block/mailbox.php:291
+#: templates/mailbox/navbar.html:18 templates/mailbox/navbar.html:34
+#: templates/message/navbar_navigate.html:12
+msgid "Answered"
+msgstr "Z odpowiedzi±"
+
+#: search.php:333
+msgid "Answered messages"
+msgstr "Wiadomo¶ci z odpowiedzi±"
+
+#: mailbox.php:408
+msgid "Apply Filters"
+msgstr "Zastosuj filtry"
+
+#: mailbox.php:408
+#, php-format
+msgid "Apply Filters to %s"
+msgstr "Zastosuj filtry do %s"
+
+#: filterprefs.php:105
+msgid "Apply filter rules upon logging on?"
+msgstr "Zastosowaæ filtry przy logowaniu?"
+
+#: filterprefs.php:106
+msgid "Apply filter rules whenever Inbox is displayed?"
+msgstr "Zastosowaæ filtry kiedy wy¶wietlana jest skrzynka odbiorcza?"
+
+#: filterprefs.php:107
+msgid "Apply filter rules whenever sidebar is refreshed?"
+msgstr "Zastosowaæ filtry kiedy od¶wie¿any jest pasek boczny?"
+
+#: mailbox.php:417
+msgid "Are you sure you want to delete this Virtual Folder Definition?"
+msgstr "Czy na pewno chcesz skasowaæ t± definicjê folderu wirtualnego?"
+
+#: smime.php:311 pgp.php:401
+msgid "Are you sure you want to delete this public key?"
+msgstr "Czy na pewno chcesz skasowaæ ten klucz publiczny?"
+
+#: smime.php:337 pgp.php:431
+msgid ""
+"Are you sure you want to delete your keypair? (This is NOT recommended!)"
+msgstr ""
+"Czy na pewno chcesz skasowaæ Twoj± parê kluczy? (To NIE jest zalecane!)"
+
+#: templates/javascript_defs.php:32
+msgid "Are you sure you want to do this?"
+msgstr "Czy na pewno chcesz to zrobiæ?"
+
+#: message.php:551 templates/javascript_defs.php:44
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "Czy na pewno chcesz BEZPOWROTNIE skasowaæ te wiadomo¶ci?"
+
+#: lib/MIME/Contents.php:254
+msgid "Are you sure you wish to PERMANENTLY delete this attachment?"
+msgstr "Czy na pewno chcesz BEZPOWROTNIE skasowaæ ten za³±cznik?"
+
+#: mailbox.php:413
+msgid "Are you sure you wish to delete all mail in this folder?"
+msgstr "Czy na pewno chcesz skasowaæ ca³± pocztê w tym folderze?"
+
+#: lib/IMP.php:787
+msgid "Are you sure you wish to empty your spam folder?"
+msgstr "Czy na pewno chcesz opró¿niæ Twój folder spamu?"
+
+#: lib/IMP.php:779
+msgid "Are you sure you wish to empty your trash folder?"
+msgstr "Czy na pewno chcesz opró¿niæ Twój folder ¶mieci?"
+
+#: mailbox.php:497
+msgid "Are you sure you wish to permanently delete these messages?"
+msgstr "Czy na pewno chesz bezpowrotnie skasowaæ te wiadomo¶ci?"
+
+#: templates/javascript_defs.php:78
+msgid "Are you sure you wish to report this message as innocent?"
+msgstr "Czy na pewno chcesz zg³osiæ tê wiadomo¶æ jako niewinn±?"
+
+#: templates/javascript_defs.php:77
+msgid "Are you sure you wish to report this message as spam?"
+msgstr "Czy na pewno chcesz zg³osiæ t± wiadomo¶æ jako spam?"
+
+#: config/prefs.php.dist:1064
+msgid "Arrival Time"
+msgstr "Czas otrzymania"
+
+#: config/prefs.php.dist:1079
+msgid "Ascending"
+msgstr "Rosn±co"
+
+#: config/prefs.php.dist:690
+msgid "Ask"
+msgstr "Popro¶"
+
+#: compose.php:1058
+msgid "Attach Files"
+msgstr "Za³±cz pliki"
+
+#: compose.php:1051
+msgid "Attach a copy of your PGP public key to your message?"
+msgstr "Do³±czyæ kopiê Twojego klucza publicznego PGP do wiadomo¶ci?"
+
+#: lib/MIME/Viewer/tnef.php:110
+msgid "Attached File:"
+msgstr "Do³±czony plik:"
+
+#: lib/Compose.php:1807 lib/Compose.php:1903
+#, php-format
+msgid ""
+"Attached file \"%s\" exceeds the attachment size limits. File NOT attached."
+msgstr ""
+"Do³±czony plik \"%s\" przekracza granicê rozmiaru za³±cznika. Plik NIE "
+"zosta³ do³±czony."
+
+#: lib/MIME/Viewer/itip.php:386
+msgid "Attached is a reply to a calendar request you sent."
+msgstr "Do³±czono odpowied¼ do pro¶by kalendarza, któr± wys³a³e¶."
+
+#: templates/javascript_defs.php:39 templates/compose/compose.html:266
+#: templates/compose/compose.html:325
+msgid "Attachment"
+msgstr "Za³±cznik"
+
+#: attachment.php:72
+#, php-format
+msgid "Attachment %s deleted."
+msgstr "Skasowano za³±cznik %s."
+
+#: lib/Compose.php:2420
+msgid "Attachment Information"
+msgstr "Informacja o za³±czniku"
+
+#: lib/Compose.php:732
+msgid "Attachment stripped: Original attachment type"
+msgstr "Wyciêto za³±cznik: Oryginalny rodzaj za³±cznika"
+
+#: compose.php:1000 lib/Compose.php:2388 templates/compose/compose.html:242
+msgid "Attachments"
+msgstr "Za³±czniki"
+
+#: message.php:568 config/prefs.php.dist:586
+msgid "Attachments Only"
+msgstr "Tylko za³±czniki"
+
+#: lib/MIME/Viewer/itip.php:724 lib/MIME/Viewer/itip.php:849
+msgid "Attendees"
+msgstr "Uczestnicy"
+
+#: lib/MIME/Viewer/notification.php:52
+msgid "Attention"
+msgstr "Uwaga"
+
+#: lib/Auth/imp.php:33
+msgid "Auth_imp: Required IMAP extension not found."
+msgstr "Auth_imp: Nie znaleziono wymaganego rozszerzenia IMAP."
+
+#: config/prefs.php.dist:747
+msgid ""
+"Automatically show images in HTML messages when the sender is in my "
+"addressbook?"
+msgstr ""
+"Automatycznie wy¶wietlaæ obrazki w wiadomo¶ciach HTML, gdy nadawca jest  w "
+"mojej ksi±¿ce adresowej?"
+
+#: templates/prefs/sourceselect.inc:293 templates/prefs/sourceselect.inc:295
+msgid "Available Address books:"
+msgstr "Dostêpne ksi±¿ki adresowe:"
+
+#: lib/MIME/Viewer/itip.php:757 lib/MIME/Viewer/itip.php:885
+msgid "Awaiting Response"
+msgstr "Oczekiwanie na odpowied¼"
+
+#: message.php:521 thread.php:136
+#, php-format
+msgid "Bac_k to %s"
+msgstr "Powrót do %s"
+
+#: message.php:521 thread.php:136
+#, php-format
+msgid "Back to %s"
+msgstr "Powrót do %s"
+
+#: thread.php:133
+msgid "Back to Multiple Message View Index"
+msgstr "Powrót do indeksu widoku wielu wiadomo¶ci"
+
+#: thread.php:131
+msgid "Back to Thread Display"
+msgstr "Powrót do wy¶wietlanego w±tka"
+
+#: lib/IMAP/Client.php:478
+#, php-format
+msgid "Bad login name or password."
+msgstr "Nieprawid³owa nazwa logowania lub has³o."
+
+#: lib/IMAP/Client.php:195
+#, php-format
+msgid "Bad or malformed request. Server Responded: %s"
+msgstr "Nieprawid³owe lub zniekszta³cone ¿±danie. Serwer odpowiedzia³: %s"
+
+#: lib/IMAP/Client.php:482
+#, php-format
+msgid "Bad request: %s"
+msgstr "Nieprawid³owe ¿±danie: %s"
+
+#: lib/Search.php:666 lib/UI/Message.php:28 templates/login/recompose.html:32
+#: templates/contacts/contacts.html:43
+msgid "Bcc"
+msgstr "UDW"
+
+#: config/prefs.php.dist:511
+msgid "Before Signature"
+msgstr "Przed sygnatur±"
+
+#: lib/MIME/Viewer/status.php:160
+msgid "Below is the raw text of the status information message."
+msgstr "Poni¿ej znajduje siê surowy tekst wiadomo¶ci z informacj± o statusie."
+
+#: config/prefs.php.dist:837
+msgid "Below the message text"
+msgstr "Pod tre¶ci± wiadomo¶ci"
+
+#: message.php:577 mailbox.php:515
+msgid "Blacklist"
+msgstr "Czarna lista"
+
+#: config/prefs.php.dist:736
+msgid "Block images in HTML messages unless they are specifically requested?"
+msgstr "Blokowaæ obrazki w wiadomo¶ciach HTML, chyba ¿e na w³asne ¿±danie?"
+
+#: lib/Search.php:674
+msgid "Body"
+msgstr "Tre¶æ"
+
+#: message.php:567 config/prefs.php.dist:585
+msgid "Body Text Only"
+msgstr "Tylko tekst"
+
+#: search.php:330 search.php:335 search.php:340 search.php:345
+msgid "Both"
+msgstr "Oba"
+
+#: config/prefs.php.dist:802
+msgid "Both Header Listing and Body of Message"
+msgstr "Lista w nag³ówku oraz w tre¶ci wiadomo¶ci"
+
+#: config/prefs.php.dist:510
+msgid "Bottom"
+msgstr "Na dole"
+
+#: lib/IMAP/Client.php:407
+msgid ""
+"CRAM-MD5 or DIGEST-MD5 requires PEAR's Auth_SASL package to be installed."
+msgstr ""
+"CRAM-MD5 lub DIGEST-MD5 wymaga zainstalowanego pakietu PEAR'a Auth_SASL."
+
+#: compose.php:946
+msgid "C_harset"
+msgstr "Kodowanie"
+
+#: search.php:316
+msgid "Calendar"
+msgstr "Kalendarz"
+
+#: lib/IMAP/Tree.php:2426
+msgid "Can not directly create mailbox in this folder."
+msgstr "Nie mo¿na bezpo¶rednio utworzyæ skrzynki w tym folderze."
+
+#: lib/Message.php:196
+msgid "Can not move messages to Trash - no Trash mailbox set in preferences."
+msgstr ""
+"Nie mo¿na przenie¶æ wiadomo¶ci do kosza - nie ustawiono kosza dla skrzynki, "
+"w preferencjach."
+
+#: templates/pgp/import_key.html:49 templates/pgp/passphrase.html:22
+#: templates/folders/import.html:17 templates/folders/folders_confirm.html:23
+#: templates/contacts/contacts.html:76 templates/saveimage/saveimage.html:20
+#: templates/smime/import_key.html:70 templates/smime/passphrase.html:24
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: templates/compose/redirect.html:83 templates/compose/compose.html:21
+#: templates/compose/compose.html:208
+msgid "Cancel Message"
+msgstr "Anuluj wiadomo¶æ"
+
+#: templates/javascript_defs.php:32
+msgid "Cancelling this message will permanently discard its contents."
+msgstr "Anulowanie tej wiadomo¶ci spowoduje trwa³e usuniêcie jej zawarto¶ci."
+
+#: lib/prefs.php:150
+msgid ""
+"Cannot activate both a Trash folder and Virtual Trash. A Trash folder will "
+"be used."
+msgstr ""
+"Nie mo¿na jednocze¶nie aktywowaæ folderu ¶mieci i wirtualnego kosza. "
+"Zostanie u¿yty folder ¶mieci."
+
+#: lib/prefs.php:153
+msgid ""
+"Cannot activate both a Trash folder and Virtual Trash. A Virtual Trash "
+"folder will be used."
+msgstr ""
+"Nie mo¿na jednocze¶nie aaktywowaæ folderu ¶mieci i wirtualnego kosza. "
+"Zostanie uzyty wirtualny folder ¶mieci."
+
+#: lib/Fetchmail/imap.php:153
+msgid "Cannot connect to the remote mail server."
+msgstr "Nie mo¿na po³±czyæ siê ze zdalnym serwerem poczty."
+
+#: lib/Fetchmail/imap.php:151
+msgid "Cannot connect to the remote mail server: "
+msgstr "Nie mo¿na po³±czyæ siê ze zdalnym serwerem poczty: "
+
+#: lib/prefs.php:164
+msgid "Cannot delete to trash unless a Trash folder is defined."
+msgstr "Nie mo¿na skasowaæ do kosza dopóki nie zdefiniowano folderu ¶mieci."
+
+#: lib/MIME/Viewer/partial.php:47
+#, php-format
+msgid ""
+"Cannot display - found only %s of %s parts of this message in the current "
+"mailbox."
+msgstr ""
+"Nie mo¿na wy¶wietliæ - znaleziono tylko %s z %s czê¶ci tej wiadomo¶ci w "
+"bie¿±cej skrzynce."
+
+#: lib/Search.php:662 lib/UI/Message.php:27 templates/login/recompose.html:23
+#: templates/contacts/contacts.html:42
+msgid "Cc"
+msgstr "DW"
+
+#: templates/smime/smime.html:83
+msgid ""
+"Certificate import is not available. File upload is not enabled on this "
+"server."
+msgstr ""
+"Import certyfikatu nie jest mo¿liwy. Wgrywanie plików nie jest w³±czone na "
+"tym serwerze."
+
+#: lib/MIME/Viewer/itip.php:739 lib/MIME/Viewer/itip.php:867
+msgid "Chair Person"
+msgstr "Przewodnicz±cy"
+
+#: acl.php:170 acl.php:171 templates/acl/acl.html:13
+msgid "Change Folder"
+msgstr "Zmieñ folder"
+
+#: config/prefs.php.dist:120
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr ""
+"Zmieñ opcje wy¶wietlania, takie jak ilo¶æ wiadomo¶ci widocznych na ka¿dej "
+"stronie i sposób sortowania wiadomo¶ci."
+
+#: config/prefs.php.dist:24
+msgid "Change mail server and folder settings."
+msgstr "Zmieñ ustawienia serwera pocztowego i folderów."
+
+#: config/prefs.php.dist:15
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr ""
+"Zmieñ nazwê, adres i sygnaturê, któr± widz± ludzie gdy czytaj± lub "
+"odpowiadaj± na twój email."
+
+#: config/prefs.php.dist:972
+msgid "Characters to display:"
+msgstr "Znaki do wy¶wietlenia:"
+
+#: templates/mailbox/message_headers.html:12
+msgid "Check All/None"
+msgstr "Zaznacz wszystko/nic"
+
+#: lib/UI/Compose.php:135
+msgid "Check Spelling"
+msgstr "Sprawd¼ pisowniê"
+
+#: folders.php:354 mailbox.php:645 lib/Block/mailbox.php:213
+msgid "Check _All/None"
+msgstr "Zaznacz wszystko/nic"
+
+#: templates/folders/actions.html:27
+msgid "Check for New Mail"
+msgstr "Sprawdzaj now± pocztê"
+
+#: config/prefs.php.dist:551
+msgid "Check spelling before sending a message?"
+msgstr "Sprawdzaæ pisowniê przed wys³aniem wiadomo¶ci?"
+
+#: lib/UI/Compose.php:136
+msgid "Checking ..."
+msgstr "Sprawdzanie ..."
+
+#: templates/folders/actions.html:11
+msgid "Choose Action"
+msgstr "Wybierz czynno¶æ"
+
+#: config/servers.php.dist:211
+msgid "Choose a mail server:"
+msgstr "Wybierz serwer poczty:"
+
+#: templates/compose/compose.html:65
+msgid "Choose a match or edit the address to the right:"
+msgstr "Wybierz pasuj±cy lub edytuj adres po prawej stronie:"
+
+#: templates/prefs/sourceselect.inc:343
+msgid "Choose the address book to use when adding addresses."
+msgstr "Wybierz ksi±¿kê adresow±, która bêdzie u¿ywana do dodawania adresów."
+
+#: templates/prefs/sourceselect.inc:289
+msgid "Choose the order of address books to search when expanding addresses."
+msgstr ""
+"Wybierz w jakiej kolejno¶ci przeszukiwaæ ksi±¿ki adresowe podczas rozwijania "
+"kontaktów."
+
+#: lib/MIME/Viewer/images.php:103
+#, php-format
+msgid "Click %s to convert the image file into a format your browser can view."
+msgstr ""
+"Kliknij %s aby przekonwertowaæ plik z obrazem do formatu, który mo¿e "
+"wy¶wietliæ Twoja przegl±darka."
+
+#: lib/MIME/Contents.php:418
+#, php-format
+msgid "Click %s to download the data."
+msgstr "Kliknij %s aby pobraæ dane."
+
+#: lib/MIME/Viewer/images.php:92
+#, php-format
+msgid "Click %s to download the image."
+msgstr "Kliknij %s aby pobraæ obraz."
+
+#: lib/Filter.php:131
+#, php-format
+msgid "Click %s to go to %s management page."
+msgstr "Kliknij %s aby przej¶æ do strony zarz±dzania %s."
+
+#: lib/MIME/Viewer/pkcs7.php:467
+#, php-format
+msgid "Click %s to view the attachment in a separate window."
+msgstr "Kliknij %s aby zobaczyæ za³±cznik w oddzielnym oknie."
+
+#: lib/MIME/Viewer/related.php:85
+#, php-format
+msgid "Click %s to view this multipart/related part in a separate window."
+msgstr ""
+"Kliknij %s aby zobaczyæ ten wieloczê¶ciowy/powi±zany fragment w oddzielnym "
+"oknie."
+
+#: lib/MIME/Viewer/pgp.php:245 lib/MIME/Viewer/pgp.php:270
+#: lib/MIME/Viewer/pkcs7.php:218
+msgid "Click HERE to verify the message."
+msgstr "Kliknij TUTAJ aby zweryfikowaæ wiadomo¶æ."
+
+#: templates/prefs/sourceselect.inc:319
+msgid ""
+"Click on one of your selected address books and then select all fields to "
+"search."
+msgstr ""
+"Kliknij na jednej z wybranych ksi±¿ek adresowych, a nastêpnie wybierz "
+"wszystkie pola do wyszukania"
+
+#: config/prefs.php.dist:1105
+msgid "Clicking on the address will compose a new message to the sender"
+msgstr "Klikniêcie na adresie utworzy now± wiadomo¶æ do nadawcy"
+
+#: config/prefs.php.dist:1106
+msgid "Clicking on the address will open the message to be read"
+msgstr "Klikniêcie na adresie otworzy wiadomo¶æ do odczytu"
+
+#: templates/fetchmail/fetchmail.html:33 templates/newmsg/alert.html:17
+msgid "Close"
+msgstr "Zamknij"
+
+#: compose.php:35
+msgid "Close this window"
+msgstr "Zamknij to okno"
+
+#: lib/IMAP/Tree.php:2369
+msgid "Closed Folder"
+msgstr "Zamknij folder"
+
+#: folders.php:436
+msgid "Collapse"
+msgstr "Zwiñ"
+
+#: folders.php:370
+msgid "Collapse All"
+msgstr "Zwiñ wszystko"
+
+#: folders.php:370
+msgid "Collapse All Folders"
+msgstr "Zwiñ wszystkie foldery"
+
+#: folders.php:436
+msgid "Collapse Folder"
+msgstr "Zwiñ folder"
+
+#: templates/fetchmail/fetchmailprefs.html:94
+msgid "Color Indicator:"
+msgstr "Znacznik koloru:"
+
+#: config/prefs.php.dist:1143
+msgid "Combine all namespaces"
+msgstr "Po³±cz wszystkie przestrzenie nazw"
+
+#: templates/pgp/pgp.html:100
+msgid "Comment:"
+msgstr "Komentarz:"
+
+#: lib/MIME/Viewer/itip.php:933
+msgid "Completed"
+msgstr "Zakoñczono"
+
+#: compose.php:34
+msgid "Compose another message"
+msgstr "Utwórz kolejn± wiadomo¶æ"
+
+#: config/prefs.php.dist:490
+msgid "Compose messages in a separate window?"
+msgstr "Tworzyæ wiadomo¶ci w oddzielnym oknie?"
+
+#: config/prefs.php.dist:500
+msgid ""
+"Compose messages with an HTML GUI by default (if browser supports the "
+"feature)?"
+msgstr ""
+"Domy¶lnie tworzyæ wiadomo¶ci z interfejsem HTML (je¶li przegl±darka wspiera "
+"t± w³a¶ciwo¶æ)?"
+
+#: config/prefs.php.dist:73
+msgid "Configure how messages are displayed."
+msgstr "Skonfiguruj jak maj± byæ wy¶wietlane wiadomo¶ci."
+
+#: config/prefs.php.dist:105
+msgid "Configure mail preview options."
+msgstr "Skonfiguruj opcje podgl±du poczty."
+
+#: config/prefs.php.dist:151
+#, php-format
+msgid "Control PGP support for %s."
+msgstr "Zarz±dzaj wsparciem PGP dla %s."
+
+#: config/prefs.php.dist:160
+#, php-format
+msgid "Control S/MIME support for %s."
+msgstr "Zarz±dzaj wsparciem S/MIME dla %s."
+
+#: config/prefs.php.dist:129
+msgid "Control options relating to messages searching."
+msgstr "Ustaw opcje odnosz±ce siê do wyszukiwania wiadomo¶ci."
+
+#: config/prefs.php.dist:97
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr ""
+"Zdecyduj kiedy bêdzie wykonywane sprawdzenie nowej poczty i czy masz byæ "
+"powiadamiany o jej nadej¶ciu."
+
+#: config/prefs.php.dist:792
+msgid "Convert textual emoticons into graphical ones?"
+msgstr "Konwertowaæ u¶mieszki tekstowe do graficznych?"
+
+#: message.php:517 message.php:698 mailbox.php:475 mailbox.php:867
+msgid "Copy"
+msgstr "Kopiuj"
+
+#: message.php:517 message.php:698 mailbox.php:475 mailbox.php:867
+msgid "Copy to folder"
+msgstr "Kopiuj do folderu"
+
+#: lib/IMAP/Client.php:189
+#, php-format
+msgid "Could not complete request. Reason Given: %s"
+msgstr "Nie mo¿na zakoñczyæ ¿±dania. Podana przyczyna: %s"
+
+#: attachment.php:50
+#, php-format
+msgid "Could not create the VFS backend: %s"
+msgstr "Nie mo¿na utworzyæ backend'u VFS: %s"
+
+#: lib/Message.php:768
+#, php-format
+msgid "Could not delete messages from %s. The server said: %s"
+msgstr "Nie mo¿na skasowaæ wiadomo¶ci z %s. Serwer odpowiedzia³: %s"
+
+#: lib/Session.php:325
+msgid "Could not execute maintenance operations."
+msgstr "Nie mo¿na przeprowadziæ czynno¶ci porz±dkowych."
+
+#: lib/MIME/Viewer/tnef.php:53
+msgid "Could not extract the requested file from the MS-TNEF attachment."
+msgstr "Nie mo¿na wyodrêbniæ ¿±danego pliku z za³±cznika MS-TNEF."
+
+#: lib/MIME/Viewer/zip.php:57
+msgid "Could not extract the requested file from the Zip archive."
+msgstr "Nie mo¿na wyodrêbniæ ¿±danego pliku z archiwum Zip."
+
+#: lib/Spam.php:226
+msgid ""
+"Could not move message to spam mailbox - no spam mailbox defined in "
+"preferences."
+msgstr ""
+"Nie mo¿na przenie¶æ wiadomo¶ci do skrzynki spam - nie zdefiniowano skrzynki "
+"spam w preferencjach."
+
+#: lib/IMAP/Client.php:318
+msgid "Could not open secure connection to the IMAP server."
+msgstr "Nie mo¿na otworzyæ bezpiecznego po³±czenia z serwerem IMAP."
+
+#: lib/Session.php:279
+msgid "Could not retrieve namespace information from IMAP server."
+msgstr "Nie mo¿na pobraæ informacji o przestrzeni nazwa z serwera IMAP."
+
+#: compose.php:52
+msgid "Could not retrieve the message from the mail server."
+msgstr "Nie mo¿na pobraæ wiadomo¶ci z serwera pocztowego."
+
+#: lib/Template.php:232
+#, php-format
+msgid "Could not save the compiled template file '%s'."
+msgstr "Nie mo¿na zapisaæ skompilowanego szablonu pliku '%s'."
+
+#: templates/fetchmail/fetchmailprefs.html:121
+#: templates/folders/actions.html:14
+msgid "Create"
+msgstr "Utwórz"
+
+#: lib/IMAP/ACL/rfc2086.php:55
+msgid "Create Folder"
+msgstr "Utwórz folder"
+
+#: lib/IMAP/ACL/rfc4314.php:55
+msgid "Create Folders"
+msgstr "Utwórz foldery"
+
+#: templates/pgp/pgp.html:135
+msgid "Create Keys"
+msgstr "Utwórz klucze"
+
+#: templates/fetchmail/fetchmailprefs.html:28
+msgid "Create a New Account"
+msgstr "Utwórz nowe konto"
+
+#: templates/prefs/spamselect.inc:11 templates/prefs/spamselect.inc:20
+msgid "Create a new Spam folder"
+msgstr "Utwórz nowy folder spamu"
+
+#: templates/prefs/folderselect.inc:11 templates/prefs/folderselect.inc:22
+msgid "Create a new drafts folder"
+msgstr "Utwórz nowy folder szkiców"
+
+#: templates/prefs/sentmailselect.inc:25 templates/prefs/sentmailselect.inc:40
+msgid "Create a new sent mail folder"
+msgstr "Utwórz nowy folder wys³anej poczty"
+
+#: templates/prefs/trashselect.inc:11 templates/prefs/trashselect.inc:20
+msgid "Create a new trash folder"
+msgstr "Utwórz nowy folder ¶mieci"
+
+#: templates/fetchmail/fetchmail.html:23
+msgid "Create an account"
+msgstr "Utwórz konto"
+
+#: config/prefs.php.dist:136
+msgid ""
+"Create filtering rules to organize your incoming mail, sort it into folders, "
+"and delete spam."
+msgstr ""
+"Utwórz opcje filtrowania i organizacji poczty przychodz±cej, posortuj j± do "
+"folderów i usuñ spam."
+
+#: templates/stationery/stationery.html:14
+msgid "Create new stationery"
+msgstr "Utwórz now± papeteriê"
+
+#: config/prefs.php.dist:537
+msgid "Create stationery and form responses."
+msgstr "Utwó¿ papeterie i formularze odpowiedzi."
+
+#: templates/compose/compose.html:307
+msgid "Current Attachments"
+msgstr "Bie¿±ce za³±czniki"
+
+#: acl.php:173
+#, php-format
+msgid "Current access to %s"
+msgstr "Bie¿±cy dostêp do %s"
+
+#: config/prefs.php.dist:1156
+msgid "Current expanded status in the folders view"
+msgstr "Bie¿±cy rozszerzony status w widoku folderów"
+
+#: config/prefs.php.dist:113
+msgid "Customize accounts for fetching mail from other accounts."
+msgstr "Dostosuj ustawienia do odbierania poczty z innych kont."
+
+#: config/prefs.php.dist:55
+msgid "Customize how you send mail."
+msgstr "Dostosuj sposób wysy³ania poczty."
+
+#: config/prefs.php.dist:41
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Dostosuj zadania uruchamiane po zalogowaniu do %s."
+
+#: mailbox.php:571 lib/Block/mailbox.php:143
+msgid "Dat_e"
+msgstr "Data"
+
+#: lib/UI/Message.php:24
+msgid "Date"
+msgstr "Data"
+
+#: lib/Search.php:686
+msgid "Date <"
+msgstr "Data <"
+
+#: lib/Search.php:682
+msgid "Date ="
+msgstr "Data ="
+
+#: lib/Search.php:690
+msgid "Date >"
+msgstr "Data >"
+
+#: templates/thread/thread.html:27
+msgid "Date:"
+msgstr "Data:"
+
+#: templates/search/search.html:93
+msgid "Day"
+msgstr "Dzieñ"
+
+#: lib/MIME/Viewer/itip.php:921
+msgid "Declined"
+msgstr "Odrzucono"
+
+#: lib/MIME/Viewer/itip.php:267
+msgid "Declined: "
+msgstr "Odrzucono: "
+
+#: config/prefs.php.dist:656
+msgid "Default"
+msgstr "Domy¶lny"
+
+#: config/prefs.php.dist:825
+msgid "Default (US-ASCII)"
+msgstr "Domy¶lny (US-ASCII)"
+
+#: templates/prefs/defaultsearchselect.inc:18
+msgid "Default Search Field:"
+msgstr "Domy¶lne pole wyszukiwania:"
+
+#: config/prefs.php.dist:587
+msgid "Default forwarding method:"
+msgstr "Domy¶lny sposób przekazywania:"
+
+#: config/prefs.php.dist:1071
+msgid "Default sorting criteria:"
+msgstr "Domy¶lne kryteria sortowania:"
+
+#: config/prefs.php.dist:1081
+msgid "Default sorting direction:"
+msgstr "Domy¶lny kierunek sortowania:"
+
+#: lib/MIME/Viewer/itip.php:929
+msgid "Delegated"
+msgstr "Oddelegowany"
+
+#: message.php:551 folders.php:401 mailbox.php:497 mailbox.php:499
+#: lib/IMAP/ACL/rfc4314.php:57 templates/fetchmail/fetchmailprefs.html:122
+#: templates/pgp/pgp.html:38 templates/folders/actions.html:17
+#: templates/contacts/contacts.html:66 templates/smime/smime.html:31
+msgid "Delete"
+msgstr "Usuñ"
+
+#: smime.php:311 pgp.php:401
+#, php-format
+msgid "Delete %s Public Key"
+msgstr "Skasuj klucz publiczny %s"
+
+#: templates/pgp/pgp.html:89 templates/smime/smime.html:79
+msgid "Delete Current Keys"
+msgstr "Skasuj bie¿±ce klucze"
+
+#: lib/IMAP/ACL/rfc4314.php:56
+msgid "Delete Folders"
+msgstr "Skasuj foldery"
+
+#: templates/folders/folders_confirm.html:22
+msgid "Delete Selected Folders"
+msgstr "Skasuj wybrane foldery"
+
+#: templates/stationery/stationery.html:44
+msgid "Delete Stationery"
+msgstr "Usuñ papeteriê"
+
+#: folders.php:401
+msgid "Delete Virtual Folder"
+msgstr "Skasuj folder wirtualny"
+
+#: mailbox.php:417
+#, php-format
+msgid "Delete Virtual Folder Definition for %s"
+msgstr "Skasuj definicjê folderu wirtualnego dla %s"
+
+#: templates/fetchmail/fetchmailprefs.html:86
+msgid "Delete fetched messages from remote server?"
+msgstr "Skasowaæ wiadomo¶ci pobrane z serwera zdalnego?"
+
+#: lib/MIME/Viewer/itip.php:668
+msgid "Delete from my calendar"
+msgstr "Skasuj z mojego kalendarza"
+
+#: config/prefs.php.dist:396
+msgid "Delete old linked attachments at beginning of month?"
+msgstr "Usuwaæ stare za³±czniki z odno¶nikami na pocz±tku miesi±ca?"
+
+#: config/prefs.php.dist:350
+msgid "Delete old sent-mail folders at beginning of month?"
+msgstr "Usuwaæ stare foldery sent-mail na pocz±tku miesi±ca?"
+
+#: config/prefs.php.dist:724
+msgid "Delete spam messages"
+msgstr "Usun±c wiadomo¶ci spamowe"
+
+#: lib/IMAP/ACL/rfc2086.php:56
+msgid "Delete/purge"
+msgstr "Usuñ/wyczy¶æ"
+
+#: templates/compose/compose.html:335
+msgid "Delete?"
+msgstr "Usun±æ?"
+
+#: message.php:479 mailbox.php:772 lib/Block/mailbox.php:314
+#: templates/mailbox/navbar.html:20 templates/mailbox/navbar.html:37
+msgid "Deleted"
+msgstr "Usuniête"
+
+#: search.php:343
+msgid "Deleted messages"
+msgstr "Usuniête wiadomo¶ci"
+
+#: compose.php:212
+#, php-format
+msgid "Deleted the attachment \"%s\"."
+msgstr "Usuniêto za³±cznik \"%s\"."
+
+#: config/prefs.php.dist:87
+msgid "Deleting and Moving Messages"
+msgstr "Usuwanie i przenoszenie wiadomo¶ci"
+
+#: lib/MIME/Viewer/itip.php:632
+msgid "Deny request"
+msgstr "Odrzuæ pro¶bê"
+
+#: lib/MIME/Viewer/itip.php:556
+msgid "Deny request for free/busy information"
+msgstr "Odrzuæ pro¶bê o informacje o dostêpno¶ci"
+
+#: config/prefs.php.dist:1080
+msgid "Descending"
+msgstr "Malej±co"
+
+#: lib/MIME/Viewer/itip.php:715 lib/MIME/Viewer/itip.php:842
+msgid "Description"
+msgstr "Opis"
+
+#: templates/compose/compose.html:331
+msgid "Description:"
+msgstr "Opis:"
+
+#: templates/pgp/pgp.html:38 templates/pgp/pgp.html:75
+#: templates/pgp/pgp.html:80 templates/smime/smime.html:31
+#: templates/smime/smime.html:67
+msgid "Details"
+msgstr "Szczegó³y"
+
+#: lib/Compose.php:2686
+#, php-format
+msgid "Did not attach \"%s\" as it was only partially uploaded."
+msgstr "Nie do³±czono \"%s\" poniewa¿ zosta³ tylko czê¶ciowo wczytany."
+
+#: lib/Compose.php:2695
+#, php-format
+msgid "Did not attach \"%s\" as the file was empty."
+msgstr "Nie do³±czono \"%s\" poniewa¿ plik by³ pusty."
+
+#: lib/Compose.php:2682
+#, php-format
+msgid ""
+"Did not attach \"%s\" as the maximum allowed upload size has been exceeded."
+msgstr ""
+"Nie do³±czono \"%s\" poniewa¿ zosta³ przekroczony maksymalny dozwolony "
+"rozmiar pliku."
+
+#: lib/Compose.php:2690
+#, php-format
+msgid ""
+"Did not attach \"%s\" as the server configuration did not allow the file to "
+"be uploaded."
+msgstr ""
+"Nie do³±czono \"%s\" poniewa¿ konfiguracja serwera nie zezwala na wgranie "
+"pliku."
+
+#: config/prefs.php.dist:784
+msgid "Dim signatures?"
+msgstr "Przyæmiæ sygnatury?"
+
+#: templates/contacts/contacts.html:58
+msgid "Display"
+msgstr "Wy¶wietl"
+
+#: config/prefs.php.dist:255
+msgid "Display Virtual Inbox?"
+msgstr "Wy¶wietlaæ wirtualn± skrzynkê odbiorcz±?"
+
+#: config/prefs.php.dist:559
+msgid "Display confirmation after sending a message?"
+msgstr "Wy¶wietlaæ potwierdzenie po wys³aniu wiadomo¶ci?"
+
+#: config/prefs.php.dist:801
+msgid "Display in Body of Message"
+msgstr "Wy¶wietl w tre¶ci wiadomo¶ci"
+
+#: config/prefs.php.dist:936
+msgid "Display pop-up notification of new mail?"
+msgstr "Wy¶wietlaæ wyskakuj±ce powiadomienie o nowej poczcie?"
+
+#: config/prefs.php.dist:901
+msgid "Display the \"Empty Spam\" link in the menubar?"
+msgstr "Wy¶wietl odno¶nik \"Opró¿nij spam\" na pasku menu?"
+
+#: config/prefs.php.dist:893
+msgid "Display the \"Empty Trash\" link in the menubar?"
+msgstr "Wy¶wietl odno¶nik \"Opró¿nij kosz\" na pasku menu?"
+
+#: templates/compose/compose.html:322
+msgid "Disposition:"
+msgstr "Dyspozycja:"
+
+#: templates/search/search.html:82
+msgid "Do NOT match"
+msgstr "NIE pasuje"
+
+#: templates/folders/actions.html:28
+msgid "Do Not Check for New Mail"
+msgstr "Nie sprawdzaj nowej poczty"
+
+#: config/prefs.php.dist:1107
+msgid "Do not generate a link in the From: column"
+msgstr "Nie twórz odno¶nika w kolumnie Od:"
+
+#: templates/javascript_defs.php:33
+msgid "Doing so will discard this message permanently."
+msgstr "Spowoduje to bezpowrotne odrzucenie wiadomo¶ci."
+
+#: login.php:407
+msgid "Don't have an account? Sign up."
+msgstr "Nie masz konta? Zarejestruj siê."
+
+#: templates/folders/actions.html:32
+msgid "Download"
+msgstr "Pobierz"
+
+#: lib/MIME/Contents.php:232
+#, php-format
+msgid "Download %s in .zip Format"
+msgstr "Pobierz %s w formacie .zip"
+
+#: message.php:676
+msgid "Download All Attachments (in .zip file)"
+msgstr "Pobierz wszystkie za³±czniki (w pliku .zip)"
+
+#: templates/folders/actions.html:33
+msgid "Download [.zip format]"
+msgstr "Pobierz [format .zip]"
+
+#: lib/MIME/Contents.php:232
+msgid "Download in .zip Format"
+msgstr "Pobierz w formacie .zip"
+
+#: message.php:477 mailbox.php:754 lib/Block/mailbox.php:296
+#: templates/mailbox/navbar.html:22 templates/mailbox/navbar.html:40
+#: templates/message/navbar_navigate.html:14
+msgid "Draft"
+msgstr "Szkice"
+
+#: lib/IMAP/Tree.php:2324
+msgid "Draft folder"
+msgstr "Folder szkiców"
+
+#: templates/prefs/folderselect.inc:19
+msgid "Drafts folder:"
+msgstr "Folder szkiców:"
+
+#: login.php:283
+msgid "Dynamic"
+msgstr "Dynamiczny"
+
+#: templates/pgp/pgp.html:105
+msgid "E-mail Address:"
+msgstr "Adres e-mail:"
+
+#: mailbox.php:806 lib/Block/mailbox.php:348
+msgid "END"
+msgstr "KONIEC"
+
+#: lib/MIME/Viewer/status.php:73
+msgid "ERROR: Your message could not be delivered."
+msgstr "B£¡D: Twoja wiadomo¶æ nie mo¿e byæ dorêczona."
+
+#: folders.php:402 templates/stationery/stationery.html:19
+msgid "Edit"
+msgstr "Edytuj"
+
+#: mailbox.php:420
+msgid "Edit Search Query"
+msgstr "Edytuj zapytanie wyszukiwania"
+
+#: folders.php:402 templates/search/search.html:17
+msgid "Edit Virtual Folder"
+msgstr "Edytuj folder wirtualny"
+
+#: mailbox.php:416
+#, php-format
+msgid "Edit Virtual Folder Definition for %s"
+msgstr "Edytuj definicjê folderu wirtualnego dla %s"
+
+#: filterprefs.php:88
+msgid "Edit your Blacklist"
+msgstr "Edytuj czarn± listê"
+
+#: filterprefs.php:87
+msgid "Edit your Filter Rules"
+msgstr "Edytuj regu³y filtrów"
+
+#: filterprefs.php:89
+msgid "Edit your Whitelist"
+msgstr "Edytuj bia³± listê"
+
+#: config/prefs.php.dist:1009
+msgid "Edit your preferences for accessing other mail accounts."
+msgstr "Zmieñ ustawienia dostêpu do innych kont pocztowych."
+
+#: templates/contacts/contacts.html:61
+msgid "Email Address"
+msgstr "Adres email"
+
+#: lib/Message.php:785
+#, php-format
+msgid "Emptied all messages from %s."
+msgstr "Opró¿niono wszystkie wiadomo¶ci z %s."
+
+#: lib/Message.php:761
+msgid "Emptied all messages from Virtual Trash Folder."
+msgstr "Opró¿niono wszystkie wiadomo¶ci z wirtualnego folderu ¶mieci."
+
+#: templates/folders/actions.html:18
+msgid "Empty"
+msgstr "Opró¿nij"
+
+#: templates/folders/folders_confirm.html:22
+msgid "Empty Selected Folders"
+msgstr "Opró¿nij wybrany folder"
+
+#: lib/IMP.php:787
+msgid "Empty _Spam"
+msgstr "Opró¿nij _spam"
+
+#: lib/IMP.php:779
+msgid "Empty _Trash"
+msgstr "Opró¿nij kosz"
+
+#: mailbox.php:413
+msgid "Empty folder"
+msgstr "Opró¿nij folder"
+
+#: pgp.php:452 templates/pgp/pgp.html:2
+msgid "Enable PGP functionality?"
+msgstr "W³±czyæ funkcjonalno¶æ PGP?"
+
+#: smime.php:347 templates/smime/smime.html:2
+msgid "Enable S/MIME functionality?"
+msgstr "W³±czyæ funkcjonalno¶æ S/MIME?"
+
+#: config/prefs.php.dist:960
+msgid "Enable message previews?"
+msgstr "W³±czyæ podgl±d wiadomo¶ci?"
+
+#: compose.php:1045
+msgid "Encr_yption Options"
+msgstr "Opcje sz_yfrowania"
+
+#: lib/MIME/Viewer/itip.php:530 lib/MIME/Viewer/itip.php:532
+#: lib/MIME/Viewer/itip.php:700 lib/MIME/Viewer/itip.php:702
+msgid "End"
+msgstr "Koniec"
+
+#: lib/Compose.php:1628
+msgid "End forwarded message"
+msgstr "Koniec przekazanej wiadomo¶ci"
+
+#: lib/Compose.php:1523
+msgid "End message"
+msgstr "Koniec wiadomo¶ci"
+
+#: lib/Compose.php:1521
+#, php-format
+msgid "End message from %s"
+msgstr "Koniec wiadomo¶ci od %s"
+
+#: smime.php:335 pgp.php:427
+msgid "Enter Passphrase"
+msgstr "Wprowad¼ has³o"
+
+#: templates/prefs/spamselect.inc:8
+msgid "Enter the name for your new Spam folder"
+msgstr "Wprowad¼ nazwê dla Twojego nowego folderu spamu"
+
+#: templates/prefs/folderselect.inc:8
+msgid "Enter the name for your new drafts folder"
+msgstr "Wprowad¼ nazwê dla Twojego nowe folderu szkiców"
+
+#: templates/prefs/sentmailselect.inc:22
+msgid "Enter the name for your new sent mail folder"
+msgstr "Wprowad¼ nazwê dla Twojego nowego folderu wys³anej poczty"
+
+#: templates/prefs/trashselect.inc:8
+msgid "Enter the name for your new trash folder"
+msgstr "Wprowad¼ nazwê dla Twojego nowego folderu ¶mieci"
+
+#: message.php:566 lib/Search.php:678 config/prefs.php.dist:584
+msgid "Entire Message"
+msgstr "Ca³a wiadomo¶æ"
+
+#: message.php:168 thread.php:70 lib/Compose.php:807 lib/Compose.php:1073
+#, php-format
+msgid "Entry \"%s\" was successfully added to the address book"
+msgstr "Wpis \"%s\" zosta³ dodany do ksi±¿ki adresowej"
+
+#: lib/MIME/Viewer/pgp.php:435 lib/MIME/Viewer/status.php:71
+#: lib/MIME/Viewer/status.php:162 lib/MIME/Viewer/pkcs7.php:424
+msgid "Error"
+msgstr "B³±d"
+
+#: lib/IMAP/Client.php:303 lib/IMAP/Client.php:323
+#, php-format
+msgid "Error connecting to IMAP server: [%s] %s."
+msgstr "B³±d przy ³±czeniu z serwerem IMAP: [%s] %s."
+
+#: lib/MIME/Contents.php:135
+msgid "Error displaying message."
+msgstr "B³±d przy wy¶wietlaniu wiadomo¶ci."
+
+#: lib/MIME/Viewer/itip.php:314 lib/MIME/Viewer/itip.php:418
+#, php-format
+msgid "Error sending reply: %s."
+msgstr "B³±d przy wysy³aniu odpowiedzi: %s."
+
+#: templates/pgp/pgp.html:32 templates/smime/smime.html:25
+msgid "Error:"
+msgstr "B³±d:"
+
+#: lib/MIME/Viewer/itip.php:104
+msgid "Event successfully deleted."
+msgstr "Zdarzenie zosta³o skasowane."
+
+#: config/prefs.php.dist:925
+msgid "Every 15 minutes"
+msgstr "Co 15 minut"
+
+#: config/prefs.php.dist:922
+msgid "Every 30 seconds"
+msgstr "Co 30 sekund"
+
+#: config/prefs.php.dist:638 config/prefs.php.dist:924
+msgid "Every 5 minutes"
+msgstr "Co 5 minut"
+
+#: config/prefs.php.dist:926
+msgid "Every half hour"
+msgstr "Co pó³ godziny"
+
+#: config/prefs.php.dist:923
+msgid "Every minute"
+msgstr "Co minutê"
+
+#: folders.php:447
+msgid "Expand"
+msgstr "Rozwiñ"
+
+#: folders.php:369
+msgid "Expand All"
+msgstr "Rozwiñ wszystko"
+
+#: folders.php:369
+msgid "Expand All Folders"
+msgstr "Rozwiñ wszystkie foldery"
+
+#: folders.php:447
+msgid "Expand Folder"
+msgstr "Rozwiñ folder"
+
+#: compose.php:755 compose.php:990
+msgid "Expand Names"
+msgstr "Rozwiñ nazwy"
+
+#: config/prefs.php.dist:1135
+msgid "Expand the entire folder tree by default in the folders view?"
+msgstr "Rozwin±æ domy¶lnie ca³e drzewo folderów w widoku folderów?"
+
+#: config/prefs.php.dist:1157
+msgid "Expand the entire folder tree by default in the sidebar?"
+msgstr "Rozwin±æ domy¶lnie ca³e drzewo folderów na pasku bocznym?"
+
+#: lib/IMP.php:798 lib/IMP.php:800
+msgid "F_etch Mail"
+msgstr "Odbi_erz pocztê"
+
+#: fetchmail.php:49 config/prefs.php.dist:112
+#: templates/fetchmail/fetchmail.html:6 templates/fetchmail/fetchmail.html:30
+msgid "Fetch Mail"
+msgstr "Odbieranie poczty"
+
+#: config/prefs.php.dist:1017
+msgid "Fetch Mail in a separate window?"
+msgstr "Odbieraæ pocztê w oddzielnym oknie?"
+
+#: templates/fetchmail/fetchmailprefs.html:89
+msgid "Fetch messages upon logging on?"
+msgstr "Pobieraæ wiadomo¶ci przy logowaniu?"
+
+#: lib/Fetchmail.php:286
+#, php-format
+msgid "Fetched %d messages from %s"
+msgstr "Pobrano %d wiadomo¶ci z %s"
+
+#: lib/Fetchmail.php:284
+#, php-format
+msgid "Fetched 1 message from %s"
+msgstr "Pobrano 1 wiadomo¶æ z %s"
+
+#: lib/Fetchmail.php:282 lib/Fetchmail.php:284 lib/Fetchmail.php:286
+msgid "Fetchmail: "
+msgstr "Pobieranie poczty:"
+
+#: lib/Fetchmail.php:288
+msgid "Fetchmail: no new messages."
+msgstr "Pobieranie poczty: nie ma nowych wiadomo¶ci."
+
+#: lib/IMP.php:804
+msgid "Fi_lters"
+msgstr "Fi_ltry"
+
+#: templates/prefs/sourceselect.inc:329
+msgid "Fields to search"
+msgstr "Pola do wyszukiwania"
+
+#: templates/javascript_defs.php:38 templates/compose/compose.html:261
+msgid "File"
+msgstr "Plik"
+
+#: templates/filters/prefs.html:48
+msgid "Filter Options"
+msgstr "Opcje filtrów"
+
+#: templates/filters/prefs.html:36
+msgid "Filter Settings"
+msgstr "Ustawienia filtrów"
+
+#: config/prefs.php.dist:707
+msgid "Filter message content for profanity?"
+msgstr "Filtrowaæ wulgaryzmy w tre¶ci wiadomo¶ci?"
+
+#: templates/filters/prefs.html:11
+msgid "Filter support is disabled on this system."
+msgstr "Wsparcie dla filtrów jest wy³±czone w tym systemie."
+
+#: config/prefs.php.dist:135
+msgid "Filters"
+msgstr "Filtry"
+
+#: templates/filters/prefs.html:3
+msgid "Filters NOT Active"
+msgstr "Filtry NIE s± aktywne"
+
+#: lib/Filter.php:130
+#, php-format
+msgid "Filters: %s management page"
+msgstr "Filtry: strona zarz±dzania %s"
+
+#: templates/contacts/contacts.html:13
+msgid "Find:"
+msgstr "Znajd¼:"
+
+#: config/prefs.php.dist:1053
+msgid "First Mailbox Page"
+msgstr "Pierwsza strona skrzynki"
+
+#: mailbox.php:266
+msgid "First Page"
+msgstr "Pierwsza strona"
+
+#: message.php:478 mailbox.php:767 templates/mailbox/navbar.html:32
+#: templates/message/navbar_navigate.html:10
+msgid "Flagged For Followup"
+msgstr "Zaznaczone do powtórzenia"
+
+#: search.php:338
+msgid "Flagged messages"
+msgstr "Zaznaczone wiadomo¶ci"
+
+#: message.php:565 mailbox.php:522
+msgid "Fo_rward"
+msgstr "P_rzeka¿"
+
+#: lib/Block/mailbox.php:448 lib/IMAP/Tree.php:2369
+#: templates/folders/folders_size.html:5
+msgid "Folder"
+msgstr "Folder"
+
+#: folders.php:252 templates/folders/folders_confirm.html:5
+msgid "Folder Actions - Confirmation"
+msgstr "Operacje na folderze - potwierdzenie"
+
+#: folders.php:309 templates/prefs/initialpageselect.inc:11
+#: templates/folders/head.html:2
+msgid "Folder Navigator"
+msgstr "Nawigator folderów"
+
+#: folders.php:271 templates/folders/folders_size.html:1
+msgid "Folder Sizes"
+msgstr "Rozmiary folderów"
+
+#: lib/Block/summary.php:3
+msgid "Folder Summary"
+msgstr "Podsumowanie folderu"
+
+#: acl.php:22
+msgid "Folder sharing is not enabled."
+msgstr "Wspó³dzielenie folderu nie jest w³±czone."
+
+#: folders.php:46
+msgid "Folder use is not enabled."
+msgstr "U¿ycie folderu nie jest w³±czone."
+
+#: config/prefs.php.dist:1124
+msgid "Format of message dates in the mailbox view for messages dated today"
+msgstr "Format daty wiadomo¶ci w skrzynce dla dzisiejszych wiadomo¶ci"
+
+#: message.php:565 mailbox.php:522 lib/Compose.php:1611
+msgid "Forward"
+msgstr "Przeka¿"
+
+#: lib/Compose.php:1597
+msgid "Forward:"
+msgstr "Przeka¿:"
+
+#: lib/Compose.php:1689
+msgid "Forwarded Message:"
+msgstr "Przekazana wiadomo¶æ:"
+
+#: lib/Compose.php:1624
+msgid "Forwarded message"
+msgstr "Przekazana wiadomo¶æ"
+
+#: lib/Compose.php:1622
+#, php-format
+msgid "Forwarded message from %s"
+msgstr "Przekazana wiadomo¶æ od: %s"
+
+#: lib/MIME/Viewer/itip.php:412
+msgid "Free/Busy Request Response"
+msgstr "Odpowied¼ na pytanie o dostêpno¶æ"
+
+#: mailbox.php:581 lib/Block/mailbox.php:153
+msgid "Fro_m"
+msgstr "Od"
+
+#: lib/Search.php:654 lib/UI/Message.php:25 lib/UI/Mailbox.php:97
+#: templates/thread/thread.html:32 templates/compose/compose.html:27
+msgid "From"
+msgstr "Od"
+
+#: config/prefs.php.dist:1066
+msgid "From Address"
+msgstr "Adres nadawcy"
+
+#: lib/Compose.php:1608 lib/Compose.php:1612
+msgid "Fwd:"
+msgstr "Fwd:"
+
+#: lib/Compose.php:1701
+msgid "Fwd: "
+msgstr "Fwd: "
+
+#: lib/Compose.php:1703
+#, php-format
+msgid "Fwd: %u Forwarded Messages"
+msgstr "Fwd: %u przekazanych wiadomo¶ci"
+
+#: templates/saveimage/saveimage.html:12
+msgid "Gallery"
+msgstr "Galeria"
+
+#: config/prefs.php.dist:13 config/prefs.php.dist:22 config/prefs.php.dist:31
+#: config/prefs.php.dist:39
+msgid "General Options"
+msgstr "Opcje g³ówne"
+
+#: templates/fetchmail/fetchmailprefs.html:80
+msgid "Get only new messages? (IMAP only)"
+msgstr "Pobiraæ tylko nowe wiadomo¶ci? (tylko IMAP)"
+
+#: folders.php:356 lib/MIME/Viewer/itip.php:568 lib/MIME/Viewer/itip.php:772
+#: lib/MIME/Viewer/itip.php:899
+msgid "Go"
+msgstr "Id¼"
+
+#: thread.php:135
+msgid "Go to Message"
+msgstr "Przejd¼ do wiadomo¶ci"
+
+#: templates/newmsg/alert.html:11
+msgid "Go to Virtual Inbox"
+msgstr "Id¼ do wirtualnej skrzynki odbiorczej"
+
+#: lib/IMP.php:354
+#, php-format
+msgid "Go to address book entry of \"%s\""
+msgstr "Id¼ do pozycji \"%s\" w ksi±¿ce adresowej"
+
+#: message.php:432 lib/Filter.php:130 lib/MIME/Contents.php:418
+#: lib/MIME/Viewer/appledouble.php:40 lib/MIME/Viewer/notification.php:60
+#: lib/MIME/Viewer/notification.php:66 lib/MIME/Viewer/status.php:119
+#: lib/MIME/Viewer/status.php:128 lib/MIME/Viewer/images.php:92
+#: lib/MIME/Viewer/images.php:99 lib/MIME/Viewer/images.php:101
+#: lib/MIME/Viewer/pkcs7.php:467 lib/MIME/Viewer/related.php:85
+msgid "HERE"
+msgstr "TUTAJ"
+
+#: lib/MIME/Viewer/related.php:86 templates/stationery/stationery.html:32
+msgid "HTML"
+msgstr "HTML"
+
+#: lib/Compose.php:437
+msgid "HTML Version of Message"
+msgstr "Wersja wiadomo¶ci w HTML"
+
+#: message.php:615
+msgid "Headers"
+msgstr "Nag³ówki"
+
+#: templates/login/recompose.html:7
+msgid "Here is the message you were composing:"
+msgstr "Oto wiadomo¶æ, któr± tworzy³e¶:"
+
+#: config/prefs.php.dist:775
+msgid "Hidden"
+msgstr "Ukryte"
+
+#: config/prefs.php.dist:774
+msgid "Hidden in Thread View"
+msgstr "Ukryte w widoku w±tków"
+
+#: templates/javascript_defs.php:27
+msgid "Hide Addresses"
+msgstr "Ukryj adresy"
+
+#: lib/Block/mailbox.php:452
+msgid "Hide Columns"
+msgstr "Ukryj kolumny"
+
+#: mailbox.php:247
+msgid "Hide Deleted"
+msgstr "Ukryj usuniête"
+
+#: folders.php:362
+msgid "Hide Unsubscribed"
+msgstr "Ukryj niezasubskrybowane"
+
+#: compose.php:962
+msgid "High"
+msgstr "Wysoki"
+
+#: message.php:272 mailbox.php:759 lib/Block/mailbox.php:301
+msgid "High Priority"
+msgstr "Wysoki priorytet"
+
+#: compose.php:961
+msgid "Highest"
+msgstr "Najwy¿szy"
+
+#: config/prefs.php.dist:803
+msgid "How do you want to display attachments?"
+msgstr "W jaki sposób wy¶wietlaæ za³±czniki?"
+
+#: config/prefs.php.dist:1145
+msgid "How should namespaces be displayed in the folder tree view?"
+msgstr ""
+"W jaki sposób maj± byæ wy¶wietlane przestrzenie nazw w widoku folderów?"
+
+#: config/prefs.php.dist:612
+msgid "How to attribute quoted lines in a reply"
+msgstr "Jak oznaczyæ cytowane linie w odpowiedzi"
+
+#: lib/IMAP.php:302
+msgid "IMAP"
+msgstr "IMAP"
+
+#: lib/Fetchmail/imap.php:99
+msgid "IMAP (Auto Detect Protocols)"
+msgstr "IMAP (autowykrywanie protoko³ów)"
+
+#: lib/IMAP/Client.php:200
+#, php-format
+msgid "IMAP Server closed the connection. Server Responded: %s"
+msgstr "Serwer IMAP zamkn±³ po³±czenie. Serwer odpowiedzia³: %s"
+
+#: lib/IMAP.php:314
+msgid "IMAP over SSL"
+msgstr "IMAP z SSL"
+
+#: lib/IMAP.php:320
+msgid "IMAP over SSL (self-signed certificate)"
+msgstr "IMAP z SSL (certyfikat w³asny (self-signed))"
+
+#: lib/IMAP.php:308
+msgid "IMAP, no TLS"
+msgstr "IMAP, bez TLS"
+
+#: lib/Fetchmail/imap.php:48
+msgid "IMAP/POP3 Mail Servers"
+msgstr "Serwery IMAP/POP3"
+
+#: lib/IMAP/Client.php:283
+msgid "If using SSL or TLS, you must have the PHP openssl extension loaded."
+msgstr ""
+"Je¶li u¿ywasz SSL lub TLS musisz mieæ za³adowane w PHP rozszerzenie openssl."
+
+#: templates/folders/folders_confirm.html:12
+msgid "If you continue, all messages in the folder(s) will be lost!"
+msgstr ""
+"Je¶li bêdziesz kontynuowaæ, wszystkie wiadomo¶ci w folderze(ach) zostan± "
+"utracone!"
+
+#: saveimage.php:47
+msgid "Image"
+msgstr "Obraz"
+
+#: templates/folders/import.html:16
+msgid "Import"
+msgstr "Importuj"
+
+#: templates/pgp/import_key.html:48 templates/smime/import_key.html:69
+msgid "Import Key"
+msgstr "Importuj klucz"
+
+#: templates/pgp/pgp.html:137 templates/smime/smime.html:85
+msgid "Import Keypair"
+msgstr "Importuj parê kluczy"
+
+#: templates/folders/actions.html:35
+msgid "Import Messages"
+msgstr "Importuj wiadomo¶ci"
+
+#: pgp.php:50
+msgid "Import PGP Key"
+msgstr "Importuj klucz PGP"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Personal Private PGP Key"
+msgstr "Importuj osobisty klucz prywatny PGP"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Personal Private PGP Key Here:"
+msgstr "Zaimportuj osobisty klucz prywatny PGP tutaj:"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Personal Public PGP Key"
+msgstr "Importuj osobisty klucz publiczny PGP"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Personal Public PGP Key Here:"
+msgstr "Zaimportuj osobisty klucz publiczny PGP tutaj:"
+
+#: templates/smime/import_key.html:11
+msgid "Import Personal S/MIME Certificates"
+msgstr "Importuj osobisty certyfikat S/MIME"
+
+#: templates/pgp/pgp.html:54 templates/smime/smime.html:47
+msgid "Import Public Key"
+msgstr "Importuj klucz publiczny"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Public PGP Key"
+msgstr "Importuj klucz publiczny PGP"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Public PGP Key Here:"
+msgstr "Zamportuj klucz publiczny PGP tutaj:"
+
+#: templates/smime/import_key.html:11
+msgid "Import Public S/MIME Key"
+msgstr "Importuj klucz publiczny S/MIME"
+
+#: smime.php:16
+msgid "Import S/MIME Key"
+msgstr "Importuj klucz S/MIME"
+
+#: templates/folders/import.html:6
+msgid "Import mbox File"
+msgstr "Importuj plik mbox"
+
+#: templates/folders/import.html:11
+msgid "Import mbox file"
+msgstr "Importuj plik mbox"
+
+#: lib/Block/mailbox.php:309 templates/mailbox/navbar.html:16
+msgid "Important"
+msgstr "Wa¿ne"
+
+#: folders.php:141
+#, php-format
+msgid "Imported %d messages from %s."
+msgstr "Zaimportowano %d wiadomo¶ci z %s."
+
+#: lib/MIME/Viewer/itip.php:937
+msgid "In Process"
+msgstr "W trakcie"
+
+#: lib/IMP.php:664 lib/Folder.php:69 lib/IMAP/Tree.php:555
+#: lib/IMAP/Tree.php:2307 templates/prefs/initialpageselect.inc:4
+msgid "Inbox"
+msgstr "Odebrane"
+
+#: config/prefs.php.dist:600
+msgid "Include a brief summary of the header in a reply?"
+msgstr "Do³±czyæ krótkie podsumowanie nag³ówka w odpowiedzi?"
+
+#: config/prefs.php.dist:595
+msgid "Include body text in forward message by default?"
+msgstr "Domy¶lnie do³±czyæ tekst w przekazywanej wiadomo¶ci?"
+
+#: config/prefs.php.dist:567
+msgid "Include original message in a reply?"
+msgstr "Za³±czyæ oryginaln± wiadomo¶æ przy odpowiedzi?"
+
+#: lib/MIME/Viewer/notification.php:59 lib/MIME/Viewer/status.php:131
+msgid "Info"
+msgstr "Informacja"
+
+#: smime.php:310 pgp.php:400
+#, php-format
+msgid "Information on %s Public Key"
+msgstr "Informacja o kluczu publicznym %s"
+
+#: pgp.php:429
+msgid "Information on Personal Private Key"
+msgstr "Informacja o osobistym kluczu prywatnym"
+
+#: smime.php:333 pgp.php:423
+msgid "Information on Personal Public Key"
+msgstr "Informacja o osobistym kluczu publicznym"
+
+#: templates/javascript_defs.php:40 templates/compose/compose.html:267
+#: templates/compose/compose.html:326
+msgid "Inline"
+msgstr "W tre¶ci"
+
+#: lib/IMAP/ACL/rfc2086.php:53 lib/IMAP/ACL/rfc4314.php:53
+msgid "Insert"
+msgstr "Wstaw"
+
+#: templates/smime/import_key.html:19
+msgid "Insert Certificate Here:"
+msgstr "Wstaw certyfikat tutaj:"
+
+#: lib/MIME/Viewer/itip.php:423
+msgid "Invalid Action selected for this component."
+msgstr "Wybrano nieprawid³ow± operacjê dla tego komponentu."
+
+#: lib/UI/Mailbox.php:61 lib/UI/Mailbox.php:111
+msgid "Invalid Address"
+msgstr "Nieprawid³owy adres"
+
+#: lib/Fetchmail/imap.php:227
+msgid "Invalid Remote Mailbox"
+msgstr "Nieprawid³owa skrzynka zdalna"
+
+#: lib/Compose.php:1160 lib/Compose.php:1179
+#, php-format
+msgid "Invalid character in e-mail address: %s."
+msgstr "Nieprawid³owy znak w adresie e-mail: %s."
+
+#: lib/Compose.php:1175
+msgid "Invalid hostname."
+msgstr "Nieprawid³owa nazwa hosta."
+
+#: smime.php:96 pgp.php:18
+msgid "Invalid key"
+msgstr "Nieprawid³owy klucz"
+
+#: lib/Compose.php:272
+msgid "Invalid message, cannot resume draft."
+msgstr "Nieprawid³owa wiadomo¶æ, nie mo¿na przywróciæ szkicu."
+
+#: pgp.php:201
+msgid "Invalid personal PGP private key."
+msgstr "Nieprawdi³owy osobisty klucz prywatny PGP."
+
+#: pgp.php:176
+msgid "Invalid personal PGP public key."
+msgstr "Nieprawid³owy osobisty klucz publiczny PGP."
+
+#: templates/mailbox/navbar.html:12
+msgid "Invert"
+msgstr "Odwróæ"
+
+#: templates/compose/compose.html:307 templates/compose/compose.html:315
+msgid "KB"
+msgstr "KB"
+
+#: templates/pgp/pgp.html:110
+msgid "Key Length:"
+msgstr "D³ugo¶æ klucza:"
+
+#: pgp.php:443
+msgid ""
+"Key generation may take a long time to complete.  Continue with key "
+"generation?"
+msgstr ""
+"Generowanie klucza mo¿e zaj±æ d³u¿szy czas. Kontynuowaæ generowanie klucza?"
+
+#: templates/pgp/pgp.html:49 templates/smime/smime.html:42
+msgid "Key import is not available. File upload is not enabled on this server."
+msgstr ""
+"Importowanie klucza nie jest mo¿liwe. Wgrywanie plików nie jest dostêpne na "
+"tym serwerze."
+
+#: templates/pgp/pgp.html:52 templates/smime/smime.html:45
+msgid ""
+"Key import is not available. You have no address book defined to add your "
+"contacts."
+msgstr ""
+"Importowanie klucza nie jest mo¿liwe. Nie masz zdefiniowanych ksi±¿ek "
+"adresowych do dodania Twoich kontaktów."
+
+#: pgp.php:340
+msgid "Key successfully sent to the public keyserver."
+msgstr "Klucz zosta³ wys³any na publiczny serwer kluczy."
+
+#: templates/login/login.html:116
+msgid "Language"
+msgstr "Jêzyk"
+
+#: config/prefs.php.dist:1054
+msgid "Last Mailbox Page"
+msgstr "Ostatnia strona skrzynki"
+
+#: mailbox.php:278
+msgid "Last Page"
+msgstr "Ostatnia strona"
+
+#: compose.php:1084
+msgid "Link Attachments?"
+msgstr "Odno¶niki do za³±czników?"
+
+#: attachment.php:34 lib/Compose.php:2379
+msgid "Linked attachments are forbidden."
+msgstr "Do³±czanie plików nie jest dozwolone."
+
+#: lib/Compose.php:2395
+#, php-format
+msgid "Links will expire on %s"
+msgstr "Wa¿no¶æ ³±cz wyga¶nie o %s"
+
+#: lib/IMAP/ACL/rfc2086.php:49 lib/IMAP/ACL/rfc4314.php:49
+msgid "List"
+msgstr "Lista"
+
+#: config/prefs.php.dist:1258
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+"Wy¶wietlaæ listê wszystkich kontaktów podczas ³adowania ekranu kontaków? "
+"je¶li wy³±czone, zobaczysz tylko kontakty wyszukane wprost)"
+
+#: config/prefs.php.dist:800
+msgid "Listing in the Header"
+msgstr "Lista w nag³ówku"
+
+#: compose.php:741
+msgid "Loading..."
+msgstr "£adowanie..."
+
+#: templates/fetchmail/fetchmailprefs.html:72
+msgid "Local Mailbox:"
+msgstr "Skrzynka lokalna:"
+
+#: lib/MIME/Viewer/itip.php:720
+msgid "Location"
+msgstr "Lokalizacja"
+
+#: templates/login/mobile.inc:3 templates/login/mobile.inc:33
+msgid "Log in"
+msgstr "Zaloguj"
+
+#: lib/Block/summary.php:45
+#, php-format
+msgid "Log in to %s"
+msgstr "Zaloguj do %s"
+
+#: login.php:403
+msgid "Login"
+msgstr "Zaloguj"
+
+#: config/prefs.php.dist:40
+msgid "Login Tasks"
+msgstr "Zadania przy logowaniu"
+
+#: compose.php:964
+msgid "Low"
+msgstr "Niski"
+
+#: message.php:274 mailbox.php:762 lib/Block/mailbox.php:304
+msgid "Low Priority"
+msgstr "Niski priorytet"
+
+#: compose.php:965
+msgid "Lowest"
+msgstr "Najni¿szy"
+
+#: lib/MIME/Viewer/appledouble.php:43
+msgid "Macintosh File"
+msgstr "Plik Macintosh"
+
+#: config/prefs.php.dist:104
+msgid "Mail Previews"
+msgstr "Podgl±d poczty"
+
+#: templates/fetchmail/fetchmailprefs.html:31
+msgid "Mail server type to connect to:"
+msgstr "Typ serwera poczty do którego pod³±czyæ:"
+
+#: lib/IMAP/Tree.php:2314 lib/IMAP/Tree.php:2341
+msgid "Mailbox"
+msgstr "Skrzynka"
+
+#: lib/Block/mailbox.php:3
+msgid "Mailbox View"
+msgstr "Widok skrzynki"
+
+#: config/prefs.php.dist:119
+msgid "Mailbox and Folder Display Options"
+msgstr "Opcje wy¶wietlania folderów i skrzynek pocztowych"
+
+#: lib/IMAP/ACL/rfc2086.php:52 lib/IMAP/ACL/rfc4314.php:52
+msgid "Mark (Other)"
+msgstr "Oznacz (inne)"
+
+#: lib/IMAP/ACL/rfc2086.php:51 lib/IMAP/ACL/rfc4314.php:51
+msgid "Mark (Seen)"
+msgstr "Oznacz (widziane)"
+
+#: templates/folders/actions.html:30
+msgid "Mark All Messages as Seen"
+msgstr "Oznacz wszystkie wiadomo¶ci jako widziane"
+
+#: templates/folders/actions.html:31
+msgid "Mark All Messages as Unseen"
+msgstr "Oznacz wszystkie wiadomo¶ci jako niewidziane"
+
+#: templates/mailbox/navbar.html:27 templates/mailbox/navbar.html:29
+#: templates/message/navbar_navigate.html:6
+#: templates/message/navbar_navigate.html:8
+msgid "Mark as:"
+msgstr "Oznacz jako:"
+
+#: config/prefs.php.dist:757
+msgid "Mark different levels of quoting with different colors?"
+msgstr "Oznaczaæ ró¿ne poziomy cytowania ró¿nymi kolorami?"
+
+#: templates/fetchmail/fetchmailprefs.html:83
+msgid "Mark messages as seen? (IMAP only)"
+msgstr "Oznaczyæ wiadomo¶ci jako widziane? (tylko IMAP)"
+
+#: config/prefs.php.dist:765
+msgid "Mark simple markup?"
+msgstr "Oznaczaæ prost± sk³adniê?"
+
+#: search.php:218
+msgid "Match All Queries"
+msgstr "Dopasuj wszystkie kryteria"
+
+#: search.php:216
+msgid "Match Any Query"
+msgstr "Dopasuj dowolne kryterium"
+
+#: templates/compose/compose.html:273
+msgid "Maximum Attachment Size"
+msgstr "Maksymalny rozmiar za³±cznika"
+
+#: lib/api.php:94
+msgid "Maximum Number of Folders"
+msgstr "Maksymalna liczba folderów"
+
+#: lib/api.php:95
+msgid "Maximum Number of Recipients per Message"
+msgstr "Maksymalna liczba odbiorców wiadomo¶ci"
+
+#: lib/api.php:96
+msgid "Maximum Number of Recipients per Time Period"
+msgstr "Maksymalna liczba odbiorców w przedziale czasowym"
+
+#: templates/compose/compose.html:255
+msgid "Maximum number of attachments reached."
+msgstr "Osi±gniêto maksymaln± liczbê za³±czników."
+
+#: templates/compose/compose.html:252
+msgid "Maximum total attachment size reached."
+msgstr "Osi±gniêto maksymalny ca³kowity rozmiar za³±cznika."
+
+#: lib/Block/tree_folders.php:3
+msgid "Menu Folder List"
+msgstr "Menu listy folderów"
+
+#: lib/Compose.php:1514
+msgid "Message"
+msgstr "Wiadomo¶æ"
+
+#: config/prefs.php.dist:54
+msgid "Message Composition"
+msgstr "Tworzenie wiadomo¶ci"
+
+#: config/prefs.php.dist:1065
+msgid "Message Date"
+msgstr "Data wiadomo¶ci"
+
+#: config/prefs.php.dist:53 config/prefs.php.dist:71 config/prefs.php.dist:86
+#: config/prefs.php.dist:95 config/prefs.php.dist:103
+#: config/prefs.php.dist:111
+msgid "Message Options"
+msgstr "Opcje wiadomo¶ci"
+
+#: search.php:411
+msgid "Message Search"
+msgstr "Wyszukiwanie wiadomo¶ci"
+
+#: config/prefs.php.dist:1069
+msgid "Message Size"
+msgstr "Rozmiar wiadomo¶ci"
+
+#: message.php:586
+msgid "Message Source"
+msgstr "¬ród³o wiadomo¶ci"
+
+#: config/prefs.php.dist:72
+msgid "Message Viewing"
+msgstr "Przegl±danie wiadomo¶ci"
+
+#: lib/Compose.php:1512
+#, php-format
+msgid "Message from %s"
+msgstr "Wiadomo¶æ od %s"
+
+#: lib/UI/Mailbox.php:148
+msgid "Message has attachments"
+msgstr "Wiadomo¶æ ma za³±czniki"
+
+#: lib/UI/Mailbox.php:147
+msgid "Message is encrypted"
+msgstr "Wiadomo¶æ jest zaszyfrowana"
+
+#: lib/UI/Mailbox.php:146
+msgid "Message is signed"
+msgstr "Wiadomo¶æ jest podpisana"
+
+#: compose.php:343 compose.php:350
+msgid "Message redirected successfully."
+msgstr "Wiadomo¶æ zosta³a przekierowana."
+
+#: lib/Compose.php:750
+#, php-format
+msgid "Message sent successfully, but not saved to %s"
+msgstr "Wiadomo¶æ zosta³a wys³ana, ale nie zapisana w %s"
+
+#: compose.php:408 compose.php:416
+msgid "Message sent successfully."
+msgstr "Wiadomo¶æ zosta³a wys³ana."
+
+#: config/prefs.php.dist:1096
+msgid "Messages per page in the mailbox view."
+msgstr "Wiadomo¶ci na stronê w widoku skrzynki."
+
+#: mailbox.php:212
+msgid "Messages to"
+msgstr "Wiadomo¶ci do"
+
+#: login.php:286
+msgid "Minimalist"
+msgstr "Minimalny"
+
+#: templates/login/login.html:129
+msgid "Mode"
+msgstr "Tryb"
+
+#: templates/search/search.html:87
+msgid "Month"
+msgstr "Miesi±c"
+
+#: message.php:516 message.php:697 mailbox.php:474 mailbox.php:866
+msgid "Move"
+msgstr "Przenie¶"
+
+#: templates/prefs/sourceselect.inc:314
+msgid "Move down"
+msgstr "Przesuñ w dó³"
+
+#: config/prefs.php.dist:725
+msgid "Move spam messages to spam folder and innocent messages to INBOX"
+msgstr "Przenie¶æ wiadomo¶ci spamowe do folderu spam a niewinne do Odebranych"
+
+#: message.php:516 message.php:697 mailbox.php:474 mailbox.php:866
+msgid "Move to folder"
+msgstr "Przenie¶ do folderu"
+
+#: templates/prefs/sourceselect.inc:312
+msgid "Move up"
+msgstr "Przesuñ do góry"
+
+#: lib/MIME/Viewer/alternative.php:96
+msgid "Multipart/alternative"
+msgstr "Wieloczê¶ciowe/altarnatywne"
+
+#: thread.php:157
+msgid "Multiple Message View"
+msgstr "Widok wielu wiadomo¶ci"
+
+#: templates/prefs/defaultsearchselect.inc:8
+msgid "NONE"
+msgstr "BRAK"
+
+#: templates/fetchmail/fetchmailprefs.html:91 templates/pgp/pgp.html:4
+#: templates/smime/smime.html:4
+msgid "NOTE:"
+msgstr "UWAGA:"
+
+#: lib/MIME/Viewer/itip.php:726 lib/MIME/Viewer/itip.php:854
+#: templates/contacts/contacts.html:60
+msgid "Name"
+msgstr "Nazwa"
+
+#: pgp.php:115
+msgid "Name and/or email cannot be empty"
+msgstr "Nazwa i/lub email nie mo¿e byæ pusty"
+
+#: lib/MIME/Viewer/itip.php:942
+msgid "Needs Action"
+msgstr "Wymagana reakcja"
+
+#: config/prefs.php.dist:689 config/prefs.php.dist:921
+msgid "Never"
+msgstr "Nigdy"
+
+#: config/prefs.php.dist:679
+msgid "Never save attachments"
+msgstr "Nigdy nie zapisuj za³±czników"
+
+#: lib/IMP.php:441
+msgid "New Folder"
+msgstr "Nowy folder"
+
+#: config/prefs.php.dist:96
+msgid "New Mail"
+msgstr "Nowa poczta"
+
+#: compose.php:224 lib/Block/tree_folders.php:36
+msgid "New Message"
+msgstr "Nowa wiadomo¶æ"
+
+#: mailbox.php:826 lib/MIME/Headers.php:193 lib/Block/mailbox.php:368
+#, php-format
+msgid "New Message to %s"
+msgstr "Nowa wiadomo¶æ do %s"
+
+#: search.php:329
+msgid "New messages"
+msgstr "Nowe wiadomo¶ci"
+
+#: message.php:532
+msgid "Next Message"
+msgstr "Nastêpna wiadomo¶æ"
+
+#: mailbox.php:276
+msgid "Next Page"
+msgstr "Nastêpna strona"
+
+#: templates/javascript_defs.php:47 config/prefs.php.dist:637
+#: config/prefs.php.dist:1132 config/prefs.php.dist:1154
+#: templates/compose/compose.html:293
+msgid "No"
+msgstr "Nie"
+
+#: smime.php:239
+msgid "No Certificate found"
+msgstr "Nie znaleziono certyfikatu"
+
+#: lib/IMP.php:1322
+msgid "No Encryption"
+msgstr "Bez szyfrowania"
+
+#: templates/pgp/pgp.html:29 templates/smime/smime.html:22
+msgid "No Keys in Keyring"
+msgstr "Nie ma kluczy na kó³ku (keyring)"
+
+#: rss.php:93 mailbox.php:255
+#, php-format
+msgid "No Messages"
+msgstr "Brak wiadomo¶ci"
+
+#: pgp.php:142
+msgid "No PGP public key imported."
+msgstr "Nie zaimportowano publicznego klucza PGP."
+
+#: mailbox.php:787 lib/Block/mailbox.php:329
+msgid "No Preview Text"
+msgstr "Bez podgl±du tekstu"
+
+#: smime.php:164
+msgid "No S/MIME public key imported."
+msgstr "Nie zaimportowano klucza publicznego S/MIME."
+
+#: templates/prefs/soundselect.inc:5
+msgid "No Sound"
+msgstr "Bez d¼wiêku"
+
+#: lib/MIME/Viewer/tnef.php:91
+msgid "No attachments found."
+msgstr "Nie znaleziono za³±czników."
+
+#: lib/Crypt/SMIME.php:131
+msgid "No email information located in the public key."
+msgstr "W kluczu publicznym nie ma informacji o adresie email."
+
+#: acl.php:73
+msgid "No folder selected."
+msgstr "Nie wybrano folderów."
+
+#: lib/Block/summary.php:135
+msgid "No folders are being checked for new mail."
+msgstr "Brak folderów, w których jest sprawdzana nowa poczta."
+
+#: folders.php:190 lib/Folder.php:460 lib/Folder.php:510
+msgid "No folders were specified"
+msgstr "Nie okre¶lono folderów"
+
+#: lib/Block/summary.php:139
+msgid "No folders with new messages"
+msgstr "Brak folderów z nowymi wiadomo¶ciami"
+
+#: lib/Block/summary.php:137
+msgid "No folders with unseen messages"
+msgstr "Brak folderów z niewidzianymi wiadomo¶ciami"
+
+#: lib/Compose.php:1552
+msgid "No message body text"
+msgstr "Brak nag³ówka wiadomo¶ci"
+
+#: lib/IMAP/Client.php:474
+msgid "No message returned."
+msgstr "Nie zwrócono wiadomo¶ci."
+
+#: mailbox.php:227
+msgid "No messages matched your search."
+msgstr "Brak wiadomo¶ci pasuj±cych do wyszukiwania."
+
+#: pgp.php:194
+msgid "No personal PGP private key imported."
+msgstr "Nie zaimportowano osobistego klucza prywatnego PGP."
+
+#: pgp.php:170
+msgid "No personal PGP public key imported."
+msgstr "Nie zaimportowano osobistego klucza publicznego PGP."
+
+#: smime.php:214
+msgid "No personal S/MIME certificates imported."
+msgstr "Nie zaimportowano osobistego certyfikatu S/MIME."
+
+#: lib/MIME/Viewer/pkcs7.php:289
+msgid ""
+"No personal private key exists so the message is unable to be decrypted."
+msgstr ""
+"Nie ma osobistego klucza prywatnego, wiec wiadomo¶æ nie mo¿e zostaæ "
+"odszyfrowana."
+
+#: lib/IMAP/Client.php:374
+msgid "No supported IMAP authentication method could be found."
+msgstr "Nie mo¿na znale¼æ wspieranej metody autentykacji IMAP."
+
+#: acl.php:105
+msgid "No user specified."
+msgstr "Nie okre¶lono u¿ytkownika."
+
+#: lib/MIME/Viewer/itip.php:747 lib/MIME/Viewer/itip.php:875
+msgid "Non Participant"
+msgstr "Nieuczestnicz±cy"
+
+#: lib/MIME/Viewer/itip.php:710 lib/MIME/Viewer/itip.php:837
+#: templates/prefs/spamselect.inc:20 templates/prefs/sourceselect.inc:35
+#: templates/prefs/folderselect.inc:21 templates/prefs/trashselect.inc:20
+#: templates/prefs/sentmailselect.inc:38 templates/mailbox/navbar.html:11
+msgid "None"
+msgstr "Nic"
+
+#: compose.php:963
+msgid "Normal"
+msgstr "Normalny"
+
+#: templates/mailbox/navbar.html:21 templates/mailbox/navbar.html:38
+msgid "Not Deleted"
+msgstr "Nieusuniête"
+
+#: templates/mailbox/navbar.html:23 templates/mailbox/navbar.html:41
+#: templates/message/navbar_navigate.html:15
+msgid "Not Draft"
+msgstr "Nie szkice"
+
+#: templates/mailbox/navbar.html:33 templates/message/navbar_navigate.html:11
+msgid "Not Flagged"
+msgstr "Nieoznaczone"
+
+#: templates/mailbox/navbar.html:17
+msgid "Not Important"
+msgstr "Niewa¿ne"
+
+#: templates/mailbox/navbar.html:25
+msgid "Not Personal"
+msgstr "Nieosobiste"
+
+#: lib/Crypt/SMIME.php:125 lib/Crypt/SMIME.php:140 lib/Crypt/PGP.php:132
+msgid "Not a valid public key."
+msgstr "Nieprawid³owy klucz publiczny."
+
+#: config/prefs.php.dist:838
+msgid "Not at all"
+msgstr "Nie wy¶wietlaæ"
+
+#: lib/Maintenance/Task/fetchmail_login.php:71
+msgid "Note that this can take some time"
+msgstr "We¼ pod uwagê, ¿e to mo¿e chwilê potrwaæ."
+
+#: lib/IMP.php:493
+msgid "Notepads"
+msgstr "Notatniki"
+
+#: config/prefs.php.dist:723
+msgid "Nothing"
+msgstr "Nic"
+
+#: attachment.php:107
+msgid "Notification: Linked attachment downloaded"
+msgstr "Powiadomienie: Pobrano powi±zany za³±cznik"
+
+#: lib/Block/mailbox.php:444
+msgid "Number of messages to display"
+msgstr "Ilo¶æ wiadomo¶ci do wy¶wietlenia"
+
+#: config/prefs.php.dist:405
+msgid "Number of months to keep old linked attachments if deleting monthly."
+msgstr ""
+"Liczba miesiêcy, przez które zachowaæ za³±czniki z odno¶nikami przy "
+"comiesiêcznym usuwaniu."
+
+#: config/prefs.php.dist:359
+msgid "Number of old sent-mail folders to keep if deleting monthly."
+msgstr ""
+"Liczba starych folderów sent-mail do zachowania przy comiesiêcznym usuwaniu."
+
+#: templates/contacts/contacts.html:75
+msgid "OK"
+msgstr "OK"
+
+#: templates/search/search.html:61 templates/pgp/import_key.html:30
+#: templates/smime/import_key.html:31
+msgid "OR"
+msgstr "LUB"
+
+#: search.php:328
+msgid "Old messages"
+msgstr "Stare wiadomo¶ci"
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:51
+msgid "Old sent-mail folders being purged."
+msgstr "Stary folder sent-mail jest czyszczony."
+
+#: lib/Block/summary.php:27
+msgid "Only display folders with unread messages in them?"
+msgstr "Wy¶wietlaæ tylko foldery zawieraj±ce nieprzeczytane wiadomo¶ci?"
+
+#: templates/javascript_defs.php:56
+msgid "Only one folder should be selected for this action."
+msgstr "Dla tej operacji powinien byæ wybrany tylko jeden folder."
+
+#: lib/IMP.php:853 lib/IMP.php:858
+msgid "Open Fo_lder"
+msgstr "Otwórz Fo_lder"
+
+#: lib/IMP.php:858
+msgid "Open Folder"
+msgstr "Otwórz Folder"
+
+#: lib/IMAP/Tree.php:2365
+msgid "Opened Folder"
+msgstr "Otwarto folder"
+
+#: lib/MIME/Viewer/itip.php:743 lib/MIME/Viewer/itip.php:871
+msgid "Optional Participant"
+msgstr "Uczestnik opcjonalny"
+
+#: templates/fetchmail/fetchmailprefs.html:3
+msgid "Other Mail Accounts"
+msgstr "Inne konta pocztowe"
+
+#: config/prefs.php.dist:118 config/prefs.php.dist:127
+#: config/prefs.php.dist:134 config/prefs.php.dist:141
+#: config/prefs.php.dist:149 config/prefs.php.dist:158
+msgid "Other Options"
+msgstr "Inne opcje"
+
+#: lib/IMAP/Tree.php:96
+msgid "Other Users' Folders"
+msgstr "Foldery innych u¿ytkowników"
+
+#: templates/login/login.html:103
+msgid "Outbound Server"
+msgstr "Serwer wychodz±cy"
+
+#: pgp.php:44 lib/MIME/Viewer/pgp.php:164 lib/MIME/Viewer/pgp.php:212
+#: lib/MIME/Viewer/pgp.php:304
+msgid "PGP"
+msgstr "PGP"
+
+#: lib/IMP.php:1325
+msgid "PGP Encrypt Message"
+msgstr "Zaszyfruj wiadomo¶æ PGP"
+
+#: lib/IMP.php:1330
+msgid "PGP Encrypt Message with passphrase"
+msgstr "Zaszyfruj wiadomo¶æ PGP z has³em"
+
+#: lib/Compose.php:1292
+msgid "PGP Error: "
+msgstr "B³±d PGP: "
+
+#: config/prefs.php.dist:150
+msgid "PGP Options"
+msgstr "Opcje PGP"
+
+#: pgp.php:30
+msgid "PGP Passphrase Input"
+msgstr "Wprowadzanie has³a PGP"
+
+#: templates/pgp/pgp.html:68
+msgid "PGP Personal Keypair support requires a secure web connection."
+msgstr ""
+"Wsparcie dla osobistej pary kluczy PGP wymaga bezpiecznego po³±czenia WWW."
+
+#: pgp.php:154
+#, php-format
+msgid "PGP Public Key for \"%s (%s)\" was successfully added."
+msgstr "Klucz publiczny PGP dla \"%s (%s)\" zosta³ dodany."
+
+#: pgp.php:250
+#, php-format
+msgid "PGP Public Key for \"%s\" was successfully deleted."
+msgstr "Klucz publiczny PGP dla \"%s\" zosta³ skasowany."
+
+#: templates/pgp/pgp.html:24
+msgid "PGP Public Keyring"
+msgstr "Publiczne kó³ko (keyring) PGP"
+
+#: lib/IMP.php:1326
+msgid "PGP Sign Message"
+msgstr "Podpisz wiadomo¶æ PGP"
+
+#: lib/IMP.php:1327
+msgid "PGP Sign/Encrypt Message"
+msgstr "Podpisz/zaszyfruj wiadomo¶æ przy u¿yciu PGP"
+
+#: lib/IMP.php:1331
+msgid "PGP Sign/Encrypt Message with passphrase"
+msgstr "Podpisz/zaszyfruj wiadomo¶æ przy u¿yciu PGP z has³em"
+
+#: compose.php:662
+msgid ""
+"PGP encryption cannot be used by default as public keys cannot be found for "
+"all recipients."
+msgstr ""
+"Szyfrowanie PGP nie mo¿e byæ domy¶lnie u¿yte poniewa¿ nie mo¿na znale¼æ "
+"kluczy publicznych dla wszystkich odbiorców."
+
+#: pgp.php:207
+msgid "PGP private key successfully added."
+msgstr "Dodano prywatny klucz PGP."
+
+#: pgp.php:182
+msgid "PGP public key successfully added."
+msgstr "Dodano publiczny klucz PGP."
+
+#: templates/pgp/pgp.html:144
+msgid "PGP support is disabled on this system."
+msgstr "Wsparcie dla PGP jest wy³±czone w tym systemie."
+
+#: templates/pgp/pgp.html:4
+msgid ""
+"PGP support requires popup windows to be used.  If your browser is currently "
+"set to disable popup windows, you must change this setting or else the PGP "
+"features will not work correctly."
+msgstr ""
+"Wsparcie dla PGP wymaga u¿ycia wyskakuj±cych okienek. Je¿eli Twoja "
+"przegl±darka obecnie blokuje wyskakuj±ce okienka, musisz zmieniæ to "
+"ustawienie lub w przeciwnym wypadku w³asno¶ci PGP nie bêd± poprawnie dzia³aæ."
+
+#: lib/Compose.php:1252
+msgid "PGP: Need passphrase for personal private key."
+msgstr "PGP: Wymagane has³o dla osobistego klucza prywatnego."
+
+#: lib/Compose.php:1261
+msgid "PGP: Need passphrase to encrypt your message with."
+msgstr "PGP: Wymagane has³o do zaszyfrowania Twojej wiadomo¶ci."
+
+#: lib/IMAP.php:278
+msgid "POP3"
+msgstr "POP3"
+
+#: lib/Fetchmail/imap.php:94
+msgid "POP3 (Auto Detect Protocols)"
+msgstr "POP3 (Autowykrywanie protoko³ów)"
+
+#: lib/IMAP.php:290
+msgid "POP3 over SSL"
+msgstr "POP3 z SSL"
+
+#: lib/IMAP.php:296
+msgid "POP3 over SSL (self-signed certificate)"
+msgstr "POP3 z SSL (certyfikat w³asny)"
+
+#: lib/IMAP.php:284
+msgid "POP3, no TLS"
+msgstr "POP3, bez TLS"
+
+#: mailbox.php:429
+#, php-format
+msgid "Page %d of %d"
+msgstr "Strona %d z %d"
+
+#: config/prefs.php.dist:1051
+msgid "Page with the First Unseen Message"
+msgstr "Strone z pierwsz± niewidzian± wiadomo¶ci±"
+
+#: config/prefs.php.dist:1052
+msgid "Page with the Last Unseen Message"
+msgstr "Strona z ostatni± niewidzian± wiadomo¶ci±"
+
+#: templates/mailbox/navbar.html:67
+msgid "Page:"
+msgstr "Strona:"
+
+#: message.php:678
+msgid "Part(s)"
+msgstr "Czê¶æ(i)"
+
+#: templates/pgp/pgp.html:125
+msgid "Passphrase (Again):"
+msgstr "Has³o (powtórzenie):"
+
+#: smime.php:248 pgp.php:332
+msgid "Passphrase successfully unloaded."
+msgstr "Has³o zosta³o ¶ci±gniête."
+
+#: templates/pgp/pgp.html:120 templates/pgp/passphrase.html:19
+#: templates/smime/passphrase.html:21
+msgid "Passphrase:"
+msgstr "Has³o:"
+
+#: pgp.php:117
+msgid "Passphrases cannot be empty"
+msgstr "Has³o nie mo¿e byæ puste"
+
+#: pgp.php:119
+msgid "Passphrases do not match"
+msgstr "Has³a nie zgadzaj± siê"
+
+#: templates/login/login.html:92
+msgid "Password"
+msgstr "Has³o"
+
+#: templates/fetchmail/fetchmailprefs.html:59
+#: templates/smime/import_key.html:54
+msgid "Password:"
+msgstr "Has³o:"
+
+#: templates/login/mobile.inc:17
+msgid "Password: "
+msgstr "Has³o: "
+
+#: message.php:464 mailbox.php:737 lib/Block/mailbox.php:279
+#: templates/mailbox/navbar.html:24
+msgid "Personal"
+msgstr "Osobiste"
+
+#: config/prefs.php.dist:14
+msgid "Personal Information"
+msgstr "Dane personalne"
+
+#: pgp.php:125
+msgid "Personal PGP keypair generated successfully."
+msgstr "Wygenerowano osobist± parê kluczy PGP."
+
+#: pgp.php:132
+msgid "Personal PGP keys deleted successfully."
+msgstr "Skasowano osobiste klucze PGP."
+
+#: smime.php:220
+msgid "Personal S/MIME certificates NOT imported: "
+msgstr "NIE zaimportowano osobistego certyfikatu S/MIME: "
+
+#: smime.php:145
+msgid "Personal S/MIME keys deleted successfully."
+msgstr "Skasowano osobiste klucze S/MIME."
+
+#: config/prefs.php.dist:221
+msgid "Place your signature before replies and forwards?"
+msgstr "Umie¶ciæ Twój podpis przed odpowiedziami i przekazaniami?"
+
+#: lib/Compose.php:435
+msgid "Plaintext Version of Message"
+msgstr "Wiadomo¶æ w wersji tekstowej"
+
+#: templates/prefs/soundselect.inc:3
+msgid ""
+"Play a sound on new mail?  This requires your browser to support embedded "
+"sound files.  Almost all do on Windows and Mac, but other platforms may "
+"require a plugin."
+msgstr ""
+"Odtwarzaæ d¼wiêk przy nowej poczcie? Twoja przegl±darka musi wspieraæ "
+"osadzone pliki d¼wiêkowe. Prawie wszystkie przegl±darki dla Windows i Mac "
+"obs³uguj± t± funkcjê, lecz dla innych platform bêdzie potrzebny plugin."
+
+#: templates/javascript_defs.php:79
+msgid "Please enter a name for the new folder:"
+msgstr "Proszê wprowadziæ nazwê dla nowego folderu:"
+
+#: templates/javascript_defs.php:58 templates/javascript_defs.php:59
+msgid "Please enter the name of the new folder:"
+msgstr "Proszê wprowadziæ nazwê nowego folderu:"
+
+#: templates/javascript_defs.php:63
+msgid "Please enter the new name:"
+msgstr "Proszê wprowadziæ now± nazwê:"
+
+#: templates/pgp/passphrase.html:12
+msgid "Please enter the passphrase for this message."
+msgstr "Proszê wprowadziæ has³o dla tej wiadomo¶ci."
+
+#: templates/pgp/passphrase.html:14
+msgid ""
+"Please enter the passphrase for your PGP private key. You will only need to "
+"enter this passphrase once per session."
+msgstr ""
+"Proszê wprowadziæ has³o dla Twojego prywatnego klucza PGP. Bêdziesz musia³ "
+"wprowadzaæ to has³o tylko raz w danej sesji."
+
+#: templates/smime/passphrase.html:15
+msgid ""
+"Please enter the passphrase for your S/MIME private key. You will only need "
+"to enter this passphrase once per session."
+msgstr ""
+"Proszê wprowadziæ has³o dla Twojego prywatnego klucza S/MIME. Bêdziesz "
+"musia³ wprowadzaæ to has³o tylko raz w danej sesji."
+
+#: login.php:181
+msgid ""
+"Please log in again to resume composing your message. If you are NOT using "
+"cookies AND you are composing messages in popup windows, you will have to "
+"log in again in your main window as well. This is to keep attackers from "
+"hijacking your session ID. We apologize for any inconvenience."
+msgstr ""
+"Proszê zalogowaæ sie ponownie aby wznowiæ tworzenie wiadomo¶ci. Je¿eli NIE "
+"u¿ywasz ciasteczek I tworzysz wiadomo¶æ w wyskakuj±cym okienku, bêdziesz "
+"musia³ zalogowaæ sie ponownie w równie¿ g³ównym oknie. Zapobiega to "
+"przejêciu identikatora Twojej sesji przez atakuj±cych. Przepraszamy za "
+"wszelkie utrudnienia."
+
+#: templates/javascript_defs.php:74
+msgid "Please provide your password."
+msgstr "Proszê podaæ swoje has³o."
+
+#: templates/javascript_defs.php:73
+msgid "Please provide your username."
+msgstr "Proszê podaæ swoj± nazwê u¿ytkownika."
+
+#: lib/Compose.php:2560 lib/UI/Compose.php:26
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Proszê poprawiæ niejednoznaczne lub nieprawid³owe adresy."
+
+#: templates/javascript_defs.php:55
+msgid "Please select a folder before you perform this action."
+msgstr "Proszê wybraæ folder przed wykonaniem tej operacji."
+
+#: templates/javascript_defs.php:67
+msgid "Please select at least one folder to search."
+msgstr "Proszê wybraæ conajmniej jeden folder do przeszukania."
+
+#: templates/compose/redirect.html:39
+msgid "Please select or edit in the box to the right:"
+msgstr "Proszê wybraæ lub edytowaæ w obszarze po prawej stronie:"
+
+#: config/prefs.php.dist:1165
+msgid "Poll all folders for new mail?"
+msgstr "Sprawdzaæ now± pocztê we wszystkich folderach?"
+
+#: templates/login/login.html:67
+msgid "Port"
+msgstr "Port"
+
+#: lib/IMAP/ACL/rfc2086.php:54 lib/IMAP/ACL/rfc4314.php:54
+msgid "Post"
+msgstr "Wy¶lij"
+
+#: config/motd.php.dist:41
+msgid "Powered by Horde"
+msgstr "Oparte na Horde"
+
+#: config/prefs.php.dist:213
+msgid "Precede your signature with dashes ('-- ')?"
+msgstr "Poprzedziæ Twój podpis delimiterem ('-- ')?"
+
+#: filterprefs.php:51 smime.php:255 pgp.php:259
+msgid "Preferences successfully updated."
+msgstr "Preferencje zosta³y zaktualizowane."
+
+#: compose.php:1104
+msgid "Preview"
+msgstr "Podgl±d"
+
+#: message.php:525
+msgid "Previous Message"
+msgstr "Poprzednia wiadomo¶æ"
+
+#: mailbox.php:268
+msgid "Previous Page"
+msgstr "Poprzednia strona"
+
+#: message.php:599
+msgid "Print"
+msgstr "Drukuj"
+
+#: message.php:682
+msgid "Printed By"
+msgstr "Wydrukowany przez"
+
+#: message.php:667 lib/MIME/Viewer/itip.php:830
+msgid "Priority"
+msgstr "Priorytet"
+
+#: templates/smime/import_key.html:59
+msgid "Private Key Password:"
+msgstr "Has³o klucza prywatnego:"
+
+#: config/prefs.php.dist:678
+msgid "Prompt every time an attachment is sent; default to NO"
+msgstr "Zapytaj za ka¿dym razem gdy za³±cznik jest wysy³any; domy¶lnie NIE"
+
+#: config/prefs.php.dist:677
+msgid "Prompt every time an attachment is sent; default to YES"
+msgstr "Zapytaj za ka¿dym razem gdy za³±cznik jest wysy³any; domy¶lnie TAK"
+
+#: templates/login/login.html:72
+msgid "Protocol"
+msgstr "Protokó³"
+
+#: templates/fetchmail/fetchmailprefs.html:47
+msgid "Protocol:"
+msgstr "Protokó³:"
+
+#: lib/Crypt/PGP.php:453
+msgid "Public PGP keyserver support has been disabled."
+msgstr "Wsparcie dla serwera kluczy publicznych PGP zosta³o wy³±czone."
+
+#: mailbox.php:443 mailbox.php:511
+msgid "Pur_ge Deleted"
+msgstr "Wyczy¶æ usuniête"
+
+#: lib/IMAP/ACL/rfc4314.php:58 templates/folders/actions.html:20
+msgid "Purge"
+msgstr "Wyczy¶æ"
+
+#: mailbox.php:443 mailbox.php:511
+msgid "Purge Deleted"
+msgstr "Wyczy¶æ usuniête"
+
+#: config/prefs.php.dist:424
+msgid "Purge Spam how often:"
+msgstr "Jak czêsto czy¶ciæ folder spamu:"
+
+#: config/prefs.php.dist:452
+msgid "Purge Trash how often:"
+msgstr "Jak czêsto czy¶ciæ folder ¶mieci:"
+
+#: config/prefs.php.dist:433
+msgid "Purge messages in Spam folder older than this amount of days."
+msgstr "Wyczy¶æ wiadomo¶ci w folderze spamu, starsze ni¿ podana liczba dni."
+
+#: config/prefs.php.dist:461
+msgid "Purge messages in Trash folder older than this amount of days."
+msgstr "Wyczy¶æ wiadomo¶ci w folderze ¶mieci, starsze ni¿ podana liczba dni."
+
+#: config/prefs.php.dist:387
+msgid "Purge messages in sent-mail folder(s) older than this amount of days."
+msgstr ""
+"Wyczy¶æ wiadomo¶ci w folderze sent-mail, starsze ni¿ podana liczba dni."
+
+#: config/prefs.php.dist:414
+msgid "Purge old messages in the Spam folder?"
+msgstr "Czy¶ciæ stare wiadomo¶ci z folderu spamu?"
+
+#: config/prefs.php.dist:442
+msgid "Purge old messages in the Trash folder?"
+msgstr "Czy¶ciæ stare wiadomo¶ci z folderu ¶mieci?"
+
+#: config/prefs.php.dist:368
+msgid "Purge old messages in the sent-mail folder(s)?"
+msgstr "Czy¶ciæ stare wiadomo¶ci w folderze sent-mail?"
+
+#: config/prefs.php.dist:378
+msgid "Purge sent-mail how often:"
+msgstr "Jak czêsto czy¶ciæ sent-mail:"
+
+#: lib/Maintenance/Task/purge_spam.php:64
+#, php-format
+msgid "Purging %d messages from Spam folder."
+msgstr "Czyszczenie %d wiadomo¶ci z folderu spam."
+
+#: lib/Maintenance/Task/purge_trash.php:63
+#, php-format
+msgid "Purging %d messages from Trash folder."
+msgstr "Czyszczenie %d wiadomo¶ci z folderu ¶mieci."
+
+#: lib/Maintenance/Task/purge_sentmail.php:63
+#, php-format
+msgid "Purging %d messages from sent-mail folder."
+msgstr "Czyszczenie %d wiadomo¶ci z folderu sent-mail."
+
+#: lib/Maintenance/Task/purge_spam.php:62
+msgid "Purging 1 message from Spam folder."
+msgstr "Czyszczenie 1 wiadomo¶ci z folderu spam."
+
+#: lib/Maintenance/Task/purge_trash.php:61
+msgid "Purging 1 message from Trash folder."
+msgstr "Czyszczenie 1 wiadomo¶ci z folderu ¶mieci."
+
+#: lib/Maintenance/Task/purge_sentmail.php:61
+#, php-format
+msgid "Purging 1 message from sent-mail folder %s."
+msgstr "Czyszczenie 1 wiadomo¶ci z folderu sent-mail %s."
+
+#: lib/IMP.php:918
+#, php-format
+msgid "Quota status: %.2fMB / %.2fMB  (%.2f%%)"
+msgstr "Quota: %.2fMB / %.2fMB (%.2f%%)"
+
+#: lib/IMP.php:922
+#, php-format
+msgid "Quota status: %.2fMB / NO LIMIT"
+msgstr "Quota: %.2fMB / BEZ LIMITU"
+
+#: lib/IMP.php:925
+#, php-format
+msgid "Quota status: NO LIMIT"
+msgstr "Quota: BEZ LIMITU"
+
+#: config/prefs.php.dist:608
+#, php-format
+msgid "Quoting %f:"
+msgstr "Cytowanie %f:"
+
+#: lib/IMAP/ACL/rfc2086.php:50 lib/IMAP/ACL/rfc4314.php:50
+msgid "Read"
+msgstr "Odczyt"
+
+#: templates/folders/actions.html:38
+msgid "Rebuild Folder Tree"
+msgstr "Odbuduj drzewo folderów"
+
+#: templates/search/search.html:31
+msgid "Recent Searches"
+msgstr "Ostatnie wyszukiwania"
+
+#: templates/search/search.html:35 templates/search/search.html:37
+msgid "Recent Searches:"
+msgstr "Ostatnie wyszukiwania:"
+
+#: message.php:570 message.php:613
+msgid "Redirec_t"
+msgstr "Przekieruj"
+
+#: message.php:570 message.php:613
+msgid "Redirect"
+msgstr "Przekieruj"
+
+#: templates/compose/redirect.html:82
+msgid "Redirect Message"
+msgstr "Przekieruj wiadomo¶æ"
+
+#: compose.php:327
+msgid "Redirect this message"
+msgstr "Przekieruj tê wiadomo¶æ"
+
+#: folders.php:344
+msgid "Refresh"
+msgstr "Od¶wie¿"
+
+#: config/prefs.php.dist:927
+msgid "Refresh Folder Views:"
+msgstr "Od¶wie¿ widok folderów:"
+
+#: mailbox.php:406
+msgid "Reload"
+msgstr "Prze³aduj"
+
+#: folders.php:334
+msgid "Reload View"
+msgstr "Prze³aduj podgl±d"
+
+#: lib/MIME/Viewer/itip.php:542 lib/MIME/Viewer/itip.php:561
+msgid "Remember the free/busy information."
+msgstr "Zapamiêtaj informacjê o dostêpno¶ci."
+
+#: config/prefs.php.dist:1134
+msgid "Remember the last view"
+msgstr "Pamiêtaj ostatni widok"
+
+#: templates/fetchmail/fetchmailprefs.html:68
+msgid "Remote Mailbox:"
+msgstr "Zdalna skrzynka:"
+
+#: lib/MIME/Viewer/html.php:123
+#, php-format
+msgid "Remote images are blocked to protect your privacy. %s"
+msgstr "Zdalne obrazki s± zablokowane w celu ochrony Twojej prywatno¶ci. %s"
+
+#: search.php:324
+msgid "Remove Field From Search"
+msgstr "Usuñ pole z wyszukiwania"
+
+#: templates/prefs/sourceselect.inc:302
+msgid "Remove source"
+msgstr "Usuñ ¼ród³o"
+
+#: templates/folders/actions.html:16
+msgid "Rename"
+msgstr "Zmieñ nazwê"
+
+#: config/prefs.php.dist:341
+msgid "Rename sent-mail folder at beginning of month?"
+msgstr "Zmieniæ nazwê folderu sent-mail na pocz±tku miesi±ca?"
+
+#: lib/Folder.php:410
+#, php-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr "Zmiana nazwy \"%s\" na \"%s\" nie powiod³a siê. Odpowied¼ serwera"
+
+#: message.php:554
+msgid "Reply"
+msgstr "Odpowiedz"
+
+#: lib/MIME/Viewer/itip.php:316 lib/MIME/Viewer/itip.php:420
+msgid "Reply Sent."
+msgstr "Odpowied¼ wys³ana."
+
+#: compose.php:302
+msgid "Reply to All:"
+msgstr "Odpowiedz wszystkim:"
+
+#: compose.php:304
+msgid "Reply to List:"
+msgstr "Odpowiedz na listê:"
+
+#: lib/MIME/Viewer/itip.php:544 lib/MIME/Viewer/itip.php:553
+#: lib/MIME/Viewer/itip.php:563
+msgid "Reply with Not Supported Message"
+msgstr "Odpowiedz: wiadomo¶æ nie wspierana"
+
+#: lib/MIME/Viewer/itip.php:551
+msgid "Reply with free/busy for next 2 months."
+msgstr "Odpowiedz informacj± o dostêpno¶ci przez nastêpne 2 miesi±ce."
+
+#: lib/MIME/Viewer/itip.php:550
+msgid "Reply with requested free/busy information."
+msgstr "Odpowiedz ¿±dan± informacj± o dostêpno¶ci"
+
+#: lib/UI/Message.php:29
+msgid "Reply-To"
+msgstr "Odpowied¼ do"
+
+#: lib/Compose.php:1765
+msgid "Reply-To: "
+msgstr "Odpowied¼ do:"
+
+#: compose.php:300
+msgid "Reply:"
+msgstr "Odpowied¼:"
+
+#: message.php:610 mailbox.php:533
+msgid "Report as Innocent"
+msgstr "Zaraportuj jako niewinny"
+
+#: message.php:604 mailbox.php:527
+msgid "Report as Spam"
+msgstr "Zaraportuj jako spam"
+
+#: compose.php:1029
+msgid "Request a _Read Receipt"
+msgstr "Popro¶ o potwie_rdzenie odczytu"
+
+#: config/prefs.php.dist:692
+msgid "Request read receipts?"
+msgstr "Prosiæ o potwierdzenie odczytu?"
+
+#: mailbox.php:105
+msgid "Requested message not found."
+msgstr "¯±dana wiadomo¶æ nie zosta³a znaleziona"
+
+#: lib/MIME/Viewer/itip.php:735 lib/MIME/Viewer/itip.php:863
+msgid "Required Participant"
+msgstr "Wymagane uczestnictwo"
+
+#: templates/search/search.html:26 templates/search/search.html:201
+#: templates/acl/acl.html:80
+msgid "Reset"
+msgstr "Przywróæ"
+
+#: lib/MIME/Viewer/itip.php:118
+msgid "Respondent Status Updated."
+msgstr "Zaktualizowano status respondenta."
+
+#: message.php:593
+msgid "Resume"
+msgstr "Wznów"
+
+#: lib/UI/Compose.php:137
+msgid "Resume Editing"
+msgstr "Wznów edycjê"
+
+#: login.php:182
+msgid "Resume your session"
+msgstr "Wznów swoj± sesjê"
+
+#: templates/fetchmail/fetchmailprefs.html:125
+msgid "Return to Fetch Mail"
+msgstr "Wróæ do odbierania poczty"
+
+#: stationery.php:146
+msgid "Return to Message Composition"
+msgstr "Wróæ do tworzenia wiadomo¶ci"
+
+#: filterprefs.php:63 templates/acl/acl.html:35 templates/acl/acl.html:81
+#: templates/acl/acl.html:95 templates/pgp/pgp.html:155
+#: templates/smime/smime.html:102
+msgid "Return to Options"
+msgstr "Wróæ do opcji"
+
+#: config/prefs.php.dist:861
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr ""
+"Wracaæ do listy wiadomo¶ci w skrzynce po usuniêciu, przeniesieniu lub "
+"skopiowaniu wiadomo¶ci?"
+
+#: acl.php:111
+#, php-format
+msgid "Rights for user \"%s\" cannot be modified."
+msgstr "Nie mo¿na zmieniæ uprawnieñ dla u¿ytkownika \"%s\"."
+
+#: lib/MIME/Viewer/itip.php:726 lib/MIME/Viewer/itip.php:854
+msgid "Role"
+msgstr "Rola"
+
+#: smime.php:67 lib/MIME/Viewer/pkcs7.php:173 lib/MIME/Viewer/pkcs7.php:280
+#: lib/MIME/Viewer/pkcs7.php:468
+msgid "S/MIME"
+msgstr "S/MIME"
+
+#: lib/IMP.php:1335
+msgid "S/MIME Encrypt Message"
+msgstr "Zaszyfruj wiadomo¶æ przy u¿yciu S/MIME"
+
+#: lib/Compose.php:1324
+msgid "S/MIME Error: "
+msgstr "B³ad S/MIME: "
+
+#: lib/Compose.php:1303
+msgid "S/MIME Error: Need passphrase for personal private key."
+msgstr "B³±d S/MIME: Wymagane has³o dla osobistego klucza prywatnego."
+
+#: config/prefs.php.dist:159
+msgid "S/MIME Options"
+msgstr "Opcje S/MIME"
+
+#: smime.php:54
+msgid "S/MIME Passphrase Input"
+msgstr "Wprowadzanie has³a S/MIME"
+
+#: templates/smime/smime.html:61
+msgid "S/MIME Personal Keypair support requires a secure web connection."
+msgstr ""
+"Wsparcie dla pary osobistych kluczy S/MIME wymaga bezpiecznego po³±czenia "
+"WWW."
+
+#: smime.php:153
+#, php-format
+msgid "S/MIME Public Key for \"%s\" was successfully deleted."
+msgstr "Skasowano klucz publiczny S/MIME dla \"%s\"."
+
+#: smime.php:175
+msgid "S/MIME Public Key successfully added."
+msgstr "Dodano klucz publiczny S/MIME."
+
+#: templates/smime/smime.html:17
+msgid "S/MIME Public Keyring"
+msgstr "Publiczne kó³ko (keyring) S/MIME"
+
+#: smime.php:224
+msgid "S/MIME Public/Private Keypair successfully added."
+msgstr "Dodano parê kluczy publiczny/prywatny S/MIME."
+
+#: lib/IMP.php:1336
+msgid "S/MIME Sign Message"
+msgstr "Podpisz wiadomo¶æ przy u¿yciu S/MIME"
+
+#: lib/IMP.php:1337
+msgid "S/MIME Sign/Encrypt Message"
+msgstr "Podpisz/zaszyfruj wiadomo¶æ przy u¿yciu S/MIME"
+
+#: templates/smime/smime.html:91
+msgid "S/MIME support is disabled on this system."
+msgstr "Wsparcie dla S/MIME jest wy³±czone w tym systemie."
+
+#: lib/MIME/Viewer/pkcs7.php:284
+msgid ""
+"S/MIME support is not currently enabled so the message is unable to be "
+"decrypted."
+msgstr ""
+"Wsparcie dla S/MIME nie jest obecnie w³±czone, wiêc wiadomo¶æ nie mo¿e "
+"zostaæ odszyfrowana."
+
+#: lib/MIME/Viewer/pkcs7.php:204
+msgid ""
+"S/MIME support is not enabled so the contents of this signed message cannot "
+"be displayed."
+msgstr ""
+"Wsparcie dla S/MIME nie jest w³±czone, wiêc zawarto¶æ tej podpisanej "
+"wiadomo¶ci nie mo¿e zostaæ wy¶wietlona."
+
+#: lib/MIME/Viewer/pkcs7.php:177
+msgid ""
+"S/MIME support is not enabled so the digital signature is unable to be "
+"verified."
+msgstr ""
+"Wsparcie dla S/MIME nie jest w³±czone, wiêc podpis cyfrowy nie mo¿e zostaæ "
+"zweryfikowany."
+
+#: lib/MIME/Viewer/pkcs7.php:134
+msgid "S/MIME support is not enabled."
+msgstr "Wsparcie dla S/MIME nie jest w³±czone."
+
+#: templates/smime/smime.html:4
+msgid ""
+"S/MIME support requires popup windows to be used.  If your browser is "
+"currently set to disable popup windows, you must change this setting or else "
+"the S/MIME features will not work correctly."
+msgstr ""
+"Wsparcie dla S/MIME wymaga u¿ycia wyskakuj±cych okienek. Je¿eli Twoja "
+"przegl±darka obecnie blokuje wyskakuj±ce okienka, musisz zmieniæ to "
+"ustawienie lub w przeciwnym wypadku w³asno¶ci S/MIME nie bêd± poprawnie "
+"dzia³aæ."
+
+#: templates/login/login.html:108
+msgid "SMTP"
+msgstr "SMTP"
+
+#: templates/login/login.html:107
+msgid "SMTP Port"
+msgstr "Port SMTP"
+
+#: compose.php:938
+msgid "S_ubject"
+msgstr "Temat"
+
+#: compose.php:1008
+msgid "Sa_ve a copy in "
+msgstr "Zapisz kopiê w "
+
+#: message.php:597
+msgid "Sa_ve as"
+msgstr "Zapisz jako"
+
+#: templates/fetchmail/fetchmailprefs.html:121 templates/search/search.html:25
+#: templates/search/search.html:200 templates/acl/acl.html:79
+msgid "Save"
+msgstr "Zapisz"
+
+#: compose.php:1080
+msgid "Save Attachments with message in sent-mail folder?"
+msgstr "Zapisaæ za³±czniki razem z wiadomo¶ci± w folderze sent-mail?"
+
+#: templates/compose/compose.html:19 templates/compose/compose.html:206
+msgid "Save Draft"
+msgstr "Zapisz szkic"
+
+#: saveimage.php:52
+msgid "Save Image"
+msgstr "Zapisz obraz"
+
+#: lib/MIME/Contents.php:243
+msgid "Save Image in Gallery"
+msgstr "Zapiszs obraz w galerii"
+
+#: filterprefs.php:124 templates/pgp/pgp.html:154
+#: templates/smime/smime.html:101
+msgid "Save Options"
+msgstr "Zapisz opcje"
+
+#: templates/stationery/stationery.html:42
+msgid "Save Stationery"
+msgstr "Zapisz papeteriê"
+
+#: compose.php:854
+msgid "Save _Draft"
+msgstr "Zapisz szkic"
+
+#: message.php:597
+msgid "Save as"
+msgstr "Zapisz jako"
+
+#: config/prefs.php.dist:629
+msgid "Save drafts as unseen?"
+msgstr "Zapisywaæ szkice jako niewidziane?"
+
+#: config/prefs.php.dist:639
+msgid "Save drafts automatically while composing?"
+msgstr "Zapisywaæ automatycznie szkice podczas tworzenia?"
+
+#: lib/MIME/Viewer/pkcs7.php:244
+msgid "Save in your Address Book"
+msgstr "Zapisz w Twojej ksi±¿ce adresowej"
+
+#: config/prefs.php.dist:1248
+msgid "Save recipients automatically to the default address book?"
+msgstr "Zapisywaæ odbiorców automatycznie w domy¶lnej ksi±¿ce adresowej?"
+
+#: templates/search/search.html:191
+msgid "Save search as a virtual folder?"
+msgstr "Zapisaæ wyszukiwanie jako folder wirtualny?"
+
+#: config/prefs.php.dist:229
+msgid "Save sent mail?"
+msgstr "Zapisywaaæ wys³an± pocztê?"
+
+#: lib/Compose.php:222
+msgid "Saving the draft failed. Could not create a drafts folder."
+msgstr "Zapisanie szkicu nie powiod³o siê. Nie mo¿na utworzyæ folderu szkiców."
+
+#: lib/Compose.php:165
+msgid "Saving the draft failed. No draft folder specified."
+msgstr "Zapisanie szkicu nie powiod³o siê. Nie okre¶lono folderu szkiców."
+
+#: lib/Compose.php:235
+#, php-format
+msgid "Saving the draft failed. This is what the server said: %s"
+msgstr "Zapisanie szkicu nie powiod³o siê. Serwer odpowiedzia³: %s"
+
+#: mailbox.php:412 lib/Search.php:533 lib/Block/tree_folders.php:44
+#: templates/contacts/contacts.html:25
+msgid "Search"
+msgstr "Szukaj"
+
+#: mailbox.php:412 search.php:211
+#, php-format
+msgid "Search %s"
+msgstr "Przeszukaj %s"
+
+#: templates/search/search.html:46
+msgid "Search Criteria"
+msgstr "Kryteria wyszukiwania"
+
+#: templates/search/search.html:130
+msgid "Search Flags"
+msgstr "Znaczniki wyszukiwania"
+
+#: templates/search/search.html:155
+msgid "Search Folders"
+msgstr "Szukaj w folderach"
+
+#: config/prefs.php.dist:128
+msgid "Search Options"
+msgstr "Opcje wyszukiwania"
+
+#: search.php:158 templates/contacts/contacts.html:31
+msgid "Search Results"
+msgstr "Wyniki wyszukiwania"
+
+#: templates/search/search.html:80
+msgid "Search Text"
+msgstr "Szukaj tekstu"
+
+#: templates/mailbox/navbar.html:14 templates/mailbox/navbar.html:30
+msgid "Seen"
+msgstr "Widziane"
+
+#: templates/fetchmail/fetchmailprefs.html:123
+msgid "Select Another Account"
+msgstr "Wybierz kolejne konto"
+
+#: search.php:315
+msgid "Select a date"
+msgstr "Wybierz datê"
+
+#: templates/search/search.html:65 templates/search/search.html:68
+msgid "Select a field"
+msgstr "Wybierz pole"
+
+#: templates/fetchmail/fetchmail.html:11
+msgid "Select accounts to fetch mail from:"
+msgstr "Wybierz konta z których pobieraæ pocztê:"
+
+#: config/prefs.php.dist:143
+msgid "Select address book sources for adding and searching for addresses."
+msgstr "Wybierz ksi±¿kê adresow± dla dodawania i wyszukiwania adresów."
+
+#: templates/search/search.html:159
+msgid "Select all"
+msgstr "Wybierz wszystko"
+
+#: templates/prefs/sourceselect.inc:321
+msgid "Select all fields to search when expanding addresses."
+msgstr "Wybierz wszystkie pola do przeszukiwania przy rozwijaniu adresów."
+
+#: templates/fetchmail/fetchmailprefs.html:21
+msgid "Select an account:"
+msgstr "Wybierz konto:"
+
+#: templates/folders/folders.html:3
+msgid "Select mailbox"
+msgstr "Wybierz skrzynkê"
+
+#: templates/search/search.html:160
+msgid "Select none"
+msgstr "Nic nie wybieraj"
+
+#: templates/compose/compose.html:134
+msgid "Select stationery:"
+msgstr "Wybierz papeteriê:"
+
+#: templates/saveimage/saveimage.html:8
+msgid "Select the gallery to save the image in."
+msgstr "Wybierz galeriê w której zapisywaæ obrazy."
+
+#: templates/fetchmail/fetchmailprefs.html:34
+msgid "Select the mail server type:"
+msgstr "Wybierz rodzaj serwera poczty:"
+
+#: templates/mailbox/navbar.html:7 templates/mailbox/navbar.html:9
+msgid "Select:"
+msgstr "Wybierz:"
+
+#: templates/prefs/sourceselect.inc:305 templates/prefs/sourceselect.inc:307
+msgid "Selected Address books:"
+msgstr "Wybrane ksi±¿ki adresowe:"
+
+#: templates/contacts/contacts.html:47
+msgid "Selected Addresses"
+msgstr "Wybrane adresy"
+
+#: pgp.php:424 templates/pgp/pgp.html:75
+msgid "Send Key to Public Keyserver"
+msgstr "Wy¶lij klucz do publicznego serwera kluczy"
+
+#: lib/MIME/Viewer/itip.php:646
+msgid "Send Latest Information"
+msgstr "Wy¶lij naj¶wie¿sze informacje"
+
+#: templates/compose/compose.html:17 templates/compose/compose.html:204
+msgid "Send Message"
+msgstr "Wy¶lij wiadomo¶æ"
+
+#: templates/javascript_defs.php:37
+msgid "Send message without a Subject?"
+msgstr "Wys³aæ wiadomo¶æ bez tematu?"
+
+#: config/prefs.php.dist:846
+msgid "Send read receipt when requested by the sender?"
+msgstr "Wysy³aæ potwierdzenie odczytu je¿eli nadawca o nie poprosi?"
+
+#: lib/IMAP/Tree.php:2337
+msgid "Sent mail folder"
+msgstr "Folder wys³anej poczty"
+
+#: templates/prefs/sentmailselect.inc:36
+msgid "Sent mail folder:"
+msgstr "Folder wys³anej poczty:"
+
+#: templates/login/login.html:36 templates/login/login.html:50
+#: templates/login/login.html:62
+msgid "Server"
+msgstr "Serwer"
+
+#: config/prefs.php.dist:23
+msgid "Server and Folder Information"
+msgstr "Informacje o serwerze i folderach"
+
+#: templates/fetchmail/fetchmailprefs.html:63
+msgid "Server:"
+msgstr "Serwer:"
+
+#: config/prefs.php.dist:88
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr ""
+"Ustaw preferencje okre¶laj±ce co siê stanie gdy przeniesiesz lub usuniesz "
+"wiadomo¶æ."
+
+#: config/prefs.php.dist:648
+msgid "Set the X-Priority header when composing messages?"
+msgstr "Ustawiaæ nag³ówek X-Priority podczas tworzenia wiadomo¶ci?"
+
+#: config/prefs.php.dist:32
+msgid "Share Folders"
+msgstr "Udostêpniaj foldery"
+
+#: templates/acl/acl.html:7
+msgid "Share mail folders"
+msgstr "Udostêpniaj foldery poczty"
+
+#: config/prefs.php.dist:33
+msgid "Share your mail folders with other users."
+msgstr "Udostêpniaj Twoje foldery pocztowe innym u¿ytkownikom."
+
+#: lib/IMAP/Tree.php:94
+msgid "Shared Folders"
+msgstr "Foldery udostêpnione"
+
+#: templates/pgp/pgp.html:15
+msgid "Should PGP signed messages automatically be verified when viewed?"
+msgstr ""
+"Czy wiadomo¶ci podpisane PGP maj± byæ automatycznie weryfikowane przy "
+"wy¶wietlaniu?"
+
+#: templates/smime/smime.html:7
+msgid "Should S/MIME signed messages automatically be verified when viewed?"
+msgstr ""
+"Czy wiadomo¶ci podpisane S/MIME maj± byæ automatycznie weryfikowane przy "
+"wy¶wietlaniu?"
+
+#: config/prefs.php.dist:776
+msgid ""
+"Should large blocks of quoted text be shown or hidden by default? It can be "
+"toggled easily whichever you choose."
+msgstr ""
+"Czy du¿e fragmenty cytowanego tekstu powinny byæ domy¶lnie widoczne czy "
+"ukryte? Mo¿na to ³atwo zmieniæ, niezale¿nie od tego co wybierzesz."
+
+#: templates/pgp/pgp.html:11
+msgid "Should the body of text/plain messages be scanned for PGP data?"
+msgstr "Czy w nag³ówku wiadomo¶ci tekstowej maj± byæ wyszukiwane dane PGP?"
+
+#: config/prefs.php.dist:621
+msgid "Should the compose window be closed after saving a draft?"
+msgstr "Zamkn±æ okno tworzenia wiadomo¶ci po zapisaniu szkicu?"
+
+#: templates/pgp/pgp.html:7
+msgid "Should your PGP public key to be attached to your messages by default?"
+msgstr ""
+"Czy klucz publiczny PGP ma byæ domy¶lnie do³±czany do Twoich wiadomo¶ci?"
+
+#: templates/javascript_defs.php:28
+msgid "Show Addresses"
+msgstr "Poka¿ adresy"
+
+#: templates/search/search.html:162
+msgid "Show All Folders"
+msgstr "Poka¿ wszystkie foldery"
+
+#: message.php:620
+msgid "Show All Headers"
+msgstr "Poka¿ wszystkie nag³ówki"
+
+#: message.php:617
+msgid "Show Common Headers"
+msgstr "Poka¿ zwyk³e nag³ówki"
+
+#: mailbox.php:245
+msgid "Show Deleted"
+msgstr "Poka¿ usuniête"
+
+#: lib/MIME/Viewer/html.php:124
+msgid "Show Images?"
+msgstr "Pokazaæ obrazki?"
+
+#: message.php:623
+msgid "Show Mailing List Information"
+msgstr "Poka¿ informacje o li¶cie mailingowej"
+
+#: templates/search/search.html:162
+msgid "Show Only Subscribed Folders"
+msgstr "Poka¿ tylko subskrybowane foldery"
+
+#: templates/folders/actions.html:37
+msgid "Show Size"
+msgstr "Poka¿ rozmiar"
+
+#: folders.php:362
+msgid "Show Unsubscribed"
+msgstr "Poka¿ niesubskrybowane"
+
+#: config/prefs.php.dist:715
+msgid "Show an icon to allow stripping of attachments from messages?"
+msgstr "Pokazaæ ikonê umo¿liwiaj±c± usuniêcie za³±czników z wiadomo¶ci?"
+
+#: config/prefs.php.dist:1144
+msgid "Show non-private mailboxes in separate folders"
+msgstr "Poka¿ wiadomo¶ci, które nie s± prywatne, w oddzielnych folderach"
+
+#: config/prefs.php.dist:988
+msgid "Show previews for unread messages only?"
+msgstr "Pokazaæ podgl±d tylko dla nieprzeczytanych wiadomo¶ci?"
+
+#: config/prefs.php.dist:996
+msgid "Show previews in tooltips?"
+msgstr "Pokazaæ podgl±d w podpowiedziach?"
+
+#: config/prefs.php.dist:530
+msgid "Show the Bcc: header field when composing mail?"
+msgstr "Pokazaæ pole nag³ówka UDW: przy tworzeniu wiadomo¶ci?"
+
+#: config/prefs.php.dist:521
+msgid "Show the Cc: header field when composing mail?"
+msgstr "Pokazaæ pole nag³owka DW: przy tworzeniu wiadomo¶ci?"
+
+#: config/prefs.php.dist:1025
+msgid "Show the Fetch Mail icon on the menubar?"
+msgstr "Pokazaæ ikonê odbierania poczty na pasku menu?"
+
+#: filterprefs.php:109
+msgid "Show the filter icon on the menubar?"
+msgstr "Pokazaæ ikonê filtrów na pasku menu?"
+
+#: lib/MIME/Viewer/html.php:140
+msgid "Show this HTML in a new window?"
+msgstr "Wy¶wietliæ HTML w nowym oknie?"
+
+#: lib/Block/summary.php:30
+msgid "Show total number of mails in folder?"
+msgstr "Pokazaæ ca³kowit± liczbê wiadomo¶ci w folderze?"
+
+#: config/prefs.php.dist:773
+msgid "Shown"
+msgstr "Widoczne"
+
+#: mailbox.php:596 lib/Block/mailbox.php:168
+msgid "Si_ze"
+msgstr "Ro_zmiar"
+
+#: templates/folders/folders_size.html:6
+msgid "Size"
+msgstr "Rozmiar"
+
+#: templates/compose/compose.html:315
+msgid "Size:"
+msgstr "Rozmiar:"
+
+#: mailbox.php:565 lib/Block/mailbox.php:137
+msgid "Sort by Arrival"
+msgstr "Sortuj wg czasu otrzymania"
+
+#: mailbox.php:570 lib/Block/mailbox.php:142
+msgid "Sort by Date"
+msgstr "Sortuj wg daty"
+
+#: mailbox.php:580 lib/Block/mailbox.php:152
+msgid "Sort by From Address"
+msgstr "Sortuj wg adresu nadawcy"
+
+#: mailbox.php:595 lib/Block/mailbox.php:167
+msgid "Sort by Message Size"
+msgstr "Sortuj wg rozmiaru wiadomo¶ci"
+
+#: mailbox.php:590 lib/Block/mailbox.php:162
+msgid "Sort by Subject"
+msgstr "Sortuj wg tematu"
+
+#: mailbox.php:585 lib/Block/mailbox.php:157
+msgid "Sort by Thread"
+msgstr "Sortuj wg w±tków"
+
+#: mailbox.php:575 lib/Block/mailbox.php:147
+msgid "Sort by To Address"
+msgstr "Sortuj wg adresu odbiorcy"
+
+#: lib/IMAP/Tree.php:2330
+msgid "Spam folder"
+msgstr "Folder spamu"
+
+#: templates/prefs/spamselect.inc:19
+msgid "Spam folder:"
+msgstr "Folder spamu:"
+
+#: compose.php:997
+msgid "Special Characters"
+msgstr "Znaki specjalne"
+
+#: search.php:47
+msgid "Special Virtual Folders cannot be edited."
+msgstr "Specjalne foldery wirtualne nie mog± byæ edytowane."
+
+#: lib/UI/Compose.php:138
+msgid "Spell Check Failed"
+msgstr "Sprawdzanie pisowni nie powiod³o siê"
+
+#: lib/MIME/Viewer/itip.php:521 lib/MIME/Viewer/itip.php:523
+#: lib/MIME/Viewer/itip.php:691 lib/MIME/Viewer/itip.php:693
+msgid "Start"
+msgstr "Start"
+
+#: compose.php:977 templates/stationery/stationery.html:8
+#: templates/stationery/stationery.html:12
+msgid "Stationery"
+msgstr "Papeteria"
+
+#: stationery.php:138
+msgid "Stationery name:"
+msgstr "Nazwa papeterii:"
+
+#: stationery.php:140
+msgid "Stationery type:"
+msgstr "Rodzaj papeterii:"
+
+#: stationery.php:143
+msgid "Stationery:"
+msgstr "Papeteria:"
+
+#: lib/MIME/Viewer/itip.php:726 lib/MIME/Viewer/itip.php:854
+msgid "Status"
+msgstr "Status"
+
+#: lib/MIME/Contents.php:254
+msgid "Strip Attachment"
+msgstr "Odetnij za³±cznik"
+
+#: config/prefs.php.dist:980
+msgid "Strip linebreaks?"
+msgstr "Pozbyæ siê podzia³u linii?"
+
+#: mailbox.php:591 lib/Block/mailbox.php:163
+msgid "Sub_ject"
+msgstr "Temat"
+
+#: lib/Search.php:670 lib/UI/Message.php:30 templates/login/recompose.html:41
+msgid "Subject"
+msgstr "Temat"
+
+#: config/prefs.php.dist:1068
+msgid "Subject Field"
+msgstr "Temat wiadomo¶ci"
+
+#: templates/thread/thread.html:37
+msgid "Subject:"
+msgstr "Temat:"
+
+#: templates/search/search.html:25 templates/search/search.html:200
+#: templates/pgp/passphrase.html:21 templates/saveimage/saveimage.html:19
+#: templates/smime/passphrase.html:23
+msgid "Submit"
+msgstr "Wy¶lij"
+
+#: templates/folders/actions.html:23
+msgid "Subscribe"
+msgstr "Subskrybuj"
+
+#: lib/MIME/Viewer/pgp.php:438 lib/MIME/Viewer/status.php:86
+#: lib/MIME/Viewer/pkcs7.php:428
+msgid "Success"
+msgstr "Sukces"
+
+#: templates/folders/folders_size.html:19
+msgid "Sum"
+msgstr "Razem"
+
+#: lib/MIME/Viewer/itip.php:708 lib/MIME/Viewer/itip.php:710
+#: lib/MIME/Viewer/itip.php:835 lib/MIME/Viewer/itip.php:837
+msgid "Summary"
+msgstr "Podsumowanie"
+
+#: compose.php:1034 compose.php:1035
+msgid "Switch Composition Method"
+msgstr "Zmieñ sposób tworzenia wiadomo¶ci"
+
+#: templates/compose/compose.html:189
+msgid "Switch to HTML composition"
+msgstr "Prze³±cz na HTML"
+
+#: templates/compose/compose.html:189
+msgid "Switch to plain text composition"
+msgstr "Prze³±cz na zwyk³y tekst"
+
+#: templates/message/navbar_navigate.html:27
+msgid "Target Folder"
+msgstr "Folder docelowy"
+
+#: templates/mailbox/navbar.html:54
+msgid "Target Mailbox:"
+msgstr "Skrzynka docelowa:"
+
+#: lib/IMP.php:476
+msgid "Task Lists"
+msgstr "Listy zadañ"
+
+#: compose.php:1039
+msgid "Te_xt"
+msgstr "Tre¶æ"
+
+#: lib/MIME/Viewer/itip.php:273
+msgid "Tentative: "
+msgstr "Wstêpnie: "
+
+#: lib/MIME/Viewer/itip.php:631
+msgid "Tentatively Accept request"
+msgstr "Wstêpnie zaakceptuj pro¶bê"
+
+#: lib/MIME/Viewer/itip.php:925
+msgid "Tentatively Accepted"
+msgstr "Wstêpnie zaakceptowane"
+
+#: lib/Maintenance/Task/tos_agreement.php:46
+#, php-format
+msgid "Terms of Service file not specified in conf.php"
+msgstr "Nie okre¶lono pliku z warunkami ¶wiadczenia us³ugi w conf.php"
+
+#: templates/stationery/stationery.html:31
+msgid "Text"
+msgstr "Tekst"
+
+#: config/prefs.php.dist:1109
+msgid "The From: column of the message should be linked:"
+msgstr "Kolumna wiadomo¶ci Od: powinna byæ odno¶nikiem:"
+
+#: lib/IMAP/Client.php:432
+msgid ""
+"The IMAP server does not appear to support the authentication method "
+"selected. Please contact your system administrator."
+msgstr ""
+"Serwer IMAP nie wspiera wybranych metod autentykacji. Skontaktuj siê z "
+"administratorem systemu."
+
+#: lib/MIME/Viewer/appledouble.php:40
+msgid "The Macintosh resource fork"
+msgstr "Odga³êzienie zasobu dla Macintosh'a"
+
+#: lib/MIME/Viewer/appledouble.php:40
+#, php-format
+msgid "The Macintosh resource fork can be downloaded %s."
+msgstr "Mo¿na pobraæ odga³êzienie zasobu dla Macintosh'a %s."
+
+#: lib/MIME/Viewer/pkcs7.php:242
+#, php-format
+msgid "The S/MIME certificate of %s: "
+msgstr "Certyfikat S/MIME %s: "
+
+#: fetchmailprefs.php:84
+#, php-format
+msgid "The account \"%s\" has been deleted."
+msgstr "Konto \"%s\" zosta³o skasowane."
+
+#: fetchmailprefs.php:77
+#, php-format
+msgid "The account \"%s\" has been saved."
+msgstr "Konto \"%s\" zosta³o zapisane."
+
+#: attachment.php:43
+msgid "The attachment was not found."
+msgstr "Nie znaleziono za³±cznika."
+
+#: lib/MIME/Viewer/itip.php:70
+msgid "The calendar data is invalid"
+msgstr "Dane kalendarza s± nieprawid³owe"
+
+#: lib/MIME/Viewer/appledouble.php:41
+msgid "The contents of the Macintosh file are below."
+msgstr "Poni¿ej znajduje siê zawarto¶æ pliku dla Macintosh'a."
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:73
+#, php-format
+msgid "The current folder(s) \"%s\" will be renamed to \"%s\"."
+msgstr "Bie¿±cy folder(y) \"%s\" zostan± przemianowane na \"%s\"."
+
+#: templates/acl/acl.html:29
+msgid ""
+"The current list of users with access to this folder could not be retrieved."
+msgstr ""
+"Nie mo¿na uzyskaæ aktualnej listy u¿ytkowników z dostêpem do tego folderu."
+
+#: config/prefs.php.dist:827
+msgid "The default charset for messages with no charset information:"
+msgstr "Domy¶lne kodowanie znaków dla wiadomo¶ci bez informacji o kodowaniu:"
+
+#: lib/Compose.php:240
+#, php-format
+msgid "The draft has been saved to the \"%s\" folder."
+msgstr "Szkic zosta³ zapisany w folderze \"%s\"."
+
+#: lib/MIME/Viewer/itip.php:142
+msgid "The event was added to your calendar."
+msgstr "Zdarzenie zosta³o dodane do Twojego kalendarza."
+
+#: lib/Folder.php:272
+#, php-format
+msgid "The folder \"%s\" already exists"
+msgstr "Folder \"%s\" ju¿ istnieje"
+
+#: folders.php:238 lib/Folder.php:188
+#, php-format
+msgid "The folder \"%s\" may not be deleted."
+msgstr "Nie mo¿na usun±æ folderu \"%s\"."
+
+#: lib/Folder.php:351
+#, php-format
+msgid "The folder \"%s\" may not be renamed."
+msgstr "Nie mo¿na zmieniæ nazwy folderu \"%s\"."
+
+#: lib/Folder.php:294
+#, php-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "Folder \"%s\" zosta³ utworzony ale nie zosta³e¶ do niego zapisany."
+
+#: lib/Folder.php:281
+#, php-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr "Folder \"%s\" nie zosta³ utworzony. Serwer odpowiedzia³"
+
+#: lib/Folder.php:192
+#, php-format
+msgid "The folder \"%s\" was not deleted. This is what the server said"
+msgstr "Folder \"%s\" nie zosta³ skasowany. Serwer odpowiedzia³"
+
+#: lib/Folder.php:297
+#, php-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "Folder \"%s\" zosta³ utworzony."
+
+#: lib/Folder.php:197
+#, php-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "Folder \"%s\" zosta³ skasowany."
+
+#: lib/Folder.php:408
+#, php-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "Nazwa folderu \"%s\" zosta³a zmieniona na \"%s\"."
+
+#: lib/MIME/Viewer/tnef.php:93
+msgid "The following files were attached to this part:"
+msgstr "Nastêpuj±ce pliki zosta³y do³±czone do tej czê¶ci:"
+
+#: lib/MIME/Viewer/status.php:74
+msgid "The mail server generated the following error message:"
+msgstr "Serwer pocztowy wygenerowa³ nastêpuj±cy komunikat o b³êdzie:"
+
+#: lib/MIME/Viewer/notification.php:50
+msgid "The mail server generated the following informational message:"
+msgstr "Serwer pocztowy wygenerowa³ nastêpuj±c± informacjê:"
+
+#: lib/MIME/Viewer/status.php:89
+msgid "The mail server generated the following message:"
+msgstr "Serwer pocztowy wygenerowa³ nastêpuj±c± wiadomo¶æ:"
+
+#: lib/Message.php:775
+#, php-format
+msgid "The mailbox %s is already empty."
+msgstr "Skrzynka %s jest ju¿ pusta."
+
+#: lib/Fetchmail.php:239
+#, php-format
+msgid "The message \"%s\" from \"%s\" (%d bytes) exceeds fetch size limit."
+msgstr "Wiadomo¶æ \"%s\" od \"%s\" (%d bajtów) przekracza rozmiar pobierania."
+
+#: templates/javascript_defs.php:51
+msgid "The message being composed has been closed. Exiting."
+msgstr "Tworzona wiadomo¶æ zosta³a zamkniêta. Wychodzenie."
+
+#: lib/MIME/Viewer/pgp.php:363
+msgid ""
+"The message below does not appear to be a valid PGP encrypted message. "
+"Error: "
+msgstr ""
+"Poni¿sza wiadomo¶æ nie wygl±da na prawdi³owo zaszyfrowan± wiadomo¶æ PGP."
+"B³±d: "
+
+#: lib/MIME/Viewer/pgp.php:249 lib/MIME/Viewer/pgp.php:398
+msgid ""
+"The message below does not appear to be in the correct PGP format (according "
+"to RFC 2015)."
+msgstr ""
+"Poni¿sza wiadomo¶æ nie wydaje siê byæ w prawid³owym formacie PGP (w "
+"rozumieniu RFC 2015)."
+
+#: lib/MIME/Viewer/pgp.php:358
+msgid "The message below has been compressed with PGP."
+msgstr "Poni¿sza wiadomo¶æ zosta³a skompresowana przy u¿yciu PGP."
+
+#: lib/MIME/Viewer/pgp.php:200
+msgid ""
+"The message below has been digitally signed and encrypted with PGP, but the "
+"signature cannot be verified."
+msgstr ""
+"Poni¿sza wiadomo¶æ zosta³a podpisana cyfrowo i zaszyfrowana PGP, ale nie "
+"mo¿na zweryfikowaæ podpisu."
+
+#: lib/MIME/Viewer/pgp.php:206
+msgid "The message below has been digitally signed and encrypted with PGP."
+msgstr "Poni¿sza wiadomo¶æ zosta³a podpisana cyfrowo i zaszyfrowana PGP."
+
+#: lib/MIME/Viewer/pgp.php:202
+msgid ""
+"The message below has been digitally signed with PGP, but the signature "
+"cannot be verified."
+msgstr ""
+"Poni¿sza wiadomo¶æ zosta³a podpisana cyfrowo z PGP, ale podpis nie mo¿e "
+"zostaæ zweryfikowany."
+
+#: lib/MIME/Viewer/pgp.php:208
+msgid "The message below has been digitally signed with PGP."
+msgstr "Poni¿sza wiadomo¶æ zosta³a podpisana cyfrowo PGP."
+
+#: lib/MIME/Viewer/pgp.php:308
+msgid ""
+"The message below has been encrypted with PGP, however, PGP support is "
+"disabled so the message cannot be decrypted."
+msgstr ""
+"Poni¿sza wiadomo¶æ zosta³a zaszyfrowana z PGP, jednak¿e wsparcie dla PGP "
+"jest wy³±czone, wiêc wiadomo¶æ nie mo¿e zostaæ odszyfrowana."
+
+#: lib/MIME/Viewer/pgp.php:346
+msgid ""
+"The message below has been encrypted with PGP, however, no personal private "
+"key exists so the message cannot be decrypted."
+msgstr ""
+"Poni¿sza wiadomo¶æ zosta³± zaszyfrowana z PGP, jednak¿e nie ma osobistego "
+"klucza prywatnego, wiêc wiadomo¶æ nie mo¿e zostaæ odszyfrowana."
+
+#: lib/MIME/Viewer/pgp.php:358
+msgid "The message below has been encrypted with PGP."
+msgstr "Poni¿sza wiadomo¶æ zosta³a zaszyfrowana PGP."
+
+#: lib/MIME/Viewer/pgp.php:353
+msgid ""
+"The message below has been encrypted with PGP. You must enter the passphrase "
+"for your PGP private key before it can be decrypted."
+msgstr ""
+"Poni¿sza wiadomo¶æ zosta³a zaszyfrowana z PGP. Musisz wprowadziæ has³o dla "
+"Twojego klucza prywatnego PGP zanim bêdzie mo¿na j± odszyfrowaæ."
+
+#: lib/MIME/Viewer/pgp.php:340
+msgid ""
+"The message below has been encrypted with PGP. You must enter the passphrase "
+"that was used to encrypt this message."
+msgstr ""
+"Poni¿sza wiadomo¶æ zosta³a zaszyfrowana z PGP. Musisz wprowadziæ has³o, "
+"które by³o u¿yte do zaszyfrowania tej wiadomo¶ci."
+
+#: lib/MIME/Viewer/pgp.php:442
+msgid "The message below has been verified."
+msgstr "Poni¿sza wiadomo¶æ zosta³a zweryfikowana."
+
+#: lib/Crypt/PGP.php:344
+msgid "The message below has not been digitally signed or encrypted with PGP."
+msgstr "Poni¿sza wiadomo¶æ zosta³a podpisana cyfrowo lub zaszyfrowana PGP."
+
+#: templates/javascript_defs.php:37
+msgid "The message does not have a Subject entered."
+msgstr "Wiadomo¶æ nie ma wprowadzonego tematu."
+
+#: lib/Filter.php:72 lib/Spam.php:213
+msgid "The message has been deleted."
+msgstr "Wiadomo¶æ zosta³a skasowana."
+
+#: lib/Spam.php:196
+msgid "The message has been reported as not spam to your system administrator."
+msgstr "Wiadomo¶æ zosta³a zg³oszona jako nie spam do Twojego administratora."
+
+#: lib/Spam.php:176
+msgid "The message has been reported as not spam."
+msgstr "Wiadomo¶æ zosta³a zg³oszona jako nie spam."
+
+#: lib/Spam.php:188
+msgid "The message has been reported as spam to your system administrator."
+msgstr "Wiadomo¶æ zosta³a zg³oszona jako spam do Twojego administratora."
+
+#: lib/Spam.php:168
+msgid "The message has been reported as spam."
+msgstr "Wiadomo¶æ zosta³a zg³oszona jako spam."
+
+#: lib/MIME/Viewer/pkcs7.php:433
+#, php-format
+msgid "The message has been verified. Sender: %s."
+msgstr "Wiadomo¶æ zosta³a zweryfikowana. Nadawca: %s."
+
+#: lib/Filter.php:74
+msgid "The messages have been deleted."
+msgstr "Wiadomo¶æ zosta³a skasowana."
+
+#: lib/MIME/Viewer/tnef.php:59
+msgid "The requested file does not exist in the MS-TNEF attachment."
+msgstr "¯±dany plik nie wystêpuje w za³±czniku MS-TNEF."
+
+#: lib/MIME/Viewer/zip.php:63
+msgid "The requested file does not exist in the Zip attachment."
+msgstr "¯±dany plik nie wystêpuje w za³±czniku Zip."
+
+#: message.php:433
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Please click %s to send the "
+"notification message."
+msgstr ""
+"Nadawca wiadomo¶ci prosi o potwierdzenie jej odczytania. Kliknij %s aby "
+"wys³aæpotwierdzenie."
+
+#: templates/javascript_defs.php:36
+msgid "The signature could not be replaced."
+msgstr "Podpis nie mo¿e zostaæ zast±piony."
+
+#: templates/javascript_defs.php:35
+msgid "The signature was successfully replaced."
+msgstr "Podpis zosta³ zast±piony."
+
+#: attachment.php:127
+msgid "The specified file cannot be read."
+msgstr "Podany plik nie mo¿e zostaæ odczytany."
+
+#: attachment.php:59
+msgid "The specified file does not exist."
+msgstr "Podany plik nie istnieje."
+
+#: stationery.php:86
+#, php-format
+msgid "The stationery \"%s\" has been added."
+msgstr "Papeteria \"%s\" zosta³a dodana."
+
+#: stationery.php:62
+#, php-format
+msgid "The stationery \"%s\" has been deleted."
+msgstr "Papeteria \"%s\" zosta³a skasowana."
+
+#: stationery.php:89
+#, php-format
+msgid "The stationery \"%s\" has been updated."
+msgstr "Papeteria \"%s\" zosta³a zaktualizowana."
+
+#: lib/MIME/Viewer/itip.php:172
+msgid "The task has been added to your tasklist."
+msgstr "Zadanie zosta³o dodane do Twojej listy zadañ."
+
+#: lib/MIME/Viewer/status.php:94
+msgid "The text of the message"
+msgstr "Tre¶æ wiadomo¶ci"
+
+#: lib/MIME/Viewer/status.php:93
+#, php-format
+msgid "The text of the message can be viewed %s."
+msgstr "Mo¿na zobaczyæ tre¶æ wiadomo¶ci %s."
+
+#: lib/MIME/Viewer/status.php:79
+msgid "The text of the returned message"
+msgstr "Tre¶æ zwróconej wiadomo¶ci"
+
+#: lib/MIME/Viewer/status.php:78
+#, php-format
+msgid "The text of the returned message can be viewed %s."
+msgstr "Mo¿na zobaczyæ tre¶æ zwróconej wiadomo¶ci %s."
+
+#: lib/MIME/Viewer/notification.php:66
+msgid "The text of the sent message"
+msgstr "Tre¶æ wys³anej wiadomo¶ci"
+
+#: lib/MIME/Viewer/notification.php:66
+#, php-format
+msgid "The text of the sent message can be viewed %s."
+msgstr "Mo¿na zobaczyæ tre¶æ wys³anej wiadomo¶ci %s."
+
+#: lib/MIME/Viewer/itip.php:157
+msgid "The user's free/busy information was sucessfully stored."
+msgstr "Wiadomo¶æ o dostêpno¶ci u¿ytkownika zosta³a zachowana."
+
+#: lib/MIME/Viewer/alternative.php:56
+msgid "There are no alternative parts that can be displayed."
+msgstr "Nie ma alternatywnych czê¶ci do wy¶wietlenia."
+
+#: templates/mailbox/empty_mailbox.html:2
+msgid "There are no messages in this mailbox."
+msgstr "W tej skrzynce nie ma ¿adnych wiadomo¶ci."
+
+#: thread.php:103
+msgid "There is no text that can be displayed inline."
+msgstr "Nie ma tekstu, który mo¿na wy¶wietliæ w tre¶ci."
+
+#: lib/Message.php:140
+#, php-format
+msgid ""
+"There was an error copying messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"Wyst±pi³ b³±d podczas kopiowania wiadomo¶ci z \"%s\" do \"%s\". Serwer "
+"odpowiedzia³"
+
+#: lib/Message.php:268
+#, php-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr ""
+"Wyst±pi³ b³±d podczas kasowania wiadomo¶ci z folderu \"%s\". Serwer "
+"odpowiedzia³"
+
+#: lib/MIME/Viewer/itip.php:102
+#, php-format
+msgid "There was an error deleting the event: %s."
+msgstr "Wyst±pi³ b³±d podczas usuwania zdarzenia: %s."
+
+#: lib/MIME/Viewer/plain.php:51 lib/MIME/Viewer/enriched.php:36
+msgid "There was an error displaying this message part"
+msgstr "Wyst±pi³ b³±d podczas wy¶wietlania czê¶ci wiadomo¶ci"
+
+#: lib/Message.php:619
+#, php-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"Wyst±pi³ b³±d podczas oznaczania wiadomo¶ci w folderze \"%s\". Serwer "
+"odpowiedzia³"
+
+#: folders.php:139
+#, php-format
+msgid "There was an error importing %s."
+msgstr "Wyst±pi³ b³±d podczas importowania %s."
+
+#: lib/MIME/Viewer/itip.php:139
+#, php-format
+msgid "There was an error importing the event: %s."
+msgstr "Wyst±pi³ b³±d podczas importowania zdarzenia: %s."
+
+#: lib/MIME/Viewer/itip.php:169
+#, php-format
+msgid "There was an error importing the task: %s."
+msgstr "Wyst±pi³ b³±d podczas importowania zadania: %s."
+
+#: lib/MIME/Viewer/itip.php:155
+#, php-format
+msgid "There was an error importing user's free/busy information: %s."
+msgstr ""
+"Wyst±pi³ b³±d podczas importowania informacji o dostêpno¶ci u¿ytkownika: %s."
+
+#: lib/Message.php:136
+#, php-format
+msgid ""
+"There was an error moving messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"Wyst±pi³ b³±d podczas przenoszenia wiadomo¶ci z \"%s\" do \"%s\". Serwer "
+"odpowiedzia³"
+
+#: lib/Compose.php:664
+#, php-format
+msgid "There was an error sending your message: %s"
+msgstr "Wyst±pi³ b³±d podczas wysy³ania Twojej wiadomo¶ci: %s"
+
+#: lib/MIME/Viewer/itip.php:116
+#, php-format
+msgid "There was an error updating the event: %s."
+msgstr "Wyst±pi³ b³±d podczas aktualizowania zdarzenia: %s."
+
+#: lib/MIME/Viewer/pgp.php:165
+msgid "This PGP Public Key was attached to the message."
+msgstr "Ten klucz publiczny PGP zosta³ do³±czony do wiadomo¶ci."
+
+#: lib/MIME/Viewer/itip.php:107 lib/MIME/Viewer/itip.php:121
+#: lib/MIME/Viewer/itip.php:146 lib/MIME/Viewer/itip.php:160
+#: lib/MIME/Viewer/itip.php:176 lib/MIME/Viewer/itip.php:319
+msgid "This action is not supported."
+msgstr "Ta operacja nie jest mo¿liwa."
+
+#: lib/MIME/Viewer/itip.php:182 lib/MIME/Viewer/itip.php:430
+msgid "This action is not yet implemented."
+msgstr "Ta operacja nie jest jeszcze zaimplementowana."
+
+#: templates/javascript_defs.php:64
+msgid "This folder may not be renamed:"
+msgstr "Nazwa tego folderu nie mo¿e byæ zmieniona:"
+
+#: templates/javascript_defs.php:61
+msgid "This may take some time. Are you sure you want to continue?"
+msgstr "To mo¿e chwilê potrwaæ. Czy na pewno chcesz kontynuowaæ?"
+
+#: lib/MIME/Viewer/appledouble.php:39
+msgid "This message contains a Macintosh file."
+msgstr "Ta wiadomo¶æ zawiera plik dla Macintosh'a."
+
+#: lib/MIME/Viewer/pkcs7.php:459
+msgid ""
+"This message contains an attachment that has been digitally signed via S/"
+"MIME."
+msgstr ""
+"Ta wiadomo¶æ zawiera za³±cznik, który zosta³ cyfrowo podpisany za pomoc± S/"
+"MIME."
+
+#: lib/MIME/Viewer/pkcs7.php:463
+msgid "This message contains an attachment that has been encrypted via S/MIME."
+msgstr ""
+"Ta wiadomo¶æ zawiera za³±cznik, który zosta³ zaszyfrowany za pomoc± S/MIME."
+
+#: lib/MIME/Viewer/status.php:159
+msgid ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+msgstr ""
+"Ta wiadomo¶æ zawiera informacjê o statusie dostarczenia poczty, ale format "
+"tej wiadomo¶ci jest nieznany."
+
+#: lib/MIME/Viewer/pkcs7.php:201
+msgid "This message does not appear to be in the correct S/MIME format."
+msgstr "Ta wiadomo¶æ nie wydaje siê byæ w prawid³owym formacie S/MIME."
+
+#: lib/MIME/Viewer/pkcs7.php:174
+msgid "This message has been digitally signed via S/MIME."
+msgstr "Ta wiadomo¶æzosta³± cyfrowo podpisana za pomoc± S/MIME."
+
+#: lib/MIME/Viewer/pkcs7.php:170 lib/MIME/Viewer/pkcs7.php:281
+msgid "This message has been encrypted via S/MIME."
+msgstr "Ta wiadomo¶æ zosta³a zaszyfrowana za pomoc± S/MIME."
+
+#: lib/MIME/Contents.php:418
+msgid "This message part cannot be viewed because it is too large."
+msgstr ""
+"Ta czê¶æ wiadomo¶ci nie mo¿e zostaæ wy¶wietlona, poniewa¿ jest za du¿a."
+
+#: message.php:518
+msgid "This message to"
+msgstr "T± wiadomo¶æ do"
+
+#: acl.php:45
+msgid "This server does not support sharing folders."
+msgstr "Ten serwer nie wspiera wspó³dzielenia folderów."
+
+#: templates/javascript_defs.php:52
+msgid "This window must be called from a compose window."
+msgstr "To okno musi byæ wywo³ane z okna tworzenia."
+
+#: templates/thread/thread.html:2
+msgid "Thread Display:"
+msgstr "Wy¶wietlany w±tek:"
+
+#: thread.php:157 config/prefs.php.dist:1070
+msgid "Thread View"
+msgstr "Widok w±tka"
+
+#: lib/MIME/Viewer/images.php:172
+msgid "Thumbnail of attached image"
+msgstr "Miniatura za³±czonego obrazu"
+
+#: compose.php:759 mailbox.php:576 lib/Search.php:658
+#: lib/Block/mailbox.php:148 lib/UI/Message.php:26 lib/UI/Mailbox.php:88
+#: templates/login/recompose.html:14 templates/contacts/contacts.html:40
+msgid "To"
+msgstr "Do"
+
+#: config/prefs.php.dist:1067
+msgid "To Address"
+msgstr "Na adres"
+
+#: message.php:562
+msgid "To All"
+msgstr "Do wszystkich"
+
+#: message.php:558
+msgid "To List"
+msgstr "Na listê"
+
+#: message.php:555
+msgid "To Sender"
+msgstr "Do nadawcy"
+
+#: message.php:562
+msgid "To _All"
+msgstr "Do wszystkich"
+
+#: message.php:558
+msgid "To _List"
+msgstr "Na _listê"
+
+#: templates/compose/redirect.html:46
+msgid "To field"
+msgstr "Do pola"
+
+#: templates/prefs/sourceselect.inc:324
+msgid ""
+"To select multiple fields, hold down the Control (PC) or Command (Mac) while "
+"clicking."
+msgstr ""
+"Aby wybraæ wiele pól, podczas klikania przytrzymaj klawisz Control (PC) lub "
+"Command (Mac)."
+
+#: lib/IMAP/Client.php:131
+msgid ""
+"To use a TLS connection, you must be running a version of PHP 5.1.0 or "
+"higher."
+msgstr ""
+"Aby u¿ywaæ po³±czenia TLS musisz korzystaæ z wersji PHP 5.1.0 lub wy¿szej."
+
+#: thread.php:116 templates/thread/thread.html:32
+msgid "To:"
+msgstr "Do:"
+
+#: config/prefs.php.dist:509
+msgid "Top"
+msgstr "U góry"
+
+#: templates/compose/compose.html:307
+msgid "Total Size:"
+msgstr "Rozmiar ca³kowity:"
+
+#: login.php:281
+msgid "Traditional"
+msgstr "Tradycyjny"
+
+#: lib/IMAP/Tree.php:2317
+msgid "Trash folder"
+msgstr "Folder ¶mieci"
+
+#: templates/prefs/trashselect.inc:19
+msgid "Trash folder:"
+msgstr "Folder ¶mieci:"
+
+#: lib/Quota/sql.php:79
+msgid "Unable to connect to SQL server."
+msgstr "Nie mo¿na pod³±czyæ do serwera SQL."
+
+#: lib/Quota/logfile.php:87 lib/Quota/mercury32.php:78
+#: lib/Quota/mdaemon.php:45 lib/Quota/command.php:93 lib/Quota/imap.php:42
+msgid "Unable to retrieve quota"
+msgstr "Nie mo¿na pobraæ informacji o dostêpnej przestrzeni na dysku"
+
+#: templates/mailbox/navbar.html:19 templates/mailbox/navbar.html:35
+#: templates/message/navbar_navigate.html:13
+msgid "Unanswered"
+msgstr "Bez odopwiedzi"
+
+#: search.php:334
+msgid "Unanswered messages"
+msgstr "Wiadomo¶ci bez odpowiedzi"
+
+#: message.php:549 mailbox.php:503
+msgid "Undelete"
+msgstr "Przywróæ"
+
+#: search.php:344
+msgid "Undeleted messages"
+msgstr "Nieusuniête wiadomo¶ci"
+
+#: lib/MIME/Headers.php:213 lib/UI/Mailbox.php:66 lib/UI/Mailbox.php:84
+msgid "Undisclosed Recipients"
+msgstr "Nieujawnieni odbiorcy"
+
+#: lib/IMAP/Client.php:462
+msgid "Unexpected response from server to AUTHENTICATE command."
+msgstr "Nieoczekiwana odpowied¼ serwera na polecenie AUTHENTICATE."
+
+#: lib/IMAP/Client.php:428
+msgid "Unexpected response from server to Digest-MD5 response."
+msgstr "Nieoczekiwana odpowied¼ serwera na odpowied¼ Digest-MD5."
+
+#: search.php:339
+msgid "Unflagged messages"
+msgstr "Niezaznaczone wiadomo¶ci"
+
+#: lib/MIME/Viewer/itip.php:462
+#, php-format
+msgid "Unhandled component of type: %s"
+msgstr "Nieobs³ugiwany komponent typu: %s"
+
+#: lib/MIME/Viewer/itip.php:729
+msgid "Unknown"
+msgstr "Nieznane"
+
+#: lib/UI/Mailbox.php:176
+msgid "Unknown Date"
+msgstr "Nieznana data"
+
+#: lib/IMAP/Client.php:205
+#, php-format
+msgid "Unknown IMAP response from the server. Server Responded: %s"
+msgstr "Nieznana odpowied¼ IMAP z serwera. Serwer odpowiedzia³: %s"
+
+#: lib/MIME/Viewer/itip.php:675
+msgid "Unknown Meeting"
+msgstr "Nieznane spotkanie"
+
+#: lib/UI/Mailbox.php:103
+msgid "Unknown Recipient"
+msgstr "Nieznany odbiorca"
+
+#: lib/MIME/Viewer/itip.php:815
+msgid "Unknown Task"
+msgstr "Nieznane zadanie"
+
+#: smime.php:335 pgp.php:427
+msgid "Unload Passphrase"
+msgstr "¦ci±gnij has³o"
+
+#: fetchmailprefs.php:68
+msgid "Unnamed"
+msgstr "Bez nazwy"
+
+#: message.php:473 mailbox.php:742 lib/Block/mailbox.php:284
+#: templates/mailbox/navbar.html:15 templates/mailbox/navbar.html:31
+#: templates/message/navbar_navigate.html:9
+msgid "Unseen"
+msgstr "Niewidziane"
+
+#: templates/folders/actions.html:24
+msgid "Unsubscribe"
+msgstr "Wypisz"
+
+#: templates/compose/compose.html:281
+msgid "Update"
+msgstr "Zaktualizuj"
+
+#: lib/MIME/Viewer/itip.php:661
+msgid "Update respondent status"
+msgstr "Zaktualizuj status respondenta"
+
+#: lib/MIME/Viewer/itip.php:640
+msgid "Update this event on my calendar"
+msgstr "Zaktualizuj to zdarzenie w moim kalendarzu"
+
+#: templates/pgp/import_key.html:38 templates/smime/import_key.html:40
+msgid "Upload:"
+msgstr "Wgraj:"
+
+#: templates/prefs/sentmailselect.inc:39
+msgid "Use Default Value"
+msgstr "U¿yj warto¶ci domy¶lnej"
+
+#: config/prefs.php.dist:263
+msgid "Use IMAP folder subscriptions?"
+msgstr "U¿ywaæ subskrypcji folderu IMAP?"
+
+#: config/prefs.php.dist:878
+msgid "Use Virtual Trash Folder?"
+msgstr "U¿ywaæ wirtualnego folderu ¶mieci?"
+
+#: templates/acl/acl.html:42
+msgid "User"
+msgstr "U¿ytkownik"
+
+#: acl.php:87 acl.php:128
+#, php-format
+msgid ""
+"User \"%s\" successfully given the specified rights for the folder \"%s\"."
+msgstr "U¿ytkownik \"%s\" uzyska³ podane prawa do folderu \"%s\"."
+
+#: templates/login/login.html:85
+msgid "Username"
+msgstr "U¿ytkownik"
+
+#: templates/fetchmail/fetchmailprefs.html:55
+msgid "Username:"
+msgstr "U¿ytkownik:"
+
+#: templates/login/mobile.inc:14
+msgid "Username: "
+msgstr "U¿ytkownik: "
+
+#: lib/MIME/Viewer/pkcs7.php:243 templates/pgp/pgp.html:38
+#: templates/pgp/pgp.html:75 templates/pgp/pgp.html:80
+#: templates/smime/smime.html:31 templates/smime/smime.html:67
+#: templates/smime/smime.html:71
+msgid "View"
+msgstr "Zobacz"
+
+#: lib/MIME/Viewer/tnef.php:109 lib/MIME/Viewer/zip.php:91
+#, php-format
+msgid "View %s"
+msgstr "Zobacz %s"
+
+#: smime.php:309 pgp.php:399
+#, php-format
+msgid "View %s Public Key"
+msgstr "Zobacz klucz publiczny %s"
+
+#: lib/MIME/Viewer/images.php:162 lib/MIME/Viewer/images.php:167
+msgid "View Attachment"
+msgstr "Zobacz za³±cznik"
+
+#: mailbox.php:536
+msgid "View Messages"
+msgstr "Zobacz wiadomo¶ci"
+
+#: smime.php:336 pgp.php:428
+msgid "View Personal Private Key"
+msgstr "Zobacz osobisty klucz prywatny"
+
+#: smime.php:332 pgp.php:422
+msgid "View Personal Public Key"
+msgstr "Zobacz osobisty klucz publiczny"
+
+#: message.php:573
+msgid "View Thread"
+msgstr "Zobacz w±tek"
+
+#: lib/MIME/Viewer/pkcs7.php:467
+msgid "View attachment in a separate window"
+msgstr "Zobacz za³±cznik w oddzielnym oknie"
+
+#: lib/MIME/Viewer/related.php:85
+msgid "View content in a separate window"
+msgstr "Zobacz zawarto¶æ w oddzielnym oknie"
+
+#: lib/MIME/Viewer/itip.php:143
+msgid "View event"
+msgstr "Zobacz zdarzenie"
+
+#: folders.php:419 mailbox.php:678
+#, php-format
+msgid "View messages in %s"
+msgstr "Zobacz wiadomo¶ci w %s"
+
+#: templates/prefs/initialpageselect.inc:16
+msgid "View or mailbox to display after login:"
+msgstr "Widok lub skrzynka do wy¶wietlenia po zalogowaniu:"
+
+#: lib/MIME/Viewer/itip.php:173
+msgid "View task"
+msgstr "Zobacz zadanie"
+
+#: mailbox.php:354 mailbox.php:355
+msgid "Virtual Folder"
+msgstr "Folder wirtualny"
+
+#: search.php:155
+#, php-format
+msgid "Virtual Folder \"%s\" created succesfully."
+msgstr "Utworzono wirtualny folder \"%s\"."
+
+#: lib/IMAP/Tree.php:90 templates/search/search.html:184
+msgid "Virtual Folders"
+msgstr "Foldery wirtualne"
+
+#: search.php:150
+msgid "Virtual Folders require a label."
+msgstr "Foldery wirtualne wymagaj± etykiety."
+
+#: lib/Search.php:401
+msgid "Virtual INBOX"
+msgstr "Wirtualna skrzynka odbiorcza"
+
+#: lib/IMAP/Tree.php:2357
+msgid "Virtual INBOX Folder"
+msgstr "Folder wirtualnej skrzynki odbiorczej"
+
+#: lib/Search.php:345
+msgid "Virtual Trash"
+msgstr "Wirtualny kosz"
+
+#: lib/IMAP/Tree.php:2353
+msgid "Virtual Trash Folder"
+msgstr "Wirtualny folder ¶mieci"
+
+#: templates/search/search.html:195
+msgid "Virtual folder label:"
+msgstr "Etykieta folderu wirtualnego:"
+
+#: lib/MIME/Viewer/pkcs7.php:422 lib/Crypt/PGP.php:344
+msgid "Warning"
+msgstr "Uwaga"
+
+#: login.php:185 login.php:332 templates/login/mobile.inc:11
+#, php-format
+msgid "Welcome to %s"
+msgstr "Witamy w %s"
+
+#: config/prefs.php.dist:726
+msgid ""
+"What should we do with spam messages after they have been reported as spam "
+"or innocent?"
+msgstr ""
+"Co nale¿y zrobiæ z wiadomo¶ci± spamow± po zg³oszeniu jej jako spam lub "
+"niewinna?"
+
+#: config/prefs.php.dist:870
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted?"
+msgstr ""
+"Podczas usuwania wiadomo¶ci, przenosiæ je do folderu ¶mieci zamiast oznaczaæ "
+"jak usuniête?"
+
+#: config/prefs.php.dist:1055
+msgid ""
+"When opening a new mailbox for the first time, which page do you want to "
+"start on?"
+msgstr ""
+"Któr± stronê wy¶wietliæ jako pierwsz±, podczas otwierania po raz pierwszy "
+"nowej skrzynki pocztowej?"
+
+#: config/prefs.php.dist:576
+msgid ""
+"When replying/forwarding to a message, should we use the same format as the "
+"original message?"
+msgstr ""
+"U¿ywaæ takiego samego formatu, jak w wiadomo¶ci oryginalnej, przy "
+"przekazywaniu/odpowiadaniu na wiadomo¶æ?"
+
+#: config/prefs.php.dist:680
+msgid "When saving sent-mail, should we save attachment data?"
+msgstr "Zapisywaæ dane za³±czników podczas zapisywania sent-mail?"
+
+#: config/prefs.php.dist:482
+msgid ""
+"When sending mail or expanding addresses, what domain should we append to "
+"unqualified addresses (email addresses without \"@\")?"
+msgstr ""
+"Jak± domenê do³±czyæ to niekwalifikowanych adresów (adresy email bez \"@\"), "
+"podczas wysy³ania poczty lub rozwijania adresów?"
+
+#: config/prefs.php.dist:839
+msgid "Where do you want to display links to alternative formats of a message?"
+msgstr "Gdzie wy¶wietlaæ odno¶niki do alternatywnych formatów wiadomo¶ci?"
+
+#: config/prefs.php.dist:512
+msgid "Where should the cursor be located in the compose text area by default?"
+msgstr ""
+"Gdzie domy¶lnie powinien znajdowaæ siê kursor w polu tekstowym tworzonej "
+"wiadomo¶ci?"
+
+#: message.php:581 mailbox.php:519
+msgid "Whitelist"
+msgstr "Bia³a lista"
+
+#: templates/search/search.html:99
+msgid "Year"
+msgstr "Rok"
+
+#: templates/javascript_defs.php:46 config/prefs.php.dist:1133
+#: config/prefs.php.dist:1155 templates/compose/compose.html:292
+msgid "Yes"
+msgstr "Tak"
+
+#: lib/Maintenance/Task/fetchmail_login.php:58
+msgid "You are about to fetch email from the following account(s):"
+msgstr "Zamierzasz pobraæ pocztê z nastêpuj±cych kont:"
+
+#: templates/folders/folders_confirm.html:10
+msgid ""
+"You are attempting to delete all messages contained in the following folder"
+"(s)."
+msgstr ""
+"Próbujesz skasowaæ wszystkie wiadomo¶ci zawarte w nastêpuj±cych folderach."
+
+#: templates/folders/folders_confirm.html:9
+msgid "You are attempting to delete the following folder(s)."
+msgstr "Próbujesz skasowaæ nastêpuj±ce foldery."
+
+#: templates/javascript_defs.php:79
+msgid "You are copying/moving to a new folder."
+msgstr "Kopiujesz/przenosisz do nowego folderu."
+
+#: templates/javascript_defs.php:57
+msgid "You are creating a sub-folder to"
+msgstr "Tworzysz podfolder w"
+
+#: templates/javascript_defs.php:59
+msgid "You are creating a top-level folder."
+msgstr "Tworzysz g³ówny folder."
+
+#: lib/Folder.php:253
+msgid "You are not allowed to create folders."
+msgstr "Nie mo¿esz tworzyæ folderów."
+
+#: lib/Folder.php:260
+#, php-format
+msgid "You are not allowed to create more than %d folders."
+msgstr "Nie mo¿esz utworzyæ wiêcej ni¿ %d folderów."
+
+#: lib/Compose.php:928
+#, php-format
+msgid ""
+"You are not allowed to send messages to more than %d recipients within %d "
+"hours."
+msgstr ""
+"Nie mo¿esz wysy³aæ wiadomo¶ci do wiêcej ni¿ %d odbiorców w ci±gu %d godzin."
+
+#: lib/Compose.php:1205
+#, php-format
+msgid "You are not allowed to send messages to more than %d recipients."
+msgstr "Nie mo¿esz wysy³aæ wiadomo¶ci do wiêcej ni¿ %d odbiorców."
+
+#: templates/javascript_defs.php:62
+msgid "You are renaming the folder:"
+msgstr "Zmieniasz nazwê folderu:"
+
+#: templates/stationery/stationery.html:39
+msgid ""
+"You can use the following placeholders in the stationery text: %c for the "
+"current message content; %s for the signature."
+msgstr ""
+"W tre¶ci papeterii mo¿esz u¿ywaæ nastêpuj±cych oznaczeñ: %c dla tre¶ci "
+"bie¿±cej wiadomo¶ci; %s dla sygnatury."
+
+#: lib/Folder.php:519
+#, php-format
+msgid "You cannot unsubscribe from \"%s\"."
+msgstr "Nie mo¿esz wypisaæ siê z \"%s\"."
+
+#: lib/Maintenance/Task/tos_agreement.php:33
+msgid ""
+"You did not agree to the Terms of Service agreement, so you were not allowed "
+"to login."
+msgstr ""
+"Nie wyrazi³e¶ zgody na warunki ¶wiadczenia us³ugi, wiêc nie mo¿esz siê "
+"zalogowaæ."
+
+#: templates/acl/acl.html:88
+msgid "You do not have permission to change access to this folder."
+msgstr "Nie masz uprawnieñ do zmiany dostêpu do tego folderu."
+
+#: lib/Maillog.php:130
+#, php-format
+msgid "You forwarded this message on %%s to the following recipients: %s."
+msgstr "Przekierowa³e¶ t± wiadomo¶æ na %%s do nastêpuj±cych odbiorców: %s."
+
+#: lib/IMP.php:969
+#, php-format
+msgid "You have %s new messages."
+msgstr "Masz %s nowych wiadomo¶ci."
+
+#: lib/IMP.php:969
+msgid "You have 1 new message."
+msgstr "Masz 1 now± wiadomo¶æ."
+
+#: compose.php:124
+msgid "You have already submitted this page."
+msgstr "Ju¿ wys³a³e¶ t± stronê."
+
+#: templates/newmsg/alert.html:3
+msgid "You have new mail in:"
+msgstr "Masz now± pocztê w:"
+
+#: templates/fetchmail/fetchmail.html:22
+msgid "You have not configured any external mail accounts."
+msgstr "Nie skonfigurowa³e¶ ¿adnych zewnêtrznych kont pocztowych."
+
+#: lib/Compose.php:1192
+msgid "You must enter at least one recipient."
+msgstr "Musisz wprowadziæ conajmniej jednego odbiorcê."
+
+#: lib/MIME/Viewer/pgp.php:353
+msgid ""
+"You must enter the passphrase for your PGP private key to view this message."
+msgstr ""
+"Musisz wprowadziæ has³o dla Twojego klucza prywatnego PHP aby zobaczyæ t± "
+"wiadomo¶æ."
+
+#: lib/MIME/Viewer/pkcs7.php:297
+msgid ""
+"You must enter the passphrase for your S/MIME private key to view this "
+"message"
+msgstr ""
+"Musisz wprowadziæ has³o do Twojego klucza prywatnego S/MIME aby zobaczyæ t± "
+"wiadomo¶æ"
+
+#: lib/MIME/Viewer/pgp.php:340
+msgid "You must enter the passphrase that was used to encrypt this message."
+msgstr ""
+"Musisz wprowadziæ has³o, które by³o u¿yte do zaszyfrowania tej wiadomo¶ci."
+
+#: templates/javascript_defs.php:80
+msgid "You must select a target mailbox first."
+msgstr "Musisz najpierw wybraæ skrzynkê docelow±."
+
+#: fetchmailprefs.php:88
+msgid "You must select an account to be deleted."
+msgstr "Musisz wybraæ konto do skasowania."
+
+#: templates/javascript_defs.php:50
+msgid "You must select an address first."
+msgstr "Musisz najpierw wybraæ adres."
+
+#: templates/javascript_defs.php:43 templates/javascript_defs.php:45
+msgid "You must select at least one message first."
+msgstr "Musisz najpierw zaznaczyæ conajmniej jedn± wiadomo¶æ."
+
+#: lib/Compose.php:851
+msgid "You must separate e-mail addresses with commas (,) not semicolons (;)."
+msgstr "Musisz oddzieliæ adresy e-mail przecinkami (,) nie ¶rednikami (;)."
+
+#: templates/javascript_defs.php:34
+msgid "You must specify a recipient."
+msgstr "Musisz podaæ odbiorcê."
+
+#: templates/fetchmail/fetchmailprefs.html:91
+msgid ""
+"You need to have \"Perform maintenance operations on login?\" enabled in "
+"your maintenance options."
+msgstr ""
+"Musisz mieæ w³±czone \"Wykonywanie czynno¶ci porz±dkowych przy logowaniu\" w "
+"Twoich opcja porz±dkowych."
+
+#: lib/Maillog.php:138
+#, php-format
+msgid "You redirected this message to %s on %%s."
+msgstr "Przekierowa³e¶ t± wiadomo¶æ do %s na %%s."
+
+#: lib/Maillog.php:142
+#, php-format
+msgid "You replied to this message on %s."
+msgstr "Odpowiedzia³e¶ na t± wiadomo¶æ %s."
+
+#: lib/Folder.php:469
+#, php-format
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr "Nie zosta³e¶ zapisany do \"%s\". Serwer odpowiedzia³"
+
+#: lib/Folder.php:521
+#, php-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr "Nie zosta³e¶ wypisany z \"%s\". Serwer odpowiedzia³"
+
+#: lib/Folder.php:472
+#, php-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr "Zosta³e¶ zapisany do \"%s\""
+
+#: lib/Folder.php:524
+#, php-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "Zosta³e¶ wypisany z \"%s\""
+
+#: templates/pgp/pgp.html:95
+msgid "Your Name:"
+msgstr "Twoja nazwa:"
+
+#: templates/pgp/pgp.html:63
+msgid "Your PGP Public/Private Keys"
+msgstr "Twoje klucze publiczny/prywatny PGP"
+
+#: templates/pgp/pgp.html:79 templates/smime/smime.html:70
+msgid "Your Private Key:"
+msgstr "Twój klucz prywatny:"
+
+#: templates/pgp/pgp.html:74 templates/smime/smime.html:66
+msgid "Your Public Key:"
+msgstr "Twój klucz publiczny:"
+
+#: config/prefs.php.dist:173
+msgid "Your Reply-to: address: <em>(optional)</em>"
+msgstr "Twój adres odpowiedz-do: <em>(opcjonalne)</em>"
+
+#: templates/smime/smime.html:56
+msgid "Your S/MIME Public/Private Certificates"
+msgstr "Twoje certyfikaty publiczny/prywatny S/MIME"
+
+#: fetchmail.php:21
+msgid "Your account does not support fetching external mail."
+msgstr "Twoje konto nie wspiera pobierania zewnêtrznej poczty."
+
+#: templates/fetchmail/fetchmailprefs.html:18
+msgid "Your accounts:"
+msgstr "Twoje konta:"
+
+#: config/prefs.php.dist:181
+msgid ""
+"Your alias addresses: <em>(optional, enter each address on a new line)</em>"
+msgstr ""
+"Twój alias adresu: <em>(opcjonalne, wprowad¼ ka¿dy adres w nowej linii)</em>"
+
+#: lib/MIME/Viewer/images.php:89
+msgid "Your browser does not support inline display of this image type."
+msgstr "Twoja przegl±darka nie wspiera wy¶wietlania w tre¶ci obrazu tego typu."
+
+#: config/prefs.php.dist:658
+msgid "Your default charset for sending messages:"
+msgstr "Twoje domy¶lne kodowanie wysy³anych wiadomo¶ci:"
+
+#: templates/prefs/encryptselect.inc:1
+msgid "Your default encryption method for sending messages:"
+msgstr "Twój domy¶lny sposób szyfrowania wysy³anych wiadomo¶ci:"
+
+#: attachment.php:113
+#, php-format
+msgid ""
+"Your linked attachment has been downloaded by at least one user.\n"
+"\n"
+"Attachment name: %s\n"
+"Attachment date: %s\n"
+"\n"
+"Click on the following link to permanently delete the attachment:\n"
+"%s"
+msgstr ""
+"Twoje przypiête za³±czniki zosta³y podbrane przez conajmniej jednego "
+"u¿ytkownika.\n"
+"\n"
+"Nazwa za³±cznika: %s\n"
+"Data za³±cznika: %s \n"
+"\n"
+"Kliknij na poni¿szym odno¶niku w celu bezpowrotnego skasowania za³±cznika:\n"
+"%s"
+
+#: lib/MIME/Viewer/status.php:88
+msgid "Your message was successfully delivered."
+msgstr "Twoja wiadomo¶æ zosta³a dostarczona."
+
+#: config/prefs.php.dist:205
+msgid "Your signature:"
+msgstr "Twój podpis:"
+
+#: lib/Message.php:521
+#, php-format
+msgid "[Attachment stripped: Original attachment type: %s, name: %s]"
+msgstr "[Za³±cznik wyciêty: Oryginalny typ za³±cznika: %s, nazwa: %s]"
+
+#: rss.php:82 message.php:265 mailbox.php:702 lib/Compose.php:1686
+#: lib/Compose.php:2148 lib/Block/mailbox.php:244
+msgid "[No Subject]"
+msgstr "[Brak tematu]"
+
+#: lib/MIME/Viewer/pgp.php:169
+msgid "[Save the key to your Address book]"
+msgstr "[Zapisz klucz w Twojej ksi±¿ce adresowej]"
+
+#: lib/MIME/Headers.php:223
+#, php-format
+msgid "[Show addresses - %s recipients]"
+msgstr "[Poka¿ adresy - %s odbiorców]"
+
+#: lib/Compose.php:2764
+msgid "[Truncated Text]"
+msgstr "[Uciêty tekst]"
+
+#: lib/MIME/Viewer/pgp.php:171
+msgid "[View the raw key]"
+msgstr "[Zobacz surowy klucz]"
+
+#: compose.php:889
+msgid "_Bcc"
+msgstr "UDW"
+
+#: message.php:577 mailbox.php:515
+msgid "_Blacklist"
+msgstr "Czarna lista"
+
+#: compose.php:886
+msgid "_Cc"
+msgstr "DW"
+
+#: message.php:551 mailbox.php:497 mailbox.php:499
+msgid "_Delete"
+msgstr "Usuñ"
+
+#: lib/IMP.php:793
+msgid "_Folders"
+msgstr "_Foldery"
+
+#: compose.php:866
+msgid "_Identity"
+msgstr "Profil"
+
+#: lib/IMP.php:762
+msgid "_Inbox"
+msgstr "Odebrane"
+
+#: lib/IMP.php:830
+msgid "_Log out"
+msgstr "Wy_loguj"
+
+#: message.php:586
+msgid "_Message Source"
+msgstr "¬ród³o wiado_mo¶ci"
+
+#: lib/IMP.php:790
+msgid "_New Message"
+msgstr "_Nowa wiadomo¶æ"
+
+#: message.php:599
+msgid "_Print"
+msgstr "Drukuj"
+
+#: compose.php:956
+msgid "_Priority"
+msgstr "_Priorytet"
+
+#: mailbox.php:341 lib/Block/mailbox.php:89
+#, php-format
+msgid "_Refresh %s"
+msgstr "Od¶wie¿ %s"
+
+#: message.php:554
+msgid "_Reply"
+msgstr "Odpowiedz"
+
+#: lib/IMP.php:795
+msgid "_Search"
+msgstr "_Szukaj"
+
+#: compose.php:852
+msgid "_Send Message"
+msgstr "Wy¶lij wiadomo¶æ"
+
+#: mailbox.php:586 lib/Block/mailbox.php:158
+msgid "_Thread"
+msgstr "W±tek"
+
+#: compose.php:882 compose.php:884
+msgid "_To"
+msgstr "Do"
+
+#: mailbox.php:503
+msgid "_Undelete"
+msgstr "Przywróæ"
+
+#: message.php:573
+msgid "_View Thread"
+msgstr "Zobacz w±tek"
+
+#: message.php:581 mailbox.php:519
+msgid "_Whitelist"
+msgstr "Bia³a lista"
+
+#: lib/Compose.php:955
+msgid "addressee unknown"
+msgstr "nieznany adres"
+
+#: lib/Search.php:542
+msgid "and"
+msgstr "i"
+
+#: lib/Compose.php:1796
+msgid "attachment"
+msgstr "za³±cznik"
+
+#: view.php:118
+msgid "attachments.zip"
+msgstr "za³±czniki.zip"
+
+#: templates/compose/compose.html:273
+msgid "bytes"
+msgstr "bajty"
+
+#: lib/Compose.php:979
+msgid "cannot create output file"
+msgstr "nie mo¿na utworzyæ pliku wyj¶ciowego"
+
+#: lib/Compose.php:951
+msgid "cannot open input"
+msgstr "nie mo¿na otworzyæ wej¶cia"
+
+#: lib/Compose.php:943
+msgid "command line usage error"
+msgstr "b³±d u¿ycia linii poleceñ"
+
+#: lib/Compose.php:999
+msgid "configuration error"
+msgstr "b³±d konfiguracji"
+
+#: lib/Compose.php:975
+msgid "critical system file missing"
+msgstr "brak krytycznego pliku systemowego"
+
+#: lib/Compose.php:947
+msgid "data format error"
+msgstr "b³±d formatu daty"
+
+#: lib/Compose.php:1003
+msgid "entry not found"
+msgstr "nie znaleiono wpisu"
+
+#: templates/contacts/contacts.html:16
+msgid "from"
+msgstr "od"
+
+#: lib/Compose.php:959
+msgid "host name unknown"
+msgstr "nieznana nazwa hosta"
+
+#: lib/Search.php:545
+msgid "in"
+msgstr "w"
+
+#: lib/Compose.php:983
+msgid "input/output error"
+msgstr "b³±d wej¶cia/wyj¶cia"
+
+#: lib/Compose.php:967
+msgid "internal software error"
+msgstr "wewnêtrzny b³±d oprogramowania"
+
+#: templates/folders/import.html:13
+msgid "into folder"
+msgstr "do folderu"
+
+#: smime.php:39 pgp.php:79
+msgid "key"
+msgstr "klucz"
+
+#: folders.php:135
+msgid "mailbox file"
+msgstr "plik skrzynki"
+
+#: lib/Compose.php:732
+msgid "name"
+msgstr "nazwa"
+
+#: lib/Search.php:539
+msgid "not"
+msgstr "nie"
+
+#: lib/Search.php:542 templates/fetchmail/fetchmailprefs.html:26
+msgid "or"
+msgstr "lub"
+
+#: lib/Compose.php:995
+msgid "permission denied"
+msgstr "dostêp zabroniony"
+
+#: templates/javascript_defs.php:29
+msgid "recipients"
+msgstr "odbiorcy"
+
+#: lib/Compose.php:991
+msgid "remote error in protocol"
+msgstr "zdalny b³±d w protokole"
+
+#: lib/Compose.php:963
+msgid "service unavailable"
+msgstr "us³uga niedostêpna"
+
+#: lib/Compose.php:971
+msgid "system error"
+msgstr "b³±d systemu"
+
+#: lib/Compose.php:987
+msgid "temporary failure"
+msgstr "chwilowa usterka"
+
+#: lib/Filter.php:65
+msgid "your blacklist"
+msgstr "twoja czarna lista"
+
+#: lib/Filter.php:91
+msgid "your whitelist"
+msgstr "twoja bia³a lista"

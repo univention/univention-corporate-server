@@ -1,0 +1,155 @@
+.kronolith_embedded {
+    margin: 0;
+    padding: 0;
+    font-size: 90%;
+}
+
+.kronolith_embedded a {
+    color: blue;
+    text-decoration: none;
+}
+.kronolith_embedded a:hover {
+    text-decoration: underline;
+}
+
+.kronolith_embedded .title {
+    font-weight: bold;
+    font-size: 100%;
+}
+
+.kronolith_embedded .control {
+    background: #CCCCCC none repeat scroll 0 0;
+    border-bottom: 1px solid #999999;
+    color: #000000;
+    padding: 1px;
+}
+
+.kronolith_embedded .linedRow, .kronolith_embedded tr.linedRow td,
+.kronolith_embedded table.linedRow td, .kronolith_embedded ul.linedRow li {
+    background: #FFFFFF none repeat scroll 0 0;
+    border-bottom: 1px solid #DDDDDD;
+    color: #000000;
+}
+
+.kronolith_embedded .nowrap {
+    white-space: nowrap;
+}
+
+.kronolith_embedded .text {
+    background: #FFFFFF none repeat scroll 0 0;
+    color: #000000;
+}
+
+.kronolith_embedded .block-eventbox,
+.kronolith_embedded table.nopadding td.block-eventbox {
+    padding: 0 4px;
+}
+
+.kronolith_embedded .event {
+}
+
+.kronolith_embedded img, .kronolith_embedded .img,
+.kronolith_embedded .img:active, .kronolith_embedded .img:hover,
+.kronolith_embedded .img:visited, .kronolith_embedded .image {
+    background: transparent none repeat scroll 0 0;
+    border: medium none;
+    vertical-align: middle;
+}
+
+.kronolith_embedded  .block-monthgrid {
+    background: #FFFFFF none repeat scroll 0 0;
+}
+
+.kronolith_embedded .item {
+    background: #EEEEEE none repeat scroll 0 0;
+    color: #000000;
+}
+.kronolith_embedded .othermonth {
+    background: #E7EEEC none repeat scroll 0 0;
+}
+.kronolith_embedded .block-monthgrid .today {
+    border: 1px solid #444466;
+}
+.kronolith_embedded .weekend {
+    background: #FFFFCC none repeat scroll 0 0;
+}
+
+.kronolith_embedded .clear {
+    clear: both;
+    height: 0;
+    line-height: 0;
+}
+
+.kronolith_embedded table {
+    border: medium none;
+}
+
+.kronolith_embedded td, .kronolith_embedded th {
+    padding: 1px;
+}
+div.horde_nicetitle {
+    color: #000;
+    background: #ffc;
+    border: 1px solid #000;
+    padding: 5px;
+    z-index: 1001;
+    position: absolute;
+    overflow: hidden;
+    opacity: .90;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+div.horde_nicetitle pre {
+    text-align: left;
+    font-size: 75%;
+    font-family: "Lucida Console",Courier,"Courier New";
+}
+
+.kronolith_embedded category_bar {
+}
+
+.kronolith_embedded .eventtitle {
+    font-weight: bold;
+    padding: 5px;
+}
+
+.kronolith_embedded .leftbar {
+    border-right:  1px solid #DDDDDD;
+    padding: 4px;
+}
+
+.kronolith_embedded .location {
+    font-size: 85%;
+    padding-top: 10px;
+    margin-left: 5px;
+}
+
+.kronolith_embedded .annotation {
+    font-size: 75%;
+    padding-top: 10px;
+    padding-left: 5px;
+}
+
+.kronolith_embedded .description {
+    font-size: 85%;
+    padding-top: 10px;
+    padding-left: 5px;
+}
+
+.kronolith_embedded .time {
+    font-size: 85%;
+    margin-top: 5px;
+    padding: 5px;
+    margin-left: 5px;
+    background: #ddddff;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.kronolith_embedded .section {
+    font-weight: bold;
+    background: #eeeeee;
+    border-bottom: 1px solid #999999;
+    color: #000000;
+    padding: 1px;
+}

@@ -1,0 +1,1800 @@
+# Turba Ukrainian win-1251 translation.
+# Copyright
+# Andriy Kopystyansky <anri@polynet.lviv.ua>, 2008
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba H3 (2.3)\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-11-28 12:38+0200\n"
+"PO-Revision-Date: 2008-12-04 12:00+0200\n"
+"Last-Translator: Andriy Kopystyansky <webmaster@polynet.lviv.ua>\n"
+"Language-Team: Ukrainian <anri@polynet.lviv.ua>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1251\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: templates/prefs/imsp_opt.inc:40
+msgid " Add an IMSP Address Book"
+msgstr " Додати IMSP-адресник"
+
+#: templates/prefs/imsp_opt.inc:29
+msgid " Delete IMSP Address Book"
+msgstr " Витерти IMSP-адресник"
+
+#: data.php:455
+#, php-format
+msgid "\"%s\" already exists and was not imported."
+msgstr "\"%s\" вже існує не був імортований."
+
+#: lib/Forms/EditContact.php:83
+#, php-format
+msgid "\"%s\" updated, but saving the uploaded file failed: %s"
+msgstr "\"%s\" оновлено, але зберегти підвантажений файл не вдалось: %s"
+
+#: lib/Forms/EditContact.php:85 lib/Forms/EditContact.php:88
+#, php-format
+msgid "\"%s\" updated."
+msgstr "\"%s\" оновлено."
+
+#: lib/Views/Browse.php:192
+#, php-format
+msgid "\"%s\" was not copied because it is a list."
+msgstr "\"%s\" не скопійовано, бо це список."
+
+#: lib/Views/Browse.php:190
+#, php-format
+msgid "\"%s\" was not moved because it is a list."
+msgstr "\"%s\" не переміщено, бо це список."
+
+#: config/prefs.php.dist:127
+msgid "\"Firstname Lastname\"  (ie. John Doe)"
+msgstr "\"Ім'я Прізвище\"  (напр. Петро Петренко)"
+
+#: config/prefs.php.dist:126
+msgid "\"Lastname, Firstname\" (ie. Doe, John)"
+msgstr "\"Прізвище, Ім'я\"  (напр. Петренко, Петро)"
+
+#: lib/Driver.php:619
+#, php-format
+msgid "%d. %s of %s"
+msgstr "%d. %s з %s"
+
+#: lib/Forms/AddContact.php:88
+#, php-format
+msgid "%s added."
+msgstr "%s додано."
+
+#: data.php:483
+#, php-format
+msgid "%s file successfully imported."
+msgstr "Файл %s успішно імпортовано."
+
+#: templates/list/numPager.inc:6
+#, php-format
+msgid "%s to %s of %s"
+msgstr "%s по %s з %s"
+
+#: lib/Turba.php:541
+#, php-format
+msgid "%s's Address Book"
+msgstr "%s Адресник"
+
+#: lib/Block/minisearch.php:44
+msgid "A browser that supports iframes is required"
+msgstr "Потрібний браузер з підтримкою iframes"
+
+#: view.php:54
+#, php-format
+msgid "Access denied to %s"
+msgstr "Доступ до %s заборонено"
+
+#: templates/browse/actions.inc:30 lib/Forms/AddContact.php:25
+msgid "Add"
+msgstr "Додати"
+
+#: lib/Forms/AddContact.php:22
+msgid "Add Contact"
+msgstr "Додати контакт"
+
+#: templates/prefs/addressbookselect.inc:173
+msgid "Add address book"
+msgstr "Додати адресник"
+
+#: lib/Forms/EditContact.php:34
+msgid "Add file"
+msgstr "Додати файл"
+
+#: templates/browse/actions.inc:30
+msgid "Add to"
+msgstr "Додати до"
+
+#: lib/Driver.php:2113 lib/Driver/null.php:57
+msgid "Adding contacts is not available."
+msgstr "Внесення контактів неможливе."
+
+#: templates/addressbook_list.php:16
+msgid "Address Book"
+msgstr "Адресник"
+
+#: templates/addressbook_list.php:12
+msgid "Address Book List"
+msgstr "Список адресників"
+
+#: lib/Views/Browse.php:78 config/prefs.php.dist:115
+msgid "Address Book Listing"
+msgstr "Перегляд Адресника"
+
+#: config/prefs.php.dist:10
+msgid "Address Books"
+msgstr "Адресники"
+
+#: data.php:435
+msgid "Address book successfully purged."
+msgstr "Адресник успішно очищено."
+
+#: templates/prefs/addressbookselect.inc:167
+#: templates/prefs/addressbookselect.inc:169
+msgid "Address books that will not be displayed:"
+msgstr "Адресники, які не будуть відображатись:"
+
+#: search.php:184 templates/browse/search.inc:47
+msgid "Advanced Search"
+msgstr "Розширений пошук"
+
+#: config/attributes.php.dist:83
+msgid "Alias"
+msgstr "Псевдонім"
+
+#: templates/list/alphaPager.inc:7 templates/list/alphaPager.inc:10
+msgid "All"
+msgstr "Всі"
+
+#: lib/api.php:941
+msgid "Already Exists"
+msgstr "Вже існує"
+
+#: config/attributes.php.dist:106
+msgid "Anniversaries"
+msgstr "Ювілеї"
+
+#: config/attributes.php.dist:102
+msgid "Anniversary"
+msgstr "Річниця"
+
+#: templates/browse/javascript.inc:85
+#, php-format
+msgid "Are you sure that you want to delete %s?"
+msgstr "Впевнені, що хочете витерти %s?"
+
+#: templates/browse/javascript.inc:66
+msgid "Are you sure that you want to delete the selected contacts?"
+msgstr "Ви впевнені, що хочете витерти вибрані контакти?"
+
+#: config/attributes.php.dist:424
+msgid "Assistant"
+msgstr ""
+
+#: search.php:181 templates/browse/search.inc:46
+msgid "Basic Search"
+msgstr "Простий пошук"
+
+#: lib/Driver/ldap.php:92 lib/Driver/ldap.php:95
+#, php-format
+msgid "Bind failed: (%s) %s"
+msgstr "Під'єднання невдале: (%s) %s"
+
+#: config/attributes.php.dist:95
+msgid "Birthday"
+msgstr "День народження"
+
+#: config/attributes.php.dist:99
+msgid "Birthdays"
+msgstr "Дні народження"
+
+#: contact.php:128 templates/browse/row.inc:10
+msgid "Blank name"
+msgstr ""
+
+#: templates/browse/actions.inc:51
+msgid "Both"
+msgstr "Обидва"
+
+#: addressbooks/index.php:39 templates/menu.inc:8
+#: templates/addressbook_list.php:29
+msgid "Browse"
+msgstr "Перегляд"
+
+#: config/attributes.php.dist:300
+msgid "Business Category"
+msgstr "Бізнес категорія"
+
+#: data.php:101
+msgid "CSV"
+msgstr "CSV"
+
+#: lib/Object/Group.php:68
+msgid "Can't add a group to itself."
+msgstr "Не можна додавати групу саму до себе."
+
+#: lib/Forms/DeleteAddressBook.php:45 lib/Forms/DeleteAddressBook.php:54
+msgid "Cancel"
+msgstr "Відмінити"
+
+#: lib/Driver/kolab.php:624
+#, php-format
+msgid "Cannot delete all address book entries for %s"
+msgstr "Не можу витерти всі записи з адресника %s"
+
+#: config/attributes.php.dist:388
+msgid "Category"
+msgstr "Категорія"
+
+#: templates/browse/column_headers.inc:25
+#, php-format
+msgid "Change %s sort to %s"
+msgstr "Змінити %s сортування на %s"
+
+#: addressbooks/index.php:41 templates/addressbook_list.php:33
+msgid "Change Permissions"
+msgstr "Змінити Права"
+
+#: templates/browse/column_headers.inc:8
+msgid "Check All/None"
+msgstr "Позначити всі/жодного"
+
+#: templates/browse/column_headers.inc:8
+msgid "Check _All/None"
+msgstr "Позначити всі/жодного"
+
+#: config/attributes.php.dist:115
+msgid "Children"
+msgstr "Діти"
+
+#: lib/Forms/AddContact.php:36
+msgid "Choose an address book"
+msgstr "Виберіть адресник"
+
+#: templates/prefs/addressbookselect.inc:163
+msgid "Choose which address books to display, and in what order:"
+msgstr "Вкажіть, які адресники показати і в якому порядку:"
+
+#: config/prefs.php.dist:11
+msgid "Choose which address books to use."
+msgstr "Виберіть, які адресники використовувати."
+
+#: templates/prefs/columnselect.inc:41
+msgid ""
+"Click an address book to sort its columns. Drag columns to re-arrange them. "
+"Check a column to enable it."
+msgstr ""
+
+#: templates/block/minisearch.inc:26
+msgid "Close"
+msgstr "Закрити"
+
+#: templates/browse/header.inc:7
+msgid "Close Search"
+msgstr "Закрити пошук"
+
+#: config/prefs.php.dist:17
+msgid "Column Options"
+msgstr "Опції колонок"
+
+#: templates/data/import.inc:13 templates/data/export.inc:12
+msgid "Comma separated values"
+msgstr "Розділені комою значення"
+
+#: templates/data/export.inc:13
+msgid "Comma separated values (Microsoft Outlook)"
+msgstr "Розділені комою значення (Microsoft Outlook)"
+
+#: config/attributes.php.dist:522
+msgid "Common Address Extended"
+msgstr ""
+
+#: config/attributes.php.dist:540
+msgid "Common City"
+msgstr ""
+
+#: config/attributes.php.dist:558
+msgid "Common Country"
+msgstr ""
+
+#: config/attributes.php.dist:466
+msgid "Common Phone"
+msgstr ""
+
+#: config/attributes.php.dist:534
+msgid "Common Post Office Box"
+msgstr ""
+
+#: config/attributes.php.dist:552
+msgid "Common Postal Code"
+msgstr ""
+
+#: config/attributes.php.dist:546
+msgid "Common State/Province"
+msgstr ""
+
+#: config/attributes.php.dist:528
+msgid "Common Street"
+msgstr ""
+
+#: config/attributes.php.dist:491
+msgid "Common Video Call"
+msgstr ""
+
+#: config/sources.php.dist:256 config/sources.php.dist:948
+msgid "Communications"
+msgstr "Комунікації"
+
+#: config/attributes.php.dist:306
+msgid "Company"
+msgstr "Компанія"
+
+#: config/attributes.php.dist:235
+msgid "Company Address"
+msgstr "Адреса компанії"
+
+#: scripts/import_squirrelmail_abook.php:112 lib/api.php:546 lib/api.php:600
+#: lib/api.php:653 lib/api.php:701 lib/api.php:756 lib/api.php:815
+#: lib/api.php:866 lib/api.php:1004 lib/api.php:1066 lib/api.php:1137
+#: lib/api.php:1204 lib/api.php:1324 lib/api.php:1563 lib/api.php:1640
+#: lib/api.php:1791
+#, php-format
+msgid "Connection failed: %s"
+msgstr "Зв'язок втрачено: %s"
+
+#: lib/Driver/ldap.php:68
+msgid "Connection failure"
+msgstr "Збій зв'язку"
+
+#: lib/Block/minisearch.php:3 lib/Block/minisearch.php:26
+msgid "Contact Search"
+msgstr "Пошук контактів"
+
+#: config/sources.php.dist:866
+msgid "Contacts"
+msgstr "Контакти"
+
+#: templates/list/numPager.inc:3
+msgid "Contacts displayed:"
+msgstr "Показано контакти:"
+
+#: lib/Views/Browse.php:346
+#, php-format
+msgid "Contacts in list: %s"
+msgstr "Контакти в списку: %s"
+
+#: templates/browse/actions.inc:18
+msgid "Copy"
+msgstr "Копіювати"
+
+#: lib/Forms/CreateAddressBook.php:39
+msgid "Create"
+msgstr "Створити"
+
+#: lib/Forms/CreateAddressBook.php:34
+msgid "Create Address Book"
+msgstr "Створити Адресник"
+
+#: templates/addressbook_list.php:8
+msgid "Create a new Address Book"
+msgstr "Створити новий Адресник"
+
+#: lib/ListView.php:448
+msgid "Create a new Contact List in:"
+msgstr "Створити новий список контактів в:"
+
+#: lib/Views/Contact.php:80
+msgid "Created"
+msgstr "Створено"
+
+#: contact.php:95
+msgid "De_lete"
+msgstr "Витерти"
+
+#: addressbooks/index.php:42 templates/addressbook_list.php:35
+#: templates/browse/actions.inc:3 lib/Views/DeleteContact.php:58
+#: lib/Forms/DeleteAddressBook.php:45
+msgid "Delete"
+msgstr "Витерти"
+
+#: lib/Views/DeleteContact.php:28 lib/Forms/DeleteAddressBook.php:40
+#, php-format
+msgid "Delete %s"
+msgstr "Витерти %s"
+
+#: lib/api.php:644
+msgid "Delete denied."
+msgstr "Витирання заборонено."
+
+#: lib/Driver/ldap.php:321
+#, php-format
+msgid "Delete failed: (%s) %s"
+msgstr "Витирання  невдале: (%s) %s"
+
+#: lib/Driver.php:2121 lib/Driver/null.php:62
+msgid "Deleting contacts is not available."
+msgstr "Видалення контактів не можливе."
+
+#: delete.php:40
+msgid "Deletion failed"
+msgstr "Видалення не вдалося."
+
+#: config/attributes.php.dist:312
+msgid "Department"
+msgstr "Відділ"
+
+#: lib/Forms/EditAddressBook.php:44 lib/Forms/CreateAddressBook.php:37
+msgid "Description"
+msgstr "Опис"
+
+#: templates/browse/search.inc:125
+msgid "Directory"
+msgstr "Каталог"
+
+#: config/prefs.php.dist:24
+msgid "Display"
+msgstr "Показати"
+
+#: config/prefs.php.dist:9 config/prefs.php.dist:16 config/prefs.php.dist:23
+#: config/prefs.php.dist:30
+msgid "Display Options"
+msgstr "Опції відображення"
+
+#: lib/Object.php:354
+msgid "Download"
+msgstr "Скачати"
+
+#: templates/browse/row.inc:27 templates/browse/row.inc:28
+#: templates/browse/contactrow.inc:25
+msgid "Download vCard"
+msgstr "Скачати vCard"
+
+#: addressbooks/index.php:40 templates/addressbook_list.php:31
+#: templates/browse/column_headers.inc:11 templates/browse/row.inc:40
+#: templates/browse/row.inc:41 templates/browse/contactrow.inc:33
+#: templates/browse/actions.inc:6
+msgid "Edit"
+msgstr "Редагувати"
+
+#: edit.php:91 templates/browse/contactrow.inc:33
+#, php-format
+msgid "Edit \"%s\""
+msgstr "Редагувати \"%s\""
+
+#: lib/Views/EditContact.php:35 lib/Forms/EditAddressBook.php:40
+#, php-format
+msgid "Edit %s"
+msgstr "Редагувати %s"
+
+#: config/attributes.php.dist:249
+msgid "Email"
+msgstr "Е-пошта"
+
+#: config/attributes.php.dist:255
+msgid "Emails"
+msgstr "Е-пошти"
+
+#: lib/Views/Browse.php:270 lib/Views/Browse.php:310
+#, php-format
+msgid "Error adding %d contact(s) to list."
+msgstr "Помилка додавання %d контакту(ів) до списку."
+
+#: lib/Views/Browse.php:272 lib/Views/Browse.php:312
+#, php-format
+msgid "Error adding %d of %d requested contact(s) to list."
+msgstr "Помилка додавання %d з %d вказаних контактів до списку."
+
+#: lib/Views/Browse.php:134
+#, php-format
+msgid "Error deleting %d contact(s)."
+msgstr "Помилка видалення %d контакту(ів)."
+
+#: lib/Views/Browse.php:136
+#, php-format
+msgid "Error deleting %d of %d requested contacts(s)."
+msgstr "Помилка видалення %d з %d вказаних контактів."
+
+#: lib/Views/Browse.php:117
+#, php-format
+msgid "Error removing %d contact(s) from list."
+msgstr "Помилка видалення %d контакту(ів) зі списку."
+
+#: lib/Views/Browse.php:119
+#, php-format
+msgid "Error removing %d of %d requested contact(s) from list."
+msgstr "Помилка видалення %d з %d вказаних контактів(ів) зі списку."
+
+#: lib/api.php:707
+#, php-format
+msgid "Error searching the address book: %s"
+msgstr "Помилка пошуку в Адреснику: %s"
+
+#: templates/browse/actions.inc:10 templates/data/export.inc:42
+msgid "Export"
+msgstr "Експорт"
+
+#: templates/data/export.inc:6
+msgid "Export Address Book"
+msgstr "Експорт Адресника"
+
+#: templates/data/export.inc:22
+msgid "Export only the selected contacts."
+msgstr "Експортувати тільки вказані контакти."
+
+#: templates/data/export.inc:28
+msgid "Export the following address book completely."
+msgstr "Експортувати наступний адресник повністю."
+
+#: search.php:106 add.php:42 data.php:247 data.php:346 data.php:424
+#: lib/Views/Browse.php:84 lib/Views/Browse.php:152 lib/Views/Browse.php:180
+#, php-format
+msgid "Failed to access the address book: %s"
+msgstr "Невдалий доступ до адресника: %s"
+
+#: lib/Views/Browse.php:211
+#, php-format
+msgid "Failed to add %s to %s: %s"
+msgstr "Не вдалось додати %s до %s: %s"
+
+#: lib/Views/Browse.php:352
+msgid "Failed to browse list"
+msgstr "Не вдалось проглянути список"
+
+#: lib/Views/Browse.php:383
+msgid "Failed to browse the directory"
+msgstr "Не вдалось проглянути директорію"
+
+#: lib/Driver/ldap.php:354
+#, php-format
+msgid "Failed to change name: (%s) %s; Old DN = %s, New DN = %s, Root = %s"
+msgstr ""
+"Не вдалось змінити ім'я: (%s) %s; Старий DN = %s, Новий DN = %s, Root = %s"
+
+#: lib/Views/Browse.php:186
+#, php-format
+msgid "Failed to find object to be added: %s"
+msgstr "Не вдалось знайти об'єкт для додавання: %s"
+
+#: search.php:175
+msgid "Failed to search the address book"
+msgstr "Помилка пошуку в Адреснику"
+
+#: data.php:262
+#, php-format
+msgid "Failed to search the directory: %s"
+msgstr "Не вдалось знайти директорію: %s"
+
+#: config/sources.php.dist:565
+msgid "Favourite Recipients"
+msgstr "Популярні отримувачі"
+
+#: config/attributes.php.dist:276
+msgid "Fax"
+msgstr "Факс"
+
+#: lib/Forms/Contact.php:41
+msgid "Files"
+msgstr "Файли"
+
+#: templates/browse/search.inc:104
+msgid "Find"
+msgstr "Пошук"
+
+#: lib/Forms/EditContact.php:128 lib/Forms/EditContact.php:167
+msgid "Finish"
+msgstr "Кінець"
+
+#: config/attributes.php.dist:53
+msgid "First Name"
+msgstr "Ім'я"
+
+#: config/attributes.php.dist:350
+msgid "Freebusy URL"
+msgstr "URL вільний/занятий"
+
+#: templates/browse/search.inc:98
+msgid "From"
+msgstr "Від"
+
+#: config/attributes.php.dist:430
+msgid "Gender"
+msgstr "Стать"
+
+#: config/sources.php.dist:791
+msgid "Global Address Book"
+msgstr "Глобальний Адресник"
+
+#: templates/browse/row.inc:61 templates/browse/contactrow.inc:44
+msgid "Group"
+msgstr "Група"
+
+#: config/attributes.php.dist:135
+msgid "Home Address"
+msgstr "Домашня адреса"
+
+#: config/attributes.php.dist:592
+msgid "Home Address Extended"
+msgstr "Домашня адреса Розширена"
+
+#: config/attributes.php.dist:153
+msgid "Home City"
+msgstr ""
+
+#: config/attributes.php.dist:171
+msgid "Home Country"
+msgstr ""
+
+#: config/attributes.php.dist:460
+msgid "Home Email"
+msgstr "Домашня е-пошта"
+
+#: config/attributes.php.dist:476
+msgid "Home Fax"
+msgstr "Домашній факс"
+
+#: config/attributes.php.dist:598
+msgid "Home Latitude"
+msgstr "Домашня широта"
+
+#: config/attributes.php.dist:603
+msgid "Home Longitude"
+msgstr "Домашня довгота"
+
+#: config/attributes.php.dist:486
+msgid "Home Mobile Phone"
+msgstr "Домашній Мобільний телефон"
+
+#: config/attributes.php.dist:261
+msgid "Home Phone"
+msgstr "Домашній телефон"
+
+#: config/attributes.php.dist:147
+msgid "Home Post Office Box"
+msgstr ""
+
+#: config/attributes.php.dist:165
+msgid "Home Postal Code"
+msgstr ""
+
+#: config/attributes.php.dist:159
+msgid "Home State/Province"
+msgstr ""
+
+#: config/attributes.php.dist:141
+msgid "Home Street Address"
+msgstr ""
+
+#: config/attributes.php.dist:501
+msgid "Home Video Call"
+msgstr ""
+
+#: config/attributes.php.dist:586
+msgid "Home Website URL"
+msgstr "URL домашнього вебсайту"
+
+#: config/sources.php.dist:682
+msgid "IMSP"
+msgstr "IMSP"
+
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Address Book, Step %d"
+msgstr "Імпорт адресника, Крок %d"
+
+#: data.php:501
+msgid "Import/Export Address Books"
+msgstr "Імпорт/Експорт адресників"
+
+#: config/attributes.php.dist:406
+msgid "Initials"
+msgstr ""
+
+#: config/attributes.php.dist:412
+msgid "Instant Messenger"
+msgstr "Онлайн мессенджер"
+
+#: lib/api.php:999 lib/api.php:1132
+msgid "Invalid ID"
+msgstr "Неправильний ID"
+
+#: scripts/import_squirrelmail_abook.php:105 lib/api.php:368 lib/api.php:696
+#: lib/api.php:751 lib/api.php:810 lib/api.php:859 lib/api.php:995
+#: lib/api.php:1128 lib/api.php:1194 lib/api.php:1774
+#, php-format
+msgid "Invalid address book: %s"
+msgstr "Неправильний адресник: %s"
+
+#: lib/api.php:1198
+msgid "Invalid contact unique ID"
+msgstr ""
+
+#: lib/api.php:1778 lib/api.php:1864 lib/api.php:1925
+msgid "Invalid email"
+msgstr "Неправильна е-пошта"
+
+#: lib/api.php:1786
+msgid "Invalid entry"
+msgstr "Неправильний запис"
+
+#: lib/Driver/ldap.php:317
+msgid "Invalid key specified."
+msgstr "Вказано некоректний ключ."
+
+#: lib/api.php:1782
+msgid "Invalid name"
+msgstr "Неправильне ім'я"
+
+#: config/attributes.php.dist:288
+msgid "Job Title"
+msgstr ""
+
+#: lib/Driver/kolab.php:1129 lib/Driver/kolab.php:1195
+#, php-format
+msgid "Key for saving must be a UID not %s!"
+msgstr ""
+
+#: lib/Driver/ldap.php:64
+msgid ""
+"LDAP support is required but the LDAP module is not available or not loaded."
+msgstr ""
+"Підтримка LDAP необхідна, але модуль LDAP не доступний або не завантажений."
+
+#: data.php:106 templates/data/import.inc:18 templates/data/export.inc:16
+msgid "LDIF Address Book"
+msgstr ""
+
+#: config/attributes.php.dist:436
+msgid "Language"
+msgstr "Мова"
+
+#: lib/Views/Contact.php:91
+msgid "Last Modified"
+msgstr "Востаннє оновлено"
+
+#: config/attributes.php.dist:59
+msgid "Last Name"
+msgstr "Прізвище"
+
+#: config/attributes.php.dist:442
+msgid "Latitude"
+msgstr "Широта"
+
+#: templates/browse/column_headers.inc:17
+msgid "List"
+msgstr "Список"
+
+#: config/sources.php.dist:251 config/sources.php.dist:944
+msgid "Location"
+msgstr "Місце перебування"
+
+#: config/attributes.php.dist:324
+msgid "Logo"
+msgstr "Логотип"
+
+#: config/attributes.php.dist:330
+msgid "Logo MIME Type"
+msgstr ""
+
+#: config/attributes.php.dist:447
+msgid "Longitude"
+msgstr "Довгота"
+
+#: lib/api.php:616
+msgid "Malformed request."
+msgstr "Неправильний запит."
+
+#: addressbooks/index.php:46 templates/addressbook_list.php:2
+msgid "Manage Address Books"
+msgstr "Керування Адресниками"
+
+#: config/attributes.php.dist:418
+msgid "Manager"
+msgstr "Менеджер"
+
+#: contact.php:109
+msgid "Mark this as your own contact"
+msgstr "Позначити це як власний контакт"
+
+#: templates/browse/search.inc:109
+msgid "Matching"
+msgstr ""
+
+#: lib/api.php:329
+msgid "Maximum Number of Contacts"
+msgstr "Максимальна кількість контактів"
+
+#: config/prefs.php.dist:97
+msgid "Maximum number of pages"
+msgstr "Максимальна кількість сторінок"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "Список меню"
+
+#: config/attributes.php.dist:65
+msgid "Middle Names"
+msgstr "По-батькові"
+
+#: lib/Driver/ldap.php:347
+msgid "Missing DN in LDAP source configuration."
+msgstr ""
+
+#: config/attributes.php.dist:271
+msgid "Mobile Phone"
+msgstr "Мобільний телефон"
+
+#: lib/Driver/ldap.php:376 lib/Driver/ldap.php:392
+#, php-format
+msgid "Modify failed: (%s) %s"
+msgstr "Зміна невдала: (%s) %s"
+
+#: templates/browse/header.inc:8
+msgid "More Options..."
+msgstr "Більше опцій..."
+
+#: lib/api.php:1902
+msgid "More than 1 entry found"
+msgstr "Більше ніж 1 запис знайдено"
+
+#: templates/browse/actions.inc:16
+msgid "Move"
+msgstr "Перенести"
+
+#: templates/prefs/addressbookselect.inc:184
+msgid "Move left"
+msgstr "Посунути вліво"
+
+#: templates/prefs/addressbookselect.inc:186
+msgid "Move right"
+msgstr "Посунути вправо"
+
+#: data.php:104 templates/data/import.inc:16
+msgid "Mulberry Address Book"
+msgstr "Адресник Mulberry"
+
+#: lib/api.php:1810
+#, php-format
+msgid ""
+"Multiple persons with address [%s], but none with name [%s] already exist"
+msgstr "Кілька осіб з адресами [%s], але жоден з іменем [%s] існують"
+
+#: config/sources.php.dist:167
+msgid "My Address Book"
+msgstr "Мій Адресник"
+
+#: lib/Forms/EditAddressBook.php:43 lib/Forms/CreateAddressBook.php:36
+#: config/attributes.php.dist:47
+msgid "Name"
+msgstr "Ім'я"
+
+#: config/prefs.php.dist:31
+msgid "Name Format"
+msgstr "Формат імені"
+
+#: config/attributes.php.dist:71
+msgid "Name Prefixes"
+msgstr "Приставка імені"
+
+#: config/attributes.php.dist:77
+msgid "Name Suffixes"
+msgstr ""
+
+#: templates/browse/search_vbook.inc:6
+msgid "Name:"
+msgstr ""
+
+#: add.php:70 lib/Block/tree_menu.php:28
+msgid "New Contact"
+msgstr "Новий контакт"
+
+#: templates/data/import.inc:46 lib/Forms/EditContact.php:119
+#: lib/Forms/EditContact.php:126 lib/Forms/EditContact.php:181
+msgid "Next"
+msgstr "Наступний"
+
+#: config/attributes.php.dist:89
+msgid "Nickname"
+msgstr "Нік"
+
+#: lib/api.php:1905 lib/api.php:1965
+#, php-format
+msgid "No %s entry found for %s"
+msgstr "Не знайдено записів %s для %s"
+
+#: data.php:93
+msgid ""
+"No Address Books are currently available. Import and Export is disabled."
+msgstr "Жодних адресників зараз не доступно. Імпорт і експорт заборонені."
+
+#: search.php:92
+msgid "No Address Books are currently available. Searching is disabled."
+msgstr "Жодних адресників зараз не доступно. Пошук заборонений."
+
+#: lib/api.php:690 lib/api.php:745 lib/api.php:805 lib/api.php:990
+#: lib/api.php:1123 lib/api.php:1189
+msgid "No address book specified"
+msgstr "Жодного адресника не вказано"
+
+#: minisearch.php:80
+msgid "No contacts found"
+msgstr "Жодних контактів не знайдено"
+
+#: templates/browse/column_headers.inc:44
+msgid "No contacts match the current filter."
+msgstr "Жоден контакт не відповідає поточному фільтру."
+
+#: lib/ListView.php:255
+msgid "No matching contacts"
+msgstr "Відповідних контактів не знайдено"
+
+#: lib/Driver/favourites.php:124
+msgid "No source for favourite recipients exists."
+msgstr ""
+
+#: lib/api.php:893 lib/api.php:1235
+msgid "No vCard data was found."
+msgstr "Жодних vCard даних не знайдено."
+
+#: templates/list/numPager.inc:8
+msgid "None"
+msgstr "Жоден"
+
+#: lib/Views/EditContact.php:33 lib/Views/DeleteContact.php:26
+#: lib/Views/Contact.php:49
+msgid "Not Found"
+msgstr "Не знайдено"
+
+#: deletefile.php:22 edit.php:48
+msgid "Not found"
+msgstr "Не знайдено"
+
+#: config/attributes.php.dist:338
+msgid "Notes"
+msgstr "Нотатки"
+
+#: config/prefs.php.dist:105
+msgid "Number of items per page"
+msgstr "Кількість на сторінку"
+
+#: lib/api.php:1041 lib/api.php:1260
+msgid "Object not found"
+msgstr "Об'єкт не знайдено"
+
+#: lib/Driver/kolab.php:1199
+#, php-format
+msgid "Object with UID %s does not exist!"
+msgstr "Об'єкт з UID %s не існує!"
+
+#: config/attributes.php.dist:294
+msgid "Occupation"
+msgstr "Посада"
+
+#: config/attributes.php.dist:318
+msgid "Office"
+msgstr "Офіс"
+
+#: templates/prefs/imsp_opt.inc:22
+msgid ""
+"Once you save this option page, the address book will be permanently "
+"deleted. If this is not what you want, then you must change your selection "
+"to \"None\"."
+msgstr ""
+"Оскільки Ви зберегли цю сторінку настройок, адресник буде назавжди витерто."
+"Якщо це не те, що Вам потрібно, тоді змініть свій вибір на \"Жоден\"."
+
+#: lib/api.php:1243
+msgid "Only one vcard supported."
+msgstr "Підтримується тільки одна vcard."
+
+#: config/sources.php.dist:258 config/sources.php.dist:950
+msgid "Organization"
+msgstr "Організація"
+
+#: config/sources.php.dist:259 config/sources.php.dist:952
+msgid "Other"
+msgstr "Інший"
+
+#: config/attributes.php.dist:356
+msgid "PGP Public Key"
+msgstr "Публічний ключ PGP"
+
+#: config/attributes.php.dist:517
+msgid "PTT"
+msgstr ""
+
+#: config/attributes.php.dist:281
+msgid "Pager"
+msgstr "Пейджер"
+
+#: lib/Views/DeleteContact.php:57
+msgid "Permanently delete this contact?"
+msgstr "Назавжди витерти цей контакт?"
+
+#: deletefile.php:36 lib/api.php:870 lib/api.php:1795 lib/Driver.php:804
+#: lib/Driver/sql.php:515
+msgid "Permission denied"
+msgstr "В доступі відмовлено"
+
+#: config/sources.php.dist:248 config/sources.php.dist:940
+msgid "Personal"
+msgstr "Приватні"
+
+#: config/attributes.php.dist:121
+msgid "Photo"
+msgstr "Фото"
+
+#: config/attributes.php.dist:127
+msgid "Photo MIME Type"
+msgstr ""
+
+#: data.php:105 templates/data/import.inc:17
+msgid "Pine Address Book"
+msgstr "Адресник Pine"
+
+#: templates/browse/javascript.inc:27
+msgid "Please name the new contact list:"
+msgstr "Будь-ласка, назвіть новий список контактів:"
+
+#: lib/Forms/EditContact.php:122 lib/Forms/EditContact.php:125
+#: lib/Forms/EditContact.php:174
+msgid "Previous"
+msgstr "Попередня"
+
+#: lib/Driver/ldap.php:197
+#, php-format
+msgid "Query failed: (%s) %s"
+msgstr "Невдалий запит: (%s) %s"
+
+#: lib/Driver/ldap.php:242 lib/Driver/ldap.php:250 lib/Driver/ldap.php:486
+#, php-format
+msgid "Read failed: (%s) %s"
+msgstr "Збій читання: (%s) %s"
+
+#: lib/Driver.php:2105 lib/Driver/null.php:52
+msgid "Reading contacts is not available."
+msgstr "Читання контактів не доступне."
+
+#: lib/Forms/DeleteAddressBook.php:43
+#, php-format
+msgid ""
+"Really delete the address book \"%s\"? This cannot be undone and all "
+"contacts in this address book will be permanently removed."
+msgstr ""
+"Справді витерти адресник \"%s\"? Це незворотня операція і всі контакти в "
+"цьому адреснику будуть назавжди витерті."
+
+#: templates/prefs/addressbookselect.inc:175
+msgid "Remove address book"
+msgstr "Видалити адресник"
+
+#: templates/browse/actions.inc:3
+msgid "Remove from this list"
+msgstr "Видалити з цього переліку"
+
+#: lib/Driver.php:2143
+msgid ""
+"Removing user data is not supported in the current address book storage "
+"driver."
+msgstr ""
+"Видалення даних користувача не підтримується поточним драйвером системи "
+"збереження адресника."
+
+#: templates/data/import.inc:22
+msgid ""
+"Replace existing address book with the imported one? <strong>Warning: This "
+"deletes all entries in your current address book.</strong>"
+msgstr ""
+"Замініти існуючий адресник імпортованим? <strong> Увага: Це знищить всі "
+"записи в Вашому адреснику.</strong>"
+
+#: lib/Driver.php:698
+msgid "Requested object not found."
+msgstr "Вказаний об'єкт не знайдено."
+
+#: templates/browse/search.inc:120
+msgid "Reset to Defaults"
+msgstr "Очистити до типових"
+
+#: config/attributes.php.dist:362
+msgid "S/MIME Public Certificate"
+msgstr "S/MIME Відкритий Сертифікат"
+
+#: config/attributes.php.dist:511
+msgid "SIP"
+msgstr ""
+
+#: lib/Driver/ldap.php:84
+#, php-format
+msgid "STARTTLS failed: (%s) %s"
+msgstr "Збій STARTTLS: (%s) %s"
+
+#: lib/Forms/EditContact.php:26 lib/Forms/EditAddressBook.php:46
+msgid "Save"
+msgstr "Зберегти"
+
+#: templates/browse/search_vbook.inc:4
+msgid "Save search as a virtual address book?"
+msgstr "Зберегти пошук як псевдо-адресник?"
+
+#: lib/Driver.php:2131 lib/Driver/null.php:67
+msgid "Saving contacts is not available."
+msgstr "Збереження контактів не доступне."
+
+#: templates/block/minisearch.inc:25 templates/browse/search.inc:111
+#: templates/browse/search.inc:119 templates/browse/header.inc:3
+#: lib/Block/tree_menu.php:62 config/prefs.php.dist:116
+msgid "Search"
+msgstr "Пошук"
+
+#: lib/api.php:1568
+msgid "Search failed"
+msgstr "Пошук невдалий"
+
+#: lib/api.php:1800 lib/api.php:1806 lib/api.php:1815 lib/api.php:1828
+#, php-format
+msgid "Search failed: %s"
+msgstr "Пошук невдалий: %s"
+
+#: templates/block/minisearch.inc:23
+msgid "Search for: "
+msgstr ""
+
+#: lib/Driver.php:2090 lib/Driver/null.php:47
+msgid "Searching is not available."
+msgstr "Пошук не доступний."
+
+#: templates/browse/row.inc:52
+msgid "Select contact"
+msgstr "Виберіть контакт"
+
+#: templates/data/export.inc:33
+msgid "Select the address book to export from:"
+msgstr "Вкажіть адресник, з якого експортувати:"
+
+#: templates/data/import.inc:27
+msgid "Select the address book to import to:"
+msgstr "Вкажіть адресник, в який імпортувати:"
+
+#: config/prefs.php.dist:61
+msgid ""
+"Select the address books that should be used for synchronization with "
+"external devices:"
+msgstr ""
+
+#: templates/data/import.inc:36
+msgid "Select the charset of the source file:"
+msgstr "Вкажіть кодування вхідного файлу:"
+
+#: templates/data/export.inc:10
+msgid "Select the export format:"
+msgstr "Вкажіть формат експорту:"
+
+#: templates/data/import.inc:44
+msgid "Select the file to import:"
+msgstr "Вкажіть файл для імпорту:"
+
+#: templates/data/import.inc:11
+msgid "Select the format of the source file:"
+msgstr "Виберіть формат вхідного файлу:"
+
+#: config/prefs.php.dist:125
+msgid "Select the format used to display names:"
+msgstr "Виберіть формат для відображення імен:"
+
+#: config/prefs.php.dist:25
+msgid "Select view to display by default and paging options."
+msgstr "Виберіть вигляд для показу по замовчуванню і опції розбиття."
+
+#: config/prefs.php.dist:18
+msgid "Select which fields to display in the address lists."
+msgstr "Виберіть поля, які показувати в списку адрес."
+
+#: config/prefs.php.dist:32
+msgid "Select which format to display names."
+msgstr "Вкажіть, в якому форматі показувати імена:"
+
+#: lib/Forms/AddContact.php:42
+#, php-format
+msgid "Selected address book \"%s\"."
+msgstr "Вибрані Адресники \"%s\"."
+
+#: templates/browse/actions.inc:49
+#, php-format
+msgid "Show %s"
+msgstr "Показати %s"
+
+#: templates/browse/actions.inc:51
+msgid "Show Both"
+msgstr ""
+
+#: templates/browse/actions.inc:50
+msgid "Show Contacts"
+msgstr "Показати контакти"
+
+#: templates/browse/actions.inc:49
+msgid "Show Lists"
+msgstr "Показати списки"
+
+#: lib/ListView.php:323 lib/ListView.php:329
+msgid "Sort Direction"
+msgstr "Напрям сортування"
+
+#: templates/browse/column_headers.inc:32
+#, php-format
+msgid "Sort by %s"
+msgstr "Сортувати по %s"
+
+#: templates/browse/column_headers.inc:27
+#, php-format
+msgid "Sort by %s only"
+msgstr "Сортувати тільки по %s"
+
+#: templates/browse/column_headers.inc:30
+#, php-format
+msgid "Sort by %s, then by %s"
+msgstr "Сортувати по %s, потім по %s"
+
+#: templates/menu.inc:6
+msgid "Source:"
+msgstr "Джерело:"
+
+#: lib/api.php:322
+msgid "Sources"
+msgstr "Джерела"
+
+#: config/attributes.php.dist:109
+msgid "Spouse"
+msgstr ""
+
+#: lib/Views/Browse.php:268 lib/Views/Browse.php:308
+#, php-format
+msgid "Successfully added %d contact(s) to list."
+msgstr "Успішно додано %d контактів до списоку."
+
+#: lib/Views/Browse.php:215
+#, php-format
+msgid "Successfully added %s to %s"
+msgstr "Успішно додано %s до %s"
+
+#: lib/Views/Browse.php:298
+#, php-format
+msgid "Successfully created the contact list \"%s\"."
+msgstr "Успішно створено список контактів \"%s\"."
+
+#: search.php:150
+#, php-format
+msgid "Successfully created virtual address book \"%s\""
+msgstr "Успішно створено псевдо-дресник \"%s\""
+
+#: lib/Views/Browse.php:132
+#, php-format
+msgid "Successfully deleted %d contact(s)."
+msgstr "Успішно видалено %d контакт(ів)."
+
+#: lib/Views/Browse.php:115
+#, php-format
+msgid "Successfully removed %d contact(s) from list."
+msgstr "Успішно видалено %d контакт(ів) зі списку."
+
+#: data.php:102
+msgid "TSV"
+msgstr "TSV"
+
+#: templates/data/import.inc:14 templates/data/export.inc:14
+msgid "Tab separated values"
+msgstr "Значення розділені табуляцією"
+
+#: templates/browse/actions.inc:20
+msgid "Target Address Book"
+msgstr "Адресник призначення"
+
+#: templates/browse/actions.inc:31
+msgid "Target Contact List"
+msgstr ""
+
+#: data.php:426
+#, php-format
+msgid "The %s file didn't contain any contacts."
+msgstr "Файл %s не містить даних."
+
+#: view.php:17
+msgid "The VFS backend needs to be configured to enable attachment uploads."
+msgstr ""
+"VFS буфер мусить бути сконфігурований, щоб дозволити закачування додатків."
+
+#: lib/Driver.php:2061
+#, php-format
+msgid "The address book \"%s\" does not exist."
+msgstr "Адресника \"%s\" не існує."
+
+#: addressbooks/create.php:32
+#, php-format
+msgid "The address book \"%s\" has been created."
+msgstr "Адресник \"%s\" був створений."
+
+#: data.php:433
+#, php-format
+msgid "The address book could not be purged: %s"
+msgstr "Адресник не може бути вичищений: %s."
+
+#: lib/api.php:1061
+msgid "The address book with your own contact doesn't exist anymore."
+msgstr "Адресника з Вашим власним контактом більше не існує."
+
+#: addressbooks/delete.php:50
+#, php-format
+msgid "The addressbook \"%s\" has been deleted."
+msgstr "Адресник \"%s\" був витертий."
+
+#: addressbooks/edit.php:44
+#, php-format
+msgid "The addressbook \"%s\" has been renamed to \"%s\"."
+msgstr "Адресник \"%s\" перейменовано на \"%s\"."
+
+#: addressbooks/edit.php:46
+#, php-format
+msgid "The addressbook \"%s\" has been saved."
+msgstr "Адресник \"%s\" збережено."
+
+#: vcard.php:19 view.php:28 contact.php:23
+msgid "The contact you requested does not exist."
+msgstr "Вказаний Вами контакт не існує."
+
+#: deletefile.php:46
+#, php-format
+msgid "The file \"%s\" has been deleted."
+msgstr "Файл \"%s\" було витерто."
+
+#: data.php:406
+msgid "The import can be finished despite the warnings."
+msgstr "Імпорт може бути завершено, не дивлячись на попередження."
+
+#: lib/Views/EditContact.php:43 lib/Views/DeleteContact.php:36
+#: lib/Views/Contact.php:59
+msgid "The requested contact was not found."
+msgstr "Вказаного контакту не знайдено."
+
+#: lib/Views/Browse.php:80
+msgid "There are no browseable address books."
+msgstr "Немає адресника, який можна проглянути."
+
+#: add.php:32
+msgid ""
+"There are no writeable address books. None of the available address books "
+"are configured to allow you to add new entries to them. If you believe this "
+"is an error, please contact your system administrator."
+msgstr ""
+"Немає адресників, в які можна записати. Жоден з доступних адресників не "
+"сконфігурований на приєднання нових записів. Якщо Ви думаєте, що це помилка, "
+"будь-ласка зв'яжіться з Вашим адміністратором."
+
+#: lib/Views/Browse.php:356
+#, php-format
+msgid "There is %d contact in this list that is not viewable to you"
+msgid_plural "There are %d contacts in this list that are not viewable to you"
+msgstr[0] "В списку є %d контакт, який Ви не можете переглядати"
+msgstr[1] "В списку є %d контакти, який Ви не можете переглядати"
+msgstr[2] "В списку є %d контактів, який Ви не можете переглядати"
+
+#: search.php:146
+#, php-format
+msgid "There was a problem creating the virtual address book: %s"
+msgstr "Трапилась помилка при створенні цього адресника: %s"
+
+#: lib/Forms/AddContact.php:95
+msgid ""
+"There was an error adding the new contact. Contact your system administrator "
+"for further help."
+msgstr ""
+"Була помилка при додаванні нового контакту. Зв'яжіться з адміністратором для "
+"подальшої допомоги."
+
+#: lib/Views/Browse.php:318
+msgid "There was an error creating a new list."
+msgstr "Трапилась помилка створення нового списку."
+
+#: lib/Views/Browse.php:221
+#, php-format
+msgid "There was an error deleting \"%s\" from the source address book."
+msgstr "Трапилась помилка при витиранні \"%s\" з адресника-джерела."
+
+#: delete.php:39
+#, php-format
+msgid "There was an error deleting this contact: %s"
+msgstr "Трапилась помилка при витиранні цього контакту: %s"
+
+#: lib/Views/Browse.php:362
+msgid "There was an error displaying the list"
+msgstr "Трапилась помилка відображенні списку"
+
+#: data.php:469
+#, php-format
+msgid "There was an error importing the data: %s"
+msgstr "Трапилась помилка при імпортуванні даних: %s."
+
+#: lib/api.php:889 lib/api.php:1230
+msgid "There was an error importing the iCalendar data."
+msgstr "Трапилась помилка імпорту даних з iCalendar"
+
+#: lib/api.php:258
+#, php-format
+msgid "There was an error removing an address book for %s"
+msgstr "Трапилась помилка при витиранні адресника для %s"
+
+#: lib/Forms/EditContact.php:93
+msgid ""
+"There was an error saving the contact. Contact your system administrator for "
+"further help."
+msgstr ""
+"Трапилась помилка збереження контакту. Зв'яжіться з адміністратором для "
+"подальшої допомоги."
+
+#: data.php:292
+msgid "There were no addresses to export."
+msgstr "Немає жодної адреси, щоб експортувати."
+
+#: templates/prefs/addressbookselect.inc:178
+#: templates/prefs/addressbookselect.inc:180
+msgid "These address books will display in this order:"
+msgstr "Ці адресники будуть показані в такому порядку:"
+
+#: addressbooks/delete.php:26
+msgid "This addressbook cannot be deleted"
+msgstr "Цей адресник не може бути витертий."
+
+#: contact.php:57
+msgid "This contact has been marked as your own."
+msgstr "Цей контакт позначений як Ваш власний."
+
+#: data.php:391
+msgid "This file format is not supported."
+msgstr "Цей формат файлу не підтримується."
+
+#: lib/api.php:1819 lib/api.php:1832
+#, php-format
+msgid "This person already has a %s entry in the address book"
+msgstr "Про цю особу вже існує %s запис в адреснику"
+
+#: config/prefs.php.dist:138
+msgid ""
+"This will be the default address book when adding or importing contacts."
+msgstr "Це буде основний адресник при додаванні або імпортуванні контактів."
+
+#: config/attributes.php.dist:241
+msgid "Time Zone"
+msgstr "Часовий пояс"
+
+#: lib/Driver/share.php:77
+msgid "Unable to find contact owner."
+msgstr "Не можу знайти власника контакту."
+
+#: lib/Turba.php:659 lib/Driver.php:1981
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Не можу завантажити визначення %s"
+
+#: lib/Forms/EditAddressBook.php:55
+#, php-format
+msgid "Unable to save address book \"%s\": %s"
+msgstr "Не можу зберегти адресник \"%s\": %s"
+
+#: lib/Driver/kolab.php:490
+msgid "Unable to search."
+msgstr "Не можу шукати."
+
+#: config/attributes.php.dist:391
+msgid "Unfiled"
+msgstr "Незаповнений"
+
+#: lib/api.php:927 lib/api.php:1038 lib/api.php:1248
+#, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "Content-Type не підтримується: %s"
+
+#: templates/browse/contactrow.inc:27
+#, php-format
+msgid "View \"%s\""
+msgstr "Огляд \"%s\""
+
+#: minisearch.php:72 minisearch.php:73
+msgid "View Contact"
+msgstr "Проглянути контакт"
+
+#: config/prefs.php.dist:114
+msgid "View to display by default:"
+msgstr "Стандартний вигляд для відображення:"
+
+#: config/attributes.php.dist:506
+msgid "VoIP"
+msgstr ""
+
+#: config/attributes.php.dist:344
+msgid "Website URL"
+msgstr "URL вебсайту"
+
+#: config/attributes.php.dist:185
+msgid "Work Address"
+msgstr "Робоча адреса"
+
+#: config/attributes.php.dist:570
+msgid "Work Address Extended"
+msgstr "Робоча адреса Розширена"
+
+#: config/attributes.php.dist:203
+msgid "Work City"
+msgstr "Місто праці"
+
+#: config/attributes.php.dist:221
+msgid "Work Country"
+msgstr "Країна праці"
+
+#: config/attributes.php.dist:454
+msgid "Work Email"
+msgstr "Робоча е-пошта"
+
+#: config/attributes.php.dist:471
+msgid "Work Fax"
+msgstr "Робочий факс"
+
+#: config/attributes.php.dist:576
+msgid "Work Latitude"
+msgstr ""
+
+#: config/attributes.php.dist:581
+msgid "Work Longitude"
+msgstr ""
+
+#: config/attributes.php.dist:481
+msgid "Work Mobile Phone"
+msgstr "Робочий Мобільний телефон"
+
+#: config/attributes.php.dist:266
+msgid "Work Phone"
+msgstr "Робочий телефон"
+
+#: config/attributes.php.dist:197
+msgid "Work Post Office Box"
+msgstr "Робоча Поштова скринька"
+
+#: config/attributes.php.dist:215
+msgid "Work Postal Code"
+msgstr "Робочий Поштовий Індекс"
+
+#: config/attributes.php.dist:209
+msgid "Work State/Province"
+msgstr "Область або Регіон, де працюєте"
+
+#: config/attributes.php.dist:191
+msgid "Work Street Address"
+msgstr "Робоча адреса"
+
+#: config/attributes.php.dist:496
+msgid "Work Video Call"
+msgstr ""
+
+#: config/attributes.php.dist:564
+msgid "Work Website URL"
+msgstr "URL робочого вебсайту"
+
+#: addressbooks/edit.php:30
+msgid "You are not allowed to change this addressbook."
+msgstr "Вам не можна змінювати цей адресник."
+
+#: add.php:48 data.php:355 lib/Views/Browse.php:159 lib/Views/Browse.php:281
+#, php-format
+msgid "You are not allowed to create more than %d contacts in \"%s\"."
+msgstr "Вам не дозволено створювати більше, ніж %d контактів в \"%s\""
+
+#: addressbooks/delete.php:37
+msgid "You are not allowed to delete this addressbook."
+msgstr "Вам не можна витирати цей адресник."
+
+#: lib/api.php:204
+msgid "You are not allowed to remove user data."
+msgstr "Вам не можна витирати дані користувача."
+
+#: lib/Driver/vbook.php:137
+msgid "You cannot add an entry to a virtual address book."
+msgstr "Ви не можете вносити записи в псевдо-адресник."
+
+#: lib/Driver/vbook.php:121
+msgid "You cannot add new contacts to a virtual address book"
+msgstr "Ви не можете вносити нові контакти в псевдо-адресник"
+
+#: lib/Driver/vbook.php:129
+msgid "You cannot delete contacts from a virtual address book"
+msgstr "Ви не можете витирати контакти з псевдо-адресника"
+
+#: lib/api.php:1056
+msgid "You didn't mark a contact as your own yet."
+msgstr "Ви ще не вказали, який з контактів Ваш власний."
+
+#: edit.php:66 view.php:38 lib/Views/EditContact.php:49
+#: lib/Views/DeleteContact.php:42
+msgid "You do not have permission to view this contact."
+msgstr "У Вас немає прав для прогляду цього контакту."
+
+#: vcard.php:37
+msgid "You do not have permission to view this object."
+msgstr "У Вас немає прав для прогляду цього об'єкту."
+
+#: lib/Forms/DeleteAddressBook.php:59
+msgid "You do not have permissions to delete this address book."
+msgstr "У Вас немає прав витирати цей адресник."
+
+#: lib/api.php:1070
+msgid ""
+"You don't have sufficient permissions to read the address book that contains "
+"your own contact."
+msgstr ""
+"У Вас немає достатньо прав для читання адресника, що містить Ваш власний "
+"контакт."
+
+#: lib/Driver/ldap.php:741
+msgid ""
+"You must have the Net_LDAP PEAR library installed to use the schema check "
+"function."
+msgstr ""
+
+#: search.php:133
+msgid "You must provide a name for virtual address books."
+msgstr "Вам слід вказати назву псевдо-адресника."
+
+#: templates/browse/javascript.inc:54
+msgid "You must select a target address book."
+msgstr "Вам слід вказати адресник призначення."
+
+#: templates/browse/javascript.inc:22
+msgid "You must select a target contact list."
+msgstr "Вам слід вказати список призначення контактів."
+
+#: edit.php:31 templates/browse/javascript.inc:16
+#: templates/browse/javascript.inc:48 templates/browse/javascript.inc:71
+msgid "You must select at least one contact first."
+msgstr "Вам слід вибрати спочатку хоча б один контакт."
+
+#: edit.php:70 lib/Views/EditContact.php:52 lib/Views/DeleteContact.php:45
+msgid "You only have permission to view this contact."
+msgstr "У Вас є право тільки на перегляд цього контакту."
+
+#: lib/Views/Browse.php:369
+msgid "Your default address book is not browseable."
+msgstr "Ваш основний адресник не переглядається."
+
+#: contact.php:101 contact.php:102 templates/browse/row.inc:14
+#: templates/browse/row.inc:15
+msgid "Your own contact"
+msgstr "Ваш власний контакт"
+
+#: lib/api.php:1075
+msgid "Your own contact cannot be found in the address book."
+msgstr "Ваш власний контакт відсутній в адреснику."
+
+#: templates/browse/contactrow.inc:12
+msgid "[no value]"
+msgstr "[без значення]"
+
+#: lib/Turba.php:601
+msgid "_Browse"
+msgstr "Перегляд"
+
+#: templates/browse/actions.inc:50
+msgid "_Contacts"
+msgstr "Контакти"
+
+#: templates/browse/actions.inc:3
+msgid "_Delete"
+msgstr "Витерти"
+
+#: contact.php:91
+msgid "_Edit"
+msgstr "Редагувати"
+
+#: lib/Turba.php:610
+msgid "_Import/Export"
+msgstr "Імпорт/Експорт"
+
+#: templates/browse/actions.inc:49
+msgid "_Lists"
+msgstr "Списки"
+
+#: lib/Turba.php:598
+msgid "_My Address Books"
+msgstr "Мої Адресники"
+
+#: lib/Turba.php:604
+msgid "_New Contact"
+msgstr "Новий контакт"
+
+#: lib/Turba.php:615
+msgid "_Print"
+msgstr "Друк"
+
+#: templates/browse/actions.inc:3
+msgid "_Remove from this list"
+msgstr "Видалити з цього списку"
+
+#: lib/Turba.php:606
+msgid "_Search"
+msgstr "Пошук"
+
+#: contact.php:88
+msgid "_View"
+msgstr "Перегляд"
+
+#: templates/browse/column_headers.inc:25
+msgid "ascending"
+msgstr "по зростанню"
+
+#: lib/Views/Contact.php:76 lib/Views/Contact.php:87
+#, php-format
+msgid "by %s"
+msgstr "по %s"
+
+#: lib/Views/Contact.php:78 lib/Views/Contact.php:89
+msgid "by me"
+msgstr "мною"
+
+#: vcard.php:45
+msgid "contact"
+msgstr "контакт"
+
+#: data.php:312 data.php:317 templates/data/export.inc:1
+msgid "contacts.csv"
+msgstr "contacts.csv"
+
+#: data.php:337
+msgid "contacts.ldif"
+msgstr "contacts.ldif"
+
+#: data.php:322
+msgid "contacts.tsv"
+msgstr "contacts.tsv"
+
+#: data.php:332
+msgid "contacts.vcf"
+msgstr "contacts.vcf"
+
+#: templates/browse/column_headers.inc:25
+msgid "descending"
+msgstr "по спаданню"
+
+#: config/attributes.php.dist:433
+msgid "female"
+msgstr "жіноча"
+
+#: lib/Block/tree_menu.php:38
+#, php-format
+msgid "in %s"
+msgstr "в %s"
+
+#: config/attributes.php.dist:433
+msgid "male"
+msgstr "чоловіча"
+
+#: config/prefs.php.dist:128
+msgid "no formatting"
+msgstr "без форматування"
+
+#: templates/prefs/imsp_opt.inc:32
+msgid "none"
+msgstr "жоден"
+
+#: templates/browse/actions.inc:33
+msgid "to a Contact List"
+msgstr "до Списку Контактів"
+
+#: templates/browse/actions.inc:22
+msgid "to a different Address Book"
+msgstr "до іншого Адресника"
+
+#: data.php:103 templates/browse/column_headers.inc:14
+#: templates/data/import.inc:15 templates/data/export.inc:15
+msgid "vCard"
+msgstr "vCard"

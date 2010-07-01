@@ -1,0 +1,383 @@
+# Bulgarian translations for Mnemo package.
+# Copyright 2002-2009 The Horde Project
+# This file is distributed under the same license as the Whups package.
+# Miroslav Pendev <miro@cybershade.us>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mnemo 2.0-cvs\n"
+"POT-Creation-Date: 2002-09-14 00:38-0400\n"
+"PO-Revision-Date: 2002-11-19 20:44-0500\n"
+"Last-Translator: Miroslav Pendev <miro@cybershade.us>\n"
+"Language-Team: BG i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1251\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%d notes"
+msgstr "%d бележки"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s файл беше импортиран успешно"
+
+msgid "1 note"
+msgstr "1 бележка"
+
+msgid "Access denied deleting note."
+msgstr "Отказан достъп за изтриване на бележка"
+
+msgid "Access denied removing the note."
+msgstr "Отказан достъп за премахване на бележка"
+
+msgid "Add, remove, and edit categories."
+msgstr "Добавяне, преместване и редактиране на категории."
+
+msgid "Adding A New Note"
+msgstr "Добавяне на нова бележка"
+
+#, c-format
+msgid "Any notes in a category that is deleted will become %s."
+msgstr "Всички бележки в избраната за изтриване категория ще станат %s."
+
+msgid "Ascending"
+msgstr "Нарастващи"
+
+msgid "Back to Notepad"
+msgstr "Обратно в бележника"
+
+msgid "Category"
+msgstr "Категория"
+
+msgid "Category Management"
+msgstr "Категории Управление"
+
+msgid "Change your note sorting and display options."
+msgstr "Установете предпочитаните сортиране и опции на дисплея."
+
+msgid "Choose Action:"
+msgstr "Избери действие:"
+
+msgid "Choose Color"
+msgstr "Избери цвят"
+
+msgid "Create New Category"
+msgstr "Създай нова категория"
+
+msgid "Current Notepad"
+msgstr "Текущ бележник"
+
+msgid "Default sorting criteria:"
+msgstr "Критерии за сортиране по подразбиране:"
+
+msgid "Default sorting direction:"
+msgstr "Посока на сортиране по подразбиране:"
+
+msgid "Delete"
+msgstr "Изтрий"
+
+msgid "Delete Note"
+msgstr "Изтрий бележка"
+
+msgid "Delete Notes"
+msgstr "Изтрий бележки"
+
+msgid "Descending"
+msgstr "Намаляващи"
+
+msgid "Description"
+msgstr "Описание"
+
+msgid "Description:"
+msgstr "Описание:"
+
+msgid "Display Options"
+msgstr "Дисплей Опции"
+
+msgid "Edit your notepads."
+msgstr "Редактирай бележките си"
+
+msgid "Export Notes"
+msgstr "Експорт бележки"
+
+msgid "Flags"
+msgstr "Флагове"
+
+msgid "Full Text"
+msgstr "Пълен текст"
+
+msgid "Help"
+msgstr "Помощ"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "При импорт на CSV данни: първия ли ред съдържа имената на полетата?"
+
+msgid "Illegal or malformed form data."
+msgstr "Недопустими или повредени данни."
+
+msgid "Import Notes"
+msgstr "Импорт бележки"
+
+msgid "Import/Export"
+msgstr "Импорт/Експорт"
+
+msgid "Import/Export Notes"
+msgstr "Импорт/Експорт на бележки"
+
+msgid "Language"
+msgstr "Език"
+
+msgid "List Notes"
+msgstr "Списък с бележки"
+
+msgid "Manage multiple notepads."
+msgstr "Управляване на множество бележници."
+
+msgid "Memo Text"
+msgstr "Текст"
+
+msgid "Mnemo is not properly configured"
+msgstr "Mnemo не е конфигуриран коректно"
+
+msgid "Modify Note"
+msgstr "Модифицирай бележка"
+
+#, c-format
+msgid "Modifying %s"
+msgstr "Модифицирай %s"
+
+msgid "My Notepad"
+msgstr "Моят Бележник"
+
+msgid "New Category"
+msgstr "Нова категория"
+
+msgid "New Note"
+msgstr "Нова бележка"
+
+msgid "No configuration information specified for SQL Memos."
+msgstr "Няма зададена конфигурация за SQL бележки."
+
+msgid "No notes"
+msgstr "Няма бележки"
+
+msgid "None specified"
+msgstr "Няма зададен"
+
+msgid "Note Category"
+msgstr "Бележка категория"
+
+msgid "Note Description"
+msgstr "Бележка описание"
+
+msgid "Note Details"
+msgstr "Бележка детайли"
+
+msgid "Note Lists"
+msgstr "Списък бележки"
+
+msgid "Note Text"
+msgstr "Бележка текст"
+
+msgid "Notepad"
+msgstr "Бележник"
+
+msgid "Notepad's Type:"
+msgstr "Тип на бележника:"
+
+msgid "Notepad's name:"
+msgstr "Име на бележника:"
+
+msgid "Notepads"
+msgstr "Бележници"
+
+msgid "Options"
+msgstr "Опции"
+
+msgid "Other Options"
+msgstr "Други Опции"
+
+msgid "Print"
+msgstr "Отпечатай"
+
+msgid "Private"
+msgstr "Частен"
+
+msgid "Refresh List"
+msgstr "Опресни списъка"
+
+msgid "Rename"
+msgstr "Преименувай"
+
+msgid "Required 'database' not specified in memos configuration."
+msgstr "Необходимата 'database' не е зададена в конфигурацията."
+
+msgid "Required 'hostspec' not specified in memos configuration."
+msgstr "Необходимия 'hostspec' не е указан в конфигурацията."
+
+msgid "Required 'password' not specified in memos configuration."
+msgstr "Необходимата 'password' не съществува в конфигурация."
+
+msgid "Required 'phptype' not specified in memos configuration."
+msgstr "Необходимия 'phptype' не е зададен в конфигурацията."
+
+msgid "Required 'table' not specified in memos configuration."
+msgstr "Необходимата 'table' не е зададена в категориите."
+
+msgid "Required 'username' not specified in memos configuration."
+msgstr "Необходимото 'username' не е зададено в конфигурацията."
+
+msgid "Search"
+msgstr "Търси"
+
+msgid "Search Results"
+msgstr "Резултати от търсенето"
+
+msgid "Search Scope"
+msgstr "Обхват на търсене"
+
+msgid "Search Text"
+msgstr "Текст за търсене"
+
+msgid "Select Category"
+msgstr "Избери Категория"
+
+msgid "Select a notepad"
+msgstr "Избери бележник"
+
+msgid "Select the file to import:"
+msgstr "Изберете файл за импорт:"
+
+msgid "Select the format to export to:"
+msgstr "Изберете формат, към който да се експортира:"
+
+msgid "Select the source to import from:"
+msgstr "Изберете източника за импорт:"
+
+msgid "Select your preferred language:"
+msgstr "Изберете предпочитаният от Вас език:"
+
+msgid "Set the your preferred display language."
+msgstr "Изберете предпочитаният от Вас език."
+
+msgid "Shared"
+msgstr "Поделен"
+
+msgid "Show"
+msgstr "Показване"
+
+msgid "Show highlight colors in the summary view?"
+msgstr "Да се показват ли засветени колони в обобщеният изглед?"
+
+msgid "Some of Mnemo's configuration files are missing:"
+msgstr "Някой от конфигурационните файлове на Mnemo липсват:"
+
+msgid "Sort Direction"
+msgstr "Сортиране"
+
+msgid "Sort by Category"
+msgstr "Сортирай по категория"
+
+msgid "Sort by Description"
+msgstr "Сортирай по описание"
+
+msgid "The data was lost."
+msgstr "Данните бяха изгубени."
+
+msgid "The file contained no data."
+msgstr "Файлът не съдържа данни."
+
+msgid "The note was deleted."
+msgstr "Бележката беше изтрита."
+
+#, c-format
+msgid "The notepad \"%s\" has been created."
+msgstr "Бележника \"%s\" беше създаден."
+
+#, c-format
+msgid "The notepad \"%s\" has been deleted."
+msgstr "Бележника \"%s\" беше премахнат."
+
+#, c-format
+msgid "The notepad \"%s\" has been saved."
+msgstr "Бележника \"%s\" беше записан."
+
+msgid "The notepad name is empty."
+msgstr "Името на Бележника е празно."
+
+msgid "The requested note does not exist."
+msgstr "Бележката, която изисквате не съществува."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Грешка при изпращането на файла. Възможно е файлът да е по-голям от "
+"максимално допустимият размер."
+
+msgid "There was an error importing the data."
+msgstr "Грешка при импорт на данните."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Грешка при импортиране на изпратения файл"
+
+msgid "There was an error removing the note."
+msgstr "Грешка при преместване на бележката."
+
+msgid "There was an error saving the note."
+msgstr "Грешка при записа на бележката."
+
+msgid "There were no memos to export."
+msgstr "Няма бележки за експорт."
+
+msgid "These changes can not be undone!"
+msgstr "Тези промени не могат да бъдат върнати!"
+
+msgid "This file contains preferences for Mnemo."
+msgstr "Този файл съдържа настройки за Mnemo."
+
+msgid ""
+"This is the main Mnemo configuration file. It contains options for all Mnemo "
+"scripts."
+msgstr ""
+"Това е главния файл за конфигуриране на Mnemo. Той съдържа пътищата и "
+"опциите за Mnemo скриптовете."
+
+#, c-format
+msgid "Unable to create to category: %s"
+msgstr "Грешка при създаването на категория: %s"
+
+#, c-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "Грешка при изтриване \"%s\": %s."
+
+msgid "Unfiled"
+msgstr "Непопълнен"
+
+msgid "Unknown note"
+msgstr "Неизвестна бележка"
+
+msgid "User Options"
+msgstr "Потребителски опции"
+
+msgid "View Note Details"
+msgstr "Детайли за бележката"
+
+msgid "Which Notepad should the notes be added to?"
+msgstr "Към кой бележник да бъде добавена бележката?"
+
+msgid "You have no notes."
+msgstr "Нямате бележки."
+
+msgid "You must select a notepad to be deleted."
+msgstr "Трябва да изберете бележник, който да бъде изтрит."
+
+msgid "Your Information"
+msgstr "Информация за Вас"
+
+msgid "Your default notepad:"
+msgstr "Вашият бележник по подразбиране:"
+
+msgid "Your notepads:"
+msgstr "Вашите бележници::"

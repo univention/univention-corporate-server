@@ -1,0 +1,29 @@
+<form method="post" name="passphrase_dialog" action="<tag:submit_url />">
+<if:reload>
+<input type="hidden" name="reload" value="<tag:reload />" />
+</if:reload>
+<if:action>
+<input type="hidden" name="passphrase_action" value="<tag:action />" />
+</if:action>
+
+<div class="header">
+ <tag:locked_img />
+ <if:symmetric>
+ <gettext>Please enter the passphrase for this message.</gettext>
+ <else:symmetric>
+ <gettext>Please enter the passphrase for your PGP private key. You will only need to enter this passphrase once per session.</gettext>
+ </else:symmetric></if:symmetric>
+</div>
+
+<div class="nowrap padded">
+ <label for="passphrase"><strong><gettext>Passphrase:</gettext></strong></label>&nbsp;
+ <input type="password" id="passphrase" name="passphrase" size="15" maxlength="60" />&nbsp;
+ <input type="submit" name="submit" class="button" value="<gettext>Submit</gettext>" />
+ <input type="button" class="button" onclick="window.close();" value="<gettext>Cancel</gettext>" />
+</div>
+
+</form>
+
+<script type="text/javascript">
+document.passphrase_dialog.passphrase.focus();
+</script>

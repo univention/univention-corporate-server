@@ -1,0 +1,34 @@
+====================
+ Horde: How to Help
+====================
+
+:Last update:   $Date: 2004-09-24 21:02:01 $
+:Revision:      $Revision: 1.4 $
+:Contact:       core@horde.org
+
+There are many ways in which you can help out in the development of any of the
+Horde projects. The first and best way you are already doing: you're using
+them. One of the keys to a great product is its users. Without users we can't
+find bugs or get feedback on what's good and what's bad.
+
+It is darn near impossible for the developers to test the code on every
+Operating System and every different version of Web Browser available to make
+sure the code runs smoothly everywhere.  Linux is not Windows, and IE is not
+Mozilla, and it is (frequently) difficult to to predict behavior between
+platforms/browsers.
+
+With this said, one of the best ways you can help is to test. If you can help
+us smooth out the code across all (or even any) platforms, you're doing a
+great service to the project.
+
+Now, if that's not enough and you want to dig in and help code, you should
+first subscribe to the project lists, particularly the general Horde
+developers list dev@lists.horde.org (see http://www.horde.org/mail/ for
+information on subscribing to the mailing lists).  Additionally, you **MUST**
+read the `Horde Coding Standards`_ to ensure that the code your submitting
+will want to be analyzed and potentially committed by the developers.  You
+should probably read the various README files (for that matter, all the
+documentation in the ``docs/`` directory) for the particular application you
+are working on also.
+
+.. _`Horde Coding Standards`: ?f=CODING_STANDARDS.html

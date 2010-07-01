@@ -1,0 +1,850 @@
+# Bulgarian translations for Kronolith package.
+# Copyright 2002-2009 The Horde Project
+# This file is distributed under the same license as the Kronolith package.
+# Miroslav Pendev <miro@cybershade.us>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith 2.0-cvs\n"
+"POT-Creation-Date: 2002-09-14 00:38-0400\n"
+"PO-Revision-Date: 2002-11-19 20:44-0500\n"
+"Last-Translator: Miroslav Pendev <miro@cybershade.us>\n"
+"Language-Team: BG i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1251\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%d hour"
+msgstr "%d час"
+
+#, c-format
+msgid "%d hour, %d minute"
+msgstr "%d час, %d минута"
+
+#, c-format
+msgid "%d hour, %d minutes"
+msgstr "%d час, %d минути"
+
+#, c-format
+msgid "%d hours"
+msgstr "%d часа"
+
+#, c-format
+msgid "%d hours, %d minute"
+msgstr "%d часа, %d минута"
+
+#, c-format
+msgid "%d hours, %d minutes"
+msgstr "%d часа, %d минути"
+
+#, c-format
+msgid "%d minute"
+msgstr "%d минута"
+
+#, c-format
+msgid "%d minutes"
+msgstr "%d минути"
+
+#, c-format
+msgid "%s Minutes before"
+msgstr "%s Минути преди"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s файл беше импортиран успешно"
+
+#, c-format
+msgid "%s is in progress."
+msgstr "%s е в момента."
+
+#, c-format
+msgid "%s is starting now."
+msgstr "%s започва сега."
+
+#, c-format
+msgid "%s starts in %s"
+msgstr "%s започва след %s"
+
+msgid "* Add these by clicking Invite *"
+msgstr "* Добавете тези като кликнете на Invite *"
+
+msgid "* Please select address(es) *"
+msgstr "* Моля изберете адрес(и) *"
+
+msgid "<b>Description</b>"
+msgstr "<b>Описание</b>"
+
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Описание</b> (опционално)"
+
+msgid "<b>Keywords</b>"
+msgstr "<b>Ключови думи</b>"
+
+msgid "<b>Keywords</b> (optional)"
+msgstr "<b>Ключови думи</b> (опционално)"
+
+msgid "<b>Recurrence</b>"
+msgstr "<b>Повторяемост</b>"
+
+msgid "<b>Recurrence</b> (optional)"
+msgstr "<b>Повторяемост</b> (опционално)"
+
+msgid "Add Event"
+msgstr "Добави събитие"
+
+msgid "Add New Remote Calendar:"
+msgstr "Добавяне на нов отдалечен (нелокален) Календар:"
+
+msgid "Add a new event"
+msgstr "Добави ново събитие"
+
+msgid "Add, remove, and edit categories."
+msgstr "Добавяне, преместване и преименуване на категории."
+
+msgid "Alarm"
+msgstr "Аларма"
+
+msgid "Alarm Date"
+msgstr "Дата за аларма"
+
+msgid "Alarm Span (minutes)"
+msgstr "Продължителност на алармата (минути)"
+
+msgid "Alarm Time"
+msgstr "Час за аларма"
+
+msgid "All day"
+msgstr "Целият ден"
+
+msgid "All day event"
+msgstr "Събития за целия ден"
+
+msgid "All events"
+msgstr "Всички събития"
+
+#, c-format
+msgid "Any events in a category that is deleted will become %s."
+msgstr "Всички събития в избраната категория ще станат %s."
+
+msgid "At"
+msgstr "в"
+
+msgid "Birthday"
+msgstr "Рожден ден"
+
+msgid "Calendar"
+msgstr "Календар"
+
+msgid "Calendar's Type:"
+msgstr "Тип на Календара:"
+
+msgid "Calendar's name:"
+msgstr "Име на Календара:"
+
+msgid "Calendars"
+msgstr "Календари"
+
+msgid "Category"
+msgstr "Категория"
+
+msgid "Category Management"
+msgstr "Категории Управление"
+
+msgid "Change the way dates and times are formatted."
+msgstr "Промяна на начина, по които са форматирани датата и часа."
+
+msgid "Choose Color"
+msgstr "Избери цвят"
+
+msgid "Confirm deletion of events?"
+msgstr "Да се изисква ли потвърждение при изтриването на събития?"
+
+msgid "Contact List"
+msgstr "Контакти"
+
+msgid "Create New Category"
+msgstr "Създай нова категория"
+
+msgid "Create a New Event"
+msgstr "Създай ново събитие"
+
+msgid "Daily: Recurs every"
+msgstr "Дневно: повтаря се всеки"
+
+msgid "Date and Time Options"
+msgstr "Дата и час Опции"
+
+msgid "Day"
+msgstr "Ден"
+
+msgid "Day(s)"
+msgstr "Ден(дни)"
+
+msgid "Delete"
+msgstr "Изтрий"
+
+#, c-format
+msgid "Delete %s"
+msgstr "Изтрий %s"
+
+#, c-format
+msgid "Delete '%s'"
+msgstr "Изтрий '%s'"
+
+msgid "Delete Event"
+msgstr "Изтрий събитие"
+
+msgid ""
+"Delete the current event only, this occurrence and all future occurences, or "
+"all occurences?"
+msgstr ""
+"Изтрий само текущото събитие, това и всички бъдещи появявания, или всички "
+"появявания?"
+
+msgid "Description"
+msgstr "Описание"
+
+msgid "Description:"
+msgstr "Описание:"
+
+msgid "Display"
+msgstr "Покажи"
+
+msgid "Display 24-hour times?"
+msgstr "Да се показва ли 24 часово време?"
+
+msgid "Display Options"
+msgstr "Дисплей Опции"
+
+#, c-format
+msgid "Due: %s"
+msgstr "Задължение: %s"
+
+msgid "Duration"
+msgstr "Продължителност"
+
+msgid "Edit"
+msgstr "Редакция"
+
+#, c-format
+msgid "Edit %s"
+msgstr "Редакция на %s"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "Редактирай '%s'"
+
+msgid "Edit Remote Calendars"
+msgstr "Редакция на отдалечени (нелокални) календари."
+
+msgid "Edit your calendars."
+msgstr "Редактирай календарите си."
+
+msgid "Email Address"
+msgstr "Еmail адрес"
+
+msgid "End Date"
+msgstr "Крайна дата"
+
+msgid "End On"
+msgstr "Край на"
+
+msgid "End Time"
+msgstr "Краен час"
+
+#, c-format
+msgid "Event from %s to %s"
+msgstr "Събитие от %s до %s"
+
+msgid "Existing Remote Calendars:"
+msgstr "Нелокални Календари:"
+
+msgid "Export Calendar"
+msgstr "Експорт на Календар"
+
+msgid "Find"
+msgstr "Търси"
+
+msgid "Fr"
+msgstr "Пк"
+
+msgid "Friday"
+msgstr "Петък"
+
+msgid "Game"
+msgstr "Игра"
+
+msgid "Goto"
+msgstr "Иди на"
+
+msgid "Help"
+msgstr "Помощ"
+
+msgid "Hour(s)"
+msgstr "Час(а)"
+
+msgid ""
+"How many days into the future should we generate free/busy information for?"
+msgstr "Колко дни напред трябва да се генерира свободен/зает информацията?"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "При импорт на CSV данни: първия ли ред съдържа имената на полетата?"
+
+msgid "Illegal or malformed form data."
+msgstr "Недопустими или повредени данни."
+
+msgid "Import Calendar"
+msgstr "Импорт на Календар"
+
+msgid "Import/Export"
+msgstr "Импорт/Експорт"
+
+msgid "Import/Export Calendar"
+msgstr "Импорт/Експорт Календар"
+
+msgid "Invite"
+msgstr "Покани"
+
+#, c-format
+msgid "Invite people to %s"
+msgstr "Покани хора в %s"
+
+#, c-format
+msgid "Invite people to '%s'"
+msgstr "Покани хора в '%s'"
+
+msgid "Keywords"
+msgstr "Ключови думи"
+
+msgid "Kronolith is not properly configured"
+msgstr "Kronolith не е конфигуриран правилно"
+
+msgid "Language"
+msgstr "Език"
+
+msgid "Last Month"
+msgstr "Предишен месец"
+
+msgid "Last week"
+msgstr "Предишна седмица"
+
+msgid "Lasts"
+msgstr "Изминали"
+
+msgid "Limit the time span to export:"
+msgstr "Ограничи продължителността за експорт:"
+
+msgid "Location"
+msgstr "Място"
+
+msgid "Manage multiple calendars."
+msgstr "Управляване на множество календари."
+
+msgid "Manage remote calendars."
+msgstr "Управляване на нелокалните календари."
+
+msgid "Meeting"
+msgstr "Среща"
+
+msgid "Minute(s)"
+msgstr "Минута(и)"
+
+msgid "Minutes"
+msgstr "Минути"
+
+msgid "Mo"
+msgstr "Пн"
+
+msgid "Monday"
+msgstr "Понеделник"
+
+msgid "Month"
+msgstr "Месец"
+
+msgid "Monthly: Recurs every"
+msgstr "Месечно: повтаря се всеки"
+
+msgid "My Calendar"
+msgstr "Моят Календар"
+
+msgid "Name"
+msgstr "Име"
+
+msgid "Name:"
+msgstr "Име:"
+
+msgid "New Category"
+msgstr "Нова категория"
+
+msgid "New Event"
+msgstr "Ново събитие"
+
+msgid "Next Month"
+msgstr "Следващ месец"
+
+msgid "Next day"
+msgstr "Следващ ден"
+
+msgid "Next week"
+msgstr "Следваща седмица"
+
+msgid "No calendars are available to guests."
+msgstr "Няма календари достъпни за гости."
+
+msgid "No configuration information specified for SQL Calendar."
+msgstr "Няма зададена конфигурация за SQL Календар"
+
+msgid "No end date"
+msgstr "Няма крайна дата"
+
+msgid "None"
+msgstr "Няма"
+
+msgid ""
+"Notice: Importing is not possible with this configuration due to a bug in "
+"the underlying calendar driver."
+msgstr ""
+"Бележка: Импортирането не е възможно с тази конфигурация поради, проблем в "
+"календарният драйвер."
+
+msgid "Options"
+msgstr "Опции"
+
+msgid "Other Options"
+msgstr "Други Опции"
+
+msgid "Pattern"
+msgstr "Повторяемост"
+
+msgid "Permanently delete this event?"
+msgstr "Да се заличи ли това събитие?"
+
+msgid "Previous day"
+msgstr "Предишен ден"
+
+msgid "Print"
+msgstr "Отпечатай"
+
+msgid "Private"
+msgstr "Частен"
+
+msgid "Recur Until"
+msgstr "Повтаряй докато"
+
+msgid "Recurrence Data"
+msgstr "Повторяеми данни"
+
+msgid "Recurrence End Date"
+msgstr "Крайна дата за повторяемостта"
+
+msgid "Recurrence Interval"
+msgstr "Повторяемост интервал"
+
+msgid "Recurrence Type"
+msgstr "Тип на повторяемостта"
+
+msgid "Recurs daily"
+msgstr "Повтаряй всеки ден"
+
+msgid "Recurs monthly"
+msgstr "Повтаряй месечно"
+
+msgid "Recurs not"
+msgstr "Не повтаряй"
+
+msgid "Recurs weekly"
+msgstr "Повтаряй седмично"
+
+msgid "Recurs yearly"
+msgstr "Повтаряй годишно"
+
+msgid "Remote Calendars"
+msgstr "Нелокални Календари"
+
+msgid "Rename"
+msgstr "Преименувай"
+
+msgid "Required 'hostspec' not specified in calendar configuration."
+msgstr "Необходимата 'hostspec' не е зададена в конфигурацията на Календар."
+
+msgid "Required 'password' not specified in calendar configuration."
+msgstr "Необходимата 'password' не е зададена в конфигурацията на Календар."
+
+msgid "Required 'phptype' not specified in calendar configuration."
+msgstr "Необходимият 'phptype' не е зададен в конфигурацията на Календар."
+
+msgid "Required 'username' not specified in calendar configuration."
+msgstr "Необходимото 'username' не е зададено в конфигурацията на Календар."
+
+msgid "Sa"
+msgstr "Сб"
+
+msgid "Saturday"
+msgstr "Събота"
+
+msgid "Save As New"
+msgstr "Запиши като ново"
+
+msgid "Save Event"
+msgstr "Запиши събитие"
+
+msgid "Select Category"
+msgstr "Избери Категория"
+
+msgid "Select a calendar"
+msgstr "Избери календар"
+
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr ""
+"Изберете опциите за потвърждение, как да се показват различните изгледи и "
+"изгледа по подразбиране."
+
+msgid "Select how to display Dates:"
+msgstr "Изберете как да се показват датите:"
+
+msgid "Select if to show due tasks in the calendar."
+msgstr "Изберете дали да се показват задачи в календара."
+
+msgid "Select the calendar to import to:"
+msgstr "Изберете календар за импорт:"
+
+msgid "Select the file to import:"
+msgstr "Изберете файл за импорт:"
+
+msgid "Select the first weekday:"
+msgstr "Изберете кой да е първият ден на седмицата:"
+
+msgid "Select the format to export to:"
+msgstr "Изберете формат, към който да се експортира:"
+
+msgid "Select the source to import from:"
+msgstr "Изберете източника за импорт:"
+
+msgid "Select the time span to show:"
+msgstr "Изберете продължителността, която да се показва:"
+
+msgid "Select the view to display after login:"
+msgstr "Изберете изгледа, който да се вижда след вход:"
+
+msgid "Select which events to show in the Horde summary."
+msgstr "Изберете събитията, които да бъдат показани в обобщението на Horde."
+
+msgid "Set the current time zone."
+msgstr "Настрой часовата зона."
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Изберете езика, на които се показват менюта, обяснения и помощ."
+
+msgid "Set your preferred display language."
+msgstr "Изберете предпочитаният от Вас език за дисплея."
+
+msgid "Shared"
+msgstr "Поделен"
+
+msgid "Show"
+msgstr "Показване"
+
+msgid "Show delete, alarm, and recurrence icons in calendar views?"
+msgstr "Покажи изтрий, аларма и повторяемост икони в изгледите на календарите?"
+
+msgid "Show due tasks in the calendar?"
+msgstr "Да се показват ли задачи в календара?"
+
+msgid "Show half hour slots in day and week views?"
+msgstr "Да се показват ли половин-часови интервали в дневният и седмичният "
+"изглед?"
+
+msgid "Show only events that have an alarm set?"
+msgstr "Да се показват ли само събитията, които имат настроена аларма?"
+
+msgid "Show the Calendar icon on the menubar?"
+msgstr "Да се показва ли \"Календар\" икона в меню лентата?"
+
+msgid "Some of Kronolith's configuration files are missing:"
+msgstr "Някои от конфигурационните файлове на Kronolith липсват:"
+
+msgid "Start Date"
+msgstr "Начална дата"
+
+msgid "Start On"
+msgstr "Започва на"
+
+msgid "Start Time"
+msgstr "Начален час"
+
+msgid "Su"
+msgstr "Нд"
+
+msgid "Summary"
+msgstr "Обобщение"
+
+msgid "Sunday"
+msgstr "Неделя"
+
+msgid "Tasks"
+msgstr "Задачи"
+
+msgid "Th"
+msgstr "Чт"
+
+#, c-format
+msgid "The calendar \"%s\" cannot be deleted."
+msgstr "Календарът \"%s\" не може да бъде изтрит."
+
+#, c-format
+msgid "The calendar \"%s\" has been deleted."
+msgstr "Календарът \"%s\" беше изтрит."
+
+#, c-format
+msgid "The calendar \"%s\" has been saved."
+msgstr "Календарът \"%s\" беше записан."
+
+msgid "The calendar name is empty."
+msgstr "Името на Календарът е празно."
+
+msgid "The data was lost."
+msgstr "Данните бяха изгубени."
+
+msgid "The file contained no data."
+msgstr "Файлът не съдържа данни."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Грешка при изпращането на файла. Възможно е файлът да е по-голям от "
+"максимално допустимият размер."
+
+msgid "There was an error importing the data."
+msgstr "Грешка при импорт на данните."
+
+msgid "There was an error importing the iCalendar data."
+msgstr "Грешка при импортиране на iCalendat данни."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Грешка при импортиране на изпратения файл"
+
+#, c-format
+msgid "There was an error importing the uploaded file: %s."
+msgstr "Грешка при импорт на изпратения файл: %s."
+
+#, c-format
+msgid "There was an error sending your invitation: %s"
+msgstr "Грешка при изпращане на поканата: %s"
+
+msgid "There were no events to export."
+msgstr "Няма събития за експорт."
+
+msgid "These changes can not be undone!"
+msgstr "Тези промени не могат да бъдат върнати!"
+
+msgid ""
+"This file controls the default preferences for Kronolith, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Този файл контролира подразбиращите се настройки за Kronolith, както и кои "
+"от тях можете да променяте."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Този файл контролира стиловете, който се използват за цветовете и шрифтовете "
+"в допълнение към подразбиращите стилове на Horde."
+
+msgid ""
+"This is the main Kronolith configuration file. It contains paths and options "
+"for all Kronolith scripts."
+msgstr ""
+"Това е главният конфигурационен файл на Kronolith. Той съдържа пътища и "
+"опции за всички скриптове на Kronolith."
+
+msgid "Thursday"
+msgstr "Четвъртък"
+
+msgid "Time Zone"
+msgstr "Часова зона"
+
+msgid "Title"
+msgstr "Длъжност"
+
+msgid "Today"
+msgstr "Днес"
+
+msgid "Tomorrow"
+msgstr "Утре"
+
+msgid "Tu"
+msgstr "Вт"
+
+msgid "Tuesday"
+msgstr "Вторник"
+
+msgid "Type"
+msgstr "Тип"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "URL:"
+msgstr "URL:"
+
+#, c-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "Грешка при изтриване \"%s\": %s."
+
+#, c-format
+msgid "Unable to delete %s."
+msgstr "Грешка при изтриване на %s."
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Грешка при зареждане на дефиницията на %s."
+
+msgid "Unfiled"
+msgstr "Непопълнен"
+
+msgid "User Interface"
+msgstr "Потребителски интерфейс"
+
+msgid "User Options"
+msgstr "Потребителски опции"
+
+#, c-format
+msgid "View %s"
+msgstr "Изглед %s"
+
+msgid "We"
+msgstr "Ср"
+
+msgid "Wednesday"
+msgstr "Сряда"
+
+msgid "Week"
+msgstr "Седмица"
+
+#, c-format
+msgid "Week %d"
+msgstr "Седмица %d"
+
+#, c-format
+msgid "Week&nbsp;%d"
+msgstr "Седмица&nbsp;%d"
+
+msgid "Week(s)"
+msgstr "Седмица(и)"
+
+msgid "Weekly: Recurs every"
+msgstr "Седмично: повтаря се всяка"
+
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr "Кога да завършват дневният и седмичният изглед?"
+
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr "Кога да започват дневният и седмичният изглед?"
+
+msgid "Work Week"
+msgstr "Работна седмица"
+
+msgid "Yearly: Recurs every"
+msgstr "Годишно: повтаря се всяка"
+
+msgid "You do not have permission to add events to the selected calendar."
+msgstr "Нямате права за добавяне на събития към избрания календар."
+
+msgid "You do not have permission to delete this event."
+msgstr "Нямате права да изтриете това събитие."
+
+msgid ""
+"You don't have an email address configured in your preferences. You must set "
+"one before sending invitations."
+msgstr ""
+"Не сте въвели email адрес във вашите настройки. Трябва да зададете адрес "
+"преди да можете да изпращате покани."
+
+#, c-format
+msgid "You have been invited to %s"
+msgstr "Вие бяхте поканен в %s"
+
+#, c-format
+msgid ""
+"You have been invited to %s.\n"
+"\n"
+"Here is a more detailed description:\n"
+"\n"
+"%s\n"
+"\n"
+"Attached is an iCalendar file describing this event."
+msgstr ""
+"Бяхте поканен в %s.\n"
+"\n"
+"Това е по-детайлно описание:\n"
+"\n"
+"%s\n"
+"\n"
+"Прикрепен е iCalendar файл описващ събитието."
+
+msgid "You have specified an invalid calendar."
+msgstr "Задали сте невалиден календар."
+
+msgid "You must select a calendar to be deleted."
+msgstr "Трябва да изберете календар, който да бъде изтрит."
+
+msgid "Your Information"
+msgstr "Информация за Вас"
+
+msgid "Your calendars:"
+msgstr "Вашите календари:"
+
+msgid "Your current time zone:"
+msgstr "Вашата часова зона:"
+
+msgid "Your default calendar:"
+msgstr "Вашият календар по подразбиране:"
+
+msgid "Your invitation was successfully sent."
+msgstr "Вашата покана беше изпратена успешно."
+
+msgid "day"
+msgstr "ден"
+
+msgid "day(s)"
+msgstr "ден(дни)"
+
+msgid "days"
+msgstr "дни"
+
+msgid "from"
+msgstr "от"
+
+msgid "iCalendar file successfully imported"
+msgstr "iCalendar файлът беше импортиран успешно"
+
+msgid "month(s)"
+msgstr "месец(а)"
+
+msgid "no time"
+msgstr "без час"
+
+msgid "on the same date"
+msgstr "на същата дата"
+
+msgid "on the same weekday"
+msgstr "на същият работен ден"
+
+msgid "week"
+msgstr "седмица"
+
+msgid "week(s) on:"
+msgstr "седмица(и):"
+
+msgid "weeks"
+msgstr "седмици"
+
+msgid "year(s)"
+msgstr "година"

@@ -1,0 +1,2196 @@
+# Kronolith Simplified Chinese translation.
+# Copyright 2002-2009 The Horde Project.
+# Zhang Bo <boozhang@sdb.ac.cn>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith 2.0-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2005-10-18 15:12+0200\n"
+"PO-Revision-Date: 2007-09-03 17:48+0800\n"
+"Last-Translator: Anna Chen <annachen2008@yahoo.com.cn>\n"
+"Language-Team: Zhang Bo <boozhang@sdb.ac.cn>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=GB2312\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: templates/search/header.inc:4
+#, php-format
+msgid "%d events"
+msgstr "%d 事件"
+
+#: templates/edit/edit_timespan.inc:121
+#, php-format
+msgid "%s Day(s) %s Hour(s) %s Minutes"
+msgstr "%s 天 %s 小时 %s 分钟"
+
+#: lib/Driver.php:2022
+#, php-format
+msgid "%s attendees"
+msgstr "%s 位参与者"
+
+#: data.php:301
+#, php-format
+msgid "%s file successfully imported"
+msgstr "成功导入 %s 文件"
+
+#: calendars.php:105 lib/api.php:201 lib/Kronolith.php:220
+#, php-format
+msgid "%s's Calendar"
+msgstr "%s 的日历"
+
+#: templates/contacts/contacts.inc:167
+msgid "* Add these by clicking Add *"
+msgstr "* 通过单击“添加”来添加这些项 *"
+
+#: templates/contacts/contacts.inc:152
+msgid "* Please select address(es) *"
+msgstr "* 请选择地址 *"
+
+#: lib/Driver.php:2021
+msgid "1 attendee"
+msgstr "1 位参与者"
+
+#: templates/search/header.inc:4
+msgid "1 event"
+msgstr "1 个事件"
+
+#: config/prefs.php.dist:171
+msgid "1 hour"
+msgstr "1 小时"
+
+#: config/prefs.php.dist:168
+msgid "15 minutes"
+msgstr "15 分"
+
+#: config/prefs.php.dist:169
+msgid "20 minutes"
+msgstr "20 分"
+
+#: config/prefs.php.dist:170
+msgid "30 minutes"
+msgstr "30 分"
+
+#: templates/edit/edit.inc:174
+msgid "<strong>Attendees</strong> (optional)"
+msgstr "<strong>参与者</strong> (可选)"
+
+#: templates/edit/edit.inc:162
+msgid "<strong>Descri_ption</strong> (optional)"
+msgstr "<strong>描述_P</strong> (可选)"
+
+#: templates/edit/edit.inc:278
+msgid "<strong>Keywords</strong> (optional)"
+msgstr "<strong>关键词</strong> (可选)"
+
+#: templates/edit/edit.inc:197
+msgid "<strong>Recurrence</strong> (optional)"
+msgstr "<strong>周期</strong> (可选)"
+
+#: templates/data/export.inc:118 templates/data/export.inc:203
+msgid "AM"
+msgstr "上午"
+
+#: lib/Kronolith.php:901
+msgid "Accepted"
+msgstr "已接受"
+
+#: templates/search/search.inc:11
+msgid "Ad_vanced Search"
+msgstr "高级搜索_V"
+
+#: templates/contacts/contacts.inc:161
+msgid "Add"
+msgstr "添加"
+
+#: templates/edit/edit.inc:23
+msgid "Add Event"
+msgstr "添加事件"
+
+#: templates/prefs/remote_cal_management.inc:43
+msgid "Add a new Remote Calendar"
+msgstr "添加远程日历"
+
+#: new.php:64
+msgid "Add a new event"
+msgstr "添加事件"
+
+#: templates/attendees/attendees.inc:72
+msgid "Add attendees"
+msgstr "添加参与者"
+
+#: templates/contacts/contacts.inc:187
+msgid "Add to attendees"
+msgstr "添加到参与者"
+
+#: contacts.php:76 templates/contacts/contacts.inc:128
+#: templates/attendees/attendees.inc:75
+msgid "Address Book"
+msgstr "地址簿"
+
+#: templates/search/search_advanced.inc:8 templates/search/search.inc:11
+msgid "Advanced Search"
+msgstr "高级搜索"
+
+#: templates/view/view.inc:47
+msgid "Alarm"
+msgstr "提醒"
+
+#: lib/Driver.php:1995
+#, php-format
+msgid "Alarm %d days before"
+msgstr "%d 天前提醒"
+
+#: lib/Driver.php:2000
+#, php-format
+msgid "Alarm %d hours before"
+msgstr "%d 小时前提醒"
+
+#: lib/Driver.php:2005
+#, php-format
+msgid "Alarm %d minutes before"
+msgstr "%d 分钟之前提醒"
+
+#: lib/Driver.php:1990
+#, php-format
+msgid "Alarm %d weeks before"
+msgstr "%d 周前提醒"
+
+#: lib/Driver.php:1994
+msgid "Alarm 1 day before"
+msgstr "1 天前提醒"
+
+#: lib/Driver.php:1999
+msgid "Alarm 1 hour before"
+msgstr "1 小时前提醒"
+
+#: lib/Driver.php:2004
+msgid "Alarm 1 minute before"
+msgstr "1 分钟之前提醒"
+
+#: lib/Driver.php:1989
+msgid "Alarm 1 week before"
+msgstr "1 周前提醒"
+
+#: data.php:59
+msgid "Alarm Date"
+msgstr "提醒日期"
+
+#: data.php:58
+msgid "Alarm Span (minutes)"
+msgstr "提醒间隔(分钟)"
+
+#: data.php:60
+msgid "Alarm Time"
+msgstr "提醒时间"
+
+#: templates/prefs/default_alarm_management.inc:24 templates/edit/edit.inc:148
+msgid "Alarm Unit"
+msgstr "提醒单位"
+
+#: templates/prefs/default_alarm_management.inc:22 templates/edit/edit.inc:146
+msgid "Alarm Value"
+msgstr "提醒值"
+
+#: templates/edit/edit.inc:141
+msgid "Alarm enabled"
+msgstr "提醒功能已启用"
+
+#: templates/delete/delete.inc:26
+msgid "All"
+msgstr "全部"
+
+#: lib/FBView.php:128 lib/FBView.php:131 lib/FBView.php:134
+msgid "All Attendees"
+msgstr "所有参与者"
+
+#: templates/perms/perms.inc:84
+msgid "All Authenticated Users"
+msgstr "所有验证用户"
+
+#: templates/search/search.inc:59
+msgid "All Future"
+msgstr "所有今后事件"
+
+#: templates/search/search.inc:53
+msgid "All Past"
+msgstr "所有过去事件"
+
+#: lib/Block/prevmonthlist.php:27 lib/Block/month.php:24
+#: lib/Block/monthlist.php:30 lib/Block/summary.php:28
+msgid "All Visible"
+msgstr "所有可见项"
+
+#: templates/edit/edit_timespan.inc:120 lib/Driver.php:2067
+#: lib/Views/Day.php:96 lib/Views/Day.php:99 lib/Views/Week.php:142
+#: lib/Views/Week.php:149
+msgid "All day"
+msgstr "整日"
+
+#: lib/Block/summary.php:173
+msgid "All day event"
+msgstr "整日事件"
+
+#: templates/data/export.inc:33
+msgid "All events"
+msgstr "所有事件"
+
+#: templates/search/search_advanced.inc:48
+#: templates/search/search_advanced.inc:70 lib/Kronolith.php:994
+msgid "Any"
+msgstr "任何"
+
+#: templates/javascript/goto.js:71
+msgid "April"
+msgstr "四月"
+
+#: templates/edit/edit_timespan.inc:38 templates/edit/edit_timespan.inc:91
+#: templates/data/export.inc:85 templates/data/export.inc:176
+msgid "At"
+msgstr "在"
+
+#: lib/Kronolith.php:1141
+msgid ""
+"Attached is an iCalendar file with more information about the event. If your "
+"mail client supports iTip requests you can use this file to easily update "
+"your local copy of the event."
+msgstr ""
+"所附的是有关此事件详情的 iCalendar 文件。如果您的邮件客户端支持 iTip 请求，则"
+"可以使用该文件轻松更新此事件的本地版本。"
+
+#: perms.php:43
+msgid "Attempt to edit a non-existent share."
+msgstr "尝试编辑不存在的共享。"
+
+#: templates/attendees/attendees.inc:42 templates/attendees/attendees.inc:54
+#: templates/view/view.inc:159
+msgid "Attendance"
+msgstr "参与"
+
+#: templates/view/view.inc:155
+msgid "Attendees"
+msgstr "参与者"
+
+#: templates/javascript/goto.js:75
+msgid "August"
+msgstr "八月"
+
+#: templates/search/search_advanced.inc:11 templates/search/search.inc:8
+msgid "Basic Search"
+msgstr "基本搜索"
+
+#: config/keywords.php.dist:17
+msgid "Birthday"
+msgstr "生日"
+
+#: lib/FBView.php:90 lib/FBView.php:111
+msgid "Busy"
+msgstr "忙"
+
+#: templates/search/search_advanced.inc:42
+msgid "C_alendar"
+msgstr "日历_A"
+
+#: templates/edit/edit.inc:49
+msgid "Cal_endar"
+msgstr "日历_E"
+
+#: templates/calendars/calendars.inc:90 lib/Block/prevmonthlist.php:21
+#: lib/Block/month.php:21 lib/Block/monthlist.php:21 lib/Block/summary.php:22
+msgid "Calendar"
+msgstr "日历"
+
+#: lib/Block/summary.php:3
+msgid "Calendar Summary"
+msgstr "日历摘要"
+
+#: data.php:245
+msgid "Calendar successfully purged."
+msgstr "成功清除日历。"
+
+#: config/prefs.php.dist:45 config/prefs.php.dist:53 config/prefs.php.dist:61
+#: config/prefs.php.dist:82
+msgid "Calendars"
+msgstr "日历"
+
+#: templates/calendar_titles.inc:8
+msgid "Calendars Printed: "
+msgstr "所打印的日历："
+
+#: calendars.php:27
+msgid "Calendars must have a name."
+msgstr "日历必须有名称。"
+
+#: data.php:261
+msgid "Can't create a new event."
+msgstr "无法创建新事件。"
+
+#: templates/delete/one.inc:25 templates/delete/delete.inc:27
+#: templates/edit/edit.inc:33 templates/edit/edit.inc:311
+msgid "Cancel"
+msgstr "取消"
+
+#: lib/Kronolith.php:877
+msgid "Cancelled"
+msgstr "已取消"
+
+#: lib/Kronolith.php:1115
+#, php-format
+msgid "Cancelled: %s"
+msgstr "已取消：%s"
+
+#: templates/search/search_advanced.inc:63 templates/edit/edit.inc:76
+msgid "Categor_y"
+msgstr "类别_Y"
+
+#: data.php:62 templates/search/event_headers.inc:4 templates/view/view.inc:6
+msgid "Category"
+msgstr "类别"
+
+#: config/prefs.php.dist:334
+msgid ""
+"Choose if you want to be notified of new, edited, and deleted events by "
+"email:"
+msgstr "如果您想接收新建、编辑和删除事件的电子邮件通知，请选择："
+
+#: config/prefs.php.dist:77
+msgid "Choose if you want to be notified of new, edited, and deleted events."
+msgstr "如果您想接收新建、编辑和删除事件的通知，请选择："
+
+#: config/prefs.php.dist:347
+msgid "Choose if you want to receive email reminders for events with alarms:"
+msgstr "如果您想接收提示事件的电子邮件通知，请选择："
+
+#: templates/prefs/search_abook_select.inc:19 config/prefs.php.dist:367
+msgid "Choose the address books to search for free/busy URLs:"
+msgstr "选择进行搜索忙/闲 URL 搜索的地址簿："
+
+#: templates/prefs/fb_cals_select.inc:16
+msgid "Choose the calendars to include in your free/busy information:"
+msgstr "选择要包含在忙/闲信息中的日历："
+
+#: config/prefs.php.dist:390
+msgid "Choose the calendars to include when generating free/busy URLs:"
+msgstr "选择要在生成忙/闲 URL 时包含的日历："
+
+#: config/prefs.php.dist:55
+msgid "Choose which holidays to display"
+msgstr "选择要显示的假期"
+
+#: config/prefs.php.dist:47
+msgid "Choose your default calendar."
+msgstr "选择默认日历。"
+
+#: templates/attendees/attendees.inc:86
+msgid "Clear all attendees"
+msgstr "清除所有参与者"
+
+#: templates/perms/perms.inc:9
+msgid "Close Window"
+msgstr "关闭窗口"
+
+#: templates/contacts/contacts.inc:188
+msgid "Close window"
+msgstr "关闭窗口"
+
+#: data.php:28 templates/data/import.inc:13
+msgid "Comma separated values"
+msgstr "逗号分隔(CSV)"
+
+#: config/prefs.php.dist:98
+msgid "Confirm deletion of events?"
+msgstr "是否确定删除事件？"
+
+#: lib/Kronolith.php:874
+msgid "Confirmed"
+msgstr "已确认"
+
+#: templates/calendars/calendars.inc:160
+msgid "Copy the URL below for use wherever you need your Free/Busy URL:"
+msgstr "无论何处需要忙/闲 URL 时则可以复制下面的 URL："
+
+#: lib/Kronolith.php:312
+#, php-format
+msgid "Could not open %s."
+msgstr "无法打开 %s。"
+
+#: templates/calendars/calendars.inc:69
+msgid "Create"
+msgstr "创建"
+
+#: templates/calendars/calendars.inc:55
+msgid "Create Calendar"
+msgstr "创建日历"
+
+#: templates/week/head.inc:29 lib/Views/Day.php:96 lib/Views/Day.php:244
+#: lib/Views/Month.php:170
+msgid "Create a New Event"
+msgstr "创建新事件"
+
+#: templates/view/view.inc:74
+msgid "Created"
+msgstr "已创建"
+
+#: templates/delete/delete.inc:24
+msgid "Current"
+msgstr "当前"
+
+#: templates/view/view.inc:96 templates/edit/edit.inc:211
+msgid "Daily: Recurs every"
+msgstr "每日：周期"
+
+#: attendees.php:113 lib/Kronolith.php:1438 lib/Block/tree_menu.php:21
+#: config/prefs.php.dist:107
+msgid "Day"
+msgstr "日"
+
+#: templates/prefs/default_alarm_management.inc:28 templates/view/view.inc:56
+#: templates/edit/edit.inc:152
+msgid "Day(s)"
+msgstr "日"
+
+#: lib/Kronolith.php:1480
+msgid "De_lete"
+msgstr "删除_L"
+
+#: templates/javascript/goto.js:79
+msgid "December"
+msgstr "十二月"
+
+#: lib/Kronolith.php:904
+msgid "Declined"
+msgstr "已拒绝"
+
+#: templates/prefs/default_alarm_management.inc:21
+msgid "Default Alarm Setting:"
+msgstr "默认提醒设置："
+
+#: config/prefs.php.dist:46
+msgid "Default Calendar"
+msgstr "默认日历"
+
+#: templates/perms/perms.inc:34 templates/perms/perms.inc:73
+#: templates/perms/perms.inc:90 templates/perms/perms.inc:114
+#: templates/perms/perms.inc:131 templates/perms/perms.inc:155
+#: templates/perms/perms.inc:172 templates/perms/perms.inc:196
+#: templates/perms/perms.inc:213 templates/perms/perms.inc:237
+#: templates/perms/perms.inc:278 templates/perms/perms.inc:295
+#: templates/perms/perms.inc:319 templates/perms/perms.inc:353
+msgid "Delegate"
+msgstr "委派"
+
+#: templates/calendars/calendars.inc:145 templates/delete/one.inc:24
+#: templates/prefs/remote_cal_management.inc:30 templates/perms/perms.inc:33
+#: templates/perms/perms.inc:69 templates/perms/perms.inc:89
+#: templates/perms/perms.inc:110 templates/perms/perms.inc:130
+#: templates/perms/perms.inc:151 templates/perms/perms.inc:171
+#: templates/perms/perms.inc:192 templates/perms/perms.inc:212
+#: templates/perms/perms.inc:233 templates/perms/perms.inc:274
+#: templates/perms/perms.inc:294 templates/perms/perms.inc:315
+#: templates/perms/perms.inc:349 lib/Driver.php:2049
+msgid "Delete"
+msgstr "删除"
+
+#: lib/Driver.php:2048 lib/Views/DeleteEvent.php:29
+#, php-format
+msgid "Delete %s"
+msgstr "删除 %s"
+
+#: templates/delete/delete.inc:22
+msgid ""
+"Delete the current event only, this occurrence and all future occurences, or "
+"all occurences?"
+msgstr "是否仅删除当前事件、此偶发事件和今后的偶发事件，或所有的偶发事件？"
+
+#: templates/search/search_advanced.inc:103
+msgid "Descri_ption"
+msgstr "描述_P"
+
+#: templates/search/search.inc:28
+msgid "Descri_ption:"
+msgstr "描述_P："
+
+#: data.php:61 templates/calendars/calendars.inc:119
+#: templates/view/view.inc:142
+msgid "Description"
+msgstr "描述"
+
+#: templates/contacts/contacts.inc:176
+msgid "Display"
+msgstr "显示"
+
+#: config/prefs.php.dist:9 config/prefs.php.dist:20 config/prefs.php.dist:37
+msgid "Display Options"
+msgstr "显示选项"
+
+#: config/prefs.php.dist:39
+msgid ""
+"Do you want to show external events in your calendar (like tasks which are "
+"due etc) ?"
+msgstr "您想在日历中显示外部事件(如到期任务等)吗？"
+
+#: lib/Kronolith.php:844
+msgid "Does not recur"
+msgstr "不循环"
+
+#: lib/Kronolith.php:520
+#, php-format
+msgid "Due: %s"
+msgstr "截止时间：%s"
+
+#: templates/edit/edit_timespan.inc:113
+msgid "Duration"
+msgstr "持续时间"
+
+#: lib/Driver.php:1797
+msgid "Duration Day"
+msgstr "持续天数"
+
+#: lib/Driver.php:1809
+msgid "Duration Hour"
+msgstr "持续小时"
+
+#: lib/Driver.php:1820
+msgid "Duration Minute"
+msgstr "持续分钟"
+
+#: templates/calendars/calendars.inc:114
+#: templates/prefs/remote_cal_management.inc:31 templates/perms/perms.inc:32
+#: templates/perms/perms.inc:65 templates/perms/perms.inc:88
+#: templates/perms/perms.inc:106 templates/perms/perms.inc:129
+#: templates/perms/perms.inc:147 templates/perms/perms.inc:170
+#: templates/perms/perms.inc:188 templates/perms/perms.inc:211
+#: templates/perms/perms.inc:229 templates/perms/perms.inc:270
+#: templates/perms/perms.inc:293 templates/perms/perms.inc:311
+#: templates/perms/perms.inc:345 lib/Driver.php:2041
+msgid "Edit"
+msgstr "编辑"
+
+#: lib/Driver.php:2040 lib/Views/EditEvent.php:29
+#, php-format
+msgid "Edit %s"
+msgstr "编辑 %s"
+
+#: templates/edit/edit.inc:190
+msgid "Edit Attendees"
+msgstr "编辑参与者"
+
+#: templates/calendars/calendars.inc:84
+msgid "Edit Calendars"
+msgstr "编辑日历"
+
+#: perms.php:258
+msgid "Edit Permissions"
+msgstr "编辑权限"
+
+#: perms.php:260
+#, php-format
+msgid "Edit Permissions for %s"
+msgstr "编辑 %s 权限"
+
+#: attendees.php:165
+msgid "Edit attendees"
+msgstr "编辑参与者"
+
+#: templates/category_legend.inc:20
+msgid "Edit categories and colors"
+msgstr "编辑类别和色彩"
+
+#: templates/perms/perms.inc:11
+#, php-format
+msgid "Edit permissions for %s"
+msgstr "编辑 %s 权限"
+
+#: templates/contacts/contacts.inc:179 templates/attendees/attendees.inc:41
+#: templates/view/view.inc:158
+msgid "Email Address"
+msgstr "电子邮件地址"
+
+#: templates/edit/edit_timespan.inc:59
+msgid "En_d"
+msgstr "结束_D"
+
+#: data.php:56
+msgid "End Date"
+msgstr "结束日期"
+
+#: templates/data/export.inc:161 lib/Driver.php:1768
+msgid "End Day"
+msgstr "结束日"
+
+#: templates/data/export.inc:178 lib/Driver.php:1781
+msgid "End Hour"
+msgstr "结束时间"
+
+#: templates/data/export.inc:190 lib/Driver.php:1792
+msgid "End Minute"
+msgstr "结束分钟"
+
+#: templates/data/export.inc:148 lib/Driver.php:1759
+msgid "End Month"
+msgstr "结束月"
+
+#: templates/search/event_headers.inc:8 templates/view/view.inc:41
+#: templates/data/export.inc:125
+msgid "End On"
+msgstr "结束"
+
+#: data.php:57
+msgid "End Time"
+msgstr "结束时间"
+
+#: templates/data/export.inc:134 lib/Driver.php:1748
+msgid "End Year"
+msgstr "结束年"
+
+#: attendees.php:157
+#, php-format
+msgid "Error retrieving free/busy information for %s: %s"
+msgstr "检索 %s 忙/闲信息时出错：%s"
+
+#: attendees.php:138
+#, php-format
+msgid "Error retrieving your free/busy information: %s"
+msgstr "检索忙/闲信息时出错：%s"
+
+#: config/prefs.php.dist:69
+msgid "Event Defaults"
+msgstr "事件默认项"
+
+#: lib/Kronolith.php:1289
+msgid "Event added:"
+msgstr "所添加的事件："
+
+#: lib/Kronolith.php:1299
+msgid "Event deleted:"
+msgstr "所删除的事件："
+
+#: lib/Kronolith.php:1294
+msgid "Event edited:"
+msgstr "所编辑的事件："
+
+#: lib/Driver.php:1220
+#, php-format
+msgid "Event from %s to %s"
+msgstr "从 %s 到 %s 的日历"
+
+#: lib/Driver/sql.php:372
+msgid "Event not found"
+msgstr "未找到事件"
+
+#: config/prefs.php.dist:68 config/prefs.php.dist:75
+msgid "Events"
+msgstr "事件"
+
+#: lib/Driver.php:858
+msgid "Events must have a start date."
+msgstr "事件必须有开始日期。"
+
+#: lib/Driver.php:820
+msgid "Events must have a title."
+msgstr "事件必须有标题。"
+
+#: templates/attendees/attendees.inc:76
+msgid "Expand Names"
+msgstr "扩展名"
+
+#: templates/data/export.inc:209
+msgid "Export"
+msgstr "导出"
+
+#: templates/data/export.inc:8
+msgid "Export Calendar"
+msgstr "导出日历"
+
+#: templates/javascript/goto.js:69
+msgid "February"
+msgstr "二月"
+
+#: templates/contacts/contacts.inc:133
+msgid "Find"
+msgstr "寻找"
+
+#: templates/javascript/goto.js:63 templates/edit/edit.inc:224
+#: lib/Views/Year.php:81 lib/Block/month.php:98
+msgid "Fr"
+msgstr "周五"
+
+#: lib/Kronolith.php:880
+msgid "Free"
+msgstr "未定"
+
+#: config/prefs.php.dist:83
+msgid "Free/Busy Information"
+msgstr "忙/闲信息"
+
+#: templates/month/head.inc:21 templates/view/view.inc:103
+#: templates/edit/javascript.inc:71
+msgid "Friday"
+msgstr "周五"
+
+#: templates/delete/delete.inc:25
+msgid "Future"
+msgstr "今后"
+
+#: config/keywords.php.dist:17
+msgid "Game"
+msgstr "游戏"
+
+#: templates/search/search_advanced.inc:23
+msgid "General"
+msgstr "常规"
+
+#: lib/Block/summary.php:149
+#, php-format
+msgid "Goto %s"
+msgstr "转到 %s"
+
+#: templates/perms/perms.inc:289
+msgid "Groups"
+msgstr "组"
+
+#: templates/perms/perms.inc:125
+msgid "Guest Permissions"
+msgstr "来宾权限"
+
+#: templates/panel.inc:43
+msgid "Hide Options"
+msgstr "隐藏选项"
+
+#: config/prefs.php.dist:54
+msgid "Holidays"
+msgstr "假期"
+
+#: templates/prefs/default_alarm_management.inc:27 templates/view/view.inc:59
+#: templates/edit/edit.inc:151
+msgid "Hour(s)"
+msgstr "小时"
+
+#: config/prefs.php.dist:167
+msgid "How long should the time slots on the day and week views be?"
+msgstr "日视图和周视图中的最小时间单位"
+
+#: config/prefs.php.dist:356
+msgid "How many days of free/busy information should we generate?"
+msgstr "需要生成多少日的忙/闲信息？"
+
+#: lib/Kronolith.php:1145
+#, php-format
+msgid ""
+"If your email client doesn't support iTip requests you can use one of the "
+"following links to accept or decline the event.\n"
+"\n"
+"To accept the event:\n"
+"%s\n"
+"\n"
+"To accept the event tentatively:\n"
+"%s\n"
+"\n"
+"To decline the event:\n"
+"%s"
+msgstr ""
+"如果您的电子邮件客户端不支持 iTip 请求，则可以使用下列链接接受或拒绝事件。 \n"
+"\n"
+"若要接受事件：\n"
+"%s\n"
+"\n"
+"若要暂时接受事件：\n"
+"%s\n"
+"\n"
+"若要拒绝事件：\n"
+"%s"
+
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Calendar, Step %d"
+msgstr "导入日历，步骤 %d"
+
+#: data.php:307
+msgid "Import/Export Calendar"
+msgstr "导入/导出日历"
+
+#: templates/perms/perms.inc:207
+msgid "Individual Users"
+msgstr "单个用户"
+
+#: templates/javascript/goto.js:68
+msgid "January"
+msgstr "一月"
+
+#: templates/javascript/goto.js:74
+msgid "July"
+msgstr "七月"
+
+#: templates/javascript/goto.js:73
+msgid "June"
+msgstr "六月"
+
+#: data.php:64 templates/view/view.inc:126
+msgid "Keywords"
+msgstr "关键词"
+
+#: templates/search/search.inc:55
+msgid "Last 24 hours"
+msgstr "最近 24 小时"
+
+#: templates/view/view.inc:81
+msgid "Last Modified"
+msgstr "上次修改"
+
+#: templates/month/head_side_by_side.inc:5 templates/month/head.inc:5
+msgid "Last Month"
+msgstr "上月"
+
+#: templates/year/head.inc:3
+msgid "Last Year"
+msgstr "上年"
+
+#: templates/search/search.inc:54 templates/week/head.inc:6
+msgid "Last week"
+msgstr "上周"
+
+#: templates/data/export.inc:29
+msgid "Limit the time span to export:"
+msgstr "限制导出的时间范围："
+
+#: config/prefs.php.dist:381
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+"是否在加载联系人屏幕时列出所有联系人？(若禁用，则仅可以看到符合搜索条件的联系"
+"人)"
+
+#: templates/search/search_advanced.inc:85 templates/edit/edit.inc:83
+msgid "Lo_cation"
+msgstr "位置_C"
+
+#: js/Kronolith.js.php:8 js/src/Kronolith.js.php:72
+msgid "Loading ..."
+msgstr "正在加载..."
+
+#: data.php:63 templates/search/event_headers.inc:5
+#: templates/prefs/remote_cal_management.inc:25
+#: templates/prefs/remote_cal_management.inc:60 templates/view/view.inc:14
+#: lib/Driver.php:2089
+msgid "Location"
+msgstr "位置"
+
+#: config/prefs.php.dist:63
+msgid "Manage remote calendars."
+msgstr "管理远程日历。"
+
+#: templates/javascript/goto.js:70
+msgid "March"
+msgstr "三月"
+
+#: lib/api.php:113
+msgid "Maximum Number of Events"
+msgstr "事件最大数量"
+
+#: lib/Block/monthlist.php:27 lib/Block/summary.php:25
+msgid "Maximum number of events to display (0 = no limit)"
+msgstr "最多显示的事件数量(0 = 无限制)"
+
+#: templates/javascript/goto.js:72
+msgid "May"
+msgstr "五月"
+
+#: lib/Driver.php:2085
+msgid "Me"
+msgstr "我"
+
+#: config/keywords.php.dist:17
+msgid "Meeting"
+msgstr "会议"
+
+#: lib/Block/tree_alarms.php:3
+msgid "Menu Alarms"
+msgstr "菜单提示"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "菜单列表"
+
+#: templates/prefs/default_alarm_management.inc:26 templates/view/view.inc:62
+#: templates/edit/edit.inc:150
+msgid "Minute(s)"
+msgstr "分钟"
+
+#: templates/javascript/goto.js:59 templates/edit/edit.inc:220
+#: lib/Views/Year.php:77 lib/Block/month.php:98
+msgid "Mo"
+msgstr "周一"
+
+#: templates/month/head.inc:17 templates/view/view.inc:99
+#: templates/edit/javascript.inc:67 config/prefs.php.dist:131
+msgid "Monday"
+msgstr "周一"
+
+#: lib/Kronolith.php:1444 lib/Block/tree_menu.php:24 config/prefs.php.dist:110
+msgid "Month"
+msgstr "月"
+
+#: templates/view/view.inc:108 templates/view/view.inc:110
+#: templates/edit/edit.inc:231 templates/edit/edit.inc:237
+msgid "Monthly: Recurs every"
+msgstr "每月：周期"
+
+#: lib/Block/monthlist.php:24
+msgid "Months Ahead"
+msgstr "之前月数"
+
+#: lib/Block/prevmonthlist.php:24
+msgid "Months Before"
+msgstr "之前月数"
+
+#: lib/api.php:756
+msgid "Multiple iCalendar components found; only one vEvent is supported."
+msgstr "找到多个 iCalendar 组件；仅支持 vEvent。"
+
+#: calendars.php:125
+msgid "My Calendars"
+msgstr "我的日历"
+
+#: templates/panel.inc:53
+msgid "My Calendars:"
+msgstr "我的日历："
+
+#: templates/calendars/calendars.inc:156
+msgid "My Free/Busy URL"
+msgstr "我的忙/闲 URL"
+
+#: templates/calendars/calendars.inc:60 templates/calendars/calendars.inc:103
+#: templates/contacts/contacts.inc:178
+#: templates/prefs/remote_cal_management.inc:24
+#: templates/prefs/remote_cal_management.inc:52
+msgid "Name"
+msgstr "名称"
+
+#: lib/Block/tree_menu.php:20
+msgid "New Event"
+msgstr "新建事件"
+
+#: lib/Kronolith.php:255
+#, php-format
+msgid ""
+"New calendar created and automatically shared with the following group(s): %"
+"s."
+msgstr "已创建新日历，并自动与下列组共享：%s。"
+
+#: templates/data/import.inc:33
+msgid "Next"
+msgstr "下一步"
+
+#: templates/search/search.inc:57
+msgid "Next 24 hours"
+msgstr "接下来的 24 小时"
+
+#: lib/FBView/day.php:29
+msgid "Next Day"
+msgstr "下一日"
+
+#: templates/month/head_side_by_side.inc:7 templates/month/head.inc:7
+msgid "Next Month"
+msgstr "下个月"
+
+#: lib/FBView/week.php:32
+msgid "Next Week"
+msgstr "下周"
+
+#: templates/year/head.inc:5
+msgid "Next Year"
+msgstr "下一年"
+
+#: templates/day/head.inc:5
+msgid "Next day"
+msgstr "下一天"
+
+#: templates/search/search.inc:58 templates/week/head.inc:8
+msgid "Next week"
+msgstr "下周"
+
+#: config/prefs.php.dist:330 config/prefs.php.dist:343
+msgid "No"
+msgstr "无"
+
+#: templates/view/view.inc:67 templates/edit/edit.inc:145
+msgid "No alarm"
+msgstr "无提示"
+
+#: templates/attendees/attendees.inc:48
+msgid "No attendees"
+msgstr "无参与者"
+
+#: lib/api.php:144 lib/api.php:895
+msgid ""
+"No attendees have been updated because none of the provided email addresses "
+"have been found in the event's attendees list."
+msgstr "未更新任何参与者信息，因所提供的电子邮件地址不在事件参与者列表中。"
+
+#: lib/Kronolith.php:1597
+msgid "No calendars are available to guests."
+msgstr "无可供来宾访问的日历。"
+
+#: templates/view/view.inc:120 templates/edit/edit.inc:257
+msgid "No end date"
+msgstr "无终止日"
+
+#: lib/Block/prevmonthlist.php:166 lib/Block/monthlist.php:175
+#: lib/Block/summary.php:204
+msgid "No events to display"
+msgstr "无可供显示的事件"
+
+#: lib/FreeBusy.php:211
+#, php-format
+msgid "No free/busy information found at the free/busy url of %s."
+msgstr "未在 %s 忙/闲 URL 找到忙/闲信息。"
+
+#: lib/Storage/kolab.php:66
+#, php-format
+msgid "No free/busy information is available for %s"
+msgstr "%s 无可用的忙/闲信息"
+
+#: lib/FreeBusy.php:212
+#, php-format
+msgid "No free/busy url found for %s."
+msgstr "未找到 %s 的忙/闲 URL。"
+
+#: lib/api.php:497 lib/api.php:513 lib/api.php:746
+msgid "No iCalendar data was found."
+msgstr "未找到 iCalendar 数据。"
+
+#: templates/edit/edit.inc:206
+msgid "No recurrence"
+msgstr "无周期"
+
+#: lib/FreeBusy.php:165
+msgid "No valid email address found"
+msgstr "未找到有效的电子邮件地址"
+
+#: lib/Kronolith.php:911 lib/Kronolith.php:932
+msgid "None"
+msgstr "无"
+
+#: lib/Views/Event.php:26 lib/Views/DeleteEvent.php:27
+#: lib/Views/EditEvent.php:27
+msgid "Not Found"
+msgstr "未找到"
+
+#: lib/Storage/sql.php:155
+msgid "Not found"
+msgstr "未找到"
+
+#: config/prefs.php.dist:76
+msgid "Notifications"
+msgstr "通知"
+
+#: templates/javascript/goto.js:78
+msgid "November"
+msgstr "十一月"
+
+#: templates/search/search.inc:56
+msgid "Now"
+msgstr "现在"
+
+#: templates/perms/perms.inc:166
+msgid "Object Creator"
+msgstr "对象编写者"
+
+#: templates/javascript/goto.js:77
+msgid "October"
+msgstr "十月"
+
+#: templates/edit/edit_timespan.inc:13 templates/edit/edit_timespan.inc:64
+msgid "On"
+msgstr "在"
+
+#: config/prefs.php.dist:333 config/prefs.php.dist:346
+msgid "On all calendars I have read access to"
+msgstr "在所有我可以读取的日历上"
+
+#: config/prefs.php.dist:332 config/prefs.php.dist:345
+msgid "On all shown calendars"
+msgstr "在所有显示的日历上"
+
+#: config/prefs.php.dist:331 config/prefs.php.dist:344
+msgid "On my calendars only"
+msgstr "仅在我的日历上"
+
+#: perms.php:55
+msgid ""
+"Only the owner or system administrator may change ownership or owner "
+"permissions for a share"
+msgstr "仅有所有者或系统管理员可以更新共享内容的所有权或所有者权限"
+
+#: lib/Kronolith.php:929
+msgid "Optional"
+msgstr "可选"
+
+#: lib/FBView.php:119
+msgid "Optional Attendees"
+msgstr "可选的参与者"
+
+#: lib/FBView.php:154
+msgid "Overview"
+msgstr "概述"
+
+#: templates/view/view.inc:28
+msgid "Owner"
+msgstr "所有者"
+
+#: templates/perms/perms.inc:28
+msgid "Owner Permissions"
+msgstr "所有者权限"
+
+#: templates/perms/perms.inc:40 templates/perms/perms.inc:51
+msgid "Owner:"
+msgstr "所有者："
+
+#: lib/Driver.php:2084
+#, php-format
+msgid "Owner: %s"
+msgstr "所有者：%s"
+
+#: templates/data/export.inc:119 templates/data/export.inc:204
+msgid "PM"
+msgstr "下午"
+
+#: templates/prefs/remote_cal_management.inc:76
+msgid "Password"
+msgstr "密码"
+
+#: templates/view/view.inc:93 templates/edit/edit.inc:201
+msgid "Pattern"
+msgstr "样式"
+
+#: templates/delete/one.inc:22
+msgid "Permanently delete this event?"
+msgstr "是否永久删除此事件？"
+
+#: lib/api.php:476 lib/api.php:554 lib/api.php:607 lib/api.php:696
+#: lib/api.php:728 lib/api.php:815 lib/api.php:871 lib/Driver/sql.php:761
+msgid "Permission Denied"
+msgstr "权限不足"
+
+#: templates/calendars/calendars.inc:111
+msgid "Permissions"
+msgstr "权限"
+
+#: config/prefs.php.dist:21
+msgid "Portal Options"
+msgstr "门户选项"
+
+#: lib/FBView/day.php:25
+msgid "Previous Day"
+msgstr "前一日"
+
+#: lib/FBView/week.php:26
+msgid "Previous Week"
+msgstr "上周"
+
+#: templates/day/head.inc:3
+msgid "Previous day"
+msgstr "前一日"
+
+#: lib/Block/prevmonthlist.php:3 lib/Block/prevmonthlist.php:42
+msgid "Prior Events"
+msgstr "优先事件"
+
+#: templates/edit/edit.inc:102
+msgid "Private?"
+msgstr "个人？"
+
+#: templates/perms/perms.inc:31 templates/perms/perms.inc:61
+#: templates/perms/perms.inc:87 templates/perms/perms.inc:102
+#: templates/perms/perms.inc:128 templates/perms/perms.inc:143
+#: templates/perms/perms.inc:169 templates/perms/perms.inc:184
+#: templates/perms/perms.inc:210 templates/perms/perms.inc:225
+#: templates/perms/perms.inc:266 templates/perms/perms.inc:292
+#: templates/perms/perms.inc:307 templates/perms/perms.inc:341
+msgid "Read"
+msgstr "阅读"
+
+#: templates/view/view.inc:119 templates/edit/edit.inc:254
+msgid "Recur Until"
+msgstr "周期结束"
+
+#: templates/view/view.inc:90
+msgid "Recurrence"
+msgstr "周期"
+
+#: data.php:68
+msgid "Recurrence Data"
+msgstr "周期数据"
+
+#: data.php:66
+msgid "Recurrence End Date"
+msgstr "周期截止日"
+
+#: lib/Driver.php:1857
+msgid "Recurrence End Day"
+msgstr "周期结束日"
+
+#: lib/Driver.php:1844
+msgid "Recurrence End Month"
+msgstr "周期结束月"
+
+#: lib/Driver.php:1829
+msgid "Recurrence End Year"
+msgstr "周期结束年"
+
+#: data.php:67
+msgid "Recurrence Interval"
+msgstr "周期间隔"
+
+#: data.php:65
+msgid "Recurrence Type"
+msgstr "周期类型"
+
+#: lib/Kronolith.php:847
+msgid "Recurs daily"
+msgstr "每日周期"
+
+#: lib/Kronolith.php:854
+msgid "Recurs monthly"
+msgstr "每月周期"
+
+#: lib/Kronolith.php:850
+msgid "Recurs weekly"
+msgstr "每周周期"
+
+#: lib/Kronolith.php:857
+msgid "Recurs yearly"
+msgstr "每年周期"
+
+#: lib/Scheduler/kronolith.php:262
+#, php-format
+msgid "Reminder: %s"
+msgstr "提醒：%s"
+
+#: config/prefs.php.dist:62
+msgid "Remote Calendars"
+msgstr "远程日历"
+
+#: templates/panel.inc:70
+msgid "Remote Calendars:"
+msgstr "远程日历："
+
+#: templates/calendars/calendars.inc:135
+msgid "Remote Subscription URL"
+msgstr "远程注册 URL"
+
+#: templates/contacts/contacts.inc:162
+msgid "Remove"
+msgstr "删除"
+
+#: templates/attendees/attendees.inc:51
+#, php-format
+msgid "Remove %s"
+msgstr "删除 %s"
+
+#: attendees.php:107
+msgid "Remove Attendee"
+msgstr "删除参与者"
+
+#: lib/Driver.php:263
+msgid ""
+"Removing user data is not supported with the current calendar storage "
+"backend."
+msgstr "删除当前日历存储后端不支持的用户数据。"
+
+#: templates/data/import.inc:31
+msgid ""
+"Replace existing calendar with the imported one? <strong>Warning: This "
+"deletes all entries in your current calendar.</strong>"
+msgstr ""
+"是否使用导入日历代替现有日历？<strong>警告：此操作会删除当前日历中的所有条"
+"目。</strong>"
+
+#: lib/Kronolith.php:936
+msgid "Required"
+msgstr "需要"
+
+#: lib/FBView.php:98 lib/FBView.php:139 lib/FBView.php:142 lib/FBView.php:145
+msgid "Required Attendees"
+msgstr "所需参与者"
+
+#: templates/edit/edit.inc:34 templates/edit/edit.inc:312
+msgid "Reset to Defaults"
+msgstr "重置为默认项"
+
+#: templates/attendees/attendees.inc:43 templates/view/view.inc:160
+msgid "Response"
+msgstr "回应"
+
+#: config/prefs.php.dist:158
+msgid ""
+"Restrict day and week views to these time slots, even if there <strong>are</"
+"strong> earlier or later events?"
+msgstr "当没有较早事件时，日视图和周视图的开始时间？"
+
+#: templates/javascript/goto.js:64 templates/edit/edit.inc:225
+#: lib/Views/Year.php:82 lib/Block/month.php:98
+msgid "Sa"
+msgstr "周六"
+
+#: templates/month/head.inc:22 templates/view/view.inc:104
+#: templates/edit/javascript.inc:72
+msgid "Saturday"
+msgstr "周六"
+
+#: templates/panel.inc:80 templates/calendars/calendars.inc:144
+msgid "Save"
+msgstr "保存"
+
+#: templates/perms/perms.inc:364
+#, php-format
+msgid "Save %s"
+msgstr "保存 %s"
+
+#: lib/Kronolith.php:1475 lib/Views/EditEvent.php:78
+#: lib/Views/EditEvent.php:87
+msgid "Save As New"
+msgstr "另存为新档"
+
+#: templates/attendees/attendees.inc:84
+msgid "Save Attendees"
+msgstr "保存参与者"
+
+#: new.php:55 lib/Views/EditEvent.php:81
+msgid "Save Event"
+msgstr "保存事件"
+
+#: templates/attendees/attendees.inc:85
+msgid "Save and Finish"
+msgstr "保存并结束"
+
+#: search.php:91 templates/search/search_advanced.inc:114
+#: templates/search/search.inc:67 templates/contacts/contacts.inc:145
+#: lib/Block/tree_menu.php:26
+msgid "Search"
+msgstr "搜索"
+
+#: templates/search/header.inc:6
+msgid "Search Results"
+msgstr "搜索结果"
+
+#: templates/panel.inc:48
+msgid "Search for Calendars:"
+msgstr "搜索日历："
+
+#: templates/contacts/contacts.inc:150
+msgid "Search results"
+msgstr "搜索结果"
+
+#: lib/Storage.php:135
+msgid "Searching free/busy is not available."
+msgstr "搜索忙/闲信息不可用。"
+
+#: templates/calendars/calendars.inc:23 templates/calendars/calendars.inc:138
+msgid "Select a calendar above to display the Remote Subscription URL"
+msgstr "选择要显示远程订阅 URL 的日历"
+
+#: templates/calendars/calendars.inc:22 templates/calendars/calendars.inc:130
+msgid "Select a calendar above to display the URL"
+msgstr "选择要显示其 URL 的日历"
+
+#: templates/calendars/calendars.inc:94
+msgid "Select a calendar to edit"
+msgstr "选择待编辑的日历："
+
+#: templates/edit/edit.inc:269 templates/edit/edit_timespan.inc:30
+#: templates/edit/edit_timespan.inc:81
+msgid "Select a date"
+msgstr "选择日期"
+
+#: templates/perms/perms.inc:329
+msgid "Select a group to add"
+msgstr "选择待添加的组"
+
+#: templates/perms/perms.inc:327
+msgid "Select a group to add:"
+msgstr "选择待添加的组："
+
+#: templates/perms/perms.inc:42
+msgid "Select a new owner:"
+msgstr "选择新的持有者："
+
+#: templates/perms/perms.inc:246 templates/perms/perms.inc:248
+msgid "Select a user to add:"
+msgstr "选择待添加的用户："
+
+#: config/prefs.php.dist:11
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr "选择确认选项、显示不同视图的方式，并选择默认视图。"
+
+#: templates/data/import.inc:18
+msgid "Select the calendar to import to:"
+msgstr "选择待导入的日历："
+
+#: templates/data/export.inc:19
+msgid "Select the calendar(s) to export from"
+msgstr "选择待导出的日历："
+
+#: templates/data/export.inc:12
+msgid "Select the export format:"
+msgstr "选择导出格式："
+
+#: templates/data/import.inc:27
+msgid "Select the file to import:"
+msgstr "选择待导入的文件："
+
+#: config/prefs.php.dist:129
+msgid "Select the first weekday:"
+msgstr "选择每周的第一个工作日："
+
+#: templates/data/import.inc:11
+msgid "Select the format of the source file:"
+msgstr "选择源文件格式："
+
+#: config/prefs.php.dist:228
+msgid "Select the time span to show:"
+msgstr "选择要显示的时间范围："
+
+#: config/prefs.php.dist:111
+msgid "Select the view to display on startup:"
+msgstr "选择启动时显示的视图："
+
+#: config/prefs.php.dist:22
+msgid "Select which events to show in the portal."
+msgstr "选择要在主页面中显示的事件。"
+
+#: config/prefs.php.dist:257
+msgid "Select which external events you would like to display"
+msgstr "选择您想要显示的外部事件"
+
+#: templates/contacts/contacts.inc:165
+msgid "Selected addresses"
+msgstr "所选地址"
+
+#: templates/delete/one.inc:19 templates/delete/delete.inc:19
+msgid "Send a cancel notification to all attendees when deleting this event"
+msgstr "当删除此事件时，发送取消通知给所有参与者"
+
+#: templates/view/view.inc:164
+#, php-format
+msgid "Send an email to %s"
+msgstr "将电子邮件发送到 %s"
+
+#: templates/edit/edit.inc:184
+msgid "Send updates/invitations to all attendees when saving this event"
+msgstr "当保存此事件时，发送更新/邀请通知给所有参与者"
+
+#: templates/javascript/goto.js:76
+msgid "September"
+msgstr "九月"
+
+#: config/prefs.php.dist:70
+msgid "Set default values for new events."
+msgstr "设置新事件的默认值。"
+
+#: templates/edit/edit_timespan.inc:81
+msgid "Set end date"
+msgstr "设置终止期"
+
+#: templates/edit/edit.inc:269
+msgid "Set recurrence end date"
+msgstr "设置周期终止日"
+
+#: templates/edit/edit_timespan.inc:30
+msgid "Set start date"
+msgstr "设置开始日期"
+
+#: config/prefs.php.dist:84
+msgid ""
+"Set your free/busy calendars and your own and other users' free/busy options."
+msgstr "设置忙/闲日历，以及您个人与其他用户的忙/闲选项。"
+
+#: calendars.php:77
+#, php-format
+msgid "Share not found: %s"
+msgstr "未找到共享项目：%s"
+
+#: templates/panel.inc:62
+msgid "Shared Calendars:"
+msgstr "共享的日历："
+
+#: templates/perms/perms.inc:30 templates/perms/perms.inc:57
+#: templates/perms/perms.inc:86 templates/perms/perms.inc:98
+#: templates/perms/perms.inc:127 templates/perms/perms.inc:139
+#: templates/perms/perms.inc:168 templates/perms/perms.inc:180
+#: templates/perms/perms.inc:209 templates/perms/perms.inc:221
+#: templates/perms/perms.inc:262 templates/perms/perms.inc:291
+#: templates/perms/perms.inc:303 templates/perms/perms.inc:337
+msgid "Show"
+msgstr "显示"
+
+#: templates/panel.inc:42
+msgid "Show Options"
+msgstr "显示选项"
+
+#: config/prefs.php.dist:200
+msgid "Show calendar options panel?"
+msgstr "显示日历选项面板？"
+
+#: config/prefs.php.dist:190
+msgid "Show category legend?"
+msgstr "是否显示类别图例？"
+
+#: config/prefs.php.dist:180
+msgid "Show delete, alarm, and recurrence icons in calendar views?"
+msgstr "是否在日历视图中显示删除、提示和周期图标？"
+
+#: config/prefs.php.dist:266
+msgid "Show external events using category colors?"
+msgstr "使用类别色彩外部任务？"
+
+#: config/prefs.php.dist:210
+msgid "Show free/busy legend?"
+msgstr "是否显示忙/闲图例？"
+
+#: config/prefs.php.dist:247
+msgid "Show only events that have an alarm set?"
+msgstr "是否仅显示有提醒设置的事件?"
+
+#: config/prefs.php.dist:219
+msgid "Show shared calendars side-by-side?"
+msgstr "是否平铺显示共享日历？"
+
+#: config/prefs.php.dist:120
+msgid "Show time of day between each day in week views?"
+msgstr "是否在周视图中显示每日的时间？"
+
+#: templates/edit/edit_timespan.inc:11
+msgid "Sta_rt"
+msgstr "开始_R"
+
+#: data.php:54
+msgid "Start Date"
+msgstr "开始日期"
+
+#: templates/data/export.inc:68 lib/Driver.php:1723
+msgid "Start Day"
+msgstr "开始日"
+
+#: templates/data/export.inc:87 lib/Driver.php:1734
+msgid "Start Hour"
+msgstr "开始小时"
+
+#: templates/data/export.inc:102 lib/Driver.php:1744
+msgid "Start Minute"
+msgstr "开始分钟"
+
+#: templates/data/export.inc:54 lib/Driver.php:1714
+msgid "Start Month"
+msgstr "开始月"
+
+#: templates/search/event_headers.inc:7 templates/view/view.inc:35
+#: templates/data/export.inc:37
+msgid "Start On"
+msgstr "开始"
+
+#: data.php:55
+msgid "Start Time"
+msgstr "开始时间"
+
+#: templates/data/export.inc:39 lib/Driver.php:1703
+msgid "Start Year"
+msgstr "开始年"
+
+#: templates/search/search_advanced.inc:94 templates/edit/edit.inc:92
+msgid "Stat_us"
+msgstr "状态_U"
+
+#: templates/search/event_headers.inc:6 templates/view/view.inc:21
+msgid "Status"
+msgstr "状态"
+
+#: lib/Storage.php:143
+msgid "Storing free/busy is not available."
+msgstr "存储忙/闲不可用。"
+
+#: templates/javascript/goto.js:65 templates/edit/edit.inc:226
+#: lib/Views/Year.php:75 lib/Views/Year.php:84 lib/Block/month.php:100
+#: lib/Block/month.php:102
+msgid "Su"
+msgstr "周日"
+
+#: templates/month/head.inc:15 templates/month/head.inc:24
+#: templates/view/view.inc:105 templates/edit/javascript.inc:66
+#: config/prefs.php.dist:130
+msgid "Sunday"
+msgstr "周日"
+
+#: config/prefs.php.dist:38
+msgid "Tasks and other external events"
+msgstr "任务以及其他外部事件"
+
+#: lib/Kronolith.php:884 lib/Kronolith.php:907
+msgid "Tentative"
+msgstr "暂定"
+
+#: templates/javascript/goto.js:62 templates/edit/edit.inc:223
+#: lib/Views/Year.php:80 lib/Block/month.php:98
+msgid "Th"
+msgstr "周四"
+
+#: data.php:235
+#, php-format
+msgid "The %s file didn't contain any events."
+msgstr "%s 文件不包含任何事件。"
+
+#: lib/Driver.php:45
+msgid "The Calendar backend is not currently available."
+msgstr "日历后端当前不可用。"
+
+#: lib/Driver.php:200
+#, php-format
+msgid "The Calendar backend is not currently available: %s"
+msgstr "日历后端当前不可用：%s"
+
+#: templates/contacts/contacts.inc:70
+msgid "The Edit Attendees screen is no longer present. Exiting."
+msgstr "“编辑参与者”屏幕未显示。正在退出。"
+
+#: calendars.php:70
+#, php-format
+msgid "The calendar \"%s\" cannot be deleted."
+msgstr "无法删除日历“%s”。"
+
+#: calendars.php:40
+#, php-format
+msgid "The calendar \"%s\" has been created."
+msgstr "已创建日历“%s”。"
+
+#: calendars.php:88
+#, php-format
+msgid "The calendar \"%s\" has been deleted."
+msgstr "已删除日历“%s”。"
+
+#: calendars.php:54
+#, php-format
+msgid "The calendar \"%s\" has been renamed to \"%s\"."
+msgstr "已将日历“%s”重命名为“%s”。"
+
+#: calendars.php:56
+#, php-format
+msgid "The calendar \"%s\" has been saved."
+msgstr "已保存日历“%s”。"
+
+#: data.php:243
+#, php-format
+msgid "The calendar could not be purged: %s"
+msgstr "无法清除日历：%s"
+
+#: templates/edit/javascript.inc:156
+msgid "The end date must be later than the start date."
+msgstr "结束日必须晚于开始日。"
+
+#: lib/Kronolith.php:1290
+#, php-format
+msgid ""
+"The event \"%s\" has been added to \"%s\" calendar, which is on %s at %s."
+msgstr "已在 %s/%s 将事件“%s”添加到“%s”日历。"
+
+#: lib/Kronolith.php:1300
+#, php-format
+msgid ""
+"The event \"%s\" has been deleted from \"%s\" calendar, which was on %s at %"
+"s."
+msgstr "已在 %s/%s 从“%s”日历中删除事件“%s”。"
+
+#: lib/Kronolith.php:1295
+#, php-format
+msgid ""
+"The event \"%s\" has been edited on \"%s\" calendar, which is on %s at %s."
+msgstr "已在 %s/%s 编辑“%s”日历中的事件“%s”。"
+
+#: lib/Kronolith.php:1183
+#, php-format
+msgid "The event notification to %s was successfully sent."
+msgstr "已将事件通知成功发送给 %s。"
+
+#: lib/Kronolith.php:1139
+msgid "The following is a more detailed description of the event:"
+msgstr "下面是有关此事件的详细描述："
+
+#: attend.php:41
+msgid ""
+"The request was incomplete. Some parameters that are necessary to accept or "
+"decline an event are missing."
+msgstr "未实现请求。接收或拒绝事件所需的部分参数丢失。"
+
+#: lib/Views/Event.php:41 lib/Views/DeleteEvent.php:40
+#: lib/Views/EditEvent.php:43
+msgid "The requested event was not found."
+msgstr "未找到所请求的事件。"
+
+#: templates/search/empty.inc:3
+msgid "There are no events matching the current criteria."
+msgstr "无符合当前规格的事件。"
+
+#: edit.php:28 add.php:24
+#, php-format
+msgid "There was an error accessing the calendar: %s"
+msgstr "访问日历时出错：%s"
+
+#: add.php:44
+#, php-format
+msgid "There was an error adding the event: %s"
+msgstr "添加事件时出错：%s"
+
+#: edit.php:83
+#, php-format
+msgid "There was an error editing the event: %s"
+msgstr "编辑事件时出错：%s"
+
+#: lib/api.php:489 lib/api.php:740
+msgid "There was an error importing the iCalendar data."
+msgstr "导入 iCalendar 数据时出错。"
+
+#: edit.php:59
+#, php-format
+msgid "There was an error moving the event: %s"
+msgstr "移动事件时出错：%s"
+
+#: lib/Kronolith.php:1188
+#, php-format
+msgid "There was an error sending an event notification to %s: %s"
+msgstr "将事件通知发送给 %s 时出错：%s"
+
+#: data.php:108
+msgid "There were no events to export."
+msgstr "无可供导出的事件。"
+
+#: lib/Block/month.php:3
+msgid "This Month"
+msgstr "此月"
+
+#: data.php:191
+msgid "This file format is not supported."
+msgstr "不支持此文件格式。"
+
+#: data.php:263
+#, php-format
+msgid "This is what the server said: %s"
+msgstr "此为服务器回应：%s"
+
+#: templates/month/head.inc:20 templates/view/view.inc:102
+#: templates/edit/javascript.inc:70
+msgid "Thursday"
+msgstr "周四"
+
+#: templates/search/search.inc:37
+msgid "Time Sp_an:"
+msgstr "时间范围_A："
+
+#: templates/edit/edit_timespan.inc:4
+msgid "Time span"
+msgstr "时间范围"
+
+#: templates/search/search_advanced.inc:34 templates/edit/edit.inc:40
+msgid "Tit_le"
+msgstr "标题_L"
+
+#: data.php:53 templates/search/event_headers.inc:3
+msgid "Title"
+msgstr "标题"
+
+#: templates/search/search.inc:20
+msgid "Title:"
+msgstr "标题："
+
+#: lib/Block/prevmonthlist.php:125 lib/Block/monthlist.php:132
+#: lib/Block/summary.php:136
+msgid "Today"
+msgstr "今日"
+
+#: lib/Block/prevmonthlist.php:127 lib/Block/monthlist.php:134
+#: lib/Block/summary.php:138
+msgid "Tomorrow"
+msgstr "明日"
+
+#: templates/javascript/goto.js:60 templates/edit/edit.inc:221
+#: lib/Views/Year.php:78 lib/Block/month.php:98
+msgid "Tu"
+msgstr "周二"
+
+#: templates/month/head.inc:18 templates/view/view.inc:100
+#: templates/edit/javascript.inc:68
+msgid "Tuesday"
+msgstr "周二"
+
+#: config/keywords.php.dist:17
+msgid "Type"
+msgstr "类型"
+
+#: templates/calendars/calendars.inc:127
+msgid "URL"
+msgstr "URL"
+
+#: lib/Storage/sql.php:75
+msgid "Unable to connect to SQL server."
+msgstr "无法连接 SQL 服务器。"
+
+#: calendars.php:84
+#, php-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "无法删除“%s”：%s"
+
+#: lib/Driver.php:203 lib/Storage.php:58
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "无法加载 %s 定义。"
+
+#: calendars.php:51
+#, php-format
+msgid "Unable to rename \"%s\": %s"
+msgstr "无法重命名“%s”：%s"
+
+#: lib/Storage/kolab.php:56
+#, php-format
+msgid "Unable to retrieve free/busy information for %s"
+msgstr "无法检索 %s 忙/闲信息"
+
+#: templates/view/view.inc:8
+#: scripts/upgrades/2004-05-19_convert_categories_to_strings.php:53
+msgid "Unfiled"
+msgstr "未分类"
+
+#: lib/api.php:520 lib/api.php:578 lib/api.php:639 lib/api.php:765
+#, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "不受支持的内容类型：%s"
+
+#: lib/Block/monthlist.php:3 lib/Block/monthlist.php:46
+msgid "Upcoming Events"
+msgstr "近期事件"
+
+#: perms.php:252
+#, php-format
+msgid "Updated \"%s\"."
+msgstr "已更新“%s”。"
+
+#: lib/Kronolith.php:1129
+#, php-format
+msgid "Updated: %s."
+msgstr "已更新：%s。"
+
+#: config/prefs.php.dist:10
+msgid "User Interface"
+msgstr "用户界面"
+
+#: templates/prefs/remote_cal_management.inc:68
+msgid "User Name"
+msgstr "用户名"
+
+#: templates/perms/perms.inc:256
+msgid "User to add:"
+msgstr "待添加的用户："
+
+#: lib/Views/Year.php:156 lib/Views/Year.php:162 lib/Block/month.php:155
+#: lib/Block/month.php:158
+msgid "View Day"
+msgstr "日视图"
+
+#: templates/javascript/goto.js:61 templates/edit/edit.inc:222
+#: lib/Views/Year.php:79 lib/Block/month.php:98
+msgid "We"
+msgstr "周三"
+
+#: lib/Scheduler/kronolith.php:266
+#, php-format
+msgid ""
+"We would like to remind you of this upcoming event.\n"
+"\n"
+"%s\n"
+"\n"
+"Location: %s\n"
+"\n"
+"Date: %s\n"
+"Time: %s\n"
+"\n"
+"%s"
+msgstr ""
+"我们会就即将到来的事件提醒您。\n"
+"\n"
+"%s\n"
+"\n"
+"位置：%s\n"
+
+#: templates/month/head.inc:19 templates/view/view.inc:101
+#: templates/edit/javascript.inc:69
+msgid "Wednesday"
+msgstr "周三"
+
+#: attendees.php:115 lib/Kronolith.php:1442 lib/Block/tree_menu.php:23
+#: config/prefs.php.dist:108
+msgid "Week"
+msgstr "周"
+
+#: workweek.php:15 week.php:15 lib/Views/Month.php:183
+#, php-format
+msgid "Week %d"
+msgstr "周 %d"
+
+#: templates/prefs/default_alarm_management.inc:29 templates/view/view.inc:53
+#: templates/edit/edit.inc:153
+msgid "Week(s)"
+msgstr "周"
+
+#: templates/view/view.inc:106 templates/edit/edit.inc:217
+msgid "Weekly: Recurs every"
+msgstr "每周：周期频率"
+
+#: config/prefs.php.dist:149
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr "当没有较晚事件时，日视图和周视图的结束时间"
+
+#: config/prefs.php.dist:140
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr "当没有较早事件时，日视图和周视图的开始时间"
+
+#: config/prefs.php.dist:287
+msgid "Which kind of holidays do you want to get displayed?"
+msgstr "您想显示哪种假期？"
+
+#: attendees.php:114 lib/Kronolith.php:1440 lib/Block/tree_menu.php:22
+#: config/prefs.php.dist:109
+msgid "Work Week"
+msgstr "工作日"
+
+#: lib/Kronolith.php:1446 lib/Block/tree_menu.php:25
+msgid "Year"
+msgstr "年"
+
+#: templates/view/view.inc:112 templates/edit/edit.inc:243
+msgid "Yearly: Recurs every"
+msgstr "每年：周期频率"
+
+#: edit.php:38 data.php:39 data.php:252 new.php:17
+#, php-format
+msgid "You are not allowed to create more than %d events."
+msgstr "您创建的事件不可以多于 %d 个。"
+
+#: attend.php:49
+msgid "You are not an attendee of the specified event."
+msgstr "您不是指定事件的参与者。"
+
+#: templates/contacts/contacts.inc:76
+msgid "You can only use this form from the Edit Attendees screen."
+msgstr "您仅可以从“编辑参与者”屏幕使用此表单。"
+
+#: lib/Kronolith.php:1080
+#, php-format
+msgid ""
+"You do not have an email address configured in your Personal Information "
+"Options. You must set one %shere%s before event notifications can be sent."
+msgstr ""
+"您未在“个人信息”选项中配置电子邮件地址。发送事件通知之前，请在 %shere%s 设"
+"置邮件地址。"
+
+#: add.php:30
+#, php-format
+msgid "You do not have permission to add events to %s."
+msgstr "您不具有将事件添加到 %s 的权限。"
+
+#: data.php:200
+msgid "You do not have permission to add events to the selected calendar."
+msgstr "您不具有将事件添加到所选日历的权限。"
+
+#: edit.php:75 add.php:27
+#, php-format
+msgid "You do not have permission to delegate events to %s."
+msgstr "您不具有将事件委派给 %s 的权限。"
+
+#: delete.php:26
+msgid "You do not have permission to delete this event."
+msgstr "您不具有删除此事件的权限。"
+
+#: edit.php:78
+msgid "You do not have permission to edit this event."
+msgstr "您不具有编辑此事件的权限。"
+
+#: data.php:197
+msgid "You have specified an invalid calendar."
+msgstr "您所指定的日历无效。"
+
+#: attend.php:21
+msgid "You have successfully accepted attendence to this event."
+msgstr "您已成功接受此人参与事件。"
+
+#: attend.php:26
+msgid "You have successfully declined attendence to this event."
+msgstr "您已成功拒绝此人参与事件。"
+
+#: attend.php:31
+msgid "You have tentatively accepted attendence to this event."
+msgstr "您已暂时接受此人参与事件。"
+
+#: calendars.php:91
+msgid "You must select a calendar to be deleted."
+msgstr "您需要选择待删除的日历。"
+
+#: templates/contacts/contacts.inc:54
+msgid "You must select an address first."
+msgstr "您需要先选择地址。"
+
+#: templates/calendars/calendars.inc:114
+msgid "You need to select a calendar first"
+msgstr "您需要先选择日历"
+
+#: lib/Kronolith.php:1290
+msgid "You requested to be notified when events are added to your calendars."
+msgstr "您已请求在事件添加到日历时接到通知。"
+
+#: lib/Kronolith.php:1300
+msgid ""
+"You requested to be notified when events are deleted from your calendars."
+msgstr "您已请求在日历中删除事件时接到通知。"
+
+#: lib/Kronolith.php:1295
+msgid "You requested to be notified when events are edited in your calendars."
+msgstr "您已请求在日历中编辑事件时接到通知。"
+
+#: templates/prefs/shareselect.inc:10
+msgid "Your default calendar"
+msgstr "默认日历"
+
+#: templates/panel.inc:58
+msgid "[Manage My Calendars]"
+msgstr "[管理日历]"
+
+#: templates/panel.inc:75
+msgid "[Manage Remote Calendars]"
+msgstr "[管理远程日历]"
+
+#: lib/Driver.php:1215
+msgid "[Private Event]"
+msgstr "[个人事件]"
+
+#: lib/Driver.php:1207 lib/Driver.php:1217
+msgid "[Unnamed event]"
+msgstr "[Unnamed event]"
+
+#: templates/edit/edit.inc:114
+msgid "_Alarm"
+msgstr "提示_A"
+
+#: templates/search/search_advanced.inc:11
+msgid "_Basic Search"
+msgstr "基本搜索_B"
+
+#: lib/Kronolith.php:1475
+msgid "_Edit"
+msgstr "编辑_E"
+
+#: lib/Kronolith.php:1612
+msgid "_Goto"
+msgstr "转到_G"
+
+#: lib/Kronolith.php:1618
+msgid "_Import/Export"
+msgstr "导入/导出_I"
+
+#: lib/Kronolith.php:1608
+msgid "_New Event"
+msgstr "新建事件_N"
+
+#: lib/Kronolith.php:1623
+msgid "_Print"
+msgstr "打印_P"
+
+#: lib/Kronolith.php:1614
+msgid "_Search"
+msgstr "搜索_S"
+
+#: lib/Kronolith.php:1603
+msgid "_Today"
+msgstr "今日_T"
+
+#: templates/edit/edit.inc:59
+#, php-format
+msgid "as %s"
+msgstr "为 %s"
+
+#: templates/edit/edit.inc:155
+msgid "before the event starts"
+msgstr "事件开始前"
+
+#: templates/prefs/default_alarm_management.inc:31
+msgid "before the event starts. A value of \"0\" means no default alarms."
+msgstr "事件开始前。值“0”表示无默认提醒。"
+
+#: config/prefs.php.dist:229
+msgid "day"
+msgstr "日"
+
+#: templates/view/view.inc:96 templates/edit/edit.inc:212
+msgid "day(s)"
+msgstr "日"
+
+#: config/prefs.php.dist:230 config/prefs.php.dist:231
+#: config/prefs.php.dist:232 config/prefs.php.dist:233
+#: config/prefs.php.dist:234
+msgid "days"
+msgstr "日"
+
+#: data.php:151 templates/data/export.inc:1
+msgid "events.csv"
+msgstr "events.csv"
+
+#: data.php:176
+msgid "events.ics"
+msgstr "events.ics"
+
+#: templates/contacts/contacts.inc:136
+msgid "in"
+msgstr "在"
+
+#: templates/view/view.inc:108 templates/view/view.inc:110
+#: templates/edit/edit.inc:232 templates/edit/edit.inc:238
+msgid "month(s)"
+msgstr "月"
+
+#: lib/Kronolith.php:1135
+#, php-format
+msgid "on %s at %s"
+msgstr "在 %s/%s"
+
+#: templates/view/view.inc:108 templates/edit/edit.inc:232
+msgid "on the same date"
+msgstr "同一天"
+
+#: templates/view/view.inc:110 templates/edit/edit.inc:238
+msgid "on the same weekday"
+msgstr "同一周末"
+
+#: data.php:29 templates/data/import.inc:14
+msgid "vCalendar/iCalendar"
+msgstr "vCalendar/iCalendar"
+
+#: lib/api.php:751
+msgid "vEvent not found."
+msgstr "未找到 vEvent。"
+
+#: config/prefs.php.dist:235
+msgid "week"
+msgstr "周"
+
+#: templates/view/view.inc:106 templates/edit/edit.inc:219
+msgid "week(s) on:"
+msgstr "周："
+
+#: config/prefs.php.dist:236 config/prefs.php.dist:237
+#: config/prefs.php.dist:238
+msgid "weeks"
+msgstr "周"
+
+#: templates/view/view.inc:112 templates/edit/edit.inc:244
+msgid "year(s)"
+msgstr "年"

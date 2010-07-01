@@ -1,0 +1,159 @@
+<form name="imp_login" id="imp_login" action="<tag:action />" method="post"<if:imp_auth> target="_parent"</if:imp_auth>>
+<tag:formInput />
+<input type="hidden" name="actionID" value="<tag:actionID />" />
+<input type="hidden" name="url" value="<tag:url />" />
+<input type="hidden" name="load_frameset" value="<tag:imp_auth />" />
+<input type="hidden" name="autologin" value="<tag:autologin />" />
+<input type="hidden" name="anchor_string" id="anchor_string" value="<tag:anchor_string />" />
+<if:recompose_data>
+<input type="hidden" name="recompose" value="<tag:recompose_data />" />
+</if:recompose_data>
+<if:ie_clientcaps>
+<input type="hidden" name="ie_version" id="ie_version" value="" />
+</if:ie_clientcaps>
+<if:server_key>
+<input type="hidden" name="server_key" value="<tag:server_key />" />
+</if:server_key>
+<loop:extra_hidden>
+<input type="hidden" name="<tag:extra_hidden.name />" value="<tag:extra_hidden.value />" />
+</loop:extra_hidden>
+
+<div id="menu">
+<if:menu>
+ <span class="rightAlign"><tag:menu /></span>
+</if:menu>
+ <h1 align="center"><tag:title /></h1>
+</div>
+
+<tag:notification_output />
+
+<table width="100%">
+ <tr>
+  <td align="center">
+   <table align="center">
+<if:display_list>
+    <tr>
+     <td class="light rightAlign"><label for="server_key"><strong><gettext>Server</gettext></strong></label></td>
+     <td class="light leftAlign">
+      <select tabindex="<tag:hsl_skey_tabindex />" id="server_key" name="server_key" onchange="imp_reload();">
+<loop:hsl>
+       <option value="<tag:hsl.val />"<if:hsl.sel> selected="selected"</if:hsl.sel>><tag:hsl.name /></option>
+</loop:hsl>
+      </select>
+      <input tabindex="<tag:hsl_tabindex />" type="button" class="button" onclick="imp_reload();" value="<tag:login />" />
+     </td>
+    </tr>
+</if:display_list>
+
+<if:server_list>
+    <tr>
+     <td class="light rightAlign"><label for="server"><strong><gettext>Server</gettext></strong></label></td>
+     <td class="light leftAlign">
+      <select tabindex="<tag:slist_tabindex />" id="server" name="server">
+<loop:slist>
+       <option value="<tag:slist.val />"<if:slist.sel> selected="selected"</if:slist.sel>><tag:slist.name /></option>
+</loop:slist>
+      </select>
+     </td>
+    </tr>
+<else:server_list>
+<if:change_server>
+    <tr>
+     <td class="light rightAlign"><label for="server"><strong><gettext>Server</gettext></strong></label></td>
+     <td class="light leftAlign">
+      <input type="text" tabindex="<tag:server_tabindex />" id="server" name="server" value="<tag:server />" onchange="serverChangeHandler()" style="direction:ltr" />
+
+<if:change_port>
+      <label for="port" class="hidden"><gettext>Port</gettext></label>
+      <input type="text" size="5" id="port" name="port" tabindex="<tag:change_port_tabindex />" value="<tag:change_port_val />" style="direction:ltr" />
+</if:change_port>
+
+<if:change_protocol>
+      <label for="protocol" class="hidden"><gettext>Protocol</gettext></label>
+      <select tabindex="<tag:change_protocol_tabindex />" id="protocol" name="protocol"<if:change_port> onchange="updatePort();"</if:change_port>>
+<loop:protocol_list>
+       <option value="<tag:protocol_list.val />"<if:protocol_list.sel> selected="selected"</if:protocol_list.sel>><tag:protocol_list.name /></option>
+</loop:protocol_list>
+      </select>
+</if:change_protocol>
+     </td>
+    </tr>
+</if:change_server>
+</else:server_list></if:server_list>
+
+    <tr>
+     <td class="light rightAlign"><label for="imapuser"><strong><gettext>Username</gettext></strong></label></td>
+     <td class="light leftAlign" nowrap="nowrap">
+      <input type="text" tabindex="<tag:username_tabindex />" id="imapuser" name="imapuser" value="<tag:username />" style="direction:ltr" /> <if:user_vinfo><strong>@<tag:user_vinfo /></strong></if:user_vinfo>
+     </td>
+    </tr>
+
+    <tr>
+     <td class="light rightAlign"><label for="pass"><strong><gettext>Password</gettext></strong></label></td>
+     <td class="leftAlign">
+      <input type="password" tabindex="<tag:password_tabindex />" id="pass" name="pass" style="direction:ltr" />
+     </td>
+    </tr>
+
+<if:change_smtphost>
+    <tr style="height: 1em;">
+     <td colspan="2"></td>
+    </tr>
+    <tr>
+     <td class="light rightAlign"><label for="smtphost"><strong><gettext>Outbound Server</gettext></strong></label></td>
+     <td class="light leftAlign">
+      <input type="text" tabindex="<tag:smtphost_tabindex />" id="smtphost" name="smtphost" value="<tag:smtphost />" style="direction:ltr" />
+<if:change_smtpport>
+      <label for="smtpport" class="hidden"><gettext>SMTP Port</gettext></label>
+      <input type="text" size="4" id="smtpport" name="smtpport" tabindex="<tag:smtpport_tabindex />" value="<tag:smtpport />" style="direction:ltr" /> <gettext>SMTP</gettext>
+</if:change_smtpport>
+     </td>
+    </tr>
+</if:change_smtphost>
+
+<if:choose_language>
+    <tr>
+     <td class="light rightAlign"><label for="new_lang"><strong><gettext>Language</gettext></strong></label></td>
+     <td class="light leftAlign">
+      <select tabindex="<tag:langs_tabindex />" id="new_lang" name="new_lang" onchange="selectLang()">
+<loop:langs>
+       <option value="<tag:langs.val />" <if:langs.sel>selected="selected"</if:langs.sel>><tag:langs.name /></option>
+</loop:langs>
+      </select>
+     </td>
+    </tr>
+</if:choose_language>
+
+<if:select_view>
+    <tr>
+     <td class="light rightAlign"><label for="select_view"><strong><gettext>Mode</gettext></strong></label></td>
+     <td class="light leftAlign">
+      <select tabindex="<tag:view_tabindex />" id="select_view" name="select_view">
+<loop:views>
+       <option value="<tag:views.val />" <if:views.sel>selected="selected"</if:views.sel>><tag:views.name /></option>
+</loop:views>
+      </select>
+     </td>
+    </tr>
+</if:select_view>
+
+    <tr>
+     <td>&nbsp;</td>
+     <td class="light leftAlign">
+      <input type="submit" class="button" name="loginButton" id="loginButton" tabindex="<tag:login_tabindex />" value="<tag:login />" onclick="return submit_login();" />
+     </td>
+    </tr>
+
+<if:signup_link>
+    <tr>
+     <td>&nbsp;</td>
+     <td class="light">
+      <tag:signup_link /><tag:signup_text></a>
+     </td>
+    </tr>
+</if:signup_link>
+   </table>
+  </td>
+ </tr>
+</table>
+</form>

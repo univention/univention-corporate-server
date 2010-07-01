@@ -1,0 +1,25 @@
+===========================
+ IMP Development TODO List 
+===========================
+
+:Last update:   $Date: 2008-03-22 10:24:57 $
+:Revision:      $Revision: 1.22.8.5 $
+:Contact:       imp@lists.horde.org
+
+In no particular order:
+
+- Don't render large MIME parts.
+
+- Print all messages in a mailbox.
+
+- Add t-prot like features (http://freshmeat.net/articles/view/1235,
+  http://www.escape.de/users/tolot/mutt/) for text massaging. Features we
+  don't already have include: Remove mailing list footers; Shrink big
+  quotations; Squeeze a sequence of blank lines to just two; Change a series
+  of four or more periods or exclamation points into just three; Hide overlong
+  signatures.
+
+- Implement combinations of AND and OR rules in the IMP search screen.
+
+- Allow thread sort in search results (will require a c-client replacement and
+  support on the IMAP server).

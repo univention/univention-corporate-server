@@ -1,0 +1,10 @@
+/**
+ * $Horde: dimp/themes/bluewhite/screen.css,v 1.2 2007-05-09 16:21:55 jan Exp $
+ */
+
+#sidebarPanel a:hover, #sidebarPanel a:hover span {
+    color: #006;
+}
+.tabset {
+    border-bottom: none;
+}

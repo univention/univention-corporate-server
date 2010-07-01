@@ -1,0 +1,46 @@
+==================
+ Acknowledgements
+==================
+
+Development of DIMP sponsored by Portugal Telecom's SAPO division
+(http://softwarelivre.sapo.pt/).
+
+
+=======================
+ DIMP Development Team
+=======================
+
+
+Core Developers
+===============
+
+- Chuck Hagenbuch <chuck@horde.org>
+- Jan Schneider <jan@horde.org>
+- Michael Slusarz <slusarz@horde.org>
+
+
+Localization
+============
+
+=====================   ======================================================
+Basque                  Euskal Herriko Unibertsitatea <webmaster@ehu.es>
+Brazilian Portuguese    Luis Felipe Marzagao <duli@fedoraproject.org>
+                        Eduardo de Carli <carliedu@ig.com.br>
+Chinese (Traditional)   David Chang <david@tmv.gov.tw>
+Croatian                Matej Vela <matej.vela@carnet.hr>
+Danish                  Niels Baggesen <nba@users.sourceforge.net>
+Dutch                   Jan Kuipers <jrkuipers@lauwerscollege.nl>
+Finnish                 Leena Heino <liinu@uta.fi>
+French                  Thierry Thomas <thierry@pompo.net>
+                        Yannick Sebastia <yannick.sebastia@ecole-navale.fr>
+German                  Jan Schneider <jan@horde.org>
+Hungarian               Laszlo L. Tornoci <torlasz@xenia.sote.hu>
+Italian                 Cristian Manoni <cristian.manoni@nethesis.it>
+Japanese                Hiromi Kimura <hiromi@tac.tsukuba.ac.jp>
+Lithuanian              Vilius Šumskas <vilius@lnk.lt>
+Polish                  Tadeusz Lesiecki <lesiecki@tmtsystem.pl>
+                        Piotr Tarnowski <drfugazi@drfugazi.eu.org>
+Russian                 Alexey Zakharov <baber@mosga.net>
+Slovak                  Martin Matuška <martin@matuska.org>
+Spanish                 Manuel P. Ayala <mayala@unex.es>
+=====================   ======================================================

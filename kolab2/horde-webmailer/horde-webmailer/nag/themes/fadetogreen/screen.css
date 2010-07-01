@@ -1,0 +1,25 @@
+/**
+ * This theme as been written by Roel Gloudemans <roel@gloudemans.info>
+ *
+ * The theme is the basis for the website of the Sales Manager Club
+ * (http://www.clubsmc.nl)
+ */
+
+.sortdown {
+    background-color: #bcc4c2;
+}
+
+.sortup {
+    background-color: #bcc4c2;
+}
+
+.sortable tbody {
+    background-color: #fff;
+}
+
+.sortable td {
+    border-right: 1px solid #d6e2e3;;
+    border-top: 1px solid #d6e2e3;;
+}
+
+

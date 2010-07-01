@@ -1,0 +1,494 @@
+===================
+ Translation Guide 
+===================
+
+:Date:     $Date: 2009-01-31 23:00:57 $
+:Revision: $Revision: 1.29.4.7 $
+:Authors:  Jan Schneider
+:Contact:  i18n@lists.horde.org
+
+.. contents::
+.. section-numbering::
+
+Translation Tool
+================
+
+``translation.php`` is a small PHP script that should help translators doing
+their work.
+
+Any feedback, bug reports and feature requests should be send to the `i18n
+mailing list`_. This is also the right place for new translations and general
+discussions of i18n and l10n questions and problems.
+
+``translation.php`` is located in ``horde/po``, so you will have to make
+``horde/po`` your working directory in order to run the commands quoted
+below. But you can run the script from any directory, just adapt the directory
+to the script. See _Prerequisites if your PHP binary is not located in
+``/usr/bin/php``.
+
+For a list of available commands run::
+
+  ./translation.php help
+
+For detailed help on a certain command run::
+
+  ./translation.php help command
+
+Additional information about creating translations and fixing problems can be
+found in the file ``horde/docs/TRANSLATION``.
+
+.. _i18n mailing list: http://www.horde.org/mail/
+
+Prerequisites
+~~~~~~~~~~~~~
+
+To run this script you'll need a PHP command line executable with `gettext
+support`_ compiled in, and the basic `PEAR`_ libraries. The script expects your
+PHP executable to be at ``/usr/bin/php``. If your executable is at another
+place, either edit the first line of ``translation.php`` to reflect your
+location or call the script like::
+
+  /usr/local/bin/php translation.php.
+
+You'll need the `gettext`_ package version 0.12 or greater.
+
+You'll need the PEAR packages `Console_Getopt`_ 0.11 or greater,
+`Console_Table`_ and `File_Find`_. To install all needed packages, run::
+
+  pear upgrade PEAR Console_Getopt
+  pear install Console_Table File_Find
+
+or download the newest package from the `PEAR`_ server and install them
+manually in your PEAR directory.
+
+.. _gettext support: http://www.php.net/gettext/
+.. _gettext: http://www.gnu.org/software/gettext/
+.. _PEAR: http://pear.php.net/
+.. _Console_Getopt: http://pear.php.net/package/Console_Getopt/
+.. _Console_Table: http://pear.php.net/package/Console_Table/
+.. _File_Find: http://pear.php.net/package/File_Find/
+
+Creating a new translation
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To create a new translation you first have to extract all gettext messages
+from the PHP sources. There are already template files with the ``.pot``
+suffix in the ``po`` directories that you can use if you have troubles
+extracting the messages, though these templates might be slightly
+outdated. Run::
+
+  ./translation.php extract
+
+You now have to create a new PO file for your locale. A locale has the form
+``ll_CC`` where ``ll`` is the two letter `ISO 639`_ code of the language and
+``CC`` the two letter `ISO 3166`_ code of the country, e.g. ``de_DE``,
+``en_US`` or ``pt_BR``.
+``translation.php`` is able to guess the locale from the ``LANG`` environment
+variable but it is safer to specify the locale with the ``-l`` parameter.
+To create the PO file run::
+
+  ./translation.php init -l ll_CC
+
+Now you can start the translation by editing the created ``ll_CC.po``
+files. It is important to set the correct charset for the locale in the
+``Content-Type:`` header.
+You should fill out the the complete header of the created ``ll_CC.po`` file,
+e.g.::
+
+  # Dutch translation for Horde.
+  # Copyright 2004-2009 The Horde Project (http://www.horde.org/)
+  # This file is distributed under the same license as the Horde package.
+  # Joris Braakman <jbraakman@yahoo.com>, 2004.
+  #
+  msgid ""
+  msgstr ""
+  "Project-Id-Version: Horde 2.3\n"
+  "Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+  "POT-Creation-Date: 2004-04-14 10:30+0200\n"
+  "PO-Revision-Date: 2004-04-14 17:17+02:00\n"
+  "Last-Translator: Joris Braakman <jbraakman@yahoo.com>\n"
+  "Language-Team: i18n@lists.horde.org\n"
+  "MIME-Version: 1.0\n"
+  "Content-Type: text/plain; charset=ISO-8859-1\n"
+  "Content-Transfer-Encoding: 8-bit\n"
+
+To compile the translations to a binary format run::
+
+  ./translation.php make -l ll_CC
+
+After you created the new translation you have to add entries for this locale
+in the configuration file horde/config/nls.php.
+
+If you create a new translation for a certain module but there are already
+translations for the same language for other modules, then you should use a
+compendium. This will save you a lot of time and it will make translations
+much more consistent.
+
+.. _ISO 639: http://www.loc.gov/standards/iso639-2/
+.. _ISO 3166: http://www.iso.ch/iso/en/prods-services/iso3166ma/index.html
+
+Compendiums
+~~~~~~~~~~~
+
+This tool utilizes a nice feature of gettext: compendium files. A compendium
+is a special PO file containing a set of translations recurring in many
+different packages. These compendiums will be used in the background without
+much intervention required. But you have to create and edit a compendium
+before you can use it.
+
+To create a compendium of all existing translations for a certain locale run::
+
+  ./translation.php compendium -l ll_CC
+
+The ``compendium.po`` being created will contain all modules' translations of
+this locale merged into a single file. You should take a closer look at this
+file because you may find a lot of special marked lines where you translated
+certain strings differently in the various modules. It's a good idea to fix
+the modules' translations now so that all modules use the same translations for
+the same strings. You can always recreate your compendium with the above
+command.
+
+If you're maintaining translations for different `branches`_ and assumed that
+you have all modules of the ``HEAD`` branches in one directory and all of the
+``FRAMEWORK_3`` branches in another, you probably want to share a compendium
+between these directories.
+
+To do this, you should first create a compendium in the ``FRAMEWORK_3``
+branch, review it and fix all translations until you're happy with the
+results. Then create a second compendium in the ``HEAD`` branch and include
+your first one with the --add option.  Now fix the translations in this
+branch. If you're ready you can remove the first compendium and for now on use
+the compendium in the ``HEAD`` branch for both branches. To do so, use the
+``-c`` or ``--compendium`` option to specify a path to your compendium.
+
+.. _branches: http://www.horde.org/source/
+
+Updating translations
+~~~~~~~~~~~~~~~~~~~~~
+
+The process of updating translations is a cycle where you extract new gettext
+strings from the sources, translate those new strings or update the already
+translated strings and compile them after.
+
+To update the translation for a module, run::
+
+  ./translation.php update -m modulename -l ll_CC
+
+This extracts the new strings from the sources and tries to update them from
+already existing translations in the compendium. You just have to translate
+all untranslated strings in the ``ll_CC.po`` file in the ``po`` directory of
+the module you updated.
+
+If extracting new strings fails for some reason, you can use the provided
+``.pot`` file to update your translation::
+
+  ./translation.php merge -m modulename -l ll_CC
+
+If your compendium is in a different directory than the ``translation.php``
+script, you can specify the path to the compendium::
+
+  ./translation.php update -m modulename -l ll_CC -c /path/to/compendium
+
+Once this is done, you can compile the translation by calling::
+
+  ./translation.php make -m modulename -l ll_CC
+
+Extending existent translations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To have your own string (e.g. that you added to config files) displayed in
+several languages, you have to
+
+  1. specify your texts as gettext arguments, in English,
+  2. edit the translation files for the required national languages,
+  3. compile those translation files.
+
+Be sure to keep records of your extensions, as you will probably have to
+repeat steps 2 and 3 after the next update.
+
+E.g., you plan to offer two IMAP servers to select from in the Webmail login
+screen:
+
+  1. In ``horde/imp/config/servers.php``, you specify::
+
+       $servers['Central'] = array(
+          'name' => _("Central Mail Service"),
+       ...
+       $servers['CompSci'] = array(
+          'name' => _("Mail Service of Computer Science Dpt.")
+       ...
+
+  2. In ``horde/imp/po/de_DE.po`` you add two entries::
+
+       msgid "Central Mail Service"
+       msgstr "Zentraler Mailserver"
+
+       msgid "Mail Service of Computer Science Dpt."
+       msgstr "Mailserver Informatik"
+
+     Likewise, you amend the translation files for other languages, as needed.
+
+  3. You compile the translations using the commands::
+
+       ./po/translation.php make --module imp --no-compendium
+
+Access Keys
+===========
+
+Access keys, also known as shortcut keys, allow easy access to important
+functions, normally by hitting the Alt/Meta key in combination with another
+key. This key is marked in most user interfaces by being underlined.
+
+As the access key is part of the word representing the action being executed,
+it is in the translators responsibility to select an access key when he
+translates these words. The action is always a link in Horde. The access key
+of a link is selected by prefixing it with an underscore.
+
+The help link in the menu for example is always "_Help". This means that the
+"H" of the link will be underlined and the help can be opened by hitting
+Alt+H. In the PO file this string will appear as::
+
+  #: templates/menu/menu.inc:53
+  msgid "_Help"
+  msgstr ""
+
+A Spanish translator might want to translate this to::
+
+  #: templates/menu/menu.inc:53
+  msgid "_Help"
+  msgstr "_Ayuda"
+
+Translators of multibyte languages need to do this a bit differently as only
+ASCII characters are allowed for access keys. A Traditional Chinese translator
+might want to use::
+
+  #: templates/menu/menu.inc:53
+  msgid "_Help"
+  msgstr "_H說明"
+
+This renders to "說明(H)" in the interface and you can
+access this link with "H" as the access key.
+
+
+Right-to-Left Languages
+=======================
+
+Translations for languages that are written from right to left might cause
+unexpected behavior if parenthesis or similar characters appear inside a
+translated string. To fix this broken string rendering you have to insert
+special Unicode codepoints into the translated string.
+
+Before such a string in parenthesis, add the U+202D codepoint. If there is
+more right-to-left text to come after the closing parenthesis, add the U+202E
+codepoint after it. If using the PO mode of the Emacs editor you can add
+codepoints with the "ucs-insert" command.
+
+
+Help Texts
+==========
+
+Organization of the help files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The help texts are available in the ``horde/locale/``, and
+``horde/APP/locale/``, directories, where APP is any Horde application. Every
+available translation is kept in a file called ``help.xml``, in a subdirectory
+named according to RFC 3066. Examples:
+
+- Horde's original help texts are in the ``horde/locale/en_US/help.xml`` file.
+- IMP's Brazilian help texts are in the ``horde/imp/locale/pt_BR/help.xml``
+  file.
+
+When, for any desired application and locale, there is no ``help.xml`` file
+available, Horde's help system will use the application's
+``locale/en_US/help.xml`` file, instead.
+
+The help files must be encoded in the language's preferred character set.
+
+There is no compilation step involved: Every modification to, or addition of,
+a ``help.xml`` file takes immediate effect.
+
+Syntax of the help files
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Each help file must consist of syntactically valid XML code.
+
+There are no predefined entities beyond the XML standard entities:
+
+- &lt;   (less than)
+- &gt;   (greater than)
+- &amp;  (ampersand)
+- &apos; (ASCII apostrophe)
+- &quot; (ASCII quotation mark)
+
+Any character available in the language's preferred character set can be
+entered as a numerical character reference (based on its Unicode scalar
+value), such as ``&#160;`` for the No-Break Space character.
+
+The general structure can be learned from the existing examples; of course,
+the XML tags must be syntactically valid, and properly nested.
+
+.. Note:: A PHP error message like ``Undefined index: url in
+          /opt/test-webmail/horde/lib/Horde/Help.php`` means that you have
+          mis-spelled, or omitted, an attribute (``url``, in this example).
+
+The following tags are available:
+
++---------+--------+---------------+-------------------------------+
+| XML-Tag | Parent | Attributes    | Purpose                       |
++=========+========+===============+===============================+
+| help    |   —    |       —       | List of help texts            |
++---------+--------+---------------+-------------------------------+
+| entry   | help   | id            | Help text                     |
++---------+--------+---------------+-------------------------------+
+| title   | entry  |       —       | Entry in the help index       |
++---------+--------+---------------+-------------------------------+
+| heading | entry  |       —       | Level 2 heading               |
++---------+--------+---------------+-------------------------------+
+| para    | entry  |       —       | Paragraph                     |
++---------+--------+---------------+-------------------------------+
+| ref     | para   | module, entry | Link into the help system     |
++---------+--------+---------------+-------------------------------+
+| eref    | para   | url           | External link                 |
++---------+--------+---------------+-------------------------------+
+| href    | para   | app, url      | Link into a Horde application |
++---------+--------+---------------+-------------------------------+
+| b       | para   |       —       | Bold text                     |
++---------+--------+---------------+-------------------------------+
+| i       | para   |       —       | Italic text on new line       |
++---------+--------+---------------+-------------------------------+
+| pre     | entry  |       —       | Example box                   |
++---------+--------+---------------+-------------------------------+
+| tip     | entry  |       —       | Tip/hint box                  |
++---------+--------+---------------+-------------------------------+
+| warn    | entry  |       —       | Warning box                   |
++---------+--------+---------------+-------------------------------+
+
+The elements marked ``para``, in the Parent column, may also be used within
+``pre``, ``tip``, and ``warn`` elements.
+
+The following attributes are available:
+
++---------+-----------+----------------------------------+
+| XML-Tag | Attribute | Purpose/Syntax                   |
++=========+===========+==================================+
+| entry   | id        | Anchor                           |
++---------+-----------+----------------------------------+
+| ref     | module    | Index of Horde application, see  |
+|         |           | ``horde/config/registry.php``    |
+|         +-----------+----------------------------------+
+|         | entry     | Id of help file entry, see above |
++---------+-----------+----------------------------------+
+| eref    | url       | arbitrary URL                    |
++---------+-----------+----------------------------------+
+| href    | app       | Index of Horde application, see  |
+|         |           | ``horde/config/registry.php``    |
+|         +-----------+----------------------------------+
+|         | url       | URL within Horde application     |
++---------+-----------+----------------------------------+
+
+Examples::
+
+  <ref module="imp" entry="compose-attachments">selecting attachments</ref>
+  <eref url="http://wiki.horde.org/FAQ/User/IMP?referer=FAQ/User#toc17">
+        UW-IMAP quirk</eref>
+  <href app="turba" url="search.php">Address search</href>
+
+The `Translation Tool`_ will introduce additional attributes:
+
++---------+-----------+--------------------------------+
+| XML-Tag | Attribute | Purpose/Syntax                 |
++=========+===========+================================+
+| entry   | state     | See `Finishing a translation`_ |
+|         +-----------+--------------------------------+
+|         | md5       | Used internally                |
++---------+-----------+--------------------------------+
+
+Reference from the Horde applications
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The typical incantation, e.g.::
+
+  <?php echo Help::link('imp', 'compose-buttons') ?>
+
+will yield a link, adorned with the ``help.png`` icon, to the entry marked
+``id="compose-buttons"`` in the IMP help file pertaining to the user's current
+locale. Usually, these links are placed in the template files, next to the
+item to be explained by the pertinent help entry.
+
+The Horde menu will usually contain a general help item, which is generated in
+``lib/Horde/Menu.php``.
+
+Creating a new translation
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If necessary, define a suitable locale id ``ll_CC``, complying with RFC
+3066. E.g., if you plan to add an Austrian translation, you would use
+``de_AT`` as your locale id.
+
+For Horde, and for all relevant applications, copy the ``help.xml`` files from
+the ``locale/en_US/`` subdirectories to the ``locale/ll_CC/`` subdirectories,
+creating them if necessary.
+
+Translate each new ``locale/ll_CC/help.xml`` file, leaving all tags and
+attributes unchanged. Just translate the text between the tags.
+
+.. Important:: The ``id`` attributes must be kept unchanged, under any
+               circumstances. 
+
+If the application is already translated and only the help files are missing,
+then be sure to use the same terminology as the existing translation. In any
+case, try to use a lucid, coherent terminology.
+
+Finishing a translation
+~~~~~~~~~~~~~~~~~~~~~~~
+
+If you want to submit a translation to be included in the Horde code base,
+make sure that you have completed all translations. Then run::
+
+  ./translation.php make-help
+
+This will mark all entries as being up-to-date so that you or other
+translators can later see which entries have been changed since then.
+
+Updating an existing translation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Run::
+
+  ./translation.php update-help
+
+This will merge your existing help file with all changes from the original,
+English help file since your last translation. Changed entries are marked with
+the attribute ``state="changed"``, new entries with ``state="new"``. The
+original entry from the English help file is added in a comment below a
+changed entry, so that you can easily compare them.
+
+Translate the remaining English phrases, like discussed above. When your
+finished, remove any English entries and follow the steps at `Finishing a
+translation`_.
+
+Extending existent translations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you feel that some feature should be better explained to the end user, then
+proceed as following:
+
+1. Determine, whether you will have to extend an existing entry, or add a new
+   one.
+
+2. In the latter case, choose a suitable ``id`` for your new help entry.
+
+3. Edit the existing entry in, or add a new entry to, the application's
+   ``en_US/help.xml`` file. Change all translations needed in your site in the
+   same way. Be sure to use the same ``id`` everywhere.
+
+4. If you have added a new entry, you might want to add a link to it from a
+   template, as explained above in `Reference from the Horde applications`_.
+
+5. If you feel that your enhancement may be useful to other users, file an
+   enhancement request at http://bugs.horde.org/ with a patch including your
+   changes to the template and the ``help.xml`` files.
+
+6. In any case, keep notes of your changes, so you can apply them to later
+   versions if necessary.

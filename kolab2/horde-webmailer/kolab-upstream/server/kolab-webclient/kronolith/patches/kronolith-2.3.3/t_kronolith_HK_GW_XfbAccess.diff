@@ -149,6 +149,16 @@ index 4ca65a6..2174167 100644
  <tr>
   <td colspan="7">&nbsp;</td>
  </tr>
+--- a/po/de_DE.po	2010-03-05 14:12:23.870442274 +0100
++++ b/po/de_DE.po	2010-03-05 14:26:38.598825847 +0100
+@@ -2709,3 +2709,6 @@
+ 
+ msgid "no one"
+ msgstr "niemanden"
++
++msgid "Extended free/busy access"
++msgstr "Erweiterter Frei/Gebucht Zugriff"
+
 -- 
 tg: (0175a71..) t/kronolith/HK/GW/XfbAccess (depends on: t/kronolith/HK/GW/FbviewRelevance)
 -- 

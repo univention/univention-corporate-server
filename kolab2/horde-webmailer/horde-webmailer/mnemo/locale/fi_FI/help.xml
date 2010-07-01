@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!-- $Horde: mnemo/locale/fi_FI/help.xml,v 1.4.12.5 2008-02-22 13:42:50 jan Exp $ -->
+<help>
+  <entry id="Overview" md5="50ee76138fb08b04b029006053bbadbc" state="uptodate">
+    <title>Yleiskuva</title>
+    <heading>Esittely</heading>
+    <para>
+    <i>Muistiinpanot</i> on ohjelma, jolla voit tehd&#xE4; muistiinpanoja
+    tietokoneelle, s&#xE4;hk&#xF6;inen vastine muistilapulle. Muistiinpanoja voi
+    luoda, muokata, poistaa ja tulostaa. Voit my&#xF6;s etsi&#xE4; tietoja
+    muistiinpanoistasi. Muistiinpanoja voi my&#xF6;s vied&#xE4; ja tuoda.
+    </para>
+    <para>
+    Toisin kuin tavallisissa muistiinpanoissa, voit jakaa
+    tietokoneella olevat muistiinpanot toisille ihmisille, vaika n&#xE4;m&#xE4;
+    olisivat fyysisesti eri paikoissa. Voit my&#xF6;s j&#xE4;rjest&#xE4;&#xE4; muistiinpanot
+    eri kategorioihin.
+    </para>
+</entry>
+  <entry id="list-actions" md5="6d592f153bfb5c296de5dfebb428e1ba" state="uptodate">
+    <title>Listaa muistiinpanot: Toiminnot</title>
+    <heading>Toiminnot</heading>
+    <para>
+    <i>Poista muistiinpano</i> poistaa pysyv&#xE4;sti valitun muistiinpanon.
+    </para>
+    <para>
+    <i>Muokkaa muistiinpanoa</i> mahdollistaa olemassaolevan  muistiinpanon muokkaamisen.
+    </para>
+    <para>
+    <i>Takaisin muistilistaan</i> palaa takaisin siihen muistilistaan, johon valittu muistiinpano kuuluu.
+    </para>
+</entry>
+  <entry id="menu-actions" md5="715a853d93cd3330e4d730b9112c8a82" state="uptodate">
+    <title>Valikon toiminnot</title>
+    <heading>Valikon toiminnot</heading>
+    <para>
+    <i>Listaa muistiinpanot</i> n&#xE4;ytt&#xE4;&#xE4; listana kaikki muistikirjan muistiinpanot.
+    </para>
+    <para>
+    <i>Uusi muistiinpano</i> voit luoda uuden muistiinpanon valittuun muistikirjaan.
+    </para>
+    <para>
+    <i>Haku</i> voit hakea tietoja muistiinpanoista. Voit hakea kuvauskent&#xE4;n perusteella tai hakea tietoja muistiinpanon koko tekstist&#xE4;.
+    </para>
+    <para>
+    <i>Tuo/Vie</i> voit tuoda tai vied&#xE4; muistiinpanoja. T&#xE4;ll&#xE4; hetkell&#xE4; tuettuina ovat CSV- ja vNote-muodot.
+    </para>
+    <para>
+    <i>Tulosta</i> voit tulostaa muistiinpanon. <i>Tulosta</i> -ikoni on n&#xE4;kyviss&#xE4; vain kun olet katsomassa yksitt&#xE4;ist&#xE4; muistiinpanoa.
+    </para>
+</entry>
+  <entry id="sorting" md5="cca3b1d1c9ed0ec5ab385f82469ddc8f" state="uptodate">
+    <title>Merkint&#xF6;jen lajittelu</title>
+    <heading>Merkint&#xF6;jen lajittelu</heading>
+    <para>
+    Muistiinpanojen listaa on mahdollista lajitella mink&#xE4; tahansa sarakkeen mukaan napsauttamalla sarakkeen otsikkoa. Voit muuttaa lajittelua nousevaksi tai laskevaksi napsauttamalla otsikon vieress&#xE4; olevaa nuoli ikonia.
+    </para>
+</entry>
+</help>

@@ -1,0 +1,1881 @@
+# Thai translations for Imp package.
+# Copyright 2003-2009 The Horde Project
+# This file is distributed under the same license as the Imp package.
+# Automatically generated, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Imp 3.1\n"
+"POT-Creation-Date: 2003-02-08 15:45+0700\n"
+"PO-Revision-Date: 2003-02-08 15:45+0700\n"
+"Last-Translator: Surasak Srisawan <surasak@rirc.ac.th>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=TIS-620\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: compose.php:635
+msgid "      To: "
+msgstr "      ถึง: "
+
+#: compose.php:619
+msgid "    Date: "
+msgstr "    วันที่: "
+
+#: compose.php:623
+msgid "    From: "
+msgstr "    จาก: "
+
+#: folders.php:439 lib/api.php:84
+msgid " - $nm new message"
+msgstr " - $nm ข้อความใหม่"
+
+#: folders.php:439 lib/api.php:84
+msgid " - $nm new messages"
+msgstr " - $nm ข้อความใหม่"
+
+#: compose.php:631
+msgid " Subject: "
+msgstr " เรื่อง: "
+
+#: templates/compose/spelling.inc:59
+msgid " in "
+msgstr " ใน "
+
+#: templates/mailbox/message_headers.inc:9
+msgid "#"
+msgstr "#"
+
+#: lib/IMP.php:304
+#, c-format
+msgid "%c"
+msgstr "%c"
+
+#: mailbox.php:552
+#, c-format
+msgid "%d of %d Messages"
+msgstr "%d จาก %d ข้อความ"
+
+#: mailbox.php:550
+#, c-format
+msgid "%d to %d of %d Messages"
+msgstr "%d ถึง %d จาก %d ข้อความ"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:42
+#, c-format
+msgid "%s already exists. Your %s folder was not renamed."
+msgstr "%s มีอยู่แล้ว โฟลเดอร์ %s จึงไม่ถูกเปลี่ยนชื่อ"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:40
+#, c-format
+msgid "%s folder being renamed at the start of the month."
+msgstr "โฟลเดอร์ %s จะถูกเปลี่ยนชื่อทุกๆ ต้นเดือน"
+
+#: templates/message/navbar_aux_top.inc:13
+#, c-format
+msgid "%s: %s (%d&nbsp;of&nbsp;%d)"
+msgstr "%s: %s (%d&nbsp;จาก&nbsp;%d)"
+
+#: templates/compose/spelling.inc:126
+msgid "(Apply these changes and move to next screen.)"
+msgstr "(บันทึกความเปลี่ยนแปลงแล้วไปยังหน้าต่อไป)"
+
+#: templates/compose/spelling.inc:113
+msgid "(Discard all changes and return to the compose screen.)"
+msgstr "(ยกเลิกการเปลี่ยนแปลงทั้งหมดและกลับสู่หน้าจอเขียนจดหมาย"
+
+#: templates/compose/spelling.inc:119
+msgid ""
+"(Return to the compose screen after applying all changes made thus far.  "
+"Changes on the current screen will NOT be applied.)"
+msgstr "(บันทึกเฉพาะการเปลี่ยนแปลงที่ผ่านมาแล้วและกลับสู่หน้าจอเขียนจดหมาย "
+"ความเปลี่ยนแปลงที่เกิดขึ้นในหน้าจอนี้จะไม่ถูกบันทึก)"
+
+#: templates/contacts/contacts.inc:56
+msgid "* Add these by clicking OK *"
+msgstr "* เพิ่มชื่อต่อไปนี้โดยคลิกที่ปุ่ม OK *"
+
+#: templates/contacts/contacts.inc:40
+msgid "* Please select address(es) *"
+msgstr "* กรุณาเลือกชื่อที่ต้องการ *"
+
+#: lib/MIME/Viewer/enriched.php:176 lib/MIME/Viewer/text.php:96
+#, c-format
+msgid ""
+"<p><i>This message was written in a character set other than your own. If it "
+"is not displayed correctly, %sclick here</a> to open it in a new window.</"
+"i></p>\n"
+msgstr ""
+"<p><i>ข้อความนี้ถูกเขียนขึ้นด้วยชุดอักขระที่แตกต่างจากที่คุณใช้ "
+"หากการแสดงผลในหน้าจอนี้ไม่ถูกต้อง ให้%sคลิกที่นี่</a> เพื่อแสดงผลในหน้าต่างใหม่</i></p>\n"
+
+#: templates/filters/manage.inc:50
+msgid "Action"
+msgstr "การกระทำ"
+
+#: message.php:58
+#, c-format
+msgid "Add to Addressbook (%s)"
+msgstr "เพิ่มลงในที่ติดต่อ (%s)"
+
+#: compose.php:956
+msgid "Added an attachment."
+msgstr "แนบเอกสาร"
+
+#: templates/compose/compose.inc:298
+msgid "Address Book"
+msgstr "ที่ติดต่อ"
+
+#: config/prefs.php.dist:114
+msgid "Addressbooks"
+msgstr "ที่ติดต่อ"
+
+#: templates/mailbox/navbar.inc:10
+msgid "All"
+msgstr "ทั้งหมด"
+
+#: lib/Maintenance/Task/purge_trash.php:90
+#, c-format
+msgid ""
+"All messages in your \"%s\" folder older than %s days will be permanently "
+"deleted."
+msgstr ""
+"จดหมายที่ค้างอยู่ในโฟลเดอร์ \"%s\" นานกว่า %s วัน จะถูกลบอย่างถาวร"
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:72
+#, c-format
+msgid "All old sent-mail folders more than %s months old will be deleted."
+msgstr "ลบโฟลเดอร์จดหมายขาออกที่มีอายุนานกว่า %s เดือน"
+
+#: prefs.php:98
+msgid "An illegal value was specified."
+msgstr "ข้อมูลที่ระบุมามีค่าไม่ถูกต้อง"
+
+#: message.php:391
+msgid "An unknown error occured adding the new entry."
+msgstr "เกิดความผิดพลาดระหว่างการเพิ่มชื่อ"
+
+#: templates/mailbox/legend.inc:12 templates/mailbox/navbar.inc:17
+#: templates/mailbox/navbar.inc:34 config/conf.php.dist:132
+msgid "Answered"
+msgstr "ตอบแล้ว"
+
+#: templates/search/main.inc:180
+msgid "Answered messages"
+msgstr "ข้อความที่ตอบกลับแล้ว"
+
+#: templates/mailbox/header.inc:21
+msgid "Apply Filters on"
+msgstr "ใช้ตัวกรองกับ"
+
+#: config/prefs.php.dist:318
+msgid "Apply filter rules upon logging on."
+msgstr "ใช้ตัวกรองเมื่อลงบันทึกเข้า"
+
+#: config/prefs.php.dist:328
+msgid "Apply filter rules when mailbox is refreshed."
+msgstr "ใช้ตัวกรองเมื่อตู้ไปรษณีย์ถูกรีเฟรช"
+
+#: templates/search/main.inc:79 templates/search/main.inc:108
+#: templates/search/main.inc:137
+msgid "April"
+msgstr "เมษายน"
+
+#: message.php:543
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "คุณต้องการลบข้อความเหล่านี้อย่างถาวรหรือไม่?"
+
+#: templates/menu/menu.inc:18
+msgid "Are you sure you wish to empty your trash folder?"
+msgstr "คุณต้องการลบข้อความทั้งหมดในโฟลเดอร์ถังขยะหรือไม่?"
+
+#: config/prefs.php.dist:506
+msgid "Arrival Time"
+msgstr "เวลาที่ได้รับ"
+
+#: config/prefs.php.dist:521
+msgid "Ascending"
+msgstr "เรียงจากหน้าไปหลัง"
+
+#: templates/compose/compose.inc:402
+msgid "Attachment"
+msgstr "เอกสารแนบ"
+
+#: templates/compose/compose.inc:307 templates/compose/compose.inc:397
+msgid "Attachments"
+msgstr "เอกสารแนบ"
+
+#: templates/search/main.inc:83 templates/search/main.inc:112
+#: templates/search/main.inc:141
+msgid "August"
+msgstr "สิงหาคม"
+
+#: templates/prefs/sourceselect.inc:264
+msgid "Available Addressbooks:"
+msgstr "ที่ติดต่อที่พบ:"
+
+#: templates/message/navbar.inc:29
+#, c-format
+msgid "Back to %s"
+msgstr "กลับไปสู่ %s"
+
+#: templates/compose/compose.inc:215 templates/message/headers.inc:20
+msgid "Bcc"
+msgstr "สำเนาซ่อนถึง"
+
+#: templates/mailbox/actions.inc:16 templates/message/navbar.inc:14
+msgid "Blacklist"
+msgstr "บัญชีดำ"
+
+#: filters.php:141 templates/filters/manage.inc:17
+#: templates/search/main.inc:62
+msgid "Body"
+msgstr "เนื้อหา"
+
+#: templates/search/main.inc:174 templates/search/main.inc:188
+#: templates/search/main.inc:202 templates/search/main.inc:216
+msgid "Both"
+msgstr "ทั้งสองประเภท"
+
+#: templates/compose/compose.inc:159 templates/message/headers.inc:16
+#: templates/search/main.inc:46
+msgid "Cc"
+msgstr "สำเนาถึง"
+
+#: filters.php:138 templates/filters/manage.inc:14
+msgid "Cc:"
+msgstr "สำเนาถึง:"
+
+#: templates/compose/spelling.inc:68
+msgid "Change"
+msgstr "เปลี่ยนแปลง"
+
+#: templates/compose/spelling.inc:69
+msgid "Change All"
+msgstr "เปลี่ยนแปลงทั้งหมด"
+
+#: config/prefs.php.dist:84
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr ""
+"เปลี่ยนตัวเลือกในการแสดงผล เช่น จำนวนจดหมายต่อหน้าและการจัดเรียงจดหมาย"
+
+#: config/prefs.php.dist:32
+msgid "Change mail server settings."
+msgstr "เปลี่ยนการตั้งค่าเครื่องบริการเมล"
+
+#: config/prefs.php.dist:25
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr ""
+"เปลี่ยนชื่อ, ที่อยู่ และลายเซ็นที่ส่งไปพร้อมกับอีเมล"
+
+#: templates/folders/actions.inc:13
+msgid "Check Folder(s) for New Mail"
+msgstr "สำรวจจดหมายใหม่"
+
+#: templates/mailbox/message_headers.inc:6
+msgid "Checkbox"
+msgstr "ตัวเลือก"
+
+#: templates/folders/actions.inc:4
+msgid "Choose Action:"
+msgstr "เลือกการกระทำ:"
+
+#: templates/prefs/sourceselect.inc:304
+msgid "Choose the addressbook to use when adding addresses."
+msgstr "เลือกที่ติดต่อที่ต้องการใช้ในการเพิ่มรายชื่อ"
+
+#: templates/prefs/sourceselect.inc:258
+msgid "Choose the order of addressbooks to search when expanding addresses."
+msgstr "กำหนดลำดับของที่ติดต่อที่ต้องการให้ค้นหาในขณะทำการเติมเต็มชื่อ"
+
+#: folders.php:259
+#, c-format
+msgid "Cleared all messages from %s."
+msgstr "ลบจดหมายทั้งหมดจาก %s"
+
+#: templates/prefs/sourceselect.inc:287
+msgid ""
+"Click on one of your selected addressbooks and then select all fields to "
+"search."
+msgstr "คลิกสมุดรายชื่อที่ต้องการ แล้วเลือกเขตข้อความที่ต้องการค้นหา"
+
+#: folders.php:359
+msgid "Closed Folder"
+msgstr "ปิดโฟลเดอร์"
+
+#: templates/folders/actions.inc:29
+msgid "Collapse All"
+msgstr "ยุบทั้งหมด"
+
+#: templates/folders/actions.inc:28
+msgid "Collapse All Folders"
+msgstr "ยุบโฟลเดอร์ทั้งหมด"
+
+#: folders.php:367 folders.php:368
+msgid "Collapse Folder"
+msgstr "ยุบโฟลเดอร์"
+
+#: lib/api.php:37 templates/menu/menu.inc:20
+msgid "Compose"
+msgstr "สร้าง"
+
+#: mailbox.php:840 message.php:53
+#, c-format
+msgid "Compose Message (%s)"
+msgstr "สร้างข้อความ (%s)"
+
+#: compose.php:419 compose.php:428 compose.php:443 compose.php:493
+msgid "Compose a message"
+msgstr "สร้างข้อความใหม่"
+
+#: config/prefs.php.dist:638
+msgid "Compose messages in a separate window."
+msgstr "สร้างข้อความในหน้าต่างใหม่"
+
+#: contacts.php:89 templates/contacts/contacts.inc:8
+msgid "Contact List"
+msgstr "รายชื่อติดต่อ"
+
+#: config/prefs.php.dist:108
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr "ควบคุมการตรวจสอบจดหมายใหม่และการเตือนเมื่อมีจดหมายใหม่"
+
+#: templates/mailbox/navbar.inc:62 templates/message/navbar_aux_bottom.inc:6
+#: templates/message/navbar_aux_top.inc:19
+msgid "Copy"
+msgstr "สำเนา"
+
+#: templates/compose/spelling.inc:52
+msgid "Correct"
+msgstr "ถูกต้อง"
+
+#: templates/compose/spelling.inc:131
+msgid "Corrected Text"
+msgstr "ข้อความที่แก้ไขแล้ว"
+
+#: folders.php:248 folders.php:253 folders.php:255
+#, c-format
+msgid "Could not delete messages from %s: %s"
+msgstr "ไม่สามารถลบข้อความจาก %s: %s"
+
+#: templates/folders/actions.inc:5
+msgid "Create Folder"
+msgstr "สร้างโฟลเดอร์"
+
+#: templates/prefs/folderselect.inc:24
+msgid "Create a new drafts folder"
+msgstr "สร้างโฟลเดอร์แบบร่าง"
+
+#: templates/identities/manage.inc:95
+msgid "Create a new sent mail folder"
+msgstr "สร้างโฟลเดอร์จดหมายที่ส่งแล้ว"
+
+#: templates/prefs/trashselect.inc:24
+msgid "Create a new trash folder"
+msgstr "สร้างโฟลเดอร์ถังขยะ"
+
+#: config/prefs.php.dist:53
+msgid ""
+"Create filtering rules to organize your incoming mail, sort it into folders, "
+"and delete spam."
+msgstr ""
+"สร้างตัวกรองเพื่อจัดการจดหมายขาเข้า, จัดเก็บลงโฟลเดอร์ และลบจดหมายขยะ"
+
+#: config/prefs.php.dist:93
+msgid "Customize how you send mail and where drafts are saved."
+msgstr "กำหนดลักษณะการส่งจดหมายและการบันทึกแบบร่าง"
+
+#: config/prefs.php.dist:74
+#, c-format
+msgid "Customize maintenance operations run upon login to %s."
+msgstr "กำหนดปฏิบัติการบำรุงรักษาระบบเมื่อลงชื่อเข้าสู่ %s"
+
+#: config/prefs.php.dist:101
+#, c-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "กำหนดงานที่ต้องการให้รันเมื่อลงชื่อเข้าสู่ %s"
+
+#: templates/mailbox/message_headers.inc:13 templates/message/headers.inc:4
+msgid "Date"
+msgstr "วันที่"
+
+#: templates/search/main.inc:87 templates/search/main.inc:116
+#: templates/search/main.inc:145
+msgid "December"
+msgstr "ธันวาคม"
+
+#: templates/prefs/identityselect.inc:5
+msgid "Default Identity"
+msgstr "เอกลักษณ์โดยปริยาย"
+
+#: config/prefs.php.dist:512
+msgid "Default sorting criteria:"
+msgstr "เงื่อนไขการจัดเรียงโดยปริยาย:"
+
+#: config/prefs.php.dist:523
+msgid "Default sorting direction:"
+msgstr "ทิศทางการจัดเรียงโดยปริยาย:"
+
+#: templates/mailbox/actions.inc:9 templates/message/navbar.inc:7
+msgid "Delete"
+msgstr "ลบ"
+
+#: templates/folders/actions.inc:7
+msgid "Delete Folder(s)"
+msgstr "ลบโฟลเดอร์"
+
+#: templates/filters/list.inc:38
+msgid "Delete messages"
+msgstr "ลบจดหมาย"
+
+#: config/prefs.php.dist:446
+msgid "Delete old sent-mail folders at beginning of month"
+msgstr "ลบโฟลเดอร์จดหมายขาออกทุกๆ ต้นเดือน"
+
+#: templates/mailbox/legend.inc:16 templates/mailbox/navbar.inc:19
+#: templates/mailbox/navbar.inc:37 config/conf.php.dist:128
+msgid "Deleted"
+msgstr "ลบแล้ว"
+
+#: compose.php:981
+msgid "Deleted an attachment."
+msgstr "ลบเอกสารแนบ"
+
+#: templates/search/main.inc:208
+msgid "Deleted messages"
+msgstr "ข้อความที่ถูกลบ"
+
+#: config/prefs.php.dist:66
+msgid "Deleting and Moving Messages"
+msgstr "การลบและเคลื่อนย้ายจดหมาย"
+
+#: config/prefs.php.dist:522
+msgid "Descending"
+msgstr "เรียงจากหลังไปหน้า"
+
+#: config/prefs.php.dist:597
+msgid "Dim signatures?"
+msgstr "แสดงลายเซ็นด้วยสีอ่อน?"
+
+#: templates/contacts/contacts.inc:65
+msgid "Display"
+msgstr "แสดงผล"
+
+#: config/prefs.php.dist:83
+msgid "Display Options"
+msgstr "ตัวเลือกการแสดงผล"
+
+#: config/prefs.php.dist:338
+msgid "Display message when filters have been applied."
+msgstr "แสดงข้อความที่กรองแล้ว"
+
+#: config/prefs.php.dist:723
+msgid "Display pop-up notification of new mail."
+msgstr "แสดงตัวเตือนเมื่อมีจดหมายใหม่"
+
+#: templates/folders/actions.inc:14
+msgid "Do Not Check Folder(s) for New Mail"
+msgstr "ไม่ต้องการตรวจสอบจดหมายใหม่"
+
+#: lib/IMP.php:950
+msgid "Download"
+msgstr "ดาวน์โหลด"
+
+#: lib/IMP.php:949
+#, c-format
+msgid "Download %s"
+msgstr "ดาวน์โหลด %s"
+
+#: templates/folders/actions.inc:16
+msgid "Download Folder(s)"
+msgstr "ดาวน์โหลดโฟลเดอร์"
+
+#: templates/mailbox/navbar.inc:21 templates/mailbox/navbar.inc:40
+#: config/conf.php.dist:136
+msgid "Draft"
+msgstr "แบบร่าง"
+
+#: templates/prefs/folderselect.inc:23
+msgid "Drafts folder:"
+msgstr "โฟลเดอร์แบบร่าง"
+
+#: config/prefs.php.dist:308
+msgid "Edit your filter rules"
+msgstr "แก้ไขตัวกรอง"
+
+#: config/prefs.php.dist:170
+msgid "Edit your identities"
+msgstr "แก้ไขเอกลักษณ์ของคุณ"
+
+#: templates/contacts/contacts.inc:68
+msgid "Email Address"
+msgstr "ที่อยู่อีเมล"
+
+#: templates/folders/actions.inc:17
+msgid "Empty Folder(s)"
+msgstr "ล้างโฟลเดอร์"
+
+#: templates/menu/menu.inc:18
+msgid "Empty Trash"
+msgstr "ล้างถังขยะ"
+
+#: templates/mailbox/actions.inc:32
+msgid "Empty Trash folder"
+msgstr "ล้างโฟลเดอร์ถังขยะ"
+
+#: compose.php:644
+msgid "End forwarded message"
+msgstr "จบการส่งต่อข้อความ"
+
+#: message.php:393
+#, c-format
+msgid "Entry \"%s\" was successfully added to the addressbook"
+msgstr "\"%s\" ถูกเพิ่มเติมลงในที่ติดต่อเรียบร้อยแล้ว"
+
+#: status.php:35
+msgid "Error"
+msgstr "ผิดพลาด"
+
+#: config/prefs.php.dist:712
+msgid "Every 15 minutes"
+msgstr "ทุก 15 นาที"
+
+#: config/prefs.php.dist:709
+msgid "Every 30 seconds"
+msgstr "ทุก 30 วินาที"
+
+#: config/prefs.php.dist:711
+msgid "Every 5 minutes"
+msgstr "ทุก 5 นาที"
+
+#: config/prefs.php.dist:713
+msgid "Every half hour"
+msgstr "ทุกครึ่งชั่วโมง"
+
+#: config/prefs.php.dist:710
+msgid "Every minute"
+msgstr "ทุกนาที"
+
+#: templates/folders/actions.inc:27
+msgid "Expand All"
+msgstr "ขยายทั้งหมด"
+
+#: templates/folders/actions.inc:26
+msgid "Expand All Folders"
+msgstr "ขยายโฟลเดอร์ทั้งหมด"
+
+#: folders.php:371 folders.php:372
+msgid "Expand Folder"
+msgstr "ขยายโฟลเดอร์"
+
+#: templates/compose/compose.inc:299
+msgid "Expand Names"
+msgstr "เติมชื่อ"
+
+#: config/prefs.php.dist:553
+msgid "Expand the entire folder tree by default in the folders view."
+msgstr "กำหนดให้ขยายโครงสร้างโฟลเดอร์ทั้งหมดเมื่ออยู่ในมุมมองรายการโฟลเดอร์"
+
+#: templates/search/main.inc:77 templates/search/main.inc:106
+#: templates/search/main.inc:135
+msgid "February"
+msgstr "กุมภาพันธ์่่"
+
+#: templates/filters/manage.inc:7
+msgid "Field"
+msgstr "เขตข้อความ"
+
+#: templates/compose/compose.inc:430
+msgid "Filename"
+msgstr "ชื่อแฟ้ม"
+
+#: mailbox.php:332
+#, c-format
+msgid "Filter Activity: The message \"%s\" from \"%s\" has been deleted."
+msgstr "ผลการกรอง: จดหมาย \"%s\" จาก \"%s\" ได้ถูกลบไปแล้ว"
+
+#: mailbox.php:343
+#, c-format
+msgid ""
+"Filter Activity: The message \"%s\" from \"%s\" has been moved to the folder "
+"\"%s\"."
+msgstr ""
+"ผลการกรอง: จดหมาย \"%s\" จาก \"%s\" ได้ถูกเคลื่อนย้ายไปที่โฟลเดอร์ \"%s\" แล้ว"
+
+#: mailbox.php:330
+#, c-format
+msgid ""
+"Filter Activity: The message \"%s\" from \"%s\" has been moved to your Trash "
+"folder."
+msgstr ""
+"ผลการกรอง: ข้อความ \"%s\" จาก \"%s\" ได้ถูกย้ายไปลงโฟลเดอร์ถังขยะแล้ว"
+
+#: templates/filters/list.inc:10
+msgid "Filter Rules"
+msgstr "กฏการกรอง"
+
+#: config/prefs.php.dist:361
+msgid "Filter message content for profanity."
+msgstr "กรองข้อความที่ไม่เหมาะสม"
+
+#: config/prefs.php.dist:52
+msgid "Filters"
+msgstr "ตัวกรอง"
+
+#: templates/contacts/contacts.inc:18
+msgid "Find"
+msgstr "ค้นหา"
+
+#: mailbox.php:488 mailbox.php:489 mailbox.php:495 mailbox.php:496
+msgid "First Page"
+msgstr "หน้าแรก"
+
+#: folders.php:275 templates/folders/head.inc:5
+#: templates/prefs/initialpageselect.inc:5
+#: templates/prefs/initialpageselect.inc:8
+msgid "Folder Navigator"
+msgstr "ตัวนำทางโฟลเดอร์"
+
+#: templates/login/login.inc:130
+msgid "Folder Prefix"
+msgstr "ตัวนำโฟลเดอร์"
+
+#: templates/menu/menu.inc:22
+msgid "Folders"
+msgstr "โฟลเดอร์"
+
+#: compose.php:651 templates/message/navbar.inc:11
+msgid "Forward"
+msgstr "ส่งต่อ"
+
+#: compose.php:648
+msgid "Forward:"
+msgstr "ส่งต่อ:"
+
+#: compose.php:615
+#, c-format
+msgid "Forwarded message from %s"
+msgstr "ข้อความที่ส่งต่อมาจาก %s"
+
+#: templates/compose/compose.inc:80 templates/mailbox/message_headers.inc:17
+#: templates/message/headers.inc:8 templates/search/main.inc:30
+msgid "From"
+msgstr "จาก"
+
+#: config/prefs.php.dist:508
+msgid "From Address"
+msgstr "ที่อยู่ผู้ส่ง"
+
+#: filters.php:139 templates/filters/manage.inc:15
+msgid "From:"
+msgstr "จาก:"
+
+#: compose.php:647 compose.php:650
+msgid "Fwd:"
+msgstr "ส่งต่อ:"
+
+#: templates/menu/menu.inc:41
+msgid "Help"
+msgstr "ช่วยเหลือ"
+
+#: mailbox.php:546
+msgid "Hide Deleted"
+msgstr "ซ่อนที่ลบแล้ว"
+
+#: folders.php:266
+msgid "Hide Unsubscribed"
+msgstr "ซ่อนที่เลิกใช้ไปแล้ว"
+
+#: config/prefs.php.dist:629
+msgid "How to prefix quoted lines in a reply:"
+msgstr "การเติมข้อความหน้าบรรทัดข้อความในการตอบกลับ:"
+
+#: templates/index/notconfigured.inc:4
+msgid "IMP is not properly configured"
+msgstr "การตั้งค่าของ IMP ไม่ถูกต้อง"
+
+#: folders.php:346 templates/menu/menu.inc:16
+msgid "INBOX"
+msgstr "ตู้ขาเข้า"
+
+#: identities.php:129 templates/identities/manage.inc:5
+msgid "Identities"
+msgstr "เอกลักษณ์"
+
+#: templates/compose/compose.inc:65
+msgid "Identity"
+msgstr "เอกลักษณ์"
+
+#: templates/identities/manage.inc:47
+msgid "Identity's name:"
+msgstr "ชื่อเรียกเอกลักษณ์"
+
+#: templates/compose/spelling.inc:70
+msgid "Ignore"
+msgstr "ละเว้น"
+
+#: templates/compose/spelling.inc:71
+msgid "Ignore All"
+msgstr "ละเว้นทั้งหมด"
+
+#: templates/mailbox/legend.inc:14 templates/mailbox/navbar.inc:15
+#: templates/mailbox/navbar.inc:32 config/conf.php.dist:134
+msgid "Important"
+msgstr "สำคัญ"
+
+#: templates/search/main.inc:194
+msgid "Important messages"
+msgstr "ข้อความสำคัญ"
+
+#: config/prefs.php.dist:620
+msgid "Include original message in a reply?"
+msgstr "แนบข้อความต้นฉบับไปกับการตอบกลับหรือไม่?"
+
+#: templates/search/main.inc:76 templates/search/main.inc:105
+#: templates/search/main.inc:134
+msgid "January"
+msgstr "มกราคม"
+
+#: templates/search/main.inc:82 templates/search/main.inc:111
+#: templates/search/main.inc:140
+msgid "July"
+msgstr "กรกฎาคม"
+
+#: templates/search/main.inc:81 templates/search/main.inc:110
+#: templates/search/main.inc:139
+msgid "June"
+msgstr "มิถุนายน"
+
+#: templates/login/login.inc:140 config/prefs.php.dist:38
+msgid "Language"
+msgstr "ภาษา"
+
+#: mailbox.php:519 mailbox.php:520 mailbox.php:525 mailbox.php:526
+msgid "Last Page"
+msgstr "หน้าสุดท้าย"
+
+#: lib/IMP.php:304
+#, c-format
+msgid "Last login: %s"
+msgstr "ลงบันทึกเข้าครั้งล่าสุด: %s"
+
+#: lib/IMP.php:302
+msgid "Last login: Never"
+msgstr "ลงบันทึกเข้าครั้งล่าสุด: ไม่เคย"
+
+#: lib/api.php:72
+#, c-format
+msgid "Log in to %s"
+msgstr "ลงบันทึกเข้า %s"
+
+#: config/prefs.php.dist:100
+msgid "Login Tasks"
+msgstr "งานในขณะลงชื่อเข้า"
+
+#: login.php:22
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr ""
+"เกิดความผิดพลาดบางประการในการลงบันทึกเข้า อาจเป็นไปได้ว่า"
+"ชื่อผู้ใช้หรือรหัสผ่านของคุณไม่ถูกต้อง"
+
+#: templates/menu/menu.inc:54 templates/menu/menu.inc:56
+msgid "Logout"
+msgstr "ลงบันทึกออก" 
+#: filters.php:129
+msgid "Mail Filters"
+msgstr "ตัวกรองจดหมาย"
+
+#: config/prefs.php.dist:51 config/prefs.php.dist:58 config/prefs.php.dist:65
+#: config/prefs.php.dist:72
+msgid "Mail Management"
+msgstr "การจัดการอีเมล"
+
+#: folders.php:348 folders.php:350 folders.php:352
+msgid "Mailbox"
+msgstr "ตู้ไปรษณีย์"
+
+#: config/prefs.php.dist:73
+msgid "Maintenance Operations"
+msgstr "การดำเนินการบำรุงรักษา"
+
+#: templates/search/main.inc:78 templates/search/main.inc:107
+#: templates/search/main.inc:136
+msgid "March"
+msgstr "มีนาคม"
+
+#: templates/mailbox/navbar.inc:29
+msgid "Mark as:"
+msgstr "กำหนดให้เป็น"
+
+#: config/prefs.php.dist:588
+msgid "Mark different levels of quoting with different colors?"
+msgstr "กำหนดสีให้แตกต่างกันสำหรับแต่ละระดับของการอ้างอิงหรือไม่"
+
+#: templates/search/main.inc:80 templates/search/main.inc:109
+#: templates/search/main.inc:138
+msgid "May"
+msgstr "พฤษภาคม"
+
+#: status.php:48
+msgid "Message"
+msgstr "ข้อความ"
+
+#: compose.php:422 compose.php:1022 config/prefs.php.dist:92
+msgid "Message Composition"
+msgstr "เขียนข้อความใหม่"
+
+#: config/prefs.php.dist:507
+msgid "Message Date"
+msgstr "วันที่ของข้อความ"
+
+#: search.php:24
+msgid "Message Search"
+msgstr "ค้นหาข้อความ"
+
+#: config/prefs.php.dist:510
+msgid "Message Size"
+msgstr "ขนาดของข้อความ"
+
+#: templates/message/navbar.inc:17
+msgid "Message Source"
+msgstr "ต้นฉบับข้อความ"
+
+#: config/prefs.php.dist:59
+msgid "Message Viewing"
+msgstr "การแสดงข้อความ"
+
+#: templates/search/main.inc:26
+msgid "Message fields"
+msgstr "เขตข้อความ"
+
+#: templates/search/main.inc:156
+msgid "Message flags"
+msgstr "ตัวบ่งชี้ข้อความ"
+
+#: templates/search/main.inc:224
+msgid "Message folders"
+msgstr "โฟลเดอร์"
+
+#: config/prefs.php.dist:532
+msgid "Messages per page in the mailbox view."
+msgstr "จำนวนข้อความต่อหน้าในมุมมองตู้ไปรษณีย์"
+
+#: mailbox.php:376
+msgid "Messages to"
+msgstr "ข้อความไปยัง"
+
+#: templates/compose/compose.inc:432
+msgid "Mime Type"
+msgstr "ชนิดของไมม์"
+
+#: templates/mailbox/navbar.inc:61 templates/message/navbar_aux_bottom.inc:5
+#: templates/message/navbar_aux_top.inc:18
+msgid "Move"
+msgstr "ย้าย"
+
+#: templates/filters/list.inc:40
+#, c-format
+msgid "Move messages to the <b>%s</b> folder"
+msgstr "ย้ายข้อความไปยังโฟลเดอร์ <b>%s</b>"
+
+#: templates/contacts/contacts.inc:67
+msgid "Name"
+msgstr "ชื่อ"
+
+#: config/prefs.php.dist:708
+msgid "Never"
+msgstr "ไม่เลือก"
+
+#: templates/mailbox/legend.inc:8
+msgid "New"
+msgstr "ใหม่"
+
+#: config/prefs.php.dist:107
+msgid "New Mail"
+msgstr "จดหมายใหม่"
+
+#: templates/search/main.inc:170
+msgid "New messages"
+msgstr "ข้อความใหม่"
+
+#: templates/message/navbar.inc:38
+msgid "Next Message"
+msgstr "ข้อความต่อไป"
+
+#: mailbox.php:516 mailbox.php:517 mailbox.php:523 mailbox.php:524
+msgid "Next Page"
+msgstr "หน้าต่อไป"
+
+#: config/prefs.php.dist:550
+msgid "No"
+msgstr "ไม่"
+
+#: mailbox.php:733
+msgid "No Subject"
+msgstr "ไม่มีชื่อเรื่อง"
+
+#: folders.php:197 folders.php:207 lib/Folder.php:404 lib/Folder.php:438
+msgid "No folders were specified"
+msgstr "กรุณาระบุโฟลเดอร์ที่ต้องการ"
+
+#: templates/mailbox/empty_mailbox.inc:4
+msgid "No messages matched your search"
+msgstr "ไม่มีข้อความใดตรงกับการค้นหาของคุณ"
+
+#: templates/compose/spelling.inc:28
+msgid "No spelling errors"
+msgstr "ไม่พบคำที่สะกดผิด"
+
+#: templates/compose/spelling.inc:88
+msgid "No suggestions"
+msgstr "ไม่มีคำแนะนำ"
+
+#: templates/identities/manage.inc:93 templates/mailbox/navbar.inc:11
+#: templates/prefs/sourceselect.inc:26
+msgid "None"
+msgstr "ไม่เลือก"
+
+#: templates/mailbox/navbar.inc:20 templates/mailbox/navbar.inc:38
+msgid "Not Deleted"
+msgstr "ไม่ถูกลบ"
+
+#: templates/mailbox/navbar.inc:22 templates/mailbox/navbar.inc:41
+msgid "Not Draft"
+msgstr "ไม่ใช่แบบร่าง"
+
+#: templates/mailbox/navbar.inc:16 templates/mailbox/navbar.inc:33
+msgid "Not Important"
+msgstr "ไม่ใช่ข้อความสำคัญ"
+
+#: templates/mailbox/navbar.inc:24
+msgid "Not Personal"
+msgstr "ไม่ใช่ข้อความส่วนตัว"
+
+#: templates/search/main.inc:212
+msgid "Not deleted messages"
+msgstr "ไม่ใช่ข้อความที่ถูกลบ"
+
+#: templates/search/main.inc:198
+msgid "Not important messages"
+msgstr "ไม่ใช่ข้อความสำคัญ"
+
+#: templates/search/main.inc:86 templates/search/main.inc:115
+#: templates/search/main.inc:144
+msgid "November"
+msgstr "พฤศจิกายน"
+
+#: config/prefs.php.dist:455
+msgid "Number of old sent-mail folders to keep if deleting monthly"
+msgstr "จำนวนโฟลเดอร์จดหมายขาออกที่ต้องการเก็บไว้ หากทำการลบทิ้งเป็นรายเดือน"
+
+#: templates/search/main.inc:85 templates/search/main.inc:114
+#: templates/search/main.inc:143
+msgid "October"
+msgstr "ตุลาคม"
+
+#: templates/search/main.inc:166
+msgid "Old messages"
+msgstr "ข้อความเก่า"
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:49
+msgid "Old sent-mail folders being purged."
+msgstr "กำลังกำจัดโฟลเดอร์จดหมายขาออกของเดือนก่อนๆ"
+
+#: folders.php:357 templates/menu/menu.inc:65
+msgid "Open Folder"
+msgstr "เปิดโฟลเดอร์"
+
+#: templates/compose/compose.inc:288 templates/menu/menu.inc:25
+msgid "Options"
+msgstr "ตัวเลือก"
+
+#: config/prefs.php.dist:82 config/prefs.php.dist:91 config/prefs.php.dist:99
+#: config/prefs.php.dist:106 config/prefs.php.dist:113
+msgid "Other Options"
+msgstr "ตัวเลือกอื่น"
+
+#: templates/mailbox/header.inc:26
+#, c-format
+msgid "Page %d of %d"
+msgstr "หน้าที่ %d จาก %d"
+
+#: templates/message/headers.inc:32
+msgid "Part(s)"
+msgstr "ส่วนประกอบ"
+
+#: templates/login/login.inc:76
+msgid "Password"
+msgstr "รหัสผ่าน"
+
+#: config/prefs.php.dist:428
+msgid "Perform maintenance operations on login"
+msgstr "ดำเนินการบำรุงรักษาระบบในขณะลงชื่อเข้า"
+
+#: templates/mailbox/navbar.inc:23 config/conf.php.dist:138
+msgid "Personal"
+msgstr "ส่วนตัว"
+
+#: config/prefs.php.dist:24
+msgid "Personal Information"
+msgstr "ข้อมูลส่วนตัว"
+
+#: templates/identities/manage.inc:82
+msgid "Place your signature before replies and forwards?"
+msgstr "เติมลายเซ็นของคุณในการตอบกลับและส่งต่อ?"
+
+#: compose.php:225 compose.php:240
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "กรุณาตรวจสอบที่อยู่ซ้ำหรือพิมพ์ผิด"
+
+#: templates/compose/compose.inc:116 templates/compose/compose.inc:172
+#: templates/compose/compose.inc:228
+msgid "Please select or edit right next:"
+msgstr "กรุณาเลือกหรือแก้ไขต่อไป:"
+
+#: templates/identities/manage.inc:77
+msgid "Precede your signature with dashes ('-- ')"
+msgstr "เติมขีด ('--') ไว้ข้าวหน้าลายเซ็นของคุณ"
+
+#: templates/message/navbar.inc:32
+msgid "Previous Message"
+msgstr "ข้อความที่แล้ว"
+
+#: mailbox.php:491 mailbox.php:492 mailbox.php:497 mailbox.php:498
+msgid "Previous Page"
+msgstr "หน้าที่แล้ว"
+
+#: templates/message/navbar.inc:23
+msgid "Print"
+msgstr "พิมพ์"
+
+#: mailbox.php:349
+#, c-format
+msgid "Problem with filter rule %d: folder does not exist: %s"
+msgstr "เกิดข้อผิดพลาดกับตัวกรอง %d: ไม่พบโฟลเดอร์: %s"
+
+#: templates/menu/menu.inc:33
+msgid "Problem?"
+msgstr "แจ้งปัญหา"
+
+#: templates/mailbox/actions.inc:26
+msgid "Purge Deleted"
+msgstr "ลบโดยถาวร"
+
+#: config/prefs.php.dist:474
+msgid "Purge Trash how often:"
+msgstr "ความถี่ในการกำจัดถังขยะ"
+
+#: config/prefs.php.dist:483
+msgid "Purge messages in Trash folder older than this amount of days"
+msgstr "จำนวนวันที่เก็บข้อความไว้ในโฟลเดอร์ถังขยะก่อนการกำจัด"
+
+#: config/prefs.php.dist:464
+msgid "Purge old message in the Trash folder"
+msgstr "กำจัดข้อความเก่าในโฟลเดอร์ถังขยะ"
+
+#: lib/Maintenance/Task/purge_trash.php:60
+#, c-format
+msgid "Purging %d message(s) from Trash folder."
+msgstr "กำจัด %d ข้อความออกจากโฟลเดอร์ถังขยะ"
+
+#: compose.php:584
+msgid "Quoting"
+msgstr "อ้างอิง"
+
+#: templates/search/main.inc:128
+msgid "Received after"
+msgstr "ได้รับหลัง"
+
+#: templates/search/main.inc:99
+msgid "Received before"
+msgstr "ได้รับก่อน"
+
+#: templates/search/main.inc:70
+msgid "Received on"
+msgstr "ได้รับเมื่อ"
+
+#: templates/message/navbar.inc:12
+msgid "Redirect"
+msgstr "เปลี่ยนเส้นทาง"
+
+#: compose.php:986
+msgid "Redirect this message"
+msgstr "เปลี่ยนเส้นทางข้อความนี้"
+
+#: compose.php:709
+msgid "Redirecting failed."
+msgstr "การเปี่ยนเส้นทางล้มเหลว"
+
+#: templates/mailbox/header.inc:19
+msgid "Refresh"
+msgstr "รีเฟรช"
+
+#: config/prefs.php.dist:714
+msgid "Refresh Folder Views:"
+msgstr "รีเฟรชมุมมองโฟลเดอร์"
+
+#: templates/folders/head.inc:6 templates/folders/head.inc:7
+msgid "Reload View"
+msgstr "รีโหลดมุมมอง"
+
+#: config/prefs.php.dist:552
+msgid "Remember the last view"
+msgstr "จดจำมุมมองล่าสุด"
+
+#: templates/compose/compose.inc:455
+msgid "Remove Selected"
+msgstr "ลบที่ถูกเลือก"
+
+#: templates/folders/actions.inc:6
+msgid "Rename Folder"
+msgstr "เปลี่ยนชื่อโฟลเดอร์"
+
+#: config/prefs.php.dist:437
+msgid "Rename sent-mail folder at beginning of month"
+msgstr "เปลี่ยนชื่อโฟลเดอร์จดหมายขาออกทุกๆ ต้นเดือน"
+
+#: lib/Folder.php:371
+#, c-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr "การเปลี่ยนชื่อจาก \"%s\" เป็น \"%s\" ล้มเหลว เครื่องบริการรายงานว่า"
+
+#: templates/compose/spelling.inc:96
+msgid "Replace with:"
+msgstr "แทนที่ด้วย:"
+
+#: templates/message/navbar.inc:9
+msgid "Reply"
+msgstr "ตอบกลับ"
+
+#: templates/message/navbar.inc:10
+msgid "Reply to All"
+msgstr "ตอบกลับทั้งหมด"
+
+#: compose.php:599
+msgid "Reply to All:"
+msgstr "ตอบกลับทั้งหมด:"
+
+#: compose.php:627
+msgid "Reply-To: "
+msgstr "ตอบกลับไปยัง:"
+
+#: templates/message/headers.inc:24
+msgid "Reply-to"
+msgstr "ตอบกลับไปยัง"
+
+#: compose.php:597
+msgid "Reply:"
+msgstr "ตอบกลับ"
+
+#: templates/message/navbar.inc:25
+msgid "Report as Spam"
+msgstr "รายงานว่าเป็น"
+
+#: templates/compose/compose.inc:348
+msgid "Request a Return Receipt"
+msgstr "ร้องขอใบตอบรับ"
+
+#: templates/message/navbar.inc:20
+msgid "Resume"
+msgstr "ทำต่อ"
+
+#: config/prefs.php.dist:376
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr ""
+"ต้องการกลับสู่รายการตู้ไปรษณีย์หลังจากทำการลบ, ย้าย หรือสำเนาข้อความหรือไม่?"
+
+#: templates/filters/manage.inc:4
+msgid "Rule Definition"
+msgstr "การกำหนดกฏเกณฑ์"
+
+#: templates/compose/compose.inc:327
+msgid "Save a copy in "
+msgstr "บันทึกสำเนาใน"
+
+#: templates/message/navbar.inc:22
+msgid "Save as"
+msgstr "บันทึกเป็น"
+
+#: templates/identities/manage.inc:87
+msgid "Save sent mail"
+msgstr "บันทึกจดหมายขาออก"
+
+#: compose.php:923
+#, c-format
+msgid "Saving the draft failed. This is what the server said: %s"
+msgstr "การบันทึกแบบร่างล้มเหลว เครื่องบริการรายงานว่า: %s"
+
+#: templates/menu/menu.inc:27 templates/search/main.inc:8
+msgid "Search"
+msgstr "ค้นหา"
+
+#: lib/IMP.php:441
+msgid "Search Results"
+msgstr "ผลการค้นหา"
+
+#: templates/mailbox/legend.inc:10 templates/mailbox/navbar.inc:13
+#: templates/mailbox/navbar.inc:30
+msgid "Seen"
+msgstr "อ่านแล้ว"
+
+#: templates/mailbox/navbar.inc:9
+msgid "Select"
+msgstr "เลือก"
+
+#: config/prefs.php.dist:115
+msgid "Select addressbook sources for adding and searching for addresses."
+msgstr "เลือกแหล่งที่ติดต่อเพื่อทำการเพิ่มและค้นหารายชื่อ"
+
+#: templates/search/main.inc:229
+msgid "Select all"
+msgstr "เลือกทั้งหมด"
+
+#: templates/identities/manage.inc:12
+msgid "Select an identity"
+msgstr "เลือกเอกลักษณ์่่่่่่่่่่่่่่่่่"
+
+#: templates/message/navbar.inc:48
+msgid "Select charset:"
+msgstr "เลือกชุดอักขระ:"
+
+#: templates/search/main.inc:230
+msgid "Select none"
+msgstr "ไม่เลือกเลย"
+
+#: config/prefs.php.dist:279
+msgid "Select your preferred language:"
+msgstr "เลือกภาษาที่ต้องการ:"
+
+#: templates/prefs/sourceselect.inc:275
+msgid "Selected Addressbooks:"
+msgstr "ที่ติดต่อที่เลือก:"
+
+#: templates/identities/manage.inc:91
+msgid "Sent mail folder:"
+msgstr "โฟลเดอร์จดหมายขาออก"
+
+#: templates/search/main.inc:84 templates/search/main.inc:113
+#: templates/search/main.inc:142
+msgid "September"
+msgstr "กันยายน"
+
+#: templates/login/login.inc:85 templates/login/login.inc:91
+msgid "Server"
+msgstr "เครื่องบริการ"
+
+#: config/prefs.php.dist:31
+msgid "Server Information"
+msgstr "ข้อมูลเครื่องบริการ"
+
+#: config/prefs.php.dist:60
+msgid "Set preferences for filtering messages for unwanted content."
+msgstr "กำหนดค่าสำหรับการกรองข้อความที่มีคำที่ไม่เหมาะสม"
+
+#: config/prefs.php.dist:67
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr "กำหนดค่าการกระทำเมื่อทำการย้ายและลบข้อความ"
+
+#: config/prefs.php.dist:46
+msgid "Set the current time zone."
+msgstr "ตั้งค่าเขตเวลา"
+
+#: config/prefs.php.dist:39
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "เลือกภาษาที่ต้องการใช้ในการแสดงเมนู, คำอธิบาย และความช่วยเหลือ"
+
+#: config/prefs.php.dist:659
+msgid "Should the compose window be closed after saving a draft?"
+msgstr "ต้องการให้ปิดหน้าต่างเขียนจดหมายหลังจากบันทึกแบบร่างหรือไม่?"
+
+#: mailbox.php:544
+msgid "Show Deleted"
+msgstr "แสดงที่ถูกลบ"
+
+#: folders.php:266
+msgid "Show Unsubscribed"
+msgstr "แสดงที่เลิกใช้ไปแล้ว"
+
+#: config/prefs.php.dist:674
+msgid "Show last login time when logging in"
+msgstr "แสดงเวลาลงบันทึกเข้าครั้งล่าสุดขณะกำลังเข้าสู่ระบบ"
+
+#: config/prefs.php.dist:579
+msgid "Show legend in the mailbox view."
+msgstr "แสดงคำอธิบายสัญลักษณ์ในมุมมองตู้ไปรษณีย์"
+
+#: templates/compose/compose.inc:431 templates/mailbox/message_headers.inc:33
+msgid "Size"
+msgstr "ขนาด"
+
+#: templates/index/notconfigured.inc:13
+msgid "Some of IMP's configuration files are missing:"
+msgstr "ไม่พบแฟ้มโครงร่างบางแฟ้มของ IMP"
+
+#: templates/mailbox/message_headers.inc:8
+#: templates/mailbox/message_headers.inc:12
+#: templates/mailbox/message_headers.inc:16
+#: templates/mailbox/message_headers.inc:22
+#: templates/mailbox/message_headers.inc:26
+#: templates/mailbox/message_headers.inc:32
+msgid "Sort Direction"
+msgstr "ทิศทางการจัดเรียง"
+
+#: message.php:366
+msgid "Spam Report from"
+msgstr "รายงานจดหมายขยะจาก"
+
+#: templates/compose/compose.inc:305
+msgid "Special Characters"
+msgstr "อักขระพิเศษ"
+
+#: templates/compose/compose.inc:302
+msgid "Spell Check"
+msgstr "ตรวจคำสะกด"
+
+#: templates/compose/spelling.inc:26
+msgid "Spell Checker"
+msgstr "ตัวตรวจคำสะกด"
+
+#: templates/compose/spelling.inc:28 templates/compose/spelling.inc:36
+msgid "Spell check complete"
+msgstr "ตรวจคำสะกดเรียบร้อยแล้ว"
+
+#: config/prefs.php.dist:541
+msgid "Spelling errors per screen when spell checking."
+msgstr "จำนวนความผิดพลาดที่แสดงในหนึ่งหน้าจอขณะทำการตรวจคำสะกด"
+
+#: templates/compose/compose.inc:270 templates/mailbox/message_headers.inc:24
+#: templates/mailbox/message_headers.inc:27 templates/message/headers.inc:28
+#: templates/search/main.inc:54
+msgid "Subject"
+msgstr "ชื่อเรื่อง"
+
+#: config/prefs.php.dist:509
+msgid "Subject Field"
+msgstr "เขตข้อความชื่อเรื่อง"
+
+#: filters.php:140 templates/filters/manage.inc:16
+msgid "Subject:"
+msgstr "ชื่อเรื่อง:"
+
+#: templates/folders/actions.inc:9
+msgid "Subscribe to Folder(s)"
+msgstr "เลือกใช้งานโฟลเดอร์"
+
+#: status.php:39
+msgid "Success"
+msgstr "สำเร็จ"
+
+#: templates/compose/spelling.inc:74
+msgid "Suggestions"
+msgstr "คำแนะนำ"
+
+#: templates/filters/manage.inc:30
+msgid "Text"
+msgstr "มีคำว่า"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:89
+#, c-format
+msgid "The current folder(s) \"%s\" will be renamed to \"%s\"."
+msgstr "โฟลเดอร์ปัจจุบัน \"%s\" จะถูกเปลี่ยนชื่อเป็น \"%s\""
+
+#: lib/Folder.php:299
+#, c-format
+msgid "The folder \"%s\" already exists"
+msgstr "โฟลเดอร์ \"%s\" มีอยู่แล้ว"
+
+#: lib/Folder.php:132
+#, c-format
+msgid ""
+"The folder \"%s\" contains illegal characters in its name. It may cause "
+"problems. Please see your system administrator."
+msgstr ""
+"โฟลเดอร์ \"%s\" มีตัวอักษรที่ไม่ถูกต้องอยู่ในชื่อ ซึ่งอาจทำให้เกิดปัญหาได้ "
+"กรุณาติดต่อผู้ดูและระบบของคุณ"
+
+#: lib/Folder.php:312
+#, c-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "โฟลเดอร์ \"%s\" ได้ถูกสร้างขึ้นแล้ว แต่ยังไม่ได้เรียกใช้"
+
+#: lib/Folder.php:265
+#, c-format
+msgid "The folder \"%s\" was deleted but you were not unsubscribed from it."
+msgstr "โฟลเดอร์ \"%s\" ได้ถูกลบไปออกแล้ว แต่คุณยังไม่ได้เลิกใช้"
+
+#: lib/Folder.php:305
+#, c-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr "ไม่สามารถสร้างโฟลเดอร์ \"%s\" ได้ เครื่องบริการรายงานว่า"
+
+#: lib/Folder.php:259
+#, c-format
+msgid "The folder \"%s\" was not deleted. This is what the server said"
+msgstr "ไม่สามารถลบโฟลเดอร์ \"%s\" ได้ เครื่องบริการรายงานว่า"
+
+#: lib/Folder.php:317
+#, c-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "โฟลเดอร์ \"%s\" ได้ถูกสร้างขึ้นเรียบร้อยแล้ว"
+
+#: lib/Folder.php:268
+#, c-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "โฟลเดอร์ \"%s\" ได้ถูกลบเรียบร้อยแล้ว"
+
+#: lib/Folder.php:368
+#, c-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "โฟลเดอร์ \"%s\" ได้ถูกเปลี่ยนชื่อเป็น \"%s\" เรียบร้อยแล้ว"
+
+#: identities.php:121
+#, c-format
+msgid "The identity \"%s\" has been deleted."
+msgstr "เอกลักษณ์ \"%s\" ได้ถูกลบแล้ว"
+
+#: identities.php:114
+#, c-format
+msgid "The identity \"%s\" has been saved."
+msgstr "เอกลักษณ์ \"%s\" ได้ถูกบันทึกแล้ว"
+
+#: templates/mailbox/empty_mailbox.inc:4
+msgid "There are no messages in this mailbox."
+msgstr "ไม่มีข้อความในตู้ไปรษณีย์นี้"
+
+#: mailbox.php:205
+#, c-format
+msgid "There was a problem expunging %s. This is what the server said"
+msgstr "เกิดข้อผิดพลาดในการลบ %s เครื่องบริการรายงานว่า"
+
+#: mailbox.php:214
+msgid "There was a problem expunging the mailbox. This is what the server said"
+msgstr "เกิดข้อผิดพลาดในการลบตู้ไปรษณีย์ เครื่องบริการรายงานว่า"
+
+#: mailbox.php:365
+#, c-format
+msgid ""
+"There was a problem expunging the mailbox. This is what the server said: %s"
+msgstr "เกิดข้อผิดพลาดในการลบตู้ไปรษณีย์ เครื่องบริการรายงานว่า: %s"
+
+#: compose.php:946
+#, c-format
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size (%d MB)."
+msgstr ""
+"เกิดข้อผิดพลาดในการอัพโหลด แฟ้มข้อมูลอาจมีขนาดใหญ่เกินกว่าขนาดที่กำหนดไว้ (%d เมกะไบต์)"
+
+#: compose.php:958
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"เกิดข้อผิดพลาดในการอัพโหลด แฟ้มข้อมูลอาจมีขนาดใหญ่เกินกว่าขนาดที่กำหนดไว้"
+
+#: lib/Message.php:115
+#, c-format
+msgid ""
+"There was an error copying messages to \"%s\". This is what the server said"
+msgstr ""
+"เกิดข้อผิดพลาดในการสำเนาข้อความไปยัง \"%s\" เครื่องบริการแจ้งว่า"
+
+#: lib/Message.php:217
+#, c-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr ""
+"เกิดข้อผิดพลาดในการลบข้อความจากโฟลเดอร์ \"%s\" เครื่องบริการรายงานว่า"
+
+#: lib/Message.php:292
+#, c-format
+msgid ""
+"There was an error deleting messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"เกิดข้อผิดพลาดในการลบข้อความในโฟลเดอร์ \"%s\" เครื่องบริการรายงานว่า"
+
+#: lib/Message.php:247 lib/Message.php:255
+msgid "There was an error deleting messages. This is what the server said"
+msgstr "เกิดข้อผิดพลาดในการลบข้อความ เครื่องบริการรายงานว่า"
+
+#: lib/MIME/Viewer/enriched.php:41 lib/MIME/Viewer/text.php:29
+msgid "There was an error displaying this message part"
+msgstr "เกิดข้อผิดพลาดในการแสดงส่วนนี้ของข้อความ"
+
+#: lib/Message.php:354 lib/Message.php:369
+#, c-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr "เกิดข้อผิดพลาดในการบ่งชี้ข้อความในโฟลเดอร์ \"%s\" เครื่องบริการรายงานว่า"
+
+#: lib/Message.php:377
+msgid "There was an error flagging messages. This is what the server said"
+msgstr "เกิดข้อผิดพลาดในการบ่งชี้ข้อความ เครื่องบริการรายงานว่า"
+
+#: lib/Message.php:111
+#, c-format
+msgid ""
+"There was an error moving messages to \"%s\". This is what the server said"
+msgstr "เกิดข้อผิดพลาดในการย้ายข้อความไป \"%s\" เครื่องบริการรายงานว่า"
+
+#: lib/Message.php:211 lib/Message.php:241
+msgid ""
+"There was an error moving messages to the trash. This is what the server said"
+msgstr "เกิดข้อผิดพลาดในการย้ายข้อความไปยังถังขยะ เครื่องบริการรายงานว่า"
+
+#: compose.php:939
+msgid "There was an error saving a draft."
+msgstr "เกิดข้อผิดพลาดในการบันทึกแบบร่าง"
+
+#: compose.php:860
+#, c-format
+msgid "There was an error sending your message: %s"
+msgstr "เกิดข้อผิดพลาดในการส่งข้อความของคุณ: %s"
+
+#: lib/Message.php:305
+msgid "There was an error undeleting messages. This is what the server said"
+msgstr "เกิดข้อผิดพลาดในการกู้คืนข้อความ เครื่องบริการรายงานว่า"
+
+#: mailbox.php:145
+msgid "There was an error viewing the requested message."
+msgstr "เกิดข้อผิดพลาดในการแสดงข้อความที่ระบุ"
+
+#: templates/index/notconfigured.inc:32
+msgid ""
+"This file controls local MIME drivers for IMP, specifically what kinds of "
+"attachments are viewable and/or downloadable."
+msgstr ""
+
+#: templates/index/notconfigured.inc:39
+msgid ""
+"This file controls the default preferences for IMP, and also controls which "
+"preferences users can alter."
+msgstr ""
+
+#: templates/index/notconfigured.inc:46
+msgid ""
+"This file controls the default settings for IMP, and also defines the list "
+"of available servers if you are using the server list."
+msgstr ""
+
+#: templates/index/notconfigured.inc:25
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+
+#: templates/index/notconfigured.inc:18
+msgid ""
+"This is the main IMP configuration file. It contains paths and options for "
+"the IMP scripts."
+msgstr ""
+
+#: message.php:377
+msgid "This message has been reported as spam to your system administrator."
+msgstr "ข้อความนี้ได้ถูกรายงานว่าเป็นการรบกวนไปยังผู้ดูแลระบบของคุณแล้ว"
+
+#: message.php:399
+msgid "This message to"
+msgstr "ข้อความนี้ไปยัง"
+
+#: prefs.php:107
+msgid "This number must be at least one."
+msgstr "ตัวเลขนี้ต้องมีค่าอย่างน้อยเท่ากับหนึ่ง"
+
+#: prefs.php:105
+msgid "This value must be a number."
+msgstr "ข้อมูลนี้ต้องมีค่าเป็นตัวเลข"
+
+#: templates/mailbox/message_headers.inc:23
+#: templates/mailbox/message_headers.inc:28
+msgid "Thread"
+msgstr "เทรด"
+
+#: config/prefs.php.dist:511
+msgid "Thread View"
+msgstr "มุมมองเทรด"
+
+#: config/prefs.php.dist:45
+msgid "Time Zone"
+msgstr "เขตเวลา"
+
+#: mailbox.php:701 templates/compose/bounce.inc:28
+#: templates/compose/compose.inc:103 templates/message/headers.inc:12
+#: templates/search/main.inc:38
+msgid "To"
+msgstr "ถึง"
+
+#: filters.php:137 templates/filters/manage.inc:13
+msgid "To:"
+msgstr "ถึง:"
+
+#: templates/compose/compose.inc:456
+#, c-format
+msgid "Total Size: %s KB"
+msgstr "ขนาดโดยรวม: %s กิโลไบต์"
+
+#: templates/prefs/trashselect.inc:23
+msgid "Trash folder:"
+msgstr "โฟลเดอร์ถังขยะ:"
+
+#: templates/mailbox/navbar.inc:18 templates/mailbox/navbar.inc:35
+msgid "Unanswered"
+msgstr "ไม่ได้ตอบกลับ"
+
+#: templates/search/main.inc:184
+msgid "Unanswered messages"
+msgstr "ข้อความที่ไม่ได้ตอบกลับ"
+
+#: templates/mailbox/actions.inc:13 templates/message/navbar.inc:5
+msgid "Undelete"
+msgstr "กู้คืน"
+
+#: mailbox.php:699 message.php:69
+msgid "Undisclosed Recipients"
+msgstr "ผู้รับที่ไม่เปิดเผย"
+
+#: identities.php:71 identities.php:72
+msgid "Unnamed"
+msgstr "ไม่มีชื่อ"
+
+#: config/conf.php.dist:130
+msgid "Unread"
+msgstr "ยังไม่ได้อ่าน"
+
+#: templates/mailbox/navbar.inc:14 templates/mailbox/navbar.inc:31
+msgid "Unseen"
+msgstr "ยังไม่ได้เปิด"
+
+#: templates/folders/actions.inc:32
+msgid "Unseen Messages"
+msgstr "ข้อความที่ยังไม่ได้เปิด"
+
+#: templates/folders/actions.inc:10
+msgid "Unsubscribe from Folder(s)"
+msgstr "เลิกใช้โฟลเดอร์"
+
+#: templates/prefs/sourceselect.inc:288
+msgid "Use Ctrl/Option+Click to select multiple fields"
+msgstr "ให้กดปุ่ม Ctrl พร้อมกับคลิกตัวเลือก เพื่อเลือกหลายเขตข้อความพร้อมๆ กัน"
+
+#: templates/identities/manage.inc:94
+msgid "Use Default Value"
+msgstr "ใช้ค่าโดยปริยาย"
+
+#: config/prefs.php.dist:263
+msgid "Use IMAP folder subscriptions"
+msgstr "ใช้การเรียกใช้โฟลเดอร์ของไอแมพ"
+
+#: prefs.php:286
+msgid "User Options"
+msgstr "ตัวเลือกเกี่ยวกับผู้ใช้"
+
+#: templates/login/login.inc:69
+msgid "Username"
+msgstr "ชื่อผู้ใช้"
+
+
+#: lib/IMP.php:936 lib/MIME/Viewer/enriched.php:177
+#: lib/MIME/Viewer/text.php:97
+#, c-format
+msgid "View %s"
+msgstr "แสดง %s"
+
+#: folders.php:342
+msgid "View messages in "
+msgstr "แสดงข้อความใน"
+
+#: templates/prefs/initialpageselect.inc:20
+msgid "View or mailbox to display after login:"
+msgstr "มุมมองหรือตู้ไปรษณีย์ที่ต้องการให้แสดงหลังจากลงชื่อเข้า:"
+
+#: status.php:43
+msgid "Warning"
+msgstr "คำเตือน"
+
+#: login.php:157 templates/login/login.inc:63
+#, c-format
+msgid "Welcome to %s"
+msgstr "ยินดีต้อนรับสู่ %s"
+
+#: config/prefs.php.dist:387
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted."
+msgstr ""
+"เมื่อต้องการลบข้อความ ให้ย้ายข้อความนั้นๆ ไปยังโฟลเดอร์ถังขยะ "
+"แทนการกำหนดให้เป็นข้อความที่ถูกลบ"
+
+#: config/prefs.php.dist:611
+msgid "Wrap text at this many characters."
+msgstr "จำนวนตัวอักษรที่ต้องการให้แสดงผลในหนึ่งบรรทัด"
+
+#: config/prefs.php.dist:551
+msgid "Yes"
+msgstr "ใช่"
+
+#: login.php:21
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "คุณได้ลงชื่อออกเรียบร้อยแล้ว <br />ขอบคุณที่ใช้บริการ"
+
+#: compose.php:721
+msgid "You must have at least one recipient."
+msgstr "ต้องกำหนดให้มีชื่อผู้รับอย่างน้อยหนึ่งชื่อ"
+
+#: identities.php:123
+msgid "You must select an identity to be deleted."
+msgstr "คุณต้องเลือกเอกลักษณ์ที่ต้องการจะลบเสียก่อน"
+
+#: lib/Folder.php:395
+#, c-format
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr "คุณยังไม่ได้เรียกใช้ \"%s\" เครื่องบริการรายงานว่า"
+
+#: lib/Folder.php:429
+#, c-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr "คุณยังไม่ได้เลิกใช้ \"%s\" เครื่องบริการรายงานว่า"
+
+#: lib/Folder.php:399
+#, c-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr "คุณได้เรียกใช้ \"%s\" เรียบร้อยแล้ว"
+
+#: lib/Folder.php:433
+#, c-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "คุณได้เลิกใช้ \"%s\" เรียบร้อยแล้ว"
+
+#: login.php:20
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "ช่วงเวลาสื่อสาร %s ของคุณได้หมดเวลาลงแล้ว กรุณาลงชื่อเข้าใหม่"
+
+#: templates/identities/manage.inc:59
+msgid "Your From: address:"
+msgstr "ที่อยู่ ผู้ส่ง: ของคุณ:"
+
+#: config/prefs.php.dist:23 config/prefs.php.dist:30 config/prefs.php.dist:37
+#: config/prefs.php.dist:44
+msgid "Your Information"
+msgstr "ข้อมูลของคุณ"
+
+#: templates/identities/manage.inc:64
+msgid "Your Reply-to: address: <i>(optional)</i>"
+msgstr "ที่อยู่ ที่ติดต่อกลับ: ของคุณ: <i>(ถ้าต้องการ)</i>"
+
+#: config/prefs.php.dist:295
+msgid "Your current time zone:"
+msgstr "เขตเวลาของคุณ"
+
+#: templates/prefs/identityselect.inc:14
+msgid "Your default identity:"
+msgstr "เอกลักษณ์โดยปริยายของคุณ"
+
+#: templates/identities/manage.inc:54
+msgid "Your full name:"
+msgstr "ชื่อเต็มของคุณ"
+
+#: templates/identities/manage.inc:10
+msgid "Your identities:"
+msgstr "เอกลักษณ์ของคุณ:"
+
+#: prefs.php:254
+msgid "Your options have been updated."
+msgstr "ตัวเลือกของคุณได้รับการปรับปรุงแล้ว"
+
+#: templates/identities/manage.inc:69
+msgid "Your signature:"
+msgstr "ลายเซ็นของคุณ:"
+
+#: mailbox.php:330 mailbox.php:332 mailbox.php:343 message.php:450
+msgid "[No Subject]"
+msgstr "[ไม่มีชื่อเรื่อง]"
+
+#: templates/prefs/sourceselect.inc:269
+msgid "add source"
+msgstr "เพิ่มแหล่ง"
+
+#: filters.php:118
+msgid "cannot move past the beginning"
+msgstr "ไม่สามารถเคลื่อนย้ายผ่านจุดเริ่มต้น"
+
+#: filters.php:101
+msgid "cannot move past the end"
+msgstr "ไม่สามารถเคลื่อนย้ายผ่านจุดสิ้นสุด"
+
+#: templates/filters/manage.inc:56
+msgid "delete message"
+msgstr "ลบข้อความ"
+
+#: templates/contacts/contacts.inc:21
+msgid "from"
+msgstr "จาก"
+
+#: templates/prefs/sourceselect.inc:282
+msgid "move down"
+msgstr "ย้ายลง"
+
+#: templates/filters/manage.inc:58
+msgid "move message to"
+msgstr "ย้ายข้อความไป"
+
+#: templates/prefs/sourceselect.inc:280
+msgid "move up"
+msgstr "ย้ายขึ้น"
+
+#: filters.php:43 filters.php:66
+msgid "no folder selected"
+msgstr "ไม่ได้เลือกโฟลเดอร์ไว้"
+
+#: filters.php:77 filters.php:88 filters.php:105 filters.php:122
+msgid "no rule selected"
+msgstr "ไม่มีกฏใดถูกเลือกไว้"
+
+#: filters.php:73
+msgid "no text specified"
+msgstr "ไม่ได้ระบุข้อความไว้"
+
+#: templates/compose/spelling.inc:64 templates/filters/list.inc:25
+msgid "none"
+msgstr "ไม่มี"
+
+#: filters.php:149 templates/compose/spelling.inc:94
+msgid "or"
+msgstr "หรือ"
+
+#: filters.php:51
+msgid "please fill in the text and choose a field and an action"
+msgstr "กรุณาเติมข้อความ,เลือกเขตข้อมูลและเลือกการกระทำ"
+
+#: templates/prefs/sourceselect.inc:271
+msgid "remove source"
+msgstr "นำแหล่งข้อมูลออก"
+
+#: filters.php:156
+msgid "select folder"
+msgstr "เลือกโฟลเดอร์"
+
+#: templates/compose/spelling.inc:26
+msgid "spelling error"
+msgstr "สะกดคำผิด"
+
+#: templates/compose/spelling.inc:26
+msgid "spelling errors"
+msgstr "สะกดคำผิด"
+
+#: templates/filters/list.inc:42
+#, c-format
+msgid "where the %s field contains <b>%s</b>"
+msgstr "เมื่อเขตข้อความ %s มีคำว่า <b>%s</b>"

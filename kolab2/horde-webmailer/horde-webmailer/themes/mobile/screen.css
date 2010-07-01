@@ -1,0 +1,39 @@
+/**
+ * $Horde: horde/themes/mobile/screen.css,v 1.1.10.3 2008-04-08 18:13:40 chuck Exp $
+ */
+
+body {
+    background: #fff;
+    font-family: "Lucida Console",Courier,"Courier New";
+    font-size: 80%;
+}
+div.simdev {
+    width: 150;
+    height: 120;
+    overflow: auto;
+}
+td.top {
+    width: 263;
+    height: 117;
+    background-image: url("graphics/top.jpg");
+}
+td.left {
+    width: 56;
+    height: 120;
+    background-image: url("graphics/left.jpg");
+}
+td.display {
+    width: 150;
+    height: 120;
+    background-image: url("graphics/display.jpg");
+}
+td.right {
+    width: 57;
+    height: 120;
+    background-image: url("graphics/right.jpg");
+}
+td.bottom {
+    width: 263;
+    height: 313;
+    background-image: url("graphics/bottom.jpg");
+}

@@ -1,0 +1,274 @@
+<?xml version="1.0"?>
+<help>
+  <entry id="blacklist" md5="5c12e162f66f68c6c2d84cc7c280d710" state="uptodate">
+    <title>Crna lista</title>
+    <para>Crna lista je popis adresa elektroni&#x10D;ke po&#x161;te &#x10D;ije poruke ne
+    &#x17E;elite da zavr&#x161;e u po&#x161;tanskom sandu&#x10D;i&#x107;u (Inbox).</para>
+  </entry>
+  <entry id="blacklist-action" md5="1701f4152c090004e3b40205439f9108" state="uptodate">
+    <title>Crna lista: Akcije</title>
+    <para>Akcija odre&#x111;uje &#x161;to treba u&#x10D;initi sa poruka koje dolaze od
+    po&#x161;iljatelja sa crne liste. Dostupne akcije su "obri&#x161;i" i "premjesti
+    u mapu". Ako se odabere brisanje poruke je mogu&#x107;e obrisati prije nego
+    se spreme u po&#x161;tanski sandu&#x10D;i&#x107; ili ih samo ozna&#x10D;iti za brisanje. Ako
+    se odabere "premje&#x161;tanje u mapu" poruke &#x107;e biti spremljene u odabranu
+    mapu.</para>
+  </entry>
+  <entry id="blacklist-addresses" md5="3431e98a8d15bfa645af394cefd8346d" state="uptodate">
+    <title>Crna lista: Adrese</title>
+    <para>Popis adresa &#x10D;ije poruke se blokiraju. U svaki redak unosi se
+    po jedna adresa.</para>
+  </entry>
+  <entry id="filters_rules" md5="d84617a2f5002d24ef11509e5f4eb6c0" state="uptodate">
+    <title>Pravila filtriranja</title>
+    <para>Ovo je glavni prikaz pravila filtriranja. Novo pravilo dodaje
+    se klikom na "Novo pravilo". Pravila se za jedno mjesto pomi&#x10D;u klikom
+    na strelicu ili upisivanjem novog rednog broja pravila u polje "Pomakni".
+    Uklju&#x10D;ivanje i isklju&#x10D;ivanje pojedinih pravila obavlja se putem ikona u
+    stupcu "Uklju&#x10D;eno". Pojedina pravila mogu se izmijeniti klikom na ime
+    pravila ili ikonu u stupcu "Uredi".</para>
+    <para>
+      <tip>Obratite pa&#x17E;nju da se pravila izvr&#x161;avaju redoslijedom u kojem
+      su prikazana. Na primjer, ako se poruka obri&#x161;e pute crne liste,
+      pravila koja slijede ne&#x107;e se primjenjivati na tu poruku.</tip>
+    </para>
+  </entry>
+  <entry id="forward" md5="c9664b960ceef87cab4af83e8f33412c" state="uptodate">
+    <title>Proslijedi</title>
+    <para>Ova stavka slu&#x17E;i automatskom proslije&#x111;ivanju novih poruka na
+    jednu ili vi&#x161;e adresa.</para>
+  </entry>
+  <entry id="forward-addresses" md5="817c5f002f99c0afd0010aabaf07c91c" state="uptodate">
+    <title>Proslijedi: Adrese</title>
+    <para>U ovo polje unosi se jedna ili vi&#x161;e adresa elektroni&#x10D;ke po&#x161;te na
+    koje se &#x17E;eli proslijediti sve nove poruke.  U svaki red unosi se po jedna
+    adresa.</para>
+  </entry>
+  <entry id="forward-keepcopy" md5="be1f36c2f9a8dcba7517b8edf5319d64" state="uptodate">
+    <title>Proslijedi: Zadr&#x17E;i kopiju</title>
+    <para>Odabirom ove opcije kopija svake poruke &#x107;e osim proslje&#x111;ivanja na
+    zadane adrese ostati spremljena i na trenutnom ra&#x10D;unu elektroni&#x10D;ke
+    po&#x161;te.</para>
+  </entry>
+  <entry id="pref-show_filter_msg" md5="d8795e5b71c6287ed7bfe3f8dc4f4861" state="uptodate">
+    <title>Opcije: Prika&#x17E;i detaljne obavijesti prilikom filtriranja?</title>
+    <para>Ako se poruke filtriraju putem IMAP-a, ova postavka odre&#x111;uje koliko
+    detaljne &#x107;e biti obavijesti o procesu filtriranja. Ako je opcija uklju&#x10D;ena
+    za svaku filtriranu poruku prikazat &#x107;e se zasebna obavijest nakon &#x161;to
+    je poruka obra&#x111;ena. Ako je ova opcija isklju&#x10D;ena prikazat &#x107;e se samo jedna
+    obavijest sa sa&#x17E;etkom izvr&#x161;enih akcija.</para>
+  </entry>
+  <entry id="pref-filter_seen" md5="85687c69db6145d77053a8b6302e5ad2" state="uptodate">
+    <title>Opcije: Filtriraj samo (ne)pregledane poruke?</title>
+    <para>Ako se poruke filtriraju putem IMAP-a, ova opcija odre&#x111;uje na koje
+    poruke u po&#x161;tanskom sandu&#x10D;i&#x107;u se primjenjuju pravila filtriranja.
+    Filtrirati se mogu sve poruke, samo nepro&#x10D;itane poruke ili samo pro&#x10D;itane
+    poruke.</para>
+  </entry>
+  <entry id="rule" md5="cf211ec97956e9adc3b8f01b2a40888f" state="uptodate">
+    <title>Pravilo filtriranja</title>
+    <para>Pravila su osnovna gra&#x111;evna jedinica filtriranja i sastoje se od
+    jednog ili vi&#x161;e uvjeta te jedne ili vi&#x161;e akcija. Za svaku novu poruku
+    provjeravaju se uvjeti pravila i ako su ispunjeni na poruci se izvr&#x161;avaju
+    zadane akcije.  Filtriranje se mo&#x17E;e koristiti za automatsko brisanje
+    ne&#x17E;eljenih poruka ili za tematsko raspore&#x111;ivanje poruka po mapama.</para>
+  </entry>
+  <entry id="rule-action" md5="0f66574fec21645147b3cbb967cc23b1" state="uptodate">
+    <title>Pravilo filtriranja: Akcije</title>
+    <para>
+    U nastavku su navedene akcije koje se mogu primijeniti na poruku koja
+    zadovoljava zadane uvjete. Napomena da dostupne akcije ovise o 
+    kori&#x161;tenom mehanizmu filtriranja.</para>
+    <heading>Isporu&#x10D;i u moj Inbox</heading>
+    <para>Sprema poruku u po&#x161;tanski sandu&#x10D;i&#x107; korisnika (Inbox). Ovo je
+    pretpostavljena akcija.</para>
+    <heading>Isporu&#x10D;i u mapu</heading>
+    <para>Poruka se isporu&#x10D;uje u zadanu mapu.</para>
+    <heading>Obri&#x161;i poruku u potpunosti</heading>
+    <para>Poruka se bri&#x161;e bez dodatnog upozorenja. Primatelj ni po&#x161;iljatelj
+    ne&#x107;e biti obavije&#x161;teni da je poruka obrisana.</para>
+    <heading>Preusmjeri poruku</heading>
+    <para>Poruka se preusmjerava na zadanu adresu elektroni&#x10D;ke po&#x161;te. Kopija
+    poruke ne&#x107;e se spremiti na trenutnom ra&#x10D;unu elektroni&#x10D;ke po&#x161;te.</para>
+    <heading>Isporu&#x10D;i u Inbox i preusmjeri</heading>
+    <para>Poruka se preusmjerava na zadanu adresu elektroni&#x10D;ke po&#x161;te, a
+    kopija poruke sprema se u po&#x161;tanski sandu&#x10D;i&#x107; korisnika.</para>
+    <heading>Odbij poruku sa razlogom</heading>
+    <para>Originalna poruka se bri&#x161;e a po&#x161;iljatelju &#x161;alje nova poruka
+    sa zadanim razlogom odbijanja.</para>
+  </entry>
+  <entry id="rule-combine" md5="29484c1ebdd7ce71edc34fc8100ef69c" state="uptodate">
+    <title>Pravilo filtriranja: Kombiniranje uvjeta</title>
+    <para>
+    Za svako pravilo filtriranja mogu&#x107;e je definirati vi&#x161;e od jednog uvjeta.
+    Uvjeti se grupiraju pomo&#x107;u operatora Sve/Bilo koje. Slo&#x17E;eni
+    uvjeti koji koriste oba operatora nisu podr&#x17E;ani.</para>
+    <heading>Sve</heading>
+    <para>Ako je odabrana opcija "Sve od slijede&#x107;eg" poruka mora zadovoljavati
+    sve zadane uvjete da bi se akcije izvr&#x161;ile.</para>
+    <heading>Bilo koje</heading>
+    <para>Ako je odabrana opcija "Bilo koje od slijede&#x107;eg" zadane akcije se
+    izvr&#x161;avaju ako je bar jedan uvjet zadovoljen.</para>
+  </entry>
+  <entry id="rule-mark" md5="e8bdb30d1c1c1cdc5ec1e5e4804f9300" state="uptodate">
+    <title>Pravilo filtriranja: Ozna&#x10D;i poruku</title>
+    <para>
+    Jedna od dostupnih akcija je i ozna&#x10D;avanje poruke sa IMAP zastavicama.
+    Dostupne zastavice su: Vi&#x111;eno, Dodana zastavica za odgovor, Odgovoreno i
+    Obrisano.</para>
+  </entry>
+  <entry id="rule-matches" md5="d30d522bc0e6b34ab656e658dc5ecc9e" state="uptodate">
+    <title>Pravilo filtriranja: Uvjeti</title>
+    <para>
+    Uvjet filtriranja odre&#x111;en je sa tri parametra. Prvi parametar je
+    polje koje se provjerava. Drugi je tip usporedbe koja se obavlja.
+    Tre&#x107;i parametar je vrijednost s kojom se polje uspore&#x111;uje. Za svako
+    polje dostupno je nekoliko tipova usporedbe. Dostupni tipovi ovise
+    o polju koje se provjerava i o kori&#x161;tenoj metodi filtriranja, te
+    zbog toga sve opcije opisane u nastavku mo&#x17E;da nisu dostupne za sva
+    polja.</para>
+
+    <heading>Sadr&#x17E;i</heading>
+    <para>Uvjet je ispunjen ako se zadani tekst nalazi bilo gdje u polju.
+    Primjer: joe_user@example.com sadr&#x17E;i tekst user@example</para>
+    <heading>Ne sadr&#x17E;i</heading>
+    <para>Uvjet je ispunjen ako se zadani tekst ne nalazi bilo gdje u
+    polju. Primjer: joe_user@example.com ne zadr&#x17E;i tekst joe@example</para>
+    <heading>Je</heading>
+    <para>Uvjet je ispunjen ako je zadani tekst jednak cijeloj vrijednosti
+    polja. Primjer: user@example.com jednak je user@example.com</para>
+    <heading>Nije</heading>
+    <para>Uvjet je ispunjen ako zadani tekst nije jednak cijeloj vrijednosti
+    polja. Primjer: user@example nije jednak user@example.com</para>
+    <heading>Po&#x10D;inje sa</heading>
+    <para>Uvjet je ispunjen kad se zadani tekst nalazi na po&#x10D;etku vrijednosti
+    polja. Primjer user@example se nalazi na po&#x10D;etku vrijednosti
+    user@example.com</para>
+    <heading>Ne po&#x10D;inje sa</heading>
+    <para>Uvjet je ispunjen kad se zadani tekst ne nalazi na po&#x10D;etku
+    vrijednosti polja. Primjer: joe@example se ne nalazi na po&#x10D;etku
+    vrijednosti user@example.com</para>
+    <heading>Zavr&#x161;ava sa</heading>
+    <para>Uvjet je ispunjen kad se zadani tekst nalazi na kraju 
+    vrijednosti polja. Primjer: example.com se nalazi na kraju vrijednosti
+    user@example.com</para>
+    <heading>Ne zavr&#x161;ava sa</heading>
+    <para>Uvjet je ispunjen kad se zadani tekst ne nalazi na kraju
+    vrijednosti polja. Primjer: user@example.com ne zavr&#x161;ava sa horde.org</para>
+    <heading>Postoji</heading>
+    <para>Uvjet je ispunjen kad zadano zaglavlje postoji u poruci, neovisno
+    koju vrijednost zaglavlje ima.</para>
+    <heading>Ne postoji</heading>
+    <para>Uvjet je ispunjen kad zadano zaglavlje ne postoji u poruci.</para>
+    <heading>Regularni izraz</heading>
+    <para>Ovaj tip usporedbe omogu&#x107;ava kori&#x161;tenje slo&#x17E;enih POSIX
+    kompatibilnih regularnih izraza za usporedbu sa zaglavljima poruke.
+    Primjer: "Received from [*\.*\.*\.*] by (hosta|hostb).example.com*"
+    podudara se sa vrijednosti zaglavlja "Received from [172.16.100.1] by
+    hosta.example.com on Tuesday"</para>
+    <heading>Podudara se</heading>
+    <para> Podudaranje je sli&#x10D;no usporedbi Sadr&#x17E;i osim &#x161;to je mogu&#x107;e
+    koristiti zamjenske znakove * i ?. Znak * zamjenjuje vi&#x161;e znakova dok ?
+    zamjenjuje to&#x10D;no jedan znak. Primjer: "*user?@example.com" podudara se sa
+    vrijednostima zaglavlja "user1@example.com" i 
+    "otheruser2@example.com"</para>
+    <heading>Ne odgovara</heading>
+    <para>Sli&#x10D;no kao usporedba Podudara se osim &#x161;to uvjet ne&#x107;e biti
+    istinit kad se zaglavlje poruke i zadana vrijednost podudaraju.</para>
+    <heading>Manje od</heading>
+    <para>Relacijska usporedba koja numeri&#x10D;ki uspore&#x111;uje zadanu vrijednost
+    sa definiranim zaglavljem poruke.</para>
+    <heading>Manje ili jednako</heading>
+    <para>Relacijska usporedba koja numeri&#x10D;ki uspore&#x111;uje zadanu vrijednost
+    sa definiranim zaglavljem poruke.</para>
+    <heading>Jednako</heading>
+    <para>Relacijska usporedba koja numeri&#x10D;ki uspore&#x111;uje zadanu vrijednost
+    sa definiranim zaglavljem poruke.</para>
+    <heading>Ve&#x107;e ili jednako</heading>
+    <para>Relacijska usporedba koja numeri&#x10D;ki uspore&#x111;uje zadanu vrijednost
+    sa definiranim zaglavljem poruke.</para>
+    <heading>Ve&#x107;e od</heading>
+    <para>Relacijska usporedba koja numeri&#x10D;ki uspore&#x111;uje zadanu vrijednost
+    sa definiranim zaglavljem poruke.</para>
+    <heading>Ograni&#x10D;enje kod Sieve filtriranja</heading>
+    <warn>Sieve specifikacija ne podr&#x17E;ava usporedbu sa negativnim brojevima.
+    Ako se u polje za vrijednost kod relacijskih usporedbi unese negativan
+    broj tada to pravilo ne&#x107;e ispravno funkcionirati.</warn>
+  </entry>
+  <entry id="rule-name" md5="8faaf71e4bf2f91d943d77f803f9a2d5" state="uptodate">
+    <title>Pravilo filtriranja: Ime</title>
+    <para>Opisni naziv za ovo pravilo. Koristi se za razlikovanje pravila
+    u popisu pravila filtriranja.</para>
+  </entry>
+  <entry id="rule-stop" md5="677c920effca959123b7d539b3b0d864" state="uptodate">
+    <title>Pravilo filtriranja: Prestani provjere</title>
+    <para>Ako poruka zadovoljava ovo pravilo i odabrana je ova opcija,
+    pravila koja slijede ne&#x107;e se izvr&#x161;avati za trenutnu poruku.</para>
+  </entry>
+  <entry id="vacation" md5="2c9e12973d36fe94aeb73b32db9a64e6" state="uptodate">
+    <title>Godi&#x161;nji odmor</title>
+    <para>Poruke o godi&#x161;njem odmoru su automatski odgovori koji se &#x161;alju
+    na nove poruke. Ova mogu&#x107;nost obi&#x10D;no se koristi kada korisnik ne&#x107;e biti
+    dostupan du&#x17E;e vrijeme.</para>
+  </entry>
+  <entry id="vacation-period" md5="531accb93b707d39b2986a779b260dbf" state="uptodate">
+     <title>Godi&#x161;nji odmor: Period</title>
+     <para>Obavijesti o godi&#x161;njem odmoru slati &#x107;e se samo tijekom zadanog
+     vremenskog perioda.</para>
+  </entry>
+  <entry id="vacation-bulk" md5="6f6e4178e80f46e7876c7ee5d0ac53b7" state="uptodate">
+    <title>Godi&#x161;nji odmor: Ne odgovaraj na masovne poruke</title>
+    <para>Odabirom ove opcije obavijesti se ne&#x107;e slati za poruke koje
+    dolaze sa lista elektroni&#x10D;ke po&#x161;te ili su ozna&#x10D;ene kao masovne
+    poruke.</para>
+  </entry>
+  <entry id="vacation-days" md5="25ba74c0e79ce72237795eb809ee4585" state="uptodate">
+    <title>Godi&#x161;nji odmor: Broj dana izme&#x111;u obavijesti</title>
+    <para>U ovo polje unosi se broj dana izme&#x111;u ponovnog slanja obavijesti na
+    adresu koja je ve&#x107; primila obavijest o godi&#x161;njem odmoru.</para>
+  </entry>
+  <entry id="vacation-myemail" md5="ef3fa70e940ed1472276c0fde5ae2aed" state="uptodate">
+    <title>Godi&#x161;nji odmor: Moje e-mail adrese</title>
+    <para>U ovo polje unose se adrese elektroni&#x10D;ke po&#x161;te korisnika.
+    Obavijesti &#x107;e se slati samo za poruke &#x10D;iji je primatelj neka od
+    adresa iz ove liste.</para>
+  </entry>
+  <entry id="vacation-noresponse" md5="2b72e12b6989c9ef1667a59040c70310" state="uptodate">
+    <title>Godi&#x161;nji odmor: Bez obavijesti</title>
+    <para>Popis adresa elektroni&#x10D;ke po&#x161;te kojima se ne &#x161;alje obavijest
+    o godi&#x161;njem odmoru.  U svaki redak unosi se po jedna adresa.</para>
+  </entry>
+  <entry id="vacation-reason" md5="d4da2f3a0d357e00950ec57d984cbcee" state="uptodate">
+    <title>Godi&#x161;nji odmor: Razlog</title>
+    <para>Tekst poruke koja &#x107;e biti poslana kao obavijest o godi&#x161;njem
+    odmoru.</para>
+  </entry>
+  <entry id="vacation-subject" md5="ce16c7c6a08993821208cfbee0b188a0" state="uptodate">
+    <title>Godi&#x161;nji odmor: Naslov</title>
+    <para>Naslov poruke koja &#x107;e biti poslana kao obavijest o godi&#x161;njem
+    odmoru.</para>
+  </entry>
+  <entry id="whitelist" md5="ecbf7000f107832d68bd7ba8f5121909" state="uptodate">
+    <title>Bijela lista</title>
+    <para>Bijela lista je popis legitimnih adresa elektroni&#x10D;ke po&#x161;te
+    &#x10D;ije poruke uvijek &#x17E;elite primati u po&#x161;tanski sandu&#x10D;i&#x107; (Inbox).
+    U svaki redak unosi se po jedna adresa.</para>
+  </entry>
+  <entry id="whitelist-addresses" md5="8fe054c1b55e6adc81d1d8525c131637" state="uptodate">
+    <title>Bijela lista: Adrese</title>
+    <para>Popisa adresa &#x10D;ije se poruke uvijek prihva&#x107;aju. U svaki redak
+    unosi se po jedna adresa.</para>
+  </entry>
+  <entry id="spam-level" md5="6f00c30a45b0acaef4ae9dba56d58013" state="uptodate">
+    <title>Spam: Razina spama</title>
+    <para>Poruke u kojima je prona&#x111;ena razina spama ve&#x107;a ili jednaka od zadane
+    smatrati &#x107;e se spamom.</para>
+    <para>Ni&#x17E;e vrijednosti &#x107;e prepoznati vi&#x161;e spama ali je i ve&#x107;a vjerojatnost
+    da &#x107;e neke legitimne poruke biti prepoznate kao spam.  "5" je uobi&#x10D;ajena
+    vrijednost ako se za prepoznavanje spama koristi SpamAssassin.</para>
+  </entry>
+  <entry id="spam-folder" md5="1639e6d1cfcd6706f93920f2c63f4a00" state="uptodate">
+    <title>Spam: Mapa za primanje spama</title>
+    <para>Poruke prepoznate kao spam biti &#x107;e spremljene u odabranu mapu.</para>
+  </entry>
+</help>

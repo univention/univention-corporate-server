@@ -1,0 +1,28 @@
+REGEDIT4
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Clients\Mail]
+@="Imp"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Clients\Mail\Imp]
+@="IMP"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Clients\Mail\Imp\Protocols]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Clients\Mail\Imp\Protocols\mailto]
+"EditFlags"=hex:02,00,00,00
+"URL Protocol"=""
+@="URL:MailTo Protocol"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Clients\Mail\Imp\Protocols\mailto\shell]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Clients\Mail\Imp\Protocols\mailto\shell\open]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Clients\Mail\Imp\Protocols\mailto\shell\open\command]
+@="Rundll32.exe Url.dll,FileProtocolHandler webmail.example.com/horde/imp/?actionID=login_compose&to=%L"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Clients\Mail\Imp\shell]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Clients\Mail\Imp\shell\open]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Clients\Mail\Imp\shell\open\command]
+@="Rundll32.exe Url.dll,FileProtocolHandler webmail.example.com/horde/imp"

@@ -1,0 +1,55 @@
+/**
+ * $Horde: horde/themes/print/screen.css,v 1.1.10.8 2008-06-12 12:37:10 jan Exp $
+ */
+
+body {
+    background: #fff;
+    color: #000;
+}
+a {
+    color: #000;
+}
+
+#menu {
+    display: none;
+}
+
+.headerbox {
+    border: none;
+}
+.widget {
+    color: #000;
+}
+.header {
+    color: #000;
+    background: #fff;
+}
+.smallheader {
+    color: #000;
+    background: #fff;
+}
+.control {
+    background: #fff;
+    border-bottom: thin solid #000;
+}
+.rowEven, .rowOdd, .item0, .item1 {
+    background-color: #fff;
+    border-bottom: thin solid #000;
+}
+.selected {
+    background: #ddd;
+}
+.signature, .signature .fixed {
+    color: #000;
+}
+.togglequote {
+    display: none;
+}
+.quoted1, .quoted2, .quoted3, .quoted4, .quoted5 {
+    color: #000;
+    border-left-color: #000;
+}
+.download {
+    padding: 2px 2px 2px 0;
+    background-image: none;
+}

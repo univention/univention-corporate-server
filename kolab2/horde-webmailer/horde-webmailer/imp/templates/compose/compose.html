@@ -1,0 +1,357 @@
+<form method="post" id="compose" name="compose" <if:file_upload>enctype="multipart/form-data" </if:file_upload> action="<tag:post_action />">
+<tag:forminput />
+<loop:hidden>
+<input type="hidden" name="<tag:hidden.n />" value="<tag:hidden.v />" id="<tag:hidden.n />" />
+</loop:hidden>
+
+<h1 class="header"><tag:title /></h1>
+
+<br />
+
+<tag:status />
+
+<table cellspacing="0">
+ <tr>
+  <td>&nbsp;</td>
+  <td class="nowrap">
+   <input name="btn_send_message" type="submit" <tag:send_msg_ak /> class="button" onclick="return uniqSubmit('send_message', event);" value="<gettext>Send Message</gettext>" />
+<if:save_draft_ak>
+   <input name="btn_save_draft" type="submit" <tag:save_draft_ak /> class="button" onclick="uniqSubmit('save_draft', event);" value="<gettext>Save Draft</gettext>" />
+</if:save_draft_ak>
+   <input name="btn_cancel_compose" type="submit" title="<gettext>Cancel Message</gettext>" class="button" onclick="return confirmCancel(event);" value="<gettext>Cancel Message</gettext>" />
+  </td>
+  <td class="rightAlign"><tag:help_buttons />&nbsp;</td>
+ </tr>
+
+ <tr>
+  <td class="light rightAlign"><strong><if:di_locked><gettext>From</gettext><else:di_locked><tag:identity_label /></else:di_locked></if:di_locked>&nbsp;</strong></td>
+  <td class="item">
+<if:di_locked>
+<if:fromaddr_locked>
+   <strong>&nbsp;<tag:from /></strong>
+<else:fromaddr_locked>
+   <input id="text_identity" type="text" tabindex="<tag:fromaddr_tabindex />" name="from" value="<tag:from />" style="direction:ltr" />
+</else:fromaddr_locked></if:fromaddr_locked>
+<else:di_locked>
+   <input type="hidden" id="last_identity" name="last_identity" value="<tag:last_identity />" />
+<if:count_select_list>
+   <select id="identity" name="identity" tabindex="<tag:selectlist_tabindex />" onchange="change_identity(this.selectedIndex)">
+<loop:select_list>
+    <option value="<tag:select_list.value />" <if:select_list.selected>selected="selected" </if:select_list.selected>><tag:select_list.label /></option>
+</loop:select_list>
+   </select>
+<else:count_select_list>
+   <input type="hidden" name="identity" value="tag:identity_default />" />
+   <tag:identity_text />
+</else:count_select_list></if:count_select_list>
+</else:di_locked></if:di_locked>
+  </td>
+  <td class="item rightAlign"><tag:help_compose-from />&nbsp;</td>
+ </tr>
+
+<loop:addr>
+ <tr>
+  <td class="light rightAlign"><strong><tag:addr.label />&nbsp;</strong></td>
+<if:addr.multiple>
+<loop:addr.hdrs>
+<if:addr.hdrs.help><else:addr.hdrs.help>
+ </tr>
+ <tr>
+  <td class="light">&nbsp;</td>
+</else:addr.hdrs.help></if:addr.hdrs.help>
+<if:addr.hdrs.multiple>
+  <td class="item">
+   <select id="<tag:addr.id />" tabindex="<tag:addr.hdrs.select_tabindex />" name="<tag:addr.id />_list[<tag:addr.hdrs.select_name />]" style="width:350px;direction:ltr">
+    <option value="" selected="selected"><gettext>Choose a match or edit the address to the right:</gettext></option>
+<loop:addr.hdrs.select_arr>
+    <option value="<tag:addr.hdrs.select_arr.val />"><tag:addr.hdrs.select_arr.val /></option>
+</loop:addr.hdrs.select_arr>
+   </select>
+   <input type="text" size="15" tabindex="<tag:addr.hdrs.input_tabindex />" name="<tag:addr.id />_field[<tag:addr.hdrs.select_name />]" value="<tag:addr.hdrs.select_name />" style="width:150px;direction:ltr" />
+<else:addr.hdrs.multiple>
+  <td class="item">
+   <input type="text" id="<tag:addr.id />" tabindex="<tag:addr.hdrs.input_tabindex />" name="<tag:addr.id />_field[]" value="<tag:addr.hdrs.input_value />" style="direction:ltr" />
+</else:addr.hdrs.multiple></if:addr.hdrs.multiple>
+  </td>
+  <td class="rightAlign"><if:addr.hdrs.help><tag:addr.hdrs.help /></if:addr.hdrs.help>&nbsp;</td>
+</loop:addr.hdrs>
+<else:addr.multiple>
+  <td class="item addressTr">
+   <input type="text" id="<tag:addr.id />" autocomplete="off" tabindex="<tag:addr.input_tabindex />" style="direction:ltr" name="<tag:addr.id />" value="<tag:addr.input_value />" />
+   <span id="<tag:addr.id />_loading_img" style="display:none;"><tag:loading_img /></span>
+   <div id="<tag:addr.id />_results" class="autocomplete"></div>
+  </td>
+  <td class="item rightAlign"><tag:addr.help_compose />&nbsp;</td>
+</else:addr.multiple></if:addr.multiple>
+ </tr>
+</loop:addr>
+
+ <tr>
+  <td class="light rightAlign"><strong><tag:subject_label />&nbsp;</strong></td>
+  <td class="item">
+   <input type="text" id="subject" tabindex="<tag:subject_tabindex />" name="subject" value="<tag:subject />" />
+  </td>
+  <td class="item rightAlign"><tag:help-subject />&nbsp;</td>
+ </tr>
+
+<if:unlocked_charset>
+ <tr>
+  <td class="light rightAlign">
+   <strong><tag:charset_label />&nbsp;</strong>
+  </td>
+  <td class="item">
+   <select id="charset" name="charset" tabindex="<tag:charset_tabindex />">
+<loop:charset_array>
+    <option value="<tag:charset_array.value />" <if:charset_array.selected>selected="selected" </if:charset_array.selected>><tag:charset_array.label /></option>
+</loop:charset_array>
+   </select>
+  </td>
+  <td class="item rightAlign"><tag:help_compose_charset />&nbsp;</td>
+ </tr>
+</if:unlocked_charset>
+
+<if:set_priority>
+ <tr>
+  <td class="light rightAlign">
+   <strong><tag:priority_label />&nbsp;</strong>
+  </td>
+  <td class="item">
+   <select id="priority" name="x_priority" tabindex="<tag:priority_tabindex />">
+<loop:pri_opt>
+    <option value="<tag:pri_opt.val />" <if:pri_opt.selected>selected="selected" </if:pri_opt.selected>><tag:pri_opt.label /></option>
+</loop:pri_opt>
+   </select>
+  </td>
+  <td class="item rightAlign"><tag:help_priority />&nbsp;</td>
+ </tr>
+</if:set_priority>
+
+<if:stationery>
+ <tr>
+  <td class="light rightAlign" valign="middle"><strong><tag:stationery_label />&nbsp;</strong></td>
+  <td class="item" colspan="2">
+   <select name="stationery" id="stationery" onchange="uniqSubmit('change_stationery', event);">
+    <option value=""><gettext>Select stationery:</gettext></option>
+<loop:stationeries>
+    <option value="<tag:stationeries.val />" <if:stationeries.selected>selected="selected" </if:stationeries.selected>><tag:stationeries.label /></option>
+</loop:stationeries>
+   </select>
+  </td>
+ </tr>
+</if:stationery>
+
+ <tr>
+  <td>&nbsp;</td>
+  <td class="item">
+   <table width="100%" cellspacing="0">
+    <tr>
+<loop:compose_options>
+     <td align="center">
+      <tag:compose_options.url /><tag:compose_options.img /><br /><tag:compose_options.label /></a>
+     </td>
+</loop:compose_options>
+    </tr>
+   </table>
+  </td>
+  <td class="item rightAlign"><tag:help_options />&nbsp;</td>
+ </tr>
+
+<if:ssm>
+ <tr>
+  <td>&nbsp;</td>
+  <td class="item" colspan="2">
+   <input id="ssm" type="checkbox" class="checkbox" name="save_sent_mail" <if:ssm_selected>checked="checked" </if:ssm_selected>/>
+   <tag:ssm_label />
+<if:ssm_folders>
+   <select onchange="$('ssm').checked='checked'" tabindex="<tag:ssm_tabindex />" id="sent_mail_folder" name="sent_mail_folder"><tag:ssm_folders /></select>
+<else:ssm_folders>
+   <span id="sent_mail_folder"><tag:ssm_folder /></span>
+</else:ssm_folders></if:ssm_folders>
+  </td>
+ </tr>
+</if:ssm>
+
+<if:rrr>
+ <tr>
+  <td>&nbsp;</td>
+  <td class="item" colspan="2">
+   <input id="rrr" type="checkbox" class="checkbox" name="request_read_receipt" <if:rrr_selected>checked="checked" </if:rrr_selected>/> <tag:rrr_label />
+  </td>
+ </tr>
+</if:rrr>
+
+<if:compose_html>
+ <tr>
+  <td>&nbsp;</td>
+  <td class="item" colspan="2">
+   <tag:html_img />
+   <tag:html_switch />
+   <if:rtemode><gettext>Switch to plain text composition</gettext><else:rtemode><gettext>Switch to HTML composition</gettext></else:rtemode></if:rtemode></a>
+  </td>
+ </tr>
+</if:compose_html>
+
+ <tr>
+  <td class="light rightAlign" valign="top"><strong><tag:message_label />&nbsp;</strong></td>
+  <td class="item" colspan="2" id="messageParent">
+   <textarea class="composebody" tabindex="<tag:message_tabindex />" name="message" id="message" rows="20" cols="80"><tag:message /></textarea>
+  </td>
+ </tr>
+
+ <tr>
+  <td>&nbsp;</td>
+  <td class="nowrap">
+   <input name="btn_send_message" type="submit" <tag:send_msg_ak /> class="button" onclick="return uniqSubmit('send_message', event);" value="<gettext>Send Message</gettext>" />
+<if:save_draft_ak>
+   <input name="btn_save_draft" type="submit" <tag:save_draft_ak /> class="button" onclick="uniqSubmit('save_draft', event);" value="<gettext>Save Draft</gettext>" />
+</if:save_draft_ak>
+   <input name="btn_cancel_compose" type="submit" title="<gettext>Cancel Message</gettext>" class="button" onclick="return confirmCancel(event);" value="<gettext>Cancel Message</gettext>" />
+  </td>
+  <td class="rightAlign"><tag:help_buttons />&nbsp;</td>
+ </tr>
+
+<if:use_encrypt>
+ <tr>
+  <td>&nbsp;</td>
+  <td class="item nowrap">
+   <tag:encrypt_label />:&nbsp;
+   <select id="encrypt_options" name="encrypt_options">
+    <tag:encrypt_options />
+   </select>
+  </td>
+  <td class="item rightAlign"><tag:help-encrypt />&nbsp;</td>
+ </tr>
+</if:use_encrypt>
+
+<if:pgp_options>
+ <tr>
+  <td>&nbsp;</td>
+  <td class="item nowrap">
+   <input id="pap" type="checkbox" class="checkbox" name="pgp_attach_pubkey" <if:pgp_attach_pubkey>checked="checked" </if:pgp_attach_pubkey>/>
+   <tag:pap />
+  </td>
+  <td class="item rightAlign"><tag:help-pubkey />&nbsp;</td>
+ </tr>
+</if:pgp_options>
+
+<if:vcard>
+ <tr>
+  <td>&nbsp;</td>
+  <td class="item nowrap" colspan="2">
+   <input id="vcard" type="checkbox" class="checkbox" name="vcard" <if:attach_vcard>checked="checked" </if:attach_vcard>/>
+   <tag:vcard />
+  </td>
+ </tr>
+</if:vcard>
+</table>
+
+<if:file_upload>
+<br />
+
+<h1 class="header">
+ <strong>&nbsp;<a id="attachments"></a><gettext>Attachments</gettext></strong>
+<if:selectlistlink>
+ &nbsp;<tag:selectlistlink />
+ <input type="hidden" name="selectlist_selectid" value="" />
+</if:selectlistlink>
+</h1>
+
+<table width="100%" cellspacing="0">
+ <tr class="item" id="upload_atc">
+<if:maxattachsize>
+  <td><gettext>Maximum total attachment size reached.</gettext></td>
+<else:maxattachsize>
+<if:maxattachmentnumber>
+  <td><gettext>Maximum number of attachments reached.</gettext></td>
+<else:maxattachmentnumber>
+  <td>
+   <table>
+    <tr id="attachment_row_1">
+     <td>
+      <strong><label for="upload_1"><gettext>File</gettext> 1:</label></strong> <input id="upload_1" name="upload_1" tabindex="<tag:file_tabindex />" type="file" onchange="attachmentChanged()" size="25" />
+     </td>
+     <td>
+      <label for="upload_disposition_1" class="hidden">Disposition</label>
+      <select id="upload_disposition_1" name="upload_disposition_1">
+       <option value="attachment" selected="selected"><gettext>Attachment</gettext></option>
+       <option value="inline"><gettext>Inline</gettext></option>
+      </select>
+     </td>
+    </tr>
+    <tr>
+     <td colspan="2">
+      (<gettext>Maximum Attachment Size</gettext>: <tag:attach_size /> <gettext>bytes</gettext>)
+     </td>
+    </tr>
+   </table>
+  </td>
+</else:maxattachmentnumber></if:maxattachmentnumber>
+</else:maxattachsize></if:maxattachsize>
+  <td class="rightAlign">
+   <input type="submit" name="btn_add_attachment" class="button" onclick="uniqSubmit('add_attachment', event);" value="<gettext>Update</gettext>" />
+   &nbsp;<tag:help-attachments />
+  </td>
+ </tr>
+
+<if:show_link_save_attach>
+<loop:attach_options>
+ <tr class="item">
+  <td colspan="3">
+   <strong><label for="<tag:attach_options.name />"><tag:attach_options.label /></label></strong>&nbsp;
+   <select id="<tag:attach_options.name />" name="<tag:attach_options.name />">
+    <option value="1"<if:attach_options.select_yes> selected="selected"</if:attach_options.select_yes>><gettext>Yes</gettext></option>
+    <option value="0"<if:attach_options.select_no> selected="selected"</if:attach_options.select_no>><gettext>No</gettext></option>
+   </select>
+   &nbsp;<tag:attach_options.help />
+  </td>
+ </tr>
+</loop:attach_options>
+</if:show_link_save_attach>
+</table>
+
+<if:numberattach>
+<br />
+
+<div align="center">
+ <div class="smallheader leftAlign">
+  <gettext>Current Attachments</gettext> (<gettext>Total Size:</gettext> <tag:total_attach_size /> <gettext>KB</gettext><if:perc_attach> / <tag:perc_attach /></if:perc_attach>) <tag:help-current-attachments />
+ </div>
+
+ <table class="leftAlign" cellspacing="0">
+<loop:atc>
+  <tr class="item">
+   <td>
+    <img style="padding-right:5px" src="<tag:atc.icon />" alt="[Icon]" />
+    <strong><tag:atc.disp_number />. <tag:atc.name /></strong> &nbsp;(<tag:atc.type />) &nbsp;&nbsp;<strong><gettext>Size:</gettext></strong> <tag:atc.size /> <gettext>KB</gettext>
+   </td>
+  </tr>
+  <tr class="item">
+   <td style="padding-left:30px">
+    <table>
+     <tr>
+      <td class="rightAlign" valign="middle"><strong><label for="file_disposition_<tag:atc.number />"><gettext>Disposition:</gettext></label></strong></td>
+      <td>
+       <select id="file_disposition_<tag:atc.number />" name="file_disposition_<tag:atc.number />">
+        <option value="attachment"<if:atc.disp_atc> selected="selected"</if:atc.disp_atc>><gettext>Attachment</gettext></option>
+        <option value="inline"<if:atc.disp_inline> selected="selected"</if:atc.disp_inline>><gettext>Inline</gettext></option>
+       </select>
+      </td>
+     </tr>
+     <tr>
+      <td class="rightAlign" valign="middle"><strong><label for="file_description_<tag:atc.number />"><gettext>Description:</gettext></label></strong>&nbsp;</td>
+      <td><input type="text" size="40" id="file_description_<tag:atc.number />" name="file_description_<tag:atc.number />" value="<tag:atc.description />" /></td>
+     </tr>
+     <tr>
+      <td class="rightAlign"><strong><label for="delattachment<tag:atc.number />"><gettext>Delete?</gettext></label></strong></td>
+      <td><input type="checkbox" class="checkbox" id="delattachment<tag:atc.number />" name="delattachments[]" value="<tag:atc.number />" /></td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+</loop:atc>
+ </table>
+</div>
+</if:numberattach>
+</if:file_upload>
+
+</form>

@@ -1,0 +1,828 @@
+# Spanish translations for horde package
+# Traducciones al español para el paquete horde.
+# Copyright 2004-2009 The Horde Project
+# This file is distributed under the same license as the horde package.
+# Automatically generated, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nag 2.0-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2006-05-18 08:28+0200\n"
+"PO-Revision-Date: 2007-02-01 16:51+0100\n"
+"Last-Translator: Jordi Giralt <projectek2@upcnet.es>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/Nag.php:47
+#, php-format
+msgid "%d hour"
+msgstr "%d hora"
+
+#: lib/Nag.php:49
+#, php-format
+msgid "%d hour, %d minute"
+msgstr "%d hora, %d minut"
+
+#: lib/Nag.php:51
+#, php-format
+msgid "%d hour, %d minutes"
+msgstr "%d hora, %d minuts"
+
+#: lib/Nag.php:39
+#, php-format
+msgid "%d hours"
+msgstr "%d hores"
+
+#: lib/Nag.php:41
+#, php-format
+msgid "%d hours, %d minute"
+msgstr "%d hores, %d minuts"
+
+#: lib/Nag.php:43
+#, php-format
+msgid "%d hours, %d minutes"
+msgstr "%d hores, %d minuts"
+
+#: lib/Nag.php:57
+#, php-format
+msgid "%d minute"
+msgstr "%d minut"
+
+#: lib/Nag.php:59
+#, php-format
+msgid "%d minutes"
+msgstr "%d minuts"
+
+#: templates/list/header.inc:9
+#, php-format
+msgid "%d tasks"
+msgstr "%d tasques"
+
+#: lib/Nag.php:334
+#, php-format
+msgid "%s at %s"
+msgstr "%s a les %s"
+
+#: lib/Nag.php:454 lib/Block/summary.php:93
+#, php-format
+msgid "%s is due in %s"
+msgstr "%s finalitzarà el %s"
+
+#: lib/Nag.php:452 lib/Block/summary.php:91
+#, php-format
+msgid "%s is due now."
+msgstr "%s acaba de finalitzar."
+
+#: data.php:151
+#, php-format
+msgid "%s successfully imported"
+msgstr "%s importat correctament"
+
+#: tasklists.php:100 lib/base.php:100
+#, php-format
+msgid "%s's Task List"
+msgstr "Llista de tasques de %s"
+
+#: lib/Nag.php:291
+msgid "(highest)"
+msgstr "(elevada)"
+
+#: lib/Nag.php:291
+msgid "(lowest)"
+msgstr "(reduida)"
+
+#: templates/list/header.inc:9
+msgid "1 task"
+msgstr "1 tasca"
+
+#: task.php:266
+#, php-format
+msgid "Access denied completing task %s."
+msgstr "S'ha denegat l'accés per finalitzar la tasca %s."
+
+#: task.php:240
+#, php-format
+msgid "Access denied deleting %s."
+msgstr "S'ha denegat l'accés per a eliminar %s."
+
+#: task.php:206
+#, php-format
+msgid "Access denied moving the task to %s."
+msgstr "S'ha denegat l'accés per a desplaçar la tasca a %s."
+
+#: task.php:209
+#, php-format
+msgid "Access denied removing task from %s."
+msgstr "S'ha denegat l'accés per a eliminar la tasca de %s."
+
+#: task.php:133
+#, php-format
+msgid "Access denied saving task to %s."
+msgstr "S'ha denegat  l'accés per a guardar la tasca a %s."
+
+#: task.php:131
+#, php-format
+msgid "Access denied saving task: %s"
+msgstr "S'ha denegat l'accés per a guardar la tasca: %s."
+
+#: task.php:58
+msgid "Adding A New Task"
+msgstr "Afegint una nova tasca"
+
+#: templates/task/task.inc:68
+msgid "Ala_rm"
+msgstr "Ala_rma"
+
+#: templates/view/task.inc:35
+msgid "Alarm"
+msgstr "Alarma"
+
+#: config/prefs.php.dist:107
+msgid "All tasks"
+msgstr "Totes les tasques"
+
+#: lib/Block/summary.php:56
+msgid "Always show completed tasks?"
+msgstr "Mostrar sempre les tasques finalitzades?"
+
+#: lib/Block/summary.php:53
+msgid "Always show overdue tasks?"
+msgstr "Mostrar sempre les tasques finalitzades?"
+
+#: config/prefs.php.dist:84
+msgid "Ascending"
+msgstr "Ascendent"
+
+#: templates/tasklists/tasklists.inc:102
+msgid "Back to Task List Options"
+msgstr "Torna a les opcioons de llista de tasques"
+
+#: data.php:28
+msgid "CSV"
+msgstr "CSV"
+
+#: templates/task/task.inc:57
+msgid "Calendar"
+msgstr "Agenda"
+
+#: templates/list/task_headers.inc:32
+msgid "Cat_egory"
+msgstr "_Categoria"
+
+#: data.php:42 templates/view/task.inc:27 config/prefs.php.dist:56
+#: config/prefs.php.dist:71
+msgid "Category"
+msgstr "Categoria"
+
+#: templates/tasklists/tasklists.inc:22
+msgid "Change"
+msgstr "Canviar"
+
+#: templates/list/task_headers.inc:4 templates/list/task_headers.inc:9
+#: templates/list/task_headers.inc:14 templates/list/task_headers.inc:21
+#: templates/list/task_headers.inc:27 templates/list/task_headers.inc:31
+msgid "Change sort direction"
+msgstr "Sentit de classificació."
+
+#: config/prefs.php.dist:15
+msgid "Change your task sorting and display options."
+msgstr "Canviar les opcions d'ordenació i visualització de tasques."
+
+#: config/prefs.php.dist:22
+msgid "Choose your default task list."
+msgstr "Trii la seva llista de tasques per defecte:"
+
+#: templates/search/search.inc:33
+msgid "Clear Form"
+msgstr "Netejar formulari"
+
+#: templates/task/task.inc:89
+msgid "Co_mpleted?"
+msgstr "F_inalitzat?"
+
+#: templates/view/task.inc:11
+msgid "Complete"
+msgstr "Finalitzar"
+
+#: templates/list/task_summaries.inc:5 lib/Block/summary.php:150
+msgid "Complete Task"
+msgstr "Tasca finalitzada"
+
+#: config/prefs.php.dist:109
+msgid "Complete tasks"
+msgstr "Tasques finalitzades"
+
+#: lib/Nag.php:349 lib/Block/summary.php:148
+msgid "Completed"
+msgstr "Finalitzat"
+
+#: task.php:275
+#, php-format
+msgid "Completed %s."
+msgstr "Ha finalitzat %s."
+
+#: templates/view/task.inc:43 templates/list/task_headers.inc:5
+#: config/prefs.php.dist:58 config/prefs.php.dist:73
+msgid "Completed?"
+msgstr "Finalitzat?"
+
+#: data.php:45
+msgid "Completion Status"
+msgstr "Estat de finalització"
+
+#: lib/api.php:205
+#, php-format
+msgid "Connection failed: %s"
+msgstr "Ha fallat la connexió: %s"
+
+#: templates/tasklists/tasklists.inc:17 templates/tasklists/tasklists.inc:99
+#: templates/tasklists/tasklists.inc:101
+msgid "Create"
+msgstr "Crear"
+
+#: templates/view/task.inc:49
+msgid "Created"
+msgstr "Creat"
+
+#: templates/task/task.inc:77 lib/Nag.php:381
+msgid "Day(s)"
+msgstr "Dia(es)"
+
+#: config/prefs.php.dist:21
+msgid "Default Task List"
+msgstr "Llista de tasques per defecte"
+
+#: templates/tasklists/tasklists.inc:100 templates/view/task.inc:16
+msgid "Delete"
+msgstr "Eliminar"
+
+#: templates/task/task.inc:111
+msgid "Delete this task"
+msgstr "Eliminar aquesta tasca"
+
+#: task.php:248
+#, php-format
+msgid "Deleted %s."
+msgstr "S'ha eliminat %s."
+
+#: config/prefs.php.dist:85
+msgid "Descending"
+msgstr "Descendent"
+
+#: data.php:41
+msgid "Description"
+msgstr "Descripció"
+
+#: templates/tasklists/tasklists.inc:90
+msgid "Description:"
+msgstr "Descripció:"
+
+#: config/prefs.php.dist:14
+msgid "Display Options"
+msgstr "Opcions de visualizació"
+
+#: data.php:43 templates/view/task.inc:31
+msgid "Due By"
+msgstr "Venç el"
+
+#: config/prefs.php.dist:57 config/prefs.php.dist:72
+msgid "Due Date"
+msgstr "Data de venciment"
+
+#: templates/task/task.inc:43
+msgid "Due _By"
+msgstr "_Vençuda des de "
+
+#: templates/view/task.inc:13
+msgid "Edit"
+msgstr "Editar"
+
+#: templates/list/task_summaries.inc:19 templates/list/task_headers.inc:18
+#: lib/Block/summary.php:146
+msgid "Edit Task"
+msgstr "Editar tasca"
+
+#: templates/list/task_headers.inc:37
+msgid "Edit categories and colors"
+msgstr "Editar les categories i els seus colors"
+
+#: templates/data/export.inc:22
+msgid "Export"
+msgstr "Exportar"
+
+#: templates/data/export.inc:8
+msgid "Export Tasks"
+msgstr "Exportar tasques"
+
+#: config/prefs.php.dist:33
+msgid "External Data"
+msgstr "Dades externes"
+
+#: config/prefs.php.dist:13
+msgid "General Options"
+msgstr "Opcions generals"
+
+#: templates/task/task.inc:76 lib/Nag.php:384
+msgid "Hour(s)"
+msgstr "Hora(es)"
+
+#: templates/data/import.inc:9
+#, php-format
+msgid "Import Tasks, Step %d"
+msgstr "Importar tasques. Pas %d"
+
+#: data.php:157
+msgid "Import/Export Tasks"
+msgstr "Importar/Exportar tasques"
+
+#: list.php:77
+msgid "Incom_plete tasks"
+msgstr "Tasques _pendents"
+
+#: config/prefs.php.dist:108
+msgid "Incomplete tasks"
+msgstr "Tasques incompletetes"
+
+#: templates/view/task.inc:56
+msgid "Last Modified"
+msgstr "Darrera modificació"
+
+#: templates/task/task.inc:75 lib/Nag.php:387
+msgid "Minute(s)"
+msgstr "Minut(s)"
+
+#: task.php:115
+msgid "Modifying:"
+msgstr "Modificant:"
+
+#: lib/api.php:548
+msgid "Multiple iCalendar components found; only one vTodo is supported."
+msgstr ""
+"S'han trobat diversos components iCalendar; només se suporta un vTodo cada "
+"vegada. "
+
+#: list.php:40
+msgid "My Tasks"
+msgstr "Les meves tasques"
+
+#: templates/search/search.inc:21 templates/task/task.inc:12
+msgid "N_ame"
+msgstr "_Nom"
+
+#: templates/list/task_headers.inc:22
+msgid "Na_me"
+msgstr "_Nom"
+
+#: data.php:40
+msgid "Name"
+msgstr "Nom"
+
+#: lib/Block/summary.php:18
+msgid "New Task"
+msgstr "Nova tasca"
+
+#: templates/data/import.inc:43
+msgid "Next"
+msgstr "Següent"
+
+#: templates/task/task.inc:46
+msgid "No due date."
+msgstr "Sense data de venciment"
+
+#: lib/api.php:338 lib/api.php:541
+msgid "No iCalendar data was found."
+msgstr "No s'han trobat dades iCalendar."
+
+#: lib/Nag.php:468
+msgid "No task lists are available to guests."
+msgstr "No disposa de llista de tasques per als invitats"
+
+#: lib/Block/summary.php:190
+msgid "No tasks to display"
+msgstr "Sense tasques visibles"
+
+#: templates/task/task.inc:71 lib/Nag.php:391
+msgid "None"
+msgstr "Cap"
+
+#: lib/Nag.php:350
+msgid "Not Completed"
+msgstr "No està finalitzat"
+
+#: config/prefs.php.dist:59 config/prefs.php.dist:74
+msgid "Owner"
+msgstr "Propietari"
+
+#: templates/list/task_headers.inc:15
+msgid "P_ri"
+msgstr "_Prioritat"
+
+#: templates/tasklists/tasklists.inc:87
+msgid "Permission"
+msgstr "Privilegi"
+
+#: lib/api.php:317 lib/api.php:421 lib/api.php:493 lib/api.php:524
+msgid "Permission Denied"
+msgstr "Permís denegat"
+
+#: lib/api.php:86
+msgid "Permission denied"
+msgstr "Permís denegat"
+
+#: data.php:44 templates/view/task.inc:39 config/prefs.php.dist:54
+#: config/prefs.php.dist:69
+msgid "Priority"
+msgstr "Prioritat"
+
+#: templates/list/header.inc:5 templates/list/header.inc:6
+msgid "Refresh List"
+msgstr "Actualitzar llista"
+
+#: templates/tasklists/tasklists.inc:101
+msgid "Reset"
+msgstr "Reinicia"
+
+#: templates/task/task.inc:103
+msgid "Save"
+msgstr "Desa"
+
+#: task.php:223
+#, php-format
+msgid "Saved %s."
+msgstr "S'ha guardat %s."
+
+#: search.php:14 templates/search/search.inc:5 templates/search/search.inc:32
+msgid "Search"
+msgstr "Cerca"
+
+#: list.php:63
+msgid "Search Results"
+msgstr "Resultads de la cerca"
+
+#: templates/search/search.inc:18
+msgid "Search Scope"
+msgstr "Àmbit de la cerca"
+
+#: templates/search/search.inc:10
+msgid "Search _Text"
+msgstr "Cercar _text"
+
+#: templates/task/task.inc:57
+msgid "Select a date"
+msgstr "Seleccioni una data"
+
+#: templates/tasklists/tasklists.inc:72
+msgid "Select a task list"
+msgstr "Seleccioni una llista de tasques"
+
+#: templates/data/export.inc:15
+msgid "Select the export format:"
+msgstr "Seleccioni el format d'exportació:"
+
+#: templates/data/import.inc:40
+msgid "Select the file to import:"
+msgstr "Seleccioni el format a importar:"
+
+#: templates/data/import.inc:16
+msgid "Select the format of the source file:"
+msgstr "Seleccioni el format de l'arxiu origen:"
+
+#: config/prefs.php.dist:45
+msgid "Should the Task List be shown in its own column in the List view?"
+msgstr ""
+"Mostrar la llista de tasques en una columna pròpia en la vista de llistat?"
+
+#: templates/menu.inc:18
+msgid "Show"
+msgstr "Mostra"
+
+#: templates/menu.inc:8
+msgid "Show Tasklists:"
+msgstr "_Les mesves tasques"
+
+#: lib/Block/summary.php:38
+msgid "Show action buttons?"
+msgstr "Mostrar botons d'acció?"
+
+#: config/prefs.php.dist:110
+msgid "Show complete, incomplete, or all tasks in the task list?"
+msgstr ""
+"En la llista de tasques mostrar les finalitzades, els pendents o totes? "
+
+#: config/prefs.php.dist:97
+msgid "Show data from any of these other applications in your task list?"
+msgstr ""
+"Mostrar dades de qualsevol d'aquestes altres aplicacions en la llista de "
+"tasques? "
+
+#: config/prefs.php.dist:34
+msgid "Show data from other applications or sources."
+msgstr "Mostrar dades d'altres aplicacions o orígens. "
+
+#: lib/Block/summary.php:41
+msgid "Show due dates?"
+msgstr "Mostar dates vençudes? "
+
+#: lib/Block/summary.php:35
+msgid "Show priorities?"
+msgstr "Mostrar prioritats?"
+
+#: lib/Block/summary.php:47
+msgid "Show task alarms?"
+msgstr "Mostrar les alarmens de les tasques?"
+
+#: lib/Block/summary.php:50
+msgid "Show task category?"
+msgstr "Mostrar la categoria de les tasques?"
+
+#: lib/Block/summary.php:44
+msgid "Show tasklist name?"
+msgstr "Mostrar el nom de la llista de tasques?"
+
+#: lib/Block/summary.php:59
+msgid "Show tasks from these categories"
+msgstr "Mostrar les tasques d'aquestes categories?"
+
+#: templates/list/task_headers.inc:32
+msgid "Sort by Category"
+msgstr "Ordenar per categoria"
+
+#: templates/list/task_headers.inc:5
+msgid "Sort by Completion Status"
+msgstr "Ordenar per estat de finalització"
+
+#: templates/list/task_headers.inc:28
+msgid "Sort by Due Date"
+msgstr "Ordenar per data de venciment"
+
+#: templates/list/task_headers.inc:22
+msgid "Sort by Name"
+msgstr "Ordenar por nom"
+
+#: templates/list/task_headers.inc:15
+msgid "Sort by Priority"
+msgstr "Ordenar por prioritat"
+
+#: templates/list/task_headers.inc:10
+msgid "Sort by User Name"
+msgstr "Ordenar per nom d'usuari"
+
+#: config/prefs.php.dist:86
+msgid "Sort direction:"
+msgstr "Sentit de classificació."
+
+#: config/prefs.php.dist:60
+msgid "Sort tasks by:"
+msgstr "Ordenar tasques per:"
+
+#: templates/list/task_summaries.inc:26
+msgid "Task Alarm"
+msgstr "Alarma de la tasca"
+
+#: templates/list/task_headers.inc:25
+msgid "Task Alarm?"
+msgstr "Alarma de la tasca?"
+
+#: templates/tasklists/tasklists.inc:66
+msgid "Task List"
+msgstr "Llista de tasques"
+
+#: config/prefs.php.dist:20 config/prefs.php.dist:32
+msgid "Task List and Share Options"
+msgstr "Opcions de llistat i compartició de tasques "
+
+#: templates/tasklists/tasklists.inc:84
+msgid "Task List's name:"
+msgstr "Nom de la llista de tasca: "
+
+#: tasklists.php:111
+msgid "Task Lists"
+msgstr "Llista de tasques"
+
+#: config/prefs.php.dist:55 config/prefs.php.dist:70
+msgid "Task Name"
+msgstr "nom de la tasca"
+
+#: templates/list/task_summaries.inc:24
+msgid "Task Note"
+msgstr "Comentari de la tasca"
+
+#: templates/list/task_headers.inc:24
+msgid "Task Note?"
+msgstr "Comentari?"
+
+#: tasklists.php:28
+msgid "Task lists must have a name."
+msgstr "Les llistes de tasques han de tenir un nom. "
+
+#: task.php:117 view.php:43
+msgid "Task not found."
+msgstr "No s'ha trobat la tasca"
+
+#: lib/Block/summary.php:3
+msgid "Tasks Summary"
+msgstr "Resum de tasques"
+
+#: task.php:166
+msgid "The alarm field may only contain integers."
+msgstr "El camp alarma només pot contenir sencers "
+
+#: tasklists.php:45
+#, php-format
+msgid "The task list \"%s\" couldn't be created: %s"
+msgstr "No es pot crear la llista de tasques \"%s\": %s."
+
+#: tasklists.php:56
+#, php-format
+msgid "The task list \"%s\" couldn't be saved: %s"
+msgstr "No es pot guardar la llista de tasques \"%s\": %s."
+
+#: tasklists.php:47
+#, php-format
+msgid "The task list \"%s\" has been created."
+msgstr "S'ha creat la llista de tasques \"%s\". "
+
+#: tasklists.php:81
+#, php-format
+msgid "The task list \"%s\" has been deleted."
+msgstr "S'ha eliminat la llista de tasques \"%s\". "
+
+#: tasklists.php:58
+#, php-format
+msgid "The task list \"%s\" has been saved."
+msgstr "S'ha guardat la llista de tasques \"%s\". "
+
+#: config/prefs.php.dist:75
+msgid "Then:"
+msgstr "A més per:"
+
+#: templates/list/empty.inc:3
+msgid "There are no tasks matching the current criteria."
+msgstr "No hi ha tasques coincidents amb els criteris actuals.  "
+
+#: task.php:272
+#, php-format
+msgid "There was a problem completing %s: %s"
+msgstr "S'ha produït un error al completar %s: %s"
+
+#: task.php:245
+#, php-format
+msgid "There was a problem deleting %s: %s"
+msgstr "S'ha produït un error a l'eliminar %s: %s "
+
+#: task.php:221
+#, php-format
+msgid "There was a problem saving the task: %s."
+msgstr "S'ha produït un error al guardar la tasca: %s"
+
+#: data.php:148
+#, php-format
+msgid "There was an error importing the data: %s"
+msgstr "S'ha produït un error al importar dades: %s"
+
+#: lib/api.php:332 lib/api.php:535
+msgid "There was an error importing the iCalendar data."
+msgstr "S'ha produït un error al importar les dades iCalendar."
+
+#: data.php:67
+msgid "There were no tasks to export."
+msgstr "No hi ha tasques a exportar."
+
+#: data.php:111
+msgid "This file format is not supported."
+msgstr "Aquest format d'arxiu no està suportat."
+
+#: tasklists.php:77
+#, php-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "No es pot eliminar \"%s\": %s"
+
+#: templates/task/task.inc:104
+msgid "Undo changes"
+msgstr "Desfer canvis"
+
+#: templates/view/task.inc:28 templates/list/task_summaries.inc:31
+#: lib/Block/summary.php:32 lib/Block/summary.php:183
+msgid "Unfiled"
+msgstr "Sense categoria"
+
+#: lib/api.php:383 lib/api.php:457 lib/api.php:568
+msgid "Unsupported Content-Type."
+msgstr "Tipus de contingut no suportat: %s "
+
+#: templates/list/task_summaries.inc:23
+msgid "View Task Details"
+msgstr "Veure detall de la tasca"
+
+#: templates/task/task.inc:78 lib/Nag.php:378
+msgid "Week(s)"
+msgstr "Semana(es)"
+
+#: templates/data/import.inc:24
+msgid "Which tasklist should the tasks be added to?"
+msgstr "A quina llista de tasques cal afegir les tasques? "
+
+#: view.php:51
+msgid "You do not have permission to view this tasklist."
+msgstr "No disposa de privilegis per a veure aquesta llista de tasques. "
+
+#: tasklists.php:84 templates/tasklists/tasklists.inc:48
+msgid "You must select a task list to be deleted."
+msgstr "Ha de seleccionar una llista de tasques a eliminar. "
+
+#: templates/prefs/tasklistselect.inc:10
+msgid "Your default task list:"
+msgstr "La seva llista de tasques per defecte:"
+
+#: templates/tasklists/tasklists.inc:70
+msgid "Your task lists:"
+msgstr "La seva llista de tasques:"
+
+#: templates/list/task_summaries.inc:23 lib/Block/summary.php:89
+#: lib/Block/summary.php:173
+msgid "[none]"
+msgstr "[Cap]"
+
+#: list.php:76
+msgid "_All tasks"
+msgstr "_Totes"
+
+#: templates/search/search.inc:23 templates/task/task.inc:39
+msgid "_Category"
+msgstr "_Categoria"
+
+#: templates/view/task.inc:11
+msgid "_Complete"
+msgstr "_Finalitzada"
+
+#: list.php:78
+msgid "_Completed tasks"
+msgstr "Tasquest finalitzade_s"
+
+#: templates/view/task.inc:16
+msgid "_Delete"
+msgstr "_Eliminar"
+
+#: templates/search/search.inc:22 templates/task/task.inc:95
+msgid "_Description"
+msgstr "_Descripció"
+
+#: templates/list/task_headers.inc:28
+msgid "_Due Date"
+msgstr "Data de vencimen_t"
+
+#: templates/view/task.inc:13
+msgid "_Edit"
+msgstr "_Editar"
+
+#: lib/Nag.php:418
+msgid "_Import/Export"
+msgstr "_Importar/Exportar"
+
+#: lib/Nag.php:406
+msgid "_List Tasks"
+msgstr "_Llistar"
+
+#: lib/Nag.php:413
+msgid "_My Tasklists"
+msgstr "_Les mesves tasques"
+
+#: lib/Nag.php:408
+msgid "_New Task"
+msgstr "_Nova tasca"
+
+#: lib/Nag.php:423
+msgid "_Print"
+msgstr "Im_primir"
+
+#: templates/task/task.inc:83
+msgid "_Priority"
+msgstr "Priori_tat"
+
+#: lib/Nag.php:410
+msgid "_Search"
+msgstr "_Cerca"
+
+#: templates/task/task.inc:20 templates/list/task_headers.inc:10
+msgid "_Task List"
+msgstr "L_lista de tasques"
+
+#: data.php:29
+msgid "iCalendar (vTodo)"
+msgstr "iCalendar (vTodo)"
+
+#: lib/Nag.php:55
+msgid "no time"
+msgstr "Sense límit"
+
+#: data.php:84 templates/data/export.inc:1
+msgid "tasks.csv"
+msgstr "tasuqes.csv"
+
+#: data.php:96
+msgid "tasks.ics"
+msgstr "tasques.ics"

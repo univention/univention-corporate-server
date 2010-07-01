@@ -20,7 +20,7 @@ diff --git a/lib/Recurrence.php b/lib/Recurrence.php
 index 5aa5960..acbbee7 100644
 --- a/lib/Recurrence.php
 +++ b/lib/Recurrence.php
-@@ -944,6 +944,7 @@ class Horde_Date_Recurrence {
+@@ -945,6 +945,7 @@
       */
      function toRRule10($calendar)
      {
@@ -28,7 +28,7 @@ index 5aa5960..acbbee7 100644
          switch ($this->recurType) {
          case HORDE_DATE_RECUR_NONE:
              return '';
-@@ -959,6 +960,7 @@ class Horde_Date_Recurrence {
+@@ -960,6 +961,7 @@
              for ($i = 0; $i <= 7 ; ++$i) {
                  if ($this->recurOnDay(pow(2, $i))) {
                      $rrule .= ' ' . $vcaldays[$i];
@@ -36,25 +36,17 @@ index 5aa5960..acbbee7 100644
                  }
              }
              break;
-@@ -997,9 +999,18 @@ class Horde_Date_Recurrence {
-             return '';
+@@ -995,7 +997,12 @@
+             return $rrule . ' ' . $calendar->_exportDateTime($recurEnd);
          }
  
--        return $this->hasRecurEnd() ?
--            $rrule . ' ' . $calendar->_exportDate($this->recurEnd) :
--            $rrule . ' #' . (int)$this->getRecurCount();
-+        if ( $this->hasRecurEnd() ) {
-+            $rrule .= ' ' . $calendar->_exportDateTime($this->recurEnd);
+-        return $rrule . ' #' . (int)$this->getRecurCount();
++        if ($rec_days_per_week > 1) {
++            $rec_weeks= (int)floor((int)$this->getRecurCount() / $rec_days_per_week);
++            return $rrule . ' #' . $rec_weeks;
 +        } else {
-+            if ($rec_days_per_week > 1) {
-+                $rec_weeks= (int)floor((int)$this->getRecurCount() / $rec_days_per_week);
-+                $rrule .= ' #' . $rec_weeks;
-+	    } else {
-+                $rrule .= ' #' . (int)$this->getRecurCount();
-+            }
++            return $rrule . ' #' . (int)$this->getRecurCount();
 +        }
-+
-+        return $rrule;
      }
  
      /**

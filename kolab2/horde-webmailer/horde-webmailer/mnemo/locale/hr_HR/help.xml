@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<help>
+
+<entry id="Overview" md5="50ee76138fb08b04b029006053bbadbc" state="uptodate">
+    <title>Pregled</title>
+    <heading>Uvod</heading>
+    <para>
+    <i>Bilje&#x161;ke</i> je aplikacija koja mogu&#x107;ava stvaranje ra&#x10D;unalnog ekvivalenta samoljepljivih listi&#x107;a.  Bilje&#x161;ke je mogu&#x107;e stvarati, mijenjati, brisati i printati.  Tako&#x111;er je mogu&#x107;e pretra&#x17E;ivanje sadr&#x17E;aja bilje&#x161;ki.  Aplikacija podr&#x17E;ava uvoz i izvoz bilje&#x161;ki koriste&#x107;i standardizirane formate.
+    </para>
+    <para>
+    Za razliku od samoljepljivih listi&#x107;a, ra&#x10D;unalne bilje&#x161;ke mo&#x17E;ete dijeliti sa drugima.  Bilje&#x161;ke mogu biti organizirane u bilje&#x17E;nice, te im se mo&#x17E;e pridru&#x17E;iti kategorija.
+    </para>
+</entry>
+
+<entry id="list-actions" md5="6d592f153bfb5c296de5dfebb428e1ba" state="uptodate">
+    <title>Popis bilje&#x161;ki: Akcije</title>
+    <heading>Akcije</heading>
+    <para>
+    <i>Obri&#x161;i bilje&#x161;ku</i> trajno bri&#x161;e odabranu bilje&#x161;ku.
+    </para>
+    <para>
+    <i>Uredi bilje&#x161;ku</i> omogu&#x107;ava izmjenu postoje&#x107;e bilje&#x161;ke.
+    </para>
+    <para>
+    <i>Natrag u bilje&#x17E;nicu</i> vra&#x107;a na popis bilje&#x161;ki trenutno odabrane bilje&#x17E;nice.
+    </para>
+</entry>
+
+<entry id="menu-actions" md5="715a853d93cd3330e4d730b9112c8a82" state="uptodate">
+    <title>Stavke menija</title>
+    <heading>Stavke menija</heading>
+    <para>
+    <i>Popis bilje&#x161;ki</i> prikazuje sve bilje&#x161;ke trenutno odabrane bilje&#x17E;nice.
+    </para>
+    <para>
+    <i>Nova bilje&#x161;ka</i> dodaje novu bilje&#x161;ku u trenutno odabranu bilje&#x17E;nicu.
+    </para>
+    <para>
+    <i>Tra&#x17E;i</i> pretra&#x17E;uje trenutno odabranu bilje&#x17E;nicu.  Mogu&#x107;e je pretra&#x17E;ivati po naslovu i tekstu bilje&#x161;ke.
+    </para>
+    <para>
+    <i>Uvoz/Izvoz</i> omogu&#x107;ava uvoz i izvoz bilje&#x161;ki u CSV i vNote formatu.
+    </para>
+    <para>
+    <i>Ispi&#x161;i</i> ispisuje bilje&#x161;ku.  Ikona <i>Ispi&#x161;i</i> pojavljuje se u meniju samo kod pregleda bilje&#x161;ke.
+    </para>
+</entry>
+
+
+<entry id="sorting" md5="cca3b1d1c9ed0ec5ab385f82469ddc8f" state="uptodate">
+    <title>Sortiranje bilje&#x161;ki</title>
+    <heading>Sortiranje bilje&#x161;ki</heading>
+    <para>
+    Popis bilje&#x161;ki mogu&#x107;e je sortirati po bilo kojem stupcu klikom na naslov stupca.  Prijelaz izme&#x111;u uzlaznog i silaznog sortiranja posti&#x17E;e se klikom na strelicu u zaglavlju stupca.
+    </para>
+</entry>
+</help>

@@ -1,0 +1,233 @@
+# Chinese translations for Mimp package
+# PACKAGE 软件包的简体中文翻译.
+# Copyright 2007-2009 The Horde Project
+# This file is distributed under the same license as the Mimp package.
+# Automatically generated, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mimp H3 (1.0.1)\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2007-08-07 04:29-0400\n"
+"PO-Revision-Date: 2007-09-03 10:19+0800\n"
+"Last-Translator: Anna Chen <annachen2008@yahoo.com.cn>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=GB2312\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mailbox.php:70
+#, php-format
+msgid "%d to %d of %d"
+msgstr "%d 至 %d/%d"
+
+#: message.php:262
+#, php-format
+msgid "(%d of %d)"
+msgstr "(%d/%d)"
+
+#: lib/MIME/Contents.php:60
+msgid "Attachment"
+msgstr "附件"
+
+#: message.php:256
+#, php-format
+msgid "Back to %s"
+msgstr "返回 %s"
+
+#: templates/compose/compose.inc:54
+msgid "Bcc: "
+msgstr "密件抄送："
+
+#: templates/compose/compose.inc:51
+msgid "Cc: "
+msgstr "抄送："
+
+#: lib/MIMP.php:33
+msgid "Compose"
+msgstr "撰写"
+
+#: config/prefs.php.dist:13
+msgid "Configure how messages are displayed."
+msgstr "配置邮件显示方式。"
+
+#: compose.php:19
+msgid "Could not retrieve the message from the mail server."
+msgstr "无法从邮件服务器获取邮件。"
+
+#: message.php:225
+msgid "Delete"
+msgstr "删除"
+
+#: config/prefs.php.dist:25
+msgid "Display only the first 250 characters of a message initially?"
+msgstr "是否一开始即显示邮件的开头 250 个字符？"
+
+#: compose.php:89 templates/compose/compose.inc:61
+#: templates/compose/redirect.inc:19
+msgid "Expand Names"
+msgstr "扩展名"
+
+#: mailbox.php:57
+msgid "First Page"
+msgstr "第一页"
+
+#: folders.php:24 lib/MIMP.php:36
+msgid "Folders"
+msgstr "文件夹"
+
+#: message.php:242
+msgid "Forward"
+msgstr "转发"
+
+#: templates/mailbox/mailbox.inc:18
+msgid "From"
+msgstr "发件人"
+
+#: templates/compose/compose.inc:41
+msgid "Identity"
+msgstr "标识"
+
+#: lib/MIMP.php:30
+msgid "Inbox"
+msgstr "收件箱"
+
+#: mailbox.php:65
+msgid "Last Page"
+msgstr "末页"
+
+#: lib/MIMP.php:42
+msgid "Log out"
+msgstr "注销"
+
+#: config/prefs.php.dist:11
+msgid "Mail Management"
+msgstr "邮件管理"
+
+#: message.php:219 message.php:263 compose.php:228 mailbox.php:156
+#: templates/folders/folders.inc:6 templates/folders/folders.inc:27
+#: templates/mailbox/mailbox.inc:4 templates/compose/compose.inc:4
+#: templates/compose/redirect.inc:4
+msgid "Menu"
+msgstr "菜单"
+
+#: compose.php:213
+msgid "Message Composition"
+msgstr "写邮件"
+
+#: config/prefs.php.dist:12
+msgid "Message Viewing"
+msgstr "查看邮件"
+
+#: compose.php:147
+msgid "Message redirected successfully."
+msgstr "成功重定向邮件。"
+
+#: compose.php:205
+msgid "Message sent successfully."
+msgstr "成功发送邮件。"
+
+#: templates/compose/compose.inc:58
+msgid "Message: "
+msgstr "邮件："
+
+#: message.php:250
+msgid "Next"
+msgstr "下一步"
+
+#: mailbox.php:64
+msgid "Next Page"
+msgstr "下一页"
+
+#: mailbox.php:72
+#, php-format
+msgid "No Messages"
+msgstr "无邮件"
+
+#: message.php:253
+msgid "Prev"
+msgstr "上一页"
+
+#: mailbox.php:58
+msgid "Previous Page"
+msgstr "上一页"
+
+#: mailbox.php:166
+msgid "Purge Deleted"
+msgstr "清除已删除项"
+
+#: message.php:243 compose.php:132 templates/compose/redirect.inc:18
+msgid "Redirect"
+msgstr "重定向"
+
+#: mailbox.php:160 templates/folders/folders.inc:29
+msgid "Refresh"
+msgstr "刷新"
+
+#: message.php:232
+msgid "Reply"
+msgstr "回复"
+
+#: message.php:239
+msgid "Reply All"
+msgstr "回复全部"
+
+#: message.php:235
+msgid "Reply to List"
+msgstr "回复列表"
+
+#: compose.php:156 templates/compose/compose.inc:60
+msgid "Send"
+msgstr "发送"
+
+#: message.php:283
+msgid "Show All"
+msgstr "显示全部"
+
+#: folders.php:56
+msgid "Show All Folders"
+msgstr "显示所有文件夹"
+
+#: folders.php:56
+msgid "Show Subscribed Folders"
+msgstr "显示订阅文件夹"
+
+#: templates/mailbox/mailbox.inc:19
+msgid "Subject"
+msgstr "主题"
+
+#: templates/compose/compose.inc:56
+msgid "Subject: "
+msgstr "主题："
+
+#: lib/MIME/Viewer/alternative.php:49
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "无可供嵌入显示的待选内容。"
+
+#: lib/MIME/Contents.php:88
+msgid "There are no parts that can be displayed inline."
+msgstr "无可供嵌入显示的内容。"
+
+#: lib/MIME/Viewer/plain.php:29 lib/MIME/Viewer/html.php:31
+msgid "There was an error displaying this message part"
+msgstr "显示此邮件时出错"
+
+#: mailbox.php:32
+msgid "There was an error viewing the requested message."
+msgstr "查看请求邮件时出错。"
+
+#: templates/compose/compose.inc:49 templates/compose/redirect.inc:16
+msgid "To: "
+msgstr "收件人："
+
+#: message.php:223
+msgid "Undelete"
+msgstr "取消删除"
+
+#: message.php:215
+msgid "View Full Message"
+msgstr "查看整封邮件"
+
+#: message.php:128 mailbox.php:93
+msgid "[No Subject]"
+msgstr "[No Subject]"

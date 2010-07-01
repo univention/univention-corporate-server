@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Horde: nag/locale/ca_ES/help.xml,v 1.1.2.2 2007-12-20 14:23:09 jan Exp $ -->
+<help>
+  <entry id="Overview" md5="67c67240d4ec4a037b8ae76f371c5ad3" state="uptodate">
+    <title>Introducció</title>
+    <heading>Introducció</heading>
+    <para>
+Aquest és una gestor de llistes de tasques bastant complet que suporta llistes de tasques privades i compartides, integració amb funcions d'agenda, categories, prioritats, venciments, recerques, impressió i importació i exportació. 
+    </para>
+  </entry>
+
+  <entry id="sorting" md5="275a51456e8b440a5bf7afe2af24c777" state="uptodate">
+    <title>Ordenació d'entrades</title>
+    <heading>Ordenació d'entrades</heading>
+    <para>
+Al visualitzar un llistat d'entrades, pot ordenar-lo per qualsevol de les columnes prement la capçalera de columna apropiada. Per a commutar el sentit de la classificació de les columnes entre ascendent o descendent, premi la icona de fletxa de la capçalera de la columna. 
+    </para>
+  </entry>
+</help>

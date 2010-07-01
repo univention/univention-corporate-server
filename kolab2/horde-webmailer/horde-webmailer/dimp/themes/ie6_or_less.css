@@ -1,0 +1,81 @@
+/**
+ * $Horde: dimp/themes/ie6_or_less.css,v 1.20.2.15 2008-08-05 17:36:01 slusarz Exp $
+ *
+ * CSS corrections for IE 6 and below.
+ */
+
+#pageContainer {
+    height: auto;
+}
+
+#sidebarPanel, #normalfolders {
+    width: 150px;
+}
+#normalfolders {
+    /* IE 6 does not support max-height. To auto-size folder list display, set
+     * height to 0px. */
+    height: 0px;
+    overflow: auto;
+}
+
+#sidebarPanel li {
+    width: 100%;
+}
+.context {
+    width: 180px;
+}
+
+div.msgSubject {
+    width: 49%;
+}
+
+div.msgmiddle {
+    margin-bottom: -4px;
+}
+
+.splitBar {
+    background-attachment: fixed;
+    font-size: 0px;
+}
+
+form#compose {
+    margin-top: -13px;
+}
+#to, #cc, #bcc {
+    overflow: auto;
+}
+#messageParent {
+    width: auto !important;
+}
+#messageParent textarea#message {
+    width: 97% !important;
+}
+
+#alerts {
+    width: 500px;
+}
+#alerts div.ie6alertsfix {
+    padding: 0;
+    border: 0;
+    background: url("graphics/clear.gif") repeat;
+}
+
+#sidebarPanel .custom img {
+    vertical-align: middle;
+}
+
+.block-monthgrid table {
+    border-width: 2px;
+}
+
+#msglistHeader {
+    height: 15px;
+}
+#mlistHeaderClear {
+    display: none;
+}
+
+/* Fixes li & ol list numbering issues in HTML messages. */
+#html-message ul li, #html-message ol li {
+    margin-left: 2em;
+}

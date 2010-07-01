@@ -1,0 +1,73 @@
+<div id="menu"><h1>&nbsp;<tag:header /></h1></div>
+
+<form method="post" action="<tag:maint_url />" name="maint_confirm">
+<input type="hidden" name="load_frameset" value="" />
+<tag:maint_postdata />
+
+<if:javascript>
+<script type="text/javascript">
+<!--
+function uncheckAll()
+{
+    for (var i = 0; i < document.maint_confirm.elements.length; i++) {
+        document.maint_confirm.elements[i].checked = false;
+    }
+}
+//-->
+</script>
+</if:javascript>
+
+<table width="100%" cellspacing="2">
+ <tr>
+  <td><tag:notify /></td>
+ </tr>
+
+<loop:tasks>
+ <tr>
+  <td class="light">
+<if:confirm>
+   <input type="checkbox" class="checkbox" id="<tag:tasks.pref />_confirm" name="<tag:tasks.pref />_confirm"<tag:tasks.checked /> />&nbsp;&nbsp;
+</if:confirm>
+<if:agree>
+   <input type="hidden" name="<tag:tasks.pref />_confirm" value="1" />
+</if:agree>
+<if:notice>
+   <input type="hidden" name="<tag:tasks.pref />_confirm" value="1" />
+</if:notice>
+   <if:confirm><label for="<tag:tasks.pref />_confirm"></if:confirm><tag:tasks.descrip /><if:confirm></label></if:confirm>
+  </td>
+ </tr>
+</loop:tasks>
+
+ <tr>
+  <td>&nbsp;</td>
+ </tr>
+
+ <tr>
+  <td>
+<if:confirm>
+   <input name="ok" type="submit" class="button" value="<gettext>Perform Maintenance Operations</gettext>" />
+<if:javascript>
+   &nbsp;&nbsp;
+   <input type="button" class="button" value="<gettext>Skip Maintenance</gettext>" onclick="uncheckAll(); document.maint_confirm.submit();" />
+</if:javascript>
+</if:confirm>
+<if:agree>
+   <input name="ok" type="submit" name="agree" class="button" value="<gettext>Yes, I Agree</gettext>" />
+   <input type="submit" name="not_agree" class="button" value="<gettext>NO, I Do NOT Agree</gettext>" />
+</if:agree>
+<if:notice>
+   <input name="ok" type="submit" class="button" value="<gettext>Click to Continue</gettext>" />
+</if:notice>
+  </td>
+ </tr>
+</table>
+
+</form>
+
+<script type="text/javascript">
+<!--
+document.maint_confirm.ok.focus();
+if (typeof window.parent.frames.horde_menu == 'undefined') document.maint_confirm.load_frameset.value = 1;
+//-->
+</script>

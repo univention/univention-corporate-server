@@ -1,0 +1,1045 @@
+# Romanian translations for Mimp package.
+# Copyright 2003-2009 The Horde Project
+# This file is distributed under the same license as the Mimp package.
+# Eugen Hoanca <eugenh@urban-grafx.ro>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mimp 0.0.1\n"
+"POT-Creation-Date: 2003-03-04 13:46+0100\n"
+"PO-Revision-Date: 2003-03-28 11:05+0200\n"
+"Last-Translator: Eugen Hoanca <eugenh@urban-grafx.ro>\n"
+"Language-Team: Romanian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: lib/Compose.php:199 lib/Compose.php:250
+msgid "      To: "
+msgstr "   Catre: "
+
+#: lib/Compose.php:187 lib/Compose.php:238
+msgid "    Date: "
+msgstr "    Data: "
+
+#: lib/Compose.php:190 lib/Compose.php:241
+msgid "    From: "
+msgstr "   De la: "
+
+#: lib/Compose.php:196 lib/Compose.php:247
+msgid " Subject: "
+msgstr " Subiect: "
+
+#: mailbox.php:251
+msgid "%d of %d Messages"
+msgstr "%d din %d mesaje"
+
+#: mailbox.php:249
+msgid "%d to %d of %d Messages"
+msgstr "de la %d la %d din %d mesaje"
+
+#: lib/Message.php:367
+msgid "%s does not appear to be a valid mailbox."
+msgstr "%s nu pare sa fie mailbox valid."
+
+#: templates/prefs/server.inc:3
+msgid "<b>Note:</b> These settings won't take effect until your next login."
+msgstr "<b>Nota:</b> Aceste setari nu vor avea efect decat la reintrare."
+
+#: templates/prefs/folderselect.inc:47
+msgid "<b>Note</b>: These folders are located within your folder path."
+msgstr "<b>Nota</b>: Aceste dosare se afla in calea pentru dosare."
+
+#: lib/Headers.php:458
+msgid "Add to Address book (%s)"
+msgstr "Adaugare in agenda (%s)"
+
+#: config/prefs.php.dist:87
+msgid "Address Books"
+msgstr "Agende"
+
+#: templates/search/main.inc:55
+msgid "All fields"
+msgstr "Toate campurile"
+
+#: message.php:89
+msgid "An unknown error occured adding the new entry."
+msgstr "O eroare necunoscuta s-a produs la inserare."
+
+#: message.php:224
+msgid "Answered"
+msgstr "Raspunse"
+
+#: templates/search/main.inc:84
+msgid "Answered messages"
+msgstr "Mesaje cu raspuns"
+
+#: templates/search/main.inc:57
+msgid "Any field"
+msgstr "Orice camp"
+
+#: templates/prefs/filters.inc:20
+msgid "Apply filter rules upon logging on"
+msgstr "Aplicare reguli filtre la intrare"
+
+#: search.php:53
+msgid "April"
+msgstr "Aprilie"
+
+#: message.php:268
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "Sunteti sigur ca doriti stergerea PERMANENTA a acestor mesaje?"
+
+#: config/prefs.php.dist:341
+msgid "Arrival Time"
+msgstr "Ora sosirii"
+
+#: config/prefs.php.dist:355
+msgid "Ascending"
+msgstr "Crescator"
+
+#: search.php:57
+msgid "August"
+msgstr "August"
+
+#: message.php:138
+msgid "Bcc"
+msgstr "Bcc"
+
+#: templates/compose/compose.inc:35
+msgid "Bcc: "
+msgstr "Bcc:"
+
+#: templates/search/main.inc:43
+msgid "Body:"
+msgstr "Corp:"
+
+#: templates/search/main.inc:78 templates/search/main.inc:92
+msgid "Both"
+msgstr "Ambii(ele)"
+
+#: message.php:137
+msgid "Cc"
+msgstr "Cc"
+
+#: templates/compose/compose.inc:32
+msgid "Cc: "
+msgstr "Cc:"
+
+#: config/prefs.php.dist:60
+msgid ""
+"Change display options such as the color scheme, how many messages you see "
+"on each page and how messages are sorted."
+msgstr ""
+"Schimbare optiuni schema culori, cate mesaje se doresc afisate pe fiecare "
+"pagina sau modul de sortare al mesajelor."
+
+#: config/prefs.php.dist:29
+msgid "Change mail server settings."
+msgstr "Schimbare setari server mail."
+
+#: config/prefs.php.dist:23
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr ""
+"Schimbare nume, adresa, sau semnatura vizibile pentru ceilaltzi in momentul "
+"citirii sau raspunderii la email."
+
+#: lib/MIMP.php:102
+msgid "Compose"
+msgstr "Compune"
+
+#: lib/Headers.php:450
+msgid "Compose Message (%s)"
+msgstr "Compune mesaj (%s)"
+
+#: config/prefs.php.dist:82
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr ""
+"Setare verificari mesaje noi de e-mail, si daca veti fi notificat sau nu "
+"atunci cand ajung."
+
+#: lib/Message.php:357
+msgid "Could not delete messages from %s. The server said: %s"
+msgstr "Nu s-au putut sterge mesajele din %s. Serverul comunica: %s"
+
+#: templates/prefs/folderselect.inc:21 templates/prefs/folderselect.inc:41
+msgid "Create a new drafts folder"
+msgstr "Creare dosar ciorne nou"
+
+#: templates/prefs/folderselect.inc:13 templates/prefs/folderselect.inc:34
+msgid "Create a new sent mail folder"
+msgstr "Creare dosar mail trimis nou"
+
+#: config/prefs.php.dist:68
+msgid "Customize how you send mail and where drafts are saved."
+msgstr "Personalizare mod de trimitere mail si salvare ciorne."
+
+#: config/prefs.php.dist:76
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Personalizare taskuri care sa ruleze la intrarea in %s."
+
+#: message.php:134
+msgid "Date"
+msgstr "Data"
+
+#: search.php:61
+msgid "December"
+msgstr "Decembrie"
+
+#: config/prefs.php.dist:347
+msgid "Default sorting criteria:"
+msgstr "Criteriu implicit de sortare:"
+
+#: config/prefs.php.dist:357
+msgid "Default sorting direction:"
+msgstr "Directie implicita de sortare:"
+
+#: message.php:279
+msgid "Delete"
+msgstr "Stergere"
+
+#: message.php:227
+msgid "Deleted"
+msgstr "Sters"
+
+#: config/prefs.php.dist:52
+msgid "Deleting and Moving Messages"
+msgstr "Stergere si mutare mesaje"
+
+#: config/prefs.php.dist:356
+msgid "Descending"
+msgstr "Descrescator"
+
+#: config/prefs.php.dist:59
+msgid "Display Options"
+msgstr "Optiuni afisaj"
+
+#: config/prefs.php.dist:444
+msgid "Display confirmation after sending a message?"
+msgstr "Afisare confirmare dupa trimiterea mesajului?"
+
+#: config/prefs.php.dist:320
+msgid "Display the 'Empty Trash' link in the menubar?"
+msgstr "Afisare legatura 'Golire cos' in bara de meniuri?"
+
+#: message.php:225
+msgid "Draft"
+msgstr "Ciorna"
+
+#: templates/prefs/folderselect.inc:40
+msgid "Drafts folder:"
+msgstr "Dosar ciorne:"
+
+#: templates/prefs/filters.inc:14
+msgid "Edit my filter rules"
+msgstr "Editare reguli filtru"
+
+#: config/prefs.php.dist:140
+msgid "Edit your identities"
+msgstr "Editare identitati"
+
+#: lib/Message.php:375
+msgid "Emptied all messages from %s."
+msgstr "S-au golit toate mesajele din %s."
+
+#: lib/Compose.php:255
+msgid "End forwarded message"
+msgstr "Sfarsit mesaj inaintat"
+
+#: lib/Compose.php:205
+msgid "End message"
+msgstr "Sfarsit mesaj"
+
+#: lib/Compose.php:203
+msgid "End message from %s"
+msgstr "Sfarsit mesaj de al %s"
+
+#: templates/prefs/folderselect.inc:18
+msgid "Enter the name for your new drafts folder"
+msgstr "Introduceti numele pentru dosarul de ciorne nou"
+
+#: templates/prefs/folderselect.inc:10
+msgid "Enter the name for your new sent mail folder"
+msgstr "Introduceti numele pentru dosarul nou de mailuri trimise"
+
+#: message.php:91
+msgid "Entry \"%s\" was successfully added to the address book"
+msgstr "Intrarea \"%s\" a fost adaugata cu succes in agenda"
+
+#: config/prefs.php.dist:512
+msgid "Every 15 minutes"
+msgstr "La fiecare 15 minute"
+
+#: config/prefs.php.dist:509
+msgid "Every 30 seconds"
+msgstr "La fiecare 30 secunde"
+
+#: config/prefs.php.dist:511
+msgid "Every 5 minutes"
+msgstr "La fiecare 5 minute"
+
+#: config/prefs.php.dist:513
+msgid "Every half hour"
+msgstr "La fiecare jumatate de ora"
+
+#: config/prefs.php.dist:510
+msgid "Every minute"
+msgstr "In fiecare minut"
+
+#: config/prefs.php.dist:526
+msgid "Expand names in the compose window automatically in the background?"
+msgstr "Extindere nume in fereastra de compunere automat in fundal?"
+
+#: config/prefs.php.dist:384
+msgid "Expand the entire folder tree by default in the folders view?"
+msgstr "Extindere intreaga structura de dosare implicit in vizualizare dosare?"
+
+#: search.php:51
+msgid "February"
+msgstr "Februarie"
+
+#: config/prefs.php.dist:274
+msgid "Filter message content for profanity?"
+msgstr "Filtrare continut mesaj dupa indecenta?"
+
+#: mailbox.php:213 mailbox.php:214
+msgid "First Page"
+msgstr "Prima pagina"
+
+#: lib/MIMP.php:103 folders.php:155
+msgid "Folders"
+msgstr "Dosare"
+
+#: templates/search/main.inc:107
+msgid "Folders:"
+msgstr "Dosare:"
+
+#: compose.php:402
+msgid "Forward"
+msgstr "Inaintare"
+
+#: compose.php:388
+msgid "Forward:"
+msgstr "Inaintare:"
+
+#: lib/Compose.php:232
+msgid "Forwarded message"
+msgstr "Mesaj inaintat"
+
+#: lib/Compose.php:230
+msgid "Forwarded message from %s"
+msgstr "Mesaj inaintat catre %s"
+
+#: message.php:135 templates/mailbox/mailbox.inc:14
+msgid "From"
+msgstr "De la"
+
+#: config/prefs.php.dist:343
+msgid "From Address"
+msgstr "Adresa De la"
+
+#: templates/search/main.inc:19
+msgid "From:"
+msgstr "De la:"
+
+#: compose.php:399 compose.php:403
+msgid "Fwd:"
+msgstr "Fwd:"
+
+#: compose.php:629
+msgid "Fwd: "
+msgstr "Fwd: "
+
+#: compose.php:631
+msgid "Fwd: %u Forwarded Messages"
+msgstr "Fwd: %u mesaje inaintate"
+
+#: mailbox.php:244
+msgid "Hide Deleted"
+msgstr "Ascunde Sterse"
+
+#: message.php:191
+msgid "High Priority"
+msgstr "Prioritate mare"
+
+#: config/prefs.php.dist:436
+msgid "How to prefix quoted lines in a reply:"
+msgstr "Cum sa prefixam liniile citate intr-un raspuns:"
+
+#: templates/compose/compose.inc:23
+msgid "Identity"
+msgstr "Identitate"
+
+#: message.php:226
+msgid "Important"
+msgstr "Important"
+
+#: config/prefs.php.dist:196
+msgid "Include a brief summary of the header in a reply?"
+msgstr "Includere cuprins sumar al headerului in raspuns?"
+
+#: config/prefs.php.dist:428
+msgid "Include original message in a reply?"
+msgstr "Includere mesaj original in raspuns?"
+
+#: search.php:50
+msgid "January"
+msgstr "Ianuarie"
+
+#: search.php:56
+msgid "July"
+msgstr "Iulie"
+
+#: search.php:55
+msgid "June"
+msgstr "Iunie"
+
+#: config/prefs.php.dist:34
+msgid "Language"
+msgstr "Limba"
+
+#: mailbox.php:229 mailbox.php:230
+msgid "Last Page"
+msgstr "Ultima pagina"
+
+#: templates/search/main.inc:62
+msgid "Limit search to:"
+msgstr "Limiteaza cautare la:"
+
+#: config/prefs.php.dist:536
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+"Listare toate contactele in ecranul de contacte? (in caz de dezactivare veti "
+"vedea doar contactele dupa care ati cautat explicit)"
+
+#: lib/Headers.php:204
+msgid "List-Archive"
+msgstr "List-Archive"
+
+#: lib/Headers.php:199
+msgid "List-Help"
+msgstr "List-Help"
+
+#: lib/Headers.php:206
+msgid "List-Id"
+msgstr "List-Id"
+
+#: lib/Headers.php:202
+msgid "List-Owner"
+msgstr "List-Owner"
+
+#: lib/Headers.php:203
+msgid "List-Post"
+msgstr "List=Post"
+
+#: lib/Headers.php:201
+msgid "List-Subscribe"
+msgstr "List-Subscribe"
+
+#: lib/Headers.php:200
+msgid "List-Unsubscribe"
+msgstr "List-Unsubscribe"
+
+#: templates/login/login.inc:3 templates/login/login.inc:14
+msgid "Log in"
+msgstr "Intrare"
+
+#: lib/MIMP.php:104
+msgid "Log out"
+msgstr "Iesire"
+
+#: config/prefs.php.dist:75
+msgid "Login Tasks"
+msgstr "Taskuri intrare"
+
+#: login.php:23
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr ""
+"Login esuat din diferite motive. Cel mai probabil introducere incorecta "
+"de username si parola."
+
+#: message.php:193
+msgid "Low Priority"
+msgstr "Prioritate mica"
+
+#: config/prefs.php.dist:45 config/prefs.php.dist:51
+msgid "Mail Management"
+msgstr "Administrare mail"
+
+#: search.php:52
+msgid "March"
+msgstr "Martie"
+
+#: search.php:54
+msgid "May"
+msgstr "Mai"
+
+#: folders.php:164 folders.php:259 message.php:272 mailbox.php:441
+#: templates/compose/compose.inc:4 templates/compose/compose.inc:43
+#: templates/mailbox/mailbox.inc:4 templates/message/headers.inc:4
+msgid "Menu"
+msgstr "Meniu"
+
+#: lib/Compose.php:180
+msgid "Message"
+msgstr "Mesaj"
+
+#: compose.php:245 compose.php:251 compose.php:264 compose.php:296
+#: compose.php:652 config/prefs.php.dist:67
+msgid "Message Composition"
+msgstr "Compunere mesaj"
+
+#: config/prefs.php.dist:342
+msgid "Message Date"
+msgstr "Data mesaj"
+
+#: templates/prefs/filters.inc:4
+msgid "Message Filters"
+msgstr "Filtre mesaj"
+
+#: search.php:17
+msgid "Message Search"
+msgstr "Cautare mesaj"
+
+#: config/prefs.php.dist:345
+msgid "Message Size"
+msgstr "Marime mesaj"
+
+#: config/prefs.php.dist:46
+msgid "Message Viewing"
+msgstr "Vizualizare mesaj"
+
+#: compose.php:425
+msgid "Message bounced successfully."
+msgstr "Mesaj ricosat cu succes."
+
+#: lib/Compose.php:178
+msgid "Message from %s"
+msgstr "Mesaj de la %s"
+
+#: compose.php:593
+msgid "Message sent successfully, but not saved to %s"
+msgstr "Mesaj trimis cu succes, dar nesalvat in %s"
+
+#: compose.php:600
+msgid "Message sent successfully."
+msgstr "Mesaj trimis cu succes."
+
+#: templates/compose/compose.inc:39
+msgid "Message: "
+msgstr "Mesaj: "
+
+#: config/prefs.php.dist:365
+msgid "Messages per page in the mailbox view."
+msgstr "Mesaje pe pagina in vizualizare mailbox."
+
+#: mailbox.php:149
+msgid "Messages to"
+msgstr "Mesaje catre"
+
+#: config/prefs.php.dist:508
+msgid "Never"
+msgstr "Niciodata"
+
+#: lib/MIMP.php:584
+msgid "New Folder"
+msgstr "Dosar nou"
+
+#: config/prefs.php.dist:81
+msgid "New Mail"
+msgstr "Mail nou"
+
+#: templates/search/main.inc:74
+msgid "New messages"
+msgstr "Mesaje noi"
+
+#: message.php:284
+msgid "Next"
+msgstr "Urmatorul"
+
+#: mailbox.php:227 mailbox.php:228
+msgid "Next Page"
+msgstr "Pagina urmatoare"
+
+#: config/prefs.php.dist:381
+msgid "No"
+msgstr "Nu"
+
+#: lib/Folder.php:475 lib/Folder.php:511 folders.php:123
+msgid "No folders were specified"
+msgstr "Nici un dosar specificat"
+
+#: lib/Compose.php:174
+msgid "No message body text"
+msgstr "Nici un corp mesaj"
+
+#: lib/Mailbox.php:217
+msgid "No messages matched your search."
+msgstr "Nici un mesaj nu s-a potrivit cautarii."
+
+#: search.php:60
+msgid "November"
+msgstr "Noiembrie"
+
+#: search.php:59
+msgid "October"
+msgstr "Octombrie"
+
+#: templates/search/main.inc:70
+msgid "Old messages"
+msgstr "Mesaje vechi"
+
+#: config/prefs.php.dist:58 config/prefs.php.dist:66 config/prefs.php.dist:74
+#: config/prefs.php.dist:80 config/prefs.php.dist:86
+msgid "Other Options"
+msgstr "Alte optiuni"
+
+#: templates/login/login.inc:10
+msgid "Password"
+msgstr "Parola"
+
+#: message.php:208 message.php:214
+msgid "Personal"
+msgstr "Personal"
+
+#: config/prefs.php.dist:22
+msgid "Personal Information"
+msgstr "Informatii personale"
+
+#: templates/search/main.inc:171
+msgid "Please enter valid search criteria."
+msgstr "Introduceti un criteriu de cautare valid."
+
+#: lib/MIMP.php:541 compose.php:53
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Rezolvati intai adresele invalide sau ambigue."
+
+#: templates/search/main.inc:160
+msgid "Please select at least one folder to search."
+msgstr "Selectati cel putin un folder pentru cautare."
+
+#: message.php:288
+msgid "Prev"
+msgstr "Ante"
+
+#: mailbox.php:215 mailbox.php:216
+msgid "Previous Page"
+msgstr "Pagina anterioara"
+
+#: templates/message/headers.inc:18
+msgid "Priority: "
+msgstr "Prioritate: "
+
+#: mailbox.php:446
+msgid "Purge Deleted"
+msgstr "Elimina sterse"
+
+#: lib/Compose.php:208
+msgid "Quoting"
+msgstr "Citare"
+
+#: templates/mailbox/mailbox.inc:22
+msgid "Read"
+msgstr "Citire"
+
+#: compose.php:643
+msgid "Redirect this message"
+msgstr "Redirectare mesaj"
+
+#: compose.php:433
+msgid "Redirecting failed."
+msgstr "Redirectare esuata."
+
+#: mailbox.php:445
+msgid "Refresh"
+msgstr "Reincarcare"
+
+#: config/prefs.php.dist:514
+msgid "Refresh Folder Views:"
+msgstr "Reincarcare vizualizare dosare:"
+
+#: config/prefs.php.dist:383
+msgid "Remember the last view"
+msgstr "Pastreaza in memorie ultima vizualizare"
+
+#: lib/Folder.php:440
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr "Redenumirea \"%s\" in \"%s\" esuata. Serverul a comunicat"
+
+#: compose.php:372
+msgid "Reply to All:"
+msgstr "Raspunde la toate"
+
+#: compose.php:374
+msgid "Reply to List:"
+msgstr "Raspunde la lista:"
+
+#: message.php:139
+msgid "Reply-To"
+msgstr "Raspunde-Catre"
+
+#: lib/Compose.php:193 lib/Compose.php:244
+msgid "Reply-To: "
+msgstr "Raspunde-Catre: "
+
+#: compose.php:370
+msgid "Reply:"
+msgstr "Raspunde:"
+
+#: config/prefs.php.dist:288
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr ""
+"Intoarcere la listarea mailboxului dupa stergere, mutare sau copiere mesaje?"
+
+#: templates/search/main.inc:7 templates/search/main.inc:102
+#: templates/search/main.inc:129
+msgid "Search"
+msgstr "Cautare"
+
+#: lib/MIMP.php:403
+msgid "Search Results"
+msgstr "Rezultate cautare"
+
+#: templates/search/main.inc:51
+msgid "Search must match:"
+msgstr "Cautarea trebuie sa corespunda:"
+
+#: config/prefs.php.dist:88
+msgid "Select address book sources for adding and searching for addresses."
+msgstr "Selectare surse agende pentru adaugare sau cautare de adrese."
+
+#: templates/search/main.inc:110
+msgid "Select all"
+msgstr "Selectare tot"
+
+#: templates/search/main.inc:111
+msgid "Select none"
+msgstr "Deselectare tot"
+
+#: config/prefs.php.dist:246
+msgid "Select your preferred language:"
+msgstr "Selectare limba favorita:"
+
+#: templates/compose/compose.inc:41
+msgid "Send"
+msgstr "Trimitere"
+
+#: templates/prefs/folderselect.inc:33
+msgid "Sent mail folder:"
+msgstr "Dosar mail trimis:"
+
+#: search.php:58
+msgid "September"
+msgstr "Septembrie"
+
+#: config/prefs.php.dist:28
+msgid "Server Information"
+msgstr "Informatii server"
+
+#: config/prefs.php.dist:47
+msgid "Set preferences for filtering messages for unwanted content."
+msgstr "Setare preferintem pentru filtrarea mesajelor de continut nedorit."
+
+#: config/prefs.php.dist:53
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr "Setare preferinte pentru comportament mutare sau stergere mesaje."
+
+#: config/prefs.php.dist:472
+msgid "Set the X-Priority header when composing messages?"
+msgstr "Setare header X-Priority cand se compun mesaje?"
+
+#: config/prefs.php.dist:41
+msgid "Set the current time zone."
+msgstr "Setare fus orar curent."
+
+#: config/prefs.php.dist:35
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Setare limba in care sunt meniurile, explicatiile si helpul."
+
+#: config/prefs.php.dist:463
+msgid "Should the compose window be closed after saving a draft?"
+msgstr "Fereastra de compunere sa fie inchisa dupa salvare ciorna?"
+
+#: mailbox.php:242
+msgid "Show Deleted"
+msgstr "Afisare sterse"
+
+#: config/prefs.php.dist:407
+msgid "Show legend in the mailbox view?"
+msgstr "Afisare legenda in vizualizare mailbox?"
+
+#: config/prefs.php.dist:373
+msgid "Spelling errors per screen when spell checking."
+msgstr "Greseli de ortografie per ecran in verificare erori."
+
+#: message.php:140 templates/mailbox/mailbox.inc:15
+msgid "Subject"
+msgstr "Subiect"
+
+#: config/prefs.php.dist:344
+msgid "Subject Field"
+msgstr "Camp subiect"
+
+#: templates/search/main.inc:35
+msgid "Subject:"
+msgstr "Subiect:"
+
+#: templates/compose/compose.inc:37
+msgid "Subject: "
+msgstr "Subiect: "
+
+#: lib/Folder.php:362
+msgid "The folder \"%s\" already exists"
+msgstr "Dosarul \"%s\" exista deja"
+
+#: lib/Folder.php:150
+msgid ""
+"The folder \"%s\" contains illegal characters in its name. It may cause "
+"problems. Please see your system administrator."
+msgstr ""
+"Dosarul \"%s\" contine caractere invalide in nume. Poate cauza probleme. "
+"Contactati administratorul de retea."
+
+#: lib/Folder.php:375
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "Dosarul \"%s\" a fost creat dar nu v-ati inscris la el."
+
+#: lib/Folder.php:327
+msgid "The folder \"%s\" was deleted but you were not unsubscribed from it."
+msgstr "Dosarul \"%s\" a fost sters, dar nu v-ati dezabonat de la el."
+
+#: lib/Folder.php:368
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr "Dosarul \"%s\" nu a fost creat. Serverul a comunicat ca"
+
+#: lib/Folder.php:380
+msgid "The folder \"%s\" was successfully created."
+msgstr "dosarul \"%s\" a fost creat cu succes."
+
+#: lib/Folder.php:330
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "Dosarul \"%s\" a fost sters cu succes."
+
+#: lib/Folder.php:437
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "Dosarul \"%s\" a fost redenumit cu succesi in \"%s\"."
+
+#: lib/Folder.php:320
+msgid "The folder '%s' was not deleted. This is what the server said"
+msgstr "Dosarul '%s' nu a fost sters. Serverul a comunicat ca"
+
+#: lib/Message.php:369
+msgid "The mailbox %s is already empty."
+msgstr "Mailboxul %s e deja gol."
+
+#: lib/MIME/Viewer/alternative.php:47
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "Nu exista componente alternative care sa fie afisate."
+
+#: lib/Contents.php:143
+msgid "There are no parts that can be displayed inline."
+msgstr "Nu exista componente care sa fie afisate."
+
+#: lib/Message.php:313
+msgid "There was a problem expunging %s. This is what the server said"
+msgstr "S-a produs o problema la eliminarea %s. Serverul a comunicat ca"
+
+#: lib/Message.php:371
+msgid "There was a problem expunging the mailbox. The server said: %s"
+msgstr "A aparut o problema la stergerea mailboxului.Serverul a comunicat: %s"
+
+#: lib/Message.php:321
+msgid "There was a problem expunging the mailbox. This is what the server said"
+msgstr "A aparut o problema la stergerea mailboxului. Serverul a comunicat ca"
+
+#: lib/Message.php:96
+msgid ""
+"There was an error copying messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"S-a produs o eroare la copierea mesajelor din \"%s\" in \"%s\". Serverul a "
+"comunicat ca"
+
+#: lib/Message.php:182
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr ""
+"S-a produs o eroare la stergerea mesajelor din dosarul \"%s\". Serverul a "
+"comunicat ca"
+
+#: lib/Message.php:232
+msgid ""
+"There was an error deleting messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"S-a produs o eroare la stergerea mesajelor din dosarul \"%s\". Serverul a "
+"comunicat ca"
+
+#: lib/Message.php:180
+msgid "There was an error deleting messages. This is what the server said: %s"
+msgstr "S-a produs o eroare la stergerea mesajelor. Serverul a comunicat: %s"
+
+#: lib/MIME/Viewer/plain.php:40
+msgid "There was an error displaying this message part"
+msgstr "S-a produs o eroare la afisarea acestei parti de mesaj"
+
+#: lib/Message.php:287
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"S-a produs o eroare la marcarea mesajelor din dosarul \"%s\". Serverul a "
+"comunicat ca"
+
+#: lib/Message.php:91
+msgid ""
+"There was an error moving messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"A aparut o eroare la mutarea mesajelor din \"%s\" in \"%s\". Serverul a "
+"comunicat ca"
+
+#: lib/Message.php:172
+msgid ""
+"There was an error moving messages to the trash. This is what the server said"
+msgstr ""
+"A aparut o eroare la mutarea mesajelor in cos. Serverul a comunicat ca"
+
+#: compose.php:607
+msgid "There was an error sending your message: %s"
+msgstr "S-a produs o eroare la trimiterea mesajului: %s"
+
+#: mailbox.php:60
+msgid "There was an error viewing the requested message."
+msgstr "S-a produs o eroare la vizualizarea mesajului solicitat."
+
+#: templates/index/notconfigured.inc:8
+msgid ""
+"This application (MIMP) is not properly configured. Please contact your "
+"system administrator."
+msgstr ""
+"Aceasta aplicatie (MIMP) nu este configurata corect. Contactati "
+"administratorul de retea."
+
+#: message.php:98
+msgid "This message to"
+msgstr "Acest mesaj catre"
+
+#: config/prefs.php.dist:346
+msgid "Thread View"
+msgstr "Vizualizare fir"
+
+#: config/prefs.php.dist:40
+msgid "Time Zone"
+msgstr "Fus orar"
+
+#: message.php:136 mailbox.php:325
+msgid "To"
+msgstr "Catre"
+
+#: templates/search/main.inc:27
+msgid "To:"
+msgstr "Catre:"
+
+#: templates/compose/compose.inc:30
+msgid "To: "
+msgstr ""
+
+#: templates/search/main.inc:88
+msgid "Unanswered messages"
+msgstr "Mesaje fara raspuns"
+
+#: message.php:277
+msgid "Undelete"
+msgstr "Recuperare"
+
+#: lib/Headers.php:468 mailbox.php:323
+msgid "Undisclosed Recipients"
+msgstr "Recipiente secrete"
+
+#: message.php:223
+msgid "Unread"
+msgstr "Necitit(e)"
+
+#: config/prefs.php.dist:231
+msgid "Use IMAP folder subscriptions?"
+msgstr "Abonare dosare IMAP?"
+
+#: templates/login/login.inc:8
+msgid "Username"
+msgstr "Username"
+
+#: templates/login/login.inc:5
+msgid "Welcome to %s"
+msgstr "Bine ati venit la %s"
+
+#: config/prefs.php.dist:298
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted?"
+msgstr ""
+"La stergerea mesajelor se vor muta direct in cos in locul marcarii acestora "
+"ca sterse?"
+
+#: config/prefs.php.dist:420
+msgid "Wrap text at this many characters."
+msgstr "Stabileste lungimea textului la atatea caractere."
+
+#: config/prefs.php.dist:382
+msgid "Yes"
+msgstr "Da"
+
+#: login.php:22
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "Ati iesit.<br />Multumim pentru utilizarea sistemului."
+
+#: compose.php:455
+msgid "You must have at least one recipient."
+msgstr "Trebuie specificat cel putin un recipient."
+
+#: lib/Folder.php:466
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr "Nu v-ati inscris in \"%s\". Serverul a comunicat ca"
+
+#: lib/Folder.php:502
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr "Nu v-ati dezabonat de la \"%s\". Serverul a comunicat ca"
+
+#: lib/Folder.php:470
+msgid "You were successfully subscribed to \"%s\""
+msgstr "Ati fost abonat cu succes la \"%s\""
+
+#: lib/Folder.php:506
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "Ati fost dezabonat cu succes de la \"%s\""
+
+#: login.php:21
+msgid "Your %s session has expired. Please login again."
+msgstr "Sesiunea %s a expirat. Va rugam reintrati."
+
+#: config/prefs.php.dist:21 config/prefs.php.dist:27 config/prefs.php.dist:33
+#: config/prefs.php.dist:39
+msgid "Your Information"
+msgstr "Informatii personale"
+
+#: config/prefs.php.dist:261
+msgid "Your current time zone:"
+msgstr "Fur orar curent:"
+
+#: templates/prefs/server.inc:1
+msgid "Your preferred mail server:"
+msgstr "Server mail favorit:"
+
+#: message.php:167 compose.php:622 mailbox.php:278
+msgid "[No Subject]"
+msgstr "[Fara subiect]"

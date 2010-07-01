@@ -1,0 +1,1589 @@
+# Latvian translation for IMP
+# Kaspars Kapenieks <kaspars@rcc.lv>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: IMP 3.1\n"
+"POT-Creation-Date: 2002-11-28 18:09+0200\n"
+"PO-Revision-Date: 2002-11-28 18:10+0200\n"
+"Last-Translator: Kaspars Kapenieks <kaspars@rcc.lv>\n"
+"Language-Team: Latvian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1257\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+msgid "      To: "
+msgstr "Saòçmçjs: "
+
+msgid "    Date: "
+msgstr "  Datums: "
+
+msgid "    From: "
+msgstr "Sûtîtâjs: "
+
+msgid " - $nm new message"
+msgstr " - $nm jauna vçstule"
+
+msgid " - $nm new messages"
+msgstr " - $nm jaunas vçstules"
+
+msgid " Subject: "
+msgstr "  Temats: "
+
+msgid " in "
+msgstr " - "
+
+msgid "#"
+msgstr "#"
+
+#, c-format
+msgid "%c"
+msgstr "%c"
+
+#, c-format
+msgid "%d of %d Messages"
+msgstr "%d no %d vçstulçm"
+
+#, c-format
+msgid "%d to %d of %d Messages"
+msgstr "%d lîdz %d no %d vçstulçm"
+
+#, c-format
+msgid "%s already exists. Your %s folder was not renamed."
+msgstr "%s jau eksistç. Mapi %s pârsaukt neizdevâs."
+
+#, c-format
+msgid "%s folder being renamed at the start of the month."
+msgstr "Mape %s tiek pârsaukta mçneða sâkumâ."
+
+#, c-format
+msgid "%s: %s (%d&nbsp;of&nbsp;%d)"
+msgstr "%s: %s (%d&nbsp;no&nbsp;%d)"
+
+msgid "(Apply these changes and move to next screen.)"
+msgstr "(Saglabât ðîs izmaiòas un pârvietoties uz nâkamo ekrânu.)"
+
+msgid "(Discard all changes and return to the compose screen.)"
+msgstr "(Atcelt visas izmaiòas un atgriezties pie vçstules rediìçðanas.)"
+
+msgid ""
+"(Return to the compose screen after applying all changes made thus far.  "
+"Changes on the current screen will NOT be applied.)"
+msgstr ""
+"(Atgriezties pie vçstules rediìçðanas pçc izmaiòu saglabâðanas.  "
+"Ðajâ ekrânâ veiktâs izmaiòas NETIKS saglabâtas.)"
+
+msgid "* Add these by clicking OK *"
+msgstr "* Pievienot ðos nospieþot OK *"
+
+msgid "* Please select address(es) *"
+msgstr "* Lûdzu izvçlieties adresi(-es) *"
+
+#, c-format
+msgid ""
+"<p><i>This message was written in a character set other than your own. If it "
+"is not displayed correctly, %sclick here</a> to open it in a new "
+"window.</i></p>\n"
+msgstr ""
+"<p><i>Ðî vçstule ir rakstîta citâ kodçjumâ. Ja tâ "
+"nav redzama korekti, %sspieþiet ðeit</a>, lai to atvçrtu "
+"jaunâ logâ.</i></p>\n"
+
+msgid "Action"
+msgstr "Darbîba"
+
+#, c-format
+msgid "Add to Addressbook (%s)"
+msgstr "Pievienot kontaktiem (%s)"
+
+msgid "Added an attachment."
+msgstr "Pielikums pievienots."
+
+msgid "Address Book"
+msgstr "Kontakti"
+
+msgid "Addressbooks"
+msgstr "Adresu grâmatas"
+
+msgid "All messages in the folder(s) will be lost!"
+msgstr "Visas vçstules no ðîs mapes tiks izdzçstas!"
+
+msgid ""
+"All messages in the following folder(s) will be downloaded into one MBOX "
+"file:"
+msgstr "Visas vçstules no sekojoðajâm mapçm tiks ielâdçtas vienâ MBOX failâ:"
+
+#, c-format
+msgid ""
+"All messages in your \"%s\" folder older than %s days will be permanently "
+"deleted."
+msgstr "Visas vçstules jûsu \"%s\" mapç, kas ir vecâkas par %s dienâm tiks neatgriezeniski "
+"izdzçstas."
+#, c-format
+msgid "All old sent-mail folders more than %s months old will be deleted."
+msgstr "Visas nosûtîto pastu mapes, kas ir vecâkas par %s mçneðiem tiks izdzçstas."
+
+msgid "All"
+msgstr "Visi"
+
+msgid "An illegal value was specified."
+msgstr "Norâdîta nederîga vçrtîba."
+
+msgid "An unknown error occured adding the new entry."
+msgstr "Kïûda pievienojot jaunu ierakstu."
+
+msgid "Answered messages"
+msgstr "Atbildçtâs vçstules"
+
+msgid "Answered"
+msgstr "Atbildçts"
+
+msgid "Apply All Rules"
+msgstr "Izpildît visus likumus"
+
+msgid "Apply Filters on"
+msgstr "Pielietot filtrus uz"
+
+msgid "Apply filter rules upon logging on."
+msgstr "Pieslçdzoties pielietot filtrçðanas likumus."
+
+msgid "Apply filter rules when mailbox is refreshed."
+msgstr "Atjaunojot pastkasti pielietot filtrçðanas likumus."
+
+msgid "April"
+msgstr "Aprîlis"
+
+msgid "Are you SURE you want to continue?"
+msgstr "Vai jûs esat PÂRLIECINÂTS, ka vçlaties turpinât?"
+
+msgid "Are you completely sure you wish to continue?"
+msgstr "Vai jûs esat pilnîgi pârliecinâts, ka vçlaties turpinât?"
+
+msgid "Are you sure you want to do this?"
+msgstr "Vai jûs esat pârliecinâts, ka vçlaties to darît?"
+
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "Vai jûs esat pârliecinâts, ka vçlaties NEATGRIEZENISKI izdzçst ðîs vçstules?"
+
+msgid "Are you sure you wish to empty this folder?"
+msgstr "Vai jûs tieðâm vçlaties iztukðot ðo mapi?"
+
+msgid "Are you sure you wish to empty your trash folder?"
+msgstr "Vai jûs tieðâm vçlaties iztukðot atkritumu mapi?"
+
+msgid "Arrival Time"
+msgstr "Saòemðanas laiks"
+
+msgid "Ascending"
+msgstr "Augoði"
+
+msgid "Attach"
+msgstr "Pievienot"
+
+msgid "Attachment"
+msgstr "Pielikums"
+
+msgid "Attachments"
+msgstr "Pielikumi"
+
+msgid "August"
+msgstr "Augusts"
+
+msgid "Available Addressbooks:"
+msgstr "Pieejamâs adresu grâmatas:"
+
+#, c-format
+msgid "Back to %s"
+msgstr "Atpakaï uz %s"
+
+msgid "Bcc"
+msgstr "Bcc"
+
+msgid "Blacklist"
+msgstr "Melnais saraksts"
+
+msgid "Body"
+msgstr "Íermenis"
+
+msgid "Both"
+msgstr "Abi"
+
+msgid "Cancel Message"
+msgstr "Atcelt vçstuli"
+
+msgid "Cancel"
+msgstr "Atcelt"
+
+msgid "Cancelling this message will permanently discard its contents."
+msgstr "Atceïot vçstuli, tiks neatgriezeniski izdzçsts tâs saturs."
+
+msgid "Cc"
+msgstr "Cc"
+
+msgid "Cc:"
+msgstr "Cc:"
+
+msgid "Change All"
+msgstr "Izmainît visus"
+
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr ""
+"Izmainît ekrâna parametrus, piemçram, vçstuïu skaitu katrâ lapâ un "
+"kâ vçstules tiks kârtotas."
+
+msgid "Change mail server settings."
+msgstr "Izmainît pasta servera parametrus."
+
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr "Izmainît vârdu, adresi un parakstu, kas bûs redzami vçstuïu saòçmçjiem."
+
+msgid "Change"
+msgstr "Mainît"
+
+msgid "Check Folder(s) for New Mail"
+msgstr "Pârbaudît mapç(s) jauno pastu"
+
+msgid "Checkbox"
+msgstr "Íeksis"
+
+msgid "Choose Action:"
+msgstr "Izvçlieties darbîbu:"
+
+msgid "Choose the addressbook to use when adding addresses."
+msgstr "Izvçlieties adresu grâmatu, kurai pievienot jaunâs adreses."
+
+msgid "Choose the order of addressbooks to search when expanding addresses."
+msgstr "Izvçlaties kârtîbu, kâdâ pârbaudît adresu grâmatas."
+
+#, c-format
+msgid "Cleared all messages from %s."
+msgstr "Iztîrîtas visas vçstules no %s."
+
+msgid ""
+"Click on one of your selected addressbooks and then select all fields to "
+"search."
+msgstr ""
+"Nospieþat uz vienas no izvçlçtajâm adresu grâmatâm un tad izvçlaties visus laukus, "
+"kuros meklçt."
+
+msgid "Closed Folder"
+msgstr "Mape aizvçrta"
+
+msgid "Collapse All Folders"
+msgstr "Aizvçrt visas mapes"
+
+msgid "Collapse All"
+msgstr "Aizvçrt visu"
+
+msgid "Collapse Folder"
+msgstr "Aizvçrt mapi"
+
+#, c-format
+msgid "Compose Message (%s)"
+msgstr "Rakstît vçstuli (%s)"
+
+msgid "Compose a message"
+msgstr "Rakstît vçstuli"
+
+msgid "Compose messages in a separate window."
+msgstr "Rakstît vçstules atseviðíâ logâ."
+
+msgid "Compose"
+msgstr "Rakstît"
+
+msgid "Contact List"
+msgstr "Kontakti"
+
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr ""
+"Iestâdît, kad pârbaudît pastu un brîdinât par jauna pasta pienâkðanu."
+
+msgid "Copy"
+msgstr "Kopçt"
+
+msgid "Correct"
+msgstr "Pareizi"
+
+msgid "Corrected Text"
+msgstr "Izlabots teksts"
+
+#, c-format
+msgid "Could not delete messages from %s: %s"
+msgstr "Neizdevâs izdzçst vçstules no %s: %s"
+
+msgid "Create Folder"
+msgstr "Izveidot mapi"
+
+msgid "Create a new drafts folder"
+msgstr "Izveidot jaunu mapi melnrakstiem"
+
+msgid "Create a new sent mail folder"
+msgstr "Izveidot jaunu mapi nosûtîtajâm vçstulçm"
+
+msgid "Create a new trash folder"
+msgstr "Izveidot jaunu mapi atkritumiem"
+
+msgid ""
+"Create filtering rules to organize your incoming mail, sort it into folders, "
+"and delete spam."
+msgstr ""
+"Izveidot filtrçðanas likumus ienâkoðâ pasta organizçðanai. Kârtoðana pa mapçm "
+"un dzçðana."
+
+msgid "Create"
+msgstr "Izveidot"
+
+msgid "Customize how you send mail and where drafts are saved."
+msgstr "Pielâgot pasta sûtîðanu un melnrakstu saglabâðanu."
+
+#, c-format
+msgid "Customize maintenance operations run upon login to %s."
+msgstr "Pielâgot uzturçðanas operâcijas, kas tiek veiktas pieslçdzoties %s."
+
+#, c-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Pielâgot uzdevumus, kas tiek veikti pieslçdzoties %s."
+
+msgid "Date"
+msgstr "Datums"
+
+msgid "December"
+msgstr "Decembris"
+
+msgid "Default Identity"
+msgstr "Parastâ identitâte"
+
+msgid "Default sorting criteria:"
+msgstr "Noklusçtie kârtoðanas nosacîjumi:"
+
+msgid "Default sorting direction:"
+msgstr "Noklusçtais kârtoðanas virziens:"
+
+msgid "Delete Folder(s)"
+msgstr "Dzçst mapi(-es)"
+
+msgid "Delete messages"
+msgstr "Dzçst vçstules"
+
+msgid "Delete old sent-mail folders at beginning of month"
+msgstr "Mçneða sâkumâ izdzçst vecâs nosûtîtâ pasta mapes"
+
+msgid "Delete"
+msgstr "Dzçst"
+
+msgid "Deleted an attachment."
+msgstr "Pielikums izdzçsts"
+
+msgid "Deleted messages"
+msgstr "Izdzçstâs vçstules"
+
+msgid "Deleted"
+msgstr "Izdzçsts"
+
+msgid "Deleting and Moving Messages"
+msgstr "Dzçst un pârvietot vçstules"
+
+msgid "Descending"
+msgstr "Dilstoði"
+
+msgid "Dim signatures?"
+msgstr "Matçt parakstus?"
+
+msgid "Display Options"
+msgstr "Ekrâna opcijas"
+
+msgid "Display message when filters have been applied."
+msgstr "Parâdît vçstuli, kad ir izmantoti filtri."
+
+msgid "Display pop-up notification of new mail."
+msgstr "Brîdinât par jaunu vçstuïu pienâkðanu."
+
+msgid "Display"
+msgstr "Parâdît"
+
+msgid "Do Not Check Folder(s) for New Mail"
+msgstr "Nepârbaudît jauno pastu mapçs"
+
+msgid "Do you want to open that folder?"
+msgstr "Vai jûs vçlaties atvçrt ðo mapi?"
+
+msgid "Done"
+msgstr "Izpildîts"
+
+#, c-format
+msgid "Download %s"
+msgstr "Ielâdçt %s"
+
+msgid "Download Folder(s)"
+msgstr "Ielâdçt mapi(-es)"
+
+msgid "Download"
+msgstr "Ielâdçt"
+
+msgid "Draft"
+msgstr "Melnraksts"
+
+msgid "Drafts folder:"
+msgstr "Melnrakstu mape:"
+
+msgid "Edit your filter rules"
+msgstr "Rediìçt filtrçðanas likumus"
+
+msgid "Edit your identities"
+msgstr "Rediìçt identitâtes"
+
+msgid "Edit"
+msgstr "Rediìçt"
+
+msgid "Email Address"
+msgstr "E-pasta adrese"
+
+msgid "Empty Folder(s)"
+msgstr "Iztukðot mapi(-es)"
+
+msgid "Empty Trash folder"
+msgstr "Iztukðot atkritumu mapi"
+
+msgid "Empty Trash"
+msgstr "Iztukðot atkritumus"
+
+msgid "End forwarded message"
+msgstr "Pârsûtîtâs vçstules beigas"
+
+msgid "Enter the name for your new drafts folder"
+msgstr "Ievadiet jaunâs melnrakstu mapes nosaukumu"
+
+msgid "Enter the name for your new sent mail folder"
+msgstr "Ievadiet jâunâs nosûtîto pastu mapes nosaukumu"
+
+msgid "Enter the name for your new trash folder"
+msgstr "Ievadiet jaunâs atkritumu mapes nosaukumu"
+
+#, c-format
+msgid "Entry \"%s\" was successfully added to the addressbook"
+msgstr "Ieraksts \"%s\" veiksmîgi pievienots adresu grâmatai"
+
+msgid "Error"
+msgstr "Kïûda"
+
+msgid "Every 15 minutes"
+msgstr "Katras 15 minûtes"
+
+msgid "Every 30 seconds"
+msgstr "Katras 30 sekundes"
+
+msgid "Every 5 minutes"
+msgstr "Katras 5 minûtes"
+
+msgid "Every half hour"
+msgstr "Katru pusstundu"
+
+msgid "Every minute"
+msgstr "Katru minûti"
+
+msgid "Expand All Folders"
+msgstr "Atvçrt visas mapes"
+
+msgid "Expand All"
+msgstr "Atvçrt visus"
+
+msgid "Expand Folder"
+msgstr "Atvçrt mapi"
+
+msgid "Expand Names"
+msgstr "Parâdît vârdus"
+
+msgid "Expand the entire folder tree by default in the folders view."
+msgstr "Noklusçti atvçrt visu mapju koku mapju skatîjumâ."
+
+msgid "February"
+msgstr "Februâris"
+
+msgid "Field"
+msgstr "Lauks"
+
+msgid "Filename"
+msgstr "Faila nosaukums"
+
+#, c-format
+msgid "Filter Activity: The message \"%s\" from \"%s\" has been deleted."
+msgstr "Filtrçðana: Vçstule \"%s\" no \"%s\" izdzçsta."
+
+#, c-format
+msgid ""
+"Filter Activity: The message \"%s\" from \"%s\" has been moved to the folder "
+"\"%s\"."
+msgstr "Filtrçðana: Vçstule \"%s\" no \"%s\" pârvietota uz mapi \"%s\"."
+
+#, c-format
+msgid ""
+"Filter Activity: The message \"%s\" from \"%s\" has been moved to your Trash "
+"folder."
+msgstr "Filtrçðana: vçstule \"%s\" no \"%s\" pârvietota uz atkritumu mapi."
+
+msgid "Filter Rules"
+msgstr "Filtrçðanas likumi"
+
+msgid "Filter message content for profanity."
+msgstr "Filtrçt vçstules saturu pçc profanâcijas."
+
+msgid "Filters"
+msgstr "Filtri"
+
+msgid "Find"
+msgstr "Meklçt"
+
+msgid "First Page"
+msgstr "Pirmâ lapa"
+
+msgid "Folder Navigator"
+msgstr "Mapju ceïvedis"
+
+msgid "Folder Prefix"
+msgstr "Mapju priedçklis"
+
+msgid "Folders"
+msgstr "Mapes"
+
+msgid "Forward"
+msgstr "Pârsûtît"
+
+msgid "Forward:"
+msgstr "Pârsûtît:"
+
+#, c-format
+msgid "Forwarded message from %s"
+msgstr "Pârsûtîta vçstule no %s"
+
+msgid "From Address"
+msgstr "Sûtîtâja adrese"
+
+msgid "From"
+msgstr "Sûtîtâjs"
+
+msgid "From:"
+msgstr "Sûtîtâjs:"
+
+msgid "Fwd:"
+msgstr "Fw:"
+
+msgid "Help"
+msgstr "Palîdzîba"
+
+msgid "Hide Deleted"
+msgstr "Paslçpt izdzçstos"
+
+msgid "Hide Unsubscribed"
+msgstr "Paslçpt neparakstîtos"
+
+msgid "How to prefix quoted lines in a reply:"
+msgstr "Kâ prefiksçt sâkotnçjo vçstuli, rakstot atbildi:"
+
+msgid "IMP is not properly configured"
+msgstr "IMP nav korekti nokonfigurçts"
+
+msgid "INBOX"
+msgstr "INBOX"
+
+msgid "Identities"
+msgstr "Identitâtes"
+
+msgid "Identity"
+msgstr "Identitâte"
+
+msgid "Identity's name:"
+msgstr "Identitâtes nosaukums:"
+
+msgid "Ignore All"
+msgstr "Ignorçt visus"
+
+msgid "Ignore"
+msgstr "Ignorçt"
+
+msgid "Important messages"
+msgstr "Svarîgas vçstules"
+
+msgid "Important"
+msgstr "Svarîgi"
+
+msgid "Include original message in a reply?"
+msgstr "Iekïaut sâkotnçjo vçstuli atbildç?"
+
+msgid "January"
+msgstr "Janvâris"
+
+msgid "July"
+msgstr "Jûlijs"
+
+msgid "June"
+msgstr "Jûnijs"
+
+msgid "Language"
+msgstr "Valoda"
+
+msgid "Last Page"
+msgstr "Pçdçja lapa"
+
+#, c-format
+msgid "Last login: %s"
+msgstr "Pçdçjâ pieslçgðanâs: %s"
+
+msgid "Last login: Never"
+msgstr "Pçdçjâ pieslçgðanâs: nekad"
+
+#, c-format
+msgid "Log in to %s"
+msgstr "Pieslçgties %s"
+
+msgid "Log in"
+msgstr "Pieslçgties"
+
+msgid "Login Tasks"
+msgstr "Pieslçgðanâs uzdevumi"
+
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr "Pieslçgties neizdevâs. Nepareizs lietotâja vârds vai parole."
+
+msgid "Logout"
+msgstr "Iziet"
+
+msgid "Mail Filters"
+msgstr "Pasta filtri"
+
+msgid "Mail Management"
+msgstr "Pasta vadîba"
+
+msgid "Mailbox"
+msgstr "Pastkaste"
+
+msgid "Maintenance Operations"
+msgstr "Uzturçðanas operâcijas"
+
+msgid "March"
+msgstr "Marts"
+
+msgid "Mark as:"
+msgstr "Atzîmçt kâ:"
+
+msgid "Mark different levels of quoting with different colors?"
+msgstr "Atzîmçt daþâdus citçðanas lîmeòus atðíirîgâs krâsâs?"
+
+msgid "May"
+msgstr "Maijs"
+
+msgid "Message Composition"
+msgstr "Vçstules rakstîðana"
+
+msgid "Message Date"
+msgstr "Vçstules datums"
+
+msgid "Message Search"
+msgstr "Vçstuïu meklçðana"
+
+msgid "Message Size"
+msgstr "Vçstules izmçrs"
+
+msgid "Message Source"
+msgstr "Vçstules pirmteksts"
+
+msgid "Message Viewing"
+msgstr "Vçstules apskate"
+
+msgid "Message fields"
+msgstr "Vçstules lauki"
+
+msgid "Message flags"
+msgstr "Vçstules karodziòi"
+
+msgid "Message folders"
+msgstr "Vçstuïu mapes"
+
+msgid "Message sent successfully, but not saved to"
+msgstr "Vçstule nosûtîta veiksmîgi, bet nav saglabâta"
+
+msgid "Message"
+msgstr "Vçstule"
+
+msgid "Messages per page in the mailbox view."
+msgstr "Vçstuïu skaits vienâ lapâ pastkastes skatîjumâ."
+
+msgid "Messages to"
+msgstr "Vçstules uz"
+
+msgid "Mime Type"
+msgstr "Mime tips"
+
+msgid "Modify"
+msgstr "Mainît"
+
+msgid "Move Down"
+msgstr "Pârvietot lejup"
+
+msgid "Move Up"
+msgstr "Pârvietot augðup"
+
+#, c-format
+msgid "Move messages to the <b>%s</b> folder"
+msgstr "Pârvietot vçstules uz <b>%s</b> mapi"
+
+msgid "Move"
+msgstr "Pârvietot"
+
+msgid "Name"
+msgstr "Vârds"
+
+msgid "Never"
+msgstr "Nekad"
+
+msgid "New Mail"
+msgstr "Jauna vçstule"
+
+msgid "New messages"
+msgstr "Jaunas vçstules"
+
+msgid "New"
+msgstr "Jauns"
+
+msgid "Next Message"
+msgstr "Nâkamâ vçstule"
+
+msgid "Next Page"
+msgstr "Nâkamâ lapa"
+
+msgid "Next"
+msgstr "Nâkamais"
+
+msgid "No Subject"
+msgstr "Bez virsraksta"
+
+msgid "No folders were specified"
+msgstr "Nav norâdîtas mapes"
+
+msgid "No messages matched your search"
+msgstr "Neviena vçstule neatbilst meklçðanas nosacîjumiem"
+
+msgid "No spelling errors"
+msgstr "Kïûdu nav"
+
+msgid "No suggestions"
+msgstr "Ieteikumu nav"
+
+msgid "No"
+msgstr "Nç"
+
+msgid "None"
+msgstr "Neviens"
+
+msgid "Not Deleted"
+msgstr "Nav izdzçsts"
+
+msgid "Not Draft"
+msgstr "Nav melnraksts"
+
+msgid "Not Important"
+msgstr "Nav svarîgs"
+
+msgid "Not Personal"
+msgstr "Nav personisks"
+
+msgid "Not deleted messages"
+msgstr "Nav izdzçstas vçstules"
+
+msgid "Not important messages"
+msgstr "Nav svarîgas vçstules"
+
+msgid "November"
+msgstr "Novembris"
+
+msgid "Number of old sent-mail folders to keep if deleting monthly"
+msgstr "Saglabâjamo nosûtîto vçstuïu mapju skaits, ja tâs ik mçnesi tiek dzçstas"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "October"
+msgstr "Oktobris"
+
+msgid "Old messages"
+msgstr "Vecâs vçstules"
+
+msgid "Old sent-mail folders being purged."
+msgstr "Tiek tîrîtas vecâs nosûtîto vçstuïu mapes."
+
+msgid "Open Folder"
+msgstr "Atvçrt mapi"
+
+msgid "Options"
+msgstr "Opcijas"
+
+msgid "Other Options"
+msgstr "Citas opcijas"
+
+#, c-format
+msgid "Page %d of %d"
+msgstr "Lapa %d no %d"
+
+msgid "Part(s)"
+msgstr "Daïa(s)"
+
+msgid "Password"
+msgstr "Parole"
+
+msgid "Perform maintenance operations on login"
+msgstr "Pieslçdzoties izpildît uzturçðanas operâcijas"
+
+msgid "Personal Information"
+msgstr "Personîgâ informâcija"
+
+msgid "Personal"
+msgstr "Personîgais"
+
+msgid "Place your signature before replies and forwards?"
+msgstr "Ievietot parakstu pirms atbildçm un pârsûtîðanâm?"
+
+msgid "Please enter the name of the new folder:"
+msgstr "Lûdzu ievadiet jaunâs mapes nosaukumu:"
+
+msgid "Please enter the new name:"
+msgstr "Lûdzu ievadiet jauno nosaukumu:"
+
+msgid "Please enter valid search criteria."
+msgstr "Lûdzu ievadiet korektus meklçðanas nosacîjumus."
+
+msgid "Please provide your username and password"
+msgstr "Lûdzu ievadiet lietotâja vârdu un paroli"
+
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Lûdzu izlabojiet neviennozîmîgas vai nederîgas adreses."
+
+msgid "Please select a folder before you perform any actions."
+msgstr "Lûdzu izvçlieties kâdu mapi pirms veikt darbîbas ar to."
+
+msgid "Please select at least one folder to search."
+msgstr "Lûdzu izvçlieties meklçðanai vismaz vienu mapi."
+
+msgid "Please select only one folder for this operation."
+msgstr "Lûdzu izvçlieties tikai vienu mapi ðai operâcijai."
+
+msgid "Please select or edit right next:"
+msgstr "Lûdzu iezîmçjiet vai rediìçjiet nâkamo:"
+
+msgid "Precede your signature with dashes ('-- ')"
+msgstr "Sâkt jûsu parakstu ar ('-- ')"
+
+msgid "Previous Message"
+msgstr "Iepriekðçjâ vçstule"
+
+msgid "Previous Page"
+msgstr "Iepriekðçjâ lapa"
+
+msgid "Print"
+msgstr "Drukât"
+
+#, c-format
+msgid "Problem with filter rule %d: folder does not exist: %s"
+msgstr "Problçma ar filtru: %d mape neeksistç: %s"
+
+msgid "Problem?"
+msgstr "Problçma?"
+
+msgid "Purge Deleted"
+msgstr "Iztîrît izdzçstos"
+
+msgid "Purge Trash how often:"
+msgstr "Cik bieþi tîrît atkritumus:"
+
+msgid "Purge messages in Trash folder older than this amount of days"
+msgstr "Tîrît vçstules no atkritumu mapes, ja tâs vecâkas par ðo dienu skaitu"
+
+msgid "Purge old message in the Trash folder"
+msgstr "Iztîrît vecâs vçstules no atkritumu mapes"
+
+#, c-format
+msgid "Purging %d message(s) from Trash folder."
+msgstr "Tîra %d vçstules no atkritumu mapes."
+
+msgid "Quoting"
+msgstr "Citçju"
+
+msgid "Received after"
+msgstr "Saòemts pçc"
+
+msgid "Received before"
+msgstr "Saòemts pirms"
+
+msgid "Received on"
+msgstr "Saòemts"
+
+msgid "Redirect Message"
+msgstr "Pâradresçt vçstuli"
+
+msgid "Redirect this message"
+msgstr "Pâradresçt ðo vçstuli"
+
+msgid "Redirect"
+msgstr "Pâradresçt"
+
+msgid "Redirecting failed."
+msgstr "Pâradresçt neizdevâs."
+
+msgid "Refresh Folder Views:"
+msgstr "Atjaunot mapju skatîjumus:"
+
+msgid "Refresh"
+msgstr "Atjaunot"
+
+msgid "Reload View"
+msgstr "Pârlâdçt skatîjumu"
+
+msgid "Remember the last view"
+msgstr "Atcerçties pçdçjo skatîjumu"
+
+msgid "Remove Selected"
+msgstr "Izdzçst iezîmçto"
+
+msgid "Rename Folder"
+msgstr "Pârsaukt mapi"
+
+msgid "Rename sent-mail folder at beginning of month"
+msgstr "Pârsaukt sent-mail mapi mçneða sâkumâ"
+
+#, c-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr "Neizdevâs pârsaukt no \"%s\" uz \"%s\". Ðâda bija servera atbilde."
+
+msgid "Replace with:"
+msgstr "Aizstât ar:"
+
+msgid "Reply to All"
+msgstr "Atbildçt visiem"
+
+msgid "Reply to All:"
+msgstr "Atbildçt visiem:"
+
+msgid "Reply"
+msgstr "Atbildçt"
+
+msgid "Reply-To: "
+msgstr "Reply-To: "
+
+msgid "Reply-to"
+msgstr "Reply-to"
+
+msgid "Reply:"
+msgstr "Atbildçt:"
+
+msgid "Report as Spam"
+msgstr "Pieteikt kâ spamu"
+
+msgid "Request a Return Receipt"
+msgstr "Pieprasît atskaiti par saòemðanu"
+
+msgid "Reset"
+msgstr "Dzçst visus"
+
+msgid "Resume"
+msgstr "Turpinât"
+
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr ""
+"Atgriezties pie vçstuïu saraksta pçc vçstules izdzçðanas, pârvietoðanas vai nokopçðanas?"
+
+msgid "Rule Definition"
+msgstr "Likuma definçðana"
+
+msgid "Save Draft"
+msgstr "Saglabât melnrakstu"
+
+msgid "Save a copy in "
+msgstr "Saglabât kopiju "
+
+msgid "Save as"
+msgstr "Saglabât kâ"
+
+msgid "Save sent mail"
+msgstr "Saglabât nosûtîto pastu"
+
+#, c-format
+msgid "Saving the draft failed. This is what the server said: %s"
+msgstr "Neizdevâs saglabât melnrakstu. Ðâda bija servera atbilde: %s"
+
+msgid "Search Results"
+msgstr "Meklçðanas rezultâti"
+
+msgid "Search"
+msgstr "Meklçðana"
+
+msgid "Seen"
+msgstr "Redzçts"
+
+msgid "Select addressbook sources for adding and searching for addresses."
+msgstr "Izvçlies adresu grâmatu avotus adresu pievienoðanai un meklçðanai."
+
+msgid "Select all"
+msgstr "Iezîmçt visus"
+
+msgid "Select an identity"
+msgstr "Izvçlies identitâti"
+
+msgid "Select charset:"
+msgstr "Izvçlies kodçjumu:"
+
+msgid "Select none"
+msgstr "Neizvçlçties neko"
+
+msgid "Select your preferred language:"
+msgstr "Izvçlies valodu:"
+
+msgid "Select"
+msgstr "Izvçlies"
+
+msgid "Selected Addressbooks:"
+msgstr "Izvçlçtâs adresu grâmatas:"
+
+msgid "Send Message"
+msgstr "Sûtît vçstuli"
+
+msgid "Sent mail folder:"
+msgstr "Nosûtîto vçstuïu mape:"
+
+msgid "September"
+msgstr "Septembris"
+
+msgid "Server Information"
+msgstr "Servera informâcija"
+
+msgid "Server"
+msgstr "Serveris"
+
+msgid "Set preferences for filtering messages for unwanted content."
+msgstr "Iestatîjumi vçstuïu filtrçðanai pçc nevçlama satura."
+
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr "Iestâdît ko darît kad izdzçð vai pârvieto vçstuli."
+
+msgid "Set the current time zone."
+msgstr "Iestâdît paðreizçjo laika zonu."
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Norâdît valodu, kâdâ bûs redzmas izvçlnes, paskaidrojumi un palîdzîba."
+
+msgid "Should the compose window be closed after saving a draft?"
+msgstr "Vai vçstules rediìçðanas logs jâaizver pçc melnraksta saglabâðanas?"
+
+msgid "Show Deleted"
+msgstr "Parâdît izdzçstos"
+
+msgid "Show Unsubscribed"
+msgstr "Parâdît neparakstîtos"
+
+msgid "Show last login time when logging in"
+msgstr "Pieslçdzoties parâdît iepriekðçjâs pieslçgðanâs laiku"
+
+msgid "Show legend in the mailbox view."
+msgstr "Râdît paskaidrojumus pastkastes skatîjumâ."
+
+msgid "Size"
+msgstr "Izmçrs"
+
+msgid "Some of IMP's configuration files are missing:"
+msgstr "Trûkst IMP konfigurâcijas faili:"
+
+msgid "Sort Direction"
+msgstr "Kârtoðanas virziens"
+
+msgid "Spam Report from"
+msgstr "Spama pieteikums no"
+
+msgid "Special Characters"
+msgstr "Îpaðie simboli"
+
+msgid "Spell Check"
+msgstr "Pareizrakstîbas pârbaude"
+
+msgid "Spell Checker"
+msgstr "Pareizrakstîbas pârbaudîtâjs"
+
+msgid "Spell check complete"
+msgstr "Pareizrakstîbas pârbaude pabeigta"
+
+msgid "Spelling errors per screen when spell checking."
+msgstr "Pareizrakstîbas kïûdu skaits vienâ ekrânâ, veicot pareizrakstîbas pârbaudi."
+
+msgid "Subject Field"
+msgstr "Temata lauks"
+
+msgid "Subject"
+msgstr "Temats"
+
+msgid "Subject:"
+msgstr "Temats:"
+
+msgid "Subscribe to Folder(s)"
+msgstr "Parakstîties uz mapi(-çm)"
+
+msgid "Success"
+msgstr "Veiksme"
+
+msgid "Suggestions"
+msgstr "Ieteikumi"
+
+msgid "Text"
+msgstr "Teksts"
+
+#, c-format
+msgid "The current folder(s) \"%s\" will be renamed to \"%s\"."
+msgstr "Tekoðâ mape(s) \"%s\" tiks pârsaukta par \"%s\"."
+
+#, c-format
+msgid "The folder \"%s\" already exists"
+msgstr "Mape \"%s\" jau eksistç"
+
+#, c-format
+msgid ""
+"The folder \"%s\" contains illegal characters in its name. It may cause "
+"problems. Please see your system administrator."
+msgstr ""
+"Mapes \"%s\" nosaukums satur neatïautus simbolus. Lûdzu sazinieties ar administratoru."
+#, c-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "Mape \"%s\" tika izveidota bet jûs uz to neesat parakstîjies."
+
+#, c-format
+msgid "The folder \"%s\" was deleted but you were not unsubscribed from it."
+msgstr "Mape \"%s\" tika izdzçsta, bet jûs neesat no tâs atrakstîjies."
+
+#, c-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr "Mapi \"%s\" neizdevâs izveidot. Servera atbilde bija ðâda."
+
+#, c-format
+msgid "The folder \"%s\" was not deleted. This is what the server said"
+msgstr "Mapi \"%s\" neizdevâs izdzçst. Servera atbilde bijâ ðâda"
+
+#, c-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "Mape \"%s\" veiksmîgi izveidota."
+
+#, c-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "Mape \"%s\" veiksmîgi izdzçsta."
+
+#, c-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "Mape \"%s\" veiksmîgi pârsaukta par \"%s\"."
+
+#, c-format
+msgid "The identity \"%s\" has been deleted."
+msgstr "Identitâte \"%s\" veiksmîgi izdzçsta."
+
+#, c-format
+msgid "The identity \"%s\" has been saved."
+msgstr "Identitâte \"%s\" saglabâta."
+
+msgid "The message being composed has been closed.  Exiting."
+msgstr "Rediìçjamâ vçstule tika aizvçrta. Beidzu."
+
+msgid "The signature couldn't be replaced."
+msgstr "Parakstu neizdzvâs aizvietot."
+
+msgid "The signature was successfully replaced."
+msgstr "Paraksts veiksmîgi aizvietots."
+
+msgid "There are no messages in this mailbox."
+msgstr "Ðajâ pastkastç nav vçstuïu."
+
+#, c-format
+msgid "There was a problem expunging %s. This is what the server said"
+msgstr "Radâs problçma dzçðot %s. Ðâda bija servera atbilde"
+
+msgid "There was a problem expunging the mailbox. This is what the server said"
+msgstr "Radâs problçma tîrot pastkasti. Ðâda bija servera atbilde"
+
+#, c-format
+msgid ""
+"There was a problem expunging the mailbox. This is what the server said: %s"
+msgstr "Radâs problçma tîrot pastkasti. Ðâda bija servera atbilde: %s"
+
+#, c-format
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size (%d MB)."
+msgstr ""
+"Radâs problçma ar faila ielâdi. Fails varçtu bût lielâks par "
+"maksimâli pieïaujamo izmçru (%d MB)."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Radâs problçma ar faila ielâdi. Fails varçtu bût lielâks par "
+"maksimâli pieïaujamo izmçru."
+#, c-format
+msgid ""
+"There was an error copying messages to \"%s\". This is what the server said"
+msgstr "Radâs kïûda kopçjot vçstules uz \"%s\". Ðâda bija servera atbilde"
+
+#, c-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr "Radâs kïûda dzçðot vçstules no mapes \"%s\". Ðâda bija servera atbilde"
+
+#, c-format
+msgid ""
+"There was an error deleting messages in the folder \"%s\". This is what the "
+"server said"
+msgstr "Radâs kïûda dzçðot vçstules mapç \"%s\". Ðâda bija servera atbilde"
+
+msgid "There was an error deleting messages. This is what the server said"
+msgstr "Radâs kïûda dzçðot vçstules. Ðâda bija servera atbilde"
+
+msgid "There was an error displaying this message part"
+msgstr "Radâs kïûda parâdot ðo vçstules daïu"
+
+#, c-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr "Radâs kïûda karogojot vçstules mapç \"%s\". Ðâda bija servera atbilde."
+
+msgid "There was an error flagging messages. This is what the server said"
+msgstr "Radâs kïûda karogojot vçstules. Ðâda bija servera atbilde."
+
+#, c-format
+msgid ""
+"There was an error moving messages to \"%s\". This is what the server said"
+msgstr "Radâs kïûda pârvietojot vçstules uz \"%s\". Ðâda bija servera atbilde"
+
+msgid ""
+"There was an error moving messages to the trash. This is what the server said"
+msgstr "Radâs kïûda pârvietojot vçstules uz atkritumiem. Ðâda bija servera atbilde."
+
+msgid "There was an error saving a draft."
+msgstr "Radâs kïûda saglabâjot melnrakstu."
+
+#, c-format
+msgid "There was an error sending your message: %s"
+msgstr "Radâs kïûda sûtot vçstuli: %s"
+
+msgid "There was an error undeleting messages. This is what the server said"
+msgstr "Radâs kïûda atjaunojot vçstules. Ðâda bija servera atbilde"
+
+msgid "There was an error viewing the requested message."
+msgstr "Radâs kïûda apskatot pieprasîto vçstuli."
+
+msgid ""
+"This file controls local MIME drivers for IMP, specifically what kinds of "
+"attachments are viewable and/or downloadable."
+msgstr ""
+"ðis fails kontrolç IMP MIME draiverus"
+
+msgid ""
+"This file controls the default preferences for IMP, and also controls which "
+"preferences users can alter."
+msgstr ""
+"Ðis fails kontrolç noklusçtos parametrus"
+
+msgid ""
+"This file controls the default settings for IMP, and also defines the list "
+"of available servers if you are using the server list."
+msgstr ""
+"Ðis fails kontrolç noklusçtos iestatîjumus"
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Ðis fails kontrolç stilus"
+
+msgid ""
+"This is the main IMP configuration file. It contains paths and options for "
+"the IMP scripts."
+msgstr ""
+"Ðis ir galvenais konfigurâcijas fails"
+
+msgid "This may take some time. Are you sure you want to continue?"
+msgstr "Tas var prasît daudz laika. Vai vçlaties turpinât?"
+
+msgid "This message has been reported as spam to your system administrator."
+msgstr "Ðî vçstule ir atzîmçta kâ spams."
+
+msgid "This message to"
+msgstr "Ðo vçstuli uz"
+
+msgid "This number must be at least one."
+msgstr "Ðim skaitlim jâbût lielâkam par nulli."
+
+msgid "This value must be a number."
+msgstr "Ðai vçrtîbai jâbût skaitlim."
+
+msgid "This window must be called from compose window"
+msgstr "Ðis logs jâizsauc no vçstules rediìçðanas loga"
+
+msgid "Thread View"
+msgstr "Pavedienu skatîjums"
+
+msgid "Thread"
+msgstr "Pavediens"
+
+msgid "Time Zone"
+msgstr "Laika zona"
+
+msgid "To"
+msgstr "Saòçmçjs"
+
+msgid "To:"
+msgstr "Saòçmçjs:"
+
+#, c-format
+msgid "Total Size: %s KB"
+msgstr "Kopçjais izmçrs: %s KB"
+
+msgid "Trash folder:"
+msgstr "Atkritumu mape:"
+
+msgid "Unanswered messages"
+msgstr "Neatbildçtâs vçstules"
+
+msgid "Unanswered"
+msgstr "Neatbildçts"
+
+msgid "Undelete"
+msgstr "Atjaunot"
+
+msgid "Undisclosed Recipients"
+msgstr "Neatklâtie saòçmçji"
+
+msgid "Unnamed"
+msgstr "Nenosaukts"
+
+msgid "Unread"
+msgstr "Neizlasîts"
+
+msgid "Unseen Messages"
+msgstr "Neredzçtas vçstules"
+
+msgid "Unseen"
+msgstr "Neredzçts"
+
+msgid "Unsubscribe from Folder(s)"
+msgstr "Atrakstîtîes no mapes(-çm)"
+
+msgid "Use Ctrl/Option+Click to select multiple fields"
+msgstr "Lietojiet Ctrl/Option+klikðíis lai izvçlçtos vairâkus saòçmçjus"
+
+msgid "Use Default Value"
+msgstr "Lietot noklusçto vçrtîbu"
+
+msgid "Use IMAP folder subscriptions"
+msgstr "Lietot parakstîðanos uz IMAP mapçm"
+
+msgid "User Options"
+msgstr "Lietotâja opcijas"
+
+msgid "Username"
+msgstr "Lietotâja vârds"
+
+#, c-format
+msgid "View %s"
+msgstr "Skatît %s"
+
+msgid "View messages in "
+msgstr "Apskatît vçstules "
+
+msgid "View or mailbox to display after login:"
+msgstr "Skats vai pastkaste ko parâdît pçc pieslçgðanâs:"
+
+msgid "Warning"
+msgstr "Brîdinâjums"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Laipni lûdzam %s"
+
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted."
+msgstr ""
+"Dzçðot vçstules pârvietot tâs uz atkritumu mapi, nevis atzîmçt kâ izdzçstas."
+
+msgid "Wrap text at this many characters."
+msgstr "Lauzt rindas pçc ðâda simbolu skaita."
+
+msgid "Yes"
+msgstr "Jâ"
+
+msgid "You are attempting to delete the following folders:"
+msgstr "Jûs mçìinat izdzçst sekojoðas mapes:"
+
+msgid "You are creating a sub-folder to "
+msgstr "Jûs veidojat apakðmapi "
+
+msgid "You are creating a top-level folder."
+msgstr "Jûs veidojat augðçjâ lîmeòa mapi."
+
+msgid "You are renaming the folder: "
+msgstr "Jûs pârsaucat mapi: "
+
+#, c-format
+msgid "You have %s new messages."
+msgstr "Jums ir %s jaunas vçstules."
+
+msgid "You have 1 new message."
+msgstr "Jums ir viena jauna vçstule."
+
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "Jûs esat izgâjis no sistçmas.<br /> Paldies par lietoðanu."
+
+msgid "You have new mail in the following folder:"
+msgstr "Jums ir jauns pasts sekojoðâ mapç:"
+
+msgid "You have new mail in the following folders:"
+msgstr "Jums ir jauns pasts sekojoðâs mapçs:"
+
+msgid "You must first select the attachment(s) to delete."
+msgstr "Jums vispirms jâizvçlas pielikumi, ko izdzçst."
+
+msgid "You must first specify the file to attach."
+msgstr "Jums vispirms jânorâda fails ko pievienot."
+
+msgid "You must have at least one recipient."
+msgstr "Jânorâda vismaz viens saòçmçjs."
+
+msgid "You must select a target mailbox first."
+msgstr "Jums vispirms jânorâda mçría pastkaste."
+
+msgid "You must select an address first."
+msgstr "Vispirms jâizvçlas adrese."
+
+msgid "You must select an identity to be deleted."
+msgstr "Jâizvçlas identitâte, ko izdzçst."
+
+msgid "You must select at least one message first."
+msgstr "Vispirms jâizvçlas vismaz viena vçstule."
+
+msgid "You must specify a recipient."
+msgstr "Jânorâda saòçmçjs"
+#, c-format
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr "Neizdevâs parakstîties uz mapi \"%s\". Ðâda bija servera atbilde"
+
+#, c-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr "Neizdevâs atrakstîties no \"%s\". Ðâda bija servera atbilde"
+
+#, c-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr "Jûs esat veiksmîgi parakstîjies uz \"%s\""
+
+#, c-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "Jûs esat veiksmîgi atrakstîjies no \"%s\""
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "Jûsu %s sesija ir beigusies. Lûdzu pieslçdzieties atkârtoti."
+
+msgid "Your From: address:"
+msgstr "Jûsu From: adrese:"
+
+msgid "Your Information"
+msgstr "Jûsu informâcija"
+
+msgid "Your Reply-to: address: <i>(optional)</i>"
+msgstr "Jûsu Reply-to: adrese: <i>(neobligâta)</i>"
+
+msgid ""
+"Your browser does not support this print option. Press Control/Option + P to "
+"print."
+msgstr ""
+"Jûsu pârlûkprogramma neuztur ðo drukâðanas iespçju. Nospieþiet Ctrl/Option + P lai izdrukâtu"
+
+msgid "Your current time zone:"
+msgstr "Jûsu paðreizçjâ laika zona:"
+
+msgid "Your default identity:"
+msgstr "Jûsu parastâ identitâte:"
+
+msgid "Your full name:"
+msgstr "Jûsu pilnais vârds:"
+
+msgid "Your identities:"
+msgstr "Jûsu identitâtes:"
+
+msgid "Your options have been updated."
+msgstr "Jûsu opcijas ir saglabâtas."
+
+msgid "Your signature:"
+msgstr "Jûsu paraksts:"
+
+msgid "[No Subject]"
+msgstr "[Bez virsraksta]"
+
+msgid "add source"
+msgstr "pievienot avotu"
+
+msgid "cannot move past the beginning"
+msgstr "nevar pârvietoties pâri sâkumam"
+
+msgid "cannot move past the end"
+msgstr "nevar pârvietoties pâri beigâm"
+
+msgid "delete message"
+msgstr "izdçst vçstuli"
+
+msgid "from"
+msgstr "no"
+
+msgid "move down"
+msgstr "pârvietoties lejup"
+
+msgid "move message to"
+msgstr "pârvietot vçstuli uz"
+
+msgid "move up"
+msgstr "pârvietoties augðup"
+
+msgid "no folder selected"
+msgstr "nav izvçlçta mape"
+
+msgid "no rule selected"
+msgstr "nav izvçlçts likums"
+
+msgid "no text specified"
+msgstr "nav norâdîts teksts"
+
+msgid "none"
+msgstr "neviens"
+
+msgid "or"
+msgstr "vai"
+
+msgid "please fill in the text and choose a field and an action"
+msgstr "lûdzu aizpildiet tekstu un izvçlieties lauku un darbîbu"
+
+msgid "remove source"
+msgstr "izdzçst avotu"
+
+msgid "select folder"
+msgstr "izvçlçties mapi"
+
+msgid "spelling error"
+msgstr "pareizrakstîbas kïûda"
+
+msgid "spelling errors"
+msgstr "pareizrakstîbas kïûdas"
+
+#, c-format
+msgid "where the %s field contains <b>%s</b>"
+msgstr "kur %s lauks satur <b>%s</b>"

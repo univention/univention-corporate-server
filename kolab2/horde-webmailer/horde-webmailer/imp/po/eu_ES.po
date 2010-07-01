@@ -1,0 +1,5910 @@
+# Basque translation for imp package.
+# This file is distributed under the same license as the imp package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: imp\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2009-09-12 10:09+0200\n"
+"PO-Revision-Date: 2009-11-20 12:25+0100\n"
+"Last-Translator: Euskal Herriko Unibertsitatea <webmaster@ehu.es>\n"
+"Language-Team: Euskal Herriko Unibertsitatea <webmaster@ehu.es>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: lib/Compose.php:1984
+msgid "      Cc: "
+msgstr "      Cc: "
+
+#: lib/Compose.php:1981
+msgid "      To: "
+msgstr "      Nori: "
+
+#: lib/Compose.php:1969
+msgid "    Date: "
+msgstr "    Data: "
+
+#: lib/Compose.php:1972
+msgid "    From: "
+msgstr "    Nork: "
+
+#: folders.php:370 mailbox.php:357
+#, php-format
+msgid " (Accesskey %s)"
+msgstr " (%s tekla)"
+
+#: lib/Compose.php:1978
+msgid " Subject: "
+msgstr " Gaia: "
+
+#: mailbox.php:577
+msgid "#"
+msgstr "#"
+
+#: lib/Quota.php:73
+#, php-format
+msgid "%.0f MB"
+msgstr "%.0f MB"
+
+#: lib/Quota.php:67
+#, php-format
+msgid "%.0f%% of %.0f MB"
+msgstr "%% %.0f / %.0f MB"
+
+#: folders.php:311 folders.php:322 lib/Message.php:863
+#, php-format
+msgid "%.2fMB"
+msgstr "%.2fMB"
+
+#: thread.php:162
+#, php-format
+msgid "%d Messages"
+msgstr "%d mezu"
+
+#: lib/Spam.php:224
+#, php-format
+msgid "%d messages have been deleted."
+msgstr "%d mezu ezabatu dira."
+
+#: lib/Spam.php:201
+#, php-format
+msgid ""
+"%d messages have been reported as not spam to your system administrator."
+msgstr "%d mezu seguru gisa sailkatu zaizkio sistema-administratzaileari."
+
+#: lib/Spam.php:181
+#, php-format
+msgid "%d messages have been reported as not spam."
+msgstr "%d mezu seguru gisa sailkatu dira."
+
+#: lib/Spam.php:193
+#, php-format
+msgid "%d messages have been reported as spam to your system administrator."
+msgstr "%d mezu baztergarri gisa sailkatu zaizkio sistema-administratzaileari."
+
+#: lib/Spam.php:173
+#, php-format
+msgid "%d messages have been reported as spam."
+msgstr "%d mezu baztergarri gisa sailkatu dira."
+
+#: mailbox.php:265
+#, php-format
+msgid "%d to %d of %d Messages"
+msgstr "%d - %d (%d mezu guztira)"
+
+#: lib/UI/Mailbox.php:137
+#, php-format
+msgid "%s KB"
+msgstr "%s KB"
+
+#: lib/UI/Mailbox.php:135
+#, php-format
+msgid "%s MB"
+msgstr "%s MB"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:39
+#, php-format
+msgid "%s already exists. Your %s folder was not renamed."
+msgstr "%s badago lehendik ere. Ez zaio izenik aldatu zure %s karpetari."
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:37
+#, php-format
+msgid "%s folder being renamed at the start of the month."
+msgstr "%s karpetari izena aldatzen zaio hilabetearen hasieran."
+
+#: lib/api.php:188 lib/api.php:191 lib/api.php:196
+#, php-format
+msgid "%s for %s"
+msgstr "%s - %s"
+
+#: lib/MIME/Viewer/itip.php:283
+#, php-format
+msgid "%s has accepted."
+msgstr "%s(e)k onartu du."
+
+#: lib/MIME/Viewer/itip.php:744
+#, php-format
+msgid "%s has cancelled \"%s\"."
+msgstr "%s(e)k bertan behera utzi du \"%s\"."
+
+#: lib/MIME/Viewer/itip.php:749
+#, php-format
+msgid "%s has cancelled an instance of the recurring \"%s\"."
+msgstr "%s(e)k bertan behera utzi du \"%s\" errepikariaren agerraldi bat."
+
+#: lib/MIME/Viewer/itip.php:289
+#, php-format
+msgid "%s has declined."
+msgstr "%s(e)k uko egin dio."
+
+#: lib/MIME/Viewer/itip.php:584
+#, php-format
+msgid "%s has replied to a free/busy request."
+msgstr "%s(e)k libre/lanpetuta eskaerari erantzun dio."
+
+#: lib/MIME/Viewer/itip.php:735
+#, php-format
+msgid "%s has replied to the invitation to \"%s\"."
+msgstr "%s erabiltzaileak \"%s\" gonbidapenari erantzun dio."
+
+#: lib/MIME/Viewer/itip.php:575
+#, php-format
+msgid "%s has sent you free/busy information."
+msgstr "%s(e)k libre/lanpetuta informazioa bidali dizu."
+
+#: lib/MIME/Viewer/itip.php:295
+#, php-format
+msgid "%s has tentatively accepted."
+msgstr "%s(e)k onartu du oraingoz."
+
+#: lib/Spam.php:270
+#, php-format
+msgid "%s report from %s"
+msgstr "%s txostena. Jatorria: %s"
+
+#: lib/MIME/Viewer/itip.php:580
+#, php-format
+msgid "%s requests your free/busy information."
+msgstr "%s erabiltzaileak libre/lanpetuta informazioa eskatzen dizu."
+
+#: lib/MIME/Viewer/itip.php:706
+#, php-format
+msgid "%s requests your presence at \"%s\"."
+msgstr "%s erabiltzaileak \"%s\"(e)ra joan zaitezen eskatzen dizu."
+
+#: lib/MIME/Viewer/itip.php:686
+#, php-format
+msgid "%s wants to notify you about changes of \"%s\"."
+msgstr "%s erabiltzaileak \"%s\"(e)ko aldaketen berri eman nahi dizu."
+
+#: lib/Message.php:470
+#, php-format
+msgid "%s was successfully added to \"%s\"."
+msgstr "%s behar bezala gehitu zaio \"%s\"(r)i."
+
+#: lib/MIME/Viewer/itip.php:723
+#, php-format
+msgid "%s wishes to ammend \"%s\"."
+msgstr "%s erabiltzaileak \"%s\" zuzendu nahi du."
+
+#: lib/MIME/Viewer/itip.php:675 lib/MIME/Viewer/itip.php:707
+#: lib/MIME/Viewer/itip.php:894
+#, php-format
+msgid "%s wishes to make you aware of \"%s\"."
+msgstr "%s erabiltzaileak zu \"%s\"(e)z jabetu zaitezen nahi du."
+
+#: lib/MIME/Viewer/itip.php:730
+#, php-format
+msgid "%s wishes to receive the latest information about \"%s\"."
+msgstr "%s erabiltzaileak \"%s\"(r)i buruzko azken informazioa jaso nahi du."
+
+#: compose.php:1233
+#, php-format
+msgid "%s%% of allowed size"
+msgstr "Onartutako tamainaren %% %s"
+
+#: message.php:282 message.php:287 message.php:505
+#, php-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#: lib/Compose.php:1913
+#, php-format
+msgid "%u Forwarded Messages"
+msgstr "%u mezu birbidali"
+
+#: rss.php:87
+#, php-format
+msgid "%u of %u messages in %s unread."
+msgstr "%u / %u mezu irakurri gabe hemen: %s."
+
+#: message.php:506
+#, php-format
+msgid "(%d&nbsp;of&nbsp;%d)"
+msgstr "(%d&nbsp;/&nbsp;%d)"
+
+#: stationery.php:129
+msgid "(HTML)"
+msgstr "(HTML)"
+
+#: stationery.php:129
+msgid "(Plain Text)"
+msgstr "(Testu soila)"
+
+#: templates/contacts/contacts.html:49
+msgid "* Add these by clicking OK *"
+msgstr "* Gehitu hauek ADOS sakatuz *"
+
+#: templates/contacts/contacts.html:33
+msgid "* Please select address(es) *"
+msgstr "* Hautatu helbidea(k) *"
+
+#: config/prefs.php.dist:1104
+msgid "100 characters"
+msgstr "100 karaktere"
+
+#: config/prefs.php.dist:1107
+msgid "1000 characters"
+msgstr "1000 karaktere"
+
+#: config/prefs.php.dist:1105
+msgid "250 characters"
+msgstr "250 karaktere"
+
+#: config/prefs.php.dist:1106
+msgid "500 characters"
+msgstr "500 karaktere"
+
+#: lib/MIME/Viewer/pdf.php:84
+#, php-format
+msgid "A PDF file named %s is attached to this message. A thumbnail is below."
+msgstr ""
+"%s izeneko PDF fitxategi bat erantsi zaio mezuari. Koadro txiki bat ikus "
+"dezakezu behean."
+
+#: lib/MIME/Viewer/notification.php:49
+msgid ""
+"A message you have sent has resulted in a return notification from the "
+"recipient."
+msgstr "Zuk bidalitako mezu bat dela-eta, jakinarazpena bidali du hartzaileak."
+
+#: templates/javascript_defs.php:67
+msgid ""
+"A popup window could not be opened. Perhaps you have set your browser to "
+"block popup windows?"
+msgstr ""
+"Ezin izan da ireki leiho gainerako bat. Beharbada leiho gainerakorrak "
+"blokeatzeko konfiguratu duzu arakatzailea?"
+
+#: templates/search/search.html:61
+msgid "AND"
+msgstr "ETA"
+
+#: config/prefs.php.dist:665
+msgid "About this editor"
+msgstr "Editore honi buruz"
+
+#: config/prefs.php.dist:973
+msgid "Above the message text"
+msgstr "Mezuaren testuari buruz"
+
+#: lib/MIME/Viewer/itip.php:713
+msgid "Accept and add to my calendar"
+msgstr "Onartu eta gehitu egutegian"
+
+#: lib/MIME/Viewer/itip.php:710
+msgid "Accept and update in my calendar"
+msgstr "Onartu eta eguneratu egutegian"
+
+#: lib/MIME/Viewer/itip.php:716
+msgid "Accept request"
+msgstr "Onartu eskaera"
+
+#: lib/MIME/Viewer/itip.php:1009
+msgid "Accepted"
+msgstr "Onartua"
+
+#: lib/MIME/Viewer/itip.php:284
+msgid "Accepted: "
+msgstr "Onartua: "
+
+#: templates/fetchmail/fetchmailprefs.html:43
+msgid "Account's name:"
+msgstr "Kontuaren izena:"
+
+#: lib/MIME/Viewer/itip.php:618 lib/MIME/Viewer/itip.php:856
+#: lib/MIME/Viewer/itip.php:857 lib/MIME/Viewer/itip.php:988
+msgid "Actions"
+msgstr "Ekintzak"
+
+#: lib/MIME/Headers.php:219 lib/MIME/Headers.php:220 lib/MIME/Headers.php:242
+#: lib/MIME/Headers.php:243
+#, php-format
+msgid "Add %s to my Address Book"
+msgstr "Gehitu %s helbide-liburuan"
+
+#: templates/prefs/sourceselect.inc:300
+msgid "Add source"
+msgstr "Gehitu iturburua"
+
+#: lib/MIME/Viewer/itip.php:677
+msgid "Add this to my calendar"
+msgstr "Gehitu hau egutegian"
+
+#: lib/MIME/Viewer/itip.php:896
+msgid "Add this to my tasklist"
+msgstr "Gehitu hau zeregin-zerrendan"
+
+#: lib/MIME/Viewer/itip.php:714
+msgid "Add to my calendar"
+msgstr "Gehitu egutegian"
+
+#: lib/Compose.php:2958
+#, php-format
+msgid "Added \"%s\" as an attachment."
+msgstr "\"%s\" eranskin gisa gehitu da."
+
+#: config/prefs.php.dist:950
+msgid ""
+"Additional headers to display when viewing: <em>(optional, enter each header "
+"on a new line)</em>"
+msgstr ""
+"Bistaratzean erakusteko goiburu gehigarriak: <em>(aukerakoa, goiburu "
+"bakoitza lerro berri batean sartu)</em>"
+
+#: lib/MIME/Viewer/notification.php:60
+#, php-format
+msgid "Additional information can be viewed %s."
+msgstr "Informazio gehigarria ikus daiteke: %s."
+
+#: lib/MIME/Viewer/notification.php:60
+msgid "Additional information details"
+msgstr "Informazio gehigarriaren xehetasunak"
+
+#: lib/MIME/Viewer/status.php:92
+msgid "Additional message details"
+msgstr "Mezu-xehetasun gehigarriak"
+
+#: lib/MIME/Viewer/status.php:91
+#, php-format
+msgid "Additional message details can be viewed %s."
+msgstr "Mezu-xehetasun gehigarriak ikus daitezke;: %s."
+
+#: lib/MIME/Viewer/status.php:77
+msgid "Additional message error details"
+msgstr "Mezu-erroreen xehetasun gehigarriak"
+
+#: lib/MIME/Viewer/status.php:76
+#, php-format
+msgid "Additional message error details can be viewed %s."
+msgstr "Mezu-erroreen xehetasun gehigarriak ikus daitezke: %s"
+
+#: compose.php:826 compose.php:1072 contacts.php:120
+#: templates/contacts/contacts.html:8
+msgid "Address Book"
+msgstr "Helbide-liburua"
+
+#: config/prefs.php.dist:168
+msgid "Address Books"
+msgstr "Helbide-liburuak"
+
+#: templates/prefs/sourceselect.inc:345
+msgid "Address book to add addresses to"
+msgstr "Helbideak gehitzeko helbide-liburua"
+
+#: config/prefs.php.dist:223
+msgid ""
+"Addresses to BCC all messages: <em>(optional, enter each address on a new "
+"line)</em>"
+msgstr ""
+"Mezu guztietako BCCn ipintzeko helbideak: <em>(aukerakoa, helbide bakoitza "
+"lerro berri batean sartu)</em>"
+
+#: config/prefs.php.dist:215
+msgid ""
+"Addresses to explicitly tie to this identity: <em>(optional, enter each "
+"address on a new line)</em>"
+msgstr ""
+"Esplizituki identitate honi lotzeko helbideak: <em>(aukerakoa, helbide "
+"bakoitza lerro berri batean sartu)</em>"
+
+#: lib/IMAP/ACL/rfc4314.php:59 lib/IMAP/ACL/rfc2086.php:57
+msgid "Administer"
+msgstr "Administratzailea"
+
+#: templates/mailbox/navbar.html:10
+msgid "All"
+msgstr "Denak"
+
+#: lib/Maintenance/Task/purge_sentmail.php:82
+#, php-format
+msgid ""
+"All messages in the folder(s) \"%s\" older than %s days will be permanently "
+"deleted."
+msgstr ""
+"\"%s\" karpetako %s egun baino gehiagoko mezu guztiak behin betiko ezabatuko "
+"dira."
+
+#: templates/javascript_defs.php:57
+msgid ""
+"All messages in the following folder(s) will be downloaded into one MBOX "
+"file:"
+msgstr ""
+"Karpeta hauetako mezu guztiak MBOX fitxategi bakar batera deskargatuko dira:"
+
+#: lib/Maintenance/Task/purge_trash.php:78
+#: lib/Maintenance/Task/purge_spam.php:79
+#, php-format
+msgid ""
+"All messages in your \"%s\" folder older than %s days will be permanently "
+"deleted."
+msgstr ""
+" \"%s\" karpetan dituzun %s egun baino gehiagoko mezu guztiak behin betiko "
+"ezabatuko dira."
+
+#: lib/Maintenance/Task/delete_attachments_monthly.php:59
+#, php-format
+msgid "All old linked attachments more than %s months old will be deleted."
+msgstr ""
+"%s hilabete baino gehiagoko eranskin estekatu guztiak ezabatu egingo dira."
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:72
+#, php-format
+msgid "All old sent-mail folders more than %s months old will be deleted."
+msgstr ""
+"%s hilabete baino gehiago dituzten bidalitako mezuen karpeta zahar guztiak "
+"ezabatu egingo dira."
+
+#: acl.php:88 acl.php:129
+#, php-format
+msgid "All rights on folder \"%s\" successfully removed for user \"%s\"."
+msgstr ""
+"\"%s\" karpetako eskubide guztiak behar bezala kendu dira \"%s\" "
+"erabiltzailearentzat."
+
+#: lib/api.php:100
+msgid "Allow Folder Creation?"
+msgstr "Onartu karpetak sortzea?"
+
+#: filterprefs.php:111
+msgid "Allow filter rules to be applied in any mailbox?"
+msgstr "Onartu iragazki-arauak edozein postontzitan aplikatzea?"
+
+#: lib/MIME/Viewer/alternative.php:79
+msgid "Alternative parts for this section:"
+msgstr "Atal honetarako ordezko zatiak:"
+
+#: config/prefs.php.dist:730
+msgid "Always"
+msgstr "Beti"
+
+#: config/prefs.php.dist:715
+msgid "Always save attachments"
+msgstr "Beti gorde eranskinak"
+
+#: lib/Message.php:581
+msgid ""
+"An error occured while attempting to strip the attachment. The IMAP server "
+"said: "
+msgstr ""
+"Errore bat gertatu da eranskina ezabatzen saiatzean. IMAP zerbitzariak hau "
+"esan du: "
+
+#: lib/MIME/Viewer/images.php:148
+#, php-format
+msgid "An image named %s is attached to this message. A thumbnail is below."
+msgstr ""
+"%s izeneko irudi bat erantsi zaio mezuari. Koadro txiki bat ikus dezakezu "
+"behean."
+
+#: lib/Message.php:444
+msgid "An unknown error occured while creating the new note."
+msgstr "Errore ezezaguna gertatu da ohar berria sortzean."
+
+#: lib/Message.php:443
+msgid "An unknown error occured while creating the new task."
+msgstr "Errore ezezaguna gertatu da zeregin berria sortzean."
+
+#: lib/MIME/Viewer/itip.php:882
+msgid "An unknown person"
+msgstr "Pertsona ezezaguna"
+
+#: message.php:477 mailbox.php:764 templates/message/navbar_navigate.html:12
+#: templates/mailbox/navbar.html:18 templates/mailbox/navbar.html:34
+msgid "Answered"
+msgstr "Erantzunda"
+
+#: lib/Search.php:797
+msgid "Answered messages"
+msgstr "Erantzundako mezuak"
+
+#: mailbox.php:419
+msgid "Apply Filters"
+msgstr "Aplikatu iragazkiak"
+
+#: mailbox.php:419
+#, php-format
+msgid "Apply Filters to %s"
+msgstr "Aplikatu iragazkiak --> %s"
+
+#: filterprefs.php:108
+msgid "Apply filter rules upon logging on?"
+msgstr "Aplikatu iragazki-arauak saioa hastean?"
+
+#: filterprefs.php:109
+msgid "Apply filter rules whenever Inbox is displayed?"
+msgstr ""
+"Aplikatu iragazki-arauak 'Sarrerako ontzia' bistaratzen den bakoitzean?"
+
+#: filterprefs.php:110
+msgid "Apply filter rules whenever sidebar is refreshed?"
+msgstr "Aplikatu iragazki-arauak alboko barra freskatzen den bakoitzean?"
+
+#: thread.php:174
+msgid "Are you sure you want to delete all messages in this thread?"
+msgstr "Ziur zaude hari honetako mezu guztiak ezabatu nahi dituzula?"
+
+#: mailbox.php:428
+msgid "Are you sure you want to delete this Virtual Folder Definition?"
+msgstr "Ziur zaude Karpeta Birtualen Definizio hau ezabatu nahi duzula?"
+
+#: smime.php:320 pgp.php:419
+msgid "Are you sure you want to delete this public key?"
+msgstr "Ziur zaude gako publiko hau ezabatu nahi duzula?"
+
+#: smime.php:348 pgp.php:451
+msgid ""
+"Are you sure you want to delete your keypair? (This is NOT recommended!)"
+msgstr "Ziur zaude zure gako-bikotea ezabatu nahi duzula? (EZ da gomendatzen!)"
+
+#: templates/javascript_defs.php:29
+msgid "Are you sure you want to do this?"
+msgstr "Ziur zaude hau egin nahi duzula?"
+
+#: message.php:684
+msgid "Are you sure you wish to PERMANENTLY delete all attachments?"
+msgstr "Ziur zaude eranskin guztiak BEHIN BETIKO ezabatu nahi dituzula?"
+
+#: message.php:554 templates/javascript_defs.php:41
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "Ziur zaude mezu hauek BEHIN BETIKO ezabatu nahi dituzula?"
+
+#: lib/MIME/Contents.php:273
+msgid "Are you sure you wish to PERMANENTLY delete this attachment?"
+msgstr "Ziur zaude eranskin hau BEHIN BETIKO ezabatu nahi duzula?"
+
+#: mailbox.php:424
+msgid "Are you sure you wish to delete all mail in this folder?"
+msgstr "Ziur zaude karpeta honetako mezu guztiak ezabatu nahi dituzula?"
+
+#: lib/IMP.php:859
+msgid "Are you sure you wish to empty your spam folder?"
+msgstr "Ziur zaude mezu baztergarrien karpeta hustu nahi duzula?"
+
+#: lib/IMP.php:851
+msgid "Are you sure you wish to empty your trash folder?"
+msgstr "Ziur zaude zakarrontzia hustu nahi duzula?"
+
+#: mailbox.php:508
+msgid "Are you sure you wish to permanently delete these messages?"
+msgstr "Ziur zaude mezu hauek behin betiko ezabatu nahi dituzula?"
+
+#: templates/javascript_defs.php:75
+msgid "Are you sure you wish to report this message as innocent?"
+msgstr "Ziur zaude mezu hau segurutzat jo nahi duzula?"
+
+#: templates/javascript_defs.php:74
+msgid "Are you sure you wish to report this message as spam?"
+msgstr "Ziur zaude mezu hau baztergarritzat jo nahi duzula?"
+
+#: config/prefs.php.dist:1200
+msgid "Arrival Time"
+msgstr "Iriste-ordua"
+
+#: config/prefs.php.dist:1215
+msgid "Ascending"
+msgstr "Gorantz"
+
+#: config/prefs.php.dist:729
+msgid "Ask"
+msgstr "Galdetu"
+
+#: compose.php:1171
+msgid "Attach Files"
+msgstr "Erantsi fitxategiak"
+
+#: compose.php:1160
+msgid "Attach a copy of your PGP public key to the message?"
+msgstr "Erantsi zure PGP gako publikoaren kopia bat mezuari?"
+
+#: compose.php:1165
+msgid "Attach your contact information to the message?"
+msgstr "Erantsi zure kontaktu-informazioa mezuari?"
+
+#: lib/MIME/Viewer/tnef.php:110
+msgid "Attached File:"
+msgstr "Erantsitako fitxategia:"
+
+#: lib/Compose.php:2017 lib/Compose.php:2123
+#, php-format
+msgid ""
+"Attached file \"%s\" exceeds the attachment size limits. File NOT attached."
+msgstr ""
+"Erantsitako \"%s\" fitxategiak gainditu egiten ditu eranskinen tamaina-"
+"mugak. Fitxategia erantsi GABE."
+
+#: lib/MIME/Viewer/itip.php:411
+msgid "Attached is a reply to a calendar request you sent."
+msgstr "Erantsita dago zuk bidalitako egutegi-eskaera baten erantzuna."
+
+#: templates/javascript_defs.php:36 templates/compose/compose.html:276
+#: templates/compose/compose.html:335
+msgid "Attachment"
+msgstr "Eranskina"
+
+#: attachment.php:73
+#, php-format
+msgid "Attachment %s deleted."
+msgstr "%s eranskina ezabatu da."
+
+#: lib/Compose.php:2646
+msgid "Attachment Information"
+msgstr "Eranskinari buruzko informazioa"
+
+#: lib/Compose.php:816
+msgid "Attachment stripped: Original attachment type"
+msgstr "Kendutako eranskina: jatorrizko eranskinaren mota"
+
+#: compose.php:1105 lib/Compose.php:2613 templates/compose/compose.html:252
+msgid "Attachments"
+msgstr "Eranskinak"
+
+#: lib/MIME/Viewer/itip.php:808 lib/MIME/Viewer/itip.php:937
+msgid "Attendees"
+msgstr "Parte-hartzaileak"
+
+#: lib/MIME/Viewer/notification.php:52
+msgid "Attention"
+msgstr "Kontuz"
+
+#: lib/Auth/imp.php:33
+msgid "Auth_imp: Required IMAP extension not found."
+msgstr "Auth_imp: ez da aurkitu behar den IMAP hedapena."
+
+#: config/hooks.php.dist:579
+msgid "Authentication failed."
+msgstr "Huts egin du autentifikatzean."
+
+#: config/prefs.php.dist:882
+msgid ""
+"Automatically show images in HTML messages when the sender is in my address "
+"book?"
+msgstr ""
+"Automatikoki erakutsi HTML mezuetako irudiak bidaltzailea nire helbide-"
+"liburuan badago?"
+
+#: templates/prefs/sourceselect.inc:293 templates/prefs/sourceselect.inc:295
+msgid "Available Address books:"
+msgstr "Helbide-liburu erabilgarriak:"
+
+#: lib/MIME/Viewer/itip.php:841 lib/MIME/Viewer/itip.php:973
+msgid "Awaiting Response"
+msgstr "Erantzunaren zain"
+
+#: message.php:524 thread.php:141
+#, php-format
+msgid "Bac_k to %s"
+msgstr "A_tzera --> %s"
+
+#: message.php:524 thread.php:141
+#, php-format
+msgid "Back to %s"
+msgstr "Atzera --> %s"
+
+#: thread.php:138
+msgid "Back to Multiple Message View Index"
+msgstr "Itzuli hainbat mezuren ikuspegiko indizera"
+
+#: thread.php:136
+msgid "Back to Thread Display"
+msgstr "Itzuli hari-ikuspegira"
+
+#: config/prefs.php.dist:631
+msgid "Background Color"
+msgstr "Atzeko planoaren kolorea"
+
+#: lib/IMAP/Client.php:480
+#, php-format
+msgid "Bad login name or password."
+msgstr "Okerreko erabiltzaile-izena edo pasahitza."
+
+#: lib/IMAP/Client.php:195
+#, php-format
+msgid "Bad or malformed request. Server Responded: %s"
+msgstr "Okerreko eskaera edo gaizki osatua. Zerbitzariaren erantzuna: %s"
+
+#: lib/IMAP/Client.php:484
+#, php-format
+msgid "Bad request: %s"
+msgstr "Okerreko eskaera: %s"
+
+#: lib/Search.php:726 lib/UI/Message.php:28
+#: templates/contacts/contacts.html:43 templates/login/recompose.html:32
+msgid "Bcc"
+msgstr "Bcc"
+
+#: config/prefs.php.dist:685
+msgid "Before Signature"
+msgstr "Sinaduraren aurretik"
+
+#: lib/MIME/Viewer/status.php:160
+msgid "Below is the raw text of the status information message."
+msgstr "Behean ikus dezakezu egoerari buruzko informazio-mezuaren testua."
+
+#: config/prefs.php.dist:974
+msgid "Below the message text"
+msgstr "Mezu-testuaren behean"
+
+#: message.php:580 mailbox.php:526
+msgid "Blacklist"
+msgstr "Zerrenda beltza"
+
+#: config/prefs.php.dist:871
+msgid "Block images in HTML messages unless they are specifically requested?"
+msgstr "Blokeatu HTML mezuetako irudiak espezifikoki eskatu ezean?"
+
+#: lib/Search.php:736
+msgid "Body"
+msgstr "Gorputza"
+
+#: message.php:570 config/prefs.php.dist:764
+msgid "Body Text Only"
+msgstr "Gorputz-testua soilik"
+
+#: message.php:571 config/prefs.php.dist:765
+msgid "Body Text with Attachments"
+msgstr "Gorputz-testua eranskinekin"
+
+#: config/prefs.php.dist:626
+msgid "Bold"
+msgstr "Lodia"
+
+#: config/prefs.php.dist:939
+msgid "Both Header Listing and Body of Message"
+msgstr "Bai goiburu-zerrenda, bai mezuaren gorputza"
+
+#: config/prefs.php.dist:684
+msgid "Bottom"
+msgstr "Behealdea"
+
+#: config/prefs.php.dist:640
+msgid "Bulleted List"
+msgstr "Buletdun zerrenda"
+
+#: lib/IMAP/Client.php:409
+msgid ""
+"CRAM-MD5 or DIGEST-MD5 requires PEAR's Auth_SASL package to be installed."
+msgstr ""
+"CRAM-MD5 edo DIGEST-MD5ek eskatu du PEARen Auth_SASL paketea instalatzea."
+
+#: compose.php:1026
+msgid "C_harset"
+msgstr "Ko_deketa"
+
+#: search.php:279 config/hooks.php.dist:506
+msgid "Calendar"
+msgstr "Egutegia"
+
+#: templates/contacts/contacts.html:69
+#: templates/folders/folders_confirm.html:24 templates/folders/import.html:18
+#: templates/saveimage/saveimage.html:20 templates/smime/passphrase.html:24
+#: templates/smime/import_key.html:70 templates/pgp/passphrase.html:22
+#: templates/pgp/import_key.html:49
+msgid "Cancel"
+msgstr "Utzi"
+
+#: templates/compose/redirect.html:84 templates/compose/compose.html:21
+#: templates/compose/compose.html:208
+msgid "Cancel Message"
+msgstr "Utzi mezua"
+
+#: templates/javascript_defs.php:29
+msgid "Cancelling this message will permanently discard its contents."
+msgstr "Mezu hau utziz gero, behin betiko baztertuko da mezuaren edukia."
+
+#: lib/Fetchmail/imap.php:151
+msgid "Cannot connect to the remote mail server."
+msgstr "Ezin da konektatu urruneko posta-zerbitzarira."
+
+#: lib/Fetchmail/imap.php:149
+msgid "Cannot connect to the remote mail server: "
+msgstr "Ezin da konektatu urruneko posta-zerbitzarira: "
+
+#: lib/IMAP/Tree.php:2093
+msgid "Cannot directly create mailbox in this folder."
+msgstr "Ezin da zuzenean postontzia eratu karpeta honetan."
+
+#: lib/MIME/Viewer/partial.php:47
+#, php-format
+msgid ""
+"Cannot display - found only %s of %s parts of this message in the current "
+"mailbox."
+msgstr ""
+"Ezin da bistaratu - mezu honen %s / %s zati bakarrik aurkitu dira uneko "
+"postontzian."
+
+#: lib/Message.php:199
+msgid "Cannot move messages to Trash - no Trash mailbox set in preferences."
+msgstr ""
+"Ezin dira eraman mezuak Zakarrontzira - ez dago Zakarrontzi-postontzirik "
+"ezarrita hobespenetan."
+
+#: pgp.php:282
+msgid "Cannot retrieve public key from cache."
+msgstr "Ezin da eskuratu gako publikoa cachetik."
+
+#: lib/Search.php:721 lib/UI/Message.php:27
+#: templates/contacts/contacts.html:42 templates/login/recompose.html:23
+msgid "Cc"
+msgstr "Cc"
+
+#: templates/smime/smime.html:79
+msgid ""
+"Certificate import is not available. File upload is not enabled on this "
+"server."
+msgstr ""
+"Ziurtagiri-inportazioa ez dago erabilgarri. Fitxategi-kargatzea ez dago "
+"gaituta zerbitzari honetan."
+
+#: lib/MIME/Viewer/itip.php:823 lib/MIME/Viewer/itip.php:955
+msgid "Chair Person"
+msgstr "Mahaiburua"
+
+#: acl.php:173 acl.php:174 templates/acl/acl.html:13
+msgid "Change Folder"
+msgstr "Aldatu karpeta"
+
+#: config/prefs.php.dist:149
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr ""
+"Aldatu bistaratze-aukerak, esate baterako zenbat mezu ikusiko diren orri "
+"bakoitzean eta zenbat mezu ordenatuko diren."
+
+#: config/prefs.php.dist:26
+msgid "Change mail server and folder settings."
+msgstr "Aldatu posta-zerbitzariaren eta karpeten ezarpenak."
+
+#: config/prefs.php.dist:16
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr ""
+"Aldatu jendeak zure mezuak irakurtzean eta erantzutean ikusiko dituen izena, "
+"helbidea eta sinadura."
+
+#: config/prefs.php.dist:1108
+msgid "Characters to display:"
+msgstr "Bistaratzeko karaktereak:"
+
+#: templates/folders/actions.html:6 templates/mailbox/message_headers.html:13
+msgid "Check All/None"
+msgstr "Egiaztatu guztiak/bat ere ez"
+
+#: lib/UI/Compose.php:152
+msgid "Check Spelling"
+msgstr "Egiaztatu ortografia"
+
+#: folders.php:383 mailbox.php:656
+msgid "Check _All/None"
+msgstr "Egiaztatu _guztiak/bat ere ez"
+
+#: templates/folders/actions.html:29
+msgid "Check for New Mail"
+msgstr "Begiratu mezu berririk dagoen"
+
+#: config/prefs.php.dist:557
+msgid "Check spelling before sending a message?"
+msgstr "Egiaztatu ortografia mezu bat bidali aurretik?"
+
+#: lib/UI/Compose.php:153
+msgid "Checking ..."
+msgstr "Egiaztatzen..."
+
+#: templates/folders/actions.html:11 templates/folders/actions.html:13
+msgid "Choose Action"
+msgstr "Aukeratu ekintza"
+
+#: config/servers.php.dist:224
+msgid "Choose a mail server:"
+msgstr "Aukeratu posta-zerbitzaria:"
+
+#: templates/compose/compose.html:65
+msgid "Choose a match or edit the address to the right:"
+msgstr "Aukeratu edo editatu helbidea eskuinean:"
+
+#: templates/prefs/sourceselect.inc:343
+msgid "Choose the address book to use when adding addresses."
+msgstr "Aukeratu helbideak gehitzeko erabiliko den helbide-liburua:"
+
+#: templates/prefs/sourceselect.inc:289
+msgid "Choose the order of address books to search when expanding addresses."
+msgstr ""
+"Aukeratu helbideak hedatzean bilaketak egiteko erabiliko den helbide-"
+"liburuen ordena."
+
+#: config/prefs.php.dist:657
+msgid "Clear Inline Font Specifications"
+msgstr "Garbitu barneko letra-tipoen zehaztapenak"
+
+#: config/prefs.php.dist:656
+msgid "Clear MSOffice tags"
+msgstr "Garbitu MSOffice etiketak"
+
+#: lib/MIME/Viewer/images.php:101
+#, php-format
+msgid "Click %s to convert the image file into a format your browser can view."
+msgstr ""
+"Irudi-fitxategia arakatzaileak ikusteko moduko formatu batera bihurtzeko, "
+"sakatu %s."
+
+#: lib/MIME/Contents.php:449
+#, php-format
+msgid "Click %s to download the data."
+msgstr "Datuak deskargatzeko, sakatu %s."
+
+#: lib/MIME/Viewer/images.php:90
+#, php-format
+msgid "Click %s to download the image."
+msgstr "Irudia deskargatzeko, sakatu %s."
+
+#: lib/Filter.php:131
+#, php-format
+msgid "Click %s to go to %s management page."
+msgstr "Sakatu %s %s kudeatzeko orrira joateko."
+
+#: lib/MIME/Viewer/pkcs7.php:487
+#, php-format
+msgid "Click %s to view the attachment in a separate window."
+msgstr "Eranskina beste leiho batean ikusteko, sakatu %s."
+
+#: lib/MIME/Viewer/related.php:85
+#, php-format
+msgid "Click %s to view this multipart/related part in a separate window."
+msgstr "Multipart/related zati hau beste leiho batean ikusteko, sakatu %s."
+
+#: lib/MIME/Viewer/pkcs7.php:220 lib/MIME/Viewer/pgp.php:248
+#: lib/MIME/Viewer/pgp.php:275
+msgid "Click HERE to verify the message."
+msgstr "Egin klik HEMEN mezu hau egiaztatzeko."
+
+#: config/prefs.php.dist:531
+#, php-format
+msgid "Click here to open all mailto: links in %s."
+msgstr "Egin klik hemen (erantzun honi:) esteka guztiak hemen irekitzeko: %s."
+
+#: templates/prefs/sourceselect.inc:319
+msgid ""
+"Click on one of your selected address books and then select all fields to "
+"search."
+msgstr ""
+"Egin klik hautatutako helbide-liburuetako batean, eta ondoren hautatu "
+"bilaketa egiteko eremu guztiak."
+
+#: config/prefs.php.dist:1241
+msgid "Clicking on the address will compose a new message to the sender"
+msgstr ""
+"Helbidean klik egitean, bidaltzailearentzako mezu berri bat sortuko da."
+
+#: config/prefs.php.dist:1242
+msgid "Clicking on the address will open the message to be read"
+msgstr "Helbidean klik egitean, irakurtzeko mezua irekiko da."
+
+#: templates/fetchmail/fetchmail.html:33 templates/newmsg/alert.html:17
+msgid "Close"
+msgstr "Itxi"
+
+#: compose.php:34
+msgid "Close this window"
+msgstr "Itxi leiho hau"
+
+#: lib/IMAP/Tree.php:2038
+msgid "Closed Folder"
+msgstr "Karpeta itxia"
+
+#: folders.php:464
+msgid "Collapse"
+msgstr "Tolestu"
+
+#: folders.php:399
+msgid "Collapse All"
+msgstr "Tolestu denak"
+
+#: folders.php:399
+msgid "Collapse All Folders"
+msgstr "Tolestu karpeta guztiak"
+
+#: folders.php:464
+msgid "Collapse Folder"
+msgstr "Tolestu karpeta"
+
+#: templates/fetchmail/fetchmailprefs.html:94
+msgid "Color Indicator:"
+msgstr "Kolorearen adierazlea:"
+
+#: config/prefs.php.dist:1279
+msgid "Combine all namespaces"
+msgstr "Konbinatu izen-leku guztiak"
+
+#: templates/pgp/pgp.html:97
+msgid "Comment:"
+msgstr "Iruzkina:"
+
+#: lib/MIME/Viewer/itip.php:1025
+msgid "Completed"
+msgstr "Burutua"
+
+#: config/prefs.php.dist:581
+msgid "Compose messages in a separate window?"
+msgstr "Prestatu mezuak beste leiho batean?"
+
+#: config/prefs.php.dist:591
+msgid ""
+"Compose messages with an HTML GUI by default (if browser supports the "
+"feature)?"
+msgstr ""
+"Prestatu mezuak HTML GUI formatuarekin lehenespenez (arakatzaileak onartzen "
+"badu)?"
+
+#: config/prefs.php.dist:95
+msgid "Configure how messages are displayed."
+msgstr "Konfiguratu nola bistaratuko diren mezuak."
+
+#: config/prefs.php.dist:131
+msgid "Configure mail preview options."
+msgstr "Konfiguratu mezuen aurrebistaren aukerak."
+
+#: config/hooks.php.dist:575
+msgid "Connection to server failed."
+msgstr "Huts egin du zerbitzarira konektatzean."
+
+#: config/hooks.php.dist:530
+msgid "Contacts"
+msgstr "Kontaktuak"
+
+#: config/prefs.php.dist:177
+#, php-format
+msgid "Control PGP support for %s."
+msgstr "Kontrolatu %s(r)en PGP euskarria."
+
+#: config/prefs.php.dist:186
+#, php-format
+msgid "Control S/MIME support for %s."
+msgstr "Kontrolatu %s(r)en S/MIMEren euskarria."
+
+#: config/prefs.php.dist:123
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr ""
+"Kontrolatu noiz begiratuko den ea mezu berririk dagoen, eta abisua bidaliko "
+"den edo ez mezu berriak heltzean."
+
+#: config/prefs.php.dist:929
+msgid "Convert textual emoticons into graphical ones?"
+msgstr "Bihurtu testuzko aurpegierak aurpegiera grafiko?"
+
+#: message.php:520 message.php:707 mailbox.php:486 mailbox.php:895
+msgid "Copy"
+msgstr "Kopiatu"
+
+#: config/prefs.php.dist:652
+msgid "Copy selection"
+msgstr "Kopiatu hautapena"
+
+#: message.php:520 message.php:707 mailbox.php:486 mailbox.php:895
+msgid "Copy to folder"
+msgstr "Kopiatu karpetan"
+
+#: lib/Compose.php:2098
+#, php-format
+msgid "Could not attach %s to the message."
+msgstr "Ezin izan zaio %s erantsi mezuari."
+
+#: lib/IMAP/Client.php:189
+#, php-format
+msgid "Could not complete request. Reason Given: %s"
+msgstr "Ezin izan da eskaera bete. Emandako arrazoia: %s"
+
+#: attachment.php:51
+#, php-format
+msgid "Could not create the VFS backend: %s"
+msgstr "Ezin izan da VFS euskarria sortu: %s"
+
+#: lib/Message.php:790
+#, php-format
+msgid "Could not delete messages from %s. The server said: %s"
+msgstr "Ezin izan dira mezuak ezabatu %s(e)tik. Zerbitzariak hau esan du: %s"
+
+#: lib/Session.php:333
+msgid "Could not execute maintenance operations."
+msgstr "Ezin izan dira mantentze-eragiketak exekutatu."
+
+#: lib/MIME/Viewer/tnef.php:53
+msgid "Could not extract the requested file from the MS-TNEF attachment."
+msgstr "Ezin izan da eskatutako fitxategia atera MS-TNEF eranskinetik."
+
+#: lib/MIME/Viewer/zip.php:61
+msgid "Could not extract the requested file from the Zip archive."
+msgstr "Ezin izan da eskatutako fitxategia atera Zip artxibotik."
+
+#: lib/Spam.php:237
+msgid ""
+"Could not move message to spam mailbox - no spam mailbox defined in "
+"preferences."
+msgstr ""
+"Ezin izan da mezua eraman mezu baztergarrien postontzira - ez dago mezu "
+"baztergarrien postontzirik definituta hobespenetan."
+
+#: lib/IMAP/Client.php:320
+msgid "Could not open secure connection to the IMAP server."
+msgstr "Ezin izan da ireki IMAP zerbitzarirako konexio segurua."
+
+#: lib/Session.php:284
+msgid "Could not retrieve namespace information from IMAP server."
+msgstr "Ezin izan da izen-leku informaziorik eskuratu IMAP zerbitzaritik."
+
+#: compose.php:52
+msgid "Could not retrieve the message from the mail server."
+msgstr "Ezin izan da mezua eskuratu posta-zerbitzaritik."
+
+#: lib/Compose.php:1099
+#, php-format
+msgid "Could not save recipients: %s"
+msgstr "Ezin izan dira gorde hartzaileak: %s"
+
+#: lib/Template.php:231
+#, php-format
+msgid "Could not save the compiled template file '%s'."
+msgstr "Ezin izan da gorde '%s' txantiloi-fitxategi konpilatua."
+
+#: templates/fetchmail/fetchmailprefs.html:121
+#: templates/folders/actions.html:16
+msgid "Create"
+msgstr "Sortu"
+
+#: lib/IMAP/ACL/rfc2086.php:55
+msgid "Create Folder"
+msgstr "Sortu karpeta"
+
+#: lib/IMAP/ACL/rfc4314.php:55
+msgid "Create Folders"
+msgstr "Sortu karpetak"
+
+#: templates/pgp/pgp.html:129
+msgid "Create Keys"
+msgstr "Sortu gakoak"
+
+#: templates/fetchmail/fetchmailprefs.html:28
+msgid "Create a New Account"
+msgstr "Sortu kontu berria"
+
+#: templates/prefs/spamselect.inc:11 templates/prefs/spamselect.inc:20
+msgid "Create a new Spam folder"
+msgstr "Sortu mezu baztergarrien karpeta berria"
+
+#: templates/prefs/folderselect.inc:11 templates/prefs/folderselect.inc:22
+msgid "Create a new drafts folder"
+msgstr "Sortu zirriborroen karpeta berria"
+
+#: templates/prefs/sentmailselect.inc:25 templates/prefs/sentmailselect.inc:40
+msgid "Create a new sent mail folder"
+msgstr "Sortu bidalitako mezuen karpeta berria"
+
+#: templates/prefs/trashselect.inc:11 templates/prefs/trashselect.inc:25
+msgid "Create a new trash folder"
+msgstr "Sortu zakarrontzi-karpeta berria"
+
+#: templates/fetchmail/fetchmail.html:23
+msgid "Create an account"
+msgstr "Sortu kontua"
+
+#: config/prefs.php.dist:162
+msgid ""
+"Create filtering rules to organize your incoming mail, sort it into folders, "
+"and delete spam."
+msgstr ""
+"Sortu iragazki-arauak sarrerako ontzira heltzen diren mezuak antolatzeko, "
+"karpetetan ordenatzeko eta mezu baztergarriak ezabatzeko."
+
+#: templates/stationery/stationery.html:14
+msgid "Create new stationery"
+msgstr "Sortu idazpapera"
+
+#: templates/compose/compose.html:317
+msgid "Current Attachments"
+msgstr "Uneko eranskinak"
+
+#: acl.php:176
+#, php-format
+msgid "Current access to %s"
+msgstr "%s(e)rako uneko atzipena"
+
+#: config/prefs.php.dist:1292
+msgid "Current expanded status in the folders view"
+msgstr "Uneko hedapen-egoera karpeta-ikuspegian"
+
+#: config/prefs.php.dist:632
+msgid "Current style"
+msgstr "Uneko estiloa"
+
+#: config/prefs.php.dist:140
+msgid "Customize accounts for fetching mail from other accounts."
+msgstr "Pertsonalizatu kontuak beste kontu batzuetako mezuak hartzeko."
+
+#: config/prefs.php.dist:88
+msgid "Customize how to deal with message drafts."
+msgstr "Pertsonalizatu nola kudeatu mezu-zirriborroak."
+
+#: config/prefs.php.dist:80
+msgid "Customize how you reply to or forward mail."
+msgstr "Pertsonalizatu nola erantzun edo birbidali nahi dituzun mezuak."
+
+#: config/prefs.php.dist:64
+msgid "Customize how you send mail."
+msgstr "Pertsonalizatu mezu-bidalketa."
+
+#: config/prefs.php.dist:44
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Pertsonalizatu exekutatu beharreko atazak %s(e)n saioa hastean."
+
+#: config/prefs.php.dist:651
+msgid "Cut selection"
+msgstr "Ebaki hautapena"
+
+#: mailbox.php:582
+msgid "Dat_e"
+msgstr "Dat_a"
+
+#: lib/UI/Message.php:24
+msgid "Date"
+msgstr "Data"
+
+#: lib/Search.php:751
+msgid "Date <"
+msgstr "Data <"
+
+#: lib/Search.php:746
+msgid "Date ="
+msgstr "Data ="
+
+#: lib/Search.php:756
+msgid "Date >="
+msgstr "Data >="
+
+#: templates/thread/thread.html:26
+msgid "Date:"
+msgstr "Data:"
+
+#: templates/search/search.html:99
+msgid "Day"
+msgstr "Eguna"
+
+#: lib/MIME/Viewer/itip.php:1013
+msgid "Declined"
+msgstr "Ukatua"
+
+#: lib/MIME/Viewer/itip.php:290
+msgid "Declined: "
+msgstr "Ukatua:  "
+
+#: config/prefs.php.dist:641
+msgid "Decrease Indent"
+msgstr "Txikitu koska"
+
+#: config/prefs.php.dist:695
+msgid "Default"
+msgstr "Lehenetsia"
+
+#: config/prefs.php.dist:962
+msgid "Default (US-ASCII)"
+msgstr "Lehenetsia (US-ASCII)"
+
+#: config/prefs.php.dist:766
+msgid "Default forwarding method:"
+msgstr "Birbidaltzeko metodo lehenetsia:"
+
+#: config/prefs.php.dist:1207
+msgid "Default sorting criteria:"
+msgstr "Ordenatze-irizpide lehenetsia:"
+
+#: config/prefs.php.dist:1217
+msgid "Default sorting direction:"
+msgstr "Ordenatze-noranzko lehenetsia:"
+
+#: lib/MIME/Viewer/itip.php:1021
+msgid "Delegated"
+msgstr "Delegatua"
+
+#: folders.php:429 message.php:554 mailbox.php:508 mailbox.php:510
+#: lib/IMAP/ACL/rfc4314.php:57 templates/fetchmail/fetchmailprefs.html:122
+#: templates/contacts/contacts.html:59 templates/folders/actions.html:19
+#: templates/smime/smime.html:35 templates/pgp/pgp.html:43
+msgid "Delete"
+msgstr "Ezabatu"
+
+#: smime.php:320 pgp.php:419
+#, php-format
+msgid "Delete %s Public Key"
+msgstr "Ezabatu %s gako publikoa"
+
+#: templates/smime/smime.html:75 templates/pgp/pgp.html:86
+msgid "Delete Current Keys"
+msgstr "Ezabatu uneko gakoak"
+
+#: lib/IMAP/ACL/rfc4314.php:56
+msgid "Delete Folders"
+msgstr "Ezabatu karpetak"
+
+#: templates/folders/folders_confirm.html:23
+msgid "Delete Selected Folders"
+msgstr "Ezabatu hautatutako karpetak"
+
+#: templates/stationery/stationery.html:44
+msgid "Delete Stationery"
+msgstr "Ezabatu idazpapera"
+
+#: thread.php:174
+msgid "Delete Thread"
+msgstr "Ezabatu haria"
+
+#: folders.php:429
+msgid "Delete Virtual Folder"
+msgstr "Ezabatu karpeta birtuala"
+
+#: mailbox.php:428
+#, php-format
+msgid "Delete Virtual Folder Definition for %s"
+msgstr "Ezabatu %s(r)en Karpeta Birtualaren Definizioa"
+
+#: templates/fetchmail/fetchmailprefs.html:86
+msgid "Delete fetched messages from remote server?"
+msgstr "Ezabatu urruneko zerbitzaritik hartutako mezuak?"
+
+#: lib/MIME/Viewer/itip.php:746
+msgid "Delete from my calendar"
+msgstr "Ezabatu egutegitik"
+
+#: config/prefs.php.dist:430
+msgid "Delete old linked attachments at beginning of month?"
+msgstr "Ezabatu eranskin estekatu zaharrak hilabetearen hasieran?"
+
+#: config/prefs.php.dist:384
+msgid "Delete old sent-mail folders at beginning of month?"
+msgstr "Ezabatu bidalitako mezuen karpeta zaharrak hilabetearen hasieran?"
+
+#: config/prefs.php.dist:856
+msgid "Delete spam messages"
+msgstr "Ezabatu mezu baztergarriak"
+
+#: lib/IMAP/ACL/rfc2086.php:56
+msgid "Delete/purge"
+msgstr "Ezabatu/Borratu betiko"
+
+#: templates/compose/compose.html:345
+msgid "Delete?"
+msgstr "Ezabatu?"
+
+#: message.php:480 mailbox.php:779 templates/mailbox/navbar.html:20
+#: templates/mailbox/navbar.html:37
+msgid "Deleted"
+msgstr "Ezabatuta"
+
+#: lib/Search.php:817
+msgid "Deleted messages"
+msgstr "Ezabatutako mezuak"
+
+#: compose.php:240
+#, php-format
+msgid "Deleted the attachment \"%s\"."
+msgstr "\"%s\" eranskina ezabatu da."
+
+#: config/prefs.php.dist:109
+msgid "Deleting and Moving Messages"
+msgstr "Mezuak ezabatzea eta lekuz aldatzea"
+
+#: lib/MIME/Viewer/itip.php:718
+msgid "Deny request"
+msgstr "Ukatu eskaera"
+
+#: lib/MIME/Viewer/itip.php:638
+msgid "Deny request for free/busy information"
+msgstr "Ukatu libre/lanpetuta informazio-eskaera"
+
+#: config/prefs.php.dist:1216
+msgid "Descending"
+msgstr "Beherantz"
+
+#: lib/MIME/Viewer/itip.php:799 lib/MIME/Viewer/itip.php:930
+msgid "Description"
+msgstr "Azalpena"
+
+#: templates/compose/compose.html:341
+msgid "Description:"
+msgstr "Azalpena:"
+
+#: templates/smime/smime.html:35 templates/smime/smime.html:67
+#: templates/pgp/pgp.html:43 templates/pgp/pgp.html:75
+#: templates/pgp/pgp.html:80
+msgid "Details"
+msgstr "Xehetasunak"
+
+#: lib/Compose.php:2940
+#, php-format
+msgid "Did not attach \"%s\" as it was only partially uploaded."
+msgstr "Ez da erantsi \"%s\", zati bat bakarrik kargatu delako."
+
+#: lib/Compose.php:2949
+#, php-format
+msgid "Did not attach \"%s\" as the file was empty."
+msgstr "Ez da erantsi \"%s\", fitxategia hutsik zegoelako."
+
+#: lib/Compose.php:2936
+#, php-format
+msgid ""
+"Did not attach \"%s\" as the maximum allowed upload size has been exceeded."
+msgstr ""
+"Ez da erantsi \"%s\", onartutako gehieneko karga-tamaina gainditu delako."
+
+#: lib/Compose.php:2944
+#, php-format
+msgid ""
+"Did not attach \"%s\" as the server configuration did not allow the file to "
+"be uploaded."
+msgstr ""
+"Ez da erantsi \"%s\", zerbitzariaren konfigurazioak ez duelako onartu "
+"kargatzeko fitxategia."
+
+#: config/prefs.php.dist:921
+msgid "Dim signatures?"
+msgstr "Ilundu sinadurak?"
+
+#: config/prefs.php.dist:661
+msgid "Direction left to right"
+msgstr "Ezkerretik eskuinera"
+
+#: config/prefs.php.dist:662
+msgid "Direction right to left"
+msgstr "Eskuinetik ezkerrera"
+
+#: config/prefs.php.dist:283
+msgid "Display Virtual Inbox?"
+msgstr "Sarrerako ontzi birtuala bistaratu?"
+
+#: config/prefs.php.dist:565
+msgid "Display confirmation after sending a message?"
+msgstr "Erakutsi berrespena mezua bidali ondoren?"
+
+#: config/prefs.php.dist:938
+msgid "Display in Body of Message"
+msgstr "Erakutsi mezuaren gorputzean"
+
+#: config/prefs.php.dist:1072
+msgid "Display pop-up notification of new mail?"
+msgstr "Bistaratu mezu berrien pop-up jakinarazpena?"
+
+#: config/prefs.php.dist:1037
+msgid "Display the \"Empty Spam\" link in the menubar?"
+msgstr "Bistaratu \"Hustu mezu baztergarriak\" esteka menu-barran?"
+
+#: config/prefs.php.dist:1029
+msgid "Display the \"Empty Trash\" link in the menubar?"
+msgstr "Bistaratu \"Hustu zakarrontzia\" esteka menu-barran?"
+
+#: templates/compose/compose.html:332
+msgid "Disposition:"
+msgstr "Antolaera:"
+
+#: templates/search/search.html:87
+msgid "Do NOT match"
+msgstr "Ez parekatu"
+
+#: templates/folders/actions.html:30
+msgid "Do Not Check for New Mail"
+msgstr "Ez begiratu mezu berririk dagoen"
+
+#: config/prefs.php.dist:1243
+msgid "Do not generate a link in the From: column"
+msgstr "Ez sortu esteka bat Nork: zutabean"
+
+#: templates/javascript_defs.php:30
+msgid "Doing so will discard this message permanently."
+msgstr "Hori eginez gero, mezua behin betiko baztertuko da."
+
+#: login.php:430
+msgid "Don't have an account? Sign up."
+msgstr "Ez duzu konturik? Erregistratu."
+
+#: templates/folders/actions.html:34
+msgid "Download"
+msgstr "Deskargatu"
+
+#: lib/MIME/Contents.php:250
+#, php-format
+msgid "Download %s in .zip Format"
+msgstr "Deskargatu %s .zip formatuan"
+
+#: message.php:680
+msgid "Download All Attachments (in .zip file)"
+msgstr "Deskargatu eranskin guztiak (.zip fitxategian)"
+
+#: templates/folders/actions.html:35
+msgid "Download [.zip format]"
+msgstr "Deskargatu [.zip formatua]"
+
+#: lib/MIME/Contents.php:250
+msgid "Download in .zip Format"
+msgstr "Deskargatu .zip formatuan"
+
+#: message.php:478 mailbox.php:769 templates/message/navbar_navigate.html:14
+#: templates/mailbox/navbar.html:22 templates/mailbox/navbar.html:40
+msgid "Draft"
+msgstr "Zirriborroa"
+
+#: lib/IMAP/Tree.php:1993
+msgid "Draft folder"
+msgstr "Zirriborroen karpeta"
+
+#: config/prefs.php.dist:301
+msgid "Drafts"
+msgstr "Zirriborroak"
+
+#: templates/prefs/folderselect.inc:19
+msgid "Drafts folder:"
+msgstr "Zirriborroen karpeta:"
+
+#: login.php:266
+msgid "Dynamic"
+msgstr "Dinamikoa"
+
+#: templates/pgp/pgp.html:102
+msgid "E-mail Address:"
+msgstr "Helbide elektronikoa:"
+
+#: mailbox.php:834
+msgid "END"
+msgstr "AMAIERA"
+
+#: lib/MIME/Viewer/status.php:73
+msgid "ERROR: Your message could not be delivered."
+msgstr "ERROREA: ezin izan da mezua bidali."
+
+#: folders.php:430 templates/stationery/stationery.html:19
+msgid "Edit"
+msgstr "Editatu"
+
+#: mailbox.php:431
+msgid "Edit Search Query"
+msgstr "Editatu bilaketa-kontsulta"
+
+#: folders.php:430 templates/search/search.html:17
+msgid "Edit Virtual Folder"
+msgstr "Editatu karpeta birtuala"
+
+#: mailbox.php:427
+#, php-format
+msgid "Edit Virtual Folder Definition for %s"
+msgstr "Editatu %s(r)en Karpeta Birtualaren Definizioa"
+
+#: filterprefs.php:91
+msgid "Edit your Blacklist"
+msgstr "Editatu zerrenda beltza"
+
+#: filterprefs.php:90
+msgid "Edit your Filter Rules"
+msgstr "Editatu iragazki-arauak"
+
+#: filterprefs.php:92
+msgid "Edit your Whitelist"
+msgstr "Editatu zerrenda zuria"
+
+#: config/prefs.php.dist:1145
+msgid "Edit your preferences for accessing other mail accounts."
+msgstr "Editatu beste posta-kontu batzuk atzitzeko hobespenak."
+
+#: lib/Message.php:807
+#, php-format
+msgid "Emptied all messages from %s."
+msgstr "%s  -- mezu guztiak hustuta"
+
+#: lib/Message.php:783
+msgid "Emptied all messages from Virtual Trash Folder."
+msgstr "Zakarrontzi-karpeta birtualeko mezu guztiak hustuta."
+
+#: templates/folders/actions.html:20
+msgid "Empty"
+msgstr "Hustu"
+
+#: templates/folders/folders_confirm.html:23
+msgid "Empty Selected Folders"
+msgstr "Hustu hautatutako karpetak"
+
+#: lib/IMP.php:859
+msgid "Empty _Spam"
+msgstr "Hustu _mezu baztergarriak"
+
+#: lib/IMP.php:851
+msgid "Empty _Trash"
+msgstr "Hustu _zakarrontzia"
+
+#: mailbox.php:424
+msgid "Empty folder"
+msgstr "Karpeta hutsa"
+
+#: pgp.php:472 templates/pgp/pgp.html:2
+msgid "Enable PGP functionality?"
+msgstr "Gaitu PGP funtzionalitatea?"
+
+#: smime.php:358 templates/smime/smime.html:2
+msgid "Enable S/MIME functionality?"
+msgstr "Gaitu S/MIME funtzionalitatea?"
+
+#: config/prefs.php.dist:1096
+msgid "Enable message previews?"
+msgstr "Gaitu mezu-aurrebista?"
+
+#: compose.php:1153
+msgid "Encr_yption Options"
+msgstr "En_kriptatze-aukerak"
+
+#: lib/Compose.php:1815
+msgid "End forwarded message"
+msgstr "Amaitu birbidalitako mezua"
+
+#: lib/Compose.php:1705
+msgid "End message"
+msgstr "Amaitu mezua"
+
+#: lib/Compose.php:1703
+#, php-format
+msgid "End message from %s"
+msgstr "Amaitu %s(e)ko mezua"
+
+#: lib/MIME/Viewer/itip.php:608 lib/MIME/Viewer/itip.php:610
+#: lib/MIME/Viewer/itip.php:784 lib/MIME/Viewer/itip.php:786
+msgid "End:"
+msgstr "Amaitu:"
+
+#: smime.php:346 pgp.php:447
+msgid "Enter Passphrase"
+msgstr "Idatzi pasaesaldia"
+
+#: templates/prefs/spamselect.inc:8
+msgid "Enter the name for your new Spam folder"
+msgstr "Idatzi mezu baztergarrien karpeta berriaren izena"
+
+#: templates/prefs/folderselect.inc:8
+msgid "Enter the name for your new drafts folder"
+msgstr "Idatzi zirriborroen karpeta berriaren izena"
+
+#: templates/prefs/sentmailselect.inc:22
+msgid "Enter the name for your new sent mail folder"
+msgstr "Idatzi bidalitako mezuen karpeta berriaren izena"
+
+#: templates/prefs/trashselect.inc:8
+msgid "Enter the name for your new trash folder"
+msgstr "Idatzi zakarrontzi-karpeta berriaren izena"
+
+#: message.php:569 lib/Search.php:741 config/prefs.php.dist:763
+msgid "Entire Message"
+msgstr "Mezu osoa"
+
+#: message.php:175 thread.php:71 lib/Compose.php:1139
+#, php-format
+msgid "Entry \"%s\" was successfully added to the address book"
+msgstr "\"%s\" sarrera behar bezala gehitu da helbide-liburuan"
+
+#: lib/MIME/Viewer/pkcs7.php:444 lib/MIME/Viewer/pgp.php:453
+#: lib/MIME/Viewer/status.php:71 lib/MIME/Viewer/status.php:162
+msgid "Error"
+msgstr "Errorea"
+
+#: lib/IMAP/Client.php:305 lib/IMAP/Client.php:325
+#, php-format
+msgid "Error connecting to IMAP server: [%s] %s."
+msgstr "Errorea IMAP zerbitzariarekin konektatzean: [%s] %s."
+
+#: lib/MIME/Contents.php:150
+msgid "Error displaying message."
+msgstr "Errorea mezua bistaratzean."
+
+#: lib/MIME/Viewer/itip.php:340 lib/MIME/Viewer/itip.php:446
+#, php-format
+msgid "Error sending reply: %s."
+msgstr "Errorea erantzuna bidaltzean: %s."
+
+#: templates/smime/smime.html:29 templates/pgp/pgp.html:37
+msgid "Error:"
+msgstr "Errorea:"
+
+#: lib/MIME/Viewer/itip.php:103
+msgid "Event successfully deleted."
+msgstr "Gertaera behar bezala ezabatu da."
+
+#: config/prefs.php.dist:1061
+msgid "Every 15 minutes"
+msgstr "15 minutuz behin"
+
+#: config/prefs.php.dist:1058
+msgid "Every 30 seconds"
+msgstr "30 segundoz behin"
+
+#: config/prefs.php.dist:824 config/prefs.php.dist:1060
+msgid "Every 5 minutes"
+msgstr "5 minutuz behin"
+
+#: config/prefs.php.dist:1062
+msgid "Every half hour"
+msgstr "Ordu erdiz behin"
+
+#: config/prefs.php.dist:1059
+msgid "Every minute"
+msgstr "Minutuan behin"
+
+#: folders.php:475
+msgid "Expand"
+msgstr "Zabaldu"
+
+#: folders.php:398
+msgid "Expand All"
+msgstr "Zabaldu denak"
+
+#: folders.php:398
+msgid "Expand All Folders"
+msgstr "Zabaldu karpeta guztiak"
+
+#: folders.php:475
+msgid "Expand Folder"
+msgstr "Zabaldu karpeta"
+
+#: compose.php:828 compose.php:1080
+msgid "Expand Names"
+msgstr "Zabaldu izenak"
+
+#: config/prefs.php.dist:1271
+msgid "Expand the entire folder tree by default in the folders view?"
+msgstr "Zabaldu karpeta-zuhaitz osoa lehenespenez karpeten ikuspegian?"
+
+#: config/prefs.php.dist:1293
+msgid "Expand the entire folder tree by default in the sidebar?"
+msgstr "Zabaldu karpeta-zuhaitz osoa lehenespenez alboko barran?"
+
+#: config/prefs.php.dist:601
+msgid "FCKeditor"
+msgstr "FCKeditor"
+
+#: lib/IMP.php:870 lib/IMP.php:872
+msgid "F_etch Mail"
+msgstr "H_artu mezuak"
+
+#: fetchmail.php:50 config/prefs.php.dist:139
+#: templates/fetchmail/fetchmail.html:6 templates/fetchmail/fetchmail.html:30
+msgid "Fetch Mail"
+msgstr "Mezuak hartzea"
+
+#: config/prefs.php.dist:1153
+msgid "Fetch Mail in a separate window?"
+msgstr "Hartu mezuak beste leiho batean?"
+
+#: templates/fetchmail/fetchmailprefs.html:89
+msgid "Fetch messages upon logging on?"
+msgstr "Hartu mezuak konektatutakoan?"
+
+#: lib/Fetchmail.php:285
+#, php-format
+msgid "Fetched %d messages from %s"
+msgstr "%d mezu hartu dira %s(e)tik"
+
+#: lib/Fetchmail.php:283
+#, php-format
+msgid "Fetched 1 message from %s"
+msgstr "Mezu bat hartu da %s(e)tik"
+
+#: lib/Fetchmail.php:281 lib/Fetchmail.php:283 lib/Fetchmail.php:285
+msgid "Fetchmail: "
+msgstr "Fetchmail: "
+
+#: lib/Fetchmail.php:287
+msgid "Fetchmail: no new messages."
+msgstr "Fetchmail: mezu berririk ez."
+
+#: lib/IMP.php:876
+msgid "Fi_lters"
+msgstr "I_ragazkiak"
+
+#: templates/prefs/sourceselect.inc:329
+msgid "Fields to search"
+msgstr "Bilatzeko eremuak"
+
+#: templates/javascript_defs.php:35 templates/compose/compose.html:271
+msgid "File"
+msgstr "Fitxategia"
+
+#: templates/filters/prefs.html:2
+msgid "Filter Settings"
+msgstr "Iragazteko ezarpenak"
+
+#: config/prefs.php.dist:839
+msgid "Filter message content for profanity?"
+msgstr "Iragazi mezuaren edukia biraoen arabera?"
+
+#: templates/filters/prefs.html:7
+msgid "Filter support is disabled on this system."
+msgstr "Iragazki-euskarria desgaituta dago sistema honetan."
+
+#: config/prefs.php.dist:161
+msgid "Filters"
+msgstr "Iragazkiak"
+
+#: lib/Filter.php:130
+#, php-format
+msgid "Filters: %s management page"
+msgstr "Iragazkiak: %s kudeaketa-orria"
+
+#: templates/contacts/contacts.html:13
+msgid "Find:"
+msgstr "Bilatu:"
+
+#: config/prefs.php.dist:1189
+msgid "First Mailbox Page"
+msgstr "Postontziko lehen orria"
+
+#: mailbox.php:278
+msgid "First Page"
+msgstr "Lehen orria"
+
+#: message.php:479 mailbox.php:774 templates/message/navbar_navigate.html:10
+#: templates/mailbox/navbar.html:16 templates/mailbox/navbar.html:32
+msgid "Flagged For Followup"
+msgstr "Segimendurako markatuta"
+
+#: lib/Search.php:807
+msgid "Flagged messages"
+msgstr "Markatutako mezuak"
+
+#: message.php:568 mailbox.php:533
+msgid "Fo_rward"
+msgstr "Bir_bidali"
+
+#: lib/IMAP/Tree.php:2038 templates/folders/folders_size.html:6
+msgid "Folder"
+msgstr "Karpeta"
+
+#: folders.php:273 templates/folders/folders_confirm.html:6
+msgid "Folder Actions - Confirmation"
+msgstr "Karpeta-ekintzak - Berrespena"
+
+#: folders.php:336 templates/prefs/initialpageselect.inc:11
+#: templates/folders/head.html:2
+msgid "Folder Navigator"
+msgstr "Karpeta-nabigatzailea"
+
+#: folders.php:293 templates/folders/folders_size.html:1
+msgid "Folder Sizes"
+msgstr "Karpeta-tamainak"
+
+#: lib/Block/summary.php:3
+msgid "Folder Summary"
+msgstr "Karpeta-laburpena"
+
+#: acl.php:25
+msgid "Folder sharing is not enabled."
+msgstr "Karpeta-partekatzea ez dago gaituta."
+
+#: folders.php:46
+msgid "Folder use is not enabled."
+msgstr "Karpeta-erabilera ez dago gaituta."
+
+#: config/prefs.php.dist:630
+msgid "Font Color"
+msgstr "Letra-tipoaren kolorea"
+
+#: config/prefs.php.dist:1260
+msgid "Format of message dates in the mailbox view for messages dated today"
+msgstr ""
+"Mezuetako daten formatua sarrerako ontziaren ikuspegian gaurko mezuetarako"
+
+#: message.php:568 mailbox.php:533 lib/Compose.php:1798
+msgid "Forward"
+msgstr "Birbidali"
+
+#: lib/Compose.php:1784
+msgid "Forward:"
+msgstr "Birbidali:"
+
+#: lib/Compose.php:1899
+msgid "Forwarded Message:"
+msgstr "Birbidalitako mezua:"
+
+#: lib/Compose.php:1811
+msgid "Forwarded message"
+msgstr "Birbidalitako mezua"
+
+#: lib/Compose.php:1809
+#, php-format
+msgid "Forwarded message from %s"
+msgstr "%s(e)tik birbidalitako mezua"
+
+#: lib/MIME/Viewer/itip.php:437
+msgid "Free/Busy Request Response"
+msgstr "Libre/lanpetuta eskaeraren erantzuna"
+
+#: mailbox.php:592
+msgid "Fro_m"
+msgstr "Nor_k"
+
+#: lib/Search.php:711 lib/UI/Mailbox.php:99 lib/UI/Message.php:25
+#: templates/compose/compose.html:27
+msgid "From"
+msgstr "Nork"
+
+#: config/prefs.php.dist:1202
+msgid "From Address"
+msgstr "Bidaltzailearen helbidea"
+
+#: templates/thread/thread.html:31
+msgid "From:"
+msgstr "Nork:"
+
+#: templates/saveimage/saveimage.html:12
+msgid "Gallery"
+msgstr "Galeria"
+
+#: config/prefs.php.dist:14 config/prefs.php.dist:24 config/prefs.php.dist:34
+#: config/prefs.php.dist:42
+msgid "General Options"
+msgstr "Aukera orokorrak"
+
+#: templates/fetchmail/fetchmailprefs.html:80
+msgid "Get only new messages? (IMAP only)"
+msgstr "Mezu berriak bakarrik hartu? (IMAP soilik)"
+
+#: folders.php:385 lib/MIME/Viewer/itip.php:650 lib/MIME/Viewer/itip.php:860
+#: lib/MIME/Viewer/itip.php:991
+msgid "Go"
+msgstr "Joan"
+
+#: thread.php:140
+msgid "Go to Message"
+msgstr "Joan mezura"
+
+#: templates/newmsg/alert.html:11
+msgid "Go to Virtual Inbox"
+msgstr "Joan zure sarrerako ontzira..."
+
+#: lib/IMP.php:404
+#, php-format
+msgid "Go to address book entry of \"%s\""
+msgstr "Joan helbide-liburuko \"%s\" sarrerara"
+
+#: message.php:447 lib/Filter.php:130 lib/MIME/Contents.php:449
+#: lib/MIME/Viewer/images.php:90 lib/MIME/Viewer/images.php:97
+#: lib/MIME/Viewer/images.php:99 lib/MIME/Viewer/notification.php:60
+#: lib/MIME/Viewer/notification.php:67 lib/MIME/Viewer/related.php:85
+#: lib/MIME/Viewer/pkcs7.php:487 lib/MIME/Viewer/appledouble.php:48
+#: lib/MIME/Viewer/status.php:119 lib/MIME/Viewer/status.php:128
+msgid "HERE"
+msgstr "HEMEN"
+
+#: lib/MIME/Viewer/related.php:86 templates/stationery/stationery.html:32
+msgid "HTML"
+msgstr "HTML"
+
+#: lib/Compose.php:477
+msgid "HTML Version of Message"
+msgstr "Mezuaren HTML bertsioa"
+
+#: message.php:619
+msgid "Headers"
+msgstr "Goiburuak"
+
+#: config/prefs.php.dist:664
+msgid "Help using editor"
+msgstr "Editorea erabiltzeko laguntza"
+
+#: templates/login/recompose.html:7
+msgid "Here is the message you were composing:"
+msgstr "Hona hemen idazten ari zinen mezua:"
+
+#: config/prefs.php.dist:912
+msgid "Hidden"
+msgstr "Ezkutatuta"
+
+#: config/prefs.php.dist:910
+msgid "Hidden in List Messages"
+msgstr "Mezu-zerrendan ezkutatuta"
+
+#: config/prefs.php.dist:909
+msgid "Hidden in Thread View"
+msgstr "Hari-ikuspegian ezkutatuta"
+
+#: config/prefs.php.dist:911
+msgid "Hidden in Thread View and List Messages"
+msgstr "Hari-ikuspegian eta mezu-zerrendan ezkutatuta"
+
+#: mailbox.php:259
+msgid "Hide Deleted"
+msgstr "Ezkutatu ezabatutakoak"
+
+#: folders.php:391
+msgid "Hide Unsubscribed"
+msgstr "Ezkutatu harpidetu gabeak"
+
+#: compose.php:1042
+msgid "High"
+msgstr "Handia"
+
+#: message.php:293
+msgid "High Priority"
+msgstr "Lehentasun handia"
+
+#: compose.php:1041
+msgid "Highest"
+msgstr "Handiena"
+
+#: config/prefs.php.dist:643
+msgid "Horizontal Rule"
+msgstr "Marra horizontala"
+
+#: config/prefs.php.dist:940
+msgid "How do you want to display attachments?"
+msgstr "Nola ikusi nahi dituzu eranskinak?"
+
+#: config/prefs.php.dist:1281
+msgid "How should namespaces be displayed in the folder tree view?"
+msgstr "Nola nahi duzu bistaratzea izen-lekuak karpeta-zuhaitzaren ikuspegian?"
+
+#: config/prefs.php.dist:792
+msgid "How to attribute quoted lines in a reply"
+msgstr "Nola nabarmendu aipatutako lerroak erantzun batean"
+
+#: lib/IMAP.php:309
+msgid "IMAP"
+msgstr "IMAP"
+
+#: lib/Fetchmail/imap.php:97
+msgid "IMAP (Auto Detect Protocols)"
+msgstr "IMAP (Automatikoki detektatu protokoloak)"
+
+#: lib/IMAP.php:315
+msgid "IMAP (self-signed certificate)"
+msgstr "IMAP (norberak sinatutako ziurtagiria)"
+
+#: lib/IMAP/Client.php:200
+#, php-format
+msgid "IMAP Server closed the connection. Server Responded: %s"
+msgstr "IMAP zerbitzariak konexioa itxi du. Zerbitzariaren erantzuna: %s"
+
+#: lib/IMAP.php:327
+msgid "IMAP over SSL"
+msgstr "IMAP SSLren gain"
+
+#: lib/IMAP.php:333
+msgid "IMAP over SSL (self-signed certificate)"
+msgstr "IMAP SSLren gain (norberak sinatutako ziurtagiria)"
+
+#: lib/IMAP.php:321
+msgid "IMAP, no TLS"
+msgstr "IMAP, TLSrik ez"
+
+#: lib/Fetchmail/imap.php:47
+msgid "IMAP/POP3 Mail Servers"
+msgstr "IMAP/POP3 posta-zerbitzariak"
+
+#: lib/IMAP/Client.php:285
+msgid "If using SSL or TLS, you must have the PHP openssl extension loaded."
+msgstr ""
+"SSL edo TLS erabiltzen ari bazara, PHP openssl hedapena kargatuta eduki "
+"behar duzu."
+
+#: templates/folders/folders_confirm.html:13
+msgid "If you continue, all messages in the folder(s) will be lost!"
+msgstr "Jarraitzen baduzu, karpetetako mezu guztiak galduko dituzu!"
+
+#: saveimage.php:48
+msgid "Image"
+msgstr "Irudia"
+
+#: lib/MIME/Viewer/html.php:160
+msgid "Images have been blocked to protect your privacy."
+msgstr "Irudiak blokeatu dira zure pribatutasuna babesteko."
+
+#: templates/folders/import.html:17
+msgid "Import"
+msgstr "Inportatu"
+
+#: templates/smime/import_key.html:69 templates/pgp/import_key.html:48
+msgid "Import Key"
+msgstr "Inportatu gakoa"
+
+#: templates/smime/smime.html:81 templates/pgp/pgp.html:131
+msgid "Import Keypair"
+msgstr "Inportatu gako-parea"
+
+#: templates/folders/actions.html:37
+msgid "Import Messages"
+msgstr "Inportatu mezuak"
+
+#: pgp.php:50
+msgid "Import PGP Key"
+msgstr "Inportatu PGP gakoa"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Personal Private PGP Key"
+msgstr "Inportatu PGP gako pribatu pertsonala"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Personal Private PGP Key Here:"
+msgstr "Inportatu PGP gako pribatu pertsonala hemen:"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Personal Public PGP Key"
+msgstr "Inportatu PGP gako publiko pertsonala"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Personal Public PGP Key Here:"
+msgstr "Inportatu PGP gako publiko pertsonala hemen:"
+
+#: templates/smime/import_key.html:11
+msgid "Import Personal S/MIME Certificates"
+msgstr "Inportatu S/MIME ziurtagiri pertsonalak"
+
+#: templates/smime/smime.html:47 templates/pgp/pgp.html:55
+msgid "Import Public Key"
+msgstr "Inportatu gako publikoa"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Public PGP Key"
+msgstr "Inportatu PGP gako publikoa"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Public PGP Key Here:"
+msgstr "Inportatu PGP gako publikoa hemen:"
+
+#: templates/smime/import_key.html:11
+msgid "Import Public S/MIME Key"
+msgstr "Inportatu S/MIME gako publikoa"
+
+#: smime.php:16
+msgid "Import S/MIME Key"
+msgstr "Inportatu S/MIME gakoa"
+
+#: templates/folders/import.html:7
+msgid "Import mbox File"
+msgstr "Inportatu mbox fitxategia"
+
+#: templates/folders/import.html:12
+msgid "Import mbox file"
+msgstr "Inportatu mbox fitxategia"
+
+#: folders.php:150
+#, php-format
+msgid "Imported %d messages from %s."
+msgstr "%d mezu inportatu dira %s(e)tik."
+
+#: pgp.php:179
+msgid ""
+"Imported key contains your PGP private key. Only add your public key in the "
+"first step!"
+msgstr ""
+"Inportatutako gakoak zure PGP gako pribatua dauka. Gako publikoa bakarrik "
+"gehitu lehen urratsean!"
+
+#: lib/MIME/Viewer/itip.php:1029
+msgid "In Process"
+msgstr "Egiten ari da"
+
+#: templates/prefs/initialpageselect.inc:4 lib/Folder.php:68 lib/api.php:293
+#: lib/IMP.php:732 lib/IMP.php:742 lib/IMAP/Tree.php:410
+#: lib/IMAP/Tree.php:1976
+msgid "Inbox"
+msgstr "Sarrerako ontzia"
+
+#: config/prefs.php.dist:780
+msgid "Include a brief summary of the header in a reply?"
+msgstr "Goiburuaren laburpena sartu erantzunean?"
+
+#: config/prefs.php.dist:775
+msgid "Include body text in forward message by default?"
+msgstr "Gorputz-testua birbidaltzeko mezuan sartu lehenespenez?"
+
+#: config/prefs.php.dist:746
+msgid "Include original message in a reply?"
+msgstr "Jatorrizko mezua sartu erantzunean?"
+
+#: config/prefs.php.dist:642
+msgid "Increase Indent"
+msgstr "Handitu koska"
+
+#: lib/MIME/Viewer/notification.php:59 lib/MIME/Viewer/status.php:131
+msgid "Info"
+msgstr "Informazioa"
+
+#: smime.php:319 pgp.php:418
+#, php-format
+msgid "Information on %s Public Key"
+msgstr "%s(r)en gako publikoari buruzko informazioa"
+
+#: pgp.php:449
+msgid "Information on Personal Private Key"
+msgstr "Gako pribatu pertsonalari buruzko informazioa"
+
+#: smime.php:344 pgp.php:443
+msgid "Information on Personal Public Key"
+msgstr "Gako publiko pertsonalari buruzko informazioa"
+
+#: templates/javascript_defs.php:37 templates/compose/compose.html:277
+#: templates/compose/compose.html:336
+msgid "Inline"
+msgstr "Barnean"
+
+#: lib/IMAP/ACL/rfc4314.php:53 lib/IMAP/ACL/rfc2086.php:53
+msgid "Insert"
+msgstr "Txertatu"
+
+#: templates/smime/import_key.html:19
+msgid "Insert Certificate Here:"
+msgstr "Sartu ziurtagiria hemen:"
+
+#: config/prefs.php.dist:646
+msgid "Insert Table"
+msgstr "Txertatu taula"
+
+#: config/prefs.php.dist:644
+msgid "Insert Web Link"
+msgstr "Txertatu web-esteka"
+
+#: config/prefs.php.dist:645
+msgid "Insert/Modify Image"
+msgstr "Txertatu/aldatu irudia"
+
+#: config/prefs.php.dist:654
+msgid "Insert/Overwrite"
+msgstr "Txertatu/gainidatzi"
+
+#: lib/MIME/Viewer/itip.php:451
+msgid "Invalid Action selected for this component."
+msgstr "Ekintza baliogabea hautatu duzu osagai honentzat."
+
+#: lib/UI/Mailbox.php:62 lib/UI/Mailbox.php:113
+msgid "Invalid Address"
+msgstr "Helbide baliogabea"
+
+#: lib/Fetchmail/imap.php:225
+msgid "Invalid Remote Mailbox"
+msgstr "Urruneko postontzi baliogabea"
+
+#: lib/Compose.php:1189 lib/Compose.php:1204 lib/Compose.php:1216
+#: lib/Compose.php:1231
+#, php-format
+msgid "Invalid character in e-mail address: %s."
+msgstr "Karaktere baliogabea helbide elektronikoan: %s."
+
+#: lib/Compose.php:1181
+#, php-format
+msgid "Invalid e-mail address: %s."
+msgstr "Helbide elektroniko ez da baliozkoa: %s."
+
+#: lib/Compose.php:1200 lib/Compose.php:1227
+msgid "Invalid hostname."
+msgstr "Ostalari-izena ez da baliozkoa:"
+
+#: smime.php:101 pgp.php:18
+msgid "Invalid key"
+msgstr "Gakoa ez da baliozkoa"
+
+#: lib/Compose.php:296
+msgid "Invalid message, cannot resume draft."
+msgstr "Mezua ez da baliozkoa, ezin da zirriborroarekin jarraitu."
+
+#: pgp.php:215
+msgid "Invalid personal PGP private key."
+msgstr "PGP gako pribatu pertsonala ez da baliozkoa."
+
+#: pgp.php:191
+msgid "Invalid personal PGP public key."
+msgstr "PGP gako publiko pertsonala ez da baliozkoa."
+
+#: templates/mailbox/navbar.html:12
+msgid "Invert"
+msgstr "Alderantzikatu"
+
+#: config/prefs.php.dist:627
+msgid "Italic"
+msgstr "Etzana"
+
+#: config/prefs.php.dist:636
+msgid "Justify Center"
+msgstr "Lerrokatu erdian"
+
+#: config/prefs.php.dist:638
+msgid "Justify Full"
+msgstr "Lerrokatze osoa"
+
+#: config/prefs.php.dist:635
+msgid "Justify Left"
+msgstr "Lerrokatu ezkerrean"
+
+#: config/prefs.php.dist:637
+msgid "Justify Right"
+msgstr "Lerrokatu eskuinean"
+
+#: templates/compose/compose.html:317 templates/compose/compose.html:325
+msgid "KB"
+msgstr "KB"
+
+#: templates/pgp/pgp.html:107
+msgid "Key Length:"
+msgstr "Gako-luzera:"
+
+#: pgp.php:463
+msgid ""
+"Key generation may take a long time to complete.  Continue with key "
+"generation?"
+msgstr ""
+"Gakoen sorrerak denbora asko iraun dezake.  Jarraitu gako-sorrerarekin?"
+
+#: templates/smime/smime.html:42 templates/pgp/pgp.html:50
+msgid "Key import is not available. File upload is not enabled on this server."
+msgstr ""
+"Gako-inportazioa ez dago erabilgarri. Fitxategi-kargatzea ez dago gaituta "
+"zerbitzari honetan."
+
+#: templates/smime/smime.html:45 templates/pgp/pgp.html:53
+msgid ""
+"Key import is not available. You have no address book defined to add your "
+"contacts."
+msgstr ""
+"Gako-inportazioa ez dago erabilgarri. Ez daukazu helbide-libururik "
+"definituta kontaktuak gehitzeko."
+
+#: pgp.php:355
+msgid "Key successfully sent to the public keyserver."
+msgstr "Gakoa behar bezala bidali da gako-zerbitzari publikora."
+
+#: templates/login/login.html:116
+msgid "Language"
+msgstr "Hizkuntza"
+
+#: login.php:299
+msgid "Language:"
+msgstr "Hizkuntza:"
+
+#: config/prefs.php.dist:1190
+msgid "Last Mailbox Page"
+msgstr "Postontziko azken orria"
+
+#: mailbox.php:290
+msgid "Last Page"
+msgstr "Azken orria"
+
+#: compose.php:1197
+msgid "Link Attachments?"
+msgstr "Estekatu eranskinak?"
+
+#: attachment.php:35 lib/Compose.php:2604
+msgid "Linked attachments are forbidden."
+msgstr "Estekatutako eranskinak debekatuta daude."
+
+#: lib/Compose.php:2620
+#, php-format
+msgid "Links will expire on %s"
+msgstr "Estekak egun honetan iraungiko dira: %s"
+
+#: lib/IMAP/ACL/rfc4314.php:49 lib/IMAP/ACL/rfc2086.php:49
+msgid "List"
+msgstr "Zerrenda"
+
+#: config/prefs.php.dist:1379
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+"Zerrendatu kontaktu guztiak kontaktuen pantaila kargatzean? (desgaituz gero, "
+"esplizituki bilatutako kontaktuak bakarrik ikusiko dituzu)"
+
+#: config/prefs.php.dist:937
+msgid "Listing in the Header"
+msgstr "Zerrenda goiburuan"
+
+#: compose.php:813
+msgid "Loading..."
+msgstr "Kargatzen..."
+
+#: templates/fetchmail/fetchmailprefs.html:72
+msgid "Local Mailbox:"
+msgstr "Postontzi lokala:"
+
+#: lib/MIME/Viewer/itip.php:804
+msgid "Location"
+msgstr "Kokalekua"
+
+#: templates/login/mobile.inc:3 templates/login/mobile.inc:37
+msgid "Log in"
+msgstr "Hasi saioa"
+
+#: lib/Block/summary.php:45
+#, php-format
+msgid "Log in to %s"
+msgstr "Hasi saioa %s(e)n"
+
+#: login.php:426
+msgid "Login"
+msgstr "Saio-hasiera"
+
+#: config/prefs.php.dist:43
+msgid "Login Tasks"
+msgstr "Saio-hasierako atazak"
+
+#: compose.php:1044
+msgid "Low"
+msgstr "Txikia"
+
+#: message.php:297
+msgid "Low Priority"
+msgstr "Lehentasun txikia"
+
+#: compose.php:1045
+msgid "Lowest"
+msgstr "Txikiena"
+
+#: lib/MIME/Viewer/appledouble.php:51
+msgid "Macintosh File"
+msgstr "Macintosh fitxategia"
+
+#: config/prefs.php.dist:130
+msgid "Mail Previews"
+msgstr "Posta-aurrebistak"
+
+#: templates/fetchmail/fetchmailprefs.html:31
+msgid "Mail server type to connect to:"
+msgstr "Konektatzeko posta-zerbitzari mota:"
+
+#: lib/IMAP/Tree.php:1983 lib/IMAP/Tree.php:2010
+msgid "Mailbox"
+msgstr "Postontzia"
+
+#: config/prefs.php.dist:148
+msgid "Mailbox and Folder Display Options"
+msgstr "Postontziak eta karpetak bistaratzeko aukerak"
+
+#: lib/IMAP/ACL/rfc4314.php:52 lib/IMAP/ACL/rfc2086.php:52
+msgid "Mark (Other)"
+msgstr "Markatu (bestelakoa)"
+
+#: lib/IMAP/ACL/rfc4314.php:51 lib/IMAP/ACL/rfc2086.php:51
+msgid "Mark (Seen)"
+msgstr "Markatu (ikusita)"
+
+#: templates/folders/actions.html:32
+msgid "Mark All Messages as Seen"
+msgstr "Markatu mezu guztiak ikusitako gisa"
+
+#: templates/folders/actions.html:33
+msgid "Mark All Messages as Unseen"
+msgstr "Markatu mezu guztiak ikusi gabeko gisa"
+
+#: templates/message/navbar_navigate.html:6
+#: templates/message/navbar_navigate.html:8 templates/mailbox/navbar.html:27
+#: templates/mailbox/navbar.html:29
+msgid "Mark as:"
+msgstr "Markatu honela:"
+
+#: config/prefs.php.dist:892
+msgid "Mark different levels of quoting with different colors?"
+msgstr "Markatu aipamen-maila desberdinak kolore desberdinekin?"
+
+#: templates/fetchmail/fetchmailprefs.html:83
+msgid "Mark messages as seen? (IMAP only)"
+msgstr "Markatu mezuak ikusitako gisa? (IMAP soilik)"
+
+#: config/prefs.php.dist:900
+msgid "Mark simple markup?"
+msgstr "Markatu markaketa soila?"
+
+#: search.php:165
+msgid "Match All Queries"
+msgstr "Guztiak betetzen dituztenak"
+
+#: search.php:163
+msgid "Match Any Query"
+msgstr "Edozein betetzen dutenak"
+
+#: config/prefs.php.dist:622
+msgid "Maximize/Minimize Editor"
+msgstr "Maximizatu/Ikonotu editorea"
+
+#: templates/compose/compose.html:283
+msgid "Maximum Attachment Size"
+msgstr "Eranskinen gehieneko tamaina"
+
+#: lib/api.php:101
+msgid "Maximum Number of Folders"
+msgstr "Karpeten gehieneko kopurua"
+
+#: lib/api.php:102
+msgid "Maximum Number of Recipients per Message"
+msgstr "Gehieneko hartzaile kopurua mezuko"
+
+#: lib/api.php:103
+msgid "Maximum Number of Recipients per Time Period"
+msgstr "Gehieneko hartzaile kopurua epealdiko"
+
+#: templates/compose/compose.html:265
+msgid "Maximum number of attachments reached."
+msgstr "Eranskinen gehieneko kopurura heldu zara."
+
+#: templates/compose/compose.html:262
+msgid "Maximum total attachment size reached."
+msgstr "Eranskinen gehieneko tamainara heldu zara."
+
+#: lib/Block/tree_folders.php:3
+msgid "Menu Folder List"
+msgstr "Menu-karpeten zerrenda"
+
+#: lib/Compose.php:1696
+msgid "Message"
+msgstr "Mezua"
+
+#: config/prefs.php.dist:63
+msgid "Message Composition"
+msgstr "Mezu-idazketa"
+
+#: config/prefs.php.dist:1201
+msgid "Message Date"
+msgstr "Mezuaren data"
+
+#: config/prefs.php.dist:87
+msgid "Message Drafts"
+msgstr "Mezu-zirriborroak"
+
+#: config/prefs.php.dist:62 config/prefs.php.dist:78 config/prefs.php.dist:86
+#: config/prefs.php.dist:93 config/prefs.php.dist:108
+#: config/prefs.php.dist:121 config/prefs.php.dist:129
+#: config/prefs.php.dist:138
+msgid "Message Options"
+msgstr "Mezu-aukerak"
+
+#: config/prefs.php.dist:79
+msgid "Message Replies/Forwards"
+msgstr "Mezu-erantzunak/birbidaltzeak"
+
+#: search.php:338
+msgid "Message Search"
+msgstr "Mezu-bilaketa"
+
+#: config/prefs.php.dist:1205
+msgid "Message Size"
+msgstr "Mezuaren tamaina"
+
+#: message.php:589
+msgid "Message Source"
+msgstr "Mezuaren iturburua"
+
+#: config/prefs.php.dist:94
+msgid "Message Viewing"
+msgstr "Mezu-bistaratzea"
+
+#: lib/Compose.php:1694
+#, php-format
+msgid "Message from %s"
+msgstr "%s(r)en mezua"
+
+#: lib/UI/Mailbox.php:151
+msgid "Message has attachments"
+msgstr "Mezuak eranskinak ditu"
+
+#: lib/UI/Mailbox.php:150
+msgid "Message is encrypted"
+msgstr "Mezua enkriptatuta dago"
+
+#: lib/UI/Mailbox.php:149
+msgid "Message is signed"
+msgstr "Mezua sinatuta dago"
+
+#: compose.php:390 compose.php:397
+msgid "Message redirected successfully."
+msgstr "Mezua behar bezala birbideratu da."
+
+#: lib/Compose.php:834
+#, php-format
+msgid "Message sent successfully, but not saved to %s"
+msgstr "Mezua behar bezala bidali da, baina ez da gorde %s(e)n."
+
+#: compose.php:461 compose.php:469
+msgid "Message sent successfully."
+msgstr "Mezua behar bezala bidali da."
+
+#: config/prefs.php.dist:1232
+msgid "Messages per page in the mailbox view."
+msgstr "Orriko mezu kopurua postontzi-aurrebistan."
+
+#: mailbox.php:225
+msgid "Messages to"
+msgstr "Mezuak hona"
+
+#: login.php:270
+msgid "Minimalist"
+msgstr "Minimalista"
+
+#: templates/login/login.html:129
+msgid "Mode"
+msgstr "Modua"
+
+#: login.php:308
+msgid "Mode:"
+msgstr "Modua:"
+
+#: templates/search/search.html:93
+msgid "Month"
+msgstr "Hilabetea"
+
+#: message.php:519 message.php:706 mailbox.php:485 mailbox.php:894
+msgid "Move"
+msgstr "Lekuz aldatu"
+
+#: templates/prefs/sourceselect.inc:314
+msgid "Move down"
+msgstr "Eraman behera"
+
+#: config/prefs.php.dist:862
+msgid "Move spam messages to spam folder and innocent messages to INBOX"
+msgstr ""
+"Eraman mezu baztergarriak mezu baztergarrien karpetara eta baztergarriak ez "
+"direnak SARRERAKO ONTZIRA"
+
+#: message.php:519 message.php:706 mailbox.php:485 mailbox.php:894
+msgid "Move to folder"
+msgstr "Eraman karpeta honetara"
+
+#: templates/prefs/sourceselect.inc:312
+msgid "Move up"
+msgstr "Eraman gora"
+
+#: lib/MIME/Viewer/alternative.php:97
+msgid "Multipart/alternative"
+msgstr "Multipart/ordezkoa"
+
+#: thread.php:181
+msgid "Multiple Message View"
+msgstr "Hainbat Mezuren Ikuspegia"
+
+#: templates/thread/thread.html:2
+msgid "Multiple Message View:"
+msgstr "Hainbat Mezuren Ikuspegia:"
+
+#: templates/fetchmail/fetchmailprefs.html:91 templates/smime/smime.html:4
+#: templates/pgp/pgp.html:4
+msgid "NOTE:"
+msgstr "OHARRA:"
+
+#: lib/MIME/Viewer/itip.php:810 lib/MIME/Viewer/itip.php:942
+msgid "Name"
+msgstr "Izena"
+
+#: pgp.php:120
+msgid "Name and/or email cannot be empty"
+msgstr "Izena eta/edo helbide elektronikoak ezin dute hutsik egon"
+
+#: lib/MIME/Viewer/itip.php:1034
+msgid "Needs Action"
+msgstr "Ekintza behar du"
+
+#: config/prefs.php.dist:728 config/prefs.php.dist:1057
+msgid "Never"
+msgstr "Inoiz ez"
+
+#: config/prefs.php.dist:718
+msgid "Never save attachments"
+msgstr "Inoiz ez gorde eranskinak"
+
+#: lib/IMP.php:490
+msgid "New Folder"
+msgstr "Karpeta berria"
+
+#: config/prefs.php.dist:122
+msgid "New Mail"
+msgstr "Mezu berria"
+
+#: compose.php:33 compose.php:252 lib/Block/tree_folders.php:35
+msgid "New Message"
+msgstr "Mezu berria"
+
+#: mailbox.php:854 lib/MIME/Headers.php:212 lib/MIME/Headers.php:235
+#, php-format
+msgid "New Message to %s"
+msgstr "%s(r)entzako mezu berria"
+
+#: message.php:535
+msgid "Next Message"
+msgstr "Hurrengo mezua"
+
+#: mailbox.php:288
+msgid "Next Page"
+msgstr "Hurrengo orria"
+
+#: templates/javascript_defs.php:44 config/prefs.php.dist:823
+#: config/prefs.php.dist:1268 config/prefs.php.dist:1290
+#: templates/compose/compose.html:303
+msgid "No"
+msgstr "Ez"
+
+#: smime.php:246
+msgid "No Certificate found"
+msgstr "Ez da aurkitu ziurtagiririk"
+
+#: lib/IMP.php:1449
+msgid "No Encryption"
+msgstr "Enkriptatzerik ez"
+
+#: templates/smime/smime.html:26 templates/pgp/pgp.html:34
+msgid "No Keys in Keyring"
+msgstr "Ez dago gakorik gako sortan"
+
+#: rss.php:86 mailbox.php:267
+#, php-format
+msgid "No Messages"
+msgstr "Mezurik ez"
+
+#: pgp.php:147
+msgid "No PGP public key imported."
+msgstr "Ez da inportatu PGP gako publikorik."
+
+#: mailbox.php:815
+msgid "No Preview Text"
+msgstr "Ez dago aurrebistako testurik"
+
+#: smime.php:171
+msgid "No S/MIME public key imported."
+msgstr "Ez da inportatu S/MIME gako publikorik."
+
+#: templates/prefs/soundselect.inc:5
+msgid "No Sound"
+msgstr "Soinurik ez"
+
+#: lib/MIME/Viewer/tnef.php:91
+msgid "No attachments found."
+msgstr "Ez da aurkitu eranskinik."
+
+#: lib/Crypt/SMIME.php:131
+msgid "No email information located in the public key."
+msgstr "Ez dago helbide-informaziorik gako publikoan."
+
+#: acl.php:76
+msgid "No folder selected."
+msgstr "Ez da hautatu karpetarik."
+
+#: lib/Block/summary.php:134
+msgid "No folders are being checked for new mail."
+msgstr "Ez da ari begiratzen mezu berririk dagoen karpetetan."
+
+#: folders.php:210 lib/Folder.php:423 lib/Folder.php:471
+msgid "No folders were specified"
+msgstr "Ez da zehaztu karpetarik"
+
+#: lib/Block/summary.php:138
+msgid "No folders with new messages"
+msgstr "Ez dago mezu berririk duen karpetarik"
+
+#: lib/Block/summary.php:136
+msgid "No folders with unseen messages"
+msgstr "Ez dago ikusi gabeko mezurik duen karpetarik"
+
+#: lib/IMP.php:1048
+msgid "No limit"
+msgstr "Mugarik gabe"
+
+#: lib/Compose.php:1732
+msgid "No message body text"
+msgstr "Ez dago mezu-gorputzeko testurik"
+
+#: lib/IMAP/Client.php:476
+msgid "No message returned."
+msgstr "Ez da mezurik itzuli."
+
+#: mailbox.php:240
+msgid "No messages matched your search."
+msgstr "Ez dago zure bilaketarekin bat datorren mezurik."
+
+#: pgp.php:220
+msgid "No personal PGP private key imported."
+msgstr "Ez da inportatu PGP gako pribatu pertsonalik."
+
+#: pgp.php:196
+msgid "No personal PGP public key imported."
+msgstr "Ez da inportatu PGP gako publiko pertsonalik."
+
+#: smime.php:221
+msgid "No personal S/MIME certificates imported."
+msgstr "Ez da inportatu S/MIME ziurtagiri pertsonalik."
+
+#: lib/MIME/Viewer/pkcs7.php:305
+msgid ""
+"No personal private key exists so the message is unable to be decrypted."
+msgstr "Gako pribatu pertsonalik ez dagoenez, ezin da mezua desenkriptatu."
+
+#: lib/IMAP/Client.php:376
+msgid "No supported IMAP authentication method could be found."
+msgstr "Ez da aurkitu IMAP autentifikazio-metodo onarturik."
+
+#: acl.php:108
+msgid "No user specified."
+msgstr "Ez da zehaztu erabiltzailerik."
+
+#: lib/MIME/Viewer/itip.php:831 lib/MIME/Viewer/itip.php:963
+msgid "Non Participant"
+msgstr "Ez-partaidea"
+
+#: templates/prefs/folderselect.inc:21 templates/prefs/sentmailselect.inc:38
+#: templates/prefs/sourceselect.inc:35 templates/prefs/spamselect.inc:20
+#: templates/prefs/trashselect.inc:23 lib/MIME/Viewer/itip.php:794
+#: lib/MIME/Viewer/itip.php:925 templates/mailbox/navbar.html:11
+msgid "None"
+msgstr "Bat ere ez"
+
+#: compose.php:1043
+msgid "Normal"
+msgstr "Normala"
+
+#: templates/mailbox/navbar.html:21 templates/mailbox/navbar.html:38
+msgid "Not Deleted"
+msgstr "Ezabatu gabe"
+
+#: templates/message/navbar_navigate.html:15 templates/mailbox/navbar.html:23
+#: templates/mailbox/navbar.html:41
+msgid "Not Draft"
+msgstr "Ez-zirriborroa"
+
+#: templates/message/navbar_navigate.html:11 templates/mailbox/navbar.html:17
+#: templates/mailbox/navbar.html:33
+msgid "Not Flagged"
+msgstr "Markatu gabe"
+
+#: templates/mailbox/navbar.html:25
+msgid "Not Personal"
+msgstr "Ez-pertsonala"
+
+#: lib/Crypt/PGP.php:136 lib/Crypt/SMIME.php:125 lib/Crypt/SMIME.php:140
+msgid "Not a valid public key."
+msgstr "Ez da baliozko gako publikoa."
+
+#: config/prefs.php.dist:975
+msgid "Not at all"
+msgstr "Inola ere ez"
+
+#: lib/Maintenance/Task/fetchmail_login.php:70
+msgid "Note that this can take some time"
+msgstr "Kontuan izan denbora dezente iraun dezakeela"
+
+#: lib/IMP.php:542
+msgid "Notepads"
+msgstr "Ohar-blokak"
+
+#: config/hooks.php.dist:522
+msgid "Notes"
+msgstr "Oharrak"
+
+#: config/prefs.php.dist:855
+msgid "Nothing"
+msgstr "Ezer ez"
+
+#: attachment.php:109
+msgid "Notification: Linked attachment downloaded"
+msgstr "Jakinarazpena: estekatutako eranskina deskargatu da"
+
+#: config/prefs.php.dist:439
+msgid "Number of months to keep old linked attachments if deleting monthly."
+msgstr ""
+"Eranskin estekatu zaharrak gordetzeko hilabete kopurua, hilero ezabatuz gero."
+
+#: config/prefs.php.dist:393
+msgid "Number of old sent-mail folders to keep if deleting monthly."
+msgstr "Bidalitako mezu zaharren karpeten kopurua, hilero ezabatuz gero."
+
+#: templates/contacts/contacts.html:68
+msgid "OK"
+msgstr "Ados"
+
+#: templates/search/search.html:61 templates/smime/import_key.html:31
+#: templates/pgp/import_key.html:30
+msgid "OR"
+msgstr "OR"
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:51
+msgid "Old sent-mail folders being purged."
+msgstr "Bidalitako mezu zaharren karpetak betiko borratzen ari dira."
+
+#: lib/Block/summary.php:27
+msgid "Only display folders with unread messages in them?"
+msgstr "Irakurri gabeko mezuak dituzten karpetak bakarrik bistaratu?"
+
+#: templates/javascript_defs.php:53
+msgid "Only one folder should be selected for this action."
+msgstr "Karpeta bat bakarrik hautatu behar da ekintza honetarako."
+
+#: lib/IMP.php:927 lib/IMP.php:932
+msgid "Open Fo_lder"
+msgstr "Ireki kar_peta"
+
+#: lib/IMP.php:932
+msgid "Open Folder"
+msgstr "Ireki karpeta"
+
+#: lib/IMAP/Tree.php:2034
+msgid "Opened Folder"
+msgstr "Irekitako karpeta"
+
+#: lib/MIME/Viewer/itip.php:827 lib/MIME/Viewer/itip.php:959
+msgid "Optional Participant"
+msgstr "Aukerako partaidea"
+
+#: config/prefs.php.dist:639
+msgid "Ordered List"
+msgstr "Ordenatutako zerrenda"
+
+#: templates/fetchmail/fetchmailprefs.html:3
+msgid "Other Mail Accounts"
+msgstr "Beste posta-kontu batzuk"
+
+#: config/prefs.php.dist:147 config/prefs.php.dist:160
+#: config/prefs.php.dist:167 config/prefs.php.dist:175
+#: config/prefs.php.dist:184
+msgid "Other Options"
+msgstr "Beste aukera batzuk"
+
+#: lib/IMAP/Tree.php:72
+msgid "Other Users' Folders"
+msgstr "Beste erabiltzaile batzuen karpetak"
+
+#: lib/api.php:178 templates/login/login.html:103
+msgid "Outbound Server"
+msgstr "Kanporanzko zerbitzaria"
+
+#: pgp.php:44 lib/MIME/Viewer/pgp.php:165 lib/MIME/Viewer/pgp.php:213
+#: lib/MIME/Viewer/pgp.php:314
+msgid "PGP"
+msgstr "PGP"
+
+#: lib/IMP.php:1452
+msgid "PGP Encrypt Message"
+msgstr "PGP enkriptazioko mezua"
+
+#: lib/IMP.php:1457
+msgid "PGP Encrypt Message with passphrase"
+msgstr "PGP enkriptazioko mezua pasaesaldiarekin"
+
+#: lib/Compose.php:1406
+msgid "PGP Error: "
+msgstr "PGP errorea: "
+
+#: config/prefs.php.dist:176
+msgid "PGP Options"
+msgstr "PGP aukerak"
+
+#: pgp.php:30
+msgid "PGP Passphrase Input"
+msgstr "PGP pasaesaldiaren sarrera"
+
+#: templates/pgp/pgp.html:69
+msgid "PGP Personal Keypair support requires a secure web connection."
+msgstr "PGP gako-bikote pertsonalaren euskarriak web-konexio segurua behar du."
+
+#: pgp.php:159
+#, php-format
+msgid "PGP Public Key for \"%s (%s)\" was successfully added."
+msgstr "\"%s (%s)\"(r)en PGP gako publikoa behar bezala gehitu da."
+
+#: pgp.php:262
+#, php-format
+msgid "PGP Public Key for \"%s\" was successfully deleted."
+msgstr "\"%s\"(r)en PGP gako publikoa behar bezala ezabatu da."
+
+#: templates/pgp/pgp.html:29
+msgid "PGP Public Keyring"
+msgstr "PGP gako sorta publikoa"
+
+#: lib/IMP.php:1453
+msgid "PGP Sign Message"
+msgstr "PGP sinaduradun mezua"
+
+#: lib/IMP.php:1454
+msgid "PGP Sign/Encrypt Message"
+msgstr "PGP sinaduradun/enkriptatzedun mezua"
+
+#: lib/IMP.php:1458
+msgid "PGP Sign/Encrypt Message with passphrase"
+msgstr "PGP sinadura/enkriptazioko mezua pasaesaldiarekin"
+
+#: compose.php:733
+msgid ""
+"PGP encryption cannot be used by default as public keys cannot be found for "
+"all recipients."
+msgstr ""
+"PGP enkriptazioa ezin da erabili lehenespenez, ezin baitira aurkitu "
+"hartzaile guztien gako publikoak."
+
+#: pgp.php:210
+msgid "PGP private key successfully added."
+msgstr "PGP gako pribatua behar bezala gehitu da."
+
+#: pgp.php:185
+msgid "PGP public key successfully added."
+msgstr "PGP gako publikoa behar bezala gehitu da."
+
+#: templates/pgp/pgp.html:138
+msgid "PGP support is disabled on this system."
+msgstr "PGP euskarria desgaituta dago sistema honetan."
+
+#: templates/pgp/pgp.html:4
+msgid ""
+"PGP support requires popup windows to be used.  If your browser is currently "
+"set to disable popup windows, you must change this setting or else the PGP "
+"features will not work correctly."
+msgstr ""
+"PGP euskarriak leiho gainerakorrak erabiltzen ditu.  Zure arakatzaileak "
+"desgaituta baditu leiho gainerakorrak, ezarpen hori aldatu behar duzu edo "
+"bestela PGP eginbideak ez dira behar bezala ibiliko."
+
+#: lib/Compose.php:1366
+msgid "PGP: Need passphrase for personal private key."
+msgstr "PGP: gako pribatu pertsonalaren pasaesaldia behar da."
+
+#: lib/Compose.php:1375
+msgid "PGP: Need passphrase to encrypt your message with."
+msgstr "PGP: mezua enkriptatzeko pasaesaldia behar da."
+
+#: lib/IMAP.php:279
+msgid "POP3"
+msgstr "POP3"
+
+#: lib/Fetchmail/imap.php:92
+msgid "POP3 (Auto Detect Protocols)"
+msgstr "POP3 (automatikoki detektatu protokoloak)"
+
+#: lib/IMAP.php:285
+msgid "POP3 (self-signed certificate)"
+msgstr "POP3 (norberak sinatutako ziurtagiria)"
+
+#: lib/IMAP.php:297
+msgid "POP3 over SSL"
+msgstr "POP3 SSLren gain"
+
+#: lib/IMAP.php:303
+msgid "POP3 over SSL (self-signed certificate)"
+msgstr "POP3 SSLren gain (norberak sinatutako ziurtagiria)"
+
+#: lib/IMAP.php:291
+msgid "POP3, no TLS"
+msgstr "POP3, TLSrik ez"
+
+#: mailbox.php:440
+#, php-format
+msgid "Page %d of %d"
+msgstr "%d/%d orria"
+
+#: config/prefs.php.dist:1187
+msgid "Page with the First Unseen Message"
+msgstr "Ikusi gabeko lehen mezuaren orria"
+
+#: config/prefs.php.dist:1188
+msgid "Page with the Last Unseen Message"
+msgstr "Ikusi gabeko azken mezuaren orria"
+
+#: templates/mailbox/navbar.html:67
+msgid "Page:"
+msgstr "Orria:"
+
+#: message.php:687
+msgid "Part(s)"
+msgstr "Zatia(k)"
+
+#: templates/pgp/pgp.html:122
+msgid "Passphrase (Again):"
+msgstr "Pasaesaldia (berriro):"
+
+#: smime.php:255 pgp.php:347
+msgid "Passphrase successfully unloaded."
+msgstr "Pasaesaldia behar bezala ahaztu da."
+
+#: templates/smime/passphrase.html:21 templates/pgp/passphrase.html:19
+#: templates/pgp/pgp.html:117
+msgid "Passphrase:"
+msgstr "Pasaesaldia:"
+
+#: pgp.php:122
+msgid "Passphrases cannot be empty"
+msgstr "Pasaesaldiak ezin dira hutsik egon"
+
+#: pgp.php:124
+msgid "Passphrases do not match"
+msgstr "Pasaesaldiak ez datoz bat"
+
+#: lib/api.php:191 templates/login/login.html:92
+msgid "Password"
+msgstr "Pasahitza"
+
+#: templates/fetchmail/fetchmailprefs.html:59
+#: templates/smime/import_key.html:54
+msgid "Password:"
+msgstr "Pasahitza:"
+
+#: templates/login/mobile.inc:17
+msgid "Password: "
+msgstr "Pasahitza: "
+
+#: config/prefs.php.dist:653
+msgid "Paste from clipboard"
+msgstr "Itsatsi arbeleko edukia"
+
+#: message.php:465 mailbox.php:752 templates/mailbox/navbar.html:24
+msgid "Personal"
+msgstr "Pertsonala"
+
+#: config/prefs.php.dist:15
+msgid "Personal Information"
+msgstr "Informazio pertsonala"
+
+#: pgp.php:130
+msgid "Personal PGP keypair generated successfully."
+msgstr "PGP gako-bikote pertsonala behar bezala sortu da."
+
+#: pgp.php:137
+msgid "Personal PGP keys deleted successfully."
+msgstr "PGP gako pertsonalak behar bezala ezabatu dira."
+
+#: smime.php:227
+msgid "Personal S/MIME certificates NOT imported: "
+msgstr "S/MIME ziurtagiri pertsonalak EZ dira inportatu: "
+
+#: smime.php:152
+msgid "Personal S/MIME keys deleted successfully."
+msgstr "S/MIME gako pertsonalak behar bezala ezabatu dira."
+
+#: config/prefs.php.dist:247
+msgid "Place your signature before replies and forwards?"
+msgstr "Ipini zure sinadura erantzun eta birbidalketen aurretik?"
+
+#: lib/Compose.php:474
+msgid "Plaintext Version of Message"
+msgstr "Mezuaren testu soileko bertsioa"
+
+#: templates/prefs/soundselect.inc:3
+msgid ""
+"Play a sound on new mail?  This requires your browser to support embedded "
+"sound files.  Almost all do on Windows and Mac, but other platforms may "
+"require a plugin."
+msgstr ""
+"Jo soinua mezu berriak heltzean?  Horretarako kapsulatutako soinu-"
+"fitxategiak onartu behar ditu arakatzaileak.  Gehienek onartzen dituzte "
+"Windows-en eta Mac-en, baina litekeena da beste plataforma batzuetan plugin "
+"bat instalatu behar izatea."
+
+#: templates/javascript_defs.php:76
+msgid "Please enter a name for the new folder:"
+msgstr "Idatzi izen bat karpeta berriarentzat:"
+
+#: templates/javascript_defs.php:55 templates/javascript_defs.php:56
+msgid "Please enter the name of the new folder:"
+msgstr "Idatzi karpeta berriaren izena:"
+
+#: templates/javascript_defs.php:60
+msgid "Please enter the new name:"
+msgstr "Idatzi izen berria:"
+
+#: templates/pgp/passphrase.html:12
+msgid "Please enter the passphrase for this message."
+msgstr "Idatzi mezu honentzako pasaesaldia."
+
+#: templates/pgp/passphrase.html:14
+msgid ""
+"Please enter the passphrase for your PGP private key. You will only need to "
+"enter this passphrase once per session."
+msgstr ""
+"Idatzi PGP gako pribatuarentzako pasaesaldia. Pasaesaldi hau behin bakarrik "
+"idatzi beharko duzu sesioko."
+
+#: templates/smime/passphrase.html:15
+msgid ""
+"Please enter the passphrase for your S/MIME private key. You will only need "
+"to enter this passphrase once per session."
+msgstr ""
+"Idatzi S/MIME gako pribatuarentzako pasaesaldia. Pasaesaldi hau behin "
+"bakarrik idatzi beharko duzu sesioko."
+
+#: login.php:192
+msgid ""
+"Please log in again to resume composing your message. If you are NOT using "
+"cookies AND you are composing messages in popup windows, you will have to "
+"log in again in your main window as well. This is to keep attackers from "
+"hijacking your session ID. We apologize for any inconvenience."
+msgstr ""
+"Hasi berriro saioa mezua osatzen jarraitzeko. EZ baduzu cookie-rikerabiltzen "
+"ETA mezuak idazten ari bazara leiho gainerakorretan, berriro hasi beharko "
+"duzu saioa leiho nagusian ere. Erasotzaileei zure saioko IDa lortzea "
+"eragozteko da. Barka eragozpenak."
+
+#: templates/javascript_defs.php:71
+msgid "Please provide your password."
+msgstr "Idatzi pasahitza."
+
+#: templates/javascript_defs.php:70
+msgid "Please provide your username."
+msgstr "Idatzi erabiltzaile-izena."
+
+#: lib/Compose.php:2794 lib/UI/Compose.php:26
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Konpondu helbide anbiguoak edo baliogabeak."
+
+#: templates/javascript_defs.php:52
+msgid "Please select a folder before you perform this action."
+msgstr "Hautatu karpeta bat ekintza hau egin aurretik."
+
+#: templates/javascript_defs.php:64
+msgid "Please select at least one folder to search."
+msgstr "Hautatu gutxienez karpeta bat bilaketa egiteko."
+
+#: templates/compose/redirect.html:40
+msgid "Please select or edit in the box to the right:"
+msgstr "Hautatu edo editatu eskuineko koadroan:"
+
+#: config/prefs.php.dist:1301
+msgid "Poll all folders for new mail?"
+msgstr "Begiratu karpeta guztietan mezu berririk dagoen?"
+
+#: lib/api.php:169 templates/login/login.html:67
+msgid "Port"
+msgstr "Ataka"
+
+#: lib/IMAP/ACL/rfc4314.php:54 lib/IMAP/ACL/rfc2086.php:54
+msgid "Post"
+msgstr "Bidali"
+
+#: config/motd.php.dist:41
+msgid "Powered by Horde"
+msgstr "Garatzailea: Horde"
+
+#: config/prefs.php.dist:239
+msgid "Precede your signature with dashes ('-- ')?"
+msgstr "Ipini marratxoak sinaduraren aurretik ('-- ')?"
+
+#: config/hooks.php.dist:538
+msgid "Preferences"
+msgstr "Hobespenak"
+
+#: smime.php:262 pgp.php:271 filterprefs.php:53
+msgid "Preferences successfully updated."
+msgstr "Hobespenak behar bezala eguneratu dira."
+
+#: compose.php:1217
+msgid "Preview"
+msgstr "Aurrebista"
+
+#: message.php:528
+msgid "Previous Message"
+msgstr "Aurreko mezua"
+
+#: mailbox.php:280
+msgid "Previous Page"
+msgstr "Aurreko orria"
+
+#: message.php:603
+msgid "Print"
+msgstr "Inprimatu"
+
+#: config/prefs.php.dist:650
+msgid "Print document"
+msgstr "Inprimatu dokumentua"
+
+#: message.php:691
+msgid "Printed By"
+msgstr "Inprimatua:"
+
+#: message.php:671 lib/MIME/Viewer/itip.php:918
+msgid "Priority"
+msgstr "Lehentasuna"
+
+#: templates/smime/import_key.html:59
+msgid "Private Key Password:"
+msgstr "Gako pribatuaren pasahitza:"
+
+#: config/prefs.php.dist:717
+msgid "Prompt every time an attachment is sent; default to NO"
+msgstr "Galdetu eranskin bat bidaltzen den bakoitzean; lehenespena: EZ"
+
+#: config/prefs.php.dist:716
+msgid "Prompt every time an attachment is sent; default to YES"
+msgstr "Galdetu eranskin bat bidaltzen den bakoitzean; lehenespena: BAI"
+
+#: config/prefs.php.dist:983
+msgid "Prompt to send read receipt when requested by the sender?"
+msgstr "Galdetu irakurragiria bidaltzea nahi duzun bidaltzaileak eskatutakoan?"
+
+#: lib/api.php:173 templates/login/login.html:72
+msgid "Protocol"
+msgstr "Protokoloa"
+
+#: login.php:290 templates/fetchmail/fetchmailprefs.html:47
+msgid "Protocol:"
+msgstr "Protokoloa:"
+
+#: lib/Crypt/PGP.php:491
+msgid "Public PGP keyserver support has been disabled."
+msgstr "Desgaitu egin da PGP gako-zerbitzari publikoen euskarria."
+
+#: mailbox.php:454 mailbox.php:522
+msgid "Pur_ge Deleted"
+msgstr "Bo_rratu betiko ezabatutakoak"
+
+#: lib/IMAP/ACL/rfc4314.php:58 templates/folders/actions.html:22
+msgid "Purge"
+msgstr "Borratu betiko"
+
+#: mailbox.php:454 mailbox.php:522
+msgid "Purge Deleted"
+msgstr "Borratu betiko ezabatutakoak"
+
+#: config/prefs.php.dist:458
+msgid "Purge Spam how often:"
+msgstr "Mezu baztergarriak betiko borratzeko maiztasuna:"
+
+#: config/prefs.php.dist:486
+msgid "Purge Trash how often:"
+msgstr "Zakarrontzia betiko borratzeko maiztasuna:"
+
+#: config/prefs.php.dist:467
+msgid "Purge messages in Spam folder older than this amount of days."
+msgstr ""
+"Borratu betiko egun kopuru hau baino gehiagoko mezu baztergarrien karpetako "
+"mezuak."
+
+#: config/prefs.php.dist:495
+msgid "Purge messages in Trash folder older than this amount of days."
+msgstr "Borratu betiko egun kopuru hau baino gehiagoko Zakarrontziko mezuak."
+
+#: config/prefs.php.dist:421
+msgid "Purge messages in sent-mail folder(s) older than this amount of days."
+msgstr ""
+"Borratu betiko egun kopuru hau baino gehiagoko bidalitako mezuen karpetako "
+"mezuak."
+
+#: config/prefs.php.dist:448
+msgid "Purge old messages in the Spam folder?"
+msgstr "Borratu betiko Mezu baztergarrien karpetako mezu zaharrak?"
+
+#: config/prefs.php.dist:476
+msgid "Purge old messages in the Trash folder?"
+msgstr "Borratu betiko Zakarrontziko mezu zaharrak?"
+
+#: config/prefs.php.dist:402
+msgid "Purge old messages in the sent-mail folder(s)?"
+msgstr "Borratu betiko bidalitako mezuen karpetako mezuak?"
+
+#: config/prefs.php.dist:412
+msgid "Purge sent-mail how often:"
+msgstr "Bidalitako mezuak betiko borratzeko maiztasuna:"
+
+#: lib/Maintenance/Task/purge_spam.php:64
+#, php-format
+msgid "Purging %d messages from Spam folder."
+msgstr "%d mezu betiko borratzen Mezu baztergarrien karpetatik."
+
+#: lib/Maintenance/Task/purge_trash.php:63
+#, php-format
+msgid "Purging %d messages from Trash folder."
+msgstr "%d mezu betiko borratzen Zakarrontzitik."
+
+#: lib/Maintenance/Task/purge_sentmail.php:63
+#, php-format
+msgid "Purging %d messages from sent-mail folder."
+msgstr "%d mezu betiko borratzen bidalitako mezuen karpetatik."
+
+#: lib/Maintenance/Task/purge_spam.php:62
+msgid "Purging 1 message from Spam folder."
+msgstr "Mezu bat betiko borratzen mezu baztergarrien karpetatik."
+
+#: lib/Maintenance/Task/purge_trash.php:61
+msgid "Purging 1 message from Trash folder."
+msgstr "Mezu bat betiko borratzen Zakarrontzitik."
+
+#: lib/Maintenance/Task/purge_sentmail.php:61
+#, php-format
+msgid "Purging 1 message from sent-mail folder %s."
+msgstr "Mezu bat betiko borratzen bidalitako mezuen karpetatik (%s)."
+
+#: lib/Quota.php:64
+#, php-format
+msgid "Quota status: %.2f MB / %.2f MB  (%.2f%%)"
+msgstr "Kuotaren egoera: %.2f MB / %.2f MB  (%% %.2f)"
+
+#: lib/Quota.php:70
+#, php-format
+msgid "Quota status: %.2f MB / NO LIMIT"
+msgstr "Kuotaren egoera: %.2f MB / MUGARIK EZ"
+
+#: lib/IMP.php:1046
+#, php-format
+msgid "Quota status: NO LIMIT"
+msgstr "Kuotaren egoera: MUGARIK EZ"
+
+#: config/prefs.php.dist:788
+#, php-format
+msgid "Quoting %f:"
+msgstr "%f erabiltzaileak idatzi du:"
+
+#: lib/IMAP/ACL/rfc4314.php:50 lib/IMAP/ACL/rfc2086.php:50
+msgid "Read"
+msgstr "Irakurri"
+
+#: templates/folders/actions.html:40
+msgid "Rebuild Folder Tree"
+msgstr "Berreraiki karpeta-zuhaitza"
+
+#: templates/search/search.html:31
+msgid "Recent Searches"
+msgstr "Azken bilaketak"
+
+#: templates/search/search.html:35 templates/search/search.html:37
+msgid "Recent Searches:"
+msgstr "Azken bilaketak:"
+
+#: message.php:573 message.php:617
+msgid "Redirec_t"
+msgstr "Birbi_deratu"
+
+#: message.php:573 message.php:617
+msgid "Redirect"
+msgstr "Birbideratu"
+
+#: templates/compose/redirect.html:83
+msgid "Redirect Message"
+msgstr "Birbideratu mezua"
+
+#: compose.php:376
+msgid "Redirect this message"
+msgstr "Birbideratu mezu hau"
+
+#: config/prefs.php.dist:648
+msgid "Redoes your last action"
+msgstr "Azken ekintza berregiten du"
+
+#: folders.php:372
+msgid "Refresh"
+msgstr "Freskatu"
+
+#: config/prefs.php.dist:1063
+msgid "Refresh Folder Views:"
+msgstr "Freskatu karpeta-ikuspegiak:"
+
+#: mailbox.php:417
+msgid "Reload"
+msgstr "Berritu"
+
+#: folders.php:362
+msgid "Reload View"
+msgstr "Berritu ikuspegia"
+
+#: lib/MIME/Viewer/itip.php:624 lib/MIME/Viewer/itip.php:643
+msgid "Remember the free/busy information."
+msgstr "Gogoratu libre/lanpetuta informazioa."
+
+#: config/prefs.php.dist:1270
+msgid "Remember the last view"
+msgstr "Gogoratu azken ikuspegia"
+
+#: templates/fetchmail/fetchmailprefs.html:68
+msgid "Remote Mailbox:"
+msgstr "Urruneko postontzia:"
+
+#: search.php:287
+msgid "Remove Field From Search"
+msgstr "Kendu eremua bilaketatik"
+
+#: config/prefs.php.dist:658
+msgid "Remove formatting"
+msgstr "Kendu formateatzea"
+
+#: templates/prefs/sourceselect.inc:302
+msgid "Remove source"
+msgstr "Kendu iturburua"
+
+#: templates/folders/actions.html:18
+msgid "Rename"
+msgstr "Aldatu izena"
+
+#: config/prefs.php.dist:375
+msgid "Rename sent-mail folder at beginning of month?"
+msgstr ""
+"Aldatu izena bidalitako mezuen karpeta zaharrari hilabetearen hasieran?"
+
+#: lib/Folder.php:380
+#, php-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr ""
+"Huts egin du \"%s\"izenaren ordez \"%s\" jartzeko prozesuak. Hau esan du "
+"zerbitzariak"
+
+#: message.php:557
+msgid "Reply"
+msgstr "Erantzun"
+
+#: lib/MIME/Viewer/itip.php:342 lib/MIME/Viewer/itip.php:448
+msgid "Reply Sent."
+msgstr "Erantzuna bidali da."
+
+#: compose.php:345
+msgid "Reply to All:"
+msgstr "Erantzun denei:"
+
+#: compose.php:347
+msgid "Reply to List:"
+msgstr "Erantzun zerrendari:"
+
+#: lib/MIME/Viewer/itip.php:626 lib/MIME/Viewer/itip.php:635
+#: lib/MIME/Viewer/itip.php:645
+msgid "Reply with Not Supported Message"
+msgstr "Erantzun onartu gabeko mezuarekin"
+
+#: lib/MIME/Viewer/itip.php:633
+msgid "Reply with free/busy for next 2 months."
+msgstr "Erantzun hurrengo bi hilabeteetako libre/lanpetuta informazioarekin."
+
+#: lib/MIME/Viewer/itip.php:632
+msgid "Reply with requested free/busy information."
+msgstr "Erantzun eskatutako libre/lanpetuta informazioarekin."
+
+#: lib/UI/Message.php:29
+msgid "Reply-To"
+msgstr "Erantzun honi"
+
+#: lib/Compose.php:1975
+msgid "Reply-To: "
+msgstr "Erantzun honi: "
+
+#: compose.php:343
+msgid "Reply:"
+msgstr "Erantzun:"
+
+#: message.php:614 mailbox.php:544
+msgid "Report as Innocent"
+msgstr "Sailkatu seguru gisa"
+
+#: message.php:608 mailbox.php:538
+msgid "Report as Spam"
+msgstr "Sailkatu baztergarri gisa"
+
+#: compose.php:1134
+msgid "Request a _Read Receipt"
+msgstr "Eskatu _irakurragiria"
+
+#: config/prefs.php.dist:731
+msgid "Request read receipts?"
+msgstr "Eskatu irakurragiriak?"
+
+#: mailbox.php:115
+msgid "Requested message not found."
+msgstr "Eskatutako mezua ez da aurkitu."
+
+#: lib/MIME/Viewer/itip.php:819 lib/MIME/Viewer/itip.php:951
+msgid "Required Participant"
+msgstr "Beharrezko partaidea"
+
+#: templates/search/search.html:26 templates/search/search.html:183
+#: templates/acl/acl.html:80
+msgid "Reset"
+msgstr "Berrezarri"
+
+#: lib/MIME/Viewer/itip.php:117
+msgid "Respondent Status Updated."
+msgstr "Erantzun-emailearen egoera eguneratuta."
+
+#: message.php:596
+msgid "Resume"
+msgstr "Berrekin"
+
+#: lib/UI/Compose.php:154
+msgid "Resume Editing"
+msgstr "Berrekin edizioari"
+
+#: login.php:193
+msgid "Resume your session"
+msgstr "Berrekin saioari"
+
+#: templates/fetchmail/fetchmailprefs.html:125
+msgid "Return to Fetch Mail"
+msgstr "Itzuli mezuak hartzera"
+
+#: templates/folders/folders_size.html:30
+msgid "Return to Folders"
+msgstr "Itzuli karpetetara"
+
+#: stationery.php:143
+msgid "Return to Message Composition"
+msgstr "Itzuli mezu-idazketara"
+
+#: filterprefs.php:66 templates/smime/smime.html:13
+#: templates/smime/smime.html:93 templates/pgp/pgp.html:21
+#: templates/pgp/pgp.html:145 templates/acl/acl.html:35
+#: templates/acl/acl.html:81 templates/acl/acl.html:95
+msgid "Return to Options"
+msgstr "Itzuli aukeretara"
+
+#: config/prefs.php.dist:998
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr ""
+"Itzuli postontzi-zerrendara mezu bat ezabatu, lekuz aldatu edo kopiatzean?"
+
+#: acl.php:114
+#, php-format
+msgid "Rights for user \"%s\" cannot be modified."
+msgstr "Ezin dira aldatu \"%s\" erabiltzailearen eskubideak."
+
+#: lib/MIME/Viewer/itip.php:810 lib/MIME/Viewer/itip.php:942
+msgid "Role"
+msgstr "Funtzioa"
+
+#: smime.php:67 lib/MIME/Viewer/pkcs7.php:173 lib/MIME/Viewer/pkcs7.php:296
+#: lib/MIME/Viewer/pkcs7.php:488
+msgid "S/MIME"
+msgstr "S/MIME"
+
+#: lib/IMP.php:1462
+msgid "S/MIME Encrypt Message"
+msgstr "S/MIMErekin enkriptatutako mezua"
+
+#: lib/Compose.php:1438
+msgid "S/MIME Error: "
+msgstr "S/MIME errorea: "
+
+#: lib/Compose.php:1417
+msgid "S/MIME Error: Need passphrase for personal private key."
+msgstr "S/MIME errorea: gako pribatu pertsonalaren pasaesaldia behar da."
+
+#: config/prefs.php.dist:185
+msgid "S/MIME Options"
+msgstr "S/MIME aukerak"
+
+#: smime.php:54
+msgid "S/MIME Passphrase Input"
+msgstr "S/MIME pasaesaldiaren sarrera"
+
+#: templates/smime/smime.html:61
+msgid "S/MIME Personal Keypair support requires a secure web connection."
+msgstr ""
+"S/MIME gako-pare pertsonalaren euskarriak web-konexio segurua behar du."
+
+#: smime.php:160
+#, php-format
+msgid "S/MIME Public Key for \"%s\" was successfully deleted."
+msgstr "\"%s\"(r)en S/MIME gako publikoa behar bezala ezabatu da."
+
+#: smime.php:182
+msgid "S/MIME Public Key successfully added."
+msgstr "S/MIME gako publikoa behar bezala gehitu da."
+
+#: templates/smime/smime.html:21
+msgid "S/MIME Public Keyring"
+msgstr "S/MIME gako sorta publikoa"
+
+#: smime.php:231
+msgid "S/MIME Public/Private Keypair successfully added."
+msgstr "S/MIME gako-bikote publikoa/pribatua behar bezala gehitu da."
+
+#: lib/IMP.php:1463
+msgid "S/MIME Sign Message"
+msgstr "S/MIMErekin sinatutako mezua"
+
+#: lib/IMP.php:1464
+msgid "S/MIME Sign/Encrypt Message"
+msgstr "S/MIMErekin sinatutako/enkriptatutako mezua"
+
+#: templates/smime/smime.html:86
+msgid "S/MIME support is disabled on this system."
+msgstr "S/MIME euskarria desgaituta dago sistema honetan."
+
+#: lib/MIME/Viewer/pkcs7.php:300
+msgid ""
+"S/MIME support is not currently enabled so the message is unable to be "
+"decrypted."
+msgstr ""
+"S/MIME euskarria ez dagoenez gaituta une honetan, ezin da mezua "
+"desenkriptatu."
+
+#: lib/MIME/Viewer/pkcs7.php:204
+msgid ""
+"S/MIME support is not enabled so the contents of this signed message cannot "
+"be displayed."
+msgstr ""
+"S/MIME euskarria ez dagoenez gaituta, ezin da sinatutako mezu honen edukia "
+"bistaratu."
+
+#: lib/MIME/Viewer/pkcs7.php:177
+msgid ""
+"S/MIME support is not enabled so the digital signature is unable to be "
+"verified."
+msgstr ""
+"S/MIME euskarria ez dagoenez gaituta, ezin da sinadura digitala egiaztatu."
+
+#: lib/MIME/Viewer/pkcs7.php:134
+msgid "S/MIME support is not enabled."
+msgstr "S/MIME euskarria ez dago gaituta."
+
+#: templates/smime/smime.html:4
+msgid ""
+"S/MIME support requires popup windows to be used.  If your browser is "
+"currently set to disable popup windows, you must change this setting or else "
+"the S/MIME features will not work correctly."
+msgstr ""
+"S/MIME euskarriak leiho gainerakorrak erabiltzen ditu.  Arakatzaileak "
+"desgaituta badituleiho gainerakorrak, ezarpen hori aldatu behar duzu edo "
+"bestela S/MIME eginbideak ez dira behar bezala ibiliko."
+
+#: templates/login/login.html:108
+msgid "SMTP"
+msgstr "SMTP"
+
+#: lib/api.php:181 templates/login/login.html:107
+msgid "SMTP Port"
+msgstr "SMTP ataka"
+
+#: compose.php:1018
+msgid "S_ubject"
+msgstr "_Gaia"
+
+#: compose.php:1113
+msgid "Sa_ve a copy in "
+msgstr "Go_rde kopia hemen: "
+
+#: message.php:600
+msgid "Sa_ve as"
+msgstr "Gor_de honela"
+
+#: templates/fetchmail/fetchmailprefs.html:121 templates/search/search.html:25
+#: templates/search/search.html:182 templates/acl/acl.html:79
+msgid "Save"
+msgstr "Gorde"
+
+#: compose.php:1193
+msgid "Save Attachments with message in sent-mail folder?"
+msgstr "Eranskinak mezuarekin gorde bidalitako mezuen karpetan?"
+
+#: templates/compose/compose.html:19 templates/compose/compose.html:206
+msgid "Save Draft"
+msgstr "Gorde zirriborroa"
+
+#: saveimage.php:53
+msgid "Save Image"
+msgstr "Gorde irudia"
+
+#: lib/MIME/Contents.php:262
+msgid "Save Image in Gallery"
+msgstr "Gorde irudia galerian"
+
+#: filterprefs.php:129 templates/smime/smime.html:12
+#: templates/smime/smime.html:92 templates/pgp/pgp.html:20
+#: templates/pgp/pgp.html:144
+msgid "Save Options"
+msgstr "Gorde aukerak"
+
+#: templates/stationery/stationery.html:42
+msgid "Save Stationery"
+msgstr "Gorde idazpapera"
+
+#: compose.php:931
+msgid "Save _Draft"
+msgstr "Gorde _zirriborroa"
+
+#: message.php:600 config/prefs.php.dist:655
+msgid "Save as"
+msgstr "Gorde honela"
+
+#: config/prefs.php.dist:814
+msgid "Save drafts as unseen?"
+msgstr "Gorde zirriborroak ikusi gabeko gisa?"
+
+#: config/prefs.php.dist:825
+msgid "Save drafts automatically while composing?"
+msgstr "Gorde zirriborroak automatikoki mezua idaztean?"
+
+#: lib/MIME/Viewer/pkcs7.php:257
+msgid "Save in your Address Book"
+msgstr "Gorde zure helbide-liburuan"
+
+#: config/prefs.php.dist:1369
+msgid "Save recipients automatically to the default address book?"
+msgstr "Gorde hartzaileak automatikoki helbide-liburu lehenetsian?"
+
+#: templates/search/search.html:173
+msgid "Save search as a virtual folder?"
+msgstr "Gorde bilaketa karpeta birtual gisa?"
+
+#: config/prefs.php.dist:255
+msgid "Save sent mail?"
+msgstr "Gorde bidalitako mezuak?"
+
+#: lib/Compose.php:247
+msgid "Saving the draft failed. Could not create a drafts folder."
+msgstr ""
+"Huts egin du zirriborroa gordetzean. Ezin izan da zirriborroen karpeta sortu."
+
+#: lib/Compose.php:187
+msgid "Saving the draft failed. No draft folder specified."
+msgstr ""
+"Huts egin du zirriborroa gordetzean. Ez da zirriborro-karpetarik zehaztu."
+
+#: lib/Compose.php:218
+#, php-format
+msgid ""
+"Saving the draft failed. The %s header contains an invalid e-mail address: %"
+"s."
+msgstr ""
+"Huts egin du zirriborroa gordetzean. %s goiburuak helbide elekroniko "
+"baliogabe bat dauka: %s."
+
+#: lib/Compose.php:254
+#, php-format
+msgid "Saving the draft failed. This is what the server said: %s"
+msgstr "Huts egin du zirriborroa gordetzean. Hau esan du zerbitzariak: %s"
+
+#: mailbox.php:423 search.php:147 lib/Search.php:574
+#: lib/Block/tree_folders.php:43 templates/contacts/contacts.html:25
+msgid "Search"
+msgstr "Bilatu"
+
+#: mailbox.php:423 search.php:151
+#, php-format
+msgid "Search %s"
+msgstr "Bilatu hemen: %s"
+
+#: templates/search/search.html:46
+msgid "Search Criteria"
+msgstr "Bilatzeko irizpideak"
+
+#: templates/search/search.html:137
+msgid "Search Folders"
+msgstr "Bilatzeko karpetak"
+
+#: search.php:93 templates/contacts/contacts.html:31
+msgid "Search Results"
+msgstr "Bilaketaren emaitza"
+
+#: templates/search/search.html:84
+msgid "Search Text"
+msgstr "Bilatzeko testua"
+
+#: templates/mailbox/navbar.html:14 templates/mailbox/navbar.html:30
+msgid "Seen"
+msgstr "Ikusita"
+
+#: lib/Search.php:787
+msgid "Seen messages"
+msgstr "Ikusitako mezuak"
+
+#: templates/fetchmail/fetchmailprefs.html:123
+msgid "Select Another Account"
+msgstr "Hautatu beste kontu bat"
+
+#: search.php:278
+msgid "Select a date"
+msgstr "Hautatu data"
+
+#: templates/search/search.html:65 templates/search/search.html:68
+msgid "Select a field"
+msgstr "Hautatu eremua"
+
+#: templates/fetchmail/fetchmail.html:11
+msgid "Select accounts to fetch mail from:"
+msgstr "Hautatu zein kontutako mezuak hartu nahi dituzun:"
+
+#: config/prefs.php.dist:169
+msgid "Select address book sources for adding and searching for addresses."
+msgstr ""
+"Hautatu helbide-liburuen iturburuak, helbideak gehitzeko eta bilatzeko."
+
+#: config/prefs.php.dist:649 templates/search/search.html:141
+msgid "Select all"
+msgstr "Hautatu denak"
+
+#: templates/prefs/sourceselect.inc:321
+msgid "Select all fields to search when expanding addresses."
+msgstr "Hautatu helbideak zabaltzean bilatzeko eremu guztiak."
+
+#: templates/fetchmail/fetchmailprefs.html:21
+msgid "Select an account:"
+msgstr "Hautatu kontu bat:"
+
+#: templates/folders/folders.html:3
+msgid "Select mailbox"
+msgstr "Hautatu postontzia"
+
+#: templates/search/search.html:142
+msgid "Select none"
+msgstr "Ez hautatu bat ere"
+
+#: templates/compose/compose.html:134
+msgid "Select stationery:"
+msgstr "Hautatu idazpapera:"
+
+#: templates/saveimage/saveimage.html:8
+msgid "Select the gallery to save the image in."
+msgstr "Hautatu irudia gordetzeko galeria."
+
+#: templates/fetchmail/fetchmailprefs.html:34
+msgid "Select the mail server type:"
+msgstr "Hautatu posta-zerbitzariaren mota:"
+
+#: templates/mailbox/navbar.html:7 templates/mailbox/navbar.html:9
+msgid "Select:"
+msgstr "Hautatu:"
+
+#: templates/prefs/sourceselect.inc:305 templates/prefs/sourceselect.inc:307
+msgid "Selected Address books:"
+msgstr "Hautatutako helbide-liburuak:"
+
+#: templates/contacts/contacts.html:47
+msgid "Selected Addresses"
+msgstr "Hautatutako helbideak"
+
+#: pgp.php:444 templates/pgp/pgp.html:75
+msgid "Send Key to Public Keyserver"
+msgstr "Bidali gakoa gako-zerbitzari publikora"
+
+#: lib/MIME/Viewer/itip.php:731
+msgid "Send Latest Information"
+msgstr "Bidali azken orduko informazioa"
+
+#: templates/compose/compose.html:17 templates/compose/compose.html:204
+msgid "Send Message"
+msgstr "Bidali mezua"
+
+#: templates/javascript_defs.php:34
+msgid "Send message without a Subject?"
+msgstr "Bidali mezua gairik gabe?"
+
+#: config/prefs.php.dist:263
+msgid "Sent"
+msgstr "Bidalitakoak"
+
+#: lib/IMAP/Tree.php:2006
+msgid "Sent mail folder"
+msgstr "Bidalitako mezuen karpeta"
+
+#: templates/prefs/sentmailselect.inc:36
+msgid "Sent mail folder:"
+msgstr "Bidalitako mezuen karpeta:"
+
+#: lib/api.php:166 templates/login/login.html:36 templates/login/login.html:50
+#: templates/login/login.html:62
+msgid "Server"
+msgstr "Zerbitzaria"
+
+#: config/prefs.php.dist:25
+msgid "Server and Folder Information"
+msgstr "Zerbitzariari eta karpetari buruzko informazioa"
+
+#: login.php:282 templates/fetchmail/fetchmailprefs.html:63
+msgid "Server:"
+msgstr "Zerbitzaria:"
+
+#: config/prefs.php.dist:110
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr ""
+"Ezarri mezuak lekuz aldatzean eta ezabatzean gertatzea nahi duzunari buruzko "
+"hobespenak."
+
+#: config/prefs.php.dist:573
+msgid "Set the X-Priority header when composing messages?"
+msgstr "Ezarri X-Lehentasunaren goiburua mezuak idaztean?"
+
+#: config/prefs.php.dist:35
+msgid "Share Folders"
+msgstr "Partekatu karpetak"
+
+#: templates/acl/acl.html:7
+msgid "Share mail folders"
+msgstr "Partekatu posta-karpetak"
+
+#: config/prefs.php.dist:36
+msgid "Share your mail folders with other users."
+msgstr "Partekatu zure posta-karpetak beste erabiltzaile batzuekin."
+
+#: lib/IMAP/Tree.php:70
+msgid "Shared Folders"
+msgstr "Partekatu karpetak"
+
+#: templates/pgp/pgp.html:15
+msgid "Should PGP signed messages automatically be verified when viewed?"
+msgstr ""
+"PGP bidez sinatutako mezuak automatikoki egiaztatu behar dira bistaratzean?"
+
+#: templates/smime/smime.html:7
+msgid "Should S/MIME signed messages automatically be verified when viewed?"
+msgstr ""
+"S/MIME bidez sinatutako mezuak automatikoki egiaztatu behar dira "
+"bistaratzean?"
+
+#: config/prefs.php.dist:913
+msgid ""
+"Should large blocks of quoted text be shown or hidden by default? It can be "
+"toggled easily whichever you choose."
+msgstr ""
+"Aipamen-testu handiak erakutsi edo ezkutatu egin behar dira lehenespenez? "
+"Oso erraz alda daiteke, aukeratzen duzuna edozein dela ere."
+
+#: templates/pgp/pgp.html:11
+msgid "Should the body of text/plain messages be scanned for PGP data?"
+msgstr "Testuzko/testu soileko mezuen gorputzetan PGP datuak bilatu?"
+
+#: config/prefs.php.dist:806
+msgid "Should the compose window be closed after saving a draft?"
+msgstr "Mezuak idazteko leihoa ixtea nahi duzu zirriborroa gordetzean?"
+
+#: templates/pgp/pgp.html:7
+msgid "Should your PGP public key to be attached to your messages by default?"
+msgstr "PGP gako publikoa mezuei eranstea nahi duzu lehenespenez?"
+
+#: templates/search/search.html:144
+msgid "Show All Folders"
+msgstr "Erakutsi karpeta guztiak"
+
+#: message.php:624
+msgid "Show All Headers"
+msgstr "Erakutsi goiburu guztiak"
+
+#: message.php:621
+msgid "Show Common Headers"
+msgstr "Erakutsi goiburu komunak"
+
+#: mailbox.php:257
+msgid "Show Deleted"
+msgstr "Erakutsi ezabatutakoak"
+
+#: lib/MIME/Viewer/html.php:160
+msgid "Show Images?"
+msgstr "Erakutsi irudiak?"
+
+#: message.php:627
+msgid "Show Mailing List Information"
+msgstr "Erakutsi posta-zerrenden informazioa"
+
+#: templates/search/search.html:144
+msgid "Show Only Subscribed Folders"
+msgstr "Erakutsi harpidetutako karpetak soilik"
+
+#: templates/folders/actions.html:39
+msgid "Show Size"
+msgstr "Erakutsi tamaina"
+
+#: folders.php:391
+msgid "Show Unsubscribed"
+msgstr "Erakutsi harpidetu gabeak"
+
+#: config/prefs.php.dist:847
+msgid "Show an icon to allow stripping of attachments from messages?"
+msgstr "Erakutsi ikono bat mezuetatik eranskinak kentzeko?"
+
+#: config/prefs.php.dist:1280
+msgid "Show non-private mailboxes in separate folders"
+msgstr "Erakutsi pribatuak ez diren postontziak karpeta bereizietan"
+
+#: config/prefs.php.dist:1124
+msgid "Show previews for unread messages only?"
+msgstr "Erakutsi irakurri gabeko mezuen aurrebistak soilik?"
+
+#: config/prefs.php.dist:1132
+msgid "Show previews in tooltips?"
+msgstr "Erakutsi aurrebistak argibideetan?"
+
+#: config/prefs.php.dist:548
+msgid "Show the Bcc: header field when composing mail?"
+msgstr "Erakutsi Bcc: goiburuaren eremua mezuak idaztean?"
+
+#: config/prefs.php.dist:539
+msgid "Show the Cc: header field when composing mail?"
+msgstr "Erakutsi Cc: goiburuaren eremua mezuak idaztean?"
+
+#: config/prefs.php.dist:1161
+msgid "Show the Fetch Mail icon on the menubar?"
+msgstr "Erakutsi 'Hartu mezuak' ikonoa menu-barran?"
+
+#: filterprefs.php:112
+msgid "Show the filter icon on the menubar?"
+msgstr "Erakutsi iragazkiaren ikonoa menu-barran?"
+
+#: lib/MIME/Viewer/html.php:175
+msgid "Show this HTML in a new window?"
+msgstr "Erakutsi HTML hau leiho berri batean?"
+
+#: lib/Block/summary.php:30
+msgid "Show total number of mails in folder?"
+msgstr "Erakutsi karpetako mezu kopurua?"
+
+#: config/prefs.php.dist:908
+msgid "Shown"
+msgstr "Erakutsita"
+
+#: mailbox.php:607
+msgid "Si_ze"
+msgstr "Ta_maina"
+
+#: templates/folders/folders_size.html:7
+msgid "Size"
+msgstr "Tamaina"
+
+#: lib/Search.php:762
+msgid "Size (KB) <"
+msgstr "Tamaina (KB) <"
+
+#: lib/Search.php:768
+msgid "Size (KB) >"
+msgstr "Tamaina (KB) >"
+
+#: templates/compose/compose.html:325
+msgid "Size:"
+msgstr "Tamaina:"
+
+#: mailbox.php:576
+msgid "Sort by Arrival"
+msgstr "Ordenatu heldutako unearen arabera"
+
+#: mailbox.php:581
+msgid "Sort by Date"
+msgstr "Ordenatu dataren arabera"
+
+#: mailbox.php:591
+msgid "Sort by From Address"
+msgstr "Ordenatu Nork helbidearen arabera"
+
+#: mailbox.php:606
+msgid "Sort by Message Size"
+msgstr "Ordenatu mezu-tamainaren arabera"
+
+#: mailbox.php:601
+msgid "Sort by Subject"
+msgstr "Ordenatu gaiaren arabera"
+
+#: mailbox.php:596
+msgid "Sort by Thread"
+msgstr "Ordenatu hariaren arabera"
+
+#: mailbox.php:586
+msgid "Sort by To Address"
+msgstr "Ordenatu Nori helbidearen arabera"
+
+#: config/prefs.php.dist:329
+msgid "Spam"
+msgstr "Mezu baztergarriak"
+
+#: lib/IMAP/Tree.php:1999
+msgid "Spam folder"
+msgstr "Mezu baztergarrien karpeta"
+
+#: templates/prefs/spamselect.inc:19
+msgid "Spam folder:"
+msgstr "Mezu baztergarrien karpeta:"
+
+#: compose.php:1099
+msgid "Special Characters"
+msgstr "Karaktere bereziak"
+
+#: search.php:40
+msgid "Special Virtual Folders cannot be edited."
+msgstr "Karpeta birtual bereziak ezin dira editatu."
+
+#: lib/UI/Compose.php:155
+msgid "Spell Check Failed"
+msgstr "Ortografia-egiaztapenak huts egin du"
+
+#: config/prefs.php.dist:660
+msgid "Split Block"
+msgstr "Zatitu blokea"
+
+#: lib/MIME/Viewer/itip.php:599 lib/MIME/Viewer/itip.php:601
+#: lib/MIME/Viewer/itip.php:775 lib/MIME/Viewer/itip.php:777
+msgid "Start:"
+msgstr "Hasiera:"
+
+#: compose.php:1057 templates/stationery/stationery.html:8
+#: templates/stationery/stationery.html:12
+msgid "Stationery"
+msgstr "Idazpapera"
+
+#: stationery.php:135
+msgid "Stationery name:"
+msgstr "Idazpaperaren izena:"
+
+#: stationery.php:137
+msgid "Stationery type:"
+msgstr "Idazpaper mota:"
+
+#: stationery.php:140
+msgid "Stationery:"
+msgstr "Idazpapera:"
+
+#: lib/MIME/Viewer/itip.php:810 lib/MIME/Viewer/itip.php:942
+msgid "Status"
+msgstr "Egoera"
+
+#: config/prefs.php.dist:629
+msgid "Strikethrough"
+msgstr "Marratua"
+
+#: message.php:684
+msgid "Strip All Attachments"
+msgstr "Kendu eranskin guztiak"
+
+#: lib/MIME/Contents.php:273
+msgid "Strip Attachment"
+msgstr "Kendu eranskina"
+
+#: message.php:684
+msgid "Strip Attachments"
+msgstr "Kendu eranskinak"
+
+#: config/prefs.php.dist:1116
+msgid "Strip linebreaks?"
+msgstr "Kendu lerro-jauziak?"
+
+#: mailbox.php:602
+msgid "Sub_ject"
+msgstr "_Gaia"
+
+#: lib/Search.php:731 lib/UI/Message.php:30 templates/login/recompose.html:41
+msgid "Subject"
+msgstr "Gaia"
+
+#: config/prefs.php.dist:1204
+msgid "Subject Field"
+msgstr "Gaiaren eremua"
+
+#: templates/thread/thread.html:36
+msgid "Subject:"
+msgstr "Gaia:"
+
+#: templates/search/search.html:25 templates/search/search.html:182
+#: templates/saveimage/saveimage.html:19 templates/smime/passphrase.html:23
+#: templates/pgp/passphrase.html:21
+msgid "Submit"
+msgstr "Bidali"
+
+#: templates/folders/actions.html:25
+msgid "Subscribe"
+msgstr "Harpidetu"
+
+#: config/prefs.php.dist:633
+msgid "Subscript"
+msgstr "Azpiindizea"
+
+#: lib/MIME/Viewer/pkcs7.php:448 lib/MIME/Viewer/pgp.php:456
+#: lib/MIME/Viewer/status.php:86
+msgid "Success"
+msgstr "Ongi"
+
+#: templates/folders/folders_size.html:22
+msgid "Sum"
+msgstr "Batura"
+
+#: lib/MIME/Viewer/itip.php:792 lib/MIME/Viewer/itip.php:794
+#: lib/MIME/Viewer/itip.php:923 lib/MIME/Viewer/itip.php:925
+msgid "Summary"
+msgstr "Laburpena"
+
+#: config/prefs.php.dist:634
+msgid "Superscript"
+msgstr "Goi-indizea"
+
+#: compose.php:1139 compose.php:1140
+msgid "Switch Composition Method"
+msgstr "Aldatu idazketa-metodoa"
+
+#: templates/compose/compose.html:189
+msgid "Switch to HTML composition"
+msgstr "Aldatu HTML formatura"
+
+#: templates/compose/compose.html:189
+msgid "Switch to plain text composition"
+msgstr "Aldatu testu soilera"
+
+#: templates/message/navbar_navigate.html:27
+msgid "Target Folder"
+msgstr "Helburuko karpeta"
+
+#: templates/mailbox/navbar.html:54
+msgid "Target Mailbox:"
+msgstr "Helburuko postontzia:"
+
+#: lib/IMP.php:525
+msgid "Task Lists"
+msgstr "Zeregin-zerrendak"
+
+#: config/hooks.php.dist:514
+msgid "Tasks"
+msgstr "Zereginak"
+
+#: compose.php:1144
+msgid "Te_xt"
+msgstr "T_estua"
+
+#: lib/MIME/Viewer/itip.php:296
+msgid "Tentative: "
+msgstr "Behin-behinekoa:  "
+
+#: lib/MIME/Viewer/itip.php:717
+msgid "Tentatively Accept request"
+msgstr "Behin-behinean onartu eskaera"
+
+#: lib/MIME/Viewer/itip.php:1017
+msgid "Tentatively Accepted"
+msgstr "Oraingoz onartua"
+
+#: lib/Maintenance/Task/tos_agreement.php:46
+#, php-format
+msgid "Terms of Service file not specified in conf.php"
+msgstr "Zerbitzu-baldintzen fitxategirik ez da zehaztu conf.php fitxategian"
+
+#: templates/stationery/stationery.html:31
+msgid "Text"
+msgstr "Testua"
+
+#: config/prefs.php.dist:624
+msgid "Text Font"
+msgstr "Testuaren letra-tipoa"
+
+#: config/prefs.php.dist:623
+msgid "Text Format"
+msgstr "Testu-formatua"
+
+#: config/prefs.php.dist:625
+msgid "Text Size"
+msgstr "Testu-tamaina"
+
+#: config/prefs.php.dist:1245
+msgid "The From: column of the message should be linked:"
+msgstr "Mezuaren Nork: zutabea estekatu behar litzateke:"
+
+#: lib/IMAP/Client.php:434
+msgid ""
+"The IMAP server does not appear to support the authentication method "
+"selected. Please contact your system administrator."
+msgstr ""
+"Badirudi IMAP zerbitzariak ez duela onartzen hautatutako autentifikazio-"
+"metodoa. Galdetu administratzaileari."
+
+#: lib/MIME/Viewer/appledouble.php:48
+msgid "The Macintosh resource fork"
+msgstr "Macintosh baliabideen fork-a"
+
+#: lib/MIME/Viewer/appledouble.php:48
+#, php-format
+msgid "The Macintosh resource fork can be downloaded %s."
+msgstr "Macintosh baliabideen fork-a deskargatu daiteke, %s."
+
+#: lib/MIME/Viewer/pkcs7.php:255
+#, php-format
+msgid "The S/MIME certificate of %s: "
+msgstr "%s(r)en S/MIME ziurtagiria: "
+
+#: fetchmailprefs.php:85
+#, php-format
+msgid "The account \"%s\" has been deleted."
+msgstr "\"%s\" kontua ezabatu da."
+
+#: fetchmailprefs.php:78
+#, php-format
+msgid "The account \"%s\" has been saved."
+msgstr "\"%s\" kontua gorde da."
+
+#: attachment.php:44
+msgid "The attachment was not found."
+msgstr "Eranskina ez da aurkitu."
+
+#: config/prefs.php.dist:666
+msgid "The buttons NOT to show when using Xinha."
+msgstr "Xinha erabiltzean EZ erakusteko botoiak."
+
+#: config/prefs.php.dist:612
+msgid "The buttons to show when using FCKeditor."
+msgstr "FCKeditor erabiltzean erakusteko botoiak."
+
+#: lib/MIME/Viewer/itip.php:70
+msgid "The calendar data is invalid"
+msgstr "Egutegiaren datuak baliogabeak dira"
+
+#: lib/MIME/Viewer/appledouble.php:49
+msgid "The contents of the Macintosh file are below."
+msgstr "Macintosh fitxategiaren edukia behean dago."
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:69
+#, php-format
+msgid "The current folder(s) \"%s\" will be renamed to \"%s\"."
+msgstr "\"%s\" uneko fitxategiari izena aldatuko zaio: \"%s\"."
+
+#: templates/acl/acl.html:29
+msgid ""
+"The current list of users with access to this folder could not be retrieved."
+msgstr ""
+"Karpeta honetarako sarbidea duten erabiltzaileen zerrenda ezin da eskuratu."
+
+#: config/prefs.php.dist:964
+msgid "The default charset for messages with no charset information:"
+msgstr "Karaktere-informaziorik gabeko mezuentzako karaktere-joko lehenetsia:"
+
+#: lib/Compose.php:264
+#, php-format
+msgid "The draft has been saved to the \"%s\" folder."
+msgstr "Zirriborroa \"%s\" karpetan gorde da."
+
+#: lib/MIME/Viewer/itip.php:161
+msgid "The event was added to your calendar."
+msgstr "Gertaera gehitu da zure egutegian."
+
+#: lib/MIME/Viewer/itip.php:148
+msgid "The event was updated in your calendar."
+msgstr "Gertaera eguneratu da zure egutegian."
+
+#: lib/Compose.php:2051
+#, php-format
+msgid "The file %s could not be attached."
+msgstr "Ezin izan da %s fitxategia erantsi."
+
+#: lib/Folder.php:284
+#, php-format
+msgid "The folder \"%s\" already exists"
+msgstr "\"%s\" karpeta badago lehendik"
+
+#: folders.php:259 lib/Folder.php:190
+#, php-format
+msgid "The folder \"%s\" may not be deleted."
+msgstr "\"%s\" karpeta ez da ezabatuko."
+
+#: lib/Folder.php:363
+#, php-format
+msgid "The folder \"%s\" may not be renamed."
+msgstr "\"%s\" karpetari ez zaio izena aldatuko."
+
+#: lib/Folder.php:306
+#, php-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "\"%s\" karpeta sortu da, baina zuk ez daukazu harpidetuta."
+
+#: lib/Folder.php:293
+#, php-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr "\"%s\" karpeta ez da sortu. Hau esan du zerbitzariak"
+
+#: lib/Folder.php:194
+#, php-format
+msgid "The folder \"%s\" was not deleted. This is what the server said"
+msgstr "\"%s\" karpeta ez da ezabatu. Hau esan du zerbitzariak"
+
+#: lib/Folder.php:309
+#, php-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "\"%s\" karpeta behar bezala sortu da."
+
+#: lib/Folder.php:199
+#, php-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "\"%s\" karpeta behar bezala ezabatu da."
+
+#: lib/Folder.php:383
+#, php-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "\"%s\" karpetari behar bezala aldatu zaio izena. Izen berria: \"%s\"."
+
+#: lib/MIME/Viewer/tnef.php:93
+msgid "The following files were attached to this part:"
+msgstr "Fitxategi hauek erantsi zaizkio zati honi:"
+
+#: templates/javascript/popup.js:59
+msgid ""
+"The image save window can not be opened. Perhaps you have set your browser "
+"to block popup windows?"
+msgstr ""
+"Ezin da ireki irudia gordetzeko leihoa. Beharbada leiho gainerakorrak "
+"blokeatzeko konfiguratu duzu arakatzailea?"
+
+#: config/prefs.php.dist:603
+msgid "The javascript editor to use on the compose page."
+msgstr "Mezuak prestatzeko orrian erabiltzeko Javascript editorea."
+
+#: lib/MIME/Viewer/status.php:74
+msgid "The mail server generated the following error message:"
+msgstr "Posta-zerbitzariak errore-mezu hau sortu du:"
+
+#: lib/MIME/Viewer/notification.php:50
+msgid "The mail server generated the following informational message:"
+msgstr "Posta-zerbitzariak informazio-mezu hau sortu du:"
+
+#: lib/MIME/Viewer/status.php:89
+msgid "The mail server generated the following message:"
+msgstr "Posta-zerbitzariak mezu hau sortu du:"
+
+#: lib/Message.php:797
+#, php-format
+msgid "The mailbox %s is already empty."
+msgstr "%s postontzia hutsik dago dagoeneko."
+
+#: lib/Fetchmail.php:238
+#, php-format
+msgid "The message \"%s\" from \"%s\" (%d bytes) exceeds fetch size limit."
+msgstr ""
+"\"%s\" / \"%s\" mezuak (%d byte) gainditu egiten du mezuak hartzeko muga."
+
+#: templates/javascript_defs.php:48
+msgid "The message being composed has been closed. Exiting."
+msgstr "Idazten ari zaren mezua itxi egin da. Irteten."
+
+#: lib/MIME/Viewer/pgp.php:381
+msgid ""
+"The message below does not appear to be a valid PGP encrypted message. "
+"Error: "
+msgstr ""
+"Beheko mezuak ez dirudi PGP bidez enkriptatutako baliozko mezua denik. "
+"Errorea: "
+
+#: lib/MIME/Viewer/pgp.php:252 lib/MIME/Viewer/pgp.php:416
+msgid ""
+"The message below does not appear to be in the correct PGP format (according "
+"to RFC 2015)."
+msgstr ""
+"Beheko mezuak ez dirudi PGP formatu zuzena duenik (RFC 2015en arabera)."
+
+#: lib/MIME/Viewer/pgp.php:376
+msgid "The message below has been compressed with PGP."
+msgstr "Beheko mezua PGP bidez konprimatu da."
+
+#: lib/MIME/Viewer/pgp.php:201
+msgid ""
+"The message below has been digitally signed and encrypted with PGP, but the "
+"signature cannot be verified."
+msgstr ""
+"Beheko mezua digitalki sinatu eta enkriptatu da PGP bidez, baina sinadura "
+"ezin da egiaztatu."
+
+#: lib/MIME/Viewer/pgp.php:207
+msgid "The message below has been digitally signed and encrypted with PGP."
+msgstr "Beheko mezua digitalki sinatu eta enkriptatu da PGP bidez."
+
+#: lib/MIME/Viewer/pgp.php:203
+msgid ""
+"The message below has been digitally signed with PGP, but the signature "
+"cannot be verified."
+msgstr ""
+"Beheko mezua digitalki sinatu da PGP bidez, baina ezin da sinadura egiaztatu."
+
+#: lib/MIME/Viewer/pgp.php:209
+msgid "The message below has been digitally signed with PGP."
+msgstr "Beheko mezua digitalki sinatu da PGP bidez."
+
+#: lib/MIME/Viewer/pgp.php:318
+msgid ""
+"The message below has been encrypted with PGP, however, PGP support is "
+"disabled so the message cannot be decrypted."
+msgstr ""
+"Beheko mezua PGP bidez enkriptatu da, baina PGP euskarria desgaituta "
+"dagoenez, ezin da mezua desenkriptatu."
+
+#: lib/MIME/Viewer/pgp.php:360
+msgid ""
+"The message below has been encrypted with PGP, however, no personal private "
+"key exists so the message cannot be decrypted."
+msgstr ""
+"Beheko mezua PGP bidez enkriptatu da, baina gako pribatu pertsonalik ez "
+"dagoenez, ezin da mezua desenkriptatu."
+
+#: lib/MIME/Viewer/pgp.php:376
+msgid "The message below has been encrypted with PGP."
+msgstr "Beheko mezua PGP bidez enkriptatu da."
+
+#: lib/MIME/Viewer/pgp.php:370
+msgid ""
+"The message below has been encrypted with PGP. You must enter the passphrase "
+"for your PGP private key before it can be decrypted."
+msgstr ""
+"Beheko mezua PGP bidez enkriptatu da. Zure PGP gako pribatuaren pasaesaldia "
+"idatzi behar duzu, desenkriptatu ahal izateko."
+
+#: lib/MIME/Viewer/pgp.php:353
+msgid ""
+"The message below has been encrypted with PGP. You must enter the passphrase "
+"that was used to encrypt this message."
+msgstr ""
+"Beheko mezua PGP bidez enkriptatu da. Mezu hau enkriptatzeko erabilitako "
+"pasaesaldia idatzi behar duzu."
+
+#: lib/MIME/Viewer/pgp.php:460
+msgid "The message below has been verified."
+msgstr "Beheko mezua egiaztatu da."
+
+#: lib/Crypt/PGP.php:382
+msgid "The message below has not been digitally signed or encrypted with PGP."
+msgstr "Beheko mezua ez da digitalki sinatu edo enkriptatu PGP bidez."
+
+#: templates/javascript_defs.php:34
+msgid "The message does not have a Subject entered."
+msgstr "Mezuari ez zaio Gairik ipini."
+
+#: lib/Filter.php:72 lib/Spam.php:222
+msgid "The message has been deleted."
+msgstr "Mezua ezabatu da."
+
+#: lib/Spam.php:203
+msgid "The message has been reported as not spam to your system administrator."
+msgstr "Mezua ez-baztergarri gisa sailkatu zaio sistema-administratzaileari."
+
+#: lib/Spam.php:183
+msgid "The message has been reported as not spam."
+msgstr "Mezua ez-baztergarri gisa sailkatu da."
+
+#: lib/Spam.php:195
+msgid "The message has been reported as spam to your system administrator."
+msgstr "Mezua baztergarri gisa sailkatu zaio sistema-administratzaileari."
+
+#: lib/Spam.php:175
+msgid "The message has been reported as spam."
+msgstr "Mezua baztergarri gisa sailkatu da."
+
+#: lib/MIME/Viewer/pkcs7.php:453
+#, php-format
+msgid "The message has been verified. Sender: %s."
+msgstr "Mezua egiaztatu da. Bidaltzailea: %s."
+
+#: lib/Filter.php:74
+msgid "The messages have been deleted."
+msgstr "Mezuak ezabatu dira."
+
+#: lib/MIME/Viewer/tnef.php:59
+msgid "The requested file does not exist in the MS-TNEF attachment."
+msgstr "Eskatutako fitxategia ez dago MS-TNEF eranskinean."
+
+#: lib/MIME/Viewer/zip.php:67
+msgid "The requested file does not exist in the Zip attachment."
+msgstr "Eskatutako fitxategia ez dago Zip eranskinean."
+
+#: message.php:448
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Please click %s to send the "
+"notification message."
+msgstr ""
+"Mezu honen bidaltzaileak eskatzen dizu mezuaren kontsulta-jakinarazpen bat "
+"bidaltzeko mezua irakurritakoan. Sakatu %s jakinarazpen-mezua bidaltzeko."
+
+#: templates/javascript_defs.php:33
+msgid "The signature could not be replaced."
+msgstr "Sinadura ezin izan da ordeztu."
+
+#: templates/javascript_defs.php:32
+msgid "The signature was successfully replaced."
+msgstr "Sinadura behar bezala ordeztu da."
+
+#: attachment.php:60
+msgid ""
+"The specified attachment does not exist. It may have been deleted by the "
+"original sender."
+msgstr ""
+"Zehaztutako eranskina ez dago. Beharbada ezabatu egingo zuen jatorrizko "
+"bidaltzaileak."
+
+#: attachment.php:129
+msgid "The specified file cannot be read."
+msgstr "Zehaztutako fitxategia ezin da irakurri."
+
+#: stationery.php:84
+#, php-format
+msgid "The stationery \"%s\" has been added."
+msgstr "\"%s\" idazpapera gehitu da."
+
+#: stationery.php:74
+#, php-format
+msgid "The stationery \"%s\" has been deleted."
+msgstr "\"%s\" idazpapera ezabatu da."
+
+#: stationery.php:87
+#, php-format
+msgid "The stationery \"%s\" has been updated."
+msgstr "\"%s\" idazpapera eguneratu da."
+
+#: lib/Compose.php:972
+msgid ""
+"The system is not properly configured. A detailed error description has been "
+"logged for the administrator."
+msgstr ""
+"Sistema ez dago behar bezala konfiguratuta. Errorearen azalpen xehatua "
+"erregistratu da administratzailearentzat."
+
+#: lib/MIME/Viewer/itip.php:192
+msgid "The task has been added to your tasklist."
+msgstr "Zeregina zure zeregin-zerrendan gehitu da."
+
+#: lib/MIME/Viewer/status.php:94
+msgid "The text of the message"
+msgstr "Mezuaren testua"
+
+#: lib/MIME/Viewer/status.php:93
+#, php-format
+msgid "The text of the message can be viewed %s."
+msgstr "Mezuaren testua %s gisa ikus daiteke."
+
+#: lib/MIME/Viewer/status.php:79
+msgid "The text of the returned message"
+msgstr "Itzulitako mezuaren testua"
+
+#: lib/MIME/Viewer/status.php:78
+#, php-format
+msgid "The text of the returned message can be viewed %s."
+msgstr "Itzulitako mezuaren testua %s gisa ikus daiteke."
+
+#: lib/MIME/Viewer/notification.php:67
+msgid "The text of the sent message"
+msgstr "Bidalitako mezuaren testua"
+
+#: lib/MIME/Viewer/notification.php:67
+#, php-format
+msgid "The text of the sent message can be viewed %s."
+msgstr "Bidalitako mezuaren testua %s gisa ikus daiteke."
+
+#: lib/MIME/Viewer/itip.php:177
+msgid "The user's free/busy information was sucessfully stored."
+msgstr "Erabiltzailearen libre/lanpetuta informazioa behar bezala gorde da."
+
+#: lib/MIME/Viewer/alternative.php:56
+msgid "There are no alternative parts that can be displayed."
+msgstr "Ez dago bistara daitekeen ordezko zatirik."
+
+#: templates/mailbox/empty_mailbox.html:2
+msgid "There are no messages in this mailbox."
+msgstr "Ez dago mezurik postontzi honetan."
+
+#: thread.php:108
+msgid "There is no text that can be displayed inline."
+msgstr "Ez dago barnean bistara daitekeen testurik."
+
+#: lib/Message.php:140
+#, php-format
+msgid ""
+"There was an error copying messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"Errorea gertatu da mezuak kopiatzean, \"%s\" --> \"%s\". Hau esan du "
+"zerbitzariak"
+
+#: lib/Message.php:270
+#, php-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr ""
+"Errorea gertatu da \"%s\" karpetatik mezuak ezabatzean. Hau esan du "
+"zerbitzariak"
+
+#: lib/MIME/Viewer/itip.php:101
+msgid "There was an error deleting the event:"
+msgstr "Errorea gertatu da gertaera ezabatzean:"
+
+#: lib/MIME/Viewer/plain.php:50 lib/MIME/Viewer/enriched.php:36
+msgid "There was an error displaying this message part"
+msgstr "Errore bat gertatu da mezu zati hau bistaratzean"
+
+#: lib/Message.php:634
+#, php-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"Errorea gertatu da \"%s\" karpetako mezuei markak ipintzean. Hau esan du "
+"zerbitzariak"
+
+#: folders.php:148
+#, php-format
+msgid "There was an error importing %s."
+msgstr "Errorea geratu da %s inportatzean."
+
+#: lib/MIME/Viewer/itip.php:158
+msgid "There was an error importing the event:"
+msgstr "Errorea gertatu da gertaera inportatzean:"
+
+#: lib/MIME/Viewer/itip.php:189
+msgid "There was an error importing the task:"
+msgstr "Errorea gertatu da zeregina inportatzean:"
+
+#: lib/MIME/Viewer/itip.php:175
+msgid "There was an error importing user's free/busy information:"
+msgstr ""
+"Errore bat gertatu da erabiltzailearen libre/lanpetuta informazioa "
+"inportatzean:"
+
+#: lib/Message.php:136
+#, php-format
+msgid ""
+"There was an error moving messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"Errorea gertatu da mezuak eramatean, \"%s\" --> \"%s\". Hau esan du "
+"zerbitzariak"
+
+#: lib/Compose.php:748
+#, php-format
+msgid "There was an error sending your message: %s"
+msgstr "Errorea gertatu da mezua bidaltzean: %s"
+
+#: lib/MIME/Viewer/itip.php:115 lib/MIME/Viewer/itip.php:144
+msgid "There was an error updating the event:"
+msgstr "Errorea gertatu da gertaera eguneratzean:"
+
+#: lib/MIME/Viewer/pgp.php:166
+msgid "This PGP Public Key was attached to the message."
+msgstr "PGP gako publiko hau erantsi zaio mezuari."
+
+#: lib/MIME/Viewer/itip.php:106 lib/MIME/Viewer/itip.php:120
+#: lib/MIME/Viewer/itip.php:166 lib/MIME/Viewer/itip.php:180
+#: lib/MIME/Viewer/itip.php:196 lib/MIME/Viewer/itip.php:345
+msgid "This action is not supported."
+msgstr "Ekintza hau ez da onartzen."
+
+#: lib/MIME/Viewer/itip.php:202 lib/MIME/Viewer/itip.php:458
+msgid "This action is not yet implemented."
+msgstr "Ekintza hau ez da inplementatu oraindik."
+
+#: templates/javascript_defs.php:61
+msgid "This folder may not be renamed:"
+msgstr "Karpeta honi ezin zaio izena aldatu:"
+
+#: templates/javascript_defs.php:58
+msgid "This may take some time. Are you sure you want to continue?"
+msgstr ""
+"Baliteke denbora pixka bat behar izatea. Ziur zaude jarraitu nahi duzula?"
+
+#: lib/MIME/Viewer/appledouble.php:47
+msgid "This message contains a Macintosh file."
+msgstr "Mezu honek Macintosh fitxategi bat dauka."
+
+#: lib/MIME/Viewer/pkcs7.php:479
+msgid ""
+"This message contains an attachment that has been digitally signed via S/"
+"MIME."
+msgstr "Mezu honek S/MIME bidez digitalki sinatutako eranskin bat dauka."
+
+#: lib/MIME/Viewer/pkcs7.php:483
+msgid "This message contains an attachment that has been encrypted via S/MIME."
+msgstr "Mezu honek S/MIME bidez enkriptatutako eranskin bat dauka."
+
+#: lib/MIME/Viewer/status.php:159
+msgid ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+msgstr ""
+"Posta-banaketari buruzko informazioa dauka mezu honek, baina mezuaren "
+"formatua ezezaguna da."
+
+#: lib/MIME/Viewer/pkcs7.php:201
+msgid "This message does not appear to be in the correct S/MIME format."
+msgstr "Ez dirudi mezu honek S/MIME formatu zuzena daukanik."
+
+#: lib/MIME/Viewer/pkcs7.php:174
+msgid "This message has been digitally signed via S/MIME."
+msgstr "Mezu hau digitalki sinatu da S/MIME bidez."
+
+#: lib/MIME/Viewer/pkcs7.php:170 lib/MIME/Viewer/pkcs7.php:297
+msgid "This message has been encrypted via S/MIME."
+msgstr "Mezu hau S/MIME bidez enkriptatu da."
+
+#: lib/MIME/Contents.php:449
+msgid "This message part cannot be viewed because it is too large."
+msgstr "Mezu zati hau ezin da bistaratu, handiegia delako."
+
+#: message.php:521
+msgid "This message to"
+msgstr "Mezu hau hona"
+
+#: lib/IMP.php:338
+#, php-format
+msgid ""
+"This request cannot be completed because the link you followed or the form "
+"you submitted was only valid for %d minutes. Please try again now."
+msgstr ""
+"Eskaera hau ezin da burutu, jarraitu duzun estekak edo bidali duzun "
+"inprimakiak %d minututarako bakarrik balio zuelako. Saiatu berriro geroago."
+
+#: acl.php:47
+msgid "This server does not support sharing folders."
+msgstr "Zerbitzari honek ez du onartzen karpetak partekatzea."
+
+#: templates/javascript_defs.php:49
+msgid "This window must be called from a compose window."
+msgstr "Leiho honi mezuak idazteko leiho batetik deitu behar zaio."
+
+#: templates/thread/thread.html:2
+msgid "Thread Display:"
+msgstr "Hari-ikuspegia:"
+
+#: thread.php:181 config/prefs.php.dist:1206
+msgid "Thread View"
+msgstr "Hari-ikuspegia"
+
+#: lib/MIME/Viewer/pdf.php:103
+msgid "Thumbnail of attached PDF file"
+msgstr "Erantsitako PDF fitxategiaren koadro txikia"
+
+#: lib/MIME/Viewer/images.php:167
+msgid "Thumbnail of attached image"
+msgstr "Erantsitako irudiaren koadro txikia"
+
+#: compose.php:832 mailbox.php:587 lib/Search.php:716 lib/UI/Mailbox.php:90
+#: lib/UI/Message.php:26 templates/contacts/contacts.html:40
+#: templates/login/recompose.html:14
+msgid "To"
+msgstr "Nori"
+
+#: config/prefs.php.dist:1203
+msgid "To Address"
+msgstr "Nori helbidea"
+
+#: message.php:565
+msgid "To All"
+msgstr "Denei"
+
+#: message.php:561
+msgid "To List"
+msgstr "Zerrendari"
+
+#: message.php:558
+msgid "To Sender"
+msgstr "Bidaltzaileari"
+
+#: message.php:565
+msgid "To _All"
+msgstr "_Denei"
+
+#: message.php:561
+msgid "To _List"
+msgstr "_Zerrendari"
+
+#: templates/compose/redirect.html:47
+msgid "To field"
+msgstr "Nori eremua"
+
+#: templates/prefs/sourceselect.inc:324
+msgid ""
+"To select multiple fields, hold down the Control (PC) or Command (Mac) while "
+"clicking."
+msgstr ""
+"Hainbat eremu hautatzeko, sakatu Ktrl (PC) edo Komandoa (Mac) tekla klik "
+"egiten duzun bitartean."
+
+#: config/prefs.php.dist:514
+msgid "To the stationery and form responses."
+msgstr "Idazpaper eta inprimaki-erantzunetara."
+
+#: lib/IMAP/Client.php:131
+msgid ""
+"To use a TLS connection, you must be running a version of PHP 5.1.0 or "
+"higher."
+msgstr ""
+"TLS konexio bat erabiltzeko, PHP 5.1.0 bertsioa edo berriagoa behar duzu."
+
+#: thread.php:121 templates/thread/thread.html:31
+msgid "To:"
+msgstr "Nori:"
+
+#: config/prefs.php.dist:659
+msgid "Toggle Borders"
+msgstr "Txandakatu ertzak"
+
+#: config/prefs.php.dist:663
+msgid "Toggle HTML Source"
+msgstr "Txandakatu HTML iturburua"
+
+#: config/prefs.php.dist:683
+msgid "Top"
+msgstr "Goian"
+
+#: templates/compose/compose.html:317
+msgid "Total Size:"
+msgstr "Tamaina guztira:"
+
+#: login.php:263
+msgid "Traditional"
+msgstr "Tradizionala"
+
+#: config/prefs.php.dist:316
+msgid "Trash"
+msgstr "Zakarrontzia"
+
+#: lib/IMAP/Tree.php:1986
+msgid "Trash folder"
+msgstr "Zakarrontziaren karpeta"
+
+#: templates/prefs/trashselect.inc:18
+msgid "Trash folder:"
+msgstr "Zakarrontziaren karpeta:"
+
+#: lib/MIME/Viewer/itip.php:144
+msgid "Trying to import the event instead."
+msgstr "Gertaera inportatzen ari da horren ordez."
+
+#: lib/Quota/sql.php:73
+msgid "Unable to connect to SQL server."
+msgstr "Ezin da SQL zerbitzariarekin konektatu."
+
+#: lib/Quota/mercury32.php:68 lib/Quota/command.php:91
+#: lib/Quota/logfile.php:85 lib/Quota/hook.php:42 lib/Quota/maildir.php:111
+#: lib/Quota/imap.php:42 lib/Quota/mdaemon.php:45
+msgid "Unable to retrieve quota"
+msgstr "Ezin da kuota eskuratu"
+
+#: templates/message/navbar_navigate.html:13 templates/mailbox/navbar.html:19
+#: templates/mailbox/navbar.html:35
+msgid "Unanswered"
+msgstr "Erantzun gabe"
+
+#: lib/Search.php:802
+msgid "Unanswered messages"
+msgstr "Erantzun gabeko mezuak"
+
+#: message.php:552 mailbox.php:514
+msgid "Undelete"
+msgstr "Desezabatu"
+
+#: lib/Search.php:822
+msgid "Undeleted messages"
+msgstr "Desezabatutako mezuak"
+
+#: config/prefs.php.dist:628
+msgid "Underline"
+msgstr "Azpimarra"
+
+#: lib/MIME/Headers.php:254 lib/UI/Mailbox.php:67 lib/UI/Mailbox.php:86
+msgid "Undisclosed Recipients"
+msgstr "Ezkutuko hartzaileak"
+
+#: config/prefs.php.dist:647
+msgid "Undoes your last action"
+msgstr "Azken ekintza desegiten du"
+
+#: lib/IMAP/Client.php:464
+msgid "Unexpected response from server to AUTHENTICATE command."
+msgstr "Ustekabeko erantzuna zerbitzaritik AUTHENTICATE komandoari."
+
+#: lib/IMAP/Client.php:430
+msgid "Unexpected response from server to Digest-MD5 response."
+msgstr "Ustekabeko erantzuna zerbitzaritik Digest-MD5 erantzunari."
+
+#: lib/Search.php:812
+msgid "Unflagged messages"
+msgstr "Markatu gabeko mezuak"
+
+#: lib/MIME/Viewer/itip.php:492
+#, php-format
+msgid "Unhandled component of type: %s"
+msgstr "Osagai maneiatu gabea, mota: %s"
+
+#: lib/MIME/Viewer/itip.php:813
+msgid "Unknown"
+msgstr "Ezezaguna"
+
+#: lib/UI/Mailbox.php:206 lib/UI/Mailbox.php:209 lib/UI/Mailbox.php:213
+msgid "Unknown Date"
+msgstr "Data ezezaguna"
+
+#: lib/IMAP/Client.php:205
+#, php-format
+msgid "Unknown IMAP response from the server. Server Responded: %s"
+msgstr "IMAP erantzun ezezaguna zerbitzaritik. Zerbitzariaren erantzuna: %s"
+
+#: lib/MIME/Viewer/itip.php:759
+msgid "Unknown Meeting"
+msgstr "Bilera ezezaguna"
+
+#: lib/UI/Mailbox.php:105
+msgid "Unknown Recipient"
+msgstr "Hartzaile ezezaguna"
+
+#: lib/MIME/Viewer/itip.php:903
+msgid "Unknown Task"
+msgstr "Zeregin ezezaguna"
+
+#: smime.php:346 pgp.php:447
+msgid "Unload Passphrase"
+msgstr "Ahaztu pasaesaldia"
+
+#: fetchmailprefs.php:69
+msgid "Unnamed"
+msgstr "Izengabea"
+
+#: message.php:474 mailbox.php:757 templates/message/navbar_navigate.html:9
+#: templates/mailbox/navbar.html:15 templates/mailbox/navbar.html:31
+msgid "Unseen"
+msgstr "Ikusi gabe"
+
+#: lib/Search.php:792
+msgid "Unseen messages"
+msgstr "Ikusi gabeko mezuak"
+
+#: templates/folders/actions.html:26
+msgid "Unsubscribe"
+msgstr "Kendu harpidetza"
+
+#: templates/compose/compose.html:291
+msgid "Update"
+msgstr "Eguneratu"
+
+#: lib/MIME/Viewer/itip.php:711 lib/MIME/Viewer/itip.php:751
+msgid "Update in my calendar"
+msgstr "Eguneratu nire egutegian"
+
+#: lib/MIME/Viewer/itip.php:738
+msgid "Update respondent status"
+msgstr "Eguneratu erantzun-emailearen egoera"
+
+#: lib/MIME/Viewer/itip.php:725
+msgid "Update this event on my calendar"
+msgstr "Eguneratu gertaera hau nire egutegian"
+
+#: templates/smime/import_key.html:40 templates/pgp/import_key.html:38
+msgid "Upload:"
+msgstr "Kargatu:"
+
+#: templates/prefs/sentmailselect.inc:39
+msgid "Use Default Value"
+msgstr "Erabili balio lehenetsia"
+
+#: config/prefs.php.dist:291
+msgid "Use IMAP folder subscriptions?"
+msgstr "Erabili IMAP karpetako harpidetzak?"
+
+#: templates/prefs/trashselect.inc:24
+msgid "Use Virtual Trash"
+msgstr "Erabili zakarrontzi birtuala"
+
+#: templates/acl/acl.html:42
+msgid "User"
+msgstr "Erabiltzailea"
+
+#: acl.php:90 acl.php:131
+#, php-format
+msgid ""
+"User \"%s\" successfully given the specified rights for the folder \"%s\"."
+msgstr ""
+"\"%s\" erabiltzaileari eskubide espezifikoak eman zaizkio \"%s\" karpetarako."
+
+#: lib/api.php:188 templates/login/login.html:85
+msgid "Username"
+msgstr "Erabiltzaile-izena"
+
+#: templates/fetchmail/fetchmailprefs.html:55
+msgid "Username:"
+msgstr "Erabiltzaile-izena:"
+
+#: templates/login/mobile.inc:14
+msgid "Username: "
+msgstr "Erabiltzaile-izena: "
+
+#: lib/MIME/Viewer/pkcs7.php:256 templates/smime/smime.html:35
+#: templates/smime/smime.html:67 templates/smime/smime.html:71
+#: templates/pgp/pgp.html:43 templates/pgp/pgp.html:75
+#: templates/pgp/pgp.html:80
+msgid "View"
+msgstr "Ikusi"
+
+#: lib/MIME/Viewer/zip.php:99 lib/MIME/Viewer/tnef.php:109
+#, php-format
+msgid "View %s"
+msgstr "Ikusi %s"
+
+#: smime.php:318 pgp.php:417
+#, php-format
+msgid "View %s Public Key"
+msgstr "Ikusi %s gako publikoa"
+
+#: lib/MIME/Viewer/images.php:157 lib/MIME/Viewer/images.php:162
+#: lib/MIME/Viewer/pdf.php:93 lib/MIME/Viewer/pdf.php:98
+msgid "View Attachment"
+msgstr "Ikusi eranskina"
+
+#: mailbox.php:547
+msgid "View Messages"
+msgstr "Ikusi mezuak"
+
+#: smime.php:347 pgp.php:448
+msgid "View Personal Private Key"
+msgstr "Ikusi gako pribatu pertsonala"
+
+#: smime.php:343 pgp.php:442
+msgid "View Personal Public Key"
+msgstr "Ikusi gako publiko pertsonala"
+
+#: message.php:576
+msgid "View Thread"
+msgstr "Ikusi haria"
+
+#: lib/MIME/Viewer/pkcs7.php:487
+msgid "View attachment in a separate window"
+msgstr "Ikusi eranskina beste leiho batean"
+
+#: lib/MIME/Viewer/related.php:85
+msgid "View content in a separate window"
+msgstr "Ikusi edukia beste leiho batean"
+
+#: lib/MIME/Viewer/itip.php:149 lib/MIME/Viewer/itip.php:162
+msgid "View event"
+msgstr "Ikusi gertaera"
+
+#: folders.php:447 mailbox.php:695
+#, php-format
+msgid "View messages in %s"
+msgstr "Ikusi %s karpetako mezuak "
+
+#: templates/prefs/initialpageselect.inc:16
+msgid "View or mailbox to display after login:"
+msgstr "Saioa hasi ondoren bistaratzeko ikuspegia edo postontzia:"
+
+#: lib/MIME/Viewer/itip.php:193
+msgid "View task"
+msgstr "Ikusi zeregina"
+
+#: mailbox.php:366 mailbox.php:367
+msgid "Virtual Folder"
+msgstr "Ikusi karpeta"
+
+#: search.php:90
+#, php-format
+msgid "Virtual Folder \"%s\" created succesfully."
+msgstr "\"%s\" karpeta birtuala behar bezala sortu da."
+
+#: lib/IMAP/Tree.php:66 templates/search/search.html:166
+msgid "Virtual Folders"
+msgstr "Karpeta birtualak"
+
+#: search.php:85
+msgid "Virtual Folders require a label."
+msgstr "Karpeta birtualek etiketa behar dute."
+
+#: lib/Search.php:441
+msgid "Virtual INBOX"
+msgstr "SARRERAKO ONTZI birtuala"
+
+#: lib/IMAP/Tree.php:2026
+msgid "Virtual INBOX Folder"
+msgstr "SARRERAKO ONTZI birtualaren karpeta"
+
+#: lib/Search.php:385
+msgid "Virtual Trash"
+msgstr "Zakarrontzi birtuala"
+
+#: lib/IMAP/Tree.php:2022
+msgid "Virtual Trash Folder"
+msgstr "Zakarrontzi birtualaren karpeta"
+
+#: templates/search/search.html:177
+msgid "Virtual folder label:"
+msgstr "Karpeta birtualaren etiketa:"
+
+#: lib/Crypt/PGP.php:382 lib/MIME/Viewer/pkcs7.php:442
+msgid "Warning"
+msgstr "Abisua"
+
+#: lib/IMP.php:334
+msgid ""
+"We cannot verify that this request was really sent by you. It could be a "
+"malicious request. If you intended to perform this action, you can retry it "
+"now."
+msgstr ""
+"Ezin dugu egiaztatu eskaera hau benetan zuk bidali duzula. Asmo txarreko "
+"eskaera bat izan liteke. Ekintza hau egin nahi bazenuen, berriro saia "
+"zaitezke orain."
+
+#: login.php:196 login.php:355 templates/login/mobile.inc:11
+#, php-format
+msgid "Welcome to %s"
+msgstr "%s. Ongi etorri!"
+
+#: config/prefs.php.dist:857
+msgid ""
+"What should we do with spam messages after they have been reported as spam "
+"or innocent?"
+msgstr ""
+"Zer egin beharko genuke mezu baztergarriekin baztergarri edo seguru gisa "
+"sailkatuak izan ondoren?"
+
+#: config/prefs.php.dist:1007
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted?"
+msgstr ""
+"Mezuak ezabatzean, eraman zakarrontziaren karpetara ezabatutako gisa markatu "
+"ordez?"
+
+#: config/prefs.php.dist:1191
+msgid ""
+"When opening a new mailbox for the first time, which page do you want to "
+"start on?"
+msgstr ""
+"Postontzi berri bat lehen aldiz irekitzean, zein orri bistaratzea nahi duzu?"
+
+#: config/prefs.php.dist:755
+msgid ""
+"When replying/forwarding to a message, should we use the same format as the "
+"original message?"
+msgstr ""
+"Mezu bati erantzutean edo mezu bat birbidaltzean, jatorrizko mezuaren "
+"formatu bera erabili behar genuke?"
+
+#: config/prefs.php.dist:719
+msgid "When saving sent-mail, should we save attachment data?"
+msgstr ""
+"Bidalitako mezuak gordetzean, eranskinaren datuak gorde behar genituzke?"
+
+#: config/prefs.php.dist:675
+msgid ""
+"When sending mail or expanding addresses, what domain should we append to "
+"unqualified addresses (email addresses without \"@\")?"
+msgstr ""
+"Mezuak bidaltzean edo helbideak zabaltzean, zein domeinu erantsi behar "
+"dizkiegu kualifikatu gabeko helbideei (\"@\" gabeko helbideak)?"
+
+#: config/prefs.php.dist:976
+msgid "Where do you want to display links to alternative formats of a message?"
+msgstr "Non bistaratu nahi dituzu mezu baten ordezko formatuen estekak?"
+
+#: config/prefs.php.dist:686
+msgid "Where should the cursor be located in the compose text area by default?"
+msgstr ""
+"Zergatik egon behar luke kurtsoreak testua idazteko arean lehenespenez?"
+
+#: message.php:584 mailbox.php:530
+msgid "Whitelist"
+msgstr "Zerrenda zuria"
+
+#: lib/prefs.php:241 config/prefs.php.dist:602
+msgid "Xinha"
+msgstr "Xinha"
+
+#: templates/search/search.html:105
+msgid "Year"
+msgstr "Urtea"
+
+#: templates/javascript_defs.php:43 config/prefs.php.dist:1269
+#: config/prefs.php.dist:1291 templates/compose/compose.html:302
+msgid "Yes"
+msgstr "Bai"
+
+#: lib/Maintenance/Task/fetchmail_login.php:57
+msgid "You are about to fetch email from the following account(s):"
+msgstr "Mezuak hartzera zoaz kontu hauetatik:"
+
+#: templates/folders/folders_confirm.html:11
+msgid ""
+"You are attempting to delete all messages contained in the following folder"
+"(s)."
+msgstr "Karpeta hauetako mezu guztiak ezabatzen saiatzen ari zara."
+
+#: templates/folders/folders_confirm.html:10
+msgid "You are attempting to delete the following folder(s)."
+msgstr "Karpeta hau/hauek ezabatzen saiatzen ari zara."
+
+#: templates/javascript_defs.php:76
+msgid "You are copying/moving to a new folder."
+msgstr "Karpeta berri batera kopiatzen/eramaten ari zara."
+
+#: templates/javascript_defs.php:54
+msgid "You are creating a sub-folder to"
+msgstr "Honen azpikarpeta bat sortzen ari zara"
+
+#: templates/javascript_defs.php:56
+msgid "You are creating a top-level folder."
+msgstr "Goi-mailako karpeta bat sortzen ari zara."
+
+#: lib/Folder.php:265
+msgid "You are not allowed to create folders."
+msgstr "Ez daukazu baimenik karpetak sortzeko."
+
+#: lib/Folder.php:272
+#, php-format
+msgid "You are not allowed to create more than %d folders."
+msgstr "Ez duzu baimenik %d karpeta baino gehiago sortzeko."
+
+#: lib/Compose.php:985
+#, php-format
+msgid ""
+"You are not allowed to send messages to more than %d recipients within %d "
+"hours."
+msgstr ""
+"Ez daukazu baimenik %d hartzaile baino gehiagori mezuak bidaltzeko %d orduko "
+"epearen baitan."
+
+#: lib/Compose.php:1257
+#, php-format
+msgid "You are not allowed to send messages to more than %d recipients."
+msgstr "Ez daukazu baimenik %d hartzaile baino gehiagori mezuak bidaltzeko."
+
+#: templates/javascript_defs.php:59
+msgid "You are renaming the folder:"
+msgstr "Karpetari izena aldatzen ari zara:"
+
+#: templates/stationery/stationery.html:39
+msgid ""
+"You can use the following placeholders in the stationery text: %c for the "
+"current message content; %s for the signature."
+msgstr ""
+"Leku-marka hauek erabil ditzakezu idazpaperaren testuan: %c uneko mezuaren "
+"edukirako; %s sinadurarako."
+
+#: lib/Folder.php:480
+#, php-format
+msgid "You cannot unsubscribe from \"%s\"."
+msgstr "Ezin duzu \"%s\"(r)en harpidetza kendu."
+
+#: lib/Maintenance/Task/tos_agreement.php:33
+msgid ""
+"You did not agree to the Terms of Service agreement, so you were not allowed "
+"to login."
+msgstr ""
+"Ez duzu onartu Zerbitzu-baldintzen kontratua, eta, beraz, ezin duzu saioa "
+"hasi."
+
+#: templates/acl/acl.html:88
+msgid "You do not have permission to change access to this folder."
+msgstr "Ez daukazu baimenik karpeta honen baimenak aldatzeko."
+
+#: lib/Maillog.php:130
+#, php-format
+msgid "You forwarded this message on %%s to the following recipients: %s."
+msgstr "Mezu hau birbidali zenien (%%s) erabiltzaile hauei: %s."
+
+#: lib/IMP.php:1092
+#, php-format
+msgid "You have %s new messages."
+msgstr "%s mezu berri dauzkazu."
+
+#: lib/IMP.php:1092
+msgid "You have 1 new message."
+msgstr "Mezu berri bat daukazu."
+
+#: lib/prefs.php:172
+msgid ""
+"You have activated move to Trash but no Trash folder is defined. You will be "
+"unable to delete messages until you set a Trash folder in the preferences."
+msgstr ""
+"Zakarrontzira eramateko ekintza aktibatu duzu, baina ez da Zakarrontziaren "
+"karpeta definitu. Ezingo duzu mezurik ezabatu, Zakarrontziaren karpeta bat "
+"ezarri arte hobespenetan."
+
+#: compose.php:150
+msgid "You have already submitted this page."
+msgstr "Orri hau bidali duzu dagoeneko."
+
+#: templates/newmsg/alert.html:3
+msgid "You have new mail in:"
+msgstr "Mezu berriak dituzu hemen:"
+
+#: templates/fetchmail/fetchmail.html:22
+msgid "You have not configured any external mail accounts."
+msgstr "Ez duzu kanpoko posta-konturik konfiguratu."
+
+#: lib/Compose.php:1244
+msgid "You must enter at least one recipient."
+msgstr "Hartzaile bat sartu behar duzu gutxienez."
+
+#: lib/MIME/Viewer/pgp.php:370
+msgid ""
+"You must enter the passphrase for your PGP private key to view this message."
+msgstr "PGP gako pribatuaren pasaesaldia sartu behar duzu mezu hau ikusteko."
+
+#: lib/MIME/Viewer/pkcs7.php:316
+msgid ""
+"You must enter the passphrase for your S/MIME private key to view this "
+"message"
+msgstr "S/MIME gako pribatuaren pasaesaldia sartu behar duzu mezu hau ikusteko"
+
+#: lib/MIME/Viewer/pgp.php:353
+msgid "You must enter the passphrase that was used to encrypt this message."
+msgstr "Mezu hau enkriptatzeko erabilitako pasaesaldia idatzi behar duzu."
+
+#: templates/javascript_defs.php:77
+msgid "You must select a target mailbox first."
+msgstr "Helburuko postontzi bat hautatu behar duzu lehendabizi."
+
+#: fetchmailprefs.php:89
+msgid "You must select an account to be deleted."
+msgstr "Kontu bat hautatu behar duzu ezabatzeko."
+
+#: templates/javascript_defs.php:47
+msgid "You must select an address first."
+msgstr "Helbide bat hautatu behar duzu lehendabizi."
+
+#: templates/javascript_defs.php:40 templates/javascript_defs.php:42
+msgid "You must select at least one message first."
+msgstr "Mezu bat hautatu behar duzu gutxienez lehendabizi."
+
+#: templates/javascript_defs.php:31
+msgid "You must specify a recipient."
+msgstr "Hartzaile bat zehaztu behar duzu."
+
+#: templates/fetchmail/fetchmailprefs.html:91
+msgid ""
+"You need to have \"Perform maintenance operations on login?\" enabled in "
+"your maintenance options."
+msgstr ""
+"\"Egin mantentze-eragiketak saioa hastean?\" gaituta eduki behar duzu "
+"mantentze-aukeretan."
+
+#: lib/Maillog.php:138
+#, php-format
+msgid "You redirected this message to %s on %%s."
+msgstr "Mezu hau birbideratu zenion %s(r)i %%s(e)an."
+
+#: lib/Maillog.php:142
+#, php-format
+msgid "You replied to this message on %s."
+msgstr "Mezu honi erantzun zenion. Data eta ordua: %s."
+
+#: lib/Folder.php:432
+#, php-format
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr "Ez zeunden \"%s\"(e)ra harpidetuta. Hau esan du zerbitzariak"
+
+#: lib/Folder.php:482
+#, php-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr "Ez zenuen \"%s\"(r)en harpidetza kenduta. Hau esan du zerbitzariak"
+
+#: lib/Folder.php:435
+#, php-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr "\"%s\"(e)ra behar bezala harpidetuta zeunden."
+
+#: lib/Folder.php:485
+#, php-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "\"%s\"(r)en harpidetza behar bezala kenduta zenuen."
+
+#: lib/Identity/imp.php:156
+msgid ""
+"Your From address is not a valid email address. This can be fixed in your "
+"Personal Information options page."
+msgstr ""
+"Zure Nork helbidea ez da baliozko helbide elektronikoa. Informazio "
+"pertsonalaren aukeretan zuzendu dezakezu."
+
+#: templates/pgp/pgp.html:92
+msgid "Your Name:"
+msgstr "Zure izena:"
+
+#: templates/pgp/pgp.html:64
+msgid "Your PGP Public/Private Keys"
+msgstr "Zure PGP gako publikoak/pribatuak"
+
+#: templates/smime/smime.html:70 templates/pgp/pgp.html:79
+msgid "Your Private Key:"
+msgstr "Zure gako pribatua:"
+
+#: templates/smime/smime.html:66 templates/pgp/pgp.html:74
+msgid "Your Public Key:"
+msgstr "Zure gako publikoa:"
+
+#: config/prefs.php.dist:199
+msgid "Your Reply-to: address: <em>(optional)</em>"
+msgstr "'Erantzun honi' helbidea: <em>(aukerakoa)</em>"
+
+#: templates/smime/smime.html:56
+msgid "Your S/MIME Public/Private Certificates"
+msgstr "Zure S/MIME ziurtagiri publikoak/pribatuak"
+
+#: fetchmail.php:22
+msgid "Your account does not support fetching external mail."
+msgstr "Zure kontuak ez du onartzen kanpoko posta hartzea."
+
+#: templates/fetchmail/fetchmailprefs.html:18
+msgid "Your accounts:"
+msgstr "Zure kontuak:"
+
+#: config/prefs.php.dist:207
+msgid ""
+"Your alias addresses: <em>(optional, enter each address on a new line)</em>"
+msgstr ""
+"Alias helbideak: <em>(aukerakoa, helbide bakoitza lerro berri batean sartu)</"
+"em>"
+
+#: lib/MIME/Viewer/images.php:87
+msgid "Your browser does not support inline display of this image type."
+msgstr ""
+"Zure arakatzaileak ez du onartzen mota honetako irudiak barnean bistaratzea."
+
+#: config/prefs.php.dist:526
+msgid "Your browser does not support this feature."
+msgstr "Arakatzaileak ez du eginbide hori onartzen."
+
+#: config/prefs.php.dist:697
+msgid "Your default charset for sending messages:"
+msgstr "Zure karaktere-kate lehenetsia mezuak bidaltzeko:"
+
+#: templates/prefs/encryptselect.inc:1
+msgid "Your default encryption method for sending messages:"
+msgstr "Zure enkriptatze-metodo lehenetsia mezuak bidaltzeko:"
+
+#: attachment.php:115
+#, php-format
+msgid ""
+"Your linked attachment has been downloaded by at least one user.\n"
+"\n"
+"Attachment name: %s\n"
+"Attachment date: %s\n"
+"\n"
+"Click on the following link to permanently delete the attachment:\n"
+"%s"
+msgstr ""
+"Eranskin estekatua erabiltzaile batek gutxienez deskargatu du.\n"
+"\n"
+"Eranskinaren izena: %s\n"
+"Eranskinaren data: %s\n"
+"\n"
+"Egin klik ondorengo estekan betiko ezabatzeko eranskina:\n"
+"%s"
+
+#: lib/MIME/Viewer/status.php:88
+msgid "Your message was successfully delivered."
+msgstr "Mezua behar bezala banatu da."
+
+#: config/prefs.php.dist:231
+msgid "Your signature:"
+msgstr "Sinadura:"
+
+#: lib/Message.php:535
+#, php-format
+msgid "[Attachment stripped: Original attachment type: %s, name: %s]"
+msgstr "[Kendutako eranskina: Jatorrizko eranskinaren mota: %s, izena: %s]"
+
+#: templates/javascript/addressesBlocks.js:7 lib/MIME/Headers.php:264
+msgid "[Hide Addresses]"
+msgstr "[Ezkutatu helbideak]"
+
+#: message.php:285 rss.php:75 mailbox.php:719 lib/Compose.php:1895
+#: lib/Compose.php:2373
+msgid "[No Subject]"
+msgstr "[Gairik ez]"
+
+#: lib/MIME/Viewer/pgp.php:170
+msgid "[Save the key to your Address book]"
+msgstr "[Gorde gakoa helbide liburuan]"
+
+#: templates/javascript/addressesBlocks.js:8
+msgid "[Show Addresses -"
+msgstr "[Erakutsi helbideak -"
+
+#: lib/MIME/Headers.php:263
+#, php-format
+msgid "[Show Addresses - %d recipients]"
+msgstr "[Erakutsi helbideak - %d hartzaileak]"
+
+#: lib/Compose.php:3019
+msgid "[Truncated Text]"
+msgstr "[Trunkatutako testua]"
+
+#: lib/MIME/Viewer/pgp.php:172
+msgid "[View the raw key]"
+msgstr "[Bistaratu gako gordina]"
+
+#: compose.php:967
+msgid "_Bcc"
+msgstr "_Bcc"
+
+#: message.php:580 mailbox.php:526
+msgid "_Blacklist"
+msgstr "_Zerrenda beltza"
+
+#: compose.php:964
+msgid "_Cc"
+msgstr "_Cc"
+
+#: message.php:554 mailbox.php:508 mailbox.php:510
+msgid "_Delete"
+msgstr "E_zabatu"
+
+#: lib/IMP.php:865
+msgid "_Folders"
+msgstr "_Karpetak"
+
+#: compose.php:944
+msgid "_Identity"
+msgstr "_Identitatea"
+
+#: lib/IMP.php:834
+msgid "_Inbox"
+msgstr "Sarrerako _ontzia"
+
+#: lib/IMP.php:902
+msgid "_Log out"
+msgstr "Amaitu _saioa"
+
+#: message.php:589
+msgid "_Message Source"
+msgstr "_Mezuaren iturburua"
+
+#: lib/IMP.php:862
+msgid "_New Message"
+msgstr "_Mezu berria"
+
+#: message.php:603
+msgid "_Print"
+msgstr "I_nprimatu"
+
+#: compose.php:1036
+msgid "_Priority"
+msgstr "_Lehentasuna"
+
+#: mailbox.php:353
+#, php-format
+msgid "_Refresh %s"
+msgstr "_Freskatu %s"
+
+#: message.php:557
+msgid "_Reply"
+msgstr "_Erantzun"
+
+#: lib/IMP.php:867
+msgid "_Search"
+msgstr "_Bilatu"
+
+#: compose.php:929
+msgid "_Send Message"
+msgstr "Bi_dali mezua"
+
+#: mailbox.php:597
+msgid "_Thread"
+msgstr "_Haria"
+
+#: compose.php:960 compose.php:962
+msgid "_To"
+msgstr "N_ori"
+
+#: mailbox.php:514
+msgid "_Undelete"
+msgstr "_Desezabatu"
+
+#: message.php:576
+msgid "_View Thread"
+msgstr "Ikusi _haria"
+
+#: message.php:584 mailbox.php:530
+msgid "_Whitelist"
+msgstr "Ze_rrenda zuria"
+
+#: lib/Compose.php:1012
+msgid "addressee unknown"
+msgstr "hartzaile ezezaguna"
+
+#: lib/Search.php:595
+msgid "and"
+msgstr "eta"
+
+#: lib/Compose.php:2006
+msgid "attachment"
+msgstr "eranskina"
+
+#: view.php:122
+msgid "attachments.zip"
+msgstr "eranskinak.zip"
+
+#: templates/compose/compose.html:283
+msgid "bytes"
+msgstr "byte"
+
+#: lib/Compose.php:1036
+msgid "cannot create output file"
+msgstr "ezin da irteera-fitxategia sortu"
+
+#: lib/Compose.php:1008
+msgid "cannot open input"
+msgstr "ezin da sarrera ireki"
+
+#: lib/Compose.php:1000
+msgid "command line usage error"
+msgstr "komando-lerroaren erabilera-errorea"
+
+#: lib/Compose.php:1056
+msgid "configuration error"
+msgstr "konfigurazio-errorea"
+
+#: lib/Compose.php:1032
+msgid "critical system file missing"
+msgstr "sistema-fitxategi kritikoa falta da"
+
+#: lib/Compose.php:1004
+msgid "data format error"
+msgstr "datu-formatuaren errorea"
+
+#: lib/Compose.php:1060
+msgid "entry not found"
+msgstr "sarrera ez da aurkitu"
+
+#: templates/contacts/contacts.html:16
+msgid "from"
+msgstr "hemendik"
+
+#: lib/Compose.php:1016
+msgid "host name unknown"
+msgstr "ostalari-izen ezezaguna"
+
+#: lib/Search.php:598
+msgid "in"
+msgstr "- "
+
+#: lib/Compose.php:1040
+msgid "input/output error"
+msgstr "sarrera/irteera errorea"
+
+#: lib/Compose.php:1024
+msgid "internal software error"
+msgstr "barneko software-errorea"
+
+#: templates/folders/import.html:14
+msgid "into folder"
+msgstr "karpetara"
+
+#: smime.php:39 pgp.php:84
+msgid "key"
+msgstr "gakoa"
+
+#: folders.php:143
+msgid "mailbox file"
+msgstr "postontzi-fitxategia"
+
+#: lib/Compose.php:816
+msgid "name"
+msgstr "izena"
+
+#: lib/Search.php:590
+msgid "not"
+msgstr "ez"
+
+#: lib/Search.php:595 templates/fetchmail/fetchmailprefs.html:26
+msgid "or"
+msgstr "edo"
+
+#: lib/Compose.php:1052
+msgid "permission denied"
+msgstr "baimena ukatuta"
+
+#: templates/javascript/addressesBlocks.js:8
+msgid "recipients]"
+msgstr "hartzaileak]"
+
+#: lib/Compose.php:1048
+msgid "remote error in protocol"
+msgstr "urruneko errorea protokoloan"
+
+#: lib/Compose.php:1020
+msgid "service unavailable"
+msgstr "zerbitzua ez dago erabilgarri"
+
+#: lib/Compose.php:1028
+msgid "system error"
+msgstr "sistema-errorea"
+
+#: lib/Compose.php:1044
+msgid "temporary failure"
+msgstr "aldi baterako hutsegitea"
+
+#: lib/Filter.php:65
+msgid "your blacklist"
+msgstr "zure zerrenda beltza"
+
+#: lib/Filter.php:91
+msgid "your whitelist"
+msgstr "zure zerrenda zuria"

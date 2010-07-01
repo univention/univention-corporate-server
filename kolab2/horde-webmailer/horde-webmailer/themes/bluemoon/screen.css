@@ -1,0 +1,167 @@
+/**
+ * $Horde: horde/themes/bluemoon/screen.css,v 1.13.6.7 2008-06-12 12:37:08 jan Exp $
+ */
+
+body {
+    font-family: Luxi Sans,Verdana;
+    background: #003893;
+}
+img {
+    border: none;
+}
+a {
+    color: #003Cff;
+}
+a:hover {
+    color: #003893;
+}
+a.widget {
+    color: #003Cff;
+    font-size: 0.9em;
+}
+a.widget:hover {
+    color: #003893;
+    background: #0168db;
+}
+.header {
+    color: #270042;
+    background: #0168db;
+    font-size: 133%;
+}
+.header a {
+    color: #270042;
+}
+td.header {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+a.header {
+    color: #00a8ff;
+}
+.light {
+    color: #fff;
+}
+a.light:hover {
+    color: #FFC800;
+}
+.smallheader {
+    color: #270042;
+    background: #0168db;
+    font-size: 120%;
+}
+a.smallheader {
+    color: #00a8ff;
+}
+.small {
+    font-size: 0.8em;
+}
+.control {
+    color: #000;
+    background-color: #d1d1d1;
+}
+.item {
+    color: #000;
+    background-color: #e9e9e9;
+}
+.button {
+    color: #fff;
+    background-color: #2b73d5;
+    border-bottom: 1px solid #99c;
+    border-right: 1px solid #99c;
+    border-top: 1px solid #000;
+    border-left: 1px solid #000;
+    font-size: 100%;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+.button:hover {
+    background-color: #1165ff;
+}
+.tooltip {
+    font-size: 80%;
+    background-color: #ffc;
+    border: 1px solid #000;
+    padding: 2px;
+}
+.accessKey {
+    text-decoration: underline;
+}
+a.header:hover {
+    color: ;
+}
+a.currentTab:hover {
+    color: ;
+}
+.notice {
+    background-color: #ffc;
+}
+.signature {
+    color: #606060;
+}
+.signature .fixed {
+    color: #606060;
+    font-size: 80%;
+}
+
+/* Table styles. */
+.linedRow {
+    color: #000;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+.linedRowSelectedCol {
+    color: #000;
+    background-color: #f3f3f3;
+    border-bottom: 1px solid #ddd;
+}
+/* Alternating styles. item0, item1 are deprecated. */
+.rowEven, .item0 {
+    background-color: #f3f3f3;
+}
+.rowOdd, .item1 {
+    background-color: #e9e9e9;
+}
+.selected {
+    background-color: #bbcbff;
+}
+.selected-over {
+    background-color: #cceeff;
+}
+
+/* Menu styles. */
+#menu {
+    color: #fff;
+    background-color: #0168db;
+}
+#menu a {
+    color: #fff;
+}
+#menu a.current {
+    color: #fff;
+    background: #0168bb;
+    border-bottom: 1px solid #99c;
+    border-right: 1px solid #99c;
+    border-top: 1px solid #023064;
+    border-left: 1px solid #023064;
+    padding: 2px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+/* Sidebar styles. */
+#sidebarPanel {
+    background-color: #0168db;
+}
+#sidebarPanel span, #sidebarPanel a {
+    font-weight: bold;
+    color: #fff;
+}
+#sidebarPanel a:hover {
+    color: #ffc800;
+}
+
+/* Tab styles. */
+.tabset li.activeTab a, .tabset li.activeTab a:hover {
+    border-bottom-color: #0168db;
+    background-color: #0168db;
+}

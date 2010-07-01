@@ -1,0 +1,5746 @@
+# translation of nb_NO.po to Norsk bokmål
+# Norwegian Horde Translation.
+# Copyright 2001-2009 The Horde Project (http://www.horde.org/)
+#
+# Oystein Steimler <oystein@rexta.net>, 2001.
+# Torstein S. Hansen <huleboer@techbee.no>, 2002.
+# Andreas Gunleikskaas <andreas@gunleikskaas.no>, 2003.
+# Geir O. Hogberg <horde@skydiver.no>, 2005.
+# Lars Tobias Børsting <lars.tobias.borsting@ntnu.no>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: nb_NO\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2005-05-18 12:43+0200\n"
+"PO-Revision-Date: 2007-02-26 04:11+0100\n"
+"Last-Translator: Lars Tobias Børsting <lars.tobias.borsting@ntnu.no>\n"
+"Language-Team: Norsk bokmål\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+#: templates/maintenance/confirm_top.inc:11
+#, php-format
+msgid ""
+" &#151; %s is ready to perform the maintenance operations checked below."
+msgstr ""
+" &#151; %s er klar for å utføre vedlikeholdsoperasjonene som er valgt "
+"nedenfor."
+
+#: lib/Horde/Form.php:2352
+#, php-format
+msgid " (%s days ago)"
+msgstr " (%s dager siden)"
+
+#: lib/Horde.php:1283
+#, php-format
+msgid " (Accesskey %s)"
+msgstr " (Hurtigtast %s)"
+
+#: lib/Horde/Form.php:2360
+#, php-format
+msgid " (in %s days)"
+msgstr " (innen %s dager)"
+
+#: lib/Horde/Form.php:2356
+msgid " (today)"
+msgstr " (i dag)"
+
+#: lib/Horde/Form.php:2358
+msgid " (tomorrow)"
+msgstr " (i morgen)"
+
+#: lib/Horde/Form.php:2354
+msgid " (yesterday)"
+msgstr "(i går)"
+
+#: lib/Block/weatherdotcom.php:214
+msgid " at "
+msgstr "den"
+
+#: lib/Block/weatherdotcom.php:200
+#, php-format
+msgid "%d %s and %s"
+msgstr "%d %s og %s"
+
+#: po/translation.php:1164
+#, php-format
+msgid "%d bytes written."
+msgstr "%d bytes skrevet."
+
+#: po/translation.php:1265
+#, php-format
+msgid "%d of %d entries marked as up-to-date"
+msgstr "%d av %d oppføringer markert som oppdatert"
+
+#: lib/Block/weatherdotcom.php:241
+#, php-format
+msgid "%d-day forecast"
+msgstr "%d-dagers varsel"
+
+#: templates/maintenance/notice_top.inc:4
+#, php-format
+msgid "%s - Notice"
+msgstr "%s - Til info"
+
+#: templates/admin/common-header.inc:29
+#, php-format
+msgid "%s Administration"
+msgstr "%s administrasjon"
+
+#: lib/Horde/Crypt/smime.php:728
+#, php-format
+msgid "%s Fingerprint"
+msgstr "%s fingeravtrykk"
+
+#: lib/Horde/MIME/Contents.php:857 lib/Horde/MIME/Contents.php:859
+#, php-format
+msgid "%s KB"
+msgstr "%s kB"
+
+#: templates/maintenance/confirm_top.inc:4
+#, php-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "%s vedlikeholdsoperasjoner - Bekreftelse"
+
+#: admin/setup/config.php:30 admin/setup/index.php:209
+#, php-format
+msgid "%s Setup"
+msgstr "%s-innstillinger"
+
+#: lib/Horde/Auth/Signup.php:276
+#, php-format
+msgid "%s Sign Up"
+msgstr "%s-registrering"
+
+#: templates/maintenance/agreement_top.inc:4
+#, php-format
+msgid "%s Terms of Agreement"
+msgstr "%s avtalevilkår"
+
+#: lib/VFS/ftp.php:596 lib/VFS/ftp.php:666
+#, php-format
+msgid "%s already exists."
+msgstr "%s finnes allerede."
+
+#: lib/Block/metar.php:157 lib/Block/metar.php:163 lib/Block/metar.php:237
+#: lib/Block/metar.php:343 lib/Block/metar.php:349
+#, php-format
+msgid "%s at %s %s"
+msgstr "%s på %s %s"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:530
+#, php-format
+msgid "%s has cancelled %s."
+msgstr "%s har kansellert %s."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:426
+#, php-format
+msgid "%s has replied to a free/busy request."
+msgstr "%s har besvart en forespørsel om informasjon angående ledig/opptatt."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:524
+#, php-format
+msgid "%s has replied to the invitation to %s."
+msgstr "%s har svart på invitasjonen til %s."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:416
+#, php-format
+msgid "%s has sent you free/busy information."
+msgstr "%s har sendt deg informasjon om ledig/opptatt."
+
+#: po/translation.php:287 po/translation.php:314
+#, php-format
+msgid "%s is not writable."
+msgstr "%s er skrivebeskyttet."
+
+#: lib/Horde/Form.php:2322
+#, php-format
+msgid "%s is required"
+msgstr "%s er påkrevd"
+
+#: lib/Block/metar.php:284
+#, php-format
+msgid "%s minutes"
+msgstr "%s minutter"
+
+#: lib/Horde/Block/Collection.php:123 po/translation.php:1331
+#, php-format
+msgid "%s not found."
+msgstr "Fant ikke %s."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:421
+#, php-format
+msgid "%s requests your free/busy information."
+msgstr "%s spør om informasjon om når du er ledig/opptatt."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:508
+#, php-format
+msgid "%s requests your presence at %s."
+msgstr "%s spør om din deltagelse på %s."
+
+#: templates/admin/user/list.inc:6
+#, php-format
+msgid "%s to %s of %s"
+msgstr "%s - %s av %s"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:513
+#, php-format
+msgid "%s wishes to add to %s."
+msgstr "%s ønsker å legge til %s."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:502
+#, php-format
+msgid "%s wishes to make you aware of %s."
+msgstr "%s ønsker å gjøre deg oppmerksom på %s."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:518
+#, php-format
+msgid "%s wishes to receive the latest information about %s."
+msgstr "%s ønsker å motta den sist oppdaterte informasjonen om %s."
+
+#: lib/Horde/Kolab.php:912
+#, php-format
+msgid "%s's Address Book"
+msgstr "Addressebok for %s"
+
+#: lib/Horde/Kolab.php:904
+#, php-format
+msgid "%s's Calendar"
+msgstr "Kalender for %s"
+
+#: lib/Horde/Kolab.php:896
+#, php-format
+msgid "%s's Notepad"
+msgstr "Notatblokk for %s"
+
+#: lib/Horde/Kolab.php:920
+#, php-format
+msgid "%s's Tasklist"
+msgstr "Oppgaveliste for %s"
+
+#: lib/Horde/Notification/Listener/mobile.php:97
+#, php-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#: lib/Horde/CLI.php:270
+#, php-format
+msgid "'%s' is not a valid choice."
+msgstr "'%s' er ikke et gyldig valg."
+
+#: lib/Horde/Registry.php:582 lib/Horde/Registry.php:982
+#, php-format
+msgid "'%s' is not configured in the Horde Registry."
+msgstr "'%s' er ikke konfigurert i Horde-registeret."
+
+#: lib/Horde/Tree.php:160
+#, php-format
+msgid "'%s' tree renderer not found."
+msgstr "Fant ikke renderer for '%s'-tre."
+
+#: admin/groups.php:57
+#, php-format
+msgid "'%s' was added to the groups system."
+msgstr "%s ble lagt til gruppesystemet."
+
+#: admin/perms/addchild.php:85
+#, php-format
+msgid "'%s' was added to the permissions system."
+msgstr "'%s' ble lagt til rettighetssystemet."
+
+#: admin/groups.php:55 admin/perms/addchild.php:83
+#, php-format
+msgid "'%s' was not created: %s."
+msgstr "%s ble ikke opprettet: %s."
+
+#: lib/Block/metar.php:199
+#, php-format
+msgid ", variable from %s to %s"
+msgstr ", variabel mellom %s og %s"
+
+#: lib/Horde/Form.php:2053 lib/Horde/Form.php:2112
+#: lib/Horde/UI/VarRenderer/html.php:691
+msgid "-- select --"
+msgstr "-- velg --"
+
+#: lib/Block/time.php:20
+msgid "12 Hour Format"
+msgstr "12-timers format"
+
+#: lib/Block/time.php:19
+msgid "24 Hour Format"
+msgstr "24-timers format"
+
+#: templates/data/time.inc:28
+msgid "24 hours"
+msgstr "24 timer"
+
+#: lib/Block/metar.php:117
+msgid "A database backend is required for this block."
+msgstr "En databasetilkobling er påkrevd for denne blokken."
+
+#: lib/Horde.php:166
+msgid "A fatal error has occurred"
+msgstr "En fatal feil har oppstått"
+
+#: lib/Horde/Crypt/pgp.php:941
+msgid "A public PGP key is required to encrypt a message."
+msgstr "En offentlig PGP-nøkkel er påkrevd for å kryptere meldingen."
+
+#: lib/Horde/Crypt/pgp.php:1167
+msgid "A public PGP key is required to verify a signed message."
+msgstr ""
+"En offentlig PGP-nøkkel er påkrevd for å verifisere en signert melding."
+
+#: lib/Horde/Crypt/pgp.php:1098
+msgid ""
+"A public PGP key, private PGP key, and passphrase are required to decrypt a "
+"message."
+msgstr ""
+"En offentlig PGP-nøkkel, privat PGP-nøkkel og passord er påkrevd for å "
+"dekryptere en melding."
+
+#: lib/Horde/Crypt/pgp.php:1017
+msgid ""
+"A public PGP key, private PGP key, and passphrase are required to sign a "
+"message."
+msgstr ""
+"En offentlig PGP-nøkkel, privat PGP-nøkkel og passord er påkrevd for å "
+"signere en melding."
+
+#: lib/Horde/Crypt/smime.php:523
+msgid ""
+"A public S/MIME key, private S/MIME key, and passphrase are required to "
+"decrypt a message."
+msgstr ""
+"En offentlig S/MIME-nøkkel, privat S/MIME-nøkkel, og passord er påkrevd for "
+"å dekryptere en melding."
+
+#: lib/Horde/Crypt/smime.php:449
+msgid ""
+"A public S/MIME key, private S/MIME key, and passphrase are required to sign "
+"a message."
+msgstr ""
+"En offentlig S/MIME-nøkkel, privat S/MIME-nøkkel, og passord er påkrevd for "
+"å signere en melding."
+
+#: lib/Horde/Crypt/smime.php:382
+msgid "A public SMIME key is required to encrypt a message."
+msgstr "En offentlig S/MIME-nøkkel er påkrevd for å kryptere en melding."
+
+#: lib/Block/weatherdotcom.php:325
+msgid "AM Rain"
+msgstr "Regn på formiddagen"
+
+#: lib/Block/weatherdotcom.php:326
+msgid "AM Showers"
+msgstr "Regnbyger på formiddagen"
+
+#: lib/Block/weatherdotcom.php:327
+msgid "AM Snow Showers"
+msgstr "Snøbyger på formiddagen"
+
+#: templates/data/time.inc:29
+msgid "AM/PM"
+msgstr "AM/PM"
+
+#: templates/javascript/htmlarea_lang.js:30
+msgid "About this editor"
+msgstr "Om denne editoren"
+
+#: services/help/index.php:52
+msgid "About..."
+msgstr "Om..."
+
+#: templates/javascript/htmlarea_lang.js:74
+msgid "Absbottom"
+msgstr "Absolutt nederst"
+
+#: templates/javascript/htmlarea_lang.js:72
+msgid "Absmiddle"
+msgstr "Absolutt midten"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:640
+msgid "Accept request"
+msgstr "Godkjenn forespørsel"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:681
+msgid "Accepted"
+msgstr "Godtatt"
+
+#: lib/VFS/musql.php:285
+msgid "Access denied creating VFS directory."
+msgstr "Tilgang ble nektet ved opprettelse av VFS-katalog."
+
+#: lib/VFS/musql.php:138
+msgid "Access denied creating VFS file."
+msgstr "Tilgang ble nektet ved opprettelse av VFS-fil."
+
+#: config/prefs.php.dist:75
+msgid "Account Password"
+msgstr "Kontopassord"
+
+#: lib/Net/SMS/clickatell_http.php:302
+msgid "Account frozen."
+msgstr "Kontoen er fryst."
+
+#: config/registry.php.dist:320
+msgid "Accounting"
+msgstr "Bokhold"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:451
+#: lib/Horde/MIME/Viewer/icalendar.php:625
+msgid "Actions"
+msgstr "Handlinger"
+
+#: admin/perms/addchild.php:54 lib/Horde/Perms/UI.php:136
+#: templates/portal/add.inc:14 templates/admin/groups/addchild.inc:16
+msgid "Add"
+msgstr "Legg til"
+
+#: admin/groups.php:214 admin/groups.php:215
+msgid "Add Child Group"
+msgstr "Legg til undergruppe"
+
+#: lib/Horde/Perms/UI.php:81 lib/Horde/Perms/UI.php:82
+msgid "Add Child Permission"
+msgstr "Legg til underrettigheter"
+
+#: templates/portal/add.inc:5
+msgid "Add Here:"
+msgstr "Legg til her:"
+
+#: admin/groups.php:208 admin/groups.php:209
+msgid "Add New Group"
+msgstr "Legg til ny gruppe"
+
+#: lib/Horde/Perms/UI.php:70 lib/Horde/Perms/UI.php:71
+msgid "Add New Permission"
+msgstr "Legg til ny rettighet"
+
+#: templates/admin/groups/addchild.inc:9
+#, php-format
+msgid "Add a child group to '%s'"
+msgstr "Legg til en undergruppe til '%s'"
+
+#: admin/perms/addchild.php:53 lib/Horde/Perms/UI.php:135
+#, php-format
+msgid "Add a child permission to '%s'"
+msgstr "Legg til underrettighet til '%s'"
+
+#: admin/user.php:30
+msgid "Add a new user:"
+msgstr "Legg til ny bruker:"
+
+#: lib/Horde/UI/VarRenderer/html.php:529
+msgid "Add column"
+msgstr "Legg til kolonne"
+
+#: templates/admin/groups/edit.inc:35
+msgid "Add new members"
+msgstr "Legg til nye medlemmer"
+
+#: templates/data/csvmap.inc:103
+msgid "Add pair"
+msgstr "Legg til par"
+
+#: config/prefs.php.dist:357
+#, php-format
+msgid "Add the %s Menu as a Mozilla Sidebar"
+msgstr "Legg til %s-menyen som Mozilla Sidebar"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:631
+#: lib/Horde/MIME/Viewer/icalendar.php:637
+msgid "Add this to my calendar"
+msgstr "Legg denne i min kalender"
+
+#: lib/Horde/MIME/Viewer/vcard.php:74
+msgid "Add to address book:"
+msgstr "Legg i addressebok:"
+
+#: lib/Horde/MIME/Viewer/vcard.php:81
+msgid "Add to my address book"
+msgstr "Legg i min addressebok"
+
+#: admin/user.php:31
+msgid "Add user"
+msgstr "Opprett bruker"
+
+#: admin/user.php:79
+#, php-format
+msgid ""
+"Added '%s' to the system, but could not add additional signup information: %"
+"s."
+msgstr ""
+"La '%s' i systemet, men kunne ikke legge til ekstra registreringsinfo: %s."
+
+#: signup.php:46
+#, php-format
+msgid "Added '%s' to the system. You can log in now."
+msgstr "La '%s' i systemet. Du kan logge inn nå."
+
+#: po/translation.php:956
+msgid "Adding new files to repository:"
+msgstr "La nye filer i repository:"
+
+#: templates/admin/user/noadd.inc:4
+msgid "Adding users is disabled."
+msgstr "Muligheten til å opprette brukere er deaktivert."
+
+#: lib/Horde/Form.php:1438 lib/Horde/MIME/Viewer/vcard.php:129
+#: lib/Horde/MIME/Viewer/vcard.php:176
+msgid "Address"
+msgstr "Adresse"
+
+#: config/registry.php.dist:134
+msgid "Address Book"
+msgstr "Adressebok"
+
+#: lib/Horde/IMAP/ACL/rfc2086.php:97
+msgid "Administer - set permissions for other users"
+msgstr "Administrer - sett rettigheter for andre brukere"
+
+#: admin/index.php:19 services/portal/sidebar.php:113
+msgid "Administration"
+msgstr "Administrasjon"
+
+#: config/registry.php.dist:406
+msgid "Ads"
+msgstr "Reklame"
+
+#: lib/Horde/MIME/Viewer/vcard.php:110
+msgid "Alias"
+msgstr "Alias"
+
+#: templates/javascript/htmlarea_table_lang.js:16
+msgid "Align"
+msgstr "Juster"
+
+#: templates/javascript/htmlarea_lang.js:67
+msgid "Alignment:"
+msgstr "Justering:"
+
+#: lib/Block/fortune.php:87
+msgid "All"
+msgstr "Alle"
+
+#: admin/perms/edit.php:118 templates/shares/edit.inc:65
+msgid "All Authenticated Users"
+msgstr "Alle autentiserte brukere"
+
+#: admin/groups.php:33 admin/groups.php:212
+msgid "All Groups"
+msgstr "Alle grupper"
+
+#: admin/perms/addchild.php:38 lib/Horde/Perms/UI.php:74
+msgid "All Permissions"
+msgstr "Alle reddigheter"
+
+#: templates/javascript/htmlarea_table_lang.js:17
+msgid "All four sides"
+msgstr "Alle fire sidene"
+
+#: lib/Horde/Form.php:1855
+msgid "Allow multiple addresses"
+msgstr "Tillat flere adresser"
+
+#: config/prefs.php.dist:523
+msgid "Allow setting of ordered list type?"
+msgstr "Tillat endring av formatet på nummererte lister?"
+
+#: lib/Horde/DataTree/sql.php:403
+msgid "Already exists"
+msgstr "Eksisterer allerede"
+
+#: config/prefs.php.dist:122
+msgid "Alternate IMSP Login"
+msgstr "Alternativ IMSP-innlogging"
+
+#: config/prefs.php.dist:496
+msgid "Alternate IMSP Password"
+msgstr "Alternativt IMSP-passord"
+
+#: config/prefs.php.dist:488
+msgid "Alternate IMSP Username"
+msgstr "Alternativt IMSP-brukernavn"
+
+#: services/resetpassword.php:35
+msgid "Alternate email address"
+msgstr "Alternativ e-postadresse"
+
+#: admin/templates.php:142
+msgid "Alternate templates"
+msgstr "Alternative maler"
+
+#: templates/javascript/htmlarea_lang.js:122
+#: templates/javascript/htmlarea_anselimage_lang.js:25
+msgid "Alternate text:"
+msgstr "Alternativ tekst:"
+
+#: lib/Horde/Prefs/UI.php:97 lib/Horde/Prefs/UI.php:117
+msgid "An illegal value was specified."
+msgstr "En ulovlig verdi ble oppgitt."
+
+#: lib/Horde/NLS/GeoIP.php:120
+msgid "Anonymous Proxy"
+msgstr "Anonym Proxy"
+
+#: services/resetpassword.php:49
+msgid "Answer"
+msgstr "Svar"
+
+#: admin/templates.php:74 admin/phpshell.php:30 lib/Horde/Block/UI.php:59
+#: templates/admin/setup/index.html:6
+msgid "Application"
+msgstr "Program"
+
+#: util/icon_browser.php:42
+msgid "Application List"
+msgstr "Programliste"
+
+#: admin/setup/index.php:130
+msgid "Application is ready."
+msgstr "Programmet er klart."
+
+#: templates/shares/edit.inc:218
+msgid "Apply to Child Shares"
+msgstr "Oppdater rekursivt"
+
+#: templates/admin/user/approve.inc:33
+msgid "Approve"
+msgstr "Godkjenn"
+
+#: lib/Horde/MIME/Contents.php:857
+msgid "Approximate Size"
+msgstr "Omtrentlig størrelse"
+
+#: lib/Horde/MIME/Viewer/rar.php:62 lib/Horde/MIME/Viewer/zip.php:66
+#: lib/Horde/MIME/Viewer/tgz.php:81
+msgid "Archive File Size"
+msgstr "Filstørrelse på arkivet"
+
+#: lib/Horde/MIME/Viewer/rar.php:61 lib/Horde/MIME/Viewer/zip.php:65
+#: lib/Horde/MIME/Viewer/tgz.php:80
+msgid "Archive Name"
+msgstr "Arkivnavn"
+
+#: templates/admin/user/removequeued.inc:9
+#, php-format
+msgid "Are you sure you want to remove the signup request for %s ?"
+msgstr "Er du sikker på at du vil fjerne registreringsforespørselen for %s?"
+
+#: templates/admin/groups/delete.inc:9
+#, php-format
+msgid "Are you sure you wish to delete '%s' and any sub-groups?"
+msgstr "Er du sikker på at du vil slette '%s' og dens undergrupper?"
+
+#: lib/Block/fortune.php:28
+msgid "Art"
+msgstr "Kunst"
+
+#: lib/Block/fortune.php:29
+msgid "Ascii Art"
+msgstr "ASCII-kunst"
+
+#: config/prefs.php.dist:415
+msgid "Ask for confirmation before doing maintenance operations?"
+msgstr "Be om bekreftelse før gjennomføring av vedlikeholdsoperasjoner?"
+
+#: lib/Horde/Form.php:3098
+msgid "Assignment columns"
+msgstr "Kolonneanvisning"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:166
+#: lib/Horde/MIME/Viewer/icalendar.php:249
+#: lib/Horde/MIME/Viewer/icalendar.php:318
+msgid "Attached is an iCalendar file reply to a request you sent"
+msgstr "Vedlagt i svaret er en iCalendar-fil for en forespørsel du sendte"
+
+#: admin/groups.php:75
+msgid "Attempt to delete a non-existent group."
+msgstr "Forsøk på å slette en gruppe som ikke eksisterer."
+
+#: admin/perms/delete.php:38
+msgid "Attempt to delete a non-existent permission."
+msgstr "Forsøk på å slette en rettighet som ikke eksisterer."
+
+#: admin/perms/edit.php:98
+msgid "Attempt to edit a non-existent permission."
+msgstr "Forsøk på å redigere en rettighet som ikke eksisterer."
+
+#: services/shares/edit.php:53
+msgid "Attempt to edit a non-existent share."
+msgstr "Forsøk på å redigere en delt ressurs som ikke eksisterer."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:577
+msgid "Attendees"
+msgstr "Deltagere"
+
+#: lib/Horde/MIME/Viewer/rar.php:67 lib/Horde/MIME/Viewer/zip.php:71
+#: lib/Horde/MIME/Viewer/tgz.php:86
+msgid "Attributes"
+msgstr "Attributt"
+
+#: lib/Horde/NLS/tld.php:28 lib/Horde/NLS/countries.php:24
+#: lib/Horde/NLS/GeoIP.php:60
+msgid "Austria"
+msgstr "Østerrike"
+
+#: lib/Horde/Auth/cyrsql.php:163
+msgid "Auth_cyrsql: Required imap extension not found."
+msgstr "Auth_cyrsql: Kan ikke finne den nødvendige IMAP-utvidelsen."
+
+#: lib/Horde/Auth/cyrus.php:137
+msgid "Auth_cyrus: Backend does not have required capabilites."
+msgstr "Auth_cyrus: Backend innehar ikke nødvendig funksjonalitet."
+
+#: lib/Horde/Auth/cyrus.php:124
+msgid "Auth_cyrus: Required imap extension not found."
+msgstr "Auth_cyrus: Kan ikke finne den nødvendige IMAP-utvidelsen."
+
+#: lib/Horde/Auth/ftp.php:40
+msgid ""
+"Auth_ftp: Required FTP extension not found. Compile PHP with the --enable-"
+"ftp switch."
+msgstr ""
+"Auth_ftp: Kan ikke finne den nødvendige FTP-utvidelsen. Kompiler PHP med --"
+"enable-ftp."
+
+#: lib/Horde/Auth/imap.php:68
+msgid "Auth_imap: Required IMAP extension not found."
+msgstr "Auth_imap: Kan ikke finne den nødvendige IMAP-utvidelsen."
+
+#: lib/Horde/Auth/krb5.php:53
+msgid "Auth_krb5: Required krb5 extension not found."
+msgstr "Auth_krb5: Kan ikke finne den nødvendige krb5-utvidelsen."
+
+#: lib/Horde/Auth/ldap.php:61
+msgid "Auth_ldap: Required LDAP extension not found."
+msgstr "Auth_ldap: Kan ikke finne den nødvendige LDAP-utvidelsen."
+
+#: lib/Horde/Auth/ldap.php:189
+#, php-format
+msgid "Auth_ldap: Unable to add user %s. This is what the server said: "
+msgstr "Auth_ldap: Kunne ikke legge til bruker %s. Serveren sa: "
+
+#: lib/Horde/Auth/ldap.php:229
+#, php-format
+msgid "Auth_ldap: Unable to remove user %s"
+msgstr "Auth_ldap: Kunne ikke fjerne brukeren %s"
+
+#: lib/Horde/Auth/ldap.php:289
+#, php-format
+msgid "Auth_ldap: Unable to update user %s"
+msgstr "Auth_ldap: Kunne ikke oppdatere bruker %s"
+
+#: lib/Horde/Auth/mcal.php:50
+msgid "Auth_mcal: Required MCAL extension not found."
+msgstr "Auth_mcal: Kan ikke finne den nødvendige MCAL-utvidelsen."
+
+#: lib/Horde/Auth/smb.php:65
+msgid "Auth_smbauth: Required smbauth extension not found."
+msgstr "Auth_smbauth: Kan ikke finne den nødvendige smbauth-utvidelsen."
+
+#: lib/Net/SMS/clickatell_http.php:299
+msgid "Authentication failed"
+msgstr "Autentisering feilet"
+
+#: lib/Net/SMS/clickatell_http.php:69 lib/Net/SMS/clickatell_http.php:78
+#, php-format
+msgid "Authentication failed. %s"
+msgstr "Autentisering feilet. %s"
+
+#: lib/Horde/Auth/radius.php:181
+msgid "Authentication rejected by RADIUS server."
+msgstr "Autentisering nektet av RADIUS-tjener."
+
+#: lib/VFS/ftp.php:800
+msgid "Authentication to FTP server failed."
+msgstr "Autentisering mot FTP-tjeneren feilet."
+
+#: templates/data/csvmap.inc:83
+msgid "Available fields:"
+msgstr "Tilgjengelige felt:"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:614
+msgid "Awaiting Response"
+msgstr "Venter på svar"
+
+#: lib/Block/fortune.php:30
+msgid "BOFH Excuses"
+msgstr "BOFH-unnskyldninger"
+
+#: templates/javascript/htmlarea_table_lang.js:18
+msgid "Background"
+msgstr "Bakgrunn"
+
+#: templates/javascript/htmlarea_lang.js:23
+msgid "Background Color"
+msgstr "Bakgrunnsfarge"
+
+#: lib/Horde/Auth/krb5.php:83
+msgid "Bad kerberos password."
+msgstr "Feil kerberos-passord."
+
+#: lib/Horde/Auth/krb5.php:85
+msgid "Bad kerberos username."
+msgstr "Feil kerberos-brukernavn."
+
+#: lib/Horde/Form.php:2593
+msgid "Bare"
+msgstr "Blank"
+
+#: util/icon_browser.php:31
+#, php-format
+msgid "Base graphics directory '%s' not found."
+msgstr "Fant ikke basekatalog for grafikk '%s'."
+
+#: templates/javascript/htmlarea_table_lang.js:19
+#: templates/javascript/htmlarea_lang.js:73
+msgid "Baseline"
+msgstr "Grunnlinje"
+
+#: lib/Horde/NLS/tld.php:35 lib/Horde/NLS/countries.php:31
+#: lib/Horde/NLS/GeoIP.php:61
+msgid "Belgium"
+msgstr "Beliga"
+
+#: lib/Horde/MIME/Viewer/vcard.php:114
+msgid "Birthday"
+msgstr "Bursdag"
+
+#: lib/Horde/Block/Collection.php:326
+#, php-format
+msgid "Block \"%s\" of application \"%s\" not found."
+msgstr "Fant ikke blokk \"%s\" av programmet \"%s\"."
+
+#: templates/portal/layout.inc:89
+msgid "Block Settings"
+msgstr "Blokkinnstillinger"
+
+#: templates/portal/layout.inc:74
+msgid "Block Type"
+msgstr "Blokktype"
+
+#: templates/javascript/htmlarea_lang.js:8
+msgid "Bold"
+msgstr "Fet"
+
+#: config/registry.php.dist:186
+msgid "Bookmarks"
+msgstr "Bokmerker"
+
+#: templates/javascript/htmlarea_table_lang.js:20
+msgid "Border"
+msgstr "Ramme"
+
+#: templates/javascript/htmlarea_lang.js:85
+msgid "Border thickness:"
+msgstr "Rammetykkelse:"
+
+#: templates/javascript/htmlarea_table_lang.js:21
+msgid "Borders"
+msgstr "Rammer"
+
+#: lib/Block/fortune.php:96
+msgid "Both"
+msgstr "Begge"
+
+#: templates/javascript/htmlarea_table_lang.js:22
+#: templates/javascript/htmlarea_lang.js:75
+msgid "Bottom"
+msgstr "Bunn"
+
+#: templates/javascript/htmlarea_lang.js:19
+msgid "Bulleted List"
+msgstr "Punktliste"
+
+#: config/registry.php.dist:397
+msgid "CMS"
+msgstr "CMS"
+
+#: lib/Horde/MIME/Viewer/zip.php:75
+msgid "CRC"
+msgstr "CRC"
+
+#: lib/Horde/Crypt/smime.php:621
+msgid "CRL Distribution Points"
+msgstr "CRL-distribusjonspunkter"
+
+#: templates/javascript/htmlarea_context_lang.js:27
+msgid "C_ell Properties..."
+msgstr "Egenskaper for c_elle..."
+
+#: lib/Horde/UI/VarRenderer/html.php:456 config/registry.php.dist:143
+msgid "Calendar"
+msgstr "Kalender"
+
+#: lib/Block/weatherdotcom.php:209
+msgid "Calm"
+msgstr "Stille"
+
+#: services/resetpassword.php:20
+msgid "Can not reset password automatically, contact your administrator."
+msgstr "Kan ikke nullstille passord automatisk, kontakt din administrator."
+
+#: lib/Horde/Auth/cyrus.php:241 lib/Horde/Auth/cyrsql.php:312
+#, php-format
+msgid "Can't connect to IMAP server: %s"
+msgstr "Kan ikke koble til IMAP-tjeneren: %s"
+
+#: admin/user.php:101 admin/user.php:120
+#: templates/javascript/htmlarea_lang.js:47
+#: templates/javascript/htmlarea_lang.js:65
+#: templates/admin/groups/delete.inc:14 templates/admin/user/clear.inc:17
+#: templates/admin/user/remove.inc:17
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: templates/problem/problem.inc:59
+msgid "Cancel Problem Report"
+msgstr "Avbryt problemrapport"
+
+#: lib/VFS/ftp.php:269
+#, php-format
+msgid "Cannot delete file \"%s\"."
+msgstr "Kan ikke slette filen \"%s\"."
+
+#: lib/VFS/ISOWriter/RealInputStrategy/copy.php:47
+#: lib/VFS/ISOWriter/RealOutputStrategy/copy.php:53
+msgid "Cannot find a temporary directory."
+msgstr "Kan ikke finne en temp-katalog."
+
+#: lib/VFS/ISOWriter.php:97
+msgid "Cannot proceed without 'targetFile' parameter."
+msgstr "Kan ikke fortsette uten 'targetFile' parameter."
+
+#: lib/VFS/ftp.php:265
+#, php-format
+msgid "Cannot remove directory \"%s\"."
+msgstr "Kan ikke slette katalogen \"%s\"."
+
+#: lib/Horde/DataTree.php:112 lib/Horde/DataTree/sql.php:578
+#, php-format
+msgid "Cannot remove, %d children exist."
+msgstr "Kan ikke slette, %d barn eksisterer."
+
+#: lib/Horde/DataTree/sql.php:504
+msgid ""
+"Cannot reorder, number of entries supplied for reorder does not match number "
+"stored."
+msgstr ""
+"Kan ikke endre rekkefølgen, antallet oppføringer valgt for omsortering "
+"stemmer ikke med antallet lagrede oppføringer."
+
+#: lib/Net/SMS/clickatell_http.php:318
+msgid "Cannot route message to specified number."
+msgstr "Kan ikke sende meldingen til det spesifiserte nummeret."
+
+#: templates/javascript/htmlarea_table_lang.js:24
+msgid "Caption"
+msgstr "Utdrag"
+
+#: config/prefs.php.dist:90
+msgid "Categories and Labels"
+msgstr "Kategorier og etiketter"
+
+#: lib/Horde/MIME/Viewer/vcard.php:197
+msgid "Cell Phone"
+msgstr "Mobiltelefon"
+
+#: templates/javascript/htmlarea_table_lang.js:25
+msgid "Cell Properties"
+msgstr "Egenskaper for celle"
+
+#: templates/javascript/htmlarea_lang.js:114
+msgid "Cell padding:"
+msgstr "Luft rundt innhold av celle:"
+
+#: templates/javascript/htmlarea_table_lang.js:61
+msgid "Cell properties"
+msgstr "Egenskaper for celle"
+
+#: templates/javascript/htmlarea_lang.js:112
+msgid "Cell spacing:"
+msgstr "Luft rundt cellen:"
+
+#: lib/Horde/Form.php:1266
+msgid "Cellphone"
+msgstr "Mobiltelefon"
+
+#: templates/javascript/htmlarea_table_lang.js:26
+msgid "Center"
+msgstr "Midtstill"
+
+#: lib/Horde/Crypt/smime.php:723
+msgid "Certificate Details"
+msgstr "Detaljer for sertifikatet"
+
+#: lib/Horde/Crypt/smime.php:620
+msgid "Certificate Policies"
+msgstr "Rettningslinjer for sertifikatet"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:596
+msgid "Chair Person"
+msgstr "Ordstyrer"
+
+#: templates/rpcsum/rpcsum.inc:24 templates/rpcsum/rpcsum.inc:97
+msgid "Change"
+msgstr "Endre"
+
+#: config/prefs.php.dist:66
+msgid ""
+"Change the name and address that people see when they read and reply to your "
+"emails."
+msgstr ""
+"Endre navn og adresse som mottakere ser når de leser og svarer på posten din."
+
+#: templates/javascript/htmlarea_table_lang.js:27
+msgid "Char"
+msgstr "Tegn"
+
+#: templates/javascript/htmlarea_context_lang.js:25
+msgid "Chec_k Link..."
+msgstr "Sjek_k link..."
+
+#: templates/maintenance/confirm_top.inc:13
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "Kryss av for de operasjonene du vil utføre nå."
+
+#: lib/Horde/Auth/Signup.php:282
+msgid "Choose a password"
+msgstr "Velg et passord"
+
+#: lib/Horde/Auth/Signup.php:281
+msgid "Choose a username"
+msgstr "Velg et brukernavn"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:452
+#: lib/Horde/MIME/Viewer/icalendar.php:626
+msgid "Choose an action:"
+msgstr "Velg handling:"
+
+#: config/prefs.php.dist:288
+msgid "Choose how to display dates:"
+msgstr "Velg hvordan du vil vise datoer:"
+
+#: templates/javascript/htmlarea_listtype_lang.js:22
+msgid "Choose list style type (for ordered lists)"
+msgstr "Velg stil for listetype (for nummererte lister)"
+
+#: lib/VFS.php:655 lib/Net/SMS.php:311
+#, php-format
+msgid "Class definition of %s not found."
+msgstr "Klassedefinisjon for %s ble ikke funnet."
+
+#: lib/Block/weatherdotcom.php:328
+msgid "Clear"
+msgstr "Klart"
+
+#: templates/javascript/htmlarea_lang.js:42
+msgid "Clear MSOffice tags"
+msgstr "Fjern MSOffice tags"
+
+#: templates/admin/user/clear.inc:7
+#, php-format
+msgid "Clear out user: %s"
+msgstr "Fjern bruker: %s"
+
+#: templates/admin/user/clear.inc:16
+msgid "Clear user"
+msgstr "Fjern bruker"
+
+#: templates/admin/user/list.inc:37
+msgid "Clear user data"
+msgstr "Fjern brukerdata"
+
+#: templates/maintenance/notice_bottom.inc:6
+msgid "Click to Continue"
+msgstr "Klikk for å fortsette"
+
+#: lib/Net/SMS/clickatell_http.php:186
+msgid "Clickatell via HTTP"
+msgstr "Clickatell via HTTP"
+
+#: services/keyboard.php:146 templates/shares/edit.inc:12
+msgid "Close Window"
+msgstr "Lukk vindu"
+
+#: lib/Block/metar.php:242
+msgid "Clouds"
+msgstr "Skyer"
+
+#: lib/Block/weatherdotcom.php:329
+msgid "Cloudy"
+msgstr "Overskyet"
+
+#: templates/portal/sidebar.inc:4
+msgid "Collapse Sidebar"
+msgstr "Slå sammen sidelinjen"
+
+#: templates/javascript/htmlarea_table_lang.js:28
+msgid "Collapsed borders"
+msgstr "Sammenslåtte rammer"
+
+#: lib/Block/color.php:18 lib/Block/color.php:29
+#: templates/javascript/htmlarea_table_lang.js:29
+msgid "Color"
+msgstr "Farge"
+
+#: lib/Horde/Block/Collection.php:297 lib/Horde/Block/Collection.php:298
+#: lib/Horde/UI/VarRenderer/html.php:472 services/images/colorpicker.php:14
+#: templates/prefs/categorymanagement.inc:51
+#: templates/prefs/categorymanagement.inc:52
+#: templates/prefs/categorymanagement.inc:68
+#: templates/prefs/categorymanagement.inc:69
+#: templates/prefs/categorymanagement.inc:85
+#: templates/prefs/categorymanagement.inc:86
+msgid "Color Picker"
+msgstr "Fargevelger"
+
+#: lib/Horde/Form.php:2835
+msgid "Colour selection"
+msgstr "Fargevalg"
+
+#: templates/javascript/htmlarea_lang.js:103
+msgid "Cols:"
+msgstr "Kolonner:"
+
+#: lib/Horde/Form.php:1930
+msgid "Column titles"
+msgstr "Kolonnetitler"
+
+#: config/registry.php.dist:289
+msgid "Comics"
+msgstr "Tegneserier"
+
+#: admin/cmdshell.php:25
+msgid "Command"
+msgstr "Kommando"
+
+#: admin/cmdshell.php:20
+msgid "Command Shell"
+msgstr "Kommandovindu"
+
+#: po/translation.php:38
+msgid "Command options:"
+msgstr "Alternativer for kommando:"
+
+#: po/translation.php:97
+msgid "Commands:"
+msgstr "Kommandoer:"
+
+#: lib/Horde/Crypt/pgp.php:399
+msgid "Comment"
+msgstr "Kommentar"
+
+#: po/translation.php:995
+msgid "Committing:"
+msgstr "Sjekker inn:"
+
+#: lib/Horde/Crypt/smime.php:590
+msgid "Common Name"
+msgstr "Navn"
+
+#: lib/Horde/MIME/Viewer/vcard.php:242
+msgid "Company"
+msgstr "Firma"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:697
+msgid "Completed"
+msgstr "Ferdig"
+
+#: lib/Horde/Text/Filter/emails.php:81 lib/Horde/Text/Filter/emails.php:87
+#: lib/Horde/Text/Filter/emails.php:97 lib/Horde/Text/Filter/emails.php:101
+#, php-format
+msgid "Compose Message (%s)"
+msgstr "Skriv melding (%s)"
+
+#: lib/Block/fortune.php:31
+msgid "Computers"
+msgstr "Datamaskiner"
+
+#: lib/Block/metar.php:247
+msgid "Conditions"
+msgstr "Vilkår"
+
+#: admin/setup/diff.php:89
+msgid "Configuration Differences"
+msgstr "Forskjeller i innstillingene"
+
+#: admin/setup/index.php:125
+msgid "Configuration needs updating."
+msgstr "Innstillingene behøver oppdatering."
+
+#: admin/setup/index.php:99
+#, php-format
+msgid "Configure %s"
+msgstr "Konfigurer %s"
+
+#: templates/admin/user/update.inc:37
+msgid "Confirm Password"
+msgstr "Bekreft passord"
+
+#: lib/Horde/IMAP/ACL/rfc2086.php:206 lib/Horde/IMAP/ACL/rfc2086.php:319
+msgid "Connection failed."
+msgstr "Tilkobling mislyktes."
+
+#: lib/Horde/IMAP/ACL/rfc2086.php:206 lib/Horde/IMAP/ACL/rfc2086.php:319
+msgid "Connection failed: "
+msgstr "Tilkobling mislyktes: "
+
+#: lib/Horde/Crypt/pgp.php:793
+msgid "Connection refused to the public keyserver."
+msgstr "Koblingen til offentlig nøkkeltjeneren feilet."
+
+#: lib/Horde/Crypt/pgp.php:795
+#, php-format
+msgid "Connection refused to the public keyserver. Reason: %s (%s)"
+msgstr "Koblingen til offentlig nøkkeltjeneren feilet. Årsak: %s (%s)"
+
+#: lib/VFS/ftp.php:794
+msgid "Connection to FTP server failed."
+msgstr "Koblingen til FTP-tjeneren mislyktes."
+
+#: lib/Horde/MIME/Viewer/vcard.php:56
+msgid "Contacts were successfully added to your address book."
+msgstr "Kontaktene ble lagt til adresseboken"
+
+#: lib/Horde/MIME/Viewer/rar.php:59 lib/Horde/MIME/Viewer/zip.php:63
+#: lib/Horde/MIME/Viewer/tgz.php:78
+#, php-format
+msgid "Contents of '%s'"
+msgstr "Innhold i '%s'"
+
+#: services/resetpassword.php:29
+msgid "Continue"
+msgstr "Fortsett"
+
+#: lib/Block/fortune.php:32
+msgid "Cookie"
+msgstr "Kjeks"
+
+#: templates/javascript/htmlarea_context_lang.js:21
+msgid "Copy"
+msgstr "Kopier"
+
+#: templates/javascript/htmlarea_lang.js:36
+msgid "Copy selection"
+msgstr "Kopier valgt område"
+
+#: po/translation.php:1072
+#, php-format
+msgid "Copying %s to %s"
+msgstr "Kopierer %s til %s"
+
+#: lib/Horde/NLS/tld.php:57 lib/Horde/NLS/countries.php:63
+#: lib/Horde/NLS/GeoIP.php:67
+msgid "Cote d'Ivoire"
+msgstr "Elfenbenskysten"
+
+#: lib/Horde/Crypt/pgp.php:977
+msgid "Could not PGP encrypt message."
+msgstr "Kunne ikke kryptere melding med PGP"
+
+#: lib/Horde/Crypt/pgp.php:1055
+msgid "Could not PGP sign message."
+msgstr "Kunne ikke signere melding med PGP"
+
+#: lib/Horde/Crypt/smime.php:411
+msgid "Could not S/MIME encrypt message."
+msgstr "Kunne ikke kryptere meldingen med S/MIME."
+
+#: lib/Horde/Crypt/smime.php:485
+msgid "Could not S/MIME sign message."
+msgstr "Kunne ikke signere meldingen med S/MIME."
+
+#: lib/Net/SMS/sms2email_http.php:184
+#, php-format
+msgid "Could not add contact. %s"
+msgstr "Kunne ikke legge til kontakt: %s"
+
+#: lib/Horde/Auth/ldap.php:113
+msgid "Could not bind to LDAP server."
+msgstr "Tilkobling til LDAP-server feilet."
+
+#: lib/Net/SMS/sms2email_http.php:154 lib/Net/SMS/clickatell_http.php:173
+#, php-format
+msgid "Could not check balance. %s"
+msgstr "Kunne ikke sjekke disponibel saldo. %s"
+
+#: admin/setup/index.php:48
+#, php-format
+msgid "Could not connect to server '%s' using FTP: %s"
+msgstr "Klarte ikke å koble til tjeneren '%s' ved bruk av FTP: %s"
+
+#: po/translation.php:1075
+#, php-format
+msgid "Could not copy %s to %s"
+msgstr "Kunne ikke kopiere %s til %s"
+
+#: lib/Net/SMS/sms2email_http.php:329
+#, php-format
+msgid "Could not create distribution list. %s"
+msgstr "Kunne ikke lage distribusjonsliste. %s"
+
+#: lib/Horde/Crypt/pgp.php:1126
+msgid "Could not decrypt PGP data."
+msgstr "Kunne ikke dekryptere PGP-melding."
+
+#: lib/Horde/Crypt/smime.php:540
+msgid "Could not decrypt S/MIME data."
+msgstr "Kunne ikke dekryptere S/MIME melding."
+
+#: lib/Net/SMS/sms2email_http.php:250
+#, php-format
+msgid "Could not delete contact. %s"
+msgstr "Klarte ikke å slette kontakt. %s"
+
+#: lib/Net/SMS/sms2email_http.php:365
+#, php-format
+msgid "Could not delete distribution list. %s"
+msgstr "Klarte ikke å slette distribusjonsliste. %s"
+
+#: admin/setup/scripts.php:37
+#, php-format
+msgid "Could not delete setup upgrade script '%s'."
+msgstr "Klarte ikke å slette oppgraderingsscript for oppsett '%s'."
+
+#: lib/Horde/Crypt/smime.php:399 lib/Horde/Crypt/pgp.php:959
+msgid "Could not determine the recipient's e-mail address."
+msgstr "Kunne ikke finne mottakers e-postadresse."
+
+#: lib/Net/SMS/sms2email_http.php:288
+msgid "Could not fetch complete address book."
+msgstr "Kunne ikke hente ut hele adresseboken."
+
+#: lib/Net/SMS/sms2email_http.php:510
+msgid "Could not fetch complete distribution list."
+msgstr "Kunne ikke ut hele distribusjonslisten."
+
+#: lib/Net/SMS/sms2email_http.php:461
+msgid "Could not fetch the complete list of distribution lists."
+msgstr "Kunne ikke hente ut hele listen med distribusjonslister."
+
+#: lib/VFS/ISOWriter/RealOutputStrategy.php:69
+#: lib/VFS/ISOWriter/RealInputStrategy.php:85
+#, php-format
+msgid "Could not load strategy '%s'."
+msgstr "Kunne ikke laste inn strategi '%s'."
+
+#: lib/VFS/ISOWriter/RealInputStrategy/copy.php:111
+#: lib/VFS/ISOWriter/RealOutputStrategy/direct.php:31
+#, php-format
+msgid "Could not mkdir '%s'."
+msgstr "Kunne ikke opprette katalogen '%s'."
+
+#: lib/Horde/Crypt/pgp.php:720
+msgid "Could not obtain public key from the keyserver."
+msgstr "Kunne ikke hente ut offentlig nøkkel fra nøkkeltjeneren."
+
+#: lib/Net/SMS/sms2email_http.php:702 lib/Net/SMS/clickatell_http.php:354
+#, php-format
+msgid "Could not open %s."
+msgstr "Kunne ikke åpne %s."
+
+#: lib/VFS/ISOWriter/RealInputStrategy/copy.php:140
+#, php-format
+msgid "Could not open '%s' for writing."
+msgstr "Kunne ikke åpne '%s' for skriving."
+
+#: lib/Horde/Maintenance.php:415
+#, php-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "Kan ikke åpne Maintenance_Task-modulen %s"
+
+#: lib/VFS/ISOWriter/RealInputStrategy/copy.php:71
+#, php-format
+msgid "Could not open directory '%s'."
+msgstr "Kunne ikke åpne katalogen '%s'."
+
+#: lib/VFS/Object.php:270
+#, php-format
+msgid "Could not read %s."
+msgstr "Kunne ikke lese %s"
+
+#: services/resetpassword.php:85
+msgid ""
+"Could not reset the password for the requested user. Some or all of the "
+"details are not correct. Try again or contact your administrator if you need "
+"further help."
+msgstr ""
+"Kunne ikke nullstille passordet for den forespurte brukeren. Noen eller alle "
+"detaljene er feil. Forsøk igjen eller kontakt administratoren din hvis du "
+"behøver ytterligere hjelp."
+
+#: lib/Horde/IMAP/ACL/rfc2086.php:318 lib/Horde/IMAP/ACL/rfc2086.php:349
+#: lib/Horde/IMAP/ACL/rfc2086.php:386 lib/Horde/IMAP/ACL/rfc2086.php:392
+#: lib/Horde/IMAP/ACL/rfc2086.php:398
+msgid "Could not retrieve ACL"
+msgstr "Kunne ikke hente ut ACL"
+
+#: lib/Net/SMS/sms2email_http.php:279
+#, php-format
+msgid "Could not retrieve address book. %s"
+msgstr "Kunne ikke hente ut adressebok. %s"
+
+#: lib/Net/SMS/sms2email_http.php:501
+#, php-format
+msgid "Could not retrieve distribution list. %s"
+msgstr "Kunne ikke hente ut distribusjonsliste. %s"
+
+#: lib/Net/SMS/sms2email_http.php:452
+#, php-format
+msgid "Could not retrieve distribution lists. %s"
+msgstr "Kunne ikke hente ut distribusjonsliste. %s"
+
+#: lib/Horde/IMAP/ACL/rfc2086.php:206 lib/Horde/IMAP/ACL/rfc2086.php:226
+#: lib/Horde/IMAP/ACL/rfc2086.php:230
+msgid "Could not retrieve server's capabilities"
+msgstr "Kunne ikke hente ut informasjon om tjenerens funksjonsevner"
+
+#: admin/setup/config.php:54
+msgid "Could not revert configuration."
+msgstr "Kunne ikke tilbakestille konfigurasjonen."
+
+#: lib/VFS/ISOWriter/RealInputStrategy/copy.php:95
+#, php-format
+msgid "Could not rmdir '%s'."
+msgstr "Kunne ikke slette katalogen '%s'."
+
+#: admin/setup/scripts.php:71
+#, php-format
+msgid "Could not save %s configuration."
+msgstr "Kunne ikke lagre %s konfigurasjon."
+
+#: admin/setup/index.php:63 admin/setup/scripts.php:57
+msgid "Could not save a backup configuation."
+msgstr "Kunne ikke lagre sikkerhetskopi av konfigurasjonen."
+
+#: admin/setup/index.php:61
+#, php-format
+msgid "Could not save a backup configuation: %s"
+msgstr "Kunne ikke lagre sikkerhetskopi av konfigurasjonen: %s"
+
+#: admin/setup/scripts.php:92
+#, php-format
+msgid "Could not save setup upgrade script to: '%s'."
+msgstr "Kunne ikke lagre oppgraderings-scriptet til oppsettet til: '%s'."
+
+#: admin/setup/config.php:64
+#, php-format
+msgid "Could not save the backup configuration file %s."
+msgstr "Kunne ikke lagre sikkerhetskopien av konfigurasjonsfilen %s."
+
+#: admin/setup/config.php:74
+#, php-format
+msgid ""
+"Could not save the configuration file %s. You can either use one of the "
+"options to save the code back on %s or copy manually the code below to %s."
+msgstr ""
+"Kunne ikke lagre konfigurasjonsfilen %s. Du kan enten benytte deg av en av "
+"mulighetene for å lagre data tilbake til %s eller kopiere koden under "
+"manuelt til %s."
+
+#: lib/Horde/Auth/ldap.php:123
+msgid "Could not search the LDAP server."
+msgstr "Kunne ikke utføre søk på LDAP tjeneren."
+
+#: lib/VFS/ISOWriter/RealInputStrategy/copy.php:87
+#, php-format
+msgid "Could not unlink '%s'."
+msgstr "Kunne ikke fjerne '%s'."
+
+#: lib/Net/SMS/sms2email_http.php:221
+#, php-format
+msgid "Could not update contact. %s"
+msgstr "Kunne ikke oppdatere kontakt. %s"
+
+#: lib/Net/SMS/sms2email_http.php:409
+#, php-format
+msgid "Could not update distribution list. %s"
+msgstr "Kunne ikke oppdatere distribusjonslisten. %s"
+
+#: admin/setup/index.php:70
+#, php-format
+msgid "Could not write configuration for '%s': %s"
+msgstr "Kunne ikke skrive konfigurasjon for '%s': %s"
+
+#: config/prefs.php.dist:356
+msgid "Couldn't find the Mozilla Sidebar. Make sure the sidebar is open."
+msgstr "Kunne ikke finne Mozilla Sidebar. Sjekk at den er åpen."
+
+#: lib/Horde/IMAP/ACL/rfc2086.php:159
+#, php-format
+msgid "Couldn't give user '%s' the following rights for the folder '%s': %s"
+msgstr "Brukeren '%s' ble gitt følgende rettigheter til mappen '%s': %s"
+
+#: lib/Horde/Form.php:1416
+msgid "Counted text"
+msgstr "Talt tekst"
+
+#: lib/Horde/Crypt/smime.php:593
+msgid "Country"
+msgstr "Land"
+
+#: config/registry.php.dist:273
+msgid "Courses"
+msgstr "Kurser"
+
+#: templates/rpcsum/rpcsum.inc:21 templates/rpcsum/rpcsum.inc:97
+#: templates/rpcsum/rpcsum.inc:101
+msgid "Create"
+msgstr "Opprett"
+
+#: templates/javascript/htmlarea_context_lang.js:67
+msgid "Create a link"
+msgstr "Opprett en lenke"
+
+#: templates/prefs/identityselect.inc:89
+msgid "Create a new one"
+msgstr "Opprett en ny"
+
+#: lib/Horde/IMAP/ACL/rfc2086.php:95
+msgid "Create sub folders"
+msgstr "Opprett undermapper"
+
+#: admin/perms/edit.php:136 lib/Horde/Perms/UI.php:222
+msgid "Creator Permissions"
+msgstr "Rettigheter for eier"
+
+#: lib/Horde/Form.php:3215
+msgid "Credit card number"
+msgstr "Kredittkortnummer"
+
+#: lib/Block/moon.php:26
+msgid "Current Phase"
+msgstr "Gjeldende fase"
+
+#: lib/Block/time.php:3 lib/Block/time.php:30
+msgid "Current Time"
+msgstr "Gjeldende tid"
+
+#: templates/javascript/htmlarea_context_lang.js:53
+msgid "Current URL is"
+msgstr "Gjeldende URL er"
+
+#: lib/Block/metar.php:25
+msgid "Current Weather"
+msgstr "Gjeldende vær"
+
+#: lib/Block/weatherdotcom.php:233
+msgid "Current condition: "
+msgstr "Gjeldende utsikter: "
+
+#: templates/javascript/htmlarea_lang.js:32
+msgid "Current style"
+msgstr "Gjeldende stil"
+
+#: config/prefs.php.dist:108
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Tilpass oppgaver som kjøres ved innlogging til %s."
+
+#: templates/javascript/htmlarea_context_lang.js:20
+msgid "Cut"
+msgstr "Klipp ut"
+
+#: templates/javascript/htmlarea_lang.js:35
+msgid "Cut selection"
+msgstr "Klipp ut valgt område"
+
+#: lib/Horde/NLS/tld.php:67 lib/Horde/NLS/countries.php:66
+#: lib/Horde/NLS/GeoIP.php:69
+msgid "Cyprus"
+msgstr "Kypros"
+
+#: lib/Horde/UI/VarRenderer/html.php:423 templates/data/date.inc:47
+#: templates/data/date.inc:48 templates/data/date.inc:49
+#: templates/data/date.inc:50
+msgid "DD"
+msgstr "DD"
+
+#: lib/Horde/Maintenance.php:38
+msgid "Daily"
+msgstr "Daglig"
+
+#: config/registry.php.dist:423
+msgid "Data"
+msgstr "Data"
+
+#: admin/datatree.php:65
+msgid "DataTree Browser"
+msgstr "DataTre-utforsker"
+
+#: lib/Horde/Form.php:2382 lib/Horde/MIME/Viewer/rfc822.php:77
+msgid "Date"
+msgstr "Dato"
+
+#: templates/admin/user/approve.inc:12
+msgid "Date Received"
+msgstr "Dato mottatt"
+
+#: lib/Horde/Form.php:2796
+msgid "Date selection"
+msgstr "Dato valg"
+
+#: lib/Block/weatherdotcom.php:277
+msgid "Day"
+msgstr "Dag"
+
+#: templates/javascript/htmlarea_context_lang.js:35
+msgid "De_lete Column"
+msgstr "Sle_tt kolonne"
+
+#: lib/Horde/UI/VarRenderer/html.php:385 lib/Horde/UI/VarRenderer/html.php:422
+#: templates/javascript/open_calendar.js:76
+msgid "December"
+msgstr "Desember"
+
+#: templates/javascript/htmlarea_listtype_lang.js:16
+msgid "Decimal numbers"
+msgstr "Desimaltall"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:685
+msgid "Declined"
+msgstr "Avslått"
+
+#: templates/javascript/htmlarea_lang.js:20
+msgid "Decrease Indent"
+msgstr "Reduser innrykk"
+
+#: lib/prefs.php:108 lib/Horde/Prefs/UI.php:191
+msgid "Default"
+msgstr "Standard"
+
+#: templates/prefs/categorymanagement.inc:47
+#: templates/prefs/categorymanagement.inc:81
+msgid "Default Color"
+msgstr "Standard farge"
+
+#: lib/Horde/Identity.php:92
+msgid "Default Identity"
+msgstr "Standardidentitet"
+
+#: admin/perms/edit.php:119 lib/Horde/Perms/UI.php:204
+msgid "Default Permissions"
+msgstr "Standardrettigheter"
+
+#: lib/Horde/Perms/UI.php:205
+msgid "Default permissions"
+msgstr "Standardrettigheter"
+
+#: lib/Block/fortune.php:33
+msgid "Definitions"
+msgstr "Definisjoner"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:643
+msgid "Delegate position"
+msgstr "Deleger posisjon"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:693
+msgid "Delegated"
+msgstr "Delegert"
+
+#: admin/groups.php:72 admin/perms/delete.php:46 admin/perms/delete.php:52
+#: lib/Horde/Perms.php:297 lib/Horde/Perms/UI.php:327
+#: lib/Horde/Perms/UI.php:347 templates/shares/edit.inc:36
+#: templates/shares/edit.inc:70 templates/shares/edit.inc:93
+#: templates/shares/edit.inc:116 templates/shares/edit.inc:139
+#: templates/shares/edit.inc:182 templates/rpcsum/rpcsum.inc:73
+#: templates/rpcsum/rpcsum.inc:99 templates/admin/groups/delete.inc:13
+#: templates/admin/user/list.inc:34
+msgid "Delete"
+msgstr "Slett"
+
+#: admin/groups.php:189 admin/groups.php:217
+msgid "Delete Group"
+msgstr "Slett gruppe"
+
+#: lib/Horde/Perms/UI.php:60 lib/Horde/Perms/UI.php:84
+msgid "Delete Permission"
+msgstr "Slett rettighet"
+
+#: lib/Horde/IMAP/ACL/rfc2086.php:96
+msgid "Delete and purge messages"
+msgstr "Slett og fjern meldinger"
+
+#: templates/javascript/htmlarea_table_lang.js:57
+msgid "Delete cell"
+msgstr "Slett celle"
+
+#: templates/javascript/htmlarea_table_lang.js:63
+msgid "Delete column"
+msgstr "Slett kolonne"
+
+#: admin/templates.php:148
+msgid "Delete existing alternate template"
+msgstr "Slett eksisterende alternativ mal"
+
+#: admin/perms/delete.php:50 lib/Horde/Perms/UI.php:326
+#, php-format
+msgid "Delete permissions for '%s'"
+msgstr "Fjern rettighetene til '%s'"
+
+#: lib/Horde/Perms/UI.php:329
+#, php-format
+msgid "Delete permissions for '%s' and any sub-permissions?"
+msgstr "Fjern rettighetene til '%s' og alle underrettigheter?"
+
+#: templates/javascript/htmlarea_table_lang.js:67
+msgid "Delete row"
+msgstr "Slett rad"
+
+#: templates/prefs/deleteidentity.inc:15
+msgid "Delete selected identity"
+msgstr "Slett valgt identitet"
+
+#: templates/javascript/htmlarea_context_lang.js:66
+msgid "Delete the current column"
+msgstr "Slett gjeldende kolonne"
+
+#: templates/javascript/htmlarea_context_lang.js:62
+msgid "Delete the current row"
+msgstr "Slett gjeldende rad"
+
+#: admin/perms/delete.php:48
+msgid "Delete this permission and any sub-permissions?"
+msgstr "Slette denne rettigheten og alle underrettigheter?"
+
+#: admin/setup/scripts.php:35
+#, php-format
+msgid "Deleted setup upgrade script '%s'."
+msgstr "Slett oppgraderings-script for oppsett '%s'."
+
+#: lib/Net/SMS/sms2email_http.php:585 lib/Net/SMS/sms2email_http.php:619
+#: lib/Net/SMS/clickatell_http.php:227 lib/Net/SMS/clickatell_http.php:261
+msgid "Delivery time"
+msgstr "Leveringstid"
+
+#: lib/Horde/NLS/tld.php:71 lib/Horde/NLS/countries.php:68
+#: lib/Horde/NLS/GeoIP.php:70
+msgid "Denmark"
+msgstr "Danmark"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:642
+msgid "Deny request"
+msgstr "Avslå forespørsel"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:471
+msgid "Deny request for free/busy information"
+msgstr "Avslå forespørsel for ledig-/opptattinformasjon"
+
+#: services/problem.php:95 services/problem.php:99 services/problem.php:109
+msgid "Describe the Problem"
+msgstr "Beskriv problemet"
+
+#: lib/Horde/Form.php:933 lib/Horde/MIME/Viewer/icalendar.php:565
+#: templates/javascript/htmlarea_table_lang.js:30
+msgid "Description"
+msgstr "Beskrivelse"
+
+#: lib/Horde.php:201
+msgid "Details (also in Horde's logfile):"
+msgstr "Detaljer (også i Horde's loggfil):"
+
+#: lib/Horde.php:205
+msgid "Details have been logged for the administrator."
+msgstr "Detaljer har blitt logget for administratoren."
+
+#: config/registry.php.dist:193
+msgid "Development"
+msgstr "Utvikling"
+
+#: lib/Block/metar.php:215
+msgid "Dew Point"
+msgstr "Duggpunkt"
+
+#: lib/Block/metar.php:292
+msgid "Dew Point for last hour: "
+msgstr "Duggpunkt for den siste timen: "
+
+#: lib/Block/weatherdotcom.php:190
+msgid "Dew point: "
+msgstr "Duggpunkt: "
+
+#: templates/javascript/htmlarea_lang.js:38
+msgid "Direction left to right"
+msgstr "Retning fra venstre mot høyre"
+
+#: templates/javascript/htmlarea_lang.js:39
+msgid "Direction right to left"
+msgstr "Retning fra høyre mot venstre"
+
+#: lib/Block/google.php:39
+msgid "Directory"
+msgstr "Katalog"
+
+#: config/prefs.php.dist:256
+msgid "Display 24-hour times?"
+msgstr "Vis 24-timers tider?"
+
+#: config/prefs.php.dist:97
+msgid "Display Options"
+msgstr "Visningsvalg"
+
+#: lib/Block/metar.php:83
+msgid "Display forecast (TAF)"
+msgstr "Vis forvarsel (TAF)"
+
+#: lib/Horde/Form.php:2806
+msgid "Display format"
+msgstr "Visningsformat"
+
+#: lib/Horde/MIME/MDN.php:203
+msgid "Disposition Notification"
+msgstr "Melding om ordning"
+
+#: admin/perms/delete.php:46 lib/Horde/Perms/UI.php:327
+msgid "Do not delete"
+msgstr "Ikke slett"
+
+#: services/maintenance.php:24
+msgid "Do not directly access maintenance.php"
+msgstr "Ikke åpne mainenance.php direkte"
+
+#: templates/data/tsvinfo.inc:19 templates/data/csvinfo.inc:19
+msgid "Does the first row contain the field names? If yes, check this box:"
+msgstr "Kryss av her hvis den første raden inneholder feltnavnet:"
+
+#: lib/Horde/MIME/Contents.php:868
+msgid "Download"
+msgstr "Last ned"
+
+#: lib/Horde/MIME/Contents.php:868
+msgid "Download %s"
+msgstr "Last ned %s"
+
+#: admin/setup/index.php:156
+msgid "Download generated configuration as PHP script."
+msgstr "Last ned generert konfigurasjon som PHP-script."
+
+#: lib/Horde/Form.php:2091
+msgid "Drop down list"
+msgstr "Nedtrekksliste"
+
+#: lib/Block/fortune.php:34
+msgid "Drugs"
+msgstr "Medisiner"
+
+#: lib/Horde/Crypt/pgp.php:399
+msgid "E-Mail"
+msgstr "E-post"
+
+#: lib/Horde/Notification/Listener/mobile.php:37
+msgid "ERR"
+msgstr "ERR"
+
+#: lib/Horde/Perms.php:296 templates/shares/edit.inc:35
+#: templates/shares/edit.inc:69 templates/shares/edit.inc:92
+#: templates/shares/edit.inc:115 templates/shares/edit.inc:138
+#: templates/shares/edit.inc:181 templates/rpcsum/rpcsum.inc:72
+#: templates/portal/edit.inc:22
+msgid "Edit"
+msgstr "Rediger"
+
+#: lib/Horde/Block/UI.php:51 templates/portal/edit.inc:22
+msgid "Edit Block"
+msgstr "Redigere blokk"
+
+#: admin/groups.php:188 admin/groups.php:216
+msgid "Edit Group"
+msgstr "Rediger gruppe"
+
+#: lib/Horde/Perms/UI.php:59 lib/Horde/Perms/UI.php:83
+msgid "Edit Permission"
+msgstr "Rediger rettigheter"
+
+#: services/shares/edit.php:237
+msgid "Edit Permissions"
+msgstr "Rediger rettighter"
+
+#: services/shares/edit.php:239
+#, php-format
+msgid "Edit Permissions for %s"
+msgstr "Rediger rettigheter for %s"
+
+#: templates/prefs/app.inc:9
+msgid "Edit options for:"
+msgstr "Rediger valg for:"
+
+#: templates/shares/edit.inc:14
+#, php-format
+msgid "Edit permissions for %s"
+msgstr "Rediger rettigheter for %s"
+
+#: admin/perms/edit.php:204 lib/Horde/Perms/UI.php:288
+#, php-format
+msgid "Edit permissions for '%s'"
+msgstr "Rediger rettigheter for %s"
+
+#: lib/Block/fortune.php:35
+msgid "Education"
+msgstr "Utdanning"
+
+#: templates/javascript/htmlarea_context_lang.js:42
+msgid "Element..."
+msgstr "Element..."
+
+#: templates/javascript/htmlarea_lang.js:109
+msgid "Em"
+msgstr "Em"
+
+#: lib/Horde/Form.php:1853 lib/Horde/MIME/Viewer/vcard.php:227
+msgid "Email"
+msgstr "E-post"
+
+#: lib/Horde/Crypt/smime.php:589 templates/admin/groups/edit.inc:12
+#: templates/admin/user/update.inc:40
+msgid "Email Address"
+msgstr "E-postadresse"
+
+#: lib/Horde/Form.php:1947
+msgid "Email addresses must match."
+msgstr "E-postadressene må stemme overens."
+
+#: lib/Horde/Form.php:1973
+msgid "Email with confirmation"
+msgstr "E-post med bekreftelse"
+
+#: lib/Horde/UI/VarRenderer/html.php:280
+msgid "Emoticons"
+msgstr "Emotikoner"
+
+#: lib/Net/SMS/clickatell_http.php:311
+msgid "Empty message."
+msgstr "Tom melding."
+
+#: lib/Horde/Auth/ldap.php:131
+msgid "Empty result."
+msgstr "Tomt resultat."
+
+#: lib/Horde/SQL/Keywords.php:114
+msgid "Empty search terms"
+msgstr "Tøm søkekriterier"
+
+#: config/prefs.php.dist:532
+msgid "Enable insertion of images from Photo Galleries in text?"
+msgstr "Aktiver mulighet for å sette inn bilder fra bildegallerier i teksten?"
+
+#: config/prefs.php.dist:507
+msgid "Enable right click context menu?"
+msgstr "Aktivere høyreklikkmeny?"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:448
+#: lib/Horde/MIME/Viewer/icalendar.php:553
+msgid "End"
+msgstr "Slutt"
+
+#: lib/Horde/Form.php:2591 lib/Horde/Form.php:2800
+msgid "End year"
+msgstr "Sluttår"
+
+#: templates/javascript/htmlarea_lang.js:29
+msgid "Enlarge Editor"
+msgstr "Gjør editoren større"
+
+#: config/prefs.php.dist:211
+msgid ""
+"Enter a security question which you will be asked if you need to reset your "
+"password, e.g. 'what is the name of your pet?':"
+msgstr ""
+"Skriv inn ett sikkerhetsspørsmål som du vil bli spurt om hvis du ønsker å "
+"nullstille passordet ditt, f.eks. 'hva er navnet på kjæledyret ditt?':"
+
+#: templates/javascript/htmlarea_lang.js:119
+#: templates/javascript/htmlarea_anselimage_lang.js:22
+msgid "Enter the image URL here"
+msgstr "Skriv inn URL til bildet her"
+
+#: lib/Horde/Notification/Listener/status.php:29
+#: lib/Block/weatherdotcom.php:41 lib/Block/weatherdotcom.php:51
+#: lib/Block/metar.php:36 services/portal/index.php:78
+msgid "Error"
+msgstr "Feil"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:195
+#: lib/Horde/MIME/Viewer/icalendar.php:278
+#: lib/Horde/MIME/Viewer/icalendar.php:347
+#, php-format
+msgid "Error sending reply: %s."
+msgstr "Feil ved sending av svar: %s"
+
+#: lib/Net/SMS/clickatell_http.php:314
+msgid "Error with email message."
+msgstr "Feil med e-postmeldingen."
+
+#: lib/VFS/ISOWriter/RealInputStrategy/copy.php:143
+#, php-format
+msgid "Error writing '%s'."
+msgstr "Feil ved skriving til '%s'."
+
+#: po/translation.php:413 po/translation.php:522 po/translation.php:1358
+#: po/translation.php:1419 po/translation.php:1482
+msgid "Error: "
+msgstr "Feil: "
+
+#: lib/Horde/NLS/GeoIP.php:56
+msgid "Europe"
+msgstr "Europa"
+
+#: config/prefs.php.dist:329
+msgid "Every 15 minutes"
+msgstr "Hvert 15. minutt"
+
+#: config/prefs.php.dist:379
+msgid "Every 2 minutes"
+msgstr "Hvert 2. minutt"
+
+#: config/prefs.php.dist:326 config/prefs.php.dist:377
+msgid "Every 30 seconds"
+msgstr "Hvert 30. sekund"
+
+#: config/prefs.php.dist:328 config/prefs.php.dist:380
+msgid "Every 5 minutes"
+msgstr "Hvert 5. minutt"
+
+#: lib/Horde/Maintenance.php:39
+msgid "Every Login"
+msgstr "Hver innlogging"
+
+#: config/prefs.php.dist:330
+msgid "Every half hour"
+msgstr "Hver halvtime"
+
+#: config/prefs.php.dist:327 config/prefs.php.dist:378
+msgid "Every minute"
+msgstr "Hvert minutt"
+
+#: templates/data/datemap.inc:28
+msgid "Example values:"
+msgstr "Eksempelverdier:"
+
+#: admin/phpshell.php:76 admin/cmdshell.php:50 admin/sqlshell.php:136
+msgid "Execute"
+msgstr "Kjør"
+
+#: po/translation.php:299 po/translation.php:320 po/translation.php:362
+#: po/translation.php:441 po/translation.php:541 po/translation.php:601
+#: po/translation.php:702 po/translation.php:737 po/translation.php:798
+#: po/translation.php:875 po/translation.php:989 po/translation.php:1011
+msgid "Executing:"
+msgstr "Kjører:"
+
+#: lib/Horde/Block/Layout.php:386
+msgid "Expand"
+msgstr "Utvid"
+
+#: templates/portal/sidebar.inc:31
+msgid "Expand Sidebar"
+msgstr "Utvid Sidebar"
+
+#: lib/Horde/SQL/Keywords.php:169
+msgid "Expected ')'"
+msgstr "Forventet ')'"
+
+#: lib/Horde/SQL/Keywords.php:176
+msgid "Expected bare word or quoted search term"
+msgstr "Forventet enkeltord eller søkekriterie i anførselstegn"
+
+#: lib/Horde/Crypt/pgp.php:398
+msgid "Expiration Date"
+msgstr "Utløpsdato"
+
+#: lib/Horde/Crypt/smime.php:700
+msgid "Exponent"
+msgstr "Eksponent"
+
+#: templates/javascript/htmlarea_table_lang.js:31
+msgid "FG Color"
+msgstr "Forgrunnsfarge"
+
+#: admin/setup/index.php:171
+msgid "FTP upload of setup"
+msgstr "Opplasting av oppsett via FTP"
+
+#: lib/Horde/Prefs/sql.php:240
+msgid "Failed retrieving preferences."
+msgstr "Uthenting av instillinger feilet."
+
+#: lib/Horde/Auth/ldap.php:103
+msgid "Failed to connect to LDAP server."
+msgstr "Tilkobling til LDAP-tjener feilet."
+
+#: lib/Horde/Auth/smb.php:103
+msgid "Failed to connect to SMB server."
+msgstr "Tilkobling til SMB-tjener feilet."
+
+#: lib/VFS/ftp.php:631
+#, php-format
+msgid "Failed to copy from \"%s\"."
+msgstr "Feilet ved kopiering fra \"%s\"."
+
+#: lib/VFS/ftp.php:636
+#, php-format
+msgid "Failed to copy to \"%s\"."
+msgstr "Feilet ved kopiering til \"%s\"."
+
+#: lib/Horde/Auth/sasl.php:92
+msgid "Failed to create new SASL connection."
+msgstr "Feilet ved opprettelse av ny SASL-tilkobling."
+
+#: lib/VFS/ftp.php:671
+#, php-format
+msgid "Failed to move to \"%s\"."
+msgstr "Feilet ved flytting til \"%s\"."
+
+#: lib/Block/weatherdotcom.php:330
+msgid "Fair"
+msgstr "Pent vær"
+
+#: lib/Horde/NLS/tld.php:84 lib/Horde/NLS/countries.php:79
+#: lib/Horde/NLS/GeoIP.php:73
+msgid "Falkland Islands (Malvinas)"
+msgstr "Falklandsøyene"
+
+#: lib/Horde/NLS/tld.php:86 lib/Horde/NLS/countries.php:80
+#: lib/Horde/NLS/GeoIP.php:74
+msgid "Faroe Islands"
+msgstr "Færøyene"
+
+#: lib/Horde/CLI.php:235
+msgid "Fatal Error:"
+msgstr "Fatal feil: "
+
+#: lib/Horde/MIME/Viewer/vcard.php:190
+msgid "Fax"
+msgstr "Fax"
+
+#: lib/Horde/UI/VarRenderer/html.php:375 lib/Horde/UI/VarRenderer/html.php:412
+#: templates/javascript/open_calendar.js:66
+msgid "February"
+msgstr "Februar"
+
+#: lib/Block/metar.php:218
+msgid "Feels Like"
+msgstr "Føles som"
+
+#: lib/Block/weatherdotcom.php:194
+msgid "Feels like: "
+msgstr "Føles som: "
+
+#: lib/Block/weatherdotcom.php:331
+msgid "Few Showers"
+msgstr "Noen byger"
+
+#: lib/Block/weatherdotcom.php:332
+msgid "Few Snow Showers"
+msgstr "Noen snøbyger"
+
+#: lib/Horde/Form.php:1928
+msgid "Field matrix"
+msgstr "Feltmatrise"
+
+#: lib/Horde/MIME/Viewer/rar.php:63 lib/Horde/MIME/Viewer/zip.php:67
+#: lib/Horde/MIME/Viewer/tgz.php:82
+#, php-format
+msgid "File Count: %s file"
+msgstr "Antall filer: %s fil"
+
+#: lib/Horde/MIME/Viewer/rar.php:63 lib/Horde/MIME/Viewer/zip.php:67
+#: lib/Horde/MIME/Viewer/tgz.php:82
+#, php-format
+msgid "File Count: %s files"
+msgstr "Antall filer: %s filer"
+
+#: config/registry.php.dist:349
+msgid "File Manager"
+msgstr "Filbehandler"
+
+#: lib/Horde/MIME/Viewer/rar.php:66 lib/Horde/MIME/Viewer/zip.php:70
+#: lib/Horde/MIME/Viewer/tgz.php:85
+msgid "File Name"
+msgstr "Filnavn"
+
+#: lib/Horde/Form.php:2980
+msgid "File selection"
+msgstr "Filvalg"
+
+#: lib/Horde/Form.php:1483
+msgid "File upload"
+msgstr "Last opp filer"
+
+#: lib/Horde/Browser.php:874
+msgid "File uploads not supported."
+msgstr "Opplasting av filer støttes ikke."
+
+#: config/registry.php.dist:86
+msgid "Filters"
+msgstr "Filter"
+
+#: lib/Block/moon.php:171
+msgid "First Half"
+msgstr "Første halvmåne"
+
+#: lib/Block/moon.php:74 lib/Block/moon.php:76
+msgid "First Quarter"
+msgstr "Første kvartmåne"
+
+#: lib/Horde/UI/VarRenderer/html.php:239
+msgid "Fix ratio"
+msgstr "Fast forhold"
+
+#: lib/Horde/UI/VarRenderer/html.php:214
+msgid "Flip"
+msgstr "Snu"
+
+#: templates/javascript/htmlarea_table_lang.js:32
+msgid "Float"
+msgstr "Flyt"
+
+#: lib/Block/weatherdotcom.php:333
+msgid "Fog"
+msgstr "Tåke"
+
+#: lib/VFS/sql.php:163 lib/VFS/musql.php:108
+#, php-format
+msgid "Folder %s does not exist"
+msgstr "Mappen %s eksisterer ikke"
+
+#: templates/javascript/htmlarea_lang.js:22
+msgid "Font Color"
+msgstr "Fontfarge"
+
+#: lib/Block/fortune.php:37
+msgid "Food"
+msgstr "Mat"
+
+#: templates/javascript/htmlarea_lang.js:123
+#: templates/javascript/htmlarea_anselimage_lang.js:26
+msgid "For browsers that don't support images"
+msgstr "For nettlesere som ikke støtter bilder"
+
+#: lib/Block/metar.php:332
+msgid "Forecast (TAF)"
+msgstr "Forvarsel (TAF)"
+
+#: lib/Block/weatherdotcom.php:74
+msgid ""
+"Forecast Days (note that the returned forecast returns both day and night; a "
+"large number here could result in a wide block)"
+msgstr ""
+"Antall dagers forvarsel (vær obs på at det returnerte forvarslet inneholder "
+"både dag og natt; en stor verdi her kan resultere i en vid blokk)"
+
+#: templates/login/login.inc:95
+msgid "Forgot your password?"
+msgstr "Glemt passordet?"
+
+#: config/registry.php.dist:431
+msgid "Forms"
+msgstr "Skjemaer"
+
+#: lib/Block/fortune.php:21
+msgid "Fortune"
+msgstr "Spådom"
+
+#: lib/Block/fortune.php:99
+msgid "Fortune type"
+msgstr "Type spådom"
+
+#: lib/Block/fortune.php:38
+msgid "Fortunes"
+msgstr "Spådommer"
+
+#: lib/Block/fortune.php:39
+msgid "Fortunes 2"
+msgstr "Spådommer 2"
+
+#: config/registry.php.dist:414
+msgid "Forums"
+msgstr "Fora"
+
+#: config/registry.php.dist:358
+msgid "Forwards"
+msgstr "Videresendte"
+
+#: po/translation.php:1439
+#, php-format
+msgid "Found applications: %s"
+msgstr "Fant programmene: %s"
+
+#: po/translation.php:1433
+msgid "Found directories:"
+msgstr "Fant katalogene:"
+
+#: templates/javascript/open_calendar.js:60
+msgid "Fr"
+msgstr "Fr"
+
+#: templates/javascript/htmlarea_table_lang.js:33
+msgid "Frames"
+msgstr "Rammer"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:417
+msgid "Free/Busy Information"
+msgstr "Ledig-/opptattinformasjon"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:427
+msgid "Free/Busy Reply"
+msgstr "Ledig-/opptattsvar"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:422
+msgid "Free/Busy Request"
+msgstr "Ledig-/opptattforespørsel"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:272
+#: lib/Horde/MIME/Viewer/icalendar.php:341
+msgid "Free/Busy Request Response"
+msgstr "Svar på ledig-/opptattforespørsel"
+
+#: lib/Horde/MIME/Viewer/rfc822.php:79
+msgid "From"
+msgstr "Fra"
+
+#: lib/Block/weatherdotcom.php:211
+msgid "From the "
+msgstr "Fra "
+
+#: templates/problem/problem.inc:48
+msgid "Full Description"
+msgstr "Full beskrivelse"
+
+#: lib/Block/moon.php:82 lib/Block/moon.php:181
+msgid "Full Moon"
+msgstr "Fullmåne"
+
+#: templates/admin/user/update.inc:39
+msgid "Full Name"
+msgstr "Fullt navn"
+
+#: templates/javascript/htmlarea_anselimage_lang.js:30
+msgid "Gallery to take image from"
+msgstr "Galleri du ønsker å hente bilde fra"
+
+#: templates/javascript/htmlarea_anselimage_lang.js:29
+msgid "Gallery:"
+msgstr "Galleri:"
+
+#: admin/setup/config.php:42
+#, php-format
+msgid "Generate %s Configuration"
+msgstr "Generer %s-konfigurasjon"
+
+#: templates/admin/setup/config.html:10
+msgid "Generated Code"
+msgstr "Generert kode"
+
+#: lib/Horde/Crypt/smime.php:599
+msgid "Given Name"
+msgstr "Gitt navn"
+
+#: templates/prefs/app.inc:16
+msgid "Go"
+msgstr "Gå til"
+
+#: lib/Block/google.php:3 lib/Block/google.php:21 lib/Block/google.php:41
+msgid "Google Search"
+msgstr "Søk på Google"
+
+#: lib/Horde/UI/VarRenderer/html.php:220
+msgid "Grayscale"
+msgstr "Gråtone"
+
+#: lib/Horde/NLS/tld.php:100 lib/Horde/NLS/countries.php:93
+#: lib/Horde/NLS/GeoIP.php:77
+msgid "Greece"
+msgstr "Hellas"
+
+#: config/nls.php.dist:181
+msgid "Greek (ISO-8859-7)"
+msgstr "Gresk (ISO-8859-7)"
+
+#: lib/Horde/NLS/tld.php:95 lib/Horde/NLS/countries.php:94
+#: lib/Horde/NLS/GeoIP.php:76
+msgid "Greenland"
+msgstr "Grønland"
+
+#: admin/groups.php:170
+msgid "Group Administration"
+msgstr "Gruppeadministrasjon"
+
+#: lib/Horde/Group.php:57
+msgid "Group names must be non-empty"
+msgstr "Gruppenavn kan ikke være tomme"
+
+#: admin/perms/edit.php:201 lib/Horde/Perms/UI.php:285
+msgid "Group permissions"
+msgstr "Grupperettigheter"
+
+#: admin/perms/edit.php:176 lib/Horde/Perms/UI.php:258 lib/Block/google.php:38
+#: templates/shares/edit.inc:177
+msgid "Groups"
+msgstr "Grupper"
+
+#: admin/perms/edit.php:127 lib/Horde/Perms/UI.php:213
+#: templates/shares/edit.inc:88
+msgid "Guest Permissions"
+msgstr "Rettigheter for gjest"
+
+#: admin/perms/edit.php:128 lib/Horde/Perms/UI.php:214
+msgid "Guest permissions"
+msgstr "Rettigheter for gjest"
+
+#: config/registry.php.dist:439
+msgid "Guestbook"
+msgstr "Gjestebok"
+
+#: lib/Horde/UI/VarRenderer/html.php:331
+msgid "HH"
+msgstr "TT"
+
+#: lib/Horde/Form.php:955
+msgid "HTML"
+msgstr "HTML"
+
+#: templates/javascript/htmlarea_table_lang.js:85
+msgid "HTMLArea cowardly refuses to delete the last cell in row."
+msgstr "HTMLArea nekter feigt å slette den siste cellen i en rad."
+
+#: templates/javascript/htmlarea_table_lang.js:86
+msgid "HTMLArea cowardly refuses to delete the last column in table."
+msgstr "HTMLArea nekter feigt å slette den siste kolonnen i tabellen."
+
+#: templates/javascript/htmlarea_table_lang.js:87
+msgid "HTMLArea cowardly refuses to delete the last row in table."
+msgstr "HTMLArea nekter feigt å slette den siste raden i tabellen."
+
+#: lib/Horde/Auth/http.php:164
+msgid "HTTP Authentication not found."
+msgstr "HTTP autentisering ikke funnet."
+
+#: lib/Horde/Crypt/pgp.php:399
+msgid "Hash-Algorithm"
+msgstr "Hash-algoritme"
+
+#: lib/Block/weatherdotcom.php:334
+msgid "Haze"
+msgstr "Dis"
+
+#: lib/Horde/Form.php:914 lib/Horde/Form.php:2921
+msgid "Header"
+msgstr "Meldingshode"
+
+#: templates/javascript/htmlarea_table_lang.js:34
+msgid "Height"
+msgstr "Høyde"
+
+#: lib/Horde/Help.php:179 lib/Horde/Help.php:186 services/help/index.php:17
+#: templates/help/index.inc:3
+msgid "Help"
+msgstr "Hjelp"
+
+#: templates/javascript/htmlarea_lang.js:31
+msgid "Help using editor"
+msgstr "Hjelp til bruk av tekstbehandler"
+
+#: lib/Horde/Form.php:1368
+msgid "Helper"
+msgstr "Hjelper"
+
+#: lib/Block/moon.php:29
+msgid "Hemisphere"
+msgstr "Halvkule"
+
+#: templates/data/tsvinfo.inc:17 templates/data/csvinfo.inc:17
+msgid "Here is the beginning of the file:"
+msgstr "Her er begynnelsen på filen:"
+
+#: lib/Block/weatherdotcom.php:376
+msgid "High"
+msgstr "Høy"
+
+#: lib/Horde/History.php:322
+msgid "History entry names must be non-empty"
+msgstr "Historieoppføringer må ha navn som ikke er tomme"
+
+#: templates/portal/menu.inc:6 templates/admin/common-header.inc:4
+msgid "Ho_me"
+msgstr "Hje_m"
+
+#: lib/Horde.php:1466
+msgid "Home"
+msgstr "Hjem"
+
+#: lib/Horde/MIME/Viewer/vcard.php:125 lib/Horde/MIME/Viewer/vcard.php:158
+msgid "Home Address"
+msgstr "Hjemmeadresse"
+
+#: lib/Horde/MIME/Viewer/vcard.php:193
+msgid "Home Phone"
+msgstr "Telefon hjemme"
+
+#: config/registry.php.dist:62
+msgid "Horde"
+msgstr "Horde"
+
+#: lib/Horde/Kolab.php:420
+#, php-format
+msgid "Horde/Kolab: Invalid %s XML data encountered in message %s"
+msgstr "Horde/Kolab: Ugyldig %s XML-data funnet i melding %s"
+
+#: lib/Horde/Kolab.php:277
+#, php-format
+msgid "Horde/Kolab: No message corresponds to object %s"
+msgstr "Horde/Kolab: Ingen melding passer med objektet %s"
+
+#: lib/Horde/Kolab.php:413
+#, php-format
+msgid "Horde/Kolab: No object of type %s found in message %s"
+msgstr "Horde/Kolab: Intet objekt av typen %s funnet i melding %s"
+
+#: lib/Horde/Kolab.php:1236
+#, php-format
+msgid "Horde/Kolab: Successfully removed %s \"%s\""
+msgstr "Horde/Kolab: Fjernet %s \"%s\""
+
+#: lib/Horde/Kolab.php:1182
+#, php-format
+msgid "Horde/Kolab: Successfully synchronised %s \"%s\""
+msgstr "Horde/Kolab: Synkroniserte %s \"%s\""
+
+#: lib/Horde/Kolab.php:223
+msgid "Horde/Kolab: The integration engine requires the 'domxml' PHP extension"
+msgstr "Horde/Kolab: Integrasjonsmotoren krever 'domxml' PHP-utvidelse"
+
+#: lib/Horde/Kolab.php:481
+#, php-format
+msgid "Horde/Kolab: Unable to create new XML tree for object %s"
+msgstr "Horde/Kolab: Kunne ikke opprette nytt XML-tre for objektet %s"
+
+#: lib/Horde/Kolab.php:1233
+#, php-format
+msgid "Horde/Kolab: Unable to remove %s \"%s\": %s"
+msgstr "Horde/Kolab: Kunne ikke fjerne %s \"%s\": %s"
+
+#: lib/Horde/Kolab.php:452
+#, php-format
+msgid "Horde/Kolab: Unable to retrieve MIME ID for the part of type %s"
+msgstr "Horde/Kolab: Kunne ikke hente MIME-identifikator for delen av type %s"
+
+#: lib/Horde/Kolab.php:1179
+#, php-format
+msgid "Horde/Kolab: Unable to synchronise %s \"%s\": %s"
+msgstr "Horde/Kolab: Kunne ikke synkronisere %s \"%s\": %s"
+
+#: lib/Horde/Kolab.php:1310
+#, php-format
+msgid "Horde/Kolab: Unable to synchronise shares: %s"
+msgstr "Horde/Kolab: Kunne ikke synkronisere delte ressurser: %s"
+
+#: lib/Horde/Kolab.php:318
+#, php-format
+msgid "Horde/Kolab: Unknown share \"%s\""
+msgstr "Horde/Kolab: Ukjent delt ressurs \"%s\""
+
+#: templates/javascript/htmlarea_lang.js:24
+msgid "Horizontal Rule"
+msgstr "Horisontal linje"
+
+#: templates/javascript/htmlarea_lang.js:82
+msgid "Horizontal padding"
+msgstr "Horisontal padding"
+
+#: templates/javascript/htmlarea_lang.js:81
+msgid "Horizontal:"
+msgstr "Horisontal:"
+
+#: templates/javascript/htmlarea_context_lang.js:50
+msgid "How did you get here? (Please report!)"
+msgstr "Hvordan kom du hit? (Vennligst rapporter!)"
+
+#: templates/javascript/htmlarea_table_lang.js:35
+msgid "How many columns would you like to merge?"
+msgstr "Hvor mange kolonner ønsker du å slå sammen?"
+
+#: templates/data/csvinfo.inc:28
+msgid "How many fields (columns) are there?"
+msgstr "Hvor mange felt (kolonner) er det?"
+
+#: templates/javascript/htmlarea_table_lang.js:36
+msgid "How many rows would you like to merge?"
+msgstr "Hvor mange rader ønsker du å slå sammen?"
+
+#: lib/Block/metar.php:228
+msgid "Humidity"
+msgstr "Fuktighet"
+
+#: lib/Block/weatherdotcom.php:217
+msgid "Humidity: "
+msgstr "Fuktighet: "
+
+#: lib/Block/fortune.php:41
+msgid "Humorists"
+msgstr "Humorister"
+
+#: lib/Horde/Auth/cyrus.php:176 lib/Horde/Auth/cyrsql.php:223
+#, php-format
+msgid "IMAP mailbox creation failed: %s"
+msgstr "Opprettelse av IMAP-postboks feilet: %s"
+
+#: lib/Horde/Auth/cyrus.php:220 lib/Horde/Auth/cyrsql.php:288
+#, php-format
+msgid "IMAP mailbox deletion failed: %s"
+msgstr "Sletting av IMAP-postboksen feilet: %s"
+
+#: lib/Horde/Auth/cyrus.php:183 lib/Horde/Auth/cyrsql.php:230
+#, php-format
+msgid "IMAP mailbox quota creation failed: %s"
+msgstr "Opprettelse av kvote på IMAP-postboks feilet: %s"
+
+#: lib/Horde/Form.php:1312
+msgid "IP Address"
+msgstr "IP-adresse"
+
+#: lib/Horde/Auth/ipbasic.php:82
+msgid "IP Address not available."
+msgstr "IP-adresse ikke tilgjengelig."
+
+#: lib/Horde/Auth/ipbasic.php:94
+msgid "IP Address not within allowed CIDR block."
+msgstr "IP-adresse ikke innenfor tilatte CIDR-blokk."
+
+#: lib/Net/SMS/clickatell_http.php:304
+msgid "IP lockdown violation."
+msgstr "Brudd på IP lockdown."
+
+#: templates/javascript/htmlarea_context_lang.js:29
+msgid "I_nsert Row Before"
+msgstr "S_ett inn ny rad før"
+
+#: lib/Horde/NLS/tld.php:120 lib/Horde/NLS/countries.php:108
+#: lib/Horde/NLS/GeoIP.php:83
+msgid "Iceland"
+msgstr "Island"
+
+#: config/prefs.php.dist:366
+msgid "Icons Only"
+msgstr "Kun ikoner"
+
+#: util/icon_browser.php:49
+#, php-format
+msgid "Icons for %s"
+msgstr "Ikoner for %s"
+
+#: config/prefs.php.dist:367
+msgid "Icons with text"
+msgstr "Ikoner med tekst"
+
+#: config/prefs.php.dist:180
+msgid "Identity's name:"
+msgstr "Identitetens navn:"
+
+#: lib/Horde/MIME/Contents.php:608
+#, php-format
+msgid "If it is not displayed correctly, %s to open it in a new window."
+msgstr "Hvis den ikke vises riktig, %s for å åpne i nytt vindu."
+
+#: config/prefs.php.dist:445
+msgid ""
+"If you don't see any icons using Internet Explorer, you may need to check "
+"this box to turn off PNG transparency."
+msgstr ""
+"Hvis du ikke ser noen ikoner når du benytter Internet Explorer, kan det "
+"hende du trenger å krysse av denne boksen for å skru av PNG-gjennomsiktighet."
+
+#: lib/Horde/UI/VarRenderer/html.php:158
+msgid ""
+"If you see this message but no image, the image you want to upload can't be "
+"displayed by your browser."
+msgstr ""
+"Hvis du ser denne meldingen men intet bilde, kan det hende at bildet du vil "
+"laste opp ikke kan vises i din nettleser."
+
+#: templates/javascript/htmlarea_lang.js:125
+#: templates/javascript/htmlarea_anselimage_lang.js:28
+msgid "Image Preview:"
+msgstr "Forhåndsvisning av bilde:"
+
+#: templates/javascript/htmlarea_table_lang.js:37
+msgid "Image URL"
+msgstr "URL til bildet"
+
+#: templates/javascript/htmlarea_lang.js:118
+#: templates/javascript/htmlarea_anselimage_lang.js:21
+msgid "Image URL:"
+msgstr "URL til bildet:"
+
+#: templates/javascript/htmlarea_anselimage_lang.js:32
+msgid "Image from gallery"
+msgstr "Bilde fra galleri"
+
+#: templates/javascript/htmlarea_anselimage_lang.js:31
+msgid "Image from gallery:"
+msgstr "Bilde fra galleri:"
+
+#: lib/Horde/Form.php:1749
+msgid "Image upload"
+msgstr "Opplasting av bilde"
+
+#: lib/Block/google.php:37
+msgid "Images"
+msgstr "Bilder"
+
+#: templates/data/tsvinfo.inc:10 templates/data/datemap.inc:10
+#: templates/data/csvmap.inc:57 templates/data/csvinfo.inc:10
+#, php-format
+msgid "Import, Step %d"
+msgstr "Importering, steg %d"
+
+#: templates/data/datemap.inc:20
+#, php-format
+msgid "Imported field: %s"
+msgstr "Importerte felt: %s"
+
+#: templates/data/csvmap.inc:73
+msgid "Imported fields:"
+msgstr "Importerte felt:"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:701
+msgid "In Process"
+msgstr "Under arbeid"
+
+#: templates/javascript/htmlarea_context_lang.js:30
+msgid "In_sert Row After"
+msgstr "_Sett inn rad etter"
+
+#: lib/Horde/Compress/zip.php:141
+msgid "Incorrect action code given."
+msgstr "Feil handlingskode oppgitt."
+
+#: lib/Net/SMS/sms2email_http.php:657
+msgid "Incorrect username and/or password."
+msgstr "Ugyldig brukernavn og/eller passord."
+
+#: services/resetpassword.php:51
+msgid ""
+"Incorrect username or alternate address. Try again or contact your "
+"administrator if you need further help."
+msgstr ""
+"Feil brukernavn eller alternativ adresse. Vennligst forsøk igjen eller "
+"kontakt systemadministratoren din for ytterligerere hjelp."
+
+#: templates/javascript/htmlarea_lang.js:21
+msgid "Increase Indent"
+msgstr "Øk innrykk"
+
+#: admin/perms/edit.php:141 templates/shares/edit.inc:134
+msgid "Individual Users"
+msgstr "Individuelle brukere"
+
+#: lib/Horde/MIME/Viewer/rfc822.php:72
+msgid "Info"
+msgstr "Info"
+
+#: config/registry.php.dist:249
+msgid "Information"
+msgstr "Informasjon"
+
+#: templates/javascript/htmlarea_context_lang.js:34
+msgid "Insert C_olumn After"
+msgstr "Sett inn k_olonne etter"
+
+#: templates/javascript/htmlarea_lang.js:117
+#: templates/javascript/htmlarea_anselimage_lang.js:20
+msgid "Insert Image"
+msgstr "Sett inn bilde"
+
+#: templates/javascript/htmlarea_lang.js:27
+#: templates/javascript/htmlarea_lang.js:100
+msgid "Insert Table"
+msgstr "Sett inn tabell"
+
+#: templates/javascript/htmlarea_lang.js:25
+msgid "Insert Web Link"
+msgstr "Sett inn weblink"
+
+#: templates/javascript/htmlarea_context_lang.js:33
+msgid "Insert _Column Before"
+msgstr "Sett inn _kolonne før"
+
+#: templates/javascript/htmlarea_context_lang.js:65
+msgid "Insert a new column after the current one"
+msgstr "Sett inn en ny kolonne etter den gjeldende"
+
+#: templates/javascript/htmlarea_context_lang.js:64
+msgid "Insert a new column before the current one"
+msgstr "Sett inn en ny kolonne før den gjeldende"
+
+#: templates/javascript/htmlarea_context_lang.js:61
+msgid "Insert a new row after the current one"
+msgstr "Sett inn en ny rad etter den gjeldende"
+
+#: templates/javascript/htmlarea_context_lang.js:60
+msgid "Insert a new row before the current one"
+msgstr "Sett inn en ny rad før den gjeldende"
+
+#: templates/javascript/htmlarea_context_lang.js:69
+msgid "Insert a paragraph after the current node"
+msgstr "Sett inn linjeskift etter den gjeldende noden"
+
+#: templates/javascript/htmlarea_context_lang.js:68
+msgid "Insert a paragraph before the current node"
+msgstr "Sett inn linjeskift før den gjeldende noden"
+
+#: admin/templates.php:150
+msgid "Insert alternate template"
+msgstr "Sett inn alternativ mal"
+
+#: config/prefs.php.dist:229
+msgid "Insert an email address to which you can receive the new password:"
+msgstr "Skriv inn en e-post adresse du ønsker å motta det nye passordet på:"
+
+#: templates/javascript/htmlarea_table_lang.js:58
+msgid "Insert cell after"
+msgstr "Sett inn celle etter"
+
+#: templates/javascript/htmlarea_table_lang.js:59
+msgid "Insert cell before"
+msgstr "Sett inn celle etter"
+
+#: templates/javascript/htmlarea_table_lang.js:64
+msgid "Insert column after"
+msgstr "Sett inn kolonne etter"
+
+#: templates/javascript/htmlarea_table_lang.js:65
+msgid "Insert column before"
+msgstr "Sett inn kolonne før"
+
+#: lib/Horde/IMAP/ACL/rfc2086.php:93
+msgid "Insert messages"
+msgstr "Sett inn meldinger"
+
+#: templates/javascript/htmlarea_context_lang.js:44
+msgid "Insert paragraph after"
+msgstr "Sett inn linjeskift etter"
+
+#: templates/javascript/htmlarea_context_lang.js:43
+msgid "Insert paragraph before"
+msgstr "Sett inn linjeskift før"
+
+#: templates/javascript/htmlarea_table_lang.js:69
+msgid "Insert row after"
+msgstr "Sett inn rad etter"
+
+#: templates/javascript/htmlarea_table_lang.js:68
+msgid "Insert row before"
+msgstr "Sett inn rad før"
+
+#: config/prefs.php.dist:220
+msgid "Insert the required answer to the security question:"
+msgstr "Sett inn det påkrevde svaret til følgende sikkerhetsspørsmål:"
+
+#: templates/javascript/htmlarea_lang.js:26
+msgid "Insert/Modify Image"
+msgstr "Sett inn/redigere bilde"
+
+#: templates/javascript/htmlarea_lang.js:89
+msgid "Insert/Modify Link"
+msgstr "Sett inn/redigere link"
+
+#: lib/Net/SMS/sms2email_http.php:668
+msgid "Insufficient credit to send to the distribution list."
+msgstr "Ikke nok kreditt for å kunne sende til distribusjonslisten."
+
+#: lib/Net/SMS/sms2email_http.php:660
+msgid "Insufficient credit."
+msgstr "Ikke nok kreditt."
+
+#: lib/Horde/Form.php:1070
+msgid "Integer"
+msgstr "Integer"
+
+#: lib/Horde/Form.php:1128
+msgid "Integer list"
+msgstr "Integer liste"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:283
+#: lib/Horde/MIME/Viewer/icalendar.php:352
+msgid "Invalid Action selected for this component."
+msgstr "Ugyldig handling valgt for denne komponenten."
+
+#: lib/Net/SMS/clickatell_http.php:306
+msgid "Invalid UDH. (User Data Header)."
+msgstr "Ugyldig UDH (User Data Header)."
+
+#: admin/setup/config.php:34
+msgid "Invalid application."
+msgstr "Ugyldig program."
+
+#: lib/Net/SMS/clickatell_http.php:321
+msgid "Invalid batch ID."
+msgstr "Ugyldig batch ID"
+
+#: lib/Horde/Form.php:2071 lib/Horde/Form.php:2142 lib/Horde/Form.php:2216
+#: lib/Horde/Form.php:2281
+msgid "Invalid data submitted."
+msgstr "Ugyldig data sendt."
+
+#: lib/Net/SMS/clickatell_http.php:309
+msgid "Invalid destination address."
+msgstr "Ugyldig mottaker adresse."
+
+#: lib/Horde/Compress/dbx.php:84 lib/Horde/Compress/dbx.php:103
+#: lib/Horde/Compress/dbx.php:223
+msgid "Invalid file format"
+msgstr "Ugyldig filformat"
+
+#: lib/Net/SMS/clickatell_http.php:316
+msgid "Invalid msg_type."
+msgstr "Ugyldig msg_type."
+
+#: lib/Net/SMS/clickatell_http.php:312
+msgid "Invalid or missing api_id."
+msgstr "Ugyldig eller manglende api_id."
+
+#: lib/Net/SMS/clickatell_http.php:305
+msgid "Invalid or missing parameters."
+msgstr "Ugyldig eller manglende parametere."
+
+#: admin/perms/addchild.php:43
+msgid "Invalid parent permission."
+msgstr "Ugyldig forelderrettighet."
+
+#: lib/Net/SMS/clickatell_http.php:315
+msgid "Invalid protocol."
+msgstr "Ugyldig protokoll."
+
+#: lib/Net/SMS/sms2email_http.php:91
+#, php-format
+msgid "Invalid recipient: '%s'"
+msgstr "Ugyldig mottaker: '%s'"
+
+#: lib/Horde/Kolab.php:1071 lib/Horde/Kolab.php:1248
+msgid "Invalid share object"
+msgstr "Ugyldig delt objekt"
+
+#: lib/Net/SMS/clickatell_http.php:310
+msgid "Invalid source address."
+msgstr "Ugyldig kildeadresse"
+
+#: lib/Net/SMS/clickatell_http.php:320
+msgid "Invalid unicode data."
+msgstr "Ugyldig unicode data."
+
+#: config/registry.php.dist:328
+msgid "Inventory"
+msgstr "Innhold"
+
+#: lib/Block/weatherdotcom.php:335
+msgid "Isolated T-Storms"
+msgstr "Isolerte tordenstormer"
+
+#: lib/Horde/Crypt/smime.php:649
+msgid "Issuer"
+msgstr "Utgiver"
+
+#: templates/javascript/htmlarea_lang.js:9
+msgid "Italic"
+msgstr "Kursiv"
+
+#: lib/Horde/UI/VarRenderer/html.php:374 lib/Horde/UI/VarRenderer/html.php:411
+#: templates/javascript/open_calendar.js:65
+msgid "January"
+msgstr "Januar"
+
+#: lib/Horde/UI/VarRenderer/html.php:380 lib/Horde/UI/VarRenderer/html.php:417
+#: templates/javascript/open_calendar.js:71
+msgid "July"
+msgstr "Juli"
+
+#: lib/Horde/UI/VarRenderer/html.php:379 lib/Horde/UI/VarRenderer/html.php:416
+#: templates/javascript/open_calendar.js:70
+msgid "June"
+msgstr "Juni"
+
+#: templates/javascript/htmlarea_table_lang.js:38
+msgid "Justify"
+msgstr "Juster"
+
+#: templates/javascript/htmlarea_context_lang.js:37
+#: templates/javascript/htmlarea_lang.js:15
+msgid "Justify Center"
+msgstr "Midtstill"
+
+#: templates/javascript/htmlarea_context_lang.js:39
+#: templates/javascript/htmlarea_lang.js:17
+msgid "Justify Full"
+msgstr "Blokkjuster"
+
+#: templates/javascript/htmlarea_context_lang.js:36
+#: templates/javascript/htmlarea_lang.js:14
+msgid "Justify Left"
+msgstr "Venstrejuster"
+
+#: templates/javascript/htmlarea_context_lang.js:38
+#: templates/javascript/htmlarea_lang.js:16
+msgid "Justify Right"
+msgstr "Høyrejuster"
+
+#: lib/Horde/UI/VarRenderer/html.php:246
+msgid "Keep original?"
+msgstr "Beholde orginal?"
+
+#: lib/Horde/Auth/krb5.php:87
+msgid "Kerberos server rejected authentication."
+msgstr "Kerberos-tjeneren avviste autentiseringen."
+
+#: lib/Block/fortune.php:42
+msgid "Kernel Newbies"
+msgstr "Kernel-nybegynnere"
+
+#: lib/Horde/Crypt/pgp.php:397
+msgid "Key Creation"
+msgstr "Nøkkelgenerering"
+
+#: lib/Horde/Crypt/pgp.php:400
+msgid "Key Fingerprint"
+msgstr "Nøkkelfingeravtrykk"
+
+#: lib/Horde/Crypt/pgp.php:398
+msgid "Key Length"
+msgstr "Nøkkellengde"
+
+#: lib/Horde/Crypt/pgp.php:397
+msgid "Key Type"
+msgstr "Nøkkeltype"
+
+#: lib/Horde/Crypt/smime.php:622
+msgid "Key Usage"
+msgstr "Nøkkelbruk"
+
+#: lib/Horde/Crypt/pgp.php:743
+msgid "Key already exists on the public keyserver."
+msgstr "Nøkkel eksisterer allerede på offentlig nøkkeltjeneren."
+
+#: lib/Block/fortune.php:43
+msgid "Kids"
+msgstr "Barn"
+
+#: templates/portal/menu.inc:8
+msgid "La_yout"
+msgstr "Ut_seende"
+
+#: templates/login/login.inc:76 po/translation.php:657
+msgid "Language"
+msgstr "Språk"
+
+#: lib/Block/moon.php:174
+msgid "Last Half"
+msgstr "Siste haltime"
+
+#: lib/Block/moon.php:88 lib/Block/moon.php:90
+msgid "Last Quarter"
+msgstr "Siste kvarter"
+
+#: lib/Block/metar.php:149
+msgid "Last Updated:"
+msgstr "Siste oppdatering:"
+
+#: lib/Horde/Auth.php:691
+#, php-format
+msgid "Last login: %s"
+msgstr "Siste innlogging: %s"
+
+#: lib/Horde/Auth.php:693
+#, php-format
+msgid "Last login: %s from %s"
+msgstr "Siste innlogging: %s fra %s"
+
+#: lib/Horde/Auth.php:688
+msgid "Last login: Never"
+msgstr "Siste innlogging: aldri"
+
+#: lib/Block/fortune.php:44
+msgid "Law"
+msgstr "Lov"
+
+#: templates/javascript/htmlarea_table_lang.js:39
+#: templates/javascript/htmlarea_lang.js:79
+msgid "Layout"
+msgstr "Utseende"
+
+#: templates/javascript/htmlarea_lang.js:86
+msgid "Leave empty for no border"
+msgstr "Ønskes ingen rammer lar du feltet være tomt"
+
+#: templates/javascript/htmlarea_table_lang.js:40
+#: templates/javascript/htmlarea_lang.js:69
+msgid "Left"
+msgstr "Venstre"
+
+#: lib/Horde/Form.php:3104
+msgid "Left header"
+msgstr "Venstre hode"
+
+#: lib/Horde/Form.php:3100
+msgid "Left values"
+msgstr "Venstre verdier"
+
+#: lib/Block/weatherdotcom.php:336
+msgid "Light Drizzle"
+msgstr "Lett duskregn"
+
+#: lib/Block/weatherdotcom.php:337
+msgid "Light Rain"
+msgstr "Lett regn"
+
+#: lib/Block/weatherdotcom.php:338
+msgid "Light Rain Early"
+msgstr "Lett formiddagsregn"
+
+#: lib/Block/weatherdotcom.php:339
+msgid "Light Rain Late"
+msgstr "Lett ettermiddagsregn"
+
+#: lib/Block/weatherdotcom.php:340
+msgid "Light Rain Shower"
+msgstr "Lette regnbyger"
+
+#: lib/Block/weatherdotcom.php:341
+msgid "Light Rain with Thunder"
+msgstr "Lett regn med torden"
+
+#: lib/Block/weatherdotcom.php:342
+msgid "Light Snow"
+msgstr "Lett snøfall"
+
+#: lib/Block/weatherdotcom.php:343
+msgid "Light Snow Shower"
+msgstr "Lette snøbyger"
+
+#: lib/Block/fortune.php:45
+msgid "Limerick"
+msgstr "Limerick"
+
+#: lib/Horde/Form.php:1802
+msgid "Link"
+msgstr "Link"
+
+#: templates/javascript/htmlarea_context_lang.js:56
+msgid "Link points to:"
+msgstr "Link peker til:"
+
+#: lib/Horde/Form.php:1859
+msgid "Link the email address to the compose page when displaying"
+msgstr "Link e-post adressen til 'skriv ny'-side ved visning"
+
+#: lib/Horde/Text/Filter/html2text.php:181
+msgid "Links"
+msgstr "Linker"
+
+#: lib/Block/fortune.php:46
+msgid "Linux Cookie"
+msgstr "Linux Cookie"
+
+#: lib/Horde/IMAP/ACL/rfc2086.php:89
+msgid "List - user can see the folder"
+msgstr "List - brukeren kan se mappen"
+
+#: admin/sqlshell.php:138
+msgid "List Databases"
+msgstr "List opp databaser"
+
+#: services/help/index.php:50
+msgid "List Help Topics"
+msgstr "Emner i Hjelp"
+
+#: admin/sqlshell.php:137
+msgid "List Tables"
+msgstr "List opp tabeller"
+
+#: templates/admin/user/nolist.inc:4
+msgid "Listing users is disabled."
+msgstr "Mulighet for å liste brukere er deaktivert."
+
+#: lib/Block/fortune.php:47
+msgid "Literature"
+msgstr "Litteratur"
+
+#: po/translation.php:1319
+msgid "Loading libraries..."
+msgstr "Laster biblioteker..."
+
+#: lib/Horde/MIME/Viewer/images.php:86
+msgid "Loading..."
+msgstr "Laster..."
+
+#: lib/Block/weatherdotcom.php:174
+msgid "Local time: "
+msgstr "Lokal tid:"
+
+#: config/prefs.php.dist:83
+msgid "Locale and Time"
+msgstr "Språk og tid"
+
+#: lib/Horde/Crypt/smime.php:595 lib/Horde/MIME/Viewer/icalendar.php:570
+#: lib/Block/weatherdotcom.php:60 lib/Block/sunrise.php:22
+#: lib/Block/metar.php:63
+msgid "Location"
+msgstr "Lokasjon"
+
+#: login.php:155 services/portal/sidebar.php:164 templates/login/mobile.inc:3
+#: templates/login/mobile.inc:15 templates/login/login.inc:83
+msgid "Log in"
+msgstr "Logg inn"
+
+#: services/portal/sidebar.php:158
+msgid "Log out"
+msgstr "Logg ut"
+
+#: config/prefs.php.dist:107
+msgid "Login Tasks"
+msgstr "Innloggingsoppgaver"
+
+#: lib/Horde/Auth.php:952
+msgid "Login failed because your username or password was entered incorrectly."
+msgstr ""
+"Innlogging feilet fordi brukernavnet eller passordet du skrev inn var feil."
+
+#: lib/Horde/Auth.php:948
+msgid "Login failed."
+msgstr "Innlogging feilet."
+
+#: lib/Horde/Form.php:1362
+msgid "Long text"
+msgstr "Lang tekst"
+
+#: lib/Block/fortune.php:48
+msgid "Love"
+msgstr "Kjærlighet"
+
+#: lib/Block/weatherdotcom.php:374
+msgid "Low"
+msgstr "Lav"
+
+#: templates/javascript/htmlarea_listtype_lang.js:21
+msgid "Lower greek letters"
+msgstr "Små greske bokstaver"
+
+#: templates/javascript/htmlarea_listtype_lang.js:19
+msgid "Lower latin letters"
+msgstr "Små latinske bokstaver"
+
+#: templates/javascript/htmlarea_listtype_lang.js:17
+msgid "Lower roman numbers"
+msgstr "Små romerske tall"
+
+#: lib/Horde/UI/VarRenderer/html.php:342 lib/Horde/UI/VarRenderer/html.php:373
+#: lib/Horde/UI/VarRenderer/html.php:410 templates/data/date.inc:47
+#: templates/data/date.inc:48 templates/data/date.inc:49
+#: templates/data/date.inc:50
+msgid "MM"
+msgstr "MM"
+
+#: lib/Horde/MIME/Viewer/tnef.php:39
+msgid "MS-TNEF Attachment contained no data."
+msgstr "MS-TNEF-vedlegget inneholdt ingen data."
+
+#: lib/Block/fortune.php:49
+msgid "Magic"
+msgstr "Magi"
+
+#: config/registry.php.dist:71
+msgid "Mail"
+msgstr "Innboks"
+
+#: templates/javascript/htmlarea_context_lang.js:40
+msgid "Make lin_k..."
+msgstr "Opprett len_ke..."
+
+#: config/prefs.php.dist:91
+msgid ""
+"Manage the list of categories you have to label items with, and colors "
+"associated with those categories."
+msgstr ""
+"Vedlikehold listen over kategorier du må merke deler med, og fargersom "
+"assosieres med de respektive kategoriene."
+
+#: lib/Horde/IMAP/ACL/rfc2086.php:91
+msgid "Mark with Seen/Unseen flags"
+msgstr "Marker med sett-/usettflagg"
+
+#: lib/Horde/IMAP/ACL/rfc2086.php:92
+msgid "Mark with other flags (e.g. Important/Answered)"
+msgstr "Marker med andre flagg (f.eks. viktig/ubesvart)"
+
+#: templates/data/csvmap.inc:111
+msgid "Matching fields"
+msgstr "Samsvarende felt"
+
+#: lib/Net/SMS/clickatell_http.php:324
+msgid "Max allowed credit."
+msgstr "Maks tillatt kreditt."
+
+#: lib/Net/SMS/clickatell_http.php:317
+msgid "Max message parts exceeded."
+msgstr "Maks meldingsdeler overskredet."
+
+#: lib/Block/metar.php:304
+msgid "Max temp last 24 hours: "
+msgstr "Maks temperatur de siste 24 timer: "
+
+#: lib/Block/metar.php:296
+msgid "Max temp last 6 hours: "
+msgstr "Maks temperatur de siste 6 timer: "
+
+#: lib/Horde/Form.php:893 lib/Horde/Form.php:1209 lib/Horde/Form.php:1231
+msgid "Maximum length"
+msgstr "Maks lengde"
+
+#: lib/Horde/UI/VarRenderer/html.php:378 lib/Horde/UI/VarRenderer/html.php:415
+#: templates/javascript/open_calendar.js:69
+msgid "May"
+msgstr "Mai"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:531
+msgid "Meeting Cancellation"
+msgstr "Møteavlysning"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:503
+msgid "Meeting Information"
+msgstr "Møteinformasjon"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:509
+msgid "Meeting Proposal"
+msgstr "Møteinnkallelse"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:525
+msgid "Meeting Reply"
+msgstr "Møtesvar"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:514
+msgid "Meeting Update"
+msgstr "Møteoppdatering"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:519
+msgid "Meeting Update Request"
+msgstr "Foresørsel om møteoppdatering"
+
+#: config/prefs.php.dist:368
+msgid "Menu mode:"
+msgstr "Menymodus:"
+
+#: templates/javascript/htmlarea_table_lang.js:60
+msgid "Merge cells"
+msgstr "Flett sammen celler"
+
+#: lib/Horde/Notification/Listener/status.php:32
+msgid "Message"
+msgstr "Melding"
+
+#: lib/Horde/Crypt/smime.php:226
+msgid ""
+"Message Verified Successfully but the signer's certificate could not be "
+"verified."
+msgstr ""
+"Meldingen ble verifisert, men sertifikatet til den som signerte ble ikke "
+"verifisert."
+
+#: lib/Net/SMS/clickatell_http.php:319
+msgid "Message expired."
+msgstr "Melding gått ut på dato."
+
+#: lib/Net/SMS/sms2email_http.php:591 lib/Net/SMS/sms2email_http.php:626
+#: lib/Net/SMS/clickatell_http.php:233 lib/Net/SMS/clickatell_http.php:268
+msgid "Message type"
+msgstr "Meldingstype"
+
+#: lib/Block/metar.php:37
+msgid "Metar block not available."
+msgstr "Metar-blokk ikke tilgjengelig."
+
+#: lib/Block/metar.php:110
+msgid ""
+"Metar block not available. Details have been logged for the administrator."
+msgstr ""
+"Metar-blokk ikke tilgjengelig. Detaljer har blitt loggført for "
+"administratoren."
+
+#: lib/Horde/MIME/Viewer/rar.php:70 lib/Horde/MIME/Viewer/zip.php:74
+msgid "Method"
+msgstr "Metode"
+
+#: lib/Horde/RPC/xmlrpc.php:82 lib/Horde/RPC/soap.php:117
+msgid "Method '%s' is not defined"
+msgstr "Metoden '%s' er ikke definert."
+
+#: lib/Block/weatherdotcom.php:69 lib/Block/metar.php:73
+msgid "Metric"
+msgstr "Metrisk"
+
+#: templates/javascript/htmlarea_table_lang.js:42
+#: templates/javascript/htmlarea_lang.js:76
+msgid "Middle"
+msgstr "Midt"
+
+#: lib/Horde/MIME/Viewer/tnef.php:41
+msgid "Mime Type"
+msgstr "MIME-type"
+
+#: lib/Block/metar.php:308
+msgid "Min temp last 24 hours: "
+msgstr "Minimum temperatur de siste 24 timer: "
+
+#: lib/Block/metar.php:300
+msgid "Min temp last 6 hours: "
+msgstr "Minimum temperatur de siste 6 timer: "
+
+#: lib/Horde/UI/VarRenderer/html.php:217
+msgid "Mirror"
+msgstr "Speil"
+
+#: lib/Block/fortune.php:51
+msgid "Miscellaneous"
+msgstr "Diverse"
+
+#: lib/Net/SMS/sms2email_http.php:697 lib/Net/SMS/clickatell_http.php:349
+msgid "Missing PEAR package HTTP_Request."
+msgstr "Mangler PEAR-pakke HTTP_Request."
+
+#: admin/setup/index.php:105
+msgid ""
+"Missing configuration. You have to generate it now if you want to use this "
+"application."
+msgstr ""
+"Mangler oppsett. Du må generere det nå hvis du vil bruke dette programmet."
+
+#: lib/Net/SMS/clickatell_http.php:313
+msgid "Missing message ID."
+msgstr "Manglende meldings-ID"
+
+#: lib/Net/SMS/vodafoneitaly_smtp.php:57
+msgid "Missing required PEAR package Mail."
+msgstr "Mangler nødvendig PEAR-pakke Mail."
+
+#: lib/Net/SMS/clickatell_http.php:303
+msgid "Missing session ID."
+msgstr "Mangler session-ID."
+
+#: templates/javascript/open_calendar.js:56
+msgid "Mo"
+msgstr "Man"
+
+#: config/registry.php.dist:122
+msgid "Mobile Mail"
+msgstr "Mobil e-post"
+
+#: lib/Block/weatherdotcom.php:375
+msgid "Moderate"
+msgstr "Moderat"
+
+#: lib/Horde/MIME/Viewer/rar.php:69 lib/Horde/MIME/Viewer/zip.php:73
+#: lib/Horde/MIME/Viewer/tgz.php:88
+msgid "Modified Date"
+msgstr "Sist modifisert"
+
+#: templates/javascript/htmlarea_context_lang.js:52
+msgid "Modify URL"
+msgstr "Endre URL"
+
+#: lib/Horde/Crypt/smime.php:697
+msgid "Modulus"
+msgstr "Modulus"
+
+#: lib/Horde/Form.php:2587
+msgid "Month and year"
+msgstr "Måned og år"
+
+#: lib/Horde/Maintenance.php:36
+msgid "Monthly"
+msgstr "Månedtlig"
+
+#: lib/Block/moon.php:3 lib/Block/moon.php:16
+msgid "Moon Phases"
+msgstr "Månefaser"
+
+#: lib/Block/weatherdotcom.php:344
+msgid "Mostly Clear"
+msgstr "Stort sett klart"
+
+#: lib/Block/weatherdotcom.php:345
+msgid "Mostly Cloudy"
+msgstr "Stort sett overskyet"
+
+#: lib/Block/weatherdotcom.php:346
+msgid "Mostly Sunny"
+msgstr "Stort sett sol"
+
+#: lib/Horde/Block/Layout.php:420
+msgid "Move Down"
+msgstr "Flytt ned"
+
+#: lib/Horde/Block/Layout.php:424
+msgid "Move Left"
+msgstr "Flytt til venstre"
+
+#: lib/Horde/Block/Layout.php:428
+msgid "Move Right"
+msgstr "Flytt til høyre"
+
+#: lib/Horde/Block/Layout.php:416
+msgid "Move Up"
+msgstr "Flytt opp"
+
+#: lib/Horde/UI/VarRenderer/html.php:497
+msgid "Move down"
+msgstr "Flytt ned"
+
+#: lib/Horde/UI/VarRenderer/html.php:496 lib/Horde/UI/VarRenderer/html.php:497
+msgid "Move up"
+msgstr "Flytt opp"
+
+#: lib/Horde/Form.php:2226
+msgid "Multiple selection"
+msgstr "Flervalg"
+
+#: config/registry.php.dist:334 config/registry.php.dist:341
+msgid "My Account"
+msgstr "Min konto"
+
+#: services/portal/index.php:51
+msgid "My Portal"
+msgstr "Min portal"
+
+#: services/portal/edit.php:124
+msgid "My Portal Layout"
+msgstr "Mitt portalutseende"
+
+#: templates/maintenance/agreement_bottom.inc:7
+msgid "NO, I Do NOT Agree"
+msgstr "Nei, jeg godtar IKKE."
+
+#: lib/Horde/Crypt/pgp.php:397 lib/Horde/MIME/Viewer/vcard.php:105
+#: lib/Horde/MIME/Viewer/tnef.php:41 lib/Horde/MIME/Viewer/icalendar.php:583
+msgid "Name"
+msgstr "Navn"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:706
+msgid "Needs Action"
+msgstr "Behøver handling"
+
+#: lib/Horde/NLS/tld.php:175 lib/Horde/NLS/countries.php:160
+#: lib/Horde/NLS/GeoIP.php:98
+msgid "Netherlands"
+msgstr "Nederland"
+
+#: config/registry.php.dist:242
+msgid "Network"
+msgstr "Nettverk"
+
+#: lib/Horde/Crypt/pgp.php:411 config/prefs.php.dist:325
+#: config/prefs.php.dist:376
+msgid "Never"
+msgstr "Aldri"
+
+#: lib/Horde/Prefs/CategoryManager.php:51
+#: templates/prefs/categorymanagement.inc:27
+msgid "New Category"
+msgstr "Ny kategori"
+
+#: lib/Block/moon.php:46 lib/Block/moon.php:68 lib/Block/moon.php:179
+msgid "New Moon"
+msgstr "Nymåne"
+
+#: templates/admin/user/update.inc:35
+msgid "New Username (optional)"
+msgstr "Nytt brukernavn (valgfritt)"
+
+#: templates/javascript/htmlarea_lang.js:91
+msgid "New window (_blank)"
+msgstr "Nytt vindu (_tomt)"
+
+#: lib/Block/google.php:40 lib/Block/fortune.php:52
+#: config/registry.php.dist:264
+msgid "News"
+msgstr "Nyheter"
+
+#: config/registry.php.dist:106
+msgid "Newsgroups"
+msgstr "Nyhetsgruppe"
+
+#: templates/data/tsvinfo.inc:21 templates/data/datemap.inc:46
+#: templates/data/csvmap.inc:137 templates/data/csvinfo.inc:32
+msgid "Next"
+msgstr "Neste"
+
+#: lib/Horde/UI/Pager.php:115 lib/Horde/UI/Pager.php:116
+msgid "Next Page"
+msgstr "Neste side"
+
+#: lib/Block/moon.php:27
+msgid "Next Phase"
+msgstr "Neste fase"
+
+#: lib/Horde/Prefs/UI.php:366 lib/Horde/Prefs/UI.php:370
+msgid "Next options"
+msgstr "Neste valg"
+
+#: lib/Block/weatherdotcom.php:289
+msgid "Night"
+msgstr "Natt"
+
+#: lib/Horde/UI/VarRenderer/html.php:888
+msgid "No"
+msgstr "Nei"
+
+#: templates/admin/setup/diff.html:16
+msgid "No available configuration data to show differences for."
+msgstr "Ingen tilgjengelige oppsettsdata å vise forskjeller med."
+
+#: lib/VFS/ISOWriter.php:111
+msgid "No available strategy for making ISO images."
+msgstr "Ingen tilgjengelig strategi for å lage ISO-filer."
+
+#: lib/Horde/Block/Layout.php:78 lib/Horde/Block/Layout.php:224
+#: lib/Horde/Block/Layout.php:246
+msgid "No block exists at the requested position"
+msgstr "Ingen blokk finnes på den forespurte posisjonen."
+
+#: lib/Horde/Auth/mcal.php:54
+msgid "No calendar name provided for MCAL authentication."
+msgstr "Ingen kalendernavn oppgitt for MCAL-autentisering."
+
+#: admin/setup/diff.php:55
+msgid "No change."
+msgstr "Ingen endring."
+
+#: lib/Horde/Perms/UI.php:144
+msgid "No child permissions are to be added below this level."
+msgstr "Ingen barenerettigheter kan legges til under dette nivået."
+
+#: admin/perms/addchild.php:61
+msgid "No children can be added to this permission."
+msgstr "Ingen barn kan legges til denne rettigheten."
+
+#: lib/Horde.php:173 lib/Horde.php:493 lib/Horde/Util.php:753
+msgid "No configuration information specified for %s."
+msgstr "Ingen oppsettsinformasjon spesifisert for %s."
+
+#: lib/VFS/ftp.php:773
+msgid "No configuration information specified for FTP VFS."
+msgstr "Ingen oppsettsinformasjon spesifisert for FTP VFS."
+
+#: lib/VFS/sql.php:595
+msgid "No configuration information specified for SQL VFS."
+msgstr "Ingen oppsettsinformasjon spesifisert for SQL VFS."
+
+#: lib/VFS/sql_file.php:757
+msgid "No configuration information specified for SQL-File VFS."
+msgstr "Ingen oppsettsinformasjon spesifisert for SQL-File VFS."
+
+#: lib/Net/SMS/clickatell_http.php:323
+msgid "No credit left."
+msgstr "Tom kreditt."
+
+#: lib/Net/SMS/sms2email_http.php:659
+msgid "No destination supplied."
+msgstr "Ingen destinasjon oppgitt."
+
+#: util/icon_browser.php:71
+msgid "No icons found."
+msgstr "Fant ingen ikoner."
+
+#: po/translation.php:413 po/translation.php:522
+msgid "No locale specified."
+msgstr "Ingen lokalitet spesifisert."
+
+#: lib/Block/weatherdotcom.php:116 lib/Block/sunrise.php:40
+#: lib/Block/metar.php:121
+msgid "No location is set."
+msgstr "Svar til listen"
+
+#: lib/Net/SMS/sms2email_http.php:658
+msgid "No message supplied."
+msgstr "Ingen meldinger"
+
+#: lib/Net/SMS/sms2email_http.php:661
+msgid "No name specified."
+msgstr "Navn ikke spesifisert."
+
+#: lib/Net/SMS/sms2email_http.php:662
+msgid "No number specified."
+msgstr "Tall ikke spesifisert."
+
+#: lib/Block/fortune.php:94
+msgid "No offensive fortunes"
+msgstr "Ingen støtende spådommer"
+
+#: lib/Horde/Auth/http.php:93
+msgid "No password provided for HTTP authentication."
+msgstr "Passord er ikke spesifisert for HTTP-autentisering."
+
+#: lib/Horde/Auth/imap.php:112
+msgid "No password provided for IMAP authentication."
+msgstr "Passord er ikke spesifisert for IMAP -autentisering."
+
+#: lib/Horde/Auth/krb5.php:74
+msgid "No password provided for Kerberos authentication."
+msgstr "Passord er ikke spesifisert for Kerberos-autentisering"
+
+#: lib/Horde/Auth/ldap.php:97
+msgid "No password provided for LDAP authentication."
+msgstr "Passord er ikke spesifisert for LDAP-autentisering"
+
+#: lib/Horde/Auth/sasl.php:82 lib/Horde/Auth/login.php:88
+#: lib/Horde/Auth/pam.php:79
+msgid "No password provided for Login authentication."
+msgstr "Passord er ikke spesifisert for Login-autentisering"
+
+#: lib/Horde/Auth/passwd.php:139
+msgid "No password provided for PASSWD authentication."
+msgstr "Passord er ikke spesifisert for PASSWD-autentisering"
+
+#: lib/Horde/Auth/smb.php:89
+msgid "No password provided for SMB authentication."
+msgstr "Passord er ikke spesifisert for SMB-autentisering"
+
+#: templates/javascript/htmlarea_table_lang.js:43
+msgid "No rules"
+msgstr "Ingen regler"
+
+#: templates/javascript/htmlarea_table_lang.js:44
+msgid "No sides"
+msgstr "Ingen sider"
+
+#: lib/Net/SMS/sms2email_http.php:656
+msgid "No username and/or password sent."
+msgstr "Brukernavn og/eller passord er ikke sendt."
+
+#: lib/Horde/RPC/xmlrpc.php:141
+msgid "No valid XML data returned"
+msgstr "Ingen gyldige XML-data returnert"
+
+#: lib/Horde/UI/VarRenderer/html.php:896 lib/Horde/UI/VarRenderer/html.php:906
+#: lib/Horde/UI/VarRenderer/html.php:917 lib/Horde/UI/VarRenderer/html.php:934
+msgid "No values"
+msgstr "Ingen verdier. "
+
+#: lib/Horde/MIME/Viewer/icalendar.php:604
+msgid "Non Participant"
+msgstr "Ikke-deltager"
+
+#: lib/Horde/Crypt/pgp.php:413 lib/Horde/MIME/Viewer/icalendar.php:560
+#: templates/javascript/htmlarea_table_lang.js:45
+#: templates/prefs/identityselect.inc:88
+msgid "None"
+msgstr "Ingen"
+
+#: lib/Block/moon.php:32 lib/Block/moon.php:60
+msgid "Northern Hemisphere"
+msgstr "Nordre halvkule"
+
+#: lib/Horde/NLS/tld.php:176 lib/Horde/NLS/countries.php:170
+#: lib/Horde/NLS/GeoIP.php:98
+msgid "Norway"
+msgstr "Norge"
+
+#: lib/Horde/Crypt/smime.php:664
+msgid "Not After"
+msgstr "Ikke etter"
+
+#: lib/Horde/Crypt/smime.php:663
+msgid "Not Before"
+msgstr "Ikke før"
+
+#: lib/VFS/file.php:356
+msgid "Not a directory"
+msgstr "Ikke en katalog"
+
+#: lib/VFS/ISOWriter.php:67 lib/VFS/ISOWriter/RealOutputStrategy.php:84
+#: lib/VFS/ISOWriter/RealOutputStrategy.php:95
+#: lib/VFS/ISOWriter/RealInputStrategy.php:49
+#: lib/VFS/ISOWriter/RealInputStrategy.php:60
+msgid "Not implemented."
+msgstr "Ikke implementert."
+
+#: templates/javascript/htmlarea_lang.js:68
+msgid "Not set"
+msgstr "Ikke satt"
+
+#: lib/VFS.php:184 lib/VFS.php:203 lib/VFS.php:221 lib/VFS.php:238
+#: lib/VFS.php:255 lib/VFS.php:271 lib/VFS.php:289 lib/VFS.php:325
+#: lib/VFS.php:388 lib/VFS.php:472 lib/VFS.php:544 lib/VFS.php:562
+msgid "Not supported."
+msgstr "Ikke støttet."
+
+#: lib/Horde/MIME/Viewer/vcard.php:247 config/registry.php.dist:159
+msgid "Notes"
+msgstr "Notater"
+
+#: templates/maintenance/confirm_top.inc:10
+msgid "Notice"
+msgstr "Obs!"
+
+#: lib/Horde/UI/VarRenderer/html.php:384 lib/Horde/UI/VarRenderer/html.php:421
+#: templates/javascript/open_calendar.js:75
+msgid "November"
+msgstr "November"
+
+#: lib/Horde/Form.php:1041
+msgid "Number"
+msgstr "Tall"
+
+#: lib/Horde/Form.php:1422
+msgid "Number of characters"
+msgstr "Antall tegn"
+
+#: lib/Horde/Form.php:1366 lib/Horde/Form.php:1420 lib/Horde/Form.php:1442
+#: templates/javascript/htmlarea_lang.js:104
+msgid "Number of columns"
+msgstr "Antall kolonner"
+
+#: lib/Horde/Form.php:1364 lib/Horde/Form.php:1418 lib/Horde/Form.php:1440
+#: templates/javascript/htmlarea_lang.js:102
+msgid "Number of rows"
+msgstr "Antall rader"
+
+#: lib/Net/SMS/sms2email_http.php:669
+msgid "Numbers not specified for updating in distribution list."
+msgstr "Ingen tall spesifisert for oppdatering i distribusjonslisten."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:483
+#: lib/Horde/MIME/Viewer/icalendar.php:663
+#: templates/javascript/htmlarea_lang.js:46
+#: templates/javascript/htmlarea_lang.js:64 po/translation.php:148
+#: po/translation.php:1329
+msgid "OK"
+msgstr "OK"
+
+#: lib/Horde/UI/VarRenderer/html.php:814
+msgid "Object"
+msgstr "Objekt"
+
+#: templates/shares/edit.inc:111
+msgid "Object Creator"
+msgstr "Skaper av objektet"
+
+#: admin/perms/edit.php:137 lib/Horde/Perms/UI.php:223
+msgid "Object creator permissions"
+msgstr "Tillatelser for skaper av objektet"
+
+#: lib/Horde/Form.php:1099
+msgid "Octal"
+msgstr "Oktal"
+
+#: config/registry.php.dist:304
+msgid "Office"
+msgstr "Kontor"
+
+#: lib/Horde/IMAP/ACL/rfc2086.php:76
+msgid "Only IMAP servers support shared folders."
+msgstr "Kun IMAP-tjenere støtter delte mapper."
+
+#: lib/Block/fortune.php:95
+msgid "Only offensive fortunes"
+msgstr "Kun støtende spådommer"
+
+#: lib/Horde/Form.php:1835 lib/Horde/Form.php:1955
+msgid "Only one email address allowed."
+msgstr "Kun en epostadresse tillatt."
+
+#: lib/Block/iframe.php:35
+msgid "Open in a new window"
+msgstr "Åpne i nytt vindu"
+
+#: templates/javascript/htmlarea_context_lang.js:54
+msgid "Opens this link in a new window"
+msgstr "Åpner denne lenken i et nytt vindu"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:600
+msgid "Optional Participant"
+msgstr "Valgfri deltaker"
+
+#: services/portal/sidebar.php:151
+msgid "Options"
+msgstr "Valg"
+
+#: services/prefs.php:29 templates/prefs/app.inc:4
+#, php-format
+msgid "Options for %s"
+msgstr "Valg for %s"
+
+#: po/translation.php:112
+msgid "Options:"
+msgstr "Valg:"
+
+#: templates/javascript/htmlarea_lang.js:18
+msgid "Ordered List"
+msgstr "Nummerert liste"
+
+#: lib/Horde/Crypt/smime.php:591
+msgid "Organisation"
+msgstr "Organisasjon"
+
+#: lib/Horde/Crypt/smime.php:592
+msgid "Organisational Unit"
+msgstr "Organisasjonsenhet"
+
+#: config/registry.php.dist:127
+msgid "Organizing"
+msgstr "Organiserer"
+
+#: admin/templates.php:135
+msgid "Original application template"
+msgstr "Original programmal"
+
+#: config/prefs.php.dist:96 config/prefs.php.dist:106
+#: config/prefs.php.dist:113 config/prefs.php.dist:121
+#: config/prefs.php.dist:129
+msgid "Other Information"
+msgstr "Annen informasjon"
+
+#: templates/shares/edit.inc:31
+msgid "Owner Permissions"
+msgstr "Eierrettigheter"
+
+#: lib/Horde/Auth/pam.php:83
+msgid "PAM authentication is not available."
+msgstr "PAM-autentisering er ikke tilgjengelig."
+
+#: lib/Horde/Crypt/pgp.php:1279
+msgid "PGP Digital Signature"
+msgstr "PGP digital signatur"
+
+#: lib/Horde/Crypt/pgp.php:1328
+msgid "PGP Encrypted Data"
+msgstr "PGP-krypter melding"
+
+#: lib/Horde/Crypt/pgp.php:1387
+msgid "PGP Public Key"
+msgstr "PGP offentlig nøkkel"
+
+#: lib/Horde/Crypt/pgp.php:1366
+msgid "PGP Signed/Encrypted Data"
+msgstr "PGP signert/kryptert data"
+
+#: admin/phpshell.php:63
+msgid "PHP Code"
+msgstr "PHP-kode"
+
+#: lib/Block/weatherdotcom.php:348
+msgid "PM Light Rain"
+msgstr "Lett regn på ettermiddagen"
+
+#: lib/Block/weatherdotcom.php:349
+msgid "PM Showers"
+msgstr "Regnbyger på ettermiddagen"
+
+#: lib/Block/weatherdotcom.php:350
+msgid "PM Snow"
+msgstr "Snø på ettermiddagen"
+
+#: lib/Block/weatherdotcom.php:351
+msgid "PM Snow Showers"
+msgstr "Snøbyger på ettermiddagen"
+
+#: lib/Block/weatherdotcom.php:352
+msgid "PM T-Storms"
+msgstr "Tordenstorm på ettermiddagen"
+
+#: lib/Horde/NLS/tld.php:187 lib/Horde/NLS/countries.php:172
+#: lib/Horde/NLS/GeoIP.php:100
+msgid "Pakistan"
+msgstr "Pakistan"
+
+#: lib/Horde/NLS/tld.php:194 lib/Horde/NLS/countries.php:173
+#: lib/Horde/NLS/GeoIP.php:102
+msgid "Palau"
+msgstr "Palau"
+
+#: lib/Horde/NLS/tld.php:182 lib/Horde/NLS/countries.php:175
+#: lib/Horde/NLS/GeoIP.php:99
+msgid "Panama"
+msgstr "Panama"
+
+#: lib/Horde/NLS/tld.php:195 lib/Horde/NLS/countries.php:177
+#: lib/Horde/NLS/GeoIP.php:103
+msgid "Paraguay"
+msgstr "Paraguay"
+
+#: lib/Block/weatherdotcom.php:347
+msgid "Partly Cloudy"
+msgstr "Delvis skyet"
+
+#: admin/user.php:36 admin/setup/index.php:174 lib/Horde/Form.php:2002
+#: lib/Net/SMS/sms2email_http.php:557 lib/Net/SMS/clickatell_http.php:203
+#: templates/login/login.inc:70 templates/admin/user/update.inc:36
+#: config/registry.php.dist:367
+msgid "Password"
+msgstr "Passord"
+
+#: lib/Horde/Crypt/smime.php:1354
+msgid "Password incorrect"
+msgstr "Feil passord"
+
+#: lib/Horde/Auth/radius.php:157
+msgid "Password required for RADIUS authentication."
+msgstr "Nødvendig passord for RADIUS-autentisering"
+
+#: lib/Horde/Form.php:2037
+msgid "Password with confirmation"
+msgstr "Passord med bekreftelse"
+
+#: templates/rpcsum/rpcsum.inc:90
+msgid "Password:"
+msgstr "Passord:"
+
+#: templates/login/mobile.inc:11
+msgid "Password: "
+msgstr "Passord: "
+
+#: admin/user.php:150 lib/Horde/Form.php:2018
+#: templates/admin/user/update.inc:15
+msgid "Passwords must match."
+msgstr "Passord stemmer ikke overens"
+
+#: admin/sqlshell.php:128 templates/javascript/htmlarea_context_lang.js:22
+msgid "Paste"
+msgstr "Lim inn"
+
+#: templates/javascript/htmlarea_lang.js:51
+msgid "Path"
+msgstr "Sti"
+
+#: lib/Block/fortune.php:54
+msgid "People"
+msgstr "Mennesker"
+
+#: templates/javascript/htmlarea_lang.js:107
+msgid "Percent"
+msgstr "Prosent"
+
+#: templates/maintenance/confirm_bottom.inc:6
+msgid "Perform Maintenance Operations"
+msgstr "Utfør vedlikeholdsoperasjoner"
+
+#: config/prefs.php.dist:396
+msgid "Perform maintenance operations on login?"
+msgstr "Utfør vedlikeholdsoperasjoner ved innlogging?"
+
+#: admin/perms/addchild.php:61 admin/perms/addchild.php:64
+#: admin/perms/addchild.php:67
+msgid "Permission"
+msgstr "Rettighet"
+
+#: admin/perms/delete.php:68
+msgid "Permission '%s' not deleted."
+msgstr "Rettigheten '%s' ikke slettet."
+
+#: admin/perms/edit.php:224 admin/perms/addchild.php:93
+#: admin/perms/index.php:22 admin/perms/delete.php:74
+msgid "Permissions Administration"
+msgstr "Rettighetsadministrasjon"
+
+#: lib/Horde/Perms/UI.php:149 lib/Horde/Perms/UI.php:152
+#: lib/Horde/Perms/UI.php:156
+msgid "Permissions for"
+msgstr "Rettighet for"
+
+#: config/prefs.php.dist:65
+msgid "Personal Information"
+msgstr "Personlig informasjon"
+
+#: lib/Horde/MIME/Viewer/vcard.php:199
+msgid "Phone"
+msgstr "Telefon"
+
+#: templates/javascript/htmlarea_context_lang.js:48
+msgid "Please confirm that you want to remove this element:"
+msgstr "Vennligst bekreft at du vil fjerne dette elementet:"
+
+#: templates/javascript/htmlarea_context_lang.js:55
+msgid "Please confirm that you want to unlink this element."
+msgstr "Vennligst bekreft at du vil avlenke dette elementet."
+
+#: lib/Horde/Form.php:2556
+msgid "Please enter a month and a year."
+msgstr "Vennligst skriv inn en måned og et år."
+
+#: templates/prefs/categorymanagement.inc:12
+msgid "Please enter a name for the new category:"
+msgstr "Vennligst skriv inn et navn for denne nye kategorien:"
+
+#: lib/Horde/Form.php:1299
+msgid "Please enter a valid IP address."
+msgstr "Vennligst skriv inn en gyldig IP-adresse."
+
+#: lib/Horde/Form.php:2434
+msgid "Please enter a valid time."
+msgstr "Vennligst skriv inn et gyldig tidspunkt."
+
+#: templates/problem/problem.inc:7
+msgid "Please provide a summary of the problem."
+msgstr "Vennligst gi et sammendrag av problemet."
+
+#: templates/login/login.inc:18 templates/login/login.inc:22
+msgid "Please provide your username and password"
+msgstr "Vennlist skriv inn brukernavn og passord"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:540
+msgid ""
+"Please review the following information, and then select an action from the "
+"menu below."
+msgstr ""
+"Vennligst se over den følgende informasjonen, velg så en handling fra menyen "
+"nedenunder."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:435
+msgid "Please select an action from the menu below."
+msgstr "Vennligst velg en handling fra menyen nedenunder."
+
+#: lib/Horde/Prefs/CategoryManager.php:72
+msgid "Please type the new category name:"
+msgstr "Vennligst skriv inn det nye kategorinavnet:"
+
+#: lib/Horde/NLS/tld.php:188 lib/Horde/NLS/countries.php:181
+#: lib/Horde/NLS/GeoIP.php:100
+msgid "Poland"
+msgstr "Polen"
+
+#: lib/Block/fortune.php:57
+msgid "Politics"
+msgstr "Politikk"
+
+#: config/registry.php.dist:456
+msgid "Polls"
+msgstr "Stemmeavgivninger"
+
+#: lib/Horde/Prefs/ldap.php:99
+msgid "Prefs_ldap: Required LDAP extension not found."
+msgstr "Prefs_ldap: Nødvendig LDAP-utvidelse ikke funnet."
+
+#: lib/Horde/Prefs/session.php:36
+msgid "Prefs_session: Required session extension not found."
+msgstr "Prefs_session: Nødvendig sesjonsutvidelse ikke funnet."
+
+#: config/registry.php.dist:298
+msgid "Presentations"
+msgstr "Presentasjoner"
+
+#: lib/Block/metar.php:223
+msgid "Pressure"
+msgstr "Trykk"
+
+#: lib/Block/metar.php:257
+msgid "Pressure at sea level: "
+msgstr "Trykk ved havnivå:"
+
+#: lib/Block/weatherdotcom.php:198
+msgid "Pressure: "
+msgstr "Trykk:"
+
+#: lib/Horde/UI/VarRenderer/html.php:188
+#: templates/javascript/htmlarea_lang.js:120
+#: templates/javascript/htmlarea_anselimage_lang.js:23
+msgid "Preview"
+msgstr "Forhåndsvisning"
+
+#: templates/javascript/htmlarea_lang.js:121
+#: templates/javascript/htmlarea_anselimage_lang.js:24
+msgid "Preview the image in a new window"
+msgstr "Forhåndsvis bildet i et nytt vindu"
+
+#: lib/Horde/UI/Pager.php:71 lib/Horde/UI/Pager.php:72
+msgid "Previous Page"
+msgstr "Forrige side"
+
+#: lib/Horde/Prefs/UI.php:356 lib/Horde/Prefs/UI.php:360
+msgid "Previous options"
+msgstr "Forrige valg"
+
+#: lib/Horde/Crypt/pgp.php:409
+msgid "Private Key"
+msgstr "Privat nøkkel"
+
+#: lib/Horde/Menu.php:175
+msgid "Problem"
+msgstr "Problem"
+
+#: services/problem.php:112
+msgid "Problem Description"
+msgstr "Problembeskrivelse"
+
+#: lib/Horde/Crypt/pgp.php:409
+msgid "Public Key"
+msgstr "Offentlig nøkkel"
+
+#: lib/Horde/Crypt/smime.php:669
+msgid "Public Key Algorithm"
+msgstr "Offentlig nøkkelalgoritme"
+
+#: lib/Horde/Crypt/pgp.php:223
+msgid "Public/Private keypair not generated successfully."
+msgstr "Offentlig/privat nøkkelpar ble ikke generert."
+
+#: lib/Horde/NLS/tld.php:191 lib/Horde/NLS/countries.php:183
+#: lib/Horde/NLS/GeoIP.php:101
+msgid "Puerto Rico"
+msgstr "Puerto Rico"
+
+#: lib/Horde/NLS/tld.php:196 lib/Horde/NLS/countries.php:184
+#: lib/Horde/NLS/GeoIP.php:103
+msgid "Qatar"
+msgstr "Katar"
+
+#: lib/Horde/Crypt/smime.php:687
+#, php-format
+msgid "RSA Public Key (%d bit)"
+msgstr "RSA offentlig nøkkel (%d bit)"
+
+#: lib/Horde/Form.php:2248
+msgid "Radio selection"
+msgstr "Radiovalg"
+
+#: lib/Block/weatherdotcom.php:353
+msgid "Rain"
+msgstr "Regn"
+
+#: lib/Block/weatherdotcom.php:354
+msgid "Rain Early"
+msgstr "Tidlig regn"
+
+#: lib/Block/weatherdotcom.php:355
+msgid "Rain Late"
+msgstr "Sent regn"
+
+#: lib/Block/weatherdotcom.php:356
+msgid "Rain Shower"
+msgstr "Regnbyger"
+
+#: lib/Block/weatherdotcom.php:357
+msgid "Rain and Snow"
+msgstr "Regn og snø"
+
+#: lib/Block/weatherdotcom.php:358
+msgid "Rain to Snow"
+msgstr "Regn til snø"
+
+#: lib/Block/fortune.php:3
+msgid "Random Fortune"
+msgstr "Tilfeldig spådom"
+
+#: lib/Horde/MIME/Viewer/rar.php:71 lib/Horde/MIME/Viewer/zip.php:76
+msgid "Ratio"
+msgstr "Forhold"
+
+#: lib/Horde/Perms.php:295 templates/shares/edit.inc:34
+#: templates/shares/edit.inc:68 templates/shares/edit.inc:91
+#: templates/shares/edit.inc:114 templates/shares/edit.inc:137
+#: templates/shares/edit.inc:180
+msgid "Read"
+msgstr "Les"
+
+#: lib/Horde/IMAP/ACL/rfc2086.php:90
+msgid "Read messages"
+msgstr "Les meldinger"
+
+#: templates/javascript/htmlarea_lang.js:34
+msgid "Redoes your last action"
+msgstr "Repeterer din forrige handling"
+
+#: config/prefs.php.dist:331
+msgid "Refresh Portal View:"
+msgstr "Frisk opp portalvisning:"
+
+#: lib/Horde/Form.php:889 lib/Horde/Form.php:1205 lib/Horde/Form.php:1227
+msgid "Regex"
+msgstr "Regex"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:457
+#: lib/Horde/MIME/Viewer/icalendar.php:476
+msgid "Remember the free/busy information."
+msgstr "Husk informasjonen om ledig/opptatt"
+
+#: config/prefs.php.dist:114
+msgid "Remote Servers"
+msgstr "Fjerntjenere"
+
+#: templates/admin/groups/edit.inc:21 templates/admin/user/approve.inc:40
+#: templates/admin/user/removequeued.inc:15
+msgid "Remove"
+msgstr "Fjern"
+
+#: templates/portal/layout.inc:11
+msgid "Remove Block"
+msgstr "Fjern blokk"
+
+#: lib/Horde/UI/VarRenderer/html.php:532
+msgid "Remove column"
+msgstr "Fjern kolonne"
+
+#: templates/javascript/htmlarea_lang.js:40
+msgid "Remove formatting"
+msgstr "Fjern formattering"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:658
+msgid "Remove from my calendar"
+msgstr "Fjern fra min kalender"
+
+#: templates/data/csvmap.inc:136
+msgid "Remove pair"
+msgstr "Fjern par"
+
+#: templates/javascript/htmlarea_context_lang.js:41
+msgid "Remove the"
+msgstr "Fjern"
+
+#: templates/admin/user/remove.inc:16
+msgid "Remove user"
+msgstr "Fjern bruker"
+
+#: templates/admin/user/remove.inc:7
+#, php-format
+msgid "Remove user: %s"
+msgstr "Fjern bruker: %s"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:197
+#: lib/Horde/MIME/Viewer/icalendar.php:280
+#: lib/Horde/MIME/Viewer/icalendar.php:349
+msgid "Reply Sent."
+msgstr "Svar sendt."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:459
+#: lib/Horde/MIME/Viewer/icalendar.php:468
+#: lib/Horde/MIME/Viewer/icalendar.php:478
+msgid "Reply with Not Supported Message"
+msgstr "Svar at meldingen ikke støttes"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:466
+msgid "Reply with free/busy for next 2 months."
+msgstr "Svar med ledig/opptatt for de neste to månedene."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:465
+msgid "Reply with requested free/busy information."
+msgstr "Svar med den forespurte ledig/opptatt-informasjonen."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:189
+#, php-format
+msgid "Reply: %s"
+msgstr "Svar: %s"
+
+#: lib/Horde.php:180 lib/Horde.php:503
+#, php-format
+msgid "Required '%s' not specified in %s configuration."
+msgstr "Nødvendig '%s' ikke spesifisert i %s-oppsett."
+
+#: lib/VFS/sql.php:601 lib/VFS/ftp.php:779 lib/VFS/sql_file.php:763
+#, php-format
+msgid "Required '%s' not specified in VFS configuration."
+msgstr "Nødvendig '%s' ikke spesifisert i VFS-oppsett."
+
+#: lib/Horde/Util.php:761
+#, php-format
+msgid "Required '%s' not specified in configuration."
+msgstr "Nødvendig '%s' ikke spesifisert i oppsett."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:592
+msgid "Required Participant"
+msgstr "Obligatorisk deltager"
+
+#: admin/user.php:31 lib/Horde/Form.php:339 lib/Horde/Form/Renderer.php:316
+#: templates/rpcsum/rpcsum.inc:101 templates/admin/user/update.inc:44
+msgid "Reset"
+msgstr "Nullstill"
+
+#: services/resetpassword.php:46
+msgid "Reset Password"
+msgstr "Nullstill passordet"
+
+#: services/resetpassword.php:27
+msgid "Reset Your Password"
+msgstr "Nullstill passordet ditt"
+
+#: admin/phpshell.php:66 admin/cmdshell.php:28 admin/sqlshell.php:73
+msgid "Results"
+msgstr "Resultater"
+
+#: po/translation.php:819
+msgid "Results:"
+msgstr "Søkeresultat:"
+
+#: templates/rpcsum/rpcsum.inc:102 templates/prefs/end.inc:7
+msgid "Return to Options"
+msgstr "Tilbake til Valg"
+
+#: lib/Horde/NLS/tld.php:197 lib/Horde/NLS/countries.php:185
+#: lib/Horde/NLS/GeoIP.php:103
+msgid "Reunion"
+msgstr "Gjenforening"
+
+#: admin/setup/config.php:44 admin/setup/config.php:48
+msgid "Revert Configuration"
+msgstr "Tilbakestill oppsett"
+
+#: config/prefs.php.dist:130
+msgid "Rich Text Editor Options"
+msgstr "Valg for rikteksteditor"
+
+#: lib/Block/fortune.php:58
+msgid "Riddles"
+msgstr "Gåter"
+
+#: templates/javascript/htmlarea_table_lang.js:48
+#: templates/javascript/htmlarea_lang.js:70
+msgid "Right"
+msgstr "Høyre"
+
+#: lib/Horde/Form.php:3106
+msgid "Right header"
+msgstr "Høyre hode"
+
+#: lib/Horde/Form.php:3102
+msgid "Right values"
+msgstr "Høyre verdier"
+
+#: templates/javascript/htmlarea_context_lang.js:28
+msgid "Ro_w Properties..."
+msgstr "Ra_degenskaper..."
+
+#: lib/Horde/MIME/Viewer/vcard.php:237 lib/Horde/MIME/Viewer/icalendar.php:583
+msgid "Role"
+msgstr "Rolle"
+
+#: lib/Horde/NLS/tld.php:198 lib/Horde/NLS/countries.php:186
+#: lib/Horde/NLS/GeoIP.php:103
+msgid "Romania"
+msgstr "Romania"
+
+#: lib/Horde/UI/VarRenderer/html.php:208
+msgid "Rotate 180"
+msgstr "Roter 180"
+
+#: lib/Horde/UI/VarRenderer/html.php:205
+msgid "Rotate Left"
+msgstr "Roter mot venstre"
+
+#: lib/Horde/UI/VarRenderer/html.php:211
+msgid "Rotate Right"
+msgstr "Roter mot høyre"
+
+#: templates/javascript/htmlarea_table_lang.js:49
+msgid "Row Properties"
+msgstr "Radegenskaper"
+
+#: templates/javascript/htmlarea_table_lang.js:70
+msgid "Row properties"
+msgstr "Radegenskaper"
+
+#: templates/javascript/htmlarea_lang.js:101
+msgid "Rows:"
+msgstr "Rader:"
+
+#: templates/javascript/htmlarea_table_lang.js:53
+msgid "Rules"
+msgstr "Regler"
+
+#: admin/sqlshell.php:129
+msgid "Run"
+msgstr "Løp"
+
+#: lib/Horde/NLS/tld.php:200 lib/Horde/NLS/countries.php:188
+#: lib/Horde/NLS/GeoIP.php:104
+msgid "Rwanda"
+msgstr "Rwanda"
+
+#: lib/Horde/Crypt/smime.php:341
+msgid "S/MIME Encrypted Message"
+msgstr "S/MIME-kryptert melding"
+
+#: lib/Horde/Auth/sasl.php:86
+msgid "SASL authentication is not available."
+msgstr "SASL-autentisering er ikke tilgjengelig."
+
+#: config/registry.php.dist:481
+msgid "SMS Messaging"
+msgstr "SMS-utsending"
+
+#: templates/javascript/open_calendar.js:61
+msgid "Sa"
+msgstr "Sa"
+
+#: lib/Horde/NLS/tld.php:251 lib/Horde/NLS/countries.php:194
+#: lib/Horde/NLS/GeoIP.php:118
+msgid "Samoa"
+msgstr "Samoa"
+
+#: lib/Horde/NLS/tld.php:212 lib/Horde/NLS/countries.php:195
+#: lib/Horde/NLS/GeoIP.php:107
+msgid "San Marino"
+msgstr "San Marino"
+
+#: lib/Horde/NLS/GeoIP.php:120
+msgid "Satellite Provider"
+msgstr "Satellittilbyder"
+
+#: templates/portal/layout.inc:98
+msgid "Save"
+msgstr "Lagre"
+
+#: templates/shares/edit.inc:216
+#, php-format
+msgid "Save %s"
+msgstr "Lagre %s"
+
+#: templates/admin/groups/edit.inc:49
+#, php-format
+msgid "Save '%s'"
+msgstr "Lagre '%s'"
+
+#: templates/prefs/end.inc:5
+msgid "Save Options"
+msgstr "Lagre valg"
+
+#: admin/setup/scripts.php:69
+#, php-format
+msgid "Saved %s configuration."
+msgstr "Lagret %s-oppsett"
+
+#: admin/setup/scripts.php:90
+#, php-format
+msgid "Saved setup upgrade script to: '%s'."
+msgstr "Lagret skript for oppgradering av oppsett til '%s'."
+
+#: lib/Block/fortune.php:59
+msgid "Science"
+msgstr "Vitenskap"
+
+#: templates/admin/user/list.inc:15 templates/admin/user/list.inc:17
+msgid "Search"
+msgstr "Søk"
+
+#: config/registry.php.dist:281
+msgid "Search Engines"
+msgstr "Søkemotorer"
+
+#: po/translation.php:1429
+#, php-format
+msgid "Searching Horde applications in %s"
+msgstr "Søker etter Horde-programmer i %s"
+
+#: po/translation.php:123
+msgid "Searching gettext binaries..."
+msgstr "Søker etter gettext-binærfiler..."
+
+#: lib/Horde/Form.php:2958
+msgid "Select Files"
+msgstr "Velg filer"
+
+#: lib/Horde/UI/VarRenderer/html.php:456
+msgid "Select a date"
+msgstr "Velg en dato"
+
+#: templates/shares/edit.inc:198
+msgid "Select a group to add"
+msgstr "Velg en gruppe å legge til"
+
+#: templates/shares/edit.inc:43
+msgid "Select a new owner"
+msgstr "Velg en ny eier"
+
+#: templates/rpcsum/rpcsum.inc:60
+msgid "Select a server"
+msgstr "Velg en tjener"
+
+#: templates/shares/edit.inc:156
+msgid "Select a user to add"
+msgstr "Velg en bruker å legge til"
+
+#: lib/Horde/Form.php:2655
+msgid "Select all date components."
+msgstr "Velg alle datokomponenter."
+
+#: lib/Horde/UI/VarRenderer/html.php:814
+msgid "Select an object"
+msgstr "Velg et objekt"
+
+#: services/keyboard.php:37
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the text area."
+msgstr ""
+"Velg karakterene du trenger fra boksen under. Du kan deretter kopiere og "
+"lime dem inn fra tekstfeltet."
+
+#: templates/data/date.inc:34
+msgid "Select the date delimiter:"
+msgstr "Velg datoskilletegn:"
+
+#: templates/data/date.inc:44
+msgid "Select the date format:"
+msgstr "Velg datoformat:"
+
+#: templates/data/time.inc:16
+msgid "Select the time delimiter:"
+msgstr "Velg tidsskilletegn:"
+
+#: templates/data/time.inc:25
+msgid "Select the time format:"
+msgstr "Velg tidsformat:"
+
+#: templates/data/csvmap.inc:64
+msgid "Select two matching fields."
+msgstr "Velg to samsvarende felt."
+
+#: config/prefs.php.dist:238
+msgid "Select your preferred language:"
+msgstr "Velg ønsket språk:"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:653
+msgid "Send Latest Information"
+msgstr "Send siste informasjon"
+
+#: templates/problem/problem.inc:58
+msgid "Send Problem Report"
+msgstr "Send problemrapport"
+
+#: lib/Horde/UI/VarRenderer/html.php:964
+msgid "Send SMS"
+msgstr "Send SMS"
+
+#: lib/Block/metar.php:314
+msgid "Sensor: "
+msgstr "Sensor:"
+
+#: lib/Horde/UI/VarRenderer/html.php:382 lib/Horde/UI/VarRenderer/html.php:419
+#: templates/javascript/open_calendar.js:73
+msgid "September"
+msgstr "September"
+
+#: lib/Horde/Crypt/smime.php:725
+msgid "Serial Number"
+msgstr "Serienummer"
+
+#: lib/Net/SMS/clickatell_http.php:301
+msgid "Session ID expired."
+msgstr "Sesjons-ID utgått på dato."
+
+#: lib/Horde/Form.php:2296
+msgid "Set"
+msgstr "Sett"
+
+#: config/prefs.php.dist:84
+msgid "Set your preferred language, timezone and date options."
+msgstr "Still inn ditt foretrukne språk, tidssone- og datovalg."
+
+#: config/prefs.php.dist:98
+msgid ""
+"Set your startup application, color scheme, page refreshing, and other "
+"display options."
+msgstr ""
+"Still inn ditt oppstartsprogram, fargeskjema, sideoppfriskning og andre "
+"visningsvalg."
+
+#: admin/setup/config.php:74
+msgid "Setup"
+msgstr "Oppsett"
+
+#: config/registry.php.dist:473
+msgid "Shopping"
+msgstr "Handel"
+
+#: templates/problem/problem.inc:43
+msgid "Short Summary"
+msgstr "Kort sammendrag"
+
+#: lib/Horde/Perms.php:294 templates/shares/edit.inc:33
+#: templates/shares/edit.inc:67 templates/shares/edit.inc:90
+#: templates/shares/edit.inc:113 templates/shares/edit.inc:136
+#: templates/shares/edit.inc:179
+msgid "Show"
+msgstr "Vis"
+
+#: lib/Horde/Form.php:2802
+msgid "Show picker"
+msgstr "Vis plukker"
+
+#: config/prefs.php.dist:515
+msgid "Show table operations menu bar?"
+msgstr "Vis menylinjen for tabelloperasjoner?"
+
+#: config/prefs.php.dist:339
+#, php-format
+msgid "Show the %s Menu on the left?"
+msgstr "Vis menyen for %s på venstre side?"
+
+#: templates/javascript/htmlarea_context_lang.js:58
+msgid "Show the Table Cell Properties dialog"
+msgstr "Vis dialog for celleegenskaper for tabell"
+
+#: templates/javascript/htmlarea_context_lang.js:63
+msgid "Show the Table Properties dialog"
+msgstr "Vis dialog for tabellegenskaper"
+
+#: templates/javascript/htmlarea_context_lang.js:59
+msgid "Show the Table Row Properties dialog"
+msgstr "Vis dialog for tabellradegenskaper"
+
+#: templates/javascript/htmlarea_context_lang.js:51
+msgid "Show the image properties dialog"
+msgstr "Vis dialog for bildeegenskaper"
+
+#: lib/Horde/Form.php:1751
+msgid "Show upload"
+msgstr "Vis opplasting"
+
+#: lib/Block/weatherdotcom.php:359
+msgid "Showers"
+msgstr "Byger"
+
+#: lib/Block/weatherdotcom.php:360
+msgid "Showers Early"
+msgstr "Tidlige byger"
+
+#: lib/Block/weatherdotcom.php:361
+msgid "Showers Late"
+msgstr "Sene byger"
+
+#: lib/Horde/Block/Layout.php:391
+msgid "Shrink"
+msgstr "Krymp"
+
+#: lib/Horde/Auth/Signup.php:278
+msgid "Sign up"
+msgstr "Registrer"
+
+#: templates/login/login.inc:89
+msgid "Sign up if not registered"
+msgstr "Registrer hvis ikke registrert"
+
+#: lib/Horde/Crypt/smime.php:736
+msgid "Signature"
+msgstr "Signatur"
+
+#: lib/Horde/Crypt/smime.php:735
+msgid "Signature Algorithm"
+msgstr "Signaturalgoritme"
+
+#: lib/Horde/NLS/tld.php:206 lib/Horde/NLS/countries.php:202
+#: lib/Horde/NLS/GeoIP.php:105
+msgid "Singapore"
+msgstr "Singapor"
+
+#: lib/Horde/Form.php:891 lib/Horde/Form.php:1207 lib/Horde/Form.php:1229
+#: lib/Horde/Form.php:2230 lib/Horde/Form.php:2919 lib/Horde/Form.php:3108
+#: lib/Horde/MIME/Viewer/rar.php:68 lib/Horde/MIME/Viewer/zip.php:72
+#: lib/Horde/MIME/Viewer/tgz.php:87
+msgid "Size"
+msgstr "Størrelse"
+
+#: templates/maintenance/confirm_bottom.inc:9
+msgid "Skip Maintenance"
+msgstr "Hopp over vedlikehold"
+
+#: lib/Horde/NLS/tld.php:210 lib/Horde/NLS/countries.php:203
+#: lib/Horde/NLS/GeoIP.php:106
+msgid "Slovakia"
+msgstr "Slovakia"
+
+#: lib/Horde/NLS/tld.php:208 lib/Horde/NLS/countries.php:204
+#: lib/Horde/NLS/GeoIP.php:106
+msgid "Slovenia"
+msgstr "Slovenia"
+
+#: lib/Block/weatherdotcom.php:363
+msgid "Snow"
+msgstr "Snø"
+
+#: lib/Block/weatherdotcom.php:364
+msgid "Snow Shower"
+msgstr "Snøbyge"
+
+#: lib/Block/weatherdotcom.php:365
+msgid "Snow Showers"
+msgstr "Snøbyger"
+
+#: lib/Block/weatherdotcom.php:366
+msgid "Snow Showers Early"
+msgstr "Snøbyger tidlig på dagen"
+
+#: lib/Block/weatherdotcom.php:367
+msgid "Snow Showers Late"
+msgstr "Snøbyger sent på dagen"
+
+#: lib/Block/metar.php:276
+msgid "Snow depth: "
+msgstr "Snødybde:"
+
+#: lib/Horde/NLS/tld.php:214 lib/Horde/NLS/countries.php:206
+#: lib/Horde/NLS/GeoIP.php:107
+msgid "Somalia"
+msgstr "Somalia"
+
+#: lib/Horde/Form.php:2915
+msgid "Sort order selection"
+msgstr "Sorteringsrekkefølge"
+
+#: lib/Net/SMS/sms2email_http.php:581 lib/Net/SMS/sms2email_http.php:613
+#: lib/Net/SMS/clickatell_http.php:223 lib/Net/SMS/clickatell_http.php:255
+msgid "Source address"
+msgstr "Kildeadresse"
+
+#: lib/Block/moon.php:33 lib/Block/moon.php:62
+msgid "Southern Hemisphere"
+msgstr "Sørlige halvkule"
+
+#: lib/Horde/Form.php:815
+msgid "Spacer"
+msgstr "Mellomrom"
+
+#: templates/javascript/htmlarea_table_lang.js:55
+#: templates/javascript/htmlarea_lang.js:80
+msgid "Spacing"
+msgstr "Mellomrom"
+
+#: lib/Horde/NLS/tld.php:80 lib/Horde/NLS/countries.php:209
+#: lib/Horde/NLS/GeoIP.php:72
+msgid "Spain"
+msgstr "Spania"
+
+#: config/registry.php.dist:95
+msgid "Spam"
+msgstr "Spam"
+
+#: services/keyboard.php:14
+msgid "Special Character Input"
+msgstr "Spesialtegninntasting"
+
+#: templates/javascript/htmlarea_table_lang.js:62
+msgid "Split cell"
+msgstr "Splitt celle"
+
+#: templates/javascript/htmlarea_table_lang.js:66
+msgid "Split column"
+msgstr "Splitt kolonne"
+
+#: templates/javascript/htmlarea_table_lang.js:71
+msgid "Split row"
+msgstr "Splitt rad"
+
+#: lib/Block/fortune.php:61
+msgid "Sports"
+msgstr "Sport"
+
+#: lib/Horde/NLS/tld.php:141 lib/Horde/NLS/countries.php:210
+#: lib/Horde/NLS/GeoIP.php:89
+msgid "Sri Lanka"
+msgstr "Sri Lanka"
+
+#: lib/Block/weatherdotcom.php:68 lib/Block/metar.php:72
+msgid "Standard"
+msgstr "Standard"
+
+#: lib/Block/fortune.php:62
+msgid "Star Trek"
+msgstr "Star Trek"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:443
+#: lib/Horde/MIME/Viewer/icalendar.php:548
+msgid "Start"
+msgstr "Start"
+
+#: lib/Horde/Form.php:2589 lib/Horde/Form.php:2798
+msgid "Start year"
+msgstr "Begynnelsesår"
+
+#: lib/Horde/Crypt/smime.php:594
+msgid "State or Province"
+msgstr "Stat eller provins"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:583 templates/admin/setup/index.html:12
+msgid "Status"
+msgstr "Status"
+
+#: lib/Horde/Form.php:2804
+msgid "Storage format"
+msgstr "Lagringsformat"
+
+#: lib/Horde/Crypt/smime.php:596
+msgid "Street Address"
+msgstr "Gateadresse"
+
+#: lib/Horde/Form.php:1225
+msgid "String list"
+msgstr "Strengliste"
+
+#: util/icon_browser.php:37
+#, php-format
+msgid "Subdirectory '%s' not found."
+msgstr "Underkatalog '%s' ikke funnet."
+
+#: lib/Horde/Crypt/smime.php:635 lib/Horde/MIME/Viewer/rfc822.php:78
+msgid "Subject"
+msgstr "Emne"
+
+#: lib/Horde/Crypt/smime.php:668
+msgid "Subject Public Key Info"
+msgstr "Emne offentlig nøkkelinfo"
+
+#: lib/Horde/Form.php:332 lib/Horde/Form/Renderer.php:313
+msgid "Submit"
+msgstr "Send"
+
+#: templates/javascript/htmlarea_lang.js:12
+msgid "Subscript"
+msgstr "Undertekst"
+
+#: admin/sqlshell.php:113 lib/Horde/Notification/Listener/status.php:30
+msgid "Success"
+msgstr "Suksess"
+
+#: admin/user.php:85
+#, php-format
+msgid "Successfully added '%s' to the system."
+msgstr "La  '%s' til systemet."
+
+#: admin/user.php:124
+#, php-format
+msgid "Successfully cleared data for user '%s' from the system."
+msgstr "Slettet data for bruker '%s' fra systemet."
+
+#: admin/groups.php:81 admin/perms/delete.php:61
+#, php-format
+msgid "Successfully deleted '%s'."
+msgstr "Slettet '%s'."
+
+#: admin/user.php:105
+#, php-format
+msgid "Successfully removed '%s' from the system."
+msgstr "Fjernet '%s' fra systemet."
+
+#: admin/setup/config.php:51
+msgid "Successfully reverted configuration. Reload to see changes."
+msgstr "Tilbakestilte oppsettet. Last på nytt for å se endringer."
+
+#: admin/setup/index.php:59 admin/setup/scripts.php:55
+msgid "Successfully saved backup configuration."
+msgstr "Lagret sikkerhetskopi av oppsettet."
+
+#: admin/setup/config.php:62
+#, php-format
+msgid "Successfully saved the backup configuration file %s."
+msgstr "Lagret sikkerhetskopi av oppsettet til filen %s."
+
+#: admin/user.php:168
+#, php-format
+msgid "Successfully updated '%s'"
+msgstr "Oppdaterte '%s'"
+
+#: admin/setup/config.php:71 admin/setup/index.php:72
+#, php-format
+msgid "Successfully wrote %s"
+msgstr "Skrev '%s'"
+
+#: lib/Horde/NLS/tld.php:204 lib/Horde/NLS/countries.php:211
+#: lib/Horde/NLS/GeoIP.php:105
+msgid "Sudan"
+msgstr "Sudan"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:558
+#: lib/Horde/MIME/Viewer/icalendar.php:560
+#: templates/javascript/htmlarea_table_lang.js:56
+msgid "Summary"
+msgstr "Sammendrag"
+
+#: lib/Block/sunrise.php:66
+msgid "Sun Rise"
+msgstr "Soloppgang"
+
+#: lib/Block/sunrise.php:71
+msgid "Sun Set"
+msgstr "Solnedgang"
+
+#: lib/Block/weatherdotcom.php:179
+msgid "Sunrise"
+msgstr "Soloppgang"
+
+#: lib/Block/sunrise.php:3 lib/Block/sunrise.php:16
+msgid "Sunrise/Sunset"
+msgstr "Soloppgang/solnedgang"
+
+#: lib/Block/weatherdotcom.php:178
+msgid "Sunrise: "
+msgstr "Soloppgang:"
+
+#: lib/Block/weatherdotcom.php:182
+msgid "Sunset"
+msgstr "Solnedgang"
+
+#: lib/Block/weatherdotcom.php:181
+msgid "Sunset: "
+msgstr "Solnedgang:"
+
+#: templates/javascript/htmlarea_lang.js:13
+msgid "Superscript"
+msgstr "Overtekst"
+
+#: lib/Horde/Crypt/smime.php:598
+msgid "Surname"
+msgstr "Etternavn"
+
+#: lib/Horde/NLS/tld.php:219 lib/Horde/NLS/countries.php:214
+#: lib/Horde/NLS/GeoIP.php:109
+msgid "Swaziland"
+msgstr "Swaziland"
+
+#: lib/Horde/NLS/tld.php:205 lib/Horde/NLS/countries.php:215
+#: lib/Horde/NLS/GeoIP.php:105
+msgid "Sweden"
+msgstr "Sverige"
+
+#: lib/Horde/NLS/tld.php:56 lib/Horde/NLS/countries.php:216
+#: lib/Horde/NLS/GeoIP.php:67
+msgid "Switzerland"
+msgstr "Sveits"
+
+#: lib/Horde/SQL/Keywords.php:98
+msgid "Syntax error in search terms"
+msgstr "Syntaksfeil i søkeord"
+
+#: lib/Block/weatherdotcom.php:369
+msgid "T-Storm"
+msgstr "Tordenstorm"
+
+#: lib/Block/weatherdotcom.php:370
+msgid "T-Storms"
+msgstr "Tordenstormer"
+
+#: lib/Horde/Data/tsv.php:171
+msgid "TSV file"
+msgstr "TSV-fil"
+
+#: lib/Horde/UI/Table.php:135
+msgid "Table"
+msgstr "Tabell"
+
+#: templates/javascript/htmlarea_table_lang.js:73
+msgid "Table Properties"
+msgstr "Tabellegenskaper"
+
+#: templates/javascript/htmlarea_table_lang.js:72
+msgid "Table properties"
+msgstr "Tabellegenskaper"
+
+#: lib/Horde/NLS/tld.php:234 lib/Horde/NLS/GeoIP.php:112
+msgid "Taiwan"
+msgstr "Taiwan"
+
+#: lib/Horde/NLS/tld.php:225 lib/Horde/NLS/countries.php:219
+#: lib/Horde/NLS/GeoIP.php:110
+msgid "Tajikistan"
+msgstr "Tajikistan"
+
+#: templates/javascript/htmlarea_lang.js:95
+msgid "Target:"
+msgstr "Mål:"
+
+#: config/registry.php.dist:168
+msgid "Tasks"
+msgstr "Oppgaver"
+
+#: lib/Horde/Crypt/smime.php:597
+msgid "Telephone Number"
+msgstr "Telefonnummer"
+
+#: lib/Block/metar.php:212
+msgid "Temperature"
+msgstr "Temperatur"
+
+#: lib/Block/weatherdotcom.php:186
+msgid "Temperature: "
+msgstr "Temperatur:"
+
+#: lib/Horde/Template.php:211
+#, php-format
+msgid "Template '%s' not found."
+msgstr "Mal '%s' ikke funnet."
+
+#: admin/templates.php:169
+msgid "Template Administration"
+msgstr "Administrasjon av maler"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:641
+msgid "Tentatively Accept request"
+msgstr "Godta forespørsel foreløpig"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:689
+msgid "Tentatively Accepted"
+msgstr "Godta foreløpig"
+
+#: lib/Horde/Form.php:1203
+msgid "Text"
+msgstr "Tekst"
+
+#: config/prefs.php.dist:365
+msgid "Text Only"
+msgstr "Kun tekst"
+
+#: templates/javascript/htmlarea_table_lang.js:74
+msgid "Text align"
+msgstr "Likestill tekst"
+
+#: templates/javascript/htmlarea_lang.js:71
+msgid "Texttop"
+msgstr "Teksttopp"
+
+#: lib/Horde/NLS/tld.php:224 lib/Horde/NLS/countries.php:221
+#: lib/Horde/NLS/GeoIP.php:110
+msgid "Thailand"
+msgstr "Tailand"
+
+#: lib/Horde/Auth.php:944
+msgid "Thank you for using the system."
+msgstr "Takk for at du brukte systemet."
+
+#: lib/VFS/ftp.php:769
+msgid "The FTP extension is not available."
+msgstr "FTP-utvidelsen er ikke tilgjengelig."
+
+#: services/images/colorpicker.php:29
+msgid "The Options window has closed. Exiting."
+msgstr "Valgvinduet er lukket. Avslutter."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:49
+msgid "The calendar data is invalid"
+msgstr "Kalenderdata er ugyldig"
+
+#: lib/Net/SMS/sms2email_http.php:664
+msgid ""
+"The contact ID number was not specified, left blank or was not found in the "
+"database."
+msgstr ""
+"ID-nummeret til kontakten ble ikke spesifisert, var blank eller ble ikke "
+"funnet i databasen."
+
+#: lib/Horde/MIME/Viewer/vcard.php:54
+msgid "The contact was successfully added to your address book."
+msgstr "Kontakten er lagt til din adressebok."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:78
+msgid "The event has been added to your calendar."
+msgstr "Hendelsen ble lagt til i din kalender."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:108
+msgid "The task has been added to your tasklist."
+msgstr "Handlingen har blitt lagt til din liste over handlinger."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:93
+msgid "The user's free/busy information was sucessfully stored."
+msgstr "Brukerens ledig/opptatt informasjon ble lagret."
+
+#: lib/Horde/Prefs/UI.php:182
+msgid "There are no options available."
+msgstr "Det er ingen tilgjengelige valg."
+
+#: lib/Horde/MIME/Viewer/rfc822.php:38
+msgid "There was an error displaying this message part"
+msgstr "Det oppstod en feil under forsøk på å vise denne meldingsdelen"
+
+#: lib/Horde/MIME/Viewer/vcard.php:42 lib/Horde/MIME/Viewer/vcard.php:51
+msgid "There was an error importing the contact data."
+msgstr "Det oppstod en feil under import av kontaktdata."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:75
+#, php-format
+msgid "There was an error importing the event: %s."
+msgstr "Det oppstod en feil under import av hendelsen: %s."
+
+#: lib/Horde/Data/imc.php:32
+msgid "There was an error importing the iCalendar data."
+msgstr "Det oppstod en feil under import av iCalendar-data."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:105
+#, php-format
+msgid "There was an error importing the task: %s."
+msgstr "Det oppstod en feil ved importering av hendelsen: %s."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:91
+#, php-format
+msgid "There was an error importing user's free/busy information: %s."
+msgstr ""
+"Det oppstod en feil ved importering av brukerens ledig/opptatt-informasjon: %"
+"s"
+
+#: admin/setup/config.php:79
+msgid ""
+"There was an error in the configuration form. Perhaps you left out a "
+"required field."
+msgstr ""
+"Det oppstod en feil i oppsettsskjemaet. Kanskje du utelot et obligatorisk "
+"felt?"
+
+#: lib/Horde/IMAP/ACL/rfc2086.php:153
+msgid "This IMAP server does not support sharing folders."
+msgstr "Denne IMAP-tjeneren støtter ikke delte mapper."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:82
+#: lib/Horde/MIME/Viewer/icalendar.php:96
+#: lib/Horde/MIME/Viewer/icalendar.php:112
+#: lib/Horde/MIME/Viewer/icalendar.php:200
+msgid "This action is not supported."
+msgstr "Den forespurte oppgaven er ikke stottet."
+
+#: lib/Horde/MIME/Viewer/icalendar.php:118
+#: lib/Horde/MIME/Viewer/icalendar.php:359
+msgid "This action is not yet implemented."
+msgstr "Den forespurte oppgaven er ikke implementert."
+
+#: lib/Horde/MIME/Viewer/rar.php:51
+msgid "This does not appear to be a valid rar archive."
+msgstr "Dette ser ikke ut som et gyldig rar-arkiv."
+
+#: lib/Horde/MIME/Viewer/zip.php:55
+msgid "This does not appear to be a valid zip file."
+msgstr "Dette ser ikke ut som et gyldig zip-arkiv."
+
+#: lib/Horde/Form.php:3130
+msgid "This does not seem to be a valid card number."
+msgstr "Dette ser ikke ut som et gyldig kortnummer."
+
+#: lib/Horde/Form.php:973 lib/Horde/Form.php:1052 lib/Horde/Form.php:1081
+#: lib/Horde/Form.php:1110 lib/Horde/Form.php:1174 lib/Horde/Form.php:1248
+#: lib/Horde/Form.php:1282 lib/Horde/Form.php:1395 lib/Horde/Form.php:1547
+#: lib/Horde/Form.php:1827 lib/Horde/Form.php:1942 lib/Horde/Form.php:1989
+#: lib/Horde/Form.php:2013 lib/Horde/Form.php:2062 lib/Horde/Form.php:2133
+#: lib/Horde/Form.php:2205 lib/Horde/Form.php:2393 lib/Horde/Form.php:2437
+#: lib/Horde/Form.php:2649 lib/Horde/Form.php:2817 lib/Horde/Form.php:3122
+#: lib/Horde/Form.php:3692 lib/Horde/Form.php:3700
+msgid "This field is required."
+msgstr "Dette feltet er obligatorisk."
+
+#: lib/Horde/Form.php:984
+msgid "This field must be a valid number."
+msgstr "Dette feltet må være et gyldig tall."
+
+#: lib/Horde/Prefs/UI.php:128
+msgid "This number must be at least one."
+msgstr "Dette tallet må være minst 1."
+
+#: lib/Horde/Prefs/UI.php:126
+msgid "This value must be a number."
+msgstr "Dette må være et tall."
+
+#: lib/Horde/Form.php:2411
+msgid "Time"
+msgstr "Tid"
+
+#: lib/Block/time.php:17
+msgid "Time format"
+msgstr "Tidsformat"
+
+#: lib/Horde/Form.php:2522
+msgid "Time selection"
+msgstr "Tidsvalg"
+
+#: lib/Horde/MIME/Viewer/vcard.php:232 lib/Block/iframe.php:20
+msgid "Title"
+msgstr "Tittel"
+
+#: lib/Horde/MIME/Viewer/rfc822.php:80
+msgid "To"
+msgstr "Til"
+
+#: lib/Block/weatherdotcom.php:251
+msgid "Today"
+msgstr "I dag"
+
+#: lib/Block/weatherdotcom.php:253
+msgid "Tomorrow"
+msgstr "I morgen"
+
+#: templates/javascript/htmlarea_table_lang.js:81
+#: templates/javascript/htmlarea_lang.js:77
+msgid "Top"
+msgstr "Topp"
+
+#: po/translation.php:657
+msgid "Translated"
+msgstr "Oversatt"
+
+#: lib/Block/fortune.php:63
+msgid "Translations"
+msgstr "Oversettelser"
+
+#: lib/Horde/NLS/tld.php:231 lib/Horde/NLS/countries.php:228
+#: lib/Horde/NLS/GeoIP.php:112
+msgid "Turkey"
+msgstr "Tyrkia"
+
+#: lib/Horde/NLS/tld.php:227 lib/Horde/NLS/countries.php:229
+#: lib/Horde/NLS/GeoIP.php:111
+msgid "Turkmenistan"
+msgstr "Turkmenistan"
+
+#: lib/Horde/MIME/Viewer/vcard.php:252 lib/Block/iframe.php:17
+msgid "URL"
+msgstr "URL"
+
+#: templates/javascript/htmlarea_lang.js:97
+msgid "URL:"
+msgstr "URL:"
+
+#: lib/Horde/NLS/tld.php:237 lib/Horde/NLS/countries.php:232
+#: lib/Horde/NLS/GeoIP.php:113
+msgid "Uganda"
+msgstr "Uganda"
+
+#: lib/Horde/NLS/tld.php:236 lib/Horde/NLS/countries.php:233
+#: lib/Horde/NLS/GeoIP.php:113
+msgid "Ukraine"
+msgstr "Ukraina"
+
+#: lib/Horde/Auth/sql.php:375
+msgid "Unable to connect to SQL server."
+msgstr "Kan ikke koble til SQL-serveren."
+
+#: lib/VFS/ftp.php:788
+msgid "Unable to connect with SSL."
+msgstr "Kan ikke koble til med SSL."
+
+#: lib/Horde/Compress/tar.php:79 lib/Horde/Compress/gzip.php:82
+msgid "Unable to decompress data."
+msgstr "Kan ikke pakke ut data."
+
+#: lib/Horde/MIME/Viewer/tgz.php:47
+msgid "Unable to open compressed archive."
+msgstr "Kan ikke åpne komprimert arkiv."
+
+#: lib/Horde/MIME/Viewer/msword.php:62
+msgid "Unable to translate this Word document"
+msgstr "Kan ikke oversette dette Word-dokumentet"
+
+#: templates/javascript/htmlarea_lang.js:10
+msgid "Underline"
+msgstr "Strek under"
+
+#: templates/prefs/end.inc:6
+msgid "Undo Changes"
+msgstr "Angre endringer"
+
+#: templates/javascript/htmlarea_lang.js:33
+msgid "Undoes your last action"
+msgstr "Tilbakestiller din siste handling."
+
+#: lib/Horde/Prefs/CategoryManager.php:58
+#: templates/prefs/categorymanagement.inc:64
+msgid "Unfiled"
+msgstr "Uspesifisert"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:384
+#, php-format
+msgid "Unhandled component of type: %s"
+msgstr "Uhåndtert komponent av typen: %s"
+
+#: lib/Horde/Crypt/pgp.php:415 lib/Horde/Crypt/pgp.php:416
+msgid "Unknown"
+msgstr "Ukjent"
+
+#: po/translation.php:1482
+#, php-format
+msgid "Unknown command: %s"
+msgstr "Ukjent kommando: %s"
+
+#: lib/Net/SMS/clickatell_http.php:300
+msgid "Unknown username or password."
+msgstr "Ukjent brukernavn eller passord."
+
+#: lib/Horde/Identity.php:298
+msgid "Unnamed"
+msgstr "Uten navn"
+
+#: po/translation.php:657
+msgid "Untranslated"
+msgstr "Ikke oversatt"
+
+#: admin/perms/edit.php:106 lib/Horde/Perms/UI.php:191
+#: templates/admin/user/list.inc:36
+msgid "Update"
+msgstr "Oppdater"
+
+#: templates/admin/user/update.inc:31
+#, php-format
+msgid "Update %s"
+msgstr "Oppdater %s"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:648
+msgid "Update respondent status"
+msgstr "Oppdater status på avsendere"
+
+#: templates/admin/user/update.inc:43
+msgid "Update user"
+msgstr "Oppdater bruker"
+
+#: admin/groups.php:137 admin/perms/edit.php:217 services/shares/edit.php:230
+#, php-format
+msgid "Updated '%s'."
+msgstr "Oppdaterte '%s'"
+
+#: admin/setup/index.php:172 lib/Horde/UI/VarRenderer/html.php:182
+msgid "Upload"
+msgstr "Last opp"
+
+#: po/translation.php:35 po/translation.php:92 po/translation.php:93
+msgid "Usage:"
+msgstr "Bruk:"
+
+#: admin/user.php:35 admin/setup/index.php:173
+#: lib/Net/SMS/sms2email_http.php:556 lib/Net/SMS/vodafoneitaly_smtp.php:97
+#: lib/Net/SMS/clickatell_http.php:202 services/resetpassword.php:33
+#: templates/login/login.inc:65 templates/admin/user/approve.inc:11
+msgid "Username"
+msgstr "Brukernavn"
+
+#: lib/Horde/Auth/Signup.php:131
+#, php-format
+msgid "Username '%s' already exists."
+msgstr "Brukernavnet '%s' eksisterer allerede."
+
+#: templates/rpcsum/rpcsum.inc:87
+msgid "Username:"
+msgstr "Brukernavn:"
+
+#: templates/login/mobile.inc:8
+msgid "Username: "
+msgstr "Brukernavn:"
+
+#: lib/Horde/Perms/UI.php:227
+msgid "Users"
+msgstr "Brukere"
+
+#: config/registry.php.dist:383
+msgid "Vacation"
+msgstr "Ferie"
+
+#: lib/Horde/Form.php:2228 lib/Horde/Form.php:2250 lib/Horde/Form.php:2298
+#: lib/Horde/Form.php:2917
+msgid "Values"
+msgstr "Verdier"
+
+#: lib/Block/weatherdotcom.php:207
+msgid "Variable"
+msgstr "Variabel"
+
+#: lib/Horde/Crypt/smime.php:724
+msgid "Version"
+msgstr "Versjon"
+
+#: config/registry.php.dist:200
+msgid "Version Control"
+msgstr "Versjonskontroll"
+
+#: lib/Horde/MIME/Contents.php:994
+#, php-format
+msgid "View %s"
+msgstr "Vis %s"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:79
+msgid "View event"
+msgstr "Vis hendelse"
+
+#: lib/Horde/MIME/Viewer/icalendar.php:109
+msgid "View task"
+msgstr "Vis handlinger"
+
+#: lib/Horde/Notification/Listener/status.php:31
+msgid "Warning"
+msgstr "Advarsel"
+
+#: po/translation.php:145 po/translation.php:681 po/translation.php:711
+#: po/translation.php:725 po/translation.php:1048 po/translation.php:1057
+#: po/translation.php:1065 po/translation.php:1075 po/translation.php:1085
+#: po/translation.php:1095 po/translation.php:1101 po/translation.php:1216
+#: po/translation.php:1226 po/translation.php:1232 po/translation.php:1252
+msgid "Warning: "
+msgstr "Advarsel:"
+
+#: config/registry.php.dist:390
+msgid "Web Site"
+msgstr "Webside"
+
+#: lib/Horde/Maintenance.php:37
+msgid "Weekly"
+msgstr "Ukentlig"
+
+#: services/portal/mobile.php:28
+msgid "Welcome"
+msgstr "Velkommen"
+
+#: templates/login/mobile.inc:4 templates/login/login.inc:50
+#, php-format
+msgid "Welcome to %s"
+msgstr "Velkommen til %s"
+
+#: services/portal/mobile.php:29 templates/portal/menu.inc:2
+#, php-format
+msgid "Welcome, %s"
+msgstr "Velkommen, %s"
+
+#: templates/javascript/htmlarea_lang.js:105
+msgid "Width:"
+msgstr "Søk"
+
+#: lib/Block/weatherdotcom.php:372
+msgid "Wind"
+msgstr "Vind"
+
+#: lib/Block/weatherdotcom.php:373
+msgid "Wind Early"
+msgstr "Vind tidlig på dagen"
+
+#: lib/Block/metar.php:154
+msgid "Wind:"
+msgstr "Vind:"
+
+#: lib/Block/weatherdotcom.php:205
+msgid "Wind: "
+msgstr "Vind:"
+
+#: lib/Block/fortune.php:64
+msgid "Wisdom"
+msgstr "Visdom"
+
+#: config/registry.php.dist:177
+msgid "Wishlists"
+msgstr "Ønskeliste"
+
+#: lib/Block/fortune.php:65
+msgid "Work"
+msgstr "Arbeid"
+
+#: lib/Horde/MIME/Viewer/vcard.php:127 lib/Horde/MIME/Viewer/vcard.php:167
+msgid "Work Address"
+msgstr "Firmaadresse"
+
+#: lib/Horde/MIME/Viewer/vcard.php:195
+msgid "Work Phone"
+msgstr "Firmatelefon"
+
+#: templates/data/date.inc:47 templates/data/date.inc:48
+#: templates/data/date.inc:49 templates/data/date.inc:50
+msgid "YY"
+msgstr "ÅÅ"
+
+#: lib/Horde/UI/VarRenderer/html.php:386 lib/Horde/UI/VarRenderer/html.php:427
+msgid "YYYY"
+msgstr "ÅÅÅÅ"
+
+#: lib/Horde/Maintenance.php:35
+msgid "Yearly"
+msgstr "årlig"
+
+#: lib/Horde/NLS/tld.php:252 lib/Horde/NLS/countries.php:247
+#: lib/Horde/NLS/GeoIP.php:118
+msgid "Yemen"
+msgstr "Yemen"
+
+#: lib/Horde/UI/VarRenderer/html.php:888
+msgid "Yes"
+msgstr "Ja"
+
+#: lib/Horde/Auth.php:944
+msgid "You have been logged out."
+msgstr "Du er nå logget ut."
+
+#: lib/Horde/Form.php:1180
+msgid "You have to enter a valid value."
+msgstr "Du har skrevet inn en gyldig verdi."
+
+#: templates/problem/problem.inc:11
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Du må beskrive problemet før du kan sende en problemrapport."
+
+#: lib/Horde/Auth.php:932
+#, php-format
+msgid "Your %s session has expired. Please login again."
+msgstr "Din %s tilkobing har gått ut. Vennligst log inn igjen."
+
+#: templates/problem/problem.inc:38
+msgid "Your Email Address"
+msgstr "Din epostadresse"
+
+#: config/prefs.php.dist:202
+msgid "Your From: address:"
+msgstr "Din avsenderadresse:"
+
+#: config/prefs.php.dist:64 config/prefs.php.dist:74 config/prefs.php.dist:82
+#: config/prefs.php.dist:89
+msgid "Your Information"
+msgstr "Din informasjon"
+
+#: templates/problem/problem.inc:33
+msgid "Your Name"
+msgstr "Fullt navn"
+
+#: lib/Block/iframe.php:50
+msgid "Your browser does not support this feature."
+msgstr "Nettleseren din støtter ikke denne funksjonen."
+
+#: templates/javascript/print.js:27
+msgid ""
+"Your browser does not support this print option. Press Control/Option + P to "
+"print."
+msgstr ""
+"Nettleseren din støtter ikke denne utskiftsoperasjonen. Trykk Kontroll/"
+"Opsjon + P for å skrive ut."
+
+#: config/prefs.php.dist:148
+msgid "Your default identity:"
+msgstr "Din standardidentitet:"
+
+#: config/prefs.php.dist:191
+msgid "Your full name:"
+msgstr "Ditt fulle navn:"
+
+#: lib/Horde/Prefs/UI.php:158
+msgid "Your options have been updated."
+msgstr "Dine valg har blitt oppdatert"
+
+#: services/problem.php:56
+msgid "[Problem Report]"
+msgstr "[Problemrapport]"
+
+#: lib/Horde.php:199
+#, php-format
+msgid "[line %s of %s]"
+msgstr "[linje %s av %s]"
+
+#: lib/Horde/Menu.php:181
+msgid "_Help"
+msgstr "Hjelp"
+
+#: lib/Horde/Menu.php:196
+msgid "_Log out"
+msgstr "Logg ut"
+
+#: lib/Horde/Menu.php:170
+msgid "_Options"
+msgstr "Valg"
+
+#: lib/Horde/Kolab.php:911
+msgid "address book"
+msgstr "adressebok"
+
+#: po/translation.php:711
+msgid "an error has occured:"
+msgstr "en feil har oppstått:"
+
+#: lib/Horde/Kolab.php:903
+msgid "calendar"
+msgstr "kalender"
+
+#: lib/Block/metar.php:170 lib/Block/metar.php:356
+#, php-format
+msgid "calm"
+msgstr "rolig"
+
+#: po/translation.php:445 po/translation.php:550 po/translation.php:611
+#: po/translation.php:749 po/translation.php:810 po/translation.php:887
+msgid "done"
+msgstr "ferdig"
+
+#: po/translation.php:552 po/translation.php:584 po/translation.php:613
+#: po/translation.php:778 po/translation.php:812 po/translation.php:889
+msgid "failed"
+msgstr "feilet"
+
+#: lib/Horde/Browser.php:870
+msgid "file"
+msgstr "fil"
+
+#: po/translation.php:129
+msgid "found: "
+msgstr "funnet:"
+
+#: lib/Block/metar.php:172 lib/Block/metar.php:358 lib/Block/metar.php:384
+#, php-format
+msgid "from the %s (%s) at %s %s"
+msgstr "fra %s (%s) på %s %s"
+
+#: admin/setup/diff.php:68 admin/setup/diff.php:76
+msgid "inline"
+msgstr "inline"
+
+#: templates/javascript/quoteBlocks.js:13
+msgid "lines]"
+msgstr "linjer]"
+
+#: lib/Horde/Prefs/UI.php:288 services/portal/sidebar.php:206
+msgid "name"
+msgstr "navn"
+
+#: po/translation.php:378
+msgid "not changed"
+msgstr "ikke endret"
+
+#: po/translation.php:131
+msgid "not found"
+msgstr "ikke funnet"
+
+#: lib/Horde/RPC.php:122
+msgid "not implemented"
+msgstr "ikke implementert"
+
+#: lib/Horde/Crypt/smime.php:1245
+msgid "not yet implemented"
+msgstr "ikke enda implementert"
+
+#: lib/Horde/Kolab.php:895
+msgid "notepad"
+msgstr "notisblokk"
+
+#: templates/javascript/htmlarea_table_lang.js:88
+msgid "percent"
+msgstr "prosent"
+
+#: lib/Block/weatherdotcom.php:380
+msgid "rising"
+msgstr "stigende"
+
+#: lib/Block/weatherdotcom.php:379
+msgid "steady"
+msgstr "stødig"
+
+#: lib/Horde/Kolab.php:919
+msgid "task list"
+msgstr "oppgaveliste"
+
+#: admin/user.php:36 lib/Horde/Auth/Signup.php:282
+msgid "type the password twice to confirm"
+msgstr "skriv passordet to ganger for å bekrefte"
+
+#: admin/setup/diff.php:68 admin/setup/diff.php:76
+msgid "unified"
+msgstr "samlet"
+
+#: lib/Horde/MIME/Part.php:17
+msgid "unnamed"
+msgstr "ikke navngitt"
+
+#: po/translation.php:375
+msgid "updated"
+msgstr "oppdatert"
+
+#: lib/Net/SMS/sms2email_http.php:587 lib/Net/SMS/clickatell_http.php:229
+msgid "user select"
+msgstr "brukervalg"
+
+#: lib/Horde/MIME/Viewer/vcard.php:38
+msgid "vCard"
+msgstr "vCard"
+
+#: lib/Horde/UI/VarRenderer/html.php:224
+msgid "w:"
+msgstr "w:"

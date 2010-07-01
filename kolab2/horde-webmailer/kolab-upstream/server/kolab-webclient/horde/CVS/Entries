@@ -1,4 +1,6 @@
-/.cvsignore/1.1/Mon Jan 11 16:38:56 2010//THEAD
-/Makefile/1.4/Tue Jan 19 05:41:54 2010//THEAD
-/horde.spec/1.10/Thu Jan 21 22:38:40 2010//THEAD
-D
+D/configuration////
+D/templates////
+/.cvsignore/1.1/Tue Jun 15 12:35:20 2010//THEAD
+/ChangeLog/1.2/Sun May 16 09:14:37 2010//THEAD
+/Makefile/1.4/Tue Jun 15 12:35:19 2010//THEAD
+/horde.spec/1.12/Thu Jun 17 12:19:42 2010//THEAD

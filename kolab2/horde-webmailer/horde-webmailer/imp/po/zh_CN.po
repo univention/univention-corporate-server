@@ -1,0 +1,5179 @@
+# IMP Simplified Chinese Translation
+# Copyright 2001 WangHengWen.
+# WangHengWen <whw@my169.com>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: IMP 4.0-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2005-10-18 15:12+0200\n"
+"PO-Revision-Date: 2007-09-03 17:45+0800\n"
+"Last-Translator: Anna Chen <annachen2008@yahoo.com.cn>\n"
+"Language-Team: Chinese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=GB2312\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: lib/Compose.php:1664
+msgid "      Cc: "
+msgstr "抄送："
+
+#: lib/Compose.php:1661
+msgid "      To: "
+msgstr "收件人："
+
+#: lib/Compose.php:1649
+msgid "    Date: "
+msgstr "日期： "
+
+#: lib/Compose.php:1652
+msgid "    From: "
+msgstr "发件人："
+
+#: folders.php:329 mailbox.php:323
+#, php-format
+msgid " (Accesskey %s)"
+msgstr " (Accesskey %s)"
+
+#: lib/Compose.php:1658
+msgid " Subject: "
+msgstr "主题："
+
+#: mailbox.php:539
+msgid "#"
+msgstr "#"
+
+#: lib/Message.php:822
+#, php-format
+msgid "%.2fMB"
+msgstr "%.2fMB"
+
+#: thread.php:149
+#, php-format
+msgid "%d Messages"
+msgstr "%d 封邮件"
+
+#: lib/Spam.php:216
+#, php-format
+msgid "%d messages have been deleted."
+msgstr "已删除 %d 封邮件。"
+
+#: lib/Spam.php:196
+#, php-format
+msgid ""
+"%d messages have been reported as not spam to your system administrator."
+msgstr "已报告系统管理员 %d 邮件是垃圾邮件。"
+
+#: lib/Spam.php:176
+#, php-format
+msgid "%d messages have been reported as not spam."
+msgstr "未报告 %d 邮件是垃圾邮件。"
+
+#: lib/Spam.php:188
+#, php-format
+msgid "%d messages have been reported as spam to your system administrator."
+msgstr "已报告系统管理员 %d 邮件是垃圾邮件。"
+
+#: lib/Spam.php:168
+#, php-format
+msgid "%d messages have been reported as spam."
+msgstr "未报告 %d 邮件是垃圾邮件。"
+
+#: mailbox.php:252
+#, php-format
+msgid "%d to %d of %d Messages"
+msgstr "从 %d 到 %d，共 %d 封"
+
+#: lib/MIME/Contents.php:578
+#, php-format
+msgid "%s Attachments, %s"
+msgstr "%s 附件, %s"
+
+#: lib/MIME/Contents.php:568 lib/UI/Mailbox.php:134
+#, php-format
+msgid "%s KB"
+msgstr "%s KB"
+
+#: lib/MIME/Contents.php:566 lib/UI/Mailbox.php:132
+#, php-format
+msgid "%s MB"
+msgstr "%s MB"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:43
+#, php-format
+msgid "%s already exists. Your %s folder was not renamed."
+msgstr "文件夹 %s 已存在。未重命名您的 %s 文件夹。"
+
+#: lib/MIME/Contents.php:571
+#, php-format
+msgid "%s bytes"
+msgstr "%s 字节"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:41
+#, php-format
+msgid "%s folder being renamed at the start of the month."
+msgstr "已在月初重命名 %s 文件夹。"
+
+#: lib/MIME/Viewer/itip.php:259
+#, php-format
+msgid "%s has accepted."
+msgstr "%s 已接受。"
+
+#: lib/MIME/Viewer/itip.php:627
+#, php-format
+msgid "%s has cancelled \"%s\"."
+msgstr "%s 已取消”%s“。"
+
+#: lib/MIME/Viewer/itip.php:265
+#, php-format
+msgid "%s has declined."
+msgstr "%s 已拒绝。"
+
+#: lib/MIME/Viewer/itip.php:500
+#, php-format
+msgid "%s has replied to a free/busy request."
+msgstr "%s 已回复忙/闲请求。"
+
+#: lib/MIME/Viewer/itip.php:619
+#, php-format
+msgid "%s has replied to the invitation to \"%s\"."
+msgstr "%s 已回复”%s“邀请。"
+
+#: lib/MIME/Viewer/itip.php:491
+#, php-format
+msgid "%s has sent you free/busy information."
+msgstr "%s 已发送忙/闲信息。"
+
+#: lib/MIME/Viewer/itip.php:271
+#, php-format
+msgid "%s has tentatively accepted."
+msgstr "已暂时接受 %s。"
+
+#: lib/MIME/Viewer/itip.php:496
+#, php-format
+msgid "%s requests your free/busy information."
+msgstr "%s 请求忙/闲信息。"
+
+#: lib/MIME/Viewer/itip.php:587
+#, php-format
+msgid "%s requests your presence at \"%s\"."
+msgstr "%s 邀请您出席”%s“。"
+
+#: lib/Message.php:466
+#, php-format
+msgid "%s was successfully added to \"%s\"."
+msgstr "已将 %s 成功添加到“%s”。"
+
+#: lib/MIME/Viewer/itip.php:599
+#, php-format
+msgid "%s wishes to ammend \"%s\"."
+msgstr "%s 希望修改”%s“。"
+
+#: lib/MIME/Viewer/itip.php:579 lib/MIME/Viewer/itip.php:769
+#, php-format
+msgid "%s wishes to make you aware of \"%s\"."
+msgstr "%s 希望您注意”%s“。"
+
+#: lib/MIME/Viewer/itip.php:606
+#, php-format
+msgid "%s wishes to receive the latest information about \"%s\"."
+msgstr "%s 希望接收”%s“的最新信息。"
+
+#: compose.php:1105
+#, php-format
+msgid "%s%% of allowed size"
+msgstr "%s%%　所允许的大小"
+
+#: message.php:260 message.php:265
+#, php-format
+msgid "%s: %s"
+msgstr "%s：%s"
+
+#: message.php:501
+#, php-format
+msgid "%s: %s (%d&nbsp;of&nbsp;%d)"
+msgstr "%s: %s (%d&nbsp;/&nbsp;%d)"
+
+#: stationery.php:134
+msgid "(HTML)"
+msgstr "(HTML)"
+
+#: stationery.php:134
+msgid "(Plain Text)"
+msgstr "(纯文本)"
+
+#: templates/contacts/contacts.html:49
+msgid "* Add these by clicking OK *"
+msgstr "* 单击“确定”添加这些项 *"
+
+#: templates/contacts/contacts.html:33
+msgid "* Please select address(es) *"
+msgstr "* 请选择地址 *"
+
+#: lib/MIME/Contents.php:576
+#, php-format
+msgid "1 Attachment, %s"
+msgstr "1 个附件, %s"
+
+#: config/prefs.php.dist:962
+msgid "100 characters"
+msgstr "100 个字符"
+
+#: config/prefs.php.dist:965
+msgid "1000 characters"
+msgstr "1000 个字符"
+
+#: config/prefs.php.dist:963
+msgid "250 characters"
+msgstr "250 个字符"
+
+#: config/prefs.php.dist:964
+msgid "500 characters"
+msgstr "500 个字符"
+
+#: lib/MIME/Viewer/images.php:151
+#, php-format
+msgid ""
+"A large image named %s is attached to this message. A thumbnail is below."
+msgstr "已将名为 %s 的大图像附加到此邮件。缩略图如下。"
+
+#: lib/MIME/Viewer/notification.php:49
+msgid ""
+"A message you have sent has resulted in a return notification from the "
+"recipient."
+msgstr "收件人退还您所发送的邮件。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:82
+msgid ""
+"A popup window could not be opened. Perhaps you have set your browser to "
+"block popup windows?"
+msgstr "无法打开弹出式窗口。是否已设置浏览器阻止弹出式窗口？"
+
+#: templates/search/search.html:61
+msgid "AND"
+msgstr "与"
+
+#: config/prefs.php.dist:836
+msgid "Above the message text"
+msgstr "邮件文本之上"
+
+#: lib/MIME/Viewer/itip.php:589
+msgid "Accept and add to my calendar"
+msgstr "接受并添加到我的日历"
+
+#: lib/MIME/Viewer/itip.php:592
+msgid "Accept request"
+msgstr "接受请求"
+
+#: lib/MIME/Viewer/itip.php:880
+msgid "Accepted"
+msgstr "已接受"
+
+#: lib/MIME/Viewer/itip.php:260
+msgid "Accepted: "
+msgstr "已接受："
+
+#: lib/MIME/Viewer/itip.php:530 lib/MIME/Viewer/itip.php:735
+#: lib/MIME/Viewer/itip.php:736 lib/MIME/Viewer/itip.php:859
+msgid "Actions"
+msgstr "操作"
+
+#: lib/MIME/Headers.php:201 lib/MIME/Headers.php:202
+#, php-format
+msgid "Add %s to my Address Book"
+msgstr "将 %s 添加到我的地址簿"
+
+#: templates/prefs/sourceselect.inc:304
+msgid "Add source"
+msgstr "添加来源"
+
+#: lib/MIME/Viewer/itip.php:581
+msgid "Add this to my calendar"
+msgstr "将此项添加到我的日历"
+
+#: lib/MIME/Viewer/itip.php:771
+msgid "Add this to my tasklist"
+msgstr "将此项添加到我的任务列表"
+
+#: lib/MIME/Viewer/itip.php:590
+msgid "Add to my calendar"
+msgstr "添加到我的日历"
+
+#: lib/Compose.php:2634
+#, php-format
+msgid "Added \"%s\" as an attachment."
+msgstr "已将“%s”作为附件添加。"
+
+#: config/prefs.php.dist:813
+msgid ""
+"Additional headers to display when viewing: <em>(optional, enter each header "
+"on a new line)</em>"
+msgstr "查看时显示的附加标题：<em>(可选，每行输入一个标题)</em>"
+
+#: lib/MIME/Viewer/notification.php:60
+#, php-format
+msgid "Additional information can be viewed %s."
+msgstr "附加信息可以显示为 %s。"
+
+#: lib/MIME/Viewer/notification.php:60
+msgid "Additional information details"
+msgstr "附加详细信息"
+
+#: lib/MIME/Viewer/status.php:92
+msgid "Additional message details"
+msgstr "附加邮件详情"
+
+#: lib/MIME/Viewer/status.php:91
+#, php-format
+msgid "Additional message details can be viewed %s."
+msgstr "可以查看附加邮件详情 %s。"
+
+#: lib/MIME/Viewer/status.php:77
+msgid "Additional message error details"
+msgstr "附加邮件错误详情"
+
+#: lib/MIME/Viewer/status.php:76
+#, php-format
+msgid "Additional message error details can be viewed %s."
+msgstr "可以查看附加邮件错误详情 %s。"
+
+#: compose.php:739 compose.php:975 contacts.php:124
+#: templates/contacts/contacts.html:8
+msgid "Address Book"
+msgstr "地址簿"
+
+#: config/prefs.php.dist:142
+msgid "Address Books"
+msgstr "地址簿"
+
+#: templates/prefs/sourceselect.inc:349
+msgid "Address book to add addresses to"
+msgstr "要添加地址的地址簿"
+
+#: config/prefs.php.dist:197
+msgid ""
+"Addresses to BCC all messages: <em>(optional, enter each address on a new "
+"line)</em>"
+msgstr "密件抄送所有邮件的地址：<em>(可选，每行输入一个地址)</em>"
+
+#: config/prefs.php.dist:189
+msgid ""
+"Addresses to explicitly tie to this identity: <em>(optional, enter each "
+"address on a new line)</em>"
+msgstr "明确绑定到此标识的地址：<em>(可选，每行输入一个地址)</em>"
+
+#: lib/IMAP/ACL/rfc4314.php:59 lib/IMAP/ACL/rfc2086.php:57
+msgid "Administer"
+msgstr "管理"
+
+#: templates/mailbox/navbar.html:10
+msgid "All"
+msgstr "全部"
+
+#: lib/Maintenance/Task/purge_sentmail.php:83
+#, php-format
+msgid ""
+"All messages in the folder(s) \"%s\" older than %s days will be permanently "
+"deleted."
+msgstr "“%s”文件夹中的早于 %s 天前的所有邮件将被永久性删除。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:73
+msgid ""
+"All messages in the following folder(s) will be downloaded into one MBOX "
+"file:"
+msgstr "所有在下列邮箱中的邮件将被下载到一个 MBOX 文件中："
+
+#: lib/Maintenance/Task/purge_trash.php:78
+#: lib/Maintenance/Task/purge_spam.php:79
+#, php-format
+msgid ""
+"All messages in your \"%s\" folder older than %s days will be permanently "
+"deleted."
+msgstr "所有在“%s”文件夹中的早于 %s 天前的邮件将被永久性删除。"
+
+#: lib/Maintenance/Task/delete_attachments_monthly.php:59
+#, php-format
+msgid "All old linked attachments more than %s months old will be deleted."
+msgstr "删除 %s 个月之前的所有附件。"
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:72
+#, php-format
+msgid "All old sent-mail folders more than %s months old will be deleted."
+msgstr "将删除发件文件夹中 %s 个月之前的所有邮件。"
+
+#: acl.php:85 acl.php:126
+#, php-format
+msgid "All rights on folder \"%s\" successfully removed for user \"%s\"."
+msgstr "已成功删除用户“%s”对文件夹“%s”的所有权限。"
+
+#: lib/api.php:86
+msgid "Allow Folder Creation?"
+msgstr "是否允许创建文件夹？"
+
+#: filterprefs.php:101
+msgid "Allow filter rules to be applied in any mailbox?"
+msgstr "是否允许将过滤规则应用到任一邮箱？"
+
+#: lib/MIME/Viewer/alternative.php:79
+msgid "Alternative parts for this section:"
+msgstr "此节的可选部分："
+
+#: config/prefs.php.dist:691
+msgid "Always"
+msgstr "总是"
+
+#: config/prefs.php.dist:676
+msgid "Always save attachments"
+msgstr "总保存附件"
+
+#: lib/Message.php:556
+msgid ""
+"An error occured while attempting to strip the attachment. The IMAP server "
+"said: "
+msgstr "尝试分离附件时出错。IMAP 服务器回应："
+
+#: lib/Message.php:440
+msgid "An unknown error occured while creating the new note."
+msgstr "创建新便签时发生未知错误。"
+
+#: lib/Message.php:439
+msgid "An unknown error occured while creating the new task."
+msgstr "创建新任务时发生未知错误。"
+
+#: message.php:473 mailbox.php:722 mailbox.php:838
+#: templates/message/navbar_navigate.html:12 templates/mailbox/navbar.html:18
+#: templates/mailbox/navbar.html:34 templates/mailbox/legend.html:4
+msgid "Answered"
+msgstr "已回复"
+
+#: search.php:331
+msgid "Answered messages"
+msgstr "已回复邮件"
+
+#: mailbox.php:382
+msgid "Apply Filters"
+msgstr "应用过滤器"
+
+#: mailbox.php:382
+#, php-format
+msgid "Apply Filters to %s"
+msgstr "将过滤器应用到 %s"
+
+#: filterprefs.php:99
+msgid "Apply filter rules upon logging on?"
+msgstr "是否在登录后立即应用过滤规则？"
+
+#: filterprefs.php:100
+msgid "Apply filter rules whenever Inbox is displayed?"
+msgstr "无论收件箱何时显示即应用过滤规则？"
+
+#: mailbox.php:391
+msgid "Are you sure you want to delete this Virtual Folder Definition?"
+msgstr "您确定要删除此虚拟文件夹定义吗？"
+
+#: smime.php:311 pgp.php:400
+msgid "Are you sure you want to delete this public key?"
+msgstr "您确定要删除此公钥吗？"
+
+#: smime.php:337 pgp.php:430
+msgid ""
+"Are you sure you want to delete your keypair? (This is NOT recommended!)"
+msgstr "您确定要删除密钥对吗？(不推荐！)"
+
+#: js/imp.js.php:3 js/src/imp.js.php:47
+msgid "Are you sure you want to do this?"
+msgstr "您确定要执行此操作吗？"
+
+#: message.php:545 js/imp.js.php:3 js/src/imp.js.php:59
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "您确定要永久删除这些邮件吗？"
+
+#: lib/MIME/Contents.php:255
+msgid "Are you sure you wish to PERMANENTLY delete this attachment?"
+msgstr "您确定要永久删除这些附件吗？"
+
+#: mailbox.php:387
+msgid "Are you sure you wish to empty this folder?"
+msgstr "您确定要清空此文件夹吗？"
+
+#: lib/IMP.php:788
+msgid "Are you sure you wish to empty your spam folder?"
+msgstr "您确定要清空垃圾邮件文件夹吗？"
+
+#: lib/IMP.php:780
+msgid "Are you sure you wish to empty your trash folder?"
+msgstr "您确定要清空垃圾邮件文件夹吗？"
+
+#: mailbox.php:470
+msgid "Are you sure you wish to permanently delete these messages?"
+msgstr "您确定要永久删除这些邮件吗？"
+
+#: js/imp.js.php:3 js/src/imp.js.php:90
+msgid "Are you sure you wish to report this message as innocent?"
+msgstr "您确定要报告此邮件是正常邮件吗？"
+
+#: js/imp.js.php:3 js/src/imp.js.php:89
+msgid "Are you sure you wish to report this message as spam?"
+msgstr "您确定要报告此邮件是垃圾邮件吗？"
+
+#: config/prefs.php.dist:1058
+msgid "Arrival Time"
+msgstr "到达时间"
+
+#: config/prefs.php.dist:1073
+msgid "Ascending"
+msgstr "升序"
+
+#: config/prefs.php.dist:690
+msgid "Ask"
+msgstr "询问"
+
+#: compose.php:1044
+msgid "Attach Files"
+msgstr "附件"
+
+#: compose.php:1038
+msgid "Attach a copy of your PGP public key to your message?"
+msgstr "将您的 PGP 公钥附到邮件中？"
+
+#: lib/MIME/Viewer/tnef.php:110
+msgid "Attached File:"
+msgstr "附件："
+
+#: lib/Compose.php:1697 lib/Compose.php:1793
+#, php-format
+msgid ""
+"Attached file \"%s\" exceeds the attachment size limits. File NOT attached."
+msgstr "所附文件“%s”超出附件大小限制。未附文件。"
+
+#: lib/MIME/Viewer/itip.php:380
+msgid "Attached is a reply to a calendar request you sent."
+msgstr "所附内容是对您所发送日历请求的答复。"
+
+#: mailbox.php:848 js/imp.js.php:3 js/src/imp.js.php:54
+#: templates/mailbox/legend.html:14 templates/compose/compose.html:266
+#: templates/compose/compose.html:325
+msgid "Attachment"
+msgstr "附件"
+
+#: attachment.php:72
+#, php-format
+msgid "Attachment %s deleted."
+msgstr "已删除附件 %s。"
+
+#: lib/Compose.php:2355
+msgid "Attachment Information"
+msgstr "附件信息"
+
+#: lib/Compose.php:654
+msgid "Attachment stripped: Original attachment type"
+msgstr "已分离的附件：原始附件类型"
+
+#: compose.php:987 lib/Compose.php:2323 templates/compose/compose.html:242
+msgid "Attachments"
+msgstr "附件"
+
+#: message.php:562 config/prefs.php.dist:586
+msgid "Attachments Only"
+msgstr "仅限附件"
+
+#: lib/MIME/Viewer/itip.php:688 lib/MIME/Viewer/itip.php:812
+msgid "Attendees"
+msgstr "参与者"
+
+#: lib/MIME/Viewer/notification.php:52
+msgid "Attention"
+msgstr "注意"
+
+#: lib/Auth/imp.php:33
+msgid "Auth_imp: Required IMAP extension not found."
+msgstr "Auth_imp：未找到所请求的 IMAP 扩展。"
+
+#: config/prefs.php.dist:747
+msgid ""
+"Automatically show images in HTML messages when the sender is in my "
+"addressbook?"
+msgstr "当发件人在地址簿中时，是否自动显示 HTML 邮件中的图像？"
+
+#: templates/prefs/sourceselect.inc:297 templates/prefs/sourceselect.inc:299
+msgid "Available Address books:"
+msgstr "可用地址簿："
+
+#: lib/MIME/Viewer/itip.php:724 lib/MIME/Viewer/itip.php:848
+msgid "Awaiting Response"
+msgstr "等待回应"
+
+#: message.php:518
+#, php-format
+msgid "Bac_k to %s"
+msgstr "返回_K %s"
+
+#: message.php:518 thread.php:134
+#, php-format
+msgid "Back to %s"
+msgstr "返回 %s"
+
+#: thread.php:131
+msgid "Back to Multiple Message View Index"
+msgstr "返回多邮件视图索引"
+
+#: thread.php:129
+msgid "Back to Thread Display"
+msgstr "返回线程显示方式"
+
+#: lib/IMAP/Client.php:478
+#, php-format
+msgid "Bad login name or password."
+msgstr "无效的登录名或密码。"
+
+#: lib/IMAP/Client.php:195
+#, php-format
+msgid "Bad or malformed request. Server Responded: %s"
+msgstr "无效或格式错误的请求。服务器回应：%s"
+
+#: lib/IMAP/Client.php:482
+#, php-format
+msgid "Bad request: %s"
+msgstr "无效请求：%s"
+
+#: lib/Search.php:665 lib/UI/Message.php:28
+#: templates/contacts/contacts.html:43 templates/login/recompose.html:32
+msgid "Bcc"
+msgstr "密件抄送"
+
+#: config/prefs.php.dist:511
+msgid "Before Signature"
+msgstr "签名之前"
+
+#: lib/MIME/Viewer/status.php:160
+msgid "Below is the raw text of the status information message."
+msgstr "下面是状态信息邮件的原始内容。"
+
+#: config/prefs.php.dist:837
+msgid "Below the message text"
+msgstr "邮件文本之下"
+
+#: message.php:571 mailbox.php:488
+msgid "Blacklist"
+msgstr "黑名单"
+
+#: config/prefs.php.dist:736
+msgid "Block images in HTML messages unless they are specifically requested?"
+msgstr "是否阻止 HTML 邮件中的图像(除非特别请求)？"
+
+#: lib/Search.php:673
+msgid "Body"
+msgstr "正文"
+
+#: message.php:561 config/prefs.php.dist:585
+msgid "Body Text Only"
+msgstr "仅限正文"
+
+#: search.php:328 search.php:333 search.php:338 search.php:343
+msgid "Both"
+msgstr "全部"
+
+#: config/prefs.php.dist:802
+msgid "Both Header Listing and Body of Message"
+msgstr "所列标题和邮件内容"
+
+#: config/prefs.php.dist:510
+msgid "Bottom"
+msgstr "底部"
+
+#: lib/IMAP/Client.php:407
+msgid ""
+"CRAM-MD5 or DIGEST-MD5 requires PEAR's Auth_SASL package to be installed."
+msgstr "CRAM-MD5 或 DIGEST-MD5 需要安装 PEAR 的 Auth_SASL 程序包。"
+
+#: compose.php:933
+msgid "C_harset"
+msgstr "字符集_H"
+
+#: search.php:314
+msgid "Calendar"
+msgstr "日历"
+
+#: lib/Message.php:196
+msgid "Can not move messages to Trash - no Trash mailbox set in preferences."
+msgstr "无法将邮件移到垃圾箱 - 未在首选项中设置垃圾信箱。"
+
+#: templates/contacts/contacts.html:76
+#: templates/folders/folders_confirm.html:23 templates/folders/import.html:17
+#: templates/saveimage/saveimage.html:20 templates/smime/passphrase.html:24
+#: templates/smime/import_key.html:70 templates/pgp/passphrase.html:22
+#: templates/pgp/import_key.html:49
+msgid "Cancel"
+msgstr "取消"
+
+#: templates/compose/redirect.html:83 templates/compose/compose.html:21
+#: templates/compose/compose.html:208
+msgid "Cancel Message"
+msgstr "取消邮件"
+
+#: js/imp.js.php:3 js/src/imp.js.php:47
+msgid "Cancelling this message will permanently discard its contents."
+msgstr "取消此邮件将导致永远丢失它的内容。"
+
+#: lib/prefs.php:145
+msgid ""
+"Cannot activate both a Trash folder and Virtual Trash. A Trash folder will "
+"be used."
+msgstr "无法激活垃圾文件夹和虚拟垃圾箱。则将使用垃圾文件夹。"
+
+#: lib/prefs.php:148
+msgid ""
+"Cannot activate both a Trash folder and Virtual Trash. A Virtual Trash "
+"folder will be used."
+msgstr "无法激活垃圾文件夹和虚拟垃圾箱。则将使用虚拟垃圾文件夹。"
+
+#: lib/Fetchmail/imap.php:160
+msgid "Cannot connect to the remote mail server."
+msgstr "无法连接到远程邮件服务器。"
+
+#: lib/Fetchmail/imap.php:158
+msgid "Cannot connect to the remote mail server: "
+msgstr "无法连接到远程邮件服务器："
+
+#: lib/MIME/Viewer/partial.php:47
+#, php-format
+msgid ""
+"Cannot display - found only %s of %s parts of this message in the current "
+"mailbox."
+msgstr "无法显示 - 仅在当前邮箱中看到此邮件的 %s(共 %s)。"
+
+#: lib/Search.php:661 lib/UI/Message.php:27
+#: templates/contacts/contacts.html:42 templates/login/recompose.html:23
+msgid "Cc"
+msgstr "抄送"
+
+#: templates/smime/smime.html:83
+msgid ""
+"Certificate import is not available. File upload is not enabled on this "
+"server."
+msgstr "证书导入不可用。此服务器上的文件上传功能未启用。"
+
+#: lib/MIME/Viewer/itip.php:706 lib/MIME/Viewer/itip.php:830
+msgid "Chair Person"
+msgstr "主席"
+
+#: acl.php:170 acl.php:171 templates/acl/acl.html:13
+msgid "Change Folder"
+msgstr "更改文件夹"
+
+#: config/prefs.php.dist:120
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr "更改显示选项，如每页显示的邮件数量、邮件排序方式和邮件排序方式。"
+
+#: config/prefs.php.dist:24
+msgid "Change mail server and folder settings."
+msgstr "更改邮件服务器和文件夹设置。"
+
+#: config/prefs.php.dist:15
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr "更改收件人阅读和回复邮件时所看到的姓名、地址和签名。"
+
+#: config/prefs.php.dist:966
+msgid "Characters to display:"
+msgstr "待显示的字符："
+
+#: templates/mailbox/message_headers.html:12
+msgid "Check All/None"
+msgstr "全部选中/全部不选"
+
+#: compose.php:552
+msgid "Check Spelling"
+msgstr "拼写检查"
+
+#: folders.php:341 mailbox.php:618
+msgid "Check _All/None"
+msgstr "全部选中/全部不选"
+
+#: templates/fetchmail/fetchmail.html:11
+msgid "Check all mail servers you want to fetch mail from:"
+msgstr "检查所有邮件服务器 -- 您将从这些邮件服务器获取邮件："
+
+#: templates/folders/actions.html:27
+msgid "Check for New Mail"
+msgstr "检查是否有新邮件"
+
+#: config/prefs.php.dist:551
+msgid "Check spelling before sending a message?"
+msgstr "发送邮件之前是否进行拼写检查？"
+
+#: compose.php:553
+msgid "Checking..."
+msgstr "正在检查..."
+
+#: templates/folders/actions.html:11
+msgid "Choose Action"
+msgstr "选择操作"
+
+#: config/servers.php.dist:214
+msgid "Choose a mail server:"
+msgstr "选择邮件服务器："
+
+#: templates/compose/compose.html:65
+msgid "Choose a match or edit the address to the right:"
+msgstr "选择匹配项或编辑右侧地址："
+
+#: templates/prefs/sourceselect.inc:347
+msgid "Choose the address book to use when adding addresses."
+msgstr "选择要添加地址的地址簿。"
+
+#: templates/prefs/sourceselect.inc:293
+msgid "Choose the order of address books to search when expanding addresses."
+msgstr "选择增加地址时待搜索地址簿的顺序。"
+
+#: lib/MIME/Viewer/images.php:103
+#, php-format
+msgid "Click %s to convert the image file into a format your browser can view."
+msgstr "单击 %s 将此图像转换为您的浏览器可以查看的图像文件："
+
+#: lib/MIME/Contents.php:419
+#, php-format
+msgid "Click %s to download the data."
+msgstr "单击 %s 下载数据。"
+
+#: lib/MIME/Viewer/images.php:92
+#, php-format
+msgid "Click %s to download the image."
+msgstr "单击 %s 下载图像。"
+
+#: lib/Filter.php:108
+#, php-format
+msgid "Click %s to go to %s management page."
+msgstr "单击 %s 转到 %s 管理页面。"
+
+#: lib/MIME/Viewer/pkcs7.php:468
+#, php-format
+msgid "Click %s to view the attachment in a separate window."
+msgstr "单击 %s 以在新窗口中查看附件。"
+
+#: lib/MIME/Viewer/related.php:85
+#, php-format
+msgid "Click %s to view this multipart/related part in a separate window."
+msgstr "单击 %s 在新窗口中查看多个部分/相关部分。"
+
+#: lib/MIME/Viewer/pkcs7.php:219 lib/MIME/Viewer/pgp.php:246
+#: lib/MIME/Viewer/pgp.php:271
+msgid "Click HERE to verify the message."
+msgstr "单击此处验证邮件。"
+
+#: templates/prefs/sourceselect.inc:323
+msgid ""
+"Click on one of your selected address books and then select all fields to "
+"search."
+msgstr "单击所选地址簿之一，然后选中所有字段进行搜索。"
+
+#: config/prefs.php.dist:1099
+msgid "Clicking on the address will compose a new message to the sender"
+msgstr "单击地址将可以给发件人写封新邮件"
+
+#: config/prefs.php.dist:1100
+msgid "Clicking on the address will open the message to be read"
+msgstr "单击地址即会打开要阅读的邮件"
+
+#: templates/fetchmail/fetchmail.html:31 templates/folders/alert.html:8
+#: templates/mailbox/alert.html:3
+msgid "Close"
+msgstr "关闭"
+
+#: compose.php:33
+msgid "Close this window"
+msgstr "关闭此窗口"
+
+#: lib/IMAP/Tree.php:2421
+msgid "Closed Folder"
+msgstr "关闭的文件夹"
+
+#: folders.php:416
+msgid "Collapse"
+msgstr "折叠"
+
+#: folders.php:357
+msgid "Collapse All"
+msgstr "全部折叠"
+
+#: folders.php:357
+msgid "Collapse All Folders"
+msgstr "折叠所有文件夹"
+
+#: folders.php:416
+msgid "Collapse Folder"
+msgstr "折叠文件夹"
+
+#: templates/pgp/pgp.html:98
+msgid "Comment:"
+msgstr "备注："
+
+#: lib/MIME/Viewer/itip.php:896
+msgid "Completed"
+msgstr "已完成"
+
+#: compose.php:32
+msgid "Compose another message"
+msgstr "写另一封邮件"
+
+#: config/prefs.php.dist:490
+msgid "Compose messages in a separate window?"
+msgstr "是否在新窗口中写邮件？"
+
+#: config/prefs.php.dist:500
+msgid ""
+"Compose messages with an HTML GUI by default (if browser supports the "
+"feature)?"
+msgstr "是否默认使用 HTML GUI 写邮件(如果浏览器支持此功能)？"
+
+#: config/prefs.php.dist:73
+msgid "Configure how messages are displayed."
+msgstr "配置邮件显示方式。"
+
+#: config/prefs.php.dist:105
+msgid "Configure mail preview options."
+msgstr "配置邮件预览选项。"
+
+#: config/prefs.php.dist:151
+#, php-format
+msgid "Control PGP support for %s."
+msgstr "控制%s的 PGP 支持。"
+
+#: config/prefs.php.dist:160
+#, php-format
+msgid "Control S/MIME support for %s."
+msgstr "控制%s的 S/MIME 支持。"
+
+#: config/prefs.php.dist:129
+msgid "Control options relating to messages searching."
+msgstr "控制与邮件搜索相关的选项。"
+
+#: config/prefs.php.dist:97
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr "控制查看是否有新邮件的时间，以及新邮价到达时是否通知。"
+
+#: config/prefs.php.dist:792
+msgid "Convert textual emoticons into graphical ones?"
+msgstr "是否将字符式表情符转换为图形式表情符？"
+
+#: message.php:514 message.php:691 mailbox.php:448 mailbox.php:862
+msgid "Copy"
+msgstr "复制"
+
+#: message.php:514 message.php:691 mailbox.php:448 mailbox.php:862
+msgid "Copy to folder"
+msgstr "复制到文件夹"
+
+#: lib/IMAP/Client.php:189
+#, php-format
+msgid "Could not complete request. Reason Given: %s"
+msgstr "无法实现请求。已知原因：%s"
+
+#: attachment.php:50
+#, php-format
+msgid "Could not create the VFS backend: %s"
+msgstr "无法创建 VFS 后端：%s"
+
+#: lib/Message.php:758
+#, php-format
+msgid "Could not delete messages from %s. The server said: %s"
+msgstr "无法删除来自 %s 的邮件。服务器回应：%s"
+
+#: lib/Session.php:325
+msgid "Could not execute maintenance operations."
+msgstr "无法执行维护操作。"
+
+#: lib/MIME/Viewer/tnef.php:53
+msgid "Could not extract the requested file from the MS-TNEF attachment."
+msgstr "无法从 MS-TNEF 附件中抽取所需的文件。"
+
+#: lib/MIME/Viewer/zip.php:57
+msgid "Could not extract the requested file from the Zip archive."
+msgstr "无法从 Zip 存档中抽取所需的文件。"
+
+#: lib/Spam.php:227
+msgid ""
+"Could not move message to spam mailbox - no spam mailbox defined in "
+"preferences."
+msgstr "无法将邮件移到垃圾邮件信箱中 - 未在首选项中定义垃圾邮件信箱。"
+
+#: lib/IMAP/Client.php:318
+msgid "Could not open secure connection to the IMAP server."
+msgstr "无法打开 IMAP 服务器安全连接。"
+
+#: lib/Session.php:279
+msgid "Could not retrieve namespace information from IMAP server."
+msgstr "无法从 IMAP 服务器检索到命名空间信息。"
+
+#: compose.php:50
+msgid "Could not retrieve the message from the mail server."
+msgstr "无法从 IMAP 服务器检索邮件。"
+
+#: lib/Template.php:236
+#, php-format
+msgid "Could not save the compiled template file '%s'."
+msgstr "无法保存编辑的模板文件“%s”。"
+
+#: templates/folders/actions.html:14
+msgid "Create"
+msgstr "创建"
+
+#: lib/IMAP/ACL/rfc2086.php:55
+msgid "Create Folder"
+msgstr "创建文件夹"
+
+#: lib/IMAP/ACL/rfc4314.php:55
+msgid "Create Folders"
+msgstr "创建文件夹"
+
+#: templates/pgp/pgp.html:133
+msgid "Create Keys"
+msgstr "创建密钥"
+
+#: templates/prefs/spamselect.inc:12 templates/prefs/spamselect.inc:24
+msgid "Create a new Spam folder"
+msgstr "创建新的垃圾文件夹"
+
+#: templates/prefs/folderselect.inc:12 templates/prefs/folderselect.inc:24
+msgid "Create a new drafts folder"
+msgstr "创建草稿文件夹"
+
+#: templates/prefs/sentmailselect.inc:26 templates/prefs/sentmailselect.inc:42
+msgid "Create a new sent mail folder"
+msgstr "创建发件文件夹"
+
+#: templates/prefs/trashselect.inc:12 templates/prefs/trashselect.inc:24
+msgid "Create a new trash folder"
+msgstr "创建垃圾文件夹"
+
+#: config/prefs.php.dist:136
+msgid ""
+"Create filtering rules to organize your incoming mail, sort it into folders, "
+"and delete spam."
+msgstr "创建过滤规则来整理来件、分类保存到文件夹中，以及删除垃圾邮件。"
+
+#: templates/stationery/stationery.html:14
+msgid "Create new stationery"
+msgstr "创建新信纸"
+
+#: config/prefs.php.dist:537
+msgid "Create stationery and form responses."
+msgstr "创建信纸和表单回应。"
+
+#: templates/compose/compose.html:307
+msgid "Current Attachments"
+msgstr "当前附件"
+
+#: acl.php:173
+#, php-format
+msgid "Current access to %s"
+msgstr "当前访问 %s"
+
+#: config/prefs.php.dist:1139
+msgid "Current expanded status in the folders view"
+msgstr "文件视图中的当前展开状态"
+
+#: config/prefs.php.dist:113
+msgid "Customize accounts for fetching mail from other accounts."
+msgstr "自定义用于获取其他帐户邮件的帐户。"
+
+#: config/prefs.php.dist:55
+msgid "Customize how you send mail."
+msgstr "自定义发送邮件的方式。"
+
+#: config/prefs.php.dist:41
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "自定义登录%s后即执行的任务。"
+
+#: mailbox.php:544
+msgid "Dat_e"
+msgstr "日期_E"
+
+#: lib/UI/Message.php:24
+msgid "Date"
+msgstr "日期"
+
+#: lib/Search.php:685
+msgid "Date <"
+msgstr "日期 <"
+
+#: lib/Search.php:681
+msgid "Date ="
+msgstr "日期 ="
+
+#: lib/Search.php:689
+msgid "Date >"
+msgstr "日期 >"
+
+#: templates/thread/thread.html:27
+msgid "Date:"
+msgstr "日期："
+
+#: templates/search/search.html:93
+msgid "Day"
+msgstr "日"
+
+#: lib/MIME/Viewer/itip.php:884
+msgid "Declined"
+msgstr "已拒绝"
+
+#: lib/MIME/Viewer/itip.php:266
+msgid "Declined: "
+msgstr "已拒绝："
+
+#: config/prefs.php.dist:656
+msgid "Default"
+msgstr "默认"
+
+#: config/prefs.php.dist:825
+msgid "Default (US-ASCII)"
+msgstr "默认 (US-ASCII)"
+
+#: templates/prefs/defaultsearchselect.inc:21
+msgid "Default Search Field:"
+msgstr "默认搜索字段："
+
+#: config/prefs.php.dist:587
+msgid "Default forwarding method:"
+msgstr "默认转发方式："
+
+#: config/prefs.php.dist:1065
+msgid "Default sorting criteria:"
+msgstr "默认排序标准："
+
+#: config/prefs.php.dist:1075
+msgid "Default sorting direction:"
+msgstr "默认排序方向："
+
+#: lib/MIME/Viewer/itip.php:892
+msgid "Delegated"
+msgstr "已指定"
+
+#: folders.php:386 message.php:545 mailbox.php:470 mailbox.php:472
+#: lib/IMAP/ACL/rfc4314.php:57 templates/contacts/contacts.html:66
+#: templates/folders/actions.html:17 templates/smime/smime.html:31
+#: templates/pgp/pgp.html:38
+msgid "Delete"
+msgstr "删除"
+
+#: smime.php:311 pgp.php:400
+#, php-format
+msgid "Delete %s Public Key"
+msgstr "删除 %s 公钥"
+
+#: templates/smime/smime.html:79 templates/pgp/pgp.html:87
+msgid "Delete Current Keys"
+msgstr "删除当前密钥"
+
+#: lib/IMAP/ACL/rfc4314.php:56
+msgid "Delete Folders"
+msgstr "删除文件夹"
+
+#: templates/folders/folders_confirm.html:22
+msgid "Delete Selected Folders"
+msgstr "删除所选文件夹"
+
+#: templates/stationery/stationery.html:50
+msgid "Delete Stationery"
+msgstr "删除信纸"
+
+#: folders.php:386
+msgid "Delete Virtual Folder"
+msgstr "删除虚拟文件夹"
+
+#: mailbox.php:391
+#, php-format
+msgid "Delete Virtual Folder Definition for %s"
+msgstr "删除 %s 虚拟文件夹定义"
+
+#: lib/MIME/Viewer/itip.php:629
+msgid "Delete from my calendar"
+msgstr "从日历中删除"
+
+#: config/prefs.php.dist:396
+msgid "Delete old linked attachments at beginning of month?"
+msgstr "是否在每个月初删除旧附件？"
+
+#: config/prefs.php.dist:350
+msgid "Delete old sent-mail folders at beginning of month?"
+msgstr "是否在每个月初删除旧的发件文件夹？"
+
+#: config/prefs.php.dist:724
+msgid "Delete spam messages"
+msgstr "删除垃圾邮件"
+
+#: lib/IMAP/ACL/rfc2086.php:56
+msgid "Delete/purge"
+msgstr "删除/销毁"
+
+#: templates/compose/compose.html:335
+msgid "Delete?"
+msgstr "删除？"
+
+#: message.php:476 mailbox.php:745 mailbox.php:840
+#: templates/mailbox/navbar.html:20 templates/mailbox/navbar.html:37
+#: templates/mailbox/legend.html:6
+msgid "Deleted"
+msgstr "已删除"
+
+#: search.php:341
+msgid "Deleted messages"
+msgstr "已删除邮件"
+
+#: compose.php:206
+#, php-format
+msgid "Deleted the attachment \"%s\"."
+msgstr "删除附件“%s”。"
+
+#: config/prefs.php.dist:87
+msgid "Deleting and Moving Messages"
+msgstr "删除和移动邮件"
+
+#: lib/MIME/Viewer/itip.php:594
+msgid "Deny request"
+msgstr "拒绝请求"
+
+#: lib/MIME/Viewer/itip.php:550
+msgid "Deny request for free/busy information"
+msgstr "拒绝忙/闲信息请求"
+
+#: config/prefs.php.dist:1074
+msgid "Descending"
+msgstr "降序"
+
+#: lib/MIME/Viewer/itip.php:676 lib/MIME/Viewer/itip.php:805
+msgid "Description"
+msgstr "描述"
+
+#: templates/compose/compose.html:331
+msgid "Description:"
+msgstr "描述："
+
+#: templates/smime/smime.html:31 templates/smime/smime.html:67
+#: templates/pgp/pgp.html:38 templates/pgp/pgp.html:73
+#: templates/pgp/pgp.html:78
+msgid "Details"
+msgstr "详情"
+
+#: lib/Compose.php:2616
+#, php-format
+msgid "Did not attach \"%s\" as it was only partially uploaded."
+msgstr "不附加”%s“，已仅上传它的一部分。"
+
+#: lib/Compose.php:2625
+#, php-format
+msgid "Did not attach \"%s\" as the file was empty."
+msgstr "不附加”%s“，因该文件为空。"
+
+#: lib/Compose.php:2612
+#, php-format
+msgid ""
+"Did not attach \"%s\" as the maximum allowed upload size has been exceeded."
+msgstr "因已超出所允许的上传大小上限，所以不附加”%s“。"
+
+#: lib/Compose.php:2620
+#, php-format
+msgid ""
+"Did not attach \"%s\" as the server configuration did not allow the file to "
+"be uploaded."
+msgstr "因服务器配置不允许上传此文件，所以不附加”%s“。"
+
+#: config/prefs.php.dist:784
+msgid "Dim signatures?"
+msgstr "是否模糊签名？"
+
+#: templates/contacts/contacts.html:58
+msgid "Display"
+msgstr "显示"
+
+#: config/prefs.php.dist:255
+msgid "Display Virtual Inbox?"
+msgstr "显示虚拟收件箱？"
+
+#: config/prefs.php.dist:559
+msgid "Display confirmation after sending a message?"
+msgstr "是否在发送邮件后显示确认信息？"
+
+#: config/prefs.php.dist:801
+msgid "Display in Body of Message"
+msgstr "显示邮件正文"
+
+#: config/prefs.php.dist:935
+msgid "Display pop-up notification of new mail?"
+msgstr "是否显示新邮件的弹出式通知？"
+
+#: config/prefs.php.dist:901
+msgid "Display the \"Empty Spam\" link in the menubar?"
+msgstr "是否在菜单栏中显示“清除垃圾邮件”链接？"
+
+#: config/prefs.php.dist:893
+msgid "Display the \"Empty Trash\" link in the menubar?"
+msgstr "是否在菜单栏中显示“清空垃圾箱”链接？"
+
+#: templates/compose/compose.html:322
+msgid "Disposition:"
+msgstr "位置："
+
+#: templates/search/search.html:82
+msgid "Do NOT match"
+msgstr "不匹配"
+
+#: templates/folders/actions.html:28
+msgid "Do Not Check for New Mail"
+msgstr "不检查是否有新邮件"
+
+#: config/prefs.php.dist:1101
+msgid "Do not generate a link in the From: column"
+msgstr "请不要在“发件人：”栏生成链接"
+
+#: js/imp.js.php:3 js/src/imp.js.php:48
+msgid "Doing so will discard this message permanently."
+msgstr "执行此操作将会永久丢失此邮件。"
+
+#: login.php:382
+msgid "Don't have an account? Sign up."
+msgstr "没有帐户吗？注册一个。"
+
+#: templates/folders/actions.html:32
+msgid "Download"
+msgstr "下载"
+
+#: lib/MIME/Contents.php:232
+#, php-format
+msgid "Download %s in .zip Format"
+msgstr "下载 .zip 格式的 %s"
+
+#: message.php:670
+msgid "Download All Attachments (in .zip file)"
+msgstr "下载所有附件(.zip 格式)"
+
+#: templates/folders/actions.html:33
+msgid "Download [.zip format]"
+msgstr "下载 [.zip 格式]"
+
+#: lib/MIME/Contents.php:232
+msgid "Download in .zip Format"
+msgstr "下载 .zip 格式的内容"
+
+#: message.php:474 mailbox.php:727 mailbox.php:841
+#: templates/message/navbar_navigate.html:14 templates/mailbox/navbar.html:22
+#: templates/mailbox/navbar.html:40 templates/mailbox/legend.html:7
+msgid "Draft"
+msgstr "草稿"
+
+#: lib/IMAP/Tree.php:2376
+msgid "Draft folder"
+msgstr "草稿文件夹"
+
+#: templates/prefs/folderselect.inc:23
+msgid "Drafts folder:"
+msgstr "草稿文件夹："
+
+#: templates/pgp/pgp.html:103
+msgid "E-mail Address:"
+msgstr "电子邮件地址："
+
+#: mailbox.php:779
+msgid "END"
+msgstr "结束"
+
+#: lib/MIME/Viewer/status.php:73
+msgid "ERROR: Your message could not be delivered."
+msgstr "错误：无法发送邮件。"
+
+#: folders.php:387 templates/stationery/stationery.html:19
+msgid "Edit"
+msgstr "编辑"
+
+#: mailbox.php:394
+msgid "Edit Search Query"
+msgstr "编辑搜索查询"
+
+#: folders.php:387 templates/search/search.html:17
+msgid "Edit Virtual Folder"
+msgstr "编辑虚拟文件夹"
+
+#: mailbox.php:390
+#, php-format
+msgid "Edit Virtual Folder Definition for %s"
+msgstr "编辑 %s 虚拟文件夹定义"
+
+#: filterprefs.php:82
+msgid "Edit your Blacklist"
+msgstr "编辑黑名单"
+
+#: filterprefs.php:81
+msgid "Edit your Filter Rules"
+msgstr "编辑过滤规则"
+
+#: filterprefs.php:83
+msgid "Edit your Whitelist"
+msgstr "编辑白名单"
+
+#: config/prefs.php.dist:1003
+msgid "Edit your preferences for accessing other mail accounts."
+msgstr "编辑访问其他邮件帐户所用的首选项。"
+
+#: templates/contacts/contacts.html:61
+msgid "Email Address"
+msgstr "电子邮件地址"
+
+#: lib/Message.php:769
+#, php-format
+msgid "Emptied all messages from %s."
+msgstr "清空来自 %s 的所有邮件。"
+
+#: lib/Message.php:751
+msgid "Emptied all messages from Virtual Trash Folder."
+msgstr "清空虚拟垃圾文件夹中的所有邮件。"
+
+#: templates/folders/actions.html:18
+msgid "Empty"
+msgstr "清空"
+
+#: templates/folders/folders_confirm.html:22
+msgid "Empty Selected Folders"
+msgstr "清空所选文件夹"
+
+#: lib/IMP.php:788
+msgid "Empty _Spam"
+msgstr "清空垃圾邮件_S"
+
+#: lib/IMP.php:780
+msgid "Empty _Trash"
+msgstr "清除垃圾邮件_S"
+
+#: mailbox.php:387
+msgid "Empty folder"
+msgstr "清空文件夹"
+
+#: pgp.php:451 templates/pgp/pgp.html:2
+msgid "Enable PGP functionality?"
+msgstr "是否启用 PGP 功能？"
+
+#: smime.php:347 templates/smime/smime.html:2
+msgid "Enable S/MIME functionality?"
+msgstr "是否启用 S/MIME 功能？"
+
+#: config/prefs.php.dist:954
+msgid "Enable message previews?"
+msgstr "是否启用邮件预览功能？"
+
+#: compose.php:1032
+msgid "Encr_yption Options"
+msgstr "加密选项_Y"
+
+#: mailbox.php:850 templates/mailbox/legend.html:16
+msgid "Encrypted"
+msgstr "已加密"
+
+#: lib/MIME/Viewer/itip.php:524 lib/MIME/Viewer/itip.php:526
+#: lib/MIME/Viewer/itip.php:661 lib/MIME/Viewer/itip.php:663
+msgid "End"
+msgstr "结束"
+
+#: lib/Compose.php:1521
+msgid "End forwarded message"
+msgstr "结束转发的邮件"
+
+#: lib/Compose.php:1415
+msgid "End message"
+msgstr "结束邮件"
+
+#: lib/Compose.php:1413
+#, php-format
+msgid "End message from %s"
+msgstr "结束来自 %s 的邮件"
+
+#: smime.php:335 pgp.php:426
+msgid "Enter Passphrase"
+msgstr "输入密码"
+
+#: templates/prefs/spamselect.inc:9
+msgid "Enter the name for your new Spam folder"
+msgstr "请输入新的垃圾文件夹名称"
+
+#: templates/prefs/folderselect.inc:9
+msgid "Enter the name for your new drafts folder"
+msgstr "请输入新草稿文件夹的名称"
+
+#: templates/prefs/sentmailselect.inc:23
+msgid "Enter the name for your new sent mail folder"
+msgstr "请输入新发件文件夹的名称"
+
+#: templates/prefs/trashselect.inc:9
+msgid "Enter the name for your new trash folder"
+msgstr "请输入新垃圾文件夹的名称"
+
+#: message.php:560 lib/Search.php:677 config/prefs.php.dist:584
+msgid "Entire Message"
+msgstr "整个邮件"
+
+#: message.php:166 thread.php:68 lib/Compose.php:726 lib/Compose.php:987
+#, php-format
+msgid "Entry \"%s\" was successfully added to the address book"
+msgstr "已成功将条目“%s”添加到地址簿中"
+
+#: lib/MIME/Viewer/pkcs7.php:425 lib/MIME/Viewer/pgp.php:430
+#: lib/MIME/Viewer/status.php:71 lib/MIME/Viewer/status.php:162
+msgid "Error"
+msgstr "错误"
+
+#: lib/IMAP/Client.php:303 lib/IMAP/Client.php:323
+#, php-format
+msgid "Error connecting to IMAP server: [%s] %s."
+msgstr "连接 IMAP 服务器时出错：[%s] %s。"
+
+#: lib/MIME/Contents.php:135
+msgid "Error displaying message."
+msgstr "显示邮件时出错。"
+
+#: lib/MIME/Viewer/itip.php:313 lib/MIME/Viewer/itip.php:412
+#, php-format
+msgid "Error sending reply: %s."
+msgstr "发送回复时出错：%s。"
+
+#: templates/smime/smime.html:25 templates/pgp/pgp.html:32
+msgid "Error:"
+msgstr "错误："
+
+#: lib/MIME/Viewer/itip.php:104
+msgid "Event successfully deleted."
+msgstr "成功删除事件。"
+
+#: config/prefs.php.dist:925
+msgid "Every 15 minutes"
+msgstr "每 15 分钟"
+
+#: config/prefs.php.dist:922
+msgid "Every 30 seconds"
+msgstr "每 30 秒"
+
+#: config/prefs.php.dist:638 config/prefs.php.dist:924
+msgid "Every 5 minutes"
+msgstr "每 5 分钟"
+
+#: config/prefs.php.dist:926
+msgid "Every half hour"
+msgstr "每半小时"
+
+#: config/prefs.php.dist:923
+msgid "Every minute"
+msgstr "每分钟"
+
+#: folders.php:424
+msgid "Expand"
+msgstr "展开"
+
+#: folders.php:356
+msgid "Expand All"
+msgstr "展开所有"
+
+#: folders.php:356
+msgid "Expand All Folders"
+msgstr "展开所有文件夹"
+
+#: folders.php:424
+msgid "Expand Folder"
+msgstr "展开文件夹"
+
+#: compose.php:741 compose.php:977
+msgid "Expand Names"
+msgstr "增加姓名"
+
+#: config/prefs.php.dist:1129
+msgid "Expand the entire folder tree by default in the folders view?"
+msgstr "是否在文件夹视图中默认展开整个文件夹树状图？"
+
+#: config/prefs.php.dist:1140
+msgid "Expand the entire folder tree by default in the sidebar?"
+msgstr "是否在侧栏中默认展开整个文件夹树状图？"
+
+#: lib/IMP.php:799 lib/IMP.php:801
+msgid "F_etch Mail"
+msgstr "获取邮件_E"
+
+#: config/prefs.php.dist:112 templates/fetchmail/fetchmail.html:29
+msgid "Fetch Mail"
+msgstr "获取邮件"
+
+#: config/prefs.php.dist:1011
+msgid "Fetch Mail in a separate window?"
+msgstr "是否在在新窗口中获取邮件？"
+
+#: lib/Fetchmail.php:283
+#, php-format
+msgid "Fetched %d messages from %s"
+msgstr "获取 %d 邮件(来自 %s)"
+
+#: lib/Fetchmail.php:281
+#, php-format
+msgid "Fetched 1 message from %s"
+msgstr "从 %s 获取 1 封邮件"
+
+#: lib/Fetchmail.php:279 lib/Fetchmail.php:281 lib/Fetchmail.php:283
+msgid "Fetchmail: "
+msgstr "Fetchmail："
+
+#: lib/Fetchmail.php:285
+msgid "Fetchmail: no new messages."
+msgstr "获取邮件：无新邮件。"
+
+#: lib/IMP.php:805
+msgid "Fi_lters"
+msgstr "过滤器_L"
+
+#: templates/prefs/sourceselect.inc:333
+msgid "Fields to search"
+msgstr "搜索字段"
+
+#: js/imp.js.php:3 js/src/imp.js.php:53 templates/compose/compose.html:261
+msgid "File"
+msgstr "文件"
+
+#: templates/filters/prefs.html:48
+msgid "Filter Options"
+msgstr "过滤选项"
+
+#: templates/filters/prefs.html:36
+msgid "Filter Settings"
+msgstr "过滤设置"
+
+#: config/prefs.php.dist:707
+msgid "Filter message content for profanity?"
+msgstr "是否过滤内容不健康的邮件？"
+
+#: templates/filters/prefs.html:11
+msgid "Filter support is disabled on this system."
+msgstr "过滤此系统不支持的支持。"
+
+#: config/prefs.php.dist:135
+msgid "Filters"
+msgstr "过滤器"
+
+#: templates/filters/prefs.html:3
+msgid "Filters NOT Active"
+msgstr "未启用过滤"
+
+#: lib/Filter.php:107
+#, php-format
+msgid "Filters: %s management page"
+msgstr "过滤：%s 管理页面"
+
+#: templates/contacts/contacts.html:13
+msgid "Find:"
+msgstr "查找："
+
+#: config/prefs.php.dist:1047
+msgid "First Mailbox Page"
+msgstr "邮箱首页"
+
+#: mailbox.php:265
+msgid "First Page"
+msgstr "第一页"
+
+#: message.php:559 mailbox.php:495
+msgid "Fo_rward"
+msgstr "转发_R"
+
+#: lib/IMAP/Tree.php:2421
+msgid "Folder"
+msgstr "文件夹"
+
+#: folders.php:234 templates/folders/folders_confirm.html:5
+msgid "Folder Actions - Confirmation"
+msgstr "文件夹操作 - 确认"
+
+#: folders.php:296 templates/prefs/initialpageselect.inc:11
+#: templates/folders/head.html:2
+msgid "Folder Navigator"
+msgstr "文件夹导航"
+
+#: folders.php:265 templates/folders/folders_size.html:1
+msgid "Folder Sizes"
+msgstr "文件夹大小"
+
+#: lib/Block/summary.php:3
+msgid "Folder Summary"
+msgstr "文件夹摘要"
+
+#: acl.php:22
+msgid "Folder sharing is not enabled."
+msgstr "未启用文件夹共享。"
+
+#: folders.php:45
+msgid "Folder use is not enabled."
+msgstr "未启用文件夹使用。"
+
+#: config/prefs.php.dist:1118
+msgid "Format of message dates in the mailbox view for messages dated today"
+msgstr "邮箱视图中今日邮件的邮件日期格式"
+
+#: message.php:559 mailbox.php:495 lib/Compose.php:1504
+msgid "Forward"
+msgstr "转发"
+
+#: lib/Compose.php:1490
+msgid "Forward:"
+msgstr "转发："
+
+#: lib/Compose.php:1580
+msgid "Forwarded Message:"
+msgstr "转发的邮件："
+
+#: lib/Compose.php:1517
+msgid "Forwarded message"
+msgstr "转发的邮件"
+
+#: lib/Compose.php:1515
+#, php-format
+msgid "Forwarded message from %s"
+msgstr "从 %s 转发的邮件"
+
+#: lib/MIME/Viewer/itip.php:406
+msgid "Free/Busy Request Response"
+msgstr "忙/闲请求回应"
+
+#: mailbox.php:554
+msgid "Fro_m"
+msgstr "发件人_M"
+
+#: lib/Search.php:653 lib/UI/Mailbox.php:97 lib/UI/Message.php:25
+#: templates/thread/thread.html:32 templates/compose/compose.html:27
+msgid "From"
+msgstr "发件人"
+
+#: config/prefs.php.dist:1060
+msgid "From Address"
+msgstr "发件人地址"
+
+#: lib/Compose.php:1501 lib/Compose.php:1505
+msgid "Fwd:"
+msgstr "转发："
+
+#: lib/Compose.php:1591
+msgid "Fwd: "
+msgstr "转发："
+
+#: lib/Compose.php:1593
+#, php-format
+msgid "Fwd: %u Forwarded Messages"
+msgstr "转发：%u 转发的邮件"
+
+#: templates/saveimage/saveimage.html:12
+msgid "Gallery"
+msgstr "图库"
+
+#: config/prefs.php.dist:13 config/prefs.php.dist:22 config/prefs.php.dist:31
+#: config/prefs.php.dist:39
+msgid "General Options"
+msgstr "常规选项"
+
+#: folders.php:343 lib/MIME/Viewer/itip.php:562 lib/MIME/Viewer/itip.php:739
+#: lib/MIME/Viewer/itip.php:862
+msgid "Go"
+msgstr "转到"
+
+#: thread.php:133
+msgid "Go to Message"
+msgstr "转到邮件"
+
+#: lib/IMP.php:355
+#, php-format
+msgid "Go to address book entry of \"%s\""
+msgstr "转到地址簿“%s”条目"
+
+#: message.php:429 lib/Filter.php:107 lib/MIME/Contents.php:419
+#: lib/MIME/Viewer/images.php:92 lib/MIME/Viewer/images.php:99
+#: lib/MIME/Viewer/images.php:101 lib/MIME/Viewer/notification.php:60
+#: lib/MIME/Viewer/notification.php:66 lib/MIME/Viewer/related.php:85
+#: lib/MIME/Viewer/pkcs7.php:468 lib/MIME/Viewer/appledouble.php:40
+#: lib/MIME/Viewer/status.php:119 lib/MIME/Viewer/status.php:128
+msgid "HERE"
+msgstr "此处"
+
+#: lib/MIME/Viewer/related.php:86 templates/stationery/stationery.html:36
+msgid "HTML"
+msgstr "HTML"
+
+#: lib/Compose.php:366
+msgid "HTML Version of Message"
+msgstr "HTML 格式的邮件"
+
+#: message.php:609
+msgid "Headers"
+msgstr "标题"
+
+#: templates/login/recompose.html:7
+msgid "Here is the message you were composing:"
+msgstr "这是您之前写的邮件："
+
+#: config/prefs.php.dist:775
+msgid "Hidden"
+msgstr "隐藏"
+
+#: config/prefs.php.dist:774
+msgid "Hidden in Thread View"
+msgstr "在线程视图中隐藏"
+
+#: js/imp.js.php:3 js/src/imp.js.php:42
+msgid "Hide Addresses"
+msgstr "隐藏地址"
+
+#: mailbox.php:246
+msgid "Hide Deleted"
+msgstr "隐藏已删除项"
+
+#: folders.php:349
+msgid "Hide Unsubscribed"
+msgstr "隐藏未订阅项"
+
+#: compose.php:949
+msgid "High"
+msgstr "高"
+
+#: message.php:270 mailbox.php:732 mailbox.php:844
+#: templates/mailbox/legend.html:10
+msgid "High Priority"
+msgstr "高优先级"
+
+#: compose.php:948
+msgid "Highest"
+msgstr "最高"
+
+#: config/prefs.php.dist:803
+msgid "How do you want to display attachments?"
+msgstr "如何显示附件？"
+
+#: config/prefs.php.dist:612
+msgid "How to attribute quoted lines in a reply"
+msgstr "如何将引述内容加入答复邮件中"
+
+#: lib/IMAP.php:239
+msgid "IMAP"
+msgstr "IMAP"
+
+#: lib/Fetchmail/imap.php:106
+msgid "IMAP (Auto Detect Protocols)"
+msgstr "IMAP (自动监测协议)"
+
+#: lib/IMAP/Client.php:200
+#, php-format
+msgid "IMAP Server closed the connection. Server Responded: %s"
+msgstr "IMAP 服务器中断连接。服务器回应：%s"
+
+#: lib/IMAP.php:251
+msgid "IMAP over SSL"
+msgstr "基于 SSL 的 IMAP"
+
+#: lib/IMAP.php:257
+msgid "IMAP over SSL (self-signed certificate)"
+msgstr "基于 SSL 的 IMAP(自签名证书)"
+
+#: lib/IMAP.php:245
+msgid "IMAP, no TLS"
+msgstr "IMAP，不是 TLS"
+
+#: lib/Fetchmail/imap.php:48
+msgid "IMAP/POP3 Mail Servers"
+msgstr "IMAP/POP3 邮件服务器"
+
+#: lib/IMAP/Client.php:283
+msgid "If using SSL or TLS, you must have the PHP openssl extension loaded."
+msgstr "如果使用 SSL 或 TLS，则必须加载 PHP openssl 扩展。"
+
+#: templates/folders/folders_confirm.html:12
+msgid "If you continue, all messages in the folder(s) will be lost!"
+msgstr "如果继续，则会丢失文件夹中的所有邮件！"
+
+#: saveimage.php:45
+msgid "Image"
+msgstr "图像"
+
+#: templates/folders/import.html:16
+msgid "Import"
+msgstr "导入"
+
+#: templates/smime/import_key.html:69 templates/pgp/import_key.html:48
+msgid "Import Key"
+msgstr "导入密钥"
+
+#: templates/smime/smime.html:85 templates/pgp/pgp.html:135
+msgid "Import Keypair"
+msgstr "导入密钥对"
+
+#: templates/folders/actions.html:35
+msgid "Import Messages"
+msgstr "导入邮件"
+
+#: pgp.php:48
+msgid "Import PGP Key"
+msgstr "导入 PGP 密钥"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Personal Private PGP Key"
+msgstr "导入个人 PGP 密钥"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Personal Private PGP Key Here:"
+msgstr "请在此处导入 PGP 个人私钥："
+
+#: templates/pgp/import_key.html:11
+msgid "Import Personal Public PGP Key"
+msgstr "导入个人 PGP 共钥"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Personal Public PGP Key Here:"
+msgstr "请在此处导入 PGP 个人公钥："
+
+#: templates/smime/import_key.html:11
+msgid "Import Personal S/MIME Certificates"
+msgstr "导入个人 S/MIME 证书"
+
+#: templates/smime/smime.html:47 templates/pgp/pgp.html:53
+msgid "Import Public Key"
+msgstr "导入公钥"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Public PGP Key"
+msgstr "导入 PGP 共钥"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Public PGP Key Here:"
+msgstr "请在此处导入 PGP 公钥："
+
+#: templates/smime/import_key.html:11
+msgid "Import Public S/MIME Key"
+msgstr "导入 S/MIME 公钥"
+
+#: smime.php:14
+msgid "Import S/MIME Key"
+msgstr "导入 S/MIME 密钥"
+
+#: templates/folders/import.html:6
+msgid "Import mbox File"
+msgstr "导入 mbox 文件"
+
+#: templates/folders/import.html:11
+msgid "Import mbox file"
+msgstr "导入 mbox 文件"
+
+#: message.php:475 mailbox.php:740 mailbox.php:839
+#: templates/message/navbar_navigate.html:10 templates/mailbox/navbar.html:16
+#: templates/mailbox/navbar.html:32 templates/mailbox/legend.html:5
+msgid "Important"
+msgstr "重要"
+
+#: search.php:336
+msgid "Important messages"
+msgstr "重要邮件"
+
+#: folders.php:140
+#, php-format
+msgid "Imported %d messages from %s."
+msgstr "已导入 %d 邮件(来自 %s)。"
+
+#: lib/MIME/Viewer/itip.php:900
+msgid "In Process"
+msgstr "处理中"
+
+#: templates/prefs/initialpageselect.inc:4 lib/Folder.php:69 lib/IMP.php:664
+#: lib/IMAP/Tree.php:536 lib/IMAP/Tree.php:760 lib/IMAP/Tree.php:2359
+msgid "Inbox"
+msgstr "收件箱"
+
+#: config/prefs.php.dist:600
+msgid "Include a brief summary of the header in a reply?"
+msgstr "是否在回复中包含标题概要？"
+
+#: config/prefs.php.dist:595
+msgid "Include body text in forward message by default?"
+msgstr "是否在转发邮件中默认包含正文？"
+
+#: config/prefs.php.dist:567
+msgid "Include original message in a reply?"
+msgstr "是否在回件中包含原始邮件？"
+
+#: lib/MIME/Viewer/notification.php:59 lib/MIME/Viewer/status.php:131
+msgid "Info"
+msgstr "信息"
+
+#: smime.php:310 pgp.php:399
+#, php-format
+msgid "Information on %s Public Key"
+msgstr "有关 %s 公钥的信息"
+
+#: pgp.php:428
+msgid "Information on Personal Private Key"
+msgstr "有关个人密钥的信息"
+
+#: smime.php:333 pgp.php:422
+msgid "Information on Personal Public Key"
+msgstr "有关个人公钥的信息"
+
+#: js/imp.js.php:3 js/src/imp.js.php:55 templates/compose/compose.html:267
+#: templates/compose/compose.html:326
+msgid "Inline"
+msgstr "嵌入式"
+
+#: lib/IMAP/ACL/rfc4314.php:53 lib/IMAP/ACL/rfc2086.php:53
+msgid "Insert"
+msgstr "插入"
+
+#: templates/smime/import_key.html:19
+msgid "Insert Certificate Here:"
+msgstr "请在此处插入证书："
+
+#: lib/MIME/Viewer/itip.php:417
+msgid "Invalid Action selected for this component."
+msgstr "为此组件所选的操作无效。"
+
+#: lib/UI/Mailbox.php:61 lib/UI/Mailbox.php:111
+msgid "Invalid Address"
+msgstr "无效地址"
+
+#: lib/Fetchmail/imap.php:234
+msgid "Invalid Remote Mailbox"
+msgstr "无效的远程邮箱"
+
+#: lib/Compose.php:1053
+#, php-format
+msgid "Invalid character in e-mail address: %s."
+msgstr "电子邮件地址中包含无效字符：%s。"
+
+#: smime.php:94 pgp.php:16
+msgid "Invalid key"
+msgstr "无效密钥"
+
+#: lib/Compose.php:215
+msgid "Invalid message, cannot resume draft."
+msgstr "无效邮件，无法继续编辑草稿。"
+
+#: pgp.php:199
+msgid "Invalid personal PGP private key."
+msgstr "无效的个人 PGP 密钥。"
+
+#: pgp.php:174
+msgid "Invalid personal PGP public key."
+msgstr "无效的个人 PGP 公钥。"
+
+#: templates/mailbox/navbar.html:12
+msgid "Invert"
+msgstr "反转"
+
+#: templates/compose/compose.html:307 templates/compose/compose.html:315
+msgid "KB"
+msgstr "KB"
+
+#: templates/pgp/pgp.html:108
+msgid "Key Length:"
+msgstr "密钥长度："
+
+#: pgp.php:442
+msgid ""
+"Key generation may take a long time to complete.  Continue with key "
+"generation?"
+msgstr "生成密钥可能会花费一些时间。是否继续生成密钥？"
+
+#: templates/smime/smime.html:42 templates/pgp/pgp.html:48
+msgid "Key import is not available. File upload is not enabled on this server."
+msgstr "无法导入密钥。此服务器上的文件上传功能未启用。"
+
+#: templates/smime/smime.html:45 templates/pgp/pgp.html:51
+msgid ""
+"Key import is not available. You have no address book defined to add your "
+"contacts."
+msgstr "无法导入密钥。您尚未定义要添加联系人的地址簿。"
+
+#: pgp.php:338
+msgid "Key successfully sent to the public keyserver."
+msgstr "已成功将密钥发送到公钥服务器。"
+
+#: templates/login/login.html:115
+msgid "Language"
+msgstr "语言"
+
+#: config/prefs.php.dist:1048
+msgid "Last Mailbox Page"
+msgstr "邮箱末页"
+
+#: mailbox.php:277
+msgid "Last Page"
+msgstr "最后一页"
+
+#: compose.php:1069
+msgid "Link Attachments?"
+msgstr "链接附件？"
+
+#: attachment.php:34 lib/Compose.php:2314
+msgid "Linked attachments are forbidden."
+msgstr "禁止附加文件。"
+
+#: lib/Compose.php:2330
+#, php-format
+msgid "Links will expire on %s"
+msgstr "链接将在 %s 过期"
+
+#: lib/IMAP/ACL/rfc4314.php:49 lib/IMAP/ACL/rfc2086.php:49
+msgid "List"
+msgstr "列表"
+
+#: config/prefs.php.dist:1242
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+"是否在加载联系人屏幕时列出所有联系人？(若禁用，则仅可以看到符合搜索规则的联系"
+"人)"
+
+#: config/prefs.php.dist:800
+msgid "Listing in the Header"
+msgstr "在标题中列出"
+
+#: compose.php:727
+msgid "Loading..."
+msgstr "正在加载..."
+
+#: lib/MIME/Viewer/itip.php:681
+msgid "Location"
+msgstr "位置"
+
+#: templates/login/mobile.inc:3 templates/login/mobile.inc:33
+msgid "Log in"
+msgstr "登录"
+
+#: lib/Block/summary.php:59
+#, php-format
+msgid "Log in to %s"
+msgstr "登录 %s"
+
+#: login.php:379
+msgid "Login"
+msgstr "登录"
+
+#: config/prefs.php.dist:40
+msgid "Login Tasks"
+msgstr "登录任务"
+
+#: compose.php:951
+msgid "Low"
+msgstr "低"
+
+#: message.php:272 mailbox.php:735 mailbox.php:845
+#: templates/mailbox/legend.html:11
+msgid "Low Priority"
+msgstr "低优先级"
+
+#: compose.php:952
+msgid "Lowest"
+msgstr "最低"
+
+#: lib/MIME/Viewer/appledouble.php:43
+msgid "Macintosh File"
+msgstr "Mac 文件"
+
+#: config/prefs.php.dist:104
+msgid "Mail Previews"
+msgstr "邮件预览"
+
+#: lib/IMAP/Tree.php:2366 lib/IMAP/Tree.php:2393
+msgid "Mailbox"
+msgstr "邮箱"
+
+#: config/prefs.php.dist:119
+msgid "Mailbox and Folder Display Options"
+msgstr "邮箱和文件夹显示选项"
+
+#: lib/IMAP/ACL/rfc4314.php:52 lib/IMAP/ACL/rfc2086.php:52
+msgid "Mark (Other)"
+msgstr "标记 (其他)"
+
+#: lib/IMAP/ACL/rfc4314.php:51 lib/IMAP/ACL/rfc2086.php:51
+msgid "Mark (Seen)"
+msgstr "标记 (已阅读)"
+
+#: templates/folders/actions.html:30
+msgid "Mark All Messages as Seen"
+msgstr "将所有邮件标记为已阅读"
+
+#: templates/folders/actions.html:31
+msgid "Mark All Messages as Unseen"
+msgstr "将所有邮件标记为未阅读"
+
+#: templates/message/navbar_navigate.html:6
+#: templates/message/navbar_navigate.html:8 templates/mailbox/navbar.html:27
+#: templates/mailbox/navbar.html:29
+msgid "Mark as:"
+msgstr "标记为："
+
+#: config/prefs.php.dist:757
+msgid "Mark different levels of quoting with different colors?"
+msgstr "是否使用不同颜色标记不同层的引述内容？"
+
+#: config/prefs.php.dist:765
+msgid "Mark simple markup?"
+msgstr "是否标记简单的标记？"
+
+#: search.php:216
+msgid "Match All Queries"
+msgstr "匹配所有查询"
+
+#: search.php:214
+msgid "Match Any Query"
+msgstr "匹配任一查询"
+
+#: templates/compose/compose.html:273
+msgid "Maximum Attachment Size"
+msgstr "最大附件大小"
+
+#: lib/api.php:89
+msgid "Maximum Number of Folders"
+msgstr "文件夹最大数量"
+
+#: lib/api.php:92
+msgid "Maximum Number of Recipients per Message"
+msgstr "每封邮件的收件人最大数量"
+
+#: lib/api.php:95
+msgid "Maximum Number of Recipients per Time Period"
+msgstr "每个时间段的收件人最大数量"
+
+#: templates/compose/compose.html:255
+msgid "Maximum number of attachments reached."
+msgstr "已达到附件最大数量。"
+
+#: templates/compose/compose.html:252
+msgid "Maximum total attachment size reached."
+msgstr "已达到附件大小的上限。"
+
+#: lib/Block/tree_folders.php:3
+msgid "Menu Folder List"
+msgstr "菜单文件夹列表"
+
+#: lib/Compose.php:1406
+msgid "Message"
+msgstr "邮件"
+
+#: config/prefs.php.dist:54
+msgid "Message Composition"
+msgstr "写邮件"
+
+#: config/prefs.php.dist:1059
+msgid "Message Date"
+msgstr "邮件日期"
+
+#: config/prefs.php.dist:53 config/prefs.php.dist:71 config/prefs.php.dist:86
+#: config/prefs.php.dist:95 config/prefs.php.dist:103
+#: config/prefs.php.dist:111
+msgid "Message Options"
+msgstr "邮件选项"
+
+#: search.php:416
+msgid "Message Search"
+msgstr "搜索邮件"
+
+#: config/prefs.php.dist:1063
+msgid "Message Size"
+msgstr "邮件大小"
+
+#: message.php:580
+msgid "Message Source"
+msgstr "邮件来源"
+
+#: config/prefs.php.dist:72
+msgid "Message Viewing"
+msgstr "查看邮件"
+
+#: lib/Compose.php:1404
+#, php-format
+msgid "Message from %s"
+msgstr "来自 %s 的邮件"
+
+#: lib/UI/Mailbox.php:160
+msgid "Message has attachments"
+msgstr "邮件有附件"
+
+#: lib/UI/Mailbox.php:151
+msgid "Message is encrypted"
+msgstr "邮件已加密"
+
+#: lib/UI/Mailbox.php:147
+msgid "Message is signed"
+msgstr "邮件已签名"
+
+#: compose.php:344 compose.php:351
+msgid "Message redirected successfully."
+msgstr "已成功重定向邮件。"
+
+#: lib/Compose.php:672
+#, php-format
+msgid "Message sent successfully, but not saved to %s"
+msgstr "已成功发送邮件，但未保存到 %s"
+
+#: compose.php:405 compose.php:413
+msgid "Message sent successfully."
+msgstr "已成功发送邮件。"
+
+#: config/prefs.php.dist:1090
+msgid "Messages per page in the mailbox view."
+msgstr "邮箱视图中每页显示的邮件数。"
+
+#: mailbox.php:211
+msgid "Messages to"
+msgstr "邮件"
+
+#: templates/search/search.html:87
+msgid "Month"
+msgstr "月"
+
+#: message.php:513 message.php:690 mailbox.php:447 mailbox.php:861
+msgid "Move"
+msgstr "移动"
+
+#: templates/prefs/sourceselect.inc:318
+msgid "Move down"
+msgstr "下移"
+
+#: config/prefs.php.dist:725
+msgid "Move spam messages to spam folder and innocent messages to INBOX"
+msgstr "将垃圾邮件移到垃圾邮件文件夹、正常邮件移到收件箱"
+
+#: message.php:513 message.php:690 mailbox.php:447 mailbox.php:861
+msgid "Move to folder"
+msgstr "移到文件夹"
+
+#: templates/prefs/sourceselect.inc:316
+msgid "Move up"
+msgstr "上移"
+
+#: lib/MIME/Viewer/alternative.php:96
+msgid "Multipart/alternative"
+msgstr "多个部分/相关部分"
+
+#: thread.php:155
+msgid "Multiple Message View"
+msgstr "显示多封邮件"
+
+#: templates/prefs/defaultsearchselect.inc:8
+msgid "NONE"
+msgstr "无"
+
+#: templates/smime/smime.html:4 templates/pgp/pgp.html:4
+msgid "NOTE:"
+msgstr "注意："
+
+#: lib/MIME/Viewer/itip.php:693 lib/MIME/Viewer/itip.php:817
+#: templates/contacts/contacts.html:60
+msgid "Name"
+msgstr "名称"
+
+#: pgp.php:113
+msgid "Name and/or email cannot be empty"
+msgstr "名称和/或电子邮件不可以为空"
+
+#: lib/MIME/Viewer/itip.php:905
+msgid "Needs Action"
+msgstr " 所需操作"
+
+#: config/prefs.php.dist:689 config/prefs.php.dist:921
+msgid "Never"
+msgstr "从未"
+
+#: config/prefs.php.dist:679
+msgid "Never save attachments"
+msgstr "从不保存附件"
+
+#: lib/IMP.php:442
+msgid "New Folder"
+msgstr "新建文件夹"
+
+#: config/prefs.php.dist:96
+msgid "New Mail"
+msgstr "新邮件"
+
+#: compose.php:218 lib/Block/summary.php:31 lib/Block/summary.php:32
+#: lib/Block/tree_folders.php:29
+msgid "New Message"
+msgstr "新建邮件"
+
+#: mailbox.php:799 lib/MIME/Headers.php:193
+#, php-format
+msgid "New Message to %s"
+msgstr "新建发给 %s 的邮件"
+
+#: search.php:327
+msgid "New messages"
+msgstr "新邮件"
+
+#: message.php:529
+msgid "Next Message"
+msgstr "下一封"
+
+#: mailbox.php:275
+msgid "Next Page"
+msgstr "下一页"
+
+#: config/prefs.php.dist:637 config/prefs.php.dist:1126
+#: config/prefs.php.dist:1137 templates/compose/compose.html:293
+msgid "No"
+msgstr "否"
+
+#: smime.php:237
+msgid "No Certificate found"
+msgstr "未找到证书"
+
+#: lib/IMP.php:1313
+msgid "No Encryption"
+msgstr "不加密"
+
+#: templates/smime/smime.html:22 templates/pgp/pgp.html:29
+msgid "No Keys in Keyring"
+msgstr "密钥环中没有密钥"
+
+#: mailbox.php:254
+#, php-format
+msgid "No Messages"
+msgstr "无邮件"
+
+#: pgp.php:140
+msgid "No PGP public key imported."
+msgstr "未导入 PGP公钥"
+
+#: mailbox.php:760
+msgid "No Preview Text"
+msgstr "无预览文本"
+
+#: smime.php:162
+msgid "No S/MIME public key imported."
+msgstr "未导入 S/MIME 公钥。"
+
+#: templates/fetchmail/fetchmail.html:22
+msgid "No accounts available to fetch mail from."
+msgstr "无可供获取(fetch)邮件的帐户。"
+
+#: lib/MIME/Viewer/tnef.php:91
+msgid "No attachments found."
+msgstr "无附件。"
+
+#: lib/Crypt/SMIME.php:131
+msgid "No email information located in the public key."
+msgstr "公钥中无电子邮件信息。"
+
+#: acl.php:73
+msgid "No folder selected."
+msgstr "未选择文件夹。"
+
+#: lib/Block/summary.php:143
+msgid "No folders are being checked for new mail."
+msgstr "未检查任何文件夹是否有新邮件。"
+
+#: folders.php:190 lib/Folder.php:453 lib/Folder.php:503
+msgid "No folders were specified"
+msgstr "未指定文件夹"
+
+#: lib/Block/summary.php:147
+msgid "No folders with new messages"
+msgstr "文件夹中都没有新邮件"
+
+#: lib/Block/summary.php:145
+msgid "No folders with unseen messages"
+msgstr "无包含未阅读邮件的文件夹"
+
+#: lib/Compose.php:1445
+msgid "No message body text"
+msgstr "无邮件正文"
+
+#: lib/IMAP/Client.php:474
+msgid "No message returned."
+msgstr "未返回邮件。"
+
+#: mailbox.php:226
+msgid "No messages matched your search."
+msgstr "无符合搜索条件的邮件。"
+
+#: pgp.php:192
+msgid "No personal PGP private key imported."
+msgstr "未导入个人 PGP 密钥。"
+
+#: pgp.php:168
+msgid "No personal PGP public key imported."
+msgstr "未导入个人 PGP 公钥。"
+
+#: smime.php:212
+msgid "No personal S/MIME certificates imported."
+msgstr "未导入任何个人 S/MIME 证书。"
+
+#: lib/MIME/Viewer/pkcs7.php:290
+msgid ""
+"No personal private key exists so the message is unable to be decrypted."
+msgstr "不存在个人私钥，因而无法解密邮件。"
+
+#: lib/IMAP/Client.php:374
+msgid "No supported IMAP authentication method could be found."
+msgstr "无法找到受支持的 IMAP 验证。"
+
+#: acl.php:105
+msgid "No user specified."
+msgstr "未指定用户。"
+
+#: lib/MIME/Viewer/itip.php:714 lib/MIME/Viewer/itip.php:838
+msgid "Non Participant"
+msgstr "无参与者"
+
+#: templates/prefs/folderselect.inc:24 templates/prefs/sentmailselect.inc:40
+#: templates/prefs/sourceselect.inc:35 templates/prefs/spamselect.inc:24
+#: templates/prefs/trashselect.inc:24 lib/MIME/Viewer/itip.php:671
+#: lib/MIME/Viewer/itip.php:800 templates/mailbox/navbar.html:11
+msgid "None"
+msgstr "无"
+
+#: compose.php:950
+msgid "Normal"
+msgstr "一般"
+
+#: templates/mailbox/navbar.html:21 templates/mailbox/navbar.html:38
+msgid "Not Deleted"
+msgstr "未删除"
+
+#: templates/message/navbar_navigate.html:15 templates/mailbox/navbar.html:23
+#: templates/mailbox/navbar.html:41
+msgid "Not Draft"
+msgstr "这不是草稿"
+
+#: templates/message/navbar_navigate.html:11 templates/mailbox/navbar.html:17
+#: templates/mailbox/navbar.html:33
+msgid "Not Important"
+msgstr "一般"
+
+#: templates/mailbox/navbar.html:25
+msgid "Not Personal"
+msgstr "非个人"
+
+#: lib/Crypt/PGP.php:132 lib/Crypt/SMIME.php:125 lib/Crypt/SMIME.php:140
+msgid "Not a valid public key."
+msgstr "无效的公钥"
+
+#: config/prefs.php.dist:838
+msgid "Not at all"
+msgstr "不客气"
+
+#: lib/Maintenance/Task/fetchmail_login.php:70
+msgid "Note that this can take some time"
+msgstr "注意，此操作会花费一些时间"
+
+#: lib/IMP.php:494
+msgid "Notepads"
+msgstr "记事本"
+
+#: config/prefs.php.dist:723
+msgid "Nothing"
+msgstr "无"
+
+#: attachment.php:107
+msgid "Notification: Linked attachment downloaded"
+msgstr "通知：已下载链接的附件"
+
+#: config/prefs.php.dist:405
+msgid "Number of months to keep old linked attachments if deleting monthly."
+msgstr "如果每月删除，保留旧附件的月数。"
+
+#: config/prefs.php.dist:359
+msgid "Number of old sent-mail folders to keep if deleting monthly."
+msgstr "如果每月删除，所保留的旧已发送邮件文件夹数。"
+
+#: templates/contacts/contacts.html:75
+msgid "OK"
+msgstr "确定"
+
+#: templates/search/search.html:61 templates/smime/import_key.html:31
+#: templates/pgp/import_key.html:30
+msgid "OR"
+msgstr "或"
+
+#: search.php:326
+msgid "Old messages"
+msgstr "旧邮件"
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:51
+msgid "Old sent-mail folders being purged."
+msgstr "已删除旧的已发送邮件文件夹。"
+
+#: lib/Block/summary.php:41
+msgid "Only display folders with unread messages in them?"
+msgstr "是否仅显示包含新邮件的文件夹？"
+
+#: js/imp.js.php:3 js/src/imp.js.php:69
+msgid "Only one folder should be selected for this action."
+msgstr "此操作仅需要选择一个文件夹。"
+
+#: lib/IMP.php:854 lib/IMP.php:859
+msgid "Open Fo_lder"
+msgstr "打开文件夹_L"
+
+#: lib/IMAP/Tree.php:2417
+msgid "Opened Folder"
+msgstr "已打开的文件夹"
+
+#: lib/MIME/Viewer/itip.php:710 lib/MIME/Viewer/itip.php:834
+msgid "Optional Participant"
+msgstr "自由参与者"
+
+#: fetchmail.php:47 templates/fetchmail/fetchmail.html:6
+msgid "Other Mail Accounts"
+msgstr "其他邮件帐户"
+
+#: config/prefs.php.dist:118 config/prefs.php.dist:127
+#: config/prefs.php.dist:134 config/prefs.php.dist:141
+#: config/prefs.php.dist:149 config/prefs.php.dist:158
+msgid "Other Options"
+msgstr "其他选项"
+
+#: templates/login/login.html:102
+msgid "Outbound Server"
+msgstr "出站服务器"
+
+#: pgp.php:42 lib/MIME/Viewer/pgp.php:165 lib/MIME/Viewer/pgp.php:213
+#: lib/MIME/Viewer/pgp.php:305
+msgid "PGP"
+msgstr "PGP"
+
+#: lib/IMP.php:1316
+msgid "PGP Encrypt Message"
+msgstr "PGP 加密邮件"
+
+#: lib/IMP.php:1321
+msgid "PGP Encrypt Message with passphrase"
+msgstr "使用密码进行 PGP 邮件加密"
+
+#: lib/Compose.php:1184
+msgid "PGP Error: "
+msgstr "PGP 错误："
+
+#: config/prefs.php.dist:150
+msgid "PGP Options"
+msgstr "PGP 选项"
+
+#: pgp.php:28
+msgid "PGP Passphrase Input"
+msgstr "输入 PGP 密码"
+
+#: templates/pgp/pgp.html:66
+msgid "PGP Personal Keypair support requires a secure web connection."
+msgstr "PGP 个人密钥对支持需要安全的 web 连接。"
+
+#: pgp.php:152
+#, php-format
+msgid "PGP Public Key for \"%s (%s)\" was successfully added."
+msgstr "已成功添加“%s (%s)”PGP 公钥。"
+
+#: pgp.php:248
+#, php-format
+msgid "PGP Public Key for \"%s\" was successfully deleted."
+msgstr "已成功删除“%s”PGP 公钥。"
+
+#: templates/pgp/pgp.html:24
+msgid "PGP Public Keyring"
+msgstr "PGP 公钥环"
+
+#: lib/IMP.php:1317
+msgid "PGP Sign Message"
+msgstr "PGP 签名邮件"
+
+#: lib/IMP.php:1318
+msgid "PGP Sign/Encrypt Message"
+msgstr "PGP 签名/加密邮件"
+
+#: lib/IMP.php:1322
+msgid "PGP Sign/Encrypt Message with passphrase"
+msgstr "使用密码进行 PGP 邮件签名/加密"
+
+#: pgp.php:205
+msgid "PGP private key successfully added."
+msgstr "已成功添加 PGP 密钥。"
+
+#: pgp.php:180
+msgid "PGP public key successfully added."
+msgstr "已成功添加 PGP 公钥。"
+
+#: templates/pgp/pgp.html:142
+msgid "PGP support is disabled on this system."
+msgstr "此系统中的 PGP 支持已禁用。"
+
+#: templates/pgp/pgp.html:4
+msgid ""
+"PGP support requires popup windows to be used.  If your browser is currently "
+"set to disable popup windows, you must change this setting or else the PGP "
+"features will not work correctly."
+msgstr ""
+"PGP 支持需要使用弹出式窗口。如果当前您已设置浏览器禁用弹出式窗口，则必须更新"
+"此设置，否则 PGP 功能将无法正常运行。"
+
+#: lib/Compose.php:1144
+msgid "PGP: Need passphrase for personal private key."
+msgstr "PGP：需要个人私钥密码。"
+
+#: lib/Compose.php:1153
+msgid "PGP: Need passphrase to encrypt your message with."
+msgstr "PGP：需要用于邮件加密的密码。"
+
+#: lib/IMAP.php:215
+msgid "POP3"
+msgstr "POP3"
+
+#: lib/Fetchmail/imap.php:101
+msgid "POP3 (Auto Detect Protocols)"
+msgstr "POP3 (自动监测协议)"
+
+#: lib/IMAP.php:227
+msgid "POP3 over SSL"
+msgstr "基于 SSL 的 POP3"
+
+#: lib/IMAP.php:233
+msgid "POP3 over SSL (self-signed certificate)"
+msgstr "基于 SSL 的 POP3(自签名证书)"
+
+#: lib/IMAP.php:221
+msgid "POP3, no TLS"
+msgstr "POP3，不是 TLS"
+
+#: mailbox.php:403
+#, php-format
+msgid "Page %d of %d"
+msgstr "第 %d 页，共 %d 页"
+
+#: config/prefs.php.dist:1045
+msgid "Page with the First Unseen Message"
+msgstr "第一封未阅读邮件页面"
+
+#: config/prefs.php.dist:1046
+msgid "Page with the Last Unseen Message"
+msgstr "最后一封未阅读邮件页面"
+
+#: templates/mailbox/navbar.html:67
+msgid "Page:"
+msgstr "页面："
+
+#: message.php:672
+msgid "Part(s)"
+msgstr "附件"
+
+#: templates/pgp/pgp.html:123
+msgid "Passphrase (Again):"
+msgstr "密码 (重复)："
+
+#: smime.php:246 pgp.php:330
+msgid "Passphrase successfully unloaded."
+msgstr "已成功取消密码。"
+
+#: templates/smime/passphrase.html:21 templates/pgp/passphrase.html:19
+#: templates/pgp/pgp.html:118
+msgid "Passphrase:"
+msgstr "密码："
+
+#: pgp.php:115
+msgid "Passphrases cannot be empty"
+msgstr "密码不可以为空"
+
+#: pgp.php:117
+msgid "Passphrases do not match"
+msgstr "密码不匹配"
+
+#: templates/login/login.html:91
+msgid "Password"
+msgstr "密码"
+
+#: templates/smime/import_key.html:54
+msgid "Password:"
+msgstr "密码："
+
+#: templates/login/mobile.inc:17
+msgid "Password: "
+msgstr "密码："
+
+#: message.php:461 mailbox.php:710 mailbox.php:842
+#: templates/mailbox/navbar.html:24 templates/mailbox/legend.html:8
+msgid "Personal"
+msgstr "个人"
+
+#: config/prefs.php.dist:14
+msgid "Personal Information"
+msgstr "个人信息"
+
+#: pgp.php:123
+msgid "Personal PGP keypair generated successfully."
+msgstr "成功生成个人 PGP 密钥对。"
+
+#: pgp.php:130
+msgid "Personal PGP keys deleted successfully."
+msgstr "成功删除个人 PGP 密钥。"
+
+#: smime.php:218
+msgid "Personal S/MIME certificates NOT imported: "
+msgstr "未导入个人 S/MIME 证书："
+
+#: smime.php:143
+msgid "Personal S/MIME keys deleted successfully."
+msgstr "成功删除个人 S/MIME 密钥。"
+
+#: config/prefs.php.dist:221
+msgid "Place your signature before replies and forwards?"
+msgstr "是否在回复和转发邮件中加签名？"
+
+#: lib/Compose.php:364
+msgid "Plaintext Version of Message"
+msgstr "纯文本格式的邮件"
+
+#: config/prefs.php.dist:942
+msgid ""
+"Play sound on new mail?  This requires your browser to support embedded "
+"sound files.  Almost all do on Windows and Mac, but other platforms will "
+"require a plugin."
+msgstr ""
+"是否在收到新邮件时播放声音？这需要您的浏览器支持嵌入式声音文件。几乎在 "
+"Windows 和 Mac 上都可以执行，但其他平台则可能需要插件。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:91
+msgid "Please enter a name for the new folder:"
+msgstr "请输入新文件夹的名称："
+
+#: js/imp.js.php:3 js/src/imp.js.php:71 js/src/imp.js.php:72
+msgid "Please enter the name of the new folder:"
+msgstr "请输入新文件夹的名称："
+
+#: js/imp.js.php:3 js/src/imp.js.php:76
+msgid "Please enter the new name:"
+msgstr "请输入新名称："
+
+#: templates/pgp/passphrase.html:12
+msgid "Please enter the passphrase for this message."
+msgstr "请输入此邮件的密码。"
+
+#: templates/pgp/passphrase.html:14
+msgid ""
+"Please enter the passphrase for your PGP private key. You will only need to "
+"enter this passphrase once per session."
+msgstr "请输入 PGP 密钥密码。每个 %s 会话仅需要输入一次密码。"
+
+#: templates/smime/passphrase.html:15
+msgid ""
+"Please enter the passphrase for your S/MIME private key. You will only need "
+"to enter this passphrase once per session."
+msgstr "请输入 S/MIME 密钥密码。一个 %s 会话仅需要输入一次密码。"
+
+#: login.php:179
+msgid ""
+"Please log in again to resume composing your message. If you are NOT using "
+"cookies AND you are composing messages in popup windows, you will have to "
+"log in again in your main window as well. This is to keep attackers from "
+"hijacking your session ID. We apologize for any inconvenience."
+msgstr ""
+"请再次登录继续写邮件。如果您未使用 cookies 且正在弹出式窗口中写邮件，也需要在"
+"主窗口中再次登录。此操作是为了防止攻击者窃取您的会话 ID。非常抱歉因此给您带来"
+"的不便。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:86
+msgid "Please provide your password."
+msgstr "请输入密码。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:85
+msgid "Please provide your username."
+msgstr "请提供用户名。"
+
+#: lib/Compose.php:2495 lib/UI/Compose.php:26
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "请解析不明确或无效的地址。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:68
+msgid "Please select a folder before you perform this action."
+msgstr "请在执行此操作之前选择文件夹。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:79
+msgid "Please select at least one folder to search."
+msgstr "请选择至少一个文件夹进行搜索。"
+
+#: templates/compose/redirect.html:39
+msgid "Please select or edit in the box to the right:"
+msgstr "请在右框中进行选择或编辑："
+
+#: config/prefs.php.dist:1148
+msgid "Poll all folders for new mail?"
+msgstr "检查所有文件夹是否有新邮件？"
+
+#: templates/login/login.html:66
+msgid "Port"
+msgstr "端口"
+
+#: lib/IMAP/ACL/rfc4314.php:54 lib/IMAP/ACL/rfc2086.php:54
+msgid "Post"
+msgstr "发布"
+
+#: config/motd.php.dist:41
+msgid "Powered by Horde"
+msgstr "由 Horde 支持"
+
+#: config/prefs.php.dist:213
+msgid "Precede your signature with dashes ('-- ')?"
+msgstr "是否在签名之前加短划线(“--”)？"
+
+#: smime.php:253 pgp.php:257 filterprefs.php:45
+msgid "Preferences successfully updated."
+msgstr "成功更新首选项。"
+
+#: compose.php:1090
+msgid "Preview"
+msgstr "预览"
+
+#: message.php:522
+msgid "Previous Message"
+msgstr "上一封"
+
+#: mailbox.php:267
+msgid "Previous Page"
+msgstr "上一页"
+
+#: message.php:593
+msgid "Print"
+msgstr "打印"
+
+#: message.php:676
+msgid "Printed By"
+msgstr "打印者"
+
+#: message.php:661 lib/MIME/Viewer/itip.php:793
+msgid "Priority"
+msgstr "优先级"
+
+#: templates/smime/import_key.html:59
+msgid "Private Key Password:"
+msgstr "私钥密码："
+
+#: config/prefs.php.dist:678
+msgid "Prompt every time an attachment is sent; default to NO"
+msgstr "每次发送附件时是否提示；默认为“否”"
+
+#: config/prefs.php.dist:677
+msgid "Prompt every time an attachment is sent; default to YES"
+msgstr "每次发送附件时是否提示；默认为“是”"
+
+#: templates/login/login.html:71
+msgid "Protocol"
+msgstr "协议"
+
+#: lib/Crypt/PGP.php:447
+msgid "Public PGP keyserver support has been disabled."
+msgstr "已禁用 PGP 公钥服务器。"
+
+#: mailbox.php:416 mailbox.php:484
+msgid "Pur_ge Deleted"
+msgstr "清除已删除项_G"
+
+#: lib/IMAP/ACL/rfc4314.php:58 templates/folders/actions.html:20
+msgid "Purge"
+msgstr "销毁"
+
+#: mailbox.php:416 mailbox.php:484
+msgid "Purge Deleted"
+msgstr "清除已删除项"
+
+#: config/prefs.php.dist:424
+msgid "Purge Spam how often:"
+msgstr "销毁垃圾邮件的频率："
+
+#: config/prefs.php.dist:452
+msgid "Purge Trash how often:"
+msgstr "清空垃圾箱的频率："
+
+#: config/prefs.php.dist:433
+msgid "Purge messages in Spam folder older than this amount of days."
+msgstr "销毁垃圾邮件文件夹中这些天前的旧邮件。"
+
+#: config/prefs.php.dist:461
+msgid "Purge messages in Trash folder older than this amount of days."
+msgstr "清除垃圾文件夹中的旧邮件。"
+
+#: config/prefs.php.dist:387
+msgid "Purge messages in sent-mail folder(s) older than this amount of days."
+msgstr "销毁发件文件夹中这些天前的旧邮件。"
+
+#: config/prefs.php.dist:414
+msgid "Purge old messages in the Spam folder?"
+msgstr "是否销毁垃圾邮件文件夹中的旧邮件？"
+
+#: config/prefs.php.dist:442
+msgid "Purge old messages in the Trash folder?"
+msgstr "是否清除垃圾文件夹中的旧邮件？"
+
+#: config/prefs.php.dist:368
+msgid "Purge old messages in the sent-mail folder(s)?"
+msgstr "是否销毁发件文件夹中的旧邮件？"
+
+#: config/prefs.php.dist:378
+msgid "Purge sent-mail how often:"
+msgstr "销毁已发送邮件的频率："
+
+#: lib/Maintenance/Task/purge_spam.php:64
+#, php-format
+msgid "Purging %d messages from Spam folder."
+msgstr "销毁垃圾邮件文件夹中的 %d 封邮件。"
+
+#: lib/Maintenance/Task/purge_trash.php:63
+#, php-format
+msgid "Purging %d messages from Trash folder."
+msgstr "从垃圾文件夹清除 %d 封邮件。"
+
+#: lib/Maintenance/Task/purge_sentmail.php:64
+#, php-format
+msgid "Purging %d messages from sent-mail folder."
+msgstr "销毁发件文件夹中的 %d 封邮件。"
+
+#: lib/Maintenance/Task/purge_spam.php:62
+msgid "Purging 1 message from Spam folder."
+msgstr "销毁垃圾邮件文件夹中的 1 封邮件。"
+
+#: lib/Maintenance/Task/purge_trash.php:61
+msgid "Purging 1 message from Trash folder."
+msgstr "从垃圾文件夹清除 1 封邮件。"
+
+#: lib/Maintenance/Task/purge_sentmail.php:62
+#, php-format
+msgid "Purging 1 message from sent-mail folder %s."
+msgstr "销毁发件文件夹 %s 中的 1 封邮件。"
+
+#: lib/IMP.php:919
+#, php-format
+msgid "Quota status: %.2fMB / %.2fMB  (%.2f%%)"
+msgstr "配额状态：%.2fMB / %.2fMB  (%.2f%%)"
+
+#: lib/IMP.php:923
+#, php-format
+msgid "Quota status: %.2fMB / NO LIMIT"
+msgstr "配额状态：%.2fMB / 无限制"
+
+#: lib/IMP.php:926
+#, php-format
+msgid "Quota status: NO LIMIT"
+msgstr "配额状态：无限制"
+
+#: config/prefs.php.dist:608
+#, php-format
+msgid "Quoting %f:"
+msgstr "引用 %f："
+
+#: lib/IMAP/ACL/rfc4314.php:50 lib/IMAP/ACL/rfc2086.php:50
+msgid "Read"
+msgstr "阅读"
+
+#: templates/folders/actions.html:38
+msgid "Rebuild Folder Tree"
+msgstr "重建文件夹树状图"
+
+#: templates/search/search.html:31
+msgid "Recent Searches"
+msgstr "最近搜索"
+
+#: templates/search/search.html:35 templates/search/search.html:37
+msgid "Recent Searches:"
+msgstr "最近搜索："
+
+#: message.php:564 message.php:607
+msgid "Redirec_t"
+msgstr "重定向_T"
+
+#: message.php:564 message.php:607
+msgid "Redirect"
+msgstr "重定向"
+
+#: templates/compose/redirect.html:82
+msgid "Redirect Message"
+msgstr "重定向邮件"
+
+#: compose.php:325
+msgid "Redirect this message"
+msgstr "重定向此邮件"
+
+#: folders.php:331
+msgid "Refresh"
+msgstr "刷新"
+
+#: config/prefs.php.dist:927
+msgid "Refresh Folder Views:"
+msgstr "刷新文件夹视图："
+
+#: mailbox.php:380
+msgid "Reload"
+msgstr "重新加载"
+
+#: folders.php:321
+msgid "Reload View"
+msgstr "重新加载视图"
+
+#: lib/MIME/Viewer/itip.php:536 lib/MIME/Viewer/itip.php:555
+msgid "Remember the free/busy information."
+msgstr "保存忙/闲信息。"
+
+#: config/prefs.php.dist:1128
+msgid "Remember the last view"
+msgstr "记住之前的视图"
+
+#: lib/MIME/Viewer/html.php:119
+#, php-format
+msgid "Remote images are blocked to protect your privacy. %s"
+msgstr "为保护您的隐私，已阻止远程图像。%s"
+
+#: search.php:322
+msgid "Remove Field From Search"
+msgstr "从搜索中删除字段"
+
+#: templates/prefs/sourceselect.inc:306
+msgid "Remove source"
+msgstr "删除来源"
+
+#: templates/folders/actions.html:16
+msgid "Rename"
+msgstr "重命名"
+
+#: config/prefs.php.dist:341
+msgid "Rename sent-mail folder at beginning of month?"
+msgstr "是否在每月初重命名发件文件夹？"
+
+#: lib/Folder.php:403
+#, php-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr "将“%s”重命名为“%s”失败。服务器回应"
+
+#: message.php:548
+msgid "Reply"
+msgstr "回复"
+
+#: lib/MIME/Viewer/itip.php:315 lib/MIME/Viewer/itip.php:414
+msgid "Reply Sent."
+msgstr "已发送答复邮件。"
+
+#: compose.php:298
+msgid "Reply to All:"
+msgstr "全部答复："
+
+#: compose.php:300
+msgid "Reply to List:"
+msgstr "答复列表"
+
+#: lib/MIME/Viewer/itip.php:538 lib/MIME/Viewer/itip.php:547
+#: lib/MIME/Viewer/itip.php:557
+msgid "Reply with Not Supported Message"
+msgstr "使用“不受支持的邮件”进行答复"
+
+#: lib/MIME/Viewer/itip.php:545
+msgid "Reply with free/busy for next 2 months."
+msgstr "接下来的 2 个月使用忙/闲信息进行答复。"
+
+#: lib/MIME/Viewer/itip.php:544
+msgid "Reply with requested free/busy information."
+msgstr "使用忙/闲信息进行答复。"
+
+#: lib/UI/Message.php:29
+msgid "Reply-To"
+msgstr "答复"
+
+#: lib/Compose.php:1655
+msgid "Reply-To: "
+msgstr "答复："
+
+#: compose.php:296
+msgid "Reply:"
+msgstr "答复"
+
+#: message.php:604 mailbox.php:506
+msgid "Report as Innocent"
+msgstr "报告此为正常邮件"
+
+#: message.php:598 mailbox.php:500
+msgid "Report as Spam"
+msgstr "报告此为正垃圾邮件"
+
+#: compose.php:1016
+msgid "Request a _Read Receipt"
+msgstr "请给出“已读”回执"
+
+#: config/prefs.php.dist:692
+msgid "Request read receipts?"
+msgstr "是否需要已读回执？"
+
+#: mailbox.php:103
+msgid "Requested message not found."
+msgstr "未找到所请求的邮件。"
+
+#: lib/MIME/Viewer/itip.php:702 lib/MIME/Viewer/itip.php:826
+msgid "Required Participant"
+msgstr "必须参与的个人"
+
+#: templates/search/search.html:26 templates/search/search.html:201
+#: templates/acl/acl.html:80
+msgid "Reset"
+msgstr "重置"
+
+#: lib/MIME/Viewer/itip.php:118
+msgid "Respondent Status Updated."
+msgstr "已更新回应状态。"
+
+#: message.php:587
+msgid "Resume"
+msgstr "恢复"
+
+#: compose.php:554
+msgid "Resume Editing"
+msgstr "继续编辑"
+
+#: login.php:180
+msgid "Resume your session"
+msgstr "继续会话"
+
+#: templates/folders/folders_size.html:14
+msgid "Return to Folders View"
+msgstr "返回文件夹视图"
+
+#: stationery.php:151
+msgid "Return to Message Composition"
+msgstr "返回写邮件页面"
+
+#: filterprefs.php:57 templates/smime/smime.html:102
+#: templates/pgp/pgp.html:153 templates/acl/acl.html:35
+#: templates/acl/acl.html:81 templates/acl/acl.html:95
+msgid "Return to Options"
+msgstr "返回选项"
+
+#: config/prefs.php.dist:861
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr "是否在删除、移动、复制邮件后返回到邮件列表？"
+
+#: acl.php:111
+#, php-format
+msgid "Rights for user \"%s\" cannot be modified."
+msgstr "无法修改用户“%s”权限。"
+
+#: lib/MIME/Viewer/itip.php:693 lib/MIME/Viewer/itip.php:817
+msgid "Role"
+msgstr "角色"
+
+#: smime.php:65 lib/MIME/Viewer/pkcs7.php:174 lib/MIME/Viewer/pkcs7.php:281
+#: lib/MIME/Viewer/pkcs7.php:469
+msgid "S/MIME"
+msgstr "S/MIME"
+
+#: lib/IMP.php:1326
+msgid "S/MIME Encrypt Message"
+msgstr "S/MIME 加密邮件"
+
+#: lib/Compose.php:1216
+msgid "S/MIME Error: "
+msgstr "S/MIME 错误："
+
+#: lib/Compose.php:1195
+msgid "S/MIME Error: Need passphrase for personal private key."
+msgstr "S/MIME 错误：个人密钥需要密码。"
+
+#: config/prefs.php.dist:159
+msgid "S/MIME Options"
+msgstr "S/MIME 选项"
+
+#: smime.php:52
+msgid "S/MIME Passphrase Input"
+msgstr "输入 S/MIME 密码"
+
+#: templates/smime/smime.html:61
+msgid "S/MIME Personal Keypair support requires a secure web connection."
+msgstr "S/MIME 个人密钥对支持需要安全的 web 连接。"
+
+#: smime.php:151
+#, php-format
+msgid "S/MIME Public Key for \"%s\" was successfully deleted."
+msgstr "已成功删除“%s”S/MIME 公钥。"
+
+#: smime.php:173
+msgid "S/MIME Public Key successfully added."
+msgstr "成功添加 S/MIME 公钥。"
+
+#: templates/smime/smime.html:17
+msgid "S/MIME Public Keyring"
+msgstr "S/MIME 公钥环"
+
+#: smime.php:222
+msgid "S/MIME Public/Private Keypair successfully added."
+msgstr "已成功添加 S/MIME 公钥/密钥对。"
+
+#: lib/IMP.php:1327
+msgid "S/MIME Sign Message"
+msgstr "S/MIME 签名邮件"
+
+#: lib/IMP.php:1328
+msgid "S/MIME Sign/Encrypt Message"
+msgstr "S/MIME 签名/加密邮件"
+
+#: templates/smime/smime.html:91
+msgid "S/MIME support is disabled on this system."
+msgstr "此系统中的 S/MIME 支持已禁用。"
+
+#: lib/MIME/Viewer/pkcs7.php:285
+msgid ""
+"S/MIME support is not currently enabled so the message is unable to be "
+"decrypted."
+msgstr "因当前未启用 S/MIME 支持，从而无法加密邮件。"
+
+#: lib/MIME/Viewer/pkcs7.php:205
+msgid ""
+"S/MIME support is not enabled so the contents of this signed message cannot "
+"be displayed."
+msgstr "因没有启用 S/MIME 支持，从而无法显示此签名邮件的内容。"
+
+#: lib/MIME/Viewer/pkcs7.php:178
+msgid ""
+"S/MIME support is not enabled so the digital signature is unable to be "
+"verified."
+msgstr "因没有启用 S/MIME 支持，从而无法验证数字签名。"
+
+#: lib/MIME/Viewer/pkcs7.php:135
+msgid "S/MIME support is not enabled."
+msgstr "S/MIME 支持未启用。"
+
+#: templates/smime/smime.html:4
+msgid ""
+"S/MIME support requires popup windows to be used.  If your browser is "
+"currently set to disable popup windows, you must change this setting or else "
+"the S/MIME features will not work correctly."
+msgstr ""
+"S/MIME 支持需要使用弹出式窗口。如果您的浏览器当前禁用弹出式窗口，则必须更改它"
+"的设置，否则 S/MIME 功能将无法正常运行。"
+
+#: templates/login/login.html:107
+msgid "SMTP"
+msgstr "SMTP"
+
+#: templates/login/login.html:106
+msgid "SMTP Port"
+msgstr "SMTP 端口"
+
+#: compose.php:925
+msgid "S_ubject"
+msgstr "主题_U"
+
+#: compose.php:995
+msgid "Sa_ve a copy in "
+msgstr "保存副本到_V"
+
+#: message.php:591
+msgid "Sa_ve as"
+msgstr "另存为_V"
+
+#: templates/search/search.html:25 templates/search/search.html:200
+#: templates/acl/acl.html:79
+msgid "Save"
+msgstr "保存"
+
+#: compose.php:1065
+msgid "Save Attachments with message in sent-mail folder?"
+msgstr "是否将附件(连同邮件)保存在已发送邮件文件夹中？"
+
+#: templates/compose/compose.html:19 templates/compose/compose.html:206
+msgid "Save Draft"
+msgstr "保存草稿"
+
+#: saveimage.php:50
+msgid "Save Image"
+msgstr "保存图像"
+
+#: lib/MIME/Contents.php:244
+msgid "Save Image in Gallery"
+msgstr "将图像保存到图库中"
+
+#: filterprefs.php:117 templates/smime/smime.html:101
+#: templates/pgp/pgp.html:152
+msgid "Save Options"
+msgstr "保存选项"
+
+#: templates/stationery/stationery.html:48
+msgid "Save Stationery"
+msgstr "保存信纸"
+
+#: compose.php:841
+msgid "Save _Draft"
+msgstr "保存草稿_D"
+
+#: message.php:591
+msgid "Save as"
+msgstr "另存为"
+
+#: config/prefs.php.dist:629
+msgid "Save drafts as unseen?"
+msgstr "是否将草稿另存为未阅读邮件？"
+
+#: config/prefs.php.dist:639
+msgid "Save drafts automatically while composing?"
+msgstr "是否在写邮件时自动保存草稿？"
+
+#: lib/MIME/Viewer/pkcs7.php:245
+msgid "Save in your Address Book"
+msgstr "保存在地址簿中"
+
+#: config/prefs.php.dist:1232
+msgid "Save recipients automatically to the default address book?"
+msgstr "是否自动将收件人保存到默认地址簿中？"
+
+#: templates/search/search.html:191
+msgid "Save search as a virtual folder?"
+msgstr "是否将搜索另存为虚拟文件夹？"
+
+#: config/prefs.php.dist:229
+msgid "Save sent mail?"
+msgstr "是否保存已发送邮件？"
+
+#: lib/Compose.php:165
+msgid "Saving the draft failed. Could not create a drafts folder."
+msgstr "保存草稿失败。无法创建草稿文件夹。"
+
+#: lib/Compose.php:108
+msgid "Saving the draft failed. No draft folder specified."
+msgstr "保存草稿失败。未指定草稿文件夹。"
+
+#: lib/Compose.php:178
+#, php-format
+msgid "Saving the draft failed. This is what the server said: %s"
+msgstr "保存草稿失败。此为服务器回应：%s"
+
+#: mailbox.php:386 lib/Search.php:533 lib/Block/tree_folders.php:37
+#: templates/contacts/contacts.html:25
+msgid "Search"
+msgstr "搜索"
+
+#: mailbox.php:386 search.php:209
+#, php-format
+msgid "Search %s"
+msgstr "搜索 %s"
+
+#: templates/search/search.html:46
+msgid "Search Criteria"
+msgstr "搜索规则"
+
+#: templates/search/search.html:130
+msgid "Search Flags"
+msgstr "搜索标志"
+
+#: templates/search/search.html:155
+msgid "Search Folders"
+msgstr "搜索文件夹"
+
+#: config/prefs.php.dist:128
+msgid "Search Options"
+msgstr "搜索选项"
+
+#: search.php:156 templates/contacts/contacts.html:31
+msgid "Search Results"
+msgstr "搜索结果"
+
+#: templates/search/search.html:80
+msgid "Search Text"
+msgstr "搜索文本"
+
+#: templates/mailbox/navbar.html:14 templates/mailbox/navbar.html:30
+msgid "Seen"
+msgstr "已阅读"
+
+#: search.php:313
+msgid "Select a date"
+msgstr "选择日期"
+
+#: templates/search/search.html:65 templates/search/search.html:68
+msgid "Select a field"
+msgstr "选择字段"
+
+#: config/prefs.php.dist:143
+msgid "Select address book sources for adding and searching for addresses."
+msgstr "选择要进行地址添加和搜索的地址簿"
+
+#: templates/search/search.html:159
+msgid "Select all"
+msgstr "全选"
+
+#: templates/prefs/sourceselect.inc:325
+msgid "Select all fields to search when expanding addresses."
+msgstr "增加地址时，选择所有字段进行搜索。"
+
+#: templates/folders/folders.html:3
+msgid "Select mailbox"
+msgstr "选择邮箱"
+
+#: templates/search/search.html:160
+msgid "Select none"
+msgstr "全部不选"
+
+#: templates/compose/compose.html:134
+msgid "Select stationery:"
+msgstr "选择信纸："
+
+#: templates/saveimage/saveimage.html:8
+msgid "Select the gallery to save the image in."
+msgstr "选择要保存图像的图库。"
+
+#: templates/mailbox/navbar.html:7 templates/mailbox/navbar.html:9
+msgid "Select:"
+msgstr "选择："
+
+#: templates/prefs/sourceselect.inc:309 templates/prefs/sourceselect.inc:311
+msgid "Selected Address books:"
+msgstr "所选地址簿："
+
+#: templates/contacts/contacts.html:47
+msgid "Selected Addresses"
+msgstr "所选地址"
+
+#: pgp.php:423 templates/pgp/pgp.html:73
+msgid "Send Key to Public Keyserver"
+msgstr "将密钥发送到公钥服务器"
+
+#: lib/MIME/Viewer/itip.php:607
+msgid "Send Latest Information"
+msgstr "发送最新信息"
+
+#: templates/compose/compose.html:17 templates/compose/compose.html:204
+msgid "Send Message"
+msgstr "发送邮件"
+
+#: js/imp.js.php:3 js/src/imp.js.php:52
+msgid "Send message without a Subject?"
+msgstr "是否发送无主题的邮件？"
+
+#: config/prefs.php.dist:846
+msgid "Send read receipt when requested by the sender?"
+msgstr "是否在发件人请求时发送已读回执？"
+
+#: lib/IMAP/Tree.php:2389
+msgid "Sent mail folder"
+msgstr "发件文件夹"
+
+#: templates/prefs/sentmailselect.inc:38
+msgid "Sent mail folder:"
+msgstr "发件文件夹："
+
+#: templates/login/login.html:35 templates/login/login.html:49
+#: templates/login/login.html:61
+msgid "Server"
+msgstr "服务器"
+
+#: config/prefs.php.dist:23
+msgid "Server and Folder Information"
+msgstr "服务器和文件夹信息"
+
+#: config/prefs.php.dist:88
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr "设置移动和删除邮件时所发生结果的首选项。"
+
+#: config/prefs.php.dist:648
+msgid "Set the X-Priority header when composing messages?"
+msgstr "是否在写邮件时设置 X-优先级标题？"
+
+#: config/prefs.php.dist:32
+msgid "Share Folders"
+msgstr "共享文件夹"
+
+#: templates/acl/acl.html:7
+msgid "Share mail folders"
+msgstr "共享邮件文件夹"
+
+#: config/prefs.php.dist:33
+msgid "Share your mail folders with other users."
+msgstr "与其他用户共享您的邮件文件夹。"
+
+#: templates/pgp/pgp.html:15
+msgid "Should PGP signed messages automatically be verified when viewed?"
+msgstr "是否在查看时自动验证 PGP 签名邮件？"
+
+#: templates/smime/smime.html:7
+msgid "Should S/MIME signed messages automatically be verified when viewed?"
+msgstr "是否在查看时自动验证 S/MIME 签名邮件？"
+
+#: config/prefs.php.dist:776
+msgid ""
+"Should large blocks of quoted text be shown or hidden by default? It can be "
+"toggled easily whichever you choose."
+msgstr "是否默认显示或隐藏内容较多的引述？无论选择显示或隐藏都可以轻松切换。"
+
+#: templates/pgp/pgp.html:11
+msgid "Should the body of text/plain messages be scanned for PGP data?"
+msgstr "扫描邮件正文/纯文本邮件是否为 PGP 数据？"
+
+#: config/prefs.php.dist:621
+msgid "Should the compose window be closed after saving a draft?"
+msgstr "是否在保存草稿后关闭写邮件窗口？"
+
+#: templates/pgp/pgp.html:7
+msgid "Should your PGP public key to be attached to your messages by default?"
+msgstr "是否将 PGP 公钥默认附加到邮件中？"
+
+#: js/imp.js.php:3 js/src/imp.js.php:43
+msgid "Show Addresses"
+msgstr "显示地址"
+
+#: templates/search/search.html:162
+msgid "Show All Folders"
+msgstr "显示所有文件夹"
+
+#: message.php:614
+msgid "Show All Headers"
+msgstr "显示所有标题"
+
+#: message.php:611
+msgid "Show Common Headers"
+msgstr "显示一般标题"
+
+#: mailbox.php:244
+msgid "Show Deleted"
+msgstr "显示已删除项"
+
+#: lib/MIME/Viewer/html.php:120
+msgid "Show Images?"
+msgstr "显示图像？"
+
+#: message.php:617
+msgid "Show Mailing List Information"
+msgstr "显示邮件列表信息"
+
+#: templates/search/search.html:162
+msgid "Show Only Subscribed Folders"
+msgstr "仅显示订阅的文件夹"
+
+#: templates/folders/actions.html:37
+msgid "Show Size"
+msgstr "显示大小"
+
+#: folders.php:349
+msgid "Show Unsubscribed"
+msgstr "显示未订阅项"
+
+#: config/prefs.php.dist:715
+msgid "Show an icon to allow stripping of attachments from messages?"
+msgstr "是否显示允许分离邮件附件的图标？"
+
+#: config/prefs.php.dist:1170
+msgid "Show legend in the mailbox view?"
+msgstr "是否在邮箱视图中显示图例？"
+
+#: config/prefs.php.dist:982
+msgid "Show previews for unread messages only?"
+msgstr "是否仅显示未阅读邮件的预览？"
+
+#: config/prefs.php.dist:990
+msgid "Show previews in tooltips?"
+msgstr "是否在工具提示对象(Tooltips)中显示预览？"
+
+#: config/prefs.php.dist:530
+msgid "Show the Bcc: header field when composing mail?"
+msgstr "是否在写邮件时显示“密件抄送：”字段？"
+
+#: config/prefs.php.dist:521
+msgid "Show the Cc: header field when composing mail?"
+msgstr "是否在写邮件时显示“抄送：”字段？"
+
+#: config/prefs.php.dist:1019
+msgid "Show the Fetch Mail icon on the menubar?"
+msgstr "是否在菜单栏上显示获取其他帐户的邮件(Fetch Mail)图标？"
+
+#: filterprefs.php:102
+msgid "Show the filter icon on the menubar?"
+msgstr "是否在菜单栏上显示过滤器图标？"
+
+#: lib/MIME/Viewer/html.php:136
+msgid "Show this HTML in a new window?"
+msgstr "是否在在新窗口中显示此 HTML？"
+
+#: lib/Block/summary.php:44
+msgid "Show total number of mails in folder?"
+msgstr "是否在文件夹中显示邮件总数？"
+
+#: config/prefs.php.dist:773
+msgid "Shown"
+msgstr "已显示"
+
+#: mailbox.php:569
+msgid "Si_ze"
+msgstr "大小_Z"
+
+#: mailbox.php:849 templates/mailbox/legend.html:15
+msgid "Signed"
+msgstr "已签名"
+
+#: templates/compose/compose.html:315
+msgid "Size:"
+msgstr "大小："
+
+#: templates/folders/folders_size.html:4
+msgid "Sizes of selected folders:"
+msgstr "所选文件夹的大小："
+
+#: mailbox.php:538
+msgid "Sort by Arrival"
+msgstr "按到达时间排序"
+
+#: mailbox.php:543
+msgid "Sort by Date"
+msgstr "按日期排序"
+
+#: mailbox.php:553
+msgid "Sort by From Address"
+msgstr "按发件人地址排序"
+
+#: mailbox.php:568
+msgid "Sort by Message Size"
+msgstr "按邮件大小排序"
+
+#: mailbox.php:563
+msgid "Sort by Subject"
+msgstr "按主题排序"
+
+#: mailbox.php:558
+msgid "Sort by Thread"
+msgstr "按线程排序"
+
+#: mailbox.php:548
+msgid "Sort by To Address"
+msgstr "按收件人地址排序"
+
+#: lib/IMAP/Tree.php:2382
+msgid "Spam folder"
+msgstr "垃圾文件夹"
+
+#: templates/prefs/spamselect.inc:23
+msgid "Spam folder:"
+msgstr "垃圾文件夹："
+
+#: compose.php:984
+msgid "Special Characters"
+msgstr "特殊字符"
+
+#: search.php:45
+msgid "Special Virtual Folders cannot be edited."
+msgstr "无法编辑特定的虚拟文件夹。"
+
+#: compose.php:555
+msgid "Spell Check Failed"
+msgstr "拼写检查失败"
+
+#: lib/MIME/Viewer/itip.php:515 lib/MIME/Viewer/itip.php:517
+#: lib/MIME/Viewer/itip.php:652 lib/MIME/Viewer/itip.php:654
+msgid "Start"
+msgstr "开始"
+
+#: compose.php:964 templates/stationery/stationery.html:8
+#: templates/stationery/stationery.html:12
+msgid "Stationery"
+msgstr "信纸"
+
+#: stationery.php:142
+msgid "Stationery name:"
+msgstr "信纸名称："
+
+#: stationery.php:144
+msgid "Stationery type:"
+msgstr "信纸类型："
+
+#: stationery.php:147
+msgid "Stationery:"
+msgstr "信纸："
+
+#: lib/MIME/Viewer/itip.php:693 lib/MIME/Viewer/itip.php:817
+msgid "Status"
+msgstr "状态"
+
+#: lib/MIME/Contents.php:255
+msgid "Strip Attachment"
+msgstr "分离附件"
+
+#: config/prefs.php.dist:974
+msgid "Strip linebreaks?"
+msgstr "是否分离断行？"
+
+#: mailbox.php:564
+msgid "Sub_ject"
+msgstr "主题_I"
+
+#: lib/Search.php:669 lib/UI/Message.php:30 templates/login/recompose.html:41
+msgid "Subject"
+msgstr "主题"
+
+#: config/prefs.php.dist:1062
+msgid "Subject Field"
+msgstr "主题字段"
+
+#: templates/thread/thread.html:37
+msgid "Subject:"
+msgstr "主题："
+
+#: templates/search/search.html:25 templates/search/search.html:200
+#: templates/saveimage/saveimage.html:19 templates/smime/passphrase.html:23
+#: templates/pgp/passphrase.html:21
+msgid "Submit"
+msgstr "提交"
+
+#: templates/folders/actions.html:23
+msgid "Subscribe"
+msgstr "订阅"
+
+#: lib/MIME/Viewer/pkcs7.php:429 lib/MIME/Viewer/pgp.php:433
+#: lib/MIME/Viewer/status.php:86
+msgid "Success"
+msgstr "成功"
+
+#: lib/MIME/Viewer/itip.php:669 lib/MIME/Viewer/itip.php:671
+#: lib/MIME/Viewer/itip.php:798 lib/MIME/Viewer/itip.php:800
+msgid "Summary"
+msgstr "摘要"
+
+#: compose.php:1021 compose.php:1022
+msgid "Switch Composition Method"
+msgstr "切换写邮件方式"
+
+#: templates/compose/compose.html:189
+msgid "Switch to HTML composition"
+msgstr "切换到 HTML 格式来写邮件"
+
+#: templates/compose/compose.html:189
+msgid "Switch to plain text composition"
+msgstr "切换到纯文本格式来写邮件"
+
+#: templates/message/navbar_navigate.html:27
+msgid "Target Folder"
+msgstr "目标文件夹"
+
+#: templates/mailbox/navbar.html:54
+msgid "Target Mailbox:"
+msgstr "目标邮箱："
+
+#: lib/IMP.php:477
+msgid "Task Lists"
+msgstr "任务列表"
+
+#: compose.php:1026
+msgid "Te_xt"
+msgstr "文本_X"
+
+#: lib/MIME/Viewer/itip.php:272
+msgid "Tentative: "
+msgstr "暂定："
+
+#: lib/MIME/Viewer/itip.php:593
+msgid "Tentatively Accept request"
+msgstr "临时接受请求"
+
+#: lib/MIME/Viewer/itip.php:888
+msgid "Tentatively Accepted"
+msgstr "临时接受"
+
+#: lib/Maintenance/Task/tos_agreement.php:46
+#, php-format
+msgid "Terms of Service file not specified in conf.php"
+msgstr "未在 conf.php 中指定服务条款文件"
+
+#: templates/stationery/stationery.html:35
+msgid "Text"
+msgstr "文本"
+
+#: config/prefs.php.dist:1103
+msgid "The From: column of the message should be linked:"
+msgstr "应链接邮件的“发件人：”列："
+
+#: lib/IMAP/Client.php:432
+msgid ""
+"The IMAP server does not appear to support the authentication method "
+"selected. Please contact your system administrator."
+msgstr "IMAP 服务器不支持所选的验证方法。请联系系统管理员。"
+
+#: lib/MIME/Viewer/appledouble.php:40
+msgid "The Macintosh resource fork"
+msgstr "Mac 资源分支"
+
+#: lib/MIME/Viewer/appledouble.php:40
+#, php-format
+msgid "The Macintosh resource fork can be downloaded %s."
+msgstr "Mac 资源分支可以下载 %s。"
+
+#: lib/MIME/Viewer/pkcs7.php:243
+#, php-format
+msgid "The S/MIME certificate of %s: "
+msgstr "%s 的 S/MIME 证书："
+
+#: fetchmailprefs.php:82
+#, php-format
+msgid "The account \"%s\" has been deleted."
+msgstr "帐户“%s”已删除。"
+
+#: fetchmailprefs.php:75
+#, php-format
+msgid "The account \"%s\" has been saved."
+msgstr "帐户“%s”已保存。"
+
+#: attachment.php:43
+msgid "The attachment was not found."
+msgstr "未找到附件。"
+
+#: lib/MIME/Viewer/itip.php:70
+msgid "The calendar data is invalid"
+msgstr "日历数据无效"
+
+#: lib/MIME/Viewer/appledouble.php:41
+msgid "The contents of the Macintosh file are below."
+msgstr "Mac 文件内容如下。"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:81
+#, php-format
+msgid "The current folder(s) \"%s\" will be renamed to \"%s\"."
+msgstr "已将当前文件夹“%s”重命名为“%s”。"
+
+#: templates/acl/acl.html:29
+msgid ""
+"The current list of users with access to this folder could not be retrieved."
+msgstr "无法检索可以访问此文件夹的当前用户列表。"
+
+#: config/prefs.php.dist:827
+msgid "The default charset for messages with no charset information:"
+msgstr "用于无字符集信息邮件的默认字符集："
+
+#: lib/Compose.php:183
+#, php-format
+msgid "The draft has been saved to the \"%s\" folder."
+msgstr "此草稿已保存到“%s”文件夹。"
+
+#: lib/MIME/Viewer/itip.php:142
+msgid "The event was added to your calendar."
+msgstr "已将此事件添加到日历。"
+
+#: lib/Folder.php:268
+#, php-format
+msgid "The folder \"%s\" already exists"
+msgstr "文件夹“%s”已存在"
+
+#: lib/Folder.php:290
+#, php-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "已创建文件夹“%s”，但未订阅。"
+
+#: lib/Folder.php:277
+#, php-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr "未创建文件夹“%s”。服务器回应"
+
+#: lib/Folder.php:188
+#, php-format
+msgid "The folder \"%s\" was not deleted. This is what the server said"
+msgstr "未删除文件夹“%s”。服务器回应"
+
+#: lib/Folder.php:293
+#, php-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "已成功创建文件夹“%s”。"
+
+#: lib/Folder.php:193
+#, php-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "已成功删除文件夹“%s”。"
+
+#: lib/Folder.php:401
+#, php-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "已成功将文件夹“%s”重命名为“%s”。"
+
+#: lib/MIME/Viewer/tnef.php:93
+msgid "The following files were attached to this part:"
+msgstr "下列文件已附加到此部分："
+
+#: lib/MIME/Viewer/status.php:74
+msgid "The mail server generated the following error message:"
+msgstr "邮件服务器生成下列错误信息："
+
+#: lib/MIME/Viewer/notification.php:50
+msgid "The mail server generated the following informational message:"
+msgstr "邮件服务器生成下列信息："
+
+#: lib/MIME/Viewer/status.php:89
+msgid "The mail server generated the following message:"
+msgstr "邮件服务器生成下列信息："
+
+#: lib/Message.php:765
+#, php-format
+msgid "The mailbox %s is already empty."
+msgstr "邮箱 %s 已空。"
+
+#: lib/Fetchmail.php:239
+#, php-format
+msgid "The message \"%s\" from \"%s\" (%d bytes) exceeds fetch size limit."
+msgstr "来自“%s”的邮件“%s”(%d 字节)已超过获取大小限制。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:64
+msgid "The message being composed has been closed. Exiting."
+msgstr "正在写的邮件已关闭。正在退出。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:52
+msgid "The message does not have a Subject entered."
+msgstr "此邮件无主题。"
+
+#: lib/Spam.php:214
+msgid "The message has been deleted."
+msgstr "已删除此邮件。"
+
+#: lib/Spam.php:198
+msgid "The message has been reported as not spam to your system administrator."
+msgstr "已向系统管理员报告此邮件不是垃圾邮件。"
+
+#: lib/Spam.php:178
+msgid "The message has been reported as not spam."
+msgstr "报告此邮件不是垃圾邮件。"
+
+#: lib/Spam.php:190
+msgid "The message has been reported as spam to your system administrator."
+msgstr "已向系统管理员报告此邮件是垃圾邮件。"
+
+#: lib/Spam.php:170
+msgid "The message has been reported as spam."
+msgstr "报告此邮件是垃圾邮件。"
+
+#: lib/MIME/Viewer/pgp.php:437
+msgid "The message has been verified."
+msgstr "已验证此邮件。"
+
+#: lib/MIME/Viewer/pkcs7.php:434
+#, php-format
+msgid "The message has been verified. Sender: %s."
+msgstr "此邮件已验证。发件人：%s。"
+
+#: lib/MIME/Viewer/tnef.php:59
+msgid "The requested file does not exist in the MS-TNEF attachment."
+msgstr "MS-TNEF 附件中没有所请求的文件。"
+
+#: lib/MIME/Viewer/zip.php:63
+msgid "The requested file does not exist in the Zip attachment."
+msgstr "ZIP 附件中没有所请求的文件。"
+
+#: message.php:430
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Please click %s to send the "
+"notification message."
+msgstr "此邮件的发件人请求您阅读之后发送“收件通知”。请单击 %s 发送通知邮件。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:51
+msgid "The signature could not be replaced."
+msgstr "无法替换此签名。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:50
+msgid "The signature was successfully replaced."
+msgstr "已成功替换签名。"
+
+#: attachment.php:127
+msgid "The specified file cannot be read."
+msgstr "无法读取所指定的文件。"
+
+#: attachment.php:59
+msgid "The specified file does not exist."
+msgstr "所指定的文件不存在。"
+
+#: stationery.php:85
+#, php-format
+msgid "The stationery \"%s\" has been added."
+msgstr "已添加信纸“%s”。"
+
+#: stationery.php:63
+#, php-format
+msgid "The stationery \"%s\" has been deleted."
+msgstr "已删除信纸“%s”。"
+
+#: stationery.php:88
+#, php-format
+msgid "The stationery \"%s\" has been updated."
+msgstr "已更新信纸“%s”。"
+
+#: lib/MIME/Viewer/itip.php:172
+msgid "The task has been added to your tasklist."
+msgstr "已将此任务添加到任务列表中。"
+
+#: lib/MIME/Viewer/status.php:94
+msgid "The text of the message"
+msgstr "邮件内容"
+
+#: lib/MIME/Viewer/status.php:93
+#, php-format
+msgid "The text of the message can be viewed %s."
+msgstr "可以查看邮件内容 %s。"
+
+#: lib/MIME/Viewer/status.php:79
+msgid "The text of the returned message"
+msgstr "所返回信息的内容"
+
+#: lib/MIME/Viewer/status.php:78
+#, php-format
+msgid "The text of the returned message can be viewed %s."
+msgstr "可以查看退件内容 %s。"
+
+#: lib/MIME/Viewer/notification.php:66
+msgid "The text of the sent message"
+msgstr "发件内容"
+
+#: lib/MIME/Viewer/notification.php:66
+#, php-format
+msgid "The text of the sent message can be viewed %s."
+msgstr "可以查看发件内容 %s。"
+
+#: lib/MIME/Viewer/itip.php:157
+msgid "The user's free/busy information was sucessfully stored."
+msgstr "成功存储用户忙/闲信息。"
+
+#: lib/MIME/Viewer/alternative.php:56
+msgid "There are no alternative parts that can be displayed."
+msgstr "无可供显示的备选部分。"
+
+#: templates/mailbox/empty_mailbox.html:2
+msgid "There are no messages in this mailbox."
+msgstr "此邮箱中没有邮件。"
+
+#: thread.php:101
+msgid "There is no text that can be displayed inline."
+msgstr "无可以嵌入显示的内容。"
+
+#: lib/Message.php:141
+#, php-format
+msgid ""
+"There was an error copying messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr "将邮件从“%s”复制到“%s”时出错。服务器回应"
+
+#: lib/Message.php:266
+#, php-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr "从文件夹“%s”删除邮件时出错。服务器回应"
+
+#: lib/MIME/Viewer/itip.php:102
+#, php-format
+msgid "There was an error deleting the event: %s."
+msgstr "删除事件时出错：%s。"
+
+#: lib/MIME/Viewer/plain.php:51 lib/MIME/Viewer/enriched.php:36
+msgid "There was an error displaying this message part"
+msgstr "显示此邮件时出错"
+
+#: lib/Message.php:609
+#, php-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr "标记文件夹“%s”中的邮件时出错。服务器回应"
+
+#: folders.php:138
+#, php-format
+msgid "There was an error importing %s."
+msgstr "导入 %s 时出错。"
+
+#: lib/MIME/Viewer/itip.php:139
+#, php-format
+msgid "There was an error importing the event: %s."
+msgstr "导入事件时出错：%s。"
+
+#: lib/MIME/Viewer/itip.php:169
+#, php-format
+msgid "There was an error importing the task: %s."
+msgstr "导入任务时出错：%s。"
+
+#: lib/MIME/Viewer/itip.php:155
+#, php-format
+msgid "There was an error importing user's free/busy information: %s."
+msgstr "导入用户忙/闲信息时出错：%s。"
+
+#: lib/Message.php:137
+#, php-format
+msgid ""
+"There was an error moving messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr "将邮件从“%s”移到“%s”时出错。服务器回应"
+
+#: lib/Compose.php:581
+#, php-format
+msgid "There was an error sending your message: %s"
+msgstr "发送邮件时出错：%s"
+
+#: lib/MIME/Viewer/itip.php:116
+#, php-format
+msgid "There was an error updating the event: %s."
+msgstr "更新事件时出错：%s。"
+
+#: lib/MIME/Viewer/pgp.php:166
+msgid "This PGP Public Key was attached to the message."
+msgstr "已将此 PGP 公钥附加到邮件。 "
+
+#: lib/MIME/Viewer/itip.php:107 lib/MIME/Viewer/itip.php:121
+#: lib/MIME/Viewer/itip.php:146 lib/MIME/Viewer/itip.php:160
+#: lib/MIME/Viewer/itip.php:176 lib/MIME/Viewer/itip.php:318
+msgid "This action is not supported."
+msgstr "不支持此操作。"
+
+#: lib/MIME/Viewer/itip.php:182 lib/MIME/Viewer/itip.php:424
+msgid "This action is not yet implemented."
+msgstr "此操作尚未完成。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:74
+msgid "This may take some time. Are you sure you want to continue?"
+msgstr "此操作会花费一些时间。您确定要继续吗？"
+
+#: lib/MIME/Viewer/appledouble.php:39
+msgid "This message contains a Macintosh file."
+msgstr "此邮件包含 Mac 文件。"
+
+#: lib/MIME/Viewer/pkcs7.php:460
+msgid ""
+"This message contains an attachment that has been digitally signed via S/"
+"MIME."
+msgstr "此邮件包含经过 S/MIME 进行数字签名的附件。"
+
+#: lib/MIME/Viewer/pkcs7.php:464
+msgid "This message contains an attachment that has been encrypted via S/MIME."
+msgstr "此邮件包含经过 S/MIME 进行加密的附件。"
+
+#: lib/MIME/Viewer/status.php:159
+msgid ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+msgstr "此邮件包含发件状态信息，但邮件格式未知。"
+
+#: lib/MIME/Viewer/pgp.php:358
+msgid ""
+"This message does not appear to be a valid PGP encrypted message. Error: "
+msgstr "此邮件不是有效的 PGP 加密邮件。错误："
+
+#: lib/MIME/Viewer/pgp.php:250 lib/MIME/Viewer/pgp.php:393
+msgid ""
+"This message does not appear to be in the correct PGP format (according to "
+"RFC 2015)."
+msgstr "此邮件的 PGP 格式错误(参照 RFC 2015)。"
+
+#: lib/MIME/Viewer/pkcs7.php:202
+msgid "This message does not appear to be in the correct S/MIME format."
+msgstr "此邮件的 S/MIME f格式错误。"
+
+#: lib/MIME/Viewer/pgp.php:201
+msgid ""
+"This message has been digitally signed and encrypted with PGP, but the "
+"signature cannot be verified."
+msgstr "此邮件已进行数字签名，并使用 PGP 进行加密，但签名无法验证。"
+
+#: lib/MIME/Viewer/pgp.php:207
+msgid "This message has been digitally signed and encrypted with PGP."
+msgstr "此邮件已进行数字签名，并使用 PGP 进行加密。"
+
+#: lib/MIME/Viewer/pgp.php:203
+msgid ""
+"This message has been digitally signed via PGP, but the signature cannot be "
+"verified."
+msgstr "此邮件已通过 PGP 进行数字签名，但签名无法验证。"
+
+#: lib/MIME/Viewer/pgp.php:209
+msgid "This message has been digitally signed via PGP."
+msgstr "此邮件已经过 PGP 进行数字签名。"
+
+#: lib/MIME/Viewer/pkcs7.php:175
+msgid "This message has been digitally signed via S/MIME."
+msgstr "此邮件已经过 S/MIME 进行数字签名。"
+
+#: lib/MIME/Viewer/pkcs7.php:171 lib/MIME/Viewer/pkcs7.php:282
+msgid "This message has been encrypted via S/MIME."
+msgstr "此邮件已经过 S/MIME 进行加密。"
+
+#: lib/MIME/Viewer/pgp.php:309
+msgid ""
+"This message has been encrypted with PGP, however, PGP support is disabled "
+"so the message cannot be decrypted."
+msgstr "此邮件已使用 PGP 进行加密，但因 PGP 支持已禁用，所以无法解密此邮件。"
+
+#: lib/MIME/Viewer/pgp.php:342
+msgid ""
+"This message has been encrypted with PGP, however, no personal private key "
+"exists so the message cannot be decrypted."
+msgstr "此邮件已使用 PGP 进行加密，但因有个人私钥，所以无法解密此邮件。"
+
+#: lib/MIME/Viewer/pgp.php:353
+msgid "This message has been encrypted with PGP."
+msgstr "此邮件已经过 PGP 进行加密。"
+
+#: lib/MIME/Viewer/pgp.php:348
+msgid ""
+"This message has been encrypted with PGP. You must enter the passphrase for "
+"your PGP private key before it can be decrypted."
+msgstr "此邮件已使用 PGP 进行加密。您需要输入 PGP 私钥密码才可以解密此邮件。"
+
+#: lib/MIME/Viewer/pgp.php:337
+msgid ""
+"This message has been encrypted with PGP. You must enter the passphrase that "
+"was used to encrypt this message."
+msgstr "此邮件已使用 PGP 进行加密。您需要输入用于加密此邮件的密码。"
+
+#: lib/MIME/Contents.php:419
+msgid "This message part can not be viewed because it is too large."
+msgstr "因邮件太大，导致无法查看此邮件。"
+
+#: message.php:515
+msgid "This message to"
+msgstr "此邮件发送到"
+
+#: acl.php:45
+msgid "This server does not support sharing folders."
+msgstr "此服务器不支持共享文件夹。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:65
+msgid "This window must be called from a compose window."
+msgstr "必须从写邮件窗口调用此窗口。"
+
+#: templates/thread/thread.html:2
+msgid "Thread Display:"
+msgstr "线程显示："
+
+#: thread.php:155 config/prefs.php.dist:1064
+msgid "Thread View"
+msgstr "线程视图"
+
+#: lib/MIME/Viewer/images.php:170
+msgid "Thumbnail of attached image"
+msgstr "所附图像的缩略图"
+
+#: compose.php:745 mailbox.php:549 lib/Search.php:657 lib/UI/Mailbox.php:88
+#: lib/UI/Message.php:26 templates/contacts/contacts.html:40
+#: templates/login/recompose.html:14
+msgid "To"
+msgstr "收件人"
+
+#: config/prefs.php.dist:1061
+msgid "To Address"
+msgstr "收件人地址"
+
+#: message.php:556
+msgid "To All"
+msgstr "发给所有人"
+
+#: message.php:552
+msgid "To List"
+msgstr "发送列表"
+
+#: message.php:549
+msgid "To Sender"
+msgstr "发给发件人"
+
+#: message.php:556
+msgid "To _All"
+msgstr "发给所有人_A"
+
+#: message.php:552
+msgid "To _List"
+msgstr "发送列表_L"
+
+#: templates/compose/redirect.html:46
+msgid "To field"
+msgstr "发送字段"
+
+#: templates/prefs/sourceselect.inc:328
+msgid ""
+"To select multiple fields, hold down the Control (PC) or Command (Mac) while "
+"clicking."
+msgstr "若要选择多个字段，请在单击时同时按下 Control (PC) 或 Command (Mac)。"
+
+#: lib/IMAP/Client.php:131
+msgid ""
+"To use a TLS connection, you must be running a version of PHP 5.1.0 or "
+"higher."
+msgstr "若要使用 TLS 连接，则必须运行 PHP 5.1.0 或更高版本。"
+
+#: thread.php:114 templates/thread/thread.html:32
+msgid "To:"
+msgstr "收件人："
+
+#: config/prefs.php.dist:509
+msgid "Top"
+msgstr "顶部"
+
+#: templates/compose/compose.html:307
+msgid "Total Size:"
+msgstr "总大小："
+
+#: lib/IMAP/Tree.php:2369
+msgid "Trash folder"
+msgstr "垃圾文件夹"
+
+#: templates/prefs/trashselect.inc:23
+msgid "Trash folder:"
+msgstr "垃圾文件夹："
+
+#: lib/Quota/sql.php:79
+msgid "Unable to connect to SQL server."
+msgstr "无法连接到 SQL 服务器。"
+
+#: lib/Quota/cyrus.php:40 lib/Quota/mercury32.php:78 lib/Quota/command.php:93
+#: lib/Quota/logfile.php:87 lib/Quota/courier.php:42 lib/Quota/mdaemon.php:45
+msgid "Unable to retrieve quota"
+msgstr "无法检索配额"
+
+#: templates/message/navbar_navigate.html:13 templates/mailbox/navbar.html:19
+#: templates/mailbox/navbar.html:35
+msgid "Unanswered"
+msgstr "未答复"
+
+#: search.php:332
+msgid "Unanswered messages"
+msgstr "未答复的邮件"
+
+#: message.php:543 mailbox.php:476
+msgid "Undelete"
+msgstr "未删除"
+
+#: search.php:342
+msgid "Undeleted messages"
+msgstr "无法删除邮件"
+
+#: lib/MIME/Headers.php:213 lib/UI/Mailbox.php:66 lib/UI/Mailbox.php:84
+msgid "Undisclosed Recipients"
+msgstr "保密收件人"
+
+#: lib/IMAP/Client.php:462
+msgid "Unexpected response from server to AUTHENTICATE command."
+msgstr "服务器因 AUTHENTICATE 命令返回意外响应。"
+
+#: lib/IMAP/Client.php:428
+msgid "Unexpected response from server to Digest-MD5 response."
+msgstr "服务器因 Digest-MD5 响应返回意外响应。"
+
+#: lib/MIME/Viewer/itip.php:456
+#, php-format
+msgid "Unhandled component of type: %s"
+msgstr "无法处理的组件类型：%s"
+
+#: search.php:337
+msgid "Unimportant messages"
+msgstr "不重要的邮件"
+
+#: lib/UI/Mailbox.php:181
+msgid "Unknown Date"
+msgstr "未知日期"
+
+#: lib/IMAP/Client.php:205
+#, php-format
+msgid "Unknown IMAP response from the server. Server Responded: %s"
+msgstr "服务器返回未知 IMAP 回应。服务器回应：%s"
+
+#: lib/MIME/Viewer/itip.php:636
+msgid "Unknown Meeting"
+msgstr "未知会议"
+
+#: lib/UI/Mailbox.php:103
+msgid "Unknown Recipient"
+msgstr "未知收件人"
+
+#: lib/MIME/Viewer/itip.php:778
+msgid "Unknown Task"
+msgstr "未知任务"
+
+#: smime.php:335 pgp.php:426
+msgid "Unload Passphrase"
+msgstr "上传密码"
+
+#: fetchmailprefs.php:66
+msgid "Unnamed"
+msgstr "未命名"
+
+#: message.php:470 mailbox.php:715 mailbox.php:837
+#: templates/message/navbar_navigate.html:9 templates/mailbox/navbar.html:15
+#: templates/mailbox/navbar.html:31 templates/mailbox/legend.html:3
+msgid "Unseen"
+msgstr "未阅读"
+
+#: templates/folders/actions.html:24
+msgid "Unsubscribe"
+msgstr "取消订阅"
+
+#: templates/compose/compose.html:281
+msgid "Update"
+msgstr "更新"
+
+#: lib/MIME/Viewer/itip.php:622
+msgid "Update respondent status"
+msgstr "更新答复状态"
+
+#: lib/MIME/Viewer/itip.php:601
+msgid "Update this event on my calendar"
+msgstr "更新我的日历中的此事件"
+
+#: templates/smime/import_key.html:40 templates/pgp/import_key.html:38
+msgid "Upload:"
+msgstr "上传："
+
+#: templates/prefs/sentmailselect.inc:41
+msgid "Use Default Value"
+msgstr "使用默认值"
+
+#: config/prefs.php.dist:263
+msgid "Use IMAP folder subscriptions?"
+msgstr "是否使用 IMAP 文件夹订阅？"
+
+#: config/prefs.php.dist:878
+msgid "Use Virtual Trash Folder?"
+msgstr "是否使用虚拟垃圾文件夹？"
+
+#: templates/acl/acl.html:42
+msgid "User"
+msgstr "用户"
+
+#: acl.php:87 acl.php:128
+#, php-format
+msgid ""
+"User \"%s\" successfully given the specified rights for the folder \"%s\"."
+msgstr "成功授予用户“%s”对文件夹“%s”的权限。"
+
+#: templates/login/login.html:84
+msgid "Username"
+msgstr "用户名"
+
+#: templates/login/mobile.inc:14
+msgid "Username: "
+msgstr "用户名："
+
+#: lib/MIME/Viewer/pkcs7.php:244 templates/smime/smime.html:31
+#: templates/smime/smime.html:67 templates/smime/smime.html:71
+#: templates/pgp/pgp.html:38 templates/pgp/pgp.html:73
+#: templates/pgp/pgp.html:78
+msgid "View"
+msgstr "查看"
+
+#: lib/MIME/Viewer/zip.php:91 lib/MIME/Viewer/tnef.php:109
+#, php-format
+msgid "View %s"
+msgstr "查看 %s"
+
+#: smime.php:309 pgp.php:398
+#, php-format
+msgid "View %s Public Key"
+msgstr "查看 %s 公钥"
+
+#: lib/MIME/Viewer/images.php:160 lib/MIME/Viewer/images.php:165
+msgid "View Attachment"
+msgstr "查看附件"
+
+#: mailbox.php:509
+msgid "View Messages"
+msgstr "查看邮件"
+
+#: smime.php:336 pgp.php:427
+msgid "View Personal Private Key"
+msgstr "查看个人密钥"
+
+#: smime.php:332 pgp.php:421
+msgid "View Personal Public Key"
+msgstr "查看个人公钥"
+
+#: message.php:567
+msgid "View Thread"
+msgstr "线程视图"
+
+#: lib/MIME/Viewer/pkcs7.php:468
+msgid "View attachment in a separate window"
+msgstr "在新窗口中查看附件"
+
+#: lib/MIME/Viewer/related.php:85
+msgid "View content in a separate window"
+msgstr "在新窗口中查看内容"
+
+#: lib/MIME/Viewer/itip.php:143
+msgid "View event"
+msgstr "查看事件"
+
+#: folders.php:403 mailbox.php:651
+#, php-format
+msgid "View messages in %s"
+msgstr "查看 %s 中的邮件"
+
+#: templates/prefs/initialpageselect.inc:19
+msgid "View or mailbox to display after login:"
+msgstr "登录后显示的视图或邮箱："
+
+#: lib/MIME/Viewer/itip.php:173
+msgid "View task"
+msgstr "查看任务"
+
+#: mailbox.php:328 mailbox.php:329
+msgid "Virtual Folder"
+msgstr "虚拟文件夹"
+
+#: search.php:153
+#, php-format
+msgid "Virtual Folder \"%s\" created succesfully."
+msgstr "已成功创建虚拟文件夹“%s”。"
+
+#: lib/IMAP/Tree.php:86 templates/search/search.html:184
+msgid "Virtual Folders"
+msgstr "虚拟文件夹"
+
+#: search.php:148
+msgid "Virtual Folders require a label."
+msgstr "虚拟文件夹需要标签。"
+
+#: lib/Search.php:406
+msgid "Virtual INBOX"
+msgstr "虚拟收件箱"
+
+#: lib/IMAP/Tree.php:2409
+msgid "Virtual INBOX Folder"
+msgstr "虚拟收件箱文件夹"
+
+#: lib/Search.php:350
+msgid "Virtual Trash"
+msgstr "虚拟垃圾箱"
+
+#: lib/IMAP/Tree.php:2405
+msgid "Virtual Trash Folder"
+msgstr "虚拟垃圾文件夹"
+
+#: templates/search/search.html:195
+msgid "Virtual folder label:"
+msgstr "虚拟文件夹标签："
+
+#: lib/MIME/Viewer/pkcs7.php:423
+msgid "Warning"
+msgstr "警告"
+
+#: login.php:183 login.php:314 templates/login/mobile.inc:11
+#, php-format
+msgid "Welcome to %s"
+msgstr "欢迎来到 %s"
+
+#: config/prefs.php.dist:726
+msgid ""
+"What should we do with spam messages after they have been reported as spam "
+"or innocent?"
+msgstr "当报告垃圾邮件或正常邮件时，应对垃圾邮件执行哪些操作？"
+
+#: config/prefs.php.dist:870
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted?"
+msgstr "删除邮件时，是否将它们移到垃圾文件夹而非标记为已删除？"
+
+#: config/prefs.php.dist:1049
+msgid ""
+"When opening a new mailbox for the first time, which page do you want to "
+"start on?"
+msgstr "第一次打开新邮箱时，您希望先打开哪个页面？"
+
+#: config/prefs.php.dist:576
+msgid ""
+"When replying/forwarding to a message, should we use the same format as the "
+"original message?"
+msgstr "当回复/转发邮件时，是否使用与原始邮件相同的格式？"
+
+#: config/prefs.php.dist:680
+msgid "When saving sent-mail, should we save attachment data?"
+msgstr "当保存已发送邮件时，是否保存附件数据？"
+
+#: config/prefs.php.dist:482
+msgid ""
+"When sending mail or expanding addresses, what domain should we append to "
+"unqualified addresses (email addresses without \"@\")?"
+msgstr ""
+"当发送邮件或增加地址时，哪些站点应附在不合格地址(不包含“@”的地址)之后？"
+
+#: config/prefs.php.dist:839
+msgid "Where do you want to display links to alternative formats of a message?"
+msgstr "显示邮件其他格式链接的位置？"
+
+#: config/prefs.php.dist:512
+msgid "Where should the cursor be located in the compose text area by default?"
+msgstr "默认情况下，光标在编写文本区域所处的位置？"
+
+#: message.php:575 mailbox.php:492
+msgid "Whitelist"
+msgstr "白名单"
+
+#: templates/search/search.html:99
+msgid "Year"
+msgstr "年"
+
+#: config/prefs.php.dist:1127 config/prefs.php.dist:1138
+#: templates/compose/compose.html:292
+msgid "Yes"
+msgstr "是"
+
+#: lib/Maintenance/Task/fetchmail_login.php:57
+msgid "You are about to fetch email from the following account(s):"
+msgstr "您正从下列帐户获取邮件："
+
+#: templates/folders/folders_confirm.html:10
+msgid ""
+"You are attempting to delete all messages contained in the following folder"
+"(s)."
+msgstr "您正尝试删除下列文件夹中的所有邮件。"
+
+#: templates/folders/folders_confirm.html:9
+msgid "You are attempting to delete the following folder(s)."
+msgstr "您正尝试删除下列文件夹。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:91
+msgid "You are copying/moving to a new folder."
+msgstr "正复制/移动到新文件夹。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:70
+msgid "You are creating a sub-folder to"
+msgstr "您正在创建子文件夹，主文件夹"
+
+#: js/imp.js.php:3 js/src/imp.js.php:72
+msgid "You are creating a top-level folder."
+msgstr "您正在创建最上层文件夹。"
+
+#: lib/Folder.php:249
+msgid "You are not allowed to create folders."
+msgstr "不允许创建文件夹。"
+
+#: lib/Folder.php:256
+#, php-format
+msgid "You are not allowed to create more than %d folders."
+msgstr "最多允许创建 %d 个文件夹。"
+
+#: lib/Compose.php:842
+#, php-format
+msgid ""
+"You are not allowed to send messages to more than %d recipients within %d "
+"hours."
+msgstr "允许在 %d 小时内将邮件发送给最多 %d 个收件人。"
+
+#: lib/Compose.php:1066
+#, php-format
+msgid "You are not allowed to send messages to more than %d recipients."
+msgstr "允许将邮件发送给最多 %d 个收件人。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:75
+msgid "You are renaming the folder:"
+msgstr "您正在重命名文件夹："
+
+#: templates/stationery/stationery.html:43
+msgid ""
+"You can use the following placeholders in the stationery text: %c for the "
+"current message content; %s for the signature."
+msgstr "您可以在信纸文本中使用下列占位符：%c 用于当前内容；%s 用于签名。"
+
+#: lib/Folder.php:512
+#, php-format
+msgid "You cannot unsubscribe from \"%s\"."
+msgstr "无法取消订阅“%s”。"
+
+#: lib/Maintenance/Task/tos_agreement.php:33
+msgid ""
+"You did not agree to the Terms of Service agreement, so you were not allowed "
+"to login."
+msgstr "因您不接受服务条款协议，所以无法登录。"
+
+#: templates/acl/acl.html:88
+msgid "You do not have permission to change access to this folder."
+msgstr "您不可以更改此文件夹的访问权限。"
+
+#: lib/Maillog.php:130
+#, php-format
+msgid "You forwarded this message on %%s to the following recipients: %s."
+msgstr "您已在 %%s 将此邮件转发给下列收件人：%s。"
+
+#: mailbox.php:362
+#, php-format
+msgid "You have %s new messages."
+msgstr "您有 %s 封新邮件。"
+
+#: mailbox.php:362
+msgid "You have 1 new message."
+msgstr "您有一封新邮件。"
+
+#: compose.php:122
+msgid "You have already submitted this page."
+msgstr "您已提交此页面。"
+
+#: templates/folders/alert.html:2
+msgid "You have new mail in:"
+msgstr "您有新邮件，位于："
+
+#: lib/Compose.php:1048
+msgid "You must enter at least one recipient."
+msgstr "您需要先选择至少一个收件人。"
+
+#: lib/MIME/Viewer/pgp.php:348
+msgid ""
+"You must enter the passphrase for your PGP private key to view this message."
+msgstr "您需要输入 PGP 个人密钥的密码才可以查看此邮件。"
+
+#: lib/MIME/Viewer/pkcs7.php:298
+msgid ""
+"You must enter the passphrase for your S/MIME private key to view this "
+"message"
+msgstr "您需要输入 S/MIME 密钥密码才可以查看此邮件"
+
+#: lib/MIME/Viewer/pgp.php:337
+msgid "You must enter the passphrase that was used to encrypt this message."
+msgstr "您需要输入用于加密此邮件的密码。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:92
+msgid "You must select a target mailbox first."
+msgstr "您需要先选择目标邮箱。"
+
+#: fetchmailprefs.php:86
+msgid "You must select an account to be deleted."
+msgstr "您需要选择待删除的帐户。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:63
+msgid "You must select an address first."
+msgstr "您需要先选择地址。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:58 js/src/imp.js.php:60
+msgid "You must select at least one message first."
+msgstr "您需要先选择至少一封邮件。"
+
+#: lib/Compose.php:765
+msgid "You must separate e-mail addresses with commas (,) not semicolons (;)."
+msgstr "您需要使用英文逗号 (,) 而非分号 (;) 来隔开电子邮件地址。"
+
+#: js/imp.js.php:3 js/src/imp.js.php:49
+msgid "You must specify a recipient."
+msgstr "您需要指定收件人。"
+
+#: lib/Maillog.php:138
+#, php-format
+msgid "You redirected this message to %s on %%s."
+msgstr "您已在 %%s 将此邮件重定向到 %s。"
+
+#: lib/Maillog.php:142
+#, php-format
+msgid "You replied to this message on %s."
+msgstr "您已在 %s 回复此邮件。"
+
+#: lib/Folder.php:462
+#, php-format
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr "您未订阅“%s”。此为服务器回应"
+
+#: lib/Folder.php:514
+#, php-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr "您未取消订阅“%s”。此为服务器回应"
+
+#: lib/Folder.php:465
+#, php-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr "您已成功订阅“%s”。"
+
+#: lib/Folder.php:517
+#, php-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "您已成功取消订阅“%s”"
+
+#: templates/pgp/pgp.html:93
+msgid "Your Name:"
+msgstr "您的姓名："
+
+#: templates/pgp/pgp.html:61
+msgid "Your PGP Public/Private Keys"
+msgstr "您的 PGP 公钥/密钥"
+
+#: templates/smime/smime.html:70 templates/pgp/pgp.html:77
+msgid "Your Private Key:"
+msgstr "您的私钥："
+
+#: templates/smime/smime.html:66 templates/pgp/pgp.html:72
+msgid "Your Public Key:"
+msgstr "您的公钥："
+
+#: config/prefs.php.dist:173
+msgid "Your Reply-to: address: <em>(optional)</em>"
+msgstr "您的答复地址：<em>(可选)</em>"
+
+#: templates/smime/smime.html:56
+msgid "Your S/MIME Public/Private Certificates"
+msgstr "您的 S/MIME 公共/个人证书"
+
+#: fetchmail.php:19
+msgid "Your account does not support fetching external mail."
+msgstr "您的帐户不支持获取(获取)外部邮件。"
+
+#: config/prefs.php.dist:181
+msgid ""
+"Your alias addresses: <em>(optional, enter each address on a new line)</em>"
+msgstr "您的别名地址：<em>(可选，每行输入一个地址)</em>"
+
+#: lib/MIME/Viewer/images.php:89
+msgid "Your browser does not support inline display of this image type."
+msgstr "您的浏览器不支持嵌入显示此类图像。"
+
+#: config/prefs.php.dist:658
+msgid "Your default charset for sending messages:"
+msgstr "发送邮件所用的默认字符集："
+
+#: templates/prefs/encryptselect.inc:1
+msgid "Your default encryption method for sending messages:"
+msgstr "发送邮件所用的默认加密方式："
+
+#: attachment.php:113
+#, php-format
+msgid ""
+"Your linked attachment has been downloaded by at least one user.\n"
+"\n"
+"Attachment name: %s\n"
+"Attachment date: %s\n"
+"\n"
+"Click on the following link to permanently delete the attachment:\n"
+"%s"
+msgstr ""
+"已有多个用户下载您所链接的附件。\n"
+"\n"
+"附件名：%s\n"
+"所附日期：%s\n"
+"\n"
+"单击下列链接来永久删除附件：\n"
+"%s"
+
+#: lib/MIME/Viewer/status.php:88
+msgid "Your message was successfully delivered."
+msgstr "已成功发送邮件“%s”。"
+
+#: config/prefs.php.dist:205
+msgid "Your signature:"
+msgstr "您的签名："
+
+#: lib/Message.php:519
+#, php-format
+msgid "[Attachment stripped: Original attachment type: %s, name: %s]"
+msgstr "[已分离的附件：原始附件类型：%s、名称：%s]"
+
+#: message.php:263 mailbox.php:675 lib/Compose.php:1578 lib/Compose.php:2049
+msgid "[No Subject]"
+msgstr "[No Subject]"
+
+#: lib/MIME/Viewer/pgp.php:170
+msgid "[Save the key to your Address book]"
+msgstr "[将密钥保存到地址簿中]"
+
+#: lib/MIME/Headers.php:224
+#, php-format
+msgid "[Show addresses - %s recipients]"
+msgstr "[显示地址 - %s 收件人]"
+
+#: lib/MIME/Viewer/pgp.php:172
+msgid "[View the raw key]"
+msgstr "[查看初始许可证]"
+
+#: compose.php:876
+msgid "_Bcc"
+msgstr "密件抄送_B"
+
+#: message.php:571 mailbox.php:488
+msgid "_Blacklist"
+msgstr "黑名单_B"
+
+#: compose.php:873
+msgid "_Cc"
+msgstr "抄送_C"
+
+#: message.php:545 mailbox.php:470 mailbox.php:472
+msgid "_Delete"
+msgstr "删除_D"
+
+#: lib/IMP.php:794
+msgid "_Folders"
+msgstr "文件夹_F"
+
+#: compose.php:853
+msgid "_Identity"
+msgstr "标识_I"
+
+#: lib/IMP.php:763
+msgid "_Inbox"
+msgstr "收件箱_I"
+
+#: lib/IMP.php:831
+msgid "_Log out"
+msgstr "注销_L"
+
+#: message.php:580
+msgid "_Message Source"
+msgstr "邮件来源_M"
+
+#: lib/IMP.php:791
+msgid "_New Message"
+msgstr "新邮件_N"
+
+#: message.php:593
+msgid "_Print"
+msgstr "打印_P"
+
+#: compose.php:943
+msgid "_Priority"
+msgstr "优先级_P"
+
+#: mailbox.php:319
+#, php-format
+msgid "_Refresh %s"
+msgstr "刷新 %s_R"
+
+#: message.php:548
+msgid "_Reply"
+msgstr "答复_R"
+
+#: lib/IMP.php:796
+msgid "_Search"
+msgstr "搜索_S"
+
+#: compose.php:839
+msgid "_Send Message"
+msgstr "发送邮件_S"
+
+#: mailbox.php:559
+msgid "_Thread"
+msgstr "线程_T"
+
+#: compose.php:869 compose.php:871
+msgid "_To"
+msgstr "收件人_T"
+
+#: mailbox.php:476
+msgid "_Undelete"
+msgstr "取消删除_U"
+
+#: message.php:567
+msgid "_View Thread"
+msgstr "线程视图_V"
+
+#: message.php:575 mailbox.php:492
+msgid "_Whitelist"
+msgstr "白名单_W"
+
+#: lib/Compose.php:869
+msgid "addressee unknown"
+msgstr "地址未知"
+
+#: lib/Search.php:542
+msgid "and"
+msgstr "和"
+
+#: lib/Compose.php:1686
+msgid "attachment"
+msgstr "附件"
+
+#: view.php:116
+msgid "attachments.zip"
+msgstr "attachments.zip"
+
+#: templates/compose/compose.html:273
+msgid "bytes"
+msgstr "字节"
+
+#: lib/Compose.php:893
+msgid "cannot create output file"
+msgstr "无法打开输出文件"
+
+#: lib/Compose.php:865
+msgid "cannot open input"
+msgstr "无法打开输入文件"
+
+#: lib/Compose.php:857
+msgid "command line usage error"
+msgstr "命令行使用错误"
+
+#: lib/Compose.php:913
+msgid "configuration error"
+msgstr "配置错误"
+
+#: lib/Compose.php:889
+msgid "critical system file missing"
+msgstr "关键系统文件丢失"
+
+#: lib/Compose.php:861
+msgid "data format error"
+msgstr "数据格式错误"
+
+#: lib/Compose.php:917
+msgid "entry not found"
+msgstr "未找到条目"
+
+#: templates/contacts/contacts.html:16
+msgid "from"
+msgstr "发件人"
+
+#: lib/Compose.php:873
+msgid "host name unknown"
+msgstr "主机名未知"
+
+#: lib/Search.php:544
+msgid "in"
+msgstr "在"
+
+#: lib/Compose.php:897
+msgid "input/output error"
+msgstr "输入/输出错误"
+
+#: lib/Compose.php:881
+msgid "internal software error"
+msgstr "内部软件错误"
+
+#: templates/folders/import.html:13
+msgid "into folder"
+msgstr "到文件夹"
+
+#: smime.php:37 pgp.php:77
+msgid "key"
+msgstr "密钥"
+
+#: folders.php:134
+msgid "mailbox file"
+msgstr "邮箱文件"
+
+#: lib/Compose.php:654
+msgid "name"
+msgstr "名称"
+
+#: lib/Search.php:539
+msgid "not"
+msgstr "不"
+
+#: lib/Search.php:542
+msgid "or"
+msgstr "或"
+
+#: lib/Compose.php:909
+msgid "permission denied"
+msgstr "权限不足"
+
+#: js/imp.js.php:3 js/src/imp.js.php:44
+msgid "recipients"
+msgstr "收件人"
+
+#: lib/Compose.php:905
+msgid "remote error in protocol"
+msgstr "协议中存在远程错误"
+
+#: lib/Compose.php:877
+msgid "service unavailable"
+msgstr "服务不可用"
+
+#: lib/Compose.php:885
+msgid "system error"
+msgstr "系统错误"
+
+#: lib/Compose.php:901
+msgid "temporary failure"
+msgstr "临时故障"
+
+#: lib/Filter.php:60
+msgid "your blacklist"
+msgstr "您的黑名单"
+
+#: lib/Filter.php:70
+msgid "your whitelist"
+msgstr "您的白名单"

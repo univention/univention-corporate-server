@@ -1,0 +1,1602 @@
+# IMP Romanian translation.
+# Copyright 2002-2009 The Horde Project.
+# Corneliu MUSAT <cmusat@keysys.ro>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: IMP 3.1\n"
+"POT-Creation-Date: 2002-08-01 04:40-0700\n"
+"PO-Revision-Date: 2002-08-01 12:56:+02:00\n"
+"Last-Translator: Corneliu MUSAT <cmusat@keysys.ro>\n"
+"Language-Team: Romanian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "      To: "
+msgstr "      Catre: "
+
+msgid "    Date: "
+msgstr "    Data: "
+
+msgid "    From: "
+msgstr "    De la: "
+
+msgid " - $nm new message"
+msgstr " - $nm mesaj nou"
+
+msgid " - $nm new messages"
+msgstr " - $nm mesaje noi"
+
+msgid " Subject: "
+msgstr " Subiect: "
+
+msgid " in "
+msgstr " in "
+
+msgid "#"
+msgstr ""
+
+#, c-format
+msgid "%c"
+msgstr ""
+
+#, c-format
+msgid "%d of %d Messages"
+msgstr "%d din %d Mesaje"
+
+#, c-format
+msgid "%d to %d of %d Messages"
+msgstr "%d - %d din %d Mesaje"
+
+#, c-format
+msgid "%s already exists. Your %s folder was not renamed."
+msgstr "%s exista. Directorul %s nu a putut fi redenumit."
+
+#, c-format
+msgid "%s does not appear to be a valid mailbox."
+msgstr "%s nu pare sa fie o casuta postala valida."
+
+#, c-format
+msgid "%s folder being renamed at the start of the month."
+msgstr "Directorul %s va fi redenumit. Inceput de luna."
+
+#, c-format
+msgid "%s is already empty."
+msgstr "%s este deja gol."
+
+#, c-format
+msgid "%s: %s (%d&nbsp;of&nbsp;%d)"
+msgstr ""
+
+msgid "(Apply these changes and move to next screen.)"
+msgstr "(Aplica modificarile si mergi mai departe.)"
+
+msgid "(Discard all changes and return to the compose screen.)"
+msgstr "(Renunta la modificari. Inapoi la fereastra de Mesaj Nou.)"
+
+msgid ""
+"(Return to the compose screen after applying all changes made thus far.  "
+"Changes on the current screen will NOT be applied.)"
+msgstr ""
+"Aplica schimbarile de pina acum si intoarce-te la fereastra de Mesaj Nou."
+"Schimbarile de pe pagina curenta NU vor fi aplicate."
+
+msgid "* Add these by clicking OK *"
+msgstr "* Adauga astea apasind OK *"
+
+msgid "* Please select address(es) *"
+msgstr "* Te rog alege adres(a/ele) *"
+
+#, c-format
+msgid ""
+"<p><i>This message was written in a character set other than your own. If it "
+"is not displayed correctly, %sclick here</a> to open it in a new window.</"
+"i></p>\n"
+msgstr ""
+"<p><i>Acest mesaj a fost scris cu alt set de caractere decit al tau. Daca nu e"
+"afisat corect, %sclick aici</a> pentru a-l deschide intr-o fereastra noua.</i></p>\n"
+
+msgid "Action"
+msgstr "Actiunea"
+
+#, c-format
+msgid "Add to Addressbook (%s)"
+msgstr "Adauga la Agenda (%s)"
+
+msgid "Added an attachment."
+msgstr "Adauga un atasament."
+
+msgid "Address Book"
+msgstr "Agenda"
+
+msgid "Addressbooks"
+msgstr "Agende"
+
+msgid "All messages in the folder(s) will be lost!"
+msgstr "Toate mesajele din directo(r/are) se vor pierde!"
+
+msgid ""
+"All messages in the following folder(s) will be downloaded into one MBOX "
+"file:"
+msgstr ""
+"Toate mesajele din directo(rul/arele) urmato(r/are) vor fi salvate intr-un"
+" fisier MBOX:"
+
+#, c-format
+msgid ""
+"All messages in your \"%s\" folder older than %s days will be permanently "
+"deleted."
+msgstr ""
+"Toate mesajele din directorul \"%s\", mai vechi de %s zile vor fi sterse"
+"definitiv."
+
+#, c-format
+msgid "All old sent-mail folders more than %s months old will be deleted."
+msgstr "Toate directoarele cu mesaje-trimise mai vechi de %s luni vor fi sterse."
+
+msgid "All"
+msgstr "Toate"
+
+msgid "An illegal value was specified."
+msgstr "S-a specificat o valoare gresita."
+
+msgid "An unknown error occured adding the new entry."
+msgstr "Eroare de natura necunoscuta! Adaugarea nu a reusit."
+
+msgid "Answered messages"
+msgstr "Mesaje cu Raspuns"
+
+msgid "Answered"
+msgstr "Cu Raspuns"
+
+msgid "Apply All Rules"
+msgstr "Aplica Toate Filtrele"
+
+msgid "Apply Filters on"
+msgstr "Aplica filtrele pe"
+
+msgid "Apply filter rules upon logging on."
+msgstr "Aplica filtrele la Conectare."
+
+msgid "Apply filter rules when mailbox is refreshed."
+msgstr "Aplica filtrele la Reinprospatare."
+
+msgid "April"
+msgstr "Aprilie"
+
+msgid "Are you SURE you want to continue?"
+msgstr "Sigur vrei sa continui ?"
+
+msgid "Are you completely sure you wish to continue?"
+msgstr "Esti absolut sigur ca vrei sa continui ?"
+
+msgid "Are you sure you want to do this?"
+msgstr "Sigur vrei sa facia asta ?"
+
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "Sigur vrei sa stergi definitiv aceste mesaje ?"
+
+msgid "Are you sure you wish to empty this folder?"
+msgstr "Sigur vrei sa golesti acest director ?"
+
+msgid "Are you sure you wish to empty your trash folder?"
+msgstr "Sigur vrei sa golesti Gunoiul ?"
+
+msgid "Arrival Time"
+msgstr "Ora sosirii"
+
+msgid "Ascending"
+msgstr "Crescator"
+
+msgid "Attach"
+msgstr "Ataseaza"
+
+msgid "Attachment"
+msgstr "Atasament"
+
+msgid "Attachments"
+msgstr "Atasamente"
+
+msgid "August"
+msgstr "August"
+
+msgid "Available Addressbooks:"
+msgstr "Agende disponibile:"
+
+#, c-format
+msgid "Back to %s"
+msgstr "Inapoi la %s"
+
+msgid "Bcc"
+msgstr "Copie #2"
+
+msgid "Blacklist"
+msgstr "Lista Neagra"
+
+msgid "Body"
+msgstr "Corp Mesaj"
+
+msgid "Both"
+msgstr "Amindoua"
+
+msgid "Cancel Message"
+msgstr "Renunta La Mesaj"
+
+msgid "Cancel"
+msgstr "Renunta"
+
+msgid "Cancelling this message will permanently discard its contents."
+msgstr "Daca renunti la acest Raspuns, continutul lui se va pierde."
+
+msgid "Cc"
+msgstr "Copie"
+
+msgid "Cc:"
+msgstr "Copie:"
+
+msgid "Change All"
+msgstr "Schimba Tot"
+
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr ""
+"Optiuni de genul cite mesaje vezi pe o pagina si cum sint ele"
+" sortate."
+
+msgid "Change mail server settings."
+msgstr "Scimba optiunile referitoare la serverul de mail."
+
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr ""
+"Specifica numele, adresa si semnatura care vor aparea in Mesajul tau."
+
+msgid "Change"
+msgstr "Schimba"
+
+msgid "Check Folder(s) for New Mail"
+msgstr "Verifica daca sint mesaje noi in Directo(r/are)"
+
+msgid "Checkbox"
+msgstr ""
+
+msgid "Choose Action:"
+msgstr "Alege Actiunea:"
+
+msgid "Choose the addressbook to use when adding addresses."
+msgstr "Alage agenda in care se vor adauga adresele noi."
+
+msgid "Choose the order of addressbooks to search when expanding addresses."
+msgstr "Alage ordinea de cautare in agende."
+
+#, c-format
+msgid "Cleared all messages from %s."
+msgstr "Au fost sterse toate mesajele din %s."
+
+msgid ""
+"Click on one of your selected addressbooks and then select all fields to "
+"search."
+msgstr ""
+"Fa Click pe una din agende si selecteaza toate cimpurile in care "
+"vrei sa cauti."
+
+msgid "Closed Folder"
+msgstr "Director Inchis"
+
+msgid "Collapse All Folders"
+msgstr "Restringe toate directoarele."
+
+msgid "Collapse All"
+msgstr "Restringe tot"
+
+msgid "Collapse Folder"
+msgstr "Restringe directorul"
+
+#, c-format
+msgid "Compose Message (%s)"
+msgstr "Mesaj Nou (%s)"
+
+msgid "Compose a message"
+msgstr "Trimite un Mesaj Nou"
+
+msgid "Compose messages in a separate window."
+msgstr "Compune Mesaj Nou in fereastra separata."
+
+msgid "Compose"
+msgstr "Mesaj Nou"
+
+msgid "Contact List"
+msgstr "Lisat de Contacte"
+
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr ""
+"Controleaza cind se verifica daca sint mesaje noi si daca vei fi sau nu anuntat"
+" la sosirea lor."
+
+msgid "Copy"
+msgstr "Copiaza"
+
+msgid "Correct"
+msgstr "Corect"
+
+msgid "Corrected Text"
+msgstr "Text Corectat"
+
+#, c-format
+msgid "Could not delete messages from %s: %s"
+msgstr "Nu am putut sterge mesajele de la %s: %s"
+
+msgid "Create Folder"
+msgstr "Creaza Director"
+
+msgid "Create a new drafts folder"
+msgstr "Creaza director nou pentru Ciorne"
+
+msgid "Create a new sent mail folder"
+msgstr "Creaza director nou pentru Mesaje-Trimise"
+
+msgid "Create a new trash folder"
+msgstr "Creaza director nou pentru Gunoi"
+
+msgid ""
+"Create filtering rules to organize your incoming mail, sort it into folders, "
+"and delete spam."
+msgstr ""
+"Creaza filtre pentru organizarea mesajelor primite, sortarea lor in directoare"
+" si stergerea celor nedorite."
+
+msgid "Create"
+msgstr "Creaza"
+
+msgid "Customize how you send mail and where drafts are saved."
+msgstr "Alege cum trimiti mesajele si unde vor fi salvate Ciornele."
+
+#, c-format
+msgid "Customize maintenance operations run upon login to %s."
+msgstr "Alege operatiunile de mentenanta executate cind te conectezi la %s."
+
+#, c-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Alege operatiunile executate la conectarea la %s."
+
+msgid "Date"
+msgstr "Data"
+
+msgid "December"
+msgstr "Decembrie"
+
+msgid "Default Identity"
+msgstr "Identitate Implicita"
+
+msgid "Default sorting criteria:"
+msgstr "Criteriu implicit de sortare:"
+
+msgid "Default sorting direction:"
+msgstr "Directie implicita de sortare:"
+
+msgid "Delete Folder(s)"
+msgstr "Sterge Directo(rul/arele)"
+
+msgid "Delete messages"
+msgstr "Sterge mesajele"
+
+msgid "Delete old sent-mail folders at beginning of month"
+msgstr "Sterge directoarele cu Mesaje-Trimise la inceput de luna."
+
+msgid "Delete"
+msgstr "Sterge"
+
+msgid "Deleted an attachment."
+msgstr "Sterge un atasament."
+
+msgid "Deleted messages"
+msgstr "Mesaje Sterse"
+
+msgid "Deleted"
+msgstr "Sterse"
+
+msgid "Deleting and Moving Messages"
+msgstr "Optiuni Mutare, Copiere, Stergere mesaje."
+
+msgid "Descending"
+msgstr "Descrescator"
+
+msgid "Dim signatures?"
+msgstr "Dim signatures - de tradus ?"
+
+msgid "Display Options"
+msgstr "Optiuni de afisare"
+
+msgid "Display message when filters have been applied."
+msgstr "Afiseaza un mesaj la aplicarea filtrelor."
+
+msgid "Display pop-up notification of new mail."
+msgstr "Anunta-ma cind am mesaje noi."
+
+msgid "Display"
+msgstr "Afiseaza"
+
+msgid "Do Not Check Folder(s) for New Mail"
+msgstr "Nu verifica daca sint mesaje noi in Directo(r/are)"
+
+msgid "Do you want to open that folder?"
+msgstr "Vrei sa deschizi acel Director ?"
+
+msgid "Done"
+msgstr "Gata"
+
+#, c-format
+msgid "Download %s"
+msgstr "Salveaza %s"
+
+msgid "Download Folder(s)"
+msgstr "Salveaza Directo(rul/arele)"
+
+msgid "Download"
+msgstr "Salveaza"
+
+msgid "Draft"
+msgstr "Ciorne"
+
+msgid "Drafts folder:"
+msgstr "Director cu Ciorne:"
+
+msgid "Edit your filter rules"
+msgstr "Schimba Regulile de Filtrare"
+
+msgid "Edit your identities"
+msgstr "Schimba Datele Personale"
+
+msgid "Edit"
+msgstr ""
+
+msgid "Email Address"
+msgstr "Adresa de Email"
+
+msgid "Empty Folder(s)"
+msgstr "Goleste Directo(rul/arele)"
+
+msgid "Empty Trash folder"
+msgstr "Goleste Gunoiul"
+
+msgid "Empty Trash"
+msgstr "Goleste Gunoiul"
+
+msgid "End forwarded message"
+msgstr ""
+
+msgid "Enter the name for your new drafts folder"
+msgstr "Introdu numele noului director cu Ciorne"
+
+msgid "Enter the name for your new sent mail folder"
+msgstr "Introdu numele noului director cu Mesaje-Trimise"
+
+msgid "Enter the name for your new trash folder"
+msgstr "Introdu numele noului Director Gunoi "
+
+#, c-format
+msgid "Entry \"%s\" was successfully added to the addressbook"
+msgstr "Adresa \"%s\" a fost adaugata cu succes la Agenda."
+
+msgid "Error"
+msgstr "Eroare"
+
+msgid "Every 15 minutes"
+msgstr "La 15 minute"
+
+msgid "Every 30 seconds"
+msgstr "La 30 secunde"
+
+msgid "Every 5 minutes"
+msgstr "La 5 minute"
+
+msgid "Every half hour"
+msgstr "La 1/2 ore"
+
+msgid "Every minute"
+msgstr "In fiecare minut"
+
+msgid "Expand All Folders"
+msgstr "Desfasoara Toate Directoarele"
+
+msgid "Expand All"
+msgstr "Desfasoara Tot"
+
+msgid "Expand Folder"
+msgstr "Desfasoara Directorul"
+
+msgid "Expand Names"
+msgstr "Completeaza adresa din Agenda"
+
+msgid "Expand the entire folder tree by default in the folders view."
+msgstr "Desfasoara Arborele de Directoare in fereastra de Directoare."
+
+msgid "February"
+msgstr "Februarie"
+
+msgid "Field"
+msgstr "Cimpul"
+
+msgid "Filename"
+msgstr "Nume Fisier"
+
+#, c-format
+msgid "Filter Activity: The message \"%s\" from \"%s\" has been deleted."
+msgstr "Filtru: Mesajul \"%s\" de la \"%s\" a fost sters."
+
+#, c-format
+msgid ""
+"Filter Activity: The message \"%s\" from \"%s\" has been moved to the folder "
+"\"%s\"."
+msgstr "Filtru: Mesajul \"%s\" de la \"%s\" a fost mutat in Directorul \"%s\"."
+
+#, c-format
+msgid ""
+"Filter Activity: The message \"%s\" from \"%s\" has been moved to your Trash "
+"folder."
+msgstr "Filtru: Mesajul \"%s\" de la \"%s\" a fost aruncat la Gunoi."
+
+msgid "Filter Rules"
+msgstr "Reguli de Filtrare"
+
+msgid "Filter message content for profanity."
+msgstr "Activeaza filtru cuvinte cenzurate !"
+
+msgid "Filters"
+msgstr "Filtre"
+
+msgid "Find"
+msgstr "Gaseste"
+
+msgid "First Page"
+msgstr "Prima Pagina"
+
+msgid "Folder Navigator"
+msgstr "Directoare"
+
+msgid "Folder Prefix"
+msgstr ""
+
+msgid "Folders"
+msgstr "Directoare"
+
+msgid "Forward"
+msgstr "Trimite Copie"
+
+msgid "Forward:"
+msgstr "Trimite Copie"
+
+#, c-format
+msgid "Forwarded message from %s"
+msgstr "Copie Mesaj trimisa de %s"
+
+msgid "From Address"
+msgstr "Expeditor"
+
+msgid "From"
+msgstr "De la"
+
+msgid "From:"
+msgstr "De la:"
+
+msgid "Fwd:"
+msgstr ""
+
+msgid "Help"
+msgstr "Ajutor"
+
+msgid "Hide Deleted"
+msgstr "Ascunde Mesaje-Sterse"
+
+msgid "Hide Unsubscribed"
+msgstr ""
+
+msgid "How to prefix quoted lines in a reply:"
+msgstr "Citatele din Mesajul-Raspun vor fi marcate cu:"
+
+msgid "IMP is not properly configured"
+msgstr "IMP nu este configurat corect"
+
+msgid "INBOX"
+msgstr ""
+
+msgid "Identities"
+msgstr "Identitati"
+
+msgid "Identity"
+msgstr "Identitate"
+
+msgid "Identity's name:"
+msgstr "Numele Identitatii:"
+
+msgid "Ignore All"
+msgstr "Ignora tot"
+
+msgid "Ignore"
+msgstr "Ignora"
+
+msgid "Important messages"
+msgstr "Mesaje Importante"
+
+msgid "Important"
+msgstr "Importante"
+
+msgid "Include original message in a reply?"
+msgstr "Include mesajul original in raspuns."
+
+msgid "January"
+msgstr "Ianuarie"
+
+msgid "July"
+msgstr "Iulie"
+
+msgid "June"
+msgstr "Iunie"
+
+msgid "Language"
+msgstr "Limba"
+
+msgid "Last Page"
+msgstr "Ultima Pagina"
+
+#, c-format
+msgid "Last login: %s"
+msgstr "Ultima conectare: %s"
+
+msgid "Last login: Never"
+msgstr "Ultima conectare: Niciodata"
+
+#, c-format
+msgid "Log in to %s"
+msgstr "Conectare la %s"
+
+msgid "Log in"
+msgstr "Conectare"
+
+msgid "Login Tasks"
+msgstr "Actiuni la Conectare"
+
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr ""
+"Conectare imposibila. Nume de Utilizator sau/si Parola gresita."
+"Incearca din nou."
+
+msgid "Logout"
+msgstr "Deconectare"
+
+msgid "Mail Filters"
+msgstr "Filtre Mesaje"
+
+msgid "Mail Management"
+msgstr "Intretinere Mesaje"
+
+msgid "Mailbox"
+msgstr "Casuta de Mesaje"
+
+msgid "Maintenance Operations"
+msgstr "Operatiuni de Mentenanta"
+
+msgid "March"
+msgstr "Martie"
+
+msgid "Mark as:"
+msgstr "Marcheaza:"
+
+msgid "Mark different levels of quoting with different colors?"
+msgstr "Marcheaza diferite nivele de citare cu diferite culori."
+
+msgid "May"
+msgstr "Mai"
+
+msgid "Message Composition"
+msgstr "Compune Mesaj Nou"
+
+msgid "Message Date"
+msgstr "Data Sosirii"
+
+msgid "Message Search"
+msgstr "Cauta Mesajul"
+
+msgid "Message Size"
+msgstr "Marime Mesaj"
+
+msgid "Message Source"
+msgstr "Sursa Mesajului"
+
+msgid "Message Viewing"
+msgstr "Filtrare Continut"
+
+msgid "Message fields"
+msgstr "Cimpurile Mesajului"
+
+msgid "Message flags"
+msgstr "Marcate ca"
+
+msgid "Message folders"
+msgstr "In Directoarele"
+
+msgid "Message sent successfully, but not saved to"
+msgstr "Mesaj trimis cu succes dar nesalvat in"
+
+msgid "Message"
+msgstr "Mesaj"
+
+msgid "Messages per page in the mailbox view."
+msgstr "mesaje pe o pagina."
+
+msgid "Messages to"
+msgstr "Mesaj(ul/ele) in"
+
+msgid "Mime Type"
+msgstr ""
+
+msgid "Modify"
+msgstr "Modifica"
+
+msgid "Move Down"
+msgstr "Mai Jos"
+
+msgid "Move Up"
+msgstr "Mai Sus"
+
+#, c-format
+msgid "Move messages to the <b>%s</b> folder"
+msgstr "Muta Mesajele in <b>%s</b>."
+
+msgid "Move"
+msgstr "Muta"
+
+msgid "Name"
+msgstr "Nume"
+
+msgid "Never"
+msgstr "Niciodata"
+
+msgid "New Mail"
+msgstr "Mesaje Noi"
+
+msgid "New messages"
+msgstr "Mesaje Noi"
+
+msgid "New"
+msgstr "Noi"
+
+msgid "Next Message"
+msgstr "Mesajul Urmator"
+
+msgid "Next Page"
+msgstr "Pagina Urmatoare"
+
+msgid "Next"
+msgstr "Urmatorul"
+
+msgid "No Subject"
+msgstr "Fara Subiect"
+
+msgid "No folders were specified"
+msgstr "Nu s-a specificat directorul"
+
+msgid "No messages matched your search"
+msgstr "Nu au fost gasite mesaje corespunzatoare"
+
+msgid "No spelling errors"
+msgstr "Nu exista greseli de scriere"
+
+msgid "No suggestions"
+msgstr "Nu exista sugestii"
+
+msgid "No"
+msgstr "Nu"
+
+msgid "None"
+msgstr "Nici Una"
+
+msgid "Not Deleted"
+msgstr "Nesterse"
+
+msgid "Not Draft"
+msgstr "Curate"
+
+msgid "Not Important"
+msgstr "Neimportante"
+
+msgid "Not Personal"
+msgstr "Ne Personal"
+
+msgid "Not deleted messages"
+msgstr "Mesaje Nesterse"
+
+msgid "Not important messages"
+msgstr "Mesaje Neimportante"
+
+msgid "November"
+msgstr "Noiembrie"
+
+msgid "Number of old sent-mail folders to keep if deleting monthly"
+msgstr "directoare cu Mesaje-Trimise se vor pastra la inceputul lunii."
+
+msgid "OK"
+msgstr ""
+
+msgid "October"
+msgstr "Octombrie"
+
+msgid "Old messages"
+msgstr "Mesaje Vechi"
+
+msgid "Old sent-mail folders being purged."
+msgstr "Directorul de Mesaje-Trimise vechi a fost golit."
+
+msgid "Open Folder"
+msgstr "Deschide"
+
+msgid "Options"
+msgstr "Optiuni"
+
+msgid "Other Options"
+msgstr "Alte Optiuni"
+
+#, c-format
+msgid "Page %d of %d"
+msgstr "Pagina %d din %d"
+
+msgid "Part(s)"
+msgstr "Atasament(e)"
+
+msgid "Password"
+msgstr "Parola"
+
+msgid "Perform maintenance operations on login"
+msgstr "Executa operatiuni de mentenanta la Conectare."
+
+msgid "Personal Information"
+msgstr "Date Personale"
+
+msgid "Personal"
+msgstr ""
+
+msgid "Place your signature before replies and forwards?"
+msgstr "Plaseaza semnatura inaintea raspunsurilor."
+
+msgid "Please enter the name of the new folder:"
+msgstr "Introdu numele noului director:"
+
+msgid "Please enter the new name:"
+msgstr "Te rog introdu noul nume:"
+
+msgid "Please enter valid search criteria."
+msgstr ""
+
+msgid "Please provide your username and password"
+msgstr "Te rog introdu numele de Utilizator si Parola."
+
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Va rog sa verificati adresele introduse. Nu par sa fie corecte."
+
+msgid "Please select a folder before you perform any actions."
+msgstr "Te rog alege un director inainte de a specifica actiunea."
+
+msgid "Please select at least one folder to search."
+msgstr "Te rog alege cel putin un director de cautare."
+
+msgid "Please select only one folder for this operation."
+msgstr "Te rog alege un singur director pentru aceasta actiune."
+
+msgid "Please select or edit right next:"
+msgstr ""
+
+msgid "Precede your signature with dashes ('-- ')"
+msgstr "Desparte semnatura prin ('-- ')"
+
+msgid "Previous Message"
+msgstr "Mesajul Precedent"
+
+msgid "Previous Page"
+msgstr "Pagina Precedenta"
+
+msgid "Print"
+msgstr "Tipareste"
+
+#, c-format
+msgid "Problem with filter rule %d: folder does not exist: %s"
+msgstr "Problema cu regula de filtrare %d: directorul nu exista: %s"
+
+msgid "Problem?"
+msgstr "Problema ?"
+
+msgid "Purge Deleted"
+msgstr "Sterge de Tot"
+
+msgid "Purge Trash how often:"
+msgstr "Goleste Gunoiul"
+
+msgid "Purge messages in Trash folder older than this amount of days"
+msgstr "Sterge mesajele din directorul Gunoi mai vechi de acest numar de zile."
+
+msgid "Purge old message in the Trash folder"
+msgstr "Sterge mesajele vechi din directorul Gunoi (definitiv)."
+
+#, c-format
+msgid "Purging %d message(s) from Trash folder."
+msgstr "Golim %d mesaj(e) din Gunoi."
+
+msgid "Quoting"
+msgstr "Citat"
+
+msgid "Received after"
+msgstr "Primite inainte de"
+
+msgid "Received before"
+msgstr "Primite dupa"
+
+msgid "Received on"
+msgstr "Primite pe"
+
+msgid "Redirect Message"
+msgstr "Redirecteaza"
+
+msgid "Redirect this message"
+msgstr "Redirecteaza acest mesaj"
+
+msgid "Redirect"
+msgstr "Redirecteaza"
+
+msgid "Redirecting failed."
+msgstr "Redirectarea a esuat."
+
+msgid "Refresh Folder Views:"
+msgstr "Reimprospateaza fereastra cu directoare:"
+
+msgid "Refresh"
+msgstr "Reimprospateaza"
+
+msgid "Reload View"
+msgstr "Reincarca fereastra"
+
+msgid "Remember the last view"
+msgstr "Ultima stare"
+
+msgid "Remove Selected"
+msgstr "Sterge cele selectate"
+
+msgid "Rename Folder"
+msgstr "Redenumeste Directorul"
+
+msgid "Rename sent-mail folder at beginning of month"
+msgstr "Redenumeste directorul cu Mesaje-Trimise la inceputul lunii."
+
+#, c-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr "Redenumirea lui \"%s\" in \"%s\" a esuat. Iata ce a zis serverul:"
+
+msgid "Replace with:"
+msgstr "Inlocuieste cu:"
+
+msgid "Reply to All"
+msgstr "Raspunde la Toti"
+
+msgid "Reply to All:"
+msgstr "Raspunde la Toti:"
+
+msgid "Reply"
+msgstr "Raspunde"
+
+msgid "Reply-To: "
+msgstr "Raspuns-Catre:"
+
+msgid "Reply-to"
+msgstr "Raspunde la"
+
+msgid "Reply:"
+msgstr "Raspunde:"
+
+msgid "Report as Spam"
+msgstr "Raporteaza ca Nedorit"
+
+msgid "Request a Return Receipt"
+msgstr "Cere Confirmare de Primire"
+
+msgid "Reset"
+msgstr "Sterge Tot"
+
+msgid "Resume"
+msgstr ""
+
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr ""
+"Intoarce-te la lista de mesaje dupa stergerea, mutarea sau copierea unui mesaj."
+
+msgid "Rule Definition"
+msgstr "Defineste Regula"
+
+msgid "Save Draft"
+msgstr "Salveaza Ciorna"
+
+msgid "Save a copy in "
+msgstr "Salveaza o copie in "
+
+msgid "Save as"
+msgstr "Salveaza ca"
+
+msgid "Save sent mail"
+msgstr "Salveaza Mesaj-Trimis"
+
+#, c-format
+msgid "Saving the draft failed. This is what the server said: %s"
+msgstr "Salvarea Ciornei a esuat. Iata ce a spus serverul: %s"
+
+msgid "Search Results"
+msgstr "Rezultate Cautare"
+
+msgid "Search"
+msgstr "Cautare"
+
+msgid "Seen"
+msgstr "Citite"
+
+msgid "Select addressbook sources for adding and searching for addresses."
+msgstr "Alege Agendele pentru adrese."
+
+msgid "Select all"
+msgstr "Selecteaza Tot"
+
+msgid "Select an identity"
+msgstr "Selecteaza o identitate"
+
+msgid "Select charset:"
+msgstr "Selecteaza setul de caractere:"
+
+msgid "Select none"
+msgstr "Selecteaza Nimic"
+
+msgid "Select your preferred language:"
+msgstr "Selecteaza limba:"
+
+msgid "Select"
+msgstr "Selecteaza"
+
+msgid "Selected Addressbooks:"
+msgstr "Agende selectate"
+
+msgid "Send Message"
+msgstr "Trimite"
+
+msgid "Sent mail folder:"
+msgstr "Director Mesaje-Trimise:"
+
+msgid "September"
+msgstr "Septembrie"
+
+msgid "Server Information"
+msgstr "Optiuni Server"
+
+msgid "Server"
+msgstr ""
+
+msgid "Set preferences for filtering messages for unwanted content."
+msgstr "Filtrare Mesaje primite impotriva continutului nedorit.<br />Cuvinte cenzurate."
+
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr "Alege ce se intimpla atunci cind muti, copiezi sau stergi mesaje."
+
+msgid "Set the current time zone."
+msgstr "Specifica localizarea geografica (fusul orar)."
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Alege limba de afisare a meniurilor, explicatiilor si ajutorului."
+
+msgid "Should the compose window be closed after saving a draft?"
+msgstr "Inchidem fereastra de compunere Mesaj Nou la salvarea ciornei."
+
+msgid "Show Deleted"
+msgstr "Arata Mesaje Sterse"
+
+msgid "Show Unsubscribed"
+msgstr ""
+
+msgid "Show last login time when logging in"
+msgstr "Afiseaza data si ora ultimei conectari."
+
+msgid "Show legend in the mailbox view."
+msgstr "Afiseaza Legenda in lista de mesaje."
+
+msgid "Size"
+msgstr "Marime"
+
+msgid "Some of IMP's configuration files are missing:"
+msgstr "Unele fisiere de configurare ale IMP lipsesc."
+
+msgid "Sort Direction"
+msgstr "Directia de Sortare"
+
+msgid "Spam Report from"
+msgstr "Mesaj nedorit raportat de"
+
+msgid "Special Characters"
+msgstr "Caractere Speciale"
+
+msgid "Spell Check"
+msgstr ""
+
+msgid "Spell Checker"
+msgstr ""
+
+msgid "Spell check complete"
+msgstr ""
+
+msgid "Spelling errors per screen when spell checking."
+msgstr "greseli de ortografie pe pagina."
+
+msgid "Subject Field"
+msgstr "Subiectul"
+
+msgid "Subject"
+msgstr "Subiect"
+
+msgid "Subject:"
+msgstr "Subiect:"
+
+msgid "Subscribe to Folder(s)"
+msgstr "Subscrie la Directo(r/are)"
+
+msgid "Success"
+msgstr ""
+
+msgid "Suggestions"
+msgstr "Sugestii"
+
+msgid "Text"
+msgstr "Textul"
+
+#, c-format
+msgid "The current folder(s) \"%s\" will be renamed to \"%s\"."
+msgstr "Directo(rul/arele) curent(e) \"%s\" vor fi redenumite ca \"%s\"."
+
+#, c-format
+msgid "The folder \"%s\" already exists"
+msgstr "Directorul \"%s\" exista deja."
+
+#, c-format
+msgid ""
+"The folder \"%s\" contains illegal characters in its name. It may cause "
+"problems. Please see your system administrator."
+msgstr ""
+"Directorul \"%s\" contine caractere nepermise in numele sau."
+" Ar putea crea probleme. Contacteaza-l pe Administrator"
+
+#, c-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "Directorul \"%s\" a fost creat dar tu nu ai subscris la el."
+
+#, c-format
+msgid "The folder \"%s\" was deleted but you were not unsubscribed from it."
+msgstr "Directorul \"%s\" a fost sters dar tu nu ai anulat subscrierea la el."
+
+#, c-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr "Directorul \"%s\" nu a fost creat. Iata ce a spus serverul:"
+
+#, c-format
+msgid "The folder \"%s\" was not deleted. This is what the server said"
+msgstr "Directorul \"%s\" nu a fost sters. Iata ce a spus serverul:"
+
+#, c-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "Directorul \"%s\" a fost creat cu succes."
+
+#, c-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "Directorul \"%s\" a fost sters cu succes."
+
+#, c-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "Directorul \"%s\" a fost redenumit cu succes ca \"%s\"."
+
+#, c-format
+msgid "The identity \"%s\" has been deleted."
+msgstr "Identitatea \"%s\" a fost stearsa."
+
+#, c-format
+msgid "The identity \"%s\" has been saved."
+msgstr "Identitatea \"%s\" a fost salvata."
+
+msgid "The message being composed has been closed.  Exiting."
+msgstr ""
+
+msgid "The signature couldn't be replaced."
+msgstr ""
+
+msgid "The signature was successfully replaced."
+msgstr ""
+
+msgid "There are no messages in this mailbox."
+msgstr "Nu exista Mesaje in aceasta casuta postala."
+
+#, c-format
+msgid "There was a problem expunging %s. This is what the server said"
+msgstr ""
+
+msgid "There was a problem expunging the mailbox. This is what the server said"
+msgstr ""
+
+#, c-format
+msgid ""
+"There was a problem expunging the mailbox. This is what the server said: %s"
+msgstr ""
+
+#, c-format
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size (%d MB)."
+msgstr ""
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+
+#, c-format
+msgid ""
+"There was an error copying messages to \"%s\". This is what the server said"
+msgstr ""
+
+#, c-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr ""
+
+#, c-format
+msgid ""
+"There was an error deleting messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+
+msgid "There was an error deleting messages. This is what the server said"
+msgstr ""
+
+msgid "There was an error displaying this message part"
+msgstr ""
+
+#, c-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+
+msgid "There was an error flagging messages. This is what the server said"
+msgstr ""
+
+#, c-format
+msgid ""
+"There was an error moving messages to \"%s\". This is what the server said"
+msgstr ""
+
+msgid ""
+"There was an error moving messages to the trash. This is what the server said"
+msgstr ""
+
+msgid "There was an error saving a draft."
+msgstr ""
+
+#, c-format
+msgid "There was an error sending your message: %s"
+msgstr ""
+
+msgid "There was an error undeleting messages. This is what the server said"
+msgstr ""
+
+msgid "There was an error viewing the requested message."
+msgstr ""
+
+msgid ""
+"This file controls local MIME drivers for IMP, specifically what kinds of "
+"attachments are viewable and/or downloadable."
+msgstr ""
+
+msgid ""
+"This file controls the default preferences for IMP, and also controls which "
+"preferences users can alter."
+msgstr ""
+
+msgid ""
+"This file controls the default settings for IMP, and also defines the list "
+"of available servers if you are using the server list."
+msgstr ""
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+
+msgid ""
+"This is the main IMP configuration file. It contains paths and options for "
+"the IMP scripts."
+msgstr ""
+
+msgid "This may take some time. Are you sure you want to continue?"
+msgstr "Aceasta operatiune este de durata. Esti sigur ca vrei sa continui ?"
+
+msgid "This message has been reported as spam to your system administrator."
+msgstr "Acest mesaj a fost raportat Administratorului ca fiind Nedorit."
+
+msgid "This message to"
+msgstr "Mesajul in"
+
+msgid "This number must be at least one."
+msgstr ""
+
+msgid "This value must be a number."
+msgstr ""
+
+msgid "This window must be called from compose window"
+msgstr ""
+
+msgid "Thread View"
+msgstr ""
+
+msgid "Thread"
+msgstr ""
+
+msgid "Time Zone"
+msgstr "Zona "
+
+msgid "To"
+msgstr "Catre"
+
+msgid "To:"
+msgstr "Catre:"
+
+#, c-format
+msgid "Total Size: %s KB"
+msgstr ""
+
+msgid "Trash folder:"
+msgstr "Gunoi:"
+
+msgid "Unanswered messages"
+msgstr "Mesaje fara Raspuns"
+
+msgid "Unanswered"
+msgstr "Fara Raspuns"
+
+msgid "Undelete"
+msgstr "Recupereaza"
+
+msgid "Undisclosed Recipients"
+msgstr ""
+
+msgid "Unnamed"
+msgstr ""
+
+msgid "Unread"
+msgstr "Necitite"
+
+msgid "Unseen Messages"
+msgstr ""
+
+msgid "Unseen"
+msgstr "Necitite"
+
+msgid "Unsubscribe from Folder(s)"
+msgstr ""
+
+msgid "Use Ctrl/Option+Click to select multiple fields"
+msgstr "Foloseste Ctrl/Option+Click pentru selestie multipla."
+
+msgid "Use Default Value"
+msgstr "Foloseste Valoarea Implicita"
+
+msgid "Use IMAP folder subscriptions?"
+msgstr "Subscrie la directoare IMAP."
+
+msgid "User Options"
+msgstr ""
+
+msgid "Username"
+msgstr "Utilizator"
+
+#, c-format
+msgid "View %s"
+msgstr ""
+
+msgid "View messages in "
+msgstr ""
+
+msgid "View or mailbox to display after login:"
+msgstr "La conectare afiseaza:"
+
+msgid "Warning"
+msgstr "Atentie"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Bine ai venit in sistemul %s"
+
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted."
+msgstr ""
+"Cind stergi un mesaj, muta-l in Gunoi in loc sa-l marchezi ca fiind sters."
+
+msgid "Wrap text at this many characters."
+msgstr "de caractere pe linie."
+
+msgid "Yes"
+msgstr "Da"
+
+msgid "You are attempting to delete the following folders:"
+msgstr "Directorul urmator va fi sters:"
+
+msgid "You are creating a sub-folder to "
+msgstr "Creare subdirector la "
+
+msgid "You are creating a top-level folder."
+msgstr "Creare director in radacina."
+
+msgid "You are renaming the folder: "
+msgstr "Redenumeste directorul: "
+
+#, c-format
+msgid "You have %s new messages."
+msgstr ""
+
+msgid "You have 1 new message."
+msgstr ""
+
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "Ai fost deconectat.<br />Iti multumim ca folosesti sistemul."
+
+msgid "You have new mail in the following folder:"
+msgstr ""
+
+msgid "You have new mail in the following folders:"
+msgstr ""
+
+msgid "You must first select the attachment(s) to delete."
+msgstr ""
+
+msgid "You must first specify the file to attach."
+msgstr ""
+
+msgid "You must have at least one recipient."
+msgstr ""
+
+msgid "You must select a target mailbox first."
+msgstr ""
+
+msgid "You must select an address first."
+msgstr ""
+
+msgid "You must select an identity to be deleted."
+msgstr ""
+
+msgid "You must select at least one message first."
+msgstr ""
+
+msgid "You must specify a recipient."
+msgstr ""
+
+#, c-format
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr ""
+
+#, c-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr ""
+
+#, c-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr ""
+
+#, c-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr ""
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr ""
+
+msgid "Your From: address:"
+msgstr "Adresa de Expeditor:"
+
+msgid "Your Information"
+msgstr "Informatii Personale"
+
+msgid "Your Reply-to: address: <i>(optional)</i>"
+msgstr "Raspunde la: <i>(optional)</i>"
+
+msgid "Your browser does not support inline display of this image type"
+msgstr ""
+
+msgid ""
+"Your browser does not support this print option. Press Control/Option + P to "
+"print."
+msgstr ""
+
+msgid "Your current time zone:"
+msgstr "Zona geografica:"
+
+msgid "Your default identity:"
+msgstr "Identitatea implicita:"
+
+msgid "Your full name:"
+msgstr "Numele complet:"
+
+msgid "Your identities:"
+msgstr "Identitati:"
+
+msgid "Your options have been updated."
+msgstr "Optiunile au fost salvate."
+
+msgid "Your signature:"
+msgstr "Semnatura:"
+
+msgid "[No Subject]"
+msgstr "[Fara Subiect]"
+
+msgid "add source"
+msgstr ""
+
+msgid "cannot move past the beginning"
+msgstr ""
+
+msgid "cannot move past the end"
+msgstr ""
+
+msgid "delete message"
+msgstr "sterge mesajul"
+
+msgid "from"
+msgstr "de la"
+
+msgid "move down"
+msgstr ""
+
+msgid "move message to"
+msgstr "muta mesajul in"
+
+msgid "move up"
+msgstr ""
+
+msgid "no folder selected"
+msgstr ""
+
+msgid "no rule selected"
+msgstr ""
+
+msgid "no text specified"
+msgstr ""
+
+msgid "none"
+msgstr ""
+
+msgid "or"
+msgstr ""
+
+msgid "please fill in the text and choose a field and an action"
+msgstr ""
+
+msgid "remove source"
+msgstr ""
+
+msgid "select folder"
+msgstr "alege unde"
+
+msgid "spelling error"
+msgstr ""
+
+msgid "spelling errors"
+msgstr ""
+
+#, c-format
+msgid "where the %s field contains <b>%s</b>"
+msgstr "primite %s <b>%s</b>"

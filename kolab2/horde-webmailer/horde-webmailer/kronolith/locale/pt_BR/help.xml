@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Horde: kronolith/locale/pt_BR/help.xml,v 1.1.10.1 2008-10-13 08:45:46 jan Exp $ -->
+<help>
+  <entry id="Overview" state="unknown">
+    <title>Kronolith: Visão Geral</title>
+    <heading>O que é kronolith?</heading>
+    <para>
+Kronolith é um calendário de interface Web. Em adição as funções necessárias de criação, modificação e remoção de eventos, ele atualmente suporta repetição de eventos (com excessões e várias opções de remoção), alarmes, funções de importação e exportação, visualização da Lista de Tarefas (Nag, se estiver instalado), e a possibilidade de mostrar os eventos na tela de sumário do Horde.
+    </para>
+<!-- English entry:
+<entry id="Overview">
+    <title>Kronolith: Overview</title>
+    <heading>What is kronolith?</heading>
+    <para>
+Kronolith is a web-based calendar application.  In addition to the required functions of creating, modifying, and deleting events, it currently supports recurring events (with exceptions and various deletion options), alarms,  import and export functions (iCalendar and Palm DataBook (PDB) formats), iCalendar invitations, multiple calander views, shared calendars, display of Task List (Nag) tasks (if Tasks List is installed), and ability to show events in the Horde summary screen.
+    </para>
+</entry>--></entry>
+  <entry id="menu-today" state="unknown">
+    <title>Menu: Hoje</title>
+    <heading>Hoje</heading>
+    <para>
+    O item de menu <i>Hoje</i> mostrará sua exibição padrão (mês, semana, dia, etc. Como configurado em Opções) para a data atual.
+    </para>
+<!-- English entry:
+<entry id="menu-today">
+    <title>Menu: Today</title>
+    <heading>Today</heading>
+    <para>
+    The <i>Today</i> menu item will display your default view (month, week, day, etc. as set in Options) for the current date.
+    </para>
+</entry>--></entry>
+  <entry id="menu-Goto" state="unknown">
+    <title>Menu: Ir Para</title>
+    <heading>Ir Para</heading>
+    <para>
+    O item de menu <i>Ir Para</i> mostrará uma pequena janela pop-up na qual você pode rapidamente selecionar o ano, mês, semana do ano, ou dia do mês para <i>ir para</i>. Esta é geralmente a forma mais rápida de mover-se no calendário.
+    </para>
+<!-- English entry:
+<entry id="menu-Goto">
+    <title>Menu: Goto</title>
+    <heading>Goto</heading>
+    <para>
+    The <i>Goto</i> menu item will display a small pop-up window in which you can quickly select a year, month, week of the year, or day of the month to <i>go to</i>.  This is usually the quickest way to move within the calendar.
+    </para>
+</entry>--></entry>
+  <entry id="menu-Day" state="unknown">
+    <title>Menu: Dia</title>
+    <heading>Exibição Dia</heading>
+    <para>
+    O item de menu <i>Dia</i> mostrará a exibição 'Dia' do dia atualmente selecionado.
+    </para>
+<!-- English entry:
+<entry id="menu-Day">
+    <title>Menu: Day</title>
+    <heading>Day View</heading>
+    <para>
+    The <i>Day</i> menu item will display the day view of the currently selected day.
+    </para>
+</entry>--></entry>
+  <entry id="menu-work-week" state="unknown">
+    <title>Menu: Comercial</title>
+    <heading>Exibição Comercial</heading>
+    <para>
+    O item de menu <i>Comercial</i> mostrará a exibição 'Comercial' (Segunda à Sexta) mais próxima ao dia atualmente selecionado.
+    </para>
+<!-- English entry:
+<entry id="menu-work-week">
+    <title>Menu: Work Week</title>
+    <heading>Work Week View</heading>
+    <para>
+    The <i>Work Week</i> menu item will display the work week view (Monday through Friday) closest to the currently selected day.
+    </para>
+</entry>--></entry>
+  <entry id="menu-week" state="unknown">
+    <title>Menu: Semana</title>
+    <heading>Exibição Semana</heading>
+    <para>
+    O item de menu <i>Semana</i> mostrará a exibição 'Semana' (exibição dos 7 dias) da semana contendo o dia atualmente selecionado.
+    </para>
+<!-- English entry:
+<entry id="menu-week">
+    <title>Menu: Week</title>
+    <heading>Week View</heading>
+    <para>
+    The <i>Week</i> menu item will display the week view (7 day view) for the week containing the currently selected day.
+    </para>
+</entry>--></entry>
+  <entry id="menu-month" state="unknown">
+    <title>Menu: Mês</title>
+    <heading>Exibição Mês</heading>
+    <para>
+    O item de menu <i>Mês</i> mostrará a exibição 'Mês' do mês contendo o dia atualmente selecionado.
+    </para>
+<!-- English entry:
+<entry id="menu-month">
+    <title>Menu: Month</title>
+    <heading>Month View</heading>
+    <para>
+    The <i>Month</i> menu item will display the month view for the month containing the currenly selected day.
+    </para>
+</entry>--></entry>
+  <entry id="menu-new-event" state="unknown">
+    <title>Menu: Novo Evento</title>
+    <heading>Adicionando um Novo Evento</heading>
+    <para>
+    O item de menu <i>Novo Evento</i> permite você criar um novo evento para ser adicionado ao calendário.
+    </para>
+<!-- English entry:
+<entry id="menu-new-event">
+    <title>Menu: New Event</title>
+    <heading>Add a New Event</heading>
+    <para>
+    The <i>New Event</i> menu item will allow you to create a new event to be added to a calendar.
+    </para>
+</entry>--></entry>
+  <entry id="menu-options" state="unknown">
+    <title>Menu: Opções</title>
+    <heading>Opções</heading>
+    <para>
+    O item de menu <i>Opções</i> permite você configurar <i>Opções</i> (ou preferências) que controlam a aparência e comportamento do kronolith, a interação do kronolith com o Horde e outras aplicações Horde, gerencia calendários múltiplos e compartilhados, e gerencia códigos de categorias para eventos.
+    </para>
+<!-- English entry:
+<entry id="menu-options">
+    <title>Menu: Options</title>
+    <heading>Options</heading>
+    <para>
+    The <i>Options</i> menu item allows you to set <i>Options</i> (or preferences) that control the look and feel of kronolith, kronolith's interaction with Horde and other Horde applications, manage multiple and shared calendars, and manage category codes for events.
+    </para>
+</entry>--></entry>
+  <entry id="menu-import-export" state="unknown">
+    <title>Menu: Importar/Exportar</title>
+    <heading>Importar/Exportar</heading>
+    <para>
+    O item de menu <i>Importar/Exportar</i> permite você importar ou exportar eventos do calendário. Atualmente você pode importar arquivos no formato CSV e Microsoft Outlook. Você somente pode exportar no formato CSV.
+    </para>
+<!-- English entry:
+<entry id="menu-import-export">
+    <title>Menu: Import/Export</title>
+    <heading>Import/Export</heading>
+    <para>
+    The <i>Import/Export</i> menu item allows you to import or export calendar events.  Currently you can import files in CSV, Microsoft Outlook, Palm DateBook, and vCalendar/iCalendar formats.  You can export to only CSV and iCalendar formats.
+    </para>
+</entry>--></entry>
+  <entry id="alarms" state="unknown">
+    <title>Avisos</title>
+    <heading>Avisos</heading>
+    <para>
+    Kronolith pode gerar avisos para eventos no calendário. Por padrão, o primeiro aviso é gerado cinqüenta minutos antes do apontamento ser iniciado, mas o aviso pode ser configurado (por evento) para ser dado a quase qualquer intervalo antes do início do evento.
+    </para>
+<!-- English entry:
+<entry id="alarms">
+    <title>Alarms</title>
+    <heading>Alarms</heading>
+    <para>
+    Kronolith can generate alarms for events in a calendar.  By default, the first alarm is generated fifteen minutes before the appointment is supposed to start, but the alarm can be set (per event) to occur at almost any interval before the event start time.
+    </para>
+</entry>--></entry>
+  <entry id="recurring-events" state="unknown">
+    <title>Repetição de Eventos</title>
+    <heading>Repetição de Eventos</heading>
+    <para>
+    Eventos podem ser criados para repetirem de várias maneiras. Muitos eventos repetem-se frequentemente de formas costumeiras. Por exemplo, a repetição <i>Mensal</i> faz o evento selecionado repetir-se uma vez por mês e a repetição <i>Semanalmente</i> faz o evento selecionado repetir-se um vez por semana. Estes tipos de eventos podem ser configurados para repetirem-se de maneiras mais complexas: por exemplo, um evento que ocorra na última Sexta-Feira de cada mês, ou um evento que ocorra na Segunda, Quarta, e Sexta-Feira de cada semana.
+    </para>
+    <para>
+    Você também pode restringir quanto tempo um evento se repetirá ao selecionar <i>Repetir até</i> para a repetição do evento.
+    </para>
+    <para>
+    Normalmente, uma modificação em um evento repetido se aplicará a todas as ocorrências deste evento. Um única ocorrência de um evento repetido pode ser modificada editando a ocorrência, removendo sua informação de repetição, e então escolhendo a opção <i>Salvar Como Novo</i>. A ocorrência selecionada pode agora ser modificada independentemente das outras ocorrências.
+    </para>
+<!-- English entry:
+<entry id="recurring-events">
+    <title>Recurring Events</title>
+    <heading>Recurring Events</heading>
+    <para>
+    Events can be made to repeat in various ways. Many events repeat in certain frequently used ways. For example, the <i>Monthly</i> recurrence types make the selected item repeat each month and the <i>Weekly</i> recurrence type makes the selected item repeat each per week. These can be made to represent events that repeat in complex ways: for example, an item that occurs on the last Friday of each month, or an item that occurs on Monday, Wednesday, and Friday every week. 
+    </para>
+    <para>
+    You can also restrict how long an event repeats by selecting the <i>end date</i> for the event's recurrence.
+    </para>
+    <para>
+    Normally, a modification to a repeating event applies to all occurrences of that event. A single occurrence of a repeating event can be modified by editing the occurrence, removing its recurrence information, and then choosing the <i>Save as New</i> option from the Repeat menu. The selected occurrence can now be modified independently of the other occurences.
+    </para>
+</entry>--></entry>
+  <entry id="Printing" state="unknown">
+    <title>Imprimindo</title>
+    <heading>Imprimindo Calendários e Eventos</heading>
+    <para>
+    Certas exibições são projetadas para serem imprimíveis. Quando em uma destas exibições, o ícone <i>Imprimir</i> aparecerá no topo da barra de menu. Use este ícone para imprimir a exibição atual.
+    </para>
+<!-- English entry:
+<entry id="Printing">
+    <title>Printing</title>
+    <heading>Printing Calendars and Events</heading>
+    <para>
+    Certain views are designed to be printable.  When in one of these views, a <i>Print</i> icon will appear in the top menu bar.  Use this menu icon to print the current view.
+    </para>
+</entry>--></entry>
+  <entry id="shares" state="new">
+  <title>Calendar Permissions</title>
+  <para>
+    Here should go a few explanations on the different users and groups that
+    permissions can be assigned to.
+  </para>
+  <para>
+    This should be a place to explain the different permission types and
+    what they mean regarding to events and calendars.
+  </para>
+</entry>
+  <entry id="embed" state="new">
+  <title>Embedding</title>
+  <para>
+    It is possible to embed small views of your calendars in external websites.
+    You can embed the same views that you can place on Horde's portal page. The
+    following are examples of code to use to embed each view on an external
+    blog or website. You should obviously edit the code with the correct server
+    address and calendar name.  The 'container' parameter is arbitrary, but must
+    both match the DOM id of the the div element and be unique across the whole
+    page you are embedding in.
+  </para>
+  <para>
+    To embed a small Month View of the current month:
+  </para>
+    <i>&lt;div id="kronocalendar"&gt;&lt;/div&gt;&lt;script
+    src="http://hostname.example.com/horde/kronolith/imple.php?imple=Embed
+    /container=kronocalendar/view=month/calendar=calendar_name"
+    type="text/javascript"&gt;&lt;/script&gt;</i>
+  <para>
+    To embed an Upcoming Events View (note the 'months' and 'maxevents'
+    parameters):
+  </para>
+    <i>&lt;div id="kronolist"&gt;&lt;/div&gt;&lt;script
+    src="http://hostname.example.com/horde/kronolith/imple.php?imple=Embed
+    /view=monthlist/calendar=calendar_name/container=kronolist/months=2/
+    maxevents=10" type="text/javascript"&gt;&lt;/script&gt;</i>
+  <para>
+    To embed a Summary View:
+  </para>
+    <i>&lt;div id="kronosummary"&gt;
+    &lt;/div&gt;&lt;script type="text/javascript"
+    src="http://hostname.example.com/horde/kronolith/imple.php?imple=Embed
+    /container=kronosummary/view=summary/calendar=calendar_name
+    "&gt;&lt;/script&gt;</i>
+</entry>
+</help>

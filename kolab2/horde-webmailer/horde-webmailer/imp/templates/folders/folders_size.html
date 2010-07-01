@@ -1,0 +1,32 @@
+<div class="header leftAlign"><gettext>Folder Sizes</gettext></div>
+
+<table class="striped sortable" id="foldersizes">
+ <thead>
+  <tr>
+   <th class="leftAlign"><gettext>Folder</gettext></th>
+   <th class="leftAlign"><gettext>Size</gettext></th>
+  </tr>
+ </thead>
+
+ <tbody>
+<loop:folders>
+  <tr>
+   <td class="leftAlign"><tag:folders.name /></td>
+   <td class="rightAlign" sortval="<tag:folders.sort />"><tag:folders.size /></td>
+  </tr>
+</loop:folders>
+ </tbody>
+
+ <tfoot>
+  <tr>
+   <td class="leftAlign"><strong><gettext>Sum</gettext></strong></td>
+   <td class="rightAlign"><strong><tag:folders_sum /></strong></td>
+  </tr>
+ </tfoot>
+</table>
+
+<form name="returnform">
+<div class="control leftAlign">
+ <input type="button" class="button" onclick="self.location.href='<tag:folders_url />';" value="<gettext>Return to Folders</gettext>" />
+</div>
+</form>

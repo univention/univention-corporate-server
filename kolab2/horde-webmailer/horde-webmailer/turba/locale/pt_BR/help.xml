@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Horde: turba/locale/pt_BR/help.xml,v 1.1 2004-11-04 20:19:26 jan Exp $ -->
+<help>
+  <entry id="Overview" state="unknown">
+    <title>Kronolith: Visão Geral</title>
+    <heading>O que é kronolith?</heading>
+    <para>
+Kronolith é um calendário de interface Web. Em adição as funções necessárias de criação, modificação e remoção de eventos, ele atualmente suporta repetição de eventos (com excessões e várias opções de remoção), alarmes, funções de importação e exportação, visualização da Lista de Tarefas (Nag, se estiver instalado), e a possibilidade de mostrar os eventos na tela de sumário do Horde.
+    </para>
+<!-- English entry:
+<entry id="Overview">
+    <title>Overview</title>
+    <heading>Introduction</heading>
+    <para>
+    The Address Book provides a convenient method and place to store contact information for easy retrieval and use. Depending on how your administrator has set up the system it can provide a private address book as well as access to public network directory services. It also supports distribution lists so you can create your own "mailing lists."
+    </para>
+</entry>--></entry>
+  <entry id="menu-add" state="new">
+    <title>Menu: Add</title>
+    <heading>Add</heading>
+    <para>
+    Add a user to an address book. You can only add users to the address books to which you have write access. If shared or public address books have been enabled they are often read-only and you will not be able to add contacts to them.
+    </para>
+</entry>
+  <entry id="menu-search" state="new">
+    <title>Menu: Search</title>
+    <heading>Search</heading>
+    <para>
+    Search an address book to locate information. This is intended as a quick search and only allows you to search on a few basic fields. Usually this is the name and email address fields, but could vary depending on how your administrator set up the address book.
+    </para>
+    <para>
+    For a more complex search you can use the "<ref module="turba" entry="menu-advanced-search">Advanced Search</ref>" which permits searching on other fields.
+    </para>
+</entry>
+  <entry id="menu-advanced-search" state="new">
+    <title>Menu: Advanced Search</title>
+    <heading>Advanced Search</heading>
+    <para>
+    Search an address book to locate information. This search allows you to search on multiple fields. Which fields are available for searching depends on the address book being searched.
+    </para>
+</entry>
+  <entry id="menu-import" state="new">
+    <title>Menu: Import/Export</title>
+    <heading>Import/Export</heading>
+
+    <para>
+    This menu allows importing to and exporting from your personal address book. It supports both CSV (Comma Separated Variable), Outlook, and vCard formats, as well as some other popular formats.
+    </para>
+
+    <heading>Importing</heading>
+    <para>
+    To import an address book, you need to have the address book data to import on your local machine (on which the web browser is running). To do this, you will need to first export the address book information from your current email client.
+    </para>
+
+    <para>
+    If you use Outlook Express:
+    </para>
+    <para>
+    1) Click on File &gt; Export &gt; Address Book
+    </para>
+    <para>
+    2) Select "Text File" (Comma Separated Values) in the "Address Book Export Tool". Click on "Export".
+    </para>
+    <para>
+    3) In the "Save exported files as" field, type in a name for your address book. Click "Next".
+    </para>
+    <para>
+    4) Put a checkmark in the box to the left of each of the fields that you wish to export. Click "Finish".
+    </para>
+    <para>
+    5) You should receive a message that states 'Address book export process has completed'. Click 'OK'.
+    </para>
+    <para>
+    6) Click 'Close' on the 'Address Book Export Tool' and close Outlook Express.
+    </para>
+
+    <tip>
+    If the exported address book file is not located on your desktop, and you're using a Windows operating system, click on Start &gt; Find or Search &gt; Files or Folders and search your main hard drive for the file name that you used in step 3. Make a note of the file's location.
+    </tip>
+
+    <para>
+    To import an address book, open the address book you want to import the information into. Click on the "Import/Export" Icon. Select the type of address information data file you want to import from the selection list. Click on the "browse" button to look for the address data file on your computer. Select the file, and click on the "Import" button. The information in the file will be imported into your address book.
+    </para>
+    <tip>
+    Some complex entries, or entries with fields that do not match your address book fields, may not import correctly. You should verify the imported data after an import.
+    </tip>
+</entry>
+  <entry id="searching-search_results" state="new">
+    <title>Searching: Search Results</title>
+    <heading>Search Results</heading>
+    <para>
+    If a search is successful, the results will show up in the "Search Results" area.
+    </para>
+    <para>
+    Clicking on an "Email" field entry will open a new Compose window to send mail to that address. Clicking on a "Name" field entry will display the address book record for that name, allowing you to then edit or delete the entry.
+    </para>
+    <para>
+    Depending on how your system has been set up by the administrator search results can be cumulative. Each search will add any new results to your existing results. This is helpful when building lists. To remove the results of cumulative searches and start a new search, click on the "Clear Search" link.
+    </para>
+
+    <tip>
+    When viewing a list of entries, you can sort the entries by each field shown by clicking on the appropriate column heading. To switch columns between ascending and descending sort order, click on the arrow icon in the column heading.
+    </tip>
+</entry>
+</help>

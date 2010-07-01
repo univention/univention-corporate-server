@@ -1,0 +1,805 @@
+# Spanish translations for horde package
+# Traducciones al español para el paquete horde.
+# Copyright 2004-2009 The Horde Project
+# This file is distributed under the same license as the horde package.
+# Automatically generated, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mimp 0.1-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2004-06-22 18:30+0200\n"
+"PO-Revision-Date: 2006-08-04 14:58+0100\n"
+"Last-Translator: Jordi Giralt <projecte.k2@upcnet.es>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/Compose.php:203 lib/Compose.php:254
+msgid "      To: "
+msgstr "    Per a: "
+
+#: lib/Compose.php:191 lib/Compose.php:242
+msgid "    Date: "
+msgstr "Data: "
+
+#: lib/Compose.php:194 lib/Compose.php:245
+msgid "    From: "
+msgstr "      De: "
+
+#: lib/Compose.php:200 lib/Compose.php:251
+msgid " Subject: "
+msgstr " Asumpte: "
+
+#: mailbox.php:91
+#, php-format
+msgid "%d to %d of %d"
+msgstr "%d a %d de %d"
+
+#: lib/Message.php:367
+#, php-format
+msgid "%s does not appear to be a valid mailbox."
+msgstr "%s no sembla una bústia vàlida."
+
+#: templates/message/headers.inc:3
+#, php-format
+msgid "(%d of %d)"
+msgstr "(%d de %d)"
+
+#: config/prefs.php.dist:65
+msgid "Address Books"
+msgstr "Llibretes d'adreces"
+
+#: config/prefs.php.dist:259
+msgid "Arrival Time"
+msgstr "Per hora d'arribada"
+
+#: config/prefs.php.dist:273
+msgid "Ascending"
+msgstr "Ascendent"
+
+#: lib/Contents.php:120
+msgid "Attachment"
+msgstr "Adjunt"
+
+#: message.php:301
+#, php-format
+msgid "Back to %s"
+msgstr "Tornar a %s"
+
+#: message.php:118
+msgid "Bcc"
+msgstr "Bcc"
+
+#: templates/compose/compose.inc:54
+msgid "Bcc: "
+msgstr "Bcc: "
+
+#: config/prefs.php.dist:317
+msgid "Both Header Listing and Body of Message"
+msgstr "Tant les capçaleres com el cos del missatge"
+
+#: message.php:117
+msgid "Cc"
+msgstr "Cc"
+
+#: templates/compose/compose.inc:51
+msgid "Cc: "
+msgstr "Cc: "
+
+#: config/prefs.php.dist:38
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr ""
+"Canvia les opcions de visualització així com la quantitat de missatges per "
+"pàgina i com ordenar-los"
+
+#: config/prefs.php.dist:19
+msgid "Change mail server settings."
+msgstr "Canviar la configuració del servidor de correu."
+
+#: config/prefs.php.dist:13
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr ""
+"Canviar el nom, ,adreça electrònica i sginatura visibles al llegir o "
+"respondre  els seus missatges."
+
+#: lib/MIMP.php:70
+msgid "Compose"
+msgstr "Redactar"
+
+#: config/prefs.php.dist:60
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr ""
+"Controla la comprovació de correu nou i si es notificarà o no al rebre'l."
+
+#: lib/Message.php:357
+#, php-format
+msgid "Could not delete messages from %s. The server said: %s"
+msgstr ""
+"No es poden eliminar els missatges de %s. Això és que ha dit el servidor: %s"
+
+#: config/prefs.php.dist:46
+msgid "Customize how you send mail and where drafts are saved."
+msgstr "Personaliza l'enviament de correu i on enmagatzemar els esborranys."
+
+#: config/prefs.php.dist:54
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Personaliza les tasques a executar a l'iniciar sessió a %s."
+
+#: message.php:114
+msgid "Date"
+msgstr "Data"
+
+#: config/prefs.php.dist:265
+msgid "Default sorting criteria:"
+msgstr "Criteri de classificació per omissió:"
+
+#: config/prefs.php.dist:275
+msgid "Default sorting direction:"
+msgstr "Sentit de clasificació per omissió:"
+
+#: message.php:254
+msgid "Delete"
+msgstr "Eliminar"
+
+#: config/prefs.php.dist:30
+msgid "Deleting and Moving Messages"
+msgstr "Eliminant i movent missatges"
+
+#: config/prefs.php.dist:274
+msgid "Descending"
+msgstr "Descendent"
+
+#: config/prefs.php.dist:37
+msgid "Display Options"
+msgstr "Opcions de visualizació"
+
+#: config/prefs.php.dist:355
+msgid "Display confirmation after sending a message?"
+msgstr "Mostrar una confirmació després d'enviar un missatge?"
+
+#: config/prefs.php.dist:316
+msgid "Display in Body of Message"
+msgstr "Mostrar en el cos del missatge"
+
+#: config/prefs.php.dist:238
+msgid "Display the 'Empty Trash' link in the menubar?"
+msgstr "Mostrar el vincle 'Buidar paperera' a la barra de menús?"
+
+#: config/prefs.php.dist:87
+msgid "Edit your identities"
+msgstr "Modificar identitats"
+
+#: lib/Message.php:375
+#, php-format
+msgid "Emptied all messages from %s."
+msgstr "Shan eliminat tots els missatges de %s."
+
+#: lib/Compose.php:259
+msgid "End forwarded message"
+msgstr "Acabar missatge reenviat"
+
+#: lib/Compose.php:209
+msgid "End message"
+msgstr "Acabar missatge"
+
+#: lib/Compose.php:207
+#, php-format
+msgid "End message from %s"
+msgstr "Acabar missatge de %s"
+
+#: config/prefs.php.dist:423
+msgid "Every 15 minutes"
+msgstr "Cada 15 minuts"
+
+#: config/prefs.php.dist:420
+msgid "Every 30 seconds"
+msgstr "Cada 30 segons"
+
+#: config/prefs.php.dist:422
+msgid "Every 5 minutes"
+msgstr "Cada 5 minuts"
+
+#: config/prefs.php.dist:424
+msgid "Every half hour"
+msgstr "Cada mitja hora"
+
+#: config/prefs.php.dist:421
+msgid "Every minute"
+msgstr "Cada minut"
+
+#: compose.php:174 templates/compose/compose.inc:61
+#: templates/compose/redirect.inc:19
+msgid "Expand Names"
+msgstr "Expandir noms"
+
+#: config/prefs.php.dist:437
+msgid "Expand names in the compose window automatically in the background?"
+msgstr ""
+"Expandir automàticament com una tasca de fons els noms de la finestra de "
+"redacció?"
+
+#: config/prefs.php.dist:192
+msgid "Filter message content for profanity?"
+msgstr "Filtrar contingut obscè en el missatge?"
+
+#: mailbox.php:73
+msgid "First Page"
+msgstr "Primera pàgina"
+
+#: folders.php:104 lib/MIMP.php:71
+msgid "Folders"
+msgstr "Carpetes"
+
+#: message.php:286
+msgid "Forward"
+msgstr "Reenviar"
+
+#: lib/Compose.php:236
+msgid "Forwarded message"
+msgstr "Missatge reenviat"
+
+#: lib/Compose.php:234
+#, php-format
+msgid "Forwarded message from %s"
+msgstr "Missatge reenviat de %s"
+
+#: message.php:115 templates/mailbox/mailbox.inc:17
+msgid "From"
+msgstr "De"
+
+#: config/prefs.php.dist:261
+msgid "From Address"
+msgstr "Remitent"
+
+#: compose.php:321 compose.php:324
+msgid "Fwd:"
+msgstr "Fwd:"
+
+#: config/prefs.php.dist:318
+msgid "How do you want to display attachments?"
+msgstr "Com desitja mostrar els adjunts?"
+
+#: config/prefs.php.dist:347
+msgid "How to prefix quoted lines in a reply:"
+msgstr "Prefix per a citar les línies del missatge de resposta: "
+
+#: templates/compose/compose.inc:41
+msgid "Identity"
+msgstr "Identitat"
+
+#: config/prefs.php.dist:143
+msgid "Include a brief summary of the header in a reply?"
+msgstr "Incloure un resum de la capçalera en la resposta?"
+
+#: config/prefs.php.dist:339
+msgid "Include original message in a reply?"
+msgstr "Incloure missatge original en la resposta?"
+
+#: mailbox.php:86
+msgid "Last Page"
+msgstr "última pàgina"
+
+#: config/prefs.php.dist:447
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+"Llistar tots els contactes al carregar la pantalla de contactes? (Si està "
+"deshabilitat, només veurà els contactes que busqui de forma explícita) "
+
+#: lib/Headers.php:204
+msgid "List-Archive"
+msgstr "List-Archive"
+
+#: lib/Headers.php:199
+msgid "List-Help"
+msgstr "List-Help"
+
+#: lib/Headers.php:206
+msgid "List-Id"
+msgstr "List-Id"
+
+#: lib/Headers.php:202
+msgid "List-Owner"
+msgstr "List-Owner"
+
+#: lib/Headers.php:203
+msgid "List-Post"
+msgstr "List-Post"
+
+#: lib/Headers.php:201
+msgid "List-Subscribe"
+msgstr "List-Subscribe"
+
+#: lib/Headers.php:200
+msgid "List-Unsubscribe"
+msgstr "List-Unsubscribe"
+
+#: config/prefs.php.dist:315
+msgid "Listing in the Header"
+msgstr "Llistar en la capçalera"
+
+#: templates/login/login.inc:3 templates/login/login.inc:14
+msgid "Log in"
+msgstr "Iniciar sesió"
+
+#: lib/MIMP.php:72
+msgid "Log out"
+msgstr "Sortir de la sessió"
+
+#: config/prefs.php.dist:53
+msgid "Login Tasks"
+msgstr "Tasques d'inici de sessió"
+
+#: config/prefs.php.dist:23 config/prefs.php.dist:29
+msgid "Mail Management"
+msgstr "Gestió de correu"
+
+#: compose.php:579 folders.php:111 folders.php:171 mailbox.php:283
+#: message.php:248 templates/message/headers.inc:4
+#: templates/mailbox/mailbox.inc:4 templates/compose/compose.inc:4
+#: templates/compose/redirect.inc:4
+msgid "Menu"
+msgstr "Menú"
+
+#: lib/Compose.php:184
+msgid "Message"
+msgstr "Missatge"
+
+#: compose.php:555 config/prefs.php.dist:45
+msgid "Message Composition"
+msgstr "Redacció del missatge"
+
+#: config/prefs.php.dist:260
+msgid "Message Date"
+msgstr "Data del missatge"
+
+#: config/prefs.php.dist:263
+msgid "Message Size"
+msgstr "Mida del missatge"
+
+#: config/prefs.php.dist:24
+msgid "Message Viewing"
+msgstr "Visualizació de missatges"
+
+#: compose.php:344
+msgid "Message bounced successfully."
+msgstr "Sha rebotat correctament el missatgeensaje."
+
+#: lib/Compose.php:182
+#, php-format
+msgid "Message from %s"
+msgstr "Missatge de %s"
+
+#: compose.php:529
+#, php-format
+msgid "Message sent successfully, but not saved to %s"
+msgstr "S'ha enviat correctament el missatge, però no s'ha guardat a %s "
+
+#: compose.php:536
+msgid "Message sent successfully."
+msgstr "S'ha enviat correctament el missatge"
+
+#: templates/compose/compose.inc:58
+msgid "Message: "
+msgstr "Missatge:"
+
+#: config/prefs.php.dist:283
+msgid "Messages per page in the mailbox view."
+msgstr "Missatges per pàgina en el llista de la bústia"
+
+#: compose.php:26
+msgid "More than one match found."
+msgstr "S'ha trobat més d'una coincidència"
+
+#: config/prefs.php.dist:419
+msgid "Never"
+msgstr "Mai"
+
+#: config/prefs.php.dist:59
+msgid "New Mail"
+msgstr "Correu nou"
+
+#: message.php:294
+msgid "Next"
+msgstr "Següent"
+
+#: mailbox.php:85
+msgid "Next Page"
+msgstr "Pàgina següent"
+
+#: mailbox.php:93
+#, php-format
+msgid "No Messages"
+msgstr "Sense missatges"
+
+#: folders.php:99 lib/Folder.php:306 lib/Folder.php:357 lib/Folder.php:362
+msgid "No folders were specified"
+msgstr "No s'han especificat carpetes"
+
+#: lib/Compose.php:178
+msgid "No message body text"
+msgstr "No hi ha text en el cos del missatge"
+
+#: lib/Mailbox.php:217
+msgid "No messages matched your search."
+msgstr "No hi ha missatges que coincideixin amb la seva recerca"
+
+#: config/prefs.php.dist:36 config/prefs.php.dist:44 config/prefs.php.dist:52
+#: config/prefs.php.dist:58 config/prefs.php.dist:64
+msgid "Other Options"
+msgstr "Altres opcions"
+
+#: templates/login/login.inc:10
+msgid "Password"
+msgstr "Contrasenya"
+
+#: config/prefs.php.dist:12
+msgid "Personal Information"
+msgstr "Informació personal"
+
+#: lib/MIMP.php:502
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Resolgui adreces electròniques ambigües o invàlides."
+
+#: message.php:297
+msgid "Prev"
+msgstr "Anterior"
+
+#: mailbox.php:74
+msgid "Previous Page"
+msgstr "Pàgina anterior"
+
+#: message.php:121
+msgid "Priority"
+msgstr "Prioritat"
+
+#: mailbox.php:288
+msgid "Purge Deleted"
+msgstr "Buidar paperera"
+
+#: lib/Compose.php:212
+msgid "Quoting"
+msgstr "Citat per"
+
+#: templates/mailbox/mailbox.inc:25
+msgid "Read"
+msgstr "Llegir"
+
+#: compose.php:178 message.php:287 templates/compose/redirect.inc:18
+msgid "Redirect"
+msgstr "Redirigir"
+
+#: compose.php:352
+msgid "Redirecting failed."
+msgstr "Ha fallat el redireccionament."
+
+#: mailbox.php:287
+msgid "Refresh"
+msgstr "Actualitzar"
+
+#: config/prefs.php.dist:425
+msgid "Refresh Folder Views:"
+msgstr "Actualitzar vistes de carpeta:"
+
+#: lib/Folder.php:265
+#, php-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr ""
+"Error al renombrar \"%s\" com \"%s\". Això és el que ha dit el servidor"
+
+#: message.php:276
+msgid "Reply"
+msgstr "Respon"
+
+#: message.php:283
+msgid "Reply All"
+msgstr "Respon a tot"
+
+#: message.php:279
+msgid "Reply to List"
+msgstr "Respon a la lista"
+
+#: message.php:119
+msgid "Reply-To"
+msgstr "Respon-A"
+
+#: lib/Compose.php:197 lib/Compose.php:248
+msgid "Reply-To: "
+msgstr "Respon-A: "
+
+#: config/prefs.php.dist:206
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr ""
+"Tornar al llistat de la bústia després d'eliminar, traslladar o copiar un "
+"missatge"
+
+#: lib/MIMP.php:363
+msgid "Search Results"
+msgstr "Resultats de la cerca"
+
+#: config/prefs.php.dist:66
+msgid "Select address book sources for adding and searching for addresses."
+msgstr ""
+"Seleccioni la llibreta d'adreces origen per a addició i recerca d'adreces"
+
+#: templates/compose/compose.inc:60
+msgid "Send"
+msgstr "Enviar"
+
+#: config/prefs.php.dist:18
+msgid "Server Information"
+msgstr "Informació del servidor"
+
+#: config/prefs.php.dist:25
+msgid "Set preferences for filtering messages for unwanted content."
+msgstr ""
+"Establix preferències per a filtrar missatges amb contingut no desitjat. "
+
+#: config/prefs.php.dist:31
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr "Establix preferències del que passarà al moure o eliminar missatges."
+
+#: config/prefs.php.dist:383
+msgid "Set the X-Priority header when composing messages?"
+msgstr "Establir la capçalera X-Priority al redactar missatges?"
+
+#: config/prefs.php.dist:374
+msgid "Should the compose window be closed after saving a draft?"
+msgstr "Tancar la finestra de redacció després de guardar un esborrany? "
+
+#: config/prefs.php.dist:307
+msgid "Show legend in the mailbox view?"
+msgstr "Mostrar comentaris en la vista de la bústia? "
+
+#: config/prefs.php.dist:291
+msgid "Spelling errors per screen when spell checking."
+msgstr ""
+"Nombre d'errors ortogràfics per pantalla durant la correcció ortogràfica"
+
+#: message.php:120 templates/mailbox/mailbox.inc:18
+msgid "Subject"
+msgstr "Assumpte"
+
+#: config/prefs.php.dist:262
+msgid "Subject Field"
+msgstr "Camp de l'assumpte"
+
+#: templates/compose/compose.inc:56
+msgid "Subject: "
+msgstr "Assumpte:"
+
+#: lib/Folder.php:154
+#, php-format
+msgid "The folder \"%s\" already exists"
+msgstr "Ja existeix la carpeta \"%s\""
+
+#: lib/Folder.php:173
+#, php-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "S'ha creat la carpeta \"%s\" però no s'ha subscrit a ell a."
+
+#: lib/Folder.php:109
+#, php-format
+msgid "The folder \"%s\" was deleted but you were not unsubscribed from it."
+msgstr "S'ha eliminat la carpeta \"%s\" però no s'ha desubscrit"
+
+#: lib/Folder.php:160
+#, php-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr ""
+"No s'ha creat la carpeta \"%s\". Això és el que ha indicat el servidor "
+
+#: lib/Folder.php:176
+#, php-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "S'ha creat correctament la carpeta \"%s\"."
+
+#: lib/Folder.php:112
+#, php-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "S'ha eliminat correctament la carpeta \"%s\"."
+
+#: lib/Folder.php:263
+#, php-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "S'ha renombrat correctament la carpeta \"%s\" com \"%s\"."
+
+#: lib/Folder.php:102
+#, php-format
+msgid "The folder '%s' was not deleted. This is what the server said"
+msgstr ""
+"No s'ha eliminat la carpeta '%s'. Això és el que ha indicat el servidor"
+
+#: lib/Message.php:369
+#, php-format
+msgid "The mailbox %s is already empty."
+msgstr "La bústia  %s ja està buida."
+
+#: lib/MIME/Viewer/alternative.php:47
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "No hi ha parts alternatives que es puguin mostrar en línia."
+
+#: lib/Contents.php:151
+msgid "There are no parts that can be displayed inline."
+msgstr "No hi ha parts que es puguin mostrar en línia."
+
+#: lib/Message.php:313
+#, php-format
+msgid "There was a problem expunging %s. This is what the server said"
+msgstr ""
+"S'ha produït un problema al buidar %s. Això és el que ha indicat el servidor."
+
+#: lib/Message.php:371
+#, php-format
+msgid "There was a problem expunging the mailbox. The server said: %s"
+msgstr ""
+"S'ha produït una problema al buidar la bústia. Això és el que ha indicat el  "
+"servidor: %s"
+
+#: lib/Message.php:321
+msgid "There was a problem expunging the mailbox. This is what the server said"
+msgstr ""
+"S'ha produït un problema al buidar la bústia. Això és el que ha indicat el "
+"servidor."
+
+#: lib/Message.php:96
+#, php-format
+msgid ""
+"There was an error copying messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"S'ha produït un error al copiar de \"%s\" a \"%s\". Això és el que ha "
+"indicat el servidor."
+
+#: lib/Message.php:182
+#, php-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr ""
+"S'ha produït un error al eliminar missatges de la carpetea \"%s\" . Això és "
+"el que ha indicat el servidor."
+
+#: lib/Message.php:232
+#, php-format
+msgid ""
+"There was an error deleting messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"S'ha produït un error al eliminar missatges de la carpeta \"%s\". Això és el "
+"que ha indicat el servidor."
+
+#: lib/Message.php:180
+#, php-format
+msgid "There was an error deleting messages. This is what the server said: %s"
+msgstr ""
+"S'ha produït un error al eliminar missatges. Això és el que ha indicat el "
+"servidor: %s"
+
+#: lib/MIME/Viewer/html.php:33 lib/MIME/Viewer/plain.php:31
+msgid "There was an error displaying this message part"
+msgstr "S'ha produït un error al mostrar aquesta part del missatge"
+
+#: lib/Message.php:287
+#, php-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"S'ha produït un error al marcat missatges de la carpeta \"%s\".  Això és el "
+"que ha indicat el servidor."
+
+#: lib/Message.php:91
+#, php-format
+msgid ""
+"There was an error moving messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"S'ha produït un error al moure missatges de \"%s\" a \"%s\". Això és el que "
+"ha indicat el servidor."
+
+#: lib/Message.php:172
+#, php-format
+msgid ""
+"There was an error moving messages to the trash. This is what the server said"
+msgstr ""
+"S'ha produït un error al moure missatges a la paperera. Això és el que ha "
+"indicat el servidor."
+
+#: compose.php:543
+#, php-format
+msgid "There was an error sending your message: %s"
+msgstr "S'ha prduït un error al enviar el missatge: %s"
+
+#: mailbox.php:46
+msgid "There was an error viewing the requested message."
+msgstr "S'ha produït un error al veure el missatge sol·licitat"
+
+#: config/prefs.php.dist:264
+msgid "Thread View"
+msgstr "Vista de seqüencies"
+
+#: mailbox.php:167 message.php:116
+msgid "To"
+msgstr "Per a "
+
+#: templates/compose/compose.inc:49 templates/compose/redirect.inc:16
+msgid "To: "
+msgstr "Per a:"
+
+#: message.php:252
+msgid "Undelete"
+msgstr "Recuperar"
+
+#: mailbox.php:165
+msgid "Undisclosed Recipients"
+msgstr "Destinataris ocults"
+
+#: config/prefs.php.dist:178
+msgid "Use IMAP folder subscriptions?"
+msgstr "Utilitzar subscripcions a carpetes IMAP?"
+
+#: templates/login/login.inc:8
+msgid "Username"
+msgstr "Usuari"
+
+#: templates/login/login.inc:5
+#, php-format
+msgid "Welcome to %s"
+msgstr "Benvingut/da a %s"
+
+#: config/prefs.php.dist:216
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted?"
+msgstr ""
+"Al eliminar missatges, moure a la paperera enlloc de marcar-los com "
+"eliminats?"
+
+#: config/prefs.php.dist:331
+msgid "Wrap text at this many characters."
+msgstr "Ajustar text a aquest número de caràcters."
+
+#: compose.php:400
+msgid "You must have at least one recipient."
+msgstr "Ha de tenir almenys un destinatari. "
+
+#: lib/Folder.php:313
+#, php-format
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr "No s'ha subscrit a \"%s\". Això és el que ha indicat el servidor"
+
+#: lib/Folder.php:369
+#, php-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr "No s'ha desubscrit de \"%s\". Això és el que ha indicat el servidor."
+
+#: lib/Folder.php:316
+#, php-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr "' ha subscrit correctament a \"%s\""
+
+#: lib/Folder.php:372
+#, php-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "S'ha desubscrit correctament de \"%s\""
+
+#: config/prefs.php.dist:11 config/prefs.php.dist:17
+msgid "Your Information"
+msgstr "La seva informació"
+
+#: mailbox.php:120 message.php:148
+msgid "[No Subject]"
+msgstr "[Sense asumpte]"

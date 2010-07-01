@@ -1,0 +1,13 @@
+/**
+ * $Horde: imp/themes/cherry/screen.css,v 1.1.10.1 2007-12-20 14:00:44 jan Exp $
+ */
+
+.important, .flagged {
+    background-color: #FFFFAA;
+}
+.unseen {
+    background-color: #FFCC99;
+}
+.answered {
+    background-color: #DDDDDD;
+}

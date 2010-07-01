@@ -1,0 +1,837 @@
+# Russian translations for Dimp package
+# Copyright 
+# Automatically generated, 2008.
+# Alexey Zakharov <baber@mosga.net>, 2008
+# This file is distributed under the same license as the Dimp package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Dimp H3 1.0\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-01-22 17:27+0100\n"
+"PO-Revision-Date: 2008-01-22 17:27+0100\n"
+"Last-Translator: Alexey Zakharov <baber@mosga.net>\n"
+"Language-Team: Russian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1251\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: imp.php:626
+#, fuzzy, php-format
+msgid "%s messages were purged from \"%s\"."
+msgstr "Переправленое сообщение от %s"
+
+#: lib/Block/newmail.php:69
+#, fuzzy, php-format
+msgid "%s more unseen messages..."
+msgstr "Не удаленные сообщения"
+
+# fuzzy, php-format
+#: imp.php:400
+#, fuzzy, php-format
+msgid "%s was successfully added to your address book."
+msgstr "Запись \"%s\" была добавлена в адресную книгу"
+
+#: imp.php:624
+#, fuzzy, php-format
+msgid "1 message was purged from \"%s\"."
+msgstr "Переправленое сообщение от %s"
+
+#: lib/Block/newmail.php:67
+#, fuzzy
+msgid "1 more unseen message..."
+msgstr "Не удаленные сообщения"
+
+#: lib/DIMP.php:189
+msgid ""
+"A popup window could not be opened. Your browser may be blocking popups."
+msgstr ""
+"Невозможно открыть всплывающее окно вследствие настроек Вашего браузера"
+
+#: lib/Views/ShowMessage.php:305
+#, fuzzy
+msgid "Add to Address Book"
+msgstr "Адресная книга"
+
+#: templates/index/index.inc:175 templates/index/index.inc:180
+msgid "All"
+msgstr "Все"
+
+#: lib/DIMP.php:182
+msgid "Arrival"
+msgstr "Время получения"
+
+#: templates/chunks/fullmessage.php:54 templates/index/index.inc:279
+msgid "Attachments Only"
+msgstr "Только вложения"
+
+#: templates/chunks/compose.php:93
+msgid "Bcc: "
+msgstr "Bcc"
+
+#: templates/index/index.inc:248 templates/index/index.inc:292
+msgid "Blacklist"
+msgstr "Черный список"
+
+# fuzzy
+#: templates/chunks/fullmessage.php:53 templates/index/index.inc:278
+msgid "Body Text Only"
+msgstr "Только текст сообщения"
+
+#: templates/index/index.inc:315
+msgid "CTRL-A: Select all messages in the current mailbox."
+msgstr "CTRL-A: Выбрать все сообщения в текущем ящике."
+
+#: lib/DIMP.php:175
+msgid "Cancel"
+msgstr "Отмена"
+
+#: lib/DIMP.php:219
+#, fuzzy
+msgid ""
+"Cancelling this message will permanently discard its contents and will "
+"delete auto-saved drafts.\n"
+"Are you sure you want to do this?"
+msgstr "При отмене отправки этого сообщения все его содержание будет утеряно."
+
+#: templates/chunks/compose.php:79
+msgid "Cc: "
+msgstr "Cc"
+
+#: templates/chunks/compose.php:38
+msgid "Check Spelling"
+msgstr "Проверить орфографию"
+
+#: templates/index/index.inc:219
+msgid "Check for New Mail"
+msgstr "Проверить новую почту"
+
+#: lib/DIMP.php:183
+msgid "Checking..."
+msgstr "Соединение..."
+
+#: templates/index/index.inc:239 templates/index/index.inc:263
+#: templates/index/index.inc:288
+msgid "Clear Flag"
+msgstr "Убрать флаг"
+
+#: templates/index/index.inc:308
+msgid ""
+"Click on a message while holding down the CTRL key to select multiple "
+"messages.  To select a range of messages, click the first message of the "
+"range, navigate to the last message of the range, and then click on the last "
+"message while holding down the SHIFT key."
+msgstr ""
+"Щелчок на сообщении при нажатой клавише CTRL позвозяет выбрать несколько "
+"сообщений одновременно.Чтобы выбрать много сообщений подряд, выберите первое "
+"сообщение, затем найдите последнее сообщение диапазона, и выберите его, "
+"держа нажатой клавишу SHIFT."
+
+#: templates/imp/message.html:30
+#, fuzzy
+msgid "Collapse Headers"
+msgstr ""
+"#-#-#-#-#  ru_RU.po (Horde v2.1)  #-#-#-#-#\n"
+"#-#-#-#-#  ru_RU.po (IMP v3.1)  #-#-#-#-#\n"
+"Развернуть все"
+
+# fuzzy
+#: config/prefs.php.dist:16
+msgid "Compose Options"
+msgstr "Составление сообщения"
+
+#: config/prefs.php.dist:18
+msgid "Control the behavior of the javascript HTML editor."
+msgstr "Управление настройками визуального HTML редактора"
+
+#: templates/index/index.inc:199
+#, fuzzy
+msgid "Could not get message list from server"
+msgstr "Ошибка при удалении писем из папки \"%s\". Сервер ответил"
+
+#: lib/DIMP.php:193
+#, fuzzy
+msgid "Create folder:"
+msgstr "Создать папку"
+
+#: templates/index/index.inc:211 templates/index/index.inc:224
+#, fuzzy
+msgid "Create subfolder"
+msgstr "Создать папку"
+
+#: lib/DIMP.php:194
+#, fuzzy
+msgid "Create subfolder:"
+msgstr "Создать папку"
+
+#: config/prefs.php.dist:11
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Задачи, выполняемые в момент входа в %s"
+
+#: templates/index/index.inc:313
+msgid ""
+"DELETE key: Delete the currently selected message(s). SHIFT-DELETE will "
+"delete the current message and move to the next message if a single message "
+"is selected."
+msgstr ""
+"DELETE: Удалить текущее сообщение. Shift-DELETE удаляет текущее сообщение и "
+"перемещает указатель на следующее, если было выбрано одно сообщение."
+
+#: lib/DIMP.php:181
+msgid "Date"
+msgstr "Дата"
+
+#: templates/index/index.inc:167 templates/index/index.inc:253
+#: templates/index/index.inc:265
+msgid "Delete"
+msgstr "Удалить"
+
+#: templates/index/index.inc:214
+#, fuzzy
+msgid "Delete Folder"
+msgstr "Удалить папку(и)"
+
+#: templates/index/index.inc:220
+msgid "Do Not Check for New Mail"
+msgstr "Не проверять папку(и) на новую почту"
+
+# fuzzy
+#: templates/index/index.inc:314
+msgid "ENTER key: Open message(s) in a popup window."
+msgstr "ENTER: Открыть письмо в отдельном окне"
+
+#: templates/index/index.inc:213
+#, fuzzy
+msgid "Empty Folder"
+msgstr "Очистить папку"
+
+# fuzzy
+#: templates/chunks/fullmessage.php:52 templates/index/index.inc:277
+msgid "Entire Message"
+msgstr "Сообщение целиком"
+
+#: templates/imp/message.html:9
+#, fuzzy
+msgid "Expand Headers"
+msgstr "Развернуть имена"
+
+# fuzzy
+#: config/prefs.php.dist:39
+#, fuzzy
+msgid "FCKeditor"
+msgstr "Править"
+
+#: templates/index/index.inc:238 templates/index/index.inc:262
+#: templates/index/index.inc:287
+msgid "Flag Message"
+msgstr "Поставить флаг"
+
+# fuzzy
+#: config/portal.php.dist:28
+msgid "Folder Summary"
+msgstr "Статистика"
+
+#: templates/index/index.inc:173
+#, fuzzy
+msgid "Folders: "
+msgstr "Папки"
+
+#: templates/index/index.inc:160
+msgid "Forward"
+msgstr "Переслать"
+
+#: templates/index/index.inc:234
+msgid "Forward Attachments Only"
+msgstr "Переслать только вложения"
+
+# fuzzy
+#: templates/index/index.inc:233
+msgid "Forward Body Text Only"
+msgstr "Переслать только текст"
+
+#: templates/index/index.inc:232
+msgid "Forward Entire Message"
+msgstr "Переслать все сообщение"
+
+#: templates/index/index.inc:181 lib/DIMP.php:178
+msgid "From"
+msgstr "От кого"
+
+#: templates/chunks/compose.php:55
+msgid "From: "
+msgstr "От кого"
+
+# fuzzy
+#: config/prefs.php.dist:9
+msgid "General Options"
+msgstr "Общие настройки"
+
+# fuzzy
+#: templates/index/index.inc:54 lib/DIMP.php:184
+msgid "Get Mail"
+msgstr "Сбор почты"
+
+#: lib/Block/newmail.php:71
+msgid "Go to your Inbox..."
+msgstr ""
+
+#: lib/Views/ShowMessage.php:374
+msgid "HERE"
+msgstr "ЗДЕСЬ"
+
+#: templates/index/index.inc:312
+msgid "HOME/END keys: Move to the beginning/end of the message list."
+msgstr "Home/End: Перемещение в начало/конец списка сообщений"
+
+#: templates/chunks/compose.php:49
+msgid "HTML composition"
+msgstr "Визуальный редактор"
+
+#: lib/DIMP.php:171
+#, fuzzy
+msgid "Hide Addresses"
+msgstr "Домашний адрес"
+
+#: templates/index/index.inc:283 lib/DIMP.php:190
+msgid "Hide Preview"
+msgstr "Убрать текст письма"
+
+# fuzzy
+#: lib/DIMP.php:168
+#, fuzzy
+msgid "Hide Quoted Text"
+msgstr "Текст"
+
+#: lib/Views/ShowMessage.php:226
+#, fuzzy
+msgid "High Priority"
+msgstr "Печать"
+
+# fuzzy
+#: templates/index/index.inc:125
+msgid "Home"
+msgstr "Портал"
+
+# fuzzy
+#: templates/index/index.inc:51
+msgid "Horde"
+msgstr "Портал"
+
+#: config/prefs.php.dist:29
+msgid "Inbox"
+msgstr "Входящие"
+
+#: templates/index/index.inc:165
+#, fuzzy
+msgid "Innocent"
+msgstr "Отправить сообщение о спаме"
+
+# fuzzy
+#: config/prefs.php.dist:17
+msgid "Javascript HTML Editor Options"
+msgstr "Настройки визуального редактора"
+
+#: templates/chunks/compose.php:13 templates/index/index.inc:46
+#: templates/index/index.inc:73 templates/index/index.inc:323 lib/DIMP.php:176
+msgid "Loading..."
+msgstr "Загрузка..."
+
+# fuzzy
+#: config/prefs.php.dist:10
+msgid "Login Tasks"
+msgstr "Вход"
+
+#: lib/Views/ShowMessage.php:230
+#, fuzzy
+msgid "Low Priority"
+msgstr "Печать"
+
+#: lib/Views/ListMessages.php:124
+#, fuzzy, php-format
+msgid "Mailbox %s does not exist."
+msgstr "Адресат уведомления %s не найден."
+
+#: templates/index/index.inc:217
+#, fuzzy
+msgid "Mark all as New"
+msgstr "Отметить как:"
+
+#: templates/index/index.inc:216
+msgid "Mark all as Read"
+msgstr ""
+
+#: templates/index/index.inc:245
+#, fuzzy
+msgid "Mark as Innocent"
+msgstr "Отправить сообщение о спаме"
+
+#: templates/index/index.inc:237 templates/index/index.inc:286
+msgid "Mark as New"
+msgstr "Отметить как новое"
+
+#: templates/index/index.inc:236 templates/index/index.inc:285
+msgid "Mark as Read"
+msgstr "Отметить как прочитанное"
+
+#: templates/index/index.inc:242
+msgid "Mark as Spam"
+msgstr "Отметить как спам"
+
+#: compose.php:314
+msgid "Message Composition"
+msgstr "Составление сообщения"
+
+# fuzzy
+#: compose.php:159
+msgid "Message sent successfully."
+msgstr "Сообщение успешно отправлено."
+
+#: templates/chunks/fullmessage.php:16 templates/chunks/fullmessage.php:40
+#, fuzzy
+msgid "Message:"
+msgstr "Сообщение"
+
+#: templates/index/index.inc:179
+#, fuzzy
+msgid "Message: "
+msgstr "Сообщение"
+
+#: lib/DIMP.php:165
+msgid "Messages"
+msgstr "Сообщения"
+
+# fuzzy
+#: templates/index/index.inc:110
+msgid "New Folder"
+msgstr "Новая папка"
+
+# fuzzy
+#: compose.php:181 lib/Views/ShowMessage.php:303
+msgid "New Message"
+msgstr "Написать"
+
+# fuzzy, php-format
+#: lib/DIMP.php:167
+msgid "No Messages"
+msgstr "Нет сообщений"
+
+#: lib/Block/foldersummary.php:73
+msgid "No folders are being checked for new mail."
+msgstr ""
+
+#: lib/Block/foldersummary.php:77
+#, fuzzy
+msgid "No folders with new messages"
+msgstr "Не удаленные сообщения"
+
+#: lib/Block/foldersummary.php:75
+#, fuzzy
+msgid "No folders with unseen messages"
+msgstr "Не удаленные сообщения"
+
+# fuzzy
+#: templates/index/index.inc:198
+#, fuzzy
+msgid "No messages to display"
+msgstr "Отобразить книжки:"
+
+#: lib/Block/newmail.php:40
+#, fuzzy
+msgid "No unread messages"
+msgstr "Сообщение"
+
+#: lib/DIMP.php:174
+msgid "Ok"
+msgstr ""
+
+#: lib/Views/ShowMessage.php:262 lib/Views/ShowMessage.php:266
+msgid "Open in new window"
+msgstr ""
+
+#: options.php:17
+msgid "Options"
+msgstr "Настройки"
+
+#: templates/index/index.inc:168
+msgid "Other Actions"
+msgstr "Другие действия"
+
+#: templates/index/index.inc:311
+msgid "PAGE UP/PAGE DOWN keys: Move one page up/down through the message list."
+msgstr "PgUp/PgDn: Переместиться на страницу вверх/вниз по списку сообщений."
+
+#: templates/index/index.inc:213
+#, fuzzy
+msgid "Permanently delete all messages?"
+msgstr "Невозможно соединиться с SQL сервером."
+
+# fuzzy
+# fuzzy
+#: templates/index/index.inc:214
+#, fuzzy
+msgid "Permanently delete this folder?"
+msgstr "Удалить зту задачу"
+
+#: lib/DIMP.php:161 config/prefs.php.dist:28
+msgid "Portal"
+msgstr "Портал"
+
+#: lib/Views/ShowMessage.php:275
+msgid "Print"
+msgstr "Печать"
+
+#: templates/index/index.inc:302
+msgid "Purge Deleted"
+msgstr "Очистить Корзину"
+
+# fuzzy
+#: templates/chunks/compose.php:32
+#, fuzzy
+msgid "Read Receipt"
+msgstr "Запросить подтверждение получения"
+
+#: templates/chunks/compose.php:49
+#, fuzzy
+msgid ""
+"Really discard all formatting information? This operation cannot be undone."
+msgstr "Действительно удалить этот запрос? Возможны проблемы с данными!"
+
+# fuzzy
+#: templates/index/index.inc:212 templates/index/index.inc:225
+#, fuzzy
+msgid "Rename Folder"
+msgstr "Переименовать папку"
+
+# fuzzy
+#: lib/DIMP.php:192
+#, fuzzy
+msgid "Rename folder to:"
+msgstr "Переименовать папку"
+
+#: templates/index/index.inc:159
+msgid "Reply"
+msgstr "Ответить"
+
+#: templates/index/index.inc:230
+msgid "Reply to All"
+msgstr "Ответить всем"
+
+msgid "Reply to Sender"
+msgstr "Ответить отправителю"
+
+#: compose.php:208
+msgid "Reply to All:"
+msgstr "Ответить всем:"
+
+#: compose.php:206
+msgid "Reply:"
+msgstr "Ответить:"
+
+#: templates/chunks/fullmessage.php:26
+#, fuzzy
+msgid "Report Innocent"
+msgstr "Отправить сообщение о спаме"
+
+#: templates/chunks/fullmessage.php:23
+#, fuzzy
+msgid "Report Spam"
+msgstr "Отправить сообщение о спаме"
+
+#: compose.php:192 lib/Views/ShowMessage.php:112 lib/Views/ShowMessage.php:122
+msgid "Requested message not found."
+msgstr ""
+
+#: templates/index/index.inc:260
+#, fuzzy
+msgid "Resume Draft"
+msgstr "Продолжить"
+
+#: lib/Views/ShowMessage.php:242
+#, fuzzy
+msgid "Save All"
+msgstr "Сохранить как"
+
+#: templates/chunks/compose.php:119
+msgid "Save Attachments in sent folder"
+msgstr "Сохранить вложения в папке отправленной почты"
+
+#: templates/chunks/compose.php:40
+msgid "Save as Draft"
+msgstr "Сохранить как черновик"
+
+#: templates/chunks/compose.php:35
+msgid "Save in "
+msgstr "Сохранить в "
+
+#: lib/DIMP.php:225
+msgid "Saving..."
+msgstr "Сохранение..."
+
+#: templates/chunks/compose.php:30
+msgid "Se_nd"
+msgstr "Отправить"
+
+#: lib/DIMP.php:163
+msgid "Search"
+msgstr "Поиск"
+
+#: lib/Views/ListMessages.php:87
+msgid "Search Results"
+msgstr "Результаты поиска"
+
+#: templates/index/index.inc:299
+msgid "Select All"
+msgstr "Выбрать все"
+
+#: lib/DIMP.php:224
+msgid "Sending..."
+msgstr "Отправка..."
+
+# fuzzy
+#: lib/DIMP.php:172
+#, fuzzy
+msgid "Show Addresses"
+msgstr "Адрес получателя"
+
+#: templates/chunks/compose.php:47
+msgid "Show Bcc"
+msgstr "Показать Bcc"
+
+# fuzzy
+#: templates/chunks/compose.php:46
+msgid "Show Cc"
+msgstr "Показать Cc"
+
+#: templates/index/index.inc:283 lib/DIMP.php:191
+msgid "Show Preview"
+msgstr "Показать текст пиьма"
+
+#: lib/DIMP.php:169
+#, fuzzy
+msgid "Show Quoted Text"
+msgstr "Сортировать по теме"
+
+#: templates/index/index.inc:162
+#, fuzzy
+msgid "Spam"
+msgstr "Внимание"
+
+#: templates/index/index.inc:183 lib/DIMP.php:180
+#: lib/Views/ShowMessage.php:214
+msgid "Subject"
+msgstr "Тема"
+
+#: templates/chunks/compose.php:107
+msgid "Subject: "
+msgstr " Тема: "
+
+# fuzzy, php-format
+# fuzzy, php-format
+#: lib/DIMP.php:223
+#, fuzzy
+msgid "The attachment limit has been reached."
+msgstr "Список задач '%s' был успешно создан"
+
+#: config/prefs.php.dist:59
+msgid "The buttons NOT to show when using Xinha."
+msgstr "Кнопки, которые НЕ будут показаны при использовании Xinha"
+
+#: config/prefs.php.dist:49
+#, fuzzy
+msgid "The buttons to show when using FCKeditor."
+msgstr "Кнопки, которые НЕ будут показаны при использовании Xinha"
+
+#: lib/DIMP.php:186
+#, fuzzy
+msgid "The connection to the remote server has been restored."
+msgstr "Неудачное соединение с сервером LDAP."
+
+#: templates/index/index.inc:309
+msgid "The following keyboard shortcuts are available:"
+msgstr "Используйте для работы следующие клавиши:"
+
+#: config/prefs.php.dist:41
+msgid "The javascript editor to use on the compose page."
+msgstr "Javascript редактор, используемый при составлении письма"
+
+# fuzzy
+#: config/prefs.php.dist:30
+msgid "The page to view immediately after login."
+msgstr "Режим работы после входа:"
+
+#: lib/Views/ShowMessage.php:375
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Click %s to send the notification "
+"message."
+msgstr ""
+
+#: lib/DIMP.php:187
+#, fuzzy
+msgid "The server is still generating the message list."
+msgstr "Настройки почтового сервера и информации о папках."
+
+#: lib/DIMP.php:188
+#, fuzzy
+msgid ""
+"The server was unable to generate the message list. Please try again later."
+msgstr ""
+"#-#-#-#-#  ru_RU.po (Horde v2.1)  #-#-#-#-#\n"
+"#-#-#-#-#  ru_RU.po (Turba v1.1)  #-#-#-#-#\n"
+"Ошибка при импорте данных."
+
+#: lib/DIMP.php:185
+msgid ""
+"There has been no contact with the remote server for several minutes. The "
+"server may be temporarily unavailable or network problems may be "
+"interrupting your session. You will not see any updates until the connection "
+"is restored."
+msgstr ""
+
+# fuzzy
+#: lib/DIMP.php:179
+msgid "Thread"
+msgstr "Цепочка"
+
+#: templates/index/index.inc:182 lib/DIMP.php:177
+msgid "To"
+msgstr "Кому"
+
+#: templates/chunks/fullmessage.php:48 templates/index/index.inc:273
+msgid "To All"
+msgstr "Всем"
+
+#: templates/chunks/fullmessage.php:47 templates/index/index.inc:272
+msgid "To Sender"
+msgstr "Отправителю"
+
+#: templates/index/index.inc:307
+msgid ""
+"To preview a message, select it from the list above. A right-click on the "
+"messages will display available actions."
+msgstr ""
+"Чтобы просмотреть сообщение, выберите его из списка выше. Щелчок правой "
+"кнопкой мыши на сообщении отображает список возможных опций."
+
+#: templates/chunks/compose.php:65
+msgid "To: "
+msgstr "Кому"
+
+#: templates/index/index.inc:310
+msgid "UP/DOWN Arrow keys: Move up/down through the message list."
+msgstr "ВВЕРХ/ВНИЗ: Перемещение вверх/вниз по списку сообщений."
+
+#: templates/index/index.inc:255 templates/index/index.inc:267
+msgid "Undelete"
+msgstr "Восстановить"
+
+#: lib/Views/ShowMessage.php:77
+msgid "Undisclosed Recipients"
+msgstr "Нераскрытые получатели"
+
+#: lib/Views/ShowMessage.php:322
+#, fuzzy
+msgid "Unknown Date"
+msgstr "Нераскрытые получатели"
+
+# fuzzy
+#: lib/DIMP.php:222
+#, fuzzy
+msgid "Uploading..."
+msgstr "Загрузить"
+
+#: lib/DIMP.php:162
+msgid "User Options"
+msgstr "Настройки пользователя"
+
+#: lib/Views/ShowMessage.php:288 lib/Views/ShowMessage.php:289
+msgid "View Message Source"
+msgstr "Просмотреть исходник"
+
+#: templates/index/index.inc:251 templates/index/index.inc:295
+msgid "Whitelist"
+msgstr "Белый список"
+
+#: config/prefs.php.dist:40
+#, fuzzy
+msgid "Xinha"
+msgstr "vCard"
+
+#: lib/DIMP.php:220
+msgid ""
+"You have already changed the message body, are you sure you want to drop the "
+"changes?"
+msgstr ""
+
+#: lib/Views/ShowMessage.php:219 lib/Views/ListMessages.php:255
+#: lib/Block/newmail.php:57
+msgid "[No Subject]"
+msgstr "[Без темы]"
+
+#: lib/Views/ShowMessage.php:83
+#, php-format
+msgid "[Show addresses - %s recipients]"
+msgstr ""
+
+# fuzzy
+#: templates/index/index.inc:53
+msgid "_Compose"
+msgstr "Написать"
+
+# fuzzy
+#: templates/chunks/fullmessage.php:28
+msgid "_Delete"
+msgstr "Удалить"
+
+#: templates/chunks/fullmessage.php:21
+msgid "_Forward"
+msgstr "Переслать"
+
+# fuzzy
+#: templates/index/index.inc:68
+msgid "_Log Out"
+msgstr "Выход"
+
+# fuzzy
+#: templates/index/index.inc:63
+msgid "_Options"
+msgstr "Настройки"
+
+#: templates/index/index.inc:59
+msgid "_Portal"
+msgstr "Портал"
+
+# fuzzy
+#: templates/chunks/fullmessage.php:20
+msgid "_Reply"
+msgstr "Ответить"
+
+#: templates/imp/message.html:13
+msgid "from"
+msgstr "от"
+
+#: lib/DIMP.php:170
+#, fuzzy
+msgid "lines"
+msgstr "Заголовок"
+
+#: lib/DIMP.php:166
+msgid "of"
+msgstr "из"
+
+#: lib/DIMP.php:173
+#, fuzzy
+msgid "recipients"
+msgstr "Нераскрытые получатели"
+
+# fuzzy
+#: lib/DIMP.php:221
+#, fuzzy
+msgid "remove"
+msgstr "Удалить"
+
+#: lib/DIMP.php:164
+#, fuzzy
+msgid "results found"
+msgstr "Результат поиска: %s из %s"

@@ -1,0 +1,18 @@
+<div id="newmail">
+<if:folders>
+ <h3><gettext>You have new mail in:</gettext></h3>
+ <ul>
+ <loop:folders>
+  <li><strong><a href="<tag:folders.url />" alt="<tag:folders.name />"><tag:folders.name /></a></strong> (<tag:folders.new />)</li>
+ </loop:folders>
+ </ul>
+<if:vinbox>
+ <ul>
+  <tag:vinbox /><gettext>Go to Virtual Inbox</gettext></a>
+ </ul>
+</if:vinbox>
+<else:folders>
+ <p><tag:msg /></p>
+</else:folders></if:folders>
+ <input type="submit" class="button" id="newmail_close" onclick="RedBox.close();" value="<gettext>Close</gettext>" />
+</div>

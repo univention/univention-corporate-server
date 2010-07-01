@@ -1,0 +1,38 @@
+<?php
+/**
+ * Release focus. Possible values (multiple possible with arrays):
+ * Horde_Release::FOCUS_INITIAL - Initial announcement
+ * Horde_Release::FOCUS_MINORFEATURE - Minor feature enhancement
+ * Horde_Release::FOCUS_MAJORFEATURE - Major feature enhancement
+ * Horde_Release::FOCUS_MINORBUG - Minor bugfixes
+ * Horde_Release::FOCUS_MAJORBUG - Major bugfixes
+ * Horde_Release::FOCUS_MINORSECURITY - Minor security fixes
+ * Horde_Release::FOCUS_MAJORSECURITY - Major security fixes
+ * Horde_Release::FOCUS_DOCS - Documentation improvements
+ */
+$this->notes['fm']['focus'] = array(Horde_Release::FOCUS_MINORFEATURE, Horde_Release::FOCUS_MINORBUG);
+
+/* Mailing list release notes. */
+$this->notes['ml']['changes'] = <<<ML
+The Horde Team is pleased to announce the final release of the Ingo Email
+Filter Rules Manager version H3 (1.2.3).
+
+Ingo is an email-filter management application. It is fully internationalized,
+integrated with Horde and the IMP Webmail client, and supports both
+server-side (Sieve, procmail) and client-side (IMAP) rule creation.
+
+Major changes compared to the Ingo H3 (1.2.2) version are:
+    * Improved/fixed vacation rules in maildrop and procmail drivers.
+    * Improved Oracle and PostgreSQL compatibility.
+    * Added Croatian translation.
+    * Other bug fixes and improvements.
+ML;
+
+/* Freshmeat release notes. */
+$this->notes['fm']['changes'] = <<<FM
+The vacation rules in maildrop and procmail drivers have been fixed or improved. Oracle and PostgreSQL compatibility have been improved. A Croatian translation has been added. Other bug fixes and improvements have been made.
+FM;
+
+$this->notes['name'] = 'Ingo';
+$this->notes['fm']['project'] = 'ingo';
+$this->notes['fm']['branch'] = 'Default';

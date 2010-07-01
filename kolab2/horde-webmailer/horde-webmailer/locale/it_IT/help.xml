@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Horde: horde/locale/it_IT/help.xml,v 1.2.10.3 2007-12-20 15:01:58 jan Exp $ -->
+<help>
+  <entry id="summary" state="uptodate" md5="68ca33f7f0c9aae4c103eb47492cdc15">
+<title>Pagina di ingresso del portale</title>
+ <para>
+  Questa pagina di ingresso del portale fornisce un breve sommario di tutte le tue
+  informazioni importanti. Ad esempio, ti può mostrare quanti nuovi messaggi ci
+  sono nella tua INBOX, i prossimi eventi nel tuo calendario, le attività nella
+  tua lista, le ultime notizie da servizi selezionati e così via. Molti di questi
+  sommari conterranno dei collegamenti a funzioni comuni, quali ad esempio la composizione
+  di una nuovo messaggio, la creazione di uno nuovo evento da inserire nel calendario
+  o la creazione di una nuova attività da inserire nella lista, ecc.
+ </para>
+ <para>
+  I contenuti di questa pagina del portale sono personalizzabili tramite il bottone Formato.
+  Ad esempio, puoi scegliere quali informazioni inserire nella pagina come anche in
+  quale ordine verranno mostrate.
+ </para>
+</entry>
+  <entry id="navbar" state="uptodate" md5="b8cf0ae19e57dfa0c2b962e516782f47">
+<title>La barra di navigazione delle applicazioni</title>
+ <para>
+  Sulla sinistra della pagina web è presente la barra di navigazione delle applicazioni.
+  Clicca sull'icona presente nella barra di navigazione per passare rapidamente e
+  velocemente tra le varie applicazioni disponibili.
+ </para>
+</entry>
+  <entry id="prefs-do_maintenance" state="uptodate" md5="dd95df07a03031232baea919288b2d00">
+    <title>Preferenze: Manutenzione: Esegui la manutenzione</title>
+    <para>
+    Se vuoi eseguire le operazioni di manutenzione appena entrato nel portale,
+    selezione questa casella.
+    </para>
+</entry>
+  <entry id="prefs-confirm_maintenance" state="uptodate" md5="a21162cdff3b1d8faeadb7296240036e">
+    <title>Preferenze: Manutenzione: Conferma la manutenzione</title>
+    <para>
+    Se desideri che venga chiesta la conferma prima che tutte le operazioni di manutenzione 
+    vengano eseguite, seleziona questa casella.
+    Se la casella non viene selezionata, tutte le operazioni di manutenzione che sono
+    programmate verranno eseguite automaticamente senza la possibilità di cancellarle
+    quando si entra nel portale.
+    </para>
+</entry>
+</help>

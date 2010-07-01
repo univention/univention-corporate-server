@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<help>
+
+<entry id="summary" md5="68ca33f7f0c9aae4c103eb47492cdc15" state="uptodate">
+<title>Atari-orria</title>
+ <para>Zure informazio garrantzitsu guztiaren laburpen bat aurkituko duzu atari-orri honetan. Adibidez, zenbat mezu berri dituzun Sarrerako ontzian, egutegian hurrengo egunetarako dituzun gertaerak, egitekoetan dituzun zereginak, hautatutako albiste-zerbitzuetako titularrak, etab.   Laburpen askotan ohiko funtzioetarako lasterbideak aurkituko dituzu, hau da, mezu elektroniko berri bat idazteko, egutegiko gertaera edo zeregin berri bat sortzeko, etab.</para> <para>Atari-orri honetako edukia pertsonaliza dezakezu, Diseinua botoia sakatuz. Adibidez, atari-orrian zein eduki bistaratuko diren hauta dezakezu, baita zein ordenatan agertuko diren ere.</para></entry>
+
+<entry id="navbar" md5="b8cf0ae19e57dfa0c2b962e516782f47" state="uptodate">
+<title>Aplikazioaren nabigazio-barra</title>
+ <para>Web-orriaren ezkerraldean bistaratzen da aplikazioaren nabigazio-barra. Erabilgarri dauden aplikazioen artean azkar eta erraz pasatzeko batetik bestera, egin klik nabigazio-barrako ikonoetan.</para></entry>
+
+<entry id="prefs-do_maintenance" md5="dd95df07a03031232baea919288b2d00" state="uptodate">
+    <title>Hobespenak: Mantentzea: Mantentzea</title>
+    <para>Mantentze-eragiketak egin nahi badituzu saioa hastean, hautatu kontrol-lauki hau.</para></entry>
+
+<entry id="prefs-confirm_maintenance" md5="a21162cdff3b1d8faeadb7296240036e" state="uptodate">
+    <title>Hobespenak: Mantentzea: Berretsi mantentzea</title>
+    <para>Mantentze-eragiketa guztiak berretsi nahi badituzu exekutatu aurretik, hautatu kontrol-lauki hau. Hautatu gabe uzten baduzu, exekutatu beharreko mantentze-eragiketa guztiak automatikoki egingo dira, eta ez duzu izango bertan behera uzteko aukerarik saioa hastean.</para></entry>
+
+</help>

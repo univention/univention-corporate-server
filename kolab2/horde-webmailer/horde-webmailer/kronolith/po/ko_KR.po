@@ -1,0 +1,670 @@
+# Kronolith Korean translation.
+# Copyright 2002 J.I Kim.
+# J.I Kim <aporie@netian.com>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith 2.0-cvs\n"
+"POT-Creation-Date: 2002-05-29 14:58+0900\n"
+"PO-Revision-Date: 2001-11-09 16:29+0900\n"
+"Last-Translator: J.I Kim <aporie@netian.com>\n"
+"Language-Team: Korean <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=EUC-KR\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%d hour"
+msgstr "%d 시"
+
+#, c-format
+msgid "%d hour, %d minute"
+msgstr "%d 시, %d 분"
+
+#, c-format
+msgid "%d hour, %d minutes"
+msgstr "%d 시, %d 분"
+
+#, c-format
+msgid "%d hours"
+msgstr "%d 시"
+
+#, c-format
+msgid "%d hours, %d minute"
+msgstr "%d 시, %d 분"
+
+#, c-format
+msgid "%d hours, %d minutes"
+msgstr "%d 시, %d 분"
+
+#, c-format
+msgid "%d minute"
+msgstr "%d 분"
+
+#, c-format
+msgid "%d minutes"
+msgstr "%d 분"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s 파일이 임포트되었습니다."
+
+#, c-format
+msgid "%s is in progress."
+msgstr "%s 가 진행중입니다."
+
+#, c-format
+msgid "%s is starting now."
+msgstr "%s 가 지금 시작합니다."
+
+#, c-format
+msgid "%s starts in %s"
+msgstr "%s가 %s 에서 시작합니다."
+
+msgid "<b>Description</b> (optional)"
+msgstr "<b>내용</b> (선택)"
+
+msgid "<b>Description</b>"
+msgstr "<b>내용</b>"
+
+msgid "<b>Keywords</b> (optional)"
+msgstr "<b>키워드</b> (선택)"
+
+msgid "<b>Keywords</b>"
+msgstr "<b>키워드</b>"
+
+msgid "<b>Recurrence</b> (optional)"
+msgstr "<b>일정 반복</b> (선택)"
+
+msgid "<b>Recurrence</b>"
+msgstr "<b>일정 반복</b>"
+
+msgid "Add Event"
+msgstr "일정 추가"
+
+msgid "Add a new event"
+msgstr "새로운 일정 추가하기"
+
+msgid "Alarm Date"
+msgstr "알림 일자"
+
+msgid "Alarm Span (minutes)"
+msgstr "알림 간격 (분)"
+
+msgid "Alarm Time"
+msgstr "알림 시간"
+
+msgid "Alarm"
+msgstr "알림"
+
+msgid "All day event"
+msgstr "하루 내내 일정"
+
+msgid "All day"
+msgstr "하루 내내"
+
+msgid "All events"
+msgstr "전체 일정"
+
+msgid "All"
+msgstr "모두"
+
+msgid "April"
+msgstr "4월"
+
+msgid "At"
+msgstr "시간"
+
+msgid "August"
+msgstr "8월"
+
+msgid "Birthday"
+msgstr "생일"
+
+msgid "Business"
+msgstr "업무"
+
+msgid "Cancel"
+msgstr "취소"
+
+msgid "Category"
+msgstr "범주"
+
+msgid "Change the way dates and times are formatted."
+msgstr "일자 및 시간 출력형식을 설정합니다."
+
+msgid "Confirm deletion of events?"
+msgstr "일정 삭제시 확인?"
+
+msgid "Create a New Event"
+msgstr "새로운 일정 생성"
+
+msgid "Current"
+msgstr "현재"
+
+msgid "Daily: Recurs every"
+msgstr "매일: 발생일 "
+
+msgid "Date and Time Options"
+msgstr "시간 및 일자 설정"
+
+msgid "Day"
+msgstr "일"
+
+msgid "Day(s)"
+msgstr "일"
+
+msgid "December"
+msgstr "12월"
+
+#, c-format
+msgid "Delete %s"
+msgstr "%s 삭제"
+
+#, c-format
+msgid "Delete '%s'"
+msgstr "'%s' 삭제"
+
+msgid "Delete Event"
+msgstr "일정 삭제"
+
+msgid ""
+"Delete the current event only, this occurrence and all future occurences, or "
+"all occurences?"
+msgstr ""
+"현재 일정만 삭제, 이 발생일정과 모든 앞으로의 발생일정, 또는 모든 발생 일정 ?"
+
+msgid "Delete"
+msgstr "삭제"
+
+msgid "Description"
+msgstr "설명"
+
+msgid "Display 24-hour times?"
+msgstr "24시간 형식으로 표시?"
+
+msgid "Display Options"
+msgstr "화면 설정"
+
+#, c-format
+msgid "Due: %s"
+msgstr "할일: %s"
+
+msgid "Duration"
+msgstr "기간"
+
+#, c-format
+msgid "Edit %s"
+msgstr "%s 수정"
+
+msgid "Edit"
+msgstr "수정"
+
+msgid "End Date"
+msgstr "종료 일자"
+
+msgid "End On"
+msgstr "종료 일자"
+
+msgid "End Time"
+msgstr "종료 시간"
+
+msgid "Export Calendar"
+msgstr "일정 익스포트"
+
+msgid "Export"
+msgstr "익스포트"
+
+msgid "February"
+msgstr "2월"
+
+msgid "Fr"
+msgstr "금"
+
+msgid "Friday"
+msgstr "금요일"
+
+msgid "Future"
+msgstr "앞으로"
+
+msgid "Game"
+msgstr "게임"
+
+msgid "Goto"
+msgstr "이동"
+
+msgid "Help"
+msgstr "도움말"
+
+msgid "Hour(s)"
+msgstr "시"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "CSV 파일을 임포트: 첫번째 열이 필드 이름을 갖고 있습니까?"
+
+msgid "Illegal or malformed form data."
+msgstr "잘못된 폼 자료"
+
+msgid "Import Calendar"
+msgstr "일정 임포트하기"
+
+msgid "Import"
+msgstr "임포트"
+
+msgid "Import/Export Calendar"
+msgstr "일정 임포트/익스포트"
+
+msgid "Import/Export"
+msgstr "임포트/익스포트"
+
+msgid "January"
+msgstr "1월"
+
+msgid "July"
+msgstr "7월"
+
+msgid "June"
+msgstr "6월"
+
+msgid "Keywords"
+msgstr "키워드"
+
+msgid "Kronolith is not properly configured"
+msgstr "Kronolith가 정상적으로 설정되어 있지 않습니다."
+
+msgid "Language"
+msgstr "언어"
+
+msgid "Last month"
+msgstr "마지막 달"
+
+msgid "Last week"
+msgstr "마지막 주"
+
+msgid "Lasts"
+msgstr "마지막"
+
+msgid "Limit the time span to export:"
+msgstr "익스포트 시간 간격 제한:"
+
+msgid "Location"
+msgstr "위치"
+
+msgid "March"
+msgstr "3월"
+
+msgid "May"
+msgstr "5월"
+
+msgid "Meeting"
+msgstr "미팅"
+
+msgid "Minute(s)"
+msgstr "분"
+
+msgid "Minutes before"
+msgstr "분 전"
+
+msgid "Minutes"
+msgstr "분"
+
+msgid "Mo"
+msgstr "월"
+
+msgid "Monday"
+msgstr "월요일"
+
+msgid "Month"
+msgstr "월"
+
+msgid "Monthly: Recurs every"
+msgstr "월마다: 발생월 "
+
+msgid "New Event"
+msgstr "새로운 일정"
+
+msgid "Next Month"
+msgstr "다음 달"
+
+msgid "Next day"
+msgstr "다음 일"
+
+msgid "Next week"
+msgstr "다음 주"
+
+msgid "No configuration information specified for SQL Calendar."
+msgstr "SQL 일정을 위한 설정 정보가 없습니다."
+
+msgid "No end date"
+msgstr "종료일 없슴"
+
+msgid "None"
+msgstr "없슴"
+
+msgid ""
+"Notice: Importing is not possible with this configuration due to a bug in "
+"the underlying calendar driver."
+msgstr ""
+"주의: 이 설정에서 임포트는 가능하지 않습니다. 이 일정 드라이버에는 버그가 있"
+"습니다."
+
+msgid "November"
+msgstr "11월"
+
+msgid "October"
+msgstr "10월"
+
+msgid "Options"
+msgstr "설정"
+
+msgid "Pattern"
+msgstr "유형"
+
+msgid "Permanently delete this event?"
+msgstr "이 일정을 완전히 삭제하시겠습니까?"
+
+msgid "Personal"
+msgstr "개인"
+
+msgid "Previous day"
+msgstr "이전 일"
+
+msgid "Problem?"
+msgstr "문제?"
+
+msgid "Recur Until"
+msgstr "종료 일"
+
+msgid "Recurrence Data"
+msgstr "반복 일"
+
+msgid "Recurrence End Date"
+msgstr "반복 종료일"
+
+msgid "Recurrence Interval"
+msgstr "반복 간격"
+
+msgid "Recurrence Type"
+msgstr "반복 유형"
+
+msgid "Recurs daily"
+msgstr "매일 반복"
+
+msgid "Recurs monthly"
+msgstr "매월 반복"
+
+msgid "Recurs not"
+msgstr "반복 안함"
+
+msgid "Recurs weekly"
+msgstr "매주 반복"
+
+msgid "Recurs yearly"
+msgstr "매년 반복"
+
+msgid "Required 'database' not specified in calendar configuration."
+msgstr "일정설정에서 'database'가 명시되지 않았습니다."
+
+msgid "Required 'hostspec' not specified in calendar configuration."
+msgstr "일정설정에서 'hostspec'이 명시되지 않았습니다."
+
+msgid "Required 'password' not specified in calendar configuration."
+msgstr "일정설정에서 'password'가 명시되지 않았습니다."
+
+msgid "Required 'phptype' not specified in calendar configuration."
+msgstr "일정설정에서 'phptype'이 명시되지 않았습니다."
+
+msgid "Required 'username' not specified in calendar configuration."
+msgstr "일정설정에서 'username'이 명시되지 않았습니다."
+
+msgid "Reset to Defaults"
+msgstr "초기값으로"
+
+msgid "Sa"
+msgstr "토"
+
+msgid "Saturday"
+msgstr "토요일"
+
+msgid "Save As New"
+msgstr "새로 저장"
+
+msgid "Save Event"
+msgstr "일정 저장"
+
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr "확인 옵션을 선택하여 화면 출력옵션을 서로 다르게 선택합니다."
+
+msgid "Select how to display Dates:"
+msgstr "일자 출력 방식 선택:"
+
+msgid "Select if to show due tasks in the calendar."
+msgstr "일정에서 보여줄 할일 선택."
+
+msgid "Select the file to import:"
+msgstr "임포트할 파일 선택:"
+
+msgid "Select the first weekday:"
+msgstr "최초 주중일 선택:"
+
+msgid "Select the format to export to:"
+msgstr "익스포트할 형식 선택:"
+
+msgid "Select the source to import from:"
+msgstr "임포트할 소스 선택:"
+
+msgid "Select the time span to show:"
+msgstr "출력시간 간격 선택:"
+
+msgid "Select the view to display after login:"
+msgstr "로그인후에 출력할 일정 선택:"
+
+msgid "Select what events to show in the Horde summary."
+msgstr "Horde 요약에서 볼 수 있기위한 일정을 선택할 수 있습니다."
+
+msgid "September"
+msgstr "9월"
+
+msgid "Set the current time zone."
+msgstr "현재의 지역 시간을 설정합니다."
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "메뉴 및 설명과 도움말에서 사용할 언어를 설정합니다."
+
+msgid "Set your preferred display language."
+msgstr "화면 출력언어를 설정합니다."
+
+msgid "Show due tasks in the calendar?"
+msgstr "일정에서 할일 보기"
+
+msgid "Show half hour slots in day and week views?"
+msgstr "일 및 주별 보기에서 30분 단위로 보기?"
+
+msgid "Show only events that have an alarm set?"
+msgstr "알림 설정된 일정만 보기?"
+
+msgid "Some of Kronolith's configuration files are missing:"
+msgstr "Kronolith의 일부 설정파일이 누락되었습니다:"
+
+msgid "Start Date"
+msgstr "시작 일자"
+
+msgid "Start On"
+msgstr "시작 일자"
+
+msgid "Start Time"
+msgstr "시작 시간"
+
+msgid "Su"
+msgstr "일"
+
+msgid "Summary"
+msgstr "요약"
+
+msgid "Sunday"
+msgstr "일요일"
+
+msgid "Tasks"
+msgstr "할일"
+
+msgid "Th"
+msgstr "목"
+
+msgid "The data was lost."
+msgstr "데이타가 사라졌습니다."
+
+msgid "The end date must be later than the start date."
+msgstr "종료일은 시작이보다 커야 합니다."
+
+msgid "The file contained no data."
+msgstr "파일에 아무런 자료가 없습니다."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"파일 업로드에 문제가 있습니다. 파일이 아마도 최대 허용한 크기보다 큰것 같습니"
+"다."
+
+msgid "There was an error importing the data."
+msgstr "자료를 임포트하는 동안 오류가 발생했습니다."
+
+msgid "There was an error importing the uploaded file"
+msgstr "업로드된 파일을 임포트하는 동안 오류가 발생했습니다."
+
+msgid "There were no events to export."
+msgstr "익스포트할 일정이 없습니다."
+
+msgid ""
+"This file controls the default preferences for Kronolith, and also controls "
+"which preferences users can alter."
+msgstr ""
+"이 파일은 Kronolith의 기본 환경설정입니다. 또한 사용자가 변경할 수 있습니다."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"이 파일은 Horde 기본설정의 색상과 폰트등에 대한 스타일시트를 갱신합니다."
+
+msgid ""
+"This is the main Kronolith configuration file. It contains paths and options "
+"for all Kronolith scripts."
+msgstr ""
+"이 파일은 메인 Kronolith 설정 파일입니다. Kronolith 스크립트의 경로와 설정내"
+"용을 포함합니다."
+
+msgid "Thursday"
+msgstr "목요일"
+
+msgid "Time Zone"
+msgstr "지역 시간"
+
+msgid "Title"
+msgstr "제목"
+
+msgid "Today"
+msgstr "오늘"
+
+msgid "Tu"
+msgstr "화"
+
+msgid "Tuesday"
+msgstr "화요일"
+
+msgid "Type"
+msgstr "유형"
+
+msgid "User Interface"
+msgstr "사용자 인터페이스"
+
+msgid "User Options"
+msgstr "사용자 설정"
+
+#, c-format
+msgid "View %s"
+msgstr "%s 보기"
+
+msgid "We"
+msgstr "수"
+
+msgid "Wednesday"
+msgstr "수요일"
+
+#, c-format
+msgid "Week %d"
+msgstr "%d 주"
+
+msgid "Week"
+msgstr "주"
+
+#, c-format
+msgid "Week&nbsp;%d"
+msgstr "%d&nbsp;주"
+
+msgid "Week(s)"
+msgstr "번째 주에 "
+
+msgid "Weekly: Recurs every"
+msgstr "주마다 발생: 발생주 "
+
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr "일 및 주별 보기 종료 시간(일정 종료 시간)?"
+
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr "일 및 주별 보기 시작 시간(일정 시작 시간)?"
+
+msgid "Work Week"
+msgstr "주중"
+
+msgid "Work&nbsp;Week"
+msgstr "주중"
+
+msgid "Yearly: Recurs every"
+msgstr "년마다: 발생년"
+
+msgid "Your Information"
+msgstr "정보사항"
+
+msgid "Your current time zone:"
+msgstr "현재 지역시간:"
+
+msgid "day"
+msgstr "일"
+
+msgid "day(s)"
+msgstr "일"
+
+msgid "days"
+msgstr "일"
+
+msgid "iCalendar file successfully imported"
+msgstr "iCalendar 파일이 임포트되었습니다."
+
+msgid "month(s)"
+msgstr "월"
+
+msgid "no time"
+msgstr "시간 없슴"
+
+msgid "on the same date"
+msgstr " 같은날에"
+
+msgid "on the same weekday"
+msgstr " 같은 주에"
+
+msgid "week"
+msgstr "주"
+
+msgid "week(s) on:"
+msgstr "번째 주에:"
+
+msgid "weeks"
+msgstr "주"
+
+msgid "year(s)"
+msgstr "년"

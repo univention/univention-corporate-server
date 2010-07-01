@@ -1,0 +1,1177 @@
+/**
+ * DIMP core CSS.
+ *
+ * $Horde: dimp/themes/screen.css,v 1.221.2.62 2008-09-05 14:17:01 jan Exp $
+ */
+
+/* Positioning */
+#pageContainer {
+    clear: both;
+}
+
+/* Popdown styles. */
+a.popdown {
+    cursor: pointer;
+    background: url("graphics/popdown.png") no-repeat center center;
+    padding: 5px !important;
+}
+a.popdown:hover {
+    padding: 4px !important;
+    border-left: 1px solid #fff;
+    border-top: 1px solid #fff;
+    border-right: 1px solid #000;
+    border-bottom: 1px solid #000;
+}
+
+/* ini header. */
+#quota {
+    float: right;
+    font-weight: normal;
+}
+#quota #used {
+    float: left;
+    width: 100px;
+    background: maroon url('graphics/quotaback.jpg') repeat-y;
+    text-align: right;
+    border: 1px #000 solid;
+}
+#quota #used img {
+    display: inline;
+    float: none;
+    padding: 0;
+    border-left: 1px #000 solid;
+    height: 14px;
+}
+div#quota {
+    padding-bottom: 3px;
+}
+#mailboxHeader {
+    clear: right;
+}
+
+#logo {
+    display: none;
+}
+/* end header */
+
+/* ini search */
+#search {
+    white-space: nowrap;
+}
+#search #q {
+    width: 200px;
+    border: 1px silver solid;
+    min-height: 18px;
+    padding: 1px;
+}
+/* end search */
+
+#sidebarPanel {
+    position: absolute;
+    cursor: default;
+    top: 0;
+    left: 0;
+    padding: 10px 0 0 10px;
+    width: 150px;
+    bottom: 0;
+    z-index: 1;
+    white-space: normal;
+    -moz-border-radius-bottomright: 0;
+    -webkit-border-bottom-right-radius: 0;
+}
+#dimpmain {
+    position: absolute;
+    margin-left: 20px;
+    left: 150px;
+    top: 10px;
+    bottom: 0;
+    right: 10px;
+}
+#dimpmain_portal h1.header a {
+    cursor: pointer;
+}
+
+/* Autocomplete styles. */
+.autocomplete {
+    background: #f4f4f4;
+    border: 1px solid #d4d4d4;
+    position: absolute;
+    padding: 2px;
+}
+.autocomplete ul {
+    margin: 1px;
+    padding: 1px;
+    list-style-type: none;
+}
+.autocomplete ul li {
+    background: transparent;
+    padding: 3px 4px 4px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #000;
+}
+.autocomplete ul .selected {
+    background: gray;
+    color: #fff;
+}
+
+/* SpellChecker styles. */
+.Checking {
+    color: red;
+}
+.incorrect {
+    text-decoration: underline;
+    cursor: pointer;
+    color: red;
+}
+.corrected {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #090;
+}
+
+/* SplitPane styles. */
+#msgSplitPane {
+    background-color: #fff;
+    border-left: 1px silver solid;
+    border-right: 1px silver solid;
+    border-bottom: 1px silver solid;
+}
+.splitBar {
+    background: #e9e9e9 url("graphics/dragHandle.png") no-repeat scroll center top;
+    border: 1px solid;
+    border-color: ThreeDHighlight ThreeDShadow ThreeDShadow ThreeDHighlight;
+    cursor: n-resize;
+    height: 5px;
+    clear: left;
+    z-index: 10;
+}
+
+/* Message List */
+div.loading img, img#folderLoading, img#msgLoading {
+    z-index: 1000;
+    background: #fff;
+    border: 1px #e0e0e0 solid;
+    padding: 2px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+/* Columns */
+div.msgStatus, div.msgFrom, div.msgSubject, div.msgDate, div.msgSize {
+    float: left;
+    overflow: hidden;
+}
+div.msgStatus {
+    width: 6%;
+}
+div.msgStatus .msCheck, div.msgStatus .msState, div.msgStatus .msCompose, div.msgStatus .msPri {
+    width: 16px;
+    float: left;
+}
+div.msgFrom {
+    width: 20%;
+}
+div.msgSubject {
+    width: 50%;
+}
+div.msgDate {
+    width: 15%;
+}
+div.msgSize {
+    width: 9%;
+}
+
+/* Message List Header and Column Header */
+#msglistHeader {
+    font-weight: bold;
+    overflow: hidden;
+    border: 1px solid silver;
+    background: transparent url("graphics/backhead_orderby.png") repeat-x;
+    height: 16px;
+}
+#msglistHeader a {
+    cursor: pointer;
+    display: block;
+}
+#msglistHeader div {
+    padding-top: 1px;
+    height: 15px;
+}
+#msglistHeader div.sortup {
+    padding-left: 0;
+}
+#msglistHeader div.sortup a {
+    padding-left: 14px;
+}
+#msglistHeader div.sortdown {
+    padding-left: 0;
+}
+#msglistHeader div.sortdown a {
+    padding-left: 14px;
+}
+#msglistHeader a small {
+    padding-left: 3px;
+    font-weight: normal;
+    font-style: italic;
+}
+
+/* Message ViewPort */
+.msglist {
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 1px silver solid;
+    float: left;
+}
+.msglist em {
+    font-weight: bold;
+}
+.msglistNoPreview {
+    border-bottom: 0;
+}
+
+/* Rows */
+.msglist div.msgRow, .msglist div div {
+    cursor: pointer;
+    font-size: 95%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 16px;
+    border-bottom: 2px #fff solid;
+}
+/* Flags */
+.msglist div.unseen {
+    font-weight: bold;
+}
+.msglist div.important, .msglist div.flagged {
+    background: #fcc;
+}
+.msglist div.unimportant {
+    font-weight: normal;
+}
+.msglist div.answered {
+    background: #cfc;
+}
+.msglist div.deletedmsg {
+    background: #999;
+}
+.msglist div.deletedmsg div.msgFrom, .msglist div.deletedmsg div.msgSubject, .msglist div.deletedmsg div.msgDate, .msglist div.deletedmsg div.msgSize {
+    text-decoration: line-through;
+}
+.msglist div.selectedRow {
+    background: #ffc;
+}
+/* Checkbox images */
+.msglist .msCheck {
+    background: transparent url("graphics/checkbox_off.png") center center no-repeat;
+}
+.msglist .msCheck:hover {
+    background: transparent url("graphics/checkbox_over.png") center center no-repeat;
+}
+.msglist div.selectedRow .msCheck {
+    background: transparent url("graphics/checkbox_on.png") center center no-repeat;
+}
+
+/* Status images and flags selectors: status column */
+.msglist div.unseen .msState {
+    background: transparent url("graphics/mail_unseen.png") center center no-repeat;
+}
+.msglist div.flagged .msState {
+    background: transparent url("graphics/mail_flagged.png") center center no-repeat;
+}
+.msglist div.deletedmsg .msState {
+    background: transparent url("graphics/mail_deleted.png") center center no-repeat;
+}
+/* Status images and flags selectors: priority column */
+.msglist div.unimportant .msPri {
+    background: transparent url("graphics/mail_priority_low.png") center center no-repeat;
+}
+.msglist div.important .msPri {
+    background: transparent url("graphics/mail_priority_high.png") center center no-repeat;
+}
+/* Status images and flags selectors: compose status column */
+.msglist div.answered .msCompose {
+    background: transparent url("graphics/mail_answered.png") center center no-repeat;
+}
+.msglist div.draft .msCompose {
+    background: transparent url("graphics/mail_draft.png") center center no-repeat;
+}
+/* Thread images. */
+div.msgSubject img {
+    margin-top: -4px;
+}
+/* Size images. */
+div.msgSize img {
+    margin-right: 2px;
+}
+
+/* Scroller */
+.sbdiv {
+    position: relative;
+    right: 0;
+    width: 14px;
+    overflow: auto;
+    background-image: url("graphics/scroller_back.png");
+    background-repeat: repeat-y;
+}
+
+.sbcursor {
+    width: 13px;
+    border-left: 1px solid silver;
+    background-image: url("graphics/scroller.png");
+    background-repeat: repeat-y;
+}
+
+.sbup {
+    width: 13px;
+    height: 16px;
+    border-left: 1px solid silver;
+    background: transparent url("graphics/sbcursor_top.png") center center no-repeat;
+}
+
+.sbdown {
+    width: 13px;
+    height: 17px;
+    border-left: 1px solid silver;
+    background: transparent url("graphics/sbcursor_bottom.png") center center no-repeat;
+}
+
+/* IFRAMEs */
+.iframe {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    border: none;
+    width: 100%;
+    height: 100%;
+}
+
+/* Sidebar */
+#sidebarPanel a {
+    cursor: pointer;
+    padding: 0;
+}
+#sidebarPanel a:hover {
+    background: transparent;
+}
+#sidebarPanel p {
+    margin: 0 0 5px;
+}
+#sidebarPanel p a {
+    text-decoration: none;
+    font-weight: bold;
+}
+#sidebarPanel p a img {
+    padding-right: 3px;
+}
+#sidebarPanel .sep, #sidebarPanel .sepfull {
+    font-size: 1px !important;
+    line-height: 1px !important;
+    height: 1px !important;
+    margin: 5px 0;
+    overflow: hidden;
+}
+#sidebarPanel .sep {
+    width: 115px;
+    background: #d0d0d0;
+}
+#sidebarPanel .sepfull {
+    width: 150px;
+    background: silver;
+}
+#sidebarPanel .count, #sidebarPanel a:hover .count {
+    color: silver;
+}
+#sidebarPanel li {
+    list-style: none;
+    width: 100%;
+    height: 17px;
+    line-height: 17px;
+    margin: 1px 0 0;
+    white-space: nowrap;
+}
+#sidebarPanel li.folder, .custom, .servicelink {
+    float: none;
+    width: 100%;
+    text-decoration: none;
+    padding: 0;
+}
+#sidebarPanel li.custom, #sidebarPanel li.servicelink {
+    display: block;
+}
+#sidebarPanel li a {
+    padding-top: 1px;
+    width: 130px;
+    display: block;
+    float: none;
+    text-decoration: none;
+}
+#sidebarPanel li.custom a, #sidebarPanel li.servicelink a {
+    padding-top: 0;
+}
+#sidebarPanel li.servicelink a {
+    font-weight: bold;
+}
+#sidebarPanel .custom {
+    background: transparent none;
+}
+.composelink, .refreshlink {
+    text-decoration: none;
+    padding: 0 4px 0 0;
+    height: 19px;
+    display: block;
+}
+.composelink a, .refreshlink a {
+    text-decoration: none;
+    font-weight: bold;
+    padding-top: 2px;
+}
+#sidebarPanel .custom img, .composelink img, .refreshlink img, .servicelink img {
+    padding-right: 4px;
+    vertical-align: bottom;
+}
+#sidebarPanel li.folder a {
+    display: inline;
+}
+#sidebarPanel .base {
+    display: inline;
+    float: left;
+    width: 20px;
+    height: 100%;
+    background: transparent url("graphics/folder.png") center left no-repeat;
+}
+#sidebarPanel .col {
+    display: inline;
+    float: left;
+    width: 20px;
+    height: 100%;
+    background: transparent url("graphics/folder_minus.png") center left no-repeat;
+}
+#sidebarPanel .exp {
+    display: inline;
+    float: left;
+    width: 20px;
+    height: 100%;
+    background: transparent url("graphics/folder_plus.png") center left no-repeat;
+}
+#sidebarPanel .create {
+    display: inline;
+    float: left;
+    width: 20px;
+    height: 100%;
+    background: transparent url("graphics/folder_create.png") center left no-repeat;
+}
+#sidebarPanel .drafts, #sidebarPanel .inbox, #sidebarPanel .sent, #sidebarPanel .spam, #sidebarPanel .trash, #sidebarPanel .customimg {
+    display: inline;
+    float: left;
+    width: 20px;
+    height: 100%;
+    padding: 0;
+    background-color: transparent;
+    background-position: center left;
+    background-repeat: no-repeat;
+}
+#sidebarPanel .drafts {
+    background-image: url("graphics/folder_drafts.png");
+}
+#sidebarPanel .inbox {
+    background-image: url("graphics/folder_inbox.png");
+}
+#sidebarPanel .sent {
+    background-image: url("graphics/folder_sent.png");
+}
+#sidebarPanel .spam {
+    background-image: url("graphics/folder_spam.png");
+}
+#sidebarPanel .trash {
+    background-image: url("graphics/folder_trash.png");
+}
+#sidebarPanel #applicationfolders {
+    display: block;
+}
+#sidebarPanel #normalfolders {
+    overflow-x: hidden;
+}
+#sidebarPanel #myfolders {
+    display: none;
+}
+#foldersSidebar {
+    overflow: hidden;
+}
+#sidebarPanel .folderlist li a {
+    width: auto;
+    overflow: hidden;
+    display: block;
+    float: none;
+}
+#sidebarPanel li div {
+    cursor: pointer;
+}
+#sidebarPanel li.subfolders {
+    height: auto;
+}
+#sidebarPanel li.subfolders ul {
+    padding-left: 10px;
+}
+#sidebarPanel li.subfolders li a {
+    width: auto;
+}
+#sidebarPanel li.on {
+    background: #ffc;
+}
+#sidebarPanel .over, #sidebarPanel li.folder:hover, #sidebarPanel li.custom:hover, #serviceActions li:hover, #dimpbarActions span:hover {
+    background: #ffcc00;
+}
+#sidebarPanel li a.drop {
+    border: 1px solid orange;
+    padding: 1px 1px 1px 19px;
+}
+
+/* Options */
+.dimpOptions {
+    float: right;
+    padding-right: 5px;
+}
+.dimpOptions form {
+    margin: 0;
+}
+.dimpOptions a, .dimpOptions a:visited {
+    text-decoration: none;
+    color: #000;
+}
+.dimpOptions a:hover {
+    text-decoration: underline;
+}
+.dimpOptions a img {
+    padding-right: 4px;
+    vertical-align: top;
+}
+
+/* Actions */
+.dimpActions {
+    margin-left: 0;
+    background: #efefef;
+    padding: 4px;
+    border: 1px silver solid;
+    border-bottom: 0px;
+    background: transparent url("graphics/backhead_s2.png") repeat-x;
+}
+.dimpActions span {
+    cursor: pointer;
+}
+.dimpActions a, .dimpActions a:visited, .dimpActions label {
+    text-decoration: none;
+    color: #000;
+    font-size: 90%;
+    line-height: 90%;
+    white-space: nowrap;
+    font-weight: bold;
+    padding: 4px;
+}
+.dimpActions a img {
+    vertical-align: middle;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+.dimpActions a:hover {
+    text-decoration: none;
+    border-left: 1px solid #fff;
+    border-top: 1px solid #fff;
+    border-right: 1px solid #000;
+    border-bottom: 1px solid #000;
+    padding: 3px;
+    cursor: pointer;
+}
+.dimpActions .sep {
+    color: #000;
+}
+.dimpActions form {
+    float: right;
+    padding: 0;
+}
+.dimpActions .disabled a, .dimpActions .disabled a:visited, .dimpActions .disabled a:active, .dimpActions .disabled a:hover {
+    cursor: default;
+    text-decoration: none;
+    color: silver;
+}
+.dimpActions .disabled a:hover {
+    border: 0;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+.dimpActions .disabled img {
+    filter: alpha(opacity=25);
+    -moz-opacity: .25;
+    opacity: .25;
+}
+.dimpActions .popdown {
+    border: 0;
+    padding: 2px;
+}
+.dimpActions .popdown:hover {
+    border-left: 1px solid #fff;
+    border-top: 1px solid #fff;
+    border-right: 1px solid #000;
+    border-bottom: 1px solid #000;
+    padding: 1px;
+}
+.dimpActions .disabled .popdown:hover {
+    border: 0;
+    cursor: default;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+.dimpActions #button_compose, .dimpActions #button_checkmail2 {
+    display: none;
+}
+
+div.dimpActionsCompose {
+    margin-top: 0;
+}
+.dimpActionsCompose a.popdown {
+    margin-right: 4px;
+}
+
+.q {
+    display: block;
+    padding: 2px 10px;
+}
+
+#previewPane {
+    overflow: auto;
+    height: 250px;
+    border: none;
+    border-top: 1px silver solid;
+    background: #fff;
+}
+
+.msgHeaders {
+    background: transparent url("graphics/backhead_r.png") repeat-x;
+    border-bottom: 1px #b9b9b3 solid;
+    padding: 2px 0;
+    font-size: 90%;
+    overflow: hidden;
+}
+.msgfullread .msgHeaders {
+    border: 1px #b9b9b3 solid;
+}
+
+.msgHeaders .dimpOptions {
+    float: right;
+    padding: 0 10px 10px;
+    margin-top: 5px;
+}
+
+.msgHeaders .dimpOptions a img {
+    vertical-align: middle;
+}
+
+.msgHeaders table {
+    margin: 0;
+}
+.msgHeaders table thead tr {
+    vertical-align: top;
+}
+.msgHeaders table thead td {
+    padding: 3px 3px 0 0;
+}
+.msgHeaders table thead td img {
+    vertical-align: middle;
+}
+.msgHeaders table thead td.label {
+    height: 15px;
+    font-weight: bold;
+    white-space: nowrap;
+    text-align: right;
+    padding-left: 3px;
+}
+.msgHeaders table thead td.subject {
+    font-weight: bold;
+}
+
+#msgHeadersContent {
+    overflow: hidden;
+}
+
+/* ini msg small header */
+#msgHeadersColl {
+    width: auto;
+    height: 17px;
+    padding: 0;
+    margin: 0 6px;
+}
+#msgHeadersColl div.date {
+    float: right;
+    text-align: right;
+    white-space: nowrap;
+}
+#msgHeadersColl div.newwin img {
+    float: right;
+    padding-left: 4px;
+    vertical-align: middle;
+}
+#msgHeadersColl div.others, #msgHeadersColl div.others div {
+    overflow: hidden;
+    white-space: nowrap;
+}
+#msgHeadersColl div.others div.toggle {
+    float: left;
+}
+#msgHeadersColl div.others div.toggle a img {
+    padding-top: 3px;
+}
+#msgHeadersColl div.subject {
+    padding-left: 4px;
+}
+#msgHeadersColl div.others div.subject {
+    float: left;
+    max-width: 40%;
+    font-weight: bold;
+    overflow: hidden;
+    margin-right: 5px;
+}
+#msgHeadersColl div.others div.from {
+    max-width: 50%;
+    overflow: hidden;
+}
+#msgHeadersColl div.others div.from a:hover {
+    border: none;
+    background: none;
+    padding: 2px;
+    text-decoration: underline;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+}
+#msgHeadersColl div.others div.from a:hover img {
+    display: none;
+}
+/* end msg small header */
+
+.msgBody {
+    background: #fff url("graphics/backhead_shadow.png") top repeat-x;
+    padding: 7px 5px 5px;
+}
+.msgBody table td {
+    padding: 0;
+}
+.msgfullread .msgBody {
+    border-left: 1px silver solid;
+    border-right: 1px silver solid;
+    border-bottom: 1px silver solid;
+    min-height: 420px;
+}
+
+/* mime status messages */
+.mimeStatusMessage, .mimeStatusWarning, .mimePartInfo {
+    color: #000;
+    margin: 2px;
+}
+.mimeStatusMessage {
+    background: #ffc;
+    border: 1px #fffba4 solid;
+}
+.mimePartInfo {
+    background: #efefef;
+    border: 1px #c0c0c0 solid;
+}
+.mimeStatusWarning {
+    background: #e81222;
+    border: 1px maroon solid;
+    color: #fff;
+}
+table.mimeStatusMessage td, table.mimeStatusWarning td, table.mimePartInfo td {
+    padding: 0;
+}
+table.mimeStatusMessage td table td, table.mimeStatusWarning td table td, table.mimePartInfo td table td {
+    padding: 0 2px 0 0;
+    white-space: nowrap;
+}
+
+/* Message Composition. */
+.msgwrite {
+    cursor: default;
+    background: #e2e2e2 url("graphics/backhead_r.png") repeat-x;
+    border: 1px #b9b9b3 solid;
+    padding: 2px 0;
+}
+.msgwrite .dimpOptions {
+    float: right;
+    padding: 10px;
+    font-size: 90%;
+    line-height: 90%;
+}
+.msgwrite .dimpOptions label {
+    display: block;
+    cursor: pointer;
+}
+.msgwrite .dimpOptions img {
+    padding-right: 3px;
+    vertical-align: middle;
+}
+
+.msgwrite thead tr {
+    vertical-align: top;
+}
+.msgwrite thead td.label {
+    height: 15px;
+    white-space: nowrap;
+    text-align: right;
+}
+.msgwrite thead td.label {
+    width: 65px;
+    padding-top: 4px;
+    padding-left: 2px;
+}
+.msgwrite thead td.subject {
+    font-weight: bold;
+}
+.msgwrite thead td {
+    padding: 3px 5px 1px 0;
+    font-size: 90%;
+}
+
+#messageParent {
+    background: #fff url("graphics/backhead_shadow.png") top repeat-x;
+    border-left: 1px silver solid;
+    border-right: 1px silver solid;
+    border-bottom: 1px silver solid;
+    padding: 1%;
+    margin: 0;
+}
+#messageParent #message {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+#messageParent .htmlarea {
+    width: 98% !important;
+    border: none;
+}
+
+#previewInfo {
+    background: transparent url(graphics/ico_message_off.png) no-repeat scroll 15px 15px;
+    line-height: 20px;
+    text-align: left;
+    padding: 15px 100px 15px 40px;
+    color: #a0a0a0;
+}
+
+div.spellcheck {
+    white-space: pre;
+    white-space: -moz-pre-wrap;
+    white-space: -hp-pre-wrap;
+    white-space: -o-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: pre-wrap;
+    white-space: pre-line;
+    word-wrap: break-word;
+}
+
+.htmledit {
+    display: none;
+    padding: 4px;
+}
+
+#subject {
+    width: 40em;
+}
+
+#rteloading {
+    position: absolute;
+    z-index: 100;
+    background-color: #000;
+    opacity: .5;
+    filter: alpha(opacity=50);
+}
+#rteloadingtxt {
+    position: absolute;
+    background-color: #fff;
+    z-index: 101;
+}
+
+/* attachment file list */
+#attach_list {
+    padding-top: 5px;
+}
+#attach_list input {
+    background: none;
+    border: none;
+    font-weight: bold;
+    text-decoration: underline;
+}
+#attach_list div {
+    background: transparent url("graphics/attachment.png") left 2px no-repeat;
+    height: 20px;
+    padding-left: 20px;
+}
+
+/* Context Menus */
+.context {
+    min-width: 180px;
+    position: absolute;
+    display: none;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    border: 1px #d4d4d4 solid;
+    padding: 1px;
+    background: #f4f4f4;
+    color: #000;
+    font-size: 90%;
+}
+.context a, .context a:visited {
+    white-space: nowrap;
+    display: block;
+    padding: 4px 4px 3px 2px;
+    text-decoration: none;
+    color: #000;
+}
+.context a:hover {
+    background: gray;
+    color: #fff;
+}
+.context a img {
+    vertical-align: middle;
+    padding-right: 4px;
+}
+.context div.sep {
+    font-size: 1px;
+    line-height: 1px;
+    height: 1px;
+    border-bottom: 1px #d4d4d4 solid;
+}
+
+/* Email Addresses. */
+a.address {
+    left: -2px;
+    position: static;
+    padding: 2px;
+    text-decoration: underline;
+    white-space: nowrap;
+}
+a.address img {
+    display: none;
+    vertical-align: top;
+}
+a.address:hover {
+    text-decoration: none;
+    padding: 2px 1px;
+    border: 1px silver solid;
+    background: #fff;
+}
+a.address:hover img {
+    display: inline;
+    padding-left: 4px;
+}
+
+#alerts {
+    cursor: pointer;
+    position: absolute;
+    top: 20%;
+    left: 25%;
+    right: 25%;
+    width: 50%;
+    /* Must always be the highest z-index on the page to ensure we can always
+       click the alert box to close. */
+    z-index: 10001;
+    margin: 0 0 10px;
+    font-weight: bold;
+    color: #fff;
+}
+#alerts div {
+    padding: 6px 20px 6px 25px;
+    border: 1px #316600 solid;
+    background-color: #5db110;
+    background-position: 6px 6px;
+    background-repeat: no-repeat;
+}
+#alerts div.horde-error {
+    background: #e81222 url("graphics/error.png") 99% 50% no-repeat;
+    border-color: maroon;
+}
+#alerts div.horde-message {
+    background-image: url("graphics/message.png");
+}
+#alerts div.horde-success {
+    background-image: url("graphics/success.png");
+}
+#alerts div.horde-warning, #alerts div.dimp-sticky, #alerts div.dimp-sticky {
+    background-color: #ebe20c;
+    background-image: url("graphics/warning.png");
+    border-color: #807b00;
+    color: #000;
+}
+#alerts div.imp-reply {
+    background-image: url("graphics/mail_answered.png");
+}
+#alerts div.imp-forward, #alerts div.imp-redirect {
+    background-image: url("graphics/mail_forwarded.png");
+}
+.tooltip, .nicetitle {
+    z-index: 1001;
+}
+
+/* Drag and drop styles. */
+.drag, .dragdrop {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ccc;
+    font: 12px Geneva,Arial,Helvetica,sans-serif;
+    padding: 2px;
+    overflow: hidden;
+    z-index: 999;
+}
+.dragdrop {
+    color: red;
+}
+
+/* Message Search Filter bar */
+.qoptions {
+    background: gray;
+    color: #fff;
+    font-size: 90%;
+    padding: 5px 5px 5px 10px;
+}
+.qoptions a, .qoptions a:visited {
+    text-decoration: none;
+    font-weight: bold;
+    color: #fff;
+    margin: 0 5px;
+    padding: 2px 5px;
+}
+.qoptions a.qselected, .qoptions a.qselected:visited, .qoptions a:hover {
+    background: #fafafa;
+    color: #000;
+    font-weight: bold;
+    border-top: 1px silver solid;
+    border-left: 1px silver solid;
+    border-bottom: 1px #e0e0e0 solid;
+    border-right: 1px #e0e0e0 solid;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    padding: 1px 4px;
+}
+.qoptions .qclose a, .qoptions .qclose a:visited {
+    float: right;
+    margin-top: -2px;
+    width: 10px;
+    background: #efefef;
+    color: #000;
+    font-weight: bold;
+    border-top: 1px silver solid;
+    border-left: 1px silver solid;
+    border-bottom: 1px #e0e0e0 solid;
+    border-right: 1px #e0e0e0 solid;
+    text-align: center;
+    vertical-align: middle;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    padding: 0px 2px 2px 4px;
+    text-decoration: none;
+}
+.qoptions .qclose a:hover {
+    background: #fff;
+}
+.qoptions .qlabel {
+    font-weight: bold;
+}
+.msgFilterDefault {
+    color: #a0a0a0;
+}
+.searchMatch {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* Redbox styles. */
+#RB_overlay {
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-height: 100%;
+    background-color: #000;
+    opacity: .6;
+    filter: alpha(opacity=60);
+}
+#RB_window {
+    z-index: 102;
+    display: block;
+    text-align: left;
+    overflow: hidden;
+    margin: 20px auto 0 auto;
+    position: absolute;
+}
+
+#RB_folder {
+    width: 20em;
+    padding: 6px;
+    border: 1px solid #ccc;
+}
+#RB_folder input {
+    margin: .2em;
+}
+
+/* Popup message styling. */
+.headercloseimg {
+    float: right;
+    padding-right: 2px;
+    cursor: pointer;
+}
+
+/* Based on the Mozilla default definitions */
+#html-message td {
+    padding: 0;
+}
+#html-message ul {
+    display: block;
+    list-style-type: disc;
+    margin: 1em 0;
+    -moz-padding-start: 40px;
+}
+#html-message ol {
+    display: block;
+    list-style-type: decimal;
+    margin: 1em 0;
+    -moz-padding-start: 40px;
+}
+#html-message p {
+    display: block;
+    margin: 1em 0;
+}
+#html-message blockquote {
+    margin: 1em 40px;
+}
+#html-message blockquote[type="cite"] {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 1em;
+}
+
+/* Keyboard key style */
+.kbd {
+    background: #eee;
+    color: #000;
+    white-space: nowrap;
+    padding: 1px 2px;
+    border: 1px solid #888;
+    font-size: 90%;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.largeaddrlist {
+    cursor: pointer;
+    background: #aaa;
+    margin-right: 5px;
+}
+.largeaddrlist:hover {
+    text-decoration: underline;
+}

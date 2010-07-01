@@ -1,0 +1,249 @@
+/**
+ * $Horde: horde/themes/silver/screen.css,v 1.19.2.6 2009-11-09 14:37:36 jan Exp $
+ */
+
+body {
+    font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+    color: #333;
+}
+.solidbox {
+    border: 1px solid #999;
+}
+.greybox {
+    border: 1px solid #999;
+}
+.headerbox {
+    border-left: 1px solid #999;
+    border-right: 1px solid #999;
+    border-bottom: 1px solid #999;
+}
+a, a.fixed {
+    color: #366;
+}
+a.widget {
+    color: #366;
+}
+.header, .smallheader {
+    background: #d7d7d7 url("graphics/menu.png") top center repeat-x;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+}
+.header {
+    padding: 2px;
+}
+.header a:hover {
+    color: #699;
+}
+.header .smallheader {
+    background: none;
+    border: none;
+}
+.light {
+    color: #666;
+}
+.smallheader {
+    color: #333;
+}
+.smallheader a {
+    color: #333;
+    background: none;
+    border: none;
+}
+.control {
+    background: #eee;
+}
+.item {
+    background: #eee;
+}
+
+.sortup {
+    background: #ccc url("graphics/za.png") center left no-repeat;
+}
+.sortdown {
+    background: #ccc url("graphics/az.png") center left no-repeat;
+}
+.linedRow, tr.linedRow td, table.linedRow td, ul.linedRow li {
+    color: #333;
+}
+.linedRowSelectedCol, td.linedRowSelectedCol, table.linedRow td.linedRowSelectedCol {
+    color: #333;
+}
+.control {
+    color: #333;
+}
+.item {
+    color: #333;
+}
+.text {
+    color: #333;
+    background: #fff;
+}
+
+/* Form styles. */
+input, select, textarea {
+    font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+    color: #000;
+    background: #f3f3f3;
+    border: 1px solid #999;
+}
+input:focus, textarea:focus {
+    background: #fff;
+}
+.button {
+    color: #333;
+    background: #d7d7d7 url("graphics/menu.png") repeat-x 0 -1px;
+    border: 1px solid #999;
+    padding: 1px 2px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.button:hover {
+    color: #699;
+}
+a.button {
+    padding: 2px 4px;
+    font-weight: bold;
+}
+
+/* Alternating styles. item0, item1 are deprecated. */
+.rowEven, .item0 {
+    background-color: #eee;
+}
+.rowOdd, .item1 {
+    background-color: #fff;
+}
+
+.selected {
+    background: #ccc;
+}
+
+/* Various popup and status layers. */
+.notice {
+    color: #333;
+    background: #ffc;
+    border: 1px solid #aaa;
+}
+.tooltip, div.nicetitle {
+    color: #333;
+    background: #ffc;
+    border: 1px solid #333;
+}
+.inProgress {
+    font-family: Verdana,Helvetica,sans-serif;
+}
+
+/* Menu styles. */
+#menu {
+    background: #d7d7d7 url("graphics/menu.png") repeat-x;
+}
+#menu h1 {
+    color: #333;
+}
+#menu a {
+    border: 1px solid transparent;
+    color: #333;
+    padding: 3px 3px 0 3px;
+    margin: 0;
+}
+#menu a:hover {
+    border: 1px solid transparent;
+    padding: 3px 3px 0 3px;
+    margin: 0;
+}
+#menu a.current {
+    border: 1px solid #aaa;
+    padding: 3px;
+    margin: 0;
+    background: url("graphics/menu-active.png") repeat-x;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+}
+#menuBottom {
+    position: relative;
+    top: -1px;
+    background: #d7d7d7;
+    border: 1px solid #999;
+    border-right: none;
+    border-top: none;
+    padding-left: 6px;
+    -moz-border-radius-bottomleft: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+}
+
+/* Sidebar styles. */
+#sidebarPanel {
+    background: #efefef;
+    margin-right: .5em;
+    border: 1px solid #999;
+    border-left: none;
+    border-top: none;
+}
+#sidebarPanel span, #sidebarPanel a {
+    color: #333;
+    font-family: Verdana,sans-serif;
+}
+#sidebarPanel a:hover {
+    color: #333;
+}
+#expandButton {
+    margin-right: .5em;
+}
+
+/* Tab styles. */
+.tabset {
+    background: none;
+}
+.tabset li {
+    background: url("graphics/tab_right.png") no-repeat right top;
+    margin-bottom: -1px;
+}
+.tabset li a {
+    color: #366;
+    background: url("graphics/tab_left.png") no-repeat left top;
+    border: 0;
+    border-bottom: 1px solid #999;
+    padding: 4px 0.8em 3px 0.8em;
+}
+.tabset li a:hover {
+    color: #999;
+    background: url("graphics/tab_left.png") no-repeat left top;
+}
+.tabset li.activeTab {
+    background: url("graphics/currentTab_right.png") no-repeat right top;
+}
+.tabset li.activeTab a {
+    color: #366;
+    background: url("graphics/currentTab_left.png") no-repeat left top;
+    border-bottom: 1px solid #999;
+}
+
+/* Preferences overview. */
+.prefsOverview dt a {
+    background: #d7d7d7 url("graphics/menu.png") repeat-x;
+    border: 1px solid #333;
+}
+.prefsOverview dd {
+    color: #333;
+    background: #fff;
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+    border-bottom: 1px solid #333;
+}
+
+/* Help styles. */
+.help {
+    color: #333;
+}
+.help #sidebarPanel {
+    border-top: 1px solid #999;
+}
+
+/* Source markup styles. */
+table.lineNumbered {
+    border: 1px solid #333;
+}
+
+/* MIME styles. */
+.download {
+    background-image: url("graphics/download.png");
+}

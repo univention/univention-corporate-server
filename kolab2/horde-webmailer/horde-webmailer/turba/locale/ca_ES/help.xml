@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Horde: turba/locale/ca_ES/help.xml,v 1.1.2.2 2007-12-20 14:34:34 jan Exp $ -->
+<help>
+
+	<entry id="Overview" md5="290506ade4e6f749246f77bbe5d48835" state="uptodate">
+<title>Introducció</title>
+<heading>Introducció</heading>
+
+	<para>
+
+    La Llibreta d'adreces ofereix una metodologia i lloc adeqüats per enmagatzemar la informació de contactes per la seva còmoda recuperació i ús. En funció de com s'ha configurat el sistema l'administrador, podeu disposar de llibretes privades així com accedir a serveis de directori de xarxa públics. També accepta llistes de distribució de forma que pogueu crear les vostres pròìes "llistes de correu".
+    
+</para>
+</entry>
+-
+	<entry id="menu-add" md5="3c1f92eb1a82839404d11d9b0a20b3ce" state="uptodate">
+<title>Menú: Afegir</title>
+<heading>Afegir</heading>
+-
+	<para>
+
+    Afegeix un usuari a la llibreta de direccions. Només es poden afegir usuaris a les llibretes d'adreces si disposa de privilegis d'escriptura. Si estan activades libretes d'adreces compartides o públiques, sovint són de només lectura i no s'hi podran afegir contactes.
+    
+</para>
+</entry>
+-
+	<entry id="menu-search" md5="8daf81ab28602d772358a174571f9ad2" state="uptodate">
+<title>Menú: Cercar</title>
+<heading>Cercar</heading>
+-
+	<para>
+
+   Permet cercar en una llibreta d'adreces per a localitzar informació. Es tracta d'una cerca senzilla que només permetrà cercar per alguns camps bàsics. Normalment el nom i l'adreça de correu , però pot variar en funció de com s'hagi configurat l'administrador la llibreta.
+    
+</para>
+-
+	<para>
+
+    Per una cerca més complexa, pot utilitzar la "
+<ref module="turba" entry="menu-advanced-search">Cerca avançada</ref>
+" que li permet cercar en altres camps.
+    
+</para>
+</entry>
+-
+	<entry id="menu-advanced-search" md5="6be703ffeba614f6ada151749fa44ab5" state="uptodate">
+<title>Menú: Cerca avançada</title>
+<heading>Cerca avançada</heading>
+-
+	<para>
+
+    Permet cercar en una llibreta d'adreces localitzar informació. Aquest mètode de cerca li permet cercar en diversos camps. Els camps disponibles per a la cerca depenen de la llibreta d'adreces que s'està cercant.
+    
+</para>
+</entry>
+-
+	<entry id="menu-import" md5="3c6c40f2a6213e9fc1f9a77827bfb5d4" state="uptodate">
+<title>Menú: Importar/Exportar</title>
+<heading>Importar/Exportar</heading>
+-
+	<para>
+
+    Aquest menú permet la importació o exportació des de la seva llibreta d'adreces personal. Els formats suportants són CSV (Valors separats per comes) d'Outlook com el vCard així com alguns altres formats habituals
+    
+</para>
+<heading>Importar</heading>
+-
+	<para>
+
+    Per a importar una llibreta d'adreces, necessita disposar d'una màquina local (on executar el navegador web) amb les dades de la llibreta d'adreces que desitgi importar. Per a realitzar-ho primer haurà d'exportar la informació de la seva llibreta d'adreces del seu client de correu.
+    
+</para>
+<para>
+    Si utilitza Outlook Express:
+    </para>
+-
+	<para>
+
+    1) Seleccioneu el menú Arxiu &gt; Exportar &gt; Llibreta d'adreces
+    
+</para>
+-
+	<para>
+
+    2) Seleccioneu "Arxiu de text" (Valors separats per comes) amb la "Eina d'exportació d'adreces". Cliqueu "Exportar".
+    
+</para>
+-
+	<para>
+
+    3) En el camp "Guardar arxiu exportat com" escriviu un nom per la llibreta d'adreces. Seleccioneu "Següent".
+    
+</para>
+-
+	<para>
+
+    4) Activeu la casella de l'esquerra de cada un dels camps que desitgi exportar. Seleccioneu "Finalitzar".
+    
+</para>
+-
+	<para>
+
+    5) Hauria d'apareixer el següent missatge informatiu 'Procés d'exportació de la llibreta d'adreces finalitzat'. Seleccioneu 'Acceptar'.
+    
+</para>
+-
+	<para>
+
+    6) Seleccioneu 'Tancar' en la 'Eina d'exportació d'adreces' i tanqui Outlook Express.
+    
+</para>
+-
+	<tip>
+
+    Si l'arxiu d'adreces exportat no està en el seu escriptori i esteu utilitzant un sistema operatiu Windows, seleccioneu el menú Inicia &gt; Cercar &gt; Arxius o Carpetes i cerqueu en la seva unitat de disc dur principal el nom de l'arxiu que hagiu utilitzar en el pas 3. Anoteu la localització de l'arxiu.
+    
+</tip>
+-
+	<para>
+
+    Per a importar una llibreta d'adreces, obriu la llibreta d'adreces a la que desitgeu importar la informació. Seleccioneu la icona "Importar/Exportar". Seleccioneu en el llistat desplegable el tipus d'arxiu de dades d'informació d'adreces que desitgi importar. Seleccioneu el botó "Examinar" per a localitzar l'arxiu de dades d'adreces en el seu ordinador. Seleccioneu l'arxiu i polseu el botó "Següent". Seguiu les instruccions i la informació de l'arxiu s'importarà a la seva llibreta d'adreces.
+    
+</para>
+-
+	<tip>
+
+    Algunes entrades complexes o que els seus camps no coincideixin amb els de la seva llibreta d'adreces puguin no importar-se correctament. Es conveniente que compruebe los datos importados tras una operación de importación.
+    
+</tip>
+</entry>
+-
+	<entry id="searching-search_results" md5="ffed8d72fa3b710df8e902c2493b254f" state="uptodate">
+<title>Cerca: Resultats de la cerca</title>
+<heading>Resultats de la cerca</heading>
+-
+	<para>
+
+    Si una cerca obté resultats, es mostraran a l'espai de "Resultatos de la cerca".
+    
+</para>
+-
+	<para>
+
+    Seleccionant en un camp de "Correu" s'obrirà una finestra de redacció de missatges per enviar correu a aquesta adreça. Seleccionant en un camp de "Nom" es mostrarà el registre d'aquest nom de la llibreta d'adreces, permetent-li modificar o eliminar la entrada.
+    
+</para>
+-
+	<para>
+
+    En funció de com hagi configurat el sistema el seu administrador, els resultats de les cerques podran ser acumulatius. Cada cerca afegirà els resultats nous als existents. Això és útil a l'elaborar llistes. Per eliminar els resultats de les cerques acumulades i començar una nova, seleccioni el vincle "Netejar cerca".
+    
+</para>
+-
+	<tip>
+
+    Al veure un llistat d'entrades, poit ordenar-les per cada un dels camps mostrats seleccionant en la capçalera de la columna adequada. Per a commutar el sentit de la classificació entre ascendent i descendent, seleccioneu la icona de la fletxa de la capçalera de la columna.
+    
+</tip>
+</entry>
+</help>

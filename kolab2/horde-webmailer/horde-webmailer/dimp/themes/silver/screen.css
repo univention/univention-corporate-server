@@ -1,0 +1,87 @@
+/* Background images. */
+.msglist div.unseen .msState {
+    background-image: transparent url("graphics/mail_unseen.png");
+}
+.msglist div.flagged .msState {
+    background-image: url("graphics/mail_flagged.png");
+}
+.msglist div.deletedmsg .msState {
+    background-image: url("graphics/mail_deleted.png");
+}
+.msglist div.unimportant .msPri {
+    background-image: url("graphics/mail_priority_low.png");
+}
+.msglist div.important .msPri {
+    background-image: url("graphics/mail_priority_high.png");
+}
+.msglist div.answered .msCompose {
+    background-image: url("graphics/mail_answered.png");
+}
+.msglist div.draft .msCompose {
+    background-image: url("graphics/mail_draft.png");
+}
+
+#sidebarPanel {
+    border-bottom: none;
+}
+#sidebarPanel .base {
+    background-image: url("graphics/folder.png");
+}
+#sidebarPanel .col {
+    background-image: url("graphics/folder_minus.png");
+}
+#sidebarPanel .exp {
+    background-image: url("graphics/folder_plus.png");
+}
+#sidebarPanel .create {
+    background-image: url("graphics/folder_create.png");
+}
+#sidebarPanel .drafts {
+    background-image: url("graphics/folder_drafts.png");
+}
+#sidebarPanel .inbox {
+    background-image: url("graphics/folder_inbox.png");
+}
+#sidebarPanel .sent {
+    background-image: url("graphics/folder_sent.png");
+}
+#sidebarPanel .spam {
+    background-image: url("graphics/folder_spam.png");
+}
+#sidebarPanel .trash {
+    background-image: url("graphics/folder_trash.png");
+}
+#attach_list div {
+    background-image: url("graphics/attachment.png");
+}
+#alerts div.horde-error {
+    background-image: url("graphics/error.png");
+}
+#alerts div.horde-message {
+    background-image: url("graphics/message.png");
+}
+#alerts div.horde-success {
+    background-image: url("graphics/success.png");
+}
+#alerts div.horde-warning, #alerts div.dimp-sticky, #alerts div.dimp-sticky {
+    background-image: url("graphics/warning.png");
+}
+#alerts div.imp-reply {
+    background-image: url("graphics/mail_answered.png");
+}
+#alerts div.imp-forward, #alerts div.imp-redirect {
+    background-image: url("graphics/mail_forwarded.png");
+}
+
+.header {
+    border-left: 1px solid #999;
+    border-right: 1px solid #999;
+}
+
+.tabset li#quota {
+    background: none;
+}
+
+.dimpActions, .msgfullread .msgHeaders, .msgwrite {
+    border-top: none;
+}

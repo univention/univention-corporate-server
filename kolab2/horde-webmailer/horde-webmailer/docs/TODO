@@ -1,0 +1,29 @@
+=============================
+ Horde Development TODO List
+=============================
+
+:Last update:   $Date: 2008-01-22 23:36:02 $
+:Revision:      $Revision: 1.27.2.1 $
+:Contact:       horde@lists.horde.org
+
+In no particular order:
+
+- Add a /services/groups/ section. Include public group homepages, including
+  any information marked public for the group (let the members list be marked
+  public/group only/admin only), add group administrators (just a flag for
+  users), add the ability to show all calendars/other shares that a group has
+  permissions to, allow creating a new calendar/poll/etc. for a group.
+
+- Add the ability to break out DataTree group_uids into their own tables (one
+  table per group).
+
+- Use the freedesktop shared-mime-info_ XML file to build our MIME_Magic magic
+  data files.
+
+- Add UI support for more configuration files.
+
+- Show shared preferences on all prefs summary screens to make it
+  easier for user to find global preferences.
+
+
+.. _shared-mime-info: http://www.freedesktop.org/Software/shared-mime-info

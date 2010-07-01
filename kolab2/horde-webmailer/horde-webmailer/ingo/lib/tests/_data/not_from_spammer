@@ -1,0 +1,40 @@
+From cyrus@prometheus Mon Aug  7 15:01:35 2006
+Return-Path: <cyrus@prometheus>
+Received: from murder ([unix socket])
+	 by prometheus (Cyrus v2.2.4-Debian-2.2.4-2) with LMTPA;
+	 Mon, 07 Aug 2006 15:01:35 -0400
+X-Sieve: CMU Sieve 2.2
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by prometheus.cronosys.com (Postfix) with ESMTP id 61BCA7080C6
+	for <jason.m.felice@gmail.com>; Mon,  7 Aug 2006 15:01:35 -0400 (EDT)
+Received: from prometheus.cronosys.com ([127.0.0.1])
+	by localhost (prometheus [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 20060-03 for <jason.m.felice@gmail.com>;
+	Mon, 7 Aug 2006 15:01:35 -0400 (EDT)
+Received: from localhost.localdomain (cousteau.att.cronosys.com [66.73.22.6])
+	by prometheus.cronosys.com (Postfix) with ESMTP id 010CC7080C0
+	for <jason.m.felice@gmail.com>; Mon,  7 Aug 2006 15:01:34 -0400 (EDT)
+Received: by localhost.localdomain (Postfix, from userid 1000)
+	id 00D37C23; Mon,  7 Aug 2006 15:01:32 -0400 (EDT)
+Date: Mon, 7 Aug 2006 15:01:32 -0400
+From: Good Guy <goodguy@example.com>
+To: jason.m.felice@gmail.com
+Subject: This is a test
+Message-ID: <20060807190132.GC22633@untamo.cronosys.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.6+20040907i
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at prometheus.cronosys.com
+X-Spam-Status: No, hits=-1.4 tagged_above=-50.0 required=4.0 tests=AWL,
+	BAYES_00, FORGED_RCVD_HELO
+X-Spam-Level: 
+
+Buy not-so-dumb stuff now.
+
+-- 
+ Jason Felice
+ (216) 221-4600  x302
+ Cronosys  -- Liberate the soul of your business <http://www.cronosys.com>.
+
+

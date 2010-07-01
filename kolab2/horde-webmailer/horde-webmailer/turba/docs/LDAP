@@ -1,0 +1,148 @@
+Turba LDAP personal addressbook HOWTO
+=====================================
+
+This HOWTO is a bare bones list of what has to be done to implement a personal
+adressbook through ldap for turba.
+
+The howto is based on a setup where both the addressbook and the users are
+stored on the same LDAP server.
+
+This is not comprehensive, but it notes how some users have implemented
+personal LDAP address books.
+
+1. Configure ``turba/config/sources.php``.
+
+   Note that OpenLDAP and some other LDAP servers use UTF8 to encode its data,
+   so you should have ``encoding = 'utf8'`` set in the parameters for your
+   LDAP address book source.
+
+   There is an example of personal address books in
+   ``turba/config/sources.php.dist``.  You will have to modify it to to match
+   the fields, settings, and schema of your LDAP server, but it's a solid
+   place to start.
+
+2. Enforce ACLs to personal address books.
+
+   Add this to your LDAP ACL so users can only see their own address book::
+
+     access to dn="ou=(.+), ou=personal_addressbook, dc=example, dc=com"
+         by dn="uid=$1, dc=example, dc=com" write
+         by * none
+
+   .. Note:: This assumes that you store your users in the same LDAP
+             directory. If not, modify appropriately for your setup.
+
+3. Make ``ou``'s for all of your users.
+
+   You'll also have to add this to the script you use to add users to your
+   LDAP directory.
+
+   ``turba/scripts/ldap/addou.pl`` is a starting point; you will need to edit
+   it to fit your needs. Copy both it and the ``addou`` shell script to
+   ``/home``.  Then run ``./addou`` and all the different names of the
+   catalogues will be added to the ldap tree as new ``ou``'s to store
+   addresses in. You should probably delete any entries that do not belong
+   there (for instance, ``/home`` directories for mysql and other daemons
+   created by some distributions).
+
+
+Entries for Turba-specific information (contact groups) from horde/scripts/ldap/horde.schema::
+
+   #
+   # Turba attribute branch 1.3.6.1.4.1.13040.4.1.*
+   #
+   attributetype ( 1.3.6.1.4.1.13040.4.1.2
+     NAME 'turbaType'
+     DESC 'Turba Object Type: Contact/List'
+     EQUALITY caseIgnoreIA5Match
+     SUBSTR caseIgnoreIA5SubstringsMatch
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{8} )
+
+   attributetype ( 1.3.6.1.4.1.13040.4.1.3
+     NAME 'turbaMembers'
+     DESC 'Encoded members of a Turba list'
+     EQUALITY caseIgnoreIA5Match
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{4000} )
+
+   attributetype ( 1.3.6.1.4.1.13040.4.1.4
+     NAME 'turbaPGPPublicKey'
+     DESC 'PGP/GPG Public Key'
+     EQUALITY caseIgnoreIA5Match
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{4000} )
+
+
+Entries for calendaring information (free/busy, etc.) from RFC 2739::
+
+   attribute (1.2.840.113556.1.4.478
+     NAME 'calCalURI'
+     DESC 'Snapshot of users entire default calendar'
+     EQUALITY caseIgnoreMatch
+     SUBSTR caseIgnoreMatch
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    )
+
+   attribute (1.2.840.113556.1.4.479
+     NAME 'calFBURL'
+     DESC 'URI of the uses free and busy information'
+     EQUALITY caseIgnoreMatch
+     SUBSTR caseIgnoreMatch
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    )
+
+   attribute (1.2.840.113556.1.4.480
+     NAME 'calCAPURI'
+     DESC 'URI used to communicate with the users calendar'
+     EQUALITY caseIgnoreMatch
+     SUBSTR caseIgnoreMatch
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    )
+
+   attribute (1.2.840.113556.1.4.481
+     NAME 'calCalAdrURI'
+     DESC 'URI to which event requests should be sent for the user'
+     EQUALITY caseIgnoreMatch
+     SUBSTR caseIgnoreMatch
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    )
+
+   attribute (1.2.840.113556.1.4.482
+     NAME 'calOtherCalURIs'
+     DESC 'URIs to non-default calendars belonging to the user'
+     EQUALITY caseIgnoreMatch
+     SUBSTR caseIgnoreMatch
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    )
+
+   attribute (1.2.840.113556.1.4.483
+     NAME 'calOtherFBURLs'
+     DESC 'URIs to non-default free and busy information files'
+     EQUALITY caseIgnoreMatch
+     SUBSTR caseIgnoreMatch
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    )
+
+   attribute (1.2.840.113556.1.4.484
+     NAME 'calOtherCAPURIs'
+     DESC 'URIs for communicating with non-default calendars'
+     EQUALITY caseIgnoreMatch
+     SUBSTR caseIgnoreMatch
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    )
+
+   attribute (1.2.840.113556.1.4.485
+     NAME 'calOtherCalAdrURIs'
+     DESC 'Destinations for event requests to non-default calendars'
+     EQUALITY caseIgnoreMatch
+     SUBSTR caseIgnoreMatch
+     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    )
+
+   objectclass (1.2.840.113556.1.5.87
+    NAME 'calEntry'
+    DESC 'Calendering and Free Busy information'
+    SUP top AUXILIARY
+    MAY (calCalURI $ calFBURL $ calCAPURI $ calCalAdrURI $
+         calOtherCalURIs $ calOtherFBURLs $ calOtherCAPURIs $
+         calOtherCalAdrURIs
+        )
+    )

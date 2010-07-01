@@ -1,0 +1,233 @@
+# Russian translations for Mimp package
+# Copyright 
+# Automatically generated, 2008.
+# Alexey Zakharov <baber@mosga.net>, 2008
+# This file is distributed under the same license as the Mimp package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mimp H3 1.1\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-01-22 17:27+0100\n"
+"PO-Revision-Date: 2008-01-22 17:27+0100\n"
+"Last-Translator: Alexey Zakharov <baber@mosga.net>\n"
+"Language-Team: Russian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1251\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mailbox.php:68
+#, php-format
+msgid "%d to %d of %d"
+msgstr "%d по %d из %d"
+
+#: message.php:263
+#, php-format
+msgid "(%d of %d)"
+msgstr "(%d из %d)"
+
+#: lib/MIME/Contents.php:62
+msgid "Attachment"
+msgstr "Вложение"
+
+#: templates/compose/compose.inc:52
+msgid "Bcc: "
+msgstr ""
+
+#: templates/compose/compose.inc:49
+msgid "Cc: "
+msgstr ""
+
+#: lib/MIMP.php:32
+msgid "Compose"
+msgstr "Написать"
+
+#: config/prefs.php.dist:13
+msgid "Configure how messages are displayed."
+msgstr "Настройка отображения сообщений"
+
+#: compose.php:21
+msgid "Could not retrieve the message from the mail server."
+msgstr "Невозможно получить сообщения с почтового сервера"
+
+#: message.php:226
+msgid "Delete"
+msgstr "Удалить"
+
+#: config/prefs.php.dist:25
+msgid "Display only the first 250 characters of a message initially?"
+msgstr "По умолчанию отображать только первые 250 символов сообщения?"
+
+#: compose.php:91 templates/compose/compose.inc:59
+#: templates/compose/redirect.inc:19
+msgid "Expand Names"
+msgstr "Развернуть имена"
+
+#: mailbox.php:58
+msgid "First Page"
+msgstr "Первая страница"
+
+#: folders.php:25 lib/MIMP.php:35
+msgid "Folders"
+msgstr "Папки"
+
+#: message.php:243
+msgid "Forward"
+msgstr "Переслать"
+
+#: templates/mailbox/mailbox.inc:18
+msgid "From"
+msgstr "От"
+
+#: templates/compose/compose.inc:39
+msgid "Identity"
+msgstr "Профиль"
+
+#: lib/MIMP.php:29
+msgid "Inbox"
+msgstr "Входящие"
+
+#: mailbox.php:63
+msgid "Last Page"
+msgstr "Последняя страница"
+
+#: lib/MIMP.php:43
+msgid "Log out"
+msgstr "Выход"
+
+#: config/prefs.php.dist:11
+msgid "Mail Management"
+msgstr "Управление почтой"
+
+#: message.php:220 message.php:264 compose.php:246 mailbox.php:155
+#: templates/folders/folders.inc:6 templates/folders/folders.inc:27
+#: templates/mailbox/mailbox.inc:4 templates/compose/compose.inc:4
+#: templates/compose/redirect.inc:4
+msgid "Menu"
+msgstr "Меню"
+
+#: compose.php:231
+msgid "Message Composition"
+msgstr "Составление сообщения"
+
+#: config/prefs.php.dist:12
+msgid "Message Viewing"
+msgstr "Просмотр сообщения"
+
+#: compose.php:151
+msgid "Message redirected successfully."
+msgstr "Сообщение успешно переслано"
+
+#: compose.php:221
+msgid "Message sent successfully."
+msgstr "Сообщение успешно отправлено"
+
+#: templates/compose/compose.inc:56
+msgid "Message: "
+msgstr "Сообщение: "
+
+#: message.php:251
+msgid "Next"
+msgstr "След."
+
+#: mailbox.php:62
+msgid "Next Page"
+msgstr "След. стр."
+
+#: mailbox.php:69
+#, php-format
+msgid "No Messages"
+msgstr "Нет сообщений"
+
+#: message.php:254
+msgid "Prev"
+msgstr "Пред."
+
+#: mailbox.php:59
+msgid "Previous Page"
+msgstr "Пред. стр."
+
+#: mailbox.php:151
+msgid "Purge Deleted"
+msgstr "Удалено совсем"
+
+#: message.php:244 compose.php:136 templates/compose/redirect.inc:18
+msgid "Redirect"
+msgstr "Перенаправить"
+
+#: mailbox.php:145 templates/folders/folders.inc:29
+msgid "Refresh"
+msgstr "Обновить"
+
+#: message.php:233
+msgid "Reply"
+msgstr "Ответить"
+
+#: message.php:240
+msgid "Reply All"
+msgstr "Ответить всем"
+
+#: message.php:236
+msgid "Reply to List"
+msgstr "Ответить в рассылку"
+
+#: compose.php:160 templates/compose/compose.inc:58
+msgid "Send"
+msgstr "Послать"
+
+#: message.php:284
+msgid "Show All"
+msgstr "Показать все"
+
+#: folders.php:57
+msgid "Show All Folders"
+msgstr "Показать все папки"
+
+#: folders.php:57
+msgid "Show Subscribed Folders"
+msgstr "Показать подкиски"
+
+#: templates/mailbox/mailbox.inc:19
+msgid "Subject"
+msgstr "Тема"
+
+#: templates/compose/compose.inc:54
+msgid "Subject: "
+msgstr "Тема: "
+
+#: lib/MIME/Viewer/alternative.php:49
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "Нет частей для отображение"
+
+#: lib/MIME/Contents.php:91
+msgid "There are no parts that can be displayed inline."
+msgstr "Нет частей для отображения"
+
+#: lib/MIME/Viewer/plain.php:29 lib/MIME/Viewer/html.php:31
+msgid "There was an error displaying this message part"
+msgstr "Ошибка отображения сообщения"
+
+#: mailbox.php:33
+msgid "There was an error viewing the requested message."
+msgstr "Ошибка отображения сообщения"
+
+#: message.php:257
+#, php-format
+msgid "To %s"
+msgstr "Для %s"
+
+#: templates/compose/compose.inc:47 templates/compose/redirect.inc:16
+msgid "To: "
+msgstr "Для %s"
+
+#: message.php:224
+msgid "Undelete"
+msgstr "Восстановить"
+
+#: message.php:216
+msgid "View Full Message"
+msgstr "Посмотреть сообшение целиком"
+
+#: message.php:129 mailbox.php:102
+msgid "[No Subject]"
+msgstr "[нет темы]"

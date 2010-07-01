@@ -1,0 +1,383 @@
+# Nag Romanian Translation
+# Copyright 2003-2009 The Horde Project
+# Eugen Hoanca <eugenh@urban-grafx.ro>, 2003.
+# Marius Dragulescu <mariusd@urban-grafx.ro>, 2003.
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Nag 1.1\n"
+"POT-Creation-Date: 2003-02-24 14:49+0200\n"
+"PO-Revision-Date: 2003-03-01 12:00+0200\n"
+"Last-Translator: Eugen Hoanca <eugenh@urban-grafx.ro>\n"
+"Language-Team: Romanian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%d tasks"
+msgstr "%d taskuri"
+
+msgid "(highest)"
+msgstr "(maxim)"
+
+msgid "(lowest)"
+msgstr "(minim)"
+
+msgid "1 task"
+msgstr "1 task"
+
+msgid "Adding A New Task"
+msgstr "Adaugare task nou"
+
+msgid "Allows categories to be added/removed/renamed."
+msgstr "Permite adaugarea/stergerea/redenumirea categoriilor."
+
+#, c-format
+msgid "Any tasks in a category that is deleted will become <b>%s</b>."
+msgstr "Orice task sters dintr-o categorie va deveni <b>%s</b>."
+
+msgid "Are you sure you want to permanently delete these tasks?"
+msgstr "Esti sigur ca vrei sa stergi definitiv aceste taskuri?"
+
+msgid "Ascending"
+msgstr "Crescator"
+
+msgid "Back to Task List"
+msgstr "Inapoi la lista taskurilor"
+
+msgid "Cannot be changed."
+msgstr "Nu se poate schimba."
+
+msgid "Category Management"
+msgstr "Administrare categorie"
+
+msgid "Category"
+msgstr "Categorie"
+
+msgid "Change your task sorting and display options."
+msgstr "Schimbare sortare taskuri si optiuni afisare."
+
+#, c-format
+msgid "Changed %d tasks to priority %d."
+msgstr "Schimbat %d taskuri la prioritatea prioritatea %d."
+
+#, c-format
+msgid "Changed 1 task to priority %d."
+msgstr "Schimbat 1 task la prioritatea %d."
+
+msgid "Choose Action:"
+msgstr "Alegere actiune:"
+
+msgid "Clear Form"
+msgstr "Sterge formular"
+
+msgid "Complete Task"
+msgstr "Finalizare task"
+
+msgid "Complete Tasks"
+msgstr "Finalizare taskuri"
+
+msgid "Completed?"
+msgstr "Finalizat?"
+
+msgid "Completion Status"
+msgstr "Status finalizare"
+
+msgid "Create a New Category"
+msgstr "Creare categorie noua"
+
+msgid "Default sorting criteria:"
+msgstr "Criteriul de sortare implicit:"
+
+msgid "Default sorting direction:"
+msgstr "Directia de sortare implicita:"
+
+msgid "Delete Task"
+msgstr "Sterge task"
+
+msgid "Delete Tasks"
+msgstr "Sterge taskuri"
+
+msgid "Delete"
+msgstr "Stergere"
+
+#, c-format
+msgid "Deleted %d tasks."
+msgstr "%d taskuri sterse."
+
+msgid "Deleted 1 task."
+msgstr "1 task sters."
+
+msgid "Descending"
+msgstr "Descrescator"
+
+msgid "Description"
+msgstr "Descriere"
+
+msgid "Display Options"
+msgstr "Optiuni afisare"
+
+msgid "Due By"
+msgstr "Limitare de"
+
+msgid "Due Date"
+msgstr "Data limita"
+
+msgid "Help"
+msgstr "Ajutor"
+
+msgid "Language"
+msgstr "Limba"
+
+msgid "List Tasks"
+msgstr "Lista taskuri"
+
+#, c-format
+msgid "Marked %d tasks as completed."
+msgstr "Marcare %d taskuri finalizate."
+
+msgid "Marked 1 task as completed."
+msgstr "Marcat 1 task ca finalizat."
+
+msgid "Modify Task"
+msgstr "Modificare Task"
+
+msgid "Modifying:"
+msgstr "Modificare:"
+
+msgid "Nag is not properly configured"
+msgstr "Nag nu este configurat corespunzator"
+
+msgid "Name"
+msgstr "Nume"
+
+msgid "New Category"
+msgstr "Categorie noua"
+
+msgid "New Task"
+msgstr "Task nou"
+
+msgid "No configuration information specified for SQL Tasks."
+msgstr "Nici o configurare specificata pentru Taskurile SQL."
+
+msgid "No due date."
+msgstr "Nici o data limita."
+
+msgid "No tasks were changed."
+msgstr "Nici un task n-a fost schimbat."
+
+msgid "No tasks were deleted."
+msgstr "Nici un task n-a fost sters."
+
+msgid "No"
+msgstr "Nu"
+
+msgid "None specified"
+msgstr "Nimic specificat"
+
+msgid "Options"
+msgstr "Optiuni"
+
+msgid "Other Options"
+msgstr "Alte optiuni"
+
+msgid "Please enter a name for the new category:"
+msgstr "Introduceti un nume pentru noua categorie:"
+
+msgid "Please enter a new name for this category:"
+msgstr "Introduceti un nume pentru aceasta categorie:"
+
+msgid "Please enter the task priority (1-5):"
+msgstr "Introduceti prioritatea taskului (1-5):"
+
+msgid "Pri"
+msgstr "Pri"
+
+msgid "Print"
+msgstr "Imprimare"
+
+msgid "Priorities must be between 1 and 5. Please enter a valid priority:"
+msgstr "Prioritatile trebuie sa fie intre 1 si 5.Introduceti o prioritate:"
+
+msgid "Priority"
+msgstr "Prioritate"
+
+msgid "Problem?"
+msgstr "Problema?"
+
+msgid "Refresh List"
+msgstr "Improspateaza lista"
+
+msgid "Rename"
+msgstr "Redenumeste"
+
+msgid "Required 'database' not specified in tasks configuration."
+msgstr "'database' nespecificat in configuratia taskurilor."
+
+msgid "Required 'hostspec' not specified in tasks configuration."
+msgstr "'hostspec' nespecificat in configuratia taskurilor."
+
+msgid "Required 'password' not specified in tasks configuration."
+msgstr "'password' nespecificat in configuratia taskurilor."
+
+msgid "Required 'phptype' not specified in tasks configuration."
+msgstr "'phptype' nespecificat in configuratia taskurilor."
+
+msgid "Required 'table' not specified in tasks configuration."
+msgstr "'table' nespecificat in configuratia taskurilor."
+
+msgid "Required 'username' not specified in tasks configuration."
+msgstr "'username' nespecificat in configuratia taskurilor."
+
+msgid "Save Task"
+msgstr "Salveaza task"
+
+msgid "Search Results"
+msgstr "Rezultate cautare"
+
+msgid "Search Scope"
+msgstr "Criteriu cautare"
+
+msgid "Search Text"
+msgstr "Cauta text"
+
+msgid "Search"
+msgstr "Cauta"
+
+msgid "Select Category"
+msgstr "Selecteaza categorie"
+
+msgid "Select your preferred language:"
+msgstr "Selectati limba favorita:"
+
+msgid "Selected?"
+msgstr "Selectat?"
+
+msgid "Set Task Priority"
+msgstr "Setare prioritate task"
+
+msgid "Set the your preferred display language."
+msgstr "Setare limba favorita pentru afisare."
+
+msgid "Show completed tasks in the task list?"
+msgstr "Afisare taskuri finalizate in lista taskurilor?"
+
+msgid "Show due dates in the summary view?"
+msgstr "Afisare date limita in afisare sumara?"
+
+msgid "Show priorities in the summary view?"
+msgstr "Afisare prioritati in afisare sumara?"
+
+msgid "Some of Nag's configuration files are missing:"
+msgstr "Anumite fisiere de configurare Nag lipsesc:"
+
+msgid "Sort Direction"
+msgstr "Directie de sortare"
+
+msgid "Sort by Category"
+msgstr "Categorie de sortare"
+
+msgid "Sort by Completion Status"
+msgstr "Sortare dupa status finalizare"
+
+msgid "Sort by Due Date"
+msgstr "Sortare dupa data limita"
+
+msgid "Sort by Name"
+msgstr "Sortare dupa nume"
+
+msgid "Sort by Priority"
+msgstr "Sortare dupa prioritate"
+
+msgid "Task Details"
+msgstr "Detalii task"
+
+msgid "Task List"
+msgstr "Lista taskuri"
+
+msgid "Task Name"
+msgstr "Nume task"
+
+msgid "Task Note"
+msgstr "Notare task"
+
+msgid "Task Note?"
+msgstr "Notare task?"
+
+msgid "The requested task does not exist."
+msgstr "Taskul cerut nu exista."
+
+msgid "The task was saved."
+msgstr "Taskul a fost salvat."
+
+msgid "There was a problem deleting tasks."
+msgstr "A aparut o problema in stergerea taskurilor."
+
+msgid "There was a problem saving the task."
+msgstr "A aparut o problema la salvarea taskului."
+
+msgid "There was a problem setting task completion status."
+msgstr "A aparut o problema la setarea statusului de finalizare a taskului."
+
+msgid "There was a problem setting task priority."
+msgstr "A aparut o problema la setarea prioritatea taskului."
+
+msgid "These changes can not be undone!"
+msgstr "Nu se va putea reveni la aceste schimbari!"
+
+msgid "This file contains preferences for Nag."
+msgstr "Acest fisier contine preferinte pentru Nag."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Acest fisier controleaza schema de culori si fonturi ce vor fi diferite "
+"de cele implicite Horde."
+
+msgid ""
+"This is the main Nag configuration file. It contains options for all Nag "
+"scripts."
+msgstr ""
+"Acesta e fisierul principal de configurare Nag. Contine optiunie pentru "
+"scripturile Nag."
+
+msgid "Undo Changes"
+msgstr "Refa schimbari"
+
+msgid "Unfiled"
+msgstr "Necompletat"
+
+msgid "Unknown task"
+msgstr "Task necunoscut"
+
+msgid "Unknown"
+msgstr "Necunoscut"
+
+msgid "User Options"
+msgstr "Optiuni utilizator"
+
+msgid "View Task Details"
+msgstr "Afisare detalii task"
+
+msgid "Yes"
+msgstr "Da"
+
+msgid "You are creating a new category."
+msgstr "Creare categorie noua."
+
+msgid "You must choose a category."
+msgstr "Selecteaza o categorie."
+
+msgid "You must select at least one task first."
+msgstr "Selecteaza cel putin un task."
+
+msgid "Your Information"
+msgstr "Detalii personale"
+
+msgid "Your task list is empty."
+msgstr "Lista de taskuri e goala."
+
+msgid "at"
+msgstr "la"

@@ -1,0 +1,1410 @@
+# NAG Traditional Chinese Translation
+# Copyright 2001 David Chang. 張良文,台灣
+# David Chang <david@tmv.gov.tw>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nag 2.2-ALPHA\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-12-15 13:56+0800\n"
+"PO-Revision-Date: 2007-08-31 12:00+0800\n"
+"Last-Translator: David Chang <david@tmv.gov.tw>\n"
+"Language-Team: Traditional Chinese <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=BIG5\n"
+"Content-Transfer-Encoding: 8-bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: templates/view/task.inc:39
+#, php-format
+msgid " (%s including sub-tasks)"
+msgstr " (%s 包含次事項)"
+
+#: lib/Nag.php:76
+#, php-format
+msgid "%d hour"
+msgstr "%d 時"
+
+#: lib/Nag.php:78
+#, php-format
+msgid "%d hour, %d minute"
+msgstr "%d 時, %d 分"
+
+#: lib/Nag.php:80
+#, php-format
+msgid "%d hour, %d minutes"
+msgstr "%d 時, %d 分"
+
+#: lib/Nag.php:68
+#, php-format
+msgid "%d hours"
+msgstr "%d 時"
+
+#: lib/Nag.php:70
+#, php-format
+msgid "%d hours, %d minute"
+msgstr "%d 時, %d 分"
+
+#: lib/Nag.php:72
+#, php-format
+msgid "%d hours, %d minutes"
+msgstr "%d 時, %d 分"
+
+#: lib/Nag.php:86
+#, php-format
+msgid "%d minute"
+msgstr "%d 分"
+
+#: lib/Nag.php:88
+#, php-format
+msgid "%d minutes"
+msgstr "%d 分"
+
+#: lib/Nag.php:398
+#, php-format
+msgid "%s at %s"
+msgstr "%s 在 %s"
+
+#: lib/Nag.php:658 lib/Block/tree_alarms.php:41 lib/Block/summary.php:124
+#, php-format
+msgid "%s is due in %s"
+msgstr "%s 將於 %s 後到期"
+
+#: lib/Nag.php:656 lib/Block/tree_alarms.php:43 lib/Block/summary.php:121
+#, php-format
+msgid "%s is due now."
+msgstr "%s 現在已到期"
+
+#: task.php:222
+#, php-format
+msgid "%s is now incomplete."
+msgstr "%s 現在改為未完成."
+
+#: data.php:218
+#, php-format
+msgid "%s successfully imported"
+msgstr "%s 檔已匯入完成"
+
+#: lib/Nag.php:584 lib/Forms/DeleteTaskList.php:86
+#, php-format
+msgid "%s's Task List"
+msgstr "%s的待辦簿"
+
+#: lib/Nag.php:349 lib/Forms/task.php:84
+msgid "(highest)"
+msgstr "(最高)"
+
+#: lib/Nag.php:349 lib/Forms/task.php:85
+msgid "(lowest)"
+msgstr "(最低)"
+
+#: task.php:206
+#, php-format
+msgid "Access denied completing task %s."
+msgstr "將待辦事項 %s 設定為完成狀態時,存取遭拒"
+
+#: task.php:27
+msgid "Access denied deleting task."
+msgstr "刪除待辦事項時,存取遭拒."
+
+#: task.php:91 task.php:97
+msgid "Access denied editing task."
+msgstr "編輯待辦事項時,存取遭拒."
+
+#: task.php:89
+#, php-format
+msgid "Access denied editing task: %s"
+msgstr "編輯待辦事項: %s 時,存取遭拒."
+
+#: lib/Driver.php:340
+#, php-format
+msgid "Access denied moving the task to %s."
+msgstr "將待辦事項搬移到 %s 時,存取遭拒."
+
+#: lib/Driver.php:330
+#, php-format
+msgid "Access denied removing task from %s."
+msgstr "將待辦事項自 %s 移除時,存取遭拒."
+
+#: task.php:132
+#, php-format
+msgid "Access denied saving task to %s."
+msgstr "將待辦事項儲存到 %s 時,存取遭拒."
+
+#: task.php:128
+#, php-format
+msgid "Access denied saving task: %s"
+msgstr "儲存待辦事項: %s 時,存取遭拒."
+
+#: data.php:57 templates/view/task.inc:30 lib/Forms/task.php:115
+msgid "Alarm"
+msgstr "警示"
+
+#: templates/data/export.inc:34 config/prefs.php.dist:208
+msgid "All tasks"
+msgstr "全部"
+
+#: lib/Block/summary.php:76
+msgid "Always show completed and future tasks?"
+msgstr "永遠顯示已完成與未來的事項?"
+
+#: lib/Block/summary.php:72
+msgid "Always show overdue tasks?"
+msgstr "永遠顯示過期事項?"
+
+#: config/prefs.php.dist:125
+msgid "Ascending"
+msgstr "上升"
+
+#: data.php:55 templates/view/task.inc:12 templates/list/task_headers.inc:56
+#: lib/Forms/task.php:110 config/prefs.php.dist:71 config/prefs.php.dist:98
+#: config/prefs.php.dist:114
+msgid "Assignee"
+msgstr "受託人"
+
+#: lib/Block/summary.php:44
+msgid "Block title"
+msgstr "區塊標題"
+
+#: data.php:30
+msgid "CSV"
+msgstr "逗點分隔格式 .csv"
+
+#: lib/UI/VarRenderer/nag.php:58 lib/UI/VarRenderer/nag.php:106
+msgid "Calendar"
+msgstr "行事曆"
+
+#: lib/Forms/DeleteTaskList.php:45 lib/Forms/DeleteTaskList.php:51
+msgid "Cancel"
+msgstr "取消"
+
+#: templates/list/task_headers.inc:60
+msgid "Cat_egory"
+msgstr "分類_e"
+
+#: data.php:54 templates/view/task.inc:8 lib/Forms/task.php:102
+#: lib/Forms/task.php:107 config/prefs.php.dist:73 config/prefs.php.dist:95
+#: config/prefs.php.dist:111
+msgid "Category"
+msgstr "分類"
+
+#: templates/tasklist_list.php:33 tasklists/index.php:56
+msgid "Change Permissions"
+msgstr "變更存取模式"
+
+#: config/prefs.php.dist:14
+msgid "Change your task sorting and display options."
+msgstr "變更你的待辦事項排序方式以及顯示選項."
+
+#: lib/Nag.php:860
+#, php-format
+msgid "Changed alarm from %s to %s"
+msgstr "警示已由 %s 變更為 %s"
+
+#: lib/Nag.php:839
+#, php-format
+msgid "Changed assignee from \"%s\" to \"%s\""
+msgstr "受託人已由 \"%s\" 變更為 \"%s\""
+
+#: lib/Nag.php:823
+#, php-format
+msgid "Changed category from \"%s\" to \"%s\""
+msgstr "分類已由 \"%s\" 變更為 \"%s\""
+
+#: lib/Nag.php:875
+#, php-format
+msgid "Changed completion from %s to %s"
+msgstr "%s 到 %s 已變更為完成"
+
+#: lib/Nag.php:880
+msgid "Changed description"
+msgstr "描述已變更"
+
+#: lib/Nag.php:848
+#, php-format
+msgid "Changed due date from %s to %s"
+msgstr "%s 到 %s 的有效期已變更"
+
+#: lib/Nag.php:870
+#, php-format
+msgid "Changed estimate from %s to %s"
+msgstr "%s 到 %s 的預估時間已變更"
+
+#: lib/Nag.php:800
+#, php-format
+msgid "Changed name from \"%s\" to \"%s\""
+msgstr "\"%s\" 到 \"%s\" 的名稱已變更"
+
+#: lib/Nag.php:815
+#, php-format
+msgid "Changed parent task from \"%s\" to \"%s\""
+msgstr "\"%s\" 到 \"%s\" 的父事項已變更"
+
+#: lib/Nag.php:865
+#, php-format
+msgid "Changed priority from %s to %s"
+msgstr "%s 到 %s 的優先順序已變更"
+
+#: lib/Nag.php:854
+#, php-format
+msgid "Changed start date from %s to %s"
+msgstr "%s 到 %s 的開始日期已變更"
+
+#: lib/Nag.php:806
+#, php-format
+msgid "Changed task list from \"%s\" to \"%s\""
+msgstr "\"%s\" 到 \"%s\" 的待辦簿已變更"
+
+#: lib/Nag.php:797
+msgid "Changes made for this task:"
+msgstr "變更模式:"
+
+#: config/prefs.php.dist:187
+msgid "Choose how you want to receive reminders for tasks with alarms:"
+msgstr "你打算以何種方式接受來自待辦事項的警示:"
+
+#: config/prefs.php.dist:178
+msgid ""
+"Choose if you want to be notified of new, edited, and deleted tasks by email:"
+msgstr "待辦簿被新增, 編輯, 與刪除事項時是否以郵件通知我?"
+
+#: config/prefs.php.dist:43
+msgid "Choose if you want to be notified of task changes and task alarms."
+msgstr "設定事項警示與變更通知."
+
+#: config/prefs.php.dist:36
+msgid "Choose your default task list."
+msgstr "選擇你的預設待辦簿."
+
+#: templates/tasklist_list.php:29 templates/tasklist_list.php:30
+msgid "Click or copy this URL to display this task list"
+msgstr "點選或複製此網址以便顯示待辦簿"
+
+#: templates/panel.inc:44
+msgid "Close"
+msgstr "關閉"
+
+#: templates/list/header.inc:8
+msgid "Close Search"
+msgstr "關閉搜尋"
+
+#: view.php:114
+msgid "Complete"
+msgstr "完成"
+
+#: templates/list/task_summaries.inc:11 lib/Block/summary.php:192
+#, php-format
+msgid "Complete \"%s\""
+msgstr "完成 \"%s\""
+
+#: templates/view/task.inc:46
+msgid "Complete Task"
+msgstr "標記為完成"
+
+#: config/prefs.php.dist:210
+msgid "Complete tasks"
+msgstr "已完成"
+
+#: lib/Nag.php:413 lib/Block/summary.php:190
+msgid "Completed"
+msgstr "已完成"
+
+#: task.php:220
+#, php-format
+msgid "Completed %s."
+msgstr "已完成 %s."
+
+#: templates/search/search.inc:27
+msgid "Completed Tasks"
+msgstr "已完成"
+
+#: templates/list/task_summaries.inc:16
+msgid "Completed parent task, mark it as incomplete first"
+msgstr "父事項為完成狀態, 請先將它標示為未完成"
+
+#: templates/data/export.inc:37
+msgid "Completed tasks"
+msgstr "已完成的事項"
+
+#: templates/view/task.inc:42 templates/list/task_headers.inc:31
+#: lib/Forms/task.php:121 config/prefs.php.dist:97 config/prefs.php.dist:113
+msgid "Completed?"
+msgstr "是否完成?"
+
+#: data.php:63
+msgid "Completion Date"
+msgstr "完成日期"
+
+#: data.php:62
+msgid "Completion Status"
+msgstr "完成狀態"
+
+#: lib/api.php:509 lib/api.php:753
+#, php-format
+msgid "Connection failed: %s"
+msgstr "連結失敗: %s"
+
+#: lib/Forms/CreateTaskList.php:39
+msgid "Create"
+msgstr "建立"
+
+#: lib/Forms/CreateTaskList.php:34
+msgid "Create Task List"
+msgstr "建立待辦簿"
+
+#: templates/tasklist_list.php:9
+msgid "Create a new Task List"
+msgstr "建立新待辦簿"
+
+#: templates/view/task.inc:61
+msgid "Created"
+msgstr "建立"
+
+#: lib/Recurrence.php:199
+msgid "Daily"
+msgstr "每日"
+
+#: lib/UI/VarRenderer/nag.php:51 lib/UI/VarRenderer/nag.php:100
+msgid "Day"
+msgstr "天"
+
+#: lib/Nag.php:445 lib/UI/VarRenderer/nag.php:136
+msgid "Day(s)"
+msgstr "天"
+
+#: config/prefs.php.dist:35
+msgid "Default Task List"
+msgstr "預設待辦簿"
+
+#: config/prefs.php.dist:29
+msgid "Defaults for new tasks"
+msgstr "新增事項時的預設資料"
+
+#: lib/Forms/task.php:114
+msgid "Delay Start Until"
+msgstr "延後到這個日期才開始"
+
+#: view.php:121 templates/tasklist_list.php:35 tasklists/index.php:57
+#: lib/Forms/DeleteTaskList.php:45
+msgid "Delete"
+msgstr "刪除"
+
+#: lib/Forms/DeleteTaskList.php:40
+#, php-format
+msgid "Delete %s"
+msgstr "刪除 %s"
+
+#: config/prefs.php.dist:21
+msgid "Delete Confirmation"
+msgstr "刪除確認"
+
+#: config/prefs.php.dist:22
+msgid "Delete button behaviour"
+msgstr "刪除按鈕的行為"
+
+#: task.php:112 lib/Forms/task.php:126 lib/Forms/task.php:153
+msgid "Delete this task"
+msgstr "刪除這個事項"
+
+#: task.php:37
+#, php-format
+msgid "Deleted %s."
+msgstr "已刪除 %s."
+
+#: lib/api.php:735
+msgid "Deleting entire tasklists is not supported."
+msgstr "不支援刪除整本待辦簿."
+
+#: config/prefs.php.dist:126
+msgid "Descending"
+msgstr "下降"
+
+#: data.php:53 lib/Forms/task.php:122
+msgid "Description"
+msgstr "描述"
+
+#: config/prefs.php.dist:13
+msgid "Display Options"
+msgstr "顯示選項"
+
+#: templates/tasklist_list.php:18
+msgid "Display URL"
+msgstr "顯示網址"
+
+#: config/prefs.php.dist:136
+msgid "Do you want to confirm deleting entries?"
+msgstr "刪除事項時需要確認?"
+
+#: data.php:56 templates/view/task.inc:26 lib/Forms/task.php:113
+msgid "Due By"
+msgstr "有效期"
+
+#: config/prefs.php.dist:72 config/prefs.php.dist:96 config/prefs.php.dist:112
+msgid "Due Date"
+msgstr "有效期"
+
+#: lib/UI/VarRenderer/nag.php:99
+msgid "Due date specified."
+msgstr "已指定有效期."
+
+#: view.php:117 templates/tasklist_list.php:31 tasklists/index.php:55
+msgid "Edit"
+msgstr "編輯"
+
+#: templates/list/task_summaries.inc:39 lib/Block/summary.php:182
+#, php-format
+msgid "Edit \"%s\""
+msgstr "編輯 \"%s\""
+
+#: lib/Forms/EditTaskList.php:40
+#, php-format
+msgid "Edit %s"
+msgstr "編輯 %s"
+
+#: templates/list/task_headers.inc:43
+msgid "Edit Task"
+msgstr "編輯"
+
+#: templates/list/task_headers.inc:65
+msgid "Edit categories and colors"
+msgstr "編輯分類與顏色"
+
+#: task.php:102 task.php:116
+#, php-format
+msgid "Edit: %s"
+msgstr "編輯: %s"
+
+#: task.php:20
+#, php-format
+msgid "Error deleting task: %s"
+msgstr "刪除事項時發生錯誤: %s"
+
+#: data.php:61 templates/view/task.inc:38 lib/Forms/task.php:120
+msgid "Estimated Time"
+msgstr "預估時間"
+
+#: templates/data/export.inc:41
+msgid "Export"
+msgstr "匯出"
+
+#: templates/data/export.inc:6
+msgid "Export Tasks"
+msgstr "匯出待辦事項"
+
+#: config/prefs.php.dist:57
+msgid "External Data"
+msgstr "外部資料"
+
+#: templates/data/export.inc:36
+msgid "Future tasks"
+msgstr "未來事項"
+
+#: config/prefs.php.dist:12 config/prefs.php.dist:20 config/prefs.php.dist:27
+msgid "General Options"
+msgstr "一般選項"
+
+#: lib/UI/VarRenderer/nag.php:111
+msgid "Hour"
+msgstr "時"
+
+#: lib/Nag.php:448 lib/UI/VarRenderer/nag.php:135
+msgid "Hour(s)"
+msgstr "時"
+
+#: templates/data/import.inc:7
+#, php-format
+msgid "Import Tasks, Step %d"
+msgstr "匯入待辦事項,步驟 %d"
+
+#: data.php:224
+msgid "Import/Export Tasks"
+msgstr "匯入/匯出待辦事項"
+
+#: list.php:112
+msgid "Incom_plete tasks"
+msgstr "未完成_p"
+
+#: templates/search/search.inc:26
+msgid "Incomplete Tasks"
+msgstr "未完成"
+
+#: templates/list/task_summaries.inc:8
+msgid "Incomplete sub tasks, complete them first"
+msgstr "請先將次事項完成"
+
+#: templates/data/export.inc:35 config/prefs.php.dist:209
+msgid "Incomplete tasks"
+msgstr "未完成"
+
+#: lib/api.php:437
+msgid "Invalid tasklist file requested."
+msgstr "無效的待辦簿檔案請求."
+
+#: lib/api.php:576
+msgid "Invalid tasklist name supplied."
+msgstr "所提供的待辦簿名稱無效."
+
+#: lib/api.php:453
+msgid "Invalid tasklist requested."
+msgstr "無效的待辦簿請求."
+
+#: templates/view/task.inc:68
+msgid "Last Modified"
+msgstr "最近一次更新"
+
+#: templates/tasklist_list.php:2 tasklists/index.php:61
+msgid "Manage Task Lists"
+msgstr "[管理待辦簿]"
+
+#: templates/list/task_summaries.inc:19
+#, php-format
+msgid "Mark \"%s\" as incomplete"
+msgstr "將 \"%s\" 標記為未完成"
+
+#: templates/view/task.inc:48
+msgid "Mark as incomplete"
+msgstr "標記為未完成"
+
+#: lib/api.php:125
+msgid "Maximum Number of Tasks"
+msgstr "待辦事項上限數目"
+
+#: lib/Block/tree_alarms.php:3
+msgid "Menu Alarms"
+msgstr "目錄警示"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "功能表"
+
+#: lib/UI/VarRenderer/nag.php:112
+msgid "Minute"
+msgstr "分鐘"
+
+#: lib/Nag.php:451 lib/UI/VarRenderer/nag.php:135
+msgid "Minute(s)"
+msgstr "分鐘"
+
+#: lib/UI/VarRenderer/nag.php:52 lib/UI/VarRenderer/nag.php:101
+msgid "Month"
+msgstr "月"
+
+#: lib/Recurrence.php:202
+msgid "Monthly"
+msgstr "每月"
+
+#: templates/list/header.inc:9
+msgid "More Options..."
+msgstr "更多選項..."
+
+#: lib/api.php:1213
+msgid "Multiple iCalendar components found; only one vTodo is supported."
+msgstr "發現多個 iCalendar 元件; 僅只支援 vTodo."
+
+#: templates/panel.inc:72
+msgid "My Task Lists:"
+msgstr "我的待辦簿:"
+
+#: list.php:34
+msgid "My Tasks"
+msgstr "我的事項"
+
+#: templates/search/search.inc:18
+msgid "N_ame"
+msgstr "名稱_a"
+
+#: templates/list/task_headers.inc:46
+msgid "Na_me"
+msgstr "名稱_m"
+
+#: lib/Driver/kolab.php:741
+#, php-format
+msgid "Nag/kolab: Did not find task %s"
+msgstr "Nag/kolab: 找不到事項 %s."
+
+#: data.php:52 lib/Forms/task.php:91
+msgid "Name"
+msgstr "名稱"
+
+#: task.php:81 task.php:116 lib/Block/tree_menu.php:26
+msgid "New Task"
+msgstr "新增"
+
+#: templates/data/import.inc:39
+msgid "Next"
+msgstr "下一步"
+
+#: config/prefs.php.dist:174
+msgid "No"
+msgstr "否"
+
+#: lib/UI/VarRenderer/nag.php:46
+msgid "No delay"
+msgstr "不延後"
+
+#: lib/UI/VarRenderer/nag.php:95
+msgid "No due date."
+msgstr "永遠."
+
+#: lib/api.php:949 lib/api.php:1007 lib/api.php:1206
+msgid "No iCalendar data was found."
+msgstr "找不到 iCalendar 資料."
+
+#: lib/Forms/task.php:53
+msgid "No parent task"
+msgstr "沒有父事項"
+
+#: lib/Recurrence.php:198
+msgid "No recurrence"
+msgstr "無"
+
+#: lib/Nag.php:673
+msgid "No task lists are available to guests."
+msgstr "不提供待辦簿給來賓使用."
+
+#: templates/list/task_footers.inc:5
+msgid "No tasks match"
+msgstr "沒有事項符合"
+
+#: lib/Block/summary.php:250
+msgid "No tasks to display"
+msgstr "沒有待辦事項."
+
+#: lib/Nag.php:455 lib/Forms/task.php:111 lib/UI/VarRenderer/nag.php:151
+msgid "None"
+msgstr "無"
+
+#: lib/Nag.php:414
+msgid "Not Completed"
+msgstr "未完成"
+
+#: templates/view/task.inc:18
+msgid "Not Private"
+msgstr "非私人"
+
+#: lib/api.php:809
+msgid "Not configured"
+msgstr "未設定"
+
+#: config/prefs.php.dist:42
+msgid "Notifications"
+msgstr "通知選項"
+
+#: config/prefs.php.dist:176
+msgid "On all shown task lists"
+msgstr "所有顯示的待辦簿"
+
+#: config/prefs.php.dist:177
+msgid "On all task lists I have read access to"
+msgstr "所有我可以讀取的待辦簿"
+
+#: config/prefs.php.dist:175
+msgid "On my task lists only"
+msgstr "只限於我的待辦簿"
+
+#: templates/list/task_headers.inc:39
+msgid "P_ri"
+msgstr "優先_r"
+
+#: lib/Forms/task.php:98
+msgid "Parent task"
+msgstr "父事項"
+
+#: lib/api.php:818 lib/api.php:856 lib/api.php:889 lib/api.php:924
+#: lib/api.php:1043 lib/api.php:1093 lib/api.php:1155 lib/api.php:1190
+#: lib/api.php:1301 lib/api.php:1348
+msgid "Permission Denied"
+msgstr "存取遭拒"
+
+#: lib/api.php:261 lib/Forms/DeleteTaskList.php:56
+msgid "Permission denied"
+msgstr "存取遭拒"
+
+#: data.php:59 templates/view/task.inc:34 lib/Forms/task.php:117
+#: config/prefs.php.dist:70 config/prefs.php.dist:93 config/prefs.php.dist:109
+msgid "Priority"
+msgstr "優先順序"
+
+#: templates/view/task.inc:18 lib/Driver.php:963
+msgid "Private"
+msgstr "私人"
+
+#: data.php:60 lib/Driver.php:961
+msgid "Private Task"
+msgstr "私人待辦事項"
+
+#: templates/view/task.inc:16 lib/Forms/task.php:112
+msgid "Private?"
+msgstr "私人?"
+
+#: lib/Forms/DeleteTaskList.php:43
+#, php-format
+msgid ""
+"Really delete the task list \"%s\"? This cannot be undone and all data on "
+"this task list will be permanently removed."
+msgstr ""
+"真的要刪除此待辦簿 \"%s\"嗎? 這項操作將無法恢復而且該待辦簿中的事項亦將永遠消"
+"失."
+
+#: view.php:121
+msgid "Really delete this task?"
+msgstr "確定刪除此事項?"
+
+#: templates/panel.inc:90 lib/Forms/EditTaskList.php:46 lib/Forms/task.php:124
+#: lib/Forms/task.php:151
+msgid "Save"
+msgstr "儲存"
+
+#: task.php:185
+#, php-format
+msgid "Saved %s."
+msgstr "儲存 %s."
+
+#: search.php:14 templates/search/search.inc:31 templates/list/header.inc:4
+#: lib/Block/tree_menu.php:46
+msgid "Search"
+msgstr "搜尋"
+
+#: templates/search/search.inc:17
+msgid "Search In:"
+msgstr "搜尋欄位:"
+
+#: templates/search/search.inc:12
+msgid "Search _Text:"
+msgstr "搜尋內容_T:"
+
+#: templates/panel.inc:60
+msgid "Search for Task Lists:"
+msgstr "搜尋待辦簿:"
+
+#: templates/search/search.inc:24
+msgid "Search:"
+msgstr "搜尋:"
+
+#: list.php:73
+#, php-format
+msgid "Search: Results for \"%s\""
+msgstr "搜尋: \"%s\" 的結果"
+
+#: lib/UI/VarRenderer/nag.php:58 lib/UI/VarRenderer/nag.php:106
+msgid "Select a date"
+msgstr "選擇一個日期"
+
+#: config/prefs.php.dist:74
+msgid "Select the columns that should be shown in the list view:"
+msgstr "選取用以顯示的待辦簿欄位:"
+
+#: templates/data/export.inc:11
+msgid "Select the export format:"
+msgstr "選擇匯出格式:"
+
+#: templates/data/import.inc:36
+msgid "Select the file to import:"
+msgstr "選擇匯入檔案:"
+
+#: templates/data/import.inc:12
+msgid "Select the format of the source file:"
+msgstr "選擇來源檔案格式:"
+
+#: templates/data/export.inc:20
+msgid "Select the task list(s) to export from:"
+msgstr "選擇要匯出的待辦簿:"
+
+#: templates/data/export.inc:32
+msgid "Select the task states to export:"
+msgstr "選擇要匯出的事項狀態:"
+
+#: templates/panel.inc:81
+msgid "Shared Task Lists:"
+msgstr "已共享的待辦簿:"
+
+#: lib/Block/summary.php:52
+msgid "Show action buttons?"
+msgstr "顯示作用按鈕?"
+
+#: config/prefs.php.dist:211
+msgid "Show complete, incomplete, or all tasks in the task list?"
+msgstr "顯示已完成,未完成事項於清單中?"
+
+#: config/prefs.php.dist:198
+msgid "Show data from any of these other applications in your task list?"
+msgstr "顯示待辦簿中其他應用程式的資料?"
+
+#: config/prefs.php.dist:58
+msgid "Show data from other applications or sources."
+msgstr "顯示其他應用程式或來源的資料."
+
+#: lib/Block/summary.php:56
+msgid "Show due dates?"
+msgstr "顯示到期日?"
+
+#: lib/Block/summary.php:48
+msgid "Show priorities?"
+msgstr "顯示優先?"
+
+#: lib/Block/summary.php:64
+msgid "Show task alarms?"
+msgstr "顯示警示?"
+
+#: lib/Block/summary.php:68
+msgid "Show task category?"
+msgstr "警示分類?"
+
+#: config/prefs.php.dist:84
+msgid "Show task list options panel?"
+msgstr "顯示進階功能面板?"
+
+#: lib/Block/summary.php:60
+msgid "Show tasklist name?"
+msgstr "顯示待辦簿名稱?"
+
+#: lib/Block/summary.php:85
+msgid "Show tasks from these categories"
+msgstr "顯示這些分類中的事項"
+
+#: lib/Block/summary.php:80
+msgid "Show tasks from these tasklists"
+msgstr "顯示這些待辦簿中的事項"
+
+#: templates/list/task_headers.inc:56
+msgid "Sort by Assignee"
+msgstr "以受託人排序"
+
+#: templates/list/task_headers.inc:60
+msgid "Sort by Category"
+msgstr "以分類排序"
+
+#: templates/list/task_headers.inc:31
+msgid "Sort by Completion Status"
+msgstr "依完成狀態排序"
+
+#: templates/list/task_headers.inc:52
+msgid "Sort by Due Date"
+msgstr "依有效期排序"
+
+#: templates/list/task_headers.inc:46
+msgid "Sort by Name"
+msgstr "以名稱排序"
+
+#: templates/list/task_headers.inc:39
+msgid "Sort by Priority"
+msgstr "以優先權排序"
+
+#: templates/list/task_headers.inc:35
+msgid "Sort by User Name"
+msgstr "以使用者名稱排序"
+
+#: config/prefs.php.dist:127
+msgid "Sort direction:"
+msgstr "排序方向:"
+
+#: config/prefs.php.dist:100
+msgid "Sort tasks by:"
+msgstr "排序事項依:"
+
+#: data.php:58
+msgid "Start"
+msgstr "啟動"
+
+#: templates/view/task.inc:22
+msgid "Start Date"
+msgstr "開始日期"
+
+#: lib/UI/VarRenderer/nag.php:50
+msgid "Start date specified."
+msgstr "已指定開始日期."
+
+#: templates/tasklist_list.php:19
+msgid "Subscription URL"
+msgstr "訂閱網址"
+
+#: templates/list/task_summaries.inc:61
+msgid "Task Alarm"
+msgstr "警示"
+
+#: templates/list/task_headers.inc:49
+msgid "Task Alarm?"
+msgstr "警示?"
+
+#: config/prefs.php.dist:28
+msgid "Task Defaults"
+msgstr "預設選項"
+
+#: lib/Driver/sql.php:100
+msgid "Task ID not found"
+msgstr "找不到待辦事項 ID."
+
+#: templates/tasklist_list.php:17 lib/Forms/task.php:94
+#: config/prefs.php.dist:69 config/prefs.php.dist:99 config/prefs.php.dist:115
+msgid "Task List"
+msgstr "待辦簿"
+
+#: lib/Forms/EditTaskList.php:44 lib/Forms/CreateTaskList.php:37
+msgid "Task List Description"
+msgstr "待辦簿的描述"
+
+#: templates/panel.inc:5
+msgid "Task List Information"
+msgstr "待辦簿資訊"
+
+#: templates/tasklist_list.php:14
+msgid "Task List List"
+msgstr "瀏覽"
+
+#: lib/Forms/EditTaskList.php:43 lib/Forms/CreateTaskList.php:36
+msgid "Task List Name"
+msgstr "待辦簿名稱"
+
+#: config/prefs.php.dist:34 config/prefs.php.dist:41 config/prefs.php.dist:56
+msgid "Task List and Share Options"
+msgstr "待辦簿以及分享選項"
+
+#: templates/tasklist_info.php:6
+#, php-format
+msgid "Task List owned by %s."
+msgstr "待辦簿擁有者 %s."
+
+#: templates/panel.inc:54 templates/panel.inc:55
+msgid "Task Lists"
+msgstr "待辦簿"
+
+#: config/prefs.php.dist:94 config/prefs.php.dist:110
+msgid "Task Name"
+msgstr "待辦事項名稱"
+
+#: templates/list/task_summaries.inc:59
+msgid "Task Note"
+msgstr "備註"
+
+#: templates/list/task_headers.inc:48
+msgid "Task Note?"
+msgstr "備解?"
+
+#: templates/search/search.inc:6
+msgid "Task Search"
+msgstr "待辦事項搜尋"
+
+#: lib/Driver/sql.php:136
+msgid "Task UID not found"
+msgstr "找不到待辦事項 UID"
+
+#: lib/Nag.php:781
+msgid "Task added:"
+msgstr "待辦事項已新增:"
+
+#: lib/Nag.php:885
+msgid "Task deleted:"
+msgstr "待辦事項已刪除:"
+
+#: lib/Nag.php:903
+msgid "Task description:"
+msgstr "待辦事項描述:"
+
+#: lib/Nag.php:790
+msgid "Task modified:"
+msgstr "待辦事項已更新:"
+
+#: task.php:95 view.php:43
+msgid "Task not found."
+msgstr "找不到待辦事項."
+
+#: lib/api.php:747
+msgid "Tasklist does not exist or no permission to delete"
+msgstr "待辦簿不存在或你沒有刪除的權限"
+
+#: lib/api.php:582
+msgid "Tasklist does not exist or no permission to edit"
+msgstr "待辦簿不存在或你沒有編輯的權限"
+
+#: lib/api.php:1270
+msgid "Tasks"
+msgstr "待辦事項"
+
+#: lib/Block/summary.php:3
+msgid "Tasks Summary"
+msgstr "待辦事項摘要"
+
+#: lib/api.php:399
+#, php-format
+msgid "Tasks from %s"
+msgstr "待辦事項來自 %s"
+
+#: data.php:212
+#, php-format
+msgid "The %s file didn't contain any tasks."
+msgstr "%s 檔案中未包含任何事項."
+
+#: lib/Driver.php:56
+msgid "The Tasks backend is not currently available."
+msgstr "目前沒有可用的待辦事項伺服端."
+
+#: lib/Driver.php:137
+#, php-format
+msgid "The Tasks backend is not currently available: %s"
+msgstr "目前沒有可用的待辦事項伺服端: %s"
+
+#: lib/Forms/task.php:184
+msgid "The alarm value must not be empty."
+msgstr "警示設定值不得空白."
+
+#: templates/prefs/defaultduetimeselect.inc:8
+msgid "The current hour"
+msgstr "目前的時間"
+
+#: lib/Nag.php:784
+#, php-format
+msgid ""
+"The task \"%s\" has been added to task list \"%s\", with a due date of: %s."
+msgstr "到期日為 %3$s 的待辦事項 \"%1$s\" 已新增到待辦簿 \"%2$s\" 中."
+
+#: lib/Nag.php:889
+#, php-format
+msgid "The task \"%s\" has been deleted from task list \"%s\"."
+msgstr "待辦事項 \"%s\" 已自待辦簿 \"%s\" 中刪除."
+
+#: lib/Nag.php:793
+#, php-format
+msgid "The task \"%s\" has been edited on task list \"%s\"."
+msgstr "待辦簿 \"%2$s\" 中的待辦事項 \"%1$s\" 已編輯完成."
+
+#: tasklists/create.php:31
+#, php-format
+msgid "The task list \"%s\" has been created."
+msgstr "此待辦事項 \"%s\" 已被建立."
+
+#: tasklists/delete.php:48
+#, php-format
+msgid "The task list \"%s\" has been deleted."
+msgstr "此待辦事項 \"%s\" 已被刪除."
+
+#: tasklists/edit.php:42
+#, php-format
+msgid "The task list \"%s\" has been renamed to \"%s\"."
+msgstr "待辦簿 \"%s\" 已更名為 \"%s\"."
+
+#: tasklists/edit.php:44
+#, php-format
+msgid "The task list \"%s\" has been saved."
+msgstr "此待辦事項 \"%s\" 已被儲存."
+
+#: config/prefs.php.dist:116
+msgid "Then:"
+msgstr "再依:"
+
+#: templates/list/empty.inc:2
+msgid "There are no tasks matching the current criteria."
+msgstr "沒有事項符合這個搜尋條件."
+
+#: task.php:216
+#, php-format
+msgid "There was a problem completing %s: %s"
+msgstr "標記 %s: %s 為完成時發生一個問題"
+
+#: task.php:33
+#, php-format
+msgid "There was a problem deleting %s: %s"
+msgstr "刪除 %s: %s 時發生一個問題"
+
+#: task.php:183
+#, php-format
+msgid "There was a problem saving the task: %s."
+msgstr "儲存待辦事項時發生錯誤: %s."
+
+#: data.php:215
+#, php-format
+msgid "There was an error importing the data: %s"
+msgstr "匯入資料: %s 時發生一個錯誤."
+
+#: lib/api.php:599 lib/api.php:941 lib/api.php:1200
+msgid "There was an error importing the iCalendar data."
+msgstr "匯入 iCalendar 資料時發生一個錯誤."
+
+#: lib/api.php:211
+#, php-format
+msgid "There was an error removing tasks for %s. Details have been logged."
+msgstr "自 %s 移除待辦事項時發生一個錯誤. 細節已登載."
+
+#: data.php:94
+msgid "There were no tasks to export."
+msgstr "沒有待辦事項被匯出."
+
+#: data.php:143
+msgid "This file format is not supported."
+msgstr "此種檔案格式並未被支援."
+
+#: tasklists/delete.php:24
+msgid "This task list cannot be deleted."
+msgstr "此待辦簿無法被刪除."
+
+#: templates/tasklist_info.php:7
+msgid "To subscribe to this task list from another program, use this URL: "
+msgstr "欲經由其他程式訂閱此待辦簿, 請使用這個網址: "
+
+#: lib/Nag.php:844
+msgid "Turned privacy off"
+msgstr "關閉個人隱私"
+
+#: lib/Nag.php:844
+msgid "Turned privacy on"
+msgstr "開啟個人隱私"
+
+#: lib/Forms/DeleteTaskList.php:63
+#, php-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "無法刪除 \"%s\": %s"
+
+#: lib/api.php:768
+#, php-format
+msgid "Unable to delete tasklist \"%s\": %s"
+msgstr "無法刪除待辦簿 \"%s\": %s"
+
+#: lib/Driver.php:140
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "無法載入 %s 的定義."
+
+#: lib/Forms/EditTaskList.php:55
+#, php-format
+msgid "Unable to save task list \"%s\": %s"
+msgstr "無法儲存待辦簿 \"%s\": %s"
+
+#: templates/view/task.inc:9 templates/list/task_summaries.inc:72
+#: lib/Nag.php:1071 lib/Nag.php:1072 lib/Nag.php:1086 lib/Nag.php:1087
+#: lib/Forms/task.php:107 lib/Block/summary.php:35 lib/Block/summary.php:243
+msgid "Unfiled"
+msgstr "未分類"
+
+#: data.php:64
+msgid "Unique ID"
+msgstr "唯一識別號碼"
+
+#: lib/api.php:701 lib/api.php:1014 lib/api.php:1068 lib/api.php:1117
+#: lib/api.php:1238
+#, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "未支援的內容型態: %s"
+
+#: lib/Driver.php:1140
+#, php-format
+msgid ""
+"We would like to remind you of this due task.\n"
+"\n"
+"%s\n"
+"\n"
+"Date: %s\n"
+"Time: %s\n"
+"\n"
+"%s"
+msgstr ""
+"我們想要通知你,這個即將到來的事項.\n"
+"\n"
+"%s\n"
+"\n"
+"\n"
+"日期: %s\n"
+"時間: %s\n"
+"\n"
+"%s"
+
+#: lib/Nag.php:442 lib/UI/VarRenderer/nag.php:136
+msgid "Week(s)"
+msgstr "週"
+
+#: lib/Recurrence.php:200
+msgid "Weekly"
+msgstr "每週"
+
+#: templates/prefs/defaultduetimeselect.inc:6
+msgid "What do you want to be the default due time for tasks?"
+msgstr "事項的預設到期時間?"
+
+#: config/prefs.php.dist:154
+msgid ""
+"When creating a new task, how many days in the future should the default due "
+"date be (0 means today)?"
+msgstr "當建立新事項時,由當天起算的多少天數為預設的到期日 (0 表示當天)?"
+
+#: config/prefs.php.dist:145
+msgid "When creating a new task, should it default to having a due date?"
+msgstr "當建立新事項時,預設有到期日?"
+
+#: templates/data/import.inc:21
+msgid "Which tasklist should the tasks be added to?"
+msgstr "要將事項增加至哪一本待辦簿中呢?"
+
+#: lib/UI/VarRenderer/nag.php:53 lib/UI/VarRenderer/nag.php:102
+msgid "Year"
+msgstr "年"
+
+#: lib/Recurrence.php:205
+msgid "Yearly"
+msgstr "每年"
+
+#: tasklists/edit.php:28
+msgid "You are not allowed to change this task list."
+msgstr "你沒有變更此待辦簿的權限."
+
+#: data.php:41 data.php:168 task.php:68
+#, php-format
+msgid "You are not allowed to create more than %d tasks."
+msgstr "你沒有建立超過 %d 個事項的權限."
+
+#: tasklists/delete.php:35
+msgid "You are not allowed to delete this task list."
+msgstr "你沒有刪除此待辦簿的權限."
+
+#: lib/api.php:143
+msgid "You are not allowed to remove user data."
+msgstr "你沒有移除用戶資料的權限."
+
+#: view.php:54
+msgid "You do not have permission to view this tasklist."
+msgstr "你沒有足夠的權限檢視此待辦簿."
+
+#: lib/Nag.php:782
+msgid "You requested to be notified when tasks are added to your task lists."
+msgstr "應你的要求,每當你的待辦簿被新增事項時發送通知."
+
+#: lib/Nag.php:887
+msgid ""
+"You requested to be notified when tasks are deleted from your task lists."
+msgstr "應你的要求,每當你的待辦簿被刪除事項時發送通知."
+
+#: lib/Nag.php:791
+msgid "You requested to be notified when tasks are edited on your task lists."
+msgstr "應你的要求,每當你的待辦簿被編輯事項時發送通知."
+
+#: templates/prefs/tasklistselect.inc:10
+msgid "Your default task list:"
+msgstr "你的預設待辦簿:"
+
+#: templates/panel.inc:67
+msgid "[Manage Task Lists]"
+msgstr "[管理待辦簿]"
+
+#: templates/list/task_summaries.inc:49 lib/Block/summary.php:118
+#: lib/Block/summary.php:226
+msgid "[none]"
+msgstr "[無]"
+
+#: templates/search/search.inc:25
+msgid "_All Tasks"
+msgstr "全部_A"
+
+#: list.php:111
+msgid "_All tasks"
+msgstr "全部_A"
+
+#: templates/search/search.inc:20
+msgid "_Category"
+msgstr "分類_C"
+
+#: view.php:114
+msgid "_Complete"
+msgstr "完成_C"
+
+#: list.php:114
+msgid "_Completed tasks"
+msgstr "已完成_C"
+
+#: view.php:121
+msgid "_Delete"
+msgstr "刪除_D"
+
+#: templates/search/search.inc:19
+msgid "_Description"
+msgstr "描述_D"
+
+#: templates/list/task_headers.inc:52
+msgid "_Due Date"
+msgstr "有效期_D"
+
+#: view.php:117
+msgid "_Edit"
+msgstr "編輯_E"
+
+#: list.php:113
+msgid "_Future tasks"
+msgstr "未來_F"
+
+#: lib/Nag.php:621
+msgid "_Import/Export"
+msgstr "匯入/匯出_I"
+
+#: lib/Nag.php:608
+msgid "_List Tasks"
+msgstr "列出_L"
+
+#: lib/Nag.php:613
+msgid "_New Task"
+msgstr "新增_N"
+
+#: lib/Nag.php:626
+msgid "_Print"
+msgstr "列印_P"
+
+#: lib/Nag.php:617
+msgid "_Search"
+msgstr "搜尋_S"
+
+#: templates/list/task_headers.inc:35
+msgid "_Task List"
+msgstr "待辦簿_T"
+
+#: templates/prefs/defaultduetimeselect.inc:15
+msgid "am"
+msgstr "早上"
+
+#: view.php:75 view.php:84
+#, php-format
+msgid "by %s"
+msgstr "由 %s"
+
+#: view.php:77 view.php:86
+msgid "by me"
+msgstr "由我"
+
+#: lib/Nag.php:876 lib/Nag.php:877
+msgid "completed"
+msgstr "已完成"
+
+#: data.php:31
+msgid "iCalendar (vTodo)"
+msgstr "iCalendar (vTodo)"
+
+#: lib/Block/tree_menu.php:36
+#, php-format
+msgid "in %s"
+msgstr "於 %s"
+
+#: lib/Nag.php:849 lib/Nag.php:850 lib/Nag.php:901
+msgid "no due date"
+msgstr "永遠"
+
+#: lib/Nag.php:816 lib/Nag.php:817
+msgid "no parent"
+msgstr "沒有父事項"
+
+#: lib/Nag.php:855 lib/Nag.php:856
+msgid "no start date"
+msgstr "沒有開始日期"
+
+#: lib/Nag.php:84
+msgid "no time"
+msgstr "無時間"
+
+#: lib/Nag.php:876 lib/Nag.php:877
+msgid "not completed"
+msgstr "未完成"
+
+#: templates/prefs/defaultduetimeselect.inc:15
+msgid "pm"
+msgstr "下午"
+
+#: data.php:114 templates/data/export.inc:1
+msgid "tasks.csv"
+msgstr "tasks.csv"
+
+#: data.php:128
+msgid "tasks.ics"
+msgstr "tasks.ics"

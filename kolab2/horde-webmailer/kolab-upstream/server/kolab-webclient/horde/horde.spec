@@ -1,7 +1,7 @@
 # Macros
 %define         V_package horde
 %define         V_version 3.3.6
-%define         V_release 20100121
+%define         V_release 20100516
 
 # Package Information
 Name:		%{V_package}
@@ -118,7 +118,7 @@ Horde framework is installed using PEAR based packages.
 
 	rm test.php
 
-	#find . -type f | grep '\.orig$' | xargs rm -f
+        find . -type f | grep '\.orig$' | xargs rm -f
 
 	cp -r * $RPM_BUILD_ROOT%{l_prefix}/var/kolab/www/client/
 

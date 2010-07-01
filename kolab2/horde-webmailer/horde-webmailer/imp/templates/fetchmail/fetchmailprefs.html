@@ -1,0 +1,129 @@
+<div class="header">
+ <tag:navcell />
+ <gettext>Other Mail Accounts</gettext>
+</div>
+
+<form name="<tag:formname />" id="<tag:formname />" action="<tag:fetchurl />">
+<tag:forminput />
+<input type="hidden" name="actionID" id="actionID" value="<tag:actionid />" />
+
+<table border="0" align="center" width="100%" cellspacing="0" cellpadding="3">
+ <tr>
+  <td class="item">
+   <table border="0">
+    <tr valign="top">
+     <td class="item">
+<if:accountselect>
+<if:accounts>
+      <label for="account"><gettext>Your accounts:</gettext></label>&nbsp;
+      <br />
+      <select id="account" name="account" onchange="accountSubmit()">
+       <option value=""><gettext>Select an account:</gettext></option>
+<loop:accounts>
+       <option value="<tag:accounts.i />"><tag:accounts.val /></option>
+</loop:accounts>
+      </select>
+      <gettext>or</gettext>
+</if:accounts>
+      <input type="button" class="button" onclick="$('actionID').setValue('fetchmail_create');accountSubmit(true);return true;" value="<gettext>Create a New Account</gettext>" />
+</if:accountselect>
+<if:driverselect>
+      <label for="fm_driver"><gettext>Mail server type to connect to:</gettext></label>&nbsp;
+      <br />
+      <select id="fm_driver" name="fm_driver" onchange="driverSubmit()">
+       <option value=""><gettext>Select the mail server type:</gettext></option>
+<loop:drivers>
+       <option value="<tag:drivers.key />"><tag:drivers.val /></option>
+</loop:drivers>
+      </select>
+</if:driverselect>
+<if:manage>
+      <input type="hidden" name="edit_account" value="<if:to_edit><tag:edit_account /></if:to_edit>" />
+      <input type="hidden" name="fm_driver" value="<tag:driver />" />
+      <label for="fm_id"><gettext>Account's name:</gettext></label>
+      <br />
+      <input id="fm_id" name="fm_id" size="30" maxlength="60" value="<if:to_edit><tag:fmid /></if:to_edit>" />
+      <br />
+      <label for="fm_protocol"><gettext>Protocol:</gettext></label>
+      <br />
+      <select id="fm_protocol" name="fm_protocol">
+<loop:protocol_list>
+       <option value="<tag:protocol_list.key />"<if:protocol_list.selected> selected="selected"</if:protocol_list.selected>><tag:protocol_list.val /></option>
+</loop:protocol_list>
+      </select>
+      <br />
+      <label for="fm_username"><gettext>Username:</gettext></label>
+      <br />
+      <input id="fm_username" name="fm_username" size="30" maxlength="60" value="<if:to_edit><tag:fmusername /></if:to_edit>" />
+      <br />
+      <label for="fm_password"><gettext>Password:</gettext></label>
+      <br />
+      <input id="fm_password" name="fm_password" size="30" maxlength="60" type="password" value="<if:to_edit><tag:fmpassword /></if:to_edit>" />
+      <br />
+      <label for="fm_server"><gettext>Server:</gettext></label>
+      <br />
+      <input id="fm_server" name="fm_server" size="30" maxlength="60" value="<if:to_edit><tag:fmserver /></if:to_edit>" />
+      <br />
+<if:allowfolders>
+      <label for="fm_rmailbox"><gettext>Remote Mailbox:</gettext></label>
+      <br />
+      <input id="fm_rmailbox" name="fm_rmailbox" size="30" maxlength="60" value="<if:to_edit><tag:fmrmailbox /></if:to_edit>" />
+      <br />
+      <label for="fm_lmailbox"><gettext>Local Mailbox:</gettext></label>
+      <br />
+      <select id="fm_lmailbox" name="fm_lmailbox">
+       <tag:fmlmailbox />
+      </select>
+      <br />
+</if:allowfolders>
+      <input type="checkbox" id="fm_onlynew" name="fm_onlynew" value="1"<if:to_edit><if:fmonlynew> checked="checked"</if:fmonlynew></if:to_edit> />
+      <label for="fm_onlynew"><gettext>Get only new messages? (IMAP only)</gettext></label>
+      <br />
+      <input type="checkbox" id="fm_markseen" name="fm_markseen" value="1"<if:to_edit><if:fmmarkseen> checked="checked"</if:fmmarkseen></if:to_edit> />
+      <label for="fm_markseen"><gettext>Mark messages as seen? (IMAP only)</gettext></label>
+      <br />
+      <input type="checkbox" id="fm_del" name="fm_del" value="1"<if:to_edit><if:fmdel> checked="checked"</if:fmdel></if:to_edit> />
+      <label for="fm_del"><gettext>Delete fetched messages from remote server?</gettext></label>
+      <br />
+      <input type="checkbox" id="fm_loginfetch" name="fm_loginfetch" value="1"<if:to_edit><if:fmloginfetch> checked="checked"</if:fmloginfetch></if:to_edit> />
+      <label for="fm_loginfetch"><gettext>Fetch messages upon logging on?</gettext></label>
+      <br />
+      (<font color="red"><gettext>NOTE:</gettext></font> <gettext>You need to have "Perform maintenance operations on login?" enabled in your maintenance options.</gettext>)
+<if:colors>
+      <br />
+      <gettext>Color Indicator:</gettext>
+      <br />
+      <table>
+       <tr>
+<loop:fm_colors>
+        <td bgcolor="<tag:fm_colors.val />">
+         <input type="radio" id="fm_acctcolor_<tag:fm_colors.val />" name="fm_acctcolor" value="<tag:fm_colors.val />"<if:fm_colors.checked> checked="checked"</if:fm_colors.checked> />
+         <label for="fm_acctcolor_<tag:fm_colors.val />" class="hidden"><tag:fm_colors.val /></label>
+        </td>
+</loop:fm_colors>
+       </tr>
+      </table>
+</if:colors>
+</if:manage>
+     </td>
+    </tr>
+   </table>
+  </td>
+ </tr>
+</table>
+
+<br />
+
+<table border="0" align="center" width="100%" cellspacing="0" cellpadding="0">
+ <tr>
+  <td nowrap="nowrap">
+<if:manage>
+   <input type="submit" name="save" class="button" onclick="$('actionID').setValue('fetchmail_prefs_save')" value="<if:fm_create><gettext>Create</gettext><else:fm_create><gettext>Save</gettext></else:fm_create></if:fm_create>" />
+   <input type="submit" name="delete" class="button" onclick="$('actionID').setValue('fetchmail_prefs_delete')" value="<gettext>Delete</gettext>" />
+   <input type="button" name="select" class="button" onclick="document.location.href='<tag:fetchurl />'" value="<gettext>Select Another Account</gettext>" />
+</if:manage>
+   <input type="button" name="back" class="button" onclick="document.location.href='<tag:prefsurl />'" value="<gettext>Return to Fetch Mail</gettext>" />
+  </td>
+ </tr>
+</table>
+</form>

@@ -1,0 +1,4669 @@
+# IMP Swedish translation
+# Copyright 2002-2009 The Horde Project
+# This file is distributed under the same license as the Imp package.
+# Andreas Dahlén <andreas@dahlen.ws>, 2005.
+# Joaquim Homrighausen <joho@webbplatsen.se>, 2005.
+# Updates from Andreas Påhlsson <andreas@pahlsson.info> 2002-01-17
+# Updates from Pontus Freyhult <pont_horde@soua.net> 2005-02-04 
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Imp 4.1-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2005-03-29 14:44+0200\n"
+"PO-Revision-Date: 2005-06-15 14:52+0200\n"
+"Last-Translator: Joaquim Homrighausen <joho@webbplatsen.se>\n"
+"Language-Team: Swedish <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/Compose.php:334
+msgid "      Cc: "
+msgstr "      Cc: "
+
+#: lib/Compose.php:331
+msgid "      To: "
+msgstr "    Till: "
+
+#: lib/Compose.php:319
+msgid "    Date: "
+msgstr "   Datum: "
+
+#: lib/Compose.php:322
+msgid "    From: "
+msgstr "    Från: "
+
+#: mailbox.php:386
+#, php-format
+msgid " (Accesskey %s)"
+msgstr " (snabbtangent %s)"
+
+#: lib/Compose.php:328
+msgid " Subject: "
+msgstr "  Ärende: "
+
+#: templates/compose/spelling.inc:70
+msgid " in "
+msgstr " i "
+
+#: templates/mailbox/message_headers.inc:7
+msgid "#"
+msgstr "#"
+
+#: lib/Block/summary.php:71
+#, php-format
+msgid "%.2fMB / %.2fMB  (%.2f%%)"
+msgstr "%.2fMB / %.2fMB  (%2f%%)"
+
+#: mailbox.php:169
+#, php-format
+msgid "%d message(s) have been deleted."
+msgstr "%d meddelande(n) har raderats."
+
+#: lib/Spam.php:182
+#, php-format
+msgid ""
+"%d messages have been reported as not spam to your system administrator."
+msgstr ""
+"%d meddelanden har rapporterats som EJ-skräppost till din "
+"systemadministratör."
+
+#: lib/Spam.php:162
+#, php-format
+msgid "%d messages have been reported as not spam."
+msgstr "%d meddelanden har rapporterats som EJ-skräppost."
+
+#: lib/Spam.php:174
+#, php-format
+msgid "%d messages have been reported as spam to your system administrator."
+msgstr ""
+"%d meddelanden har rapporterats som skräppost till systemadministratören."
+
+#: lib/Spam.php:154
+#, php-format
+msgid "%d messages have been reported as spam."
+msgstr "%d meddelanden har rapporterats som skräppost."
+
+#: mailbox.php:345
+#, php-format
+msgid "%d to %d of %d Messages"
+msgstr "%d till %d av %d meddelanden"
+
+#: mailbox.php:600
+#, php-format
+msgid "%s KB"
+msgstr "%s Kb"
+
+#: pgp.php:332
+#, php-format
+msgid "%s PGP Administration"
+msgstr "%s PGP-administration"
+
+#: smime.php:254
+#, php-format
+msgid "%s S/MIME Administration"
+msgstr "%s S/MIME-administration"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:49
+#, php-format
+msgid "%s already exists. Your %s folder was not renamed."
+msgstr "%s finns redan. Namnet på mappen %s ändrades inte."
+
+#: lib/Message.php:633
+#, php-format
+msgid "%s does not appear to be a valid mailbox."
+msgstr "%s verkar inte vara en korrekt mapp."
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:47
+#, php-format
+msgid "%s folder being renamed at the start of the month."
+msgstr "Mappen %s får nytt namn i början av månaden."
+
+#: lib/MIME/Viewer/itip.php:226
+#, php-format
+msgid "%s has accepted."
+msgstr "%s har accepterat."
+
+#: lib/MIME/Viewer/itip.php:581
+#, php-format
+msgid "%s has cancelled %s."
+msgstr "%s har annullerat %s."
+
+#: lib/MIME/Viewer/itip.php:232
+#, php-format
+msgid "%s has declined."
+msgstr "%s har avböjt."
+
+#: lib/MIME/Viewer/itip.php:452
+#, php-format
+msgid "%s has replied to a free/busy request."
+msgstr "%s har svarat på en begäran om information angående ledig/upptagen."
+
+#: lib/MIME/Viewer/itip.php:572
+#, php-format
+msgid "%s has replied to the invitation to %s."
+msgstr "%s har svarat på inbjudan till %s."
+
+#: lib/MIME/Viewer/itip.php:441
+#, php-format
+msgid "%s has sent you free/busy information."
+msgstr "%s har skickat dig information om ledig/upptagen."
+
+#: lib/MIME/Viewer/itip.php:238
+#, php-format
+msgid "%s has tentatively accepted."
+msgstr "%s har accepterat preliminärt."
+
+#: lib/MIME/Viewer/itip.php:446
+#, php-format
+msgid "%s requests your free/busy information."
+msgstr "%s efterfrågar information om när du är ledig/upptagen."
+
+#: lib/MIME/Viewer/itip.php:541
+#, php-format
+msgid "%s requests your presence at %s."
+msgstr "%s efterfrågar din närvaro vid %s."
+
+#: lib/Message.php:388
+#, php-format
+msgid "%s was successfully added to %s."
+msgstr "%s lades till %s."
+
+#: lib/MIME/Viewer/itip.php:553
+#, php-format
+msgid "%s wishes to ammend %s."
+msgstr "%s vill ändra %s."
+
+#: lib/MIME/Viewer/itip.php:531
+#, php-format
+msgid "%s wishes to make you aware of %s."
+msgstr "%s vill göra dig medveten om %s."
+
+#: lib/MIME/Viewer/itip.php:558
+#, php-format
+msgid "%s wishes to receive the latest information about %s."
+msgstr "%s vill erhålla den senaste informationen om %s."
+
+#: message.php:282 message.php:287
+#, php-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#: templates/message/navbar_top.inc:13
+#, php-format
+msgid "%s: %s (%d&nbsp;of&nbsp;%d)"
+msgstr "%s: %s (%d&nbsp;av&nbsp;%d)"
+
+#: templates/compose/spelling.inc:133
+msgid "(Apply these changes and move to next screen.)"
+msgstr "(Verkställ ändringarna och fortsätt till nästa skärm.)"
+
+#: templates/compose/spelling.inc:120
+msgid "(Discard all changes and return to the compose screen.)"
+msgstr "(Ta bort alla ändringar och återvänd till meddelande.)"
+
+#: spelling.php:270
+msgid ""
+"(Return to the compose screen after applying all changes made thus far.  "
+"Changes on the current screen will NOT be applied.)"
+msgstr ""
+"(Återvänd till meddelande efter verkställande av hittills gjorda ändringar. "
+"Ändringar på aktiv skärm kommer INTE verkställas.)"
+
+#: spelling.php:267
+msgid ""
+"(Send message after applying all changes made thus far.  Changes on the "
+"current screen will NOT be applied.)"
+msgstr ""
+"(Skicka meddelande efter verkställande av hittills gjorda ändringar. "
+"Ändringar på aktiv skärm kommer INTE verkställas.)"
+
+#: templates/contacts/contacts.inc:232
+msgid "* Add these by clicking OK *"
+msgstr "* Lägg till dem här genom att klicka OK *"
+
+#: templates/contacts/contacts.inc:212
+msgid "* Please select address(es) *"
+msgstr "* Välj adress(er) *"
+
+#: lib/Spam.php:184
+msgid "1 message has been reported as not spam to your system administrator."
+msgstr ""
+"1 meddelande har rapporterats som EJ-skräppost till din systemadministratör."
+
+#: lib/Spam.php:164
+msgid "1 message has been reported as not spam."
+msgstr "1 meddelande har rapporterats som EJ-skräppost."
+
+#: lib/Spam.php:176
+msgid "1 message has been reported as spam to your system administrator."
+msgstr ""
+"1 meddelande har rapporterats som skräppost till din systemadministratör."
+
+#: lib/Spam.php:156
+msgid "1 message has been reported as spam."
+msgstr "1 meddelande har rapporterats som skräppost."
+
+#: config/prefs.php.dist:797
+msgid "100 characters"
+msgstr "100 tecken"
+
+#: config/prefs.php.dist:800
+msgid "1000 characters"
+msgstr "1000 tecken"
+
+#: config/prefs.php.dist:798
+msgid "250 characters"
+msgstr "250 tecken"
+
+#: config/prefs.php.dist:799
+msgid "500 characters"
+msgstr "500 tecken"
+
+#: lib/MIME/Viewer/images.php:159
+#, php-format
+msgid "A large image named %s is attached to this message."
+msgstr "En stor bild (%s) är bifogad till meddelandet."
+
+#: lib/MIME/Viewer/notification.php:53
+msgid ""
+"A message you have sent has resulted in a return notification from the "
+"recipient."
+msgstr "Du har fått leveransbekräftelse på ett meddelande du skickat."
+
+#: templates/search/fields.inc:5
+msgid "AND"
+msgstr "AND"
+
+#: lib/MIME/Viewer/itip.php:546
+msgid "Accept request"
+msgstr "Acceptera begäran"
+
+#: lib/MIME/Viewer/itip.php:705
+msgid "Accepted"
+msgstr "Accepterad"
+
+#: lib/MIME/Viewer/itip.php:227
+msgid "Accepted: "
+msgstr "Accepterad: "
+
+#: lib/IMP.php:917 lib/IMP.php:919
+msgid "Acco_unts"
+msgstr "Kon_ton"
+
+#: templates/fetchmail/manage.inc:7
+msgid "Account's name:"
+msgstr "Kontots namn:"
+
+#: lib/MIME/Viewer/itip.php:477 lib/MIME/Viewer/itip.php:682
+msgid "Actions"
+msgstr "Åtgärder"
+
+#: templates/prefs/sourceselect.inc:303
+msgid "Add source"
+msgstr "Lägg till källa"
+
+#: lib/MIME/Viewer/itip.php:534 lib/MIME/Viewer/itip.php:544
+msgid "Add this to my calendar"
+msgstr "Lägg till i min kalender"
+
+#: lib/MIME/Headers.php:206 lib/MIME/Headers.php:207
+#, php-format
+msgid "Add to Address book (%s)"
+msgstr "Lägg till i adressbok (%s)"
+
+#: compose.php:1165
+#, php-format
+msgid "Added \"%s\" as an attachment."
+msgstr "Lade till %s som en bilaga."
+
+#: config/prefs.php.dist:191
+msgid ""
+"Additional headers to display when viewing: <em>(optional, enter each header "
+"on a new line)</em>"
+msgstr ""
+"Ytterligare huvudrader att visa: <em>(ej obligatoriskt, ange varje huvudrad "
+"på en egen rad)</em>"
+
+#: lib/MIME/Viewer/notification.php:65
+#, php-format
+msgid "Additional information can be viewed %s."
+msgstr "Ytterligare information visas %s."
+
+#: lib/MIME/Viewer/notification.php:65
+msgid "Additional information details"
+msgstr "Fler detaljer"
+
+#: lib/MIME/Viewer/status.php:96
+msgid "Additional message details"
+msgstr "Fler detaljer om meddelandet"
+
+#: lib/MIME/Viewer/status.php:95
+#, php-format
+msgid "Additional message details can be viewed %s."
+msgstr "Fler detaljer om meddelandet visas %s."
+
+#: lib/MIME/Viewer/status.php:81
+msgid "Additional message error details"
+msgstr "Fler felmeddelande-detaljer"
+
+#: lib/MIME/Viewer/status.php:80
+#, php-format
+msgid "Additional message error details can be viewed %s."
+msgstr "Fler felmeddelande-detaljer visas %s."
+
+#: contacts.php:90 templates/contacts/contacts.inc:176
+#: templates/compose/compose.inc:330 templates/compose/redirect.inc:52
+msgid "Address Book"
+msgstr "Adressbok"
+
+#: config/prefs.php.dist:127
+msgid "Address Books"
+msgstr "Adressböcker"
+
+#: config/prefs.php.dist:182
+msgid ""
+"Addresses to BCC all messages: <em>(optional, enter each address on a new "
+"line)</em>"
+msgstr ""
+"Adresser att lägga till som BCC till alla meddelanden: <em>(ej "
+"obligatoriskt, skriv varje adress på en egen rad)</em>"
+
+#: config/prefs.php.dist:174
+msgid ""
+"Addresses to explicitly tie to this identity: <em>(optional, enter each "
+"address on a new line)</em>"
+msgstr ""
+"Adresser kopplade till den här identiten: <em>(ej obligatoriskt, skriv varje "
+"adress på en egen rad)</em>"
+
+#: templates/mailbox/navbar.inc:10 config/prefs.php.dist:801
+msgid "All"
+msgstr "Alla"
+
+#: templates/folders/javascript.inc:5
+msgid "All messages in the folder(s) will be lost!"
+msgstr "Alla meddelanden i mappen/mapparna försvinner!"
+
+#: templates/folders/javascript.inc:6
+msgid ""
+"All messages in the following folder(s) will be downloaded into one MBOX "
+"file:"
+msgstr "Alla meddelanden i följande mapp(ar) laddas ner till en MBOX-fil:"
+
+#: lib/Maintenance/Task/purge_trash.php:83
+#, php-format
+msgid ""
+"All messages in your \"%s\" folder older than %s days will be permanently "
+"deleted."
+msgstr ""
+"Alla meddelanden i din '%s'-mapp, äldre än %s dagar kommer att raderas "
+"permanent."
+
+#: lib/Maintenance/Task/delete_attachments_monthly.php:63
+#, php-format
+msgid "All old linked attachments more than %s months old will be deleted."
+msgstr "Alla länkade bilagor äldre än %s månader kommer att raderas."
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:78
+#, php-format
+msgid "All old sent-mail folders more than %s months old will be deleted."
+msgstr ""
+"Alla mappar för skickade meddelanden, äldre än %s månader kommer att raderas."
+
+#: acl.php:85
+#, php-format
+msgid "All rights on folder '%s' successfully removed for user '%s'."
+msgstr "Behörigheter till mappen '%s' raderades för användare '%s'."
+
+#: templates/filters/prefs.inc:48
+msgid "Allow filter rules to be applied in any mailbox?"
+msgstr "Tillåt att filter-regler tillämpas i alla brevlådor?"
+
+#: lib/MIME/Viewer/alternative.php:113
+msgid "Alternative parts for this section:"
+msgstr "Alternativa delar för den här delen:"
+
+#: config/prefs.php.dist:558 config/prefs.php.dist:579
+msgid "Always"
+msgstr "Alltid"
+
+#: config/prefs.php.dist:543
+msgid "Always save attachments"
+msgstr "Spara alltid bilagor"
+
+#: lib/Message.php:481
+msgid ""
+"An error occured while attempting to strip the attachment. The IMAP server "
+"said: "
+msgstr "Ett fel uppstod när bilagan skulle tas bort: IMAP-servern svarade: "
+
+#: lib/Message.php:375
+msgid "An unknown error occured while creating the new task."
+msgstr "Ett okänt fel uppstod vid uppläggningen av uppgiften."
+
+#: mailbox.php:670 message.php:496 templates/message/navbar_navigate.inc:9
+#: templates/mailbox/legend.inc:6 templates/mailbox/navbar.inc:18
+#: templates/mailbox/navbar.inc:35
+msgid "Answered"
+msgstr "Besvarat"
+
+#: templates/search/main.inc:31
+msgid "Answered messages"
+msgstr "Besvarade meddelanden"
+
+#: templates/mailbox/header.inc:7
+msgid "Apply Filters"
+msgstr "Verkställ filter"
+
+#: templates/mailbox/header.inc:7
+#, php-format
+msgid "Apply Filters to %s"
+msgstr "Verkställ filter på %s"
+
+#: templates/filters/prefs.inc:36
+msgid "Apply filter rules upon logging on?"
+msgstr "Verkställ filterregler vid inloggning?"
+
+#: templates/filters/prefs.inc:42
+msgid "Apply filter rules whenever INBOX is displayed?"
+msgstr "Verkställ filterregler när inkorgen visas?"
+
+#: templates/folders/javascript.inc:9
+msgid "Are you SURE you want to continue?"
+msgstr "Är du säker på att du vill fortsätta?"
+
+#: templates/folders/javascript.inc:5
+msgid "Are you completely sure you wish to continue?"
+msgstr "Är du verkligen säker på att du vill fortsätta?"
+
+#: templates/smime/smime.inc:60 templates/pgp/pgp.inc:93
+msgid "Are you sure you want to delete this public key?"
+msgstr "Är du säker att du vill radera den publika nyckeln?"
+
+#: templates/smime/smime.inc:122 templates/pgp/pgp.inc:169
+msgid ""
+"Are you sure you want to delete your keypair? (This is NOT recommended!)"
+msgstr "Är du säker att du vill radera nyckelparet? (Rekommenderas INTE!)"
+
+#: templates/compose/compose.js:6 templates/compose/redirect.inc:5
+msgid "Are you sure you want to do this?"
+msgstr "Är du säker?"
+
+#: message.php:404 templates/folders/javascript.inc:73
+#: templates/mailbox/javascript.inc:68
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "Är du säker på att du vill radera dessa meddelanden PERMANENT?"
+
+#: lib/MIME/Contents.php:228
+msgid "Are you sure you wish to PERMANENTLY delete this attachment?"
+msgstr "Är du säker på att du vill radera bilagan PERMANENT?"
+
+#: templates/mailbox/actions.inc:39
+msgid "Are you sure you wish to empty this folder?"
+msgstr "Är du säker på att du vill tömma mappen?"
+
+#: lib/IMP.php:908
+msgid "Are you sure you wish to empty your trash folder?"
+msgstr "Är du säker på att du vill tömma din papperskorg?"
+
+#: templates/mailbox/actions.inc:8
+msgid "Are you sure you wish to permanently delete these messages?"
+msgstr "Är du säker på att du vill radera dessa meddelanden PERMANENT?"
+
+#: templates/mailbox/javascript.inc:86
+msgid "Are you sure you wish to report this message as innocent?"
+msgstr "Är du säker på att du vill rapportera meddelandet som oskyldigt?"
+
+#: templates/mailbox/javascript.inc:77
+msgid "Are you sure you wish to report this message as spam?"
+msgstr "Är du säker på att du vill rapportera meddelandet som skräppost?"
+
+#: config/prefs.php.dist:896
+msgid "Arrival Time"
+msgstr "Ankomsttid"
+
+#: config/prefs.php.dist:911
+msgid "Ascending"
+msgstr "Stigande"
+
+#: config/prefs.php.dist:557 config/prefs.php.dist:578
+msgid "Ask"
+msgstr "Fråga"
+
+#: templates/compose/compose.inc:509
+msgid "Attach"
+msgstr "Bifoga"
+
+#: templates/compose/compose.inc:466
+msgid "Attach Files"
+msgstr "Bifoga filer"
+
+#: templates/compose/compose.inc:447
+msgid "Attach a copy of your PGP public key to your message?"
+msgstr "Bifoga en kopia av din publika PGP-nyckel till meddelandet?"
+
+#: lib/MIME/Viewer/tnef.php:113
+msgid "Attached File:"
+msgstr "Bifogad fil:"
+
+#: lib/Compose.php:370 lib/Compose.php:457
+#, php-format
+msgid ""
+"Attached file \"%s\" exceeds the attachment size limits. File NOT attached."
+msgstr ""
+"Bifogad fil \"%s\" överskrider maxstorlek för bilagor. Filen har ej bifogats."
+
+#: lib/MIME/Viewer/itip.php:341
+msgid "Attached is a reply to a calendar request you sent."
+msgstr "Bifogar svar på kalender-förfrågan du skickade."
+
+#: mailbox.php:704 templates/mailbox/legend.inc:16
+#: templates/compose/attachments.inc:14 templates/compose/attachments.js:98
+#: templates/compose/compose.inc:496
+msgid "Attachment"
+msgstr "Bilaga"
+
+#: compose.php:975 lib/Message.php:442
+msgid "Attachment stripped: Original attachment type"
+msgstr "Bilaga borttagen: Typ på ursprungsbilagan"
+
+#: templates/compose/compose.inc:340 templates/compose/compose.inc:464
+#: lib/Compose.php:1013
+msgid "Attachments"
+msgstr "Bilagor"
+
+#: lib/MIME/Viewer/itip.php:635
+msgid "Attendees"
+msgstr "Deltagare"
+
+#: lib/MIME/Viewer/notification.php:56
+msgid "Attention"
+msgstr "Observera"
+
+#: lib/Auth/imp.php:49
+msgid "Auth_imp: Required IMAP extension not found."
+msgstr "Auth_imp: Kan inte hitta den nödvändiga IMAP-utökningen."
+
+#: config/prefs.php.dist:636
+msgid ""
+"Automatically show images in HTML messages when the sender is in my "
+"addressbook?"
+msgstr ""
+"Visa bilder i HTML-meddelanden automatiskt när avsändaren finns i\n"
+"adressboken?"
+
+#: templates/prefs/sourceselect.inc:298
+msgid "Available Address books:"
+msgstr "Tillgängliga adressböcker:"
+
+#: lib/MIME/Viewer/itip.php:671
+msgid "Awaiting Response"
+msgstr "Väntar på svar"
+
+#: templates/message/navbar_navigate.inc:26
+#, php-format
+msgid "Bac_k to %s"
+msgstr "Tillba_ka till %s"
+
+#: thread.php:75 templates/message/navbar_navigate.inc:26
+#, php-format
+msgid "Back to %s"
+msgstr "Tillbaka till %s"
+
+#: thread.php:73
+msgid "Back to Thread Display"
+msgstr "Tillbaka till trådvisning"
+
+#: search.php:152 message.php:263 templates/contacts/contacts.inc:227
+#: templates/compose/recompose.inc:20
+msgid "Bcc"
+msgstr "Bcc"
+
+#: lib/MIME/Viewer/status.php:168
+msgid "Below is the raw text of the status information message."
+msgstr "Nedan finns ursprungstexten från statusmeddelandet."
+
+#: templates/message/navbar_actions.inc:21 templates/mailbox/actions.inc:16
+msgid "Blacklist"
+msgstr "Spärra adress"
+
+#: config/prefs.php.dist:624
+msgid "Block images in HTML messages unless they are specifically requested?"
+msgstr "Blockera bilder i HTML-meddelanden om de inte särskilt efterfrågas?"
+
+#: search.php:160
+msgid "Body"
+msgstr "Meddelandetext"
+
+#: templates/search/main.inc:23 templates/search/main.inc:39
+#: templates/search/main.inc:55 templates/search/main.inc:71
+msgid "Both"
+msgstr "Båda"
+
+#: config/prefs.php.dist:683
+msgid "Both Header Listing and Body of Message"
+msgstr "Både i rubrik och i meddelandet"
+
+#: templates/compose/compose.inc:283
+msgid "C_harset"
+msgstr "T_eckenkodning"
+
+#: templates/search/fields.inc:35
+msgid "Calendar"
+msgstr "Kalender"
+
+#: lib/Fetchmail/imap.php:204
+msgid "Can not connect to the remote mail server."
+msgstr "Kan inte kontakta e-postservern"
+
+#: lib/Fetchmail/imap.php:202
+msgid "Can not connect to the remote mail server: "
+msgstr "Kan inte kontakta e-postservern: "
+
+#: lib/MIME/Viewer/partial.php:53
+#, php-format
+msgid ""
+"Can not display - found only %s of %s parts of this message in the current "
+"mailbox."
+msgstr ""
+"Kan inte visa - hittade bara %s av %s delar av meddelandet i aktuell "
+"brevlåda."
+
+#: templates/saveimage/saveimage.inc:19 templates/folders/import.inc:21
+#: templates/contacts/contacts.inc:258 templates/compose/spelling.inc:120
+#: templates/smime/import_key.inc:86 templates/smime/passphrase.inc:20
+#: templates/pgp/import_key.inc:66 templates/pgp/passphrase.inc:32
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: templates/compose/compose.inc:70 templates/compose/compose.inc:426
+#: templates/compose/redirect.inc:111
+msgid "Cancel Message"
+msgstr "Avbryt"
+
+#: templates/compose/compose.js:6 templates/compose/redirect.inc:5
+msgid "Cancelling this message will permanently discard its contents."
+msgstr "Om du avbryter försvinner allt i meddelandet."
+
+#: search.php:148 message.php:262 templates/contacts/contacts.inc:226
+#: templates/compose/recompose.inc:15
+msgid "Cc"
+msgstr "Cc"
+
+#: lib/MIME/Viewer/itip.php:653
+msgid "Chair Person"
+msgstr "Ordförande"
+
+#: templates/compose/spelling.inc:80
+msgid "Change"
+msgstr "Ändra"
+
+#: templates/compose/spelling.inc:81
+msgid "Change All"
+msgstr "Ändra alla"
+
+#: templates/acl/acl.inc:92
+msgid "Change Folder"
+msgstr "Ändra mapp"
+
+#: config/prefs.php.dist:112
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr "Ändra inställningar för visning av antal meddelanden och sortering."
+
+#: config/prefs.php.dist:24
+msgid "Change mail server and folder settings."
+msgstr "Ändra inställningar för e-postserver och mappar."
+
+#: config/prefs.php.dist:15
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr ""
+"Ändra namn, adress och signatur som mottagarna ser när de läser och svarar "
+"på din meddelanden."
+
+#: config/prefs.php.dist:802
+msgid "Characters to display:"
+msgstr "Antal tecken att visa:"
+
+#: templates/folders/actions.inc:13
+msgid "Check Folder(s) for New Mail"
+msgstr "Kontrollera mapp(ar) för ny e-post"
+
+#: templates/folders/actions.inc:2 templates/mailbox/message_headers.inc:69
+msgid "Check _All/None"
+msgstr "Markera _Alla/Ingen"
+
+#: templates/fetchmail/fetchmail.inc:10 templates/fetchmail/fetchmail.inc:21
+msgid "Check all mail servers you want to fetch mail from:"
+msgstr "Kryssa för alla e-postservrar du vill hämta post från:"
+
+#: config/prefs.php.dist:447
+msgid "Check spelling before sending a message?"
+msgstr "Kontrollera stavning innan meddelande skickas?"
+
+#: templates/folders/actions.inc:4
+msgid "Choose Action:"
+msgstr "Välj åtgärd:"
+
+#: config/servers.php.dist:194
+msgid "Choose a mail server:"
+msgstr "Välj en e-postserver:"
+
+#: lib/MIME/Viewer/itip.php:478 lib/MIME/Viewer/itip.php:683
+msgid "Choose an action:"
+msgstr "Välj åtgärd:"
+
+#: templates/prefs/sourceselect.inc:349
+msgid "Choose the address book to use when adding addresses."
+msgstr "Välj adressbok där nya adresser läggs till."
+
+#: templates/prefs/sourceselect.inc:293
+msgid "Choose the order of address books to search when expanding addresses."
+msgstr "Välj ordning som adressböcker genomsöks vid expansion av adresser."
+
+#: lib/MIME/Viewer/images.php:109
+#, php-format
+msgid "Click %s to convert the image file into a format your browser can view."
+msgstr ""
+"Klicka %s för att konvertera bilden till ett format din webbläsare kan\n"
+"visa."
+
+#: lib/MIME/Viewer/images.php:98
+#, php-format
+msgid "Click %s to download the image."
+msgstr "Klicka %s för att ladda ner bilden."
+
+#: lib/Filter.php:112
+#, php-format
+msgid "Click %s to go to %s management page."
+msgstr "Klicka %s för att gå till %s-hanteringssidan."
+
+#: lib/MIME/Viewer/html.php:106
+#, php-format
+msgid "Click %s to view HTML content in a separate window."
+msgstr "Klicka %s för att visa HTML-innehåll i ett eget fönster."
+
+#: lib/MIME/Viewer/images.php:160
+#, php-format
+msgid "Click %s to view a thumbnail of this image."
+msgstr "Klicka %s för att visa en miniatyr av den här bilden."
+
+#: lib/MIME/Viewer/pkcs7.php:421
+#, php-format
+msgid "Click %s to view the attachment in a separate window."
+msgstr "Klicka %s för att visa bilagan i ett eget fönster."
+
+#: lib/MIME/Viewer/related.php:64
+#, php-format
+msgid "Click %s to view this multipart/related part in a separate window."
+msgstr "Klicka %s för att visa multipart/related i ett eget fönster."
+
+#: lib/MIME/Viewer/html.php:93
+msgid "Click here to SHOW the Images"
+msgstr "Klicka här för att VISA bilderna"
+
+#: templates/prefs/sourceselect.inc:321
+msgid ""
+"Click on one of your selected address books and then select all fields to "
+"search."
+msgstr ""
+"Klicka på en av dina adressböcker och ange sedan vilka fält som skall "
+"genomsökas."
+
+#: lib/MIME/Viewer/pgp.php:176
+msgid "Click to Save PGP Public Key in your Address book"
+msgstr "Klicka föra att spara publik PGP-nyckel i din adressbok"
+
+#: lib/MIME/Viewer/pkcs7.php:205
+#, php-format
+msgid "Click to Save S/MIME certificate of %s in your Address Book"
+msgstr "Klicka föra att spara S/MIME certifikat för %s i din adressbok"
+
+#: config/prefs.php.dist:930
+msgid "Clicking on the address will compose a new message to the sender"
+msgstr ""
+"Om du klickar på adressen får du skriva ett nytt meddelande till\n"
+"avsändaren"
+
+#: config/prefs.php.dist:931
+msgid "Clicking on the address will open the message to be read"
+msgstr "Om du klickar på adressen öppnas meddelandet för visning"
+
+#: templates/fetchmail/fetchmail.inc:28
+msgid "Close"
+msgstr "Stäng"
+
+#: compose.php:749 compose.php:1056
+msgid "Close this window"
+msgstr "Stäng fönstret"
+
+#: folders.php:390
+msgid "Closed Folder"
+msgstr "Stängda mappar"
+
+#: folders.php:410
+msgid "Collapse"
+msgstr "Stäng"
+
+#: templates/folders/actions.inc:34
+msgid "Collapse All"
+msgstr "Stäng alla"
+
+#: templates/folders/actions.inc:34
+msgid "Collapse All Folders"
+msgstr "Stäng alla mappar"
+
+#: folders.php:410
+msgid "Collapse Folder"
+msgstr "Stäng mapp"
+
+#: templates/fetchmail/manage.inc:51
+msgid "Color Indicator: "
+msgstr "Färgindikator: "
+
+#: templates/pgp/pgp.inc:191
+msgid "Comment"
+msgstr "Kommentar"
+
+#: lib/MIME/Viewer/itip.php:721
+msgid "Completed"
+msgstr "Slutförd"
+
+#: lib/Block/summary.php:19 lib/Block/tree_folders.php:42
+msgid "Compose"
+msgstr "Skriv"
+
+#: mailbox.php:734 lib/MIME/Headers.php:195
+#, php-format
+msgid "Compose Message (%s)"
+msgstr "Skriv (%s)"
+
+#: compose.php:748 compose.php:1055
+msgid "Compose another message"
+msgstr "Skriv ett annat meddelande"
+
+#: config/prefs.php.dist:430
+msgid "Compose messages in a separate window?"
+msgstr "Skriv meddelanden i ett separat fönster?"
+
+#: config/prefs.php.dist:439
+msgid ""
+"Compose messages with an HTML GUI by default (if browser supports the "
+"feature)?"
+msgstr ""
+"Skriv meddelanden med ett HTML-gränssnitt som (om webläsaren stödjer "
+"funktionen)?"
+
+#: config/prefs.php.dist:70
+msgid "Configure how messages are displayed."
+msgstr "Inställningar för meddelandevisning."
+
+#: config/prefs.php.dist:97
+msgid "Configure mail preview options."
+msgstr "Ändra inställningar förhandsgranskning."
+
+#: lib/Fetchmail/imap.php:237
+msgid "Connection to server failed"
+msgstr "Förbindelse till server misslyckades."
+
+#: config/prefs.php.dist:136
+#, php-format
+msgid "Control PGP support for %s."
+msgstr "Hantering av PGP i %s."
+
+#: config/prefs.php.dist:145
+#, php-format
+msgid "Control S/MIME support for %s."
+msgstr "Hantering av S/MIME i %s."
+
+#: config/prefs.php.dist:89
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr ""
+"Kontrollera när nya meddelanden anländer och ange om notifiering skall ske "
+"när de anländer."
+
+#: config/prefs.php.dist:693
+msgid "Convert textual emoticons into graphical ones?"
+msgstr "Konvertera känsloikoner i textform till grafiska?"
+
+#: templates/message/navbar_navigate.inc:19 templates/mailbox/navbar.inc:51
+msgid "Copy"
+msgstr "Kopiera"
+
+#: templates/message/navbar_navigate.inc:19
+msgid "Copy to folder"
+msgstr "Kopiera till mapp"
+
+#: templates/compose/spelling.inc:63
+msgid "Correct"
+msgstr "Korrekt"
+
+#: templates/compose/spelling.inc:140
+msgid "Corrected Text"
+msgstr "Korrigerad text"
+
+#: attachment.php:50
+#, php-format
+msgid "Could not create the VFS backend: %s"
+msgstr "Kunde inte skapa VFS-kopplingen: %s"
+
+#: lib/Message.php:624
+#, php-format
+msgid "Could not delete messages from %s. The server said: %s"
+msgstr "Kunde inte radera meddelanden från %s. Servern svarade: %s"
+
+#: lib/Session.php:298
+msgid "Could not execute maintenance operations."
+msgstr "Kunde inte utföra underhållsaktiviteter"
+
+#: lib/MIME/Viewer/tnef.php:56
+msgid "Could not extract the requested file from the MS-TNEF attachment."
+msgstr "Kunde inte extrahera begärd fil från MS-TNEF bilagan."
+
+#: lib/MIME/Viewer/zip.php:61
+msgid "Could not extract the requested file from the Zip archive."
+msgstr "Kunde inte extrahera begärd fil från ZIP-arkivet."
+
+#: search.php:361 templates/fetchmail/manage.inc:67
+#: templates/fetchmail/account_select.inc:26 templates/acl/acl.inc:39
+#: templates/acl/acl.inc:160
+msgid "Create"
+msgstr "Skapa"
+
+#: templates/folders/actions.inc:5
+msgid "Create Folder"
+msgstr "Skapa mapp"
+
+#: templates/pgp/pgp.inc:252
+msgid "Create Keys"
+msgstr "Skapa nycklar"
+
+#: templates/search/header.inc:14
+msgid "Create Virtual Folder"
+msgstr "Skapa virtuell mapp"
+
+#: templates/prefs/folderselect.inc:12 templates/prefs/folderselect.inc:24
+msgid "Create a new drafts folder"
+msgstr "Skapa ny mapp för utkast"
+
+#: templates/prefs/sentmailselect.inc:27 templates/prefs/sentmailselect.inc:43
+msgid "Create a new sent mail folder"
+msgstr "Skapa ny mapp för skickade meddelanden"
+
+#: templates/prefs/trashselect.inc:12 templates/prefs/trashselect.inc:24
+msgid "Create a new trash folder"
+msgstr "Skapa ny mapp för papperskorg"
+
+#: config/prefs.php.dist:121
+msgid ""
+"Create filtering rules to organize your incoming mail, sort it into folders, "
+"and delete spam."
+msgstr ""
+"Skapa filtreringsregler för att organisera inkommande meddelanden, sortera "
+"in i mappar och radera skräppost."
+
+#: templates/acl/acl.inc:95
+#, php-format
+msgid "Current access to %s"
+msgstr "Nuvarande rättigheter för %s"
+
+#: config/prefs.php.dist:105
+msgid "Customize accounts for fetching mail from other accounts."
+msgstr "Skräddarsy konton för hämtning av meddelanden från andra konton."
+
+#: config/prefs.php.dist:51
+msgid "Customize how you send mail."
+msgstr "Skräddarsy hur du skickar meddelanden."
+
+#: config/prefs.php.dist:40
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "Skräddarsy aktiviteter som körs vid inlogning till %s."
+
+#: templates/mailbox/message_headers.inc:12
+msgid "Dat_e"
+msgstr "Dat_um"
+
+#: message.php:259 thread.php:85
+msgid "Date"
+msgstr "Datum"
+
+#: lib/MIME/Viewer/itip.php:709
+msgid "Declined"
+msgstr "Avböjt"
+
+#: lib/MIME/Viewer/itip.php:233
+msgid "Declined: "
+msgstr "Avböjt: "
+
+#: config/prefs.php.dist:903
+msgid "Default sorting criteria:"
+msgstr "Förvald sorteringsordning:"
+
+#: config/prefs.php.dist:913
+msgid "Default sorting direction:"
+msgstr "Förvald sorteringsriktning:"
+
+#: lib/MIME/Viewer/itip.php:717
+msgid "Delegated"
+msgstr "Delegerad"
+
+#: folders.php:380 templates/message/navbar_actions.inc:6
+#: templates/mailbox/actions.inc:8 templates/mailbox/actions.inc:10
+#: templates/fetchmail/manage.inc:68 templates/contacts/contacts.inc:248
+#: templates/compose/attachments.inc:28 templates/smime/smime.inc:60
+#: templates/pgp/pgp.inc:93
+msgid "Delete"
+msgstr "Radera"
+
+#: templates/smime/smime.inc:60 templates/pgp/pgp.inc:93
+#, php-format
+msgid "Delete %s Public Key"
+msgstr "Radera publik nyckel för %s"
+
+#: templates/smime/smime.inc:122 templates/pgp/pgp.inc:169
+msgid "Delete Current Keys"
+msgstr "Raderaaktuella nycklar"
+
+#: templates/folders/actions.inc:7
+msgid "Delete Folder(s)"
+msgstr "Radera mapp(ar)"
+
+#: folders.php:380
+msgid "Delete Virtual Folder"
+msgstr "Radera virtuell mapp"
+
+#: templates/fetchmail/manage.inc:43
+msgid "Delete fetched messages from remote server?"
+msgstr "Radera hämtade meddelanden från server?"
+
+#: lib/MIME/Viewer/itip.php:584
+msgid "Delete from my calendar"
+msgstr "Ta bort från min kalender"
+
+#: config/prefs.php.dist:363
+msgid "Delete old linked attachments at beginning of month?"
+msgstr "Radera länkade bilagor i början av månaden?"
+
+#: config/prefs.php.dist:345
+msgid "Delete old sent-mail folders at beginning of month?"
+msgstr "Radera mapp(ar) för skickade meddelanden vid början av månaden?"
+
+#: config/prefs.php.dist:614
+msgid "Delete spam messages after they have been reported as spam?"
+msgstr "Radera meddelanden när de rapporterats som skräppost?"
+
+#: mailbox.php:694 message.php:499 templates/mailbox/legend.inc:8
+#: templates/mailbox/navbar.inc:20 templates/mailbox/navbar.inc:38
+msgid "Deleted"
+msgstr "Raderad"
+
+#: templates/search/main.inc:63
+msgid "Deleted messages"
+msgstr "Radera meddelanden"
+
+#: compose.php:279
+#, php-format
+msgid "Deleted the attachment \"%s\"."
+msgstr "Raderade bilagan %s."
+
+#: config/prefs.php.dist:79
+msgid "Deleting and Moving Messages"
+msgstr "Radera och flytta meddelanden"
+
+#: lib/MIME/Viewer/itip.php:548
+msgid "Deny request"
+msgstr "Avslå begäran"
+
+#: lib/MIME/Viewer/itip.php:497
+msgid "Deny request for free/busy information"
+msgstr "Avslå begäran om ledig/upptagen-information"
+
+#: config/prefs.php.dist:912
+msgid "Descending"
+msgstr "Fallande"
+
+#: templates/compose/attachments.inc:21 lib/MIME/Viewer/itip.php:623
+msgid "Description"
+msgstr "Beskrivning"
+
+#: templates/smime/smime.inc:60 templates/smime/smime.inc:106
+#: templates/pgp/pgp.inc:93 templates/pgp/pgp.inc:147
+#: templates/pgp/pgp.inc:151
+msgid "Details"
+msgstr "Detaljer"
+
+#: config/prefs.php.dist:673
+msgid "Dim signatures?"
+msgstr "Gråmarkera signatur?"
+
+#: templates/contacts/contacts.inc:240
+msgid "Display"
+msgstr "Visa"
+
+#: config/prefs.php.dist:463
+msgid "Display confirmation after sending a message?"
+msgstr "Visa bekräftelse efter att meddelande har skickats?"
+
+#: config/prefs.php.dist:682
+msgid "Display in Body of Message"
+msgstr "Visa i meddelandet"
+
+#: config/prefs.php.dist:777
+msgid "Display pop-up notification of new mail?"
+msgstr "Visa popup notifiering vid nya meddelanden?"
+
+#: config/prefs.php.dist:742
+msgid "Display the 'Empty Trash' link in the menubar?"
+msgstr "Visa 'Töm papperkorg' i menyn?"
+
+#: templates/compose/attachments.inc:11
+msgid "Disposition"
+msgstr "Placering"
+
+#: templates/search/fields.inc:25
+msgid "Do NOT match"
+msgstr "Skall INTE passa"
+
+#: templates/folders/actions.inc:14
+msgid "Do Not Check Folder(s) for New Mail"
+msgstr "Kontrollera inte mapp(ar) för nya meddelanden"
+
+#: config/prefs.php.dist:932
+msgid "Do not generate a link in the From: column"
+msgstr "Skapa ingen länk från Från-fältet"
+
+#: lib/IMP.php:1010
+msgid "Do you want to open that folder?"
+msgstr "Vill du öppna mappen?"
+
+#: templates/compose/spelling.inc:126
+msgid "Done"
+msgstr "Klar"
+
+#: lib/MIME/Contents.php:205
+#, php-format
+msgid "Download %s in .zip Format"
+msgstr "Hämta %s som en zip-fil"
+
+#: templates/message/headers.inc:52
+msgid "Download All Attachments (in .zip file)"
+msgstr "Hämta alla bilagor (som en zip-fil)"
+
+#: templates/folders/actions.inc:18
+msgid "Download Folder(s)"
+msgstr "Hämta mapp(ar)"
+
+#: templates/folders/actions.inc:19
+msgid "Download Folder(s) [.zip format]"
+msgstr "Hämta mapp(ar) (som en zip-fil)"
+
+#: lib/MIME/Contents.php:205
+msgid "Download in .zip Format"
+msgstr "Hämta i .zip-format"
+
+#: mailbox.php:675 message.php:497 templates/message/navbar_navigate.inc:11
+#: templates/mailbox/legend.inc:9 templates/mailbox/navbar.inc:22
+#: templates/mailbox/navbar.inc:41
+msgid "Draft"
+msgstr "Utkast"
+
+#: folders.php:353
+msgid "Draft folder"
+msgstr "Utkast-mapp"
+
+#: templates/prefs/folderselect.inc:23
+msgid "Drafts folder:"
+msgstr "Utkast-mapp:"
+
+#: templates/pgp/pgp.inc:196
+msgid "E-mail Address"
+msgstr "E-postadress"
+
+#: lib/Mailbox.php:341
+msgid "END"
+msgstr "SLUT"
+
+#: lib/MIME/Viewer/status.php:77
+msgid "ERROR: Your message could not be delivered."
+msgstr "FEL: Ditt meddelande kunde inte levereras."
+
+#: folders.php:381
+msgid "Edit"
+msgstr "Ändra"
+
+#: templates/filters/prefs.inc:18
+msgid "Edit Blacklist"
+msgstr "Ändra spärrade adresser"
+
+#: templates/filters/prefs.inc:13
+msgid "Edit Filters"
+msgstr "Ändra filter"
+
+#: folders.php:381 templates/mailbox/header.inc:13
+#: templates/search/header.inc:16
+msgid "Edit Virtual Folder"
+msgstr "Ändra virtuell mapp"
+
+#: templates/mailbox/header.inc:13
+#, php-format
+msgid "Edit Virtual Folder Definition for %s"
+msgstr "Ändra definitionen för den virtuella mappen %s"
+
+#: templates/filters/prefs.inc:23
+msgid "Edit Whitelist"
+msgstr "Ändra betrodda adresser"
+
+#: templates/filters/prefs.inc:18
+msgid "Edit your blacklist"
+msgstr "Ändra spärrade adresser"
+
+#: templates/filters/prefs.inc:13
+msgid "Edit your filter rules"
+msgstr "Ändra filterregler"
+
+#: config/prefs.php.dist:839
+msgid "Edit your preferences for accessing other mail accounts."
+msgstr "Ändra inställningar för åtkomst av andra e-postkonton."
+
+#: templates/filters/prefs.inc:23
+msgid "Edit your whitelist"
+msgstr "Ändra betrodda adresser"
+
+#: templates/contacts/contacts.inc:243
+msgid "Email Address"
+msgstr "E-postadress"
+
+#: lib/Message.php:641
+#, php-format
+msgid "Emptied all messages from %s."
+msgstr "Rensade alla meddelanden från %s."
+
+#: templates/folders/actions.inc:20
+msgid "Empty Folder(s)"
+msgstr "Töm mapp(ar)"
+
+#: templates/mailbox/actions.inc:39
+msgid "Empty Trash folder"
+msgstr "Töm Papperskorg"
+
+#: lib/IMP.php:908
+msgid "Empty _Trash"
+msgstr "Töm _papperskorg"
+
+#: templates/pgp/notactive.inc:16 templates/pgp/pgp.inc:20
+msgid "Enable PGP functionality?"
+msgstr "Aktivera PGP-funktionalitet?"
+
+#: templates/smime/notactive.inc:16 templates/smime/smime.inc:16
+msgid "Enable S/MIME functionality?"
+msgstr "Aktivera S/MIME-funktionalitet?"
+
+#: config/prefs.php.dist:789
+msgid "Enable message previews?"
+msgstr "Aktivera förhandsgranskning av meddelanden?"
+
+#: templates/compose/compose.inc:433
+msgid "Encr_yption Options"
+msgstr "Kr_ypteringsinställningar"
+
+#: lib/MIME/Viewer/itip.php:474 lib/MIME/Viewer/itip.php:611
+msgid "End"
+msgstr "Slut"
+
+#: lib/Compose.php:300
+msgid "End forwarded message"
+msgstr "Slut på vidarebefordrat meddelande"
+
+#: lib/Compose.php:257
+msgid "End message"
+msgstr "Slut på meddelanden"
+
+#: lib/Compose.php:255
+#, php-format
+msgid "End message from %s"
+msgstr "Slut på meddelande från %s"
+
+#: templates/smime/smime.inc:112 templates/pgp/pgp.inc:151
+msgid "Enter Passphrase"
+msgstr "Ange lösenord"
+
+#: templates/prefs/folderselect.inc:9
+msgid "Enter the name for your new drafts folder"
+msgstr "Ange namn på ny mapp för utkast"
+
+#: templates/prefs/sentmailselect.inc:24
+msgid "Enter the name for your new sent mail folder"
+msgstr "Ange namn på ny mapp för skickade meddelanden"
+
+#: templates/prefs/trashselect.inc:9
+msgid "Enter the name for your new trash folder"
+msgstr "Ange namn på ny papperskorg"
+
+#: compose.php:1042 message.php:191
+#, php-format
+msgid "Entry \"%s\" was successfully added to the address book"
+msgstr "'%s' lades till i adressboken."
+
+#: templates/smime/smime.inc:53 templates/pgp/pgp.inc:84
+#: lib/MIME/Viewer/pgp.php:392 lib/MIME/Viewer/pkcs7.php:378
+#: lib/MIME/Viewer/status.php:75 lib/MIME/Viewer/status.php:170
+msgid "Error"
+msgstr "Fel"
+
+#: lib/MIME/Viewer/itip.php:277 lib/MIME/Viewer/itip.php:370
+#, php-format
+msgid "Error sending reply: %s."
+msgstr "Fel under sändning av svarsmeddelande: %s"
+
+#: lib/MIME/Viewer/itip.php:92
+msgid "Event successfully deleted."
+msgstr "Händelse raderad."
+
+#: config/prefs.php.dist:767
+msgid "Every 15 minutes"
+msgstr "Var 15:e minut"
+
+#: config/prefs.php.dist:764
+msgid "Every 30 seconds"
+msgstr "Var 30:e sekund"
+
+#: config/prefs.php.dist:766
+msgid "Every 5 minutes"
+msgstr "Var 5:e minut"
+
+#: config/prefs.php.dist:768
+msgid "Every half hour"
+msgstr "Varje halvtimme"
+
+#: config/prefs.php.dist:765
+msgid "Every minute"
+msgstr "Varje minut"
+
+#: folders.php:419
+msgid "Expand"
+msgstr "Expandera"
+
+#: templates/folders/actions.inc:33
+msgid "Expand All"
+msgstr "Expandera alla"
+
+#: templates/folders/actions.inc:33
+msgid "Expand All Folders"
+msgstr "Expandera alla mappar"
+
+#: folders.php:419
+msgid "Expand Folder"
+msgstr "Expandera mapp"
+
+#: templates/compose/compose.inc:331 templates/compose/redirect.inc:53
+msgid "Expand Names"
+msgstr "Expandera namn"
+
+#: config/prefs.php.dist:1030
+msgid "Expand names in the compose window automatically in the background?"
+msgstr "Automatisk bakgrundsexpansion av adresser när du anger mottagare?"
+
+#: config/prefs.php.dist:960
+msgid "Expand the entire folder tree by default in the folders view?"
+msgstr "Expandera alla mappar som förvald inställning i mappvyn?"
+
+#: templates/compose/compose.inc:155 templates/compose/compose.inc:205
+#: templates/compose/compose.inc:256 templates/compose/redirect.inc:101
+msgid "Expanding"
+msgstr "Expanderar"
+
+#: templates/fetchmail/fetchmail.inc:26 config/prefs.php.dist:104
+msgid "Fetch Mail"
+msgstr "Hämta e-post"
+
+#: config/prefs.php.dist:848
+msgid "Fetch Mail in a separate window?"
+msgstr "Hämta e-post i ett separat fönster."
+
+#: templates/fetchmail/manage.inc:46
+msgid "Fetch messages upon logging on?"
+msgstr "Hämta meddelanden vid inloggning?"
+
+#: lib/Fetchmail.php:306
+#, php-format
+msgid "Fetched %d message(s) from %s"
+msgstr "Hämtade %d meddelanden från %s."
+
+#: lib/Fetchmail.php:304 lib/Fetchmail.php:306
+msgid "Fetchmail: "
+msgstr "Fetchmail: "
+
+#: lib/Fetchmail.php:308
+msgid "Fetchmail: no new messages."
+msgstr "Fetchmail: inga nya meddelanden."
+
+#: lib/IMP.php:923
+msgid "Fi_lters"
+msgstr "Fi_lter"
+
+#: templates/compose/attachments.js:83 templates/compose/compose.inc:492
+msgid "File"
+msgstr "Fil"
+
+#: templates/filters/prefs.inc:31
+msgid "Filter Options"
+msgstr "Filterinställningar"
+
+#: templates/filters/prefs.inc:9
+msgid "Filter Settings"
+msgstr "Filterinställningar"
+
+#: config/prefs.php.dist:596
+msgid "Filter message content for profanity?"
+msgstr "Filtrera meddelande på svordomar?"
+
+#: templates/filters/notactive.inc:11
+msgid "Filter support is disabled on this system."
+msgstr "Filtersupport är avstängt i systemet."
+
+#: config/prefs.php.dist:120
+msgid "Filters"
+msgstr "Filter"
+
+#: templates/filters/notactive.inc:3
+msgid "Filters NOT Active"
+msgstr "Filter är INTE aktivt"
+
+#: lib/Filter.php:111
+#, php-format
+msgid "Filters: %s management page"
+msgstr "%s-filterhanteringssida"
+
+#: templates/contacts/contacts.inc:184
+msgid "Find"
+msgstr "Sök"
+
+#: config/prefs.php.dist:885
+msgid "First Mailbox Page"
+msgstr "Första brevlådesidan"
+
+#: mailbox.php:317
+msgid "First Page"
+msgstr "Första sidan"
+
+#: templates/message/navbar_actions.inc:15 templates/mailbox/actions.inc:21
+msgid "Fo_rward"
+msgstr "Vida_rbefordra"
+
+#: folders.php:258 templates/folders/head.inc:2
+#: templates/prefs/initialpageselect.inc:6
+#: templates/prefs/initialpageselect.inc:10
+msgid "Folder Navigator"
+msgstr "Mappnavigator"
+
+#: templates/login/login.inc:199
+msgid "Folder Prefix"
+msgstr "Mapprefix"
+
+#: lib/Block/summary.php:3
+msgid "Folder Summary"
+msgstr "Mappsammanställning"
+
+#: acl.php:24
+msgid "Folder sharing is not enabled."
+msgstr "Mappdelning är inte tillgängligt."
+
+#: folders.php:52
+msgid "Folder use is not enabled."
+msgstr "Mappanvändning är inte tillgångligt."
+
+#: config/prefs.php.dist:949
+msgid "Format of message dates in the mailbox view for messages dated today"
+msgstr "Datumformat i brevlådevyn för meddelanden daterade idag"
+
+#: compose.php:701 templates/message/navbar_actions.inc:15
+#: templates/mailbox/actions.inc:21
+msgid "Forward"
+msgstr "Vidarbefordra"
+
+#: compose.php:686
+msgid "Forward:"
+msgstr "Vidarbefordra:"
+
+#: lib/Compose.php:285
+msgid "Forwarded message"
+msgstr "Vidarebefordrat meddelande"
+
+#: lib/Compose.php:283
+#, php-format
+msgid "Forwarded message from %s"
+msgstr "Vidarebefordrat meddelande från %s"
+
+#: lib/MIME/Viewer/itip.php:442
+msgid "Free/Busy Information"
+msgstr "Ledig/Upptagen information"
+
+#: lib/MIME/Viewer/itip.php:453
+msgid "Free/Busy Reply"
+msgstr "Ledig/Upptagen svar"
+
+#: lib/MIME/Viewer/itip.php:447
+msgid "Free/Busy Request"
+msgstr "Ledig/upptagen-förfrågan"
+
+#: lib/MIME/Viewer/itip.php:364
+msgid "Free/Busy Request Response"
+msgstr "Svar på ledig/upptagen-förfrågan"
+
+#: templates/mailbox/message_headers.inc:22
+msgid "Fro_m"
+msgstr "Frå_n"
+
+#: search.php:140 message.php:260 thread.php:86
+#: templates/compose/compose.inc:98
+msgid "From"
+msgstr "Från"
+
+#: config/prefs.php.dist:898
+msgid "From Address"
+msgstr "Från-adress"
+
+#: compose.php:698 compose.php:702
+msgid "Fwd:"
+msgstr "VB:"
+
+#: compose.php:1203
+msgid "Fwd: "
+msgstr "VB: "
+
+#: compose.php:1205
+#, php-format
+msgid "Fwd: %u Forwarded Messages"
+msgstr "VB: %u vidarbefordrat meddelande"
+
+#: config/prefs.php.dist:13 config/prefs.php.dist:22 config/prefs.php.dist:30
+#: config/prefs.php.dist:38
+msgid "General Options"
+msgstr "Allmänna inställningar"
+
+#: templates/fetchmail/manage.inc:37
+msgid "Get only new messages? (IMAP only)"
+msgstr "Hämta enbart nya meddelanden? (IMAP)"
+
+#: thread.php:74
+msgid "Go to Message"
+msgstr "Gå till meddelande"
+
+#: message.php:187
+#, php-format
+msgid "Go to address book entry of \"%s\""
+msgstr "Gå till adressbokspost för '%s'"
+
+#: templates/acl/acl.inc:135
+msgid "Grant access"
+msgstr "Ge tillgång"
+
+#: message.php:552 lib/Filter.php:111 lib/MIME/Viewer/appledouble.php:43
+#: lib/MIME/Viewer/html.php:106 lib/MIME/Viewer/images.php:98
+#: lib/MIME/Viewer/images.php:105 lib/MIME/Viewer/images.php:107
+#: lib/MIME/Viewer/images.php:160 lib/MIME/Viewer/notification.php:65
+#: lib/MIME/Viewer/notification.php:71 lib/MIME/Viewer/pgp.php:178
+#: lib/MIME/Viewer/pkcs7.php:421 lib/MIME/Viewer/related.php:64
+#: lib/MIME/Viewer/status.php:123 lib/MIME/Viewer/status.php:130
+msgid "HERE"
+msgstr "HÄR"
+
+#: lib/MIME/Viewer/html.php:107 lib/MIME/Viewer/related.php:65
+msgid "HTML"
+msgstr "HTML"
+
+#: compose.php:230
+msgid "HTML Version of Message"
+msgstr "HTML-version av meddelandet"
+
+#: templates/message/headers.inc:58
+msgid "Headers"
+msgstr "Rubriker"
+
+#: templates/compose/recompose.inc:5
+msgid "Here is the message you were composing:"
+msgstr "Här är meddelandet du skrev på:"
+
+#: config/prefs.php.dist:664
+msgid "Hidden"
+msgstr "Gömd"
+
+#: config/prefs.php.dist:663
+msgid "Hidden in Thread View"
+msgstr "Gömd i trådvy"
+
+#: mailbox.php:339
+msgid "Hide Deleted"
+msgstr "Dölj raderade"
+
+#: folders.php:253
+msgid "Hide Unsubscribed"
+msgstr "Göm unsubscribed"
+
+#: templates/compose/compose.inc:305
+msgid "High"
+msgstr "Hög"
+
+#: mailbox.php:680 message.php:294 templates/mailbox/legend.inc:12
+msgid "High Priority"
+msgstr "Hög prioritet"
+
+#: templates/compose/compose.inc:304
+msgid "Highest"
+msgstr "Högst"
+
+#: config/prefs.php.dist:684
+msgid "How do you want to display attachments?"
+msgstr "Hur vill du visa bilagor?"
+
+#: config/prefs.php.dist:489
+msgid "How to attribute quoted lines in a reply"
+msgstr "Hur citerade rader visas i ett svar"
+
+#: lib/Fetchmail/imap.php:137
+msgid "IMAP"
+msgstr "IMAP"
+
+#: lib/Fetchmail/imap.php:132
+msgid "IMAP (Auto Detect Protocols)"
+msgstr "IMAP (upptäck protokoll automatiskt)"
+
+#: templates/login/login.inc:174 lib/Fetchmail/imap.php:149
+msgid "IMAP over SSL"
+msgstr "IMAP över SSL"
+
+#: lib/Fetchmail/imap.php:155
+msgid "IMAP over SSL (self-signed certificate)"
+msgstr "IMAP över SSL (självsignerat certifikat)"
+
+#: templates/login/login.inc:175
+msgid "IMAP over SSL (self-signed)"
+msgstr "IMAP över SSL (självsignerad)"
+
+#: templates/login/login.inc:173 lib/Fetchmail/imap.php:143
+msgid "IMAP, no TLS"
+msgstr "IMAP, ingen TLS"
+
+#: lib/Fetchmail/imap.php:50
+msgid "IMAP/POP3 Mail Servers"
+msgstr "IMAP/POP3 e-postservrar"
+
+#: folders.php:345
+msgid "INBOX"
+msgstr "Inkorg"
+
+#: templates/compose/spelling.inc:82
+msgid "Ignore"
+msgstr "Ignorera"
+
+#: templates/compose/spelling.inc:83
+msgid "Ignore All"
+msgstr "Ignorera alla"
+
+#: templates/saveimage/saveimage.inc:8
+msgid "Image"
+msgstr "Bild"
+
+#: templates/folders/import.inc:20
+msgid "Import"
+msgstr "Importera"
+
+#: templates/smime/import_key.inc:85 templates/pgp/import_key.inc:65
+msgid "Import Key"
+msgstr "Importera nyckel"
+
+#: templates/pgp/pgp.inc:254
+msgid "Import Keypair"
+msgstr "Importera nyckelpar"
+
+#: templates/folders/actions.inc:25
+msgid "Import Messages"
+msgstr "Importera meddelanden"
+
+#: pgp.php:42
+msgid "Import PGP Key"
+msgstr "Importera PGP-nyckel"
+
+#: templates/smime/smime.inc:76
+msgid "Import Personal Certificate"
+msgstr "Importera personligt certifikat"
+
+#: templates/pgp/import_key.inc:14
+msgid "Import Personal Private PGP Key"
+msgstr "Importera personlig privat PGP-nyckel"
+
+#: templates/pgp/import_key.inc:9
+msgid "Import Personal Public PGP Key"
+msgstr "Importera personlig publik PGP-nyckel"
+
+#: templates/smime/import_key.inc:4
+msgid "Import Personal S/MIME Certificates"
+msgstr "Importera personligt S/MIME-certifikat"
+
+#: templates/smime/smime.inc:34 templates/pgp/pgp.inc:107
+msgid "Import Public Key"
+msgstr "Import publik nyckel"
+
+#: templates/pgp/import_key.inc:4
+msgid "Import Public PGP Key"
+msgstr "Import publik PGP-nyckel"
+
+#: templates/smime/import_key.inc:8
+msgid "Import Public S/MIME Key"
+msgstr "Importera publik S/MIME-nyckel"
+
+#: smime.php:16
+msgid "Import S/MIME Key"
+msgstr "Importera S/MIME-nyckel"
+
+#: templates/folders/import.inc:9
+msgid "Import mbox File"
+msgstr "Importera mbox-fil"
+
+#: templates/folders/import.inc:16
+#, php-format
+msgid "Import mbox file %s into folder %s."
+msgstr "Importera mbox fil %s till mappen %s."
+
+#: mailbox.php:688 message.php:498 templates/message/navbar_navigate.inc:7
+#: templates/mailbox/legend.inc:7 templates/mailbox/navbar.inc:16
+#: templates/mailbox/navbar.inc:33
+msgid "Important"
+msgstr "Viktigt"
+
+#: templates/search/main.inc:47
+msgid "Important messages"
+msgstr "Viktiga meddelanden"
+
+#: folders.php:157
+#, php-format
+msgid "Imported %d messages from %s."
+msgstr "Importerade %d meddelanden från %s."
+
+#: lib/MIME/Viewer/itip.php:725
+msgid "In Process"
+msgstr "Pågående"
+
+#: lib/IMP.php:368 lib/Folder.php:248
+msgid "Inbox"
+msgstr "Inkorg"
+
+#: config/prefs.php.dist:477
+msgid "Include a brief summary of the header in a reply?"
+msgstr "Inkludera en kort sammanställning av rubrikerna i svar?"
+
+#: config/prefs.php.dist:471
+msgid "Include original message in a reply?"
+msgstr "Inkludera orginalmeddelande i svar?"
+
+#: lib/MIME/Viewer/notification.php:64 lib/MIME/Viewer/status.php:133
+msgid "Info"
+msgstr "Info"
+
+#: templates/smime/smime.inc:60 templates/pgp/pgp.inc:93
+#, php-format
+msgid "Information on %s Public Key"
+msgstr "Information om publik nyckel för %s"
+
+#: templates/pgp/pgp.inc:151
+msgid "Information on Personal Private Key"
+msgstr "Information om personlig privat nyckel"
+
+#: templates/smime/smime.inc:106 templates/pgp/pgp.inc:147
+msgid "Information on Personal Public Key"
+msgstr "Information om personlig publik nyckel"
+
+#: templates/compose/attachments.inc:15 templates/compose/attachments.js:99
+#: templates/compose/compose.inc:497
+msgid "Inline"
+msgstr "Inline"
+
+#: templates/smime/import_key.inc:9
+msgid "Insert Certificate Here"
+msgstr "Infoga certifikat här"
+
+#: templates/pgp/import_key.inc:15
+msgid "Insert Personal Private PGP Key Here"
+msgstr "Infoga personlig privat PGP-nyckel här"
+
+#: templates/pgp/import_key.inc:10
+msgid "Insert Personal Public PGP Key Here"
+msgstr "Infoga personlig publik PGP-nyckel nyckel"
+
+#: templates/pgp/import_key.inc:5
+msgid "Insert Public PGP Key Here"
+msgstr "Infoga publik PGP-nyckel här"
+
+#: lib/MIME/Viewer/itip.php:375
+msgid "Invalid Action selected for this component."
+msgstr "Handling är ogiltig för den här komponenten."
+
+#: mailbox.php:548 mailbox.php:589
+msgid "Invalid Address"
+msgstr "Felaktig adress"
+
+#: lib/Fetchmail/imap.php:312
+msgid "Invalid Remote Mailbox"
+msgstr "Felaktig fjärrbrevlåda"
+
+#: compose.php:132
+#, php-format
+msgid "Invalid character in e-mail address: %s."
+msgstr "Ogiltigt tecken i e-postadress: %s."
+
+#: pgp.php:16 smime.php:82
+msgid "Invalid key"
+msgstr "Felaktig nyckel"
+
+#: pgp.php:196
+msgid "Invalid personal PGP private key."
+msgstr "Felaktig personlig privat PGP-nyckel."
+
+#: pgp.php:171
+msgid "Invalid personal PGP public key."
+msgstr "Felaktig personlig publik PGP-nyckel."
+
+#: templates/mailbox/navbar.inc:12
+msgid "Invert"
+msgstr "Invertera urval"
+
+#: templates/compose/compose.inc:567
+msgid "KB"
+msgstr "KB"
+
+#: templates/pgp/pgp.inc:201
+msgid "Key Length"
+msgstr "Nyckellängd"
+
+#: pgp.php:318
+msgid "Key successfully sent to the public keyserver."
+msgstr "Nyckel skickades till den publika nyckelservern."
+
+#: templates/login/login.inc:227
+msgid "Language"
+msgstr "Språk"
+
+#: config/prefs.php.dist:886
+msgid "Last Mailbox Page"
+msgstr "Sista brevlådesidan"
+
+#: mailbox.php:330
+msgid "Last Page"
+msgstr "Sista sidan"
+
+#: templates/compose/compose.inc:380
+msgid "Li_nk Attachments"
+msgstr "Lä_nka bilagor"
+
+#: attachment.php:34 lib/Compose.php:1003
+msgid "Linked attachments are forbidden."
+msgstr "Länka bilagor är inte tillåtet."
+
+#: lib/Compose.php:1020
+#, php-format
+msgid "Links will expire on %s"
+msgstr "Länkar kommer att löpa ut %s"
+
+#: config/prefs.php.dist:1049
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+"Visa alla kontakter när du tar fram kontaktvyn? (Annars ser du bara\n"
+"kontakter när du explicit söker efter dem)"
+
+#: config/prefs.php.dist:681
+msgid "Listing in the Header"
+msgstr "Visa i rubriken"
+
+#: templates/fetchmail/manage.inc:30
+msgid "Local Mailbox:"
+msgstr "Lokal brevlåda:"
+
+#: lib/MIME/Viewer/itip.php:628
+msgid "Location"
+msgstr "Plats"
+
+#: templates/login/login.inc:235
+msgid "Log in"
+msgstr "Logga in"
+
+#: lib/Block/summary.php:117
+#, php-format
+msgid "Log in to %s"
+msgstr "Logga in till %s"
+
+#: templates/login/login.inc:142
+msgid "Login"
+msgstr "Login"
+
+#: config/prefs.php.dist:39
+msgid "Login Tasks"
+msgstr "Loginaktiviteter"
+
+#: templates/compose/compose.inc:307
+msgid "Low"
+msgstr "Låg"
+
+#: mailbox.php:683 message.php:296 templates/mailbox/legend.inc:13
+msgid "Low Priority"
+msgstr "Låg prioritet"
+
+#: templates/compose/compose.inc:308
+msgid "Lowest"
+msgstr "Lägst"
+
+#: lib/MIME/Viewer/appledouble.php:46
+msgid "Macintosh File"
+msgstr "Macintochfil"
+
+#: pgp.php:332 smime.php:254 templates/smime/passphrase.inc:13
+msgid "Mail"
+msgstr "E-post"
+
+#: config/prefs.php.dist:96
+msgid "Mail Previews"
+msgstr "Förhandsgranskning"
+
+#: templates/fetchmail/driver_select.inc:16
+msgid "Mail server type to connect to:"
+msgstr "Typ av e-post server att ansluta till:"
+
+#: folders.php:363
+msgid "Mailbox"
+msgstr "Brevlåda"
+
+#: config/prefs.php.dist:111
+msgid "Mailbox and Folder Display Options"
+msgstr "Visningsinställningar för brevlåda och mappar"
+
+#: templates/folders/actions.inc:16
+msgid "Mark All Messages in Folder as Seen"
+msgstr "Markera alla meddelanden i mappen som lästa"
+
+#: templates/folders/actions.inc:17
+msgid "Mark All Messages in Folder as Unseen"
+msgstr "Markera alla meddelanden i mappen som olästa"
+
+#: templates/message/navbar_navigate.inc:5 templates/mailbox/navbar.inc:30
+msgid "Mark as:"
+msgstr "Markera som:"
+
+#: config/prefs.php.dist:646
+msgid "Mark different levels of quoting with different colors?"
+msgstr "Markera olika nivåer av citat med olika färger?"
+
+#: templates/fetchmail/manage.inc:40
+msgid "Mark messages as seen? (IMAP only)"
+msgstr "Merkera meddelanden som lästa? (endast IMAP)"
+
+#: config/prefs.php.dist:654
+msgid "Mark simple markup?"
+msgstr "Hantera enkel textuppmärkning?"
+
+#: templates/search/header.inc:46
+msgid "Match All Queries"
+msgstr "Samtliga"
+
+#: templates/search/header.inc:42
+msgid "Match Any Query"
+msgstr "Minst en"
+
+#: templates/compose/compose.inc:503
+msgid "Maximum Attachment Size"
+msgstr "Maximal bilagestorlek"
+
+#: templates/compose/compose.inc:484
+msgid "Maximum number of attachments reached."
+msgstr "Max antal bilagor uppnått."
+
+#: templates/compose/compose.inc:479
+msgid "Maximum total attachment size reached."
+msgstr "Maxstorlek för samtliga bilagor uppnådd."
+
+#: lib/MIME/Viewer/itip.php:582
+msgid "Meeting Cancellation"
+msgstr "Avboka möte"
+
+#: lib/MIME/Viewer/itip.php:532
+msgid "Meeting Information"
+msgstr "Mötesinformation"
+
+#: lib/MIME/Viewer/itip.php:542
+msgid "Meeting Proposal"
+msgstr "Mötesförfrågan"
+
+#: lib/MIME/Viewer/itip.php:573
+msgid "Meeting Reply"
+msgstr "Mötessvar"
+
+#: lib/MIME/Viewer/itip.php:554
+msgid "Meeting Update"
+msgstr "Mötesuppdatering"
+
+#: lib/MIME/Viewer/itip.php:559
+msgid "Meeting Update Request"
+msgstr "Uppdateringsbegäran om möte"
+
+#: lib/Block/tree_folders.php:3
+msgid "Menu Folder List"
+msgstr "Meny mapplista"
+
+#: lib/Compose.php:247
+msgid "Message"
+msgstr "Meddelande"
+
+#: compose.php:506 compose.php:533 compose.php:565 config/prefs.php.dist:50
+msgid "Message Composition"
+msgstr "Skriv meddelande"
+
+#: config/prefs.php.dist:897
+msgid "Message Date"
+msgstr "Meddelandedatum"
+
+#: config/prefs.php.dist:49 config/prefs.php.dist:68 config/prefs.php.dist:78
+#: config/prefs.php.dist:87 config/prefs.php.dist:95 config/prefs.php.dist:103
+msgid "Message Options"
+msgstr "Meddelandeinställningar"
+
+#: search.php:359
+msgid "Message Search"
+msgstr "Meddelandesökning"
+
+#: config/prefs.php.dist:901
+msgid "Message Size"
+msgstr "Meddelandestorlek"
+
+#: message.php:381
+msgid "Message Source"
+msgstr "Meddelandekälla"
+
+#: config/prefs.php.dist:69
+msgid "Message Viewing"
+msgstr "Meddelandevisning"
+
+#: templates/search/header.inc:55
+msgid "Message fields"
+msgstr "Meddelandefält"
+
+#: templates/search/main.inc:6
+msgid "Message flags"
+msgstr "Meddelandeflaggor"
+
+#: templates/search/main.inc:83
+msgid "Message folders"
+msgstr "Meddelande mappar"
+
+#: lib/Compose.php:245
+#, php-format
+msgid "Message from %s"
+msgstr "Meddelande från %s"
+
+#: templates/search/header.inc:33
+msgid "Message matches"
+msgstr "Meddelande matchar"
+
+#: compose.php:745 compose.php:759
+msgid "Message redirected successfully."
+msgstr "Meddelande eftersänt."
+
+#: compose.php:992
+#, php-format
+msgid "Message sent successfully, but not saved to %s"
+msgstr "Meddelande skickades, men kunde inte sparas till %s"
+
+#: compose.php:1051 compose.php:1066
+msgid "Message sent successfully."
+msgstr "Meddelande skickades."
+
+#: config/prefs.php.dist:921
+msgid "Messages per page in the mailbox view."
+msgstr "Meddelande per sida i mappvyn."
+
+#: mailbox.php:294
+msgid "Messages to"
+msgstr "Meddelande till"
+
+#: templates/acl/acl.inc:29
+msgid "Modify"
+msgstr "Ändra"
+
+#: templates/compose/expand.inc:12
+#, php-format
+msgid "More than one address found for field '%s'."
+msgstr "Mer än en adress hittat för fältet '%s'."
+
+#: templates/message/navbar_navigate.inc:18 templates/mailbox/navbar.inc:50
+msgid "Move"
+msgstr "Flytta"
+
+#: templates/prefs/sourceselect.inc:316
+msgid "Move down"
+msgstr "Flytta ner"
+
+#: templates/message/navbar_navigate.inc:18
+msgid "Move to folder"
+msgstr "Flytta till mapp"
+
+#: templates/prefs/sourceselect.inc:314
+msgid "Move up"
+msgstr "Flytta upp"
+
+#: lib/Mailbox.php:331
+msgid "Multipart Message"
+msgstr "Multipart meddelanden"
+
+#: lib/MIME/Viewer/alternative.php:130
+msgid "Multipart/alternative"
+msgstr "Multipart/alternative"
+
+#: templates/fetchmail/manage.inc:48 templates/smime/smime.inc:20
+#: templates/pgp/pgp.inc:24
+msgid "NOTE"
+msgstr "Notering"
+
+#: templates/contacts/contacts.inc:242 lib/MIME/Viewer/itip.php:640
+msgid "Name"
+msgstr "Namn"
+
+#: pgp.php:110
+msgid "Name and/or email can not be empty"
+msgstr "Namn och/eller e-post får inte vara tom"
+
+#: lib/MIME/Viewer/itip.php:730
+msgid "Needs Action"
+msgstr "Behöver åtgärd"
+
+#: config/prefs.php.dist:556 config/prefs.php.dist:577
+#: config/prefs.php.dist:763
+msgid "Never"
+msgstr "Aldrig"
+
+#: config/prefs.php.dist:546
+msgid "Never save attachments"
+msgstr "Spara aldrig bilagor"
+
+#: templates/acl/acl.inc:124
+msgid "New"
+msgstr "Ny"
+
+#: lib/IMP.php:576
+msgid "New Folder"
+msgstr "Ny mapp"
+
+#: config/prefs.php.dist:88
+msgid "New Mail"
+msgstr "Nya meddelanden"
+
+#: templates/search/main.inc:19
+msgid "New messages"
+msgstr "Nya meddelanden"
+
+#: templates/compose/spelling.inc:133
+msgid "Next"
+msgstr "Nästa"
+
+#: templates/message/navbar_navigate.inc:33
+msgid "Next Message"
+msgstr "Nästa meddelande"
+
+#: mailbox.php:328
+msgid "Next Page"
+msgstr "Nästa sida"
+
+#: templates/compose/compose.inc:532 config/prefs.php.dist:957
+msgid "No"
+msgstr "Nej"
+
+#: smime.php:226
+msgid "No Certificate found"
+msgstr "Inget certifikat hittat"
+
+#: templates/compose/encrypt_list.inc:5
+msgid "No Encryption"
+msgstr "Ingen kryptering"
+
+#: templates/pgp/pgp.inc:80
+msgid "No Keys in Keyring"
+msgstr "Inga nycklar i nyckelringen"
+
+#: mailbox.php:347
+#, php-format
+msgid "No Messages"
+msgstr "Inga meddelanden"
+
+#: pgp.php:137
+msgid "No PGP public key imported."
+msgstr "Ingen publik PGP-nyckel importerades."
+
+#: templates/smime/smime.inc:131
+msgid "No Personal Certificate Present"
+msgstr "Inget personligt certifikat tillgängligt"
+
+#: templates/smime/smime.inc:49
+msgid "No Public Keys Found"
+msgstr "Inga publika nycklar hittades"
+
+#: smime.php:151
+msgid "No S/MIME public key imported."
+msgstr "Ingen publik S/MIME-nyckel importerades."
+
+#: lib/MIME/Viewer/tnef.php:94
+msgid "No attachments found."
+msgstr "Bilagor saknas."
+
+#: acl.php:72 acl.php:98
+msgid "No folder selected."
+msgstr "Ingen mapp vald."
+
+#: lib/Block/summary.php:130
+msgid "No folders are being checked for new mail."
+msgstr "Inga mappar kontrolleras för ny e-post."
+
+#: folders.php:206 lib/Folder.php:598 lib/Folder.php:649
+msgid "No folders were specified"
+msgstr "Inga mappar är valda"
+
+#: lib/Block/summary.php:136
+msgid "No folders with new messages"
+msgstr "Inga mappar med nya meddelanden"
+
+#: lib/Block/summary.php:133
+msgid "No folders with unseen messages"
+msgstr "Inga mappar med olästa meddelanden"
+
+#: lib/Compose.php:241
+msgid "No message body text"
+msgstr "Ingen meddelandetext"
+
+#: lib/Mailbox.php:393
+msgid "No messages matched your search."
+msgstr "Inga meddelanden motsvarade din sökning."
+
+#: pgp.php:189
+msgid "No personal PGP private key imported."
+msgstr "Ingen personlig privat PGP-nyckel importerades."
+
+#: pgp.php:165
+msgid "No personal PGP public key imported."
+msgstr "Ingen personlig publik PGP-nyckel importerades."
+
+#: smime.php:201
+msgid "No personal S/MIME certificates imported."
+msgstr "Ingent personlig S/MIME-certifikat importerades."
+
+#: spelling.php:213
+msgid "No spellchecking program configured."
+msgstr "Hittade inget program för rättstavningskontroll."
+
+#: templates/compose/spelling.inc:48
+msgid "No spelling errors"
+msgstr "Inga stavfel"
+
+#: templates/compose/spelling.inc:100
+msgid "No suggestions"
+msgstr "Inga förslag"
+
+#: acl.php:68 acl.php:94
+msgid "No user specified."
+msgstr "Ingen användare angiven."
+
+#: lib/MIME/Viewer/itip.php:661
+msgid "Non Participant"
+msgstr "Icke-deltagare"
+
+#: templates/prefs/sentmailselect.inc:41 templates/prefs/sourceselect.inc:35
+#: templates/prefs/spamselect.inc:5 templates/mailbox/navbar.inc:11
+#: lib/MIME/Viewer/itip.php:618
+msgid "None"
+msgstr "Ingen"
+
+#: templates/compose/compose.inc:306
+msgid "Normal"
+msgstr "Normal"
+
+#: templates/mailbox/navbar.inc:21 templates/mailbox/navbar.inc:39
+msgid "Not Deleted"
+msgstr "Ej raderad"
+
+#: templates/message/navbar_navigate.inc:12 templates/mailbox/navbar.inc:23
+#: templates/mailbox/navbar.inc:42
+msgid "Not Draft"
+msgstr "Ej utkast"
+
+#: templates/message/navbar_navigate.inc:8 templates/mailbox/navbar.inc:17
+#: templates/mailbox/navbar.inc:34
+msgid "Not Important"
+msgstr "Ej viktigt"
+
+#: templates/mailbox/navbar.inc:25
+msgid "Not Personal"
+msgstr "Ej personligt"
+
+#: lib/Crypt/PGP.php:154 lib/Crypt/SMIME.php:152 lib/Crypt/SMIME.php:158
+#: lib/Crypt/SMIME.php:167
+msgid "Not a valid public key."
+msgstr "Felaktig publik PGP-nyckel."
+
+#: templates/search/main.inc:67
+msgid "Not deleted messages"
+msgstr "Ej raderade meddelanden"
+
+#: templates/search/main.inc:51
+msgid "Not important messages"
+msgstr "Ej viktiga meddelanden"
+
+#: lib/Maintenance/Task/fetchmail_login.php:76
+msgid "Note that this can take some time"
+msgstr "Det kan ta en stund."
+
+#: config/prefs.php.dist:372
+msgid "Number of months to keep old linked attachments if deleting monthly."
+msgstr "Antal månader som länkade bilagor skall sparas, om månadsvis radering."
+
+#: config/prefs.php.dist:354
+msgid "Number of old sent-mail folders to keep if deleting monthly."
+msgstr ""
+"Antal mappar för skickade meddelanden som skall sparas vid månatlig radering."
+
+#: templates/contacts/contacts.inc:257 lib/MIME/Viewer/itip.php:509
+#: lib/MIME/Viewer/itip.php:685
+msgid "OK"
+msgstr "OK"
+
+#: templates/search/fields.inc:5 templates/smime/import_key.inc:49
+#: templates/pgp/import_key.inc:48
+msgid "OR"
+msgstr "eller"
+
+#: templates/search/main.inc:15
+msgid "Old messages"
+msgstr "Gamla meddelanden"
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:55
+msgid "Old sent-mail folders being purged."
+msgstr "Mapp för skickade meddelanden rensas."
+
+#: lib/Block/summary.php:27
+msgid "Only display folders with unread messages in them?"
+msgstr "Visa bara mappar med olästa meddelanden?"
+
+#: templates/folders/javascript.inc:78
+msgid "Only one folder should be selected for this action."
+msgstr "Bara en mapp kan vara vald för den här handlingen."
+
+#: templates/menu.inc:7 templates/menu.inc:27
+msgid "Ope_n Folder"
+msgstr "Öpp_na mapp"
+
+#: templates/menu.inc:24
+msgid "Open Folder"
+msgstr "Öppna mapp"
+
+#: folders.php:388
+msgid "Opened Folder"
+msgstr "Öppnade mapp"
+
+#: lib/MIME/Viewer/itip.php:657
+msgid "Optional Participant"
+msgstr "Icke obligatoriska deltagare"
+
+#: fetchmail.php:33 templates/fetchmail/top.inc:3
+#: templates/fetchmail/fetchmail.inc:6
+msgid "Other Mail Accounts"
+msgstr "Andra e-postkonton"
+
+#: config/prefs.php.dist:110 config/prefs.php.dist:119
+#: config/prefs.php.dist:126 config/prefs.php.dist:134
+#: config/prefs.php.dist:143
+msgid "Other Options"
+msgstr "Andra inställningar"
+
+#: templates/pgp/passphrase.inc:16 lib/MIME/Viewer/pgp.php:170
+#: lib/MIME/Viewer/pgp.php:210 lib/MIME/Viewer/pgp.php:296
+msgid "PGP"
+msgstr "PGP"
+
+#: templates/compose/encrypt_list.inc:7
+msgid "PGP Encrypt Message"
+msgstr "PGP kryptera"
+
+#: compose.php:330
+msgid "PGP Error: "
+msgstr "PGP-fel: "
+
+#: compose.php:309
+msgid "PGP Error: Need passphrase for personal private key."
+msgstr "PGP-fel: Behöver lösenord för personlig privat nyckel."
+
+#: templates/pgp/notactive.inc:6
+msgid "PGP NOT Active"
+msgstr "PGP är inte aktivt"
+
+#: templates/pgp/pgp.inc:6 config/prefs.php.dist:135
+msgid "PGP Options"
+msgstr "PGP inställningar"
+
+#: pgp.php:30
+msgid "PGP Passphrase Input"
+msgstr "Inmatning av PGP-lösenord"
+
+#: templates/pgp/pgp.inc:128
+msgid "PGP Personal Keypair support requires a secure web connection."
+msgstr "PGP personligt nyckelpar kräver säker förbindelse (HTTPS)."
+
+#: lib/MIME/Viewer/pgp.php:178
+msgid "PGP Public Key Text"
+msgstr "Publik PGP-nyckel"
+
+#: pgp.php:149
+#, php-format
+msgid "PGP Public Key for \"%s (%s)\" was successfully added."
+msgstr "Publik PGP-nyckel för '%s (%s)' lades till."
+
+#: pgp.php:245
+#, php-format
+msgid "PGP Public Key for \"%s\" was successfully deleted."
+msgstr "Publik PGP-nyckel för '%s' raderades."
+
+#: templates/pgp/pgp.inc:72
+msgid "PGP Public Keyring"
+msgstr "Publik nyckelring för PGP"
+
+#: templates/compose/encrypt_list.inc:8
+msgid "PGP Sign Message"
+msgstr "Signera"
+
+#: templates/compose/encrypt_list.inc:9
+msgid "PGP Sign/Encrypt Message"
+msgstr "Signera/Kryptera"
+
+#: pgp.php:202
+msgid "PGP private key successfully added."
+msgstr "Privat PGP-nyckel lades till."
+
+#: pgp.php:177
+msgid "PGP public key successfully added."
+msgstr "Publik PGP-nyckel lades till."
+
+#: templates/pgp/notactive.inc:11
+msgid "PGP support is disabled on this system."
+msgstr "PGP-support är avstängt i systemet."
+
+#: lib/MIME/Viewer/pgp.php:214
+msgid ""
+"PGP support is not currently active so the digital signature is unable to be "
+"verified."
+msgstr ""
+"Den digitala signaturen kan inte verifieras pga att PGP-support inte är "
+"aktiverat."
+
+#: lib/MIME/Viewer/pgp.php:301
+msgid ""
+"PGP support is not currently active so the message is unable to be decrypted."
+msgstr ""
+"Meddelandet kan inte dekrypteras pga att PGP-support inte är aktiverat."
+
+#: templates/pgp/pgp.inc:24
+msgid ""
+"PGP support requires popup windows to be used.  If your browser is currently "
+"set to disable popup windows, you must change this setting or else the PGP "
+"features will not work correctly"
+msgstr ""
+"PGP-stödet kräver att popup-fönster fungerar. Om din\n"
+"webbläsare är inställd att blockera popup-fönster måste du ändra den\n"
+"inställningen för att PGP-stödet ska fungera"
+
+#: lib/Fetchmail/imap.php:108
+msgid "POP3"
+msgstr "POP3"
+
+#: lib/Fetchmail/imap.php:103
+msgid "POP3 (Auto Detect Protocols)"
+msgstr "POP3 (detektera protokoll automatiskt)"
+
+#: lib/Fetchmail/imap.php:120
+msgid "POP3 over SSL"
+msgstr "POP3 över SSL"
+
+#: lib/Fetchmail/imap.php:126
+msgid "POP3 over SSL (self-signed certificate)"
+msgstr "POP3 över SSL (självsignerat certifikat)"
+
+#: templates/login/login.inc:177
+msgid "POP3 over SSL (self-signed)"
+msgstr "POP3 över SSL (självsignerad)"
+
+#: lib/Fetchmail/imap.php:114
+msgid "POP3, no TLS"
+msgstr "POP3, ingen TLS"
+
+#: templates/mailbox/header.inc:19
+#, php-format
+msgid "Page %d of %d"
+msgstr "Sida %d av %d"
+
+#: config/prefs.php.dist:883
+msgid "Page with the First Unseen Message"
+msgstr "Sidan med första olästa meddelandet"
+
+#: config/prefs.php.dist:884
+msgid "Page with the Last Unseen Message"
+msgstr "Sidan med det sista olästa meddelandet"
+
+#: templates/message/headers.inc:43
+msgid "Part(s)"
+msgstr "Del(ar)"
+
+#: templates/pgp/pgp.inc:211
+msgid "Passphrase"
+msgstr "Lösenord"
+
+#: templates/pgp/pgp.inc:216
+msgid "Passphrase (Again)"
+msgstr "Lösenord (igen)"
+
+#: pgp.php:310 smime.php:235
+msgid "Passphrase successfully unloaded."
+msgstr "Lösenord frigjort."
+
+#: templates/smime/passphrase.inc:17 templates/pgp/passphrase.inc:29
+msgid "Passphrase:"
+msgstr "Lösenord:"
+
+#: pgp.php:112
+msgid "Passphrases can not be empty"
+msgstr "Lösenord kan inte vara tomt"
+
+#: pgp.php:114
+msgid "Passphrases do not match"
+msgstr "Lösenord stämmer inte överrens"
+
+#: templates/login/login.inc:221 templates/fetchmail/manage.inc:20
+#: templates/smime/import_key.inc:71
+msgid "Password"
+msgstr "Lösenord"
+
+#: templates/fetchmail/manage.inc:48
+msgid "Perform maintenance operations on login?"
+msgstr "Utför underhållsaktiviteter vid inloggning?"
+
+#: acl.php:76 acl.php:102
+msgid "Permissions for this user can not be changed."
+msgstr "Kan inte ändra rättigheter för denna användare."
+
+#: mailbox.php:659 message.php:489 templates/mailbox/legend.inc:10
+#: templates/mailbox/navbar.inc:24
+msgid "Personal"
+msgstr "Personlig"
+
+#: config/prefs.php.dist:14
+msgid "Personal Information"
+msgstr "Personlig information"
+
+#: pgp.php:120
+msgid "Personal PGP keypair generated successfully."
+msgstr "Personligt nyckelpar för PGP skapades."
+
+#: pgp.php:127
+msgid "Personal PGP keys deleted successfully."
+msgstr "Personligt nyckelpar för PGP raderades."
+
+#: smime.php:207
+msgid "Personal S/MIME certificates NOT imported: "
+msgstr "Inget personligt S/MIME-certifikat importerades."
+
+#: smime.php:132
+msgid "Personal S/MIME keys deleted successfully."
+msgstr "Personligt nyckelpar för S/MIME raderades."
+
+#: config/prefs.php.dist:215
+msgid "Place your signature before replies and forwards?"
+msgstr "Sätta signatur före svar och vidarbefordring?"
+
+#: compose.php:228
+msgid "Plaintext Version of Message"
+msgstr "Meddelande i plaintext"
+
+#: templates/message/javascript.inc:55 templates/mailbox/javascript.inc:200
+msgid "Please enter a name for the new folder:"
+msgstr "Skriv ett namn för den nya mappen:"
+
+#: templates/folders/javascript.inc:101 templates/folders/javascript.inc:103
+msgid "Please enter the name of the new folder:"
+msgstr "Ange namn på ny mapp:"
+
+#: templates/folders/javascript.inc:146
+msgid "Please enter the new name:"
+msgstr "Skriv in det nya namnet:"
+
+#: templates/pgp/passphrase.inc:19
+#, php-format
+msgid ""
+"Please enter the passphrase for your PGP private key. You will only need to "
+"enter this passphrase once per %s session."
+msgstr ""
+"Var god ange lösenord för din privata PGP-nyckel. Lösenordet behöver bara "
+"anges en gång per %s-session."
+
+#: templates/smime/passphrase.inc:13
+#, php-format
+msgid ""
+"Please enter the passphrase for your S/MIME private key. You will only need "
+"to enter this passphrase once per %s session."
+msgstr ""
+"Var god ange lösenord för din privata S/MIME-nyckel. Lösenordet behöver bara "
+"anges en gång per %s-session."
+
+#: recompose.php:88
+msgid ""
+"Please log in again to resume composing your message. If you are NOT using "
+"cookies AND you are composing messages in popup windows, you will have to "
+"log in again in your main window as well. This is to keep attackers from "
+"hijacking your session ID. We apologize for any inconvenience."
+msgstr ""
+"Logga in igen för att återuppta arbetet med att skriva på ditt\n"
+"meddelande. Om du INTE accepterar kakor OCH skriver brev i\n"
+"popup-fönster måste du också logga in i huvudfönstret igen. Detta är\n"
+"en säkerhetsåtgärd för att hindra att din session övertas. Vi ber om\n"
+"ursäkt för eventuella olägenheter detta orsakar."
+
+#: templates/login/login.inc:81
+msgid "Please provide your password."
+msgstr "Ange ditt lösenord."
+
+#: templates/login/login.inc:77
+msgid "Please provide your username."
+msgstr "Ange ditt användarnamn."
+
+#: compose.php:80 lib/IMP.php:519
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Rätta felaktiga eller tvetydiga adresser."
+
+#: lib/MIME/Viewer/itip.php:598
+msgid ""
+"Please review the following information, and then select an action from the "
+"menu below."
+msgstr ""
+"Kontrollera följande information och välj sedan en handling i menyn\n"
+"nedan."
+
+#: templates/folders/javascript.inc:56
+msgid "Please select a folder before you perform any actions."
+msgstr "Välj en mapp innan du utför handlingar."
+
+#: lib/MIME/Viewer/itip.php:461
+msgid "Please select an action from the menu below."
+msgstr "Välj en handling från menyn nedan."
+
+#: templates/search/javascript.inc:41
+msgid "Please select at least one folder to search."
+msgstr "Välj åtminstone en mapp att söka i."
+
+#: templates/folders/javascript.inc:4
+msgid "Please select only one folder for this operation."
+msgstr "Välj bara en mapp för den här operationen."
+
+#: templates/compose/redirect.inc:73
+msgid "Please select or edit in the box to the right:"
+msgstr "Välj eller ändra i rutan till höger:"
+
+#: templates/compose/compose.inc:127 templates/compose/compose.inc:177
+#: templates/compose/compose.inc:228
+msgid "Please select or edit right next:"
+msgstr "Ange eller ändra nästa:"
+
+#: config/motd.php.dist:41
+msgid "Powered by Horde"
+msgstr "Drivs med Horde"
+
+#: config/prefs.php.dist:207
+msgid "Precede your signature with dashes ('-- ')?"
+msgstr "Föregå signatur med streck ('--')?"
+
+#: filterprefs.php:40 pgp.php:257 smime.php:241
+msgid "Preferences successfully updated."
+msgstr "Inställningar uppdaterade."
+
+#: templates/compose/attachments.inc:3
+msgid "Preview"
+msgstr "Förhandsvisning"
+
+#: templates/message/navbar_navigate.inc:28
+msgid "Previous Message"
+msgstr "Föregående meddelande"
+
+#: mailbox.php:319
+msgid "Previous Page"
+msgstr "Föregående sida"
+
+#: templates/message/navbar_actions.inc:33
+msgid "Print"
+msgstr "Skriv ut"
+
+#: templates/message/headers.inc:38
+msgid "Priority"
+msgstr "Prioritet"
+
+#: templates/smime/import_key.inc:76
+msgid "Private Key Password"
+msgstr "Lösenord för privat nyckel"
+
+#: config/prefs.php.dist:545
+msgid "Prompt every time an attachment is sent; default to NO"
+msgstr "Bekräfta varje gång en bilaga skickas, ha NEJ som standardsvar"
+
+#: config/prefs.php.dist:544
+msgid "Prompt every time an attachment is sent; default to YES"
+msgstr "Bekräfta varje gång en bilaga skickas, ha JA som standardsvar"
+
+#: templates/fetchmail/manage.inc:10
+msgid "Protocol:"
+msgstr "Protokoll:"
+
+#: lib/Crypt/PGP.php:461
+msgid "Public PGP keyserver support has been disabled."
+msgstr "Support för PGP-nyckelserver är inte aktivt."
+
+#: templates/mailbox/actions.inc:36 templates/mailbox/actions_deleted.inc:8
+msgid "Pur_ge Deleted"
+msgstr "Ren_sa raderade"
+
+#: templates/mailbox/actions.inc:36 templates/mailbox/actions_deleted.inc:8
+msgid "Purge Deleted"
+msgstr "Rensa raderade"
+
+#: templates/folders/actions.inc:22
+msgid "Purge Folder(s)"
+msgstr "Töm mapp(ar)"
+
+#: config/prefs.php.dist:391
+msgid "Purge Trash how often:"
+msgstr "Hur ofta rensas papperkorgen:"
+
+#: config/prefs.php.dist:400
+msgid "Purge messages in Trash folder older than this amount of days."
+msgstr "Rensa meddelanden i papperkorgen äldre än så här många dagar."
+
+#: config/prefs.php.dist:381
+msgid "Purge old messages in the Trash folder?"
+msgstr "Rensa gamla meddelanden i papperkorgen?"
+
+#: lib/Maintenance/Task/purge_trash.php:67
+#, php-format
+msgid "Purging %d message(s) from Trash folder."
+msgstr "Rensar %d meddelande(n) från papperkorgen."
+
+#: config/prefs.php.dist:422
+msgid "Put this after @ when sending mail and default address expansion:"
+msgstr "Lägg till efter @ om domän saknas:"
+
+#: templates/quota/quota.inc:17
+#, php-format
+msgid "Quota status: %.2fMB / %.2fMB  (%.2f%%)"
+msgstr "Quota status: %.2fMB / %.2fMB  (%2f%%)"
+
+#: templates/quota/quota.inc:21
+#, php-format
+msgid "Quota status: %.2fMB / NO LIMIT"
+msgstr "Quota status: %.2fMB / INGEN BEGRÄNSNING"
+
+#: templates/quota/quota.inc:24
+#, php-format
+msgid "Quota status: NO LIMIT"
+msgstr "Quota status: INGEN BEGRÄNSNING"
+
+#: config/prefs.php.dist:485
+#, php-format
+msgid "Quoting %f:"
+msgstr "Citerar %f:"
+
+#: templates/compose/compose.inc:377
+msgid "Re_quest Delivery Confirmation"
+msgstr "Be_gär leveransbekräftelse"
+
+#: search.php:164
+msgid "Received On"
+msgstr "Ankom den"
+
+#: search.php:172
+msgid "Received Since"
+msgstr "Ankom sedan"
+
+#: search.php:168
+msgid "Received Until"
+msgstr "Ankom till"
+
+#: templates/message/navbar_actions.inc:16
+msgid "Redirec_t"
+msgstr "Eftersän_d"
+
+#: templates/message/navbar_actions.inc:16
+msgid "Redirect"
+msgstr "Eftersänd"
+
+#: templates/compose/redirect.inc:110
+msgid "Redirect Message"
+msgstr "Eftersänd meddelande"
+
+#: compose.php:708
+msgid "Redirect this message"
+msgstr "Eftersänd det här meddelandet"
+
+#: compose.php:768
+msgid "Redirecting failed."
+msgstr "Eftersändning misslyckades."
+
+#: templates/compose/compose.inc:573
+msgid "Refresh"
+msgstr "Förnya"
+
+#: config/prefs.php.dist:769
+msgid "Refresh Folder Views:"
+msgstr "Förnya mappvyer:"
+
+#: templates/folders/head.inc:3 templates/mailbox/header.inc:4
+msgid "Reload"
+msgstr "Ladda om"
+
+#: templates/folders/head.inc:3
+msgid "Reload View"
+msgstr "Ladda om vy"
+
+#: lib/MIME/Viewer/itip.php:483 lib/MIME/Viewer/itip.php:502
+msgid "Remember the free/busy information."
+msgstr "Kom ihåg information om ledig/upptagen."
+
+#: config/prefs.php.dist:959
+msgid "Remember the last view"
+msgstr "Kom ihåg senaste vyn"
+
+#: templates/fetchmail/manage.inc:27
+msgid "Remote Mailbox:"
+msgstr "Fjärrbrevlåda:"
+
+#: templates/search/fields.inc:40
+msgid "Remove Field From Search"
+msgstr "Ta bort fält från sökningen"
+
+#: templates/prefs/sourceselect.inc:305
+msgid "Remove source"
+msgstr "Ta bort källa"
+
+#: templates/folders/actions.inc:6
+msgid "Rename Folder(s)"
+msgstr "Byt namn på mapp(ar)"
+
+#: config/prefs.php.dist:336
+msgid "Rename sent-mail folder at beginning of month?"
+msgstr "Byt namn på mapp för skickade meddelanden i början av månaden?"
+
+#: lib/Folder.php:552
+#, php-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr "Namnbyte från '%s' till '%s' misslyckades. Servern svarade"
+
+#: templates/message/navbar_actions.inc:10
+msgid "Repl_y to List"
+msgstr "Sva_ra till lista"
+
+#: templates/compose/spelling.inc:105
+msgid "Replace with:"
+msgstr "Ersätt med:"
+
+#: templates/message/navbar_actions.inc:8
+msgid "Reply"
+msgstr "Svara"
+
+#: lib/MIME/Viewer/itip.php:279 lib/MIME/Viewer/itip.php:372
+msgid "Reply Sent."
+msgstr "Svar skickat."
+
+#: templates/message/navbar_actions.inc:13
+msgid "Reply to All"
+msgstr "Svara alla"
+
+#: compose.php:657
+msgid "Reply to All:"
+msgstr "Svara alla:"
+
+#: templates/message/navbar_actions.inc:10
+msgid "Reply to List"
+msgstr "Svara till lista"
+
+#: compose.php:659
+msgid "Reply to List:"
+msgstr "Svara till lista:"
+
+#: templates/message/navbar_actions.inc:13
+msgid "Reply to _All"
+msgstr "Svara _alla"
+
+#: lib/MIME/Viewer/itip.php:485 lib/MIME/Viewer/itip.php:494
+#: lib/MIME/Viewer/itip.php:504
+msgid "Reply with Not Supported Message"
+msgstr "Svara att begäran inte stöds"
+
+#: lib/MIME/Viewer/itip.php:492
+msgid "Reply with free/busy for next 2 months."
+msgstr "Svara med information om ledig/upptagen för kommande två månader."
+
+#: lib/MIME/Viewer/itip.php:491
+msgid "Reply with requested free/busy information."
+msgstr "Svara med den begärda ledig/upptagen-informationen."
+
+#: message.php:264
+msgid "Reply-To"
+msgstr "Svar till"
+
+#: lib/Compose.php:325
+msgid "Reply-To: "
+msgstr "Svar till: "
+
+#: compose.php:655
+msgid "Reply:"
+msgstr "Svara:"
+
+#: templates/message/navbar_actions.inc:38 templates/mailbox/actions.inc:26
+msgid "Report as Innocent"
+msgstr "Rapportera som oskyldigt"
+
+#: templates/message/navbar_actions.inc:35 templates/mailbox/actions.inc:24
+msgid "Report as Spam"
+msgstr "Rapportera som skräppost"
+
+#: templates/compose/compose.inc:374
+msgid "Request a _Read Receipt"
+msgstr "Begär _läskvitto"
+
+#: config/prefs.php.dist:580
+msgid "Request delivery confirmation?"
+msgstr "Begär leveransbekräftelse?"
+
+#: config/prefs.php.dist:559
+msgid "Request read receipts?"
+msgstr "Begär läskvitto?"
+
+#: mailbox.php:176
+msgid "Requested message not found."
+msgstr "Begärt meddelande ej funnet."
+
+#: lib/MIME/Viewer/itip.php:649
+msgid "Required Participant"
+msgstr "Obligatorisk deltagare"
+
+#: templates/search/header.inc:26 templates/search/main.inc:143
+#: templates/acl/acl.inc:161
+msgid "Reset"
+msgstr "Återställ"
+
+#: lib/MIME/Viewer/itip.php:106
+msgid "Respondent Status Updated."
+msgstr "Svarsstatus uppdaterad."
+
+#: templates/message/navbar_actions.inc:30
+msgid "Resume"
+msgstr "Återta"
+
+#: recompose.php:89
+msgid "Resume your session"
+msgstr "Återuppta session"
+
+#: templates/fetchmail/manage.inc:69 templates/fetchmail/account_select.inc:32
+#: templates/fetchmail/driver_select.inc:31
+msgid "Return to Fetch Mail"
+msgstr "Återvänt till Fetch Mail"
+
+#: templates/filters/notactive.inc:22 templates/filters/prefs.inc:60
+#: templates/pgp/pgp.inc:268
+msgid "Return to Main Preferences Screen"
+msgstr "Återvänd till huvudinställningsfönster"
+
+#: templates/smime/notactive.inc:26 templates/smime/smime.inc:143
+#: templates/acl/acl.inc:162 templates/acl/acl.inc:173
+msgid "Return to Options"
+msgstr "Återvänd till inställningar"
+
+#: templates/pgp/notactive.inc:33
+msgid "Return to Previous Screen"
+msgstr "Återgå till föregående vy"
+
+#: config/prefs.php.dist:707
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr ""
+"Återvända till mappvyn efter radering, flyttning eller kopiering av "
+"meddelande?"
+
+#: lib/MIME/Viewer/itip.php:640
+msgid "Role"
+msgstr "Roll"
+
+#: lib/MIME/Viewer/pkcs7.php:145 lib/MIME/Viewer/pkcs7.php:240
+#: lib/MIME/Viewer/pkcs7.php:422
+msgid "S/MIME"
+msgstr "S/MIME"
+
+#: templates/compose/encrypt_list.inc:12
+msgid "S/MIME Encrypt Message"
+msgstr "S/MIME kryptera"
+
+#: compose.php:366
+msgid "S/MIME Error: "
+msgstr "S/MIME-fel:"
+
+#: compose.php:345
+msgid "S/MIME Error: Need passphrase for personal private key."
+msgstr "S/MIME-fel: Behöver lösenord för personlig privat nyckel."
+
+#: templates/smime/notactive.inc:6
+msgid "S/MIME NOT Active"
+msgstr "S/MIME är inte aktivt"
+
+#: templates/smime/smime.inc:6 config/prefs.php.dist:144
+msgid "S/MIME Options"
+msgstr "S/MIME inställningar"
+
+#: smime.php:49
+msgid "S/MIME Passphrase Input"
+msgstr "Inmatning av S/MIME-lösenord"
+
+#: templates/smime/smime.inc:91
+msgid "S/MIME Personal Keypair support requires a secure web connection."
+msgstr "S/MIME personligt nyckelpar kräver säker förbindelse (HTTPS)."
+
+#: smime.php:140
+#, php-format
+msgid "S/MIME Public Key for \"%s\" was successfully deleted."
+msgstr "Publik S/MIME-nyckel för '%s' raderades."
+
+#: smime.php:162
+msgid "S/MIME Public Key successfully added."
+msgstr "Publik S/MIME-nyckel lades till."
+
+#: templates/smime/smime.inc:41
+msgid "S/MIME Public Keyring"
+msgstr "Publik nyckelring för S/MIME"
+
+#: smime.php:211
+msgid "S/MIME Public/Private Keypair successfully added."
+msgstr "Publikt/privat nyckelpar för S/MIME lades till."
+
+#: templates/compose/encrypt_list.inc:13
+msgid "S/MIME Sign Message"
+msgstr "S/MIME signera"
+
+#: templates/compose/encrypt_list.inc:14
+msgid "S/MIME Sign/Encrypt Message"
+msgstr "S/MIME Signera/Kryptera"
+
+#: templates/smime/notactive.inc:11
+msgid "S/MIME support is disabled on this system."
+msgstr "S/MIME-support är avstängt i systemet."
+
+#: lib/MIME/Viewer/pkcs7.php:244
+msgid ""
+"S/MIME support is not currently enabled so the message is unable to be "
+"decrypted."
+msgstr ""
+"Meddelandet kan inte dekrypteras pga att stöd för S/MIME inte är aktiverat."
+
+#: lib/MIME/Viewer/pkcs7.php:176
+msgid ""
+"S/MIME support is not enabled so the contents of this signed message can not "
+"be displayed."
+msgstr ""
+"Innehållet i det signerade meddelandet kan inte verifieras pga att stöd för "
+"S/MIME inte är aktiverat."
+
+#: lib/MIME/Viewer/pkcs7.php:149
+msgid ""
+"S/MIME support is not enabled so the digital signature is unable to be "
+"verified."
+msgstr ""
+"Den digitala signaturen kan inte verifieras pga att stöd för S/MIME inte är "
+"aktiverat."
+
+#: templates/smime/smime.inc:20
+msgid ""
+"S/MIME support requires popup windows to be used.  If your browser is "
+"currently set to disable popup windows, you must change this setting or else "
+"the S/MIME features will not work correctly"
+msgstr ""
+"S/MIME-stödet använder popup-fönster. Om din webbläsare är inställd\n"
+"att blockera popup-fönster måste du ändra den inställningen för att\n"
+"S/MIME-stödet ska fungera"
+
+#: templates/compose/compose.inc:266
+msgid "S_ubject"
+msgstr "Ä_rende"
+
+#: templates/compose/compose.inc:354
+msgid "Sa_ve a copy in "
+msgstr "Spa_ra kopia i "
+
+#: templates/message/navbar_actions.inc:32
+msgid "Sa_ve as"
+msgstr "Spa_ra som"
+
+#: search.php:363 templates/fetchmail/manage.inc:67
+msgid "Save"
+msgstr "Spara"
+
+#: templates/compose/compose.inc:528
+msgid "Save Attachments with message in sent-mail folder?"
+msgstr "Spara bilagor med meddelandet i sent-mail mappen?"
+
+#: templates/compose/compose.inc:68 templates/compose/compose.inc:424
+msgid "Save Draft"
+msgstr "Spara utkast"
+
+#: saveimage.php:42
+msgid "Save Image"
+msgstr "Spara bild"
+
+#: lib/MIME/Contents.php:217
+msgid "Save Image in Gallery"
+msgstr "Spara bild i galleri"
+
+#: templates/filters/prefs.inc:59 templates/smime/notactive.inc:25
+#: templates/smime/smime.inc:142 templates/pgp/notactive.inc:23
+#: templates/pgp/pgp.inc:64
+msgid "Save Options"
+msgstr "Spara inställningar"
+
+#: templates/compose/compose.inc:68 templates/compose/compose.inc:424
+msgid "Save _Draft"
+msgstr "Spara _utkast"
+
+#: templates/message/navbar_actions.inc:32
+msgid "Save as"
+msgstr "Spara som"
+
+#: config/prefs.php.dist:506
+msgid "Save drafts as unseen?"
+msgstr "Spara utkast som olästa?"
+
+#: config/prefs.php.dist:1039
+msgid "Save recipients automatically to the default address book?"
+msgstr "Lägg till mottagare till huvudadressboken automatiskt?"
+
+#: templates/search/main.inc:127
+msgid "Save search as a virtual folder?"
+msgstr "Spara sökning som en virtuell folder?"
+
+#: config/prefs.php.dist:224
+msgid "Save sent mail?"
+msgstr "Spara skickade meddelanden?"
+
+#: compose.php:1136
+#, php-format
+msgid "Saving the draft failed. This is what the server said: %s"
+msgstr "Misslyckades att spara utkast. Servern svarade: %s"
+
+#: templates/mailbox/header.inc:11 templates/contacts/contacts.inc:201
+msgid "Search"
+msgstr "Sök"
+
+#: templates/mailbox/header.inc:11 templates/search/header.inc:18
+#, php-format
+msgid "Search %s"
+msgstr "Sök %s"
+
+#: lib/Block/tree_folders.php:161
+msgid "Search Mail"
+msgstr "Sök e-post"
+
+#: search.php:316
+msgid "Search Results"
+msgstr "Sökresultat"
+
+#: templates/mailbox/navbar.inc:14 templates/mailbox/navbar.inc:31
+msgid "Seen"
+msgstr "Sedd"
+
+#: templates/mailbox/navbar.inc:9
+msgid "Select"
+msgstr "Välj"
+
+#: templates/fetchmail/manage.inc:70
+msgid "Select Another Account"
+msgstr "Välj ett annat konto"
+
+#: templates/search/fields.inc:35
+msgid "Select a date"
+msgstr "Välj ett datum"
+
+#: templates/search/fields.inc:10
+msgid "Select a field"
+msgstr "Välj ett fält"
+
+#: config/prefs.php.dist:128
+msgid "Select address book sources for adding and searching for addresses."
+msgstr "Välj adressbok för tillägg och sökning av adresser."
+
+#: templates/search/main.inc:88
+msgid "Select all"
+msgstr "Välj alla"
+
+#: templates/prefs/sourceselect.inc:323
+msgid "Select all fields to search when expanding addresses."
+msgstr "Välj fält som genomsöks vid expansion av adresser."
+
+#: templates/fetchmail/account_select.inc:21
+msgid "Select an account"
+msgstr "Välj ett konto"
+
+#: templates/search/main.inc:89
+msgid "Select none"
+msgstr "Välj ingen"
+
+#: templates/saveimage/saveimage.inc:9
+msgid "Select the gallery to save the image in."
+msgstr "Välj galleri att spara bilden i."
+
+#: templates/fetchmail/driver_select.inc:21
+msgid "Select the mail server type"
+msgstr "Välj e-postservertyp"
+
+#: templates/prefs/sourceselect.inc:309
+msgid "Selected Address books:"
+msgstr "Valda adressböcker:"
+
+#: templates/pgp/pgp.inc:147
+msgid "Send Key to Public Keyserver"
+msgstr "Skicka nyckel till publik nyckelserver"
+
+#: lib/MIME/Viewer/itip.php:560
+msgid "Send Latest Information"
+msgstr "Skicka senaste informationen"
+
+#: config/prefs.php.dist:568
+msgid "Send MDN when requested by the sender?"
+msgstr "Skicka leveransbekräftelse när sändaren begär det?"
+
+#: templates/compose/compose.inc:66 templates/compose/compose.inc:422
+msgid "Send Message"
+msgstr "Skicka"
+
+#: folders.php:358
+msgid "Sent mail folder"
+msgstr "Mapp för skickade meddelanden"
+
+#: templates/prefs/sentmailselect.inc:39
+msgid "Sent mail folder:"
+msgstr "Mapp för skickade meddelanden:"
+
+#: templates/login/login.inc:138 templates/login/login.inc:152
+#: templates/login/login.inc:159
+msgid "Server"
+msgstr "Server"
+
+#: config/prefs.php.dist:23
+msgid "Server and Folder Information"
+msgstr "Server- och mappinformation"
+
+#: templates/fetchmail/manage.inc:23
+msgid "Server:"
+msgstr "Server:"
+
+#: config/prefs.php.dist:80
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr ""
+"Ange inställningar för vad som händer vid flytt och radering av meddelanden."
+
+#: config/prefs.php.dist:515
+msgid "Set the X-Priority header when composing messages?"
+msgstr "Ange 'X-Priority' rubrik när meddelanden skickas?"
+
+#: config/prefs.php.dist:31
+msgid "Share Folders"
+msgstr "Dela mappar"
+
+#: templates/acl/acl.inc:86
+msgid "Share mail folders"
+msgstr "Dela e-postmappar"
+
+#: config/prefs.php.dist:32
+msgid "Share your mail folders with other users."
+msgstr "Dela e-postmappar med andra användare."
+
+#: config/prefs.php.dist:665
+msgid ""
+"Should large blocks of quoted text be shown or hidden by default? It can be "
+"toggled easily whichever you choose."
+msgstr ""
+"Ska stora sjok av citerad text visas eller gömmas som standard?\n"
+"Oavsett vilket du väljer är det lätt att ändra."
+
+#: templates/pgp/pgp.inc:52
+msgid "Should the body of text/plain messages be scanned for PGP data?"
+msgstr "Vill du söka efter PGP data i text/plain-meddelanden?"
+
+#: config/prefs.php.dist:498
+msgid "Should the compose window be closed after saving a draft?"
+msgstr ""
+"Skall fönstret 'skriv meddelande' stängas efter att utkast har sparats?"
+
+#: templates/pgp/pgp.inc:40
+msgid "Should your PGP public key to be attached to your messages by default?"
+msgstr "Vill du, som default, bifoga din publika PGP-nyckel till meddelanden?"
+
+#: templates/search/main.inc:92
+msgid "Show All Folders"
+msgstr "Visa alla mappar"
+
+#: templates/message/headers.inc:67
+msgid "Show All Headers"
+msgstr "Visa alla rubriker"
+
+#: mailbox.php:337
+msgid "Show Deleted"
+msgstr "Visa raderade"
+
+#: templates/message/headers.inc:61
+msgid "Show Limited Headers"
+msgstr "Visa begränsade rubriker"
+
+#: templates/message/headers.inc:70
+msgid "Show Mailing List Information"
+msgstr "Visa information om maillista"
+
+#: templates/search/main.inc:92
+msgid "Show Only Subscribed Folders"
+msgstr "Visa bara mappar med prenumerationer"
+
+#: folders.php:253
+msgid "Show Unsubscribed"
+msgstr "Visa unsubscribed"
+
+#: config/prefs.php.dist:605
+msgid "Show an icon to allow stripping of attachments from messages?"
+msgstr "Visa en ikon för att ta bort bilagor från meddelanden?"
+
+#: config/prefs.php.dist:983
+msgid "Show legend in the mailbox view?"
+msgstr "Visa förklaring i mappvyn?"
+
+#: config/prefs.php.dist:818
+msgid "Show previews for unread messages only?"
+msgstr "Visa förhandsgranskningar bara för olästa meddelanden?"
+
+#: config/prefs.php.dist:826
+msgid "Show previews in tooltips?"
+msgstr "Visa förhandsgranskningar i verktygtips?"
+
+#: config/prefs.php.dist:857
+msgid "Show the Fetch Mail icon on the menubar?"
+msgstr "Visa 'hämta meddelanden' i menyn?"
+
+#: lib/MIME/Viewer/html.php:93
+msgid "Show the Images"
+msgstr "Visa alla bilder"
+
+#: templates/filters/prefs.inc:54
+msgid "Show the filter icon on the menubar?"
+msgstr "Visa filterikon i menyn?"
+
+#: lib/Block/summary.php:30
+msgid "Show total number of mails in folder?"
+msgstr "Visa antal meddelanden i mapp?"
+
+#: config/prefs.php.dist:662
+msgid "Shown"
+msgstr "Visade"
+
+#: templates/mailbox/message_headers.inc:37
+msgid "Si_ze"
+msgstr "Sto_rlek"
+
+#: templates/login/login.inc:241
+msgid "Sign up if not registered"
+msgstr "Anmäl dig om du inte registrerad"
+
+#: templates/mailbox/legend.inc:17
+msgid "Signed"
+msgstr "Signerat"
+
+#: templates/compose/attachments.inc:3
+msgid "Size"
+msgstr "Storlek"
+
+#: templates/mailbox/message_headers.inc:75
+msgid "Sort Direction"
+msgstr "Sorteringsriktning"
+
+#: templates/mailbox/message_headers.inc:6
+msgid "Sort by Arrival"
+msgstr "Sortera på ankomst"
+
+#: templates/mailbox/message_headers.inc:11
+msgid "Sort by Date"
+msgstr "Sortera på datum"
+
+#: templates/mailbox/message_headers.inc:21
+msgid "Sort by From Address"
+msgstr "Sortera på adress"
+
+#: templates/mailbox/message_headers.inc:36
+msgid "Sort by Message Size"
+msgstr "Sortera på storlek"
+
+#: templates/mailbox/message_headers.inc:31
+msgid "Sort by Subject"
+msgstr "Sortera på ärende"
+
+#: templates/mailbox/message_headers.inc:26
+msgid "Sort by Thread"
+msgstr "Sortera på tråd"
+
+#: templates/mailbox/message_headers.inc:16
+msgid "Sort by To Address"
+msgstr "Sortera på adress"
+
+#: templates/prefs/spamselect.inc:4
+msgid "Spam folder:"
+msgstr "Mapp för skräppost:"
+
+#: templates/compose/compose.inc:337
+msgid "Special Characters"
+msgstr "Specialtecken"
+
+#: search.php:195
+msgid "Special Virtual Folders can not be edited."
+msgstr "Virtuella mappar som är spciella kan inte ändras."
+
+#: templates/compose/compose.inc:334
+msgid "Spell Check"
+msgstr "Stavningskontroll"
+
+#: templates/compose/spelling.inc:46
+msgid "Spell Checker"
+msgstr "Stavningskontroll"
+
+#: templates/compose/spelling.inc:48 templates/compose/spelling.inc:56
+msgid "Spell check complete"
+msgstr "Stavningskontroll klar"
+
+#: config/prefs.php.dist:455
+msgid "Spelling errors per screen when spell checking."
+msgstr "Antal stavfel per skärm vid stavningskontroll."
+
+#: lib/MIME/Viewer/itip.php:469 lib/MIME/Viewer/itip.php:606
+msgid "Start"
+msgstr "Start"
+
+#: lib/MIME/Viewer/itip.php:640
+msgid "Status"
+msgstr "Status"
+
+#: lib/MIME/Contents.php:228
+msgid "Strip Attachment"
+msgstr "Ta bort bilaga"
+
+#: config/prefs.php.dist:810
+msgid "Strip linebreaks?"
+msgstr "Ta bort radbrytningar?"
+
+#: templates/mailbox/message_headers.inc:32
+msgid "Sub_ject"
+msgstr "Ä_rende"
+
+#: search.php:156 message.php:265 templates/compose/recompose.inc:25
+msgid "Subject"
+msgstr "Ärende"
+
+#: config/prefs.php.dist:900
+msgid "Subject Field"
+msgstr "Ärendefält"
+
+#: search.php:365 templates/saveimage/saveimage.inc:18
+#: templates/smime/passphrase.inc:19 templates/pgp/passphrase.inc:31
+msgid "Submit"
+msgstr "Skicka"
+
+#: templates/folders/actions.inc:9
+msgid "Subscribe to Folder(s)"
+msgstr "Prenumerera på mapp(ar)"
+
+#: lib/MIME/Viewer/pgp.php:395 lib/MIME/Viewer/pkcs7.php:381
+#: lib/MIME/Viewer/status.php:90
+msgid "Success"
+msgstr "Lyckat"
+
+#: templates/compose/spelling.inc:86
+msgid "Suggestions"
+msgstr "Förslag"
+
+#: lib/MIME/Viewer/itip.php:616 lib/MIME/Viewer/itip.php:618
+msgid "Summary"
+msgstr "Sammanställning"
+
+#: templates/compose/compose.inc:391 templates/compose/compose.inc:394
+msgid "Switch Composition Method"
+msgstr "Byt skrivläge"
+
+#: templates/compose/compose.inc:395
+msgid "Switch to HTML composition"
+msgstr "Byt till HTML-läge"
+
+#: templates/compose/compose.inc:395
+msgid "Switch to plain text composition"
+msgstr "Byt till textläge"
+
+#: templates/compose/compose.inc:410
+msgid "Te_xt"
+msgstr "Te_xt"
+
+#: lib/MIME/Viewer/itip.php:239
+msgid "Tentative: "
+msgstr "Preliminärt: "
+
+#: lib/MIME/Viewer/itip.php:547
+msgid "Tentatively Accept request"
+msgstr "Godkänn begäran preliminärt"
+
+#: lib/MIME/Viewer/itip.php:713
+msgid "Tentatively Accepted"
+msgstr "Preliminärt accepterat"
+
+#: lib/Maintenance/Task/tos_agreement.php:54
+#, php-format
+msgid "Terms of Service file not specified in conf.php"
+msgstr "Fil med avtalsvillkor är inte angiven i conf.php"
+
+#: config/prefs.php.dist:934
+msgid "The From: column of the message should be linked:"
+msgstr "Vad ska From:-kolumnen av meddelandet länka till:"
+
+#: lib/MIME/Viewer/appledouble.php:43
+msgid "The Macintosh resource fork"
+msgstr "Macintosh resurs-strömmen"
+
+#: lib/MIME/Viewer/appledouble.php:43
+#, php-format
+msgid "The Macintosh resource fork can be downloaded %s."
+msgstr "Macintosh resurs-strömmen kan laddas ner %s."
+
+#: fetchmailprefs.php:81
+#, php-format
+msgid "The account \"%s\" has been deleted."
+msgstr "Kontot '%s' raderades."
+
+#: fetchmailprefs.php:74
+#, php-format
+msgid "The account \"%s\" has been saved."
+msgstr "Kontot '%s' sparades."
+
+#: attachment.php:43
+msgid "The attachment was not found."
+msgstr "Bilagor saknas."
+
+#: lib/MIME/Viewer/itip.php:61
+msgid "The calendar data is invalid"
+msgstr "Kalenderinformationen är felaktig"
+
+#: templates/javascript/open_compose_win.js:37
+msgid ""
+"The compose window can't be opened. Perhaps you have set your browser to "
+"block popup windows?"
+msgstr ""
+"Kan inte öppna fönstret att skriva meddelanden i, kanske har du ställt in "
+"din webbläsare att blockera popup-fönster?"
+
+#: lib/MIME/Viewer/appledouble.php:44
+msgid "The contents of the Macintosh file are below."
+msgstr "Innehållet i Macintosh-filen återfinns nedan."
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:96
+#, php-format
+msgid "The current folder(s) \"%s\" will be renamed to \"%s\"."
+msgstr "Namnet på nuvarande mapp(ar) '%s' kommer att bytas till '%s'."
+
+#: templates/acl/acl.inc:107
+msgid ""
+"The current list of users with access to this folder could not be retrieved"
+msgstr "Kunde inte hämta listan på användare med tillgång till denna mapp"
+
+#: compose.php:1145
+#, php-format
+msgid "The draft has been saved to the \"%s\" folder."
+msgstr "Utkastet har sparats i mappen \"%s\"."
+
+#: lib/MIME/Viewer/itip.php:129
+msgid "The event was added to your calendar."
+msgstr "Händelsen har lagts till i din kalender."
+
+#: templates/compose/expand.inc:9
+#, php-format
+msgid "The field '%s' can't be expanded."
+msgstr "Fältet '%s' kan inte expanderas."
+
+#: lib/Folder.php:431
+#, php-format
+msgid "The folder \"%s\" already exists"
+msgstr "Mappen '%s' existerar redan"
+
+#: lib/Folder.php:192
+#, php-format
+msgid ""
+"The folder \"%s\" contains illegal characters in its name. It may cause "
+"problems. Please see your system administrator."
+msgstr ""
+"Namnet på mappen '%s' innehåller felaktiga tecken som kan medföra problem. "
+"Var god kontakta din systemadministratör."
+
+#: lib/Folder.php:450
+#, php-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "Mappen '%s' skapades men du började inte prenumerera på den."
+
+#: lib/Folder.php:380
+#, php-format
+msgid "The folder \"%s\" was deleted but you were not unsubscribed from it."
+msgstr "Mappen '%s' raderades men din prenumeration på mappen togs inte bort."
+
+#: lib/Folder.php:437
+#, php-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr "Mappen '%s' skapades inte. Servern svarade"
+
+#: lib/Folder.php:373
+#, php-format
+msgid "The folder \"%s\" was not deleted. This is what the server said"
+msgstr "Mappen '%s' raderades inte. Servern svarade"
+
+#: lib/Folder.php:453
+#, php-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "Mappen '%s' skapades."
+
+#: lib/Folder.php:383
+#, php-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "Mappen '%s' raderades."
+
+#: lib/Folder.php:550
+#, php-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "Namnet på mappen '%s' ändrades till '%s'"
+
+#: lib/MIME/Viewer/tnef.php:96
+msgid "The following files were attached to this part:"
+msgstr "Följande filer var bifogade den här delen:"
+
+#: templates/javascript/open_saveimage_win.js:12
+msgid ""
+"The image save window can not be opened. Perhaps you have set your browser "
+"to block popup windows?"
+msgstr ""
+"Kan inte öppna fönstret att spara bilder i, kanske har du ställt in din "
+"webbläsare att blockera popup-fönster?"
+
+#: lib/MIME/Viewer/html.php:95
+msgid ""
+"The images will be displayed because the sender is present in your "
+"addressbook."
+msgstr "Visar bilder då avsändaren finns i din adressbok."
+
+#: lib/MIME/Viewer/status.php:78
+msgid "The mail server generated the following error message:"
+msgstr "E-postservern gav följande felmeddelande:"
+
+#: lib/MIME/Viewer/notification.php:54
+msgid "The mail server generated the following informational message:"
+msgstr "E-postservern gav följande informationsmeddelande:"
+
+#: lib/MIME/Viewer/status.php:93
+msgid "The mail server generated the following message:"
+msgstr "E-postservern gav följande meddelande:"
+
+#: lib/Message.php:635
+#, php-format
+msgid "The mailbox %s is already empty."
+msgstr "Mappen '%s' är redan tom."
+
+#: lib/Fetchmail.php:262
+#, php-format
+msgid "The message \"%s\" from \"%s\" (%d bytes) exceeds fetch size limit."
+msgstr ""
+"Meddelandet från \"%s\" till \"%s\" (%d bytes) överskrider maxstorleken\n"
+"för meddelanden som hämtas."
+
+#: templates/contacts/contacts.inc:103
+msgid "The message being composed has been closed. Exiting."
+msgstr "Meddelandet som skrivs har stängts. Avslutar."
+
+#: message.php:142
+msgid "The message has been deleted."
+msgstr "Meddelandet har raderats."
+
+#: lib/MIME/Viewer/pgp.php:399
+msgid "The message has been verified."
+msgstr "Meddelandet har verifierats."
+
+#: lib/MIME/Viewer/pkcs7.php:385
+#, php-format
+msgid "The message has been verified. Sender: %s."
+msgstr "Meddelandet har verifierats. Avsändare: %s"
+
+#: templates/smime/open_smime_win.js:10 templates/pgp/open_pgp_win.js:10
+msgid ""
+"The passphrase window can't be opened. Perhaps you have set your browser to "
+"block popup windows?"
+msgstr ""
+"Kan inte öppna fönstret för att fråga efter lösenfras. Kanske har du ställt\n"
+"in din webbläsare att blockera popup-fönster?"
+
+#: lib/MIME/Viewer/pgp.php:178
+#, php-format
+msgid "The raw text of the PGP Public Key can be viewed %s."
+msgstr "Råtexten för PGP-nyckeln visas %s."
+
+#: lib/MIME/Viewer/tnef.php:62
+msgid "The requested file does not exist in the MS-TNEF attachment."
+msgstr "Den begärda filen finns inte i MS-TNEF bilagan."
+
+#: lib/MIME/Viewer/zip.php:67
+msgid "The requested file does not exist in the Zip attachment."
+msgstr "Den begärda filen finns inte i ZIP bilagan."
+
+#: message.php:553
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Please click %s to send the "
+"notification message."
+msgstr ""
+"Avsändaren begär leveransbekräftelse av dig när du läst detta\n"
+"meddelande. Klicka %s för att skicka leveransbekräftelse."
+
+#: lib/MIME/Viewer/images.php:72
+msgid "The server was not able to create a thumbnail of this image."
+msgstr "Servern kunde inta skapa en miniatyrbild för bilden."
+
+#: templates/compose/compose.js:104
+msgid "The signature could not be replaced."
+msgstr "Kunde inte byta ut signaturen."
+
+#: templates/compose/compose.js:102
+msgid "The signature was successfully replaced."
+msgstr "Signaturen har ersatts."
+
+#: attachment.php:59
+msgid "The specified file does not exist."
+msgstr "Angiven fil finns inte."
+
+#: lib/MIME/Viewer/itip.php:159
+msgid "The task has been added to your tasklist."
+msgstr "Uppgiften har lagts till i din uppgiftslista."
+
+#: lib/MIME/Viewer/status.php:98
+msgid "The text of the message"
+msgstr "Texten för meddelandet"
+
+#: lib/MIME/Viewer/status.php:97
+#, php-format
+msgid "The text of the message can be viewed %s."
+msgstr "Texten för meddelandet kan visas %s."
+
+#: lib/MIME/Viewer/status.php:83
+msgid "The text of the returned message"
+msgstr "Texten för det returnerade meddelandet."
+
+#: lib/MIME/Viewer/status.php:82
+#, php-format
+msgid "The text of the returned message can be viewed %s."
+msgstr "Texten för det returnerade meddelandet kan visas %s."
+
+#: lib/MIME/Viewer/notification.php:71
+msgid "The text of the sent message"
+msgstr "Texten för det skickade meddelandet."
+
+#: lib/MIME/Viewer/notification.php:71
+#, php-format
+msgid "The text of the sent message can be viewed %s."
+msgstr "Texten för det skickade meddelandet kan visas %s."
+
+#: lib/MIME/Viewer/itip.php:144
+msgid "The user's free/busy information was sucessfully stored."
+msgstr "Ledig/upptagen-information för användaren har sparats."
+
+#: lib/MIME/Viewer/alternative.php:89
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "Det finns inga alternativa delas som kan visas inline."
+
+#: templates/mailbox/empty_mailbox.inc:3
+msgid "There are no messages in this mailbox."
+msgstr "Det finns inga meddelanden i den här mappen."
+
+#: lib/Message.php:594
+#, php-format
+msgid "There was a problem expunging %s. This is what the server said"
+msgstr "Problem vid radering av %s. Servern svarade"
+
+#: lib/Message.php:637
+#, php-format
+msgid "There was a problem expunging the mailbox. The server said: %s"
+msgstr "Problem vid radering av innehållet i mappen. Servern svarade: %s"
+
+#: lib/Message.php:603
+msgid "There was a problem expunging the mailbox. This is what the server said"
+msgstr "Problem vid radering av innehållet i mappen. Servern svarade"
+
+#: lib/Message.php:97
+#, php-format
+msgid ""
+"There was an error copying messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"Det uppstod problem vid kopiering av meddelanden till '%s' till '%s'. "
+"Servern svarade"
+
+#: lib/Message.php:207 lib/Message.php:222
+#, php-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr ""
+"Det uppstod problem vid radering av meddelanden från mappen '%s'. Servern "
+"svarade"
+
+#: lib/Message.php:286
+#, php-format
+msgid ""
+"There was an error deleting messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"Det uppstod problem vid radering av meddelanden från mappen '%s'. Servern "
+"svarade"
+
+#: lib/Message.php:220
+#, php-format
+msgid "There was an error deleting messages. This is what the server said: %s"
+msgstr "Det uppstod problem vid radering av meddelanden. Servern svarade %s"
+
+#: lib/MIME/Viewer/itip.php:90
+#, php-format
+msgid "There was an error deleting the event: %s."
+msgstr "Det uppstod ett fel vid radering av händelse: %s"
+
+#: lib/MIME/Viewer/enriched.php:40 lib/MIME/Viewer/plain.php:55
+msgid "There was an error displaying this message part"
+msgstr "Det uppstod ett fel vid visning av meddelandedelen."
+
+#: lib/Message.php:523 lib/Message.php:565
+#, php-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"Det uppstod problem vid märkning av meddelanden i mappen '%s'. Servern "
+"svarade"
+
+#: folders.php:155
+#, php-format
+msgid "There was an error importing %s."
+msgstr "Det uppstod ett fel vid import: %s"
+
+#: lib/MIME/Viewer/itip.php:126
+#, php-format
+msgid "There was an error importing the event: %s."
+msgstr "Fel vid import av händelsen: %s."
+
+#: lib/MIME/Viewer/itip.php:156
+#, php-format
+msgid "There was an error importing the task: %s."
+msgstr "Fel vid import av uppgiften: %s."
+
+#: lib/MIME/Viewer/itip.php:142
+#, php-format
+msgid "There was an error importing user's free/busy information: %s."
+msgstr "Fel vid import av information om ledig/upptagen: %s."
+
+#: lib/Message.php:92
+#, php-format
+msgid ""
+"There was an error moving messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"Det uppstod problem vid flytt av meddelanden till '%s' till '%s'. Servern "
+"svarade"
+
+#: compose.php:1153
+msgid "There was an error saving this message as a draft."
+msgstr "Det uppstod ett fel när meddeladet skulle sparas som utkast."
+
+#: compose.php:914
+#, php-format
+msgid "There was an error sending your message: %s"
+msgstr "Det uppstod ett fel när ditt meddelande skickades: %s"
+
+#: lib/MIME/Viewer/itip.php:104
+#, php-format
+msgid "There was an error updating the event: %s."
+msgstr "Det uppstod ett fel vid 3uppdatering av händelsen: %s"
+
+#: lib/MIME/Viewer/plain.php:62
+msgid "There was no text in this message part"
+msgstr "Ingen text i den här meddelandedelen"
+
+#: lib/MIME/Viewer/html.php:95
+msgid "This HTML message has images embedded in it."
+msgstr "HTML-meddelandet har inbäddade bilder."
+
+#: lib/MIME/Viewer/html.php:89
+msgid ""
+"This HTML message has images embedded in it. Blocked images appear like "
+"this: "
+msgstr ""
+"Detta HTML-meddelande har inbäddade bilder. Blockerade bilder visas så\n"
+"här:"
+
+#: lib/MIME/Viewer/pgp.php:171
+msgid "This PGP Public Key was attached to the message."
+msgstr "Den här publika PGP-nyckeln var bifogat till meddelandet."
+
+#: lib/MIME/Viewer/itip.php:95 lib/MIME/Viewer/itip.php:109
+#: lib/MIME/Viewer/itip.php:133 lib/MIME/Viewer/itip.php:147
+#: lib/MIME/Viewer/itip.php:163 lib/MIME/Viewer/itip.php:282
+msgid "This action is not supported."
+msgstr "Denna handling stöds inte."
+
+#: lib/MIME/Viewer/itip.php:169 lib/MIME/Viewer/itip.php:382
+msgid "This action is not yet implemented."
+msgstr "Handlingen är inte implementerad ännu."
+
+#: templates/folders/javascript.inc:7
+msgid "This may take some time. Are you sure you want to continue?"
+msgstr "Det kan ta lite tid, är du säker på att du vill fortsätta?"
+
+#: lib/MIME/Viewer/appledouble.php:42
+msgid "This message contains a Macintosh file."
+msgstr "Detta meddelande innehåller en Macintosh-fil."
+
+#: lib/MIME/Viewer/pkcs7.php:413
+msgid ""
+"This message contains an attachment that has been digitally signed via S/"
+"MIME."
+msgstr "Meddelandet innehåller en bilaga som har signerats via S/MIME."
+
+#: lib/MIME/Viewer/pkcs7.php:417
+msgid "This message contains an attachment that has been encrypted via S/MIME."
+msgstr "Meddelandet innehåller en bilaga som har krypterats via S/MIME."
+
+#: lib/MIME/Viewer/status.php:167
+msgid ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+msgstr ""
+"Detta meddelande innehåller leveransinformation om e-post, men\n"
+"formatet på meddelandet är okänt."
+
+#: lib/MIME/Viewer/pgp.php:321
+msgid ""
+"This message does not appear to be a valid PGP encrypted message. Error: "
+msgstr "Det här meddelandet verkar inte ha ett riktigt PGP-fomat. Fel: "
+
+#: lib/MIME/Viewer/pgp.php:246 lib/MIME/Viewer/pgp.php:356
+msgid ""
+"This message does not appear to be in the correct PGP format (according to "
+"RFC 2015)."
+msgstr ""
+"Det här meddelandet verkar inte ha ett riktigt PGP-fomat (enligt RFC 2015)."
+
+#: lib/MIME/Viewer/pkcs7.php:173
+msgid "This message does not appear to be in the correct S/MIME format."
+msgstr "Det här meddelandet verkar inte ha ett riktigt S/MIME-fomat."
+
+#: lib/MIME/Viewer/pgp.php:211 lib/MIME/Viewer/pgp.php:422
+msgid "This message has been digitally signed via PGP."
+msgstr "Meddelandet har signerats via PGP."
+
+#: lib/MIME/Viewer/pkcs7.php:146
+msgid "This message has been digitally signed via S/MIME."
+msgstr "Meddelandet har signerats via S/MIME."
+
+#: lib/MIME/Viewer/pkcs7.php:142 lib/MIME/Viewer/pkcs7.php:241
+msgid "This message has been encrypted via S/MIME."
+msgstr "Meddelandet har krypterats via S/MIME."
+
+#: lib/MIME/Viewer/pgp.php:207 lib/MIME/Viewer/pgp.php:297
+msgid "This message has been encrypted with PGP."
+msgstr "Meddelandet har krypterats via PGP."
+
+#: message.php:208
+msgid "This message to"
+msgstr "Meddelandet till"
+
+#: acl.php:46
+msgid "This server does not support sharing folders."
+msgstr "Denna server stöder inte delade mappar."
+
+#: templates/contacts/contacts.inc:109
+msgid "This window must be called from a compose window."
+msgstr ""
+"Detta fönster kan bara öppnas från ett fönster för att skriva meddelanden."
+
+#: templates/thread/thread.html:8
+msgid "Thread Display"
+msgstr "Trådvisning"
+
+#: thread.php:31 config/prefs.php.dist:902 templates/thread/thread.html:2
+msgid "Thread View"
+msgstr "Trådvy"
+
+#: search.php:144 mailbox.php:569 message.php:261
+#: templates/mailbox/message_headers.inc:17
+#: templates/contacts/contacts.inc:224 templates/compose/recompose.inc:10
+#: templates/compose/redirect.inc:61
+msgid "To"
+msgstr "Till"
+
+#: config/prefs.php.dist:899
+msgid "To Address"
+msgstr "Till adress"
+
+#: templates/prefs/sourceselect.inc:326
+msgid ""
+"To select multiple fields, hold down the Control (PC) or Command (Mac) while "
+"clicking."
+msgstr ""
+"För att välja flera fält, håll nere Control (på PC) eller Command (på\n"
+"Mac) och klicka."
+
+#: templates/compose/compose.inc:567
+msgid "Total Attachments Size:"
+msgstr "Storlek på bilagor:"
+
+#: folders.php:349
+msgid "Trash folder"
+msgstr "Papperskorg"
+
+#: templates/prefs/trashselect.inc:23
+msgid "Trash folder:"
+msgstr "Papperskorg"
+
+#: lib/Quota/command.php:77 lib/Quota/courier.php:54 lib/Quota/logfile.php:93
+#: lib/Quota/mdaemon.php:51 lib/Quota/mercury32.php:84 lib/Quota/cyrus.php:70
+msgid "Unable to retrieve quota"
+msgstr "Kunde inte läsa quota"
+
+#: templates/message/navbar_navigate.inc:10 templates/mailbox/navbar.inc:19
+#: templates/mailbox/navbar.inc:36
+msgid "Unanswered"
+msgstr "Obesvarat"
+
+#: templates/search/main.inc:35
+msgid "Unanswered messages"
+msgstr "Obesvarade meddelanden"
+
+#: templates/message/navbar_actions.inc:4 templates/mailbox/actions.inc:13
+msgid "Undelete"
+msgstr "Återta"
+
+#: mailbox.php:553 mailbox.php:565 lib/MIME/Headers.php:218
+msgid "Undisclosed Recipients"
+msgstr "Okänd mottagare"
+
+#: lib/MIME/Viewer/itip.php:408
+#, php-format
+msgid "Unhandled component of type: %s"
+msgstr "Icke hanterad komponent av typ: %s"
+
+#: mailbox.php:530
+msgid "Unknown Date"
+msgstr "Okänt datum"
+
+#: lib/MIME/Viewer/itip.php:591
+msgid "Unknown Meeting"
+msgstr "Okänt möte"
+
+#: mailbox.php:581
+msgid "Unknown Recipient"
+msgstr "Okänd mottagare"
+
+#: templates/smime/smime.inc:112 templates/pgp/pgp.inc:151
+msgid "Unload Passphrase"
+msgstr "Frigör lösenord"
+
+#: fetchmailprefs.php:65
+msgid "Unnamed"
+msgstr "Namnlös"
+
+#: mailbox.php:664 message.php:495 templates/message/navbar_navigate.inc:6
+#: templates/mailbox/legend.inc:5 templates/mailbox/navbar.inc:15
+#: templates/mailbox/navbar.inc:32
+msgid "Unseen"
+msgstr "Oläst"
+
+#: templates/folders/actions.inc:10
+msgid "Unsubscribe from Folder(s)"
+msgstr "Avsluta prenumeration på mapp(ar)"
+
+#: templates/compose/compose.inc:574
+msgid "Update Attachment Information"
+msgstr "Uppdatera bilageinformation"
+
+#: lib/MIME/Viewer/itip.php:576
+msgid "Update respondent status"
+msgstr "Uppdatera status på svarande"
+
+#: templates/smime/import_key.inc:58 templates/pgp/import_key.inc:56
+msgid "Upload"
+msgstr "Ladda upp"
+
+#: templates/prefs/sentmailselect.inc:42
+msgid "Use Default Value"
+msgstr "Använd förvalt värde"
+
+#: config/prefs.php.dist:251
+msgid "Use IMAP folder subscriptions?"
+msgstr "Använd IMAPs mappprenumerationer?"
+
+#: config/prefs.php.dist:726
+msgid "Use Virtual Trash Folder?"
+msgstr "Använd virtuell papperskorg?"
+
+#: templates/acl/acl.inc:142
+msgid "User"
+msgstr "Användare"
+
+#: acl.php:87
+#, php-format
+msgid "User '%s' successfully given the specified rights for the folder '%s'."
+msgstr "Gav användaren '%s' angivna rättigheter till mappen '%s'."
+
+#: templates/login/login.inc:209
+msgid "Username"
+msgstr "Användarnamn"
+
+#: templates/fetchmail/manage.inc:17
+msgid "Username:"
+msgstr "Användarnamn:"
+
+#: templates/smime/smime.inc:60 templates/smime/smime.inc:106
+#: templates/smime/smime.inc:112 templates/pgp/pgp.inc:93
+#: templates/pgp/pgp.inc:147 templates/pgp/pgp.inc:151
+msgid "View"
+msgstr "Visa"
+
+#: lib/MIME/Viewer/tnef.php:112 lib/MIME/Viewer/zip.php:95
+#, php-format
+msgid "View %s"
+msgstr "Visa %s"
+
+#: templates/smime/smime.inc:60 templates/pgp/pgp.inc:93
+#, php-format
+msgid "View %s Public Key"
+msgstr "Visa publik nyckel för %s"
+
+#: lib/MIME/Viewer/html.php:106
+msgid "View HTML content in a separate window"
+msgstr "Visa HTML-innehåll i ett separat fönster"
+
+#: templates/smime/smime.inc:112 templates/pgp/pgp.inc:151
+msgid "View Personal Private Key"
+msgstr "Visa personlig, privat nyckel"
+
+#: templates/smime/smime.inc:106 templates/pgp/pgp.inc:147
+msgid "View Personal Public Key"
+msgstr "Visa personlig, publik nyckel"
+
+#: templates/message/navbar_actions.inc:18
+msgid "View Thread"
+msgstr "Visa tråd"
+
+#: lib/MIME/Viewer/images.php:160 lib/MIME/Viewer/images.php:162
+msgid "View Thumbnail"
+msgstr "Visa miniatyrbild"
+
+#: lib/MIME/Viewer/pkcs7.php:421
+msgid "View attachment in a separate window"
+msgstr "Visa bilagor i ett separat fönster"
+
+#: lib/MIME/Viewer/related.php:64
+msgid "View content in a separate window"
+msgstr "Visa innehåll i ett separat fönster"
+
+#: lib/MIME/Viewer/itip.php:130
+msgid "View event"
+msgstr "Visa händelse"
+
+#: folders.php:341 mailbox.php:499
+#, php-format
+msgid "View messages in %s"
+msgstr "Visa meddelanden i %s"
+
+#: templates/prefs/initialpageselect.inc:26
+msgid "View or mailbox to display after login:"
+msgstr "Vy eller mapp att visa efter inloggning:"
+
+#: lib/MIME/Viewer/itip.php:160
+msgid "View task"
+msgstr "Visa uppgift"
+
+#: lib/MIME/Viewer/html.php:99
+msgid "View the Images"
+msgstr "Visa bilder"
+
+#: search.php:314
+#, php-format
+msgid "Virtual Folder \"%s\" created succesfully."
+msgstr "Virtuell mapp '%s' skapades."
+
+#: templates/search/main.inc:111 lib/IMAP/Tree.php:125 lib/IMAP/Tree.php:138
+#: lib/IMAP/Tree.php:140 lib/IMAP/Tree.php:144 lib/IMAP/Tree.php:145
+#: lib/IMAP/Tree.php:329 lib/IMAP/Tree.php:353 lib/IMAP/Tree.php:395
+msgid "Virtual Folders"
+msgstr "Virtuella mappar"
+
+#: search.php:296
+msgid "Virtual Folders require a label."
+msgstr "Virtuella mappar måste ha ett namn"
+
+#: lib/VFolder.php:188 lib/VFolder.php:193
+msgid "Virtual INBOX"
+msgstr "Virtuell inkorg"
+
+#: folders.php:377
+msgid "Virtual INBOX Folder"
+msgstr "Virtuell inkorg"
+
+#: mailbox.php:417 lib/VFolder.php:122 lib/VFolder.php:127
+msgid "Virtual Trash"
+msgstr "Virtuell papperskorg"
+
+#: folders.php:374
+msgid "Virtual Trash Folder"
+msgstr "Virtuell papperskorg"
+
+#: templates/search/main.inc:133
+msgid "Virtual folder label"
+msgstr "Namn på virtuell mapp"
+
+#: login.php:131
+#, php-format
+msgid "Welcome to %s"
+msgstr "Välkommen till %s"
+
+#: config/prefs.php.dist:717
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted?"
+msgstr ""
+"När meddelanden raderas flytta dem till papperskorgen istället för att "
+"markera dem som raderade?"
+
+#: config/prefs.php.dist:887
+msgid "When opening a new mailbox, which page do you want to start on?"
+msgstr "När du öppnar en ny e-postlåda, vilken sida vill du börja på?"
+
+#: config/prefs.php.dist:547
+msgid "When saving sent-mail, should we save attachment data?"
+msgstr "När skickad post sparas, ska bilagor också sparas?"
+
+#: templates/message/navbar_actions.inc:24 templates/mailbox/actions.inc:19
+msgid "Whitelist"
+msgstr "Betrodda adresser"
+
+#: templates/compose/compose.inc:531 config/prefs.php.dist:958
+msgid "Yes"
+msgstr "Ja"
+
+#: lib/Maintenance/Task/fetchmail_login.php:63
+msgid "You are about to fetch email from the following account(s):"
+msgstr "Du kommer att häme meddelanden från följande konto(n):"
+
+#: templates/folders/javascript.inc:8
+msgid "You are attempting to delete the following folders:"
+msgstr "Du försöker ta bort följande mappar:"
+
+#: templates/message/javascript.inc:55 templates/mailbox/javascript.inc:200
+msgid "You are copying/moving to a new folder."
+msgstr "Du flyttar/kopierar till en ny mapp."
+
+#: templates/folders/javascript.inc:101
+msgid "You are creating a sub-folder to "
+msgstr "Du skapar en undermapp till "
+
+#: templates/folders/javascript.inc:103
+msgid "You are creating a top-level folder."
+msgstr "Du skapar en mapp på toppnivån."
+
+#: templates/folders/javascript.inc:144
+msgid "You are renaming the folder: "
+msgstr "Du döper om mappen: "
+
+#: lib/Maintenance/Task/tos_agreement.php:37
+msgid ""
+"You did not agree to the Terms of Service agreement, so you were not allowed "
+"to login."
+msgstr "Eftersom du inte godkänt användningsvillkoren får du inte logga in."
+
+#: templates/acl/acl.inc:169
+msgid "You do not have permission to change access to this folder"
+msgstr "Du har inte rätt att ändra rättigheter för denna mapp"
+
+#: lib/Maillog.php:132
+#, php-format
+msgid "You forwarded this message on %%s to the following recipients: %s."
+msgstr "Du vidarbefordrade meddelandet %%s till följande mottagare: %s."
+
+#: templates/mailbox/alert.inc:3
+#, php-format
+msgid "You have %s new messages."
+msgstr "Du har %s nya meddelanden."
+
+#: templates/mailbox/alert.inc:3
+msgid "You have 1 new message."
+msgstr "Du har 1 nytt meddelande."
+
+#: templates/compose/attachments.js:116
+msgid ""
+"You have at least one attachment selected that you didn't upload yet. Are "
+"you sure you want to send this message without these attachments?"
+msgstr ""
+"Du har minst en bilaga vald som du inte laddat upp än. Är du säker påatt du "
+"vill skicka meddelandet utan bilagorna?"
+
+#: lib/IMP.php:1009
+msgid "You have new mail in the following folder:"
+msgstr "Du har ny post i följande mapp:"
+
+#: lib/IMP.php:1014
+msgid "You have new mail in the following folders:"
+msgstr "Du har nya meddelanden i följande mappar:"
+
+#: compose.php:127
+msgid "You must enter at least one recipient."
+msgstr "Välj minst en mottagare."
+
+#: lib/MIME/Viewer/pgp.php:308
+msgid ""
+"You must enter the passphrase for your PGP private key to view this message"
+msgstr ""
+"Du måste ange lösenord för din privata PGP-nyckel för att kunna visa det här "
+"meddelandet."
+
+#: lib/MIME/Viewer/pkcs7.php:252
+msgid ""
+"You must enter the passphrase for your S/MIME private key to view this "
+"message"
+msgstr ""
+"Du måste ange lösenord för din privata S/MIME-nyckel för att kunna visa det "
+"här meddelandet."
+
+#: templates/message/javascript.inc:64 templates/mailbox/javascript.inc:209
+msgid "You must select a target mailbox first."
+msgstr "Välj en målmapp först."
+
+#: fetchmailprefs.php:85
+msgid "You must select an account to be deleted."
+msgstr "Ange kontot som skall raderas."
+
+#: templates/contacts/contacts.inc:81
+msgid "You must select an address first."
+msgstr "Du måste ange en adress först."
+
+#: templates/mailbox/javascript.inc:62 templates/mailbox/javascript.inc:216
+#: templates/mailbox/javascript.inc:271
+msgid "You must select at least one message first."
+msgstr "Välj minst ett meddelande först."
+
+#: templates/compose/redirect.inc:13
+msgid "You must specify a recipient."
+msgstr "Välj en mottagare."
+
+#: templates/compose/attachments.js:29
+msgid "You must specify at least one file to attach."
+msgstr "Välj minst en fil att bifoga."
+
+#: templates/fetchmail/manage.inc:48
+#, php-format
+msgid "You need to have '%s' enabled in your maintenance options."
+msgstr "Du måste aktivera '%s' i underhållsinställningar."
+
+#: lib/Maillog.php:140
+#, php-format
+msgid "You redirected this message to %s on %%s."
+msgstr "Du eftersände meddelandet till %s den %%s."
+
+#: lib/Maillog.php:144
+#, php-format
+msgid "You replied to this message on %s."
+msgstr "Du svarade på meddelandet %s."
+
+#: lib/Folder.php:605
+#, php-format
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr "Du blev inte prenumerant på '%s'. Servern svarade"
+
+#: lib/Folder.php:656
+#, php-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr "Din prenumeration på '%s' avslutades inte. Servern svarade"
+
+#: lib/Folder.php:608
+#, php-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr "Prenumeration på '%s' startades."
+
+#: lib/Folder.php:659
+#, php-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "Din prenumeration på '%s' avslutades."
+
+#: templates/pgp/pgp.inc:186
+msgid "Your Name"
+msgstr "Ditt namn"
+
+#: templates/pgp/pgp.inc:119
+msgid "Your PGP Public/Private Keys"
+msgstr "Din publika/privata nyckel för PGP"
+
+#: templates/smime/smime.inc:110 templates/pgp/pgp.inc:150
+msgid "Your Private Key"
+msgstr "Din privata nyckel"
+
+#: templates/smime/smime.inc:104 templates/pgp/pgp.inc:146
+msgid "Your Public Key"
+msgstr "Din publika nyckel"
+
+#: config/prefs.php.dist:158
+msgid "Your Reply-to: address: <em>(optional)</em>"
+msgstr "Din Reply-to: adress: <em>(valfri)</em>"
+
+#: templates/smime/smime.inc:83
+msgid "Your S/MIME Public/Private Certificates"
+msgstr "Ditt publika/privata certifikat för S/MIME"
+
+#: templates/fetchmail/account_select.inc:16
+msgid "Your accounts:"
+msgstr "Dina konton:"
+
+#: config/prefs.php.dist:166
+msgid ""
+"Your alias addresses: <em>(optional, enter each address on a new line)</em>"
+msgstr ""
+"Dina alias adresser: <em>(ej obligatoriskt, skriv varje adress på en ny\n"
+"rad)</em>"
+
+#: lib/MIME/Viewer/images.php:95
+msgid "Your browser does not support inline display of this image type."
+msgstr "Din webläsare stödjer inte inline-visning av den här bildtypen."
+
+#: templates/message/print.inc:27
+msgid ""
+"Your browser does not support this print option. Press Control/Option + P to "
+"print."
+msgstr ""
+"Din webläsare stödjer inte utskriftsfunktionen. Tryck CTRL/Option + P för "
+"att skriva ut."
+
+#: config/prefs.php.dist:525
+msgid "Your default charset for sending messages:"
+msgstr "Standardtextkodning när du skickar meddelanden:"
+
+#: templates/prefs/encryptselect.inc:1
+msgid "Your default encryption method for sending messages:"
+msgstr "Standardmetod för kryptering när du skickar meddelanden:"
+
+#: lib/MIME/Viewer/status.php:92
+msgid "Your message was successfully delivered."
+msgstr "Meddelandet levererades."
+
+#: config/prefs.php.dist:199
+msgid "Your signature:"
+msgstr "Din signatur:"
+
+#: compose.php:1193 mailbox.php:514 message.php:285 lib/Compose.php:746
+msgid "[No Subject]"
+msgstr "[Inget ärende]"
+
+#: templates/compose/compose.inc:216
+msgid "_Bcc"
+msgstr "_Bcc"
+
+#: templates/message/navbar_actions.inc:21 templates/mailbox/actions.inc:16
+msgid "_Blacklist"
+msgstr "_Spärra adress"
+
+#: templates/compose/compose.inc:165
+msgid "_Cc"
+msgstr "_Cc"
+
+#: lib/IMP.php:910
+msgid "_Compose"
+msgstr "_Skriv"
+
+#: templates/message/navbar_actions.inc:6 templates/mailbox/actions.inc:8
+#: templates/mailbox/actions.inc:10
+msgid "_Delete"
+msgstr "_Radera"
+
+#: lib/IMP.php:912
+msgid "_Folders"
+msgstr "_Mappar"
+
+#: templates/compose/compose.inc:80
+msgid "_Identity"
+msgstr "_Identitet"
+
+#: lib/IMP.php:903
+msgid "_Inbox"
+msgstr "_Inkorg"
+
+#: lib/IMP.php:953
+msgid "_Log out"
+msgstr "_Logga ut"
+
+#: message.php:381
+msgid "_Message Source"
+msgstr "_Meddelandekälla"
+
+#: templates/message/navbar_actions.inc:33
+msgid "_Print"
+msgstr "_Skriv ut"
+
+#: templates/compose/compose.inc:283 templates/compose/compose.inc:300
+msgid "_Priority"
+msgstr "_Prioritet"
+
+#: mailbox.php:382
+#, php-format
+msgid "_Refresh %s"
+msgstr "_Förnya %s"
+
+#: templates/message/navbar_actions.inc:8
+msgid "_Reply"
+msgstr "_Svara"
+
+#: lib/IMP.php:914
+msgid "_Search"
+msgstr "_Sök"
+
+#: templates/compose/compose.inc:66 templates/compose/compose.inc:422
+msgid "_Send Message"
+msgstr "_Skicka meddelande"
+
+#: templates/mailbox/message_headers.inc:27
+msgid "_Thread"
+msgstr "_Tråd"
+
+#: templates/compose/compose.inc:115
+msgid "_To"
+msgstr "_Till"
+
+#: templates/mailbox/actions.inc:13
+msgid "_Undelete"
+msgstr "_Återta"
+
+#: templates/message/navbar_actions.inc:18
+msgid "_View Thread"
+msgstr "_Visa tråd"
+
+#: templates/message/navbar_actions.inc:24 templates/mailbox/actions.inc:19
+msgid "_Whitelist"
+msgstr "_Betrodda adresser"
+
+#: lib/Compose.php:359
+msgid "attachment"
+msgstr "bilaga"
+
+#: view.php:102
+msgid "attachments.zip"
+msgstr "bilagor.zip"
+
+#: templates/compose/compose.inc:503
+msgid "bytes"
+msgstr "tecken"
+
+#: templates/contacts/contacts.inc:188
+msgid "from"
+msgstr "från"
+
+#: pgp.php:69 smime.php:29
+msgid "key"
+msgstr "nyckel"
+
+#: folders.php:151
+msgid "mailbox file"
+msgstr "brevlådefil"
+
+#: compose.php:975 lib/Message.php:442
+msgid "name"
+msgstr "namn"
+
+#: templates/compose/spelling.inc:76
+msgid "none"
+msgstr "ingen"
+
+#: templates/compose/spelling.inc:105
+msgid "or"
+msgstr "eller"
+
+#: templates/compose/spelling.inc:46
+msgid "spelling error"
+msgstr "stavfel"
+
+#: templates/compose/spelling.inc:46
+msgid "spelling errors"
+msgstr "stavfel"
+
+#: lib/Filter.php:55
+msgid "your blacklist"
+msgstr "dina spärrade adresser"
+
+#: lib/Filter.php:67
+msgid "your whitelist"
+msgstr "dina betrodda adresser"

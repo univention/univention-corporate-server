@@ -1,0 +1,263 @@
+# Slovak translations for Mimp package.
+# Copyright 2008-2009 The Horde Project
+# This file is distributed under the same license as the Mimp package.
+# Martin Matu¹ka <martin@matuska.org>, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mimp H3 (1.1-RC2)\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-09-12 22:55+0200\n"
+"PO-Revision-Date: 2008-09-17 12:51+0100\n"
+"Last-Translator: Martin Matuska <martin@matuska.org>\n"
+"Language-Team: Slovak <martin@matuska.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: message.php:295
+#, php-format
+msgid "(%d of %d)"
+msgstr "(%d z %d)"
+
+#: lib/MIME/Contents.php:62
+msgid "Attachment"
+msgstr "Príloha"
+
+#: templates/compose/compose.inc:52
+msgid "Bcc: "
+msgstr "Bcc: "
+
+#: templates/compose/compose.inc:49
+msgid "Cc: "
+msgstr "Cc: "
+
+#: config/prefs.php.dist:11
+msgid "Configure how messages are displayed."
+msgstr "Nastavenie spôsob zobrazenia správ."
+
+#: compose.php:22
+msgid "Could not retrieve the message from the mail server."
+msgstr "Nemo¾no prija» správy z po¹tového servera."
+
+#: message.php:258
+msgid "Delete"
+msgstr "Vymaza»"
+
+#: config/prefs.php.dist:23
+msgid "Display only the first 250 characters of a message initially?"
+msgstr "Zobrazi» na zaèiatku iba prvých 250 znakov zo správy?"
+
+#: mailbox.php:185
+msgid "Do Not Sort by Thread"
+msgstr "Netriedi» podµa vlákna"
+
+#: lib/MIME/Viewer/status.php:69
+msgid "ERROR: Your message could not be delivered."
+msgstr "CHYBA: Va¹u správu nebolo mo¾né doruèi»"
+
+#: compose.php:88 templates/compose/compose.inc:59
+#: templates/compose/redirect.inc:19
+msgid "Expand Names"
+msgstr "Doplni» mená/adresy"
+
+#: mailbox.php:66
+msgid "First Page"
+msgstr "Prvá stránka"
+
+#: folders.php:60 lib/MIMP.php:36
+msgid "Folders"
+msgstr "Prieèinky"
+
+#: message.php:275
+msgid "Forward"
+msgstr "Preposla»"
+
+#: mailbox.php:171
+msgid "From"
+msgstr "Od"
+
+#: templates/compose/compose.inc:39
+msgid "Identity"
+msgstr "Identita"
+
+#: lib/MIMP.php:30
+msgid "Inbox"
+msgstr "Prijaté správy"
+
+#: mailbox.php:71
+msgid "Last Page"
+msgstr "Posledná stránka"
+
+#: lib/MIMP.php:44
+msgid "Log out"
+msgstr "Odhlási»"
+
+#: config/prefs.php.dist:9
+msgid "Mail Management"
+msgstr "Správa po¹ty"
+
+#: message.php:252 message.php:296 compose.php:240 mailbox.php:197
+#: templates/folders/folders.inc:6 templates/folders/folders.inc:29
+#: templates/mailbox/mailbox.inc:10 templates/compose/compose.inc:4
+#: templates/compose/redirect.inc:4
+msgid "Menu"
+msgstr "Menu"
+
+#: compose.php:225
+msgid "Message Composition"
+msgstr "Písanie správy"
+
+#: config/prefs.php.dist:10
+msgid "Message Viewing"
+msgstr "Zobrazenie správy"
+
+#: compose.php:142
+msgid "Message redirected successfully."
+msgstr "Správa bola úspe¹ne presmerovaná"
+
+#: compose.php:215
+msgid "Message sent successfully."
+msgstr "Správa bola úspe¹ne odoslaná."
+
+#: templates/compose/compose.inc:56
+msgid "Message: "
+msgstr "Správa: "
+
+#: lib/MIMP.php:33
+msgid "New Message"
+msgstr "Nová správa"
+
+#: message.php:283
+msgid "Next"
+msgstr "Ïalej"
+
+#: mailbox.php:70
+msgid "Next Page"
+msgstr "Ïal¹ia strana"
+
+#: message.php:286
+msgid "Prev"
+msgstr "Naspä»"
+
+#: mailbox.php:67
+msgid "Previous Page"
+msgstr "Predchádzajúca stránka"
+
+#: mailbox.php:164
+msgid "Purge Deleted"
+msgstr "Odstráni» vymazané"
+
+#: message.php:276 compose.php:129 templates/compose/redirect.inc:18
+msgid "Redirect"
+msgstr "Presmerova»"
+
+#: mailbox.php:158 templates/folders/folders.inc:31
+msgid "Refresh"
+msgstr "Obnovi»"
+
+#: message.php:265
+msgid "Reply"
+msgstr "Odpoveda»"
+
+#: message.php:272
+msgid "Reply All"
+msgstr "Odpoveda» v¹etkým"
+
+#: message.php:268
+msgid "Reply to List"
+msgstr "Odpoveda» do e-mailovej konferencie:"
+
+#: compose.php:151 templates/compose/compose.inc:58
+msgid "Send"
+msgstr "Odosla»"
+
+#: message.php:316
+msgid "Show All"
+msgstr "Zobrazi» v¹etko"
+
+#: folders.php:56
+msgid "Show All Folders"
+msgstr "Zobrazi» v¹etky prieèinky"
+
+#: folders.php:56
+msgid "Show Subscribed Folders"
+msgstr "Zobrazi» prihlásené prieèinky"
+
+#: mailbox.php:182
+msgid "Sort by Thread"
+msgstr "Triedi» podµa vlákna"
+
+#: mailbox.php:172
+msgid "Subject"
+msgstr "Predmet"
+
+#: templates/compose/compose.inc:54
+msgid "Subject: "
+msgstr "Predmet: "
+
+#: lib/MIME/Viewer/status.php:70
+msgid "The mail server generated the following error message:"
+msgstr "Mailový server vygeneroval nasledujúce chybové hlásenie:"
+
+#: lib/MIME/Viewer/status.php:79
+msgid "The mail server generated the following message:"
+msgstr "Mailový server vygeneroval nasledovné hlásenie:"
+
+#: lib/MIME/Viewer/alternative.php:49
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "®iadne alternatívne èasti nemo¾no zobrazi» v tele správy."
+
+#: lib/MIME/Contents.php:91
+msgid "There are no parts that can be displayed inline."
+msgstr "®iadne èasti nemo¾no zobrazi» v tele správy."
+
+#: lib/MIME/Viewer/plain.php:29 lib/MIME/Viewer/html.php:31
+msgid "There was an error displaying this message part"
+msgstr "Nastala chyba pri zobrazovaní tejto èasti správy"
+
+#: mailbox.php:36
+msgid "There was an error viewing the requested message."
+msgstr "Nastala chyba pri prezeraní po¾adovanej správy."
+
+#: lib/MIME/Viewer/status.php:114
+msgid ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+msgstr ""
+"Táto správa obsahuje informáciu o stave doruèenia po¹ty, ale formát správy "
+"nie je známy."
+
+#: message.php:289
+#, php-format
+msgid "To %s"
+msgstr "Na %s"
+
+#: templates/compose/compose.inc:47 templates/compose/redirect.inc:16
+msgid "To: "
+msgstr "Pre:"
+
+#: message.php:256
+msgid "Undelete"
+msgstr "Obnovi»"
+
+#: message.php:41
+msgid "Undisclosed Recipients"
+msgstr "Nezverejnení príjemcovia"
+
+#: message.php:248
+msgid "View Full Message"
+msgstr "Zobrazi» celú správu"
+
+#: lib/MIME/Viewer/status.php:78
+msgid "Your message was successfully delivered."
+msgstr "Správa bola úspe¹ne doruèená."
+
+#: message.php:159 mailbox.php:117
+msgid "[No Subject]"
+msgstr "[Bez predmetu]"
+
+#: templates/mailbox/mailbox.inc:7
+msgid "of"
+msgstr "z"

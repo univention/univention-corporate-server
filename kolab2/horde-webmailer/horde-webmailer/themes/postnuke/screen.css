@@ -1,0 +1,87 @@
+/**
+ * $Horde: horde/themes/postnuke/screen.css,v 1.8.6.4 2008-06-12 12:37:09 jan Exp $
+ */
+
+body {
+    background: #b1b78b;
+}
+a {
+    color: #339;
+    font-family: Geneva,Arial,Helvetica,sans-serif;
+}
+a:hover {
+    color: blue;
+}
+a.widget {
+    color: #000;
+}
+a.widget:hover {
+    color: blue;
+    background: #b1b78b;
+}
+.header {
+    background: #b1b78b;
+    font-size: 140%;
+}
+.light {
+    color: #fff;
+    font-family: Geneva,Arial,Helvetica,sans-serif;
+}
+.smallheader {
+    color: #000;
+    background: #b1b78b;
+}
+.control {
+    color: #000;
+    background: #d9dcc2;
+}
+.item {
+    color: #000;
+    background: #e9e9e9;
+}
+.button {
+    color: #fff;
+    background-color: #000;
+    border-bottom: 1px solid #B1B78B;
+    border-right: 1px solid #B1B78B;
+    border-top: 1px solid #99c;
+    border-left: 1px solid #99c;
+    font-family: Verdana,Helvetica,sans-serif;
+}
+.text {
+    color: #000;
+    background-color: #fff;
+}
+/* Alternating styles. item0, item1 are deprecated. */
+.rowEven, .item0 {
+    background-color: #f9f9f9;
+}
+.rowOdd, .item1 {
+    background-color: #e9e9e9;
+}
+.selected {
+    background-color: #bbcbff;
+}
+
+/* Menu styles. */
+#menu {
+    color: #fff;
+    background: #b1b78b;
+}
+#menu a {
+    color: #fff;
+}
+#menu a.current {
+    background: #bfb78b;
+}
+
+/* Sidebar styles. */
+#sidebarPanel {
+    background-color: #B1B78B;
+}
+
+/* Tab styles. */
+.tabset li.activeTab a, .tabset li.activeTab a:hover {
+    border-bottom-color: #b1b78b;
+    background-color: #b1b78b;
+}

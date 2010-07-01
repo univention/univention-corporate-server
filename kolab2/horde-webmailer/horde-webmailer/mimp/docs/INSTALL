@@ -1,0 +1,183 @@
+=================
+ Installing MIMP
+=================
+
+:Last update:   $Date: 2008-06-21 18:17:06 $
+:Revision:      $Revision: 1.7.2.4 $
+:Contact:       imp@lists.horde.org
+
+.. contents:: Contents
+.. section-numbering::
+
+This document contains instructions for installing the MIMP web-based mail
+client on your system.
+
+For information on the capabilities and features of MIMP, see the file
+README_ in the top-level directory of the MIMP distribution.
+
+
+Obtaining MIMP
+===============
+
+MIMP can be obtained from the Horde website and FTP server, at
+
+   http://www.horde.org/mimp/
+
+   ftp://ftp.horde.org/pub/mimp/
+
+Or use the mirror closest to you:
+
+   http://www.horde.org/mirrors.php
+
+Bleeding-edge development versions of MIMP are available via CVS; see the
+file `docs/HACKING`_ in the Horde distribution, or the website
+http://www.horde.org/source/, for information on accessing the Horde CVS
+repository.
+
+
+Prerequisites
+=============
+
+To function properly, MIMP **REQUIRES** the following:
+
+1. A working IMP installation.
+
+   MIMP runs on top of IMP.  Therefore, you will need to set-up IMP before you
+   can install MIMP.  Please see the `imp/docs/INSTALL`_ file in IMP for
+   directions on how to install IMP properly.
+
+   .. IMPORTANT:: MIMP requires the Horde Framework version 3.2+ and IMP
+                  version 4.2+ to run. Although not necessary, it is
+                  **STRONGLY RECOMMENDED** that you always upgrade IMP
+                  to the latest version when upgrading MIMP since any bug
+                  fixes to the core libraries occur there.
+
+
+Installing MIMP
+===============
+
+MIMP is written in PHP, and must be installed in a web-accessible directory.
+The precise location of this directory will differ from system to system.
+Conventionally, MIMP is installed directly underneath Horde in the web
+server's document tree.
+
+Since MIMP is written in PHP, there is no compilation necessary;
+simply expand the distribution where you want it to reside and rename
+the root directory of the distribution to whatever you wish to appear
+in the URL.  For example, with the Apache web server's default document
+root of ``/usr/local/apache/htdocs``, you would type::
+
+   cd /usr/local/apache/htdocs/horde
+   tar zxvf /path/to/mimp-1.0.tar.gz
+   mv mimp-1.0 mimp
+
+and would then find MIMP at the URL::
+
+   http://your-server/horde/mimp/
+
+
+Configuring MIMP
+================
+
+1. Configuring Horde for MIMP
+
+   a. Register the application
+
+      In ``horde/config/registry.php``, find the ``applications['mimp']``
+      stanza.  The default settings here should be okay, but you can change
+      them if desired.  If you have changed the location of MIMP relative to
+      Horde, either in the URL, in the filesystem or both, you must update the
+      ``fileroot`` and ``webroot`` settings to their correct values.
+
+   b. Enable IMP authentication [OPTIONAL]
+
+      See IMP's `imp/docs/INSTALL`_ file for details.
+
+2. Configuring MIMP.
+
+   To configure MIMP, change to the ``config/`` directory of the installed
+   distribution, and make copies of all of the configuration ``dist`` files
+   without the ``dist`` suffix::
+
+      cd config/
+      for foo in *.dist; do cp $foo `basename $foo .dist`; done
+
+   Or on Windows::
+
+      copy *.dist *.
+
+   Documentation on the format and purpose of those files can be found in each
+   file.  You may edit these files if you wish to customize MIMP's appearance
+   and behavior.  With two exceptions (``conf.php`` and ``servers.php``) the
+   defaults will be correct for most sites.
+
+   You must be sure to list your IMAP/POP3 server names and configuration
+   information in ``servers.php`` (unless you demand that the user specify his
+   own at login).
+
+   You must login to Horde as a Horde Administrator to finish the
+   configuration of MIMP.  Use the Horde ``Administration`` menu item to get
+   to the administration page, and then click on the ``Setup`` icon to get the
+   configuration page.  Select ``Mobile Mail`` from the selection list of
+   applications.  Fill in or change any configuration values as needed.  When
+   done click on ``Generate Mobile Mail Configuration`` to generate the
+   ``conf.php`` file.  If your web server doesn't have write permissions to
+   the MIMP configuration directory or file, it will not be able to write the
+   file.  In this case, go back to ``Setup`` and choose one of the other
+   methods to create the configuration file ``mimp/config/conf.php``.
+
+   Note for international users: MIMP uses GNU gettext to provide local
+   translations of text displayed by applications; the translations are found
+   in the po/ directory.  If a translation is not yet available for your
+   locale (and you wish to create one), see the ``horde/po/README`` file, or
+   if you're having trouble using a provided translation, please see the
+   `horde/docs/TRANSLATIONS`_ file for instructions.
+
+3. Securing MIMP
+
+   Before you can secure MIMP, you need a secure Horde installation.  Please
+   read the file in `horde/docs/SECURITY`_ for Horde security information
+   before proceeding.
+
+   See IMP's `imp/docs/INSTALL`_ file for further details on how to secure
+   IMP/MIMP.
+
+5. Tuning MIMP (Performance)
+
+   See `horde/docs/PERFORMANCE`_.
+
+
+Obtaining Support
+=================
+
+If you encounter problems with MIMP, help is available!
+
+The Horde Frequently Asked Questions List (FAQ), available on the Web at
+
+  http://www.horde.org/faq/
+
+The Horde Project runs a number of mailing lists, for individual applications
+and for issues relating to the project as a whole.  Information, archives, and
+subscription information can be found at
+
+  http://www.horde.org/mail/
+
+Lastly, Horde developers, contributors and users may also be found on IRC,
+on the channel #horde on the Freenode Network (irc.freenode.net).
+
+Please keep in mind that MIMP is free software written by volunteers.  For
+information on reasonable support expectations, please read
+
+  http://www.horde.org/support.php
+
+Thanks for using MIMP!
+
+The MIMP team
+
+
+.. _README: ?f=README.html
+.. _`imp/docs/INSTALL`: ../imp/docs/?f=INSTALL.html
+.. _`docs/HACKING`: ../../horde/docs/?f=HACKING.html
+.. _`horde/docs/PERFORMANCE`: ../../horde/docs/?f=PERFORMANCE.html
+.. _`horde/docs/SECURITY`: ../../horde/docs/?f=SECURITY.html
+.. _`horde/docs/TRANSLATIONS`: ../../horde/docs/?f=TRANSLATIONS.html

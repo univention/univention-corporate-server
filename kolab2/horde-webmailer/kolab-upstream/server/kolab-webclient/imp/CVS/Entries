@@ -1,4 +1,7 @@
-/.cvsignore/1.1/Mon Jan 18 17:44:22 2010//THEAD
-/Makefile/1.2/Tue Jan 19 05:41:54 2010//THEAD
-/imp.spec/1.6/Wed Feb 24 10:50:07 2010//THEAD
-D
+D/configuration////
+D/patches////
+D/templates////
+/.cvsignore/1.1/Tue Jun 15 12:35:23 2010//THEAD
+/ChangeLog/1.4/Wed Apr 14 19:00:52 2010//THEAD
+/Makefile/1.2/Tue Jun 15 12:35:23 2010//THEAD
+/imp.spec/1.9/Thu Jun 17 12:19:42 2010//THEAD

@@ -1,0 +1,16 @@
+/**
+ * $Horde: imp/themes/green/screen.css,v 1.1.10.1 2007-12-20 14:00:46 jan Exp $
+ */
+
+.deleted {
+    background-color: #B82828;
+}
+.important, .flagged {
+    background-color: #F78E8E;
+}
+.unseen {
+    background-color: #fae5c0;
+}
+.answered {
+    background-color: #6FD992;
+}

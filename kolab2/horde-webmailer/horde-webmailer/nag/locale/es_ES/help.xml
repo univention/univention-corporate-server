@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- $Horde: nag/locale/es_ES/help.xml,v 1.1 2004-12-11 11:57:52 jan Exp $ -->
+<help>
+  <entry id="Overview" md5="67c67240d4ec4a037b8ae76f371c5ad3" state="uptodate">
+    <title>Introducci&#xF3;n</title>
+    <heading>Introducci&#xF3;n</heading>
+    <para>
+    &#xC9;ste es una gestor de listas de tareas bastante completo que soporta listas de tareas privadas y compartidas, integraci&#xF3;n con funciones de agenda, categor&#xED;as, prioridades, vencimientos, b&#xFA;squedas, impresi&#xF3;n e importaci&#xF3;n y exportaci&#xF3;n.
+    </para>
+  </entry>
+
+  <entry id="sorting" md5="275a51456e8b440a5bf7afe2af24c777" state="uptodate">
+    <title>Ordenaci&#xF3;n de entradas</title>
+    <heading>Ordenaci&#xF3;n de entradas</heading>
+    <para>
+    Al visualizar un listado de entradas, puede ordenarlo por cualquiera de las columnas pulsando la cabecera de columna apropiada. Para conmutar el sentido de la clasificaci&#xF3;n de las columnas entre ascendente o descendente, pulse el icono de flecha de la cabecera de la columna.
+    </para>
+  </entry>
+</help>

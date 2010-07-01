@@ -1,0 +1,237 @@
+# Italian translations for Mimp package.
+# Copyright 2007-2009 The Horde Project
+# This file is distributed under the same license as the Mimp package.
+# Automatically generated, 2007.
+# Copyright 2007 nethesis srl.
+# Cristian Manoni, Alessio Fattorini, Davide marini 2007
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mimp H3 (1.1-ALPHA)\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-05-17 11:04+0200\n"
+"PO-Revision-Date: 2007-08-23 16:14+0200\n"
+"Last-Translator: nethesis srl <info@nethesis.it>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: message.php:269
+#, php-format
+msgid "(%d of %d)"
+msgstr "Pagina %d di %d"
+
+#: lib/MIME/Contents.php:62
+msgid "Attachment"
+msgstr "Allegato"
+
+#: templates/compose/compose.inc:52
+msgid "Bcc: "
+msgstr "Ccn"
+
+#: templates/compose/compose.inc:49
+msgid "Cc: "
+msgstr "Cc"
+
+#: config/prefs.php.dist:11
+msgid "Configure how messages are displayed."
+msgstr "Configura come visualizzare i messaggi."
+
+#: compose.php:22
+msgid "Could not retrieve the message from the mail server."
+msgstr "Impossibile recuperare il messaggio dal server di posta"
+
+#: message.php:232
+msgid "Delete"
+msgstr "Elimina"
+
+#: config/prefs.php.dist:23
+msgid "Display only the first 250 characters of a message initially?"
+msgstr "Mostra solo i primi 250 caratteri di un messagio inizialmente?"
+
+#: mailbox.php:185
+msgid "Do Not Sort by Thread"
+msgstr "Non Ordinare per Argomento"
+
+#: compose.php:88 templates/compose/redirect.inc:19
+#: templates/compose/compose.inc:59
+msgid "Expand Names"
+msgstr "Espandi Nomi"
+
+#: mailbox.php:66
+msgid "First Page"
+msgstr "Prima Pagina"
+
+#: folders.php:60 lib/MIMP.php:36
+msgid "Folders"
+msgstr "Cartelle"
+
+#: message.php:249
+msgid "Forward"
+msgstr "Inoltra"
+
+#: mailbox.php:171
+msgid "From"
+msgstr "Da"
+
+#: templates/compose/compose.inc:39
+msgid "Identity"
+msgstr "Identità"
+
+#: lib/MIMP.php:30
+msgid "Inbox"
+msgstr "Posta in Arrivo"
+
+#: mailbox.php:71
+msgid "Last Page"
+msgstr "Ultima Pagina"
+
+#: lib/MIMP.php:44
+msgid "Log out"
+msgstr "Fine sessione"
+
+#: config/prefs.php.dist:9
+msgid "Mail Management"
+msgstr "Gestione Mail"
+
+#: mailbox.php:197 message.php:226 message.php:270 compose.php:240
+#: templates/folders/folders.inc:6 templates/folders/folders.inc:29
+#: templates/compose/redirect.inc:4 templates/compose/compose.inc:4
+#: templates/mailbox/mailbox.inc:10
+msgid "Menu"
+msgstr "Menu"
+
+#: compose.php:225
+msgid "Message Composition"
+msgstr "Composizione Messaggio"
+
+#: config/prefs.php.dist:10
+msgid "Message Viewing"
+msgstr "Visualizzazione Messaggio"
+
+#: compose.php:142
+msgid "Message redirected successfully."
+msgstr "Messaggio reindirizzato con successo."
+
+#: compose.php:215
+msgid "Message sent successfully."
+msgstr "Messaggio inviato con successo."
+
+#: templates/compose/compose.inc:56
+msgid "Message: "
+msgstr "Messaggio: "
+
+#: lib/MIMP.php:33
+msgid "New Message"
+msgstr "Nuovo Messaggio"
+
+#: message.php:257
+msgid "Next"
+msgstr "Successivo"
+
+#: mailbox.php:70
+msgid "Next Page"
+msgstr "Pagina Successiva"
+
+#: message.php:260
+msgid "Prev"
+msgstr "Anteprima"
+
+#: mailbox.php:67
+msgid "Previous Page"
+msgstr "Pagina Precedente"
+
+#: mailbox.php:164
+msgid "Purge Deleted"
+msgstr "Rimuovi Eliminati"
+
+#: message.php:250 compose.php:129 templates/compose/redirect.inc:18
+msgid "Redirect"
+msgstr "Reindirizza"
+
+#: mailbox.php:158 templates/folders/folders.inc:31
+msgid "Refresh"
+msgstr "Aggiorna"
+
+#: message.php:239
+msgid "Reply"
+msgstr "Rispondi"
+
+#: message.php:246
+msgid "Reply All"
+msgstr "Rispondi a Tutti"
+
+#: message.php:242
+msgid "Reply to List"
+msgstr "Rispondi alla Lista"
+
+#: compose.php:151 templates/compose/compose.inc:58
+msgid "Send"
+msgstr "Invia"
+
+#: message.php:290
+msgid "Show All"
+msgstr "Mostra tutto"
+
+#: folders.php:56
+msgid "Show All Folders"
+msgstr "Mostra tutte le Cartelle"
+
+#: folders.php:56
+msgid "Show Subscribed Folders"
+msgstr "Mostra le Cartelle Sottoscritte"
+
+#: mailbox.php:182
+msgid "Sort by Thread"
+msgstr "Ordina per Argomento"
+
+#: mailbox.php:172
+msgid "Subject"
+msgstr "Oggetto"
+
+#: templates/compose/compose.inc:54
+msgid "Subject: "
+msgstr " Oggetto: "
+
+#: lib/MIME/Viewer/alternative.php:49
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "Non ci sono porzioni alternative che possono essere mostrate inline."
+
+#: lib/MIME/Contents.php:91
+msgid "There are no parts that can be displayed inline."
+msgstr "Non ci sono porzioni alternative che possono essere mostrate inline."
+
+#: lib/MIME/Viewer/plain.php:29 lib/MIME/Viewer/html.php:31
+msgid "There was an error displaying this message part"
+msgstr "Si è verificato un errore visualizzando questa porzione del messaggio"
+
+#: mailbox.php:36
+msgid "There was an error viewing the requested message."
+msgstr "Si  verificato un errore visualizzando il messaggio richiesto."
+
+#: message.php:263
+#, php-format
+msgid "To %s"
+msgstr "A: %s"
+
+#: templates/compose/redirect.inc:16 templates/compose/compose.inc:47
+msgid "To: "
+msgstr "A: "
+
+#: message.php:230
+msgid "Undelete"
+msgstr "Recupera"
+
+#: message.php:222
+msgid "View Full Message"
+msgstr "Visualizza tutto il messaggio"
+
+#: mailbox.php:117 message.php:135
+msgid "[No Subject]"
+msgstr "[Nessun Oggetto]"
+
+#: templates/mailbox/mailbox.inc:7
+msgid "of"
+msgstr "di"

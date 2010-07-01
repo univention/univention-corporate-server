@@ -1,0 +1,36 @@
+<form name="fm_perform" action="<tag:fetch_url />">
+<tag:forminput />
+<input type="hidden" name="actionID" value="fetchmail_fetch" />
+
+<h1 class="header">
+ <gettext>Fetch Mail</gettext>
+</h1>
+
+<div id="fetchmail">
+<if:accounts>
+ <gettext>Select accounts to fetch mail from:</gettext>
+ <br />
+ <ul>
+<loop:accounts>
+  <li>
+   <label><input type="checkbox" name="accounts[]" checked="checked" value="<tag:accounts.key />" />
+   <tag:accounts.label /></label>
+  </li>
+</loop:accounts>
+  </ul>
+<else:accounts>
+ <gettext>You have not configured any external mail accounts.</gettext>
+ <a href="<tag:fetch_prefs />"><strong><gettext>Create an account</gettext></strong></a>.
+ <br />
+</else:accounts></if:accounts>
+</div>
+
+<div>
+<if:accounts>
+ <input type="submit" name="fetch" class="button" value="<gettext>Fetch Mail</gettext>" />
+</if:accounts>
+<if:cancel_js>
+ <input type="button" name="back" class="button" onclick="<tag:cancel_js />" value="<gettext>Close</gettext>" />
+</if:cancel_js>
+</div>
+</form>

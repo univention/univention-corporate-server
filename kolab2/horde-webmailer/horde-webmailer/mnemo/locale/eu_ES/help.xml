@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!-- $Horde: mnemo/locale/eu_ES/help.xml,v 1.1.2.2 2009-11-18 14:05:06 jan Exp $ -->
+<help>
+
+<entry id="Overview" md5="50ee76138fb08b04b029006053bbadbc" state="uptodate">
+    <title>Ikuspegi orokorra</title>
+    <heading>Sarrera</heading> <para><i>Oharrak</i> aplikazioaren bidez, ordenagailuak ohar itsaskorren antzeko funtzioa izan dezake.  Oharrak sortu, aldatu, ezabatu eta inprima daitezke.  Bilaketak ere egin ditzakezu oharretan informazioa topatzeko.   Inporta eta esportatu ere egin daitezke.</para> <para>Benetako ohar itsaskorrak ez bezala, ordenagailuko oharrak beste pertsona batzuekin parteka daitezke kokaleku fisiko desberdinetan.  Oharrak ohar-bloketan antola daitezke, eta kategoria eslei diezaiekezu.</para></entry>
+
+<entry id="list-actions" md5="6d592f153bfb5c296de5dfebb428e1ba" state="uptodate">
+    <title>Nire oharrak: ekintzak</title>
+    <heading>Ekintzak</heading> <para><i>Ezabatu</i> aukerak oharra betiko ezabatuko du.</para> <para><i>Editatu</i> aukerarekin oharra alda daiteke.</para> <para><i>Itzuli ohar-blokera</i> aukerak ohar-ikuspegitik uneko oharra dagoen ohar-blokera eramango zaitu.</para></entry>
+
+<entry id="menu-actions" md5="715a853d93cd3330e4d730b9112c8a82" state="uptodate">
+    <title>Menu-elementuak</title>
+    <heading>Menu-elementuak</heading> <para><i>Zerrendatu oharrak</i> aukerak uneko ohar-blokeko ohar guztiak zerrendatzen ditu.</para> <para><i>Ohar berria</i> aukeraren bidez, uneko ohar-blokean ohar berri bat sor dezakezu.</para> <para><i>Bilatu</i> aukerarekin, zure oharretan testu zati bat bila dezakezu.  Oharretako lehen lerroan edo testu osoan bila dezakezu.</para> <para><i>Inportatu/Esportatu</i> aukeraren bidez, oharrak inporta edo esporta ditzakezu.  Egun CSV formatuko eta vNote formatuko fitxategiak onartzen dira.</para> <para><i>Inprimatu</i> aukeraren bidez ohar bat inprima dezakezu.  <i>Inprimatu</i> ikonoa ohar bat ikusten ari zarenean soilik agertzen da menu-barran.</para></entry>
+
+
+<entry id="sorting" md5="cca3b1d1c9ed0ec5ab385f82469ddc8f" state="uptodate">
+    <title>Ordenatu sarrerak</title>
+    <heading>Ordenatu sarrerak</heading> <para>Oharren zerrenda ikustean, oharrak edozein zutaberen arabera ordena ditzakezu zutabe egokian klik eginez gero.  Goranzko edo beheranzko ordenara aldatzeko, klik egin zutabeko "Oharra" izenburuaren ondoko geziaren ikonoan.</para></entry></help>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="iso-8859-9"?>
+<!-- $Horde: nag/locale/tr_TR/help.xml,v 1.1.2.2 2007-12-20 14:23:29 jan Exp $ -->
+<help>
+
+<!-- English entry:
+  <entry id="Overview">
+    <title>Overview</title>
+    <heading>Introduction</heading>
+    <para>
+      This is a fairly full-featured "to-do" list manager that supports
+      private and shared tasks lists, integration with the Calendar function,
+      categories, priorities, due-dates, searches, printing and import/export
+      functions.
+    </para>
+  </entry>
+-->
+
+<entry id="Overview" md5="67c67240d4ec4a037b8ae76f371c5ad3" state="uptodate">
+<title>Genel Bakış</title>
+<heading>Başlangıç</heading>
+<para>
+Özel ve paylaşımlı görev listeleri, Takvim fonksiyonuyla bütünlük,kategoriler,öncelikler,randevular,aramalar,yazdırma,al/ver fonksiyonlarını sağlayan tam donanımlı bir "yapılacaklar" listesi yöneticisidir.
+</para>
+</entry>
+
+<!-- English entry:
+  <entry id="sorting">
+    <title>Sorting Entries</title>
+    <heading>Sorting Entries</heading>
+    <para>
+      When viewing a list of entries, you can sort the entries by any column
+      by clicking on the appropriate column heading.  To switch columns
+      between ascending and descending order, click on the arrow icon in the
+      column heading.
+    </para>
+  </entry>
+-->
+
+<entry id="sorting" md5="275a51456e8b440a5bf7afe2af24c777" state="uptodate">
+<title>Girişlerin Sınıflandırılması</title>
+<heading>Girişlerin Sınıflandırılması</heading>
+<para>
+Girişlerin listesini görüntülerken, girişleri herhangi bir sütuna göre o sütunun başlığına tıklayarak sınıflandırabilirsiniz. Sütunu yükselen ve alçalan sınıflandırma arasında değiştirmek için, sütun başlığındaki ok simgesini tıklayın.
+</para>
+</entry>
+
+</help>

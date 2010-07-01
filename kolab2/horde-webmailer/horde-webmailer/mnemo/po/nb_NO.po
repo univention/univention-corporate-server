@@ -1,0 +1,236 @@
+# Norwegian Mnemo Translation.
+# Copyright 2002-2009 The Horde Project.
+# This file is distributed under the same license as the Mnemo package.
+# Torstein S. Hansen <huleboer@techbee.no>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mnemo 2.0-cvs\n"
+"POT-Creation-Date: 2002-06-05 11:43+0200\n"
+"PO-Revision-Date: 2002-06-05 11:45+0100\n"
+"Last-Translator: Torstein S. Hansen <huleboer@techbee.no>\n"
+"Language-Team: Norwegian (Bokmal) <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%d memos"
+msgstr "%d memos"
+
+msgid "1 memo"
+msgstr "1 notat"
+
+msgid "Adding A New Memo"
+msgstr "Legg til eit nytt notat"
+
+msgid "Ascending"
+msgstr "Stigande"
+
+msgid "Back to Memo List"
+msgstr "Tilbake til notatliste"
+
+msgid "Category"
+msgstr "Kategori"
+
+msgid "Change your memo sorting and display options."
+msgstr "Endre alternativ for sortering og vising av notat"
+
+msgid "Checkbox"
+msgstr "Avkryssingsboks"
+
+msgid "Choose Action:"
+msgstr "Vel handling:"
+
+msgid "Clear Form"
+msgstr "Nullstill skjema"
+
+msgid "Current Memos"
+msgstr "Gjeldande notat"
+
+msgid "Default sorting criteria:"
+msgstr "Standard sorteringskriterium:"
+
+msgid "Default sorting direction:"
+msgstr "Standard sorteringsrekkefølgje:"
+
+msgid "Delete Memo"
+msgstr "Slett notat"
+
+msgid "Delete Memos"
+msgstr "Slett notat"
+
+#, c-format
+msgid "Deleted %d memos."
+msgstr "Sletta %d notat."
+
+msgid "Deleted 1 memo."
+msgstr "Sletta 1 notat."
+
+msgid "Descending"
+msgstr "Synkande"
+
+msgid "Description"
+msgstr "Skildring"
+
+msgid "Display Options"
+msgstr "Visingsalternativ"
+
+msgid "Full Text"
+msgstr "Fulltekst"
+
+msgid "Help"
+msgstr "Hjelp"
+
+msgid "Language"
+msgstr "Språk"
+
+msgid "List Memos"
+msgstr "Vis notat"
+
+msgid "Memo Category"
+msgstr "Notatkategori"
+
+msgid "Memo Description"
+msgstr "Notatskildring"
+
+msgid "Memo Details"
+msgstr "Notatdetaljar"
+
+msgid "Memo Text"
+msgstr "Notattekst"
+
+msgid "Mnemo is not properly configured"
+msgstr "Mnemo er ikkje ordentleg konfigurert"
+
+msgid "Modify Memo"
+msgstr "Endre notat"
+
+#, c-format
+msgid "Modifying %s"
+msgstr "Endrar %s"
+
+msgid "New Memo"
+msgstr "Nytt notat"
+
+msgid "No configuration information specified for SQL Memos."
+msgstr "Ingen konfigurasjonsinformasjon spesifisert for SQL-notat."
+
+msgid "No memos were deleted."
+msgstr "Ingen notat vart sletta."
+
+msgid "No memos"
+msgstr "Ingen notat"
+
+msgid "None specified"
+msgstr "Ingen spesifisert"
+
+msgid "Options"
+msgstr "Alternativ"
+
+msgid "Other Options"
+msgstr "Andre alternativ"
+
+msgid "Problem?"
+msgstr "Problem?"
+
+msgid "Refresh List"
+msgstr "Frisk opp liste"
+
+msgid "Required 'database' not specified in memos configuration."
+msgstr "Nødvendig 'database' ikkje spesifisert i konfigurasjon for notat."
+
+msgid "Required 'hostspec' not specified in memos configuration."
+msgstr "Nødvendig 'hostspec' ikkje spesifisert i konfigurasjon for notat."
+
+msgid "Required 'password' not specified in memos configuration."
+msgstr "Nødvendig 'password' ikkje spesifisert i konfigurasjon for notat."
+
+msgid "Required 'phptype' not specified in memos configuration."
+msgstr "Nødvendig 'phptype' ikkje spesifisert i konfigurasjon for notat."
+
+msgid "Required 'table' not specified in memos configuration."
+msgstr "Nødvendig 'table' ikkje spesifisert i konfigurasjon for notat."
+
+msgid "Required 'username' not specified in memos configuration."
+msgstr "Nødvendig 'username' ikkje spesifisert i konfigurasjon for notat."
+
+msgid "Save Memo"
+msgstr "Lagre notat"
+
+msgid "Search Results"
+msgstr "Søkeresultat"
+
+msgid "Search Scope"
+msgstr "Søkeområde"
+
+msgid "Search Text"
+msgstr "Søkestreng"
+
+msgid "Search"
+msgstr "Søk"
+
+msgid "Select your preferred language:"
+msgstr "Vel ønska språk:"
+
+msgid "Set the your preferred display language."
+msgstr "Vel ønska språk."
+
+msgid "Some of Mnemo's configuration files are missing:"
+msgstr "Nokre av Mnemo sine konfigurasjonsfiler manglar:"
+
+msgid "Sort Direction"
+msgstr "Sorteringsrekkefølgje"
+
+msgid "Sort by Category"
+msgstr "Sorter etter kategori"
+
+msgid "Sort by Description"
+msgstr "Sorter etter skildring"
+
+msgid "The requested memo does not exist."
+msgstr "Det førespurte notatet eksisterer ikkje."
+
+msgid "There was a problem deleting memos."
+msgstr "Problem ved sletting av notat."
+
+msgid "This file contains preferences for Mnemo."
+msgstr "Denne fila inneheld innstillingar for Mnemo."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Denne fila kontrollerer stilarket som blir brukt til å definere fargar og "
+"skrifttypar, legg til eller overstyrer standardverdiar i Horde."
+
+msgid ""
+"This is the main Mnemo configuration file. It contains options for all Mnemo "
+"scripts."
+msgstr ""
+"Dette er hovedkonfigurasjonsfila for Mnemo. Den inneheld alternativ for alle "
+"Mnemo-skripta."
+
+msgid "Undo Changes"
+msgstr "Angre endringar"
+
+msgid "Unfiled"
+msgstr "Uarkivert"
+
+msgid "Unknown memo"
+msgstr "Ukjent notat"
+
+msgid "User Options"
+msgstr "Brukarval"
+
+msgid "View Memo Details"
+msgstr "Vis notatdetaljar"
+
+msgid "You have no memos."
+msgstr "Du har ingen notat."
+
+msgid "You must select at least one memo first."
+msgstr "Du må først velje minst eitt notat."
+
+msgid "Your Information"
+msgstr "Din informasjon"

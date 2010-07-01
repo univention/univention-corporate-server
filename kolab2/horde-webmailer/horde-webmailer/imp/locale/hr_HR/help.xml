@@ -1,0 +1,879 @@
+<?xml version="1.0"?>
+<help>
+
+<entry id="keyboard-navigation" md5="885a83e5ce7c455f8d7d40a17ca901df" state="uptodate">
+    <title>Tipkovnica: Navigacija</title>
+    <para>Tipkovnicu mo&#x17E;ete koristiti za kretanje izme&#x111;u poruka u prikazu sandu&#x10D;i&#x107;a, za pomicanje na prethodnu ili sljede&#x107;u poruku u prikazu poruke, te za listanje stranica u prikazu sandu&#x10D;i&#x107;a.</para>
+    <heading>Tipke za navigaciju u popisu poruka</heading>
+    <para>U popisu poruka mo&#x17E;ete koristiti tipkovnicu za odabir i prikaz poruka. Za kretanje izme&#x111;u poruka mo&#x17E;ete koristiti tipke sa strelicama Gore i Dolje pritom dr&#x17E;e&#x107;i tipku Control (Ctrl). Ako pritisnete Gore, po&#x10D;et &#x107;ete na dnu stranice (zadnja prikazana poruka), a ako pritisnete Dolje, na vrhu (prva prikazana poruka).</para>
+    <para>Trenutna poruka je osvijetljena kao da ste preko nje pre&#x161;li mi&#x161;om. Dok se kre&#x107;ete gore i dolje u popisu poruka, mo&#x17E;ete pritisnuti Razmak za odabir ili brisanje odabira poruke, ili Return za prikaz poruke.</para>
+    <para>Ako pri kretanju kroz popis poruka dr&#x17E;ite pritisnutu tipku Alt umjesto Ctrl, poruke koje prelazite se automatski odabiru ili bri&#x161;u iz odabira.</para>
+    <heading>Popis poruka: Prethodna/sljede&#x107;a stranica</heading>
+    <para>Mo&#x17E;ete koristiti tipke Lijevo i Desno za prikaz prethodne odnosno sljede&#x107;e stranice poruka u sandu&#x10D;i&#x107;u.</para>
+    <heading>Prikaz poruke: Prethodna/sljede&#x107;a poruka</heading>
+    <para>Mo&#x17E;ete koristiti tipke Lijevo i Desno za prikaz prethodne odnosno sljede&#x107;e poruke.</para>
+</entry>
+
+<!--
+<entry id="keyboard-shortcuts">
+    <title>Tipkovnica: Prečice</title>
+    <heading>Korištenje prečica na tipkovnici</heading>
+</entry>
+-->
+
+<entry id="message-forward" md5="54e9d9dcf21964f5f81bc6c23e48cdea" state="uptodate">
+  <title>Proslje&#x111;ivanje poruka</title>
+  <para>Kod proslje&#x111;ivanja poruka imate nekoliko mogu&#x107;nosti.</para>
+
+  <heading>Proslje&#x111;ivanje iz prikaza sandu&#x10D;i&#x107;a</heading>
+  <para>U prikazu sandu&#x10D;i&#x107;a mo&#x17E;ete istovremeno proslijediti vi&#x161;e poruka. Poruke koje odabrane &#x107;e biti u cijelosti proslije&#x111;ene svim primateljima. U prozoru za sastavljanje &#x107;ete vidjeti svaku poruku kao prilog. Primatelji &#x107;e vidjeti poruke kao ugra&#x111;ene poruke elektroni&#x10D;ke po&#x161;te.</para>
+
+  <heading>Proslje&#x111;ivanje iz prikaza poruke</heading>
+  <para>Kod proslje&#x111;ivanja pojedina&#x10D;nih poruka u prikazu poruke, mo&#x17E;ete odabrati izme&#x111;u tri opcije:</para>
+  <para><b>1. Cijela poruka</b>: Ova opcija dodaje cijelu poruku kao prilog. Prozor za sastavljanje poruke ne&#x107;e sadr&#x17E;avati tekst iz proslije&#x111;ene poruke. Ovo ima isti u&#x10D;inak kao proslje&#x111;ivanje jedne poruke iz popisa poruka, osim &#x161;to se automatski postavlja polje Naslov.</para>
+  <para><b>2. Samo tijelo poruke</b>: Ako &#x17E;elite proslijediti samo tijelo poruke, odaberite ovu opciju. Prilozi iz izvorne poruke ne&#x107;e biti uklju&#x10D;eni u proslije&#x111;enoj poruci. Tekst &#x107;e biti prikazan u polju za sastavljanje poruke i mo&#x17E;ete ga izmijeniti ili dodati svoje komentare.</para>
+  <para><b>3. Tijelo poruke s prilozima</b>: Ako &#x17E;elite proslijediti priloge zajedno s tijelom poruke, odaberite ovu opciju. Tekst poruke &#x107;e biti prikazan u polju za sastavljanje, gdje ga mo&#x17E;ete izmijeniti. U proslije&#x111;enu poruku &#x107;e biti uklju&#x10D;eni svi prilozi izvorne poruke.</para>
+
+</entry>
+
+<entry id="compose-buttons" md5="bd0e2b0eff15d7c5cf7df9b7ef4ac40a" state="uptodate">
+    <title>Sastavljanje poruka: Akcije</title>
+    <heading>Akcije</heading>
+    <para>
+    "Po&#x161;alji poruku" &#x161;alje va&#x161;u poruku elektroni&#x10D;ke po&#x161;te navedenim primateljima. Budite sigurni da &#x17E;elite poslati poruku jer je ova akcija nepovratna i ne mo&#x17E;e se poni&#x161;titi.
+    </para>
+    <para>
+    "Spremi koncept" snima nedovr&#x161;enu poruku u mapu "Koncepti" kojoj mo&#x17E;ete pristupiti kroz padaju&#x107;u listu mapa u gornjem desnom kutu stranice. Poruku kasnije mo&#x17E;ete dovr&#x161;iti prelaskom u mapu "Koncepti", otvaranjem snimljene poruke i klikom na "Nastavi". Prije snimanja koncepta preporu&#x10D;a se upisati naslov poruke kako bi ju kasnije mogli lak&#x161;e prona&#x107;i u mapi s konceptima.
+    </para>
+    <tip>
+    Ovisno o postavkama sustava, u opcijama je mogu&#x107;e promijeniti dali se nakon spremanja koncepta prikazuje posljednja pregledana mapa ili se nastavlja s ure&#x111;ivanjem poruke.
+    </tip>
+    <para>
+    "Otka&#x17E;i poruku" zatvara prozor za pisanje poruke i vra&#x107;a se na posljednju prikazanu mapu.
+    </para>
+</entry>
+
+<entry id="compose-identity" md5="6b2272c5440c753e783d000db88fea07" state="uptodate">
+    <title>Sastavljanje poruka: Identitet</title>
+    <heading>Identitet</heading>
+    <para>
+    Iz padaju&#x107;eg popisa identiteta zadanih pod <qt>Opcije-&gt;Osobne informacije</qt> odaberite identitet koji &#x107;e se koristiti prilikom slanja poruke. 
+    </para>
+</entry>
+
+<entry id="compose-from" md5="4395043c22323cc80d50709c5d20637e" state="uptodate">
+    <title>Sastavljanje poruka: Od</title>
+    <heading>Od</heading>
+    <para>
+    Unesite adresu elektroni&#x10D;ke po&#x161;te koja &#x107;e se koristiti kao po&#x161;iljatelj ove poruke.
+    </para>
+</entry>
+
+<entry id="compose-to" md5="31cba17f169572c367aa8014831eb8f8" state="uptodate">
+    <title>Sastavljanje poruka: Za</title>
+    <heading>Za</heading>
+    <para>
+    Unesite ispravne adrese elektroni&#x10D;ke po&#x161;te primatelja ove poruke. Kod unosa vi&#x161;e primatelja njihove adrese razdvojite zarezima. Kori&#x161;tenje bilo kojeg drugog znaka za razdvajanje primatelja nije podr&#x17E;ano i uzrokovati &#x107;e gre&#x161;ku.
+    </para>
+</entry>
+
+<entry id="compose-cc" md5="97571433ab037ef9c4d101a56bf74e25" state="uptodate">
+    <title>Sastavljanje poruka: Cc</title>
+    <heading>Cc</heading>
+    <para>
+    Unesite ispravne adrese elektroni&#x10D;ke po&#x161;te primatelja koji &#x107;e primiti kopiju (carbon copy) ove poruke. Kod unosa vi&#x161;e primatelja njihove adrese razdvojite zarezima. Kori&#x161;tenje bilo kojeg drugog znaka za razdvajanje primatelja nije podr&#x17E;ano i uzrokovati &#x107;e gre&#x161;ku.
+    </para>
+
+    <para>
+    Kopije poruke se obi&#x10D;no &#x161;alju osobama koji nisu direktni primatelji poruke, ali trebaju biti informirani o sadr&#x17E;aju poruke, obi&#x10D;no jer su indirektno zainteresirani za tematiku poruke.  Primatelji iz polja "Za:" i "Cc:" vide sve primatelje iz oba polja s primateljima.
+    </para>
+</entry>
+
+<entry id="compose-bcc" md5="aa8f9e2d44fdb74def0fa15240ff687b" state="uptodate">
+    <title>Sastavljanje poruka: Bcc</title>
+    <heading>Bcc</heading>
+    <para>
+    Unesite ispravne adrese elektroni&#x10D;ke po&#x161;te primatelja koji &#x107;e primiti tajnu kopiju (blind carbon copy) ove poruke. Kod unosa vi&#x161;e primatelja njihove adrese razdvojite zarezima. Kori&#x161;tenje bilo kojeg drugog znaka za razdvajanje primatelja nije podr&#x17E;ano i uzrokovati &#x107;e gre&#x161;ku.
+    </para>
+
+    <para>
+    Tajne kopije poruka obi&#x10D;no se &#x161;alju primateljima koji trebaju vidjeti sadr&#x17E;aj poruke, a da za to ne saznaju ostali primatelji poruke. Dakle "tajno" zna&#x10D;i da je identitet tih primatelja sakriven od ostalih primatelja poruke. Samo po&#x161;iljatelj i "Bcc" primatelji znaju da su oni tako&#x111;er primili kopiju poruke.
+    </para>
+</entry>
+
+<entry id="compose-subject" md5="0639a8790e306acc9e19b4d1ce342d53" state="uptodate">
+    <title>Sastavljanje poruka: Naslov</title>
+    <heading>Naslov</heading>
+    <para>
+    Unesite naslov va&#x161;e poruke. Preporu&#x10D;a se koristiti kratke i jednostavne naslove koji dobro opisuju sadr&#x17E;aj poruke. Naslov je najjednostavniji na&#x10D;in na koji se primatelji i po&#x161;iljatelji mogu podsjetiti o sadr&#x17E;aju poruke, te je vrlo va&#x17E;an za organizaciju i kasnije pronala&#x17E;enje bitnih poruka.
+    </para>
+    <para>
+    Prilikom odgovaranja na poruku ili proslje&#x111;ivanja poruke naslov se kopira i u novu poruku te se na osnovu toga mo&#x17E;e prepoznati koje poruke &#x10D;ine "nit" rasprave. Ako odgovori ili proslije&#x111;ene poruke sadr&#x17E;e nove teme, korisno je u skladu s tim izmijeniti i "Naslov" poruke kako bi primatelji mogli lak&#x161;e pratiti promjene u toku rasprave.
+    </para>
+</entry>
+
+<entry id="compose-charset" md5="c2c878070445af81407da5bfc4083ea3" state="uptodate">
+    <title>Sastavljanje poruka: Set znakova</title>
+    <heading>Set znakova</heading>
+    <para>
+    Odabir skupa znakova koji &#x107;e se koristiti u poslanoj poruci.
+    </para>
+</entry>
+
+<entry id="compose-options" md5="5f1d50a733c8b7e46aecece28822ff70" state="uptodate">
+    <title>Sastavljanje poruka: Opcije</title>
+    <heading>Opcije</heading>
+    <para>
+    Sljede&#x107;e opcije poma&#x17E;u vam u sastavljanu poruke.
+    </para>
+    <para>
+    Kliknite na "Provjeri pravopis" za provjeru ispravnosti teksta poruke.
+    </para>
+    <para>
+    Kliknite na "Prilozi" za prelazak na donji dio stranice gdje je poruci mogu&#x107;e prilo&#x17E;iti datoteke.
+    </para>
+    <para>
+    Ako je administrator sustava omogu&#x107;io spremanje poslanih poruka, ozna&#x10D;avanjem ku&#x107;ice pored "Spremi kopiju" aktivira se spremanje poruke nakon slanja. Poslana poruka spremit &#x107;e se u podrazumijevanu mapu ili onu zadanu pod "Opcije-&gt;Osobne postavke-&gt;Identiteti". Ako je administrator sustava omogu&#x107;io odabir mape za spremanje poslanih poruka, pored ove opcije pojavit &#x107;e se padaju&#x107;a lista s popisom dostupnih mapa.
+    </para>
+    <para>
+    Spremanje kopija poslanih poruka korisno je za evidentiranje rasprava koje su se vodile putem elektroni&#x10D;ke po&#x161;te. Spremanje poslanih poruka mo&#x17E;e se uklju&#x10D;iti kao zadano za svaki identitet odlaskom na "Opcije-&gt;Osobne postavke-&gt;Identiteti". U postavkama je tako&#x111;er mogu&#x107;e podesiti periodi&#x10D;ko &#x10D;i&#x161;&#x107;enje ili arhiviranje mape s poslanim porukama.
+    </para>
+    <warn>
+    Spremanje svih poslanih poruka nije preporu&#x10D;ljivo u svim situacijama jer mo&#x17E;e dovesti do brzog zapunjenja korisni&#x10D;kog ra&#x10D;una elektroni&#x10D;ke po&#x161;te, posebno kada se uz poruke &#x161;alju veliki prilozi.  Ra&#x10D;un elektroni&#x10D;ke po&#x161;te koji je zapunjen ne mo&#x17E;e primati nove poruke elektroni&#x10D;ke po&#x161;te.
+    </warn>
+</entry>
+
+<entry id="compose-attachments" md5="c61d86cfad0842f122278366bb2804b0" state="uptodate">
+    <title>Sastavljanje poruka: Dodavanje priloga</title>
+    <heading>Dodavanje priloga</heading>
+    <para>
+    Priloge je mogu&#x107;e dodati u poruku ako va&#x161; web preglednik podr&#x17E;ava slanje datoteka. Istovremeno je mogu&#x107;e poslati vi&#x161;e datoteka.
+    </para>
+    <para>Korak 1: Unesite stazu i ime datoteke ili kliknite na gumb "Browse" i odaberite datoteku koju &#x17E;elite prilo&#x17E;iti. Staza i ime datoteke nakon toga biti &#x107;e upisana u polju priloga. Ako va&#x161; web preglednik podr&#x17E;ava JavaScript pojavit &#x107;e se novo polje za unos jo&#x161; jedne datoteke &#x161;to omogu&#x107;ava istovremeno slanje vi&#x161;e datoteka.
+    </para>
+    <para>Korak 2: Odaberite &#x17E;elite li da se poslana datoteka primatelju prika&#x17E;e kao prilog ili ugra&#x111;ena u sadr&#x17E;aj poruke. Ako primateljev klijent za elektroni&#x10D;ku po&#x161;tu ne podr&#x17E;ava ugra&#x111;eni prikaz priloga, sve datoteke biti &#x107;e prikazane kao prilozi.
+    </para>
+    <para>
+    Ako ne &#x17E;elite mijenjati opis ili razmje&#x161;taj priloga, dodavanje priloga je ovime zavr&#x161;eno. Datoteke &#x107;e se prenijeti na poslu&#x17E;itelj prilikom slanja poruke. Ako pak prije slanja &#x17E;elite promijeniti opis ili razmje&#x161;taj priloga, kliknite na gumb "A&#x17E;uriraj" &#x10D;ime &#x107;e se novo dodani prilozi poslati na poslu&#x17E;itelj i spremiti izmjene napravljene na postoje&#x107;im prilozima.
+    </para>
+    <tip>
+    Napomena da za ve&#x107;e datoteke i/ili sporije na&#x10D;ine pristupa Internetu proces slanja datoteka mo&#x17E;e potrajati. Budite strpljivi i nemojte klikati na druge poveznice i gumbe dok slanje ne zavr&#x161;i.
+    </tip>
+</entry>
+
+<entry id="compose-current-attachments" md5="1dac09e0dba4d062ec6a4f82718956b7" state="uptodate">
+    <title>Sastavljanje poruka: Trenutni prilozi</title>
+    <heading>Trenutni prilozi</heading>
+    <para>
+    Ovaj dio stranice prikazuje popis datoteka ve&#x107; prilo&#x17E;enih poruci.
+    </para>
+    <heading>Brisanje prilo&#x17E;enih datoteka</heading>
+    <para>
+    Za brisanje prilo&#x17E;enih datoteka:
+    </para>
+    <para>
+    Korak 1: Ozna&#x10D;ite ku&#x107;icu pored priloga koje &#x17E;elite obrisati.
+    </para>
+    <para>
+    Korak 2: Kliknite na gumb "A&#x17E;uriraj" koji se nalazi iznad popisa trenutnih priloga da bi odmah spremili izmjene ili &#x107;e izmjene nad prilozima biti automatski izvr&#x161;ene prilikom slanja poruke.
+    </para>
+    <heading>Promjena razmje&#x161;taja priloga</heading>
+    <para>
+    Za promjenu razmje&#x161;taja priloga:
+    </para>
+    <para>
+    Korak 1: Za svaki prilog postavite &#x17E;eljeni razmje&#x161;taj - "U istoj razini" ili "Prilog".
+    </para>
+    <para>
+    Korak 2: Kliknite na gumb "A&#x17E;uriraj" koji se nalazi iznad popisa trenutnih priloga da bi odmah spremili izmjene ili &#x107;e izmjene nad prilozima biti automatski izvr&#x161;ene prilikom slanja poruke.
+    </para>
+    <heading>Promjena opisa priloga</heading>
+    <para>
+    Za promjenu opisa priloga (tekst koji &#x107;e primateljima biti prikazan kao opis priloga):
+    </para>
+    <para>
+    Korak 1: Unesite opis priloga u polje Opis.
+    </para>
+    <para>
+    Korak 2: Kliknite na gumb "A&#x17E;uriraj" koji se nalazi iznad popisa trenutnih priloga da bi odmah spremili izmjene ili &#x107;e izmjene nad prilozima biti automatski izvr&#x161;ene prilikom slanja poruke.
+    </para>
+</entry>
+
+<entry id="compose-priority" md5="b023367c36de3ce1567d27ccaa45640c" state="uptodate">
+    <title>Sastavljanje poruka: Prioritet</title>
+    <heading>Prioritet</heading>
+    <para>
+    Postavlja "X-Priority" zaglavlje u odlaznoj poruci. Zaglavlje "X-Priority" je neka vrsta "pseudo standarda" koji podr&#x17E;avaju Netscape, Mozilla, Opera i Outlook klijenti.  Klijenti elektroni&#x10D;ke po&#x161;te koji ne podr&#x17E;avaju ovo zaglavlje &#x107;e ignorirati ovu informaciju.
+    </para>
+</entry>
+
+<entry id="compose-save-attachments" md5="db89972c4ebb0b41ab691b6a7744a81d" state="uptodate">
+    <title>Sastavljanje poruka: Spremi priloge</title>
+    <para>
+    Odre&#x111;uje dali &#x107;e se prilozi kori&#x161;teni kod sastavljanja poruke spremiti zajedno sa porukom u mapu s poslanom po&#x161;tom. Ako je odabrano "Da", prilozi &#x107;e se spremiti. Ako je odabrano "Ne", prilozi &#x107;e se obrisati iz poruke nakon slanja svim po&#x161;iljateljima a prije spremanja u mapu s poslanom po&#x161;tom. Opcija "Ne" slu&#x17E;i smanjenju zauze&#x107;a diskovnog prostora jer se iz poruke prije spremanja bri&#x161;u potencijalno veliki prilozi.
+    </para>
+</entry>
+
+<entry id="compose-link-attachments" md5="63b3841c95aed31b5372f0fa770ee382" state="uptodate">
+    <title>Sastavljanje poruka: Dodaj poveznicu na priloge</title>
+    <para>
+    Odre&#x111;uje dali &#x107;e se prilozi dodani u poruku poslati zajedno sa porukom ili &#x107;e ostati spremljeni na poslu&#x17E;itelju. Ako prilozi ostanu spremljeni na poslu&#x17E;itelju, poruka poslana primateljima sadr&#x17E;avati &#x107;e web poveznicu putem koje je mogu&#x107;e preuzeti priloge. Prednost dodavanja poveznica na priloge je zna&#x10D;ajno smanjenje veli&#x10D;ine poslanih poruka. Nedostatak je &#x161;to sadr&#x17E;aj priloga mo&#x17E;da ne&#x107;e biti dostupan u budu&#x107;nosti jer nije poslan zajedno sa porukom elektroni&#x10D;ke po&#x161;te.
+    </para>
+</entry>
+
+<entry id="search" md5="0d9192553331cd63eeb46a3f52ef3db8" state="uptodate">
+    <title>Pretra&#x17E;ivanje poruka</title>
+    <heading>Kriterij pretra&#x17E;ivanja</heading>
+    <para>
+    Poruke je po mapama mogu&#x107;e pretra&#x17E;ivati koriste&#x107;i razli&#x10D;ite kriterije pretra&#x17E;ivanja.
+    </para>
+    <para>
+    Korak 1: Odaberite dali &#x17E;elite da budu zadovoljeni <b>svi</b> uvjeti (I pretraga) ili <b>bilo koji</b> od uvjeta (ILI pretraga).
+    </para>
+    <para>
+    Korak 2: Odaberite polja po kojima &#x17E;elite pretra&#x17E;ivati i, ako je potrebno, zadajte parametre pretra&#x17E;ivanja odabranih polja.
+    </para>
+    <para>
+    Korak 3: Odaberite jednu ili vi&#x161;e mapa koje &#x107;e se pretra&#x17E;ivati.
+    </para>
+    <para>
+    Korak 4: Kliknite na "Po&#x161;alji".
+    </para>
+    <para>
+    Naslovi poruka koje zadovoljavaju zadane kriterije pretra&#x17E;ivanja biti &#x107;e prikazani na stranici s "Rezultatima pretra&#x17E;ivanja".
+    </para>
+</entry>
+
+<entry id="folder-options" md5="08ee3e450a82431727763b9db082ec08" state="uptodate">
+    <title>Mape: Akcije</title>
+    <para>
+      Mape se odabiru ozna&#x10D;avanjem ku&#x107;ice ispred imena mape. Nakon ozna&#x10D;avanja iz padaju&#x107;eg izbornika mogu&#x107;e je odabrati akciju koja &#x107;e se primijeniti na odabrane mape.
+    </para>
+    <heading>Kreiraj</heading>
+    <para>
+    Ako je mogu&#x107;e, stvara novu mapu.  Za dodavanje mapu u osnovnoj razini odaberite akciju Kreiraj dok nije odabrana ni jedna mapa. Za dodavanje podmape prvo ozna&#x10D;ite mapu u koju &#x17E;elite dodati podmapu te zatim odaberite akciju Kreiraj.
+    </para>
+    <heading>Preimenuj</heading>
+    <para>
+    Mijenja ime mape. Ozna&#x10D;ite mape koje &#x17E;elite preimenovati i odaberite akciju Preimenuj. Prilikom preimenovanja sve podmape preimenovane mape tako&#x111;er &#x107;e biti preba&#x10D;ene u mapu s novim imenom.
+    </para>
+    <heading>Obri&#x161;i</heading>
+    <para>
+    Bri&#x161;e mapu i sve poruke u njoj. Ozna&#x10D;ite mapu koju &#x17E;elite obrisati i odaberite akciju 'Obri&#x161;i'. Ako obrisana mapa sadr&#x17E;i podmape one ne&#x107;e biti automatski obrisane. Za brisanje podmapa potrebno ih je ozna&#x10D;iti prije pokretanja akcije brisanja.
+    </para>
+    <heading>Isprazni</heading>
+    <para>
+    Za brisanje svih poruka u mapi, ali ne i same mape, ozna&#x10D;ite mapu i odaberite akciju 'Isprazni'.
+    </para>
+    <heading>Pra&#x17E;njenje</heading>
+    <para>
+    Za &#x10D;i&#x161;&#x107;enje svih poruka u mapi koje su ozna&#x10D;ene kao obrisane, ali ne i brisanje same mape, ozna&#x10D;ite mapu i odaberite akciju 'Pra&#x17E;njenje'. Ova akcija dostupna je samo ako se ne koristi mapa za spremanje sme&#x107;a.
+    </para>
+    <heading>Pretplati se/Odjavi pretplatu</heading>
+    <para>
+    Ozna&#x10D;ava mapu kao pretpla&#x107;enu ili nepretpla&#x107;enu. Pretpla&#x107;ene mape prikazuju se u popisu mapa. Ove akcije dostupne su samo ako se koristi IMAP pretplata na mape.
+    </para>
+    <para>
+    Za pretpla&#x107;ivanje na mapu ozna&#x10D;ite &#x17E;eljenu mapu i odaberite akciju 'Pretplati se'. Za odjavu pretplate ponovo ozna&#x10D;ite mapu i odaberite akciju 'Odjavi pretplatu'.
+    </para>
+    <heading>Provjeravaj novu po&#x161;tu/Ne provjeravaj novu po&#x161;tu</heading>
+    <para>
+    Aktivira provjeru nove po&#x161;te za odabrane mape u Navigatoru mapa i bo&#x10D;noj traci (ako je prikazana).
+    </para>
+    <para>
+    Za aktiviranje provjere ozna&#x10D;ite &#x17E;eljene mape i odaberite akciju 'Provjeravaj novu po&#x161;tu'. Za isklju&#x10D;ivanje provjere nove po&#x161;te ozna&#x10D;ite &#x17E;eljene mape i odaberite akciju 'Ne provjeravaj novu po&#x161;tu'.
+    </para>
+    <heading>Ozna&#x10D;i sve poruke kao pregledane/nepregledane</heading>
+    <para>
+    Da bi ozna&#x10D;ili sve poruke kao pregledane ozna&#x10D;ite &#x17E;eljene mape i odaberite akciju 'Ozna&#x10D;i sve poruke kao pregledane'. Da bi ozna&#x10D;ili sve poruke kao nepregledane ozna&#x10D;ite &#x17E;eljene mape i odaberite akciju 'Ozna&#x10D;i sve poruke kao nepregledane'.
+    </para>
+    <heading>Preuzmi</heading>
+    <para>
+    Za preuzimanje svih poruka u mapi kao jedne datoteke (mbox format), ozna&#x10D;ite mapu i odaberite akciju 'Preuzmi'. Za preuzimanje datoteke u Zip komprimiranom formatu odaberite akciju 'Preuzmi [.zip format]'.
+    </para>
+    <heading>Uvezi poruke</heading>
+    <para>
+    Ova akcija omogu&#x107;ava uvoz poruka u mbox ili .eml formatu u odabranu mapu. Ozna&#x10D;ite mapu u koju &#x17E;elite uvesti poruke i odaberite ovu akciju. Prikazat &#x107;e se forma u koju je potrebno unijeti ime mbox ili .eml datoteke sa porukama za uvoz.
+    </para>
+    <heading>Obnovi stablo mapa</heading>
+    <para>
+    Provjerava stanje mapa na poslu&#x17E;itelju i osvje&#x17E;ava grafi&#x10D;ki prikaz stabla mapa. Ovu akciju obi&#x10D;no nije potrebno pozivati ako poslu&#x17E;itelju elektroni&#x10D;ke po&#x161;te istovremeno ne pristupate i sa drugim klijentom, te ste u me&#x111;uvremenu putem tog klijenta izmijenili strukturu mapa.
+    </para>
+
+    <heading>Prika&#x17E;i/sakrij nepretpla&#x107;ene</heading>
+    <para>
+    Ako je uklju&#x10D;ena IMAP pretplata na mape ova akcija prikazuje/skriva nepretpla&#x107;ene mape. Da bi se pretplatili/odjavili pretplatu na mapu, ozna&#x10D;ite &#x17E;eljenu mapu i iz padaju&#x107;eg izbornika sa popisom akcija odaberite 'Pretplati se' ili 'Odjavi pretplatu'.
+    </para>
+    <heading>Pro&#x161;iri sve</heading>
+    <para>
+    Prika&#x17E;i sve podmape.
+    </para>
+    <heading>Skupi sve</heading>
+    <para>
+    Sakrij sve podmape.
+    </para>
+</entry>
+
+<entry id="filters" md5="5ef60786767e638fbf5ba8fc5bd5d9d2" state="uptodate">
+    <title>Filteri: Primjeni</title>
+    <heading>Primjeni pravila filtriranja</heading>
+    <para>
+    Klikom na ikonu "Primjeni filtere" pored imena mape INBOX kod prikaza sadr&#x17E;aja po&#x161;tanskog sandu&#x10D;i&#x107; pokre&#x107;e se filtriranje svih poruka prema zadanim pravilima filtriranja.
+    </para>
+</entry>
+
+<entry id="filter-edit-rules" md5="5baa5708ac9449e797f967313a9e1a27" state="uptodate">
+    <title>Filteri: Ure&#x111;ivanje pravila filtriranja</title>
+    <heading>Uredi pravila filtriranja</heading>
+    <para>
+    Klikom na "Uredi pravila filtriranja" otvara se stranica na kojoj je mogu&#x107;e dodati, obrisati i izmijeniti trenutno aktivna pravila filtriranja.
+    </para>
+</entry>
+
+<entry id="filter-edit-blacklist" md5="80ff7803c66599c7035f7f8811d218cc" state="uptodate">
+    <title>Filteri: Ure&#x111;ivanje crne liste</title>
+    <heading>Uredi crnu listu</heading>
+    <para>
+    Odabirom akcije "Uredi crnu listu" prikazuje se stranicu na kojoj je mogu&#x107;e dodavati, brisati i izmijeniti popis adresa elektroni&#x10D;ke po&#x161;te od kojih UVIJEK odbijate primati po&#x161;tu.
+    </para>
+</entry>
+
+<entry id="filter-edit-whitelist" md5="330c3a8fad198c7afe855c101c63cd0f" state="uptodate">
+    <title>Filteri: Ure&#x111;ivanje bijele liste</title>
+    <heading>Uredi bijelu listu</heading>
+    <para>
+    Odabirom akcije "Uredi bijelu listu" prikazuje se stranicu na kojoj je mogu&#x107;e dodavati, brisati i izmijeniti popis adresa elektroni&#x10D;ke po&#x161;te od kojih UVIJEK &#x17E;elite primati po&#x161;tu.
+    </para>
+</entry>
+
+<entry id="filter-on-login" md5="37d9297d1cca46435e36b6e38e45dcdb" state="uptodate">
+    <title>Filteri: Filtriranje kod prijave</title>
+    <heading>Primjeni pravila filtriranja kod prijave?</heading>
+    <para>
+    Uklju&#x10D;ite ovu opciju ako pravila filtriranja &#x17E;elite primijeniti kod prijave u sustav.
+    </para>
+</entry>
+
+<entry id="filter-on-display" md5="f5afc305402ef52bad108933f3f33291" state="uptodate">
+    <title>Filteri: Filtriranje kod pristupa</title>
+    <heading>Primjeni pravila filtriranja kod prikaza INBOX mape?</heading>
+    <para>
+    Uklju&#x10D;ite ovu opciju ako pravila filtriranja &#x17E;elite primijeniti kod svakog pristupa po&#x161;tanskom sandu&#x10D;i&#x107;u.
+    </para>
+</entry>
+
+<entry id="filter-any-mailbox" md5="71c51e83909f9d0bd440d220772ee3c6" state="uptodate">
+    <title>Filteri: Filtriranje svih mapa</title>
+    <heading>Omogu&#x107;i primjenu filtriranja na bilo koju mapu?</heading>
+    <para>
+    Uklju&#x10D;ite ovu opciju ako &#x17E;elite omogu&#x107;iti primjenu pravila filtriranja na bilo kojoj mapi. Uobi&#x10D;ajeno se filtriranje primjenjuje samo na nove poruke pristigle u po&#x161;tanski sandu&#x10D;i&#x107;. Ako je ova opcija uklju&#x10D;ena, ikona za filtriranje poruka u trenutnoj mapi pojavit &#x107;e se za sve mape kod prikaza sadr&#x17E;aja mape. NAPOMENA: Primjena filtriranja na mapama osim po&#x161;tanskog sandu&#x10D;i&#x107;a mo&#x17E;e imati za posljedicu neo&#x10D;ekivane (npr. filtriranje mo&#x17E;e uzrokovati dostavu jo&#x161; jedne kopije poruke u istu mapu) ili ne&#x17E;eljene posljedice (npr. filtriranje mo&#x17E;e uzrokovati micanje ili brisanje poruka ako su od trenutka dostave poruke u mapu izmijenjena pravila filtriranja).
+    </para>
+</entry>
+
+<entry id="pgp-compose-attach-pubkey" md5="97446dbbb27616b4fa39be801e10df2d" state="uptodate">
+    <title>PGP: Prilo&#x17E;i javni klju&#x10D; poruci</title>
+    <heading>Prilo&#x17E;i javni klju&#x10D; poruci</heading>
+    <para>
+    Ako je ova opcija uklju&#x10D;ena u poruku koja se &#x161;alje prilo&#x17E;it &#x107;e se i kopija PGP javnog klju&#x10D;a korisnika (ako javni klju&#x10D; postoji).  Pretpostavljeno pona&#x161;anje mo&#x17E;e se promijeniti u PGP opcijama.
+    </para>
+</entry>
+
+<entry id="pgp-option-scan-body" md5="6baaada0d46dc1ab0941087f235f359b" state="uptodate">
+    <title>PGP: Pregledaj tekst poruka</title>
+    <heading>Pregledaj tekst poruka</heading>
+    <para>
+    Ako je ova opcija uklju&#x10D;ena IMP &#x107;e pretra&#x17E;ivati sadr&#x17E;aj svih tekstualnih poruka za PGP podacima te prikazati rezultate ako su PGP podaci prona&#x111;eni. Napomena da ovo mo&#x17E;e usporiti rad sustava jer se svaka tekstualna poruka mora u cijelosti pregledati da bi se prona&#x161;li PGP podaci.
+    </para>
+</entry>
+
+<entry id="compose-options-encrypt" md5="78ff9bd91687efb91d2798ca0458b5cb" state="uptodate">
+    <title>Sastavljanje poruka: Opcije enkripcije</title>
+    <heading>Bez enkripcije</heading>
+    <para>
+    &#x160;alje poruku bez kriptiranja (&#x10D;isti tekst).
+    </para>
+    <heading>PGP &#x161;ifriranje poruke</heading>
+    <para>
+    Ova opcija prije slanja trenutnu poruku kriptira koriste&#x107;i PGP i javne klju&#x10D;eve primatelja poruke. Javni klju&#x10D;evi primatelja MORAJU biti spremljeni u adresaru da bi kriptiranje uspjelo. Ako se javni klju&#x10D; primatelja nalazi u adresaru ali kriptiranje i dalje javlja gre&#x161;ku provjerite dali je adresa elektroni&#x10D;ke po&#x161;te primatelja jednaka adresi elektroni&#x10D;ke po&#x161;te spremljenoj u adresar. Podaci dobiveni kriptiranjem sadr&#x17E;aja poruke biti &#x107;e prilo&#x17E;eni poslanoj poruci.
+    </para>
+    <heading>PGP potpisivanje poruke</heading>
+    <para>
+    Ova opcije slu&#x17E;i za digitalno potpisivanje trenutne poruke pomo&#x107;u PGP-a i privatnog klju&#x10D;a korisnika. Ako lozinka s kojom je za&#x161;ti&#x107;en privatni klju&#x10D; jo&#x161; nije unesena pojavit &#x107;e se prozor u koji je potrebno upisati lozinku.  Primatelj poruke mora posjedovati kopiju javnog klju&#x10D;a po&#x161;iljatelja da bi mogao provjeriti digitalni potpis na poruci.
+    </para>
+    <heading>PGP potpisivanje/&#x161;ifriranje poruke</heading>
+    <para>
+    Ova opcija prvo digitalno potpisuje te zatim kriptira poruku. Pogledati "PGP &#x161;ifriranje poruke" i "PGP potpisivanje poruke" za detalje.
+    </para>
+    <heading>PGP &#x161;ifriranje poruke sa tajnom frazom</heading>
+    <para>
+    Ova opcija poruku prije slanja kriptira koriste&#x107;i PGP i tajnu lozinku. Prije kriptiranja pojavit &#x107;e se prozor u koji je potrebno unijeti lozinku koja &#x107;e se koristiti za kriptiranje poruke. Lozinku je primatelju poruke potrebno prenijeti nekim sigurnim kanalom kao &#x161;to je telefon, osobno itd. Podaci dobiveni kriptiranjem sadr&#x17E;aja poruke biti &#x107;e prilo&#x17E;eni poslanoj poruci.
+    </para>
+    <heading>PGP potpisivanje/&#x161;ifriranje poruke sa tajnom frazom</heading>
+    <para>
+    Ova opcija prvo digitalno potpisuje te zatim kriptira poruku koriste&#x107;i zadanu lozinku. Pogledati "PGP &#x161;ifriranje poruke sa tajnom frazom" i "PGP potpisivanje poruke" za detalje.
+    </para>
+    <heading>S/MIME &#x161;ifriranje poruke</heading>
+    <para>
+    Ova opcija prije slanja trenutnu poruku kriptira koriste&#x107;i S/MIME i certifikate primatelja poruke. Certifikati primatelja MORAJU biti spremljeni u adresaru da bi kriptiranje uspjelo. Ako se certifikat primatelja nalazi u adresaru ali kriptiranje i dalje javlja gre&#x161;ku provjerite dali je adresa elektroni&#x10D;ke po&#x161;te primatelja jednaka adresi elektroni&#x10D;ke po&#x161;te spremljenoj u adresar. Podaci dobiveni kriptiranjem sadr&#x17E;aja poruke biti &#x107;e prilo&#x17E;eni poslanoj poruci.
+    </para>
+    <heading>S/MIME potpisivanje poruke</heading>
+    <para>
+    Ova opcije slu&#x17E;i za digitalno potpisivanje trenutne poruke pomo&#x107;u S/MIME-a i certifikata korisnika. Ako lozinka s kojom je za&#x161;ti&#x107;en certifikat jo&#x161; nije unesena pojavit &#x107;e se prozor u koji je potrebno upisati lozinku.
+    </para>
+    <heading>S/MIME potpisivanje/&#x161;ifriranje poruke</heading>
+    <para>
+    Ova opcija prvo digitalno potpisuje te zatim kriptira poruku. Pogledati "S/MIME &#x161;ifriranje poruke" i "S/MIME potpisivanje poruke" za detalje.
+    </para>
+</entry>
+
+<entry id="pgp-overview" md5="24b5138b4b53f73b5f2f2739e4c1858d" state="uptodate">
+    <title>PGP: Pregled</title>
+    <heading>&#x160;to je PGP?</heading>
+    <para>
+    PGP je alat za sigurnu komunikaciju i &#x10D;uvanje podataka, a koristi se naj&#x10D;e&#x161;&#x107;e za elektroni&#x10D;ku po&#x161;tu. Slu&#x17E;i za kriptiranje podataka i digitalno potpisivanje. IMP koristi GnuPG (GNU Privacy Guard) za ostvarivanje ove funkcionalnosti.
+    </para>
+    <heading>Aktiviraj PGP funkcije</heading>
+    <para>
+    Ako je ova opcija uklju&#x10D;ena biti &#x107;e mogu&#x107;e dodati i pregledavati osobne PGP klju&#x10D;eve, dodavati i brisati javne klju&#x10D;eve drugih osoba, &#x10D;itati kriptirane poruke, provjeravati digitalni potpis na porukama, te slati kriptirane/digitalno potpisane poruke.
+    </para>
+</entry>
+
+<entry id="pgp-option-attach-pubkey" md5="561ce43370ac4afbcc3f9818c8fbc2f6" state="uptodate">
+    <title>PGP: Opcije - Prilo&#x17E;i javni klju&#x10D; svakoj poruci</title>
+    <heading>Opcije - Prilo&#x17E;i javni klju&#x10D; svakoj poruci</heading>
+    <para>
+    Ako je odabrana ova opcija svakoj poruci koja se &#x161;alje prilo&#x17E;it &#x107;e se kopija PGP javnog klju&#x10D; korisnika (ako javni klju&#x10D; postoji).
+    </para>
+</entry>
+
+<entry id="pgp-manage-pubkey" md5="b289ea5824b7f69f35c0751497f4e1c3" state="uptodate">
+    <title>PGP: Upravljanje javnim klju&#x10D;evima</title>
+    <heading>Uvod</heading>
+    <para>
+    Ovaj dio prikazuje listu svih kontakata u adresaru koji imaju uvezen PGP javni klju&#x10D;. Samo za te korisnike mogu&#x107;e je 1) poslati kritpiranu poruku ili 2) provjeriti digitalni potpis na njihovim porukama.
+    </para>
+    <heading>Pregled</heading>
+    <para>
+    Prikazuje PGP javni klju&#x10D; u novom prozoru.
+    </para>
+    <heading>Detalji</heading>
+    <para>
+    Prikazuje detalje odabranog PGP javnog klju&#x10D;a.
+    </para>
+    <heading>Obri&#x161;i</heading>
+    <para>
+    Bri&#x161;e odabrani javni klju&#x10D; iz adresara.
+    </para>
+</entry>
+
+<entry id="pgp-import-pubkey" md5="6ee1130b46e9ff1ca9ad3a3a47e7b382" state="uptodate">
+    <title>PGP: Upravljanje javnim klju&#x10D;evima - Uvoz</title>
+    <heading>Uvezi javni klju&#x10D;</heading>
+    <para>
+    Ovaj gumb otvara novi prozor koji slu&#x17E;i za uvoz PGP javnih klju&#x10D;eva. Klju&#x10D; je mogu&#x107;e iskopirati u tekstualno polje ili, ako se klju&#x10D; nalazi u datoteci na ra&#x10D;unalu korisnika, prenijeti kao datoteku. Ako je uvoz uspje&#x161;an klju&#x10D; se dodaje u adresar korisnika i prozor za uvoz se zatvara. Kod neuspjelog uvoza prikazuje se tekst gre&#x161;ke s opisom problema.
+    </para>
+</entry>
+
+<entry id="pgp-overview-personalkey" md5="220af2b74a58f430efd72d6d6b1f993f" state="uptodate">
+    <title>PGP: Upravljanje osobnim klju&#x10D;evima</title>
+    <heading>Pregled</heading>
+    <para>
+    Za digitalno potpisivanje poruka i primanje kriptiranih poruka potrebno je posjedovati osobni PGP par javni/privatni klju&#x10D;.
+    </para>
+    <heading>Va&#x161; javni klju&#x10D;</heading>
+    <para>
+    Javni klju&#x10D; treba biti dostupan svim osobama koje vam trebaju slati kriptirane poruke koje samo vi mo&#x17E;ete dekriptirati (koriste&#x107;i va&#x161; privatni klju&#x10D;). Tako&#x111;er va&#x161; javni klju&#x10D; treba biti dostupan svim osobama kojima &#x161;aljete digitalno potpisane poruke - javni klju&#x10D; je potreban za provjeru digitalnog potpisa.
+    </para>
+    <heading>Va&#x161; privatni klju&#x10D;</heading>
+    <para>
+    Va&#x161; privatni klju&#x10D; potreban je za dekriptiranje poruka kriptiranih pomo&#x107;u va&#x161;eg javnog klju&#x10D;a. Tako&#x111;er va&#x161; privatni klju&#x10D; se koristi za digitalno potpisivanje poruka koje &#x161;aljete. Privatni klju&#x10D; za&#x161;ti&#x107;en je lozinkom koja se zadaje prilikom generiranja klju&#x10D;a. Zbog to se kod svih akcija koje zahtijevaju kori&#x161;tenje privatnog klju&#x10D;a pojavljuje dijalog za unos lozinke. Lozinku je potrebno unijeti samo jednom nakon prijave jer se lozinka pamti sve do odjave (zbog toga je bitno odjaviti se iz sustava).
+    </para>
+</entry>
+
+<entry id="pgp-personalkey-public" md5="3c844d4ff8fdda3e0d446b47a63117e0" state="uptodate">
+    <title>PGP: Upravljanje osobnim klju&#x10D;evima - Javni klju&#x10D;</title>
+    <heading>Pregled</heading>
+    <para>
+    Prikazuje PGP klju&#x10D; u novom prozoru.
+    </para>
+    <heading>Detalji</heading>
+    <para>
+    Prikazuje informacije o PGP javnom klju&#x10D;u korisnika.
+    </para>
+</entry>
+
+<entry id="pgp-personalkey-private" md5="1851b67a1aeef1242fc3a2b94af75c03" state="uptodate">
+    <title>PGP: Upravljanje osobnim klju&#x10D;evima - Privatni klju&#x10D;</title>
+    <heading>Unesi lozinku</heading>
+    <para>
+    Prikazuje dijalog za unos lozinke. Unesena lozinka, ako je ispravna, ostati &#x107;e zapam&#x107;ena do odjave iz sustava.
+    </para>
+    <heading>Isprazni lozinku</heading>
+    <para>
+    Bri&#x161;e zapam&#x107;enu lozinku - svako slijede&#x107;e kori&#x161;tenje privatnog klju&#x10D;a zahtjevat &#x107;e ponovan unos lozinke.
+    </para>
+    <heading>Pregled</heading>
+    <para>
+    Prikazuje PGP privatni klju&#x10D; u novom prozoru. NIKAD NE &#x160;ALJITE OVAJ KLJU&#x10C; BILO KOME - ova mogu&#x107;nost slu&#x17E;i samo za izvoz privatnog klju&#x10D;a iz korisni&#x10D;kih postavki u druge programe.
+    </para>
+    <heading>Detalji</heading>
+    <para>
+    Prikazuje informacije o PGP privatnom klju&#x10D;u korisnika.
+    </para>
+</entry>
+
+<entry id="pgp-personalkey-delete" md5="dbd8cbe6bce71c4fb592dd1b3b27b7ce" state="uptodate">
+    <title>PGP: Upravljanje osobnim klju&#x10D;evima - Brisanje</title>
+    <heading>Obri&#x161;i trenutne klju&#x10D;eve</heading>
+    <para>
+    Ovaj gumb slu&#x17E;i za brisanje osobnog para javni/privatni klju&#x10D; iz korisni&#x10D;kih postavku.
+    </para>
+</entry>
+
+<entry id="pgp-personalkey-create-name" md5="748cb124b7ff52820792e278037a8c27" state="uptodate">
+    <title>PGP: Stvaranje osobnog klju&#x10D;a - Ime</title>
+    <heading>Ime</heading>
+    <para>
+    Ime korisnika koje &#x107;e se dodati u osobni klju&#x10D;. Ovo polje je obavezno.
+    </para>
+</entry>
+
+<entry id="pgp-personalkey-create-comment" md5="e666eb9f0ee4b49fe04f74fc18db8640" state="uptodate">
+    <title>PGP: Stvaranje osobnog klju&#x10D;a - Komentar</title>
+    <heading>Komentar</heading>
+    <para>
+    Komentar koji &#x107;e se dodati u osobni klju&#x10D;. Ovo polje nije obavezno.
+    </para>
+</entry>
+
+<entry id="pgp-personalkey-create-email" md5="c729f70fdb3a73cbb7ba5ef5888e3092" state="uptodate">
+    <title>PGP: Stvaranje osobnog klju&#x10D;a - E-mail adresa</title>
+    <heading>E-mail adresa</heading>
+    <para>
+    Adresa elektroni&#x10D;ke po&#x161;te koja &#x107;e se koristiti sa osobnim klju&#x10D;em. Ovo polje je obavezno.
+    </para>
+</entry>
+
+<entry id="pgp-personalkey-create-keylength" md5="24ca641c63fb5ff310a39ee0d3b1ee55" state="uptodate">
+    <title>PGP: Stvaranje osobnog klju&#x10D;a - Duljina klju&#x10D;a</title>
+    <heading>Duljina klju&#x10D;a</heading>
+    <para>
+    Duljina klju&#x10D;a (u bitima) koji &#x107;e se generirati. Ve&#x107;e duljine pru&#x17E;aju ve&#x107;u za&#x161;titu (ali du&#x17E;e traje da se klju&#x10D; generira i pomo&#x107;u njega kriptira).  Duljina od 1024 bita je pretpostavljena i pru&#x17E;a vrlo dobru za&#x161;titu.
+    </para>
+</entry>
+
+<entry id="pgp-personalkey-create-passphrase" md5="2fb9372970bf33f51e988ba39dbd7193" state="uptodate">
+    <title>PGP: Stvaranje osobnog klju&#x10D;a - Lozinka</title>
+    <heading>Lozinka</heading>
+    <para>
+    Lozinka koja slu&#x17E;i za za&#x161;titu i kriptiranje osobnog tajnog klju&#x10D;a. Trebala bi biti duga bar 6 znakova, razli&#x10D;ita od lozinke za prijavu, izbjegavati kori&#x161;tenje rije&#x10D;i iz rje&#x10D;nika te sadr&#x17E;avati brojeve i slova.  Lozinku je potrebno unijeti dva puta zbog izbjegavanja gre&#x161;aka u unosu. Ovo polje je obavezno.
+    </para>
+</entry>
+
+<entry id="pgp-personalkey-create-actions" md5="0f8234935b964c83533b4ec4c15eb712" state="uptodate">
+    <title>PGP: Stvaranje osobnog klju&#x10D;a - Akcije</title>
+    <heading>Kreiraj klju&#x10D;eve</heading>
+    <para>
+    Generira i u korisni&#x10D;ke postavke sprema par javni/privatni klju&#x10D;.
+    </para>
+    <heading>Uvezi par klju&#x10D;eva</heading>
+    <para>
+    Uvozi par javni/privatni klju&#x10D;. Klikom na ovaj gumb otvara se novi prozor koji omogu&#x107;ava uvoz postoje&#x107;eg PGP para javni/privatni klju&#x10D;. Klju&#x10D;eve je mogu&#x107;e prekopirati u polje za tekst ili prenijeti kao datoteku ako se klju&#x10D;evi nalaze na ra&#x10D;unalu korisnika. Ako su klju&#x10D;evi ispravni spremit &#x107;e se u korisni&#x10D;ke postavke i prozor &#x107;e se zatvoriti dok &#x107;e se za neispravne klju&#x10D;eve prikazati poruka s obja&#x161;njenjem za&#x161;to uvoz nije uspio.
+    </para>
+</entry>
+
+<entry id="smime-overview" md5="d3c752b1345fb2eccfe575c07461963f" state="uptodate">
+    <title>S/MIME: Pregled</title>
+    <heading>&#x160;to je S/MIME?</heading>
+    <para>
+    S/MIME je sustav u kojem parovi javnih/osobnih klju&#x10D;eva omogu&#x107;avaju digitalni potpis, privatnost i otkrivanje neovla&#x161;tenih izmjena na otvoren i interoperabilan na&#x10D;in. S/MIME ostvaruje privatnost kriptiraju&#x107;i poruke tako da ih samo po&#x161;iljatelj i zadani primatelji mogu dekriptirati. Putem digitalnog potpisa mogu&#x107;e je provjeriti identitet po&#x161;iljatelja poruke.  Kriptiranje i digitalni potpis zajedno poma&#x17E;u otkrivanju neovla&#x161;tenih izmjena, te omogu&#x107;uju primatelju da odredi dali je poruka izmijenjena nakon slanja.
+    </para>
+    <heading>Aktivirati S/MIME funkcije</heading>
+    <para>
+    Ako je ova opcija odabrana biti &#x107;e mogu&#x107;e uvesti osobne S/MIME klju&#x10D;eve, &#x10D;itati kriptirane poruke, provjeravati digitalne potpise na porukama, te kriptirati/potpisivati poruke koje se &#x161;alju.
+    </para>
+</entry>
+
+<entry id="smime-overview-personalkey" md5="9f4f36ae72cb4abc731067d338be3b98" state="uptodate">
+    <title>S/MIME: Osobni klju&#x10D;evi</title>
+    <heading>Pregled</heading>
+    <para>
+    Ukoliko &#x17E;elite digitalno potpisivati poruke ili koristiti kriptiranje poruka potrebno je posjedovati S/MIME par javni/osobni klju&#x10D;.
+    </para>
+</entry>
+
+<entry id="smime-import-personal-certs" md5="cf0ed2e3e24d30dedf8cfef2c2645759" state="uptodate">
+    <title>S/MIME: Uvoz osobnog certifikata</title>
+    <heading>Uvoz osobnog certifikata</heading>
+    <para>
+    Uvozi osobni certifikat iz datoteke u PKCS #12 formatu. PKCS #12 datoteke obi&#x10D;no se dobivaju izvozom klju&#x10D;eva iz web preglednika (npr. Internet Explorer, Firefox) ili iz spremi&#x161;ta certifikata operacijskog sustava (npr. Windows XP). Ispravni klju&#x10D;evi biti &#x107;e dodani u korisni&#x10D;ke postavke i prozor za uvoz &#x107;e se zatvoriti, dok &#x107;e se za neispravne certifikata pojaviti poruka za&#x161;to uvoz nije uspio.
+    </para>
+</entry>
+
+<entry id="smime-delete-personal-certs" md5="018bb6b61a7e416892de288ad1c880f4" state="uptodate">
+    <title>S/MIME: Brisanje osobnog certifikata</title>
+    <heading>Brisanje osobnog certifikata</heading>
+    <para>
+    Bri&#x161;e osobni certifikat korisnika iz postavki. Nakon brisanja vi&#x161;e nije mogu&#x107;e potpisivati S/MIME poruke i &#x10D;itati S/MIME kriptirane poruke poslane na osobnu adresu korisnika. 
+    </para>
+</entry>
+
+<entry id="smime-manage-pubkey" md5="8b6c63684d3d73b3d084025a78fe7e88" state="uptodate">
+    <title>S/MIME: Upravljanje javnim klju&#x10D;evima</title>
+    <heading>S/MIME: Upravljanje javnim klju&#x10D;evima</heading>
+    <para>
+    Slu&#x17E;i za upravljanje privjeskom javnih S/MIME klju&#x10D;eva.
+    </para>
+    <heading>Pregled</heading>
+    <para>
+    Prikazuje izvorni tekst javnog klju&#x10D;a.
+    </para>
+    <heading>Detalji</heading>
+    <para>
+    Prikazuje tehni&#x10D;ke detalje javnog klju&#x10D;a.
+    </para>
+    <heading>Obri&#x161;i</heading>
+    <para>
+    Bri&#x161;e odabrani javni klju&#x10D; iz privjeska.  Nakon brisanja javnog klju&#x10D;a korisnika vi&#x161;e nije mogu&#x107;e kriptirati poruke za tog korisnika.
+    </para>
+</entry>
+
+<entry id="printing" md5="f233c11b6b4a6bedeb68f1d5a2a976db" state="uptodate">
+    <title>Ispis</title>
+    <heading>Ispis poruke</heading>
+    <para>
+    Trenutno prikazana poruka mo&#x17E;e se ispisati klikom na poveznicu "Ispis" iz popisa akcija prikazanog iznad ili ispod poruke. Poruka formatirana za ispis zatim &#x107;e biti prikazana u novom prozoru. Ovisno u kori&#x161;tenom web pregledniku i operacijskom sustavu mo&#x17E;da &#x107;e se automatski prikazati i dijalog sa opcijama za ispis. Ako se dijalog za ispis ne pojavi mogu&#x107;e ga je otvoriti odabirom izbornika "File" i stavke "Print" u web pregledniku.
+    </para>
+</entry>
+
+<entry id="sorting" md5="18cdeac38027fe5c42bab693f2a4260a" state="uptodate">
+    <title>Sortiranje i niz poruka</title>
+    <heading>Sortiranje poruka</heading>
+    <para>
+    Prikaz liste poruka mogu&#x107;e je sortirati po bilo kojem stupcu klikom na naziv stupca u zaglavlju stupca. Prijelaz izme&#x111;u silaznog i uzlaznog sortiranja posti&#x17E;e se klikom na strelicu u zaglavlju stupca.
+    </para>
+    <heading>Niz poruka</heading>
+    <para>
+    Klikom na poveznicu [Niz] u zaglavlju stupca s naslovom, poruke je mogu&#x107;e grupirati po nitima rasprave (temi) tako da je svaka poruka grupirana sa svojim odgovorima. Povratak na uobi&#x10D;ajeno sortiranje po naslovu poruke posti&#x17E;e se odabirom poveznice [Naslov] u zaglavlju stupca s naslovima poruka.
+    </para>
+</entry>
+
+<entry id="alternative-msg" md5="4978073f76977b6af6b69810e4d22a65" state="uptodate">
+    <title>Poruke sa vi&#x161;e alternativnih dijelova</title>
+    <para>
+    Ponekad primljene poruke imaju postavljen tip poruke na "multipart/alternative". Takve poruke sastoje se od vi&#x161;e dijelova koji svi prikazuju ISTI SADR&#x17D;AJ ali u RAZLI&#x10C;ITIM FORMATIMA. Webmail &#x107;e u tom slu&#x10D;aju prikazati posljednji dio poruke koji se mo&#x17E;e prikazati u web pregledniku, ako takav dio uop&#x107;e postoji.  Svi ostali formati dostupni su preko stavke "Alternativni dijelovi ovog bloka" i mogu se pojedina&#x10D;no pregledati i preuzeti. Va&#x17E;no je ponoviti da alternativni dijelovi imaju ISTI SADR&#x17D;AJ kao prikazani i razlikuju se samo u na&#x10D;inu formatiranja (npr. &#x10D;isti tekst i HTML formatiranje).
+    </para>
+</entry>
+
+<entry id="prefs-rename_sentmail_monthly" md5="530fa20e0afbc25ffd40877948832899" state="uptodate">
+    <title>Opcije: Prijavni zadaci: Preimenovati mapu poslana-po&#x161;ta po&#x10D;etkom mjeseca</title>
+    <para>
+    Uklju&#x10D;ite ovu opciju ako &#x17E;elite preimenovati mapu poslane po&#x161;te po&#x10D;etkom svakom mjeseca. Nakon preimenovanja (u ime koje sadr&#x17E;i mjesec i godinu) napravit &#x107;e se nova mapa za poslanu po&#x161;tu.
+    </para>
+</entry>
+
+<entry id="prefs-delete_sentmail_monthly" md5="0beed16dfd68e2f25e0c66871fd546df" state="uptodate">
+    <title>Opcije: Prijavni zadaci: Obrisati mape stare poslane po&#x161;te po&#x10D;etkom mjeseca</title>
+    <para>
+    Uklju&#x10D;ite ovu opciju ako &#x17E;elite obrisati stare mape s poslanom po&#x161;tom po&#x10D;etkom svakog mjeseca. Ovo mo&#x17E;e biti korisno ako je na poslu&#x17E;itelju elektroni&#x10D;ke po&#x161;te postavljeno ograni&#x10D;enje zauze&#x107;a prostora korisnika.
+    </para>
+</entry>
+
+<entry id="prefs-delete_sentmail_monthly_keep" md5="71ed1c2eab48b91a25b5bcd4b14ccea9" state="uptodate">
+    <title>Opcije: Prijavni zadaci: Broj mjeseci za &#x10D;uvanje mapa poslane po&#x161;te</title>
+    <para>
+    Ako je uklju&#x10D;eno brisanje mapa sa starom poslanom po&#x161;tom, koliko mjeseci se &#x10D;uvaju stare mape sa poslanom po&#x161;tom?  Mape starije od zadanog broja mjeseci biti &#x107;e obrisane.
+    </para>
+</entry>
+
+<entry id="prefs-purge_sentmail" md5="7b37c534aaaec6b43589f15845cf0273" state="uptodate">
+    <title>Opcije: Prijavni zadaci: Brisati stare poruke iz mape s poslanim porukama</title>
+    <para>
+    &#x17D;elite li s vremena na vrijeme o&#x10D;istiti mape s poslanom po&#x161;tom.
+    </para>
+</entry>
+
+<entry id="prefs-purge_sentmail_interval" md5="423f3c1b0645cee1bc58e6e22a6d8b68" state="uptodate">
+    <title>Opcije: Prijavni zadaci: Koliko &#x10D;esto brisati poslane poruke</title>
+    <para>
+    Ako je uklju&#x10D;eno brisanje poruka iz mapa s poslanom po&#x161;tom, koliko &#x10D;esto se bri&#x161;u poslane poruke?
+    </para>
+</entry>
+
+<entry id="prefs-purge_sentmail_keep" md5="fcba2b7e5da61a7fdda7970f926f8d8a" state="uptodate">
+    <title>Opcije: Prijavni zadaci: Broj dana za &#x10D;uvanje poslanih poruka</title>
+    <para>
+    Ako je uklju&#x10D;eno brisanje poruka iz mapa s poslanom po&#x161;tom, poruke starije od zadanog broja dana bit &#x107;e obrisane.
+    </para>
+</entry>
+
+<entry id="prefs-delete_attachments_monthly" md5="373ea02ede6df5fc345caf632e19a75f" state="uptodate">
+    <title>Opcije: Prijavni zadaci: Obrisati povezane priloge po&#x10D;etkom mjeseca</title>
+    <para>
+    Uklju&#x10D;ite ovu opciju ako &#x17E;elite obrisati stare povezane priloge po&#x10D;etkom svakog mjeseca. Ovo mo&#x17E;e biti korisno ako je na poslu&#x17E;itelju elektroni&#x10D;ke po&#x161;te postavljeno ograni&#x10D;enje zauze&#x107;a prostora korisnika.
+    </para>
+</entry>
+
+<entry id="prefs-delete_attachments_monthly_keep" md5="1b340a60214dffd04aec02cc1127df5d" state="uptodate">
+    <title>Opcije: Prijavni zadaci: Broj mjeseci za &#x10D;uvanje starih povezanih priloga</title>
+    <para>
+    Ako je uklju&#x10D;eno brisanje starih povezanih priloga po&#x10D;etkom svakog mjeseca, koliko mjeseci se &#x10D;uvaju prilozi? Prilozi stariji od zadanog broja mjeseci biti &#x107;e obrisani.
+    </para>
+</entry>
+
+<entry id="prefs-purge_trash" md5="dc71871146be3e46ade0087a8cf18273" state="uptodate">
+    <title>Opcije: Prijavni zadaci: Brisanje poruka iz mape Sme&#x107;e</title>
+    <para>
+    &#x17D;elite li s vremena na vrijeme o&#x10D;istiti poruke iz mape sa sme&#x107;em.
+    </para>
+</entry>
+
+<entry id="prefs-purge_trash_interval" md5="7be91fbeb05b2d87289d4c5602d5a32f" state="uptodate">
+    <title>Opcije: Prijavni zadaci: Koliko &#x10D;esto prazniti Sme&#x107;e</title>
+    <para>
+    Ako je uklju&#x10D;eno &#x10D;i&#x161;&#x107;enje mape Sme&#x107;e, koliko &#x10D;esto ju treba prazniti?
+    </para>
+</entry>
+
+<entry id="prefs-purge_trash_keep" md5="3cb5a2b5b80b7ac1179ae005f983970e" state="uptodate">
+    <title>Opcije: Prijavni zadaci: Broj dana za &#x10D;uvanje poruka u Sme&#x107;u</title>
+    <para>
+    Ako je uklju&#x10D;eno &#x10D;i&#x161;&#x107;enje mape Sme&#x107;e, poruke starije od zadanog broja dana biti &#x107;e obrisane.
+    </para>
+</entry>
+
+<entry id="prefs-purge_spam" md5="9cabaf3500d3316054db045cf5339f5e" state="uptodate">
+    <title>Opcije: Prijavni zadaci: Brisanje poruka iz mape Spam</title>
+    <para>
+    &#x17D;elite li s vremena na vrijeme o&#x10D;istiti poruke iz mape sa ne&#x17E;eljenim porukama.
+    </para>
+</entry>
+
+<entry id="prefs-purge_spam_interval" md5="fe0f7289693d19bd386638e25beeb276" state="uptodate">
+    <title>Opcije: Prijavni zadaci: Koliko &#x10D;esto prazniti Spam</title>
+    <para>
+    Ako je uklju&#x10D;eno &#x10D;i&#x161;&#x107;enje mape Spam, koliko &#x10D;esto ju treba prazniti?
+    </para>
+</entry>
+
+<entry id="prefs-purge_spam_keep" md5="f4748aba20cf4a9b6ce92822bd185de6" state="uptodate">
+    <title>Opcije: Prijavni zadaci: Broj dana za &#x10D;uvanje Spam poruka</title>
+    <para>
+    Ako je uklju&#x10D;eno &#x10D;i&#x161;&#x107;enje mape Spam, poruke starije od zadanog broja dana biti &#x107;e obrisane.
+    </para>
+</entry>
+
+<entry id="prefs-attrib_text" md5="721a09d7ca028c97e3bd2b38c597fff7" state="uptodate">
+     <title>Opcije: Sastavljanje poruka: Citiranje kod odgovora</title>
+     <para>
+     Ovdje je mogu&#x107;e unijeti frazu za koju &#x17E;elite da se pojavi prije citiranog teksta kad odgovarate na poruku.
+     </para>
+     <para>
+     U frazu je putem jedne ili vi&#x161;e zamjena mogu&#x107;e dodati informacije o poruci na koju se odgovara. Zamjene se sastoje od simbola '%' i jednog slova. Na raspolaganju su sljede&#x107;e zamjene:
+     </para>
+
+     <para> %f : Ime i adresa elektroni&#x10D;ke po&#x161;te po&#x161;iljatelja</para>
+     <para> %a : Adresa elektroni&#x10D;ke po&#x161;te po&#x161;iljatelja</para>
+     <para> %p : Ime po&#x161;iljatelja</para>
+     <para> %r : Datum i vrijeme u punom RFC 2822 formatu</para>
+     <para> %d : Datum u obliku ddd, dd mmm GGGG</para>
+     <para> %x : Lokalizirani oblik datuma</para>
+     <para> %c : Lokalizirani oblik datuma i vremena</para>
+     <para> %m : Identifikator poruke</para>
+     <para> %s : Naslov poruke</para>
+     <para> %n : Novi red</para>
+     <para> %% : Znak '%'</para>
+
+</entry>
+
+<entry id="prefs-default_msg_charset" md5="4ef4fb2090e703f6f8e03f39ab96e717" state="uptodate">
+    <title>Opcije: Podrazumijevani skup znakova za primljene poruke</title>
+    <para>
+    Postavlja pretpostavljeni skup znakova koji se koristi za tekstualne dijelove poruka koji nemaju eksplicitno definiran skup znakova. Prema RFC 2045 poruke bez postavljenog seta znakova prikazuju se koriste&#x107;i 'US-ASCII' skup znakova. Ponekad se de&#x161;ava da neispravni klijenti elektroni&#x10D;ke po&#x161;te &#x161;alju tekstualne poruke u nekom drugom skupu znakova bez postavljanja odgovaraju&#x107;ih parametara u zaglavlju poruke. Postavite ovaj parametar na skup znakova koji &#x107;e se koristiti za primljene poruke. Odabirom vrijednosti "Podrazumijevano" koristit &#x107;e se MIME postavke.
+    </para>
+</entry>
+
+<entry id="prefs-disposition_request_read" md5="89e92c4d68224b2345b59959878a7174" state="uptodate">
+    <title>Opcije: Zatra&#x17E;i potvrdu o pro&#x10D;itanome</title>
+    <para>
+    "Potvrda o pro&#x10D;itanome" &#x161;alje zahtjev primatelju da po&#x161;alje obavijest kada je poruka prikazana.  Svi klijenti ne podr&#x17E;avaju i uva&#x17E;avaju ovu opciju.
+    </para>
+</entry>
+
+<entry id="prefs-disposition_send_mdn" md5="1fe04e5dc3de68d172da284895973ea9" state="uptodate">
+    <title>Opcije: Po&#x161;alji potvrdu o pro&#x10D;itanome</title>
+    <para>
+    "Po&#x161;alji potvrdu o pro&#x10D;itanome" &#x161;alje MDN (Message Disposition Notification) obavijest kada korisnik otvori poruku za koju je po&#x161;iljatelj tra&#x17E;io potvrdu o pro&#x10D;itanome. U ve&#x107;ini slu&#x10D;ajeve ovo se de&#x161;ava automatski, bez potvrde korisnika. U odre&#x111;enim izoliranim slu&#x10D;ajevima, korisnik treba odlu&#x10D;iti o slanju potvrde klikom na ponu&#x111;enu poveznicu.
+    </para>
+</entry>
+
+<entry id="prefs-disposition_request_delivery" md5="26598e29af05a07de5e13644669be712" state="uptodate">
+    <title>Opcije: Zatra&#x17E;i potvrdu o isporuci</title>
+    <para>
+    "Zatra&#x17E;i potvrdu o isporuci" &#x161;alje zahtjev primateljevom poslu&#x17E;itelju elektroni&#x10D;ke po&#x161;te da obavijesti po&#x161;iljatelja kada je poruka isporu&#x10D;ena u primateljev po&#x161;tanski sandu&#x10D;i&#x107;. To ne zna&#x10D;i sa je primatelj pro&#x10D;itao poruku, ve&#x107; samo da poruka &#x10D;eka u po&#x161;tanskom sandu&#x10D;i&#x107;u. Svi poslu&#x17E;itelji elektroni&#x10D;ke po&#x161;te ne podr&#x17E;avaju ovu mogu&#x107;nost.
+    </para>
+</entry>
+
+<entry id="prefs-delete_spam_after_report" md5="cefa8b52e09b0ada90e0889a3959efea" state="uptodate">
+    <title>Opcije: Brisanje Spam poruka nakon prijave</title>
+    <para>
+    Nakon prijave poruke kao Spam ili Ne-spam mogu&#x107;e su sljede&#x107;e akcije.
+    </para>
+    <para>
+    Prvo, mogu&#x107;e je ne dirati poruku - poruka je prijavljena kao spam ili ne-spam ali ostaje u svojoj trenutnoj mapi.
+    </para>
+    <para>
+    Drugo, ako je poruka prijavljena kao spam, poruka se odmah bri&#x161;e. Ova postavka ne utje&#x10D;e na poruke prijavljene kao ne-spam.
+    </para>
+    <para>
+    Tre&#x107;e, nakon prijave poruke kao spam, poruka se bri&#x161;e iz trenutne mape i sprema u mapu za ne&#x17E;eljene poruke. Ako je poruka prijavljena kao ne-spam, poruka se bri&#x161;e iz trenutne mape i sprema u po&#x161;tanski sandu&#x10D;i&#x107;.
+    </para>
+</entry>
+
+<entry id="prefs-html_image_replacement" md5="28e1cf08e328345a8e7274c853492d4f" state="uptodate">
+    <title>Opcije: Blokiraj HTML slike</title>
+    <para>
+    Trebaju li kod ugra&#x111;enog prikaza HTML poruka slike biti blokirane dok se ne zatra&#x17E;i njihov pregled? Napomena da &#x107;e kod pregleda HTML priloga slike uvijek biti prikazane.
+    </para>
+</entry>
+
+<entry id="prefs-html_image_addrbook" md5="759fa3df24e0a3cd89f320102252f91a" state="uptodate">
+    <title>Opcije: Prika&#x17E;i HTML slike za po&#x161;iljatelje iz adresara</title>
+    <para>
+    Ako je uklju&#x10D;eno blokiranje slika kod ugra&#x111;enog prikaza HTML poruka, trebaju li se slike ipak prikazati ako se po&#x161;iljatelj ve&#x107; nalazi u adresaru korisnika?
+    </para>
+</entry>
+
+<entry id="prefs-mailbox_start" md5="62fcc38a15f54dae7eb8bdafa93ed341" state="uptodate">
+    <title>Opcije: Po&#x10D;etna stranica prikaza mape</title>
+    <para>
+    Odre&#x111;uje koji &#x107;e se dio poruka u mapi prikazati kod prvog pristupa mapi.
+    </para>
+</entry>
+
+<entry id="prefs-save_attachments" md5="35b46334cdcc7fa416b9f9fca5874e80" state="uptodate">
+    <title>Opcije: Spremanje priloga poslanih poruka</title>
+    <para>
+    Ako se poslane poruke spremaju u mapu s poslanim porukama, ova opcija odre&#x111;uje dali se spremaju i prilozi. Dostupne su slijede&#x107;e opcije:
+    </para>
+    <para>* "Uvijek spremi priloge" - NIKAD ne pita za spremanje priloga kod pisanja poruke; prilozi se UVIJEK spremaju sa poslanom porukom.</para>
+    <para>* "Upitaj svaki put kada se &#x161;alje prilog; zadano je DA" - UVIJEK pita dali treba spremiti prilog kod pisanja poruke; zadano je spremanje priloga s porukom.</para>
+    <para>* "Upitaj svaki put kada se &#x161;alje prilog; zadano je NE" - UVIJEK pita dali treba spremiti prilog kod pisanja poruke; zadano je da se prilog ne sprema s porukom.</para>
+    <para>* "Nikad ne spremaj priloge" - NIKAD ne pita za spremanje priloga kod pisanja poruke; prilozi se NIKAD ne spremaju sa poslanom porukom.</para>
+</entry>
+
+<entry id="virtual_inbox" md5="a91e01732bb8129cbc6a7f5c6dca3ab3" state="uptodate">
+    <title>Mape: Virtualni sandu&#x10D;i&#x107;</title>
+    <para>
+    Virtualni sandu&#x10D;i&#x107; je spremljena pretraga koja uklanja potrebu pregledavanja mapa u potrazi za novim porukama. Umjesto toga, sve pretpla&#x107;ene mape se pretra&#x17E;uju za novim porukama i prona&#x111;ene poruke se prikazuju zajedno.
+    </para>
+</entry>
+
+<entry id="virtual_trash" md5="b83f73ed56dff0addcbd4702e5a21a3d" state="uptodate">
+    <title>Mape: Virtualno sme&#x107;e</title>
+    <para>
+    Virtualno sme&#x107;e je spremljena pretraga koja uklanja potrebu za posebnom mapom za obrisane poruke. Umjesto premje&#x161;tanja obrisanih poruka u centraliziranu mapu za sme&#x107;e, poruke se samo ozna&#x10D;avaju kao obrisane u mapama gdje se nalaze. Ako se isklju&#x10D;i opcija prikaz obrisanih poruka, obrisane poruke se vi&#x161;e ne&#x107;e vidjeti u popisu poruka. Odabirom mape Virtualno sme&#x107;e, sve mape se pretra&#x17E;uju za porukama koje su ozna&#x10D;ene kao obrisane i sve prona&#x111;ene poruke se prikazuju zajedno.
+    </para>
+</entry>
+
+</help>

@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<help>
+
+<entry id="Overview" md5="290506ade4e6f749246f77bbe5d48835" state="uptodate">
+    <title>Pregled</title>
+    <heading>Uvod</heading>
+    <para>
+    Aplikacija Adresar pru&#x17E;a jednostavno su&#x10D;elje za spremanje, pretra&#x17E;ivanje i
+    kori&#x161;tenje informacija o kontaktima.  Ovisno o postavkama sustava dostupni
+    su privatni adresari kao i pristup na javne imeni&#x10D;ke servise.  Aplikacija
+    tako&#x111;er podr&#x17E;ava stvaranje kontakt listi koje svaki korisnik mo&#x17E;e
+    upotrebljavati kao privatne "mailing liste".
+    </para>
+</entry>
+
+<entry id="menu-add" md5="3c1f92eb1a82839404d11d9b0a20b3ce" state="uptodate">
+    <title>Izbornik: Novi kontakt</title>
+    <heading>Novi kontakt</heading>
+    <para>
+    Dodaje novi kontakt u adresar. Kontakte je mogu&#x107;e dodati samo u adresare za
+    koje imate pravo pisanja. Dijeljeni i javni adresari obi&#x10D;no se mogu samo
+    &#x10D;itati pa u njih nije mogu&#x107;e dodavati kontakte.
+    </para>
+</entry>
+
+<entry id="menu-search" md5="8daf81ab28602d772358a174571f9ad2" state="uptodate">
+    <title>Izbornik: Pretraga</title>
+    <heading>Pretraga</heading>
+    <para>
+    Pretra&#x17E;uje adresar po zadanim kriterijima. Ova opcija namijenjena je brzom
+    pretra&#x17E;ivanju i omogu&#x107;uje pretra&#x17E;ivanje samo po nekoliko osnovnih polja.
+    Obi&#x10D;no je mogu&#x107;e pretra&#x17E;ivati samo po imenu i adresi elektroni&#x10D;ke po&#x161;te,
+    ali to ovisi o postavkama adresara na sustavu.
+    </para>
+    <para>
+    Za naprednije pretra&#x17E;ivanje mogu&#x107;e je koristiti stavku "<ref module="turba" entry="menu-advanced-search">Naprednu pretragu</ref>"
+    koja dopu&#x161;ta pretra&#x17E;ivanje po svim poljima.
+    </para>
+</entry>
+
+<entry id="menu-advanced-search" md5="6be703ffeba614f6ada151749fa44ab5" state="uptodate">
+    <title>Izbornik: Napredna pretraga</title>
+    <heading>Napredna pretraga</heading>
+    <para>
+    Pretra&#x17E;uje adresar po zadanim kriterijima. Ova metoda omogu&#x107;ava
+    pretra&#x17E;ivanje po vi&#x161;e polja istovremeno. Dostupna polja ovise o tipu
+    adresara koji se pretra&#x17E;uje.
+    </para>
+</entry>
+
+<entry id="menu-import" md5="3c6c40f2a6213e9fc1f9a77827bfb5d4" state="uptodate">
+    <title>Izbornik: Uvoz/Izvoz</title>
+    <heading>Uvoz/Izvoz</heading>
+
+    <para>
+    Ova stavka omogu&#x107;ava uvoz i izvoz privatnih adresara. Dostupni su formati
+    CSV (Vrijednosti odvojene zarezom), Outlook, vCard kao i neki drugi
+    popularni formati.
+    </para>
+
+    <heading>Uvoz</heading>
+    <para>
+    Za uvoz kontakata u adresar prvo je potrebno pripremiti podatke na ra&#x10D;unalu
+    korisnika (odnosno na ra&#x10D;unalu na kojem je pokrenut web preglednik). Podaci
+    se dobivaju izvozom kontakata iz korisni&#x10D;kog klijenta za &#x10D;itanje
+    elektroni&#x10D;ke po&#x161;te.
+    </para>
+
+    <para>
+    Ako koristite Outlook Express:
+    </para>
+    <para>
+    1) Kliknite na File &gt; Export &gt; Address Book
+    </para>
+    <para>
+    2) Odaberite "Text File" (Comma Separated Values) u "Address Book Export Tool". Kliknite na "Export".
+    </para>
+    <para>
+    3) U polju "Save exported files as", upi&#x161;ite ime za va&#x161; adresar te kliknite na "Next".
+    </para>
+    <para>
+    4) Kva&#x10D;icom ozna&#x10D;ite kvadrati&#x107; lijevo od imena polje koja &#x17E;elite izvesti. Kliknite na "Finish".
+    </para>
+    <para>
+    5) Ako je izvoz bio uspje&#x161;an pojavit &#x107;e se poruka 'Address book export process has completed'. Kliknite na 'OK'.
+    </para>
+    <para>
+    6) Odaberite 'Close' u prozoru 'Address Book Export Tool' i zatvorite Outlook Express.
+    </para>
+
+    <tip>
+    Ako se datoteka sa podacima iz adresara ne nalazi na radnoj povr&#x161;ini i
+    koristite Windows operacijski sustav, odaberite Start &gt; Find or Search &gt;
+    Files or Folders i potra&#x17E;ite na disku ime datoteke koje ste naveli u
+    koraku 3. Zabilje&#x17E;ite lokaciju prona&#x111;ene datoteke.
+    </tip>
+
+    <para>
+    Za uvoz podataka prvo je potrebno otvoriti adresar u koji &#x107;e se kontakti
+    dodati. Zatim kliknite na ikonu "Uvoz/Izvoz". Iz liste odaberite
+    format datoteke sa podacima koje &#x17E;elite uvesti. Kliknite na gumb
+    "Browse" i prona&#x111;ite na va&#x161;em ra&#x10D;unalu datoteku sa kontaktima.
+    Nakon odabira datoteke kliknite na "Uvezi". Ovime &#x107;e kontakti
+    iz odabrane datoteke biti dodani u trenutno odabrani adresar.
+    </para>
+
+    <tip>
+    Slo&#x17E;eni kontakti ili kontakti sa poljima koja nisu podr&#x17E;ana u adresaru
+    mo&#x17E;da se ne&#x107;e ispravno uvesti. Nakon uvoza provjerite podatke uvezenih
+    kontakata.
+    </tip>
+</entry>
+
+<entry id="searching-search_results" md5="ffed8d72fa3b710df8e902c2493b254f" state="uptodate">
+    <title>Pretra&#x17E;ivanje: Rezultati pretra&#x17E;ivanja</title>
+    <heading>Rezultati pretra&#x17E;ivanja</heading>
+    <para>
+    Ako je pretra&#x17E;ivanje uspjelo, rezultati &#x107;e se prikazati u obliku tablice s
+    rezultatima.
+    </para>
+    <para>
+    Klikom na vrijednost u polju "E-mail" otvara se prozor za
+    sastavljanje nove poruke za odabranu adresu elektroni&#x10D;ke po&#x161;te. Klikom na
+    vrijednost u polju "Ime" prikazat &#x107;e se detalji odabranog
+    kontakta te omogu&#x107;iti ure&#x111;ivanje ili brisanje istoga.
+    </para>
+    <para>
+    Ovisno o postavkama sustava rezultati pretra&#x17E;ivanja mogu se prikazivati
+    kumulativno. To zna&#x10D;i da se rezultati svakog novog pretra&#x17E;ivanja nadodaju
+    na prethodne rezultate. Ovo je korisno kod stvaranja listi kontakata.
+    Brisanje kumulativnih rezultata pretra&#x17E;ivanja i po&#x10D;etak nove pretrage
+    posti&#x17E;e se klikom na poveznicu "Obri&#x161;i pretragu".
+    </para>
+
+    <tip>
+    Kod pregledavanja kontakte je mogu&#x107;e sortirati po svim prikazanim poljima
+    klikom na odgovaraju&#x107;e ime polja u zaglavlju stupca. Prijelaz izme&#x111;u
+    uzlaznog i silaznog sortiranja posti&#x17E;e se klikom na strelicu u zaglavlju
+    stupca.
+    </tip>
+</entry>
+
+</help>

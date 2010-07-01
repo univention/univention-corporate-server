@@ -1,0 +1,584 @@
+# Polish translations for Mnemo package
+# Polskie tlumaczenia dla pakietu Mnemo.
+# Copyright 2005-2009 The Horde Project
+# This file is distributed under the same license as the Mnemo package.
+# Mateusz Kaminski <matipl@pld-linux.org>, 2005.
+# Piotr Tarnowski <drfugazi@drfugazi.eu.org>, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mnemo H3 (2.2-cvs)\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2007-06-14 14:47+0200\n"
+"PO-Revision-Date: 2007-06-20 19:43+0200\n"
+"Last-Translator: Piotr Tarnowski <drfugazi@drfugazi.eu.org>\n"
+"Language-Team: Polish <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+
+#: templates/memo/memo.inc:48
+#, php-format
+msgid "%s characters"
+msgstr "%s znaków"
+
+#: data.php:201
+#, php-format
+msgid "%s file successfully imported"
+msgstr "plik %s zosta³ zaimportowany"
+
+#: notepads.php:103 lib/Mnemo.php:352
+#, php-format
+msgid "%s's Notepad"
+msgstr "Notatnik - %s"
+
+#: memo.php:201
+msgid "Access denied deleting note."
+msgstr "Brak uprawnieñ aby usun±æ notatkê."
+
+#: memo.php:152 memo.php:155
+msgid "Access denied moving the note."
+msgstr "Brak uprawnieñ aby przenie¶æ notatkê."
+
+#: memo.php:120
+#, php-format
+msgid "Access denied saving note to %s."
+msgstr "Brak uprawnieñ aby zapisaæ notatkê do %s."
+
+#: memo.php:118
+#, php-format
+msgid "Access denied saving note: %s"
+msgstr "Brak uprawnieñ aby zapisaæ notatkê: %s"
+
+#: config/prefs.php.dist:61
+msgid "Ascending"
+msgstr "Rosn±co"
+
+#: data.php:32 templates/data/import.inc:11
+msgid "CSV"
+msgstr "CSV"
+
+#: data.php:54 templates/view/memo.inc:26
+msgid "Category"
+msgstr "Kategoria"
+
+#: templates/notepads/notepads.inc:21
+msgid "Change"
+msgstr "Zmieñ"
+
+#: config/prefs.php.dist:15
+msgid "Change your note sorting and display options."
+msgstr "Zmieñ opcje sortowania i wy¶wietlania notatek."
+
+#: config/prefs.php.dist:22
+msgid "Choose your default Notepad."
+msgstr "Wybierz swój domy¶lny notatnik."
+
+#: templates/list/header.inc:8
+msgid "Close Search"
+msgstr "Zamknij wyszukiwanie"
+
+#: templates/notepads/notepads.inc:15 templates/notepads/notepads.inc:59
+msgid "Create"
+msgstr "Utwórz"
+
+#: templates/view/memo.inc:32
+msgid "Created"
+msgstr "Utworzono"
+
+#: templates/memo/memo.inc:44 templates/view/memo.inc:54
+msgid "Decrypt"
+msgstr "Odszyfruj"
+
+#: config/prefs.php.dist:21
+msgid "Default Notepad"
+msgstr "Domy¶lny notatnik"
+
+#: config/prefs.php.dist:52
+msgid "Default sorting criteria:"
+msgstr "Domy¶lne kryterium sortowania:"
+
+#: config/prefs.php.dist:63
+msgid "Default sorting direction:"
+msgstr "Domy¶lny kierunek sortowania:"
+
+#: templates/view/memo.inc:16 templates/notepads/notepads.inc:60
+msgid "Delete"
+msgstr "Usuñ"
+
+#: config/prefs.php.dist:28
+msgid "Delete Confirmation"
+msgstr "Potwierdzenie usuwania"
+
+#: config/prefs.php.dist:29
+msgid "Delete button behaviour"
+msgstr "Zachowanie przycisku usuwania"
+
+#: templates/memo/memo.inc:32
+msgid "Delete this note"
+msgstr "Usuñ tê notatkê"
+
+#: config/prefs.php.dist:62
+msgid "Descending"
+msgstr "Malej±co"
+
+#: templates/notepads/notepads.inc:55
+msgid "Description:"
+msgstr "Opis:"
+
+#: lib/Driver/kolab.php:543
+#, php-format
+msgid "Did not find note %s"
+msgstr "Nie znaleziono notatki %s"
+
+#: config/prefs.php.dist:14
+msgid "Display Options"
+msgstr "Opcje wy¶wietlania"
+
+#: config/prefs.php.dist:108
+msgid "Do you want to confirm deleting entries?"
+msgstr "Czy chcesz potwierdzaæ usuwanie wpisów?"
+
+#: templates/view/memo.inc:13
+msgid "Edit"
+msgstr "Edytuj"
+
+#: templates/list/memo_summaries.inc:5
+#, php-format
+msgid "Edit \"%s\""
+msgstr "Edytuj \"%s\""
+
+#: lib/Block/summary.php:74 templates/list/memo_headers.inc:30
+msgid "Edit Note"
+msgstr "Edytuj notatkê"
+
+#: templates/list/memo_headers.inc:40
+msgid "Edit categories and colors"
+msgstr "Edytuj kategorie i kolory"
+
+#: memo.php:103
+#, php-format
+msgid "Edit: %s"
+msgstr "Edytuj: %s"
+
+#: templates/list/memo_summaries.inc:12
+msgid "Empty Note"
+msgstr "Pusta notatka"
+
+#: lib/Driver.php:118
+msgid ""
+"Encryption support has not been configured, please contact your "
+"administrator."
+msgstr ""
+"Wsparcie dla szyfrowania nie zosta³o skonfigurowane, skontaktuj siê z "
+"administratorem"
+
+#: templates/data/export.inc:16
+msgid "Export"
+msgstr "Eksport"
+
+#: templates/data/export.inc:2
+msgid "Export Notes"
+msgstr "Eksport notatek"
+
+#: config/prefs.php.dist:13 config/prefs.php.dist:20 config/prefs.php.dist:27
+msgid "General Options"
+msgstr "G³ówne opcje"
+
+#: templates/data/import.inc:1
+#, php-format
+msgid "Import Notes, Step %d"
+msgstr "Import notatek, krok %d"
+
+#: data.php:207
+msgid "Import/Export Notes"
+msgstr "Import/Eksport notatek"
+
+#: templates/search/search.inc:17
+msgid "In: "
+msgstr "W: "
+
+#: templates/view/memo.inc:39
+msgid "Last Modified"
+msgstr "Ostatnio zmodyfikowano"
+
+#: lib/api.php:77
+msgid "Maximum Number of Notes"
+msgstr "Maksymalna ilo¶æ notatek"
+
+#: data.php:53
+msgid "Memo Text"
+msgstr "Tekst memo"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr "Lista menu"
+
+#: templates/list/header.inc:9
+msgid "More Options..."
+msgstr "Wiêcej opcji..."
+
+#: templates/panel.inc:40
+msgid "My Notepads:"
+msgstr "Moje notatniki:"
+
+#: list.php:31
+msgid "My Notes"
+msgstr "Moje notatki"
+
+#: templates/notepads/notepads.inc:50
+msgid "Name:"
+msgstr "Nazwa:"
+
+#: memo.php:55 lib/Block/tree_menu.php:21
+msgid "New Note"
+msgstr "Nowa notatka"
+
+#: templates/data/import.inc:34
+msgid "Next"
+msgstr "Dalej"
+
+#: lib/api.php:259
+msgid "No iCalendar data was found."
+msgstr "Nie znaleziono danych w formacie iCalendar."
+
+#: templates/list/memo_footers.inc:4
+msgid "No notes match"
+msgstr "Nie dopasowano notatek"
+
+#: templates/list/empty.inc:1
+msgid "No notes match the current criteria."
+msgstr "Nie ma notatek spe³niaj±cych bie¿±ce kryteria."
+
+#: lib/Block/summary.php:100
+msgid "No notes to display"
+msgstr "Brak notatek do wy¶wietlenia"
+
+#: templates/list/memo_headers.inc:32
+msgid "No_te"
+msgstr "No_tatka"
+
+#: lib/Driver/sql.php:175
+msgid "Not found"
+msgstr "Nie znaleziono"
+
+#: config/prefs.php.dist:51
+msgid "Note Category"
+msgstr "Kategoria wiadomo¶ci"
+
+#: view.php:108
+msgid "Note Details"
+msgstr "Szczegó³y notatki"
+
+#: notepads.php:114
+msgid "Note Lists"
+msgstr "Listy notatek"
+
+#: config/prefs.php.dist:50
+msgid "Note Text"
+msgstr "Tre¶æ notatki"
+
+#: templates/memo/memo.inc:48
+msgid "Note _Text"
+msgstr "_Tre¶æ notatki"
+
+#: view.php:56 memo.php:66 note/pdf.php:57
+msgid "Note not found."
+msgstr "Nie znaleziono notatki."
+
+#: templates/memo/memo.inc:54
+msgid "Note_pad"
+msgstr "Notatnik"
+
+#: templates/panel.inc:32 templates/panel.inc:33
+#: templates/notepads/notepads.inc:39
+msgid "Notepads"
+msgstr "Notatniki"
+
+#: notepads.php:33
+msgid "Notepads must have a name."
+msgstr "Notatniki musz± posiadaæ nazwê."
+
+#: templates/notepads/notepads.inc:42
+msgid "Notepads:"
+msgstr "Notatniki:"
+
+#: lib/Block/summary.php:3
+msgid "Notes Summary"
+msgstr "Podsumowanie notatek"
+
+#: lib/api.php:236 lib/api.php:324 lib/api.php:382 lib/api.php:411
+msgid "Permission Denied"
+msgstr "Dostêp zabroniony"
+
+#: templates/notepads/notepads.inc:52
+msgid "Permissions"
+msgstr "Uprawnienia"
+
+#: templates/view/memo.inc:16
+msgid "Really delete this note?"
+msgstr "Na prawdê usun±æ tê notatkê?"
+
+#: templates/panel.inc:59 templates/memo/memo.inc:52
+msgid "Save"
+msgstr "Zapisz"
+
+#: templates/view/memo.inc:11
+msgid "Save as PDF"
+msgstr "Zapisz jako PDF"
+
+#: search.php:17 lib/Block/tree_menu.php:30 templates/list/header.inc:4
+#: templates/search/search.inc:4 templates/search/search.inc:27
+msgid "Search"
+msgstr "Szukaj"
+
+#: list.php:53
+#, php-format
+msgid "Search Results (%s)"
+msgstr "Wyniki wyszukiwania (%s)"
+
+#: templates/notepads/notepads.inc:44
+msgid "Select a notepad"
+msgstr "Wybierz notatnik"
+
+#: templates/data/export.inc:9
+msgid "Select the export format:"
+msgstr "Wybierz format eksportu:"
+
+#: templates/data/import.inc:31
+msgid "Select the file to import:"
+msgstr "Wybierz plik do importu:"
+
+#: templates/data/import.inc:9
+msgid "Select the format of the source file:"
+msgstr "Wybierz format pliku ¼ród³owego:"
+
+#: templates/panel.inc:50
+msgid "Shared Notepads:"
+msgstr "Wspó³dzielone notatniki:"
+
+#: lib/Block/summary.php:34
+msgid "Show action buttons?"
+msgstr "Wy¶wietlaæ przyciski akcji?"
+
+#: lib/Block/summary.php:37
+msgid "Show notepad name?"
+msgstr "Wy¶wietlaæ nazwê notatnika?"
+
+#: config/prefs.php.dist:41
+msgid "Show notepad options panel?"
+msgstr "Wy¶wietlaæ panel opcji notatnika?"
+
+#: lib/Block/summary.php:40
+msgid "Show notes from these categories"
+msgstr "Wy¶wietlaj notatki z tych kategori"
+
+#: templates/list/memo_headers.inc:36
+msgid "Sort by Category"
+msgstr "Sortuj po kategorii"
+
+#: templates/list/memo_headers.inc:32
+msgid "Sort by Note Text"
+msgstr "Sortuj po tre¶ci notatek"
+
+#: memo.php:175
+#, php-format
+msgid "Successfully saved \"%s\"."
+msgstr "Pomy¶lnie zapisano \"%s\"."
+
+#: data.php:195
+#, php-format
+msgid "The %s file didn't contain any notes."
+msgstr "Plik %s nie zawiera³ ¿adnych notatek."
+
+#: lib/Driver.php:53
+msgid "The Notes backend is not currently available."
+msgstr "Backend notatek nie jest obecnie dostêpny."
+
+#: lib/Driver.php:227
+#, php-format
+msgid "The Notes backend is not currently available: %s"
+msgstr "Backend notatek nie jest obecnie dostêpny: %s"
+
+#: memo.php:198
+msgid "The note was deleted."
+msgstr "Notatka zosta³a usuniêta"
+
+#: notepads.php:46 notepads.php:57
+#, php-format
+msgid "The notepad \"%s\" couldn't be created: %s"
+msgstr "Notatnik \"%s\" nie zosta³ utworzony: %s"
+
+#: notepads.php:48
+#, php-format
+msgid "The notepad \"%s\" has been created."
+msgstr "Notatnik \"%s\" zosta³ utworzony."
+
+#: notepads.php:89
+#, php-format
+msgid "The notepad \"%s\" has been deleted."
+msgstr "Notatnik \"%s\" zosta³ usuniêty."
+
+#: notepads.php:59
+#, php-format
+msgid "The notepad \"%s\" has been saved."
+msgstr "Notatnik \"%s\" zosta³ zapisany."
+
+#: data.php:198
+#, php-format
+msgid "There was an error importing the data: %s"
+msgstr "Wyst±pi³ b³±d podczas importu danych: %s"
+
+#: lib/api.php:253
+msgid "There was an error importing the iCalendar data."
+msgstr "Wyst±pi³ b³±d podczas importu danych w formacie iCalendar."
+
+#: lib/api.php:430
+msgid "There was an error importing the vNote data."
+msgstr "Wyst±pi³ b³±d podczas importu danych w formacie vNote."
+
+#: memo.php:196
+#, php-format
+msgid "There was an error removing the note: %s"
+msgstr "Wyst±pi³ b³±d podczas usuwania notatki: %s"
+
+#: memo.php:173
+#, php-format
+msgid "There was an error saving the note: %s"
+msgstr "Wyst±pi³ b³±d podczas zapisywania notatki: %s"
+
+#: view.php:45 note/pdf.php:46
+#, php-format
+msgid "There was an error viewing this notepad: %s"
+msgstr "Wyst±pi³ b³±d podczas wy¶wietlania tego notatnika: %s"
+
+#: data.php:79
+msgid "There were no memos to export."
+msgstr "Nie by³o ¿adnych notatek do wyeksportowania."
+
+#: data.php:105
+msgid "This file format is not supported."
+msgstr "Ten format pliku nie jest wspierany."
+
+#: view.php:98 memo.php:90
+msgid "This note cannot be decrypted:"
+msgstr "Nie mo¿na odszyfrowaæ tej notatki:"
+
+#: view.php:90 memo.php:82
+msgid "This note has been encrypted, please provide the password below."
+msgstr "Ta notatka zosta³a zaszyfrowana, wprowad¼ has³o poni¿ej."
+
+#: view.php:87 view.php:95 memo.php:79 memo.php:87 lib/Driver/kolab.php:739
+#: lib/Driver/sql.php:438
+msgid "This note has been encrypted."
+msgstr "Ta notatka zosta³a zaszyfrowana."
+
+#: notepads.php:84
+#, php-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "Nie mo¿na usun±æ \"%s\": %s"
+
+#: lib/Driver.php:230
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Nie mo¿na za³adowaæ definicji %s."
+
+#: lib/Mnemo.php:222 lib/Mnemo.php:223 lib/Mnemo.php:237 lib/Mnemo.php:238
+#: lib/Block/summary.php:95 templates/list/memo_summaries.inc:14
+#: templates/view/memo.inc:27
+msgid "Unfiled"
+msgstr "Niewype³niona"
+
+#: lib/api.php:289 lib/api.php:346 lib/api.php:438
+#, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "Niewspierany rodzaj zawarto¶ci: %s"
+
+#: templates/data/import.inc:16
+msgid "Which Notepad should the notes be added to?"
+msgstr "Do którego notatnika powinny byæ dodane notatki?"
+
+#: data.php:42 data.php:130 memo.php:37
+#, php-format
+msgid "You are not allowed to create more than %d notes."
+msgstr "Nie masz zezwolenia aby utworzyæ wiêcej ni¿ %d notatek."
+
+#: view.php:49 note/pdf.php:50
+#, php-format
+msgid "You do not have permission to view the notepad %s."
+msgstr "Nie masz uprawnieñ aby ogl±daæ notatnik %s."
+
+#: notepads.php:69
+msgid "You must select a notepad to be deleted."
+msgstr "Musisz wybraæ notatnik do usuniêcia."
+
+#: templates/prefs/notepadselect.inc:10
+msgid "Your default notepad:"
+msgstr "Twój domy¶lny notatnik:"
+
+#: templates/panel.inc:45
+msgid "[Manage My Notepads]"
+msgstr "[Zarz±daj moimi notatnikami]"
+
+#: templates/search/search.inc:21
+msgid "_Body"
+msgstr "Tre¶ci"
+
+#: templates/memo/memo.inc:65 templates/list/memo_headers.inc:36
+msgid "_Category"
+msgstr "Kategoria"
+
+#: templates/view/memo.inc:16
+msgid "_Delete"
+msgstr "Usuñ"
+
+#: templates/view/memo.inc:13
+msgid "_Edit"
+msgstr "_Edytuj"
+
+#: templates/memo/memo.inc:69
+msgid "_Encrypt?"
+msgstr "Zaszyfrowaæ?"
+
+#: templates/search/search.inc:9
+msgid "_For: "
+msgstr "Wyra¿enie: "
+
+#: lib/Mnemo.php:389
+msgid "_Import/Export"
+msgstr "_Import/Eksport"
+
+#: lib/Mnemo.php:376
+msgid "_List Notes"
+msgstr "_Lista notatek"
+
+#: lib/Mnemo.php:381
+msgid "_New Note"
+msgstr "_Nowa notatka"
+
+#: templates/memo/memo.inc:42 templates/memo/memo.inc:74
+#: templates/view/memo.inc:52
+msgid "_Password"
+msgstr "Has³o"
+
+#: lib/Mnemo.php:394
+msgid "_Print"
+msgstr "Drukuj"
+
+#: lib/Mnemo.php:385
+msgid "_Search"
+msgstr "_Szukaj"
+
+#: templates/search/search.inc:20
+msgid "_Title"
+msgstr "_Tytule"
+
+#: data.php:91 templates/data/export.inc:4
+msgid "notes.csv"
+msgstr "notatki.csv"
+
+#: data.php:33 templates/data/import.inc:12
+msgid "vNote"
+msgstr "vNote"

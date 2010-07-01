@@ -1,0 +1,25 @@
+/**
+ * $Horde: mnemo/themes/silver/screen.css,v 1.1.2.2 2008-03-27 17:56:28 jan Exp $
+ */
+
+.sortup {
+    background: #ccc url("graphics/za.png") center left no-repeat;
+}
+.sortdown {
+    background: #ccc url("graphics/az.png") center left no-repeat;
+}
+body #sbarShow {
+    background-image: url("graphics/plus.png");
+}
+body #sbarHide {
+    background-image: url("graphics/minus.png");
+}
+#pageControls {
+    top: 49px;
+    background: #d7d7d7;
+    border-color: #999;
+    border-width: 0 0 1px 1px;
+}
+#pageControls #notepadSearch {
+    background-image: url("graphics/search.png");
+}

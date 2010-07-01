@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="iso-8859-2"?>
+<!-- Horde 3.1 Admin help: hu_HU $Horde: horde/admin/locale/hu_HU/help.xml,v 1.1.2.2 2007-12-20 15:01:21 jan Exp $ -->
+<help>
+  <entry id="admin-phpshell" state="uptodate" md5="d5017591ef4a3f39d9787b581a0abba5">
+    <title>Adminisztrációs eszközök: a PHP Shell</title>
+    <heading>A PHP Shell használata</heading>
+    <para>A PHP parancsértelmező segítségével tetszőleges PHP parancsokat
+          hajthat végre a szerveren. Ezeket a parancsokat a gép az 
+          <code>eval()</code> függvény segítségével, az aktuálisan érvényes
+          session keretében hajtja végre. E parancsértelmező célja, hogy
+          ki tudjunk próbálni tetszőleges, egyszerűbb kódrészleteket. 
+          Ahhoz azonban, hogy bármilyen outputot lássunk, a kódnak echo
+          vagy print parancsokat kell tartalmaznia.
+    </para>
+</entry>
+  <entry id="admin-sqlshell" state="uptodate" md5="5bd2fcb9c9678e62ca141566ab8f4c4f">
+    <title>Adminisztrációs eszközök: az SQL Shell</title>
+    <heading>Az SQL Shell használata</heading>
+    <para>Az SQL parancsértelmező segítségével tetszőleges SQL parancsot
+          hajthat végre az adatbázison. Ezeket a parancsokat a gép a PEAR::DB
+          révén hajtja végre a $conf['sql']-ben megadott adatbazison.
+          Ezzel az eszközzel lekérdezéseket, bonyolult SQL módosításokat,
+          törléseket hajthat végre, vagy adatokat gyűjthet. Az SQL parancsokat
+          közvetlenül az adatbázisnak küldi, majd visszaadja az eredménykódokat
+          ill. a kapott adatokat.
+    </para>
+</entry>
+  <entry id="admin-cmdshell" state="uptodate" md5="9dbbe593735eebbb34de991a57b98b9f">
+    <title>Adminisztrációs eszközök: a parancssor</title>
+    <heading>A parancssor használata</heading>
+    <para>A parancssor segítségével parancsokat hajthat végre a szerveren.
+          Ez egy-egy parancs gyors végrehajtására jó, vagy arra az esetre, ha
+          más módon nem képes a szerver parancsértelmezőjéhez (Command Shell)
+          jutnia.
+    </para>
+</entry>
+</help>

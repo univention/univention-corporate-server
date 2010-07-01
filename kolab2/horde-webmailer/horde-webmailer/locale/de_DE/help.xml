@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Horde: horde/locale/de_DE/help.xml,v 1.5 2004-10-22 13:37:19 jan Exp $ -->
+<help>
+  <entry id="summary" md5="68ca33f7f0c9aae4c103eb47492cdc15" state="uptodate">
+    <title>Die Portalseite</title>
+    <para>
+      Die Portalseite erlaubt eine kurze Übersicht über alle Ihre wichtigen
+      Informationen. Sie kann zum Beispiel anzeigen, wie viele neue Emails Sie
+      haben, welche Termine demnächst anstehen, welche Aufgaben Sie noch zu
+      erledigen haben oder auch die neuesten Nachrichten. Viele dieser
+      Übersichten enthalten schnelle Zugriffe auf häufig benötigte Funktionen,
+      wie das Schreiben neuer Emails oder dem Anlegen neuer Kalendereinträge
+      oder Aufgaben.
+    </para>
+    <para>
+      Der Inhalt dieser Portalseite kann über den "Anpassen"-Link
+      verändert werden. Sie können zum Beispiel auswählen, welche Übersichten
+      in die Portalseite aufgenommen werden sollen, und festlegen, in welcher
+      Reihenfolge sie angezeigt werden.
+    </para>
+  </entry>
+
+  <entry id="navbar" md5="b8cf0ae19e57dfa0c2b962e516782f47" state="uptodate">
+    <title>Die Anwendungs-Navigationsleiste</title>
+    <para>
+      Auf der linken Seite des Fensters befindet sich die Navigationsleiste
+      für die Anwendungen. Klicken Sie auf die Symbole oder Namen der
+      Anwendungen, um schnell und einfach zwischen diesen hin- und
+      herzuschalten.
+    </para>
+  </entry>
+  <entry id="prefs-do_maintenance" state="uptodate" md5="dd95df07a03031232baea919288b2d00">
+    <title>Einstellungen: Anmeldeaufgaben: Wartungsarbeiten
+      durchführen</title>
+    <para>
+      Wenn Sie möchten, dass nach der Anmeldung Wartungsarbeiten durchgeführt
+      werden, markieren Sie dieses Auswahlfeld.
+    </para>
+  </entry>
+  <entry id="prefs-confirm_maintenance" state="uptodate" md5="a21162cdff3b1d8faeadb7296240036e">
+    <title>Einstellungen: Anmeldeaufgaben: Wartungsarbeiten bestätigen</title>
+    <para>
+      Wenn Sie alle Wartungsarbeiten bestätigen möchten, bevor diese
+      ausgeführt werden, markieren Sie dieses Auswahlfeld. Wenn Sie das Feld
+      deaktiviert lassen, werden alle Wartungsarbeiten automatisch
+      durchgeführt, ohne dass Sie bei der Anmeldung die Gelegenheit haben,
+      diese abzubrechen.
+    </para>
+  </entry>
+</help>

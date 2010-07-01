@@ -1,0 +1,1034 @@
+# Slovak translations for Ingo package.
+# Copyright 2008-2009 The Horde Project
+# This file is distributed under the same license as the Ingo package.
+# Martin Matu¹ka <martin@matuska.org>, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Ingo H3 (1.2-RC2)\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-09-06 11:10+0200\n"
+"PO-Revision-Date: 2008-09-17 12:51+0100\n"
+"Last-Translator: Martin Matuska <martin@matuska.org>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: filters.php:223
+msgid " and"
+msgstr " a"
+
+#: filters.php:223
+msgid " or"
+msgstr " alebo"
+
+#: templates/blacklist/blacklist.inc:17
+msgid "Action for blacklisted addresses:"
+msgstr "Operácia pre adresy z èiernej listiny:"
+
+#: templates/script/activate.inc:10
+msgid "Activate Script"
+msgstr "Zapnú» skript"
+
+#: lib/Driver/ldap.php:229
+#, php-format
+msgid "Activating the script for \"%s\" failed: (%d) %s"
+msgstr "Chyba pri aktivácii skriptu pre \"%s\": (%d) %s"
+
+#: templates/filters/settings.inc:8
+msgid "Additional Settings"
+msgstr "Ïal¹ie nastavenia"
+
+#: forward.php:43
+msgid "Address(es) to forward to:"
+msgstr "Adresy, na ktoré sa má preposiela»:"
+
+#: vacation.php:56
+msgid "Addresses to not send responses to:"
+msgstr "Adresy, na ktoré sa nemá posiela» odpoveï:"
+
+#: vacation.php:50
+msgid "Advanced Settings"
+msgstr "Roz¹írené nastavenia"
+
+#: templates/rule/header.inc:44
+msgid "All of the following"
+msgstr "V¹etky z nasledujúcich"
+
+#: lib/api.php:73
+msgid "Allow Rules"
+msgstr "Povolujúce pravidlá"
+
+#: templates/rule/footer.inc:34
+msgid "Answered"
+msgstr "Zodpovedané"
+
+#: templates/rule/header.inc:45
+msgid "Any of the following"
+msgstr "Ktorékoµvek z nasledújucich"
+
+#: templates/filters/footer.inc:8
+msgid "Apply Filters"
+msgstr "Aplikova» filtre"
+
+#: filters.php:252
+msgid "Are you sure you want to delete this rule?"
+msgstr "Naozaj chcete vymaza» toto pravidlo?"
+
+#: config/prefs.php.dist:32
+msgid "Automatically update the script after each change?"
+msgstr "Automaticky po ka¾dej zmene aktualizova» skript?"
+
+#: vacation.php:41
+msgid "Basic Settings"
+msgstr "Zálkadné nastavenia"
+
+#: config/fields.php.dist:47
+msgid "Bcc"
+msgstr "Bcc"
+
+#: lib/Storage.php:346
+msgid "Begins with"
+msgstr "Zaèína na"
+
+#: lib/Driver/ldap.php:106 lib/Driver/ldap.php:111
+#, php-format
+msgid "Bind failed: (%s) %s"
+msgstr "Pripojenie (bind) zlyhalo: (%s) %s"
+
+#: filters.php:174 templates/blacklist/blacklist.inc:7
+#: lib/Block/overview.php:95 lib/Block/overview.php:98
+msgid "Blacklist"
+msgstr "Èierna listina"
+
+#: blacklist.php:104
+msgid "Blacklist Edit"
+msgstr "Upravi» èiernu listinu"
+
+#: blacklist.php:19
+msgid "Blacklist is not supported in the current filtering driver."
+msgstr "Èierna listina nie je podporovaná v aktuálnom ovladaèi filtrovania."
+
+#: lib/Script/procmail.php:219 lib/Script/sieve.php:276
+#: lib/Script/maildrop.php:197
+msgid "Blacklisted Addresses"
+msgstr "Adresy v èiernej listine"
+
+#: config/fields.php.dist:100
+msgid "Body"
+msgstr "Telo"
+
+#: filters.php:220 rule.php:322
+msgid "Case Sensitive"
+msgstr "Rozli¹ova» veµké/malé písmená"
+
+#: config/fields.php.dist:43
+msgid "Cc"
+msgstr "Cc"
+
+#: spam.php:106 rule.php:141 whitelist.php:38 forward.php:56 vacation.php:81
+#: blacklist.php:70
+msgid "Changes saved."
+msgstr "Zmeny boli ulo¾ené."
+
+#: lib/Driver/ldap.php:73
+msgid "Connection failure"
+msgstr "Nastala chyba pri pokuse o spojenie"
+
+#: lib/Storage.php:342
+msgid "Contains"
+msgstr "Obsahuje"
+
+#: filters.php:263 filters.php:264
+#, php-format
+msgid "Copy %s"
+msgstr "Kopírova» %s"
+
+#: lib/Storage.php:993 lib/Storage/sql.php:621
+#, php-format
+msgid "Copy of %s"
+msgstr "Kópia %s"
+
+#: lib/Template.php:235
+#, php-format
+msgid "Could not save the compiled template file '%s'."
+msgstr "Nepodarilo sa ulo¾i» vytvorený vzorový súbor: '%s'."
+
+#: lib/Ingo.php:62
+msgid "Create new folder"
+msgstr "Vytvori» nový prieèinok"
+
+#: lib/Script/procmail.php:352 lib/Script/maildrop.php:362
+msgid "DISABLED: "
+msgstr "VYPNUTÉ: "
+
+#: templates/script/activate.inc:17
+msgid "Deactivate Script"
+msgstr "Vypnú» skript"
+
+#: filters.php:252 filters.php:253
+#, php-format
+msgid "Delete %s"
+msgstr "Vymaza» %s"
+
+#: templates/rule/filter.inc:33
+msgid "Delete Condition"
+msgstr "Podmienka vymazania"
+
+#: lib/Storage.php:290
+msgid "Delete message completely"
+msgstr "Vymaza» správu"
+
+#: templates/rule/footer.inc:36
+msgid "Deleted"
+msgstr "Vymazané"
+
+#: lib/Storage.php:278
+msgid "Deliver into my Inbox"
+msgstr "Doruèi» do prieèinka s prijatou po¹tou"
+
+#: lib/Storage.php:304
+msgid "Deliver into my Inbox and copy to"
+msgstr "Doruèi» do prieèinka s prijatou po¹tou a kopírova» do"
+
+#: lib/Storage.php:299
+msgid "Deliver into my Inbox and redirect to"
+msgstr "Doruèi» do prieèinka s prijatou po¹tou a presmerova» na"
+
+#: lib/Storage.php:284
+msgid "Deliver to folder"
+msgstr "Doruèi» do prieèinka"
+
+#: config/fields.php.dist:83
+msgid "Destination (To,Cc,Bcc,etc)"
+msgstr "Cieµ (To,Cc,Bcc,atï.)"
+
+#: filters.php:277 filters.php:278
+#, php-format
+msgid "Disable %s"
+msgstr "Vypnú» %s"
+
+#: spam.php:160 forward.php:99 vacation.php:153
+#: templates/whitelist/whitelist.inc:8 templates/blacklist/blacklist.inc:10
+#: templates/rule/header.inc:26
+msgid "Disabled"
+msgstr "Vypnuté"
+
+#: templates/filters/settings.inc:15
+msgid "Display detailed notification when each filter is applied?"
+msgstr "Zobrazi» detailné upozornenie pri pou¾ití ka¾dého filtra?"
+
+#: vacation.php:58
+msgid "Do not send responses to bulk or list messages?"
+msgstr "Neposiela» odpoveï do e-mailových konferencií?"
+
+#: templates/rule/footer.inc:10
+msgid "Do this:"
+msgstr "Vyknoa» èinnos»:"
+
+#: lib/Storage.php:347
+msgid "Doesn't begin with"
+msgstr "Nezaèína na"
+
+#: lib/Storage.php:343
+msgid "Doesn't contain"
+msgstr "Neobsahuje"
+
+#: lib/Storage.php:349
+msgid "Doesn't end with"
+msgstr "Nekonèí na"
+
+#: lib/Storage.php:351
+msgid "Doesn't exist"
+msgstr "Neexistuje"
+
+#: lib/Storage.php:354
+msgid "Doesn't match (with placeholders)"
+msgstr "Neodpovedá vzoru (s premennými)"
+
+#: templates/filters/header.inc:23 lib/Block/overview.php:63
+#: lib/Block/overview.php:72 lib/Block/overview.php:87
+#: lib/Block/overview.php:97 lib/Block/overview.php:107
+msgid "Edit"
+msgstr "Upravi»"
+
+#: filters.php:241 filters.php:243 filters.php:247 filters.php:248
+#, php-format
+msgid "Edit %s"
+msgstr "Upravi» %s"
+
+#: filters.php:287 filters.php:288
+#, php-format
+msgid "Enable %s"
+msgstr "Zapnú» %s"
+
+#: templates/filters/header.inc:25
+msgid "Enabled"
+msgstr "Zapnutý"
+
+#: vacation.php:45
+msgid "End of vacation:"
+msgstr "Koniec neprítomnosti:"
+
+#: lib/Storage.php:348
+msgid "Ends with"
+msgstr "Konèí na"
+
+#: lib/Storage.php:359
+msgid "Equal to"
+msgstr "Rovná sa"
+
+#: lib/Driver/ldap.php:138 lib/Driver/ldap.php:148 lib/Driver/ldap.php:157
+#: lib/Driver/ldap.php:167
+#, php-format
+msgid "Error retrieving current script: (%d) %s"
+msgstr "Nastala chyba pri naèítavaní aktuálneho skriptu: (%d) %s"
+
+#: blacklist.php:68
+msgid "Error saving changes."
+msgstr "Nastala chyba pri ukladaní zmien"
+
+#: templates/filters/header.inc:17
+msgid "Existing Rules"
+msgstr "Existujúce pravidlá"
+
+#: lib/Storage.php:350
+msgid "Exists"
+msgstr "Existuje"
+
+#: lib/Driver/ldap.php:143
+#, php-format
+msgid "Expected 1 object, got %d."
+msgstr "Oèakával sa 1 objekt, pri¹lo %d."
+
+#: lib/Driver/sivtest.php:204
+msgid "Failed to read from socket: "
+msgstr "Nastala chyba èítaní zo socketu:"
+
+#: lib/Driver/sivtest.php:199
+msgid "Failed to write to socket: "
+msgstr "Nastala chyba pri zapisovaní do socketu: "
+
+#: lib/Driver/sivtest.php:194
+msgid "Failed to write to socket: (connection lost!)"
+msgstr "Nastala chyba pri zapisovaní do socketu: (spojenie zlyhalo!)"
+
+#: templates/rule/filter.inc:10
+msgid "Field"
+msgstr "Pole"
+
+#: templates/filters/settings.inc:22
+msgid "Filter All Messages"
+msgstr "Filtrova» v¹etky správy"
+
+#: templates/filters/settings.inc:24
+msgid "Filter Only Seen Messages"
+msgstr "Filtrova» iba preèítané správy"
+
+#: templates/filters/settings.inc:23
+msgid "Filter Only Unseen Messages"
+msgstr "Filtrova» iba nepreèítané správy"
+
+#: templates/filters/settings.inc:20
+msgid "Filter Options"
+msgstr "Nastavenia filtrovania"
+
+#: templates/rule/header.inc:25
+msgid "Filter Rule"
+msgstr "Filtrovacie pravidlo"
+
+#: filters.php:139
+msgid "Filter Rules"
+msgstr "Filtrovacie pravidlá"
+
+#: script.php:54
+msgid "Filter Script Display"
+msgstr "Zobrazenie filtrovacieho skripta"
+
+#: lib/Ingo.php:382
+msgid "Filter _Rules"
+msgstr "Filtrovacie p_ravidlá"
+
+#: lib/Script/imap.php:357
+#, php-format
+msgid "Filter activity: %s message(s) have been copied to the folder \"%s\"."
+msgstr "Aktivita filtra: %s správ bolo skopírovaných do prieèinka \"%s\"."
+
+#: lib/Script/imap.php:338
+#, php-format
+msgid "Filter activity: %s message(s) have been deleted."
+msgstr "Aktivita filtra: %s správ bolo vymazaných."
+
+#: lib/Script/imap.php:314
+#, php-format
+msgid "Filter activity: %s message(s) have been moved to the folder \"%s\"."
+msgstr "Aktivita filtra: %s správ bolo presunutých do prieèinka \"%s\"."
+
+#: lib/Script/imap.php:206
+#, php-format
+msgid "Filter activity: %s message(s) that matched the blacklist were deleted."
+msgstr ""
+"Aktivita filtra: %s správ ktoré vyhovovali èiernej listine bolo vymazaných."
+
+#: lib/Script/imap.php:350
+#, php-format
+msgid ""
+"Filter activity: The message \"%s\" from \"%s\" has been copied to the "
+"folder \"%s\"."
+msgstr ""
+"Aktivita filtra: Správa \"%s\" od \"%s\" bola skopírovaná do prieèinka \"%s"
+"\"."
+
+#: lib/Script/imap.php:332
+#, php-format
+msgid "Filter activity: The message \"%s\" from \"%s\" has been deleted."
+msgstr "Aktivita filtra: Správa \"%s\" od \"%s\" bola vymazaná."
+
+#: lib/Script/imap.php:307
+#, php-format
+msgid ""
+"Filter activity: The message \"%s\" from \"%s\" has been moved to the folder "
+"\"%s\"."
+msgstr ""
+"Aktivita filtra: Správa \"%s\" od \"%s\" bola presunutá do prieèinka \"%s\"."
+
+#: rule.php:188
+msgid "Filter not found."
+msgstr "Filter nebol nájdený."
+
+#: templates/rule/footer.inc:32
+msgid "Flagged For Followup"
+msgstr "Oznaèená ako vzor"
+
+#: spam.php:74
+msgid "Folder to receive spam:"
+msgstr "Prieèinok na odber nevy¾iadanej po¹ty:"
+
+#: templates/rule/header.inc:42
+msgid "For an incoming message that matches:"
+msgstr "Pre pri¹lú správu ktorá odpovedá vzoru:"
+
+#: filters.php:192 forward.php:97 lib/Block/overview.php:71
+#: lib/Block/overview.php:73
+msgid "Forward"
+msgstr "Preposielanie"
+
+#: lib/Script/sieve.php:229
+msgid "Forward Keep Action"
+msgstr "Preposla» a ponecha»"
+
+#: forward.php:18
+msgid "Forward is not supported in the current filtering driver."
+msgstr "Preposielanie nie je podporované aktuálnym ovladaèom filtrovania."
+
+#: lib/Script/procmail.php:298 lib/Script/sieve.php:239
+#: lib/Script/maildrop.php:246
+msgid "Forwards"
+msgstr "Presmerovania"
+
+#: forward.php:104
+msgid "Forwards Edit"
+msgstr "Upravi» presmerovania"
+
+#: config/fields.php.dist:39
+msgid "From"
+msgstr "Od"
+
+#: lib/Script/sieve.php:2948
+msgid "From:"
+msgstr "Od:"
+
+#: lib/Script/sieve.php:123
+msgid "Generated by Ingo (http://www.horde.org/ingo/)"
+msgstr "Vytvorené programom Ingo (http://www.horde.org/ingo/)"
+
+#: lib/Storage.php:357
+msgid "Greater than"
+msgstr "Väè¹ie ako"
+
+#: lib/Storage.php:358
+msgid "Greater than or equal to"
+msgstr "Väè¹ie ako alebo rovné ako"
+
+#: rule.php:38
+msgid "Individual rules are not supported in the current filtering driver."
+msgstr ""
+"Individuálne pravidlá nie sú podporované aktuálnym ovladaèom filtrovania."
+
+#: lib/Script/sieve.php:2542
+msgid "Inexistant mailbox specified for message delivery."
+msgstr "Zadaná schránka na doruèovanie po¹ty neexistuje."
+
+#: lib/Storage.php:344
+msgid "Is"
+msgstr "Je"
+
+#: lib/Storage.php:345
+msgid "Isn't"
+msgstr "Nie je"
+
+#: forward.php:41
+msgid "Keep a copy of messages in this account?"
+msgstr "Ponecha» lokálnu kópiu správ?"
+
+#: lib/Driver/ldap.php:23
+msgid ""
+"LDAP support is required but the LDAP module is not available or not loaded."
+msgstr ""
+"Je po¾adovaná podpora LDAP, ale LDAP modul nie je dostupný alebo nahratý."
+
+#: lib/Storage.php:355
+msgid "Less than"
+msgstr "Men¹ie ako"
+
+#: lib/Storage.php:356
+msgid "Less than or equal to"
+msgstr "Men¹ie ako alebo rovné ako"
+
+#: config/fields.php.dist:59
+msgid "List-ID"
+msgstr "List-ID"
+
+#: templates/blacklist/blacklist.inc:20
+msgid "Mar_k message as deleted"
+msgstr "_Oznaèi» správu ako vymazanú."
+
+#: templates/rule/footer.inc:25
+msgid "Mark message as:"
+msgstr "Oznaèi» správu ako:"
+
+#: templates/rule/filter.inc:23
+msgid "Match type"
+msgstr "Typ porovnania"
+
+#: lib/Storage.php:353
+msgid "Matches (with placeholders)"
+msgstr "Odpovedá vzoru (s premennými)"
+
+#: lib/api.php:76
+msgid "Maximum Number of Rules"
+msgstr "Maximálny poèet pravidiel."
+
+#: lib/Storage.php:507
+#, php-format
+msgid ""
+"Maximum number of blacklisted addresses exceeded (Total addresses: %s, "
+"Maximum addresses: %s).  Could not add new addresses to blacklist."
+msgstr ""
+"Maximálny poèet adries v èiernej listine bol dosiahnutý (Adries spolu: %s, "
+"maximálne: %s). Nemo¾né prida» nové adresy do èiernej listiny."
+
+#: lib/Storage.php:560
+#, php-format
+msgid ""
+"Maximum number of whitelisted addresses exceeded (Total addresses: %s, "
+"Maximum addresses: %s).  Could not add new addresses to whitelist."
+msgstr ""
+"Maximálny poèet adries v bielej listine bol dosiahnutý (Adries spolu: %s, "
+"maximálne: %s). Nemo¾né prida» nové adresy do bielej listiny."
+
+#: spam.php:71
+msgid ""
+"Messages with a likely spam score greater than or equal to this number will "
+"be treated as spam."
+msgstr ""
+"Správy so spamovým skóre vy¹¹ím alebo rovným tomuto èíslo budú pova¾ované za "
+"nevy¾iadanú po¹tu."
+
+#: lib/Script/sieve.php:2962
+msgid "Missing address to notify"
+msgstr "Chýba adresa na upozornenia"
+
+#: lib/Script/sieve.php:2343
+msgid "Missing address to redirect message to"
+msgstr "Chýba adresa na preposielanie po¹ty"
+
+#: lib/Script/sieve.php:2389
+msgid "Missing reason for reject"
+msgstr "Chýba dôvod na odmietnutie"
+
+#: lib/Script/sieve.php:2692
+msgid "Missing reason in vacation."
+msgstr "Chýba dôvod pre neprítomnos»."
+
+#: templates/filters/header.inc:29
+msgid "Move"
+msgstr "Presunú»"
+
+#: filters.php:156 filters.php:273
+msgid "Move Rule Down"
+msgstr "Presunú» pravidlo dolu"
+
+#: filters.php:157 filters.php:272
+msgid "Move Rule Up"
+msgstr "Presunú» pravidlo hore"
+
+#: vacation.php:53
+msgid "My email addresses:"
+msgstr "Moja e-mailová adresa:"
+
+#: templates/filters/filter-none.inc:3 templates/filters/footer.inc:6
+#: lib/Storage.php:889
+msgid "New Rule"
+msgstr "Nové pravidlo"
+
+#: lib/Ingo.php:233 lib/Ingo.php:235
+#, php-format
+msgid "No \"%s\" element found in backend configuration."
+msgstr "Prvok \"%s\" nebol nájdený v konfigurácii backendu."
+
+#: lib/Ingo.php:226
+msgid "No backend configured for this host"
+msgstr "Nenájdené nastavenia backendu pre tento host"
+
+#: lib/Ingo.php:202
+msgid "No backends configured in backends.php"
+msgstr "V súbore backends.php nie sú nastavené ¾iadne backendy"
+
+#: templates/filters/filter-none.inc:3
+#, php-format
+msgid "No filters. Click \"%s\" to create a new filter."
+msgstr "®iadne filre. Kliknite \"%s\" pre vytvorenie nového filtra."
+
+#: lib/Script/sieve.php:1692 lib/Script/sieve.php:1841
+#: lib/Script/sieve.php:2065
+msgid "No headers specified"
+msgstr "Neboli zadané ¾iadne hlavièky."
+
+#: script.php:69
+msgid "No script generated."
+msgstr "®iaden skript nebol vytvorený."
+
+#: lib/Script/sieve.php:2081 lib/Script/sieve.php:2165
+msgid "No strings specified"
+msgstr "®iadne re»azce neboli zadané."
+
+#: lib/Storage.php:360
+msgid "Not equal to"
+msgstr "Nerovná sa"
+
+#: lib/Storage.php:320
+msgid "Notify email address"
+msgstr "E-mailová adresa na upozornenia"
+
+#: vacation.php:60
+msgid "Number of days between vacation replies:"
+msgstr "Poèet dní medzi odpoveïami na neprítomnos»:"
+
+#: lib/Storage.php:314
+msgid "Only flag the message"
+msgstr "Iba oznaèi» správu príznakom"
+
+#: config/prefs.php.dist:18
+msgid "Options about script updating."
+msgstr "Nastavenia aktualizácie skruptu."
+
+#: config/prefs.php.dist:16
+msgid "Other Options"
+msgstr "Ïal¹ie nastavenia"
+
+#: lib/Block/overview.php:3
+msgid "Overview"
+msgstr "Prehµad"
+
+#: config/fields.php.dist:91
+msgid "Participant (From,To,etc)"
+msgstr "Úèastník (From,To,atï.)"
+
+#: templates/javascript/new_folder.js:7
+msgid "Please enter the name of the new folder:"
+msgstr "Zadajte prosím meno pre nový prieèinok:"
+
+#: vacation.php:48
+msgid "Reason:"
+msgstr "Dôvod:"
+
+#: config/fields.php.dist:63
+msgid "Received"
+msgstr "Prijaté"
+
+#: lib/Storage.php:295
+msgid "Redirect to"
+msgstr "Presmerova» na"
+
+#: lib/Storage.php:352
+msgid "Regular expression"
+msgstr "Regulárny výraz"
+
+#: lib/Storage.php:310
+msgid "Reject with reason"
+msgstr "Odmietnu» s dôvodom"
+
+#: config/fields.php.dist:51
+msgid "Resent-From"
+msgstr "Preposlané od"
+
+#: config/fields.php.dist:55
+msgid "Resent-To"
+msgstr "Preposlané komu"
+
+#: templates/rule/footer.inc:61
+msgid "Return to Filters List"
+msgstr "Návrat na zoznam filtrov"
+
+#: spam.php:62 spam.php:141 forward.php:34 forward.php:88 vacation.php:34
+#: vacation.php:117 templates/whitelist/whitelist.inc:24
+#: templates/blacklist/blacklist.inc:42
+msgid "Return to Rules List"
+msgstr "Návrat na zoznam pravidiel"
+
+#: templates/filters/header.inc:24
+msgid "Rule"
+msgstr "Pravidlo"
+
+#: filters.php:78
+msgid "Rule Copied"
+msgstr "Pravidlo bolo skopírované"
+
+#: filters.php:57
+msgid "Rule Deleted"
+msgstr "Pravidlo bolo vymazané"
+
+#: spam.php:122 filters.php:94 forward.php:72 vacation.php:97
+msgid "Rule Disabled"
+msgstr "Pravidlo bolo vypnuté"
+
+#: spam.php:113 filters.php:99 forward.php:63 vacation.php:88
+msgid "Rule Enabled"
+msgstr "Pravidlo bolo zapnuté"
+
+#: templates/rule/header.inc:33
+msgid "Rule Name:"
+msgstr "Názov pravidla:"
+
+#: lib/Script/sieve.php:2950
+msgid "Rule:"
+msgstr "Pravidlo:"
+
+#: lib/Driver/ldap.php:86
+#, php-format
+msgid "STARTTLS failed: (%s) %s"
+msgstr "Chyba pri STARTTLS: (%s) %s"
+
+#: lib/Ingo.php:396
+msgid "S_pam"
+msgstr "_Nevy¾iadaná po¹ta"
+
+#: spam.php:79 forward.php:45 vacation.php:62
+#: templates/whitelist/whitelist.inc:23 templates/blacklist/blacklist.inc:41
+#: templates/rule/footer.inc:60
+msgid "Save"
+msgstr "Ulo¾i»"
+
+#: templates/filters/settings.inc:31
+msgid "Save Settings"
+msgstr "Ulo¾i» nastavenia"
+
+#: spam.php:116 spam.php:137 forward.php:66 forward.php:84 vacation.php:91
+#: vacation.php:113
+msgid "Save and Disable"
+msgstr "Ulo¾i» a vypnú»"
+
+#: spam.php:107 spam.php:139 forward.php:57 forward.php:86 vacation.php:82
+#: vacation.php:115
+msgid "Save and Enable"
+msgstr "Ulo¾i» a zapnú»"
+
+#: templates/script/header.inc:2
+msgid "Script"
+msgstr "Skript"
+
+#: config/prefs.php.dist:17
+msgid "Script Updating"
+msgstr "Aktualizácia skriptu"
+
+#: lib/Ingo.php:178
+msgid "Script not updated."
+msgstr "Skript nebol aktualizovaný."
+
+#: lib/Ingo.php:149
+msgid "Script successfully activated."
+msgstr "Skript bol úspe¹ne zapnutý."
+
+#: lib/Ingo.php:148
+msgid "Script successfully deactivated."
+msgstr "Skript bol úspe¹ne vypnutý."
+
+#: templates/rule/footer.inc:30
+msgid "Seen"
+msgstr "Preèítané"
+
+#: rule.php:218
+msgid "Select a field"
+msgstr "Vyberte pole"
+
+#: templates/menu.inc:6 templates/menu.inc:8
+msgid "Select ruleset to display:"
+msgstr "Vybra» skupinu pravidiel na zobrazenie:"
+
+#: rule.php:347 templates/blacklist/blacklist.inc:23 lib/Ingo.php:59
+msgid "Select target folder"
+msgstr "Vybra» cieµový prieèinok"
+
+#: rule.php:255
+msgid "Self-Defined Header"
+msgstr "U¾ívateµom zadaná hlavièka"
+
+#: config/fields.php.dist:35
+msgid "Sender"
+msgstr "Odosielateµ"
+
+#: filters.php:118
+msgid "Settings successfully updated."
+msgstr "Nastavenia boli úspe¹ne aktualizované."
+
+#: templates/script/activate.inc:24
+msgid "Show Active Script"
+msgstr "Zobrazi» aktívny skript"
+
+#: templates/script/activate.inc:31
+msgid "Show Current Script"
+msgstr "Zobrazi» aktuálny skript"
+
+#: spam.php:18
+msgid "Simple spam filtering is not supported in the current filtering driver."
+msgstr ""
+"Jednoduché filtrovanie nevy¾iadanej po¹ty nie je podporované aktuálnym "
+"ovladaèom filtrovania."
+
+#: config/fields.php.dist:95
+msgid "Size"
+msgstr "Veµkos»"
+
+#: config/fields.php.dist:87
+msgid "Source (From,Reply-to,etc)"
+msgstr "Zdroj (From,Reply-to,atï.)"
+
+#: filters.php:198 lib/Script/sieve.php:438 lib/Script/maildrop.php:301
+#: lib/Block/overview.php:105 lib/Block/overview.php:108
+msgid "Spam Filter"
+msgstr "Filter pre nevy¾iadanú po¹tu"
+
+#: spam.php:158 spam.php:165
+msgid "Spam Filtering"
+msgstr "Filtrovanie nevy¾iadanej po¹ty"
+
+#: spam.php:71
+msgid "Spam Level:"
+msgstr "Úroveò nevy¾iadanej po¹ty (SPAM):"
+
+#: vacation.php:43
+msgid "Start of vacation:"
+msgstr "Zaèiatok neprítomnosti:"
+
+#: templates/rule/footer.inc:50
+msgid "Stop checking if this rule matches?"
+msgstr "Nepokraèova» ak správa vyhovuje tomuto pravidlu?"
+
+#: config/fields.php.dist:31
+msgid "Subject"
+msgstr "Predmet"
+
+#: vacation.php:46
+msgid "Subject of vacation message:"
+msgstr "Predmet správy o neprítomnosti:"
+
+#: lib/Script/sieve.php:2949
+msgid "Subject:"
+msgstr "Predmet:"
+
+#: lib/api.php:113
+#, php-format
+msgid "The address \"%s\" has been added to your blacklist."
+msgstr "Adresa \"%s\" bola pridaná do Va¹ej èiernej listiny."
+
+#: lib/api.php:141
+#, php-format
+msgid "The address \"%s\" has been added to your whitelist."
+msgstr "Adresa \"%s\" bola pridaná do Va¹ej bielej listiny."
+
+#: lib/Ingo.php:144
+msgid "The driver said: "
+msgstr "Ovládaè oznámil: "
+
+#: lib/Ingo.php:143
+msgid "There was an error activating the script."
+msgstr "Nastala chyba pri zapínaní skriptu."
+
+#: lib/Ingo.php:142
+msgid "There was an error deactivating the script."
+msgstr "Nastala chyba pri vypínaní skriptu."
+
+#: config/fields.php.dist:27
+msgid "To"
+msgstr "Pre"
+
+#: templates/filters/filter.html:32
+msgid "To:"
+msgstr "Pre:"
+
+#: lib/Script.php:126
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Nemo¾né nahra» definíciu %s."
+
+#: templates/rule/filter.inc:15
+msgid "User header"
+msgstr "U¾ívateµská hlavièka"
+
+#: filters.php:186 vacation.php:151 lib/Script/procmail.php:278
+#: lib/Script/sieve.php:412 lib/Script/maildrop.php:276
+#: lib/Block/overview.php:61 lib/Block/overview.php:64
+msgid "Vacation"
+msgstr "Neprítomnos»"
+
+#: vacation.php:158
+msgid "Vacation Edit"
+msgstr "Upravi» neprítomnos»"
+
+#: vacation.php:18
+msgid "Vacation is not supported in the current filtering driver."
+msgstr ""
+"Neprítomnos» (vacation) nie je podporovaná aktuálnym ovladaèom filtrovania."
+
+#: rule.php:353
+msgid "Value"
+msgstr "Hodnota"
+
+#: templates/whitelist/whitelist.inc:14
+msgid "Wh_itelist addresses:"
+msgstr "Adresy v _bielej listine:"
+
+#: filters.php:180 templates/whitelist/whitelist.inc:5
+#: lib/Block/overview.php:85 lib/Block/overview.php:88
+msgid "Whitelist"
+msgstr "Biela listina"
+
+#: whitelist.php:57
+msgid "Whitelist Edit"
+msgstr "Upravi» bielu listinu"
+
+#: whitelist.php:20
+msgid "Whitelist is not supported in the current filtering driver."
+msgstr "Biela listina nie je podporovaná aktuálnym ovladaèom filtrovania."
+
+#: lib/Script/procmail.php:246 lib/Script/sieve.php:336
+#: lib/Script/maildrop.php:224
+msgid "Whitelisted Addresses"
+msgstr "Adresy v bielej listine"
+
+#: config/fields.php.dist:79
+msgid "X-Priority"
+msgstr "X-Priority"
+
+#: config/fields.php.dist:67
+msgid "X-Spam-Level"
+msgstr "X-Spam-Level"
+
+#: config/fields.php.dist:71
+msgid "X-Spam-Score"
+msgstr "X-Spam-Score"
+
+#: config/fields.php.dist:75
+msgid "X-Spam-Status"
+msgstr "X-Spam-Status"
+
+#: filters.php:71 rule.php:172
+#, php-format
+msgid "You are not allowed to create more than %d rules."
+msgstr "Nemáte právo vytvori» viac ako %d pravidiel."
+
+#: filters.php:63 rule.php:23
+msgid "You are not allowed to create or edit custom rules."
+msgstr "Nemáte právo vytvori» alebo upravi» u¾ívateµské pravidlá."
+
+#: rule.php:96
+#, php-format
+msgid "You cannot create empty conditions. Please fill in a value for \"%s\"."
+msgstr "Nemo¾no vytvára» prázdne podmienky. Prosím zadajte hodnotu pre \"%s\"."
+
+#: filters.php:52 rule.php:151
+msgid "You do not have permission to delete filter rules."
+msgstr "Nemáte právo na vymazanie filtrovacích pravidiel."
+
+#: filters.php:45 filters.php:112 filters.php:123 rule.php:58 rule.php:165
+msgid "You do not have permission to edit filter rules."
+msgstr "Nemáte právo na úpravu filtrovacích pravidiel."
+
+#: lib/Script/sieve.php:2947
+msgid "You have received a new message"
+msgstr "Máte novú správu"
+
+#: lib/Script/imap.php:309 lib/Script/imap.php:334 lib/Script/imap.php:352
+msgid "[No Sender]"
+msgstr "[bez odosielateµa]"
+
+#: lib/Script/imap.php:308 lib/Script/imap.php:333 lib/Script/imap.php:351
+msgid "[No Subject]"
+msgstr "[Bez predmetu]"
+
+#: lib/Ingo.php:387
+msgid "_Blacklist"
+msgstr "Èierna _listina"
+
+#: templates/blacklist/blacklist.inc:18
+msgid "_Delete message completely"
+msgstr "_Vymaza» správu"
+
+#: templates/blacklist/blacklist.inc:32
+msgid "_Enter each address on a new line:"
+msgstr "_Zadajte ka¾dú adresu na samostatný riadok:"
+
+#: lib/Ingo.php:393
+msgid "_Forward"
+msgstr "_Preposla»"
+
+#: templates/blacklist/blacklist.inc:22
+msgid "_Move message to folder:"
+msgstr "_Presunú» správu do prieèinka:"
+
+#: lib/Ingo.php:404
+msgid "_Permissions"
+msgstr "_Práva"
+
+#: lib/Ingo.php:401
+msgid "_Script"
+msgstr "_Skript"
+
+#: lib/Ingo.php:390
+msgid "_Vacation"
+msgstr "_Neprítomnos»"
+
+#: lib/Ingo.php:384
+msgid "_Whitelist"
+msgstr "_Biela listina"
+
+#: lib/Block/overview.php:54
+msgid "active"
+msgstr "zapnuté"
+
+#: templates/rule/filter.inc:4
+msgid "and"
+msgstr "a"
+
+#: templates/filters/filter.html:19
+msgid "disabled - click to enable"
+msgstr "vypnuté - kliknite na zapnutie"
+
+#: lib/Block/overview.php:52
+msgid "inactive"
+msgstr "vypnutý"
+
+#: lib/Script/maildrop.php:134
+msgid "maildrop script generated by Ingo"
+msgstr "maildrop script vytvoreny programom Ingo"
+
+#: templates/rule/filter.inc:4
+msgid "or"
+msgstr "alebo"
+
+#: lib/Script/procmail.php:140
+msgid "procmail script generated by Ingo"
+msgstr "procmail script vytvoreny programom Ingo"

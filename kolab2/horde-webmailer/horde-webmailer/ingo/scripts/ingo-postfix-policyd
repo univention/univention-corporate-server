@@ -1,0 +1,175 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Usage: ingo-postfix-policyd [-v]
+ *
+ * Delegated Postfix SMTPD policy server that enforce's Ingo's
+ * blacklist and whitelist rules.  Logging is done through the
+ * standard Horde logger.
+ *
+ * How it works: each time a Postfix SMTP server process is started it
+ * connects to the policy service socket, and Postfix runs one
+ * instance of this PHP script.  By default, a Postfix SMTP server
+ * process terminates after 100 seconds of idle time, or after serving
+ * 100 clients. Thus, the cost of starting this script is smoothed out
+ * over time.
+ *
+ * To run this from /etc/postfix/master.cf (if necessary substituting
+ * a user that has permissions for your Horde configuration and
+ * logfiles for www-data):
+ *
+ *    policy  unix  -       n       n       -       -       spawn
+ *      user=www-data argv=/path/to/horde/ingo/scripts/ingo-postfix-policyd
+ *
+ * To use this from Postfix SMTPD, use in /etc/postfix/main.cf:
+ *
+ *    smtpd_recipient_restrictions =
+ *  ...
+ *  reject_unauth_destination
+ *  check_policy_service unix:private/policy
+ *  ...
+ *
+ * NOTE: specify check_policy_service AFTER reject_unauth_destination
+ * or else your system can become an open relay.
+ *
+ * To test this script by hand, execute:
+ *
+ *    % ingo-postfix-policyd
+ *
+ * Each query is a bunch of attributes. See
+ * http://www.postfix.org/SMTPD_POLICY_README.html and the example
+ * greylisting policy daemon for all of the possibilities. This script
+ * uses only:
+ *
+ *    sender=foo@bar.tld
+ *    recipient=bar@foo.tld
+ *
+ * And the query is terminated with an:
+ *    [empty line]
+ *
+ * The policy server script will answer in the same style, with an
+ * attribute list followed by a empty line:
+ *
+ *    action=DUNNO
+ *    [empty line]
+ *
+ * The possible actions are documented at
+ * http://www.postfix.org/access.5.html. We return "DUNNO" when the
+ * sender/recipient combination doesn't match any blacklist or
+ * whitelist rules, OK if the sender is whitelisted, and REJECT if the
+ * sender is blacklisted.
+ */
+
+@define('AUTH_HANDLER', true);
+@define('INGO_BASE', dirname(dirname(__FILE__)));
+@define('HORDE_BASE', dirname(dirname(dirname(__FILE__))));
+
+// Do CLI checks and environment setup first.
+require_once HORDE_BASE . '/lib/core.php';
+require_once 'Horde/CLI.php';
+
+// Make sure no one runs this from the web.
+if (!Horde_CLI::runningFromCLI()) {
+    exit(1);
+}
+
+// Load the CLI environment - make sure there's no time limit, init some
+// variables, etc.
+Horde_CLI::init();
+
+// Include needed libraries.
+require_once INGO_BASE . '/lib/base.php';
+
+// Initialize authentication manager.
+$auth = &Auth::singleton($conf['auth']['driver']);
+
+// Initialize storage backend.
+$rules_storage = Ingo_Storage::factory();
+
+// Make sure output is unbuffered.
+ob_implicit_flush();
+
+// Main loop.
+$query = array();
+while (!feof(STDIN)) {
+    $line = fgets(STDIN);
+    if (strpos($line, '=') !== false) {
+        list($key, $value) = explode('=', trim($line), 2);
+        $query[$key] = $value;
+    } elseif ($line == "\n") {
+        if (empty($query['request']) || $query['request'] != 'smtpd_access_policy') {
+            Horde::logMessage('Unrecognized request: ' . substr(var_export($query, true), 0, 200), __FILE__, __LINE__, PEAR_LOG_ERR);
+            exit(1);
+        }
+
+        Horde::logMessage(var_export($query, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+        $action = smtpd_access_policy($query);
+        Horde::logMessage("Action: $action", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+        echo "action=$action\n\n";
+        @ob_flush();
+        $query = array();
+    } else {
+        Horde::logMessage('Ignoring garbage: ' . substr($line, 0, 100), __FILE__, __LINE__, PEAR_LOG_INFO);
+    }
+}
+
+exit(0);
+
+/**
+ * Do policy checks
+ *
+ * @param array $query Query parameter hash
+ *
+ * @return string The access policy response.
+ */
+function smtpd_access_policy($query)
+{
+    static $whitelists = array();
+    static $blacklists = array();
+
+    if (empty($query['sender']) || empty($query['recipient'])) {
+        return null;
+    }
+
+    // Try to determine the Horde username corresponding to the email recipient.
+    $user = $query['recipient'];
+    $pos = strpos($user, '@');
+    if ($pos !== false) {
+        $user = substr($user, 0, $pos);
+    }
+    $user = Horde::callHook('_ingo_hook_smtpd_access_policy_username', $query, 'ingo', $user);
+
+    // Get $user's rules if we don't have them already.
+    if (!isset($whitelists[$user])) {
+        // Default empty rules.
+        $whitelists[$user] = array();
+        $blacklists[$user] = array();
+
+        // Retrieve the data.
+        $GLOBALS['auth']->setAuth($user, array());
+        $_SESSION['ingo']['current_share'] = ':' . $user;
+        $wl = $GLOBALS['rules_storage']->retrieve(INGO_STORAGE_ACTION_WHITELIST, false);
+        $bl = $GLOBALS['rules_storage']->retrieve(INGO_STORAGE_ACTION_BLACKLIST, false);
+
+        // Fill in data from saved rules.
+        if (!is_a($wl, 'PEAR_Error')) {
+            $whitelists[$user] = $wl->getWhitelist();
+        }
+        if (!is_a($bl, 'PEAR_Error') && !$bl->getBlacklistFolder()) {
+            // We will only reject email at delivery time if the user
+            // wants blacklisted mail deleted completely, not filed
+            // into a separate folder.
+            $blacklists[$user] = $bl->getBlacklist();
+        }
+    }
+
+    // Check whitelist rules first so that mistaken overlap doesn't
+    // result in lost mail.
+    if (in_array($query['sender'], $whitelists[$user])) {
+        return 'OK';
+    } elseif (in_array($query['sender'], $blacklists[$user])) {
+        return 'REJECT';
+    } else {
+        return 'DUNNO';
+    }
+}

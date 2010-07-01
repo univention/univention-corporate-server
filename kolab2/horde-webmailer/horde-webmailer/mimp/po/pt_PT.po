@@ -1,0 +1,780 @@
+# Copyright 2007-2009 The Horde Project
+# This file is distributed under the same license as the MIMP package.
+# Automatically generated, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mimp 0.1-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2007-01-13 09:49+0000\n"
+"PO-Revision-Date: 2007-01-13 12:14+0100\n"
+"Last-Translator: Manuel Menezes de Sequeira <Manuel.Sequeira@iscte.pt>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/Compose.php:355
+msgid "      To: "
+msgstr "    Para: "
+
+#: lib/Compose.php:343
+msgid "    Date: "
+msgstr "    Data: "
+
+#: lib/Compose.php:346
+msgid "    From: "
+msgstr "      De: "
+
+#: lib/Compose.php:352
+msgid " Subject: "
+msgstr " Assunto: "
+
+#: mailbox.php:83
+#, php-format
+msgid "%d to %d of %d"
+msgstr "%d a %d de %d"
+
+#: message.php:297
+#, php-format
+msgid "(%d of %d)"
+msgstr "(%d de %d)"
+
+#: config/prefs.php.dist:191
+msgid "Arrival Time"
+msgstr "Hora de Chegada"
+
+#: config/prefs.php.dist:205
+msgid "Ascending"
+msgstr "Ascendente"
+
+#: lib/MIME/Contents.php:138
+msgid "Attachment"
+msgstr "Anexo"
+
+#: lib/Auth/mimp.php:42
+msgid "Auth_mimp: Required IMAP extension not found."
+msgstr "Auth_mimp: Extensão IMAP necessária mas não encontrada."
+
+#: message.php:291
+#, php-format
+msgid "Back to %s"
+msgstr "Regressar a %s"
+
+#: lib/IMAP/Client.php:477
+#, php-format
+msgid "Bad login name or password."
+msgstr "Nome de utilizador ou palavra-passe errados."
+
+#: lib/IMAP/Client.php:194
+#, php-format
+msgid "Bad or malformed request. Server Responded: %s"
+msgstr "Pedido errado ou mal formado. O servidor respondeu: %s"
+
+#: lib/IMAP/Client.php:481
+#, php-format
+msgid "Bad request: %s"
+msgstr "Pedido errado: %s"
+
+#: message.php:112
+msgid "Bcc"
+msgstr "Cco"
+
+#: templates/compose/compose.inc:54
+msgid "Bcc: "
+msgstr "Cco: "
+
+#: lib/IMAP/Client.php:406
+msgid ""
+"CRAM-MD5 or DIGEST-MD5 requires PEAR's Auth_SASL package to be installed."
+msgstr ""
+"O CRAM-MD5 ou o DIGEST-MD5 exigem a instalação do pacote PEAR Auth_SASL."
+
+#: message.php:111
+msgid "Cc"
+msgstr "Cc"
+
+#: templates/compose/compose.inc:51
+msgid "Cc: "
+msgstr "Cc: "
+
+#: config/prefs.php.dist:42
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr ""
+"Alterar opções de visualização tais como o número de mensagens a mostrar em "
+"cada página e como as ordenar."
+
+#: config/prefs.php.dist:21
+msgid "Change mail server settings."
+msgstr "Alterar configurações do servidor de correio electrónico."
+
+#: config/prefs.php.dist:13
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr ""
+"Alterar o nome, endereço e assinatura que serão mostradas a quem ler ou "
+"responder às suas mensagens."
+
+#: config/servers.php.dist:155
+msgid "Choose a mail server:"
+msgstr "Escolher um servidor de correio electrónico:"
+
+#: lib/MIMP.php:44
+msgid "Compose"
+msgstr "Compor"
+
+#: config/prefs.php.dist:28
+msgid "Configure how messages are displayed."
+msgstr "Configurar modo de visualização de mensagens."
+
+#: lib/IMAP/Client.php:188
+#, php-format
+msgid "Could not complete request. Reason Given: %s"
+msgstr "Não foi completar o pedido. Razão Dada: %s"
+
+#: lib/IMAP/Client.php:317
+msgid "Could not open secure connection to the IMAP server."
+msgstr "Não foi possível estabelecer uma ligação segura ao servidor IMAP."
+
+#: lib/Session.php:192
+msgid "Could not retrieve namespace information from IMAP server."
+msgstr ""
+"Não foi possível obter do servidor IMAP informação sobre o espaço nominativo."
+
+#: config/prefs.php.dist:49
+msgid "Customize how you send mail."
+msgstr "Personalizar forma de envio de correio."
+
+#: message.php:108
+msgid "Date"
+msgstr "Data"
+
+#: config/prefs.php.dist:197
+msgid "Default sorting criteria:"
+msgstr "Critério de ordenação por omissão:"
+
+#: config/prefs.php.dist:207
+msgid "Default sorting direction:"
+msgstr "Direcção de ordenação por omissão:"
+
+#: message.php:245
+msgid "Delete"
+msgstr "Remover"
+
+#: config/prefs.php.dist:34
+msgid "Deleting and Moving Messages"
+msgstr "Removendo e Movendo Mensagens"
+
+#: config/prefs.php.dist:206
+msgid "Descending"
+msgstr "Descendente"
+
+#: config/prefs.php.dist:41
+msgid "Display Options"
+msgstr "Opcões de Visualização"
+
+#: config/prefs.php.dist:228
+msgid "Display confirmation after sending a message?"
+msgstr "Confirmar após envio de uma mensagem?"
+
+#: config/prefs.php.dist:140
+msgid "Display only the first 250 characters of a message initially?"
+msgstr ""
+"Mostrar inicialmente apenas os primeiros 250 caracteres de uma mensagem?"
+
+#: message.php:235
+msgid "Download Full Message Text"
+msgstr "Descarregar Texto Completo da Mensagem"
+
+#: lib/Compose.php:368
+msgid "End Forwarded Message"
+msgstr "Terminar Mensagem Reencaminhada"
+
+#: lib/IMAP/Client.php:302 lib/IMAP/Client.php:322
+#, php-format
+msgid "Error connecting to IMAP server: [%s] %s."
+msgstr "Erro ao conectar com o servidor IMAP: [%s] %s."
+
+#: compose.php:86 templates/compose/compose.inc:61
+#: templates/compose/redirect.inc:19
+msgid "Expand Names"
+msgstr "Expandir nomes"
+
+#: config/prefs.php.dist:132
+msgid "Filter message content for profanity?"
+msgstr "Filtrar conteúdo obsceno das mensagens?"
+
+#: mailbox.php:67
+msgid "First Page"
+msgstr "Primeira página"
+
+#: folders.php:25 lib/MIMP.php:47
+msgid "Folders"
+msgstr "Pastas"
+
+#: message.php:277
+msgid "Forward"
+msgstr "Reencaminhar"
+
+#: lib/Compose.php:337
+msgid "Forwarded Message"
+msgstr "Mensagem Reencaminhada"
+
+#: lib/Compose.php:335
+#, php-format
+msgid "Forwarded Message from %s"
+msgstr "Mensagem Reencaminhada de %s"
+
+#: message.php:109 templates/mailbox/mailbox.inc:18
+msgid "From"
+msgstr "De"
+
+#: config/prefs.php.dist:193
+msgid "From Address"
+msgstr "Remetente"
+
+#: compose.php:245 compose.php:248
+msgid "Fwd:"
+msgstr "Enc:"
+
+#: lib/IMAP.php:193
+msgid "IMAP"
+msgstr "IMAP"
+
+#: lib/IMAP/Client.php:199
+#, php-format
+msgid "IMAP Server closed the connection. Server Responded: %s"
+msgstr "O Servidor IMAP fechou a ligação. Respondeu: %s"
+
+#: lib/IMAP.php:205
+msgid "IMAP over SSL"
+msgstr "IMAP sobre SSL"
+
+#: lib/IMAP.php:211
+msgid "IMAP over SSL (self-signed certificate)"
+msgstr "IMAP sobre SSL (certificado auto-assinado)"
+
+#: lib/IMAP.php:199
+msgid "IMAP, no TLS"
+msgstr "IMAP, sem TLS"
+
+#: lib/MIMP.php:371
+msgid "INBOX"
+msgstr "Entrada"
+
+#: templates/compose/compose.inc:41
+msgid "Identity"
+msgstr "Identidade"
+
+#: lib/IMAP/Client.php:282
+msgid "If using SSL or TLS, you must have the PHP openssl extension loaded."
+msgstr ""
+"Para usar SSL ou TSL é necessário ter a extensão openssl carregada no PHP."
+
+#: lib/MIMP.php:41 lib/MIMP.php:143 lib/Folder.php:156 lib/IMAP/Tree.php:96
+msgid "Inbox"
+msgstr "Entrada"
+
+#: mailbox.php:78
+msgid "Last Page"
+msgstr "Última página"
+
+#: templates/login/login.inc:3 templates/login/login.inc:33
+msgid "Log in"
+msgstr "Entrar"
+
+#: lib/MIMP.php:53
+msgid "Log out"
+msgstr "Sair"
+
+#: config/prefs.php.dist:26 config/prefs.php.dist:33
+msgid "Mail Management"
+msgstr "Gestão do Correio"
+
+#: folders.php:29 folders.php:69 message.php:239 message.php:298
+#: compose.php:500 mailbox.php:202 templates/mailbox/mailbox.inc:4
+#: templates/compose/compose.inc:4 templates/compose/redirect.inc:4
+msgid "Menu"
+msgstr "Menu"
+
+#: lib/Compose.php:307
+msgid "Message"
+msgstr "Mensagem"
+
+#: compose.php:476 config/prefs.php.dist:48
+msgid "Message Composition"
+msgstr "Composição da Mensagem"
+
+#: config/prefs.php.dist:192
+msgid "Message Date"
+msgstr "Data da Mensagem"
+
+#: config/prefs.php.dist:195
+msgid "Message Size"
+msgstr "Tamanho da Mensagem"
+
+#: config/prefs.php.dist:27
+msgid "Message Viewing"
+msgstr "Visualização de Mensagens"
+
+#: compose.php:268
+msgid "Message bounced successfully."
+msgstr "Mensagem devolvida correctamente."
+
+#: lib/Compose.php:305
+#, php-format
+msgid "Message from %s"
+msgstr "Mensagem de %s"
+
+#: compose.php:452
+#, php-format
+msgid "Message sent successfully, but not saved to %s"
+msgstr "Mensagem enviada correctamente, embora não tenha sido guardada em %s"
+
+#: compose.php:459
+msgid "Message sent successfully."
+msgstr "Mensagem enviada correctamente."
+
+#: templates/compose/compose.inc:58
+msgid "Message: "
+msgstr "Mensagem: "
+
+#: config/prefs.php.dist:215
+msgid "Messages per page in the mailbox view."
+msgstr "Mensagens por página na vista de caixa postal."
+
+#: compose.php:20
+msgid "More than one match found."
+msgstr "Múltiplas correspondências encontradas."
+
+#: message.php:285
+msgid "Next"
+msgstr "Seguinte"
+
+#: mailbox.php:77
+msgid "Next Page"
+msgstr "Próxima Página"
+
+#: mailbox.php:85
+#, php-format
+msgid "No Messages"
+msgstr "Nenhuma Mensagem"
+
+#: lib/Compose.php:301
+msgid "No message body text"
+msgstr "Falta texto no corpo da mensagem"
+
+#: lib/IMAP/Client.php:473
+msgid "No message returned."
+msgstr "Nenhuma mensagem devolvida."
+
+#: lib/IMAP/Client.php:373
+msgid "No supported IMAP authentication method could be found."
+msgstr "Não se encontrou qualquer método de autenticação IMAP suportado."
+
+#: templates/prefs/sentmailselect.inc:4
+msgid "None"
+msgstr "Nenhum"
+
+#: config/prefs.php.dist:40 config/prefs.php.dist:47
+msgid "Other Options"
+msgstr "Outras Opções"
+
+#: lib/IMAP.php:169
+msgid "POP3"
+msgstr "POP3"
+
+#: lib/IMAP.php:181
+msgid "POP3 over SSL"
+msgstr "POP3 sobre SSL"
+
+#: lib/IMAP.php:187
+msgid "POP3 over SSL (self-signed certificate)"
+msgstr "POP3 sobre SSL (certificado auto-assinado)"
+
+#: lib/IMAP.php:175
+msgid "POP3, no TLS"
+msgstr "POP3, sem TLS"
+
+#: templates/login/login.inc:15
+msgid "Password"
+msgstr "Palavra-passe"
+
+#: config/prefs.php.dist:12
+msgid "Personal Information"
+msgstr "Informação Pessoal"
+
+#: config/prefs.php.dist:86
+msgid "Place your signature before replies and forwards?"
+msgstr "Colocar a sua assinatura antes de respostas ou reencaminhamentos?"
+
+#: lib/MIMP.php:274
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "Por favor corrija os endereços ambíguos ou inválidos."
+
+#: templates/login/login.inc:22
+msgid "Port"
+msgstr "Porto"
+
+#: config/motd.php.dist:20
+msgid "Powered by Horde"
+msgstr "Baseado em Horde"
+
+#: config/prefs.php.dist:78
+msgid "Precede your signature with dashes ('-- ')?"
+msgstr "Preceder a sua assinatura com dois hífens ('-- ')?"
+
+#: message.php:288
+msgid "Prev"
+msgstr "Anterior"
+
+#: mailbox.php:68
+msgid "Previous Page"
+msgstr "Página Anterior"
+
+#: message.php:114
+msgid "Priority"
+msgstr "Prioridade"
+
+#: mailbox.php:210
+msgid "Purge Deleted"
+msgstr "Eliminar Removidas"
+
+#: message.php:278 compose.php:90 templates/compose/redirect.inc:18
+msgid "Redirect"
+msgstr "Redireccionar"
+
+#: compose.php:276
+msgid "Redirecting failed."
+msgstr "Redireccionamento falhou."
+
+#: folders.php:71 mailbox.php:206
+msgid "Refresh"
+msgstr "Actualizar"
+
+#: message.php:267
+msgid "Reply"
+msgstr "Responder"
+
+#: message.php:274
+msgid "Reply All"
+msgstr "Responder a Todos"
+
+#: message.php:270
+msgid "Reply to List"
+msgstr "Responder para a Lista"
+
+#: message.php:113
+msgid "Reply-To"
+msgstr "Responder-Para"
+
+#: lib/Compose.php:349
+msgid "Reply-To: "
+msgstr "Responder-Para: "
+
+#: config/prefs.php.dist:153
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr ""
+"Regressar à lista de caixas postais após remover, mover ou copiar uma "
+"mensagem?"
+
+#: config/prefs.php.dist:94
+msgid "Save sent mail?"
+msgstr "Guardar mensagens enviadas?"
+
+#: compose.php:94 templates/compose/compose.inc:60
+msgid "Send"
+msgstr "Enviar"
+
+#: templates/prefs/sentmailselect.inc:2
+msgid "Sent mail folder:"
+msgstr "Pasta de mensagens enviadas:"
+
+#: templates/login/login.inc:20
+msgid "Server"
+msgstr "Servidor"
+
+#: config/prefs.php.dist:20
+msgid "Server Information"
+msgstr "Informações do Servidor"
+
+#: config/prefs.php.dist:35
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr ""
+"Estabelecer opções acerca do que deve ocorrer ao mover ou remover mensagens."
+
+#: folders.php:73
+msgid "Show All Folders"
+msgstr "Mostrar Todas as Pastas"
+
+#: folders.php:73
+msgid "Show Subscribed Folders"
+msgstr "Mostrar Pastas Subscritas"
+
+#: message.php:107 templates/mailbox/mailbox.inc:19
+msgid "Subject"
+msgstr "Assunto"
+
+#: config/prefs.php.dist:194
+msgid "Subject Field"
+msgstr "Campo de assunto"
+
+#: templates/compose/compose.inc:56
+msgid "Subject: "
+msgstr "Assunto: "
+
+#: lib/IMAP/Client.php:431
+msgid ""
+"The IMAP server does not appear to support the authentication method "
+"selected. Please contact your system administrator."
+msgstr ""
+"O servidor IMAP não parece suportar o método de autenticação seleccionado. "
+"Por favor contacte o seu administrador de sistemas."
+
+#: lib/Folder.php:80
+#, php-format
+msgid "The folder \"%s\" already exists"
+msgstr "A pasta \"%s\" já existe"
+
+#: lib/Folder.php:204
+#, php-format
+msgid ""
+"The folder \"%s\" contains illegal characters in its name. It may cause "
+"problems. Please see your system administrator."
+msgstr ""
+"O nome da pasta \"%s\" contém caracteres inválidos e pode causar problemas. "
+"Entre em contacto com o administrador do sistema."
+
+#: lib/Folder.php:94
+#, php-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "Criou a pasta \"%s\", mas não a subscreveu."
+
+#: lib/Folder.php:86
+#, php-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr "A pasta \"%s\" não foi criada. O servidor disse"
+
+#: lib/Folder.php:97
+#, php-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "A pastaa \"%s\" foi criada com sucesso."
+
+#: lib/MIME/Viewer/alternative.php:49
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "Não há partes alternativas que se possam mostrar em linha."
+
+#: lib/MIME/Contents.php:166
+msgid "There are no parts that can be displayed inline."
+msgstr "Não há partes que se possam mostrar em linha."
+
+#: lib/Message.php:239
+msgid "There was a problem expunging the mailbox. This is what the server said"
+msgstr "Houve um problema ao esvaziar a caixa posta. O servidor disse"
+
+#: lib/Message.php:86
+#, php-format
+msgid ""
+"There was an error copying messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"Ocorreu um erro ao copiar mensagens de \"%s\" para \"%s\". O servidor disse"
+
+#: lib/Message.php:170
+#, php-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr "Ocorreu um erro ao remover mensagens da pasta \"%s\". O servidor disse"
+
+#: lib/Message.php:219
+#, php-format
+msgid ""
+"There was an error deleting messages in the folder \"%s\". This is what the "
+"server said"
+msgstr "Ocorreu um erro ao remover mensagens na pasta \"%s\". O servidor disse"
+
+#: lib/Message.php:168
+#, php-format
+msgid "There was an error deleting messages. This is what the server said: %s"
+msgstr "Ocorreu um erro ao remover mensagens. O servidor disse: %s"
+
+#: lib/MIME/Viewer/plain.php:29 lib/MIME/Viewer/html.php:31
+msgid "There was an error displaying this message part"
+msgstr "Ocorreu um erro ao mostrar esta parte da mensagem"
+
+#: lib/Message.php:81
+#, php-format
+msgid ""
+"There was an error moving messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"Ocorreu um erro ao mover mensagens de \"%s\" para \"%s\". O servidor disse"
+
+#: lib/Message.php:160
+#, php-format
+msgid ""
+"There was an error moving messages to the trash. This is what the server said"
+msgstr "Ocorreu um erro ao mover mensagens para o lixo. O servidor disse"
+
+#: compose.php:466
+#, php-format
+msgid "There was an error sending your message: %s"
+msgstr "Ocorreu um erro ao enviar a sua mensagem: %s"
+
+#: mailbox.php:44
+msgid "There was an error viewing the requested message."
+msgstr "Ocorreu um erro ao mostrar a mensagem solicitada."
+
+#: config/prefs.php.dist:196
+msgid "Thread View"
+msgstr "Visualização de Conversas"
+
+#: message.php:110 mailbox.php:137
+msgid "To"
+msgstr "Para"
+
+#: lib/IMAP/Client.php:130
+msgid ""
+"To use a TLS connection, you must be running a version of PHP 5.1.0 or "
+"higher."
+msgstr "Para utilizar uma conexão TLS tem de usar o PHP 5.1.0 ou superior."
+
+#: templates/compose/compose.inc:49 templates/compose/redirect.inc:16
+msgid "To: "
+msgstr "Para: "
+
+#: message.php:243
+msgid "Undelete"
+msgstr "Recuperar"
+
+#: mailbox.php:135
+msgid "Undisclosed Recipients"
+msgstr "Destinatários Ocultos"
+
+#: lib/IMAP/Client.php:461
+msgid "Unexpected response from server to AUTHENTICATE command."
+msgstr "Resposta inesperada do servidor a um comando AUTHENTICATE."
+
+#: lib/IMAP/Client.php:427
+msgid "Unexpected response from server to Digest-MD5 response."
+msgstr "Resposta inesperada do servidor a uma resposta Digest-MD5."
+
+#: lib/IMAP/Client.php:204
+#, php-format
+msgid "Unknown IMAP response from the server. Server Responded: %s"
+msgstr "Resposta do servidor IMAP desconhecida. Servidor Respondeu: %s"
+
+#: templates/prefs/sentmailselect.inc:5
+msgid "Use Default Value"
+msgstr "Usar o valor padrão"
+
+#: config/prefs.php.dist:119
+msgid "Use IMAP folder subscriptions?"
+msgstr "Usar subscrições de pastas IMAP?"
+
+#: templates/login/login.inc:13
+msgid "Username"
+msgstr "Nome de utilizador"
+
+#: templates/login/login.inc:10
+#, php-format
+msgid "Welcome to %s"
+msgstr "Bem-vindo a %s"
+
+#: config/prefs.php.dist:162
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted?"
+msgstr ""
+"Ao remover mensagens, movê-las para a pasta Lixo em vez de as marcar como "
+"removidas?"
+
+#: compose.php:327
+msgid "You must have at least one recipient."
+msgstr "Tem de ter pelo menos um destinatário."
+
+#: config/prefs.php.dist:11 config/prefs.php.dist:19
+msgid "Your Information"
+msgstr "A Sua Informação"
+
+#: config/prefs.php.dist:62
+msgid "Your Reply-to: address: <em>(optional)</em>"
+msgstr "O seu Endereço de Resposta: <em>(opcional)</em>"
+
+#: config/prefs.php.dist:70
+msgid "Your signature:"
+msgstr "A sua Assinatura:"
+
+#: message.php:141 mailbox.php:105
+msgid "[No Subject]"
+msgstr "[Sem Assunto]"
+
+#: lib/Compose.php:151
+msgid "addressee unknown"
+msgstr "destinatário desconhecido"
+
+#: lib/Compose.php:175
+msgid "cannot create output file"
+msgstr "impossível criar arquivo de saída"
+
+#: lib/Compose.php:147
+msgid "cannot open input"
+msgstr "impossível abrir entrada"
+
+#: lib/Compose.php:140
+msgid "command line usage error"
+msgstr "erro na utilização da linha de comandos"
+
+#: lib/Compose.php:194
+msgid "configuration error"
+msgstr "erro de configuração"
+
+#: lib/Compose.php:171
+msgid "critical system file missing"
+msgstr "arquivo crítico do sistema em falta"
+
+#: lib/Compose.php:143
+msgid "data format error"
+msgstr "erro de formato de dados"
+
+#: lib/Compose.php:198
+msgid "entry not found"
+msgstr "entrada não encontrada"
+
+#: lib/Compose.php:155
+msgid "host name unknown"
+msgstr "nome de servidor desconhecido"
+
+#: lib/Compose.php:179
+msgid "input/output error"
+msgstr "erro de entrada/saída"
+
+#: lib/Compose.php:163
+msgid "internal software error"
+msgstr "erro interno do software"
+
+#: lib/Compose.php:190
+msgid "permission denied"
+msgstr "permissão negada"
+
+#: lib/Compose.php:187
+msgid "remote error in protocol"
+msgstr "erro remoto no protocolo"
+
+#: lib/Compose.php:159
+msgid "service unavailable"
+msgstr "serviço indisponível"
+
+#: lib/Compose.php:167
+msgid "system error"
+msgstr "erro de sistema"
+
+#: lib/Compose.php:183
+msgid "temporary failure"
+msgstr "falha temporária"

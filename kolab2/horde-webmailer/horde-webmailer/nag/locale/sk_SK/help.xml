@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="iso-8859-2"?>
+<!-- $Horde: nag/locale/sk_SK/help.xml,v 1.3 2004-12-03 02:10:36 jan Exp $ -->
+<help>
+  <entry id="Overview" state="unknown">
+    <title>Prehľad</title>
+    <heading>Úvod</heading>
+    <para>
+    Aplikácia Úlohy je správca "to-do" zoznamov s mnohými funkciami. Podporuje súkromné a zdieľané zoznamy úloh, integráciu s Kalendárom, kategórie, priority, termíny úloh, vyhľadávanie, tlač a funkcie pre import/export.
+    </para>
+<!-- English entry:
+<entry id="Overview">
+    <title>Overview</title>
+    <heading>Introduction</heading>
+    <para>
+      This is a fairly full-featured "to-do" list manager that supports
+      private and shared tasks lists, integration with the Calendar function,
+      categories, priorities, due-dates, searches, printing and import/export
+      functions.
+    </para>
+  </entry>--></entry>
+  <entry id="sorting" state="unknown">
+    <title>Triedenie položiek</title>
+    <heading>Triedenie položiek</heading>
+    <para>
+    Počas zobrazovania zoznamu si môžete nechať položky zoradiť podľa ľubovoľného stĺpca jednoduchým kliknutím na jeho názov. Ak chcete zmeniť smer triedenia (vzostupne resp. zostupne), kliknite na ikonu šípky v mene stĺpca.
+    </para>
+<!-- English entry:
+<entry id="sorting">
+    <title>Sorting Entries</title>
+    <heading>Sorting Entries</heading>
+    <para>
+      When viewing a list of entries, you can sort the entries by any column
+      by clicking on the appropriate column heading.  To switch columns
+      between ascending and descending order, click on the arrow icon in the
+      column heading.
+    </para>
+  </entry>--></entry>
+</help>

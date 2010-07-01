@@ -1,0 +1,81 @@
+<form action="<tag:version_action />" style="margin:8px">
+<tag:version_input />
+<input type="hidden" name="check_versions" value="1" />
+<input type="submit" value="<gettext>Check for newer versions</gettext>" class="button" />
+</form>
+
+<table class="striped" cellspacing="0" width="100%">
+ <thead>
+  <tr>
+    <th class="header leftAlign">
+      <gettext>Application</gettext>
+    </th>
+    <th class="header">
+      &nbsp;
+    </th>
+    <th class="header leftAlign">
+      <gettext>Status</gettext>
+    </th>
+    <if:versions>
+    <th class="header">
+      &nbsp;
+    </th>
+    <th class="header">
+      &nbsp;
+    </th>
+    </if:versions>
+  </tr>
+ </thead>
+ <tbody>
+  <loop:apps>
+  <tr>
+    <td>
+      <tag:apps.icon />
+      <tag:apps.name />
+      <tag:apps.version />
+    </td>
+    <td align="center">
+      <tag:apps.conf />
+    </td>
+    <td>
+      <tag:apps.status />
+    </td>
+    <if:versions>
+    <td align="center">
+      <tag:apps.load />
+    </td>
+    <td>
+      <tag:apps.vstatus />
+    </td>
+    </if:versions>
+  </tr>
+  </loop:apps>
+ </tbody>
+</table>
+
+<table id="update" cellspacing="10">
+ <tr valign="top">
+  <td width="50%">
+   <if:actions>
+    <h1 class="header">
+     <gettext>Setup upgrade scripts available</gettext>
+    </h1>
+    <table class="striped headerbox" cellspacing="0" width="100%">
+    <loop:actions>
+     <tr>
+      <td><tag:actions.icon /></td><td><tag:actions.link /></td>
+     </tr>
+    </loop:actions>
+    </table>
+   </if:actions>
+  </td>
+  <td width="50%">
+   <if:ftpform>
+    <h1 class="header"><gettext>FTP upload of setup</gettext></h1>
+    <div class="headerbox">
+     <tag:ftpform />
+    </div>
+   </if:ftpform>
+  </td>
+ </tr>
+</table>

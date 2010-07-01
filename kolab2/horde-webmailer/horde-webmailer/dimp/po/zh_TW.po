@@ -1,0 +1,765 @@
+# IMP Traditional Chinese Translation
+# Copyright 2006 David Chang.張良文,台灣
+# David Chang <david@tmv.gov.tw>, 2001.
+msgid ""
+msgstr ""
+"Project-Id-Version: Dimp 1.0\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-09-25 12:32+0200\n"
+"PO-Revision-Date: 2008-03-28 12:00+0800\n"
+"Last-Translator: David Chang<david@tmv.gov.tw>\n"
+"Language-Team: Traditional Chinese <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=BIG5\n"
+"Content-Transfer-Encoding: 8-bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/Views/ShowMessage.php:295
+#, php-format
+msgid "%d Attachment"
+msgid_plural "%d Attachments"
+msgstr[0] "%d 個附件"
+
+#: imp.php:661
+#, php-format
+msgid "%s messages were purged from \"%s\"."
+msgstr "%s 封郵件已從 \"%s\" 清除."
+
+#: lib/Block/newmail.php:70
+#, php-format
+msgid "%s more unseen messages..."
+msgstr "%s 封以上新郵件..."
+
+#: imp.php:447
+#, php-format
+msgid "%s was successfully added to your address book."
+msgstr "%s 已成功地新增至你的通訊錄中."
+
+#: templates/index/index.inc:247
+#, php-format
+msgid ""
+"%s will delete the current message and move to the next message if a single "
+"message is selected."
+msgstr "如果只選一封信件, %s 將刪除目前的信件並自動選取下一封."
+
+#: imp.php:659
+#, php-format
+msgid "1 message was purged from \"%s\"."
+msgstr "1 封郵件已從 \"%s\" 清除."
+
+#: lib/Block/newmail.php:68
+msgid "1 more unseen message..."
+msgstr "1 封以上新郵件..."
+
+#: lib/DIMP.php:210
+msgid ""
+"A popup window could not be opened. Your browser may be blocking popups."
+msgstr "無法開啟一個快顯視窗. 有可能你的瀏覽器已將其封鎖."
+
+#: templates/chunks/message.php:127 templates/index/index.inc:421
+msgid "Add to Address Book"
+msgstr "新增到的通訊錄"
+
+#: templates/index/index.inc:193 templates/index/index.inc:198
+msgid "All"
+msgstr "所有"
+
+#: templates/index/index.inc:220 templates/index/index.inc:222
+msgid "Arrival"
+msgstr "到達"
+
+#: templates/chunks/message.php:122 templates/index/index.inc:392
+msgid "Attachments Only"
+msgstr "純附件"
+
+#: templates/index/index.inc:126
+msgid "Base Level"
+msgstr "基本等級"
+
+#: templates/chunks/compose.php:114
+msgid "Bcc: "
+msgstr "秘件副本: "
+
+#: templates/index/index.inc:360 templates/index/index.inc:405
+msgid "Blacklist"
+msgstr "黑名單"
+
+#: templates/chunks/message.php:121 templates/index/index.inc:391
+msgid "Body Text Only"
+msgstr "純文字內容"
+
+#: lib/DIMP.php:202
+msgid "Cancel"
+msgstr "取消"
+
+#: lib/DIMP.php:238
+msgid ""
+"Cancelling this message will permanently discard its contents and will "
+"delete auto-saved drafts.\n"
+"Are you sure you want to do this?"
+msgstr ""
+"取消編寫新郵件將會遺失信件中的所有內容,並刪除自動儲存的草稿.\n"
+"你確定繼續嗎?"
+
+#: templates/index/index.inc:293
+msgid "Cc"
+msgstr "副本"
+
+#: templates/chunks/compose.php:100
+msgid "Cc: "
+msgstr "副本: "
+
+#: templates/chunks/compose.php:57
+msgid "Check Spelling"
+msgstr "拼字檢查"
+
+#: templates/index/index.inc:330
+msgid "Check for New Mail"
+msgstr "檢查新郵件"
+
+#: lib/DIMP.php:204
+msgid "Checking..."
+msgstr "查驗中..."
+
+#: templates/index/index.inc:351 templates/index/index.inc:375
+#: templates/index/index.inc:401
+msgid "Clear Flag"
+msgstr "標記成不重要"
+
+#: templates/index/index.inc:242
+#, php-format
+msgid ""
+"Click on a message while holding down the %s key to select multiple "
+"messages.  To select a range of messages, click the first message of the "
+"range, navigate to the last message of the range, and then click on the last "
+"message while holding down the %s key."
+msgstr ""
+"按 %s 鍵不放並點選滑鼠可複選信件. 如果要範圍選取請先點選第一封,接著按 %s 鍵並"
+"點選最後一封."
+
+#: templates/index/index.inc:276
+msgid "Collapse Headers"
+msgstr "折疊表頭"
+
+#: templates/index/index.inc:62 templates/index/index.inc:183
+msgid "Compose"
+msgstr "寫信"
+
+#: templates/index/index.inc:234
+msgid "Could not get message list from server"
+msgstr "無法自伺服器讀取郵件清單"
+
+#: lib/DIMP.php:214
+msgid "Create folder:"
+msgstr "建立信件匣:"
+
+#: templates/index/index.inc:322 templates/index/index.inc:335
+msgid "Create subfolder"
+msgstr "建立次信件匣"
+
+#: lib/DIMP.php:215
+msgid "Create subfolder:"
+msgstr "建立次信件匣:"
+
+#: templates/index/index.inc:242 templates/index/index.inc:249
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: config/prefs.php.dist:11
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "自訂一些登入%s後所要執行的工作."
+
+#: templates/index/index.inc:219 templates/index/index.inc:223
+#: templates/index/index.inc:285
+msgid "Date"
+msgstr "日期"
+
+#: templates/index/index.inc:247
+msgid "Del"
+msgstr "Del"
+
+#: templates/chunks/message.php:49 templates/index/index.inc:185
+#: templates/index/index.inc:247 templates/index/index.inc:365
+#: templates/index/index.inc:377
+msgid "Delete"
+msgstr "Delete"
+
+#: templates/index/index.inc:325
+msgid "Delete Folder"
+msgstr "刪除信件匣"
+
+#: templates/index/index.inc:247
+msgid "Delete the currently selected message(s)."
+msgstr "刪除目前所選擇的郵件."
+
+#: templates/index/index.inc:331
+msgid "Do Not Check for New Mail"
+msgstr "不檢查新郵件"
+
+#: templates/index/index.inc:324
+msgid "Empty Folder"
+msgstr "清空信件匣"
+
+#: templates/index/index.inc:246
+msgid "End"
+msgstr "End"
+
+#: templates/index/index.inc:248
+msgid "Enter"
+msgstr "Enter"
+
+#: templates/chunks/message.php:120 templates/index/index.inc:390
+msgid "Entire Message"
+msgstr "整封郵件"
+
+#: templates/index/index.inc:257
+msgid "Expand Headers"
+msgstr "展開表頭"
+
+#: templates/index/index.inc:350 templates/index/index.inc:374
+#: templates/index/index.inc:400
+msgid "Flag Message"
+msgstr "標記成重要"
+
+#: config/portal.php.dist:28
+msgid "Folder Summary"
+msgstr "信件匣摘要"
+
+#: templates/index/index.inc:191
+msgid "Folders: "
+msgstr "信件匣: "
+
+#: templates/chunks/message.php:42 templates/index/index.inc:176
+msgid "Forward"
+msgstr "轉寄"
+
+#: templates/index/index.inc:346
+msgid "Forward Attachments Only"
+msgstr "純附件"
+
+#: templates/index/index.inc:345
+msgid "Forward Body Text Only"
+msgstr "純文字內容"
+
+#: templates/index/index.inc:344
+msgid "Forward Entire Message"
+msgstr "轉寄整封郵件"
+
+#: templates/index/index.inc:199 templates/index/index.inc:207
+#: templates/index/index.inc:281
+msgid "From"
+msgstr "寄件人"
+
+#: templates/chunks/compose.php:76
+msgid "From: "
+msgstr "寄件人: "
+
+#: config/prefs.php.dist:9
+msgid "General Options"
+msgstr "一般選項"
+
+#: templates/index/index.inc:63 templates/index/index.inc:184 lib/DIMP.php:205
+msgid "Get Mail"
+msgstr "外部郵件"
+
+#: lib/Block/newmail.php:72
+msgid "Go to your Inbox..."
+msgstr "前往收件匣..."
+
+#: lib/Views/ShowMessage.php:359
+msgid "HERE"
+msgstr "這裡"
+
+#: templates/chunks/compose.php:67
+msgid "HTML composition"
+msgstr "HTML"
+
+#: templates/index/index.inc:396 lib/DIMP.php:211
+msgid "Hide Preview"
+msgstr "隱藏預覽"
+
+#: lib/DIMP.php:196
+msgid "Hide Quoted Text"
+msgstr "隱藏引述"
+
+#: templates/index/index.inc:426
+msgid "High Priority"
+msgstr "高優先"
+
+#: templates/index/index.inc:141 templates/index/index.inc:246
+msgid "Home"
+msgstr "Home"
+
+#: templates/index/index.inc:60
+msgid "Horde"
+msgstr "Horde"
+
+#: config/prefs.php.dist:22
+msgid "Inbox"
+msgstr "收件匣"
+
+#: templates/index/index.inc:181
+msgid "Innocent"
+msgstr "這不是廣告郵件"
+
+#: templates/chunks/compose.php:20 templates/index/index.inc:34
+#: lib/DIMP.php:203
+msgid "Loading..."
+msgstr "載入中..."
+
+#: templates/index/index.inc:79
+msgid "Log Out"
+msgstr "登出"
+
+#: config/prefs.php.dist:10
+msgid "Login Tasks"
+msgstr "登入工作"
+
+#: templates/index/index.inc:427
+msgid "Low Priority"
+msgstr "低優先"
+
+#: lib/Views/ListMessages.php:161
+#, php-format
+msgid "Mailbox %s does not exist."
+msgstr "信件匣 %s 並不存在."
+
+#: templates/index/index.inc:328
+msgid "Mark all as New"
+msgstr "全部標記成未看過"
+
+#: templates/index/index.inc:327
+msgid "Mark all as Read"
+msgstr "全部標記成看過"
+
+#: templates/index/index.inc:357
+msgid "Mark as Innocent"
+msgstr "不是廣告郵件"
+
+#: templates/index/index.inc:349 templates/index/index.inc:399
+msgid "Mark as New"
+msgstr "標記成未看過"
+
+#: templates/index/index.inc:348 templates/index/index.inc:398
+msgid "Mark as Read"
+msgstr "標記成看過"
+
+#: templates/index/index.inc:354
+msgid "Mark as Spam"
+msgstr "標記成廣告郵件"
+
+#: lib/DIMP.php:192
+msgid "Message"
+msgstr "郵件"
+
+#: compose.php:344
+msgid "Message Composition"
+msgstr "郵件寫作"
+
+#: compose.php:182
+msgid "Message sent successfully."
+msgstr "郵件遞送成功."
+
+#: templates/chunks/message.php:37 templates/chunks/message.php:105
+msgid "Message:"
+msgstr "郵件:"
+
+#: templates/index/index.inc:197
+msgid "Message: "
+msgstr "郵件: "
+
+#: lib/DIMP.php:193
+msgid "Messages"
+msgstr "郵件"
+
+#: lib/DIMP.php:200
+#, php-format
+msgid "Move %s to %s"
+msgstr "搬移 %s 到 %s"
+
+#: templates/index/index.inc:245
+msgid "Move one page up/down through the message list."
+msgstr "信件清單換頁檢視."
+
+#: templates/index/index.inc:246
+msgid "Move to the beginning/end of the message list."
+msgstr "移至信件清單的開始/結束."
+
+#: templates/index/index.inc:244
+msgid "Move up/down through the message list."
+msgstr "移動信件清單檢視方向"
+
+#: templates/index/index.inc:118
+msgid "My Folders"
+msgstr "我的信件匣"
+
+#: templates/index/index.inc:122
+msgid "New Folder"
+msgstr "新的信件匣"
+
+#: compose.php:204 templates/chunks/message.php:126
+#: templates/index/index.inc:420
+msgid "New Message"
+msgstr "寫信"
+
+#: lib/DIMP.php:195
+msgid "No Messages"
+msgstr "沒有郵件"
+
+#: lib/Block/foldersummary.php:75
+msgid "No folders are being checked for new mail."
+msgstr "所有檢查過的信件匣中都沒有新郵件."
+
+#: lib/Block/foldersummary.php:79
+msgid "No folders with new messages"
+msgstr "沒有包含新郵件的信件匣"
+
+#: lib/Block/foldersummary.php:77
+msgid "No folders with unseen messages"
+msgstr "沒有包含未看過郵件的信件匣"
+
+#: templates/index/index.inc:233
+msgid "No messages to display"
+msgstr "無郵件可顯示"
+
+#: lib/Block/newmail.php:41
+msgid "No unread messages"
+msgstr "沒有新郵件"
+
+#: lib/DIMP.php:199
+msgid "Ok"
+msgstr "好"
+
+#: templates/index/index.inc:16 templates/index/index.inc:263
+msgid "Open in new window"
+msgstr "在新的視窗開啟"
+
+#: templates/index/index.inc:248
+msgid "Open message in a popup window."
+msgstr "在新視窗開啟信件."
+
+#: templates/index/index.inc:74
+msgid "Options"
+msgstr "選項"
+
+#: templates/index/index.inc:186
+msgid "Other Actions"
+msgstr "其他方式"
+
+#: lib/DIMP.php:216
+msgid "Permanently delete all messages?"
+msgstr "永久刪除所有的信件?"
+
+#: lib/DIMP.php:217
+msgid "Permanently delete this folder?"
+msgstr "永久刪除此信件匣?"
+
+#: templates/index/index.inc:245
+msgid "PgDown"
+msgstr "PdDown"
+
+#: templates/index/index.inc:245
+msgid "PgUp"
+msgstr "PgUp"
+
+#: templates/index/index.inc:69 lib/DIMP.php:188 config/prefs.php.dist:21
+msgid "Portal"
+msgstr "個人站台"
+
+#: templates/chunks/message.php:57 templates/index/index.inc:265
+msgid "Print"
+msgstr "友善列印"
+
+#: templates/index/index.inc:415
+msgid "Purge Deleted"
+msgstr "清除已刪除"
+
+#: templates/chunks/compose.php:52
+msgid "Read Receipt"
+msgstr "讀取回條"
+
+#: lib/DIMP.php:245
+msgid ""
+"Really discard all formatting information? This operation cannot be undone."
+msgstr "真的要放棄所有編輯訊息嗎? 這項操作將無法恢復."
+
+#: templates/index/index.inc:323 templates/index/index.inc:336
+msgid "Rename Folder"
+msgstr "更名信件匣"
+
+#: lib/DIMP.php:213
+msgid "Rename folder to:"
+msgstr "更名信件匣為:"
+
+#: templates/chunks/message.php:41 templates/index/index.inc:175
+msgid "Reply"
+msgstr "回覆"
+
+#: templates/index/index.inc:341
+msgid "Reply to All"
+msgstr "回覆所有"
+
+#: compose.php:232
+msgid "Reply to All:"
+msgstr "回覆所有:"
+
+#: templates/index/index.inc:342
+msgid "Reply to List"
+msgstr "回覆給討論群組"
+
+#: compose.php:234
+msgid "Reply to List:"
+msgstr "回覆給討論群組:"
+
+#: templates/index/index.inc:340
+msgid "Reply to Sender"
+msgstr "回覆"
+
+#: compose.php:230
+msgid "Reply:"
+msgstr "回覆:"
+
+#: templates/chunks/message.php:47
+msgid "Report Innocent"
+msgstr "這不是廣告郵件"
+
+#: templates/chunks/message.php:44
+msgid "Report Spam"
+msgstr "這是廣告郵件"
+
+#: compose.php:214 lib/Views/ShowMessage.php:154
+msgid "Requested message not found."
+msgstr "找不到郵件."
+
+#: templates/index/index.inc:372
+msgid "Resume Draft"
+msgstr "繼續編輯"
+
+#: lib/Views/ShowMessage.php:298
+msgid "Save All"
+msgstr "儲存全部"
+
+#: templates/chunks/compose.php:140
+msgid "Save Attachments in sent folder"
+msgstr "附件隨寄件一起備份"
+
+#: templates/chunks/compose.php:58
+msgid "Save as Draft"
+msgstr "存為草稿"
+
+#: templates/chunks/compose.php:55
+msgid "Save in "
+msgstr "寄件備份於"
+
+#: lib/DIMP.php:244
+msgid "Saving..."
+msgstr "儲存中..."
+
+#: lib/DIMP.php:190
+msgid "Search"
+msgstr "搜尋"
+
+#: lib/Views/ListMessages.php:80
+msgid "Search Results"
+msgstr "搜尋結果"
+
+#: templates/index/index.inc:412
+msgid "Select All"
+msgstr "選取所有"
+
+#: templates/index/index.inc:249
+msgid "Select all messages in the current mailbox."
+msgstr "選取目前信件匣中的所有信件."
+
+#: templates/chunks/compose.php:50
+msgid "Send"
+msgstr "寄發"
+
+#: lib/DIMP.php:243
+msgid "Sending..."
+msgstr "傳送中..."
+
+#: templates/index/index.inc:242 templates/index/index.inc:247
+msgid "Shift"
+msgstr "Shift"
+
+#: templates/chunks/compose.php:65
+msgid "Show Bcc"
+msgstr "顯示秘件副本"
+
+#: templates/chunks/compose.php:64
+msgid "Show Cc"
+msgstr "顯示副本"
+
+#: templates/index/index.inc:396 lib/DIMP.php:212
+msgid "Show Preview"
+msgstr "顯示預覽"
+
+#: lib/DIMP.php:197
+msgid "Show Quoted Text"
+msgstr "顯示引述"
+
+#: templates/index/index.inc:226
+msgid "Size"
+msgstr "大小"
+
+#: templates/index/index.inc:178
+msgid "Spam"
+msgstr "垃圾郵件"
+
+#: templates/chunks/compose.php:70
+msgid "Special Characters"
+msgstr "特殊字元"
+
+#: templates/chunks/message.php:67 templates/index/index.inc:201
+#: templates/index/index.inc:211 templates/index/index.inc:215
+#: templates/index/index.inc:276
+msgid "Subject"
+msgstr "主旨"
+
+#: templates/chunks/compose.php:128
+msgid "Subject: "
+msgstr "主旨: "
+
+#: lib/DIMP.php:242
+msgid "The attachment limit has been reached."
+msgstr "已到達附件容量上限."
+
+#: lib/DIMP.php:207
+msgid "The connection to the remote server has been restored."
+msgstr "到遠端伺服器的連結已被回存."
+
+#: templates/index/index.inc:243
+msgid "The following keyboard shortcuts are available:"
+msgstr "可用的快捷按鍵如下:"
+
+#: config/prefs.php.dist:23
+msgid "The page to view immediately after login."
+msgstr "選擇登入後的檢視頁面."
+
+#: lib/Views/ShowMessage.php:360
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Click %s to send the notification "
+"message."
+msgstr "郵件寄件者要求回應表示你已讀取郵件,請點選 %s 傳送回條."
+
+#: lib/DIMP.php:208
+msgid "The server is still generating the message list."
+msgstr "伺服器產生郵件清單中."
+
+#: lib/DIMP.php:209
+msgid ""
+"The server was unable to generate the message list. Please try again later."
+msgstr "伺服器無法產生郵件清單. 請稍後再試."
+
+#: lib/DIMP.php:206
+msgid ""
+"There has been no contact with the remote server for several minutes. The "
+"server may be temporarily unavailable or network problems may be "
+"interrupting your session. You will not see any updates until the connection "
+"is restored."
+msgstr ""
+"截至目前為止與遠端伺服器的聯繫已斷線好幾分鐘了. 該伺服器可能暫時無法提供服務"
+"或者因為網路出了問題中斷你的會期(session). 直到網路連結被回復前你將看不到任何"
+"更新資訊."
+
+#: templates/index/index.inc:212 templates/index/index.inc:214
+msgid "Thread"
+msgstr "關聯"
+
+#: templates/index/index.inc:200 templates/index/index.inc:208
+#: templates/index/index.inc:289
+msgid "To"
+msgstr "收件人"
+
+#: templates/chunks/message.php:113 templates/index/index.inc:385
+msgid "To All"
+msgstr "所有人"
+
+#: templates/chunks/message.php:115 templates/index/index.inc:386
+msgid "To List"
+msgstr "討論群組"
+
+#: templates/chunks/message.php:112 templates/index/index.inc:384
+msgid "To Sender"
+msgstr "寄件人"
+
+#: templates/index/index.inc:241
+msgid ""
+"To preview a message, select it from the list above. A right-click on the "
+"messages will display available actions."
+msgstr "請選擇上列一封信件預覽. 你可以在信件上點選滑鼠右鍵使用相關功能."
+
+#: templates/chunks/compose.php:86
+msgid "To: "
+msgstr "收件人: "
+
+#: templates/index/index.inc:367 templates/index/index.inc:379
+msgid "Undelete"
+msgstr "復原已刪除"
+
+#: lib/Views/ShowMessage.php:87
+msgid "Undisclosed Recipients"
+msgstr "隱藏收件對象"
+
+#: lib/Views/ShowMessage.php:323
+msgid "Unknown Date"
+msgstr "未知的日期"
+
+#: lib/DIMP.php:241
+msgid "Uploading..."
+msgstr "上傳中..."
+
+#: lib/DIMP.php:189
+msgid "User Options"
+msgstr "使用者選項"
+
+#: templates/chunks/message.php:60 templates/index/index.inc:268
+msgid "View Message Source"
+msgstr "檢視原始檔"
+
+#: templates/index/index.inc:363 templates/index/index.inc:408
+msgid "Whitelist"
+msgstr "友善名單"
+
+#: lib/DIMP.php:239
+msgid ""
+"You have already changed the message body, are you sure you want to drop the "
+"changes?"
+msgstr "你已經變更了郵件內容,確定要放棄變更嗎?"
+
+#: lib/Views/ShowMessage.php:95
+msgid "[Hide Addresses]"
+msgstr "[隱藏住址]"
+
+#: lib/Views/ShowMessage.php:281 lib/Views/ListMessages.php:297
+#: lib/Block/newmail.php:58
+msgid "[No Subject]"
+msgstr "[無主旨]"
+
+#: lib/DIMP.php:201
+msgid "base level of the folder tree"
+msgstr "樹狀信件匣的基本等級"
+
+#: templates/index/index.inc:258
+msgid "from"
+msgstr "從"
+
+#: lib/DIMP.php:198
+msgid "lines"
+msgstr "行"
+
+#: lib/DIMP.php:194
+msgid "of"
+msgstr "共"
+
+#: lib/DIMP.php:240
+msgid "remove"
+msgstr "移除"
+
+#: lib/DIMP.php:191
+msgid "results found"
+msgstr "搜尋結果"

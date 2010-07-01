@@ -9,8 +9,8 @@ This patch tries to assemble a formatted name if not all fields are set.
 If the formatted name is empty after all turba displays company name (if entered).
 
 
---- a/horde-webmail/turba/lib/Turba.php
-+++ b/horde-webmail/turba/lib/Turba.php
+--- a/horde-webmailer/turba/lib/Turba.php
++++ b/horde-webmailer/turba/lib/Turba.php
 @@ -235,18 +235,34 @@ class Turba {
          if (!isset($name_format)) {
              $name_format = $prefs->getValue('name_format');
@@ -49,8 +49,8 @@ If the formatted name is empty after all turba displays company name (if entered
              }
          } else {
              /* One field, we'll have to guess. */
---- a/horde-webmail/turba/templates/browse/row.inc
-+++ b/horde-webmail/turba/templates/browse/row.inc
+--- a/horde-webmailer/turba/templates/browse/row.inc
++++ b/horde-webmailer/turba/templates/browse/row.inc
 @@ -6,6 +6,8 @@ if ($ob->hasValue('name')) {
            !in_array($ob->driver->alternativeName, $this->columns) &&
            $ob->hasValue($ob->driver->alternativeName)) {

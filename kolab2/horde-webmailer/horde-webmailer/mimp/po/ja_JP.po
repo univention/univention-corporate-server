@@ -1,0 +1,260 @@
+# Japanese translation for MIMP.
+# Copyright 2008-2009 Horde Project
+# This file is distributed under the same license as the MIMP package.
+# Hiromi Kimura <hiromi@tac.tsukuba.ac.jp>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: MIMP 1.1.1\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-09-06 11:11+0200\n"
+"PO-Revision-Date: 2009-02-01 18:21+0900\n"
+"Last-Translator: Hiromi Kimura <hiromi@tac.tsukuba.ac.jp>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=SHIFT_JIS\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: message.php:295
+#, php-format
+msgid "(%d of %d)"
+msgstr "（%d / %d）"
+
+#: lib/MIME/Contents.php:62
+msgid "Attachment"
+msgstr "添付"
+
+#: templates/compose/compose.inc:52
+msgid "Bcc: "
+msgstr "Bcc:"
+
+#: templates/compose/compose.inc:49
+msgid "Cc: "
+msgstr "Cc:"
+
+#: config/prefs.php.dist:11
+msgid "Configure how messages are displayed."
+msgstr "メッセージをどう表示するかを設定します。"
+
+#: compose.php:22
+msgid "Could not retrieve the message from the mail server."
+msgstr "メールサーバからメッセージが取得できません。"
+
+#: message.php:258
+msgid "Delete"
+msgstr "削除"
+
+#: config/prefs.php.dist:23
+msgid "Display only the first 250 characters of a message initially?"
+msgstr "最初は本文の先頭 250 文字だけを表示しますか？"
+
+#: mailbox.php:189
+msgid "Do Not Sort by Thread"
+msgstr "スレッドで並び替えない"
+
+#: lib/MIME/Viewer/status.php:69
+msgid "ERROR: Your message could not be delivered."
+msgstr "エラー：メールが配達されませんでした。"
+
+#: compose.php:88 templates/compose/compose.inc:59
+#: templates/compose/redirect.inc:19
+msgid "Expand Names"
+msgstr "名前を展開"
+
+#: mailbox.php:66
+msgid "First Page"
+msgstr "最初のページ"
+
+#: folders.php:60 lib/MIMP.php:36
+msgid "Folders"
+msgstr "フォルダ"
+
+#: message.php:275
+msgid "Forward"
+msgstr "転送"
+
+#: mailbox.php:171
+msgid "From"
+msgstr "From"
+
+#: templates/compose/compose.inc:39
+msgid "Identity"
+msgstr "ID"
+
+#: lib/MIMP.php:30
+msgid "Inbox"
+msgstr "INBOX"
+
+#: mailbox.php:71
+msgid "Last Page"
+msgstr "最後のページ"
+
+#: lib/MIMP.php:44
+msgid "Log out"
+msgstr "ログアウト"
+
+#: config/prefs.php.dist:9
+msgid "Mail Management"
+msgstr "メールの管理"
+
+#: message.php:252 message.php:296 compose.php:240 mailbox.php:201
+#: templates/folders/folders.inc:6 templates/folders/folders.inc:29
+#: templates/mailbox/mailbox.inc:10 templates/compose/compose.inc:4
+#: templates/compose/redirect.inc:4
+msgid "Menu"
+msgstr "メニュー"
+
+#: compose.php:225
+msgid "Message Composition"
+msgstr "メール作成"
+
+#: config/prefs.php.dist:10
+msgid "Message Viewing"
+msgstr "メール表示"
+
+#: compose.php:142
+msgid "Message redirected successfully."
+msgstr "メッセージは転送されました。"
+
+#: compose.php:215
+msgid "Message sent successfully."
+msgstr "メッセージは送信されました。"
+
+#: templates/compose/compose.inc:56
+msgid "Message: "
+msgstr "メッセージ："
+
+#: lib/MIMP.php:33
+msgid "New Message"
+msgstr "新着メッセージ"
+
+#: message.php:283
+msgid "Next"
+msgstr "次"
+
+#: mailbox.php:70
+msgid "Next Page"
+msgstr "次のページ"
+
+#: message.php:286
+msgid "Prev"
+msgstr "前"
+
+#: mailbox.php:67
+msgid "Previous Page"
+msgstr "前のページ"
+
+#: mailbox.php:164
+msgid "Purge Deleted"
+msgstr "ゴミ箱を空にする"
+
+#: message.php:276 compose.php:129 templates/compose/redirect.inc:18
+msgid "Redirect"
+msgstr "そのまま転送"
+
+#: mailbox.php:158 templates/folders/folders.inc:31
+msgid "Refresh"
+msgstr "再表示"
+
+#: message.php:265
+msgid "Reply"
+msgstr "返信"
+
+#: message.php:272
+msgid "Reply All"
+msgstr "全員に返信"
+
+#: message.php:268
+msgid "Reply to List"
+msgstr "リストに返信"
+
+#: compose.php:151 templates/compose/compose.inc:58
+msgid "Send"
+msgstr "送信"
+
+#: message.php:316
+msgid "Show All"
+msgstr "全て表示"
+
+#: folders.php:56
+msgid "Show All Folders"
+msgstr "全フォルダ表示"
+
+#: folders.php:56
+msgid "Show Subscribed Folders"
+msgstr "登録済みのフォルダーだけを表示"
+
+#: mailbox.php:186
+msgid "Sort by Thread"
+msgstr "スレッドで並び替え"
+
+#: mailbox.php:172
+msgid "Subject"
+msgstr "件名"
+
+#: templates/compose/compose.inc:54
+msgid "Subject: "
+msgstr "件名："
+
+#: lib/MIME/Viewer/status.php:70
+msgid "The mail server generated the following error message:"
+msgstr "メールサーバは以下のエラーメッセージを生成しました："
+
+#: lib/MIME/Viewer/status.php:79
+msgid "The mail server generated the following message:"
+msgstr "メールサーバからのメッセージ："
+
+#: lib/MIME/Viewer/alternative.php:49
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "インライン表示可能な代替パートはありません。"
+
+#: lib/MIME/Contents.php:91
+msgid "There are no parts that can be displayed inline."
+msgstr "インライン表示可能なパートはありません。"
+
+#: lib/MIME/Viewer/plain.php:29 lib/MIME/Viewer/html.php:31
+msgid "There was an error displaying this message part"
+msgstr "メッセージパートの表示でエラーが発生しました。"
+
+#: mailbox.php:36
+msgid "There was an error viewing the requested message."
+msgstr "メールの表示中にエラーが発生しました。"
+
+#: lib/MIME/Viewer/status.php:114
+msgid ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+msgstr "このメッセージには配送情報が含まれていますが、形式が不明です。"
+
+#: message.php:289
+#, php-format
+msgid "To %s"
+msgstr "To %s"
+
+#: templates/compose/compose.inc:47 templates/compose/redirect.inc:16
+msgid "To: "
+msgstr "To： "
+
+#: message.php:256
+msgid "Undelete"
+msgstr "削除取り消し"
+
+#: message.php:41
+msgid "Undisclosed Recipients"
+msgstr "不明な受信者"
+
+#: message.php:248
+msgid "View Full Message"
+msgstr "全文表示"
+
+#: lib/MIME/Viewer/status.php:78
+msgid "Your message was successfully delivered."
+msgstr "あなたのメールは正常に配達されました。"
+
+#: message.php:159 mailbox.php:117
+msgid "[No Subject]"
+msgstr "[件名なし]"
+
+#: templates/mailbox/mailbox.inc:7
+msgid "of"
+msgstr "of"

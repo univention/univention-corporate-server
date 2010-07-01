@@ -1,0 +1,25 @@
+/**
+ * $Horde: kronolith/themes/tango-blue/screen.css,v 1.4.2.1 2007-12-20 14:13:05 jan Exp $
+ */
+
+.weekend {
+    background: #b2cae4 none repeat scroll 0% 50%;
+}
+
+#view_title {
+    margin: 0 .3em;
+}
+
+.monthgrid .today {
+    background-color: #dde8c1;
+    border: 2px solid #446;
+}
+
+.block-eventbox {
+    -moz-border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    border: 0;
+}
+.day-eventbox {
+    padding: 6px;
+}

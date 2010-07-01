@@ -1,0 +1,5022 @@
+# Persian translations for Imp package.
+# This file is distributed under the same license as the Horde package.
+# 
+# Copyright 2004 High Concil of Informatics (www.shci.ir)
+# Provided by  Amirkabir Metanetworking Ltd, 2004 <persian-horde@metanetworking.com>
+# Mohsen Nader-Badr       <naderi@metanetworking.com>
+# chakameh Mortezania     <mortezania@metanetworking.com>
+# Salman Niksefat         <niksefat@metanetworking.com>
+# Hamed Gheybi            <gheybi@metanetworking.com>
+# Vahid Ghafarpour        <ghafarpour@metanetworking.com>
+# Zahra Ahmadi Firouzjaee <ahmadi@metanetworking.com>
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: IMP 4 ALPHA\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2005-07-13 20:04+0430\n"
+"PO-Revision-Date: 2005-07-09 15:27+0200\n"
+"Last-Translator: Amirkabir Metanetworking ltd. <persian-horde@metanetworking."
+"com>\n"
+"Language-Team: Persian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: lib/Compose.php:413
+msgid "      Cc: "
+msgstr " رونوشت به:"
+
+#: lib/Compose.php:410
+msgid "      To: "
+msgstr "به:     "
+
+#: lib/Compose.php:398
+msgid "    Date: "
+msgstr "تاریخ:  "
+
+#: lib/Compose.php:401
+msgid "    From: "
+msgstr "از:     "
+
+# #-#-#-#-#  compendium.po (Horde 3)  #-#-#-#-#
+# 
+#: mailbox.php:415
+#, php-format
+msgid " (Accesskey %s)"
+msgstr "(کلید دسترسی %s)"
+
+#: lib/Compose.php:407
+msgid " Subject: "
+msgstr "عنوان:  "
+
+#: templates/compose/spelling.inc:70
+msgid " in "
+msgstr " در "
+
+#: templates/mailbox/message_headers.inc:12
+msgid "#"
+msgstr "#"
+
+# 
+#: lib/Block/summary.php:71
+#, php-format
+msgid "%.2fMB / %.2fMB  (%.2f%%)"
+msgstr "%.2fMB / %.2fMB  (%.2f%%)"
+
+# 
+#: mailbox.php:176
+#, php-format
+msgid "%d messages have been deleted."
+msgstr "%d پیغام حذف شده است"
+
+#: lib/Spam.php:181
+#, php-format
+msgid ""
+"%d messages have been reported as not spam to your system administrator."
+msgstr "%d پیغام بعنوان هرزنامه به سرپرست سامانهٔ شما گزارش شده است"
+
+# 
+#: lib/Spam.php:161
+#, php-format
+msgid "%d messages have been reported as not spam."
+msgstr "%d پیغام بعنوان غیر هرزنامه گزارش شده است"
+
+#: lib/Spam.php:173
+#, php-format
+msgid "%d messages have been reported as spam to your system administrator."
+msgstr "%d پیغام بعنوان هرزنامه به سرپرست سامانهٔ شما گزارش شده است"
+
+# 
+#: lib/Spam.php:153
+#, php-format
+msgid "%d messages have been reported as spam."
+msgstr "%d پیغام بعنوان هرزنامه گزارش شده است"
+
+# 
+#: mailbox.php:366
+#, php-format
+msgid "%d to %d of %d Messages"
+msgstr "%d تا %d از %d پیغام"
+
+#: mailbox.php:631
+#, php-format
+msgid "%s KB"
+msgstr "کیلوبایت %s"
+
+#: thread.php:147
+#, php-format
+msgid "%s Messages"
+msgstr "%s پیغام"
+
+# 
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:48
+#, php-format
+msgid "%s already exists. Your %s folder was not renamed."
+msgstr "%s در حال حاضر موجود می‌باشد.پوشه %s شما تفییر نام نیافته است"
+
+# 
+#: lib/Message.php:630
+#, php-format
+msgid "%s does not appear to be a valid mailbox."
+msgstr "%s به نظر نمی‌رسد که نامه‌دان معتبری باشد"
+
+# 
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:46
+#, php-format
+msgid "%s folder being renamed at the start of the month."
+msgstr "پوشه%s در ابتدای ماه تفییر نام یافته است"
+
+#: lib/MIME/Viewer/itip.php:228
+#, php-format
+msgid "%s has accepted."
+msgstr "%s پذیرفته شده است"
+
+#: lib/MIME/Viewer/itip.php:583
+#, php-format
+msgid "%s has cancelled %s."
+msgstr "%s %s را لغو کرده است"
+
+#: lib/MIME/Viewer/itip.php:234
+#, php-format
+msgid "%s has declined."
+msgstr "%s رد شده است"
+
+#: lib/MIME/Viewer/itip.php:454
+#, php-format
+msgid "%s has replied to a free/busy request."
+msgstr "%s به یک درخواست آزاد/مشغول پاسخ داده است"
+
+#: lib/MIME/Viewer/itip.php:574
+#, php-format
+msgid "%s has replied to the invitation to %s."
+msgstr "%s به دعوت %s پاسخ داده است"
+
+#: lib/MIME/Viewer/itip.php:443
+#, php-format
+msgid "%s has sent you free/busy information."
+msgstr "%s اطلاعات آزاد/مشغول را به شما فرستاده است"
+
+# 
+#: lib/MIME/Viewer/itip.php:240
+#, php-format
+msgid "%s has tentatively accepted."
+msgstr "%s بطور آزمایشی پذیرفته شده است"
+
+#: lib/MIME/Viewer/itip.php:448
+#, php-format
+msgid "%s requests your free/busy information."
+msgstr "%s اطلاعات آزاد/مشغول شما را درخواست دارد"
+
+#: lib/MIME/Viewer/itip.php:543
+#, php-format
+msgid "%s requests your presence at %s."
+msgstr "%s حضور شما را در %s خواستار است"
+
+#: lib/Message.php:387
+#, php-format
+msgid "%s was successfully added to %s."
+msgstr "%s با موفّقیّت به %s اضافه شد"
+
+#: lib/MIME/Viewer/itip.php:555
+#, php-format
+msgid "%s wishes to ammend %s."
+msgstr "%s مایل است  %s را اصلاح سازد"
+
+#: lib/MIME/Viewer/itip.php:533
+#, php-format
+msgid "%s wishes to make you aware of %s."
+msgstr "%s مایل است شما را از %s باخبر سازد"
+
+#: lib/MIME/Viewer/itip.php:560
+#, php-format
+msgid "%s wishes to receive the latest information about %s."
+msgstr "%s مایل است آخرین اطلاعات راجع به %s را دریافت کند"
+
+#: message.php:280 message.php:285
+#, php-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+# 
+#: templates/message/navbar_top.inc:13
+#, php-format
+msgid "%s: %s (%d&nbsp;of&nbsp;%d)"
+msgstr "%s: %s (%d از %d)"
+
+#: templates/compose/spelling.inc:133
+msgid "(Apply these changes and move to next screen.)"
+msgstr "(اعمال این تفییرات و انتقال به صفحه بعد)"
+
+#: templates/compose/spelling.inc:120
+msgid "(Discard all changes and return to the compose screen.)"
+msgstr "(ملغی کردن تمامی تغییرات و بازگشت به صفحهٔ ایجاد پیغام)"
+
+#: templates/stationery/prefs.inc:16
+msgid "(HTML)"
+msgstr "(HTML)"
+
+#: templates/stationery/prefs.inc:16
+msgid "(Plain Text)"
+msgstr "(متن ساده)"
+
+#: spelling.php:280
+msgid ""
+"(Return to the compose screen after applying all changes made thus far.  "
+"Changes on the current screen will NOT be applied.)"
+msgstr ""
+"(بازگشت به صفحه ایجاد پیغام بعد از اعمال تمامی تغییراتی که تاکنون انجام شده "
+"تغییرات در صفحه کنونی اعمال نخواهد شد("
+
+#: spelling.php:277
+msgid ""
+"(Send message after applying all changes made thus far.  Changes on the "
+"current screen will NOT be applied.)"
+msgstr ""
+"ارسال پیغام بعد از اعمال تمامی تغییراتی که تاکنون انجام شده تغییرات درصفحه) "
+"کنونی اعمال نخواهد شد("
+
+#: templates/contacts/contacts.inc:222
+msgid "* Add these by clicking OK *"
+msgstr "* اضافه کردن اینها با فشار دادن دکمه تأیید *"
+
+#: templates/contacts/contacts.inc:201
+msgid "* Please select address(es) *"
+msgstr "* لطفاً آدرس(ها) را انتخاب کنید *"
+
+#: mailbox.php:174
+msgid "1 message has been deleted."
+msgstr "یک پیغام حذف شده است"
+
+#: lib/Spam.php:183
+msgid "1 message has been reported as not spam to your system administrator."
+msgstr "یک پیغام بعنوان غیر هرزنامه به سرپرست سامانهٔ شما گزارش شده است"
+
+#: lib/Spam.php:163
+msgid "1 message has been reported as not spam."
+msgstr "یک پیغام بعنوان غیر هرزنامه گزارش شده است"
+
+#: lib/Spam.php:175
+msgid "1 message has been reported as spam to your system administrator."
+msgstr "یک پیغام بعنوان هرزنامه به سرپرست سامانهٔ شما گزارش شده است"
+
+#: lib/Spam.php:155
+msgid "1 message has been reported as spam."
+msgstr "یک پیغام بعنوان هرزنامه گزارش شده است"
+
+#: config/prefs.php.dist:829
+msgid "100 characters"
+msgstr "۱۰۰ نویسه"
+
+#: config/prefs.php.dist:832
+msgid "1000 characters"
+msgstr "۱۰۰۰ نویسه"
+
+#: config/prefs.php.dist:830
+msgid "250 characters"
+msgstr "۲۵۰ نویسه"
+
+#: config/prefs.php.dist:831
+msgid "500 characters"
+msgstr "۵۰۰ نویسه"
+
+# 
+#: lib/MIME/Viewer/images.php:168
+#, php-format
+msgid "A large image named %s is attached to this message."
+msgstr "یک تصویر بزرگ به نام %s به پیغام شما پیوست شده است"
+
+#: lib/MIME/Viewer/notification.php:52
+msgid ""
+"A message you have sent has resulted in a return notification from the "
+"recipient."
+msgstr "نتیجه ارسال پیغام شما یک رسید از دریافت کننده می‌باشد"
+
+#: templates/search/fields.inc:5
+msgid "AND"
+msgstr "و"
+
+#: lib/MIME/Viewer/itip.php:548
+msgid "Accept request"
+msgstr "پذیرفتن درخواست"
+
+#: lib/MIME/Viewer/itip.php:707
+msgid "Accepted"
+msgstr "پذیرفته شده"
+
+#: lib/MIME/Viewer/itip.php:229
+msgid "Accepted: "
+msgstr "پذیرفته شده:"
+
+#: lib/IMP.php:1013 lib/IMP.php:1015
+msgid "Acco_unts"
+msgstr "حسابها"
+
+#: templates/fetchmail/manage.inc:7
+msgid "Account's name:"
+msgstr "نام حساب‌:"
+
+#: lib/MIME/Viewer/itip.php:479 lib/MIME/Viewer/itip.php:684
+msgid "Actions"
+msgstr "فعالیتها"
+
+#: templates/prefs/sourceselect.inc:303
+msgid "Add source"
+msgstr "اضافه کردن سرچشمه "
+
+#: lib/MIME/Viewer/itip.php:536 lib/MIME/Viewer/itip.php:546
+msgid "Add this to my calendar"
+msgstr "اضافه کردن این به تقویم من"
+
+#: lib/MIME/Headers.php:206 lib/MIME/Headers.php:207
+#, php-format
+msgid "Add to Address book (%s)"
+msgstr "اضافه کردن به کتابچهٔ آدرس (%s)"
+
+# 
+#: compose.php:1190
+#, php-format
+msgid "Added \"%s\" as an attachment."
+msgstr "\"%s\" بعنوان پیوست اضافه شد"
+
+#: config/prefs.php.dist:191
+msgid ""
+"Additional headers to display when viewing: <em>(optional, enter each header "
+"on a new line)</em>"
+msgstr ""
+"سرآمدهای اضافی برای نمایش به هنگام مشاهده: <em> (هر سرآمد را در یک خط جدید "
+"وارد کنید، اختیاری) </em>"
+
+# 
+#: lib/MIME/Viewer/notification.php:64
+#, php-format
+msgid "Additional information can be viewed %s."
+msgstr "اطلاعات اضافی می‌توانند در %s دیده شوند"
+
+#: lib/MIME/Viewer/notification.php:64
+msgid "Additional information details"
+msgstr "جزئیات اضافی اطلاعات"
+
+#: lib/MIME/Viewer/status.php:95
+msgid "Additional message details"
+msgstr "جزئیات اضافی پیغام"
+
+# 
+#: lib/MIME/Viewer/status.php:94
+#, php-format
+msgid "Additional message details can be viewed %s."
+msgstr "جزئیات اضافی پیغام می‌توانند در %s دیده شوند"
+
+#: lib/MIME/Viewer/status.php:80
+msgid "Additional message error details"
+msgstr "جزئیات اضافی خطای پیغام"
+
+# 
+#: lib/MIME/Viewer/status.php:79
+#, php-format
+msgid "Additional message error details can be viewed %s."
+msgstr "جزئیات اضافی خطای پیغام می‌توانند در %s دیده شوند"
+
+#: contacts.php:85 templates/contacts/contacts.inc:175
+#: templates/compose/compose.inc:338 templates/compose/redirect.inc:52
+msgid "Address Book"
+msgstr "کتابچهٔ آدرس "
+
+#: config/prefs.php.dist:127
+msgid "Address Books"
+msgstr "کتابچه‌های آدرس "
+
+#: config/prefs.php.dist:182
+msgid ""
+"Addresses to BCC all messages: <em>(optional, enter each address on a new "
+"line)</em>"
+msgstr ""
+"آدرسهایی برای رونوشت مخفی تمام پیغامها: <em>(هر سرآمد را در یک خط جدید وارد "
+"کنید، اختیاری) </em>"
+
+#: config/prefs.php.dist:174
+msgid ""
+"Addresses to explicitly tie to this identity: <em>(optional, enter each "
+"address on a new line)</em>"
+msgstr ""
+"آدرسهایی برای متصل شدن به این مشخصه: <em>(هر سرآمد را در یک خط جدید وارد "
+"کنید، اختیاری)</em>"
+
+#: templates/mailbox/navbar.inc:10 config/prefs.php.dist:833
+msgid "All"
+msgstr "همه"
+
+#: templates/folders/javascript.inc:5
+msgid ""
+"All messages in the following folder(s) will be downloaded into one MBOX "
+"file:"
+msgstr "تمامی پیغامها در این پوشه(ها) در یک  نامه‌دان استقرار خواهد یافت"
+
+# 
+#: lib/Maintenance/Task/purge_trash.php:85
+#, php-format
+msgid ""
+"All messages in your \"%s\" folder older than %s days will be permanently "
+"deleted."
+msgstr ""
+" تمامی پیغامهای شما در پوشه  \"%s\"  که قدیمی‌تر‌ از  %s روز باشند به طور "
+"همیشگی حذف خواهند شد"
+
+# 
+#: lib/Maintenance/Task/delete_attachments_monthly.php:63
+#, php-format
+msgid "All old linked attachments more than %s months old will be deleted."
+msgstr "تمامی ضمیمه‌های قدیمی‌تر‌ از  %s  ماه حذف خواهند شد"
+
+# 
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:77
+#, php-format
+msgid "All old sent-mail folders more than %s months old will be deleted."
+msgstr "تمامی نامه‌های ارسال شدهٔ قدیمی‌تر‌ از  %s  ماه حذف خواهند شد"
+
+# 
+#: acl.php:85
+#, php-format
+msgid "All rights on folder '%s' successfully removed for user '%s'."
+msgstr "تمامی حقوق بر پوشه '%s' با موفّقیّت برای کاربر '%s' حذف شد"
+
+#: lib/api.php:71
+msgid "Allow Folder Creation?"
+msgstr "ایجاد پوشه مجاز است؟"
+
+#: templates/filters/prefs.inc:48
+msgid "Allow filter rules to be applied in any mailbox?"
+msgstr "آیا برای هر نامه‌دان قوانین فیلتر اعمال شود؟"
+
+#: lib/MIME/Viewer/alternative.php:112
+msgid "Alternative parts for this section:"
+msgstr "بخشهای جایگزین برای این قسمت:"
+
+#: config/prefs.php.dist:570 config/prefs.php.dist:582
+msgid "Always"
+msgstr "همیشه"
+
+#: config/prefs.php.dist:555
+msgid "Always save attachments"
+msgstr "همواره پیوستها حفظ شوند"
+
+#: lib/Message.php:478
+msgid ""
+"An error occured while attempting to strip the attachment. The IMAP server "
+"said: "
+msgstr "کارساز IMAP گفته است: خطایی در گرفتن ضمیمه رخ داده است "
+
+#: lib/Message.php:374
+msgid "An unknown error occured while creating the new task."
+msgstr "خطایی ناشناس در حین ایجاد یک وظیفهٔ جدید رخ داده است"
+
+#: mailbox.php:705 message.php:494 templates/message/navbar_navigate.inc:9
+#: templates/mailbox/navbar.inc:18 templates/mailbox/navbar.inc:35
+#: templates/mailbox/legend.inc:6
+msgid "Answered"
+msgstr "پاسخ داده شده"
+
+#: templates/search/main.inc:31
+msgid "Answered messages"
+msgstr "پیغامهای پاسخ داده شده"
+
+#: templates/mailbox/header.inc:7
+msgid "Apply Filters"
+msgstr "اعمال فیلترها"
+
+#: templates/mailbox/header.inc:7
+#, php-format
+msgid "Apply Filters to %s"
+msgstr "اعمال فیلترها به %s"
+
+#: templates/filters/prefs.inc:36
+msgid "Apply filter rules upon logging on?"
+msgstr "آیا قوانین فیلتر به هنگام ورود اعمال شود؟"
+
+#: templates/filters/prefs.inc:42
+msgid "Apply filter rules whenever INBOX is displayed?"
+msgstr ""
+"آیا قوانین فیلتر در هنگامی که پیغامهای دریافتی نمایش داده می‌شود، اعمال شود؟"
+
+#: templates/pgp/pgp.inc:27 templates/smime/smime.inc:25
+msgid "Are you sure you want to delete this public key?"
+msgstr "آیا مطمئنید که می‌خواهید این کلید عمومی را حذف کنید؟"
+
+#: templates/pgp/pgp.inc:85 templates/smime/smime.inc:79
+msgid ""
+"Are you sure you want to delete your keypair? (This is NOT recommended!)"
+msgstr ""
+"آیا مطمئنید که می‌خواهید جفت کلید خود را حذف کنید؟ (این کار پیشنهاد نمی‌شود)"
+
+#: templates/compose/compose.js:6 templates/compose/redirect.inc:5
+msgid "Are you sure you want to do this?"
+msgstr "مطمئنید که می‌خواهید این کار را انجام دهید؟"
+
+#: message.php:402 templates/mailbox/javascript.inc:68
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "آیا مطمئنید که به طور همیشگی می‌خواهید این پیغامها را حذف کنید؟"
+
+#: lib/MIME/Contents.php:228
+msgid "Are you sure you wish to PERMANENTLY delete this attachment?"
+msgstr "آیا مطمئنید که به طور همیشگی می‌خواهید این پیوست را حذف کنید؟"
+
+#: templates/mailbox/actions.inc:40
+msgid "Are you sure you wish to empty this folder?"
+msgstr "آیا مطمئنید که می‌خواهید این پوشه را خالی کنید؟"
+
+#: lib/IMP.php:1002
+msgid "Are you sure you wish to empty your spam folder?"
+msgstr "آیا مطمئنید که می‌خواهید پوشهٔ هرزنامه‌های خود را خالی کنید؟ "
+
+#: lib/IMP.php:995
+msgid "Are you sure you wish to empty your trash folder?"
+msgstr "آیا مطمئنید که می‌خواهید پوشهٔ آشغال خود را خالی کنید؟ "
+
+#: templates/mailbox/actions.inc:8
+msgid "Are you sure you wish to permanently delete these messages?"
+msgstr "آیا مطمئنید که به طور همیشگی می‌خواهید این پیغامها را حذف کنید؟"
+
+#: templates/mailbox/javascript.inc:86
+msgid "Are you sure you wish to report this message as innocent?"
+msgstr "آیا مطمئنید که می‌خواهید این پیغام را بعنوان بی‌ضرر گزارش کنید؟ "
+
+#: templates/mailbox/javascript.inc:77
+msgid "Are you sure you wish to report this message as spam?"
+msgstr "آیا مطمئنید که می‌خواهید این پیغام را بعنوان هرزنامه گزارش کنید؟ "
+
+#: config/prefs.php.dist:928
+msgid "Arrival Time"
+msgstr "زمان رسیدن"
+
+#: config/prefs.php.dist:943
+msgid "Ascending"
+msgstr "صعودی"
+
+#: config/prefs.php.dist:569 config/prefs.php.dist:581
+msgid "Ask"
+msgstr "پرسش"
+
+#: templates/compose/compose.inc:517
+msgid "Attach"
+msgstr "پیوست"
+
+#: templates/compose/compose.inc:474
+msgid "Attach Files"
+msgstr "پیوست کردن پرونده‌ها"
+
+#: templates/compose/compose.inc:455
+msgid "Attach a copy of your PGP public key to your message?"
+msgstr "آیا یک رونوشت از کلید عمومی PGP شما به پیغامتان پیوست شود؟"
+
+#: lib/MIME/Viewer/tnef.php:113
+msgid "Attached File:"
+msgstr "پرونده‌های پیوست شده:"
+
+# 
+#: lib/Compose.php:448 lib/Compose.php:535
+#, php-format
+msgid ""
+"Attached file \"%s\" exceeds the attachment size limits. File NOT attached."
+msgstr "پروندهٔ‌ پیوست شدهٔ \"%s\" از اندازه مجاز بیشتر است. پرونده‌ پیوست نشد"
+
+#: lib/MIME/Viewer/itip.php:343
+msgid "Attached is a reply to a calendar request you sent."
+msgstr "پیوست پاسخ به درخواست تقویمی است که شما فرستادید"
+
+#: templates/mailbox/legend.inc:16 templates/compose/attachments.inc:14
+#: templates/compose/compose.inc:504 templates/compose/attachments.js:98
+msgid "Attachment"
+msgstr "پیوست"
+
+#: compose.php:1000 lib/Message.php:439
+msgid "Attachment stripped: Original attachment type"
+msgstr "پیوست اخذ شد: نوع اصلی پیوست"
+
+#: lib/Compose.php:1100 templates/compose/compose.inc:348
+#: templates/compose/compose.inc:472
+msgid "Attachments"
+msgstr "پیوستها"
+
+#: lib/MIME/Viewer/itip.php:637
+msgid "Attendees"
+msgstr "شرکت کننده‌ها"
+
+#: lib/MIME/Viewer/notification.php:55
+msgid "Attention"
+msgstr "توجه"
+
+#: lib/Auth/imp.php:46
+msgid "Auth_imp: Required IMAP extension not found."
+msgstr "Authimp: بسط مورد نیاز IMAP پیدا نشد"
+
+#: config/prefs.php.dist:643
+msgid ""
+"Automatically show images in HTML messages when the sender is in my "
+"addressbook?"
+msgstr ""
+"آیا وقتی فرستنده در کتابچهٔ آدرس من باشد تصاویر بطور خودکار در پیغامهای HTML "
+"نشان داده شوند؟"
+
+#: templates/prefs/sourceselect.inc:298
+msgid "Available Address books:"
+msgstr "کتابچه‌های آدرس در دسترس:"
+
+#: lib/MIME/Viewer/itip.php:673
+msgid "Awaiting Response"
+msgstr "منتظر پاسخ"
+
+#: templates/message/navbar_navigate.inc:26
+#, php-format
+msgid "Bac_k to %s"
+msgstr "بازگشت به %s"
+
+# 
+#: thread.php:133 templates/message/navbar_navigate.inc:26
+#, php-format
+msgid "Back to %s"
+msgstr "بازگشت به %s"
+
+#: thread.php:130
+msgid "Back to Multiple Message View Index"
+msgstr "بازگشت به شاخص نمای چندگانهٔ پیغام"
+
+#: thread.php:128
+msgid "Back to Thread Display"
+msgstr "بازگشت به مد نمایش سلسه‌ایی"
+
+#: search.php:151 message.php:261 templates/contacts/contacts.inc:217
+#: templates/compose/recompose.inc:20
+msgid "Bcc"
+msgstr "رونوشت مخفی"
+
+#: lib/MIME/Viewer/status.php:167
+msgid "Below is the raw text of the status information message."
+msgstr "در زیر متنی از اطلاعات وضعیت پیغام وجود دارد"
+
+#: templates/message/navbar_actions.inc:21 templates/mailbox/actions.inc:16
+msgid "Blacklist"
+msgstr "لیست سیاه"
+
+#: config/prefs.php.dist:631
+msgid "Block images in HTML messages unless they are specifically requested?"
+msgstr ""
+"آیا تصاویر در پیغامهای HTML بجز در مواردی که مشخصاً درخواست نشده‌اند، بلوکه "
+"شوند؟"
+
+#: search.php:159
+msgid "Body"
+msgstr "بدنه"
+
+#: templates/search/main.inc:23 templates/search/main.inc:39
+#: templates/search/main.inc:55 templates/search/main.inc:71
+msgid "Both"
+msgstr "هر دو"
+
+#: config/prefs.php.dist:690
+msgid "Both Header Listing and Body of Message"
+msgstr "فهرست سرآمد و بدنه پیغام، هردو"
+
+#: templates/compose/compose.inc:271
+msgid "C_harset"
+msgstr "مجموعهٔ نویسه"
+
+#: templates/search/fields.inc:35
+msgid "Calendar"
+msgstr "تقویم"
+
+#: lib/Fetchmail/imap.php:203
+msgid "Can not connect to the remote mail server."
+msgstr "نمی‌توان به کارساز پست الکترونیک راه دور وصل شد"
+
+#: lib/Fetchmail/imap.php:201
+msgid "Can not connect to the remote mail server: "
+msgstr "نمی‌توان به کارساز پست الکترونیک راه دور وصل شد:"
+
+# 
+#: lib/MIME/Viewer/partial.php:52
+#, php-format
+msgid ""
+"Can not display - found only %s of %s parts of this message in the current "
+"mailbox."
+msgstr "نمی‌توان نمایش داد - تنها %s از %s بخش این پیغام در این نامه‌دان پیدا شد"
+
+#: folders.php:272 templates/contacts/contacts.inc:250
+#: templates/saveimage/saveimage.inc:19 templates/pgp/passphrase.inc:32
+#: templates/pgp/import_key.inc:66 templates/folders/import.inc:21
+#: templates/smime/passphrase.inc:20 templates/smime/import_key.inc:86
+#: templates/compose/spelling.inc:120
+msgid "Cancel"
+msgstr "لغو"
+
+#: templates/compose/compose.inc:70 templates/compose/compose.inc:434
+#: templates/compose/redirect.inc:111
+msgid "Cancel Message"
+msgstr "لغو پیغام"
+
+#: templates/compose/compose.js:6 templates/compose/redirect.inc:5
+msgid "Cancelling this message will permanently discard its contents."
+msgstr "لغو این پیغام بطور کامل تمامی محتوای آن را از بین خواهد برد"
+
+#: search.php:147 message.php:260 templates/contacts/contacts.inc:216
+#: templates/compose/recompose.inc:15
+msgid "Cc"
+msgstr "رونوشت"
+
+#: templates/smime/smime.inc:93
+msgid ""
+"Certificate import is not available. File upload is not enabled on this "
+"server."
+msgstr ""
+"درون‌برد گواهی در دسترس نمی‌باشد. ارسال فایل بر روی این کارساز ممکن نیست."
+
+#: lib/MIME/Viewer/itip.php:655
+msgid "Chair Person"
+msgstr "مدیر"
+
+#: templates/compose/spelling.inc:80
+msgid "Change"
+msgstr "تغییر"
+
+#: templates/compose/spelling.inc:81
+msgid "Change All"
+msgstr "تغییر همه"
+
+#: templates/acl/acl.inc:92
+msgid "Change Folder"
+msgstr "تغییر پوشه"
+
+#: config/prefs.php.dist:112
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr ""
+"تغییر گزینه‌های نمایش مانند تعداد پیغامها در هر صفحه و چگونگی مرتب شدن پیغامها"
+
+#: config/prefs.php.dist:24
+msgid "Change mail server and folder settings."
+msgstr "تغییر تنظیمات کارساز پست الکترونیک و پوشه"
+
+#: config/prefs.php.dist:15
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr ""
+"تغییردادن نام و آدرسی که افراد هنگام خواندن و پاسخ دادن به نامهٔ شما خواهند "
+"دید "
+
+#: config/prefs.php.dist:834
+msgid "Characters to display:"
+msgstr "نویسه‌ها برای نمایش: "
+
+#: templates/folders/actions.inc:15
+msgid "Check Folder(s) for New Mail"
+msgstr "بررسی پوشه(ها) برای نامهٔ جدید"
+
+#: templates/folders/actions.inc:2 templates/mailbox/message_headers.inc:75
+msgid "Check _All/None"
+msgstr "بررسی همه/ هیچ‌یک"
+
+#: templates/fetchmail/fetchmail.inc:10 templates/fetchmail/fetchmail.inc:21
+msgid "Check all mail servers you want to fetch mail from:"
+msgstr ""
+"بررسی تمامی کارساز‌های نامهٔ الکترونیکی‌ایی که می‌خواهید نامه‌ از آنها واکشی کنید:"
+
+#: config/prefs.php.dist:459
+msgid "Check spelling before sending a message?"
+msgstr "آیا قبل از اینکه پیغام فرستاده شود از نظر املایی بررسی شود؟"
+
+#: templates/folders/actions.inc:4
+msgid "Choose Action:"
+msgstr "انتخاب عمل:"
+
+#: config/servers.php.dist:195
+msgid "Choose a mail server:"
+msgstr "انتخاب یک کارساز پست الکترونیک:"
+
+#: templates/compose/compose.inc:124 templates/compose/compose.inc:165
+#: templates/compose/compose.inc:216
+msgid "Choose a match or edit the address to the right:"
+msgstr "لطفاً انتخاب کنید و یا آدرس را ویرایش کنید:"
+
+#: lib/MIME/Viewer/itip.php:480 lib/MIME/Viewer/itip.php:685
+msgid "Choose an action:"
+msgstr "انتخاب یک عمل:"
+
+#: templates/prefs/sourceselect.inc:349
+msgid "Choose the address book to use when adding addresses."
+msgstr "انتخاب یک کتابچهٔ آدرس برای هنگامی که آدرسها را اضافه می‌کنید"
+
+#: templates/prefs/sourceselect.inc:293
+msgid "Choose the order of address books to search when expanding addresses."
+msgstr "انتخاب ترتیبی برای کتابچه‌های آدرس در هنگام جستجو"
+
+# 
+#: lib/MIME/Viewer/images.php:108
+#, php-format
+msgid "Click %s to convert the image file into a format your browser can view."
+msgstr ""
+"برای تبدیل پروندهٔ‌ تصویر به قالبی که مرورگر شما بتواند آنرا ببیند %s را کلیک "
+"کنید "
+
+# 
+#: lib/MIME/Viewer/images.php:97
+#, php-format
+msgid "Click %s to download the image."
+msgstr "برای گرفتن تصویر %s .را فشار دهید"
+
+# 
+#: lib/Filter.php:112
+#, php-format
+msgid "Click %s to go to %s management page."
+msgstr "بر روی %s کلیک کنید تا به صفحه مدیریت %s بروید"
+
+# 
+#: lib/MIME/Viewer/html.php:118
+#, php-format
+msgid "Click %s to view HTML content in a separate window."
+msgstr "برای دیدن محتوای HTML در یک پنجرهٔ جداگانه، %s را کلیک کنید"
+
+# 
+#: lib/MIME/Viewer/images.php:169
+#, php-format
+msgid "Click %s to view a thumbnail of this image."
+msgstr " برای دیدن تصویر کوچک از این تصویر %s را کلیک کنید"
+
+# 
+#: lib/MIME/Viewer/pkcs7.php:424
+#, php-format
+msgid "Click %s to view the attachment in a separate window."
+msgstr "برای دیدن محتوای HTML در یک پنجرهٔ جداگانه %s را کلیک کنید"
+
+# 
+#: lib/MIME/Viewer/related.php:63
+#, php-format
+msgid "Click %s to view this multipart/related part in a separate window."
+msgstr "برای دیدن قسمتهای مختلف در یک پنجرهٔ جداگانه %s را کلیک کنید"
+
+#: lib/MIME/Viewer/html.php:97
+msgid "Click here to SHOW the Images"
+msgstr "اینجا را برای نمایش تصاویر کلیک کنید"
+
+#: templates/prefs/sourceselect.inc:321
+msgid ""
+"Click on one of your selected address books and then select all fields to "
+"search."
+msgstr ""
+"بر روی یکی از کتابچه‌های آدرس انتخاب شده کلیک کنید و سپس  فیلدهای مورد نظر را "
+"برای جستجو انتخاب کنید"
+
+#: lib/MIME/Viewer/pgp.php:175
+msgid "Click to Save PGP Public Key in your Address book"
+msgstr "برای حفظ کلیدهای عمومی PGP در کتابچهٔ آدرس خود، کلیک کنید"
+
+#: lib/MIME/Viewer/pkcs7.php:204
+#, php-format
+msgid "Click to Save S/MIME certificate of %s in your Address Book"
+msgstr "برای حفظ گواهی S/MIME %s در کتابچهٔ آدرس خود، کلیک کنید"
+
+#: config/prefs.php.dist:962
+msgid "Clicking on the address will compose a new message to the sender"
+msgstr " کلیک کردن روی آدرس، صفحه ایجاد پیغام را بالا می‌آورد "
+
+#: config/prefs.php.dist:963
+msgid "Clicking on the address will open the message to be read"
+msgstr "کلیک کردن روی آدرس، پیغام را برای خواندن باز می‌کند"
+
+#: templates/fetchmail/fetchmail.inc:28
+msgid "Close"
+msgstr "بستن"
+
+#: compose.php:774 compose.php:1081
+msgid "Close this window"
+msgstr "بستن این پنجره"
+
+#: folders.php:423
+msgid "Closed Folder"
+msgstr "پوشهٔ بسته شده"
+
+#: folders.php:443
+msgid "Collapse"
+msgstr "بستن"
+
+#: templates/folders/actions.inc:36
+msgid "Collapse All"
+msgstr "بستن همه"
+
+#: templates/folders/actions.inc:36
+msgid "Collapse All Folders"
+msgstr "بستن همهٔ پوشه‌ها"
+
+#: folders.php:443
+msgid "Collapse Folder"
+msgstr "بستن پوشه"
+
+#: templates/fetchmail/manage.inc:51
+msgid "Color Indicator: "
+msgstr "شاخص رنگ:"
+
+#: templates/pgp/pgp.inc:103
+msgid "Comment"
+msgstr "توضیح"
+
+#: lib/MIME/Viewer/itip.php:723
+msgid "Completed"
+msgstr "کامل شده"
+
+#: lib/Block/tree_folders.php:42 lib/Block/summary.php:19
+msgid "Compose"
+msgstr "ایجاد پیغام"
+
+# 
+#: mailbox.php:771 lib/MIME/Headers.php:198
+#, php-format
+msgid "Compose Message (%s)"
+msgstr "ایجاد پیغام (%s)"
+
+#: compose.php:773 compose.php:1080
+msgid "Compose another message"
+msgstr "ایجاد یک پیغام دیگر"
+
+#: config/prefs.php.dist:430
+msgid "Compose messages in a separate window?"
+msgstr "آیا پیغامها در یک پنجرهٔ جداگانه ایجاد شوند؟"
+
+#: config/prefs.php.dist:439
+msgid ""
+"Compose messages with an HTML GUI by default (if browser supports the "
+"feature)?"
+msgstr ""
+" آیا پیغامها بطور پیش فرض با یک واسط گرافیکی مبتنی بر HTML ایجاد شود(اگر "
+"مرورگر مشخصه را پشتیبانی ‌کند)؟ "
+
+#: config/prefs.php.dist:67
+msgid "Configure how messages are displayed."
+msgstr "پیکربندی چگونگی نمایش پیغامها"
+
+#: config/prefs.php.dist:97
+msgid "Configure mail preview options."
+msgstr "پیکربندی گزینه‌‌های پیش‌نمایش  نامه"
+
+#: lib/Fetchmail/imap.php:236
+msgid "Connection to server failed"
+msgstr "اتصال به کارساز ناموفّق بود"
+
+# 
+#: config/prefs.php.dist:136
+#, php-format
+msgid "Control PGP support for %s."
+msgstr "کنترل پشتیبانی PGP برای %s."
+
+# 
+#: config/prefs.php.dist:145
+#, php-format
+msgid "Control S/MIME support for %s."
+msgstr "کنترل پشتیبانی S/MIME برای %s"
+
+#: config/prefs.php.dist:89
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr "کنترل وصول نامهٔ جدید و ارائهٔ تذکرهای مرتبط"
+
+#: config/prefs.php.dist:700
+msgid "Convert textual emoticons into graphical ones?"
+msgstr "آیا احساسات نوشتاری به گرافیکی تبدیل شود؟"
+
+#: templates/message/navbar_navigate.inc:19 templates/mailbox/navbar.inc:51
+msgid "Copy"
+msgstr "رونوشت"
+
+#: templates/message/navbar_navigate.inc:19
+msgid "Copy to folder"
+msgstr "رونوشت در پوشه"
+
+#: templates/compose/spelling.inc:63
+msgid "Correct"
+msgstr "صحیح"
+
+#: templates/compose/spelling.inc:140
+msgid "Corrected Text"
+msgstr "متنهای تصحیح شده"
+
+# #-#-#-#-#  compendium.po (Horde 3)  #-#-#-#-#
+# 
+#: attachment.php:50
+#, php-format
+msgid "Could not create the VFS backend: %s"
+msgstr "نمی‌توان پشتیان VFS را ایجاد کرد: %s"
+
+# 
+#: lib/Message.php:621
+#, php-format
+msgid "Could not delete messages from %s. The server said: %s"
+msgstr "نمی‌توان پیغامها را از %s حذف کرد. کارساز گفته است:%s"
+
+#: lib/Session.php:301
+msgid "Could not execute maintenance operations."
+msgstr "نمی‌توان عملیات نگهداری را اجرا کرد"
+
+#: lib/MIME/Viewer/tnef.php:56
+msgid "Could not extract the requested file from the MS-TNEF attachment."
+msgstr "نمی‌توان پرونده‌ خواسته شده را از پیوست MS-TNEF بازکرد"
+
+#: lib/MIME/Viewer/zip.php:60
+msgid "Could not extract the requested file from the Zip archive."
+msgstr "نمی‌توان پرونده‌ خواسته شده را از آرشیو Zip بازکرد"
+
+#: search.php:360 templates/acl/acl.inc:39 templates/acl/acl.inc:160
+#: templates/fetchmail/account_select.inc:26 templates/fetchmail/manage.inc:67
+msgid "Create"
+msgstr "ایجاد"
+
+#: templates/folders/actions.inc:6
+msgid "Create Folder"
+msgstr "ایجاد پوشه"
+
+#: templates/pgp/pgp.inc:137
+msgid "Create Keys"
+msgstr "ایجاد کلیدها"
+
+#: templates/search/header.inc:14
+msgid "Create Virtual Folder"
+msgstr "ایجاد پوشه مجازی"
+
+#: templates/prefs/spamselect.inc:12 templates/prefs/spamselect.inc:24
+msgid "Create a new Spam folder"
+msgstr "ایجاد یک پوشه جدید هرزنامه‌ها"
+
+#: templates/prefs/folderselect.inc:12 templates/prefs/folderselect.inc:24
+msgid "Create a new drafts folder"
+msgstr "ایجاد یک پوشه جدید پیش نویسها"
+
+#: templates/prefs/sentmailselect.inc:27 templates/prefs/sentmailselect.inc:43
+msgid "Create a new sent mail folder"
+msgstr "ایجاد یک پوشه جدید برای نامه‌های ارسالی"
+
+#: templates/prefs/trashselect.inc:12 templates/prefs/trashselect.inc:24
+msgid "Create a new trash folder"
+msgstr "ایجاد یک پوشه جدید آشغال"
+
+#: config/prefs.php.dist:121
+msgid ""
+"Create filtering rules to organize your incoming mail, sort it into folders, "
+"and delete spam."
+msgstr ""
+" ایجاد قوانین فیلتر برای سازماندهی نامه‌های دریافتی، مرتب سازی نامه‌ها در "
+"پوشه‌ها و حذف هرزنامه‌ها"
+
+#: templates/stationery/prefs.inc:14
+msgid "Create new stationery"
+msgstr "ایجاد نوشت‌افزار جدید"
+
+#: config/prefs.php.dist:445
+msgid "Create stationery and form responses."
+msgstr "ایجاد نوشت‌افزار و فرم پاسخ"
+
+#: templates/acl/acl.inc:95
+#, php-format
+msgid "Current access to %s"
+msgstr "دسترسی کنونی به %s"
+
+#: config/prefs.php.dist:105
+msgid "Customize accounts for fetching mail from other accounts."
+msgstr "بهینه سازی حسابها برای واکشی نامه‌ها از حسابهای دیگر"
+
+#: config/prefs.php.dist:51
+msgid "Customize how you send mail."
+msgstr "بهینه سازی چگونگی ارسال نامه‌ها"
+
+#: config/prefs.php.dist:40
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "بهینه سازی وظایف برای اجرا به هنگام ورود به %s"
+
+#: templates/mailbox/message_headers.inc:17
+msgid "Dat_e"
+msgstr "تاریخ"
+
+#: thread.php:144 message.php:257
+msgid "Date"
+msgstr "تاریخ"
+
+#: lib/MIME/Viewer/itip.php:711
+msgid "Declined"
+msgstr "ردشده"
+
+#: lib/MIME/Viewer/itip.php:235
+msgid "Declined: "
+msgstr "ردشده:"
+
+#: config/prefs.php.dist:935
+msgid "Default sorting criteria:"
+msgstr "معیارهای پیش فرض مرتب سازی:"
+
+#: config/prefs.php.dist:945
+msgid "Default sorting direction:"
+msgstr "جهت مرتب سازی پیش فرض:"
+
+#: lib/MIME/Viewer/itip.php:719
+msgid "Delegated"
+msgstr "نماینده"
+
+#: folders.php:413 templates/contacts/contacts.inc:239
+#: templates/pgp/pgp.inc:27 templates/message/navbar_actions.inc:6
+#: templates/fetchmail/manage.inc:68 templates/mailbox/actions.inc:8
+#: templates/mailbox/actions.inc:10 templates/smime/smime.inc:25
+#: templates/compose/attachments.inc:28
+msgid "Delete"
+msgstr "حذف"
+
+# 
+#: templates/pgp/pgp.inc:27 templates/smime/smime.inc:25
+#, php-format
+msgid "Delete %s Public Key"
+msgstr "حذف کلید عمومی %s"
+
+#: templates/pgp/pgp.inc:85 templates/smime/smime.inc:79
+msgid "Delete Current Keys"
+msgstr "حذف کلید‌های کنونی"
+
+#: templates/folders/actions.inc:9
+msgid "Delete Folder(s)"
+msgstr "حذف پوشه(ها)"
+
+#: folders.php:273
+msgid "Delete Selected Folders"
+msgstr "حذف پوشه‌های انتخاب شده"
+
+#: templates/stationery/prefs.inc:42
+msgid "Delete Stationery"
+msgstr "حذف نوشت‌افزار"
+
+#: folders.php:413
+msgid "Delete Virtual Folder"
+msgstr "حذف پوشه مجازی"
+
+#: templates/fetchmail/manage.inc:43
+msgid "Delete fetched messages from remote server?"
+msgstr "آیا پیغامهای واکشی شده از کارساز حذف شود؟"
+
+#: lib/MIME/Viewer/itip.php:586
+msgid "Delete from my calendar"
+msgstr "از تقویم من حذف شود"
+
+#: config/prefs.php.dist:363
+msgid "Delete old linked attachments at beginning of month?"
+msgstr "آیا پیوندهای پیوست قدیمی، در ابتدای هر ماه حذف شوند؟"
+
+#: config/prefs.php.dist:345
+msgid "Delete old sent-mail folders at beginning of month?"
+msgstr "آیا نامه‌های فرستاده شدهٔ قدیمی، در ابتدای هر ماه حذف شوند؟"
+
+#: config/prefs.php.dist:618
+msgid "Delete spam messages"
+msgstr "حذف هرزنامه‌ها"
+
+#: mailbox.php:731 message.php:497 templates/mailbox/navbar.inc:20
+#: templates/mailbox/navbar.inc:38 templates/mailbox/legend.inc:8
+msgid "Deleted"
+msgstr "حذف شده"
+
+#: templates/search/main.inc:63
+msgid "Deleted messages"
+msgstr "پیغامهای حذف شده"
+
+# 
+#: compose.php:278
+#, php-format
+msgid "Deleted the attachment \"%s\"."
+msgstr "پیوست \"%s\" حذف شده"
+
+#: config/prefs.php.dist:79
+msgid "Deleting and Moving Messages"
+msgstr "حذف و انتقال پیغامها"
+
+#: lib/MIME/Viewer/itip.php:550
+msgid "Deny request"
+msgstr "رد تقاضا"
+
+#: lib/MIME/Viewer/itip.php:499
+msgid "Deny request for free/busy information"
+msgstr "درخواست برای اطلاعات آزاد/مشغول پذیرفته نشد"
+
+#: config/prefs.php.dist:944
+msgid "Descending"
+msgstr "نزولی"
+
+#: lib/MIME/Viewer/itip.php:625 templates/compose/attachments.inc:21
+msgid "Description"
+msgstr "توضیح"
+
+#: templates/pgp/pgp.inc:27 templates/pgp/pgp.inc:72 templates/pgp/pgp.inc:77
+#: templates/smime/smime.inc:25 templates/smime/smime.inc:68
+msgid "Details"
+msgstr "جزئیات"
+
+#: config/prefs.php.dist:680
+msgid "Dim signatures?"
+msgstr "امضاء‌ها تار شوند؟"
+
+#: templates/contacts/contacts.inc:231
+msgid "Display"
+msgstr "نمایش"
+
+#: config/prefs.php.dist:475
+msgid "Display confirmation after sending a message?"
+msgstr "آیا بعد از فرستادن پیغام، تأیید آن نمایش داده شود؟"
+
+#: config/prefs.php.dist:689
+msgid "Display in Body of Message"
+msgstr "نمایش در بدنهٔ پیغام"
+
+#: config/prefs.php.dist:802
+msgid "Display pop-up notification of new mail?"
+msgstr "آیا تذکرهای گشودنی برای نامه‌ٔ جدید نمایش داده شود؟ "
+
+#: config/prefs.php.dist:767
+msgid "Display the \"Empty Spam\" link in the menubar?"
+msgstr "آیا پیوند 'خالی کردن هرزنامه‌ها' در گزینگان نمایش داده شود؟"
+
+#: config/prefs.php.dist:758
+msgid "Display the \"Empty Trash\" link in the menubar?"
+msgstr "آیا پیوند 'خالی کردن سطل آشغال' در گزینگان نمایش داده شود؟"
+
+#: templates/compose/attachments.inc:11
+msgid "Disposition"
+msgstr "ترتیب"
+
+#: templates/search/fields.inc:25
+msgid "Do NOT match"
+msgstr "عدم تطابق"
+
+#: templates/folders/actions.inc:16
+msgid "Do Not Check Folder(s) for New Mail"
+msgstr "عدم بررسی پوشه(ها) برای نامهٔ جدید"
+
+#: config/prefs.php.dist:964
+msgid "Do not generate a link in the From: column"
+msgstr "در ستون فرستنده پیوندی ایجاد نکن"
+
+#: lib/IMP.php:1106
+msgid "Do you want to open that folder?"
+msgstr "آیا می‌خواهید آن پوشه را باز کنید؟"
+
+#: templates/login/login.inc:224
+msgid "Don't have an account? Sign up."
+msgstr "آیا حسابی ندارید؟ ثبت نام"
+
+#: templates/compose/spelling.inc:126
+msgid "Done"
+msgstr "انجام شده"
+
+# 
+#: lib/MIME/Contents.php:205
+#, php-format
+msgid "Download %s in .zip Format"
+msgstr "استقرار %s در قالب .zip"
+
+#: templates/message/headers.inc:52
+msgid "Download All Attachments (in .zip file)"
+msgstr "استقرار تمامی پیوستها(در پروندهٔ .zip)"
+
+#: templates/folders/actions.inc:20
+msgid "Download Folder(s)"
+msgstr "استقرار پوشه(ها)"
+
+#: templates/folders/actions.inc:21
+msgid "Download Folder(s) [.zip format]"
+msgstr "استقرار پوشه(ها) [قالب .zip]"
+
+#: lib/MIME/Contents.php:205
+msgid "Download in .zip Format"
+msgstr "استقرار در قالب .zip"
+
+#: mailbox.php:710 message.php:495 templates/message/navbar_navigate.inc:11
+#: templates/mailbox/navbar.inc:22 templates/mailbox/navbar.inc:41
+#: templates/mailbox/legend.inc:9
+msgid "Draft"
+msgstr "پیش نویس"
+
+#: folders.php:386
+msgid "Draft folder"
+msgstr "پوشهٔ پیش نویس"
+
+#: templates/prefs/folderselect.inc:23
+msgid "Drafts folder:"
+msgstr "پوشهٔ پیش نویسها:"
+
+#: templates/pgp/pgp.inc:108
+msgid "E-mail Address"
+msgstr "آدرس نامهٔ الکترونیکی"
+
+#: lib/Mailbox.php:316
+msgid "END"
+msgstr "خاتمه"
+
+#: lib/MIME/Viewer/status.php:76
+msgid "ERROR: Your message could not be delivered."
+msgstr "خطا: پیغام شما تحویل داده نشد"
+
+#: folders.php:414 templates/stationery/prefs.inc:19
+msgid "Edit"
+msgstr "ویرایش"
+
+#: templates/filters/prefs.inc:18
+msgid "Edit Blacklist"
+msgstr "ویرایش لیست سیاه"
+
+#: templates/filters/prefs.inc:13
+msgid "Edit Filters"
+msgstr "ویرایش فیلترها"
+
+#: folders.php:414 templates/mailbox/header.inc:13
+#: templates/search/header.inc:16
+msgid "Edit Virtual Folder"
+msgstr "ویرایش پوشه‌ٔ مجازی"
+
+#: templates/mailbox/header.inc:13
+#, php-format
+msgid "Edit Virtual Folder Definition for %s"
+msgstr "ویرایش تعریف پوشهٔ مجازی %s"
+
+#: templates/filters/prefs.inc:23
+msgid "Edit Whitelist"
+msgstr "ویرایش فهرست سفید"
+
+#: templates/filters/prefs.inc:18
+msgid "Edit your blacklist"
+msgstr "ویرایش فهرست سیاه شما"
+
+#: templates/filters/prefs.inc:13
+msgid "Edit your filter rules"
+msgstr "ویرایش قوانین فیلتر شما"
+
+#: config/prefs.php.dist:871
+msgid "Edit your preferences for accessing other mail accounts."
+msgstr "ویرایش گزینه‌های شما برای دستیابی به حسابهای نامهٔ دیگر"
+
+#: templates/filters/prefs.inc:23
+msgid "Edit your whitelist"
+msgstr "ویرایش فهرست سفید شما"
+
+#: templates/contacts/contacts.inc:234
+msgid "Email Address"
+msgstr "آدرس نامهٔ الکترونیکی"
+
+# 
+#: lib/Message.php:638
+#, php-format
+msgid "Emptied all messages from %s."
+msgstr "تمامی پیغامها از %s خالی شدند"
+
+#: templates/folders/actions.inc:22
+msgid "Empty Folder(s)"
+msgstr "خالی کردن پوشه(ها)"
+
+#: folders.php:274
+msgid "Empty Selected Folders"
+msgstr "خالی کردن پوشه‌های انتخاب شده"
+
+#: templates/mailbox/actions.inc:40
+msgid "Empty Trash folder"
+msgstr "خالی کردن پوشهٔ آشغال"
+
+#: lib/IMP.php:1002
+msgid "Empty _Spam"
+msgstr "خالی کردن هرزنامه‌ها"
+
+#: lib/IMP.php:995
+msgid "Empty _Trash"
+msgstr "خالی کردن سطل آشغال"
+
+#: templates/pgp/pgp.inc:1 templates/pgp/notactive.inc:6
+msgid "Enable PGP functionality?"
+msgstr "آیا قابلیت PGP فعال شود؟"
+
+#: templates/smime/notactive.inc:6 templates/smime/smime.inc:1
+msgid "Enable S/MIME functionality?"
+msgstr "آیا قابلیت S/MIME فعال شود؟"
+
+#: config/prefs.php.dist:821
+msgid "Enable message previews?"
+msgstr "آیا پیش‌نمایشهای پیغام فعال شود؟"
+
+#: templates/compose/compose.inc:441
+msgid "Encr_yption Options"
+msgstr "گزینه‌‌های رمزبندی"
+
+#: lib/MIME/Viewer/itip.php:476 lib/MIME/Viewer/itip.php:613
+msgid "End"
+msgstr "انتها"
+
+#: lib/Compose.php:379
+msgid "End forwarded message"
+msgstr "انتهای پیغام‌ ارجاع شده"
+
+#: lib/Compose.php:336
+msgid "End message"
+msgstr "انتهای پیغام"
+
+# 
+#: lib/Compose.php:334
+#, php-format
+msgid "End message from %s"
+msgstr "انتهای پیغام از %s"
+
+#: templates/pgp/pgp.inc:77 templates/smime/smime.inc:72
+msgid "Enter Passphrase"
+msgstr "واردکردن عبارت گذر"
+
+#: templates/prefs/spamselect.inc:9
+msgid "Enter the name for your new Spam folder"
+msgstr "نام پوشهٔ هرزنامهٔ جدید خود را وارد کنید"
+
+#: templates/prefs/folderselect.inc:9
+msgid "Enter the name for your new drafts folder"
+msgstr "نام پوشهٔ پیش نویس جدید خود را وارد کنید"
+
+#: templates/prefs/sentmailselect.inc:24
+msgid "Enter the name for your new sent mail folder"
+msgstr "نام پوشهٔ نامه‌های ارسال شده جدید خود را وارد کنید"
+
+#: templates/prefs/trashselect.inc:9
+msgid "Enter the name for your new trash folder"
+msgstr "نام پوشهٔ آشغال جدید خود را وارد کنید"
+
+# 
+#: compose.php:1067 thread.php:71 message.php:189
+#, php-format
+msgid "Entry \"%s\" was successfully added to the address book"
+msgstr "ورودی %s با موفّقیّت به کتابچهٔ آدرس اضافه شد"
+
+#: lib/MIME/Viewer/pgp.php:391 lib/MIME/Viewer/status.php:74
+#: lib/MIME/Viewer/status.php:169 lib/MIME/Viewer/pkcs7.php:380
+#: templates/pgp/pgp.inc:21 templates/smime/smime.inc:18
+msgid "Error"
+msgstr "خطا"
+
+# 
+#: lib/MIME/Viewer/itip.php:279 lib/MIME/Viewer/itip.php:372
+#, php-format
+msgid "Error sending reply: %s."
+msgstr "خطا در فرستادن پاسخ:%s"
+
+#: lib/MIME/Viewer/itip.php:94
+msgid "Event successfully deleted."
+msgstr "رویداد با موفّقیّت حذف شد"
+
+#: config/prefs.php.dist:792
+msgid "Every 15 minutes"
+msgstr "هر پانزده دقیقه"
+
+#: config/prefs.php.dist:789
+msgid "Every 30 seconds"
+msgstr "هر سی دقیقه"
+
+#: config/prefs.php.dist:791
+msgid "Every 5 minutes"
+msgstr "هر پنج دقیقه"
+
+#: config/prefs.php.dist:793
+msgid "Every half hour"
+msgstr "هر نیم ساعت"
+
+#: config/prefs.php.dist:790
+msgid "Every minute"
+msgstr "هر دقیقه"
+
+#: folders.php:452
+msgid "Expand"
+msgstr "باز کردن"
+
+#: templates/folders/actions.inc:35
+msgid "Expand All"
+msgstr "بازکردن همه"
+
+#: templates/folders/actions.inc:35
+msgid "Expand All Folders"
+msgstr "بازکردن همه پوشه‌ها"
+
+#: folders.php:452
+msgid "Expand Folder"
+msgstr "بازکردن پوشه"
+
+#: templates/compose/compose.inc:339 templates/compose/redirect.inc:53
+msgid "Expand Names"
+msgstr "بازکردن اسمها"
+
+#: config/prefs.php.dist:1062
+msgid "Expand names in the compose window automatically in the background?"
+msgstr "آیا اسامی بطور خودکار در پس‌زمینهٔ صغحهٔ ایجاد پیغام باز شوند؟"
+
+#: config/prefs.php.dist:992
+msgid "Expand the entire folder tree by default in the folders view?"
+msgstr "آیا بطور پیش فرض در بخش نمایش پوشه‌ها، تمامی درخت پوشه باز شود؟"
+
+#: templates/compose/compose.inc:143 templates/compose/compose.inc:193
+#: templates/compose/compose.inc:244 templates/compose/redirect.inc:101
+msgid "Expanding"
+msgstr "باز کردن"
+
+#: templates/fetchmail/fetchmail.inc:26 config/prefs.php.dist:104
+msgid "Fetch Mail"
+msgstr "واکشی نامه"
+
+#: config/prefs.php.dist:880
+msgid "Fetch Mail in a separate window?"
+msgstr "آیا نامه در پنجرهٔ جداگانه‌ایی واکشی شود؟"
+
+#: templates/fetchmail/manage.inc:46
+msgid "Fetch messages upon logging on?"
+msgstr "آیا پیغامها بمحض ورود واکشی شوند؟"
+
+# 
+#: lib/Fetchmail.php:307
+#, php-format
+msgid "Fetched %d messages from %s"
+msgstr "%d پیغام از %s واکشی شدند"
+
+# 
+#: lib/Fetchmail.php:305
+#, php-format
+msgid "Fetched 1 message from %s"
+msgstr "یک پیغام از %s واکشی شد"
+
+#: lib/Fetchmail.php:303 lib/Fetchmail.php:305 lib/Fetchmail.php:307
+msgid "Fetchmail: "
+msgstr "واکشی نامه:"
+
+# 
+#: lib/Fetchmail.php:309
+msgid "Fetchmail: no new messages."
+msgstr "واکشی نامه: نامهٔ جدیدی وجود ندارد"
+
+#: lib/IMP.php:1019
+msgid "Fi_lters"
+msgstr "فیلترها"
+
+#: templates/compose/compose.inc:500 templates/compose/attachments.js:83
+msgid "File"
+msgstr "پرونده‌"
+
+#: templates/filters/prefs.inc:31
+msgid "Filter Options"
+msgstr "گزینه‌های فیلتر"
+
+#: templates/filters/prefs.inc:9
+msgid "Filter Settings"
+msgstr "تنظیمات فیلتر"
+
+#: config/prefs.php.dist:599
+msgid "Filter message content for profanity?"
+msgstr "آیا مضمون پیغام برای بی‌حرمتی به مقدسات فیلتر شود؟"
+
+#: templates/filters/notactive.inc:11
+msgid "Filter support is disabled on this system."
+msgstr "پشتیبانی فیلتر بر روی این سامانه فعال نیست"
+
+#: config/prefs.php.dist:120
+msgid "Filters"
+msgstr "فیلترها"
+
+#: templates/filters/notactive.inc:3
+msgid "Filters NOT Active"
+msgstr "فیلتر‌ها فعال نیستند"
+
+# 
+#: lib/Filter.php:111
+#, php-format
+msgid "Filters: %s management page"
+msgstr "فیلترها: %s صفحهٔ مدیریت"
+
+#: templates/contacts/contacts.inc:181
+msgid "Find"
+msgstr "پیداکردن"
+
+#: config/prefs.php.dist:917
+msgid "First Mailbox Page"
+msgstr "صفحهٔ اول نامه‌دان "
+
+#: mailbox.php:338
+msgid "First Page"
+msgstr "صفحهٔ اول"
+
+#: templates/message/navbar_actions.inc:15 templates/mailbox/actions.inc:21
+msgid "Fo_rward"
+msgstr "ارجاع"
+
+#: folders.php:254 templates/folders/folders_confirm.html:5
+msgid "Folder Actions - Confirmation"
+msgstr "عملیات پوشه - تأیید"
+
+#: folders.php:291 templates/folders/head.inc:2
+#: templates/prefs/initialpageselect.inc:6
+#: templates/prefs/initialpageselect.inc:10
+msgid "Folder Navigator"
+msgstr "ناوشگر پوشه"
+
+#: templates/login/login.inc:176
+msgid "Folder Prefix"
+msgstr "پیشوند پوشه"
+
+#: lib/Block/summary.php:3
+msgid "Folder Summary"
+msgstr "خلاصهٔ پوشه"
+
+#: acl.php:24
+msgid "Folder sharing is not enabled."
+msgstr "به اشتراک گذاشتن پوشه مقدور نیست"
+
+#: folders.php:52
+msgid "Folder use is not enabled."
+msgstr "استفاده از پوشه مقدور نیست"
+
+#: config/prefs.php.dist:981
+msgid "Format of message dates in the mailbox view for messages dated today"
+msgstr "فرمت تاریخ نامه در نامه‌دان برای نامه‌های امروز "
+
+#: compose.php:726 templates/message/navbar_actions.inc:15
+#: templates/mailbox/actions.inc:21
+msgid "Forward"
+msgstr "ارجاع"
+
+#: compose.php:711
+msgid "Forward:"
+msgstr ":ارجاع"
+
+#: lib/Compose.php:364
+msgid "Forwarded message"
+msgstr "پیغام ارجاع شده"
+
+# 
+#: lib/Compose.php:362
+#, php-format
+msgid "Forwarded message from %s"
+msgstr "پیغام ارجاع شده از %s"
+
+#: lib/MIME/Viewer/itip.php:444
+msgid "Free/Busy Information"
+msgstr "اطلاعات آزاد/مشغول"
+
+#: lib/MIME/Viewer/itip.php:455
+msgid "Free/Busy Reply"
+msgstr "پاسخ آزاد/مشغول"
+
+#: lib/MIME/Viewer/itip.php:449
+msgid "Free/Busy Request"
+msgstr "درخواست آزاد/مشغول"
+
+#: lib/MIME/Viewer/itip.php:366
+msgid "Free/Busy Request Response"
+msgstr "پاسخ درخواست آزاد/مشغول"
+
+#: templates/mailbox/message_headers.inc:27
+msgid "Fro_m"
+msgstr "از"
+
+#: thread.php:145 search.php:139 message.php:258
+#: templates/compose/compose.inc:98
+msgid "From"
+msgstr "از"
+
+#: config/prefs.php.dist:930
+msgid "From Address"
+msgstr "از آدرس"
+
+#: compose.php:723 compose.php:727
+msgid "Fwd:"
+msgstr "ارجاع:"
+
+#: compose.php:1228
+msgid "Fwd: "
+msgstr "ارجاع:"
+
+# 
+#: compose.php:1230
+#, php-format
+msgid "Fwd: %u Forwarded Messages"
+msgstr "ارجاع: %u پیغامهای ارجاع شده"
+
+#: config/prefs.php.dist:13 config/prefs.php.dist:22 config/prefs.php.dist:30
+#: config/prefs.php.dist:38
+msgid "General Options"
+msgstr "گزینه‌های عمومی"
+
+#: templates/fetchmail/manage.inc:37
+msgid "Get only new messages? (IMAP only)"
+msgstr "آیا فقط پیغامهای جدید گرفته شوند؟ (فقط IMAP)"
+
+#: thread.php:132
+msgid "Go to Message"
+msgstr "بازگشت به پیغام"
+
+#: lib/IMP.php:547
+#, php-format
+msgid "Go to address book entry of \"%s\""
+msgstr "برو به ورودی کتابچهٔ آدرس \"%s\" "
+
+#: templates/acl/acl.inc:135
+msgid "Grant access"
+msgstr "واگذاری دسترسی"
+
+#: message.php:550 lib/Filter.php:111 lib/MIME/Viewer/images.php:97
+#: lib/MIME/Viewer/images.php:104 lib/MIME/Viewer/images.php:106
+#: lib/MIME/Viewer/images.php:169 lib/MIME/Viewer/appledouble.php:43
+#: lib/MIME/Viewer/related.php:63 lib/MIME/Viewer/html.php:118
+#: lib/MIME/Viewer/pgp.php:177 lib/MIME/Viewer/status.php:122
+#: lib/MIME/Viewer/status.php:129 lib/MIME/Viewer/notification.php:64
+#: lib/MIME/Viewer/notification.php:70 lib/MIME/Viewer/pkcs7.php:424
+msgid "HERE"
+msgstr "اینجا"
+
+#: lib/MIME/Viewer/related.php:64 lib/MIME/Viewer/html.php:119
+#: templates/stationery/prefs.inc:31
+msgid "HTML"
+msgstr "HTML"
+
+#: compose.php:229
+msgid "HTML Version of Message"
+msgstr "نسخهٔ HTML از پیغام"
+
+#: templates/message/headers.inc:58
+msgid "Headers"
+msgstr "سرآمدها"
+
+#: templates/compose/recompose.inc:5
+msgid "Here is the message you were composing:"
+msgstr "اینجا پیغامی است که شما نوشته‌ا‌ید:"
+
+#: config/prefs.php.dist:671
+msgid "Hidden"
+msgstr "پنهان کردن"
+
+#: config/prefs.php.dist:670
+msgid "Hidden in Thread View"
+msgstr "پنهان کردن در نمایش سلسله‌ایی "
+
+#: mailbox.php:360
+msgid "Hide Deleted"
+msgstr "‍پنهان کردن حذف شده‌ها"
+
+#: folders.php:286
+msgid "Hide Unsubscribed"
+msgstr "پنهان کردن غیرعضو‌ها"
+
+#: templates/compose/compose.inc:293
+msgid "High"
+msgstr "بالا"
+
+#: mailbox.php:715 message.php:292 templates/mailbox/legend.inc:12
+msgid "High Priority"
+msgstr "اولویت بالا"
+
+#: templates/compose/compose.inc:292
+msgid "Highest"
+msgstr "بالاترین"
+
+#: config/prefs.php.dist:691
+msgid "How do you want to display attachments?"
+msgstr "چگونگی نمایش پیوست‌ها"
+
+#: config/prefs.php.dist:501
+msgid "How to attribute quoted lines in a reply"
+msgstr "چگونگی مشخص کردن خطهای نقل قول در یک پاسخ"
+
+#: lib/Fetchmail/imap.php:136
+msgid "IMAP"
+msgstr "IMAP"
+
+#: lib/Fetchmail/imap.php:131
+msgid "IMAP (Auto Detect Protocols)"
+msgstr "IMAP (پیدا کردن پروتکلها بطور خودکار)"
+
+#: lib/Fetchmail/imap.php:148 templates/login/login.inc:163
+msgid "IMAP over SSL"
+msgstr "IMAP روی SSL"
+
+#: lib/Fetchmail/imap.php:154
+msgid "IMAP over SSL (self-signed certificate)"
+msgstr "IMAP بر SSL (گواهی خودامضاء) "
+
+#: templates/login/login.inc:164
+msgid "IMAP over SSL (self-signed)"
+msgstr "IMAP بر SSL(گواهی خودامضاء) "
+
+#: lib/Fetchmail/imap.php:142 templates/login/login.inc:162
+msgid "IMAP, no TLS"
+msgstr "IMAP ،نه TLS"
+
+#: lib/Fetchmail/imap.php:49
+msgid "IMAP/POP3 Mail Servers"
+msgstr "کارسازهای نامه‌های الکترونیکی IMAP/POP3"
+
+#: lib/IMP.php:906
+msgid "INBOX"
+msgstr "INBOX"
+
+#: templates/folders/folders_confirm.html:12
+msgid "If you continue, all messages in the folder(s) will be lost!"
+msgstr "در صورت ادامه، تمامی پیغامها در این پوشه(ها) از بین خواهد رفت!"
+
+#: templates/compose/spelling.inc:82
+msgid "Ignore"
+msgstr "نادیده گرفتن"
+
+#: templates/compose/spelling.inc:83
+msgid "Ignore All"
+msgstr "نادیده گرفتن همه"
+
+#: templates/saveimage/saveimage.inc:8
+msgid "Image"
+msgstr "تصویر"
+
+#: templates/folders/import.inc:20
+msgid "Import"
+msgstr "درون‌برد"
+
+#: templates/pgp/import_key.inc:65 templates/smime/import_key.inc:85
+msgid "Import Key"
+msgstr "درون‌برد کلید"
+
+#: templates/pgp/pgp.inc:139
+msgid "Import Keypair"
+msgstr "درون‌برد جفت کلید"
+
+#: templates/folders/actions.inc:27
+msgid "Import Messages"
+msgstr "درون‌برد پیغامها"
+
+#: pgp.php:42
+msgid "Import PGP Key"
+msgstr "درون‌برد کلید PGP"
+
+#: templates/smime/smime.inc:91
+msgid "Import Personal Certificate"
+msgstr "درون‌برد گواهیهای شخصی"
+
+#: templates/pgp/import_key.inc:14
+msgid "Import Personal Private PGP Key"
+msgstr "درون‌برد کلید خصوصی شخصی PGP"
+
+#: templates/pgp/import_key.inc:9
+msgid "Import Personal Public PGP Key"
+msgstr "درون‌برد کلید عمومی شخصی PGP "
+
+#: templates/smime/import_key.inc:4
+msgid "Import Personal S/MIME Certificates"
+msgstr "درون‌برد گواهیهای S/MIME شخصی"
+
+#: templates/pgp/pgp.inc:42 templates/smime/smime.inc:40
+msgid "Import Public Key"
+msgstr "درون‌برد کلید عمومی"
+
+#: templates/pgp/import_key.inc:4
+msgid "Import Public PGP Key"
+msgstr "درون‌برد کلید عمومی PGP"
+
+#: templates/smime/import_key.inc:8
+msgid "Import Public S/MIME Key"
+msgstr "درون‌برد کلید S/MIME عمومی "
+
+#: smime.php:16
+msgid "Import S/MIME Key"
+msgstr "درون‌برد کلید S/MIME"
+
+#: templates/folders/import.inc:9
+msgid "Import mbox File"
+msgstr "درون‌برد پروندهٔ‌ mbox"
+
+# 
+#: templates/folders/import.inc:16
+#, php-format
+msgid "Import mbox file %s into folder %s."
+msgstr "درون‌برد پروندهٔ‌ %s mbox در پوشهٔ %s"
+
+#: mailbox.php:725 message.php:496 templates/message/navbar_navigate.inc:7
+#: templates/mailbox/navbar.inc:16 templates/mailbox/navbar.inc:33
+#: templates/mailbox/legend.inc:7
+msgid "Important"
+msgstr "مهم"
+
+#: templates/search/main.inc:47
+msgid "Important messages"
+msgstr "پیغامهای مهم"
+
+# 
+#: folders.php:157
+#, php-format
+msgid "Imported %d messages from %s."
+msgstr "%d پیغام از %s درون‌برد شد"
+
+#: lib/MIME/Viewer/itip.php:727
+msgid "In Process"
+msgstr "در حال انجام"
+
+#: folders.php:378 lib/IMP.php:366 lib/Folder.php:242 lib/IMAP/Tree.php:203
+msgid "Inbox"
+msgstr "Inbox"
+
+#: config/prefs.php.dist:489
+msgid "Include a brief summary of the header in a reply?"
+msgstr "آیا پاسخ شامل یک خلاصه از سرآمد باشد؟"
+
+#: config/prefs.php.dist:483
+msgid "Include original message in a reply?"
+msgstr "آیا پاسخ شامل پیغام اصلی باشد؟"
+
+#: lib/MIME/Viewer/status.php:132 lib/MIME/Viewer/notification.php:63
+msgid "Info"
+msgstr "اطلاعات"
+
+# 
+#: templates/pgp/pgp.inc:27 templates/smime/smime.inc:25
+#, php-format
+msgid "Information on %s Public Key"
+msgstr "اطلاعات بر روی کلید عمومی %s"
+
+#: templates/pgp/pgp.inc:77
+msgid "Information on Personal Private Key"
+msgstr "اطلاعات بر روی کلید خصوصی شخصی"
+
+#: templates/pgp/pgp.inc:72 templates/smime/smime.inc:68
+msgid "Information on Personal Public Key"
+msgstr "اطلاعات بر روی کلید عمومی شخصی"
+
+#: templates/compose/attachments.inc:15 templates/compose/compose.inc:505
+#: templates/compose/attachments.js:99
+msgid "Inline"
+msgstr "در خط"
+
+#: templates/smime/import_key.inc:9
+msgid "Insert Certificate Here"
+msgstr "گواهی را اینجا درج کنید"
+
+#: templates/pgp/import_key.inc:15
+msgid "Insert Personal Private PGP Key Here"
+msgstr "کلید محرمانهٔ شخصی PGP را اینجا درج کنید"
+
+#: templates/pgp/import_key.inc:10
+msgid "Insert Personal Public PGP Key Here"
+msgstr "کلید عمومی شخصی PGP را اینجا درج کنید"
+
+#: templates/pgp/import_key.inc:5
+msgid "Insert Public PGP Key Here"
+msgstr "کلید عمومی PGP را اینجا درج کنید"
+
+#: lib/MIME/Viewer/itip.php:377
+msgid "Invalid Action selected for this component."
+msgstr "عمل غیرمعتبری برای این مؤلفه انتخاب شده است"
+
+#: mailbox.php:577 mailbox.php:618
+msgid "Invalid Address"
+msgstr "آدرس غیرمعتبر"
+
+#: lib/Fetchmail/imap.php:311
+msgid "Invalid Remote Mailbox"
+msgstr "نامه‌دان راه دور غیرمعتبر"
+
+#: compose.php:131
+#, php-format
+msgid "Invalid character in e-mail address: %s."
+msgstr "نویسهٔ غیرمعتبر در آدرس پست الکترونیک : %s"
+
+#: pgp.php:16 smime.php:82
+msgid "Invalid key"
+msgstr "کلید غیرمعتبر"
+
+#: pgp.php:196
+msgid "Invalid personal PGP private key."
+msgstr "کلید غیرمعتبر محرمانهٔ شخصی PGP "
+
+#: pgp.php:171
+msgid "Invalid personal PGP public key."
+msgstr "کلید غیرمعتبر عمومی شخصی PGP"
+
+#: templates/mailbox/navbar.inc:12
+msgid "Invert"
+msgstr "معکوس"
+
+#: templates/compose/compose.inc:575
+msgid "KB"
+msgstr "کیلوبایت"
+
+#: templates/pgp/pgp.inc:113
+msgid "Key Length"
+msgstr "طول کلید"
+
+#: templates/pgp/pgp.inc:37 templates/smime/smime.inc:35
+msgid "Key import is not available. File upload is not enabled on this server."
+msgstr "درون‌برد کلید در دسترس نیست. ارسال فایل بر روی این کارساز مقدور نیست"
+
+#: templates/pgp/pgp.inc:39 templates/smime/smime.inc:37
+msgid ""
+"Key import is not available. You have no address book defined to add your "
+"contacts."
+msgstr ""
+"درون‌برد کلید در دسترس نیست. شما کتابچهٔ آدرسی برای تماسهای خود مشخص ننموده‌اید"
+
+#: pgp.php:318
+msgid "Key successfully sent to the public keyserver."
+msgstr "کلید با موفّقیّت به کارساز کلید عمومی فرستاده شد"
+
+#: templates/login/login.inc:207
+msgid "Language"
+msgstr "زبان"
+
+#: config/prefs.php.dist:918
+msgid "Last Mailbox Page"
+msgstr "صفحهٔ آخر نامه‌دان"
+
+#: mailbox.php:351
+msgid "Last Page"
+msgstr "صفحهٔ آخر"
+
+#: templates/compose/compose.inc:388
+msgid "Li_nk Attachments"
+msgstr "پیوند پیوستها"
+
+#: attachment.php:34 lib/Compose.php:1090
+msgid "Linked attachments are forbidden."
+msgstr "پیوستهای پیوندی مجاز نیست"
+
+#: lib/Compose.php:1107
+#, php-format
+msgid "Links will expire on %s"
+msgstr "پیوندها بر روی %s منقضی خواهند شد."
+
+#: config/prefs.php.dist:1081
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+"آیا هنگامی که صفحهٔ تماسها بار می‌شود تمامی تماسها فهرست شوند؟ (در غیر اینصورت "
+"تنها شما تماسهایی را می‌بینید که بطور صریح جستجو کنید)"
+
+#: config/prefs.php.dist:688
+msgid "Listing in the Header"
+msgstr "فهرست شدن در سرآمد"
+
+#: templates/fetchmail/manage.inc:30
+msgid "Local Mailbox:"
+msgstr "نامه‌دان محلی:"
+
+#: lib/MIME/Viewer/itip.php:630
+msgid "Location"
+msgstr "موقعیت"
+
+#: templates/login/login.inc:217
+msgid "Log in"
+msgstr "ورود"
+
+#: lib/Block/summary.php:117
+#, php-format
+msgid "Log in to %s"
+msgstr "ورود به %s"
+
+#: templates/login/login.inc:134
+msgid "Login"
+msgstr "ورود"
+
+#: config/prefs.php.dist:39
+msgid "Login Tasks"
+msgstr "وظایف ورود"
+
+#: templates/compose/compose.inc:295
+msgid "Low"
+msgstr "پایین"
+
+#: mailbox.php:718 message.php:294 templates/mailbox/legend.inc:13
+msgid "Low Priority"
+msgstr "اولویت پایین"
+
+#: templates/compose/compose.inc:296
+msgid "Lowest"
+msgstr "پایین‌تر‌ین"
+
+#: lib/MIME/Viewer/appledouble.php:46
+msgid "Macintosh File"
+msgstr "پرونده‌ Macintosh "
+
+#: templates/smime/passphrase.inc:13
+msgid "Mail"
+msgstr "نامه الکترونیکی"
+
+#: config/prefs.php.dist:96
+msgid "Mail Previews"
+msgstr "پیش‌نمایشهای نامه"
+
+#: templates/fetchmail/driver_select.inc:16
+msgid "Mail server type to connect to:"
+msgstr "نوع کارساز نامهٔ الکترونیکی برای متصل شدن به:"
+
+#: folders.php:396
+msgid "Mailbox"
+msgstr "نامه‌دان"
+
+#: config/prefs.php.dist:111
+msgid "Mailbox and Folder Display Options"
+msgstr "گزینه‌های نمایش نامه‌دان و پوشه"
+
+#: templates/folders/actions.inc:18
+msgid "Mark All Messages in Folder as Seen"
+msgstr "علامت گذاری تمام پیغامهای پوشه به عنوان مشاهده شده"
+
+#: templates/folders/actions.inc:19
+msgid "Mark All Messages in Folder as Unseen"
+msgstr "علامت گذاری تمام پیغامهای پوشه به عنوان مشاهده نشده"
+
+#: templates/message/navbar_navigate.inc:5 templates/mailbox/navbar.inc:30
+msgid "Mark as:"
+msgstr "علامت گذاری بعنوان:"
+
+#: config/prefs.php.dist:653
+msgid "Mark different levels of quoting with different colors?"
+msgstr "آیا سطوح مختلف نقل قولها، با رنگهای مختلف علامت گذاری شود؟"
+
+#: templates/fetchmail/manage.inc:40
+msgid "Mark messages as seen? (IMAP only)"
+msgstr "آیا پیغامها بعنوان مشاهده شده علامت گذاری شوند؟ (فقط IMAP)"
+
+#: config/prefs.php.dist:661
+msgid "Mark simple markup?"
+msgstr "علائم ساده علامت ‌گذاری شوند؟"
+
+#: templates/search/header.inc:46
+msgid "Match All Queries"
+msgstr "تطبیق تمامی پرس‌وجوها"
+
+#: templates/search/header.inc:42
+msgid "Match Any Query"
+msgstr "تطبیق هر پرس‌وجو"
+
+#: templates/compose/compose.inc:511
+msgid "Maximum Attachment Size"
+msgstr "بیشینهٔ اندازهٔ پیوست"
+
+#: lib/api.php:74
+msgid "Maximum Number of Folders"
+msgstr "بیشینهٔ تعداد پوشه‌ها"
+
+#: templates/compose/compose.inc:492
+msgid "Maximum number of attachments reached."
+msgstr "رسیدن به بیشینهٔ تعداد پیوستها"
+
+#: templates/compose/compose.inc:487
+msgid "Maximum total attachment size reached."
+msgstr "رسیدن به بیشینهٔ مجموع اندازهٔ پیوست"
+
+#: lib/MIME/Viewer/itip.php:584
+msgid "Meeting Cancellation"
+msgstr "لغو شدن ملاقات"
+
+#: lib/MIME/Viewer/itip.php:534
+msgid "Meeting Information"
+msgstr "اطلاعات ملاقات"
+
+#: lib/MIME/Viewer/itip.php:544
+msgid "Meeting Proposal"
+msgstr "طرح پیشنهادی ملاقات"
+
+#: lib/MIME/Viewer/itip.php:575
+msgid "Meeting Reply"
+msgstr "پاسخ ملاقات"
+
+#: lib/MIME/Viewer/itip.php:556
+msgid "Meeting Update"
+msgstr "بروزرسانی ملاقات"
+
+#: lib/MIME/Viewer/itip.php:561
+msgid "Meeting Update Request"
+msgstr "درخواست بروزرسانی ملاقات"
+
+#: lib/Block/tree_folders.php:3
+msgid "Menu Folder List"
+msgstr "گزینگان فهرست پوشه"
+
+#: lib/Compose.php:326
+msgid "Message"
+msgstr "پیغام"
+
+#: compose.php:528 compose.php:555 compose.php:587 config/prefs.php.dist:50
+msgid "Message Composition"
+msgstr "ایجاد پیغام"
+
+#: config/prefs.php.dist:929
+msgid "Message Date"
+msgstr "تاریخ پیغام"
+
+#: config/prefs.php.dist:49 config/prefs.php.dist:65 config/prefs.php.dist:78
+#: config/prefs.php.dist:87 config/prefs.php.dist:95 config/prefs.php.dist:103
+msgid "Message Options"
+msgstr "گزینه‌های پیغام"
+
+#: search.php:358
+msgid "Message Search"
+msgstr "جستجوی پیغام"
+
+#: config/prefs.php.dist:933
+msgid "Message Size"
+msgstr "اندازهٔ پیغام"
+
+#: message.php:379
+msgid "Message Source"
+msgstr "سرچشمهٔ پیغام"
+
+#: config/prefs.php.dist:66
+msgid "Message Viewing"
+msgstr "مشاهدهٔ پیغام"
+
+#: templates/search/header.inc:55
+msgid "Message fields"
+msgstr "فیلدهای پیغام"
+
+#: templates/search/main.inc:6
+msgid "Message flags"
+msgstr "پرچمهای پیغام"
+
+#: templates/search/main.inc:83
+msgid "Message folders"
+msgstr "پوشه‌های پیغام"
+
+#: lib/Compose.php:324
+#, php-format
+msgid "Message from %s"
+msgstr "پیغام از %s"
+
+#: mailbox.php:658
+msgid "Message has attachments"
+msgstr " پیغام دارای پیوست است"
+
+#: mailbox.php:649
+msgid "Message is encrypted"
+msgstr " پیغام رمز بندی می‌شود"
+
+#: mailbox.php:644
+msgid "Message is signed"
+msgstr " پیغام امضاء می‌شود"
+
+#: templates/search/header.inc:33
+msgid "Message matches"
+msgstr "تطبیقهای پیغام"
+
+#: compose.php:770 compose.php:784
+msgid "Message redirected successfully."
+msgstr "پیغام با موفّقیّت تغییر مسیر داده شد"
+
+# 
+#: compose.php:1017
+#, php-format
+msgid "Message sent successfully, but not saved to %s"
+msgstr "پیغام با موفّقیّت ارسال شد، اما در %s حفظ نشد"
+
+#: compose.php:1076 compose.php:1091
+msgid "Message sent successfully."
+msgstr "پیغام با موفّقیّت فرستاده شد"
+
+#: config/prefs.php.dist:953
+msgid "Messages per page in the mailbox view."
+msgstr "تعداد پیغامها در هر صفحه نمایش نامه‌دان"
+
+#: mailbox.php:315
+msgid "Messages to"
+msgstr "پیغامها به"
+
+#: templates/acl/acl.inc:29
+msgid "Modify"
+msgstr "تغییر"
+
+# 
+#: templates/compose/expand.inc:12
+#, php-format
+msgid "More than one address found for field '%s'."
+msgstr "برای فیلد '%s' بیش از یک آدرس پیدا شد"
+
+#: templates/message/navbar_navigate.inc:18 templates/mailbox/navbar.inc:50
+msgid "Move"
+msgstr "انتقال"
+
+#: templates/prefs/sourceselect.inc:316
+msgid "Move down"
+msgstr "انتقال به پایین"
+
+#: config/prefs.php.dist:619
+msgid "Move spam messages to spam folder and innocent messages to INBOX"
+msgstr "انتقال هرزنامه‌ها و نامه‌ها به پوشه‌های مربوطه"
+
+#: templates/message/navbar_navigate.inc:18
+msgid "Move to folder"
+msgstr "انتقال به پوشه"
+
+#: templates/prefs/sourceselect.inc:314
+msgid "Move up"
+msgstr "انتقال به بالا"
+
+#: lib/MIME/Viewer/alternative.php:129
+msgid "Multipart/alternative"
+msgstr "چند بخشی/جایگزین"
+
+#: thread.php:76 thread.php:148
+msgid "Multiple Message View"
+msgstr "نمای چندگانهٔ پیغام"
+
+#: templates/pgp/pgp.inc:2 templates/fetchmail/manage.inc:48
+#: templates/smime/smime.inc:2
+msgid "NOTE"
+msgstr "توجه"
+
+#: lib/MIME/Viewer/itip.php:642 templates/contacts/contacts.inc:233
+msgid "Name"
+msgstr "نام"
+
+#: pgp.php:110
+msgid "Name and/or email can not be empty"
+msgstr "نام و/یا آدرس نامهٔ الکترونیکی نمی‌تواند خالی باشد"
+
+#: lib/MIME/Viewer/itip.php:732
+msgid "Needs Action"
+msgstr "نیاز به فعالیت"
+
+#: config/prefs.php.dist:568 config/prefs.php.dist:580
+#: config/prefs.php.dist:788
+msgid "Never"
+msgstr "هرگز"
+
+# 
+#: config/prefs.php.dist:558
+msgid "Never save attachments"
+msgstr "هرگز پیوستها حفظ نشوند"
+
+#: templates/acl/acl.inc:124
+msgid "New"
+msgstr "جدید"
+
+#: lib/IMP.php:611
+msgid "New Folder"
+msgstr "پوشهٔ جدید"
+
+#: config/prefs.php.dist:88
+msgid "New Mail"
+msgstr "نامهٔ جدید"
+
+#: templates/search/main.inc:19
+msgid "New messages"
+msgstr "پیغامهای جدید"
+
+#: templates/compose/spelling.inc:133
+msgid "Next"
+msgstr "بعدی"
+
+#: templates/message/navbar_navigate.inc:33
+msgid "Next Message"
+msgstr "پیغام بعدی"
+
+#: mailbox.php:349
+msgid "Next Page"
+msgstr "صفحهٔ بعدی"
+
+#: templates/compose/compose.inc:540 config/prefs.php.dist:989
+msgid "No"
+msgstr "خیر"
+
+#: smime.php:226
+msgid "No Certificate found"
+msgstr "گواهی‌ا‌یی پیدا نشد"
+
+#: templates/compose/encrypt_list.inc:5
+msgid "No Encryption"
+msgstr "بدون رمزبندی"
+
+#: templates/pgp/pgp.inc:19
+msgid "No Keys in Keyring"
+msgstr "هیچ کلیدی در حلقهٔ کلید نیست"
+
+#: mailbox.php:368
+#, php-format
+msgid "No Messages"
+msgstr "پیغامی نیست"
+
+#: pgp.php:137
+msgid "No PGP public key imported."
+msgstr "هیچ کلید عمومی PGP درون‌برد نشده"
+
+#: templates/smime/smime.inc:84
+msgid "No Personal Certificate Present"
+msgstr "هیچ گواهی شخصی وجود ندارد"
+
+#: lib/Mailbox.php:329
+msgid "No Preview Text"
+msgstr "بدون پیش‌نمایش متن"
+
+#: templates/smime/smime.inc:15
+msgid "No Public Keys Found"
+msgstr "کلید عمومی‌ا‌یی پیدا نشد"
+
+#: smime.php:151
+msgid "No S/MIME public key imported."
+msgstr "هیچ کلید عمومی S/MIME درون‌برد نشده"
+
+#: lib/MIME/Viewer/tnef.php:94
+msgid "No attachments found."
+msgstr "هیچ پیوستی پیدا نشد"
+
+#: acl.php:72 acl.php:98
+msgid "No folder selected."
+msgstr "هیچ پوشه‌ای انتخاب نشد"
+
+#: lib/Block/summary.php:143
+msgid "No folders are being checked for new mail."
+msgstr "هیچ پوشه‌ای برای نامهٔ جدید جستجو نشد"
+
+#: folders.php:206 lib/Folder.php:600 lib/Folder.php:651
+msgid "No folders were specified"
+msgstr "هیچ پوشه‌ای مشخص نشد"
+
+#: lib/Block/summary.php:149
+msgid "No folders with new messages"
+msgstr "پوشه‌ای با پیغامهای جدید نیست"
+
+#: lib/Block/summary.php:146
+msgid "No folders with unseen messages"
+msgstr "پوشه‌ای با پیغام مشاهده نشده نیست"
+
+#: lib/Compose.php:320
+msgid "No message body text"
+msgstr "متن بدنهٔ پیغام نیست"
+
+#: lib/Mailbox.php:373
+msgid "No messages matched your search."
+msgstr "هیچ پیغامی با جستجوی شما تطابق ندارد"
+
+#: pgp.php:189
+msgid "No personal PGP private key imported."
+msgstr "هیچ کلید PGP خصوصی شخصی‌ای درون‌برد نشده"
+
+#: pgp.php:165
+msgid "No personal PGP public key imported."
+msgstr "هیچ کلید PGP عمومی شخصی درون‌برد نشده"
+
+#: smime.php:201
+msgid "No personal S/MIME certificates imported."
+msgstr "هیچ گواهی S/MIME شخصی درون‌برد نشده"
+
+#: spelling.php:220
+msgid "No spellchecking program configured."
+msgstr "هیچ برنامهٔ خطایاب املایی پیکربندی نشده"
+
+#: templates/compose/spelling.inc:48
+msgid "No spelling errors"
+msgstr "هیچ خطای املایی وجود ندارد"
+
+#: templates/compose/spelling.inc:100
+msgid "No suggestions"
+msgstr "پیشنهادی نیست"
+
+#: acl.php:68 acl.php:94
+msgid "No user specified."
+msgstr "هیچ کاربری مشخص نشده"
+
+#: lib/MIME/Viewer/itip.php:663
+msgid "Non Participant"
+msgstr "بدون شرکت کننده"
+
+#: lib/MIME/Viewer/itip.php:620 templates/prefs/sourceselect.inc:35
+#: templates/prefs/sentmailselect.inc:41 templates/prefs/spamselect.inc:24
+#: templates/mailbox/navbar.inc:11
+msgid "None"
+msgstr "هیچکدام"
+
+#: templates/compose/compose.inc:294
+msgid "Normal"
+msgstr "عادی"
+
+#: templates/mailbox/navbar.inc:21 templates/mailbox/navbar.inc:39
+msgid "Not Deleted"
+msgstr "حذف نشده"
+
+#: templates/message/navbar_navigate.inc:12 templates/mailbox/navbar.inc:23
+#: templates/mailbox/navbar.inc:42
+msgid "Not Draft"
+msgstr "غیر پیش نویس"
+
+#: templates/message/navbar_navigate.inc:8 templates/mailbox/navbar.inc:17
+#: templates/mailbox/navbar.inc:34
+msgid "Not Important"
+msgstr "غیر مهم"
+
+#: templates/mailbox/navbar.inc:25
+msgid "Not Personal"
+msgstr "غیر شخصی"
+
+#: lib/Crypt/PGP.php:155 lib/Crypt/SMIME.php:152 lib/Crypt/SMIME.php:158
+#: lib/Crypt/SMIME.php:167
+msgid "Not a valid public key."
+msgstr "کلید عمومی نامعتبر"
+
+#: templates/search/main.inc:67
+msgid "Not deleted messages"
+msgstr "پیغامهای حذف نشده"
+
+#: templates/search/main.inc:51
+msgid "Not important messages"
+msgstr "پیغامهای غیر مهم"
+
+#: lib/Maintenance/Task/fetchmail_login.php:75
+msgid "Note that this can take some time"
+msgstr "توجه کنید که این می‌تواند زمان ببرد"
+
+#: config/prefs.php.dist:617
+msgid "Nothing"
+msgstr "هیچ چیز"
+
+#: config/prefs.php.dist:372
+msgid "Number of months to keep old linked attachments if deleting monthly."
+msgstr "تعداد ماه‌های نگهداری نامه‌های قدیمی، اگر آنها ماهیانه حذف شوند"
+
+#: config/prefs.php.dist:354
+msgid "Number of old sent-mail folders to keep if deleting monthly."
+msgstr ""
+"تعداد پوشه‌های نامه‌های ارسالی قدیمی برای نگهداری، اگر آنها ماهیانه حذف شود"
+
+#: lib/MIME/Viewer/itip.php:511 lib/MIME/Viewer/itip.php:687
+#: templates/contacts/contacts.inc:249
+msgid "OK"
+msgstr "صحیح است"
+
+#: templates/pgp/import_key.inc:48 templates/smime/import_key.inc:49
+#: templates/search/fields.inc:5
+msgid "OR"
+msgstr "یا"
+
+#: templates/search/main.inc:15
+msgid "Old messages"
+msgstr "پیغامهای قدیمی"
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:54
+msgid "Old sent-mail folders being purged."
+msgstr "پوشهٔ نامه‌های فرستاده شده خالی شد"
+
+#: lib/Block/summary.php:27
+msgid "Only display folders with unread messages in them?"
+msgstr "آیا تنها پوشه‌هایی که پیغامهای خوانده نشده دارند نمایش داده شوند؟"
+
+#: templates/folders/javascript.inc:71
+msgid "Only one folder should be selected for this action."
+msgstr "برای این عمل تنها یک پوشه باید انتخاب شود"
+
+#: templates/menu.inc:10 templates/menu.inc:29
+msgid "Ope_n Folder"
+msgstr "بازکردن پوشه"
+
+#: templates/menu.inc:26
+msgid "Open Folder"
+msgstr "باز کردن پوشه"
+
+#: folders.php:421
+msgid "Opened Folder"
+msgstr "پوشهٔ باز شده"
+
+#: lib/MIME/Viewer/itip.php:659
+msgid "Optional Participant"
+msgstr "شریک انتخابی"
+
+#: fetchmail.php:33 templates/fetchmail/top.inc:3
+#: templates/fetchmail/fetchmail.inc:6
+msgid "Other Mail Accounts"
+msgstr "بقیه حسابهای پستی"
+
+#: config/prefs.php.dist:110 config/prefs.php.dist:119
+#: config/prefs.php.dist:126 config/prefs.php.dist:134
+#: config/prefs.php.dist:143
+msgid "Other Options"
+msgstr "گزینه‌های دیگر"
+
+#: lib/MIME/Viewer/pgp.php:169 lib/MIME/Viewer/pgp.php:209
+#: lib/MIME/Viewer/pgp.php:295 templates/pgp/passphrase.inc:16
+msgid "PGP"
+msgstr "PGP"
+
+#: templates/compose/encrypt_list.inc:7
+msgid "PGP Encrypt Message"
+msgstr "پیغام رمزبندی شدهٔ PGP"
+
+#: compose.php:329
+msgid "PGP Error: "
+msgstr "خطای PGP: "
+
+#: compose.php:308
+msgid "PGP Error: Need passphrase for personal private key."
+msgstr "خطای PGP: به عبارت گذر برای کلید خصوصی شخصی نیاز می‌باشد"
+
+#: config/prefs.php.dist:135
+msgid "PGP Options"
+msgstr "گزینه‌های PGP"
+
+#: pgp.php:30
+msgid "PGP Passphrase Input"
+msgstr "واردکردن عبارت گذرPGP "
+
+#: templates/pgp/pgp.inc:55
+msgid "PGP Personal Keypair support requires a secure web connection."
+msgstr "پشتیبانی جفت کلید شخصی PGP به یک اتصال امن وب نیاز دارد"
+
+#: lib/MIME/Viewer/pgp.php:177
+msgid "PGP Public Key Text"
+msgstr "متن کلید عمومی PGP"
+
+# 
+#: pgp.php:149
+#, php-format
+msgid "PGP Public Key for \"%s (%s)\" was successfully added."
+msgstr "کلید عمومی PGP برای \"%s (%s)\" با موفّقیّت اضافه شد"
+
+# 
+#: pgp.php:245
+#, php-format
+msgid "PGP Public Key for \"%s\" was successfully deleted."
+msgstr "کلید عمومی PGP برای \"%s\" با موفّقیّت حذف شد"
+
+#: templates/pgp/pgp.inc:14
+msgid "PGP Public Keyring"
+msgstr "حلقه کلید عمومی PGP"
+
+#: templates/compose/encrypt_list.inc:8
+msgid "PGP Sign Message"
+msgstr "پیغام امضاء شدهٔ PGP"
+
+#: templates/compose/encrypt_list.inc:9
+msgid "PGP Sign/Encrypt Message"
+msgstr "پیغام امضاء شده/رمزبندی شده PGP"
+
+#: pgp.php:202
+msgid "PGP private key successfully added."
+msgstr "کلید شخصی PGP با موفّقیّت اضافه شد"
+
+#: pgp.php:177
+msgid "PGP public key successfully added."
+msgstr "کلید عمومی PGP با موفّقیّت اضافه شد"
+
+#: templates/pgp/notactive.inc:4
+msgid "PGP support is disabled on this system."
+msgstr "پشتیبانی PGP روی این سامانه فعال نیست"
+
+#: lib/MIME/Viewer/pgp.php:213
+msgid ""
+"PGP support is not currently active so the digital signature is unable to be "
+"verified."
+msgstr ""
+"پشتیبانی PGP در حال حاضر فعال نمی‌باشد از اینرو امضای دیجیتالی قابل بازبینی "
+"نیست"
+
+#: lib/MIME/Viewer/pgp.php:300
+msgid ""
+"PGP support is not currently active so the message is unable to be decrypted."
+msgstr ""
+"پشتیبانی PGP در حال حاضر فعال نمی‌باشد از اینرو پیغام قابل رمزگشایی نیست "
+
+#: templates/pgp/pgp.inc:2
+msgid ""
+"PGP support requires popup windows to be used.  If your browser is currently "
+"set to disable popup windows, you must change this setting or else the PGP "
+"features will not work correctly."
+msgstr ""
+"PGP برای عملکرد صحیح خود از پنجره‌های گشودنی استفاده می‌کند. مرورگر خود را "
+"برای استفاده از این پنجره‌ها تنظیم کنید"
+
+#: lib/Fetchmail/imap.php:107
+msgid "POP3"
+msgstr "POP3"
+
+#: lib/Fetchmail/imap.php:102
+msgid "POP3 (Auto Detect Protocols)"
+msgstr "POP3 (تشخیص خودکار پروتکلها) "
+
+#: lib/Fetchmail/imap.php:119
+msgid "POP3 over SSL"
+msgstr "POP3 روی SSL"
+
+#: lib/Fetchmail/imap.php:125
+msgid "POP3 over SSL (self-signed certificate)"
+msgstr "POP3 روی SSL (گواهی خودامضاء)"
+
+#: templates/login/login.inc:166
+msgid "POP3 over SSL (self-signed)"
+msgstr "POP3 روی SSL (خودامضاء)"
+
+#: lib/Fetchmail/imap.php:113
+msgid "POP3, no TLS"
+msgstr "POP3، نه TLS"
+
+# 
+#: templates/mailbox/header.inc:19
+#, php-format
+msgid "Page %d of %d"
+msgstr "صفحهٔ %d از %d"
+
+#: config/prefs.php.dist:915
+msgid "Page with the First Unseen Message"
+msgstr "صفحه با اولین پیغام مشاهده نشده"
+
+#: config/prefs.php.dist:916
+msgid "Page with the Last Unseen Message"
+msgstr "صفحه با آخرین پیغام مشاهده نشده"
+
+#: templates/message/headers.inc:43
+msgid "Part(s)"
+msgstr "بخش(ها)"
+
+#: templates/pgp/pgp.inc:123
+msgid "Passphrase"
+msgstr "عبارت گذر"
+
+#: templates/pgp/pgp.inc:128
+msgid "Passphrase (Again)"
+msgstr "عبارت گذر (دوباره)"
+
+#: pgp.php:310 smime.php:235
+msgid "Passphrase successfully unloaded."
+msgstr " عبارت گذر با موفّقیّت ارسال شد"
+
+#: templates/pgp/passphrase.inc:29 templates/smime/passphrase.inc:17
+msgid "Passphrase:"
+msgstr "عبارت گذر:"
+
+#: pgp.php:112
+msgid "Passphrases can not be empty"
+msgstr " عبارت گذر نمی‌تواند خالی باشد"
+
+#: pgp.php:114
+msgid "Passphrases do not match"
+msgstr "عبارات گذر منطبق نیستند"
+
+#: templates/fetchmail/manage.inc:20 templates/smime/import_key.inc:71
+#: templates/login/login.inc:199
+msgid "Password"
+msgstr "اسم رمز"
+
+#: templates/fetchmail/manage.inc:48
+msgid "Perform maintenance operations on login?"
+msgstr "آیا عملیات نگهداری به هنگام ورود اجرا شود؟"
+
+#: acl.php:76 acl.php:102
+msgid "Permissions for this user can not be changed."
+msgstr "مجوزهای این کاربر را نمی‌توان تغییر داد"
+
+#: mailbox.php:694 message.php:487 templates/mailbox/navbar.inc:24
+#: templates/mailbox/legend.inc:10
+msgid "Personal"
+msgstr "شخصی"
+
+#: config/prefs.php.dist:14
+msgid "Personal Information"
+msgstr "اطلاعات شخصی"
+
+#: pgp.php:120
+msgid "Personal PGP keypair generated successfully."
+msgstr "جفت کلید شخصی PGP با موفّقیّت تولید شد"
+
+#: pgp.php:127
+msgid "Personal PGP keys deleted successfully."
+msgstr "کلیدهای شخصی PGP با موفّقیّت حذف شدند"
+
+#: smime.php:207
+msgid "Personal S/MIME certificates NOT imported: "
+msgstr "گواهیهای شخصی S/MIME درون‌برد نشد:"
+
+#: smime.php:132
+msgid "Personal S/MIME keys deleted successfully."
+msgstr "کلیدهای شخصی S/MIME با موفّقیّت حذف شدند"
+
+#: config/prefs.php.dist:215
+msgid "Place your signature before replies and forwards?"
+msgstr "آیا قبل از پاسخ و ارجاع امضای شما گنجانده شود؟"
+
+#: compose.php:227
+msgid "Plaintext Version of Message"
+msgstr "نسخهٔ متن معمولی پیغام"
+
+#: config/prefs.php.dist:809
+msgid ""
+"Play sound on new mail?  This requires your browser to support embedded "
+"sound files.  Almost all do on Windows and Mac, but other platforms will "
+"require a plugin."
+msgstr ""
+"آیا پخش صدا بر روی نامهٔ جدید صورت گیرد؟ برای این منظور می‌بایست مرورگر شما از "
+"اینگونه فایلهای صوتی پشتیبانی نماید."
+
+#: templates/message/javascript.inc:55 templates/mailbox/javascript.inc:200
+msgid "Please enter a name for the new folder:"
+msgstr "لطفاً نامی برای پوشهٔ جدید وارد کنید:"
+
+#: templates/folders/javascript.inc:94 templates/folders/javascript.inc:96
+msgid "Please enter the name of the new folder:"
+msgstr "لطفاً نامی برای پوشهٔ جدید وارد کنید:"
+
+#: templates/folders/javascript.inc:129
+msgid "Please enter the new name:"
+msgstr "لطفاً نام جدید را وارد کنید:"
+
+#: templates/pgp/passphrase.inc:19
+#, php-format
+msgid ""
+"Please enter the passphrase for your PGP private key. You will only need to "
+"enter this passphrase once per %s session."
+msgstr ""
+"لطفاً عبارت گذر را برای کلید خصوصی PGP خود وارد کنید. شما به این عمل تنها در "
+"هر %s نشست نیاز دارید"
+
+#: templates/smime/passphrase.inc:13
+#, php-format
+msgid ""
+"Please enter the passphrase for your S/MIME private key. You will only need "
+"to enter this passphrase once per %s session."
+msgstr ""
+"لطفاً عبارت گذر را برای کلید خصوصی S/MIME خود وارد کنید. شما به این عمل تنها "
+"در هر %s نشست نیاز دارید"
+
+#: recompose.php:88
+msgid ""
+"Please log in again to resume composing your message. If you are NOT using "
+"cookies AND you are composing messages in popup windows, you will have to "
+"log in again in your main window as well. This is to keep attackers from "
+"hijacking your session ID. We apologize for any inconvenience."
+msgstr ""
+"لطفاً برای ادامه عمل ارسال پیغام دوباره وارد شوید. زیرا اگر شما از کوکیها "
+"استفاده نکنید و صفحه تولید پیغام شما در یک پنجره گشودنی باشد، شما مجبور به "
+"ورود دوباره در پنجرهٔ اصلی خواهید بود و این امر می‌تواند باعث دزدیدن ID نشست  "
+"شما توسط نفوذگران شود"
+
+#: templates/login/login.inc:71
+msgid "Please provide your password."
+msgstr "لطفاً اسم رمز خود را آماده کنید"
+
+#: templates/login/login.inc:67
+msgid "Please provide your username."
+msgstr "لطفاً نام کاربری خود را آماده کنید:"
+
+#: compose.php:79 lib/IMP.php:517
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "لطفاً ابهام یا آدرس غیرمعتبر را برطرف کنید"
+
+#: lib/MIME/Viewer/itip.php:600
+msgid ""
+"Please review the following information, and then select an action from the "
+"menu below."
+msgstr ""
+"لطفاً اطلاعات زیر را مرور کرده، و سپس یک فعالیت از گزینگان زیر را برگزینید"
+
+#: templates/folders/javascript.inc:53
+msgid "Please select a folder before you perform any actions."
+msgstr "لطفاً قبل از انجام هر گونه فعالیتی یک پوشه انتخاب کنید"
+
+#: lib/MIME/Viewer/itip.php:463
+msgid "Please select an action from the menu below."
+msgstr "لطفاً یک فعالیت از گزینگان زیر را برگزینید"
+
+#: templates/search/javascript.inc:41
+msgid "Please select at least one folder to search."
+msgstr "لطفاً حداقل یک شاخه برای جستجو انتخاب کنید"
+
+#: templates/folders/javascript.inc:4
+msgid "Please select only one folder for this operation."
+msgstr "لطفاً برای این عمل فقط یک پوشه انتخاب کنید"
+
+#: templates/compose/redirect.inc:73
+msgid "Please select or edit in the box to the right:"
+msgstr "لطفاً در جعبهٔ چپ انتخاب و یا ویرایش کنید:"
+
+#: config/motd.php.dist:41
+msgid "Powered by Horde"
+msgstr "در اختیار هورد"
+
+#: config/prefs.php.dist:207
+msgid "Precede your signature with dashes ('-- ')?"
+msgstr "قبل از امضای شما خط فاصله ('-- ') گذاشته شود؟"
+
+#: filterprefs.php:40 pgp.php:257 smime.php:241
+msgid "Preferences successfully updated."
+msgstr "گزینه‌ها با موفّقیّت بروزرسانی شدند"
+
+#: templates/compose/attachments.inc:3
+msgid "Preview"
+msgstr "پیش‌نمایش"
+
+#: templates/message/navbar_navigate.inc:28
+msgid "Previous Message"
+msgstr "پیغام قبلی"
+
+#: mailbox.php:340
+msgid "Previous Page"
+msgstr "صفحهٔ قبلی"
+
+#: templates/message/navbar_actions.inc:33
+msgid "Print"
+msgstr "چاپ"
+
+#: templates/message/headers.inc:38
+msgid "Priority"
+msgstr "اولویت"
+
+#: templates/smime/import_key.inc:76
+msgid "Private Key Password"
+msgstr "اسم رمز کلید خصوصی"
+
+#: config/prefs.php.dist:557
+msgid "Prompt every time an attachment is sent; default to NO"
+msgstr "اعلان زمانی که یک پیوست ارسال می‌گردد: مقدار پیش فرض نه است"
+
+#: config/prefs.php.dist:556
+msgid "Prompt every time an attachment is sent; default to YES"
+msgstr "اعلان زمانی که یک پیوست ارسال می‌گردد: مقدار پیش فرض بله است"
+
+#: templates/fetchmail/manage.inc:10
+msgid "Protocol:"
+msgstr "پروتکل:"
+
+#: lib/Crypt/PGP.php:461
+msgid "Public PGP keyserver support has been disabled."
+msgstr "پشتیبانی کارساز کلید عمومی ‌PGP غیر فعال شده است"
+
+#: templates/mailbox/actions_deleted.inc:8 templates/mailbox/actions.inc:37
+msgid "Pur_ge Deleted"
+msgstr "پاکسازی حذف شده‌ها"
+
+#: templates/mailbox/actions_deleted.inc:8 templates/mailbox/actions.inc:37
+msgid "Purge Deleted"
+msgstr "پاکسازی حذف شده‌ها"
+
+#: templates/folders/actions.inc:24
+msgid "Purge Folder(s)"
+msgstr "پاکسازی پوشه(ها)"
+
+#: config/prefs.php.dist:391
+msgid "Purge Trash how often:"
+msgstr " پاکسازی سطل آشغال در بازه‌های زمانی:"
+
+#: config/prefs.php.dist:400
+msgid "Purge messages in Trash folder older than this amount of days."
+msgstr "پاکسازی پیغامهای پوشهٔ سطل آشغال که از این چند روز قدیمی‌تر‌ باشند"
+
+#: config/prefs.php.dist:381
+msgid "Purge old messages in the Trash folder?"
+msgstr "آیا پیغامهای قدیمی در پوشهٔ سطل آشغال پاکسازی شوند؟"
+
+# 
+#: lib/Maintenance/Task/purge_trash.php:68
+#, php-format
+msgid "Purging %d messages from Trash folder."
+msgstr "پاکسازی %d پیغام از پوشهٔ سطل آشغال"
+
+# 
+#: lib/Maintenance/Task/purge_trash.php:66
+msgid "Purging 1 message from Trash folder."
+msgstr "پاکسازی یک پیغام از پوشهٔ سطل آشغال"
+
+# 
+#: templates/quota/quota.inc:17
+#, php-format
+msgid "Quota status: %.2fMB / %.2fMB  (%.2f%%)"
+msgstr "وضعیت‌ سهمیه: %.2fMB / %.2fMB  (%.2f%%)"
+
+# 
+#: templates/quota/quota.inc:21
+#, php-format
+msgid "Quota status: %.2fMB / NO LIMIT"
+msgstr "وضعیت سهمیه: %.2f مگابایت/بدون محدودیت"
+
+# 
+#: templates/quota/quota.inc:24
+#, php-format
+msgid "Quota status: NO LIMIT"
+msgstr "وضعیت‌ سهمیه: بدون محدودیت"
+
+#: config/prefs.php.dist:497
+#, php-format
+msgid "Quoting %f:"
+msgstr "نقل قول %f:"
+
+#: templates/compose/compose.inc:385
+msgid "Re_quest Delivery Confirmation"
+msgstr "درخواست تائیدیهٔ تحویل"
+
+#: search.php:163
+msgid "Received On"
+msgstr "دریافت شده بر"
+
+#: search.php:171
+msgid "Received Since"
+msgstr "دریافت شده از"
+
+#: search.php:167
+msgid "Received Until"
+msgstr "دریافت شده تا"
+
+#: templates/message/navbar_actions.inc:16
+msgid "Redirec_t"
+msgstr "تغییر مسیر"
+
+#: templates/message/navbar_actions.inc:16
+msgid "Redirect"
+msgstr "تغییر مسیر"
+
+#: templates/compose/redirect.inc:110
+msgid "Redirect Message"
+msgstr "تغییر مسیر پیغام"
+
+#: compose.php:733
+msgid "Redirect this message"
+msgstr "تغییر مسیر این پیغام"
+
+#: compose.php:793
+msgid "Redirecting failed."
+msgstr "تغییر مسیر ناموفّق بود"
+
+#: templates/compose/compose.inc:581
+msgid "Refresh"
+msgstr "بازآوری"
+
+#: config/prefs.php.dist:794
+msgid "Refresh Folder Views:"
+msgstr "بازآوری نماهای پوشه:"
+
+#: templates/folders/head.inc:3 templates/mailbox/header.inc:4
+msgid "Reload"
+msgstr "بارگذاری مجدد"
+
+#: templates/folders/head.inc:3
+msgid "Reload View"
+msgstr "بارگذاری مجدد نما"
+
+#: lib/MIME/Viewer/itip.php:485 lib/MIME/Viewer/itip.php:504
+msgid "Remember the free/busy information."
+msgstr "به یادآوری اطلاعات آزاد/مشغول"
+
+#: config/prefs.php.dist:991
+msgid "Remember the last view"
+msgstr "به ‌یادآوری آخرین فرم نمایش"
+
+#: templates/fetchmail/manage.inc:27
+msgid "Remote Mailbox:"
+msgstr "نامه‌دان راه دور:"
+
+#: templates/search/fields.inc:40
+msgid "Remove Field From Search"
+msgstr "حذف فیلد از جستجو"
+
+#: templates/prefs/sourceselect.inc:305
+msgid "Remove source"
+msgstr "حذف سرچشمه"
+
+#: templates/folders/actions.inc:8
+msgid "Rename Folder(s)"
+msgstr "تغییر نام پوشه(ها)"
+
+#: config/prefs.php.dist:336
+msgid "Rename sent-mail folder at beginning of month?"
+msgstr "آیا پوشهٔ نامه‌های فرستاده شده در ابتدای ماه تغییر نام داده شود؟"
+
+# 
+#: lib/Folder.php:554
+#, php-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr "تغییر نام \"%s\" به \"%s\" ناموفّق بود. این چیزی است که کارساز گفته است"
+
+#: templates/message/navbar_actions.inc:10
+msgid "Repl_y to List"
+msgstr "پاسخ به فهرست"
+
+#: templates/compose/spelling.inc:105
+msgid "Replace with:"
+msgstr "جایگزین کردن با:"
+
+#: templates/message/navbar_actions.inc:8
+msgid "Reply"
+msgstr "پاسخ "
+
+#: lib/MIME/Viewer/itip.php:281 lib/MIME/Viewer/itip.php:374
+msgid "Reply Sent."
+msgstr "پاسخ ارسال شد"
+
+#: templates/message/navbar_actions.inc:13
+msgid "Reply to All"
+msgstr "پاسخ به همه"
+
+#: compose.php:679
+msgid "Reply to All:"
+msgstr "پاسخ به همه:"
+
+#: templates/message/navbar_actions.inc:10
+msgid "Reply to List"
+msgstr "پاسخ به فهرست"
+
+#: compose.php:681
+msgid "Reply to List:"
+msgstr ":پاسخ به فهرست"
+
+#: templates/message/navbar_actions.inc:13
+msgid "Reply to _All"
+msgstr "پاسخ به همه"
+
+#: lib/MIME/Viewer/itip.php:487 lib/MIME/Viewer/itip.php:496
+#: lib/MIME/Viewer/itip.php:506
+msgid "Reply with Not Supported Message"
+msgstr "پاسخ با پیغام پشتیبانی نشده"
+
+#: lib/MIME/Viewer/itip.php:494
+msgid "Reply with free/busy for next 2 months."
+msgstr "پاسخ با آزاد/مشغول برای دو ماه آینده"
+
+#: lib/MIME/Viewer/itip.php:493
+msgid "Reply with requested free/busy information."
+msgstr "پاسخ با اطلاعات آزاد/مشغول خواسته شده"
+
+#: message.php:262
+msgid "Reply-To"
+msgstr "پاسخ به"
+
+#: lib/Compose.php:404
+msgid "Reply-To: "
+msgstr "پاسخ به: "
+
+#: compose.php:677
+msgid "Reply:"
+msgstr "پاسخ:"
+
+#: templates/message/navbar_actions.inc:38 templates/mailbox/actions.inc:26
+msgid "Report as Innocent"
+msgstr "گزارش بعنوان بی‌ضرر"
+
+#: templates/message/navbar_actions.inc:35 templates/mailbox/actions.inc:24
+msgid "Report as Spam"
+msgstr "گزارش بعنوان هرزنامه"
+
+#: templates/compose/compose.inc:382
+msgid "Request a _Read Receipt"
+msgstr "درخواست یک رسید مطالعه"
+
+#: config/prefs.php.dist:583
+msgid "Request delivery confirmation?"
+msgstr " آیا برای تحویل تائیدیه درخواست شود؟"
+
+#: config/prefs.php.dist:571
+msgid "Request read receipts?"
+msgstr "آیا رسید مطالعه درخواست شود؟"
+
+#: mailbox.php:189
+msgid "Requested message not found."
+msgstr "پیغام خواسته شده پیدا نشد"
+
+#: lib/MIME/Viewer/itip.php:651
+msgid "Required Participant"
+msgstr "شریک مورد نیاز"
+
+#: templates/acl/acl.inc:161 templates/search/main.inc:143
+#: templates/search/header.inc:26
+msgid "Reset"
+msgstr "بازنشانی"
+
+#: lib/MIME/Viewer/itip.php:108
+msgid "Respondent Status Updated."
+msgstr "حالات پاسخگویی بروزرسانی شدند"
+
+#: templates/message/navbar_actions.inc:30
+msgid "Resume"
+msgstr "از سرگرفتن"
+
+#: recompose.php:89
+msgid "Resume your session"
+msgstr "از سر گرفتن نشست شما"
+
+#: templates/stationery/prefs.inc:44
+msgid "Return to \"Message Composition\""
+msgstr "بازگشت به ایجاد پیغام"
+
+#: templates/fetchmail/driver_select.inc:31
+#: templates/fetchmail/account_select.inc:32 templates/fetchmail/manage.inc:69
+msgid "Return to Fetch Mail"
+msgstr "بازگشت به واکشی نامه"
+
+#: templates/pgp/pgp.inc:149 templates/pgp/notactive.inc:15
+#: templates/filters/notactive.inc:22 templates/filters/prefs.inc:60
+msgid "Return to Main Preferences Screen"
+msgstr "بازگشت به صفحهٔ اصلی گزینه‌ها"
+
+#: templates/acl/acl.inc:162 templates/acl/acl.inc:173
+#: templates/smime/notactive.inc:14 templates/smime/smime.inc:101
+msgid "Return to Options"
+msgstr "بازگشت به گزینه‌ها"
+
+#: config/prefs.php.dist:723
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr ""
+"آیا بعد از حذف، انتقال و یا رونوشت گرفتن از یک پیغام، به فهرست نامه‌دان "
+"بازگشت شود؟"
+
+#: lib/MIME/Viewer/itip.php:642
+msgid "Role"
+msgstr "نقش"
+
+#: lib/MIME/Viewer/pkcs7.php:144 lib/MIME/Viewer/pkcs7.php:239
+#: lib/MIME/Viewer/pkcs7.php:425
+msgid "S/MIME"
+msgstr "S/MIME"
+
+#: templates/compose/encrypt_list.inc:12
+msgid "S/MIME Encrypt Message"
+msgstr "پیغام رمزبندی S/MIME "
+
+#: compose.php:365
+msgid "S/MIME Error: "
+msgstr "خطای S/MIME: "
+
+#: compose.php:344
+msgid "S/MIME Error: Need passphrase for personal private key."
+msgstr "خطای S/MIME: نیاز به عبارت گذر برای کلید خصوصی شخصی"
+
+#: config/prefs.php.dist:144
+msgid "S/MIME Options"
+msgstr "گزینه‌های S/MIME"
+
+#: smime.php:49
+msgid "S/MIME Passphrase Input"
+msgstr "واردکردن S/MIME عبارت گذر"
+
+#: templates/smime/smime.inc:54
+msgid "S/MIME Personal Keypair support requires a secure web connection."
+msgstr "پشتیبانی جفت کلید شخصی S/MIME به یک اتصال امن وب نیازمند است"
+
+# 
+#: smime.php:140
+#, php-format
+msgid "S/MIME Public Key for \"%s\" was successfully deleted."
+msgstr "کلید عمومی S/MIME برای \"%s\" با موفّقیّت حذف شد"
+
+#: smime.php:162
+msgid "S/MIME Public Key successfully added."
+msgstr "کلید عمومی S/MIME با موفّقیّت اضافه شد"
+
+#: templates/smime/smime.inc:10
+msgid "S/MIME Public Keyring"
+msgstr "حلقهٔ کلید عمومی S/MIME"
+
+#: smime.php:211
+msgid "S/MIME Public/Private Keypair successfully added."
+msgstr "جفت کلید عمومی/شخصی S/MIME با موفّقیّت اضافه شد"
+
+#: templates/compose/encrypt_list.inc:13
+msgid "S/MIME Sign Message"
+msgstr "امضاء شده S/MIME پیغام"
+
+#: templates/compose/encrypt_list.inc:14
+msgid "S/MIME Sign/Encrypt Message"
+msgstr "پیغام رمزبندی شده/امضاء شده S/MIME "
+
+#: templates/smime/notactive.inc:4
+msgid "S/MIME support is disabled on this system."
+msgstr "پشتیبانی S/MIME روی این سامانه فعال نیست"
+
+#: lib/MIME/Viewer/pkcs7.php:243
+msgid ""
+"S/MIME support is not currently enabled so the message is unable to be "
+"decrypted."
+msgstr ""
+"پشتیبانی S/MIME در حال حاضر فعال نیست از اینرو پیغام قابل رمزگشایی نیست"
+
+#: lib/MIME/Viewer/pkcs7.php:175
+msgid ""
+"S/MIME support is not enabled so the contents of this signed message can not "
+"be displayed."
+msgstr "پشتیبانی S/MIME فعال نیست از اینرو متن پیغام نمی‌تواند نمایش داده شود"
+
+#: lib/MIME/Viewer/pkcs7.php:148
+msgid ""
+"S/MIME support is not enabled so the digital signature is unable to be "
+"verified."
+msgstr "پشتیبانی S/MIME فعال نیست از اینرو امضای دیجیتالی قابل بازبینی نیست"
+
+#: templates/smime/smime.inc:2
+msgid ""
+"S/MIME support requires popup windows to be used.  If your browser is "
+"currently set to disable popup windows, you must change this setting or else "
+"the S/MIME features will not work correctly."
+msgstr ""
+"پشتیبانی S/MIME برای عملکرد صحیح خود نیاز به پنجره‌های گشودنی دارد مرورگرخود "
+"را برای استفاده از این پنجره‌ها تنظیم کنید"
+
+#: templates/compose/compose.inc:254
+msgid "S_ubject"
+msgstr "عنوان"
+
+#: templates/compose/compose.inc:362
+msgid "Sa_ve a copy in "
+msgstr "حفظ یک رونوشت در"
+
+#: templates/message/navbar_actions.inc:32
+msgid "Sa_ve as"
+msgstr "حفظ با نام"
+
+#: search.php:362 templates/fetchmail/manage.inc:67
+msgid "Save"
+msgstr "حفظ"
+
+#: templates/compose/compose.inc:536
+msgid "Save Attachments with message in sent-mail folder?"
+msgstr "آیا پیوستهای پیغام در پوشهٔ نامه‌های فرستاده شده حفظ شود؟"
+
+#: templates/compose/compose.inc:68 templates/compose/compose.inc:432
+msgid "Save Draft"
+msgstr "حفظ پیش نویس"
+
+#: saveimage.php:42
+msgid "Save Image"
+msgstr "حفظ تصویر"
+
+#: lib/MIME/Contents.php:217
+msgid "Save Image in Gallery"
+msgstr "حفظ تصویر در گالری"
+
+#: templates/pgp/pgp.inc:148 templates/pgp/notactive.inc:13
+#: templates/filters/prefs.inc:59 templates/smime/notactive.inc:12
+#: templates/smime/smime.inc:100
+msgid "Save Options"
+msgstr "حفظ گزینه‌ها"
+
+#: templates/stationery/prefs.inc:40
+msgid "Save Stationery"
+msgstr "حفظ نوشت‌افزار"
+
+#: templates/compose/compose.inc:68 templates/compose/compose.inc:432
+msgid "Save _Draft"
+msgstr "حفظ پیش نویس"
+
+#: templates/message/navbar_actions.inc:32
+msgid "Save as"
+msgstr "حفظ با نام"
+
+#: config/prefs.php.dist:518
+msgid "Save drafts as unseen?"
+msgstr "آیا پیش نویسها بعنوان پیغامهای مشاهده نشده حفظ شود؟"
+
+#: config/prefs.php.dist:1071
+msgid "Save recipients automatically to the default address book?"
+msgstr "آیا گیرنده‌ها به طور خودکار در کتابچهٔ آدرس حفظ شوند؟"
+
+#: templates/search/main.inc:127
+msgid "Save search as a virtual folder?"
+msgstr "آیا جستجو به عنوان یک پوشهٔ مجازی حفظ شود؟"
+
+#: config/prefs.php.dist:224
+msgid "Save sent mail?"
+msgstr "آیا نامهٔ فرستاده شده حفظ شود؟"
+
+# 
+#: compose.php:1161
+#, php-format
+msgid "Saving the draft failed. This is what the server said: %s"
+msgstr "حفظ پیش نویس ناموفّق بود. این چیزی است که کارساز گفته است: %s"
+
+#: lib/Block/tree_folders.php:50 templates/contacts/contacts.inc:194
+#: templates/mailbox/header.inc:11
+msgid "Search"
+msgstr "جستجو"
+
+#: templates/mailbox/header.inc:11 templates/search/header.inc:18
+#, php-format
+msgid "Search %s"
+msgstr "جستجو %s"
+
+#: search.php:315
+msgid "Search Results"
+msgstr "نتایج جستجو"
+
+#: templates/mailbox/navbar.inc:14 templates/mailbox/navbar.inc:31
+msgid "Seen"
+msgstr "مشاهده شده"
+
+# #-#-#-#-#  fa_IR.po (Turba 1.2.2)  #-#-#-#-#
+# msgid "Search Results"
+# msgstr "نتایج جستجو"
+#: templates/mailbox/navbar.inc:9
+msgid "Select"
+msgstr "انتخاب"
+
+#: templates/fetchmail/manage.inc:70
+msgid "Select Another Account"
+msgstr "انتخاب یک حساب دیگر"
+
+#: templates/search/fields.inc:35
+msgid "Select a date"
+msgstr "انتخاب یک تاریخ"
+
+#: templates/search/fields.inc:10
+msgid "Select a field"
+msgstr "انتخاب یک فیلد"
+
+#: templates/compose/compose.inc:316
+msgid "Select a stationery:"
+msgstr "انتخاب یک نوشت‌افزار:"
+
+#: config/prefs.php.dist:128
+msgid "Select address book sources for adding and searching for addresses."
+msgstr "انتخاب کتابچه‌های آدرس اصلی برای جستجو و اضافه کردن آدرسها"
+
+# #-#-#-#-#  fa_IR.po (Turba 1.2.2)  #-#-#-#-#
+# msgid "Search Results"
+# msgstr "نتایج جستجو"
+#: templates/search/main.inc:88
+msgid "Select all"
+msgstr "انتخاب همه"
+
+#: templates/prefs/sourceselect.inc:323
+msgid "Select all fields to search when expanding addresses."
+msgstr "انتخاب تمامی فیلد‌ها برای جستجو وقتی آدرسها باز می‌شوند "
+
+#: templates/fetchmail/account_select.inc:21
+msgid "Select an account"
+msgstr "انتخاب یک حساب"
+
+# #-#-#-#-#  fa_IR.po (Turba 1.2.2)  #-#-#-#-#
+# msgid "Search Results"
+# msgstr "نتایج جستجو"
+#: templates/search/main.inc:89
+msgid "Select none"
+msgstr "انتخاب هیچ‌یک"
+
+#: templates/saveimage/saveimage.inc:9
+msgid "Select the gallery to save the image in."
+msgstr "انتخاب گالری برای حفظ تصویر"
+
+#: templates/fetchmail/driver_select.inc:21
+msgid "Select the mail server type"
+msgstr "انتخاب نوع کارساز نامهٔ الکترونیکی"
+
+#: templates/prefs/sourceselect.inc:309
+msgid "Selected Address books:"
+msgstr "انتخاب کتابچه‌های آدرس:"
+
+#: templates/pgp/pgp.inc:72
+msgid "Send Key to Public Keyserver"
+msgstr "ارسال کلید به کارساز کلید عمومی"
+
+#: lib/MIME/Viewer/itip.php:562
+msgid "Send Latest Information"
+msgstr "ارسال آخرین اطلاعات"
+
+#: templates/compose/compose.inc:66 templates/compose/compose.inc:430
+msgid "Send Message"
+msgstr "ارسال پیغام"
+
+#: config/prefs.php.dist:707
+msgid "Send read receipt when requested by the sender?"
+msgstr " آیارسید مطالعه هنگامی که ارسال کننده درخواست می‌کند، ارسال شود؟"
+
+#: folders.php:391
+msgid "Sent mail folder"
+msgstr "پوشه پیغامهای فرستاده شده"
+
+#: templates/prefs/sentmailselect.inc:39
+msgid "Sent mail folder:"
+msgstr "پوشه پیغامهای فرستاده شده:"
+
+#: templates/login/login.inc:129 templates/login/login.inc:143
+#: templates/login/login.inc:150
+msgid "Server"
+msgstr "کارساز"
+
+#: config/prefs.php.dist:23
+msgid "Server and Folder Information"
+msgstr "اطلاعات کارساز و پوشه"
+
+#: templates/fetchmail/manage.inc:23
+msgid "Server:"
+msgstr "کارساز:"
+
+#: config/prefs.php.dist:80
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr "تنظیم گزینه‌ها برای زمان حذف و یا انتقال پیغامها"
+
+#: config/prefs.php.dist:527
+msgid "Set the X-Priority header when composing messages?"
+msgstr "آیا سرآمد X-Priority هنگام ایجاد پیغامها تنظیم شود؟"
+
+#: config/prefs.php.dist:31
+msgid "Share Folders"
+msgstr "پوشه‌های مشترک"
+
+#: templates/acl/acl.inc:86
+msgid "Share mail folders"
+msgstr "پوشه‌های نامهٔ مشترک"
+
+#: config/prefs.php.dist:32
+msgid "Share your mail folders with other users."
+msgstr "اشتراک پوشه‌های نامهٔ شما با کاربران دیگر"
+
+#: config/prefs.php.dist:672
+msgid ""
+"Should large blocks of quoted text be shown or hidden by default? It can be "
+"toggled easily whichever you choose."
+msgstr ""
+"آیا بلوکهای بزرگ نقل قول نمایش داده شوند، یا پنهان شوند؟ این  تنظیم به راحتی "
+"در هر زمان که بخواهید قابل تغییر است"
+
+#: templates/pgp/pgp.inc:7
+msgid "Should the body of text/plain messages be scanned for PGP data?"
+msgstr "آیا بدنهٔ پیغامها با متن ساده برای داده PGP پوییده شوند؟"
+
+#: config/prefs.php.dist:510
+msgid "Should the compose window be closed after saving a draft?"
+msgstr "آیا صفحه ایجاد پیغام باید بعد از حفظ یک پیش نویس بسته شود؟"
+
+#: templates/pgp/pgp.inc:4
+msgid "Should your PGP public key to be attached to your messages by default?"
+msgstr "آیا کلید عمومی PGP باید بطور خودکار به پیغام شما پیوست شود؟"
+
+#: templates/search/main.inc:92
+msgid "Show All Folders"
+msgstr "نمایش همهٔ پوشه‌ها"
+
+#: templates/message/headers.inc:67
+msgid "Show All Headers"
+msgstr "نمایش همهٔ سرآمدها"
+
+#: mailbox.php:358
+msgid "Show Deleted"
+msgstr "نمایش حذف شده‌ها"
+
+#: templates/message/headers.inc:61
+msgid "Show Limited Headers"
+msgstr "نمایش سرآمدهای محدود شده"
+
+#: templates/message/headers.inc:70
+msgid "Show Mailing List Information"
+msgstr "نمایش اطلاعات فهرست نامه‌ها"
+
+#: templates/search/main.inc:92
+msgid "Show Only Subscribed Folders"
+msgstr "فقط نمایش پوشه‌های عضو"
+
+#: folders.php:286
+msgid "Show Unsubscribed"
+msgstr "نمایش غیرعضو‌ها"
+
+#: config/prefs.php.dist:608
+msgid "Show an icon to allow stripping of attachments from messages?"
+msgstr "آیا یک آیکون برای اخذ پیوستها از پیغامها نشان داده شود؟"
+
+#: config/prefs.php.dist:1015
+msgid "Show legend in the mailbox view?"
+msgstr "آیا شرح پیغامها به هنگام نمایش نامه‌دان نشان داده شود؟"
+
+#: config/prefs.php.dist:850
+msgid "Show previews for unread messages only?"
+msgstr "آیا پیش‌نمایشها فقط برای پیغامهای خوانده نشده نشان داده شوند؟"
+
+#: config/prefs.php.dist:858
+msgid "Show previews in tooltips?"
+msgstr "آیا پیش نمایشها در راهنمای آنی نمایش داده شوند؟"
+
+#: config/prefs.php.dist:889
+msgid "Show the Fetch Mail icon on the menubar?"
+msgstr "آیا آیکون واکشی نامه در گزینگان نمایش داده شود؟"
+
+#: lib/MIME/Viewer/html.php:97
+msgid "Show the Images"
+msgstr "نمایش تصاویر"
+
+#: templates/filters/prefs.inc:54
+msgid "Show the filter icon on the menubar?"
+msgstr "آیا آیکون فیلتر در گزینگان نمایش داده شود؟"
+
+#: lib/Block/summary.php:30
+msgid "Show total number of mails in folder?"
+msgstr "آیا تعداد کل نامه‌ها در پوشه نشان داده شود؟"
+
+#: config/prefs.php.dist:669
+msgid "Shown"
+msgstr "نمایش دادن"
+
+#: templates/mailbox/message_headers.inc:42
+msgid "Si_ze"
+msgstr "اندازه"
+
+#: templates/mailbox/legend.inc:17
+msgid "Signed"
+msgstr "امضا شده"
+
+#: templates/compose/attachments.inc:3
+msgid "Size"
+msgstr "اندازه"
+
+#: templates/mailbox/message_headers.inc:85
+msgid "Sort Direction"
+msgstr "جهت مرتب سازی"
+
+#: templates/mailbox/message_headers.inc:11
+msgid "Sort by Arrival"
+msgstr "مرتب سازی بر اساس ورود"
+
+#: templates/mailbox/message_headers.inc:16
+msgid "Sort by Date"
+msgstr "مرتب سازی بر اساس تاریخ"
+
+#: templates/mailbox/message_headers.inc:26
+msgid "Sort by From Address"
+msgstr "مرتب سازی بر اساس آدرس فرستنده"
+
+#: templates/mailbox/message_headers.inc:41
+msgid "Sort by Message Size"
+msgstr "مرتب سازی بر اساس اندازهٔ پیغام"
+
+#: templates/mailbox/message_headers.inc:36
+msgid "Sort by Subject"
+msgstr "مرتب سازی بر اساس عنوان"
+
+#: templates/mailbox/message_headers.inc:31
+msgid "Sort by Thread"
+msgstr "مرتب سازی سلسله‌ایی"
+
+#: templates/mailbox/message_headers.inc:21
+msgid "Sort by To Address"
+msgstr "مرتب سازی براساس آدرس گیرنده"
+
+#: templates/prefs/spamselect.inc:23
+msgid "Spam folder:"
+msgstr "پوشهٔ هرزنامه:"
+
+#: templates/compose/compose.inc:345
+msgid "Special Characters"
+msgstr "نویسه‌های خاص"
+
+#: search.php:194
+msgid "Special Virtual Folders can not be edited."
+msgstr "پوشه‌های مجازی خاص قابل ویرایش نیستند "
+
+#: templates/compose/compose.inc:342
+msgid "Spell Check"
+msgstr "بررسی املایی"
+
+#: templates/compose/spelling.inc:46
+msgid "Spell Checker"
+msgstr "خطایاب املایی"
+
+#: templates/compose/spelling.inc:48 templates/compose/spelling.inc:56
+msgid "Spell check complete"
+msgstr "بررسی املایی کامل شد"
+
+#: config/prefs.php.dist:467
+msgid "Spelling errors per screen when spell checking."
+msgstr "خطاهای املایی در هر صفحه هنگام بررسی املایی"
+
+#: lib/MIME/Viewer/itip.php:471 lib/MIME/Viewer/itip.php:608
+msgid "Start"
+msgstr "شروع"
+
+#: templates/stationery/prefs.inc:9 templates/compose/compose.inc:310
+msgid "Stationery"
+msgstr "نوشت‌افزار"
+
+#: templates/stationery/prefs.inc:26
+msgid "Stationery name:"
+msgstr "نام نوشت‌افزار:"
+
+#: templates/stationery/prefs.inc:28
+msgid "Stationery type:"
+msgstr "نوع نوشت‌افزار:"
+
+#: templates/stationery/prefs.inc:33
+msgid "Stationery:"
+msgstr "نوشت‌افزار:"
+
+#: lib/MIME/Viewer/itip.php:642
+msgid "Status"
+msgstr "وضعیت‌"
+
+#: lib/MIME/Contents.php:228
+msgid "Strip Attachment"
+msgstr "حذف پیوست"
+
+#: config/prefs.php.dist:842
+msgid "Strip linebreaks?"
+msgstr "حذف جداکنندهٔ خطوط"
+
+#: templates/mailbox/message_headers.inc:37
+msgid "Sub_ject"
+msgstr "عنوان"
+
+#: thread.php:146 search.php:155 message.php:263
+#: templates/compose/recompose.inc:25
+msgid "Subject"
+msgstr "عنوان"
+
+#: config/prefs.php.dist:932
+msgid "Subject Field"
+msgstr "فیلد عنوان"
+
+#: search.php:364 templates/saveimage/saveimage.inc:18
+#: templates/pgp/passphrase.inc:31 templates/smime/passphrase.inc:19
+msgid "Submit"
+msgstr "ارائه"
+
+#: templates/folders/actions.inc:11
+msgid "Subscribe to Folder(s)"
+msgstr "عضویت در پوشه(ها)"
+
+#: lib/MIME/Viewer/pgp.php:394 lib/MIME/Viewer/status.php:89
+#: lib/MIME/Viewer/pkcs7.php:384
+msgid "Success"
+msgstr "موفّقیّت"
+
+#: templates/compose/spelling.inc:86
+msgid "Suggestions"
+msgstr "پیشنهادات"
+
+#: lib/MIME/Viewer/itip.php:618 lib/MIME/Viewer/itip.php:620
+msgid "Summary"
+msgstr "خلاصه"
+
+#: templates/compose/compose.inc:399 templates/compose/compose.inc:402
+msgid "Switch Composition Method"
+msgstr "تعویض شیوهٔ انشاء"
+
+#: templates/compose/compose.inc:403
+msgid "Switch to HTML composition"
+msgstr "تعویض به مد HTML"
+
+#: templates/compose/compose.inc:403
+msgid "Switch to plain text composition"
+msgstr "تعویض به مد انشای متن ساده"
+
+#: templates/compose/compose.inc:418
+msgid "Te_xt"
+msgstr "متن"
+
+#: lib/MIME/Viewer/itip.php:241
+msgid "Tentative: "
+msgstr "آزمایشی"
+
+#: lib/MIME/Viewer/itip.php:549
+msgid "Tentatively Accept request"
+msgstr "درخواست بطور آزمایشی پذیرفته شد"
+
+#: lib/MIME/Viewer/itip.php:715
+msgid "Tentatively Accepted"
+msgstr "پذیرفته شدهٔ آزمایشی"
+
+# 
+#: lib/Maintenance/Task/tos_agreement.php:53
+#, php-format
+msgid "Terms of Service file not specified in conf.php"
+msgstr "موارد پروندهٔ‌ سرویس در conf.php مشخص نشده است"
+
+#: templates/stationery/prefs.inc:30
+msgid "Text"
+msgstr "متن"
+
+#: config/prefs.php.dist:966
+msgid "The From: column of the message should be linked:"
+msgstr "ستون فرستندهٔ پیغام باید پیوند شود: "
+
+#: lib/MIME/Viewer/appledouble.php:43
+msgid "The Macintosh resource fork"
+msgstr ""
+
+#: lib/MIME/Viewer/appledouble.php:43
+#, php-format
+msgid "The Macintosh resource fork can be downloaded %s."
+msgstr ""
+
+# 
+#: fetchmailprefs.php:81
+#, php-format
+msgid "The account \"%s\" has been deleted."
+msgstr "حساب \"%s\" حذف شده است"
+
+# 
+#: fetchmailprefs.php:74
+#, php-format
+msgid "The account \"%s\" has been saved."
+msgstr "حساب \"%s\" حفظ شده است"
+
+#: attachment.php:43
+msgid "The attachment was not found."
+msgstr "پیوست پیدا نشد"
+
+#: lib/MIME/Viewer/itip.php:63
+msgid "The calendar data is invalid"
+msgstr " دادهٔ تقویم نامعتبر است "
+
+#: templates/javascript/open_compose_win.js:37
+msgid ""
+"The compose window can't be opened. Perhaps you have set your browser to "
+"block popup windows?"
+msgstr ""
+"صفحهٔ تولید پیغام نمی‌تواند باز شود. شاید شما مرورگر خور را برای بازنکردن "
+"پنجره‌های گشودنی تنظیم کرده‌ید؟"
+
+#: lib/MIME/Viewer/appledouble.php:44
+msgid "The contents of the Macintosh file are below."
+msgstr "محتویات پروندهٔ‌ Macintosh در ذیل آمده است."
+
+# 
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:95
+#, php-format
+msgid "The current folder(s) \"%s\" will be renamed to \"%s\"."
+msgstr "پوشه(ها)ی جاری \"%s\" به \"%s\" تغییر نام یافته است"
+
+#: templates/acl/acl.inc:107
+msgid ""
+"The current list of users with access to this folder could not be retrieved"
+msgstr "فهرست کنونی کاربران با اجازهٔ دسترسی به این پوشه قابل بازیابی نیست"
+
+# 
+#: compose.php:1170
+#, php-format
+msgid "The draft has been saved to the \"%s\" folder."
+msgstr "پیش نویس در پوشهٔ \"%s\" حفظ شده است"
+
+#: lib/MIME/Viewer/itip.php:131
+msgid "The event was added to your calendar."
+msgstr "رویداد به تقویم شما اضافه شده بود"
+
+# 
+#: templates/compose/expand.inc:9
+#, php-format
+msgid "The field '%s' can't be expanded."
+msgstr "فیلد '%s' قابل باز شدن نیست"
+
+# 
+#: lib/Folder.php:435
+#, php-format
+msgid "The folder \"%s\" already exists"
+msgstr "پوشهٔ \"%s\" از قبل موجود است"
+
+# 
+#: lib/Folder.php:186
+#, php-format
+msgid ""
+"The folder \"%s\" contains illegal characters in its name. It may cause "
+"problems. Please see your system administrator."
+msgstr ""
+"نام پوشهٔ \"%s\" شامل نویسه‌های غیر مجاز می‌باشد که این مسئله می‌تواند مشکلاتی "
+"را ایجاد کند. لطفاً با سرپرست سامانهٔ خود تماس بگیرید"
+
+# 
+#: lib/Folder.php:454
+#, php-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "پوشهٔ \"%s\" ایجاد شده است اما شما در آن عضو نمی‌باشید "
+
+#: lib/Folder.php:367
+#, php-format
+msgid "The folder \"%s\" was deleted but you were not unsubscribed from it."
+msgstr "پوشهٔ \"%s\" حذف شده است اما شما عضویت خود را در آن لغو نکرده‌ید "
+
+# 
+#: lib/Folder.php:441
+#, php-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr "پوشهٔ \"%s\" ایجاد نشده بود. این چیزی است که کارساز گفته است"
+
+# 
+#: lib/Folder.php:360
+#, php-format
+msgid "The folder \"%s\" was not deleted. This is what the server said"
+msgstr "پوشهٔ '%s' حذف نشده بود. این چیزی است که کارساز گفته است"
+
+#: lib/Folder.php:457
+#, php-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "پوشهٔ \"%s\" با موفّقیّت ایجاد شد"
+
+#: lib/Folder.php:370
+#, php-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "پوشهٔ \"%s\" با موفّقیّت حذف شد"
+
+# 
+#: lib/Folder.php:552
+#, php-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "پوشهٔ \"%s\" با موفّقیّت به \"%s\" تغییر نام یافته است"
+
+#: lib/MIME/Viewer/tnef.php:96
+msgid "The following files were attached to this part:"
+msgstr "پرونده‌‌های زیر به این قسمت پیوست شده‌ است:"
+
+#: templates/javascript/open_saveimage_win.js:12
+msgid ""
+"The image save window can not be opened. Perhaps you have set your browser "
+"to block popup windows?"
+msgstr ""
+"پنجرهٔ حفظ تصویر نمی‌تواند باز شود. شاید شما مرورگر خور را برای بازنکردن "
+"پنجره‌های گشودنی تنظیم کرده‌ید؟"
+
+#: lib/MIME/Viewer/html.php:99
+msgid ""
+"The images will be displayed because the sender is present in your "
+"addressbook."
+msgstr "تصویرها نمایش داده می‌شوند چون فرستنده در کتابچهٔ آدس شما وجود دارد"
+
+#: lib/MIME/Viewer/status.php:77
+msgid "The mail server generated the following error message:"
+msgstr "کارساز نامهٔ الکترونیکی پیغامهای خطای زیر را تولید کرد:"
+
+#: lib/MIME/Viewer/notification.php:53
+msgid "The mail server generated the following informational message:"
+msgstr "کارساز نامهٔ الکترونیکی پیغامهای اطلاعاتی زیر را تولید کرد:"
+
+#: lib/MIME/Viewer/status.php:92
+msgid "The mail server generated the following message:"
+msgstr "کارساز نامهٔ الکترونیکی پیغامهای زیر را تولید کرد:"
+
+# 
+#: lib/Message.php:632
+#, php-format
+msgid "The mailbox %s is already empty."
+msgstr "نامه‌دان %s قبلاً خالی بوده است"
+
+# 
+#: lib/Fetchmail.php:261
+#, php-format
+msgid "The message \"%s\" from \"%s\" (%d bytes) exceeds fetch size limit."
+msgstr "پیغام \"%s\" از \"%s\" (%d بایت) تجاوز از حداکثر اندازه واکشی"
+
+#: templates/contacts/contacts.inc:103
+msgid "The message being composed has been closed. Exiting."
+msgstr "پیغام ایجاد شده بسته شده است: خروج"
+
+#: message.php:143
+msgid "The message has been deleted."
+msgstr "پیغام حذف شده است"
+
+#: lib/MIME/Viewer/pgp.php:398
+msgid "The message has been verified."
+msgstr "پیغام بازبینی شده است"
+
+#: lib/MIME/Viewer/pkcs7.php:388
+#, php-format
+msgid "The message has been verified. Sender: %s."
+msgstr "پیغام بازبینی شده است. فرستنده: %s"
+
+#: templates/pgp/open_pgp_win.js:10 templates/smime/open_smime_win.js:10
+msgid ""
+"The passphrase window can't be opened. Perhaps you have set your browser to "
+"block popup windows?"
+msgstr ""
+"پنجرهٔ عبارت گذر قادر به باز شدن نیست. شاید شما مرورگر خود را اینگونه تنظیم "
+"کرده‌ا‌ید؟"
+
+#: lib/MIME/Viewer/pgp.php:177
+#, php-format
+msgid "The raw text of the PGP Public Key can be viewed %s."
+msgstr "متن خام کلید عمومی PGP می‌تواند مشاهده شود %s"
+
+#: lib/MIME/Viewer/tnef.php:62
+msgid "The requested file does not exist in the MS-TNEF attachment."
+msgstr "پروندهٔ‌ درخواستی در پیوست MS-TNEF وجود ندارد"
+
+#: lib/MIME/Viewer/zip.php:66
+msgid "The requested file does not exist in the Zip attachment."
+msgstr "پروندهٔ‌ در خواستی در پیوست Zip وجود ندارد"
+
+#: message.php:551
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Please click %s to send the "
+"notification message."
+msgstr ""
+"فرستنده این پیغام تقاضا دارد که یک تأئیدیه برای خواندن پیغام دریافت کند لطفاً "
+"هنگامی که این پیغام را خواندید بر روی %s کلیک کنید تا این تأئیدیه ارسال شود"
+
+# 
+#: lib/MIME/Viewer/images.php:71
+msgid "The server was not able to create a thumbnail of this image."
+msgstr " کارساز نمی‌تواند تصویر کوچکی از این تصویر را ایجاد کند"
+
+#: templates/compose/compose.js:104
+msgid "The signature could not be replaced."
+msgstr "امضاء را نمی‌توان جایگزین کرد"
+
+#: templates/compose/compose.js:102
+msgid "The signature was successfully replaced."
+msgstr "امضاء با موفّقیّت جایگزین شد"
+
+#: attachment.php:59
+msgid "The specified file does not exist."
+msgstr "پروندهٔ‌ مشخص شده وجود ندارد"
+
+# #-#-#-#-#  compendium.po (Horde 3)  #-#-#-#-#
+# 
+#: stationery.php:84
+#, php-format
+msgid "The stationery \"%s\" has been added."
+msgstr "نوشت‌افزار \"%s\" اضافه شده است"
+
+# #-#-#-#-#  compendium.po (Horde 3)  #-#-#-#-#
+# 
+#: stationery.php:63
+#, php-format
+msgid "The stationery \"%s\" has been deleted."
+msgstr "نوشت‌افزار \"%s\" حذف شده است"
+
+# #-#-#-#-#  compendium.po (Horde 3)  #-#-#-#-#
+# 
+#: stationery.php:87
+#, php-format
+msgid "The stationery \"%s\" has been updated."
+msgstr "نوشت‌افزار \"%s\" بروزرسانی شده است"
+
+#: lib/MIME/Viewer/itip.php:161
+msgid "The task has been added to your tasklist."
+msgstr "وظیفهٔ مورد نظر به فهرست وظایف شما اضافه شده است"
+
+#: lib/MIME/Viewer/status.php:97
+msgid "The text of the message"
+msgstr "متن پیغام"
+
+#: lib/MIME/Viewer/status.php:96
+#, php-format
+msgid "The text of the message can be viewed %s."
+msgstr "متن پیغام قابل مشاهده است %s"
+
+#: lib/MIME/Viewer/status.php:82
+msgid "The text of the returned message"
+msgstr "متن پیغام برگرندانده شده"
+
+#: lib/MIME/Viewer/status.php:81
+#, php-format
+msgid "The text of the returned message can be viewed %s."
+msgstr " متن پیغام برگرندانده شده می‌تواند مشاهده شود %s"
+
+#: lib/MIME/Viewer/notification.php:70
+msgid "The text of the sent message"
+msgstr "متن پیغام فرستاده شده"
+
+#: lib/MIME/Viewer/notification.php:70
+#, php-format
+msgid "The text of the sent message can be viewed %s."
+msgstr "متن پیغام فرستاده شده می‌تواند مشاهده شود %s"
+
+#: lib/MIME/Viewer/itip.php:146
+msgid "The user's free/busy information was sucessfully stored."
+msgstr "اطلاعات آزاد/مشغول کاربران با موفّقیّت ذخیره شد"
+
+#: lib/MIME/Viewer/alternative.php:88
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "بخش جایگزینی که بتواند درخط نمایش داده شود موجود نیست"
+
+#: templates/mailbox/empty_mailbox.inc:3
+msgid "There are no messages in this mailbox."
+msgstr "پیغامی در این نامه‌دان نیست"
+
+# 
+#: lib/Message.php:591
+#, php-format
+msgid "There was a problem expunging %s. This is what the server said"
+msgstr "خطایی در پاک کردن %s رخ داده است. این چیزی است که کارساز گفته است: "
+
+# 
+#: lib/Message.php:634
+#, php-format
+msgid "There was a problem expunging the mailbox. The server said: %s"
+msgstr "خطایی در پاک کردن نامه‌دان رخ داده است. کارساز گفت: %s"
+
+# 
+#: lib/Message.php:600
+msgid "There was a problem expunging the mailbox. This is what the server said"
+msgstr ""
+"خطایی در پاک کردن نامه‌دان رخ داده است. این چیزی است که کارساز گفته است: %s"
+
+# 
+#: lib/Message.php:96
+#, php-format
+msgid ""
+"There was an error copying messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"خطایی در تهیهٔ رونوشت پیغام از \"%s\" به \"%s\" رخ داده است. این چیزی است که "
+"کارساز گفته است"
+
+# 
+#: lib/Message.php:206 lib/Message.php:221
+#, php-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr ""
+"خطایی در حذف پیغامها از پوشهٔ \"%s\" رخ داده است. این چیزی است که کارساز گفته "
+"است"
+
+# 
+#: lib/Message.php:285
+#, php-format
+msgid ""
+"There was an error deleting messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"خطایی در حذف پیغامها در پوشهٔ \"%s\" رخ داده است. این چیزی است که کارساز گفته "
+"است"
+
+# 
+#: lib/Message.php:219
+#, php-format
+msgid "There was an error deleting messages. This is what the server said: %s"
+msgstr "خطایی در حذف پیغامها رخ داده است. این چیزی است که کارساز گفته است: %s"
+
+# 
+#: lib/MIME/Viewer/itip.php:92
+#, php-format
+msgid "There was an error deleting the event: %s."
+msgstr "خطایی در حذف رویداد رخ داده است: %s"
+
+#: lib/MIME/Viewer/plain.php:54 lib/MIME/Viewer/enriched.php:39
+msgid "There was an error displaying this message part"
+msgstr "خطایی در نمایش این بخش پیغام رخ داده است"
+
+# 
+#: lib/Message.php:520 lib/Message.php:562
+#, php-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr ""
+"خطایی در پرچم‌گذاری پیغامها در پوشهٔ \"%s\" رخ داده است. این چیزی است که "
+"کارساز گفته است"
+
+# 
+#: folders.php:155
+#, php-format
+msgid "There was an error importing %s."
+msgstr "خطایی در درون‌برد کردن %s رخ داده است"
+
+# 
+#: lib/MIME/Viewer/itip.php:128
+#, php-format
+msgid "There was an error importing the event: %s."
+msgstr "خطایی در درون‌برد کردن رویداد رخ داده است: %s"
+
+#: lib/MIME/Viewer/itip.php:158
+#, php-format
+msgid "There was an error importing the task: %s."
+msgstr "خطایی در درون‌برد کردن کار رخ داده است: %s"
+
+#: lib/MIME/Viewer/itip.php:144
+#, php-format
+msgid "There was an error importing user's free/busy information: %s."
+msgstr "خطایی در درون‌برد کردن اطلاعات آزاد/مشغول کاربران رخ داده است: %s"
+
+# 
+#: lib/Message.php:91
+#, php-format
+msgid ""
+"There was an error moving messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr ""
+"خطایی در انتقال پیغامها از \"%s\" به \"%s\" رخ داده است. این چیزی است که "
+"کارساز گفته است"
+
+#: compose.php:1178
+msgid "There was an error saving this message as a draft."
+msgstr "خطایی در حفظ پیغام بعنوان یک پیش نویس روی داده است"
+
+# 
+#: compose.php:939
+#, php-format
+msgid "There was an error sending your message: %s"
+msgstr "خطایی در فرستادن پیغام شما رخ داده است: %s"
+
+# 
+#: lib/MIME/Viewer/itip.php:106
+#, php-format
+msgid "There was an error updating the event: %s."
+msgstr "خطایی در بروزرسانی رویداد رخ داده است: %s"
+
+#: lib/MIME/Viewer/plain.php:61
+msgid "There was no text in this message part"
+msgstr "متنی در این بخش پیغام نیست"
+
+#: lib/MIME/Viewer/html.php:99
+msgid "This HTML message has images embedded in it."
+msgstr "این پیغام HTML شامل تصاویر است"
+
+#: lib/MIME/Viewer/html.php:92
+msgid ""
+"This HTML message has images embedded in it. Blocked images appear like "
+"this: "
+msgstr "این پیغام HTML شامل تصاویر است. بلوک تصاویر شبیه به این ظاهر می‌شود:"
+
+#: lib/MIME/Viewer/pgp.php:170
+msgid "This PGP Public Key was attached to the message."
+msgstr "این کلید عمومی PGP به پیغام پیوست  شده بود"
+
+#: lib/MIME/Viewer/itip.php:97 lib/MIME/Viewer/itip.php:111
+#: lib/MIME/Viewer/itip.php:135 lib/MIME/Viewer/itip.php:149
+#: lib/MIME/Viewer/itip.php:165 lib/MIME/Viewer/itip.php:284
+msgid "This action is not supported."
+msgstr "این عمل پشتیبانی نمی‌شود"
+
+#: lib/MIME/Viewer/itip.php:171 lib/MIME/Viewer/itip.php:384
+msgid "This action is not yet implemented."
+msgstr "این عمل هنوز پیاده‌سازی نشده است"
+
+#: templates/folders/javascript.inc:6
+msgid "This may take some time. Are you sure you want to continue?"
+msgstr "این عمل کمی زمان می‌برد. آیا مطمئنید که می‌خواهید ادامه دهید؟"
+
+#: lib/MIME/Viewer/appledouble.php:42
+msgid "This message contains a Macintosh file."
+msgstr "این پیغام شامل یک پروندهٔ‌ Macintosh است"
+
+#: lib/MIME/Viewer/pkcs7.php:416
+msgid ""
+"This message contains an attachment that has been digitally signed via S/"
+"MIME."
+msgstr ""
+"این پیغام شامل یک پیوست است که از طریق S/MIME بطور دیجیتالی امضاء شده است"
+
+#: lib/MIME/Viewer/pkcs7.php:420
+msgid "This message contains an attachment that has been encrypted via S/MIME."
+msgstr "این پیغام حاوی یک پیوست است که از طریق S/MIME رمزبندی شده است"
+
+#: lib/MIME/Viewer/status.php:166
+msgid ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+msgstr "این پیغام حاوی اطلاعات وضعیت تحویل می‌باشد اما قالب پیغام ناشناخته است"
+
+#: lib/MIME/Viewer/pgp.php:320
+msgid ""
+"This message does not appear to be a valid PGP encrypted message. Error: "
+msgstr "این پیغام بنظر نمی‌رسد که یک پیغام معتبر رمزبندی شدهٔ PGP باشد. خطا: "
+
+#: lib/MIME/Viewer/pgp.php:245 lib/MIME/Viewer/pgp.php:355
+msgid ""
+"This message does not appear to be in the correct PGP format (according to "
+"RFC 2015)."
+msgstr "بنظر نمی‌رسد که این پیغام در قالب صحیح PGP باشد ( باتوجه بهRFC 2015) "
+
+#: lib/MIME/Viewer/pkcs7.php:172
+msgid "This message does not appear to be in the correct S/MIME format."
+msgstr "بنظر نمی‌رسد که این پیغام در قالب صحیح S/MIME باشد"
+
+#: lib/MIME/Viewer/pgp.php:210 lib/MIME/Viewer/pgp.php:421
+msgid "This message has been digitally signed via PGP."
+msgstr "این پیغام از طریق PGP بطور دیجیتالی امضاء شده است"
+
+#: lib/MIME/Viewer/pkcs7.php:145
+msgid "This message has been digitally signed via S/MIME."
+msgstr "این پیغام از طریق S/MIME بطور دیجیتالی امضاء شده است"
+
+#: lib/MIME/Viewer/pkcs7.php:141 lib/MIME/Viewer/pkcs7.php:240
+msgid "This message has been encrypted via S/MIME."
+msgstr "این پیغام با S/MIME رمزبندی شده است"
+
+#: lib/MIME/Viewer/pgp.php:206 lib/MIME/Viewer/pgp.php:296
+msgid "This message has been encrypted with PGP."
+msgstr "این پیغام با PGP رمزبندی شده است"
+
+#: message.php:206
+msgid "This message to"
+msgstr "این پیغام به"
+
+#: acl.php:46
+msgid "This server does not support sharing folders."
+msgstr "این کارساز پوشه‌های مشترک را پشتیبانی نمی‌کند"
+
+#: templates/contacts/contacts.inc:109
+msgid "This window must be called from a compose window."
+msgstr "این پنجره بابید از طریق یک پنجرهٔ ایجاد پیغام صدا شود"
+
+#: thread.php:148
+msgid "Thread Display"
+msgstr "نمایش سلسله‌ایی"
+
+#: thread.php:76 config/prefs.php.dist:934
+msgid "Thread View"
+msgstr "نمایش سلسله‌ایی "
+
+#: search.php:143 mailbox.php:598 message.php:259
+#: templates/contacts/contacts.inc:214
+#: templates/mailbox/message_headers.inc:22 templates/compose/redirect.inc:61
+#: templates/compose/recompose.inc:10
+msgid "To"
+msgstr "به"
+
+#: config/prefs.php.dist:931
+msgid "To Address"
+msgstr "آدرس گیرنده"
+
+#: templates/prefs/sourceselect.inc:326
+msgid ""
+"To select multiple fields, hold down the Control (PC) or Command (Mac) while "
+"clicking."
+msgstr ""
+"برای انتخاب چند فیلد، دکمه Ctrl را روی (PC) یا Command را را روی (Mac)، در "
+"مدت کلیک کردن نگهدارید"
+
+#: templates/compose/compose.inc:575
+msgid "Total Attachments Size:"
+msgstr "مجموع اندازهٔ پیوستها:"
+
+#: folders.php:382
+msgid "Trash folder"
+msgstr "پوشهٔ آشغال"
+
+#: templates/prefs/trashselect.inc:23
+msgid "Trash folder:"
+msgstr "پوشهٔ آشغال:"
+
+#: lib/Quota/mercury32.php:83 lib/Quota/mdaemon.php:50 lib/Quota/cyrus.php:69
+#: lib/Quota/courier.php:55 lib/Quota/logfile.php:92 lib/Quota/command.php:76
+msgid "Unable to retrieve quota"
+msgstr "نمی‌توان مقدار سهمیه را بازیابی کرد "
+
+#: templates/message/navbar_navigate.inc:10 templates/mailbox/navbar.inc:19
+#: templates/mailbox/navbar.inc:36
+msgid "Unanswered"
+msgstr "پاسخ داده نشده"
+
+#: templates/search/main.inc:35
+msgid "Unanswered messages"
+msgstr "پیغامهای پاسخ داده نشده"
+
+#: templates/message/navbar_actions.inc:4 templates/mailbox/actions.inc:13
+msgid "Undelete"
+msgstr "بازیابی"
+
+#: mailbox.php:582 mailbox.php:594 lib/MIME/Headers.php:218
+msgid "Undisclosed Recipients"
+msgstr "گیرندهٔ ناشناس"
+
+#: lib/MIME/Viewer/itip.php:410
+#, php-format
+msgid "Unhandled component of type: %s"
+msgstr "مؤلفهٔ  بدون پشتیبانی: %s"
+
+#: mailbox.php:559
+msgid "Unknown Date"
+msgstr "تاریخ نامعلوم"
+
+#: lib/MIME/Viewer/itip.php:593
+msgid "Unknown Meeting"
+msgstr "ملاقات نامعلوم"
+
+#: mailbox.php:610
+msgid "Unknown Recipient"
+msgstr "گیرندهٔ نامعلوم"
+
+#: templates/pgp/pgp.inc:77 templates/smime/smime.inc:72
+msgid "Unload Passphrase"
+msgstr "برداشتن عبارت گذر"
+
+#: fetchmailprefs.php:65
+msgid "Unnamed"
+msgstr "بی‌نام"
+
+#: mailbox.php:699 message.php:493 templates/message/navbar_navigate.inc:6
+#: templates/mailbox/navbar.inc:15 templates/mailbox/navbar.inc:32
+#: templates/mailbox/legend.inc:5
+msgid "Unseen"
+msgstr "مشاهده نشده"
+
+#: templates/folders/actions.inc:12
+msgid "Unsubscribe from Folder(s)"
+msgstr "لغو عضویت از پوشه(ها)"
+
+#: templates/compose/compose.inc:582
+msgid "Update Attachment Information"
+msgstr "بروزرسانی اطلاعات پیوست"
+
+#: lib/MIME/Viewer/itip.php:578
+msgid "Update respondent status"
+msgstr "بروزرسانی وضعیت پاسخ"
+
+#: templates/pgp/import_key.inc:56 templates/smime/import_key.inc:58
+msgid "Upload"
+msgstr "ارسال"
+
+#: templates/prefs/sentmailselect.inc:42
+msgid "Use Default Value"
+msgstr "استفاده از مقدار پیش فرض"
+
+#: config/prefs.php.dist:251
+msgid "Use IMAP folder subscriptions?"
+msgstr "آیا از عضویت پوشه‌های IMAP استفاده شود؟ "
+
+#: config/prefs.php.dist:742
+msgid "Use Virtual Trash Folder?"
+msgstr "آیا از پوشهٔ آشغال مجازی استفاده شود؟"
+
+#: templates/acl/acl.inc:142
+msgid "User"
+msgstr "کاربر"
+
+# 
+#: acl.php:87
+#, php-format
+msgid "User '%s' successfully given the specified rights for the folder '%s'."
+msgstr "کاربر '%s' با موفّقیّت دسترسیهای مشخص شده برای پوشه '%s' را داد"
+
+#: templates/login/login.inc:184
+msgid "Username"
+msgstr "نام کاربر"
+
+#: templates/fetchmail/manage.inc:17
+msgid "Username:"
+msgstr "نام کاربر:"
+
+#: templates/pgp/pgp.inc:27 templates/pgp/pgp.inc:72 templates/pgp/pgp.inc:77
+#: templates/smime/smime.inc:25 templates/smime/smime.inc:68
+#: templates/smime/smime.inc:72
+msgid "View"
+msgstr "نما"
+
+#: lib/MIME/Viewer/zip.php:94 lib/MIME/Viewer/tnef.php:112
+#, php-format
+msgid "View %s"
+msgstr "نمایش %s"
+
+# 
+#: templates/pgp/pgp.inc:27 templates/smime/smime.inc:25
+#, php-format
+msgid "View %s Public Key"
+msgstr "نمایش کلید عمومی %s"
+
+#: lib/MIME/Viewer/html.php:118
+msgid "View HTML content in a separate window"
+msgstr "نمایش متن HTML در یک پنجرهٔ جداگانه"
+
+#: templates/mailbox/actions.inc:29
+msgid "View Messages"
+msgstr "مشاهدهٔ پیغامها"
+
+#: templates/pgp/pgp.inc:77 templates/smime/smime.inc:72
+msgid "View Personal Private Key"
+msgstr "نمایش کلید خصوصی شخصی"
+
+#: templates/pgp/pgp.inc:72 templates/smime/smime.inc:68
+msgid "View Personal Public Key"
+msgstr "نمایش کلید عمومی شخصی"
+
+#: templates/message/navbar_actions.inc:18
+msgid "View Thread"
+msgstr "نمایش سلسله‌ "
+
+#: lib/MIME/Viewer/images.php:169 lib/MIME/Viewer/images.php:171
+msgid "View Thumbnail"
+msgstr "نمایش تصویر کوچک شده"
+
+#: lib/MIME/Viewer/pkcs7.php:424
+msgid "View attachment in a separate window"
+msgstr "نمایش پیوستها در یک پنجرهٔ جداگانه"
+
+#: lib/MIME/Viewer/related.php:63
+msgid "View content in a separate window"
+msgstr "نمایش متن در یک پنجرهٔ جداگانه"
+
+#: lib/MIME/Viewer/itip.php:132
+msgid "View event"
+msgstr "نمایش رویداد"
+
+# 
+#: folders.php:374 mailbox.php:528
+#, php-format
+msgid "View messages in %s"
+msgstr "نمایش پیغامها در %s"
+
+# #-#-#-#-#  compendium.po (Horde 3)  #-#-#-#-#
+# 
+#: templates/prefs/initialpageselect.inc:26
+msgid "View or mailbox to display after login:"
+msgstr "مشاهده نامه و یا نامه‌دان برای نمایش بعد از ورود"
+
+#: lib/MIME/Viewer/itip.php:162
+msgid "View task"
+msgstr "مشاهدهٔ وظیفه"
+
+#: lib/MIME/Viewer/html.php:103
+msgid "View the Images"
+msgstr "نمایش تصاویر"
+
+#: search.php:313
+#, php-format
+msgid "Virtual Folder \"%s\" created succesfully."
+msgstr "پوشهٔ مجازی \"%s\" با موفّقیّت ایجاد شد"
+
+#: lib/IMAP/Tree.php:128 lib/IMAP/Tree.php:141 lib/IMAP/Tree.php:143
+#: lib/IMAP/Tree.php:147 lib/IMAP/Tree.php:148 lib/IMAP/Tree.php:351
+#: lib/IMAP/Tree.php:375 lib/IMAP/Tree.php:417 templates/search/main.inc:111
+msgid "Virtual Folders"
+msgstr "پوشه&#x200c;های مجازی"
+
+#: search.php:295
+msgid "Virtual Folders require a label."
+msgstr "پوشهٔ مجازی به یک برچسب نیاز دارد"
+
+#: lib/VFolder.php:185 lib/VFolder.php:190
+msgid "Virtual INBOX"
+msgstr "پوشهٔ‌ مجازی نامه‌های دریافتی"
+
+#: folders.php:410
+msgid "Virtual INBOX Folder"
+msgstr "پوشه‌ٔ مجازی نامه‌های دریافتی"
+
+#: mailbox.php:446 lib/VFolder.php:120 lib/VFolder.php:125
+msgid "Virtual Trash"
+msgstr "سطل آشغال مجازی"
+
+#: folders.php:407
+msgid "Virtual Trash Folder"
+msgstr "پوشه‌ٔ مجازی آشغال"
+
+#: templates/search/main.inc:133
+msgid "Virtual folder label"
+msgstr "برچسب پوشهٔ مجازی"
+
+#: lib/MIME/Viewer/pkcs7.php:378
+msgid "Warning"
+msgstr "اخطار: "
+
+#: login.php:138
+#, php-format
+msgid "Welcome to %s"
+msgstr "به %s خوش آمدید "
+
+#: config/prefs.php.dist:620
+msgid ""
+"What should we do with spam messages after they have been reported as spam "
+"or innocent?"
+msgstr "آیا هرزنامه‌ها بعد از اینکه به عنوان هرزنامه گزارش شدند حذف شوند؟"
+
+#: config/prefs.php.dist:733
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted?"
+msgstr ""
+"آیا در هنگام حذف پیغامها، بجای علامت گذاری آنها بعنوان حذف شده به سطل آشغال "
+"شما انتقال داده شوند؟"
+
+#: config/prefs.php.dist:919
+msgid "When opening a new mailbox, which page do you want to start on?"
+msgstr "در هنگام بازکردن یک نامه‌دان جدید، کدام صفحه برای شروع باز شود؟"
+
+#: config/prefs.php.dist:559
+msgid "When saving sent-mail, should we save attachment data?"
+msgstr "آیا هنگامی که نامهٔ فرستاده شده حفظ می‌شود، باید پیوست هم حفظ شود؟"
+
+#: config/prefs.php.dist:422
+msgid ""
+"When sending mail or expanding addresses, what domain should we append to "
+"unqualified addresses (email addresses without \"@\")?"
+msgstr ""
+"به هنگام ارسال پیغام، چه نام حوزه‌ایی را باید به آدرسهای غیر کامل (بدون @) "
+"اضافه نمود"
+
+#: templates/message/navbar_actions.inc:24 templates/mailbox/actions.inc:19
+msgid "Whitelist"
+msgstr "فهرست سفید"
+
+#: templates/compose/compose.inc:539 config/prefs.php.dist:990
+msgid "Yes"
+msgstr "بله"
+
+#: lib/Maintenance/Task/fetchmail_login.php:62
+msgid "You are about to fetch email from the following account(s):"
+msgstr "شما در صدد واکشی نامه‌های الکترونیکی از حساب‌(های) زیر هستید:"
+
+#: templates/folders/folders_confirm.html:10
+msgid ""
+"You are attempting to delete all messages contained in the following folder"
+"(s)."
+msgstr "شما در پی حذف پیغامهای پوشه‌های زیر هستید:"
+
+#: templates/folders/folders_confirm.html:9
+msgid "You are attempting to delete the following folder(s)."
+msgstr "شما در پی حذف پوشه‌های زیر هستید:"
+
+#: templates/message/javascript.inc:55 templates/mailbox/javascript.inc:200
+msgid "You are copying/moving to a new folder."
+msgstr "شما در حال رونوشت گرفتن/انتقال به یک پوشه جدید هستید"
+
+#: templates/folders/javascript.inc:94
+msgid "You are creating a sub-folder to "
+msgstr "شما در حال ساختن یک زیرپوشه هستید"
+
+#: templates/folders/javascript.inc:96
+msgid "You are creating a top-level folder."
+msgstr "شما در حال ایجاد یک پوشه سطح بالا هستید"
+
+#: lib/Folder.php:418
+msgid "You are not allowed to create folders."
+msgstr "شما مجوز ایجاد پوشه را ندارید"
+
+#: lib/Folder.php:425
+#, php-format
+msgid "You are not allowed to create more than %d folders."
+msgstr "شما مجوز ایجاد بیش از %d پوشه را ندارید"
+
+#: templates/folders/javascript.inc:127
+msgid "You are renaming the folder: "
+msgstr "شما در حال تغییر نام پوشه هستید:"
+
+#: lib/Folder.php:658
+#, php-format
+msgid "You can not unsubscribe from \"%s\"."
+msgstr "لغو عضویت شما از \"%s\" ممکن نیست"
+
+#: templates/stationery/prefs.inc:35
+#, php-format
+msgid ""
+"You can use the following placeholders in the stationery text: %c for the "
+"current message content; %s for the signature."
+msgstr ""
+"شما از ترکیبات زیر در نوشت‌افزار می‌توانید استفاده نمایید: %c برای اشاره به "
+"متن پیغام فعلی و %s برای امضاء"
+
+#: lib/Maintenance/Task/tos_agreement.php:36
+msgid ""
+"You did not agree to the Terms of Service agreement, so you were not allowed "
+"to login."
+msgstr ""
+"شما با شریط توافقی خدمتگزار موافقت نکرده‌ا‌ید، بنابراین شما اجازه ورود ندارید"
+
+#: templates/acl/acl.inc:169
+msgid "You do not have permission to change access to this folder"
+msgstr "شما مجوز تغییر دسترسی این پوشه را ندارید"
+
+# 
+#: lib/Maillog.php:128
+#, php-format
+msgid "You forwarded this message on %%s to the following recipients: %s."
+msgstr "شما این پیغام را بر %%s به گیرندگان زیر ارجاع کردید: %s"
+
+# 
+#: templates/mailbox/alert.inc:3
+#, php-format
+msgid "You have %s new messages."
+msgstr "شما %s پیغام جدید دارید"
+
+#: templates/mailbox/alert.inc:3
+msgid "You have 1 new message."
+msgstr "شما یک پیغام جدید دارید"
+
+#: templates/compose/attachments.js:116
+msgid ""
+"You have at least one attachment selected that you didn't upload yet. Are "
+"you sure you want to send this message without these attachments?"
+msgstr ""
+"شما حداقل یک پیوست انتخاب شده دارید که هنوز آنرا ارسال نکرده‌ا‌ید. آیا مطمئنید "
+"که می‌خواهید بدون این پیوستها پیغام را بفرستید؟"
+
+#: lib/IMP.php:1105
+msgid "You have new mail in the following folder:"
+msgstr "شما در پوشهٔ زیر پیغام جدید دارید:"
+
+#: lib/IMP.php:1110
+msgid "You have new mail in the following folders:"
+msgstr "شما در پوشهٔ زیر پیغام جدید دارید:"
+
+#: compose.php:126
+msgid "You must enter at least one recipient."
+msgstr "شما باید حداقل یک گیرنده وارد کنید"
+
+#: lib/MIME/Viewer/pgp.php:307
+msgid ""
+"You must enter the passphrase for your PGP private key to view this message"
+msgstr ""
+"شما باید عبارت گذر را برای کلید خصوصی PGP خود وارد کنید تا پیغام را مشاهده "
+"کنید"
+
+#: lib/MIME/Viewer/pkcs7.php:251
+msgid ""
+"You must enter the passphrase for your S/MIME private key to view this "
+"message"
+msgstr ""
+"شما باید عبارت گذر را برای کلید خصوصی S/MIME خود وارد کنید تا پیغام را "
+"مشاهده کنید"
+
+#: templates/message/javascript.inc:64 templates/mailbox/javascript.inc:209
+msgid "You must select a target mailbox first."
+msgstr "شما ابتدا باید یک نامه دان مقصد مشخص کنید"
+
+#: fetchmailprefs.php:85
+msgid "You must select an account to be deleted."
+msgstr "شما باید یک حساب برای حذف کردن انتخاب کنید"
+
+#: templates/contacts/contacts.inc:81
+msgid "You must select an address first."
+msgstr "شما ابتدا باید یک آدرس انتخاب کنید"
+
+#: templates/mailbox/javascript.inc:62 templates/mailbox/javascript.inc:216
+#: templates/mailbox/javascript.inc:271
+msgid "You must select at least one message first."
+msgstr "شما ابتدا باید حداقل یک پیغام انتخاب کنید"
+
+#: templates/compose/redirect.inc:13
+msgid "You must specify a recipient."
+msgstr "شما باید یک گیرنده مشخص کنید"
+
+#: templates/compose/attachments.js:29
+msgid "You must specify at least one file to attach."
+msgstr "شما حداقل باید یک پرونده‌ برای پیوست کردن مشخص کنید"
+
+# 
+#: templates/fetchmail/manage.inc:48
+#, php-format
+msgid "You need to have '%s' enabled in your maintenance options."
+msgstr "شما نیاز دارید که '%s' را در گزینه‌های نگهداری، فعال کنید"
+
+# 
+#: lib/Maillog.php:136
+#, php-format
+msgid "You redirected this message to %s on %%s."
+msgstr "شما این پیغام را به %s بر %%s تغییر مسیر داده‌ا‌ید"
+
+#: lib/Maillog.php:140
+#, php-format
+msgid "You replied to this message on %s."
+msgstr "شما به این پیغام در %s پاسخ داده‌اید"
+
+# 
+#: lib/Folder.php:607
+#, php-format
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr "کارساز گفت که شما عضو \"%s\" نبود‌ید"
+
+# 
+#: lib/Folder.php:660
+#, php-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr "کارساز گفت که عضویّت شما در \"%s\" لغو نشده بود"
+
+#: lib/Folder.php:610
+#, php-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr "شما با موفّقیّت در \"%s\" عضو شدید"
+
+#: lib/Folder.php:663
+#, php-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "عضویت شما با موفّقیّت از \"%s\" لغو شد"
+
+#: templates/pgp/pgp.inc:98
+msgid "Your Name"
+msgstr "نام شما"
+
+#: templates/pgp/pgp.inc:50
+msgid "Your PGP Public/Private Keys"
+msgstr "کلید‌های عمومی/خصوصی PGP شما"
+
+#: templates/pgp/pgp.inc:76 templates/smime/smime.inc:71
+msgid "Your Private Key"
+msgstr "کلید شخصی شما"
+
+#: templates/pgp/pgp.inc:71 templates/smime/smime.inc:67
+msgid "Your Public Key"
+msgstr "کلید عمومی شما"
+
+#: config/prefs.php.dist:158
+msgid "Your Reply-to: address: <em>(optional)</em>"
+msgstr "پاسخ شما به: آدرس <em>(اختیاری)</em>"
+
+#: templates/smime/smime.inc:49
+msgid "Your S/MIME Public/Private Certificates"
+msgstr "گواهیهای کلید‌های عمومی/خصوصی S/MIME شما"
+
+#: templates/fetchmail/account_select.inc:16
+msgid "Your accounts:"
+msgstr "حسابهای شما:"
+
+#: config/prefs.php.dist:166
+msgid ""
+"Your alias addresses: <em>(optional, enter each address on a new line)</em>"
+msgstr ""
+"آدرس مستعار شما: <em>(اختیاری، هر آدرس را در یک خط جدید وارد کنید)</em>"
+
+#: lib/MIME/Viewer/images.php:94
+msgid "Your browser does not support inline display of this image type."
+msgstr "مرورگر شما نمایش درخط این نوع تصویر را پشتیبانی نمی‌کند"
+
+#: config/prefs.php.dist:537
+msgid "Your default charset for sending messages:"
+msgstr "مجموعه نویسهٔ پیش فرض شما برای ارسال پیغامها:"
+
+#: templates/prefs/encryptselect.inc:1
+msgid "Your default encryption method for sending messages:"
+msgstr "شیوهٔ رمزبندی پیش فرض شما برای ارسال پیغام:"
+
+#: lib/MIME/Viewer/status.php:91
+msgid "Your message was successfully delivered."
+msgstr "پیغام شما با موفّقیّت ارسال شد"
+
+#: config/prefs.php.dist:199
+msgid "Your signature:"
+msgstr "امضای شما:"
+
+#: compose.php:1218 mailbox.php:543 message.php:283 lib/Compose.php:833
+msgid "[No Subject]"
+msgstr "[بدون عنوان]"
+
+#: templates/compose/compose.inc:204
+msgid "_Bcc"
+msgstr "رونوشت مخفی"
+
+#: templates/message/navbar_actions.inc:21 templates/mailbox/actions.inc:16
+msgid "_Blacklist"
+msgstr "فهرست سیاه"
+
+#: templates/compose/compose.inc:153
+msgid "_Cc"
+msgstr "رونوشت"
+
+#: lib/IMP.php:1005
+msgid "_Compose"
+msgstr "ایجاد پیغام"
+
+#: templates/message/navbar_actions.inc:6 templates/mailbox/actions.inc:8
+#: templates/mailbox/actions.inc:10
+msgid "_Delete"
+msgstr "حذف"
+
+#: lib/IMP.php:1008
+msgid "_Folders"
+msgstr "پوشه&#x200c;ها"
+
+#: templates/compose/compose.inc:80
+msgid "_Identity"
+msgstr "از"
+
+#: lib/IMP.php:990
+msgid "_Inbox"
+msgstr "Inbox"
+
+#: lib/IMP.php:1049
+msgid "_Log out"
+msgstr "خروج"
+
+#: message.php:379
+msgid "_Message Source"
+msgstr "سرچشمه پیغام"
+
+#: templates/message/navbar_actions.inc:33
+msgid "_Print"
+msgstr "چاپ"
+
+#: templates/compose/compose.inc:271 templates/compose/compose.inc:288
+msgid "_Priority"
+msgstr "اولویت"
+
+# 
+#: mailbox.php:411
+#, php-format
+msgid "_Refresh %s"
+msgstr "بازآوری %s"
+
+#: templates/message/navbar_actions.inc:8
+msgid "_Reply"
+msgstr "پاسخ"
+
+#: lib/IMP.php:1010
+msgid "_Search"
+msgstr "جستجو"
+
+#: templates/compose/compose.inc:66 templates/compose/compose.inc:430
+msgid "_Send Message"
+msgstr "فرستادن پیغام"
+
+#: templates/mailbox/message_headers.inc:32
+msgid "_Thread"
+msgstr "سلسله"
+
+#: templates/compose/compose.inc:115
+msgid "_To"
+msgstr "به"
+
+#: templates/mailbox/actions.inc:13
+msgid "_Undelete"
+msgstr "بازیابی"
+
+#: templates/message/navbar_actions.inc:18
+msgid "_View Thread"
+msgstr "نمایش سلسله"
+
+#: templates/message/navbar_actions.inc:24 templates/mailbox/actions.inc:19
+msgid "_Whitelist"
+msgstr "فهرست سفید"
+
+#: lib/Compose.php:171
+msgid "addressee unknown"
+msgstr ""
+
+#: lib/Compose.php:437
+msgid "attachment"
+msgstr "پیوست"
+
+#: view.php:102
+msgid "attachments.zip"
+msgstr "پیوستها.zip"
+
+#: templates/compose/compose.inc:511
+msgid "bytes"
+msgstr "بایت‌"
+
+#: lib/Compose.php:195
+msgid "cannot create output file"
+msgstr ""
+
+#: lib/Compose.php:167
+msgid "cannot open input"
+msgstr ""
+
+#: lib/Compose.php:159
+msgid "command line usage error"
+msgstr ""
+
+#: lib/Compose.php:215
+msgid "configuration error"
+msgstr ""
+
+#: lib/Compose.php:191
+msgid "critical system file missing"
+msgstr ""
+
+#: lib/Compose.php:163
+msgid "data format error"
+msgstr ""
+
+#: lib/Compose.php:219
+msgid "entry not found"
+msgstr ""
+
+#: templates/contacts/contacts.inc:185
+msgid "from"
+msgstr "از"
+
+#: lib/Compose.php:175
+msgid "host name unknown"
+msgstr ""
+
+#: lib/Compose.php:199
+msgid "input/output error"
+msgstr ""
+
+#: lib/Compose.php:183
+msgid "internal software error"
+msgstr ""
+
+#: pgp.php:69 smime.php:29
+msgid "key"
+msgstr "کلید"
+
+#: folders.php:151
+msgid "mailbox file"
+msgstr "پروندهٔ‌ نامه‌دان"
+
+#: compose.php:1000 lib/Message.php:439
+msgid "name"
+msgstr "نام"
+
+#: templates/compose/spelling.inc:76
+msgid "none"
+msgstr "هیچ‌یک"
+
+#: templates/compose/spelling.inc:105
+msgid "or"
+msgstr "یا"
+
+#: lib/Compose.php:211
+msgid "permission denied"
+msgstr ""
+
+#: lib/Compose.php:207
+msgid "remote error in protocol"
+msgstr ""
+
+#: lib/Compose.php:179
+msgid "service unavailable"
+msgstr ""
+
+#: templates/compose/spelling.inc:46
+msgid "spelling error"
+msgstr "خطای املایی"
+
+#: templates/compose/spelling.inc:46
+msgid "spelling errors"
+msgstr "خطاهای املایی"
+
+#: lib/Compose.php:187
+msgid "system error"
+msgstr "خطای سامانه"
+
+#: lib/Compose.php:203
+msgid "temporary failure"
+msgstr "شکست موقتی"
+
+#: lib/Filter.php:55
+msgid "your blacklist"
+msgstr "فهرست سیاه شما"
+
+#: lib/Filter.php:67
+msgid "your whitelist"
+msgstr "فهرست سفید شما"

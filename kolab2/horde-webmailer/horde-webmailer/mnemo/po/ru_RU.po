@@ -1,0 +1,744 @@
+# Russian translations for Mnemo package
+# Copyright
+# Alexey Zakharov <baber@mosga.net>, 2008
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mnemo H3 2.2\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2008-02-03 00:20+0200\n"
+"PO-Revision-Date: 2008-02-03 00:50+0200\n"
+"Last-Translator: Alexey Zakharov <baber@mosga.net>\n"
+"Language-Team: Russian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1251\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# fuzzy, php-format
+#: templates/memo/memo.inc:53
+#, php-format
+msgid "%s characters"
+msgstr "%s букв"
+
+#: data.php:199
+#, php-format
+msgid "%s file successfully imported"
+msgstr "Файл %s успешно импортирован"
+
+# fuzzy, php-format
+#: notepads.php:99 lib/Mnemo.php:429 lib/Forms/DeleteNotepad.php:86
+#, php-format
+msgid "%s's Notepad"
+msgstr "Моя книжка (%s)"
+
+# fuzzy
+#: memo.php:199
+msgid "Access denied deleting note."
+msgstr "У вас недостаточно прав чтобы удалить эту заметку"
+
+# fuzzy
+#: memo.php:150 memo.php:153
+msgid "Access denied moving the note."
+msgstr "У вас недостаточно прав чтобы переместить эту заметку"
+
+# fuzzy, php-format
+#: memo.php:120
+#, php-format
+msgid "Access denied saving note to %s."
+msgstr "У вас нет прав писать заметки в %s"
+
+# fuzzy, php-format
+#: memo.php:118
+#, php-format
+msgid "Access denied saving note: %s"
+msgstr "Недостаточно прав для сохранения заметки: %s"
+
+# fuzzy
+#: templates/prefs/showsummaryselect.inc:103
+msgid "Add category"
+msgstr "Новая категория"
+
+#: config/prefs.php.dist:70
+msgid "Ascending"
+msgstr "По возрастанию"
+
+#: templates/prefs/showsummaryselect.inc:99
+#, fuzzy
+msgid "Available Categories:"
+msgstr "Доступные поля:"
+
+#: templates/notepads/notepads.inc:97
+msgid "Back to Notepad Options"
+msgstr "Вернутся к опциям"
+
+#: data.php:32 templates/data/import.inc:11
+msgid "CSV"
+msgstr "CSV-файл"
+
+#: lib/Forms/DeleteNotepad.php:45 lib/Forms/DeleteNotepad.php:51
+msgid "Cancel"
+msgstr "Отмена"
+
+# fuzzy
+#: data.php:54 templates/view/memo.inc:26
+msgid "Category"
+msgstr "Категория"
+
+#: templates/notepads/notepads.inc:22
+msgid "Change"
+msgstr "Изменить"
+
+#: notepads/index.php:32 templates/notepad_list.php:31
+#, fuzzy
+msgid "Change Permissions"
+msgstr "Настройки пользователя"
+
+#: config/prefs.php.dist:14
+msgid "Change your note sorting and display options."
+msgstr "Изменить опции отображения и поиска в записной книжке"
+
+#: templates/prefs/showsummaryselect.inc:93
+#, fuzzy
+msgid "Choose the memo categories to list in the summary view."
+msgstr "Выберите порядок отображения столбцов в списке адресов."
+
+#: config/prefs.php.dist:21
+msgid "Choose your default Notepad."
+msgstr "Выбрать вашу записную книжку по умолчанию"
+
+#: templates/list/header.inc:8
+#, fuzzy
+msgid "Close Search"
+msgstr "Очистить"
+
+#: templates/notepads/notepads.inc:17 templates/notepads/notepads.inc:94
+#: templates/notepads/notepads.inc:96 lib/Forms/CreateNotepad.php:39
+msgid "Create"
+msgstr "Создать"
+
+# fuzzy
+# fuzzy
+#: lib/Forms/CreateNotepad.php:34
+msgid "Create Notepad"
+msgstr "Создать книжку"
+
+# fuzzy
+#: templates/notepad_list.php:8
+msgid "Create a new Notepad"
+msgstr "Создать новую книжку"
+
+#: templates/view/memo.inc:32
+msgid "Created"
+msgstr "Создана"
+
+# fuzzy
+# fuzzy
+#: config/prefs.php.dist:20
+msgid "Default Notepad"
+msgstr "Книжка по умолчанию"
+
+#: config/prefs.php.dist:61
+msgid "Default sorting criteria:"
+msgstr "Сортировка по умолчанию:"
+
+# fuzzy
+#: config/prefs.php.dist:72
+msgid "Default sorting direction:"
+msgstr "Порядок сортировки"
+
+#: notepads/index.php:33 templates/notepad_list.php:33
+#: templates/notepads/notepads.inc:95 templates/view/memo.inc:16
+#: lib/Forms/DeleteNotepad.php:45
+msgid "Delete"
+msgstr "Удалить"
+
+#: lib/Forms/DeleteNotepad.php:40
+#, php-format
+msgid "Delete %s"
+msgstr "Удалить %s"
+
+# fuzzy
+#: config/prefs.php.dist:27
+msgid "Delete Confirmation"
+msgstr "Удаление"
+
+#: config/prefs.php.dist:28
+msgid "Delete button behaviour"
+msgstr "Подтверждение операции удаления"
+
+# fuzzy
+#: templates/memo/memo.inc:11
+msgid "Delete this note"
+msgstr "Удалить заметку"
+
+#: config/prefs.php.dist:71
+msgid "Descending"
+msgstr "По убыванию"
+
+#: lib/Forms/EditNotepad.php:44 lib/Forms/CreateNotepad.php:37
+msgid "Description"
+msgstr "Описание"
+
+# fuzzy
+# fuzzy
+#: templates/notepads/notepads.inc:85
+msgid "Description:"
+msgstr "Описание"
+
+#: lib/Driver/kolab.php:556
+#, fuzzy, php-format
+msgid "Did not find note %s"
+msgstr "Нет групп"
+
+# fuzzy
+#: config/prefs.php.dist:13
+msgid "Display Options"
+msgstr "Отображение"
+
+# fuzzy
+#: config/prefs.php.dist:117
+msgid "Do you want to confirm deleting entries?"
+msgstr "Запрашивать подтверждение при удалении записей?"
+
+#: notepads/index.php:31 templates/notepad_list.php:29
+#: templates/view/memo.inc:13
+msgid "Edit"
+msgstr "Редактирование"
+
+#: templates/list/memo_summaries.inc:5
+#, fuzzy, php-format
+msgid "Edit \"%s\""
+msgstr "Редактирование '%s'"
+
+#: lib/Forms/EditNotepad.php:40
+#, php-format
+msgid "Edit %s"
+msgstr "Редактирование %s"
+
+# fuzzy
+# fuzzy
+#: templates/list/memo_headers.inc:30 lib/Block/summary.php:74
+msgid "Edit Note"
+msgstr "Редактировать"
+
+#: templates/list/memo_headers.inc:45
+#, fuzzy
+msgid "Edit categories and colors"
+msgstr "Категории и метки"
+
+#: memo.php:104
+#, fuzzy, php-format
+msgid "Edit: %s"
+msgstr "Редактирование %s"
+
+# fuzzy
+#: templates/list/memo_summaries.inc:15 lib/Block/summary.php:93
+msgid "Empty Note"
+msgstr "Пустая заметка"
+
+#: lib/Driver.php:118
+msgid ""
+"Encryption support has not been configured, please contact your "
+"administrator."
+msgstr ""
+
+#: templates/data/export.inc:16
+msgid "Export"
+msgstr "Экспорт"
+
+# fuzzy
+#: templates/data/export.inc:2
+msgid "Export Notes"
+msgstr "Экспорт заметок"
+
+# fuzzy
+#: config/prefs.php.dist:12 config/prefs.php.dist:19 config/prefs.php.dist:26
+msgid "General Options"
+msgstr "Общие настройки"
+
+# fuzzy, php-format
+#: templates/data/import.inc:1
+#, php-format
+msgid "Import Notes, Step %d"
+msgstr "Импорт заметок, Шаг %d"
+
+# fuzzy
+# fuzzy
+#: data.php:205
+msgid "Import/Export Notes"
+msgstr "Импорт/Экспорт"
+
+#: templates/search/search.inc:17
+msgid "In: "
+msgstr "Где: "
+
+#: templates/view/memo.inc:39
+msgid "Last Modified"
+msgstr "Исправлена"
+
+# fuzzy
+#: notepads/index.php:37 templates/notepad_list.php:2
+msgid "Manage Notepads"
+msgstr "Управление книжками"
+
+#: lib/Block/tree_menu.php:3
+msgid "Menu List"
+msgstr ""
+
+#: templates/list/header.inc:9
+#, fuzzy
+msgid "More Options..."
+msgstr "Настройки пользователя"
+
+# fuzzy
+#: templates/panel.inc:50
+msgid "My Notepads:"
+msgstr "Мои Книжки"
+
+# fuzzy
+#: list.php:31
+msgid "My Notes"
+msgstr "Мои заметки"
+
+#: lib/Forms/EditNotepad.php:43 lib/Forms/CreateNotepad.php:36
+msgid "Name"
+msgstr "Название"
+
+# fuzzy
+#: memo.php:57 lib/Block/tree_menu.php:23
+msgid "New Note"
+msgstr "Новая заметка"
+
+#: templates/data/import.inc:34
+msgid "Next"
+msgstr "Далее"
+
+#: lib/api.php:272
+#, fuzzy
+msgid "No iCalendar data was found."
+msgstr "Прикрепленные"
+
+#: templates/list/memo_footers.inc:4
+#, fuzzy
+msgid "No notes match"
+msgstr "НЕ совпадает"
+
+#: templates/list/empty.inc:1
+msgid "No notes match the current criteria."
+msgstr "Подходящих заметок не найдено"
+
+# fuzzy
+#: lib/Block/summary.php:101
+#, fuzzy
+msgid "No notes to display"
+msgstr "Отобразить книжки:"
+
+# fuzzy
+#: templates/list/memo_headers.inc:37
+msgid "No_te"
+msgstr "Заметки"
+
+#: lib/Driver/sql.php:195
+#, fuzzy
+msgid "Not found"
+msgstr "Отменить изменения"
+
+# fuzzy
+#: config/prefs.php.dist:59
+msgid "Note Category"
+msgstr "Категория"
+
+# fuzzy
+#: view.php:108
+msgid "Note Details"
+msgstr "Заметка"
+
+# fuzzy
+#: notepads.php:110
+#, fuzzy
+msgid "Note Lists"
+msgstr "Новая группа"
+
+# fuzzy
+#: config/prefs.php.dist:58
+msgid "Note Text"
+msgstr "Текст"
+
+# fuzzy
+#: templates/memo/memo.inc:53
+msgid "Note _Text"
+msgstr "Текст"
+
+# fuzzy
+#: templates/memo/memo.inc:59
+msgid "Note_pad"
+msgstr "Книжка"
+
+# fuzzy
+#: templates/notepad_list.php:15 templates/list/memo_headers.inc:33
+#: config/prefs.php.dist:60
+msgid "Notepad"
+msgstr "Книжка"
+
+# fuzzy
+#: templates/notepad_list.php:12
+#, fuzzy
+msgid "Notepad List"
+msgstr "Новая группа"
+
+# fuzzy
+# fuzzy
+#: templates/notepads/notepads.inc:79
+msgid "Notepad's name:"
+msgstr "Название записной книжки:"
+
+# fuzzy
+#: templates/panel.inc:32 templates/panel.inc:33
+#: templates/notepads/notepads.inc:61
+msgid "Notepads"
+msgstr "Записные книжки"
+
+#: notepads.php:33
+msgid "Notepads must have a name."
+msgstr "Вы не задали название записной книжки"
+
+# fuzzy
+# fuzzy
+#: lib/Block/summary.php:3
+msgid "Notes Summary"
+msgstr "Состояние"
+
+# fuzzy
+#: lib/api.php:147 lib/api.php:187 lib/api.php:220 lib/api.php:250
+#: lib/api.php:337 lib/api.php:396 lib/api.php:425
+#, fuzzy
+msgid "Permission Denied"
+msgstr "Изменить права доступа"
+
+# fuzzy
+#: templates/notepads/notepads.inc:82
+msgid "Permissions"
+msgstr "Изменить права доступа"
+
+#: lib/Forms/DeleteNotepad.php:43
+#, php-format
+msgid ""
+"Really delete the notepad \"%s\"? This cannot be undone and all data on this "
+"notepad will be permanently removed."
+msgstr ""
+
+# fuzzy
+# fuzzy
+#: templates/view/memo.inc:16
+#, fuzzy
+msgid "Really delete this note?"
+msgstr "Удалить зту задачу"
+
+#: templates/prefs/showsummaryselect.inc:105
+#, fuzzy
+msgid "Remove category"
+msgstr "Удалить пару"
+
+#: templates/notepads/notepads.inc:96
+msgid "Reset"
+msgstr "Сбросить"
+
+# fuzzy
+#: templates/panel.inc:68 templates/memo/memo.inc:57
+#: lib/Forms/EditNotepad.php:46
+msgid "Save"
+msgstr "Записать"
+
+#: templates/view/memo.inc:11
+#, fuzzy
+msgid "Save as PDF"
+msgstr "Сохранить как"
+
+#: search.php:17 templates/search/search.inc:4 templates/search/search.inc:27
+#: templates/list/header.inc:4 lib/Block/tree_menu.php:44
+msgid "Search"
+msgstr "Поиск"
+
+#: list.php:54
+msgid "Search Results"
+msgstr "Результаты поиска"
+
+#: templates/panel.inc:38
+msgid "Search for Notepads:"
+msgstr "Искать в заметках: "
+
+# fuzzy
+#: templates/notepads/notepads.inc:67
+msgid "Select a notepad"
+msgstr "Выберите записную книжку"
+
+# fuzzy
+#: templates/data/export.inc:9
+msgid "Select the export format:"
+msgstr "Выберите формат для экспорта:"
+
+#: templates/data/import.inc:31
+msgid "Select the file to import:"
+msgstr "Импортируемый файл:"
+
+# fuzzy
+#: templates/data/import.inc:9
+msgid "Select the format of the source file:"
+msgstr "Выберите формат импортируемого файла:"
+
+#: templates/prefs/showsummaryselect.inc:109
+#, fuzzy
+msgid "Selected Categories:"
+msgstr "Выбранные столбцы:"
+
+# fuzzy
+# fuzzy
+#: templates/panel.inc:59
+#, fuzzy
+msgid "Shared Notepads:"
+msgstr "Записные книжки:"
+
+#: config/prefs.php.dist:39
+msgid "Should the Notepad be shown in its own column in the List view?"
+msgstr "Отобразить название списка задач отдельной колонкой при выборе задачи?"
+
+# fuzzy
+#: lib/Block/summary.php:34
+msgid "Show action buttons?"
+msgstr "Кнопки"
+
+# fuzzy
+# fuzzy
+#: lib/Block/summary.php:37
+msgid "Show notepad name?"
+msgstr "Название записной книжки"
+
+# fuzzy
+#: config/prefs.php.dist:49
+msgid "Show notepad options panel?"
+msgstr "Показывать панель опций для заметок?"
+
+#: lib/Block/summary.php:40
+msgid "Show notes from these categories"
+msgstr "Показать по категории:"
+
+#: templates/list/memo_headers.inc:41
+#, fuzzy
+msgid "Sort by Category"
+msgstr "Сортировать по теме"
+
+#: templates/list/memo_headers.inc:37
+#, fuzzy
+msgid "Sort by Note Text"
+msgstr "Сортировать по теме"
+
+#: templates/list/memo_headers.inc:33
+#, fuzzy
+msgid "Sort by Notepad"
+msgstr "Сортировать по теме"
+
+# fuzzy, php-format
+# fuzzy, php-format
+#: memo.php:173
+#, php-format
+msgid "Successfully saved \"%s\"."
+msgstr "Заметка '%s' успешно сохранена"
+
+#: data.php:193
+#, php-format
+msgid "The %s file didn't contain any notes."
+msgstr ""
+
+#: lib/Driver.php:53
+#, fuzzy
+msgid "The Notes backend is not currently available."
+msgstr "Нет доступных настроек."
+
+#: lib/Driver.php:227
+#, fuzzy, php-format
+msgid "The Notes backend is not currently available: %s"
+msgstr "Нет доступных настроек."
+
+# fuzzy
+#: memo.php:196
+msgid "The note was deleted."
+msgstr "Заметка была удалена."
+
+# fuzzy, php-format
+#: notepads.php:46
+#, php-format
+msgid "The notepad \"%s\" couldn't be created: %s"
+msgstr "Записная книжка '%s' не может быть создана: %s"
+
+# fuzzy, php-format
+#: notepads.php:48 notepads/create.php:31
+#, php-format
+msgid "The notepad \"%s\" has been created."
+msgstr "Записная книжка '%s' была успешно создана"
+
+# fuzzy, php-format
+#: notepads.php:85 notepads/delete.php:48
+#, php-format
+msgid "The notepad \"%s\" has been deleted."
+msgstr "Записная книжка '%s' была удалена."
+
+# fuzzy, php-format
+# fuzzy, php-format
+#: notepads/edit.php:42
+#, fuzzy, php-format
+msgid "The notepad \"%s\" has been renamed to \"%s\"."
+msgstr "Список задач '%s' был успешно создан"
+
+# fuzzy, php-format
+#: notepads.php:56 notepads/edit.php:44
+#, php-format
+msgid "The notepad \"%s\" has been saved."
+msgstr "Записная книжка '%s' была сохранена."
+
+#: view.php:90 memo.php:83
+msgid "This note has been encrypted, please provide the password below."
+msgstr ""
+
+#: lib/Driver.php:230
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "Невозможно загрузить определение %s."
+
+#: lib/Forms/EditNotepad.php:55
+#, fuzzy, php-format
+msgid "Unable to save notepad \"%s\": %s"
+msgstr "Ошибка при доступе к указанной адресной книге."
+
+# fuzzy
+#: templates/view/memo.inc:27 templates/list/memo_summaries.inc:17
+#: lib/Mnemo.php:245 lib/Mnemo.php:246 lib/Mnemo.php:260 lib/Mnemo.php:261
+#: lib/Block/summary.php:96
+msgid "Unfiled"
+msgstr "Отсутствует"
+
+#: lib/api.php:302 lib/api.php:359 lib/api.php:452
+#, fuzzy, php-format
+msgid "Unsupported Content-Type: %s"
+msgstr "Некорректное имя."
+
+#: templates/data/import.inc:16
+msgid "Which Notepad should the notes be added to?"
+msgstr ""
+
+#: notepads/edit.php:28
+#, fuzzy
+msgid "You are not allowed to change this notepad."
+msgstr "Вы создаете папку верхнего уровня."
+
+#: data.php:42 data.php:128 memo.php:37
+#, fuzzy, php-format
+msgid "You are not allowed to create more than %d notes."
+msgstr "Вы создаете папку верхнего уровня."
+
+#: notepads/delete.php:35
+#, fuzzy
+msgid "You are not allowed to delete this notepad."
+msgstr "Вы создаете папку верхнего уровня."
+
+#: view.php:49 note/pdf.php:50
+#, php-format
+msgid "You do not have permission to view the notepad %s."
+msgstr ""
+
+#: notepads.php:65
+#, fuzzy
+msgid "You must select a notepad to be deleted."
+msgstr "Вы должны выбрать профиль для удаления."
+
+# fuzzy
+#: templates/prefs/notepadselect.inc:10
+msgid "Your default notepad:"
+msgstr "Ваша записная книжка по умолчанию:"
+
+# fuzzy
+#: templates/notepads/notepads.inc:65
+msgid "Your notepads:"
+msgstr "Ваша записная книжка:"
+
+# fuzzy
+#: templates/panel.inc:45
+msgid "[Manage Notepads]"
+msgstr "[Управление заметками]"
+
+#: templates/search/search.inc:21
+msgid "_Body"
+msgstr "Текст"
+
+# fuzzy
+#: templates/memo/memo.inc:70 templates/list/memo_headers.inc:41
+msgid "_Category"
+msgstr "Категория"
+
+# fuzzy
+#: templates/view/memo.inc:16
+msgid "_Delete"
+msgstr "Удалить"
+
+# fuzzy
+#: templates/view/memo.inc:13
+msgid "_Edit"
+msgstr "Редактировать"
+
+# fuzzy
+#: templates/memo/memo.inc:74
+#, fuzzy
+msgid "_Encrypt?"
+msgstr "Зашифровано"
+
+#: templates/search/search.inc:9
+msgid "_For: "
+msgstr "Что ищем: "
+
+# fuzzy
+#: lib/Mnemo.php:466
+msgid "_Import/Export"
+msgstr "Импорт/Экспорт"
+
+# fuzzy
+#: lib/Mnemo.php:453
+msgid "_List Notes"
+msgstr "Выбрать"
+
+# fuzzy
+#: lib/Mnemo.php:458
+msgid "_New Note"
+msgstr "Добавить"
+
+#: templates/view/memo.inc:52 templates/memo/memo.inc:21
+#: templates/memo/memo.inc:79
+#, fuzzy
+msgid "_Password"
+msgstr "Пароль"
+
+# fuzzy
+#: lib/Mnemo.php:471
+msgid "_Print"
+msgstr "Печать"
+
+# fuzzy
+#: lib/Mnemo.php:462
+msgid "_Search"
+msgstr "Поиск"
+
+#: templates/search/search.inc:20
+msgid "_Title"
+msgstr "Название"
+
+#: lib/Block/tree_menu.php:33
+#, php-format
+msgid "in %s"
+msgstr "в %s"
+
+#: data.php:90 templates/data/export.inc:4
+msgid "notes.csv"
+msgstr ""
+
+#: data.php:33 templates/data/import.inc:12
+#, fuzzy
+msgid "vNote"
+msgstr "Заметки"

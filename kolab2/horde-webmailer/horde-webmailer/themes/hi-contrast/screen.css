@@ -1,0 +1,73 @@
+body {
+    background-color: #fff;
+}
+a {
+    color: #000;
+}
+a:hover {
+    color: #000;
+}
+a.widget:hover {
+    color: #000;
+    background-color: #fff;
+}
+.header {
+    color: #000;
+    background-color: #fff;
+}
+.smallheader {
+    color: #000;
+    background-color: #fff;
+}
+.control {
+    background-color: #fff;
+}
+.item {
+    background-color: #fff;
+}
+.button {
+    background-color: #fff;
+    border: 1px solid #224;
+}
+.item1 {
+    background-color: #e6e6de;
+}
+.selected {
+    background-color: #e6e6de;
+}
+.light {
+    color: #000;
+}
+
+/* Menu styles. */
+#menu {
+    color: #000;
+    background-color: #fff;
+    border-bottom: 1px solid #000;
+}
+#menu a {
+    color: #000;
+    border: 1px solid #fff;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+#menu a:hover {
+    border: 1px solid #66a;
+}
+#menu a.current {
+    border: 1px solid #000;
+}
+
+/* Sidebar styles. */
+#sidebarPanel {
+    border-right: 1px solid #000;
+    border-bottom: 1px solid #000;
+    background-color: #fff;
+}
+
+/* Tab styles. */
+.tabset li.activeTab a, .tabset li.activeTab a:hover {
+    border-bottom-color: #fff;
+    background-color: #fff;
+    color: #000;
+}

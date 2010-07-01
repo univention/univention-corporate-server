@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+<help>
+
+<entry id="Overview" md5="1585927d48e4627c792fe0332c41fd39" state="uptodate">
+    <title>Kalendar: Pregled</title>
+    <heading>&#x160;to je Kalendar?</heading>
+    <para>
+    Kalendar je web aplikacija za upravljanje doga&#x111;ajima. Uz osnovne funkcije
+    dodavanja, ure&#x111;ivanja i brisanja doga&#x111;aja, aplikacija podr&#x17E;ava ponavljanje
+    doga&#x111;aja (sa iznimkama i mogu&#x107;nosti brisanja), alarme, uvoz i izvoz
+    doga&#x111;aja (iCalendar i CSV formati), iCalendar pozivnice, nekoliko
+    razli&#x10D;itih na&#x10D;ina prikaza kalendara, dijeljene kalendare, prikaz zadataka
+    iz aplikacije Zadaci, te mogu&#x107;nost sa&#x17E;etog prikaza doga&#x111;aja na Webmail
+    portalu.
+    </para>
+</entry>
+
+<entry id="menu-today" md5="c6d0c0f366175a38d0655ed9969ed4a6" state="uptodate">
+    <title>Izbornik: Danas</title>
+    <para>
+    Stavka <i>Danas</i> u glavnom izborniku aplikacije otvara pretpostavljeni
+    prikaz (mjesec, tjedan, dan itd. kako je postavljeno u Opcijama) za
+    dana&#x161;nji dan.
+    </para>
+</entry>
+
+<entry id="menu-Goto" md5="566191775ba90b769f2e3f7cdf24cbfa" state="uptodate">
+    <title>Izbornik: Prije&#x111;i</title>
+    <para>
+    Stavka <i>Prije&#x111;i</i> u glavnom izborniku aplikacije prikazuje dijalog
+    u kojem je mogu&#x107;e jednostavno odabrati &#x17E;eljeni mjesec ili tjedan u godini,
+    odnosno dan u mjesecu koji &#x107;e se prikazati. Ovo je &#x10D;esto najbr&#x17E;i na&#x10D;in
+    kretanja po kalendaru.
+    </para>
+</entry>
+
+<entry id="menu-Day" md5="3cd62e10116058db52a15fecd7ddbcb0" state="uptodate">
+    <title>Izbornik: Dan</title>
+    <para>
+    Kartica <i>Dan</i> prikazuje dnevni pregled doga&#x111;aja za odabrani dan.
+    </para>
+</entry>
+
+<entry id="menu-work-week" md5="f9a63585c81dca63887e130dbbea91de" state="uptodate">
+    <title>Izbornik: Radni tjedan</title>
+    <para>
+    Kartica <i>Radni tjedan</i> prikazuje tjedni pregled doga&#x111;aja za
+    radne dane (ponedjeljak do petak) u tjednu koji je najbli&#x17E;i trenutno
+    odabranom danu.
+    </para>
+</entry>
+
+<entry id="menu-week" md5="3d8a3bfda629bb6e09819b2e660546e5" state="uptodate">
+    <title>Izbornik: Tjedan</title>
+    <para>
+    Kartica <i>Tjedan</i> prikazuje tjedni pregled doga&#x111;aja (ponedjeljak
+    do nedjelja) za tjedan koji sadr&#x17E;i trenutno odabrani dan.
+    </para>
+</entry>
+
+<entry id="menu-month" md5="4be2056875775ec1f5b0f920a1dab608" state="uptodate">
+    <title>Izbornik: Mjesec</title>
+    <para>
+    Kartica <i>Mjesec</i> prikazuje mjese&#x10D;ni pregled doga&#x111;aja za mjesec
+    koji sadr&#x17E;i trenutno odabrani dan.
+    </para>
+</entry>
+
+<entry id="menu-new-event" md5="37406cc2ee51040862df1eaa2f645d4e" state="uptodate">
+    <title>Izbornik: Novi doga&#x111;aj</title>
+    <para>
+    Stavka <i>Novi doga&#x111;aj</i> u glavnom izborniku aplikacije slu&#x17E;i za
+    dodavanje novog doga&#x111;aja u kalendar.
+    </para>
+</entry>
+
+<entry id="menu-options" md5="d7df2c0cda84c89c638d9d6e59307976" state="uptodate">
+    <title>Izbornik: Opcije</title>
+    <para>
+    Stavka <i>Opcije</i> u glavnom izborniku aplikacije slu&#x17E;i za postavljanje
+    opcija koje odre&#x111;uju izgled i pona&#x161;anje Kalendara, interakciju Kalendara
+    sa drugim aplikacijama u sustavu Webmaila, te upravljanje korisni&#x10D;kim i
+    dijeljenim kalendarima.
+    </para>
+</entry>
+
+<entry id="menu-import-export" md5="34bc9dfc4d6302fc1011696a1b8d1ca8" state="uptodate">
+    <title>Izbornik: Uvoz/Izvoz</title>
+    <para>
+    Stavka <i>Uvoz/Izvoz</i> u glavnom izborniku aplikacije slu&#x17E;i za
+    uvoz i izvoz doga&#x111;aja. Podr&#x17E;an je uvoz datoteka u CSV, Microsoft Outlook
+    i vCalendar/iCalendar formatu, dok je izvoz mogu&#x107; samo u CSV i iCalendar
+    format.
+    </para>
+</entry>
+
+<entry id="alarms" md5="4c1c6f3eb13a416031ffbee4fce99ea1" state="uptodate">
+    <title>Alarmi</title>
+    <para>
+    Kalendar mo&#x17E;e slati alarme za doga&#x111;aje koji slijede. Prvi alarm se
+    podrazumijevano &#x161;alje petnaest minuta prije nego &#x161;to obveza treba
+    po&#x10D;eti, no to se mo&#x17E;e promijeniti na bilo koji interval prije po&#x10D;etka
+    doga&#x111;aja
+    </para>
+</entry>
+
+<entry id="recurring-events" md5="8ea7be1fb6cee0b4131c9a548e25d92f" state="uptodate">
+    <title>Ponavljanje doga&#x111;aja</title>
+    <para>
+    Doga&#x111;aji se mogu ponavljati na razli&#x10D;ite na&#x10D;ine. Ve&#x107;ina doga&#x111;aja
+    ponavlja se na odre&#x111;eni predvidljiv na&#x10D;in. Na primjer, opcija
+    <i>Mjese&#x10D;no</i> ponavljanje koristi se za doga&#x111;aje koji se ponavljaju svaki
+    mjesec, dok se <i>Tjedno</i> ponavljanje koristi za doga&#x111;aje koji se
+    ponavljaju svaki tjedan. Ovim opcijama mogu&#x107;e je predstaviti doga&#x111;aje
+    koji se ponavljaju na slo&#x17E;enije na&#x10D;ine: na primjer, svaki tre&#x107;i petak u
+    mjesecu ili svaki ponedjeljak, srijedu i petak.
+    </para>
+    <para>
+    Odabirom zavr&#x161;nog datuma ili broja ponavljanja mogu&#x107;e je ograni&#x10D;iti do
+    kada &#x107;e se doga&#x111;aj ponavljati.
+    </para>
+    <para>
+    Izmjena doga&#x111;aja koji se ponavlja primjenjuje se na sva ponavljanja tog
+    doga&#x111;aja. No i svako pojedino ponavljanje doga&#x111;aja mo&#x17E;e se nezavisno
+    izmijeniti tako da se kod ure&#x111;ivanja &#x17E;eljene instance doga&#x111;aja isklju&#x10D;i
+    ponavljanje te prije spremanja odabere opcija <i>Spremi kao novo</i>.
+    Doti&#x10D;no ponavljanje nakon toga se mo&#x17E;e ure&#x111;ivati nezavisno od svih
+    ostalih.
+    </para>
+</entry>
+
+<entry id="Printing" md5="2f90d14e34b715a054fb52bb919ac5f8" state="uptodate">
+    <title>Ispis</title>
+    <heading>Ispis kalendara i doga&#x111;aja</heading>
+    <para>
+    Neki od na&#x10D;ina prikaza kalendara dizajnirani su za ispis. Kada je otvoren
+    takav na&#x10D;ina prikaza u glavnom izborniku aplikacije pojavit &#x107;e se
+    stavka <i>Ispi&#x161;i</i>. Odabirom ove stavke pokre&#x107;e se ispis trenutno
+    odabranog prikaza kalendara.
+    </para>
+</entry>
+
+<entry id="shares" md5="bf3a44d08a824979ba8dd8fd0e661eee" state="uptodate">
+  <title>Dozvole</title>
+  <para>
+    Opisati razli&#x10D;ite korisnike i grupe kojima se mogu dodijeliti ovlasti.
+  </para>
+  <para>
+    Opisati razli&#x10D;ite tipove ovlasti i njihovo zna&#x10D;enje u odnosu na
+    doga&#x111;aje i kalendare.
+  </para>
+</entry>
+
+<entry id="embed" md5="f62876bee3350ab0066d4f90feeef297" state="uptodate">
+  <title>Ugra&#x111;ivanje</title>
+  <para>
+    Kalendar nudi mogu&#x107;nost ugra&#x111;ivanja razli&#x10D;itih pregleda doga&#x111;aja u
+    vanjske web stranice. Ugraditi se mogu svi pogledi koje je mogu&#x107;e
+    dodati u Webmail portal. U nastavku su navedeni primjeri koda koji
+    se mo&#x17E;e ugraditi u vanjski blog ili web stranicu. U primjerima je 
+    potrebno izmijeniti samo ime poslu&#x17E;itelja i ime kalendara.  Vrijednost
+    parametra 'container' mo&#x17E;e se slobodno odabrati, ali mora odgovarati DOM
+    identifikatoru div elementa i biti jedinstvena za cijelu stranicu u
+    koju se pogled ugra&#x111;uje.
+  </para>
+  <para>
+    Ugra&#x111;ivanje sa&#x17E;etog mjese&#x10D;nog pogleda za trenutni mjesec:
+  </para>
+    <i>&lt;div id="kronocalendar"&gt;&lt;/div&gt;&lt;script
+    src="http://hostname.example.com/horde/kronolith/imple.php?imple=Embed
+    /container=kronocalendar/view=month/calendar=calendar_name"
+    type="text/javascript"&gt;&lt;/script&gt;</i>
+  <para>
+    Ugra&#x111;ivanje pregleda predstoje&#x107;ih doga&#x111;aja (obratiti pa&#x17E;nju na parametre
+    'months' i 'maxevents'):
+  </para>
+    <i>&lt;div id="kronolist"&gt;&lt;/div&gt;&lt;script
+    src="http://hostname.example.com/horde/kronolith/imple.php?imple=Embed
+    /view=monthlist/calendar=calendar_name/container=kronolist/months=2/
+    maxevents=10" type="text/javascript"&gt;&lt;/script&gt;</i>
+  <para>
+    Ugra&#x111;ivanje sa&#x17E;etog pogleda:
+  </para>
+    <i>&lt;div id="kronosummary"&gt;
+    &lt;/div&gt;&lt;script type="text/javascript"
+    src="http://hostname.example.com/horde/kronolith/imple.php?imple=Embed
+    /container=kronosummary/view=summary/calendar=calendar_name
+    "&gt;&lt;/script&gt;</i>
+</entry>
+</help>

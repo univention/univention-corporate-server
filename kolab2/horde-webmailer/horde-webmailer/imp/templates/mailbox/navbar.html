@@ -1,0 +1,75 @@
+<table width="100%" cellspacing="0">
+ <tr class="mboxcontrol">
+  <td<if:isbottom> class="bottomborder"</if:isbottom>>
+   <div class="leftFloat">
+    <form id="select<tag:id />" action="javascript:void(0)" onsubmit="return false">
+    <input type="hidden" name="mailbox" value="<tag:mailbox />" />
+    <label for="filter<tag:id />" class="hidden"><gettext>Select:</gettext></label>
+    <select id="filter<tag:id />" name="filter" onchange="makeSelection(<tag:id />);">
+     <option value="" selected="selected"><gettext>Select:</gettext></option>
+     <option value="!<tag:imp_all />"><gettext>All</gettext></option>
+     <option value="<tag:imp_all />"><gettext>None</gettext></option>
+     <option value="+<tag:imp_all />"><gettext>Invert</gettext></option>
+<if:use_pop><else:use_pop>
+     <option value="!<tag:imp_unseen />"><gettext>Seen</gettext></option>
+     <option value="<tag:imp_unseen />"><gettext>Unseen</gettext></option>
+     <option value="<tag:imp_flagged />"><gettext>Flagged For Followup</gettext></option>
+     <option value="!<tag:imp_flagged />"><gettext>Not Flagged</gettext></option>
+     <option value="<tag:imp_answered />"><gettext>Answered</gettext></option>
+     <option value="!<tag:imp_answered />"><gettext>Unanswered</gettext></option>
+     <option value="<tag:imp_deleted />"><gettext>Deleted</gettext></option>
+     <option value="!<tag:imp_deleted />"><gettext>Not Deleted</gettext></option>
+     <option value="<tag:imp_draft />"><gettext>Draft</gettext></option>
+     <option value="!<tag:imp_draft />"><gettext>Not Draft</gettext></option>
+     <option value="<tag:imp_personal />"><gettext>Personal</gettext></option>
+     <option value="!<tag:imp_personal />"><gettext>Not Personal</gettext></option>
+    </select>
+    <label for="flag<tag:id />" class="hidden"><gettext>Mark as:</gettext></label>
+    <select id="flag<tag:id />" name="flag" onchange="flagMessages(<tag:id />);">
+     <option value="" selected="selected"><gettext>Mark as:</gettext></option>
+     <option value="Seen"><gettext>Seen</gettext></option>
+     <option value="0Seen"><gettext>Unseen</gettext></option>
+     <option value="Flagged"><gettext>Flagged For Followup</gettext></option>
+     <option value="0Flagged"><gettext>Not Flagged</gettext></option>
+     <option value="Answered"><gettext>Answered</gettext></option>
+     <option value="0Answered"><gettext>Unanswered</gettext></option>
+<if:use_trash><else:use_trash>
+     <option value="Deleted"><gettext>Deleted</gettext></option>
+     <option value="0Deleted"><gettext>Not Deleted</gettext></option>
+</else:use_trash></if:use_trash>
+     <option value="Draft"><gettext>Draft</gettext></option>
+     <option value="0Draft"><gettext>Not Draft</gettext></option>
+</else:use_pop></if:use_pop>
+    </select>
+    </form>
+   </div>
+<if:use_folders>
+   <div class="leftFloat" style="padding-left:10px">
+    <form method="post" action="<tag:mailbox_url />">
+    <input type="hidden" name="mailbox" value="<tag:mailbox />" />
+    <ul class="msgactions" style="display:inline">
+     <li><tag:move /></li>
+     <li class="lastnavbar"><tag:copy /></li>
+    </ul>
+    <label for="targetMailbox<tag:id />" class="hidden"><gettext>Target Mailbox:</gettext></label>
+    <select id="targetMailbox<tag:id />" name="targetMailbox" onchange="updateFolders(<tag:id />);">
+     <tag:folder_options />
+    </select>
+    </form>
+   </div>
+</if:use_folders>
+   <div class="rightFloat">
+<if:multiple_page>
+    <form method="get" action="<tag:mailbox_url />">
+    <input type="hidden" name="mailbox" value="<tag:mailbox />" />
+    <tag:sessiontag />
+    <tag:pages_first /> <tag:pages_prev />
+    <label for="page<tag:id />" class="hidden"><gettext>Page:</gettext></label>
+    <input type="text" id="page<tag:id />" name="page" value="<tag:page_val />" size="<tag:page_size />" />
+    <tag:pages_next /> <tag:pages_last />
+    </form>
+</if:multiple_page>
+   </div>
+  </td>
+ </tr>
+</table>

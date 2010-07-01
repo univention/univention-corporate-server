@@ -1,0 +1,141 @@
+------
+v1.1.3
+------
+
+[jan] Add Croatian translation (Matej Vela <matej.vela@carnet.hr>).
+
+
+------
+v1.1.2
+------
+
+[mms] Ignore 'compose_html' preference in IMP (Bug #8415) (Requires IMP 4.3.5).
+[mms] Fix showing Cc and Bcc fields (Bug #8167).
+[cjh] Implement custom menu items (Bug #7630).
+
+
+------
+v1.1.1
+------
+
+[mms] Added a MIME_Viewer to display mail system admin messages.
+[jan] Add Basque translation (Euskal Herriko Unibertsitatea EHU/UPV
+      <xabier.arrieta@ehu.es>).
+[jan] Add Brazilian Portuguese translation (Luis Felipe Marzagao
+      <duli@fedoraproject.org>, Eduardo de Carli <carliedu@ig.com.br>).
+
+
+----
+v1.1
+----
+
+[mms] Add sort change links to mailbox.
+[mms] Cc/Bcc display now handled by IMP's pref.
+[mms] Fix thread display.
+[mms] Protect delete actions with CSRF tokens.
+[jan] Add Slovak translation (Martin Matuška <martin@matuska.org>).
+
+
+--------
+v1.1-RC2
+--------
+
+[mms] Honor nav_poll preference from IMP.
+[jan] Add Russian translation (Alexey Zakharov <baber@mosga.net>).
+
+
+--------
+v1.1-RC1
+--------
+
+[jan] Add Japanese translation (Hiromi Kimura <hiromi@tac.tsukuba.ac.jp>).
+
+
+----------
+v1.1-ALPHA
+----------
+
+[mms] MIMP now requires an IMP 4.2 installation - MIMP uses all of IMP's base
+      libraries to provide its core functionality.
+
+
+------
+v1.0.1
+------
+
+[jan] Add Catalan translation (Jordi Giralt <projecte.k2@upcnet.es>).
+[jan] Add Portuguese translation (Manuel Menezes de Sequeira
+      <Manuel.Sequeira@iscte.pt>).
+[jan] Add Dutch translation (Jan Kuipers <jrkuipers@lauwerscollege.nl>).
+
+
+----
+v1.0
+----
+
+[mms] Don't show prefs page unless authenticated to MIMP (Bug #3756).
+[mms] Fix overriding smtphost/smtpport from servers.php (phyre@rogers.com,
+      Bug #3571).
+
+
+--------
+v1.0-RC1
+--------
+
+[mms] More bugfix/performance merges from IMP HEAD.
+[mms] MIMP does not support hordeauth/autologin.
+[jan] Fix editing of identities (Bug #3345).
+
+
+---------
+v1.0-BETA
+---------
+
+[mms] Many bugfix/performance merges from IMP HEAD.
+[mms] Allow PHP expressions to be executed for user-defined headers.
+[mms] Removed 'dotfiles' server config parameter.
+[mms] Fix maildomain setting on login (Bug #3057).
+[jan] Add Italian translation (Marco Pirovano <marco.pirovano@unibocconi.it>).
+[mms] Updated IMAP_Client from IMP with various bugfixes/cleanups.
+[jan] Add Hungarian translation (Laszlo L. Tornoci <torlasz@xenia.sote.hu>).
+[mms] Added test script.
+
+
+----------
+v1.0-ALPHA
+----------
+
+[mms] Removed 'folders', 'namespace, and 'hierarchies' server config
+      parameters.
+[mms] Add auto-detection of namespace information from IMAP server.
+[mms] Correctly convert message text from browser charset to sending charset
+      (Bug #2357).
+[cjh] Allow basic identity editing through MIMP's preferences when using
+      a full web browser (Bug #1636).
+[jan] Add French translation (David Hoffmann
+      <david.hoffmann@chru-strasbourg.fr>).
+[mms] Add preference to only download the first 250 characters of a message
+      on the initial message view.
+[jan] Add Finnish translation (Leena Heino <liinu@uta.fi>).
+[mms] Determine the default IMAP delimiter according to RFC 3501.
+[jan] Add Lithuanian translation (Vilius Sumskas <vilius@lnk.lt>).
+[jan] Add Spanish translation (Manuel Perez Ayala <mperaya@alcazaba.unex.es>).
+[mms] Use IMAP_Tree:: for IMAP Tree generation.
+[cjh] Use a linkset for the menu.
+[cjh] Add support for Reply, Reply List, Reply All, and Forward.
+[cjh] Display status messages using Notification_Listener_mobile.
+[cjh] Add redirect message functionality.
+[cjh] Add support for Expand Names.
+[cjh] Mailbox views now include paging.
+[cjh] List all attachments that aren't displayed in the headers.
+[cjh] Add an HTML viewer that strips tags and allows at least basic
+      text viewing.
+[jan] Add Romanian translation (Eugen Hoanca <eugenh@urban-grafx.ro>).
+[jan] Add German translation.
+[cjh] Add Compose menu item, and making sending mail work.
+[cjh] Add more menu items - Expunge, Refresh
+[cjh] The folder list is now functional.
+[cjh] Seperate menu card now, and successful display of mailboxes, messages,
+      and deletion of messages.
+[cjh] Start pruning parts of IMP that don't belong in a mobile application.
+[cjh] Start of work based on IMP.

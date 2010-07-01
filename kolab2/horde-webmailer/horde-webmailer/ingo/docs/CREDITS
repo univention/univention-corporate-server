@@ -1,0 +1,85 @@
+=======================
+ Ingo Development Team
+=======================
+
+
+Core Developers
+===============
+
+- Michael Slusarz <slusarz@horde.org>
+- Jan Schneider <jan@horde.org>
+
+
+Localization
+============
+
+=====================   ======================================================
+Basque                  Euskal Herriko Unibertsitatea <xabier.arrieta@ehu.es>
+Brazilian Portuguese    Fabio Gomes <flgoms@uol.com.br>
+                        Luis Felipe Marzagao <duli@fedoraproject.org>
+                        Eduardo de Carli <carliedu@ig.com.br>
+Catalan                 Jordi Giralt <projecte.k2@upcnet.es>
+Chinese (Simplified)    Anna Chen <annachen2008@yahoo.com.cn>
+Chinese (Traditional)   David Chang <david@tmv.gov.tw>
+Croatian                Matej Vela <matej.vela@carnet.hr>
+Czech                   Pavel Chytil <pavel@chytil.tk>
+Danish                  Brian Truelsen <horde+i18n@briantruelsen.dk>
+                        Niels Baggesen <nba@users.sourceforge.net>
+Dutch                   Ruben van der Steenhoven
+                        <ruben_donotspamme@webmeesters.net>
+Estonian                Toomas Aas <toomas.aas@mail.ee>
+                        Alar Sing <alar.sing@err.ee>
+Finnish                 Leena Heino <Leena.Heino@uta.fi>
+French                  Florent Aide <faide@alphacent.com>
+                        Benoit St-André <ben@benoitst-andre.net>
+                        Pierre Lachance <pl@pierrelachance.net>
+                        Vincent Vinet <vvinet@revolutionlinux.com>
+                        Yannick Sebastia <yannick.sebastia@ecole-navale.fr>
+German                  Jan Schneider <jan@horde.org>
+Greek                   Konstantinos C. Milosis <kmilosis@yahoo.com>
+Hungarian               Attila Nagy <bra@fsn.hu>
+                        Laszlo L. Tornoci <torlasz@xenia.sote.hu>
+Italian                 Marko Djukic <marko@oblo.com>
+                        Marco Pirovano <marco.pirovano@unibocconi.it>
+                        Cristian Manoni <cristian.manoni@nethesis.it>
+Japanese                Hiromi Kimura <hiromi@tac.tsukuba.ac.jp>
+Korean                  Jinhyok Heo <novembre@ournature.org>
+Latvian                 Janis Eisaks <jancs@dv.lv>
+Lithuanian              Vilius Šumskas <vilius@lnk.lt>
+Norwegian Bokmaal       Trond Bjørstad <trb@ndn.no>
+                        Thomas Chr. Dahl <tcd@ndn.no>
+Polish                  Przemyslaw "Primo" Witek <primo@npl.pl>
+                        Krzysztof Kozlowski <kozik1@o2.pl>
+                        Piotr Adamcio <adamcios@o2.pl>
+                        Tadeusz Lesiecki <lesiecki@tmtsystem.pl>
+                        Piotr Tarnowski <drfugazi@drfugazi.eu.org>
+Portuguese              Manuel Menezes de Sequeira <Manuel.Sequeira>
+Romanian                Eugen Hoanca <eugenh@urban-grafx.ro>
+Russian                 Alexey Zakharov <baber@mosga.net>
+Slovak                  Martin Matuška <martin@matuska.org>
+Slovenian               Duck <duck@obala.net>
+Spanish                 Manuel Perez Ayala <mperaya@alcazaba.unex.es>
+Swedish                 Anders Norrbring <anders@norrbring.biz>
+Turkish                 Middle East Technical University <horde-tr@metu.edu.tr>
+Ukrainian               Andriy Kopystyansky <anri@polynet.lviv.ua>
+=====================   ======================================================
+
+
+Inactive Developers
+===================
+
+- Mike Cochrane <mike@graftonhall.co.nz>
+- Brent J. Nordquist <bjn@horde.org>
+
+
+Other Thanks
+============
+
+Ryan Gallagher <ryan@studiesabroad.com>
+
+- The name :-) "Mail comes 'in'...Where does it 'go'?"
+
+Tufts University
+
+- Funding support for LDAP/Sieve (Sun JES/ONE & iPlanet messaging servers).
+

@@ -1,0 +1,5029 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright YEAR Horde Project
+# This file is distributed under the same license as the PACKAGE package.
+# Keo Sophon <keosophon@khmeros.info>, 2005.
+# Leang Chumsoben <soben@khmeros.info>, 2006.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: IMP\n"
+"POT-Creation-Date: 2004-12-08 10:28+0100\n"
+"PO-Revision-Date: 2005-06-15 11:53+0700\n"
+"Last-Translator: Leang Chumsoben <soben@khmeros.info>\n"
+"Language-Team: Khmer <support@khmeros.info>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: lib/Compose.php:1558
+msgid "      Cc: "
+msgstr "      ចម្លង ៖ "
+
+#: lib/Compose.php:1555
+msgid "      To: "
+msgstr "      ទៅ ៖ "
+
+#: lib/Compose.php:1543
+msgid "    Date: "
+msgstr "    កាលបរិច្ឆេទ ៖ "
+
+#: lib/Compose.php:1546
+msgid "    From: "
+msgstr "    ពី ៖ "
+
+#: folders.php:274 mailbox.php:331
+#, php-format
+msgid " (Accesskey %s)"
+msgstr "(គ្រាប់​ចុច​ផ្លូវ​កាត់ %s)"
+
+#: lib/Compose.php:1552
+msgid " Subject: "
+msgstr " ប្រធានបទ ៖ "
+
+#: lib/MIME/Viewer/pgp.php:169
+msgid " [ Save the key to your Address book ] "
+msgstr " [ រក្សាទុក​កូនសោ​ទៅ​សៀវភៅ​អាសយដ្ឋាន​របស់​អ្នក ] "
+
+#: lib/MIME/Viewer/pgp.php:171
+msgid " [ View the raw key ] "
+msgstr " [ មើល​គ្រាប់ចុច​ដើមៅ ] "
+
+#: mailbox.php:560
+msgid "#"
+msgstr "#"
+
+#: thread.php:153
+#, php-format
+msgid "%d Messages"
+msgstr "សារ​ចំនួន %d"
+
+#: lib/Spam.php:218
+#, php-format
+msgid "%d messages have been deleted."
+msgstr "សារ​ចំនួន %d ត្រូវ​បាន​លុប ។"
+
+#: lib/Spam.php:200
+#, php-format
+msgid ""
+"%d messages have been reported as not spam to your system administrator."
+msgstr "សារ %d ត្រូវ​បាន​រាយ​ការណ៍​ទៅ​កាន់​អ្នក​គ្រប់​គ្រង​ប្រព័ន្ធ​របស់​អ្នក​ថា​មិន​មែន​សារ​ឥត​បាន​ការ ។"
+
+#: lib/Spam.php:180
+#, php-format
+msgid "%d messages have been reported as not spam."
+msgstr "សារ %d ត្រូវ​បាន​រាយ​ការណ៍​ថា​មិន​មែន​សារ​ឥត​បាន​ការ ។"
+
+#: lib/Spam.php:192
+#, php-format
+msgid "%d messages have been reported as spam to your system administrator."
+msgstr "សារ %d ត្រូវ​បាន​រាយ​ការណ៍​ទៅ​កាន់​អ្នក​គ្រប់​គ្រង​ប្រព័ន្ធ​របស់​អ្នក​ថា​​ជា​​សារ​ឥត​បានការ"
+
+#: lib/Spam.php:172
+#, php-format
+msgid "%d messages have been reported as spam."
+msgstr "សារ %d ត្រូវ​បាន​រាយ​ការណ៍​ថា​ជា​សារ​ឥត​បាន​ការ ។"
+
+#: mailbox.php:278
+#, php-format
+msgid "%d to %d of %d Messages"
+msgstr "%d ដល់ %d នៃ​សារ %d"
+
+#: lib/MIME/Contents.php:567
+#, php-format
+msgid "%s Attachments, %s"
+msgstr "ឯកសារ​ភ្ជាប់​ចំនួន %s, %s"
+
+#: mailbox.php:784 lib/MIME/Contents.php:558
+#, php-format
+msgid "%s KB"
+msgstr "%s KB"
+
+#: mailbox.php:782 lib/MIME/Contents.php:556
+#, php-format
+msgid "%s MB"
+msgstr "%s មេកាបៃ"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:44
+#, php-format
+msgid "%s already exists. Your %s folder was not renamed."
+msgstr "%s មាន​រួច​ហើយ ។ ថត %s របស់​អ្នក​មិន​ត្រូវ​បាន​ប្តូរ​ឈ្មោះ​ឡើយ ។"
+
+#: lib/MIME/Contents.php:561
+#, php-format
+msgid "%s bytes"
+msgstr "%s បៃ"
+
+#: lib/Message.php:723
+#, php-format
+msgid "%s does not appear to be a valid mailbox."
+msgstr "%s ទំនង​ជា​ប្រអប់​សំបុត្រ​មិន​ត្រឹមត្រូវ ។"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:42
+#, php-format
+msgid "%s folder being renamed at the start of the month."
+msgstr "ថត %s នឹង​​ត្រូវ​បាន​ប្តូរ​ឈ្មោះ​ នៅ​ពេល​ចាប់​ផ្តើម​នៃ​ខែ ។"
+
+#: lib/MIME/Viewer/itip.php:257
+#, php-format
+msgid "%s has accepted."
+msgstr "%s បាន​ទទួល ។"
+
+#: lib/MIME/Viewer/itip.php:617
+#, php-format
+msgid "%s has cancelled \"%s\"."
+msgstr "%s បាន​បោះបង់ \"%s\" ។"
+
+#: lib/MIME/Viewer/itip.php:263
+#, php-format
+msgid "%s has declined."
+msgstr "%s បាន​បដិសេធ ។"
+
+#: lib/MIME/Viewer/itip.php:492
+#, php-format
+msgid "%s has replied to a free/busy request."
+msgstr "%s បាន​ឆ្លើយ​តប​ទៅ​នឹង​សំណើ ទំនេរ/រវល់ មួយ ។"
+
+#: lib/MIME/Viewer/itip.php:609
+#, php-format
+msgid "%s has replied to the invitation to \"%s\"."
+msgstr "%s បាន​ឆ្លើយតប​ទៅ​សេចក្ដី​អញ្ជើញ​ទៅ​កាន់ \"%s\" ។"
+
+#: lib/MIME/Viewer/itip.php:483
+#, php-format
+msgid "%s has sent you free/busy information."
+msgstr "%s បាន​ផ្ញើ​ឲ្យ​អ្នក​នូវ​ព័ត៌មាន ទំនេរ/រវល់ ។"
+
+#: lib/MIME/Viewer/itip.php:269
+#, php-format
+msgid "%s has tentatively accepted."
+msgstr "%s បាន​ទទួល​ជា​បណ្តោះ​អាសន្ន ។"
+
+#: lib/MIME/Viewer/itip.php:488
+#, php-format
+msgid "%s requests your free/busy information."
+msgstr "%s ស្នើ​សុំ​ព័ត៌មាន​ ទំនេរ/រវល់​ របស់​អ្នក ។"
+
+#: lib/MIME/Viewer/itip.php:580
+#, php-format
+msgid "%s requests your presence at \"%s\"."
+msgstr "%s សុំ​ឲ្យ​អ្នក​មាន​វត្តមាន​នៅ \"%s\" ។"
+
+#: lib/Message.php:472
+#, php-format
+msgid "%s was successfully added to \"%s\"."
+msgstr "%s ត្រូវ​បាន​បន្ថែម​ដោយ​ជោគជ័យ​ទៅ​កាន់ \"%s\" ។"
+
+#: lib/MIME/Viewer/itip.php:592
+#, php-format
+msgid "%s wishes to ammend \"%s\"."
+msgstr "%s ចង់​ឲ្យ ammend \"%s\" ។"
+
+#: lib/MIME/Viewer/itip.php:571
+#, php-format
+msgid "%s wishes to make you aware of \"%s\"."
+msgstr "%s ចង់​ឲ្យ​អ្នក​ដឹង​អំពី \"%s\" ។"
+
+#: lib/MIME/Viewer/itip.php:596
+#, php-format
+msgid "%s wishes to receive the latest information about \"%s\"."
+msgstr "%s ចង់​ទទួល​ព័ត៌មាន​ចុងក្រោយ​បំផុត​អំពី \"%s\" ។"
+
+#: message.php:254 message.php:259
+#, php-format
+msgid "%s: %s"
+msgstr "%s ៖ %s"
+
+#: message.php:491
+#, php-format
+msgid "%s: %s (%d&nbsp;of&nbsp;%d)"
+msgstr "%s ៖ %s (%d&nbsp;of&nbsp;%d)"
+
+#: templates/compose/spelling.html:73
+msgid "(Apply these changes and move to next screen.)"
+msgstr "(អនុវត្ត​ការ​ផ្លាស់​ប្តូរ​ទាំង​នេះ និង ផ្លាស់​ទី​ទៅ​កាន់​អេក្រង់​បន្ទាប់ ។)"
+
+#: templates/compose/spelling.html:60
+msgid "(Discard all changes and return to the compose screen.)"
+msgstr "(បោះចោល​ការ​ផ្លាស់​ប្តូរ​ទាំងអស់ និង ត្រឡប់​ទៅ​កាន់​អេក្រង់​​តែង ។)"
+
+#: templates/stationery/prefs.inc:16
+msgid "(HTML)"
+msgstr "(HTML)"
+
+#: templates/stationery/prefs.inc:16
+msgid "(Plain Text)"
+msgstr "(អត្ថបទ​ធម្មតា)"
+
+#: spelling.php:249
+msgid ""
+"(Return to the compose screen after applying all changes made thus far.  "
+"Changes on the current screen will NOT be applied.)"
+msgstr ""
+"ត្រឡប់​ទៅ​អេក្រង់​តែង បន្ទាប់​ពី​អនុវត្ត​ការ​ផ្លាស់​ប្តូរ​ទាំង​អស់ដែល​បាន​ធ្វើ​​​រហូត​ដល់​ពេល​នេះ ។ ការ​ផ្លាស់​ប្តូរ​លើ​"
+"អេក្រង់​បច្ចុប្បន្ន នឹង​មិន​ត្រូវ​បាន​អនុវត្ត​ឡើយ ។"
+
+#: spelling.php:246
+msgid ""
+"(Send message after applying all changes made thus far.  Changes on the "
+"current screen will NOT be applied.)"
+msgstr ""
+"ផ្ញើ​សារ បន្ទាប់​ពីអនុវត្ត​ការ​ផ្លាស់​ប្តូរ​ទាំងអស់​ដែល​បាន​ធ្វើ​រហូត​ដល់​ពេល​នេះ ។ ការ​ផ្លាស់ប្តូរ​លើ​អេក្រង់​"
+"បច្ចុប្បន្ន នឹង​មិន​ត្រូវ​បាន​អនុវត្ត​ឡើយ ។"
+
+#: templates/contacts/contacts.html:47
+msgid "* Add these by clicking OK *"
+msgstr "* បន្ថែម​ទាំង​នេះ ដោយ​ចុច​យល់ព្រម *"
+
+#: templates/contacts/contacts.html:32
+msgid "* Please select address(es) *"
+msgstr "* សូម​ជ្រើស​អាសយដ្ឋាន *"
+
+#: lib/MIME/Contents.php:565
+#, php-format
+msgid "1 Attachment, %s"
+msgstr "ឯកសារ​ភ្ជាប់​ចំនួន ១, %s"
+
+#: config/prefs.php.dist:831
+msgid "100 characters"
+msgstr "១០០ តួ​អក្សរ"
+
+#: config/prefs.php.dist:834
+msgid "1000 characters"
+msgstr "១០០០ តួ​អក្សរ"
+
+#: config/prefs.php.dist:832
+msgid "250 characters"
+msgstr "២៥០ តួ​អក្សរ"
+
+#: config/prefs.php.dist:833
+msgid "500 characters"
+msgstr "៥០០ តួ​អក្សរ"
+
+#: lib/MIME/Viewer/images.php:163
+#, php-format
+msgid "A large image named %s is attached to this message."
+msgstr "រូបភាព​ធំ​មួយ​ដែល​មាន​ឈ្មោះ %s ត្រូវ​បានភ្ជាប់​​ជាមួយ​​សារ​នេះ ។"
+
+#: lib/MIME/Viewer/notification.php:50
+msgid ""
+"A message you have sent has resulted in a return notification from the "
+"recipient."
+msgstr "សារ​មួយ​ដែល​អ្នក​បាន​ផ្ញើ បាន​ផ្តល់​លទ្ធផល​ជា​ការ​ជូនដំណឹង​ត្រឡប់​មួយ ​ពី​អ្នក​ទទួល ។"
+
+#: templates/search/search.html:49
+msgid "AND"
+msgstr "និង"
+
+#: config/prefs.php.dist:705
+msgid "Above the message text"
+msgstr "ខាង​លើ​អត្ថបទ​សារ"
+
+#: lib/MIME/Viewer/itip.php:582
+msgid "Accept and add to my calendar"
+msgstr "ព្រម​ទទួល ហើយ​បន្ថែម​ទៅ​ប្រតិទិន​របស់​ខ្ញុំ"
+
+#: lib/MIME/Viewer/itip.php:585
+msgid "Accept request"
+msgstr "ព្រម​​ទទួល​​សំណើ"
+
+#: lib/MIME/Viewer/itip.php:746
+msgid "Accepted"
+msgstr "បាន​ទទួល"
+
+#: lib/MIME/Viewer/itip.php:258
+msgid "Accepted: "
+msgstr "បាន​ទទួល ៖ "
+
+#: templates/fetchmail/manage.inc:7
+msgid "Account's name:"
+msgstr "ឈ្មោះ​គណនី ៖"
+
+#: lib/MIME/Viewer/itip.php:522 lib/MIME/Viewer/itip.php:725
+msgid "Actions"
+msgstr "អំពើ"
+
+#: lib/MIME/Headers.php:201 lib/MIME/Headers.php:202
+#, php-format
+msgid "Add %s to my Address Book"
+msgstr "បន្ថែម %s ទៅ​សៀវភៅ​អាសយដ្ឋាន​របស់​ខ្ញុំ"
+
+#: templates/prefs/sourceselect.inc:303
+msgid "Add source"
+msgstr "បន្ថែម​ប្រភព"
+
+#: lib/MIME/Viewer/itip.php:573
+msgid "Add this to my calendar"
+msgstr "បន្ថែម​នេះ​ទៅ​ប្រតិទិន​របស់​ខ្ញុំ"
+
+#: lib/MIME/Viewer/itip.php:583
+msgid "Add to my calendar"
+msgstr "បន្ថែម​ទៅ​ប្រតិទិន​របស់​ខ្ញុំ"
+
+#: compose.php:323
+#, php-format
+msgid "Added \"%s\" as an attachment."
+msgstr "បាន​បន្ថែម \"%s\" ជា​ឯកសារ​ភ្ជាប់​មួយ ។"
+
+#: config/prefs.php.dist:199
+msgid ""
+"Additional headers to display when viewing: <em>(optional, enter each header "
+"on a new line)</em>"
+msgstr ""
+"ក្បាល​បន្ថែម​ទៀត ដែល​ត្រូវ​បង្ហាញ​នៅ​ពេល​មើល ៖ <em>(ស្រេច​ចិត្ត បញ្ចូល​ក្បាល​នីមួយៗ​លើ​ជួរ​ថ្មី)</em>"
+
+#: lib/MIME/Viewer/notification.php:62
+#, php-format
+msgid "Additional information can be viewed %s."
+msgstr "ព័ត៌មាន​បន្ថែម​អាច​ត្រូវ​បាន​មើល​ %s ។"
+
+#: lib/MIME/Viewer/notification.php:62
+msgid "Additional information details"
+msgstr "សេចក្តី​លម្អិតរបស់​​ព័ត៌មាន​បន្ថែម"
+
+#: lib/MIME/Viewer/status.php:93
+msgid "Additional message details"
+msgstr "សេចក្តី​លម្អិត​របស់​សារ​បន្ថែម"
+
+#: lib/MIME/Viewer/status.php:92
+#, php-format
+msgid "Additional message details can be viewed %s."
+msgstr "សេចក្តី​លម្អិត​របស់​សារ​បន្ថែម​ អាច​ត្រូវ​បាន​មើល​ %s ។"
+
+#: lib/MIME/Viewer/status.php:78
+msgid "Additional message error details"
+msgstr "សេចក្តី​លម្អិត​អំពី​កំហុស​របស់​សារ​បន្ថែម"
+
+#: lib/MIME/Viewer/status.php:77
+#, php-format
+msgid "Additional message error details can be viewed %s."
+msgstr "សេចក្តី​លម្អិត​អំពី​កំហុស​របស់​សារ​បន្ថែម អាច​ត្រូវ​បាន​មើល​​ %s ​។"
+
+#: compose.php:867 compose.php:1230 contacts.php:77
+#: templates/contacts/contacts.html:8
+msgid "Address Book"
+msgstr "សៀវភៅ​អាសយដ្ឋាន"
+
+#: config/prefs.php.dist:135
+msgid "Address Books"
+msgstr "សៀវភៅ​អាសយដ្ឋាន"
+
+#: config/prefs.php.dist:190
+msgid ""
+"Addresses to BCC all messages: <em>(optional, enter each address on a new "
+"line)</em>"
+msgstr "អាសយដ្ឋាន​ដែល​ត្រូវ​លាក់​សារ​ទាំងអស់ ៖ <em>(ស្រេច​ចិត្ត, បញ្ចូល​អាសយដ្ឋាន​នីមួយៗ​លើ​ជួរ​ថ្មី)</em>"
+
+#: config/prefs.php.dist:182
+msgid ""
+"Addresses to explicitly tie to this identity: <em>(optional, enter each "
+"address on a new line)</em>"
+msgstr ""
+"អាសយដ្ឋាន​ដែល​ត្រូវ​ចង​ជាក់លាក់​នឹង​អត្តសញ្ញាណ​នេះ ៖ <em>(ស្រេច​ចិត្ត, បញ្ចូល​អាសយដ្ឋាន​នីមួយៗ​លើ​ជួរ​ថ្មី)</"
+"em>"
+
+#: templates/mailbox/navbar.html:7
+msgid "All"
+msgstr "ទាំងអស់"
+
+#: templates/javascript/folders.js:13
+msgid ""
+"All messages in the following folder(s) will be downloaded into one MBOX "
+"file:"
+msgstr "សារ​ទាំង​អស់​ក្នុង​ថត​ខាងក្រោម នឹង​ត្រូវ​បាន​ទាញ​យកដោយ​ដាក់​ទៅក្នុង​ឯកសារ MBOX មួយ ។"
+
+#: lib/Maintenance/Task/purge_trash.php:80
+#, php-format
+msgid ""
+"All messages in your \"%s\" folder older than %s days will be permanently "
+"deleted."
+msgstr "សារ​ទាំងអស់​ក្នុង​ថត \"%s\" របស់​អ្នក ដែល​ចាស់​ជាង %s ថ្ងៃ នឹង​ត្រូវ​បាន​លុប​ចោល​ជា​អចិន្ត្រៃយ៍ ។"
+
+#: lib/Maintenance/Task/delete_attachments_monthly.php:59
+#, php-format
+msgid "All old linked attachments more than %s months old will be deleted."
+msgstr "ឯកសារ​ភ្ជាប់​ចាស់​ទាំង​អស់​ដែល​ចាស់​ជាង %s ខែ នឹង​ត្រូវ​បាន​លុប​ ។"
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:73
+#, php-format
+msgid "All old sent-mail folders more than %s months old will be deleted."
+msgstr "ថត​សំបុត្រ​ដែល​បាន​ផ្ញើទាំង​អស់ ដែល​ចាស់​ជាង %s ខែ នឹង​ត្រូវ​បាន​លុប ។"
+
+#: acl.php:84
+#, php-format
+msgid "All rights on folder \"%s\" successfully removed for user \"%s\"."
+msgstr "សិទ្ធិ​ទាំងអស់​នៅ​លើ​ថត \"%s\" ត្រូវ​បាន​យក​ចេញ​ដោយ​ជោគជ័យ​សម្រាប់​អ្នក​ប្រើ \"%s\" ។"
+
+#: lib/api.php:81
+msgid "Allow Folder Creation?"
+msgstr "អនុញ្ញាត​ឲ្យ​បង្កើត​ថត ?"
+
+#: filterprefs.php:98
+msgid "Allow filter rules to be applied in any mailbox?"
+msgstr "អនុញ្ញាត​ឲ្យ​អនុវត្ត​ក្បួន​តម្រង​ក្នុង​ប្រអប់​សំបុត្រ​ណាមួយ​ឬ​ទេ ?"
+
+#: lib/MIME/Viewer/alternative.php:111
+msgid "Alternative parts for this section:"
+msgstr "ផ្នែក​នៃ​ជម្រើស សម្រាប់​ភាគ​នេះ ៖"
+
+#: config/prefs.php.dist:584
+msgid "Always"
+msgstr "ជានិច្ច"
+
+#: config/prefs.php.dist:569
+msgid "Always save attachments"
+msgstr "រក្សា​ទុក​ឯកសារ​ភ្ជាប់​ជានិច្ច"
+
+#: lib/Message.php:563
+msgid ""
+"An error occured while attempting to strip the attachment. The IMAP server "
+"said: "
+msgstr "កំហុស​មួយ​បាន​កើត​ឡើង ខណៈពេល​ប៉ុនប៉ង​ច្បួត​ឯកសារ​ភ្ជាប់​ចេញ ។ ម៉ាស៊ីន​បម្រើ IMAP បាន​និយាយ ៖"
+
+#: lib/Message.php:446
+msgid "An unknown error occured while creating the new note."
+msgstr "កំហុស​មិន​ស្គាល់​មួយ​បាន​កើតឡើង ខណៈ​ពេល​បង្កើត​ចំណាំ​ថ្មី ។"
+
+#: lib/Message.php:445
+msgid "An unknown error occured while creating the new task."
+msgstr "កំហុស​ដែល​មិន​ស្គាល់​មួយ​បាន​កើត​ឡើង ខណៈ​ពេល​បង្កើត​ភារកិច្ច​ថ្មី ។"
+
+#: message.php:472 mailbox.php:818 mailbox.php:971
+#: templates/message/navbar_navigate.html:9 templates/mailbox/navbar.html:15
+#: templates/mailbox/navbar.html:30 templates/mailbox/legend.html:4
+msgid "Answered"
+msgstr "បាន​ឆ្លើយ​តប"
+
+#: search.php:329
+msgid "Answered messages"
+msgstr "សារ​ដែល​បាន​ឆ្លើយ​តប"
+
+#: mailbox.php:351
+msgid "Apply Filters"
+msgstr "អនុវត្ត​តម្រង"
+
+#: mailbox.php:351
+#, php-format
+msgid "Apply Filters to %s"
+msgstr "អនុវត្ត​តម្រង​ទៅ %s"
+
+#: filterprefs.php:96
+msgid "Apply filter rules upon logging on?"
+msgstr "អនុវត្ត​ក្បួន​តម្រង​ អាស្រ័យ​លើ​ការ​ចូល ?"
+
+#: filterprefs.php:97
+msgid "Apply filter rules whenever Inbox is displayed?"
+msgstr "អនុវត្ត​ក្បួន​តម្រង ពេល​បង្ហាញ​ប្រអប់​ទទួល ?"
+
+#: mailbox.php:361
+msgid "Are you sure you want to delete this Virtual Folder Definition?"
+msgstr "តើ​អ្នក​ពិត​ជា​ចង់​លុប​និយមន័យ​ថត​និម្មិត​នេះ​ឬ ?"
+
+#: templates/smime/smime.inc:25 templates/pgp/pgp.inc:27
+msgid "Are you sure you want to delete this public key?"
+msgstr "តើ​អ្នក​ពិត​ជា​ចង់​លុប​កូនសោ​សាធារណៈ​នេះ​ឬ ?"
+
+#: templates/smime/smime.inc:79 templates/pgp/pgp.inc:85
+msgid ""
+"Are you sure you want to delete your keypair? (This is NOT recommended!)"
+msgstr "តើ​អ្នក​ពិត​ជា​ចង់​លុប​គូ​កូនសោ​របស់​អ្នក​ឬ ? (មិន​មែន​ជា​អនុសាសន៍!)"
+
+#: templates/compose/javascript.inc:6
+msgid "Are you sure you want to do this?"
+msgstr "តើ​អ្នក​ពិត​ជា​ចង់​ធ្វើ​ដូច​នេះ​ឬ ?"
+
+#: message.php:537 templates/mailbox/javascript.inc:80
+msgid "Are you sure you wish to PERMANENTLY delete these messages?"
+msgstr "តើ​អ្នក​ពិត​ជា​ចង់​លុប​សារ​ទាំង​នេះ​ជា​អចិន្ត្រៃយ៍​ឬ​ ?​"
+
+#: lib/MIME/Contents.php:242
+msgid "Are you sure you wish to PERMANENTLY delete this attachment?"
+msgstr "តើ​អ្នក​ពិត​ជា​ចង់​លុប​ឯកសារ​ភ្ជាប់​នេះ​ជា​អចិន្ត្រៃយ៍​ឬ ?"
+
+#: mailbox.php:464
+msgid "Are you sure you wish to empty this folder?"
+msgstr "តើ​អ្នក​ពិត​ជា​ចង់​សម្អាត​ថត​នេះ​ឬ ?"
+
+#: lib/IMP.php:787
+msgid "Are you sure you wish to empty your spam folder?"
+msgstr "តើ​អ្នក​ពិត​ជា​ចង់​សម្អាត​ថត​សារ​ឥត​បាន​ការ​របស់​អ្នក​ឬ ?"
+
+#: lib/IMP.php:777
+msgid "Are you sure you wish to empty your trash folder?"
+msgstr "តើ​អ្នក​ពិត​ជា​ចង់​សម្អាត​ថត​សំរាម​របស់​អ្នក​ឬ ?"
+
+#: mailbox.php:463
+msgid "Are you sure you wish to permanently delete these messages?"
+msgstr "តើ​អ្នក​ពិត​ជា​ចង់​លុប​សារ​ទាំង​នេះ​ជា​អចិន្ត្រៃយ៍​ឬ ?"
+
+#: templates/message/javascript.inc:36 templates/mailbox/javascript.inc:91
+msgid "Are you sure you wish to report this message as innocent?"
+msgstr "តើ​អ្នក​ពិត​ជា​ចង់​រាយ​ការណ៍​អំពី​សារ​នេះ​ថា​ជា​សារ​ល្អ​ឬ ?"
+
+#: templates/message/javascript.inc:31 templates/mailbox/javascript.inc:86
+msgid "Are you sure you wish to report this message as spam?"
+msgstr "តើ​អ្នក​ពិត​ជា​ចង់​រាយ​ការណ៍​សារ​នេះ​ថា ជា​សារឥត​បានការ​ឬ ?"
+
+#: config/prefs.php.dist:927
+msgid "Arrival Time"
+msgstr "ពេល​វេលា​មក​ដល់"
+
+#: config/prefs.php.dist:942
+msgid "Ascending"
+msgstr "ឡើង"
+
+#: config/prefs.php.dist:583
+msgid "Ask"
+msgstr "សួរ"
+
+#: compose.php:1300
+msgid "Attach Files"
+msgstr "ភ្ជាប់​​ឯកសារ​ជាមួយ"
+
+#: compose.php:1292
+msgid "Attach a copy of your PGP public key to your message?"
+msgstr "ភ្ជាប់​ជាមួយ​នូវ​ច្បាប់​ចម្លង​មួយ​នៃ​កូនសោ​សាធារណៈ PGP របស់​អ្នក​ ទៅ​សារ​របស់​អ្នក ?"
+
+#: lib/MIME/Viewer/tnef.php:111
+msgid "Attached File:"
+msgstr "ឯកសារ​ដែល​បាន​ភ្ជាប់​ជាមួយ ៖"
+
+#: lib/Compose.php:1591 lib/Compose.php:1687
+#, php-format
+msgid ""
+"Attached file \"%s\" exceeds the attachment size limits. File NOT attached."
+msgstr "ឯកសារ​ \"%s\" ដែល​បាន​ភ្ជាប់​ជាមួយ លើស​កម្រិត​ទំហំ​ឯកសារ​ភ្ជាប់ ។ ឯកសារ​មិន​ត្រូវ​បាន​ភ្ជាប់ ។"
+
+#: lib/MIME/Viewer/itip.php:377
+msgid "Attached is a reply to a calendar request you sent."
+msgstr "ឯកសារ​ដែល​បាន​ភ្ជាប់ គឺ​ជា​ការ​ឆ្លើយ​តប​មួយ​ទៅ​សំណើ​ប្រតិទិន​ដែលអ្នកបាន​ផ្ញើ ។"
+
+#: mailbox.php:983 templates/compose/javascript.inc:242
+#: templates/mailbox/legend.html:14 templates/compose/compose.html:269
+#: templates/compose/compose.html:325
+msgid "Attachment"
+msgstr "ឯកសារ​ភ្ជាប់"
+
+#: attachment.php:70
+#, php-format
+msgid "Attachment %s deleted."
+msgstr "ឯកសារ​ភ្ជាប់ %s ត្រូវ​បាន​លុប ។"
+
+#: lib/Compose.php:2256
+msgid "Attachment Information"
+msgstr "ព័ត៌មាន​ឯកសារ​ភ្ជាប់"
+
+#: lib/Message.php:524 lib/Compose.php:640
+msgid "Attachment stripped: Original attachment type"
+msgstr "ឯកសារ​ភ្ជាប់​ដែល​បាន​ច្បូត​យក​ចេញ ៖ ប្រភេទ​ឯកសារ​ភ្ជាប់​ដើម"
+
+#: compose.php:1241 lib/Compose.php:2224 templates/compose/compose.html:242
+msgid "Attachments"
+msgstr "ឯកសារ​ភ្ជាប់"
+
+#: lib/MIME/Viewer/itip.php:678
+msgid "Attendees"
+msgstr "អ្នកចូលរួម"
+
+#: lib/MIME/Viewer/notification.php:53
+msgid "Attention"
+msgstr "ការ​ប្រុង​ប្រយ័ត្ន"
+
+#: lib/Auth/imp.php:44
+msgid "Auth_imp: Required IMAP extension not found."
+msgstr "Auth_imp: រក​មិន​ឃើញ​ផ្នែក​បន្ថែម IMAP ដែល​ត្រូវការ​ឡើយ ។"
+
+#: config/prefs.php.dist:640
+msgid ""
+"Automatically show images in HTML messages when the sender is in my "
+"addressbook?"
+msgstr ""
+"បង្ហាញ​រូបភាព​ក្នុង​សារ HTML ដោយ​ស្វ័យ​ប្រវត្តិ ពេល​អ្នក​ផ្ញើ​ស្ថិត​នៅ​ក្នុង​សៀវភៅ​អាសយដ្ឋាន​របស់​ខ្ញុំ ?"
+
+#: templates/prefs/sourceselect.inc:298
+msgid "Available Address books:"
+msgstr "សៀវភៅ​អាសយដ្ឋាន​ដែល​មាន"
+
+#: lib/MIME/Viewer/itip.php:714
+msgid "Awaiting Response"
+msgstr "កំពុង​រងចាំ​ការ​ឆ្លើយ​តប"
+
+#: message.php:510
+#, php-format
+msgid "Bac_k to %s"
+msgstr "_Kត្រឡប់​ទៅ %s "
+
+#: message.php:510 thread.php:135
+#, php-format
+msgid "Back to %s"
+msgstr "ត្រឡប់​ទៅ %s"
+
+#: thread.php:132
+msgid "Back to Multiple Message View Index"
+msgstr "ត្រឡប់​ទៅ​លិបិក្រម​ទិដ្ឋភាព​សារ​ច្រើន"
+
+#: thread.php:130
+msgid "Back to Thread Display"
+msgstr "ត្រឡប់​ទៅ​ការ​បង្ហាញ​ជា​ខ្សែ​ស្រឡាយ"
+
+#: lib/IMAP/Client.php:573
+#, php-format
+msgid "Bad login name or password."
+msgstr "ឈ្មោះ​ចូល ឬ ពាក្យសម្ងាត់​មិន​ល្អ ។"
+
+#: lib/IMAP/Client.php:387
+#, php-format
+msgid "Bad or malformed request. Server Responded: %s"
+msgstr "សំណើ​មិន​ល្អ ឬ មិន​ត្រឹមត្រូវ ។ ម៉ាស៊ីន​បម្រើ​បាន​ឆ្លើយតប​ថា ៖ %s"
+
+#: lib/IMAP/Client.php:577
+#, php-format
+msgid "Bad request: %s."
+msgstr "សំណើ​មិន​ល្អ ៖ %s ។"
+
+#: message.php:235 lib/Search.php:615 templates/contacts/contacts.html:42
+#: templates/login/recompose.html:32
+msgid "Bcc"
+msgstr "លាក់"
+
+#: lib/MIME/Viewer/status.php:163
+msgid "Below is the raw text of the status information message."
+msgstr "ខាង​ក្រោម​គឺ​ជា​អត្ថបទ​ឆៅរបស់​សារ​នៃ​ព័ត៌មាន​ស្ថានភាព ។"
+
+#: config/prefs.php.dist:706
+msgid "Below the message text"
+msgstr "ខាង​ក្រោម​អត្ថបទ​សារ"
+
+#: message.php:565 mailbox.php:490
+msgid "Blacklist"
+msgstr "បញ្ជី​ខ្មៅ"
+
+#: config/prefs.php.dist:629
+msgid "Block images in HTML messages unless they are specifically requested?"
+msgstr "ទប់ស្កាត់​រូបភាព​ក្នុង​សារ HTML ប្រសិន​បើ​ពួក​វា​មិន​ត្រូវ​បាន​ស្នើ​សុំ​ជា​ពិសេស ?"
+
+#: lib/Search.php:623
+msgid "Body"
+msgstr "តួ"
+
+#: search.php:326 search.php:331 search.php:336 search.php:341
+msgid "Both"
+msgstr "ទាំងពីរ"
+
+#: config/prefs.php.dist:696
+msgid "Both Header Listing and Body of Message"
+msgstr "ទាំង​ការ​រាយ​បឋមកថា និង តួ​របស់​សារ"
+
+#: compose.php:1188
+msgid "C_harset"
+msgstr "_Hសំណុំ​តួ​អក្សរ "
+
+#: search.php:312
+msgid "Calendar"
+msgstr "ប្រតិទិន"
+
+#: lib/Fetchmail/imap.php:155
+msgid "Can not connect to the remote mail server."
+msgstr "មិន​អាច​ត​ភ្ជាប់​ទៅ​ម៉ាស៊ីន​បម្រើ​សំបុត្រ​ឆ្ងាយ ។"
+
+#: lib/Fetchmail/imap.php:153
+msgid "Can not connect to the remote mail server: "
+msgstr "មិន​អាច​តភ្ជាប់​ទៅ​ម៉ាស៊ីន​បម្រើ​សំបុត្រ​ឆ្ងាយ ៖"
+
+#: lib/MIME/Viewer/partial.php:50
+#, php-format
+msgid ""
+"Can not display - found only %s of %s parts of this message in the current "
+"mailbox."
+msgstr "មិន​អាច​បង្ហាញ - រក​ឃើញ​តែ %s នៃ​ផ្នែក %s របស់​សារ​នេះ ក្នុង​ប្រអប់​សំបុត្រ​បច្ចុប្បន្ន ។"
+
+#: templates/smime/passphrase.inc:21 templates/smime/import_key.inc:86
+#: templates/pgp/passphrase.inc:32 templates/contacts/contacts.html:74
+#: templates/folders/folders_confirm.html:23 templates/folders/import.html:17
+#: templates/saveimage/saveimage.html:19 templates/compose/spelling.html:60
+#: templates/pgp/import_key.html:49
+msgid "Cancel"
+msgstr "បោះបង់"
+
+#: templates/compose/redirect.html:78 templates/compose/compose.html:25
+#: templates/compose/compose.html:208
+msgid "Cancel Message"
+msgstr "បោះបង់​សារ"
+
+#: templates/compose/javascript.inc:6
+msgid "Cancelling this message will permanently discard its contents."
+msgstr "បោះបង់​សារ​នេះ នឹង​បោះចោល​មាតិកា​របស់​វា​ជា​អចិន្ត្រៃយ៍ ។"
+
+#: message.php:234 lib/Search.php:611 templates/contacts/contacts.html:41
+#: templates/login/recompose.html:23
+msgid "Cc"
+msgstr "ចម្លង"
+
+#: templates/smime/smime.inc:93
+msgid ""
+"Certificate import is not available. File upload is not enabled on this "
+"server."
+msgstr ""
+"មិន​មាន​ការ​នាំចូល​វិញ្ញាបនបត្រ​ឡើយ ។ ការ​ផ្ទុក​ឯកសារ​ឡើង មិន​ត្រូវ​បាន​ធ្វើ​ឲ្យ​ប្រើ​បាន​ឡើយ​លើ​ម៉ាស៊ីន​បម្រើ​"
+"នេះ ។"
+
+#: lib/MIME/Viewer/itip.php:696
+msgid "Chair Person"
+msgstr "ប្រធាន"
+
+#: templates/compose/spelling.html:34
+msgid "Change"
+msgstr "ផ្លាស់​ប្តូរ"
+
+#: templates/compose/spelling.html:35
+msgid "Change All"
+msgstr "ផ្លាស់​ប្តូរ​ទាំង​អស់"
+
+#: templates/acl/acl.inc:92
+msgid "Change Folder"
+msgstr "ផ្លាស់​ប្តូរ​ថត"
+
+#: config/prefs.php.dist:113
+msgid ""
+"Change display options such as how many messages you see on each page and "
+"how messages are sorted."
+msgstr ""
+"ផ្លាស់​ប្តូរ​ជម្រើស​បង្ហាញ​ដូចជា សារ​ចំនួន​ប៉ុន្មាន​ដែល​អ្នក​ឃើញ​លើ​ទំព័រ​និមួយៗ និង សារ​ត្រូវ​បាន​តម្រៀប​យ៉ាង​"
+"ដូចម្តេច ។"
+
+#: config/prefs.php.dist:24
+msgid "Change mail server and folder settings."
+msgstr "ផ្លាស់​ប្តូរ​ការ​កំណត់​ម៉ាស៊ីន​បម្រើ​សំបុត្រ និង ថត ។"
+
+#: config/prefs.php.dist:15
+msgid ""
+"Change the name, address, and signature that people see when they read and "
+"reply to your email."
+msgstr ""
+"ផ្លាស់​ប្តូរ​ឈ្មោះ អាសយដ្ឋាន និង ហត្ថលេខា​ដែល​មនុស្ស​ឃើញ​ ពេល​ពួក​គេ​អាន និង ឆ្លើយ​តប​ទៅ​អ៊ីមែល​របស់អ្នក ។"
+
+#: config/prefs.php.dist:835
+msgid "Characters to display:"
+msgstr "តួ​អក្សរ​ដែល​ត្រូវ​បង្ហាញ ៖"
+
+#: templates/folders/actions.html:17
+msgid "Check Folder(s) for New Mail"
+msgstr "ពិនិត្យ​មើល​ថត​ សម្រាប់​សំបុត្រ​ថ្មី"
+
+#: folders.php:286 mailbox.php:640
+msgid "Check _All/None"
+msgstr "_Aធីក​ទាំងអស់/មិន​ធីក​ទាំងអស់ "
+
+#: templates/fetchmail/fetchmail.inc:10 templates/fetchmail/fetchmail.inc:21
+msgid "Check all mail servers you want to fetch mail from:"
+msgstr "ពិនិត្យ​មើល​ម៉ាស៊ីន​បម្រើ​ទាំងអស់ ដែល​អ្នក​ចង់​​ទៅ​ប្រមូល​យក​សំបុត្រ​ពី ៖"
+
+#: config/prefs.php.dist:464
+msgid "Check spelling before sending a message?"
+msgstr "ពិនិត្យ​អក្ខរាវិរុទ្ធ មុន​ពេល​ផ្ញើ​សារមួយ ?"
+
+#: templates/folders/actions.html:6
+msgid "Choose Action"
+msgstr "ជ្រើស​អំពើ"
+
+#: config/servers.php.dist:179
+msgid "Choose a mail server:"
+msgstr "ជ្រើស​ម៉ាស៊ីន​បម្រើ​សំបុត្រ ៖"
+
+#: templates/compose/compose.html:64
+msgid "Choose a match or edit the address to the right:"
+msgstr "ជ្រើស​ដំណូច​មួយ ឬ កែសម្រួល​អាសយដ្ឋាន​នៅ​ខាង​ស្ដាំ ៖"
+
+#: templates/prefs/sourceselect.inc:349
+msgid "Choose the address book to use when adding addresses."
+msgstr "ជ្រើស​សៀវភៅ​អាសយដ្ឋាន​ដែល​ត្រូវ​ប្រើ ពេល​បន្ថែម​អាសយដ្ឋាន ។"
+
+#: templates/prefs/sourceselect.inc:293
+msgid "Choose the order of address books to search when expanding addresses."
+msgstr "ជ្រើស​លំដាប់​សៀវភៅ​អាសយដ្ឋានដែល​ត្រូវ​ស្វែង​រក ពេល​ពង្រីក​អាសយដ្ឋាន ។"
+
+#: lib/MIME/Viewer/images.php:115
+#, php-format
+msgid "Click %s to convert the image file into a format your browser can view."
+msgstr "ចុច %s ដើម្បី​បម្លែង​ឯកសារ​រូបភាព​ទៅ​ជា​ទ្រង់​ទ្រាយ​ដែល​កម្មវិធី​រុករក​របស់​អ្នក​អាចបង្ហាញ ។"
+
+#: lib/MIME/Viewer/images.php:104
+#, php-format
+msgid "Click %s to download the image."
+msgstr "ចុច %s ដើម្បី​ទាញយករូបភាព ។"
+
+#: lib/Filter.php:102
+#, php-format
+msgid "Click %s to go to %s management page."
+msgstr "ចុច %s ដើម្បី​ទៅ​កាន់ទំព័រ​គ្រប់​គ្រង %s ។​"
+
+#: lib/MIME/Viewer/images.php:164
+#, php-format
+msgid "Click %s to view a thumbnail of this image."
+msgstr "ចុច %s ដើម្បី​មើល​រូបភាព​តូច​របស់​រូបភាព​នេះ ។"
+
+#: lib/MIME/Viewer/pkcs7.php:423
+#, php-format
+msgid "Click %s to view the attachment in a separate window."
+msgstr "ចុច %s ដើម្បី​មើល​ឯកសារ​ភ្ជាប់​ក្នុង​បង្អួច​ផ្សេង ។"
+
+#: lib/MIME/Viewer/related.php:79
+#, php-format
+msgid "Click %s to view this multipart/related part in a separate window."
+msgstr "ចុច %s ដើម្បី​មើល​ផ្នែក​ច្រើន​ផ្នែក ឬ ផ្នែក​ទាក់ទង​គ្នា​នេះ​នៅ​ក្នុង​បង្អួច​ផ្សេង ។"
+
+#: templates/prefs/sourceselect.inc:321
+msgid ""
+"Click on one of your selected address books and then select all fields to "
+"search."
+msgstr ""
+"ចុច​លើ​សៀវភៅ​អាសយដ្ឋាន​មួយ ក្នុង​ចំណោម​សៀវភៅ​អាសយដ្ឋាន​ដែល​បាន​ជ្រើស​របស់​អ្នក និង បន្ទាប់​មក​ជ្រើស​ក្រឡា​"
+"ទទឹង​ទាំងអស់​ដែល​ត្រូវ​ស្វែង​រក ។"
+
+#: lib/MIME/Viewer/pkcs7.php:202
+#, php-format
+msgid "Click to Save S/MIME certificate of %s in your Address Book"
+msgstr "ចុច ដើម្បី​រក្សា​ទុក​វិញ្ញាបនបត្រ​របស់ S/MIME នៃ %s ក្នុង​សៀវភៅ​អាសយដ្ឋាន​របស់​អ្នក"
+
+#: config/prefs.php.dist:961
+msgid "Clicking on the address will compose a new message to the sender"
+msgstr "ចុច​លើ​អាសយដ្ឋាន​ នឹង​តែង​សារ​ថ្មី​មួយ​ទៅ​អ្នក​ផ្ញើ"
+
+#: config/prefs.php.dist:962
+msgid "Clicking on the address will open the message to be read"
+msgstr "ចុច​លើ​អាសយដ្ឋាន នឹង​បើក​សារ​ដែល​ត្រូវ​អាន"
+
+#: templates/fetchmail/fetchmail.inc:28
+msgid "Close"
+msgstr "បិទ"
+
+#: compose.php:150
+msgid "Close this window"
+msgstr "បិទ​បង្អួច​នេះ"
+
+#: lib/IMAP/Tree.php:425
+msgid "Closed Folder"
+msgstr "ថត​ដែល​បាន​បិទ"
+
+#: lib/IMAP/Tree.php:448
+msgid "Collapse"
+msgstr "វេញ"
+
+#: folders.php:304
+msgid "Collapse All"
+msgstr "វេញ​ទាំងអស់"
+
+#: folders.php:304
+msgid "Collapse All Folders"
+msgstr "វេញ​ថត​ទាំងអស់"
+
+#: lib/IMAP/Tree.php:448
+msgid "Collapse Folder"
+msgstr "វេញ​ថត"
+
+#: templates/fetchmail/manage.inc:51
+msgid "Color Indicator: "
+msgstr "ទ្រនិចបង្ហាញ​​ពណ៌ ៖"
+
+#: templates/pgp/pgp.inc:103
+msgid "Comment"
+msgstr "សេចក្តី​អធិប្បាយ"
+
+#: lib/MIME/Viewer/itip.php:762
+msgid "Completed"
+msgstr "ទាំងស្រុង"
+
+#: compose.php:149
+msgid "Compose another message"
+msgstr "តែង​សារ​មួយ​ផ្សេង"
+
+#: config/prefs.php.dist:435
+msgid "Compose messages in a separate window?"
+msgstr "តែង​សារ​ក្នុង​បង្អួច​ផ្សេង​ឬ ?"
+
+#: config/prefs.php.dist:444
+msgid ""
+"Compose messages with an HTML GUI by default (if browser supports the "
+"feature)?"
+msgstr "តែង​សារ​ជាមួយ HTML GUI ដោយ​លំនាំដើម (ប្រសិន​បើ​កម្មវិធី​រុករក​គាំទ្រ​លក្ខណៈ​ពិសេស​នេះ) ?"
+
+#: config/prefs.php.dist:67
+msgid "Configure how messages are displayed."
+msgstr "កំណត់​រចនា​សម្ព័ន្ធថា ​តើ​សារ​ប៉ុន្មាន​ដែល​ត្រូវ​បង្ហាញ ។"
+
+#: config/prefs.php.dist:98
+msgid "Configure mail preview options."
+msgstr "កំណត់​រចនា​សម្ព័ន្ធ​ជម្រើស​មើល​សំបុត្រ​ជា​មុន ។"
+
+#: lib/IMAP/Client.php:370
+msgid "Connection dropped by IMAP server."
+msgstr "ការ​តភ្ជាប់​ត្រូវ​បាន​ទម្លាក់​ចោល​ដោយ​ម៉ាស៊ីន​បម្រើ IMAP ។"
+
+#: lib/Fetchmail/imap.php:188
+msgid "Connection to server failed"
+msgstr "ការ​តភ្ជាប់​ទៅ​ម៉ាស៊ីន​បម្រើ​បាន​បរាជ័យ"
+
+#: config/prefs.php.dist:144
+#, php-format
+msgid "Control PGP support for %s."
+msgstr "ត្រួត​ពិនិត្យ​ការគាំទ្រ PGP សម្រាប់ %s ។"
+
+#: config/prefs.php.dist:153
+#, php-format
+msgid "Control S/MIME support for %s."
+msgstr "ត្រួត​ពិនិត្យការ​គាំទ្រ S/MIME សម្រាប់ %s ។"
+
+#: config/prefs.php.dist:122
+msgid "Control options relating to messages searching."
+msgstr "បញ្ជា​ជម្រើស​ដែល​ទាក់ទង​ទៅ​នឹង​ការ​ស្វែងរក​សារ ។"
+
+#: config/prefs.php.dist:90
+msgid ""
+"Control when new mail will be checked for, and whether or not to notify you "
+"when it arrives."
+msgstr "ត្រួត​ពិនិត្យ ពេល​សំបុត្រ​ថ្មី​នឹង​ត្រូវ​បាន​ពិនិត្យ​មើល និង ថា​តើ​ត្រូវ​ជូន​ដំណឹង​ដល់​អ្នក​ឬ​អត់ ពេល​វា​មក​ដល់ ។"
+
+#: config/prefs.php.dist:686
+msgid "Convert textual emoticons into graphical ones?"
+msgstr "បម្លែង​សញ្ញា​អារម្មណ៍​ដែល​ត្រឹមត្រូវ​​តាម​អត្ថបទ ទៅ​ជា​សញ្ញា​អារម្មណ៍​ក្រាហ្វិក ?"
+
+#: message.php:504 message.php:696 mailbox.php:420 mailbox.php:998
+msgid "Copy"
+msgstr "ចម្លង"
+
+#: message.php:504 message.php:696 mailbox.php:420 mailbox.php:998
+msgid "Copy to folder"
+msgstr "ចម្លង​ទៅ​ថត"
+
+#: templates/compose/spelling.html:28
+msgid "Correct"
+msgstr "កែ"
+
+#: templates/compose/spelling.html:82
+msgid "Corrected Text"
+msgstr "អត្ថបទ​ដែល​បាន​កែ"
+
+#: lib/IMAP/Client.php:382
+#, php-format
+msgid "Could not complete request. Reason Given: %s"
+msgstr "មិន​អាច​បញ្ចប់​សំណើ ។ មូលហេតុ​គឺ ៖ %s"
+
+#: attachment.php:50
+#, php-format
+msgid "Could not create the VFS backend: %s"
+msgstr "មិន​អាច​បង្កើត​ចុង​ខាង​ក្រោយ VFS ៖ %s"
+
+#: lib/Message.php:715
+#, php-format
+msgid "Could not delete messages from %s. The server said: %s"
+msgstr "មិន​អាច​លុប​សារ​ពី %s ។ ម៉ាស៊ីន​បម្រើ​បាន​និយាយ​ថា ៖ %s"
+
+#: lib/Session.php:322
+msgid "Could not execute maintenance operations."
+msgstr "មិន​អាច​អនុវត្ត​ប្រតិបត្តិការ​តំហែទាំ ។"
+
+#: lib/MIME/Viewer/tnef.php:54
+msgid "Could not extract the requested file from the MS-TNEF attachment."
+msgstr "មិន​អាច​ស្រង់​ចេញ​ឯកសារ​ដែល​បាន​ស្នើសុំ ពី​ឯកសារ​ភ្ជាប់ MS-TNEF ។"
+
+#: lib/MIME/Viewer/zip.php:58
+msgid "Could not extract the requested file from the Zip archive."
+msgstr "មិន​អាច​ស្រង់​ចេញ​ឯកសារ​ដែល​បាន​ស្នើ​សុំពីប័ណ្ណសារ Zip ។"
+
+#: lib/IMAP/Client.php:446
+#, php-format
+msgid "Could not open secure connection to the IMAP server. %s : %s."
+msgstr "មិន​អាច​បើក​ការ​តភ្ជាប់​សុវត្ថិភាព​ទៅ​កាន់​ម៉ាស៊ីន​បម្រើ IMAP បាន​ឡើយ ។ %s ៖ %s ។"
+
+#: lib/Session.php:270
+msgid "Could not retrieve namespace information from IMAP server."
+msgstr "មិន​អាច​ទៅ​យក​ព័ត៌មាន namespace ពី​ម៉ាស៊ីន​បម្រើ IMAP ។"
+
+#: templates/fetchmail/manage.inc:67 templates/acl/acl.inc:39
+#: templates/acl/acl.inc:161
+msgid "Create"
+msgstr "បង្កើត"
+
+#: templates/folders/actions.html:8
+msgid "Create Folder"
+msgstr "បង្កើត​ថត"
+
+#: templates/pgp/pgp.inc:137
+msgid "Create Keys"
+msgstr "បង្កើត​កូនសោ"
+
+#: templates/fetchmail/account_select.inc:26
+msgid "Create a New Account"
+msgstr "បង្កើត​គណនី​ថ្មី​មួយ"
+
+#: templates/prefs/spamselect.inc:12 templates/prefs/spamselect.inc:24
+msgid "Create a new Spam folder"
+msgstr "បង្កើត​ថត​សារ​ឥត​បាន​ការ​ថ្មី​មួយ"
+
+#: templates/prefs/folderselect.inc:12 templates/prefs/folderselect.inc:24
+msgid "Create a new drafts folder"
+msgstr "បង្កើត​ថត​សេចក្តី​ព្រាង​ថ្មី​មួយ"
+
+#: templates/prefs/sentmailselect.inc:26 templates/prefs/sentmailselect.inc:42
+msgid "Create a new sent mail folder"
+msgstr "បង្កើត​ថត​សំបុត្រ​ដែល​បាន​ផ្ញើ​ថ្មី​មួយ"
+
+#: templates/prefs/trashselect.inc:12 templates/prefs/trashselect.inc:24
+msgid "Create a new trash folder"
+msgstr "បង្កើត​ថត​សំរាម​ថ្មី​មួយ"
+
+#: config/prefs.php.dist:129
+msgid ""
+"Create filtering rules to organize your incoming mail, sort it into folders, "
+"and delete spam."
+msgstr "បង្កើត​ក្បួន​តម្រង ដើម្បី​រៀប​ចំ​សំបុត្រ​ចូល​របស់​អ្នក តម្រៀប​វា​ចូល​ក្នុង​ថត និង លុប​សារ​ឥត​បាន​ការ ។"
+
+#: templates/stationery/prefs.inc:14
+msgid "Create new stationery"
+msgstr "បង្កើត​ផ្ទៃ​ខាង​ក្រោយ​សំបុត្រ​ថ្មី"
+
+#: config/prefs.php.dist:450
+msgid "Create stationery and form responses."
+msgstr "បង្កើត​ផ្ទៃ​ខាង​ក្រោយ​សំបុត្រ ហើយ​បង្កើត​ការ​ឆ្លើយតប ។"
+
+#: templates/acl/acl.inc:95
+#, php-format
+msgid "Current access to %s"
+msgstr "ការ​ចូល​ដំណើរការ​បច្ចុប្បន្ន​ទៅ %s"
+
+#: config/prefs.php.dist:106
+msgid "Customize accounts for fetching mail from other accounts."
+msgstr "ប្តូរ​គណនី​តាម​បំណង ដើម្បី​ទៅ​ប្រមូល​យក​សំបុត្រ​ពីគណនី​ផ្សេង ។"
+
+#: config/prefs.php.dist:51
+msgid "Customize how you send mail."
+msgstr "ប្តូរ​​​របៀប​ដែល​អ្នក​ផ្ញើ​សារ​តាម​បំណង ។"
+
+#: config/prefs.php.dist:40
+#, php-format
+msgid "Customize tasks to run upon logon to %s."
+msgstr "ប្តូរ​ភារកិច្ច​ដែល​ត្រូវ​រត់​តាម​បំណង អាស្រ័យ​លើ​ការ​ចូល​ទៅ​ %s ។"
+
+#: mailbox.php:565
+msgid "Dat_e"
+msgstr "_Eកាលបរិច្ឆេទ "
+
+#: message.php:231 thread.php:150
+msgid "Date"
+msgstr "កាលបរិច្ឆេទ"
+
+#: lib/MIME/Viewer/itip.php:750
+msgid "Declined"
+msgstr "បាន​បដិសេធ"
+
+#: lib/MIME/Viewer/itip.php:264
+msgid "Declined: "
+msgstr "បាន​បដិសេធ ៖ "
+
+#: config/prefs.php.dist:549
+msgid "Default"
+msgstr "លំនាំដើម"
+
+#: templates/prefs/defaultsearchselect.inc:21
+msgid "Default Search Field"
+msgstr "វាល​ស្វែងរក​លំនាំដើម"
+
+#: config/prefs.php.dist:934
+msgid "Default sorting criteria:"
+msgstr "លក្ខណៈ​វិនិច្ឆ័យ​តម្រៀប​លំនាំ​ដើម ៖"
+
+#: config/prefs.php.dist:944
+msgid "Default sorting direction:"
+msgstr "ទិស​តម្រៀប​លំនាំ​ដើម ៖"
+
+#: lib/MIME/Viewer/itip.php:758
+msgid "Delegated"
+msgstr "បាន​ផ្តល់​សិទិ្ធ"
+
+#: message.php:537 mailbox.php:463 mailbox.php:466
+#: templates/fetchmail/manage.inc:68 templates/smime/smime.inc:25
+#: templates/pgp/pgp.inc:27 lib/IMAP/Tree.php:412
+#: templates/contacts/contacts.html:64
+msgid "Delete"
+msgstr "លុប"
+
+#: templates/smime/smime.inc:25 templates/pgp/pgp.inc:27
+#, php-format
+msgid "Delete %s Public Key"
+msgstr "លុប​កូនសោ​សាធារណៈ %s"
+
+#: templates/smime/smime.inc:79 templates/pgp/pgp.inc:85
+msgid "Delete Current Keys"
+msgstr "លុប​កូនសោ​បច្ចុប្បន្ន"
+
+#: templates/folders/actions.html:11
+msgid "Delete Folder(s)"
+msgstr "លុប​ថត​"
+
+#: templates/folders/folders_confirm.html:22
+msgid "Delete Selected Folders"
+msgstr "លុប​ថត​ដែល​បាន​ជ្រើស"
+
+#: templates/stationery/prefs.inc:42
+msgid "Delete Stationery"
+msgstr "លុប​ផ្ទៃ​ខាង​ក្រោយ​សំបុត្រ"
+
+#: lib/IMAP/Tree.php:412
+msgid "Delete Virtual Folder"
+msgstr "លុប​ថត​និមិ្មត"
+
+#: mailbox.php:361
+#, php-format
+msgid "Delete Virtual Folder Definition for %s"
+msgstr "លុប​និយមន័យ​ថត​និម្មិត​សម្រាប់ %s"
+
+#: templates/fetchmail/manage.inc:43
+msgid "Delete fetched messages from remote server?"
+msgstr "លុប​សារ​ដែល​បាន​ទៅ​ប្រមូល​យក​ ពី​ម៉ាស៊ីន​បម្រើ​ឆ្ងាយ ?"
+
+#: lib/MIME/Viewer/itip.php:619
+msgid "Delete from my calendar"
+msgstr "លុប​ពី​ប្រតិទិន​របស់​ខ្ញុំ"
+
+#: config/prefs.php.dist:369
+msgid "Delete old linked attachments at beginning of month?"
+msgstr "លុប​ឯកសារ​ភ្ជាប់​ដែល​បាន​ត​ភ្ជាប់​ចាស់ នៅ​ពេល​ចាប់​ផ្តើម​នៃ​ខែឬ ?"
+
+#: config/prefs.php.dist:351
+msgid "Delete old sent-mail folders at beginning of month?"
+msgstr "លុប​ថត​សំបុត្រ​ដែល​បាន​ផ្ញើ​ចាស់ នៅ​ពេល​ចាប់​ផ្តើម​នៃ​ខែ​ឬ ?"
+
+#: config/prefs.php.dist:617
+msgid "Delete spam messages"
+msgstr "លុប​សារ​ឥត​បាន​ការ"
+
+#: templates/compose/compose.html:337
+msgid "Delete?"
+msgstr "លុប ?"
+
+#: message.php:475 mailbox.php:841 mailbox.php:973
+#: templates/mailbox/navbar.html:17 templates/mailbox/navbar.html:33
+#: templates/mailbox/legend.html:6
+msgid "Deleted"
+msgstr "បាន​លុប"
+
+#: search.php:339
+msgid "Deleted messages"
+msgstr "សារ​ដែល​បាន​លុប"
+
+#: compose.php:303
+#, php-format
+msgid "Deleted the attachment \"%s\"."
+msgstr "បាន​លុប​ឯកសារ​ភ្ជាប់ \"%s\" ។"
+
+#: config/prefs.php.dist:80
+msgid "Deleting and Moving Messages"
+msgstr "កំពុង​លុប និង ផ្លាស់​ទី​សារ"
+
+#: lib/MIME/Viewer/itip.php:587
+msgid "Deny request"
+msgstr "បដិសេធ​សំណើ"
+
+#: lib/MIME/Viewer/itip.php:542
+msgid "Deny request for free/busy information"
+msgstr "បដិសេធ​សំណើ​សម្រាប់​ព័ត៌មាន ទំនេរ/រវល់"
+
+#: config/prefs.php.dist:943
+msgid "Descending"
+msgstr "ចុះ"
+
+#: lib/MIME/Viewer/itip.php:666
+msgid "Description"
+msgstr "ពិពណ៌នា"
+
+#: templates/compose/compose.html:331
+msgid "Description:"
+msgstr "ពិពណ៌នា ៖"
+
+#: templates/smime/smime.inc:25 templates/smime/smime.inc:68
+#: templates/pgp/pgp.inc:27 templates/pgp/pgp.inc:72 templates/pgp/pgp.inc:77
+msgid "Details"
+msgstr "សេចក្តី​លម្អិត"
+
+#: compose.php:315
+#, php-format
+msgid "Did not attach \"%s\" as the file was empty."
+msgstr "មិន​បាន​ភ្ជាប់ \"%s\" ឡើយ ដោយ​សារ​ឯកសារ​ទទេ ។"
+
+#: config/prefs.php.dist:677
+msgid "Dim signatures?"
+msgstr "ធ្វើ​ឲ្យ​ហត្ថលេខា​ពិបាក​មើល​ឬ ?"
+
+#: templates/contacts/contacts.html:56
+msgid "Display"
+msgstr "បង្ហាញ"
+
+#: config/prefs.php.dist:480
+msgid "Display confirmation after sending a message?"
+msgstr "បង្ហាញ​ការ​អះអាង បន្ទាប់​ពីផ្ញើ​សារមួយ ?"
+
+#: config/prefs.php.dist:695
+msgid "Display in Body of Message"
+msgstr "បង្ហាញ​ក្នុង​តួ​របស់​សារ"
+
+#: config/prefs.php.dist:804
+msgid "Display pop-up notification of new mail?"
+msgstr "បង្ហាញ​ការ​​ជូនដំណឹង​ដែល​លេចឡើង​របស់​សំបុត្រ​ថ្មី ?"
+
+#: config/prefs.php.dist:770
+msgid "Display the \"Empty Spam\" link in the menubar?"
+msgstr "បង្ហាញ​តំណ \"សម្អាត​សារ​ឥត​បាន​ការ\" ក្នុង​របារ​ម៉ឺនុយ ?"
+
+#: config/prefs.php.dist:762
+msgid "Display the \"Empty Trash\" link in the menubar?"
+msgstr "បង្ហាញ​តំណ \"សម្អាត​សំរាម\" ក្នុង​របារ​ម៉ឺនុយ ?"
+
+#: templates/compose/compose.html:322
+msgid "Disposition:"
+msgstr "ចរិត ៖"
+
+#: templates/search/search.html:68
+msgid "Do NOT match"
+msgstr "មិន​ផ្គូផ្គង"
+
+#: templates/folders/actions.html:18
+msgid "Do Not Check Folder(s) for New Mail"
+msgstr "កុំ​ពិនិត្យ​មើល​ថត សម្រាប់​សំបុត្រ​ថ្មី"
+
+#: config/prefs.php.dist:963
+msgid "Do not generate a link in the From: column"
+msgstr "កុំ​បង្កើត​តំណ​មួយ​ក្នុង​ជួរ​ឈរ​ \"ពី ៖\""
+
+#: lib/IMP.php:958
+msgid "Do you want to open that folder?"
+msgstr "តើ​អ្នក​ចង់​បើក​ថត​នោះ​ឬ ?"
+
+#: login.php:355
+msgid "Don't have an account? Sign up."
+msgstr "មិន​មាន​គណនី ? សូម​ចុះឈ្មោះ ។"
+
+#: templates/compose/spelling.html:66
+msgid "Done"
+msgstr "ធ្វើ​រួច"
+
+#: lib/MIME/Contents.php:219
+#, php-format
+msgid "Download %s in .zip Format"
+msgstr "ទាញយក %s ជា​ទ្រង់ទ្រាយ .zip"
+
+#: message.php:664
+msgid "Download All Attachments (in .zip file)"
+msgstr "ទាញយក​ឯកសារ​ភ្ជាប់​ទាំងអស់ (ជា​ឯកសារ .zip)"
+
+#: templates/folders/actions.html:22
+msgid "Download Folder(s)"
+msgstr "ទាញយក ​ថត"
+
+#: templates/folders/actions.html:23
+msgid "Download Folder(s) [.zip format]"
+msgstr "ទាញយក​ ថត​ផ្សេងៗ [ទ្រង់​ទ្រាយ .zip]"
+
+#: lib/MIME/Contents.php:219
+msgid "Download in .zip Format"
+msgstr "ទាញយក​ជា​ទ្រង់​ទ្រាយ .zip"
+
+#: message.php:473 mailbox.php:823 mailbox.php:974
+#: templates/message/navbar_navigate.html:11 templates/mailbox/navbar.html:19
+#: templates/mailbox/navbar.html:36 templates/mailbox/legend.html:7
+msgid "Draft"
+msgstr "សេចក្តី​ព្រាង"
+
+#: lib/IMAP/Tree.php:374
+msgid "Draft folder"
+msgstr "ថត​សេចក្តី​ព្រាង"
+
+#: templates/prefs/folderselect.inc:23
+msgid "Drafts folder:"
+msgstr "ថត​សេចក្តី​ព្រាង ៖"
+
+#: templates/pgp/pgp.inc:108
+msgid "E-mail Address"
+msgstr "អាសយដ្ឋាន​អ៊ីមែល"
+
+#: mailbox.php:895
+msgid "END"
+msgstr "ចុងបញ្ចប់"
+
+#: lib/MIME/Viewer/status.php:74
+msgid "ERROR: Your message could not be delivered."
+msgstr "កំហុស ៖ សារ​របស់​អ្នក​មិន​អាច​ត្រូវ​បាន​បញ្ជូន​ទៅដល់ ។"
+
+#: templates/stationery/prefs.inc:19 lib/IMAP/Tree.php:413
+msgid "Edit"
+msgstr "កែ​សម្រួល"
+
+#: mailbox.php:364 templates/search/search.html:19
+msgid "Edit Search Query"
+msgstr "កែសម្រួល​សំណួរ​ស្វែងរក"
+
+#: lib/IMAP/Tree.php:413 templates/search/search.html:17
+msgid "Edit Virtual Folder"
+msgstr "កែ​សម្រួល​ថត​និមិ្មត"
+
+#: mailbox.php:360
+#, php-format
+msgid "Edit Virtual Folder Definition for %s"
+msgstr "កែ​សម្រួល​និយមន័យ​ថត​និម្មិត​សម្រាប់ %s"
+
+#: filterprefs.php:79
+msgid "Edit your Blacklist"
+msgstr "កែសម្រួល​បញ្ជី​ខ្មៅ​របស់​អ្នក"
+
+#: filterprefs.php:78
+msgid "Edit your Filter Rules"
+msgstr "កែសម្រួល​ក្បួន​តម្រង​របស់​អ្នក"
+
+#: filterprefs.php:80
+msgid "Edit your Whitelist"
+msgstr "កែសម្រួល​បញ្ជី​ស​របស់​អ្នក"
+
+#: config/prefs.php.dist:872
+msgid "Edit your preferences for accessing other mail accounts."
+msgstr "កែ​សម្រួល​ចំណង់​ចំណូល​ចិត្ត​របស់​អ្នក សម្រាប់​ចូល​ដំណើរការ​គណនី​សំបុត្រ​ផ្សេងៗ ។"
+
+#: templates/contacts/contacts.html:59
+msgid "Email Address"
+msgstr "អាសយដ្ឋាន​អ៊ីមែល"
+
+#: lib/Message.php:731
+#, php-format
+msgid "Emptied all messages from %s."
+msgstr "បាន​​លុប​បំបាត់សារ​ទាំងអស់​ពី %s ។"
+
+#: lib/Message.php:708
+msgid "Emptied all messages from Virtual Trash Folder."
+msgstr "បាន​សម្អាត​សារ​ទាំងអស់​ពី​ថត​សំរាម​និម្មិត ។"
+
+#: templates/folders/actions.html:24
+msgid "Empty Folder(s)"
+msgstr "សម្អាត​ថត"
+
+#: templates/folders/folders_confirm.html:22
+msgid "Empty Selected Folders"
+msgstr "សម្អាត​ថត​ដែល​បាន​ជ្រើស"
+
+#: mailbox.php:464
+msgid "Empty Trash folder"
+msgstr "សម្អាត​ថត​សំរាម"
+
+#: lib/IMP.php:787
+msgid "Empty _Spam"
+msgstr "_Sសម្អាត​សារ​ឥត​បាន​ការ "
+
+#: lib/IMP.php:777
+msgid "Empty _Trash"
+msgstr "_Tសម្អាត​​សំរាម "
+
+#: templates/pgp/pgp.inc:1 templates/pgp/notactive.inc:6
+msgid "Enable PGP functionality?"
+msgstr "ធ្វើ​ឲ្យ​មុខ​ងារ PGP ប្រើ​បាន ?"
+
+#: templates/smime/smime.inc:1 templates/smime/notactive.inc:6
+msgid "Enable S/MIME functionality?"
+msgstr "ធ្វើ​ឲ្យ​មុខងារ S/MIME ប្រើ​បាន ?"
+
+#: config/prefs.php.dist:823
+msgid "Enable message previews?"
+msgstr "ធ្វើ​ឲ្យ​ការ​មើល​សារ​ជា​មុន​ប្រើ​បាន ?"
+
+#: compose.php:1286
+msgid "Encr_yption Options"
+msgstr "_Yជម្រើស​បម្លែង​ជា​កូដ "
+
+#: mailbox.php:985 templates/mailbox/legend.html:16
+msgid "Encrypted"
+msgstr "បាន​បម្លែង​ជា​កូដ"
+
+#: lib/MIME/Viewer/itip.php:516 lib/MIME/Viewer/itip.php:518
+#: lib/MIME/Viewer/itip.php:651 lib/MIME/Viewer/itip.php:653
+msgid "End"
+msgstr "បញ្ចប់"
+
+#: lib/Compose.php:1484
+msgid "End forwarded message"
+msgstr "បញ្ចប់​សារ​ដែល​បាន​បញ្ជូន​បន្ត"
+
+#: lib/Compose.php:1403
+msgid "End message"
+msgstr "បញ្ចប់​សារ"
+
+#: lib/Compose.php:1401
+#, php-format
+msgid "End message from %s"
+msgstr "បញ្ចប់​សារ​ពី %s"
+
+#: templates/smime/smime.inc:72 templates/pgp/pgp.inc:77
+msgid "Enter Passphrase"
+msgstr "បញ្ចូល​ឃ្លា​សម្ងាត់"
+
+#: templates/prefs/spamselect.inc:9
+msgid "Enter the name for your new Spam folder"
+msgstr "បញ្ចូល​ឈ្មោះ​ថ្មី សម្រាប់​ថត​សារ​ឥត​បាន​ការ​ថ្មី​របស់​អ្នក"
+
+#: templates/prefs/folderselect.inc:9
+msgid "Enter the name for your new drafts folder"
+msgstr "បញ្ចូល​ឈ្មោះ សម្រាប់​ថត​សេចក្តីព្រាង​ថ្មី​របស់​អ្នក"
+
+#: templates/prefs/sentmailselect.inc:23
+msgid "Enter the name for your new sent mail folder"
+msgstr "បញ្ចូល​ឈ្មោះ សម្រាប់​ថត​សំបុត្រ​ដែល​បាន​ផ្ញើ​ថ្មី​របស់​អ្នក"
+
+#: templates/prefs/trashselect.inc:9
+msgid "Enter the name for your new trash folder"
+msgstr "បញ្ចូល​ឈ្មោះ សម្រាប់​ថត​សំរាម​ថ្មី​របស់​អ្នក"
+
+#: lib/Search.php:627
+msgid "Entire Message"
+msgstr "សារ​ទាំងមូល"
+
+#: message.php:157 thread.php:70 lib/Compose.php:713 lib/Compose.php:970
+#, php-format
+msgid "Entry \"%s\" was successfully added to the address book"
+msgstr "ធាតុ \"%s\" ត្រូវ​បាន​បន្ថែម​ដោយ​ជោគជ័យ ទៅ​សៀវភៅ​អាសយដ្ឋាន"
+
+#: templates/smime/smime.inc:18 templates/pgp/pgp.inc:21
+#: lib/MIME/Viewer/pkcs7.php:381 lib/MIME/Viewer/pgp.php:394
+#: lib/MIME/Viewer/status.php:72 lib/MIME/Viewer/status.php:165
+msgid "Error"
+msgstr "កំហុស"
+
+#: lib/IMAP/Client.php:431 lib/IMAP/Client.php:454
+#, php-format
+msgid "Error connecting to IMAP server. %s : %s."
+msgstr "កំហុស​ក្នុង​ការ​តភ្ជាប់​ទៅ​កាន់​ម៉ាស៊ីន​បម្រើ IMAP ។ %s ៖ %s ។"
+
+#: lib/MIME/Contents.php:124
+msgid "Error displaying message."
+msgstr "កំហុស​ក្នុង​ការ​បង្ហាញ​សារ ។"
+
+#: lib/MIME/Viewer/itip.php:310 lib/MIME/Viewer/itip.php:408
+#, php-format
+msgid "Error sending reply: %s."
+msgstr "កំហុស​បញ្ជូន​ការ​ឆ្លើយ​តប​ទៅ ៖ %s ។"
+
+#: lib/MIME/Viewer/itip.php:102
+msgid "Event successfully deleted."
+msgstr "បាន​លុប​ព្រឹត្តិការណ៍​ដោយ​ជោគ​ជ័យ ។"
+
+#: config/prefs.php.dist:794
+msgid "Every 15 minutes"
+msgstr "រៀង​រាល់​ ១៥ នាទី"
+
+#: config/prefs.php.dist:791
+msgid "Every 30 seconds"
+msgstr "រៀង​រាល់​ ៣០ វិនាទី"
+
+#: config/prefs.php.dist:531 config/prefs.php.dist:793
+msgid "Every 5 minutes"
+msgstr "រៀង​រាល់ ៥ នាទី"
+
+#: config/prefs.php.dist:795
+msgid "Every half hour"
+msgstr "រៀង​រាល់​កន្លះ​ម៉ោង"
+
+#: config/prefs.php.dist:792
+msgid "Every minute"
+msgstr "រៀង​រាល់នាទី"
+
+#: lib/IMAP/Tree.php:456
+msgid "Expand"
+msgstr "បន្លាយ"
+
+#: folders.php:303
+msgid "Expand All"
+msgstr "បន្លាយ​ទាំងអស់"
+
+#: folders.php:303
+msgid "Expand All Folders"
+msgstr "បន្លាយ​ថត​ទាំងអស់"
+
+#: lib/IMAP/Tree.php:456
+msgid "Expand Folder"
+msgstr "បន្លាយ​ថត"
+
+#: compose.php:868 compose.php:1231
+msgid "Expand Names"
+msgstr "បន្លាយ​ឈ្មោះ"
+
+#: config/prefs.php.dist:1074
+msgid "Expand names in the compose window automatically in the background?"
+msgstr "បន្លាយ​ឈ្មោះ​ក្នុង​បង្អួច​តែងដោយ​ស្វ័យ​ប្រវត្តិ ក្នុង​ផ្ទៃ​ខាង​ក្រោយ ?"
+
+#: config/prefs.php.dist:991
+msgid "Expand the entire folder tree by default in the folders view?"
+msgstr "បន្លាយ​មែក​ធាង​ថត​ទាំង​មូល​ជា​លំនាំដើម ក្នុង​ទិដ្ឋភាព​ថត ?"
+
+#: templates/compose/redirect.html:67 templates/compose/compose.html:82
+msgid "Expanding"
+msgstr "ការ​បន្លាយ"
+
+#: lib/IMP.php:798 lib/IMP.php:800
+msgid "F_etch Mail"
+msgstr "_Eទៅ​ប្រមូល​យក​សំបុត្រ "
+
+#: templates/fetchmail/fetchmail.inc:26 config/prefs.php.dist:105
+msgid "Fetch Mail"
+msgstr "\"ទៅ​​ប្រមូល​យក​សំបុត្រ\""
+
+#: config/prefs.php.dist:880
+msgid "Fetch Mail in a separate window?"
+msgstr "\"ទៅ​ប្រមូល​យក​សំបុត្រ\" ​ក្នុង​បង្អួច​ផ្សេងឬ ?"
+
+#: templates/fetchmail/manage.inc:46
+msgid "Fetch messages upon logging on?"
+msgstr "ទៅ​ប្រមូល​យក​សារ អាស្រ័យ​លើ​ការ​ចូលឬ ?"
+
+#: lib/Fetchmail.php:291
+#, php-format
+msgid "Fetched %d messages from %s"
+msgstr "បាន​ទៅ​ប្រមូល​យក​សារ​ចំនួន %d ពី %s"
+
+#: lib/Fetchmail.php:289
+#, php-format
+msgid "Fetched 1 message from %s"
+msgstr "បាន​ទៅ​ប្រមូល​យក​សារ​ចំនួន ១ ពី %s"
+
+#: lib/Fetchmail.php:287 lib/Fetchmail.php:289 lib/Fetchmail.php:291
+msgid "Fetchmail: "
+msgstr "ទៅ​ប្រមូល​យក​សំបុត្រ ៖"
+
+#: lib/Fetchmail.php:293
+msgid "Fetchmail: no new messages."
+msgstr "ទៅ​​ប្រមូល​យក​សំបុត្រ ៖ គ្មាន​សារ​ថ្មី ។"
+
+#: lib/IMP.php:804
+msgid "Fi_lters"
+msgstr "_Lតម្រង "
+
+#: templates/compose/javascript.inc:227 templates/compose/compose.html:265
+msgid "File"
+msgstr "ឯកសារ"
+
+#: templates/filters/prefs.html:48
+msgid "Filter Options"
+msgstr "ជម្រើស​របស់​តម្រង"
+
+#: templates/filters/prefs.html:36
+msgid "Filter Settings"
+msgstr "ការ​កំណត់​តម្រង"
+
+#: config/prefs.php.dist:600
+msgid "Filter message content for profanity?"
+msgstr "ត្រង​មាតិកា​របស់​សារ សម្រាប់​ភាព​អាសគ្រាម ?"
+
+#: templates/filters/prefs.html:11
+msgid "Filter support is disabled on this system."
+msgstr "ការ​គាំទ្រ​តម្រង​ត្រូវ​បាន​ធ្វើ​ឲ្យ​ប្រើ​លែង​បាន ​លើ​ប្រព័ន្ធ​នេះ ។"
+
+#: config/prefs.php.dist:128
+msgid "Filters"
+msgstr "តម្រង"
+
+#: templates/filters/prefs.html:3
+msgid "Filters NOT Active"
+msgstr "តម្រង​មិន​សកម្ម"
+
+#: lib/Filter.php:101
+#, php-format
+msgid "Filters: %s management page"
+msgstr "តម្រង ៖ ទំព័រ​គ្រប់​គ្រង %s"
+
+#: templates/contacts/contacts.html:13
+msgid "Find:"
+msgstr "រក ៖"
+
+#: config/prefs.php.dist:916
+msgid "First Mailbox Page"
+msgstr "ទំព័រ​ប្រអប់​សំបុត្រ​ដំបូង"
+
+#: mailbox.php:432
+msgid "First Page"
+msgstr "ទំព័រ​ដំបូង"
+
+#: message.php:554 mailbox.php:501
+msgid "Fo_rward"
+msgstr "_Rបញ្ជូន​បន្ត "
+
+#: folders.php:216 templates/folders/folders_confirm.html:5
+msgid "Folder Actions - Confirmation"
+msgstr "អំពើ​ថត - អះអាង"
+
+#: folders.php:249 templates/prefs/initialpageselect.inc:6
+#: templates/prefs/initialpageselect.inc:10 templates/folders/head.html:2
+msgid "Folder Navigator"
+msgstr "កម្មវិធី​រុក​រក​ថត"
+
+#: lib/Block/summary.php:3
+msgid "Folder Summary"
+msgstr "សេចក្តី​សង្ខេប​របស់​ថត"
+
+#: acl.php:23
+msgid "Folder sharing is not enabled."
+msgstr "ការ​ចែក​រំលែក​ថត​គឺ​អសកម្ម ។"
+
+#: folders.php:24
+msgid "Folder use is not enabled."
+msgstr "ការ​ប្រើ​ថត​គឺ​អសកម្ម ។"
+
+#: config/prefs.php.dist:980
+msgid "Format of message dates in the mailbox view for messages dated today"
+msgstr ""
+"ទ្រង់​ទ្រាយ​​នៃ​កាល​បរិច្ឆេទ​របស់​សារ ក្នុង​ទិដ្ឋភាព​ប្រអប់សំបុត្រ សម្រាប់សារ​ដែល​បាន​ចុះ​កាល​បរិច្ឆេទ​ថ្ងៃ​នេះ"
+
+#: message.php:554 mailbox.php:501 lib/Compose.php:1455
+msgid "Forward"
+msgstr "បញ្ជូន​បន្ត"
+
+#: lib/Compose.php:1441
+msgid "Forward:"
+msgstr "បញ្ជូន​បន្ត ៖"
+
+#: lib/Compose.php:1469
+msgid "Forwarded message"
+msgstr "សារ​ដែល​បាន​បញ្ជូន​បន្ត"
+
+#: lib/Compose.php:1467
+#, php-format
+msgid "Forwarded message from %s"
+msgstr "សារ​ដែល​បាន​បញ្ជូន​បន្ត​ពី %s"
+
+#: lib/MIME/Viewer/itip.php:402
+msgid "Free/Busy Request Response"
+msgstr "ការ​ឆ្លើយ​តប​សំណើ ទំនេរ/រវល់"
+
+#: mailbox.php:575
+msgid "Fro_m"
+msgstr "_Mពី "
+
+#: message.php:232 thread.php:151 lib/Search.php:603
+#: templates/compose/compose.html:31
+msgid "From"
+msgstr "ពី"
+
+#: config/prefs.php.dist:929
+msgid "From Address"
+msgstr "ពី​អាសយដ្ឋាន"
+
+#: lib/Compose.php:1452 lib/Compose.php:1456
+msgid "Fwd:"
+msgstr "បញ្ជូន​បន្ត ៖"
+
+#: compose.php:619
+msgid "Fwd: "
+msgstr "បញ្ជូន​បន្ត ៖"
+
+#: compose.php:621
+#, php-format
+msgid "Fwd: %u Forwarded Messages"
+msgstr "បញ្ជូន​បន្ត ៖ សារ​ដែល​បាន​បញ្ជូន​បន្ត %u"
+
+#: config/prefs.php.dist:13 config/prefs.php.dist:22 config/prefs.php.dist:30
+#: config/prefs.php.dist:38
+msgid "General Options"
+msgstr "ជម្រើស​ទូទៅ"
+
+#: templates/fetchmail/manage.inc:37
+msgid "Get only new messages? (IMAP only)"
+msgstr "យក​តែ​សារ​ថ្មី ? (តែ IMAP)"
+
+#: folders.php:288 lib/MIME/Viewer/itip.php:554 lib/MIME/Viewer/itip.php:728
+msgid "Go"
+msgstr "ទៅ"
+
+#: thread.php:134
+msgid "Go to Message"
+msgstr "ទៅ​កាន់​សារ"
+
+#: lib/IMP.php:363
+#, php-format
+msgid "Go to address book entry of \"%s\""
+msgstr "ទៅ​កាន់​ធាតុ​សៀវភៅ​អាសយដ្ឋាន​នៃ \"%s\""
+
+#: templates/acl/acl.inc:136
+msgid "Grant access"
+msgstr "អនុញ្ញាត​ឲ្យ​ចូល​ដំណើរការ"
+
+#: message.php:428 lib/Filter.php:101 lib/MIME/Viewer/images.php:104
+#: lib/MIME/Viewer/images.php:111 lib/MIME/Viewer/images.php:113
+#: lib/MIME/Viewer/images.php:164 lib/MIME/Viewer/notification.php:62
+#: lib/MIME/Viewer/notification.php:68 lib/MIME/Viewer/related.php:79
+#: lib/MIME/Viewer/pkcs7.php:423 lib/MIME/Viewer/appledouble.php:41
+#: lib/MIME/Viewer/status.php:120 lib/MIME/Viewer/status.php:129
+msgid "HERE"
+msgstr "ទីនេះ"
+
+#: templates/stationery/prefs.inc:31 lib/MIME/Viewer/html.php:119
+#: lib/MIME/Viewer/related.php:80
+msgid "HTML"
+msgstr "HTML"
+
+#: lib/Compose.php:360
+msgid "HTML Version of Message"
+msgstr "កំណែ HTML របស់​សារ"
+
+#: message.php:683
+msgid "Headers"
+msgstr "បឋមកថា"
+
+#: templates/login/recompose.html:7
+msgid "Here is the message you were composing:"
+msgstr "នេះ​គឺ​ជា​សារ​ដែល​អ្នក​បាន​កំពុង​តែង ៖"
+
+#: config/prefs.php.dist:668
+msgid "Hidden"
+msgstr "លាក់"
+
+#: config/prefs.php.dist:667
+msgid "Hidden in Thread View"
+msgstr "លាក់​ក្នុង​ទិដ្ឋភាព​​ខ្សែ​អំបោះ"
+
+#: mailbox.php:272
+msgid "Hide Deleted"
+msgstr "លាក់ \"បាន​លុប\""
+
+#: folders.php:294
+msgid "Hide Unsubscribed"
+msgstr "លាក់ \"មិន​បាន​ជាវ\""
+
+#: compose.php:1204
+msgid "High"
+msgstr "ខ្ពស់"
+
+#: message.php:264 mailbox.php:828 mailbox.php:977
+#: templates/mailbox/legend.html:10
+msgid "High Priority"
+msgstr "អាទិភាព​ខ្ពស់"
+
+#: compose.php:1203
+msgid "Highest"
+msgstr "ខ្ពស់​បំផុត"
+
+#: config/prefs.php.dist:697
+msgid "How do you want to display attachments?"
+msgstr "តើ​អ្នក​ចង់​បង្ហាញ​ឯកសារ​ភ្ជាប់​យ៉ាង​ដូចម្តេច ?"
+
+#: config/prefs.php.dist:505
+msgid "How to attribute quoted lines in a reply"
+msgstr "របៀប​កំណត់​បន្ទាត់​ដែល​បាន​ដក​ស្រង់ ក្នុង​ការ​ឆ្លើយ​តប"
+
+#: lib/IMAP.php:199
+msgid "IMAP"
+msgstr "IMAP"
+
+#: lib/Fetchmail/imap.php:107
+msgid "IMAP (Auto Detect Protocols)"
+msgstr "IMAP (Auto Detect Protocols)"
+
+#: lib/IMAP/Client.php:391
+#, php-format
+msgid "IMAP Server closed the connection. Server Responded: %s"
+msgstr "ម៉ាស៊ីន​បម្រើ IMAP បាន​បិទ​ការ​តភ្ជាប់ ។ ម៉ាស៊ីន​បម្រើ​បាន​ឆ្លើយតប​ថា ៖ %s"
+
+#: lib/IMAP.php:211
+msgid "IMAP over SSL"
+msgstr "IMAP លើ SSL"
+
+#: lib/IMAP.php:217
+msgid "IMAP over SSL (self-signed certificate)"
+msgstr "IMAP លើ SSL (វិញ្ញាបនបត្រ​ដែល​បាន​ចុះ​ហត្ថលេខា​ដោយ​ខ្លួន​ឯង)"
+
+#: lib/IMAP/Client.php:368
+msgid "IMAP server closed the connection."
+msgstr "ម៉ាស៊ីន​បម្រើ IMAP បាន​បិទ​ការ​តភ្ជាប់ ។"
+
+#: lib/IMAP.php:205
+msgid "IMAP, no TLS"
+msgstr "IMAP គ្មាន TLS"
+
+#: lib/Fetchmail/imap.php:49
+msgid "IMAP/POP3 Mail Servers"
+msgstr "ម៉ាស៊ីន​បម្រើ​សំបុត្រ IMAP/POP3"
+
+#: lib/IMP.php:657
+msgid "INBOX"
+msgstr "ប្រអប់​ទទួល"
+
+#: lib/IMAP/Client.php:411
+msgid "If using SSL or TLS, you must have the PHP openssl extension loaded."
+msgstr "បើ​ប្រើ SSL ឬ TLS, អ្នក​ត្រូវ​តែ​បាន​ផ្ទុក​ផ្នែក​បន្ថែម openssl របស់ PHP ។"
+
+#: templates/folders/folders_confirm.html:12
+msgid "If you continue, all messages in the folder(s) will be lost!"
+msgstr "បើ​អ្នក​បន្ត សារ​ទាំងអស់​នៅ​ក្នុង​ថត​នឹង​ត្រូវ​បាន​បាត់បង់ !"
+
+#: templates/compose/spelling.html:36
+msgid "Ignore"
+msgstr "មិន​អើពើ"
+
+#: templates/compose/spelling.html:37
+msgid "Ignore All"
+msgstr "មិន​អើពើ​ទាំងអស់"
+
+#: saveimage.php:46
+msgid "Image"
+msgstr "រូបភាព"
+
+#: lib/MIME/Viewer/html.php:96
+#, php-format
+msgid "Images are blocked: %s to protect your privacy. %s"
+msgstr "រូបភាព​ត្រូវ​បាន​ទប់ស្កាត់ ៖ %s ដើម្បី​ការពារ​ភាព​ឯកជន​របស់​អ្នក ។ %s"
+
+#: templates/folders/import.html:16
+msgid "Import"
+msgstr "នាំចូល"
+
+#: templates/smime/import_key.inc:85 templates/pgp/import_key.html:48
+msgid "Import Key"
+msgstr "នាំចូល​កូនសោ"
+
+#: templates/pgp/pgp.inc:139
+msgid "Import Keypair"
+msgstr "នាំចូល​គូ​កូនសោ"
+
+#: templates/folders/actions.html:29
+msgid "Import Messages"
+msgstr "នាំចូល​សារ"
+
+#: pgp.php:39
+msgid "Import PGP Key"
+msgstr "នាំចូល​កូនសោ​របស់ PGP"
+
+#: templates/smime/smime.inc:91
+msgid "Import Personal Certificate"
+msgstr "នាំចូល​វិញ្ញាបនបត្រ​ផ្ទាល់​ខ្លួន"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Personal Private PGP Key"
+msgstr "នាំចូល​កូនសោ PGP ឯកជន​ផ្ទាល់​ខ្លួន"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Personal Private PGP Key Here:"
+msgstr "នាំចូល​កូនសោ PGP ឯកជន​ផ្ទាល់​ខ្លួន នៅ​ទីនេះ ៖"
+
+#: templates/smime/import_key.inc:4
+msgid "Import Personal S/MIME Certificates"
+msgstr "នាំចូល​វិញ្ញាបនបត្រ S/MIME ផ្ទាល់​ខ្លួន"
+
+#: templates/smime/smime.inc:40 templates/pgp/pgp.inc:42
+msgid "Import Public Key"
+msgstr "នាំចូល​កូនសោ​សាធារណៈ"
+
+#: templates/pgp/import_key.html:11
+msgid "Import Public PGP Key"
+msgstr "នាំចូល​កូនសោ PGP សាធារណៈ"
+
+#: templates/pgp/import_key.html:18
+msgid "Import Public PGP Key Here:"
+msgstr "នាំចូល​កូនសោ PGP សាធារណៈ នៅ​ទីនេះ ៖"
+
+#: templates/smime/import_key.inc:8
+msgid "Import Public S/MIME Key"
+msgstr "នាំចូល​កូនសោ S/MIME សាធារណៈ"
+
+#: smime.php:16
+msgid "Import S/MIME Key"
+msgstr "នាំចូល​កូនសោ S/MIME"
+
+#: templates/folders/import.html:6
+msgid "Import mbox File"
+msgstr "នាំចូល​ឯកសារ mbox"
+
+#: templates/folders/import.html:11
+msgid "Import mbox file"
+msgstr "នាំចូល​ឯកសារ mbox"
+
+#: message.php:474 mailbox.php:836 mailbox.php:972
+#: templates/message/navbar_navigate.html:7 templates/mailbox/navbar.html:13
+#: templates/mailbox/navbar.html:28 templates/mailbox/legend.html:5
+msgid "Important"
+msgstr "សំខាន់"
+
+#: search.php:334
+msgid "Important messages"
+msgstr "សារ​សំខាន់"
+
+#: folders.php:115
+#, php-format
+msgid "Imported %d messages from %s."
+msgstr "បាន​នាំចូល​សារ %d ពី %s ។"
+
+#: lib/MIME/Viewer/itip.php:766
+msgid "In Process"
+msgstr "ស្ថិត​ក្នុង​ដំណើរការ"
+
+#: templates/prefs/initialpageselect.inc:14 lib/Folder.php:86
+#: lib/Folder.php:211 lib/IMP.php:308 lib/IMAP/Tree.php:110
+#: lib/IMAP/Tree.php:213 lib/IMAP/Tree.php:359
+msgid "Inbox"
+msgstr "ប្រអប់​ទទួល"
+
+#: config/prefs.php.dist:493
+msgid "Include a brief summary of the header in a reply?"
+msgstr "រួម​បញ្ចូល​សេចក្តី​សង្ខេប​ខ្លី​របស់​បឋមកថា​ក្នុង​ការ​ឆ្លើយ​តប ?"
+
+#: config/prefs.php.dist:488
+msgid "Include original message in a reply?"
+msgstr "រួម​បញ្ចូល​សារ​ប្រភព​ក្នុង​ការ​ឆ្លើយ​តប ?"
+
+#: lib/MIME/Viewer/notification.php:61 lib/MIME/Viewer/status.php:132
+msgid "Info"
+msgstr "ព័ត៌មាន"
+
+#: templates/smime/smime.inc:25 templates/pgp/pgp.inc:27
+#, php-format
+msgid "Information on %s Public Key"
+msgstr "ព័ត៌មាន​អំពី​កូនសោ​សាធារណៈ​ %s"
+
+#: templates/pgp/pgp.inc:77
+msgid "Information on Personal Private Key"
+msgstr "ព័ត៌មាន​អំពី​កូនសោ​ឯកជន​ផ្ទាល់ខ្លួន"
+
+#: templates/smime/smime.inc:68 templates/pgp/pgp.inc:72
+msgid "Information on Personal Public Key"
+msgstr "ព័ត៌មាន​អំពី​កូនសោ​សាធារណៈ​ផ្ទាល់​ខ្លួន"
+
+#: templates/compose/javascript.inc:243 templates/compose/compose.html:270
+#: templates/compose/compose.html:326
+msgid "Inline"
+msgstr "ក្នុង​តួ"
+
+#: templates/smime/import_key.inc:9
+msgid "Insert Certificate Here"
+msgstr "បញ្ចូល​វិញ្ញាបនបត្រ​ទីនេះ"
+
+#: lib/MIME/Viewer/itip.php:413
+msgid "Invalid Action selected for this component."
+msgstr "អំពើ​មិន​ត្រឹមត្រូវ​ដែល​បាន​ជ្រើស​ សម្រាប់​សមាសភាគ​នេះ ។"
+
+#: mailbox.php:724 mailbox.php:766
+msgid "Invalid Address"
+msgstr "អាសយដ្ឋាន​មិន​ត្រឹមត្រូវ"
+
+#: lib/Fetchmail/imap.php:261
+msgid "Invalid Remote Mailbox"
+msgstr "ប្រអប់​សំបុត្រ​ឆ្ងាយ​មិន​ត្រឹមត្រូវ"
+
+#: lib/Compose.php:1036
+#, php-format
+msgid "Invalid character in e-mail address: %s."
+msgstr "តួ​អក្សរ​មិន​ត្រឹមត្រូវ ​ក្នុង​អាសយដ្ឋាន​អ៊ីមែល ៖ %s ។"
+
+#: smime.php:78 pgp.php:16
+msgid "Invalid key"
+msgstr "កូនសោ​មិន​ត្រឹមត្រូវ"
+
+#: lib/Compose.php:197
+msgid "Invalid message, can not resume draft."
+msgstr "សារ​មិន​ត្រឹមត្រូវ, មិន​អាច​បន្ត​សេចក្ដី​ព្រាង"
+
+#: pgp.php:202
+msgid "Invalid personal PGP private key."
+msgstr "កូនសោ​ឯកជន PGP ផ្ទាល់​ខ្លួន​មិនត្រឹមត្រូវ ។"
+
+#: pgp.php:177
+msgid "Invalid personal PGP public key."
+msgstr "កូនសោ​សាធារណៈ​ PGP ផ្ទាល់​ខ្លួន​មិនត្រឹមត្រូវ ។"
+
+#: templates/mailbox/navbar.html:9
+msgid "Invert"
+msgstr "ដាក់បញ្ច្រាស"
+
+#: templates/compose/compose.html:314 templates/compose/compose.html:349
+msgid "KB"
+msgstr "KB"
+
+#: templates/pgp/pgp.inc:113
+msgid "Key Length"
+msgstr "ប្រវែង​កូនសោ"
+
+#: templates/pgp/pgp.inc:137
+msgid ""
+"Key generation may take a long time to complete.  Continue with key "
+"generation?"
+msgstr "ការ​បង្កើត​កូនសោ​អាច​នឹង​ត្រូវ​ការ​រយៈពេល​យូរ ។  បន្ត​បង្កើត​កូនសោ ?"
+
+#: templates/smime/smime.inc:35 templates/pgp/pgp.inc:37
+msgid "Key import is not available. File upload is not enabled on this server."
+msgstr ""
+"មិន​មាន​ការ​នាំចូល​កូនសោ​ឡើយ ។ ការ​ទាញយក​ឯកសារ មិន​ត្រូវ​បាន​ធ្វើ​ឲ្យ​ប្រើ​បាន​ឡើយ​លើ​ម៉ាស៊ីន​បម្រើ​នេះ ។"
+
+#: templates/smime/smime.inc:37 templates/pgp/pgp.inc:39
+msgid ""
+"Key import is not available. You have no address book defined to add your "
+"contacts."
+msgstr ""
+"មិន​មាន​ការ​នាំចូល​កូនសោ​ឡើយ ។ អ្នក​មិន​បាន​កំណត់​សៀវភៅ​អាសយដ្ឋាន ដើម្បី​បន្ថែម​ទំនាក់​ទំនង​របស់​អ្នក​ឡើយ ។"
+
+#: pgp.php:324
+msgid "Key successfully sent to the public keyserver."
+msgstr "កូនសោ​ត្រូវ​បាន​ផ្ញើ​ដោយ​ជោគ​ជ័យ ​ទៅ​ម៉ាស៊ីន​បម្រើ​កូនសោ​សាធារណៈ ។"
+
+#: templates/login/login.html:113
+msgid "Language"
+msgstr "ភាសា"
+
+#: config/prefs.php.dist:917
+msgid "Last Mailbox Page"
+msgstr "ទំព័រ​ប្រអប់​សំបុត្រ​ចុង​ក្រោយ"
+
+#: mailbox.php:444
+msgid "Last Page"
+msgstr "ទំព័រ​ចុង​ក្រោយ"
+
+#: compose.php:1327
+msgid "Link Attachments?"
+msgstr "តភ្ជាប់​ឯកសារ​ភ្ជាប់ ?"
+
+#: attachment.php:34 lib/Compose.php:2215
+msgid "Linked attachments are forbidden."
+msgstr "ឯកសារ​ភ្ជាប់​ត្រូវ​បាន​ហាមឃាត់ ។"
+
+#: lib/Compose.php:2231
+#, php-format
+msgid "Links will expire on %s"
+msgstr "តំណ​នឹង​ផុតកំណត់​នៅ %s"
+
+#: config/prefs.php.dist:1093
+msgid ""
+"List all contacts when loading the contacts screen? (if disabled, you will "
+"only see contacts that you search for explicitly)"
+msgstr ""
+"រាយ​ការ​ទាក់​ទង​ទាំងអស់ ពេល​ផ្ទុក​អេក្រង់​ការ​ទាក់ទង ? (ប្រសិន​បើ​អសកម្ម អ្នក​នឹង​ឃើញ​តែ​ការ​ទាក់​ទង​ដែល​"
+"អ្នកស្វែងរក​យ៉ាង​ជាក់​លាក់)"
+
+#: config/prefs.php.dist:694
+msgid "Listing in the Header"
+msgstr "រាយ​ក្នុង​បឋមកថា"
+
+#: templates/fetchmail/manage.inc:30
+msgid "Local Mailbox:"
+msgstr "ប្រអប់​សំបុត្រ​មូលដ្ឋាន ៖"
+
+#: lib/MIME/Viewer/itip.php:671
+msgid "Location"
+msgstr "ទីតាំង"
+
+#: lib/Block/summary.php:104
+#, php-format
+msgid "Log in to %s"
+msgstr "ចូល​ទៅ %s"
+
+#: login.php:352
+msgid "Login"
+msgstr "ចូល"
+
+#: config/prefs.php.dist:39
+msgid "Login Tasks"
+msgstr "ភារកិច្ច​ចូល"
+
+#: compose.php:1206
+msgid "Low"
+msgstr "ទាប"
+
+#: message.php:266 mailbox.php:831 mailbox.php:978
+#: templates/mailbox/legend.html:11
+msgid "Low Priority"
+msgstr "អាទិភាព​ទាប"
+
+#: compose.php:1207
+msgid "Lowest"
+msgstr "ទាប​បំផុត"
+
+#: lib/MIME/Viewer/appledouble.php:44
+msgid "Macintosh File"
+msgstr "ឯកសារ Macintosh"
+
+#: templates/smime/passphrase.inc:13
+msgid "Mail"
+msgstr "សំបុត្រ"
+
+#: config/prefs.php.dist:97
+msgid "Mail Previews"
+msgstr "មើល​សំបុត្រ​ជា​មុន"
+
+#: templates/fetchmail/driver_select.inc:16
+msgid "Mail server type to connect to:"
+msgstr "ប្រភេទ​ម៉ាស៊ីន​បម្រើ​សំបុត្រ​ដែល​ត្រូវ​ភ្ជាប់​ទៅ​កាន់ ៖"
+
+#: lib/IMAP/Tree.php:365 lib/IMAP/Tree.php:393
+msgid "Mailbox"
+msgstr "ប្រអប់​សំបុត្រ"
+
+#: config/prefs.php.dist:112
+msgid "Mailbox and Folder Display Options"
+msgstr "ជម្រើស​បង្ហាញ​ប្រអប់​សំបុត្រ និង ថត"
+
+#: templates/folders/actions.html:20
+msgid "Mark All Messages in Folder as Seen"
+msgstr "សម្គាល់​សារ​ទាំងអស់​ ក្នុង​ថត​ថា​បាន​មើល"
+
+#: templates/folders/actions.html:21
+msgid "Mark All Messages in Folder as Unseen"
+msgstr "សម្គាល់​សារ​ទាំងអស់​ក្នុង​ថតថា \"មិន​បាន​មើល\""
+
+#: templates/message/navbar_navigate.html:5 templates/mailbox/navbar.html:25
+msgid "Mark as:"
+msgstr "សម្គាល់​ជា ៖"
+
+#: config/prefs.php.dist:650
+msgid "Mark different levels of quoting with different colors?"
+msgstr "សម្គាល់​កម្រិត​ខុសៗ​គ្នា​របស់​សម្រង់ ដោយ​ពណ៌​ខុស​គ្នា ?"
+
+#: templates/fetchmail/manage.inc:40
+msgid "Mark messages as seen? (IMAP only)"
+msgstr "សម្គាល់​សារ​ជា \"បាន​មើល\" ឬ ? (តែ IMAP)"
+
+#: config/prefs.php.dist:658
+msgid "Mark simple markup?"
+msgstr "សម្គាល់​ការ​តម្លើង​តម្លៃ​សាមញ្ញ ?"
+
+#: search.php:226
+msgid "Match All Queries"
+msgstr "ដូច​សំណួរ​ទាំងអស់"
+
+#: search.php:224
+msgid "Match Any Query"
+msgstr "ដូច​សំណួរ​ណាមួយ"
+
+#: templates/compose/compose.html:276
+msgid "Maximum Attachment Size"
+msgstr "ទំហំ​ឯកសារ​ភ្ជាប់​អតិបរមា"
+
+#: lib/api.php:84
+msgid "Maximum Number of Folders"
+msgstr "ចំនួន​ថត​អតិបរមា"
+
+#: lib/api.php:87
+msgid "Maximum Number of Recipients per Message"
+msgstr "ចំនួន​អ្នក​ទទួល​អតិបរមា​ក្នុង​សារ​មួយ"
+
+#: lib/api.php:90
+msgid "Maximum Number of Recipients per Time Period"
+msgstr "ចំនួន​អ្នក​ទទួល​ច្រើន​បំផុត​ក្នុង​មួយ​រយៈពេល"
+
+#: templates/compose/compose.html:258
+msgid "Maximum number of attachments reached."
+msgstr "បាន​មក​ដល់​កម្រិត​នៃ​ចំនួន​អតិបរមា​របស់ឯកសារ​ភ្ជាប់ ។"
+
+#: templates/compose/compose.html:253
+msgid "Maximum total attachment size reached."
+msgstr "បាន​មក​ដល់​កម្រិត​នៃ​ទំហំ​ឯកសារ​ភ្ជាប់​សរុបអតិបរមា"
+
+#: lib/Block/tree_folders.php:3
+msgid "Menu Folder List"
+msgstr "បញ្ជី​ថត​ម៉ឺនុយ"
+
+#: lib/Compose.php:1393
+msgid "Message"
+msgstr "សារ"
+
+#: compose.php:331 compose.php:358 compose.php:367 config/prefs.php.dist:50
+msgid "Message Composition"
+msgstr "ការ​តែង​សារ"
+
+#: config/prefs.php.dist:928
+msgid "Message Date"
+msgstr "កាល​បរិច្ឆេទ​របស់​សារ"
+
+#: templates/search/search.html:112
+msgid "Message Flags"
+msgstr "ទង់​សារ"
+
+#: templates/search/search.html:137
+msgid "Message Folders"
+msgstr "ថត​សារ"
+
+#: templates/search/search.html:33
+msgid "Message Matches"
+msgstr "ដំណូច​របស់​សារ"
+
+#: config/prefs.php.dist:49 config/prefs.php.dist:65 config/prefs.php.dist:79
+#: config/prefs.php.dist:88 config/prefs.php.dist:96 config/prefs.php.dist:104
+msgid "Message Options"
+msgstr "ជម្រើស​របស់​សារ"
+
+#: search.php:406
+msgid "Message Search"
+msgstr "ការ​ស្វែង​រកសារ"
+
+#: config/prefs.php.dist:932
+msgid "Message Size"
+msgstr "ទំហំ​របស់​សារ"
+
+#: message.php:578
+msgid "Message Source"
+msgstr "ប្រភព​របស់​សារ"
+
+#: config/prefs.php.dist:66
+msgid "Message Viewing"
+msgstr "ការ​មើល​សារ"
+
+#: lib/Compose.php:1391
+#, php-format
+msgid "Message from %s"
+msgstr "សារ​ពី %s"
+
+#: mailbox.php:866
+msgid "Message has attachments"
+msgstr "សារ​មាន​ឯកសារ​ភ្ជាប់"
+
+#: mailbox.php:858
+msgid "Message is encrypted"
+msgstr "សារ​ត្រូវ​បាន​បម្លែង​ជា​កូដ"
+
+#: mailbox.php:854
+msgid "Message is signed"
+msgstr "សារ​ត្រូវ​បាន​ចុះហត្ថលេខា"
+
+#: compose.php:474 compose.php:481
+msgid "Message redirected successfully."
+msgstr "សារ​ត្រូវ​បាន​ប្តូរ​ទិស​ដោយ​ជោគជ័យ ។"
+
+#: lib/Compose.php:660
+#, php-format
+msgid "Message sent successfully, but not saved to %s"
+msgstr "សារ​ត្រូវ​បាន​ផ្ញើ​ដោយ​ជោគ​ជ័យ ប៉ុន្តែ​មិន​ត្រូវ​បាន​រក្សា​ទុក​ទៅ %s"
+
+#: compose.php:542 compose.php:550
+msgid "Message sent successfully."
+msgstr "សារ​ត្រូវ​បាន​ផ្ញើ​ដោយ​ជោគ​ជ័យ ។"
+
+#: config/prefs.php.dist:952
+msgid "Messages per page in the mailbox view."
+msgstr "សារ​ក្នុង​មួយ​ទំព័រ ក្នុង​ទិដ្ឋភាព​ប្រអប់​សំបុត្រ​ ។"
+
+#: mailbox.php:245
+msgid "Messages to"
+msgstr "សារ​ទៅ​កាន់"
+
+#: templates/acl/acl.inc:29
+msgid "Modify"
+msgstr "កែប្រែ"
+
+#: expand.php:40
+#, php-format
+msgid "More than one address found for field \"%s\"."
+msgstr "បាន​រកឃើញ​អាសយដ្ឋាន​ច្រើន​ជាង​មួយ សម្រាប់​វាល \"%s\" ។"
+
+#: message.php:503 message.php:695 mailbox.php:419 mailbox.php:997
+msgid "Move"
+msgstr "ផ្លាស់​ទី"
+
+#: templates/prefs/sourceselect.inc:316
+msgid "Move down"
+msgstr "ចុះ​ក្រោម"
+
+#: config/prefs.php.dist:618
+msgid "Move spam messages to spam folder and innocent messages to INBOX"
+msgstr "ផ្លាស់ទី​សារ​ឥត​បាន​ការ​ទៅ​ថត​សារ​ឥត​បាន​ការ ហើយ​ផ្លាស់ទី​សារ​ល្អ​ទៅ​ប្រអប់​ទទួល"
+
+#: message.php:503 message.php:695 mailbox.php:419 mailbox.php:997
+msgid "Move to folder"
+msgstr "ផ្លាស់​ទី​ថត"
+
+#: templates/prefs/sourceselect.inc:314
+msgid "Move up"
+msgstr "ឡើង​លើ"
+
+#: lib/MIME/Viewer/alternative.php:128
+msgid "Multipart/alternative"
+msgstr "ច្រើន​ផ្នែក/ឆ្លាស់"
+
+#: thread.php:75 thread.php:154
+msgid "Multiple Message View"
+msgstr "ទិដ្ឋភាព​សារ​ច្រើន"
+
+#: templates/prefs/defaultsearchselect.inc:8
+msgid "NONE"
+msgstr "គ្មាន"
+
+#: templates/fetchmail/manage.inc:48 templates/smime/smime.inc:2
+#: templates/pgp/pgp.inc:2
+msgid "NOTE"
+msgstr "ចំណាំ"
+
+#: lib/MIME/Viewer/itip.php:683 templates/contacts/contacts.html:58
+msgid "Name"
+msgstr "ឈ្មោះ"
+
+#: pgp.php:116
+msgid "Name and/or email cannot be empty"
+msgstr "ឈ្មោះ និង/ឬ អ៊ីមែល​មិន​អាច​ទទេ​បាន​ឡើយ"
+
+#: lib/MIME/Viewer/itip.php:771
+msgid "Needs Action"
+msgstr "ត្រូវ​ការ​អំពើ"
+
+#: config/prefs.php.dist:582 config/prefs.php.dist:790
+msgid "Never"
+msgstr "កុំ"
+
+#: config/prefs.php.dist:572
+msgid "Never save attachments"
+msgstr "កុំ​រក្សា​ទុក​ឯកសារ​ភ្ជាប់"
+
+#: templates/acl/acl.inc:124
+msgid "New"
+msgstr "ថ្មី"
+
+#: lib/IMP.php:428
+msgid "New Folder"
+msgstr "ថត​ថ្មី"
+
+#: config/prefs.php.dist:89
+msgid "New Mail"
+msgstr "សំបុត្រ​ថ្មី"
+
+#: lib/Block/summary.php:26 lib/Block/summary.php:27
+#: lib/Block/tree_folders.php:31
+msgid "New Message"
+msgstr "សារ​ថ្មី"
+
+#: mailbox.php:919 lib/MIME/Headers.php:193
+#, php-format
+msgid "New Message to %s"
+msgstr "សារ​ថ្មី​ទៅ %s"
+
+#: search.php:325
+msgid "New messages"
+msgstr "សារ​ថ្មី"
+
+#: templates/compose/spelling.html:73
+msgid "Next"
+msgstr "បន្ទាប់"
+
+#: message.php:521 message.php:702
+msgid "Next Message"
+msgstr "សារ​បន្ទាប់"
+
+#: mailbox.php:442
+msgid "Next Page"
+msgstr "ទំព័រ​បន្ទាប់"
+
+#: config/prefs.php.dist:530 config/prefs.php.dist:988
+#: templates/compose/compose.html:296
+msgid "No"
+msgstr "គ្មាន"
+
+#: smime.php:222
+msgid "No Certificate found"
+msgstr "គ្មាន​វិញ្ញាបនបត្រ​ត្រូវ​បាន​រកឃើញ"
+
+#: lib/IMP.php:1313
+msgid "No Encryption"
+msgstr "គ្មាន​ការ​បម្លែង​ជា​កូដ"
+
+#: templates/pgp/pgp.inc:19
+msgid "No Keys in Keyring"
+msgstr "គ្មាន​កូន​សោ​ក្នុង Keyring"
+
+#: mailbox.php:280
+#, php-format
+msgid "No Messages"
+msgstr "គ្មាន​សារ"
+
+#: pgp.php:143
+msgid "No PGP public key imported."
+msgstr "គ្មាន​កូនសោ​សាធារណៈ PGP ត្រូវ​បាន​នាំចូល ។"
+
+#: templates/smime/smime.inc:84
+msgid "No Personal Certificate Present"
+msgstr "គ្មាន​វត្តមាន​វិញ្ញាបនបត្រ​ផ្ទាល់​ខ្លួន"
+
+#: mailbox.php:876
+msgid "No Preview Text"
+msgstr "គ្មាន​អត្ថបទ​មើល​ជា​មុន"
+
+#: templates/smime/smime.inc:15
+msgid "No Public Keys Found"
+msgstr "គ្មាន​កូនសោ​សាធារណៈ ត្រូវ​បាន​រកឃើញ"
+
+#: smime.php:147
+msgid "No S/MIME public key imported."
+msgstr "គ្មាន​កូនសោ​សាធារណៈ S/MIME ត្រូវ​បាន​នាំចូល ។"
+
+#: lib/MIME/Viewer/tnef.php:92
+msgid "No attachments found."
+msgstr "រក​មិន​ឃើញ​ឯកសារ​ភ្ជាប់ ។"
+
+#: lib/Crypt/SMIME.php:140
+msgid "No email information located in the public key."
+msgstr "មិន​មាន​ព័ត៌មាន​អ៊ីមែល​នៅ​ក្នុង​កូនសោ​សាធារណៈ​ឡើយ ។"
+
+#: acl.php:71 acl.php:97
+msgid "No folder selected."
+msgstr "គ្មាន​ថត ត្រូវ​បាន​ជ្រើស ។"
+
+#: lib/Block/summary.php:132
+msgid "No folders are being checked for new mail."
+msgstr "គ្មាន​ថត​ត្រូវ​បាន​ពិនិត្យ​មើល សម្រាប់សំបុត្រ​ថ្មី ។"
+
+#: folders.php:165 lib/Folder.php:511 lib/Folder.php:561
+msgid "No folders were specified"
+msgstr "គ្មាន​ថត ត្រូវ​បាន​បញ្ជាក់"
+
+#: lib/Block/summary.php:138
+msgid "No folders with new messages"
+msgstr "គ្មាន​ថត​ដែល​មាន​សារ​ថ្មី"
+
+#: lib/Block/summary.php:135
+msgid "No folders with unseen messages"
+msgstr "គ្មាន​ថត​ដែល​មាន​សារ​មិន​ទាន់​មើល"
+
+#: lib/Compose.php:1387
+msgid "No message body text"
+msgstr "គ្មាន​អត្ថបទ​នៃ​តួ​របស់​សារ"
+
+#: lib/IMAP/Client.php:569
+msgid "No message returned."
+msgstr "មិន​មាន​សារ​ត្រឡប់​មក​វិញ​ឡើយ ។"
+
+#: mailbox.php:258
+msgid "No messages matched your search."
+msgstr "គ្មាន​សារដែល​​ផ្គូផ្គង​ទៅ​នឹង​ការ​ស្វែង​រក​របស់​អ្នក ។"
+
+#: pgp.php:195
+msgid "No personal PGP private key imported."
+msgstr "គ្មាន​កូនសោ​ឯកជន PGP ផ្ទាល់​ខ្លួន ​ត្រូវ​បាន​នាំចូល ។"
+
+#: pgp.php:171
+msgid "No personal PGP public key imported."
+msgstr "គ្មាន​កូនសោ​សាធារណៈ PGP ផ្ទាល់​ខ្លួន​ ត្រូវ​បាន​នាំចូល ។"
+
+#: smime.php:197
+msgid "No personal S/MIME certificates imported."
+msgstr "គ្មាន​វិញ្ញាបនបត្រ S/MIME ផ្ទាល់​ខ្លួន ត្រូវ​បាន​នាំចូល ។"
+
+#: lib/MIME/Viewer/pkcs7.php:246
+msgid ""
+"No personal private key exists so the message is unable to be decrypted."
+msgstr "មិន​មាន​កូនសោ​ឯកជន​ផ្ទាល់​ខ្លួន​ឡើយ ដូច្នេះ​សារ​នឹង​មិន​អាច​ត្រូវ​បាន​បម្លែង​មក​ជា​ភាព​ធម្មតា​វិញ​ឡើយ ។"
+
+#: spelling.php:190
+msgid "No spellchecking program configured."
+msgstr "គ្មាន​កម្មវិធី​ពិនិត្យ​អក្ខរាវិរុទ្ធ ត្រូវ​បាន​កំណត់​រចនា​សម្ព័ន្ធ ។"
+
+#: compose.php:993
+msgid "No suggestions"
+msgstr "គ្មាន​យោបល់"
+
+#: lib/IMAP/Client.php:561
+msgid "No supported IMAP authentication method could be found."
+msgstr "មិន​អាច​រកឃើញ​វិធីសាស្ត្រ​ផ្ទៀងផ្ទាត់ IMAP ដែល​បាន​គាំទ្រ ។"
+
+#: acl.php:67 acl.php:93
+msgid "No user specified."
+msgstr "គ្មាន​អ្នក​ប្រើ ត្រូវ​បាន​បញ្ជាក់ ។"
+
+#: lib/MIME/Viewer/itip.php:704
+msgid "Non Participant"
+msgstr "គ្មាន​អ្នក​ចូលរួម"
+
+#: templates/prefs/folderselect.inc:24 templates/prefs/sentmailselect.inc:40
+#: templates/prefs/sourceselect.inc:35 templates/prefs/spamselect.inc:24
+#: templates/prefs/trashselect.inc:24 lib/MIME/Viewer/itip.php:661
+#: templates/mailbox/navbar.html:8
+msgid "None"
+msgstr "គ្មាន"
+
+#: compose.php:1205
+msgid "Normal"
+msgstr "ធម្មតា"
+
+#: templates/mailbox/navbar.html:18 templates/mailbox/navbar.html:34
+msgid "Not Deleted"
+msgstr "មិន​បាន​លុប"
+
+#: templates/message/navbar_navigate.html:12 templates/mailbox/navbar.html:20
+#: templates/mailbox/navbar.html:37
+msgid "Not Draft"
+msgstr "មិន​មែន​សេចក្តី​ព្រាង"
+
+#: templates/message/navbar_navigate.html:8 templates/mailbox/navbar.html:14
+#: templates/mailbox/navbar.html:29
+msgid "Not Important"
+msgstr "មិន​សំខាន់"
+
+#: templates/mailbox/navbar.html:22
+msgid "Not Personal"
+msgstr "មិន​មែន​ផ្ទាល់​ខ្លួន"
+
+#: lib/Crypt/PGP.php:139 lib/Crypt/SMIME.php:134 lib/Crypt/SMIME.php:149
+msgid "Not a valid public key."
+msgstr "មិន​មែន​កូនសោ​សាធារណៈត្រឹមត្រូវ​មួយ ។"
+
+#: config/prefs.php.dist:707
+msgid "Not at all"
+msgstr "អត់​សោះ"
+
+#: lib/Maintenance/Task/fetchmail_login.php:71
+msgid "Note that this can take some time"
+msgstr "ចំណាំ​ថា​ វា​ត្រូវ​ការ​ពេល​វេលា​បន្តិច​បន្តួច"
+
+#: config/prefs.php.dist:616
+msgid "Nothing"
+msgstr "គ្មាន​អ្វី​សោះ"
+
+#: attachment.php:89
+msgid "Notification: Linked attachment downloaded"
+msgstr "សេចក្ដី​ជូន​ដំណឹង ៖ ឯកសារ​ភ្ជាប់​ដែល​បាន​តភ្ជាប់ ត្រូវ​បាន​ទាញយក​ហើយ ។"
+
+#: config/prefs.php.dist:378
+msgid "Number of months to keep old linked attachments if deleting monthly."
+msgstr "ចំនួន​ខែ​ដែល​ត្រូវ​រក្សាឯកសារភ្ជាប់​ដែល​បាន​ភ្ជាប់​ចាស់ ប្រសិន​បើ​លុប​រាល់​ខែ ។"
+
+#: config/prefs.php.dist:360
+msgid "Number of old sent-mail folders to keep if deleting monthly."
+msgstr "ចំនួននៃ​ថត​សំបុត្រ​បាន​ផ្ញើ​ដែល​ត្រូវ​រក្សា​ទុក ប្រសិន​បើលុប​រាល់​ខែ ។"
+
+#: templates/contacts/contacts.html:73
+msgid "OK"
+msgstr "យល់​ព្រម"
+
+#: templates/smime/import_key.inc:49 templates/search/search.html:49
+#: templates/pgp/import_key.html:30
+msgid "OR"
+msgstr "ឬ"
+
+#: search.php:324
+msgid "Old messages"
+msgstr "សារ​ចាស់"
+
+#: lib/Maintenance/Task/delete_sentmail_monthly.php:52
+msgid "Old sent-mail folders being purged."
+msgstr "ថត \"សំបុត្រ​បាន​ផ្ញើ\" ចាស់​កំពុង​ត្រូវ​បាន​លុប​បំបាត់ ។"
+
+#: lib/Block/summary.php:33
+msgid "Only display folders with unread messages in them?"
+msgstr "បង្ហាញ​តែ​ថត​ដែល​មាន​សារ​មិន​ទាន់​អាន ?"
+
+#: templates/javascript/folders.js:81
+msgid "Only one folder should be selected for this action."
+msgstr "តែ​ថត​មួយ​ប៉ុណ្ណោះ គួរ​ត្រូវ​បាន​ជ្រើស​សម្រាប់​អំពើ​នេះ ។"
+
+#: lib/IMP.php:858 lib/IMP.php:863
+msgid "Open Fo_lder"
+msgstr "_Lបើក​ថត "
+
+#: lib/IMAP/Tree.php:422
+msgid "Opened Folder"
+msgstr "ថត​ដែល​បាន​បើក"
+
+#: lib/MIME/Viewer/itip.php:700
+msgid "Optional Participant"
+msgstr "អ្នក​ចូល​រួម​ស្រេច​លើ​ចិត្ត"
+
+#: fetchmail.php:43 templates/fetchmail/top.inc:3
+#: templates/fetchmail/fetchmail.inc:6
+msgid "Other Mail Accounts"
+msgstr "គណនី​សំបុត្រ​ផ្សេងៗ"
+
+#: config/prefs.php.dist:111 config/prefs.php.dist:120
+#: config/prefs.php.dist:127 config/prefs.php.dist:134
+#: config/prefs.php.dist:142 config/prefs.php.dist:151
+msgid "Other Options"
+msgstr "ជម្រើស​ផ្សេងៗ"
+
+#: templates/login/login.html:101
+msgid "Outbound Server"
+msgstr "ម៉ាស៊ីន​បម្រើ​ខាង​ក្រៅ"
+
+#: templates/pgp/passphrase.inc:16 lib/MIME/Viewer/pgp.php:164
+#: lib/MIME/Viewer/pgp.php:212 lib/MIME/Viewer/pgp.php:293
+msgid "PGP"
+msgstr "PGP"
+
+#: lib/IMP.php:1316
+msgid "PGP Encrypt Message"
+msgstr "PGP Encrypt Message"
+
+#: lib/Compose.php:1144
+msgid "PGP Error: "
+msgstr "កំហុស PGP ៖ "
+
+#: lib/Compose.php:1123
+msgid "PGP Error: Need passphrase for personal private key."
+msgstr "កំហុស PGP ៖ ត្រូវការ​ឃ្លា​សម្ងាត់ សម្រាប់​កូនសោ​ឯកជន​ផ្ទាល់​ខ្លួន ។"
+
+#: config/prefs.php.dist:143
+msgid "PGP Options"
+msgstr "ជម្រើស PGP"
+
+#: pgp.php:30
+msgid "PGP Passphrase Input"
+msgstr "ការ​បញ្ចូល​ឃ្លា​សម្ងាត់​របស់ PGP"
+
+#: templates/pgp/pgp.inc:55
+msgid "PGP Personal Keypair support requires a secure web connection."
+msgstr "ការ​គាំទ្រគូ​កូនសោ​ផ្ទាល់​ខ្លួន PGP ទាមទារ​ការ​តភ្ជាប់​បណ្តាញ​សុវត្ថិភាព ។"
+
+#: pgp.php:155
+#, php-format
+msgid "PGP Public Key for \"%s (%s)\" was successfully added."
+msgstr "កូនសោ​សាធារណៈ PGP សម្រាប់ \"%s (%s)\"  ត្រូវ​បាន​បន្ថែម​ដោយ​ជោគ​ជ័យ ។"
+
+#: pgp.php:251
+#, php-format
+msgid "PGP Public Key for \"%s\" was successfully deleted."
+msgstr "កូនសោ​សាធារណៈ PGP សម្រាប់ \"%s\" ត្រូវ​បាន​លុប​ដោយ​ជោគជ័យ ។"
+
+#: templates/pgp/pgp.inc:14
+msgid "PGP Public Keyring"
+msgstr "PGP Public Keyring"
+
+#: lib/IMP.php:1317
+msgid "PGP Sign Message"
+msgstr "PGP Sign Message"
+
+#: lib/IMP.php:1318
+msgid "PGP Sign/Encrypt Message"
+msgstr "PGP Sign/Encrypt Message"
+
+#: pgp.php:208
+msgid "PGP private key successfully added."
+msgstr "កូនសោ​ឯកជន PGP ត្រូវ​បាន​បន្ថែម​ដោយ​ជោគជ័យ ។"
+
+#: pgp.php:183
+msgid "PGP public key successfully added."
+msgstr "កូនសោ​សាធារណៈ PGP ត្រូវ​បាន​បន្ថែម​ដោយ​ជោគជ័យ ។"
+
+#: templates/pgp/notactive.inc:4
+msgid "PGP support is disabled on this system."
+msgstr "ការ​គាំទ្រ PGP ត្រូវ​បាន​ធ្វើ​ឲ្យ​ប្រើ​លែង​បាន​ លើ​ប្រព័ន្ធ​នេះ ។"
+
+#: templates/pgp/pgp.inc:2
+msgid ""
+"PGP support requires popup windows to be used.  If your browser is currently "
+"set to disable popup windows, you must change this setting or else the PGP "
+"features will not work correctly."
+msgstr ""
+"ការ​គាំទ្រ PGP ទាមទារ​ឲ្យ​ប្រើ​បង្អួច​លេចឡើង ។ បើ​កម្មវិធី​រុករក​របស់​អ្នក​កំពុង​ធ្វើ​ឲ្យ​បង្អួច​លេចឡើង​ប្រើ​លែង​"
+"បាន អ្នក​ត្រូវ​តែ​ផ្លាស់ប្ដូរ​ការ​កំណត់​នេះ បើ​ពុំ​នោះ​ទេ​លក្ខណៈ​ពិសេស PGP នឹង​មិន​ដំណើរការ​ត្រឹមត្រូវ​ឡើយ ។"
+
+#: lib/IMAP.php:175
+msgid "POP3"
+msgstr "POP3"
+
+#: lib/Fetchmail/imap.php:102
+msgid "POP3 (Auto Detect Protocols)"
+msgstr "POP3 (Auto Detect Protocols)"
+
+#: lib/IMAP.php:187
+msgid "POP3 over SSL"
+msgstr "POP3 លើ SSL"
+
+#: lib/IMAP.php:193
+msgid "POP3 over SSL (self-signed certificate)"
+msgstr "POP3 លើ SSL (វិញ្ញាបនបត្រ​ដែល​បាន​ចុះ​ហត្ថលេខា​ដោយ​ខ្លួន​ឯង)"
+
+#: lib/IMAP.php:181
+msgid "POP3, no TLS"
+msgstr "POP3 គ្មាន TLS"
+
+#: mailbox.php:374
+#, php-format
+msgid "Page %d of %d"
+msgstr "ទំព័រ %d នៃ %d"
+
+#: config/prefs.php.dist:914
+msgid "Page with the First Unseen Message"
+msgstr "ទំព័រ​ដែល​មាន​សារ​មិន​បាន​មើល​ដំបូង"
+
+#: config/prefs.php.dist:915
+msgid "Page with the Last Unseen Message"
+msgstr "ទំព័រ​ដែល​មាន​សារ​មិន​បានមើល​​ចុង​ក្រោយ"
+
+#: message.php:666
+msgid "Part(s)"
+msgstr "ផ្នែក"
+
+#: templates/pgp/pgp.inc:123
+msgid "Passphrase"
+msgstr "ឃ្លា​សម្ងាត់"
+
+#: templates/pgp/pgp.inc:128
+msgid "Passphrase (Again)"
+msgstr "ឃ្លា​សម្ងាត់ (ម្តង​ទៀត)"
+
+#: smime.php:231 pgp.php:316
+msgid "Passphrase successfully unloaded."
+msgstr "ឃ្លា​សម្ងាត់​ត្រូវ​បាន​រើ​ចេញ​ដោយ​ជោគ​ជ័យ ។"
+
+#: templates/smime/passphrase.inc:18 templates/pgp/passphrase.inc:29
+msgid "Passphrase:"
+msgstr "ឃ្លា​សម្ងាត់ ៖"
+
+#: pgp.php:118
+msgid "Passphrases cannot be empty"
+msgstr "ឃ្លា​សម្ងាត់​មិន​អាច​ទទេ​បាន​ឡើយ"
+
+#: pgp.php:120
+msgid "Passphrases do not match"
+msgstr "ឃ្លា​សម្ងាត់​មិន​ផ្គូផ្គង"
+
+#: templates/fetchmail/manage.inc:20 templates/smime/import_key.inc:71
+#: templates/login/login.html:90
+msgid "Password"
+msgstr "ពាក្យ​សម្ងាត់"
+
+#: templates/fetchmail/manage.inc:48
+msgid "Perform maintenance operations on login?"
+msgstr "ធ្វើ​ប្រតិបត្តិការ​តំហែទាំ ពេល​ចូល ?"
+
+#: acl.php:75 acl.php:101
+msgid "Permissions for this user cannot be changed."
+msgstr "សិទ្ធិ​សម្រាប់​អ្នក​ប្រើ​នេះ មិន​អាច​ត្រូវ​បាន​ផ្លាស់ប្ដូរ​បាន​ឡើយ ។"
+
+#: message.php:460 mailbox.php:806 mailbox.php:975
+#: templates/mailbox/navbar.html:21 templates/mailbox/legend.html:8
+msgid "Personal"
+msgstr "ផ្ទាល់​ខ្លួន"
+
+#: config/prefs.php.dist:14
+msgid "Personal Information"
+msgstr "ព័ត៌មាន​ផ្ទាល់​ខ្លួន"
+
+#: pgp.php:126
+msgid "Personal PGP keypair generated successfully."
+msgstr "គូ​កូនសោ PGP ផ្ទាល់​ខ្លួន ត្រូវ​បាន​បង្កើត​ដោយ​ជោគជ័យ ។"
+
+#: pgp.php:133
+msgid "Personal PGP keys deleted successfully."
+msgstr "កូនសោ PGP ផ្ទាល់​ខ្លួន ត្រូវ​បាន​លុប​ដោយ​ជោគជ័យ ។"
+
+#: smime.php:203
+msgid "Personal S/MIME certificates NOT imported: "
+msgstr "វិញ្ញាបនបត្រ S/MIME ផ្ទាល់​ខ្លួន មិន​ត្រូវ​បាន​នាំ​ចូល​ឡើយ ៖"
+
+#: smime.php:128
+msgid "Personal S/MIME keys deleted successfully."
+msgstr "កូនសោ S/MIME ផ្ទាល់​ខ្លួន​ ត្រូវ​បាន​លុប​ដោយ​ជោគជ័យ ។"
+
+#: config/prefs.php.dist:223
+msgid "Place your signature before replies and forwards?"
+msgstr "ដាក់​ហត្ថលេខា​របស់​អ្នក មុន​ការ​ឆ្លើយ​តប និង បញ្ជូនបន្ត ?"
+
+#: lib/Compose.php:358
+msgid "Plaintext Version of Message"
+msgstr "កំណែ​អត្ថបទ​ធម្មតា​របស់​សារ"
+
+#: config/prefs.php.dist:811
+msgid ""
+"Play sound on new mail?  This requires your browser to support embedded "
+"sound files.  Almost all do on Windows and Mac, but other platforms will "
+"require a plugin."
+msgstr ""
+"ចាក់​សម្លេង​ពេល​មាន​សារ​ថ្មី ?  វា​ទាមទារ​ឲ្យ​កម្មវិធី​រុករក​របស់​អ្នក​គាំទ្រ​ឯកសារ​សម្លេង​បង្កប់ ។  កម្មវិធី​"
+"រុករក​ស្ទើរ​តែ​ទាំងអស់​នៅ​លើ Windows និង Mac បាន​គាំទ្រ ប៉ុន្តែ​វេទិកា​ផ្សេង​ទៀត​នឹង​ទាមទារ​កម្មវិធី​ជំនួយ​"
+"ខាង​ក្នុង​មួយ ។"
+
+#: templates/message/javascript.inc:70 templates/mailbox/javascript.inc:195
+msgid "Please enter a name for the new folder:"
+msgstr "សូម​បញ្ចូល​ឈ្មោះ​មួយ សម្រាប់​ថត​ថ្មី ៖"
+
+#: templates/javascript/folders.js:104 templates/javascript/folders.js:106
+msgid "Please enter the name of the new folder:"
+msgstr "សូម​បញ្ចូល​ឈ្មោះ​របស់​ថត​ថ្មី ៖"
+
+#: templates/javascript/folders.js:139
+msgid "Please enter the new name:"
+msgstr "សូម​បញ្ចូល​ឈ្មោះ​ថ្មី ៖"
+
+#: templates/pgp/passphrase.inc:19
+#, php-format
+msgid ""
+"Please enter the passphrase for your PGP private key. You will only need to "
+"enter this passphrase once per %s session."
+msgstr ""
+"សូម​បញ្ចូល​ឃ្លា​សម្ងាត់​សម្រាប់​កូនសោ​ឯកជន PGP របស់​អ្នក ។ អ្នក​ចាំបាច់​បញ្ចូល​ឃ្លា​សម្ងាត់​នេះ​តែ​មួយ​ដង ក្នុង​មួយ​"
+"សម័យ %s ។"
+
+#: templates/smime/passphrase.inc:13
+#, php-format
+msgid ""
+"Please enter the passphrase for your S/MIME private key. You will only need "
+"to enter this passphrase once per %s session."
+msgstr ""
+"សូម​បញ្ចូល​ឃ្លា​សម្ងាត់​សម្រាប់​កូនសោ​ឯកជន S/MIME របស់​អ្នក ។ អ្នក​ចាំបាច់​បញ្ចូល​ឃ្លា​សម្ងាត់​នេះ​តែ​មួយ​ដង ក្នុង​"
+"មួយ​សម័យ %s ។"
+
+#: login.php:180
+msgid ""
+"Please log in again to resume composing your message. If you are NOT using "
+"cookies AND you are composing messages in popup windows, you will have to "
+"log in again in your main window as well. This is to keep attackers from "
+"hijacking your session ID. We apologize for any inconvenience."
+msgstr ""
+"សូម​ចូល​ម្តង​ទៀត ដើម្បី​បន្ត​តែង​សារ​របស់​អ្នក ។ ប្រសិន​បើ​អ្នក​មិន​កំពុង​ប្រើ​ខូគី និង អ្នក​កំពុង​តែង​សារ​ក្នុង​បង្អួច​"
+"លេចឡើង អ្នកចាំបាច់ត្រូវ​ចូល​ម្តង​ទៀត ក្នុង​បង្អួច​មេ​របស់​អ្នក​ផង​ដែរ ។ នេះ​គឺ​ដើម្បី​រារាំង​អ្នក​វាយ​ប្រហារ​ពី​"
+"ការ​ប្លន់​អត្តសញ្ញាណ​សម័យ​របស់​អ្នក ។ យើ​ង​សូម​ទោស​សម្រាប់​ភាព​មិន​ងាយស្រួល​ណាមួយ ។"
+
+#: templates/login/javascript.inc:36
+msgid "Please provide your password."
+msgstr "សូម​ផ្តល់​ពាក្យ​សម្ងាត់​របស់​អ្នក ។"
+
+#: templates/login/javascript.inc:32
+msgid "Please provide your username."
+msgstr "សូម​ផ្តល់​ឈ្មោះ​អ្នក​ប្រើ​របស់អ្នក ។"
+
+#: compose.php:106 lib/Compose.php:2398
+msgid "Please resolve ambiguous or invalid addresses."
+msgstr "សូម​ដោះ​ស្រាយ​អាសយដ្ឋាន​ដែល​មិន​ច្បាស់ ឬ មិន​ត្រឹមត្រូវ ។"
+
+#: templates/javascript/folders.js:63
+msgid "Please select a folder before you perform this action."
+msgstr "សូម​ជ្រើស​ថត​មួយ មុន​នឹង​អ្នក​ប្រតិបត្តិ​អំពើ​នេះ ។"
+
+#: templates/search/javascript.inc:41
+msgid "Please select at least one folder to search."
+msgstr "សូម​ជ្រើស​យ៉ាង​ហោច​ណាស់​ថត​មួយ ដើម្បី​ស្វែង​រក ។"
+
+#: templates/javascript/folders.js:12
+msgid "Please select only one folder for this operation."
+msgstr "សូម​ជ្រើស​ថត​តែ​មួយ​គត់ សម្រាប់​ប្រតិបត្តិការ​នេះ ។"
+
+#: templates/compose/redirect.html:39
+msgid "Please select or edit in the box to the right:"
+msgstr "សូម​ជ្រើស ឬ កែសម្រួល​ក្នុង​ប្រអប់​ទៅ​ខាង​ស្តាំ ៖"
+
+#: config/motd.php.dist:41
+msgid "Powered by Horde"
+msgstr "ធ្វើ​ឲ្យ​ដើរ​ដោយ Horde"
+
+#: config/prefs.php.dist:215
+msgid "Precede your signature with dashes ('-- ')?"
+msgstr "នាំ​មុខ​ហត្ថលេខា​របស់​អ្នក​ដោយ​សញ្ញា​ដាច់ៗ ('-- ') ?"
+
+#: smime.php:237 pgp.php:263 filterprefs.php:41
+msgid "Preferences successfully updated."
+msgstr "ចំណង់​ចំណូលចិត្ត ​ត្រូវ​បាន​ធ្វើ​ឲ្យ​ទាន់​សម័យ​ដោយ​ស្វ័យ​ប្រវត្តិ ។"
+
+#: compose.php:1347 templates/compose/compose.html:314
+msgid "Preview"
+msgstr "មើល​ជា​មុន"
+
+#: message.php:513 message.php:699
+msgid "Previous Message"
+msgstr "សារ​មុន"
+
+#: mailbox.php:434
+msgid "Previous Page"
+msgstr "ទំព័រ​មុន"
+
+#: message.php:594
+msgid "Print"
+msgstr "បោះពុម្ព"
+
+#: message.php:655
+msgid "Priority"
+msgstr "អាទិភាព"
+
+#: templates/smime/import_key.inc:76
+msgid "Private Key Password"
+msgstr "ពាក្យ​សម្ងាត់​របស់កូនសោ​ឯកជន"
+
+#: config/prefs.php.dist:571
+msgid "Prompt every time an attachment is sent; default to NO"
+msgstr "រំលឹក​រៀង​រាល់​ពេល​ដែល​ឯកសារ​ភ្ជាប់​មួយ​ត្រូវ​បាន​ផ្ញើ ។ លំនាំដើមគឺ​ទេ ។"
+
+#: config/prefs.php.dist:570
+msgid "Prompt every time an attachment is sent; default to YES"
+msgstr "រំលឹក​រៀង​រាល់​ពេល​ដែល​ឯកសារ​ភ្ជាប់​មួយ​ត្រូវ​បាន​ផ្ញើ ។ លំនាំដើមគឺ​បាទ ។"
+
+#: templates/fetchmail/manage.inc:10
+msgid "Protocol:"
+msgstr "ពិធីការ ៖"
+
+#: lib/Crypt/PGP.php:430
+msgid "Public PGP keyserver support has been disabled."
+msgstr "ការ​គាំទ្រ​ម៉ាស៊ីន​បម្រើ​កូនសោ PGP សាធារណៈ ត្រូវ​បាន​ធ្វើឲ្យ​ប្រើ​លែង​បាន ។"
+
+#: mailbox.php:388 mailbox.php:483
+msgid "Pur_ge Deleted"
+msgstr "_Gលុប​បំបាត់ \"បាន​លុប\" "
+
+#: mailbox.php:388 mailbox.php:483
+msgid "Purge Deleted"
+msgstr "លុប​បំបាត់ \"បាន​លុប\" "
+
+#: templates/folders/actions.html:26
+msgid "Purge Folder(s)"
+msgstr "លុប​បំបាត់​ថត"
+
+#: config/prefs.php.dist:397
+msgid "Purge Trash how often:"
+msgstr "ចំនួន​ដង​ត្រូវ​លុប​បំបាត់​សំរាម ៖"
+
+#: config/prefs.php.dist:406
+msgid "Purge messages in Trash folder older than this amount of days."
+msgstr "លុប​បំបាត់​សារ​ក្នុង​ថត​សំរាម ដែល​ចាស់​ជាង​ចំនួន​ថ្ងៃ​នេះ ។"
+
+#: config/prefs.php.dist:387
+msgid "Purge old messages in the Trash folder?"
+msgstr "លុប​បំបាត់​សារ​ចាស់​ក្នុង​ថត​សំរាម ?"
+
+#: lib/Maintenance/Task/purge_trash.php:65
+#, php-format
+msgid "Purging %d messages from Trash folder."
+msgstr "កំពុង​លុប​បំបាត់​សារ​ចំនួន %d ពី​ថត​សំរាម ។"
+
+#: lib/Maintenance/Task/purge_trash.php:63
+msgid "Purging 1 message from Trash folder."
+msgstr "កំពុង​លុប​បំបាត់​សារ​ចំនួន ១ ពី​ថត​សំរាម ។"
+
+#: lib/IMP.php:917
+#, php-format
+msgid "Quota status: %.2fMB / %.2fMB  (%.2f%%)"
+msgstr "ស្ថានភាព​កូតា ៖ %.2fMB / %.2fMB  (%.2f%%)"
+
+#: lib/IMP.php:921
+#, php-format
+msgid "Quota status: %.2fMB / NO LIMIT"
+msgstr "ស្ថានភាព​កូតា ៖ %.2fMB / គ្មាន​កំណត់"
+
+#: lib/IMP.php:924
+#, php-format
+msgid "Quota status: NO LIMIT"
+msgstr "ស្ថានភាព​កូតា ៖ គ្មាន​កំណត់"
+
+#: config/prefs.php.dist:501
+#, php-format
+msgid "Quoting %f:"
+msgstr "សម្រង់ %f ៖"
+
+#: templates/folders/actions.html:31
+msgid "Rebuild Folder Tree"
+msgstr "ស្ថាបនា​មែកធាង​ថត​ឡើង​វិញ"
+
+#: lib/Search.php:631
+msgid "Received On"
+msgstr "បាន​ទទួល ​នៅ​ថ្ងៃ"
+
+#: lib/Search.php:639
+msgid "Received Since"
+msgstr "បាន​ទទួល​ ចាប់​តាំង​ពី"
+
+#: lib/Search.php:635
+msgid "Received Until"
+msgstr "បាន​ទទួល រហូតដល់"
+
+#: message.php:556
+msgid "Redirec_t"
+msgstr "_Tប្តូរ​ទិស "
+
+#: message.php:556
+msgid "Redirect"
+msgstr "ប្តូរ​ទិស"
+
+#: templates/compose/redirect.html:77
+msgid "Redirect Message"
+msgstr "ប្តូរ​ទិស​សារ"
+
+#: compose.php:433
+msgid "Redirect this message"
+msgstr "ប្តូរ​ទិស​សារ​នេះ"
+
+#: compose.php:496
+msgid "Redirecting failed."
+msgstr "ការ​ប្តូរ​ទិស​បាន​បរាជ័យ ។"
+
+#: folders.php:276
+msgid "Refresh"
+msgstr "ធ្វើ​ឲ្យ​ស្រស់"
+
+#: config/prefs.php.dist:796
+msgid "Refresh Folder Views:"
+msgstr "ធ្វើ​ឲ្យ​ទិដ្ឋភាព​របស់​ថត​ស្រស់ ៖"
+
+#: mailbox.php:349
+msgid "Reload"
+msgstr "ផ្ទុក​ឡើង​វិញ"
+
+#: folders.php:266
+msgid "Reload View"
+msgstr "ផ្ទុក​ទិដ្ឋភាព​ឡើង​វិញ"
+
+#: lib/MIME/Viewer/itip.php:528 lib/MIME/Viewer/itip.php:547
+msgid "Remember the free/busy information."
+msgstr "ចងចាំ​ព័ត៌មាន ទំនេរ/រវល់ ។"
+
+#: config/prefs.php.dist:990
+msgid "Remember the last view"
+msgstr "ចងចាំ​ទិដ្ឋភាព​ចុង​ក្រោយ"
+
+#: templates/fetchmail/manage.inc:27
+msgid "Remote Mailbox:"
+msgstr "ប្រអប់​សំបុត្រ​ឆ្ងាយ ៖"
+
+#: search.php:320
+msgid "Remove Field From Search"
+msgstr "យក​វាល​ចេញ​ពី​ការ​ស្វែង​រក"
+
+#: templates/prefs/sourceselect.inc:305
+msgid "Remove source"
+msgstr "យក​ប្រភព​ចេញ"
+
+#: templates/folders/actions.html:10
+msgid "Rename Folder(s)"
+msgstr "ប្តូរ​ឈ្មោះ​ថត"
+
+#: config/prefs.php.dist:342
+msgid "Rename sent-mail folder at beginning of month?"
+msgstr "ប្តូរ​ឈ្មោះ​ថត​សំបុត្រ​ដែល​បាន​ផ្ញើ នៅ​ពេល​ចាប់​ផ្តើម​នៃ​ខែ ?"
+
+#: lib/Folder.php:463
+#, php-format
+msgid "Renaming \"%s\" to \"%s\" failed. This is what the server said"
+msgstr "ការ​ប្តូរ​ឈ្មោះ \"%s\" ទៅ \"%s\" បាន​បរាជ័យ ។ នេះ​គឺ​ជា​អ្វី​ដែល​ម៉ាស៊ីន​បម្រើ​បាន​និយាយ"
+
+#: message.php:543
+msgid "Repl_y to List"
+msgstr "_Yឆ្លើយ​តប​ទៅ​បញ្ជី "
+
+#: templates/compose/spelling.html:50
+msgid "Replace with:"
+msgstr "ជំនួស​ដោយ ៖"
+
+#: message.php:540
+msgid "Reply"
+msgstr "ឆ្លើយ​តប"
+
+#: lib/MIME/Viewer/itip.php:312 lib/MIME/Viewer/itip.php:410
+msgid "Reply Sent."
+msgstr "ការ​ឆ្លើយ​តប​ត្រូវ​បាន​ផ្ញើ"
+
+#: message.php:549
+msgid "Reply to All"
+msgstr "ឆ្លើយ​តប​ទៅ​ទាំង​អស់"
+
+#: compose.php:406
+msgid "Reply to All:"
+msgstr "ឆ្លើយ​តប​ទៅ​ទាំង​អស់ ៖"
+
+#: message.php:543
+msgid "Reply to List"
+msgstr "ឆ្លើយ​តប​ទៅ​បញ្ជី"
+
+#: compose.php:408
+msgid "Reply to List:"
+msgstr "ឆ្លើយ​តប​ទៅ​បញ្ជី ៖"
+
+#: message.php:549
+msgid "Reply to _All"
+msgstr "_Aឆ្លើយ​តប​ទៅទាំងអស់ "
+
+#: lib/MIME/Viewer/itip.php:530 lib/MIME/Viewer/itip.php:539
+#: lib/MIME/Viewer/itip.php:549
+msgid "Reply with Not Supported Message"
+msgstr "ឆ្លើយ​តប​ដោយ​​សារ​ដែល​មិន​គាំទ្រ"
+
+#: lib/MIME/Viewer/itip.php:537
+msgid "Reply with free/busy for next 2 months."
+msgstr "ឆ្លើយ​តបដោយ ទំនេរ/រវល់ សម្រាប់​ ២ ខែ​បន្ទាប់ ។"
+
+#: lib/MIME/Viewer/itip.php:536
+msgid "Reply with requested free/busy information."
+msgstr "ឆ្លើយ​តប​ដោយ​​ព័ត៌មាន​ ទំនេរ/រវល់ ដែល​បាន​ស្នើ​សុំ ។"
+
+#: message.php:236
+msgid "Reply-To"
+msgstr "ឆ្លើយ​តប​-ទៅ"
+
+#: lib/Compose.php:1549
+msgid "Reply-To: "
+msgstr "ឆ្លើយ​តប​-ទៅ ៖ "
+
+#: compose.php:404
+msgid "Reply:"
+msgstr "ឆ្លើយ​តប ៖"
+
+#: message.php:607 mailbox.php:514
+msgid "Report as Innocent"
+msgstr "រាយការណ៍​ថា​ល្អ"
+
+#: message.php:599 mailbox.php:506
+msgid "Report as Spam"
+msgstr "រាយការណ៍​ជា​សារ​ឥត​បាន​ការ"
+
+#: compose.php:1270
+msgid "Request a _Read Receipt"
+msgstr "_Rស្នើ​សុំ​បង្កាន់​ដៃ​អាន​មួយ "
+
+#: config/prefs.php.dist:585
+msgid "Request read receipts?"
+msgstr "ស្នើ​សុំ​បង្កាន់​ដៃ​អាន ?"
+
+#: mailbox.php:131
+msgid "Requested message not found."
+msgstr "រក​មិន​ឃើញ​សារ​ដែល​បាន​ស្នើ​សុំ ។"
+
+#: lib/MIME/Viewer/itip.php:692
+msgid "Required Participant"
+msgstr "អ្នក​ចូល​រួម​ដែល​ទាមទារ"
+
+#: templates/acl/acl.inc:162 templates/search/search.html:29
+#: templates/search/search.html:181
+msgid "Reset"
+msgstr "កំណត់​ឡើង​វិញ"
+
+#: lib/MIME/Viewer/itip.php:116
+msgid "Respondent Status Updated."
+msgstr "ស្ថានភាព​ឆ្លើយ​តប​ ត្រូវ​បាន​ធ្វើ​ឲ្យ​ទាន់​សម័យ ។"
+
+#: message.php:587
+msgid "Resume"
+msgstr "ធ្វើ​បន្ត"
+
+#: login.php:181
+msgid "Resume your session"
+msgstr "ធ្វើ​បន្ត​សម័យ​របស់​អ្នក"
+
+#: templates/stationery/prefs.inc:44
+msgid "Return to \"Message Composition\""
+msgstr "ត្រឡប់​ទៅ \"ការ​តែង​សារ\""
+
+#: templates/fetchmail/driver_select.inc:31 templates/fetchmail/manage.inc:69
+#: templates/fetchmail/account_select.inc:32
+msgid "Return to Fetch Mail"
+msgstr "ត្រឡប់​ទៅ​កាន់ \"ទៅ​ប្រមូល​យក​សំបុត្រ\""
+
+#: filterprefs.php:53 templates/smime/smime.inc:101
+#: templates/smime/notactive.inc:15 templates/pgp/pgp.inc:149
+#: templates/pgp/notactive.inc:15 templates/acl/acl.inc:163
+#: templates/acl/acl.inc:175
+msgid "Return to Options"
+msgstr "ត្រឡប់​ទៅ​ជម្រើស"
+
+#: config/prefs.php.dist:730
+msgid ""
+"Return to the mailbox listing after deleting, moving, or copying a message?"
+msgstr "ត្រឡប់​ទៅ​ការ​រាយ​របស់​ប្រអប់​សំបុត្រ បន្ទាប់ពី​លុប ផ្លាស់​ទី ឬ ចម្លង​សារ​មួយ ?"
+
+#: lib/MIME/Viewer/itip.php:683
+msgid "Role"
+msgstr "តួនាទី"
+
+#: lib/MIME/Viewer/pkcs7.php:142 lib/MIME/Viewer/pkcs7.php:237
+#: lib/MIME/Viewer/pkcs7.php:424
+msgid "S/MIME"
+msgstr "S/MIME"
+
+#: lib/IMP.php:1321
+msgid "S/MIME Encrypt Message"
+msgstr "S/MIME Encrypt Message"
+
+#: lib/Compose.php:1176
+msgid "S/MIME Error: "
+msgstr "កំហុស S/MIME ៖ "
+
+#: lib/Compose.php:1155
+msgid "S/MIME Error: Need passphrase for personal private key."
+msgstr "កំហុស S/MIME ៖ ត្រូវ​ការ​ឃ្លា​សម្ងាត់ សម្រាប់​កូនសោ​ឯកជន​ផ្ទាល់​ខ្លួន ។"
+
+#: config/prefs.php.dist:152
+msgid "S/MIME Options"
+msgstr "ជម្រើស S/MIME"
+
+#: smime.php:46
+msgid "S/MIME Passphrase Input"
+msgstr "ការ​បញ្ចូល​ឃ្លា​សម្ងាត់ S/MIME"
+
+#: templates/smime/smime.inc:54
+msgid "S/MIME Personal Keypair support requires a secure web connection."
+msgstr "ការ​គាំទ្រ​គូ​កូនសោ​ផ្ទាល់​ខ្លួន S/MIME ទាម​ទារ​ការ​តភ្ជាប់​តាម​បណ្តាញ​សុវត្ថិភាព ។"
+
+#: smime.php:136
+#, php-format
+msgid "S/MIME Public Key for \"%s\" was successfully deleted."
+msgstr "កូនសោ​សាធារណៈ S/MIME សម្រាប់ \"%s\" ត្រូវ​បាន​លុប​ដោយ​ជោគជ័យ ។"
+
+#: smime.php:158
+msgid "S/MIME Public Key successfully added."
+msgstr "កូនសោ​សាធារណៈ S/MIME ត្រូ​វបាន​បន្ថែម​ដោយ​ជោគជ័យ ។"
+
+#: templates/smime/smime.inc:10
+msgid "S/MIME Public Keyring"
+msgstr "S/MIME Public Keyring"
+
+#: smime.php:207
+msgid "S/MIME Public/Private Keypair successfully added."
+msgstr "គូ​កូនសោ សាធារណៈ/ឯកជន S/MIME ត្រូវ​បាន​បន្ថែម​ដោយ​ជោគជ័យ ។"
+
+#: lib/IMP.php:1322
+msgid "S/MIME Sign Message"
+msgstr "S/MIME Sign Message"
+
+#: lib/IMP.php:1323
+msgid "S/MIME Sign/Encrypt Message"
+msgstr "S/MIME Sign/Encrypt Message"
+
+#: templates/smime/notactive.inc:4
+msgid "S/MIME support is disabled on this system."
+msgstr "ការ​គាំទ្រ S/MIME​ គឺ​ត្រូវ​បាន​ធ្វើ​ឲ្យ​ប្រើ​លែង​បាន​លើ​ប្រព័ន្ធ​នេះ ។"
+
+#: lib/MIME/Viewer/pkcs7.php:241
+msgid ""
+"S/MIME support is not currently enabled so the message is unable to be "
+"decrypted."
+msgstr ""
+"ការ​គាំទ្រ S/MIME បច្ចុប្បន្ន​មិន​ត្រូវ​បាន​ធ្វើ​ឲ្យប្រើ​បាន ដូច្នេះ​សារ​មិន​អាច​ត្រូវ​បម្លែង​មក​ជា​ភាព​ធម្មតា ។"
+
+#: lib/MIME/Viewer/pkcs7.php:173
+msgid ""
+"S/MIME support is not enabled so the contents of this signed message cannot "
+"be displayed."
+msgstr ""
+"ការ​គាំទ្រ S/MIME មិន​ត្រូវ​បាន​ធ្វើ​ឲ្យ​ប្រើ​បាន​ឡើយ ដូច្នេះ​មាតិកា​របស់​សារ​ដែល​បាន​ចុះ​ហត្ថលេខា​នេះ នឹង​មិន​"
+"អាច​ត្រូវ​បាន​បង្ហាញ​បាន​ឡើយ ។"
+
+#: lib/MIME/Viewer/pkcs7.php:146
+msgid ""
+"S/MIME support is not enabled so the digital signature is unable to be "
+"verified."
+msgstr ""
+"ការ​គាំទ្រ S/MIME មិន​ត្រូវ​បាន​ធ្វើ​ឲ្យ​ប្រើ​បាន​ឡើយ ដូច្នេះ​ហត្ថលេខា​ឌីជីថល​នឹង​មិន​អាច​ត្រូវ​បាន​ផ្ទៀងផ្ទាត់​"
+"បាន​ឡើយ ។"
+
+#: templates/smime/smime.inc:2
+msgid ""
+"S/MIME support requires popup windows to be used.  If your browser is "
+"currently set to disable popup windows, you must change this setting or else "
+"the S/MIME features will not work correctly."
+msgstr ""
+"ការ​គាំទ្រ S/MIME ទាមទារ​ឲ្យ​ប្រើ​បង្អួច​លេចឡើង ។ បើ​កម្មវិធី​រុករក​របស់​អ្នក​កំពុង​ធ្វើ​ឲ្យ​បង្អួច​លេចឡើង​ប្រើ​"
+"លែង​បាន អ្នក​ត្រូវ​តែ​ផ្លាស់ប្ដូរ​ការ​កំណត់​នេះ បើ​ពុំ​នោះ​ទេ​លក្ខណៈ​ពិសេស S/MIME នឹង​មិន​ដំណើរការ​ត្រឹមត្រូវ​"
+"ឡើយ ។"
+
+#: templates/login/login.html:105
+msgid "SMTP"
+msgstr "SMTP"
+
+#: compose.php:1179
+msgid "S_ubject"
+msgstr "_Uប្រធាន​បទ "
+
+#: compose.php:1249
+msgid "Sa_ve a copy in "
+msgstr "_Vរក្សា​ទុក​ច្បាប់​ចម្លង​ក្នុង "
+
+#: message.php:592
+msgid "Sa_ve as"
+msgstr "_Vរក្សា​ទុក​ជា "
+
+#: templates/fetchmail/manage.inc:67 templates/search/search.html:28
+#: templates/search/search.html:180
+msgid "Save"
+msgstr "រក្សា​ទុក"
+
+#: compose.php:1323
+msgid "Save Attachments with message in sent-mail folder?"
+msgstr "រក្សា​ទុក​ឯកសារ​ភ្ជាប់​ជាមួយ​សារ​ ក្នុង​ថត​សំបុត្រ​ដែល​បាន​ផ្ញើ ?"
+
+#: templates/compose/compose.html:23 templates/compose/compose.html:206
+msgid "Save Draft"
+msgstr "រក្សា​ទុក ​សេចក្តី​ព្រាង"
+
+#: saveimage.php:51
+msgid "Save Image"
+msgstr "រក្សាទុក​រូបភាព"
+
+#: lib/MIME/Contents.php:231
+msgid "Save Image in Gallery"
+msgstr "រក្សាទុក​រូបភាព​ក្នុង​វិចិត្រសាល"
+
+#: filterprefs.php:114 templates/smime/smime.inc:100
+#: templates/smime/notactive.inc:13 templates/pgp/pgp.inc:148
+#: templates/pgp/notactive.inc:13
+msgid "Save Options"
+msgstr "រក្សា​ទុក​ ជម្រើស"
+
+#: templates/stationery/prefs.inc:40
+msgid "Save Stationery"
+msgstr "រក្សាទុក​ផ្ទៃ​ខាង​ក្រោយ​សំបុត្រ"
+
+#: compose.php:1094
+msgid "Save _Draft"
+msgstr "_Dរក្សា​ទុក​សេចក្តីព្រាង "
+
+#: message.php:592
+msgid "Save as"
+msgstr "រក្សា​ទុក​ជា"
+
+#: config/prefs.php.dist:522
+msgid "Save drafts as unseen?"
+msgstr "រក្សា​ទុក​សេចក្តី​ព្រាង​ជា​មិន​បាន​មើល​ឬ ?"
+
+#: config/prefs.php.dist:532
+msgid "Save drafts automatically while composing?"
+msgstr "រក្សាទុក​សេចក្ដីព្រាង​ដោយ​ស្វ័យប្រវត្តិ ខណៈ​ពេល​តែង ?"
+
+#: config/prefs.php.dist:1083
+msgid "Save recipients automatically to the default address book?"
+msgstr "រក្សា​ទុក​អ្នកទទួល​ទាំងឡាយ ទៅ​កាន់​សៀវភៅ​អាសយដ្ឋាន​លំនាំ​ដើម​​ដោយ​ស្វ័យ​ប្រវត្តិ ?"
+
+#: templates/search/search.html:172
+msgid "Save search as a virtual folder?"
+msgstr "រក្សា​ទុក​ការ​ស្វែង​រក ជា​ថត​និម្មិតមួយឬ ?"
+
+#: config/prefs.php.dist:231
+msgid "Save sent mail?"
+msgstr "រក្សា​ទុក​សំបុត្រ​ដែល​បានផ្ញើ​ឬ​ទេ ?"
+
+#: lib/Compose.php:150
+msgid "Saving the draft failed. Could not create a drafts folder."
+msgstr "ការ​រក្សាទុក​សេចក្ដីព្រាង​បាន​បរាជ័យ ។ មិន​អាច​បង្កើត​ថត​សេចក្ដីព្រាង​បាន​ឡើយ ។"
+
+#: lib/Compose.php:89
+msgid "Saving the draft failed. No draft folder specified."
+msgstr "ការ​រក្សាទុក​សេចក្ដីព្រាង​បាន​បរាជ័យ ។ មិន​មាន​ថត​សេចក្ដីព្រាង​ត្រូវ​បាន​បញ្ជាក់​លម្អិត ។"
+
+#: lib/Compose.php:165
+#, php-format
+msgid "Saving the draft failed. This is what the server said: %s"
+msgstr "ការ​រក្សា​ទុក​សេចក្តីព្រាង​បាន​បរាជ័យ ។ នេះ​គឺ​ជា​អ្វី​ដែល​ម៉ាស៊ីន​បម្រើ​បាននិយាយ ៖ %s"
+
+#: mailbox.php:356 lib/Block/tree_folders.php:39
+#: templates/contacts/contacts.html:25
+msgid "Search"
+msgstr "ស្វែង​រក"
+
+#: mailbox.php:356 search.php:219
+#, php-format
+msgid "Search %s"
+msgstr "ស្វែង​រក %s"
+
+#: config/prefs.php.dist:121
+msgid "Search Options"
+msgstr "ជម្រើស​ស្វែងរក"
+
+#: search.php:165
+msgid "Search Results"
+msgstr "លទ្ធផល​ស្វែង​រក"
+
+#: templates/mailbox/navbar.html:11 templates/mailbox/navbar.html:26
+msgid "Seen"
+msgstr "បាន​មើល"
+
+#: templates/fetchmail/manage.inc:70
+msgid "Select Another Account"
+msgstr "ជ្រើស​គណនី​មួយ​ផ្សេង"
+
+#: search.php:311
+msgid "Select a date"
+msgstr "ជ្រើស​កាលបរិច្ឆេទ"
+
+#: templates/search/search.html:55
+msgid "Select a field"
+msgstr "ជ្រើស​វាល"
+
+#: config/prefs.php.dist:136
+msgid "Select address book sources for adding and searching for addresses."
+msgstr "ជ្រើស​ប្រភព​សៀវភៅ​អាសយដ្ឋាន សម្រាប់​បន្ថែម និង ស្វែង​រក​អាសយដ្ឋាន ។​"
+
+#: templates/search/search.html:141
+msgid "Select all"
+msgstr "ជ្រើស​ទាំងអស់"
+
+#: templates/prefs/sourceselect.inc:323
+msgid "Select all fields to search when expanding addresses."
+msgstr "ជ្រើស​វាល​ដែល​ត្រូវ​ស្វែង​រក​ទាំងអស់ ពេល​ពង្រីក​អាសយដ្ឋាន ។"
+
+#: templates/fetchmail/account_select.inc:21
+msgid "Select an account"
+msgstr "ជ្រើស​គណនី"
+
+#: templates/search/search.html:142
+msgid "Select none"
+msgstr "ជ្រើស​គ្មាន"
+
+#: templates/compose/compose.html:133
+msgid "Select stationery:"
+msgstr "ជ្រើស​ផ្ទៃ​ខាង​ក្រោយ​សំបុត្រ ៖"
+
+#: templates/saveimage/saveimage.html:8
+msgid "Select the gallery to save the image in."
+msgstr "ជ្រើស​វិចិត្រសាល ដើម្បី​រក្សាទុក​រូបភាព​នៅ​ក្នុង ។"
+
+#: templates/fetchmail/driver_select.inc:21
+msgid "Select the mail server type"
+msgstr "ជ្រើស​ប្រភេទ​ម៉ាស៊ីន​បម្រើ​សំបុត្រ"
+
+#: templates/mailbox/navbar.html:6
+msgid "Select:"
+msgstr "ជ្រើស ៖"
+
+#: templates/prefs/sourceselect.inc:309
+msgid "Selected Address books:"
+msgstr "សៀវភៅ​អាសយដ្ឋាន​ដែល​បាន​ជ្រើស ៖"
+
+#: templates/pgp/pgp.inc:72
+msgid "Send Key to Public Keyserver"
+msgstr "បញ្ជូន​កូនសោ​ទៅ​ម៉ាស៊ីន​បម្រើ​កូនសោ​សាធារណៈ"
+
+#: lib/MIME/Viewer/itip.php:597
+msgid "Send Latest Information"
+msgstr "ផ្ញើ​ព័ត៌មាន​ថ្មី​បំផុត"
+
+#: templates/compose/compose.html:21 templates/compose/compose.html:204
+msgid "Send Message"
+msgstr "ផ្ញើ​សារ"
+
+#: templates/compose/javascript.inc:119
+msgid "Send message without a Subject?"
+msgstr "ផ្ញើ​សារ​ដោយ​គ្មាន​ប្រធានបទ ?"
+
+#: config/prefs.php.dist:715
+msgid "Send read receipt when requested by the sender?"
+msgstr "ផ្ញើ​បង្កាន់ដៃ​បាន​អាន នៅ​ពេល​បាន​ស្នើ​ដោយ​អ្នក​ផ្ញើ ?"
+
+#: lib/IMAP/Tree.php:385
+msgid "Sent mail folder"
+msgstr "ថត​សំបុត្រ​ដែល​បាន​ផ្ញើ"
+
+#: templates/prefs/sentmailselect.inc:38
+msgid "Sent mail folder:"
+msgstr "ថត​សំបុត្រ​ដែល​បាន​ផ្ញើ ៖"
+
+#: templates/login/login.html:36 templates/login/login.html:50
+#: templates/login/login.html:62
+msgid "Server"
+msgstr "ម៉ាស៊ីន​បម្រើ"
+
+#: config/prefs.php.dist:23
+msgid "Server and Folder Information"
+msgstr "ព័ត៌មាន​ម៉ាស៊ីន​បម្រើ និង ថត"
+
+#: templates/fetchmail/manage.inc:23
+msgid "Server:"
+msgstr "ម៉ាស៊ីន​បម្រើ ៖"
+
+#: config/prefs.php.dist:81
+msgid "Set preferences for what happens when you move and delete messages."
+msgstr "កំណត់​ចំណង់​ចំណូលចិត្តថា​អ្វី​នឹង​ត្រូវ​កើតឡើង ពេល​អ្នក​ផ្លាស់ទី និង លុប​សារ ។"
+
+#: config/prefs.php.dist:541
+msgid "Set the X-Priority header when composing messages?"
+msgstr "កំណត់​បឋមកថា​អាទិភាព X ពេល​តែង​សារ ?"
+
+#: config/prefs.php.dist:31
+msgid "Share Folders"
+msgstr "ចែក​រំលែក​ថត"
+
+#: templates/acl/acl.inc:86
+msgid "Share mail folders"
+msgstr "ចែក​រំលែក​ថត​សំបុត្រ"
+
+#: config/prefs.php.dist:32
+msgid "Share your mail folders with other users."
+msgstr "ចែក​រំលែក​ថត​សំបុត្រ​របស់​អ្នក ជាមួយ​អ្នក​ប្រើ​ផ្សេង ។"
+
+#: config/prefs.php.dist:669
+msgid ""
+"Should large blocks of quoted text be shown or hidden by default? It can be "
+"toggled easily whichever you choose."
+msgstr ""
+"ជា​លំនាំ​ដើម​ តើ​បណ្តុំ​ធំនៃ​អត្ថបទ​ដែល​បាន​ស្រង់ គួរ​ត្រូវ​បាន​បង្ហាញ ឬ លាក់​ឬ​ទេ ? មួយ​ណា​ក៏​ដោយ​ដែល​អ្នក​ជ្រើស "
+"វា​អាច​ត្រូវ​បាន​បិទ​បើក​ដោយ​ងាយស្រួល ។"
+
+#: templates/pgp/pgp.inc:7
+msgid "Should the body of text/plain messages be scanned for PGP data?"
+msgstr "តើ​តួ​នៃ​សារ​អត្ថបទ/ធម្មតា គួរ​ត្រូវ​បាន​វិភាគ សម្រាប់​ទិន្នន័យ PGP ឬ​ទេ ?​"
+
+#: config/prefs.php.dist:514
+msgid "Should the compose window be closed after saving a draft?"
+msgstr "តើ​បង្អួច​តែង​គួរ​តែ​ត្រូវ​បាន​បិទ បន្ទាប់​ពី​រក្សា​ទុក​សេចក្តី​ព្រាង​ឬទេ ?"
+
+#: templates/pgp/pgp.inc:4
+msgid "Should your PGP public key to be attached to your messages by default?"
+msgstr "តើ​កូន​សោ​សាធារណៈ PGP របស់​អ្នក​ គួរ​ត្រូវ​បាន​ភ្ជាប់​ទៅ​សារ​របស់​អ្នក​​ជា​លំនាំ​ដើម​ឬ​ទេ ?"
+
+#: templates/search/search.html:144
+msgid "Show All Folders"
+msgstr "បង្ហាញ​ថត​ទាំង​អស់"
+
+#: message.php:678
+msgid "Show All Headers"
+msgstr "បង្ហាញ​បឋមកថា​ទាំងអស់"
+
+#: mailbox.php:270
+msgid "Show Deleted"
+msgstr "បង្ហាញ \"បាន​លុប\""
+
+#: lib/MIME/Viewer/html.php:98
+msgid "Show Images?"
+msgstr "បង្ហាញ​រូបភាព ?"
+
+#: message.php:672
+msgid "Show Limited Headers"
+msgstr "បង្ហាញ \"បឋមកថា​ដែល​បាន​កម្រិត\""
+
+#: message.php:681
+msgid "Show Mailing List Information"
+msgstr "បង្ហាញ​ព័ត៌មាន​របស់​បញ្ជី​សំបុត្រ​រួម"
+
+#: templates/search/search.html:144
+msgid "Show Only Subscribed Folders"
+msgstr "បង្ហាញ​តែ​ថត​ដែល​បាន​ជាវ"
+
+#: folders.php:294
+msgid "Show Unsubscribed"
+msgstr "បង្ហាញ \"បាន​ឈប់​ជាវ\""
+
+#: config/prefs.php.dist:608
+msgid "Show an icon to allow stripping of attachments from messages?"
+msgstr "បង្ហាញ​រូប​តំណាង​ដែល​អនុញ្ញាត​ឲ្យ​ច្បូត​ឯកសារ​ភ្ជាប់​ចេញ​ពី​សារ​ឬ ?"
+
+#: config/prefs.php.dist:1013
+msgid "Show legend in the mailbox view?"
+msgstr "បង្ហាញ​តាង ក្នុង​ទិដ្ឋភាព​ប្រអប់​សំបុត្រ ?"
+
+#: config/prefs.php.dist:851
+msgid "Show previews for unread messages only?"
+msgstr "បង្ហាញ​មើល​ជា​មុន សម្រាប់​តែ​សារ​មិន​ទាន់​អាន ?"
+
+#: config/prefs.php.dist:859
+msgid "Show previews in tooltips?"
+msgstr "បង្ហាញ​មើល​ជា​មុន ជា​ព័ត៌មាន​ជំនួយ ?"
+
+#: config/prefs.php.dist:888
+msgid "Show the Fetch Mail icon on the menubar?"
+msgstr "បង្ហាញ​រូប​តំណាង \"ទៅ​ប្រមូល​យក​សំបុត្រ\" លើ​របារ​ម៉ឺនុយ ?"
+
+#: filterprefs.php:99
+msgid "Show the filter icon on the menubar?"
+msgstr "បង្ហាញ​រូបតំណាង​របស់​តម្រង​លើ​របារ​ម៉ឺនុយ ?"
+
+#: lib/Block/summary.php:36
+msgid "Show total number of mails in folder?"
+msgstr "បង្ហាញ​ចំនួន​សំបុត្រ​សរុប​ក្នុង​ថត ?"
+
+#: config/prefs.php.dist:666
+msgid "Shown"
+msgstr "បាន​បង្ហាញ"
+
+#: mailbox.php:590
+msgid "Si_ze"
+msgstr "_Zទំហំ "
+
+#: mailbox.php:984 templates/mailbox/legend.html:15
+msgid "Signed"
+msgstr "បាន​ចុះ​ហត្ថលេខា"
+
+#: templates/compose/compose.html:314
+msgid "Size:"
+msgstr "ទំហំ ៖"
+
+#: mailbox.php:559
+msgid "Sort by Arrival"
+msgstr "តម្រៀប​តាម​ការ​មក​ដល់"
+
+#: mailbox.php:564
+msgid "Sort by Date"
+msgstr "តម្រៀប​តាម​កាល​បរិច្ឆេទ"
+
+#: mailbox.php:574
+msgid "Sort by From Address"
+msgstr "តម្រៀប​តាម​អាសយដ្ឋាន \"ពី\""
+
+#: mailbox.php:589
+msgid "Sort by Message Size"
+msgstr "តម្រៀប​តាម​ទំហំ​របស់​សារ"
+
+#: mailbox.php:584
+msgid "Sort by Subject"
+msgstr "តម្រៀប​តាម​ប្រធាន​បទ"
+
+#: mailbox.php:579
+msgid "Sort by Thread"
+msgstr "តម្រៀប​តាម​ខ្សែ​អំបោះ"
+
+#: mailbox.php:569
+msgid "Sort by To Address"
+msgstr "តម្រៀប​តាម​អាសយដ្ឋាន​ \"ទៅ\""
+
+#: lib/IMAP/Tree.php:379
+msgid "Spam folder"
+msgstr "ថត​សារ​ឥត​បាន​ការ​"
+
+#: templates/prefs/spamselect.inc:23
+msgid "Spam folder:"
+msgstr "ថត​របស់​សារ​ឥត​បានការ ៖"
+
+#: compose.php:1238
+msgid "Special Characters"
+msgstr "តួអក្សរ​ពិសេស"
+
+#: search.php:53
+msgid "Special Virtual Folders cannot be edited."
+msgstr "មិន​អាច​កែសម្រួល​ថត​និម្មិត​ពិសេស​បាន​ឡើយ ។"
+
+#: compose.php:1234
+msgid "Spell Check"
+msgstr "ពិនិត្យ​​អក្ខរាវិរុទ្ធ"
+
+#: templates/compose/spelling.html:19
+msgid "Spell Checker"
+msgstr "កម្មវិធី​ពិនិត្យ​​អក្ខរាវិរុទ្ធ"
+
+#: compose.php:973
+msgid "Spell check complete"
+msgstr "ការ​ពិនិត្យ​អក្ខរាវិរុទ្ធ​បាន​បញ្ចប់​ទាំង​ស្រុង"
+
+#: templates/compose/spelling.html:21
+msgid "Spell check complete - No spelling errors"
+msgstr "ការ​ពិនិត្យអក្ខរាវិរុទ្ធ​បាន​បញ្ចប់​ហើយ - មិន​មាន​កំហុស​អក្ខរាវិរុទ្ធ​ឡើយ"
+
+#: config/prefs.php.dist:472
+msgid "Spelling errors per screen when spell checking."
+msgstr "កំហុស​អក្ខរាវិរុទ្ធ​ក្នុង​មួយ​អេក្រង់ ពេល​ពិនិត្យអក្ខរាវិរុទ្ធ ។"
+
+#: lib/MIME/Viewer/itip.php:507 lib/MIME/Viewer/itip.php:509
+#: lib/MIME/Viewer/itip.php:642 lib/MIME/Viewer/itip.php:644
+msgid "Start"
+msgstr "ចាប់ផ្តើម"
+
+#: compose.php:1219 templates/stationery/prefs.inc:9
+msgid "Stationery"
+msgstr "ផ្ទៃ​ខាង​ក្រោយ​សំបុត្រ"
+
+#: templates/stationery/prefs.inc:26
+msgid "Stationery name:"
+msgstr "ឈ្មោះ​ផ្ទៃ​ខាង​ក្រោយ​សំបុត្រ ៖"
+
+#: templates/stationery/prefs.inc:28
+msgid "Stationery type:"
+msgstr "ប្រភេទ​ផ្ទៃ​ខាង​ក្រោយ​សំបុត្រ ៖"
+
+#: templates/stationery/prefs.inc:33
+msgid "Stationery:"
+msgstr "ផ្ទៃ​ខាង​ក្រោយ​សំបុត្រ ៖"
+
+#: lib/MIME/Viewer/itip.php:683
+msgid "Status"
+msgstr "ស្ថានភាព"
+
+#: lib/MIME/Contents.php:242
+msgid "Strip Attachment"
+msgstr "ច្បូត​ឯកសារ​ភ្ជាប់​ចេញ"
+
+#: config/prefs.php.dist:843
+msgid "Strip linebreaks?"
+msgstr "ច្បូត​ការ​ចុះ​បន្ទាត់​ចេញ ?"
+
+#: mailbox.php:585
+msgid "Sub_ject"
+msgstr "_Jប្រធានបទ "
+
+#: message.php:237 thread.php:152 lib/Search.php:619
+#: templates/login/recompose.html:41
+msgid "Subject"
+msgstr "ប្រធានបទ"
+
+#: config/prefs.php.dist:931
+msgid "Subject Field"
+msgstr "វាល​​ប្រធានបទ"
+
+#: templates/smime/passphrase.inc:20 templates/pgp/passphrase.inc:31
+#: templates/search/search.html:28 templates/search/search.html:180
+#: templates/saveimage/saveimage.html:18
+msgid "Submit"
+msgstr "ដាក់​ស្នើ"
+
+#: templates/folders/actions.html:13
+msgid "Subscribe to Folder(s)"
+msgstr "ជាវ​ប្រចាំ​ទៅ​ថត"
+
+#: lib/MIME/Viewer/pkcs7.php:385 lib/MIME/Viewer/pgp.php:397
+#: lib/MIME/Viewer/status.php:87
+msgid "Success"
+msgstr "ជោគជ័យ"
+
+#: templates/compose/spelling.html:40
+msgid "Suggestions"
+msgstr "យោបល់"
+
+#: lib/MIME/Viewer/itip.php:659 lib/MIME/Viewer/itip.php:661
+msgid "Summary"
+msgstr "សេចក្តី​សង្ខេប"
+
+#: compose.php:1275 compose.php:1276
+msgid "Switch Composition Method"
+msgstr "ប្តូរ​វិធី​សាស្ត្រ​តែង"
+
+#: templates/compose/compose.html:189
+msgid "Switch to HTML composition"
+msgstr "ប្តូរ​ទៅ​​ការតែង​ HTML"
+
+#: templates/compose/compose.html:189
+msgid "Switch to plain text composition"
+msgstr "ប្តូរ​ទៅ​ការ​តែង​អត្ថបទ​ធម្មតា"
+
+#: compose.php:1280
+msgid "Te_xt"
+msgstr "_Xអត្ថបទ "
+
+#: lib/MIME/Viewer/itip.php:270
+msgid "Tentative: "
+msgstr "បណ្ដោះអាសន្ន ៖ "
+
+#: lib/MIME/Viewer/itip.php:586
+msgid "Tentatively Accept request"
+msgstr "ព្រម​ទទួល​សំណើ​ជា​បណ្ដោះ​អាសន្ន"
+
+#: lib/MIME/Viewer/itip.php:754
+msgid "Tentatively Accepted"
+msgstr "បាន​ទទួល​ជា​បណ្តោះ​អាសន្ន"
+
+#: lib/Maintenance/Task/tos_agreement.php:49
+#, php-format
+msgid "Terms of Service file not specified in conf.php"
+msgstr "ឯកសារ​លក្ខខណ្ឌ​នៃ​សេវា មិន​ត្រូវ​បាន​បញ្ជាក់​ក្នុង conf.php"
+
+#: templates/stationery/prefs.inc:30
+msgid "Text"
+msgstr "អត្ថបទ"
+
+#: config/prefs.php.dist:965
+msgid "The From: column of the message should be linked:"
+msgstr "ពី ៖ ជួរឈរ​របស់​សារ​គួរ​តែ​ត្រូវ​បាន​តភ្ជាប់ ៖"
+
+#: lib/IMAP/Client.php:530
+msgid ""
+"The IMAP server does not appear to support the authentication method "
+"selected. Please contact your system administrator."
+msgstr ""
+"ម៉ាស៊ីន​បម្រើ IMAP ទំនង​ជា​មិន​គាំទ្រ​វិធីសាស្ត្រ​ផ្ទៀងផ្ទាត់​ដែល​បាន​ជ្រើស​ឡើយ ។ សូម​ទាក់ទង​អ្នក​គ្រប់គ្រង​ប្រព័ន្ធ​"
+"របស់​អ្នក ។"
+
+#: lib/MIME/Viewer/appledouble.php:41
+msgid "The Macintosh resource fork"
+msgstr "ផ្នែក​ធនធាន​របស់ Macintosh"
+
+#: lib/MIME/Viewer/appledouble.php:41
+#, php-format
+msgid "The Macintosh resource fork can be downloaded %s."
+msgstr "ផ្នែក​ធនធាន​របស់ Macintosh អាច​ត្រូវ​បាន​ទាញយក​ %s ។"
+
+#: fetchmailprefs.php:81
+#, php-format
+msgid "The account \"%s\" has been deleted."
+msgstr "គណនី \"%s\" ត្រូវ​បាន​លុប ។"
+
+#: fetchmailprefs.php:74
+#, php-format
+msgid "The account \"%s\" has been saved."
+msgstr "គណនី \"%s\" ត្រូវ​បាន​រក្សា​ទុក ។"
+
+#: attachment.php:43
+msgid "The attachment was not found."
+msgstr "ឯកសារ​ភ្ជាប់​មិន​ត្រូវ​បាន​រកឃើញ ។"
+
+#: lib/MIME/Viewer/itip.php:71
+msgid "The calendar data is invalid"
+msgstr "ទិន្នន័យ​ប្រតិទិន​មិន​ត្រឹមត្រូវ​ឡើយ"
+
+#: templates/javascript/open_compose_win.js:37
+msgid ""
+"The compose window can't be opened. Perhaps you have set your browser to "
+"block popup windows?"
+msgstr ""
+"មិន​អាច​បើក​បង្អួច​តែង​បាន​ទេ ។ ប្រហែល​ជា​អ្នក​បាន​កំណត់​កម្មវិធី​រុករក​របស់​អ្នក​ ឲ្យ​ទប់​ស្កាត់​បង្អួច​លេច​ឡើង ?"
+
+#: lib/MIME/Viewer/appledouble.php:42
+msgid "The contents of the Macintosh file are below."
+msgstr "មាតិកា​របស់​ឯកសារ Macintosh គឺ​ខាង​ក្រោម ។"
+
+#: lib/Maintenance/Task/rename_sentmail_monthly.php:87
+#, php-format
+msgid "The current folder(s) \"%s\" will be renamed to \"%s\"."
+msgstr "ថត​បច្ចុប្បន្ន \"%s\" នឹង​ត្រូវ​បាន​ប្តូរ​ឈ្មោះ​ទៅ​ជា \"%s\" ។"
+
+#: templates/acl/acl.inc:107
+msgid ""
+"The current list of users with access to this folder could not be retrieved"
+msgstr "មិន​អាច​ទៅ​យក​បញ្ជី​បច្ចុប្បន្ន​របស់​អ្នកប្រើ ​ដែល​ចូល​ដំណើរការ​ទៅ​ថត​នេះ"
+
+#: lib/Compose.php:178
+#, php-format
+msgid "The draft has been saved to the \"%s\" folder."
+msgstr "សេចក្តី​ព្រាង​ត្រូវ​បាន​រក្សា​ទុក​ទៅ​ថត \"%s\" ។"
+
+#: lib/MIME/Viewer/itip.php:140
+msgid "The event was added to your calendar."
+msgstr "ព្រឹត្តិការណ៍​ត្រូវ​បាន​បន្ថែម​ទៅ​ប្រតិទិន​របស់​អ្នក ។"
+
+#: expand.php:38
+#, php-format
+msgid "The field \"%s\" can't be expanded."
+msgstr "មិន​អាច​បន្លាយ​វាល \"%s\" បាន​ឡើយ ។"
+
+#: lib/Folder.php:337
+#, php-format
+msgid "The folder \"%s\" already exists"
+msgstr "ថត \"%s\" មាន​រួច​ហើយ"
+
+#: lib/Folder.php:162
+#, php-format
+msgid ""
+"The folder \"%s\" contains illegal characters in its name. It may cause "
+"problems. Please see your system administrator."
+msgstr ""
+"ថត \"%s\" មាន​តួ​អក្សរ​ខុស​ច្បាប់ក្នុង​ឈ្មោះ​របស់​វា ។ វា​អាច​បង្ក​បញ្ហា ។ សូម​ជួប​ជាមួយ​អ្នក​គ្រប់​គ្រង​ប្រព័ន្ធ​"
+"របស់អ្នក ។"
+
+#: lib/Folder.php:356
+#, php-format
+msgid "The folder \"%s\" was created but you were not subscribed to it."
+msgstr "ថត \"%s\" ត្រូវ​បាន​បង្កើត ប៉ុន្តែ​អ្នក​មិន​ត្រូវ​បាន​ជាវ​ប្រចាំ​ទៅវា ។"
+
+#: lib/Folder.php:269
+#, php-format
+msgid "The folder \"%s\" was deleted but you were not unsubscribed from it."
+msgstr "ថត \"%s\" ត្រូវ​បាន​លុប ប៉ុន្តែ​អ្នក​មិន​ត្រូវ​បាន​ឈប់​ជាវ​ពីវា ។"
+
+#: lib/Folder.php:343
+#, php-format
+msgid "The folder \"%s\" was not created. This is what the server said"
+msgstr "មិន​បាន​បង្កើត​ថត \"%s\" ឡើយ​ ។ នេះ​គឺ​ជា​អ្វី​ដែល​ម៉ាស៊ីន​បម្រើ​បាននិយាយ"
+
+#: lib/Folder.php:262
+#, php-format
+msgid "The folder \"%s\" was not deleted. This is what the server said"
+msgstr "ថត \"%s\" មិន​អាច​ត្រូវ​បាន​លុប​បាន​ឡើយ ។ ម៉ាស៊ីន​បម្រើ​បាន​ថា​អញ្ចឹង"
+
+#: lib/Folder.php:359
+#, php-format
+msgid "The folder \"%s\" was successfully created."
+msgstr "ថត \"%s\" ត្រូវ​បាន​បង្កើត​ដោយ​ជោគ​ជ័យ ។"
+
+#: lib/Folder.php:272
+#, php-format
+msgid "The folder \"%s\" was successfully deleted."
+msgstr "ថត \"%s\" ត្រូវ​បាន​លុប​ដោយ​ជោគជ័យ ។"
+
+#: lib/Folder.php:461
+#, php-format
+msgid "The folder \"%s\" was successfully renamed to \"%s\"."
+msgstr "ថត \"%s\" ត្រូវ​បាន​ប្តូរ​ឈ្មោះ​ទៅ​ជា \"%s\" ដោយ​ជោគ​ជ័យ ។"
+
+#: lib/MIME/Viewer/tnef.php:94
+msgid "The following files were attached to this part:"
+msgstr "ឯកសារ​ខាង​ក្រោម​ ត្រូវ​បាន​ភ្ជាប់​ទៅ​ជាមួយ​ផ្នែក​នេះ ៖"
+
+#: templates/javascript/open_saveimage_win.js:12
+msgid ""
+"The image save window can not be opened. Perhaps you have set your browser "
+"to block popup windows?"
+msgstr ""
+"មិន​អាច​បើក​បង្អួច​រក្សាទុក​រូបភាព​បាន​ឡើយ ។ ប្រហែល​ជា​អ្នក​បាន​កំណត់​ឲ្យ​កម្មវិធី​រុករក​របស់​អ្នក ទប់ស្កាត់​បង្អួច​"
+"លេចឡើង​ហើយ​មើល​ទៅ ?"
+
+#: lib/MIME/Viewer/status.php:75
+msgid "The mail server generated the following error message:"
+msgstr "ម៉ាស៊ីន​បម្រើ​សំបុត្រ​បាន​បង្កើត​សារ​កំហុស​ដូច​ខាង​ក្រោម ៖"
+
+#: lib/MIME/Viewer/notification.php:51
+msgid "The mail server generated the following informational message:"
+msgstr "ម៉ាស៊ីន​បម្រើ​សំបុត្រ​បាន​បង្កើត​សារ​នៃព័ត៌មាន​ដូចខាង​ក្រោម ៖"
+
+#: lib/MIME/Viewer/status.php:90
+msgid "The mail server generated the following message:"
+msgstr "ម៉ាស៊ីន​បម្រើ​សំបុត្រ​បាន​បង្កើត​សារ​ដូច​ខាង​ក្រោម ៖"
+
+#: lib/Message.php:725
+#, php-format
+msgid "The mailbox %s is already empty."
+msgstr "ប្រអប់​សំបុត្រ %s គឺ​ទទេ​រួចហើយ ។"
+
+#: lib/Fetchmail.php:247
+#, php-format
+msgid "The message \"%s\" from \"%s\" (%d bytes) exceeds fetch size limit."
+msgstr "សារ \"%s\" ពី \"%s\" លើស (%d បៃ) កម្រិត​ទំហំ​ទាញ​យក​ ។"
+
+#: templates/contacts/javascript.inc:103
+msgid "The message being composed has been closed. Exiting."
+msgstr "សារ​ដែល​កំពុង​តែង​ ត្រូវ​បាន​បិទ ។ ចេញ ។"
+
+#: templates/compose/javascript.inc:119
+msgid "The message does not have a Subject entered."
+msgstr "សារ​មិន​មាន​ប្រធានបទ​ឡើយ ។"
+
+#: lib/Spam.php:216
+msgid "The message has been deleted."
+msgstr "សារ​ត្រូវ​បាន​លុប ។"
+
+#: lib/Spam.php:202
+msgid "The message has been reported as not spam to your system administrator."
+msgstr "សារ​ត្រូវ​បាន​រាយការណ៍​ទៅ​អ្នក​គ្រប់គ្រង​ប្រព័ន្ធ​របស់​អ្នក​ថា មិន​មែន​ជា​សារ​ឥត​បាន​ការ​ឡើយ ។"
+
+#: lib/Spam.php:182
+msgid "The message has been reported as not spam."
+msgstr "សារ​ត្រូវ​បាន​រាយការណ៍​ថា មិន​មែន​ជា​សារ​ឥត​បាន​ការ​ឡើយ ។"
+
+#: lib/Spam.php:194
+msgid "The message has been reported as spam to your system administrator."
+msgstr "សារ​ត្រូវ​បាន​រាយការណ៍​ទៅ​អ្នក​គ្រប់គ្រង​ប្រព័ន្ធ​របស់​អ្នក​ថា ជា​សារ​ឥត​បាន​ការ ។"
+
+#: lib/Spam.php:174
+msgid "The message has been reported as spam."
+msgstr "សារ​ត្រូវ​បាន​រាយការណ៍​ថា ជា​សារ​ឥត​បាន​ការ ។"
+
+#: lib/MIME/Viewer/pgp.php:401
+msgid "The message has been verified."
+msgstr "សារ​ត្រូវ​បាន​ផ្ទៀង​ផ្ទាត់ ។"
+
+#: lib/MIME/Viewer/pkcs7.php:389
+#, php-format
+msgid "The message has been verified. Sender: %s."
+msgstr "សារ​ត្រូវ​បាន​ផ្ទៀង​ផ្ទាត់ ។ អ្នក​ផ្ញើ ៖ %s ។"
+
+#: templates/javascript/open_pgp_win.js:8
+#: templates/javascript/open_smime_win.js:8
+msgid ""
+"The passphrase window can't be opened. Perhaps you have set your browser to "
+"block popup windows?"
+msgstr ""
+"មិន​អាច​បើក​បង្អួច​ឃ្លា​សម្ងាត់ ។ ប្រហែល​ជា​អ្នក​បាន​កំណត់​កម្មវិធី​រុក​រក​របស់​អ្នក ឲ្យ​ទប់ស្កាត់​បង្អួច​លេចឡើង ?"
+
+#: lib/MIME/Viewer/tnef.php:60
+msgid "The requested file does not exist in the MS-TNEF attachment."
+msgstr "ឯកសារ​ដែល​បាន​ស្នើ​សុំ មិន​មាន​ក្នុង​ឯកសារ​ភ្ជាប់ MS-TNEF ។"
+
+#: lib/MIME/Viewer/zip.php:64
+msgid "The requested file does not exist in the Zip attachment."
+msgstr "ឯកសារ​ដែល​បាន​ស្នើ​សុំ​ មិន​មាន​ក្នុង​ឯកសារ​ភ្ជាប់ Zip ។"
+
+#: message.php:429
+#, php-format
+msgid ""
+"The sender of this message is requesting a Message Disposition Notification "
+"from you when you have read this message. Please click %s to send the "
+"notification message."
+msgstr ""
+"អ្នក​ផ្ញើ​សារ​នេះ​កំពុង​ស្នើ​សុំ​ \"ការ​ជូន​ដំណឹង​ចរិត​របស់​សារ\" ពី​អ្នក ពេលអ្នក​បាន​អាន​សារនេះ ។ សូម​ចុច %s "
+"ដើម្បី​ផ្ញើ​សារ​ជូន​ដំណឹង ។"
+
+#: lib/MIME/Viewer/images.php:67
+msgid "The server was not able to create a thumbnail of this image."
+msgstr "ម៉ាស៊ីន​បម្រើ​មិន​អាច​បង្កើត​រូបភាព​តូចៗ​នៃ​រូបភាព​នេះ​បាន​ឡើយ ។"
+
+#: templates/compose/javascript.inc:83
+msgid "The signature could not be replaced."
+msgstr "ហត្ថលេខា​មិន​អាច​ត្រូវ​បាន​ជំនួស ។"
+
+#: templates/compose/javascript.inc:81
+msgid "The signature was successfully replaced."
+msgstr "ហត្ថលេខា​ត្រូវ​បាន​ជំនួស​ដោយ​ជោគជ័យ ។"
+
+#: attachment.php:59
+msgid "The specified file does not exist."
+msgstr "ឯកសារ​ដែល​បាន​បញ្ជាក់​មិន​មាន​ឡើយ ។"
+
+#: stationery.php:84
+#, php-format
+msgid "The stationery \"%s\" has been added."
+msgstr "ផ្ទៃ​ខាង​ក្រោយ​សំបុត្រ \"%s\" ត្រូវ​បាន​បន្ថែម ។"
+
+#: stationery.php:63
+#, php-format
+msgid "The stationery \"%s\" has been deleted."
+msgstr "ផ្ទៃ​ខាង​ក្រោយ​សំបុត្រ \"%s\" ត្រូវ​បាន​លុប ។"
+
+#: stationery.php:87
+#, php-format
+msgid "The stationery \"%s\" has been updated."
+msgstr "ផ្ទៃ​ខាង​ក្រោយ​សំបុត្រ \"%s\" ត្រូវ​បាន​ធ្វើ​ឲ្យ​ទាន់សម័យ ។"
+
+#: lib/MIME/Viewer/itip.php:170
+msgid "The task has been added to your tasklist."
+msgstr "ភារកិច្ច​ត្រូវ​បាន​បន្ថែម​ទៅ​បញ្ជី​ភារកិច្ច​របស់អ្នក ។"
+
+#: lib/MIME/Viewer/status.php:95
+msgid "The text of the message"
+msgstr "អត្ថបទ​របស់​សារ"
+
+#: lib/MIME/Viewer/status.php:94
+#, php-format
+msgid "The text of the message can be viewed %s."
+msgstr "អត្ថបទ​របស់​សារ​អាច​ត្រូវ​បាន​មើល %s ។"
+
+#: lib/MIME/Viewer/status.php:80
+msgid "The text of the returned message"
+msgstr "អត្ថបទ​របស់​សារ​ដែល​បាន​ត្រឡប់"
+
+#: lib/MIME/Viewer/status.php:79
+#, php-format
+msgid "The text of the returned message can be viewed %s."
+msgstr "អត្ថបទ​របស់​សារ​ដែល​បាន​ត្រឡប់ អាច​ត្រូវ​បាន​មើល​ %s ។"
+
+#: lib/MIME/Viewer/notification.php:68
+msgid "The text of the sent message"
+msgstr "អត្ថបទ​របស់​សារ​ដែល​បាន​ផ្ញើ"
+
+#: lib/MIME/Viewer/notification.php:68
+#, php-format
+msgid "The text of the sent message can be viewed %s."
+msgstr "អត្ថបទ​របស់​សារ​ដែល​បាន​ផ្ញើ អាច​ត្រូវ​បាន​មើល​ %s ។"
+
+#: lib/MIME/Viewer/itip.php:155
+msgid "The user's free/busy information was sucessfully stored."
+msgstr "ព័ត៌មាន​ ទំនេរ/រវល់​ របស់​អ្នក​ប្រើ ត្រូវ​បាន​រក្សា​ទុក​ដោយ​ជោគជ័យ ។"
+
+#: lib/MIME/Viewer/alternative.php:86
+msgid "There are no alternative parts that can be displayed inline."
+msgstr "គ្មាន​ផ្នែក​ផ្សេង​ដែល​អាច​ត្រូវ​បាន​បង្ហាញ​ក្នុង​តួ ។"
+
+#: templates/mailbox/empty_mailbox.html:2
+msgid "There are no messages in this mailbox."
+msgstr "គ្មាន​សារ​ក្នុង​ប្រអប់​សំបុត្រ​នេះ ។"
+
+#: thread.php:109
+msgid "There is no text that can be displayed inline."
+msgstr "មិន​មាន​អត្ថបទ ដែល​អាច​ត្រូវ​បាន​បង្ហាញ​ក្នុង​តួ​បាន​ឡើយ ។"
+
+#: lib/Message.php:729
+#, php-format
+msgid "There was a problem expunging the mailbox. The server said: %s"
+msgstr "មាន​បញ្ហា​ក្នុង​ការ​បំបាត់​ចោល​ប្រអប់​សំបុត្រ ។ ម៉ាស៊ីន​បម្រើ​បាន​និយាយថា ៖ %s"
+
+#: lib/Message.php:114
+#, php-format
+msgid ""
+"There was an error copying messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr "មាន​កំហុស​មួយ ក្នុង​ការ​ចម្លង​សារ​ពី \"%s\" ទៅ \"%s\" ។ នេះ​គឺ​ជា​អ្វី​ដែល​ម៉ាស៊ីន​បម្រើ​បាន​និយាយ"
+
+#: lib/Message.php:238
+#, php-format
+msgid ""
+"There was an error deleting messages from the folder \"%s\". This is what "
+"the server said"
+msgstr "មាន​កំហុស​មួយ ក្នុង​ការ​លុប​សារ​ពីថត \"%s\" ។ នេះ​គឺ​ជា​អ្វី​ដែល​ម៉ាស៊ីន​បម្រើ​បាន​និយាយ"
+
+#: lib/Message.php:329
+#, php-format
+msgid ""
+"There was an error deleting messages in the folder \"%s\". This is what the "
+"server said"
+msgstr "មាន​កំហុស​មួយ ក្នុង​ការ​លុប​សារ​ក្នុង​ថត \"%s\" ។ នេះ​គឺ​ជា​អ្វី​ដែល​ម៉ាស៊ីន​បម្រើ​បាន​និយាយ"
+
+#: lib/MIME/Viewer/itip.php:100
+#, php-format
+msgid "There was an error deleting the event: %s."
+msgstr "មាន​កំហុស​មួយ ក្នុង​ការ​លុប​ព្រឹត្តិការណ៍ ៖ %s ។"
+
+#: lib/MIME/Viewer/plain.php:52 lib/MIME/Viewer/enriched.php:37
+msgid "There was an error displaying this message part"
+msgstr "មាន​កំហុស​មួយ ក្នុង​ការ​បង្ហាញ​ផ្នែក​របស់​សារ​នេះ"
+
+#: lib/Message.php:607
+#, php-format
+msgid ""
+"There was an error flagging messages in the folder \"%s\". This is what the "
+"server said"
+msgstr "មាន​កំហុស​មួយ ក្នុងការ​ដាក់ទង់​ឲ្យ​សារ​ក្នុង​ថត \"%s\" ។ នេះ​គឺ​ជា​អ្វី​ដែល​ម៉ាស៊ីន​បម្រើ​បាន​និយាយ"
+
+#: folders.php:113
+#, php-format
+msgid "There was an error importing %s."
+msgstr "មាន​កំហុស​មួយ ក្នុង​ការ​នាំចូល %s ។"
+
+#: lib/MIME/Viewer/itip.php:137
+#, php-format
+msgid "There was an error importing the event: %s."
+msgstr "មាន​កំហុសមួយ ក្នុង​ការ​នាំចូល​ព្រឹត្តិការណ៍ ៖ %s ។"
+
+#: lib/MIME/Viewer/itip.php:167
+#, php-format
+msgid "There was an error importing the task: %s."
+msgstr "មាន​កំហុស​មួយ ក្នុង​ការ​​​នាំចូល​ភារកិច្ច ៖ %s ។"
+
+#: lib/MIME/Viewer/itip.php:153
+#, php-format
+msgid "There was an error importing user's free/busy information: %s."
+msgstr "មាន​កំហុស​មួយ ក្នុង​ការ​នាំចូល​ព័ត៌មាន ទំនេរ/រវល់ របស់​អ្នក​ប្រើ ៖ %s ។"
+
+#: lib/Message.php:107
+#, php-format
+msgid ""
+"There was an error moving messages from \"%s\" to \"%s\". This is what the "
+"server said"
+msgstr "មាន​កំហុស​មួយ ក្នុង​ការ​ផ្លាស់​ទី​សារ​ពី \"%s\" ទៅ \"%s\" ។ នេះ​គឺ​ជា​អ្វី​ដែល​ម៉ាស៊ីន​បម្រើ​បាន​និយាយ"
+
+#: lib/Compose.php:567
+#, php-format
+msgid "There was an error sending your message: %s"
+msgstr "មាន​កំហុស​មួយ ក្នុង​ការ​ផ្ញើ​សាររបស់អ្នក ៖ %s"
+
+#: lib/MIME/Viewer/itip.php:114
+#, php-format
+msgid "There was an error updating the event: %s."
+msgstr "មាន​កំហុស​មួយ ក្នុង​ការ​ធ្វើ​​ឲ្យ​​ព្រឹត្តិការណ៍​ទាន់​សម័យ ៖ %s ។"
+
+#: lib/MIME/Viewer/plain.php:59
+msgid "There was no text in this message part"
+msgstr "មិន​មាន​អត្ថបទ ក្នុង​ផ្នែក​នៃ​​សារ​នេះ"
+
+#: lib/MIME/Viewer/pgp.php:165
+msgid "This PGP Public Key was attached to the message."
+msgstr "កូនសោ​សាធារណៈ PGP នេះ​ ត្រូវ​បាន​ភ្ជាប់​ទៅ​សារ​នេះ ។"
+
+#: lib/MIME/Viewer/itip.php:105 lib/MIME/Viewer/itip.php:119
+#: lib/MIME/Viewer/itip.php:144 lib/MIME/Viewer/itip.php:158
+#: lib/MIME/Viewer/itip.php:174 lib/MIME/Viewer/itip.php:315
+msgid "This action is not supported."
+msgstr "មិន​គាំទ្រ​អំពើ​នេះ ។"
+
+#: lib/MIME/Viewer/itip.php:180 lib/MIME/Viewer/itip.php:420
+msgid "This action is not yet implemented."
+msgstr "អំពើ​នេះ​មិន​ទាន់​ត្រូវ​បាន​អនុវត្ត​ឡើយ ។"
+
+#: templates/javascript/folders.js:14
+msgid "This may take some time. Are you sure you want to continue?"
+msgstr "នេះ​ប្រហែល​ជា​ត្រូវ​ការ​ពេល​បន្តិច​បន្តួច ។ តើ​អ្នក​ពិត​ជា​ចង់​បន្ត​ឬ ?"
+
+#: lib/MIME/Viewer/appledouble.php:40
+msgid "This message contains a Macintosh file."
+msgstr "សារ​នេះ​មាន​ផ្ទុក​ឯកសារ Macintosh មួយ ។"
+
+#: lib/MIME/Viewer/pkcs7.php:415
+msgid ""
+"This message contains an attachment that has been digitally signed via S/"
+"MIME."
+msgstr "សារ​នេះ​មាន​ឯកសារ​ភ្ជាប់ ដែល​ត្រូវ​បាន​ចុះ​ហត្ថលេខា​ឌីជីថល​តាម​រយៈ S/MIME ។"
+
+#: lib/MIME/Viewer/pkcs7.php:419
+msgid "This message contains an attachment that has been encrypted via S/MIME."
+msgstr "សារ​នេះ​មាន​ឯកសារ​ភ្ជាប់ ដែល​ត្រូវ​បាន​បម្លែង​ជា​កូដ​តាម​រយៈ S/MIME ។"
+
+#: lib/MIME/Viewer/status.php:162
+msgid ""
+"This message contains mail delivery status information, but the format of "
+"this message is unknown."
+msgstr "សារ​នេះ​មាន​ព័ត៌មាន​ស្ថានភាព​បញ្ជូន​សំបុត្រ ប៉ុន្តែ​ទ្រង់​ទ្រាយ​របស់​សារ​នេះ មិន​ត្រូវ​បាន​ស្គាល់​ឡើយ ។"
+
+#: lib/MIME/Viewer/pgp.php:323
+msgid ""
+"This message does not appear to be a valid PGP encrypted message. Error: "
+msgstr "សារ​នេះ​មិន​ទំនង​ជា​សារ​ដែល​បាន​បម្លែង​ជា​កូដ PGP ត្រឹម​ត្រូវ​មួយ​ឡើយ ។ កំហុស ៖"
+
+#: lib/MIME/Viewer/pgp.php:243 lib/MIME/Viewer/pgp.php:358
+msgid ""
+"This message does not appear to be in the correct PGP format (according to "
+"RFC 2015)."
+msgstr "សារ​នេះ​មិន​ទំនង​ជា​មាន​ទ្រង់​ទ្រាយ PGP ត្រឹមត្រូវ (យោង​តាម RFC 2015) ។"
+
+#: lib/MIME/Viewer/pkcs7.php:170
+msgid "This message does not appear to be in the correct S/MIME format."
+msgstr "សារ​នេះ​មិន​ទំនង​ជា​មាន​ទ្រង់​ទ្រាយ S/MIME ត្រឹមត្រូវ ។"
+
+#: lib/MIME/Viewer/pgp.php:200
+msgid ""
+"This message has been digitally signed and encrypted with PGP, but the "
+"signature cannot be verified."
+msgstr ""
+"សារ​នេះ​ត្រូវ​បាន​ចុះ​ហត្ថលេខា​ឌីជីថល និង បម្លែង​ជា​កូដ​ដោយ​ប្រើ PGP ប៉ុន្តែ​ហត្ថលេខា​មិន​អាច​ត្រូវ​បាន​"
+"ផ្ទៀងផ្ទាត់​បាន​ឡើយ ។"
+
+#: lib/MIME/Viewer/pgp.php:206
+msgid "This message has been digitally signed and encrypted with PGP."
+msgstr "សារ​នេះ​ត្រូវ​បាន​ចុះ​ហត្ថលេខា​ឌីជីថល និង បម្លែង​ជា​កូដ​ដោយ​ប្រើ PGP ។"
+
+#: lib/MIME/Viewer/pgp.php:202
+msgid ""
+"This message has been digitally signed via PGP, but the signature cannot be "
+"verified."
+msgstr ""
+"សារ​នេះ​ត្រូវ​បាន​ចុះហត្ថលេខា​ឌីជីថល​តាម​រយៈ PGP ប៉ុន្តែ​ហត្ថលេខា​មិន​អាច​ត្រូវ​បាន​ផ្ទៀងផ្ទាត់​បាន​ឡើយ ។"
+
+#: lib/MIME/Viewer/pgp.php:208 lib/MIME/Viewer/pgp.php:424
+msgid "This message has been digitally signed via PGP."
+msgstr "សារ​នេះ​ត្រូវ​បាន​ចុះ​ហត្ថលេខា​ជា​លេខ​តាមរយៈ PGP ។"
+
+#: lib/MIME/Viewer/pkcs7.php:143
+msgid "This message has been digitally signed via S/MIME."
+msgstr "សារ​នេះ​ត្រូវ​បាន​ចុះ​ហត្ថលេខា​ឌីជីថល​តាមរយៈ S/MIME ។"
+
+#: lib/MIME/Viewer/pkcs7.php:139 lib/MIME/Viewer/pkcs7.php:238
+msgid "This message has been encrypted via S/MIME."
+msgstr "សារ​នេះ​ត្រូវ​បាន​បម្លែង​ជា​កូដ​តាមរយៈ S/MIME ។"
+
+#: lib/MIME/Viewer/pgp.php:298
+msgid ""
+"This message has been encrypted with PGP, however, PGP support is disabled "
+"so the message cannot be decrypted."
+msgstr ""
+"សារ​នេះ​ត្រូវ​បាន​បម្លែង​ជា​កូដ​ដោយ​ប្រើ PGP ទោះ​យ៉ាង​ណា ការ​គាំទ្រ PGP ត្រូវ​បាន​ធ្វើ​ឲ្យ​ប្រើ​លែង​បាន "
+"ដូច្នេះ​សារ​នឹង​មិន​អាច​ត្រូវ​បាន​បម្លែង​មក​ជា​ភាព​ធម្មតា​បាន​ឡើយ ។"
+
+#: lib/MIME/Viewer/pgp.php:303
+msgid ""
+"This message has been encrypted with PGP, however, no personal private key "
+"exists so the message cannot be decrypted."
+msgstr ""
+"សារ​នេះ​ត្រូវ​បាន​បម្លែង​ជា​កូដ​ដោយ​ប្រើ PGP ទោះ​យ៉ាង​ណា មិន​ទាន់​មាន​កូនសោ​ឯកជន​ផ្ទាល់​ខ្លួន​នៅ​ឡើយ​ទេ ដូច្នេះ​"
+"សារ​នឹង​មិន​អាច​ត្រូវ​បាន​បម្លែង​មក​ជា​ភាព​ធម្មតា​បាន​ឡើយ ។"
+
+#: lib/MIME/Viewer/pgp.php:294
+msgid "This message has been encrypted with PGP."
+msgstr "សារ​នេះ​ត្រូវ​បាន​បម្លែង​ជា​កូដ​ដោយ PGP ។"
+
+#: message.php:505
+msgid "This message to"
+msgstr "សារ​នេះ​ទៅ"
+
+#: acl.php:45
+msgid "This server does not support sharing folders."
+msgstr "ម៉ាស៊ីន​បម្រើ​នេះ​មិន​គាំទ្រ​ថត​ដែល​ចែក​រំលែក ។"
+
+#: templates/contacts/javascript.inc:109
+msgid "This window must be called from a compose window."
+msgstr "ត្រូវ​តែ​ហៅ​បង្អួច​នេះ ពី​បង្អួច​តែង​មួយ ។"
+
+#: thread.php:154
+msgid "Thread Display"
+msgstr "បង្ហាញ​ជា​ខ្សែ​ស្រឡាយ"
+
+#: thread.php:75 config/prefs.php.dist:933
+msgid "Thread View"
+msgstr "ទិដ្ឋភាព​ខ្សែអំបោះ"
+
+#: message.php:233 compose.php:879 mailbox.php:570 mailbox.php:746
+#: lib/Search.php:607 templates/contacts/contacts.html:39
+#: templates/login/recompose.html:14
+msgid "To"
+msgstr "ទៅ"
+
+#: config/prefs.php.dist:930
+msgid "To Address"
+msgstr "ទៅ​អាសយដ្ឋាន"
+
+#: templates/prefs/sourceselect.inc:326
+msgid ""
+"To select multiple fields, hold down the Control (PC) or Command (Mac) while "
+"clicking."
+msgstr "ជ្រើស​ក្រឡា​ទទឹង​ច្រើន សង្កត់​បញ្ជា (PC) ឬ បញ្ជា (Mac) ខណៈពេល​កំពុង​ចុច ។"
+
+#: lib/IMAP/Client.php:134
+msgid ""
+"To use a TLS connection, you must be running a version of PHP 5.0.6 or "
+"higher."
+msgstr "ដើម្បី​ប្រើ​ការ​តភ្ជាប់ TLS អ្នក​ត្រូវ​តែ​កំពុង​រត់ PHP កំណែ 5.0.6 ឬ ខ្ពស់​ជាង ។"
+
+#: templates/compose/compose.html:349
+msgid "Total Attachments Size:"
+msgstr "ទំហំ​ឯកសារ​ភ្ជាប់​សរុប ៖"
+
+#: lib/IMAP/Tree.php:368
+msgid "Trash folder"
+msgstr "ថត​សំរាម"
+
+#: templates/prefs/trashselect.inc:23
+msgid "Trash folder:"
+msgstr "ថត​សំរាម ៖"
+
+#: lib/Quota/cyrus.php:64 lib/Quota/mercury32.php:79 lib/Quota/command.php:72
+#: lib/Quota/logfile.php:88 lib/Quota/courier.php:53 lib/Quota/mdaemon.php:48
+msgid "Unable to retrieve quota"
+msgstr "មិន​អាច​ទៅ​យក​កូតា"
+
+#: templates/message/navbar_navigate.html:10 templates/mailbox/navbar.html:16
+#: templates/mailbox/navbar.html:31
+msgid "Unanswered"
+msgstr "មិន​បាន​ឆ្លើយ​តប"
+
+#: search.php:330
+msgid "Unanswered messages"
+msgstr "សារ​ដែល​មិន​បាន​ឆ្លើយ​តប"
+
+#: message.php:535 mailbox.php:471
+msgid "Undelete"
+msgstr "មិន​លុប"
+
+#: search.php:340
+msgid "Undeleted messages"
+msgstr "សារ​មិន​ទាន់​លុប"
+
+#: mailbox.php:729 mailbox.php:742 lib/MIME/Headers.php:213
+msgid "Undisclosed Recipients"
+msgstr "មិន​បានប្រកាស​​អ្នក​ទទួល"
+
+#: lib/MIME/Viewer/itip.php:448
+#, php-format
+msgid "Unhandled component of type: %s"
+msgstr "សមាសភាគ​ដែល​មិន​បាន​ដោះ​ស្រាយ​នៃ​ប្រភេទ ៖ %s"
+
+#: search.php:335
+msgid "Unimportant messages"
+msgstr "សារ​មិន​សំខាន់"
+
+#: mailbox.php:709
+msgid "Unknown Date"
+msgstr "កាល​បរិច្ឆេទ​ដែល​មិន​ស្គាល់"
+
+#: lib/IMAP/Client.php:395
+#, php-format
+msgid "Unknown IMAP response from the server. Server Responded: %s"
+msgstr "មិន​ស្គាល់​ចម្លើយ IMAP ពី​ម៉ាស៊ីន​បម្រើ ។ ម៉ាស៊ីន​បម្រើ​បាន​ឆ្លើយតប​ថា ៖ %s"
+
+#: lib/MIME/Viewer/itip.php:626
+msgid "Unknown Meeting"
+msgstr "កិច្ច​ប្រជុំ​ដែល​មិន​ស្គាល់"
+
+#: mailbox.php:758
+msgid "Unknown Recipient"
+msgstr "អ្នក​ទទួល​ដែល​មិន​ស្គាល់"
+
+#: templates/smime/smime.inc:72 templates/pgp/pgp.inc:77
+msgid "Unload Passphrase"
+msgstr "រើ​ឃ្លា​សម្ងាត់​ចេញ"
+
+#: fetchmailprefs.php:65
+msgid "Unnamed"
+msgstr "គ្មាន​ឈ្មោះ"
+
+#: message.php:469 mailbox.php:811 mailbox.php:970
+#: templates/message/navbar_navigate.html:6 templates/mailbox/navbar.html:12
+#: templates/mailbox/navbar.html:27 templates/mailbox/legend.html:3
+msgid "Unseen"
+msgstr "មិន​​បាន​មើល"
+
+#: templates/folders/actions.html:14
+msgid "Unsubscribe from Folder(s)"
+msgstr "ឈប់​ជាវ​ពី​ថត"
+
+#: templates/compose/compose.html:284
+msgid "Update"
+msgstr "ធ្វើ​ឲ្យ​ទាន់សម័យ"
+
+#: lib/MIME/Viewer/itip.php:612
+msgid "Update respondent status"
+msgstr "ធ្វើ​ឲ្យ​ស្ថានភាព​ឆ្លើយ​តប​ទាន់សម័យ"
+
+#: templates/smime/import_key.inc:58
+msgid "Upload"
+msgstr "ផ្ទុក​ឡើង"
+
+#: templates/pgp/import_key.html:38
+msgid "Upload:"
+msgstr "ផ្ទុក​ឡើង ៖"
+
+#: templates/prefs/sentmailselect.inc:41
+msgid "Use Default Value"
+msgstr "ប្រើ​តម្លៃ​លំនាំដើម"
+
+#: config/prefs.php.dist:257
+msgid "Use IMAP folder subscriptions?"
+msgstr "ប្រើ​ការ​ជាវ​ថត IMAP ឬ ?"
+
+#: config/prefs.php.dist:747
+msgid "Use Virtual Trash Folder?"
+msgstr "ប្រើ ថត​សំរាម​និម្មិត ?"
+
+#: templates/acl/acl.inc:143
+msgid "User"
+msgstr "អ្នក​ប្រើ"
+
+#: acl.php:86
+#, php-format
+msgid ""
+"User \"%s\" successfully given the specified rights for the folder \"%s\"."
+msgstr "អ្នក​ប្រើ \"%s\" ត្រូវ​បាន​ផ្ដល់​សិទ្ធិ​ដែល​បាន​បញ្ជាក់​លម្អិត​ដោយ​ជោគជ័យ​ហើយ សម្រាប់​ថត \"%s\" ។"
+
+#: templates/login/login.html:83
+msgid "Username"
+msgstr "ឈ្មោះ​អ្នក​ប្រើ"
+
+#: templates/fetchmail/manage.inc:17
+msgid "Username:"
+msgstr "ឈ្មោះ​អ្នក​ប្រើ ៖"
+
+#: templates/smime/smime.inc:25 templates/smime/smime.inc:68
+#: templates/smime/smime.inc:72 templates/pgp/pgp.inc:27
+#: templates/pgp/pgp.inc:72 templates/pgp/pgp.inc:77
+msgid "View"
+msgstr "មើល"
+
+#: lib/MIME/Viewer/zip.php:92 lib/MIME/Viewer/tnef.php:110
+#, php-format
+msgid "View %s"
+msgstr "មើល %s"
+
+#: templates/smime/smime.inc:25 templates/pgp/pgp.inc:27
+#, php-format
+msgid "View %s Public Key"
+msgstr "មើល​កូនសោ​សាធារណៈ %s"
+
+#: mailbox.php:519
+msgid "View Messages"
+msgstr "មើល​សារ"
+
+#: templates/smime/smime.inc:72 templates/pgp/pgp.inc:77
+msgid "View Personal Private Key"
+msgstr "មើល​​កូនសោ​ឯកជន​ផ្ទាល់​ខ្លួន"
+
+#: templates/smime/smime.inc:68 templates/pgp/pgp.inc:72
+msgid "View Personal Public Key"
+msgstr "មើល​កូនសោ​សាធារណៈ​ផ្ទាល់​ខ្លួន"
+
+#: message.php:559
+msgid "View Thread"
+msgstr "មើល​ខ្សែ​អំបោះ"
+
+#: lib/MIME/Viewer/images.php:164 lib/MIME/Viewer/images.php:166
+msgid "View Thumbnail"
+msgstr "មើល​រូបភាព​តូច"
+
+#: lib/MIME/Viewer/pkcs7.php:423
+msgid "View attachment in a separate window"
+msgstr "មើល​ឯកសារ​ភ្ជាប់ ​​ក្នុង​បង្អួច​ដាច់​ដោយ​ឡែក"
+
+#: lib/MIME/Viewer/related.php:79
+msgid "View content in a separate window"
+msgstr "មើល​មាតិកា​ក្នុង​បង្អួច​ផ្សេង"
+
+#: lib/MIME/Viewer/itip.php:141
+msgid "View event"
+msgstr "មើល​ព្រឹត្តិការណ៍"
+
+#: mailbox.php:669 lib/IMAP/Tree.php:351
+#, php-format
+msgid "View messages in %s"
+msgstr "មើល​សារ​ក្នុង %s"
+
+#: templates/prefs/initialpageselect.inc:23
+msgid "View or mailbox to display after login:"
+msgstr "ទិដ្ឋភាព ឬ ប្រអប់​សំបុត្រ​ដែល​ត្រូវ​បង្ហាញ​ បន្ទាប់​ពី​ចូល ៖"
+
+#: lib/MIME/Viewer/itip.php:171
+msgid "View task"
+msgstr "មើល​ភារកិច្ច"
+
+#: lib/MIME/Viewer/html.php:118
+msgid "View this HTML content in a separate window."
+msgstr "មើល​មាតិកា HTML នេះ​ក្នុង​បង្អួច​ផ្សេង ។"
+
+#: search.php:162
+#, php-format
+msgid "Virtual Folder \"%s\" created succesfully."
+msgstr "ថត​និមិ្មត \"%s\" ត្រូវ​បាន​បង្កើត​ដោយ​ជោគ​ជ័យ ។"
+
+#: lib/IMAP/Tree.php:132 lib/IMAP/Tree.php:145 lib/IMAP/Tree.php:147
+#: lib/IMAP/Tree.php:151 lib/IMAP/Tree.php:152 lib/IMAP/Tree.php:613
+#: lib/IMAP/Tree.php:637 lib/IMAP/Tree.php:675
+#: templates/search/search.html:165
+msgid "Virtual Folders"
+msgstr "ថត​និមិ្មត"
+
+#: search.php:154
+msgid "Virtual Folders require a label."
+msgstr "ថត​និម្មិត​ទាមទារ​ស្លាក​មួយ ។"
+
+#: lib/Search.php:434
+msgid "Virtual INBOX"
+msgstr "ប្រអប់​ទទួល​និម្មិត"
+
+#: lib/IMAP/Tree.php:409
+msgid "Virtual INBOX Folder"
+msgstr "ថត​ប្រអប់​ទទួល​និម្មិត"
+
+#: lib/Search.php:380
+msgid "Virtual Trash"
+msgstr "សំរាម​និម្មិ"
+
+#: lib/IMAP/Tree.php:405
+msgid "Virtual Trash Folder"
+msgstr "ថត​សំរាម​និម្មិត"
+
+#: templates/search/search.html:176
+msgid "Virtual folder label:"
+msgstr "ស្លាក​ថត​និម្មិត ៖"
+
+#: lib/MIME/Viewer/pkcs7.php:379
+msgid "Warning"
+msgstr "ព្រមាន"
+
+#: login.php:184 login.php:266
+#, php-format
+msgid "Welcome to %s"
+msgstr "សូម​ស្វាគមន៍​មក​កាន់ %s"
+
+#: config/prefs.php.dist:619
+msgid ""
+"What should we do with spam messages after they have been reported as spam "
+"or innocent?"
+msgstr ""
+"តើ​យើង​ត្រូវ​ធ្វើ​យ៉ាង​ដូចម្ដេច​ជាមួយ​សារ​ឥត​បាន​ការ បន្ទាប់​ពី​ពួក​វា​ត្រូវ​បាន​រាយការណ៍​ថា​ជា​សារ​ឥត​បាន​ការ ឬ "
+"សារ​ល្អ ?"
+
+#: config/prefs.php.dist:739
+msgid ""
+"When deleting messages, move them to your Trash folder instead of marking "
+"them as deleted?"
+msgstr "ពេល​លុប​សារ ផ្លាស់​ទី​ពួក​វា​ទៅ​ថត​សំរាម​របស់​អ្នក ជំនួស​ឲ្យ​ការ​សម្គាល់​ពួក​វា​ថា​បាន​លុប ?"
+
+#: config/prefs.php.dist:918
+msgid "When opening a new mailbox, which page do you want to start on?"
+msgstr "ពេល​បើក​ប្រអប់​សំបុត្រ​ថ្មី​មួយ ទំព័រ​ណាមួយ​ដែល​អ្នក​ចង់​ចាប់ផ្តើម​ពី ?"
+
+#: config/prefs.php.dist:573
+msgid "When saving sent-mail, should we save attachment data?"
+msgstr "ពេល​រក្សា​ទុក​សំបុត្រ​​​ដែល​បាន​ផ្ញើ​ តើ​យើង​គួរ​រក្សា​ទុក​ទិន្នន័យ​ឯកសារ​ភ្ជាប់​ឬ​ទេ ?"
+
+#: config/prefs.php.dist:427
+msgid ""
+"When sending mail or expanding addresses, what domain should we append to "
+"unqualified addresses (email addresses without \"@\")?"
+msgstr ""
+"នៅ​ពេល​ផ្ញើ​សំបុត្រ ឬ បន្លាយ​អាសយដ្ឋាន តើ​ដែន​អ្វី​ដែល​យើង​គួរ​បន្ថែម​ទៅ​ខាង​ចុង​អាសយដ្ឋាន​ដែល​មិន​មាន​លក្ខណៈ​"
+"គ្រប់គ្រាន់ (អាសយដ្ឋាន​អ៊ីមែល​ដែល​គ្មាន \"@\") ?"
+
+#: config/prefs.php.dist:708
+msgid "Where do you want to display links to alternative formats of a message?"
+msgstr "តើ​អ្នក​ចង់​បង្ហាញ​តំណ​ទៅ​កាន់​ទ្រង់ទ្រាយ​ជំនួស​របស់​សារ​មួយ នៅ​កន្លែង​ណា ?"
+
+#: message.php:571 mailbox.php:496
+msgid "Whitelist"
+msgstr "បញ្ជី​ស"
+
+#: config/prefs.php.dist:989 templates/compose/compose.html:295
+msgid "Yes"
+msgstr "បាទ"
+
+#: lib/Maintenance/Task/fetchmail_login.php:58
+msgid "You are about to fetch email from the following account(s):"
+msgstr "អ្នក​ទំនង​ជាទៅ​ប្រមូល​យក​​អ៊ីមែល ពី​គណនី​ខាង​ក្រោម​ ៖"
+
+#: templates/folders/folders_confirm.html:10
+msgid ""
+"You are attempting to delete all messages contained in the following folder"
+"(s)."
+msgstr "អ្នក​កំពុង​ប៉ុនប៉ង​លុប​សារ​ទាំងអស់ ដែល​មាន​ក្នុង​ថត​ខាង​ក្រោម ។"
+
+#: templates/folders/folders_confirm.html:9
+msgid "You are attempting to delete the following folder(s)."
+msgstr "អ្នក​កំពុង​ប៉ុនប៉ង​លុប​ថត​ខាង​ក្រោម ។"
+
+#: templates/message/javascript.inc:70 templates/mailbox/javascript.inc:195
+msgid "You are copying/moving to a new folder."
+msgstr "អ្នក​កំពុង​ចម្លង/ផ្លាស់ទី​ ទៅ​ថតថ្មី​មួយ ។​"
+
+#: templates/javascript/folders.js:104
+msgid "You are creating a sub-folder to "
+msgstr "អ្នក​កំពុង​បង្កើត​ថត​រង​មួយ​នៃ"
+
+#: templates/javascript/folders.js:106
+msgid "You are creating a top-level folder."
+msgstr "អ្នក​កំពុង​បង្កើត​ថត​កម្រិត​កំពូល​មួយ ។"
+
+#: lib/Folder.php:320
+msgid "You are not allowed to create folders."
+msgstr "អ្នក​មិន​ត្រូវ​បាន​អនុញ្ញាត​ឲ្យ​បង្កើត​ថត​ឡើយ ។"
+
+#: lib/Folder.php:327
+#, php-format
+msgid "You are not allowed to create more than %d folders."
+msgstr "អ្នក​មិន​ត្រូវ​បាន​អនុញ្ញាត​ឲ្យ​បង្កើត​ថត​ច្រើន​ជាង %d ឡើយ ។"
+
+#: lib/Compose.php:826
+#, php-format
+msgid ""
+"You are not allowed to send messages to more than %d recipients within %d "
+"hours."
+msgstr "អ្នក​មិន​ត្រូវ​បាន​អនុញ្ញាត​ឲ្យ​ផ្ញើ​សារ​ទៅ​អ្នក​ទទួល​ច្រើន​ជាង %d នាក់​ឡើយ ក្នុង​រយៈពេល %d ម៉ោង ។"
+
+#: lib/Compose.php:1049
+#, php-format
+msgid "You are not allowed to send messages to more than %d recipients."
+msgstr "អ្នក​មិន​ត្រូវ​បាន​អនុញ្ញាត​ឲ្យ​ផ្ញើ​សារ​ទៅ​អ្នក​ទទួល​ច្រើន​ជាង %d នាក់​ឡើយ ។"
+
+#: templates/javascript/folders.js:137
+msgid "You are renaming the folder: "
+msgstr "អ្នក​កំពុង​ប្តូរ​ឈ្មោះ​ថត ៖"
+
+#: templates/stationery/prefs.inc:35
+#, php-format
+msgid ""
+"You can use the following placeholders in the stationery text: %c for the "
+"current message content; %s for the signature."
+msgstr ""
+"អ្នក​អាច​ប្រើ​កន្លែង​ដាក់​ខាង​ក្រោម នៅ​ក្នុង​អត្ថបទ​ផ្ទៃ​ខាង​ក្រោយ​សំបុត្រ ៖ %c សម្រាប់​មាតិកា​សារ​បច្ចុប្បន្ន; "
+"%s សម្រាប់​ហត្ថលេខា ។"
+
+#: lib/Folder.php:568
+#, php-format
+msgid "You cannot unsubscribe from \"%s\"."
+msgstr "អ្នក​មិន​អាច​ឈប់ជាវ​ពី \"%s\" បាន​ឡើយ ។"
+
+#: lib/Maintenance/Task/tos_agreement.php:34
+msgid ""
+"You did not agree to the Terms of Service agreement, so you were not allowed "
+"to login."
+msgstr "អ្នក​មិន​បាន​យល់​ព្រម​ទៅ​លក្ខខណ្ឌ​កិច្ច​នៃ​ព្រម​ព្រៀង​​សេវា ដូច្នេះ​អ្នក​មិន​ត្រូវ​បាន​អនុញ្ញាត​ឲ្យ​ចូល ។"
+
+#: templates/acl/acl.inc:170
+msgid "You do not have permission to change access to this folder"
+msgstr "អ្នក​​មិន​មាន​សេចក្តី​អនុញ្ញាត​ ដើម្បី​ផ្លាស់​ប្តូរ​ការ​ចូល​ដំណើរការ​ទៅ​ថត​នេះ"
+
+#: lib/Maillog.php:130
+#, php-format
+msgid "You forwarded this message on %%s to the following recipients: %s."
+msgstr "អ្នក​បាន​បញ្ជូន​បន្ត​សារ​នេះ​លើ %%s ទៅ​អ្នក​ទទួល​ខាង​ក្រោម ៖ %s ។"
+
+#: mailbox.php:1009
+#, php-format
+msgid "You have %s new messages."
+msgstr "អ្នក​មាន​សារ​ថ្មី %s ។"
+
+#: mailbox.php:1009
+msgid "You have 1 new message."
+msgstr "អ្នក​មាន​សារ​ថ្មី ១ ។"
+
+#: compose.php:216
+msgid "You have already submitted this page."
+msgstr "អ្នក​បាន​ដាក់ស្នើ​ទំព័រ​នេះ​រួច​ហើយ ។"
+
+#: lib/IMP.php:957
+msgid "You have new mail in the following folder:"
+msgstr "អ្នក​មាន​សំបុត្រ​ថ្មី ក្នុង​ថត​ដូច​​ខាង​ក្រោម ៖"
+
+#: lib/IMP.php:962
+msgid "You have new mail in the following folders:"
+msgstr "អ្នក​មាន​សំបុត្រ​ថ្មី ក្នុង​ថត​​​ដូច​ខាង​ក្រោម ៖"
+
+#: lib/Compose.php:1031
+msgid "You must enter at least one recipient."
+msgstr "អ្នក​ត្រូវ​តែ​បញ្ចូល​យ៉ាង​ហោច​ណាស់​អ្នក​ទទួល​មួយ ។"
+
+#: lib/MIME/Viewer/pgp.php:310
+msgid ""
+"You must enter the passphrase for your PGP private key to view this message"
+msgstr "អ្នក​ត្រូវ​តែ​បញ្ចូល​ឃ្លា​សម្ងាត់​សម្រាប់​កូនសោ​ឯកជន PGP របស់​អ្នក ដើម្បី​មើល​សារ​នេះ"
+
+#: lib/MIME/Viewer/pkcs7.php:254
+msgid ""
+"You must enter the passphrase for your S/MIME private key to view this "
+"message"
+msgstr "អ្នក​​ត្រូវ​តែ​បញ្ចូល​ឃ្លា​សម្ងាត់​សម្រាប់​កូនសោ​ឯកជន S/MIME របស់​អ្នក ដើម្បី​មើល​សារ​នេះ"
+
+#: templates/message/javascript.inc:79 templates/mailbox/javascript.inc:204
+msgid "You must select a target mailbox first."
+msgstr "ដំបូង អ្នក​ត្រូវ​តែ​ជ្រើស​ប្រអប់​សំបុត្រ​គោល​ដៅ​មួយ ។"
+
+#: fetchmailprefs.php:85
+msgid "You must select an account to be deleted."
+msgstr "អ្នក​ត្រូវ​តែ​ជ្រើស​គណនី​ដែល​ត្រូវ​លុប​មួយ ។"
+
+#: templates/contacts/javascript.inc:81
+msgid "You must select an address first."
+msgstr "ដំបូង អ្នក​ត្រូវ​តែ​ជ្រើស​អាសយដ្ឋាន​មួយ ។"
+
+#: templates/mailbox/javascript.inc:74 templates/mailbox/javascript.inc:211
+#: templates/mailbox/javascript.inc:268
+msgid "You must select at least one message first."
+msgstr "ដំបូង អ្នក​ត្រូវ​តែ​ជ្រើស​យ៉ាង​ហោច​ណាស់​សារ​មួយ ។"
+
+#: templates/compose/javascript.inc:18
+msgid "You must specify a recipient."
+msgstr "អ្នក​ត្រូវ​តែ​បញ្ជាក់​អ្នក​ទទួល​មួយ ។"
+
+#: templates/fetchmail/manage.inc:48
+#, php-format
+msgid "You need to have \"%s\" enabled in your maintenance options."
+msgstr "អ្នក​ត្រូវតែ​ធ្វើ​ឲ្យ \"%s\" ប្រើ​បាន​នៅ​ក្នុង​ជម្រើស​ថែទាំ​របស់​អ្នក ។"
+
+#: lib/Maillog.php:138
+#, php-format
+msgid "You redirected this message to %s on %%s."
+msgstr "អ្នកបាន​ប្តូរ​ទិស​សារ​នេះ​ទៅ %s លើ %%s ។"
+
+#: lib/Maillog.php:142
+#, php-format
+msgid "You replied to this message on %s."
+msgstr "អ្នក​បាន​ឆ្លើយ​តប​ទៅ​សារ​នេះ​លើ %s ។"
+
+#: lib/Folder.php:518
+#, php-format
+msgid "You were not subscribed to \"%s\". Here is what the server said"
+msgstr "អ្នក​​មិន​ត្រូវ​​បាន​ជាវ​ប្រចាំ​ទៅ \"%s\" ។ នេះ​គឺ​ជា​អ្វី​ដែល​ម៉ាស៊ីន​បម្រើ​បាន​និយាយ"
+
+#: lib/Folder.php:570
+#, php-format
+msgid "You were not unsubscribed from \"%s\". Here is what the server said"
+msgstr "អ្នក​មិនត្រូវ​​បាន​ឈប់​ជាវ​ពី \"%s\" ។ នេះ​គឺ​ជា​អ្វី​ដែល​ម៉ាស៊ីន​បម្រើ​បាន​និយាយ"
+
+#: lib/Folder.php:521
+#, php-format
+msgid "You were successfully subscribed to \"%s\""
+msgstr "អ្នកត្រូវ​​បាន​ជាវ​ប្រចាំ​ទៅ \"%s\" ដោយ​ជោគជ័យ"
+
+#: lib/Folder.php:573
+#, php-format
+msgid "You were successfully unsubscribed from \"%s\""
+msgstr "អ្នក​ត្រូវ​​បាន​ឈប់​ជាវ​ពី \"%s\" ដោយ​ជោគ​ជ័យ"
+
+#: templates/pgp/pgp.inc:98
+msgid "Your Name"
+msgstr "ឈ្មោះ​របស់អ្នក"
+
+#: templates/pgp/pgp.inc:50
+msgid "Your PGP Public/Private Keys"
+msgstr "កូនសោ សាធារណៈ/ឯកជន PGP របស់​អ្នក"
+
+#: templates/smime/smime.inc:71 templates/pgp/pgp.inc:76
+msgid "Your Private Key"
+msgstr "កូនសោ​ឯកជន​របស់​អ្នក"
+
+#: templates/smime/smime.inc:67 templates/pgp/pgp.inc:71
+msgid "Your Public Key"
+msgstr "កូនសោ​សាធារណៈ​របស់​អ្នក"
+
+#: config/prefs.php.dist:166
+msgid "Your Reply-to: address: <em>(optional)</em>"
+msgstr "អាសយដ្ឋាន​ឆ្លើយតប-ទៅ​របស់​អ្នក ៖ <em>(ស្រេច​ចិត្ត)</em>"
+
+#: templates/smime/smime.inc:49
+msgid "Your S/MIME Public/Private Certificates"
+msgstr "វិញ្ញាបនបត្រ​ សាធារណៈ/ឯកជន​ នៃ S/MIME របស់​អ្នក"
+
+#: templates/fetchmail/account_select.inc:16
+msgid "Your accounts:"
+msgstr "គណនី​របស់​អ្នក ៖"
+
+#: config/prefs.php.dist:174
+msgid ""
+"Your alias addresses: <em>(optional, enter each address on a new line)</em>"
+msgstr "អាសយដ្ឋាន​ក្លែងក្លាយ​របស់​អ្នក ៖ <em>(ស្រេច​ចិត្ត, បញ្ចូល​អាសយដ្ឋាន​នីមួយៗ​លើ​ជួរ​ថ្មី)</em>"
+
+#: lib/MIME/Viewer/images.php:101
+msgid "Your browser does not support inline display of this image type."
+msgstr "កម្មវិធី​រុករក​របស់​អ្នក​ មិនគាំទ្រ​ការ​បង្ហាញ​ក្នុងតួ នៃ​ប្រភេទ​រូបភាព​នេះ ។"
+
+#: config/prefs.php.dist:551
+msgid "Your default charset for sending messages:"
+msgstr "សំណុំ​តួ​អក្សរ​លំនាំ​ដើម​របស់អ្នក សម្រាប់​​ផ្ញើ​សារ ៖"
+
+#: templates/prefs/encryptselect.inc:1
+msgid "Your default encryption method for sending messages:"
+msgstr "វិធីសាស្ត្រ​បម្លែង​ជា​កូដ​លំនាំដើម​របស់អ្នក សម្រាប់​​ផ្ញើ​សារ ៖"
+
+#: attachment.php:94
+#, php-format
+msgid ""
+"Your linked attachment has been downloaded by at least one user.\n"
+"\n"
+"Attachment name: %s\n"
+"Attachment date: %s\n"
+"\n"
+"Click on the following link to permanently delete the attachment:\n"
+"%s"
+msgstr ""
+"ឯកសារ​ភ្ជាប់​របស់​អ្នក​ដែល​បាន​តភ្ជាប់ ត្រូវ​បាន​ទាញយក​ដោយ​អ្នក​ប្រើ​យ៉ាង​តិច​ម្នាក ។\n"
+"\n"
+"ឈ្មោះ​ឯកសារ​ភ្ជាប់ ៖ %s\n"
+"កាលបរិច្ឆេទ​ឯកសារ​ភ្ជាប់ ៖ %s\n"
+"\n"
+"ចុច​តំណ​ខាង​ក្រោម​ដើម្បី​លុប​ឯកសារ​ភ្ជាប់​ជា​អចិន្ត្រៃយ៍ ៖\n"
+"%s"
+
+#: lib/MIME/Viewer/status.php:89
+msgid "Your message was successfully delivered."
+msgstr "សារ​របស់​អ្នក​ត្រូវ​បាន​បញ្ជូន​ដោយ​ជោគ​ជ័យ ។"
+
+#: config/prefs.php.dist:207
+msgid "Your signature:"
+msgstr "ហត្ថលេខា​របស់​អ្នក ៖"
+
+#: templates/javascript/addressesBlocks.js:7
+msgid "[Hide Addresses]"
+msgstr "[លាក់​អាសយដ្ឋាន]"
+
+#: message.php:257 compose.php:609 mailbox.php:691 lib/Compose.php:1968
+msgid "[No Subject]"
+msgstr "[គ្មាន​ប្រធានបទ]"
+
+#: templates/javascript/addressesBlocks.js:8
+msgid "[Show Addresses -"
+msgstr "[បង្ហាញ​អាសយដ្ឋាន -"
+
+#: lib/MIME/Headers.php:222
+#, php-format
+msgid "[Show addresses - %s recipients]"
+msgstr "[បង្ហាញ​អាសយដ្ឋាន - អ្នក​ទទួល​ចំនួន %s]"
+
+#: compose.php:1130
+msgid "_Bcc"
+msgstr "_Bលាក់ "
+
+#: message.php:565 mailbox.php:490
+msgid "_Blacklist"
+msgstr "_Bបញ្ជី​ខ្មៅ "
+
+#: compose.php:1127
+msgid "_Cc"
+msgstr "_Cចម្លង "
+
+#: message.php:537 mailbox.php:463 mailbox.php:466
+msgid "_Delete"
+msgstr "_Dលុប "
+
+#: lib/IMP.php:793
+msgid "_Folders"
+msgstr "_Fថត "
+
+#: compose.php:1107
+msgid "_Identity"
+msgstr "_Iអត្តសញ្ញាណ "
+
+#: lib/IMP.php:758
+msgid "_Inbox"
+msgstr "_Iប្រអប់​ទទួល "
+
+#: lib/IMP.php:834
+msgid "_Log out"
+msgstr "_Lចេញ "
+
+#: message.php:578
+msgid "_Message Source"
+msgstr "_Mកូដ​របស់​សារ "
+
+#: lib/IMP.php:790
+msgid "_New Message"
+msgstr "_Nសារ​ថ្មី "
+
+#: message.php:594
+msgid "_Print"
+msgstr "_Pបោះពុម្ព "
+
+#: compose.php:1198
+msgid "_Priority"
+msgstr "_Pអាទិភាព "
+
+#: mailbox.php:327
+#, php-format
+msgid "_Refresh %s"
+msgstr "_Rធ្វើ​ឲ្យ %s ស្រស់ "
+
+#: message.php:540
+msgid "_Reply"
+msgstr "_Rឆ្លើយ​តប "
+
+#: lib/IMP.php:795
+msgid "_Search"
+msgstr "_Sស្វែង​រក "
+
+#: compose.php:1092 compose.php:1096
+msgid "_Send Message"
+msgstr "_Sផ្ញើ​សារ "
+
+#: mailbox.php:580
+msgid "_Thread"
+msgstr "_Tខ្សៃ​ស្រឡាយ "
+
+#: compose.php:1123 compose.php:1125
+msgid "_To"
+msgstr "_Tទៅ "
+
+#: mailbox.php:471
+msgid "_Undelete"
+msgstr "_Uមិន​លុប "
+
+#: message.php:559
+msgid "_View Thread"
+msgstr "_Vមើល​ខ្សែ​ស្រឡាយ "
+
+#: message.php:571 mailbox.php:496
+msgid "_Whitelist"
+msgstr "_Wបញ្ជីស "
+
+#: lib/Compose.php:853
+msgid "addressee unknown"
+msgstr "មិន​ស្គាល់​អ្នក​ទទួល​សំបុត្រ"
+
+#: lib/Compose.php:1580
+msgid "attachment"
+msgstr "ឯកសារ​ភ្ជាប់"
+
+#: view.php:114
+msgid "attachments.zip"
+msgstr "attachments.zip"
+
+#: templates/compose/compose.html:276
+msgid "bytes"
+msgstr "បៃ"
+
+#: lib/Compose.php:877
+msgid "cannot create output file"
+msgstr "មិន​អាច​បង្កើត​ឯកសារ​លទ្ធផល"
+
+#: lib/Compose.php:849
+msgid "cannot open input"
+msgstr "មិន​អាច​បើក​ព័ត៌មាន​បញ្ចូល"
+
+#: lib/Compose.php:841
+msgid "command line usage error"
+msgstr "កំហុស​ការ​ប្រើ​បន្ទាត់​ពាក្យបញ្ជា"
+
+#: lib/Compose.php:897
+msgid "configuration error"
+msgstr "កំហុស​ការ​កំណត់​រចនាសម្ព័ន្ធ"
+
+#: lib/Compose.php:873
+msgid "critical system file missing"
+msgstr "បាត់​ឯកសារ​ប្រព័ន្ធ​សំខាន់​បំផុត"
+
+#: lib/Compose.php:845
+msgid "data format error"
+msgstr "កំហុស​ទ្រង់ទ្រាយ​ទិន្នន័យ"
+
+#: lib/Compose.php:901
+msgid "entry not found"
+msgstr "រក​មិន​ឃើញ​ធាតុ​បញ្ចូល"
+
+#: templates/contacts/contacts.html:16
+msgid "from"
+msgstr "ពី"
+
+#: lib/Compose.php:857
+msgid "host name unknown"
+msgstr "មិន​ស្គាល់​ឈ្មោះ​ម៉ាស៊ីន"
+
+#: templates/compose/spelling.html:31
+msgid "in"
+msgstr "ក្នុង"
+
+#: lib/Compose.php:881
+msgid "input/output error"
+msgstr "កំហុស​បញ្ចេញ/បញ្ចូល"
+
+#: lib/Compose.php:865
+msgid "internal software error"
+msgstr "កំហុស​កម្មវិធី​ខាង​ក្រៅ"
+
+#: templates/folders/import.html:13
+msgid "into folder"
+msgstr "ទៅ​ក្នុង​ថត"
+
+#: smime.php:29 pgp.php:77
+msgid "key"
+msgstr "កូនសោ"
+
+#: folders.php:109
+msgid "mailbox file"
+msgstr "ឯកសារ​ប្រអប់​សំបុត្រ"
+
+#: lib/Message.php:524 lib/Compose.php:640
+msgid "name"
+msgstr "ឈ្មោះ"
+
+#: templates/compose/spelling.html:32
+msgid "none"
+msgstr "គ្មាន"
+
+#: templates/compose/spelling.html:50
+msgid "or"
+msgstr "ឬ"
+
+#: lib/Compose.php:893
+msgid "permission denied"
+msgstr "សិទ្ធិ​ត្រូវ​បាន​បដិសេធ"
+
+#: templates/javascript/addressesBlocks.js:8
+msgid "recipients]"
+msgstr "អ្នក​ទទួល]"
+
+#: lib/Compose.php:889
+msgid "remote error in protocol"
+msgstr "កំហុស​ពី​ចម្ងាយ​ក្នុង​ពិធីការ"
+
+#: lib/Compose.php:861
+msgid "service unavailable"
+msgstr "មិន​អាច​រក​សេវា​បាន"
+
+#: templates/compose/spelling.html:19
+msgid "spelling error"
+msgstr "កំហុស​អក្ខរាវិរុទ្ធ"
+
+#: templates/compose/spelling.html:19
+msgid "spelling errors"
+msgstr "កំហុស​អក្ខរាវិរុទ្ធ"
+
+#: lib/Compose.php:869
+msgid "system error"
+msgstr "កំហុស​ប្រព័ន្ធ"
+
+#: lib/Compose.php:885
+msgid "temporary failure"
+msgstr "បរាជ័យ​បណ្ដោះអាសន្ន"
+
+#: lib/Filter.php:51
+msgid "your blacklist"
+msgstr "បញ្ជី​ខ្មៅ​របស់​អ្នក"
+
+#: lib/Filter.php:61
+msgid "your whitelist"
+msgstr "បញ្ជី​ស​របស់​អ្នក"

@@ -1,0 +1,488 @@
+------
+v2.3.4
+------
+
+[jan] Add and fix Oracle-specific SQL scripts.
+[jan] Fix importing due date attribute from iCalendar (Bug #8644).
+[jan] Fix charset when exporting tasks to iCalendar 2.0 (Bug #8637).
+[jan] Add Croatian translation (Matej Vela <matej.vela@carnet.hr>).
+
+
+------
+v2.3.3
+------
+
+[mms] Upgrade prototype.js to v1.6.1.
+[jan] Fix synchronization with output compression enabled (Bug #7769).
+[jan] Display application name as task list name when listing external tasks.
+[jan] Fix importing vTodo data including more iCalendar components.
+
+
+------
+v2.3.2
+------
+
+[jan] Don't allow to set alarms if no due date has been set.
+[cjh] Work around BC break with Horde versions before 3.2 (Bug #7820).
+[cjh] Add URL access to tasks by "starts-with" search on the task name.
+[cjh] Add hooks for altering the displayed task description and showing help
+      text next to the task description entry field.
+[cjh] Add estimated time to the fields available in the task list.
+[jan] Fix link escaping in notification messages (Alfonso Marín Marín
+      <almarin@um.es>, Bug #7509).
+
+
+------
+v2.3.1
+------
+
+[cjh] Add a PostgreSQL-specific upgrade script for 2.2 to 2.3.
+[cjh] Fix fatal error when completing tasks (Bug #7400).
+[mms] Upgrade prototype.js to v1.6.0.3.
+
+
+----
+v2.3
+----
+
+[jan] Change group field in shares table to work with LDAP groups (Bug #6883).
+[jan] Log completion date if adding a completed task (Bug #7275).
+[jan] Fix user name conversion with user hooks in the task list panel
+      (Bug #7366).
+[jan] Fix displayed WebDAV subscription URLs in the task list manager.
+
+
+--------
+v2.3-RC1
+--------
+
+[jan] Log moving of tasks in the history backend (Bug #3207).
+[jan] Fix deleting all tasks over WebDAV (Bug #7004).
+[jan] Add Estonian translation (Alar Sing <alar.sing@err.ee>).
+[jan] Send a more detailed notification message and use the recipient's
+      preferred language and date/time format after a task has changed.
+[jan] Add Basque translation (Euskal Herriko Unibertsitatea EHU/UPV
+      <xabier.arrieta@ehu.es>).
+[jan] Fix task relationship getting lost when importing tasks
+      (tkrah@fachschaft.imn.htwk-leipzig.de, bb.apc.ag, Bug #6770).
+[jan] Add preference to set columns for the list view.
+[jan] Allow to set task assignee.
+[jan] Add options to export screen for choosing task lists and task states.
+[mjr] Remove user permissions on all shares when deleting a user.
+[mjr] Fix issue with removeUserData api that caused the deleted user's task list
+      to not be deleted (Bug #6969).
+
+
+----
+v2.2
+----
+
+[cjh] Improve resource usage in datatree_to_sql share migration script
+      (Bug #6740).
+[jan] Allow to import all fields that can be exported.
+[cjh] Fix displayed WebDAV subscription URLs in the panel (Bug #6709).
+
+
+--------
+v2.2-RC3
+--------
+
+[bak] Move tasklists into per-owner subdirectories when viewed through WebDAV.
+      (Request #6595)
+[cjh] Apply fix for http://dev.rubyonrails.org/ticket/11473 to prototype.js
+      (Request #6590).
+[cjh] Add an upgrade script for the new SQL share driver (Request #6109).
+[jan] Correctly determine default task list in the API (SyncML, WebDAV).
+[cjh] Show who created or made the last change to a task along with the date
+      (Request #6305).
+[jan] Add Turkish translation (METU <horde-tr@metu.edu.tr>).
+
+
+--------
+v2.2-RC2
+--------
+
+[jan] SECURITY: Fix privilege escalation in Horde API.
+[cjh] SECURITY: Fix missing ownership validation on share changes.
+[cjh] Fix sorting tasks by Task list.
+[jan] Fix tasks losing their parent task when being completed (Bug #6035).
+[cjh] Add the ability to filter the list of task lists in the panel.
+[cjh] New share management UI that doesn't require JavaScript.
+[jan] Fix 2006-04-18_add_creator_and_assignee_fields.php upgrade script.
+
+
+--------
+v2.2-RC1
+--------
+
+[jan] Implement WebDAV access.
+[jan] Add exportTasklist() API method.
+[jan] Add SQL upgrade script.
+[jan] Show estimated time including sub-tasks.
+[cjh] Fix generation of UIDs with PHP 5.2+.
+
+
+----------
+v2.2-ALPHA
+----------
+
+[cjh] Add preferences for turning due dates on by default, setting the
+      default due date's number of days in the future, and setting the
+      default due date's time.
+[cjh] Add vCalendar 2.0 alarm export (munzli@olmero.ch, Bug #4851).
+[jan] Add sub-tasks.
+[jan] Add start dates for tasks.
+[jan] Add support for the Horde_Alarm framework (requires Horde 3.2).
+[cjh] Default to a javascript quick search, if available, with options
+      for the full search and a direct link to full search if javascript
+      is unavailable.
+[cjh] Allow explicitly searching All, Incomplete, or Completed tasks
+      (Request #4222).
+[cjh] Allow configuring the tasklists that the task summary block shows,
+      and let the user set a title for the block to differentiate multiple
+      instances (Request #2388).
+[cjh] Show task description tooltips in the task summary block (Request #3444).
+[cjh] Store completion date and add history entries for task completion.
+[cjh] Move tasklist selection/deselection to a collapsible panel.
+[mas] Conform to WCAG 1.0 Priority 2/Section 508 accessibility guidelines.
+      (Request #4080)
+[cjh] Allow using the checkboxes to mark tasks as incomplete as well
+      as complete (michael.sheldon@credativ.de, Request #4250).
+[cjh] Sort date fields correctly with JS table sorting.
+[jan] Add private flag.
+[jan] Add a field for estimated time being spent on a task.
+[mdj] Add support for split read/write database.
+[mdj] Add failover support for SQL backend.
+[cjh] Add a tree block for showing current alarms.
+
+
+------
+v2.1.4
+------
+
+[jan] SECURITY: Fix privilege escalation in Horde API.
+[cjh] SECURITY: Fix missing ownership validation on share changes.
+[cjh] Send iCalendar data as UTF-8.
+
+
+------
+v2.1.3
+------
+
+[jan] Show alarms for overdue tasks too.
+[jan] Add Catalan translation (Jordi Giralt <projecte.k2@upcnet.es>).
+
+
+------
+v2.1.2
+------
+
+[jan] Show error message if imported file didn't contain tasks.
+[jan] Add categories from imported contacts to the user's categories.
+[jan] Fix import of CSV data.
+[jan] Add Slovenian translation (Duck <duck@obala.net>).
+[jan] Show personal tasklist by default with disabled preferences (Bug #4078).
+
+
+------
+v2.1.1
+------
+
+[jan] Only load completed/incomplete tasks from backend where sufficient
+      (Request #2387).
+[jan] Don't show tooltips for tasks without read permissions (Bug #3836).
+[jan] Fix fatal error when dealing with very old tasks that don't have a UID
+      yet (Bug #3818).
+[jan] Add 1.1 to 2.x upgrade script for Oracle.
+
+
+----
+v2.1
+----
+
+[ben] Better support for MS-SQL.
+
+
+--------
+v2.1-RC1
+--------
+
+[jan] Add Portuguese translation (Manuel Menezes de Sequeira
+      <Manuel.Sequeira>).
+[jan] Add preference to send email notifications to users when tasks have
+      been added, edited, or deleted in their calendars (kevin_myer@iu13.org,
+      Request #2332).
+[jan] Confirm task deletions (Request #1155).
+[jan] Add CLI script to import vTodo data.
+[cjh] Add support for dynamic re-sorting of the task list, including saving
+      the sort preferences on any changes.
+[cjh] Deprecate the DataTree tasks driver.
+[cjh] Make the completed checkbox in task view functional
+      (martin@mein-horde.de, Bug #2157).
+[mas] Change any output of <b> and <i> tags to <strong> and <em> for better
+      accessibility support.
+[jan] Add permissions to restrict number of tasks.
+[jan] Add print view to task list (kevin_myer@iu13.org, Bug #1875).
+[cjh] Add ics.php, which can be used for integration with Sunbird,
+      iCal, et. al.
+[jan] Show category colors in portal block (Brandon Knitter
+      <knitterb@blandsite.org>, Bug #1126).
+
+
+------
+v2.0.4
+------
+
+[cjh] Close several XSS vulnerabilities with task and tasklist data.
+
+
+------
+v2.0.3
+------
+
+[jan] Allow to import more than one task from vTodo data at once.
+
+
+------
+v2.0.2
+------
+
+[cjh] Add a PostgreSQL upgrade script (Bug #1780).
+[cjh] Use bind variables in the SQL driver (selsky@columbia.edu, Bug #1681).
+[cjh] Fix problem where you couldn't select any tasklists once you'd
+      deselected all of them.
+[jan] Add shortcut icon (favicon.ico).
+[jan] Fix warnings if no tasks to export exist.
+[jan] Fix CSV imports (Bug #1387).
+[cjh] Allow hiding the Task List column in the List view.
+
+
+------
+v2.0.1
+------
+
+[jan] Allow to select the "Unfiled" category in the portal block (Mathieu
+      Clabaut <mathieu.clabaut@free.fr>, Bug #1237).
+[cjh] Don't highlight the New Task menu item when editing tasks.
+[cjh] Use a checkbox for editing completed/incomplete in the task
+      edit view, to match the list view (Bug #1212).
+[jan] Fix print button.
+[jan] Add Japanese translation (Hiromi Kimura <hiromi@tac.tsukuba.ac.jp>).
+
+
+----
+v2.0
+----
+
+[cjh] UIDs need to be stored in the History system with a nag: prefix and
+      with the tasklist_id so as not to confuse different instances of the
+      same task (if two users both have a task on their seperate tasklists,
+      they should have unique histories for that task).
+[jan] Fix upgrade script to create unique IDs.
+
+
+--------
+v2.0-RC3
+--------
+
+[jan] Add Polish translation (Piotr Kuczynski <pkuczynski@hypode.pl>).
+[cjh] Add My Tasklists menu entry.
+
+
+--------
+v2.0-RC2
+--------
+
+[jan] Add Latvian translation (Janis Eisaks <jancs@dv.lv>).
+
+
+--------
+v2.0-RC1
+--------
+
+[jan] Tweak layout of the summary block.
+
+
+---------
+v2.0-BETA
+---------
+
+[jan] Add special black-on-white styles for message printing.
+[cjh] Users can now specify a secondary sort column
+      (Andrew Coleman <mercury@appisolutions.net>).
+[cjh] Preserve searches while re-sorting (Francois Marier <francois@nit.ca>).
+[jan] Add access keys.
+[cjh] Add Kolab drivers (Stuart Bingë <s.binge@codefusion.co.za>).
+
+
+----------
+v2.0-ALPHA
+----------
+
+[cjh] GUIDs now only contain nag: and the task ID - sharename is not needed.
+[cjh] Task IDs are now 32-character unique strings, to be useable as GUIDs.
+      The SQL table definition has changed; conversion scripts are in scripts/.
+[jan] Add Indonesian language (Slamin <slamin@unej.ac.id>).
+[cjh] Add import and export in vTodo (iCalendar) format.
+[cjh] Make sure that the correct categories for a task's current tasklist
+      are always used.
+[cjh] Track addition, modification, and deletion of tasks
+      with the Horde History:: API.
+[cjh] Change how tasks are stored in the SQL driver. scripts/create_sequence.php
+      will update an existing database with no loss of data.
+[cjh] Show tooltips containing task descriptions.
+[cjh] Add a preference for the default category
+      (Brian Keifer <brian@valinor.net>).
+[cjh] Make the due date in the summary block configurable
+      (Mathieu CLABAUT <mathieu.clabaut@free.fr>).
+[cjh] Add task alarms (Mathieu CLABAUT <mathieu.clabaut@free.fr>).
+[jan] Add UTF-8 support and charset parameter for backend drivers.
+[cjh] Only show selected task categories on the summary screen
+      (John Morrissey <jwm@horde.net>).
+[cjh] Much more comprehensive permissions checking, and support for
+      guest access.
+[cjh] Use the global shares editing page for changing/assigning share permissions.
+[cjh] Add options for showing, sorting by, and grouping by task owner
+      (Brian Keifer <brian@valinor.net>).
+[mac] Allow importing onto any available Task list.
+[cjh] Add an option to show only complete tasks, and add links on the
+      task view to switch between all, complete, and incomplete.
+[mac] Add shared task lists.
+
+
+------
+v1.1.3
+------
+
+[jan] Close XSS when setting the parent frame's page title by javascript (cjh).
+
+
+------
+v1.1.2
+------
+
+[jan] Add Polish translation (Piotr Kuczynski <pkuczynski@hypode.pl>).
+[cjh] Fix changing of task attributes that have not been set previously
+      (rvs@angara.ru, Bug #569).
+
+
+------
+v1.1.1
+------
+
+[jan] Add Indonesian language (Slamin <slamin@unej.ac.id>).
+[jan] Add Arabic (Syria) translation (Platinum Development Team
+      <devteam@platinum-sy.net>).
+[jan] Add Romanian translation (Eugen Hoanca <eugenh@urban-grafx.ro>,
+      Marius Dragulescu <mariusd@urban-grafx.ro>).
+[jon] Display the task navbar above the description in the task view, as well
+      (John Morrissey <jwm@horde.net>).
+
+
+----
+v1.1
+----
+
+[jan] Add Greek translation (Stefanos I. Dimitriou <sdimitri@teiath.gr>).
+[jan] Add print task button (mac).
+[jan] Add Slovak translation (Ivan Noris <vix@vazka.sk>).
+[jan] Add ability to create new categories (mac).
+[jan] Add Nag::addParameter().
+[jan] Add Norwegian Bokmaal translation (Torstein S. Hansen <huleboer@techbee.no>).
+[jan] Add Bulgarian translation (Miroslav Pendev <miro@cybershade.us>).
+[jan] Add preferences for showing priorities and due dates in the summary
+      (Brian Keifer <brian@valinor.net>).
+[jan] Add Lithuanian translation (Darius Matuliauskas <darius@lnk.lt>).
+[jan] Replace <?= with <?php echo to remove the short_open_tags requirement (cjh).
+[jan] Show success or failure message on saving the task.
+[jan] Show completed tasks with strikethrough in the Horde summary screen
+      (Bill Edgington <horde@0x20.com>).
+[jan] Add Danish translation (Martin List-Petersen <martin@list-petersen.dk>).
+
+
+----
+v1.0
+----
+
+[jan] Add Hungarian translation (Laszlo L. Tornoci <torlasz@xenia.sote.hu>).
+[jan] Add Simplified Chinese translation (Peter Wang <whw@oulink.net>).
+[jan] Add Korean translation (J.I Kim <aporie@netian.com>).
+[jan] Add Norwegian Nynorsk translation (Per-Stian Vatne <psv@orsta.org>).
+[cjh] Completed tasks aren't overdue, no matter what the due date.
+[cjh] Filter out completed tasks earlier if requested, so the task count
+      is correct.
+[cjh] Simplify color scheme a bit.
+[cjh] Add category column.
+[cjh] Remove task_added column.
+[cjh] Keep track of when a task was last modified (for sync purposes).
+[jan] Add Finnish translation (Tero Matinlassi <terom@iki.fi>).
+[jan] Add Brazilian Portuguese translation (Antonio Dias <accdias@sst.com.br>).
+[cjh] Close a potential problem with register_globals On and $js_onLoad.
+[cjh] Add new task link to the summary (Quinn Wilson <qwilson@midworld.org>).
+[cjh] Use the new PrefsUI class.
+[cjh] Remove the STORAGE_* constants in favor of PEAR_Errors.
+[cjh] Add a preference to not show completed tasks in the task list.
+[cjh] Fix completion widget in the task modification screen.
+[jon] Adapt to the new Horde::img() syntax.
+[cjh] Switch output compression to ob_gzhandler().
+[cjh] Use NAG_TEMPLATES constant for all template paths.
+[cjh] Use $registry->get() for all Registry information.
+[cjh] Prefix all application constants with NAG_.
+[cjh] Use the new Notification system.
+[jon] Enable the "portability" option in the SQL driver.
+[jan] Remove the standard value for the language preference. The language to
+      fall back to should be set Horde wide in lang.php instead.
+[jan] Add Swedish translation (Andreas Dahlén <andreas@dahlen.ws>).
+[jan] Add Traditional Chinese translation (David Chang <david@thbuo.gov.tw>).
+[bjn] Change 'en' and 'en_EN' locales to 'en_US' (default).
+[cjh] Change Nag_Storage:: to Nag_Driver::.
+[cjh] Allow setting priority for multiple tasks in the list view.
+[cjh] Change task priorities to be 1-5 (matches Palm todo list).
+[jon] Apply a "strike-through" style to closed (completed) tasks.
+[jon] Remove task dependency code.
+[jon] Add completion status. (Paul Cooper <pgc@ucecom.com>)
+[jan] Add French translation (Mikhaël Janson <mik@galaxie.net>).
+[cjh] Let the Registry handle retrieving preferences.
+[jan] Due tasks can now be shown in Kronolith.
+[jan] Add Italian translation (Giovanni Meneghetti <gmeneghetti@infvic.it>).
+[cjh] Add Czech translation (pchytil@asp.ogi.edu).
+[cjh] Add Russian translation (Ignat Ikryanov <ignat@ibd.ru>).
+[avsm] Replace $conf['paths'] with the $registry equivalents.
+[jon] Updated to reflect the changes in PEAR DB's quoteString().
+[cjh] Add $conf['menu']['apps'] support.
+[cjh] Add low and high priority icons.
+[cjh] Show a note icon if a task has a description.
+[jon] Added the concept of task priorities (low, medium, high).
+[jon] Return to the task detail view after additions or modifications.
+[jon] Allow a task to be dependent on another task.
+[cjh] Add translation framework.
+[jon] Added Nag::formatDate() to format internal date values.
+
+
+------
+v0.0.1
+------
+
+[cjh] Start application-specific constants at 100 and prefix them with NAG_.
+[cjh] Add a Horde summary API function.
+[jon] Added initial help text.
+[cjh] Use prefs.gif and generic prefs templates from Horde.
+[jon] Display task descriptions using a proportional (fixed) font.
+[jon] Added externally-accessible API for registry integration.
+[jon] HORDE_BASE is now defined in lib/base.php instead of config/conf.php.
+[jon] Added detailed installation documentation (docs/INSTALL).
+[jon] Moved task retrieval out of base.php for more efficiency and granularity.
+[jon] Display overdue tasks in a different color.
+[jon] Added status support for Horde messages / errors.
+[cjh] Make multiple task deletion from the task list work.
+[cjh] Make task storage work when deleting more than one task.
+[jon] Added rudimentary searching capabilities.
+[cjh] Define the HORDE_BASE constant in config/conf.php, and use it when
+      referring to any of Horde's files.
+[jon] Added the ability to add, remove, and delete tasks.
+[jon] Made the task view date and time formats separately configurable.
+[jon] Added individual task viewing (with descriptions).
+[jon] Added sorting to the task list.
+[jon] Added initial preferences support.
+[jon] Added an initial "List Tasks" implementation
+[jon] Added the 'sql' storage implementation.

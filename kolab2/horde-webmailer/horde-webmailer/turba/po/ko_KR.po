@@ -1,0 +1,1055 @@
+# Korean translations for horde package
+# horde 패키지에 대한 한국어 번역문.
+# Copyright 2005-2009 The Horde Project
+# This file is distributed under the same license as the horde package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 2.0-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2005-02-10 02:08+0100\n"
+"PO-Revision-Date: 2001-11-10 02:40+0900\n"
+"Last-Translator: Jinhyok Heo <novembre@ournature.org>\n"
+"Language-Team: i18n@lists.horde.org\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=euc-kr\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: config/prefs.php.dist:111
+msgid "\"Firstname Lastname\"  (ie. John Doe)"
+msgstr "이름 성(예: John Doe)"
+
+#: config/prefs.php.dist:110
+msgid "\"Lastname, Firstname\" (ie. Doe, John)"
+msgstr "성, 이름(예: Doe, John)"
+
+#: add.php:96
+msgid "%s added."
+msgstr "%s 추가됨."
+
+#: data.php:256
+msgid "%s file successfully imported"
+msgstr "%s 파일을 성공적으로 가져왔습니다."
+
+#: templates/browse/footer.inc:9
+msgid "%s to %s of %s"
+msgstr "%s ~ %s, 전체 %s 개"
+
+#: browse.php:146
+msgid "'%s' was not copied because it is a list."
+msgstr "'%s'는 리스트이므로 복사되지 않음"
+
+#: browse.php:144
+msgid "'%s' was not moved because it is a list."
+msgstr "'%s'는 리스트이므로 옮겨지지 않음"
+
+#: lib/Block/minisearch.php:45
+msgid "A browser that supports iFrames is required"
+msgstr "iFrame을 지원하는 브라우져가 필요합니다"
+
+#: config/prefs.php.dist:132
+msgid "Above search form"
+msgstr ""
+
+#: templates/browse/search.inc:65
+msgid "Ad_vanced Search"
+msgstr "_v고급 검색"
+
+#: add.php:61
+msgid "Add"
+msgstr "추가"
+
+#: templates/prefs/columnselect.inc:237
+msgid "Add column"
+msgstr "칼럼 추가"
+
+#: templates/browse/actions.inc:33
+msgid "Add to"
+msgstr "추가"
+
+#: browse.php:30 config/prefs.php.dist:99
+msgid "Address Book Listing"
+msgstr "주소록 리스트"
+
+#: add.php:95
+msgid "Address book entry"
+msgstr "주소록 입력"
+
+#: lib/Driver.php:496
+msgid "Address book is read-only."
+msgstr "주소록은 읽기 전용입니다."
+
+#: data.php:236
+msgid "Address book successfully purged."
+msgstr "주소록이 성공적으로 비워짐"
+
+#: search.php:94 templates/browse/search.inc:65
+#: templates/browse/search.inc:113
+msgid "Advanced Search"
+msgstr "고급 검색"
+
+#: config/attributes.php.dist:64
+msgid "Alias"
+msgstr "별명"
+
+#: templates/browse/footerAlpha.inc:10 templates/browse/footerAlpha.inc:13
+msgid "All"
+msgstr "모두 선택"
+
+#: lib/api.php:372
+msgid "Already Exists"
+msgstr "이미 존재함"
+
+#: templates/browse/javascript.inc:79
+msgid "Are you sure that you want to delete %s?"
+msgstr "%를 정말 지우겠습니까?"
+
+#: templates/browse/javascript.inc:53
+msgid "Are you sure that you want to delete the selected entries?"
+msgstr "선택한 것들을 정말 지우겠습니까?"
+
+#: config/prefs.php.dist:70
+msgid "Ascending"
+msgstr "오름차순"
+
+#: templates/prefs/columnselect.inc:233
+msgid "Available Columns:"
+msgstr "가능한 항목:"
+
+#: templates/browse/actions.inc:55
+msgid "Ba_ck to %s"
+msgstr "_c%s로 돌아가기"
+
+#: templates/browse/actions.inc:55
+msgid "Back to %s"
+msgstr "%s로 돌아가기"
+
+#: templates/browse/search.inc:116
+msgid "Basi_c Search"
+msgstr "_c기본 검색"
+
+#: search.php:91 templates/browse/search.inc:62
+#: templates/browse/search.inc:116
+msgid "Basic Search"
+msgstr "기본 검색"
+
+#: config/prefs.php.dist:131
+msgid "Below search form"
+msgstr ""
+
+#: lib/Driver/ldap.php:82 lib/Driver/ldap.php:85
+#, php-format
+msgid "Bind failed: (%s) %s"
+msgstr ""
+
+#: config/attributes.php.dist:178
+msgid "Birthday"
+msgstr "생일"
+
+#: config/attributes.php.dist:173
+msgid "Business Category"
+msgstr ""
+
+#: data.php:28
+msgid "CSV"
+msgstr "CSV"
+
+#: templates/browse/actions.inc:59
+msgid "C_lear Search"
+msgstr "_l검색항목 초기화"
+
+#: templates/browse/column_headers.inc:7
+msgid "Check _All/None"
+msgstr "선택"
+
+#: config/prefs.php.dist:29
+msgid ""
+"Choose a default directory for your personal addressbook, contact lists, and "
+"searches."
+msgstr "기본 디렉토리 선택"
+
+#: add.php:53
+msgid "Choose an address book"
+msgstr "주소록 선택"
+
+#: templates/prefs/columnselect.inc:228
+msgid "Choose the order of the columns to display in the address list."
+msgstr "주소 목록의 칼럼 표시 순서 선택"
+
+#: templates/browse/actions.inc:59
+msgid "Clear Search"
+msgstr "검색항목 초기화"
+
+#: config/prefs.php.dist:10
+msgid "Column Options"
+msgstr "컬럼 옵션"
+
+#: templates/data/import.inc:18 templates/data/export.inc:16
+msgid "Comma separated values"
+msgstr "콤마로 구분된 값"
+
+#: templates/data/export.inc:17
+msgid "Comma separated values (Microsoft Outlook)"
+msgstr "콤마로 구분된 값(아웃룩 용)"
+
+#: config/attributes.php.dist:76
+msgid "Company"
+msgstr "회사"
+
+#: config/attributes.php.dist:144
+msgid "Company Address"
+msgstr "회사 주소"
+
+#: lib/api.php:611 lib/api.php:800
+msgid "Connection failed: %s"
+msgstr "연결 실패: %s"
+
+#: lib/Driver/ldap.php:63
+msgid "Connection failure"
+msgstr "연결 실패"
+
+#: browse.php:85
+msgid "Contact removed from list."
+msgstr ""
+
+#: browse.php:279
+msgid "Contacts in list: %s"
+msgstr "%s 리스트의 연락처 목록"
+
+#: browse.php:301
+msgid "Contents of %s"
+msgstr "'%s'의 내용"
+
+#: templates/browse/actions.inc:20
+msgid "Copy"
+msgstr "복사"
+
+#: lib/ObjectView.php:134
+msgid "Created"
+msgstr "생성"
+
+#: config/prefs.php.dist:16
+msgid "Default Display"
+msgstr "기본 표시"
+
+#: config/prefs.php.dist:121
+msgid ""
+"Default directory for your personal addressbook, contact lists, and searches."
+msgstr "기본 디렉토리 선택"
+
+#: config/prefs.php.dist:72
+msgid "Default sorting direction:"
+msgstr "기본 정렬 방법"
+
+#: templates/browse/actions.inc:5 lib/Renderer.php:48
+msgid "Delete"
+msgstr "삭제"
+
+#: config/prefs.php.dist:35
+msgid "Delete Confirmation"
+msgstr "삭제 확인"
+
+#: config/prefs.php.dist:36
+msgid "Delete button behaviour"
+msgstr "삭제 버튼 동작"
+
+#: lib/Driver/ldap.php:274
+msgid "Delete failed: (%s) %s"
+msgstr "삭제 실패: (%s) %s"
+
+#: delete.php:32
+msgid "Deletion failed"
+msgstr "삭제 실패"
+
+#: config/attributes.php.dist:213
+msgid "Department"
+msgstr "부서"
+
+#: config/prefs.php.dist:71
+msgid "Descending"
+msgstr "내림차순"
+
+#: templates/browse/search.inc:132
+msgid "Directory"
+msgstr "디렉토리"
+
+#: config/prefs.php.dist:9 config/prefs.php.dist:15 config/prefs.php.dist:21
+#: config/prefs.php.dist:27
+msgid "Display Options"
+msgstr "화면 설정"
+
+#: config/prefs.php.dist:149
+msgid "Do you want to confirm deleting entries?"
+msgstr "지울 때 확인하기"
+
+#: templates/browse/contactrow.inc:25
+msgid "Download vCard"
+msgstr "vCard 내려받기"
+
+#: templates/browse/column_headers.inc:8 templates/browse/contactrow.inc:33
+#: lib/Renderer.php:46
+msgid "Edit"
+msgstr "수정"
+
+#: templates/browse/contactrow.inc:33
+msgid "Edit '%s'"
+msgstr "수정 '%s'"
+
+#: edit.php:53 edit.php:80
+msgid "Edit entry for %s"
+msgstr "%s 항목 수정"
+
+#: config/attributes.php.dist:58
+msgid "Email"
+msgstr "이메일"
+
+#: edit.php:79
+msgid "Entry for %s updated."
+msgstr "%s 수정됨"
+
+#: templates/browse/actions.inc:11 templates/data/export.inc:46
+msgid "Export"
+msgstr "내보내기"
+
+#: templates/data/export.inc:7
+msgid "Export Address Book"
+msgstr "주소록 내보내기"
+
+#: templates/data/export.inc:26
+msgid "Export only the selected contacts."
+msgstr ""
+
+#: templates/data/export.inc:32
+msgid "Export the following address book completely."
+msgstr ""
+
+#: data.php:110 data.php:228 browse.php:62 browse.php:120 browse.php:135
+#: add.php:72 search.php:51
+msgid "Failed to access the address book: %s"
+msgstr "주소록 접근 실패: %s"
+
+#: browse.php:154
+msgid "Failed to add %s to %s: %s"
+msgstr "%s를 %s에 추가 실패 : %s"
+
+#: browse.php:284
+msgid "Failed to browse list"
+msgstr "리스트 탐색 실패"
+
+#: browse.php:315
+msgid "Failed to browse the directory"
+msgstr "디렉토리 검색실패"
+
+#: lib/Driver/ldap.php:312
+#, php-format
+msgid "Failed to change name: (%s) %s; Old DN = %s, New DN = %s, Root = %s"
+msgstr ""
+
+#: browse.php:140
+msgid "Failed to find object to be added: %s"
+msgstr "추가할 대상을 찾지 못함:%s"
+
+#: data.php:124 search.php:85
+msgid "Failed to search the directory: %s"
+msgstr "디렉토리 검색 실패: %s"
+
+#: config/attributes.php.dist:167
+msgid "Fax"
+msgstr "팩스"
+
+#: templates/browse/search.inc:72
+msgid "Find"
+msgstr "찾기"
+
+#: config/attributes.php.dist:48
+msgid "First Name"
+msgstr "이름"
+
+#: config/attributes.php.dist:202
+msgid "Freebusy URL"
+msgstr ""
+
+#: templates/browse/search.inc:85
+msgid "From"
+msgstr "위치"
+
+#: config/sources.php.dist:532
+msgid "Global Address Book"
+msgstr "전체 주소록"
+
+#: templates/browse/contactrow.inc:44
+msgid "Group"
+msgstr ""
+
+#: config/attributes.php.dist:82
+msgid "Home Address"
+msgstr "집 주소"
+
+#: config/attributes.php.dist:93
+msgid "Home City"
+msgstr "도시"
+
+#: config/attributes.php.dist:108
+msgid "Home Country"
+msgstr "국가"
+
+#: config/attributes.php.dist:150
+msgid "Home Phone"
+msgstr "집 전화"
+
+#: config/attributes.php.dist:103
+msgid "Home Postal Code"
+msgstr "우편번호"
+
+#: config/attributes.php.dist:98
+msgid "Home State/Province"
+msgstr "시/도"
+
+#: config/attributes.php.dist:88
+msgid "Home Street Address"
+msgstr "집 주소"
+
+#: config/sources.php.dist:468
+msgid "IMSP"
+msgstr ""
+
+#: templates/data/import.inc:9
+msgid "Import Address Book, Step %d"
+msgstr "주소록 가져오기, 단계 %d"
+
+#: data.php:274
+msgid "Import/Export Address Books"
+msgstr "주소록 가져오기/내보내기"
+
+#: lib/api.php:358 lib/api.php:577
+#, fuzzy
+msgid "Invalid Content-Type"
+msgstr "잘못된 이름."
+
+#: lib/api.php:419 lib/api.php:508
+#, fuzzy
+msgid "Invalid ID"
+msgstr "잘못된 이름."
+
+#: lib/api.php:191 lib/api.php:316 lib/api.php:415 lib/api.php:504
+#: lib/api.php:556 lib/api.php:871
+msgid "Invalid address book"
+msgstr "잘못된 주소록"
+
+#: lib/api.php:875 lib/api.php:946 lib/api.php:999
+msgid "Invalid email"
+msgstr "잘못된 이메일."
+
+#: lib/api.php:883
+#, fuzzy
+msgid "Invalid entry"
+msgstr "잘못된 이름."
+
+#: lib/Driver/ldap.php:270
+#, fuzzy
+msgid "Invalid key specified."
+msgstr "문자열 입력 오류"
+
+#: lib/api.php:879
+msgid "Invalid name"
+msgstr "잘못된 이름."
+
+#: lib/api.php:560
+msgid "Invalid objectId"
+msgstr "잘못된 객체 아이디"
+
+#: lib/Driver/ldap.php:38
+msgid ""
+"LDAP support is required but the LDAP module is not available or not loaded."
+msgstr ""
+
+#: lib/ObjectView.php:139
+msgid "Last Modified"
+msgstr "마지막 수정"
+
+#: config/attributes.php.dist:53
+msgid "Last Name"
+msgstr "성"
+
+#: templates/browse/column_headers.inc:10
+msgid "List"
+msgstr "리스트"
+
+#: templates/browse/search.inc:79
+msgid "Matching"
+msgstr "찾는 문자열"
+
+#: config/prefs.php.dist:81
+msgid "Maximum number of pages"
+msgstr "최대 페이지수"
+
+#: lib/Block/minisearch.php:3
+msgid "Mini Search"
+msgstr "간단한 검색"
+
+#: lib/Driver/ldap.php:306
+msgid "Missing DN in LDAP source configuration."
+msgstr ""
+
+#: config/attributes.php.dist:162
+msgid "Mobile Phone"
+msgstr "핸드폰"
+
+#: lib/Driver/ldap.php:335 lib/Driver/ldap.php:352
+msgid "Modify failed: (%s) %s"
+msgstr "수정 실표: (%s) %s"
+
+#: lib/api.php:985
+msgid "More than 1 entry found"
+msgstr ""
+
+#: templates/browse/actions.inc:19
+msgid "Move"
+msgstr "이동"
+
+#: templates/prefs/columnselect.inc:247
+msgid "Move left"
+msgstr "왼쪽으로 이동"
+
+#: templates/prefs/columnselect.inc:249
+msgid "Move right"
+msgstr "오른쪽으로 이동"
+
+#: data.php:31 templates/data/import.inc:21
+msgid "Mulberry Address Book"
+msgstr "Mulberry 주소록"
+
+#: lib/api.php:905
+msgid ""
+"Multiple persons with address [%s], but none with name [%s] already exist"
+msgstr "%s 주소를 가진 사람은 이미 있으나, %s 이름으로 존재하는 것은 없음"
+
+#: config/sources.php.dist:174 config/sources.php.dist:304
+msgid "My Addressbook"
+msgstr "내 주소록"
+
+#: config/attributes.php.dist:42
+msgid "Name"
+msgstr "이름"
+
+#: config/prefs.php.dist:22
+msgid "Name Format"
+msgstr "이름 형식"
+
+#: config/sources.php.dist:78
+msgid "Netcenter Member Directory"
+msgstr ""
+
+#: add.php:45 add.php:112 lib/Block/minisearch.php:27
+msgid "New Contact"
+msgstr "새로운 연락처 추가"
+
+#: templates/browse/actions.inc:37
+msgid "New List"
+msgstr "새 리스트"
+
+#: templates/data/import.inc:42
+msgid "Next"
+msgstr "다음"
+
+#: config/attributes.php.dist:218
+msgid "Nickname"
+msgstr "별명"
+
+#: lib/api.php:987 lib/api.php:1036
+#, php-format
+msgid "No %s entry found for %s"
+msgstr ""
+
+#: lib/api.php:955
+msgid "No address books found."
+msgstr "주소록 없음"
+
+#: minisearch.php:87
+msgid "No contacts found"
+msgstr "연락처 없음"
+
+#: lib/api.php:338
+msgid "No vCard data was found."
+msgstr "vCard 정보 찾지 못함"
+
+#: templates/browse/footer.inc:11
+msgid "None"
+msgstr "선택하지 않음"
+
+#: config/attributes.php.dist:184
+msgid "Notes"
+msgstr "참조"
+
+#: config/prefs.php.dist:89
+msgid "Number of items per page"
+msgstr "페이지당 결과 갯수"
+
+#: lib/api.php:436
+msgid "Object not found"
+msgstr "찾지 못함"
+
+#: config/attributes.php.dist:223
+msgid "Office"
+msgstr ""
+
+#: config/prefs.php.dist:34
+msgid "Other Options"
+msgstr "기타 설정"
+
+#: config/attributes.php.dist:190
+msgid "PGP Public Key"
+msgstr ""
+
+#: lib/api.php:322 lib/api.php:425 lib/api.php:514 lib/api.php:569
+#: lib/api.php:728 lib/api.php:889
+msgid "Permission Denied"
+msgstr "권한 없음"
+
+#: lib/Driver.php:454
+msgid "Permission denied"
+msgstr "권한 없음"
+
+#: data.php:32 templates/data/import.inc:22
+msgid "Pine Address Book"
+msgstr "Pine 주소록"
+
+#: templates/browse/javascript.inc:25
+msgid "Please enter the name of the new list:"
+msgstr "새로운 리스트의 이름을 입력하세요:"
+
+#: templates/prefs/columnselect.inc:221
+msgid "Please select a directory:"
+msgstr "디렉토리 선택:"
+
+#: config/sources.php.dist:384
+msgid "Private Address Book"
+msgstr "개인 주소록"
+
+#: lib/Driver/ldap.php:146
+msgid "Query failed: (%s) %s"
+msgstr "검색 실패: (%s) %s"
+
+#: templates/block/minisearch.inc:43
+msgid "Quick Search"
+msgstr "빨리 찾기"
+
+#: lib/Driver/ldap.php:190 lib/Driver/ldap.php:198 lib/Driver/ldap.php:432
+#, php-format
+msgid "Read failed: (%s) %s"
+msgstr ""
+
+#: templates/browse/footer.inc:6
+msgid "Records displayed:"
+msgstr "표시"
+
+#: templates/prefs/columnselect.inc:239
+msgid "Remove column"
+msgstr "칼럼 삭제"
+
+#: templates/browse/actions.inc:5
+msgid "Remove from this list"
+msgstr "리스트에서 제거"
+
+#: templates/data/import.inc:26
+msgid ""
+"Replace existing address book with the imported one? <b>Warning: This "
+"deletes all entries in your current address book.</b>"
+msgstr ""
+"가져온 것으로 기존 주소록을 바꿀까요? <b>주의: 이것은 현재 주소록의 모든 항목"
+"을 지웁니다.</b>"
+
+#: lib/Driver.php:344
+msgid "Requested object not found."
+msgstr ""
+
+#: add.php:46 templates/browse/search.inc:126
+msgid "Reset to Defaults"
+msgstr "초기화"
+
+#: config/attributes.php.dist:196
+msgid "S/MIME Public Certificate"
+msgstr ""
+
+#: lib/Driver/ldap.php:74
+#, php-format
+msgid "STARTTLS failed: (%s) %s"
+msgstr ""
+
+#: edit.php:57 add.php:46
+msgid "Save"
+msgstr "저장"
+
+#: templates/browse/search.inc:98 templates/browse/search.inc:125
+#: templates/block/minisearch.inc:48 config/prefs.php.dist:100
+msgid "Search"
+msgstr "검색"
+
+#: browse.php:264 minisearch.php:66
+msgid "Search Results"
+msgstr "검색 결과"
+
+#: lib/api.php:805
+msgid "Search failed"
+msgstr "검색 실패"
+
+#: lib/api.php:895 lib/api.php:901 lib/api.php:910 lib/api.php:923
+msgid "Search failed: %s"
+msgstr "검색 실패: %s"
+
+#: config/prefs.php.dist:28
+msgid "Searching Options"
+msgstr "검색 옵션"
+
+#: templates/block/minisearch.inc:49
+msgid "Searching..."
+msgstr "찾는중..."
+
+#: templates/browse/select.inc:9
+msgid "Select Address Book"
+msgstr "주소록 선택"
+
+#: templates/browse/actions.inc:35
+msgid "Select List"
+msgstr "리스트 선택"
+
+#: templates/data/export.inc:37
+msgid "Select the address book to export from:"
+msgstr "내보낼 주소록 선택:"
+
+#: templates/data/import.inc:31
+msgid "Select the address book to import to:"
+msgstr "가져올 주소록 선택:"
+
+#: templates/data/export.inc:14
+msgid "Select the export format:"
+msgstr "내보내기 형식 선택"
+
+#: templates/data/import.inc:40
+msgid "Select the file to import:"
+msgstr "임포트할 파일 선택:"
+
+#: templates/data/import.inc:16
+msgid "Select the format of the source file:"
+msgstr "소스 파일 포맷 선택"
+
+#: config/prefs.php.dist:109
+msgid "Select the format used to display names:"
+msgstr "이름 표시 형식 선택:"
+
+#: config/prefs.php.dist:17
+msgid "Select view to display by default."
+msgstr "기본 표시 선택"
+
+#: config/prefs.php.dist:11
+msgid "Select which fields to display in the address lists."
+msgstr "주소 리스트에 표시할 항목 선택"
+
+#: config/prefs.php.dist:23
+msgid "Select which format to display names."
+msgstr "이름 표시 형식 선택"
+
+#: templates/prefs/columnselect.inc:243
+msgid "Selected Columns:"
+msgstr "선택된 항목"
+
+#: add.php:59
+msgid "Selected address book '%s'."
+msgstr "주소록 '%s' 선택"
+
+#: config/sources.php.dist:239
+msgid "Shared Directory"
+msgstr "공유 디렉토리"
+
+#: templates/browse/actions.inc:53
+msgid "Sho_w All"
+msgstr "_w모두 보기"
+
+#: templates/browse/select.inc:11
+msgid "Show"
+msgstr ""
+
+#: templates/browse/actions.inc:53
+msgid "Show All"
+msgstr "모두 보기"
+
+#: templates/browse/actions.inc:52
+msgid "Show Contacts"
+msgstr "연락처 보기"
+
+#: templates/browse/actions.inc:51
+msgid "Show Lists"
+msgstr "리스트 보기"
+
+#: templates/browse/actions.inc:52
+msgid "Show _Contacts"
+msgstr "_c연락처 보기"
+
+#: templates/browse/actions.inc:51
+msgid "Show _Lists"
+msgstr "_l리스트 보기"
+
+#: templates/browse/column_headers.inc:12
+#: templates/browse/column_headers.inc:17
+msgid "Sort Direction"
+msgstr "정렬 방법"
+
+#: lib/api.php:154
+msgid "Sources"
+msgstr "소스"
+
+#: config/prefs.php.dist:130
+msgid "Specify where you want advanced search results to appear."
+msgstr ""
+
+#: browse.php:156
+msgid "Successfully added %s to %s"
+msgstr "%s가 %s에 성공적으로 추가됨"
+
+#: data.php:29
+msgid "TSV"
+msgstr ""
+
+#: templates/data/import.inc:19 templates/data/export.inc:18
+msgid "Tab separated values"
+msgstr "탭으로 구분된 값"
+
+#: data.php:234
+msgid "The address book could not be purged: %s"
+msgstr "주소록을 비울 수 없습니다: %s"
+
+#: edit.php:24 vcard.php:22 display.php:23
+msgid "The contact you requested does not exist."
+msgstr "요청한 연락처가 없습니다."
+
+#: browse.php:58
+msgid "There are no browseable address books."
+msgstr "탐색가능한 주소록이 없습니다."
+
+#: add.php:38
+msgid ""
+"There are no writeable address books. None of the available address books "
+"are configured to allow you to add new entries to them. If you believe this "
+"is an error, please contact your system administrator."
+msgstr ""
+"새로운 항목을 추가할 수 있도록 설정된 주소록이 없습니다. 만약 이것이 오류라"
+"고 생각하신다면, 관리자에게 문의하시기 바랍니다."
+
+#: add.php:108
+msgid ""
+"There was an error adding the new contact. Contact your system administrator "
+"for further help."
+msgstr "추가하는데 오류가 발생했습니다. 관리자에게 도움을 요청하시기 바랍니다."
+
+#: browse.php:212
+msgid "There was an error creating a new list."
+msgstr "새로운 리스트 만들기 오류"
+
+#: browse.php:163
+msgid "There was an error deleting %s from the source address book."
+msgstr "삭제 오류: %s"
+
+#: delete.php:31
+msgid "There was an error deleting this contact: %s"
+msgstr "삭제 오류 : %s"
+
+#: browse.php:93
+msgid "There was an error deleting this object."
+msgstr "삭제 오류"
+
+#: browse.php:294
+#, fuzzy
+msgid "There was an error displaying the select List"
+msgstr ""
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"#-#-#-#-#  compendium.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"메세지 전송 오류\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"메세지 보내기 오류\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"메세지 보내기 오류\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"메세지 보내기 오류\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"메세지 보내기 오류\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"메세지 보내기 오류\n"
+"#-#-#-#-#  ko_KR.po (IMP 4.0-cvs)  #-#-#-#-#\n"
+"메세지 보내기 오류"
+
+#: data.php:249
+msgid "There was an error importing the data: %s"
+msgstr "데이타 가져오기 오류: %s"
+
+#: lib/api.php:334
+msgid "There was an error importing the iCalendar data."
+msgstr "iCalendar 데이터 가져오기 오류"
+
+#: browse.php:83
+msgid "There was an error removing this object."
+msgstr "제거 오류"
+
+#: edit.php:84
+msgid "There was an error updating this entry: %s"
+msgstr "수정 오류: %s"
+
+#: data.php:151
+msgid "There were no addresses to export."
+msgstr "가져올 수 있는 주소가 없습니다."
+
+#: lib/Driver.php:404 lib/Driver.php:445
+msgid "This address book is read-only"
+msgstr "이 주소록은 읽기 전용입니다."
+
+#: data.php:211
+msgid "This file format is not supported."
+msgstr ""
+
+#: lib/api.php:914 lib/api.php:927
+msgid "This person already has a %s entry in the address book"
+msgstr "'%s'는 이미 주소록에 등록되어 있습니다."
+
+#: config/attributes.php.dist:70
+msgid "Title"
+msgstr "제목"
+
+#: lib/Driver.php:825
+msgid "Unable to load the definition of %s."
+msgstr "%s 정의를 읽을 수 없습니다."
+
+#: edit.php:57
+msgid "Undo Changes"
+msgstr "변경사항 되돌리기"
+
+#: lib/api.php:466
+msgid "Unsupported Content-Type."
+msgstr ""
+
+#: config/sources.php.dist:139
+msgid "Verisign Directory"
+msgstr "Verisign 디렉토리"
+
+#: templates/browse/contactrow.inc:27
+msgid "View '%s'"
+msgstr "'%s' 보기"
+
+#: minisearch.php:82
+msgid "View Contact"
+msgstr "연락처 보기"
+
+#: config/prefs.php.dist:98
+msgid "View to display by default:"
+msgstr "첫 기본 화면"
+
+#: config/attributes.php.dist:208
+msgid "Website URL"
+msgstr ""
+
+#: config/attributes.php.dist:113
+msgid "Work Address"
+msgstr "직장 주소"
+
+#: config/attributes.php.dist:124
+msgid "Work City"
+msgstr "직장 도시"
+
+#: config/attributes.php.dist:139
+msgid "Work Country"
+msgstr "직장 국가"
+
+#: config/attributes.php.dist:156
+msgid "Work Phone"
+msgstr "직장 전화"
+
+#: config/attributes.php.dist:134
+msgid "Work Postal Code"
+msgstr "직장 우편번호"
+
+#: config/attributes.php.dist:129
+msgid "Work State/Province"
+msgstr "직장 시/도"
+
+#: config/attributes.php.dist:119
+msgid "Work Street Address"
+msgstr "직장 주소"
+
+#: templates/browse/javascript.inc:25
+msgid "You are creating a distribution list."
+msgstr "새로운 리스트를 만듭니다."
+
+#: edit.php:44 display.php:48
+msgid "You do not have permission to view this contact."
+msgstr ""
+
+#: vcard.php:40
+msgid "You do not have permission to view this object."
+msgstr ""
+
+#: templates/browse/javascript.inc:41
+msgid "You must select a target address book."
+msgstr "주소록을 선택해야 합니다."
+
+#: templates/browse/javascript.inc:18
+msgid "You must select a target list."
+msgstr "리스트를 선택해야 합니다."
+
+#: templates/browse/javascript.inc:58
+msgid "You must select at least one entry first."
+msgstr "연락처를 먼저 선택하세요."
+
+#: edit.php:48
+msgid "You only have permission to view this contact."
+msgstr "이 목록을 볼 수 있는 권한만 있습니다."
+
+#: templates/browse/contactrow.inc:12
+msgid "[no value]"
+msgstr "[값 없음]"
+
+#: lib/Turba.php:275
+msgid "_Add"
+msgstr "_A추가"
+
+#: lib/Turba.php:274
+msgid "_Browse"
+msgstr "_B탐색"
+
+#: templates/browse/actions.inc:5
+msgid "_Delete"
+msgstr "_D삭제"
+
+#: lib/Turba.php:280
+msgid "_Import/Export"
+msgstr "_I가져오기/내보내기"
+
+#: templates/browse/actions.inc:5
+msgid "_Remove from this list"
+msgstr "_R이 리스트에서 지우기"
+
+#: lib/Turba.php:276
+msgid "_Search"
+msgstr "_S검색"
+
+#: vcard.php:46
+msgid "contact.vcf"
+msgstr ""
+
+#: data.php:172 data.php:177 templates/data/export.inc:1
+msgid "contacts.csv"
+msgstr ""
+
+#: data.php:182
+msgid "contacts.tsv"
+msgstr ""
+
+#: templates/browse/actions.inc:22
+msgid "to Selected Address Book"
+msgstr "선택된 주소록으로"
+
+#: data.php:30 templates/browse/column_headers.inc:9
+#: templates/data/import.inc:20 templates/data/export.inc:20
+msgid "vCard"
+msgstr "vCard"
