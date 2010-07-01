@@ -60,7 +60,7 @@ Categories=service-ssh
 
 [sshd/passwordauthentication]
 Description[de]=Aktiviere/Deaktiviere password authentication direkt über sshd
-Description[en]=Enalbe/Disable password authentication via sshd directly
+Description[en]=Enable/Disable password authentication via sshd directly
 Type=str
 Categories=service-ssh
 
