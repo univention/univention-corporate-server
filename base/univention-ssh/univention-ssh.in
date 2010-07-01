@@ -156,6 +156,7 @@ try:
 		elif arg.startswith('-'):
 			raise IndexError
 		else:
+			pw_filename = arg
 			pw_file = open(arg, 'r')
 			try:
 				password = pw_file.read()
