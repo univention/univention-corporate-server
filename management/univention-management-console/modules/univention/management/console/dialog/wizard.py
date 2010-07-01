@@ -31,13 +31,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import base
+import univention.management.console.protocol as umcp
+import univention.management.console.locales as locales
 
-class Wizard( base.Element ):
+from base import *
+from button import *
+
+import copy as copy_module
+
+
+_ = locales.Translation( 'univention.management.console.dialog' ).translate
+
+class Wizard( Element ):
 	def __init__( self, title = '' ):
-		base.Element.__init__( self )
+		Element.__init__( self )
 		self._title = title
-		self._content = base.List( attributes = { 'width' : '100%' } )
+		self._content = List( attributes = { 'width' : '100%' } )
 		self._image = None
 
 	def set_image( self, image ):
@@ -48,7 +57,7 @@ class Wizard( base.Element ):
 
 	def add_buttons( self, *args ):
 		if self._image:
-			self._content.add_row( [ base.Fill( 2 ) ] )
+			self._content.add_row( [ Fill( 2 ) ] )
 			self._content.add_row( [ '', args ] )
 		else:
 			self._content.add_row( [ '' ] )
@@ -57,8 +66,143 @@ class Wizard( base.Element ):
 	def setup( self ):
 		if self._image:
 			self._image[ 'width' ] = '100'
-			return base.Frame( [ base.List( content = [ [ base.Cell( self._image, { 'valign' : 'top' } ), self._content ] ], attributes = { 'width' : '100%' } ) ], self._title )
+			return Frame( [ List( content = [ [ Cell( self._image, { 'valign' : 'top' } ), self._content ] ], attributes = { 'width' : '100%' } ) ], self._title )
 		else:
-			return base.Section( self._title, self._content, attributes = { 'width' : '100%' } )
+			return Section( self._title, self._content, attributes = { 'width' : '100%' } )
 
 WizardTypes = ( type( Wizard() ), )
+
+# the following classes help to setup a wizard based on the Wizard
+# dialog class above. An example can be found in the UVMM UMC module
+
+class Page( object ):
+	def __init__( self, title = '', description = '' ):
+		self.title = title
+		self.description = description
+		self.options = []
+		self.actions = []
+		self.buttons = []
+
+	def setup( self, command, options, prev = True, next = True, finish = False, cancel = True ):
+		wizard = Wizard( self.title )
+		wizard._content.add_row( [ Fill( 2, str( self.description ) ), ] )
+		wizard._content.add_row( [ Fill( 2, '' ), ] )
+		items = []
+		for option in self.options:
+			if hasattr( option, 'option' ):
+				items.append( option.id() )
+				if option.option in options:
+					option.default = options[ option.option ]
+			wizard._content.add_row( [ option, ] )
+		wizard._content.add_row( [ Fill( 2, '' ), ] )
+		if self.actions:
+			# add already collected options to actions
+			for button in self.actions:
+				for action in button.actions:
+					action.command.options.update( options )
+			wizard._content.add_row( [ List( content = [ self.actions, ], attributes = { 'colspan' : '2' } ), ] )
+			wizard._content.add_row( [ Fill( 2, '' ), ] )
+
+		if not self.buttons:
+			if next:
+				opts = copy_module.copy( options )
+				opts[ 'action' ] = 'next'
+				next_btn = NextButton( ( Action( umcp.SimpleCommand( command, opts ), items ), ) )
+			elif finish:
+				opts = copy_module.copy( options )
+				opts[ 'action' ] = 'finish'
+				next_btn = Button( _( 'Finish' ), 'actions/finish', ( Action( umcp.SimpleCommand( command, opts ), items ), ), { 'class' : 'button_right' } )
+			else:
+				next_btn = ''
+			if cancel:
+				opts = copy_module.copy( options )
+				opts[ 'action' ] = 'cancel'
+				cancel_btn = Button( _( 'Cancel' ), 'actions/cancel', ( Action( umcp.SimpleCommand( command, opts ), items ), ) )
+			else:
+				cancel_btn
+			if prev:
+				opts = copy_module.copy( options )
+				opts[ 'action' ] = 'prev'
+				prev = umcp.SimpleCommand( command, opts )
+				prev.verify_options = False
+				prev_btn = PrevButton( ( Action( prev, items ), ) )
+			else:
+				prev_btn = ''
+
+			wizard._content.add_row( [ cancel_btn, List( content = [ [ prev_btn, next_btn ], ] ) ] )
+		else:
+			wizard._content.add_row( self.buttons )
+
+		return wizard.setup()
+
+class WizardResult( object ):
+	def __init__( self, value =True, text = '' ):
+		self.value = value
+		self.text = text
+
+	def __nonzero__( self ):
+		return self.value
+
+class IWizard( list ):
+	def __init__( self, command = '' ):
+		list.__init__( self )
+		self.current = None
+		self.command = command
+		self.actions = { 'next' : self.next, 'prev' : self.prev, 'cancel' : self.cancel, 'finish' : self.finish }
+		self._result = None
+
+	def result( self ):
+		return self._result
+
+	def action( self, object ):
+		if 'action' in object.options:
+			action = object.options[ 'action' ]
+			del object.options[ 'action' ]
+		else:
+			action = 'next'
+
+		if action in self.actions:
+			return self.actions[ action ]( object )
+
+		return WizardResult( False, 'Unknown wizard action: %s' % action )
+
+	def setup( self, object ):
+		prev = True
+		next = True
+		finish = False
+		if self.current == ( len( self ) - 1 ): # last page
+			next = False
+			finish = True
+		elif not self.current:
+			prev = False
+		return self[ self.current ].setup( self.command, object.options, prev = prev, next = next, finish = finish )
+
+	def finish( self, object ):
+		return WizardResult( False, 'finish is not implemented!' )
+
+	def next( self, object ):
+		if self.current == None:
+			self.current = 0
+		elif self.current == ( len( self ) - 1 ):
+			return None
+		else:
+			self.current += 1
+
+		return WizardResult()
+
+
+	def prev( self, object ):
+		if self.current == 0:
+			return None
+		else:
+			self.current -= 1
+
+		return WizardResult()
+
+	def cancel( self, object ):
+		return WizardResult( False, 'cancel is not implemented!' )
+
+	def reset( self ):
+		self.current = None
+		self._result = None
+

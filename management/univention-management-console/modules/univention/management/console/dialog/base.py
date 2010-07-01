@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import copy
+import copy as copy_module
 
 import base
 
@@ -39,7 +39,7 @@ class Element( object ):
 	__counter = 0
 	def __init__( self, attributes = {} ):
 		self.__id = None
-		self.__attributes = copy.deepcopy( attributes )
+		self.__attributes = copy_module.deepcopy( attributes )
 		self.__create_id()
 
 	def __str__( self ):

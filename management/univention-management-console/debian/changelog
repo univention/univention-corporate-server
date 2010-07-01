@@ -1,3 +1,10 @@
+univention-management-console (3.0.31-1) unstable; urgency=low
+
+  * move wizard helper classes from UVMM UMC module into the dialog
+    module; Bug #18613
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 01 Jul 2010 11:43:53 +0200
+
 univention-management-console (3.0.30-1) unstable; urgency=low
 
   * use isFinal member function to detect final response (required for
