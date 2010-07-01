@@ -1,7 +1,7 @@
 # Macros
 %define         V_package horde
 %define         V_version 3.3.6
-%define         V_release 20100516
+%define         V_release 20100628
 
 # Package Information
 Name:		%{V_package}
@@ -27,6 +27,7 @@ Source8:        10-kolab_hooks_base.php
 Source9:        10-kolab_prefs_base.php
 Source10:       10-kolab_conf_base.php
 Source11:       conf.php
+Source12:       hook-delete_webmail_user.php
 
 # List of Patches
 Patch0:         package.patch
@@ -64,6 +65,7 @@ PreReq:       Horde_Text_Filter
 PreReq:       Horde_Text_Flowed
 PreReq:       Horde_Tree
 PreReq:       Horde_UI
+PreReq:       Kolab_Config
 PreReq:       Kolab_Format >= 1.0.1
 PreReq:       Kolab_Server >= 0.5.0
 PreReq:       Kolab_Storage >= 0.4.0
@@ -105,6 +107,7 @@ Horde framework is installed using PEAR based packages.
 	%{l_shtool} install -d $RPM_BUILD_ROOT%{l_prefix}/var/kolab/webclient_data/tmp
 	%{l_shtool} install -d $RPM_BUILD_ROOT%{l_prefix}/var/kolab/webclient_data/sessions
 	%{l_shtool} install -d $RPM_BUILD_ROOT%{l_prefix}/etc/kolab/templates	
+	%{l_shtool} install -d $RPM_BUILD_ROOT%{l_prefix}/var/kolab/hooks/delete
 
 	cd %{V_package}-%{V_version}
 
@@ -160,6 +163,10 @@ Horde framework is installed using PEAR based packages.
 
 	%{l_shtool} install -c -m 644 %{l_value -s -a} %{S:1} %{S:2} %{S:3} %{S:4} %{S:5} %{S:6} %{S:7} \
 	  $RPM_BUILD_ROOT%{l_prefix}/etc/kolab/templates
+
+	%{l_shtool} install -c -m 755 %{l_value -s -a} %{S:12} $RPM_BUILD_ROOT%{l_prefix}/var/kolab/hooks/delete
+	sed -i -e 's#@@@php_bin@@@#%{l_prefix}/bin/php#' $RPM_BUILD_ROOT%{l_prefix}/var/kolab/hooks/delete/hook-*
+	sed -i -e 's#@@@prefix@@@#%{l_prefix}#' $RPM_BUILD_ROOT%{l_prefix}/var/kolab/hooks/delete/hook-*
 
 	%{l_shtool} install -c -m 644 %{l_value -s -a} %{S:8} $RPM_BUILD_ROOT%{l_prefix}/var/kolab/www/client/config/hooks.d/
 	%{l_shtool} install -c -m 644 %{l_value -s -a} %{S:9} $RPM_BUILD_ROOT%{l_prefix}/var/kolab/www/client/config/prefs.d/

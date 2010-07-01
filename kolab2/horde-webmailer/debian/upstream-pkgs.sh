@@ -90,6 +90,8 @@ for ((i=0; i<${#package[@]}; i++)); do
     fi
   done
 
+  # Hook templates not considered yet : hooks/horde-3.3.6/hook-delete_webmail_user.php
+
   ## 5. fix special case for horde framework package
   if [ "${pkg}" == horde ]; then
 	mv ${WEBMAILER_DIR}/horde/* ${WEBMAILER_DIR}

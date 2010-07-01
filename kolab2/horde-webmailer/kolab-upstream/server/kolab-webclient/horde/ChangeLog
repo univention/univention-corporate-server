@@ -1,0 +1,19 @@
+2010-06-28  Gunnar Wrobel  <p@rdus.de>
+
+	* hooks/horde-3.3.6/hook-delete_webmail_user.php:
+
+	kolab/issue3472 (web client user prefs not deleted when user gets
+	deleted)
+
+2010-05-16  Gunnar Wrobel  <p@rdus.de>
+
+	* configuration/horde-3.3.6/10-kolab_conf_base.php: 
+
+	kolab/issue2991 (The Kolab web client is always in the privileged networks) 
+
+2010-05-06  Gunnar Wrobel  <p@rdus.de>
+
+	* patches/horde-3.3.6/t_horde_HK_GW_ZpushAnnotations.diff:
+
+	Support setting Zpush configuration values.
+
