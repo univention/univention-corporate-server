@@ -1,3 +1,16 @@
+univention-virtual-machine-manager-daemon (0.9.43-1) unstable; urgency=low
+
+  * show location within the tree at the top of each page; Bug #18164
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 01 Jul 2010 16:26:03 +0200
+
+univention-virtual-machine-manager-daemon (0.9.42-1) unstable; urgency=low
+
+  * updated profiles: add boot device list and changed architecture x86 to
+    i686; Bug #18613
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 30 Jun 2010 08:45:09 +0200
+
 univention-virtual-machine-manager-daemon (0.9.41-1) unstable; urgency=low
 
   * overworked storage management in UVMM daemon

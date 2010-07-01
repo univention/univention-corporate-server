@@ -35,6 +35,8 @@ set -e
 
 eval "$(univention-config-registry shell hostname domainname server/role)"
 
+univention-config-registry set "uvmm/pool/default/path?/var/lib/libvirt/images"
+
 case "$1" in
     configure)
     rm -rf /etc/pki/libvirt/clientcert.pem

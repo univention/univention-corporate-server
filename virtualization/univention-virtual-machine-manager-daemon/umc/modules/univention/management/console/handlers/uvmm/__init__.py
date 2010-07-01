@@ -213,6 +213,45 @@ class handler( umch.simpleHandler ):
 			value = default
 		return value
 
+	def set_content( self, object, content ):
+		# create position links
+		lst = umcd.List( attributes = { 'width' : '100%', 'type' : 'umc_mini_padding' } )
+		row = []
+		options = {}
+		keys = []
+		refresh = ''
+		slash = umcd.Cell( umcd.HTML( '&rarr;' ), attributes = { 'type' : 'umc_mini_padding' } )
+		row.append( umcd.Cell( umcd.HTML( '<b>%s</b>' % _( 'Location:' ) ), attributes = { 'type' : 'umc_mini_padding' } ) )
+		if 'group' in object.options:
+			keys.append( 'group' )
+			options[ 'group' ] = object.options[ 'group' ]
+			if 'node' in object.options or 'source' in object.options or 'dest' in object.options:
+				if 'node' in object.options:
+					key = 'node'
+				else:
+					key = 'dest'
+					if 'source' in object.options:
+						key = 'source'
+				object.options[ 'node' ] = object.options[ key ]
+				keys.append( 'node' )
+				if 'domain' in object.options:
+					keys.append( 'domain' )
+		for key in keys[ : -1 ]:
+			options[ key ] = object.options[ key ]
+			cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % key , options = copy.copy( options ) )
+			lnk = umcd.LinkButton( object.options[ key ] , actions = [ umcd.Action( cmd ) ] )
+			row.append( umcd.Cell( lnk, attributes = { 'type' : 'umc_mini_padding' } ) )
+			row.append( slash )
+			refresh = key
+		row.append( umcd.Cell( umcd.Text( object.options[ keys[ -1 ] ] ), attributes = { 'type' : 'umc_mini_padding' } ) )
+
+		reload_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % refresh, options = options )
+		reload_btn = umcd.LinkButton( _( 'Refresh' ), 'actions/refresh', actions = [ umcd.Action( reload_cmd ) ] )
+		reload_btn.set_size( umct.SIZE_SMALL )
+		row.append( umcd.Cell( reload_btn, attributes = { 'width' : '100%', 'align' : 'right', 'type' : 'umc_mini_padding' } ) )
+		lst.add_row( row, attributes = { 'type' : 'umc_mini_padding' } )
+		object.dialog[ 0 ].set_dialog( umcd.List( content = [ [ lst, ], [ content, ] ] ) )
+
 	def uvmm_overview( self, object ):
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object )
 		if success:
@@ -227,11 +266,6 @@ class handler( umch.simpleHandler ):
 			return
 
 		nodes = self.uvmm.get_group_info( object.options[ 'group' ] )
-		content = umcd.List()
-		reload_cmd = umcp.SimpleCommand( 'uvmm/group/overview', options = { 'group' : object.options[ 'group' ] } )
-		reload_btn = umcd.LinkButton( _( 'Refresh' ), 'actions/refresh', actions = [ umcd.Action( reload_cmd ) ] )
-		reload_btn.set_size( umct.SIZE_SMALL )
-		content.add_row( [ umcd.Cell( reload_btn, attributes = { 'align' : 'right' } ), ] )
 
 		table = umcd.List()
 		table.set_header( [ _( 'Physical server' ), _( 'CPU usage' ), _( 'Memory usage' ) ] )
@@ -241,8 +275,7 @@ class handler( umch.simpleHandler ):
 			cpu_usage = percentage( 0, width = 150 )
 			mem_usage = percentage( float( node.curMem ) / node.phyMem * 100, '%s / %s' % ( block2byte( node.curMem ), block2byte( node.phyMem ) ), width = 150 )
 			table.add_row( [ node_btn, cpu_usage, mem_usage ] )
-		content.add_row( [ table, ] )
-		res.dialog[ 0 ].set_dialog( content )
+		self.set_content( res, table )
 		self.finished(object.id(), res)
 
 	def _create_domain_buttons( self, object, node, domain, overview = 'node', operations = False, remove_failure = 'domain' ):
@@ -340,10 +373,6 @@ class handler( umch.simpleHandler ):
 		node = self.uvmm.get_node_info( node_uri )
 
 		content = umcd.List()
-		reload_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = { 'group' : object.options[ 'group' ], 'node' : object.options[ 'node' ] } )
-		reload_btn = umcd.LinkButton( _( 'Refresh' ), 'actions/refresh', actions = [ umcd.Action( reload_cmd ) ] )
-		reload_btn.set_size( umct.SIZE_SMALL )
-		# content.add_row( [ umcd.Cell( reload_btn, attributes = { 'align' : 'right' } ), ] )
 
 		node_table = umcd.List()
 		node_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = { 'group' : object.options[ 'group' ], 'node' : node.name } )
@@ -353,7 +382,7 @@ class handler( umch.simpleHandler ):
 		node_table.add_row( [ _( 'Physical server' ), node_btn ] )
 		node_table.add_row( [ _( 'CPU usage' ), cpu_usage ] )
 		node_table.add_row( [ _( 'Memory' ), mem_usage ] )
-		content.add_row( [ umcd.Section( _( 'Physical server' ), node_table ), umcd.Cell( reload_btn, attributes = { 'align' : 'right', 'valign' : 'top' } ) ] )
+		content.add_row( [ umcd.Section( _( 'Physical server' ), node_table ) ] )
 
 		table = umcd.List()
 		num_buttons = 0
@@ -381,7 +410,7 @@ class handler( umch.simpleHandler ):
 			table.set_header( [ _( 'Instance' ), _( 'Operating System' ), _( 'CPU usage' ), _( 'Memory' ) ] )
 
 		content.add_row( [ umcd.Cell( table, attributes = { 'colspan' : '2' } ), ] )
-		res.dialog[ 0 ].set_dialog( content )
+		self.set_content( res, content )
 		self.finished(object.id(), res)
 
 	def _dlg_domain_settings( self, object, node, domain_info ):
@@ -479,17 +508,25 @@ class handler( umch.simpleHandler ):
 
 		content2.add_row( [ umcd.Text( '' ) ] )
 
-		if not domain_info:
-			content.add_row( [ umcd.Cell( umcd.Section( _( 'Extended Settings' ), content2, hideable = False, hidden = False, name = 'subsection.newdomain' ), attributes = { 'colspan' : '2' } ), ] )
-		else:
-			content.add_row( [ umcd.Cell( umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = True, name = 'subsection.%s' % domain_info.name ), attributes = { 'colspan' : '2' } ), ] )
+		# if not domain_info:
+		# 	content.add_row( [ umcd.Cell( umcd.Section( _( 'Extended Settings' ), content2, hideable = False, hidden = False, name = 'subsection.newdomain' ), attributes = { 'colspan' : '2' } ), ] )
+		# else:
+		# 	content.add_row( [ umcd.Cell( umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = True, name = 'subsection.%s' % domain_info.name ), attributes = { 'colspan' : '2' } ), ] )
 
 		ids = ( name.id(), os.id(), virt_tech.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), drives.id(), vnc.id(), vnc_global.id(), kblayout.id(), bootdevs.id() )
 		cfg_cmd = umcp.SimpleCommand( 'uvmm/domain/configure', options = object.options )
 		overview_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = object.options )
-		content.add_row( [ '', umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ] ) ] )
 
-		return content
+		sections = umcd.List()
+		if not domain_info:
+			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = False, hidden = False, name = 'settings.newdomain' ) ] )
+			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = False, hidden = False, name = 'extsettings.newdomain' ) ] )
+		else:
+			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = True, hidden = False, name = 'settings.%s' % domain_info.name ) ] )
+			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = False, name = 'extsettings.%s' % domain_info.name ) ] )
+		sections.add_row( [ umcd.Cell( umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ] ), attributes = { 'align' : 'right', 'defaultbutton' : '1' } ) ] )
+
+		return sections
 
 	def uvmm_domain_overview( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain overview' )
@@ -510,9 +547,9 @@ class handler( umch.simpleHandler ):
 
 		blind_table = umcd.List()
 
-		reload_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = { 'group' : object.options[ 'group' ], 'node' : object.options[ 'node' ], 'domain' : object.options[ 'domain' ] } )
-		reload_btn = umcd.LinkButton( _( 'Refresh' ), 'actions/refresh', actions = [ umcd.Action( reload_cmd ) ] )
-		reload_btn.set_size( umct.SIZE_SMALL )
+		# reload_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = { 'group' : object.options[ 'group' ], 'node' : object.options[ 'node' ], 'domain' : object.options[ 'domain' ] } )
+		# reload_btn = umcd.LinkButton( _( 'Refresh' ), 'actions/refresh', actions = [ umcd.Action( reload_cmd ) ] )
+		# reload_btn.set_size( umct.SIZE_SMALL )
 		# blind_table.add_row( [ umcd.Cell( reload_btn, attributes = { 'align' : 'right' } ), ] )
 
 		infos = umcd.List()
@@ -532,13 +569,14 @@ class handler( umch.simpleHandler ):
 		tab = umcd.List()
 		tab.add_row( [ infos, stats ] )
 
-		blind_table.add_row( [ umcd.Section( _( 'Virtual instance %(domain)s' ) % { 'domain' : domain_info.name }, tab ), umcd.Cell( reload_btn, attributes = { 'align' : 'right', 'valign' : 'top' } ) ] )
-		blind_table.add_row( [ umcd.Cell( umcd.Section( 'Operations', ops ), attributes = { 'colspan' : '2' } ) ] )
+		blind_table.add_row( [ umcd.Section( _( 'Virtual instance %(domain)s' ) % { 'domain' : domain_info.name }, tab ) ] )
+		blind_table.add_row( [ umcd.Cell( umcd.Section( 'Operations', ops ) ) ] )
 
 		content = self._dlg_domain_settings( object, node, domain_info )
-		blind_table.add_row( [ umcd.Cell( umcd.Section( _( 'Settings' ), content, hideable = True, hidden = True, name = 'section.%s' % domain_info.name ), attributes = { 'colspan' : '2' } ) ] )
+		blind_table.add_row( [ content ] )
 
-		res.dialog[ 0 ].set_dialog( blind_table )
+		self.set_content( res, blind_table )
+		# res.dialog[ 0 ].set_dialog( blind_table )
 		self.finished(object.id(), res)
 
 	def uvmm_domain_migrate( self, object ):
@@ -667,7 +705,7 @@ class handler( umch.simpleHandler ):
 
 		if not 'action' in object.options:
 			self.domain_wizard.reset()
-		self.domain_wizard.action( object, ( node_uri, node ) )
+		result = self.domain_wizard.action( object, ( node_uri, node ) )
 		# domain wizard finished?
 		if self.domain_wizard.result():
 			resp = self.uvmm.domain_configure( object.options[ 'node' ], self.domain_wizard.result() )
@@ -677,12 +715,18 @@ class handler( umch.simpleHandler ):
 				self.finished( object.id(), res, report = resp.msg )
 			else:
 				self.uvmm_domain_overview( object )
-				return
+			return
 		else:
 			page = self.domain_wizard.setup( object )
+			ud.debug( ud.ADMIN, ud.INFO, 'Domain create: dialog: %s' % str( page ) )
 			res.dialog[ 0 ].set_dialog( page )
 
-		self.finished(object.id(), res)
+		if not result:
+			res.status( 201 )
+			report = result.text
+		else:
+			report = ''
+		self.finished( object.id(), res, report = report )
 
 	def uvmm_domain_remove_images( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain remove images' )
@@ -750,8 +794,12 @@ class handler( umch.simpleHandler ):
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 		node = self.uvmm.get_node_info( node_uri )
 
-		self.device_wizard.action( object, ( node_uri, node ) )
+		result = self.device_wizard.action( object, ( node_uri, node ) )
 		page = self.device_wizard.setup( object )
 		res.dialog[ 0 ].set_dialog( page )
-
-		self.finished(object.id(), res)
+		if not result:
+			res.status( 201 )
+			report = result.text
+		else:
+			report = ''
+		self.finished( object.id(), res, report = report )

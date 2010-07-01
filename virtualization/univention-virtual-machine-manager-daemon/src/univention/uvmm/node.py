@@ -49,6 +49,11 @@ from univention.uvmm.eventloop import *
 import threading
 from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_all_storage_volumes, StorageError, storage_pools
 
+import univention.config_registry as ucr
+
+configRegistry = ucr.ConfigRegistry()
+configRegistry.load()
+
 logger = logging.getLogger('uvmmd.node')
 
 STATES = ['NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED']
@@ -437,7 +442,7 @@ class Node(object):
 				break
 		else:
 			logger.debug( "register default pool on %s" % self.name )
-			create_storage_pool( self.conn, '/var/lib/libvirt/images' )
+			create_storage_pool( self.conn, configRegistry.get( 'uvmm/pool/default/path', '/var/lib/libvirt/images' ) )
 			self.storages.append( get_storage_pool_info( self, 'default' ) )
 
 	def update_once(self):

@@ -159,6 +159,27 @@ class Client( notifier.signals.Provider ):
 
 		return node_info.data
 
+	def is_domain_name_unique( self, node, domain_name ):
+		node_info = self.get_node_info( node )
+		if self.is_error( node_info ):
+			return None
+
+		for domain in node_info.domains:
+			if domain.name == domain_name:
+				return False
+		return True
+
+	def is_image_used( self, node, image ):
+		node_info = self.get_node_info( node )
+		if self.is_error( node_info ):
+			return None
+
+		for domain in node_info.domains:
+			for disk in domain.disks:
+				if disk.source == image:
+					return domain.name
+		return None
+
 	def get_domain_info( self, node, domain ):
 		node_info = self.get_node_info( node )
 		if self.is_error( node_info ):

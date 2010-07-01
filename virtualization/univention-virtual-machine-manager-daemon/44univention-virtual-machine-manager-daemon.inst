@@ -87,11 +87,13 @@ univention-directory-manager uvmm/profile create "$@" \
 	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
 	--set name="Windows XP x86" \
 	--set name_prefix=win-xp- \
-	--set arch=x86 \
+	--set arch=i686 \
 	--set cpus=1 \
 	--set virttech=hvm \
 	--set ram=512MB \
 	--set interface=eth0 \
+	--append bootdev=cdrom \
+	--append bootdev=hd \
 	--set vnc=1 \
 	--set kblayout=de
 
@@ -105,6 +107,8 @@ univention-directory-manager uvmm/profile create "$@" \
 	--set virttech=hvm \
 	--set ram=512MB \
 	--set interface=eth0 \
+	--append bootdev=cdrom \
+	--append bootdev=hd \
 	--set vnc=1 \
 	--set kblayout=de
 
@@ -113,11 +117,13 @@ univention-directory-manager uvmm/profile create "$@" \
 	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
 	--set name="Windows 7 x86" \
 	--set name_prefix=win7- \
-	--set arch=x86 \
+	--set arch=i686 \
 	--set cpus=1 \
 	--set virttech=hvm \
 	--set ram=512MB \
 	--set interface=eth0 \
+	--append bootdev=cdrom \
+	--append bootdev=hd \
 	--set vnc=1 \
 	--set kblayout=de
 
@@ -131,6 +137,8 @@ univention-directory-manager uvmm/profile create "$@" \
 	--set virttech=hvm \
 	--set ram=512MB \
 	--set interface=eth0 \
+	--append bootdev=cdrom \
+	--append bootdev=hd \
 	--set vnc=1 \
 	--set kblayout=de
 
@@ -139,11 +147,13 @@ univention-directory-manager uvmm/profile create "$@" \
 	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
 	--set name="Univention Corporate Server 2.4-0 (i386)" \
 	--set name_prefix=ucs24- \
-	--set arch=x86 \
+	--set arch=i686 \
 	--set cpus=1 \
 	--set virttech=hvm \
 	--set ram=512MB \
 	--set interface=eth0 \
+	--append bootdev=cdrom \
+	--append bootdev=hd \
 	--set vnc=1 \
 	--set kblayout=de
 
@@ -157,6 +167,8 @@ univention-directory-manager uvmm/profile create "$@" \
 	--set virttech=hvm \
 	--set ram=512MB \
 	--set interface=eth0 \
+	--append bootdev=cdrom \
+	--append bootdev=hd \
 	--set vnc=1 \
 	--set kblayout=de
 
