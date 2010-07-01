@@ -54,7 +54,7 @@ Categories=service-ssh
 
 [sshd/challengeresponse]
 Description[de]=Aktiviere/Deaktiviere challenge response authentication
-Description[en]=Enalbe/Disable challenge response authentication
+Description[en]=Enable/Disable challenge response authentication
 Type=str
 Categories=service-ssh
 

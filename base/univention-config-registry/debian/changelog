@@ -1,3 +1,10 @@
+univention-config-registry (6.0.11-1) unstable; urgency=low
+
+  * fixed typo in ucr variable description for sshd/challengeresponse.
+    Bug #18776
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 01 Jul 2010 21:19:00 +0200
+
 univention-config-registry (6.0.10-1) unstable; urgency=low
 
   * include univention-ucr-cron (Bug #16541)
