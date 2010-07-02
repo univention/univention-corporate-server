@@ -3,9 +3,9 @@ auth     requisite                          pam_nologin.so
 if baseConfig.get('auth/faillog', 'no').lower() in ['yes', 'true', 'enabled', '1']:
 	tally_option='per_user deny=%s' % baseConfig.get('auth/faillog/limit', '5')
 	if baseConfig.get('auth/faillog/root', 'no') in ['yes', 'true', 'enabled', '1']:
-		tally_option=' even_deny_root_account'
+		tally_option+=' even_deny_root_account'
 	if baseConfig.get('auth/faillog/unlock_time', '0') != '0':
-		tally_option=' unlock_time=%s' % baseConfig.get('auth/faillog/unlock_time')
+		tally_option+=' unlock_time=%s' % baseConfig.get('auth/faillog/unlock_time')
 	if baseConfig.get('auth/faillog/lock_global', 'false').lower() in [ 'true', 'yes', 'on', '1']:
 		print 'auth	[success=1 user_unknown=1 default=bad]	pam_tally.so %s' % tally_option
 		print 'auth	[default=bad]	pam_runasroot.so program=/usr/lib/univention-pam/lock-user'
