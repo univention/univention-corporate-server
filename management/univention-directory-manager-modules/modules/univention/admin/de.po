@@ -888,8 +888,8 @@ msgid "Locked all login method"
 msgstr "Alle Anmeldeverfahren sind gesperrt"
 
 #: syntax.py:2241
-msgid "Locked Windows only"
-msgstr "Nur Windows gesperrt"
+msgid "Locked Windows/Kerberos only"
+msgstr "Nur Windows/Kerberos gesperrt"
 
 #: syntax.py:2242
 msgid "Locked POSIX/LDAP only"

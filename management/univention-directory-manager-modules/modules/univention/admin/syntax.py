@@ -2238,6 +2238,6 @@ class locked( select ):
 	choices = (
 		( 'none', _( 'None locked login method' ) ),
 		( 'all', _( 'Locked all login method' ) ),
-		( 'windows', _( 'Locked Windows only' ) ),
+		( 'windows', _( 'Locked Windows/Kerberos only' ) ),
 		( 'posix', _( 'Locked POSIX/LDAP only' ) ),
 	)
