@@ -1,3 +1,9 @@
+univention-pam (4.0.3-1) unstable; urgency=low
+
+  * support umlauts in lock-user script. Bug #18750
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 02 Jul 2010 08:16:35 +0200
+
 univention-pam (4.0.2-1) unstable; urgency=low
 
   * added faillog support which can be activated by setting
