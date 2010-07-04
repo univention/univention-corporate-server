@@ -20,7 +20,7 @@ if baseConfig.get('auth/faillog', 'no').lower() in ['yes', 'true', 'enabled', '1
 		print 'auth	[success=1 user_unknown=1 default=bad]	pam_tally.so %s' % tally_option
 		print 'auth	[default=die]	pam_runasroot.so program=/usr/lib/univention-pam/lock-user'
 	else:
-		print 'auth	required	pam_tally.so per_user %s' % tally_option
+		print 'auth	required	pam_tally.so %s' % tally_option
 @!@
 
 # local unix authentification; don't cache passwords
