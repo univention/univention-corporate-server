@@ -1,10 +1,10 @@
 #!/usr/bin/make -f
 
-D=$(CURDIR)/debian/horde-webmail/
+D=$(CURDIR)/debian/horde-webmailer/
 HORDESHARE=$(D)/usr/share/horde3/
 
 # WEBMAILERSOURCE_DIR is prepared by running debian/upstream-pkgs.sh
-WEBMAILERSOURCE_DIR=$(CURDIR)/horde-webmailer
+WEBMAILERSOURCE_DIR=$(CURDIR)/horde-webmail
 
 ## The Univention patches in debian/patches are applied by quilt
 include /usr/share/quilt/quilt.make
