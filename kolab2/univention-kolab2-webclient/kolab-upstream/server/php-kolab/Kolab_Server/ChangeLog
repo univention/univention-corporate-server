@@ -1,3 +1,8 @@
+2010-03-24  Gunnar Wrobel  <p@rdus.de>
+
+	* patches/Kolab_Server-0.5.0/issue3983.patch:
+	kolab/issue3983 (Phpunit testsuite fails on OpenPKG Kolab 2.2.2)
+
 2009-04-25  Gunnar Wrobel  <p@rdus.de>
 
 	* Kolab_Server.spec: Update to 0.5.0

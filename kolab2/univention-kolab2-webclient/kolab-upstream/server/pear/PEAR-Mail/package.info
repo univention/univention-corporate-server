@@ -16,7 +16,7 @@ package_origin='WGET'
 version='1.1.14'
 
 # Package release number
-release='1'
+release='2'
 
 # Source URL to download from
 sourceurl='http://pear.php.net/get'

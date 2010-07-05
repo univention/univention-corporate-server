@@ -17,8 +17,8 @@ Beware: the current script pulls CVS HEAD, maybe kolab_2_2_branch or kolab-serve
 Then debian/rules should operate on the basis of the tarballs in 'kolab-php-lib'.
 
 
-Interesting from the point of OEM configuration adjustments:
-============================================================
+Kolab changed the method for OEM configuration adjustments:
+===========================================================
 kolab-upstream/server/pear/Horde_Framework/patches/Horde_Framework-0.0.2dev20091215/t_horde_HK__MP_ConfdStyleConfigurationOverride.diff
-http://bugs.horde.org/ticket/8172
+( http://bugs.horde.org/ticket/8172 )
 

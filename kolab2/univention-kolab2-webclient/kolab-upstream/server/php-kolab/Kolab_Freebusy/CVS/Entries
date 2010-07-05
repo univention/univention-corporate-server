@@ -1,6 +1,7 @@
-/.cvsignore/1.6/Fri Jan 22 15:36:04 2010//THEAD
-/ChangeLog/1.28/Sat Apr 25 19:24:45 2009//THEAD
-/Kolab_FreeBusy.spec/1.25/Fri Jan 22 16:30:10 2010//THEAD
-/Makefile/1.10/Fri Jan 22 15:36:04 2010//THEAD
-/package.info/1.2/Fri Jan 22 15:36:04 2010//THEAD
-D
+/.cvsignore/1.6/Tue Jun 15 13:27:21 2010//THEAD
+/Makefile/1.11/Thu Jun 17 12:46:08 2010//THEAD
+D/patches////
+D/templates////
+/ChangeLog/1.33/Mon Jul  5 13:19:47 2010//THEAD
+/Kolab_FreeBusy.spec/1.31/Mon Jul  5 13:19:47 2010//THEAD
+/package.info/1.8/Mon Jul  5 13:19:47 2010//THEAD

@@ -1,3 +1,14 @@
+univention-kolab2-webclient (6.0.2-1) unstable; urgency=low
+
+  * remove Horde_* and Kolab_* PEAR archives from this package
+    which are shipped by horde-webmailer and/or univention-kolab2-framework
+  * update debian/upstream-pkgs.sh accordingly
+  * minor updates from the scripts/sql and scripts/update SQL files
+  * rename UCS template files to new Kolab subfile scheme
+  * updated kolab-upstream (Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 05 Jul 2010 17:02:16 +0200
+
 univention-kolab2-webclient (6.0.1-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
@@ -23,7 +34,7 @@ univention-kolab2-webclient (5.0.4-7) unstable; urgency=low
 
   * revert set $conf['auth']['driver']='kolab' if horde/auth==kolab
     because the uid login via 'imp' has been fixed by a patch to
-	horde-webmailer (Bug #17442)
+    horde-webmailer (Bug #17442)
 
  -- Arvid Requate <requate@univention.de>  Fri, 26 Feb 2010 20:41:56 +0100
 

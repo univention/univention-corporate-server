@@ -34,8 +34,8 @@ CREATE INDEX kronolith_uid_idx ON kronolith_events (event_uid);
 
 
 CREATE TABLE kronolith_storage (
-    vfb_owner      VARCHAR(255) DEFAULT NULL,
-    vfb_email      VARCHAR(255) DEFAULT '' NOT NULL,
+    vfb_owner      VARCHAR(255),
+    vfb_email      VARCHAR(255) NOT NULL,
     vfb_serialized TEXT NOT NULL
 );
 

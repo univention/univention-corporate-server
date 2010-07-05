@@ -1,5 +1,5 @@
 Type: file
-File: etc/horde/horde3/conf.d/kolab.ucs.php
+File: etc/horde/horde3/conf.d/20-kolab_ucs.php
 User: www-data
 Mode: 640
 Variables: ldap/server/name
@@ -11,40 +11,40 @@ Variables: horde/.*
 Variables: domainname
 
 Type: file
-File: etc/horde/horde3/hooks.d/hooks.ucs.php
+File: etc/horde/horde3/hooks.d/20-hooks_ucs.php
 Variables: horde/application/.*
 
 Type: file
-File: etc/horde/horde3/prefs.d/prefs.ucs.php
+File: etc/horde/horde3/prefs.d/20-prefs_ucs.php
 
 Type: file
-File: etc/horde/horde3/registry.d/registry.ucs.php
+File: etc/horde/horde3/registry.d/20-registry_ucs.php
 Variables: horde/application/.*
 Variables: horde/webroot
 
 Type: file
-File: etc/horde/imp4/conf.d/conf.ucs.php
+File: etc/horde/imp4/conf.d/20-conf_ucs.php
 Variables: horde/.*
 
 Type: file
-File: etc/horde/imp4/prefs.d/prefs.ucs.php
+File: etc/horde/imp4/prefs.d/20-prefs_ucs.php
 Variables: horde/folder/sent
 Variables: horde/folder/drafts
 Variables: horde/folder/trash
 Variables: horde/folder/spam
 
 Type: file
-File: etc/horde/imp4/servers.d/servers.ucs.php
+File: etc/horde/imp4/servers.d/20-servers_ucs.php
 
 Type: file
-File: etc/horde/turba2/conf.d/conf.ucs.php
+File: etc/horde/turba2/conf.d/20-conf_ucs.php
 Variables: horde/.*
 
 Type: file
-File: etc/horde/turba2/sources.d/sources.ucs.php
+File: etc/horde/turba2/sources.d/20-sources_ucs.php
 
 Type: file
-File: etc/horde/kronolith2/conf.d/kolab.ucs.php
+File: etc/horde/kronolith2/conf.d/20-kolab_ucs.php
 Variables: domainname
 Variables: horde/.*
 
@@ -60,10 +60,10 @@ Variables: horde/webaccess/share.*
 Variables: horde/auth
 
 Type: file
-File: etc/horde/ingo1/conf.d/conf.ucs.php
+File: etc/horde/ingo1/conf.d/20-conf_ucs.php
 
 Type: file
-File: etc/horde/ingo1/backends.d/backends.ucs.php
+File: etc/horde/ingo1/backends.d/20-backends_ucs.php
 
 Type: file
 File: etc/horde/passwd/conf.php
@@ -72,16 +72,16 @@ Type: file
 File: etc/horde/passwd/backends.php
 
 Type: file
-File: etc/horde/nag2/conf.d/conf.ucs.php
+File: etc/horde/nag2/conf.d/20-conf_ucs.php
 
 Type: file
-File: etc/horde/nag2/prefs.d/prefs.ucs.php
+File: etc/horde/nag2/prefs.d/20-prefs_ucs.php
 
 Type: file
-File: etc/horde/mnemo2/conf.d/conf.ucs.php
+File: etc/horde/mnemo2/conf.d/20-conf_ucs.php
 
 Type: file
-File: etc/horde/mnemo2/prefs.d/prefs.ucs.php
+File: etc/horde/mnemo2/prefs.d/20-prefs_ucs.php
 
 Type: file
 File: etc/cron.d/kronolith2

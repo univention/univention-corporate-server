@@ -16,7 +16,7 @@ package_origin='WGET'
 version='0.5.0'
 
 # Package release number
-release='20100116'
+release='20100325'
 
 # Source URL to download from
 sourceurl='http://pear.horde.org/get'

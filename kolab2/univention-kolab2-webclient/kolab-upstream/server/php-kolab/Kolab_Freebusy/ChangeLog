@@ -1,3 +1,40 @@
+2010-06-25  Gunnar Wrobel  <p@rdus.de>
+
+	* patches/Kolab_FreeBusy-0.1.7/Kolab_FreeBusy_0.1.7_p2.patch:
+
+	kolab/issue3732 (Logging needed for errors when creating a Kolab
+	session object)
+
+2010-06-24  Gunnar Wrobel  <p@rdus.de>
+
+	* patches/Kolab_FreeBusy-0.1.7/Kolab_FreeBusy_0.1.7_p1.patch:
+
+	kolab/issue4395 (freebusy list contains time of an event, which is
+	from a now *not* shared, before shared calendar folder)
+
+2010-06-23  Gunnar Wrobel  <p@rdus.de>
+
+	* Kolab_FreeBusy.spec: Update to 0.1.7
+
+	kolab/issue3983 (Phpunit testsuite fails on OpenPKG Kolab 2.2.2)
+	kolab/issue4395 (freebusy list contains time of an event, which is
+	from a now *not* shared, before shared calendar folder)
+
+2010-05-16  Gunnar Wrobel  <p@rdus.de>
+
+	* Kolab_FreeBusy.spec: Update to 0.1.6
+
+	freebusy.conf.template.in moved to the Kolab_FreeBusy package.
+
+	kolab/issue3544 (Cached xfb access not up to date for changed
+	distribution lists)
+
+2010-03-25  Gunnar Wrobel  <p@rdus.de>
+
+	* patches/Kolab_FreeBusy-0.1.5/issue3983.patch:
+
+	kolab/issue3983 (Phpunit testsuite fails on OpenPKG Kolab 2.2.2)
+
 2009-04-25  Gunnar Wrobel  <p@rdus.de>
 
 	* Kolab_FreeBusy.spec: Update to 0.1.5
@@ -16,7 +53,7 @@
 	                 free/busy information)
 	kolab/issue3527 (no immediately printing of folders during
 	                 freebusy cache regeneration)
-	
+
 2009-03-06  Gunnar Wrobel  <p@rdus.de>
 
 	* Kolab_FreeBusy.spec: Update to 0.1.3.

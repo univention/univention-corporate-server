@@ -6,8 +6,8 @@
 %define         V_package_origin WGET
 %define         V_repo_commit 
 %define         V_repo_release 
-%define         V_version 0.1.8
-%define         V_release 20100122
+%define         V_version 0.1.9
+%define         V_release 20100420
 %define         V_sourceurl http://pear.horde.org/get
 %define         V_php_lib_loc php
 %define         V_www_loc 

@@ -215,6 +215,7 @@ ALTER TABLE horde_cache OWNER TO horde;
 CREATE TABLE horde_locks (
     lock_id                  VARCHAR(36) NOT NULL,
     lock_owner               VARCHAR(32) NOT NULL,
+    lock_scope               VARCHAR(32) NOT NULL,
     lock_principal           VARCHAR(255) NOT NULL,
     lock_origin_timestamp    BIGINT NOT NULL,
     lock_update_timestamp    BIGINT NOT NULL,

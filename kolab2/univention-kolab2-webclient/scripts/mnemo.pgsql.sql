@@ -7,7 +7,7 @@ CREATE TABLE mnemo_memos (
     memo_desc       VARCHAR(64) NOT NULL,
     memo_body       TEXT,
     memo_category   VARCHAR(80),
-    memo_private    SMALLINT NOT NULL DEFAULT 0,
+    memo_private    SMALLINT DEFAULT 0 NOT NULL,
 --
     PRIMARY KEY (memo_owner, memo_id)
 );

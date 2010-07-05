@@ -1,3 +1,9 @@
+2010-06-23  Gunnar Wrobel  <p@rdus.de>
+
+	* patches/Kolab_Format-1.0.1/Kolab_Format_1.0.1_p1.patch:
+
+	Make the task handler independent of the Kolab package.
+
 2009-04-24  Gunnar Wrobel  <p@rdus.de>
 
 	* Kolab_Format_1.0.1_p1.patch: Removes an additional option that

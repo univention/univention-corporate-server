@@ -13,10 +13,10 @@ package_url='http://pear.horde.org/index.php?package='
 package_origin='WGET'
 
 # Version number
-version='0.4.0'
+version='0.5.0'
 
 # Package release number
-release='2010228'
+release='20100625'
 
 # Source URL to download from
 sourceurl='http://pear.horde.org/get'

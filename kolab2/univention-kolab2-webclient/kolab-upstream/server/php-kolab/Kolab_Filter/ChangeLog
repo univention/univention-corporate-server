@@ -1,3 +1,23 @@
+2010-04-20  Gunnar Wrobel  <p@rdus.de>
+
+	* Kolab_Filter.spec:  Update to 0.1.9.
+
+	kolab/issue4257 ("Always accept" policy doesn't set atendee status
+	to "accepted")
+
+2010-04-15  Gunnar Wrobel  <p@rdus.de>
+
+	* patches/Kolab_Filter-0.1.8/issue3967.patch:
+
+	kolab/issue3962 (Names of config variables for "untrusted" text missleading)
+	kolab/issue3967 (UNTRUSTED vs. UNAUTHENTICATED, distinction considered harmful)
+
+2010-03-25  Gunnar Wrobel  <p@rdus.de>
+
+	* patches/Kolab_Filter-0.1.8/issue3983.patch:
+
+	kolab/issue3983 (Phpunit testsuite fails on OpenPKG Kolab 2.2.2)
+
 2009-11-16  Gunnar Wrobel  <p@rdus.de>
 
 	* Kolab_Filter.spec: Update to 0.1.7.

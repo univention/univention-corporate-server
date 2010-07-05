@@ -45,7 +45,8 @@ prereq='                                   \
 PreReq:       OpenPKG, openpkg >= 20070603 \
 PreReq:       php, php::with_pear = yes    \
 PreReq:       PEAR-Horde-Channel           \
-PreReq:       PEAR-SOAP >= 0.8RC3           \
+PreReq:       PEAR-SOAP >= 0.8RC3          \
+PreReq:       PEAR-HTTP_WebDAV_Server      \
 PreReq:       Horde_Framework              \
 PreReq:       Horde_Lock                   \
 '

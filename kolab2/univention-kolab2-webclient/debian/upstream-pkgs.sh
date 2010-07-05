@@ -7,7 +7,7 @@ TARGET_DIR=${CURDIR}/kolab-php-lib
 ## directories for the upstream packages:
 KOLAB_SRCDIR=kolab-upstream
 KOLABPEAR=server/pear
-KOLABPHP=server/php-kolab
+# KOLABPHP=server/php-kolab
 
 ## 1. checkout current kolab pear and php-kolab packages
 
@@ -25,6 +25,7 @@ for d in ${KOLABPEAR} ${KOLABPHP}; do
 	fi
 done
 
+
 mkdir -p ${TARGET_DIR}
 
 # The Makefiles of the PEAR-Packages under server/pear use
@@ -38,7 +39,7 @@ mkdir -p ${TARGET_DIR}
 # build process in debian/rules
 
 # extract the kolab package name, upstream package name, version and URL from the PEAR info file
-for pkginfo in ${KOLAB_SRCDIR}/${KOLABPEAR}/*/package.info ${KOLAB_SRCDIR}/${KOLABPHP}/*/package.info; do
+for pkginfo in ${KOLAB_SRCDIR}/${KOLABPEAR}/*/package.info; do
 	## 2. look for kolab patches for the upstream package
 	pkgdir=`dirname ${pkginfo}`
 
@@ -53,6 +54,11 @@ for pkginfo in ${KOLAB_SRCDIR}/${KOLABPEAR}/*/package.info ${KOLAB_SRCDIR}/${KOL
 
 	pkgpatchdir="${pkgdir}/patches/${PACKAGE}-${VERSION}/"
 	patchlist="$(ls ${pkgpatchdir}/*.diff ${pkgpatchdir}/*.patch 2>/dev/null)"
+
+	# skip the Horde_* and Kolab_* packages, they are included in horde-webmailer and/or kolab-framework
+	[[ "${PEAR_PACKAGE}" == Horde_* ]] && continue
+	[[ "${PEAR_PACKAGE}" == Kolab_* ]] && continue
+	[[ "${PEAR_PACKAGE}" == File ]] && continue
 
 	## 3. download upstream tarball and apply kolab patches if present
 	if [ -z "${patchlist}" ]; then
