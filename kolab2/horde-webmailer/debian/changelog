@@ -1,3 +1,14 @@
+horde-webmailer (1.2.0~2.2.0-17) unstable; urgency=low
+
+  * add patch t_horde_HK__MP_ConfdStyleConfigurationOverride.diff
+    from kolab-upstream/server/pear/Horde_Framework/patches/
+  * spilt prepare_horde-webmailer.sh from upstream-pkgs.sh,
+    the former containes the commands to create the horde-webmailer
+    sources from the upstream Horde packages with Kolab patches applied
+    (Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 05 Jul 2010 17:22:24 +0200
+
 horde-webmailer (1.2.0~2.2.0-16) unstable; urgency=low
 
   * updated upstream snapshot

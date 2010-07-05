@@ -6,12 +6,13 @@ HORDESHARE=$(D)/usr/share/horde3/
 # WEBMAILERSOURCE_DIR is prepared by running debian/upstream-pkgs.sh
 WEBMAILERSOURCE_DIR=$(CURDIR)/horde-webmailer
 
+## The Univention patches in debian/patches are applied by quilt
 include /usr/share/quilt/quilt.make
 
 prepare: debian/prepare-stamp
 debian/prepare-stamp:
-	## to pull upstream packages:
-	# debian/upstream-pkgs.sh
+	## extract Horde upstream packages and apply Kolab patches
+	# debian/prepare_horde-webmailer.sh	# this expects horde-webmailer to be removed in clean target
 	touch debian/prepare-stamp
 
 configure: configure-stamp
@@ -29,11 +30,10 @@ clean:
 	dh_testroot
 	rm -f build-stamp configure-stamp
 	# rm -f horde-webmail-1.2.0_kolab_openpkg.patch
-	rm -rf horde-webmail
+	rm -rf horde-webmailer
 	rm -rf $(QUILT_STAMPFN)
 	rm -rf debian/prepare-stamp
 	rm -f *~
-	rm -Rf .pc framework
 	dh_clean
 
 install: build
@@ -42,60 +42,43 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	## The Univention patches in debian/patches are applied here:
-	# QUILT_PATCH_OPTS="-d $(WEBMAILERSOURCE_DIR)" quilt --quiltrc /dev/null push -a || test $? = 2
-	QUILT_PATCHES=debian/patches quilt --quiltrc /dev/null push -a || test $? = 2
-
 	# install
 	mkdir -p `dirname $(HORDESHARE)`
 	cp -r $(WEBMAILERSOURCE_DIR)/* $(HORDESHARE)
-	find $(HORDESHARE) -type d -name .pc -exec rm -rf {} \; # remove the quilt dirs of upstream-pkgs.sh
-	find $(HORDESHARE) -type d -name .svn -exec rm -rf {} \; # remove the svn dirs
+	find $(HORDESHARE) -type d -name .pc | xargs -r rm -rf # remove the quilt dirs of upstream-pkgs.sh
+	find $(HORDESHARE) -type d -name .svn | xargs -r rm -rf # remove the svn dirs
 
 	# translation
 	msgfmt -o ${HORDESHARE}/kronolith/locale/de_DE/LC_MESSAGES/kronolith.mo ${HORDESHARE}/kronolith/po/de_DE.po
 
 	## Horde Demo Cfg files
-	(cd ${HORDESHARE}/config && find . ! -path "*.svn*" -type f -exec install -m 0644 {} $(D)/etc/horde/horde3/{} \;)
+	(cd ${HORDESHARE}/config && find . ! -path "*.svn*" -type f -exec install -D -m 0644 {} $(D)/etc/horde/horde3/{} \;)
 	rm -R ${HORDESHARE}/config
-	#(cd $(D)/etc/horde/horde3/; for f in *.dist; do cp $$f `basename $$f .dist`; done)
 	ln -sf /etc/horde/horde3 ${HORDESHARE}/config
 
-	(cd ${HORDESHARE}/kronolith/config && find . ! -path "*.svn*" -type f -exec install -m 0644 {} $(D)/etc/horde/kronolith2/{} \;)
+	(cd ${HORDESHARE}/kronolith/config && find . ! -path "*.svn*" -type f -exec install -D -m 0644 {} $(D)/etc/horde/kronolith2/{} \;)
 	rm -R ${HORDESHARE}/kronolith/config
-	#(cd $(D)/etc/horde/kronolith2; for f in *.dist; do cp $$f `basename $$f .dist`; done)
 	ln -sf /etc/horde/kronolith2 ${HORDESHARE}/kronolith/config
-	sed -i "s|^require_once dirname(__FILE__) . '/../lib/\(.*\)';|require_once '/usr/share/horde3/kronolith/lib/\1';|" $(D)/etc/horde/kronolith2/prefs.php ; \
 
-	(cd ${HORDESHARE}/imp/config && find . ! -path "*.svn*" -type f -exec install -m 0644 {} $(D)/etc/horde/imp4/{} \;)
+	(cd ${HORDESHARE}/imp/config && find . ! -path "*.svn*" -type f -exec install -D -m 0644 {} $(D)/etc/horde/imp4/{} \;)
 	rm -R ${HORDESHARE}/imp/config
-	#(cd $(D)/etc/horde/imp4; for f in *.dist; do cp $$f `basename $$f .dist`; done)
 	ln -sf /etc/horde/imp4 ${HORDESHARE}/imp/config
-	sed -i "s|^require_once dirname(__FILE__) . '/../lib/\(.*\)';|require_once '/usr/share/horde3/imp/lib/\1';|" $(D)/etc/horde/imp4/prefs.php ; \
 
-	(cd ${HORDESHARE}/turba/config && find . ! -path "*.svn*" -type f -exec install -m 0644 {} $(D)/etc/horde/turba2/{} \;)
+	(cd ${HORDESHARE}/turba/config && find . ! -path "*.svn*" -type f -exec install -D -m 0644 {} $(D)/etc/horde/turba2/{} \;)
 	rm -R ${HORDESHARE}/turba/config
-	#(cd $(D)/etc/horde/turba2; for f in *.dist; do cp $$f `basename $$f .dist`; done)
 	ln -sf /etc/horde/turba2 ${HORDESHARE}/turba/config
-	sed -i "s|^require_once dirname(__FILE__) . '/../lib/\(.*\)';|require_once '/usr/share/horde3/turba/lib/\1';|" $(D)/etc/horde/turba2/prefs.php ; \
 
-	(cd ${HORDESHARE}/mnemo/config && find . ! -path "*.svn*" -type f -exec install -m 0644 {} $(D)/etc/horde/mnemo2/{} \;)
+	(cd ${HORDESHARE}/mnemo/config && find . ! -path "*.svn*" -type f -exec install -D -m 0644 {} $(D)/etc/horde/mnemo2/{} \;)
 	rm -R ${HORDESHARE}/mnemo/config
-	#(cd $(D)/etc/horde/mnemo2; for f in *.dist; do cp $$f `basename $$f .dist`; done)
 	ln -sf /etc/horde/mnemo2 ${HORDESHARE}/mnemo/config
-	sed -i "s|^require_once dirname(__FILE__) . '/../lib/\(.*\)';|require_once '/usr/share/horde3/mnemo/lib/\1';|" $(D)/etc/horde/mnemo2/prefs.php ; \
 
-	(cd ${HORDESHARE}/nag/config && find . ! -path "*.svn*" -type f -exec install -m 0644 {} $(D)/etc/horde/nag2/{} \;)
+	(cd ${HORDESHARE}/nag/config && find . ! -path "*.svn*" -type f -exec install -D -m 0644 {} $(D)/etc/horde/nag2/{} \;)
 	rm -R ${HORDESHARE}/nag/config
-	#(cd $(D)/etc/horde/nag2; for f in *.dist; do cp $$f `basename $$f .dist`; done)
 	ln -sf /etc/horde/nag2 ${HORDESHARE}/nag/config
-	sed -i "s|^require_once dirname(__FILE__) . '/../lib/\(.*\)';|require_once '/usr/share/horde3/nag/lib/\1';|" $(D)/etc/horde/nag2/prefs.php ; \
 
-	(cd ${HORDESHARE}/ingo/config && find . ! -path "*.svn*" -type f -exec install -m 0644 {} $(D)/etc/horde/ingo1/{} \;)
+	(cd ${HORDESHARE}/ingo/config && find . ! -path "*.svn*" -type f -exec install -D -m 0644 {} $(D)/etc/horde/ingo1/{} \;)
 	rm -R ${HORDESHARE}/ingo/config
-	#(cd $(D)/etc/horde/ingo1; for f in *.dist; do cp $$f `basename $$f .dist`; done)
 	ln -sf /etc/horde/ingo1 ${HORDESHARE}/ingo/config
-	sed -i "s|^require_once dirname(__FILE__) . '/../lib/\(.*\)';|require_once '/usr/share/horde3/ingo/lib/\1';|" $(D)/etc/horde/ingo1/prefs.php ; \
 
 binary-arch: build install
 
