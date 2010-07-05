@@ -34,8 +34,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-30 13:21+0200\n"
-"PO-Revision-Date: 2010-04-08 09:57+0200\n"
+"POT-Creation-Date: 2010-07-05 14:24+0200\n"
+"PO-Revision-Date: 2010-07-05 14:28+0200\n"
 "Last-Translator: Andreas Büsching <buesching@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -66,7 +66,7 @@ msgstr "Boot-Medium"
 msgid "Destination host"
 msgstr "Zielwirtsystem"
 
-#: __init__.py:76 wizards.py:318
+#: __init__.py:76 wizards.py:204
 msgid "Architecture"
 msgstr "Architektur"
 
@@ -118,7 +118,7 @@ msgstr "Sind Sie sicher, dass die virtuelle Instanz gelöscht werden soll?"
 msgid "Configuration of virtual instances"
 msgstr "Konfiguration der virtuellen Instanzen"
 
-#: __init__.py:138 wizards.py:332
+#: __init__.py:138 wizards.py:218
 msgid "Name"
 msgstr "Name"
 
@@ -126,7 +126,7 @@ msgstr "Name"
 msgid "MAC address"
 msgstr "MAC-Adresse"
 
-#: __init__.py:140 __init__.py:355 __init__.py:381 wizards.py:335
+#: __init__.py:140 __init__.py:397 __init__.py:423 wizards.py:221
 msgid "Memory"
 msgstr "Speicher"
 
@@ -142,7 +142,7 @@ msgstr "VNC-Fernzugriff"
 msgid "Available globally"
 msgstr "Global verfügbar"
 
-#: __init__.py:145 wizards.py:338
+#: __init__.py:145 wizards.py:224
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
@@ -150,7 +150,7 @@ msgstr "Tastaturlayout"
 msgid "Drive"
 msgstr "Laufwerk"
 
-#: __init__.py:149 __init__.py:381 __init__.py:520
+#: __init__.py:149 __init__.py:423 __init__.py:570
 msgid "Operating System"
 msgstr "Betriebssystem"
 
@@ -186,11 +186,11 @@ msgstr "Ändern des Status einer virtuellen Instanz"
 msgid "Change state of virtual instances"
 msgstr "Ändern des Status von virtuellen Instanzen"
 
-#: __init__.py:170 __init__.py:381
+#: __init__.py:170 __init__.py:423
 msgid "Instance"
 msgstr "Instanz"
 
-#: __init__.py:176 __init__.py:302
+#: __init__.py:176 __init__.py:335
 msgid "New Device"
 msgstr "Neues Laufwerk"
 
@@ -226,7 +226,15 @@ msgstr "aus"
 msgid "crashed"
 msgstr "abgestürzt"
 
-#: __init__.py:219
+#: __init__.py:224
+msgid "Location:"
+msgstr ""
+
+#: __init__.py:249
+msgid "Refresh"
+msgstr "Aktualisieren"
+
+#: __init__.py:258
 msgid ""
 "This UMC module provides a management system for virtualization hosts that "
 "are registered within the UCS domain.\n"
@@ -256,81 +264,86 @@ msgstr ""
 "detaillierten Auflistung von Einstellungen. Diese können auch bearbeitet und "
 "gespeichert werden."
 
-#: __init__.py:232 __init__.py:344 __init__.py:514
-msgid "Refresh"
-msgstr "Aktualisieren"
-
-#: __init__.py:237 __init__.py:353 __init__.py:356
+#: __init__.py:271 __init__.py:395 __init__.py:398
 msgid "Physical server"
 msgstr "Physikalischer Server"
 
-#: __init__.py:237 __init__.py:354 __init__.py:381 __init__.py:526
+#: __init__.py:271 __init__.py:396 __init__.py:423 __init__.py:576
 msgid "CPU usage"
 msgstr "CPU Auslastung"
 
-#: __init__.py:237 __init__.py:525
+#: __init__.py:271 __init__.py:575
 msgid "Memory usage"
 msgstr "Speichernutzung"
 
-#: __init__.py:255 __init__.py:571
+#: __init__.py:288 __init__.py:622
 msgid "Migrate"
 msgstr "Migrieren"
 
-#: __init__.py:264
+#: __init__.py:297
 msgid "Start"
 msgstr "Start"
 
-#: __init__.py:272
+#: __init__.py:305
 msgid "Stop"
 msgstr "Stop"
 
-#: __init__.py:280
+#: __init__.py:313
 msgid "Suspend"
 msgstr "Anhalten"
 
-#: __init__.py:288
+#: __init__.py:321
 msgid "Resume"
 msgstr "Fortführen"
 
-#: __init__.py:295 __init__.py:726
+#: __init__.py:328 __init__.py:777
 msgid "Remove"
 msgstr "Löschen"
 
-#: __init__.py:337
+#: __init__.py:359
+#, python-format
+msgid "%(dn)s on %(nn)s"
+msgstr "%(dn)s auf %(nn)s"
+
+#: __init__.py:367
+msgid "JavaVNC"
+msgstr "JavaVNC"
+
+#: __init__.py:383
 msgid "The physical server is not available at the moment"
 msgstr "Der physikalische Server ist momentan nicht erreichbar"
 
-#: __init__.py:438 __init__.py:441
+#: __init__.py:480 __init__.py:483
 msgid "Drives"
 msgstr "Laufwerk"
 
-#: __init__.py:483 __init__.py:485
+#: __init__.py:535 __init__.py:538
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: __init__.py:536 __init__.py:539
 msgid "Extended Settings"
 msgstr "Erweiterte Einstellungen"
 
-#: __init__.py:490
+#: __init__.py:540
 msgid "Save"
 msgstr "Speichern"
 
-#: __init__.py:519
+#: __init__.py:569
 msgid "Status"
 msgstr "Status"
 
-#: __init__.py:535
+#: __init__.py:585
 #, python-format
 msgid "Virtual instance %(domain)s"
 msgstr "Virtuelle Instanz %(domain)s"
 
-#: __init__.py:539
-msgid "Settings"
-msgstr "Einstellungen"
-
-#: __init__.py:561
+#: __init__.py:612
 #, python-format
 msgid "Migrate %(domain)s from %(source)s to:"
 msgstr "Migriere die Instanz %(domain)s vom Wirtsystem %(source)s zu:"
 
-#: __init__.py:707
+#: __init__.py:758
 msgid ""
 "When removing a virtual instance the disk images bind to it may be removed "
 "also. Please select the disks that should be remove with the virtual "
@@ -342,22 +355,22 @@ msgstr ""
 "die entfernt werden sollen. Stellen Sie sicher, daß keins der Images von "
 "einer anderen Instanz genutzt wird."
 
-#: __init__.py:725
+#: __init__.py:776
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: __init__.py:730
+#: __init__.py:781
 #, python-format
 msgid "Remove the virtual instance %(instance)s?"
 msgstr "Virtuelle Instanz %(instance)s löschen?"
 
-#: __init__.py:745
+#: __init__.py:796
 #, python-format
 msgid "Removing the instance <i>%(domain)s</i> failed"
 msgstr ""
 "Das Löschen der virtuellen Instanz <i>%(domain)s</i> ist fehlgeschlagen"
 
-#: __init__.py:748
+#: __init__.py:799
 #, python-format
 msgid "The instance <i>%(domain)s</i> was removed successfully"
 msgstr "Die virtuelle Instanz <i>%(domain)s</i> wurde erfolgreich gelöscht"
@@ -391,7 +404,7 @@ msgstr "Diskette"
 msgid "Hard drive"
 msgstr "Festplatte"
 
-#: types.py:55 wizards.py:402
+#: types.py:55 wizards.py:288
 msgid "CDROM drive"
 msgstr "CDROM-Laufwerk"
 
@@ -415,31 +428,27 @@ msgstr "Auswahl einer vorhandenen Image-Datei"
 msgid "Could not open LDAP connection"
 msgstr "Konnte Verbindung zum LDAP-Server nicht aufbauen"
 
-#: wizards.py:89
-msgid "Finish"
-msgstr "Fertigstellen"
-
-#: wizards.py:178
+#: wizards.py:56
 msgid "Add a device"
 msgstr "Laufwerk hinzufügen"
 
-#: wizards.py:179
+#: wizards.py:57
 msgid "Storage pool"
 msgstr "Speicherbereich"
 
-#: wizards.py:180
+#: wizards.py:58
 msgid "Device image"
 msgstr "Laufwerk Image-Datei"
 
-#: wizards.py:185
+#: wizards.py:63
 msgid "What type of device should be created?"
 msgstr "Welche Art von Laufwerk soll erstellt werden?"
 
-#: wizards.py:186
+#: wizards.py:64
 msgid "Type of device"
 msgstr "Art des Laufwerks"
 
-#: wizards.py:190
+#: wizards.py:68
 msgid ""
 "For the harddrive a new image can be created or an existing image can be "
 "used. If you choose to use an existing image make sure that it is not used "
@@ -449,7 +458,7 @@ msgstr ""
 "ausgewählt werden. Wählen Sie eine existierende Image-Datei stellen Sie "
 "sicher, dass diese nicht von einer anderen Instanz verwendet wird."
 
-#: wizards.py:201
+#: wizards.py:79
 msgid ""
 "Select a storage pool that should be used for the image. The filename and "
 "size for the virtual harddrive have been set to default values. You may "
@@ -459,73 +468,76 @@ msgstr ""
 "Größe der Image-Datei wurde mit einem Vorgabewert belegt. Diesen können Sie "
 "wie gewünscht anpassen."
 
-#: wizards.py:203
+#: wizards.py:81
 msgid "Filename"
 msgstr "Dateiname"
 
-#: wizards.py:204
+#: wizards.py:82
 msgid "Size"
 msgstr "Größe"
 
-#: wizards.py:208
+#: wizards.py:86
 msgid "The following device will be create:"
 msgstr "Das folgende Laufwerk wird angelegt:"
 
-#: wizards.py:219
+#: wizards.py:97
 msgid "Pool"
 msgstr "Speicherbereich"
 
-#: wizards.py:255
+#: wizards.py:133
 msgid "Select the storage pool and afterwards one of the existing disk images"
 msgstr ""
 "Wählen Sie einen Speicherbereich und anschließend eine existierende Image-"
 "Datei"
 
-#: wizards.py:257
+#: wizards.py:135
 msgid "Select the storage pool and afterwards one of the existing ISO image"
 msgstr ""
 "Wählen Sie einen Speicherbereich und anschließend eine existierende ISO-Datei"
 
-#: wizards.py:269
+#: wizards.py:150
 msgid ""
 "The selected image is already used by another virtual instance. You may "
 "consider to choose another image or continue if you are sure that it will "
 "not cause any problems."
-msgstr "Das ausgewählte Image wird bereits von einer anderen virtuellen Instanz verwendet. Sie sollten eventuell ein anderes Image wählen oder wenn Sie sich sicher sind, dass dies zu keinen Problemen führt, können Sie auch fortfahren."
+msgstr ""
+"Das ausgewählte Image wird bereits von einer anderen virtuellen Instanz "
+"verwendet. Sie sollten eventuell ein anderes Image wählen oder wenn Sie sich "
+"sicher sind, dass dies zu keinen Problemen führt, können Sie auch fortfahren."
 
-#: wizards.py:272
+#: wizards.py:153
 #, python-format
 msgid "<b>Device type</b>: %(type)s"
 msgstr "<b>Laufwerktyp</b>: %(type)s"
 
-#: wizards.py:273
+#: wizards.py:154
 #, python-format
 msgid "<b>Storage pool</b>: %(pool)s"
 msgstr "<b>Speicherbereich</b>: %(pool)s"
 
-#: wizards.py:274
+#: wizards.py:155
 #, python-format
 msgid "<b>Image filename</b>: %(image)s"
 msgstr "<b>Image-Datei</b>: %(image)s"
 
-#: wizards.py:275
+#: wizards.py:156
 #, python-format
 msgid "<b>Image size</b>: %(size)s"
 msgstr "<b>Image-Größe</b>: %(size)s"
 
-#: wizards.py:312
+#: wizards.py:198
 msgid "Create new virtual instance"
 msgstr "Erstellen neuer virtuellen Instanz"
 
-#: wizards.py:316
+#: wizards.py:202
 msgid "Profiles"
 msgstr "Profile"
 
-#: wizards.py:319
+#: wizards.py:205
 msgid "Virtualisation Technology"
 msgstr "Virtualisierungstechnik"
 
-#: wizards.py:326
+#: wizards.py:212
 msgid ""
 "By selecting a profile for the virtual instance most of the settings will be "
 "filled out with default values. In the following step these values may be "
@@ -535,7 +547,7 @@ msgstr ""
 "virtuelle Instanz vorausgefüllt. Im folgenden Schritt können diese Werte "
 "angepasst werden."
 
-#: wizards.py:331
+#: wizards.py:217
 msgid ""
 "The settings shown below are all read from the selected profile. Please "
 "verify that these values fits your environment. At least the name for the "
@@ -545,37 +557,37 @@ msgstr ""
 "Stellen Sie sicher, dass die Werte in Ihrer Umgebung gültig sind. Mindestens "
 "der Name der Instanz sollte angepasst werden."
 
-#: wizards.py:336
+#: wizards.py:222
 msgid "CPUs"
 msgstr "CPUs"
 
-#: wizards.py:337
+#: wizards.py:223
 msgid "VNC"
 msgstr "VNC"
 
-#: wizards.py:342
+#: wizards.py:228
 msgid "The virtual instance will be created with the following settings."
 msgstr "Die virtuelle Instanz wird mit den folgenden Einstellungen angelegt."
 
-#: wizards.py:343
+#: wizards.py:229
 msgid "Attached devices"
 msgstr "Eingebundene Laufwerk"
 
-#: wizards.py:345
+#: wizards.py:231
 msgid "You may now add additional devices by clicking the button 'Add device'"
 msgstr ""
 "Sie können nun weitere Laufwerke hinzufügen indem Sie die Schaltfläche "
 "'Laufwerk hinzufügen' wählen"
 
-#: wizards.py:346
+#: wizards.py:232
 msgid "Add device"
 msgstr "Laufwerk hinzufügen"
 
-#: wizards.py:382
+#: wizards.py:268
 msgid "You should modify the name of the virtual instance"
 msgstr "Sie sollten den Namen der virtuellen Instanz anpassen"
 
-#: wizards.py:384
+#: wizards.py:270
 msgid ""
 "The chosen name for the virtual instance is not unique. Please use another "
 "one."
@@ -583,16 +595,19 @@ msgstr ""
 "Der gewählte Name ist nicht eindeutig. Bitte verwenden Sie einen anderen "
 "Namen."
 
-#: wizards.py:395
+#: wizards.py:281
 #, python-format
 msgid "<li>%(type)s: %(size)s (image file %(image)s in pool %(pool)s)</li>"
 msgstr ""
 "<li>%(type)s: %(size)s (Image-Datei %(image)s im Speicherbereich %(pool)s)</"
 "li>"
 
-#: wizards.py:400
+#: wizards.py:286
 msgid "hard drive"
 msgstr "Festplatte"
+
+#~ msgid "Finish"
+#~ msgstr "Fertigstellen"
 
 #~ msgid "Add virtual instance"
 #~ msgstr "Hinzufügen einer virtuellen Instanz"

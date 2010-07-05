@@ -355,6 +355,19 @@ class handler( umch.simpleHandler ):
 			html = umcd.HTML( '<a class="nounderline" target="_blank" href="%s"><span class="content">VNC</span></a>' % uri )
 			buttons.append( html )
 			buttons.append( comma )
+			popupwindow = ("<html><head><title>" + \
+			               _("%(dn)s on %(nn)s") + \
+			               "</title></head><body>" + \
+			               "<applet archive='/TightVncViewer.jar' code='com.tightvnc.vncviewer.VncViewer' height='100%%' width='100%%'>" + \
+			               "<param name='host' value='%(h)s'><param name='port' value='%(p)s'></applet>" + \
+			               "</body></html>") % {'h': host, 'p': vnc.port, 'nn': node.name, 'dn': domain.name}
+			id = ''.join([c for c in '%s%s' % (host, vnc.port) if c.lower() in set('abcdefghijklmnopqrstuvwxyz0123456789') ])
+			javascript = "var w=window.open('','VNC%s','dependent=no,resizable=yes');if(w.document.applets.length > 0){w.focus();}else{w.document.write('%s');w.document.close();};return false;" % (id, popupwindow.replace("'", "\\'"))
+			html = umcd.HTML( ('<a class="nounderline" href="#" onClick="%s"><span class="content">' + \
+			                   _('JavaVNC') + \
+			                   '</span></a>') % javascript )
+			buttons.append( html )
+			buttons.append( comma )
 
 		return buttons[ : -1 ]
 

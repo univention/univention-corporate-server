@@ -50,6 +50,7 @@ install:
 
 	install -m 0644 uvmm.py     debian/$(PACKAGE_NAME)/usr/lib/univention-directory-listener/system/
 	install -m 0755 44univention-virtual-machine-manager-daemon.inst debian/$(PACKAGE_NAME)/usr/lib/univention-install/
+	install -m 0444 TightVncViewer.jar debian/$(PACKAGE_NAME)/var/www/
 
 binary-arch:
 

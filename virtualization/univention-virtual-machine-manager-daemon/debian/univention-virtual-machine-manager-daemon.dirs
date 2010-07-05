@@ -5,3 +5,4 @@ usr/lib/univention-directory-listener/system
 usr/lib/univention-install
 usr/share/univention-management-console/www/themes
 var/cache/univention-virtual-machine-manager-daemon
+var/www
