@@ -7,8 +7,8 @@ in oldstyle sidebar and DIMP. The "options" link at the menu on
 the top is unaffected.
 
 
---- a/horde-webmailer/config/conf.php
-+++ b/horde-webmailer/config/conf.php
+--- a/horde-webmail/config/conf.php
++++ b/horde-webmail/config/conf.php
 @@ -79,6 +79,7 @@ $conf['problems']['tickets'] = false;
  $conf['problems']['attachments'] = true;
  $conf['menu']['apps'] = array();
@@ -17,8 +17,8 @@ the top is unaffected.
  $conf['menu']['links']['help'] = 'all';
  $conf['menu']['links']['options'] = 'authenticated';
  $conf['menu']['links']['problem'] = 'all';
---- a/horde-webmailer/config/conf.xml
-+++ b/horde-webmailer/config/conf.xml
+--- a/horde-webmail/config/conf.xml
++++ b/horde-webmail/config/conf.xml
 @@ -1510,6 +1510,8 @@
  
     <configboolean name="always" desc="Should we &lt;strong&gt;always
@@ -28,8 +28,8 @@ the top is unaffected.
  
     <configsection name="links">
      <configenum name="help" desc="Should we display help links in the
---- a/horde-webmailer/services/portal/sidebar.php
-+++ b/horde-webmailer/services/portal/sidebar.php
+--- a/horde-webmail/services/portal/sidebar.php
++++ b/horde-webmail/services/portal/sidebar.php
 @@ -137,6 +137,7 @@ function buildMenu()
      }
  

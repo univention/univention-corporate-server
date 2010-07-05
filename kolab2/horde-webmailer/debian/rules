@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-D=$(CURDIR)/debian/horde-webmailer/
+D=$(CURDIR)/debian/horde-webmail/
 HORDESHARE=$(D)/usr/share/horde3/
 
 # WEBMAILERSOURCE_DIR is prepared by running debian/upstream-pkgs.sh
@@ -29,8 +29,7 @@ clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
-	# rm -f horde-webmail-1.2.0_kolab_openpkg.patch
-	rm -rf horde-webmailer
+	# rm -rf horde-webmail
 	rm -rf $(QUILT_STAMPFN)
 	rm -rf debian/prepare-stamp
 	rm -f *~

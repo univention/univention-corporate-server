@@ -6,8 +6,8 @@ This patch adds a new config option that is able to hide the
 'save_as_new' button when editing events.
 
 
---- a/horde-webmailer/kronolith/config/conf.php
-+++ b/horde-webmailer/kronolith/config/conf.php
+--- a/horde-webmail/kronolith/config/conf.php
++++ b/horde-webmail/kronolith/config/conf.php
 @@ -4,6 +4,7 @@
  $conf['calendar']['driver'] = 'kolab';
  $conf['calendar']['day']['inline_time'] = false;
@@ -16,8 +16,8 @@ This patch adds a new config option that is able to hide the
  $conf['storage']['driver'] = 'kolab';
  $conf['storage']['default_domain'] = '';
  $conf['storage']['freebusy']['protocol'] = 'https';
---- a/horde-webmailer/kronolith/config/conf.xml
-+++ b/horde-webmailer/kronolith/config/conf.xml
+--- a/horde-webmail/kronolith/config/conf.xml
++++ b/horde-webmail/kronolith/config/conf.xml
 @@ -17,6 +17,12 @@
     <case name="kolab" desc="Kolab" />
    </configswitch>
@@ -31,8 +31,8 @@ This patch adds a new config option that is able to hide the
    <configsection name="week">
     <configheader>Display Settings For Week View</configheader>
     <configboolean name="inline_time" desc="Should we display time range of each event in week view?">false</configboolean>
---- a/horde-webmailer/kronolith/lib/Views/EditEvent.php
-+++ b/horde-webmailer/kronolith/lib/Views/EditEvent.php
+--- a/horde-webmail/kronolith/lib/Views/EditEvent.php
++++ b/horde-webmail/kronolith/lib/Views/EditEvent.php
 @@ -36,6 +36,7 @@ class Kronolith_View_EditEvent {
  
      function html($active = true)

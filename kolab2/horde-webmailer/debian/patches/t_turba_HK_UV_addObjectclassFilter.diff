@@ -10,8 +10,8 @@ This patch adds the objectclass filter if definded, so only valid address
 book entries are shown.
 
 
---- a/horde-webmailer/turba/lib/Driver/ldap.php
-+++ b/horde-webmailer/turba/lib/Driver/ldap.php
+--- a/horde-webmail/turba/lib/Driver/ldap.php
++++ b/horde-webmail/turba/lib/Driver/ldap.php
 @@ -155,6 +155,10 @@ class Turba_Driver_ldap extends Turba_Driver {
                      $filter .= '(&' . $this->_buildSearchQuery($vals) . ')';
                  }

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 CURDIR=$(pwd)
-WEBMAILER_DIR=${CURDIR}/horde-webmailer
+WEBMAILER_DIR=${CURDIR}/horde-webmail
 
 ## directories for the upstream packages:
 HORDE_SRCDIR=${CURDIR}/horde-upstream

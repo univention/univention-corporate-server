@@ -6,8 +6,8 @@ Date:   Tue Jan 12 10:25:14 2010 +0100
 
     Pulled patch from http://bugs.horde.org/ticket/8172
 
---- a/horde-webmailer/lib/Horde.php
-+++ b/horde-webmailer/lib/Horde.php
+--- a/horde-webmail/lib/Horde.php
++++ b/horde-webmail/lib/Horde.php
 @@ -542,6 +542,29 @@ HTML;
              $was_included = true;
          }

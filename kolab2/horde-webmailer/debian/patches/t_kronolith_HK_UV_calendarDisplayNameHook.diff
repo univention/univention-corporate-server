@@ -11,8 +11,8 @@ untouched. This patch adds an additional hook for modifying display names of
 personal calendars.
 
 
---- a/horde-webmailer/kronolith/config/conf.xml
-+++ b/horde-webmailer/kronolith/config/conf.xml
+--- a/horde-webmail/kronolith/config/conf.xml
++++ b/horde-webmail/kronolith/config/conf.xml
 @@ -111,4 +111,15 @@
     </values>
    </configmultienum>
@@ -31,7 +31,7 @@ personal calendars.
  </configuration>
 new file mode 100644
 --- /dev/null
-+++ b/horde-webmailer/kronolith/config/hooks.php
++++ b/horde-webmail/kronolith/config/hooks.php
 @@ -0,0 +1,34 @@
 +<?php
 +/**
@@ -69,7 +69,7 @@ new file mode 100644
 +}
 new file mode 100644
 --- /dev/null
-+++ b/horde-webmailer/kronolith/config/hooks.php.dist
++++ b/horde-webmail/kronolith/config/hooks.php.dist
 @@ -0,0 +1,34 @@
 +<?php
 +/**
@@ -105,8 +105,8 @@ new file mode 100644
 +if (file_exists(dirname(__FILE__) . '/hooks.local.php')) {
 +  require_once(dirname(__FILE__) . '/hooks.local.php');
 +}
---- a/horde-webmailer/kronolith/templates/panel.inc
-+++ b/horde-webmailer/kronolith/templates/panel.inc
+--- a/horde-webmail/kronolith/templates/panel.inc
++++ b/horde-webmail/kronolith/templates/panel.inc
 @@ -41,7 +41,14 @@ foreach (Kronolith::listCalendars() as $id => $cal) {
   <h4><?php echo _("My Calendars:") ?></h4>
   <ul id="mycalendars">

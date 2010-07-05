@@ -1,3 +1,10 @@
+horde-webmailer (1.2.0~2.2.0-18) unstable; urgency=low
+
+  * rename internal src directory as workaround for repo-ng bug
+    (for Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 05 Jul 2010 18:07:40 +0200
+
 horde-webmailer (1.2.0~2.2.0-17) unstable; urgency=low
 
   * add patch t_horde_HK__MP_ConfdStyleConfigurationOverride.diff

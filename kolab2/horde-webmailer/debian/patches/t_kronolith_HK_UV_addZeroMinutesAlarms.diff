@@ -6,8 +6,8 @@ currently horde treats alarms that should occur 0 minutes before the
 specific incident as disabled alarms. This patch adds a distiction
 between them.
 
---- a/horde-webmailer/kronolith/lib/Block/monthlist.php
-+++ b/horde-webmailer/kronolith/lib/Block/monthlist.php
+--- a/horde-webmail/kronolith/lib/Block/monthlist.php
++++ b/horde-webmail/kronolith/lib/Block/monthlist.php
 @@ -119,7 +119,7 @@ class Horde_Block_Kronolith_monthlist extends Horde_Block {
                      $event->end = new Horde_Date($tomorrow12am);
                  }
@@ -17,8 +17,8 @@ between them.
                      continue;
                  }
  
---- a/horde-webmailer/kronolith/lib/Driver.php
-+++ b/horde-webmailer/kronolith/lib/Driver.php
+--- a/horde-webmail/kronolith/lib/Driver.php
++++ b/horde-webmail/kronolith/lib/Driver.php
 @@ -415,7 +415,7 @@ class Kronolith_Event {
       *
       * @var integer
@@ -81,8 +81,8 @@ between them.
                      $alarm_value = $this->alarm / 10080;
                      $title = $alarm_value == 1 ?
                          _("Alarm 1 week before") :
---- a/horde-webmailer/kronolith/lib/Driver/kolab.php
-+++ b/horde-webmailer/kronolith/lib/Driver/kolab.php
+--- a/horde-webmail/kronolith/lib/Driver/kolab.php
++++ b/horde-webmail/kronolith/lib/Driver/kolab.php
 @@ -495,7 +495,9 @@ class Kronolith_Driver_kolab_wrapper_old extends Kronolith_Driver_kolab_wrapper
          $organizer = &$this->_kolab->initRootElem('organizer');
          $this->_kolab->setElemStr($organizer, 'smtp-address', $event->getCreatorID());
@@ -139,8 +139,8 @@ between them.
              $event['alarm'] = $this->alarm;
          }
  
---- a/horde-webmailer/kronolith/lib/Driver/sql.php
-+++ b/horde-webmailer/kronolith/lib/Driver/sql.php
+--- a/horde-webmail/kronolith/lib/Driver/sql.php
++++ b/horde-webmail/kronolith/lib/Driver/sql.php
 @@ -967,7 +967,8 @@ class Kronolith_Event_sql extends Kronolith_Event {
          $this->_properties['event_end'] = date('Y-m-d H:i:s', $this->end->timestamp());
  
@@ -151,8 +151,8 @@ between them.
  
          /* Recurrence. */
          if (!$this->recurs()) {
---- a/horde-webmailer/kronolith/templates/edit/edit.inc
-+++ b/horde-webmailer/kronolith/templates/edit/edit.inc
+--- a/horde-webmail/kronolith/templates/edit/edit.inc
++++ b/horde-webmail/kronolith/templates/edit/edit.inc
 @@ -133,9 +133,12 @@
   </td>
   <td valign="top">
@@ -168,8 +168,8 @@ between them.
            $alarm_value = $event->alarm / 10080;
            $alarm_unit = 'week';
        } elseif ($event->alarm % 1440 == 0) {
---- a/horde-webmailer/kronolith/templates/prefs/default_alarm_management.inc
-+++ b/horde-webmailer/kronolith/templates/prefs/default_alarm_management.inc
+--- a/horde-webmail/kronolith/templates/prefs/default_alarm_management.inc
++++ b/horde-webmail/kronolith/templates/prefs/default_alarm_management.inc
 @@ -1,10 +1,12 @@
  <?php if (!$prefs->isLocked('default_alarm')):
  
@@ -185,8 +185,8 @@ between them.
          $alarm_value /= 10080;
          $alarm_unit = 'week';
      } elseif ($alarm_value % 1440 == 0) {
---- a/horde-webmailer/kronolith/templates/view/view.inc
-+++ b/horde-webmailer/kronolith/templates/view/view.inc
+--- a/horde-webmail/kronolith/templates/view/view.inc
++++ b/horde-webmail/kronolith/templates/view/view.inc
 @@ -47,8 +47,11 @@
   <td class="rightAlign"><strong><?php echo _("Alarm") ?>&nbsp;&nbsp;</strong></td>
   <td>

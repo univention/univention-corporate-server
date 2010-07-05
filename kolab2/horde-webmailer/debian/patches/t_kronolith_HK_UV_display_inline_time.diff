@@ -8,8 +8,8 @@ This patch adds a new config option to display the events start/end time
 additionally to existing event title.
 
 
---- a/horde-webmailer/kronolith/config/conf.php
-+++ b/horde-webmailer/kronolith/config/conf.php
+--- a/horde-webmail/kronolith/config/conf.php
++++ b/horde-webmail/kronolith/config/conf.php
 @@ -2,6 +2,8 @@
  /* CONFIG START. DO NOT CHANGE ANYTHING IN OR AFTER THIS LINE. */
  // $Horde: kronolith/config/conf.xml,v 1.14.10.5 2007/12/20 14:12:23 jan Exp $
@@ -19,8 +19,8 @@ additionally to existing event title.
  $conf['storage']['driver'] = 'kolab';
  $conf['storage']['default_domain'] = '';
  $conf['storage']['freebusy']['protocol'] = 'https';
---- a/horde-webmailer/kronolith/config/conf.xml
-+++ b/horde-webmailer/kronolith/config/conf.xml
+--- a/horde-webmail/kronolith/config/conf.xml
++++ b/horde-webmail/kronolith/config/conf.xml
 @@ -16,6 +16,15 @@
  
     <case name="kolab" desc="Kolab" />
@@ -37,8 +37,8 @@ additionally to existing event title.
   </configsection>
  
   <configsection name="storage">
---- a/horde-webmailer/kronolith/lib/Driver.php
-+++ b/horde-webmailer/kronolith/lib/Driver.php
+--- a/horde-webmail/kronolith/lib/Driver.php
++++ b/horde-webmail/kronolith/lib/Driver.php
 @@ -2214,7 +2214,7 @@ class Kronolith_Event {
          return Horde::applicationUrl(Util::addParameter('event.php', $params));
      }
@@ -61,8 +61,8 @@ additionally to existing event title.
          if (isset($this->external)) {
              $link = $registry->link($this->external . '/show', $this->external_params);
              $link = Horde::linkTooltip(Horde::url($link), '', 'event-tentative', '', '', String::wrap($this->description));
---- a/horde-webmailer/kronolith/lib/Views/Day.php
-+++ b/horde-webmailer/kronolith/lib/Views/Day.php
+--- a/horde-webmail/kronolith/lib/Views/Day.php
++++ b/horde-webmail/kronolith/lib/Views/Day.php
 @@ -70,6 +70,7 @@ class Kronolith_View_Day extends Kronolith_Day {
      function html()
      {
@@ -80,8 +80,8 @@ additionally to existing event title.
                          if ($showTime) {
                              $row .= '<div class="event-time">' . htmlspecialchars($event->getTimeRange()) . '</div>';
                          }
---- a/horde-webmailer/kronolith/lib/Views/Week.php
-+++ b/horde-webmailer/kronolith/lib/Views/Week.php
+--- a/horde-webmail/kronolith/lib/Views/Week.php
++++ b/horde-webmail/kronolith/lib/Views/Week.php
 @@ -117,6 +117,7 @@ class Kronolith_View_Week {
      function html()
      {

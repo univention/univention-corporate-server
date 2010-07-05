@@ -7,8 +7,8 @@ sending invitations for events is superfluous. This patch adds a config
 option to hide the corresponding checkbox.
 
 
---- a/horde-webmailer/kronolith/config/conf.php
-+++ b/horde-webmailer/kronolith/config/conf.php
+--- a/horde-webmail/kronolith/config/conf.php
++++ b/horde-webmail/kronolith/config/conf.php
 @@ -5,6 +5,7 @@ $conf['calendar']['driver'] = 'kolab';
  $conf['calendar']['day']['inline_time'] = false;
  $conf['calendar']['week']['inline_time'] = false;
@@ -17,8 +17,8 @@ option to hide the corresponding checkbox.
  $conf['storage']['driver'] = 'kolab';
  $conf['storage']['default_domain'] = '';
  $conf['storage']['freebusy']['protocol'] = 'https';
---- a/horde-webmailer/kronolith/config/conf.xml
-+++ b/horde-webmailer/kronolith/config/conf.xml
+--- a/horde-webmail/kronolith/config/conf.xml
++++ b/horde-webmail/kronolith/config/conf.xml
 @@ -20,6 +20,7 @@
    <configsection name="edit">
     <configheader>Display Settings For Events Edit Dialog</configheader>
@@ -27,8 +27,8 @@ option to hide the corresponding checkbox.
    </configsection>
  
  
---- a/horde-webmailer/kronolith/templates/delete/delete.inc
-+++ b/horde-webmailer/kronolith/templates/delete/delete.inc
+--- a/horde-webmail/kronolith/templates/delete/delete.inc
++++ b/horde-webmail/kronolith/templates/delete/delete.inc
 @@ -17,9 +17,11 @@ if (empty($url)) {
  <table class="striped" cellspacing="0">
  <tr><td class="warning"><?php echo _("This is a recurring event. Delete the current event only, this<br />occurrence and all future occurences, or all occurences?") ?></td></tr>
@@ -41,8 +41,8 @@ option to hide the corresponding checkbox.
  
  <tr><td>
   <input type="submit" class="button" name="current" value="<?php echo _("Current") ?>" />
---- a/horde-webmailer/kronolith/templates/delete/one.inc
-+++ b/horde-webmailer/kronolith/templates/delete/one.inc
+--- a/horde-webmail/kronolith/templates/delete/one.inc
++++ b/horde-webmail/kronolith/templates/delete/one.inc
 @@ -15,9 +15,11 @@ if (empty($url)) {
  <input type="hidden" name="calendar" value="<?php echo htmlspecialchars(Util::getFormData('calendar')) ?>" />
  
@@ -55,8 +55,8 @@ option to hide the corresponding checkbox.
  
   <p><?php echo _("Permanently delete this event?") ?></p>
  
---- a/horde-webmailer/kronolith/templates/edit/edit.inc
-+++ b/horde-webmailer/kronolith/templates/edit/edit.inc
+--- a/horde-webmail/kronolith/templates/edit/edit.inc
++++ b/horde-webmail/kronolith/templates/edit/edit.inc
 @@ -371,6 +371,7 @@ endif;
  </tr>
  

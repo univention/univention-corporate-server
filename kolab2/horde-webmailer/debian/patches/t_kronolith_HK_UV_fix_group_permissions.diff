@@ -4,8 +4,8 @@ kronolith: LDAP-DNs in value-fields of group ACL dropdown (Bug #10692, Bug #1544
 	 Without this patch LDAP-DNs appear in the value-fields oder the group-ACL dropdown
 	 this seems to have cause problems with setting group ACLs on the folders
 
---- a/horde-webmailer/kronolith/templates/perms/perms.inc.orig	2008-03-17 17:26:39.000000000 +0100
-+++ b/horde-webmailer/kronolith/templates/perms/perms.inc	2008-03-17 17:28:12.000000000 +0100
+--- a/horde-webmail/kronolith/templates/perms/perms.inc.orig	2008-03-17 17:26:39.000000000 +0100
++++ b/horde-webmail/kronolith/templates/perms/perms.inc	2008-03-17 17:28:12.000000000 +0100
 @@ -262,9 +262,9 @@
    <td class="header" align="center"><?php echo _("Delegate") ?></td>
    <td class="header">&nbsp;</td>
