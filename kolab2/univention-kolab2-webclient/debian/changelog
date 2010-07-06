@@ -1,3 +1,11 @@
+univention-kolab2-webclient (6.0.2-2) unstable; urgency=low
+
+  * add missing Net_IMAP-1.1.0.tgz
+  * set auth driver to application imp in horde/auth=kolab to activate dimp dropdown
+  * activate display_errors if horde/debug/level = PEAR_LOG_DEBUG (Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Jul 2010 15:49:03 +0200
+
 univention-kolab2-webclient (6.0.2-1) unstable; urgency=low
 
   * remove Horde_* and Kolab_* PEAR archives from this package

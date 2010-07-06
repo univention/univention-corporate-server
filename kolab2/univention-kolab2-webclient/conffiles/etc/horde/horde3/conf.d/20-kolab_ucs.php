@@ -2,6 +2,10 @@
 
 @%@BCWARNING=// @%@
 
+@!@
+if baseConfig.get('horde/debug/level') == 'PEAR_LOG_DEBUG':
+	print 'ini_set("display_errors", 1);'
+@!@
 $conf['debug_level'] = E_ALL;
 $conf['max_exec_time'] = 0;
 $conf['use_ssl'] = 2;
@@ -64,6 +68,8 @@ if horde_auth.lower() == 'kolab':
 	print "$conf['auth']['params']['port'] = 143;"
 	print "$conf['auth']['params']['protocol'] = 'imap/notls';"
 	print "$conf['auth']['params']['imapconfig'] = 'separate';"
+	print "$conf['auth']['params']['app'] = 'imp';"
+	print "$conf['auth']['driver'] = 'application';"
 else:
 	print "$conf['auth']['params']['hostspec'] = '%s';" % baseConfig['ldap/server/name']
 	print "$conf['auth']['params']['basedn'] = '%s';" % baseConfig['ldap/base']

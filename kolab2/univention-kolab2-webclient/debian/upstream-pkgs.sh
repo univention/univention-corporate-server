@@ -38,6 +38,13 @@ mkdir -p ${TARGET_DIR}
 # tarball and the pear-Installation is done as part of the package
 # build process in debian/rules
 
+# unfortunately http://kolab.org/cgi-bin/viewcvs-kolab.cgi/server/pear/PEAR-Net_IMAP/ is currently empty
+# but it is absolutely require_once'd in /usr/share/horde3/lib/Horde/Kolab/IMAP/pear.php
+# Note that /usr/share/php/PEAR/Net/IMAP.php shipped by univention-kolab2-framework is not in the include_path
+# Since currently univention-kolab2-webclient does not depend on univention-kolab2-framework, we have to
+# ship it here
+wget -P ${TARGET_DIR} http://download.pear.php.net/package/Net_IMAP-1.1.0.tgz
+
 # extract the kolab package name, upstream package name, version and URL from the PEAR info file
 for pkginfo in ${KOLAB_SRCDIR}/${KOLABPEAR}/*/package.info; do
 	## 2. look for kolab patches for the upstream package

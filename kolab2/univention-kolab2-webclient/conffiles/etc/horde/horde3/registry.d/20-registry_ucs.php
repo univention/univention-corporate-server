@@ -1,31 +1,8 @@
 <?php
 @%@BCWARNING=// @%@
 
-// We try to automatically determine the proper webroot for Horde
-// here. This still assumes that applications live under horde3/. If
-// this results in incorrect results for you, simply change the
-// use of the $webroot variable in the 'horde' stanza below.
-//
-// Note for Windows users: the below assumes that your PHP_SELF
-// variable uses forward slashes. If it does not, you'll have to tweak
-// this.
-if (isset($_SERVER['PHP_SELF'])) {
-    $webroot = preg_split(';/;', $_SERVER['PHP_SELF'], 2, PREG_SPLIT_NO_EMPTY);
-    $webroot = strstr(dirname(__FILE__), DIRECTORY_SEPARATOR . array_shift($webroot));
-    if ($webroot !== false) {
-        $webroot = preg_replace(array('/\\\\/', ';/config$;'), array('/', ''), $webroot);
-    } elseif ($webroot === false) {
-        $webroot = '';
-    } else {
-        $webroot = '/horde3';
-    }
-} else {
-    $webroot = '/horde3';
-}
-
 @!@
-if baseConfig.has_key('horde/webroot'):
-        print "$webroot = '%s';" % baseConfig['horde/webroot']
+print "$webroot = '%s';" % baseConfig.get('horde/webroot', '/horde3')
 @!@
 
 $this->applications['horde'] = array(
