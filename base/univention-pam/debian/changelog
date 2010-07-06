@@ -1,3 +1,9 @@
+univention-pam (4.0.6-1) unstable; urgency=low
+
+  * Follow rename of /etc/pam.d/ssh to .../sshd (Bug #18884)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 06 Jul 2010 10:32:46 +0200
+
 univention-pam (4.0.5-1) unstable; urgency=low
 
   * fixed another typo in pam_tally pam config. Bug #18750

@@ -245,7 +245,7 @@ Variables: auth/user/services
 Variables: auth/admin/services
 
 Type: file
-File: etc/pam.d/ssh
+File: etc/pam.d/sshd
 Variables: auth/user/services
 Variables: auth/admin/services
 Variables: auth/sshd/accessfile

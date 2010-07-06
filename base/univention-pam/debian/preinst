@@ -72,7 +72,6 @@ EOF
 			rm -f "$file"
 		fi
 	done
-
 fi
 
 if [ "$1" = upgrade -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.11; then
@@ -104,6 +103,13 @@ if [ "$1" = upgrade -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.2.2; then
 	fi
 fi
 
+# Bug #18884: follow rename of "ssh" to "sshd"
+if [ "$1" = upgrade -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.6
+then
+	mv /etc/univention/templates/files/etc/pam.d/ssh{,d}
+	mv /etc/pam.d/ssh{,d}
+	dpkg-divert --rename --quiet --divert /etc/pam.d/ssh.debian --remove /etc/pam.d/ssh || true
+fi
 
 #DEBHELPER#
 

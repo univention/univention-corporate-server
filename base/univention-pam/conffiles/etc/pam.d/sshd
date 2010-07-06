@@ -4,19 +4,19 @@
 # Warnung: Diese Datei wurde automatisch generiert und kann durch 
 #          univention-baseconfig überschrieben werden. 
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
-# 
-# 	/etc/univention/templates/files/etc/pam.d/ssh
-# 
+#
+#	/etc/univention/templates/files/etc/pam.d/sshd
+#
 
 @!@
-if 'ssh' in baseConfig['auth/user/services'].split(' '):
+if 'ssh' in baseConfig.get('auth/user/services', '').split(' '):
 	scheme='common'
-elif 'ssh' in baseConfig['auth/admin/services'].split(' '):
+elif 'ssh' in baseConfig.get('auth/admin/services', '').split(' '):
 	scheme='admin'
 else:
 	scheme='deny'
 
-if baseConfig.has_key('auth/sshd/accessfile') and baseConfig['auth/sshd/accessfile']:
+if baseConfig.get('auth/sshd/accessfile', False):
 	print 'account  required                pam_access.so accessfile=%s listsep=,' % baseConfig['auth/sshd/accessfile']
 print '@include %s-account' % scheme
 print '@include %s-auth' % scheme
