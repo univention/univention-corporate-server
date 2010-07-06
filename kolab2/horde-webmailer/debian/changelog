@@ -1,3 +1,15 @@
+horde-webmailer (1.2.0~2.2.0-20) unstable; urgency=low
+
+  * fix minor bug t_horde_UV_fix_shutdown_call.diff (for Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Jul 2010 14:17:25 +0200
+
+horde-webmailer (1.2.0~2.2.0-19) unstable; urgency=low
+
+  * add links (for Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 05 Jul 2010 19:38:39 +0200
+
 horde-webmailer (1.2.0~2.2.0-18) unstable; urgency=low
 
   * rename internal src directory as workaround for repo-ng bug
