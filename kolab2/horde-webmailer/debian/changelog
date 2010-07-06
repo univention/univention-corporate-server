@@ -1,3 +1,9 @@
+horde-webmailer (1.2.5~2.2.3-3) unstable; urgency=low
+
+  * add dimp1 and mimp1 to /etc/horde (for Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Jul 2010 20:55:09 +0200
+
 horde-webmailer (1.2.5~2.2.3-2) unstable; urgency=low
 
   * fix relative include paths in the Horde upstream prefs.php files
