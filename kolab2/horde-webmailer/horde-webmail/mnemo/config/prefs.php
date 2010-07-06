@@ -6,7 +6,7 @@
  */
 
 // Make sure that constants are defined.
-require_once dirname(__FILE__) . '/../lib/Mnemo.php';
+require_once '/usr/share/horde3/mnemo/lib/Mnemo.php';
 
 $prefGroups['display'] = array(
     'column' => _("General Options"),

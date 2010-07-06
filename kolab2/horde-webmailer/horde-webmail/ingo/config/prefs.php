@@ -6,7 +6,7 @@
  */
 
 // Make sure that INGO_STORAGE_* constants are defined.
-require_once dirname(__FILE__) . '/../lib/Storage.php';
+require_once '/usr/share/horde3/ingo/lib/Storage.php';
 
 // This preference group will only be displayed if the configured
 // Ingo_Script:: driver can create script files.

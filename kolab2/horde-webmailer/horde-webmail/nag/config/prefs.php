@@ -6,7 +6,7 @@
  */
 
 // Make sure that constants are defined.
-require_once dirname(__FILE__) . '/../lib/Nag.php';
+require_once '/usr/share/horde3/nag/lib/Nag.php';
 
 $prefGroups['display'] = array(
     'column' => _("General Options"),

@@ -1,3 +1,10 @@
+horde-webmailer (1.2.5~2.2.3-2) unstable; urgency=low
+
+  * fix relative include paths in the Horde upstream prefs.php files
+    (for Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Jul 2010 19:29:19 +0200
+
 horde-webmailer (1.2.5~2.2.3-1) unstable; urgency=low
 
   * update version number to represent the approximate state of

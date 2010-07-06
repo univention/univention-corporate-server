@@ -6,7 +6,7 @@
  */
 
 // Make sure that constants are defined.
-require_once dirname(__FILE__) . '/../lib/IMP.php';
+require_once '/usr/share/horde3/imp/lib/IMP.php';
 $is_pop3 = isset($_SESSION['imp']) &&
            $_SESSION['imp']['base_protocol'] == 'pop3';
 

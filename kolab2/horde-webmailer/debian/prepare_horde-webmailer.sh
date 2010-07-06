@@ -76,8 +76,15 @@ for ((i=0; i<${#package[@]}; i++)); do
   
   # copy php.dist files where necessary
   for f in "${WEBMAILER_DIR}/${pkg}"/config/*.php.dist; do
-    target="${WEBMAILER_DIR}/${pkg}/config/$(basename $f .dist)"
-    [ -f "$target" ] || cp $f $target
+    targetfilename="$(basename $f .dist)"
+    target="${WEBMAILER_DIR}/${pkg}/config/$targetfilename"
+    if ! [ -f "$target" ]; then
+	  cp $f $target
+	  if [ "$targetfilename" == "prefs.php" ]; then
+	    # patch the relative into an absolute path, necessary for the /etc/horde setup
+        sed -i "s|^require_once dirname(__FILE__) . '/../lib/\(.*\)';|require_once '/usr/share/horde3/${pkg}/lib/\1';|" "$target"
+	  fi
+	fi
   done
 
   # Hook templates not considered yet : hooks/horde-3.3.6/hook-delete_webmail_user.php
