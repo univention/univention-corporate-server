@@ -1,3 +1,10 @@
+univention-kolab2-webclient (6.0.2-3) unstable; urgency=low
+
+  * remove dpkg-new update handling from postinst (Bug #17812)
+  * checkin new upstream PEAR packages and kolab patches
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Jul 2010 17:37:39 +0200
+
 univention-kolab2-webclient (6.0.2-2) unstable; urgency=low
 
   * add missing Net_IMAP-1.1.0.tgz

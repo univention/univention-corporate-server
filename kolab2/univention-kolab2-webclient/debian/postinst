@@ -30,39 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-oldtemplatelist="
-/etc/horde/horde3/conf.php
-/etc/horde/horde3/motd.php
-/etc/horde/horde3/kolab.php
-/etc/horde/horde3/hooks.php
-/etc/horde/horde3/prefs.php
-/etc/horde/horde3/registry.php
-/etc/horde/imp4/conf.php
-/etc/horde/imp4/prefs.php
-/etc/horde/imp4/servers.php
-/etc/horde/turba2/conf.php
-/etc/horde/turba2/attributes.php
-/etc/horde/turba2/sources.php
-/etc/horde/kronolith2/conf.php
-/etc/horde/ingo1/prefs.php
-/etc/horde/ingo1/conf.php
-/etc/horde/ingo1/backends.php
-/etc/horde/nag2/conf.php
-/etc/horde/nag2/prefs.php
-/etc/horde/mnemo2/conf.php
-/etc/horde/mnemo2/prefs.php"
-
-if test "$1" = "configure"; then
-	if test -n "$2" && dpkg --compare-versions "$2" lt "5.0.4-2"; then
-		# move the unpacked (diverted dpkg-new) horde-webmailer config files in place
-		# (diversion removal in preinst happens after horde-webmailer was unpacked)
-		for file in ${oldtemplatelist}; do
-			mv ${file}.debian.dpkg-new ${file} || true
-		done
-	fi
-fi
-
-
 a2enmod php5
 
 # create database, user and tables
