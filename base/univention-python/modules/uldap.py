@@ -410,28 +410,28 @@ class access:
 						if oldvalue[i] in homePostalAddress:
 							homePostalAddress.remove(oldvalue[i])
 					val=homePostalAddress
-				if key == 'pager':
+				elif key == 'pager':
 					op=ldap.MOD_REPLACE
 					postalAddress=self.getAttr(dn, 'pager')
 					for i in range(0,len(oldvalue)):
 						if oldvalue[i] in postalAddress:
 							postalAddress.remove(oldvalue[i])
 					val=postalAddress
-				if key == 'mobile':
+				elif key == 'mobile':
 					op=ldap.MOD_REPLACE
 					mobileTelephoneNumber=self.getAttr(dn, 'mobile')
 					for i in range(0,len(oldvalue)):
 						if oldvalue[i] in mobileTelephoneNumber:
 							mobileTelephoneNumber.remove(oldvalue[i])
 					val=mobileTelephoneNumber
-				if key == 'pagerTelephoneNumber':
+				elif key == 'pagerTelephoneNumber':
 					op=ldap.MOD_REPLACE
 					pagerTelephoneNumber=self.getAttr(dn, 'pagerTelephoneNumber')
 					for i in range(0,len(oldvalue)):
 						if oldvalue[i] in pagerTelephoneNumber:
 							pagerTelephoneNumber.remove(oldvalue[i])
 					val=pagerTelephoneNumber
-				if key == "jpegPhoto":
+				elif key == "jpegPhoto":
 					val=None
 				else:
 					val=oldvalue

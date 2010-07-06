@@ -1,3 +1,9 @@
+univention-python (5.0.1-1) unstable; urgency=low
+
+  * Fix broken if-elif-else construct in uldap.py#modify (Bug #18926)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 06 Jul 2010 18:12:03 +0200
+
 univention-python (5.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
