@@ -104,12 +104,40 @@ if [ "$1" = upgrade -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.2.2; then
 fi
 
 # Bug #18884: follow rename of "ssh" to "sshd"
-if [ "$1" = upgrade -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.6
-then
-	mv /etc/univention/templates/files/etc/pam.d/ssh{,d}
-	mv /etc/pam.d/ssh{,d}
-	dpkg-divert --rename --quiet --divert /etc/pam.d/ssh.debian --remove /etc/pam.d/ssh || true
-fi
+# Code copied from http://wiki.debian.org/DpkgConffileHandling
+# Prepare to move a conffile without triggering a dpkg question
+prep_mv_conffile() {
+	local PKGNAME="$1"
+	local CONFFILE="$2"
+
+	[ -e "$CONFFILE" ] || return 0
+
+	local md5sum="$(md5sum "$CONFFILE" | sed -e 's/ .*//')"
+	local old_md5sum="$(dpkg-query -W -f='${Conffiles}' "$PKGNAME" | \
+	sed -n -e "\' $CONFFILE ' { s/ obsolete$//; s/.* //; p }")"
+	if [ "$md5sum" = "$old_md5sum" ]; then
+		rm -f "$CONFFILE"
+	fi
+}
+
+case "$1" in
+install|upgrade)
+	if dpkg --compare-versions "$2" le 4.0.6
+	then
+		if test -e /etc/pam.d/ssh
+		then
+			if univention-config-registry filter </etc/univention/templates/files/etc/pam.d/ssh | cmp -s /etc/pam.d/ssh -
+			then
+				rm -f /etc/pam.d/ssh
+			else
+				mv -f /etc/pam.d/ssh{,.dpkg-del}
+			fi
+		fi
+		prep_mv_conffile univention-pam /etc/univention/templates/files/etc/pam.d/ssh
+		dpkg-divert --rename --quiet --divert /etc/pam.d/ssh.debian --remove /etc/pam.d/ssh || true
+	fi
+	;;
+esac
 
 #DEBHELPER#
 

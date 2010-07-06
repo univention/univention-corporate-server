@@ -90,6 +90,29 @@ then
 	univention-config-registry set 'security/limits/group/Domain Users/hard/nproc?1000' # Bug #12928
 fi
 
+# Bug #18884: follow rename of "ssh" to "sshd"
+# Code copied from http://wiki.debian.org/DpkgConffileHandling
+# Move a conffile without triggering a dpkg question
+mv_conffile() {
+	local OLDCONFFILE="$1"
+	local NEWCONFFILE="$2"
+
+	[ -e "$OLDCONFFILE" ] || return 0
+
+	echo "Preserving user changes to $NEWCONFFILE ..."
+	mv -f "$NEWCONFFILE" "$NEWCONFFILE".dpkg-new
+	mv -f "$OLDCONFFILE" "$NEWCONFFILE"
+}
+
+case "$1" in
+configure)
+	if dpkg --compare-versions "$2" le 4.0.6
+	then
+		mv_conffile /etc/univention/templates/files/etc/pam.d/ssh{,d}
+	fi
+	;;
+esac
+
 #DEBHELPER#
 
 exit 0
