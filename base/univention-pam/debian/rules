@@ -57,6 +57,7 @@ install: build
 	install -m 0755 lock-user debian/univention-pam/usr/lib/univention-pam/
 	univention-install-config-registry
 	univention-install-config-registry-info
+	sed -i -e '\!/etc/!d' debian/univention-pam.conffiles # Bug #18924
 	dh_install
 
 binary-indep: build install

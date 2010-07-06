@@ -1,3 +1,9 @@
+univention-pam (4.0.6-3) unstable; urgency=low
+
+  * Work around broken univention-install-* (Bug #18884, Bug #18924)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 06 Jul 2010 14:05:33 +0200
+
 univention-pam (4.0.6-2) unstable; urgency=low
 
   * Fix renaming conffile (Bug #18884)

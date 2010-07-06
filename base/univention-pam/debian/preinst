@@ -114,7 +114,7 @@ prep_mv_conffile() {
 
 	local md5sum="$(md5sum "$CONFFILE" | sed -e 's/ .*//')"
 	local old_md5sum="$(dpkg-query -W -f='${Conffiles}' "$PKGNAME" | \
-	sed -n -e "\' $CONFFILE ' { s/ obsolete$//; s/.* //; p }")"
+	sed -n -e "\' $CONFFILE ' { s/ obsolete$//; s/.* //; p; q }")"
 	if [ "$md5sum" = "$old_md5sum" ]; then
 		rm -f "$CONFFILE"
 	fi
