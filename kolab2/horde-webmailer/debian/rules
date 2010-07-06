@@ -63,6 +63,10 @@ install: build
 	rm -R ${HORDESHARE}/imp/config
 	ln -sf /etc/horde/imp4 ${HORDESHARE}/imp/config
 
+	(cd ${HORDESHARE}/dimp/config && find . ! -path "*.svn*" -type f -exec install -D -m 0644 {} $(D)/etc/horde/dimp1/{} \;)
+	rm -R ${HORDESHARE}/dimp/config
+	ln -sf /etc/horde/dimp1 ${HORDESHARE}/dimp/config
+
 	(cd ${HORDESHARE}/turba/config && find . ! -path "*.svn*" -type f -exec install -D -m 0644 {} $(D)/etc/horde/turba2/{} \;)
 	rm -R ${HORDESHARE}/turba/config
 	ln -sf /etc/horde/turba2 ${HORDESHARE}/turba/config

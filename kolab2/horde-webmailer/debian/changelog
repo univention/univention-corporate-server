@@ -1,3 +1,12 @@
+horde-webmailer (1.2.5~2.2.3-1) unstable; urgency=low
+
+  * update version number to represent the approximate state of
+    horde-webmailer with kolab-webclient patches
+  * provide missing config/*.php files from php.dist
+  * add config dir for dimp (for Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Jul 2010 17:03:18 +0200
+
 horde-webmailer (1.2.0~2.2.0-20) unstable; urgency=low
 
   * fix minor bug t_horde_UV_fix_shutdown_call.diff (for Bug #17812)
