@@ -1,1 +1,0 @@
-var acl_loading;function ACLFolderChange(a){if($F("aclfolder")){if(acl_loading==null||a!=null){acl_loading=true;$("acl").disable();$("folders").submit()}}};

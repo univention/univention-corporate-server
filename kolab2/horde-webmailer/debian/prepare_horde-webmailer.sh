@@ -28,7 +28,7 @@ KOALB_WEBCLIENT=server/kolab-webclient
 #fqdnhostname=
 #local_addr=
 
-## Step 1. and 2. (copying the kolab and horde upstream packages) can be done manually by
+## Step 1., 2. and 3. (copying the kolab and horde upstream packages) can be done manually by
 ## calling debian/upstream-pkgs.sh
 
 mkdir -p ${WEBMAILER_DIR}
@@ -47,9 +47,10 @@ for ((i=0; i<${#package[@]}; i++)); do
   fi
   file=${pkgfullname}.tar.gz
  
-  ## 3. apply kolab patches for it
+  ## 4. untar the horde-upstream/ packages
   tar xf "${HORDE_SRCDIR}/${file}"
   
+  ## 5. apply all patches from kolab-upstream/ to the repective module and move to the horde-webmail/ subdirectory
   cd ${pkgfullname} && {
   #patch -p1 -P 0
   QUILT_PATCHES=${KOLAB_SRCDIR}/${KOALB_WEBCLIENT}/${pkg}/patches/${pkg}-${version} quilt --quiltrc /dev/null push -a || test $? = 2
@@ -58,7 +59,7 @@ for ((i=0; i<${#package[@]}; i++)); do
   ## cleanup quilt patch dirs
   find ${WEBMAILER_DIR} -type d -name .pc | xargs -r rm -rf
   
-  ## 4. copy static Kolab config files and sub-files into target dirs
+  ## 6. copy static Kolab config files and sub-files into target dirs
   for f in kolab-upstream/server/kolab-webclient/$pkg/configuration/*/*.php ; do
     filename="$(basename $f)"
     if [[ "$filename" =~ ^([[:digit:]]+-kolab)_([^_]+)_(.*.php) ]]; then
@@ -74,29 +75,29 @@ for ((i=0; i<${#package[@]}; i++)); do
     fi
   done
   
-  # copy php.dist files where necessary
+  # 7. copy php.dist files where necessary
   for f in "${WEBMAILER_DIR}/${pkg}"/config/*.php.dist; do
     targetfilename="$(basename $f .dist)"
     target="${WEBMAILER_DIR}/${pkg}/config/$targetfilename"
     if ! [ -f "$target" ]; then
 	  cp $f $target
 	  if [ "$targetfilename" == "prefs.php" ]; then
-	    # patch the relative into an absolute path, necessary for the /etc/horde setup
+	    # 7.b patch the relative into an absolute path, necessary for the /etc/horde setup
         sed -i "s|^require_once dirname(__FILE__) . '/../lib/\(.*\)';|require_once '/usr/share/horde3/${pkg}/lib/\1';|" "$target"
 	  fi
 	fi
   done
 
-  # Hook templates not considered yet : hooks/horde-3.3.6/hook-delete_webmail_user.php
+  ## Hook templates not considered yet : hooks/horde-3.3.6/hook-delete_webmail_user.php
   
-  ## 5. fix special case for horde framework package
+  ## 8. fix special case for horde framework package
   if [ "${pkg}" == horde ]; then
     mv ${WEBMAILER_DIR}/horde/* ${WEBMAILER_DIR}
     rm -Rf ${WEBMAILER_DIR}/horde
   fi
   }
   
-  ## 6. generate Config sub-files from Kolab Templates for manual inspection
+  ## 9. generate Config sub-files from Kolab Templates for manual inspection
   #for t in kolab-upstream/server/kolab-webclient/$pkg/templates/*/*.template ; do
   #  target="$(cat $t | sed -n '/KOLAB_META_START/,/KOLAB_META_END/ s/TARGET=\(.*\)/\1/p')"
   #  eval target=$(echo $target | sed -e 's/@@@\(.*\)@@@/$\1/')
@@ -104,4 +105,6 @@ for ((i=0; i<${#package[@]}; i++)); do
   #  cat $t | sed -n '/KOLAB_META_END/,$ p' | grep -v KOLAB_META_END > kolab-config/$target
   #done
 
+  ## 10. build new horde-webmail.tar.gz
+  tar czf horde-webmail.tar.gz horde-webmail
 done

@@ -27,7 +27,7 @@ mkdir -p ${HORDE_SRCDIR}
 package=( horde dimp imp ingo kronolith mimp mnemo nag turba ) # passwd is part of sork-passwd deb
 
 for ((i=0; i<${#package[@]}; i++)); do
-  ## 2. download upstream horde package
+  ## 2. look for OpenPKG .spec files in the kolab-webclient subdirectories
   pkg=${package[$i]}
   tmp=(`grep "%define         V_version" ${KOLAB_SRCDIR}/${KOALB_WEBCLIENT}/${pkg}/${pkg}.spec`)
   version=${tmp[2]}
@@ -39,6 +39,7 @@ for ((i=0; i<${#package[@]}; i++)); do
   fi
   file=${pkgfullname}.tar.gz
 
+  ## 3. download upstream horde packages
   [ -f "${HORDE_SRCDIR}/${file}" ] || wget -P ${HORDE_SRCDIR} http://ftp.horde.org/pub/${pkg}/${file}
 
 done

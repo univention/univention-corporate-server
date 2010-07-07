@@ -1,3 +1,10 @@
+horde-webmailer (1.2.5~2.2.3-4) unstable; urgency=low
+
+  * add postinst to fix directory to link conversion after update
+  * turn horde-webmail into an archive file (for Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Jul 2010 09:46:33 +0200
+
 horde-webmailer (1.2.5~2.2.3-3) unstable; urgency=low
 
   * add dimp1 and mimp1 to /etc/horde (for Bug #17812)

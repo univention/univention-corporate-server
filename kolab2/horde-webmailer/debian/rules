@@ -3,9 +3,6 @@
 D=$(CURDIR)/debian/horde-webmailer/
 HORDESHARE=$(D)/usr/share/horde3/
 
-# WEBMAILERSOURCE_DIR is prepared by running debian/upstream-pkgs.sh
-WEBMAILERSOURCE_DIR=$(CURDIR)/horde-webmail
-
 ## The Univention patches in debian/patches are applied by quilt
 include /usr/share/quilt/quilt.make
 
@@ -23,13 +20,14 @@ configure-stamp: prepare patch
 build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
+	tar xzf horde-webmail.tar.gz
 	touch build-stamp
 
 clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
-	# rm -rf horde-webmail
+	rm -rf horde-webmail
 	rm -rf $(QUILT_STAMPFN)
 	rm -rf debian/prepare-stamp
 	rm -f *~
@@ -43,7 +41,7 @@ install: build
 
 	# install
 	mkdir -p `dirname $(HORDESHARE)`
-	cp -r $(WEBMAILERSOURCE_DIR)/* $(HORDESHARE)
+	cp -r horde-webmail/* $(HORDESHARE)
 	find $(HORDESHARE) -type d -name .pc | xargs -r rm -rf # remove the quilt dirs of upstream-pkgs.sh
 	find $(HORDESHARE) -type d -name .svn | xargs -r rm -rf # remove the svn dirs
 
