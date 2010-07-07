@@ -93,6 +93,7 @@ class Page( object ):
 				items.append( option.id() )
 				if option.option in options:
 					option.default = options[ option.option ]
+			option[ 'colspan' ] = '2'
 			wizard._content.add_row( [ option, ] )
 		wizard._content.add_row( [ Fill( 2, '' ), ] )
 		if self.actions:
@@ -111,7 +112,11 @@ class Page( object ):
 			elif finish:
 				opts = copy_module.copy( options )
 				opts[ 'action' ] = 'finish'
-				next_btn = Button( _( 'Finish' ), 'actions/finish', ( Action( umcp.SimpleCommand( command, opts ), items ), ), { 'class' : 'button_right' } )
+				if isinstance( finish, basestring ):
+					text = finish
+				else:
+					text = _( 'Finish' )
+				next_btn = Button( text, 'actions/finish', ( Action( umcp.SimpleCommand( command, opts ), items ), ), { 'class' : 'button_right' } )
 			else:
 				next_btn = ''
 			if cancel:
@@ -119,7 +124,7 @@ class Page( object ):
 				opts[ 'action' ] = 'cancel'
 				cancel_btn = Button( _( 'Cancel' ), 'actions/cancel', ( Action( umcp.SimpleCommand( command, opts ), items ), ) )
 			else:
-				cancel_btn
+				cancel_btn = ''
 			if prev:
 				opts = copy_module.copy( options )
 				opts[ 'action' ] = 'prev'
@@ -151,6 +156,10 @@ class IWizard( list ):
 		self.actions = { 'next' : self.next, 'prev' : self.prev, 'cancel' : self.cancel, 'finish' : self.finish }
 		self._result = None
 
+	def replace_title( self, title ):
+		for page in self:
+			page.title = title
+
 	def result( self ):
 		return self._result
 
@@ -166,16 +175,22 @@ class IWizard( list ):
 
 		return WizardResult( False, 'Unknown wizard action: %s' % action )
 
-	def setup( self, object ):
-		prev = True
-		next = True
-		finish = False
+	def setup( self, object, prev = None, next = None, finish = None, cancel = None ):
+		if prev == None:
+			prev = True
+		if next == None:
+			next = True
+		if finish == None:
+			finish = False
+		if cancel == None:
+			cancel = True
 		if self.current == ( len( self ) - 1 ): # last page
 			next = False
-			finish = True
+			if not finish:
+				finish = True
 		elif not self.current:
 			prev = False
-		return self[ self.current ].setup( self.command, object.options, prev = prev, next = next, finish = finish )
+		return self[ self.current ].setup( self.command, object.options, prev = prev, next = next, finish = finish, cancel = cancel )
 
 	def finish( self, object ):
 		return WizardResult( False, 'finish is not implemented!' )
