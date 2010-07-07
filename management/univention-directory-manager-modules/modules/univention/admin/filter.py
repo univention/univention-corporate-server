@@ -87,9 +87,8 @@ def parse(filter_s, begin=0, end=-1):
 	if end == -1:
 		end=len(filter_s)-1
 	
-	if filter_s[begin] == '(':
+	if filter_s[begin] == '(' and filter_s[end] == ')':
 		begin+=1
-	if filter_s[end] == ')':
 		end-=1
 
 	if filter_s[begin] in ['&', '|', '!']:
