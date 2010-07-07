@@ -1,0 +1,226 @@
+#!/bin/bash
+#
+# Univention Quota
+#  set quota by group membership
+#
+# Copyright 2004-2010 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+verbose () {
+	if [ "$VERBOSE" -eq 1 ]
+	then
+		echo "${@}" 1>&2
+	fi
+}
+
+getUsersInGroupNested () { # GROUP
+	local GROUP="$1"
+	getent group "$GROUP"|cut -d':' -f4|tr ',' '\n'
+}
+
+getUsersInGroupFlat () { # GROUP
+	local GROUP="$1"
+	ldapsearch -xLLL "(&(cn=$GROUP)(objectClass=univentionGroup))" uniqueMember | \
+		ldapsearch-wrapper | \
+		ldapsearch-decode64 | \
+		grep '^uniqueMember: uid=' | \
+		cut -d' ' -f2- | \
+		sed -r 's/uid=([^,]+),.*$/\1/'
+}
+
+getUsersInGroup () { # GROUP FLATMODE
+	local GROUP="$1"
+	local FLATMODE="$2"
+	if [ "$FLATMODE" -eq 1 ]
+	then
+		verbose "Searching for users directly in $GROUP"
+		getUsersInGroupFlat "$GROUP"
+	else
+		verbose "Searching for users in $GROUP or subgroups"
+		getUsersInGroupNested "$GROUP"
+	fi
+}
+
+mountpoint2filesystem () { # MOUNTPOINT
+	local MOUNTPOINT="$1"
+	tr -s '\t' ' ' < /proc/mounts |cut -d' ' -f1,2|grep " $MOUNTPOINT$"|cut -d' ' -f1|tail -n1
+}
+
+filesystem2mountpoint () { # DEVICE
+	local FILESYSTEM="$1"
+	tr -s '\t' ' ' < /proc/mounts |cut -d' ' -f1,2|grep "^$FILESYSTEM "|cut -d' ' -f2|tail -n1
+}
+
+setQuotaForUserOnFilesystem () { # USER FILESYSTEM BSL BHL
+	local USER="$1"
+	local FILESYSTEM="$2"
+	local BSL="$3"
+	local BHL="$4"
+	local ISL=$(quota -wulv "$USER"|tr -s '\t' ' '|grep "^ *$FILESYSTEM "|cut -d' ' -f6)
+	local IHL=$(quota -wulv "$USER"|tr -s '\t' ' '|grep "^ *$FILESYSTEM "|cut -d' ' -f7)
+	verbose "Setting quota $BSL/$BHL ($ISL/$IHL) for $USER on $FILESYSTEM"
+	setquota -u "$USER" "$BSL" "$BHL" "$ISL" "$IHL" "$FILESYSTEM"
+}
+
+userHasQuotaOnFilesystem () { # USER FILESYSTEM
+	local USER="$1"
+	local FILESYSTEM="$2"
+	quota -wul "$USER"|tr -s '\t' ' '|grep -qs "^ *$FILESYSTEM "
+}
+
+usage () {
+	echo "$0: set usrquota on mountpoint for every user in group"
+	echo ""
+	echo "USAGE:"
+	echo "	$0 [OPTIONS]"
+	echo ""
+	echo "OPTIONS:"
+	echo "	-g GROUP"
+	echo "	   the group for whose users the quota will be set"
+	echo ""
+	echo "	-s SOFTLIMIT"
+	echo "	   soft limit in KiB"
+	echo ""
+	echo "	-h HARDLIMIT"
+	echo "	   hard limit in KiB"
+	echo ""
+	echo "	-m MOUNTPOINT"
+	echo "	   which filesystem to set the quota for (must be mounted)"
+	echo ""
+	echo "	-d DEVICE"
+	echo "	   which filesystem to set the quota for (must be mounted)"
+	echo ""
+	echo "	-f"
+	echo "	   force: set quota even if it is already set"
+	echo ""
+	echo "	-n"
+	echo "	   nested groups: process users in subgroups too"
+	echo ""
+	echo "	-v"
+	echo "	   verbose: print debug output"
+	echo ""
+	echo "	Required options are: -g -s -h -m -d"
+	echo "	You can either supply -m or -d"
+}
+
+FLATMODE=1
+FORCE=0
+VERBOSE=0
+while getopts 'g:s:h:m:d:fnv' OPTION
+do
+	case "$OPTION" in
+		'g' )
+			GROUP="$OPTARG"
+			;;
+		's' )
+			BSL="$OPTARG"
+			;;
+		'h' )
+			BHL="$OPTARG"
+			;;
+		'm' )
+			if mountpoint2filesystem "$OPTARG" > /dev/zero
+			then
+				FILESYSTEM="$(mountpoint2filesystem "$OPTARG")"
+				verbose "Mount point $OPTARG is $FILESYSTEM"
+			else
+				echo "Invalid mount point $OPTARG!"
+				exit 1
+			fi
+			;;
+		'd' )
+			if filesystem2mountpoint "$OPTARG" > /dev/zero
+			then
+				FILESYSTEM="$OPTARG"
+			else
+				echo "Invalid file system $OPTARG!"
+				exit 1
+			fi
+			;;
+		'f' )
+			FORCE=1
+			;;
+		'n' )
+			FLATMODE=0
+			;;
+		'v' )
+			VERBOSE=1
+			;;
+	esac
+done
+
+if [ -z "${GROUP+set}" ]
+then
+	echo "Missing GROUP!"
+	usage
+	exit 3
+fi
+if [ -z "${BSL+set}" ]
+then
+	echo "Missing SOFTLIMIT!"
+	usage
+	exit 3
+fi
+if [ -z "${BHL+set}" ]
+then
+	echo "Missing HARDLIMIT!"
+	usage
+	exit 3
+fi
+if [ -z "${FILESYSTEM+set}" ]
+then
+	echo "Missing MOUNTPOINT/DEVICE!"
+	usage
+	exit 3
+fi
+
+verbose "Using group $GROUP"
+verbose "Using filesystem $FILESYSTEM"
+for USER in $(getUsersInGroup "$GROUP" "$FLATMODE")
+do
+	if [ "$FORCE" -eq 0 ]
+	then
+		if userHasQuotaOnFilesystem "$USER" "$FILESYSTEM"
+		then
+			verbose "Skipping $USER"
+			continue
+		fi
+	fi
+	if [ "$VERBOSE" -eq 1 ]
+	then
+		if userHasQuotaOnFilesystem "$USER" "$FILESYSTEM"
+		then
+			verbose "Forcing $USER"
+		fi
+	fi
+	setQuotaForUserOnFilesystem "$USER" "$FILESYSTEM" "$BSL" "$BHL"
+done
+verbose "Everything OK"

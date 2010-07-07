@@ -1,3 +1,9 @@
+univention-quota (5.0.2-1) unstable; urgency=low
+
+  * add univention-group-quota (Bug #18113)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 07 Jul 2010 14:55:08 +0200
+
 univention-quota (5.0.1-1) unstable; urgency=low
 
   * support UUID entries in /etc/fstab; Bug #18738

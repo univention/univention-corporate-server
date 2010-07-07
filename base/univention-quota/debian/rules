@@ -54,6 +54,7 @@ install-ext-%:
 	dh_clean -k
 	dh_installdirs
 
+	install -m 0755 files/univention-group-quota debian/univention-quota/usr/sbin
 	install -m 0755 files/univention-user-quota debian/univention-quota/usr/sbin
 	install -m 0755 files/univention-setquota debian/univention-quota/usr/sbin
 	install -m 0755 71univention-quota.inst debian/univention-quota/usr/lib/univention-install/
