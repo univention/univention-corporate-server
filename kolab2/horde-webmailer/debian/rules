@@ -10,6 +10,7 @@ prepare: debian/prepare-stamp
 debian/prepare-stamp:
 	## extract Horde upstream packages and apply Kolab patches
 	# debian/prepare_horde-webmailer.sh	# this expects horde-webmailer to be removed in clean target
+	tar xzf horde-webmail.tar.gz
 	touch debian/prepare-stamp
 
 configure: configure-stamp
@@ -20,7 +21,6 @@ configure-stamp: prepare patch
 build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
-	tar xzf horde-webmail.tar.gz
 	touch build-stamp
 
 clean:
