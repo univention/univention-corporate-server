@@ -1,3 +1,9 @@
+univention-management-console (3.0.32-1) unstable; urgency=low
+
+  * added insert() to dialog class List() (Bug #18255)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 07 Jul 2010 11:56:06 +0200
+
 univention-management-console (3.0.31-1) unstable; urgency=low
 
   * move wizard helper classes from UVMM UMC module into the dialog

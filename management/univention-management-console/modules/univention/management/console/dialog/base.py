@@ -211,6 +211,9 @@ class List( Element ):
 	def add_row( self, row, attributes = {} ):
 		self._content.append( Row( row, attributes ) )
 
+	def insert_row( self, i, row, attributes = {} ):
+		self.__content.insert( i, Row( row, attributes ) )
+
 	def remove_row( self, i ):
 		try:
 			self._content.pop( i )
