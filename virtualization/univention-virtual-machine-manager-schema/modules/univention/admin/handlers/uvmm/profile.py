@@ -210,6 +210,14 @@ layout=[
 		  ] )
 	]
 
+def list2str( lst ):
+	return ','.join( lst )
+
+def str2list( value ):
+	if value:
+		return value[ 0 ].split( ',' )
+	return []
+
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('name_prefix', 'univentionVirtualMachineProfileNamePrefix', None, univention.admin.mapping.ListToString)
@@ -223,7 +231,7 @@ mapping.register('kblayout', 'univentionVirtualMachineProfileKBLayout', None, un
 mapping.register('kernel', 'univentionVirtualMachineProfileKernel', None, univention.admin.mapping.ListToString)
 mapping.register('kernel_parameter', 'univentionVirtualMachineProfileKernelParameter', None, univention.admin.mapping.ListToString)
 mapping.register('initramfs', 'univentionVirtualMachineProfileInitRAMfs', None, univention.admin.mapping.ListToString)
-mapping.register('bootdev', 'univentionVirtualMachineProfileBootDevices' )
+mapping.register('bootdev', 'univentionVirtualMachineProfileBootDevices', list2str, str2list )
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
