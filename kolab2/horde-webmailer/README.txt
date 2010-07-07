@@ -33,8 +33,9 @@ Note: the Kolab patches turn horde-webmail into kolab-webclient and make use
 
 Kolab changed the method for OEM configuration adjustments:
 ===========================================================
-univention-kolab2-webclient/kolab-upstream/server/pear/Horde_Framework/patches/Horde_Framework-0.0.2dev20091215/t_horde_HK__MP_ConfdStyleConfigurationOverride.diff
-( http://bugs.horde.org/ticket/8172 )
+univention-kolab2-webclient/kolab-upstream/server/pear/Horde_Framework/patches/Horde_Framework-0.0.2dev20091215/t_horde_HK__MP_ConfdStyleConfigurationOverride.diff ( http://bugs.horde.org/ticket/8172 )
+Horde_Framework itself is not installed since it collides with server/kolab-webclient/horde included in the horde-webmailer debian package.
+Since this patch has not made it yet into server/kolab-webclient/horde, it is copied into horde-webmailer/debian/patches.
 
 ## The upstream Horde packages now also make use of sub-files:
 # horde-webmail/config/registry.d/README explains:
@@ -51,6 +52,7 @@ information.
 ## The new upstream Horde packages ship conf.php etc. only as .php.dist
 * horde-upstream/horde-3.3.6.tar.gz
 * horde-upstream/kronolith-h3-2.3.3.tar.gz
+* ...
 
 ## Kolab configuration files are shiped in three forms:
 # 1. static Horde php.dist files that are installed as .php to provide "something"
