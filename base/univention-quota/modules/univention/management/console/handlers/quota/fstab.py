@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import os
 import re
 
 class File( list ):
@@ -107,6 +108,13 @@ class Entry( object ):
 	def __init__( self, spec, mount_point, type, options,
 				  dump = 0, passno = 0, comment = '' ):
 		self.spec = spec.strip()
+		if self.spec.startswith( 'UUID=' ):
+			self.uuid = self.spec[ 5: ]
+			uuid_dev = os.path.join( '/dev/disk/by-uuid', self.uuid )
+			if os.path.exists( uuid_dev ):
+				self.spec = os.path.realpath( uuid_dev )
+		else:
+			self.uuid = None
 		self.mount_point = mount_point.strip()
 		self.type = type.strip()
 		self.options = options.split( ',' )
@@ -115,9 +123,14 @@ class Entry( object ):
 		self.comment = comment
 
 	def __str__( self ):
-		return '%s\t%s\t%s\t%s\t%d\t%d\t%s' % \
-			( self.spec, self.mount_point, self.type,  ','.join( self.options ),
-			  self.dump, self.passno, self.comment )
+		if self.uuid:
+			return 'UUID=%s\t%s\t%s\t%s\t%d\t%d\t%s' % \
+				   ( self.uuid, self.mount_point, self.type,  ','.join( self.options ),
+					 self.dump, self.passno, self.comment )
+		else:
+			return '%s\t%s\t%s\t%s\t%d\t%d\t%s' % \
+				   ( self.spec, self.mount_point, self.type,  ','.join( self.options ),
+					 self.dump, self.passno, self.comment )
 
 class InvalidEntry( Exception ):
 	pass
