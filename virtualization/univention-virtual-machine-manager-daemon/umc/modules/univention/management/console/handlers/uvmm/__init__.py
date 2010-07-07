@@ -70,7 +70,7 @@ drive_type = umcd.make( ( 'type', DriveTypeSelect( _( 'Type' ) ) ), attributes =
 drive_uri = umcd.make( ( 'uri', umc.String( 'URI' ) ), attributes = { 'width' : '250' } )
 drive_dev = umcd.make( ( 'dev', umc.String( _( 'Device' ) ) ), attributes = { 'width' : '250' } )
 
-boot_dev = umcd.make( ( 'bootdev', BootDeviceSelect( _( 'Boot device' ) ) ), attributes = { 'width' : '250' } )
+boot_dev = umcd.make( ( 'bootdev', BootDeviceSelect( _( 'Boot device' ) ) ), attributes = { 'width' : '200' } )
 
 dest_node_select = NodeSelect( _( 'Destination host' ) )
 arch_select = DynamicSelect( _( 'Architecture' ) )
@@ -470,7 +470,7 @@ class handler( umch.simpleHandler ):
 						bd_default.append( ( key, descr ) )
 						break
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: boot devices (found): %s' % bd_default )
-		bootdevs = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'bootdevs' ], fields = [ boot_dev ], default = bd_default, attributes = { 'width' : '250' } )
+		bootdevs = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'bootdevs' ], fields = [ boot_dev ], default = bd_default, attributes = { 'width' : '200' } )
 		if domain_info and domain_info.disks:
 			defaults = []
 			for disk in domain_info.disks:
@@ -503,13 +503,13 @@ class handler( umch.simpleHandler ):
 		vnc_global = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc_global' ], default = vnc_global, attributes = { 'width' : '250' } )
 
 		content.add_row( [ name, os ] )
-		content.add_row( [ arch, virt_tech ] )
+		content.add_row( [ arch, '' ] )
 		content.add_row( [ cpus, mac ] )
 		content.add_row( [ memory, interface ] )
 
 		content2 = umcd.List()
-		content2.add_row( [ bootdevs, umcd.Cell( drives, attributes = { 'rowspan' : '4', 'valign' : 'top' } ) ] )
-		content2.add_row( [ kernel ] )
+		content2.add_row( [ virt_tech ] )
+		content2.add_row( [ kernel, umcd.Cell( bootdevs, attributes = { 'rowspan' : '3' } ) ] )
 		content2.add_row( [ ram_disk ] )
 		content2.add_row( [ root_part ] )
 
@@ -520,6 +520,9 @@ class handler( umch.simpleHandler ):
 		content2.add_row( [ kblayout ] )
 
 		content2.add_row( [ umcd.Text( '' ) ] )
+
+		content3 = umcd.List()
+		content3.add_row( [ drives ] )
 
 		# if not domain_info:
 		# 	content.add_row( [ umcd.Cell( umcd.Section( _( 'Extended Settings' ), content2, hideable = False, hidden = False, name = 'subsection.newdomain' ), attributes = { 'colspan' : '2' } ), ] )
@@ -533,9 +536,11 @@ class handler( umch.simpleHandler ):
 		sections = umcd.List()
 		if not domain_info:
 			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = False, hidden = False, name = 'settings.newdomain' ) ] )
+			sections.add_row( [ umcd.Section( _( 'Devices' ), content3, hideable = False, hidden = False, name = 'devices.newdomain' ) ] )
 			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = False, hidden = False, name = 'extsettings.newdomain' ) ] )
 		else:
 			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = True, hidden = False, name = 'settings.%s' % domain_info.name ) ] )
+			sections.add_row( [ umcd.Section( _( 'Devices' ), content3, hideable = True, hidden = False, name = 'devices.%s' % domain_info.name ) ] )
 			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = False, name = 'extsettings.%s' % domain_info.name ) ] )
 		sections.add_row( [ umcd.Cell( umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ] ), attributes = { 'align' : 'right', 'defaultbutton' : '1' } ) ] )
 

@@ -201,8 +201,6 @@ class InstanceWizard( umcd.IWizard ):
 		self.node = None
 		self.profile_syntax = DynamicSelect( _( 'Profiles' ) )
 		self.profile_syntax.update_choices( [ item[ 'name' ] for item in self.udm.get_profiles() ] )
-		self.arch_syntax = DynamicSelect( _( 'Architecture' ) )
-		self.virttech_syntax = DynamicSelect( _( 'Virtualisation Technology' ) )
 		self.device_wizard = DeviceWizard( command )
 		self.device_wizard_active = False
 		self.actions[ 'new-device' ] = self.new_device
@@ -216,12 +214,9 @@ class InstanceWizard( umcd.IWizard ):
 		# page 1
 		page = umcd.Page( self.title, _( 'The settings shown below are all read from the selected profile. Please verify that these values fits your environment. At least the name for the virtual instance should be modified.' ) )
 		page.options.append( umcd.make( ( 'name', umc.String( _( 'Name' ) ) ) ) )
-		page.options.append( umcd.make( ( 'arch', self.arch_syntax ) ) )
-		page.options.append( umcd.make( ( 'type', self.virttech_syntax ) ) )
 		page.options.append( umcd.make( ( 'memory', umc.String( _( 'Memory' ) ) ) ) )
 		page.options.append( umcd.make( ( 'cpus', NumberSelect( _( 'CPUs' ) ) ) ) )
 		page.options.append( umcd.make( ( 'vnc', umc.Boolean( _( 'VNC' ) ) ) ) )
-		page.options.append( umcd.make( ( 'kblayout', KBLayoutSelect( _( 'Keyboard layout' ) ) ) ) )
 		self.append( page )
 
 		# page 2
@@ -235,25 +230,18 @@ class InstanceWizard( umcd.IWizard ):
 
 	def action( self, object, node ):
 		self.node_uri, self.node = node
-		# at startup
-		if self.current == None:
-			# read capabilities
-			types = []
-			archs = []
-			for template in self.node.capabilities:
-				if not template.virt_tech in types:
-					types.append( template.virt_tech )
-				if not template.arch in archs:
-					archs.append( template.arch )
-			self.virttech_syntax.update_choices( types )
-			self.arch_syntax.update_choices( archs )
 		return umcd.IWizard.action( self, object )
 
 	def next( self, object ):
 		if self.device_wizard_active:
 			return self.device_wizard.next( object )
+		if not 'instance-profile' in object.options:
+			self.replace_title( _( 'Create a virtual instance' ) )
+		else:
+			self.replace_title( _( 'Create a virtual instance (profile: %(profile)s)' ) % { 'profile' : object.options[ 'instance-profile' ] } )
 		if self.current == 0:
 			self.profile = self.udm.get_profile( object.options[ 'instance-profile' ] )
+			ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: next: profile boot devices: %s' % str( self.profile[ 'bootdev' ] ) )
 			object.options[ 'name' ] = self.profile[ 'name_prefix' ]
 			object.options[ 'arch' ] = self.profile[ 'arch' ]
 			object.options[ 'type' ] = self.profile[ 'virttech' ]
@@ -268,6 +256,9 @@ class InstanceWizard( umcd.IWizard ):
 				return umcd.WizardResult( False, _( 'You should modify the name of the virtual instance' ) )
 			if not self.uvmm.is_domain_name_unique( self.node_uri, object.options[ 'name' ] ):
 				return umcd.WizardResult( False, _( 'The chosen name for the virtual instance is not unique. Please use another one.' ) )
+			# activate device wizard to add a first mandatory device
+			if not self.devices:
+				self.new_device( object, cancel = False )
 		return umcd.IWizard.next( self, object )
 
 	def prev( self, object ):
@@ -279,7 +270,7 @@ class InstanceWizard( umcd.IWizard ):
 	def _list_attached_devices( self ):
 		'''add list of attached devices to page 2'''
 		dev_template = _( '<li>%(type)s: %(size)s (image file %(image)s in pool %(pool)s)</li>' )
-		html = '<ul>'
+		html = '<ul class="umc_listing">'
 		for dev in self.devices:
 			values = {}
 			if dev.device == uvmmn.Disk.DEVICE_DISK:
@@ -332,18 +323,28 @@ class InstanceWizard( umcd.IWizard ):
 
 		return umcd.WizardResult()
 
-	def new_device( self, object ):
+	def new_device( self, object, cancel = True ):
 		# all next, prev and finished events must be redirected to the device wizard
 		self.device_wizard_active = True
+		self.device_wizard_cancel = cancel
 		self.device_number += 1
 		object.options[ 'image-name' ] = object.options[ 'name' ] + '-%d.img' % self.device_number
 		object.options[ 'image-size' ] = '8 GB'
 		return self.device_wizard.action( object, ( self.node_uri, self.node ) )
 
-	def setup( self, object ):
+	def setup( self, object, prev = None, next = None, finish = None, cancel = None ):
 		if self.device_wizard_active:
-			return self.device_wizard.setup( object )
-		return umcd.IWizard.setup( self, object )
+			return self.device_wizard.setup( object, finish = _( 'Add' ), cancel = self.device_wizard_cancel )
+		return umcd.IWizard.setup( self, object, cancel = False )
+
+	def cancel( self, object ):
+		if self.device_wizard_active:
+			self.device_wizard_active = False
+			# fall back to instance overview
+			self.current = 2
+			self.device_wizard.reset()
+
+		return umcd.WizardResult()
 
 	def reset( self ):
 		self.devices = []

@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (0.9.45-1) unstable; urgency=low
+
+  * show cancel button in device wizard; Bug #18861
+  * remove archiecture, virtualization technology and VNC keyboard layout
+    in instance wizard; Bug #18852
+  * restructure settings dialog; Bug #18856
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 07 Jul 2010 16:53:18 +0200
+
 univention-virtual-machine-manager-daemon (0.9.44-1) unstable; urgency=low
 
   * add VNC java client capability (Bug #18346)
@@ -6,7 +15,8 @@ univention-virtual-machine-manager-daemon (0.9.44-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.43-1) unstable; urgency=low
 
-  * show location within the tree at the top of each page; Bug #18164
+  * show location of current object within the tree at the top of each
+    page; Bug #18164
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 01 Jul 2010 16:26:03 +0200
 
