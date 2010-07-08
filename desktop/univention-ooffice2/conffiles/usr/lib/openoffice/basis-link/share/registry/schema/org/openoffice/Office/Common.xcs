@@ -847,6 +847,11 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <desc>Contains a list of passwords encoded with the master password.</desc>
         </info>
       </set>
+      <prop oor:name="AuthenticateUsingSystemCredentials" oor:type="oor:string-list">
+        <info>
+          <desc>Contains a list of URLs that should be accessed using system credentials of the user.</desc>
+        </info>
+      </prop>
     </group>
     <group oor:name="_3D_Engine">
       <info>
@@ -964,14 +969,14 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
       </prop>
       <prop oor:name="MaximumPaperWidth" oor:type="xs:int">
         <info>
-          <desc>Specifies the maximum allowed Paper Width for page definitions in 1/100th cm. Default is 3m. When this is changed to higher values, it is done on own risk.</desc>
+          <desc>Specifies the maximum allowed Paper Width for page definitions in cm. Default is 3m, i.e. 300 cm. When this is changed to higher values, it is done on own risk.</desc>
           <label>Maximum allowed Paper Width for page definitions</label>
         </info>
         <value>30000</value>
       </prop>
       <prop oor:name="MaximumPaperHeight" oor:type="xs:int">
         <info>
-          <desc>Specifies the maximum allowed Paper Height for page definitions in 1/100th cm. Default is 3m. When this is changed to higher values, it is done on own risk.</desc>
+          <desc>Specifies the maximum allowed Paper Height for page definitions in cm. Default is 3m, i.e. 300 cm. When this is changed to higher values, it is done on own risk.</desc>
           <label>Maximum allowed Paper Height for page definitions</label>
         </info>
         <value>30000</value>
@@ -1003,6 +1008,121 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <label>Maximum allowed Bottom margin for page definitions</label>
         </info>
         <value>9999</value>
+      </prop>
+      <prop oor:name="AntiAliasing" oor:type="xs:boolean">
+        <info>
+          <desc>
+            This switch allows to switch DrawingLayer based views to be rendered using AntiAliasing or not.
+            Of course this takes only effect when AntiAliasing is supported for the System OOo is running on.
+          </desc>
+          <label>This switch determines if DrawingLayer based views use AntiAliasing.</label>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="SnapHorVerLinesToDiscrete" oor:type="xs:boolean">
+        <info>
+          <desc>
+            This switch allows to enhance visualisation of graphics which use Horizontal or Vertical Hairlines
+            combined with AntiAliased mode (e.g. in 2D charts). When not used, those lines will be AntiAliased
+            as everything else. Since this is not pleasing for the eye, this option allows to force those lines
+            to snap to discrete points (pixels) when activated and thus avoids AntiAliasing of pure Horizontal or
+            Vertical Hairlines.
+          </desc>
+          <label>Determines if Horizontal and Vertical HairLines in AntiAliased mode are snapped to discrete pixles to enhance visualisation</label>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="RenderDecoratedTextDirect" oor:type="xs:boolean">
+        <info>
+          <desc>
+            This switch determines if the decorations of decorated text portions (e.g. underline, strike through)
+            are rendered using VCL direct rendering or if the primitive is decomposed into simple text and the
+            corresponding geometrical representations of the decorations. Default is true since VCL's usage
+            of the diverse System's hinting possibilities for decorations is useful.
+          </desc>
+          <label>Determines if decorated texts are decomposed at render time or directly rendered using VCL</label>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="RenderSimpleTextDirect" oor:type="xs:boolean">
+        <info>
+          <desc>
+            This switch determines if simple text is directly rendered using VCL or not. If not, the simple text
+            is decomposed into PolyPolygons which will be painted then. Default is true, since VCL will use the
+            hinting for font rendering on the diverse supported systems, which gives better quality than rendering
+            the text as Polygons.
+          </desc>
+          <label>Determines if simple texts are decomposed at render time or directly rendered using VCL</label>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="SolidDragCreate" oor:type="xs:boolean">
+        <info>
+          <desc>
+            This switch decides if Interactions in the DrawingLayer are visualized using Wireframe or Full-Object
+            previews. If false, only Wireframe will be used. If true, Full-Object preview which gives a much better
+            feedback about the object interaction will be used. This mode is used for modification and creation of 
+            objects. During interaction, a geometric copy of the object(s) is shown with 50% transparence in the 
+            foreground. That copy shows exactly what You will get when You end the interaction.
+          </desc>
+          <label>This switch determines if DrawingLayer Interactions show Wireframe or Full-Object preview.</label>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="Quadratic3DRenderLimit" oor:type="xs:int">
+        <info>
+          <desc>
+            This defines a Limitation for the default raster conversion from 3D Scenes to Bitmaps.
+            The number is the maximum number of pixels to use, e.g. 1000x1000 Pixels is allowed as default.
+            When Scenes would need more Pixels than this, the Bitmap will be limited and scaled to the needed pixel size at paint time.
+          </desc>
+          <label>A Pixel limitation for the creation of 3D Scenes with the default renderer.</label>
+        </info>
+        <value>1000000</value>
+      </prop>
+      <prop oor:name="QuadraticFormControlRenderLimit" oor:type="xs:int">
+        <info>
+          <desc>This defines a Limitation for the default raster conversion of FormControls in edit mode.
+                These have the ability to be displayed using this fallback to Bitmaps.
+                The number is the maximum number of pixels to use, e.g. 300x150 Pixels is allowed as default.
+                When FormControls would need more Pixels than this, the Bitmap will be limited and scaled to the needed pixel size at paint time.
+          </desc>
+          <label>A Pixel limitation for the creation of FormControl fallback display.</label>
+        </info>
+        <value>45000</value>
+      </prop>
+      <prop oor:name="TransparentSelection" oor:type="xs:boolean">
+        <info>
+          <desc>
+            This switch defines if the selections in the applications (text or cells) are visualized using 
+            inverse (XOR) when set to false (the old selection method, also used when in HighContrast mode) 
+            or a transparent overlay selection using the system's selection color.
+          </desc>
+          <label>This switch defines if for text/cell selections the old inverse or the new transparent selection is to be used.</label>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="TransparentSelectionPercent" oor:type="xs:short">
+        <info>
+          <desc>
+            Specifies the degree of transparence to be used when transparent selection is used. The value is a percent
+            value. Since neither no transparence nor complete transparence makes sense, the value is limited to a range
+            of 10% - 90%. If the given value is outside this range, it is cropped to it.
+          </desc>
+          <label>Specifies the percent of transparence to use if transparent selection is used.</label>
+        </info>
+        <value>75</value>
+      </prop>
+      <prop oor:name="SelectionMaximumLuminancePercent" oor:type="xs:short">
+        <info>
+          <desc>
+            Specifies the maximum allowed luminance the system's selection color may have. When the color
+            fetched from the system is brighter (luminacne is bigger), it will be scaled to a luminance
+            of exactly this given value.
+          </desc>
+          <label>Specifies the maximum allowed luminance for the system's selection color.</label>
+        </info>
+        <value>70</value>
       </prop>
     </group>
     <group oor:name="AutoCorrect">
@@ -1062,6 +1182,13 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         <info>
           <desc>Specifies if minus signs should be replaced by dashes automatically.</desc>
           <label>Replace dashes</label>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="AddNonBreakingSpace" oor:type="xs:boolean">
+        <info>
+          <desc>Adds a non-breaking space before the characters :;!? in french.</desc>
+          <label>Add non-breaking space</label>
         </info>
         <value>true</value>
       </prop>
@@ -1195,6 +1322,17 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
       <info>
         <desc>Contains the current and default path settings used by the Office.</desc>
       </info>
+      <group oor:name="Info">
+        <info>
+          <desc>Contains various properties information purpose only.</desc>
+        </info>
+        <prop oor:name="WorkPathChanged" oor:type="xs:boolean">
+          <info>
+            <desc>A flag which is set by the tools options dialog whenever a user changed the work path.</desc>
+          </info>
+          <value>true</value>
+        </prop>
+      </group>
       <group oor:name="Current">
         <info>
           <desc>Contains the global path settings, mainly those of the Options dialog.</desc>
@@ -1878,6 +2016,44 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <value>true</value>
         </prop>
       </group>
+      <group oor:name="ODF">
+        <info>
+          <desc>Specifies ODF settings.</desc>
+        </info>
+        <prop oor:name="DefaultVersion" oor:type="xs:short">
+          <info>
+            <desc>Specifies the default ODF version for saving documents.</desc>
+          </info>
+          <constraints>
+            <enumeration oor:value="0">
+              <info>
+                <desc>ODFVER_UNKNOWN</desc>
+              </info>
+            </enumeration>
+            <enumeration oor:value="1">
+              <info>
+                <desc>ODFVER_010</desc>
+              </info>
+            </enumeration>
+            <enumeration oor:value="2">
+              <info>
+                <desc>ODFVER_011</desc>
+              </info>
+            </enumeration>
+            <enumeration oor:value="4">
+              <info>
+                <desc>ODFVER_012</desc>
+              </info>
+            </enumeration>
+            <enumeration oor:value="3">
+              <info>
+                <desc>ODFVER_LATEST</desc>
+              </info>
+            </enumeration>
+          </constraints>
+          <value>3</value>
+        </prop>
+      </group>
     </group>
     <group oor:name="Load">
       <info>
@@ -1887,6 +2063,12 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         <info>
           <desc>Specifies whether the user defined configuration settings are loaded together with the document.</desc>
           <label>Load user-defined settings</label>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="ShowOfficeUpdateDialog" oor:type="xs:boolean">
+        <info>
+          <desc>Specifies whether the office update dialog should be shown in case the loaded document has newer ODF version than the maximal supported one.</desc>
         </info>
         <value>true</value>
       </prop>
@@ -2071,6 +2253,17 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         </constraints>
         <value>0</value>
       </prop>
+      <group oor:name="NewDocumentHandling">
+        <info>
+          <desc>Contains settings to change new document window behavior.</desc>
+        </info>
+        <prop oor:name="ForceFocusAndToFront" oor:type="xs:boolean">
+          <info>
+            <desc>Every new document window will be forced to front and grabs the focus.</desc>
+          </info>
+          <value>true</value>
+        </prop>
+      </group>
       <group oor:name="AppWindow">
         <info>
           <desc>Contains settings on how the application window should be displayed.</desc>
@@ -2220,6 +2413,12 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         <prop oor:name="DontHideDisabledEntry" oor:type="xs:boolean">
           <info>
             <desc>Shows all deactivated menu entries. Menu commands that are normally not necessary are hidden by default.</desc>
+          </info>
+          <value>true</value>
+        </prop>
+        <prop oor:name="IsSystemIconsInMenus" oor:type="xs:boolean">
+          <info>
+            <desc>Indicates whether icons in the office menus should shown/hidden by following the System theme.</desc>
           </info>
           <value>true</value>
         </prop>
@@ -2694,6 +2893,29 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           </info>
         </set>
       </group>
+      <group oor:name="StartCenter">
+        <info>
+          <desc>Contains settings for the start center.</desc>
+        </info>
+        <prop oor:name="AddFeatureURL" oor:type="xs:string">
+          <info>
+            <desc>Contains a string specifying the URL to be browsed for additional features (e.g. extensions)</desc>
+          </info>
+          <value/>
+        </prop>
+        <prop oor:name="InfoURL" oor:type="xs:string">
+          <info>
+            <desc>Contains a string specifying the URL to be browsed for information about the product</desc>
+          </info>
+          <value/>
+        </prop>
+        <prop oor:name="TemplateRepositoryURL" oor:type="xs:string">
+          <info>
+            <desc>Contains a string specifying the URL to be browsed for additional template documents</desc>
+          </info>
+          <value/>
+        </prop>
+      </group>
       <group oor:name="Registration">
         <info>
           <desc>Contains various settings regarding the product registration feature.</desc>
@@ -2730,12 +2952,12 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         </prop>
         <prop oor:name="ProductVersionID" oor:type="xs:string">
           <info>
-            <desc>Current product ID.</desc>
+            <deprecated/>
           </info>
         </prop>
         <set oor:name="ProductVersions" oor:node-type="ProductVersionID">
           <info>
-            <desc>Specifies product specific IDs and associated instance UUIDs</desc>
+            <deprecated/>
           </info>
         </set>
       </group>
@@ -3012,6 +3234,12 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
             </info>
             <value>true</value>
           </prop>
+          <prop oor:name="ImportWWFieldsAsEnhancedFields" oor:type="xs:boolean">
+            <info>
+              <desc>Flag to control use of enhanced fields.</desc>
+            </info>
+            <value>true</value>
+          </prop>
         </group>
         <group oor:name="Export">
           <info>
@@ -3040,6 +3268,24 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
               <desc>Specifies if embedded Impress objects are converted into PowerPoint objects.</desc>
             </info>
             <value>true</value>
+          </prop>
+          <prop oor:name="EnablePowerPointPreview" oor:type="xs:boolean">
+            <info>
+              <desc>Specifies if previews are created when saving PowerPoint documents.</desc>
+            </info>
+            <value>true</value>
+          </prop>
+          <prop oor:name="EnableExcelPreview" oor:type="xs:boolean">
+            <info>
+              <desc>Specifies if previews are created when saving Excel documents.</desc>
+            </info>
+            <value>false</value>
+          </prop>
+          <prop oor:name="EnableWordPreview" oor:type="xs:boolean">
+            <info>
+              <desc>Specifies if previews are created when saving Word documents.</desc>
+            </info>
+            <value>false</value>
           </prop>
         </group>
       </group>
@@ -4261,9 +4507,47 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         </info>
         <value>@%@openoffice/usesystemfiledialog@%@</value>
       </prop>
+      <prop oor:name="UseDocumentSystemFileLocking" oor:type="xs:boolean">
+        <info>
+          <desc>Allows to specify whether the OOo document file locking mechanics should use the system file locking.</desc>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="UseDocumentOOoLockFile" oor:type="xs:boolean">
+        <info>
+          <desc>Allows to specify whether the OOo document file locking mechanics should use the lock file for locking.</desc>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="ShowLinkWarningDialog" oor:type="xs:boolean">
+        <info>
+          <desc>Determines if a warning dialog should be
+					displayed when a user checks the link checkbox in
+					the insert graphics dialog.</desc>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="UseSystemPrintDialog" oor:type="xs:boolean">
+        <info>
+          <desc>Determines if the system's print dialog should be used. If false, the platform independent print dialog implementation will be used. Relevant on platforms where print dialog integration is implemented.</desc>
+        </info>
+        <value>false</value>
+      </prop>
+      <prop oor:name="TryODMADialog" oor:type="xs:boolean">
+        <info>
+          <desc>Determines whether to show the document creation and selection of the machine's default ODMA (Open Document Management Architecture) DMS (Document Management System). If true, and the machine has a DMS available, the DMS's dialog will be displayed. That dialog then gives the opportunity to use the application's dialog instead, which means the normal system file and folder pickers will be displayed. Relevant only on Windows.</desc>
+        </info>
+        <value>false</value>
+      </prop>
       <prop oor:name="DisableUICustomization" oor:type="xs:boolean">
         <info>
           <desc>Disables the customization of the UI elements.</desc>
+        </info>
+        <value>false</value>
+      </prop>
+      <prop oor:name="AlwaysAllowSave" oor:type="xs:boolean">
+        <info>
+          <desc>Determines if the user can save the document even when it's not modified.</desc>
         </info>
         <value>false</value>
       </prop>
@@ -4318,6 +4602,16 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <enumeration oor:value="tango">
             <info>
               <desc>Tango - the Gnome default theme</desc>
+            </info>
+          </enumeration>
+          <enumeration oor:value="classic">
+            <info>
+              <desc>Classic - the OpenOffice.org 2.0 default theme</desc>
+            </info>
+          </enumeration>
+          <enumeration oor:value="oxygen">
+            <info>
+              <desc>Oxygen - the KDE4 default theme</desc>
             </info>
           </enumeration>
         </constraints>
@@ -4507,6 +4801,12 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         <info>
           <desc>Specifies the label of the second component-based search command.</desc>
         </info>
+      </prop>
+      <prop oor:name="IsNotes" oor:type="xs:boolean">
+        <info>
+          <desc>Specifies if search includes comments(SwPostItFields)</desc>
+        </info>
+        <value>false</value>
       </prop>
       <group oor:name="Japanese">
         <info>
@@ -4848,7 +5148,7 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         </prop>
         <prop oor:name="CTLTextNumerals" oor:type="xs:int">
           <info>
-            <desc>Specifies the type of numerals (Arabic (0), Hindi (1) or system settings (2)) is used per default in all applications.</desc>
+            <desc>Specifies the type of numerals (Arabic (0), Hindi (1), system settings (2) or Context(3)) is used per default in all applications.</desc>
           </info>
           <value>0</value>
         </prop>
