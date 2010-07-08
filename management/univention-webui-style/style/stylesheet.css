@@ -1447,6 +1447,7 @@ padding-right: 8px;
 
 .umc_listing {
 	list-style-type: disc !important;
+	margin: 5px 5px 5px 24px !important;
 }
 
 span.h4
