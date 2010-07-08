@@ -1,3 +1,10 @@
+univention-webui-style (5.0.13-1) unstable; urgency=low
+
+  * add style for normal listings
+  * add style right aligned table cells; Bug #18861
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 02 Jul 2010 15:50:03 +0200
+
 univention-webui-style (5.0.12-1) unstable; urgency=low
 
   * add new style for blind tables that should use a smaller padding; Bug #18164

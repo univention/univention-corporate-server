@@ -1445,6 +1445,10 @@ padding-right: 8px;
 	padding-bottom: 0px;
 }
 
+.umc_listing {
+	list-style-type: disc !important;
+}
+
 span.h4
 {
 	font-size: 16px;
@@ -1783,6 +1787,10 @@ td.umc_list_element table.button td.button_icon input.button_icon
 
 .umc_list_element_number {
     text-align: right;
+}
+
+.umc_list_element_right {
+    float: right;
 }
 
 td.umc_list_head,
