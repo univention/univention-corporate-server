@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.46-1) unstable; urgency=low
+
+  * re-structuring of domain settings; Bug #18856
+  * support removing of devices
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 08 Jul 2010 16:30:28 +0200
+
 univention-virtual-machine-manager-daemon (0.9.45-1) unstable; urgency=low
 
   * show cancel button in device wizard; Bug #18861
