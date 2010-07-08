@@ -85,7 +85,11 @@ class Page( object ):
 
 	def setup( self, command, options, prev = True, next = True, finish = False, cancel = True ):
 		wizard = Wizard( self.title )
-		wizard._content.add_row( [ Fill( 2, str( self.description ) ), ] )
+		if isinstance( self.description, HTML ):
+			self.description[ 'colspan' ] = '2'
+			wizard._content.add_row( [ self.description, ] )
+		else:
+			wizard._content.add_row( [ Fill( 2, self.description ), ] )
 		wizard._content.add_row( [ Fill( 2, '' ), ] )
 		items = []
 		for option in self.options:
