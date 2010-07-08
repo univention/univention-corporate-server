@@ -287,11 +287,18 @@ class Client( notifier.signals.Provider ):
 			raise ConnectionError()
 		return self.recv_blocking()
 
+	def _verify_device_files( self, domain ):
+		dev_name = 'a'
+		for dev in domain.disks:
+			dev.target_dev = 'hd%s' % dev_name
+			dev_name = chr( ord( dev_name ) + 1 )
+
 	def domain_configure( self, node, data ):
 		req = protocol.Request_DOMAIN_DEFINE()
 		req.uri = self.node_name2uri( node )
 		ud.debug( ud.ADMIN, ud.ERROR, 'disks to send: %s' % data.disks )
 		ud.debug( ud.ADMIN, ud.ERROR, 'interfaces to send: %s' % data.interfaces )
+		self._verify_device_files( data )
 		req.domain = data
 		if not self.send( req.pack() ):
 			raise ConnectionError()

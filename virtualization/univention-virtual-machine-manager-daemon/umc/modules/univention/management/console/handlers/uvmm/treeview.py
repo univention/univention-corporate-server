@@ -70,7 +70,7 @@ class TreeView( object ):
 	@staticmethod
 	def convert(data, current, level=0, options={}, additional_buttons={}, uvmm=None, node_uri=None, cache={}):
 		"""
-		Convert nested list|tutple into TreeView of buttons.
+		Convert nested list|tuple into TreeView of buttons.
 		Depth-first recursion which creation on return path.
 
 		data: nested list|tuples.

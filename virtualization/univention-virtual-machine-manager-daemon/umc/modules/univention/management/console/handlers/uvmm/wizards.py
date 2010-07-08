@@ -190,7 +190,7 @@ class DeviceWizard( umcd.IWizard ):
 		disk.source = os.path.join( disk.source, object.options[ 'image-name' ] )
 
 		self._result = disk
-		return umcd.IWizard.finish( self, object )
+		return umcd.WizardResult()
 
 class InstanceWizard( umcd.IWizard ):
 	def __init__( self, command ):
@@ -220,10 +220,8 @@ class InstanceWizard( umcd.IWizard ):
 		self.append( page )
 
 		# page 2
-		page = umcd.Page( self.title, _( 'The virtual instance will be created with the following settings.' ) )
-		page.options.append( umcd.HTML( '<b>%s</b><br>' %_( 'Attached devices' ) ) )
+		page = umcd.Page( self.title, umcd.HTML( _( 'The virtual instance will be created with the settings shown below. You may now add additional devices by clicking the button <i>Add device</i>' ) ) )
 		page.options.append( umcd.HTML( '' ) )
-		page.options.append( umcd.Text( _( "You may now add additional devices by clicking the button 'Add device'" ) ) )
 		add_btn = umcd.Button( _( 'Add device' ), 'uvmm/add', ( umcd.Action( umcp.SimpleCommand( command, options = { 'action' : 'new-device' } ) ), ) )
 		page.actions.append( add_btn )
 		self.append( page )
@@ -267,8 +265,22 @@ class InstanceWizard( umcd.IWizard ):
 
 		return umcd.IWizard.prev( self, object )
 
-	def _list_attached_devices( self ):
-		'''add list of attached devices to page 2'''
+	def _list_domain_settings( self, object ):
+		'''add list with domain settings to page 2'''
+		rows = []
+		# rows.append( [ umcd.HTML( '<b>%s</b><br>' % _( 'Instance settings' ) ), ] )
+		settings = umcd.List()
+		for text, key in ( ( _( 'Name' ), 'name' ), ( _( 'CPUs' ), 'cpus' ), ( _( 'Memory' ), 'memory' ) ):
+			settings.add_row( [ umcd.HTML( '<i>%s</i>' % text ), object.options.get( key, '' ) ] )
+		if object.options.get( 'vnc' ):
+			value = _( 'activated' )
+		else:
+			value = _( 'deactivated' )
+		settings.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'VNC access' ) ), value ] )
+		rows.append( [ settings ] )
+
+		rows.append( [ umcd.HTML( '<b>%s</b><br>' % _( 'Attached devices' ) ), ] )
+
 		dev_template = _( '<li>%(type)s: %(size)s (image file %(image)s in pool %(pool)s)</li>' )
 		html = '<ul class="umc_listing">'
 		for dev in self.devices:
@@ -287,14 +299,15 @@ class InstanceWizard( umcd.IWizard ):
 					break
 			html += dev_template % values
 		html += '</ul>'
-		self[ 2 ].options[ 1 ] = umcd.HTML( html )
+		rows.append( [ umcd.HTML( html ) ] )
+		self[ 2 ].options[ 0 ] = umcd.List( content = rows )
 
 	def finish( self, object ):
 		if self.device_wizard_active:
 			self.device_wizard_active = False
 			self.device_wizard.finish( object )
 			self.devices.append( self.device_wizard.result() )
-			self._list_attached_devices()
+			self._list_domain_settings( object )
 			self.device_wizard.reset()
 		else:
 			domain = uvmmp.Data_Domain()

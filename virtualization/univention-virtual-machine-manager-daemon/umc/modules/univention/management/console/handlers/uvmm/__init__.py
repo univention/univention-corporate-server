@@ -178,6 +178,12 @@ command_description = {
 		method = 'uvmm_device_create',
 		values = {},
 		),
+	'uvmm/device/remove': umch.command(
+		short_description = _( 'Remove Device' ),
+		long_description = _('Removes a device' ),
+		method = 'uvmm_device_remove',
+		values = {},
+		),
 }
 
 class handler( umch.simpleHandler ):
@@ -442,7 +448,7 @@ class handler( umch.simpleHandler ):
 		name = umcd.make( self[ 'uvmm/domain/configure' ][ 'name' ], default = handler._getattr( domain_info, 'name', '' ), attributes = { 'width' : '250' } )
 		virt_tech = umcd.make( self[ 'uvmm/domain/configure' ][ 'type' ], default = handler._getattr( domain_info, 'virt_tech', 'hvm' ), attributes = { 'width' : '250' } )
 		arch = umcd.make( self[ 'uvmm/domain/configure' ][ 'arch' ], default = handler._getattr( domain_info, 'arch', 'i686' ), attributes = { 'width' : '250' } )
-		os = umcd.make( self[ 'uvmm/domain/configure' ][ 'os' ], default = getattr(domain_info, 'annotations', {}).get('os', ''), attributes = { 'width' : '250' } )
+		os_widget = umcd.make( self[ 'uvmm/domain/configure' ][ 'os' ], default = getattr(domain_info, 'annotations', {}).get('os', ''), attributes = { 'width' : '250' } )
 		cpus_select.max = int( node.cpus )
 		cpus = umcd.make( self[ 'uvmm/domain/configure' ][ 'cpus' ], default = handler._getattr( domain_info, 'vcpus', '1' ), attributes = { 'width' : '250' } )
 		mem = handler._getattr( domain_info, 'maxMem', '536870912' )
@@ -471,16 +477,34 @@ class handler( umch.simpleHandler ):
 						break
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: boot devices (found): %s' % bd_default )
 		bootdevs = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'bootdevs' ], fields = [ boot_dev ], default = bd_default, attributes = { 'width' : '200' } )
+		# device listing
+		disk_list = umcd.List()
+		disk_list.set_header( [ _( 'Type' ), _( 'Image' ), _( 'Size' ), _( 'Pool' ), '' ] )
 		if domain_info and domain_info.disks:
 			defaults = []
-			for disk in domain_info.disks:
-				if not disk.source: continue
-				value = '%s,%s:%s,%s' % ( uuv_node.Disk.map_device( id = disk.device ), disk.driver, disk.source, disk.target_dev )
-				defaults.append( ( value, value ) )
-			drives = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'drives' ], fields = [ drive_type, drive_uri, drive_dev ], separator = ',', label = _( 'Drives' ),
-									  default = defaults, attributes = { 'width' : '250' } )
-		else:
-			drives = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'drives' ], fields = [ drive_type, drive_uri, drive_dev ], separator = ',', label = _( 'Drives' ), attributes = { 'width' : '250' } )
+			overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = copy.copy( object.options ) )
+			remove_cmd = umcp.SimpleCommand( 'uvmm/device/remove', options = copy.copy( object.options ) )
+			remove_cmd.options[ 'disk' ] = None
+			for dev in domain_info.disks:
+				values = {}
+				if dev.device == uvmmn.Disk.DEVICE_DISK:
+					values[ 'type' ] = _( 'hard drive' )
+				else:
+					values[ 'type' ] = _( 'CDROM drive' )
+				if not dev.size:
+					values[ 'size' ] = _( 'unknown' )
+				else:
+					values[ 'size' ] = block2byte( dev.size )
+				values[ 'image' ] = os.path.basename( dev.source )
+				dir = os.path.dirname( dev.source )
+				values[ 'pool' ] = dir
+				for pool in node.storages:
+					if pool.path == dir:
+						values[ 'pool' ] = pool.name
+						break
+
+				remove_cmd.options[ 'disk' ] = dev.source
+				disk_list.add_row( [ values[ 'type' ], values[ 'image' ], values[ 'size' ], values[ 'pool' ], umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd, options = { 'disk' : dev.source } ), umcd.Action( overview_cmd ) ] ) ] )
 		vnc_bool = False
 		vnc_global = True
 		vnc_keymap = 'de'
@@ -502,7 +526,7 @@ class handler( umch.simpleHandler ):
 		kblayout = umcd.make( self[ 'uvmm/domain/configure' ][ 'kblayout' ], default = vnc_keymap, attributes = { 'width' : '250' } )
 		vnc_global = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc_global' ], default = vnc_global, attributes = { 'width' : '250' } )
 
-		content.add_row( [ name, os ] )
+		content.add_row( [ name, os_widget ] )
 		content.add_row( [ arch, '' ] )
 		content.add_row( [ cpus, mac ] )
 		content.add_row( [ memory, interface ] )
@@ -521,26 +545,26 @@ class handler( umch.simpleHandler ):
 
 		content2.add_row( [ umcd.Text( '' ) ] )
 
-		content3 = umcd.List()
-		content3.add_row( [ drives ] )
+		# content3 = umcd.List()
+		# content3.add_row( [ drives ] )
 
 		# if not domain_info:
 		# 	content.add_row( [ umcd.Cell( umcd.Section( _( 'Extended Settings' ), content2, hideable = False, hidden = False, name = 'subsection.newdomain' ), attributes = { 'colspan' : '2' } ), ] )
 		# else:
 		# 	content.add_row( [ umcd.Cell( umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = True, name = 'subsection.%s' % domain_info.name ), attributes = { 'colspan' : '2' } ), ] )
 
-		ids = ( name.id(), os.id(), virt_tech.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), drives.id(), vnc.id(), vnc_global.id(), kblayout.id(), bootdevs.id() )
+		ids = ( name.id(), os_widget.id(), virt_tech.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), vnc.id(), vnc_global.id(), kblayout.id(), bootdevs.id() )
 		cfg_cmd = umcp.SimpleCommand( 'uvmm/domain/configure', options = object.options )
 		overview_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = object.options )
 
 		sections = umcd.List()
 		if not domain_info:
 			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = False, hidden = False, name = 'settings.newdomain' ) ] )
-			sections.add_row( [ umcd.Section( _( 'Devices' ), content3, hideable = False, hidden = False, name = 'devices.newdomain' ) ] )
+			sections.add_row( [ umcd.Section( _( 'Devices' ), disk_list, hideable = False, hidden = False, name = 'devices.newdomain' ) ] )
 			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = False, hidden = False, name = 'extsettings.newdomain' ) ] )
 		else:
 			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = True, hidden = False, name = 'settings.%s' % domain_info.name ) ] )
-			sections.add_row( [ umcd.Section( _( 'Devices' ), content3, hideable = True, hidden = False, name = 'devices.%s' % domain_info.name ) ] )
+			sections.add_row( [ umcd.Section( _( 'Devices' ), disk_list, hideable = True, hidden = False, name = 'devices.%s' % domain_info.name ) ] )
 			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = False, name = 'extsettings.%s' % domain_info.name ) ] )
 		sections.add_row( [ umcd.Cell( umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ] ), attributes = { 'align' : 'right', 'defaultbutton' : '1' } ) ] )
 
@@ -666,18 +690,20 @@ class handler( umch.simpleHandler ):
 		domain.interfaces.append( iface )
 
 		# disks
-		for drive in object.options[ 'drives' ]:
-			dev, uri, target = drive.split( ',' )
-			disk = uuv_node.Disk()
-			disk.device = uuv_node.Disk.map_device( name = dev )
-			disk.type = uuv_node.Disk.TYPE_FILE
-			if uri.find( ':' ) != -1:
-				disk.source = uri.split( ':' )[ 1 ]
-			else:
-				disk.source = uri
-			disk.target_dev = target
-			domain.disks.append( disk )
-			ud.debug( ud.ADMIN, ud.ERROR, 'drive: %s' % str( disk ) )
+		if domain_info:
+			domain.disks = domain_info.disks
+		# for drive in object.options[ 'drives' ]:
+		# 	dev, uri, target = drive.split( ',' )
+		# 	disk = uuv_node.Disk()
+		# 	disk.device = uuv_node.Disk.map_device( name = dev )
+		# 	disk.type = uuv_node.Disk.TYPE_FILE
+		# 	if uri.find( ':' ) != -1:
+		# 		disk.source = uri.split( ':' )[ 1 ]
+		# 	else:
+		# 		disk.source = uri
+		# 	disk.target_dev = target
+		# 	domain.disks.append( disk )
+		# 	ud.debug( ud.ADMIN, ud.ERROR, 'drive: %s' % str( disk ) )
 
 		# graphics
 		ud.debug( ud.ADMIN, ud.INFO, 'Configure Domain: graphics: %s' % object.options[ 'vnc' ] )
@@ -812,7 +838,29 @@ class handler( umch.simpleHandler ):
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 		node = self.uvmm.get_node_info( node_uri )
 
+		ud.debug( ud.ADMIN, ud.INFO, 'Device create: action: %s' % str( object.options.get( 'action' ) ) )
+		# user cancelled the wizard
+		if object.options.get( 'action' ) == 'cancel':
+			self.device_wizard.reset()
+			self.uvmm_domain_overview( object )
+			return
+
 		result = self.device_wizard.action( object, ( node_uri, node ) )
+
+		# domain wizard finished?
+		if self.device_wizard.result():
+			new_disk = self.device_wizard.result()
+			domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
+			domain_info.disks.append( new_disk )
+			resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
+			new_disk = self.device_wizard.reset()
+			if self.uvmm.is_error( resp ):
+				res.status( 301 )
+				self.finished( object.id(), res, report = resp.msg )
+			else:
+				self.uvmm_domain_overview( object )
+			return
+		# navigating in the wizard ...
 		page = self.device_wizard.setup( object )
 		res.dialog[ 0 ].set_dialog( page )
 		if not result:
@@ -821,3 +869,25 @@ class handler( umch.simpleHandler ):
 		else:
 			report = ''
 		self.finished( object.id(), res, report = report )
+
+	def uvmm_device_remove( self, object ):
+		ud.debug( ud.ADMIN, ud.INFO, 'Device remove' )
+		res = umcp.Response( object )
+
+		# remove domain
+		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
+		new_disks = []
+		for dev in domain_info.disks:
+			if dev.source != object.options[ 'disk' ]:
+				new_disks.append( dev )
+		domain_info.disks = new_disks
+		resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
+
+		if self.uvmm.is_error( resp ):
+			res.status( 301 )
+			self.finished( object.id(), res, report = _( 'Removing the device <i>%(device)s</i> failed' ) % { 'device' : os.path.basename( object.options[ 'disk' ] ) } )
+		else:
+			res.status( 201 )
+			self.finished( object.id(), res, report = _( 'The device <i>%(device)s</i> was removed successfully' ) % { 'device' : os.path.basename( object.options[ 'disk' ] ) } )
+
