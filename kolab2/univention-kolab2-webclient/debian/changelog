@@ -1,3 +1,10 @@
+univention-kolab2-webclient (6.0.2-5) unstable; urgency=low
+
+  * include sql command files from horde-webmail/*/scripts/upgrades/
+  * document the necessary steps in README.txt (Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Jul 2010 12:13:24 +0200
+
 univention-kolab2-webclient (6.0.2-4) unstable; urgency=low
 
   * add the dpkg-new update handling again (Bug #17812)

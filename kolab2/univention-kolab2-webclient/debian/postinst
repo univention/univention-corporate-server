@@ -71,12 +71,16 @@ su - postgres -c "psql -d template1 -f $share/create.database_and_user.sql &> /d
 su - postgres -c "psql -d horde -f $share/create.pgsql.sql &> /dev/null"
 su - postgres -c "psql -d horde -f $share/horde_datatree.sql &> /dev/null"
 su - postgres -c "psql -d horde -f $share/horde_prefs.sql &> /dev/null"
-su - postgres -c "psql -d horde -f $share/horde_syncml.sql &> /dev/null"
 su - postgres -c "psql -d horde -f $share/horde_histories.sql &> /dev/null"
 su - postgres -c "psql -d horde -f $share/kronolith.pgsql.sql &> /dev/null"
 su - postgres -c "psql -d horde -f $share/turba_objects.pgsql.sql &> /dev/null"
 su - postgres -c "psql -d horde -f $share/nag.pgsql.sql &> /dev/null"
 su - postgres -c "psql -d horde -f $share/mnemo.pgsql.sql &> /dev/null"
+su - postgres -c "psql -d horde -f $share/ingo.pgsql.sql &> /dev/null"
+su - postgres -c "psql -d horde -f $share/imp.pgsql.sql &> /dev/null"
+for f in horde_3.1_to_3.2.pgsql.sql horde_3.3_to_3.3.5.sql kronolith_2.1_to_2.2.pgsql.sql kronolith_2.2_to_2.3.pgsql.sql mnemo_2.1_to_2.2.pgsql.sql mnemo_2.2.1_to_2.2.2.pgsql.sql mnemo_2.2_to_2.2.1.pgsql.sql nag_2.1_to_2.2.pgsql.sql nag_2.2_to_2.3.pgsql.sql turba_2.1_to_2.2_add_sql_share_tables.pgsql.sql turba_2.2.1_to_2.3.pgsql.sql turba_2.3_to_2.3.3.pgsql.sql; do
+	su - postgres -c "psql -d horde -f $share/$f &> /dev/null"
+done
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.1.6-1; then
 	su - postgres -c "psql -d horde -f $share/syncml_map_update.sql &> /dev/null"

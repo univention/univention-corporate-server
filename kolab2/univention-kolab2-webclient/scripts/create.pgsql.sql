@@ -16,6 +16,16 @@ CREATE TABLE horde_users (
 
 ALTER TABLE horde_users OWNER TO horde;
 
+CREATE TABLE horde_signups (
+    user_name VARCHAR(255) NOT NULL,
+    signup_date INTEGER NOT NULL,
+    signup_host VARCHAR(255) NOT NULL,
+    signup_data TEXT NOT NULL,
+    PRIMARY KEY (user_name)
+);
+
+ALTER TABLE horde_signups OWNER TO horde;
+
 CREATE TABLE horde_groups (
     group_uid INTEGER NOT NULL,
     group_name VARCHAR(255) NOT NULL UNIQUE,
@@ -146,6 +156,8 @@ CREATE TABLE horde_sessionhandler (
 );
 
 ALTER TABLE horde_sessionhandler OWNER TO horde;
+
+CREATE INDEX session_lastmodified_idx ON horde_sessionhandler (session_lastmodified);
 
 CREATE TABLE horde_syncml_map (
     syncml_syncpartner VARCHAR(255) NOT NULL,

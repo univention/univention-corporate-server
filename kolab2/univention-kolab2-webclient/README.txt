@@ -17,6 +17,35 @@ Beware: the current script pulls CVS HEAD, maybe kolab_2_2_branch or kolab-serve
 
 Then debian/rules should operate on the basis of the tarballs in 'kolab-php-lib'.
 
+SQL setup and update scripts
+============================
+1. The SQL setup command files must be compared on each update for each module:
+ * horde-webmail/scripts/sql/*.pgsql.sql
+ * horde-webmail/scripts/sql/*.sql
+ * horde-webmail/*/scripts/sql/*.pgsql.sql
+ * horde-webmail/*/scripts/sql/*.sql
+
+If something changes here compared to univention-kolab2-webclient/scripts it is likely
+that horde-webmailer provides some upgrade-sql. To ship ALTER TABLE commands to customers
+who upgrade from an older version of horde-webmailer/univention-kolab2-webclient, it is important
+to provide the corresponding upgrade-sql. It might be a matter of taste if one updates the
+univention-kolab2-webclient/scripts/*.sql files as well, probably it does not hurt.
+
+2. Check the SQL upgrade command files for each module:
+ * horde-webmail/scripts/upgrades/*.pgsql.sql
+ * horde-webmail/scripts/upgrades/*.sql
+ * horde-webmail/*/scripts/upgrades/*.pgsql.sql
+ * horde-webmail/*/scripts/upgrades/*.sql
+
+The pgsql.sql differ from the plain sql files by containing a line
+ALTER TABLE table_name OWNER TO horde;
+after each CREATE table_name statement.
+In case no pgsql.sql is provided, the corresponding plain sql file must be adjusted acconrdingly.
+The pgsql.sql files must be copied to univention-kolab2-webclient/scripts/ and installed via debian/postinst.
+
+3. Check the php upgrade scripts for each module:
+ * horde-webmail/scripts/upgrades/*.php
+ * horde-webmail/*/scripts/upgrades/*.php
 
 Kolab changed the method for OEM configuration adjustments:
 ===========================================================
