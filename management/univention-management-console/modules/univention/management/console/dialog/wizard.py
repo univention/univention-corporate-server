@@ -134,7 +134,7 @@ class Page( object ):
 			else:
 				prev_btn = ''
 
-			wizard._content.add_row( [ cancel_btn, List( content = [ [ prev_btn, next_btn ], ] ) ] )
+			wizard._content.add_row( [ cancel_btn, Cell( List( content = [ [ prev_btn, next_btn ], ], ), attributes = { 'type' : 'umc_list_element_right' } ) ] )
 		else:
 			wizard._content.add_row( self.buttons )
 

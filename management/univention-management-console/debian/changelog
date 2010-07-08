@@ -1,3 +1,9 @@
+univention-management-console (3.0.34-1) unstable; urgency=low
+
+  * IWizard: right align next and previous buttons; Bug #18861
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 08 Jul 2010 10:13:44 +0200
+
 univention-management-console (3.0.33-1) unstable; urgency=low
 
   * IWizard: make cancel button optional, reset Wizard on cancel, text for
