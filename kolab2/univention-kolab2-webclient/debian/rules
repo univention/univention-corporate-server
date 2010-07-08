@@ -85,11 +85,17 @@ install: build
 	install -m 644 scripts/create.pgsql.sql $(SHARE)
 	install -m 644 scripts/horde_datatree.sql $(SHARE)
 	install -m 644 scripts/horde_prefs.sql $(SHARE)
-	install -m 644 scripts/horde_syncml.sql $(SHARE)
+	install -m 644 scripts/horde_histories.sql $(SHARE)
 	install -m 644 scripts/kronolith.pgsql.sql $(SHARE)
 	install -m 644 scripts/turba_objects.pgsql.sql $(SHARE)
-	install -m 644 scripts/horde_histories.sql $(SHARE)
+	install -m 644 scripts/nag.pgsql.sql $(SHARE)
+	install -m 644 scripts/mnemo.pgsql.sql $(SHARE)
+	install -m 644 scripts/ingo.pgsql.sql $(SHARE)
+	install -m 644 scripts/imp.pgsql.sql $(SHARE)
 	install -m 644 scripts/syncml_map_update.sql $(SHARE)
+	for f in horde_3.1_to_3.2.pgsql.sql horde_3.3_to_3.3.5.sql kronolith_2.1_to_2.2.pgsql.sql kronolith_2.2_to_2.3.pgsql.sql mnemo_2.1_to_2.2.pgsql.sql mnemo_2.2.1_to_2.2.2.pgsql.sql mnemo_2.2_to_2.2.1.pgsql.sql nag_2.1_to_2.2.pgsql.sql nag_2.2_to_2.3.pgsql.sql turba_2.1_to_2.2_add_sql_share_tables.pgsql.sql turba_2.2.1_to_2.3.pgsql.sql turba_2.3_to_2.3.3.pgsql.sql; do \
+		 install -m 644 scripts/$${f} $(SHARE) ; \
+	done
 	install -m 755 scripts/turba-permissions.py $(SHARE)
 	install -m 755 scripts/syncml_interrupt.sh $(SHARE)
 	install -m 755 scripts/syncml_reset_user.sh $(SHARE)
