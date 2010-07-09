@@ -214,7 +214,7 @@ class InstanceWizard( umcd.IWizard ):
 		# page 1
 		page = umcd.Page( self.title, _( 'The settings shown below are all read from the selected profile. Please verify that these values fits your environment. At least the name for the virtual instance should be modified.' ) )
 		page.options.append( umcd.make( ( 'name', umc.String( _( 'Name' ) ) ) ) )
-		page.options.append( umcd.make( ( 'memory', umc.String( _( 'Memory' ) ) ) ) )
+		page.options.append( umcd.make( ( 'memory', umc.String( _( 'Memory (in MB)' ) ) ) ) )
 		page.options.append( umcd.make( ( 'cpus', NumberSelect( _( 'CPUs' ) ) ) ) )
 		page.options.append( umcd.make( ( 'vnc', umc.Boolean( _( 'VNC' ) ) ) ) )
 		self.append( page )
@@ -254,6 +254,14 @@ class InstanceWizard( umcd.IWizard ):
 				return umcd.WizardResult( False, _( 'You should modify the name of the virtual instance' ) )
 			if not self.uvmm.is_domain_name_unique( self.node_uri, object.options[ 'name' ] ):
 				return umcd.WizardResult( False, _( 'The chosen name for the virtual instance is not unique. Please use another one.' ) )
+			mem_size = MemorySize.str2num( object.options[ 'memory' ], unit = 'MB' )
+			four_mb = MemorySize.str2num( '4', unit = 'MB' )
+			if mem_size < four_mb:
+				object.options[ 'memory' ] = '4 MB'
+				return umcd.WizardResult( False, _( 'You must at least use 4 MB for a virtual instance.' ) )
+			if mem_size > self.max_memory:
+				object.options[ 'memory' ] = MemorySize.num2str( self.max_memory * 0.75 )
+				return umcd.WizardResult( False, _( 'Your physical server does not have that much memory. As a suggestion the a mount of memory was set to 75% of the available memory.' ) )
 			# activate device wizard to add a first mandatory device
 			if not self.devices:
 				self.new_device( object, cancel = False )
@@ -314,7 +322,7 @@ class InstanceWizard( umcd.IWizard ):
 			domain.name = object.options[ 'name' ]
 			domain.arch = object.options[ 'arch' ]
 			domain.virt_tech = object.options[ 'type' ]
-			domain.maxMem = byte2block( object.options[ 'memory' ] )
+			domain.maxMem = MemorySize.str2num( object.options[ 'memory' ], unit = 'MB' )
 			domain.vcpus = object.options[ 'cpus' ]
 			if object.options[ 'bootdev' ] and object.options[ 'bootdev' ][ 0 ]:
 				ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: boot devices: %s' % str( object.options[ 'bootdev' ] ) )

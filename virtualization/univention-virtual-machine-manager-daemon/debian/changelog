@@ -1,6 +1,14 @@
+univention-virtual-machine-manager-daemon (0.9.49-1) unstable; urgency=low
+
+  * memory for a virtual instance should between 4 MB and the maxmial
+    available memory of the physical server
+  * megabyte is the default unit for the specified amount of memory; Bug #18851
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 09 Jul 2010 16:16:06 +0200
+
 univention-virtual-machine-manager-daemon (0.9.48-1) unstable; urgency=low
 
-  * fix refresh and location buttons; Bug #18164 
+  * fix refresh and location buttons; Bug #18164
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 09 Jul 2010 13:55:35 +0200
 

@@ -280,7 +280,7 @@ class handler( umch.simpleHandler ):
 			node_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = { 'group' : object.options[ 'group' ], 'node' : node.name } )
 			node_btn = umcd.LinkButton( node.name, actions = [ umcd.Action( node_cmd ) ] )
 			cpu_usage = percentage( 0, width = 150 )
-			mem_usage = percentage( float( node.curMem ) / node.phyMem * 100, '%s / %s' % ( block2byte( node.curMem ), block2byte( node.phyMem ) ), width = 150 )
+			mem_usage = percentage( float( node.curMem ) / node.phyMem * 100, '%s / %s' % ( MemorySize.num2str( node.curMem ), MemorySize.num2str( node.phyMem ) ), width = 150 )
 			table.add_row( [ node_btn, cpu_usage, mem_usage ] )
 		self.set_content( res, table )
 		self.finished(object.id(), res)
@@ -401,7 +401,7 @@ class handler( umch.simpleHandler ):
 		node_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = { 'group' : object.options[ 'group' ], 'node' : node.name } )
 		node_btn = umcd.LinkButton( node.name, actions = [ umcd.Action( node_cmd ) ] )
 		cpu_usage = percentage( 0, width = 150 )
-		mem_usage = percentage( float( node.curMem ) / node.phyMem * 100, '%s / %s' % ( block2byte( node.curMem ), block2byte( node.phyMem ) ), width = 150 )
+		mem_usage = percentage( float( node.curMem ) / node.phyMem * 100, '%s / %s' % ( MemorySize.num2str( node.curMem ), MemorySize.num2str( node.phyMem ) ), width = 150 )
 		node_table.add_row( [ _( 'Physical server' ), node_btn ] )
 		node_table.add_row( [ _( 'CPU usage' ), cpu_usage ] )
 		node_table.add_row( [ _( 'Memory' ), mem_usage ] )
@@ -427,7 +427,7 @@ class handler( umch.simpleHandler ):
 			os = getattr( domain, 'annotations', {} ).get( 'os', '' )
 			if len( os ) > 15:
 				os = os[ : 13 ] + '...'
-			table.add_row( [ domain_btn, os, percentage( float( domain.cputime[ 0 ] ) / 10, width = 80 ), umcd.Number( block2byte( domain.maxMem ) ), buttons ] )# + buttons )
+			table.add_row( [ domain_btn, os, percentage( float( domain.cputime[ 0 ] ) / 10, width = 80 ), umcd.Number( MemorySize.num2str( domain.maxMem ) ), buttons ] )# + buttons )
 
 		if len( table.get_content() ):
 			table.set_header( [ _( 'Instance' ), _( 'Operating System' ), _( 'CPU usage' ), _( 'Memory' ) ] )
@@ -456,7 +456,7 @@ class handler( umch.simpleHandler ):
 		cpus_select.max = int( node.cpus )
 		cpus = umcd.make( self[ 'uvmm/domain/configure' ][ 'cpus' ], default = handler._getattr( domain_info, 'vcpus', '1' ), attributes = { 'width' : '250' } )
 		mem = handler._getattr( domain_info, 'maxMem', '536870912' )
-		memory = umcd.make( self[ 'uvmm/domain/configure' ][ 'memory' ], default = block2byte( mem ), attributes = { 'width' : '250' } )
+		memory = umcd.make( self[ 'uvmm/domain/configure' ][ 'memory' ], default = MemorySize.num2str( mem ), attributes = { 'width' : '250' } )
 		if domain_info and domain_info.interfaces:
 			iface = domain_info.interfaces[ 0 ]
 			iface_mac = iface.mac_address
@@ -498,7 +498,7 @@ class handler( umch.simpleHandler ):
 				if not dev.size:
 					values[ 'size' ] = _( 'unknown' )
 				else:
-					values[ 'size' ] = block2byte( dev.size )
+					values[ 'size' ] = MemorySize.num2str( dev.size )
 				values[ 'image' ] = os.path.basename( dev.source )
 				dir = os.path.dirname( dev.source )
 				values[ 'pool' ] = dir
@@ -603,7 +603,7 @@ class handler( umch.simpleHandler ):
 		infos.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Operating System' ) ), getattr(domain_info, 'annotations', {}).get('os', '' ) ] )
 
 		stats = umcd.List()
-		mem_usage = percentage( int( float( domain_info.curMem ) / domain_info.maxMem * 100 ), label = '%s / %s' % ( block2byte( domain_info.curMem ), block2byte( domain_info.maxMem ) ), width = 130 )
+		mem_usage = percentage( int( float( domain_info.curMem ) / domain_info.maxMem * 100 ), label = '%s / %s' % ( MemorySize.num2str( domain_info.curMem ), MemorySize.num2str( domain_info.maxMem ) ), width = 130 )
 		cpu_usage = percentage( float( domain_info.cputime[ 0 ] ) / 10, width = 130 )
 		stats.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Memory usage' ) ), mem_usage ] )
 		stats.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'CPU usage' ) ), cpu_usage ] )
@@ -685,7 +685,7 @@ class handler( umch.simpleHandler ):
 		domain.cmdline = handler._getstr( object, 'cmdline' )
 		domain.initrd = handler._getstr( object, 'initrd' )
 		domain.boot = handler._getstr( object, 'bootdevs' )
-		domain.maxMem = byte2block( object.options[ 'memory' ] )
+		domain.maxMem = MemorySize.str2num( object.options[ 'memory' ] )
 
 		# interface
 		iface = uuv_node.Interface()
@@ -752,6 +752,7 @@ class handler( umch.simpleHandler ):
 		node = self.uvmm.get_node_info( node_uri )
 
 		if not 'action' in object.options:
+			self.domain_wizard.max_memory = node.phyMem
 			self.domain_wizard.reset()
 		result = self.domain_wizard.action( object, ( node_uri, node ) )
 		# domain wizard finished?
