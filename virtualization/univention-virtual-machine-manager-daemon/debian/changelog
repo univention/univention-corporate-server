@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.48-1) unstable; urgency=low
+
+  * fix refresh and location buttons; Bug #18164 
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 09 Jul 2010 13:55:35 +0200
+
 univention-virtual-machine-manager-daemon (0.9.47-1) unstable; urgency=low
 
   * disable relogin in java VNC client (Bug #18346)

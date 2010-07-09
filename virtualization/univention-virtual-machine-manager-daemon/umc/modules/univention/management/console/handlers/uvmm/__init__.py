@@ -230,7 +230,6 @@ class handler( umch.simpleHandler ):
 		row.append( umcd.Cell( umcd.HTML( '<b>%s</b>' % _( 'Location:' ) ), attributes = { 'type' : 'umc_mini_padding' } ) )
 		if 'group' in object.options:
 			keys.append( 'group' )
-			options[ 'group' ] = object.options[ 'group' ]
 			if 'node' in object.options or 'source' in object.options or 'dest' in object.options:
 				if 'node' in object.options:
 					key = 'node'
@@ -238,20 +237,22 @@ class handler( umch.simpleHandler ):
 					key = 'dest'
 					if 'source' in object.options:
 						key = 'source'
-				object.options[ 'node' ] = object.options[ key ]
+				options[ 'node' ] = object.options[ key ]
 				keys.append( 'node' )
 				if 'domain' in object.options:
 					keys.append( 'domain' )
+		opts = {}
 		for key in keys[ : -1 ]:
-			options[ key ] = object.options[ key ]
-			cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % key , options = copy.copy( options ) )
+			opts[ key ] = object.options[ key ]
+			cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % key , options = copy.copy( opts ) )
 			lnk = umcd.LinkButton( object.options[ key ] , actions = [ umcd.Action( cmd ) ] )
 			row.append( umcd.Cell( lnk, attributes = { 'type' : 'umc_mini_padding' } ) )
 			row.append( slash )
-			refresh = key
+		refresh = keys[ -1 ]
+		opts[ keys[ -1 ] ] = object.options[ keys[ -1 ] ]
 		row.append( umcd.Cell( umcd.Text( object.options[ keys[ -1 ] ] ), attributes = { 'type' : 'umc_mini_padding' } ) )
 
-		reload_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % refresh, options = options )
+		reload_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % refresh, options = copy.copy( opts ) )
 		reload_btn = umcd.LinkButton( _( 'Refresh' ), 'actions/refresh', actions = [ umcd.Action( reload_cmd ) ] )
 		reload_btn.set_size( umct.SIZE_SMALL )
 		row.append( umcd.Cell( reload_btn, attributes = { 'width' : '100%', 'align' : 'right', 'type' : 'umc_mini_padding' } ) )
