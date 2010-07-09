@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.47-1) unstable; urgency=low
+
+  * disable relogin in java VNC client (Bug #18346)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 09 Jul 2010 11:53:25 +0200
+
 univention-virtual-machine-manager-daemon (0.9.46-1) unstable; urgency=low
 
   * re-structuring of domain settings; Bug #18856

@@ -365,7 +365,10 @@ class handler( umch.simpleHandler ):
 			               _("%(dn)s on %(nn)s") + \
 			               "</title></head><body>" + \
 			               "<applet archive='/TightVncViewer.jar' code='com.tightvnc.vncviewer.VncViewer' height='100%%' width='100%%'>" + \
-			               "<param name='host' value='%(h)s'><param name='port' value='%(p)s'></applet>" + \
+			               "<param name='host' value='%(h)s'>" + \
+			               "<param name='port' value='%(p)s'>" + \
+			               "<param name='offer relogin' value='no'>" + \
+			               "</applet>" + \
 			               "</body></html>") % {'h': host, 'p': vnc.port, 'nn': node.name, 'dn': domain.name}
 			id = ''.join([c for c in '%s%s' % (host, vnc.port) if c.lower() in set('abcdefghijklmnopqrstuvwxyz0123456789') ])
 			javascript = "var w=window.open('','VNC%s','dependent=no,resizable=yes');if(w.document.applets.length > 0){w.focus();}else{w.document.write('%s');w.document.close();};return false;" % (id, popupwindow.replace("'", "\\'"))
