@@ -1,3 +1,9 @@
+univention-webui (4.0.19-1) unstable; urgency=low
+
+  * fixed valid session detection (Bug #14593)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 12 Jul 2010 18:02:51 +0200
+
 univention-webui (4.0.18-1) unstable; urgency=low
 
   * class col: support width attribute; Bug #18164

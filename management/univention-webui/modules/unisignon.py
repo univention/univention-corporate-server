@@ -170,7 +170,7 @@ class SignOnRedirect(object):
 				raise Exception('Cannot get session id for application %s' % self.application)
 
 			# session id is present but missing text 'You are logged in as' (text is shown on every page) ==> raise Exception
-			if self.application == 'UMC' and not 'You are logged in as' in page_content:
+			if not 'You are logged in as' in page_content and not 'Sie sind angemeldet als' in page_content:
 				self.sessionid = None
 				raise Exception('Got invalid session id for application %s' % self.application)
 
