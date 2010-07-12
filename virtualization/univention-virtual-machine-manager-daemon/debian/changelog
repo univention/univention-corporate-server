@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (0.9.50-1) unstable; urgency=low
+
+  * fixed navigation in device wizard
+  * show hint when selecting a ISO image (how to add new images)
+  * fixed automatic creation of new disk images
+  * minor enhancements in device wizard; Bug #18854
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 12 Jul 2010 17:32:06 +0200
+
 univention-virtual-machine-manager-daemon (0.9.49-1) unstable; urgency=low
 
   * memory for a virtual instance should between 4 MB and the maxmial

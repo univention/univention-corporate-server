@@ -102,11 +102,12 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 				logger.info('[%d] Request "%s" received' % (self.client_id, command.command,))
 
 				try:
+					logger.error('[%d] Executing command "%s"' % (self.client_id,command.command,))
 					res = commands[command.command](self, command)
 					if res == None:
 						res = protocol.Response_OK()
-				except KeyError:
-					logger.warning('[%d] Unknown command "%s".' % (self.client_id, command.command,))
+				except KeyError, e:
+					logger.warning('[%d] Unknown command "%s": %s.' % (self.client_id, command.command,str(e)))
 					res = protocol.Response_ERROR()
 					res.translatable_text = '[%(id)d] Unknown command "%(command)s".'
 					res.values = {

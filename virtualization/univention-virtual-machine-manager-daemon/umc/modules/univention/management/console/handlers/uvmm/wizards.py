@@ -58,6 +58,7 @@ class DeviceWizard( umcd.IWizard ):
 		self.image_syntax = DynamicSelect( _( 'Device image' ) )
 		self.actions[ 'pool-selected' ] = self.pool_selected
 		self.uvmm = uvmmd.Client( auto_connect = False )
+		self.prev_first_page = False
 
 		# page 0
 		page = umcd.Page( self.title, _( 'What type of device should be created?' ) )
@@ -96,6 +97,16 @@ class DeviceWizard( umcd.IWizard ):
 			choices.append( { 'description' : storage.name, 'actions' : [ action, ] } )
 		return umcd.ChoiceButton( _( 'Pool' ), choices = choices )
 
+	def reset( self ):
+		self.prev_first_page = False
+		umcd.IWizard.reset( self )
+
+	def setup( self, object, prev = None, next = None, finish = None, cancel = None ):
+		ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: setup! (current: %s, prev_first_page: %s)' % ( str( self.current ), self.prev_first_page ) )
+		if self.current == 0 and self.prev_first_page:
+			return umcd.IWizard.setup( self, object, prev = True, next = next, finish = finish, cancel = cancel )
+		return umcd.IWizard.setup( self, object, prev = prev, next = next, finish = finish, cancel = cancel )
+
 	def action( self, object, node ):
 		ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: action! (current: %s)' % str( self.current ) )
 		self.node_uri, self.node = node
@@ -116,14 +127,22 @@ class DeviceWizard( umcd.IWizard ):
 
 		return self[ self.current ]
 
+	def _disk_type_text( self, disk_type ):
+		if disk_type == 'disk':
+			return _( 'hard drive' )
+		else:
+			return _( 'CDROM device' )
+
 	def next( self, object ):
 		if self.current == 0: # which device type?
 			# initialize pool and image selection
 			self.pool_selected( object )
 			if object.options[ 'device-type' ] == 'disk':
 				self.current = 1
+				self[ 2 ].hint = None
 			else:
 				self.current = 2
+				self[ 2 ].hint = _( 'If the list of available images is empty or the required image is not found, you may copy the ISO image on the server into the directory /var/lib/libvirt/images. After that go to the previous page an return to this one. The image should now be available.' )
 		elif self.current == 1: # new or existing disk image?
 			if object.options[ 'existing-or-new-disk' ] == 'disk-new':
 				self.current = 3
@@ -141,7 +160,7 @@ class DeviceWizard( umcd.IWizard ):
 					if vol.source == object.options[ 'device-image' ]:
 						ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: set information about existing disk image: %s' % object.options[ 'device-image' ] )
 						object.options[ 'image-name' ] = os.path.basename( object.options[ 'device-image' ] )
-						object.options[ 'image-size' ] = block2byte( vol.size )
+						object.options[ 'image-size' ] = MemorySize.num2str( vol.size )
 				if not object.options[ 'device-image' ] in object.options.get( '_reuse_image', [] ) and vol.device == uvmmn.Disk.DEVICE_DISK and self.uvmm.is_image_used( self.node_uri, object.options[ 'device-image' ] ):
 					if '_reuse_image' in object.options:
 						object.options[ '_reuse_image' ].append( object.options[ 'device-image' ] )
@@ -150,8 +169,8 @@ class DeviceWizard( umcd.IWizard ):
 					return umcd.WizardResult( False, _( 'The selected image is already used by another virtual instance. You may consider to choose another image or continue if you are sure that it will not cause any problems.' ) )
 			self.current = 4
 			self[ self.current ].options = []
-			self[ self.current ].options.append( umcd.HTML( _( '<b>Device type</b>: %(type)s' ) % { 'type' : object.options[ 'device-type' ] } ) )
-			self[ self.current ].options.append( umcd.HTML( _( '<b>Storage pool</b>: %(pool)s' ) % { 'pool' : object.options[ 'device-pool' ] } ) )
+			self[ self.current ].options.append( umcd.HTML( _( '<b>Device type</b>: %(type)s' ) % { 'type' : self._disk_type_text( object.options[ 'device-type' ] ) } ) )
+			self[ self.current ].options.append( umcd.HTML( _( '<b>Storage pool</b>: %(pool)s (path: %(path)s)' ) % { 'pool' : object.options[ 'device-pool' ], 'path' : self._get_pool_path( object.options[ 'device-pool' ] ) } ) )
 			self[ self.current ].options.append( umcd.HTML( _( '<b>Image filename</b>: %(image)s' ) % { 'image' : object.options[ 'image-name' ] } ) )
 			self[ self.current ].options.append( umcd.HTML( _( '<b>Image size</b>: %(size)s' ) % { 'size' : object.options[ 'image-size' ] } ) )
 		else:
@@ -163,16 +182,26 @@ class DeviceWizard( umcd.IWizard ):
 		return umcd.WizardResult()
 
 	def prev( self, object ):
-		if self.current == 3:
+		if self.current == 2:
+			self.current = 0
+		elif self.current == 3:
 			self.current = 1
-			return self[ self.current ]
-		if self.current == 4:
-			if object.options[ 'existing-or-new-disk' ] == 'disk-new':
+		elif self.current == 4:
+			if object.options[ 'existing-or-new-disk' ] == 'disk-new' and object.options[ 'device-type' ] == 'disk':
 				self.current = 3
 			else:
 				self.current = 2
+		else:
+			return umcd.IWizard.prev( self, object )
 
-		return umcd.IWizard.prev( self, object )
+		return umcd.WizardResult()
+
+	def _get_pool_path( self, pool_name ):
+		for pool in self.node.storages:
+			if pool.name == pool_name:
+				return pool.path
+
+		return ''
 
 	def finish( self, object ):
 		# collect information about the device
@@ -181,12 +210,9 @@ class DeviceWizard( umcd.IWizard ):
 			disk.device = uvmmn.Disk.DEVICE_DISK
 		else:
 			disk.device = uvmmn.Disk.DEVICE_CDROM
-		disk.size = byte2block( object.options[ 'image-size' ] )
+		disk.size = MemorySize.str2num( object.options[ 'image-size' ], unit = 'MB' )
 
-		for pool in self.node.storages:
-			if pool.name == object.options[ 'device-pool' ]:
-				disk.source = pool.path
-				break
+		disk.source = self._get_pool_path( object.options[ 'device-pool' ] )
 		disk.source = os.path.join( disk.source, object.options[ 'image-name' ] )
 
 		self._result = disk
@@ -264,12 +290,17 @@ class InstanceWizard( umcd.IWizard ):
 				return umcd.WizardResult( False, _( 'Your physical server does not have that much memory. As a suggestion the a mount of memory was set to 75% of the available memory.' ) )
 			# activate device wizard to add a first mandatory device
 			if not self.devices:
+				self.device_wizard.prev_first_page = True
 				self.new_device( object, cancel = False )
 		return umcd.IWizard.next( self, object )
 
 	def prev( self, object ):
 		if self.device_wizard_active:
-			return self.device_wizard.prev( object )
+			if self.device_wizard.current == 0:
+				self.device_wizard_active = False
+				self.device_wizard.reset()
+			else:
+				return self.device_wizard.prev( object )
 
 		return umcd.IWizard.prev( self, object )
 
@@ -297,7 +328,7 @@ class InstanceWizard( umcd.IWizard ):
 				values[ 'type' ] = _( 'hard drive' )
 			else:
 				values[ 'type' ] = _( 'CDROM drive' )
-			values[ 'size' ] = block2byte( dev.size )
+			values[ 'size' ] = MemorySize.num2str( dev.size )
 			values[ 'image' ] = os.path.basename( dev.source )
 			dir = os.path.dirname( dev.source )
 			values[ 'pool' ] = dir

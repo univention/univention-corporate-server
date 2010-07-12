@@ -74,7 +74,8 @@ def create_storage_volume(conn, domain, disk):
 		logger.warning('Reusing existing volume "%s" for domain "%s"' % (disk.source, domain.name))
 		return v
 	except libvirt.libvirtError, e:
-		if e.get_error_code() != libvirt.VIR_ERR_INVALID_STORAGE_VOL:
+		logger.info( 'create_storage_volume: libvirt error (%d): %s' % ( e.get_error_code(), str( e ) ) )
+		if not e.get_error_code() in ( libvirt.VIR_ERR_INVALID_STORAGE_VOL, libvirt.VIR_ERR_NO_STORAGE_VOL ):
 			raise StorageError(_('Error locating storage volume "%(volume)s" for "%(domain)s": %(error)s'), volume=disk.source, domain=domain.name, error=e)
 
 	for pool_name in conn.listStoragePools() + conn.listDefinedStoragePools():
