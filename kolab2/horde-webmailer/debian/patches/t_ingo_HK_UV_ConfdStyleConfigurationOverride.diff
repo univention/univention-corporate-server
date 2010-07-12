@@ -1,0 +1,19 @@
+--- a/horde-webmail/ingo/config/backends.php.dist	2010-07-12 10:55:29.000000000 +0200
++++ b/horde-webmail/ingo/config/backends.php.dist	2010-07-12 10:55:45.000000000 +0200
+@@ -324,3 +324,16 @@
+         'shares' => false
+     );
+ }
++
++// Load global configuration stanzas in .d directory
++$directory = dirname(__FILE__) . '/backends.d';
++if (file_exists($directory) && is_dir($directory)) {
++    $sub_files = glob("$directory/*.php");
++    if ($sub_files) {
++        foreach ($sub_files as $sub_file) {
++            ob_start();
++            $success = include $sub_file;
++            $output = ob_get_clean();
++        }
++    }
++}

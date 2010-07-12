@@ -1,3 +1,10 @@
+horde-webmailer (1.2.5~2.2.3-6) unstable; urgency=low
+
+  * fix directory to link conversion in postinst
+  * use loadConfiguration for ingo backends.php as well (for Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 12 Jul 2010 09:59:57 +0200
+
 horde-webmailer (1.2.5~2.2.3-5) unstable; urgency=low
 
   * unpack horde-webmail archive file before patch phase (Bug #17812)

@@ -33,8 +33,14 @@
 if test "$1" = "configure"; then
 	if test -n "$2" && dpkg --compare-versions "$2" lt "1.2.5~2.2.3-3"; then
 		# manually convert directories to links on update
-		ln -s /etc/horde/dimp1 /usr/share/horde3/dimp/config
-		ln -s /etc/horde/mimp1 /usr/share/horde3/mimp/config
+		if [ -d /usr/share/horde3/dimp/config ]; then
+			rm -rf /usr/share/horde3/dimp/config
+			ln -s /etc/horde/dimp1 /usr/share/horde3/dimp/config
+		fi
+		if [ -d /usr/share/horde3/mimp/config ]; then
+			rm -rf /usr/share/horde3/mimp/config
+			ln -s /etc/horde/mimp1 /usr/share/horde3/mimp/config
+		fi
 	fi
 fi
 
