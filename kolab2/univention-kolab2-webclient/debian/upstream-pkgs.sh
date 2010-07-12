@@ -44,6 +44,10 @@ mkdir -p ${TARGET_DIR}
 # Since currently univention-kolab2-webclient does not depend on univention-kolab2-framework, we have to
 # ship it here
 wget -P ${TARGET_DIR} http://download.pear.php.net/package/Net_IMAP-1.1.0.tgz
+wget -P ${TARGET_DIR} http://download.pear.php.net/package/MDB2-2.4.1.tgz
+wget -P ${TARGET_DIR} http://download.pear.php.net/package/MDB2_Driver_pgsql-1.4.1.tgz
+wget -P ${TARGET_DIR} http://download.pear.php.net/package/MDB2_Schema-0.8.5.tgz
+wget -P ${TARGET_DIR} http://download.pear.php.net/package/Net_DNS-1.0.1.tgz
 
 # extract the kolab package name, upstream package name, version and URL from the PEAR info file
 for pkginfo in ${KOLAB_SRCDIR}/${KOLABPEAR}/*/package.info; do

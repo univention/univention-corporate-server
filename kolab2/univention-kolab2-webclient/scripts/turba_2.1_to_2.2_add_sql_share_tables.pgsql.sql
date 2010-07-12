@@ -14,6 +14,8 @@ CREATE TABLE turba_shares (
     PRIMARY KEY (share_id)
 );
 
+ALTER TABLE turba_shares OWNER TO horde;
+
 CREATE INDEX turba_shares_share_name_idx ON turba_shares (share_name);
 CREATE INDEX turba_shares_share_owner_idx ON turba_shares (share_owner);
 CREATE INDEX turba_shares_perm_creator_idx ON turba_shares (perm_creator);
@@ -26,6 +28,8 @@ CREATE TABLE turba_shares_groups (
     perm SMALLINT NOT NULL
 );
 
+ALTER TABLE turba_shares_groups OWNER TO horde;
+
 CREATE INDEX turba_shares_groups_share_id_idx ON turba_shares_groups (share_id);
 CREATE INDEX turba_shares_groups_group_uid_idx ON turba_shares_groups (group_uid);
 CREATE INDEX turba_shares_groups_perm_idx ON turba_shares_groups (perm);
@@ -35,6 +39,8 @@ CREATE TABLE turba_shares_users (
     user_uid VARCHAR(32) NOT NULL,
     perm SMALLINT NOT NULL
 );
+
+ALTER TABLE turba_shares_users OWNER TO horde;
 
 CREATE INDEX turba_shares_users_share_id_idx ON turba_shares_users (share_id);
 CREATE INDEX turba_shares_users_user_uid_idx ON turba_shares_users (user_uid);

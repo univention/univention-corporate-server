@@ -1,3 +1,11 @@
+univention-kolab2-webclient (6.0.2-7) unstable; urgency=low
+
+  * replace broken Net_IMAP by last known working version
+  * add PEAR packages recommended by horde3/test.php (Bug #17812)
+  * fix pgsql upgrqade scripts
+
+ -- Arvid Requate <requate@univention.de>  Mon, 12 Jul 2010 14:49:16 +0200
+
 univention-kolab2-webclient (6.0.2-6) unstable; urgency=low
 
   * install update sql command files in debian/rules (Bug #17812)

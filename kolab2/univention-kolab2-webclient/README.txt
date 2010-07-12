@@ -19,7 +19,11 @@ Then debian/rules should operate on the basis of the tarballs in 'kolab-php-lib'
 
 SQL setup and update scripts
 ============================
-1. The SQL setup command files must be compared on each update for each module:
+1. Read docs/UPGRADING instructions:
+ * horde-webmail/docs/UPGRADING
+ * horde-webmail/*/docs/UPGRADING (or e.g. http://www.horde.org/kronolith/docs/?f=UPGRADING.html)
+
+2. The SQL setup command files must be compared on each update for each module:
  * horde-webmail/scripts/sql/*.pgsql.sql
  * horde-webmail/scripts/sql/*.sql
  * horde-webmail/*/scripts/sql/*.pgsql.sql
@@ -31,7 +35,7 @@ who upgrade from an older version of horde-webmailer/univention-kolab2-webclient
 to provide the corresponding upgrade-sql. It might be a matter of taste if one updates the
 univention-kolab2-webclient/scripts/*.sql files as well, probably it does not hurt.
 
-2. Check the SQL upgrade command files for each module:
+3. Check the SQL upgrade command files for each module:
  * horde-webmail/scripts/upgrades/*.pgsql.sql
  * horde-webmail/scripts/upgrades/*.sql
  * horde-webmail/*/scripts/upgrades/*.pgsql.sql
@@ -43,7 +47,7 @@ after each CREATE table_name statement.
 In case no pgsql.sql is provided, the corresponding plain sql file must be adjusted acconrdingly.
 The pgsql.sql files must be copied to univention-kolab2-webclient/scripts/ and installed via debian/postinst.
 
-3. Check the php upgrade scripts for each module:
+4. Check the php upgrade scripts for each module:
  * horde-webmail/scripts/upgrades/*.php
  * horde-webmail/*/scripts/upgrades/*.php
 
@@ -52,3 +56,11 @@ Kolab changed the method for OEM configuration adjustments:
 kolab-upstream/server/pear/Horde_Framework/patches/Horde_Framework-0.0.2dev20091215/t_horde_HK__MP_ConfdStyleConfigurationOverride.diff ( http://bugs.horde.org/ticket/8172 )
 Horde_Framework itself is not installed since it collides with server/kolab-webclient/horde included in the horde-webmailer debian package.
 Since this patch has not made it yet into server/kolab-webclient/horde, it is copied into horde-webmailer/debian/patches.
+
+Testing:
+=======
+Check http://hostname/horde3/test.php
+Check http://hostname/horde3/turba/test.php
+Check http://hostname/horde3/kronolith/test.php
+Check http://hostname/horde3/imp/test.php
+Check http://hostname/horde3/ingo/test.php
