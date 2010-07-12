@@ -4,5 +4,6 @@ etc/pki/CA
 usr/lib/univention-directory-listener/system
 usr/lib/univention-install
 usr/share/univention-management-console/www/themes
+var/backups/univention-virtual-machine-manager-daemon
 var/cache/univention-virtual-machine-manager-daemon
 var/www

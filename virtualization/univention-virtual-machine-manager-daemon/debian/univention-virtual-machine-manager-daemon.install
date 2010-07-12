@@ -3,3 +3,4 @@ usr/sbin
 usr/share/univention-management-console
 usr/share/pyshared/univention/management
 usr/share/locale/de/LC_MESSAGES/univention-management-console-handlers-uvmm.mo
+var/www

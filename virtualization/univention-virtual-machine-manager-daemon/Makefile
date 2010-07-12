@@ -25,6 +25,8 @@ install:: install-modules install-locales install-images
 	install -m 0755 -t $(DESTDIR)/usr/sbin src/univention-virtual-machine-manager-daemon
 	install -m 0755 -t $(DESTDIR)/usr/sbin src/univention-virtual-machine-manager
 	ln -s univention-virtual-machine-manager $(DESTDIR)/usr/sbin/uvmm
+	install -m 0755 -d $(DESTDIR)/var/www
+	install -m 0444 -t $(DESTDIR)/var/www TightVncViewer.jar
 
 .PHONY: uninstall
 uninstall:

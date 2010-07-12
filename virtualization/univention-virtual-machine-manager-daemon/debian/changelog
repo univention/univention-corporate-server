@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (0.9.51-1) unstable; urgency=low
+
+  * Backup domain XML before undefine and updates (Bug #18679)
+  * Increase timeout for unreachable hosts.
+  * Work around long update time (Bug #18970)
+  * Work around negative CPU usage (Bug #18631)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 12 Jul 2010 18:33:42 +0200
+
 univention-virtual-machine-manager-daemon (0.9.50-1) unstable; urgency=low
 
   * fixed navigation in device wizard

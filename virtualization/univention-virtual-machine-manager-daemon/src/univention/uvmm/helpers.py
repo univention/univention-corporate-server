@@ -31,7 +31,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__all__ = ['_', 'N_', 'TranslatableException', 'LIBVIRT_ERR']
+__all__ = [
+		'_',
+		'N_',
+		'TranslatableException',
+		'LIBVIRT_ERR',
+		'ms',
+		]
 
 import gettext
 N_ = lambda msg: msg
@@ -62,3 +68,18 @@ class TranslatableException(Exception):
 
 import libvirt
 LIBVIRT_ERR = dict([(getattr(libvirt, err), err) for err in dir(libvirt) if err.startswith('VIR_ERR_')])
+
+def ms(ms):
+	"""
+	Format milli seconds as readable string.
+	>>> ms(((12*60+34)*60+56)*1000+789)
+	'12:34:56.789'
+	"""
+
+	hm, s = divmod(ms, 60000)
+	h, m = divmod(hm, 60)
+	return "%d:%02d:%06.3f" % (h, m, s / 1000.0)
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()

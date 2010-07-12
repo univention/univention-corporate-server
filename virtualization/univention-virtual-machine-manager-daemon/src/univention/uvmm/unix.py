@@ -137,6 +137,8 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 			if err != errno.ECONNRESET:
 				logger.error('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
 				raise
+			else:
+				logger.warn('[%d] NetException: %s' % (self.client_id, traceback.format_exc()))
 		except Exception, e:
 			logger.critical('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
 			raise

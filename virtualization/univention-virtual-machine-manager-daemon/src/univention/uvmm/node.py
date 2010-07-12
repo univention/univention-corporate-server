@@ -41,7 +41,7 @@ import socket
 import logging
 from xml.dom.minidom import getDOMImplementation, parseString
 import math
-from helpers import TranslatableException, N_ as _
+from helpers import TranslatableException, ms, N_ as _
 from uvmm_ldap import ldap_annotation, LdapError, ldap_modify
 import univention.admin.uexceptions
 import traceback
@@ -89,8 +89,8 @@ class Disk( object ):
 	'''Container for disk objects'''
 	( DEVICE_DISK, DEVICE_CDROM, DEVICE_FLOPPY ) = range( 3 )
 	DEVICE_MAP = { DEVICE_DISK : 'disk', DEVICE_CDROM : 'cdrom', DEVICE_FLOPPY : 'floppy' }
-	( TYPE_FILE, ) = range( 1 )
-	TYPE_MAP = { TYPE_FILE : 'file' }
+	(TYPE_FILE, TYPE_PHYSICAL) = range(2)
+	TYPE_MAP = {TYPE_FILE: 'file', TYPE_PHYSICAL: 'phy'}
 	def __init__( self ):
 		self.type = Disk.TYPE_FILE
 		self.device = Disk.DEVICE_DISK
@@ -238,10 +238,14 @@ class Domain(object):
 
 	def update(self, domain):
 		"""Update statistics."""
+		id = domain.ID()
 		self.name = domain.name()
 		for i in range(5):
 			info = domain.info()
 			if info[0] != libvirt.VIR_DOMAIN_NOSTATE: # ignore =?= libvirt's transient error
+				break
+			if not domain.isActive():
+				info[0] = libvirt.VIR_DOMAIN_SHUTOFF
 				break
 			time.sleep(1)
 		else:
@@ -250,7 +254,7 @@ class Domain(object):
 
 		self.state, maxMem, curMem, self.vcpus, runtime = info
 
-		if domain.ID() == 0 and domain.connect().getURI().startswith('xen'):
+		if domain.ID() == 0 and domain.connect().getType() == 'Xen':
 			# xen://#Domain-0 always reports (1<<32)-1
 			maxMem = domain.connect().getInfo()[1]
 			self.maxMem = long(maxMem) << 20 # GiB
@@ -269,8 +273,8 @@ class Domain(object):
 		# Calculate historical CPU usage
 		# http://www.teamquest.com/resources/gunther/display/5/
 		now = time.time()
-		if self._time_stamp > 0.0:
-			delta_t = now - self._time_stamp # wall clock [s]
+		delta_t = now - self._time_stamp # wall clock [s]
+		if delta_t > 0.0 and delta_used >= 0L:
 			usage = delta_used / delta_t / self.vcpus / 1000000 # ms
 			for i in range(len(Domain.CPUTIMES)):
 				if delta_t < Domain.CPUTIMES[i]:
@@ -383,6 +387,8 @@ class Node(object):
 		self.conn = None
 		self.storages = {}
 		self.domains = {}
+		self.config_frequency = Nodes.IDLE_FREQUENCY
+		self.current_frequency = Nodes.IDLE_FREQUENCY
 
 		def timer_callback(timer, *opaque):
 			try:
@@ -397,11 +403,10 @@ class Node(object):
 				logger.error("Exception %s: %s" % (e, traceback.format_exc()))
 				# don't crash the event handler
 
-		self.timerID = virEventAddTimerImpl(Nodes.IDLE_FREQUENCY, timer_callback, (None,None))
+		self.timerID = virEventAddTimerImpl(self.current_frequency, timer_callback, (None,None))
 
 	def update_autoreconnect(self):
 		"""(Re-)connect after connection broke."""
-		self.last_try = time.time()
 		try:
 			if self.conn == None:
 				self.conn = libvirt.open(self.uri)
@@ -409,19 +414,32 @@ class Node(object):
 				self.update_once()
 				self._get_storages()
 				self._register_default_pool()
-			self.update()
+				# reset timer after successful re-connect
+				self.current_frequency = self.config_frequency
+				virEventUpdateTimerImpl(self.timerID, self.config_frequency)
+			try:
+				self.update()
+			finally:
+				self.last_try = self.last_update = time.time()
 		except libvirt.libvirtError, e:
-			logger.warning("'%s' broken? %s" % (self.uri, e))
+			self.last_try = time.time()
+			# double timer interval until maximum
+			hz = min(self.current_frequency * 2, Nodes.BEBO_FREQUENCY)
+			logger.warning("'%s' broken? next check in %s. %s" % (self.uri, ms(hz), e))
+			if hz > self.current_frequency:
+				virEventUpdateTimerImpl(self.timerID, self.current_frequency)
 			if self.conn != None:
 				try:
 				  if False: # libvirt FIXME domainEventDeregister SEGVs!!!
 					self.conn.domainEventDeregister(self.domainCB)
-				except:
+				except Exception, e:
+					logger.error('Exception %s: %s' % (e, traceback.format_exc()))
 					pass
 				self.domainCB = None
 				try:
 					self.conn.close()
-				except:
+				except Exception, e:
+					logger.error('Exception %s: %s' % (e, traceback.format_exc()))
 					pass
 				self.conn = None
 
@@ -495,6 +513,8 @@ class Node(object):
 
 	def set_frequency(self, hz):
 		"""Set polling frequency for update."""
+		self.config_frequency = hz
+		self.current_frequency = hz
 		virEventUpdateTimerImpl(self.timerID, hz)
 
 	def _get_storages( self ):
@@ -513,7 +533,10 @@ class Node(object):
 				# Update existing domains
 				domStat = self.domains[uuid]
 				domStat.update(dom)
-				cached_domains.remove(uuid)
+				try:
+					cached_domains.remove(uuid)
+				except ValueError:
+					pass
 			else:
 				# Add new domains
 				domStat = Domain(dom)
@@ -525,7 +548,6 @@ class Node(object):
 			del self.domains[uuid]
 		self.curMem = curMem
 		self.maxMem = maxMem
-		self.last_update = self.last_try
 
 	def wait_update(self, domain, state_key, timeout=10):
 		"""Wait until domain gets updated."""
@@ -542,8 +564,9 @@ class Node(object):
 
 class Nodes(dict):
 	"""Handle registered nodes."""
-	IDLE_FREQUENCY = 15*1000; # ms
-	USED_FREQUENCY = 10*1000; # ms
+	IDLE_FREQUENCY = 15*1000 # ms
+	USED_FREQUENCY = 10*1000 # ms
+	BEBO_FREQUENCY = 5*60*1000 # ms
 	def __init__(self):
 		super(Nodes,self).__init__()
 		self.frequency = -1
@@ -611,6 +634,19 @@ def node_list(group):
 def group_list():
 	"""Return list of groups for nodes."""
 	return ['default'] # FIXME
+
+def _domain_backup(dom):
+	"""Save domain definition to backup file."""
+	uuid = dom.UUIDString()
+	xml = dom.XMLDesc(0)
+	now = time.strftime("%Y-%m-%dT%H:%M:%SZ",time.gmtime())
+	file = "/var/backups/univention-virtual-machine-manager-daemon/%s_%s.xml" % (uuid, now)
+	f = open(file, "w")
+	try:
+		f.write(xml)
+		logger.info("Domain backuped to %s." % (file,))
+	finally:
+		f.close()
 
 def domain_define( uri, domain ):
 	"""Convert python object to an XML document."""
@@ -790,6 +826,7 @@ def domain_define( uri, domain ):
 	# remove old domain definitions
 	if old_dom:
 		try:
+			_domain_backup(old_dom)
 			old_dom.undefine()
 			logger.info('Old domain "%s" removed.' % (domain.name,))
 		except libvirt.libvirtError, e:
@@ -797,7 +834,9 @@ def domain_define( uri, domain ):
 				raise NodeError(_('Error removing domain "%(domain)s": %(error)s'), domain=domain.name, error=e)
 	if domain.uuid:
 		try:
-			conn.lookupByUUIDString(domain.uuid).undefine()
+			dom = conn.lookupByUUIDString(domain.uuid)
+			_domain_backup(dom)
+			dom.undefine()
 			logger.info('Old domain "%s" removed.' % (domain.uuid,))
 		except libvirt.libvirtError, e:
 			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
@@ -906,6 +945,7 @@ def domain_undefine(uri, domain, volumes=[]):
 		node = node_query(uri)
 		conn = node.conn
 		dom = conn.lookupByUUIDString(domain)
+		_domain_backup(dom)
 		if volumes is None:
 			volumes = get_all_storage_volumes(conn, dom,)
 		destroy_storage_volumes(conn, volumes, ignore_error=True)
