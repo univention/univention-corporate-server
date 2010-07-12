@@ -1,3 +1,9 @@
+horde-webmailer (1.2.5~2.2.3-7) unstable; urgency=low
+
+  * fix patch (for Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 12 Jul 2010 14:51:18 +0200
+
 horde-webmailer (1.2.5~2.2.3-6) unstable; urgency=low
 
   * fix directory to link conversion in postinst

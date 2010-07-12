@@ -1,5 +1,5 @@
---- a/horde-webmail/ingo/config/backends.php.dist	2010-07-12 10:55:29.000000000 +0200
-+++ b/horde-webmail/ingo/config/backends.php.dist	2010-07-12 10:55:45.000000000 +0200
+--- a/horde-webmail/ingo/config/backends.php	2010-07-12 10:55:29.000000000 +0200
++++ b/horde-webmail/ingo/config/backends.php	2010-07-12 10:55:45.000000000 +0200
 @@ -324,3 +324,16 @@
          'shares' => false
      );
