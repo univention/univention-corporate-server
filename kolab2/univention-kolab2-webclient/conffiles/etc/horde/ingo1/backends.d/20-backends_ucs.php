@@ -12,7 +12,7 @@ if ($GLOBALS['conf']['kolab']['enabled']) {
 				'hostspec' => $GLOBALS['conf']['kolab']['imap']['server'],
 				'logintype' => 'PLAIN',
 				'port' => $GLOBALS['conf']['kolab']['imap']['sieveport'],
-				'scriptname' => 'kmail-vacation.siv'
+				'scriptname' => 'sieve.siv'
 				),
 			'script' => 'sieve',
 			'scriptparams' => array()
