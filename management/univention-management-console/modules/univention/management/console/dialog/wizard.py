@@ -36,6 +36,7 @@ import univention.management.console.locales as locales
 
 from base import *
 from button import *
+from image import *
 
 import copy as copy_module
 
@@ -82,6 +83,7 @@ class Page( object ):
 		self.options = []
 		self.actions = []
 		self.buttons = []
+		self.hint = None
 
 	def setup( self, command, options, prev = True, next = True, finish = False, cancel = True ):
 		wizard = Wizard( self.title )
@@ -97,8 +99,21 @@ class Page( object ):
 				items.append( option.id() )
 				if option.option in options:
 					option.default = options[ option.option ]
-			option[ 'colspan' ] = '2'
+			if not self.hint:
+				option[ 'colspan' ] = '2'
+			elif 'colspan' in option:
+				del option[ 'colspan' ]
 			wizard._content.add_row( [ option, ] )
+		if self.hint:
+			image = Image( 'actions/info', umct.SIZE_SMALL )
+			attrs = { 'valign' : 'top', 'type' : 'umc_mini_padding' }
+			table = List( attributes = attrs )
+			hint = HTML( self.hint, attributes = attrs )
+			table.add_row( [ Cell( image, attributes = attrs ), Cell( hint, attributes = attrs ) ] )
+			cell = Cell( table, attributes = { 'valign' : 'top', 'align' : 'right', 'rowspan' : str( len( self.options ) ) } )
+
+			wizard._content._content[ 2 ].append( cell )
+
 		wizard._content.add_row( [ Fill( 2, '' ), ] )
 		if self.actions:
 			# add already collected options to actions
@@ -180,6 +195,10 @@ class IWizard( list ):
 		return WizardResult( False, 'Unknown wizard action: %s' % action )
 
 	def setup( self, object, prev = None, next = None, finish = None, cancel = None ):
+		if prev == True:
+			force_prev = True
+		else:
+			force_prev = False
 		if prev == None:
 			prev = True
 		if next == None:
@@ -193,7 +212,7 @@ class IWizard( list ):
 			if not finish:
 				finish = True
 		elif not self.current:
-			prev = False
+			prev = force_prev
 		return self[ self.current ].setup( self.command, object.options, prev = prev, next = next, finish = finish, cancel = cancel )
 
 	def finish( self, object ):

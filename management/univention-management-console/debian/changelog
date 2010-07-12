@@ -1,3 +1,10 @@
+univention-management-console (3.0.36-1) unstable; urgency=low
+
+  * support overwriting of prev button visibility
+  * add support for displaying hints an wizard pages; Bug #18854
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 12 Jul 2010 17:33:59 +0200
+
 univention-management-console (3.0.35-1) unstable; urgency=low
 
   * IWizard: support umcd.HTML as page description element; Bug #18861

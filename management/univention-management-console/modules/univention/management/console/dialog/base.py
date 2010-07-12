@@ -53,9 +53,12 @@ class Element( object ):
 			del self.__attributes[ key ]
 
 	def __getitem__( self, key ):
-		if self.__attributes.has_key( key ):
+		if key in self.__attributes:
 			return self.__attributes[ key ]
 		return None
+
+	def __contains__( self, key ):
+		return key in self.__attributes
 
 	def __create_id( self ):
 		self.__id = '%s%d' % ( self.type(), Element.__counter )

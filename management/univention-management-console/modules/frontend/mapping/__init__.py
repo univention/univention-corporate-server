@@ -66,7 +66,7 @@ class Storage( dict ):
 			return cmd[ 'confirm' ]
 
 		return None
-			
+
 	def to_uniparts( self, umcp_parts ):
 		if type( umcp_parts ) in umcd.DynamicElementTypes:
 			return self.__convert_dynamics( umcp_parts )
