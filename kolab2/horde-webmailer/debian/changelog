@@ -1,3 +1,10 @@
+horde-webmailer (1.2.5~2.2.3-9) unstable; urgency=low
+
+  * add fix for "NO, Login failed" errors causing slow login.php response
+  * use group root instead of adm to please ucs_test (for Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Jul 2010 16:48:16 +0200
+
 horde-webmailer (1.2.5~2.2.3-8) unstable; urgency=low
 
   * Fix conffile permissions (Bug #18975)

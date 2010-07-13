@@ -18,4 +18,5 @@ t_framework_UV_fixed_group_permissions.diff
 t_horde_HK__MP_ConfdStyleConfigurationOverride.diff
 t_ingo_HK_UV_ConfdStyleConfigurationOverride.diff
 t_horde_UV_fix_shutdown_call.diff
+t_horde_alarm_HK_UV_fix_listAlarms_authentication_failure_slowness.diff
 01_CVE-2008-1284.patch

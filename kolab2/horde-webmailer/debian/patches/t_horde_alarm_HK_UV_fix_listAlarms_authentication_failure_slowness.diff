@@ -1,0 +1,33 @@
+workaround for imp/login.php delay in
+  $notification->notify(array('listeners' => 'status'));
+and
+  HORDE [error] [kronolith] NO, Login failed: authentication failure
+  HORDE [error] [nag] NO, Login failed: authentication failure
+error messages in /var/log/horde/horde3.log.
+
+These seem to be due to missing $user=Auth::getAuth() in Notification::notify
+resulting in a very slow listShares login error in Horde_Auth::listAlarms
+# similar report: http://marc.info/?l=horde&m=123282849125819&w=2
+It seems futile to list shares if no authenticated username is available,
+like in login.php
+
+--- a/horde-webmail/lib/Horde/Alarm.php	2010-07-13 16:12:53.000000000 +0200
++++ b/horde-webmail/lib/Horde/Alarm.php	2010-07-13 16:13:25.000000000 +0200
+@@ -209,7 +209,7 @@ class Horde_Alarm {
+                     continue;
+                 }
+                 /* Preload alarms that happen in the next ttl seconds. */
+-                if ($preload) {
++                if ($preload && $user) {
+                     $alarms = $registry->callByPackage($app, 'listAlarms', array(time() + $this->_params['ttl'], $user));
+                     if (is_a($alarms, 'PEAR_Error')) {
+                         if ($pushed) {
+@@ -222,7 +222,7 @@ class Horde_Alarm {
+                 }
+                 /* Load current alarms if no preloading requested or if this
+                  * is the first call in this session. */
+-                if (!$preload || !isset($_SESSION['horde']['alarm']['loaded'])) {
++                if (!$preload || !isset($_SESSION['horde']['alarm']['loaded']) && $user) {
+                     $app_alarms = $registry->callByPackage($app, 'listAlarms', array(time(), $user));
+                     if (is_a($app_alarms, 'PEAR_Error')) {
+                         Horde::logMessage($app_alarms, __FILE__, __LINE__, PEAR_LOG_ERR);

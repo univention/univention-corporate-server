@@ -45,7 +45,7 @@ if test "$1" = "configure"; then
 fi
 
 for f in /etc/horde/*/*.php /etc/horde/*/*.d/*.php; do
-	dpkg-statoverride --force --update --add www-data adm 640 $f
+	dpkg-statoverride --force --update --add www-data root 640 $f
 done
 
 exit 0
