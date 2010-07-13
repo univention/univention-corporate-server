@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (1.0.14-1) unstable; urgency=low
+
+  * use "human readable" descriptions for the virtualization technology; Bug #18850
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 13 Jul 2010 10:03:14 +0200
+
 univention-virtual-machine-manager-schema (1.0.13-1) unstable; urgency=low
 
   * map boot devices into a single value string attribute (comma separated

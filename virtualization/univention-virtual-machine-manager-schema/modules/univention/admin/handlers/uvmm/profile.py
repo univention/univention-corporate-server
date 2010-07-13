@@ -62,6 +62,13 @@ class Architecture( univention.admin.syntax.select ):
 		('x86_64', '64 Bit' ),
 	]
 
+class VirtTech( univention.admin.syntax.select ):
+	name = 'VirtTech'
+	choices = [
+		('hvm', _( 'Full virtualization' ) ),
+		('xen', _( 'Paravirtualization' ) ),
+	]
+
 property_descriptions={
 	'name': univention.admin.property(
 			short_description= _('Name'),
@@ -96,7 +103,7 @@ property_descriptions={
 	'virttech': univention.admin.property(
 			short_description= _('Virtualisation Technology'),
 			long_description= _('Virtualisation Technology'),
-			syntax=univention.admin.syntax.string,
+			syntax = VirtTech,
 			multivalue=0,
 			options=[],
 			required=0,
