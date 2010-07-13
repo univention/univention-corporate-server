@@ -45,9 +45,10 @@ import univention.config_registry
 from univention.updater import UniventionUpdater
 from json import JsonReader, JsonWriter
 
-import os
+import os, copy
 import subprocess, string, time
 import socket, re
+import traceback
 
 _ = umc.Translation('univention.management.console.handlers.update').translate
 
@@ -72,6 +73,15 @@ command_description = {
 		priority = 100,
 		caching = False
 	),
+	'update/settings': umch.command(
+		short_description = _('Settings'),
+		long_description = _('Settings'),
+		method = 'settings',
+		values = { },
+		startup = True,
+		priority = 80,
+		caching = False
+	),
 	'update/release_settings': umch.command(
 		short_description = _('Release update settings'),
 		long_description = _('Release update settings'),
@@ -84,11 +94,6 @@ command_description = {
 			'use_unmaintained': umc.Boolean( _( 'Use unmaintained repositories' ), required = False ),
 			},
 		caching = False
-	),
-	'update/check_release_updates': umch.command(
-		short_description = _('Check for updates'),
-		method = 'check_release_updates',
-		values = { },
 	),
 	'update/components_update': umch.command(
 		short_description = _('Check for updates'),
@@ -143,6 +148,18 @@ command_description = {
 }
 
 
+class VersionSelection( umc.StaticSelection ):
+	def __init__( self, custom_choices=None ):
+		umc.StaticSelection.__init__( self, _( 'Update system up to release version' ) )
+		self.custom_choices = custom_choices
+
+	def choices( self ):
+		if not self.custom_choices:
+			return [ [ 'none', 'none' ] ]
+		return self.custom_choices
+umcd.copy( umc.StaticSelection, VersionSelection )
+
+
 class handler(umch.simpleHandler):
 
 	def __init__(self):
@@ -167,6 +184,10 @@ class handler(umch.simpleHandler):
 
 	def overview(self, object):
 		_d = ud.function('update.handler.overview')
+		self.finished(object.id(), None)
+
+	def settings(self, object):
+		_d = ud.function('update.handler.settings')
 		self.finished(object.id(), None)
 
 	def release_settings(self, object):
@@ -231,33 +252,15 @@ class handler(umch.simpleHandler):
 		self.finished(object.id(), None)
 
 
-	def check_release_updates(self, object):
-		ud.debug(ud.ADMIN, ud.INFO, 'Updater: check_release_updates')
 
-		#TODO: check for an invalid repository server
-		self.next_release_update_checked = True
-
+	def _reinit(self):
 		try:
-			#TODO: check for the latest ucs version
 			self.updater.ucr_reinit()
-			self.next_release_update = self.updater.release_update_available()
-			self.next_security_update = self.updater.security_update_available()
-		except socket.gaierror, e:
-			# connection to the repository server failed
-			self.next_release_update_checked = False
+		except (socket.error, socket.gaierror), e:
 			import traceback
-			ud.debug(ud.ADMIN, ud.ERROR, 'updater: socket.gaierror: %s' % traceback.format_exc())
-			error_message = _( 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' ) % str( e[ 1 ] )
-			self.finished(object.id(), None, error_message , success = False )
+			ud.debug(ud.ADMIN, ud.ERROR, 'updater: socket.gaierror: %s' % traceback.format_exc().replace('%','§'))
 		except Exception, e:
-			self.next_release_update_checked = False
-			import traceback
-			ud.debug(ud.ADMIN, ud.ERROR, 'updater: check_release_updates: %s' % traceback.format_exc())
-			self.finished(object.id(), None, 'Failed to check the update: %s' % traceback.format_exc(), success = False)
-
-		ud.debug(ud.ADMIN, ud.PROCESS, 'The nextupdate is %s' % self.next_release_update)
-
-		self.finished(object.id(), None)
+			ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % (traceback.format_exc().replace('%','§')))
 
 
 	def components_update(self, object):
@@ -373,8 +376,12 @@ class handler(umch.simpleHandler):
 	def install_release_updates(self, object):
 		_d = ud.function('update.handler.install_release_updates')
 
-
-		if self.updater.configRegistry.get('update/umc/nextversion', 'true').lower() in ['false', 'disabled', '0', 'no']:
+		updateto = object.options.get('updateto',[None])[0]
+		ud.debug(ud.ADMIN, ud.PROCESS, 'install_release_updates: updateto=%s' % updateto )
+		if updateto:
+			(returncode, returnstring) = self.__create_at_job('univention-updater net --updateto %s' % updateto)
+			ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: univention-updater net --updateto %s' % updateto)
+		elif self.updater.configRegistry.get('update/umc/nextversion', 'true').lower() in ['false', 'disabled', '0', 'no']:
 			(returncode, returnstring) = self.__create_at_job('univention-updater net')
 			ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: univention-updater net')
 		else:
@@ -472,7 +479,6 @@ class handler(umch.simpleHandler):
 			json = JsonWriter()
 			content = json.write(data)
 		except:
-			import traceback
 			content = ''
 			ud.debug(ud.ADMIN, ud.ERROR, 'update.handler._web_tail_logfile: failed to create JSON: %s' % (traceback.format_exc().replace('%','#')) )
 
@@ -538,111 +544,136 @@ class handler(umch.simpleHandler):
 			cmd = umcp.Command( args = [ 'reboot/do' ], opts = { 'action' : 'reboot', 'message' : _( 'Rebooting the system after an update' ) } )
 			list_info.add_row( [ '', umcd.Button( _( 'Reboot system' ), 'actions/ok', actions = [ umcd.Action( cmd ) ] ) ] )
 		#### UCS Releases
+		list_config = umcd.List()
 		list_release = umcd.List()
 
 		local_repo = self.updater.configRegistry.get( 'local/repository', 'no' ).lower() in ( 'yes', 'true' )
 
-
+		# ==== UCS RELEASE UPDATES =====
+		list_update_release = umcd.List()
 
 		if self.__is_updater_running():
-			# updater log button
+			# release update is running ==> show logfile button
 			req = self.__get_logfile_request( { 'windowtype': 'release' } )
-			btn_install_release_update = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
-			list_release.add_row([umcd.Text(_('The update is still in progress')), btn_install_release_update])
+			btn_view_log = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
+			list_update_release.add_row([ umcd.Text(_('The update is still in progress.')), btn_view_log])
 
-		elif self.__is_security_update_running():
-			# security update log button
-			req = self.__get_logfile_request( { 'windowtype': 'security' } )
-			btn_install_sec_update = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
-			list_release.add_row([umcd.Text(_('The update is still in progress')), btn_install_sec_update])
+		elif self.__is_security_update_running() or self.__is_dist_upgrade_running():
+			# release update button is disabled due to running updates
+			txt = umcd.Text( _('The currently installed release version is %s.') % self.updater.get_ucs_version() )
+			txt['colspan'] = '2'
+			list_update_release.add_row([ txt ])
 
 		else:
-			req = umcp.Command(args=['update/release_settings'])
+			# get all available release updates
+			errormsg = None
+			try:
+				available_release_updates, blocking_component = self.updater.get_all_available_release_updates()
+			except (socket.error, socket.gaierror), e:
+				ud.debug(ud.ADMIN, ud.ERROR, 'updater: socket.gaierror: %s' % traceback.format_exc().replace('%','§'))
+				errormsg = _( 'The connection to the repository server failed: %s. Please check the repository settings and the network connection.' ) % str( e[ 1 ] )
+			except Exception, e:
+				ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % (traceback.format_exc()))
+				errormsg = _( 'An error occured during network operation: %s' % traceback.format_exc().replace('%','§'))
+
+			if errormsg:
+				list_update_release.add_row([ errormsg ])
+			else:
+				if not available_release_updates:
+					# no release update possible/available
+					if blocking_component:
+						txt = umcd.Text(_('The currently installed UCR release version is %(version)s. Further release updates are available but the update is blocked by required component "%(component)s".') % { 'version': self.updater.get_ucs_version(), 'component': blocking_component})
+					else:
+						txt = umcd.Text( _('The currently installed version is %s and there is no update available.') % self.updater.get_ucs_version() )
+					txt['colspan'] = '2'
+					list_update_release.add_row([ txt ])
+
+				else:
+					# release update possible/available
+					txt = umcd.Text( _('The currently installed release version is %s and new release updates are available.') % self.updater.get_ucs_version() )
+					txt['colspan'] = '2'
+					list_update_release.add_row([ txt ])
+
+					choices = []
+					for ver in available_release_updates:
+						choices.append( (ver, 'UCS %s' % ver) )
+					sel_version = umcd.Selection( ( 'updateto', VersionSelection( choices ) ), default = available_release_updates[-1] )
+					idlist = [ sel_version.id() ]
+					btn_install_release_update = umcd.Button(_('Install release updates'), 'actions/install', actions = [umcd.Action(self.__get_warning_request({'type': 'release', 'updateto':[]}), idlist)])
+
+					list_update_release.add_row([ sel_version, btn_install_release_update ])
+
+		# ==== UCS SECURITY UPDATES =====
+		list_update_security = umcd.List()
+
+		if self.__is_security_update_running():
+			# security update is running ==> show logfile button
+			req = self.__get_logfile_request( { 'windowtype': 'security' } )
+			btn_view_log = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
+			list_update_security.add_row([ umcd.Text(_('The security update is still in progress.')), btn_view_log])
+
+		elif self.__is_updater_running() or self.__is_dist_upgrade_running():
+			# release update button is disabled due to running updates
+			txt = umcd.Text( _('The currently installed security update version is %s.') % self.updater.security_patchlevel )
+			txt['colspan'] = '2'
+			list_update_security.add_row([ txt ])
+
+		else:
+			try:
+				available_security_updates = self.updater.get_all_available_security_updates()
+			except (socket.error, socket.gaierror), e:
+				ud.debug(ud.ADMIN, ud.ERROR, 'updater: socket.gaierror: %s' % traceback.format_exc().replace('%','§'))
+				errormsg = _( 'The connection to the repository server failed: %s. Please check the repository settings and the network connection.' ) % str( e[ 1 ] )
+			except Exception, e:
+				ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % traceback.format_exc().replace('%','§'))
+				errormsg = _( 'An error occured during network operation: %s' % traceback.format_exc())
+
+			if errormsg:
+				list_update_security.add_row([ errormsg ])
+			else:
+				if available_security_updates:
+					btn_install_security_update = umcd.Button(_('Install available security updates'), 'actions/install', actions = [umcd.Action(self.__get_warning_request({'type': 'security'}))])
+					txt = _('The currently installed security update version is %(old)s and the most recent security update version is %(new)s.')
+					list_update_security.add_row([umcd.Text(txt % {'old':self.updater.security_patchlevel, 'new': available_security_updates[-1].replace('sec','') })])
+					list_update_security.add_row([btn_install_security_update])
+				else:
+					txt = umcd.Text( _('The currently installed security update version is %(old)s and no further security updates are available.') % { 'old': self.updater.security_patchlevel } )
+					txt['colspan'] = '2'
+					list_update_security.add_row([ txt ])
+
+		# ==== UCS PACKAGE UPDATES =====
+		list_update_packages = umcd.List()
+
+		if self.__is_updater_running() or self.__is_security_update_running():
+			# disable buttons if update is running
+			list_update_packages.add_row([ umcd.Text('Check for new packages has been skipped since an update is currently running.') ])
+
+		elif self.__is_dist_upgrade_running():
+			# show button for logfile if update is running
+			req = self.__get_logfile_request( { 'windowtype': 'dist-upgrade' } )
+			btn_show_logfile = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
+			list_update_packages.add_row([umcd.Text(_('The package update is still in progress.')), btn_show_logfile])
+
+		else:
+			# check for new packages
+			req = umcp.Command(args=['update/components_update'], opts={'status': 'check'})
 			req.set_flag('web:startup', True)
 			req.set_flag('web:startup_cache', False)
 			req.set_flag('web:startup_dialog', True)
-			req.set_flag('web:startup_referrer', True)
-			req.set_flag('web:startup_format', _('Release settings'))
-			release_button = umcd.Button(_('UCS release'), 'update/gear', actions=[umcd.Action(req)])
-			security_button = umcd.Button(_('Security patch level'), 'update/gear', actions=[umcd.Action(req)])
-			if self.next_release_update_checked:
-				if self.next_release_update:
-					btn_install_release_update = umcd.Button(_('Install this update'), 'actions/install', actions = [umcd.Action(self.__get_warning_request({'type': 'release'}))])
-					list_release.add_row([release_button,umcd.Text(_('The installed version is %(old)s and %(new)s is available.') % {'old': self.updater.get_ucs_version(), 'new': self.next_release_update}), btn_install_release_update])
-				else:
-					list_release.add_row([release_button,umcd.Text(_('The installed version is %s and there is no update available.') % self.updater.get_ucs_version())])
+			req.set_flag('web:startup_referrer', False)
+			req.set_flag('web:startup_format', _('Check for package updates'))
+			btn_update_check = umcd.Button(_('Check for package updates'), 'actions/refresh', actions = [umcd.Action(req)])
 
-				if self.next_security_update:
-					btn_install_security_update = umcd.Button(_('Install this update'), 'actions/install', actions = [umcd.Action(self.__get_warning_request({'type': 'security'}))])
-					list_release.add_row([security_button, umcd.Text(_('The installed security release is %(old)s and %(new)s is available') % {'old':self.updater.security_patchlevel, 'new': self.next_security_update}), btn_install_security_update])
-				else:
-					list_release.add_row([security_button, umcd.Text(_('The installed security release is %s and there is no update available.') % self.updater.security_patchlevel)])
+			txt = umcd.Text(_('%d component(s) have been specified and may contain new packages.') % len(self.updater.get_all_components()))
+			txt['colspan'] = '2'
+			list_update_packages.add_row([txt])
+			list_update_packages.add_row([btn_update_check])
 
-			else:
-				list_release.add_row([release_button,umcd.Text(_('The installed version is %s.') % self.updater.get_ucs_version())])
+		frame_update_release = umcd.Frame([list_update_release], _('Release Update'))
+		frame_update_security = umcd.Frame([list_update_security], _('Security Update'))
+		frame_update_packages = umcd.Frame([list_update_packages], _('Package Update'))
 
-				list_release.add_row([security_button, umcd.Text(_('The installed security release is %s') % self.updater.security_patchlevel)])
-
-
-			req = umcp.Command(args=['update/check_release_updates'])
-			btn_update_check = umcd.Button(_('Check for updates'), 'actions/refresh', actions = [umcd.Action(req), umcd.Action(umcp.Command(args=['update/overview']))])
-			list_release.add_row([btn_update_check])
-
-		#### UCS Components
-		list_component = umcd.List()
-		if not local_repo:
-
-			# TODO: check the components
-			for component_name in self.updater.get_all_components():
-				component = self.updater.get_component(component_name)
-				description = component.get('description', component_name)
-				req = umcp.Command(args=['update/components_settings'], opts = {'component': component})
-				req.set_flag('web:startup', True)
-				req.set_flag('web:startup_cache', False)
-				req.set_flag('web:startup_dialog', True)
-				req.set_flag('web:startup_referrer', True)
-				req.set_flag('web:startup_format', _('Modify component %s' )  % description )
-				if component.get('activated', '').lower() in ['true', 'yes', '1', 'enabled']:
-					list_component.add_row([umcd.Button(description, 'update/gear', actions=[umcd.Action(req)]), umcd.Text(_('This component is enabled'))])
-				else:
-					list_component.add_row([umcd.Button(description, 'update/gear', actions=[umcd.Action(req)]), umcd.Text(_('This component is disabled'))])
-
-
-			#TODO: show new components from the server
-
-			if self.__is_updater_running() or self.__is_security_update_running():
-				# disable buttons if update is running
-				pass
-			elif self.__is_dist_upgrade_running():
-				# show button for logfile if update is running
-				req = self.__get_logfile_request( { 'windowtype': 'dist-upgrade' } )
-				btn_show_logfile = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
-				list_component.add_row([umcd.Text(_('The update is still in progress')), btn_show_logfile])
-			else:
-				req = umcp.Command(args=['update/components_update'], opts={'status': 'check'})
-				req.set_flag('web:startup', True)
-				req.set_flag('web:startup_cache', False)
-				req.set_flag('web:startup_dialog', True)
-				req.set_flag('web:startup_referrer', False)
-				req.set_flag('web:startup_format', _('Check for updates'))
-				btn_update_check = umcd.Button(_('Check for updates'), 'actions/refresh', actions = [umcd.Action(req)])
-
-				req = umcp.Command(args=['update/components_settings'])
-				req.set_flag('web:startup', True)
-				req.set_flag('web:startup_cache', False)
-				req.set_flag('web:startup_dialog', True)
-				req.set_flag('web:startup_referrer', True)
-				req.set_flag('web:startup_format', _('Add a new component'))
-				btn_add_component = umcd.Button(_('Add a new component'), 'actions/plus', actions = [umcd.Action(req)])
-
-				list_component.add_row([btn_update_check, btn_add_component])
-		else:
-			list_component.add_row( [ umcd.InfoBox( _( 'The component management has been deactivated as this server has a local repository.' ), columns = 2 ) ] )
-
-		frame_release = umcd.Frame([list_release], _('Release information'))
-		frame_component = umcd.Frame([list_component], _('Components'))
-
-		res.dialog = [frame_release, frame_component]
+		res.dialog = [frame_update_release, frame_update_security, frame_update_packages]
 		if frame_info:
 			res.dialog.insert( 0, frame_info )
 
@@ -670,10 +701,65 @@ class handler(umch.simpleHandler):
 		list_release.add_row( [ '', '' ] )
 		list_release.add_row( [ umcd.SetButton( umcd.Action( req, [ inpt_server.id(), inpt_prefix.id(), inpt_hotfixes.id(), inpt_maintained.id(), inpt_unmaintained.id() ] ) ), cancel ] )
 
-
 		res.dialog = [frame_release]
 
 		self.revamped(object.id(), res)
+
+	def _web_settings(self, object, res):
+		_d = ud.function('update.handler._web_settings')
+
+		if self.__is_updater_running() or self.__is_security_update_running() or self.__is_dist_upgrade_running():
+			lst = umcd.List()
+			lst.add_row([ umcd.Text('The settings dialog has been disabled since an update is currently running. It will be reenabled if update process has finished.') ])
+			res.dialog = [ umcd.Frame( [lst], _('Settings') ) ]
+		else:
+			# RELEASE SETTINGS
+			list_settings_release = umcd.List()
+			req = umcp.Command(args=['update/release_settings'])
+			req.set_flag('web:startup', True)
+			req.set_flag('web:startup_cache', False)
+			req.set_flag('web:startup_dialog', True)
+			req.set_flag('web:startup_referrer', True)
+			req.set_flag('web:startup_format', _('Repository Settings'))
+			btn_release = umcd.Button(_('Configure repository settings'), 'update/gear', actions=[umcd.Action(req)])
+			list_settings_release.add_row([ _('UCS systems access repository servers for installing release updates or security updates.') ])
+			list_settings_release.add_row([ _('Which repository server is used can be set for each UCS system individually.')  ])
+			list_settings_release.add_row([ btn_release ])
+
+			# COMPONENT SETTINGS
+			list_settings_component_txt = umcd.List()
+			list_settings_component_txt.add_row([ _('In addition to the standard repositories, additional software components can also be integrated by adding component repositories.') ])
+
+			list_settings_component = umcd.List()
+			list_settings_component.set_header( [ _('Component Name'), _( 'Status' ), '' ] )
+			for component_name in self.updater.get_all_components():
+				component = self.updater.get_component(component_name)
+				description = component.get('description', component_name)
+				req = umcp.Command(args=['update/components_settings'], opts = {'component': component})
+				req.set_flag('web:startup', True)
+				req.set_flag('web:startup_cache', False)
+				req.set_flag('web:startup_dialog', True)
+				req.set_flag('web:startup_referrer', True)
+				req.set_flag('web:startup_format', _('Modify component %s' )  % description )
+				txt = umcd.Text(_('This component is disabled.'))
+				if component.get('activated', '').lower() in ['true', 'yes', '1', 'enabled']:
+					txt = umcd.Text(_('This component is enabled.'))
+				btn = umcd.Button(_('Configure'), 'update/gear', actions=[umcd.Action(req)])
+				list_settings_component.add_row([ umcd.Text(description), txt, btn ])
+
+			req = umcp.Command(args=['update/components_settings'])
+			req.set_flag('web:startup', True)
+			req.set_flag('web:startup_cache', False)
+			req.set_flag('web:startup_dialog', True)
+			req.set_flag('web:startup_referrer', True)
+			req.set_flag('web:startup_format', _('Add a new component'))
+			btn_add_component = umcd.Button(_('Add a new component'), 'actions/plus', actions = [umcd.Action(req)])
+			btn_add_component['colspan'] = '2'
+			list_settings_component.add_row([ btn_add_component ])
+
+		res.dialog = [ umcd.Frame([list_settings_release], _('Repository Settings')), umcd.Frame([list_settings_component_txt, list_settings_component], _('Component Settings')) ]
+		self.revamped(object.id(), res)
+
 
 
 	def _web_components_settings(self, object, res):
@@ -781,15 +867,16 @@ class handler(umch.simpleHandler):
 
 		if res.options['type'] == 'security':
 			command = 'update/install_security_updates'
-#			self.logfile = '/var/log/univention/security-updates.log'
 		else:
 			command = 'update/install_release_updates'
-#			self.logfile = '/var/log/univention/updater.log'
 
 		html = self.__get_update_warning()
 
+		updateto = object.options.get('updateto',[None])
+		ud.debug(ud.ADMIN, ud.PROCESS, '_web_update_warning: updateto=%s' % updateto )
+
 		result.add_row([ umcd.HTML(html, attributes = { 'colspan' : str(2) })])
-		req = umcp.Command(args=[command])
+		req = umcp.Command(args=[command], opts={ 'updateto': updateto } )
 		btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req), umcd.Action(self.__get_logfile_request( { 'windowtype': res.options['type'] } ))])
 
 		result.add_row([ btn_continue, umcd.CancelButton()])

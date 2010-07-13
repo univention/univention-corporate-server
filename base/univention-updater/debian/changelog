@@ -1,3 +1,15 @@
+univention-updater (6.0.5-1) unstable; urgency=low
+
+  * redesigned layout (Bug #18237)
+  * added "updateto" drop down box
+  * changes of UniventionUpdater
+    - avoid error msgs in updater or raise Exception if requested
+    - function to return a list of all available security updates
+    - function to return a list of all available release updates
+    - new exception class 
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 13 Jul 2010 17:39:20 +0200
+
 univention-updater (6.0.4-1) unstable; urgency=low
 
   * switched to umcd.RefreshFrame() (Bug #17666)

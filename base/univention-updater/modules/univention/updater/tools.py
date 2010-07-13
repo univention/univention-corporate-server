@@ -47,6 +47,13 @@ import urllib
 
 HTTP_PROXY_DEFAULT_PORT = 3128
 
+class ExceptionUpdaterRequiredComponentMissing(Exception):
+	def __init__(self, version, component):
+		self.version = version
+		self.component = component
+	def __str__(self):
+		return "An update to UCS %s without the component '%s' is not possible because the component '%s' is marked as required." % (self.version, self.component, self.component)
+
 class UCS_Version( object ):
 	'''Version object consisting of major-, minor-number and patch-level'''
 	FORMAT = '%(major)d.%(minor)d'
@@ -419,33 +426,66 @@ class UniventionUpdater:
 		self.close_connection()
 		return None
 
-	def get_next_version(self, version, components=[]):
+	def get_next_version(self, version, components=[], errorsto='stderr'):
 		'''Check if a new patchlevel, minor or major release is available for the given version.
-		Components must be available for the same major.minor version.
+		   Components must be available for the same major.minor version.
+		   errorsto: stderr|exception|none
 		'''
+		debug = (errorsto == 'stderr')
+
 		for ver in [
 			{'major':version.major  , 'minor':version.minor  , 'patchlevel':version.patchlevel+1},
 			{'major':version.major  , 'minor':version.minor+1, 'patchlevel':0},
 			{'major':version.major+1, 'minor':0              , 'patchlevel':0}
 			]:
-			if self.net_path_exists(UCSRepoPool(part='maintained', **ver).path()):
+			if self.net_path_exists(UCSRepoPool(part='maintained', **ver).path(), debug=debug):
 				for component in components:
 					mm_version = UCS_Version.FORMAT % ver
-					if not self.get_component_repositories(component, [mm_version], False):
-						print >>sys.stderr, "An update to UCS %s without the component '%s' is not possible because the component '%s' is marked as required." % (mm_version, component, component)
+					if not self.get_component_repositories(component, [mm_version], False, debug=debug):
+						if errorsto == 'stderr':
+							print >>sys.stderr, "An update to UCS %s without the component '%s' is not possible because the component '%s' is marked as required." % (mm_version, component, component)
+						elif errorsto == 'exception':
+							raise ExceptionUpdaterRequiredComponentMissing( mm_version, component )
 						return None
 				else:
 					return UCS_Version.FULLFORMAT % ver
 		return None
 
-	def release_update_available( self, ucs_version = None ):
+	def get_all_available_release_updates( self, ucs_version = None ):
+		'''Returns a list of all available release updates - the function takes required components into account
+		   and stops if a required component is missing
+		   Arguments:
+		     ucs_version: starts travelling through available version from version 'ucs_version'
+		   Return value: tuple(versions, blocking component)
+		     versions: available UCS versions (list of strings)
+			 blocking component: None or name of update blocking component
+		 '''
+
+		if not ucs_version:
+			ucs_version = self.current_version
+
+		components = filter(lambda c: 'current' in self.configRegistry.get('repository/online/component/%s/version' % c, '').split(','), self.get_components())
+
+		result = []
+		while ucs_version:
+			try:
+				ucs_version = self.get_next_version(UCS_Version(ucs_version), components, errorsto='exception')
+			except ExceptionUpdaterRequiredComponentMissing, e:
+				# e.component blocks update to next version ==> return current list and blocking component
+				return result, e.component
+
+			if ucs_version:
+				result.append(ucs_version)
+		return result, None
+
+	def release_update_available( self, ucs_version = None, errorsto='stderr' ):
 		'''Check if an update is available for the ucs_version'''
 		if not ucs_version:
 			ucs_version = self.current_version
 
 		components = filter(lambda c: 'current' in self.configRegistry.get('repository/online/component/%s/version' % c, '').split(','), self.get_components())
 
-		return self.get_next_version(UCS_Version(ucs_version), components)
+		return self.get_next_version(UCS_Version(ucs_version), components, errorsto)
 
 	def release_update_temporary_sources_list(self, version, components=None):
 		'''Return list of Debian repository statements for the release update including all enabled components.'''
@@ -473,9 +513,25 @@ class UniventionUpdater:
 			sources_list.append( ver.deb() )
 		return sources_list
 
-	def security_update_available(self):
+	def get_all_available_security_updates(self):
+		'''Returns a list of all available security updates for current major.minor version'''
+		result = []
+		archs = ['all', 'extern'] + self.architectures
+		for sp in xrange(self.security_patchlevel+1, 999):
+			version = UCS_Version( (self.version_major, self.version_minor, sp) )
+			secver = self.security_update_available(version)
+			if secver == False:
+				return result
+			else:
+				result.append( secver )
+		return result
+
+	def security_update_available(self, version=None):
 		'''Check for the security version for the current version'''
-		start = end = UCS_Version( (self.version_major, self.version_minor, self.security_patchlevel+1) )
+		if version:
+			start = end = version
+		else:
+			start = end = UCS_Version( (self.version_major, self.version_minor, self.security_patchlevel+1) )
 		archs = ['all', 'extern'] + self.architectures
 		for ver in self._iterate_versions(UCSRepoPool(patch="sec%(patchlevel)d"), start, end, self.parts, archs):
 			return 'sec%(patchlevel)s' % ver
@@ -513,13 +569,12 @@ class UniventionUpdater:
 	def get_component(self, name):
 		'''Retrieve named component from registry as hash'''
 		component = {}
+		component['name'] = name
+		component['activated'] = self.configRegistry.get('repository/online/component/%s' % name, 'disabled')
 		for key in self.configRegistry.keys():
-			component['activated'] = self.configRegistry['repository/online/component/%s' % name]
-			component['name'] = name
 			if key.startswith('repository/online/component/%s/' % name):
 				var = key.split('repository/online/component/%s/' % name)[1]
 				component[var] = self.configRegistry[key]
-				pass
 		return component
 
 	def _iterate_versions(self, ver, start, end, parts, archs, **netConf):
@@ -653,7 +708,7 @@ class UniventionUpdater:
 
 		return '\n'.join(result)
 
-	def get_component_repositories(self, component, versions, clean=False):
+	def get_component_repositories(self, component, versions, clean=False, debug=True):
 		'''Return array of Debian repository statements for requested component.
 		With clean=True, additional clean statements for apt-mirror are added.
 		'''
@@ -698,7 +753,7 @@ class UniventionUpdater:
 		elif repository_prefix.lower() != 'none':
 			netConf['prefix'] = repository_prefix.strip('/')
 			repo.prefix += '%s/' % repository_prefix.strip('/')
-		netConf['debug'] = True
+		netConf['debug'] = debug
 
 		for repo.version in versions:
 			for repo.part in ["%s/component" % part for part in parts]:
