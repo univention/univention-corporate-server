@@ -96,6 +96,7 @@ install-ext-%:
 	install -m 755 univention-directory-policy/univention-policy-repository-sync debian/univention-updater/usr/lib/univention-directory-policy/
 	install -m 755 univention-directory-policy/univention-policy-maintenance debian/univention-updater/usr/lib/univention-directory-policy/
 	install -m 755 python/univention-actualise debian/univention-updater/usr/sbin/
+	install -m 755 script/univention-pkg-install debian/univention-updater/usr/sbin/
 
 	cat python/univention-repository-addpackage | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention-repository-addpackage_tmp
 	install -m 755 python/univention-repository-addpackage_tmp debian/univention-updater/usr/sbin/univention-repository-addpackage
