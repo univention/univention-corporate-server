@@ -52,13 +52,18 @@ class RefreshFrame( base.HTML ):
 
 		from json import JsonWriter
 		def _web_some_command(self, object, res):
-		 	data = [ '%s ==> %s\n' % (time.ctime(), repr(object.options)) ]
+			data = { 'contentappend': '%s ==> %s\n' % (time.ctime(), repr(object.options)) }
 		 	json = JsonWriter()
 		 	content = json.write(data)
 		 	content_type = 'application/json'
 		 	res.dialog = { 'Content-Type': content_type, 'Content': content }
 		 	self.revamped( object.id(), res, rawresult = True )
 
+		Valid keys for data are "content" and "contentappend":
+		"content": the content of the RefreshFrame will be replaced with content given here.
+		"contentappend": the given content will be appended to the current RefreshFrame content
+		all other keys: if specified, the innerHTML of the object specified by id will be replaced
+		                ==> dojo.byId( $KEY ).innerHTML = $VALUE;
 		"""
 		# create custom text identifier
 		alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -81,7 +86,7 @@ class RefreshFrame( base.HTML ):
 
 		url_options = urllib.urlencode(opts)
 
-		txt_div = '<div id="wnd%(identifier)s" style="width:%(width)spx; height:%(height)spx; overflow: scroll; border:1px solid #000000; margin: 1px; background: #F8F8F8 none repeat scroll 0 0"><pre id="data%(identifier)s" style="background: #F8F8F8 none repeat scroll 0 0"></pre></div>' % { 'width': widget_width, 'height': widget_height, 'identifier': identifier }
+		txt_div = '<div class="refreshframe" id="wnd%(identifier)s" style="width:%(width)spx; height:%(height)spx; overflow: scroll;"><pre class="refreshframecontent" id="data%(identifier)s"></pre></div>' % { 'width': widget_width, 'height': widget_height, 'identifier': identifier }
 
 		txt_javascript = """
 <script type='text/javascript'>
@@ -94,12 +99,23 @@ umc.ajax.refreshframe.updateData = function(refreshurl, wndid, dataid, maxlen) {
             handleAs: 'json',
             preventCache: true,
             load: function(data) {
-				var newdata = dojo.byId( dataid ).innerHTML + data[0];
-				if (newdata.length > maxlen) {
-					newdata = newdata.substr(newdata.length - maxlen, maxlen);
+				if (!(data['contentappend'] === undefined)) {
+					var newdata = dojo.byId( dataid ).innerHTML + data['contentappend'];
+					if (newdata.length > maxlen) {
+						newdata = newdata.substr(newdata.length - maxlen, maxlen);
+					}
+					dojo.byId( dataid ).innerHTML = newdata;
+					dojo.byId( wndid ).scrollTop = dojo.byId( wndid ).scrollHeight;
 				}
-				dojo.byId( dataid ).innerHTML = newdata;
-				dojo.byId( wndid ).scrollTop = dojo.byId( wndid ).scrollHeight;
+				if (!(data['content'] === undefined)) {
+					dojo.byId( dataid ).innerHTML = data['content'];
+					dojo.byId( wndid ).scrollTop = dojo.byId( wndid ).scrollHeight;
+				}
+				for (var curdataid in data) {
+				    if ((curdataid != 'contentappend') && (curdataid != 'content')) {
+						dojo.byId( curdataid ).innerHTML = data[curdataid];
+					}
+				}
             },
         }
     var deferred = dojo.xhrGet(xhrArgs);

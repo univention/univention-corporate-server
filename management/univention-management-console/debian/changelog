@@ -1,3 +1,9 @@
+univention-management-console (3.0.37-1) unstable; urgency=low
+
+  * changed API of umcd.RefreshFrame() (Bug #17666)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 09 Jul 2010 09:59:38 +0200
+
 univention-management-console (3.0.36-1) unstable; urgency=low
 
   * support overwriting of prev button visibility

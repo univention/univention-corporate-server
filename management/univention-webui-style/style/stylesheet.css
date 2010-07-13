@@ -474,6 +474,17 @@ div#waitdialog .submit
 	margin-left: 24px;
 }
 
+div.refreshframe {
+	border:1px solid #000000; 
+	margin: 1px; 
+	background: #F8F8F8 none repeat scroll 0 0;
+	font-size: 10px;
+}
+
+div.refreshframecontent {
+	background: #F8F8F8 none repeat scroll 0 0;
+}
+
 div.usertext .submit,
 div.usertext .cancel
 {

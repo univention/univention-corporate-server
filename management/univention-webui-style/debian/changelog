@@ -1,3 +1,9 @@
+univention-webui-style (5.0.16-1) unstable; urgency=low
+
+  * added style for umcd.RefreshFrame() (Bug #17666)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 09 Jul 2010 10:01:40 +0200
+
 univention-webui-style (5.0.15-1) unstable; urgency=low
 
   * fix favicon (Bug #16074)
