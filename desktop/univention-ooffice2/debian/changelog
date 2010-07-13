@@ -1,3 +1,9 @@
+univention-ooffice2 (4.0.2-1) unstable; urgency=low
+
+  * fixed template Common.xcs for online help (Bug #18637) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 13 Jul 2010 10:15:11 +0200
+
 univention-ooffice2 (4.0.1-1) unstable; urgency=low
 
   * merged oo 3.2.0 changes from ucd scope (Bug #18454)

@@ -1425,7 +1425,7 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <info>
             <desc>Specifies the path to the Office help files.</desc>
           </info>
-          <value>$(instpath)/help</value>
+          <value>/usr/share/openoffice/basis3.2/help</value>
         </prop>
         <prop oor:name="Linguistic" oor:type="xs:string">
           <info>
@@ -1574,7 +1574,7 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <info>
             <desc>Specifies the default directory where Office help files are located.</desc>
           </info>
-          <value>$(instpath)/help</value>
+          <value>/usr/share/openoffice/basis3.2/help</value>
         </prop>
         <prop oor:name="Linguistic" oor:type="xs:string">
           <info>
