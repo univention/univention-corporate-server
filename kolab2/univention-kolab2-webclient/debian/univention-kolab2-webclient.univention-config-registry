@@ -12,22 +12,32 @@ Variables: domainname
 
 Type: file
 File: etc/horde/horde3/hooks.d/20-hooks_ucs.php
+User: www-data
+Mode: 640
 Variables: horde/application/.*
 
 Type: file
 File: etc/horde/horde3/prefs.d/20-prefs_ucs.php
+User: www-data
+Mode: 640
 
 Type: file
 File: etc/horde/horde3/registry.d/20-registry_ucs.php
+User: www-data
+Mode: 640
 Variables: horde/application/.*
 Variables: horde/webroot
 
 Type: file
 File: etc/horde/imp4/conf.d/20-conf_ucs.php
+User: www-data
+Mode: 640
 Variables: horde/.*
 
 Type: file
 File: etc/horde/imp4/prefs.d/20-prefs_ucs.php
+User: www-data
+Mode: 640
 Variables: horde/folder/sent
 Variables: horde/folder/drafts
 Variables: horde/folder/trash
@@ -35,53 +45,83 @@ Variables: horde/folder/spam
 
 Type: file
 File: etc/horde/imp4/servers.d/20-servers_ucs.php
+User: www-data
+Mode: 640
 
 Type: file
 File: etc/horde/turba2/conf.d/20-conf_ucs.php
+User: www-data
+Mode: 640
 Variables: horde/.*
 
 Type: file
 File: etc/horde/turba2/sources.d/20-sources_ucs.php
+User: www-data
+Mode: 640
 
 Type: file
 File: etc/horde/kronolith2/conf.d/20-kolab_ucs.php
+User: www-data
+Mode: 640
 Variables: domainname
 Variables: horde/.*
 
 Type: file
 File: etc/horde/gollem/conf.php
+User: www-data
+Mode: 640
 
 Type: file
 File: etc/horde/gollem/prefs.php
+User: www-data
+Mode: 640
 
 Type: file
 File: etc/horde/gollem/backends.php
+User: www-data
+Mode: 640
 Variables: horde/webaccess/share.*
 Variables: horde/auth
 
 Type: file
 File: etc/horde/ingo1/conf.d/20-conf_ucs.php
+User: www-data
+Mode: 640
 
 Type: file
 File: etc/horde/ingo1/backends.d/20-backends_ucs.php
+User: www-data
+Mode: 640
 
 Type: file
 File: etc/horde/passwd/conf.php
+User: www-data
+Mode: 640
 
 Type: file
 File: etc/horde/passwd/backends.php
+User: www-data
+Mode: 640
 
 Type: file
 File: etc/horde/nag2/conf.d/20-conf_ucs.php
+User: www-data
+Mode: 640
 
 Type: file
 File: etc/horde/nag2/prefs.d/20-prefs_ucs.php
+User: www-data
+Mode: 640
 
 Type: file
 File: etc/horde/mnemo2/conf.d/20-conf_ucs.php
+User: www-data
+Mode: 640
 
 Type: file
 File: etc/horde/mnemo2/prefs.d/20-prefs_ucs.php
+User: www-data
+Mode: 640
 
 Type: file
 File: etc/cron.d/kronolith2
