@@ -38,8 +38,8 @@ class RefreshFrame( base.HTML ):
 	def __init__( self, sessionid, command, opts = {}, attributes = {}, maxlen=300000, refresh_interval=3000 ):
 		"""
 		Returns a frame with specified geometry and refreshes its content every 'refresh_interval' miliseconds by calling
+		specified 'command' and passing 'opts' as command options.
 		Arguments:
-			command 'command' with specified opts
 			sessionid: the session id (required)
 			command: umcp command to be called for getting new content
 			opts: options passed to umcp command
