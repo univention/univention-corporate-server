@@ -150,18 +150,18 @@ class TreeView( object ):
 		except uvmmd.ConnectionError:
 			table = umcd.SimpleTreeTable()
 			table.set_tree_data( [] )
-			table.set_dialog( umcd.InfoBox( _( 'The connection to the UVMM service could not be established. Please verify that it is started. You may use the UMC service module therefor.' ) ) )
+			table.set_dialog( umcd.InfoBox( _( 'The connection to the Univention Virtual Machine Manager service could not be established. Please verify that it is started. You may use the UMC service module therefor.' ) ) )
 			success = False
 		res.dialog = [ table ]
 
 		return ( success, res )
-		
+
 	@staticmethod
 	def get_tree( uvmm_client, current ):
 		additional_buttons = { 2 : ( ( _( 'Add' ), 'uvmm/add', 'uvmm/domain/create', { 'domain' : 'NONE' } ), ) }
 		table = umcd.SimpleTreeTable( collapsible = 2 )
 		table.set_tree_data( TreeView.convert( uvmm_client.get_node_tree(), current, additional_buttons = additional_buttons, uvmm = uvmm_client, cache = {} ) )
-		
+
 		return table
 
 

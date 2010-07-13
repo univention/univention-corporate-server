@@ -47,6 +47,20 @@ class DynamicSelect( umc.StaticSelection ):
 	def update_choices( self, types ):
 		self._choices = types
 
+class VirtTechSelect( umc.StaticSelection ):
+	MAPPING = { 'hvm' : _( 'Full virtualization' ),
+				'xen' : _( 'Paravirtualization' ) ,
+				}
+	def __init__( self, label, required = True, may_change = True ):
+		self._choices = []
+		umc.StaticSelection.__init__( self, label, required = required, may_change = may_change )
+
+	def choices( self ):
+		return map( lambda x: ( x, VirtTechSelect.MAPPING[ x ] ), self._choices )
+
+	def update_choices( self, types ):
+		self._choices = types
+
 class KBLayoutSelect( umc.StaticSelection ):
 	def choices( self ):
 		return ( ( 'de', _( 'German' ) ), ( 'en-us', _( 'American' ) ) )
@@ -87,6 +101,7 @@ class NodeSelect( umc.StaticSelection ):
 			self._choices.remove( ignore )
 
 umcd.copy( umc.StaticSelection, DynamicSelect )
+umcd.copy( umc.StaticSelection, VirtTechSelect )
 umcd.copy( umc.StaticSelection, KBLayoutSelect )
 umcd.copy( umc.StaticSelection, BootDeviceSelect )
 umcd.copy( umc.StaticSelection, NumberSelect )

@@ -74,7 +74,7 @@ boot_dev = umcd.make( ( 'bootdev', BootDeviceSelect( _( 'Boot device' ) ) ), att
 
 dest_node_select = NodeSelect( _( 'Destination host' ) )
 arch_select = DynamicSelect( _( 'Architecture' ) )
-type_select = DynamicSelect( _( 'Virtualization Technique' ) )
+type_select = VirtTechSelect( _( 'Virtualization Technology' ) )
 cpus_select = NumberSelect( _( 'Number of CPUs' ) )
 
 command_description = {

@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.52-1) unstable; urgency=low
+
+  * use "human readable" descriptions for the virtualization technology; Bug #18850
+  * update german translation
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 13 Jul 2010 09:59:23 +0200
+
 univention-virtual-machine-manager-daemon (0.9.51-1) unstable; urgency=low
 
   * Backup domain XML before undefine and updates (Bug #18679)
