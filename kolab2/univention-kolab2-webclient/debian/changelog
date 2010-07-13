@@ -1,3 +1,9 @@
+univention-kolab2-webclient (6.0.2-11) unstable; urgency=low
+
+  * fix patch for Net_Sieve (Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Jul 2010 13:17:40 +0200
+
 univention-kolab2-webclient (6.0.2-10) unstable; urgency=low
 
   * Fix conffile permissions (Bug #18975)

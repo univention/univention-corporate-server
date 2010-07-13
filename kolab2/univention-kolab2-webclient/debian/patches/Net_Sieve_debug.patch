@@ -19,26 +19,26 @@
                  unset($this->supportedAuthMethods[$pos]);
              }
          }
-@@ -826,9 +822,7 @@
+@@ -826,9 +822,6 @@
              return new PEAR_Error( 'Failed to write to socket: ' . $error->getMessage() );
          }
  
 -        if( $this->_debug ){
 -            // C: means this data was sent by  the client (this class)
 -            echo "C:$cmd\n";
+-        }
 +        $this->_debug("C: $cmd");
-         }
          return true;
      }
-@@ -852,9 +846,7 @@
+@@ -852,9 +846,6 @@
              return new PEAR_Error( 'Failed to write to socket: ' . $lastline->getMessage() );
          }
          $lastline=rtrim($lastline);
 -        if($this->_debug){
 -            // S: means this data was sent by  the IMAP Server
 -            echo "S:$lastline\n" ;
+-        }
 +        $this->_debug("S: $lastline");
-         }
  
          if( $lastline === '' ) {
 @@ -896,9 +888,7 @@
