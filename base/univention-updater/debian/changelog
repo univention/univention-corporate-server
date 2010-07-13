@@ -1,3 +1,12 @@
+univention-updater (6.0.4-1) unstable; urgency=low
+
+  * switched to umcd.RefreshFrame() (Bug #17666)
+  * use updater/commands/distupgrade for component update
+  * removed sleep of 8 seconds after starting update process
+  * fixed process_running detection (atq is now always used)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 09 Jul 2010 11:16:38 +0200
+
 univention-updater (6.0.3-1) unstable; urgency=low
 
   * added univention-pkg-install (Bug #17995)

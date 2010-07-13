@@ -43,10 +43,11 @@ import univention.debug as ud
 import univention.config_registry
 
 from univention.updater import UniventionUpdater
+from json import JsonReader, JsonWriter
 
 import os
 import subprocess, string, time
-import socket
+import socket, re
 
 _ = umc.Translation('univention.management.console.handlers.update').translate
 
@@ -56,6 +57,10 @@ long_description = _('Manage system updates')
 categories = ['all', 'system']
 
 UCR_ALLOWED_CHARACTERS = '^[^#:@]+$'
+FN_LIST_INSTALL_COMPONENT_LOG = [ '/var/log/univention/actualise.log' ]
+FN_LIST_SECURITY_UPDATE_LOG = [ '/var/log/univention/security-updates.log' ]
+FN_LIST_RELEASE_UPDATE_LOG = [ '/var/log/univention/updater.log' ]
+FN_LIST_DIST_UPGRADE_LOG = [ '/var/log/univention/upgrade.log' ]
 
 command_description = {
 	'update/overview': umch.command(
@@ -114,11 +119,18 @@ command_description = {
 		method = 'install_security_updates',
 		values = { },
 	),
-	'update/view_logfile': umch.command(
-		short_description = _('View the logfile during the update' ),
-		method = 'view_logfile',
+	'update/tail_logfile': umch.command(
+		short_description = _('Get tail of logfile'),
+		method = 'tail_logfile',
 		values = {
-			'filename': umc.String( _( 'Name of the log file' ), required = False ),
+			'filename': umc.String( _( 'Name of log file' ), required = False ),
+		},
+	),
+	'update/tail_logfile_dialog': umch.command(
+		short_description = _('Get dialog with AJAX logfile output'),
+		method = 'tail_logfile_dialog',
+		values = {
+			'filename': umc.String( _( 'Name of log file' ), required = False ),
 		},
 	),
 	'update/update_warning': umch.command(
@@ -147,6 +159,10 @@ class handler(umch.simpleHandler):
 		self.next_securtiy_update = None
 
 		self.ucr_reinit = False
+
+		self.tail_fn2fd = {}
+
+		self.command_dist_upgrade = self.updater.configRegistry.get('update/commands/distupgrade', 'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -u dist-upgrade')
 
 
 	def overview(self, object):
@@ -298,19 +314,21 @@ class handler(umch.simpleHandler):
 			self.finished(object.id(), None)
 
 		elif status == 'execute':
-			p1 = subprocess.Popen(['echo "Starting dist-upgrade at $(date)">>/var/log/univention/upgrade.log; DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade | tee -a /var/log/univention/upgrade.log 2>&1'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-			(stdout,stderr) = p1.communicate()
-			ud.debug(ud.ADMIN, ud.PROCESS, 'execute the update with "dist-upgrade", the returncode is %d' % p1.returncode)
-			ud.debug(ud.ADMIN, ud.PROCESS, 'stderr=%s' % stderr)
-			ud.debug(ud.ADMIN, ud.INFO, 'stdout=%s' % stdout)
+			cmd = '''echo "Starting dist-upgrade at $(date)" >> /var/log/univention/upgrade.log;
+			DEBIAN_FRONTEND=noninteractive
+			%s >> /var/log/univention/upgrade.log 2>&1 ;
+			if [ $? = 0 ] ; then
+				echo  >> /var/log/univention/upgrade.log ;
+				echo "The update has been finished successfully."  >> /var/log/univention/upgrade.log ;
+		    else
+				echo  >> /var/log/univention/upgrade.log ;
+				echo "An error occured during update. Please check the logfiles."  >> /var/log/univention/upgrade.log ;
+		    fi
+			''' % self.command_dist_upgrade
+			(returncode, returnstring) = self.__create_at_job(cmd)
+			ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: apt-get dist-upgrade' )
+			self.finished(object.id(), None)
 
-			if p1.returncode == 0:
-				self.finished(object.id(), stdout)
-			else:
-				if len(stderr) > 1:
-					self.finished(object.id(), stderr, success=False)
-				else:
-					self.finished(object.id(), stdout, success=False)
 
 	def components_settings(self, object):
 		_d = ud.function('update.handler.components_settings')
@@ -363,8 +381,6 @@ class handler(umch.simpleHandler):
 			(returncode, returnstring) = self.__create_at_job('univention-updater net --updateto %s' % self.next_release_update)
 			ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: univention-updater net --updateto %s' % self.next_release_update)
 
-		self.logfile = '/var/log/univention/updater.log'
-
 		if returncode != 0:
 			self.finished(object.id(), None, returnstring, success = False)
 		else:
@@ -374,7 +390,6 @@ class handler(umch.simpleHandler):
 		_d = ud.function('update.handler.install_security_updates')
 
 		(returncode, returnstring) = self.__create_at_job('univention-security-update net' )
-		self.logfile = '/var/log/univention/security-updates.log'
 		ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: univention-security-update net' )
 
 		if returncode != 0:
@@ -382,18 +397,130 @@ class handler(umch.simpleHandler):
 		else:
 			self.finished(object.id(), None)
 
-	def view_logfile(self, object):
-		_d = ud.function('update.handler.view_logfile')
+	def tail_logfile(self, object):
+		_d = ud.function('update.handler.tail_logfile')
+		self.finished(object.id(), None)
 
-		p1 = subprocess.Popen(['tail -n 40 %s' % object.options[ 'filename' ] ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-		(stdout,stderr) = p1.communicate()
-
-		self.finished(object.id(), stdout)
-
+	def tail_logfile_dialog(self, object):
+		_d = ud.function('update.handler.tail_logfile_dialog')
+		self.finished(object.id(), None)
 
 	#######################
 	# The revamp functions
 	#######################
+
+	def _web_tail_logfile(self, object, res):
+		_d = ud.function('update.handler._web_tail_logfile')
+
+		headline = None
+		headline_msg = None
+		windowtype = object.options.get('windowtype')
+		if windowtype == 'release':
+			if not self.__is_updater_running():
+				headline = _('Update finished')
+				headline_msg = _('The release update has been finished. During update some log messages have been shown in window below. Please check the output for error messages.')
+		elif windowtype == 'security':
+			if not self.__is_security_update_running():
+				headline = _('Update finished')
+				headline_msg = _('The security update has been finished. During update some log messages have been shown in window below. Please check the output for error messages.')
+		elif windowtype == 'dist-upgrade':
+			if not self.__is_dist_upgrade_running():
+				headline = _('Update finished')
+				headline_msg = _('The update has been finished. During update some log messages have been shown in window below. Please check the output for error messages.')
+		else:
+			ud.debug(ud.ADMIN, ud.ERROR, 'update.handler._web_tail_logfile: unknown window type: %s' % (windowtype) )
+
+		fdlist = []
+		for key in object.options.keys():
+			# get all filenames (filename1=... filenameB=...)
+			if key.startswith('filename'):
+				fn = object.options.get(key)
+				# some security checks
+				if not fn.startswith('/var/log/univention/'):
+					self.finished(object.id(), 'invalid filename%s: access not allowed by UMC module' % fn)
+					return
+				else:
+					# create fd if fd is not present
+					try:
+						if not fn in self.tail_fn2fd:
+							ud.debug(ud.ADMIN, ud.INFO, 'update.handler._web_tail_logfile: opening %s' % fn)
+							fd = open(fn,'r+')
+							fd.seek(0,2)				 # seek to file end ==> show only new entries
+							#fd.seek(-16384,2)			 # seek to 16384 bytes before file end ==> show last 16k of file
+							self.tail_fn2fd[fn] = fd
+						else:
+							fd = self.tail_fn2fd[fn]
+						fdlist.append(fd)
+					except Exception, e:
+						ud.debug(ud.ADMIN, ud.WARN, 'update.handler._web_tail_logfile: cannot open: %s ==> %s' % (fn, str(e)) )
+
+		logdata = ''
+		for fd in fdlist:
+			curpos = fd.tell()
+			fd.seek(0,2)	   # seek to file end
+			endpos = fd.tell()
+			fd.seek(curpos,0)  # seek back to cur pos
+			pendingbytes = endpos - curpos
+			logdata += fd.read(pendingbytes)  # get pending data
+
+		data = { 'contentappend': logdata }
+		if headline:
+			data['tail_headline'] = str(headline)
+		if headline_msg:
+			data['tail_headlinemsg'] = str(headline_msg)
+		try:
+			json = JsonWriter()
+			content = json.write(data)
+		except:
+			import traceback
+			content = ''
+			ud.debug(ud.ADMIN, ud.ERROR, 'update.handler._web_tail_logfile: failed to create JSON: %s' % (traceback.format_exc().replace('%','#')) )
+
+		res.dialog = { 'Content-Type': 'application/json', 'Content': content }
+		self.revamped( object.id(), res, rawresult = True )
+
+
+	def _web_tail_logfile_dialog(self, object, res):
+		_d = ud.function('update.handler._web_tail_logfile_dialog')
+
+		windowtype = object.options.get('windowtype','undefined-local')
+
+		# depending on window type set headline, headline message and logfiles
+		if windowtype == 'release':
+			txt_headline = _('Update progress')
+			txt_headline_msg = _('The release update process has been started. During update log messages will be shown in window below. Please wait until the release update has been finished.')
+			filenames = FN_LIST_RELEASE_UPDATE_LOG
+		elif windowtype == 'security':
+			txt_headline = _('Security update progress')
+			txt_headline_msg = _('The security update process has been started. During update log messages will be shown in window below. Please wait until the security update has been finished.')
+			filenames = FN_LIST_SECURITY_UPDATE_LOG
+		elif windowtype == 'dist-upgrade':
+			txt_headline = _('Update progress')
+			txt_headline_msg = _('The update process has been started. During update log messages will be shown in window below. Please wait until the update has been finished.')
+			filenames = FN_LIST_DIST_UPGRADE_LOG
+		else:
+			ud.debug(ud.ADMIN, ud.ERROR, 'update.handler.__create_tail_window: unknown window type: %s' % (windowtype) )
+			txt_headline = 'ERROR'
+			txt_headline_msg = 'ERROR MSG'
+			filenames = FN_LIST_RELEASE_UPDATE_LOG
+
+		lst = umcd.List()
+		lst.add_row( [ umcd.HTML('<h2 id="tail_headline">' + txt_headline + '</h2') ] )
+		lst.add_row( [ umcd.HTML( '<div id="tail_headlinemsg">' +  txt_headline_msg + '</div>' ) ] )
+		# convert filename list
+		opts = { 'windowtype' : windowtype }
+		i = 1
+		for fn in filenames:
+			opts['filename%d' % i] = fn
+			i += 1
+		# add refresh frame
+		lst.add_row( [ umcd.RefreshFrame( self._sessionid, 'update/tail_logfile', opts, attributes = { 'colspan': '3', 'width': '900', 'height': '400' }, refresh_interval=1000) ] )
+		# add close button
+		cmd = umcp.Command( args = [ 'update/overview' ], opts = { } )
+		item_btn = umcd.Button( _('Close'), 'actions/ok', actions = [ umcd.Action( cmd ) ] )
+		lst.add_row( [ item_btn ] )
+		res.dialog = [ lst ]
+		self.revamped(object.id(), res)
 
 
 	# This revamp function shows the Overview site
@@ -415,20 +542,18 @@ class handler(umch.simpleHandler):
 
 		local_repo = self.updater.configRegistry.get( 'local/repository', 'no' ).lower() in ( 'yes', 'true' )
 
-		# updater log button
-		req = self.__get_logfile_request( '/var/log/univention/updater.log' )
-		btn_install_release_update = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
 
-		# security update log button
-		req = self.__get_logfile_request( '/var/log/univention/security-updates.log' )
-		btn_install_sec_update = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
 
 		if self.__is_updater_running():
-			self.logfile = '/var/log/univention/updater.log'
+			# updater log button
+			req = self.__get_logfile_request( { 'windowtype': 'release' } )
+			btn_install_release_update = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
 			list_release.add_row([umcd.Text(_('The update is still in progress')), btn_install_release_update])
 
 		elif self.__is_security_update_running():
-			self.logfile = '/var/log/univention/security-updates.log'
+			# security update log button
+			req = self.__get_logfile_request( { 'windowtype': 'security' } )
+			btn_install_sec_update = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
 			list_release.add_row([umcd.Text(_('The update is still in progress')), btn_install_sec_update])
 
 		else:
@@ -485,23 +610,32 @@ class handler(umch.simpleHandler):
 
 			#TODO: show new components from the server
 
-			req = umcp.Command(args=['update/components_update'], opts={'status': 'check'})
-			req.set_flag('web:startup', True)
-			req.set_flag('web:startup_cache', False)
-			req.set_flag('web:startup_dialog', True)
-			req.set_flag('web:startup_referrer', False)
-			req.set_flag('web:startup_format', _('Check for updates'))
-			btn_update_check = umcd.Button(_('Check for updates'), 'actions/refresh', actions = [umcd.Action(req)])
+			if self.__is_updater_running() or self.__is_security_update_running():
+				# disable buttons if update is running
+				pass
+			elif self.__is_dist_upgrade_running():
+				# show button for logfile if update is running
+				req = self.__get_logfile_request( { 'windowtype': 'dist-upgrade' } )
+				btn_show_logfile = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
+				list_component.add_row([umcd.Text(_('The update is still in progress')), btn_show_logfile])
+			else:
+				req = umcp.Command(args=['update/components_update'], opts={'status': 'check'})
+				req.set_flag('web:startup', True)
+				req.set_flag('web:startup_cache', False)
+				req.set_flag('web:startup_dialog', True)
+				req.set_flag('web:startup_referrer', False)
+				req.set_flag('web:startup_format', _('Check for updates'))
+				btn_update_check = umcd.Button(_('Check for updates'), 'actions/refresh', actions = [umcd.Action(req)])
 
-			req = umcp.Command(args=['update/components_settings'])
-			req.set_flag('web:startup', True)
-			req.set_flag('web:startup_cache', False)
-			req.set_flag('web:startup_dialog', True)
-			req.set_flag('web:startup_referrer', True)
-			req.set_flag('web:startup_format', _('Add a new component'))
-			btn_add_component = umcd.Button(_('Add a new component'), 'actions/plus', actions = [umcd.Action(req)])
+				req = umcp.Command(args=['update/components_settings'])
+				req.set_flag('web:startup', True)
+				req.set_flag('web:startup_cache', False)
+				req.set_flag('web:startup_dialog', True)
+				req.set_flag('web:startup_referrer', True)
+				req.set_flag('web:startup_format', _('Add a new component'))
+				btn_add_component = umcd.Button(_('Add a new component'), 'actions/plus', actions = [umcd.Action(req)])
 
-			list_component.add_row([btn_update_check, btn_add_component])
+				list_component.add_row([btn_update_check, btn_add_component])
 		else:
 			list_component.add_row( [ umcd.InfoBox( _( 'The component management has been deactivated as this server has a local repository.' ), columns = 2 ) ] )
 
@@ -539,26 +673,6 @@ class handler(umch.simpleHandler):
 
 		res.dialog = [frame_release]
 
-		self.revamped(object.id(), res)
-
-	def _web_view_logfile(self, object, res):
-		_d = ud.function('update.handler._web_view_logfile')
-		result = umcd.List()
-
-		if self.__is_updater_running() or self.__is_security_update_running():
-			log = res.dialog
-			html = '<h2>' + _('The update is still in progress.') + '</h2>' + '<pre>' + _('Please wait. The update may take a while. A click on the refresh button will update the log messages.') + '</pre>' + '<body>' + self.__remove_status_messages(log) + '</body>'
-			result.add_row([ umcd.HTML(html, attributes = { 'colspan' : str(2) })])
-			btn_refresh = umcd.Button(_('Refresh'), 'actions/refresh', actions = [umcd.Action(self.__get_logfile_request( self.logfile ))])
-			result.add_row([ btn_refresh, umcd.CloseButton()])
-		else:
-			html = '<h2>' + _('The update has been finished.') + '</h2>'
-			log = res.dialog
-			html +=  '<body>' + self.__remove_status_messages(log) + '</body>'
-			result.add_row([ umcd.HTML(html, attributes = { 'colspan' : str(2) })])
-			result.add_row([ umcd.CloseButton()])
-
-		res.dialog = [ result]
 		self.revamped(object.id(), res)
 
 
@@ -650,15 +764,12 @@ class handler(umch.simpleHandler):
 			req.set_flag('web:startup_dialog', True)
 			req.set_flag('web:startup_referrer', False)
 			req.set_flag('web:startup_format', _('Execute the update'))
-			btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req)])
+			tail_action = umcd.Action(self.__get_logfile_request( { 'windowtype': 'dist-upgrade' } ))
+			btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req), tail_action])
 
 			result.add_row([ btn_continue, umcd.CancelButton()])
 		elif object.options['status'] == 'execute':
-			html = '<h2>' + _('The updater finished.') + '</h2>'
-			if res.dialog:
-				html += '<body>' + self.__remove_status_messages(res.dialog) + '</body>'
-			result.add_row([ umcd.HTML(html, attributes = { 'colspan' : str(2) })])
-			result.add_row([ umcd.CloseButton()])
+			pass
 
 		res.dialog = [ result]
 		self.revamped(object.id(), res)
@@ -670,16 +781,16 @@ class handler(umch.simpleHandler):
 
 		if res.options['type'] == 'security':
 			command = 'update/install_security_updates'
-			self.logfile = '/var/log/univention/security-updates.log'
+#			self.logfile = '/var/log/univention/security-updates.log'
 		else:
 			command = 'update/install_release_updates'
-			self.logfile = '/var/log/univention/updater.log'
+#			self.logfile = '/var/log/univention/updater.log'
 
 		html = self.__get_update_warning()
 
 		result.add_row([ umcd.HTML(html, attributes = { 'colspan' : str(2) })])
 		req = umcp.Command(args=[command])
-		btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req), umcd.Action(self.__get_logfile_request( self.logfile ))])
+		btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req), umcd.Action(self.__get_logfile_request( { 'windowtype': res.options['type'] } ))])
 
 		result.add_row([ btn_continue, umcd.CancelButton()])
 		res.dialog = [ result]
@@ -703,43 +814,42 @@ dpkg-statoverride --remove /usr/sbin/univention-management-console-server
 dpkg-statoverride --remove /usr/sbin/apache2
 chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 ''' % command
-		p1 = subprocess.Popen( [ 'at now', ], stdin = subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True )
+		p1 = subprocess.Popen( [ 'LC_ALL=C at now', ], stdin = subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True )
 		(stdout,stderr) = p1.communicate( script )
 		ud.debug(ud.ADMIN, ud.WARN, 'executing "%s"' % command)
 		ud.debug(ud.ADMIN, ud.WARN, 'install stderr=%s' % stderr)
 		ud.debug(ud.ADMIN, ud.INFO, 'install stdout=%s' % stdout)
-		# TODO: this should be solved in another way,
-		# we have to wait a few seconds otherwise the updater process haven't started yet
-		time.sleep(8)
+		match = re.search('^job\s+(\d+)\s+at', stdout, re.I | re.S | re.M)
+		if match:
+			ud.debug(ud.ADMIN, ud.INFO, 'created at job %s' % match.group(1))
+
 		if p1.returncode != 0:
 			return (p1.returncode,stderr)
 		else:
 			return (p1.returncode,stdout)
 
-	def __is_process_running(self, pattern, command ):
-		p1 = subprocess.Popen(['ps -ef | grep -v grep | egrep "%s"' % pattern ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-		(stdout,stderr) = p1.communicate()
-		if p1.returncode == 0:
-			if len(stdout) < 1:
-				p1 = subprocess.Popen(['atq  | awk "{print $1}" | while read num; do p=$(at -c $num | grep %s); if [ -n "$p"]; then echo "%s is running"; fi ; done' % (command, command)], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-				(stdout,stderr) = p1.communicate()
-				if p1.returncode == 0 and len(stdout) > 1:
+	def __is_process_running(self, command ):
+		p1 = subprocess.Popen('/usr/bin/atq', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		(atqout,stderr) = p1.communicate()
+		for line in atqout.splitlines():
+			job = line.split('\t',1)[0]
+			if job.isdigit():
+				p2 = subprocess.Popen(['/usr/bin/at','-c',job], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+				(atout,stderr) = p2.communicate()
+				if command in atout:
 					return True
-				return False
-			else:
-				return True
-		else:
-			return False
-
+		return False
 
 	def __is_updater_running(self):
-		# TODO: also check the at jobs
-		return self.__is_process_running( 'python.* /usr/sbin/univention-updater net', 'univention-updater net' )
+		return self.__is_process_running( 'univention-updater net' )
 
 
 	def __is_security_update_running(self):
-		# TODO: also check the at jobs
-		return self.__is_process_running('python.* /usr/sbin/univention-security-update net', 'univention-security-update net' )
+		return self.__is_process_running( 'univention-security-update net' )
+
+
+	def __is_dist_upgrade_running(self):
+		return self.__is_process_running( self.command_dist_upgrade )
 
 
 	def __remove_status_messages(self, text):
@@ -773,18 +883,14 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 		return html
 
 
-	def __get_logfile_request( self, filename = None ):
-		req = umcp.Command( args = [ 'update/view_logfile' ] )
-		if filename:
-			req.options[ 'filename' ] = filename
-		else:
-			req.options[ 'filename' ] = '/var/log/univention/updater.log'
-
+	def __get_logfile_request( self, options ):
+		req = umcp.Command( args = [ 'update/tail_logfile_dialog' ] )
+		req.options.update(options)
 		req.set_flag('web:startup', True)
 		req.set_flag('web:startup_cache', False)
 		req.set_flag('web:startup_dialog', True)
 		req.set_flag('web:startup_referrer', False)
-		req.set_flag('web:startup_format', _('Show the update progress'))
+		req.set_flag('web:startup_format', _('Update progress'))
 
 		return req
 
@@ -794,16 +900,5 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 		req.set_flag('web:startup_cache', False)
 		req.set_flag('web:startup_dialog', True)
 		req.set_flag('web:startup_referrer', False)
-		req.set_flag('web:startup_format', _('Confirm the updater warning'))
+		req.set_flag('web:startup_format', _('Update warning'))
 		return req
-
-	def __is_logfile_available( self, filename ):
-		if os.path.isfile( filename ):
-			try:
-				size = os.stat( filename )[ 6 ]
-				if size > 0:
-					return True
-			except:
-				pass
-
-		return False
