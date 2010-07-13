@@ -1,3 +1,10 @@
+univention-kolab2-webclient (6.0.2-9) unstable; urgency=low
+
+  * revert to former Net_Sieve version (Bug #17812)
+  * patch Net_Sieve to avoid debug output into HTML
+
+ -- Arvid Requate <requate@univention.de>  Mon, 12 Jul 2010 19:02:20 +0200
+
 univention-kolab2-webclient (6.0.2-8) unstable; urgency=low
 
   * use Net_Sieve version with support for a custom debug handler
