@@ -1,3 +1,9 @@
+univention-kolab2-webclient (6.0.2-14) unstable; urgency=low
+
+  * set encoding according to locale/default (Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Jul 2010 17:38:42 +0200
+
 univention-kolab2-webclient (6.0.2-13) unstable; urgency=low
 
   * brown paperbag fix for Net_Sieve patch (Bug #17812)

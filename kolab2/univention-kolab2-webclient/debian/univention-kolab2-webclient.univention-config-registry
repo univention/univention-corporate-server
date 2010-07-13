@@ -29,6 +29,11 @@ Variables: horde/application/.*
 Variables: horde/webroot
 
 Type: file
+File: etc/horde/horde3/nls.d/20-kolab_ucs.php
+User: www-data
+Mode: 640
+
+Type: file
 File: etc/horde/imp4/conf.d/20-conf_ucs.php
 User: www-data
 Mode: 640
