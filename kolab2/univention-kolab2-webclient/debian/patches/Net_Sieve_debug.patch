@@ -63,11 +63,10 @@
                          if($this->_state != NET_SIEVE_STATE_AUTHORISATION) {
                              // receive the pending OK only if we aren't authenticating
                              // since string responses during authentication don't need an
-@@ -960,16 +960,16 @@
-         return $this->_raiseError($msg,$code);
+@@ -961,14 +961,17 @@
      }
  
--    /**
+     /**
 -    * Sets the debug state
 -    *
 -    * @param boolean $debug
@@ -84,10 +83,10 @@
 +    function setDebug($debug = true, $handler = null)
      {
          $this->_debug = $debug;
--    }
++        $this->_debug_handler = $handler;
+     }
  
      /**
-     * Disconnect from the Sieve server
 @@ -1125,9 +1113,7 @@
              return $this->_raiseError($msg,$code);
          }
