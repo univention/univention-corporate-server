@@ -55,6 +55,7 @@ install: build
 	install -m 755 conffiles/etc/runit/univention-libvirt/run debian/univention-virtual-machine-manager-node-common/etc/runit/univention-libvirt/
 	touch debian/univention-virtual-machine-manager-node-common/etc/runit/univention-libvirt/down
 	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-virtual-machine-manager-node-common/etc/runit/univention-libvirt/finish
+	install -m 755 conffiles/etc/modprobe.d/loop debian/univention-virtual-machine-manager-node-common/etc/modprobe.d/
 
 # Build architecture-independent files here.
 binary-indep: build install

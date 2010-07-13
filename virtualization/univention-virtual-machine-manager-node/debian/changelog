@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (0.1.8-1) unstable; urgency=low
+
+  * Increment maximum number of loop-back block devices to 256 (Bug #18765)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Jul 2010 17:59:34 +0200
+
 univention-virtual-machine-manager-node (0.1.7-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

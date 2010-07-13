@@ -1,0 +1,3 @@
+# maximum number of loop-back block devices: default=8 max=256
+# maximum number partitions per block device: default=0
+options loop max_loop=256 max_part=0
