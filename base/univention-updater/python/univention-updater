@@ -54,6 +54,7 @@ from univention.updater.tools import LocalUpdater
 #   * check the local repository path /var/lib/univention-reposiotry
 #   * changed variable update/server to repository/online/server
 
+FN_STATUS = '/var/lib/univention-updater/univention-updater.status'
 failure = '/var/lib/univention-updater/update-failed'
 reboot_required = '/var/lib/univention-updater/reboot-required'
 TMPSOURCE = '/etc/apt/sources.list.d/00_ucs_temporary_installation.list'
@@ -62,10 +63,13 @@ LOGNAME = '/var/log/univention/updater.log'
 fd_log = sys.stderr
 stdout_orig=sys.stdout
 
+updater_status = {}
+
 class UpdateError(Exception):
 	""" Exception to signal errors on update """
-	def __init__(self, msg=None):
+	def __init__(self, msg=None, errorsource=None):
 		Exception.__init__(self, msg)
+		self.errorsource = errorsource
 
 class UpToDateNoError(Exception):
 	""" Exception to signal when no update needs to be done """
@@ -83,6 +87,34 @@ def dprint(str):
 	for fd in (stdout_orig, fd_log):
 		print >>fd, str
 		fd.flush()
+
+def update_status(**kwargs):
+	'''
+	update updater_status and write status to disk
+
+	Keys:
+	- current_version ==> UCS_Version ==> 2.3-1
+	- next_version    ==> UCS_Version ==> 2.3-2
+	- updatetype      ==> (LOCAL|NET|CDROM)
+	- status          ==> (RUNNING|FAILED|DONE)
+	- errorsource     ==> (SETTINGS|PREPARATION|PREUP|UPDATE|POSTUP)
+	'''
+	global updater_status
+	updater_status.update(kwargs)
+	# write temporary file
+	fn = '%s.new' % FN_STATUS
+	try:
+		fd = open( fn, 'w+' )
+		for key, val in updater_status.items():
+			fd.write('%s=%s\n' % (key, val))
+		fd.close()
+	except:
+		dprint('Warning: cannot update %s' % fn)
+	try:
+		os.rename(fn, FN_STATUS)
+	except:
+		dprint('Warning: cannot update %s' % FN_STATUS)
+
 
 def usage(fd=sys.stdout):
 	""" Print usage message. """
@@ -179,7 +211,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 		else:
 			raise UpdateError('A local repository was not found.\n' +
 					'       Please check the UCR variable repository/mirror/basepath\n' +
-					'       or try to install via "univention-updater net"')
+					'       or try to install via "univention-updater net"', errorsource='SETTINGS')
 
 	elif mode == 'cdrom':
 		if iso:
@@ -191,7 +223,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 			if resultCode not in (0,32):
 				res=os.system('mount -l 2>>%s | grep -q " %s "' % (LOGNAME, cdrom_mount_point))
 				if res != 0:
-					raise UpdateError('Failed to mount %s' % iso)
+					raise UpdateError('Failed to mount %s' % iso, errorsource='PREPARATION')
 		else:
 			device_name="cdrom"
 
@@ -201,7 +233,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 			if resultCode not in (0,32):
 				res=os.system('mount -l 2>>%s | grep -q " %s "' % (LOGNAME, cdrom_mount_point))
 				if res != 0:
-					raise UpdateError('Failed to mount cdrom')
+					raise UpdateError('Failed to mount cdrom', errorsource='PREPARATION')
 		try:
 			# Let's check if this Update could be installed, as on the dvd is a textfile for which UCS release this update is
 			if os.path.exists('%s/ucs-updates/' % cdrom_mount_point):
@@ -210,9 +242,9 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 					nextversion=string.lower(f.readline().strip('\n').replace('nextupdate=',''))
 					f.close()
 				else:
-					raise UpdateError("%s does not contain an update for version %s-%s."%(device_name,vv,vp))
+					raise UpdateError("%s does not contain an update for version %s-%s."%(device_name,vv,vp), errorsource='PREPARATION')
 			else:
-				raise UpdateError("%s is not a valid UCS update medium" % device_name)
+				raise UpdateError("%s is not a valid UCS update medium" % device_name, errorsource='PREPARATION')
 		finally:
 			resultCode=subprocess.call(['umount', cdrom_mount_point])
 			if resultCode != 0:
@@ -226,7 +258,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 				components = filter(lambda c: 'current' in baseConfig.get('repository/online/component/%s/version' % c, '').split(','), updater.get_components())
 				for component in components:
 					if not updater.get_component_repositories(component, [mm_version], False):
-						raise UpdateError('The required component %s is missing for version %s.' % (component, mm_version))
+						raise UpdateError('The required component %s is missing for version %s.' % (component, mm_version), errorsource='PREPARATION')
 
 	elif mode == 'net':
 		try:
@@ -239,9 +271,9 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 			code, message = msg
 
 			if code == socket.EAI_NONAME:
-				raise UpdateError('The name %s is not known.\n       Please check your network settings or set the UCR variable repository/online/server to a different value.' % (updater.repository_server))
+				raise UpdateError('The name %s is not known.\n       Please check your network settings or set the UCR variable repository/online/server to a different value.' % (updater.repository_server), errorsource='SETTINGS')
 			else:
-				raise UpdateError('An error occured during the connection to %s.\n       Please check your network settings.' % updater.repository_server)
+				raise UpdateError('An error occured during the connection to %s.\n       Please check your network settings.' % updater.repository_server, errorsource='SETTINGS')
 
 	if nextversion in (None,'none'):
 		return None
@@ -349,6 +381,8 @@ def main():
 	lastversion='%s-%s' % (vv,vp)
 	nextversion=None
 
+	update_status( current_version=lastversion, type=command.upper(), status='RUNNING' )
+
 	if updateto:
 		if UCS_Version(updateto) <= UCS_Version(lastversion):
 			dprint('System is up to date (UCS %s)' % lastversion)
@@ -388,6 +422,8 @@ def main():
 			raise UpToDateNoError(reboot)
 
 		dprint('Update to = %s' % nextversion)
+		update_status( next_version=nextversion )
+
 		if ignoressh:
 			os.putenv('update%d%d_ignoressh' % (UCS_Version(nextversion).major, UCS_Version(nextversion).minor, ), 'yes')
 		if ignoreterm:
@@ -417,6 +453,7 @@ def main():
 			raise UpToDateNoError(reboot)
 
 		dprint('Update to = %s' % nextversion)
+		update_status( next_version=nextversion )
 		if ignoressh:
 			os.putenv('update%d%d_ignoressh' % (UCS_Version(nextversion).major, UCS_Version(nextversion).minor, ), 'yes')
 		if ignoreterm:
@@ -431,7 +468,7 @@ def main():
 
 			if resultCode != 0:
 				fp_debug.close()
-				raise UpdateError('Failed to execute "univention-repository-update cdrom"')
+				raise UpdateError('Failed to execute "univention-repository-update cdrom"', errorsource='UPDATE')
 
 			calllocal = [sys.argv[0], 'local']
 			if updateto:
@@ -455,7 +492,7 @@ def main():
 			resultCode = subprocess.call( [ '/usr/sbin/univention-repository-update', 'net' ] + updateto_args )
 			if resultCode != 0:
 				fp_debug.close()
-				raise UpdateError('Failed to execute "univention-repository-update net"')
+				raise UpdateError('Failed to execute "univention-repository-update net"', errorsource='PREPARATION')
 
 			calllocal = [sys.argv[0], 'local']
 			if updateto:
@@ -474,6 +511,7 @@ def main():
 			raise UpToDateNoError(reboot)
 
 		dprint('Update to = %s' % nextversion)
+		update_status( next_version=nextversion )
 		if ignoressh:
 			os.putenv('update%d%d_ignoressh' % (UCS_Version(nextversion).major, UCS_Version(nextversion).minor, ), 'yes')
 		if ignoreterm:
@@ -503,7 +541,7 @@ def main():
 			tee.wait()
 			preup.wait()
 			if preup.returncode != 0:
-				raise UpdateError('Failed to execute "preup.sh"')
+				raise UpdateError('Failed to execute "preup.sh"', errorsource='PREUP')
 
 	count=0
 	while os.path.exists('/var/run/apt-get.lock') and count < 300:
@@ -516,7 +554,7 @@ def main():
 	if os.path.exists('/var/run/apt-get.lock'):
 		os.unlink('/var/run/apt-get.lock')
 	if resultCode != 0:
-		raise UpdateError('Failed to execute "%s"' % cmd_update)
+		raise UpdateError('Failed to execute "%s"' % cmd_update, errorsource='UPDATE')
 
 	# Execute the dist-upgrade!
 	count=0
@@ -529,7 +567,7 @@ def main():
 	if os.path.exists('/var/run/apt-get.lock'):
 		os.unlink('/var/run/apt-get.lock')
 	if resultCode != 0:
-		raise UpdateError('Failed to execute "%s"' % cmd_dist_upgrade)
+		raise UpdateError('Failed to execute "%s"' % cmd_dist_upgrade, errorsource='UPDATE')
 
 	# Call the postup.sh
 	if scriptPath:
@@ -543,7 +581,7 @@ def main():
 			tee.wait()
 			postup.wait()
 			if postup.returncode != 0:
-				raise UpdateError('Failed to execute "postup.sh"')
+				raise UpdateError('Failed to execute "postup.sh"', errorsource='POSTUP')
 
 	(nvv,nvp)=nextversion.split('-')[0:2]
 
@@ -556,6 +594,7 @@ def main():
 	if os.path.exists(failure):
 		os.unlink(failure)
 	subprocess.call(['touch', reboot_required])
+	update_status( status='DONE' )
 	do_cleanup()
 	os.execv(sys.argv[0], sys.argv)
 
@@ -569,6 +608,10 @@ if __name__ == '__main__':
 		try:
 			main()
 		except UpdateError, msg:
+			if msg.errorsource:
+				update_status( status='FAILED', errorsource=msg.errorsource )
+			else:
+				update_status( status='FAILED' )
 			dprint("Error: %s" % msg)
 			print >>sys.stderr, 'Error: Please check "%s" for details.' % LOGNAME
 			subprocess.call(['touch', failure])
@@ -583,6 +626,7 @@ if __name__ == '__main__':
 			devnull.close()
 			sys.exit(1)
 		except UpToDateNoError, error:
+			update_status( status='DONE' )
 			if os.path.exists(failure):
 				os.unlink(failure)
 			if os.path.exists(reboot_required):

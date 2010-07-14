@@ -42,6 +42,35 @@ import socket
 import univention.updater
 
 updater = univention.updater.UniventionUpdater()
+updater_status = {}
+
+FN_STATUS = '/var/lib/univention-updater/univention-security-update.status'
+
+def update_status(**kwargs):
+	'''
+	update updater_status and write status to disk
+
+	Keys:
+	- updatetype      ==> (LOCAL|NET)
+	- status          ==> (RUNNING|FAILED|DONE)
+	- errorsource     ==> (SETTINGS|PREPARATION|PREUP|UPDATE|POSTUP)
+	'''
+	global updater_status
+	updater_status.update(kwargs)
+	# write temporary file
+	fn = '%s.new' % FN_STATUS
+	try:
+		fd = open( fn, 'w+' )
+		for key, val in updater_status.items():
+			fd.write('%s=%s\n' % (key, val))
+		fd.close()
+	except:
+		dprint('Warning: cannot update %s' % fn)
+	try:
+		os.rename(fn, FN_STATUS)
+	except:
+		dprint('Warning: cannot update %s' % FN_STATUS)
+
 
 def dprint(str, fd=[]):
 	""" print message to multiple destinations or stdout """
@@ -154,6 +183,7 @@ if __name__ == '__main__':
 		local_repository = True
 		# if there is no _new_ repository server -> exit
 		if configRegistry.has_key( 'repository/local/old' ):
+			update_status( status='FAILED', errorsource='SETTINGS' )
 			dprint( 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old structure and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no". Information on how to migrate the repository can be found in the release notes for UCS 2.2-0', [fp_debug,sys.stderr] )
 			sys.exit( 1 )
 
@@ -162,6 +192,7 @@ if __name__ == '__main__':
 			dprint( 'Update local repository server ...', [fp_debug] )
 			ret = subprocess.call( ['univention-repository-update', 'net', '--security-only'], stdout=fp_debug, stderr=fp_debug )
 			if ret:
+				update_status( status='FAILED', errorsource='PREPARATION' )
 				dprint( 'Error: Update of local repository server failed', [fp_debug,sys.stderr] )
 				sys.exit( 1 )
 		# ... via tar archive
@@ -169,11 +200,13 @@ if __name__ == '__main__':
 			repo_path = configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
 			ret = subprocess.call( ['tar','xzf', file], cwd=os.path.join(repo_path, 'mirror'), stdout=fp_debug, stderr=fp_debug )
 			if ret:
+				update_status( status='FAILED', errorsource='PREPARATION' )
 				dprint( 'Error: Failed to extract security update archive.', [fp_debug,sys.stderr] )
 				sys.exit( 1 )
 
 	# without a local repository the local mode is not supported
 	elif command == 'local':
+		update_status( status='FAILED', errorsource='SETTINGS' )
 		dprint( 'Error: The local mode can just be used on repository servers', [fp_debug,sys.stderr] )
 		sys.exit( 1 )
 
@@ -185,6 +218,8 @@ if __name__ == '__main__':
 	if os.path.exists(filename):
 		dprint( 'Warning: Found `%s`\nfrom incomplete univention-updater run. Deleted.' % (filename), [fp_debug,sys.stdout] )
 		os.remove(filename)
+
+	update_status( status='RUNNING', type=command.upper() )
 
 	upgraded = None
 	while True:
@@ -199,6 +234,7 @@ if __name__ == '__main__':
 				dprint( 'Error: The name %s is not known.\n       Please check your network settings or set the UCR variable repository/online/server to a different value.' % (updater.repository_server), [fp_debug,sys.stderr] )
 			else:
 				dprint( 'Error: An error occurs during the connection to %s.\n       Please check your network settings and check the logfile /var/log/univention/security-updates.log' % (updater.repository_server), [fp_debug,sys.stderr] )
+			update_status( status='FAILED', errorsource='SETTINGS' )
 
 			sys.exit( 1 )
 
@@ -229,11 +265,13 @@ if __name__ == '__main__':
 					# update indices
 					ret = subprocess.call( cmd_update.split( ' ' ), stdout=fp_debug, stderr=fp_debug )
 					if ret:
+						update_status( status='FAILED', errorsource='PREPARATION' )
 						dprint( 'Error: Failed to update APT indices', [fp_debug,sys.stderr] )
 					else:
 						os.environ[ 'DEBIAN_FRONTEND' ] = 'noninteractive'
 						ret = subprocess.call( cmd_dist_upgrade.split( ' ' ), stdout=fp_debug, stderr=fp_debug )
 						if ret:
+							update_status( status='FAILED', errorsource='UPDATE' )
 							dprint( 'Error: Failed to upgrade packages', [fp_debug,sys.stderr] )
 
 					remove_temporary_sources_list()
@@ -246,3 +284,4 @@ if __name__ == '__main__':
 			if not upgraded:
 				dprint( 'No Security Update available!', [fp_debug,sys.stdout] )
 			break
+	update_status( status='DONE' )
