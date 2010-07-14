@@ -47,6 +47,8 @@ import select
 import logging
 from OpenSSL import SSL
 import traceback
+import PAM
+import threading
 
 logger = logging.getLogger('uvmmd.unix')
 
@@ -97,33 +99,14 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 				(length, command) = packet
 				buffer = buffer[length:]
 
-				if not isinstance(command, protocol.Request):
+				if isinstance(command, protocol.Request):
+					res = self.handle_command(command)
+				else:
 					logger.error('[%d] Packet is no UVMM Request. Ignored.' % (self.client_id,))
-				logger.info('[%d] Request "%s" received' % (self.client_id, command.command,))
-
-				try:
-					logger.error('[%d] Executing command "%s"' % (self.client_id,command.command,))
-					res = commands[command.command](self, command)
-					if res == None:
-						res = protocol.Response_OK()
-				except KeyError, e:
-					logger.warning('[%d] Unknown command "%s": %s.' % (self.client_id, command.command,str(e)))
 					res = protocol.Response_ERROR()
-					res.translatable_text = '[%(id)d] Unknown command "%(command)s".'
+					res.translatable_text = _('Packet is no UVMM Request: %(type)s')
 					res.values = {
-							'id': self.client_id,
-							'command': command.command,
-							}
-				except CommandError, e:
-					logger.warning('[%d] Error doing command "%s": %s' % (self.client_id, command.command, e))
-					res = protocol.Response_ERROR()
-					res.translatable_text, res.values = e.args
-				except Exception, e:
-					logger.error('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
-					res = protocol.Response_ERROR()
-					res.translatable_text = _('Exception: %(exception)s')
-					res.values = {
-							'exception': str(e),
+							'type': type(command),
 							}
 
 				logger.debug('[%d] Sending response.' % (self.client_id,))
@@ -143,6 +126,37 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 			logger.critical('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
 			raise
 
+	def handle_command(self, command):
+		"""Handle command packet."""
+		logger.info('[%d] Request "%s" received' % (self.client_id, command.command,))
+		try:
+			cmd = commands[command.command]
+		except KeyError, e:
+			logger.warning('[%d] Unknown command "%s": %s.' % (self.client_id, command.command,str(e)))
+			res = protocol.Response_ERROR()
+			res.translatable_text = '[%(id)d] Unknown command "%(command)s".'
+			res.values = {
+					'id': self.client_id,
+					'command': command.command,
+					}
+		else:
+			try:
+				res = cmd(self, command)
+				if res == None:
+					res = protocol.Response_OK()
+			except CommandError, e:
+				logger.warning('[%d] Error doing command "%s": %s' % (self.client_id, command.command, e))
+				res = protocol.Response_ERROR()
+				res.translatable_text, res.values = e.args
+			except Exception, e:
+				logger.error('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
+				res = protocol.Response_ERROR()
+				res.translatable_text = _('Exception: %(exception)s')
+				res.values = {
+						'exception': str(e),
+						}
+		return res
+
 	def finish(self):
 		"""Perform cleanup."""
 		logger.info('[%d] Connection closed.' % (self.client_id,))
@@ -152,7 +166,152 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 		#super(StreamHandler,self).finish()
 		SocketServer.StreamRequestHandler.finish(self)
 
-class SecureStreamHandler(StreamHandler):
+class PamAuthenticator(object):
+	"""
+	Handle PAM authentication asynchronously.
+
+	>>> p = PamAuthenticator()
+	>>> req = protocol.Request_GROUP_LIST()
+	>>> print p.handle(req)
+	Packet:
+	 challenge: [('login:', 2)]
+	 status: AUTHENTICATION
+	>>> req = protocol.Request_AUTHENTICATION(response=[('testuser1', PAM.PAM_SUCCESS)])
+	>>> print p.handle(req)
+	Packet:
+	 challenge: [('Password: ', 1)]
+	 status: AUTHENTICATION
+	>>> req = protocol.Request_AUTHENTICATION(response=[('univention', PAM.PAM_SUCCESS)])
+	>>> print p.handle(req)
+	None
+	>>> req = protocol.Request_GROUP_LIST()
+	>>> print p.handle(req)
+	None
+	"""
+	PAM_SERVICE = 'uvmmd'
+	TIMEOUT = 60.0 # s
+	AUTH_INIT, AUTH_RUNNING, AUTH_OK, AUTH_FAIL = range(4)
+
+	def __init__(self, client_address):
+		"""Initialize PAM authenticator."""
+		self.client_address = client_address
+		self.state = PamAuthenticator.AUTH_INIT
+		self.response_pending = threading.Event()
+		self.challenge_pending = threading.Event()
+		self.thread = threading.Thread(target=PamAuthenticator.run, args=(self,))
+		self.thread.daemon = True
+
+	@staticmethod
+	def pam_conv(auth, query_list, userData):
+		"""
+		PAM conversation function.
+		http://www.kernel.org/pub/linux/libs/pam/Linux-PAM-html/adg-interface-of-app-expected.html#adg-pam_conv
+		"""
+		self = userData
+		if self.state != PamAuthenticator.AUTH_RUNNING:
+			raise PAM.error('Authenticator not running: %d' % (self.state,))
+		try:
+			self.res = protocol.Response_AUTHENTICATION(challenge=query_list)
+			# clear internal flag
+			self.response_pending.clear()
+			# signal response needed
+			self.challenge_pending.set()
+			logger.debug('Authentication required: %s' % (query_list,))
+			# wait for response
+			self.response_pending.wait(PamAuthenticator.TIMEOUT)
+			if not self.response_pending.isSet():
+				self.state = PamAuthenticator.AUTH_FAIL
+				raise PAM.error('Timeout!')
+			return self.response
+		except Exception, e:
+			logger.error('Error doing conversation: %s' % (e,))
+			raise
+
+	@staticmethod
+	def run(self):
+		"""Thread doing PAM authentication."""
+		try:
+			try:
+				auth = PAM.pam()
+				auth.start(PamAuthenticator.PAM_SERVICE)
+				auth.set_item(PAM.PAM_RHOST, self.client_address)
+				auth.set_item(PAM.PAM_CONV, self.pam_conv)
+				auth.setUserData(self)
+				auth.authenticate()
+				auth.acct_mgmt()
+				del auth
+				# signal success
+				logger.info('Authentication succeeded')
+				self.state = PamAuthenticator.AUTH_OK
+				self.res = None
+			except Exception, e:
+				logger.error('Authentication failed: %s' % e)
+				self.state = PamAuthenticator.AUTH_FAIL
+				self.res = protocol.Response_ERROR()
+				self.res.translatable_text = _('Authentication failed')
+		finally:
+			self.challenge_pending.set()
+
+	def handle(self, command):
+		"""
+		Handle authentication: If the connection is not yet authenticated,
+		start PAM authentication and handle challenge-response through
+		AUTHENTICATION packets.
+		Returns None on success, Response_AUTHENTICATION on further negotiation
+		and Response_ERROR on failure."""
+		if self.state == PamAuthenticator.AUTH_OK:
+			return None
+
+		if self.state == PamAuthenticator.AUTH_FAIL:
+			return self.res
+
+		self.challenge_pending.clear()
+		if self.state == PamAuthenticator.AUTH_INIT:
+			self.state = PamAuthenticator.AUTH_RUNNING
+			self.thread.start()
+		else: # self.state == PamAuthenticator.AUTH_RUNNING:
+			if not isinstance(command, protocol.Request_AUTHENTICATION):
+				logger.warn('Authentication protocol violated: %s' % (command,))
+				# terminate thread
+				self.state = PamAuthenticator.AUTH_FAIL
+				self.response = None
+				self.response_pending.set()
+				self.thread.join()
+				self.res = protocol.Response_ERROR()
+				self.res.translatable_text = _('Authentication protocol violated')
+				return self.res
+			self.response = command.response
+			self.response_pending.set()
+
+		self.challenge_pending.wait(PamAuthenticator.TIMEOUT)
+		if self.res is None:
+			self.thread.join()
+		return self.res
+
+class AuthenticatedStreamHandler(StreamHandler):
+	"""Handle TCP client connection requiring authentication."""
+	def setup(self):
+		"""Authenticated connection."""
+		#super(AuthenticatedStreamHandler,self).setup()
+		StreamHandler.setup(self)
+		self.authenticator = PamAuthenticator(self.client_address[0])
+
+	def finish(self):
+		"""Perform cleanup."""
+		self.authenticator.handle(None)
+		#super(AuthenticatedStreamHandler,self).finish()
+		StreamHandler.finish(self)
+
+	def handle_command(self, command):
+		"""Handle command packet."""
+		res = self.authenticator.handle(command)
+		if res is None:
+			#res = super(AuthenticatedStreamHandler,self).handle_command(command)
+			res = StreamHandler.handle_command(self, command)
+		return res
+
+class SecureStreamHandler(AuthenticatedStreamHandler):
+	"""Handle one TCP-SSL client connection."""
 	def setup(self):
 		"""SSL connection doesn't support makefile, wrap it."""
 		request = self.request
@@ -160,7 +319,8 @@ class SecureStreamHandler(StreamHandler):
 			def makefile(this, mode, size):
 				return socket._fileobject(request, mode, size)
 		self.request = SslConnection()
-		StreamHandler.setup(self)
+		#super(SecureStreamHandler,self).setup()
+		AuthenticatedStreamHandler.setup(self)
 		self.connection = self.request = request
 
 class ThreadingSSLServer(SocketServer.ThreadingTCPServer):
@@ -205,7 +365,7 @@ def unix(options):
 				host, port = options.tcp.rsplit(':', 1)
 			else:
 				host, port = options.tcp, 2105
-			tcpd = SocketServer.ThreadingTCPServer((host, int(port)), StreamHandler)
+			tcpd = SocketServer.ThreadingTCPServer((host, int(port)), AuthenticatedStreamHandler)
 			tcpd.daemon_threads = True
 			tcpd.allow_reuse_address = True
 			sockets[tcpd.fileno()] = tcpd
@@ -246,3 +406,6 @@ def unix(options):
 	except OSError, (err, errmsg):
 		logger.warning("Failed to delete old socket '%s': %s" % (options.socket, errmsg))
 
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()

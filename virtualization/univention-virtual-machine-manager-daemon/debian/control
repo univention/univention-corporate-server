@@ -15,6 +15,7 @@ Architecture: all
 Depends: libvirt-bin,
  univention-ssl,
  python-elementtree,
+ python-pam,
  python-univention-virtual-machine-manager,
  ${python:Depends}, ${misc:Depends}
 XB-Python-Version: ${python:Versions}

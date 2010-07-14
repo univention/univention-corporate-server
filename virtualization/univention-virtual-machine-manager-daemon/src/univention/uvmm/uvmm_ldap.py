@@ -179,7 +179,7 @@ def ldap_uris(ldap_uri=None):
 	if len(SERVICES) == 0:
 		raise LdapConfigurationError(_('No SERVICES defined.'))
 	
-	# Build fuilter to find all Virtualization nodes
+	# Build filter to find all Virtualization nodes
 	filter_list = ["(univentionService=%s)" % service for service in SERVICES]
 	if len(filter_list) > 1:
 		filter = "(|%s)" % "".join(filter_list)

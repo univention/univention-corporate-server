@@ -301,6 +301,12 @@ class _Commands:
 		except node.NodeError, e:
 			raise CommandError( 'STORAGE_VOLUMES', e )
 
+	@staticmethod
+	def AUTHENTICATION(server, request):
+		'''Handle authentication.'''
+		# handled in unix.py#AuthenticatedStreamHandler
+		pass
+
 	def __getitem__(self, cmd):
 		if cmd.startswith('_'):
 			raise CommandError(cmd, _('Command "%(command)s" is restricted'))

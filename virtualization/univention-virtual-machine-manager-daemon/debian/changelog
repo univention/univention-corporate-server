@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (0.9.54-1) unstable; urgency=low
+
+  * Implement destroying paused domains (Bug #18713)
+  * Implement PAM authentication (Bug #18663)
+  * Fix handling of unknown command.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 14 Jul 2010 19:25:31 +0200
+
 univention-virtual-machine-manager-daemon (0.9.53-1) unstable; urgency=low
 
   * shutdown virtual instance before removing it

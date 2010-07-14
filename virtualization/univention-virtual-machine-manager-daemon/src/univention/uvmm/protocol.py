@@ -188,6 +188,11 @@ class Request_STORAGE_DEFINE(Request):
 		self.name = None
 		self.size = 0 # bytes
 
+class Request_AUTHENTICATION(Request):
+	"""Provide authentication data."""
+	def _default(self):
+		self.command = 'AUTHENTICATION'
+		self.response = [] # (data, PAM.PAM_{SUCCESS|*_ERR|...})
 class Response(Packet):
 	"""Super class of all responses from UVMM daemon."""
 	def _default(self):
@@ -208,6 +213,11 @@ class Response_DUMP(Response_OK):
 		self.status = 'OK'
 		self.data = {}
 
+class Response_AUTHENTICATION(Response):
+	"""Authentication required, contains PAM challanges."""
+	def _default(self):
+		self.status = 'AUTHENTICATION'
+		self.challenge = [] # (PAM.PAM_{PROMPT_ECHO_{ON|OFF}|ERROR_MSG|PROMPT_TEXT}, query)
 class Data_StoragePool(object):
 	"""Container for storage pool statistics."""
 	def __init__(self):

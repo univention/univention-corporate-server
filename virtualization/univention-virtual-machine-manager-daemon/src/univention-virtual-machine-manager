@@ -38,6 +38,8 @@ import locale
 from optparse import OptionParser
 from univention.uvmm import protocol, client
 from univention.uvmm.helpers import TranslatableException, _, N_
+import PAM
+from getpass import getpass
 __builtins__._ = _
 
 def create_socket(options):
@@ -69,6 +71,26 @@ def request(options, req):
 		if options.verbose:
 			print >>sys.stderr, "request=%s" % (req,)
 		res = sock.send(req)
+		while isinstance(res, protocol.Response_AUTHENTICATION):
+			resp = []
+			for query, type in res.challenge:
+				if type == PAM.PAM_PROMPT_ECHO_ON:
+					val = raw_input(query)
+					resp.append((val, PAM.PAM_SUCCESS))
+				elif type == PAM.PAM_PROMPT_ECHO_OFF:
+					val = getpass(query)
+					resp.append((val, PAM.PAM_SUCCESS))
+				elif type == PAM.PAM_PROMPT_ERROR_MSG:
+					print >>sys.stderr, query
+					resp.append(('', PAM.PAM_SUCCESS))
+				elif type == PAM.PAM_PROMPT_TEXT_INFO:
+					print >>sys.stdout, query
+					resp.append(('', PAM.PAM_SUCCESS))
+			req2 = protocol.Request_AUTHENTICATION(response=resp)
+			res = sock.send(req2)
+			if isinstance(res, protocol.Response_OK):
+				# repeat original request
+				res = sock.send(req)
 		if isinstance(res, protocol.Response_DUMP):
 			print "DATA:"
 			try:

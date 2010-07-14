@@ -417,10 +417,8 @@ class Node(object):
 				# reset timer after successful re-connect
 				self.current_frequency = self.config_frequency
 				virEventUpdateTimerImpl(self.timerID, self.config_frequency)
-			try:
-				self.update()
-			finally:
-				self.last_try = self.last_update = time.time()
+			self.update()
+			self.last_try = self.last_update = time.time()
 		except libvirt.libvirtError, e:
 			self.last_try = time.time()
 			# double timer interval until maximum
@@ -430,7 +428,6 @@ class Node(object):
 				virEventUpdateTimerImpl(self.timerID, self.current_frequency)
 			if self.conn != None:
 				try:
-				  if False: # libvirt FIXME domainEventDeregister SEGVs!!!
 					self.conn.domainEventDeregister(self.domainCB)
 				except Exception, e:
 					logger.error('Exception %s: %s' % (e, traceback.format_exc()))
@@ -889,6 +886,7 @@ def domain_state(uri, domain, state):
 					(libvirt.VIR_DOMAIN_BLOCKED,  'SHUTDOWN'): dom.destroy,
 					(libvirt.VIR_DOMAIN_PAUSED,   'PAUSE'   ): None,
 					(libvirt.VIR_DOMAIN_PAUSED,   'RUN'     ): dom.resume,
+					(libvirt.VIR_DOMAIN_PAUSED,   'SHUTDOWN'): dom.destroy,
 					(libvirt.VIR_DOMAIN_SHUTDOWN, 'RUN'     ): dom.create,
 					(libvirt.VIR_DOMAIN_SHUTDOWN, 'SHUTDOWN'): None,
 					(libvirt.VIR_DOMAIN_SHUTOFF,  'RUN'     ): dom.create,
