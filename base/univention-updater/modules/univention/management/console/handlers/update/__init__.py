@@ -758,7 +758,7 @@ class handler(umch.simpleHandler):
 			btn_add_component['colspan'] = '2'
 			list_settings_component.add_row([ btn_add_component ])
 
-		res.dialog = [ umcd.Frame([list_settings_release], _('Repository Settings')), umcd.Frame([list_settings_component_txt, list_settings_component], _('Component Settings')) ]
+			res.dialog = [ umcd.Frame([list_settings_release], _('Repository Settings')), umcd.Frame([list_settings_component_txt, list_settings_component], _('Component Settings')) ]
 		self.revamped(object.id(), res)
 
 
