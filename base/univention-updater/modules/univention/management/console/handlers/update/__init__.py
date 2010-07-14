@@ -457,8 +457,8 @@ class handler(umch.simpleHandler):
 			pass
 
 		if result.get('current_version') and result.get('next_version'):
-			result['TXT_VERSION_FROM_TO'] = _('The update stopped during update from version %(from)s to %(to)s.') % { 'from': result['current_version'],
-																														'to': result['next_version'] }
+			result['TXT_VERSION_FROM_TO'] = _('The update process stopped during update from version %(from)s to %(to)s.') % { 'from': result['current_version'],
+																																'to': result['next_version'] }
 
 		return result
 
@@ -716,7 +716,7 @@ class handler(umch.simpleHandler):
 				if not available_release_updates:
 					# no release update possible/available
 					if blocking_component:
-						txt = umcd.Text(_('The currently installed UCR release version is %(version)s. Further release updates are available but the update is blocked by required component "%(component)s".') % { 'version': self.updater.get_ucs_version(), 'component': blocking_component})
+						txt = umcd.Text(_('The currently installed UCS release version is %(version)s. Further release updates are available but the update is blocked by required component "%(component)s".') % { 'version': self.updater.get_ucs_version(), 'component': blocking_component})
 					else:
 						txt = umcd.Text( _('The currently installed version is %s and there is no update available.') % self.updater.get_ucs_version() )
 					txt['colspan'] = '2'
