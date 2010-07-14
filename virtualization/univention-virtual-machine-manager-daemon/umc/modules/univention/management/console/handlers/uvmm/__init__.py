@@ -304,8 +304,8 @@ class handler( umch.simpleHandler ):
 			buttons.append( umcd.LinkButton( _( 'Start' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
 			buttons.append( comma )
 
-		# Stop? if state is not stopped or suspended
-		if not domain.state in ( 3, 4, 5 ):
+		# Stop? if state is not stopped
+		if not domain.state in ( 4, 5 ):
 			opts = copy.copy( cmd_opts )
 			opts[ 'state' ] = 'SHUTDOWN'
 			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
@@ -821,10 +821,13 @@ class handler( umch.simpleHandler ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain remove' )
 		res = umcp.Response( object )
 
-
-		# remove domain
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
+
+		# shutdown machine before removing it
+		self.uvmm.domain_set_state( object.options[ 'node' ], object.options[ 'domain' ], 'SHUTDOWN' )
+
+		# remove domain
 		resp = self.uvmm.domain_undefine( node_uri, domain_info.uuid, object.options[ 'drives' ] )
 
 		if self.uvmm.is_error( resp ):

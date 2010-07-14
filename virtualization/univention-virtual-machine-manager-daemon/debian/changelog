@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.53-1) unstable; urgency=low
+
+  * shutdown virtual instance before removing it
+  * show operation stop if instance is paused; Bug #18713
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 14 Jul 2010 15:59:19 +0200
+
 univention-virtual-machine-manager-daemon (0.9.52-1) unstable; urgency=low
 
   * use "human readable" descriptions for the virtualization technology; Bug #18850
