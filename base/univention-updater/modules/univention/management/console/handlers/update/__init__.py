@@ -112,6 +112,8 @@ command_description = {
 			'component_unmaintained': umc.String(_('Unmaintained'), required = False),
 			'component_username': umc.String(_('Username'), required = False),
 			'component_password': umc.String(_('Password'), required = False, regex = UCR_ALLOWED_CHARACTERS),
+			'use_maintained': umc.Boolean( _( 'Use maintained repositories' ), required = False ),
+			'use_unmaintained': umc.Boolean( _( 'Use unmaintained repositories' ), required = False ),
 		},
 	),
 	'update/install_release_updates': umch.command(
@@ -345,6 +347,8 @@ class handler(umch.simpleHandler):
 		component_unmaintained = object.options.get('component_unmaintained', '')
 		component_username = object.options.get('component_username', '')
 		component_password = object.options.get('component_password', '')
+		component_use_maintained = object.options.get('use_maintained', '')
+		component_use_unmaintained = object.options.get('use_unmaintained', '')
 
 		ud.debug(ud.ADMIN, ud.INFO, 'Component settings for %s' % component_name)
 		if component_name:
@@ -363,6 +367,13 @@ class handler(umch.simpleHandler):
 				res.append('repository/online/component/%s/username=%s' % (component_name,component_username))
 			if component_password:
 				res.append('repository/online/component/%s/password=%s' % (component_name,component_password))
+			parts = []
+			if component_use_maintained:
+				parts.append('maintained')
+			if component_use_unmaintained:
+				parts.append('unmaintained')
+			res.append('repository/online/component/%s/parts=%s' % (component_name, ','.join(parts)))
+
 			ud.debug(ud.ADMIN, ud.INFO, 'Set the following component settings: %s' % res)
 			univention.config_registry.handler_set(res)
 			ud.debug(ud.ADMIN, ud.INFO, 'And reinit the updater modul')
@@ -776,6 +787,7 @@ class handler(umch.simpleHandler):
 		prefix = ''
 		username = ''
 		password = ''
+		parts = [ 'maintained' ]
 
 		# build the default values
 		if res.options.has_key('component'):
@@ -791,6 +803,7 @@ class handler(umch.simpleHandler):
 			prefix = res.options['component'].get('prefix', '')
 			username = res.options['component'].get('username', '')
 			password = res.options['component'].get('password', '')
+			parts = re.split('[, ]', res.options['component'].get('parts', 'maintained'))
 
 		if not server:
 			server=self.updater.repository_server
@@ -810,15 +823,20 @@ class handler(umch.simpleHandler):
 		inpt_prefix = umcd.make(self['update/components_settings']['component_prefix'], default = prefix)
 		inpt_username = umcd.make(self['update/components_settings']['component_username'], default = username)
 		inpt_password = umcd.make(self['update/components_settings']['component_password'], default = password)
+		inpt_maintained = umcd.make( self[ 'update/components_settings' ][ 'use_maintained' ], default = 'maintained' in parts )
+		inpt_unmaintained = umcd.make( self[ 'update/components_settings' ][ 'use_unmaintained' ], default = 'unmaintained' in parts )
 
 		list_release.add_row([inpt_activated])
 		list_release.add_row([inpt_name, inpt_description])
 		list_release.add_row([inpt_server, inpt_prefix])
 		list_release.add_row([inpt_username, inpt_password])
+		list_release.add_row([inpt_maintained, inpt_unmaintained])
 
 		req = umcp.Command(args = ['update/components_settings'])
 		cancel = umcd.CancelButton()
-		list_release.add_row([umcd.SetButton(umcd.Action(req, [inpt_activated.id(), inpt_name.id(), inpt_description.id(), inpt_server.id(), inpt_prefix.id(), inpt_username.id(), inpt_password.id()])), cancel])
+		list_release.add_row([umcd.SetButton(umcd.Action(req, [inpt_activated.id(), inpt_name.id(), inpt_description.id(), inpt_server.id(),
+															   inpt_prefix.id(), inpt_username.id(), inpt_password.id(), inpt_maintained.id(),
+															   inpt_unmaintained.id()])), cancel])
 
 
 		res.dialog = [frame_release]
