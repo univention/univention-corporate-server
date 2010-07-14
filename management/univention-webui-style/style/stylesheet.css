@@ -2019,6 +2019,10 @@ td.umc_tree_table_separator {
 	padding: 0px;
 }
 
+.umc_section_title {
+    color: #C00000;
+}
+
 .umc_hidden {
 	visibility: collapse;
 }
