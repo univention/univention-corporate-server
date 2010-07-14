@@ -1,3 +1,10 @@
+univention-updater (6.0.7-1) unstable; urgency=low
+
+  * avoid flickering of headline and headline_msg if update has been
+    finished (Bug #17666)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 14 Jul 2010 14:34:18 +0200
+
 univention-updater (6.0.6-1) unstable; urgency=low
 
   * use updater.log for dist-upgrade in UMC module (Bug #19006)

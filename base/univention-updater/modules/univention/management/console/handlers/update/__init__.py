@@ -180,6 +180,7 @@ class handler(umch.simpleHandler):
 		self.next_securtiy_update = None
 
 		self.ucr_reinit = False
+		self.last_running_status = {}
 
 		self.tail_fn2fd = {}
 
@@ -334,6 +335,9 @@ class handler(umch.simpleHandler):
 			''' % { 'cmd': self.command_dist_upgrade, 'logfile': FN_LIST_DIST_UPGRADE_LOG[0] }
 			(returncode, returnstring) = self.__create_at_job(cmd)
 			ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: apt-get dist-upgrade' )
+
+			self.last_running_status['dist-upgrade'] = False
+
 			self.finished(object.id(), None)
 
 
@@ -404,6 +408,8 @@ class handler(umch.simpleHandler):
 			(returncode, returnstring) = self.__create_at_job('univention-updater net --updateto %s' % self.next_release_update)
 			ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: univention-updater net --updateto %s' % self.next_release_update)
 
+		self.last_running_status['release'] = False
+
 		if returncode != 0:
 			self.finished(object.id(), None, returnstring, success = False)
 		else:
@@ -414,6 +420,8 @@ class handler(umch.simpleHandler):
 
 		(returncode, returnstring) = self.__create_at_job('univention-security-update net' )
 		ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: univention-security-update net' )
+
+		self.last_running_status['security'] = False
 
 		if returncode != 0:
 			self.finished(object.id(), None, returnstring, success = False)
@@ -439,21 +447,25 @@ class handler(umch.simpleHandler):
 		headline_msg = None
 		windowtype = object.options.get('windowtype')
 		if windowtype == 'release':
-			if not self.__is_updater_running():
+			cur_running_status = self.__is_updater_running()
+			if not cur_running_status and self.last_running_status.get(windowtype):
 				headline = _('Update finished')
 				headline_msg = _('The release update has been finished. During update some log messages have been shown in window below. Please check the output for error messages.')
 				self._reinit()
 		elif windowtype == 'security':
-			if not self.__is_security_update_running():
+			cur_running_status = self.__is_security_update_running()
+			if not cur_running_status and self.last_running_status.get(windowtype):
 				headline = _('Update finished')
 				headline_msg = _('The security update has been finished. During update some log messages have been shown in window below. Please check the output for error messages.')
 				self._reinit()
 		elif windowtype == 'dist-upgrade':
-			if not self.__is_dist_upgrade_running():
+			cur_running_status = self.__is_dist_upgrade_running()
+			if not cur_running_status and self.last_running_status.get(windowtype):
 				headline = _('Update finished')
 				headline_msg = _('The update has been finished. During update some log messages have been shown in window below. Please check the output for error messages.')
 				self._reinit()
 		else:
+			cur_running_status = None
 			ud.debug(ud.ADMIN, ud.ERROR, 'update.handler._web_tail_logfile: unknown window type: %s' % (windowtype) )
 
 		fdlist = []
@@ -500,6 +512,8 @@ class handler(umch.simpleHandler):
 		except:
 			content = ''
 			ud.debug(ud.ADMIN, ud.ERROR, 'update.handler._web_tail_logfile: failed to create JSON: %s' % (traceback.format_exc().replace('%','#')) )
+
+		self.last_running_status[windowtype] = cur_running_status
 
 		res.dialog = { 'Content-Type': 'application/json', 'Content': content }
 		self.revamped( object.id(), res, rawresult = True )
