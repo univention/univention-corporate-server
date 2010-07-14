@@ -427,14 +427,17 @@ class handler(umch.simpleHandler):
 			if not self.__is_updater_running():
 				headline = _('Update finished')
 				headline_msg = _('The release update has been finished. During update some log messages have been shown in window below. Please check the output for error messages.')
+				self._reinit()
 		elif windowtype == 'security':
 			if not self.__is_security_update_running():
 				headline = _('Update finished')
 				headline_msg = _('The security update has been finished. During update some log messages have been shown in window below. Please check the output for error messages.')
+				self._reinit()
 		elif windowtype == 'dist-upgrade':
 			if not self.__is_dist_upgrade_running():
 				headline = _('Update finished')
 				headline_msg = _('The update has been finished. During update some log messages have been shown in window below. Please check the output for error messages.')
+				self._reinit()
 		else:
 			ud.debug(ud.ADMIN, ud.ERROR, 'update.handler._web_tail_logfile: unknown window type: %s' % (windowtype) )
 
