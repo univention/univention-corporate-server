@@ -1,0 +1,22 @@
+--- a/lib/Auth/imp.php.orig	2010-02-26 20:20:36.000000000 +0100
++++ b/lib/Auth/imp.php	2010-02-26 20:20:40.000000000 +0100
+@@ -134,7 +134,7 @@ class Auth_imp extends Auth {
+ 
+         /* Open an IMAP stream. */
+         require_once IMP_BASE . '/lib/IMAP.php';
+-        $imp_imap = &IMP_IMAP::singleton($_SESSION['imp']['user'], $credentials['password']);
++        $imp_imap = &IMP_IMAP::singleton($_SESSION['imp']['uniquser'], $credentials['password']);
+         if (!$imp_imap->changeMbox(null, IMP_IMAP_PEEK)) {
+             Horde::logMessage(IMP::loginLogMessage('failed'), __FILE__, __LINE__, PEAR_LOG_ERR);
+ 
+--- a/lib/Session.php	2010-02-26 19:26:11.000000000 +0100
++++ b/lib/Session.php	2010-02-26 19:26:26.000000000 +0100
+@@ -275,7 +275,7 @@ class IMP_Session {
+                     }
+                 } else {
+                     /* Auto-detect namespace parameters from IMAP server. */
+-                    $res = $imapclient->login($_SESSION['imp']['user'], $password);
++                    $res = $imapclient->login($_SESSION['imp']['uniquser'], $password);
+                     if (is_a($res, 'PEAR_Error')) {
+                         $auth_imp->IMPsetAuthErrorMsg($res->getMessage());
+                         unset($_SESSION['imp']);

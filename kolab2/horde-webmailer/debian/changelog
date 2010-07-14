@@ -1,3 +1,10 @@
+horde-webmailer (1.2.5~2.2.3-10) unstable; urgency=low
+
+  * checkin applied but missing imp_HK_UV_fix_login_by_uid patch
+  * revert and remove work-in-progress ZpushAnnotations patch (Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Jul 2010 20:12:36 +0200
+
 horde-webmailer (1.2.5~2.2.3-9) unstable; urgency=low
 
   * add fix for "NO, Login failed" errors causing slow login.php response
