@@ -676,7 +676,11 @@ class handler(umch.simpleHandler):
 			req.set_flag('web:startup_format', _('Check for package updates'))
 			btn_update_check = umcd.Button(_('Check for package updates'), 'actions/refresh', actions = [umcd.Action(req)])
 
-			txt = umcd.Text(_('%d component(s) have been specified and may contain new packages.') % len(self.updater.get_all_components()))
+			cnt = len(self.updater.get_all_components())
+			if cnt:
+				txt = umcd.Text(_('%d component(s) have been specified and may contain new packages.') % cnt)
+			else:
+				txt = umcd.Text(_('Currently there is no component repository specified.'))
 			txt['colspan'] = '2'
 			list_update_packages.add_row([txt])
 			list_update_packages.add_row([btn_update_check])
@@ -722,7 +726,7 @@ class handler(umch.simpleHandler):
 
 		if self.__is_updater_running() or self.__is_security_update_running() or self.__is_dist_upgrade_running():
 			lst = umcd.List()
-			lst.add_row([ umcd.Text('The settings dialog has been disabled since an update is currently running. It will be reenabled if update process has finished.') ])
+			lst.add_row( [ umcd.InfoBox( _( 'The settings dialog has been disabled since an update is currently running. It will be reenabled if update process has finished.' ), columns = 2 ) ] )
 			res.dialog = [ umcd.Frame( [lst], _('Settings') ) ]
 		else:
 			# RELEASE SETTINGS
@@ -835,9 +839,9 @@ class handler(umch.simpleHandler):
 
 		req = umcp.Command(args = ['update/components_settings'])
 		cancel = umcd.CancelButton()
-		list_release.add_row([umcd.SetButton(umcd.Action(req, [inpt_activated.id(), inpt_name.id(), inpt_description.id(), inpt_server.id(),
-															   inpt_prefix.id(), inpt_username.id(), inpt_password.id(), inpt_maintained.id(),
-															   inpt_unmaintained.id()])), cancel])
+		list_release.add_row([cancel, umcd.SetButton(umcd.Action(req, [inpt_activated.id(), inpt_name.id(), inpt_description.id(), inpt_server.id(),
+																	   inpt_prefix.id(), inpt_username.id(), inpt_password.id(), inpt_maintained.id(),
+																	   inpt_unmaintained.id()]))])
 
 
 		res.dialog = [frame_release]
@@ -859,7 +863,7 @@ class handler(umch.simpleHandler):
 				req.set_flag('web:startup_format', _('Confirm the updater warning'))
 				btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req)])
 
-				result.add_row([ btn_continue, umcd.CancelButton()])
+				result.add_row([ umcd.CancelButton(), btn_continue])
 			else:
 				result.add_row([ umcd.HTML('<h2>' + _('No updates available') + '</h2>')])
 				result.add_row([ umcd.CancelButton()])
@@ -876,7 +880,7 @@ class handler(umch.simpleHandler):
 			tail_action = umcd.Action(self.__get_logfile_request( { 'windowtype': 'dist-upgrade' } ))
 			btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req), tail_action])
 
-			result.add_row([ btn_continue, umcd.CancelButton()])
+			result.add_row([ umcd.CancelButton(), btn_continue])
 		elif object.options['status'] == 'execute':
 			pass
 
@@ -902,7 +906,7 @@ class handler(umch.simpleHandler):
 		req = umcp.Command(args=[command], opts={ 'updateto': updateto } )
 		btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req), umcd.Action(self.__get_logfile_request( { 'windowtype': res.options['type'] } ))])
 
-		result.add_row([ btn_continue, umcd.CancelButton()])
+		result.add_row([ umcd.CancelButton(), btn_continue])
 		res.dialog = [ result]
 		self.revamped(object.id(), res)
 
