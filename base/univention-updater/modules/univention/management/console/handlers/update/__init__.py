@@ -745,32 +745,36 @@ class handler(umch.simpleHandler):
 			list_settings_component_txt = umcd.List()
 			list_settings_component_txt.add_row([ _('In addition to the standard repositories, additional software components can also be integrated by adding component repositories.') ])
 
-			list_settings_component = umcd.List()
-			list_settings_component.set_header( [ _('Component Name'), _( 'Status' ), '' ] )
-			for component_name in self.updater.get_all_components():
-				component = self.updater.get_component(component_name)
-				description = component.get('description', component_name)
-				req = umcp.Command(args=['update/components_settings'], opts = {'component': component})
+			local_repo = self.updater.configRegistry.get( 'local/repository', 'no' ).lower() in ( 'yes', 'true' )
+			if local_repo:
+				list_settings_component.add_row( [ umcd.InfoBox( _( 'The component management has been deactivated as this server has a local repository.' ), columns = 2 ) ] )
+			else:
+				list_settings_component = umcd.List()
+				list_settings_component.set_header( [ _('Component Name'), _( 'Status' ), '' ] )
+				for component_name in self.updater.get_all_components():
+					component = self.updater.get_component(component_name)
+					description = component.get('description', component_name)
+					req = umcp.Command(args=['update/components_settings'], opts = {'component': component})
+					req.set_flag('web:startup', True)
+					req.set_flag('web:startup_cache', False)
+					req.set_flag('web:startup_dialog', True)
+					req.set_flag('web:startup_referrer', True)
+					req.set_flag('web:startup_format', _('Modify component %s' )  % description )
+					txt = umcd.Text(_('This component is disabled.'))
+					if component.get('activated', '').lower() in ['true', 'yes', '1', 'enabled']:
+						txt = umcd.Text(_('This component is enabled.'))
+					btn = umcd.Button(_('Configure'), 'update/gear', actions=[umcd.Action(req)])
+					list_settings_component.add_row([ umcd.Text(description), txt, btn ])
+
+				req = umcp.Command(args=['update/components_settings'])
 				req.set_flag('web:startup', True)
 				req.set_flag('web:startup_cache', False)
 				req.set_flag('web:startup_dialog', True)
 				req.set_flag('web:startup_referrer', True)
-				req.set_flag('web:startup_format', _('Modify component %s' )  % description )
-				txt = umcd.Text(_('This component is disabled.'))
-				if component.get('activated', '').lower() in ['true', 'yes', '1', 'enabled']:
-					txt = umcd.Text(_('This component is enabled.'))
-				btn = umcd.Button(_('Configure'), 'update/gear', actions=[umcd.Action(req)])
-				list_settings_component.add_row([ umcd.Text(description), txt, btn ])
-
-			req = umcp.Command(args=['update/components_settings'])
-			req.set_flag('web:startup', True)
-			req.set_flag('web:startup_cache', False)
-			req.set_flag('web:startup_dialog', True)
-			req.set_flag('web:startup_referrer', True)
-			req.set_flag('web:startup_format', _('Add a new component'))
-			btn_add_component = umcd.Button(_('Add a new component'), 'actions/plus', actions = [umcd.Action(req)])
-			btn_add_component['colspan'] = '2'
-			list_settings_component.add_row([ btn_add_component ])
+				req.set_flag('web:startup_format', _('Add a new component'))
+				btn_add_component = umcd.Button(_('Add a new component'), 'actions/plus', actions = [umcd.Action(req)])
+				btn_add_component['colspan'] = '2'
+				list_settings_component.add_row([ btn_add_component ])
 
 			res.dialog = [ umcd.Frame([list_settings_release], _('Repository settings')), umcd.Frame([list_settings_component_txt, list_settings_component], _('Component settings')) ]
 		self.revamped(object.id(), res)
