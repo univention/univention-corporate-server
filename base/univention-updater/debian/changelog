@@ -1,3 +1,13 @@
+univention-updater (6.0.8-1) unstable; urgency=low
+
+  * enhanced univention-updater and univention-security-update: (Bug #14346)
+    write status to /var/lib/univention-updater/univention-*.status 
+  * UMC online update module now checks /var/lib/univention-updater/*.status
+    to display proper message after update stopped (successfully/faulty)
+  * added new translations (Bug #14346, #18237, 17666)
+  
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 14 Jul 2010 18:21:56 +0200
+
 univention-updater (6.0.7-1) unstable; urgency=low
 
   * avoid flickering of headline and headline_msg if update has been
