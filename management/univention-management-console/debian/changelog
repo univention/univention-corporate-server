@@ -1,3 +1,9 @@
+univention-management-console (3.0.38-1) unstable; urgency=low
+
+  * umcd.RefreshFrame(): scroll down only if content changed (Bug #17666)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 14 Jul 2010 11:37:31 +0200
+
 univention-management-console (3.0.37-1) unstable; urgency=low
 
   * changed API of umcd.RefreshFrame() (Bug #17666)

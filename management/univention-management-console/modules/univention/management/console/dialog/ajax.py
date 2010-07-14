@@ -105,11 +105,15 @@ umc.ajax.refreshframe.updateData = function(refreshurl, wndid, dataid, maxlen) {
 						newdata = newdata.substr(newdata.length - maxlen, maxlen);
 					}
 					dojo.byId( dataid ).innerHTML = newdata;
-					dojo.byId( wndid ).scrollTop = dojo.byId( wndid ).scrollHeight;
+					if (data['contentappend'].length > 0) {
+						dojo.byId( wndid ).scrollTop = dojo.byId( wndid ).scrollHeight;
+					}
 				}
 				if (!(data['content'] === undefined)) {
 					dojo.byId( dataid ).innerHTML = data['content'];
-					dojo.byId( wndid ).scrollTop = dojo.byId( wndid ).scrollHeight;
+					if (data['contentappend'].length > 0) {
+						dojo.byId( wndid ).scrollTop = dojo.byId( wndid ).scrollHeight;
+					}
 				}
 				for (var curdataid in data) {
 				    if ((curdataid != 'contentappend') && (curdataid != 'content')) {
