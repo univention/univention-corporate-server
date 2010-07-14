@@ -1,3 +1,9 @@
+univention-updater (6.0.6-1) unstable; urgency=low
+
+  * use updater.log for dist-upgrade in UMC module (Bug #19006)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 14 Jul 2010 11:43:03 +0200
+
 univention-updater (6.0.5-1) unstable; urgency=low
 
   * redesigned layout (Bug #18237)

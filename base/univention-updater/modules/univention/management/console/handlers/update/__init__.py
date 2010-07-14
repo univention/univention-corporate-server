@@ -61,7 +61,7 @@ UCR_ALLOWED_CHARACTERS = '^[^#:@]+$'
 FN_LIST_INSTALL_COMPONENT_LOG = [ '/var/log/univention/actualise.log' ]
 FN_LIST_SECURITY_UPDATE_LOG = [ '/var/log/univention/security-updates.log' ]
 FN_LIST_RELEASE_UPDATE_LOG = [ '/var/log/univention/updater.log' ]
-FN_LIST_DIST_UPGRADE_LOG = [ '/var/log/univention/upgrade.log' ]
+FN_LIST_DIST_UPGRADE_LOG = [ '/var/log/univention/updater.log' ]
 
 command_description = {
 	'update/overview': umch.command(
@@ -317,17 +317,18 @@ class handler(umch.simpleHandler):
 			self.finished(object.id(), None)
 
 		elif status == 'execute':
-			cmd = '''echo "Starting dist-upgrade at $(date)" >> /var/log/univention/upgrade.log;
+			cmd = '''echo "Starting dist-upgrade at $(date)" >> %(logfile)s;
 			DEBIAN_FRONTEND=noninteractive
-			%s >> /var/log/univention/upgrade.log 2>&1 ;
+			%(cmd)s >> %(logfile)s 2>&1 ;
 			if [ $? = 0 ] ; then
-				echo  >> /var/log/univention/upgrade.log ;
-				echo "The update has been finished successfully."  >> /var/log/univention/upgrade.log ;
+				echo >> %(logfile)s ;
+				echo "The update has been finished successfully at $(date)."  >> %(logfile)s ;
 		    else
-				echo  >> /var/log/univention/upgrade.log ;
-				echo "An error occured during update. Please check the logfiles."  >> /var/log/univention/upgrade.log ;
+				echo >> %(logfile)s ;
+				echo "An error occured during update. Please check the logfiles."  >> %(logfile)s ;
+				date >> %(logfile)s ;
 		    fi
-			''' % self.command_dist_upgrade
+			''' % { 'cmd': self.command_dist_upgrade, 'logfile': FN_LIST_DIST_UPGRADE_LOG }
 			(returncode, returnstring) = self.__create_at_job(cmd)
 			ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: apt-get dist-upgrade' )
 			self.finished(object.id(), None)
