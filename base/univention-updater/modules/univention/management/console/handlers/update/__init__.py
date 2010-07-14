@@ -45,8 +45,8 @@ import univention.config_registry
 from univention.updater import UniventionUpdater
 from json import JsonReader, JsonWriter
 
-import os, copy
-import subprocess, string, time
+import os
+import subprocess
 import socket, re
 import traceback
 
@@ -58,7 +58,9 @@ long_description = _('Manage system updates')
 categories = ['all', 'system']
 
 UCR_ALLOWED_CHARACTERS = '^[^#:@]+$'
-FN_LIST_INSTALL_COMPONENT_LOG = [ '/var/log/univention/actualise.log' ]
+
+# display specified logfiles when running update -
+# FN_LIST_DIST_UPGRADE_LOG: the first filename is also used actively as logfile
 FN_LIST_SECURITY_UPDATE_LOG = [ '/var/log/univention/security-updates.log' ]
 FN_LIST_RELEASE_UPDATE_LOG = [ '/var/log/univention/updater.log' ]
 FN_LIST_DIST_UPGRADE_LOG = [ '/var/log/univention/updater.log' ]
@@ -259,7 +261,6 @@ class handler(umch.simpleHandler):
 		try:
 			self.updater.ucr_reinit()
 		except (socket.error, socket.gaierror), e:
-			import traceback
 			ud.debug(ud.ADMIN, ud.ERROR, 'updater: socket.gaierror: %s' % traceback.format_exc().replace('%','§'))
 		except Exception, e:
 			ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % (traceback.format_exc().replace('%','§')))
@@ -559,10 +560,6 @@ class handler(umch.simpleHandler):
 			cmd = umcp.Command( args = [ 'reboot/do' ], opts = { 'action' : 'reboot', 'message' : _( 'Rebooting the system after an update' ) } )
 			list_info.add_row( [ '', umcd.Button( _( 'Reboot system' ), 'actions/ok', actions = [ umcd.Action( cmd ) ] ) ] )
 		#### UCS Releases
-		list_config = umcd.List()
-		list_release = umcd.List()
-
-		local_repo = self.updater.configRegistry.get( 'local/repository', 'no' ).lower() in ( 'yes', 'true' )
 
 		# ==== UCS RELEASE UPDATES =====
 		list_update_release = umcd.List()
@@ -971,7 +968,7 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 			if line.startswith('\r'):
 				continue
 			result.append(line)
-		return string.join(result, '\n').replace('\n', '<br />')
+		return '<br />'.join(result).replace('\n', '<br />')
 
 
 	def __get_update_warning(self):
