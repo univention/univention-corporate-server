@@ -65,8 +65,8 @@ FN_LIST_DIST_UPGRADE_LOG = [ '/var/log/univention/updater.log' ]
 
 command_description = {
 	'update/overview': umch.command(
-		short_description = _('Overview'),
-		long_description = _('Overview'),
+		short_description = _('Updates'),
+		long_description = _('Updates'),
 		method = 'overview',
 		values = { },
 		startup = True,
@@ -670,9 +670,9 @@ class handler(umch.simpleHandler):
 			list_update_packages.add_row([txt])
 			list_update_packages.add_row([btn_update_check])
 
-		frame_update_release = umcd.Frame([list_update_release], _('Release Update'))
-		frame_update_security = umcd.Frame([list_update_security], _('Security Update'))
-		frame_update_packages = umcd.Frame([list_update_packages], _('Package Update'))
+		frame_update_release = umcd.Frame([list_update_release], _('Release Updates'))
+		frame_update_security = umcd.Frame([list_update_security], _('Security Updates'))
+		frame_update_packages = umcd.Frame([list_update_packages], _('Package Updates'))
 
 		res.dialog = [frame_update_release, frame_update_security, frame_update_packages]
 		if frame_info:
