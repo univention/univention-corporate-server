@@ -331,7 +331,7 @@ class handler(umch.simpleHandler):
 				echo "An error occured during update. Please check the logfiles."  >> %(logfile)s ;
 				date >> %(logfile)s ;
 		    fi
-			''' % { 'cmd': self.command_dist_upgrade, 'logfile': FN_LIST_DIST_UPGRADE_LOG }
+			''' % { 'cmd': self.command_dist_upgrade, 'logfile': FN_LIST_DIST_UPGRADE_LOG[0] }
 			(returncode, returnstring) = self.__create_at_job(cmd)
 			ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: apt-get dist-upgrade' )
 			self.finished(object.id(), None)
