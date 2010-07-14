@@ -684,9 +684,9 @@ class handler(umch.simpleHandler):
 			list_update_packages.add_row([txt])
 			list_update_packages.add_row([btn_update_check])
 
-		frame_update_release = umcd.Frame([list_update_release], _('Release Updates'))
-		frame_update_security = umcd.Frame([list_update_security], _('Security Updates'))
-		frame_update_packages = umcd.Frame([list_update_packages], _('Package Updates'))
+		frame_update_release = umcd.Frame([list_update_release], _('Release updates'))
+		frame_update_security = umcd.Frame([list_update_security], _('Security updates'))
+		frame_update_packages = umcd.Frame([list_update_packages], _('Package updates'))
 
 		res.dialog = [frame_update_release, frame_update_security, frame_update_packages]
 		if frame_info:
@@ -714,7 +714,7 @@ class handler(umch.simpleHandler):
 		req = umcp.Command(args = ['update/release_settings'])
 		cancel = umcd.CancelButton()
 		list_release.add_row( [ '', '' ] )
-		list_release.add_row( [ umcd.SetButton( umcd.Action( req, [ inpt_server.id(), inpt_prefix.id(), inpt_hotfixes.id(), inpt_maintained.id(), inpt_unmaintained.id() ] ) ), cancel ] )
+		list_release.add_row( [ cancel, umcd.SetButton( umcd.Action( req, [ inpt_server.id(), inpt_prefix.id(), inpt_hotfixes.id(), inpt_maintained.id(), inpt_unmaintained.id() ] ) ) ] )
 
 		res.dialog = [frame_release]
 
@@ -772,7 +772,7 @@ class handler(umch.simpleHandler):
 			btn_add_component['colspan'] = '2'
 			list_settings_component.add_row([ btn_add_component ])
 
-			res.dialog = [ umcd.Frame([list_settings_release], _('Repository Settings')), umcd.Frame([list_settings_component_txt, list_settings_component], _('Component Settings')) ]
+			res.dialog = [ umcd.Frame([list_settings_release], _('Repository settings')), umcd.Frame([list_settings_component_txt, list_settings_component], _('Component settings')) ]
 		self.revamped(object.id(), res)
 
 
