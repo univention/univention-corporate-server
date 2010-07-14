@@ -65,6 +65,10 @@ FN_LIST_SECURITY_UPDATE_LOG = [ '/var/log/univention/security-updates.log' ]
 FN_LIST_RELEASE_UPDATE_LOG = [ '/var/log/univention/updater.log' ]
 FN_LIST_DIST_UPGRADE_LOG = [ '/var/log/univention/updater.log' ]
 
+FN_STATUS_UPDATER = '/var/lib/univention-updater/univention-updater.status'
+FN_STATUS_SECURITY_UPDATE = '/var/lib/univention-updater/univention-security-update.status'
+FN_STATUS_DIST_UPGRADE = '/var/lib/univention-updater/umc-dist-upgrade.status'
+
 command_description = {
 	'update/overview': umch.command(
 		short_description = _('Updates'),
@@ -111,7 +115,6 @@ command_description = {
 			'component_prefix': umc.String(_('Prefix'), required = False),
 			'component_name': umc.String(_('Name')),
 			'component_description': umc.String(_('Description'), required = False),
-			'component_unmaintained': umc.String(_('Unmaintained'), required = False),
 			'component_username': umc.String(_('Username'), required = False),
 			'component_password': umc.String(_('Password'), required = False, regex = UCR_ALLOWED_CHARACTERS),
 			'use_maintained': umc.Boolean( _( 'Use maintained repositories' ), required = False ),
@@ -322,17 +325,20 @@ class handler(umch.simpleHandler):
 
 		elif status == 'execute':
 			cmd = '''echo "Starting dist-upgrade at $(date)" >> %(logfile)s;
+			echo "status=RUNNING" > %(statusfile)s ;
 			DEBIAN_FRONTEND=noninteractive
 			%(cmd)s >> %(logfile)s 2>&1 ;
 			if [ $? = 0 ] ; then
+				echo "status=DONE" > %(statusfile)s ;
 				echo >> %(logfile)s ;
 				echo "The update has been finished successfully at $(date)."  >> %(logfile)s ;
 		    else
+			    echo "status=FAILED" > %(statusfile)s ;
 				echo >> %(logfile)s ;
 				echo "An error occured during update. Please check the logfiles."  >> %(logfile)s ;
 				date >> %(logfile)s ;
 		    fi
-			''' % { 'cmd': self.command_dist_upgrade, 'logfile': FN_LIST_DIST_UPGRADE_LOG[0] }
+			''' % { 'cmd': self.command_dist_upgrade, 'logfile': FN_LIST_DIST_UPGRADE_LOG[0], 'statusfile': FN_STATUS_DIST_UPGRADE }
 			(returncode, returnstring) = self.__create_at_job(cmd)
 			ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: apt-get dist-upgrade' )
 
@@ -349,7 +355,6 @@ class handler(umch.simpleHandler):
 		component_prefix = object.options.get('component_prefix', '')
 		component_name = object.options.get('component_name', '')
 		component_description = object.options.get('component_description', '')
-		component_unmaintained = object.options.get('component_unmaintained', '')
 		component_username = object.options.get('component_username', '')
 		component_password = object.options.get('component_password', '')
 		component_use_maintained = object.options.get('use_maintained', '')
@@ -440,30 +445,130 @@ class handler(umch.simpleHandler):
 	# The revamp functions
 	#######################
 
+	def _get_status_file(self, fn):
+		result = {}
+		try:
+			lines = open(fn,'r').readlines()
+			for line in lines:
+				if '=' in line:
+					key, val = line.strip().split('=',1)
+					result[key] = val
+		except:
+			pass
+
+		if result.get('current_version') and result.get('next_version'):
+			result['TXT_VERSION_FROM_TO'] = _('The update stopped during update from version %(from)s to %(to)s.') % { 'from': result['current_version'],
+																														'to': result['next_version'] }
+
+		return result
+
 	def _web_tail_logfile(self, object, res):
 		_d = ud.function('update.handler._web_tail_logfile')
 
+		windowtype = object.options.get('windowtype')
 		headline = None
 		headline_msg = None
-		windowtype = object.options.get('windowtype')
+
+		# test if update has finished and check status of update
 		if windowtype == 'release':
 			cur_running_status = self.__is_updater_running()
 			if not cur_running_status and self.last_running_status.get(windowtype):
-				headline = _('Update finished')
-				headline_msg = _('The release update has been finished. During update some log messages have been shown in window below. Please check the output for error messages.')
 				self._reinit()
+				# read status
+				status = self._get_status_file(FN_STATUS_UPDATER)
+				if not status or not 'status' in status:
+					# updater does not support status-file or status file is defect
+					headline = _('Update finished')
+					headline_msg = _('The release update has been finished. During update some log messages have been shown in window below. Please check the output for error messages.')
+				else:
+					# status-file has been found
+					if status.get('status') == 'DONE':
+						# update was successful
+						headline = _('Update has been finished successfully')
+						headline_msg = _('The release update has been finished. During update some log messages have been shown in window below.')
+
+					elif status.get('status') == 'FAILED':
+						# update failed
+						headline = _('Update failed')
+						logfile = '/var/log/univention/updater.log'
+
+						if status.get('errorsource') in ['PREPARATION', 'SETTINGS']:
+							headline_msg = _('An error occured during update preparation. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						elif status.get('errorsource') in ['PREUP']:
+							headline_msg = _('An error occured during pre-update checks in preup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						elif status.get('errorsource') in ['UPDATE']:
+							headline_msg = _('An error occured during update. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						elif status.get('errorsource') in ['POSTUP']:
+							headline_msg = _('An error occured in post-update script postup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						else:
+							headline_msg = _('An error occured. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+
+						txt_version_from_to = status.get('TXT_VERSION_FROM_TO','')
+						if txt_version_from_to:
+							headline_msg = '%s<br />%s' % (headline_msg, txt_version_from_to)
+
 		elif windowtype == 'security':
 			cur_running_status = self.__is_security_update_running()
 			if not cur_running_status and self.last_running_status.get(windowtype):
-				headline = _('Update finished')
-				headline_msg = _('The security update has been finished. During update some log messages have been shown in window below. Please check the output for error messages.')
 				self._reinit()
+
+				# read status
+				status = self._get_status_file(FN_STATUS_SECURITY_UPDATE)
+				if not status or not 'status' in status:
+					# updater does not support status-file or status file is defect
+					headline = _('Update finished')
+					headline_msg = _('The security update has been finished. During update some log messages have been shown in window below. Please check the output for error messages.')
+				else:
+					# status-file has been found
+					if status.get('status') == 'DONE':
+						# update was successful
+						headline = _('Update has been finished successfully')
+						headline_msg = _('The security update has been finished. During update some log messages have been shown in window below.')
+
+					elif status.get('status') == 'FAILED':
+						# update failed
+						headline = _('Update failed')
+						logfile = '/var/log/univention/security-updates.log'
+
+						if status.get('errorsource') in ['PREPARATION', 'SETTINGS']:
+							headline_msg = _('An error occured during update preparation. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						elif status.get('errorsource') in ['PREUP']:
+							headline_msg = _('An error occured during pre-update checks in preup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						elif status.get('errorsource') in ['UPDATE']:
+							headline_msg = _('An error occured during update. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						elif status.get('errorsource') in ['POSTUP']:
+							headline_msg = _('An error occured in post-update script postup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						else:
+							headline_msg = _('An error occured. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+
+						txt_version_from_to = status.get('TXT_VERSION_FROM_TO','')
+						if txt_version_from_to:
+							headline_msg = '%s<br />%s' % (headline_msg, txt_version_from_to)
+
 		elif windowtype == 'dist-upgrade':
 			cur_running_status = self.__is_dist_upgrade_running()
 			if not cur_running_status and self.last_running_status.get(windowtype):
-				headline = _('Update finished')
-				headline_msg = _('The update has been finished. During update some log messages have been shown in window below. Please check the output for error messages.')
 				self._reinit()
+
+				# read status
+				status = self._get_status_file(FN_STATUS_SECURITY_UPDATE)
+				if not status or not 'status' in status:
+					# updater does not support status-file or status file is defect
+					headline = _('Update finished')
+					headline_msg = _('The update has been finished. During update some log messages have been shown in window below. Please check the output for error messages.')
+				else:
+					# status-file has been found
+					if status.get('status') == 'DONE':
+						# update was successful
+						headline = _('Update has been finished successfully')
+						headline_msg = _('The update has been finished. During update some log messages have been shown in window below.')
+
+					elif status.get('status') == 'FAILED':
+						# update failed
+						headline = _('Update failed')
+						logfile = '/var/log/univention/updater.log'
+						headline_msg = _('An error occured during package update. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+
 		else:
 			cur_running_status = None
 			ud.debug(ud.ADMIN, ud.ERROR, 'update.handler._web_tail_logfile: unknown window type: %s' % (windowtype) )
