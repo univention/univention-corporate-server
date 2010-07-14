@@ -389,7 +389,10 @@ class handler(umch.simpleHandler):
 	def install_release_updates(self, object):
 		_d = ud.function('update.handler.install_release_updates')
 
-		updateto = object.options.get('updateto',[None])[0]
+		updateto = object.options.get('updateto',[None])
+		if type(updateto) == list:
+			updateto = updateto[0]
+
 		ud.debug(ud.ADMIN, ud.PROCESS, 'install_release_updates: updateto=%s' % updateto )
 		if updateto:
 			(returncode, returnstring) = self.__create_at_job('univention-updater net --updateto %s' % updateto)
