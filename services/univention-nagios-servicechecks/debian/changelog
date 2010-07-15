@@ -1,3 +1,9 @@
+univention-nagios-servicechecks (1.0.5-1) unstable; urgency=low
+
+  * added missing UCR headers (Bug #17957)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 15 Jul 2010 10:56:02 +0200
+
 univention-nagios-servicechecks (1.0.4-1) unstable; urgency=low
 
   * register service objects even if nagios/client/autoregister=no (Bug #17957)
