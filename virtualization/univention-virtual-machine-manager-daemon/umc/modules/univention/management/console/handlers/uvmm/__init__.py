@@ -537,7 +537,7 @@ class handler( umch.simpleHandler ):
 
 		content2 = umcd.List()
 		content2.add_row( [ virt_tech ] )
-		content2.add_row( [ kernel, umcd.Cell( bootdevs, attributes = { 'rowspan' : '3' } ) ] )
+		content2.add_row( [ kernel, umcd.Cell( bootdevs, attributes = { 'rowspan' : '3', 'valign' : 'top' } ) ] )
 		content2.add_row( [ ram_disk ] )
 		content2.add_row( [ root_part ] )
 
@@ -549,28 +549,20 @@ class handler( umch.simpleHandler ):
 
 		content2.add_row( [ umcd.Text( '' ) ] )
 
-		# content3 = umcd.List()
-		# content3.add_row( [ drives ] )
-
-		# if not domain_info:
-		# 	content.add_row( [ umcd.Cell( umcd.Section( _( 'Extended Settings' ), content2, hideable = False, hidden = False, name = 'subsection.newdomain' ), attributes = { 'colspan' : '2' } ), ] )
-		# else:
-		# 	content.add_row( [ umcd.Cell( umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = True, name = 'subsection.%s' % domain_info.name ), attributes = { 'colspan' : '2' } ), ] )
-
 		ids = ( name.id(), os_widget.id(), virt_tech.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), vnc.id(), vnc_global.id(), kblayout.id(), bootdevs.id() )
 		cfg_cmd = umcp.SimpleCommand( 'uvmm/domain/configure', options = object.options )
 		overview_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = object.options )
 
 		sections = umcd.List()
 		if not domain_info:
-			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = False, hidden = False, name = 'settings.newdomain' ) ] )
 			sections.add_row( [ umcd.Section( _( 'Devices' ), disk_list, hideable = False, hidden = False, name = 'devices.newdomain' ) ] )
+			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = False, hidden = False, name = 'settings.newdomain' ) ] )
 			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = False, hidden = False, name = 'extsettings.newdomain' ) ] )
 		else:
-			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = True, hidden = False, name = 'settings.%s' % domain_info.name ) ] )
 			sections.add_row( [ umcd.Section( _( 'Devices' ), disk_list, hideable = True, hidden = False, name = 'devices.%s' % domain_info.name ) ] )
+			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = True, hidden = False, name = 'settings.%s' % domain_info.name ) ] )
 			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = False, name = 'extsettings.%s' % domain_info.name ) ] )
-		sections.add_row( [ umcd.Cell( umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ] ), attributes = { 'align' : 'right', 'defaultbutton' : '1' } ) ] )
+		sections.add_row( [ umcd.Cell( umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ], default = True ), attributes = { 'align' : 'right' } ) ] )
 
 		return sections
 
@@ -592,11 +584,6 @@ class handler( umch.simpleHandler ):
 		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
 
 		blind_table = umcd.List()
-
-		# reload_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = { 'group' : object.options[ 'group' ], 'node' : object.options[ 'node' ], 'domain' : object.options[ 'domain' ] } )
-		# reload_btn = umcd.LinkButton( _( 'Refresh' ), 'actions/refresh', actions = [ umcd.Action( reload_cmd ) ] )
-		# reload_btn.set_size( umct.SIZE_SMALL )
-		# blind_table.add_row( [ umcd.Cell( reload_btn, attributes = { 'align' : 'right' } ), ] )
 
 		infos = umcd.List()
 		infos.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Status' ) ), handler.STATES[ domain_info.state ] ] )
@@ -622,7 +609,6 @@ class handler( umch.simpleHandler ):
 		blind_table.add_row( [ content ] )
 
 		self.set_content( res, blind_table )
-		# res.dialog[ 0 ].set_dialog( blind_table )
 		self.finished(object.id(), res)
 
 	def uvmm_domain_migrate( self, object ):
@@ -652,7 +638,7 @@ class handler( umch.simpleHandler ):
 			opts2[ 'migrate' ] = 'failure'
 			cmd_failure = umcd.Action( umcp.SimpleCommand( 'uvmm/domain/overview', options = opts2 ), status_range = umcd.Action.FAILURE )
 
-			content.add_row( [ '', umcd.Button( _( 'Migrate' ), actions = [ umcd.Action( umcp.SimpleCommand( 'uvmm/domain/migrate', options = object.options ), [ dest.id() ] ), cmd_success, cmd_failure ] ) ] )
+			content.add_row( [ '', umcd.Button( _( 'Migrate' ), actions = [ umcd.Action( umcp.SimpleCommand( 'uvmm/domain/migrate', options = object.options ), [ dest.id() ] ), cmd_success, cmd_failure ], default = True ) ] )
 			res.dialog[ 0 ].set_dialog( content )
 			resp = None
 
@@ -696,18 +682,6 @@ class handler( umch.simpleHandler ):
 		# disks
 		if domain_info:
 			domain.disks = domain_info.disks
-		# for drive in object.options[ 'drives' ]:
-		# 	dev, uri, target = drive.split( ',' )
-		# 	disk = uuv_node.Disk()
-		# 	disk.device = uuv_node.Disk.map_device( name = dev )
-		# 	disk.type = uuv_node.Disk.TYPE_FILE
-		# 	if uri.find( ':' ) != -1:
-		# 		disk.source = uri.split( ':' )[ 1 ]
-		# 	else:
-		# 		disk.source = uri
-		# 	disk.target_dev = target
-		# 	domain.disks.append( disk )
-		# 	ud.debug( ud.ADMIN, ud.ERROR, 'drive: %s' % str( disk ) )
 
 		# graphics
 		ud.debug( ud.ADMIN, ud.INFO, 'Configure Domain: graphics: %s' % object.options[ 'vnc' ] )
@@ -810,7 +784,7 @@ class handler( umch.simpleHandler ):
 			fail_overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = opts )
 			success_overview_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = opts )
 			cancel = umcd.Button( _( 'Cancel' ), actions = [ umcd.Action( back ) ] )
-			button = umcd.Button( _( 'Remove' ), actions = [ umcd.Action( req, boxes ), umcd.Action( success_overview_cmd, status_range = umcd.Action.SUCCESS ), umcd.Action( fail_overview_cmd, status_range = umcd.Action.FAILURE ) ] )
+			button = umcd.Button( _( 'Remove' ), actions = [ umcd.Action( req, boxes ), umcd.Action( success_overview_cmd, status_range = umcd.Action.SUCCESS ), umcd.Action( fail_overview_cmd, status_range = umcd.Action.FAILURE ) ], default = True )
 			lst.add_row( [ '' ] )
 			lst.add_row( [ umcd.Cell( cancel, attributes = { 'align' : 'right', 'colspan' : '2' } ), umcd.Cell( button, attributes = { 'align' : 'right' } ) ] )
 

@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (0.9.55-1) unstable; urgency=low
+
+  * fixed button styles; Bug #18721
+  * removed unused code
+  * reordered sections of domain settings
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 15 Jul 2010 11:32:47 +0200
+
 univention-virtual-machine-manager-daemon (0.9.54-1) unstable; urgency=low
 
   * Implement destroying paused domains (Bug #18713)
