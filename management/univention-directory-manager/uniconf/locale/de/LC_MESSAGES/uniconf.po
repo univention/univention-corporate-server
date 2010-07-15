@@ -1681,8 +1681,8 @@ msgid "Link to Online Update Module of Univention Management Console"
 msgstr "Link zum Online-Update-Modul von Univention Management Console"
 
 #: unidialog.py:437
-msgid "&nbsp;of Univention Management Console to install updates."
-msgstr "&nbsp; in Univention Management Console, um das Update einzuspielen."
+msgid " of Univention Management Console to install updates."
+msgstr " in Univention Management Console, um das Update einzuspielen."
 
 # msgid "Your search did not match any objects."
 # msgstr "Es wurden keine Ergebnisse für Ihre Suchanfrage gefunden."

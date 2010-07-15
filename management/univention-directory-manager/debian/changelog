@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.9-1) unstable; urgency=low
+
+  * removed superfluous &nbsp; (Bug #14593)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 15 Jul 2010 10:16:02 +0200
+
 univention-directory-manager (8.0.8-1) unstable; urgency=low
 
   * Fix non-editable multi-valued fields (Bug #18833)

@@ -436,7 +436,7 @@ class unidialog(unimodule.unimodule):
 																]})
 								self.subobjs.append(updatemsg)
 
-							updatemsg = htmltext ('', {}, {'htmltext': ["""%s</p></div>""" % _('&nbsp;of Univention Management Console to install updates.')]})
+							updatemsg = htmltext ('', {}, {'htmltext': ["""%s</p></div>""" % _(' of Univention Management Console to install updates.')]})
 							self.subobjs.append(updatemsg)
 
 
