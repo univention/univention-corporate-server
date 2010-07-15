@@ -142,6 +142,8 @@ command_description = {
 				   'cpus' : cpus_select,
 				   'vnc' : umc.Boolean( _( 'VNC remote access' ) ),
 				   'vnc_global' : umc.Boolean( _( 'Available globally' ) ),
+				   'vnc_passwd' : umc.Password( _( 'Password' ), required = False ),
+				   'vnc_passwd_remove' : umc.Boolean( _( 'Remove password' ), required = False ),
 				   'kblayout' : KBLayoutSelect( _( 'Keyboard layout' ) ),
 				   'arch' : arch_select,
 				   'type' : type_select,
@@ -529,6 +531,8 @@ class handler( umch.simpleHandler ):
 		vnc = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc' ], default = vnc_bool, attributes = { 'width' : '250' } )
 		kblayout = umcd.make( self[ 'uvmm/domain/configure' ][ 'kblayout' ], default = vnc_keymap, attributes = { 'width' : '250' } )
 		vnc_global = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc_global' ], default = vnc_global, attributes = { 'width' : '250' } )
+		vnc_passwd = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc_passwd' ], attributes = { 'width' : '250' } )
+		vnc_passwd_remove = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc_passwd_remove' ], attributes = { 'width' : '250' } )
 
 		content.add_row( [ name, os_widget ] )
 		content.add_row( [ arch, '' ] )
@@ -543,15 +547,15 @@ class handler( umch.simpleHandler ):
 
 		content2.add_row( [ umcd.Text( '' ) ] )
 
-		content2.add_row( [ vnc ] )
-		content2.add_row( [ vnc_global ] )
-		content2.add_row( [ kblayout ] )
+		content2.add_row( [ vnc, vnc_passwd ] )
+		content2.add_row( [ vnc_global, vnc_passwd_remove ] )
+		content2.add_row( [ kblayout, '' ] )
 
 		content2.add_row( [ umcd.Text( '' ) ] )
 
-		ids = ( name.id(), os_widget.id(), virt_tech.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), vnc.id(), vnc_global.id(), kblayout.id(), bootdevs.id() )
+		ids = ( name.id(), os_widget.id(), virt_tech.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), vnc.id(), vnc_global.id(), vnc_passwd.id(), vnc_passwd_remove.id(), kblayout.id(), bootdevs.id() )
 		cfg_cmd = umcp.SimpleCommand( 'uvmm/domain/configure', options = object.options )
-		overview_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = object.options )
+		overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = object.options )
 
 		sections = umcd.List()
 		if not domain_info:
@@ -688,6 +692,12 @@ class handler( umch.simpleHandler ):
 		if object.options[ 'vnc' ]:
 			gfx = uuv_node.Graphic()
 			gfx.keymap = object.options[ 'kblayout' ]
+			if object.options[ 'vnc_passwd' ]:
+				gfx.passwd = object.options[ 'vnc_passwd' ]
+			elif object.options[ 'vnc_passwd_remove' ]:
+				gfx.passwd = None
+			else:
+				gfx.passwd = domain_info.graphics[ 0 ].passwd
 			if object.options[ 'vnc_global' ]:
 				gfx.listen = '0.0.0.0'
 			domain.graphics.append( gfx )

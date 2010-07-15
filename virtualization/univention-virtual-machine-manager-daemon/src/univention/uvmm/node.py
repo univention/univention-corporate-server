@@ -140,6 +140,7 @@ class Graphic( object ):
 		self.autoport = True
 		self.keymap = 'de'
 		self.listen = None
+		self.passwd = None
 
 	@staticmethod
 	def map_type( id = None, name = None ):
@@ -296,7 +297,7 @@ class Domain(object):
 
 	def xml2obj( self, domain ):
 		"""Parse XML into python object."""
-		doc = parseString( domain.XMLDesc( 0 ) )
+		doc = parseString( domain.XMLDesc( 1 ) )
 		devices = doc.getElementsByTagName( 'devices' )[ 0 ]
 
 		os = doc.getElementsByTagName( 'os' )
@@ -367,7 +368,8 @@ class Domain(object):
 			dev.autoport = graphic.getAttribute( 'autoport' )
 			if graphic.hasAttribute( 'listen' ):
 				dev.listen = graphic.getAttribute( 'listen' )
-			dev.autoport = graphic.getAttribute( 'autoport' )
+			if graphic.hasAttribute( 'passwd' ):
+				dev.passwd = graphic.getAttribute( 'passwd' )
 			if dev.autoport.lower() == 'yes':
 				dev.autoport = True
 			else:
@@ -815,6 +817,8 @@ def domain_define( uri, domain ):
 			elem.setAttribute( 'autoport', 'no' )
 		if graphic.listen:
 			elem.setAttribute( 'listen', graphic.listen )
+		if graphic.passwd:
+			elem.setAttribute( 'passwd', graphic.passwd )
 		elem.setAttribute( 'keymap', graphic.keymap )
 		devices.appendChild( elem )
 
