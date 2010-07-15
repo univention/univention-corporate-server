@@ -1,3 +1,9 @@
+univention-installer (6.0.25-1) unstable; urgency=low
+
+  * improve traceback output formatting (Bug #18798)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 15 Jul 2010 12:06:03 +0200
+
 univention-installer (6.0.24-1) unstable; urgency=low
 
   * always wait for udev in 12_partition.py Bug #12524

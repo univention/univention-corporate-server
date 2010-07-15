@@ -229,6 +229,7 @@ def debug(text):
 class error_message(subwin):
 	def __init__(self,parent,pos_y,pos_x,width,height, message):
 		self.message=message
+		self.message_width = width - 4
 		text = _( 'This error message is shown when an unexpected error occures '
 				'during the installation process. The best way is to reboot '
 				'the computer and retry the installation. Confirming this '
@@ -263,7 +264,7 @@ class error_message(subwin):
 			l=l.replace('\n','')
 			l=l.replace('\r','')
 			l=l.strip(' ')
-			self.elements.append(textline(l[:60],self.pos_y+4+count,self.pos_x+2)) #2...
+			self.elements.append(textline(l[:self.message_width],self.pos_y+4+count,self.pos_x+2)) #2...
 			count=count+1
 			f.write(str(l)+'\n')
 
@@ -798,12 +799,28 @@ except KeyboardInterrupt:
 except:
 	info = sys.exc_info()
 
-	err_height=15
-	err_width=66
-	err_min_x=(max_x/2)-(err_width/2)
+	err_height = 17
+	err_width = 72
+	err_min_x=(max_x/2)-(err_width/2) - 1
 	err_min_y=(max_y/2)-(err_height/2)
 	try:
-		error=error_message(None, err_min_y, err_min_x, err_width+2, err_height, apply(traceback.format_exception,info))
+		def format_exception(info):
+			(info_type, info_value, info_traceback, ) = info
+			newlist = []
+			for (filename, line, function, text, ) in traceback.extract_tb(info_traceback):
+				if not (filename.startswith('<') and filename.endswith('>')):
+					if '/' in filename:
+						filename = filename[ filename.rfind('/')+1 : ]
+				newlist.append( (filename, line, function, text, ) )
+			outlist = []
+			for line in traceback.format_list(newlist) + traceback.format_exception_only(info_type, info_value):
+				line = line.replace('\n', ' ')
+				while '  ' in line:
+					line = line.replace('  ', ' ')
+				outlist.append(line)
+			outlist = ['Traceback (most recent call last):'] + outlist[-9:]
+			return outlist
+		error=error_message(None, err_min_y, err_min_x, err_width+2, err_height, format_exception(info))
 		for line in apply(traceback.format_exception,info):
 			debug(line)
 		error.draw()
