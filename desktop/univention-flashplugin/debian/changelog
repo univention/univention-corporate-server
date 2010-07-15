@@ -1,3 +1,10 @@
+univention-flashplugin (3.0.0-5) unstable; urgency=low
+
+  * Bump version to force a rerun of the postinst which installs
+    the new r277 security release (Bug #18584)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 15 Jul 2010 16:46:51 +0200
+
 univention-flashplugin (3.0.0-4) unstable; urgency=low
 
   * Fix base path for the installation of the downloaded
