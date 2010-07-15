@@ -1,3 +1,9 @@
+univention-config-registry (6.0.13-1) unstable; urgency=low
+
+  * set codename to golden beech (Bug #18806)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 15 Jul 2010 13:43:40 +0200
+
 univention-config-registry (6.0.12-1) unstable; urgency=low
 
   * fixed typo in ucr variable description for

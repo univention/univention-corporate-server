@@ -140,7 +140,10 @@ fi
 # univention-baseconfig set version/releasename="copper beech" # UCS 2.2
 
 # http://en.wikipedia.org/wiki/Hornbeam
-univention-baseconfig set version/releasename="hornbeam" # UCS 2.3
+# univention-baseconfig set version/releasename="hornbeam" # UCS 2.3
+
+# http://en.wikipedia.org/wiki/Fagus_sylvatica
+univention-baseconfig set version/releasename="golden beech" # UCS 2.4
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.33; then
 	chown root:root /tmp/
