@@ -70,9 +70,14 @@ class Button( base.Text, image.Image ):
 	"""Represents a button of any kind. The argument actions contains a
 	list of Action objects that defines the UMCP commands
 	to execute when the button is presssed."""
-	def __init__( self, label = '', tag = None, actions = [], attributes = {}, close_dialog = True, helptext = None, icon_right = False ):
+	def __init__( self, label = '', tag = None, actions = [], attributes = {}, close_dialog = True, helptext = None, icon_right = False, default = False ):
 		base.Text.__init__( self, label, attributes )
 		image.Image.__init__( self, tag, attributes = attributes )
+		if not 'class' in self and not default:
+			self[ 'class' ] = 'cancel'
+		elif default:
+			self[ 'class' ] = 'submit'
+			self[ 'defaultbutton' ] = '1'
 		if not isinstance( actions, ( list, tuple ) ):
 			self.actions = [ actions ]
 		else:

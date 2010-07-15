@@ -1,3 +1,9 @@
+univention-management-console (3.0.39-1) unstable; urgency=low
+
+  * fixed button style; Bug #18721
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 15 Jul 2010 11:16:03 +0200
+
 univention-management-console (3.0.38-1) unstable; urgency=low
 
   * umcd.RefreshFrame(): scroll down only if content changed (Bug #17666)
