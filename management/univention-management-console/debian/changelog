@@ -1,8 +1,14 @@
+univention-management-console (3.0.40-1) unstable; urgency=low
+
+  * fixed UMC module top: use run_process to prevent traceback (Bug #18998)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 15 Jul 2010 15:27:49 +0200
+
 univention-management-console (3.0.39-1) unstable; urgency=low
 
   * fixed button style; Bug #18721
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 15 Jul 2010 11:16:03 +0200
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 15 Jul 2010 15:28:53 +0200
 
 univention-management-console (3.0.38-1) unstable; urgency=low
 

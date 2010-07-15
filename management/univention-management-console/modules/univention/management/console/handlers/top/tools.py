@@ -35,13 +35,14 @@ import copy, re
 
 import notifier.popen
 import univention.management.console as umc
+import univention.management.console.tools as umct
 
 import univention.debug as ud
 
 _ = umc.Translation( 'univention.management.console.handlers.top' ).translate
 
 _ps_regex = re.compile( ' *(?P<cpu>[0-9.]*) +(?P<vsize>[0-9]*) +(?P<rssize>[0-9]*) +(?P<mem>[0-9.]*) +(?P<user>[^ ]*) +(?P<pid>[0-9]*) +(?P<prog>[^ ]*)( +(?P<args>.*))?' )
-_ps_cmd = 'ps h -eo pcpu,vsize,rssize,pmem,user,pid,command'
+_ps_cmd = [ 'ps', 'h', '-eo', 'pcpu,vsize,rssize,pmem,user,pid,command']
 
 class Process( object ):
 	def __init__( self, uid = '', pid = 0, vsize = 0, rssize = 0, mem = 0.0, cpu = 0.0, prog = '', args = [] ):
@@ -54,26 +55,34 @@ class Process( object ):
 		self.prog = prog
 		self.args = args
 
-def run_ps( callback, sort = 'cpu', count = '50' ):
+def run_ps( sort = 'cpu', count = '50' ):
 	global _ps_cmd
 
 	cmd = copy.copy( _ps_cmd )
 	if sort == 'cpu':
-		cmd += ' --sort=-pcpu'
+		cmd.append('--sort=-pcpu')
 	elif sort == 'rssize':
-		cmd += ' --sort=-rssize'
+		cmd.append('--sort=-rssize')
 	elif sort == 'vsize':
-		cmd += ' --sort=-vsize'
+		cmd.append('--sort=-vsize')
 	elif sort == 'user':
-		cmd += ' --sort=user'
+		cmd.append('--sort=user')
 	elif sort == 'pid':
-		cmd += ' --sort=pid'
+		cmd.append('--sort=pid')
+
+	ud.debug( ud.ADMIN, ud.INFO, 'top: cmd=%s' % cmd )
+	result = umct.run_process( cmd, timeout=0, shell=False, output=True )
+
+	stdout = result['stdout'].read()
+	ud.debug( ud.ADMIN, ud.INFO, 'output=\n%s' % stdout )
+
+	stdout_lines = [ x.rstrip('\n\r') for x in stdout.splitlines() ]
+
 	if not count == 'all':
-		cmd += ' | head -%s' % count
-	ud.debug( ud.ADMIN, ud.INFO, cmd )
-	proc = notifier.popen.Shell( cmd, stdout = True )
-	proc.signal_connect( 'finished', callback )
-	proc.start()
+		stdout_lines = stdout_lines[0:int(count)]
+
+	return parse_ps( stdout_lines )
+
 
 def parse_ps( result ):
 	global _ps_regex

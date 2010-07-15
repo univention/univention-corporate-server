@@ -112,14 +112,13 @@ class handler( umch.simpleHandler, _revamp.Web ):
 						   report = _( 'You are not permitted to run this command.' ),
 						   success = False )
 			return
-		if object.incomplete:
-			tools.run_ps( notifier.Callback( self._top_view, object ), 'cpu' )
-		else:
-			tools.run_ps( notifier.Callback( self._top_view, object ), object.options[ 'sort' ],
-						  object.options[ 'count' ] )
 
-	def _top_view( self, pid, status, result, object ):
-		self.finished( object.id(), tools.parse_ps( result ) )
+		if object.incomplete:
+			result = tools.run_ps( 'cpu' )
+		else:
+			result = tools.run_ps( object.options[ 'sort' ], object.options[ 'count' ] )
+
+		self.finished( object.id(), result )
 
 	def top_kill( self, object ):
 		if not self.permitted( 'top/kill', options = object.options ):
