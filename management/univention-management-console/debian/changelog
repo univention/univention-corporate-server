@@ -1,3 +1,9 @@
+univention-management-console (3.0.41-1) unstable; urgency=low
+
+  * change loglevel of PAM error msg to ERROR (Bug #18564)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 15 Jul 2010 15:56:50 +0200
+
 univention-management-console (3.0.40-1) unstable; urgency=low
 
   * fixed UMC module top: use run_process to prevent traceback (Bug #18998)

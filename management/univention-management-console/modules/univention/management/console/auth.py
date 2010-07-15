@@ -94,10 +94,10 @@ class PAM_Auth( Auth ):
 			self._pam.authenticate()
 			self._pam.acct_mgmt()
 		except PAM.error, e:
-			ud.debug( ud.ADMIN, ud.INFO, "PAM: authentication error: %s" % str( e ) )
+			ud.debug( ud.ADMIN, ud.ERROR, "PAM: authentication error: %s" % str( e ) )
 			return False
 		except Exception, e: # internal error
-			ud.debug( ud.ADMIN, ud.INFO, "PAM: global error: %s" % str( e ) )
+			ud.debug( ud.ADMIN, ud.WARN, "PAM: global error: %s" % str( e ) )
 			return False
 
 		return True
