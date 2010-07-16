@@ -249,6 +249,9 @@ class Client( signals.Provider ):
 						break
 				else:
 					break
+		except socket.error, e:
+			ud.debug( ud.ADMIN, ud.WARN, 'Client: _recv: error on socket: %s' % str( e ) )
+			recv = None
 		except SSL.SysCallError, e:
 			# lost connection or any other unfixable error
 			recv = None
