@@ -297,7 +297,7 @@ class Domain(object):
 
 	def xml2obj( self, domain ):
 		"""Parse XML into python object."""
-		doc = parseString( domain.XMLDesc( 1 ) )
+		doc = parseString(domain.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE))
 		devices = doc.getElementsByTagName( 'devices' )[ 0 ]
 
 		os = doc.getElementsByTagName( 'os' )
