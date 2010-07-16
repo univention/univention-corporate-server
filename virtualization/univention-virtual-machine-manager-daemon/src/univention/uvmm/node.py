@@ -155,60 +155,87 @@ class DomainTemplate(object):
 	@staticmethod
 	def list_from_xml(xml):
 		"""Convert XML to list.
-		>>> t = DomainTemplate.list_from_xml(TEST_CAPABILITIES)
+		>>> t = DomainTemplate.list_from_xml(KVM_CAPABILITIES)
 		>>> len(t)
-		1
+		3
 		>>> t[0].virt_tech
 		u'hvm'
 		>>> t[0].arch
 		u'i686'
+		>>> t[0].domain
+		u'qemu'
 		>>> t[0].emulator
 		u'/usr/bin/qemu'
 		>>> t[0].machines
 		[u'pc']
-		>>> t[0].domains
-		[u'qemu']
 		>>> t[0].features
 		['pae', u'acpi', u'apic']
 		"""
 		doc = parseString(xml)
+		capas = doc.firstChild
 		result = []
-		for guest in doc.getElementsByTagName('guest'):
-			virt_tech = guest.getElementsByTagName('os_type')[0].firstChild.nodeValue
-			f_names = []
-			features = guest.getElementsByTagName('features')
-			if features:
-				c = features[0].firstChild
-				while c:
-					if c.nodeType == 1:
-						if c.nodeName == 'pae':
-							if 'nonpae' not in f_names:
-								f_names.append('pae')
-						elif c.nodeName == 'nonpae':
-							if 'pae' not in f_names:
-								f_names.append('nonpae')
-						elif c.getAttribute('default') == 'on':
-							f_names.append(c.nodeName)
-					c = c.nextSibling
-			for arch in guest.getElementsByTagName('arch'):
-				dom = DomainTemplate(virt_tech, arch, f_names)
-				result.append(dom)
+		for guest in filter(lambda f: f.nodeName == 'guest', capas.childNodes):
+			virt_tech = DomainTemplate.__nv(guest, 'os_type')
+			f_names = DomainTemplate.__get_features(guest)
+			for arch in filter(lambda f: f.nodeName == 'arch', guest.childNodes):
+				for dom in filter(lambda f: f.nodeName == 'domain', arch.childNodes):
+					dom = DomainTemplate(arch, dom, virt_tech, f_names)
+					result.append(dom)
 		return result
 
-	def __init__(self, virt_tech, arch, features):
+	@staticmethod
+	def __nv(node, name):
+		return node.getElementsByTagName(name)[0].firstChild.nodeValue
+
+	@staticmethod
+	def __get_features(node):
+		"""Return list of features."""
+		f_names = []
+		features = filter(lambda f: f.nodeName == 'features', node.childNodes)
+		if features:
+			for c in features[0].childNodes:
+				if c.nodeType == 1:
+					if c.nodeName == 'pae':
+						if 'nonpae' not in f_names:
+							f_names.append('pae')
+					elif c.nodeName == 'nonpae':
+						if 'pae' not in f_names:
+							f_names.append('nonpae')
+					elif c.getAttribute('default') == 'on':
+						f_names.append(c.nodeName)
+		return f_names
+
+	def __init__(self, arch, dom, virt_tech, features):
 		self.virt_tech = virt_tech
-		self.arch = arch.getAttribute('name')
-		self.emulator = arch.getElementsByTagName('emulator')[0].firstChild.nodeValue
-		try:
-			self.loader = arch.getElementsByTagName('loader')[0].firstChild.nodeValue
-		except:
-			self.loader = None
-		self.machines = [m.firstChild.nodeValue for m in arch.getElementsByTagName('machine')]
-		self.domains = [d.getAttribute('type') for d in arch.getElementsByTagName('domain')]
 		self.features = features
+		self.arch = arch.getAttribute('name')
+		self.domain = dom.getAttribute('type')
+
+		for n in [dom, arch]:
+			try:
+				self.emulator = DomainTemplate.__nv(n, 'emulator')
+				break
+			except IndexError:
+				pass
+		else:
+			logger.error('No emulator specified in %s/%s' % (self.arch, self.domain))
+			raise
+
+		for n in [dom, arch]:
+			self.machines = [m.firstChild.nodeValue for m in n.childNodes if m.nodeName == 'machine']
+			if self.machines:
+				break
+		else:
+			logger.error('No machines specified in %s/%s' % (self.arch, self.domain))
+			raise
+
+		try:
+			self.loader = DomainTemplate.__nv(arch, 'loader')
+		except:
+			self.loader = None # optional
 
 	def __str__(self):
-		return 'DomainTemplate(type=%s arch=%s): %s, %s, %s, %s, %s' % (self.virt_tech, self.arch, self.emulator, self.loader, self.machines, self.domains, self.features)
+		return 'DomainTemplate(type=%s arch=%s dom=%s): %s, %s, %s, %s' % (self.virt_tech, self.arch, self.domain, self.emulator, self.loader, self.machines, self.features)
 
 class Domain(object):
 	"""Container for domain statistics."""
@@ -685,7 +712,7 @@ def domain_define( uri, domain ):
 	loader = None
 	logger.debug('Searching for loader: %s' % node.capabilities)
 	for template in node.capabilities:
-		logger.debug('template: %s' % str((template.arch, domain.arch, template.virt_tech, domain.virt_tech)))
+		logger.debug('template: %s' % str(template.arch))
 		if template.arch == domain.arch and template.virt_tech == domain.virt_tech and template.loader:
 			loader = doc.createElement( 'loader' )
 			loader.appendChild( doc.createTextNode( template.loader ) )
@@ -844,7 +871,7 @@ def domain_define( uri, domain ):
 				raise NodeError(_('Error removing domain "%(domain)s": %(error)s'), domain=domain.uuid, error=e)
 
 	try:
-		logger.info( 'XML DUMP: ' + doc.toxml() )
+		logger.debug('XML DUMP: %s' % doc.toxml())
 		d = conn.defineXML(doc.toxml())
 		domain.uuid = d.UUIDString()
 	except libvirt.libvirtError, e:
@@ -996,10 +1023,72 @@ def domain_migrate(source_uri, domain, target_uri):
 		raise NodeError(_('Error migrating domain "%(domain)s": %(error)s'), domain=domain, error=e)
 
 if __name__ == '__main__':
-	TEST_CAPABILITIES = '''<capabilities>
+	XEN_CAPABILITIES = '''<capabilities>
 		<host>
-			<cpu/>
-			<migration_features/>
+			<cpu>
+				<arch>x86_64</arch>
+				<features>
+					<pae/>
+				</features>
+			</cpu>
+			<migration_features>
+				<live/>
+				<uri_transports>
+					<uri_transport>xenmigr</uri_transport>
+				</uri_transports>
+			</migration_features>
+			<topology>
+				<cells num='1'>
+					<cell id='0'>
+						<cpus num='1'>
+							<cpu id='0'/>
+						</cpus>
+					</cell>
+				</cells>
+			</topology>
+		</host>
+		<guest>
+			<os_type>xen</os_type>
+			<arch name='x86_64'>
+				<wordsize>64</wordsize>
+				<emulator>/usr/lib64/xen/bin/qemu-dm</emulator>
+				<machine>xenpv</machine>
+				<domain type='xen'>
+				</domain>
+			</arch>
+		</guest>
+		<guest>
+			<os_type>xen</os_type>
+			<arch name='i686'>
+				<wordsize>32</wordsize>
+				<emulator>/usr/lib64/xen/bin/qemu-dm</emulator>
+				<machine>xenfv</machine>
+				<domain type='xen'>
+				</domain>
+			</arch>
+			<features>
+				<pae/>
+				<nonpae/>
+				<acpi default='on' toggle='yes'/>
+				<apic default='on' toggle='yes'/>
+			</features>
+		</guest>
+	</capabilities>'''
+	KVM_CAPABILITIES = '''<capabilities>
+		<host>
+			<uuid>00020003-0004-0005-0006-000700080009</uuid>
+			<cpu>
+				<arch>x86_64</arch>
+				<model>phenom</model>
+				<topology sockets='1' cores='2' threads='1'/>
+				<feature name='wdt'/>
+			</cpu>
+			<migration_features>
+				<live/>
+				<uri_transports>
+					<uri_transport>tcp</uri_transport>
+				</uri_transports>
+			</migration_features>
 		</host>
 		<guest>
 			<os_type>hvm</os_type>
@@ -1009,6 +1098,11 @@ if __name__ == '__main__':
 				<machine>pc</machine>
 				<domain type='qemu'>
 				</domain>
+				<domain type='kvm'>
+					<emulator>/usr/bin/kvm</emulator>
+					<machine>pc-0.12</machine>
+					<machine canonical='pc-0.12'>pc</machine>
+				</domain>
 			</arch>
 			<features>
 				<cpuselection/>
@@ -1017,6 +1111,16 @@ if __name__ == '__main__':
 				<acpi default='on' toggle='yes'/>
 				<apic default='on' toggle='no'/>
 			</features>
+		</guest>
+		<guest>
+			<os_type>hvm</os_type>
+			<arch name='arm'>
+				<wordsize>32</wordsize>
+				<emulator>/usr/bin/qemu-system-arm</emulator>
+				<machine>integratorcp</machine>
+				<domain type='qemu'>
+				</domain>
+			</arch>
 		</guest>
 	</capabilities>'''
 

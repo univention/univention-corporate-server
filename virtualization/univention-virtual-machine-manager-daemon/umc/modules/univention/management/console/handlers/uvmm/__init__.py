@@ -465,7 +465,7 @@ class handler( umch.simpleHandler ):
 			iface_source = iface.source
 		else:
 			iface_mac = ''
-			iface_source = 'eth0'
+			iface_source = 'eth0' # FIXME: br0 for KVM?
 		mac = umcd.make( self[ 'uvmm/domain/configure' ][ 'mac' ], default = iface_mac, attributes = { 'width' : '250' } )
 		interface = umcd.make( self[ 'uvmm/domain/configure' ][ 'interface' ], default = iface_source, attributes = { 'width' : '250' } )
 		ram_disk = umcd.make( self[ 'uvmm/domain/configure' ][ 'initrd' ], default = handler._getattr( domain_info, 'initrd', '' ), attributes = { 'width' : '250' } )
