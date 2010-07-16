@@ -317,6 +317,8 @@ class Processor( signals.Provider ):
 					mod_proc = ModuleProcess( module_name, self.__interface,
 											  locale = self.__locale  )
 				mod_proc.signal_connect( 'result', self._mod_result )
+				cb = notifier.Callback( self._socket_died, module_name, msg )
+				mod_proc.signal_connect( 'closed', cb )
 				cb = notifier.Callback( self._mod_died, msg )
 				mod_proc.signal_connect( 'finished', cb )
 				self.__processes[ module_name ] = mod_proc
@@ -371,6 +373,12 @@ class Processor( signals.Provider ):
 
 	def _mod_result( self, msg ):
 		self.signal_emit( 'response', msg )
+
+	def _socket_died( self, module_name, msg):
+		ud.debug( ud.ADMIN, ud.WARN, 'socket died (module=%s)' % module_name )
+		res = Response( msg )
+		res.status( 502 ) # module process died unexpectedly
+		self._mod_died(0, 0, module_name, msg)
 
 	def _mod_died( self, pid, status, name, msg ):
 		if status:
