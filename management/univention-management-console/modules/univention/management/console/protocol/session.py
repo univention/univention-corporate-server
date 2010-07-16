@@ -308,6 +308,7 @@ class Processor( signals.Provider ):
 		module_name = self.__is_command_known( msg )
 		if module_name:
 			if not self.__processes.has_key( module_name ):
+				ud.debug( ud.ADMIN, ud.INFO, 'creating new module and passing new request to module %s: %s' % (module_name, str(msg._id)) )
 				if umc.baseconfig.has_key( 'umc/module/debug/level' ):
 					mod_proc = ModuleProcess( module_name, self.__interface,
 								  debug = umc.baseconfig[ 'umc/module/debug/level' ],
@@ -322,6 +323,7 @@ class Processor( signals.Provider ):
 				cb = notifier.Callback( self._mod_connect, mod_proc, msg )
 				notifier.timer_add( 50, cb )
 			else:
+				ud.debug( ud.ADMIN, ud.INFO, 'passing new request to running module %s' % module_name )
 				self.__processes[ module_name ].request( msg )
 
 	def _mod_connect( self, mod, msg ):
