@@ -230,6 +230,15 @@ class Client( signals.Provider ):
 
 		self.__unfinishedRequests.append( msg.id() )
 
+	def invalidate_all_requests(self):
+		for reqid in self.__unfinishedRequests:
+			response = Response()
+			response._id = reqid
+			response._command = 'COMMAND'
+			response.status( 502 ) # module process died unexpectedly
+			ud.debug( ud.ADMIN, ud.WARN, 'invalidate_all_requests: request %s' % ( str(reqid) ) )
+			self.signal_emit( 'response', response )
+
 	def _recv( self, sock ):
 		try:
 			recv = ''
