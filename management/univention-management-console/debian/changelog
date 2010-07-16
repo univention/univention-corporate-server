@@ -1,3 +1,11 @@
+univention-management-console (3.0.42-1) unstable; urgency=low
+
+  * do not crash UMC server if socket to module process is broken
+  * invalidate all pending requests correctly if module process 
+    has shut down (unexpectedly) (Bug #14015)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 16 Jul 2010 14:00:50 +0200
+
 univention-management-console (3.0.41-1) unstable; urgency=low
 
   * change loglevel of PAM error msg to ERROR (Bug #18564)

@@ -387,12 +387,16 @@ class Processor( signals.Provider ):
 			res.status( 502 ) # module process died unexpectedly
 		else:
 			ud.debug( ud.ADMIN, ud.INFO, 'module process died: everything fine' )
+		if name in self.__processes:
+			ud.debug( ud.ADMIN, ud.WARN, 'module process died: cleaning up requests')
+			self.__processes[ name ].invalidate_all_requests()
 		# if killtimer has been set then remove it
-		if self.__killtimer.has_key( name ):
+		if name in self.__killtimer:
 			ud.debug( ud.ADMIN, ud.INFO, 'module process died: stopping killtimer of "%s"' % name )
 			notifier.timer_remove( self.__killtimer[ name ] )
 			del self.__killtimer[ name ]
-		del self.__processes[ name ]
+		if name in self.__processes:
+			del self.__processes[ name ]
 
 	def handle_request_status( self, msg ):
 
