@@ -245,7 +245,10 @@ class Client( signals.Provider ):
 
 		if not recv:
 			self.signal_emit( 'closed' )
-			sock.close()
+			try:
+				sock.close()
+			except:
+				pass
 			notifier.socket_remove( sock )
 			return False
 
