@@ -176,6 +176,14 @@ class Client( signals.Provider ):
 					else:
 						del self.__resend_queue[sock][0]
 				except socket.error, e:
+					if e[0] in [104, 107, 9]:
+						# Error may happen if module process died and server tries to send request at the same time
+						# 104: connection reset by peer
+						# 107: socket not connected
+						# 9: bad file descriptor
+						ud.debug( ud.ADMIN, ud.INFO, 'Client: _resend: socket is damaged: %s' % str( e ) )
+						self.signal_emit( 'closed' )
+						return False
 					if e[0] != 11:
 						raise
 					return True
