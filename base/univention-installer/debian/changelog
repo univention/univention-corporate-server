@@ -1,3 +1,9 @@
+univention-installer (6.0.27-1) unstable; urgency=low
+
+  * fixed translation (Bug #13552) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 16 Jul 2010 14:01:13 +0200
+
 univention-installer (6.0.26-1) unstable; urgency=low
 
   * set codename to golden beech (Bug #18806)
