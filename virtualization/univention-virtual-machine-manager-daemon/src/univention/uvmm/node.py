@@ -48,6 +48,7 @@ import traceback
 from univention.uvmm.eventloop import *
 import threading
 from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_all_storage_volumes, StorageError, storage_pools
+import os
 
 import univention.config_registry as ucr
 
@@ -664,15 +665,21 @@ def group_list():
 def _domain_backup(dom):
 	"""Save domain definition to backup file."""
 	uuid = dom.UUIDString()
-	xml = dom.XMLDesc(0)
-	now = time.strftime("%Y-%m-%dT%H:%M:%SZ",time.gmtime())
-	file = "/var/backups/univention-virtual-machine-manager-daemon/%s_%s.xml" % (uuid, now)
-	f = open(file, "w")
+	xml = dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+	if len(xml) < 300: # minimal XML descriptor length
+		logger.error("Failed to backup domain %s: %s" % (uuid, xml))
+		raise NodeError("Failed to backup domain %(domain)s: %(xml)s", domain=uuid, xml=xml)
+	now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+	tmp_file = "/var/backups/univention-virtual-machine-manager-daemon/%s_%s.xml" % (uuid, now)
+	file = "/var/backups/univention-virtual-machine-manager-daemon/%s.xml" % (uuid,)
+	f = open(tmp_file, "w")
 	try:
 		f.write(xml)
-		logger.info("Domain backuped to %s." % (file,))
 	finally:
 		f.close()
+	os.rename(tmp_file, file)
+	os.chmod(file, 0440)
+	logger.info("Domain backuped to %s." % (file,))
 
 def domain_define( uri, domain ):
 	"""Convert python object to an XML document."""
@@ -1003,7 +1010,7 @@ def domain_migrate(source_uri, domain, target_uri):
 			target_dom = source_dom.migrate(target_conn, flags, None, None, 0)
 		elif source_state in (libvirt.VIR_DOMAIN_SHUTDOWN, libvirt.VIR_DOMAIN_SHUTOFF, libvirt.VIR_DOMAIN_CRASHED):
 			# for domains not running their definition is migrated
-			xml = source_dom.XMLDesc(0)
+			xml = source_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
 			target_conn.defineXML(xml)
 			source_dom.undefine()
 		elif True or source_state in (libvirt.VIR_DOMAIN_PAUSED):

@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.57-1) unstable; urgency=low
+
+  * Save only one backup per domain (Bug #18679)
+  * Include security information and change mode to 0440.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 19 Jul 2010 10:28:07 +0200
+
 univention-virtual-machine-manager-daemon (0.9.56-1) unstable; urgency=low
 
   * add option to set or remove a VNC password; Bug #18715
