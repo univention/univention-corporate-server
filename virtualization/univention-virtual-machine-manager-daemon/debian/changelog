@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (0.9.59-1) unstable; urgency=low
+
+  * replace keys for devices with human readable text; Bug #18850
+  * show size of devices
+  * fixed style (do not wrap text in treeview and location); Bug #18721
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 19 Jul 2010 14:00:33 +0200
+
 univention-virtual-machine-manager-daemon (0.9.58-1) unstable; urgency=low
 
   * add UCR variable uvmm/umc/vnc to select VNC type (Bug #18346)

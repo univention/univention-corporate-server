@@ -62,7 +62,7 @@ class TreeView( object ):
 		highlight = False
 		if current == TreeView.get_item_path( options ):
 			highlight = True
-		link = umcd.LinkButton( text, icon, actions = [ action ], current = highlight )
+		link = umcd.LinkButton( text, icon, actions = [ action ], current = highlight, attributes = { 'class' : 'umc_nowrap' } )
 		link.set_size( umct.SIZE_SMALL )
 
 		return link
@@ -109,6 +109,10 @@ class TreeView( object ):
 							icon = 'uvmm/node'
 					except Exception, e:
 						pass
+					# remove domain name from hostname
+					dot = item.find( '.' )
+					if  dot > -1:
+						item = item[ : dot ]
 				elif level == 3:
 					if item == 'Domain-0':
 						continue

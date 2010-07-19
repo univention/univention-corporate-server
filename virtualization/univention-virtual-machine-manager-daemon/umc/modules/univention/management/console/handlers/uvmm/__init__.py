@@ -226,13 +226,13 @@ class handler( umch.simpleHandler ):
 
 	def set_content( self, object, content ):
 		# create position links
-		lst = umcd.List( attributes = { 'width' : '100%', 'type' : 'umc_mini_padding' } )
+		lst = umcd.List( attributes = { 'width' : '100%', 'type' : 'umc_mini_padding umc_nowrap' } )
 		row = []
 		options = {}
 		keys = []
 		refresh = ''
-		slash = umcd.Cell( umcd.HTML( '&rarr;' ), attributes = { 'type' : 'umc_mini_padding' } )
-		row.append( umcd.Cell( umcd.HTML( '<b>%s</b>' % _( 'Location:' ) ), attributes = { 'type' : 'umc_mini_padding' } ) )
+		slash = umcd.Cell( umcd.HTML( '&rarr;' ), attributes = { 'type' : 'umc_mini_padding umc_nowrap' } )
+		row.append( umcd.Cell( umcd.HTML( '<b>%s</b>' % _( 'Location:' ) ), attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) )
 		if 'group' in object.options:
 			keys.append( 'group' )
 			if 'node' in object.options or 'source' in object.options or 'dest' in object.options:
@@ -251,11 +251,11 @@ class handler( umch.simpleHandler ):
 			opts[ key ] = object.options[ key ]
 			cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % key , options = copy.copy( opts ) )
 			lnk = umcd.LinkButton( object.options[ key ] , actions = [ umcd.Action( cmd ) ] )
-			row.append( umcd.Cell( lnk, attributes = { 'type' : 'umc_mini_padding' } ) )
+			row.append( umcd.Cell( lnk, attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) )
 			row.append( slash )
 		refresh = keys[ -1 ]
 		opts[ keys[ -1 ] ] = object.options[ keys[ -1 ] ]
-		row.append( umcd.Cell( umcd.Text( object.options[ keys[ -1 ] ] ), attributes = { 'type' : 'umc_mini_padding' } ) )
+		row.append( umcd.Cell( umcd.Text( object.options[ keys[ -1 ] ] ), attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) )
 
 		reload_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % refresh, options = copy.copy( opts ) )
 		reload_btn = umcd.LinkButton( _( 'Refresh' ), 'actions/refresh', actions = [ umcd.Action( reload_cmd ) ] )
@@ -384,6 +384,12 @@ class handler( umch.simpleHandler ):
 
 		return buttons[ : -1 ]
 
+	def _device_name( self, device ):
+		if device == uvmmn.Disk.DEVICE_DISK:
+			return _( 'hard drive' )
+		else:
+			return _( 'CDROM drive' )
+
 	def uvmm_node_overview( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Node overview' )
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node' ) )
@@ -474,7 +480,6 @@ class handler( umch.simpleHandler ):
 		kernel = umcd.make( self[ 'uvmm/domain/configure' ][ 'kernel' ], default = handler._getattr( domain_info, 'kernel', '' ), attributes = { 'width' : '250' } )
 		bootdev_default = getattr( domain_info, 'boot', [ 'cdrom', 'hd' ] )
 		bd_default = []
-		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: boot devices: %s' % bootdev_default )
 		if bootdev_default:
 			for dev in bootdev_default:
 				for key, descr in BootDeviceSelect.CHOICES:
@@ -482,7 +487,6 @@ class handler( umch.simpleHandler ):
 					if key == str( dev ):
 						bd_default.append( ( key, descr ) )
 						break
-		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: boot devices (found): %s' % bd_default )
 		bootdevs = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'bootdevs' ], fields = [ boot_dev ], default = bd_default, attributes = { 'width' : '200' } )
 		# device listing
 		disk_list = umcd.List()
@@ -492,23 +496,27 @@ class handler( umch.simpleHandler ):
 			overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = copy.copy( object.options ) )
 			remove_cmd = umcp.SimpleCommand( 'uvmm/device/remove', options = copy.copy( object.options ) )
 			remove_cmd.options[ 'disk' ] = None
+			storage_volumes = {}
 			for dev in domain_info.disks:
 				values = {}
-				if dev.device == uvmmn.Disk.DEVICE_DISK:
-					values[ 'type' ] = _( 'hard drive' )
-				else:
-					values[ 'type' ] = _( 'CDROM drive' )
-				if not dev.size:
-					values[ 'size' ] = _( 'unknown' )
-				else:
-					values[ 'size' ] = MemorySize.num2str( dev.size )
+				values[ 'type' ] = self._device_name( dev.device )
 				values[ 'image' ] = os.path.basename( dev.source )
 				dir = os.path.dirname( dev.source )
 				values[ 'pool' ] = dir
 				for pool in node.storages:
 					if pool.path == dir:
 						values[ 'pool' ] = pool.name
+						if not pool.name in storage_volumes:
+							storage_volumes[ pool.name ] = self.uvmm.storage_pool_volumes( object.options[ 'node' ], pool.name )
+						for vol in storage_volumes[ pool.name ]:
+							if vol.source == dev.source:
+								dev.size = vol.size
+								break
 						break
+				if not dev.size:
+					values[ 'size' ] = _( 'unknown' )
+				else:
+					values[ 'size' ] = MemorySize.num2str( dev.size )
 
 				remove_cmd.options[ 'disk' ] = dev.source
 				disk_list.add_row( [ values[ 'type' ], values[ 'image' ], values[ 'size' ], values[ 'pool' ], umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd, options = { 'disk' : dev.source } ), umcd.Action( overview_cmd ) ] ) ] )
@@ -784,7 +792,7 @@ class handler( umch.simpleHandler ):
 				if not disk.source: continue
 				static_options = { 'drives' : disk.source }
 				chk_button = umcd.Checkbox( static_options = static_options )
-				chk_button.set_text( '%s: %s' % ( uuv_node.Disk.map_device( id = disk.device ), disk.source ) )
+				chk_button.set_text( '%s: %s' % ( self._device_name( disk.device ), disk.source ) )
 				boxes.append( chk_button.id() )
 				lst.add_row( [ umcd.Cell( umcd.Text( '' ), attributes = { 'width' : '10' } ), umcd.Cell( chk_button, attributes = { 'colspan' : '2' } ) ] )
 

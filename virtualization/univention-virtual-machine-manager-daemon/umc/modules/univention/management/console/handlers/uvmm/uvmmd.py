@@ -324,7 +324,7 @@ class Client( notifier.signals.Provider ):
 
 	def storage_pool_volumes( self, node, pool, type = None ):
 		req = protocol.Request_STORAGE_VOLUMES()
-		req.uri = node
+		req.uri = self.node_name2uri( node )
 		req.pool = pool
 		req.type = type
 		if not self.send( req.pack() ):

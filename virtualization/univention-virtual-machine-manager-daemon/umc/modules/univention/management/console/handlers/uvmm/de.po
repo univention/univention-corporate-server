@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-13 09:47+0200\n"
+"POT-Creation-Date: 2010-07-16 13:57+0200\n"
 "PO-Revision-Date: 2010-07-05 14:28+0200\n"
 "Last-Translator: Andreas Büsching <buesching@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -50,7 +50,7 @@ msgstr "Virtuelle Maschinen"
 msgid "Univention Virtual Machine Manager"
 msgstr "Univention Virtual Machine Manager"
 
-#: __init__.py:69 __init__.py:486
+#: __init__.py:69 __init__.py:488
 msgid "Type"
 msgstr "Typ"
 
@@ -58,7 +58,7 @@ msgstr "Typ"
 msgid "Device"
 msgstr "Gerät"
 
-#: __init__.py:73 __init__.py:154
+#: __init__.py:73 __init__.py:156
 msgid "Boot device"
 msgstr "Boot-Medium"
 
@@ -126,7 +126,7 @@ msgstr "Name"
 msgid "MAC address"
 msgstr "MAC-Adresse"
 
-#: __init__.py:140 __init__.py:407 __init__.py:433 wizards.py:312
+#: __init__.py:140 __init__.py:409 __init__.py:435 wizards.py:312
 msgid "Memory"
 msgstr "Speicher"
 
@@ -143,106 +143,114 @@ msgid "Available globally"
 msgstr "Global verfügbar"
 
 #: __init__.py:145
+msgid "Password"
+msgstr "Passwort"
+
+#: __init__.py:146
+msgid "Remove password"
+msgstr "Passwort löschen"
+
+#: __init__.py:147
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
-#: __init__.py:148
+#: __init__.py:150
 msgid "Drive"
 msgstr "Laufwerk"
 
-#: __init__.py:149 __init__.py:433 __init__.py:603
+#: __init__.py:151 __init__.py:435 __init__.py:594
 msgid "Operating System"
 msgstr "Betriebssystem"
 
-#: __init__.py:150
+#: __init__.py:152
 msgid "User"
 msgstr "Benutzer"
 
-#: __init__.py:151
+#: __init__.py:153
 msgid "RAM disk"
 msgstr "RAM-Disk"
 
-#: __init__.py:152
+#: __init__.py:154
 msgid "Kernel parameter"
 msgstr "Kernelparameter"
 
-#: __init__.py:153
+#: __init__.py:155
 msgid "Kernel"
 msgstr "Kernel"
 
-#: __init__.py:158 __init__.py:159
+#: __init__.py:160 __init__.py:161
 msgid "Migration of virtual instances"
 msgstr "Migration von virtuellen Instanzen"
 
-#: __init__.py:161
+#: __init__.py:163
 msgid "domain"
 msgstr "Domäne"
 
-#: __init__.py:167
+#: __init__.py:169
 msgid "Change state of a virtual instance"
 msgstr "Ändern des Status einer virtuellen Instanz"
 
-#: __init__.py:168
+#: __init__.py:170
 msgid "Change state of virtual instances"
 msgstr "Ändern des Status von virtuellen Instanzen"
 
-#: __init__.py:170 __init__.py:433
+#: __init__.py:172 __init__.py:435
 msgid "Instance"
 msgstr "Instanz"
 
-#: __init__.py:176 __init__.py:342
+#: __init__.py:178 __init__.py:344
 msgid "New Device"
 msgstr "Neues Laufwerk"
 
-#: __init__.py:177
+#: __init__.py:179
 msgid "Create a new device"
 msgstr "Erstellen eines neuen Laufwerk"
 
-#: __init__.py:182
+#: __init__.py:184
 msgid "Remove Device"
 msgstr "Laufwerk entfernen"
 
-#: __init__.py:183
+#: __init__.py:185
 msgid "Removes a device"
 msgstr "Ein Laufwerk entfernen"
 
-#: __init__.py:192 __init__.py:499
+#: __init__.py:194 __init__.py:501
 msgid "unknown"
 msgstr "Unbekannt"
 
-#: __init__.py:193
+#: __init__.py:195
 msgid "running"
 msgstr "läuft"
 
-#: __init__.py:194
+#: __init__.py:196
 msgid "idle"
 msgstr "idle"
 
-#: __init__.py:195
+#: __init__.py:197
 msgid "paused"
 msgstr "pausiert"
 
-#: __init__.py:196
+#: __init__.py:198
 msgid "shut down"
 msgstr "wird ausgeschaltet"
 
-#: __init__.py:197
+#: __init__.py:199
 msgid "shut off"
-msgstr "aus"
+msgstr "ausgeschaltet"
 
-#: __init__.py:198
+#: __init__.py:200
 msgid "crashed"
 msgstr "abgestürzt"
 
-#: __init__.py:230
+#: __init__.py:232
 msgid "Location:"
 msgstr "Ort:"
 
-#: __init__.py:256
+#: __init__.py:258
 msgid "Refresh"
 msgstr "Aktualisieren"
 
-#: __init__.py:265
+#: __init__.py:267
 msgid ""
 "This UMC module provides a management system for virtualization hosts that "
 "are registered within the UCS domain.\n"
@@ -272,148 +280,156 @@ msgstr ""
 "detaillierten Auflistung von Einstellungen. Diese können auch bearbeitet und "
 "gespeichert werden."
 
-#: __init__.py:278 __init__.py:405 __init__.py:408
+#: __init__.py:280 __init__.py:407 __init__.py:410
 msgid "Physical server"
 msgstr "Physikalischer Server"
 
-#: __init__.py:278 __init__.py:406 __init__.py:433 __init__.py:609
+#: __init__.py:280 __init__.py:408 __init__.py:435 __init__.py:600
 msgid "CPU usage"
 msgstr "CPU Auslastung"
 
-#: __init__.py:278 __init__.py:608
+#: __init__.py:280 __init__.py:599
 msgid "Memory usage"
 msgstr "Speichernutzung"
 
-#: __init__.py:295 __init__.py:655
+#: __init__.py:297 __init__.py:645
 msgid "Migrate"
 msgstr "Migrieren"
 
-#: __init__.py:304
+#: __init__.py:306
 msgid "Start"
 msgstr "Start"
 
-#: __init__.py:312
+#: __init__.py:314
 msgid "Stop"
 msgstr "Stop"
 
-#: __init__.py:320
+#: __init__.py:322
 msgid "Suspend"
 msgstr "Anhalten"
 
-#: __init__.py:328
+#: __init__.py:330
 msgid "Resume"
 msgstr "Fortführen"
 
-#: __init__.py:335 __init__.py:511 __init__.py:813
+#: __init__.py:337 __init__.py:513 __init__.py:797
 msgid "Remove"
 msgstr "Löschen"
 
-#: __init__.py:366
+#: __init__.py:368
 #, python-format
 msgid "%(dn)s on %(nn)s"
 msgstr "%(dn)s auf %(nn)s"
 
-#: __init__.py:377
+#: __init__.py:379
 msgid "JavaVNC"
 msgstr "JavaVNC"
 
-#: __init__.py:393
+#: __init__.py:395
 msgid "The physical server is not available at the moment"
 msgstr "Der physikalische Server ist momentan nicht erreichbar"
 
-#: __init__.py:486
+#: __init__.py:488
 msgid "Image"
-msgstr ""
+msgstr "Image"
 
-#: __init__.py:486 wizards.py:83
+#: __init__.py:488 wizards.py:83
 msgid "Size"
 msgstr "Größe"
 
-#: __init__.py:486 wizards.py:98
+#: __init__.py:488 wizards.py:98
 msgid "Pool"
 msgstr "Speicherbereich"
 
-#: __init__.py:495 wizards.py:132 wizards.py:328
+#: __init__.py:497 wizards.py:132 wizards.py:328
 msgid "hard drive"
 msgstr "Festplatte"
 
-#: __init__.py:497 types.py:69 wizards.py:330
+#: __init__.py:499 types.py:69 wizards.py:330
 msgid "CDROM drive"
 msgstr "CDROM-Laufwerk"
 
-#: __init__.py:566 __init__.py:570
-msgid "Settings"
-msgstr "Einstellungen"
-
-#: __init__.py:567 __init__.py:571
+#: __init__.py:562 __init__.py:566
 msgid "Devices"
 msgstr "Geräte"
 
-#: __init__.py:568 __init__.py:572
+#: __init__.py:563 __init__.py:567
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: __init__.py:564 __init__.py:568
 msgid "Extended Settings"
 msgstr "Erweiterte Einstellungen"
 
-#: __init__.py:573
+#: __init__.py:569
 msgid "Save"
 msgstr "Speichern"
 
-#: __init__.py:602
+#: __init__.py:593
 msgid "Status"
 msgstr "Status"
 
-#: __init__.py:618
+#: __init__.py:609
 #, python-format
 msgid "Virtual instance %(domain)s"
 msgstr "Virtuelle Instanz %(domain)s"
 
-#: __init__.py:645
+#: __init__.py:635
 #, python-format
 msgid "Migrate %(domain)s from %(source)s to:"
 msgstr "Migriere die Instanz %(domain)s vom Wirtsystem %(source)s zu:"
 
-#: __init__.py:794
+#: __init__.py:778
 msgid ""
 "When removing a virtual instance the disk images bind to it may be removed "
 "also. Please select the disks that should be remove with the virtual "
 "instance. Be sure that none of the images to be delete are used by any other "
 "instance."
-msgstr "Beim Entfernen einer virtuellen Instanz können die damit assoziierten Festplatten-Images auch entfernt werden. Bitte wählen Sie die Platten aus, die entfernt werden sollen. Stellen Sie sicher, dass keins der Images von einer anderen Instanz genutzt wird."
+msgstr ""
+"Beim Entfernen einer virtuellen Instanz können die damit assoziierten "
+"Festplatten-Images auch entfernt werden. Bitte wählen Sie die Platten aus, "
+"die entfernt werden sollen. Stellen Sie sicher, dass keins der Images von "
+"einer anderen Instanz genutzt wird."
 
-#: __init__.py:812
+#: __init__.py:796
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: __init__.py:817
+#: __init__.py:801
 #, python-format
 msgid "Remove the virtual instance %(instance)s?"
 msgstr "Virtuelle Instanz %(instance)s löschen?"
 
-#: __init__.py:832
+#: __init__.py:819
 #, python-format
 msgid "Removing the instance <i>%(domain)s</i> failed"
 msgstr ""
 "Das Löschen der virtuellen Instanz <i>%(domain)s</i> ist fehlgeschlagen"
 
-#: __init__.py:835
+#: __init__.py:822
 #, python-format
 msgid "The instance <i>%(domain)s</i> was removed successfully"
 msgstr "Die virtuelle Instanz <i>%(domain)s</i> wurde erfolgreich gelöscht"
 
-#: __init__.py:894
+#: __init__.py:881
 #, python-format
 msgid "Removing the device <i>%(device)s</i> failed"
 msgstr "Das Löschen des Laufwerks <i>%(device)s</i> ist fehlgeschlagen"
 
-#: __init__.py:897
+#: __init__.py:884
 #, python-format
 msgid "The device <i>%(device)s</i> was removed successfully"
 msgstr "Das Laufwerk <i>%(device)s</i> wurde erfolgreich gelöscht"
 
 #: treeview.py:153
 msgid ""
-"The connection to the Univention Virtual Machine Manager service could not be established. Please verify "
-"that it is started. You may use the UMC service module therefor."
-msgstr "Die Verbindung zum Univention Virtual Machine Manager-Dienst konnte nicht hergestellt werden. Bitte prüfen Sie, ob der Dienst gestartet ist. Dafür können Sie das UMC Dienste-Modul verwenden."
+"The connection to the Univention Virtual Machine Manager service could not "
+"be established. Please verify that it is started. You may use the UMC "
+"service module therefor."
+msgstr ""
+"Die Verbindung zum Univention Virtual Machine Manager-Dienst konnte nicht "
+"hergestellt werden. Bitte prüfen Sie, ob der Dienst gestartet ist. Dafür "
+"können Sie das UMC Dienste-Modul verwenden."
 
 #: treeview.py:161 wizards.py:389
 msgid "Add"
@@ -499,9 +515,9 @@ msgid ""
 "size for the virtual harddrive have been set to default values. You may "
 "change these values to fit your needs."
 msgstr ""
-"Wählen Sie den Speicherbereich in dem die Image-Datei erstellt werden soll. Die "
-"Größe der Image-Datei wurde mit einem Vorgabewert belegt. Diesen können Sie "
-"wie gewünscht anpassen."
+"Wählen Sie den Speicherbereich in dem die Image-Datei erstellt werden soll. "
+"Die Größe der Image-Datei wurde mit einem Vorgabewert belegt. Diesen können "
+"Sie wie gewünscht anpassen."
 
 #: wizards.py:82
 msgid "Filename"
