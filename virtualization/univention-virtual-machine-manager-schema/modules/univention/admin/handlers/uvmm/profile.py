@@ -69,6 +69,14 @@ class VirtTech( univention.admin.syntax.select ):
 		('xen', _( 'Paravirtualization' ) ),
 	]
 
+class Emulator( univention.admin.syntax.select ):
+	name = 'Emulator'
+	choices = [
+		('kvm', _( 'KVM' ) ),
+		('qemu', _( 'QEMU' ) ),
+		('xen', _( 'XEN' ) ),
+	]
+
 property_descriptions={
 	'name': univention.admin.property(
 			short_description= _('Name'),
@@ -104,6 +112,16 @@ property_descriptions={
 			short_description= _('Virtualisation Technology'),
 			long_description= _('Virtualisation Technology'),
 			syntax = VirtTech,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'emulator': univention.admin.property(
+			short_description= _('Virtualisation Technology'),
+			long_description= _('Virtualisation Technology'),
+			syntax = Emulator,
 			multivalue=0,
 			options=[],
 			required=0,

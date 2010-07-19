@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (1.0.15-1) unstable; urgency=low
+
+  * add emulator to profile module; Bug #18863
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 19 Jul 2010 12:56:29 +0200
+
 univention-virtual-machine-manager-schema (1.0.14-1) unstable; urgency=low
 
   * use "human readable" descriptions for the virtualization technology; Bug #18850
