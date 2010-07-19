@@ -127,7 +127,7 @@ class Page( object ):
 			if next:
 				opts = copy_module.copy( options )
 				opts[ 'action' ] = 'next'
-				next_btn = NextButton( ( Action( umcp.SimpleCommand( command, opts ), items ), ) )
+				next_btn = Button( _( 'Next' ), actions = ( Action( umcp.SimpleCommand( command, opts ), items ), ), attributes = { 'class' : 'button_right' }, default = True )
 			elif finish:
 				opts = copy_module.copy( options )
 				opts[ 'action' ] = 'finish'
@@ -135,13 +135,13 @@ class Page( object ):
 					text = finish
 				else:
 					text = _( 'Finish' )
-				next_btn = Button( text, 'actions/finish', ( Action( umcp.SimpleCommand( command, opts ), items ), ), { 'class' : 'button_right' } )
+				next_btn = Button( text, actions = ( Action( umcp.SimpleCommand( command, opts ), items ), ), attributes = { 'class' : 'button_right' }, default = True )
 			else:
 				next_btn = ''
 			if cancel:
 				opts = copy_module.copy( options )
 				opts[ 'action' ] = 'cancel'
-				cancel_btn = Button( _( 'Cancel' ), 'actions/cancel', ( Action( umcp.SimpleCommand( command, opts ), items ), ) )
+				cancel_btn = Button( _( 'Cancel' ), actions = ( Action( umcp.SimpleCommand( command, opts ), items ), ) )
 			else:
 				cancel_btn = ''
 			if prev:
@@ -149,7 +149,7 @@ class Page( object ):
 				opts[ 'action' ] = 'prev'
 				prev = umcp.SimpleCommand( command, opts )
 				prev.verify_options = False
-				prev_btn = PrevButton( ( Action( prev, items ), ) )
+				prev_btn = Button( _( 'Previous' ), actions = ( Action( umcp.SimpleCommand( command, opts ), items ), ), attributes = { 'class' : 'button_right' }, default = True )
 			else:
 				prev_btn = ''
 
