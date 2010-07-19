@@ -1,3 +1,9 @@
+univention-webui-style (5.0.18-1) unstable; urgency=low
+
+  * add style to deactivate automatic line wrapping; Bug #18164
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 19 Jul 2010 13:40:38 +0200
+
 univention-webui-style (5.0.17-1) unstable; urgency=low
 
   * modify style for sections, title color matches the frame title now; Bug #18127

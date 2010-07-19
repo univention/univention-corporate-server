@@ -1449,6 +1449,10 @@ td.umc_list_element img.icon
 padding-right: 8px;
 }
 
+.umc_nowrap {
+	white-space: nowrap;
+}
+
 .umc_mini_padding {
 	padding-left: 2px;
 	padding-top: 0px;
