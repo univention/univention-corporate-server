@@ -115,7 +115,10 @@ class SelectionButton( Button ):
 
 class LinkButton( Button ):
 	def __init__( self, label = '', tag = None, actions = [], attributes = {}, close_dialog = True, helptext = None, current = False ):
-		attributes[ 'class' ] = 'linkbutton'
+		if 'class' in attributes:
+			attributes[ 'class' ] += ' linkbutton'
+		else:
+			attributes[ 'class' ] = 'linkbutton'
 		if current:
 			attributes[ 'class' ] += ' umc_tree_item_current'
 		self.current = current

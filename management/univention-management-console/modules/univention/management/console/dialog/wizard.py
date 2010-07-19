@@ -149,7 +149,7 @@ class Page( object ):
 				opts[ 'action' ] = 'prev'
 				prev = umcp.SimpleCommand( command, opts )
 				prev.verify_options = False
-				prev_btn = Button( _( 'Previous' ), actions = ( Action( umcp.SimpleCommand( command, opts ), items ), ), attributes = { 'class' : 'button_right' }, default = True )
+				prev_btn = Button( _( 'Previous' ), actions = ( Action( umcp.SimpleCommand( command, opts ), items ), ), attributes = { 'class' : 'button_right' } )
 			else:
 				prev_btn = ''
 

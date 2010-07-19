@@ -1,3 +1,9 @@
+univention-management-console (3.0.44-1) unstable; urgency=low
+
+  * wizard: the prev-button sghould not be a default button; Bug #18861
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 19 Jul 2010 12:59:35 +0200
+
 univention-management-console (3.0.43-1) unstable; urgency=low
 
   * wizard: adapt style of buttons to current design of UMC; Bug #18861
