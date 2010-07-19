@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (3.0.9-1) unstable; urgency=low
+
+  * added possibility to set quota off (Bug #15220)
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 19 Jul 2010 08:50:29 +0200
+
 univention-mail-cyrus-kolab2 (3.0.8-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
