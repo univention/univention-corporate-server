@@ -62,6 +62,7 @@ binary-indep: build install
 	dh_pycentral -i
 	dh_installinit
 	dh_installchangelogs
+	univention-install-config-registry-info
 	univention-install-service-info
 	dh_link
 	dh_compress

@@ -36,6 +36,7 @@ set -e
 eval "$(univention-config-registry shell hostname domainname server/role)"
 
 univention-config-registry set "uvmm/pool/default/path?/var/lib/libvirt/images"
+univention-config-registry set "uvmm/umc/vnc?internal"
 
 case "$1" in
     configure)

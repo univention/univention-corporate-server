@@ -56,6 +56,9 @@ from tools import *
 from types import *
 from wizards import *
 
+configRegistry = ucr.ConfigRegistry()
+configRegistry.load()
+
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
 name = 'uvmm'
@@ -360,24 +363,22 @@ class handler( umch.simpleHandler ):
 					host = '[%s]' % sockaddr[0]
 			except: pass
 			vnc = domain.graphics[ 0 ]
-			uri = 'vnc://%s:%s' % (host, vnc.port)
-			html = umcd.HTML( '<a class="nounderline" target="_blank" href="%s"><span class="content">VNC</span></a>' % uri )
-			buttons.append( html )
-			buttons.append( comma )
-			popupwindow = ("<html><head><title>" + \
-			               _("%(dn)s on %(nn)s") + \
-			               "</title></head><body>" + \
-			               "<applet archive='/TightVncViewer.jar' code='com.tightvnc.vncviewer.VncViewer' height='100%%' width='100%%'>" + \
-			               "<param name='host' value='%(h)s'>" + \
-			               "<param name='port' value='%(p)s'>" + \
-			               "<param name='offer relogin' value='no'>" + \
-			               "</applet>" + \
-			               "</body></html>") % {'h': host, 'p': vnc.port, 'nn': node.name, 'dn': domain.name}
-			id = ''.join([c for c in '%s%s' % (host, vnc.port) if c.lower() in set('abcdefghijklmnopqrstuvwxyz0123456789') ])
-			javascript = "var w=window.open('','VNC%s','dependent=no,resizable=yes');if(w.document.applets.length > 0){w.focus();}else{w.document.write('%s');w.document.close();};return false;" % (id, popupwindow.replace("'", "\\'"))
-			html = umcd.HTML( ('<a class="nounderline" href="#" onClick="%s"><span class="content">' + \
-			                   _('JavaVNC') + \
-			                   '</span></a>') % javascript )
+			if configRegistry.get('uvmm/umc/vnc', 'internal').lower() in ('external', ):
+				uri = 'vnc://%s:%s' % (host, vnc.port)
+				html = umcd.HTML( '<a class="nounderline" target="_blank" href="%s"><span class="content">VNC</span></a>' % uri )
+			else:
+				popupwindow = ("<html><head><title>" + \
+				               _("%(dn)s on %(nn)s") + \
+				               "</title></head><body>" + \
+				               "<applet archive='/TightVncViewer.jar' code='com.tightvnc.vncviewer.VncViewer' height='100%%' width='100%%'>" + \
+				               "<param name='host' value='%(h)s'>" + \
+				               "<param name='port' value='%(p)s'>" + \
+				               "<param name='offer relogin' value='no'>" + \
+				               "</applet>" + \
+				               "</body></html>") % {'h': host, 'p': vnc.port, 'nn': node.name, 'dn': domain.name}
+				id = ''.join([c for c in '%s%s' % (host, vnc.port) if c.lower() in set('abcdefghijklmnopqrstuvwxyz0123456789') ])
+				javascript = "var w=window.open('','VNC%s','dependent=no,resizable=yes');if(w.document.applets.length > 0){w.focus();}else{w.document.write('%s');w.document.close();};return false;" % (id, popupwindow.replace("'", "\\'"))
+				html = umcd.HTML( ('<a class="nounderline" href="#" onClick="%s"><span class="content">VNC</span></a>') % javascript )
 			buttons.append( html )
 			buttons.append( comma )
 
