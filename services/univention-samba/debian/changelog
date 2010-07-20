@@ -1,3 +1,9 @@
+univention-samba (5.0.5-1) unstable; urgency=low
+
+  * added dependency to samba-common-bin. Bug #18901
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Jul 2010 17:19:18 +0200
+
 univention-samba (5.0.4-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
