@@ -80,6 +80,28 @@ void signals_unblock(void)
 }
 
 
+void sig_usr1_handler(int sig)
+{
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "received signal %d", sig);
+	int loglevel=univention_debug_level[UV_DEBUG_LISTENER];
+	if ( loglevel < UV_DEBUG_ALL ) {
+		loglevel+=1;
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "increasing univention_debug_level to %d", loglevel);
+		univention_debug_level[UV_DEBUG_LISTENER]=loglevel;
+	}
+}
+
+void sig_usr2_handler(int sig)
+{
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "received signal %d", sig);
+	int loglevel=univention_debug_level[UV_DEBUG_LISTENER];
+	if ( loglevel > UV_DEBUG_ERROR ) {
+		loglevel-=1;
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "decreasing univention_debug_level to %d", loglevel);
+		univention_debug_level[UV_DEBUG_LISTENER]=loglevel;
+	}
+}
+
 void exit_handler(int sig)
 {
 	char **c;
@@ -151,6 +173,12 @@ void process_signals(void)
 			case SIGHUP:
 				reload_handler(signal);
 				break;
+			case SIGUSR1:
+				sig_usr1_handler(signal);
+				break;
+			case SIGUSR2:
+				sig_usr2_handler(signal);
+				break;
 		}
 		pending_signals[signal] = 0;
 	}
@@ -169,6 +197,8 @@ void signals_init(void)
 	install_handler(SIGTERM, &signal_handler);
 	install_handler(SIGABRT, &signal_handler);
 	install_handler(SIGHUP, &signal_handler);
+	install_handler(SIGUSR1, &signal_handler);
+	install_handler(SIGUSR2, &signal_handler);
 }
 #else
 /* initialize signal handling */
@@ -180,5 +210,7 @@ void signals_init(void)
 	install_handler(SIGTERM, &exit_handler);
 	install_handler(SIGABRT, &exit_handler);
 	install_handler(SIGHUP, &reload_handler);
+	install_handler(SIGUSR1, &sig_usr1_handler);
+	install_handler(SIGUSR2, &sig_usr2_handler);
 }
 #endif
