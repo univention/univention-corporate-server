@@ -1,3 +1,9 @@
+univention-installer (6.0.29-1) unstable; urgency=low
+
+  * disable dns forwarder for non server roles fix Bug #13836
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Jul 2010 13:08:23 +0200
+
 univention-installer (6.0.28-1) unstable; urgency=low
 
   * fixed profile auto partitioning (Bug #13151)
