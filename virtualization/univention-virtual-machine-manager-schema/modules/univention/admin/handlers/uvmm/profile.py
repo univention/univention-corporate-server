@@ -65,8 +65,9 @@ class Architecture( univention.admin.syntax.select ):
 class VirtTech( univention.admin.syntax.select ):
 	name = 'VirtTech'
 	choices = [
-		('hvm', _( 'Full virtualization' ) ),
-		('xen', _( 'Paravirtualization' ) ),
+		( 'kvm-hvm', _( 'Full virtualization (KVM)' ) ),
+		( 'xen-hvm', _( 'Full virtualization (XEN)' ) ),
+		( 'xen-xen', _( 'Paravirtualization (XEN)' )  ),
 	]
 
 class Emulator( univention.admin.syntax.select ):
@@ -112,16 +113,6 @@ property_descriptions={
 			short_description= _('Virtualisation Technology'),
 			long_description= _('Virtualisation Technology'),
 			syntax = VirtTech,
-			multivalue=0,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	'emulator': univention.admin.property(
-			short_description= _('Virtualisation Technology'),
-			long_description= _('Virtualisation Technology'),
-			syntax = Emulator,
 			multivalue=0,
 			options=[],
 			required=0,
