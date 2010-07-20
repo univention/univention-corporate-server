@@ -1,3 +1,9 @@
+univention-webui (4.0.20-1) unstable; urgency=low
+
+  * add support for several style classes for buton widgets; Bug #18164
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 20 Jul 2010 13:43:30 +0200
+
 univention-webui (4.0.19-1) unstable; urgency=low
 
   * fixed valid session detection (Bug #14593)

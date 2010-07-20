@@ -644,7 +644,7 @@ class button extends extra{
 
 	function cancel_button($title, $icon, $byteindex, $content, $defaultbutton)
 	{
-		$str .= '<span class="cancel">';
+		$str .= '<span class="'.$this->attribute['class'].'">';
 		$str .= '<input type="hidden" id="'.$byteindex.'" name="usrinput['.$byteindex.']" value="'.$content.'"></input>';
 		if ($defaultbutton) {
 			$str .= $this->default_button($byteindex);	
@@ -680,16 +680,21 @@ class button extends extra{
 		$class=$this->status;
 		if(isset($this->attribute['active'])) $class .= '_on';
 
-		if ( $this->attribute['class'] && $this->attribute['class'] == 'submit' ) {
+		if ( $this->attribute['class'] ) {
+			$classes = explode( " ", $this->attribute['class'] );
+		} else {
+			$classes = Array();
+		}
+		if ( in_array( 'submit', $classes ) ) {
 			return $this->submit_button($this->basket['text'], $this->attribute['icon'], $this->byteindex, $this->basket['content'], $this->attribute['defaultbutton']); 
 		}
-		if ( $this->attribute['class'] && $this->attribute['class'] == 'cancel' ) {
+		if ( in_array( 'cancel', $classes ) ) {
 			return $this->cancel_button($this->basket['text'], $this->attribute['icon'], $this->byteindex, $this->basket['content'], $this->attribute['defaultbutton']); 
 		}
-		if ( $this->attribute['class'] && $this->attribute['class'] == 'cancel spacer' ) {
+		if ( in_array( 'cancel_spacer', $classes ) ) {
 			return $this->cancel_spacer_button($this->basket['text'], $this->attribute['icon'], $this->byteindex, $this->basket['content'], $this->attribute['defaultbutton']); 
 		}
-		if ( $this->attribute['class'] && $this->attribute['class'] == 'search_result' ) {
+		if ( in_array( 'search_result', $classes ) ) {
 			return $this->search_result_button($this->basket['text'], $this->attribute['icon'], $this->byteindex, $this->basket['content'], $this->attribute['defaultbutton']); 
 		}
 
