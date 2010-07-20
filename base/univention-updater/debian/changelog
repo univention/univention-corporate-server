@@ -1,3 +1,10 @@
+univention-updater (6.0.9-1) unstable; urgency=low
+
+  * added --silent paramter for univention-updater to suppress any output
+    on stdout (Bug #18465)
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Jul 2010 13:48:42 +0200
+
 univention-updater (6.0.8-1) unstable; urgency=low
 
   * enhanced univention-updater and univention-security-update: (Bug #14346)

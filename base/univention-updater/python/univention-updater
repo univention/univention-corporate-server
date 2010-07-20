@@ -84,6 +84,11 @@ def log(str):
 
 def dprint(str):
 	""" Print message to stdout and LOGNAME. """
+	if nostdout:
+		print >>fd_log, str
+		fd_log.flush()
+		return
+		
 	for fd in (stdout_orig, fd_log):
 		print >>fd, str
 		fd.flush()
@@ -122,7 +127,7 @@ def usage(fd=sys.stdout):
 	print >>fd, 'Copyright (c) 2005-2010 Univention GmbH, Germany'
 	print >>fd, ''
 	print >>fd, 'Syntax:'
-	print >>fd, '  univention-updater <local,net,cdrom> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--iso <iso-image>] [--updateto <UCS-Release>] [--reboot <timespec>] [--no-clean] [--check] '
+	print >>fd, '  univention-updater <local,net,cdrom> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--iso <iso-image>] [--updateto <UCS-Release>] [--reboot <timespec>] [--no-clean] [--check] [--silent]'
 	print >>fd, '  univention-updater [--help] '
 	print >>fd, ''
 	print >>fd, 'Known-Bugs:'
@@ -286,6 +291,7 @@ def main():
 
 	cdrom_mount_point='/cdrom'
 	iso=None
+	global nostdout
 
 	fp_debug=open('/var/log/univention/updater.log', 'a+')
 	stdout_orig=sys.stdout
@@ -315,8 +321,9 @@ def main():
 	clean  = True
 	ignoressh = False
 	ignoreterm = False
+	nostdout = False
 
-	longopts=['src=','device=', 'cdrom=', 'iso=', 'updateto=', 'reboot=', 'no-clean', 'check', 'ignoressh', 'ignoreterm']
+	longopts=['src=','device=', 'cdrom=', 'iso=', 'updateto=', 'reboot=', 'no-clean', 'check', 'ignoressh', 'ignoreterm', 'silent']
 	try:
 		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
 	except getopt.error, msg:
@@ -362,6 +369,8 @@ def main():
 			ignoressh = True
 		elif opt == '--ignoreterm':
 			ignoreterm = True
+		elif opt == '--silent':
+			nostdout = True
 		else:
 			dprint('Unknown parameter: "%s"'%opt)
 			sys.exit(2)
