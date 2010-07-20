@@ -38,6 +38,7 @@ fi
 univention-baseconfig set ldap/port?389
 univention-baseconfig set mail/cyrus?yes
 univention-baseconfig set mail/cyrus/sieve/listen_host?localhost
+univention-config-registry set mail/cyrus/userlogfiles?yes
 
 dpkg-statoverride --add root sasl 660 /etc/sasldb2 || true
 

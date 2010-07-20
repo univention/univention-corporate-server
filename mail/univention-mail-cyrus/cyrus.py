@@ -38,6 +38,19 @@ description='Create default imap folders and sieve mail filters'
 filter='(&(objectClass=univentionMail)(uid=*))'
 attributes=['uid', 'mailPrimaryAddress', 'mailGlobalSpamFolder']
 
+def create_cyrus_userlogfile(mailaddress):
+	userlogfiles = listener.baseConfig.get('mail/cyrus/userlogfiles')
+	if userlogfiles and userlogfiles.lower() in ['true', 'yes']:
+		path='/var/lib/cyrus/log/%s' % (mailaddress)
+
+		cyrus_id=pwd.getpwnam('cyrus')[2]
+		mail_id=grp.getgrnam('mail')[2]
+
+		if not os.path.exists( path ):
+			os.mkdir(path)
+		os.chmod(path,0750)
+		os.chown(path,cyrus_id, mail_id)
+
 def handler(dn, new, old):
 	if new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0]:
 		listener.setuid(0)
@@ -46,15 +59,7 @@ def handler(dn, new, old):
 			p = os.popen('/usr/sbin/univention-cyrus-mkdir %s' % (string.lower(new['mailPrimaryAddress'][0])))
 			p.close()
 
-			path='/var/lib/cyrus/log/%s' % (string.lower(new['mailPrimaryAddress'][0]))
-			try:
-				os.mkdir(path)
-			except:
-				pass
-			os.chmod(path,0750)
-			cyrus_id=pwd.getpwnam('cyrus')[2]
-			mail_id=grp.getgrnam('mail')[2]
-			os.chown(path,cyrus_id, mail_id)
+			create_cyrus_userlogfile(string.lower(new['mailPrimaryAddress'][0]))
 
 			listener.unsetuid()
 		except:

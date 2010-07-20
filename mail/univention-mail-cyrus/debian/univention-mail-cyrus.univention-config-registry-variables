@@ -75,3 +75,9 @@ Description[de]=Bestimmt, ob Cyrus 2.2 beim Systemstart gestartet wird
 Description[en]=Controls whether cyrus 2.2 will be started upon system boot
 Type=str
 Categories=service-mail
+
+[mail/cyrus/userlogfiles]
+Description[de]=Bestimmt, ob Benutzer-Protokoll-Dateien für neue Benutzer in /var/lib/cyrus/log/ erstellt werden.
+Description[en]=Controls whether user log files will be created for new users in /var/lib/cyrus/log/.
+Type=str
+Categories=service-mail

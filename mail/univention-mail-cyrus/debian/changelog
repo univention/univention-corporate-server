@@ -1,3 +1,9 @@
+univention-mail-cyrus (3.0.1-1) unstable; urgency=low
+
+  * add UCR variable mail/cyrus/userlogfiles (Bug #18666)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 20 Jul 2010 14:38:04 +0200
+
 univention-mail-cyrus (3.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
