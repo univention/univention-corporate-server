@@ -1,4 +1,0 @@
-Type: file
-File: etc/apache2/sites-available/ingo-vacation
-Variables: horde/webroot
-Variables: horde/ingo-vacation/alias
