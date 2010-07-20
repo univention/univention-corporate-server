@@ -203,6 +203,8 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 		}
 		ldap_msgfree(res);
 	}
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
+			"finished initializing module %s", handler->name);
 	return rv;
 }
 

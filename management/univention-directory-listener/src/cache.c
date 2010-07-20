@@ -139,7 +139,7 @@ int cache_init(void)
 	if (lockf(fileno(lock_fp), F_TEST, 0) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
 				"Could not get lock for database [%s]; "
-				"Is anonother listener processs running?\n",
+				"Is another listener processs running?\n",
 				lock_file);
 		exit(0);
 	}
@@ -597,6 +597,7 @@ int cache_print_entries(char *dn)
 		printf("%s\n", (char*)key.data);
 	} while (cur->c_get(cur, &key, &data, DB_NEXT) == 0);
 
+	cur->c_close(cur);
 	free(key.data);
 	free(data.data);
 	return 0;

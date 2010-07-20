@@ -1,3 +1,10 @@
+univention-directory-listener (5.0.0-2) unstable; urgency=low
+
+  * fix typo (Bug #18677)
+  * added log message on exit of change_init_module (Bug #9318)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 20 Jul 2010 17:03:53 +0200
+
 univention-directory-listener (5.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
