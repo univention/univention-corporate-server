@@ -127,7 +127,7 @@ def usage(fd=sys.stdout):
 	print >>fd, 'Copyright (c) 2005-2010 Univention GmbH, Germany'
 	print >>fd, ''
 	print >>fd, 'Syntax:'
-	print >>fd, '  univention-updater <local,net,cdrom> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--iso <iso-image>] [--updateto <UCS-Release>] [--reboot <timespec>] [--no-clean] [--check] [--silent]'
+	print >>fd, '  univention-updater <local,net,cdrom> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--iso <iso-image>] [--updateto <UCS-Release>] [--reboot <timespec>] [--no-clean] [--silent] [--check]'
 	print >>fd, '  univention-updater [--help] '
 	print >>fd, ''
 	print >>fd, 'Known-Bugs:'

@@ -1,3 +1,9 @@
+univention-updater (6.0.9-2) unstable; urgency=low
+
+  * fixed help message for previous change (Bug #18465) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Jul 2010 14:03:08 +0200
+
 univention-updater (6.0.9-1) unstable; urgency=low
 
   * added --silent paramter for univention-updater to suppress any output
