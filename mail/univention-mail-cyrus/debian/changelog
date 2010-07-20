@@ -1,3 +1,9 @@
+univention-mail-cyrus (3.0.1-1.1) unstable; urgency=low
+
+  * fixed postinst, restart cyrus server (Bug #18814) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Jul 2010 16:14:59 +0200
+
 univention-mail-cyrus (3.0.1-1) unstable; urgency=low
 
   * add UCR variable mail/cyrus/userlogfiles (Bug #18666)

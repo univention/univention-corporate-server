@@ -42,6 +42,9 @@ univention-config-registry set mail/cyrus/userlogfiles?yes
 
 dpkg-statoverride --add root sasl 660 /etc/sasldb2 || true
 
+
+#DEBHELPER#
+
 CHROOT=/var/spool/postfix
 
 addgroup --system postfix || true
@@ -93,6 +96,8 @@ fi
 /etc/init.d/saslauthd start
 
 univention-baseconfig commit /etc/init.d/cyrus21 || true
+univention-baseconfig commit /etc/init.d/cyrus2.2 || true
+killall -9 cyrmaster
 cyrver=`univention-baseconfig get mail/cyrus/version`
 if [ "$cyrver" == "2.2" ]; then
     /etc/init.d/cyrus2.2 restart
@@ -162,7 +167,6 @@ if [ ! -d /var/spool/cyrus/jobs/mailbox/create/admin ]; then
 	mkdir -p /var/spool/cyrus/jobs/mailbox/create/admin
 fi
 
-#DEBHELPER#
 
 chown cyrus:mail /var/spool/sieve/*sieve
 
