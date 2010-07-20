@@ -471,7 +471,9 @@ class object(content):
 		self.add_elem('netobject.INPUT_NAMESERVER1', input(nameserver1_str,self.minY+12,self.minX+20,MAXIP+8)) #10
 		self.elements.append(button(_('More'),self.minY+12,self.minX+(self.width)-4,align="right")) #11
 
+		proxyY=14
 		if self.ask_forwarder:
+			proxyY=16
 			# - DNS Forwarder
 			self.elements.append(textline(_('DNS Forwarder'),self.minY+14,self.minX+2)) #12
 			if not self.container.has_key('DNS-Forwarder'):
@@ -481,11 +483,11 @@ class object(content):
 			self.elements.append(button(_('More'),self.minY+14,self.minX+(self.width)-4,align="right")) #14
 
 		# - Proxy
-		self.elements.append(textline(_('HTTP proxy'),self.minY+16,self.minX+2)) #15
+		self.elements.append(textline(_('HTTP proxy'),self.minY+proxyY,self.minX+2)) #15
 		if not self.container.has_key('proxy_http'):
-			self.elements.append(input('http://',self.minY+16,self.minX+20,MAXIP+8)) #16
+			self.elements.append(input('http://',self.minY+proxyY,self.minX+20,MAXIP+8)) #16
 		else:
-			self.elements.append(input('%s'%self.container['proxy_http'][0],self.minY+16,self.minX+20,MAXIP+8)) #16
+			self.elements.append(input('%s'%self.container['proxy_http'][0],self.minY+proxyY,self.minX+20,MAXIP+8)) #16
 
 		if not self.already_redraw:
 			#add first device
@@ -603,6 +605,24 @@ class object(content):
 
 	def helptext(self):
 		return _('Network \n \n In this module the network configuration is done. \n \n Select \"New Interface\" to add a new interface. Select \"New Virtual Interface\" to create a new virtual interface. \n \n Interface: \n Select the interface you want to configure. \n \n Dynamic (DHCP): \n Mark this field if you want this interface to retrieve its IP configuration via DHCP (Dynamic Host Configuration Protocol). \n \n Static: \n Mark this field if you want this interface to be configured manually. \n \n Enter IP, netmask, broadcast and network address of this interface. \n\n Gateway: \n Default gateway to be use. \n \n Name server: \n Enter the IP address of the primary name server, if you are adding a system to an existing domain. \n More: \n Enter additional name servers \n \n DNS Forwarder: \n Enter the IP address of a DNS server to forward queries to. \n More: \n Enter additional DNS forwarders \n \n HTTP-Proxy: \n Enter the IP address and port number for the HTTP-Proxy (example: http://192.168.1.123:5858)')
+
+	def draw(self):
+		self.debug('Drawing Main Window')
+		if len(self.elements) > 13:
+			self.container['Gateway']=[self.elements[8].result().strip()]
+			self.container['Nameserver']=[self.elements[10].result().strip()]
+			if self.ask_forwarder:
+				self.container['DNS-Forwarder']=[self.elements[13].result().strip()]
+				self.container['proxy_http']=[self.elements[16].result().strip()]
+			else:
+				self.container['proxy_http']=[self.elements[13].result().strip()]
+			if 'system_role' in self.all_results and not (self.all_results['system_role'] in 
+				['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave']):
+				self.ask_forwarder=False
+			else:
+				self.ask_forwarder=True
+			self.layout()
+		content.draw(self)
 
 	def modheader(self):
 		return _('Network')
