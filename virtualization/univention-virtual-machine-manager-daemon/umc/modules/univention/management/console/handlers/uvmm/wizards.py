@@ -50,19 +50,19 @@ import uvmmd
 
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
-class DeviceWizard( umcd.IWizard ):
+class DriveWizard( umcd.IWizard ):
 	def __init__( self, command ):
 		umcd.IWizard.__init__( self, command )
-		self.title = _( 'Add a device' )
+		self.title = _( 'Add a drive' )
 		self.pool_syntax = DynamicSelect( _( 'Storage pool' ) )
-		self.image_syntax = DynamicSelect( _( 'Device image' ) )
+		self.image_syntax = DynamicSelect( _( 'Drive image' ) )
 		self.actions[ 'pool-selected' ] = self.pool_selected
 		self.uvmm = uvmmd.Client( auto_connect = False )
 		self.prev_first_page = False
 
 		# page 0
-		page = umcd.Page( self.title, _( 'What type of device should be created?' ) )
-		page.options.append( umcd.make( ( 'device-type', DriveTypeSelect( _( 'Type of device' ) ) ) ) )
+		page = umcd.Page( self.title, _( 'What type of drive should be created?' ) )
+		page.options.append( umcd.make( ( 'drive-type', DriveTypeSelect( _( 'Type of drive' ) ) ) ) )
 		self.append( page )
 
 		# page 1
@@ -73,7 +73,7 @@ class DeviceWizard( umcd.IWizard ):
 		# page 2
 		page = umcd.Page( self.title )
 		page.options.append( umcd.Text( '' ) ) # will be replaced with pool selection button
-		page.options.append( umcd.make( ( 'device-image', self.image_syntax ) ) )
+		page.options.append( umcd.make( ( 'drive-image', self.image_syntax ) ) )
 		self.append( page )
 
 		# page 3
@@ -84,7 +84,7 @@ class DeviceWizard( umcd.IWizard ):
 		self.append( page )
 
 		# page 4
-		page = umcd.Page( self.title, _( 'The following device will be create:' ) )
+		page = umcd.Page( self.title, _( 'The following drive will be create:' ) )
 		self.append( page )
 
 	def _create_pool_select_button( self, options ):
@@ -92,7 +92,7 @@ class DeviceWizard( umcd.IWizard ):
 		for storage in self.node.storages:
 			opts = copy.copy( options )
 			opts[ 'action' ] = 'pool-selected'
-			opts[ 'device-pool' ] = storage.name
+			opts[ 'drive-pool' ] = storage.name
 			action = umcd.Action( umcp.SimpleCommand( self.command, options = opts ) )
 			choices.append( { 'description' : storage.name, 'actions' : [ action, ] } )
 		return umcd.ChoiceButton( _( 'Pool' ), choices = choices )
@@ -102,27 +102,27 @@ class DeviceWizard( umcd.IWizard ):
 		umcd.IWizard.reset( self )
 
 	def setup( self, object, prev = None, next = None, finish = None, cancel = None ):
-		ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: setup! (current: %s, prev_first_page: %s)' % ( str( self.current ), self.prev_first_page ) )
+		ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: setup! (current: %s, prev_first_page: %s)' % ( str( self.current ), self.prev_first_page ) )
 		if self.current == 0 and self.prev_first_page:
 			return umcd.IWizard.setup( self, object, prev = True, next = next, finish = finish, cancel = cancel )
 		return umcd.IWizard.setup( self, object, prev = prev, next = next, finish = finish, cancel = cancel )
 
 	def action( self, object, node ):
-		ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: action! (current: %s)' % str( self.current ) )
+		ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: action! (current: %s)' % str( self.current ) )
 		self.node_uri, self.node = node
 		if self.current == None:
 			# read pool
-			ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: node storage pools: %s' % str( self.node.storages ) )
+			ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: node storage pools: %s' % str( self.node.storages ) )
 			btn = self._create_pool_select_button( object.options )
-			object.options[ 'device-pool' ] = 'default'
+			object.options[ 'drive-pool' ] = 'default'
 			self[ 2 ].options[ 0 ] = btn
 			self[ 3 ].options[ 0 ] = btn
 
 		return umcd.IWizard.action( self, object )
 
 	def pool_selected( self, object ):
-		vols = self.uvmm.storage_pool_volumes( self.node_uri, object.options.get( 'device-pool', 'default' ), object.options[ 'device-type' ] )
-		ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: node storage volumes: %s' % str( vols ) )
+		vols = self.uvmm.storage_pool_volumes( self.node_uri, object.options.get( 'drive-pool', 'default' ), object.options[ 'drive-type' ] )
+		ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: node storage volumes: %s' % str( vols ) )
 		self.image_syntax.update_choices( [ vol.source for vol in vols ] )
 
 		return self[ self.current ]
@@ -131,13 +131,13 @@ class DeviceWizard( umcd.IWizard ):
 		if disk_type == 'disk':
 			return _( 'hard drive' )
 		else:
-			return _( 'CDROM device' )
+			return _( 'CDROM drive' )
 
 	def next( self, object ):
-		if self.current == 0: # which device type?
+		if self.current == 0: # which drive type?
 			# initialize pool and image selection
 			self.pool_selected( object )
-			if object.options[ 'device-type' ] == 'disk':
+			if object.options[ 'drive-type' ] == 'disk':
 				self.current = 1
 				self[ 2 ].hint = None
 			else:
@@ -148,29 +148,29 @@ class DeviceWizard( umcd.IWizard ):
 				self.current = 3
 			else:
 				self.current = 2
-				if object.options[ 'device-type' ] == 'disk':
+				if object.options[ 'drive-type' ] == 'disk':
 					self[ self.current ].description = _( 'Select the storage pool and afterwards one of the existing disk images' )
 				else:
 					self[ self.current ].description = _( 'Select the storage pool and afterwards one of the existing ISO image' )
 		elif self.current in ( 2, 3 ): # select existing disk image
 			if self.current == 2:
-				ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: collect information about existing disk image: %s' % object.options[ 'device-image' ] )
-				vols = self.uvmm.storage_pool_volumes( self.node_uri, object.options.get( 'device-pool', 'default' ), object.options[ 'device-type' ] )
+				ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: collect information about existing disk image: %s' % object.options[ 'drive-image' ] )
+				vols = self.uvmm.storage_pool_volumes( self.node_uri, object.options.get( 'drive-pool', 'default' ), object.options[ 'drive-type' ] )
 				for vol in vols:
-					if vol.source == object.options[ 'device-image' ]:
-						ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: set information about existing disk image: %s' % object.options[ 'device-image' ] )
-						object.options[ 'image-name' ] = os.path.basename( object.options[ 'device-image' ] )
+					if vol.source == object.options[ 'drive-image' ]:
+						ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: set information about existing disk image: %s' % object.options[ 'drive-image' ] )
+						object.options[ 'image-name' ] = os.path.basename( object.options[ 'drive-image' ] )
 						object.options[ 'image-size' ] = MemorySize.num2str( vol.size )
-				if not object.options[ 'device-image' ] in object.options.get( '_reuse_image', [] ) and vol.device == uvmmn.Disk.DEVICE_DISK and self.uvmm.is_image_used( self.node_uri, object.options[ 'device-image' ] ):
+				if not object.options[ 'drive-image' ] in object.options.get( '_reuse_image', [] ) and vol.device == uvmmn.Disk.DEVICE_DISK and self.uvmm.is_image_used( self.node_uri, object.options[ 'drive-image' ] ):
 					if '_reuse_image' in object.options:
-						object.options[ '_reuse_image' ].append( object.options[ 'device-image' ] )
+						object.options[ '_reuse_image' ].append( object.options[ 'drive-image' ] )
 					else:
-						object.options[ '_reuse_image' ] = [ object.options[ 'device-image' ], ]
+						object.options[ '_reuse_image' ] = [ object.options[ 'drive-image' ], ]
 					return umcd.WizardResult( False, _( 'The selected image is already used by another virtual instance. You may consider to choose another image or continue if you are sure that it will not cause any problems.' ) )
 			self.current = 4
 			self[ self.current ].options = []
-			self[ self.current ].options.append( umcd.HTML( _( '<b>Device type</b>: %(type)s' ) % { 'type' : self._disk_type_text( object.options[ 'device-type' ] ) } ) )
-			self[ self.current ].options.append( umcd.HTML( _( '<b>Storage pool</b>: %(pool)s (path: %(path)s)' ) % { 'pool' : object.options[ 'device-pool' ], 'path' : self._get_pool_path( object.options[ 'device-pool' ] ) } ) )
+			self[ self.current ].options.append( umcd.HTML( _( '<b>Drive type</b>: %(type)s' ) % { 'type' : self._disk_type_text( object.options[ 'drive-type' ] ) } ) )
+			self[ self.current ].options.append( umcd.HTML( _( '<b>Storage pool</b>: %(pool)s (path: %(path)s)' ) % { 'pool' : object.options[ 'drive-pool' ], 'path' : self._get_pool_path( object.options[ 'drive-pool' ] ) } ) )
 			self[ self.current ].options.append( umcd.HTML( _( '<b>Image filename</b>: %(image)s' ) % { 'image' : object.options[ 'image-name' ] } ) )
 			self[ self.current ].options.append( umcd.HTML( _( '<b>Image size</b>: %(size)s' ) % { 'size' : object.options[ 'image-size' ] } ) )
 		else:
@@ -187,7 +187,7 @@ class DeviceWizard( umcd.IWizard ):
 		elif self.current == 3:
 			self.current = 1
 		elif self.current == 4:
-			if object.options[ 'existing-or-new-disk' ] == 'disk-new' and object.options[ 'device-type' ] == 'disk':
+			if object.options[ 'existing-or-new-disk' ] == 'disk-new' and object.options[ 'drive-type' ] == 'disk':
 				self.current = 3
 			else:
 				self.current = 2
@@ -204,15 +204,15 @@ class DeviceWizard( umcd.IWizard ):
 		return ''
 
 	def finish( self, object ):
-		# collect information about the device
+		# collect information about the drive
 		disk = uvmmn.Disk()
-		if object.options[ 'device-type' ] == 'disk':
+		if object.options[ 'drive-type' ] == 'disk':
 			disk.device = uvmmn.Disk.DEVICE_DISK
 		else:
 			disk.device = uvmmn.Disk.DEVICE_CDROM
 		disk.size = MemorySize.str2num( object.options[ 'image-size' ], unit = 'MB' )
 
-		disk.source = self._get_pool_path( object.options[ 'device-pool' ] )
+		disk.source = self._get_pool_path( object.options[ 'drive-pool' ] )
 		disk.source = os.path.join( disk.source, object.options[ 'image-name' ] )
 
 		self._result = disk
@@ -227,10 +227,10 @@ class InstanceWizard( umcd.IWizard ):
 		self.node = None
 		self.profile_syntax = DynamicSelect( _( 'Profiles' ) )
 		self.profile_syntax.update_choices( [ item[ 'name' ] for item in self.udm.get_profiles() ] )
-		self.device_wizard = DeviceWizard( command )
-		self.device_wizard_active = False
-		self.actions[ 'new-device' ] = self.new_device
-		self.devices = []
+		self.drive_wizard = DriveWizard( command )
+		self.drive_wizard_active = False
+		self.actions[ 'new-drive' ] = self.new_drive
+		self.drives = []
 
 		# page 0
 		page = umcd.Page( self.title, _( 'By selecting a profile for the virtual instance most of the settings will be filled out with default values. In the following step these values may be modified.' ) )
@@ -246,9 +246,9 @@ class InstanceWizard( umcd.IWizard ):
 		self.append( page )
 
 		# page 2
-		page = umcd.Page( self.title, umcd.HTML( _( 'The virtual instance will be created with the settings shown below. You may now add additional devices by clicking the button <i>Add device</i>' ) ) )
+		page = umcd.Page( self.title, umcd.HTML( _( 'The virtual instance will be created with the settings shown below. You may now add additional drives by clicking the button <i>Add drive</i>' ) ) )
 		page.options.append( umcd.HTML( '' ) )
-		add_btn = umcd.Button( _( 'Add device' ), 'uvmm/add', ( umcd.Action( umcp.SimpleCommand( command, options = { 'action' : 'new-device' } ) ), ) )
+		add_btn = umcd.Button( _( 'Add drive' ), 'uvmm/add', ( umcd.Action( umcp.SimpleCommand( command, options = { 'action' : 'new-drive' } ) ), ) )
 		page.actions.append( add_btn )
 		self.append( page )
 
@@ -257,15 +257,18 @@ class InstanceWizard( umcd.IWizard ):
 		return umcd.IWizard.action( self, object )
 
 	def next( self, object ):
-		if self.device_wizard_active:
-			return self.device_wizard.next( object )
+		if self.drive_wizard_active:
+			return self.drive_wizard.next( object )
 		if not 'instance-profile' in object.options:
 			self.replace_title( _( 'Create a virtual instance' ) )
 		else:
-			self.replace_title( _( 'Create a virtual instance (profile: %(profile)s)' ) % { 'profile' : object.options[ 'instance-profile' ] } )
+			if not object.options.get( 'name' ):
+				self.replace_title( _( 'Create a virtual instance (profile: %(profile)s)' ) % { 'profile' : object.options[ 'instance-profile' ] } )
+			else:
+				self.replace_title( _( 'Create a virtual instance <i>%(name)s</i>' ) % { 'name' : object.options[ 'name' ] } )
 		if self.current == 0:
 			self.profile = self.udm.get_profile( object.options[ 'instance-profile' ] )
-			ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: next: profile boot devices: %s' % str( self.profile[ 'bootdev' ] ) )
+			ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: next: profile boot drives: %s' % str( self.profile[ 'bootdev' ] ) )
 			object.options[ 'name' ] = self.profile[ 'name_prefix' ]
 			object.options[ 'arch' ] = self.profile[ 'arch' ]
 			object.options[ 'type' ] = self.profile[ 'virttech' ]
@@ -288,19 +291,19 @@ class InstanceWizard( umcd.IWizard ):
 			if mem_size > self.max_memory:
 				object.options[ 'memory' ] = MemorySize.num2str( self.max_memory * 0.75 )
 				return umcd.WizardResult( False, _( 'Your physical server does not have that much memory. As a suggestion the a mount of memory was set to 75% of the available memory.' ) )
-			# activate device wizard to add a first mandatory device
-			if not self.devices:
-				self.device_wizard.prev_first_page = True
-				self.new_device( object, cancel = False )
+			# activate drive wizard to add a first mandatory drive
+			if not self.drives:
+				self.drive_wizard.prev_first_page = True
+				self.new_drive( object, cancel = False )
 		return umcd.IWizard.next( self, object )
 
 	def prev( self, object ):
-		if self.device_wizard_active:
-			if self.device_wizard.current == 0:
-				self.device_wizard_active = False
-				self.device_wizard.reset()
+		if self.drive_wizard_active:
+			if self.drive_wizard.current == 0:
+				self.drive_wizard_active = False
+				self.drive_wizard.reset()
 			else:
-				return self.device_wizard.prev( object )
+				return self.drive_wizard.prev( object )
 
 		return umcd.IWizard.prev( self, object )
 
@@ -318,11 +321,11 @@ class InstanceWizard( umcd.IWizard ):
 		settings.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'VNC access' ) ), value ] )
 		rows.append( [ settings ] )
 
-		rows.append( [ umcd.HTML( '<b>%s</b><br>' % _( 'Attached devices' ) ), ] )
+		rows.append( [ umcd.HTML( '<b>%s</b><br>' % _( 'Attached drives' ) ), ] )
 
 		dev_template = _( '<li>%(type)s: %(size)s (image file %(image)s in pool %(pool)s)</li>' )
 		html = '<ul class="umc_listing">'
-		for dev in self.devices:
+		for dev in self.drives:
 			values = {}
 			if dev.device == uvmmn.Disk.DEVICE_DISK:
 				values[ 'type' ] = _( 'hard drive' )
@@ -342,12 +345,12 @@ class InstanceWizard( umcd.IWizard ):
 		self[ 2 ].options[ 0 ] = umcd.List( content = rows )
 
 	def finish( self, object ):
-		if self.device_wizard_active:
-			self.device_wizard_active = False
-			self.device_wizard.finish( object )
-			self.devices.append( self.device_wizard.result() )
+		if self.drive_wizard_active:
+			self.drive_wizard_active = False
+			self.drive_wizard.finish( object )
+			self.drives.append( self.drive_wizard.result() )
 			self._list_domain_settings( object )
-			self.device_wizard.reset()
+			self.drive_wizard.reset()
 		else:
 			domain = uvmmp.Data_Domain()
 			domain.name = object.options[ 'name' ]
@@ -356,50 +359,51 @@ class InstanceWizard( umcd.IWizard ):
 			domain.maxMem = MemorySize.str2num( object.options[ 'memory' ], unit = 'MB' )
 			domain.vcpus = object.options[ 'cpus' ]
 			if object.options[ 'bootdev' ] and object.options[ 'bootdev' ][ 0 ]:
-				ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: boot devices: %s' % str( object.options[ 'bootdev' ] ) )
+				ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: boot drives: %s' % str( object.options[ 'bootdev' ] ) )
 				domain.boot = object.options[ 'bootdev' ]
 			if object.options[ 'vnc' ]:
 				gfx = uvmmn.Graphic()
 				gfx.listen = '0.0.0.0'
 				gfx.keymap = object.options[ 'kblayout' ]
 				domain.graphics = [ gfx, ]
-			# set device names
+			# set drive names
 			dev_name = 'a'
-			for dev in self.devices:
+			for dev in self.drives:
 				dev.target_dev = 'hd%s' % dev_name
 				dev_name = chr( ord( dev_name ) + 1 )
-			domain.disks = self.devices
+			domain.disks = self.drives
 			iface = uvmmn.Interface()
 			iface.source = object.options[ 'interface' ]
 			self._result = domain
 
 		return umcd.WizardResult()
 
-	def new_device( self, object, cancel = True ):
-		# all next, prev and finished events must be redirected to the device wizard
-		self.device_wizard_active = True
-		self.device_wizard_cancel = cancel
-		self.device_number += 1
-		object.options[ 'image-name' ] = object.options[ 'name' ] + '-%d.img' % self.device_number
+	def new_drive( self, object, cancel = True ):
+		# all next, prev and finished events must be redirected to the drive wizard
+		self.drive_wizard_active = True
+		self.drive_wizard_cancel = cancel
+		self.drive_number += 1
+		object.options[ 'image-name' ] = object.options[ 'name' ] + '-%d.img' % self.drive_number
 		object.options[ 'image-size' ] = '8 GB'
-		return self.device_wizard.action( object, ( self.node_uri, self.node ) )
+		self.drive_wizard.replace_title( _( 'Add drive to <i>%(name)s</i>' ) % { 'name' : object.options[ 'name' ] } )
+		return self.drive_wizard.action( object, ( self.node_uri, self.node ) )
 
 	def setup( self, object, prev = None, next = None, finish = None, cancel = None ):
-		if self.device_wizard_active:
-			return self.device_wizard.setup( object, finish = _( 'Add' ), cancel = self.device_wizard_cancel )
+		if self.drive_wizard_active:
+			return self.drive_wizard.setup( object, finish = _( 'Add' ), cancel = self.drive_wizard_cancel )
 		return umcd.IWizard.setup( self, object, cancel = False )
 
 	def cancel( self, object ):
-		if self.device_wizard_active:
-			self.device_wizard_active = False
+		if self.drive_wizard_active:
+			self.drive_wizard_active = False
 			# fall back to instance overview
 			self.current = 2
-			self.device_wizard.reset()
+			self.drive_wizard.reset()
 
 		return umcd.WizardResult()
 
 	def reset( self ):
-		self.devices = []
-		self.device_number = 0
-		self.device_wizard.reset()
+		self.drives = []
+		self.drive_number = 0
+		self.drive_wizard.reset()
 		umcd.IWizard.reset( self )

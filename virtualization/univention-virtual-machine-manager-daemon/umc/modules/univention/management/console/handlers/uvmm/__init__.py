@@ -71,7 +71,7 @@ hide_tabs = True
 # fields of a drive definition
 drive_type = umcd.make( ( 'type', DriveTypeSelect( _( 'Type' ) ) ), attributes = { 'width' : '250' } )
 drive_uri = umcd.make( ( 'uri', umc.String( 'URI' ) ), attributes = { 'width' : '250' } )
-drive_dev = umcd.make( ( 'dev', umc.String( _( 'Device' ) ) ), attributes = { 'width' : '250' } )
+drive_dev = umcd.make( ( 'dev', umc.String( _( 'Drive' ) ) ), attributes = { 'width' : '250' } )
 
 boot_dev = umcd.make( ( 'bootdev', BootDeviceSelect( _( 'Boot device' ) ) ), attributes = { 'width' : '200' } )
 
@@ -177,16 +177,16 @@ command_description = {
 				   'state' : umc.String( 'State' ),
 				  },
 		),
-	'uvmm/device/create': umch.command(
-		short_description = _( 'New Device' ),
-		long_description = _('Create a new device' ),
-		method = 'uvmm_device_create',
+	'uvmm/drive/create': umch.command(
+		short_description = _( 'New Drive' ),
+		long_description = _('Create a new drive' ),
+		method = 'uvmm_drive_create',
 		values = {},
 		),
-	'uvmm/device/remove': umch.command(
-		short_description = _( 'Remove Device' ),
-		long_description = _('Removes a device' ),
-		method = 'uvmm_device_remove',
+	'uvmm/drive/remove': umch.command(
+		short_description = _( 'Remove Drive' ),
+		long_description = _('Removes a drive' ),
+		method = 'uvmm_drive_remove',
 		values = {},
 		),
 }
@@ -207,7 +207,7 @@ class handler( umch.simpleHandler ):
 		global command_description
 		umch.simpleHandler.__init__( self, command_description )
 		self.uvmm = uvmmd.Client( auto_connect = False )
-		self.device_wizard = DeviceWizard( 'uvmm/device/create' )
+		self.drive_wizard = DriveWizard( 'uvmm/drive/create' )
 		self.domain_wizard = InstanceWizard( 'uvmm/domain/create' )
 
 	@staticmethod
@@ -340,11 +340,11 @@ class handler( umch.simpleHandler ):
 			buttons.append( umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( cmd ), ] ) )
 			buttons.append( comma )
 
-		# create device
+		# create drive
 		if operations:
 			opts = copy.copy( cmd_opts )
-			cmd = umcp.SimpleCommand( 'uvmm/device/create', options = opts )
-			buttons.append( umcd.LinkButton( _( 'New Device' ), actions = [ umcd.Action( cmd ), ] ) )
+			cmd = umcp.SimpleCommand( 'uvmm/drive/create', options = opts )
+			buttons.append( umcd.LinkButton( _( 'New Drive' ), actions = [ umcd.Action( cmd ), ] ) )
 			buttons.append( comma )
 
 		# VNC? if running and activated
@@ -384,8 +384,8 @@ class handler( umch.simpleHandler ):
 
 		return buttons[ : -1 ]
 
-	def _device_name( self, device ):
-		if device == uvmmn.Disk.DEVICE_DISK:
+	def _drive_name( self, drive ):
+		if drive == uvmmn.Disk.DEVICE_DISK:
 			return _( 'hard drive' )
 		else:
 			return _( 'CDROM drive' )
@@ -488,18 +488,18 @@ class handler( umch.simpleHandler ):
 						bd_default.append( ( key, descr ) )
 						break
 		bootdevs = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'bootdevs' ], fields = [ boot_dev ], default = bd_default, attributes = { 'width' : '200' } )
-		# device listing
+		# drive listing
 		disk_list = umcd.List()
 		disk_list.set_header( [ _( 'Type' ), _( 'Image' ), _( 'Size' ), _( 'Pool' ), '' ] )
 		if domain_info and domain_info.disks:
 			defaults = []
 			overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = copy.copy( object.options ) )
-			remove_cmd = umcp.SimpleCommand( 'uvmm/device/remove', options = copy.copy( object.options ) )
+			remove_cmd = umcp.SimpleCommand( 'uvmm/drive/remove', options = copy.copy( object.options ) )
 			remove_cmd.options[ 'disk' ] = None
 			storage_volumes = {}
 			for dev in domain_info.disks:
 				values = {}
-				values[ 'type' ] = self._device_name( dev.device )
+				values[ 'type' ] = self._drive_name( dev.device )
 				values[ 'image' ] = os.path.basename( dev.source )
 				dir = os.path.dirname( dev.source )
 				values[ 'pool' ] = dir
@@ -568,11 +568,11 @@ class handler( umch.simpleHandler ):
 
 		sections = umcd.List()
 		if not domain_info:
-			sections.add_row( [ umcd.Section( _( 'Devices' ), disk_list, hideable = False, hidden = False, name = 'devices.newdomain' ) ] )
+			sections.add_row( [ umcd.Section( _( 'Drives' ), disk_list, hideable = False, hidden = False, name = 'drives.newdomain' ) ] )
 			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = False, hidden = False, name = 'settings.newdomain' ) ] )
 			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = False, hidden = False, name = 'extsettings.newdomain' ) ] )
 		else:
-			sections.add_row( [ umcd.Section( _( 'Devices' ), disk_list, hideable = True, hidden = False, name = 'devices.%s' % domain_info.name ) ] )
+			sections.add_row( [ umcd.Section( _( 'Drives' ), disk_list, hideable = True, hidden = False, name = 'drives.%s' % domain_info.name ) ] )
 			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = True, hidden = False, name = 'settings.%s' % domain_info.name ) ] )
 			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = False, name = 'extsettings.%s' % domain_info.name ) ] )
 		sections.add_row( [ umcd.Cell( umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ], default = True ), attributes = { 'align' : 'right' } ) ] )
@@ -735,7 +735,7 @@ class handler( umch.simpleHandler ):
 			self.finished( object.id(), res )
 
 	def uvmm_domain_create( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Device create' )
+		ud.debug( ud.ADMIN, ud.INFO, 'Drive create' )
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
 		if not success:
 			self.finished(object.id(), res)
@@ -792,7 +792,7 @@ class handler( umch.simpleHandler ):
 				if not disk.source: continue
 				static_options = { 'drives' : disk.source }
 				chk_button = umcd.Checkbox( static_options = static_options )
-				chk_button.set_text( '%s: %s' % ( self._device_name( disk.device ), disk.source ) )
+				chk_button.set_text( '%s: %s' % ( self._drive_name( disk.device ), disk.source ) )
 				boxes.append( chk_button.id() )
 				lst.add_row( [ umcd.Cell( umcd.Text( '' ), attributes = { 'width' : '10' } ), umcd.Cell( chk_button, attributes = { 'colspan' : '2' } ) ] )
 
@@ -830,8 +830,8 @@ class handler( umch.simpleHandler ):
 			res.status( 201 )
 			self.finished( object.id(), res, report = _( 'The instance <i>%(domain)s</i> was removed successfully' ) % { 'domain' : object.options[ 'domain' ] } )
 
-	def uvmm_device_create( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Device create' )
+	def uvmm_drive_create( self, object ):
+		ud.debug( ud.ADMIN, ud.INFO, 'Drive create' )
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
 		if not success:
 			self.finished(object.id(), res)
@@ -839,22 +839,22 @@ class handler( umch.simpleHandler ):
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 		node = self.uvmm.get_node_info( node_uri )
 
-		ud.debug( ud.ADMIN, ud.INFO, 'Device create: action: %s' % str( object.options.get( 'action' ) ) )
+		ud.debug( ud.ADMIN, ud.INFO, 'Drive create: action: %s' % str( object.options.get( 'action' ) ) )
 		# user cancelled the wizard
 		if object.options.get( 'action' ) == 'cancel':
-			self.device_wizard.reset()
+			self.drive_wizard.reset()
 			self.uvmm_domain_overview( object )
 			return
 
-		result = self.device_wizard.action( object, ( node_uri, node ) )
+		result = self.drive_wizard.action( object, ( node_uri, node ) )
 
 		# domain wizard finished?
-		if self.device_wizard.result():
-			new_disk = self.device_wizard.result()
+		if self.drive_wizard.result():
+			new_disk = self.drive_wizard.result()
 			domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
 			domain_info.disks.append( new_disk )
 			resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
-			new_disk = self.device_wizard.reset()
+			new_disk = self.drive_wizard.reset()
 			if self.uvmm.is_error( resp ):
 				res.status( 301 )
 				self.finished( object.id(), res, report = resp.msg )
@@ -862,7 +862,7 @@ class handler( umch.simpleHandler ):
 				self.uvmm_domain_overview( object )
 			return
 		# navigating in the wizard ...
-		page = self.device_wizard.setup( object )
+		page = self.drive_wizard.setup( object )
 		res.dialog[ 0 ].set_dialog( page )
 		if not result:
 			res.status( 201 )
@@ -871,8 +871,8 @@ class handler( umch.simpleHandler ):
 			report = ''
 		self.finished( object.id(), res, report = report )
 
-	def uvmm_device_remove( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Device remove' )
+	def uvmm_drive_remove( self, object ):
+		ud.debug( ud.ADMIN, ud.INFO, 'Drive remove' )
 		res = umcp.Response( object )
 
 		# remove domain
@@ -887,8 +887,8 @@ class handler( umch.simpleHandler ):
 
 		if self.uvmm.is_error( resp ):
 			res.status( 301 )
-			self.finished( object.id(), res, report = _( 'Removing the device <i>%(device)s</i> failed' ) % { 'device' : os.path.basename( object.options[ 'disk' ] ) } )
+			self.finished( object.id(), res, report = _( 'Removing the drive <i>%(drive)s</i> failed' ) % { 'drive' : os.path.basename( object.options[ 'disk' ] ) } )
 		else:
 			res.status( 201 )
-			self.finished( object.id(), res, report = _( 'The device <i>%(device)s</i> was removed successfully' ) % { 'device' : os.path.basename( object.options[ 'disk' ] ) } )
+			self.finished( object.id(), res, report = _( 'The drive <i>%(drive)s</i> was removed successfully' ) % { 'drive' : os.path.basename( object.options[ 'disk' ] ) } )
 
