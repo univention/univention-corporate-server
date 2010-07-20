@@ -141,7 +141,7 @@ class Page( object ):
 			if cancel:
 				opts = copy_module.copy( options )
 				opts[ 'action' ] = 'cancel'
-				cancel_btn = Button( _( 'Cancel' ), actions = ( Action( umcp.SimpleCommand( command, opts ), items ), ) )
+				cancel_btn = Cell( Button( _( 'Cancel' ), actions = ( Action( umcp.SimpleCommand( command, opts ), items ), ) ), attributes = { 'type' : 'button_padding' } )
 			else:
 				cancel_btn = ''
 			if prev:
@@ -149,11 +149,13 @@ class Page( object ):
 				opts[ 'action' ] = 'prev'
 				prev = umcp.SimpleCommand( command, opts )
 				prev.verify_options = False
-				prev_btn = Button( _( 'Previous' ), actions = ( Action( umcp.SimpleCommand( command, opts ), items ), ), attributes = { 'class' : 'button_right' } )
+				prev_btn = Cell( Button( _( 'Previous' ), actions = ( Action( umcp.SimpleCommand( command, opts ), items ), ), attributes = { 'class' : 'cancel' } ), attributes = { 'type' : 'button_padding' } )
 			else:
 				prev_btn = ''
 
-			wizard._content.add_row( [ cancel_btn, Cell( List( content = [ [ prev_btn, next_btn ], ], ), attributes = { 'type' : 'umc_list_element_right' } ) ] )
+			lst = List()
+			lst.add_row( [ prev_btn, next_btn ] )
+			wizard._content.add_row( [ cancel_btn, Cell( lst, attributes = { 'type' : 'umc_list_element_right' } ) ] )
 		else:
 			wizard._content.add_row( self.buttons )
 

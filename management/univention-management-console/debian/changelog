@@ -1,3 +1,9 @@
+univention-management-console (3.0.45-1) unstable; urgency=low
+
+  * wizard: adjust vertical align of buttons; Bug #18164
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 20 Jul 2010 13:44:55 +0200
+
 univention-management-console (3.0.44-1) unstable; urgency=low
 
   * wizard: the prev-button sghould not be a default button; Bug #18861
