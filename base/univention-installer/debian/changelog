@@ -1,3 +1,9 @@
+univention-installer (6.0.28-1) unstable; urgency=low
+
+  * fixed profile auto partitioning (Bug #13151)
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Jul 2010 11:16:00 +0200
+
 univention-installer (6.0.27-1) unstable; urgency=low
 
   * fixed translation (Bug #13552) 

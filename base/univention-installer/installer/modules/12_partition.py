@@ -1175,7 +1175,7 @@ class object(content):
 						format = self.parent.container['profile']['create'][disk][num]['format']
 
 						# do not create fs on partitions if format is 0
-						if format == "0":
+						if format == "0" and not self.parent.all_results.get('part_delete', "") == "all":
 							self.parent.debug('will not create fs on partition %s%s due format == %s' % (disk, num, format))
 							continue
 
@@ -1200,7 +1200,7 @@ class object(content):
 					format = lv['format']
 
 					# do not create fs on partitions if format is 0
-					if format == "0":
+					if format == "0" and not self.parent.all_results.get('part_delete', "") == "all":
 						self.parent.debug('will not create fs on %s due format == %s' % (lvname, format))
 						continue
 
