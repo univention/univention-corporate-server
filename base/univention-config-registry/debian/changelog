@@ -1,3 +1,9 @@
+univention-config-registry (6.0.14-1) unstable; urgency=low
+
+  * also allow legacy parameter --forced (Bug #18936)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 20 Jul 2010 16:46:27 +0200
+
 univention-config-registry (6.0.13-1) unstable; urgency=low
 
   * set codename to golden beech (Bug #18806)

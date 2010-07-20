@@ -1424,6 +1424,8 @@ def main(args):
 				continue
 			if not arg.startswith( '--' ): break
 			cmd_opt = arg[ 2: ]
+			if action in ('set', 'unset', ) and cmd_opt == 'forced':
+				cmd_opt = 'force'
 			if cmd_opt in cmd_opts.keys():
 				cmd_opt_tuple = cmd_opts[ cmd_opt ]
 				if cmd_opt_tuple[0] == BOOL:
