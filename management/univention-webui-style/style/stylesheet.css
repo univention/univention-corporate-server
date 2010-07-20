@@ -997,18 +997,22 @@ td.overview
 
 td.overview a
 {
-	display: block;	
+	display: block;
 	color: #c00000;
 	font-size: 13px;
 	text-decoration: underline;
 }
 
+.button_padding {
+	padding: 0px 16px 10px 0px;
+}
+
 table.button_right{
-float:right;
+	float:right;
 }
 
 table.button_center{
-float:center;
+	float:center;
 }
 
 

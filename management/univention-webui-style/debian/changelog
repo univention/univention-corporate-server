@@ -1,3 +1,9 @@
+univention-webui-style (5.0.19-1) unstable; urgency=low
+
+  * add style to vertically align normal and default buttons; Bug #18164
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 20 Jul 2010 13:42:18 +0200
+
 univention-webui-style (5.0.18-1) unstable; urgency=low
 
   * add style to deactivate automatic line wrapping; Bug #18164
