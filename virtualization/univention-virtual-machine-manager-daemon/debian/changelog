@@ -1,3 +1,15 @@
+univention-virtual-machine-manager-daemon (0.9.61-1) unstable; urgency=low
+
+  * use os type and domain type to define virtualisation technology
+  * virtualization technology may not be changed
+  * use '32 Bit' or '64 Bit' as values for the archiecture
+  * re-design conclusion of drive details in wizard
+  * modify hint whne adding a new CDROM drive
+  * a few minor layout fixes
+  * move 'new drive' button into drive section; Bug #19064
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 21 Jul 2010 16:31:19 +0200
+
 univention-virtual-machine-manager-daemon (0.9.60-2) unstable; urgency=low
 
   * Document uvmm/pool/default/path UCR variable (Bug #18611)

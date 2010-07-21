@@ -95,7 +95,7 @@ class DriveWizard( umcd.IWizard ):
 			opts[ 'drive-pool' ] = storage.name
 			action = umcd.Action( umcp.SimpleCommand( self.command, options = opts ) )
 			choices.append( { 'description' : storage.name, 'actions' : [ action, ] } )
-		return umcd.ChoiceButton( _( 'Pool' ), choices = choices )
+		return umcd.ChoiceButton( _( 'Pool' ), choices = choices, attributes = { 'width' : '300px' } )
 
 	def reset( self ):
 		self.prev_first_page = False
@@ -121,9 +121,10 @@ class DriveWizard( umcd.IWizard ):
 		return umcd.IWizard.action( self, object )
 
 	def pool_selected( self, object ):
+		ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: node storage volumes: %s' % str( self.node_uri ) )
 		vols = self.uvmm.storage_pool_volumes( self.node_uri, object.options.get( 'drive-pool', 'default' ), object.options[ 'drive-type' ] )
 		ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: node storage volumes: %s' % str( vols ) )
-		self.image_syntax.update_choices( [ vol.source for vol in vols ] )
+		self.image_syntax.update_choices( [ os.path.basename( vol.source ) for vol in vols ] )
 
 		return self[ self.current ]
 
@@ -142,7 +143,11 @@ class DriveWizard( umcd.IWizard ):
 				self[ 2 ].hint = None
 			else:
 				self.current = 2
-				self[ 2 ].hint = _( 'If the list of available images is empty or the required image is not found, you may copy the ISO image on the server into the directory /var/lib/libvirt/images. After that go to the previous page an return to this one. The image should now be available.' )
+				if self.image_syntax._choices:
+					msg = _( 'If the required image is not found, you may copy the ISO image on the server into the directory /var/lib/libvirt/images. After that go to the previous page an return to this one. The image should now be available.' )
+				else:
+					msg = _( 'The list of available images is empty! You may copy the ISO image on the server into the directory /var/lib/libvirt/images. After that go to the previous page an return to this one. The image should now be available.' )
+				self[ 2 ].hint = msg
 		elif self.current == 1: # new or existing disk image?
 			if object.options[ 'existing-or-new-disk' ] == 'disk-new':
 				self.current = 3
@@ -169,10 +174,16 @@ class DriveWizard( umcd.IWizard ):
 					return umcd.WizardResult( False, _( 'The selected image is already used by another virtual instance. You may consider to choose another image or continue if you are sure that it will not cause any problems.' ) )
 			self.current = 4
 			self[ self.current ].options = []
-			self[ self.current ].options.append( umcd.HTML( _( '<b>Drive type</b>: %(type)s' ) % { 'type' : self._disk_type_text( object.options[ 'drive-type' ] ) } ) )
-			self[ self.current ].options.append( umcd.HTML( _( '<b>Storage pool</b>: %(pool)s (path: %(path)s)' ) % { 'pool' : object.options[ 'drive-pool' ], 'path' : self._get_pool_path( object.options[ 'drive-pool' ] ) } ) )
-			self[ self.current ].options.append( umcd.HTML( _( '<b>Image filename</b>: %(image)s' ) % { 'image' : object.options[ 'image-name' ] } ) )
-			self[ self.current ].options.append( umcd.HTML( _( '<b>Image size</b>: %(size)s' ) % { 'size' : object.options[ 'image-size' ] } ) )
+			conf = umcd.List()
+			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Drive type' ) ), self._disk_type_text( object.options[ 'drive-type' ] ) ] )
+			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Storage pool' ) ), _( 'path: %(path)s' ) % { 'path' : self._disk_type_text( object.options[ 'drive-type' ] ) } ] )
+			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image filename' ) ), object.options[ 'image-name' ] ] )
+			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image size' ) ), object.options[ 'image-size' ] ] )
+			self[ self.current ].options.append( conf )
+			# self[ self.current ].options.append( umcd.HTML( _( '<b>Drive type</b>: %(type)s' ) % { 'type' : self._disk_type_text( object.options[ 'drive-type' ] ) } ) )
+			# self[ self.current ].options.append( umcd.HTML( _( '<b>Storage pool</b>: %(pool)s (path: %(path)s)' ) % { 'pool' : object.options[ 'drive-pool' ], 'path' : self._get_pool_path( object.options[ 'drive-pool' ] ) } ) )
+			# self[ self.current ].options.append( umcd.HTML( _( '<b>Image filename</b>: %(image)s' ) % { 'image' : object.options[ 'image-name' ] } ) )
+			# self[ self.current ].options.append( umcd.HTML( _( '<b>Image size</b>: %(size)s' ) % { 'size' : object.options[ 'image-size' ] } ) )
 		else:
 			if self.current == None:
 				self.current = 0
@@ -355,7 +366,7 @@ class InstanceWizard( umcd.IWizard ):
 			domain = uvmmp.Data_Domain()
 			domain.name = object.options[ 'name' ]
 			domain.arch = object.options[ 'arch' ]
-			domain.virt_tech = object.options[ 'type' ]
+			domain.domain_type, domain.os_type = object.options[ 'type' ].split( '-' )
 			domain.maxMem = MemorySize.str2num( object.options[ 'memory' ], unit = 'MB' )
 			domain.vcpus = object.options[ 'cpus' ]
 			if object.options[ 'bootdev' ] and object.options[ 'bootdev' ][ 0 ]:

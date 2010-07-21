@@ -159,7 +159,7 @@ class DomainTemplate(object):
 		>>> t = DomainTemplate.list_from_xml(KVM_CAPABILITIES)
 		>>> len(t)
 		3
-		>>> t[0].virt_tech
+		>>> t[0].os_type
 		u'hvm'
 		>>> t[0].arch
 		u'i686'
@@ -176,11 +176,11 @@ class DomainTemplate(object):
 		capas = doc.firstChild
 		result = []
 		for guest in filter(lambda f: f.nodeName == 'guest', capas.childNodes):
-			virt_tech = DomainTemplate.__nv(guest, 'os_type')
+			os_type = DomainTemplate.__nv(guest, 'os_type')
 			f_names = DomainTemplate.__get_features(guest)
 			for arch in filter(lambda f: f.nodeName == 'arch', guest.childNodes):
 				for dom in filter(lambda f: f.nodeName == 'domain', arch.childNodes):
-					dom = DomainTemplate(arch, dom, virt_tech, f_names)
+					dom = DomainTemplate(arch, dom, os_type, f_names)
 					result.append(dom)
 		return result
 
@@ -206,8 +206,8 @@ class DomainTemplate(object):
 						f_names.append(c.nodeName)
 		return f_names
 
-	def __init__(self, arch, dom, virt_tech, features):
-		self.virt_tech = virt_tech
+	def __init__(self, arch, dom, os_type, features):
+		self.os_type = os_type
 		self.features = features
 		self.arch = arch.getAttribute('name')
 		self.domain = dom.getAttribute('type')
@@ -236,7 +236,7 @@ class DomainTemplate(object):
 			self.loader = None # optional
 
 	def __str__(self):
-		return 'DomainTemplate(type=%s arch=%s dom=%s): %s, %s, %s, %s' % (self.virt_tech, self.arch, self.domain, self.emulator, self.loader, self.machines, self.features)
+		return 'DomainTemplate(type=%s arch=%s dom=%s): %s, %s, %s, %s' % (self.os_type, self.arch, self.domain, self.emulator, self.loader, self.machines, self.features)
 
 class Domain(object):
 	"""Container for domain statistics."""
@@ -248,7 +248,8 @@ class Domain(object):
 		self.curMem = 0L
 		self.vcpus = 1
 		self.arch = 'i686'
-		self.virt_tech = domain.OSType()
+		self.os_type = domain.OSType()
+		self.domain_type = None
 		self.kernel = ''
 		self.cmdline = ''
 		self.initrd = ''
@@ -327,13 +328,13 @@ class Domain(object):
 		"""Parse XML into python object."""
 		doc = parseString(domain.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE))
 		devices = doc.getElementsByTagName( 'devices' )[ 0 ]
-
+		self.domain_type = doc.documentElement.getAttribute( 'type' )
 		os = doc.getElementsByTagName( 'os' )
 		if os:
 			os = os[ 0 ]
 			type = os.getElementsByTagName( 'type' )
 			if type and type[ 0 ].firstChild and type[ 0 ].firstChild.nodeValue:
-				self.virt_tech = type[ 0 ].firstChild.nodeValue
+				self.os_type = type[ 0 ].firstChild.nodeValue
 				if type[ 0 ].hasAttribute( 'arch' ):
 					self.arch = type[ 0 ].getAttribute( 'arch' )
 			kernel = os.getElementsByTagName( 'kernel' )
@@ -419,6 +420,13 @@ class Node(object):
 		self.domains = {}
 		self.config_frequency = Nodes.IDLE_FREQUENCY
 		self.current_frequency = Nodes.IDLE_FREQUENCY
+		self.name = None
+		self.phyMem = 0
+		self.curMem = 0
+		self.maxMem = 0
+		self.cpus = 0
+		self.cores = 0
+		self.capabilities = []
 
 		def timer_callback(timer, *opaque):
 			try:
@@ -694,7 +702,7 @@ def domain_define( uri, domain ):
 	elem = doc.createElement( 'name' )
 	elem.appendChild( doc.createTextNode( domain.name ) )
 	doc.documentElement.appendChild( elem )
-	doc.documentElement.setAttribute('type', conn.getType().lower()) # TODO: verify
+	doc.documentElement.setAttribute('type', domain.domain_type.lower()) # TODO: verify
 	if not domain.uuid:
 		try:
 			old_dom = conn.lookupByName(domain.name)
@@ -720,7 +728,7 @@ def domain_define( uri, domain ):
 	logger.debug('Searching for loader: %s' % node.capabilities)
 	for template in node.capabilities:
 		logger.debug('template: %s' % str(template.arch))
-		if template.arch == domain.arch and template.virt_tech == domain.virt_tech and template.loader:
+		if template.arch == domain.arch and template.os_type == domain.os_type and template.loader:
 			loader = doc.createElement( 'loader' )
 			loader.appendChild( doc.createTextNode( template.loader ) )
 
@@ -732,7 +740,7 @@ def domain_define( uri, domain ):
 				doc.documentElement.appendChild(features)
 
 	type = doc.createElement( 'type' )
-	type.appendChild( doc.createTextNode( domain.virt_tech ) )
+	type.appendChild( doc.createTextNode( domain.os_type ) )
 	type.setAttribute( 'arch', domain.arch )
 	os = doc.createElement( 'os' )
 	os.appendChild( type )
@@ -754,7 +762,7 @@ def domain_define( uri, domain ):
 		initrd = doc.createElement( 'initrd' )
 		initrd.appendChild( text )
 		os.appendChild( initrd )
-	if domain.virt_tech == 'hvm':
+	if domain.os_type == 'hvm':
 		for dev in domain.boot: # (hd|cdrom|network|fd)+
 			boot = doc.createElement('boot')
 			boot.setAttribute('dev', dev)

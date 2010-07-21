@@ -48,15 +48,32 @@ class DynamicSelect( umc.StaticSelection ):
 		self._choices = types
 
 class VirtTechSelect( umc.StaticSelection ):
-	MAPPING = { 'hvm' : _( 'Full virtualization' ),
-				'xen' : _( 'Paravirtualization' ) ,
-				}
+	MAPPING = {
+		'kvm-hvm' : _( 'Full virtualization (KVM)' ),
+		'xen-hvm' : _( 'Full virtualization (XEN)' ),
+		'xen-xen' : _( 'Paravirtualization (XEN)' ) ,
+		}
 	def __init__( self, label, required = True, may_change = True ):
 		self._choices = []
 		umc.StaticSelection.__init__( self, label, required = required, may_change = may_change )
 
 	def choices( self ):
 		return map( lambda x: ( x, VirtTechSelect.MAPPING[ x ] ), self._choices )
+
+	def update_choices( self, types ):
+		self._choices = types
+
+class ArchSelect( umc.StaticSelection ):
+	MAPPING = {
+		'i686' : '32 Bit',
+		'x86_64' : '64 Bit',
+		}
+	def __init__( self, label, required = True, may_change = True ):
+		self._choices = []
+		umc.StaticSelection.__init__( self, label, required = required, may_change = may_change )
+
+	def choices( self ):
+		return map( lambda x: ( x, ArchSelect.MAPPING[ x ] ), self._choices )
 
 	def update_choices( self, types ):
 		self._choices = types
@@ -108,3 +125,4 @@ umcd.copy( umc.StaticSelection, NumberSelect )
 umcd.copy( umc.StaticSelection, DriveTypeSelect )
 umcd.copy( umc.StaticSelection, NodeSelect )
 umcd.copy( umc.StaticSelection, DiskSelect )
+umcd.copy( umc.StaticSelection, ArchSelect )

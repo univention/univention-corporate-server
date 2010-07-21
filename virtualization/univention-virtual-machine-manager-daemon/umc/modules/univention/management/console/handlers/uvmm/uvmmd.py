@@ -322,9 +322,9 @@ class Client( notifier.signals.Provider ):
 			raise ConnectionError()
 		return self.recv_blocking()
 
-	def storage_pool_volumes( self, node, pool, type = None ):
+	def storage_pool_volumes( self, node_uri, pool, type = None ):
 		req = protocol.Request_STORAGE_VOLUMES()
-		req.uri = self.node_name2uri( node )
+		req.uri = node_uri
 		req.pool = pool
 		req.type = type
 		if not self.send( req.pack() ):

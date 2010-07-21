@@ -30,10 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION="1"
+VERSION="2"
 
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
+
+CREDENTIALS="$@"
 
 eval "$(univention-config-registry shell ldap/base server/role ldap/hostdn)"
 NAME="Virtual Machine Manager"
@@ -82,95 +84,66 @@ univention-directory-manager container/cn create "$@" \
 	--set name=Profiles
 
 # create machine profiles
-univention-directory-manager uvmm/profile create "$@" \
-	--ignore_exists \
-	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-	--set name="Windows XP x86" \
-	--set name_prefix=win-xp- \
-	--set arch=i686 \
-	--set cpus=1 \
-	--set virttech=hvm \
-	--set ram=512MB \
-	--set interface=eth0 \
-	--append bootdev=cdrom \
-	--append bootdev=hd \
-	--set vnc=1 \
-	--set kblayout=de
 
-univention-directory-manager uvmm/profile create "$@" \
-	--ignore_exists \
-	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-	--set name="Windows XP x86_64" \
-	--set name_prefix=winxp-64- \
-	--set arch=x86_64 \
-	--set cpus=1 \
-	--set virttech=hvm \
-	--set ram=512MB \
-	--set interface=eth0 \
-	--append bootdev=cdrom \
-	--append bootdev=hd \
-	--set vnc=1 \
-	--set kblayout=de
+kernel=$(readlink -e /vmlinuz)
 
-univention-directory-manager uvmm/profile create "$@" \
-	--ignore_exists \
-	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-	--set name="Windows 7 x86" \
-	--set name_prefix=win7- \
-	--set arch=i686 \
-	--set cpus=1 \
-	--set virttech=hvm \
-	--set ram=512MB \
-	--set interface=eth0 \
-	--append bootdev=cdrom \
-	--append bootdev=hd \
-	--set vnc=1 \
-	--set kblayout=de
+create_hvm_profile() {
+	cn="$1"
+	prefix="$2"
+	virttech="$3"
+	arch="$4"
+	# create machine profile
+	univention-directory-manager uvmm/profile create $CREDENTIALS \
+		--ignore_exists \
+		--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
+		--set name="$cn" \
+		--set name_prefix="$prefix" \
+		--set arch="$arch" \
+		--set cpus=1 \
+		--set virttech="${virttech}-hvm" \
+		--set ram=512MB \
+		--set interface=eth0 \
+		--append bootdev=cdrom \
+		--append bootdev=hd \
+		--set vnc=1 \
+		--set kblayout=de
+}
 
-univention-directory-manager uvmm/profile create "$@" \
-	--ignore_exists \
-	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-	--set name="Windows 7 x86_64" \
-	--set name_prefix=win7-64- \
-	--set arch=x86_64 \
-	--set cpus=1 \
-	--set virttech=hvm \
-	--set ram=512MB \
-	--set interface=eth0 \
-	--append bootdev=cdrom \
-	--append bootdev=hd \
-	--set vnc=1 \
-	--set kblayout=de
+create_xen_profile() {
+	cn="$1"
+	prefix="$2"
+	arch="$4"
+	# create machine profile
+	univention-directory-manager uvmm/profile create $CREDENTIALS \
+		--ignore_exists \
+		--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
+		--set name="$cn" \
+		--set name_prefix="$prefix" \
+		--set arch="$arch" \
+		--set cpus=1 \
+		--set virttech="xen-xen" \
+		--set ram=512MB \
+		--set interface=eth0 \
+		--append bootdev=cdrom \
+		--append bootdev=hd \
+		--set vnc=1 \
+		--set kblayout=de
+}
 
-univention-directory-manager uvmm/profile create "$@" \
-	--ignore_exists \
-	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-	--set name="Univention Corporate Server 2.4-0 (i386)" \
-	--set name_prefix=ucs24- \
-	--set arch=i686 \
-	--set cpus=1 \
-	--set virttech=hvm \
-	--set ram=512MB \
-	--set interface=eth0 \
-	--append bootdev=cdrom \
-	--append bootdev=hd \
-	--set vnc=1 \
-	--set kblayout=de
+create_hvm_profile "Windows XP 32 Bit (XEN)" "winxp-" "xen" "i686"
+create_hvm_profile "Windows XP 64 Bit (XEN)" "winxp-64-" "xen" "x86_64"
+create_hvm_profile "Windows 7 32 Bit (XEN)" "win7-" "xen" "i686"
+create_hvm_profile "Windows 7 64 Bit (XEN)" "win7-64-" "xen" "x86_64"
+create_hvm_profile "Windows XP 32 Bit (KVM)" "winxp-" "kvm" "i686"
+create_hvm_profile "Windows XP 64 Bit (KVM)" "winxp-64-" "kvm" "x86_64"
+create_hvm_profile "Windows 7 32 Bit (KVM)" "win7-" "kvm" "i686"
+create_hvm_profile "Windows 7 64 Bit (KVM)" "win7-64-" "kvm" "x86_64"
+create_xen_profile "Univention Corporate Server 2.4-0 32 Bit (XEN)" "ucs24-" "i686"
+create_xen_profile "Univention Corporate Server 2.4-0 64 Bit (XEN)" "ucs24-64-" "x86_64"
+create_hvm_profile "Univention Corporate Server 2.4-0 32 Bit (KVM)" "ucs24-" "kvm" "i686"
+create_hvm_profile "Univention Corporate Server 2.4-0 64 Bit (KVM)" "ucs24-64-" "kvm" "x86_64"
 
-univention-directory-manager uvmm/profile create "$@" \
-	--ignore_exists \
-	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-	--set name="Univention Corporate Server 2.4-0 (amd64)" \
-	--set name_prefix=ucs24-amd64- \
-	--set arch=x86_64 \
-	--set cpus=1 \
-	--set virttech=hvm \
-	--set ram=512MB \
-	--set interface=eth0 \
-	--append bootdev=cdrom \
-	--append bootdev=hd \
-	--set vnc=1 \
-	--set kblayout=de
+# TODO: profiles for xen-xen
 
 joinscript_save_current_version
 

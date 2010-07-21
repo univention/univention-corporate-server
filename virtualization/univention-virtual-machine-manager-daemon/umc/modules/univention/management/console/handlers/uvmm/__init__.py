@@ -76,8 +76,8 @@ drive_dev = umcd.make( ( 'dev', umc.String( _( 'Drive' ) ) ), attributes = { 'wi
 boot_dev = umcd.make( ( 'bootdev', BootDeviceSelect( _( 'Boot device' ) ) ), attributes = { 'width' : '200' } )
 
 dest_node_select = NodeSelect( _( 'Destination host' ) )
-arch_select = DynamicSelect( _( 'Architecture' ) )
-type_select = VirtTechSelect( _( 'Virtualization Technology' ) )
+arch_select = ArchSelect( _( 'Architecture' ) )
+type_select = VirtTechSelect( _( 'Virtualization Technology' ), may_change = False )
 cpus_select = NumberSelect( _( 'Number of CPUs' ) )
 
 command_description = {
@@ -341,11 +341,11 @@ class handler( umch.simpleHandler ):
 			buttons.append( comma )
 
 		# create drive
-		if operations:
-			opts = copy.copy( cmd_opts )
-			cmd = umcp.SimpleCommand( 'uvmm/drive/create', options = opts )
-			buttons.append( umcd.LinkButton( _( 'New Drive' ), actions = [ umcd.Action( cmd ), ] ) )
-			buttons.append( comma )
+		# if operations:
+		# 	opts = copy.copy( cmd_opts )
+		# 	cmd = umcp.SimpleCommand( 'uvmm/drive/create', options = opts )
+		# 	buttons.append( umcd.LinkButton( _( 'New Drive' ), actions = [ umcd.Action( cmd ), ] ) )
+		# 	buttons.append( comma )
 
 		# VNC? if running and activated
 		if domain.state in ( 1, 2 ) and domain.graphics and domain.graphics[ 0 ].port != -1:
@@ -451,15 +451,20 @@ class handler( umch.simpleHandler ):
 		types = []
 		archs = []
 		for template in node.capabilities:
-			if not template.virt_tech in types:
-				types.append( template.virt_tech )
+			tech = '%s-%s' % ( template.domain, template.os_type )
+			ud.debug( ud.ADMIN, ud.INFO, 'domain settings: virtualisation technology: %s' % tech )
+			if not tech in VirtTechSelect.MAPPING:
+				continue
+			if not tech in types:
+				types.append( tech )
 			if not template.arch in archs:
 				archs.append( template.arch )
 		type_select.update_choices( types )
 		arch_select.update_choices( archs )
 
 		name = umcd.make( self[ 'uvmm/domain/configure' ][ 'name' ], default = handler._getattr( domain_info, 'name', '' ), attributes = { 'width' : '250' } )
-		virt_tech = umcd.make( self[ 'uvmm/domain/configure' ][ 'type' ], default = handler._getattr( domain_info, 'virt_tech', 'hvm' ), attributes = { 'width' : '250' } )
+		tech_default = '%s-%s' % ( handler._getattr( domain_info, 'domain_type', 'xen' ), handler._getattr( domain_info, 'os_type', 'hvm' ) )
+		virt_tech = umcd.make_readonly( self[ 'uvmm/domain/configure' ][ 'type' ], default = tech_default, attributes = { 'width' : '250' } )
 		arch = umcd.make( self[ 'uvmm/domain/configure' ][ 'arch' ], default = handler._getattr( domain_info, 'arch', 'i686' ), attributes = { 'width' : '250' } )
 		os_widget = umcd.make( self[ 'uvmm/domain/configure' ][ 'os' ], default = getattr(domain_info, 'annotations', {}).get('os', ''), attributes = { 'width' : '250' } )
 		cpus_select.max = int( node.cpus )
@@ -472,7 +477,7 @@ class handler( umch.simpleHandler ):
 			iface_source = iface.source
 		else:
 			iface_mac = ''
-			iface_source = 'eth0' # FIXME: br0 for KVM?
+			iface_source = 'eth0'
 		mac = umcd.make( self[ 'uvmm/domain/configure' ][ 'mac' ], default = iface_mac, attributes = { 'width' : '250' } )
 		interface = umcd.make( self[ 'uvmm/domain/configure' ][ 'interface' ], default = iface_source, attributes = { 'width' : '250' } )
 		ram_disk = umcd.make( self[ 'uvmm/domain/configure' ][ 'initrd' ], default = handler._getattr( domain_info, 'initrd', '' ), attributes = { 'width' : '250' } )
@@ -489,6 +494,10 @@ class handler( umch.simpleHandler ):
 						break
 		bootdevs = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'bootdevs' ], fields = [ boot_dev ], default = bd_default, attributes = { 'width' : '200' } )
 		# drive listing
+		drive_sec = umcd.List()
+		opts = copy.copy( object.options )
+		cmd = umcp.SimpleCommand( 'uvmm/drive/create', options = opts )
+		drive_sec.add_row( [ umcd.LinkButton( _( 'New Drive' ), actions = [ umcd.Action( cmd ), ] ) ] )
 		disk_list = umcd.List()
 		disk_list.set_header( [ _( 'Type' ), _( 'Image' ), _( 'Size' ), _( 'Pool' ), '' ] )
 		if domain_info and domain_info.disks:
@@ -507,7 +516,7 @@ class handler( umch.simpleHandler ):
 					if pool.path == dir:
 						values[ 'pool' ] = pool.name
 						if not pool.name in storage_volumes:
-							storage_volumes[ pool.name ] = self.uvmm.storage_pool_volumes( object.options[ 'node' ], pool.name )
+							storage_volumes[ pool.name ] = self.uvmm.storage_pool_volumes( self.uvmm.node_name2uri( object.options[ 'node' ] ), pool.name )
 						for vol in storage_volumes[ pool.name ]:
 							if vol.source == dev.source:
 								dev.size = vol.size
@@ -520,6 +529,8 @@ class handler( umch.simpleHandler ):
 
 				remove_cmd.options[ 'disk' ] = dev.source
 				disk_list.add_row( [ values[ 'type' ], values[ 'image' ], values[ 'size' ], values[ 'pool' ], umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd, options = { 'disk' : dev.source } ), umcd.Action( overview_cmd ) ] ) ] )
+		drive_sec.add_row( [disk_list ] )
+
 		vnc_bool = False
 		vnc_global = True
 		vnc_keymap = 'de'
@@ -550,9 +561,12 @@ class handler( umch.simpleHandler ):
 
 		content2 = umcd.List()
 		content2.add_row( [ virt_tech ] )
-		content2.add_row( [ kernel, umcd.Cell( bootdevs, attributes = { 'rowspan' : '3', 'valign' : 'top' } ) ] )
-		content2.add_row( [ ram_disk ] )
-		content2.add_row( [ root_part ] )
+		if domain_info.os_type == 'hvm':
+			content2.add_row( [ bootdevs ] )
+		else:
+			content2.add_row( [ kernel ] )
+			content2.add_row( [ ram_disk ] )
+			content2.add_row( [ root_part ] )
 
 		content2.add_row( [ umcd.Text( '' ) ] )
 
@@ -568,11 +582,11 @@ class handler( umch.simpleHandler ):
 
 		sections = umcd.List()
 		if not domain_info:
-			sections.add_row( [ umcd.Section( _( 'Drives' ), disk_list, hideable = False, hidden = False, name = 'drives.newdomain' ) ] )
+			sections.add_row( [ umcd.Section( _( 'Drives' ), drive_sec, hideable = False, hidden = False, name = 'drives.newdomain' ) ] )
 			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = False, hidden = False, name = 'settings.newdomain' ) ] )
 			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = False, hidden = False, name = 'extsettings.newdomain' ) ] )
 		else:
-			sections.add_row( [ umcd.Section( _( 'Drives' ), disk_list, hideable = True, hidden = False, name = 'drives.%s' % domain_info.name ) ] )
+			sections.add_row( [ umcd.Section( _( 'Drives' ), drive_sec, hideable = True, hidden = False, name = 'drives.%s' % domain_info.name ) ] )
 			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = True, hidden = False, name = 'settings.%s' % domain_info.name ) ] )
 			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = False, name = 'extsettings.%s' % domain_info.name ) ] )
 		sections.add_row( [ umcd.Cell( umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ], default = True ), attributes = { 'align' : 'right' } ) ] )
@@ -674,7 +688,7 @@ class handler( umch.simpleHandler ):
 		if domain_info:
 			domain.uuid = domain_info.uuid
 		domain.name = object.options[ 'name' ]
-		domain.virt_tech = object.options[ 'type' ]
+		domain.domain_type, domain.os_type = object.options[ 'type' ].split( '-' )
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: operating system: %s' % handler._getstr( object, 'os' ) )
 		domain.annotations['os'] = handler._getstr( object, 'os' )
 		domain.arch = object.options[ 'arch' ]
