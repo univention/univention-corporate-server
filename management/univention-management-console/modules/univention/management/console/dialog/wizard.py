@@ -87,32 +87,38 @@ class Page( object ):
 
 	def setup( self, command, options, prev = True, next = True, finish = False, cancel = True ):
 		wizard = Wizard( self.title )
-		if isinstance( self.description, HTML ):
-			self.description[ 'colspan' ] = '2'
-			wizard._content.add_row( [ self.description, ] )
-		else:
-			wizard._content.add_row( [ Fill( 2, self.description ), ] )
-		wizard._content.add_row( [ Fill( 2, '' ), ] )
+		# add description
+		if self.description:
+			if isinstance( self.description, HTML ):
+				self.description[ 'colspan' ] = '2'
+				wizard._content.add_row( [ self.description, ] )
+			else:
+				wizard._content.add_row( [ Fill( 2, self.description ), ] )
+			wizard._content.add_row( [ Fill( 2, '' ), ] )
 		items = []
+
+		# add hint
+		if self.hint:
+			attrs = { 'valign' : 'top', 'type' : 'umc_mini_padding', 'width' : '100%' }
+			table = List( attributes = attrs )
+			hint = HTML( self.hint, attributes = attrs )
+			table.add_row( [ Cell( hint, attributes = attrs ) ] )
+
+			wizard._content.add_row( [ Cell( table, attributes = { 'colspan' : '2' } ) ] )
+			wizard._content.add_row( [ Fill( 2, '' ), ] )
+
+		# add options
 		for option in self.options:
 			if hasattr( option, 'option' ):
 				items.append( option.id() )
 				if option.option in options:
 					option.default = options[ option.option ]
-			if not self.hint:
-				option[ 'colspan' ] = '2'
-			elif 'colspan' in option:
-				del option[ 'colspan' ]
+			option[ 'colspan' ] = '2'
+			# if not self.hint:
+			# 	option[ 'colspan' ] = '2'
+			# elif 'colspan' in option:
+			# 	del option[ 'colspan' ]
 			wizard._content.add_row( [ option, ] )
-		if self.hint:
-			image = Image( 'actions/info', umct.SIZE_SMALL )
-			attrs = { 'valign' : 'top', 'type' : 'umc_mini_padding' }
-			table = List( attributes = attrs )
-			hint = HTML( self.hint, attributes = attrs )
-			table.add_row( [ Cell( image, attributes = attrs ), Cell( hint, attributes = attrs ) ] )
-			cell = Cell( table, attributes = { 'valign' : 'top', 'align' : 'right', 'rowspan' : str( len( self.options ) ) } )
-
-			wizard._content._content[ 2 ].append( cell )
 
 		wizard._content.add_row( [ Fill( 2, '' ), ] )
 		if self.actions:

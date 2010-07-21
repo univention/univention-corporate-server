@@ -201,7 +201,10 @@ def selection_map( storage, umcp_part ):
 		else:
 			choices.append( { 'name' : key, 'description' : name } )
 	attributes.update( { 'choicelist' : choices } )
-	quest = question_select( str( umcp_part ), utils.layout_attrs( storage, umcp_part ), attributes )
+	layout_attrs = utils.layout_attrs( storage, umcp_part )
+	if not umcp_part.syntax.may_change:
+		layout_attrs[ 'passive' ] = 'true'
+	quest = question_select( str( umcp_part ), layout_attrs, attributes )
 	storage[ umcp_part.id() ] = ( quest, umcp_part )
 
 	return quest

@@ -1,3 +1,10 @@
+univention-management-console (3.0.46-1) unstable; urgency=low
+
+  * wizard: show hints above options without an icon
+  * support read only selection boxes; Bug #19064
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 21 Jul 2010 16:26:56 +0200
+
 univention-management-console (3.0.45-1) unstable; urgency=low
 
   * wizard: adjust vertical align of buttons; Bug #18164
