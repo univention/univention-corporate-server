@@ -253,6 +253,33 @@ class MultiValueMap( mapper.IMapper ):
 						newvalue.append( ( key, descr ) )
 				dyn.cached = newvalue
 			return True
+		elif btn_down.pressed():
+			dynamic_action = True
+			selected = mselect.getselected()
+			if selected:
+				selected = selected[ 0 ]
+				for idx in range( len( dyn.cached ) ):
+					if dyn.cached[ idx ][ 0 ] == selected:
+						if idx == ( len( dyn.cached ) -1 ):
+							return True
+						key, descr = dyn.cached[ idx ]
+						del dyn.cached[ idx ]
+						dyn.cached.insert( idx + 1 , (key, descr ) )
+						break
+			return True
+		elif btn_up.pressed():
+			dynamic_action = True
+			selected = mselect.getselected()
+			if selected:
+				selected = selected[ 0 ]
+				for idx in range( len( dyn.cached ) ):
+					if dyn.cached[ idx ][ 0 ] == selected:
+						if idx == 0:
+							return True
+						key, descr = dyn.cached[ idx ]
+						del dyn.cached[ idx ]
+						dyn.cached.insert( idx - 1 , (key, descr ) )
+			return True
 
 		return False
 

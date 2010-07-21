@@ -1,3 +1,9 @@
+univention-management-console (3.0.47-1) unstable; urgency=low
+
+  * implement up and down button in multivalue widget; Bug #14972
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 21 Jul 2010 17:06:59 +0200
+
 univention-management-console (3.0.46-1) unstable; urgency=low
 
   * wizard: show hints above options without an icon
