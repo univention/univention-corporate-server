@@ -1,3 +1,10 @@
+univention-join (3.0.1-1) unstable; urgency=low
+
+  * don't cut the last character because univention-ssh was fixed. Bug
+    #14212
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Jul 2010 11:31:12 +0200
+
 univention-join (3.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

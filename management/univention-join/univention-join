@@ -415,7 +415,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	fi
 
 	echo -n "Sync SSL settings: "
-	eval `echo univention-config-registry set \` univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-config-registry dump ssl/common ssl/country ssl/email ssl/locality ssl/organization ssl/organizationalunit ssl/state | grep ^ssl| sed -e 's|: |="|' | sed -e 's|.$|"|'\`` >>/var/log/univention/join.log 2>&1
+	eval `echo univention-config-registry set \` univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-config-registry dump ssl/common ssl/country ssl/email ssl/locality ssl/organization ssl/organizationalunit ssl/state | grep ^ssl| sed -e 's|: |="|' \`` >>/var/log/univention/join.log 2>&1
 
 
 	echo -e "\033[60Gdone"
