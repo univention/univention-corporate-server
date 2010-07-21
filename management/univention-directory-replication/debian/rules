@@ -56,6 +56,7 @@ install: build
 	dh_installdirs
 
 	install -m 755 replication.py debian/${package}/usr/lib/univention-directory-listener/system/replication.py
+	install -m 755 univention-directory-replicate-one debian/${package}/usr/sbin/univention-directory-replicate-one
 	cat univention-directory-replication-resync | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-directory-replication-resync_tmp
 	install -m 744 univention-directory-replication-resync_tmp debian/${package}/usr/sbin/univention-directory-replication-resync
 	rm univention-directory-replication-resync_tmp

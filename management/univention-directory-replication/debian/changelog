@@ -1,3 +1,10 @@
+univention-directory-replication (4.0.1-2) unstable; urgency=low
+
+  * ship univention-directory-replicate-one script in binary package
+    (Bug #15646)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Jul 2010 09:42:09 +0200
+
 univention-directory-replication (4.0.1-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
