@@ -137,7 +137,7 @@ Type=str
 Categories=system-base
 
 [auth/faillog]
-Description[de]=Aktiviert das automatische Sperren von Benutzern falls die Anmeldung zu h�ufig fehlschläg. (default: no)
+Description[de]=Aktiviert das automatische Sperren von Benutzern falls die Anmeldung zu häufig fehlschläg. (default: no)
 Description[en]=Enabled user locking if too many login attemps fail. (default: no)
 Type=str
 Categories=system-base
@@ -161,7 +161,7 @@ Type=str
 Categories=system-base
 
 [auth/faillog/lock_global]
-Description[de]=Das Sperren des Benutzers wird global durchgef�hrt, wenn die Anzahl der erlaubten fehlerhaften Anmeldeversuche erreicht wurde. (default: no)
+Description[de]=Das Sperren des Benutzers wird global durchgeführt, wenn die Anzahl der erlaubten fehlerhaften Anmeldeversuche erreicht wurde. (default: no)
 Description[en]=The user lock will be saved global if maximum allowed attempts has been reached. (default: no)
 Type=str
 Categories=system-base
