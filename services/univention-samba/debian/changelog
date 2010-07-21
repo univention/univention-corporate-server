@@ -1,3 +1,11 @@
+univention-samba (5.0.6-1) unstable; urgency=low
+
+  * lock and unlock tdb file while writing. Bug #18616
+  * add join-backup to samba adminusers and join the local server to the
+    samba domain. Bug #17821
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Jul 2010 15:26:33 +0200
+
 univention-samba (5.0.5-1) unstable; urgency=low
 
   * added dependency to samba-common-bin. Bug #18901

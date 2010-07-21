@@ -30,18 +30,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=4
+VERSION=5
 
-if ! test -e "/usr/share/univention-join/.joined"; then
-	echo "The server has not joined yet"
-	exit 1
-fi
-
-touch /usr/lib/univention-install/.index.txt
-
-test -n "`grep "univention-samba v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
 
 rm -f /var/cache/samba/dont_start >/dev/null 2>&1
+
+# during installation samba/autostart was set to no to prevent
+# a half configured samba server. Set autostart to yes during first join
+if [ "$JS_LAST_EXECUTED_VERSION" = 0 ]; then
+	univention-baseconfig set samba/autostart=yes
+fi
+univention-baseconfig set samba/autostart?yes
 
 # Stop the NFS Kernel Server
 nfsd_pid=`pidof nfsd`
@@ -49,27 +50,36 @@ if [ -n "$nfsd_pid" ]; then
 	test -x /etc/init.d/nfs-kernel-server && /etc/init.d/nfs-kernel-server stop
 fi
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
 winbind_was_running=0
-if COLUMNS=200 dpkg -l winbind | grep "^ii  winbind"; then
+if [ -x /etc/init.d/winbind ]; then
 	if /etc/init.d/winbind status >/dev/null 2>&1; then
 		winbind_was_running=1
 	fi
 
 	/etc/init.d/winbind stop
+fi
 
-	# parse binddn and bindpwd from command line arguments into shell variables
-	eval $(echo "$@" | sed -n 's/.*--binddn \(.*\) --bindpwd \(.*\).*/binddn="\1"\nbindpwd="\2"/p')
-	# map binddn back to uid, returns nothing if no binddn or binddn= cn=admin,..
-	dcaccount=$(ldapsearch -x -s base -b "$binddn" uid | ldapsearch-wrapper | sed -n 's/^uid: \(.*\)$/\1/p')
-	if [ -n "$dcaccount" -a -n "$bindpwd" ]; then
-		# create samba machine account for this machine
-		net rpc join -U${dcaccount}%${bindpwd}
-		if [ $? != 0 ]; then
-			echo "ERROR: failed to join via net rpc join"
-			exit 1
-		fi
+# The samba server should be up and running for local join
+/etc/init.d/samba restart
+
+# parse binddn and bindpwd from command line arguments into shell variables
+eval $(echo "$@" | sed -n 's/.*--binddn \(.*\) --bindpwd \(.*\).*/binddn="\1"\nbindpwd="\2"/p')
+# map binddn back to uid, returns nothing if no binddn or binddn= cn=admin,..
+dcaccount=$(ldapsearch -x -s base -b "$binddn" uid | ldapsearch-wrapper | sed -n 's/^uid: \(.*\)$/\1/p')
+if [ -n "$dcaccount" -a -n "$bindpwd" ]; then
+	# create samba machine account for this machine
+	net rpc join -U${dcaccount}%${bindpwd}
+	if [ $? != 0 ]; then
+		echo "ERROR: failed to join via net rpc join"
+		exit 1
+	fi
+elif [ -e /etc/backup-join.secret ]; then
+	net rpc join -Ujoin-backup%"$(cat /etc/backup-join.secret)"
+	if [ $? != 0 ]; then
+		echo "ERROR: failed to join via net rpc join"
+		exit 1
 	fi
 fi
 
@@ -139,15 +149,8 @@ if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
 	univention-baseconfig unset create/home/share
 fi
 
-univention-baseconfig set samba/autostart=yes
 
 /etc/init.d/samba restart >/dev/null 2>&1
-sleep 2
-
-#FIXME
-/etc/init.d/samba stop >/dev/null 2>&1
-sleep 2
-/etc/init.d/samba start >/dev/null 2>&1
 
 if [ -n "$nfsd_pid" ]; then
 	test -x /etc/init.d/nfs-kernel-server && /etc/init.d/nfs-kernel-server start
@@ -157,10 +160,10 @@ if [ $winbind_was_running -eq 1 ]; then
 	/etc/init.d/winbind start >/dev/null 2>&1
 fi
 
+
 # sync netlogon share
 /usr/share/univention-samba/slave-sync >>/var/log/univention/samba-sync.log
 
-test -n "`grep "univention-samba v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-samba v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
-
+joinscript_save_current_version
 
 exit 0

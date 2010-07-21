@@ -43,6 +43,7 @@ def setMachineAccountPrivilege( sambaSID ):
 	tdbKey='PRIV_%s\x00' % (sambaSID )
 
 	tdbFile=tdb.Tdb('/var/lib/samba/account_policy.tdb')
+	tdbFile.lock_all()
 	privs = tdbFile.get(tdbKey)
 	if not privs:
 		privs='\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
@@ -50,6 +51,8 @@ def setMachineAccountPrivilege( sambaSID ):
 	privs='\x10'+privs[1:len(privs)]
 
 	tdbFile[tdbKey]=privs
+
+	tdbFile.unlock_all()
 
 def username2sid( username ):
 	lo=univention.uldap.getMachineConnection()

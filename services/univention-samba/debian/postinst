@@ -69,7 +69,12 @@ fi
 
 univention-config-registry set samba/share/home?yes
 univention-config-registry set samba/share/groups?no
-univention-config-registry set samba/adminusers?administrator
+univention-config-registry set samba/adminusers?"administrator join-backup"
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.6; then
+	#append join-backup to samba adminusers
+	univention-config-registry set samba/adminusers="$samba_adminusers join-backup"
+fi
 
 if [ "$server_role" != "memberserver" ]
 then
@@ -112,6 +117,7 @@ univention-config-registry set samba/os/level?65
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	/usr/lib/univention-install/26univention-samba.inst || true
+	/usr/lib/univention-install/96univention-samba-local-join.inst || true
 fi
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.17; then
 	if [ "$server_role" = "memberserver" ]; then
