@@ -3,3 +3,9 @@ Description[de]=Soll ein Java-Plugin ("internal"), oder ein vnc://-Link ("extern
 Description[en]=Whether a Java plugin ("internal") or a vnc://-Link ("external") should be used for VNC access via UMC to running virtual instances.
 Type=str
 Categories=uvmm
+
+[uvmm/pool/default/path]
+Description[de]=Pfad des standard-Speicherbereichs für Image-Dateien.
+Description[en]=Path of the 'default' storage pool for image files.
+Type=str
+Categories=uvmm
