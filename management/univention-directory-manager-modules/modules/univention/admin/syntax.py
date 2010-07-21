@@ -301,7 +301,7 @@ class string_numbers_letters_dots(simple):
 		if self._re.match(text) != None:
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots!")
+			raise univention.admin.uexceptions.valueError, _("Value must not contain anything other than digits, letters or dots, must be at least 2 characters long, and start and end with a digit or letter!")
 
 class string_numbers_letters_dots_spaces(simple):
 	name='string_numbers_letters_dots_spaces'
@@ -312,7 +312,7 @@ class string_numbers_letters_dots_spaces(simple):
 		if self._re.match(text) != None:
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters, dots and spaces!")
+			raise univention.admin.uexceptions.valueError, _("Value must not contain anything other than digits, letters, dots or spaces, must be at least 2 characters long, and start and end with a digit or letter!")
 
 
 class phone(simple):
@@ -325,7 +325,7 @@ class phone(simple):
 		if self._re.match(text) != None:
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots!")
+			raise univention.admin.uexceptions.valueError, _("Value must not contain anything other than digits, letters, dots, brackets, slash, plus, or minus!")
 
 class IA5string(string):
 	name='IA5string'
@@ -347,7 +347,7 @@ class uid(simple):
 		if self._re.match(text) != None and text != 'admin':
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots, and may not be admin!")
+			raise univention.admin.uexceptions.valueError, _("Value must not contain anything other than digits, letters, dots, dash or underscore, must be at least 2 characters long, must start and end with a digit or letter, and must not be admin!")
 
 class uid_umlauts(simple):
 	name='uid'
@@ -417,7 +417,7 @@ class passwd(simple):
 		if len(text) >= self.min_length:
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError, _('The password is to short, at least 8 characters needed.')
+			raise univention.admin.uexceptions.valueError, _('The password is too short, at least %d characters needed.' % self.min_length)
 class userPasswd(simple):
 	name="passwd"
 
@@ -586,17 +586,24 @@ class emailAddressTemplate(simple):
 			return text
 		raise univention.admin.uexceptions.valueError,_("Not a valid email address!")
 
- 
 class iso8601Date(simple):
+	'''A date of the format:
+	yyyy-ddd   (2009-213)
+	yyyy-mm    (2009-05)
+	yyyy-mm-dd (2009-05-13)
+	yyyy-Www   (2009-W21)
+	yyyy-Www-D (2009-W21-4)
+	with the dashes being optional
+	'''
 	name = 'iso8601Date'
 
 	# regexp-source: http://regexlib.com/REDetails.aspx?regexp_id=2092
-	_re=re.compile('^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]5[0-3])(?:\-)?[1-7])?)?)$')
-	
+	_re=re.compile('^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3])(?:\-)?[1-7])?)?)$')
+
 	def parse(self, text):
 		if self._re.match(text) != None:
 			return text
-		raise univention.admin.uexceptions.valueError,_("The given date does not confirm iso8601, example: \"2009-01-01T12:00:00+01:00\".")
+		raise univention.admin.uexceptions.valueError,_("The given date does not conform to iso8601, example: \"2009-01-01\".")
 
 class date(simple):
 	name='date'
@@ -608,7 +615,7 @@ class date(simple):
 	def parse(self, text):
 		if self._re_iso.match(text) != None:
 			year, month, day = map(lambda(x): int(x), text.split('-'))
-			if year > 1960 and year < 2100 and month < 13 and day < 31:
+			if year > 1960 and year < 2100 and month < 13 and day < 32:
 				return '%02d.%02d.%s' % ( day, month, str( year )[ 2 : ] )
 		if self._re_de.match(text) != None:
 			day, month, year = map(lambda(x): int(x), text.split('.'))
@@ -1846,57 +1853,11 @@ class HourSimple(select):
 		('23', '23'),
 	]
 
-class HourSimple(select):
-	name='hour'
-	choices=[
-		('00', '0'),
-		('1', '1'),
-		('2', '2'),
-		('3', '3'),
-		('4', '4'),
-		('5', '5'),
-		('6', '6'),
-		('7', '7'),
-		('8', '8'),
-		('9', '9'),
-		('10', '10'),
-		('11', '11'),
-		('12', '12'),
-		('13', '13'),
-		('14', '14'),
-		('15', '15'),
-		('16', '16'),
-		('17', '17'),
-		('18', '18'),
-		('19', '19'),
-		('20', '20'),
-		('21', '21'),
-		('22', '22'),
-		('23', '23'),
-	]
-
 class Minute(select):
 	name='minute'
 	choices=[
 		('', ''),
 		('all', _( 'all' ) ),
-		('00', '0'),
-		('5', '5'),
-		('10', '10'),
-		('15', '15'),
-		('20', '20'),
-		('25', '25'),
-		('30', '30'),
-		('35', '35'),
-		('40', '40'),
-		('45', '45'),
-		('50', '50'),
-		('55', '55'),
-	]
-
-class MinuteSimple(select):
-	name='minute'
-	choices=[
 		('00', '0'),
 		('5', '5'),
 		('10', '10'),
