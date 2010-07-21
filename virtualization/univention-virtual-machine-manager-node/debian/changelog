@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (0.1.9-1) unstable; urgency=low
+
+  * Restart supervised libvirtd only when needed (Bug #18668, Bug #18110)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 21 Jul 2010 13:59:21 +0200
+
 univention-virtual-machine-manager-node (0.1.8-1) unstable; urgency=low
 
   * Increment maximum number of loop-back block devices to 256 (Bug #18765)

@@ -44,6 +44,7 @@ import univention.debug as debug
 import subprocess
 
 service_name = "Virtual Machine Manager"
+need_restart = False
 
 def initialize():
 	"""Called once on first initialization."""
@@ -78,16 +79,22 @@ def handler(dn, new, old):
 		listener.setuid(0)
 		try:
 			ucr.handler_set([key_value])
+			global need_restart
+			need_restart = True
 		finally:
 			listener.unsetuid()
 
 def postrun():
 	"""Called 15s after handler."""
-	listener.setuid(0)
-	try:
-		ret = subprocess.call(['invoke-rc.d', 'libvirt-bin', 'restart'])
-	finally:
-		listener.unsetuid()
+	global need_restart
+	if need_restart:
+		listener.setuid(0)
+		try:
+			# "libvirtd reload" only reloads the driver state, not the config file!
+			ret = subprocess.call(['invoke-rc.d', 'univention-virtual-machine-manager-node-common', 'restart'])
+			need_restart = False
+		finally:
+			listener.unsetuid()
 
 def clean():
 	"""Called before resync."""
