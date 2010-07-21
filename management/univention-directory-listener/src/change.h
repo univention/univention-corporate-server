@@ -51,6 +51,7 @@ int 	change_delete_dn	(NotifierID			 id,
 int 	change_update_dn	(univention_ldap_parameters_t	*lp,
 				 NotifierID			 id,
 				 char				*dn,
-				 char				command);
+				 char				command,
+				 univention_ldap_parameters_t   *lp_local);
 
 #endif /* _CHANGE_H_ */

@@ -1,3 +1,9 @@
+univention-directory-listener (5.0.1-1) unstable; urgency=low
+
+  * check local LDAP for parent container objects (Bug #17063)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Jul 2010 18:59:04 +0200
+
 univention-directory-listener (5.0.0-3) unstable; urgency=low
 
   * add signal handlers for USR1 and USR2 to in-/decrease loglevel at
