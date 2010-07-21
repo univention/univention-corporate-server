@@ -1,3 +1,10 @@
+univention-samba (5.0.7-1) unstable; urgency=low
+
+  * remove duplicated code from join script and set the password of 
+    ldap user before local join. Bug #17821
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Jul 2010 17:18:24 +0200
+
 univention-samba (5.0.6-1) unstable; urgency=low
 
   * lock and unlock tdb file while writing. Bug #18616
