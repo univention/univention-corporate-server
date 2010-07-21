@@ -1,3 +1,11 @@
+univention-join (3.0.1-2) unstable; urgency=low
+
+  * move univention join script from 91 to 23 because we need in some
+    join scripts the new generated users, for example join-backup in
+    univention-samba. Bug #17821
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Jul 2010 15:09:48 +0200
+
 univention-join (3.0.1-1) unstable; urgency=low
 
   * don't cut the last character because univention-ssh was fixed. Bug
