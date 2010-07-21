@@ -455,42 +455,37 @@ msgstr "FreeNX-Server"
 msgid "FreeNX application/thin-client server"
 msgstr "FreeNX Application/Thin-Client Server"
 
-#: installer/package_list.py:284
+#: installer/package_list.py:286
 msgid "Virtualization"
 msgstr "Virtualisierung"
 
-#: installer/package_list.py:286
-msgid "Xen Virtualization"
-msgstr "Xen Virtualisierung"
+#: installer/package_list.py:288
+msgid "Univention virtualization"
+msgstr "Univention Virtualisierung"
 
-#: installer/package_list.py:290
-msgid "Xen hypervisor (2.6.18)"
-msgstr "Xen-Hypervisor (2.6.18)"
-
-#: installer/package_list.py:295 installer/package_list.py:303
-msgid "Xen hypervisor environment to run virtualised hosts."
-msgstr "Xen-Hypervisor für den Betrieb virtualisierter Systeme."
+#: installer/package_list.py:292
+msgid "Virtual Machine Manager (UVMM)"
+msgstr "Virtual Machine Manager (UVMM)"
 
 #: installer/package_list.py:298
-msgid "Xen hypervisor (2.6.26)"
-msgstr "Xen-Hypervisor (2.6.26)"
+msgid "UMC module for managing virtualization servers and virtual instances"
+msgstr "UMC Modul für die Verwaltung von Virtualisierungs-Servern und virtuellen Instanzen"
 
-#: installer/package_list.py:306
-msgid "Xen kernel images (2.6.18)"
-msgstr "Xen-Kernel-Images (2.6.18)"
+#: installer/package_list.py:301
+msgid "Xen virtualization server"
+msgstr "Xen Virtualisierung Server"
 
-#: installer/package_list.py:311 installer/package_list.py:319
-#: installer/package_list.py:327
-msgid "Xen kernel images for Xen guests."
-msgstr "Xen-Kernel-Images für Xen-Gastinstanzen."
+#: installer/package_list.py:307
+msgid "Sets up a virtualization server based on Xen"
+msgstr "Richtet einen auf Xen basierenden Virtualisierungs-Server ein"
 
-#: installer/package_list.py:314
-msgid "Xen kernel images (2.6.26)"
-msgstr "Xen-Kernel-Images (2.6.26)"
+#: installer/package_list.py:310
+msgid "KVM virtualization server"
+msgstr "KVM Virtualisierung Server"
 
-#: installer/package_list.py:322
-msgid "Xen kernel images (2.6.30)"
-msgstr "Xen-Kernel-Images (2.6.30)"
+#: installer/package_list.py:316
+msgid "Sets up a virtualization server based on KVM"
+msgstr "Richtet einen auf KVM basierenden Virtualisierungs-Server ein"
 
 #: installer/package_list.py:332 installer/package_list.py:334
 msgid "Administrative tools"

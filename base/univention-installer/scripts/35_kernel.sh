@@ -91,6 +91,13 @@ else
 	fi
 fi
 
+# install xen kernel on xen virtualization server
+echo $packages | grep -qi univention-virtual-machine-manager-node-xen
+if [ 0 -eq $? ]; then
+	kernel_package="$kernel_package $kernel_package-xen"
+fi 
+	
+
 cat >>/instmnt/install_kernel.sh <<__EOT__
 
 export DEBIAN_FRONTEND=noninteractive
