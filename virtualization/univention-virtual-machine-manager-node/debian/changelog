@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (0.1.10-1) unstable; urgency=low
+
+  * Fix exception accessing associatedDomain (Bug #18787)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 21 Jul 2010 17:49:57 +0200
+
 univention-virtual-machine-manager-node (0.1.9-1) unstable; urgency=low
 
   * Restart supervised libvirtd only when needed (Bug #18668, Bug #18110)

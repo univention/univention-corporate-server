@@ -60,13 +60,21 @@ def handler(dn, new, old):
 
 	old_host = None
 	if old and service_name in old.get('univentionService', []):
-		old_host = "%s.%s" % (old['cn'][0], old['associatedDomain'][0])
+		try:
+			domain = old['associatedDomain'][0]
+		except KeyError:
+			domain = ucr.get('domainname')
+		old_host = "%s.%s" % (old['cn'][0], domain)
 		if old_host in tls_allowed_dn_list:
 			debug.debug(debug.LISTENER, debug.INFO, "removing UVMM daemon %s" % (old_host,))
 			tls_allowed_dn_list.remove(old_host)
 	new_host = None
 	if new and service_name in new.get('univentionService', []):
-		new_host = "%s.%s" % (new['cn'][0], new['associatedDomain'][0])
+		try:
+			domain = new['associatedDomain'][0]
+		except KeyError:
+			domain = ucr.get('domainname')
+		new_host = "%s.%s" % (new['cn'][0], domain)
 		debug.debug(debug.LISTENER, debug.INFO, "+uvmm %s" % (new_host,))
 		if new_host not in tls_allowed_dn_list:
 			debug.debug(debug.LISTENER, debug.INFO, "adding UVMM daemon %s" % (new_host,))
