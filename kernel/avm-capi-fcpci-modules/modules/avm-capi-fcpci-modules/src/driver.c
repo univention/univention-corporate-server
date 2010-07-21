@@ -577,7 +577,11 @@ static void __kcapi reset_ctrl (struct capi_ctr * ctrl) {
 		}
 	}
 	stop (card);
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31))
 	capi_ctr_reseted (ctrl);
+#else
+	capi_ctr_down (ctrl);
+#endif
 #if defined (__fcpnp__)
 	pnp_disable_dev (card->dev);
 #endif

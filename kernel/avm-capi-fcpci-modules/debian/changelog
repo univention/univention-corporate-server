@@ -1,3 +1,9 @@
+avm-capi-fcpci-modules (4.0.1-1) unstable; urgency=low
+
+  * updates for build against 2.6.32. Bug #18323
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Jul 2010 06:55:33 +0200
+
 avm-capi-fcpci-modules (4.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

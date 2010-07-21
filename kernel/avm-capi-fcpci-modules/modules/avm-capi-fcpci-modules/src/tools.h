@@ -71,13 +71,15 @@ extern void vlprintf (const char *, const char *, va_list);
 
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
-#ifndef atomic_xchg
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32))
+# ifndef atomic_xchg
 static inline unsigned long atomic_xchg (
 	volatile atomic_t *	v, 
 	unsigned		value
 ) {
 	return __xchg (value, &v->counter, sizeof (unsigned));
 } /* atomic_xchg */
+# endif
 #endif
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
