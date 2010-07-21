@@ -1,3 +1,10 @@
+univention-xen (3.0.5-1) unstable; urgency=low
+
+  * allow univention-kernel-image-2.6.18-xen as dom0 meta package. Bug
+    #19058
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Jul 2010 11:38:47 +0200
+
 univention-xen (3.0.4-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
