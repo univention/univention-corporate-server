@@ -95,10 +95,14 @@ def request(options, req):
 			print "DATA:"
 			try:
 				from pprint import pprint
-				if isinstance(res.data, list):
-					pprint([i._json() for i in res.data])
-				else:
-					pprint(res.data._json())
+				def dump(obj):
+					if hasattr(obj, '_json'):
+						return obj._json()
+					elif isinstance(obj, list):
+						return map(dump, obj)
+					else:
+						return str(obj)
+				pprint(dump(res.data))
 			except AttributeError, e:
 				print str(res)
 			except Exception, e:

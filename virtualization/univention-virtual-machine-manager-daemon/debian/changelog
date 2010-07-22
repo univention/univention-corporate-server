@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (0.9.61-4) unstable; urgency=low
+
+  * Fix volume-pool information in creation wizard (Bug #19069)
+  * Expand description of 'VNC' checkbox.
+  * Fix spelling.
+  * Improve uvmm dump functionallity.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 Jul 2010 19:28:03 +0200
+
 univention-virtual-machine-manager-daemon (0.9.61-3) unstable; urgency=low
 
   * Fix PAM integration with UCR (Bug #18663)

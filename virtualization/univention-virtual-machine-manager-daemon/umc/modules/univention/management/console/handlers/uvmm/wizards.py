@@ -84,7 +84,7 @@ class DriveWizard( umcd.IWizard ):
 		self.append( page )
 
 		# page 4
-		page = umcd.Page( self.title, _( 'The following drive will be create:' ) )
+		page = umcd.Page( self.title, _( 'The following drive will be created:' ) )
 		self.append( page )
 
 	def _create_pool_select_button( self, options ):
@@ -123,7 +123,7 @@ class DriveWizard( umcd.IWizard ):
 	def pool_selected( self, object ):
 		ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: node storage volumes: %s' % str( self.node_uri ) )
 		vols = self.uvmm.storage_pool_volumes( self.node_uri, object.options.get( 'drive-pool', 'default' ), object.options[ 'drive-type' ] )
-		ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: node storage volumes: %s' % str( vols ) )
+		ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: node storage volumes: %s' % map(str, vols))
 		self.image_syntax.update_choices( [ os.path.basename( vol.source ) for vol in vols ] )
 
 		return self[ self.current ]
@@ -131,8 +131,10 @@ class DriveWizard( umcd.IWizard ):
 	def _disk_type_text( self, disk_type ):
 		if disk_type == 'disk':
 			return _( 'hard drive' )
-		else:
+		if disk_type == 'cdrom':
 			return _( 'CDROM drive' )
+		else:
+			return _('unknown')
 
 	def next( self, object ):
 		if self.current == 0: # which drive type?
@@ -141,13 +143,15 @@ class DriveWizard( umcd.IWizard ):
 			if object.options[ 'drive-type' ] == 'disk':
 				self.current = 1
 				self[ 2 ].hint = None
-			else:
+			elif object.options['drive-type'] == 'cdrom':
 				self.current = 2
 				if self.image_syntax._choices:
-					msg = _( 'If the required image is not found, you may copy the ISO image on the server into the directory /var/lib/libvirt/images. After that go to the previous page an return to this one. The image should now be available.' )
+					msg = _( 'If the required image is not found, you may copy the ISO image on the server into the directory /var/lib/libvirt/images/. After that go to the previous page an return to this one. The image should now be available.' )
 				else:
-					msg = _( 'The list of available images is empty! You may copy the ISO image on the server into the directory /var/lib/libvirt/images. After that go to the previous page an return to this one. The image should now be available.' )
+					msg = _( 'The list of available images is empty! You may copy the ISO image on the server into the directory /var/lib/libvirt/images/. After that go to the previous page an return to this one. The image should now be available.' )
 				self[ 2 ].hint = msg
+			else:
+				raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
 		elif self.current == 1: # new or existing disk image?
 			if object.options[ 'existing-or-new-disk' ] == 'disk-new':
 				self.current = 3
@@ -155,17 +159,26 @@ class DriveWizard( umcd.IWizard ):
 				self.current = 2
 				if object.options[ 'drive-type' ] == 'disk':
 					self[ self.current ].description = _( 'Select the storage pool and afterwards one of the existing disk images' )
-				else:
+				elif object.options['drive-type'] == 'cdrom':
 					self[ self.current ].description = _( 'Select the storage pool and afterwards one of the existing ISO image' )
-		elif self.current in ( 2, 3 ): # select existing disk image
-			if self.current == 2:
+				else:
+					raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
+		elif self.current in ( 2, 3 ): # 2=create new, 3=select existing, disk image
+			if self.current == 2: # create new dist image
 				ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: collect information about existing disk image: %s' % object.options[ 'drive-image' ] )
-				vols = self.uvmm.storage_pool_volumes( self.node_uri, object.options.get( 'drive-pool', 'default' ), object.options[ 'drive-type' ] )
+				drive_pool = object.options['drive-pool']
+				drive_type = object.options['drive-type']
+				drive_image = object.options['drive-image']
+				vols = self.uvmm.storage_pool_volumes(self.node_uri, drive_pool, drive_type)
 				for vol in vols:
-					if vol.source == object.options[ 'drive-image' ]:
+					if os.path.basename(vol.source) == drive_image:
 						ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: set information about existing disk image: %s' % object.options[ 'drive-image' ] )
-						object.options[ 'image-name' ] = os.path.basename( object.options[ 'drive-image' ] )
+						object.options[ 'image-name' ] = drive_image
 						object.options[ 'image-size' ] = MemorySize.num2str( vol.size )
+						break
+				else:
+					ud.debug(ud.ADMIN, ud.ERROR, 'Image not found: pool=%s type=%s image=%s vols=%s' % (drive_pool, drive_type, drive_image, map(str, vols)))
+					return umcd.WizardResult(False, _('Image not found')) # FIXME
 				if not object.options[ 'drive-image' ] in object.options.get( '_reuse_image', [] ) and vol.device == uvmmn.Disk.DEVICE_DISK and self.uvmm.is_image_used( self.node_uri, object.options[ 'drive-image' ] ):
 					if '_reuse_image' in object.options:
 						object.options[ '_reuse_image' ].append( object.options[ 'drive-image' ] )
@@ -176,7 +189,7 @@ class DriveWizard( umcd.IWizard ):
 			self[ self.current ].options = []
 			conf = umcd.List()
 			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Drive type' ) ), self._disk_type_text( object.options[ 'drive-type' ] ) ] )
-			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Storage pool' ) ), _( 'path: %(path)s' ) % { 'path' : self._disk_type_text( object.options[ 'drive-type' ] ) } ] )
+			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Storage pool' ) ), _( 'path: %(path)s' ) % { 'path' : self._get_pool_path( object.options[ 'drive-pool' ] ) } ] )
 			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image filename' ) ), object.options[ 'image-name' ] ] )
 			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image size' ) ), object.options[ 'image-size' ] ] )
 			self[ self.current ].options.append( conf )
@@ -198,7 +211,7 @@ class DriveWizard( umcd.IWizard ):
 		elif self.current == 3:
 			self.current = 1
 		elif self.current == 4:
-			if object.options[ 'existing-or-new-disk' ] == 'disk-new' and object.options[ 'drive-type' ] == 'disk':
+			if object.options['drive-type' ]== 'disk' and object.options['existing-or-new-disk'] == 'disk-new':
 				self.current = 3
 			else:
 				self.current = 2
@@ -219,8 +232,10 @@ class DriveWizard( umcd.IWizard ):
 		disk = uvmmn.Disk()
 		if object.options[ 'drive-type' ] == 'disk':
 			disk.device = uvmmn.Disk.DEVICE_DISK
-		else:
+		elif object.options[ 'drive-type' ] == 'cdrom':
 			disk.device = uvmmn.Disk.DEVICE_CDROM
+		else:
+			raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
 		disk.size = MemorySize.str2num( object.options[ 'image-size' ], unit = 'MB' )
 
 		disk.source = self._get_pool_path( object.options[ 'drive-pool' ] )
@@ -241,6 +256,7 @@ class InstanceWizard( umcd.IWizard ):
 		self.drive_wizard = DriveWizard( command )
 		self.drive_wizard_active = False
 		self.actions[ 'new-drive' ] = self.new_drive
+		self.actions[ 'pool-selected' ] = self.drive_wizard.pool_selected # FIXME: KeyError 'drive-type'
 		self.drives = []
 
 		# page 0
@@ -253,7 +269,7 @@ class InstanceWizard( umcd.IWizard ):
 		page.options.append( umcd.make( ( 'name', umc.String( _( 'Name' ) ) ) ) )
 		page.options.append( umcd.make( ( 'memory', umc.String( _( 'Memory (in MB)' ) ) ) ) )
 		page.options.append( umcd.make( ( 'cpus', NumberSelect( _( 'CPUs' ) ) ) ) )
-		page.options.append( umcd.make( ( 'vnc', umc.Boolean( _( 'VNC' ) ) ) ) )
+		page.options.append( umcd.make( ( 'vnc', umc.Boolean( _( 'Enable VNC remote access' ) ) ) ) )
 		self.append( page )
 
 		# page 2
