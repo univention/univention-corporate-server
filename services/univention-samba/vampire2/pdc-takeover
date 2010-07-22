@@ -37,6 +37,29 @@ netlogon_dir=/var/lib/samba/netlogon
 
 eval `/usr/sbin/univention-baseconfig shell`
 
+cat <<_EOW
+
+univention-pdc-takeover was disabled with Samba 3.5 in UCS 2.4.
+
+Samba 3.3 must be installed to start the takeover of a windows
+pdc. The following commands can be used:
+
+ucr set repositoy/online/component/samba3.3/server=apt.univention.de \ 
+        repositoy/online/component/samba3.3=true
+apt-get update; apt-get install univention-samba-3.3
+
+
+After a successful takeover Samba 3.5 can be reinstalled with the 
+following commands:
+
+ucr unset repositoy/online/component/samba3.3/server \ 
+        repositoy/online/component/samba3.3
+apt-get update; apt-get install univention-samba
+
+_EOW
+
+exit 1
+
 display_help() {
 	cat <<-EOL
 	Syntax:
