@@ -9,3 +9,9 @@ Description[de]=Pfad des standard-Speicherbereichs für Image-Dateien.
 Description[en]=Path of the 'default' storage pool for image files.
 Type=str
 Categories=uvmm
+
+[auth/uvmmd/accessfile]
+Description[de]=Pfad zur PAM-Konfigurationsdatei mit der Zugriffsbeschränkung für UVMMd.
+Description[en]=Path to the PAM configuration file with access control for UVMMd.
+Type=str
+Categories=uvmm

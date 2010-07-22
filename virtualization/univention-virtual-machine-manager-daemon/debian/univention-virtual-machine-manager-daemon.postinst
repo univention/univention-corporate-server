@@ -73,5 +73,7 @@ if [ -x /etc/init.d/apache2 ]; then
     invoke-rc.d apache2 restart || true
 fi
 
+univention-config-registry set auth/uvmmd/accessfile?/etc/security/access-uvmmd.conf
+
 exit 0
 # vim:set ft=sh ts=4 sw=4 et:

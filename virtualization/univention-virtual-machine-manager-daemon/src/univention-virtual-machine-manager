@@ -267,21 +267,22 @@ if __name__ == '__main__':
 				tree = ET.parse(file_or_xml)
 				root = tree.getroot() # domain
 			domain = protocol.Data_Domain()
+			domain.domain_type = root.attrib['type']
 			domain.uuid = root.findtext('uuid')
 			domain.name = root.findtext('name')
-			domain.virt_tech = root.find('os').findtext('type')
+			domain.os_type = root.find('os').findtext('type')
 			try: domain.arch = root.find('os').find('type').attrib['arch']
 			except KeyError: domain.arch = 'i686' # FIXME
-			if domain.virt_tech == 'linux':
+			if domain.os_type == 'linux':
 				domain.kernel = root.find('os').findtext('kernel')
 				domain.cmdline = root.find('os').findtext('cmdline')
 				domain.initrd = root.find('os').findtext('initrd')
-			elif domain.virt_tech == 'hvm':
+			elif domain.os_type == 'hvm':
 				try: domain.boot = [boot.attrib['dev'] for boot in root.find('os').findall('boot')]
 				except AttributeError: pass
 				except KeyError: pass
 			else:
-				raise "Unknown virtualization technique '%s'" % (domain.virt_tech,)
+				raise "Unknown os/typ='%s'" % (domain.os_type,)
 			domain.maxMem = int(root.findtext('memory')) << 10
 			from univention.uvmm.node import Disk, Interface, Graphic
 			for disk in root.find('devices').findall('disk'):

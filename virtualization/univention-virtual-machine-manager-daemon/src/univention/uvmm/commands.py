@@ -108,6 +108,7 @@ class _Commands:
 			pkg_data.domains = []
 			for domain in local_data.domains.values():
 				domain_data = protocol.Data_Domain()
+				domain_data.domain_type = domain.domain_type
 				domain_data.uuid = domain.uuid
 				domain_data.name = domain.name
 				domain_data.arch = domain.arch

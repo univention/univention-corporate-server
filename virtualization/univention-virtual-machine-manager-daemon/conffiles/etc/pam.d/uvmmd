@@ -1,0 +1,8 @@
+@%@BCWARNING=# @%@
+
+@include common-auth
+@!@
+if baseConfig.get('auth/uvmmd/accessfile', False):
+	print 'account  required                pam_access.so accessfile=%s listsep=,' % baseConfig['auth/uvmmd/accessfile']
+@!@
+@include common-account
