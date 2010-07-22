@@ -79,6 +79,10 @@ else
 		fi
 
 		boot_version=`uname -r | awk -F"-" '{print $1}'`
+		if uname -r | grep -iq bigmem; then 
+			boot_version="$boot_version-64gb"
+		fi
+
 		if [ "$boot_version" = "2.6.14" ]; then
 			# booting the default kernel image
 			kernel_package="univention-kernel-image${kernel_extension}-2.6.18"
