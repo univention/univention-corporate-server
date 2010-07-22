@@ -10,7 +10,7 @@ Package: univention-virtual-machine-manager-schema
 Architecture: all
 Depends: python-univention-directory-manager-uvmm,
  ${python:Depends}, ${misc:Depends}
-Recommends: univention-ldap-config
+Enhances: univention-ldap-config
 Description: UCS - Univention Virtual Machine Manager schema definitions
  This package contains the OpenLDAP schema definitions for
  the UVMM (Univention Virtual Machine Manager).
