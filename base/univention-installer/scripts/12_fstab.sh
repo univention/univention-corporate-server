@@ -120,6 +120,13 @@ elif [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
 /dev/iseries/vcda  /cdrom     auto    user,noauto,exec            0       0
 __EOT__
 	mkdir -p /instmnt/cdrom
+# xen
+elif [ -d "/proc/xen" ]; then
+        . /tmp/installation_profile
+        cat >>/instmnt/etc/fstab <<__EOT__
+$cdrom_device  /cdrom     auto    user,noauto,exec            0       0
+__EOT__
+	mkdir -p /instmnt/cdrom
 else
 	cat >>/instmnt/etc/fstab <<__EOT__
 /dev/sr0  /cdrom     auto    user,noauto,exec            0       0

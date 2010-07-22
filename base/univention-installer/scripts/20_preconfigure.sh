@@ -72,6 +72,36 @@ fi
 mount proc /proc -t proc
 mount -t sysfs sysfs /sys/
 
+# create devices file for xen and kvm
+cd /sys/block
+for d in xvd[a-z] vd[a-z]; do
+        if [ ! -d "/sys/block/\$d" ]; then
+                continue
+        fi
+        cd "/sys/block/\$d"
+        . ./uevent
+        mknod "/dev/\$d" b "\$MAJOR" "\$MINOR"
+        for i in 1 2 3 4 5 6 7 8 9; do
+                if [ ! -e "/dev/\$d\$i" ]; then
+                        mknod "/dev/\$d\$i" b "\$MAJOR" "\$((\$MINOR + \$i))"
+                fi
+        done
+done
+
+# create xen console
+cd /sys/devices/virtual/tty
+for d in hvc[0-9]; do
+        if [ ! -d "/sys/devices/virtual/tty/\$d" ]; then
+                continue
+        fi
+        cd "/sys/devices/virtual/tty/\$d"
+        . ./uevent
+        if [ ! -e "/dev/\$d" ]; then
+                mknod "/dev/\$d" c "\$MAJOR" "\$MINOR"
+        fi
+done
+
+
 echo "Setting up devices, this may take a while."
 
 cd /dev
