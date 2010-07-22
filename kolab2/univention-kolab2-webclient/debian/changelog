@@ -1,3 +1,9 @@
+univention-kolab2-webclient (6.0.2-17) unstable; urgency=low
+
+  * add dirs for var/cache/horde etc. (Bug #17812)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Jul 2010 12:08:38 +0200
+
 univention-kolab2-webclient (6.0.2-16) unstable; urgency=low
 
   * depend on python-pygresql for turba-permissions.py (Bug #17812)
