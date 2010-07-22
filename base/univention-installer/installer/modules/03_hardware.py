@@ -349,6 +349,15 @@ class object(content):
 						cdrom_devices.append('iseries/vcdc')
 						cdrom_devices.append('iseries/vcdd')
 				
+				# virt
+				for i in map(chr, range(ord('a'), ord('z')+1)):
+					# xen
+					if os.path.exists('/sys/block/xvd%s' % i):
+						cdrom_devices.append("/dev/xvd%s" % i)
+					# virtio
+					if os.path.exists('/sys/block/vd%s' % i):
+						cdrom_devices.append("/dev/vd%s" % i)
+
 				# defauls
 				defaults = ["scd0", "scd1"]
 				for i in defaults:

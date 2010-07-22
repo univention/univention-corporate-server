@@ -1,3 +1,10 @@
+univention-installer (6.0.34-3) unstable; urgency=low
+
+  * redirect udev output to /dev/null
+  * add support for xvd[a-z] and vd[a-z] devices file in 03_hardware.py Bug Bug #18958
+
+ -- Felix Botner <botner@univention.de>  Thu, 22 Jul 2010 14:27:27 +0200
+
 univention-installer (6.0.33-2) unstable; urgency=low
 
   * fixed debian/rules Bug #18958 

@@ -17,8 +17,8 @@ else
 	# udev
 	echo > /sys/kernel/uevent_helper
 	mkdir -p /dev/.udev/db/
-	udevd --daemon
+	udevd --daemon 1>/dev/null 2>/dev/null
 	mkdir -p /dev/.udev/queue/ /dev/.udev/rules.d/
-	udevadm trigger
-	udevadm settle || true
+	udevadm trigger 1>/dev/null 2>/dev/null
+	udevadm settle 1>/dev/null 2>/dev/null || true
 fi
