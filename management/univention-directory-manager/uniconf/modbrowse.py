@@ -314,7 +314,7 @@ class modbrowse(unimodule.unimodule):
 
 		list_types = []
 		try:
-			policies=self.lo.getPolicies(position.getDn())
+			policies=self.lo.getPolicies(position.getDn(), policies=[], attrs={}, result={}, fixedattrs={})
 			list_types=policies['univentionPolicyAdminContainerSettings']['univentionAdminListModules']['value']
 		except KeyError:
 			pass
