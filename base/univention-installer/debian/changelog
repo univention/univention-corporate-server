@@ -1,3 +1,9 @@
+univention-installer (6.0.33-2) unstable; urgency=low
+
+  * fixed debian/rules Bug #18958 
+
+ -- Felix Botner <botner@univention.de>  Thu, 22 Jul 2010 12:53:55 +0200
+
 univention-installer (6.0.33-1) unstable; urgency=low
 
   * install 64gb kernel package if installer was started with bigmem kernel Bug #18958
