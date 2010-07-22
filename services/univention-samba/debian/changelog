@@ -1,3 +1,10 @@
+univention-samba (5.0.8-1) unstable; urgency=low
+
+  * added samba/auth/methods to control auth methods on a memberserver.
+    Bug #18505
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Jul 2010 11:14:17 +0200
+
 univention-samba (5.0.7-1) unstable; urgency=low
 
   * remove duplicated code from join script and set the password of 

@@ -27,6 +27,7 @@ Variables: samba/domainmaster
 Variables: samba/user
 Variables: samba/ldap/replication/sleep
 Variables: samba/memberserver/passdb/ldap
+Variables: samba/auth/methods
 
 Type: subfile
 Multifile: etc/samba/smb.conf

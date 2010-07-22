@@ -7,7 +7,7 @@ if baseConfig.has_key('server/role') and baseConfig['server/role'] != 'memberser
 	if baseConfig.get('ldap/server/addition',''):
 		ldapserver.extend( baseConfig.get('ldap/server/addition').split(' ') )
 	print '\tpassdb backend = ldapsam:"ldap://%s"' % ' ldap://'.join(ldapserver)
-	print '\tauth methods = guest sam winbind'
+	print '\tauth methods = %s' % baseConfig.get('samba/auth/methods', 'guest sam winbind')
 
 if configRegistry.get('server/role') == 'memberserver' and configRegistry.get('samba/memberserver/passdb/ldap','').lower() in ('yes', 'true'):
 	ldapserver = baseConfig['ldap/server/name'].split(' ')
