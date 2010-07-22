@@ -1,3 +1,9 @@
+univention-pam (4.0.8-1) unstable; urgency=low
+
+  * support samba 3.3 packages. Bug #18426
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Jul 2010 10:54:39 +0200
+
 univention-pam (4.0.7-1) unstable; urgency=low
 
   * fix encoding (Bug #18987)
