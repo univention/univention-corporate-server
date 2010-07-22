@@ -1,7 +1,13 @@
+univention-virtual-machine-manager-daemon (0.9.61-3) unstable; urgency=low
+
+  * Fix PAM integration with UCR (Bug #18663)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 Jul 2010 12:28:02 +0200
+
 univention-virtual-machine-manager-daemon (0.9.61-2) unstable; urgency=low
 
   * Missing {os,domain}_type conversion (Bug #19064)
-  * Add pam configuration (Bug #18663)
+  * Add PAM configuration (Bug #18663)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 22 Jul 2010 12:07:21 +0200
 

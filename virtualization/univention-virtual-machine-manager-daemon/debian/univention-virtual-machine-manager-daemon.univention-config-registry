@@ -3,3 +3,4 @@ File: etc/security/access-uvmmd.conf
 
 Type: file
 File: etc/pam.d/uvmmd
+Variables: auth/uvmmd/accessfile

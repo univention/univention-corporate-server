@@ -63,6 +63,8 @@ then
     /usr/lib/univention-install/44univention-virtual-machine-manager-daemon.inst || true
 fi
 
+univention-config-registry set auth/uvmmd/accessfile?/etc/security/access-uvmmd.conf
+
 #DEBHELPER#
 
 if [ -x /etc/init.d/univention-management-console-server ]; then
@@ -72,8 +74,6 @@ fi
 if [ -x /etc/init.d/apache2 ]; then
     invoke-rc.d apache2 restart || true
 fi
-
-univention-config-registry set auth/uvmmd/accessfile?/etc/security/access-uvmmd.conf
 
 exit 0
 # vim:set ft=sh ts=4 sw=4 et:
