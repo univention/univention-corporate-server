@@ -40,6 +40,7 @@ translation=univention.admin.localization.translation('univention.admin.handlers
 _=translation.translate
 
 module = 'uvmm/profile'
+default_containers = ['cn=Profiles,cn=Virtual Machine Manager']
 
 childs = 0
 short_description = _('UVMM: Profile')

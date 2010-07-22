@@ -42,6 +42,7 @@ translation=univention.admin.localization.translation('univention.admin.handlers
 _=translation.translate
 
 module = 'uvmm/info'
+default_containers = ['cn=Information,cn=Virtual Machine Manager']
 
 childs = 0
 short_description = _('UVMM: Machine information')
