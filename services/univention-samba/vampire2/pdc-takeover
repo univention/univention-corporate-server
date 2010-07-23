@@ -46,7 +46,7 @@ pdc. The following commands can be used:
 
 ucr set repositoy/online/component/samba3.3/server=apt.univention.de \ 
         repositoy/online/component/samba3.3=true
-apt-get update; apt-get install univention-samba-3.3
+apt-get update; aptitude install univention-samba-3.3
 
 
 After a successful takeover Samba 3.5 can be reinstalled with the 
@@ -54,7 +54,7 @@ following commands:
 
 ucr unset repositoy/online/component/samba3.3/server \ 
         repositoy/online/component/samba3.3
-apt-get update; apt-get install univention-samba
+apt-get update; aptitude install univention-samba
 
 _EOW
 
