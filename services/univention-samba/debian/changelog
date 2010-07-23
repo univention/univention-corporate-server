@@ -1,3 +1,13 @@
+univention-samba (5.0.13-1) unstable; urgency=low
+
+  [Roman Asendorf]
+   * adding attribute sambaPasswordHistory if missing (Bug: #14908)
+   * adding attribute sambaAcctFlags if missing (Bug: #14908)
+   * changed pw expiry date calculation from ucr based to policy based (Bug: #14908)
+   * added support for sync of pw expire dates from nt to ucs (Bug: #14908)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Jul 2010 17:30:43 +0200
+
 univention-samba (5.0.12-1) unstable; urgency=low
 
   * create more diretories in the print driver directory. Bug #14622
