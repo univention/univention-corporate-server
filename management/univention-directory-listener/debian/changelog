@@ -1,3 +1,10 @@
+univention-directory-listener (5.0.2-1) unstable; urgency=low
+
+  * skip duplicated uniqueMember entries if the UCR variable
+    listener/uniquemember/skip is set to yes. Bug #18692
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Jul 2010 08:00:22 +0200
+
 univention-directory-listener (5.0.1-1) unstable; urgency=low
 
   * check local LDAP for parent container objects (Bug #17063)
