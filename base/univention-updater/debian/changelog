@@ -1,3 +1,9 @@
+univention-updater (6.0.11-1) unstable; urgency=low
+
+  * test availability of scopes for ucs 2.4-0 release in preup.sh Bug #19081
+
+ -- Felix Botner <botner@univention.de>  Fri, 23 Jul 2010 13:21:07 +0200
+
 univention-updater (6.0.10-1) unstable; urgency=low
 
   * added screen as dependecy, it is very useful to start the update

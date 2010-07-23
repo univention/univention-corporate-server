@@ -27,6 +27,52 @@ function cleanup() {
 }
 trap cleanup EXIT
 
+# Bug #19081:
+# check if scope is active and available for 2.4-0
+# this test can be removed after 2.4-0
+updateCheck=$(mktemp)
+echo '
+#!/usr/bin/python2.4
+
+from univention.updater import UniventionUpdater, UCS_Version
+from univention.updater.tools import LocalUpdater
+import univention.config_registry
+import sys
+
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
+yes = ["enabled", "true", "1", "yes", "enable"]
+scopes = ["ucd"]
+
+for scope in scopes:
+
+	if configRegistry.get("repository/online/component/%s" % scope, "").lower() in yes and configRegistry.get("update/check/component/%s" % scope, "yes").lower() in yes:
+
+		available = []
+		updater = UniventionUpdater()
+		available += updater.get_component_repositories(scope, ["2.4"], debug=False)
+		updater = LocalUpdater()
+		available += updater.get_component_repositories(scope, ["2.4"], debug=False)
+		if not available:
+			print scope
+			sys.exit(1)
+sys.exit(0)
+' >> $updateCheck
+
+doUpdateCheck=$(ucr get update/check/component)
+if [ -n "$doUpdateCheck" -a "$doUpdateCheck" = "no" ]; then
+	continue
+else
+	scope=$(python2.4 $updateCheck)
+	if [ ! $? -eq 0 ]; then
+		echo "An update to UCS 2.4 without the component \"$scope\" is
+not possible because the component \"$scope\" is required."
+		rm -f $updateCheck
+		exit 1
+	fi
+fi
+rm -f $updateCheck
+
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
 	if [ "$update24_ignoressh" != "yes" ]; then
