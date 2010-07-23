@@ -1,3 +1,22 @@
+univention-directory-manager-modules (6.0.13-3) unstable; urgency=low
+
+  * fix new user case for SASL passthrough (Bug #18039)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 20 May 2010 14:37:51 +0200
+
+univention-directory-manager-modules (6.0.13-2) unstable; urgency=low
+
+  * change keyword to perserve SASL passthrough to 'keep' (Bug #18039)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 20 May 2010 09:27:28 +0200
+
+univention-directory-manager-modules (6.0.13-1) unstable; urgency=low
+
+  * new UCR variable to preserve SASL passthrough authentication in
+    userPassword (Bug #18039)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 18 May 2010 17:00:07 +0200
+
 univention-directory-manager-modules (6.0.12-1) unstable; urgency=low
 
   * fix iso8601-syntax (Bug #16262)

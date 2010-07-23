@@ -1466,6 +1466,11 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			return True
 		return False
 
+	def __pwd_is_auth_saslpassthrough(self, password):
+		if password.startswith('{SASL}') and univention.admin.baseConfig.get('directory/manager/web/modules/users/user/auth/saslpassthrough','no').lower() == 'keep':
+			return 'keep'
+		return 'no'
+
 	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
 		global options
 		global mapping
@@ -1580,6 +1585,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		self.oldPrimaryGroupDn=0
 
 		self.modifypassword=1
+		self.is_auth_saslpassthrough='no'
 
 		self['locked']='none'
 		self['disabled']='none'
@@ -1599,6 +1605,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					self.modifypassword=0
 					if self.__pwd_is_locked(userPassword):
 						self['locked']='posix'
+					self.is_auth_saslpassthrough=self.__pwd_is_auth_saslpassthrough(userPassword)
 
 				if 'posix' in self.options:
 
@@ -2424,12 +2431,13 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 			#                             FIXME: required for join user root
 			if 'posix' in self.options or ('samba' in self.options and self['username'] == 'root') or 'mail' in self.options or 'ldap_pwd' in self.options:
-				password_crypt = "{crypt}%s%s" % (disabled, univention.admin.password.crypt(self['password']))
-				#shadowlastchange=str(long(time.time())/3600/24)
-				ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
-				#if 'posix' in self.options:
-				#	if pwd_change_next_login != 1:
-				#		shadowLastChangeValue = shadowlastchange
+				if self.is_auth_saslpassthrough == 'no':
+					password_crypt = "{crypt}%s%s" % (disabled, univention.admin.password.crypt(self['password']))
+					#shadowlastchange=str(long(time.time())/3600/24)
+					ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
+					#if 'posix' in self.options:
+					#	if pwd_change_next_login != 1:
+					#		shadowLastChangeValue = shadowlastchange
 			if 'samba' in self.options:
 				password_nt, password_lm = univention.admin.password.ntlm(self['password'])
 				if str(self.oldattr.get('sambaAcctFlags', [''])[0]) != str(acctFlags.decode()):
