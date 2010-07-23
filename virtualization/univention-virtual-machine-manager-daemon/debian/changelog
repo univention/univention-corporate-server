@@ -1,3 +1,13 @@
+univention-virtual-machine-manager-daemon (0.9.61-5) unstable; urgency=low
+
+  * Calculate CPU usage (Bug #18660)
+  * Simplify protocol-command-node implementation.
+    - Replace _json() by pprint and custom dumper.
+    - Store public data ready for pickling.
+  * Fix retries for unreachable hosts.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 23 Jul 2010 18:58:14 +0200
+
 univention-virtual-machine-manager-daemon (0.9.61-4) unstable; urgency=low
 
   * Fix volume-pool information in creation wizard (Bug #19069)

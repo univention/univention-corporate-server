@@ -48,6 +48,7 @@ import traceback
 from univention.uvmm.eventloop import *
 import threading
 from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_all_storage_volumes, StorageError, storage_pools
+from protocol import Data_Domain, Data_Node
 import os
 
 import univention.config_registry as ucr
@@ -242,34 +243,21 @@ class Domain(object):
 	"""Container for domain statistics."""
 	CPUTIMES = (10, 60, 5*60) # 10s 60s 5m
 	def __init__(self, domain):
-		self.uuid = domain.UUIDString()
-		self.state = 0
-		self.maxMem = 0L
-		self.curMem = 0L
-		self.vcpus = 1
-		self.arch = 'i686'
-		self.os_type = domain.OSType()
-		self.domain_type = None
-		self.kernel = ''
-		self.cmdline = ''
-		self.initrd = ''
-		self.boot = ['hd', 'cdrom']
-		self.interfaces = []
-		self.disks = []
-		self.graphics = []
+		self.pd = Data_Domain() # public data
+		self.pd.uuid = domain.UUIDString()
+		self.pd.os_type = domain.OSType()
 		self._time_stamp = 0.0
 		self._time_used = 0L
-		self.cputime = [0.0, 0.0, 0.0] # percentage in last 10s 60s 5m
-		self.annotations = {}
+		self._cpu_usage = 0
 		self.update(domain)
 
 	def __eq__(self, other):
-		return self.uuid == other.uuid;
+		return self.pd.uuid == other.pd.uuid;
 
 	def update(self, domain):
-		"""Update statistics."""
+		"""Update statistics which may change often."""
 		id = domain.ID()
-		self.name = domain.name()
+		self.pd.name = domain.name()
 		for i in range(5):
 			info = domain.info()
 			if info[0] != libvirt.VIR_DOMAIN_NOSTATE: # ignore =?= libvirt's transient error
@@ -279,24 +267,24 @@ class Domain(object):
 				break
 			time.sleep(1)
 		else:
-			logger.warning('No state for %s: %s' % (self.name, info))
+			logger.warning('No state for %s: %s' % (self.pd.name, info))
 			return
 
-		self.state, maxMem, curMem, self.vcpus, runtime = info
+		self.pd.state, maxMem, curMem, self.pd.vcpus, runtime = info
 
 		if domain.ID() == 0 and domain.connect().getType() == 'Xen':
 			# xen://#Domain-0 always reports (1<<32)-1
 			maxMem = domain.connect().getInfo()[1]
-			self.maxMem = long(maxMem) << 20 # GiB
+			self.pd.maxMem = long(maxMem) << 20 # GiB
 		else:
-			self.maxMem = long(maxMem) << 10 # KiB
+			self.pd.maxMem = long(maxMem) << 10 # KiB
 
-		if self.state in (libvirt.VIR_DOMAIN_SHUTOFF, libvirt.VIR_DOMAIN_CRASHED):
-			self.curMem = 0L
+		if self.pd.state in (libvirt.VIR_DOMAIN_SHUTOFF, libvirt.VIR_DOMAIN_CRASHED):
+			self.pd.curMem = 0L
 			delta_used = 0L
 			self._time_used = 0L
 		else:
-			self.curMem = long(curMem) << 10 # KiB
+			self.pd.curMem = long(curMem) << 10 # KiB
 			delta_used = runtime - self._time_used # running [ns]
 			self._time_used = runtime
 
@@ -305,14 +293,14 @@ class Domain(object):
 		now = time.time()
 		delta_t = now - self._time_stamp # wall clock [s]
 		if delta_t > 0.0 and delta_used >= 0L:
-			usage = delta_used / delta_t / self.vcpus / 1000000 # ms
+			self._cpu_usage = delta_used / delta_t / self.pd.vcpus / 1000000 # ms
 			for i in range(len(Domain.CPUTIMES)):
 				if delta_t < Domain.CPUTIMES[i]:
 					e = math.exp(-1.0 * delta_t / Domain.CPUTIMES[i])
-					self.cputime[i] *= e
-					self.cputime[i] += (1.0 - e) * usage
+					self.pd.cputime[i] *= e
+					self.pd.cputime[i] += (1.0 - e) * self._cpu_usage
 				else:
-					self.cputime[i] = usage
+					self.pd.cputime[i] = self._cpu_usage
 		self._time_stamp = now
 		self.update_expensive(domain)
 
@@ -320,37 +308,37 @@ class Domain(object):
 		"""Update statistics."""
 		self.xml2obj( domain )
 		try:
-			self.annotations = ldap_annotation(self.uuid)
+			self.pd.annotations = ldap_annotation(self.pd.uuid)
 		except LdapError, e:
-			self.annotations = {}
+			self.pd.annotations = {}
 
 	def xml2obj( self, domain ):
 		"""Parse XML into python object."""
 		doc = parseString(domain.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE))
 		devices = doc.getElementsByTagName( 'devices' )[ 0 ]
-		self.domain_type = doc.documentElement.getAttribute( 'type' )
+		self.pd.domain_type = doc.documentElement.getAttribute('type')
 		os = doc.getElementsByTagName( 'os' )
 		if os:
 			os = os[ 0 ]
 			type = os.getElementsByTagName( 'type' )
 			if type and type[ 0 ].firstChild and type[ 0 ].firstChild.nodeValue:
-				self.os_type = type[ 0 ].firstChild.nodeValue
+				self.pd.os_type = type[0].firstChild.nodeValue
 				if type[ 0 ].hasAttribute( 'arch' ):
-					self.arch = type[ 0 ].getAttribute( 'arch' )
+					self.pd.arch = type[0].getAttribute('arch')
 			kernel = os.getElementsByTagName( 'kernel' )
 			if kernel and kernel[ 0 ].firstChild and kernel[ 0 ].firstChild.nodeValue:
-				self.kernel = kernel[ 0 ].firstChild.nodeValue
+				self.pd.kernel = kernel[0].firstChild.nodeValue
 			cmdline = os.getElementsByTagName( 'cmdline' )
 			if cmdline and cmdline[ 0 ].firstChild and cmdline[ 0 ].firstChild.nodeValue:
-				self.cmdline = cmdline[ 0 ].firstChild.nodeValue
+				self.pd.cmdline = cmdline[0].firstChild.nodeValue
 			initrd = os.getElementsByTagName( 'initrd' )
 			if initrd and initrd[ 0 ].firstChild and initrd[ 0 ].firstChild.nodeValue:
-				self.initrd = initrd[ 0 ].firstChild.nodeValue
+				self.pd.initrd = initrd[0].firstChild.nodeValue
 			boot = os.getElementsByTagName('boot')
 			if boot:
-				self.boot = [dev.attributes['dev'].value for dev in boot]
+				self.pd.boot = [dev.attributes['dev'].value for dev in boot]
 
-		self.disks = []
+		self.pd.disks = []
 		disks = devices.getElementsByTagName( 'disk' )
 		for disk in disks:
 			dev = Disk()
@@ -366,9 +354,9 @@ class Domain(object):
 			if disk.getElementsByTagName( 'readonly' ):
 				dev.readonly = True
 
-			self.disks.append( dev )
+			self.pd.disks.append(dev)
 
-		self.interfaces = []
+		self.pd.interfaces = []
 		interfaces = devices.getElementsByTagName( 'interface' )
 		for iface in interfaces:
 			dev = Interface()
@@ -386,9 +374,9 @@ class Domain(object):
 			if target:
 				dev.target_dev = target[ 0 ].getAttribute( 'dev' )
 
-			self.interfaces.append( dev )
+			self.pd.interfaces.append(dev)
 
-		self.graphics = []
+		self.pd.graphics = []
 		graphics = devices.getElementsByTagName( 'graphics' )
 		for graphic in graphics:
 			dev = Graphic()
@@ -404,29 +392,22 @@ class Domain(object):
 			else:
 				dev.autoport = False
 			dev.keymap = graphic.getAttribute( 'keymap' )
-			self.graphics.append( dev )
+			self.pd.graphics.append(dev)
 
 	def key(self):
 		"""Return a unique key for this domain and generation."""
-		return hash((self.uuid, self._time_stamp))
+		return hash((self.pd.uuid, self._time_stamp))
 
 class Node(object):
 	"""Container for node statistics."""
 	def __init__(self, uri):
+		self.pd = Data_Node() # public data
 		self.uri = uri
 		self._lock = threading.Lock()
 		self.conn = None
-		self.storages = {}
 		self.domains = {}
 		self.config_frequency = Nodes.IDLE_FREQUENCY
 		self.current_frequency = Nodes.IDLE_FREQUENCY
-		self.name = None
-		self.phyMem = 0
-		self.curMem = 0
-		self.maxMem = 0
-		self.cpus = 0
-		self.cores = 0
-		self.capabilities = []
 
 		def timer_callback(timer, *opaque):
 			try:
@@ -456,13 +437,14 @@ class Node(object):
 				self.current_frequency = self.config_frequency
 				virEventUpdateTimerImpl(self.timerID, self.config_frequency)
 			self.update()
-			self.last_try = self.last_update = time.time()
+			self.pd.last_try = self.pd.last_update = time.time()
 		except libvirt.libvirtError, e:
-			self.last_try = time.time()
+			self.pd.last_try = time.time()
 			# double timer interval until maximum
 			hz = min(self.current_frequency * 2, Nodes.BEBO_FREQUENCY)
 			logger.warning("'%s' broken? next check in %s. %s" % (self.uri, ms(hz), e))
 			if hz > self.current_frequency:
+				self.current_frequency = hz
 				virEventUpdateTimerImpl(self.timerID, self.current_frequency)
 			if self.conn != None:
 				try:
@@ -479,34 +461,35 @@ class Node(object):
 				self.conn = None
 
 	def __eq__(self, other):
-		return (self.uri, self.name) == (other.uri, other.name)
+		return (self.uri, self.pd.name) == (other.uri, other.pd.name)
 
 	def __del__(self):
 		"""Free Node and deregister callbacks."""
 		self.unregister()
-		del self.storages
+		del self.pd.storages
+		del self.pd
 		del self.domains
 
 	def _register_default_pool( self ):
 		'''create a default storage pool if not available'''
-		for pool in self.storages:
+		for pool in self.pd.storages:
 			if pool.name == 'default':
-				logger.debug( "default pool already registered on %s" % self.name )
+				logger.debug("default pool already registered on %s" % self.pd.name)
 				break
 		else:
-			logger.debug( "register default pool on %s" % self.name )
+			logger.debug("register default pool on %s" % self.pd.name)
 			create_storage_pool( self.conn, configRegistry.get( 'uvmm/pool/default/path', '/var/lib/libvirt/images' ) )
-			self.storages.append( get_storage_pool_info( self, 'default' ) )
+			self.pd.storages.append(get_storage_pool_info(self, 'default'))
 
 	def update_once(self):
 		"""Update once on (re-)connect."""
-		self.name = self.conn.getHostname()
+		self.pd.name = self.conn.getHostname()
 		info = self.conn.getInfo()
-		self.phyMem = long(info[1]) << 20 # MiB
-		self.cpus = info[2]
-		self.cores = info[4:8]
+		self.pd.phyMem = long(info[1]) << 20 # MiB
+		self.pd.cpus = info[2]
+		self.pd.cores = info[4:8]
 		xml = self.conn.getCapabilities()
-		self.capabilities = DomainTemplate.list_from_xml(xml)
+		self.pd.capabilities = DomainTemplate.list_from_xml(xml)
 
 		def domain_callback(conn, dom, event, detail, node):
 			try:
@@ -554,12 +537,13 @@ class Node(object):
 
 	def _get_storages( self ):
 		'''read the list of available storage pool'''
-		self.storages = storage_pools( node = self )
+		self.pd.storages = storage_pools(node=self)
 
 	def update(self):
 		"""Update node statistics."""
 		curMem = 0
 		maxMem = 0
+		cpu_usage = 0
 		cached_domains = self.domains.keys()
 		for dom in [self.conn.lookupByID(id) for id in self.conn.listDomainsID()] + \
 			[self.conn.lookupByName(name) for name in self.conn.listDefinedDomains()]:
@@ -576,13 +560,15 @@ class Node(object):
 				# Add new domains
 				domStat = Domain(dom)
 				self.domains[uuid] = domStat
-			curMem += domStat.curMem
-			maxMem += domStat.maxMem
+			curMem += domStat.pd.curMem
+			maxMem += domStat.pd.maxMem
+			cpu_usage += domStat._cpu_usage
 		for uuid in cached_domains:
 			# Remove obsolete domains
 			del self.domains[uuid]
-		self.curMem = curMem
-		self.maxMem = maxMem
+		self.pd.curMem = curMem
+		self.pd.maxMem = maxMem
+		self.pd.cpu_usage = min(1000, cpu_usage)
 
 	def wait_update(self, domain, state_key, timeout=10):
 		"""Wait until domain gets updated."""
@@ -725,8 +711,8 @@ def domain_define( uri, domain ):
 
 	# find loader
 	loader = None
-	logger.debug('Searching for loader: %s' % node.capabilities)
-	for template in node.capabilities:
+	logger.debug('Searching for loader: %s' % node.pd.capabilities)
+	for template in node.pd.capabilities:
 		logger.debug('template: %s' % str(template.arch))
 		if template.arch == domain.arch and template.os_type == domain.os_type and template.loader:
 			loader = doc.createElement( 'loader' )
@@ -806,16 +792,22 @@ def domain_define( uri, domain ):
 		elem.setAttribute( 'type', disk.map_type( id = disk.type ) )
 		elem.setAttribute( 'device', disk.map_device( id = disk.device ) )
 		devices.appendChild( elem )
+
+		# FIXME: KVM doesn't like it
 		driver = doc.createElement( 'driver' )
 		driver.setAttribute( 'name', disk.driver )
 		elem.appendChild( driver )
+
 		source = doc.createElement( 'source' )
 		source.setAttribute( 'file', disk.source )
 		elem.appendChild( source )
+
+		# FIXME: Xen-PV should use xvd[a-z], Kvm-VirtIO uses vd[a-z]
 		target = doc.createElement( 'target' )
 		target.setAttribute( 'dev', disk.target_dev )
 		target.setAttribute( 'bus', disk.target_bus )
 		elem.appendChild( target )
+
 		if disk.readonly:
 			readonly = doc.createElement( 'readonly' )
 			elem.appendChild( readonly )
@@ -940,10 +932,9 @@ def domain_state(uri, domain, state):
 					(libvirt.VIR_DOMAIN_CRASHED,  'RUN'     ): dom.create,
 					(libvirt.VIR_DOMAIN_CRASHED,  'SHUTDOWN'): None, # TODO destroy?
 					}
-			transition = TRANSITION[(dom_stat.state, state)]
+			transition = TRANSITION[(dom_stat.pd.state, state)]
 		except KeyError, e:
-
-			cur_state = STATES[dom_stat.state]
+			cur_state = STATES[dom_stat.pd.state]
 			raise NodeError(_('Unsupported state transition %(cur_state)s to %(next_state)s'), cur_state=cur_state, next_state=state)
 
 		if transition:
@@ -955,7 +946,7 @@ def domain_state(uri, domain, state):
 				cur_state = dom.info()[0]
 				if cur_state not in ignore_states:
 					# xen does not send event, do update explicitly
-					dom_stat.state = cur_state
+					dom_stat.pd.state = cur_state
 					break
 				time.sleep(1)
 	except libvirt.libvirtError, e:

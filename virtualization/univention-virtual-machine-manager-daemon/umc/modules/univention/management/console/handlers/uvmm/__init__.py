@@ -284,7 +284,7 @@ class handler( umch.simpleHandler ):
 		for node in nodes:
 			node_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = { 'group' : object.options[ 'group' ], 'node' : node.name } )
 			node_btn = umcd.LinkButton( node.name, actions = [ umcd.Action( node_cmd ) ] )
-			cpu_usage = percentage( 0, width = 150 )
+			cpu_usage = percentage(float(node.cpu_usage) / 10.0, width=150)
 			mem_usage = percentage( float( node.curMem ) / node.phyMem * 100, '%s / %s' % ( MemorySize.num2str( node.curMem ), MemorySize.num2str( node.phyMem ) ), width = 150 )
 			table.add_row( [ node_btn, cpu_usage, mem_usage ] )
 		self.set_content( res, table )
@@ -409,7 +409,7 @@ class handler( umch.simpleHandler ):
 		node_table = umcd.List()
 		node_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = { 'group' : object.options[ 'group' ], 'node' : node.name } )
 		node_btn = umcd.LinkButton( node.name, actions = [ umcd.Action( node_cmd ) ] )
-		cpu_usage = percentage( 0, width = 150 )
+		cpu_usage = percentage(float(node.cpu_usage) / 10.0, width=150)
 		mem_usage = percentage( float( node.curMem ) / node.phyMem * 100, '%s / %s' % ( MemorySize.num2str( node.curMem ), MemorySize.num2str( node.phyMem ) ), width = 150 )
 		node_table.add_row( [ _( 'Physical server' ), node_btn ] )
 		node_table.add_row( [ _( 'CPU usage' ), cpu_usage ] )

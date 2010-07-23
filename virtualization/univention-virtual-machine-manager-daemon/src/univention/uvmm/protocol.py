@@ -225,55 +225,32 @@ class Data_StoragePool(object):
 		self.name = None
 		self.capacity = None
 		self.available = None
-	def _json(self):
-		return {
-			'uuid':self.uuid,
-			'name':self.name,
-			'capacity':self.capacity,
-			'available':self.available,
-			}
 class Data_Domain(object):
 	"""Container for domain statistics."""
 	def __init__(self):
 		self.uuid = None
 		self.name = None
 		self.domain_type = None # xen, qemu, kvm
-		self.arch = None # i686, x86_64
+		self.arch = 'i686' # i686, x86_64
 		self.os_type = None # linux(=Xen-PV), hvm(=Xen-FV)
+
+		# Xen-PV
 		self.kernel = None
 		self.cmdline = None
 		self.initrd = None
+
+		# Xen-HVM, Qemu-HVM, Kvm-HVM
 		self.boot = [] # (fd|hd|cdrom|network)+
-		self.state = None
-		self.maxMem = None
-		self.curMem = None
-		self.vcpus = None
-		self.cputime = [0.0, 0.0, 0.0]
+
+		self.state = 0
+		self.maxMem = 0L
+		self.curMem = 0L
+		self.vcpus = 1
+		self.cputime = [0.0, 0.0, 0.0] # percentage in last 10s 60s 5m
 		self.interfaces = [] # node.Interface
 		self.disks = [] # node.Disk
 		self.graphics = [] # node.Graphics
 		self.annotations = {}
-	def _json(self):
-		return {
-			'uuid':self.uuid,
-			'name':self.name,
-			'domain_type': self.domain_type,
-			'arch': self.arch,
-			'os_type': self.os_type,
-			'kernel':self.kernel,
-			'cmdline':self.cmdline,
-			'initrd':self.initrd,
-			'boot': self.boot,
-			'state':self.state,
-			'maxMem':self.maxMem,
-			'curMem':self.curMem,
-			'vcpus':self.vcpus,
-			'cputime':self.cputime,
-			'interfaces': [ str( i ) for i in self.interfaces ],
-			'disks': [ str( d ) for d in self.disks ],
-			'graphics': [str(g) for g in self.graphics],
-			'annotations': self.annotations,
-			}
 class Data_Node(object):
 	"""Container for node statistics."""
 	def __init__(self):
@@ -281,6 +258,7 @@ class Data_Node(object):
 		self.phyMem = None
 		self.curMem = None
 		self.maxMem = None
+		self.cpu_usage = None
 		self.cpus = None
 		self.cores = [None, None, None, None]
 		self.storages = [] # Data_StoragePool
@@ -288,36 +266,11 @@ class Data_Node(object):
 		self.capabilities = {} # node.DomainTemplate
 		self.last_try = 0.0
 		self.last_update = 0.0
-	def _json(self):
-		return {
-			'name':self.name,
-			'phyMem':self.phyMem,
-			'curMem':self.curMem,
-			'maxMem':self.maxMem,
-			'cpus':self.cpus,
-			'cores':self.cores,
-			'storages':[s._json() for s in self.storages],
-			'domains':[d._json() for d in self.domains],
-			'capabilities':[str(tmp) for tmp in self.capabilities],
-			'last_try': self.last_try,
-			'last_update': self.last_update,
-			}
-
 class Data_Pool(object):
 	"""Container for storage pool statistics."""
-
 	def __init__(self):
 		self.name = None
 		self.uuid = None
 		self.capacity = 0L
 		self.available = 0L
 		self.path = None # optional
-
-	def _json(self):
-		return {
-				'name': self.name,
-				'uuid': self.uuid,
-				'capacity': self.capacity,
-				'available': self.available,
-				'path': self.path,
-				}

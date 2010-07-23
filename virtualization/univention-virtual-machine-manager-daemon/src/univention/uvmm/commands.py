@@ -90,46 +90,8 @@ class _Commands:
 			if local_data.conn is None:
 				raise CommandError('NODE_QUERY', _('Node %(uri)s is not available'), uri=request.uri)
 
-			pkg_data = protocol.Data_Node()
-			pkg_data.name = local_data.name
-			pkg_data.phyMem = local_data.phyMem
-			pkg_data.curMem = local_data.curMem
-			pkg_data.maxMem = local_data.maxMem
-			pkg_data.cpus = local_data.cpus
-			pkg_data.cores = tuple(local_data.cores)
-			pkg_data.storages = copy.copy( local_data.storages )
-			# for store in local_data.storages:
-			# 	store_data = protocol.Data_StoragePool()
-			# 	store_data.uuid = store.uuid
-			# 	store_data.name = store.name
-			# 	store_data.capacity = store.capacity
-			# 	store_data.available = store.available
-			# 	pkg_data.storages.append(store_data)
-			pkg_data.domains = []
-			for domain in local_data.domains.values():
-				domain_data = protocol.Data_Domain()
-				domain_data.domain_type = domain.domain_type
-				domain_data.uuid = domain.uuid
-				domain_data.name = domain.name
-				domain_data.arch = domain.arch
-				domain_data.os_type = domain.os_type
-				domain_data.kernel = domain.kernel
-				domain_data.cmdline = domain.cmdline
-				domain_data.initrd = domain.initrd
-				domain_data.boot = domain.boot
-				domain_data.state = domain.state
-				domain_data.maxMem = domain.maxMem
-				domain_data.curMem = domain.curMem
-				domain_data.vcpus = domain.vcpus
-				domain_data.cputime = tuple(domain.cputime)
-				domain_data.interfaces = domain.interfaces
-				domain_data.disks = domain.disks
-				domain_data.graphics = domain.graphics
-				domain_data.annotations = domain.annotations
-				pkg_data.domains.append(domain_data)
-			pkg_data.capabilities = local_data.capabilities
-			pkg_data.last_try = local_data.last_try
-			pkg_data.last_update = local_data.last_update
+			pkg_data = copy.copy(local_data.pd)
+			pkg_data.domains = [d.pd for d in local_data.domains.values()]
 
 			res = protocol.Response_DUMP()
 			res.data = pkg_data
