@@ -88,18 +88,22 @@ eval $(echo "$@" | sed -n 's/.*--binddn \(.*\) --bindpwd \(.*\).*/binddn="\1"\nb
 # map binddn back to uid, returns nothing if no binddn or binddn= cn=admin,..
 dcaccount=$(ldapsearch -x -s base -b "$binddn" uid | ldapsearch-wrapper | sed -n 's/^uid: \(.*\)$/\1/p')
 if [ -n "$dcaccount" -a -n "$bindpwd" ]; then
-	# create samba machine account for this machine
-	net rpc join -U${dcaccount}%${bindpwd}
-	if [ $? != 0 ]; then
-		echo "ERROR: failed to join via net rpc join"
-		exit 1
-	fi
+	samba_account="$dcaccount"
+	samba_pwd="$bindpwd"
 elif [ -e /etc/backup-join.secret ]; then
-	net rpc join -Ujoin-backup%"$(cat /etc/backup-join.secret)"
+	samba_account="join-backup"
+	samba_pwd="$(</etc/backup-join.secret)"
+fi
+
+if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
+	net rpc join -U${samba_account}%${samba_pwd}
 	if [ $? != 0 ]; then
 		echo "ERROR: failed to join via net rpc join"
 		exit 1
 	fi
+	# set defaul printer permissions
+	net rpc rights -U${samba_account}%${samba_pwd} grant Printer-Admins SePrintOperatorPrivilege
+	net rpc rights -U${samba_account}%${samba_pwd} grant Administrator SePrintOperatorPrivilege
 fi
 
 # stop samba
@@ -110,15 +114,18 @@ if [ -n "$samba_pid" ]; then
 	killall smbd nmbd >/dev/null 2>&1
 fi
 
-mkdir -p /var/lib/samba/drivers
-chgrp -R "Printer-Admins" /var/lib/samba/drivers
-chmod g+w /var/lib/samba/drivers
-chmod +s /var/lib/samba/drivers
+SAMBA_DRIVERS="/var/lib/samba/drivers"
+mkdir -p $SAMBA_DRIVERS
+chgrp -R "Printer-Admins" $SAMBA_DRIVERS
+chmod g+w $SAMBA_DRIVERS
+chmod +s $SAMBA_DRIVERS
 
-mkdir -p /var/lib/samba/drivers/W32X86
-chgrp -R "Printer-Admins" /var/lib/samba/drivers/W32X86
-chmod g+w /var/lib/samba/drivers/W32X86
-chmod +s /var/lib/samba/drivers/W32X86
+for X in COLOR IA64 W32ALPHA W32MIPS W32PPC W32X86 WIN40 x64; do 
+	mkdir -p $SAMBA_DRIVERS/$X;
+	chgrp -R "Printer-Admins" $SAMBA_DRIVERS/$X
+	chmod g+w $SAMBA_DRIVERS/$X
+	chmod +s $SAMBA_DRIVERS/$X
+done
 
 # make existing host share container a standard share container
 if ldapsearch -x -s base -b "cn=$hostname.$domainname,cn=shares,$ldap_base" > /dev/null; then

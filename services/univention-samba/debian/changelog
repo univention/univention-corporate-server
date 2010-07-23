@@ -1,3 +1,12 @@
+univention-samba (5.0.12-1) unstable; urgency=low
+
+  * create more diretories in the print driver directory. Bug #14622
+  * remove printer admin parameter from smb.conf and give Printer-
+    Admins/Administrator the SePrintOperatorPrivilege permission during
+    join script. Bug #3562
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Jul 2010 11:58:23 +0200
+
 univention-samba (5.0.11-1) unstable; urgency=low
 
   * samba.local.config.py: check if /etc/samba/printers.conf.d exists to

@@ -5,7 +5,6 @@ if baseConfig.has_key('cups/server') and baseConfig['cups/server'] in ['127.0.0.
     print '\tload printers = yes'
     print '\tprinting = cups'
     print '\tprintcap name = cups '
-    print '\tprinter admin = @"Printer-Admins", root, Administrator'
 if baseConfig.get('samba/cups/encrypt'):
 	print '\tcups encrypt = %s' % baseConfig.get('samba/cups/encrypt')
 @!@
