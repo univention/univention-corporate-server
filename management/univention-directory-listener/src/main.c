@@ -321,10 +321,6 @@ int main(int argc, char* argv[])
 		exit(1);
 	lp->authmethod = LDAP_AUTH_SASL;
 
-	if ((lp_local=univention_ldap_new()) == NULL)
-		exit(1);
-	lp_local->authmethod = LDAP_AUTH_SASL;
-
 #if WITH_KRB5
 	if ((kp=univention_krb5_new()) == NULL)
 		exit(1);

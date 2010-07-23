@@ -1,3 +1,9 @@
+univention-directory-listener (5.0.4-1) unstable; urgency=low
+
+  * use simple bind for local LDAP connection (Bug #17063)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 23 Jul 2010 16:53:41 +0200
+
 univention-directory-listener (5.0.3-1) unstable; urgency=low
 
   * fixed typo in last commit. Bug #18692
