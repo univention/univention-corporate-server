@@ -1,3 +1,9 @@
+univention-directory-listener (5.0.3-1) unstable; urgency=low
+
+  * fixed typo in last commit. Bug #18692
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Jul 2010 08:06:52 +0200
+
 univention-directory-listener (5.0.2-1) unstable; urgency=low
 
   * skip duplicated uniqueMember entries if the UCR variable

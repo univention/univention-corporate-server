@@ -168,8 +168,9 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 	int rv = 0;
 
 	int memberUidMode = 0;
-	int uniqueMemberdMode = 0;
+	int uniqueMemberMode = 0;
 	int duplicateMemberUid = 0;
+	int duplicateUniqueMember = 0;
 	int i;
 
 	/* convert LDAP entry to cache entry */
