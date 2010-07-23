@@ -393,22 +393,26 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 		if (rv == LDAP_SUCCESS) {			/* parent of parent_dn found in local LDAP */
 			/* lookup parent_dn object in remote LDAP */
 			rv = ldap_search_ext_s(lp->ld, parent_dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res);
-			ldap_memfree( parent_dn );
 			if ( rv == LDAP_NO_SUCH_OBJECT ) {
 				 univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not find parent container of dn: %s from %s (%s)", dn, lp->host, ldap_err2string(rv));
+				ldap_memfree( parent_dn );
 				ldap_msgfree( res );
 				 return rv;
 			} else { /* parent_dn found in remote LDAP */
 				cur=ldap_first_entry(lp->ld, res);
-				ldap_msgfree( res );
 				if (cur == NULL) {
 					/* entry exists (since we didn't get NO_SUCH_OBJECT),
 					 * but was probably excluded thru ACLs which makes it
 					 * non-existent for us */
 				 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not get parent object of dn: %s from %s (%s)", dn, lp->host, ldap_err2string(rv));
+					ldap_memfree( parent_dn );
+					ldap_msgfree( res );
 				 	return LDAP_INSUFFICIENT_ACCESS;
 				} else { /* found data for parent_dn in remote LDAP */
+				 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "change_update_entry for parent_dn: %s", parent_dn);
 					rv = change_update_entry(lp, id, cur, 'n');	/* use same id to add parent_dn */
+					ldap_memfree( parent_dn );
+					ldap_msgfree( res );	// cur points into res
 					return rv;
 				}
 				return LDAP_OTHER; /* safetybelt, should not get here */

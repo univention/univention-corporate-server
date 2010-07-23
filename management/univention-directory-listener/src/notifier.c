@@ -74,6 +74,7 @@ int connect_to_local_ldap(univention_ldap_parameters_t *lp_local,
 {
 
 	/* XXX: Fix when using krb5 */
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "base: %s, binddn: %s, bindpw: %s", lp_local->base, lp_local->binddn, lp_local->bindpw);
 	while (univention_ldap_open(lp_local) != 0 ) {
 		if ( lp_local->ld != NULL ) {
 			ldap_unbind_ext(lp_local->ld, NULL, NULL);
