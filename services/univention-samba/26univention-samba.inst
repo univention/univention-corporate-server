@@ -62,14 +62,16 @@ if [ -x /etc/init.d/winbind ]; then
 fi
 
 if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" ]; then
-	univention-baseconfig set samba/user="$ldap_hostdn"
+	univention-baseconfig set	samba/user="$ldap_hostdn" \
+								samba/user/pwdfile?"/etc/machine.secret"
 	smbpasswd -w `cat /etc/machine.secret`
 	for idmap_ldap_config in alloc ${samba_idmap_domains}; do
 		echo "setting idmap secret for ${idmap_ldap_config} from /etc/machine.secret"
 		net idmap secret ${idmap_ldap_config} `</etc/machine.secret` 2>/dev/null
 	done
 else
-	univention-baseconfig set samba/user?"cn=admin,$ldap_base"
+	univention-baseconfig set	samba/user?"cn=admin,$ldap_base" \
+								samba/user/pwdfile?"/etc/ldap.secret"
 	/etc/init.d/samba restart >/dev/null 2>&1
 	smbpasswd -w `cat /etc/ldap.secret`
 	for idmap_ldap_config in alloc ${samba_idmap_domains}; do

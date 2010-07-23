@@ -1,3 +1,12 @@
+univention-samba (5.0.11-1) unstable; urgency=low
+
+  * samba.local.config.py: check if /etc/samba/printers.conf.d exists to
+    prevent a traceback during the package installation. Bug #17457
+  * smb.conf: use samba/user and samba/user/pwdfile for univention-
+    passwd. Bug #18817
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Jul 2010 10:24:01 +0200
+
 univention-samba (5.0.10-1) unstable; urgency=low
 
   * better use aptitude for the installation of samba-3.3 packages. Bug

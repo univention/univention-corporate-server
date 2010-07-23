@@ -163,39 +163,40 @@ def get_printers():
 			
 
 	# samba
-	for file in os.listdir('/etc/samba/printers.conf.d'):
-		fd = open(os.path.join("/etc/samba/printers.conf.d", file))
+	if os.path.exists('/etc/samba/printers.conf.d'):
+		for file in os.listdir('/etc/samba/printers.conf.d'):
+			fd = open(os.path.join("/etc/samba/printers.conf.d", file))
 
-		smb = ""
-		printer = ""
-		valid = ""
-		invalid = ""
+			smb = ""
+			printer = ""
+			valid = ""
+			invalid = ""
 
-		for line in fd.readlines():
-			m_smb = reg_smb.match(line)
-			m_smb_cups = reg_smb_cups.match(line)
-			m_valid = reg_valid.match(line)
-			m_invalid = reg_invalid.match(line)
+			for line in fd.readlines():
+				m_smb = reg_smb.match(line)
+				m_smb_cups = reg_smb_cups.match(line)
+				m_valid = reg_valid.match(line)
+				m_invalid = reg_invalid.match(line)
 
-			if m_smb: smb = m_smb.group(1).strip()
-			if m_smb_cups: printer = m_smb_cups.group(1).strip()
-			if m_valid: valid = m_valid.group(1)
-			if m_invalid: invalid = m_invalid.group(1)
+				if m_smb: smb = m_smb.group(1).strip()
+				if m_smb_cups: printer = m_smb_cups.group(1).strip()
+				if m_valid: valid = m_valid.group(1)
+				if m_invalid: invalid = m_invalid.group(1)
 
-		if smb and printer:
-			printers[printer] = {}
-			printers[printer]['smbname'] = smb
+			if smb and printer:
+				printers[printer] = {}
+				printers[printer]['smbname'] = smb
 
-			if valid:
-				users = parse_users(valid)
-				printers[printer]['valid users'] = {}
-				for user in users:
-					printers[printer]["valid users"].update({user : 1})
-			if invalid:
-				users = parse_users(invalid)
-				printers[printer]['invalid users'] = {}
-				for user in users:
-					printers[printer]["invalid users"].update({user : 1})
+				if valid:
+					users = parse_users(valid)
+					printers[printer]['valid users'] = {}
+					for user in users:
+						printers[printer]["valid users"].update({user : 1})
+				if invalid:
+					users = parse_users(invalid)
+					printers[printer]['invalid users'] = {}
+					for user in users:
+						printers[printer]["invalid users"].update({user : 1})
 
 
 def set_printmode(group, mode):

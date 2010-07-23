@@ -232,6 +232,12 @@ Description[en]=Alternative LDAP admin DN
 Type=str
 Categories=service-samba
 
+[samba/user/pwdfile]
+Description[de]=Passwortdatei für den alternative LDAP-Administrator DN
+Description[en]=Password file for alternative LDAP admin DN
+Type=str
+Categories=service-samba
+
 [samba/winbind/trusted/domains/only]
 Description[de]=Erlaube Samba-Memberservern einer Samba-Domäne, von LDAP/NIS/rsync verteilte UNIX Accounts als uids für Winbindd Benutzer zu verwenden
 Description[en]=Allow Samba member-servers of a samba domain to use UNIX accounts distributet via LDAP/NIS/rsync as the uid's for winbindd users
