@@ -1,3 +1,9 @@
+univention-pkgdb (4.0.3-1) unstable; urgency=low
+
+  * fix traceback in join script (missing cn=services) (Bug #19022)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 23 Jul 2010 14:51:05 +0200
+
 univention-pkgdb (4.0.2-1) unstable; urgency=low
 
   * downgrade WARN to INFO (Bug #18107)
