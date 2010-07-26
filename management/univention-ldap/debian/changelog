@@ -1,3 +1,10 @@
+univention-ldap (7.0.5-1) unstable; urgency=low
+
+  * added ldap attribute for resolution of the secondary display in dual
+    monitor setups. Bug #12124
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Jul 2010 15:49:18 +0200
+
 univention-ldap (7.0.4-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

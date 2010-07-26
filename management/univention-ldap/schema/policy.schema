@@ -170,6 +170,11 @@ attributetype ( 1.3.6.1.4.1.10176.1000.3.1.18 NAME 'univentionXDisplayVirtualSiz
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
 
+attributetype ( 1.3.6.1.4.1.10176.1000.3.1.19 NAME 'univentionXResolutionSecondary'
+	DESC 'X resolution of the secondary display in dual monitor setups'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
 objectclass ( 1.3.6.1.4.1.10176.1000.3.2.1 NAME 'univentionPolicyXConfiguration'
 	SUP 'univentionPolicy' STRUCTURAL
 	DESC 'X configuration policy object'
@@ -181,7 +186,8 @@ objectclass ( 1.3.6.1.4.1.10176.1000.3.2.1 NAME 'univentionPolicyXConfiguration'
 		  univentionXVNCExportType $ univentionXVNCExportViewonly  $
 		  univentionXVideoRam $ univentionXDisplaySize $ univentionXAutoDetect $
 		  univentionXDisplayPrimary $ univentionXDisplaySecondary $ 
-		  univentionXDisplayPosition $ univentionXDisplayVirtualSize ))
+		  univentionXDisplayPosition $ univentionXDisplayVirtualSize $
+		  univentionXResolutionSecondary ))
 
 # $OID: 1.3.6.1.4.1.10176.1000.4 (Sound) $
 attributetype ( 1.3.6.1.4.1.10176.1000.4.1.1 NAME 'univentionSoundEnabled'
