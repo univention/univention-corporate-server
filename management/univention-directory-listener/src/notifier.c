@@ -69,24 +69,6 @@ extern int server_list_entries;
 #define TIMEOUT_NOTIFIER_RECONNECT	5*60 /* 5 minutes */
 
 
-int connect_to_local_ldap(univention_ldap_parameters_t *lp_local,
-		                univention_krb5_parameters_t *kp)
-{
-
-	/* XXX: Fix when using krb5 */
-	while (univention_ldap_open(lp_local) != 0 ) {
-		if ( lp_local->ld != NULL ) {
-			ldap_unbind_ext(lp_local->ld, NULL, NULL);
-		}
-		lp_local->ld = NULL;
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to local ldap server (%s), retrying in 30 seconds", lp_local->host);
-		sleep(30);
-	}
-
-	return LDAP_SUCCESS;
-
-}
-
 static int connect_to_ldap(univention_ldap_parameters_t *lp,
 		                univention_krb5_parameters_t *kp)
 {
@@ -115,8 +97,7 @@ static int connect_to_ldap(univention_ldap_parameters_t *lp,
 /* listen for ldap updates */
 int notifier_listen(univention_ldap_parameters_t *lp,
 		univention_krb5_parameters_t *kp,
-		int write_transaction_file,
-		univention_ldap_parameters_t *lp_local)
+		int write_transaction_file)
 {
 	NotifierID	id;
 
@@ -191,18 +172,9 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 			}
 		}
 
-		/* ensure that connection to local LDAP is open */
-		if (lp_local->host != NULL && lp_local->ld == NULL) {
-			if ((rv = connect_to_local_ldap(lp_local, kp)) != 0) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to connect to local LDAP");
-				notifier_entry_free(&entry);
-				return rv;
-			}
-		}
-
 		/* Try to do the change. If the LDAP server is down, try
 		   to reconnect */
-		while ((rv=change_update_dn(lp, entry.id, entry.dn, entry.command, lp_local)) != LDAP_SUCCESS) {
+		while ((rv=change_update_dn(lp, entry.id, entry.dn, entry.command)) != LDAP_SUCCESS) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "change_update_dn: %s", ldap_err2string(rv));
 			if (rv == LDAP_SERVER_DOWN) {
 				int rv2;

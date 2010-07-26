@@ -289,8 +289,6 @@ void prepare_cache(const char *cache_dir)
 int main(int argc, char* argv[])
 {
 	univention_ldap_parameters_t	*lp;
-	univention_ldap_parameters_t	*lp_local;
-	char *server_role;
 #ifdef WITH_KRB5
 	univention_krb5_parameters_t	*kp;
 	int				 do_kinit = 0;
@@ -320,10 +318,6 @@ int main(int argc, char* argv[])
 	if ((lp=univention_ldap_new()) == NULL)
 		exit(1);
 	lp->authmethod = LDAP_AUTH_SASL;
-
-	if ((lp_local=univention_ldap_new()) == NULL)
-		exit(1);
-	lp_local->authmethod = LDAP_AUTH_SASL;
 
 #if WITH_KRB5
 	if ((kp=univention_krb5_new()) == NULL)
@@ -491,17 +485,6 @@ int main(int argc, char* argv[])
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "connection okay to host %s", lp->host);
 
-	/* connect to local LDAP server */
-	server_role = univention_config_get_string("server/role");
-	/* if this is not a master */
-	if (strcmp(server_role, "domaincontroller_master")) {
-		lp_local->host=strdup("localhost"); // or fqdn e.g. from univention_config_get_string("ldap/server/name");
-		lp_local->base=lp->base;
-		lp_local->binddn=lp->binddn;
-		lp_local->bindpw=lp->bindpw;
-		connect_to_local_ldap(lp_local, kp);
-	}
-
 	/* XXX: we shouldn't block all signals for so long */
 	signals_block();
 	cache_init();
@@ -556,19 +539,13 @@ int main(int argc, char* argv[])
 #endif
 	
 	if (!initialize_only) {
-		rv=notifier_listen(lp, kp, write_transaction_file, lp_local);
+		rv=notifier_listen(lp, kp, write_transaction_file);
 	}
 
 	if (rv != 0)
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "listener: %d", rv);
 
 	exit_handler(2);
-	if ( lp->ld != NULL ) {
-		ldap_unbind_ext(lp->ld, NULL, NULL);
-	}
-	if ( lp_local->ld != NULL ) {
-		ldap_unbind_ext(lp_local->ld, NULL, NULL);
-	}
 	exit(rv);
 	return rv;
 }
