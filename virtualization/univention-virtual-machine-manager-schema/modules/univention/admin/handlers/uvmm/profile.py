@@ -71,14 +71,6 @@ class VirtTech( univention.admin.syntax.select ):
 		( 'xen-xen', _( 'Paravirtualization (XEN)' )  ),
 	]
 
-class Emulator( univention.admin.syntax.select ):
-	name = 'Emulator'
-	choices = [
-		('kvm', _( 'KVM' ) ),
-		('qemu', _( 'QEMU' ) ),
-		('xen', _( 'XEN' ) ),
-	]
-
 property_descriptions={
 	'name': univention.admin.property(
 			short_description= _('Name'),
@@ -200,6 +192,16 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'advkernelconf': univention.admin.property(
+			short_description= _('Use advanced kernel configuarion'),
+			long_description= _('Manually specify the kernel configuration for paravirtualized machines or use pyGrub as bootloader'),
+			syntax=univention.admin.syntax.TrueFalseUp,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	'bootdev': univention.admin.property(
 			short_description= _('Boot devices'),
 			long_description= _('Order of boot devices'),
@@ -222,8 +224,10 @@ layout=[
 			[ univention.admin.field( "virttech" ), univention.admin.field( "ram" ) ],
 			[ univention.admin.field( "interface" ), ],
 			[ univention.admin.field( "vnc" ), univention.admin.field( "kblayout" ) ],
+			[ univention.admin.field( "bootdev" )  ],
+			[ univention.admin.field( "advkernelconf" ), ],
 			[ univention.admin.field( "kernel" ), univention.admin.field( "kernel_parameter" ) ],
-			[ univention.admin.field( "bootdev" ), univention.admin.field( "initramfs" ),  ],
+			[ univention.admin.field( "initramfs" )  ],
 		  ] )
 	]
 
@@ -248,6 +252,7 @@ mapping.register('kblayout', 'univentionVirtualMachineProfileKBLayout', None, un
 mapping.register('kernel', 'univentionVirtualMachineProfileKernel', None, univention.admin.mapping.ListToString)
 mapping.register('kernel_parameter', 'univentionVirtualMachineProfileKernelParameter', None, univention.admin.mapping.ListToString)
 mapping.register('initramfs', 'univentionVirtualMachineProfileInitRAMfs', None, univention.admin.mapping.ListToString)
+mapping.register('advkernelconf', 'univentionVirtualMachineAdvancedKernelConfig', None, univention.admin.mapping.ListToString)
 mapping.register('bootdev', 'univentionVirtualMachineProfileBootDevices', list2str, str2list )
 
 class object(univention.admin.handlers.simpleLdap):
