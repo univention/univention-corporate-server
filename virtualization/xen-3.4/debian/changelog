@@ -1,3 +1,10 @@
+xen-3.4 (3.4.3-6) unstable; urgency=low
+
+  * added missing file debian/libxenstore3.0.dirs from last commit. Bug
+    #19044
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Jul 2010 12:06:09 +0200
+
 xen-3.4 (3.4.3-5) unstable; urgency=low
 
   * move libxenstore files into a separate package. Bug #19044
