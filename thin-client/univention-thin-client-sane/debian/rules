@@ -57,7 +57,7 @@ install: build
 
 	univention-install-config-registry
 
-	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-sane/var/lib/univention-client-root/thin-client-archive/sane -p sane-utils
+	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-sane/var/lib/univention-client-root/thin-client-archive/sane -p sane-utils openbsd-inetd
 
 binary-indep: build install
 
