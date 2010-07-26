@@ -164,8 +164,9 @@ class Cell( Element ):
 		self.item = item
 
 class Row( Element, list ):
-	def __init__( self, sequence = [], attributes = {} ):
+	def __init__( self, sequence = [], attributes = {}, default_type = None ):
 		Element.__init__( self, attributes )
+		self.default_type = default_type
 		list.__init__( self, _verify_list_items( sequence ) )
 
 	def set_cell( self, no, content ):
@@ -175,8 +176,9 @@ class Row( Element, list ):
 		return list.__getitem__( self, no )
 
 class List( Element ):
-	def __init__( self, header = None, content = None, sec_header = None, attributes = {} ):
+	def __init__( self, header = None, content = None, sec_header = None, attributes = {}, default_type = None ):
 		Element.__init__( self, attributes )
+		self.default_type = default_type
 		if not header:
 			self.__header = []
 		else:
@@ -212,10 +214,10 @@ class List( Element ):
 		return self.__sec_header
 
 	def add_row( self, row, attributes = {} ):
-		self._content.append( Row( row, attributes ) )
+		self._content.append( Row( row, attributes, default_type = self.default_type ) )
 
 	def insert_row( self, i, row, attributes = {} ):
-		self.__content.insert( i, Row( row, attributes ) )
+		self.__content.insert( i, Row( row, attributes, default_type = self.default_type ) )
 
 	def remove_row( self, i ):
 		try:

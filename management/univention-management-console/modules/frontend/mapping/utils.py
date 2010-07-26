@@ -55,8 +55,8 @@ def default( umcp_part ):
 
 	return None
 
-def layout_attrs( storage, umcp_part ):
-	args = storage.create_tag_attributes( umcp_part )
+def layout_attrs( storage, umcp_part, default_type = None ):
+	args = storage.create_tag_attributes( umcp_part, default_type = default_type )
 	if umcp_part.has_attributes():
 		attrs = umcp_part.attributes()
 		for key in ( 'valign', 'colspan', 'rowspan', 'align', 'type', 'width', 'warning', 'onmouseover', 'onmouseout', 'class' ):

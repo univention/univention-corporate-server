@@ -44,24 +44,25 @@ _ = umc.Translation( 'univention.management.console.frontend' ).translate
 
 def rows_map( storage, umcp_part ):
 	row = []
+	default_type = getattr( umcp_part, 'default_type', None )
 	for elem in umcp_part:
 		part = []
 		args = {}
 		if isinstance( elem, ( list, tuple ) ):
 			for item in elem:
 				part.append( storage.to_uniparts( item ) )
-				args.update( utils.layout_attrs( storage, item ) )
+				args.update( utils.layout_attrs( storage, item, default_type = default_type ) )
 		elif isinstance( elem, umcd.Cell ):
 			part.append( storage.to_uniparts( elem.item ) )
-			args.update( utils.layout_attrs( storage, elem ) )
+			args.update( utils.layout_attrs( storage, elem, default_type = default_type ) )
 		else:
 			part.append( storage.to_uniparts( elem ) )
-			args = utils.layout_attrs( storage, elem )
+			args = utils.layout_attrs( storage, elem, default_type = default_type )
 		row.append( tablecol( '', args, { 'obs' : part } ) )
 
 	row_args = { 'type' : 'umc_list_row' }
 	if isinstance( umcp_part, umcd.Row ):
-		row_args.update( utils.layout_attrs( storage, umcp_part ) )
+		row_args.update( utils.layout_attrs( storage, umcp_part, default_type = default_type ) )
 
 	return tablerow( '', row_args, { 'obs' : row } )
 
@@ -142,9 +143,10 @@ mapper.add( umcd.Section, section_map )
 
 def list_map( storage, umcp_part ):
 	headers = []
+	default_type = getattr( umcp_part, 'default_type', None )
 	for col in umcp_part.get_header():
 		head = header( unicode( col ), { 'type' : '4' }, {} )
-		args = utils.layout_attrs( storage, col )
+		args = utils.layout_attrs( storage, col, default_type = default_type )
 		if not umcp_part.get_second_header():
 			args.update( { 'type' : 'umc_list_head' } )
 		else:
@@ -159,7 +161,7 @@ def list_map( storage, umcp_part ):
 	if umcp_part.get_second_header():
 		for col in umcp_part.get_second_header():
 			head = header( unicode( col ), { 'type' : '5' }, {} )
-			args = utils.layout_attrs( storage, col )
+			args = utils.layout_attrs( storage, col, default_type = default_type )
 			args.update( { 'type' : 'umc_list_head_second' } )
 			headers.append( tablecol( '', args, { 'obs' : [ head ] } ) )
 		rows.append( tablerow( '', { 'type' : 'umc_list_head' }, { 'obs' : headers } ) )
@@ -169,7 +171,7 @@ def list_map( storage, umcp_part ):
 		rows.append( up )
 
 	args = { 'type' : 'umc_list' }
-	args.update( utils.layout_attrs( storage, umcp_part ) )
+	args.update( utils.layout_attrs( storage, umcp_part, default_type = default_type ) )
 	return table( '', args, { 'obs' : rows } )
 
 mapper.add( umcd.List, list_map )

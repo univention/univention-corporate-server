@@ -76,8 +76,11 @@ class Storage( dict ):
 			return self.__convert_elements( umcp_parts )
 
 		return None
-	def create_tag_attributes( self, elem ):
-		args = { 'type' : 'umc_list_element' }
+	def create_tag_attributes( self, elem, default_type = None ):
+		if not default_type:
+			args = { 'type' : 'umc_list_element' }
+		else:
+			args = { 'type' : default_type }
 		if isinstance( elem, umcd.Date ):
 			args[ 'type' ] = 'umc_list_element_date'
 		elif isinstance( elem, umcd.Number ):
