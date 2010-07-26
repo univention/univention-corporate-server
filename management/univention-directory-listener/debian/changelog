@@ -1,3 +1,10 @@
+univention-directory-listener (5.0.4-3) unstable; urgency=low
+
+  * revert changes for Bug #17063, machine.secret change in univention-join
+    breaks local bind.
+
+ -- Arvid Requate <requate@univention.de>  Fri, 23 Jul 2010 18:44:30 +0200
+
 univention-directory-listener (5.0.4-2) unstable; urgency=low
 
   * fix initialization of lp_local and free ldap search res a bit later

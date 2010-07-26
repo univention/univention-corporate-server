@@ -168,9 +168,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 	int rv = 0;
 
 	int memberUidMode = 0;
-	int uniqueMemberMode = 0;
 	int duplicateMemberUid = 0;
-	int duplicateUniqueMember = 0;
 	int i;
 
 	/* convert LDAP entry to cache entry */
@@ -204,11 +202,6 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 			memberUidMode=1;
 		} else {
 			memberUidMode=0;
-		}
-		if ( !strncmp(cache_entry->attributes[cache_entry->attribute_count]->name, "uniqueMember", strlen("uniqueMember")) ) {
-			uniqueMemberMode=1;
-		} else {
-			uniqueMemberMode=0;
 		}
 		if ((val=ldap_get_values_len(ld, ldap_entry, attr)) == NULL) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ldap_get_values failed");
@@ -244,31 +237,6 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 				skipMemberUid = univention_config_get_string("listener/memberuid/skip");
 
 				if ( !strncmp(skipMemberUid, "yes", strlen("yes")) || !strncmp(skipMemberUid, "true", strlen("true")) ) {
-					continue;
-				}
-			}
-			if ( uniqueMemberMode == 1 ) {
-				/* avoid duplicate uniqueMember entries https://forge.univention.org/bugzilla/show_bug.cgi?id=18692 */
-				duplicateUniqueMember = 0;
-				for (i=0; i<cache_entry->attributes[cache_entry->attribute_count]->value_count; i++) {
-					if (!memcmp(cache_entry->attributes[cache_entry->attribute_count]->values[i], (*v)->bv_val, (*v)->bv_len+1) ) {
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Found a duplicate uniqueMember entry:");
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "DN: %s",  *dn);
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "uniqueMember: %s", cache_entry->attributes[cache_entry->attribute_count]->values[i]);
-						duplicateUniqueMember = 1;
-						break;
-					}
-				}
-			} else {
-				duplicateUniqueMember = 0;
-			}
-			if ( duplicateUniqueMember == 1) {
-				/* skip this uniqueMember entry if listener/uniquemember/skip is set to yes */
-				char *skipUniqueMember;
-
-				skipUniqueMember = univention_config_get_string("listener/uniquemember/skip");
-
-				if ( !strncmp(skipUniqueMember, "yes", strlen("yes")) || !strncmp(skipUniqueMember, "true", strlen("true")) ) {
 					continue;
 				}
 			}
