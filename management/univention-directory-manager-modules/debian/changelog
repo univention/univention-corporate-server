@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.14-2) unstable; urgency=low
+
+  * fixed typo in xfree policy mapping. Bug #12124
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Jul 2010 16:42:49 +0200
+
 univention-directory-manager-modules (6.0.14-1) unstable; urgency=low
 
   * update dual monitor setup configuration and make the display policy

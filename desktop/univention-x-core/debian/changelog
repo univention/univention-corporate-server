@@ -1,3 +1,9 @@
+univention-x-core (4.0.1-2) unstable; urgency=low
+
+  * fixed typo in variable description. Bug #12124
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Jul 2010 16:36:31 +0200
+
 univention-x-core (4.0.1-1) unstable; urgency=low
 
   * update dual monitor setups. Bug #12124

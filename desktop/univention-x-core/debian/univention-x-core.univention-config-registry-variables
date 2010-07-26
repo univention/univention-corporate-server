@@ -201,9 +201,9 @@ Description[en]=The overall size of the virtual display when running in dual mon
 Type=str
 Categories=system-desktop
 
-[xorg/resolution/secundary]
+[xorg/resolution/secondary]
 Description[de]=Bildschirm-Auflösung des sekundären Monitor (Breite x Höhe in Pixeln)
-Description[en]=Display resolution for the secundary monitor
+Description[en]=Display resolution for the secondary monitor
 Type=str
 Categories=system-desktop
 
@@ -215,7 +215,7 @@ Categories=system-desktop
 
 [xorg/display/secondary]
 Description[de]=Der Xserver-interne Bezeichner für den sekundären Monitor (ermittelbar durch Aufruf von xrandr)
-Description[en]=The Xserver internal specifier for the secundary monitor (can be queried with xrandr)
+Description[en]=The Xserver internal specifier for the secondary monitor (can be queried with xrandr)
 Type=str
 Categories=system-desktop
 

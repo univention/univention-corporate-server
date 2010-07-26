@@ -3,48 +3,57 @@
 
 eval "$(univention-config-registry shell)"
 
-max ()
-{
-	if [ "$1" -gt "$2" ]; then
-		echo -n "$1"
-	else
-		echo -n "$2"
-	fi
-}
-
 if [ -n "$xorg_resolution_secondary" ]; then
-	x_prim="${xorg_resolution%x*}"
-	y_prim="${xorg_resolution##*x}"
-	x_sec="${xorg_resolution_secondary%x*}"
-	y_sec="${xorg_resolution_secondary##*x}"
-
-	if [ -n "$xorg_display_relative_position" ]; then
-		if [ "$xorg_display_relative_position" = "right" -o "$xorg_display_relative_position" = "left" ]; then
-			new_value="$((x_prim+x_sec)) $(max $y_prim $y_sec)"
-		elif [ "$xorg_display_relative_position" = "above" -o "$xorg_display_relative_position" = "belove" ]; then
-			new_value="$(max $x_prim $x_sec) $(y_prim+y_sec)"
-		fi
-	fi
-	if [ -n "$new_value" ] && [ "$new_value" != "$xorg_virtual_size" ]; then
-		if [ -z "$xorg_ignore_display_virtual" ]; then
-			univention-config-registry set xorg/display/virtual="$new_value"
-		fi
-	fi
-
 	# try to set device names 
 	xrandr_output=$(LC_ALL=C xrandr | sed -n 's| connected.*||p')
 	prim_name="${xrandr_output%
 *}"
 	sec_name="${xrandr_output##*
 }"
-	if [ -z "$xorg_display_primary" -a -z "$xorg_display_secondary" ]; then
-		univention-config-registry set xorg/display/primary="$prim_name" xorg/display/secondary="$sec_name"
-	elif [ -z "$xorg_display_primary" ]; then
-		univention-config-registry set xorg/display/primary="$prim_name"
-	elif [ -z "$xorg_display_secondary" ]; then
-		univention-config-registry set xorg/display/secondary="$sec_name"
-	fi
+	if [ -n "$prim_name" -a -n "$sec_name" ]; then
+		if [ "$xorg_autodetect" = "yes" ] || [ "$xorg_autodetect" = "true" ] || [ "$xorg_autodetect" = "on" ] || [ "$xorg_autodetect" = "1" ]; then
+			autodetect=yes
+		else
+			autodetect=no
+		fi
+		if [ -z "$xorg_display_primary" -o -z "$xorg_display_secondary" -o "$autodetect" = "yes" ]; then
+			if [ -z "$xorg_display_primary" -a -z "$xorg_display_secondary" ]; then
+				univention-config-registry set xorg/display/primary="$prim_name" xorg/display/secondary="$sec_name"
+			elif [ -z "$xorg_display_primary" ]; then
+				univention-config-registry set xorg/display/primary="$prim_name"
+			elif [ -z "$xorg_display_secondary" ]; then
+				univention-config-registry set xorg/display/secondary="$sec_name"
+			fi
+		
+			eval "$(univention-config-registry shell xorg_display_primary xorg_display_secondary)"
 
+			if [ "$autodetect" = "yes" ]; then
+				mode_primary="--auto"
+				mode_secondary="--auto"
+			else
+				mode_primary="--mode $xorg_resolution"
+				mode_secondary="--mode $xorg_resolution_secondary"
+			fi
+
+			if [ -n "$xorg_display_relative_position" ]; then
+				if [ "$xorg_display_relative_position" = "right" ]; then
+					xrandr --output $xorg_display_primary $mode_primary --output $xorg_display_secondary $mode_secondary --right-of $xorg_display_primary
+				elif [ "$xorg_display_relative_position" = "below" ]; then
+					xrandr --output $xorg_display_primary $mode_primary --output $xorg_display_secondary $mode_secondary --below $xorg_display_primary
+				elif [ "$xorg_display_relative_position" = "above" ]; then
+					xrandr --output $xorg_display_primary $mode_primary --output $xorg_display_secondary $mode_secondary --above $xorg_display_primary
+				elif [ "$xorg_display_relative_position" = "left" ]; then
+					xrandr --output $xorg_display_primary $mode_primary --output $xorg_display_secondary $mode_secondary --left-of $xorg_display_primary
+				else
+					logger "Dualhead setup: Unknown position setting xorg/display/relative-position: \"$xorg_display_relative_position\"."
+				fi
+			else
+				xrandr --output $xorg_display_primary $mode_primary --output $xorg_display_secondary $mode_secondary
+			fi
+		fi
+	else
+		logger "Dualhead setup: Did not found two xrandr output devices."
+	fi
 fi
 
 exit 0

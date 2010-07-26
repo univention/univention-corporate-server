@@ -34,6 +34,36 @@ if [ -x /usr/sbin/univention-config-registry ]; then
 	if [ -n "$system_setup_appliance_start" ] && [ "$system_setup_appliance_start" = "yes" ] || [ "$system_setup_appliance_start" = "true" ]; then
 		exit 0
 	fi
+
+	max ()
+	{
+		if [ "$1" -gt "$2" ]; then
+			echo -n "$1"
+		else
+			echo -n "$2"
+		fi
+	}
+
+	# calculate xorg/display/virtual if xorg/resolution/secondary is set
+	if [ -n "$xorg_resolution_secondary" ]; then
+		x_prim="${xorg_resolution%x*}"
+		y_prim="${xorg_resolution##*x}"
+		x_sec="${xorg_resolution_secondary%x*}"
+		y_sec="${xorg_resolution_secondary##*x}"
+
+		if [ -n "$xorg_display_relative_position" ]; then
+			if [ "$xorg_display_relative_position" = "right" -o "$xorg_display_relative_position" = "left" ]; then
+				new_value="$((x_prim+x_sec)) $(max $y_prim $y_sec)"
+			elif [ "$xorg_display_relative_position" = "above" -o "$xorg_display_relative_position" = "belove" ]; then
+				new_value="$(max $x_prim $x_sec) $(y_prim+y_sec)"
+			fi
+		fi
+		if [ -n "$new_value" ] && [ "$new_value" != "$xorg_display_virtual" ]; then
+			if [ -z "$xorg_ignore_display_virtual" ]; then
+				univention-config-registry set xorg/display/virtual="$new_value"
+			fi
+		fi
+	fi
 fi
 
 set -e

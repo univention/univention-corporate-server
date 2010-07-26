@@ -1,3 +1,10 @@
+univention-gdm (6.0.4-1) unstable; urgency=low
+
+  * move the virtual size calculation to gdm init script otherwise the X
+    server runs already and call xrandr in gdm init script. Bug #12124
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Jul 2010 20:22:42 +0200
+
 univention-gdm (6.0.3-1) unstable; urgency=low
 
   * added a gdm init script which calculates xorg/display/virtual and
