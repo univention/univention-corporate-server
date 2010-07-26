@@ -22,7 +22,7 @@
 ;--- Define default location where file should install and add files --------
 
 ;Installdir:
-<$DirectoryTree Key="INSTALLDIR" Dir="c:\Windows\UCS-AD-Connector" CHANGE="\" PrimaryFolder="Y">
+<$DirectoryTree Key="INSTALLDIR" Dir="c:\Windows\" CHANGE="\" PrimaryFolder="Y">
 
 
 

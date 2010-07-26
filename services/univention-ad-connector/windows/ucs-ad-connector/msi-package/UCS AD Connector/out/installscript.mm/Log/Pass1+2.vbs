@@ -2,7 +2,7 @@
 ' Generator   : PPWIZARD version 08.307
 '             : FREE tool for Windows, OS/2, DOS and UNIX by Dennis Bareis (dbareis@gmail.com)
 '             : http://dennisbareis.com/ppwizard.htm
-' Time        : Monday, 26 Jul 2010 7:22:14am
+' Time        : Monday, 26 Jul 2010 8:47:21am
 ' Input File  : Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\installscript.mm
 ' Output File : Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\out\installscript.mm\Log\Pass1+2.vbs
 '*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
@@ -445,7 +445,7 @@ RowPrepare 2
 
 MmID = "@VBS0004"
 oRec.StringData(1) = "NoSuchProperty.so.always.false"
-oRec.StringData(2) = "This MSI can't be installed as a MAKEMSI build or update did not successfully complete. " & vbCRLF & "" & vbCRLF & "The failing script ""installscript.mm"" was executed at Mon Jul 26 2010 at 7:22:14am."
+oRec.StringData(2) = "This MSI can't be installed as a MAKEMSI build or update did not successfully complete. " & vbCRLF & "" & vbCRLF & "The failing script ""installscript.mm"" was executed at Mon Jul 26 2010 at 8:47:21am."
 ValidateNEW(0)
 RowUpdate()
  
@@ -1249,7 +1249,7 @@ MmLT = "<$Summary ""Subject"" VALUE=""<$COMPANY_SUMMARY_SUBJECT>"">"
 
 
 MmID = "@VBS0115"
-SummaryItem PID_Subject, "1.0.0 (created Mon Jul 26 2010 at 7:22:14am)"
+SummaryItem PID_Subject, "1.0.0 (created Mon Jul 26 2010 at 8:47:21am)"
 
 
 
@@ -1537,7 +1537,7 @@ on error resume next
 
 
 
-dim VB_ARPCOMMENTS : VB_ARPCOMMENTS = Html2Text("UCS AD Connector (1.0.0)" & vbCRLF & "was created Mon Jul 26 2010 at 7:22:14am." & vbCRLF & "" & vbCRLF & "Testinstall" & vbCRLF & "Packaged by My Name (My Address (see ""ME.MMH""))." & vbCRLF & "" & vbCRLF & "SUPPORTED on On any Windows Computer.")
+dim VB_ARPCOMMENTS : VB_ARPCOMMENTS = Html2Text("UCS AD Connector (1.0.0)" & vbCRLF & "was created Mon Jul 26 2010 at 8:47:21am." & vbCRLF & "" & vbCRLF & "Testinstall" & vbCRLF & "Packaged by My Name (My Address (see ""ME.MMH""))." & vbCRLF & "" & vbCRLF & "SUPPORTED on On any Windows Computer.")
 err.clear()         'Ignore any error in called routine...
 
 
@@ -1864,7 +1864,7 @@ MmLT = "<$CompanyAddStampWithProperty ""BuildTime"" VALUE=^<?CompileTime>^>"
 
 
 MmID = "@VBS0216"
-cb_PropValue = "Mon Jul 26 2010 at 7:22:14am"
+cb_PropValue = "Mon Jul 26 2010 at 8:47:21am"
 
 MmID = "@VBS0217"
 TableNowMk "Property"
@@ -2653,7 +2653,7 @@ TableNow ""
 
 '######################################################################
 MmLL = "installscript.mm(25)"
-MmLT = "<$DirectoryTree Key=""INSTALLDIR"" Dir=""c:\Windows\UCS-AD-Connector"" CHANGE=""\"" PrimaryFolder=""Y"">"
+MmLT = "<$DirectoryTree Key=""INSTALLDIR"" Dir=""c:\Windows\"" CHANGE=""\"" PrimaryFolder=""Y"">"
 '######################################################################
 
 
@@ -2701,7 +2701,6 @@ TableNow ""
 
 MmID = "@VBS0344"
 TableNowMk "Directory"
- 
 
 MmID = "@VBS0345"
 RowPrepare 3
@@ -2709,7 +2708,7 @@ RowPrepare 3
 MmID = "@VBS0346"
 oRec.StringData(1) = "INSTALLDIR"
 oRec.StringData(2) = "WindowsFolder"
-oRec.StringData(3) = MakeSfnLfn("WindowsFolder", "UCS-AD-Connector")
+oRec.StringData(3) = "."
 ValidateFIELD(1)
 RowUpdate()
 
@@ -2835,9 +2834,9 @@ MmID = "@VBS0374"
 RowPrepare 3
 
 MmID = "@VBS0375"
-oRec.StringData(1) = "_INSTALLDIR_UCS_AD_CONNECTOR"
+oRec.StringData(1) = "_INSTALLDIR_.SVN"
 oRec.StringData(2) = "INSTALLDIR"
-oRec.StringData(3) = MakeSfnLfn("INSTALLDIR", "UCS-AD-Connector")
+oRec.StringData(3) = MakeSfnLfn("INSTALLDIR", ".svn")
 ValidateFIELD(1)
 RowUpdate()
 
@@ -2853,9 +2852,9 @@ MmID = "@VBS0379"
 RowPrepare 6
 
 MmID = "@VBS0380"
-oRec.StringData(1) = "c1.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.dll"
+oRec.StringData(1) = "c1.ALL.1.0.0.UCS_A._INSTALLDIR_.SVN_x"
 oRec.StringData(2) = GuidMake("")
-oRec.StringData(3) = "_INSTALLDIR_UCS_AD_CONNECTOR"
+oRec.StringData(3) = "_INSTALLDIR_.SVN"
 oRec.IntegerData(4) = msidbComponentAttributesLocalOnly
 oRec.StringData(5) = ""
 oRec.StringData(6) = ""
@@ -2873,16 +2872,16 @@ RowPrepare 2
 
 MmID = "@VBS0384"
 oRec.StringData(1) = "ALL.1.0.0.UCS_AD_Connector"
-oRec.StringData(2) = "c1.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.dll"
+oRec.StringData(2) = "c1.ALL.1.0.0.UCS_A._INSTALLDIR_.SVN_x"
 ValidateNEW(0)
 RowUpdate()
 
 MmID = "@VBS0385"
 TableNow ""
 
-CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\copypwd.dll"
-CurrentFileKey="copypwd.dll"
-CurrentFileNameSL=Get83PlusLongName("copypwd.dll")
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\.svn\entries"
+CurrentFileKey="entries"
+CurrentFileNameSL=Get83PlusLongName("entries")
 ob_FileVersion("")
 
 MmID = "@VBS0386"
@@ -2893,9 +2892,9 @@ RowPrepare 8
 
 MmID = "@VBS0388"
 oRec.StringData(1) = CurrentFileKey
-oRec.StringData(2) = "c1.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.dll"
+oRec.StringData(2) = "c1.ALL.1.0.0.UCS_A._INSTALLDIR_.SVN_x"
 oRec.StringData(3) = CurrentFileNameSL
-oRec.IntegerData(4) = 49152
+oRec.IntegerData(4) = 370
 oRec.StringData(5) = CurrentFileVersion
 oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
 oRec.StringData(6) = FileLanguage()
@@ -2915,8 +2914,8 @@ RowPrepare 4
 MmID = "@VBS0392"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = CurrentFile
-oRec.StringData(3) = "2009-07-31"
-oRec.StringData(4) = "07:36:10"
+oRec.StringData(3) = "2010-07-26"
+oRec.StringData(4) = "08:22:22"
 ValidateNEW(0)
 RowUpdate()
 
@@ -2928,7 +2927,7 @@ MmID = "@VBS0394"
 TableNowMk "Component"
 
 MmID = "@VBS0395"
-RowsPrepare "`Component` = 'c1.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.dll'"
+RowsPrepare "`Component` = 'c1.ALL.1.0.0.UCS_A._INSTALLDIR_.SVN_x'"
 RecCnt = 0
 do
 set oRec = SqlViewFetch()
@@ -2937,69 +2936,748 @@ RecCnt = RecCnt + 1
 
 MmID = "@VBS0396"
 oRec.IntegerData(4) = (oRec.IntegerData(4) AND NOT msidbComponentAttributesRegistryKeyPath)
-oRec.StringData(6) = "copypwd.dll"
+oRec.StringData(6) = "entries"
 ValidateFETCH(1)
 RowsREPLACE()
 loop
 SqlViewClose()
-if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c1.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.dll'")
+if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c1.ALL.1.0.0.UCS_A._INSTALLDIR_.SVN_x'")
 
 MmID = "@VBS0397"
 TableNow ""
 
 
 MmID = "@VBS0398"
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\.svn\format"
+CurrentFileKey="format"
+CurrentFileNameSL=Get83PlusLongName("format")
+ob_FileVersion("")
 
 MmID = "@VBS0399"
+TableNowMk "File"
 
 MmID = "@VBS0400"
-TableNowMk "Component"
+RowPrepare 8
 
 MmID = "@VBS0401"
-RowPrepare 6
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = "c1.ALL.1.0.0.UCS_A._INSTALLDIR_.SVN_x"
+oRec.StringData(3) = CurrentFileNameSL
+oRec.IntegerData(4) = 2
+oRec.StringData(5) = CurrentFileVersion
+oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
+oRec.StringData(6) = FileLanguage()
+oRec.IntegerData(8) = 0
+ValidateNEW(2)
+RowUpdate()
 
 MmID = "@VBS0402"
-oRec.StringData(1) = "c2.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.exe"
+TableNow ""
+
+MmID = "@VBS0403"
+TableNowMk "_MAKEMSI_FileSource"
+
+MmID = "@VBS0404"
+RowPrepare 4
+
+MmID = "@VBS0405"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = CurrentFile
+oRec.StringData(3) = "2010-07-26"
+oRec.StringData(4) = "07:35:28"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0406"
+TableNow ""
+ob_FileHash("Y")
+
+
+MmID = "@VBS0407"
+
+MmID = "@VBS0408"
+
+MmID = "@VBS0409"
+TableNowMk "Directory"
+ 
+
+MmID = "@VBS0410"
+RowPrepare 3
+
+MmID = "@VBS0411"
+oRec.StringData(1) = "_INSTALLDIR_UCS_AD_CONNECTOR"
+oRec.StringData(2) = "INSTALLDIR"
+oRec.StringData(3) = MakeSfnLfn("INSTALLDIR", "UCS-AD-Connector")
+ValidateFIELD(1)
+RowUpdate()
+
+MmID = "@VBS0412"
+TableNow ""
+
+MmID = "@VBS0413"
+
+MmID = "@VBS0414"
+TableNowMk "Directory"
+ 
+
+MmID = "@VBS0415"
+RowPrepare 3
+
+MmID = "@VBS0416"
+oRec.StringData(1) = "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN"
+oRec.StringData(2) = "_INSTALLDIR_UCS_AD_CONNECTOR"
+oRec.StringData(3) = MakeSfnLfn("_INSTALLDIR_UCS_AD_CONNECTOR", ".svn")
+ValidateFIELD(1)
+RowUpdate()
+
+MmID = "@VBS0417"
+TableNow ""
+
+MmID = "@VBS0418"
+
+MmID = "@VBS0419"
+TableNowMk "Component"
+
+MmID = "@VBS0420"
+RowPrepare 6
+
+MmID = "@VBS0421"
+oRec.StringData(1) = "c2.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_x"
 oRec.StringData(2) = GuidMake("")
-oRec.StringData(3) = "_INSTALLDIR_UCS_AD_CONNECTOR"
+oRec.StringData(3) = "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN"
 oRec.IntegerData(4) = msidbComponentAttributesLocalOnly
 oRec.StringData(5) = ""
 oRec.StringData(6) = ""
 ValidateFIELD(1)
 RowUpdate()
 
-MmID = "@VBS0403"
+MmID = "@VBS0422"
 
 
-MmID = "@VBS0404"
+MmID = "@VBS0423"
 TableNowMk "FeatureComponents"
 
-MmID = "@VBS0405"
+MmID = "@VBS0424"
 RowPrepare 2
 
-MmID = "@VBS0406"
+MmID = "@VBS0425"
 oRec.StringData(1) = "ALL.1.0.0.UCS_AD_Connector"
-oRec.StringData(2) = "c2.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.exe"
+oRec.StringData(2) = "c2.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_x"
 ValidateNEW(0)
 RowUpdate()
 
-MmID = "@VBS0407"
+MmID = "@VBS0426"
 TableNow ""
 
-CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\copypwd.exe"
-CurrentFileKey="copypwd.exe"
-CurrentFileNameSL=Get83PlusLongName("copypwd.exe")
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\entries"
+CurrentFileKey="entries_1"
+CurrentFileNameSL=Get83PlusLongName("entries")
 ob_FileVersion("")
 
-MmID = "@VBS0408"
+MmID = "@VBS0427"
 TableNowMk "File"
 
-MmID = "@VBS0409"
+MmID = "@VBS0428"
 RowPrepare 8
 
-MmID = "@VBS0410"
+MmID = "@VBS0429"
 oRec.StringData(1) = CurrentFileKey
-oRec.StringData(2) = "c2.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.exe"
+oRec.StringData(2) = "c2.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_x"
+oRec.StringData(3) = CurrentFileNameSL
+oRec.IntegerData(4) = 1345
+oRec.StringData(5) = CurrentFileVersion
+oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
+oRec.StringData(6) = FileLanguage()
+oRec.IntegerData(8) = 0
+ValidateNEW(2)
+RowUpdate()
+
+MmID = "@VBS0430"
+TableNow ""
+
+MmID = "@VBS0431"
+TableNowMk "_MAKEMSI_FileSource"
+
+MmID = "@VBS0432"
+RowPrepare 4
+
+MmID = "@VBS0433"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = CurrentFile
+oRec.StringData(3) = "2010-07-26"
+oRec.StringData(4) = "08:22:22"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0434"
+TableNow ""
+ob_FileHash("Y")
+
+MmID = "@VBS0435"
+TableNowMk "Component"
+
+MmID = "@VBS0436"
+RowsPrepare "`Component` = 'c2.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_x'"
+RecCnt = 0
+do
+set oRec = SqlViewFetch()
+if oRec is Nothing then exit DO
+RecCnt = RecCnt + 1
+
+MmID = "@VBS0437"
+oRec.IntegerData(4) = (oRec.IntegerData(4) AND NOT msidbComponentAttributesRegistryKeyPath)
+oRec.StringData(6) = "entries_1"
+ValidateFETCH(1)
+RowsREPLACE()
+loop
+SqlViewClose()
+if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c2.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_x'")
+
+MmID = "@VBS0438"
+TableNow ""
+
+
+MmID = "@VBS0439"
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\format"
+CurrentFileKey="format_1"
+CurrentFileNameSL=Get83PlusLongName("format")
+ob_FileVersion("")
+
+MmID = "@VBS0440"
+TableNowMk "File"
+
+MmID = "@VBS0441"
+RowPrepare 8
+
+MmID = "@VBS0442"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = "c2.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_x"
+oRec.StringData(3) = CurrentFileNameSL
+oRec.IntegerData(4) = 2
+oRec.StringData(5) = CurrentFileVersion
+oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
+oRec.StringData(6) = FileLanguage()
+oRec.IntegerData(8) = 0
+ValidateNEW(2)
+RowUpdate()
+
+MmID = "@VBS0443"
+TableNow ""
+
+MmID = "@VBS0444"
+TableNowMk "_MAKEMSI_FileSource"
+
+MmID = "@VBS0445"
+RowPrepare 4
+
+MmID = "@VBS0446"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = CurrentFile
+oRec.StringData(3) = "2010-07-26"
+oRec.StringData(4) = "07:35:28"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0447"
+TableNow ""
+ob_FileHash("Y")
+
+
+MmID = "@VBS0448"
+
+MmID = "@VBS0449"
+
+MmID = "@VBS0450"
+TableNowMk "Directory"
+ 
+
+MmID = "@VBS0451"
+RowPrepare 3
+
+MmID = "@VBS0452"
+oRec.StringData(1) = "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE"
+oRec.StringData(2) = "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN"
+oRec.StringData(3) = MakeSfnLfn("_INSTALLDIR_UCS_AD_CONNECTOR_.SVN", "prop-base")
+ValidateFIELD(1)
+RowUpdate()
+
+MmID = "@VBS0453"
+TableNow ""
+
+MmID = "@VBS0454"
+
+MmID = "@VBS0455"
+TableNowMk "Component"
+
+MmID = "@VBS0456"
+RowPrepare 6
+
+MmID = "@VBS0457"
+oRec.StringData(1) = "c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x"
+oRec.StringData(2) = GuidMake("")
+oRec.StringData(3) = "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE"
+oRec.IntegerData(4) = msidbComponentAttributesLocalOnly
+oRec.StringData(5) = ""
+oRec.StringData(6) = ""
+ValidateFIELD(1)
+RowUpdate()
+
+MmID = "@VBS0458"
+
+
+MmID = "@VBS0459"
+TableNowMk "FeatureComponents"
+
+MmID = "@VBS0460"
+RowPrepare 2
+
+MmID = "@VBS0461"
+oRec.StringData(1) = "ALL.1.0.0.UCS_AD_Connector"
+oRec.StringData(2) = "c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0462"
+TableNow ""
+
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\prop-base\copypwd.dll.svn-base"
+CurrentFileKey="copypwd.dll.svn_base"
+CurrentFileNameSL=Get83PlusLongName("copypwd.dll.svn-base")
+ob_FileVersion("")
+
+MmID = "@VBS0463"
+TableNowMk "File"
+
+MmID = "@VBS0464"
+RowPrepare 8
+
+MmID = "@VBS0465"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = "c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x"
+oRec.StringData(3) = CurrentFileNameSL
+oRec.IntegerData(4) = 79
+oRec.StringData(5) = CurrentFileVersion
+oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
+oRec.StringData(6) = FileLanguage()
+oRec.IntegerData(8) = 0
+ValidateNEW(2)
+RowUpdate()
+
+MmID = "@VBS0466"
+TableNow ""
+
+MmID = "@VBS0467"
+TableNowMk "_MAKEMSI_FileSource"
+
+MmID = "@VBS0468"
+RowPrepare 4
+
+MmID = "@VBS0469"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = CurrentFile
+oRec.StringData(3) = "2010-07-26"
+oRec.StringData(4) = "07:35:28"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0470"
+TableNow ""
+ob_FileHash("Y")
+
+MmID = "@VBS0471"
+TableNowMk "Component"
+
+MmID = "@VBS0472"
+RowsPrepare "`Component` = 'c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x'"
+RecCnt = 0
+do
+set oRec = SqlViewFetch()
+if oRec is Nothing then exit DO
+RecCnt = RecCnt + 1
+
+MmID = "@VBS0473"
+oRec.IntegerData(4) = (oRec.IntegerData(4) AND NOT msidbComponentAttributesRegistryKeyPath)
+oRec.StringData(6) = "copypwd.dll.svn_base"
+ValidateFETCH(1)
+RowsREPLACE()
+loop
+SqlViewClose()
+if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x'")
+
+MmID = "@VBS0474"
+TableNow ""
+
+
+MmID = "@VBS0475"
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\prop-base\copypwd.exe.svn-base"
+CurrentFileKey="copypwd.exe.svn_base"
+CurrentFileNameSL=Get83PlusLongName("copypwd.exe.svn-base")
+ob_FileVersion("")
+
+MmID = "@VBS0476"
+TableNowMk "File"
+
+MmID = "@VBS0477"
+RowPrepare 8
+
+MmID = "@VBS0478"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = "c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x"
+oRec.StringData(3) = CurrentFileNameSL
+oRec.IntegerData(4) = 79
+oRec.StringData(5) = CurrentFileVersion
+oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
+oRec.StringData(6) = FileLanguage()
+oRec.IntegerData(8) = 0
+ValidateNEW(2)
+RowUpdate()
+
+MmID = "@VBS0479"
+TableNow ""
+
+MmID = "@VBS0480"
+TableNowMk "_MAKEMSI_FileSource"
+
+MmID = "@VBS0481"
+RowPrepare 4
+
+MmID = "@VBS0482"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = CurrentFile
+oRec.StringData(3) = "2010-07-26"
+oRec.StringData(4) = "07:35:28"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0483"
+TableNow ""
+ob_FileHash("Y")
+
+
+MmID = "@VBS0484"
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\prop-base\libeay32.dll.svn-base"
+CurrentFileKey="libeay32.dll.svn_base"
+CurrentFileNameSL=Get83PlusLongName("libeay32.dll.svn-base")
+ob_FileVersion("")
+
+MmID = "@VBS0485"
+TableNowMk "File"
+
+MmID = "@VBS0486"
+RowPrepare 8
+
+MmID = "@VBS0487"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = "c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x"
+oRec.StringData(3) = CurrentFileNameSL
+oRec.IntegerData(4) = 79
+oRec.StringData(5) = CurrentFileVersion
+oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
+oRec.StringData(6) = FileLanguage()
+oRec.IntegerData(8) = 0
+ValidateNEW(2)
+RowUpdate()
+
+MmID = "@VBS0488"
+TableNow ""
+
+MmID = "@VBS0489"
+TableNowMk "_MAKEMSI_FileSource"
+
+MmID = "@VBS0490"
+RowPrepare 4
+
+MmID = "@VBS0491"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = CurrentFile
+oRec.StringData(3) = "2010-07-26"
+oRec.StringData(4) = "07:35:28"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0492"
+TableNow ""
+ob_FileHash("Y")
+
+
+MmID = "@VBS0493"
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\prop-base\libssl32.dll.svn-base"
+CurrentFileKey="libssl32.dll.svn_base"
+CurrentFileNameSL=Get83PlusLongName("libssl32.dll.svn-base")
+ob_FileVersion("")
+
+MmID = "@VBS0494"
+TableNowMk "File"
+
+MmID = "@VBS0495"
+RowPrepare 8
+
+MmID = "@VBS0496"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = "c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x"
+oRec.StringData(3) = CurrentFileNameSL
+oRec.IntegerData(4) = 79
+oRec.StringData(5) = CurrentFileVersion
+oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
+oRec.StringData(6) = FileLanguage()
+oRec.IntegerData(8) = 0
+ValidateNEW(2)
+RowUpdate()
+
+MmID = "@VBS0497"
+TableNow ""
+
+MmID = "@VBS0498"
+TableNowMk "_MAKEMSI_FileSource"
+
+MmID = "@VBS0499"
+RowPrepare 4
+
+MmID = "@VBS0500"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = CurrentFile
+oRec.StringData(3) = "2010-07-26"
+oRec.StringData(4) = "07:35:28"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0501"
+TableNow ""
+ob_FileHash("Y")
+
+
+MmID = "@VBS0502"
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\prop-base\ssleay32.dll.svn-base"
+CurrentFileKey="ssleay32.dll.svn_base"
+CurrentFileNameSL=Get83PlusLongName("ssleay32.dll.svn-base")
+ob_FileVersion("")
+
+MmID = "@VBS0503"
+TableNowMk "File"
+
+MmID = "@VBS0504"
+RowPrepare 8
+
+MmID = "@VBS0505"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = "c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x"
+oRec.StringData(3) = CurrentFileNameSL
+oRec.IntegerData(4) = 79
+oRec.StringData(5) = CurrentFileVersion
+oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
+oRec.StringData(6) = FileLanguage()
+oRec.IntegerData(8) = 0
+ValidateNEW(2)
+RowUpdate()
+
+MmID = "@VBS0506"
+TableNow ""
+
+MmID = "@VBS0507"
+TableNowMk "_MAKEMSI_FileSource"
+
+MmID = "@VBS0508"
+RowPrepare 4
+
+MmID = "@VBS0509"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = CurrentFile
+oRec.StringData(3) = "2010-07-26"
+oRec.StringData(4) = "07:35:28"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0510"
+TableNow ""
+ob_FileHash("Y")
+
+
+MmID = "@VBS0511"
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\prop-base\ucs-ad-connector.exe.svn-base"
+CurrentFileKey="ucs_ad_connector.exe.svn_base"
+CurrentFileNameSL=Get83PlusLongName("ucs-ad-connector.exe.svn-base")
+ob_FileVersion("")
+
+MmID = "@VBS0512"
+TableNowMk "File"
+
+MmID = "@VBS0513"
+RowPrepare 8
+
+MmID = "@VBS0514"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = "c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x"
+oRec.StringData(3) = CurrentFileNameSL
+oRec.IntegerData(4) = 79
+oRec.StringData(5) = CurrentFileVersion
+oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
+oRec.StringData(6) = FileLanguage()
+oRec.IntegerData(8) = 0
+ValidateNEW(2)
+RowUpdate()
+
+MmID = "@VBS0515"
+TableNow ""
+
+MmID = "@VBS0516"
+TableNowMk "_MAKEMSI_FileSource"
+
+MmID = "@VBS0517"
+RowPrepare 4
+
+MmID = "@VBS0518"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = CurrentFile
+oRec.StringData(3) = "2010-07-26"
+oRec.StringData(4) = "07:35:28"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0519"
+TableNow ""
+ob_FileHash("Y")
+
+
+MmID = "@VBS0520"
+
+MmID = "@VBS0521"
+
+MmID = "@VBS0522"
+TableNowMk "Directory"
+ 
+
+MmID = "@VBS0523"
+RowPrepare 3
+
+MmID = "@VBS0524"
+oRec.StringData(1) = "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE"
+oRec.StringData(2) = "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN"
+oRec.StringData(3) = MakeSfnLfn("_INSTALLDIR_UCS_AD_CONNECTOR_.SVN", "text-base")
+ValidateFIELD(1)
+RowUpdate()
+
+MmID = "@VBS0525"
+TableNow ""
+
+MmID = "@VBS0526"
+
+MmID = "@VBS0527"
+TableNowMk "Component"
+
+MmID = "@VBS0528"
+RowPrepare 6
+
+MmID = "@VBS0529"
+oRec.StringData(1) = "c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x"
+oRec.StringData(2) = GuidMake("")
+oRec.StringData(3) = "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE"
+oRec.IntegerData(4) = msidbComponentAttributesLocalOnly
+oRec.StringData(5) = ""
+oRec.StringData(6) = ""
+ValidateFIELD(1)
+RowUpdate()
+
+MmID = "@VBS0530"
+
+
+MmID = "@VBS0531"
+TableNowMk "FeatureComponents"
+
+MmID = "@VBS0532"
+RowPrepare 2
+
+MmID = "@VBS0533"
+oRec.StringData(1) = "ALL.1.0.0.UCS_AD_Connector"
+oRec.StringData(2) = "c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0534"
+TableNow ""
+
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\text-base\copypwd.dll.svn-base"
+CurrentFileKey="copypwd.dll.svn_base_1"
+CurrentFileNameSL=Get83PlusLongName("copypwd.dll.svn-base")
+ob_FileVersion("")
+
+MmID = "@VBS0535"
+TableNowMk "File"
+
+MmID = "@VBS0536"
+RowPrepare 8
+
+MmID = "@VBS0537"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = "c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x"
+oRec.StringData(3) = CurrentFileNameSL
+oRec.IntegerData(4) = 49152
+oRec.StringData(5) = CurrentFileVersion
+oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
+oRec.StringData(6) = FileLanguage()
+oRec.IntegerData(8) = 0
+ValidateNEW(2)
+RowUpdate()
+
+MmID = "@VBS0538"
+TableNow ""
+
+MmID = "@VBS0539"
+TableNowMk "_MAKEMSI_FileSource"
+
+MmID = "@VBS0540"
+RowPrepare 4
+
+MmID = "@VBS0541"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = CurrentFile
+oRec.StringData(3) = "2010-07-26"
+oRec.StringData(4) = "07:40:06"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0542"
+TableNow ""
+ob_FileHash("Y")
+
+MmID = "@VBS0543"
+TableNowMk "Component"
+
+MmID = "@VBS0544"
+RowsPrepare "`Component` = 'c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x'"
+RecCnt = 0
+do
+set oRec = SqlViewFetch()
+if oRec is Nothing then exit DO
+RecCnt = RecCnt + 1
+
+MmID = "@VBS0545"
+oRec.IntegerData(4) = (oRec.IntegerData(4) AND NOT msidbComponentAttributesRegistryKeyPath)
+oRec.StringData(6) = "copypwd.dll.svn_base_1"
+ValidateFETCH(1)
+RowsREPLACE()
+loop
+SqlViewClose()
+if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x'")
+
+MmID = "@VBS0546"
+TableNow ""
+
+
+MmID = "@VBS0547"
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\text-base\copypwd.exe.svn-base"
+CurrentFileKey="copypwd.exe.svn_base_1"
+CurrentFileNameSL=Get83PlusLongName("copypwd.exe.svn-base")
+ob_FileVersion("")
+
+MmID = "@VBS0548"
+TableNowMk "File"
+
+MmID = "@VBS0549"
+RowPrepare 8
+
+MmID = "@VBS0550"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = "c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x"
 oRec.StringData(3) = CurrentFileNameSL
 oRec.IntegerData(4) = 32768
 oRec.StringData(5) = CurrentFileVersion
@@ -3009,103 +3687,43 @@ oRec.IntegerData(8) = 0
 ValidateNEW(2)
 RowUpdate()
 
-MmID = "@VBS0411"
+MmID = "@VBS0551"
 TableNow ""
 
-MmID = "@VBS0412"
+MmID = "@VBS0552"
 TableNowMk "_MAKEMSI_FileSource"
 
-MmID = "@VBS0413"
+MmID = "@VBS0553"
 RowPrepare 4
 
-MmID = "@VBS0414"
+MmID = "@VBS0554"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = CurrentFile
-oRec.StringData(3) = "2009-07-31"
-oRec.StringData(4) = "07:36:10"
+oRec.StringData(3) = "2010-07-26"
+oRec.StringData(4) = "07:40:04"
 ValidateNEW(0)
 RowUpdate()
 
-MmID = "@VBS0415"
+MmID = "@VBS0555"
 TableNow ""
 ob_FileHash("Y")
 
-MmID = "@VBS0416"
-TableNowMk "Component"
 
-MmID = "@VBS0417"
-RowsPrepare "`Component` = 'c2.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.exe'"
-RecCnt = 0
-do
-set oRec = SqlViewFetch()
-if oRec is Nothing then exit DO
-RecCnt = RecCnt + 1
-
-MmID = "@VBS0418"
-oRec.IntegerData(4) = (oRec.IntegerData(4) AND NOT msidbComponentAttributesRegistryKeyPath)
-oRec.StringData(6) = "copypwd.exe"
-ValidateFETCH(1)
-RowsREPLACE()
-loop
-SqlViewClose()
-if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c2.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.exe'")
-
-MmID = "@VBS0419"
-TableNow ""
-
-
-MmID = "@VBS0420"
-
-MmID = "@VBS0421"
-
-MmID = "@VBS0422"
-TableNowMk "Component"
-
-MmID = "@VBS0423"
-RowPrepare 6
-
-MmID = "@VBS0424"
-oRec.StringData(1) = "c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libeay32.dll"
-oRec.StringData(2) = GuidMake("")
-oRec.StringData(3) = "_INSTALLDIR_UCS_AD_CONNECTOR"
-oRec.IntegerData(4) = msidbComponentAttributesLocalOnly
-oRec.StringData(5) = ""
-oRec.StringData(6) = ""
-ValidateFIELD(1)
-RowUpdate()
-
-MmID = "@VBS0425"
-
-
-MmID = "@VBS0426"
-TableNowMk "FeatureComponents"
-
-MmID = "@VBS0427"
-RowPrepare 2
-
-MmID = "@VBS0428"
-oRec.StringData(1) = "ALL.1.0.0.UCS_AD_Connector"
-oRec.StringData(2) = "c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libeay32.dll"
-ValidateNEW(0)
-RowUpdate()
-
-MmID = "@VBS0429"
-TableNow ""
-
-CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\libeay32.dll"
-CurrentFileKey="libeay32.dll"
-CurrentFileNameSL=Get83PlusLongName("libeay32.dll")
+MmID = "@VBS0556"
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\text-base\libeay32.dll.svn-base"
+CurrentFileKey="libeay32.dll.svn_base_1"
+CurrentFileNameSL=Get83PlusLongName("libeay32.dll.svn-base")
 ob_FileVersion("")
 
-MmID = "@VBS0430"
+MmID = "@VBS0557"
 TableNowMk "File"
 
-MmID = "@VBS0431"
+MmID = "@VBS0558"
 RowPrepare 8
 
-MmID = "@VBS0432"
+MmID = "@VBS0559"
 oRec.StringData(1) = CurrentFileKey
-oRec.StringData(2) = "c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libeay32.dll"
+oRec.StringData(2) = "c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x"
 oRec.StringData(3) = CurrentFileNameSL
 oRec.IntegerData(4) = 843776
 oRec.StringData(5) = CurrentFileVersion
@@ -3115,103 +3733,43 @@ oRec.IntegerData(8) = 0
 ValidateNEW(2)
 RowUpdate()
 
-MmID = "@VBS0433"
+MmID = "@VBS0560"
 TableNow ""
 
-MmID = "@VBS0434"
+MmID = "@VBS0561"
 TableNowMk "_MAKEMSI_FileSource"
 
-MmID = "@VBS0435"
+MmID = "@VBS0562"
 RowPrepare 4
 
-MmID = "@VBS0436"
+MmID = "@VBS0563"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = CurrentFile
-oRec.StringData(3) = "2009-07-31"
-oRec.StringData(4) = "07:36:10"
+oRec.StringData(3) = "2010-07-26"
+oRec.StringData(4) = "07:40:04"
 ValidateNEW(0)
 RowUpdate()
 
-MmID = "@VBS0437"
+MmID = "@VBS0564"
 TableNow ""
 ob_FileHash("Y")
 
-MmID = "@VBS0438"
-TableNowMk "Component"
 
-MmID = "@VBS0439"
-RowsPrepare "`Component` = 'c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libeay32.dll'"
-RecCnt = 0
-do
-set oRec = SqlViewFetch()
-if oRec is Nothing then exit DO
-RecCnt = RecCnt + 1
-
-MmID = "@VBS0440"
-oRec.IntegerData(4) = (oRec.IntegerData(4) AND NOT msidbComponentAttributesRegistryKeyPath)
-oRec.StringData(6) = "libeay32.dll"
-ValidateFETCH(1)
-RowsREPLACE()
-loop
-SqlViewClose()
-if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libeay32.dll'")
-
-MmID = "@VBS0441"
-TableNow ""
-
-
-MmID = "@VBS0442"
-
-MmID = "@VBS0443"
-
-MmID = "@VBS0444"
-TableNowMk "Component"
-
-MmID = "@VBS0445"
-RowPrepare 6
-
-MmID = "@VBS0446"
-oRec.StringData(1) = "c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libssl32.dll"
-oRec.StringData(2) = GuidMake("")
-oRec.StringData(3) = "_INSTALLDIR_UCS_AD_CONNECTOR"
-oRec.IntegerData(4) = msidbComponentAttributesLocalOnly
-oRec.StringData(5) = ""
-oRec.StringData(6) = ""
-ValidateFIELD(1)
-RowUpdate()
-
-MmID = "@VBS0447"
-
-
-MmID = "@VBS0448"
-TableNowMk "FeatureComponents"
-
-MmID = "@VBS0449"
-RowPrepare 2
-
-MmID = "@VBS0450"
-oRec.StringData(1) = "ALL.1.0.0.UCS_AD_Connector"
-oRec.StringData(2) = "c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libssl32.dll"
-ValidateNEW(0)
-RowUpdate()
-
-MmID = "@VBS0451"
-TableNow ""
-
-CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\libssl32.dll"
-CurrentFileKey="libssl32.dll"
-CurrentFileNameSL=Get83PlusLongName("libssl32.dll")
+MmID = "@VBS0565"
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\text-base\libssl32.dll.svn-base"
+CurrentFileKey="libssl32.dll.svn_base_1"
+CurrentFileNameSL=Get83PlusLongName("libssl32.dll.svn-base")
 ob_FileVersion("")
 
-MmID = "@VBS0452"
+MmID = "@VBS0566"
 TableNowMk "File"
 
-MmID = "@VBS0453"
+MmID = "@VBS0567"
 RowPrepare 8
 
-MmID = "@VBS0454"
+MmID = "@VBS0568"
 oRec.StringData(1) = CurrentFileKey
-oRec.StringData(2) = "c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libssl32.dll"
+oRec.StringData(2) = "c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x"
 oRec.StringData(3) = CurrentFileNameSL
 oRec.IntegerData(4) = 159744
 oRec.StringData(5) = CurrentFileVersion
@@ -3221,103 +3779,43 @@ oRec.IntegerData(8) = 0
 ValidateNEW(2)
 RowUpdate()
 
-MmID = "@VBS0455"
+MmID = "@VBS0569"
 TableNow ""
 
-MmID = "@VBS0456"
+MmID = "@VBS0570"
 TableNowMk "_MAKEMSI_FileSource"
 
-MmID = "@VBS0457"
+MmID = "@VBS0571"
 RowPrepare 4
 
-MmID = "@VBS0458"
+MmID = "@VBS0572"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = CurrentFile
-oRec.StringData(3) = "2009-07-31"
-oRec.StringData(4) = "07:36:10"
+oRec.StringData(3) = "2010-07-26"
+oRec.StringData(4) = "07:40:04"
 ValidateNEW(0)
 RowUpdate()
 
-MmID = "@VBS0459"
+MmID = "@VBS0573"
 TableNow ""
 ob_FileHash("Y")
 
-MmID = "@VBS0460"
-TableNowMk "Component"
 
-MmID = "@VBS0461"
-RowsPrepare "`Component` = 'c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libssl32.dll'"
-RecCnt = 0
-do
-set oRec = SqlViewFetch()
-if oRec is Nothing then exit DO
-RecCnt = RecCnt + 1
-
-MmID = "@VBS0462"
-oRec.IntegerData(4) = (oRec.IntegerData(4) AND NOT msidbComponentAttributesRegistryKeyPath)
-oRec.StringData(6) = "libssl32.dll"
-ValidateFETCH(1)
-RowsREPLACE()
-loop
-SqlViewClose()
-if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libssl32.dll'")
-
-MmID = "@VBS0463"
-TableNow ""
-
-
-MmID = "@VBS0464"
-
-MmID = "@VBS0465"
-
-MmID = "@VBS0466"
-TableNowMk "Component"
-
-MmID = "@VBS0467"
-RowPrepare 6
-
-MmID = "@VBS0468"
-oRec.StringData(1) = "c5.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ssleay32.dll"
-oRec.StringData(2) = GuidMake("")
-oRec.StringData(3) = "_INSTALLDIR_UCS_AD_CONNECTOR"
-oRec.IntegerData(4) = msidbComponentAttributesLocalOnly
-oRec.StringData(5) = ""
-oRec.StringData(6) = ""
-ValidateFIELD(1)
-RowUpdate()
-
-MmID = "@VBS0469"
-
-
-MmID = "@VBS0470"
-TableNowMk "FeatureComponents"
-
-MmID = "@VBS0471"
-RowPrepare 2
-
-MmID = "@VBS0472"
-oRec.StringData(1) = "ALL.1.0.0.UCS_AD_Connector"
-oRec.StringData(2) = "c5.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ssleay32.dll"
-ValidateNEW(0)
-RowUpdate()
-
-MmID = "@VBS0473"
-TableNow ""
-
-CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\ssleay32.dll"
-CurrentFileKey="ssleay32.dll"
-CurrentFileNameSL=Get83PlusLongName("ssleay32.dll")
+MmID = "@VBS0574"
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\text-base\ssleay32.dll.svn-base"
+CurrentFileKey="ssleay32.dll.svn_base_1"
+CurrentFileNameSL=Get83PlusLongName("ssleay32.dll.svn-base")
 ob_FileVersion("")
 
-MmID = "@VBS0474"
+MmID = "@VBS0575"
 TableNowMk "File"
 
-MmID = "@VBS0475"
+MmID = "@VBS0576"
 RowPrepare 8
 
-MmID = "@VBS0476"
+MmID = "@VBS0577"
 oRec.StringData(1) = CurrentFileKey
-oRec.StringData(2) = "c5.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ssleay32.dll"
+oRec.StringData(2) = "c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x"
 oRec.StringData(3) = CurrentFileNameSL
 oRec.IntegerData(4) = 159744
 oRec.StringData(5) = CurrentFileVersion
@@ -3327,103 +3825,43 @@ oRec.IntegerData(8) = 0
 ValidateNEW(2)
 RowUpdate()
 
-MmID = "@VBS0477"
+MmID = "@VBS0578"
 TableNow ""
 
-MmID = "@VBS0478"
+MmID = "@VBS0579"
 TableNowMk "_MAKEMSI_FileSource"
 
-MmID = "@VBS0479"
+MmID = "@VBS0580"
 RowPrepare 4
 
-MmID = "@VBS0480"
+MmID = "@VBS0581"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = CurrentFile
-oRec.StringData(3) = "2009-07-31"
-oRec.StringData(4) = "07:36:10"
+oRec.StringData(3) = "2010-07-26"
+oRec.StringData(4) = "07:40:04"
 ValidateNEW(0)
 RowUpdate()
 
-MmID = "@VBS0481"
+MmID = "@VBS0582"
 TableNow ""
 ob_FileHash("Y")
 
-MmID = "@VBS0482"
-TableNowMk "Component"
 
-MmID = "@VBS0483"
-RowsPrepare "`Component` = 'c5.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ssleay32.dll'"
-RecCnt = 0
-do
-set oRec = SqlViewFetch()
-if oRec is Nothing then exit DO
-RecCnt = RecCnt + 1
-
-MmID = "@VBS0484"
-oRec.IntegerData(4) = (oRec.IntegerData(4) AND NOT msidbComponentAttributesRegistryKeyPath)
-oRec.StringData(6) = "ssleay32.dll"
-ValidateFETCH(1)
-RowsREPLACE()
-loop
-SqlViewClose()
-if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c5.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ssleay32.dll'")
-
-MmID = "@VBS0485"
-TableNow ""
-
-
-MmID = "@VBS0486"
-
-MmID = "@VBS0487"
-
-MmID = "@VBS0488"
-TableNowMk "Component"
-
-MmID = "@VBS0489"
-RowPrepare 6
-
-MmID = "@VBS0490"
-oRec.StringData(1) = "c6.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ucs_ad_connector.exe"
-oRec.StringData(2) = GuidMake("")
-oRec.StringData(3) = "_INSTALLDIR_UCS_AD_CONNECTOR"
-oRec.IntegerData(4) = msidbComponentAttributesLocalOnly
-oRec.StringData(5) = ""
-oRec.StringData(6) = ""
-ValidateFIELD(1)
-RowUpdate()
-
-MmID = "@VBS0491"
-
-
-MmID = "@VBS0492"
-TableNowMk "FeatureComponents"
-
-MmID = "@VBS0493"
-RowPrepare 2
-
-MmID = "@VBS0494"
-oRec.StringData(1) = "ALL.1.0.0.UCS_AD_Connector"
-oRec.StringData(2) = "c6.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ucs_ad_connector.exe"
-ValidateNEW(0)
-RowUpdate()
-
-MmID = "@VBS0495"
-TableNow ""
-
-CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\ucs-ad-connector.exe"
-CurrentFileKey="ucs_ad_connector.exe"
-CurrentFileNameSL=Get83PlusLongName("ucs-ad-connector.exe")
+MmID = "@VBS0583"
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\text-base\ucs-ad-connector.exe.svn-base"
+CurrentFileKey="ucs_ad_connector.exe.svn_base_1"
+CurrentFileNameSL=Get83PlusLongName("ucs-ad-connector.exe.svn-base")
 ob_FileVersion("")
 
-MmID = "@VBS0496"
+MmID = "@VBS0584"
 TableNowMk "File"
 
-MmID = "@VBS0497"
+MmID = "@VBS0585"
 RowPrepare 8
 
-MmID = "@VBS0498"
+MmID = "@VBS0586"
 oRec.StringData(1) = CurrentFileKey
-oRec.StringData(2) = "c6.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ucs_ad_connector.exe"
+oRec.StringData(2) = "c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x"
 oRec.StringData(3) = CurrentFileNameSL
 oRec.IntegerData(4) = 53248
 oRec.StringData(5) = CurrentFileVersion
@@ -3433,16 +3871,99 @@ oRec.IntegerData(8) = 0
 ValidateNEW(2)
 RowUpdate()
 
-MmID = "@VBS0499"
+MmID = "@VBS0587"
 TableNow ""
 
-MmID = "@VBS0500"
+MmID = "@VBS0588"
 TableNowMk "_MAKEMSI_FileSource"
 
-MmID = "@VBS0501"
+MmID = "@VBS0589"
 RowPrepare 4
 
-MmID = "@VBS0502"
+MmID = "@VBS0590"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = CurrentFile
+oRec.StringData(3) = "2010-07-26"
+oRec.StringData(4) = "07:40:04"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0591"
+TableNow ""
+ob_FileHash("Y")
+
+
+MmID = "@VBS0592"
+
+MmID = "@VBS0593"
+
+MmID = "@VBS0594"
+TableNowMk "Component"
+
+MmID = "@VBS0595"
+RowPrepare 6
+
+MmID = "@VBS0596"
+oRec.StringData(1) = "c5.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.dll"
+oRec.StringData(2) = GuidMake("")
+oRec.StringData(3) = "_INSTALLDIR_UCS_AD_CONNECTOR"
+oRec.IntegerData(4) = msidbComponentAttributesLocalOnly
+oRec.StringData(5) = ""
+oRec.StringData(6) = ""
+ValidateFIELD(1)
+RowUpdate()
+
+MmID = "@VBS0597"
+
+
+MmID = "@VBS0598"
+TableNowMk "FeatureComponents"
+
+MmID = "@VBS0599"
+RowPrepare 2
+
+MmID = "@VBS0600"
+oRec.StringData(1) = "ALL.1.0.0.UCS_AD_Connector"
+oRec.StringData(2) = "c5.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.dll"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0601"
+TableNow ""
+
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\copypwd.dll"
+CurrentFileKey="copypwd.dll"
+CurrentFileNameSL=Get83PlusLongName("copypwd.dll")
+ob_FileVersion("")
+
+MmID = "@VBS0602"
+TableNowMk "File"
+
+MmID = "@VBS0603"
+RowPrepare 8
+
+MmID = "@VBS0604"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = "c5.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.dll"
+oRec.StringData(3) = CurrentFileNameSL
+oRec.IntegerData(4) = 49152
+oRec.StringData(5) = CurrentFileVersion
+oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
+oRec.StringData(6) = FileLanguage()
+oRec.IntegerData(8) = 0
+ValidateNEW(2)
+RowUpdate()
+
+MmID = "@VBS0605"
+TableNow ""
+
+MmID = "@VBS0606"
+TableNowMk "_MAKEMSI_FileSource"
+
+MmID = "@VBS0607"
+RowPrepare 4
+
+MmID = "@VBS0608"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = CurrentFile
 oRec.StringData(3) = "2009-07-31"
@@ -3450,31 +3971,561 @@ oRec.StringData(4) = "07:36:10"
 ValidateNEW(0)
 RowUpdate()
 
-MmID = "@VBS0503"
+MmID = "@VBS0609"
 TableNow ""
 ob_FileHash("Y")
 
-MmID = "@VBS0504"
+MmID = "@VBS0610"
 TableNowMk "Component"
 
-MmID = "@VBS0505"
-RowsPrepare "`Component` = 'c6.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ucs_ad_connector.exe'"
+MmID = "@VBS0611"
+RowsPrepare "`Component` = 'c5.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.dll'"
 RecCnt = 0
 do
 set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0506"
+MmID = "@VBS0612"
+oRec.IntegerData(4) = (oRec.IntegerData(4) AND NOT msidbComponentAttributesRegistryKeyPath)
+oRec.StringData(6) = "copypwd.dll"
+ValidateFETCH(1)
+RowsREPLACE()
+loop
+SqlViewClose()
+if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c5.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.dll'")
+
+MmID = "@VBS0613"
+TableNow ""
+
+
+MmID = "@VBS0614"
+
+MmID = "@VBS0615"
+
+MmID = "@VBS0616"
+TableNowMk "Component"
+
+MmID = "@VBS0617"
+RowPrepare 6
+
+MmID = "@VBS0618"
+oRec.StringData(1) = "c6.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.exe"
+oRec.StringData(2) = GuidMake("")
+oRec.StringData(3) = "_INSTALLDIR_UCS_AD_CONNECTOR"
+oRec.IntegerData(4) = msidbComponentAttributesLocalOnly
+oRec.StringData(5) = ""
+oRec.StringData(6) = ""
+ValidateFIELD(1)
+RowUpdate()
+
+MmID = "@VBS0619"
+
+
+MmID = "@VBS0620"
+TableNowMk "FeatureComponents"
+
+MmID = "@VBS0621"
+RowPrepare 2
+
+MmID = "@VBS0622"
+oRec.StringData(1) = "ALL.1.0.0.UCS_AD_Connector"
+oRec.StringData(2) = "c6.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.exe"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0623"
+TableNow ""
+
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\copypwd.exe"
+CurrentFileKey="copypwd.exe"
+CurrentFileNameSL=Get83PlusLongName("copypwd.exe")
+ob_FileVersion("")
+
+MmID = "@VBS0624"
+TableNowMk "File"
+
+MmID = "@VBS0625"
+RowPrepare 8
+
+MmID = "@VBS0626"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = "c6.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.exe"
+oRec.StringData(3) = CurrentFileNameSL
+oRec.IntegerData(4) = 32768
+oRec.StringData(5) = CurrentFileVersion
+oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
+oRec.StringData(6) = FileLanguage()
+oRec.IntegerData(8) = 0
+ValidateNEW(2)
+RowUpdate()
+
+MmID = "@VBS0627"
+TableNow ""
+
+MmID = "@VBS0628"
+TableNowMk "_MAKEMSI_FileSource"
+
+MmID = "@VBS0629"
+RowPrepare 4
+
+MmID = "@VBS0630"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = CurrentFile
+oRec.StringData(3) = "2009-07-31"
+oRec.StringData(4) = "07:36:10"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0631"
+TableNow ""
+ob_FileHash("Y")
+
+MmID = "@VBS0632"
+TableNowMk "Component"
+
+MmID = "@VBS0633"
+RowsPrepare "`Component` = 'c6.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.exe'"
+RecCnt = 0
+do
+set oRec = SqlViewFetch()
+if oRec is Nothing then exit DO
+RecCnt = RecCnt + 1
+
+MmID = "@VBS0634"
+oRec.IntegerData(4) = (oRec.IntegerData(4) AND NOT msidbComponentAttributesRegistryKeyPath)
+oRec.StringData(6) = "copypwd.exe"
+ValidateFETCH(1)
+RowsREPLACE()
+loop
+SqlViewClose()
+if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c6.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.exe'")
+
+MmID = "@VBS0635"
+TableNow ""
+
+
+MmID = "@VBS0636"
+
+MmID = "@VBS0637"
+
+MmID = "@VBS0638"
+TableNowMk "Component"
+
+MmID = "@VBS0639"
+RowPrepare 6
+
+MmID = "@VBS0640"
+oRec.StringData(1) = "c7.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libeay32.dll"
+oRec.StringData(2) = GuidMake("")
+oRec.StringData(3) = "_INSTALLDIR_UCS_AD_CONNECTOR"
+oRec.IntegerData(4) = msidbComponentAttributesLocalOnly
+oRec.StringData(5) = ""
+oRec.StringData(6) = ""
+ValidateFIELD(1)
+RowUpdate()
+
+MmID = "@VBS0641"
+
+
+MmID = "@VBS0642"
+TableNowMk "FeatureComponents"
+
+MmID = "@VBS0643"
+RowPrepare 2
+
+MmID = "@VBS0644"
+oRec.StringData(1) = "ALL.1.0.0.UCS_AD_Connector"
+oRec.StringData(2) = "c7.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libeay32.dll"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0645"
+TableNow ""
+
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\libeay32.dll"
+CurrentFileKey="libeay32.dll"
+CurrentFileNameSL=Get83PlusLongName("libeay32.dll")
+ob_FileVersion("")
+
+MmID = "@VBS0646"
+TableNowMk "File"
+
+MmID = "@VBS0647"
+RowPrepare 8
+
+MmID = "@VBS0648"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = "c7.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libeay32.dll"
+oRec.StringData(3) = CurrentFileNameSL
+oRec.IntegerData(4) = 843776
+oRec.StringData(5) = CurrentFileVersion
+oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
+oRec.StringData(6) = FileLanguage()
+oRec.IntegerData(8) = 0
+ValidateNEW(2)
+RowUpdate()
+
+MmID = "@VBS0649"
+TableNow ""
+
+MmID = "@VBS0650"
+TableNowMk "_MAKEMSI_FileSource"
+
+MmID = "@VBS0651"
+RowPrepare 4
+
+MmID = "@VBS0652"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = CurrentFile
+oRec.StringData(3) = "2009-07-31"
+oRec.StringData(4) = "07:36:10"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0653"
+TableNow ""
+ob_FileHash("Y")
+
+MmID = "@VBS0654"
+TableNowMk "Component"
+
+MmID = "@VBS0655"
+RowsPrepare "`Component` = 'c7.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libeay32.dll'"
+RecCnt = 0
+do
+set oRec = SqlViewFetch()
+if oRec is Nothing then exit DO
+RecCnt = RecCnt + 1
+
+MmID = "@VBS0656"
+oRec.IntegerData(4) = (oRec.IntegerData(4) AND NOT msidbComponentAttributesRegistryKeyPath)
+oRec.StringData(6) = "libeay32.dll"
+ValidateFETCH(1)
+RowsREPLACE()
+loop
+SqlViewClose()
+if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c7.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libeay32.dll'")
+
+MmID = "@VBS0657"
+TableNow ""
+
+
+MmID = "@VBS0658"
+
+MmID = "@VBS0659"
+
+MmID = "@VBS0660"
+TableNowMk "Component"
+
+MmID = "@VBS0661"
+RowPrepare 6
+
+MmID = "@VBS0662"
+oRec.StringData(1) = "c8.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libssl32.dll"
+oRec.StringData(2) = GuidMake("")
+oRec.StringData(3) = "_INSTALLDIR_UCS_AD_CONNECTOR"
+oRec.IntegerData(4) = msidbComponentAttributesLocalOnly
+oRec.StringData(5) = ""
+oRec.StringData(6) = ""
+ValidateFIELD(1)
+RowUpdate()
+
+MmID = "@VBS0663"
+
+
+MmID = "@VBS0664"
+TableNowMk "FeatureComponents"
+
+MmID = "@VBS0665"
+RowPrepare 2
+
+MmID = "@VBS0666"
+oRec.StringData(1) = "ALL.1.0.0.UCS_AD_Connector"
+oRec.StringData(2) = "c8.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libssl32.dll"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0667"
+TableNow ""
+
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\libssl32.dll"
+CurrentFileKey="libssl32.dll"
+CurrentFileNameSL=Get83PlusLongName("libssl32.dll")
+ob_FileVersion("")
+
+MmID = "@VBS0668"
+TableNowMk "File"
+
+MmID = "@VBS0669"
+RowPrepare 8
+
+MmID = "@VBS0670"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = "c8.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libssl32.dll"
+oRec.StringData(3) = CurrentFileNameSL
+oRec.IntegerData(4) = 159744
+oRec.StringData(5) = CurrentFileVersion
+oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
+oRec.StringData(6) = FileLanguage()
+oRec.IntegerData(8) = 0
+ValidateNEW(2)
+RowUpdate()
+
+MmID = "@VBS0671"
+TableNow ""
+
+MmID = "@VBS0672"
+TableNowMk "_MAKEMSI_FileSource"
+
+MmID = "@VBS0673"
+RowPrepare 4
+
+MmID = "@VBS0674"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = CurrentFile
+oRec.StringData(3) = "2009-07-31"
+oRec.StringData(4) = "07:36:10"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0675"
+TableNow ""
+ob_FileHash("Y")
+
+MmID = "@VBS0676"
+TableNowMk "Component"
+
+MmID = "@VBS0677"
+RowsPrepare "`Component` = 'c8.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libssl32.dll'"
+RecCnt = 0
+do
+set oRec = SqlViewFetch()
+if oRec is Nothing then exit DO
+RecCnt = RecCnt + 1
+
+MmID = "@VBS0678"
+oRec.IntegerData(4) = (oRec.IntegerData(4) AND NOT msidbComponentAttributesRegistryKeyPath)
+oRec.StringData(6) = "libssl32.dll"
+ValidateFETCH(1)
+RowsREPLACE()
+loop
+SqlViewClose()
+if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c8.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libssl32.dll'")
+
+MmID = "@VBS0679"
+TableNow ""
+
+
+MmID = "@VBS0680"
+
+MmID = "@VBS0681"
+
+MmID = "@VBS0682"
+TableNowMk "Component"
+
+MmID = "@VBS0683"
+RowPrepare 6
+
+MmID = "@VBS0684"
+oRec.StringData(1) = "c9.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ssleay32.dll"
+oRec.StringData(2) = GuidMake("")
+oRec.StringData(3) = "_INSTALLDIR_UCS_AD_CONNECTOR"
+oRec.IntegerData(4) = msidbComponentAttributesLocalOnly
+oRec.StringData(5) = ""
+oRec.StringData(6) = ""
+ValidateFIELD(1)
+RowUpdate()
+
+MmID = "@VBS0685"
+
+
+MmID = "@VBS0686"
+TableNowMk "FeatureComponents"
+
+MmID = "@VBS0687"
+RowPrepare 2
+
+MmID = "@VBS0688"
+oRec.StringData(1) = "ALL.1.0.0.UCS_AD_Connector"
+oRec.StringData(2) = "c9.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ssleay32.dll"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0689"
+TableNow ""
+
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\ssleay32.dll"
+CurrentFileKey="ssleay32.dll"
+CurrentFileNameSL=Get83PlusLongName("ssleay32.dll")
+ob_FileVersion("")
+
+MmID = "@VBS0690"
+TableNowMk "File"
+
+MmID = "@VBS0691"
+RowPrepare 8
+
+MmID = "@VBS0692"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = "c9.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ssleay32.dll"
+oRec.StringData(3) = CurrentFileNameSL
+oRec.IntegerData(4) = 159744
+oRec.StringData(5) = CurrentFileVersion
+oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
+oRec.StringData(6) = FileLanguage()
+oRec.IntegerData(8) = 0
+ValidateNEW(2)
+RowUpdate()
+
+MmID = "@VBS0693"
+TableNow ""
+
+MmID = "@VBS0694"
+TableNowMk "_MAKEMSI_FileSource"
+
+MmID = "@VBS0695"
+RowPrepare 4
+
+MmID = "@VBS0696"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = CurrentFile
+oRec.StringData(3) = "2009-07-31"
+oRec.StringData(4) = "07:36:10"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0697"
+TableNow ""
+ob_FileHash("Y")
+
+MmID = "@VBS0698"
+TableNowMk "Component"
+
+MmID = "@VBS0699"
+RowsPrepare "`Component` = 'c9.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ssleay32.dll'"
+RecCnt = 0
+do
+set oRec = SqlViewFetch()
+if oRec is Nothing then exit DO
+RecCnt = RecCnt + 1
+
+MmID = "@VBS0700"
+oRec.IntegerData(4) = (oRec.IntegerData(4) AND NOT msidbComponentAttributesRegistryKeyPath)
+oRec.StringData(6) = "ssleay32.dll"
+ValidateFETCH(1)
+RowsREPLACE()
+loop
+SqlViewClose()
+if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c9.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ssleay32.dll'")
+
+MmID = "@VBS0701"
+TableNow ""
+
+
+MmID = "@VBS0702"
+
+MmID = "@VBS0703"
+
+MmID = "@VBS0704"
+TableNowMk "Component"
+
+MmID = "@VBS0705"
+RowPrepare 6
+
+MmID = "@VBS0706"
+oRec.StringData(1) = "c10.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ucs_ad_connector.exe"
+oRec.StringData(2) = GuidMake("")
+oRec.StringData(3) = "_INSTALLDIR_UCS_AD_CONNECTOR"
+oRec.IntegerData(4) = msidbComponentAttributesLocalOnly
+oRec.StringData(5) = ""
+oRec.StringData(6) = ""
+ValidateFIELD(1)
+RowUpdate()
+
+MmID = "@VBS0707"
+
+
+MmID = "@VBS0708"
+TableNowMk "FeatureComponents"
+
+MmID = "@VBS0709"
+RowPrepare 2
+
+MmID = "@VBS0710"
+oRec.StringData(1) = "ALL.1.0.0.UCS_AD_Connector"
+oRec.StringData(2) = "c10.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ucs_ad_connector.exe"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0711"
+TableNow ""
+
+CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\ucs-ad-connector.exe"
+CurrentFileKey="ucs_ad_connector.exe"
+CurrentFileNameSL=Get83PlusLongName("ucs-ad-connector.exe")
+ob_FileVersion("")
+
+MmID = "@VBS0712"
+TableNowMk "File"
+
+MmID = "@VBS0713"
+RowPrepare 8
+
+MmID = "@VBS0714"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = "c10.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ucs_ad_connector.exe"
+oRec.StringData(3) = CurrentFileNameSL
+oRec.IntegerData(4) = 53248
+oRec.StringData(5) = CurrentFileVersion
+oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
+oRec.StringData(6) = FileLanguage()
+oRec.IntegerData(8) = 0
+ValidateNEW(2)
+RowUpdate()
+
+MmID = "@VBS0715"
+TableNow ""
+
+MmID = "@VBS0716"
+TableNowMk "_MAKEMSI_FileSource"
+
+MmID = "@VBS0717"
+RowPrepare 4
+
+MmID = "@VBS0718"
+oRec.StringData(1) = CurrentFileKey
+oRec.StringData(2) = CurrentFile
+oRec.StringData(3) = "2009-07-31"
+oRec.StringData(4) = "07:36:10"
+ValidateNEW(0)
+RowUpdate()
+
+MmID = "@VBS0719"
+TableNow ""
+ob_FileHash("Y")
+
+MmID = "@VBS0720"
+TableNowMk "Component"
+
+MmID = "@VBS0721"
+RowsPrepare "`Component` = 'c10.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ucs_ad_connector.exe'"
+RecCnt = 0
+do
+set oRec = SqlViewFetch()
+if oRec is Nothing then exit DO
+RecCnt = RecCnt + 1
+
+MmID = "@VBS0722"
 oRec.IntegerData(4) = (oRec.IntegerData(4) AND NOT msidbComponentAttributesRegistryKeyPath)
 oRec.StringData(6) = "ucs_ad_connector.exe"
 ValidateFETCH(1)
 RowsREPLACE()
 loop
 SqlViewClose()
-if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c6.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ucs_ad_connector.exe'")
+if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c10.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ucs_ad_connector.exe'")
 
-MmID = "@VBS0507"
+MmID = "@VBS0723"
 TableNow ""
 
 
@@ -3486,38 +4537,38 @@ MmLT = "<$Files ""files\temp\*.*"" DestDir=""[TempFolder]"">"
 '######################################################################
 
 
-MmID = "@VBS0508"
+MmID = "@VBS0724"
 
-MmID = "@VBS0509"
+MmID = "@VBS0725"
 
-MmID = "@VBS0510"
+MmID = "@VBS0726"
 
-MmID = "@VBS0511"
+MmID = "@VBS0727"
 TableNowMk "Directory"
 
-MmID = "@VBS0512"
+MmID = "@VBS0728"
 RowPrepare 3
 
-MmID = "@VBS0513"
+MmID = "@VBS0729"
 oRec.StringData(1) = "TempFolder"
 oRec.StringData(2) = "WindowsFolder"
 oRec.StringData(3) = ".:Temp"
 ValidateFIELD(1)
 RowUpdate()
 
-MmID = "@VBS0514"
+MmID = "@VBS0730"
 TableNow ""
 
-MmID = "@VBS0515"
+MmID = "@VBS0731"
 
-MmID = "@VBS0516"
+MmID = "@VBS0732"
 TableNowMk "Component"
 
-MmID = "@VBS0517"
+MmID = "@VBS0733"
 RowPrepare 6
 
-MmID = "@VBS0518"
-oRec.StringData(1) = "c7.ALL.1.0.0.UCS_A.TempFolder_x"
+MmID = "@VBS0734"
+oRec.StringData(1) = "c11.ALL.1.0.0.UCS_A.TempFolder_x"
 oRec.StringData(2) = GuidMake("")
 oRec.StringData(3) = "TempFolder"
 oRec.IntegerData(4) = msidbComponentAttributesLocalOnly
@@ -3526,22 +4577,22 @@ oRec.StringData(6) = ""
 ValidateFIELD(1)
 RowUpdate()
 
-MmID = "@VBS0519"
+MmID = "@VBS0735"
 
 
-MmID = "@VBS0520"
+MmID = "@VBS0736"
 TableNowMk "FeatureComponents"
 
-MmID = "@VBS0521"
+MmID = "@VBS0737"
 RowPrepare 2
 
-MmID = "@VBS0522"
+MmID = "@VBS0738"
 oRec.StringData(1) = "ALL.1.0.0.UCS_AD_Connector"
-oRec.StringData(2) = "c7.ALL.1.0.0.UCS_A.TempFolder_x"
+oRec.StringData(2) = "c11.ALL.1.0.0.UCS_A.TempFolder_x"
 ValidateNEW(0)
 RowUpdate()
 
-MmID = "@VBS0523"
+MmID = "@VBS0739"
 TableNow ""
 
 CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\temp\ucs-ad-connector-service.cmd"
@@ -3549,17 +4600,17 @@ CurrentFileKey="ucs_ad_connector_service.cmd"
 CurrentFileNameSL=Get83PlusLongName("ucs-ad-connector-service.cmd")
 ob_FileVersion("")
 
-MmID = "@VBS0524"
+MmID = "@VBS0740"
 TableNowMk "File"
 
-MmID = "@VBS0525"
+MmID = "@VBS0741"
 RowPrepare 8
 
-MmID = "@VBS0526"
+MmID = "@VBS0742"
 oRec.StringData(1) = CurrentFileKey
-oRec.StringData(2) = "c7.ALL.1.0.0.UCS_A.TempFolder_x"
+oRec.StringData(2) = "c11.ALL.1.0.0.UCS_A.TempFolder_x"
 oRec.StringData(3) = CurrentFileNameSL
-oRec.IntegerData(4) = 74
+oRec.IntegerData(4) = 146
 oRec.StringData(5) = CurrentFileVersion
 oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
 oRec.StringData(6) = FileLanguage()
@@ -3567,48 +4618,48 @@ oRec.IntegerData(8) = 0
 ValidateNEW(2)
 RowUpdate()
 
-MmID = "@VBS0527"
+MmID = "@VBS0743"
 TableNow ""
 
-MmID = "@VBS0528"
+MmID = "@VBS0744"
 TableNowMk "_MAKEMSI_FileSource"
 
-MmID = "@VBS0529"
+MmID = "@VBS0745"
 RowPrepare 4
 
-MmID = "@VBS0530"
+MmID = "@VBS0746"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = CurrentFile
-oRec.StringData(3) = "2010-07-25"
-oRec.StringData(4) = "09:35:16"
+oRec.StringData(3) = "2010-07-26"
+oRec.StringData(4) = "08:44:30"
 ValidateNEW(0)
 RowUpdate()
 
-MmID = "@VBS0531"
+MmID = "@VBS0747"
 TableNow ""
 ob_FileHash("Y")
 
-MmID = "@VBS0532"
+MmID = "@VBS0748"
 TableNowMk "Component"
 
-MmID = "@VBS0533"
-RowsPrepare "`Component` = 'c7.ALL.1.0.0.UCS_A.TempFolder_x'"
+MmID = "@VBS0749"
+RowsPrepare "`Component` = 'c11.ALL.1.0.0.UCS_A.TempFolder_x'"
 RecCnt = 0
 do
 set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0534"
+MmID = "@VBS0750"
 oRec.IntegerData(4) = (oRec.IntegerData(4) AND NOT msidbComponentAttributesRegistryKeyPath)
 oRec.StringData(6) = "ucs_ad_connector_service.cmd"
 ValidateFETCH(1)
 RowsREPLACE()
 loop
 SqlViewClose()
-if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c7.ALL.1.0.0.UCS_A.TempFolder_x'")
+if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'c11.ALL.1.0.0.UCS_A.TempFolder_x'")
 
-MmID = "@VBS0535"
+MmID = "@VBS0751"
 TableNow ""
 
 
@@ -3620,19 +4671,19 @@ MmLT = "<$ExeCa EXE='[TempFolder]ucs-ad-connector-service.cmd' Args=^""MsgBox Ti
 '######################################################################
 
 
-MmID = "@VBS0536"
+MmID = "@VBS0752"
 
 
 
 
-MmID = "@VBS0537"
+MmID = "@VBS0753"
 TableNowMk "CustomAction"
 
 
-MmID = "@VBS0538"
+MmID = "@VBS0754"
 RowPrepare 5
 
-MmID = "@VBS0539"
+MmID = "@VBS0755"
 oRec.StringData(1) = "ExeCaKeyF01"
 oRec.StringData(3) = "TempFolder"
 oRec.IntegerData(2) = &H00E2
@@ -3641,19 +4692,19 @@ ValidateFIELD(1)
 RowUpdate()
 
 
-MmID = "@VBS0540"
+MmID = "@VBS0756"
 TableNow ""
 
 SeqNo = GetSeqNumber("InstallExecuteSequence", "InstallFinalize-", 1)
 
-MmID = "@VBS0541"
+MmID = "@VBS0757"
 TableNowMk "InstallExecuteSequence"
 
 
-MmID = "@VBS0542"
+MmID = "@VBS0758"
 RowPrepare 3
 
-MmID = "@VBS0543"
+MmID = "@VBS0759"
 oRec.StringData(1) = "ExeCaKeyF01"
 oRec.StringData(2) = "not Installed"
 oRec.IntegerData(3) = SeqNo
@@ -3661,25 +4712,25 @@ ValidateFIELD(1)
 RowUpdate()
 
 
-MmID = "@VBS0544"
+MmID = "@VBS0760"
 TableNow ""
 
 
-MmID = "@VBS0545"
+MmID = "@VBS0761"
 TableNowMk "ActionText"
 
 
-MmID = "@VBS0546"
+MmID = "@VBS0762"
 RowPrepare 3
 
-MmID = "@VBS0547"
+MmID = "@VBS0763"
 oRec.StringData(1) = "ExeCaKeyF01"
 oRec.StringData(2) = "EXE Custom Action : ExeCaKeyF01"
 ValidateFIELD(1)
 RowUpdate()
 
 
-MmID = "@VBS0548"
+MmID = "@VBS0764"
 TableNow ""
 
 
@@ -3691,7 +4742,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0549"
+MmID = "@VBS0765"
 TableNowMk "Control"
 
 
@@ -3702,10 +4753,10 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0550"
+MmID = "@VBS0766"
 RowPrepare 12
 
-MmID = "@VBS0551"
+MmID = "@VBS0767"
 oRec.StringData(1) = "ProgressDlg"
 oRec.StringData(2) = "ActionData"
 oRec.StringData(3) = "Text"
@@ -3729,7 +4780,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0552"
+MmID = "@VBS0768"
 TableNow ""
 
 
@@ -3740,7 +4791,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0553"
+MmID = "@VBS0769"
 TableNowMk "EventMapping"
 
 
@@ -3751,10 +4802,10 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0554"
+MmID = "@VBS0770"
 RowPrepare 4
 
-MmID = "@VBS0555"
+MmID = "@VBS0771"
 oRec.StringData(1) = "ProgressDlg"
 oRec.StringData(2) = "ActionData"
 oRec.StringData(3) = "ActionData"
@@ -3770,7 +4821,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0556"
+MmID = "@VBS0772"
 TableNow ""
 
 
@@ -3781,7 +4832,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0557"
+MmID = "@VBS0773"
 TableNowMk "Control"
 
 
@@ -3792,7 +4843,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0558"
+MmID = "@VBS0774"
 RowsPrepare "`Dialog_` = 'ProgressDlg' AND `Control` = 'ActionText'"
 RecCnt = 0
 do
@@ -3800,7 +4851,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0559"
+MmID = "@VBS0775"
 oRec.IntegerData(8) = oRec.IntegerData(8) or msidbControlAttributesNoPrefix
 ValidateFETCH(1)
 RowsREPLACE()
@@ -3816,7 +4867,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0560"
+MmID = "@VBS0776"
 TableNow ""
 
 
@@ -3827,7 +4878,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0561"
+MmID = "@VBS0777"
 TableNowMk "Control"
 
 
@@ -3838,7 +4889,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0562"
+MmID = "@VBS0778"
 RowsPrepare "Dialog_ = 'ProgressDlg' AND Control = 'Title'"
 RecCnt = 0
 do
@@ -3846,7 +4897,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0563"
+MmID = "@VBS0779"
 oRec.IntegerData(6) = 300
 oRec.IntegerData(7) = 30
 ValidateFETCH(1)
@@ -3863,7 +4914,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0564"
+MmID = "@VBS0780"
 TableNow ""
 
 
@@ -3874,7 +4925,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0565"
+MmID = "@VBS0781"
 TableNowMk "Control"
 
 
@@ -3885,7 +4936,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0566"
+MmID = "@VBS0782"
 RowsPrepare "Dialog_ = 'ProgressDlg' AND Control = 'ProgressBar'"
 RecCnt = 0
 do
@@ -3893,7 +4944,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0567"
+MmID = "@VBS0783"
 oRec.IntegerData(8) = 1
 ValidateFETCH(1)
 RowsREPLACE()
@@ -3909,7 +4960,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0568"
+MmID = "@VBS0784"
 TableNow ""
 
 
@@ -3920,7 +4971,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0569"
+MmID = "@VBS0785"
 TableNowMk "Control"
 
 
@@ -3931,7 +4982,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0570"
+MmID = "@VBS0786"
 RowsPrepare "`Dialog_` = 'ProgressDlg' AND `Control` = 'StatusLabel'"
 RecCnt = 0
 do
@@ -3939,7 +4990,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0571"
+MmID = "@VBS0787"
 oRec.IntegerData(6) = 30
 ValidateFETCH(1)
 RowsREPLACE()
@@ -3955,7 +5006,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0572"
+MmID = "@VBS0788"
 RowsPrepare "`Dialog_` = 'ProgressDlg' AND `Control` = 'ActionText'"
 RecCnt = 0
 do
@@ -3963,7 +5014,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0573"
+MmID = "@VBS0789"
 oRec.IntegerData(4) = 65
 oRec.IntegerData(6) = 300
 ValidateFETCH(1)
@@ -3980,7 +5031,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0574"
+MmID = "@VBS0790"
 TableNow ""
 
 
@@ -3991,7 +5042,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0575"
+MmID = "@VBS0791"
 TableNowMk "Dialog"
 
 
@@ -4002,7 +5053,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0576"
+MmID = "@VBS0792"
 RowsPrepare "`Title` = '[ProductName] [Setup]'"
 RecCnt = 0
 do
@@ -4010,7 +5061,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0577"
+MmID = "@VBS0793"
 oRec.StringData(7) = "[ProductName] ([ProductVersion]) [Setup]"
 ValidateFETCH(1)
 RowsREPLACE()
@@ -4026,7 +5077,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0578"
+MmID = "@VBS0794"
 TableNow ""
 
 
@@ -4037,7 +5088,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0579"
+MmID = "@VBS0795"
 TableNowMk "RadioButton"
 
 
@@ -4048,13 +5099,13 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0580"
+MmID = "@VBS0796"
 RowsPrepare ""
 do
 set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 
-MmID = "@VBS0581"
+MmID = "@VBS0797"
 oRec.StringData(8) = replace(oRec.StringData(8), "icense", "icence")
 ValidateFETCH(1)
 RowsREPLACE()
@@ -4069,7 +5120,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0582"
+MmID = "@VBS0798"
 TableNow ""
 
 
@@ -4080,7 +5131,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0583"
+MmID = "@VBS0799"
 TableNowMk "Dialog"
 
 
@@ -4091,7 +5142,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0584"
+MmID = "@VBS0800"
 RowsPrepare "`Title` = 'Installer Information'"
 RecCnt = 0
 do
@@ -4099,7 +5150,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0585"
+MmID = "@VBS0801"
 oRec.StringData(7) = "[ProductName] ([ProductVersion]) - Installer Information"
 ValidateFETCH(1)
 RowsREPLACE()
@@ -4115,7 +5166,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0586"
+MmID = "@VBS0802"
 TableNow ""
 
 
@@ -4126,7 +5177,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0587"
+MmID = "@VBS0803"
 TableNowMk "Control"
 
 
@@ -4137,13 +5188,13 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0588"
+MmID = "@VBS0804"
 RowsPrepare "`Dialog_` = 'VerifyRepairDlg' and `Control` = 'Title'"
 do
 set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 
-MmID = "@VBS0589"
+MmID = "@VBS0805"
 oRec.StringData(10) = oRec.StringData(10) & " "
 ValidateFETCH(1)
 RowsREPLACE()
@@ -4158,13 +5209,13 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0590"
+MmID = "@VBS0806"
 RowsPrepare "`Dialog_` = 'VerifyRemoveDlg' and `Control` = 'Title'"
 do
 set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 
-MmID = "@VBS0591"
+MmID = "@VBS0807"
 oRec.StringData(10) = oRec.StringData(10) & " "
 ValidateFETCH(1)
 RowsREPLACE()
@@ -4179,7 +5230,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0592"
+MmID = "@VBS0808"
 TableNow ""
 
 
@@ -4190,7 +5241,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0593"
+MmID = "@VBS0809"
 TableNowMk "Dialog"
 
 
@@ -4201,7 +5252,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0594"
+MmID = "@VBS0810"
 RowsPrepare "`Dialog` = 'ErrorDlg'"
 RecCnt = 0
 do
@@ -4209,7 +5260,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0595"
+MmID = "@VBS0811"
 oRec.IntegerData(4) = oRec.IntegerData(4) + 150
 oRec.IntegerData(5) = oRec.IntegerData(5) + 80
 ValidateFETCH(1)
@@ -4226,7 +5277,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0596"
+MmID = "@VBS0812"
 TableNow ""
 
 
@@ -4237,7 +5288,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0597"
+MmID = "@VBS0813"
 TableNowMk "Control"
 
 
@@ -4248,7 +5299,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0598"
+MmID = "@VBS0814"
 RowsPrepare "`Dialog_` = 'ErrorDlg' and `Type`='PushButton'"
 RecCnt = 0
 do
@@ -4256,7 +5307,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0599"
+MmID = "@VBS0815"
 oRec.IntegerData(4) = oRec.IntegerData(4) + 75
 oRec.IntegerData(5) = oRec.IntegerData(5) + 80
 ValidateFETCH(1)
@@ -4276,7 +5327,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0600"
+MmID = "@VBS0816"
 RowsPrepare "`Dialog_` = 'ErrorDlg' and `Control`='ErrorText'"
 RecCnt = 0
 do
@@ -4284,7 +5335,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0601"
+MmID = "@VBS0817"
 oRec.StringData(3) = "Text"
 oRec.IntegerData(8) = oRec.IntegerData(8) or ErrorTextControlAttr
 oRec.IntegerData(6) = oRec.IntegerData(6) + 150
@@ -4303,7 +5354,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0602"
+MmID = "@VBS0818"
 TableNow ""
 
 
@@ -4314,7 +5365,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0603"
+MmID = "@VBS0819"
 TableNowMk "Control"
 
 
@@ -4325,7 +5376,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0604"
+MmID = "@VBS0820"
 RowsPrepare "`Dialog_` = 'WelcomeDlg' and `Control`='Description'"
 RecCnt = 0
 do
@@ -4333,7 +5384,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0605"
+MmID = "@VBS0821"
 oRec.IntegerData(7) = 165
 oRec.StringData(10) = "This will install ""[ProductName]"" (version [ProductVersion], dated  [_MAKEMSI_BuildTime]) onto your computer."& vbCRLF & vbCRLF & "Click ""Next"" to continue."
 ValidateFETCH(1)
@@ -4350,7 +5401,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0606"
+MmID = "@VBS0822"
 TableNow ""
 
 
@@ -4361,7 +5412,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0607"
+MmID = "@VBS0823"
 TableNowMk "InstallUISequence"
 
 
@@ -4372,7 +5423,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0608"
+MmID = "@VBS0824"
 RowsPrepare "`Action` = 'MaintenanceWelcomeDlg'"
 RecCnt = 0
 do
@@ -4380,7 +5431,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0609"
+MmID = "@VBS0825"
 oRec.StringData(1) = "MaintenanceTypeDlg"
 ValidateFETCH(1)
 RowsREPLACE()
@@ -4396,7 +5447,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0610"
+MmID = "@VBS0826"
 TableNow ""
 
 
@@ -4407,7 +5458,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0611"
+MmID = "@VBS0827"
 TableNowMk "Control"
 
 
@@ -4418,7 +5469,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0612"
+MmID = "@VBS0828"
 RowsPrepare "`Dialog_` = 'MaintenanceTypeDlg' and `Control`='Back'"
 RecCnt = 0
 do
@@ -4426,7 +5477,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0613"
+MmID = "@VBS0829"
 oRec.IntegerData(8) = oRec.IntegerData(8) and not (msidbControlAttributesVisible or msidbControlAttributesEnabled)
 ValidateFETCH(1)
 RowsREPLACE()
@@ -4442,7 +5493,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0614"
+MmID = "@VBS0830"
 TableNow ""
 
 
@@ -4453,7 +5504,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0615"
+MmID = "@VBS0831"
 TableNowMk "Control"
 
 
@@ -4464,15 +5515,15 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0616"
+MmID = "@VBS0832"
 DeleteTableRows("Dialog_ = 'AdminRegistrationDlg' AND Control = 'CDKeyLabel'")
  
 
-MmID = "@VBS0617"
+MmID = "@VBS0833"
 DeleteTableRows("Dialog_ = 'AdminRegistrationDlg' AND Control = 'CDKeyEdit'")
  
 
-MmID = "@VBS0618"
+MmID = "@VBS0834"
 RowsPrepare "Dialog_ = 'AdminRegistrationDlg' AND Control = 'OrganizationEdit'"
 RecCnt = 0
 do
@@ -4480,7 +5531,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0619"
+MmID = "@VBS0835"
 oRec.StringData(11) = "Back"
 ValidateFETCH(1)
 RowsREPLACE()
@@ -4496,7 +5547,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0620"
+MmID = "@VBS0836"
 TableNow ""
 
 
@@ -4507,7 +5558,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0621"
+MmID = "@VBS0837"
 TableNowMk "ControlEvent"
 
 
@@ -4518,7 +5569,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0622"
+MmID = "@VBS0838"
 RowsPrepare "Dialog_ = 'AdminWelcomeDlg' AND Control_ = 'Next' AND Event = 'NewDialog' AND Argument = 'AdminRegistrationDlg' AND Condition = '1'"
 RecCnt = 0
 do
@@ -4526,7 +5577,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0623"
+MmID = "@VBS0839"
 oRec.StringData(4) = "AdminInstallPointDlg"
 ValidateFETCH(1)
 RowsREPLACE()
@@ -4542,7 +5593,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0624"
+MmID = "@VBS0840"
 RowsPrepare "Dialog_ = 'AdminInstallPointDlg' AND Control_ = 'Back' AND Event = 'NewDialog' AND Argument = 'AdminRegistrationDlg' AND Condition = '1'"
 RecCnt = 0
 do
@@ -4550,7 +5601,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0625"
+MmID = "@VBS0841"
 oRec.StringData(4) = "AdminWelcomeDlg"
 ValidateFETCH(1)
 RowsREPLACE()
@@ -4566,7 +5617,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0626"
+MmID = "@VBS0842"
 TableNow ""
 
 
@@ -4577,7 +5628,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0627"
+MmID = "@VBS0843"
 TableNowMk "Control"
 
 
@@ -4588,7 +5639,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0628"
+MmID = "@VBS0844"
 RowsPrepare "`Control`='BottomLine' and `Type`='Line' and (`Dialog_` <> 'AdminWelcomeDlg') and (`Dialog_` <> 'ExitDialog') and (`Dialog_` <> 'FatalError') and (`Dialog_` <> 'MaintenanceWelcomeDlg') and (`Dialog_` <> 'PrepareDlg') and (`Dialog_` <> 'ResumeDlg') and (`Dialog_` <> 'UserExit') and (`Dialog_` <> 'WelcomeDlg')"
 RecCnt = 0
 do
@@ -4596,7 +5647,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0629"
+MmID = "@VBS0845"
 oRec.IntegerData(4) = oRec.IntegerData(4) + 95 + 2
 oRec.IntegerData(6) = oRec.IntegerData(6) - 95 - 2
 ValidateFETCH(1)
@@ -4613,7 +5664,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0630"
+MmID = "@VBS0846"
 TableNow ""
 
 
@@ -4624,7 +5675,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0631"
+MmID = "@VBS0847"
 TableNowMk "TextStyle"
 
 
@@ -4635,10 +5686,10 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0632"
+MmID = "@VBS0848"
 RowPrepare 5
 
-MmID = "@VBS0633"
+MmID = "@VBS0849"
 oRec.StringData(1) = "BrandingLR"
 oRec.StringData(2) = "Tahoma"
 oRec.IntegerData(3) = 8
@@ -4655,10 +5706,10 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0634"
+MmID = "@VBS0850"
 RowPrepare 5
 
-MmID = "@VBS0635"
+MmID = "@VBS0851"
 oRec.StringData(1) = "BrandingUL"
 oRec.StringData(2) = "Tahoma"
 oRec.IntegerData(3) = 8
@@ -4675,7 +5726,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0636"
+MmID = "@VBS0852"
 TableNow ""
 
 
@@ -4686,7 +5737,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0637"
+MmID = "@VBS0853"
 TableNowMk "Control"
 
 
@@ -4697,7 +5748,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0638"
+MmID = "@VBS0854"
 RowsPrepare "`Control`='BottomLine' and `Type`='Line' and (`Dialog_` <> 'AdminWelcomeDlg') and (`Dialog_` <> 'ExitDialog') and (`Dialog_` <> 'FatalError') and (`Dialog_` <> 'MaintenanceWelcomeDlg') and (`Dialog_` <> 'PrepareDlg') and (`Dialog_` <> 'ResumeDlg') and (`Dialog_` <> 'UserExit') and (`Dialog_` <> 'WelcomeDlg')"
 RecCnt = 0
 do
@@ -4705,7 +5756,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0639"
+MmID = "@VBS0855"
 oRec.StringData(2) = "BrandingLR"
 oRec.StringData(3) = "Text"
 oRec.IntegerData(4) = 2 + 1
@@ -4730,7 +5781,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0640"
+MmID = "@VBS0856"
 RowsPrepare "`Control`='BottomLine' and `Type`='Line' and (`Dialog_` <> 'AdminWelcomeDlg') and (`Dialog_` <> 'ExitDialog') and (`Dialog_` <> 'FatalError') and (`Dialog_` <> 'MaintenanceWelcomeDlg') and (`Dialog_` <> 'PrepareDlg') and (`Dialog_` <> 'ResumeDlg') and (`Dialog_` <> 'UserExit') and (`Dialog_` <> 'WelcomeDlg')"
 RecCnt = 0
 do
@@ -4738,7 +5789,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0641"
+MmID = "@VBS0857"
 oRec.StringData(2) = "BrandingUL"
 oRec.StringData(3) = "Text"
 oRec.StringData(9) = ""
@@ -4764,7 +5815,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0642"
+MmID = "@VBS0858"
 TableNow ""
 
 
@@ -4775,7 +5826,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0643"
+MmID = "@VBS0859"
 TableNowMk "Control"
 
 
@@ -4786,7 +5837,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0644"
+MmID = "@VBS0860"
 RowsPrepare "Dialog_ = 'CustomizeDlg' AND Control = 'Description'"
 RecCnt = 0
 do
@@ -4794,7 +5845,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0645"
+MmID = "@VBS0861"
 oRec.IntegerData(4) = 15
 oRec.IntegerData(6) = 290
 ValidateFETCH(1)
@@ -4811,7 +5862,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0646"
+MmID = "@VBS0862"
 RowsPrepare "Dialog_ = 'CustomizeDlg' AND Control = 'Text'"
 RecCnt = 0
 do
@@ -4819,7 +5870,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0647"
+MmID = "@VBS0863"
 oRec.IntegerData(4) = 15
 oRec.IntegerData(6) = 330
 ValidateFETCH(1)
@@ -4836,7 +5887,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0648"
+MmID = "@VBS0864"
 RowsPrepare "Dialog_ = 'CustomizeDlg' AND Control = 'Tree'"
 RecCnt = 0
 do
@@ -4844,7 +5895,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0649"
+MmID = "@VBS0865"
 oRec.IntegerData(4) = 10
 oRec.IntegerData(5) = 77
 oRec.IntegerData(6) = 189
@@ -4863,7 +5914,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0650"
+MmID = "@VBS0866"
 RowsPrepare "Dialog_ = 'CustomizeDlg' AND Control = 'Box'"
 RecCnt = 0
 do
@@ -4871,7 +5922,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0651"
+MmID = "@VBS0867"
 oRec.IntegerData(4) = 207
 oRec.IntegerData(5) = 73
 oRec.IntegerData(6) = 153
@@ -4890,7 +5941,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0652"
+MmID = "@VBS0868"
 RowsPrepare "Dialog_ = 'CustomizeDlg' AND Control = 'LocationLabel'"
 RecCnt = 0
 do
@@ -4898,7 +5949,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0653"
+MmID = "@VBS0869"
 oRec.IntegerData(4) = 15
 oRec.IntegerData(5) = 203
 oRec.IntegerData(6) = 37
@@ -4917,7 +5968,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0654"
+MmID = "@VBS0870"
 RowsPrepare "Dialog_ = 'CustomizeDlg' AND Control = 'Location'"
 RecCnt = 0
 do
@@ -4925,7 +5976,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0655"
+MmID = "@VBS0871"
 oRec.IntegerData(4) = 55
 oRec.IntegerData(5) = 203
 oRec.IntegerData(6) = 243
@@ -4945,7 +5996,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0656"
+MmID = "@VBS0872"
 RowsPrepare "Dialog_ = 'CustomizeDlg' AND Control = 'Browse'"
 RecCnt = 0
 do
@@ -4953,7 +6004,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0657"
+MmID = "@VBS0873"
 oRec.IntegerData(5) = 208
 ValidateFETCH(1)
 RowsREPLACE()
@@ -4969,7 +6020,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0658"
+MmID = "@VBS0874"
 RowsPrepare "Dialog_ = 'CustomizeDlg' AND Control = 'ItemDescription'"
 RecCnt = 0
 do
@@ -4977,7 +6028,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0659"
+MmID = "@VBS0875"
 oRec.IntegerData(4) = 212
 oRec.IntegerData(5) = 79
 oRec.IntegerData(6) = 144
@@ -4996,7 +6047,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0660"
+MmID = "@VBS0876"
 RowsPrepare "Dialog_ = 'CustomizeDlg' AND Control = 'ItemSize'"
 RecCnt = 0
 do
@@ -5004,7 +6055,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0661"
+MmID = "@VBS0877"
 oRec.IntegerData(4) = 212
 oRec.IntegerData(5) = 147
 oRec.IntegerData(6) = 144
@@ -5023,7 +6074,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0662"
+MmID = "@VBS0878"
 TableNow ""
 
 
@@ -5034,7 +6085,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0663"
+MmID = "@VBS0879"
 TableNowMk "TextStyle"
 
 
@@ -5045,10 +6096,10 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0664"
+MmID = "@VBS0880"
 RowPrepare 5
 
-MmID = "@VBS0665"
+MmID = "@VBS0881"
 oRec.StringData(1) = "FeatureDirFont"
 oRec.StringData(2) = "Tahoma"
 oRec.IntegerData(3) = 8
@@ -5064,7 +6115,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0666"
+MmID = "@VBS0882"
 TableNow ""
 
 
@@ -5075,15 +6126,15 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0667"
+MmID = "@VBS0883"
 
-MmID = "@VBS0668"
+MmID = "@VBS0884"
 TableNowMk "Binary"
 
-MmID = "@VBS0669"
+MmID = "@VBS0885"
 RowPrepare 2
 
-MmID = "@VBS0670"
+MmID = "@VBS0886"
 oRec.SetStream 2, "C:\Programme\MakeMsi\MmCustomSetup.ico"
 oRec.StringData(1) = "custicon"
 
@@ -5091,7 +6142,7 @@ ValidateStreamKeyLength array(1)
 ValidateFIELD(1)
 RowUpdate()
 
-MmID = "@VBS0671"
+MmID = "@VBS0887"
 TableNow ""
 
 
@@ -5102,15 +6153,15 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0672"
+MmID = "@VBS0888"
 
-MmID = "@VBS0673"
+MmID = "@VBS0889"
 TableNowMk "Binary"
 
-MmID = "@VBS0674"
+MmID = "@VBS0890"
 RowPrepare 2
 
-MmID = "@VBS0675"
+MmID = "@VBS0891"
 oRec.SetStream 2, "C:\Programme\MakeMsi\white.bmp"
 oRec.StringData(1) = "bannrbmp"
 
@@ -5118,7 +6169,7 @@ ValidateStreamKeyLength array(1)
 ValidateFIELD(1)
 RowUpdate()
 
-MmID = "@VBS0676"
+MmID = "@VBS0892"
 TableNow ""
 
 
@@ -5129,15 +6180,15 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0677"
+MmID = "@VBS0893"
 
-MmID = "@VBS0678"
+MmID = "@VBS0894"
 TableNowMk "Binary"
 
-MmID = "@VBS0679"
+MmID = "@VBS0895"
 RowPrepare 2
 
-MmID = "@VBS0680"
+MmID = "@VBS0896"
 oRec.SetStream 2, "C:\Programme\MakeMsi\LeftSide.bmp"
 oRec.StringData(1) = "dlgbmp"
 
@@ -5145,7 +6196,7 @@ ValidateStreamKeyLength array(1)
 ValidateFIELD(1)
 RowUpdate()
 
-MmID = "@VBS0681"
+MmID = "@VBS0897"
 TableNow ""
 
 
@@ -5156,7 +6207,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0682"
+MmID = "@VBS0898"
 TableNowMk "Control"
 
 
@@ -5167,7 +6218,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0683"
+MmID = "@VBS0899"
 RowsPrepare "Dialog_ = 'AdminWelcomeDlg' AND Control = 'Description'"
 RecCnt = 0
 do
@@ -5175,7 +6226,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0684"
+MmID = "@VBS0900"
 oRec.IntegerData(5) = 85
 ValidateFETCH(1)
 RowsREPLACE()
@@ -5191,7 +6242,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0685"
+MmID = "@VBS0901"
 RowsPrepare "Dialog_ = 'ExitDialog' AND Control = 'Description'"
 RecCnt = 0
 do
@@ -5199,7 +6250,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0686"
+MmID = "@VBS0902"
 oRec.IntegerData(5) = 85
 ValidateFETCH(1)
 RowsREPLACE()
@@ -5215,7 +6266,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0687"
+MmID = "@VBS0903"
 RowsPrepare "Dialog_ = 'FatalError' AND Control = 'Description1'"
 RecCnt = 0
 do
@@ -5223,7 +6274,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0688"
+MmID = "@VBS0904"
 oRec.IntegerData(5) = 85
 ValidateFETCH(1)
 RowsREPLACE()
@@ -5239,7 +6290,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0689"
+MmID = "@VBS0905"
 RowsPrepare "Dialog_ = 'FatalError' AND Control = 'Description2'"
 RecCnt = 0
 do
@@ -5247,7 +6298,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0690"
+MmID = "@VBS0906"
 oRec.IntegerData(5) = 130
 ValidateFETCH(1)
 RowsREPLACE()
@@ -5263,7 +6314,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0691"
+MmID = "@VBS0907"
 RowsPrepare "Dialog_ = 'PrepareDlg' AND Control = 'Description'"
 RecCnt = 0
 do
@@ -5271,7 +6322,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0692"
+MmID = "@VBS0908"
 oRec.IntegerData(5) = 85
 ValidateFETCH(1)
 RowsREPLACE()
@@ -5287,7 +6338,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0693"
+MmID = "@VBS0909"
 RowsPrepare "Dialog_ = 'PrepareDlg' AND Control = 'ActionText'"
 RecCnt = 0
 do
@@ -5295,7 +6346,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0694"
+MmID = "@VBS0910"
 oRec.IntegerData(5) = 130
 oRec.StringData(10) = "Initialising... Please wait..."
 ValidateFETCH(1)
@@ -5312,7 +6363,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0695"
+MmID = "@VBS0911"
 RowsPrepare "Dialog_ = 'PrepareDlg' AND Control = 'ActionData'"
 RecCnt = 0
 do
@@ -5320,7 +6371,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0696"
+MmID = "@VBS0912"
 oRec.IntegerData(5) = 155
 ValidateFETCH(1)
 RowsREPLACE()
@@ -5336,7 +6387,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0697"
+MmID = "@VBS0913"
 RowsPrepare "Dialog_ = 'UserExit' AND Control = 'Description1'"
 RecCnt = 0
 do
@@ -5344,7 +6395,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0698"
+MmID = "@VBS0914"
 oRec.IntegerData(5) = 85
 ValidateFETCH(1)
 RowsREPLACE()
@@ -5360,7 +6411,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0699"
+MmID = "@VBS0915"
 RowsPrepare "Dialog_ = 'UserExit' AND Control = 'Description2'"
 RecCnt = 0
 do
@@ -5368,7 +6419,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0700"
+MmID = "@VBS0916"
 oRec.IntegerData(5) = 130
 ValidateFETCH(1)
 RowsREPLACE()
@@ -5384,7 +6435,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0701"
+MmID = "@VBS0917"
 RowsPrepare "Dialog_ = 'MaintenanceWelcomeDlg' AND Control = 'Description'"
 RecCnt = 0
 do
@@ -5392,7 +6443,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0702"
+MmID = "@VBS0918"
 oRec.IntegerData(5) = 85
 ValidateFETCH(1)
 RowsREPLACE()
@@ -5408,7 +6459,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0703"
+MmID = "@VBS0919"
 RowsPrepare "Dialog_ = 'ResumeDlg' AND Control = 'Description'"
 RecCnt = 0
 do
@@ -5416,7 +6467,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0704"
+MmID = "@VBS0920"
 oRec.IntegerData(5) = 85
 ValidateFETCH(1)
 RowsREPLACE()
@@ -5432,7 +6483,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0705"
+MmID = "@VBS0921"
 RowsPrepare "Dialog_ = 'WelcomeDlg' AND Control = 'Description'"
 RecCnt = 0
 do
@@ -5440,7 +6491,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0706"
+MmID = "@VBS0922"
 oRec.IntegerData(5) = 85
 ValidateFETCH(1)
 RowsREPLACE()
@@ -5456,7 +6507,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0707"
+MmID = "@VBS0923"
 TableNow ""
 
 
@@ -5467,11 +6518,11 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0708"
+MmID = "@VBS0924"
 TableNowMk "Dialog"
  
 
-MmID = "@VBS0709"
+MmID = "@VBS0925"
 RowsPrepare "`Dialog` = 'CancelDlg'"
 RecCnt = 0
 do
@@ -5479,7 +6530,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0710"
+MmID = "@VBS0926"
 oRec.IntegerData(2) = 60
 oRec.IntegerData(3) = 75
 ValidateFETCH(1)
@@ -5489,14 +6540,14 @@ SqlViewClose()
 if not RecCnt = 1 then Error("Found " & RecCnt & " record(s), we expected ""? = 1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Dialog` = 'CancelDlg'")
  
 
-MmID = "@VBS0711"
+MmID = "@VBS0927"
 TableNow ""
 
-MmID = "@VBS0712"
+MmID = "@VBS0928"
 TableNowMk "Dialog"
  
 
-MmID = "@VBS0713"
+MmID = "@VBS0929"
 RowsPrepare "`Dialog` = 'ErrorDlg'"
 RecCnt = 0
 do
@@ -5504,7 +6555,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0714"
+MmID = "@VBS0930"
 oRec.IntegerData(2) = 60
 oRec.IntegerData(3) = 75
 ValidateFETCH(1)
@@ -5514,14 +6565,14 @@ SqlViewClose()
 if not RecCnt = 1 then Error("Found " & RecCnt & " record(s), we expected ""? = 1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Dialog` = 'ErrorDlg'")
  
 
-MmID = "@VBS0715"
+MmID = "@VBS0931"
 TableNow ""
 
-MmID = "@VBS0716"
+MmID = "@VBS0932"
 TableNowMk "Dialog"
  
 
-MmID = "@VBS0717"
+MmID = "@VBS0933"
 RowsPrepare "`Dialog` = 'WaitForCostingDlg'"
 RecCnt = 0
 do
@@ -5529,7 +6580,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0718"
+MmID = "@VBS0934"
 oRec.IntegerData(2) = 60
 oRec.IntegerData(3) = 75
 ValidateFETCH(1)
@@ -5539,7 +6590,7 @@ SqlViewClose()
 if not RecCnt = 1 then Error("Found " & RecCnt & " record(s), we expected ""? = 1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Dialog` = 'WaitForCostingDlg'")
  
 
-MmID = "@VBS0719"
+MmID = "@VBS0935"
 TableNow ""
 
 
@@ -5550,28 +6601,28 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0720"
+MmID = "@VBS0936"
 cb_PropValue = "0"
 
-MmID = "@VBS0721"
+MmID = "@VBS0937"
 TableNowMk "Property"
    if cb_PropValue = "" then
 
-MmID = "@VBS0722"
+MmID = "@VBS0938"
 DeleteTableRows("`Property` = 'MM_REDUCED_UI'")
    else
 
-MmID = "@VBS0723"
+MmID = "@VBS0939"
 RowPrepare 2
 
-MmID = "@VBS0724"
+MmID = "@VBS0940"
 oRec.StringData(1) = "MM_REDUCED_UI"
 oRec.StringData(2) = cb_PropValue
 ValidateFIELD(1)
 RowUpdate()
    end if
 
-MmID = "@VBS0725"
+MmID = "@VBS0941"
 TableNow ""
 
 
@@ -5582,7 +6633,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0726"
+MmID = "@VBS0942"
 TableNowMk "InstallUISequence"
 
 
@@ -5593,7 +6644,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0727"
+MmID = "@VBS0943"
 RowsPrepare "Action = 'ExitDialog'"
 RecCnt = 0
 do
@@ -5601,7 +6652,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0728"
+MmID = "@VBS0944"
 oRec.StringData(2) = "Installed or (MM_REDUCED_UI = 0)"
 ValidateFETCH(1)
 RowsREPLACE()
@@ -5617,7 +6668,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0729"
+MmID = "@VBS0945"
 RowsPrepare "Action = 'WelcomeDlg'"
 RecCnt = 0
 do
@@ -5625,7 +6676,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0730"
+MmID = "@VBS0946"
 oRec.StringData(2) = "NOT Installed and (MM_REDUCED_UI = 0)"
 ValidateFETCH(1)
 RowsREPLACE()
@@ -5641,7 +6692,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0731"
+MmID = "@VBS0947"
 TableNow ""
 
 
@@ -5652,7 +6703,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0732"
+MmID = "@VBS0948"
 TableNowMk "Property"
 
 
@@ -5663,7 +6714,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0733"
+MmID = "@VBS0949"
 DeleteTableRows("`Property` = 'ComponentDownload'")
 
 
@@ -5674,7 +6725,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0734"
+MmID = "@VBS0950"
 TableNow ""
 
 
@@ -5685,7 +6736,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0735"
+MmID = "@VBS0951"
 TableNowMk "ControlEvent"
 
 
@@ -5696,7 +6747,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0736"
+MmID = "@VBS0952"
 RowsPrepare "Dialog_ = 'CancelDlg' AND Control_ = 'Yes' AND Event = 'EndDialog' AND Argument = 'Exit' AND Condition = '1'"
 RecCnt = 0
 do
@@ -5704,7 +6755,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0737"
+MmID = "@VBS0953"
 oRec.IntegerData(6) = 2
 ValidateFETCH(1)
 RowsREPLACE()
@@ -5720,10 +6771,10 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0738"
+MmID = "@VBS0954"
 RowPrepare 6
 
-MmID = "@VBS0739"
+MmID = "@VBS0955"
 oRec.StringData(1) = "CancelDlg"
 oRec.StringData(2) = "Yes"
 oRec.StringData(3) = "[UserPressedYesOnCancelDlg]"
@@ -5741,7 +6792,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0740"
+MmID = "@VBS0956"
 TableNow ""
 
 
@@ -5752,7 +6803,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0741"
+MmID = "@VBS0957"
 TableNowMk "InstallUISequence"
 
 
@@ -5763,7 +6814,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0742"
+MmID = "@VBS0958"
 RowsPrepare "Action = 'UserExit'"
 RecCnt = 0
 do
@@ -5771,7 +6822,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0743"
+MmID = "@VBS0959"
 oRec.StringData(2) = "not UserPressedYesOnCancelDlg"
 ValidateFETCH(1)
 RowsREPLACE()
@@ -5787,7 +6838,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0744"
+MmID = "@VBS0960"
 TableNow ""
 
 
@@ -5798,7 +6849,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0745"
+MmID = "@VBS0961"
 TableNowMk "Control"
 
 
@@ -5809,7 +6860,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0746"
+MmID = "@VBS0962"
 RowsPrepare "`Dialog_` = 'FatalError' AND `Control` = 'Title'"
 RecCnt = 0
 do
@@ -5817,7 +6868,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0747"
+MmID = "@VBS0963"
 oRec.StringData(10) = "{\VerdanaBold13Red}[ProductName] [Wizard] ended prematurely"
 ValidateFETCH(1)
 RowsREPLACE()
@@ -5833,7 +6884,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0748"
+MmID = "@VBS0964"
 TableNow ""
 
 
@@ -5844,7 +6895,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0749"
+MmID = "@VBS0965"
 TableNowMk "TextStyle"
 
 
@@ -5855,10 +6906,10 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0750"
+MmID = "@VBS0966"
 RowPrepare 5
 
-MmID = "@VBS0751"
+MmID = "@VBS0967"
 oRec.StringData(1) = "VerdanaBold13Red"
 oRec.StringData(2) = "Verdana"
 oRec.IntegerData(3) = 13
@@ -5875,7 +6926,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0752"
+MmID = "@VBS0968"
 TableNow ""
 
 
@@ -5886,7 +6937,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0753"
+MmID = "@VBS0969"
 TableNowMk "Control"
 
 
@@ -5897,7 +6948,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0754"
+MmID = "@VBS0970"
 RowsPrepare "Dialog_ = 'VerifyReadyDlg' AND Control = 'Text'"
 RecCnt = 0
 do
@@ -5905,7 +6956,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0755"
+MmID = "@VBS0971"
 oRec.IntegerData(7) = 160
 ValidateFETCH(1)
 RowsREPLACE()
@@ -5921,7 +6972,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0756"
+MmID = "@VBS0972"
 TableNow ""
 
  
@@ -5934,106 +6985,106 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0757"
+MmID = "@VBS0973"
 
 
-MmID = "@VBS0758"
+MmID = "@VBS0974"
 cb_PropValue = "C:\Programme\MakeMsi\MakeMsi.MMH (v10.169, 21,924 bytes, dated Tue Nov 24 2009 at 5:41:56pm)"
 
-MmID = "@VBS0759"
+MmID = "@VBS0975"
 TableNowMk "Property"
    if cb_PropValue = "" then
 
-MmID = "@VBS0760"
+MmID = "@VBS0976"
 DeleteTableRows("`Property` = '_MAKEMSI_Header_MAKEMSI.MMH'")
    else
 
-MmID = "@VBS0761"
+MmID = "@VBS0977"
 RowPrepare 2
 
-MmID = "@VBS0762"
+MmID = "@VBS0978"
 oRec.StringData(1) = "_MAKEMSI_Header_MAKEMSI.MMH"
 oRec.StringData(2) = cb_PropValue
 ValidateFIELD(1)
 RowUpdate()
    end if
 
-MmID = "@VBS0763"
+MmID = "@VBS0979"
 TableNow ""
 
 
-MmID = "@VBS0764"
-cb_PropValue = "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\installscript.mm (2,598 bytes, dated Mon Jul 26 2010 at 6:53:37am)"
+MmID = "@VBS0980"
+cb_PropValue = "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\installscript.mm (2,582 bytes, dated Mon Jul 26 2010 at 8:17:02am)"
 
-MmID = "@VBS0765"
+MmID = "@VBS0981"
 TableNowMk "Property"
    if cb_PropValue = "" then
 
-MmID = "@VBS0766"
+MmID = "@VBS0982"
 DeleteTableRows("`Property` = '_MAKEMSI_Source_INSTALLSCRIPT.MM'")
    else
 
-MmID = "@VBS0767"
+MmID = "@VBS0983"
 RowPrepare 2
 
-MmID = "@VBS0768"
+MmID = "@VBS0984"
 oRec.StringData(1) = "_MAKEMSI_Source_INSTALLSCRIPT.MM"
 oRec.StringData(2) = cb_PropValue
 ValidateFIELD(1)
 RowUpdate()
    end if
 
-MmID = "@VBS0769"
+MmID = "@VBS0985"
 TableNow ""
 
 
-MmID = "@VBS0770"
+MmID = "@VBS0986"
 cb_PropValue = "C:\Programme\MakeMsi\COMPANY.MMH (v08.202, 53,874 bytes, dated Sun Mar 28 2010 at 5:21:00pm)"
 
-MmID = "@VBS0771"
+MmID = "@VBS0987"
 TableNowMk "Property"
    if cb_PropValue = "" then
 
-MmID = "@VBS0772"
+MmID = "@VBS0988"
 DeleteTableRows("`Property` = '_MAKEMSI_Header_COMPANY.MMH'")
    else
 
-MmID = "@VBS0773"
+MmID = "@VBS0989"
 RowPrepare 2
 
-MmID = "@VBS0774"
+MmID = "@VBS0990"
 oRec.StringData(1) = "_MAKEMSI_Header_COMPANY.MMH"
 oRec.StringData(2) = cb_PropValue
 ValidateFIELD(1)
 RowUpdate()
    end if
 
-MmID = "@VBS0775"
+MmID = "@VBS0991"
 TableNow ""
 
 
-MmID = "@VBS0776"
+MmID = "@VBS0992"
 cb_PropValue = "C:\Programme\MakeMsi\DEPT.MMH (v03.171, 4,275 bytes, dated Sat May 7 2005 at 9:10:04am)"
 
-MmID = "@VBS0777"
+MmID = "@VBS0993"
 TableNowMk "Property"
    if cb_PropValue = "" then
 
-MmID = "@VBS0778"
+MmID = "@VBS0994"
 DeleteTableRows("`Property` = '_MAKEMSI_Header_DEPT.MMH'")
    else
 
-MmID = "@VBS0779"
+MmID = "@VBS0995"
 RowPrepare 2
 
-MmID = "@VBS0780"
+MmID = "@VBS0996"
 oRec.StringData(1) = "_MAKEMSI_Header_DEPT.MMH"
 oRec.StringData(2) = cb_PropValue
 ValidateFIELD(1)
 RowUpdate()
    end if
 
-MmID = "@VBS0781"
+MmID = "@VBS0997"
 TableNow ""
 
 
@@ -6042,11 +7093,11 @@ TableNow ""
 
 
 
-MmID = "@VBS0782"
+MmID = "@VBS0998"
 TableNowMk "Component"
 
 
-MmID = "@VBS0783"
+MmID = "@VBS0999"
 RowsPrepare ""
 do
 set oRec = SqlViewFetch()
@@ -6054,7 +7105,7 @@ if oRec is Nothing then exit DO
 
 '--- START of USER Code ---
 
-MmID = "@VBS0784"
+MmID = "@VBS1000"
 on error resume next
 
 
@@ -6063,25 +7114,25 @@ dim CName : CName = oRec.StringData(1)
 dim CGuid : CGuid = oRec.StringData(2)
 VbsReturnMacro "CompGuid." & CName, CGuid
 
-MmID = "@VBS0785"
+MmID = "@VBS1001"
 
 
 
-MmID = "@VBS0786"
+MmID = "@VBS1002"
 VbsCheck "/VBS Command detected failure!" & vbCRLF & vbCRLF & "VBS command: installscript.mm(54) - Processing ROW command's query results"
 on error goto 0
 
-MmID = "@VBS0787"
+MmID = "@VBS1003"
 
 loop
 SqlViewClose()
 
 
-MmID = "@VBS0788"
+MmID = "@VBS1004"
 TableNow ""
 
 
-MmID = "@VBS0789"
+MmID = "@VBS1005"
 
 
 
@@ -6202,7 +7253,7 @@ end function
 '=========================================================================
 sub Need83NameStart()
 '=========================================================================
-Need83BaseDir = TmpDir & "\MM83-26565"
+Need83BaseDir = TmpDir & "\MM83-31666"
 if  not ofs.FolderExists(Need83BaseDir) Then
 set oNeed83BaseDir = oFS.CreateFolder(Need83BaseDir)
 end if
@@ -6377,14 +7428,14 @@ on error goto 0
 if   AddtoHashTableYn = "Y" then
 if   CurrentFileVersion = "" then
 
-MmID = "@VBS0790"
+MmID = "@VBS1006"
 TableNowMk "MsiFileHash"
 
 
-MmID = "@VBS0791"
+MmID = "@VBS1007"
 RowPrepare 6
 
-MmID = "@VBS0792"
+MmID = "@VBS1008"
 oRec.StringData(1) = CurrentFileKey
 oRec.IntegerData(2) = 0
 oRec.IntegerData(3) = oHash.IntegerData(1)
@@ -6395,7 +7446,7 @@ ValidateFIELD(1)
 RowUpdate()
 
 
-MmID = "@VBS0793"
+MmID = "@VBS1009"
 TableNow ""
 
 end if
@@ -7122,7 +8173,7 @@ MmLT = "Processing Merge Modules"
 '######################################################################
 
 
-MmID = "@VBS0794"
+MmID = "@VBS1010"
 
 say ""
 Say "No merge modules to be merged"
@@ -7424,13 +8475,13 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0795"
+MmID = "@VBS1011"
 
-MmID = "@VBS0796"
+MmID = "@VBS1012"
 TableNowMk "_MAKEMSI_FileSource"
 TableDelete("")
 
-MmID = "@VBS0797"
+MmID = "@VBS1013"
 TableNow ""
 
 
@@ -7470,28 +8521,28 @@ oInstaller.UILevel = msiUILevelNone
 
 
 
-MmID = "@VBS0798"
+MmID = "@VBS1014"
 cb_PropValue = "UCS AD Connector version 1.0.0 - [1]"
 
-MmID = "@VBS0799"
+MmID = "@VBS1015"
 TableNowMk "Property"
    if cb_PropValue = "" then
 
-MmID = "@VBS0800"
+MmID = "@VBS1016"
 DeleteTableRows("`Property` = 'DiskPrompt'")
    else
 
-MmID = "@VBS0801"
+MmID = "@VBS1017"
 RowPrepare 2
 
-MmID = "@VBS0802"
+MmID = "@VBS1018"
 oRec.StringData(1) = "DiskPrompt"
 oRec.StringData(2) = cb_PropValue
 ValidateFIELD(1)
 RowUpdate()
    end if
 
-MmID = "@VBS0803"
+MmID = "@VBS1019"
 TableNow ""
 
 pc_Say "@Opening the ""File"" table"
@@ -7932,18 +8983,18 @@ end if
 CabKey = oFS.GetFileName(ThisCabFile)
 MediaCabinet = "#_MAKEMSI_Cabs." & CabKey
 
-MmID = "@VBS0804"
+MmID = "@VBS1020"
 TableNowMk "_MAKEMSI_Cabs"
 
 
-MmID = "@VBS0805"
+MmID = "@VBS1021"
 TableNowMk "_Validation"
  
 
-MmID = "@VBS0806"
+MmID = "@VBS1022"
 RowPrepare 10
 
-MmID = "@VBS0807"
+MmID = "@VBS1023"
 oRec.StringData(1) = "_MAKEMSI_Cabs"
 oRec.StringData(2) = "Name"
 oRec.StringData(3) = "N"
@@ -7953,10 +9004,10 @@ ValidateFIELD(1)
 RowUpdate()
  
 
-MmID = "@VBS0808"
+MmID = "@VBS1024"
 RowPrepare 10
 
-MmID = "@VBS0809"
+MmID = "@VBS1025"
 oRec.StringData(1) = "_MAKEMSI_Cabs"
 oRec.StringData(2) = "Data"
 oRec.StringData(3) = "N"
@@ -7966,14 +9017,14 @@ ValidateFIELD(1)
 RowUpdate()
  
 
-MmID = "@VBS0810"
+MmID = "@VBS1026"
 TableNow "_MAKEMSI_Cabs"
 
 
-MmID = "@VBS0811"
+MmID = "@VBS1027"
 RowPrepare 2
 
-MmID = "@VBS0812"
+MmID = "@VBS1028"
 oRec.StringData(1) = CabKey
 oRec.SetStream 2, ThisCabFile
 
@@ -7983,7 +9034,7 @@ RowUpdate()
 
 VbsCheck "Failed imbedding the cab file """ & ThisCabFile & """ into the MSI!"
 
-MmID = "@VBS0813"
+MmID = "@VBS1029"
 TableNow ""
 
 dim DiskPrompt : DiskPrompt = "Disk #{#}"
@@ -7998,14 +9049,14 @@ error "We generated a volume label of """ & VolumeLabel & """ which is too long,
 end if
 pc_Say "@Update the ""Media"" table"
 
-MmID = "@VBS0814"
+MmID = "@VBS1030"
 TableNowMk "Media"
 
 
-MmID = "@VBS0815"
+MmID = "@VBS1031"
 RowPrepare 6
 
-MmID = "@VBS0816"
+MmID = "@VBS1032"
 oRec.IntegerData(1) = NextDiskId
 oRec.IntegerData(2) = MaxSeq
 oRec.StringData(3) = DiskPrompt
@@ -8016,19 +9067,19 @@ RowUpdate()
  VbsCheck "Failed updating the media table!"
 NextDiskId = NextDiskId + 1
 
-MmID = "@VBS0817"
+MmID = "@VBS1033"
 TableNow ""
 
 next
 pc_say "@Deleting the file source information table"
 
-MmID = "@VBS0818"
+MmID = "@VBS1034"
 
-MmID = "@VBS0819"
+MmID = "@VBS1035"
 TableNowMk "_MAKEMSI_FileSource"
 TableDelete("")
 
-MmID = "@VBS0820"
+MmID = "@VBS1036"
 TableNow ""
 
 
@@ -8039,15 +9090,15 @@ next
 end if
 Say "Marking MSI updates as complete..." 
 
-MmID = "@VBS0821"
+MmID = "@VBS1037"
 TableNowMk "LaunchCondition"
  
 
-MmID = "@VBS0822"
+MmID = "@VBS1038"
 DeleteTableRows("`Condition` = 'NoSuchProperty.so.always.false'")
  dim s_RowCnt : s_RowCnt = 0 
 
-MmID = "@VBS0823"
+MmID = "@VBS1039"
 RowsPrepare ""
 do
 set oRec = SqlViewFetch()
@@ -8055,32 +9106,32 @@ if oRec is Nothing then exit DO
 
 '--- START of USER Code ---
 
-MmID = "@VBS0824"
+MmID = "@VBS1040"
 on error resume next
 
 
  s_RowCnt = s_RowCnt + 1 
 
-MmID = "@VBS0825"
+MmID = "@VBS1041"
 
 
 
-MmID = "@VBS0826"
+MmID = "@VBS1042"
 VbsCheck "/VBS Command detected failure!" & vbCRLF & vbCRLF & "VBS command: installscript.mm(54) - Processing ROW command's query results"
 on error goto 0
 
-MmID = "@VBS0827"
+MmID = "@VBS1043"
 
 ValidateFETCH(1)
 loop
 SqlViewClose()
  if  s_RowCnt = 0 then 
 
-MmID = "@VBS0828"
+MmID = "@VBS1044"
 TableDelete("")
  end if 
 
-MmID = "@VBS0829"
+MmID = "@VBS1045"
 TableNow ""
 
 pc_Say GetAmPmTime() & ": Finished compile. Took " & Elapsed() & " seconds."
@@ -8216,11 +9267,11 @@ function NumberOfFilesNeedingCompile()
 NumberOfFilesNeedingCompile = clng(0)
 if  TableExists("_MAKEMSI_FileSource") then
 
-MmID = "@VBS0830"
+MmID = "@VBS1046"
 TableNowMk "_MAKEMSI_FileSource"
 
 
-MmID = "@VBS0831"
+MmID = "@VBS1047"
 RowsPrepare ""
 do
 set oRec = SqlViewFetch()
@@ -8228,28 +9279,28 @@ if oRec is Nothing then exit DO
 
 '--- START of USER Code ---
 
-MmID = "@VBS0832"
+MmID = "@VBS1048"
 on error resume next
 
 
 
 NumberOfFilesNeedingCompile = NumberOfFilesNeedingCompile + 1
 
-MmID = "@VBS0833"
+MmID = "@VBS1049"
 
 
 
-MmID = "@VBS0834"
+MmID = "@VBS1050"
 VbsCheck "/VBS Command detected failure!" & vbCRLF & vbCRLF & "VBS command: installscript.mm(54) - Processing ROW command's query results"
 on error goto 0
 
-MmID = "@VBS0835"
+MmID = "@VBS1051"
 
 loop
 SqlViewClose()
 
 
-MmID = "@VBS0836"
+MmID = "@VBS1052"
 TableNow ""
 
 end if
@@ -8263,11 +9314,11 @@ function GetNextFileSequence()        'First entry is one
 GetNextFileSequence = 0
 if  TableExists("File") then
 
-MmID = "@VBS0837"
+MmID = "@VBS1053"
 TableNowMk "File"
 
 
-MmID = "@VBS0838"
+MmID = "@VBS1054"
 RowsPrepare ""
 do
 set oRec = SqlViewFetch()
@@ -8275,7 +9326,7 @@ if oRec is Nothing then exit DO
 
 '--- START of USER Code ---
 
-MmID = "@VBS0839"
+MmID = "@VBS1055"
 on error resume next
 
 
@@ -8284,21 +9335,21 @@ if   oRec.IntegerData(8) > GetNextFileSequence then
 GetNextFileSequence = oRec.IntegerData(8)
 end if
 
-MmID = "@VBS0840"
+MmID = "@VBS1056"
 
 
 
-MmID = "@VBS0841"
+MmID = "@VBS1057"
 VbsCheck "/VBS Command detected failure!" & vbCRLF & vbCRLF & "VBS command: installscript.mm(54) - Processing ROW command's query results"
 on error goto 0
 
-MmID = "@VBS0842"
+MmID = "@VBS1058"
 
 loop
 SqlViewClose()
 
 
-MmID = "@VBS0843"
+MmID = "@VBS1059"
 TableNow ""
 
 end if
@@ -8313,11 +9364,11 @@ function GetNextDiskId()        'First entry is one
 GetNextDiskId = 0
 if  TableExists("Media") then
 
-MmID = "@VBS0844"
+MmID = "@VBS1060"
 TableNowMk "Media"
 
 
-MmID = "@VBS0845"
+MmID = "@VBS1061"
 RowsPrepare ""
 do
 set oRec = SqlViewFetch()
@@ -8325,7 +9376,7 @@ if oRec is Nothing then exit DO
 
 '--- START of USER Code ---
 
-MmID = "@VBS0846"
+MmID = "@VBS1062"
 on error resume next
 
 
@@ -8334,21 +9385,21 @@ if   oRec.IntegerData(1) > GetNextDiskId then
 GetNextDiskId = oRec.IntegerData(1)
 end if
 
-MmID = "@VBS0847"
+MmID = "@VBS1063"
 
 
 
-MmID = "@VBS0848"
+MmID = "@VBS1064"
 VbsCheck "/VBS Command detected failure!" & vbCRLF & vbCRLF & "VBS command: installscript.mm(54) - Processing ROW command's query results"
 on error goto 0
 
-MmID = "@VBS0849"
+MmID = "@VBS1065"
 
 loop
 SqlViewClose()
 
 
-MmID = "@VBS0850"
+MmID = "@VBS1066"
 TableNow ""
 
 end if
@@ -9061,94 +10112,94 @@ MsiOpen "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\uc
 
 
 
-MmID = "@VBS0851"
+MmID = "@VBS1067"
 
-MmID = "@VBS0852"
+MmID = "@VBS1068"
  
 
-MmID = "@VBS0853"
+MmID = "@VBS1069"
 
-MmID = "@VBS0854"
+MmID = "@VBS1070"
 TableNowMk "Directory"
 
-MmID = "@VBS0855"
+MmID = "@VBS1071"
 RowPrepare 3
 
-MmID = "@VBS0856"
+MmID = "@VBS1072"
 oRec.StringData(1) = "ProgramFilesFolder"
 oRec.StringData(2) = "TARGETDIR"
 oRec.StringData(3) = ".:ProgFile|Program Files"
 ValidateFIELD(1)
 RowUpdate()
 
-MmID = "@VBS0857"
+MmID = "@VBS1073"
 TableNow ""
 
-MmID = "@VBS0858"
+MmID = "@VBS1074"
 TableNowMk "Directory"
  
 
-MmID = "@VBS0859"
+MmID = "@VBS1075"
 RowPrepare 3
 
-MmID = "@VBS0860"
+MmID = "@VBS1076"
 oRec.StringData(1) = "_PROGRAMFILESFOLDER_MAKEMSI_PACKAGE_DOCUMENTATION"
 oRec.StringData(2) = "ProgramFilesFolder"
 oRec.StringData(3) = MakeSfnLfn("ProgramFilesFolder", "MAKEMSI Package Documentation")
 ValidateFIELD(1)
 RowUpdate()
 
-MmID = "@VBS0861"
+MmID = "@VBS1077"
 TableNow ""
 
-MmID = "@VBS0862"
+MmID = "@VBS1078"
 
-MmID = "@VBS0863"
+MmID = "@VBS1079"
 TableNowMk "Directory"
  
 
-MmID = "@VBS0864"
+MmID = "@VBS1080"
 RowPrepare 3
 
-MmID = "@VBS0865"
+MmID = "@VBS1081"
 oRec.StringData(1) = "_PROGRAMFILESFOLDER_MAKEMSI_PACKAGE_DOCUMENTATION_MY_COMPANY"
 oRec.StringData(2) = "_PROGRAMFILESFOLDER_MAKEMSI_PACKAGE_DOCUMENTATION"
 oRec.StringData(3) = MakeSfnLfn("_PROGRAMFILESFOLDER_MAKEMSI_PACKAGE_DOCUMENTATION", "My Company")
 ValidateFIELD(1)
 RowUpdate()
 
-MmID = "@VBS0866"
+MmID = "@VBS1082"
 TableNow ""
 
-MmID = "@VBS0867"
+MmID = "@VBS1083"
 
-MmID = "@VBS0868"
+MmID = "@VBS1084"
 TableNowMk "Directory"
  
 
-MmID = "@VBS0869"
+MmID = "@VBS1085"
 RowPrepare 3
 
-MmID = "@VBS0870"
+MmID = "@VBS1086"
 oRec.StringData(1) = "MAKEMSI_DOCO"
 oRec.StringData(2) = "_PROGRAMFILESFOLDER_MAKEMSI_PACKAGE_DOCUMENTATION_MY_COMPANY"
 oRec.StringData(3) = MakeSfnLfn("_PROGRAMFILESFOLDER_MAKEMSI_PACKAGE_DOCUMENTATION_MY_COMPANY", "My Name")
 ValidateFIELD(1)
 RowUpdate()
 
-MmID = "@VBS0871"
+MmID = "@VBS1087"
 TableNow ""
  
 
-MmID = "@VBS0872"
+MmID = "@VBS1088"
 
-MmID = "@VBS0873"
+MmID = "@VBS1089"
 TableNowMk "Component"
 
-MmID = "@VBS0874"
+MmID = "@VBS1090"
 RowPrepare 6
 
-MmID = "@VBS0875"
+MmID = "@VBS1091"
 oRec.StringData(1) = "MAKEMSI_Documentation"
 oRec.StringData(2) = GuidMake("")
 oRec.StringData(3) = "MAKEMSI_DOCO"
@@ -9158,43 +10209,43 @@ oRec.StringData(6) = ""
 ValidateFIELD(1)
 RowUpdate()
 
-MmID = "@VBS0876"
+MmID = "@VBS1092"
 
 
-MmID = "@VBS0877"
+MmID = "@VBS1093"
 TableNowMk "FeatureComponents"
 
-MmID = "@VBS0878"
+MmID = "@VBS1094"
 RowPrepare 2
 
-MmID = "@VBS0879"
+MmID = "@VBS1095"
 oRec.StringData(1) = "ALL.1.0.0.UCS_AD_Connector"
 oRec.StringData(2) = "MAKEMSI_Documentation"
 ValidateNEW(0)
 RowUpdate()
 
-MmID = "@VBS0880"
+MmID = "@VBS1096"
 TableNow ""
 
  
 
-MmID = "@VBS0881"
+MmID = "@VBS1097"
 CurrentFile="Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\out\installscript.mm\MSI\setup.hta"
 CurrentFileKey="MAKEMSI_Documentation"
 CurrentFileNameSL="MSIRPT.HTA|setup.hta"
 CurrentFileVersion=""
 
-MmID = "@VBS0882"
+MmID = "@VBS1098"
 TableNowMk "File"
 
-MmID = "@VBS0883"
+MmID = "@VBS1099"
 RowPrepare 8
 
-MmID = "@VBS0884"
+MmID = "@VBS1100"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = "MAKEMSI_Documentation"
 oRec.StringData(3) = CurrentFileNameSL
-oRec.IntegerData(4) = 69432
+oRec.IntegerData(4) = 92718
 oRec.StringData(5) = CurrentFileVersion
 oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
 oRec.StringData(6) = "1033"
@@ -9202,30 +10253,30 @@ oRec.IntegerData(8) = 0
 ValidateNEW(2)
 RowUpdate()
 
-MmID = "@VBS0885"
+MmID = "@VBS1101"
 TableNow ""
 
-MmID = "@VBS0886"
+MmID = "@VBS1102"
 TableNowMk "_MAKEMSI_FileSource"
 
-MmID = "@VBS0887"
+MmID = "@VBS1103"
 RowPrepare 4
 
-MmID = "@VBS0888"
+MmID = "@VBS1104"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = CurrentFile
 oRec.StringData(3) = "2010-07-26"
-oRec.StringData(4) = "07:23:20"
+oRec.StringData(4) = "08:48:30"
 ValidateNEW(0)
 RowUpdate()
 
-MmID = "@VBS0889"
+MmID = "@VBS1105"
 TableNow ""
 
-MmID = "@VBS0890"
+MmID = "@VBS1106"
 TableNowMk "Component"
 
-MmID = "@VBS0891"
+MmID = "@VBS1107"
 RowsPrepare "`Component` = 'MAKEMSI_Documentation'"
 RecCnt = 0
 do
@@ -9233,7 +10284,7 @@ set oRec = SqlViewFetch()
 if oRec is Nothing then exit DO
 RecCnt = RecCnt + 1
 
-MmID = "@VBS0892"
+MmID = "@VBS1108"
 oRec.IntegerData(4) = (oRec.IntegerData(4) AND NOT msidbComponentAttributesRegistryKeyPath)
 oRec.StringData(6) = "MAKEMSI_Documentation"
 ValidateFETCH(1)
@@ -9242,20 +10293,20 @@ loop
 SqlViewClose()
 if not RecCnt =1 then Error("Found " & RecCnt & " record(s), we expected ""=1"".  The SQL WHERE clause was:" & vbCRLF & vbCRLF & "`Component` = 'MAKEMSI_Documentation'")
 
-MmID = "@VBS0893"
+MmID = "@VBS1109"
 TableNow ""
   
 
-MmID = "@VBS0894"
+MmID = "@VBS1110"
 
-MmID = "@VBS0895"
+MmID = "@VBS1111"
 TableNowMk "CustomAction"
  
 
-MmID = "@VBS0896"
+MmID = "@VBS1112"
 RowPrepare 5
 
-MmID = "@VBS0897"
+MmID = "@VBS1113"
 oRec.StringData(4) = "file:///[!MAKEMSI_Documentation]"
 oRec.IntegerData(2) = &H0033
 oRec.StringData(1) = "PropertyCa03_ARPREADME"
@@ -9263,7 +10314,7 @@ oRec.StringData(3) = "ARPREADME"
 ValidateFIELD(1)
 RowUpdate()
 
-MmID = "@VBS0898"
+MmID = "@VBS1114"
 TableNow ""
 SeqNo = GetSeqNumber("InstallExecuteSequence", "CostFinalize-", 1)
 
@@ -9275,20 +10326,20 @@ MmLT = "#{ SET ""SeqTable={ }<??cb_SeqTables>"""
 '######################################################################
 
 
-MmID = "@VBS0899"
+MmID = "@VBS1115"
 TableNowMk "InstallExecuteSequence"
 
-MmID = "@VBS0900"
+MmID = "@VBS1116"
 RowPrepare 3
 
-MmID = "@VBS0901"
+MmID = "@VBS1117"
 oRec.StringData(1) = "PropertyCa03_ARPREADME"
 oRec.StringData(2) = ""
 oRec.IntegerData(3) = SeqNo
 ValidateFIELD(1)
 RowUpdate()
 
-MmID = "@VBS0902"
+MmID = "@VBS1118"
 TableNow ""
 
 
@@ -9300,7 +10351,7 @@ MmLT = "#evaluate ^^ ^<$Rexx4UpdateMmLocation >^"
 '######################################################################
 
 
-MmID = "@VBS0903"
+MmID = "@VBS1119"
 
 
 
