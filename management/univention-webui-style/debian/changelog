@@ -1,3 +1,9 @@
+univention-webui-style (5.0.21-1) unstable; urgency=low
+
+  * add new style for list elements with smaller padding; Bug #18863
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 26 Jul 2010 16:29:32 +0200
+
 univention-webui-style (5.0.20-1) unstable; urgency=low
 
   * added css style for tab info text. Bug #19095
