@@ -2,6 +2,8 @@ univentionXModule="xorg/device/driver"
 
 univentionXResolution="xorg/resolution"
 
+univentionXResolutionSecondary="xorg/resolution/secondary"
+
 univentionXColorDepth="xorg/screen/DefaultDepth"
 
 univentionXHSync="xorg/monitor/HorizSync"
