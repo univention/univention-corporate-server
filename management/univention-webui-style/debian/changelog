@@ -1,3 +1,9 @@
+univention-webui-style (5.0.20-1) unstable; urgency=low
+
+  * added css style for tab info text. Bug #19095
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Jul 2010 12:01:28 +0200
+
 univention-webui-style (5.0.19-1) unstable; urgency=low
 
   * add style to vertically align normal and default buttons; Bug #18164

@@ -1351,6 +1351,14 @@ td.tab_layout{
 	vertical-align: top;
 }
 
+td.tab_layout_info{
+	width:340px;
+	padding-bottom: 18px;
+	vertical-align: top;
+	color: #C00000;
+	font-size: 15px;
+}
+
 table.multi{
 border-spacing:0px !important;
 border-collapse:collapse;

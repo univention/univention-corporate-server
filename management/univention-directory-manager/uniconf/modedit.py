@@ -4208,6 +4208,10 @@ class modedit(unimodule.unimodule):
 										]})\
 									]}))
 						cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [table("",{'type':'multi'},{"obs":minput_rows})]}))
+					elif property.syntax.name == 'info_text':
+							cols.append(tablecol('',{'type':'tab_layout_info'}, {'obs': [ \
+										text("",{},{'text':['%s'%property.short_description]})\
+ 									]}))
 					elif property.syntax.name == 'none':
 							cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [ ]}))
 
