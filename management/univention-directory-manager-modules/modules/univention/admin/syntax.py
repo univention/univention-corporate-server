@@ -178,6 +178,10 @@ class none(simple):
 	name="none"
 	pass
 
+class info_text(simple):
+	name="info_text"
+	pass
+
 class module:
 	type='module'
 	name='module'

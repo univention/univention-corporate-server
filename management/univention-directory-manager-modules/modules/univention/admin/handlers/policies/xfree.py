@@ -44,12 +44,14 @@ class xfreeFixedAttributes(univention.admin.syntax.select):
 	choices=[
 		('univentionXAutoDetect',_('Automatic detection')),
 		('univentionXResolution',_('Resolution')),
+		('univentionXResolutionSecondary',_('secondaryresolution')),
 		('univentionXColorDepth',_('Color depth')),
 		('univentionXMouseProtocol',_('Mouse protocol')),
 		('univentionXMouseDevice',_('Mouse device')),
 		('univentionXKeyboardDevice',_('Keyboard layout')),
 		('univentionXKeyboardVariant',_('Keyboard variant')),
-		('univentionXHsync',_('Horizontal sync')),
+		('univentionXKeyboardLayout', _('Keyboard layout')),
+		('univentionXHSync',_('Horizontal sync')),
 		('univentionXVRefresh',_('Vertical refresh')),
 		('univentionXModule',_('Graphics adapter driver')),
 		('univentionXDisplaySize',_('Display size')),
@@ -87,7 +89,19 @@ property_descriptions={
 			identifies=1,
 		),
 	'resolution': univention.admin.property(
-			short_description=_('Resolution'),
+			short_description=_('Resolution of primary display'),
+			long_description='',
+			syntax=univention.admin.syntax.XResolution,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0,
+			configObjectPosition='cn=xconfig choices,cn=univention',
+			configAttributeName='univentionXResolutionChoices'
+		),
+	'secondaryresolution': univention.admin.property(
+			short_description=_('Resolution of secondary disaplay'),
 			long_description='',
 			syntax=univention.admin.syntax.XResolution,
 			multivalue=0,
@@ -280,7 +294,7 @@ property_descriptions={
 			default=('', [])
 		),
 	'displayposition': univention.admin.property(
-			short_description=_('Display position'),
+			short_description=_('Position of secondary disaplay'),
 			long_description='',
 			syntax=univention.admin.syntax.XDisplayPosition,
 			multivalue=0,
@@ -291,7 +305,7 @@ property_descriptions={
 			default=('1', [])
 		),
 	'primarydisplay': univention.admin.property(
-			short_description=_('Primary display'),
+			short_description=_('Name of primary display'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -302,7 +316,7 @@ property_descriptions={
 			default=('', [])
 		),
 	'secondarydisplay': univention.admin.property(
-			short_description=_('Secondary display'),
+			short_description=_('Name of secondary display'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -340,22 +354,55 @@ property_descriptions={
 			may_change=1,
 			identifies=0,
 			dontsearch=1
-		)
+		),
+	'info_text_general': univention.admin.property(
+			short_description=_('General settings'),
+			long_description='',
+			syntax=univention.admin.syntax.info_text,
+			multivalue=0,
+			required=0,
+			may_change=1,
+			identifies=0,
+			dontsearch=1
+		),
+	'info_text_input': univention.admin.property(
+			short_description=_('Input devices'),
+			long_description='',
+			syntax=univention.admin.syntax.info_text,
+			multivalue=0,
+			required=0,
+			may_change=1,
+			identifies=0,
+			dontsearch=1
+		),
+	'info_text_advanced': univention.admin.property(
+			short_description=_('Advanced settings'),
+			long_description='',
+			syntax=univention.admin.syntax.info_text,
+			multivalue=0,
+			required=0,
+			may_change=1,
+			identifies=0,
+			dontsearch=1
+		),
 }
 layout=[
 	univention.admin.tab(_('General'),_('Display settings'), [
-		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field( 'autodetect' ), univention.admin.field('filler', hide_in_normalmode=1) ],
-		[ univention.admin.field('xModule') ],
-		
+		[univention.admin.field('name', hide_in_resultmode=1) ],
+		[univention.admin.field('info_text_general')],
+		[univention.admin.field( 'autodetect' ) ],
+		[ univention.admin.field('xModule')],
 		[univention.admin.field('resolution'), univention.admin.field('colorDepth')],
+		[univention.admin.field('secondaryresolution'), univention.admin.field('displayposition')],
+		[univention.admin.field('info_text_input')],
 		[univention.admin.field('mouseProtocol'), univention.admin.field('mouseDevice')],
 		[univention.admin.field('keyboardLayout'), univention.admin.field('keyboardVariant')],
+		[univention.admin.field('info_text_advanced')],
+        [univention.admin.field('vncExport'), univention.admin.field('vncExportViewonly')],
 		[univention.admin.field('hSync'), univention.admin.field('vRefresh')],
 		[univention.admin.field('displaySize'), univention.admin.field('videoRam')],
-		[univention.admin.field('virtualsize'), univention.admin.field('primarydisplay')],
-		[univention.admin.field('secondarydisplay'), univention.admin.field('displayposition')],
-
-        [univention.admin.field('vncExport'), univention.admin.field('vncExportViewonly')],
+		[univention.admin.field('primarydisplay'),univention.admin.field('secondarydisplay')],
+		[univention.admin.field('virtualsize')],
 	]),
 	univention.admin.tab(_('Object'),_('Object'), [
 		[univention.admin.field('requiredObjectClasses') , univention.admin.field('prohibitedObjectClasses') ],
@@ -367,6 +414,7 @@ mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('xModule', 'univentionXModule', None, univention.admin.mapping.ListToString)
 mapping.register('resolution', 'univentionXResolution', None, univention.admin.mapping.ListToString)
+mapping.register('resolutionsecondary', 'univentionXResolutionSecondary', None, univention.admin.mapping.ListToString)
 mapping.register('colorDepth', 'univentionXColorDepth', None, univention.admin.mapping.ListToString)
 mapping.register('mouseProtocol', 'univentionXMouseProtocol', None, univention.admin.mapping.ListToString)
 mapping.register('mouseDevice', 'univentionXMouseDevice', None, univention.admin.mapping.ListToString)
