@@ -1,0 +1,36 @@
+﻿Build started 27.04.2010 06:17:49.
+Project "\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\PwDump6.vcxproj" on node 2 (build target(s)).
+InitializeBuildStatus:
+  Creating ".\PwDumpDebug\PwDump6.unsuccessfulbuild" because "AlwaysCreate" was specified.
+ClCompile:
+  All outputs are up-to-date.
+  All outputs are up-to-date.
+ResourceCompile:
+  C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D _DEBUG /D _VC80_UPGRADE=0x0710 /l"0x0409" /nologo /fo".\PwDumpDebug\pwdump.res" pwdump.rc 
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\.\PwDumpDebug\PwDump6.exe) does not match the Linker's OutputFile property value (\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\PwDumpDebug\PwDump.exe). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(PwDump6) does not match the Linker's OutputFile property value (PwDump). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+Link:
+  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"PwDumpDebug/PwDump.exe" /INCREMENTAL:NO /NOLOGO Mpr.lib odbc32.lib odbccp32.lib netapi32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:".\PwDumpDebug\PwDump6.exe.intermediate.manifest" /MANIFESTUAC:NO /DEBUG /PDB:".\PwDumpDebug/PwDump.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE:NO /IMPLIB:".\PwDumpDebug\PwDump6.lib" /MACHINE:X86 .\PwDumpDebug\pwdump.res
+  .\PwDumpDebug/blowfish.obj
+  .\PwDumpDebug/PwDump6.obj
+  .\PwDumpDebug/ResourceLoader.obj
+  .\PwDumpDebug/XGetopt.obj
+  "\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\LsaExtRelease\lsremora64.lib"
+blowfish.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
+  PwDump6.vcxproj -> \\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\.\PwDumpDebug\PwDump6.exe
+Manifest:
+  C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"PwDumpDebug/PwDump.exe;#1" /manifest .\PwDumpDebug\PwDump6.exe.intermediate.manifest
+PostBuildEvent:
+  copy LsaExtRelease\*.dll PwdumpDebug
+  :VCEnd
+  LsaExtRelease\lsremora64.dll
+  LsaExtRelease\lsremora.dll
+          2 Datei(en) kopiert.
+FinalizeBuildStatus:
+  Deleting file ".\PwDumpDebug\PwDump6.unsuccessfulbuild".
+  Touching ".\PwDumpDebug\PwDump6.lastbuildstate".
+Done Building Project "\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\PwDump6.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:04.58

@@ -1,0 +1,34 @@
+﻿Build started 27.04.2010 06:17:44.
+Project "\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\pwservice.vcxproj" on node 2 (build target(s)).
+InitializeBuildStatus:
+  Creating ".\PwserviceDebug\pwservice.unsuccessfulbuild" because "AlwaysCreate" was specified.
+ClCompile:
+  All outputs are up-to-date.
+  All outputs are up-to-date.
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\.\PwserviceDebug\pwservice.exe) does not match the Linker's OutputFile property value (\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\PwserviceDebug\servpw.exe). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(pwservice) does not match the Linker's OutputFile property value (servpw). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+Link:
+  C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:".\PwserviceDebug/servpw.exe" /INCREMENTAL:NO /NOLOGO odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:".\PwserviceDebug\pwservice.exe.intermediate.manifest" /MANIFESTUAC:NO /DEBUG /PDB:".\PwserviceDebug/servpw.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE:NO /IMPLIB:".\PwserviceDebug\pwservice.lib" /MACHINE:X86 .\PwserviceDebug/lsassthreadstub.obj
+  .\PwserviceDebug/pwservice.obj
+  "\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\LsaExtRelease\lsremora64.lib"
+lsassthreadstub.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
+     Creating library .\PwserviceDebug\pwservice.lib and object .\PwserviceDebug\pwservice.exp
+  pwservice.vcxproj -> \\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\.\PwserviceDebug\pwservice.exe
+Manifest:
+  C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\.\PwserviceDebug\pwservice.exe.manifest" /manifest .\PwserviceDebug\pwservice.exe.intermediate.manifest
+BscMake:
+  All outputs are up-to-date.
+PostBuildEvent:
+  Copy PwServiceDebug\*.exe PwDumpDebug
+  :VCEnd
+  PwServiceDebug\servpw64.exe
+  PwServiceDebug\servpw.exe
+          2 Datei(en) kopiert.
+FinalizeBuildStatus:
+  Deleting file ".\PwserviceDebug\pwservice.unsuccessfulbuild".
+  Touching ".\PwserviceDebug\pwservice.lastbuildstate".
+Done Building Project "\\KORALL\stefan\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\src\pwdump6\pwservice.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.55

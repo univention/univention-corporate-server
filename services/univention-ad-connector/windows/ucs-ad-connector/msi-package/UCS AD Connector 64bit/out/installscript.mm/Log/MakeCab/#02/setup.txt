@@ -1,0 +1,13 @@
+Microsoft (R) Cabinet Maker - Version 5.1.2600.2180
+Copyright (c) Microsoft Corporation. All rights reserved..
+
+PASS 1: Checking directive file(s)
+----------------------------------
+PASS 2: Processing directive file(s)
+------------------------------------
+  0.00% - MAKEMSI_Documentation (1 of 1) 43.27% - MAKEMSI_Documentation (1 of 1) 86.54% - MAKEMSI_Documentation (1 of 1)100.00% - MAKEMSI_Documentation (1 of 1)100.00% - MAKEMSI_Documentation (1 of 1)100.00% - MAKEMSI_Documentation (1 of 1)100.00% - MAKEMSI_Documentation (1 of 1)  0.00% [flushing current folder]        49.48% [flushing current folder] 86.64% [flushing current folder] 99.27% [flushing current folder]  0.23% [flushing current folder]100.00% [flushing current folder]Total files:              1      
+Bytes before:        75,730
+Bytes after:         16,150
+After/Before:            21.33% compression
+Time:                     0.34 seconds ( 0 hr  0 min  0.34 sec)
+Throughput:             214.99 Kb/second
