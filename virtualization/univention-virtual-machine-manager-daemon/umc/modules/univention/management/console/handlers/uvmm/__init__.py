@@ -153,6 +153,7 @@ command_description = {
 				   'drives' : umc.StringList( _( 'Drive' ) ),
 				   'os' : umc.String( _( 'Operating System' ), required = False ),
 				   'user' : umc.String( _( 'User' ), required = False ),
+				   'advkernelconf' : umc.Boolean( _( 'Advanved kernel configuration' ), required = False ),
 				   'initrd' : umc.String( _( 'RAM disk' ), required = False ),
 				   'cmdline' : umc.String( _( 'Kernel parameter' ), required = False ),
 				   'kernel' : umc.String( _( 'Kernel' ), required = False ),
@@ -187,6 +188,12 @@ command_description = {
 		short_description = _( 'Remove Drive' ),
 		long_description = _('Removes a drive' ),
 		method = 'uvmm_drive_remove',
+		values = {},
+		),
+	'uvmm/drive/bootdevice': umch.command(
+		short_description = _( 'Set drive as boot device' ),
+		long_description = _('Set drive as boot device' ),
+		method = 'uvmm_drive_bootdevice',
 		values = {},
 		),
 }
@@ -480,6 +487,12 @@ class handler( umch.simpleHandler ):
 			iface_source = 'eth0'
 		mac = umcd.make( self[ 'uvmm/domain/configure' ][ 'mac' ], default = iface_mac, attributes = { 'width' : '250' } )
 		interface = umcd.make( self[ 'uvmm/domain/configure' ][ 'interface' ], default = iface_source, attributes = { 'width' : '250' } )
+		# if no bootloader is set we use the advanced kernel configuration options
+		if handler._getattr( domain_info, 'bootloader', '' ):
+			akc = False
+		else:
+			akc = True
+		advkernelconf = umcd.make( self[ 'uvmm/domain/configure' ][ 'advkernelconf' ], default = akc )
 		ram_disk = umcd.make( self[ 'uvmm/domain/configure' ][ 'initrd' ], default = handler._getattr( domain_info, 'initrd', '' ), attributes = { 'width' : '250' } )
 		root_part = umcd.make( self[ 'uvmm/domain/configure' ][ 'cmdline' ], default = handler._getattr( domain_info, 'cmdline', '' ), attributes = { 'width' : '250' } )
 		kernel = umcd.make( self[ 'uvmm/domain/configure' ][ 'kernel' ], default = handler._getattr( domain_info, 'kernel', '' ), attributes = { 'width' : '250' } )
@@ -494,18 +507,20 @@ class handler( umch.simpleHandler ):
 						break
 		bootdevs = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'bootdevs' ], fields = [ boot_dev ], default = bd_default, attributes = { 'width' : '200' } )
 		# drive listing
-		drive_sec = umcd.List()
+		drive_sec = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
 		opts = copy.copy( object.options )
 		cmd = umcp.SimpleCommand( 'uvmm/drive/create', options = opts )
 		drive_sec.add_row( [ umcd.LinkButton( _( 'New Drive' ), actions = [ umcd.Action( cmd ), ] ) ] )
-		disk_list = umcd.List()
+		disk_list = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
 		disk_list.set_header( [ _( 'Type' ), _( 'Image' ), _( 'Size' ), _( 'Pool' ), '' ] )
 		if domain_info and domain_info.disks:
 			defaults = []
 			overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = copy.copy( object.options ) )
 			remove_cmd = umcp.SimpleCommand( 'uvmm/drive/remove', options = copy.copy( object.options ) )
+			bootdev_cmd = umcp.SimpleCommand( 'uvmm/drive/bootdevice', options = copy.copy( object.options ) )
 			remove_cmd.options[ 'disk' ] = None
 			storage_volumes = {}
+			first = True
 			for dev in domain_info.disks:
 				values = {}
 				values[ 'type' ] = self._drive_name( dev.device )
@@ -528,9 +543,16 @@ class handler( umch.simpleHandler ):
 					values[ 'size' ] = MemorySize.num2str( dev.size )
 
 				remove_cmd.options[ 'disk' ] = dev.source
-				disk_list.add_row( [ values[ 'type' ], values[ 'image' ], values[ 'size' ], values[ 'pool' ], umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd, options = { 'disk' : dev.source } ), umcd.Action( overview_cmd ) ] ) ] )
-		drive_sec.add_row( [disk_list ] )
+				remove_btn = umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd, options = { 'disk' : dev.source } ), umcd.Action( overview_cmd ) ] )
+				if not first:
+					bootdev_cmd.options[ 'disk' ] = dev.source
+					bootdev_btn = umcd.LinkButton( _( 'Boot device' ), actions = [ umcd.Action( bootdev_cmd, options = { 'disk' : dev.source } ), umcd.Action( overview_cmd ) ] )
+					disk_list.add_row( [ values[ 'type' ], values[ 'image' ], values[ 'size' ], values[ 'pool' ], [ remove_btn, bootdev_btn ] ] )
+				else:
+					disk_list.add_row( [ values[ 'type' ], values[ 'image' ], values[ 'size' ], values[ 'pool' ], [ remove_btn, ] ] )
+				first = False
 
+		drive_sec.add_row( [disk_list ] )
 		vnc_bool = False
 		vnc_global = True
 		vnc_keymap = 'de'
@@ -564,6 +586,7 @@ class handler( umch.simpleHandler ):
 		if domain_info.os_type == 'hvm':
 			content2.add_row( [ bootdevs ] )
 		else:
+			content2.add_row( [ advkernelconf ] )
 			content2.add_row( [ kernel ] )
 			content2.add_row( [ ram_disk ] )
 			content2.add_row( [ root_part ] )
@@ -694,9 +717,14 @@ class handler( umch.simpleHandler ):
 		domain.arch = object.options[ 'arch' ]
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: architecture: %s' % domain.arch )
 		domain.vcpus = int( object.options[ 'cpus' ] )
-		domain.kernel = handler._getstr( object, 'kernel' )
-		domain.cmdline = handler._getstr( object, 'cmdline' )
-		domain.initrd = handler._getstr( object, 'initrd' )
+		# if para-virtualized machine ...
+		if domain.os_type == 'xen':
+			if object.options.get( 'advkernelconf', False ):
+				domain.kernel = handler._getstr( object, 'kernel' )
+				domain.cmdline = handler._getstr( object, 'cmdline' )
+				domain.initrd = handler._getstr( object, 'initrd' )
+			else:
+				domain.bootloader = '/usr/bin/pygrub'
 		domain.boot = handler._getstr( object, 'bootdevs' )
 		domain.maxMem = MemorySize.str2num( object.options[ 'memory' ] )
 
@@ -905,4 +933,25 @@ class handler( umch.simpleHandler ):
 		else:
 			res.status( 201 )
 			self.finished( object.id(), res, report = _( 'The drive <i>%(drive)s</i> was removed successfully' ) % { 'drive' : os.path.basename( object.options[ 'disk' ] ) } )
+
+	def uvmm_drive_bootdevice( self, object ):
+		ud.debug( ud.ADMIN, ud.INFO, 'Drive boot device' )
+		res = umcp.Response( object )
+
+		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
+		new_disks = []
+		for dev in domain_info.disks:
+			if dev.source != object.options[ 'disk' ]:
+				new_disks.append( dev )
+			else:
+				new_disks.insert( 0, dev )
+		domain_info.disks = new_disks
+		resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
+
+		if self.uvmm.is_error( resp ):
+			res.status( 301 )
+			self.finished( object.id(), res, report = _( 'Setting the drive <i>%(drive)s</i> as boot device as failed' ) % { 'drive' : os.path.basename( object.options[ 'disk' ] ) } )
+		else:
+			self.finished( object.id(), res )
 

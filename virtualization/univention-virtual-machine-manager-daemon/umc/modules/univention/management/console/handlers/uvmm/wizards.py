@@ -58,7 +58,7 @@ class DriveWizard( umcd.IWizard ):
 		self.image_syntax = DynamicSelect( _( 'Drive image' ) )
 		self.actions[ 'pool-selected' ] = self.pool_selected
 		self.uvmm = uvmmd.Client( auto_connect = False )
-		self.prev_first_page = False
+		self.reset()
 
 		# page 0
 		page = umcd.Page( self.title, _( 'What type of drive should be created?' ) )
@@ -98,6 +98,7 @@ class DriveWizard( umcd.IWizard ):
 		return umcd.ChoiceButton( _( 'Pool' ), choices = choices, attributes = { 'width' : '300px' } )
 
 	def reset( self ):
+		self.replace_title( self.title )
 		self.prev_first_page = False
 		umcd.IWizard.reset( self )
 
@@ -115,6 +116,7 @@ class DriveWizard( umcd.IWizard ):
 			ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: node storage pools: %s' % str( self.node.storages ) )
 			btn = self._create_pool_select_button( object.options )
 			object.options[ 'drive-pool' ] = 'default'
+			object.options[ 'image-size' ] = '8 GB'
 			self[ 2 ].options[ 0 ] = btn
 			self[ 3 ].options[ 0 ] = btn
 
@@ -164,7 +166,8 @@ class DriveWizard( umcd.IWizard ):
 				else:
 					raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
 		elif self.current in ( 2, 3 ): # 2=create new, 3=select existing, disk image
-			if self.current == 2: # create new dist image
+			pool_path = self._get_pool_path( object.options[ 'drive-pool' ] )
+			if self.current == 2: # create new disk image
 				ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: collect information about existing disk image: %s' % object.options[ 'drive-image' ] )
 				drive_pool = object.options['drive-pool']
 				drive_type = object.options['drive-type']
@@ -179,24 +182,25 @@ class DriveWizard( umcd.IWizard ):
 				else:
 					ud.debug(ud.ADMIN, ud.ERROR, 'Image not found: pool=%s type=%s image=%s vols=%s' % (drive_pool, drive_type, drive_image, map(str, vols)))
 					return umcd.WizardResult(False, _('Image not found')) # FIXME
-				if not object.options[ 'drive-image' ] in object.options.get( '_reuse_image', [] ) and vol.device == uvmmn.Disk.DEVICE_DISK and self.uvmm.is_image_used( self.node_uri, object.options[ 'drive-image' ] ):
-					if '_reuse_image' in object.options:
-						object.options[ '_reuse_image' ].append( object.options[ 'drive-image' ] )
-					else:
-						object.options[ '_reuse_image' ] = [ object.options[ 'drive-image' ], ]
-					return umcd.WizardResult( False, _( 'The selected image is already used by another virtual instance. You may consider to choose another image or continue if you are sure that it will not cause any problems.' ) )
+			drive_path = os.path.join( pool_path, object.options[ 'image-name' ] )
+			ud.debug( ud.ADMIN, ud.ERROR, 'Check if image %s is already used' % drive_path )
+			is_used = self.uvmm.is_image_used( self.node_uri, drive_path )
+			if is_used in ( object.options.get( 'domain', '' ), object.options.get( 'name', '' ) ):
+				return umcd.WizardResult( False, _( 'The selected image is already used by this the virtual instance. You have to choose a different name.' ) )
+			if not drive_path in object.options.get( '_reuse_image', [] ) and object.options[ 'drive-type' ] == 'disk' and is_used:
+				if '_reuse_image' in object.options:
+					object.options[ '_reuse_image' ].append( drive_path )
+				else:
+					object.options[ '_reuse_image' ] = [ drive_path, ]
+				return umcd.WizardResult( False, _( 'The selected image is already used by the virtual instance %(domain)s. You may consider to choose another image or continue if you are sure that it will not cause any problems.' ) % { 'domain' : is_used } )
 			self.current = 4
 			self[ self.current ].options = []
 			conf = umcd.List()
 			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Drive type' ) ), self._disk_type_text( object.options[ 'drive-type' ] ) ] )
-			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Storage pool' ) ), _( 'path: %(path)s' ) % { 'path' : self._get_pool_path( object.options[ 'drive-pool' ] ) } ] )
+			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Storage pool' ) ), _( 'path: %(path)s' ) % { 'path' : pool_path } ] )
 			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image filename' ) ), object.options[ 'image-name' ] ] )
 			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image size' ) ), object.options[ 'image-size' ] ] )
 			self[ self.current ].options.append( conf )
-			# self[ self.current ].options.append( umcd.HTML( _( '<b>Drive type</b>: %(type)s' ) % { 'type' : self._disk_type_text( object.options[ 'drive-type' ] ) } ) )
-			# self[ self.current ].options.append( umcd.HTML( _( '<b>Storage pool</b>: %(pool)s (path: %(path)s)' ) % { 'pool' : object.options[ 'drive-pool' ], 'path' : self._get_pool_path( object.options[ 'drive-pool' ] ) } ) )
-			# self[ self.current ].options.append( umcd.HTML( _( '<b>Image filename</b>: %(image)s' ) % { 'image' : object.options[ 'image-name' ] } ) )
-			# self[ self.current ].options.append( umcd.HTML( _( '<b>Image size</b>: %(size)s' ) % { 'size' : object.options[ 'image-size' ] } ) )
 		else:
 			if self.current == None:
 				self.current = 0
@@ -337,7 +341,6 @@ class InstanceWizard( umcd.IWizard ):
 	def _list_domain_settings( self, object ):
 		'''add list with domain settings to page 2'''
 		rows = []
-		# rows.append( [ umcd.HTML( '<b>%s</b><br>' % _( 'Instance settings' ) ), ] )
 		settings = umcd.List()
 		for text, key in ( ( _( 'Name' ), 'name' ), ( _( 'CPUs' ), 'cpus' ), ( _( 'Memory' ), 'memory' ) ):
 			settings.add_row( [ umcd.HTML( '<i>%s</i>' % text ), object.options.get( key, '' ) ] )
@@ -383,6 +386,14 @@ class InstanceWizard( umcd.IWizard ):
 			domain.name = object.options[ 'name' ]
 			domain.arch = object.options[ 'arch' ]
 			domain.domain_type, domain.os_type = object.options[ 'type' ].split( '-' )
+			# check configuration for para-virtualized machines
+			if domain.os_type == 'xen':
+				if self.profile[ 'advkernelconf' ] == 'FALSE': # use pyGrub
+					domain.bootloader = '/usr/bin/pygrub'
+				else:
+					domain.kernel = object.options[ 'kernel' ]
+					domain.cmdline = object.options[ 'cmdline' ]
+					domain.initrd = object.options[ 'initrd' ]
 			domain.maxMem = MemorySize.str2num( object.options[ 'memory' ], unit = 'MB' )
 			domain.vcpus = object.options[ 'cpus' ]
 			if object.options[ 'bootdev' ] and object.options[ 'bootdev' ][ 0 ]:
@@ -395,8 +406,12 @@ class InstanceWizard( umcd.IWizard ):
 				domain.graphics = [ gfx, ]
 			# set drive names
 			dev_name = 'a'
+			if domain.bootloader:
+				device_prefix = 'xvd%s'
+			else:
+				device_prefix = 'hd%s'
 			for dev in self.drives:
-				dev.target_dev = 'hd%s' % dev_name
+				dev.target_dev = device_prefix % dev_name
 				dev_name = chr( ord( dev_name ) + 1 )
 			domain.disks = self.drives
 			iface = uvmmn.Interface()

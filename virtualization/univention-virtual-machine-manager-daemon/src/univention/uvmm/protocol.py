@@ -238,6 +238,8 @@ class Data_Domain(object):
 		self.kernel = None
 		self.cmdline = None
 		self.initrd = None
+		self.bootloader = None
+		self.bootloader_args = None
 
 		# Xen-HVM, Qemu-HVM, Kvm-HVM
 		self.boot = [] # (fd|hd|cdrom|network)+

@@ -1,3 +1,13 @@
+univention-virtual-machine-manager-daemon (0.9.62-1) unstable; urgency=low
+
+  * UVMM daemon: support setting the bootloader for PV machines
+  * add option to choose between pygrub and manual kernel configuration
+  * if creating a PV machine use device name prefix xvd instead of hd
+  * detect reusage of hard drive images within one single machine
+  * support setting the boot device for PV machines; Bug #18863
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 26 Jul 2010 17:12:20 +0200
+
 univention-virtual-machine-manager-daemon (0.9.61-5) unstable; urgency=low
 
   * Calculate CPU usage (Bug #18660)

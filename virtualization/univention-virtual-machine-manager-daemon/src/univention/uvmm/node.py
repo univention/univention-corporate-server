@@ -337,6 +337,13 @@ class Domain(object):
 			boot = os.getElementsByTagName('boot')
 			if boot:
 				self.pd.boot = [dev.attributes['dev'].value for dev in boot]
+		bootloader = doc.getElementsByTagName( 'bootloader' )
+		if bootloader:
+			if bootloader[ 0 ].firstChild and bootloader[ 0 ].firstChild.nodeValue:
+				self.pd.bootloader = bootloader[ 0 ].firstChild.nodeValue
+			args = doc.getElementsByTagName( 'bootloader_args' )
+			if args and args[ 0 ].firstChild and args[ 0 ].firstChild.nodeValue:
+				self.pd.bootloader_args = args[ 0 ].firstChild.nodeValue
 
 		self.pd.disks = []
 		disks = devices.getElementsByTagName( 'disk' )
@@ -732,6 +739,17 @@ def domain_define( uri, domain ):
 	os.appendChild( type )
 	if loader:
 		os.appendChild( loader )
+
+	if domain.bootloader:
+		text = doc.createTextNode( domain.bootloader )
+		bootloader = doc.createElement( 'bootloader' )
+		bootloader.appendChild( text )
+		doc.documentElement.appendChild( bootloader )
+		if domain.bootloader_args:
+			text = doc.createTextNode( domain.bootloader_args )
+			bootloader_args = doc.createElement( 'bootloader_args' )
+			bootloader_args.appendChild( text )
+			doc.documentElement.appendChild( bootloader_args )
 
 	if domain.kernel:
 		text = doc.createTextNode( domain.kernel )

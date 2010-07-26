@@ -124,10 +124,9 @@ create_xen_profile() {
 		--set virttech="xen-xen" \
 		--set ram=512MB \
 		--set interface=eth0 \
-		--append bootdev=cdrom \
-		--append bootdev=hd \
 		--set vnc=1 \
-		--set kblayout=de
+		--set kblayout=de \
+		--set advkernelconf=FALSE
 }
 
 create_hvm_profile "Windows XP 32 Bit (XEN)" "winxp-" "xen" "i686"
