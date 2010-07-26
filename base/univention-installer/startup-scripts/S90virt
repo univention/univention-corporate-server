@@ -2,6 +2,9 @@
 
 # mount the sys filesystem
 if [ ! -e /sys/devices ]; then
+	if [ ! -d /sys ]; then
+		mkdir /sys
+	fi
         mount -t sysfs none /sys
 fi
 
@@ -31,8 +34,10 @@ then
 
 	# console: maybe there is a better solution (changing
         # inittab) but at this point we can not reload inittab
-        rm /dev/tty1
-        ln -s /dev/hvc0 /dev/tty1
+	if [ ! -d /sys/devices/virtual/graphics/fb0 ]; then	
+	        rm /dev/tty1
+        	ln -s /dev/hvc0 /dev/tty1
+	fi
 
 fi
 

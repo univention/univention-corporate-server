@@ -1,3 +1,9 @@
+univention-installer (6.0.34-4) unstable; urgency=low
+
+  * fixed S90virt startup script Bug #18958 
+
+ -- Felix Botner <botner@univention.de>  Mon, 26 Jul 2010 13:35:40 +0200
+
 univention-installer (6.0.34-3) unstable; urgency=low
 
   * redirect udev output to /dev/null
