@@ -16,7 +16,7 @@ XS-Python-Version: all
 
 Package: xen-3.4
 Architecture: any
-Depends: ${shlibs:Depends}, ${python:Depends}, python-xml, iproute, udev
+Depends: ${shlibs:Depends}, ${python:Depends}, libxenstore3.0, python-xml, iproute, udev
 Provides: xen-hypervisor,
  xen-hypervisor-3,
  xen-hypervisor-3.4,
@@ -30,20 +30,18 @@ Replaces: xen-hypervisor-3.2-1-i386,
  xen-utils-3.2-1,
  xen-utils-common,
  xenstore-utils,
- libxenstore3.0
 Conflicts: xen-hypervisor-3.2-1-i386,
  xen-hypervisor-3.2-1-amd64,
  xen-utils-3.2-1,
  xen-utils-common,
  xenstore-utils,
- libxenstore3.0 (<< 3.4)
 Description: Xen Hypervisor
  Server Virtualization with the Xen Hypervisor
 XB-Python-Version: ${python:Versions}
 
 Package: libxenstore3.0
-Architecture: all
+Architecture: any
 Section: libs
 Depends: xen-3.4 (= ${Source-Version})
 Description: Xenstore communications library for Xen
- Dummy-Transition package for the public libxenstore.
+ This package contains the public libxenstore.

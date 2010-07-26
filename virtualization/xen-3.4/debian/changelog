@@ -1,3 +1,9 @@
+xen-3.4 (3.4.3-5) unstable; urgency=low
+
+  * move libxenstore files into a separate package. Bug #19044
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Jul 2010 09:54:46 +0200
+
 xen-3.4 (3.4.3-4) unstable; urgency=low
 
   * Fix loop-back device check (Bug #18690)

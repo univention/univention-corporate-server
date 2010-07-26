@@ -73,6 +73,7 @@ install-arch-common:
 	dh_installdirs -s
 	$(MAKE) -C xen-3.4.3/xen          install
 	$(MAKE) -C xen-3.4.3/tools        install
+	mv debian/xen-3.4/usr/lib/libxenstore.* debian/libxenstore3.0/usr/lib/
 install-python%: install-arch-common
 	$(MAKE) -C xen-3.4.3/tools/pygrub install PYTHON=/usr/bin/python$*
 	$(MAKE) -C xen-3.4.3/tools/python install PYTHON=/usr/bin/python$*
