@@ -1,3 +1,11 @@
+univention-gdm (6.0.3-1) unstable; urgency=low
+
+  * added a gdm init script which calculates xorg/display/virtual and
+    sets the names for primary and secondary display if they are empty.
+    Bug #12124
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Jul 2010 15:57:21 +0200
+
 univention-gdm (6.0.2-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

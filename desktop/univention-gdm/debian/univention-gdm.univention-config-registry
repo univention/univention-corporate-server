@@ -20,6 +20,10 @@ File: etc/gdm/Init/scripts/00_resolution
 Mode: 0755
 
 Type: file
+File: etc/gdm/Init/scripts/10_dualhead
+Mode: 0755
+
+Type: file
 File: etc/gdm/PostLogin/Default
 
 Type: file
