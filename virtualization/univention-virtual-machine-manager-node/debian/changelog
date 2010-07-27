@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (0.1.11-1) unstable; urgency=low
+
+  * add init script to create a bridging interface on KVM nodes; Bug #19059
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 27 Jul 2010 15:12:05 +0200
+
 univention-virtual-machine-manager-node (0.1.10-1) unstable; urgency=low
 
   * Fix exception accessing associatedDomain (Bug #18787)
