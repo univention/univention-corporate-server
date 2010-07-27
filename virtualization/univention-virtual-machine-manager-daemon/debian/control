@@ -17,6 +17,7 @@ Depends: libvirt-bin,
  python-elementtree,
  python-pam,
  python-univention-virtual-machine-manager,
+ univention-virtual-machine-manager-schema,
  ${python:Depends}, ${misc:Depends}
 XB-Python-Version: ${python:Versions}
 Description: Univention Virtual Machine Manager Daemon
