@@ -1,3 +1,10 @@
+univention-installer (6.0.35-1) unstable; urgency=low
+
+  * remove (cd) entry from menu.lst in UCS installer to make pygrub
+    happy. Bug #19096
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jul 2010 10:59:19 +0200
+
 univention-installer (6.0.34-4) unstable; urgency=low
 
   * fixed S90virt startup script Bug #18958 

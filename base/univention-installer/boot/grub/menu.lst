@@ -1,6 +1,6 @@
 default 0
 timeout 60
-splashimage (cd)/boot/grub/uniboot.xpm.gz
+splashimage /boot/grub/uniboot.xpm.gz
 
 #Change foreground and background of grubs font
 foreground = FFFFFF
@@ -10,11 +10,11 @@ background = 000000
 #color cyan/blue white/blue
 
 title Univention Installer
-kernel (cd)/boot/linux-@%@KERNEL@%@ root=/dev/ram ro vt.default_utf8=0 vga=785 ramdisk_size=65536 flavor=linux text
-initrd (cd)/boot/linux-@%@KERNEL@%@.bin
+kernel /boot/linux-@%@KERNEL@%@ root=/dev/ram ro vt.default_utf8=0 vga=785 ramdisk_size=65536 flavor=linux text
+initrd /boot/linux-@%@KERNEL@%@.bin
 
 title Additional options
-configfile (cd)/boot/grub/menu-kernel.lst
+configfile /boot/grub/menu-kernel.lst
 
 title Boot from first harddisk partition
 rootnoverify (hd0)
