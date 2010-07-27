@@ -1,3 +1,9 @@
+univention-installer (6.0.37-1) unstable; urgency=low
+
+  * widen IP address input field (Bug #19034)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 27 Jul 2010 16:45:05 +0200
+
 univention-installer (6.0.36-1) unstable; urgency=low
 
   * disable dns forwarder for non server roles fix Bug #13836

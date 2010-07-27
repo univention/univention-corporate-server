@@ -760,10 +760,10 @@ class object(content):
 				# CHECKBOX_DHCP will return ['dynamic'] or []
 
 			self.add_elem('edit.TXT_IP', textline(_('IP address:'), self.pos_y+4, self.pos_x+2))#1
-			self.add_elem('edit.INPUT_IP', input(ip_str, self.pos_y+4, self.pos_x+14, MAXIP))#2
+			self.add_elem('edit.INPUT_IP', input(ip_str, self.pos_y+4, self.pos_x+14, MAXIP+1))#2
 
 			self.add_elem('edit.TXT_NETMASK', textline(_('Netmask:'), self.pos_y+5, self.pos_x+2))#3
-			self.add_elem('edit.INPUT_NETMASK', input(netmask_str, self.pos_y+5, self.pos_x+14, MAXIP))#4
+			self.add_elem('edit.INPUT_NETMASK', input(netmask_str, self.pos_y+5, self.pos_x+14, MAXIP+1))#4
 			if not virtual:
 				self.add_elem('edit.BUTTON_DHCLIENT', button('F5-'+_('DHCP Query'),self.pos_y+5,self.pos_x+(self.width)-4,align='right')) #12
 
