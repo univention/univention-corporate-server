@@ -39,7 +39,6 @@
 
 import listener
 import os, pwd, types, ldap, ldap.schema, re, time, copy, codecs, base64, string
-import ldap.dn
 import univention_baseconfig, univention.debug
 import smtplib
 from email.MIMEText import MIMEText
@@ -551,24 +550,6 @@ def connect(ldif=0):
 	reconnect=0
 	return connection
 
-connection_remote=None
-def connect_remote():
-	global connection_remote
-
-	if not connection_remote:
-		ldap_uri = 'ldaps://%s' % listener.baseConfig.get('ldap/master')
-		ldap_remote = ldap.initialize( ldap_uri )
-		pw = get_machine_secret()
-		binddn = listener.baseConfig.get('ldap/hostdn')
-		try:
-			ldap_remote.simple_bind_s( binddn, pw )
-		except ldap.LDAPError, msg:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: bind failed on URI %s' % (msg[0]['desc'], ldap_uri) )
-			return None
-		connection_remote = ldap_remote
-
-	return connection_remote
-
 def addlist(new):
 	al=[]
 	for key in new.keys():
@@ -665,53 +646,6 @@ def getOldValues( ldapconn, dn ):
 		old={}
 
 	return old
-
-def add_from_remote_ldap( ldapconn, ldap_remote, dn ):
-	## lookup dn object in remote LDAP
-	try:
-		answer = ldap_remote.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ['*', '+'])
-	except ldap.LDAPError, msg:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "%s: could not find object for DN: %s in remote LDAP" % (msg[0]['desc'], dn) )
-		return None
-	## dn found in remote LDAP
-	try:
-		al=addlist(answer[0][1])
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "ldapadd for DN: %s, addlist=%s" % (dn, al))
-		ldapconn.add_s(dn, al)
-		return True
-	except ldap.LDAPError, msg:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "%s: ldapadd failed for DN: %s" % (msg[0]['desc'], dn) )
-		return None
-
-def check_parent_dn( ldapconn, ldap_remote, dn, matched=listener.baseConfig.get('ldap/base') ):
-	if not isinstance(ldapconn, LDIFObject):
-		try:
-			dn_parts = ldap.dn.str2dn(dn)
-			if len(dn_parts) > 1:
-				parent_dn = ldap.dn.dn2str(dn_parts[1:])
-				if parent_dn == matched:
-					return True
-			else:
-				return None
-		except ldap.LDAPError, msg:
-			return None
-		try:
-			parent = ldapconn.search_s(parent_dn, ldap.SCOPE_BASE, '(objectClass=*)', ['dn'])[0][1]
-		except ldap.NO_SUCH_OBJECT, msg:
-			## lookup parent of parent_dn object in local LDAP
-			rv = check_parent_dn( ldapconn, ldap_remote, parent_dn, matched )
-			if not rv:
-				## parent of parent_dn check failed
-				return None
-			else:
-				rv = add_from_remote_ldap(ldapconn, ldap_remote, parent_dn)
-				return rv
-		except ldap.LDAPError, msg:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: error while checking parent object of DN %s' % (msg[0]['desc'], dn) )
-			return None
-	else:
-		return None
-
 
 # check if target container exists; this function creates required containers if they are missing
 def flatmodeCreateContainer( ldapconn, dn ):
@@ -981,36 +915,12 @@ def handler(dn, new, listener_old):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: %s; trying to apply changes' % (msg[0]['desc'], dn))
 		try:
 			cur = l.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)')[0][1]
-		except ldap.LDAPError, msg:
+		except LDAPError, msg:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: going into LDIF mode' % msg[0]['desc'])
 			reconnect=1
 			connect(ldif=1)
 			handler(dn, new, old)
 		handler(dn, new, cur)
-
-	except ldap.NO_SUCH_OBJECT, msg:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: retrying' % msg[0]['desc'])
-		ldap_remote = connect_remote()
-		if ldap_remote:
-			if check_parent_dn(l, ldap_remote, dn, msg[0]['matched']):
-				handler(dn, new, old)
-			else:
-				## lookup dn object in remote LDAP, in case it has been deleted remote
-				try:
-					answer = ldap_remote.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ['dn'])
-				except ldap.LDAPError, msg:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "%s: could not find object for DN: %s in remote LDAP" % (msg[0]['desc'], dn) )
-					return	# fine, object has been removed, nothing to do
-				## dn found in remote LDAP
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: going into LDIF mode' % msg[0]['desc'])
-				reconnect=1
-				connect(ldif=1)
-				handler(dn, new, old)
-		else:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: going into LDIF mode' % msg[0]['desc'])
-			reconnect=1
-			connect(ldif=1)
-			handler(dn, new, old)
 
 	except ldap.CONSTRAINT_VIOLATION, msg:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Constraint violation: dn=%s: %s' % (dn,msg[0]['desc']))
@@ -1085,18 +995,6 @@ def get_password():
 				pwd = rootdn_pattern.findall(line)[0]
 				break
 		f.close()
-	finally:
-		listener.unsetuid()
-	return pwd
-
-def get_machine_secret():
-	pwd=''
-	listener.setuid(0)
-	try:
-		f = open('/etc/machine.secret', 'r')
-		pwd=f.read()
-		f.close()
-		pwd=pwd.strip()
 	finally:
 		listener.unsetuid()
 	return pwd

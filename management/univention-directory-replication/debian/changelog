@@ -1,3 +1,9 @@
+univention-directory-replication (4.0.2-2) unstable; urgency=low
+
+  * reverting changes for 4.0.2-1, fixed in listener (Bug #17063)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Jul 2010 23:49:04 +0200
+
 univention-directory-replication (4.0.2-1) unstable; urgency=low
 
   * check local LDAP for parent container objects (Bug #17063)
