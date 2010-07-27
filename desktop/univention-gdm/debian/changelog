@@ -1,3 +1,10 @@
+univention-gdm (6.0.5-2) unstable; urgency=low
+
+  * don't set xorg/display/primary and xorg/display/secondary via UCR in
+    Init/scripts/10_dualhead. Bug #12124
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jul 2010 09:22:19 +0200
+
 univention-gdm (6.0.5-1) unstable; urgency=low
 
   * some minor fixes of last commit. Bug #12124

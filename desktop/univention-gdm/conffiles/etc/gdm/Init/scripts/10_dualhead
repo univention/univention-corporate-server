@@ -17,15 +17,14 @@ if [ -n "$xorg_resolution_secondary" ]; then
 			autodetect=no
 		fi
 		if [ -z "$xorg_display_primary" -o -z "$xorg_display_secondary" -o "$autodetect" = "yes" ]; then
-			if [ -z "$xorg_display_primary" -a -z "$xorg_display_secondary" ]; then
-				univention-config-registry set xorg/display/primary="$prim_name" xorg/display/secondary="$sec_name"
-			elif [ -z "$xorg_display_primary" ]; then
-				univention-config-registry set xorg/display/primary="$prim_name"
-			elif [ -z "$xorg_display_secondary" ]; then
-				univention-config-registry set xorg/display/secondary="$sec_name"
+				
+			if [ -z "$xorg_display_primary" -o -z "$xorg_display_secondary" ]; then
+				export local_xorg_display_primary="$prim_name"
+				export local_xorg_display_secondary="$sec_name"
+			else
+				export local_xorg_display_primary="$xorg_display_primary"
+				export local_xorg_display_secondary="$xorg_display_secondary"
 			fi
-		
-			eval "$(univention-config-registry shell xorg/display/primary xorg/display/secondary)"
 
 			if [ "$autodetect" = "yes" ]; then
 				mode_primary="--auto"
@@ -37,18 +36,18 @@ if [ -n "$xorg_resolution_secondary" ]; then
 
 			if [ -n "$xorg_display_relative_position" ]; then
 				if [ "$xorg_display_relative_position" = "right" ]; then
-					xrandr --output $xorg_display_primary $mode_primary --output $xorg_display_secondary $mode_secondary --right-of $xorg_display_primary
+					xrandr --output $local_xorg_display_primary $mode_primary --output $local_xorg_display_secondary $mode_secondary --right-of $local_xorg_display_primary
 				elif [ "$xorg_display_relative_position" = "below" ]; then
-					xrandr --output $xorg_display_primary $mode_primary --output $xorg_display_secondary $mode_secondary --below $xorg_display_primary
+					xrandr --output $local_xorg_display_primary $mode_primary --output $local_xorg_display_secondary $mode_secondary --below $local_xorg_display_primary
 				elif [ "$xorg_display_relative_position" = "above" ]; then
-					xrandr --output $xorg_display_primary $mode_primary --output $xorg_display_secondary $mode_secondary --above $xorg_display_primary
+					xrandr --output $local_xorg_display_primary $mode_primary --output $local_xorg_display_secondary $mode_secondary --above $local_xorg_display_primary
 				elif [ "$xorg_display_relative_position" = "left" ]; then
-					xrandr --output $xorg_display_primary $mode_primary --output $xorg_display_secondary $mode_secondary --left-of $xorg_display_primary
+					xrandr --output $local_xorg_display_primary $mode_primary --output $local_xorg_display_secondary $mode_secondary --left-of $local_xorg_display_primary
 				else
 					logger "Dualhead setup: Unknown position setting xorg/display/relative-position: \"$xorg_display_relative_position\"."
 				fi
 			else
-				xrandr --output $xorg_display_primary $mode_primary --output $xorg_display_secondary $mode_secondary
+				xrandr --output $local_xorg_display_primary $mode_primary --output $local_xorg_display_secondary $mode_secondary
 			fi
 		fi
 	else
