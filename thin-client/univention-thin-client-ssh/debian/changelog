@@ -1,3 +1,10 @@
+univention-thin-client-ssh (4.1.1-1) unstable; urgency=low
+
+  * set ucr variables for challengeresponse and for
+    passwordauthentication during thin client boot. Bug #18776
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jul 2010 08:10:08 +0200
+
 univention-thin-client-ssh (4.1.0-1) unstable; urgency=low
 
   * bump version for UCS TCS compatibility (Bug #17543)

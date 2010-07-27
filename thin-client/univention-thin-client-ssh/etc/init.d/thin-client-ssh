@@ -46,6 +46,6 @@ else
 fi
 
 univention-config-registry set "sshd/port?22" "sshd/permitroot?yes" "sshd/xforwarding?no" \
-	"sshd/challengeresponse?no" "sshd/autostart?yes" >/dev/tty8 2>&1
+	"sshd/autostart?yes"  "sshd/challengeresponse?yes" "sshd/passwordauthentication?no" >/dev/tty8 2>&1
 
 log_action_end_msg 0
