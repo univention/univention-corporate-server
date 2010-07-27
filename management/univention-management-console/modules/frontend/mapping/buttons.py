@@ -70,7 +70,7 @@ class IButtonMap( object ):
 				# check if the value should be appended or
 				# replaced. If option is not set, skip it
 				if umcp.option:
-					if isinstance( umcp, umcd.ReadOnlyInput ):
+					if isinstance( umcp, umcd.ReadOnlyInput ) or umcp.syntax.may_change == False:
 						value = umcp.default
 					else:
 						value = new_value
