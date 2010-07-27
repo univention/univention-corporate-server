@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (0.9.64-1) unstable; urgency=low
+
+  * update german translation
+  * fixed minor bug in UVVM daemon (might be related to Bug #18579)
+  * wizard: add network interface to newly created instance
+  * only show 'boot device' button in drive list for para-virtualized machines; Bug #18863
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 27 Jul 2010 15:37:29 +0200
+
 univention-virtual-machine-manager-daemon (0.9.63-1) unstable; urgency=low
 
   * added dependecy to univention-virtual-machine-manager-schema. Bug

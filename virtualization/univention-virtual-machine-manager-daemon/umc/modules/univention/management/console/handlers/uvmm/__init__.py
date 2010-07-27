@@ -550,7 +550,8 @@ class handler( umch.simpleHandler ):
 					disk_list.add_row( [ values[ 'type' ], values[ 'image' ], values[ 'size' ], values[ 'pool' ], [ remove_btn, bootdev_btn ] ] )
 				else:
 					disk_list.add_row( [ values[ 'type' ], values[ 'image' ], values[ 'size' ], values[ 'pool' ], [ remove_btn, ] ] )
-				first = False
+				if domain_info.os_type != 'xen':
+					first = False
 
 		drive_sec.add_row( [disk_list ] )
 		vnc_bool = False

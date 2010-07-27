@@ -186,7 +186,7 @@ class DriveWizard( umcd.IWizard ):
 			ud.debug( ud.ADMIN, ud.ERROR, 'Check if image %s is already used' % drive_path )
 			is_used = self.uvmm.is_image_used( self.node_uri, drive_path )
 			if is_used in ( object.options.get( 'domain', '' ), object.options.get( 'name', '' ) ):
-				return umcd.WizardResult( False, _( 'The selected image is already used by this the virtual instance. You have to choose a different name.' ) )
+				return umcd.WizardResult( False, _( 'The selected image is already used by this virtual instance! You have to choose a different filename.' ) )
 			if not drive_path in object.options.get( '_reuse_image', [] ) and object.options[ 'drive-type' ] == 'disk' and is_used:
 				if '_reuse_image' in object.options:
 					object.options[ '_reuse_image' ].append( drive_path )
@@ -394,17 +394,21 @@ class InstanceWizard( umcd.IWizard ):
 					domain.kernel = object.options[ 'kernel' ]
 					domain.cmdline = object.options[ 'cmdline' ]
 					domain.initrd = object.options[ 'initrd' ]
+			# memory
 			domain.maxMem = MemorySize.str2num( object.options[ 'memory' ], unit = 'MB' )
+			# CPUs
 			domain.vcpus = object.options[ 'cpus' ]
+			# boot devices
 			if object.options[ 'bootdev' ] and object.options[ 'bootdev' ][ 0 ]:
 				ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: boot drives: %s' % str( object.options[ 'bootdev' ] ) )
 				domain.boot = object.options[ 'bootdev' ]
+			# VNC
 			if object.options[ 'vnc' ]:
 				gfx = uvmmn.Graphic()
 				gfx.listen = '0.0.0.0'
 				gfx.keymap = object.options[ 'kblayout' ]
 				domain.graphics = [ gfx, ]
-			# set drive names
+			# drives
 			dev_name = 'a'
 			if domain.bootloader:
 				device_prefix = 'xvd%s'
@@ -414,8 +418,11 @@ class InstanceWizard( umcd.IWizard ):
 				dev.target_dev = device_prefix % dev_name
 				dev_name = chr( ord( dev_name ) + 1 )
 			domain.disks = self.drives
-			iface = uvmmn.Interface()
-			iface.source = object.options[ 'interface' ]
+			# network interface
+			if object.options[ 'interface' ]:
+				iface = uvmmn.Interface()
+				iface.source = object.options[ 'interface' ]
+				domain.interfaces = [ iface, ]
 			self._result = domain
 
 		return umcd.WizardResult()

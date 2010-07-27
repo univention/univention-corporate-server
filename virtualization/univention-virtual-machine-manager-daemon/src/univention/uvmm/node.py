@@ -293,7 +293,10 @@ class Domain(object):
 		now = time.time()
 		delta_t = now - self._time_stamp # wall clock [s]
 		if delta_t > 0.0 and delta_used >= 0L:
-			self._cpu_usage = delta_used / delta_t / self.pd.vcpus / 1000000 # ms
+			try:
+				self._cpu_usage = delta_used / delta_t / self.pd.vcpus / 1000000 # ms
+			except ZeroDivisionError:
+				self._cpu_usage = 0
 			for i in range(len(Domain.CPUTIMES)):
 				if delta_t < Domain.CPUTIMES[i]:
 					e = math.exp(-1.0 * delta_t / Domain.CPUTIMES[i])
