@@ -1,3 +1,9 @@
+univention-gdm (6.0.5-1) unstable; urgency=low
+
+  * some minor fixes of last commit. Bug #12124
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jul 2010 07:38:11 +0200
+
 univention-gdm (6.0.4-1) unstable; urgency=low
 
   * move the virtual size calculation to gdm init script otherwise the X

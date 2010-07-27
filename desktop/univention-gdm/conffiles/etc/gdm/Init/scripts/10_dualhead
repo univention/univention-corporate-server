@@ -25,7 +25,7 @@ if [ -n "$xorg_resolution_secondary" ]; then
 				univention-config-registry set xorg/display/secondary="$sec_name"
 			fi
 		
-			eval "$(univention-config-registry shell xorg_display_primary xorg_display_secondary)"
+			eval "$(univention-config-registry shell xorg/display/primary xorg/display/secondary)"
 
 			if [ "$autodetect" = "yes" ]; then
 				mode_primary="--auto"

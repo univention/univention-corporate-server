@@ -45,6 +45,7 @@ if [ -x /usr/sbin/univention-config-registry ]; then
 	}
 
 	# calculate xorg/display/virtual if xorg/resolution/secondary is set
+	eval $(/usr/sbin/univention-config-registry shell xorg/resolution/secondary xorg/display/relative-position xorg/display/virtual xorg/resolution)
 	if [ -n "$xorg_resolution_secondary" ]; then
 		x_prim="${xorg_resolution%x*}"
 		y_prim="${xorg_resolution##*x}"
