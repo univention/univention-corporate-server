@@ -558,11 +558,11 @@ msgstr ""
 
 #: syntax.py:985
 msgid "Left of primary display"
-msgstr "Links des primären Monitors"
+msgstr "Links vom primären Monitor"
 
 #: syntax.py:986
 msgid "Right of primary display"
-msgstr "Rechts des primären Monitors"
+msgstr "Rechts vom primären Monitor"
 
 #: syntax.py:987
 msgid "Above primary display"

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.15-1) unstable; urgency=low
+
+  * adjust dualhead syntax translation. Bug #12124
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jul 2010 09:50:03 +0200
+
 univention-directory-manager-modules (6.0.14-2) unstable; urgency=low
 
   * fixed typo in xfree policy mapping. Bug #12124
