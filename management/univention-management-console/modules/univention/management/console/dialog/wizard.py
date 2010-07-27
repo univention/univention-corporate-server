@@ -147,7 +147,9 @@ class Page( object ):
 			if cancel:
 				opts = copy_module.copy( options )
 				opts[ 'action' ] = 'cancel'
-				cancel_btn = Cell( Button( _( 'Cancel' ), actions = ( Action( umcp.SimpleCommand( command, opts ), items ), ) ), attributes = { 'type' : 'button_padding' } )
+				cmd = umcp.SimpleCommand( command, opts )
+				cmd.verify_options = False
+				cancel_btn = Cell( Button( _( 'Cancel' ), actions = ( Action( cmd, items ) ) ), attributes = { 'type' : 'button_padding' } )
 			else:
 				cancel_btn = ''
 			if prev:
