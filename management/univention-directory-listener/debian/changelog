@@ -1,3 +1,11 @@
+univention-directory-listener (5.0.4-5) unstable; urgency=low
+
+  * fixed machine.secret problem in local bind by checking cache,
+    re-adding code from 5.0.1-1 to/including 5.0.4-2 (Bug #17063)
+  * this adds accidentally reverted changes for Bug #18692 again
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Jul 2010 23:44:11 +0200
+
 univention-directory-listener (5.0.4-4) unstable; urgency=low
 
   * revert one more checkin for Bug #17063

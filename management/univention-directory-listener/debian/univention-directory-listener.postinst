@@ -68,7 +68,9 @@ update-rc.d -f univention-ldap-listener remove >/dev/null 2>&1
 univention-baseconfig set listener/debug/level?2
 
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=17998
-univention-baseconfig set listener/memberuid/skip?yes
+# https://forge.univention.org/bugzilla/show_bug.cgi?id=18692
+univention-baseconfig set	listener/memberuid/skip?yes \
+							listener/uniquemember/skip?yes 
 
 mkdir -p /var/lib/univention-ldap/schema/id/
 

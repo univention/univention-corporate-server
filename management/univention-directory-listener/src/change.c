@@ -359,9 +359,113 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 	return rv;
 }
 
+int connect_to_local_ldap(univention_ldap_parameters_t *lp_local)
+{
+
+	/* XXX: Fix when using krb5 */
+	while (univention_ldap_open(lp_local) != 0 ) {
+		if ( lp_local->ld != NULL ) {
+			ldap_unbind_ext(lp_local->ld, NULL, NULL);
+		}
+		lp_local->ld = NULL;
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to local ldap server (%s), retrying in 30 seconds", lp_local->host);
+		sleep(30);
+	}
+
+	return LDAP_SUCCESS;
+
+}
+
+int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, univention_ldap_parameters_t *lp_local)
+{
+	int rv = 0;
+	int flags = 0;
+	LDAPDN ldap_dn = NULL;
+
+	rv = ldap_str2dn(dn, &ldap_dn, flags);
+	if ( rv != LDAP_SUCCESS || ! ldap_dn )
+		return rv;
+	
+	char *parent_dn = NULL;
+	rv = ldap_dn2str(&ldap_dn[1], &parent_dn, LDAP_DN_FORMAT_LDAPV3); // skip left most rdn
+	ldap_dnfree( ldap_dn );
+	if ( rv != LDAP_SUCCESS )
+		return rv;
+
+	if (!strcmp(parent_dn, lp_local->base)) {
+		// univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "parent of DN: %s is base", dn);
+		ldap_memfree( parent_dn );
+		return LDAP_SUCCESS;
+	}
+
+	CacheEntry entry;
+	LDAPMessage	*res,
+			*cur;
+	char *attrs_local[] = {"dn", NULL};
+	char *attrs[] = {"*", "+", NULL};
+	struct timeval timeout;
+	/* max wait for 5 minutes */
+	timeout.tv_sec = 300;
+	timeout.tv_usec = 0;
+
+	if ((rv=cache_get_entry_lower_upper(id-1, parent_dn, &entry)) == DB_NOTFOUND) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "checking parent_dn of %s in local LDAP", dn);
+
+		/* ensure that connection to local LDAP is open */
+		if (lp_local->ld == NULL) {
+			if ((rv = connect_to_local_ldap(lp_local)) != 0) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to connect to local LDAP");
+				ldap_memfree( parent_dn );
+				return rv;
+			}
+		}
+
+		/* search for parent_dn in local LDAP */
+		rv = ldap_search_ext_s(lp_local->ld, parent_dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs_local, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res);
+		ldap_msgfree( res );
+		if ( rv == LDAP_NO_SUCH_OBJECT ) {		/* parent_dn not present in local LDAP */
+			rv = check_parent_dn(lp, id, parent_dn, lp_local);	/* check if parent of parent_dn is here */
+			if (rv == LDAP_SUCCESS) {			/* parent of parent_dn found in local LDAP */
+				/* lookup parent_dn object in remote LDAP */
+				rv = ldap_search_ext_s(lp->ld, parent_dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, NULL /*serverctrls*/, NULL /*clientctrls*/, &timeout, 0 /*sizelimit*/, &res);
+				if ( rv == LDAP_NO_SUCH_OBJECT ) {
+					 univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not find parent container of dn: %s from %s (%s)", dn, lp->host, ldap_err2string(rv));
+					ldap_memfree( parent_dn );
+					ldap_msgfree( res );
+					return rv;
+				} else { /* parent_dn found in remote LDAP */
+					cur=ldap_first_entry(lp->ld, res);
+					if (cur == NULL) {
+						/* entry exists (since we didn't get NO_SUCH_OBJECT),
+						 * but was probably excluded thru ACLs which makes it
+						 * non-existent for us */
+						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not get parent object of dn: %s from %s (%s)", dn, lp->host, ldap_err2string(rv));
+						ldap_memfree( parent_dn );
+						ldap_msgfree( res );
+						return LDAP_INSUFFICIENT_ACCESS;
+					} else { /* found data for parent_dn in remote LDAP */
+						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "change_update_entry for parent_dn: %s", parent_dn);
+						rv = change_update_entry(lp, id, cur, 'n');	/* add parent_dn object */
+						ldap_memfree( parent_dn );
+						ldap_msgfree( res );	// cur points into res
+						return rv;
+					}
+					return LDAP_OTHER; /* safetybelt, should not get here */
+				}
+				return LDAP_OTHER; /* safetybelt, should not get here */
+			}
+			return rv; /* check_parent_dn(parent_dn) failed, something is wrong with parent_dn */
+		}
+		return rv;	/* LDAP_SUCCESS or other than LDAP_NO_SUCH_OBJECT */
+	}
+	// univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "parent of DN: %s is in cache", dn);
+	ldap_memfree( parent_dn );
+	return LDAP_SUCCESS;
+}
+
 /* Update DN from LDAP; this is a higher level interface for
    change_update_entry  */
-int change_update_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, char command)
+int change_update_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, char command, univention_ldap_parameters_t *lp_local)
 {
 	LDAPMessage	*res,
 			*cur;
@@ -387,8 +491,12 @@ int change_update_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, 
 		} else {
 			/* entry exists, so make sure the schema is up-to-date and
 			 * then update it */
-			if ((rv = change_update_schema(lp)) == LDAP_SUCCESS)
-				rv = change_update_entry(lp, id, cur, command);
+			if ((rv = change_update_schema(lp)) == LDAP_SUCCESS) {
+				if (lp_local->host != NULL)     // we are a replicating system
+					rv = check_parent_dn(lp, id, dn, lp_local);
+				if ( rv == LDAP_SUCCESS )
+					rv = change_update_entry(lp, id, cur, command);
+			}
 		}
 	}
 
