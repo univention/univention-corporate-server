@@ -590,7 +590,7 @@ msgid ""
 "may consider to choose another image or continue if you are sure that it "
 "will not cause any problems."
 msgstr ""
-"Das ausgewählte Image wird bereits von der virtuellen Instanz $(domain)s "
+"Das ausgewählte Image wird bereits von der virtuellen Instanz %(domain)s "
 "verwendet. Sie sollten eventuell ein anderes Image wählen oder wenn Sie sich "
 "sicher sind, dass dies zu keinen Problemen führt, können Sie auch fortfahren."
 
