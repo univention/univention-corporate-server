@@ -215,7 +215,8 @@ chmod 755 "/sbin/start-stop-daemon"
 				touch "/ramdisk$n"
 			fi
 			mkdir -p "`dirname \"$n\"`"
-			ln -s "/ramdisk$n" "$n"
+			rm -f "$n" 
+			ln -sf "/ramdisk$n" "$n"
 	    fi
 	done
 
