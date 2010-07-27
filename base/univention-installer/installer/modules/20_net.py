@@ -63,6 +63,10 @@ class object(content):
 		#For more nameservers and dns-forwarders
 		self.dns={}
 
+	def depends(self):
+		return {'system_role': ['domaincontroller_master', 'domaincontroller_backup','domaincontroller_slave','memberserver','basesystem','managed_client','mobile_client'] }
+
+
 	def debug(self, txt):
 		info = inspect.getframeinfo(inspect.currentframe().f_back)[0:3]
 		line = info[1]
@@ -130,11 +134,6 @@ class object(content):
 			self.serversystem=False
 		else:
 			self.serversystem=True
-
-		if 'system_role' in self.all_results and not (self.all_results['system_role'] in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave']):
-			self.ask_forwarder=False
-		else:
-			self.ask_forwarder=True
 
 		for i in range(0,4):
 			if self.all_results.has_key('eth%d_type' % i) and (self.all_results['eth%d_type' % i] == 'dynamic' or self.all_results['eth%d_type' % i] == 'dhcp'):
@@ -472,6 +471,12 @@ class object(content):
 		self.elements.append(button(_('More'),self.minY+12,self.minX+(self.width)-4,align="right")) #11
 
 		proxyY=14
+
+		if 'system_role' in self.all_results and not (self.all_results['system_role'] in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave']):
+			self.ask_forwarder=False
+		else:
+			self.ask_forwarder=True
+
 		if self.ask_forwarder:
 			proxyY=16
 			# - DNS Forwarder
@@ -605,24 +610,6 @@ class object(content):
 
 	def helptext(self):
 		return _('Network \n \n In this module the network configuration is done. \n \n Select \"New Interface\" to add a new interface. Select \"New Virtual Interface\" to create a new virtual interface. \n \n Interface: \n Select the interface you want to configure. \n \n Dynamic (DHCP): \n Mark this field if you want this interface to retrieve its IP configuration via DHCP (Dynamic Host Configuration Protocol). \n \n Static: \n Mark this field if you want this interface to be configured manually. \n \n Enter IP, netmask, broadcast and network address of this interface. \n\n Gateway: \n Default gateway to be use. \n \n Name server: \n Enter the IP address of the primary name server, if you are adding a system to an existing domain. \n More: \n Enter additional name servers \n \n DNS Forwarder: \n Enter the IP address of a DNS server to forward queries to. \n More: \n Enter additional DNS forwarders \n \n HTTP-Proxy: \n Enter the IP address and port number for the HTTP-Proxy (example: http://192.168.1.123:5858)')
-
-	def draw(self):
-		self.debug('Drawing Main Window')
-		if len(self.elements) > 13:
-			self.container['Gateway']=[self.elements[8].result().strip()]
-			self.container['Nameserver']=[self.elements[10].result().strip()]
-			if self.ask_forwarder:
-				self.container['DNS-Forwarder']=[self.elements[13].result().strip()]
-				self.container['proxy_http']=[self.elements[16].result().strip()]
-			else:
-				self.container['proxy_http']=[self.elements[13].result().strip()]
-			if 'system_role' in self.all_results and not (self.all_results['system_role'] in 
-				['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave']):
-				self.ask_forwarder=False
-			else:
-				self.ask_forwarder=True
-			self.layout()
-		content.draw(self)
 
 	def modheader(self):
 		return _('Network')

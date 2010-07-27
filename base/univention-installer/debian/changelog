@@ -1,3 +1,9 @@
+univention-installer (6.0.36-1) unstable; urgency=low
+
+  * disable dns forwarder for non server roles fix Bug #13836
+
+ -- Felix Botner <botner@univention.de>  Tue, 27 Jul 2010 12:23:46 +0200
+
 univention-installer (6.0.35-1) unstable; urgency=low
 
   * remove (cd) entry from menu.lst in UCS installer to make pygrub
