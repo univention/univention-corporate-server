@@ -3,3 +3,4 @@ xend.init.patch
 ucs-xendomains.patch
 xend-restart-time.patch
 18690_xend_block.diff
+pygrub_empty_root.patch

@@ -1,3 +1,9 @@
+xen-3.4 (3.4.3-7) unstable; urgency=low
+
+  * ignore empty grub entry directive. Bug #18863
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Jul 2010 21:52:48 +0200
+
 xen-3.4 (3.4.3-6) unstable; urgency=low
 
   * added missing file debian/libxenstore3.0.dirs from last commit. Bug
