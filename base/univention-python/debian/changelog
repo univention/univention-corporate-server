@@ -1,3 +1,9 @@
+univention-python (5.0.2-1) unstable; urgency=low
+
+  * added password quality check python module. Bug #14943
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Jul 2010 07:17:16 +0200
+
 univention-python (5.0.1-1) unstable; urgency=low
 
   * Fix broken if-elif-else construct in uldap.py#modify (Bug #18926)

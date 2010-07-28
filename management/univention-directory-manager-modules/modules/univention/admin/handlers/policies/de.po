@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-26 11:24+0200\n"
+"POT-Creation-Date: 2010-07-27 20:21+0200\n"
 "PO-Revision-Date: 2009-11-09 15:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,7 +59,7 @@ msgstr "Univention Directory Manager Container Konfiguration"
 #: nfsmounts.py:66 policy.py:65 print_quota.py:69 printserver.py:66
 #: pwhistory.py:68 registry.py:63 release.py:66 repositoryserver.py:66
 #: repositorysync.py:67 share_userquota.py:69 slavepackages.py:67 sound.py:67
-#: thinclient.py:71 windowsinstallation.py:66 xfree.py:80
+#: thinclient.py:71 windowsinstallation.py:66 xfree.py:82
 msgid "Name"
 msgstr "Name"
 
@@ -74,10 +74,10 @@ msgstr "Verfügbare Univention Directory Manager Module"
 #: ldapserver.py:86 mailquota.py:86 maintenance.py:167
 #: managedclientpackages.py:97 masterpackages.py:97 memberpackages.py:97
 #: mobileclientpackages.py:97 nfsmounts.py:86 print_quota.py:109
-#: printserver.py:86 pwhistory.py:108 registry.py:83 release.py:96
+#: printserver.py:86 pwhistory.py:118 registry.py:83 release.py:96
 #: repositoryserver.py:86 repositorysync.py:127 share_userquota.py:119
 #: slavepackages.py:97 sound.py:97 thinclient.py:131 windowsinstallation.py:86
-#: xfree.py:210
+#: xfree.py:212
 msgid "Required object classes"
 msgstr "Benötigte Objektklassen"
 
@@ -88,10 +88,10 @@ msgstr "Benötigte Objektklassen"
 #: ldapserver.py:96 mailquota.py:96 maintenance.py:177
 #: managedclientpackages.py:107 masterpackages.py:107 memberpackages.py:107
 #: mobileclientpackages.py:107 nfsmounts.py:96 print_quota.py:119
-#: printserver.py:96 pwhistory.py:118 registry.py:93 release.py:106
+#: printserver.py:96 pwhistory.py:128 registry.py:93 release.py:106
 #: repositoryserver.py:96 repositorysync.py:137 share_userquota.py:129
 #: slavepackages.py:107 sound.py:107 thinclient.py:141
-#: windowsinstallation.py:96 xfree.py:220
+#: windowsinstallation.py:96 xfree.py:222
 msgid "Excluded object classes"
 msgstr "Ausgeschlossene Objektklassen"
 
@@ -102,10 +102,10 @@ msgstr "Ausgeschlossene Objektklassen"
 #: dhcp_statements.py:159 ldapserver.py:106 mailquota.py:106
 #: maintenance.py:187 managedclientpackages.py:117 masterpackages.py:117
 #: memberpackages.py:117 mobileclientpackages.py:117 nfsmounts.py:106
-#: print_quota.py:129 printserver.py:106 pwhistory.py:128 registry.py:103
+#: print_quota.py:129 printserver.py:106 pwhistory.py:138 registry.py:103
 #: release.py:116 repositoryserver.py:106 repositorysync.py:147
 #: share_userquota.py:139 slavepackages.py:117 sound.py:117 thinclient.py:151
-#: windowsinstallation.py:106 xfree.py:230
+#: windowsinstallation.py:106 xfree.py:232
 msgid "Fixed attributes"
 msgstr "Festgelegte Attribute"
 
@@ -116,7 +116,7 @@ msgstr "Festgelegte Attribute"
 #: dhcp_statements.py:169 ldapserver.py:116 mailquota.py:116
 #: maintenance.py:197 managedclientpackages.py:127 masterpackages.py:127
 #: memberpackages.py:127 mobileclientpackages.py:127 nfsmounts.py:116
-#: print_quota.py:139 printserver.py:116 pwhistory.py:138 registry.py:113
+#: print_quota.py:139 printserver.py:116 pwhistory.py:148 registry.py:113
 #: release.py:126 repositoryserver.py:116 repositorysync.py:157
 #: share_userquota.py:149 slavepackages.py:127 sound.py:127 thinclient.py:161
 #: windowsinstallation.py:116
@@ -128,10 +128,10 @@ msgstr "Leere Attribute"
 #: dhcp_routing.py:135 ldapserver.py:137 mailquota.py:137 maintenance.py:218
 #: managedclientpackages.py:148 masterpackages.py:148 memberpackages.py:148
 #: mobileclientpackages.py:148 nfsmounts.py:137 policy.py:75
-#: print_quota.py:160 printserver.py:137 pwhistory.py:159 registry.py:134
+#: print_quota.py:160 printserver.py:137 pwhistory.py:169 registry.py:134
 #: release.py:147 repositoryserver.py:137 repositorysync.py:178
 #: share_userquota.py:170 slavepackages.py:148 sound.py:148 thinclient.py:182
-#: windowsinstallation.py:137 xfree.py:398
+#: windowsinstallation.py:137 xfree.py:390
 msgid "General"
 msgstr "Allgemein"
 
@@ -146,10 +146,10 @@ msgstr "Univention Directory Manager Konfiguration"
 #: dhcp_statements.py:196 ldapserver.py:141 mailquota.py:141
 #: maintenance.py:226 managedclientpackages.py:153 masterpackages.py:153
 #: memberpackages.py:153 mobileclientpackages.py:153 nfsmounts.py:141
-#: print_quota.py:165 printserver.py:141 pwhistory.py:164 registry.py:138
+#: print_quota.py:165 printserver.py:141 pwhistory.py:174 registry.py:138
 #: release.py:151 repositoryserver.py:141 repositorysync.py:184
 #: share_userquota.py:175 slavepackages.py:153 sound.py:153 thinclient.py:188
-#: windowsinstallation.py:141 xfree.py:415
+#: windowsinstallation.py:141 xfree.py:407
 msgid "Object"
 msgstr "Objekt"
 
@@ -1051,9 +1051,13 @@ msgstr "Passwort-Länge"
 msgid "Policy: Passwords"
 msgstr "Richtlinie: Passwort"
 
-#: pwhistory.py:62 pwhistory.py:159
+#: pwhistory.py:62 pwhistory.py:169
 msgid "Passwords"
 msgstr "Passwort-Richtlinie"
+
+#: pwhistory.py:108
+msgid "Password quality check"
+msgstr "Passwort-Qualitätsprüfung"
 
 #: registry.py:56
 msgid "Policy: Univention Configuration Registry"
@@ -1253,7 +1257,7 @@ msgstr "Richtlinie: Windows-Installation"
 msgid "Windows installation"
 msgstr "Windows-Installation"
 
-#: xfree.py:45 xfree.py:338
+#: xfree.py:45 xfree.py:340
 msgid "Automatic detection"
 msgstr "Automatische Erkennung"
 
@@ -1261,125 +1265,128 @@ msgstr "Automatische Erkennung"
 msgid "Resolution"
 msgstr "Auflösung"
 
-#: xfree.py:47 xfree.py:114
+#: xfree.py:47
+msgid "secondaryresolution"
+msgstr "Auflösung"
+
+#: xfree.py:48 xfree.py:116
 msgid "Color depth"
 msgstr "Farbtiefe"
 
-#: xfree.py:48 xfree.py:126
+#: xfree.py:49 xfree.py:128
 msgid "Mouse protocol"
 msgstr "Maus Protokoll"
 
-#: xfree.py:49 xfree.py:138
+#: xfree.py:50 xfree.py:140
 msgid "Mouse device"
 msgstr "Mausanschluss"
 
-#: xfree.py:50 xfree.py:150
+#: xfree.py:51 xfree.py:53 xfree.py:152
 msgid "Keyboard layout"
 msgstr "Tastaturbelegung"
 
-#: xfree.py:51 xfree.py:162
+#: xfree.py:52 xfree.py:164
 msgid "Keyboard variant"
 msgstr "Variante der Tastaturbelegung"
 
-#: xfree.py:52 xfree.py:174
+#: xfree.py:54 xfree.py:176
 msgid "Horizontal sync"
 msgstr "Horizontale Synchronisation"
 
-#: xfree.py:53 xfree.py:186
+#: xfree.py:55 xfree.py:188
 msgid "Vertical refresh"
 msgstr "Vertikale Wiederholfrequenz"
 
-#: xfree.py:54 xfree.py:198
+#: xfree.py:56 xfree.py:200
 msgid "Graphics adapter driver"
 msgstr "Graphikkarten-Treiber"
 
-#: xfree.py:55
+#: xfree.py:57
 msgid "Display size"
 msgstr "Display-Grösse"
 
-#: xfree.py:56 xfree.py:262
+#: xfree.py:58 xfree.py:264
 msgid "Enable VNC export"
 msgstr "Erlaube VNC Display-Freigabe"
 
-#: xfree.py:57 xfree.py:273
+#: xfree.py:59 xfree.py:275
 msgid "Viewonly VNC export"
 msgstr "VNC Display-Freigabe nur anzeigen"
 
-#: xfree.py:58
+#: xfree.py:60
 msgid "Amount of RAM on the graphics adapter"
 msgstr "Die Größe des RAM auf der Grafikkarte"
 
-#: xfree.py:59
+#: xfree.py:61
 msgid "Primary display"
 msgstr "Primärer Monitor"
 
-#: xfree.py:60
+#: xfree.py:62
 msgid "Secondary display"
 msgstr "Sekundärer Monitor"
 
-#: xfree.py:61
+#: xfree.py:63
 msgid "Relative position of secondary display"
 msgstr "Relative Position des zweiten Monitors"
 
-#: xfree.py:62 xfree.py:284
+#: xfree.py:64 xfree.py:286
 msgid "Virtual size of dual monitor desktop"
 msgstr "Größe des virtuellen Desktops im Zwei-Monitor-Betrieb"
 
-#: xfree.py:73
+#: xfree.py:75
 msgid "Policy: Display"
 msgstr "Richtlinie: Display"
 
-#: xfree.py:74 xfree.py:398
+#: xfree.py:76 xfree.py:390
 msgid "Display settings"
 msgstr "Display-Einstellungen"
 
-#: xfree.py:90
+#: xfree.py:92
 msgid "Resolution of primary display"
 msgstr "Auflösung des primären Monitors"
 
-#: xfree.py:102
+#: xfree.py:104
 msgid "Resolution of secondary disaplay"
 msgstr "Auflösung des sekundären Monitors"
 
-#: xfree.py:240
+#: xfree.py:242
 msgid "Empty Attributes"
 msgstr "Leere Attribute"
 
-#: xfree.py:250
+#: xfree.py:252
 msgid "Display size (mm)"
 msgstr "Display-Grösse (mm)"
 
-#: xfree.py:295
+#: xfree.py:297
 msgid "Position of secondary disaplay"
 msgstr "Position des sekundären Monitors"
 
-#: xfree.py:306
+#: xfree.py:308
 msgid "Name of primary display"
 msgstr "Name des primären Monitor"
 
-#: xfree.py:317
+#: xfree.py:319
 msgid "Name of secondary display"
 msgstr "Name des sekundären Monitors"
 
-#: xfree.py:328
+#: xfree.py:330
 msgid "RAM on the graphics adapter in kB"
 msgstr "RAM auf der Grafikkarte in kB"
 
-#: xfree.py:357
+#: xfree.py:359
 msgid "General settings"
 msgstr "Basiseinstellungen"
 
-#: xfree.py:367
+#: xfree.py:369
 msgid "Input devices"
 msgstr "Eingabegeräte"
 
-#: xfree.py:377
-msgid "VNC"
-msgstr "VNC"
-
-#: xfree.py:387
+#: xfree.py:379
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
+
+#~ msgid "VNC"
+#~ msgstr "VNC"
 
 #~ msgid "Linux terminal server"
 #~ msgstr "Linux-Terminal-Server"

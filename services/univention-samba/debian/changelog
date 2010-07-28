@@ -1,3 +1,9 @@
+univention-samba (5.0.14-1) unstable; urgency=low
+
+  * use univention.password for password quality checks. Bug #14943
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jul 2010 21:12:19 +0200
+
 univention-samba (5.0.13-1) unstable; urgency=low
 
   [Roman Asendorf]

@@ -1,3 +1,9 @@
+univention-ldap (7.0.6-1) unstable; urgency=low
+
+  * added pwQualityCheck to control password quality checks. Bug #14943
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jul 2010 20:30:04 +0200
+
 univention-ldap (7.0.5-1) unstable; urgency=low
 
   * added ldap attribute for resolution of the secondary display in dual

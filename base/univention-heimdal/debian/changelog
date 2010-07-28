@@ -1,3 +1,9 @@
+univention-heimdal (4.0.1-1) unstable; urgency=low
+
+  * use univention.password for password quality checks. Bug #14943
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jul 2010 21:33:39 +0200
+
 univention-heimdal (4.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

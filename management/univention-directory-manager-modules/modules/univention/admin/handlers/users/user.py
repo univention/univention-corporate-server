@@ -50,6 +50,7 @@ import univention.admin.handlers.settings.prohibited_username
 import base64
 
 import univention.debug
+import univention.password
 
 translation=univention.admin.localization.translation('univention.admin.handlers.users')
 _=translation.translate
@@ -590,7 +591,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'overridePWLength': univention.admin.property(
-			short_description=_('Override password length'),
+			short_description=_('Override password check'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -2341,6 +2342,16 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						for i,j in self.alloc:
 							univention.admin.allocators.release(self.lo, self.position, i, j)
 						raise univention.admin.uexceptions.pwToShort, _('The password is too short, at least %d character!') %self.password_length
+			if pwhistoryPolicy != None and pwhistoryPolicy['pwQualityCheck'] != None and pwhistoryPolicy['pwQualityCheck'].lower() in ['true', '1']:
+				if self['overridePWLength'] != '1':
+					pwdCheck = univention.password.Check(self.lo)
+					pwdCheck.enableQualityCheck = True
+					try:
+						pwdCheck.check(self['password'])
+					except ValueError, e:
+						raise univention.admin.uexceptions.pwQuality, str(e).replace('W?rterbucheintrag','Wörterbucheintrag').replace('enth?lt', 'enthält')
+						
+					
 			if pwhistoryPolicy != None and pwhistoryPolicy['expiryInterval'] != None and len(pwhistoryPolicy['expiryInterval']) > 0:
 				try:
 					expiryInterval=int(pwhistoryPolicy['expiryInterval'])

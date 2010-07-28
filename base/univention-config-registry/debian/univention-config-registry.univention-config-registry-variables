@@ -447,3 +447,39 @@ Description[de]=PATH-Variable, die für alle univention-ucr-cron-Jobs gilt
 Description[en]=PATH variable set for all univention-ucr-cron jobs
 Type=str
 Categories=Misc
+
+[password/quality/credit/digist]
+Description[de]=Dies ist die minmale Anzahl von Zahlen, die in dem neuen Passwort vorkommen muss.
+Description[en]=This is the minimum number of digits that must be met for a new password.
+Type=str
+Categories=system-password
+
+[password/quality/credit/upper]
+Description[de]=Dies ist die minmale Anzahl von Grossbuchstaben, die in dem neuen Passwort vorkommen muss.
+Description[en]=This is the minimum number of upper case letters that must be met for a new password.
+Type=str
+Categories=system-password
+
+[password/quality/credit/lower]
+Description[de]=Dies ist die minimale Anzahl von Kleinbuchstaben, die in dem neuen Passwort vorkommen muss.
+Description[en]=This is the minimum number of lower case letters that must be met for a new password. 
+Type=str
+Categories=system-password
+
+[password/quality/credit/other]
+Description[de]=Dies ist die minimale Anzahl von anderen Zeichen, die in dem neuen Passwort vorkommen muss.
+Description[en]=This is the minimum number of other characters that must be met for a new password. 
+Type=str
+Categories=system-password
+
+[password/quality/forbidden/chars]
+Description[de]=Wenn eines der hier angegeben Zeichen Teil des Passworts ist, so wird das Passwort abgelehnt.
+Description[en]=If one of the given character part of the new password, then the password will be rejected.
+Type=str
+Categories=system-password
+
+[password/quality/requiered/chars]
+Description[de]=Eines der hier angegeben Zeichen muss Teil des Passworts sein, ansonsten wird das Passwort abgelehnt.
+Description[en]=One of the given characters must be part of the new password, otherwise the password will be rejected.
+Type=str
+Categories=system-password

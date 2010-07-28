@@ -44,7 +44,7 @@ class xfreeFixedAttributes(univention.admin.syntax.select):
 	choices=[
 		('univentionXAutoDetect',_('Automatic detection')),
 		('univentionXResolution',_('Resolution')),
-		('univentionXResolutionSecondary',_('secondaryresolution')),
+		('univentionXResolutionSecondary',_('Resolution of secondary disaplay')),
 		('univentionXColorDepth',_('Color depth')),
 		('univentionXMouseProtocol',_('Mouse protocol')),
 		('univentionXMouseDevice',_('Mouse device')),

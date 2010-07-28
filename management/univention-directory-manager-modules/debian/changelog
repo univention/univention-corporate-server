@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.16-1) unstable; urgency=low
+
+  * added pwQualityCheck to control password quality checks. Bug #14943
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jul 2010 20:29:43 +0200
+
 univention-directory-manager-modules (6.0.15-1) unstable; urgency=low
 
   * adjust dualhead syntax translation. Bug #12124

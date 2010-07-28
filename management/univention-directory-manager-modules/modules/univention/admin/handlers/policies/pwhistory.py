@@ -104,6 +104,16 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'pwQualityCheck': univention.admin.property(
+			short_description=_('Password quality check'),
+			long_description=_('Enables/disables password quality checks for example dictonaty entries'),
+			syntax=univention.admin.syntax.TrueFalseUp,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	'requiredObjectClasses': univention.admin.property(
 			short_description=_('Required object classes'),
 			long_description='',
@@ -159,7 +169,7 @@ layout=[
 	univention.admin.tab(_('General'),_('Passwords'), [
 		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('filler', hide_in_resultmode=1)],
 		[univention.admin.field('length'), univention.admin.field('expiryInterval') ],
-		[univention.admin.field('pwLength') ]
+		[univention.admin.field('pwLength'), univention.admin.field('pwQualityCheck') ]
 	]),
 	univention.admin.tab(_('Object'),_('Object'), [
 		[univention.admin.field('requiredObjectClasses') , univention.admin.field('prohibitedObjectClasses') ],
@@ -172,6 +182,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('length', 'univentionPWHistoryLen', None, univention.admin.mapping.ListToString)
 mapping.register('expiryInterval', 'univentionPWExpiryInterval', None, univention.admin.mapping.ListToString)
 mapping.register('pwLength', 'univentionPWLength', None, univention.admin.mapping.ListToString)
+mapping.register('pwQualityCheck', 'univentionPWQualityCheck', None, univention.admin.mapping.ListToString)
 mapping.register('requiredObjectClasses', 'requiredObjectClasses')
 mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
 mapping.register('fixedAttributes', 'fixedAttributes')

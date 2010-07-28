@@ -200,6 +200,9 @@ class invalidOptions(base):
 class pwToShort(base):
 	message=_('Password policy error: ')
 
+class pwQuality(base):
+	message=_('Password policy error: ')
+
 class invalidOperation(base):
 	message=_('This operation is not allowed on this object.')
 

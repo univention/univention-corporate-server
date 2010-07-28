@@ -72,6 +72,43 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.25.22;
 	mv /etc/logrotate.d/heimdal-kdc.new /etc/logrotate.d/heimdal-kdc
 fi
 
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1; then
+	if [ -n "$kerberos_password_quality_ascii_lowercase" ]; then
+		univention-config-registry set password/quality/ascii_lowercase="$kerberos_password_quality_ascii_lowercase"
+		univention-config-registry unset kerberos/password/quality/ascii_lowercase
+	fi
+	if [ -n "$kerberos_password_quality_ascii_uppercase" ]; then
+		univention-config-registry set password/quality/ascii_uppercase="$kerberos_password_quality_ascii_uppercase"
+		univention-config-registry unset kerberos/password/quality/ascii_uppercase
+	fi
+	if [ -n "$kerberos_password_quality_diff_ok" ]; then
+		univention-config-registry set password/quality/diff_ok="$kerberos_password_quality_diff_ok"
+		univention-config-registry unset kerberos/password/quality/diff_ok
+	fi
+	if [ -n "$kerberos_password_quality_dig_credit" ]; then
+		univention-config-registry set password/quality/credit/digist="$kerberos_password_quality_dig_credit"
+		univention-config-registry unset kerberos/password/quality/dig_credit
+	fi
+	if [ -n "$kerberos_password_quality_low_credit" ]; then
+		univention-config-registry set password/quality/credit/lower="$kerberos_password_quality_low_credit"
+		univention-config-registry unset kerberos/password/quality/low_credit
+	fi
+	if [ -n "$kerberos_password_quality_oth_credit" ]; then
+		univention-config-registry set password/quality/credit/other="$kerberos_password_quality_oth_credit"
+		univention-config-registry unset kerberos/password/quality/oth_credit
+	fi
+	if [ -n "$kerberos_password_quality_up_credit" ]; then
+		univention-config-registry set password/quality/credit/upper="$kerberos_password_quality_up_credit"
+		univention-config-registry unset kerberos/password/quality/up_credit
+	fi
+	if [ -n "$kerberos_password_quality_min_length" ]; then
+		univention-config-registry set password/quality/length/min="$kerberos_password_quality_min_length"
+		univention-config-registry unset kerberos/password/quality/min_length
+	fi
+fi
+
+univention-config-registry set kerberos/password/quality/check?yes
+
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.1.2-4; then
 	/usr/sbin/update-inetd --disable telnet		# enabled in heimdal-servers postinst
 fi
@@ -86,6 +123,7 @@ if [ "$1" = "configure" ]; then
 		/etc/init.d/univention-directory-listener crestart
 	fi
 fi
+
 
 exit 0
 

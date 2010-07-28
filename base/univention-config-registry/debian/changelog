@@ -1,3 +1,9 @@
+univention-config-registry (6.0.15-1) unstable; urgency=low
+
+  * added some password quality ucr descriptions. Bug #14943
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Jul 2010 06:51:09 +0200
+
 univention-config-registry (6.0.14-2) unstable; urgency=low
 
   * added syslog template (Bug #9510 #17853) 

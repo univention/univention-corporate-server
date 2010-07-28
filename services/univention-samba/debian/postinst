@@ -153,7 +153,8 @@ univention-config-registry set samba/script/adduser?true \
 				samba/guest_account?nobody \
 				samba/map_to_guest?"Bad User" \
 				samba/netlogon/sync?sync \
-				samba/domain/logons?auto
+				samba/domain/logons?auto \
+				samba/password/checkscript?"/usr/share/univention-samba/password_check %u"
 
 # remove the invalid users UCR settings which was set in earlier UCS installations
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.1-0; then
