@@ -36,30 +36,31 @@ log_action_msg "Setting up Thin Client policy configuration"
 
 eval $(univention-config-registry shell ldap/server/name ldap/hostdn)
 
-policy_file=$(mktemp)
-policy_file_result=$(mktemp)
+# get and set poliy
+policy="$(univention_policy_result -s -h $ldap_server_name -s "$ldap_hostdn" \
+| sed 's|fixedAttributes=[^ ]*||g')"
+eval ucr set $(echo "$policy")
 
-univention_policy_result -h $ldap_server_name -s "$ldap_hostdn" | sed 's|fixedAttributes=[^ ]*||;s|"||g' >$policy_file
-cat $policy_file | while read line; do
+# mapping
+eval "$policy"
+ucrMapping=$(while IFS== read var val; do
+        if [ ! "\$$var" = "\$" ]; then
+                # no value found
+                if [ -z "$val" ]; then
+                        continue
+                fi
+                # spaces are not allowed in var names -> remove them
+                var=${var// /}
+                if eval test -n \"\$${var}\"; then
+                        echo \"$val=\$${var}\"
+                fi
+        fi
+done < <(cat /etc/univention/templates/mapping/*.univention-config-registry-mapping))
 
-	# split the line a=b in a and b
-	var="${line%%=*}"
-	val="${line#*=}"
-
-	if [ -n "$var" ] && [ -n "$val" ]; then
-		new_value=$(grep "$var=" /etc/univention/templates/mapping/* | head -n 1 | sed -e 's|.*=||;s|"||g')
-		if [ -n "${new_value}" ]; then
-			echo $line | sed -e "s|${var}=|${new_value}=|g" >>$policy_file_result
-		else
-			echo $line >>$policy_file_result
-		fi
-	fi
-
-done
-
-cat $policy_file_result | while read line; do
-    univention-config-registry set "${line}"
-done
+# set mapping vars
+if [ -n "$ucrMapping" ]; then
+        eval ucr set $(echo "$ucrMapping")
+fi
 
 # interpret configuration registry policies
 /usr/lib/univention-directory-policy/univention-policy-update-config-registry --setall "$ldap_hostdn" >>/dev/tty8 2>&1

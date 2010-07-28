@@ -1,3 +1,10 @@
+univention-thin-client-basesystem (7.1.2-1) unstable; urgency=low
+
+  * fixed escaping for univention-config-registry policy mapping 
+    (Bug #18809)
+
+ -- Felix Botner <botner@univention.de>  Wed, 28 Jul 2010 12:36:32 +0200
+
 univention-thin-client-basesystem (7.1.1-1) unstable; urgency=low
 
   * adjust sources.list and merge a build fixx from UCS TCS scope. Bug
