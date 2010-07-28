@@ -139,6 +139,10 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 						ldap_unbind_ext(lp->ld, NULL, NULL);
 						lp->ld = NULL;
 					}
+					if (lp_local->ld != NULL) {
+						ldap_unbind_ext(lp_local->ld, NULL, NULL);
+						lp_local->ld = NULL;
+					}
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "running postrun handlers");
 					handlers_postrun_all();
 					timeout = DELAY_ALIVE;
