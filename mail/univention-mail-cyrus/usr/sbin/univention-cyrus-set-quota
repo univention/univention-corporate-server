@@ -32,24 +32,35 @@
 # <http://www.gnu.org/licenses/>.
 
 adminuser=0
-import os, string, pwd, grp, sys, univention_baseconfig, ldap, tempfile, posix
+import os, string, pwd, grp, sys, univention_baseconfig, ldap, tempfile, posix, subprocess, time
 from pexpect import *
 
 
-def usage():
-	print 'usage: univention-cyrus-set-quota <USERNAME>'
-	sys.exit(1)
 
 baseConfig = univention_baseconfig.baseConfig()
 baseConfig.load()
-
 
 cyrus_user='cyrus'
 
 if posix.environ.has_key('USER'):
 	user_name=posix.environ['USER']
+	if baseConfig.get('mail/cyrus/imap/quotaintervall') and baseConfig['mail/cyrus/imap/quotaintervall'] != "0":
+		if os.path.isfile('/var/cache/cyrusquota%s' % user_name):
+			currenttime = time.time()
+			currenttime = int(currenttime)
+			filetime = os.path.getmtime('/var/cache/cyrusquota%s' % user_name)
+			difference = currenttime - filetime # in seconds
+			minutes = difference/60
+			intervall = baseConfig['mail/cyrus/imap/quotaintervall']
+			if minutes < int(intervall):
+				sys.exit(0)
+			else:
+				os.utime('/var/cache/cyrusquota%s' % user_name, None)
+		else:
+			subprocess.Popen(['touch /var/cache/cyrusquota%s' % user_name], shell=True)
+
 else:
-	sys.exit(1)
+    sys.exit(1)
 
 if user_name == 'root' or user_name == 'cyrus':
 	sys.exit(0)
@@ -133,6 +144,23 @@ if univentionMQ != '0':
 			child.sendline(password)
 		elif i == 1:
 			child.sendline('setquota user/%s %s' % (mail, univentionMQ))
+			child.sendline('disc')
+			child.sendline('exit')
+		elif i == 2:
+			sys.exit(1)
+else:
+	password=open('/etc/cyrus.secret').read()
+	if password[-1] == '\n':
+		password=password[0:-1]
+
+	child = spawn('/usr/bin/cyradm -u %s localhost' % (cyrus_user))
+	i=0
+	while not i == 3:
+		i = child.expect(['IMAP Password:', '>', 'cyradm: cannot connect to server', EOF], timeout=60)
+		if i == 0:
+			child.sendline(password)
+		elif i == 1:
+			child.sendline('setquota user/%s none' % mail)
 			child.sendline('disc')
 			child.sendline('exit')
 		elif i == 2:

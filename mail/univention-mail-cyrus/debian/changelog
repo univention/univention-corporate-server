@@ -1,3 +1,9 @@
+univention-mail-cyrus (3.0.2-1) unstable; urgency=low
+
+  * added check interval for mailquota checks (Bug #15220) 
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 28 Jul 2010 11:10:59 +0200
+
 univention-mail-cyrus (3.0.1-1.1) unstable; urgency=low
 
   * fixed postinst, restart cyrus server (Bug #18814) 
