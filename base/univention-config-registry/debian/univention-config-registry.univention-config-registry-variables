@@ -478,7 +478,7 @@ Description[en]=If one of the given character part of the new password, then the
 Type=str
 Categories=system-password
 
-[password/quality/requiered/chars]
+[password/quality/required/chars]
 Description[de]=Eines der hier angegeben Zeichen muss Teil des Passworts sein, ansonsten wird das Passwort abgelehnt.
 Description[en]=One of the given characters must be part of the new password, otherwise the password will be rejected.
 Type=str

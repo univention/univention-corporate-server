@@ -1,3 +1,9 @@
+univention-python (5.0.3-1) unstable; urgency=low
+
+  * fixed typo in 'required'. Bug #14943
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Jul 2010 08:43:59 +0200
+
 univention-python (5.0.2-1) unstable; urgency=low
 
   * added password quality check python module. Bug #14943

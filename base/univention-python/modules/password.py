@@ -70,7 +70,7 @@ class Check:
 		if self.ConfigRegistry.get('password/quality/credit/other', '0'):
 			cracklib.oth_credit=int(self.ConfigRegistry.get('password/quality/credit/other', '0'))*-1
 		self.forbidden_chars=self.ConfigRegistry.get('password/quality/forbidden/chars', '')
-		self.requiered_chars=self.ConfigRegistry.get('password/quality/requiered/chars', '')
+		self.required_chars=self.ConfigRegistry.get('password/quality/required/chars', '')
 
 		# to be compatible with UCS 2.3 kerberos check_cracklib.py
 		if self.ConfigRegistry.get('password/quality/length/min', None):
@@ -114,13 +114,13 @@ class Check:
 			for c in self.forbidden_chars:
 				if c in password:
 					raise ValueError('Password contains forbidden characters')
-			if self.requiered_chars:
-				requiered_char = False
-				for c in self.requiered_chars:
-					if c in self.requiered_chars:
-						requiered_char = True
-				if not requiered_char:
-					raise ValueError('Password does not contain one of requierd characters: "%s"' % self.requiered_chars)
+			if self.required_chars:
+				required_char = False
+				for c in self.required_chars:
+					if c in self.required_chars:
+						required_char = True
+				if not required_char:
+					raise ValueError('Password does not contain one of required characters: "%s"' % self.required_chars)
 
 			cracklib.min_length=self.min_length
 
