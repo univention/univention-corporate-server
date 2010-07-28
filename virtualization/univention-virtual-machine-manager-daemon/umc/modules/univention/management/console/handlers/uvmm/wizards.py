@@ -256,7 +256,6 @@ class InstanceWizard( umcd.IWizard ):
 		self.uvmm = uvmmd.Client( auto_connect = False )
 		self.node = None
 		self.profile_syntax = DynamicSelect( _( 'Profiles' ) )
-		self.profile_syntax.update_choices( [ item[ 'name' ] for item in self.udm.get_profiles() ] )
 		self.drive_wizard = DriveWizard( command )
 		self.drive_wizard_active = False
 		self.actions[ 'new-drive' ] = self.new_drive
@@ -297,6 +296,9 @@ class InstanceWizard( umcd.IWizard ):
 				self.replace_title( _( 'Create a virtual instance (profile: %(profile)s)' ) % { 'profile' : object.options[ 'instance-profile' ] } )
 			else:
 				self.replace_title( _( 'Create a virtual instance <i>%(name)s</i>' ) % { 'name' : object.options[ 'name' ] } )
+		if self.current == None:
+			tech = self.node_uri[ : self.node_uri.find( ':' ) ]
+			self.profile_syntax.update_choices( [ item[ 'name' ] for item in self.udm.get_profiles( tech ) ] )
 		if self.current == 0:
 			self.profile = self.udm.get_profile( object.options[ 'instance-profile' ] )
 			ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: next: profile boot drives: %s' % str( self.profile[ 'bootdev' ] ) )

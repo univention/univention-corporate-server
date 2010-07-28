@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (0.9.67-1) unstable; urgency=low
+
+  * wizard: just show the profiles that matches the virtualization
+    technology of the node; Bug #18863
+  * fixed removing drives
+  * update translation
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 28 Jul 2010 15:54:06 +0200
+
 univention-virtual-machine-manager-daemon (0.9.66-1) unstable; urgency=low
 
   * better support for KVM

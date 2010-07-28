@@ -290,6 +290,13 @@ class Client( notifier.signals.Provider ):
 			raise ConnectionError()
 		return self.recv_blocking()
 
+	def __next_letter( self, char, exclude = [] ):
+		char = chr( ord( char ) + 1 )
+		while char in exclude:
+			char = chr( ord( char ) + 1 )
+
+		return char
+
 	def _verify_device_files( self, domain ):
 		cdrom_name = 'a'
 		cdrom_prefix = 'hd%s'
@@ -300,14 +307,30 @@ class Client( notifier.signals.Provider ):
 		elif domain.domain_type == 'kvm':
 			device_prefix = 'vd%s' # virtio instead of ide
 
+		dev_exclude = []
+		cdrom_exclude = []
 		for dev in domain.disks:
-			# CDROM drive  need to use the ide driver as booting from virtio devices does not work
+			if dev.target_dev:
+				if dev.device == node.Disk.DEVICE_CDROM and domain.domain_type == 'kvm':
+					cdrom_exclude.append( dev.target_dev[ -1 ] )
+				else:
+					dev_exclude.append( dev.target_dev[ -1 ] )
+
+		if cdrom_name in cdrom_exclude:
+			cdrom_name = self.__next_letter( cdrom_name, cdrom_exclude )
+		if dev_name in dev_exclude:
+			dev_name = self.__next_letter( dev_name, dev_exclude )
+
+		for dev in domain.disks:
+			# CDROM drive need to use the ide driver as booting from virtio devices does not work
 			if dev.device == node.Disk.DEVICE_CDROM and domain.domain_type == 'kvm':
-				dev.target_dev = cdrom_prefix % cdrom_name
-				cdrom_name = chr( ord( cdrom_name ) + 1 )
+				if not dev.target_dev:
+					dev.target_dev = cdrom_prefix % cdrom_name
+				cdrom_name = self.__next_letter( cdrom_name, cdrom_exclude )
 			else:
-				dev.target_dev = device_prefix % dev_name
-				dev_name = chr( ord( dev_name ) + 1 )
+				if not dev.target_dev:
+					dev.target_dev = device_prefix % dev_name
+				dev_name = self.__next_letter( dev_name, dev_exclude )
 
 	def domain_configure( self, node, data ):
 		req = protocol.Request_DOMAIN_DEFINE()

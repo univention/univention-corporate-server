@@ -73,7 +73,7 @@ drive_type = umcd.make( ( 'type', DriveTypeSelect( _( 'Type' ) ) ), attributes =
 drive_uri = umcd.make( ( 'uri', umc.String( 'URI' ) ), attributes = { 'width' : '250' } )
 drive_dev = umcd.make( ( 'dev', umc.String( _( 'Drive' ) ) ), attributes = { 'width' : '250' } )
 
-boot_dev = umcd.make( ( 'bootdev', BootDeviceSelect( _( 'Boot device' ) ) ), attributes = { 'width' : '200' } )
+boot_dev = umcd.make( ( 'bootdev', BootDeviceSelect( _( 'Boot order' ) ) ), attributes = { 'width' : '200' } )
 
 dest_node_select = NodeSelect( _( 'Destination host' ) )
 arch_select = ArchSelect( _( 'Architecture' ) )
@@ -157,7 +157,7 @@ command_description = {
 				   'initrd' : umc.String( _( 'RAM disk' ), required = False ),
 				   'cmdline' : umc.String( _( 'Kernel parameter' ), required = False ),
 				   'kernel' : umc.String( _( 'Kernel' ), required = False ),
-				   'bootdevs' : umc.StringList( _( 'Boot device' ), required = False ),
+				   'bootdevs' : umc.StringList( _( 'Boot order' ), required = False ),
 				   },
 		),
 	'uvmm/domain/migrate': umch.command(
@@ -271,7 +271,7 @@ class handler( umch.simpleHandler ):
 		if refresh == 'group' and opts[ refresh ] == 'default':
 			text = _( 'Physical servers' )
 		else:
-			text = object.options[ key ]
+			text = object.options[ refresh ]
 		row.append( umcd.Cell( umcd.Text( text ), attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) )
 
 		reload_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % refresh, options = copy.copy( opts ) )
@@ -526,12 +526,12 @@ class handler( umch.simpleHandler ):
 		if domain_info and domain_info.disks:
 			defaults = []
 			overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = copy.copy( object.options ) )
-			remove_cmd = umcp.SimpleCommand( 'uvmm/drive/remove', options = copy.copy( object.options ) )
-			bootdev_cmd = umcp.SimpleCommand( 'uvmm/drive/bootdevice', options = copy.copy( object.options ) )
-			remove_cmd.options[ 'disk' ] = None
 			storage_volumes = {}
 			first = True
 			for dev in domain_info.disks:
+				remove_cmd = umcp.SimpleCommand( 'uvmm/drive/remove', options = copy.copy( object.options ) )
+				bootdev_cmd = umcp.SimpleCommand( 'uvmm/drive/bootdevice', options = copy.copy( object.options ) )
+				remove_cmd.options[ 'disk' ] = None
 				values = {}
 				values[ 'type' ] = self._drive_name( dev.device )
 				values[ 'image' ] = os.path.basename( dev.source )
@@ -552,11 +552,11 @@ class handler( umch.simpleHandler ):
 				else:
 					values[ 'size' ] = MemorySize.num2str( dev.size )
 
-				remove_cmd.options[ 'disk' ] = dev.source
-				remove_btn = umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd, options = { 'disk' : dev.source } ), umcd.Action( overview_cmd ) ] )
+				remove_cmd.options[ 'disk' ] = copy.copy( dev.source )
+				remove_btn = umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd ), umcd.Action( overview_cmd ) ] )
 				if not first:
 					bootdev_cmd.options[ 'disk' ] = dev.source
-					bootdev_btn = umcd.LinkButton( _( 'Boot device' ), actions = [ umcd.Action( bootdev_cmd, options = { 'disk' : dev.source } ), umcd.Action( overview_cmd ) ] )
+					bootdev_btn = umcd.LinkButton( _( 'Set as boot device' ), actions = [ umcd.Action( bootdev_cmd, options = { 'disk' : dev.source } ), umcd.Action( overview_cmd ) ] )
 					disk_list.add_row( [ values[ 'type' ], values[ 'image' ], values[ 'size' ], values[ 'pool' ], [ remove_btn, bootdev_btn ] ] )
 				else:
 					disk_list.add_row( [ values[ 'type' ], values[ 'image' ], values[ 'size' ], values[ 'pool' ], [ remove_btn, ] ] )
