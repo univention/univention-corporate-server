@@ -295,6 +295,7 @@ class Client( notifier.signals.Provider ):
 		while char in exclude:
 			char = chr( ord( char ) + 1 )
 
+		exclude.append( char )
 		return char
 
 	def _verify_device_files( self, domain ):
@@ -326,11 +327,11 @@ class Client( notifier.signals.Provider ):
 			if dev.device == node.Disk.DEVICE_CDROM and domain.domain_type == 'kvm':
 				if not dev.target_dev:
 					dev.target_dev = cdrom_prefix % cdrom_name
-				cdrom_name = self.__next_letter( cdrom_name, cdrom_exclude )
+					cdrom_name = self.__next_letter( cdrom_name, cdrom_exclude )
 			else:
 				if not dev.target_dev:
 					dev.target_dev = device_prefix % dev_name
-				dev_name = self.__next_letter( dev_name, dev_exclude )
+					dev_name = self.__next_letter( dev_name, dev_exclude )
 
 	def domain_configure( self, node, data ):
 		req = protocol.Request_DOMAIN_DEFINE()

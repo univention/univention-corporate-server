@@ -560,7 +560,7 @@ class handler( umch.simpleHandler ):
 					disk_list.add_row( [ values[ 'type' ], values[ 'image' ], values[ 'size' ], values[ 'pool' ], [ remove_btn, bootdev_btn ] ] )
 				else:
 					disk_list.add_row( [ values[ 'type' ], values[ 'image' ], values[ 'size' ], values[ 'pool' ], [ remove_btn, ] ] )
-				if domain_info.os_type != 'xen':
+				if domain_info.os_type == 'xen':
 					first = False
 
 		drive_sec.add_row( [disk_list ] )
@@ -651,7 +651,11 @@ class handler( umch.simpleHandler ):
 		infos.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Operating System' ) ), getattr(domain_info, 'annotations', {}).get('os', '' ) ] )
 
 		stats = umcd.List()
-		mem_usage = percentage( int( float( domain_info.curMem ) / domain_info.maxMem * 100 ), label = '%s / %s' % ( MemorySize.num2str( domain_info.curMem ), MemorySize.num2str( domain_info.maxMem ) ), width = 130 )
+		if domain_info.maxMem:
+			pct = int( float( domain_info.curMem ) / domain_info.maxMem * 100 )
+		else:
+			pct = 0
+		mem_usage = percentage( pct, label = '%s / %s' % ( MemorySize.num2str( domain_info.curMem ), MemorySize.num2str( domain_info.maxMem ) ), width = 130 )
 		cpu_usage = percentage( float( domain_info.cputime[ 0 ] ) / 10, width = 130 )
 		stats.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Memory usage' ) ), mem_usage ] )
 		stats.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'CPU usage' ) ), cpu_usage ] )

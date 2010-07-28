@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (0.9.68-1) unstable; urgency=low
+
+  * instance wizard: move cdrom drive of para-virtualized machines to
+    first position in configuration; Bug #18863
+  * fixed a traceback in calculation of current memory usage
+  * fixed caluation of next free drive letter
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 28 Jul 2010 19:38:52 +0200
+
 univention-virtual-machine-manager-daemon (0.9.67-1) unstable; urgency=low
 
   * wizard: just show the profiles that matches the virtualization

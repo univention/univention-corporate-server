@@ -416,6 +416,15 @@ class InstanceWizard( umcd.IWizard ):
 			# drives
 			domain.disks = self.drives
 			self.uvmm._verify_device_files( domain )
+			# on PV machines we should move the CDROM drive to first position
+			if domain.os_type == 'xen':
+				new_disks = []
+				for dev in domain.disks:
+					if dev.device == uvmmn.Disk.DEVICE_DISK:
+						new_disks.append( dev )
+					else:
+						new_disks.insert( 0, dev )
+			domain.disks = new_disks
 			# network interface
 			if object.options[ 'interface' ]:
 				iface = uvmmn.Interface()
