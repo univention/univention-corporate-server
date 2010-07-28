@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.17-1) unstable; urgency=low
+
+  * do not remove disable state while setting password via univention-
+    passwd. Bug #18825
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Jul 2010 08:02:17 +0200
+
 univention-directory-manager-modules (6.0.16-1) unstable; urgency=low
 
   * added pwQualityCheck to control password quality checks. Bug #14943

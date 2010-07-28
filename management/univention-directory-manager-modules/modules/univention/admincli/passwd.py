@@ -107,7 +107,6 @@ def doit(arglist):
 			object['password']=unicode(pwd)
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'univention-passwd: passwd set, modify object')
-		object['disabled']='0'
 		dn=object.modify()
 
 		out.append('password changed')
@@ -149,7 +148,6 @@ def doit(arglist):
 						object['password']=unicode(pwd)
 
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'univention-passwd: passwd set, modify object')
-					object['disabled']='0'
 					object['overridePWHistory']='1'
 					object['overridePWLength']='1'
 					dn=object.modify()
