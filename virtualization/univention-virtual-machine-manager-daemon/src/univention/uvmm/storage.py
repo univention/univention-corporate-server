@@ -64,6 +64,7 @@ def create_storage_pool(conn, dir, pool_name='default'):
 	try:
 		p = conn.storagePoolDefineXML(xml, 0)
 		p.setAutostart(True)
+		p.create( 0 )
 	except libvirt.libvirtError, e:
 		raise StorageError(_('Error creating storage pool "%(pool)s" for "%(domain)s": %(error)s'), pool=pool_name, domain=domain.name, error=e)
 

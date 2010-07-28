@@ -37,11 +37,14 @@ import time
 import notifier
 import notifier.signals
 
+import univention.management.console as umc
 import univention.management.console.tools as umct
 
-from univention.uvmm import protocol
+from univention.uvmm import protocol, node
 
 import univention.debug as ud
+
+_ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
 class ConnectionError( Exception ):
 	pass
@@ -288,10 +291,23 @@ class Client( notifier.signals.Provider ):
 		return self.recv_blocking()
 
 	def _verify_device_files( self, domain ):
+		cdrom_name = 'a'
+		cdrom_prefix = 'hd%s'
 		dev_name = 'a'
+		device_prefix = 'hd%s'
+		if domain.domain_type == 'xen' and domain.bootloader:
+			device_prefix = 'xvd%s'
+		elif domain.domain_type == 'kvm':
+			device_prefix = 'vd%s' # virtio instead of ide
+
 		for dev in domain.disks:
-			dev.target_dev = 'hd%s' % dev_name
-			dev_name = chr( ord( dev_name ) + 1 )
+			# CDROM drive  need to use the ide driver as booting from virtio devices does not work
+			if dev.device == node.Disk.DEVICE_CDROM and domain.domain_type == 'kvm':
+				dev.target_dev = cdrom_prefix % cdrom_name
+				cdrom_name = chr( ord( cdrom_name ) + 1 )
+			else:
+				dev.target_dev = device_prefix % dev_name
+				dev_name = chr( ord( dev_name ) + 1 )
 
 	def domain_configure( self, node, data ):
 		req = protocol.Request_DOMAIN_DEFINE()

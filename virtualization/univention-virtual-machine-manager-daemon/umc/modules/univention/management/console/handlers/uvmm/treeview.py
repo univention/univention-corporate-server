@@ -102,11 +102,15 @@ class TreeView( object ):
 				options[ opt ] = item
 				if level == 2:
 					node_uri = uvmm.node_name2uri( item )
-					icon = 'uvmm/node-off'
+					# FIXME: need to know to virtualization technology of offline nodes
+					icon = 'uvmm/node-kvm-off'
 					try:
 						node_info = get_node_info(node_uri)
 						if node_info.last_try == node_info.last_update:
-							icon = 'uvmm/node'
+							if node_uri.startswith( 'xen:' ):
+								icon = 'uvmm/node-xen'
+							else:
+								icon = 'uvmm/node-kvm'
 					except Exception, e:
 						pass
 					# remove domain name from hostname
@@ -125,6 +129,9 @@ class TreeView( object ):
 							elif domain_info.state in ( 3, ):
 								icon = 'uvmm/domain-paused'
 							break
+				# FIXME: should be removed if UVVMd supports groups
+				if level == 1 and item == 'default':
+					item = _( 'Physical servers' )
 				link = TreeView.button_create( item, icon, command, options, current )
 				treedata.append( link )
 			else: # list or tuple

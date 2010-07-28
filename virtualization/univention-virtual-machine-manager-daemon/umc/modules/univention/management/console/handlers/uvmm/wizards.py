@@ -412,15 +412,8 @@ class InstanceWizard( umcd.IWizard ):
 				gfx.keymap = object.options[ 'kblayout' ]
 				domain.graphics = [ gfx, ]
 			# drives
-			dev_name = 'a'
-			if domain.bootloader:
-				device_prefix = 'xvd%s'
-			else:
-				device_prefix = 'hd%s'
-			for dev in self.drives:
-				dev.target_dev = device_prefix % dev_name
-				dev_name = chr( ord( dev_name ) + 1 )
 			domain.disks = self.drives
+			self.uvmm._verify_device_files( domain )
 			# network interface
 			if object.options[ 'interface' ]:
 				iface = uvmmn.Interface()

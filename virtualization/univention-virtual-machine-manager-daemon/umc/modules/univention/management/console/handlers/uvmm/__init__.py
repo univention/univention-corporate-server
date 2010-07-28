@@ -257,12 +257,22 @@ class handler( umch.simpleHandler ):
 		for key in keys[ : -1 ]:
 			opts[ key ] = object.options[ key ]
 			cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % key , options = copy.copy( opts ) )
-			lnk = umcd.LinkButton( object.options[ key ] , actions = [ umcd.Action( cmd ) ] )
+			# FIXME: should be removed if UVMMd supports groups
+			if key == 'group' and object.options[ key ] == 'default':
+				text = _( 'Physical servers' )
+			else:
+				text = object.options[ key ]
+			lnk = umcd.LinkButton( text , actions = [ umcd.Action( cmd ) ] )
 			row.append( umcd.Cell( lnk, attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) )
 			row.append( slash )
 		refresh = keys[ -1 ]
 		opts[ keys[ -1 ] ] = object.options[ keys[ -1 ] ]
-		row.append( umcd.Cell( umcd.Text( object.options[ keys[ -1 ] ] ), attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) )
+		# FIXME: should be removed if UVMMd supports groups
+		if refresh == 'group' and opts[ refresh ] == 'default':
+			text = _( 'Physical servers' )
+		else:
+			text = object.options[ key ]
+		row.append( umcd.Cell( umcd.Text( text ), attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) )
 
 		reload_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % refresh, options = copy.copy( opts ) )
 		reload_btn = umcd.LinkButton( _( 'Refresh' ), 'actions/refresh', actions = [ umcd.Action( reload_cmd ) ] )
@@ -274,7 +284,7 @@ class handler( umch.simpleHandler ):
 	def uvmm_overview( self, object ):
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object )
 		if success:
-			res.dialog[ 0 ].set_dialog( umcd.ModuleDescription( 'Univention Virtual Machine Manager', _( 'This UMC module provides a management system for virtualization hosts that are registered within the UCS domain.\nThe tree view on the left side shows an overview of all existing physical servers and the residing virtual instances. By selecting one of the physical servers statistics of the current state are displayed to get an impression of the health of the hardware system. Additionally actions like start, stop, suspend and resume for each virtual instance can be invoked on each of the instances.\nAlso possible is the remote access to virtual instances via VNC. Therefor it must be activated in the configuration.\nEach virtual instance entry in the tree view provides access to detailed information und gives the possibility to change the configuration or state and migrated it to another physical server.' ) ) )
+			res.dialog[ 0 ].set_dialog( umcd.ModuleDescription( 'Univention Virtual Machine Manager (UVMM)', _( 'This module provides a management interface for physical servers that are registered within the UCS domain.\nThe tree view on the left side shows an overview of all existing physical servers and the residing virtual instances. By selecting one of the physical servers statistics of the current state are displayed to get an impression of the health of the hardware system. Additionally actions like start, stop, suspend and resume for each virtual instance can be invoked on each of the instances.\nAlso possible is the remote access to virtual instances via VNC. Therefor it must be activated in the configuration.\nEach virtual instance entry in the tree view provides access to detailed information und gives the possibility to change the configuration or state and migrated it to another physical server.' ) ) )
 		self.finished( object.id(), res )
 
 	def uvmm_group_overview( self, object ):
@@ -510,7 +520,7 @@ class handler( umch.simpleHandler ):
 		drive_sec = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
 		opts = copy.copy( object.options )
 		cmd = umcp.SimpleCommand( 'uvmm/drive/create', options = opts )
-		drive_sec.add_row( [ umcd.LinkButton( _( 'New Drive' ), actions = [ umcd.Action( cmd ), ] ) ] )
+		drive_sec.add_row( [ umcd.LinkButton( _( 'Add new drive' ), actions = [ umcd.Action( cmd ), ] ) ] )
 		disk_list = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
 		disk_list.set_header( [ _( 'Type' ), _( 'Image' ), _( 'Size' ), _( 'Pool' ), '' ] )
 		if domain_info and domain_info.disks:
@@ -653,8 +663,9 @@ class handler( umch.simpleHandler ):
 		tab = umcd.List()
 		tab.add_row( [ infos, stats ] )
 
-		blind_table.add_row( [ umcd.Section( _( 'Virtual instance %(domain)s' ) % { 'domain' : domain_info.name }, tab ) ] )
-		blind_table.add_row( [ umcd.Cell( umcd.Section( 'Operations', ops ) ) ] )
+		tech = '%s-%s' % ( domain_info.domain_type, domain_info.os_type )
+		blind_table.add_row( [ umcd.Section( _( 'Virtual instance %(domain)s - <i>%(tech)s</i>' ) % { 'domain' : domain_info.name, 'tech' : VirtTechSelect.MAPPING[ tech ] }, tab ) ] )
+		blind_table.add_row( [ umcd.Cell( umcd.Section( _( 'Operations' ), ops ) ) ] )
 
 		content = self._dlg_domain_settings( object, node, domain_info )
 		blind_table.add_row( [ content ] )

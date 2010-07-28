@@ -47,7 +47,7 @@ import univention.admin.uexceptions
 import traceback
 from univention.uvmm.eventloop import *
 import threading
-from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_all_storage_volumes, StorageError, storage_pools
+from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_all_storage_volumes, StorageError, storage_pools, get_storage_pool_info
 from protocol import Data_Domain, Data_Node
 import os
 
@@ -326,6 +326,9 @@ class Domain(object):
 			type = os.getElementsByTagName( 'type' )
 			if type and type[ 0 ].firstChild and type[ 0 ].firstChild.nodeValue:
 				self.pd.os_type = type[0].firstChild.nodeValue
+				# we should use the identifier xen instead of linux
+				if self.pd.os_type == 'linux':
+					self.pd.os_type = 'xen'
 				if type[ 0 ].hasAttribute( 'arch' ):
 					self.pd.arch = type[0].getAttribute('arch')
 			kernel = os.getElementsByTagName( 'kernel' )
@@ -814,10 +817,10 @@ def domain_define( uri, domain ):
 		elem.setAttribute( 'device', disk.map_device( id = disk.device ) )
 		devices.appendChild( elem )
 
-		# FIXME: KVM doesn't like it
-		driver = doc.createElement( 'driver' )
-		driver.setAttribute( 'name', disk.driver )
-		elem.appendChild( driver )
+		# FIXME: KVM doesn't like it -> Xen/libvirt adds this automatically
+		# driver = doc.createElement( 'driver' )
+		# driver.setAttribute( 'name', disk.driver )
+		# elem.appendChild( driver )
 
 		source = doc.createElement( 'source' )
 		source.setAttribute( 'file', disk.source )
@@ -826,7 +829,8 @@ def domain_define( uri, domain ):
 		# FIXME: Xen-PV should use xvd[a-z], Kvm-VirtIO uses vd[a-z]
 		target = doc.createElement( 'target' )
 		target.setAttribute( 'dev', disk.target_dev )
-		target.setAttribute( 'bus', disk.target_bus )
+		# TODO: Xen an KVM have their default based on the device names
+		# target.setAttribute( 'bus', disk.target_bus )
 		elem.appendChild( target )
 
 		if disk.readonly:
