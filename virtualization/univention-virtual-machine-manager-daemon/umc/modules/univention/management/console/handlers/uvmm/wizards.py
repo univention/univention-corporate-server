@@ -309,6 +309,9 @@ class InstanceWizard( umcd.IWizard ):
 			object.options[ 'vnc' ] = self.profile[ 'vnc' ]
 			object.options[ 'kblayout' ] = self.profile[ 'kblayout' ]
 			object.options[ 'interface' ] = self.profile[ 'interface' ]
+			object.options[ 'kernel' ] = self.profile[ 'kernel' ]
+			object.options[ 'cmdline' ] = self.profile[ 'kernel_parameter' ]
+			object.options[ 'initrd' ] = self.profile[ 'initramfs' ]
 		if self.current == 1:
 			if object.options[ 'name' ] == self.profile[ 'name_prefix' ]:
 				return umcd.WizardResult( False, _( 'You should modify the name of the virtual instance' ) )
@@ -388,7 +391,7 @@ class InstanceWizard( umcd.IWizard ):
 			domain.domain_type, domain.os_type = object.options[ 'type' ].split( '-' )
 			# check configuration for para-virtualized machines
 			if domain.os_type == 'xen':
-				if self.profile[ 'advkernelconf' ] == 'FALSE': # use pyGrub
+				if self.profile[ 'advkernelconf' ] != 'TRUE': # use pyGrub
 					domain.bootloader = '/usr/bin/pygrub'
 				else:
 					domain.kernel = object.options[ 'kernel' ]
