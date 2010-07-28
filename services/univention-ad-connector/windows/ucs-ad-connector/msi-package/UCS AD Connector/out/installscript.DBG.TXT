@@ -24,14 +24,14 @@
 #####################################################################################
  
  
-[26.07.2010  8:47:19,61 - Diagnostic info cmd]: cscript.exe //NoLogo "C:\Programme\MakeMsi\VersionInformationBox.vbs" 
+[28.07.2010 14:38:00,80 - Diagnostic info cmd]: cscript.exe //NoLogo "C:\Programme\MakeMsi\VersionInformationBox.vbs" 
 
 This computer has Windows Installer 3.0.3790.2538 and WSH 5.6 on Microsoft Windows XP (5.1.2600 Service Pack 2)
 
 MAKEMSI is at version 10.169
                             
                             
-[26.07.2010  8:47:20,30 - Diagnostic info cmd]: set 
+[28.07.2010 14:38:01,26 - Diagnostic info cmd]: set 
 ALLUSERSPROFILE=C:\Dokumente und Einstellungen\All Users
 APPDATA=C:\Dokumente und Einstellungen\stegoh\Anwendungsdaten
 BuffSize=32000
@@ -80,15 +80,15 @@ USERPROFILE=C:\Dokumente und Einstellungen\stegoh
 windir=C:\WINDOWS
                             
                             
-[26.07.2010  8:47:20,80 - CMD]: chcp 1252 
+[28.07.2010 14:38:01,35 - CMD]: chcp 1252 
 Aktive Codepage: 1252.
              
-[26.07.2010  8:47:20,91 - CMD]: reg4mm.exe PPWIZ4MM.4MM '/ConsoleFile:+out\installscript.DBG.TXT' /ErrorFile: /OTHER 'installscript.mm' /Define:MmMode=P /DeleteOnError:N '/Output:out\*.*\IgnoreMe.txt' /Sleep:0,0 '/BuildTitle:/OTHER/Building from {x22}{IS}{x22}' /option:Tabs='4' /IncludePath=*MAKEMSI_USER_FILES_PATH;*MAKEMSI_COMPANY_SUPPORT_DIR;  
+[28.07.2010 14:38:01,48 - CMD]: reg4mm.exe PPWIZ4MM.4MM '/ConsoleFile:+out\installscript.DBG.TXT' /ErrorFile: /OTHER 'installscript.mm' /Define:MmMode=P /DeleteOnError:N '/Output:out\*.*\IgnoreMe.txt' /Sleep:0,0 '/BuildTitle:/OTHER/Building from {x22}{IS}{x22}' /option:Tabs='4' /IncludePath=*MAKEMSI_USER_FILES_PATH;*MAKEMSI_COMPANY_SUPPORT_DIR;  
                  
 
 
 *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
-                        Monday, 26 Jul 2010 8:47:22am
+                       Wednesday, 28 Jul 2010 2:38:03pm
 *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
 
 []---------------------------------------------------------[]
@@ -287,12 +287,12 @@ Building from "installscript.mm"
          * Reading: C:\Programme\MakeMsi\COMPANY.MMH
            - Making: out\installscript.mm\Log\Pass1+2.vbs
 
-           08:47:34  Script : COMPANY.MMH(182) - @VBS0001
-           08:47:34  Command: <$COMPANY_GET_TEMPLATE_AND_OPEN_MSI>
+           14:38:20  Script : COMPANY.MMH(182) - @VBS0001
+           14:38:20  Command: <$COMPANY_GET_TEMPLATE_AND_OPEN_MSI>
 
              >> Row Command for table: LaunchCondition
                 >> Condition       = NoSuchProperty.so.always.false
-                >> Description     = This MSI can't be installed as a MAKEMSI build or update did not successfully complete. <?xCRLF><?xCRLF>The failing script "installscript.mm" was executed at Mon Jul 26 2010 at 8:47:21am.
+                >> Description     = This MSI can't be installed as a MAKEMSI build or update did not successfully complete. <?xCRLF><?xCRLF>The failing script "installscript.mm" was executed at Wed Jul 28 2010 at 2:38:02pm.
                 >> @Validate       = NEW -MISSINGDATA
                    >> @Validate mode: NEW -MISSINGDATA
 
@@ -304,16 +304,16 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(225) - @VBS0016
-           08:47:34  Command: <$Summary "Security" *Value=^<$COMPANY_SECURITY_VALUE_VBEXP>^>
+           14:38:20  Script : COMPANY.MMH(225) - @VBS0016
+           14:38:20  Command: <$Summary "Security" *Value=^<$COMPANY_SECURITY_VALUE_VBEXP>^>
 
 
-           08:47:34  Script : COMPANY.MMH(256) - @VBS0017
-           08:47:34  Command: <$Table "Error">
+           14:38:20  Script : COMPANY.MMH(256) - @VBS0017
+           14:38:20  Command: <$Table "Error">
 
 
-           08:47:34  Script : COMPANY.MMH(258) - @VBS0018
-           08:47:34  Command: <$@@ErrorMsg "1335">
+           14:38:20  Script : COMPANY.MMH(258) - @VBS0018
+           14:38:20  Command: <$@@ErrorMsg "1335">
 
              >> Row Command for table: Error
                 >> Error           = 1335
@@ -321,8 +321,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(261) - @VBS0020
-           08:47:34  Command: <$@@ErrorMsg "1720">
+           14:38:20  Script : COMPANY.MMH(261) - @VBS0020
+           14:38:20  Command: <$@@ErrorMsg "1720">
 
              >> Row Command for table: Error
                 >> Error           = 1720
@@ -330,8 +330,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(262) - @VBS0022
-           08:47:34  Command: <$@@ErrorMsg "2740">
+           14:38:20  Script : COMPANY.MMH(262) - @VBS0022
+           14:38:20  Command: <$@@ErrorMsg "2740">
 
              >> Row Command for table: Error
                 >> Error           = 2740
@@ -339,8 +339,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(265) - @VBS0024
-           08:47:34  Command: <$@@ErrorMsg "2705"> ;;ICE03 error at validation time, but if not validating...
+           14:38:20  Script : COMPANY.MMH(265) - @VBS0024
+           14:38:20  Command: <$@@ErrorMsg "2705"> ;;ICE03 error at validation time, but if not validating...
 
              >> Row Command for table: Error
                 >> Error           = 2705
@@ -348,8 +348,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(268) - @VBS0026
-           08:47:34  Command: <$@@ErrorMsg "1721">
+           14:38:20  Script : COMPANY.MMH(268) - @VBS0026
+           14:38:20  Command: <$@@ErrorMsg "1721">
 
              >> Row Command for table: Error
                 >> Error           = 1721
@@ -357,8 +357,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(269) - @VBS0028
-           08:47:34  Command: <$@@ErrorMsg "1722">
+           14:38:20  Script : COMPANY.MMH(269) - @VBS0028
+           14:38:20  Command: <$@@ErrorMsg "1722">
 
              >> Row Command for table: Error
                 >> Error           = 1722
@@ -366,8 +366,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(272) - @VBS0030
-           08:47:34  Command: <$@@ErrorMsg "2103">
+           14:38:20  Script : COMPANY.MMH(272) - @VBS0030
+           14:38:20  Command: <$@@ErrorMsg "2103">
 
              >> Row Command for table: Error
                 >> Error           = 2103
@@ -375,8 +375,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(273) - @VBS0032
-           08:47:34  Command: <$@@ErrorMsg "2755">
+           14:38:20  Script : COMPANY.MMH(273) - @VBS0032
+           14:38:20  Command: <$@@ErrorMsg "2755">
 
              >> Row Command for table: Error
                 >> Error           = 2755
@@ -384,8 +384,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(276) - @VBS0034
-           08:47:34  Command: <$@@ErrorMsg "1909">
+           14:38:20  Script : COMPANY.MMH(276) - @VBS0034
+           14:38:20  Command: <$@@ErrorMsg "1909">
 
              >> Row Command for table: Error
                 >> Error           = 1909
@@ -393,28 +393,28 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(277) - @VBS0036
-           08:47:34  Command: <$/Table>
+           14:38:20  Script : COMPANY.MMH(277) - @VBS0036
+           14:38:20  Command: <$/Table>
 
 
-           08:47:34  Script : COMPANY.MMH(314) - @VBS0037
-           08:47:34  Command: <$Table "Billboard">
+           14:38:20  Script : COMPANY.MMH(314) - @VBS0037
+           14:38:20  Command: <$Table "Billboard">
 
 
-           08:47:34  Script : COMPANY.MMH(315) - @VBS0038
-           08:47:34  Command: <$TableDelete>
+           14:38:20  Script : COMPANY.MMH(315) - @VBS0038
+           14:38:20  Command: <$TableDelete>
 
 
-           08:47:34  Script : COMPANY.MMH(316) - @VBS0039
-           08:47:34  Command: <$/Table>
+           14:38:20  Script : COMPANY.MMH(316) - @VBS0039
+           14:38:20  Command: <$/Table>
 
 
-           08:47:34  Script : COMPANY.MMH(321) - @VBS0040
-           08:47:34  Command: <$Table "_Validation">
+           14:38:21  Script : COMPANY.MMH(321) - @VBS0040
+           14:38:21  Command: <$Table "_Validation">
 
 
-           08:47:34  Script : COMPANY.MMH(328) - @VBS0041
-           08:47:34  Command: <$Row @Where="`Table` = 'ListView' AND `Column` = 'Value'" @OK='=1' Category="Formatted" >
+           14:38:21  Script : COMPANY.MMH(328) - @VBS0041
+           14:38:21  Command: <$Row @Where="`Table` = 'ListView' AND `Column` = 'Value'" @OK='=1' Category="Formatted" >
 
              >> Row Command for table: _Validation
                 >> @Where          = `Table` = 'ListView' AND `Column` = 'Value'
@@ -423,36 +423,36 @@ Building from "installscript.mm"
                    >> @Validate mode: FETCH
 
 
-           08:47:34  Script : COMPANY.MMH(329) - @VBS0043
-           08:47:34  Command: <$/Table>
+           14:38:21  Script : COMPANY.MMH(329) - @VBS0043
+           14:38:21  Command: <$/Table>
 
 
-           08:47:34  Script : COMPANY.MMH(335) - @VBS0044
-           08:47:34  Command: <$TableCreate "FeatureComponents" DropExisting="N"> ;;Windows Installer will PV in MSI.DLL (in UI sequence) if missing
+           14:38:21  Script : COMPANY.MMH(335) - @VBS0044
+           14:38:21  Command: <$TableCreate "FeatureComponents" DropExisting="N"> ;;Windows Installer will PV in MSI.DLL (in UI sequence) if missing
 
 
-           08:47:34  Script : COMPANY.MMH(336) - @VBS0047
-           08:47:34  Command: <$TableCreate "File" DropExisting="N"> ;;Windows Installer needs table (even if empty)
+           14:38:21  Script : COMPANY.MMH(336) - @VBS0047
+           14:38:21  Command: <$TableCreate "File" DropExisting="N"> ;;Windows Installer needs table (even if empty)
 
 
-           08:47:34  Script : COMPANY.MMH(337) - @VBS0050
-           08:47:34  Command: <$TableCreate "Media" DropExisting="N"> ;;Windows Installer needs table (even if empty)
+           14:38:21  Script : COMPANY.MMH(337) - @VBS0050
+           14:38:21  Command: <$TableCreate "Media" DropExisting="N"> ;;Windows Installer needs table (even if empty)
 
 
-           08:47:34  Script : COMPANY.MMH(342) - @VBS0053
-           08:47:34  Command: <$TableCreate "<$MAKEMSI_TABLENAME_FILESOURCE>">
+           14:38:21  Script : COMPANY.MMH(342) - @VBS0053
+           14:38:21  Command: <$TableCreate "<$MAKEMSI_TABLENAME_FILESOURCE>">
 
 
-           08:47:34  Script : COMPANY.MMH(388) - @VBS0057
-           08:47:34  Command: <$TableCreate "MsiFileHash">
+           14:38:21  Script : COMPANY.MMH(388) - @VBS0057
+           14:38:21  Command: <$TableCreate "MsiFileHash">
 
 
-           08:47:34  Script : COMPANY.MMH(389) - @VBS0061
-           08:47:34  Command: <$Table "_Validation">
+           14:38:21  Script : COMPANY.MMH(389) - @VBS0061
+           14:38:21  Command: <$Table "_Validation">
 
 
-           08:47:34  Script : COMPANY.MMH(400) - @VBS0062
-           08:47:34  Command: <$Row Table="MsiFileHash" Column="File_" Nullable="N" KeyTable="File" KeyColumn="1" Category="Identifier" Description="Foreign key into the File table." >
+           14:38:21  Script : COMPANY.MMH(400) - @VBS0062
+           14:38:21  Command: <$Row Table="MsiFileHash" Column="File_" Nullable="N" KeyTable="File" KeyColumn="1" Category="Identifier" Description="Foreign key into the File table." >
 
              >> Row Command for table: _Validation
                 >> Table           = MsiFileHash
@@ -465,8 +465,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(411) - @VBS0064
-           08:47:34  Command: <$Row Table="MsiFileHash" Column="Options" Nullable="N" Category="Integer" MinValue="0" MaxValue="0" Description="Reserved option (must be 0)." >
+           14:38:21  Script : COMPANY.MMH(411) - @VBS0064
+           14:38:21  Command: <$Row Table="MsiFileHash" Column="Options" Nullable="N" Category="Integer" MinValue="0" MaxValue="0" Description="Reserved option (must be 0)." >
 
              >> Row Command for table: _Validation
                 >> Table           = MsiFileHash
@@ -479,8 +479,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(422) - @VBS0066
-           08:47:34  Command: <$HashRow "1">
+           14:38:21  Script : COMPANY.MMH(422) - @VBS0066
+           14:38:21  Command: <$HashRow "1">
 
              >> Row Command for table: _Validation
                 >> Table           = MsiFileHash
@@ -491,8 +491,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(423) - @VBS0068
-           08:47:34  Command: <$HashRow "2">
+           14:38:21  Script : COMPANY.MMH(423) - @VBS0068
+           14:38:21  Command: <$HashRow "2">
 
              >> Row Command for table: _Validation
                 >> Table           = MsiFileHash
@@ -503,8 +503,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(424) - @VBS0070
-           08:47:34  Command: <$HashRow "3">
+           14:38:21  Script : COMPANY.MMH(424) - @VBS0070
+           14:38:21  Command: <$HashRow "3">
 
              >> Row Command for table: _Validation
                 >> Table           = MsiFileHash
@@ -515,8 +515,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(425) - @VBS0072
-           08:47:34  Command: <$HashRow "4">
+           14:38:21  Script : COMPANY.MMH(425) - @VBS0072
+           14:38:21  Command: <$HashRow "4">
 
              >> Row Command for table: _Validation
                 >> Table           = MsiFileHash
@@ -527,12 +527,12 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(426) - @VBS0074
-           08:47:34  Command: <$/Table>
+           14:38:21  Script : COMPANY.MMH(426) - @VBS0074
+           14:38:21  Command: <$/Table>
 
 
-           08:47:34  Script : COMPANY.MMH(476) - @VBS0075
-           08:47:34  Command: <$Feature "<$COMPANY_COMPLETE_FEATURE>" Directory_="<$COMPANY_COMPLETE_FEATURE_DIRECTORY>" Title="<$COMPANY_COMPLETE_FEATURE_TITLE>" Description="<$COMPANY_COMPLETE_FEATURE_DESCRIPTION>" Attributes="<$COMPANY_COMPLETE_FEATURE_ATTRIBUTES>" Display="<$COMPANY_COMPLETE_FEATURE_DISPLAY>" >
+           14:38:21  Script : COMPANY.MMH(476) - @VBS0075
+           14:38:21  Command: <$Feature "<$COMPANY_COMPLETE_FEATURE>" Directory_="<$COMPANY_COMPLETE_FEATURE_DIRECTORY>" Title="<$COMPANY_COMPLETE_FEATURE_TITLE>" Description="<$COMPANY_COMPLETE_FEATURE_DESCRIPTION>" Attributes="<$COMPANY_COMPLETE_FEATURE_ATTRIBUTES>" Display="<$COMPANY_COMPLETE_FEATURE_DISPLAY>" >
 
              >> Row Command for table: Feature
                 >> Feature         = ALL.1.0.0.UCS_AD_Connector
@@ -546,8 +546,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(583) - @VBS0080
-           08:47:34  Command: <$COMPANY_SET_PROPERTY_UPGRADECODE> ;;User can override above macros to change behaviour...
+           14:38:21  Script : COMPANY.MMH(583) - @VBS0080
+           14:38:21  Command: <$COMPANY_SET_PROPERTY_UPGRADECODE> ;;User can override above macros to change behaviour...
 
              >> Property command for: UpgradeCode
                 >> Value comes from a VB EXPRESSION: UpgradeCode
@@ -557,8 +557,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(584) - @VBS0087
-           08:47:34  Command: <$COMPANY_SET_PROPERTY_PRODUCTCODE>
+           14:38:21  Script : COMPANY.MMH(584) - @VBS0087
+           14:38:21  Command: <$COMPANY_SET_PROPERTY_PRODUCTCODE>
 
              >> Property command for: ProductCode
                 >> Value comes from a VB EXPRESSION: GuidMake("ProductCode")
@@ -568,12 +568,12 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(585) - @VBS0093
-           08:47:34  Command: <$COMPANY_SET_PROPERTY_PACKAGECODE>
+           14:38:21  Script : COMPANY.MMH(585) - @VBS0093
+           14:38:21  Command: <$COMPANY_SET_PROPERTY_PACKAGECODE>
 
 
-           08:47:34  Script : COMPANY.MMH(595) - @VBS0094
-           08:47:34  Command: <$Property "ALLUSERS" Value="<$COMPANY_ALLUSERS_PROPERTY>">
+           14:38:21  Script : COMPANY.MMH(595) - @VBS0094
+           14:38:21  Command: <$Property "ALLUSERS" Value="<$COMPANY_ALLUSERS_PROPERTY>">
 
              >> Property command for: ALLUSERS
                 >> Value comes from a LITERAL: 1
@@ -583,8 +583,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:34  Script : COMPANY.MMH(607) - @VBS0100
-           08:47:34  Command: <$Property "REINSTALLMODE" Value=^<$COMPANY_REINSTALLMODE>^>
+           14:38:21  Script : COMPANY.MMH(607) - @VBS0100
+           14:38:21  Command: <$Property "REINSTALLMODE" Value=^<$COMPANY_REINSTALLMODE>^>
 
              >> Property command for: REINSTALLMODE
                 >> Value comes from a LITERAL: amus
@@ -594,8 +594,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:35  Script : COMPANY.MMH(619) - @VBS0106
-           08:47:35  Command: <$Property "ProductName" Value="<$COMPANY_PROPERTY_PRODUCTNAME>">
+           14:38:21  Script : COMPANY.MMH(619) - @VBS0106
+           14:38:21  Command: <$Property "ProductName" Value="<$COMPANY_PROPERTY_PRODUCTNAME>">
 
              >> Property command for: ProductName
                 >> Value comes from a LITERAL: UCS AD Connector
@@ -605,52 +605,52 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:35  Script : COMPANY.MMH(637) - @VBS0112
-           08:47:35  Command: <$Summary "TEMPLATE" Value="<$COMPANY_SUMMARY_TEMPLATE>">
+           14:38:21  Script : COMPANY.MMH(637) - @VBS0112
+           14:38:21  Command: <$Summary "TEMPLATE" Value="<$COMPANY_SUMMARY_TEMPLATE>">
 
 
-           08:47:35  Script : COMPANY.MMH(641) - @VBS0113
-           08:47:35  Command: <$Summary "MsiSchema" Value="<$COMPANY_SUMMARY_SCHEMA>">
+           14:38:21  Script : COMPANY.MMH(641) - @VBS0113
+           14:38:21  Command: <$Summary "MsiSchema" Value="<$COMPANY_SUMMARY_SCHEMA>">
 
 
-           08:47:35  Script : COMPANY.MMH(643) - @VBS0114
-           08:47:35  Command: <$Summary "TITLE" VALUE="<$COMPANY_SUMMARY_TITLE>">
+           14:38:21  Script : COMPANY.MMH(643) - @VBS0114
+           14:38:21  Command: <$Summary "TITLE" VALUE="<$COMPANY_SUMMARY_TITLE>">
 
 
-           08:47:35  Script : COMPANY.MMH(644) - @VBS0115
-           08:47:35  Command: <$Summary "Subject" VALUE="<$COMPANY_SUMMARY_SUBJECT>">
+           14:38:21  Script : COMPANY.MMH(644) - @VBS0115
+           14:38:21  Command: <$Summary "Subject" VALUE="<$COMPANY_SUMMARY_SUBJECT>">
 
 
-           08:47:35  Script : COMPANY.MMH(645) - @VBS0116
-           08:47:35  Command: <$Summary "SourceType" Value="<$COMPANY_SUMMARY_SourceType>">
+           14:38:21  Script : COMPANY.MMH(645) - @VBS0116
+           14:38:21  Command: <$Summary "SourceType" Value="<$COMPANY_SUMMARY_SourceType>">
 
 
-           08:47:35  Script : COMPANY.MMH(646) - @VBS0117
-           08:47:35  Command: <$Summary "CREATE_DTM" VALUE="now()">
+           14:38:21  Script : COMPANY.MMH(646) - @VBS0117
+           14:38:21  Command: <$Summary "CREATE_DTM" VALUE="now()">
 
 
-           08:47:35  Script : COMPANY.MMH(647) - @VBS0118
-           08:47:35  Command: <$Summary "EDITTIME" VALUE="now()">
+           14:38:21  Script : COMPANY.MMH(647) - @VBS0118
+           14:38:21  Command: <$Summary "EDITTIME" VALUE="now()">
 
 
-           08:47:35  Script : COMPANY.MMH(648) - @VBS0119
-           08:47:35  Command: <$Summary "LASTSAVE_DTM" *VALUE="Empty"> ;;Don't want
+           14:38:21  Script : COMPANY.MMH(648) - @VBS0119
+           14:38:21  Command: <$Summary "LASTSAVE_DTM" *VALUE="Empty"> ;;Don't want
 
 
-           08:47:35  Script : COMPANY.MMH(649) - @VBS0120
-           08:47:35  Command: <$Summary "LASTPRINTED" *VALUE=^Empty^> ;;Don't want
+           14:38:21  Script : COMPANY.MMH(649) - @VBS0120
+           14:38:21  Command: <$Summary "LASTPRINTED" *VALUE=^Empty^> ;;Don't want
 
 
-           08:47:35  Script : COMPANY.MMH(653) - @VBS0121
-           08:47:35  Command: <$Html2Text VBVAR="VB_COMMENTS" HTML=^<$COMPANY_SUMMARY_COMMENTS>^>
+           14:38:21  Script : COMPANY.MMH(653) - @VBS0121
+           14:38:21  Command: <$Html2Text VBVAR="VB_COMMENTS" HTML=^<$COMPANY_SUMMARY_COMMENTS>^>
 
 
-           08:47:35  Script : COMPANY.MMH(654) - @VBS0124
-           08:47:35  Command: <$Summary "COMMENTS" *VALUE="VB_COMMENTS">
+           14:38:21  Script : COMPANY.MMH(654) - @VBS0124
+           14:38:21  Command: <$Summary "COMMENTS" *VALUE="VB_COMMENTS">
 
 
-           08:47:35  Script : COMPANY.MMH(665) - @VBS0125
-           08:47:35  Command: <$Property "Manufacturer" Value="<$COMPANY_PROPERTY_MANUFACTURER>">
+           14:38:21  Script : COMPANY.MMH(665) - @VBS0125
+           14:38:21  Command: <$Property "Manufacturer" Value="<$COMPANY_PROPERTY_MANUFACTURER>">
 
              >> Property command for: Manufacturer
                 >> Value comes from a LITERAL: My Name
@@ -660,16 +660,16 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:35  Script : COMPANY.MMH(666) - @VBS0131
-           08:47:35  Command: <$Summary "AUTHOR" VALUE="<$COMPANY_SUMMARY_AUTHOR>">
+           14:38:21  Script : COMPANY.MMH(666) - @VBS0131
+           14:38:21  Command: <$Summary "AUTHOR" VALUE="<$COMPANY_SUMMARY_AUTHOR>">
 
 
-           08:47:35  Script : COMPANY.MMH(667) - @VBS0132
-           08:47:35  Command: <$Summary "LastAuthor" VALUE="<$COMPANY_SUMMARY_LASTAUTHOR>">
+           14:38:21  Script : COMPANY.MMH(667) - @VBS0132
+           14:38:21  Command: <$Summary "LastAuthor" VALUE="<$COMPANY_SUMMARY_LASTAUTHOR>">
 
 
-           08:47:35  Script : COMPANY.MMH(676) - @VBS0133
-           08:47:35  Command: <$Property "ARPCONTACT" VALUE=^<$COMPANY_CONTACT_NAME>^>
+           14:38:21  Script : COMPANY.MMH(676) - @VBS0133
+           14:38:21  Command: <$Property "ARPCONTACT" VALUE=^<$COMPANY_CONTACT_NAME>^>
 
              >> Property command for: ARPCONTACT
                 >> Value comes from a LITERAL: My Name
@@ -679,8 +679,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:35  Script : COMPANY.MMH(691) - @VBS0139
-           08:47:35  Command: <$Property "ARPURLINFOABOUT" Value="<$COMPANY_ARP_URL_PUBLISHER>">
+           14:38:21  Script : COMPANY.MMH(691) - @VBS0139
+           14:38:21  Command: <$Property "ARPURLINFOABOUT" Value="<$COMPANY_ARP_URL_PUBLISHER>">
 
              >> Property command for: ARPURLINFOABOUT
                 >> Value comes from a LITERAL: http://www.MyUrl.com/See/ME.MMH/
@@ -690,8 +690,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:35  Script : COMPANY.MMH(695) - @VBS0145
-           08:47:35  Command: <$Property "ARPHELPLINK" Value="<$COMPANY_ARP_URL_TECHNICAL_SUPPORT>">
+           14:38:21  Script : COMPANY.MMH(695) - @VBS0145
+           14:38:21  Command: <$Property "ARPHELPLINK" Value="<$COMPANY_ARP_URL_TECHNICAL_SUPPORT>">
 
              >> Property command for: ARPHELPLINK
                 >> Value comes from a LITERAL: http://www.MyUrl.com/See/ME.MMH/Support
@@ -701,8 +701,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:35  Script : COMPANY.MMH(707) - @VBS0151
-           08:47:35  Command: <$Property "ProductVersion" Value="<$ProductVersion>">
+           14:38:22  Script : COMPANY.MMH(707) - @VBS0151
+           14:38:22  Command: <$Property "ProductVersion" Value="<$ProductVersion>">
 
              >> Property command for: ProductVersion
                 >> Value comes from a LITERAL: 1.0.0
@@ -712,12 +712,12 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:35  Script : COMPANY.MMH(711) - @VBS0157
-           08:47:35  Command: <$Html2Text VBVAR="VB_ARPCOMMENTS" HTML=^<$COMPANY_PROPERTY_ARPCOMMENTS>^>
+           14:38:22  Script : COMPANY.MMH(711) - @VBS0157
+           14:38:22  Command: <$Html2Text VBVAR="VB_ARPCOMMENTS" HTML=^<$COMPANY_PROPERTY_ARPCOMMENTS>^>
 
 
-           08:47:35  Script : COMPANY.MMH(722) - @VBS0160
-           08:47:35  Command: <$Property "ARPCOMMENTS" *VALUE="VB_ARPCOMMENTS">
+           14:38:22  Script : COMPANY.MMH(722) - @VBS0160
+           14:38:22  Command: <$Property "ARPCOMMENTS" *VALUE="VB_ARPCOMMENTS">
 
              >> Property command for: ARPCOMMENTS
                 >> Value comes from a VB EXPRESSION: VB_ARPCOMMENTS
@@ -748,8 +748,8 @@ Building from "installscript.mm"
              >> Looking for config in macro: UpgradeCode_PROPERTY
              >>   Value found: UNINSTALLTHIS
 
-           08:47:35  Script : COMPANY.MMH(735) - @VBS0166
-           08:47:35  Command: <$UpgradeTable "=UpgradeCode"> ;;Use value in VB variable
+           14:38:22  Script : COMPANY.MMH(735) - @VBS0166
+           14:38:22  Command: <$UpgradeTable "=UpgradeCode"> ;;Use value in VB variable
 
              >> Row Command for table: Upgrade
                 >> *UpgradeCode    = UpgradeCode
@@ -777,8 +777,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:35  Script : COMPANY.MMH(756) - @VBS0183
-           08:47:35  Command: <$COMPANY_MOVE_RemoveExistingProducts>
+           14:38:22  Script : COMPANY.MMH(756) - @VBS0183
+           14:38:22  Command: <$COMPANY_MOVE_RemoveExistingProducts>
 
              >> Row Command for table: InstallExecuteSequence
                 >> Action          = RemoveExistingProducts
@@ -786,8 +786,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:35  Script : COMPANY.MMH(911) - @VBS0187
-           08:47:35  Command: <$Icon '<$COMPANY_PRODUCT_ICON>' Product="Y">
+           14:38:22  Script : COMPANY.MMH(911) - @VBS0187
+           14:38:22  Command: <$Icon '<$COMPANY_PRODUCT_ICON>' Product="Y">
 
              >> Row Command for table: Icon
                 >> Data            = C:\Programme\MakeMsi\MmDefaultProductIcon.ico
@@ -805,8 +805,8 @@ Building from "installscript.mm"
              >> MsiValFilter(Case sensitive): MmDefaultProductIcon.1.0.0.ico.exe
                 >> Reason: Microsoft bug in the validation. Ignore any messages mentioning this product icon's key (ICE36 "Icon Bloat" warning).
 
-           08:47:35  Script : COMPANY.MMH(939) - @VBS0198
-           08:47:35  Command: <$CompanyAddStampWithProperty "MakemsiVersion" VALUE=^<$MAKEMSI_VERSION>^>
+           14:38:22  Script : COMPANY.MMH(939) - @VBS0198
+           14:38:22  Command: <$CompanyAddStampWithProperty "MakemsiVersion" VALUE=^<$MAKEMSI_VERSION>^>
 
              >> Property command for: _MAKEMSI_MakemsiVersion
                 >> Value comes from a LITERAL: 10.169
@@ -816,8 +816,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:35  Script : COMPANY.MMH(940) - @VBS0204
-           08:47:35  Command: <$CompanyAddStampWithProperty "BuildComputer" VALUE=^<$MAKEMSI_COMPUTERNAME>^>
+           14:38:22  Script : COMPANY.MMH(940) - @VBS0204
+           14:38:22  Command: <$CompanyAddStampWithProperty "BuildComputer" VALUE=^<$MAKEMSI_COMPUTERNAME>^>
 
              >> Property command for: _MAKEMSI_BuildComputer
                 >> Value comes from a LITERAL: DIANE
@@ -827,8 +827,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:35  Script : COMPANY.MMH(941) - @VBS0210
-           08:47:35  Command: <$CompanyAddStampWithProperty "BuildUser" VALUE=^<$MAKEMSI_USERNAME> in <$MAKEMSI_USERDOMAIN>^>
+           14:38:22  Script : COMPANY.MMH(941) - @VBS0210
+           14:38:22  Command: <$CompanyAddStampWithProperty "BuildUser" VALUE=^<$MAKEMSI_USERNAME> in <$MAKEMSI_USERDOMAIN>^>
 
              >> Property command for: _MAKEMSI_BuildUser
                 >> Value comes from a LITERAL: stegoh in DIANE
@@ -838,19 +838,19 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:35  Script : COMPANY.MMH(942) - @VBS0216
-           08:47:35  Command: <$CompanyAddStampWithProperty "BuildTime" VALUE=^<?CompileTime>^>
+           14:38:22  Script : COMPANY.MMH(942) - @VBS0216
+           14:38:22  Command: <$CompanyAddStampWithProperty "BuildTime" VALUE=^<?CompileTime>^>
 
              >> Property command for: _MAKEMSI_BuildTime
-                >> Value comes from a LITERAL: Mon Jul 26 2010 at 8:47:21am
+                >> Value comes from a LITERAL: Wed Jul 28 2010 at 2:38:02pm
              >> Row Command for table: Property
                 >> Property        = _MAKEMSI_BuildTime
                 >> *Value          = cb_PropValue
                    >> @Validate mode: FIELD
 
 
-           08:47:35  Script : COMPANY.MMH(943) - @VBS0222
-           08:47:35  Command: <$CompanyAddStampWithProperty "ProcessingMode" VALUE=^<$MMMODE_DESCRIPTION>^>
+           14:38:22  Script : COMPANY.MMH(943) - @VBS0222
+           14:38:22  Command: <$CompanyAddStampWithProperty "ProcessingMode" VALUE=^<$MMMODE_DESCRIPTION>^>
 
              >> Property command for: _MAKEMSI_ProcessingMode
                 >> Value comes from a LITERAL: Production
@@ -860,8 +860,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:35  Script : COMPANY.MMH(944) - @VBS0228
-           08:47:35  Command: <$CompanyAddStampWithProperty "SupportedPlatforms" VALUE=^<$PLATFORM_MsiSupportedWhere>^>
+           14:38:22  Script : COMPANY.MMH(944) - @VBS0228
+           14:38:22  Command: <$CompanyAddStampWithProperty "SupportedPlatforms" VALUE=^<$PLATFORM_MsiSupportedWhere>^>
 
              >> Property command for: _MAKEMSI_SupportedPlatforms
                 >> Value comes from a LITERAL: SUPPORTED on On any Windows Computer.
@@ -871,40 +871,40 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:35  Script : COMPANY.MMH(951) - @VBS0234
-           08:47:35  Command: <$Table "Property">
+           14:38:22  Script : COMPANY.MMH(951) - @VBS0234
+           14:38:22  Command: <$Table "Property">
 
 
-           08:47:35  Script : COMPANY.MMH(952) - @VBS0235
-           08:47:35  Command: <$RowsDelete WHERE="Property = 'ShowUserRegistrationDlg'">
+           14:38:22  Script : COMPANY.MMH(952) - @VBS0235
+           14:38:22  Command: <$RowsDelete WHERE="Property = 'ShowUserRegistrationDlg'">
 
 
-           08:47:35  Script : COMPANY.MMH(953) - @VBS0236
-           08:47:35  Command: <$/Table>
+           14:38:22  Script : COMPANY.MMH(953) - @VBS0236
+           14:38:22  Command: <$/Table>
 
 
-           08:47:35  Script : COMPANY.MMH(954) - @VBS0237
-           08:47:35  Command: <$Table "ControlEvent">
+           14:38:22  Script : COMPANY.MMH(954) - @VBS0237
+           14:38:22  Command: <$Table "ControlEvent">
 
 
-           08:47:35  Script : COMPANY.MMH(955) - @VBS0238
-           08:47:35  Command: <$RowsDelete WHERE=^Dialog_ = 'LicenseAgreementDlg' AND Control_ = 'Next' AND Event = 'NewDialog' AND Argument = 'SetupTypeDlg' AND Condition = 'IAgree = "Yes" AND ShowUserRegistrationDlg <> 1'^>
+           14:38:22  Script : COMPANY.MMH(955) - @VBS0238
+           14:38:22  Command: <$RowsDelete WHERE=^Dialog_ = 'LicenseAgreementDlg' AND Control_ = 'Next' AND Event = 'NewDialog' AND Argument = 'SetupTypeDlg' AND Condition = 'IAgree = "Yes" AND ShowUserRegistrationDlg <> 1'^>
 
 
-           08:47:35  Script : COMPANY.MMH(956) - @VBS0239
-           08:47:35  Command: <$RowsDelete WHERE=^Dialog_ = 'LicenseAgreementDlg' AND Control_ = 'Next' AND Event = 'NewDialog' AND Argument = 'UserRegistrationDlg' AND Condition = 'IAgree = "Yes" AND ShowUserRegistrationDlg = 1'^>
+           14:38:22  Script : COMPANY.MMH(956) - @VBS0239
+           14:38:22  Command: <$RowsDelete WHERE=^Dialog_ = 'LicenseAgreementDlg' AND Control_ = 'Next' AND Event = 'NewDialog' AND Argument = 'UserRegistrationDlg' AND Condition = 'IAgree = "Yes" AND ShowUserRegistrationDlg = 1'^>
 
 
-           08:47:35  Script : COMPANY.MMH(957) - @VBS0240
-           08:47:35  Command: <$RowsDelete WHERE="Dialog_ = 'SetupTypeDlg' AND Control_ = 'Back' AND Event = 'NewDialog' AND Argument = 'LicenseAgreementDlg' AND Condition = 'ShowUserRegistrationDlg <> 1'">
+           14:38:22  Script : COMPANY.MMH(957) - @VBS0240
+           14:38:22  Command: <$RowsDelete WHERE="Dialog_ = 'SetupTypeDlg' AND Control_ = 'Back' AND Event = 'NewDialog' AND Argument = 'LicenseAgreementDlg' AND Condition = 'ShowUserRegistrationDlg <> 1'">
 
 
-           08:47:35  Script : COMPANY.MMH(958) - @VBS0241
-           08:47:35  Command: <$RowsDelete WHERE="Dialog_ = 'SetupTypeDlg' AND Control_ = 'Back' AND Event = 'NewDialog' AND Argument = 'UserRegistrationDlg' AND Condition = 'ShowUserRegistrationDlg = 1'">
+           14:38:22  Script : COMPANY.MMH(958) - @VBS0241
+           14:38:22  Command: <$RowsDelete WHERE="Dialog_ = 'SetupTypeDlg' AND Control_ = 'Back' AND Event = 'NewDialog' AND Argument = 'UserRegistrationDlg' AND Condition = 'ShowUserRegistrationDlg = 1'">
 
 
-           08:47:35  Script : COMPANY.MMH(968) - @VBS0242
-           08:47:35  Command: <$Row Dialog_="LicenseAgreementDlg" Control_="Next" Event="NewDialog" Argument="UserRegistrationDlg" Condition='IAgree = "Yes"' Ordering="1" >
+           14:38:22  Script : COMPANY.MMH(968) - @VBS0242
+           14:38:22  Command: <$Row Dialog_="LicenseAgreementDlg" Control_="Next" Event="NewDialog" Argument="UserRegistrationDlg" Condition='IAgree = "Yes"' Ordering="1" >
 
              >> Row Command for table: ControlEvent
                 >> Dialog_         = LicenseAgreementDlg
@@ -916,8 +916,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:35  Script : COMPANY.MMH(979) - @VBS0244
-           08:47:35  Command: <$Row Dialog_="SetupTypeDlg" Control_="Back" Event="NewDialog" Argument="UserRegistrationDlg" Condition="1" Ordering="" >
+           14:38:22  Script : COMPANY.MMH(979) - @VBS0244
+           14:38:22  Command: <$Row Dialog_="SetupTypeDlg" Control_="Back" Event="NewDialog" Argument="UserRegistrationDlg" Condition="1" Ordering="" >
 
              >> Row Command for table: ControlEvent
                 >> Dialog_         = SetupTypeDlg
@@ -929,8 +929,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           08:47:35  Script : COMPANY.MMH(980) - @VBS0246
-           08:47:35  Command: <$/Table>
+           14:38:22  Script : COMPANY.MMH(980) - @VBS0246
+           14:38:22  Command: <$/Table>
 
            (@1,010)INFO: Have licence?: installscript.licence.rtf
            (@1,019)INFO: Using licence: lizenz.rtf
@@ -938,12 +938,12 @@ Building from "installscript.mm"
            * Reading: lizenz.rtf
          * Reading: C:\Programme\MakeMsi\COMPANY.MMH
 
-           08:47:37  Script : COMPANY.MMH(1050) - @VBS0247
-           08:47:37  Command: <$Table "Control">
+           14:38:25  Script : COMPANY.MMH(1050) - @VBS0247
+           14:38:25  Command: <$Table "Control">
 
 
-           08:47:37  Script : COMPANY.MMH(1055) - @VBS0248
-           08:47:37  Command: <$Row @Where="Dialog_='LicenseAgreementDlg' and Control='AgreementText'" @OK="? = 1" *Text=~"<??b_Text>"~ >
+           14:38:25  Script : COMPANY.MMH(1055) - @VBS0248
+           14:38:25  Command: <$Row @Where="Dialog_='LicenseAgreementDlg' and Control='AgreementText'" @OK="? = 1" *Text=~"<??b_Text>"~ >
 
              >> Row Command for table: Control
                 >> @Where          = Dialog_='LicenseAgreementDlg' and Control='AgreementText'
@@ -952,12 +952,12 @@ Building from "installscript.mm"
                    >> @Validate mode: FETCH
 
 
-           08:47:37  Script : COMPANY.MMH(1056) - @VBS0250
-           08:47:37  Command: <$/Table>
+           14:38:25  Script : COMPANY.MMH(1056) - @VBS0250
+           14:38:25  Command: <$/Table>
 
 
-           08:47:37  Script : COMPANY.MMH(1066) - @VBS0251
-           08:47:37  Command: <$DialogRemove "UserRegistrationDlg">
+           14:38:25  Script : COMPANY.MMH(1066) - @VBS0251
+           14:38:25  Command: <$DialogRemove "UserRegistrationDlg">
 
              >> Row Command for table: ControlEvent
                 >> @Where          = 
@@ -980,8 +980,8 @@ Building from "installscript.mm"
        (@66)INFO: DLL custom action code will not be compressed (UPX.EXE not found)
    * Reading: installscript.mm
 
-     08:47:38  Script : installscript.mm(15) - @VBS0278
-     08:47:38  Command: <$DialogRemove "SetupTypeDlg"> ;; do not ask for Typical Custom complete
+     14:38:26  Script : installscript.mm(15) - @VBS0278
+     14:38:26  Command: <$DialogRemove "SetupTypeDlg"> ;; do not ask for Typical Custom complete
 
        >> Row Command for table: ControlEvent
           >> @Where          = 
@@ -997,8 +997,8 @@ Building from "installscript.mm"
              >> @Validate mode: FETCH
 
 
-     08:47:38  Script : installscript.mm(16) - @VBS0305
-     08:47:38  Command: <$DialogRemove "LicenseAgreementDlg"> ;;ignore lizenz.rtf File
+     14:38:26  Script : installscript.mm(16) - @VBS0305
+     14:38:26  Command: <$DialogRemove "LicenseAgreementDlg"> ;;ignore lizenz.rtf File
 
        >> Row Command for table: ControlEvent
           >> @Where          = 
@@ -1014,27 +1014,33 @@ Building from "installscript.mm"
              >> @Validate mode: FETCH
 
 
-     08:47:38  Script : installscript.mm(25) - @VBS0332
-     08:47:38  Command: <$DirectoryTree Key="INSTALLDIR" Dir="c:\Windows\" CHANGE="\" PrimaryFolder="Y">
+     14:38:26  Script : installscript.mm(25) - @VBS0332
+     14:38:26  Command: <$DirectoryTree Key="INSTALLDIR" Dir="c:\Windows\UCS-AD-Connector" CHANGE="\" PrimaryFolder="Y">
 
 
        >> Rexx4MakeDirTree()
           >> INPUTS
           >> ~~~~~~
-          >> DIRECTORY: c:\Windows\
+          >> DIRECTORY: c:\Windows\UCS-AD-Connector\
           >> NAME     : INSTALLDIR
 
           >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "C:\WINDOWS\" begin with "C:\PROGRAM FILES\"?
-             >> Does "C:\WINDOWS\" begin with "C:\WINDOWS\"?
-                >> YES! Translated to "[WINDOWSFOLDER]\"
-             >> Does "[WINDOWSFOLDER]\" begin with "C:\WINNT\"?
-             >> Does "[WINDOWSFOLDER]\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[WINDOWSFOLDER]\" begin with "C:\WINNT\SYSTEM32\"?
+             >> Does "C:\WINDOWS\UCS-AD-CONNECTOR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "C:\WINDOWS\UCS-AD-CONNECTOR\" begin with "C:\WINDOWS\"?
+                >> YES! Translated to "[WINDOWSFOLDER]\UCS-AD-CONNECTOR\"
+             >> Does "[WINDOWSFOLDER]\UCS-AD-CONNECTOR\" begin with "C:\WINNT\"?
+             >> Does "[WINDOWSFOLDER]\UCS-AD-CONNECTOR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[WINDOWSFOLDER]\UCS-AD-CONNECTOR\" begin with "C:\WINNT\SYSTEM32\"?
           >> See if we can find a directory alias for start of directory
+             >> Look at: [WindowsFolder]\UCS-AD-Connector
              >> Look at: [WindowsFolder]
-          >> Only a single directory component assume it's an alias
-          >> Creating the key "INSTALLDIR" is an alias for "WindowsFolder"
+          >> Extracting the BASE from "[WindowsFolder]\UCS-AD-Connector"
+
+          >> Work through the tree "UCS-AD-Connector" creating any required directories
+             >> Processing part "UCS-AD-Connector"
+                >> Creating key: "INSTALLDIR"
+                >> Parent   key: "WindowsFolder"
+                >> Full name: c:\Windows\UCS-AD-Connector
 
           >> OUTPUTS
           >> ~~~~~~~
@@ -1057,7 +1063,7 @@ Building from "installscript.mm"
        >> Row Command for table: Directory
           >> Directory       = INSTALLDIR
           >> Directory_Parent = WindowsFolder
-          >> DefaultDir      = .
+          >> *DefaultDir     = MakeSfnLfn("WindowsFolder", "UCS-AD-Connector")
              >> @Validate mode: FIELD
 
        >> Row Command for table: Feature
@@ -1093,68 +1099,55 @@ Building from "installscript.mm"
              >> @Validate mode: FIELD
 
 
-     08:47:38  Script : installscript.mm(35) - @VBS0370
-     08:47:38  Command: <$Files "files\Programme\*.*" SubDir="TREE" DestDir="INSTALLDIR">
+     14:38:26  Script : installscript.mm(35) - @VBS0370
+     14:38:26  Command: <$Files "files\Programme\UCS-AD-Connector\*.*" DestDir="INSTALLDIR">
 
 
        >> Rexx4MakeDirTree()
           >> INPUTS
           >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\.svn\
+          >> DIRECTORY: [INSTALLDIR]\
           >> NAME     : 
 
           >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\.SVN\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\.SVN\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\.SVN\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\.SVN\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\.SVN\" begin with "C:\WINNT\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
           >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\.svn
              >> Look at: [INSTALLDIR]
-          >> Extracting the BASE from "[INSTALLDIR]\.svn"
-
-          >> Work through the tree ".svn" creating any required directories
-             >> Processing part ".svn"
-                >> Creating key: "_INSTALLDIR_.SVN"
-                >> Parent   key: "INSTALLDIR"
-                >> Full name: [INSTALLDIR]\.svn
+          >> Only a single directory component assume it's an alias
 
           >> OUTPUTS
           >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_.SVN
-
-       >> Row Command for table: Directory
-          >> Directory       = _INSTALLDIR_.SVN
-          >> Directory_Parent = INSTALLDIR
-          >> *DefaultDir     = MakeSfnLfn("INSTALLDIR", ".svn")
-             >> @Validate mode: FIELD
+          >> DT_KEYNAME: INSTALLDIR
 
 
        >> Rexx4MakeDirTree()
           >> INPUTS
           >> ~~~~~~
-          >> DIRECTORY: _INSTALLDIR_.SVN\
+          >> DIRECTORY: INSTALLDIR\
           >> NAME     : 
 
           >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "_INSTALLDIR_.SVN\" begin with "C:\PROGRAM FILES\"?
-             >> Does "_INSTALLDIR_.SVN\" begin with "C:\WINDOWS\"?
-             >> Does "_INSTALLDIR_.SVN\" begin with "C:\WINNT\"?
-             >> Does "_INSTALLDIR_.SVN\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "_INSTALLDIR_.SVN\" begin with "C:\WINNT\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
           >> See if we can find a directory alias for start of directory
-             >> Look at: _INSTALLDIR_.SVN
+             >> Look at: INSTALLDIR
           >> Only a single directory component assume it's an alias
 
           >> OUTPUTS
           >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_.SVN
+          >> DT_KEYNAME: INSTALLDIR
 
        >> Row Command for table: Component
-          >> Component       = c1.ALL.1.0.0.UCS_A._INSTALLDIR_.SVN_x
+          >> Component       = c1.ALL.1.0.0.UCS_A.INSTALLDIR_1_copypwd.dll
           >> *ComponentId    = GuidMake("")
-          >> Directory_      = _INSTALLDIR_.SVN
+          >> Directory_      = INSTALLDIR
           >> Attributes      = msidbComponentAttributesLocalOnly
           >> Condition       = 
           >> KeyPath         = 
@@ -1162,910 +1155,13 @@ Building from "installscript.mm"
 
        >> Row Command for table: FeatureComponents
           >> Feature_        = ALL.1.0.0.UCS_AD_Connector
-          >> Component_      = c1.ALL.1.0.0.UCS_A._INSTALLDIR_.SVN_x
+          >> Component_      = c1.ALL.1.0.0.UCS_A.INSTALLDIR_1_copypwd.dll
           >> @Validate       = NEW -MISSINGDATA
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: File
           >> *File           = CurrentFileKey
-          >> Component_      = c1.ALL.1.0.0.UCS_A._INSTALLDIR_.SVN_x
-          >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 370
-          >> *Version        = CurrentFileVersion
-          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
-          >> *Language       = FileLanguage()
-          >> Sequence        = 0
-          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
-             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
-
-       >> Row Command for table: _MAKEMSI_FileSource
-          >> *File_          = CurrentFileKey
-          >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-26
-          >> Time            = 08:22:22
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-       >> Row Command for table: Component
-          >> @Where          = `Component` = 'c1.ALL.1.0.0.UCS_A._INSTALLDIR_.SVN_x'
-          >> @SelfRef        = {*}
-          >> @OK             = =1
-          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
-          >> KeyPath         = entries
-             >> @Validate mode: FETCH
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\.svn\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\.SVN\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\.SVN\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\.SVN\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\.SVN\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\.SVN\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\.svn
-                >> New DIR: [_INSTALLDIR_.SVN]\
-          >> Only a single directory component assume it's an alias
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_.SVN
-
-       >> Row Command for table: File
-          >> *File           = CurrentFileKey
-          >> Component_      = c1.ALL.1.0.0.UCS_A._INSTALLDIR_.SVN_x
-          >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 2
-          >> *Version        = CurrentFileVersion
-          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
-          >> *Language       = FileLanguage()
-          >> Sequence        = 0
-          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
-             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
-
-       >> Row Command for table: _MAKEMSI_FileSource
-          >> *File_          = CurrentFileKey
-          >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-26
-          >> Time            = 07:35:28
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\.svn\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector\.svn
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector
-             >> Look at: [INSTALLDIR]
-          >> Extracting the BASE from "[INSTALLDIR]\UCS-AD-Connector\.svn"
-
-          >> Work through the tree "UCS-AD-Connector\.svn" creating any required directories
-             >> Processing part "UCS-AD-Connector"
-                >> Creating key: "_INSTALLDIR_UCS_AD_CONNECTOR"
-                >> Parent   key: "INSTALLDIR"
-                >> Full name: [INSTALLDIR]\UCS-AD-Connector
-             >> Processing part ".svn"
-                >> Creating key: "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN"
-                >> Parent   key: "_INSTALLDIR_UCS_AD_CONNECTOR"
-                >> Full name: [INSTALLDIR]\UCS-AD-Connector\.svn
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN
-
-       >> Row Command for table: Directory
-          >> Directory       = _INSTALLDIR_UCS_AD_CONNECTOR
-          >> Directory_Parent = INSTALLDIR
-          >> *DefaultDir     = MakeSfnLfn("INSTALLDIR", "UCS-AD-Connector")
-             >> @Validate mode: FIELD
-
-       >> Row Command for table: Directory
-          >> Directory       = _INSTALLDIR_UCS_AD_CONNECTOR_.SVN
-          >> Directory_Parent = _INSTALLDIR_UCS_AD_CONNECTOR
-          >> *DefaultDir     = MakeSfnLfn("_INSTALLDIR_UCS_AD_CONNECTOR", ".svn")
-             >> @Validate mode: FIELD
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN\" begin with "C:\PROGRAM FILES\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN\" begin with "C:\WINDOWS\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN\" begin with "C:\WINNT\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN
-          >> Only a single directory component assume it's an alias
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN
-
-       >> Row Command for table: Component
-          >> Component       = c2.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_x
-          >> *ComponentId    = GuidMake("")
-          >> Directory_      = _INSTALLDIR_UCS_AD_CONNECTOR_.SVN
-          >> Attributes      = msidbComponentAttributesLocalOnly
-          >> Condition       = 
-          >> KeyPath         = 
-             >> @Validate mode: FIELD
-
-       >> Row Command for table: FeatureComponents
-          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
-          >> Component_      = c2.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_x
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-       >> Row Command for table: File
-          >> *File           = CurrentFileKey
-          >> Component_      = c2.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_x
-          >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 1345
-          >> *Version        = CurrentFileVersion
-          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
-          >> *Language       = FileLanguage()
-          >> Sequence        = 0
-          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
-             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
-
-       >> Row Command for table: _MAKEMSI_FileSource
-          >> *File_          = CurrentFileKey
-          >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-26
-          >> Time            = 08:22:22
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-       >> Row Command for table: Component
-          >> @Where          = `Component` = 'c2.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_x'
-          >> @SelfRef        = {*}
-          >> @OK             = =1
-          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
-          >> KeyPath         = entries_1
-             >> @Validate mode: FETCH
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\.svn\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector\.svn
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR_.SVN]\
-          >> Only a single directory component assume it's an alias
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN
-
-       >> Row Command for table: File
-          >> *File           = CurrentFileKey
-          >> Component_      = c2.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_x
-          >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 2
-          >> *Version        = CurrentFileVersion
-          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
-          >> *Language       = FileLanguage()
-          >> Sequence        = 0
-          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
-             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
-
-       >> Row Command for table: _MAKEMSI_FileSource
-          >> *File_          = CurrentFileKey
-          >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-26
-          >> Time            = 07:35:28
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\.svn\prop-base\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector\.svn\prop-base
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector\.svn
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR_.SVN]\prop-base\
-          >> Extracting the BASE from "[_INSTALLDIR_UCS_AD_CONNECTOR_.SVN]\prop-base"
-
-          >> Work through the tree "prop-base" creating any required directories
-             >> Processing part "prop-base"
-                >> Creating key: "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE"
-                >> Parent   key: "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN"
-                >> Full name: [INSTALLDIR]\UCS-AD-Connector\.svn\prop-base
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE
-
-       >> Row Command for table: Directory
-          >> Directory       = _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE
-          >> Directory_Parent = _INSTALLDIR_UCS_AD_CONNECTOR_.SVN
-          >> *DefaultDir     = MakeSfnLfn("_INSTALLDIR_UCS_AD_CONNECTOR_.SVN", "prop-base")
-             >> @Validate mode: FIELD
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE\" begin with "C:\PROGRAM FILES\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE\" begin with "C:\WINDOWS\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE\" begin with "C:\WINNT\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE
-          >> Only a single directory component assume it's an alias
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE
-
-       >> Row Command for table: Component
-          >> Component       = c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x
-          >> *ComponentId    = GuidMake("")
-          >> Directory_      = _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE
-          >> Attributes      = msidbComponentAttributesLocalOnly
-          >> Condition       = 
-          >> KeyPath         = 
-             >> @Validate mode: FIELD
-
-       >> Row Command for table: FeatureComponents
-          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
-          >> Component_      = c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-       >> Row Command for table: File
-          >> *File           = CurrentFileKey
-          >> Component_      = c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x
-          >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 79
-          >> *Version        = CurrentFileVersion
-          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
-          >> *Language       = FileLanguage()
-          >> Sequence        = 0
-          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
-             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
-
-       >> Row Command for table: _MAKEMSI_FileSource
-          >> *File_          = CurrentFileKey
-          >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-26
-          >> Time            = 07:35:28
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-       >> Row Command for table: Component
-          >> @Where          = `Component` = 'c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x'
-          >> @SelfRef        = {*}
-          >> @OK             = =1
-          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
-          >> KeyPath         = copypwd.dll.svn_base
-             >> @Validate mode: FETCH
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\.svn\prop-base\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector\.svn\prop-base
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE]\
-          >> Only a single directory component assume it's an alias
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE
-
-       >> Row Command for table: File
-          >> *File           = CurrentFileKey
-          >> Component_      = c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x
-          >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 79
-          >> *Version        = CurrentFileVersion
-          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
-          >> *Language       = FileLanguage()
-          >> Sequence        = 0
-          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
-             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
-
-       >> Row Command for table: _MAKEMSI_FileSource
-          >> *File_          = CurrentFileKey
-          >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-26
-          >> Time            = 07:35:28
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\.svn\prop-base\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector\.svn\prop-base
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE]\
-          >> Only a single directory component assume it's an alias
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE
-
-       >> Row Command for table: File
-          >> *File           = CurrentFileKey
-          >> Component_      = c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x
-          >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 79
-          >> *Version        = CurrentFileVersion
-          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
-          >> *Language       = FileLanguage()
-          >> Sequence        = 0
-          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
-             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
-
-       >> Row Command for table: _MAKEMSI_FileSource
-          >> *File_          = CurrentFileKey
-          >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-26
-          >> Time            = 07:35:28
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\.svn\prop-base\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector\.svn\prop-base
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE]\
-          >> Only a single directory component assume it's an alias
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE
-
-       >> Row Command for table: File
-          >> *File           = CurrentFileKey
-          >> Component_      = c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x
-          >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 79
-          >> *Version        = CurrentFileVersion
-          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
-          >> *Language       = FileLanguage()
-          >> Sequence        = 0
-          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
-             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
-
-       >> Row Command for table: _MAKEMSI_FileSource
-          >> *File_          = CurrentFileKey
-          >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-26
-          >> Time            = 07:35:28
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\.svn\prop-base\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector\.svn\prop-base
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE]\
-          >> Only a single directory component assume it's an alias
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE
-
-       >> Row Command for table: File
-          >> *File           = CurrentFileKey
-          >> Component_      = c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x
-          >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 79
-          >> *Version        = CurrentFileVersion
-          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
-          >> *Language       = FileLanguage()
-          >> Sequence        = 0
-          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
-             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
-
-       >> Row Command for table: _MAKEMSI_FileSource
-          >> *File_          = CurrentFileKey
-          >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-26
-          >> Time            = 07:35:28
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\.svn\prop-base\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\PROP-BASE\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector\.svn\prop-base
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE]\
-          >> Only a single directory component assume it's an alias
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE
-
-       >> Row Command for table: File
-          >> *File           = CurrentFileKey
-          >> Component_      = c3.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_PROP_BASE_x
-          >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 79
-          >> *Version        = CurrentFileVersion
-          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
-          >> *Language       = FileLanguage()
-          >> Sequence        = 0
-          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
-             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
-
-       >> Row Command for table: _MAKEMSI_FileSource
-          >> *File_          = CurrentFileKey
-          >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-26
-          >> Time            = 07:35:28
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\.svn\text-base\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector\.svn\text-base
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector\.svn
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR_.SVN]\text-base\
-          >> Extracting the BASE from "[_INSTALLDIR_UCS_AD_CONNECTOR_.SVN]\text-base"
-
-          >> Work through the tree "text-base" creating any required directories
-             >> Processing part "text-base"
-                >> Creating key: "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE"
-                >> Parent   key: "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN"
-                >> Full name: [INSTALLDIR]\UCS-AD-Connector\.svn\text-base
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE
-
-       >> Row Command for table: Directory
-          >> Directory       = _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE
-          >> Directory_Parent = _INSTALLDIR_UCS_AD_CONNECTOR_.SVN
-          >> *DefaultDir     = MakeSfnLfn("_INSTALLDIR_UCS_AD_CONNECTOR_.SVN", "text-base")
-             >> @Validate mode: FIELD
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE\" begin with "C:\PROGRAM FILES\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE\" begin with "C:\WINDOWS\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE\" begin with "C:\WINNT\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE
-          >> Only a single directory component assume it's an alias
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE
-
-       >> Row Command for table: Component
-          >> Component       = c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x
-          >> *ComponentId    = GuidMake("")
-          >> Directory_      = _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE
-          >> Attributes      = msidbComponentAttributesLocalOnly
-          >> Condition       = 
-          >> KeyPath         = 
-             >> @Validate mode: FIELD
-
-       >> Row Command for table: FeatureComponents
-          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
-          >> Component_      = c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-       >> Row Command for table: File
-          >> *File           = CurrentFileKey
-          >> Component_      = c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x
-          >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 49152
-          >> *Version        = CurrentFileVersion
-          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
-          >> *Language       = FileLanguage()
-          >> Sequence        = 0
-          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
-             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
-
-       >> Row Command for table: _MAKEMSI_FileSource
-          >> *File_          = CurrentFileKey
-          >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-26
-          >> Time            = 07:40:06
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-       >> Row Command for table: Component
-          >> @Where          = `Component` = 'c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x'
-          >> @SelfRef        = {*}
-          >> @OK             = =1
-          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
-          >> KeyPath         = copypwd.dll.svn_base_1
-             >> @Validate mode: FETCH
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\.svn\text-base\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector\.svn\text-base
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE]\
-          >> Only a single directory component assume it's an alias
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE
-
-       >> Row Command for table: File
-          >> *File           = CurrentFileKey
-          >> Component_      = c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x
-          >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 32768
-          >> *Version        = CurrentFileVersion
-          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
-          >> *Language       = FileLanguage()
-          >> Sequence        = 0
-          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
-             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
-
-       >> Row Command for table: _MAKEMSI_FileSource
-          >> *File_          = CurrentFileKey
-          >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-26
-          >> Time            = 07:40:04
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\.svn\text-base\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector\.svn\text-base
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE]\
-          >> Only a single directory component assume it's an alias
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE
-
-       >> Row Command for table: File
-          >> *File           = CurrentFileKey
-          >> Component_      = c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x
-          >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 843776
-          >> *Version        = CurrentFileVersion
-          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
-          >> *Language       = FileLanguage()
-          >> Sequence        = 0
-          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
-             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
-
-       >> Row Command for table: _MAKEMSI_FileSource
-          >> *File_          = CurrentFileKey
-          >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-26
-          >> Time            = 07:40:04
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\.svn\text-base\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector\.svn\text-base
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE]\
-          >> Only a single directory component assume it's an alias
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE
-
-       >> Row Command for table: File
-          >> *File           = CurrentFileKey
-          >> Component_      = c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x
-          >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 159744
-          >> *Version        = CurrentFileVersion
-          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
-          >> *Language       = FileLanguage()
-          >> Sequence        = 0
-          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
-             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
-
-       >> Row Command for table: _MAKEMSI_FileSource
-          >> *File_          = CurrentFileKey
-          >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-26
-          >> Time            = 07:40:04
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\.svn\text-base\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector\.svn\text-base
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE]\
-          >> Only a single directory component assume it's an alias
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE
-
-       >> Row Command for table: File
-          >> *File           = CurrentFileKey
-          >> Component_      = c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x
-          >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 159744
-          >> *Version        = CurrentFileVersion
-          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
-          >> *Language       = FileLanguage()
-          >> Sequence        = 0
-          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
-             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
-
-       >> Row Command for table: _MAKEMSI_FileSource
-          >> *File_          = CurrentFileKey
-          >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-26
-          >> Time            = 07:40:04
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\.svn\text-base\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\.SVN\TEXT-BASE\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector\.svn\text-base
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE]\
-          >> Only a single directory component assume it's an alias
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE
-
-       >> Row Command for table: File
-          >> *File           = CurrentFileKey
-          >> Component_      = c4.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_.SVN_TEXT_BASE_x
-          >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 53248
-          >> *Version        = CurrentFileVersion
-          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
-          >> *Language       = FileLanguage()
-          >> Sequence        = 0
-          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
-             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
-
-       >> Row Command for table: _MAKEMSI_FileSource
-          >> *File_          = CurrentFileKey
-          >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-26
-          >> Time            = 07:40:04
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR]\
-          >> Only a single directory component assume it's an alias
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR
-
-
-       >> Rexx4MakeDirTree()
-          >> INPUTS
-          >> ~~~~~~
-          >> DIRECTORY: _INSTALLDIR_UCS_AD_CONNECTOR\
-          >> NAME     : 
-
-          >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\PROGRAM FILES\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINDOWS\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINNT\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINNT\SYSTEM32\"?
-          >> See if we can find a directory alias for start of directory
-             >> Look at: _INSTALLDIR_UCS_AD_CONNECTOR
-          >> Only a single directory component assume it's an alias
-
-          >> OUTPUTS
-          >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR
-
-       >> Row Command for table: Component
-          >> Component       = c5.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.dll
-          >> *ComponentId    = GuidMake("")
-          >> Directory_      = _INSTALLDIR_UCS_AD_CONNECTOR
-          >> Attributes      = msidbComponentAttributesLocalOnly
-          >> Condition       = 
-          >> KeyPath         = 
-             >> @Validate mode: FIELD
-
-       >> Row Command for table: FeatureComponents
-          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
-          >> Component_      = c5.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.dll
-          >> @Validate       = NEW -MISSINGDATA
-             >> @Validate mode: NEW -MISSINGDATA
-
-       >> Row Command for table: File
-          >> *File           = CurrentFileKey
-          >> Component_      = c5.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.dll
+          >> Component_      = c1.ALL.1.0.0.UCS_A.INSTALLDIR_1_copypwd.dll
           >> *FileName       = CurrentFileNameSL
           >> FileSize        = 49152
           >> *Version        = CurrentFileVersion
@@ -2084,7 +1180,7 @@ Building from "installscript.mm"
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: Component
-          >> @Where          = `Component` = 'c5.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.dll'
+          >> @Where          = `Component` = 'c1.ALL.1.0.0.UCS_A.INSTALLDIR_1_copypwd.dll'
           >> @SelfRef        = {*}
           >> @OK             = =1
           >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
@@ -2095,49 +1191,48 @@ Building from "installscript.mm"
        >> Rexx4MakeDirTree()
           >> INPUTS
           >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\
+          >> DIRECTORY: [INSTALLDIR]\
           >> NAME     : 
 
           >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINNT\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
           >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR]\
+             >> Look at: [INSTALLDIR]
           >> Only a single directory component assume it's an alias
 
           >> OUTPUTS
           >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR
+          >> DT_KEYNAME: INSTALLDIR
 
 
        >> Rexx4MakeDirTree()
           >> INPUTS
           >> ~~~~~~
-          >> DIRECTORY: _INSTALLDIR_UCS_AD_CONNECTOR\
+          >> DIRECTORY: INSTALLDIR\
           >> NAME     : 
 
           >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\PROGRAM FILES\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINDOWS\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINNT\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINNT\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
           >> See if we can find a directory alias for start of directory
-             >> Look at: _INSTALLDIR_UCS_AD_CONNECTOR
+             >> Look at: INSTALLDIR
           >> Only a single directory component assume it's an alias
 
           >> OUTPUTS
           >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR
+          >> DT_KEYNAME: INSTALLDIR
 
        >> Row Command for table: Component
-          >> Component       = c6.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.exe
+          >> Component       = c2.ALL.1.0.0.UCS_A.INSTALLDIR_1_copypwd.exe
           >> *ComponentId    = GuidMake("")
-          >> Directory_      = _INSTALLDIR_UCS_AD_CONNECTOR
+          >> Directory_      = INSTALLDIR
           >> Attributes      = msidbComponentAttributesLocalOnly
           >> Condition       = 
           >> KeyPath         = 
@@ -2145,13 +1240,13 @@ Building from "installscript.mm"
 
        >> Row Command for table: FeatureComponents
           >> Feature_        = ALL.1.0.0.UCS_AD_Connector
-          >> Component_      = c6.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.exe
+          >> Component_      = c2.ALL.1.0.0.UCS_A.INSTALLDIR_1_copypwd.exe
           >> @Validate       = NEW -MISSINGDATA
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: File
           >> *File           = CurrentFileKey
-          >> Component_      = c6.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.exe
+          >> Component_      = c2.ALL.1.0.0.UCS_A.INSTALLDIR_1_copypwd.exe
           >> *FileName       = CurrentFileNameSL
           >> FileSize        = 32768
           >> *Version        = CurrentFileVersion
@@ -2170,7 +1265,7 @@ Building from "installscript.mm"
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: Component
-          >> @Where          = `Component` = 'c6.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_copypwd.exe'
+          >> @Where          = `Component` = 'c2.ALL.1.0.0.UCS_A.INSTALLDIR_1_copypwd.exe'
           >> @SelfRef        = {*}
           >> @OK             = =1
           >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
@@ -2181,49 +1276,48 @@ Building from "installscript.mm"
        >> Rexx4MakeDirTree()
           >> INPUTS
           >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\
+          >> DIRECTORY: [INSTALLDIR]\
           >> NAME     : 
 
           >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINNT\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
           >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR]\
+             >> Look at: [INSTALLDIR]
           >> Only a single directory component assume it's an alias
 
           >> OUTPUTS
           >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR
+          >> DT_KEYNAME: INSTALLDIR
 
 
        >> Rexx4MakeDirTree()
           >> INPUTS
           >> ~~~~~~
-          >> DIRECTORY: _INSTALLDIR_UCS_AD_CONNECTOR\
+          >> DIRECTORY: INSTALLDIR\
           >> NAME     : 
 
           >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\PROGRAM FILES\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINDOWS\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINNT\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINNT\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
           >> See if we can find a directory alias for start of directory
-             >> Look at: _INSTALLDIR_UCS_AD_CONNECTOR
+             >> Look at: INSTALLDIR
           >> Only a single directory component assume it's an alias
 
           >> OUTPUTS
           >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR
+          >> DT_KEYNAME: INSTALLDIR
 
        >> Row Command for table: Component
-          >> Component       = c7.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libeay32.dll
+          >> Component       = c3.ALL.1.0.0.UCS_A.INSTALLDIR_1_libeay32.dll
           >> *ComponentId    = GuidMake("")
-          >> Directory_      = _INSTALLDIR_UCS_AD_CONNECTOR
+          >> Directory_      = INSTALLDIR
           >> Attributes      = msidbComponentAttributesLocalOnly
           >> Condition       = 
           >> KeyPath         = 
@@ -2231,13 +1325,13 @@ Building from "installscript.mm"
 
        >> Row Command for table: FeatureComponents
           >> Feature_        = ALL.1.0.0.UCS_AD_Connector
-          >> Component_      = c7.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libeay32.dll
+          >> Component_      = c3.ALL.1.0.0.UCS_A.INSTALLDIR_1_libeay32.dll
           >> @Validate       = NEW -MISSINGDATA
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: File
           >> *File           = CurrentFileKey
-          >> Component_      = c7.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libeay32.dll
+          >> Component_      = c3.ALL.1.0.0.UCS_A.INSTALLDIR_1_libeay32.dll
           >> *FileName       = CurrentFileNameSL
           >> FileSize        = 843776
           >> *Version        = CurrentFileVersion
@@ -2256,7 +1350,7 @@ Building from "installscript.mm"
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: Component
-          >> @Where          = `Component` = 'c7.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libeay32.dll'
+          >> @Where          = `Component` = 'c3.ALL.1.0.0.UCS_A.INSTALLDIR_1_libeay32.dll'
           >> @SelfRef        = {*}
           >> @OK             = =1
           >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
@@ -2267,49 +1361,48 @@ Building from "installscript.mm"
        >> Rexx4MakeDirTree()
           >> INPUTS
           >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\
+          >> DIRECTORY: [INSTALLDIR]\
           >> NAME     : 
 
           >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINNT\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
           >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR]\
+             >> Look at: [INSTALLDIR]
           >> Only a single directory component assume it's an alias
 
           >> OUTPUTS
           >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR
+          >> DT_KEYNAME: INSTALLDIR
 
 
        >> Rexx4MakeDirTree()
           >> INPUTS
           >> ~~~~~~
-          >> DIRECTORY: _INSTALLDIR_UCS_AD_CONNECTOR\
+          >> DIRECTORY: INSTALLDIR\
           >> NAME     : 
 
           >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\PROGRAM FILES\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINDOWS\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINNT\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINNT\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
           >> See if we can find a directory alias for start of directory
-             >> Look at: _INSTALLDIR_UCS_AD_CONNECTOR
+             >> Look at: INSTALLDIR
           >> Only a single directory component assume it's an alias
 
           >> OUTPUTS
           >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR
+          >> DT_KEYNAME: INSTALLDIR
 
        >> Row Command for table: Component
-          >> Component       = c8.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libssl32.dll
+          >> Component       = c4.ALL.1.0.0.UCS_A.INSTALLDIR_1_libssl32.dll
           >> *ComponentId    = GuidMake("")
-          >> Directory_      = _INSTALLDIR_UCS_AD_CONNECTOR
+          >> Directory_      = INSTALLDIR
           >> Attributes      = msidbComponentAttributesLocalOnly
           >> Condition       = 
           >> KeyPath         = 
@@ -2317,13 +1410,13 @@ Building from "installscript.mm"
 
        >> Row Command for table: FeatureComponents
           >> Feature_        = ALL.1.0.0.UCS_AD_Connector
-          >> Component_      = c8.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libssl32.dll
+          >> Component_      = c4.ALL.1.0.0.UCS_A.INSTALLDIR_1_libssl32.dll
           >> @Validate       = NEW -MISSINGDATA
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: File
           >> *File           = CurrentFileKey
-          >> Component_      = c8.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libssl32.dll
+          >> Component_      = c4.ALL.1.0.0.UCS_A.INSTALLDIR_1_libssl32.dll
           >> *FileName       = CurrentFileNameSL
           >> FileSize        = 159744
           >> *Version        = CurrentFileVersion
@@ -2342,7 +1435,7 @@ Building from "installscript.mm"
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: Component
-          >> @Where          = `Component` = 'c8.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_libssl32.dll'
+          >> @Where          = `Component` = 'c4.ALL.1.0.0.UCS_A.INSTALLDIR_1_libssl32.dll'
           >> @SelfRef        = {*}
           >> @OK             = =1
           >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
@@ -2353,49 +1446,48 @@ Building from "installscript.mm"
        >> Rexx4MakeDirTree()
           >> INPUTS
           >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\
+          >> DIRECTORY: [INSTALLDIR]\
           >> NAME     : 
 
           >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINNT\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
           >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR]\
+             >> Look at: [INSTALLDIR]
           >> Only a single directory component assume it's an alias
 
           >> OUTPUTS
           >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR
+          >> DT_KEYNAME: INSTALLDIR
 
 
        >> Rexx4MakeDirTree()
           >> INPUTS
           >> ~~~~~~
-          >> DIRECTORY: _INSTALLDIR_UCS_AD_CONNECTOR\
+          >> DIRECTORY: INSTALLDIR\
           >> NAME     : 
 
           >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\PROGRAM FILES\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINDOWS\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINNT\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINNT\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
           >> See if we can find a directory alias for start of directory
-             >> Look at: _INSTALLDIR_UCS_AD_CONNECTOR
+             >> Look at: INSTALLDIR
           >> Only a single directory component assume it's an alias
 
           >> OUTPUTS
           >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR
+          >> DT_KEYNAME: INSTALLDIR
 
        >> Row Command for table: Component
-          >> Component       = c9.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ssleay32.dll
+          >> Component       = c5.ALL.1.0.0.UCS_A.INSTALLDIR_1_ssleay32.dll
           >> *ComponentId    = GuidMake("")
-          >> Directory_      = _INSTALLDIR_UCS_AD_CONNECTOR
+          >> Directory_      = INSTALLDIR
           >> Attributes      = msidbComponentAttributesLocalOnly
           >> Condition       = 
           >> KeyPath         = 
@@ -2403,13 +1495,13 @@ Building from "installscript.mm"
 
        >> Row Command for table: FeatureComponents
           >> Feature_        = ALL.1.0.0.UCS_AD_Connector
-          >> Component_      = c9.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ssleay32.dll
+          >> Component_      = c5.ALL.1.0.0.UCS_A.INSTALLDIR_1_ssleay32.dll
           >> @Validate       = NEW -MISSINGDATA
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: File
           >> *File           = CurrentFileKey
-          >> Component_      = c9.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ssleay32.dll
+          >> Component_      = c5.ALL.1.0.0.UCS_A.INSTALLDIR_1_ssleay32.dll
           >> *FileName       = CurrentFileNameSL
           >> FileSize        = 159744
           >> *Version        = CurrentFileVersion
@@ -2428,7 +1520,7 @@ Building from "installscript.mm"
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: Component
-          >> @Where          = `Component` = 'c9.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ssleay32.dll'
+          >> @Where          = `Component` = 'c5.ALL.1.0.0.UCS_A.INSTALLDIR_1_ssleay32.dll'
           >> @SelfRef        = {*}
           >> @OK             = =1
           >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
@@ -2439,49 +1531,48 @@ Building from "installscript.mm"
        >> Rexx4MakeDirTree()
           >> INPUTS
           >> ~~~~~~
-          >> DIRECTORY: [INSTALLDIR]\UCS-AD-Connector\
+          >> DIRECTORY: [INSTALLDIR]\
           >> NAME     : 
 
           >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\PROGRAM FILES\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINDOWS\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINNT\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "[INSTALLDIR]\UCS-AD-CONNECTOR\" begin with "C:\WINNT\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
           >> See if we can find a directory alias for start of directory
-             >> Look at: [INSTALLDIR]\UCS-AD-Connector
-                >> New DIR: [_INSTALLDIR_UCS_AD_CONNECTOR]\
+             >> Look at: [INSTALLDIR]
           >> Only a single directory component assume it's an alias
 
           >> OUTPUTS
           >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR
+          >> DT_KEYNAME: INSTALLDIR
 
 
        >> Rexx4MakeDirTree()
           >> INPUTS
           >> ~~~~~~
-          >> DIRECTORY: _INSTALLDIR_UCS_AD_CONNECTOR\
+          >> DIRECTORY: INSTALLDIR\
           >> NAME     : 
 
           >> See if any defined MapUserDir mappings apply (5 items)
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\PROGRAM FILES\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINDOWS\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINNT\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINDOWS\SYSTEM32\"?
-             >> Does "_INSTALLDIR_UCS_AD_CONNECTOR\" begin with "C:\WINNT\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
           >> See if we can find a directory alias for start of directory
-             >> Look at: _INSTALLDIR_UCS_AD_CONNECTOR
+             >> Look at: INSTALLDIR
           >> Only a single directory component assume it's an alias
 
           >> OUTPUTS
           >> ~~~~~~~
-          >> DT_KEYNAME: _INSTALLDIR_UCS_AD_CONNECTOR
+          >> DT_KEYNAME: INSTALLDIR
 
        >> Row Command for table: Component
-          >> Component       = c10.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ucs_ad_connector.exe
+          >> Component       = c6.ALL.1.0.0.UCS_A.INSTALLDIR_1_ucs_ad_connector.exe
           >> *ComponentId    = GuidMake("")
-          >> Directory_      = _INSTALLDIR_UCS_AD_CONNECTOR
+          >> Directory_      = INSTALLDIR
           >> Attributes      = msidbComponentAttributesLocalOnly
           >> Condition       = 
           >> KeyPath         = 
@@ -2489,13 +1580,13 @@ Building from "installscript.mm"
 
        >> Row Command for table: FeatureComponents
           >> Feature_        = ALL.1.0.0.UCS_AD_Connector
-          >> Component_      = c10.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ucs_ad_connector.exe
+          >> Component_      = c6.ALL.1.0.0.UCS_A.INSTALLDIR_1_ucs_ad_connector.exe
           >> @Validate       = NEW -MISSINGDATA
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: File
           >> *File           = CurrentFileKey
-          >> Component_      = c10.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ucs_ad_connector.exe
+          >> Component_      = c6.ALL.1.0.0.UCS_A.INSTALLDIR_1_ucs_ad_connector.exe
           >> *FileName       = CurrentFileNameSL
           >> FileSize        = 53248
           >> *Version        = CurrentFileVersion
@@ -2514,7 +1605,7 @@ Building from "installscript.mm"
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: Component
-          >> @Where          = `Component` = 'c10.ALL.1.0.0.UCS_A._INSTALLDIR_UCS_AD_CONNECTOR_1_ucs_ad_connector.exe'
+          >> @Where          = `Component` = 'c6.ALL.1.0.0.UCS_A.INSTALLDIR_1_ucs_ad_connector.exe'
           >> @SelfRef        = {*}
           >> @OK             = =1
           >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
@@ -2522,8 +1613,8 @@ Building from "installscript.mm"
              >> @Validate mode: FETCH
 
 
-     08:47:43  Script : installscript.mm(36) - @VBS0724
-     08:47:43  Command: <$Files "files\temp\*.*" DestDir="[TempFolder]">
+     14:38:29  Script : installscript.mm(36) - @VBS0503
+     14:38:29  Command: <$Files "files\temp\*.*" DestDir="[TempFolder]">
 
 
        >> Rexx4MakeDirTree()
@@ -2575,7 +1666,7 @@ Building from "installscript.mm"
           >> DT_KEYNAME: TempFolder
 
        >> Row Command for table: Component
-          >> Component       = c11.ALL.1.0.0.UCS_A.TempFolder_x
+          >> Component       = c7.ALL.1.0.0.UCS_A.TempFolder_x
           >> *ComponentId    = GuidMake("")
           >> Directory_      = TempFolder
           >> Attributes      = msidbComponentAttributesLocalOnly
@@ -2585,13 +1676,13 @@ Building from "installscript.mm"
 
        >> Row Command for table: FeatureComponents
           >> Feature_        = ALL.1.0.0.UCS_AD_Connector
-          >> Component_      = c11.ALL.1.0.0.UCS_A.TempFolder_x
+          >> Component_      = c7.ALL.1.0.0.UCS_A.TempFolder_x
           >> @Validate       = NEW -MISSINGDATA
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: File
           >> *File           = CurrentFileKey
-          >> Component_      = c11.ALL.1.0.0.UCS_A.TempFolder_x
+          >> Component_      = c7.ALL.1.0.0.UCS_A.TempFolder_x
           >> *FileName       = CurrentFileNameSL
           >> FileSize        = 146
           >> *Version        = CurrentFileVersion
@@ -2610,7 +1701,7 @@ Building from "installscript.mm"
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: Component
-          >> @Where          = `Component` = 'c11.ALL.1.0.0.UCS_A.TempFolder_x'
+          >> @Where          = `Component` = 'c7.ALL.1.0.0.UCS_A.TempFolder_x'
           >> @SelfRef        = {*}
           >> @OK             = =1
           >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
@@ -2618,8 +1709,8 @@ Building from "installscript.mm"
              >> @Validate mode: FETCH
 
 
-     08:47:43  Script : installscript.mm(54) - @VBS0752
-     08:47:43  Command: <$ExeCa EXE='[TempFolder]ucs-ad-connector-service.cmd' Args=^"MsgBox Title" "MsgBox text..."^ WorkDir="TempFolder" SEQ="InstallFinalize-" Type="immediate ASync AnyRc" Condition="<$CONDITION_INSTALL_ONLY>" >
+     14:38:29  Script : installscript.mm(54) - @VBS0531
+     14:38:29  Command: <$ExeCa EXE='[TempFolder]ucs-ad-connector-service.cmd' Args=^"MsgBox Title" "MsgBox text..."^ WorkDir="TempFolder" SEQ="InstallFinalize-" Type="immediate ASync AnyRc" Condition="<$CONDITION_INSTALL_ONLY>" >
 
 
        >> Rexx4MakeDirTree()
@@ -2663,10 +1754,10 @@ Building from "installscript.mm"
      (@54)INFO: MAKEMSI told not to backup source code.
      * Reading: C:\Programme\MakeMsi\UiSample.MMH
 
-       08:47:44  Script : UiSample.MMH(152) - @VBS0765
+       14:38:30  Script : UiSample.MMH(152) - @VBS0544
 
 
-       08:47:44  Script : UiSample.MMH(169) - @VBS0766
+       14:38:30  Script : UiSample.MMH(169) - @VBS0545
 
          >> Row Command for table: Control
             >> Dialog_         = ProgressDlg
@@ -2684,13 +1775,13 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       08:47:44  Script : UiSample.MMH(170) - @VBS0768
+       14:38:30  Script : UiSample.MMH(170) - @VBS0547
 
 
-       08:47:44  Script : UiSample.MMH(171) - @VBS0769
+       14:38:30  Script : UiSample.MMH(171) - @VBS0548
 
 
-       08:47:44  Script : UiSample.MMH(180) - @VBS0770
+       14:38:30  Script : UiSample.MMH(180) - @VBS0549
 
          >> Row Command for table: EventMapping
             >> Dialog_         = ProgressDlg
@@ -2700,13 +1791,13 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       08:47:44  Script : UiSample.MMH(181) - @VBS0772
+       14:38:31  Script : UiSample.MMH(181) - @VBS0551
 
 
-       08:47:44  Script : UiSample.MMH(191) - @VBS0773
+       14:38:31  Script : UiSample.MMH(191) - @VBS0552
 
 
-       08:47:44  Script : UiSample.MMH(199) - @VBS0774
+       14:38:31  Script : UiSample.MMH(199) - @VBS0553
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'ProgressDlg' AND `Control` = 'ActionText'
@@ -2716,13 +1807,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:44  Script : UiSample.MMH(200) - @VBS0776
+       14:38:31  Script : UiSample.MMH(200) - @VBS0555
 
 
-       08:47:44  Script : UiSample.MMH(210) - @VBS0777
+       14:38:31  Script : UiSample.MMH(210) - @VBS0556
 
 
-       08:47:44  Script : UiSample.MMH(218) - @VBS0778
+       14:38:31  Script : UiSample.MMH(218) - @VBS0557
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'ProgressDlg' AND Control = 'Title'
@@ -2732,13 +1823,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:44  Script : UiSample.MMH(219) - @VBS0780
+       14:38:31  Script : UiSample.MMH(219) - @VBS0559
 
 
-       08:47:44  Script : UiSample.MMH(228) - @VBS0781
+       14:38:31  Script : UiSample.MMH(228) - @VBS0560
 
 
-       08:47:44  Script : UiSample.MMH(235) - @VBS0782
+       14:38:31  Script : UiSample.MMH(235) - @VBS0561
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'ProgressDlg' AND Control = 'ProgressBar'
@@ -2747,13 +1838,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:44  Script : UiSample.MMH(236) - @VBS0784
+       14:38:31  Script : UiSample.MMH(236) - @VBS0563
 
 
-       08:47:44  Script : UiSample.MMH(245) - @VBS0785
+       14:38:31  Script : UiSample.MMH(245) - @VBS0564
 
 
-       08:47:44  Script : UiSample.MMH(253) - @VBS0786
+       14:38:31  Script : UiSample.MMH(253) - @VBS0565
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'ProgressDlg' AND `Control` = 'StatusLabel'
@@ -2762,7 +1853,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:44  Script : UiSample.MMH(262) - @VBS0788
+       14:38:31  Script : UiSample.MMH(262) - @VBS0567
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'ProgressDlg' AND `Control` = 'ActionText'
@@ -2772,13 +1863,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:44  Script : UiSample.MMH(263) - @VBS0790
+       14:38:31  Script : UiSample.MMH(263) - @VBS0569
 
 
-       08:47:44  Script : UiSample.MMH(275) - @VBS0791
+       14:38:31  Script : UiSample.MMH(275) - @VBS0570
 
 
-       08:47:44  Script : UiSample.MMH(283) - @VBS0792
+       14:38:31  Script : UiSample.MMH(283) - @VBS0571
 
          >> Row Command for table: Dialog
             >> @Where          = `Title` = '[ProductName] [Setup]'
@@ -2787,13 +1878,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:44  Script : UiSample.MMH(294) - @VBS0794
+       14:38:31  Script : UiSample.MMH(294) - @VBS0573
 
 
-       08:47:44  Script : UiSample.MMH(317) - @VBS0795
+       14:38:31  Script : UiSample.MMH(317) - @VBS0574
 
 
-       08:47:44  Script : UiSample.MMH(325) - @VBS0796
+       14:38:31  Script : UiSample.MMH(325) - @VBS0575
 
          >> Row Command for table: RadioButton
             >> @Where          = 
@@ -2802,13 +1893,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:44  Script : UiSample.MMH(326) - @VBS0798
+       14:38:31  Script : UiSample.MMH(326) - @VBS0577
 
 
-       08:47:44  Script : UiSample.MMH(336) - @VBS0799
+       14:38:31  Script : UiSample.MMH(336) - @VBS0578
 
 
-       08:47:44  Script : UiSample.MMH(344) - @VBS0800
+       14:38:31  Script : UiSample.MMH(344) - @VBS0579
 
          >> Row Command for table: Dialog
             >> @Where          = `Title` = 'Installer Information'
@@ -2817,13 +1908,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:44  Script : UiSample.MMH(345) - @VBS0802
+       14:38:31  Script : UiSample.MMH(345) - @VBS0581
 
 
-       08:47:44  Script : UiSample.MMH(353) - @VBS0803
+       14:38:31  Script : UiSample.MMH(353) - @VBS0582
 
 
-       08:47:44  Script : UiSample.MMH(360) - @VBS0804
+       14:38:31  Script : UiSample.MMH(360) - @VBS0583
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'VerifyRepairDlg' and `Control` = 'Title'
@@ -2832,7 +1923,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:44  Script : UiSample.MMH(367) - @VBS0806
+       14:38:31  Script : UiSample.MMH(367) - @VBS0585
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'VerifyRemoveDlg' and `Control` = 'Title'
@@ -2841,13 +1932,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:44  Script : UiSample.MMH(368) - @VBS0808
+       14:38:31  Script : UiSample.MMH(368) - @VBS0587
 
 
-       08:47:44  Script : UiSample.MMH(391) - @VBS0809
+       14:38:31  Script : UiSample.MMH(391) - @VBS0588
 
 
-       08:47:44  Script : UiSample.MMH(401) - @VBS0810
+       14:38:31  Script : UiSample.MMH(401) - @VBS0589
 
          >> Row Command for table: Dialog
             >> @Where          = `Dialog` = 'ErrorDlg'
@@ -2858,13 +1949,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:44  Script : UiSample.MMH(402) - @VBS0812
+       14:38:31  Script : UiSample.MMH(402) - @VBS0591
 
 
-       08:47:44  Script : UiSample.MMH(403) - @VBS0813
+       14:38:31  Script : UiSample.MMH(403) - @VBS0592
 
 
-       08:47:44  Script : UiSample.MMH(413) - @VBS0814
+       14:38:31  Script : UiSample.MMH(413) - @VBS0593
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'ErrorDlg' and `Type`='PushButton'
@@ -2875,7 +1966,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:44  Script : UiSample.MMH(432) - @VBS0816
+       14:38:31  Script : UiSample.MMH(432) - @VBS0595
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'ErrorDlg' and `Control`='ErrorText'
@@ -2888,13 +1979,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:44  Script : UiSample.MMH(433) - @VBS0818
+       14:38:31  Script : UiSample.MMH(433) - @VBS0597
 
 
-       08:47:44  Script : UiSample.MMH(455) - @VBS0819
+       14:38:31  Script : UiSample.MMH(455) - @VBS0598
 
 
-       08:47:44  Script : UiSample.MMH(463) - @VBS0820
+       14:38:31  Script : UiSample.MMH(463) - @VBS0599
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'WelcomeDlg' and `Control`='Description'
@@ -2904,13 +1995,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:44  Script : UiSample.MMH(464) - @VBS0822
+       14:38:31  Script : UiSample.MMH(464) - @VBS0601
 
 
-       08:47:44  Script : UiSample.MMH(473) - @VBS0823
+       14:38:31  Script : UiSample.MMH(473) - @VBS0602
 
 
-       08:47:45  Script : UiSample.MMH(481) - @VBS0824
+       14:38:31  Script : UiSample.MMH(481) - @VBS0603
 
          >> Row Command for table: InstallUISequence
             >> @Where          = `Action` = 'MaintenanceWelcomeDlg'
@@ -2919,13 +2010,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(482) - @VBS0826
+       14:38:31  Script : UiSample.MMH(482) - @VBS0605
 
 
-       08:47:45  Script : UiSample.MMH(485) - @VBS0827
+       14:38:31  Script : UiSample.MMH(485) - @VBS0606
 
 
-       08:47:45  Script : UiSample.MMH(493) - @VBS0828
+       14:38:32  Script : UiSample.MMH(493) - @VBS0607
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'MaintenanceTypeDlg' and `Control`='Back'
@@ -2935,13 +2026,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(494) - @VBS0830
+       14:38:32  Script : UiSample.MMH(494) - @VBS0609
 
 
-       08:47:45  Script : UiSample.MMH(505) - @VBS0831
+       14:38:32  Script : UiSample.MMH(505) - @VBS0610
 
 
-       08:47:45  Script : UiSample.MMH(521) - @VBS0832
+       14:38:32  Script : UiSample.MMH(521) - @VBS0611
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'AdminRegistrationDlg' AND Control = 'OrganizationEdit'
@@ -2950,13 +2041,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(522) - @VBS0836
+       14:38:32  Script : UiSample.MMH(522) - @VBS0615
 
 
-       08:47:45  Script : UiSample.MMH(532) - @VBS0837
+       14:38:32  Script : UiSample.MMH(532) - @VBS0616
 
 
-       08:47:45  Script : UiSample.MMH(540) - @VBS0838
+       14:38:32  Script : UiSample.MMH(540) - @VBS0617
 
          >> Row Command for table: ControlEvent
             >> @Where          = Dialog_ = 'AdminWelcomeDlg' AND Control_ = 'Next' AND Event = 'NewDialog' AND Argument = 'AdminRegistrationDlg' AND Condition = '1'
@@ -2965,7 +2056,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(549) - @VBS0840
+       14:38:32  Script : UiSample.MMH(549) - @VBS0619
 
          >> Row Command for table: ControlEvent
             >> @Where          = Dialog_ = 'AdminInstallPointDlg' AND Control_ = 'Back' AND Event = 'NewDialog' AND Argument = 'AdminRegistrationDlg' AND Condition = '1'
@@ -2974,13 +2065,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(550) - @VBS0842
+       14:38:32  Script : UiSample.MMH(550) - @VBS0621
 
 
-       08:47:45  Script : UiSample.MMH(590) - @VBS0843
+       14:38:32  Script : UiSample.MMH(590) - @VBS0622
 
 
-       08:47:45  Script : UiSample.MMH(600) - @VBS0844
+       14:38:32  Script : UiSample.MMH(600) - @VBS0623
 
          >> Row Command for table: Control
             >> @Where          = `Control`='BottomLine' and `Type`='Line' and (`Dialog_` <> 'AdminWelcomeDlg') and (`Dialog_` <> 'ExitDialog') and (`Dialog_` <> 'FatalError') and (`Dialog_` <> 'MaintenanceWelcomeDlg') and (`Dialog_` <> 'PrepareDlg') and (`Dialog_` <> 'ResumeDlg') and (`Dialog_` <> 'UserExit') and (`Dialog_` <> 'WelcomeDlg')
@@ -2991,13 +2082,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(601) - @VBS0846
+       14:38:32  Script : UiSample.MMH(601) - @VBS0625
 
 
-       08:47:45  Script : UiSample.MMH(640) - @VBS0847
+       14:38:32  Script : UiSample.MMH(640) - @VBS0626
 
 
-       08:47:45  Script : UiSample.MMH(650) - @VBS0848
+       14:38:32  Script : UiSample.MMH(650) - @VBS0627
 
          >> Row Command for table: TextStyle
             >> TextStyle       = BrandingLR
@@ -3008,7 +2099,7 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       08:47:45  Script : UiSample.MMH(660) - @VBS0850
+       14:38:32  Script : UiSample.MMH(660) - @VBS0629
 
          >> Row Command for table: TextStyle
             >> TextStyle       = BrandingUL
@@ -3019,13 +2110,13 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       08:47:45  Script : UiSample.MMH(661) - @VBS0852
+       14:38:32  Script : UiSample.MMH(661) - @VBS0631
 
 
-       08:47:45  Script : UiSample.MMH(662) - @VBS0853
+       14:38:32  Script : UiSample.MMH(662) - @VBS0632
 
 
-       08:47:45  Script : UiSample.MMH(681) - @VBS0854
+       14:38:32  Script : UiSample.MMH(681) - @VBS0633
 
          >> Row Command for table: Control
             >> @Where          = `Control`='BottomLine' and `Type`='Line' and (`Dialog_` <> 'AdminWelcomeDlg') and (`Dialog_` <> 'ExitDialog') and (`Dialog_` <> 'FatalError') and (`Dialog_` <> 'MaintenanceWelcomeDlg') and (`Dialog_` <> 'PrepareDlg') and (`Dialog_` <> 'ResumeDlg') and (`Dialog_` <> 'UserExit') and (`Dialog_` <> 'WelcomeDlg')
@@ -3045,7 +2136,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(701) - @VBS0856
+       14:38:32  Script : UiSample.MMH(701) - @VBS0635
 
          >> Row Command for table: Control
             >> @Where          = `Control`='BottomLine' and `Type`='Line' and (`Dialog_` <> 'AdminWelcomeDlg') and (`Dialog_` <> 'ExitDialog') and (`Dialog_` <> 'FatalError') and (`Dialog_` <> 'MaintenanceWelcomeDlg') and (`Dialog_` <> 'PrepareDlg') and (`Dialog_` <> 'ResumeDlg') and (`Dialog_` <> 'UserExit') and (`Dialog_` <> 'WelcomeDlg')
@@ -3066,13 +2157,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(702) - @VBS0858
+       14:38:32  Script : UiSample.MMH(702) - @VBS0637
 
 
-       08:47:45  Script : UiSample.MMH(713) - @VBS0859
+       14:38:32  Script : UiSample.MMH(713) - @VBS0638
 
 
-       08:47:45  Script : UiSample.MMH(722) - @VBS0860
+       14:38:32  Script : UiSample.MMH(722) - @VBS0639
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Description'
@@ -3082,7 +2173,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(730) - @VBS0862
+       14:38:32  Script : UiSample.MMH(730) - @VBS0641
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Text'
@@ -3092,7 +2183,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(740) - @VBS0864
+       14:38:32  Script : UiSample.MMH(740) - @VBS0643
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Tree'
@@ -3104,7 +2195,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(750) - @VBS0866
+       14:38:32  Script : UiSample.MMH(750) - @VBS0645
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Box'
@@ -3116,7 +2207,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(760) - @VBS0868
+       14:38:32  Script : UiSample.MMH(760) - @VBS0647
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'LocationLabel'
@@ -3128,7 +2219,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(771) - @VBS0870
+       14:38:32  Script : UiSample.MMH(771) - @VBS0649
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Location'
@@ -3141,7 +2232,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(778) - @VBS0872
+       14:38:32  Script : UiSample.MMH(778) - @VBS0651
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Browse'
@@ -3150,7 +2241,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(788) - @VBS0874
+       14:38:32  Script : UiSample.MMH(788) - @VBS0653
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'ItemDescription'
@@ -3162,7 +2253,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(798) - @VBS0876
+       14:38:32  Script : UiSample.MMH(798) - @VBS0655
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'ItemSize'
@@ -3174,13 +2265,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(800) - @VBS0878
+       14:38:32  Script : UiSample.MMH(800) - @VBS0657
 
 
-       08:47:45  Script : UiSample.MMH(803) - @VBS0879
+       14:38:33  Script : UiSample.MMH(803) - @VBS0658
 
 
-       08:47:45  Script : UiSample.MMH(811) - @VBS0880
+       14:38:33  Script : UiSample.MMH(811) - @VBS0659
 
          >> Row Command for table: TextStyle
             >> TextStyle       = FeatureDirFont
@@ -3190,10 +2281,10 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       08:47:45  Script : UiSample.MMH(812) - @VBS0882
+       14:38:33  Script : UiSample.MMH(812) - @VBS0661
 
 
-       08:47:45  Script : UiSample.MMH(823) - @VBS0883
+       14:38:33  Script : UiSample.MMH(823) - @VBS0662
 
          >> Row Command for table: Binary
             >> Data            = C:\Programme\MakeMsi\MmCustomSetup.ico
@@ -3202,7 +2293,7 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       08:47:45  Script : UiSample.MMH(836) - @VBS0888
+       14:38:33  Script : UiSample.MMH(836) - @VBS0667
 
          >> Row Command for table: Binary
             >> Data            = C:\Programme\MakeMsi\white.bmp
@@ -3211,7 +2302,7 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       08:47:45  Script : UiSample.MMH(872) - @VBS0893
+       14:38:33  Script : UiSample.MMH(872) - @VBS0672
 
          >> Row Command for table: Binary
             >> Data            = C:\Programme\MakeMsi\LeftSide.bmp
@@ -3220,10 +2311,10 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       08:47:45  Script : UiSample.MMH(933) - @VBS0898
+       14:38:33  Script : UiSample.MMH(933) - @VBS0677
 
 
-       08:47:45  Script : UiSample.MMH(940) - @VBS0899
+       14:38:33  Script : UiSample.MMH(940) - @VBS0678
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'AdminWelcomeDlg' AND Control = 'Description'
@@ -3232,7 +2323,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(947) - @VBS0901
+       14:38:33  Script : UiSample.MMH(947) - @VBS0680
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'ExitDialog' AND Control = 'Description'
@@ -3241,7 +2332,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(954) - @VBS0903
+       14:38:33  Script : UiSample.MMH(954) - @VBS0682
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'FatalError' AND Control = 'Description1'
@@ -3250,7 +2341,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(961) - @VBS0905
+       14:38:33  Script : UiSample.MMH(961) - @VBS0684
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'FatalError' AND Control = 'Description2'
@@ -3259,7 +2350,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(968) - @VBS0907
+       14:38:33  Script : UiSample.MMH(968) - @VBS0686
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'PrepareDlg' AND Control = 'Description'
@@ -3268,7 +2359,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(976) - @VBS0909
+       14:38:33  Script : UiSample.MMH(976) - @VBS0688
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'PrepareDlg' AND Control = 'ActionText'
@@ -3278,7 +2369,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(983) - @VBS0911
+       14:38:33  Script : UiSample.MMH(983) - @VBS0690
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'PrepareDlg' AND Control = 'ActionData'
@@ -3287,7 +2378,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:45  Script : UiSample.MMH(990) - @VBS0913
+       14:38:33  Script : UiSample.MMH(990) - @VBS0692
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'UserExit' AND Control = 'Description1'
@@ -3296,7 +2387,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:46  Script : UiSample.MMH(997) - @VBS0915
+       14:38:33  Script : UiSample.MMH(997) - @VBS0694
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'UserExit' AND Control = 'Description2'
@@ -3305,7 +2396,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:46  Script : UiSample.MMH(1004) - @VBS0917
+       14:38:33  Script : UiSample.MMH(1004) - @VBS0696
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'MaintenanceWelcomeDlg' AND Control = 'Description'
@@ -3314,7 +2405,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:46  Script : UiSample.MMH(1011) - @VBS0919
+       14:38:33  Script : UiSample.MMH(1011) - @VBS0698
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'ResumeDlg' AND Control = 'Description'
@@ -3323,7 +2414,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:46  Script : UiSample.MMH(1018) - @VBS0921
+       14:38:33  Script : UiSample.MMH(1018) - @VBS0700
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'WelcomeDlg' AND Control = 'Description'
@@ -3332,10 +2423,10 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:46  Script : UiSample.MMH(1019) - @VBS0923
+       14:38:33  Script : UiSample.MMH(1019) - @VBS0702
 
 
-       08:47:46  Script : UiSample.MMH(1083) - @VBS0924
+       14:38:33  Script : UiSample.MMH(1083) - @VBS0703
 
          >> Row Command for table: Dialog
             >> @Where          = `Dialog` = 'CancelDlg'
@@ -3359,7 +2450,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:46  Script : UiSample.MMH(1091) - @VBS0936
+       14:38:33  Script : UiSample.MMH(1091) - @VBS0715
 
          >> Property command for: MM_REDUCED_UI
             >> Value comes from a LITERAL: 0
@@ -3369,10 +2460,10 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       08:47:46  Script : UiSample.MMH(1094) - @VBS0942
+       14:38:33  Script : UiSample.MMH(1094) - @VBS0721
 
 
-       08:47:46  Script : UiSample.MMH(1102) - @VBS0943
+       14:38:33  Script : UiSample.MMH(1102) - @VBS0722
 
          >> Row Command for table: InstallUISequence
             >> @Where          = Action = 'ExitDialog'
@@ -3381,7 +2472,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:46  Script : UiSample.MMH(1110) - @VBS0945
+       14:38:33  Script : UiSample.MMH(1110) - @VBS0724
 
          >> Row Command for table: InstallUISequence
             >> @Where          = Action = 'WelcomeDlg'
@@ -3390,7 +2481,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:46  Script : UiSample.MMH(1111) - @VBS0947
+       14:38:34  Script : UiSample.MMH(1111) - @VBS0726
 
 
          >> MsiValFilter(Case sensitive): Row 'VerifyRepairDlg.Repair' in table 'Control' has bits set in the 'Attributes' column that are reserved
@@ -3402,19 +2493,19 @@ Building from "installscript.mm"
          >> MsiValFilter(Case sensitive): Row 'VerifyReadyDlg.Install' in table 'Control' has bits set in the 'Attributes' column that are reserved
             >> Reason: Work around Microsoft's bug in latest validation CUB files (_ReservedBits table)
 
-       08:47:46  Script : UiSample.MMH(1170) - @VBS0948
+       14:38:34  Script : UiSample.MMH(1170) - @VBS0727
 
 
-       08:47:46  Script : UiSample.MMH(1171) - @VBS0949
+       14:38:34  Script : UiSample.MMH(1171) - @VBS0728
 
 
-       08:47:46  Script : UiSample.MMH(1172) - @VBS0950
+       14:38:34  Script : UiSample.MMH(1172) - @VBS0729
 
 
-       08:47:46  Script : UiSample.MMH(1186) - @VBS0951
+       14:38:34  Script : UiSample.MMH(1186) - @VBS0730
 
 
-       08:47:46  Script : UiSample.MMH(1194) - @VBS0952
+       14:38:34  Script : UiSample.MMH(1194) - @VBS0731
 
          >> Row Command for table: ControlEvent
             >> @Where          = Dialog_ = 'CancelDlg' AND Control_ = 'Yes' AND Event = 'EndDialog' AND Argument = 'Exit' AND Condition = '1'
@@ -3423,7 +2514,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:46  Script : UiSample.MMH(1206) - @VBS0954
+       14:38:34  Script : UiSample.MMH(1206) - @VBS0733
 
          >> Row Command for table: ControlEvent
             >> Dialog_         = CancelDlg
@@ -3435,13 +2526,13 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       08:47:46  Script : UiSample.MMH(1208) - @VBS0956
+       14:38:34  Script : UiSample.MMH(1208) - @VBS0735
 
 
-       08:47:46  Script : UiSample.MMH(1209) - @VBS0957
+       14:38:34  Script : UiSample.MMH(1209) - @VBS0736
 
 
-       08:47:46  Script : UiSample.MMH(1217) - @VBS0958
+       14:38:34  Script : UiSample.MMH(1217) - @VBS0737
 
          >> Row Command for table: InstallUISequence
             >> @Where          = Action = 'UserExit'
@@ -3450,13 +2541,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:46  Script : UiSample.MMH(1218) - @VBS0960
+       14:38:34  Script : UiSample.MMH(1218) - @VBS0739
 
 
-       08:47:46  Script : UiSample.MMH(1317) - @VBS0961
+       14:38:34  Script : UiSample.MMH(1317) - @VBS0740
 
 
-       08:47:46  Script : UiSample.MMH(1324) - @VBS0962
+       14:38:34  Script : UiSample.MMH(1324) - @VBS0741
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'FatalError' AND `Control` = 'Title'
@@ -3465,13 +2556,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:46  Script : UiSample.MMH(1325) - @VBS0964
+       14:38:34  Script : UiSample.MMH(1325) - @VBS0743
 
 
-       08:47:46  Script : UiSample.MMH(1326) - @VBS0965
+       14:38:34  Script : UiSample.MMH(1326) - @VBS0744
 
 
-       08:47:46  Script : UiSample.MMH(1335) - @VBS0966
+       14:38:34  Script : UiSample.MMH(1335) - @VBS0745
 
          >> Row Command for table: TextStyle
             >> TextStyle       = VerdanaBold13Red
@@ -3482,13 +2573,13 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       08:47:46  Script : UiSample.MMH(1336) - @VBS0968
+       14:38:34  Script : UiSample.MMH(1336) - @VBS0747
 
 
-       08:47:46  Script : UiSample.MMH(1347) - @VBS0969
+       14:38:34  Script : UiSample.MMH(1347) - @VBS0748
 
 
-       08:47:46  Script : UiSample.MMH(1354) - @VBS0970
+       14:38:34  Script : UiSample.MMH(1354) - @VBS0749
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'VerifyReadyDlg' AND Control = 'Text'
@@ -3497,11 +2588,11 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       08:47:46  Script : UiSample.MMH(1355) - @VBS0972
+       14:38:34  Script : UiSample.MMH(1355) - @VBS0751
 
    * Reading: installscript.mm
 
-     08:47:46  Script : installscript.mm(54) - @VBS0973
+     14:38:34  Script : installscript.mm(54) - @VBS0752
 
        >> Property command for: _MAKEMSI_Header_MAKEMSI.MMH
           >> Value comes from a LITERAL: C:\Programme\MakeMsi\MakeMsi.MMH (v10.169, 21,924 bytes, dated Tue Nov 24 2009 at 5:41:56pm)
@@ -3511,7 +2602,7 @@ Building from "installscript.mm"
              >> @Validate mode: FIELD
 
        >> Property command for: _MAKEMSI_Source_INSTALLSCRIPT.MM
-          >> Value comes from a LITERAL: Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\installscript.mm (2,582 bytes, dated Mon Jul 26 2010 at 8:17:02am)
+          >> Value comes from a LITERAL: Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\installscript.mm (2,601 bytes, dated Wed Jul 28 2010 at 2:37:44pm)
        >> Row Command for table: Property
           >> Property        = _MAKEMSI_Source_INSTALLSCRIPT.MM
           >> *Value          = cb_PropValue
@@ -3547,11 +2638,11 @@ Building from "installscript.mm"
              >> @Validate mode: FIELD
 
 
-     08:47:47  Script : installscript.mm(54) - @VBS1010
-     08:47:47  Command: Processing Merge Modules
+     14:38:36  Script : installscript.mm(54) - @VBS0789
+     14:38:36  Command: Processing Merge Modules
 
 
-     08:47:47  Script : installscript.mm(54) - @VBS1011
+     14:38:36  Script : installscript.mm(54) - @VBS0790
 
        >> Property command for: DiskPrompt
           >> Value comes from a LITERAL: UCS AD Connector version 1.0.0 - [1]
@@ -3620,9 +2711,9 @@ Building from "installscript.mm"
 
      (@54)INFO: Executing the VBS to generate the MSI
 
-#### START: VBSCRIPT PASS 1 (8:47:50am) ##############################
+#### START: VBSCRIPT PASS 1 (2:38:41pm) ##############################
 
-08:47:50: MAKEMSI version 10.169 - PASS 1
+14:38:43: MAKEMSI version 10.169 - PASS 1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Windows   Version: Microsoft Windows XP (5.1.2600 Service Pack 2)
 WSH       Version: 5.6
@@ -3632,40 +2723,40 @@ Creating a new MSI (template based)
 Creating "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\out\installscript.mm\MSI\setup.msi"
 From "C:\Programme\MakeMsi\UISAMPLE.msi"
 
-08:48:02: Starting compile...  No cache for this compile.
+14:39:04: Starting compile...  No cache for this compile.
 This is the "end of pass 1 compile"
-Compile #01 for 23 file(s) with sequence numbers 1 to 23
+Compile #01 for 7 file(s) with sequence numbers 1 to 7
 
 Media size is 1.998.950.400 bytes.
-Reserving 260.432 bytes on media #1 (1.998.688.256 bytes available):
-  = MSI      :  210.432
+Reserving 259.408 bytes on media #1 (1.998.688.256 bytes available):
+  = MSI      :  209.408
   + Reserved :   50.000 (see "COMPILE_RESERVED_BYTES_ON_MEDIA1")
 
 Compressing the files into CAB file(s)
 Will not cache as this wasn't requested
 
-    | MakeCAB Report: Mon Jul 26 08:48:10 2010
+    | MakeCAB Report: Wed Jul 28 14:39:08 2010
     | 
-    | Total files:             23
-    | Bytes before:     2,599,203
-    | Bytes after:        997,604
-    | After/Before:            38.38% compression
-    | Time:                     6.85 seconds ( 0 hr  0 min  6.85 sec)
-    | Throughput:             370.61 Kb/second
+    | Total files:              7
+    | Bytes before:     1,298,578
+    | Bytes after:        498,542
+    | After/Before:            38.39% compression
+    | Time:                     2.40 seconds ( 0 hr  0 min  2.40 sec)
+    | Throughput:             528.17 Kb/second
 
 Generated 1 cab file(s).
 Processing CAB #1: out\installscript.mm\Log\MakeCab\#01\MM01.cab
 Marking MSI updates as complete...
-08:48:18: Finished compile. Took 28,5 seconds.
+14:39:19: Finished compile. Took 35,7 seconds.
 
 Closing the Windows Installer Database (updates completed).
 
 No merge modules to be merged
 
 Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\out\installscript.mm\MSI\setup.msi".
-08:48:19: Took 28,7 seconds.
+14:39:19: Took 36,3 seconds.
 
-#### END:   VBSCRIPT PASS 1 (8:48:20am) ##############################
+#### END:   VBSCRIPT PASS 1 (2:39:21pm) ##############################
 
      * Reading: out\installscript.mm\Log\FromPass1.TXT
    * Reading: installscript.mm
@@ -3686,7 +2777,7 @@ Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-conne
        * Reading: C:\Programme\MakeMsi\AUTOTAG.MMH
      * Reading: C:\Programme\MakeMsi\HtmlRpt.MMH
    * Reading: installscript.mm
-       >> HTML report - STARTING: 08:48:21
+       >> HTML report - STARTING: 14:39:23
      - Making: out\installscript.mm\MSI\setup.hta
      (@54)INFO: Could not find: "MsiDiff.VBS"!
 
@@ -3695,14 +2786,14 @@ Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-conne
              >> The file does not begin with "MZ" (so can't contain STRFILEINFO)
           >> Will try to get document properties from explorer...
              >> Document properties initialization...
-                >> PROPERTY LINE: TaskInfo: 2496 C:\WINDOWS\system32\cmd.exe
+                >> PROPERTY LINE: TaskInfo: 2300 C:\WINDOWS\system32\cmd.exe
                 >> PROPERTY LINE: #-1. {ToolTip} = Typ: VBScript Script File{LF}Ge„ndert am: 07.04.2006 18:57{LF}Gr”áe: 8,92 KB
                 >> PROPERTY LINE: # 0. {Name} = MmDocumentProperties
                 >> PROPERTY LINE: # 1. {Gr”áe} = 9 KB
                 >> PROPERTY LINE: # 2. {Typ} = VBScript Script File
                 >> PROPERTY LINE: # 3. {Ge„ndert am} = 07.04.2006 18:57
                 >> PROPERTY LINE: # 4. {Erstellt am} = 07.04.2006 18:57
-                >> PROPERTY LINE: # 5. {Letzter Zugriff am} = 26.07.2010 08:07
+                >> PROPERTY LINE: # 5. {Letzter Zugriff am} = 28.07.2010 14:34
                 >> PROPERTY LINE: # 6. {Attribute} = A
                 >> PROPERTY LINE: # 7. {Status} = Online
                 >> PROPERTY LINE: # 8. {Besitzer} = Administratoren
@@ -3741,96 +2832,6 @@ Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-conne
                 >> PROPERTY LINE: 
              >> Need to determine a template for the extension: CMD
                 >> No template for this extension (won't process)
-
-       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\entries
-          >> Look for "STRFILEINFO" in executables...
-             >> The file does not begin with "MZ" (so can't contain STRFILEINFO)
-          >> Will try to get document properties from explorer...
-             >> Need to determine a template for the extension: 
-                >> No template for this extension (won't process)
-
-       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\.svn\entries
-          >> Look for "STRFILEINFO" in executables...
-             >> The file does not begin with "MZ" (so can't contain STRFILEINFO)
-          >> Will try to get document properties from explorer...
-
-       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\text-base\copypwd.dll.svn-base
-          >> Look for "STRFILEINFO" in executables...
-             >> The file begins with "MZ" (probably an executable)
-             >> Looks like it could contain STRFILEINFO... Will try to obtain...
-          >> Will try to get document properties from explorer...
-             >> Need to determine a template for the extension: SVN-BASE
-                >> No template for this extension (won't process)
-
-       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\text-base\ssleay32.dll.svn-base
-          >> Look for "STRFILEINFO" in executables...
-             >> The file begins with "MZ" (probably an executable)
-             >> Looks like it could contain STRFILEINFO... Will try to obtain...
-          >> Will try to get document properties from explorer...
-
-       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\text-base\copypwd.exe.svn-base
-          >> Look for "STRFILEINFO" in executables...
-             >> The file begins with "MZ" (probably an executable)
-             >> Looks like it could contain STRFILEINFO... Will try to obtain...
-          >> Will try to get document properties from explorer...
-
-       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\text-base\ucs-ad-connector.exe.svn-base
-          >> Look for "STRFILEINFO" in executables...
-             >> The file begins with "MZ" (probably an executable)
-             >> Looks like it could contain STRFILEINFO... Will try to obtain...
-          >> Will try to get document properties from explorer...
-
-       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\text-base\libssl32.dll.svn-base
-          >> Look for "STRFILEINFO" in executables...
-             >> The file begins with "MZ" (probably an executable)
-             >> Looks like it could contain STRFILEINFO... Will try to obtain...
-          >> Will try to get document properties from explorer...
-
-       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\text-base\libeay32.dll.svn-base
-          >> Look for "STRFILEINFO" in executables...
-             >> The file begins with "MZ" (probably an executable)
-             >> Looks like it could contain STRFILEINFO... Will try to obtain...
-          >> Will try to get document properties from explorer...
-
-       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\prop-base\ucs-ad-connector.exe.svn-base
-          >> Look for "STRFILEINFO" in executables...
-             >> The file does not begin with "MZ" (so can't contain STRFILEINFO)
-          >> Will try to get document properties from explorer...
-
-       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\prop-base\ssleay32.dll.svn-base
-          >> Look for "STRFILEINFO" in executables...
-             >> The file does not begin with "MZ" (so can't contain STRFILEINFO)
-          >> Will try to get document properties from explorer...
-
-       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\prop-base\libssl32.dll.svn-base
-          >> Look for "STRFILEINFO" in executables...
-             >> The file does not begin with "MZ" (so can't contain STRFILEINFO)
-          >> Will try to get document properties from explorer...
-
-       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\prop-base\libeay32.dll.svn-base
-          >> Look for "STRFILEINFO" in executables...
-             >> The file does not begin with "MZ" (so can't contain STRFILEINFO)
-          >> Will try to get document properties from explorer...
-
-       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\format
-          >> Look for "STRFILEINFO" in executables...
-             >> The file does not begin with "MZ" (so can't contain STRFILEINFO)
-          >> Will try to get document properties from explorer...
-
-       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\.svn\format
-          >> Look for "STRFILEINFO" in executables...
-             >> The file does not begin with "MZ" (so can't contain STRFILEINFO)
-          >> Will try to get document properties from explorer...
-
-       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\prop-base\copypwd.exe.svn-base
-          >> Look for "STRFILEINFO" in executables...
-             >> The file does not begin with "MZ" (so can't contain STRFILEINFO)
-          >> Will try to get document properties from explorer...
-
-       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\.svn\prop-base\copypwd.dll.svn-base
-          >> Look for "STRFILEINFO" in executables...
-             >> The file does not begin with "MZ" (so can't contain STRFILEINFO)
-          >> Will try to get document properties from explorer...
 
        >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\files\Programme\UCS-AD-Connector\ucs-ad-connector.exe
           >> Look for "STRFILEINFO" in executables...
@@ -3882,7 +2883,7 @@ Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-conne
                 >> No template for this extension (won't process)
      * Reading: installscript.mm
    * Reading: installscript.mm
-       >> HTML report - FINISHED: 08:48:30
+       >> HTML report - FINISHED: 14:39:31
      - Making: out\installscript.mm\Log\Pass1+2.vbs
      (@54)INFO: Inserting second pass processing...
 
@@ -3989,7 +2990,7 @@ Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-conne
           >> *File           = CurrentFileKey
           >> Component_      = MAKEMSI_Documentation
           >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 92718
+          >> FileSize        = 68942
           >> *Version        = CurrentFileVersion
           >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
           >> Language        = 1033
@@ -4000,8 +3001,8 @@ Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-conne
        >> Row Command for table: _MAKEMSI_FileSource
           >> *File_          = CurrentFileKey
           >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-26
-          >> Time            = 08:48:30
+          >> Date            = 2010-07-28
+          >> Time            = 14:39:28
           >> @Validate       = NEW -MISSINGDATA
              >> @Validate mode: NEW -MISSINGDATA
 
@@ -4021,8 +3022,8 @@ Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-conne
              >> @Validate mode: FIELD
 
 
-     08:48:32  Script : installscript.mm(54) - @VBS1115
-     08:48:32  Command: #{ SET "SeqTable={ }<??cb_SeqTables>"
+     14:39:33  Script : installscript.mm(54) - @VBS0894
+     14:39:33  Command: #{ SET "SeqTable={ }<??cb_SeqTables>"
 
        >> Row Command for table: InstallExecuteSequence
           >> Action          = PropertyCa03_ARPREADME
@@ -4031,13 +3032,13 @@ Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-conne
              >> @Validate mode: FIELD
 
 
-     08:48:32  Script : installscript.mm(54) - @VBS1119
+     14:39:33  Script : installscript.mm(54) - @VBS0898
 
      (@54)INFO: Executing the VBS to build the MSI
 
-#### START: VBSCRIPT PASS 2 (8:48:33am) ##############################
+#### START: VBSCRIPT PASS 2 (2:39:34pm) ##############################
 
-08:48:33: MAKEMSI version 10.169 - PASS 2
+14:39:35: MAKEMSI version 10.169 - PASS 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Windows   Version: Microsoft Windows XP (5.1.2600 Service Pack 2)
 WSH       Version: 5.6
@@ -4045,34 +3046,34 @@ Installer Version: 3.0.3790.2538
 
 Opening the MSI "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\out\installscript.mm\MSI\setup.msi"
 
-08:48:34: Starting compile...  No cache for this compile.
+14:39:36: Starting compile...  No cache for this compile.
 Compiling the documentation that MAKEMSI generated
-Compile #02 for 1 file(s) with sequence numbers 24 to 24
+Compile #02 for 1 file(s) with sequence numbers 8 to 8
 
 Media size is 1.998.950.400 bytes.
-Reserving 1.271.632 bytes on media #1 (1.997.676.544 bytes available):
-  = MSI      :  1.221.632
-  + Reserved :     50.000 (see "COMPILE_RESERVED_BYTES_ON_MEDIA1")
+Reserving 764.752 bytes on media #1 (1.998.184.448 bytes available):
+  = MSI      :  714.752
+  + Reserved :   50.000 (see "COMPILE_RESERVED_BYTES_ON_MEDIA1")
 
 Compressing the files into CAB file(s)
 Will not cache as this wasn't requested
 
-    | MakeCAB Report: Mon Jul 26 08:48:35 2010
+    | MakeCAB Report: Wed Jul 28 14:39:38 2010
     | 
     | Total files:              1
-    | Bytes before:        92,718
-    | Bytes after:         16,560
-    | After/Before:            17.86% compression
-    | Time:                     0.51 seconds ( 0 hr  0 min  0.51 sec)
-    | Throughput:             177.89 Kb/second
+    | Bytes before:        68,942
+    | Bytes after:         15,426
+    | After/Before:            22.38% compression
+    | Time:                     0.50 seconds ( 0 hr  0 min  0.50 sec)
+    | Throughput:             133.58 Kb/second
 
 Generated 1 cab file(s).
 Processing CAB #1: out\installscript.mm\Log\MakeCab\#02\MM02.cab
 Marking MSI updates as complete...
-08:48:37: Finished compile. Took 3,3 seconds.
+14:39:40: Finished compile. Took 4,5 seconds.
 
 
-#### END:   VBSCRIPT PASS 2 (8:48:38am) ##############################
+#### END:   VBSCRIPT PASS 2 (2:39:41pm) ##############################
 
      (@54)INFO: ====================================================
      (@54)INFO: MSI Validation has been turned off (or not enabled)
@@ -4083,12 +3084,12 @@ Marking MSI updates as complete...
 Summary
 ~~~~~~~
    Mode            : Production
-   installscript.mm: Mon Jul 26 2010 at 8:17:02am
+   installscript.mm: Wed Jul 28 2010 at 2:37:44pm
    MSI Name        : out\installscript.mm\MSI\setup.msi
    MSI Version     : 1.0.0
    Return Code     : 0
-   Elapsed Time    : 1 minute 19.79 seconds
+   Elapsed Time    : 1 minute 42.2 seconds
 
                                      
                                      
-[26.07.2010  8:48:44,08 - Diagnostic info STATUS]: OK 
+[28.07.2010 14:39:47,52 - Diagnostic info STATUS]: OK 
