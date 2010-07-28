@@ -87,6 +87,7 @@ extern int INIT_ONLY;
 extern char *cache_dir;
 
 DB *dbp;
+DBC *dbc_cur = NULL;
 #ifdef WITH_DB42
 DB_ENV *dbenvp;
 #endif
@@ -576,6 +577,7 @@ int cache_first_entry(DBC **cur, char **dn, CacheEntry *entry)
 		dbp->err(dbp, rv, "cursor");
 		return rv;
 	}
+	dbc_cur=*cur;
 	
 	return cache_next_entry(cur, dn, entry);
 }
@@ -648,6 +650,7 @@ int cache_next_entry(DBC **cur, char **dn, CacheEntry *entry)
 
 int cache_free_cursor(DBC *cur)
 {
+	dbc_cur = NULL;
 	return cur->c_close(cur);
 }
 
@@ -655,6 +658,8 @@ int cache_close(void)
 {
 	int rv;
 
+	if ( dbc_cur != NULL )
+		cache_free_cursor(dbc_cur);
 	if ((rv = dbp->close(dbp, 0)) != 0) {
 		dbp->err(dbp, rv, "close");
 	}
