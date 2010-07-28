@@ -1,3 +1,9 @@
+univention-grub (4.0.1-1) unstable; urgency=low
+
+  * invoke grub-mkdevicemap before grub-install; Bug #19115
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 28 Jul 2010 11:37:21 +0200
+
 univention-grub (4.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
