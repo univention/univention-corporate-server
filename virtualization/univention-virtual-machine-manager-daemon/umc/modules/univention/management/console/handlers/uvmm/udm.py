@@ -55,29 +55,31 @@ class Client( object ):
 		except IOError, e:
 			raise ConnectionError( _( 'Could not open LDAP connection' ) )
 
-	def get_profiles( self, tech = None ):
-		try:
-			res = univention.admin.modules.lookup( uvmm_profile, self.co, self.lo, scope='one', base = self.base, required = False, unique = False )
-		except univention.admin.uexceptions.base, e:
-			ud.debug( ud.ADMIN, ud.ERROR, 'UVMM/UDM: get_profiles: error while searching for template: %s' % str( e ) )
-			return []
-
+	def _tech_filter( self, tech ):
 		if tech:
 			# FIXME: we need a way to make things unique e.g. kvm == qemu
 			if tech == 'qemu':
 				tech = 'kvm'
-			profiles = []
-			for profile in res:
-				if profile[ 'virttech' ].startswith( tech ):
-					profiles.append( profile )
-			return profiles
+			filter='univentionVirtualMachineProfileVirtTech=%s*' % tech
+		else:
+			filter='univentionVirtualMachineProfileVirtTech=*'
+		return filter
+
+	def get_profiles( self, tech = None ):
+		try:
+			res = univention.admin.modules.lookup( uvmm_profile, self.co, self.lo, scope='sub', filter=self._tech_filter(tech), base = self.base, required = False, unique = False )
+		except univention.admin.uexceptions.base, e:
+			ud.debug( ud.ADMIN, ud.ERROR, 'UVMM/UDM: get_profiles: error while searching for template: %s' % str( e ) )
+			return []
+
 		return res
 
-	def get_profile( self, name ):
+	def get_profile( self, name, tech ):
+		name = name.replace( '(', '\(' )
+		name = name.replace( ')', '\)' )
+		filter = '(&(%s)(cn=%s))' % (self._tech_filter(tech), name)
 		try:
-			name = name.replace( '(', '\(' )
-			name = name.replace( ')', '\)' )
-			res = univention.admin.modules.lookup( uvmm_profile, self.co, self.lo, filter = 'cn=%s' % name, scope='one', base = self.base, required = False, unique = True )
+			res = univention.admin.modules.lookup( uvmm_profile, self.co, self.lo, filter = filter, scope='sub', base = self.base, required = False, unique = True )
 		except univention.admin.uexceptions.base, e:
 			ud.debug( ud.ADMIN, ud.ERROR, 'UVMM/UDM: get_profile: error while searching for template: %s' % str( e ) )
 			return {}

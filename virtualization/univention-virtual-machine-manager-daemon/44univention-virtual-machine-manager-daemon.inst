@@ -83,6 +83,16 @@ univention-directory-manager container/cn create "$@" \
 	--position="cn=Virtual Machine Manager,$ldap_base" \
 	--set name=Profiles
 
+univention-directory-manager container/cn create "$@" \
+	--ignore_exists \
+	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
+	--set name=xen
+
+univention-directory-manager container/cn create "$@" \
+	--ignore_exists \
+	--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
+	--set name=kvm
+
 # create machine profiles
 
 kernel=$(readlink -e /vmlinuz)
@@ -92,16 +102,17 @@ create_hvm_profile() {
 	prefix="$2"
 	virttech="$3"
 	arch="$4"
+	ram="$5"
 	# create machine profile
 	univention-directory-manager uvmm/profile create $CREDENTIALS \
 		--ignore_exists \
-		--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
+		--position="cn=${virttech},cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
 		--set name="$cn" \
 		--set name_prefix="$prefix" \
 		--set arch="$arch" \
 		--set cpus=1 \
 		--set virttech="${virttech}-hvm" \
-		--set ram=512MB \
+		--set ram="${ram}" \
 		--set interface=eth0 \
 		--append bootdev=cdrom \
 		--append bootdev=hd \
@@ -112,35 +123,50 @@ create_hvm_profile() {
 create_xen_profile() {
 	cn="$1"
 	prefix="$2"
-	arch="$4"
+	arch="$3"
+	ram="$4"
 	# create machine profile
 	univention-directory-manager uvmm/profile create $CREDENTIALS \
 		--ignore_exists \
-		--position="cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
+		--position="cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
 		--set name="$cn" \
 		--set name_prefix="$prefix" \
 		--set arch="$arch" \
 		--set cpus=1 \
 		--set virttech="xen-xen" \
-		--set ram=512MB \
+		--set ram="${ram}" \
 		--set interface=eth0 \
 		--set vnc=1 \
 		--set kblayout=de \
 		--set advkernelconf=FALSE
 }
 
-create_hvm_profile "Windows XP 32 Bit (XEN)" "winxp-" "xen" "i686"
-create_hvm_profile "Windows XP 64 Bit (XEN)" "winxp-64-" "xen" "x86_64"
-create_hvm_profile "Windows 7 32 Bit (XEN)" "win7-" "xen" "i686"
-create_hvm_profile "Windows 7 64 Bit (XEN)" "win7-64-" "xen" "x86_64"
-create_hvm_profile "Windows XP 32 Bit (KVM)" "winxp-" "kvm" "i686"
-create_hvm_profile "Windows XP 64 Bit (KVM)" "winxp-64-" "kvm" "x86_64"
-create_hvm_profile "Windows 7 32 Bit (KVM)" "win7-" "kvm" "i686"
-create_hvm_profile "Windows 7 64 Bit (KVM)" "win7-64-" "kvm" "x86_64"
-create_xen_profile "Univention Corporate Server 2.4-0 32 Bit (XEN)" "ucs24-" "i686"
-create_xen_profile "Univention Corporate Server 2.4-0 64 Bit (XEN)" "ucs24-64-" "x86_64"
-create_hvm_profile "Univention Corporate Server 2.4-0 32 Bit (KVM)" "ucs24-" "kvm" "i686"
-create_hvm_profile "Univention Corporate Server 2.4-0 64 Bit (KVM)" "ucs24-64-" "kvm" "x86_64"
+create_hvm_profile "Windows XP" "winxp-" "xen" "i686" "512MB"
+create_hvm_profile "Windows XP" "winxp-" "kvm" "i686" "512MB"
+
+create_hvm_profile "Windows 7" "win7-" "xen" "i686" "768MB"
+create_hvm_profile "Windows 7 (64 Bit)" "win7-64-" "xen" "x86_64" "768MB"
+create_hvm_profile "Windows 7" "win7-" "kvm" "i686" "768MB"
+create_hvm_profile "Windows 7 (64 Bit)" "win7-64-" "kvm" "x86_64" "768MB"
+
+create_hvm_profile "Windows 2003" "w2k3-" "xen" "i686" "768MB"
+create_hvm_profile "Windows 2003" "w2k3-" "kvm" "i686" "768MB"
+
+create_hvm_profile "Windows 2003 R2 (64 Bit)" "w2k3r2-" "xen" "x86_64" "768MB"
+create_hvm_profile "Windows 2003 R2 (64 Bit)" "w2k3r2-" "kvm" "x86_64" "768MB"
+
+create_hvm_profile "Windows 2008" "w2k8-" "xen" "i686" "1024MB"
+create_hvm_profile "Windows 2008" "w2k8-" "kvm" "i686" "1024MB"
+
+create_hvm_profile "Windows 2008 R2 (64 Bit)" "w2k8r2-" "xen" "x86_64" "1024MB"
+create_hvm_profile "Windows 2008 R2 (64 Bit)" "w2k8r2-" "kvm" "x86_64" "1024MB"
+
+create_xen_profile "Univention Corporate Server 2.4 (32 Bit)" "ucs24-" "i686" "512MB"
+create_xen_profile "Univention Corporate Server 2.4 (64 Bit)" "ucs24-64-" "x86_64" "512MB"
+
+create_hvm_profile "Univention Corporate Server 2.4 (32 Bit)" "ucs24-" "kvm" "i686" "512MB"
+create_hvm_profile "Univention Corporate Server 2.4 (64 Bit)" "ucs24-64-" "kvm" "x86_64" "512MB"
+
 
 # TODO: profiles for xen-xen
 
