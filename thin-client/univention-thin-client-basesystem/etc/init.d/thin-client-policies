@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Client Basesystem
 #  init script: setting up a thin client
