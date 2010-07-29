@@ -1,3 +1,9 @@
+univention-shares (4.0.1-1) unstable; urgency=low
+
+  * cleanup package and added UCR header. Bug #19169
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Jul 2010 21:10:20 +0200
+
 univention-shares (4.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
