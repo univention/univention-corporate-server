@@ -1,3 +1,10 @@
+univention-mail-postfix (3.0.1-1) unstable; urgency=low
+
+  * use mail/hosteddomains in postfix mydestinations if
+    postfix/zarafa is true (Bug #19055)
+
+ -- Felix Botner <botner@univention.de>  Thu, 29 Jul 2010 16:41:25 +0200
+
 univention-mail-postfix (3.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

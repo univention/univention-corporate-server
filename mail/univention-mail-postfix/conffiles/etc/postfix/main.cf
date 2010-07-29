@@ -43,7 +43,10 @@ if baseConfig.has_key('server/role') and baseConfig['server/role'] == 'domaincon
 	print 'mynetworks = 127.0.0.0/8'
 else:
 	print 'transport_maps = hash:/etc/postfix/transport'
-	print 'mydestination = $myhostname.$mydomain, localhost.$mydomain, $mydomain, localhost, $transport_maps'
+	if baseConfig.get('postfix/zarafa', "false").lower() in ['true', 'yes']:
+		print 'mydestination = $myhostname.$mydomain, localhost.$mydomain, $mydomain, localhost, $transport_maps, %s' % ", ".join(baseConfig.get("mail/hosteddomains", "").split(' '))
+	else:
+		print 'mydestination = $myhostname.$mydomain, localhost.$mydomain, $mydomain, localhost, $transport_maps'
 
 	if baseConfig.has_key('mail/postfix/mynetworks') and baseConfig['mail/postfix/mynetworks']:
 		print 'mynetworks = %s' % baseConfig['mail/postfix/mynetworks']
