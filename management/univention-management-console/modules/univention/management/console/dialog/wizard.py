@@ -157,7 +157,7 @@ class Page( object ):
 				opts[ 'action' ] = 'prev'
 				prev = umcp.SimpleCommand( command, opts )
 				prev.verify_options = False
-				prev_btn = Cell( Button( _( 'Previous' ), actions = ( Action( umcp.SimpleCommand( command, opts ), items ), ), attributes = { 'class' : 'cancel' } ), attributes = { 'type' : 'button_padding' } )
+				prev_btn = Cell( Button( _( 'Previous' ), actions = ( Action( prev, items ), ), attributes = { 'class' : 'cancel' } ), attributes = { 'type' : 'button_padding' } )
 			else:
 				prev_btn = ''
 
