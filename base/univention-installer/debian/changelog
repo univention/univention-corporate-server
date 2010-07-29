@@ -1,3 +1,10 @@
+univention-installer (6.0.38-1) unstable; urgency=low
+
+  * set nomodeset in installer to prevent KMS problems during
+    installation. Bug #19134
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Jul 2010 09:01:14 +0200
+
 univention-installer (6.0.37-1) unstable; urgency=low
 
   * widen IP address input field (Bug #19034)
