@@ -1,3 +1,9 @@
+univention-python (5.0.4-1) unstable; urgency=low
+
+  * added python-cracklib dependency. Bug #14943
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Jul 2010 21:40:19 +0200
+
 univention-python (5.0.3-1) unstable; urgency=low
 
   * fixed typo in 'required'. Bug #14943
