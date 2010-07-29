@@ -161,11 +161,17 @@ create_hvm_profile "Windows 2008" "w2k8-" "kvm" "i686" "1024MB"
 create_hvm_profile "Windows 2008 R2 (64 Bit)" "w2k8r2-" "xen" "x86_64" "1024MB"
 create_hvm_profile "Windows 2008 R2 (64 Bit)" "w2k8r2-" "kvm" "x86_64" "1024MB"
 
-create_xen_profile "Univention Corporate Server 2.4 (32 Bit)" "ucs24-" "i686" "512MB"
+create_xen_profile "Univention Corporate Server 2.4" "ucs24-" "i686" "512MB"
 create_xen_profile "Univention Corporate Server 2.4 (64 Bit)" "ucs24-64-" "x86_64" "512MB"
 
-create_hvm_profile "Univention Corporate Server 2.4 (32 Bit)" "ucs24-" "kvm" "i686" "512MB"
+create_hvm_profile "Univention Corporate Server 2.4" "ucs24-" "kvm" "i686" "512MB"
 create_hvm_profile "Univention Corporate Server 2.4 (64 Bit)" "ucs24-64-" "kvm" "x86_64" "512MB"
+
+create_hvm_profile "Other" "other-" "xen" "i686" "256MB"
+create_hvm_profile "Other" "other-" "kvm" "i686" "256MB"
+
+create_hvm_profile "Other (64 Bit)" "other-" "xen" "x86_64" "1024MB"
+create_hvm_profile "Other (64 Bit)" "other-" "kvm" "x86_64" "1024MB"
 
 
 # TODO: profiles for xen-xen
