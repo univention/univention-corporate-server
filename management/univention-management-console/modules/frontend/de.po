@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-18 10:43+0200\n"
+"POT-Creation-Date: 2010-07-29 07:53+0200\n"
 "PO-Revision-Date: 2008-06-16 13:44+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,302 +38,128 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: modconsole.py:140
-msgid "Help"
-msgstr "Hilfe"
-
-#: modconsole.py:142
-msgid "About UMC"
-msgstr "Über UMC"
-
-#: modconsole.py:160
-msgid "You are logged in as"
-msgstr "Sie sind angemeldet als"
-
-#: modconsole.py:171 modconsole.py:322 modconsole.py:334 modconsole.py:433
-msgid "Logout"
-msgstr "Abmelden"
-
-#: modconsole.py:196
-msgid "Univention Management Console Login"
-msgstr "Univention Management Console Anmeldung"
-
-#: modconsole.py:202
-msgid "Session Timeout"
-msgstr "Session-Timeout"
-
-#: modconsole.py:203
-msgid ""
-"To increase the session timeout log into Univention Management Console, "
-"select the Univention Configuration Registry module and change the value of "
-"<code>umc/web/timeout</code>."
-msgstr ""
-"Um den Session-Timeout zu erhöhen, melden Sie sich an der Univention "
-"Management Console an, wählen Sie das Modul Univention Configuration "
-"Registry aus und ändern Sie den Wert von <code>umc/web/timeout</code>."
-
-#: modconsole.py:216
-msgid "Unsupported web browser"
-msgstr "Nicht unterstützter Webbrowser"
-
-#: modconsole.py:217
-msgid ""
-"The Univention Management Console (UMC) has not been tested with your web "
-"browser. You should use Firefox since version 3.x or Microsoft Internet "
-"Explorer since version 6.0."
-msgstr ""
-"Univention Management Console (UMC) wurde mit Ihrer Webbrowser Version nicht "
-"getestet. Bitte verwenden Sie Firefox ab Version 3.x oder den Microsoft "
-"Internet Explorer ab Version 6.0."
-
-#: modconsole.py:228
-msgid "Insecure Connection"
-msgstr "Unsichere Verbindung"
-
-#: modconsole.py:229
-#, python-format
-msgid ""
-"This network connection is not encrypted. All personal or sensitive data "
-"will be transmitted in plain text. Please follow <a href=https://%s/"
-"univention-management-console/ >this link</a> to use a secure SSL connection."
-msgstr ""
-"Die Netzwerkverbindung ist nicht verschlüsselt. Alle persönlichen und "
-"sensiblen Daten werden im Klartext übertragen. Bitte verwenden Sie <a "
-"href=https://%s/univention-management-console/ >diesen Link</a> für eine "
-"verschlüsselte SSL-Verbindung."
-
-#: modconsole.py:258
-msgid "Language:"
-msgstr "Sprache:"
-
-#: modconsole.py:258
-msgid "Select language for this session"
-msgstr "Bitte wählen Sie eine Sprache für diese Sitzung"
-
-#: modconsole.py:260
-msgid "User name"
-msgstr "Benutzername"
-
-#: modconsole.py:260
-msgid "Please enter your uid."
-msgstr "Bitte geben Sie Ihren Benutzernamen ein."
-
-#: modconsole.py:261 modconsole.py:323
-msgid "Cancel"
-msgstr "Abbrechen"
-
-#: modconsole.py:261
-msgid "Abort login"
-msgstr "Anmeldung abbrechen"
-
-#: modconsole.py:262
-msgid "Password"
-msgstr "Passwort"
-
-#: modconsole.py:262
-msgid "Please enter your password."
-msgstr "Bitte geben Sie Ihr Passwort ein."
-
-#: modconsole.py:263
-msgid "Login"
-msgstr "Anmeldung"
-
-#: modconsole.py:323
-msgid "Abort logout"
-msgstr "Anmeldung abbrechen"
-
-#: modconsole.py:327
-msgid "Do you really want to logout?"
-msgstr "Möchten Sie sich wirklich abmelden?"
-
-#: modconsole.py:361
-msgid "About Univention Management Console"
-msgstr "Über Univention Management Console"
-
-#: modconsole.py:367
-msgid "Version"
-msgstr "Version"
-
-#: modconsole.py:372
-msgid "Build"
-msgstr "Build"
-
-#: modconsole.py:382
-msgid "Hostname"
-msgstr "Rechnername"
-
-#: modconsole.py:395
-msgid "Local installation"
-msgstr "Lokale Installation"
-
-#: modconsole.py:396
-msgid "UCS version"
-msgstr "UCS Version"
-
-#: modconsole.py:406
-msgid "Contact"
-msgstr "Kontakt"
-
-#: modconsole.py:418
-msgid "ALL RIGHTS RESERVED"
-msgstr "ALL RIGHTS RESERVED"
-
-#: modconsole.py:433
-msgid "Ok"
-msgstr "Ok"
-
-#: modconsole.py:454
-msgid "Update status"
-msgstr "Status aktualisieren"
-
-#: modconsole.py:506
-msgid ""
-"Authentication failed: A connection to the UMC daemon could not be "
-"established."
-msgstr ""
-"Authentisierungfehler: Eine Verbindung zum UMC-Dämon konnte nicht "
-"hergestellt werden"
-
-#: modconsole.py:564
-msgid "The UMC server did not responed to the authentication request"
-msgstr "Der UMC-Server hat auf die Authentisierungsanfrage nicht geantwortet"
-
-#: modconsole.py:617
-#, python-format
-msgid "Authentication failed: %s"
-msgstr "Authentisierungsfehler: %s"
-
-#: modconsole.py:632
-msgid "Logout successful."
-msgstr "Abmeldung erfolgreich"
-
-#: unidialog.py:119
-#, python-format
-msgid "error while modifying: %s %s"
-msgstr "Während des Bearbeitens ist ein Fehler aufgetreten: %s %s"
-
-#: mapping/buttons.py:177
+#: mapping/buttons.py:181
 msgid "Execute"
 msgstr "Ausführen"
 
-#: mapping/buttons.py:178
+#: mapping/buttons.py:182
 msgid "Perform action on selected objects."
 msgstr "Aktion mit ausgewählten Objekten ausführen"
 
-#: mapping/buttons.py:180
+#: mapping/buttons.py:184
 msgid "Invert selection"
 msgstr "Auswahl umkehren"
 
-#: mapping/buttons.py:181
+#: mapping/buttons.py:185
 msgid "Select all"
 msgstr "Alle auswählen"
 
-#: mapping/buttons.py:188 mapping/buttons.py:190
+#: mapping/buttons.py:192 mapping/buttons.py:194
 msgid "Selected objects ..."
 msgstr "Ausgewählte Objekte ..."
 
-#: mapping/buttons.py:252 mapping/buttons.py:342 mapping/buttons.py:410
+#: mapping/buttons.py:256 mapping/buttons.py:346 mapping/buttons.py:414
 msgid "Select"
 msgstr "Auswählen"
 
-#: mapping/buttons.py:253 mapping/buttons.py:343 mapping/buttons.py:411
+#: mapping/buttons.py:257 mapping/buttons.py:347 mapping/buttons.py:415
 msgid "Select entry"
 msgstr "Auswählen eines Eintrags"
 
-#: mapping/dynamics.py:95
+#: mapping/dynamics.py:97
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: mapping/dynamics.py:204
+#: mapping/dynamics.py:206
 msgid "Entries:"
 msgstr "Einträge:"
 
-#: mapping/dynamics.py:205
+#: mapping/dynamics.py:207
 #, python-format
 msgid "Current entries for '%s'"
 msgstr "Existierende Einträge für '%s'"
 
-#: mapping/dynamics.py:319
+#: mapping/dynamics.py:349
 msgid "any"
 msgstr "Alle"
 
-#: mapping/dynamics.py:320
+#: mapping/dynamics.py:350
 msgid "none"
 msgstr "Keine"
 
-#: mapping/dynamics.py:333
+#: mapping/dynamics.py:363
 msgid "Enter search filter"
 msgstr "Suchfilter"
 
-#: mapping/dynamics.py:341
+#: mapping/dynamics.py:371
 msgid "Display"
 msgstr "Anzeigen"
 
-#: mapping/dynamics.py:342
+#: mapping/dynamics.py:372
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: mapping/dynamics.py:342
+#: mapping/dynamics.py:372
 msgid "Select attribute"
 msgstr "Wählen Sie ein Attribut aus"
 
-#: mapping/dynamics.py:462
+#: mapping/dynamics.py:492
 msgid "All"
 msgstr "Alles"
 
-#: mapping/dynamics.py:462
+#: mapping/dynamics.py:492
 msgid "Select objects to add"
 msgstr "Wählen Sie die Objekte zum Hinzufügen aus."
 
-#: mapping/dynamics.py:463
+#: mapping/dynamics.py:493
 msgid "Current"
 msgstr "Aktuell"
 
-#: mapping/dynamics.py:463
+#: mapping/dynamics.py:493
 msgid "Select objects to remove"
 msgstr "Wählen Sie die zu entfernenden Objekte aus."
 
-#: mapping/dynamics.py:606
+#: mapping/dynamics.py:636
 msgid "Select a file"
 msgstr "Datei auswählen"
 
-#: mapping/dynamics.py:607
+#: mapping/dynamics.py:637
 msgid "Upload file"
 msgstr "Datei hochladen"
 
-#: mapping/dynamics.py:607
+#: mapping/dynamics.py:637
 msgid "Upload selected file"
 msgstr "Ausgewählte Datei hochladen"
 
-#: mapping/dynamics.py:612
+#: mapping/dynamics.py:642
 msgid "Remove"
 msgstr "Entfernen"
 
-#: mapping/dynamics.py:612
+#: mapping/dynamics.py:642
 msgid "Delete file"
 msgstr "Datei entfernen"
 
-#: pages/module.py:134
-msgid "Operation still in progress. Please wait ..."
-msgstr "Der Vorgang ist noch nicht abgeschlossen. Bitte gedulden Sie sich ..."
+#: pages/module.py:145
+msgid "The operation is still in progress. Please wait ..."
+msgstr "Der Vorgang ist noch nicht abgeschlossen. Bitte warten ..."
 
-#: pages/module.py:135 pages/startup.py:109
+#: pages/module.py:146 pages/startup.py:111
 msgid "Information"
 msgstr "Hinweis"
 
-#: pages/module.py:280
+#: pages/module.py:294
 msgid "Messages"
 msgstr "Meldungen"
 
-#: pages/overview.py:50
+#: pages/overview.py:52
 msgid "Overview"
 msgstr "Überblick"
 
-#: pages/startup.py:50
+#: pages/startup.py:52
 msgid "Bugreport: Univention Management Console Traceback"
 msgstr "Fehlerbericht: Univention Management Console Traceback"
 
-#: pages/startup.py:51
+#: pages/startup.py:53
 msgid ""
 "\n"
 "Please take a second to provide the following information\n"
@@ -358,14 +184,188 @@ msgstr ""
 "3) Beobachtetes Ergebnis\n"
 "\n"
 
-#: pages/startup.py:94
+#: pages/startup.py:96
 #, python-format
 msgid "Report this error to %s &lt;%s&gt;"
 msgstr "Diesen Fehler an %s &lt;%s&gt; melden"
 
-#: pages/startup.py:99
+#: pages/startup.py:101
 msgid "An error has occured"
 msgstr "Ein Fehler ist aufgetreten"
+
+#: modconsole.py:144
+msgid "Help"
+msgstr "Hilfe"
+
+#: modconsole.py:146
+msgid "About UMC"
+msgstr "Über UMC"
+
+#: modconsole.py:164
+msgid "You are logged in as"
+msgstr "Sie sind angemeldet als"
+
+#: modconsole.py:175 modconsole.py:326 modconsole.py:338 modconsole.py:437
+msgid "Logout"
+msgstr "Abmelden"
+
+#: modconsole.py:200
+msgid "Univention Management Console Login"
+msgstr "Univention Management Console Anmeldung"
+
+#: modconsole.py:206
+msgid "Session Timeout"
+msgstr "Session-Timeout"
+
+#: modconsole.py:207
+msgid ""
+"To increase the session timeout log into Univention Management Console, "
+"select the Univention Configuration Registry module and change the value of "
+"<code>umc/web/timeout</code>."
+msgstr ""
+"Um den Session-Timeout zu erhöhen, melden Sie sich an der Univention "
+"Management Console an, wählen Sie das Modul Univention Configuration "
+"Registry aus und ändern Sie den Wert von <code>umc/web/timeout</code>."
+
+#: modconsole.py:220
+msgid "Unsupported web browser"
+msgstr "Nicht unterstützter Webbrowser"
+
+#: modconsole.py:221
+msgid ""
+"The Univention Management Console (UMC) has not been tested with your web "
+"browser. You should use Firefox since version 3.x or Microsoft Internet "
+"Explorer since version 6.0."
+msgstr ""
+"Univention Management Console (UMC) wurde mit Ihrer Webbrowser Version nicht "
+"getestet. Bitte verwenden Sie Firefox ab Version 3.x oder den Microsoft "
+"Internet Explorer ab Version 6.0."
+
+#: modconsole.py:232
+msgid "Insecure Connection"
+msgstr "Unsichere Verbindung"
+
+#: modconsole.py:233
+#, python-format
+msgid ""
+"This network connection is not encrypted. All personal or sensitive data "
+"will be transmitted in plain text. Please follow <a href=https://%s/"
+"univention-management-console/ >this link</a> to use a secure SSL connection."
+msgstr ""
+"Die Netzwerkverbindung ist nicht verschlüsselt. Alle persönlichen und "
+"sensiblen Daten werden im Klartext übertragen. Bitte verwenden Sie <a "
+"href=https://%s/univention-management-console/ >diesen Link</a> für eine "
+"verschlüsselte SSL-Verbindung."
+
+#: modconsole.py:262
+msgid "Language:"
+msgstr "Sprache:"
+
+#: modconsole.py:262
+msgid "Select language for this session"
+msgstr "Bitte wählen Sie eine Sprache für diese Sitzung"
+
+#: modconsole.py:264
+msgid "User name"
+msgstr "Benutzername"
+
+#: modconsole.py:264
+msgid "Please enter your uid."
+msgstr "Bitte geben Sie Ihren Benutzernamen ein."
+
+#: modconsole.py:265 modconsole.py:327
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: modconsole.py:265
+msgid "Abort login"
+msgstr "Anmeldung abbrechen"
+
+#: modconsole.py:266
+msgid "Password"
+msgstr "Passwort"
+
+#: modconsole.py:266
+msgid "Please enter your password."
+msgstr "Bitte geben Sie Ihr Passwort ein."
+
+#: modconsole.py:267
+msgid "Login"
+msgstr "Anmeldung"
+
+#: modconsole.py:327
+msgid "Abort logout"
+msgstr "Anmeldung abbrechen"
+
+#: modconsole.py:331
+msgid "Do you really want to logout?"
+msgstr "Möchten Sie sich wirklich abmelden?"
+
+#: modconsole.py:365
+msgid "About Univention Management Console"
+msgstr "Über Univention Management Console"
+
+#: modconsole.py:371
+msgid "Version"
+msgstr "Version"
+
+#: modconsole.py:376
+msgid "Build"
+msgstr "Build"
+
+#: modconsole.py:386
+msgid "Hostname"
+msgstr "Rechnername"
+
+#: modconsole.py:399
+msgid "Local installation"
+msgstr "Lokale Installation"
+
+#: modconsole.py:400
+msgid "UCS version"
+msgstr "UCS Version"
+
+#: modconsole.py:410
+msgid "Contact"
+msgstr "Kontakt"
+
+#: modconsole.py:422
+msgid "ALL RIGHTS RESERVED"
+msgstr "ALL RIGHTS RESERVED"
+
+#: modconsole.py:437
+msgid "Ok"
+msgstr "Ok"
+
+#: modconsole.py:458
+msgid "Update status"
+msgstr "Status aktualisieren"
+
+#: modconsole.py:516
+msgid ""
+"Authentication failed: A connection to the UMC daemon could not be "
+"established."
+msgstr ""
+"Authentisierungfehler: Eine Verbindung zum UMC-Dämon konnte nicht "
+"hergestellt werden"
+
+#: modconsole.py:620
+msgid "The UMC server did not responed to the authentication request"
+msgstr "Der UMC-Server hat auf die Authentisierungsanfrage nicht geantwortet"
+
+#: modconsole.py:675
+#, python-format
+msgid "Authentication failed: %s"
+msgstr "Authentisierungsfehler: %s"
+
+#: modconsole.py:690
+msgid "Logout successful."
+msgstr "Abmeldung erfolgreich"
+
+#: unidialog.py:121
+#, python-format
+msgid "error while modifying: %s %s"
+msgstr "Während des Bearbeitens ist ein Fehler aufgetreten: %s %s"
 
 #~ msgid "OK"
 #~ msgstr "OK"

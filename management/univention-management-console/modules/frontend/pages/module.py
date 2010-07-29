@@ -142,7 +142,7 @@ class Module( base.Page ):
 		self.__operation_is_progress = True
 		lst = umcd.List()
 		lst.add_row( [ umcd.Image( 'actions/info', umc_tools.SIZE_MEDIUM ),
-			       _( 'Operation still in progress. Please wait ...' ) ] )
+			       _( 'The operation is still in progress. Please wait ...' ) ] )
 		frame = umcd.Frame( [ lst ], _( 'Information' ) )
 		self.__in_progress = umcd.Dialog( [ frame ] )
 		self.__storage.clear()
