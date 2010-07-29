@@ -1,3 +1,9 @@
+univention-installer (6.0.40-1) unstable; urgency=low
+
+  * fixed typo s|nomoeset|nomodeset|. Bug #19134
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Jul 2010 21:34:16 +0200
+
 univention-installer (6.0.39-1) unstable; urgency=low
 
   * redirect install-mbr output to /dev/null Bug #19122
