@@ -96,9 +96,10 @@ else
 fi
 
 # install xen kernel on xen virtualization server
+boot_version=`uname -r | awk -F"-" '{print $1}'`
 echo $packages | grep -qi univention-virtual-machine-manager-node-xen
 if [ 0 -eq $? ]; then
-	kernel_package="$kernel_package $kernel_package-xen"
+	xen_kernel="univention-kernel-image-${boot_version}-xen"
 fi 
 	
 
@@ -121,6 +122,10 @@ if [ "\$?" != "0" ]; then
 	if [ -n "$fallback_kernel_package" ]; then
 		apt-get -y -o APT::Get::AllowUnauthenticated=1 install $fallback_kernel_package
 	fi
+fi
+
+if [ -n "$xen_kernel" ]; then
+	apt-get -y -o APT::Get::AllowUnauthenticated=1 install $xen_kernel
 fi
 
 univention-config-registry commit

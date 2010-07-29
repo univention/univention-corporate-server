@@ -1,3 +1,11 @@
+univention-installer (6.0.39-1) unstable; urgency=low
+
+  * redirect install-mbr output to /dev/null Bug #19122
+  * install univention-kernel-image-VERSION-xen if
+    xen virtualization node is selected Bug #19045 
+
+ -- Felix Botner <botner@univention.de>  Thu, 29 Jul 2010 16:06:51 +0200
+
 univention-installer (6.0.38-1) unstable; urgency=low
 
   * set nomodeset in installer to prevent KMS problems during

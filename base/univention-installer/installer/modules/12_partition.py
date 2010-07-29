@@ -1485,7 +1485,7 @@ class object(content):
 				devices_remove[dev] = 1
 				continue
 			elif _re_error.match(first_line):
-				os.system('/sbin/install-mbr -f %s' % dev)
+				os.system('/sbin/install-mbr -f %s 2>/dev/null 1>/dev/null' % dev)
 				p = os.popen('/sbin/parted %s unit B p 2>&1 | grep [a-z]'% dev)
 				first_line=p.readline()
 				if _re_error.match(first_line):
