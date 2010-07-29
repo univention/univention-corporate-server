@@ -298,40 +298,62 @@ class Client( notifier.signals.Provider ):
 		exclude.append( char )
 		return char
 
+	# def _verify_device_files( self, domain ):
+	# 	cdrom_name = 'a'
+	# 	cdrom_prefix = 'hd%s'
+	# 	dev_name = 'a'
+	# 	device_prefix = 'hd%s'
+	# 	if domain.domain_type == 'xen' and domain.bootloader:
+	# 		device_prefix = 'xvd%s'
+	# 	elif domain.domain_type == 'kvm':
+	# 		device_prefix = 'vd%s' # virtio instead of ide
+
+	# 	dev_exclude = []
+	# 	cdrom_exclude = []
+	# 	for dev in domain.disks:
+	# 		if dev.target_dev:
+	# 			if dev.device == node.Disk.DEVICE_CDROM and domain.domain_type == 'kvm':
+	# 				cdrom_exclude.append( dev.target_dev[ -1 ] )
+	# 			else:
+	# 				dev_exclude.append( dev.target_dev[ -1 ] )
+
+	# 	if cdrom_name in cdrom_exclude:
+	# 		cdrom_name = self.__next_letter( cdrom_name, cdrom_exclude )
+	# 	if dev_name in dev_exclude:
+	# 		dev_name = self.__next_letter( dev_name, dev_exclude )
+
+	# 	for dev in domain.disks:
+	# 		# CDROM drive need to use the ide driver as booting from virtio devices does not work
+	# 		if dev.device == node.Disk.DEVICE_CDROM and domain.domain_type == 'kvm':
+	# 			if not dev.target_dev:
+	# 				dev.target_dev = cdrom_prefix % cdrom_name
+	# 				cdrom_name = self.__next_letter( cdrom_name, cdrom_exclude )
+	# 		else:
+	# 			if not dev.target_dev:
+	# 				dev.target_dev = device_prefix % dev_name
+	# 				dev_name = self.__next_letter( dev_name, dev_exclude )
+
+	# FIXME: currently we need to use IDE only for KVM as Windows is
+	# not able to handle virtio drives!!! The profile should contain the
+	# information which platform will be installed.
 	def _verify_device_files( self, domain ):
-		cdrom_name = 'a'
-		cdrom_prefix = 'hd%s'
 		dev_name = 'a'
 		device_prefix = 'hd%s'
 		if domain.domain_type == 'xen' and domain.bootloader:
 			device_prefix = 'xvd%s'
-		elif domain.domain_type == 'kvm':
-			device_prefix = 'vd%s' # virtio instead of ide
 
 		dev_exclude = []
-		cdrom_exclude = []
 		for dev in domain.disks:
 			if dev.target_dev:
-				if dev.device == node.Disk.DEVICE_CDROM and domain.domain_type == 'kvm':
-					cdrom_exclude.append( dev.target_dev[ -1 ] )
-				else:
-					dev_exclude.append( dev.target_dev[ -1 ] )
+				dev_exclude.append( dev.target_dev[ -1 ] )
 
-		if cdrom_name in cdrom_exclude:
-			cdrom_name = self.__next_letter( cdrom_name, cdrom_exclude )
 		if dev_name in dev_exclude:
 			dev_name = self.__next_letter( dev_name, dev_exclude )
 
 		for dev in domain.disks:
-			# CDROM drive need to use the ide driver as booting from virtio devices does not work
-			if dev.device == node.Disk.DEVICE_CDROM and domain.domain_type == 'kvm':
-				if not dev.target_dev:
-					dev.target_dev = cdrom_prefix % cdrom_name
-					cdrom_name = self.__next_letter( cdrom_name, cdrom_exclude )
-			else:
-				if not dev.target_dev:
-					dev.target_dev = device_prefix % dev_name
-					dev_name = self.__next_letter( dev_name, dev_exclude )
+			if not dev.target_dev:
+				dev.target_dev = device_prefix % dev_name
+				dev_name = self.__next_letter( dev_name, dev_exclude )
 
 	def domain_configure( self, node, data ):
 		req = protocol.Request_DOMAIN_DEFINE()

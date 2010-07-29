@@ -66,7 +66,7 @@ class DriveWizard( umcd.IWizard ):
 		self.append( page )
 
 		# page 1
-		page = umcd.Page( self.title, _( 'For the harddrive a new image can be created or an existing image can be used. If you choose to use an existing image make sure that it is not used by another virtual instance at the same time.' ) )
+		page = umcd.Page( self.title, _( 'For the hard drive a new image can be created or an existing one can be chosen. An existing image should only be used by one virtual instance at a time.' ) )
 		page.options.append( umcd.make( ( 'existing-or-new-disk', DiskSelect( '' ) ) ) )
 		self.append( page )
 
@@ -77,7 +77,7 @@ class DriveWizard( umcd.IWizard ):
 		self.append( page )
 
 		# page 3
-		page = umcd.Page( self.title, _( 'Select a storage pool that should be used for the image. The filename and size for the virtual harddrive have been set to default values. You may change these values to fit your needs.' ) )
+		page = umcd.Page( self.title, _( 'Each hard drive image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). The newly create image will have the specified name and size provided by the following settings. Currently these was been set to default images. It has to be ensured that there is enough space left in the defined storage pool.' ) )
 		page.options.append( umcd.Text( '' ) ) # will be replaced with pool selection button
 		page.options.append( umcd.make( ( 'image-name', umc.String( _( 'Filename' ) ) ) ) )
 		page.options.append( umcd.make( ( 'image-size', umc.String( _( 'Size' ) ) ) ) )
@@ -148,9 +148,9 @@ class DriveWizard( umcd.IWizard ):
 			elif object.options['drive-type'] == 'cdrom':
 				self.current = 2
 				if self.image_syntax._choices:
-					msg = _( 'If the required image is not found, you may copy the ISO image on the server into the directory /var/lib/libvirt/images/. After that go to the previous page an return to this one. The image should now be available.' )
+					msg = _( "If the required ISO image is not found it might be added by copying the file into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>default</i>. After that go to the previous page an return to this one. The image should now be listed." )
 				else:
-					msg = _( 'The list of available images is empty! You may copy the ISO image on the server into the directory /var/lib/libvirt/images/. After that go to the previous page an return to this one. The image should now be available.' )
+					msg = _( "The list of available images is empty! To add an ISO image the file needs to be copied into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>default</i>. After that go to the previous page an return to this one. The image should now be listed." )
 				self[ 2 ].hint = msg
 			else:
 				raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
@@ -160,9 +160,9 @@ class DriveWizard( umcd.IWizard ):
 			else:
 				self.current = 2
 				if object.options[ 'drive-type' ] == 'disk':
-					self[ self.current ].description = _( 'Select the storage pool and afterwards one of the existing disk images' )
+					self[ self.current ].description = _( 'Each hard drive image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list of available images is updated.' )
 				elif object.options['drive-type'] == 'cdrom':
-					self[ self.current ].description = _( 'Select the storage pool and afterwards one of the existing ISO image' )
+					self[ self.current ].description = _( 'Each ISO image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list of available images is updated.' )
 				else:
 					raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
 		elif self.current in ( 2, 3 ): # 2=create new, 3=select existing, disk image
@@ -263,12 +263,12 @@ class InstanceWizard( umcd.IWizard ):
 		self.drives = []
 
 		# page 0
-		page = umcd.Page( self.title, _( 'By selecting a profile for the virtual instance most of the settings will be filled out with default values. In the following step these values may be modified.' ) )
+		page = umcd.Page( self.title, _( 'By selecting a profile for the virtual instance most of the settings will be set to default values. In the following steps some of these values might be modified. After the creation of the virtual instance all parameters, extended settings und attached drives can be adjusted. It should be ensured that the profile is for the correct architecture as this option can not be changed afterwards.' ) )
 		page.options.append( umcd.make( ( 'instance-profile', self.profile_syntax ) ) )
 		self.append( page )
 
 		# page 1
-		page = umcd.Page( self.title, _( 'The settings shown below are all read from the selected profile. Please verify that these values fits your environment. At least the name for the virtual instance should be modified.' ) )
+		page = umcd.Page( self.title, _( 'The following settings were read from the selected profile and can be modified now.' ) )
 		page.options.append( umcd.make( ( 'name', umc.String( _( 'Name' ) ) ) ) )
 		page.options.append( umcd.make( ( 'memory', umc.String( _( 'Memory (in MB)' ) ) ) ) )
 		page.options.append( umcd.make( ( 'cpus', NumberSelect( _( 'CPUs' ) ) ) ) )
@@ -276,7 +276,7 @@ class InstanceWizard( umcd.IWizard ):
 		self.append( page )
 
 		# page 2
-		page = umcd.Page( self.title, umcd.HTML( _( 'The virtual instance will be created with the settings shown below. You may now add additional drives by clicking the button <i>Add drive</i>' ) ) )
+		page = umcd.Page( self.title, umcd.HTML( _( 'The virtual instance will be created with the settings shown below. The button <i>Add drive</i> can be used to attach another drive.' ) ) )
 		page.options.append( umcd.HTML( '' ) )
 		add_btn = umcd.Button( _( 'Add drive' ), 'uvmm/add', ( umcd.Action( umcp.SimpleCommand( command, options = { 'action' : 'new-drive' } ) ), ) )
 		page.actions.append( add_btn )
