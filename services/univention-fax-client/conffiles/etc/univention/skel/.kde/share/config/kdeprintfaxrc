@@ -1,3 +1,5 @@
+@%@BCWARNING=# @%@
+
 [Fax]
 Device=@%@fax/modem@%@
 Page=a4
