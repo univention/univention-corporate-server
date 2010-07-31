@@ -99,13 +99,13 @@ print defoptions
 # xenhopt=
 
 ## Xen Linux kernel options to use with the default Xen boot option
-# xenkopt=console=tty0 fbcon=map:2
+# xenkopt=console=tty0 fbcon=map:2 nosplash
 
 ## altoption boot targets option
 ## multiple altoptions lines are allowed
 ## e.g. altoptions=(extra menu suffix) extra boot options
 ##      altoptions=(single-user) single
-# altoptions=(single-user mode) single
+# altoptions=(single-user mode) single nosplash
 
 ## controls how many kernels should be put into the menu.lst
 ## only counts the first occurence of a kernel, not the

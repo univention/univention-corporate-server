@@ -1,3 +1,10 @@
+univention-grub (4.0.2-1) unstable; urgency=low
+
+  * disable usplash on xen dom0 kernels and in single user mode. Bug
+    #16936 and Bug #16216
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Jul 2010 19:31:11 +0200
+
 univention-grub (4.0.1-1) unstable; urgency=low
 
   * invoke grub-mkdevicemap before grub-install; Bug #19115
