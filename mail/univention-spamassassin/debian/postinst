@@ -29,6 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+eval "$(univention-config-registry shell)"
 
 createLogfile () {
 	if [ ! -e $1 ] ; then
@@ -41,7 +42,6 @@ createLogfile () {
 createLogfile /var/log/univention/spamassassin-learn.log "root:adm" 640
 
 if [ -f /var/spool/procmail/user/procmail.spam@domain ]; then
-	eval `univention-baseconfig shell domainname`
 	mv /var/spool/procmail/user/procmail.spam@domain /var/spool/procmail/user/procmail.spam@$domainname
 fi
 

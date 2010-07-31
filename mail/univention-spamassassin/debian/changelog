@@ -1,3 +1,11 @@
+univention-spamassassin (3.0.1-1) unstable; urgency=low
+
+  * call ucr shell in postinst otherwise the join script won't be
+    exceuted during the installation on DC Master or DC Backup. Bug
+    #16916
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Jul 2010 17:56:28 +0200
+
 univention-spamassassin (3.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
