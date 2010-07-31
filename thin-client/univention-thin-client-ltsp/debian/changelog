@@ -1,3 +1,9 @@
+univention-thin-client-ltsp (4.1.1-1) unstable; urgency=low
+
+  * set permissions for /var/log/univention/ltsp-mounts.log. Bug #12852
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Jul 2010 21:02:37 +0200
+
 univention-thin-client-ltsp (4.1.0-1) unstable; urgency=low
 
   * bump version for UCS TCS compatibility (Bug #17543)

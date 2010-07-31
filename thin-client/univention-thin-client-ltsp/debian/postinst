@@ -32,6 +32,11 @@
 
 #DEBHELPER#
 
+# set permissions for ltsp-mounts.log
+touch /var/log/univention/ltsp-mounts.log
+chiwn "root:adm" /var/log/univention/ltsp-mounts.log
+chmod 640 /var/log/univention/ltsp-mounts.log
+
 univention-thin-client-apt install ltspfsd
 univention-thin-client-apt install univention-thin-client-ltsp-config
 
