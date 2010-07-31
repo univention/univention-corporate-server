@@ -1,3 +1,12 @@
+univention-join (3.0.2-1) unstable; urgency=low
+
+  * redirect stderr to join.log. Bug #19180
+  * added options to univention-join:
+     -realm for kerberos/realm  (Bug #11275)
+     -ldapbase for ldap base (Bug #18029)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Jul 2010 16:22:19 +0200
+
 univention-join (3.0.1-2) unstable; urgency=low
 
   * move univention join script from 91 to 23 because we need in some

@@ -50,6 +50,8 @@ display_help() {
 	  -dcaccount <account>:    name of DC master account
 	  -dcpwd <password file>:  file with DC master password
 	  -type <type>:            type of computer, e.g. "client"
+	  -ldapbase <ldap base>:   LDAP Base DN, e.g. dc=test,dc=local
+	  -realm <kerberos realm>: Kerberos realm, e.g. TEST.LOCAL
 
 	  -h | --help | -?:        print this usage message and exit program
 	  --version:               print version information and exit program
@@ -133,6 +135,16 @@ do
 		"-dcpwd")
 			shift
 			DCPWD=$1
+			shift
+			;;
+		"-ldapbase")
+			shift
+			LDAPBASE="$1"
+			shift
+			;;
+		"-realm")
+			shift
+			REALM="$1"
 			shift
 			;;
 		"-type")
@@ -230,7 +242,7 @@ if [ $? != 0 ]; then
 	failed_message "ping to $DCNAME failed"
 fi
 
-univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" echo ssh-check | grep -qs ssh-check
+univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" echo ssh-check 2>>/var/log/univention/join.log | grep -qs ssh-check
 if [ $? != 0 ]; then
 	failed_message "ssh-login for $DCACCOUNT@$DCNAME failed. Maybe you entered a wrong password."
 fi
@@ -243,8 +255,12 @@ if [ -x /etc/init.d/slapd ]; then
 	echo -e "\033[60Gdone"
 fi
 
-echo -n "Search ldap/base"
-ldap_base=`ldapsearch -x  -h $DCNAME -b "" -s base 'objectclass=*' NamingContexts -LLL | grep namingContexts | sed -e 's|namingContexts: ||'`
+if [ -z "$LDAPBASE" ]; then
+	echo -n "Search ldap/base"
+	ldap_base=`ldapsearch -x  -h $DCNAME -b "" -s base 'objectclass=*' NamingContexts -LLL | grep namingContexts | sed -e 's|namingContexts: ||'`
+else
+	ldap_base="$LDAPBASE"
+fi
 univention-config-registry set ldap/base="$ldap_base" >/dev/null 2>&1
 echo -e "\033[60Gdone"
 
@@ -292,7 +308,7 @@ if [ -n "$server_role" ]; then
 	fi
 	echo -n "Join Computer Account: "
 	univention-scp "$DCPWD" "$DCPWD" "$DCACCOUNT@$DCNAME:$DCPWD" >>/var/log/univention/join.log 2>&1
-	res=`univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/share/univention-join/univention-server-join -role $server_role -hostname $hostname -domainname $domainname $ip_cmd $mac_cmd $position_cmd $auth_cmd`
+	res=`univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/share/univention-join/univention-server-join -role $server_role -hostname $hostname -domainname $domainname $ip_cmd $mac_cmd $position_cmd $auth_cmd 2>>/var/log/univention/join.log`
 	univention-ssh $DCPWD $DCACCOUNT@$DCNAME "rm $DCPWD" >>/var/log/univention/join.log 2>&1
 	res_message=`echo $res | grep uexception | sed -e 's|.*univention.admin.uexceptions.||'g`
 	if [ -z "$res_message" ]; then
@@ -376,6 +392,22 @@ if [ -e /etc/runit/univention/univention-directory-listener ]; then
 fi
 rm -Rf /var/lib/univention-directory-listener/*
 
+set_kerberos_realm ()
+{
+	DCPWD="$1"
+	DCACCOUNT="$2"
+	DCNAME="$3"
+	realm="$4"
+	if [ -z "$realm" ]; then
+		realm=$(univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-config-registry get kerberos/realm | sed -e 's, ,,g' | grep [A-Za-z0-9] ) >>/var/log/univention/join.log 2>&1
+		if [ $? != 0 -o -z "$realm" ]; then
+			echo "Unable to retrieve the kerberos realm. Try to use option -realm <kerberos/realm>"
+			exit 1
+		fi
+	fi
+	univention-config-registry set kerberos/realm="$realm" >>/var/log/univention/join.log 2>&1
+
+}
 if [ "$server_role" = "domaincontroller_backup" ]; then
 
 	if [ -e "/etc/ldap.secret" ]; then cat /etc/ldap.secret >>/etc/ldap.secret.SAVE; fi
@@ -436,7 +468,8 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	univention-config-registry set ldap/server/name?"$DCNAME" >>/var/log/univention/join.log 2>&1
 	univention-config-registry set ldap/master?"$DCNAME" >>/var/log/univention/join.log 2>&1
 	univention-config-registry set kerberos/adminserver?"$DCNAME" >>/var/log/univention/join.log 2>&1
-	univention-config-registry set kerberos/realm=$(univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-config-registry get kerberos/realm | sed -e 's, ,,g' | grep [A-Za-z0-9] ) >>/var/log/univention/join.log 2>&1
+	
+	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
 
 	eval `univention-config-registry shell`
 
@@ -523,7 +556,7 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	univention-config-registry set ldap/server/name?"$DCNAME" >>/var/log/univention/join.log 2>&1
 	univention-config-registry set ldap/master?"$DCNAME" >>/var/log/univention/join.log 2>&1
 	univention-config-registry set kerberos/adminserver?"$DCNAME" >>/var/log/univention/join.log 2>&1
-	univention-config-registry set kerberos/realm=$(univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-config-registry get kerberos/realm | sed -e 's, ,,g' | grep [A-Za-z0-9] ) >>/var/log/univention/join.log 2>&1
+	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
 
 	echo -n "0" >/var/lib/univention-ldap/schema/id/id
 	chown listener /var/lib/univention-ldap/schema/id/id
@@ -578,7 +611,7 @@ elif [ "$server_role" = "memberserver" ]; then
 	univention-config-registry set ldap/server/name?"$DCNAME" >>/var/log/univention/join.log 2>&1
 	univention-config-registry set ldap/master?"$DCNAME" >>/var/log/univention/join.log 2>&1
 	univention-config-registry set kerberos/adminserver?"$DCNAME" >>/var/log/univention/join.log 2>&1
-	univention-config-registry set kerberos/realm=$(univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-config-registry get kerberos/realm | sed -e 's, ,,g' | grep [A-Za-z0-9] ) >>/var/log/univention/join.log 2>&1
+	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
 
 	touch /var/univention-join/joined
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
@@ -619,7 +652,7 @@ else
 	univention-config-registry set ldap/server/name="$DCNAME" >>/var/log/univention/join.log 2>&1
 	univention-config-registry set ldap/master="$DCNAME" >>/var/log/univention/join.log 2>&1
 	univention-config-registry set kerberos/adminserver="$DCNAME" >>/var/log/univention/join.log 2>&1
-	univention-config-registry set kerberos/realm=$(univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-config-registry get kerberos/realm | sed -e 's, ,,g' | grep [A-Za-z0-9] ) >>/var/log/univention/join.log 2>&1
+	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
 	cat /etc/ldap/ldap.conf  | sed -e "s|#.*||g" | grep -q TLS_CACERT || echo "TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem" >>/etc/ldap/ldap.conf
 
 	touch /var/univention-join/joined
