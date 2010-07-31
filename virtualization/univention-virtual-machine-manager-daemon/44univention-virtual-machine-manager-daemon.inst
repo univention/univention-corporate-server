@@ -170,8 +170,8 @@ create_hvm_profile "Univention Corporate Server 2.4 (64 Bit)" "ucs24-64-" "kvm" 
 create_hvm_profile "Other" "other-" "xen" "i686" "256MB"
 create_hvm_profile "Other" "other-" "kvm" "i686" "256MB"
 
-create_hvm_profile "Other (64 Bit)" "other-" "xen" "x86_64" "1024MB"
-create_hvm_profile "Other (64 Bit)" "other-" "kvm" "x86_64" "1024MB"
+create_hvm_profile "Other (64 Bit)" "other-" "xen" "x86_64" "256MB"
+create_hvm_profile "Other (64 Bit)" "other-" "kvm" "x86_64" "256MB"
 
 
 # TODO: profiles for xen-xen

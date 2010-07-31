@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.72-1) unstable; urgency=low
+
+  * set ram to 256 MB for profile 'Other (64 Bit)'. Bug #19132
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Jul 2010 12:47:25 +0200
+
 univention-virtual-machine-manager-daemon (0.9.71-1) unstable; urgency=low
 
   * update german translation
