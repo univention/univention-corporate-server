@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/sh -x
 #
 # Univention Samba
 #  join script
@@ -64,7 +64,7 @@ fi
 if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" ]; then
 	univention-baseconfig set	samba/user="$ldap_hostdn" \
 								samba/user/pwdfile?"/etc/machine.secret"
-	smbpasswd -w `cat /etc/machine.secret`
+	smbpasswd -w $(cat /etc/machine.secret)
 	for idmap_ldap_config in alloc ${samba_idmap_domains}; do
 		echo "setting idmap secret for ${idmap_ldap_config} from /etc/machine.secret"
 		net idmap secret ${idmap_ldap_config} `</etc/machine.secret` 2>/dev/null
@@ -73,20 +73,24 @@ else
 	univention-baseconfig set	samba/user?"cn=admin,$ldap_base" \
 								samba/user/pwdfile?"/etc/ldap.secret"
 	/etc/init.d/samba restart >/dev/null 2>&1
-	smbpasswd -w `cat /etc/ldap.secret`
+	smbpasswd -w $(cat /etc/ldap.secret)
 	for idmap_ldap_config in alloc ${samba_idmap_domains}; do
 		echo "setting idmap secret for ${idmap_ldap_config} from /etc/ldap.secret"
 		net idmap secret ${idmap_ldap_config} `</etc/ldap.secret` 2>/dev/null
 	done
 fi
 
+eval "$(univention-config-registry samba/user/pwdfile samba/user)"
+
 # The samba server should be up and running for local join
 /etc/init.d/samba restart
+sleep 3
 
 # parse binddn and bindpwd from command line arguments into shell variables
 eval $(echo "$@" | sed -n 's/.*--binddn \(.*\) --bindpwd \(.*\).*/binddn="\1"\nbindpwd="\2"/p')
-# map binddn back to uid, returns nothing if no binddn or binddn= cn=admin,..
-dcaccount=$(ldapsearch -x -s base -b "$binddn" uid | ldapsearch-wrapper | sed -n 's/^uid: \(.*\)$/\1/p')
+if [ -n "$binddn" ]; then
+	dcaccount="$(ldapsearch -x -s base -b "$binddn" -LLL uid | ldapsearch-wrapper | sed -n 's/^uid: \(.*\)$/\1/p')"
+fi
 if [ -n "$dcaccount" -a -n "$bindpwd" ]; then
 	samba_account="$dcaccount"
 	samba_pwd="$bindpwd"
@@ -96,14 +100,33 @@ elif [ -e /etc/backup-join.secret ]; then
 fi
 
 if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
+	if [ "$server_role" != "domaincontroler_master" -a "$samba_domainmaster" = "yes" ]; then
+		# samba slave pdc needs permissions for the passdb backend to modify the local account
+		real_samba_user="$(ucr get samba/user)"
+		univention-config-registry set samba/user="$binddn"
+		smbpasswd -w "$bindpwd"
+		/etc/init.d/samba restart
+		sleep 3
+	fi
+		
 	net rpc join -U${samba_account}%${samba_pwd}
-	if [ $? != 0 ]; then
+	rc=$?
+
+	# set defaul printer permissions
+	net rpc rights -U${samba_account}%${samba_pwd} grant Printer-Admins SePrintOperatorPrivilege
+
+	if [ "$server_role" != "domaincontroler_master" -a "$samba_domainmaster" = "yes" ]; then
+		# samba slave pdc needs permissions for the passdb backend to modify the local account
+		univention-config-registry set samba/user="$real_samba_user"
+		smbpasswd -w "$(cat $samba_user_pwdfile)"
+		/etc/init.d/samba restart
+		sleep 3
+	fi
+
+	if [ $rc != 0 ]; then
 		echo "ERROR: failed to join via net rpc join"
 		exit 1
 	fi
-	# set defaul printer permissions
-	net rpc rights -U${samba_account}%${samba_pwd} grant Printer-Admins SePrintOperatorPrivilege
-	net rpc rights -U${samba_account}%${samba_pwd} grant Administrator SePrintOperatorPrivilege
 fi
 
 # stop samba

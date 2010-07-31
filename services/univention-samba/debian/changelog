@@ -1,3 +1,13 @@
+univention-samba (5.0.15-1) unstable; urgency=low
+
+  * On a slave pdc the local samba account for the passdb ldap backend
+    needs the permission to add a samba objectClass to the host object.
+    By default the ldap/hostdn is used as passdb ldap backend  but he
+    does not have these permissions. So the join user will be used as
+    passdb ldap account temporarily. Bug #19128
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Jul 2010 15:10:50 +0200
+
 univention-samba (5.0.14-1) unstable; urgency=low
 
   * use univention.password for password quality checks. Bug #14943
