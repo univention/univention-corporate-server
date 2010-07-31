@@ -1,3 +1,10 @@
+univention-kde (5.0.3-1) unstable; urgency=low
+
+  * call 'konqueror $HOME' instead of 'kfmclient openProfile
+    filemanagement' in kde example profiles. Bug #13104
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Jul 2010 19:14:35 +0200
+
 univention-kde (5.0.2-1) unstable; urgency=low
 
   * unset auth/kdeprofile while removing package. Bug #18648
