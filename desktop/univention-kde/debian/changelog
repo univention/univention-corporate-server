@@ -1,3 +1,9 @@
+univention-kde (5.0.2-1) unstable; urgency=low
+
+  * unset auth/kdeprofile while removing package. Bug #18648
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Jul 2010 19:01:25 +0200
+
 univention-kde (5.0.1-1) unstable; urgency=low
 
   * added UCR header to /etc/univention/skel/.mcoprc. Bug #19169
