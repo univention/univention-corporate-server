@@ -1,3 +1,9 @@
+univention-samba (5.0.15-2) unstable; urgency=low
+
+  * remove debug statement from join script and fixed a typo. Bug #19128
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Jul 2010 15:54:21 +0200
+
 univention-samba (5.0.15-1) unstable; urgency=low
 
   * On a slave pdc the local samba account for the passdb ldap backend
