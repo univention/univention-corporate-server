@@ -1,3 +1,9 @@
+univention-config-registry (6.0.18-1) unstable; urgency=low
+
+  * fixed typo in template syslog.conf (Bug #17853)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 02 Aug 2010 18:15:53 +0200
+
 univention-config-registry (6.0.17-1) unstable; urgency=low
 
   * fixed typo in 'required'. Bug #14943
