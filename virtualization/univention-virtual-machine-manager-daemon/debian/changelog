@@ -1,6 +1,12 @@
+univention-virtual-machine-manager-daemon (0.9.74-2) unstable; urgency=low
+
+  * Fix backtraces in 'add' and 'remove' (Bug #17733)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 02 Aug 2010 15:46:08 +0200
+
 univention-virtual-machine-manager-daemon (0.9.73-1) unstable; urgency=low
 
-  * always use 'memory usage' isntread of 'memory'; Bug #19130
+  * always use 'memory usage' instead of 'memory'; Bug #19130
   * remove floppy from list of possible boot devices; Bug #19140
   * verify correct format of memory size input fields; Bug #19144
   * wizard: the storage pool selection just lists the active pools
@@ -15,7 +21,7 @@ univention-virtual-machine-manager-daemon (0.9.72-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.71-1) unstable; urgency=low
 
-  * update german translation
+  * update German translation
   * use always use IDE devices for KVM (Windows can not handle virtio
     drives); Bug #18863
 
@@ -39,7 +45,7 @@ univention-virtual-machine-manager-daemon (0.9.68-1) unstable; urgency=low
   * instance wizard: move cdrom drive of para-virtualized machines to
     first position in configuration; Bug #18863
   * fixed a traceback in calculation of current memory usage
-  * fixed caluation of next free drive letter
+  * fixed calculation of next free drive letter
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 28 Jul 2010 19:38:52 +0200
 
@@ -55,7 +61,7 @@ univention-virtual-machine-manager-daemon (0.9.67-1) unstable; urgency=low
 univention-virtual-machine-manager-daemon (0.9.66-1) unstable; urgency=low
 
   * better support for KVM
-  * update german translation
+  * update German translation
   * rename default group in views
   * directly activate storage pool default after creation
   * new icons; Bug #18871
@@ -76,7 +82,7 @@ univention-virtual-machine-manager-daemon (0.9.64-2) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.64-1) unstable; urgency=low
 
-  * update german translation
+  * update German translation
   * fixed minor bug in UVVM daemon (might be related to Bug #18579)
   * wizard: add network interface to newly created instance
   * only show 'boot device' button in drive list for para-virtualized machines; Bug #18863
@@ -85,17 +91,17 @@ univention-virtual-machine-manager-daemon (0.9.64-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.63-1) unstable; urgency=low
 
-  * added dependecy to univention-virtual-machine-manager-schema. Bug
+  * added dependency to univention-virtual-machine-manager-schema. Bug
     #18534
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jul 2010 10:04:22 +0200
 
 univention-virtual-machine-manager-daemon (0.9.62-1) unstable; urgency=low
 
-  * UVMM daemon: support setting the bootloader for PV machines
+  * UVMM daemon: support setting the boot-loader for PV machines
   * add option to choose between pygrub and manual kernel configuration
   * if creating a PV machine use device name prefix xvd instead of hd
-  * detect reusage of hard drive images within one single machine
+  * detect re-usage of hard drive images within one single machine
   * support setting the boot device for PV machines; Bug #18863
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 26 Jul 2010 17:12:20 +0200
@@ -115,7 +121,7 @@ univention-virtual-machine-manager-daemon (0.9.61-4) unstable; urgency=low
   * Fix volume-pool information in creation wizard (Bug #19069)
   * Expand description of 'VNC' checkbox.
   * Fix spelling.
-  * Improve uvmm dump functionallity.
+  * Improve uvmm dump functionality.
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 22 Jul 2010 19:28:03 +0200
 
@@ -136,9 +142,9 @@ univention-virtual-machine-manager-daemon (0.9.61-1) unstable; urgency=low
 
   * use os type and domain type to define virtualisation technology
   * virtualization technology may not be changed
-  * use '32 Bit' or '64 Bit' as values for the archiecture
+  * use '32 Bit' or '64 Bit' as values for the architecture
   * re-design conclusion of drive details in wizard
-  * modify hint whne adding a new CDROM drive
+  * modify hint when adding a new CDROM drive
   * a few minor layout fixes
   * move 'new drive' button into drive section; Bug #19064
 
@@ -152,7 +158,7 @@ univention-virtual-machine-manager-daemon (0.9.60-2) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.60-1) unstable; urgency=low
 
-  * update german translation
+  * update German translation
   * replace term device with drive; Bug #18850
   * fixed vertical alignment of wizard buttons; Bug #18721
 
@@ -211,7 +217,7 @@ univention-virtual-machine-manager-daemon (0.9.53-1) unstable; urgency=low
 univention-virtual-machine-manager-daemon (0.9.52-1) unstable; urgency=low
 
   * use "human readable" descriptions for the virtualization technology; Bug #18850
-  * update german translation
+  * update German translation
 
  -- Andreas Büsching <buesching@univention.de>  Tue, 13 Jul 2010 09:59:23 +0200
 
@@ -235,7 +241,7 @@ univention-virtual-machine-manager-daemon (0.9.50-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.49-1) unstable; urgency=low
 
-  * memory for a virtual instance should between 4 MB and the maxmial
+  * memory for a virtual instance should between 4 MB and the maximal
     available memory of the physical server
   * megabyte is the default unit for the specified amount of memory; Bug #18851
 
@@ -263,7 +269,7 @@ univention-virtual-machine-manager-daemon (0.9.46-1) unstable; urgency=low
 univention-virtual-machine-manager-daemon (0.9.45-1) unstable; urgency=low
 
   * show cancel button in device wizard; Bug #18861
-  * remove archiecture, virtualization technology and VNC keyboard layout
+  * remove architecture, virtualization technology and VNC keyboard layout
     in instance wizard; Bug #18852
   * restructure settings dialog; Bug #18856
 
@@ -271,7 +277,7 @@ univention-virtual-machine-manager-daemon (0.9.45-1) unstable; urgency=low
 
 univention-virtual-machine-manager-daemon (0.9.44-1) unstable; urgency=low
 
-  * add VNC java client capability (Bug #18346)
+  * add VNC Java client capability (Bug #18346)
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 05 Jul 2010 13:44:53 +0200
 
@@ -579,7 +585,7 @@ univention-virtual-machine-manager-daemon (0.9.12-1) unstable; urgency=low
 univention-virtual-machine-manager-daemon (0.9.11-1) unstable; urgency=low
 
   * split settings of a domain into settings and extend settings
-  * show stauts of domains in tree view; Bug #18235
+  * show status of domains in tree view; Bug #18235
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 28 May 2010 16:03:21 +0200
 

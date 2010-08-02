@@ -436,6 +436,7 @@ class Node(object):
 				# don't crash the event handler
 
 		self.timerID = virEventAddTimerImpl(self.current_frequency, timer_callback, (None,None))
+		self.domainCB = None
 
 	def update_autoreconnect(self):
 		"""(Re-)connect after connection broke."""
@@ -607,7 +608,7 @@ class Nodes(dict):
 	def __delitem__(self, uri):
 		"""x.__delitem__(i) <==> del x[i]"""
 		self[uri].unregister()
-		super(Node,self).__delitem__(uri)
+		super(Nodes, self).__delitem__(uri)
 	def set_frequency(self, hz):
 		"""Set polling frequency for update."""
 		for node in self.values():
