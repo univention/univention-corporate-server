@@ -1,3 +1,9 @@
+univention-firewall (3.0.3-1) unstable; urgency=low
+
+  * renamed 20localhost to 17localhost (Bug #18407)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 02 Aug 2010 17:42:41 +0200
+
 univention-firewall (3.0.2-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
