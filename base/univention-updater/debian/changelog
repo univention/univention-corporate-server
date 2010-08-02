@@ -1,3 +1,11 @@
+univention-updater (6.0.13-1) unstable; urgency=low
+
+  * decreased jitter from 600 to 30 seconds when calling
+    univention-updater-check during boot (Bug #19153)
+  * call univention-updater-check after (sec-)update (Bug #19153)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 02 Aug 2010 10:51:28 +0200
+
 univention-updater (6.0.12-1) unstable; urgency=low
 
   * use the configured server for a component in mirror.list. Bug #15982

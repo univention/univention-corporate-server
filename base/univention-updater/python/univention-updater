@@ -286,6 +286,15 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 		return nextversion
 
 
+def update_ucr_updatestatus():
+	try:
+		devnull = open( '/dev/null', 'w' )
+		subprocess.call( '/usr/share/univention-updater/univention-updater-check', stdout = devnull, stderr = devnull )
+		devnull.close()
+	except:
+		dprint('Warning: calling univention-updater-check failed.')
+
+
 def main():
 	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
 
@@ -616,6 +625,7 @@ if __name__ == '__main__':
 	try:
 		try:
 			main()
+			update_ucr_updatestatus()
 		except UpdateError, msg:
 			if msg.errorsource:
 				update_status( status='FAILED', errorsource=msg.errorsource )
@@ -635,6 +645,7 @@ if __name__ == '__main__':
 			devnull.close()
 			sys.exit(1)
 		except UpToDateNoError, error:
+			update_ucr_updatestatus()
 			update_status( status='DONE' )
 			if os.path.exists(failure):
 				os.unlink(failure)

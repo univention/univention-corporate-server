@@ -117,6 +117,14 @@ def checkForUpdate(command):
 			pass
 	return False
 
+def update_ucr_updatestatus():
+	try:
+		devnull = open( '/dev/null', 'w' )
+		subprocess.call( '/usr/share/univention-updater/univention-updater-check', stdout = devnull, stderr = devnull )
+		devnull.close()
+	except:
+		dprint('Warning: calling univention-updater-check failed.')
+
 if __name__ == '__main__':
 	# parse options
 
@@ -284,4 +292,6 @@ if __name__ == '__main__':
 			if not upgraded:
 				dprint( 'No Security Update available!', [fp_debug,sys.stdout] )
 			break
+
+	update_ucr_updatestatus()
 	update_status( status='DONE' )
