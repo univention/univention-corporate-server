@@ -30,8 +30,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-02 14:09+0200\n"
-"PO-Revision-Date: 2010-08-02 14:14+0200\n"
+"POT-Creation-Date: 2010-08-02 15:25+0200\n"
+"PO-Revision-Date: 2010-08-02 15:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -387,7 +387,10 @@ msgid ""
 "The updates can be installed up to release version %(maxpossibleversion)s. "
 "Further release updates are available but the following release updates are "
 "blocked by required component \"%(component)s\"."
-msgstr "Die Updates können bis zur UCS-Release-Version %(maxpossibleversion)s installiert werden. Weitere Releaseupdates sind verfügbar, werden aber durch die benötigte Komponente %(component)s blockiert."
+msgstr ""
+"Die Updates können bis zur UCS-Release-Version %(maxpossibleversion)s "
+"installiert werden. Weitere Releaseupdates sind verfügbar, werden aber durch "
+"die benötigte Komponente %(component)s blockiert."
 
 #: __init__.py:740
 #, python-format
@@ -569,30 +572,25 @@ msgstr "Warnung!"
 
 #: __init__.py:1111
 msgid ""
-"Installing an system update is a significant change to your IT environment."
-"<br>"
-msgstr ""
-"Das Einspielen eines Updates ist ein signifikanter Eingriff in die "
-"vorhandene IT-Infrastruktur.<br>"
+"Installing an system update is a significant change to this system and could "
+"have impact<br>"
+msgstr "Das Einspielen eines Updates ist eine signifikante Veränderung des betreffenden Systems, die auch<br>"
 
 #: __init__.py:1112
 msgid ""
-"In the normal case, undisturbed use operation cannot be guaranteed during "
-"the update,<br>"
-msgstr ""
-"Im Normalfall ist das störungsfreie Arbeiten von Anwendern während des "
-"Updates nicht gegeben,<br>"
+"to other systems. In normal case, trouble-free use by users is not possible "
+"during the update,<br>"
+msgstr "Auswirkungen auf andere Systeme haben kann. Im Normalfall ist während des Updates kein störungsfreies Arbeiten<br>"
 
 #: __init__.py:1113
 msgid ""
 "since system services may need to be restarted. Thus, updates shouldn't be "
 "installed<br>"
-msgstr ""
-"da bspw. Dienste neu gestartet werden. Deshalb sollten Sie das Update<br>"
+msgstr "von Anwendern möglich, da bspw. Dienste neu gestartet werden. Deshalb sollten Sie das Update<br>"
 
 #: __init__.py:1114
 msgid ""
-"on a live system. It is also recommend to evaluate the update in a test "
+"on a live system. It is also recommended to evaluate the update in a test "
 "environment<br>"
 msgstr "nicht im laufenden Betrieb einspielen. Tests in einer Testumgebung<br>"
 

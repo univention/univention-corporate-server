@@ -1108,10 +1108,10 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 
 	def __get_update_warning(self):
 		html = '<h2>' + _('Attention!') + '</h2>' + '<body>'
-		html += _('Installing an system update is a significant change to your IT environment.<br>')
-		html += _('In the normal case, undisturbed use operation cannot be guaranteed during the update,<br>')
+		html += _('Installing an system update is a significant change to this system and could have impact<br>')
+		html += _('to other systems. In normal case, trouble-free use by users is not possible during the update,<br>')
 		html += _('since system services may need to be restarted. Thus, updates shouldn\'t be installed<br>')
-		html += _('on a live system. It is also recommend to evaluate the update in a test environment<br>')
+		html += _('on a live system. It is also recommended to evaluate the update in a test environment<br>')
 		html += _('and to create a backup of the system.')
 		html += '<br><br>'
 		html += _('During setup, the web server may be stopped, leading to a termination of the HTTP<br>')
