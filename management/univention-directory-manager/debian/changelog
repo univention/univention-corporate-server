@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.12-1) unstable; urgency=low
+
+  * fixed language bug in single sign on (Bug #19154)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 02 Aug 2010 16:58:38 +0200
+
 univention-directory-manager (8.0.11-1) unstable; urgency=low
 
   * added a info text to structure the tab, see policies/xfree for more

@@ -82,7 +82,9 @@ class modredirect(unimodule.unimodule):
 		password = self.save.get('pass')
 		language = self.save.get('language')
 		if not language:
-			language = 'en'
+			language = os.environ["LC_MESSAGES"][0:2]
+			if not language or len(language) < 2:
+				language = 'en'
 
 		# get redirect target
 		host = self.save.get('redirect_host')
