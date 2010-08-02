@@ -57,11 +57,14 @@ if test "$1" = "configure"; then
 		# move the unpacked (diverted dpkg-new) horde-webmailer config files in place
 		# (diversion removal in preinst happens after horde-webmailer was unpacked)
 		for file in ${oldtemplatelist}; do
-			[ -f ${file}.debian.dpkg-new ] && mv ${file}.debian.dpkg-new ${file}
+			if [ -f ${file}.debian.dpkg-new ]; then
+				mv ${file}.debian.dpkg-new ${file}
+				chown www-data ${file}
+				chmod 640 ${file}
+			fi
 		done
 	fi
 fi
-
 
 a2enmod php5
 
