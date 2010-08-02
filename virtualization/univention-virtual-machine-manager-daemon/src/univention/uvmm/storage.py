@@ -194,6 +194,7 @@ def get_storage_pool_info( node, name ):
 	pool.capacity = int( doc.getElementsByTagName( 'capacity' )[ 0 ].firstChild.nodeValue )
 	pool.available = int( doc.getElementsByTagName( 'available' )[ 0 ].firstChild.nodeValue )
 	pool.path = doc.getElementsByTagName( 'path' )[ 0 ].firstChild.nodeValue
+	pool.active = p.isActive() == 1
 
 	return pool
 

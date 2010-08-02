@@ -80,7 +80,7 @@ class DriveWizard( umcd.IWizard ):
 		page = umcd.Page( self.title, _( 'Each hard drive image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). The newly create image will have the specified name and size provided by the following settings. Currently these was been set to default images. It has to be ensured that there is enough space left in the defined storage pool.' ) )
 		page.options.append( umcd.Text( '' ) ) # will be replaced with pool selection button
 		page.options.append( umcd.make( ( 'image-name', umc.String( _( 'Filename' ) ) ) ) )
-		page.options.append( umcd.make( ( 'image-size', umc.String( _( 'Size' ) ) ) ) )
+		page.options.append( umcd.make( ( 'image-size', umc.String( _( 'Size (default unit MB)' ), regex = MemorySize.SIZE_REGEX ) ) ) )
 		self.append( page )
 
 		# page 4
@@ -90,6 +90,8 @@ class DriveWizard( umcd.IWizard ):
 	def _create_pool_select_button( self, options ):
 		choices = []
 		for storage in self.node.storages:
+			if not storage.active:
+				continue
 			opts = copy.copy( options )
 			opts[ 'action' ] = 'pool-selected'
 			opts[ 'drive-pool' ] = storage.name
@@ -165,9 +167,9 @@ class DriveWizard( umcd.IWizard ):
 					self[ self.current ].description = _( 'Each ISO image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list of available images is updated.' )
 				else:
 					raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
-		elif self.current in ( 2, 3 ): # 2=create new, 3=select existing, disk image
+		elif self.current in ( 2, 3 ): # 2=create new, 3=select existing disk image
 			pool_path = self._get_pool_path( object.options[ 'drive-pool' ] )
-			if self.current == 2: # create new disk image
+			if self.current == 2: # select existing disk image
 				ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: collect information about existing disk image: %s' % object.options[ 'drive-image' ] )
 				drive_pool = object.options['drive-pool']
 				drive_type = object.options['drive-type']
@@ -182,6 +184,8 @@ class DriveWizard( umcd.IWizard ):
 				else:
 					ud.debug(ud.ADMIN, ud.ERROR, 'Image not found: pool=%s type=%s image=%s vols=%s' % (drive_pool, drive_type, drive_image, map(str, vols)))
 					return umcd.WizardResult(False, _('Image not found')) # FIXME
+			elif self.current == 3: # create new disk image
+				object.options[ 'image-size' ] = MemorySize.str2str( object.options[ 'image-size' ], unit = 'MB' )
 			drive_path = os.path.join( pool_path, object.options[ 'image-name' ] )
 			ud.debug( ud.ADMIN, ud.ERROR, 'Check if image %s is already used' % drive_path )
 			is_used = self.uvmm.is_image_used( self.node_uri, drive_path )
@@ -270,7 +274,7 @@ class InstanceWizard( umcd.IWizard ):
 		# page 1
 		page = umcd.Page( self.title, _( 'The following settings were read from the selected profile and can be modified now.' ) )
 		page.options.append( umcd.make( ( 'name', umc.String( _( 'Name' ) ) ) ) )
-		page.options.append( umcd.make( ( 'memory', umc.String( _( 'Memory (in MB)' ) ) ) ) )
+		page.options.append( umcd.make( ( 'memory', umc.String( _( 'Memory (in MB)' ), regex = MemorySize.SIZE_REGEX ) ) ) )
 		page.options.append( umcd.make( ( 'cpus', NumberSelect( _( 'CPUs' ) ) ) ) )
 		page.options.append( umcd.make( ( 'vnc', umc.Boolean( _( 'Enable VNC remote access' ) ) ) ) )
 		self.append( page )

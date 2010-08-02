@@ -276,3 +276,4 @@ class Data_Pool(object):
 		self.capacity = 0L
 		self.available = 0L
 		self.path = None # optional
+		self.active = False

@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (0.9.73-1) unstable; urgency=low
+
+  * always use 'memory usage' isntread of 'memory'; Bug #19130
+  * remove floppy from list of possible boot devices; Bug #19140
+  * verify correct format of memory size input fields; Bug #19144
+  * wizard: the storage pool selection just lists the active pools
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 30 Jul 2010 14:28:57 +0200
+
 univention-virtual-machine-manager-daemon (0.9.72-1) unstable; urgency=low
 
   * set ram to 256 MB for profile 'Other (64 Bit)'. Bug #19132

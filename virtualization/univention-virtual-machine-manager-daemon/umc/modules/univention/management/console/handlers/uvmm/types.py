@@ -83,7 +83,7 @@ class KBLayoutSelect( umc.StaticSelection ):
 		return ( ( 'de', _( 'German' ) ), ( 'en-us', _( 'American' ) ) )
 
 class BootDeviceSelect( umc.StaticSelection ):
-	CHOICES = ( ( 'fd', _( 'Floppy disk' ) ), ( 'hd', _( 'Hard drive' ) ), ( 'cdrom', _( 'CDROM drive' ) ), ( 'network', _( 'Network' ) ) )
+	CHOICES = ( ( 'hd', _( 'Hard drive' ) ), ( 'cdrom', _( 'CDROM drive' ) ), ( 'network', _( 'Network' ) ) )
 
 	def choices( self ):
 		return BootDeviceSelect.CHOICES

@@ -41,7 +41,7 @@ def percentage( percent, label = None, width = 100 ):
 
 class MemorySize( object ):
 	UNITS = ( 'B', 'KB', 'MB', 'GB', 'TB' )
-	SIZE_REGEX = re.compile( '(?P<size>[0-9.]+)[ \t]*(?P<unit>(%s))?' % '|'.join( UNITS ) )
+	SIZE_REGEX = re.compile( '^ *(?P<size>[0-9]+([,.]?[0-9]+))[ \t]*(?P<unit>(%s))? *$' % '|'.join( UNITS ) )
 
 	@staticmethod
 	def num2str( size, unit = 'B' ):
@@ -63,9 +63,10 @@ class MemorySize( object ):
 	def str2num( size, block_size = 1, unit = 'B' ):
 		match = MemorySize.SIZE_REGEX.match( size )
 		if not match:
-			return 0
+			return -1
 
 		grp = match.groupdict()
+		grp[ 'size' ] = grp[ 'size' ].replace( ',', '.' )
 		size = float( grp[ 'size' ] )
 		factor = 0
 		if 'unit' in grp and grp[ 'unit' ] in MemorySize.UNITS:
@@ -76,7 +77,14 @@ class MemorySize( object ):
 
 		return long( size / float( block_size ) )
 
+	@staticmethod
+	def str2str( size, unit = 'B' ):
+		num = MemorySize.str2num( size, unit = unit )
+		if num == -1:
+			return ''
+		return MemorySize.num2str( num )
 
 if __name__ == '__main__':
-	for test in ( "MemorySize.str2num( '512' )", "MemorySize.str2num( '512', unit = 'MB' )", "MemorySize.num2str( 512 )", "MemorySize.num2str( 512, unit = 'MB' )" ):
-		print "%s ->" % test, eval( test )
+	for test in ( "MemorySize.str2num( '512' )", "MemorySize.str2num( '512', unit = 'MB' )", "MemorySize.num2str( 512 )", "MemorySize.num2str( 512, unit = 'MB' )",
+				  "MemorySize.str2num( '512,0 MB' )", "MemorySize.str2num( '2.0 GB' )", "MemorySize.str2num( '2.,0 GB' )" ):
+		print "%-44s -> %14s" % ( test, str( eval( test ) ) )

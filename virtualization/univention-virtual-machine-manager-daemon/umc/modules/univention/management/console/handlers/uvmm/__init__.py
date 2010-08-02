@@ -424,13 +424,13 @@ class handler( umch.simpleHandler ):
 		content = umcd.List()
 
 		node_table = umcd.List()
-		node_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = { 'group' : object.options[ 'group' ], 'node' : node.name } )
-		node_btn = umcd.LinkButton( node.name, actions = [ umcd.Action( node_cmd ) ] )
+		# node_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = { 'group' : object.options[ 'group' ], 'node' : node.name } )
+		# node_btn = umcd.LinkButton( node.name, actions = [ umcd.Action( node_cmd ) ] )
 		cpu_usage = percentage(float(node.cpu_usage) / 10.0, width=150)
 		mem_usage = percentage( float( node.curMem ) / node.phyMem * 100, '%s / %s' % ( MemorySize.num2str( node.curMem ), MemorySize.num2str( node.phyMem ) ), width = 150 )
-		node_table.add_row( [ _( 'Physical server' ), node_btn ] )
+		# node_table.add_row( [ _( 'Physical server' ), node_btn ] )
 		node_table.add_row( [ _( 'CPU usage' ), cpu_usage ] )
-		node_table.add_row( [ _( 'Memory' ), mem_usage ] )
+		node_table.add_row( [ _( 'Memory usage' ), mem_usage ] )
 		content.add_row( [ umcd.Section( _( 'Physical server' ), node_table ) ] )
 
 		table = umcd.List()

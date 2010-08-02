@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-29 09:57+0200\n"
+"POT-Creation-Date: 2010-07-30 15:54+0200\n"
 "PO-Revision-Date: 2010-07-05 14:28+0200\n"
 "Last-Translator: Andreas Büsching <buesching@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -126,7 +126,7 @@ msgstr "Name"
 msgid "MAC address"
 msgstr "MAC-Adresse"
 
-#: __init__.py:143 __init__.py:433 __init__.py:459 wizards.py:350
+#: __init__.py:143 __init__.py:459 wizards.py:350
 msgid "Memory"
 msgstr "Speicher"
 
@@ -288,7 +288,7 @@ msgstr ""
 "detaillierten Anzeige von Einstellungen. Diese können dort entsprechend "
 "bearbeitet und gespeichert werden."
 
-#: __init__.py:300 __init__.py:431 __init__.py:434
+#: __init__.py:300 __init__.py:434
 msgid "Physical server"
 msgstr "Physikalischer Server"
 
@@ -296,7 +296,7 @@ msgstr "Physikalischer Server"
 msgid "CPU usage"
 msgstr "CPU Auslastung"
 
-#: __init__.py:300 __init__.py:660
+#: __init__.py:300 __init__.py:433 __init__.py:660
 msgid "Memory usage"
 msgstr "Speichernutzung"
 
@@ -349,7 +349,7 @@ msgstr "Neues Laufwerk hinzufügen"
 msgid "Image"
 msgstr "Image"
 
-#: __init__.py:525 wizards.py:83
+#: __init__.py:525
 msgid "Size"
 msgstr "Größe"
 
@@ -477,10 +477,6 @@ msgstr "Deutsch"
 msgid "American"
 msgstr "Englisch"
 
-#: types.py:86
-msgid "Floppy disk"
-msgstr "Diskette"
-
 #: types.py:86 types.py:101
 msgid "Hard drive"
 msgstr "Festplatte"
@@ -554,6 +550,10 @@ msgstr ""
 #: wizards.py:82
 msgid "Filename"
 msgstr "Dateiname"
+
+#: wizards.py:83
+msgid "Size (default unit MB)"
+msgstr "Größe (Standardeinheit MB)"
 
 #: wizards.py:87
 msgid "The following drive will be created:"
@@ -773,6 +773,9 @@ msgstr ""
 #, python-format
 msgid "Add drive to <i>%(name)s</i>"
 msgstr "Laufwerk zu <i>%(name)s</i> hinzufügen"
+
+#~ msgid "Floppy disk"
+#~ msgstr "Diskette"
 
 #~ msgid ""
 #~ "Select a storage pool that should be used for the image. The filename and "
