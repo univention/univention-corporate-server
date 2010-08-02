@@ -1,3 +1,10 @@
+univention-updater (6.0.15-1) unstable; urgency=low
+
+  * reset permissions of apache2 binary and univention-management-console
+    binary after reboot (Bug #18237)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 02 Aug 2010 14:05:38 +0200
+
 univention-updater (6.0.14-1) unstable; urgency=low
 
   * changed cancel button to close button (Bug #18237)
