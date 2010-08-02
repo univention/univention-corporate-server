@@ -1,3 +1,9 @@
+univention-updater (6.0.17-2) unstable; urgency=low
+
+  * call univention-updater-check in postup.sh via atd (Bug #19153)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 02 Aug 2010 16:30:47 +0200
+
 univention-updater (6.0.17-1) unstable; urgency=low
 
   * call univention-updater-check in postup.sh via atd (Bug #19153)
