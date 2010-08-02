@@ -176,4 +176,7 @@ if [ -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.33-1; then
 	fi
 fi
 
+# hotfix for Bug #19153 ; not required after UCS 2.4-0
+echo "/usr/share/univention-updater/univention-updater-check > /dev/null 2> /dev/null" | at now + 2 minute
+
 exit 0
