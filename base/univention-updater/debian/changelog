@@ -1,3 +1,11 @@
+univention-updater (6.0.14-1) unstable; urgency=low
+
+  * changed cancel button to close button (Bug #18237)
+  * fixed translation (Bug #18237)
+  * added hint "latest version" to release version drop-down (Bug #18237)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 02 Aug 2010 14:07:23 +0200
+
 univention-updater (6.0.13-1) unstable; urgency=low
 
   * decreased jitter from 600 to 30 seconds when calling

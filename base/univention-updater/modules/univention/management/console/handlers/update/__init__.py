@@ -728,9 +728,18 @@ class handler(umch.simpleHandler):
 					txt['colspan'] = '2'
 					list_update_release.add_row([ txt ])
 
+					if blocking_component:
+						txt = umcd.Text( _('The updates can be installed up to release version %(maxpossibleversion)s. Further release updates are available but the following release updates are blocked by required component "%(component)s".') % { 'maxpossibleversion': available_release_updates[-1], 'component': blocking_component } )
+						txt['colspan'] = '2'
+						list_update_release.add_row([ txt ])
+
+
 					choices = []
 					for ver in available_release_updates:
-						choices.append( (ver, 'UCS %s' % ver) )
+						if ver == available_release_updates[-1] and not blocking_component:
+							choices.append( (ver, _('UCS %s (latest version)') % ver) )
+						else:
+							choices.append( (ver, _('UCS %s') % ver) )
 					sel_version = umcd.Selection( ( 'updateto', VersionSelection( choices ) ), default = available_release_updates[-1] )
 					idlist = [ sel_version.id() ]
 					btn_install_release_update = umcd.Button(_('Install release updates'), 'actions/install', actions = [umcd.Action(self.__get_warning_request({'type': 'release', 'updateto':[]}), idlist)])
@@ -988,7 +997,7 @@ class handler(umch.simpleHandler):
 				result.add_row([ umcd.CancelButton(), btn_continue])
 			else:
 				result.add_row([ umcd.HTML('<h2>' + _('No updates available') + '</h2>')])
-				result.add_row([ umcd.CancelButton()])
+				result.add_row([ umcd.CloseButton()])
 		elif object.options['status'] == 'warning':
 			html = self.__get_update_warning()
 
