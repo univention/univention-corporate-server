@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.75-1) unstable; urgency=low
+
+  * added Microsoft to Windows profile names. Bug #19132
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 02 Aug 2010 18:53:13 +0200
+
 univention-virtual-machine-manager-daemon (0.9.74-2) unstable; urgency=low
 
   * Fix backtraces in 'add' and 'remove' (Bug #17733)

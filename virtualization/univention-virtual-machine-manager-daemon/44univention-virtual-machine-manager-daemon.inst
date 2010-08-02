@@ -141,25 +141,25 @@ create_xen_profile() {
 		--set advkernelconf=FALSE
 }
 
-create_hvm_profile "Windows XP" "winxp-" "xen" "i686" "512MB"
-create_hvm_profile "Windows XP" "winxp-" "kvm" "i686" "512MB"
+create_hvm_profile "Microsoft Windows XP" "winxp-" "xen" "i686" "512MB"
+create_hvm_profile "Microsoft Windows XP" "winxp-" "kvm" "i686" "512MB"
 
-create_hvm_profile "Windows 7" "win7-" "xen" "i686" "768MB"
-create_hvm_profile "Windows 7 (64 Bit)" "win7-64-" "xen" "x86_64" "768MB"
-create_hvm_profile "Windows 7" "win7-" "kvm" "i686" "768MB"
-create_hvm_profile "Windows 7 (64 Bit)" "win7-64-" "kvm" "x86_64" "768MB"
+create_hvm_profile "Microsoft Windows 7" "win7-" "xen" "i686" "768MB"
+create_hvm_profile "Microsoft Windows 7 (64 Bit)" "win7-64-" "xen" "x86_64" "768MB"
+create_hvm_profile "Microsoft Windows 7" "win7-" "kvm" "i686" "768MB"
+create_hvm_profile "Microsoft Windows 7 (64 Bit)" "win7-64-" "kvm" "x86_64" "768MB"
 
-create_hvm_profile "Windows 2003" "w2k3-" "xen" "i686" "768MB"
-create_hvm_profile "Windows 2003" "w2k3-" "kvm" "i686" "768MB"
+create_hvm_profile "Microsoft Windows 2003" "w2k3-" "xen" "i686" "768MB"
+create_hvm_profile "Microsoft Windows 2003" "w2k3-" "kvm" "i686" "768MB"
 
-create_hvm_profile "Windows 2003 R2 (64 Bit)" "w2k3r2-" "xen" "x86_64" "768MB"
-create_hvm_profile "Windows 2003 R2 (64 Bit)" "w2k3r2-" "kvm" "x86_64" "768MB"
+create_hvm_profile "Microsoft Windows 2003 R2 (64 Bit)" "w2k3r2-" "xen" "x86_64" "768MB"
+create_hvm_profile "Microsoft Windows 2003 R2 (64 Bit)" "w2k3r2-" "kvm" "x86_64" "768MB"
 
-create_hvm_profile "Windows 2008" "w2k8-" "xen" "i686" "1024MB"
-create_hvm_profile "Windows 2008" "w2k8-" "kvm" "i686" "1024MB"
+create_hvm_profile "Microsoft Windows 2008" "w2k8-" "xen" "i686" "1024MB"
+create_hvm_profile "Microsoft Windows 2008" "w2k8-" "kvm" "i686" "1024MB"
 
-create_hvm_profile "Windows 2008 R2 (64 Bit)" "w2k8r2-" "xen" "x86_64" "1024MB"
-create_hvm_profile "Windows 2008 R2 (64 Bit)" "w2k8r2-" "kvm" "x86_64" "1024MB"
+create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "xen" "x86_64" "1024MB"
+create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "kvm" "x86_64" "1024MB"
 
 create_xen_profile "Univention Corporate Server 2.4" "ucs24-" "i686" "512MB"
 create_xen_profile "Univention Corporate Server 2.4 (64 Bit)" "ucs24-64-" "x86_64" "512MB"
