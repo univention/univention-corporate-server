@@ -450,6 +450,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				res=univention.admin.config.getDefaultValue(self.lo, 'univentionDefaultDomainControllerGroup', position=self.position)
 				if res:
 					self['primaryGroup']=res
+					self.save()
 
 
 

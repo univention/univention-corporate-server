@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.20-1) unstable; urgency=low
+
+  * save primaryGroup setting into self.info. Bug #19128
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Aug 2010 12:03:27 +0200
+
 univention-directory-manager-modules (6.0.19-1) unstable; urgency=low
 
   * don't append samba option twice. Bug #19128
