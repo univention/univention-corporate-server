@@ -61,6 +61,11 @@ options={
 	'kerberos': univention.admin.option(
 			short_description=_('Kerberos principal'),
 			default=1
+		),
+	'samba': univention.admin.option(
+			short_description=_('Samba account'),
+			editable=1,
+			default=1
 		)
 }
 property_descriptions={
@@ -201,7 +206,7 @@ property_descriptions={
 			long_description='',
 			syntax=univention.admin.syntax.passwd,
 			multivalue=0,
-			options=['kerberos'],
+			options=['kerberos','posix', 'samba'],
 			required=0,
 			may_change=1,
 			identifies=0,
@@ -270,7 +275,6 @@ property_descriptions={
             may_change=1,
             identifies=0
         ),
-
 	'instprofile': univention.admin.property(
 			short_description=_('Name of installation profile'),
 			long_description='',
@@ -349,7 +353,7 @@ mapping.register('mac', 'macAddress' )
 mapping.register('ip', 'aRecord' )
 mapping.register('reinstall', 'univentionServerReinstall', None, univention.admin.mapping.ListToString)
 mapping.register('instprofile', 'univentionServerInstallationProfile', None, univention.admin.mapping.ListToString)
-mapping.register('reinstalloption', 'univentionServerInstallationOptions', None, univention.admin.mapping.ListToString)
+mapping.register('reinstalloption', 'univentionServerInstallationOption', None, univention.admin.mapping.ListToString)
 mapping.register('reinstalltext', 'univentionServerInstallationText', None, univention.admin.mapping.ListToString)
 mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapping.ListToString)
 mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.ListToString)
@@ -379,6 +383,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 		self.ipRequest=0
 
+		self.old_samba_option = False
 		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate)
 		self.options = []
 		nagios.Support.__init__(self)
@@ -394,6 +399,9 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				self.options.append( 'kerberos' )
 			if 'posixAccount' in ocs:
 				self.options.append( 'posix' )
+			if 'sambaSamAccount' in ocs:
+				self.old_samba_option = True
+				self.options.append( 'samba' )
 		else:
 			self._define_options( options )
 
@@ -466,7 +474,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				self._remove_option( 'kerberos' )
 		if 'posix' in self.options:
 			self.uidNum=univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
-			self.alloc.append(('uidNumber', self.uidNum))
+			self.alloc.append(('uidNumber',self.uidNum))
 			if self['primaryGroup']:
 				searchResult=self.lo.search(base=self['primaryGroup'], attr=['gidNumber'])
 				for tmp,number in searchResult:
@@ -482,7 +490,24 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			al.append(('krb5Key', self.oldattr.get('password', ['1']), krb_keys))
 			password_crypt = "{crypt}%s" % (univention.admin.password.crypt(self['password']))
 			al.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
+
+			if 'samba' in self.options:
+				password_nt, password_lm = univention.admin.password.ntlm(self['password'])
+				al.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
+				al.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
 			self.modifypassword=0
+		if 'samba' in self.options:
+			acctFlags=univention.admin.samba.acctFlags(flags={'W':1})
+			try:
+				self.machineSid=univention.admin.allocators.requestUserSid(self.lo, self.position, self.uidNum)
+			except:
+				pass
+			else:
+				self.alloc.append(('sid',self.machineSid))
+			ocs.append('sambaSamAccount')
+			al.append(('sambaSID', [self.machineSid]))
+			al.append(('sambaAcctFlags', [acctFlags.decode()]))
+			al.append(('displayName', self.info['name']))
 
 		krb_key_version=str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0])+1)
 		al.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
@@ -550,7 +575,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				self.modifypassword=0
 			else:
 				self.modifypassword=1
-
 		self.nagios_ldap_pre_modify()
 		univention.admin.handlers.simpleComputer._ldap_pre_modify( self )
 
@@ -567,6 +591,10 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
 			password_crypt = "{crypt}%s" % (univention.admin.password.crypt(self['password']))
 			ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
+			if 'samba' in self.options:
+				password_nt, password_lm = univention.admin.password.ntlm(self['password'])
+				ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
+				ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
 
 		if self.hasChanged('name'):
 			if hasattr(self, 'uidNum'):
@@ -582,6 +610,26 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			self.alloc.append(('uidNumber', self.uid))
 
 			ml.append(('uid', self.oldattr.get('uid', [None])[0], self.uid))
+
+			if 'samba' in self.options:
+				ml.append(('displayName', self.oldattr.get('name', [None])[0], self['name']))
+
+		# add samba option
+		if 'samba' in self.options and not self.old_samba_option:
+			acctFlags=univention.admin.samba.acctFlags(flags={'W':1})
+			self.machineSid=univention.admin.allocators.requestUserSid(self.lo, self.position, self.oldattr['uidNumber'][0])
+			self.alloc.append(('sid',self.machineSid))
+			ml.insert(0, ('objectClass', '', 'sambaSamAccount'))
+			ml.append(('sambaSID', '', [self.machineSid]))
+			ml.append(('sambaAcctFlags', '', [acctFlags.decode()]))
+			ml.append(('displayName', '', self.info['name']))
+		if not 'samba' in self.options and self.old_samba_option:
+			ocs=self.oldattr.get('objectClass', [])
+			if 'sambaSamAccount' in ocs:
+				ml.insert(0, ('objectClass', 'sambaSamAccount', ''))
+			for key in [ 'sambaSID', 'sambaAcctFlags', 'sambaNTPassword', 'sambaLMPassword', 'sambaPwdLastSet', 'displayName' ]:
+				if self.oldattr.get(key, []):
+					ml.insert(0, (key, self.oldattr.get(key, []), ''))
 
 		return ml
 

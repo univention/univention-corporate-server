@@ -1,3 +1,10 @@
+univention-samba (5.0.16-1) unstable; urgency=low
+
+  * use the udm modules which can set the samba options directly. Bug
+    #19128
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Aug 2010 06:42:30 +0200
+
 univention-samba (5.0.15-2) unstable; urgency=low
 
   * remove debug statement from join script and fixed a typo. Bug #19128

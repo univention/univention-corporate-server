@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.18-1) unstable; urgency=low
+
+  * added samba option for DC's and for memberserver. Bug #19128
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Aug 2010 06:41:04 +0200
+
 univention-directory-manager-modules (6.0.17-1) unstable; urgency=low
 
   * do not remove disable state while setting password via univention-

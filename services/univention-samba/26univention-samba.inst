@@ -100,33 +100,18 @@ elif [ -e /etc/backup-join.secret ]; then
 fi
 
 if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
-	if [ "$server_role" != "domaincontroler_master" -a "$samba_domainmaster" = "yes" ]; then
-		# samba slave pdc needs permissions for the passdb backend to modify the local account
-		real_samba_user="$(ucr get samba/user)"
-		univention-config-registry set samba/user="$binddn"
-		smbpasswd -w "$bindpwd"
-		/etc/init.d/samba restart
-		sleep 3
+	if [ $JS_LAST_EXECUTED_VERSION -le 5 ]; then
+		# set the samba option
+		univention-directory-manager computers/$server_role modify $@ --dn "$ldap_hostdn" --append-option samba --set password="$(</etc/machine.secret)"
 	fi
-		
-	net rpc join -U${samba_account}%${samba_pwd}
-	rc=$?
+	
+	# save the machine.secret as password for the server instead of running net rpc join
+	cat /etc/machine.secret | net -f -i changesecretpw
+	# net rpc join -U${samba_account}%${samba_pwd}
+	# rc=$?
 
 	# set defaul printer permissions
 	net rpc rights -U${samba_account}%${samba_pwd} grant Printer-Admins SePrintOperatorPrivilege
-
-	if [ "$server_role" != "domaincontroler_master" -a "$samba_domainmaster" = "yes" ]; then
-		# samba slave pdc needs permissions for the passdb backend to modify the local account
-		univention-config-registry set samba/user="$real_samba_user"
-		smbpasswd -w "$(cat $samba_user_pwdfile)"
-		/etc/init.d/samba restart
-		sleep 3
-	fi
-
-	if [ $rc != 0 ]; then
-		echo "ERROR: failed to join via net rpc join"
-		exit 1
-	fi
 fi
 
 # stop samba
