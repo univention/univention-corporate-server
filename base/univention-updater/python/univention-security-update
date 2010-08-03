@@ -33,6 +33,8 @@
 import os
 import sys
 import getopt
+import tempfile
+import shutil
 import univention.config_registry as ucr
 import time
 import subprocess
@@ -89,6 +91,33 @@ def remove_temporary_sources_list ():
 	filename = '/etc/apt/sources.list.d/00_ucs_temporary_security_update.list'
 	if os.path.exists(filename):
 		os.remove(filename)
+
+def copy_sh_files(tempdir,path):
+	""" Copy pre- and postup.sh from tempdir to path. """
+	for sh in ['preup.sh', 'postup.sh']:
+		if os.path.exists(os.path.join(tempdir,sh)):
+			os.remove(os.path.join(tempdir,sh))
+		if os.path.exists(os.path.join(path,sh)):
+			shutil.copy(os.path.join(path,sh), os.path.join(tempdir,sh))
+			os.chmod(os.path.join(tempdir, sh), 0744)
+
+def download_sh_files(updater, server_path, tempdir):
+	""" Retrieve pre- und postup.sh from remote repository into tempdir. """
+	for sh in ['preup.sh', 'postup.sh']:
+		filename = os.path.join(tempdir, sh)
+		if os.path.exists(filename):
+			os.remove(filename)
+
+		path = "%s/%s/%s" % (updater.repository_prefix, server_path, sh)
+		response_data = updater.retrieve_url(path)
+		if not response_data:
+			dprint('failed to download %s' % path, [fp_debug])
+			continue
+
+		f = open(filename, 'w+' )
+		f.write(response_data)
+		f.close()
+		os.chmod(filename, 0744)
 
 def usage(fd=sys.stdout):
 	print >> fd, 'univention-security-update: tool for including security updates into local repository'
@@ -185,6 +214,17 @@ if __name__ == '__main__':
 	configRegistry = ucr.ConfigRegistry()
 	configRegistry.load()
 
+	tempdir = tempfile.mkdtemp()
+	dprint('using tempdir = %s' % tempdir, [fp_debug])
+
+	old_exitfunc = getattr(sys, 'exitfunc', None)
+	def do_cleanup():
+		"""Remove temporary direcotry on exit."""
+		shutil.rmtree(tempdir, ignore_errors=True)
+		if (old_exitfunc):
+			old_exitfunc()
+	sys.exitfunc = do_cleanup
+
 	local_repository = False
 	# update local repository
 	if configRegistry.get( 'local/repository', 'no' ) in ( 'true', 'yes'):
@@ -257,36 +297,71 @@ if __name__ == '__main__':
 			sources_list_entries = updater.security_update_temporary_sources_list()
 			upgraded = nextupdate
 			if call_upgrade and sources_list_entries:
-					add_temporary_sources_list('\n'.join(sources_list_entries))
+				add_temporary_sources_list('\n'.join(sources_list_entries))
 
-					# Execute the dist-upgrade!
-					count=0
-					while os.path.exists('/var/run/apt-get.lock') and count < 300:
-						time.sleep(1)
-						count=count+1
-					# create lock file
-					try:
-						fd = open( '/var/run/apt-get.lock', 'w' )
-					except:
-						pass
-					fd.close()
-					# update indices
-					ret = subprocess.call( cmd_update.split( ' ' ), stdout=fp_debug, stderr=fp_debug )
-					if ret:
-						update_status( status='FAILED', errorsource='PREPARATION' )
-						dprint( 'Error: Failed to update APT indices', [fp_debug,sys.stderr] )
-					else:
-						os.environ[ 'DEBIAN_FRONTEND' ] = 'noninteractive'
-						ret = subprocess.call( cmd_dist_upgrade.split( ' ' ), stdout=fp_debug, stderr=fp_debug )
-						if ret:
-							update_status( status='FAILED', errorsource='UPDATE' )
-							dprint( 'Error: Failed to upgrade packages', [fp_debug,sys.stderr] )
+				# Download the pre and postup scripts
+				scriptPath = tempdir
+				download_sh_files(updater, '%s/maintained/%s/all' % (updater.ucs_version, nextupdate), tempdir)
 
-					remove_temporary_sources_list()
-					if os.path.exists('/var/run/apt-get.lock'):
-						os.unlink('/var/run/apt-get.lock')
+				if scriptPath:
+					dprint('Call the preup.sh file with the path: %s' % scriptPath, [fp_debug])
+					if os.path.exists(os.path.join(scriptPath, 'preup.sh')):
+						dprint('Execute %s' % os.path.join(scriptPath, 'preup.sh'), [fp_debug])
+						os.chmod(os.path.join(scriptPath, 'preup.sh'), 0744)
+						preup = subprocess.Popen((os.path.join(scriptPath, 'preup.sh'), nextupdate), stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
+						tee = subprocess.Popen(('tee', '-a', '/var/log/univention/security-updates.log'), stdin=preup.stdout)
+						# Order is important! See bug #16454
+						tee.wait()
+						preup.wait()
+						if preup.returncode != 0:
+							dprint( 'Error: Failed to execute "preup.sh"', [fp_debug,sys.stdout] )
+							sys.exit(1)
+
+				# Execute the dist-upgrade!
+				count=0
+				while os.path.exists('/var/run/apt-get.lock') and count < 300:
+					time.sleep(1)
+					count=count+1
+				# create lock file
+				try:
+					fd = open( '/var/run/apt-get.lock', 'w' )
+				except:
+					pass
+				fd.close()
+				# check for preup.sh
+
+				# update indices
+				ret = subprocess.call( cmd_update.split( ' ' ), stdout=fp_debug, stderr=fp_debug )
+				if ret:
+					update_status( status='FAILED', errorsource='PREPARATION' )
+					dprint( 'Error: Failed to update APT indices', [fp_debug,sys.stderr] )
+				else:
+					os.environ[ 'DEBIAN_FRONTEND' ] = 'noninteractive'
+					ret = subprocess.call( cmd_dist_upgrade.split( ' ' ), stdout=fp_debug, stderr=fp_debug )
 					if ret:
-						sys.exit( ret )
+						update_status( status='FAILED', errorsource='UPDATE' )
+						dprint( 'Error: Failed to upgrade packages', [fp_debug,sys.stderr] )
+
+				remove_temporary_sources_list()
+				if os.path.exists('/var/run/apt-get.lock'):
+					os.unlink('/var/run/apt-get.lock')
+				if ret:
+					sys.exit( ret )
+				
+				# Call the postup.sh
+				if scriptPath:
+					dprint('Call the postup.sh file with the path: %s' % scriptPath, [fp_debug])
+					if os.path.exists(os.path.join(scriptPath, 'postup.sh')):
+						dprint('Execute %s' % os.path.join(scriptPath, 'postup.sh'), [fp_debug])
+						os.chmod(os.path.join(scriptPath, 'postup.sh'), 0744)
+						postup = subprocess.Popen((os.path.join(scriptPath, 'postup.sh'), nextupdate), stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
+						tee = subprocess.Popen(('tee', '-a', '/var/log/univention/security-updates.log'), stdin=postup.stdout)
+						# Order is important! See bug #16454
+						tee.wait()
+						postup.wait()
+						if postup.returncode != 0:
+							update_status( status='FAILED', errorsource='POSTUP' )
+							dprint('Error: Failed to execute "postup.sh"', [fp_debug,sys.stderr] )
 			updater.ucr_reinit()
 		else:
 			if not upgraded:

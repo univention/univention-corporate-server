@@ -1,3 +1,9 @@
+univention-updater (6.0.18-1) unstable; urgency=low
+
+  * support preup and postup scripts for security updates. Bug #17111
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Aug 2010 11:16:25 +0200
+
 univention-updater (6.0.17-2) unstable; urgency=low
 
   * call univention-updater-check in postup.sh via atd (Bug #19153)

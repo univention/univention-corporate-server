@@ -96,8 +96,9 @@ class UniventionMirror( UniventionUpdater ):
 		'''mirrors the preup.sh and postup.sh scripts'''
 		# check the main repositories for preup and postup scripts
 		repos = self.print_version_repositories( start = self.version_start, end = self.version_end )
+		sec = self.print_security_repositories( start = self.version_start, end = self.version_end )
 
-		for repo in repos.split( '\n' ):
+		for repo in repos.split( '\n' )+sec.split('\n'):
 			if not repo:
 				continue
 			deb, url, comp = repo.split( ' ' )
