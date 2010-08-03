@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.76-1) unstable; urgency=low
+
+  * Filter out profiles for different architectures (Bug #19162)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 03 Aug 2010 11:29:30 +0200
+
 univention-virtual-machine-manager-daemon (0.9.75-1) unstable; urgency=low
 
   * added Microsoft to Windows profile names. Bug #19132

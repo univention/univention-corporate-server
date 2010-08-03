@@ -804,6 +804,7 @@ class handler( umch.simpleHandler ):
 
 		if not 'action' in object.options:
 			self.domain_wizard.max_memory = node.phyMem
+			self.domain_wizard.archs = set([t.arch for t in node.capabilities])
 			self.domain_wizard.reset()
 		result = self.domain_wizard.action( object, ( node_uri, node ) )
 		# domain wizard finished?
