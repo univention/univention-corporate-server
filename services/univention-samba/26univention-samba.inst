@@ -104,14 +104,16 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 		# set the samba option
 		univention-directory-manager computers/$server_role modify $@ --dn "$ldap_hostdn" --append-option samba --set password="$(</etc/machine.secret)"
 	fi
-	
-	# save the machine.secret as password for the server instead of running net rpc join
-	cat /etc/machine.secret | net -f -i changesecretpw
-	# net rpc join -U${samba_account}%${samba_pwd}
-	# rc=$?
 
+	net rpc join -U${samba_account}%${samba_pwd}
+	rc=$?
+	
 	# set defaul printer permissions
 	net rpc rights -U${samba_account}%${samba_pwd} grant Printer-Admins SePrintOperatorPrivilege
+	if [ $rc != 0 ]; then
+		echo "ERROR: failed to join via net rpc join"
+		exit 1
+	fi
 fi
 
 # stop samba
