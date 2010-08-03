@@ -1,3 +1,9 @@
+univention-config-registry (6.0.19-1) unstable; urgency=low
+
+  * changed syslog.conf to multifile template (Bug #17853)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 03 Aug 2010 10:43:52 +0200
+
 univention-config-registry (6.0.18-1) unstable; urgency=low
 
   * fixed typo in template syslog.conf (Bug #17853)

@@ -192,8 +192,12 @@ Variables: locale/default
 
 Type: file
 File: etc/cron.d/univention-ucr-cronjobs
-Variables: cron/*
+Variables: cron/.*
 
-Type: file
-File: etc/syslog.conf
-Variables: syslog/*
+Type: multifile
+Multifile: etc/syslog.conf
+Variables: syslog/.*
+
+Type: subfile
+Multifile: etc/syslog.conf
+Subfile: etc/00syslog.conf
