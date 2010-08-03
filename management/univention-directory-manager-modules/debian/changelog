@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.19-1) unstable; urgency=low
+
+  * don't append samba option twice. Bug #19128
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Aug 2010 08:11:12 +0200
+
 univention-directory-manager-modules (6.0.18-1) unstable; urgency=low
 
   * added samba option for DC's and for memberserver. Bug #19128

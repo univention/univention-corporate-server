@@ -522,6 +522,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			al.append(('sambaSID', [self.machineSid]))
 			al.append(('sambaAcctFlags', [acctFlags.decode()]))
 			al.append(('displayName', self.info['name']))
+			self.old_samba_option = True
 
 		al.insert(0, ('objectClass', ocs))
 		al.append(('univentionServerRole', '', 'master'))
