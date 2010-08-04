@@ -508,15 +508,20 @@ class handler( umch.simpleHandler ):
 		type_select.update_choices( types )
 		arch_select.update_choices( archs )
 
-		name = umcd.make( self[ 'uvmm/domain/configure' ][ 'name' ], default = handler._getattr( domain_info, 'name', '' ), attributes = { 'width' : '250' } )
+		# if domain is not stopped ...
+		if domain_info.state != 5:
+			make_func = umcd.make_readonly
+		else:
+			make_func = umcd.make
+		name = make_func( self[ 'uvmm/domain/configure' ][ 'name' ], default = handler._getattr( domain_info, 'name', '' ), attributes = { 'width' : '250' } )
 		tech_default = '%s-%s' % ( handler._getattr( domain_info, 'domain_type', 'xen' ), handler._getattr( domain_info, 'os_type', 'hvm' ) )
 		virt_tech = umcd.make_readonly( self[ 'uvmm/domain/configure' ][ 'type' ], default = tech_default, attributes = { 'width' : '250' } )
-		arch = umcd.make( self[ 'uvmm/domain/configure' ][ 'arch' ], default = handler._getattr( domain_info, 'arch', 'i686' ), attributes = { 'width' : '250' } )
-		os_widget = umcd.make( self[ 'uvmm/domain/configure' ][ 'os' ], default = getattr(domain_info, 'annotations', {}).get('os', ''), attributes = { 'width' : '250' } )
+		arch = make_func( self[ 'uvmm/domain/configure' ][ 'arch' ], default = handler._getattr( domain_info, 'arch', 'i686' ), attributes = { 'width' : '250' } )
+		os_widget = make_func( self[ 'uvmm/domain/configure' ][ 'os' ], default = getattr(domain_info, 'annotations', {}).get('os', ''), attributes = { 'width' : '250' } )
 		cpus_select.max = int( node.cpus )
-		cpus = umcd.make( self[ 'uvmm/domain/configure' ][ 'cpus' ], default = handler._getattr( domain_info, 'vcpus', '1' ), attributes = { 'width' : '250' } )
+		cpus = make_func( self[ 'uvmm/domain/configure' ][ 'cpus' ], default = handler._getattr( domain_info, 'vcpus', '1' ), attributes = { 'width' : '250' } )
 		mem = handler._getattr( domain_info, 'maxMem', '536870912' )
-		memory = umcd.make( self[ 'uvmm/domain/configure' ][ 'memory' ], default = MemorySize.num2str( mem ), attributes = { 'width' : '250' } )
+		memory = make_func( self[ 'uvmm/domain/configure' ][ 'memory' ], default = MemorySize.num2str( mem ), attributes = { 'width' : '250' } )
 		if domain_info and domain_info.interfaces:
 			iface = domain_info.interfaces[ 0 ]
 			iface_mac = iface.mac_address
@@ -524,17 +529,17 @@ class handler( umch.simpleHandler ):
 		else:
 			iface_mac = ''
 			iface_source = 'eth0'
-		mac = umcd.make( self[ 'uvmm/domain/configure' ][ 'mac' ], default = iface_mac, attributes = { 'width' : '250' } )
-		interface = umcd.make( self[ 'uvmm/domain/configure' ][ 'interface' ], default = iface_source, attributes = { 'width' : '250' } )
+		mac = make_func( self[ 'uvmm/domain/configure' ][ 'mac' ], default = iface_mac, attributes = { 'width' : '250' } )
+		interface = make_func( self[ 'uvmm/domain/configure' ][ 'interface' ], default = iface_source, attributes = { 'width' : '250' } )
 		# if no bootloader is set we use the advanced kernel configuration options
 		if handler._getattr( domain_info, 'bootloader', '' ):
 			akc = False
 		else:
 			akc = True
-		advkernelconf = umcd.make( self[ 'uvmm/domain/configure' ][ 'advkernelconf' ], default = akc )
-		ram_disk = umcd.make( self[ 'uvmm/domain/configure' ][ 'initrd' ], default = handler._getattr( domain_info, 'initrd', '' ), attributes = { 'width' : '250' } )
-		root_part = umcd.make( self[ 'uvmm/domain/configure' ][ 'cmdline' ], default = handler._getattr( domain_info, 'cmdline', '' ), attributes = { 'width' : '250' } )
-		kernel = umcd.make( self[ 'uvmm/domain/configure' ][ 'kernel' ], default = handler._getattr( domain_info, 'kernel', '' ), attributes = { 'width' : '250' } )
+		advkernelconf = make_func( self[ 'uvmm/domain/configure' ][ 'advkernelconf' ], default = akc )
+		ram_disk = make_func( self[ 'uvmm/domain/configure' ][ 'initrd' ], default = handler._getattr( domain_info, 'initrd', '' ), attributes = { 'width' : '250' } )
+		root_part = make_func( self[ 'uvmm/domain/configure' ][ 'cmdline' ], default = handler._getattr( domain_info, 'cmdline', '' ), attributes = { 'width' : '250' } )
+		kernel = make_func( self[ 'uvmm/domain/configure' ][ 'kernel' ], default = handler._getattr( domain_info, 'kernel', '' ), attributes = { 'width' : '250' } )
 		bootdev_default = getattr( domain_info, 'boot', [ 'cdrom', 'hd' ] )
 		bd_default = []
 		if bootdev_default:
@@ -545,11 +550,14 @@ class handler( umch.simpleHandler ):
 						bd_default.append( ( key, descr ) )
 						break
 		bootdevs = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'bootdevs' ], fields = [ boot_dev ], default = bd_default, attributes = { 'width' : '200' } )
+		if domain_info.state != 5:
+			bootdevs.syntax.may_change = False
 		# drive listing
 		drive_sec = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
 		opts = copy.copy( object.options )
-		cmd = umcp.SimpleCommand( 'uvmm/drive/create', options = opts )
-		drive_sec.add_row( [ umcd.LinkButton( _( 'Add new drive' ), actions = [ umcd.Action( cmd ), ] ) ] )
+		if domain_info.state == 5:
+			cmd = umcp.SimpleCommand( 'uvmm/drive/create', options = opts )
+			drive_sec.add_row( [ umcd.LinkButton( _( 'Add new drive' ), actions = [ umcd.Action( cmd ), ] ) ] )
 		disk_list = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
 		disk_list.set_header( [ _( 'Type' ), _( 'Image' ), _( 'Size' ), _( 'Pool' ), '' ] )
 		if domain_info and domain_info.disks:
@@ -583,12 +591,17 @@ class handler( umch.simpleHandler ):
 
 				remove_cmd.options[ 'disk' ] = copy.copy( dev.source )
 				remove_btn = umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd ), umcd.Action( overview_cmd ) ] )
-				if not first:
-					bootdev_cmd.options[ 'disk' ] = dev.source
-					bootdev_btn = umcd.LinkButton( _( 'Set as boot device' ), actions = [ umcd.Action( bootdev_cmd, options = { 'disk' : dev.source } ), umcd.Action( overview_cmd ) ] )
-					disk_list.add_row( [ values[ 'type' ], values[ 'image' ], values[ 'size' ], values[ 'pool' ], [ remove_btn, bootdev_btn ] ] )
+				if domain_info.state == 5:
+					if not first:
+						bootdev_cmd.options[ 'disk' ] = dev.source
+						bootdev_btn = umcd.LinkButton( _( 'Set as boot device' ), actions = [ umcd.Action( bootdev_cmd, options = { 'disk' : dev.source } ), umcd.Action( overview_cmd ) ] )
+						buttons = [ remove_btn, bootdev_btn ]
+					else:
+						buttons = [ remove_btn, ]
 				else:
-					disk_list.add_row( [ values[ 'type' ], values[ 'image' ], values[ 'size' ], values[ 'pool' ], [ remove_btn, ] ] )
+					buttons = []
+
+				disk_list.add_row( [ values[ 'type' ], values[ 'image' ], values[ 'size' ], values[ 'pool' ], buttons ] )
 				if domain_info.os_type == 'xen':
 					first = False
 
@@ -610,11 +623,11 @@ class handler( umch.simpleHandler ):
 					vnc_keymap = gfx.keymap
 					break
 
-		vnc = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc' ], default = vnc_bool, attributes = { 'width' : '250' } )
-		kblayout = umcd.make( self[ 'uvmm/domain/configure' ][ 'kblayout' ], default = vnc_keymap, attributes = { 'width' : '250' } )
-		vnc_global = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc_global' ], default = vnc_global, attributes = { 'width' : '250' } )
-		vnc_passwd = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc_passwd' ], attributes = { 'width' : '250' } )
-		vnc_passwd_remove = umcd.make( self[ 'uvmm/domain/configure' ][ 'vnc_passwd_remove' ], attributes = { 'width' : '250' } )
+		vnc = make_func( self[ 'uvmm/domain/configure' ][ 'vnc' ], default = vnc_bool, attributes = { 'width' : '250' } )
+		kblayout = make_func( self[ 'uvmm/domain/configure' ][ 'kblayout' ], default = vnc_keymap, attributes = { 'width' : '250' } )
+		vnc_global = make_func( self[ 'uvmm/domain/configure' ][ 'vnc_global' ], default = vnc_global, attributes = { 'width' : '250' } )
+		vnc_passwd = make_func( self[ 'uvmm/domain/configure' ][ 'vnc_passwd' ], attributes = { 'width' : '250' } )
+		vnc_passwd_remove = make_func( self[ 'uvmm/domain/configure' ][ 'vnc_passwd_remove' ], attributes = { 'width' : '250' } )
 
 		content.add_row( [ name, os_widget ] )
 		content.add_row( [ arch, '' ] )
@@ -644,6 +657,8 @@ class handler( umch.simpleHandler ):
 		overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = object.options )
 
 		sections = umcd.List()
+		if domain_info.state != 5:
+			sections.add_row( [ umcd.HTML( _( '<b>The settings of a virtual instance can just be modified if it is shut off.</b>' ) ) ] )
 		if not domain_info:
 			sections.add_row( [ umcd.Section( _( 'Drives' ), drive_sec, hideable = False, hidden = False, name = 'drives.newdomain' ) ] )
 			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = False, hidden = False, name = 'settings.newdomain' ) ] )
@@ -652,7 +667,8 @@ class handler( umch.simpleHandler ):
 			sections.add_row( [ umcd.Section( _( 'Drives' ), drive_sec, hideable = True, hidden = False, name = 'drives.%s' % domain_info.name ) ] )
 			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = True, hidden = False, name = 'settings.%s' % domain_info.name ) ] )
 			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = False, name = 'extsettings.%s' % domain_info.name ) ] )
-		sections.add_row( [ umcd.Cell( umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ], default = True ), attributes = { 'align' : 'right' } ) ] )
+		if domain_info.state == 5:
+			sections.add_row( [ umcd.Cell( umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ], default = True ), attributes = { 'align' : 'right' } ) ] )
 
 		return sections
 

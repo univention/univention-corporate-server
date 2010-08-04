@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.78-1) unstable; urgency=low
+
+  * modifying settings of a virtual instance is just possible if it is stopped; Bug #19148
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 04 Aug 2010 19:41:18 +0200
+
 univention-virtual-machine-manager-daemon (0.9.77-1) unstable; urgency=low
 
   * rename UMC module to 'Virtual Machines (UVMM); Bug #19207
