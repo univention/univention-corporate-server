@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.76-2) unstable; urgency=low
+
+  * Remove arch=None case from architecture filter (Bug #19162)
+  * Handle insufficient credentials on LDAP update (Bug #18787)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 04 Aug 2010 10:47:11 +0200
+
 univention-virtual-machine-manager-daemon (0.9.76-1) unstable; urgency=low
 
   * Filter out profiles for different architectures (Bug #19162)

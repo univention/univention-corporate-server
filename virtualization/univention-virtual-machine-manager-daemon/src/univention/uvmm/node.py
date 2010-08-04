@@ -42,7 +42,7 @@ import logging
 from xml.dom.minidom import getDOMImplementation, parseString
 import math
 from helpers import TranslatableException, ms, N_ as _
-from uvmm_ldap import ldap_annotation, LdapError, ldap_modify
+from uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify
 import univention.admin.uexceptions
 import traceback
 from univention.uvmm.eventloop import *
@@ -925,7 +925,11 @@ def domain_define( uri, domain ):
 					modified = True
 			if modified:
 				record.commit()
+		except LdapConnectionError, e:
+			logger.error('Updating LDAP failed, insufficient permissions: %s' % (e,))
 		except univention.admin.uexceptions.objectExists, e:
+			logger.error('Updating LDAP failed: %s %s' % (e, record))
+		except univention.admin.uexceptions.ldapError, e:
 			logger.error('Updating LDAP failed: %s %s' % (e, record))
 
 	node.wait_update(domain.uuid, old_stat)
