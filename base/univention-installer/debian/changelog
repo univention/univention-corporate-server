@@ -1,3 +1,9 @@
+univention-installer (6.0.41-1) unstable; urgency=low
+
+  * adjust virtualization server translation. Bug #19192
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Aug 2010 06:48:30 +0200
+
 univention-installer (6.0.40-1) unstable; urgency=low
 
   * fixed typo s|nomoeset|nomodeset|. Bug #19134

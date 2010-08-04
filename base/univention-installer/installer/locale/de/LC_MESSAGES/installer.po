@@ -469,23 +469,23 @@ msgstr "Virtual Machine Manager (UVMM)"
 
 #: installer/package_list.py:298
 msgid "UMC module for managing virtualization servers and virtual instances"
-msgstr "UMC Modul für die Verwaltung von Virtualisierungs-Servern und virtuellen Instanzen"
+msgstr "UMC Modul für die Verwaltung von Virtualisierungsservern und virtuellen Instanzen"
 
 #: installer/package_list.py:301
 msgid "Xen virtualization server"
-msgstr "Xen Virtualisierung Server"
+msgstr "Xen Virtualisierungsserver"
 
 #: installer/package_list.py:307
 msgid "Sets up a virtualization server based on Xen"
-msgstr "Richtet einen auf Xen basierenden Virtualisierungs-Server ein"
+msgstr "Richtet einen auf Xen basierenden Virtualisierungsserver ein"
 
 #: installer/package_list.py:310
 msgid "KVM virtualization server"
-msgstr "KVM Virtualisierung Server"
+msgstr "KVM Virtualisierungsserver"
 
 #: installer/package_list.py:316
 msgid "Sets up a virtualization server based on KVM"
-msgstr "Richtet einen auf KVM basierenden Virtualisierungs-Server ein"
+msgstr "Richtet einen auf KVM basierenden Virtualisierungsserver ein"
 
 #: installer/package_list.py:332 installer/package_list.py:334
 msgid "Administrative tools"
