@@ -43,7 +43,7 @@ Description: UCS - thin client base configuration
 
 Package: univention-client-basesystem
 Architecture: all
-Depends: univention-thin-client-basesystem, univention-thin-client-x-base, univention-thin-client-x-fonts, univention-thin-client-cups, univention-thin-client-ltsp, univention-thin-client-login
+Depends: univention-thin-client-basesystem, univention-thin-client-x-base, univention-thin-client-x-fonts, univention-thin-client-cups, univention-thin-client-ltsp, univention-thin-client-login, univention-thin-client-vnc
 Description: UCS - thin client base system
  This package is used for the update to the new modular thin client basesystem
  .
