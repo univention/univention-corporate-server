@@ -1,3 +1,11 @@
+univention-squid (4.0.4-1) unstable; urgency=low
+
+  * straightened squid.conf template:
+    - duplicate acl localnet definitions removed (Bug #19214)
+    - static settings moved to the top, merge of separate @!@ blocks
+
+ -- Arvid Requate <requate@univention.de>  Wed, 04 Aug 2010 21:44:24 +0200
+
 univention-squid (4.0.3-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
