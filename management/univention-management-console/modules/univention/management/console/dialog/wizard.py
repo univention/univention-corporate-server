@@ -114,10 +114,6 @@ class Page( object ):
 				if option.option in options:
 					option.default = options[ option.option ]
 			option[ 'colspan' ] = '2'
-			# if not self.hint:
-			# 	option[ 'colspan' ] = '2'
-			# elif 'colspan' in option:
-			# 	del option[ 'colspan' ]
 			wizard._content.add_row( [ option, ] )
 
 		wizard._content.add_row( [ Fill( 2, '' ), ] )

@@ -125,6 +125,8 @@ mapper.add( umcd.Link, link_map )
 
 def _input_map( storage, umcp_part, attributes ):
 	default = utils.default( umcp_part )
+	if not umcp_part.syntax.may_change:
+		attributes[ 'passive' ] = 'true'
 	quest = question_text( unicode( umcp_part ), attributes,
 						   { 'usertext' : default,
 							 'helptext' : '' } )
