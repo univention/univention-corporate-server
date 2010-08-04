@@ -30,17 +30,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval `univention-baseconfig shell`
+eval `univention-config-registry shell`
 
-univention-baseconfig set cups/server?$hostname.$domainname
-univention-baseconfig set cups/admin?"root@"$domainname
-univention-baseconfig set cups/systemgroup?"Printer-Admins,lp"
-univention-baseconfig set cups/location/base?"networks"
-univention-baseconfig set cups/location/admin?"networks"
-univention-baseconfig set cups/filedevice?yes
-univention-baseconfig set cups/autostart?yes
-univention-baseconfig set cups/printserver?yes
-univention-config-registry set cups/debug/level?warn
+univention-config-registry set cups/server?$hostname.$domainname \
+	cups/admin?"root@"$domainname \
+	cups/systemgroup?"Printer-Admins,lp" \
+	cups/location/base?"networks" \
+	cups/location/admin?"networks" \
+	cups/filedevice?yes \
+	cups/autostart?yes \
+	cups/printserver?yes \
+	cups/debug/level?warn
 
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.2-1; then
 	if [ "`univention-baseconfig get cups/server`" = "$hostname" ]; then
