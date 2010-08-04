@@ -91,8 +91,8 @@ class Disk( object ):
 	'''Container for disk objects'''
 	( DEVICE_DISK, DEVICE_CDROM, DEVICE_FLOPPY ) = range( 3 )
 	DEVICE_MAP = { DEVICE_DISK : 'disk', DEVICE_CDROM : 'cdrom', DEVICE_FLOPPY : 'floppy' }
-	(TYPE_FILE, TYPE_PHYSICAL) = range(2)
-	TYPE_MAP = {TYPE_FILE: 'file', TYPE_PHYSICAL: 'phy'}
+	(TYPE_FILE, TYPE_BLOCK) = range(2)
+	TYPE_MAP = {TYPE_FILE: 'file', TYPE_BLOCK: 'block'}
 	def __init__( self ):
 		self.type = Disk.TYPE_FILE
 		self.device = Disk.DEVICE_DISK
