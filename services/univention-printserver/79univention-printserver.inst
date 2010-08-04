@@ -390,6 +390,7 @@ univention-admin settings/printermodel create $@ --ignore_exists --position "cn=
 	--append printmodel="\"foomatic-rip/openprinting-gs-builtin/Canon/Canon-BJ-330-bj200.ppd.gz\" \"Canon BJ-330 Foomatic/bj200 (recommended)\""
 
 # Manufacturer: HP Printers: 1343
+if ! ldapsearch -x -b "cn=HP,cn=cups,cn=univention,$ldap_base" dn | grep -q '^dn: '; then	# avoid the modify if object exists, workaround for Bug #12964 
 univention-admin settings/printermodel create $@ --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=HP \
 	--append printmodel="\"cups-included/HP/deskjet.ppd\" \"HP DeskJet Series, 1.3\"" \
 	--append printmodel="\"cups-included/HP/laserjet.ppd\" \"HP LaserJet Series PCL 4/5, 1.3\"" \
@@ -1736,6 +1737,7 @@ univention-admin settings/printermodel modify $@ --ignore_exists --dn "cn=HP,cn=
 	--append printmodel="\"hp-ppd/HP/HP_DeskJet_350C.ppd\" \"HP DeskJet 350C\"" \
 	--append printmodel="\"ghostscript/model/pxlmono.ppd\" \"HP LaserJet Series PCL 6 CUPS\"" \
 	--append printmodel="\"ghostscript/model/pxlcolor.ppd\" \"HP Color LaserJet Series PCL 6 CUPS\""
+fi	# end of if ! settings/printermodel with cn=HP exists
 
 # Manufacturer: Citizen Printers: 2
 univention-admin settings/printermodel create $@ --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Citizen \

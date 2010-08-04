@@ -1,3 +1,9 @@
+univention-printserver (4.0.6-1) unstable; urgency=low
+
+  * modify doesn't support --ignore_exists yet (Bug #19229)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 04 Aug 2010 16:52:57 +0200
+
 univention-printserver (4.0.5-1) unstable; urgency=low
 
   * set basic UCR variables in one go to avoid AttributeError traceback
