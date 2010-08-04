@@ -1,3 +1,10 @@
+univention-system-setup (4.0.4-1) unstable; urgency=low
+
+  * install univention-managed-client instead of transition package
+    univention-fat-client. Bug #19236
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Aug 2010 15:15:12 +0200
+
 univention-system-setup (4.0.3-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
