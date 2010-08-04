@@ -36,17 +36,22 @@ if [ -n "$xorg_resolution_secondary" ]; then
 
 			if [ -n "$xorg_display_relative_position" ]; then
 				if [ "$xorg_display_relative_position" = "right" ]; then
+					xrandr --output $local_xorg_display_secondary --off
 					xrandr --output $local_xorg_display_primary $mode_primary --output $local_xorg_display_secondary $mode_secondary --right-of $local_xorg_display_primary
 				elif [ "$xorg_display_relative_position" = "below" ]; then
+					xrandr --output $local_xorg_display_secondary --off
 					xrandr --output $local_xorg_display_primary $mode_primary --output $local_xorg_display_secondary $mode_secondary --below $local_xorg_display_primary
 				elif [ "$xorg_display_relative_position" = "above" ]; then
+					xrandr --output $local_xorg_display_secondary --off
 					xrandr --output $local_xorg_display_primary $mode_primary --output $local_xorg_display_secondary $mode_secondary --above $local_xorg_display_primary
 				elif [ "$xorg_display_relative_position" = "left" ]; then
+					xrandr --output $local_xorg_display_secondary --off
 					xrandr --output $local_xorg_display_primary $mode_primary --output $local_xorg_display_secondary $mode_secondary --left-of $local_xorg_display_primary
 				else
 					logger "Dualhead setup: Unknown position setting xorg/display/relative-position: \"$xorg_display_relative_position\"."
 				fi
 			else
+				xrandr --output $local_xorg_display_secondary --off
 				xrandr --output $local_xorg_display_primary $mode_primary --output $local_xorg_display_secondary $mode_secondary
 			fi
 		fi
