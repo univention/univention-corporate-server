@@ -49,7 +49,7 @@ class Web( object ):
 		lst = umcd.List()
 
 		if joined:
-			lst.set_header( [ umcd.Text( _( 'Script' ), attributes = { 'colspan' : '2' } ),
+			lst.set_header( [ '', _( 'Script' ),
 							  _( 'State' ), _( 'Current version' ), _( 'Last version' ) ] )
 			for script in scripts:
 				runnable = False
@@ -89,8 +89,7 @@ class Web( object ):
 					req.set_flag( 'web:startup_format',
 								  _( "Join script: %(name)s" ) % { 'name' : name } )
 					btn = umcd.Button( name, 'join/script', umcd.Action( req ) )
-					btn[ 'colspan' ] = '2'
-					lst.add_row( [ btn, success, cur, last ] )
+					lst.add_row( [ umcd.Fill(1), btn, success, cur, last ] )
 				else:
 					btn = umcd.Image( 'join/script_inactive',
 									  attributes = { 'type' : 'umc_list_element_part_left' } )
@@ -136,7 +135,7 @@ class Web( object ):
 				lst.add_row( [ umcd.InfoBox( _( 'The domain join was successful!' ) ) ] )
 			else:
 				lst.add_row( [ umcd.InfoBox( _( 'The domain join failed!' ) ) ] )
-			html = '<pre>' + '\n'.join( log ) + '</pre>'
+			html = '<pre>' + ''.join( log ) + '</pre>'
 			html = html.replace( '\x1b[60G', '\t\t\t' )
 			lst.add_row( [ umcd.HTML( html ) ] )
 			lst.add_row( [ umcd.CloseButton() ] )
@@ -177,7 +176,7 @@ class Web( object ):
 				lst.add_row( [ umcd.InfoBox( _( 'The join script was successful!' ) ) ] )
 			else:
 				lst.add_row( [ umcd.InfoBox( _( 'The join script failed!' ) ) ] )
-			html = '<pre>' + '\n'.join( log ) + '</pre>'
+			html = '<pre>' + ''.join( log ) + '</pre>'
 			lst.add_row( [ umcd.HTML( html ) ] )
 			lst.add_row( [ umcd.CloseButton() ] )
 			res.dialog = [ umcd.Frame( [ lst ], _( 'Log file' ) ) ]

@@ -1,3 +1,10 @@
+univention-management-console (3.0.53-1) unstable; urgency=low
+
+  * fixed double-newline in join module (Bug #19208)
+  * fixed smaller layout bug
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 04 Aug 2010 15:08:37 +0200
+
 univention-management-console (3.0.52-1) unstable; urgency=low
 
   * wizard: previous button should not check syntax of input fields; Bug #19139
