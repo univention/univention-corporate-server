@@ -40,11 +40,18 @@ def percentage( percent, label = None, width = 100 ):
 	return umcd.Progressbar( percent, label = label, attributes = { 'width' : '%dpx' % width } )
 
 class MemorySize( object ):
+	"""Parse and convert size with optional prefix from and to numbers."""
 	UNITS = ( 'B', 'KB', 'MB', 'GB', 'TB' )
-	SIZE_REGEX = re.compile( '^ *(?P<size>[0-9]+([,.]?[0-9]+))[ \t]*(?P<unit>(%s))? *$' % '|'.join( UNITS ) )
+	SIZE_REGEX = re.compile( '^ *(?P<size>[0-9]+(?:[,.][0-9]+)?)[ \t]*(?P<unit>(%s))? *$' % '|'.join( UNITS ) )
 
 	@staticmethod
 	def num2str( size, unit = 'B' ):
+		"""Pretty-print number to string consisting of size and optional prefix.
+		>>> MemorySize.num2str(512)
+		'512 B'
+		>>> MemorySize.num2str(512, unit='MB')
+		'512.0 MB'
+		"""
 		block_size = 1
 		for item in MemorySize.UNITS:
 			if item == unit:
@@ -57,10 +64,27 @@ class MemorySize( object ):
 			size /= 1024.0
 			unit += 1
 
-		return '%.1f %s' % ( size, MemorySize.UNITS[ unit ] )
+		if unit > 0:
+			return '%.1f %s' % ( size, MemorySize.UNITS[ unit ] )
+		else:
+			return '%.0f %s' % ( size, MemorySize.UNITS[ unit ] )
 
 	@staticmethod
 	def str2num( size, block_size = 1, unit = 'B' ):
+		"""Parse string consisting of size and prefix into number.
+		>>> MemorySize.str2num('512')
+		512L
+		>>> MemorySize.str2num('512 MB')
+		536870912L
+		>>> MemorySize.str2num('512,0 MB')
+		536870912L
+		>>> MemorySize.str2num('2.0 GB')
+		2147483648L
+		>>> MemorySize.str2num('8GB')
+		8589934592L
+		>>> MemorySize.str2num('2.,0 GB')
+		-1
+		"""
 		match = MemorySize.SIZE_REGEX.match( size )
 		if not match:
 			return -1
@@ -79,12 +103,15 @@ class MemorySize( object ):
 
 	@staticmethod
 	def str2str( size, unit = 'B' ):
+		"""Normalize string consisting of size and prefix.
+		>>> MemorySize.str2str('0.5 MB')
+		'512.0 KB'
+		"""
 		num = MemorySize.str2num( size, unit = unit )
 		if num == -1:
 			return ''
 		return MemorySize.num2str( num )
 
 if __name__ == '__main__':
-	for test in ( "MemorySize.str2num( '512' )", "MemorySize.str2num( '512', unit = 'MB' )", "MemorySize.num2str( 512 )", "MemorySize.num2str( 512, unit = 'MB' )",
-				  "MemorySize.str2num( '512,0 MB' )", "MemorySize.str2num( '2.0 GB' )", "MemorySize.str2num( '2.,0 GB' )" ):
-		print "%-44s -> %14s" % ( test, str( eval( test ) ) )
+	import doctest
+	doctest.testmod()

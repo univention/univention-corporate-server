@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.76-3) unstable; urgency=low
+
+  * Fix MemorySize parser for '8GB' default value (Bug #18578)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 04 Aug 2010 15:04:11 +0200
+
 univention-virtual-machine-manager-daemon (0.9.76-2) unstable; urgency=low
 
   * Remove arch=None case from architecture filter (Bug #19162)
