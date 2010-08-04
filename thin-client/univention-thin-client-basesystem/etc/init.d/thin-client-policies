@@ -39,7 +39,7 @@ eval $(univention-config-registry shell ldap/server/name ldap/hostdn)
 # get and set poliy
 policy="$(univention_policy_result -s -h $ldap_server_name -s "$ldap_hostdn" \
 | sed 's|fixedAttributes=[^ ]*||g')"
-eval ucr set $(echo "$policy")
+eval ucr set $(echo "$policy") >/dev/tty8 2>&1
 
 # mapping
 eval "$policy"
@@ -59,7 +59,7 @@ done < <(cat /etc/univention/templates/mapping/*.univention-config-registry-mapp
 
 # set mapping vars
 if [ -n "$ucrMapping" ]; then
-        eval ucr set $(echo "$ucrMapping")
+        eval ucr set $(echo "$ucrMapping") >/dev/tty8 2>&1
 fi
 
 # interpret configuration registry policies
@@ -73,7 +73,7 @@ registry_vals="portmap/autostart?yes locale/default?de_DE.UTF-8:UTF-8"
 
 # set all desktopServer as possible timeserver
 timeserver=""
-for i in `cat $policy_file_result | grep univentionDesktopServer | sed -e 's|.*univentionDesktopServer=||' | sed -e 's|"||g'`; do
+for i in $(echo "$policy" | grep univentionDesktopServer | sed -e 's|.*univentionDesktopServer=||' | sed -e 's|"||g'); do
   if test -z "${timeserver}"; then
     timeserver="$i"
   else
@@ -94,7 +94,7 @@ done
 
 # set authentication servers
 authserver=''
-for i in `cat $policy_file_result | grep univentionAuthServer | sed -e 's|.*univentionAuthServer=||' | sed -e 's|"||g'`; do
+for i in $(echo "$policy" | grep univentionAuthServer | sed -e 's|.*univentionAuthServer=||' | sed -e 's|"||g'); do
 	authserver="$authserver $i"
 done
 
