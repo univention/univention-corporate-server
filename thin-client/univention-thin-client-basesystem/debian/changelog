@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (7.1.4-2) unstable; urgency=low
+
+  * use /bin/bash for etc/init.d/thin-client-ldap. Bug #18809
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Aug 2010 21:28:56 +0200
+
 univention-thin-client-basesystem (7.1.4-1) unstable; urgency=low
 
   * more escaping in thin-client-policy init script. Bug #18809
