@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.13-1) unstable; urgency=low
+
+  * added single sign on in computer modules (Bug #19232)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 04 Aug 2010 18:31:22 +0200
+
 univention-directory-manager (8.0.12-1) unstable; urgency=low
 
   * fixed language bug in single sign on (Bug #19154)

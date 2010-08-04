@@ -353,16 +353,30 @@ class modedit(unimodule.unimodule):
 		links=[htmltext('',{},{'htmltext':[""]})]
 		if hasattr(self.object,'link'):
 			linktext=''
+			sso_items = []
 			res=self.object.link()
 			if res:
+				self.singleSignOnButtons = []
 				for link in res:
+					if link.has_key('name') and link.has_key('fqdn'):
+						btn = button( link['name'], {'link':'1', 'type': 'h-link'}, {'helptext': link['name']} )
+						hostname = link.get('ipaddr', link['fqdn'])
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "modedit: links: singleSignOn fqdn=%s  hostname=%s" % (link['fqdn'], hostname))
+						self.singleSignOnButtons.append( [ btn, 'redirect', link['fqdn'], hostname ] )
+
 					if link.has_key('name') and link.has_key('url'):
 						if link.has_key('icon'):
 							linktext+=' <a href="%s" target="_blank"><img src="/icon/%s" alt="%s"></a>'%(link['url'],link['icon'],link['name'])
 						else:
 							linktext+=' <a href="%s" target="_blank">%s</a>'%(link['url'],link['name'])
 
-				links=[htmltext('',{},{'htmltext':[linktext]})]
+				sso_enabled = ucr.is_true('directory/manager/web/singlesignon/umc', True)
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "modedit: links: singleSignOn_enabled=%s" % sso_enabled)
+				if self.singleSignOnButtons and sso_enabled:
+					links = [ x[0] for x in self.singleSignOnButtons ]
+				else:
+					links=[htmltext('',{},{'htmltext':[linktext]})]
+
 		header_rows.append(
 			tablerow('',{},{'obs':
 					[tablecol('',{'type':'content_icon'},{'obs':[head_icon]}),
@@ -5005,6 +5019,16 @@ class modedit(unimodule.unimodule):
 			for num in moveleft:
 				vals=vals[:int(num)]+"0"+vals[int(num)+1:]
 			self.object["sambaLogonHours"]=vals
+
+		# SingleSignOn buttons
+		if hasattr(self, 'singleSignOnButtons'):
+			for btn, nextmod, fqdn, ipaddr in self.singleSignOnButtons:
+				if btn.pressed():
+					self.save.put('redirect_next_module', self.save.get('uc_module'))
+					self.save.put('uc_module', nextmod)
+					self.save.put('redirect_host_session', fqdn)
+					self.save.put('redirect_host_browser', ipaddr)
+					return
 
 		# Shared folder ACLs
 		if hasattr(self, 'sharedFolderACLAddButton'):

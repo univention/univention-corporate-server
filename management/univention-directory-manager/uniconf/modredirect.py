@@ -87,12 +87,15 @@ class modredirect(unimodule.unimodule):
 				language = 'en'
 
 		# get redirect target
-		host = self.save.get('redirect_host')
+		host_session = self.save.get('redirect_host_session')
 		args = self.save.get('redirect_args')
-		if not host:
+		if not host_session:
 			# use fallback
-			host = self.save.get('uc_virtualmodule')
+			host_session = self.save.get('uc_virtualmodule')
 			args = self.save.get('uc_submodule')
+
+		# optional hostname for user/browser
+		host_browser = self.save.get('redirect_host_browser', host_session)
 
 		# determine protocol of current connection
 		proto = 'http'
@@ -102,12 +105,15 @@ class modredirect(unimodule.unimodule):
 		proto = self.save.get('redirect_proto', proto)
 
 		ud.debug(ud.ADMIN, ud.INFO, 'modredirect: creating SSO request object')
-		sso = unisignon.SignOnRedirect( host, username, password, language=language, application='UMC', protocol=proto, arguments=args )
+		sso = unisignon.SignOnRedirect( host_browser, username, password, language=language, application='UMC', protocol=proto, arguments=args )
 		ud.debug(ud.ADMIN, ud.INFO, 'modredirect: got SSO request object')
 		targetURL = sso.getTargetURL()
 
-		session_hostname = host
-		if host == os.environ["HTTP_HOST"]:
+		# use different hostname for creating session
+		# ==> create session with FQDN ==> required because auf SSL connections
+		# ==> redirect user via FQDN *or* IP address ==> the latter one is mostly prefered
+		session_hostname = host_session
+		if session_hostname == os.environ["HTTP_HOST"]:
 			# if specified host is localhost then use FQDN as hostname - otherwise urllib will complain about certificate's wrong common name
 			ucr = univention.config_registry.ConfigRegistry()
 			ucr.load()
@@ -123,15 +129,16 @@ class modredirect(unimodule.unimodule):
 			msg = _('Creating a new session for Univention Management Console on host %(host)s failed. Please click %(starttag)shere%(endtag)s to log in manually.')
 
 		msg = msg % {
-				'host': host,
+				'host': host_browser,
 				'starttag': '<a href="%s" target="_blank">' % targetURL,
 				'endtag': '</a>',
 				}
 
+		self.save.put('uc_module', self.save.get('redirect_next_module', 'none'))
+
 		# session is valid ==> add javascript code for submitting "redirect" form and javascript code to get back to UDM startup page
 		if sso.getSessionID():
-			# set current module to "none"
-			self.save.put('uc_module', 'none')
+			# set current module to "none" or saved value
 			# get javascript from signon object and merge it with own javascript, so user is pushed back to UDM startup page after creating UMC popup
 			msg += sso.getOnLoadJavascriptTag()
 			msg += '<script type="text/javascript">dojo.addOnLoad(function(){ setTimeout(function(){ document.forms["content"].submit(); }, 3000); });</script>'
@@ -163,4 +170,5 @@ class modredirect(unimodule.unimodule):
 		pass
 
 	def waitmessage(self):
-		return _('Creating new session for Univention Management Console...')
+		if self.save.get('uc_module') == 'redirect':
+			return _('Creating new session for Univention Management Console...')
