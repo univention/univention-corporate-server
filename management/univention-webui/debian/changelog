@@ -1,3 +1,9 @@
+univention-webui (4.0.21-1) unstable; urgency=low
+
+  * fixed read-only text input fields; Bug #19148
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 04 Aug 2010 19:39:23 +0200
+
 univention-webui (4.0.20-1) unstable; urgency=low
 
   * add support for several style classes for buton widgets; Bug #18164

@@ -264,7 +264,7 @@ class question_text extends extra{
 			$str .= ' onclick="this.form.submit()" ';
 		}
 		if (isset($this->attribute['passive'])) {
-			$str .= ' disabled';
+			$str .= ' disabled ';
 		}
 		if ($this->attribute['width']) 
 			$str .= 'style="width:'.($this->attribute['width']).'px" ';
