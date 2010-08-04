@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.22-1) unstable; urgency=low
+
+  * return FQDN and IP address to be able to do single sign on for UMC in
+    UDM (Bug #19232)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 04 Aug 2010 18:26:37 +0200
+
 univention-directory-manager-modules (6.0.21-1) unstable; urgency=low
 
   * the samba password hashes must be set via net rpc join. Bug #19128

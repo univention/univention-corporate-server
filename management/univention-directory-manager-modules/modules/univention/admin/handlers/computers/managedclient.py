@@ -576,12 +576,23 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			univention.admin.allocators.release(self.lo, self.position, i, j)
 
 	def link(self):
-		if self['ip']:
-			return [{'name':_('Open Univention Management Console on this computer'),'url':'https://%s/univention-management-console/'%self['ip'][ 0 ]}]
-		elif self.has_key('dnsEntryZoneForward') and self['dnsEntryZoneForward'] and len( self['dnsEntryZoneForward' ] ) > 0:
-			zone=self['dnsEntryZoneForward'][0][('%s'%self['dnsEntryZoneForward'][0]).find('=')+1:('%s'%self['dnsEntryZoneForward'][0]).find(',')]
-			return [{'name':_('Open Univention Management Console on this computer'),'url':'https://%s.%s/univention-management-console/'%(self['name'],zone)}]
-	
+		result = []
+		if self['ip'] and len( self[ 'ip' ] ) > 0 and self['ip'][ 0 ]:
+			result = [{ 'url': 'https://%s/univention-management-console/' % self['ip'][ 0 ],
+						'ipaddr': self['ip'][ 0 ],
+						}]
+		if self.has_key('dnsEntryZoneForward') and self['dnsEntryZoneForward'] and len( self['dnsEntryZoneForward' ] ) > 0:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'DEBUG: dnsEntryZoneForward=%s' % self['dnsEntryZoneForward'] )
+			zone = univention.admin.uldap.explodeDn( self['dnsEntryZoneForward'][0], 1)[0]
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'DEBUG: zone=%s' % zone )
+			if not result:
+				result = [ { 'url': 'https://%s.%s/univention-management-console/' % (self['name'], zone) }]
+			result[0]['fqdn'] = '%s.%s' % (self['name'], zone)
+		if result:
+			result[0]['name'] = _('Open Univention Management Console on this computer')
+			return result
+		return None
+
 
 def rewrite(filter, mapping):
 	if filter.variable == 'ip':
