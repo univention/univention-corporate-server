@@ -1,41 +1,58 @@
 #### UGS-Master-Profile ####
-to_check="partition"
+to_check="hostname domainname ldap_base"	## to_check makes the installer ask for a value, with a default given below
 
-# [Optionen]
-windows_domain="UGS"
-hostname="ugs-master"
-ldap_base="dc=test,dc=univention,dc=de"
-#root_password=''
-domainname="ugs.univention.de"
+# [Hardware detection]
+#modules=''
 
-# [System-Optionen]
+# [Partition]
+#auto_part="full_disk"	## use with care, uses all storage attached
+
+# [Bootloader]
+#bootloader_record=/dev/sda
+
+# [Timezone]
+timezone="Europe/Berlin"
+
+# [Keyboard]
+keymap="de-latin1"
+
+# [Languages/Charsets]
+locales="de_DE.UTF-8:UTF-8"
+
+# [Default language]
+locale_default="de_DE.UTF-8:UTF-8"
+
+# [System role]
+system_role="domaincontroller_master"
+
+# [Settings]
+windows_domain="EXAMPLE"
+hostname="dc-master"
+domainname="ugs.example.com"
+ldap_base="dc=ugs,dc=example,dc=com"
+#root_password=''	## use with care
+
+# [Network]
+#gateway=''
+#nameserver_1=''
+#forwarder=''
+
+# [Security settings]
+security_profile='normal'
+
+# [Certificate]
+ssl_country="DE"
+ssl_state="Bremen"
+ssl_locality="Bremen"
+ssl_organization="Example GmbH"
+ssl_organizationalunit="UGS Test Installation"
+ssl_email="ssl@example.com"
+
+# [System settings]
 local_repository="true"
 create_home_share="true"
 
-# [Sprache]
-locales="de_DE.UTF-8:UTF-8"
-
-# [Standardsprache]
-locale_default="de_DE.UTF-8:UTF-8"
-
-# [Zertifikat]
-ssl_country="de"
-ssl_state="Bremen"
-ssl_locality="Bremen"
-ssl_organization="Univention GmbH"
-ssl_organizationalunit="UGS Test Installation"
-ssl_email="ssl@univention.de"
-
-# [Tastatur]
-keymap="de-latin1"
-
-# [Systemrolle]
-system_role="domaincontroller_master"
-
-# [Zeitzone]
-timezone="Europe/Berlin"
-
 # [Software]
+# Example
 packages="univention-samba samba univention-dhcp dhcp3-server univention-bind univention-bind-proxy bind9 univention-kolab2 univention-kolab2-framework univention-mail-postfix-kolab2 univention-mail-cyrus-kolab2 univention-management-console univention-pkgdb univention-directory-manager python-univention-license univention-mozilla-firefox univention-kde ispell ingerman amarok kaffeine kmplayer kdemultimedia mplayer univention-java k3b k3b-i18n cdrdao kdeartwork-misc kdeartwork-emoticons kdeartwork-style kdeartwork-theme-icon kscreensaver kdewallpapers kdeartwork-theme-window kamera kfax kpdf kview kuickshow ksnapshot ark kcalc kgpg klaptopdaemon kwalletmanager kdepim univention-x-core univention-gdm univention-gdm-sessions univention-flashplugin xtightvncviewer mozilla-mplayer univention-nagios-client univention-thin-client openssh-server univention-nagios-server univention-printquota pykota univention-printquotadb univention-printserver cupsys univention-application-server openssh-client univention-java eject less nmap vim wget"
-
 

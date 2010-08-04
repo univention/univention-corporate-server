@@ -1,28 +1,44 @@
 #### UCS-Basesystem-Profile ####
-to_check="partition"
+to_check="hostname domainname"	## to_check makes the installer ask for a value, with a default provided by the profile
 
-# [Optionen]
-hostname="basesystem"
-#root_password=''
-domainname="test.univention.de"
+# [Hardware detection]
+#modules=''
 
-# [System-Optionen]
-local_repository="false"
+# [Partition]
+#auto_part="full_disk"	## use with care, uses all storage attached
 
-# [Sprache]
-locales="de_DE.UTF-8:UTF-8"
+# [Bootloader]
+#bootloader_record=/dev/sda
 
-# [Standardsprache]
-locale_default="de_DE.UTF-8:UTF-8"
-
-# [Tastatur]
-keymap="de-latin1"
-
-# [Systemrolle]
-system_role="basesystem"
-
-# [Zeitzone]
+# [Timezone]
 timezone="Europe/Berlin"
 
+# [Keyboard]
+keymap="de-latin1"
+
+# [Languages/Charsets]
+locales="de_DE.UTF-8:UTF-8"
+
+# [Default language]
+locale_default="de_DE.UTF-8:UTF-8"
+
+# [System role]
+system_role="basesystem"
+
+# [Settings]
+hostname="basesystem"
+domainname="example.com"
+#root_password=''	## use with care
+
+# [Network]
+#gateway=''
+#nameserver_1=''
+#forwarder=''
+
+# [Security settings]
+#security_profile='normal'
+
 # [Software]
+# Example
 packages="openssh-client openssh-server dhcp-client vim links-ssl wget xtightvncviewer"
+
