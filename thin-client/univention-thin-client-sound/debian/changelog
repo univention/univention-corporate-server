@@ -1,3 +1,10 @@
+univention-thin-client-sound (5.1.1-1) unstable; urgency=low
+
+  * merge from UCS TCS 3.1: 
+    * create /var/lib/alsa to prevent a boot error message. Bug #19242
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Aug 2010 21:03:09 +0200
+
 univention-thin-client-sound (5.1.0-1) unstable; urgency=low
 
   * bump version for UCS TCS compatibility (Bug #17543)

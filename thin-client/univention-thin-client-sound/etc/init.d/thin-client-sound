@@ -36,6 +36,8 @@ eval $(univention-config-registry shell thinclient/sound/volume thinclient/sound
 
 log_action_msg "Setting up Thin Client Sound Device"
 
+mkdir -p /var/lib/alsa
+
 if [ -z "$univentionSoundEnabled" ]; then
 	log_action_msg "disabled"
 	exit 0
