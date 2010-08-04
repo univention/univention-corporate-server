@@ -432,7 +432,7 @@ class unidialog(unimodule.unimodule):
 							else:
 								# Manual Login
 								updatemsg = htmltext ('', {}, \
-													{'htmltext': [""" <a href="/univention-management-console/index.php?init_umccmd=update/overview" target="_blank">%s</a> """ % _('Online Update Module')
+													{'htmltext': [""" <a href="/univention-management-console/index.php?init_umccmd=update/overview" target="_blank">%s</a>&nbsp;""" % _('Online Update Module')
 																]})
 								self.subobjs.append(updatemsg)
 
