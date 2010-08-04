@@ -1,3 +1,9 @@
+univention-management-console (3.0.55-1) unstable; urgency=low
+
+  * support read-only checkboxes and password fields; Bug #19148
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 04 Aug 2010 20:12:57 +0200
+
 univention-management-console (3.0.54-1) unstable; urgency=low
 
   * support read-only text input fields; Bug #19148

@@ -158,7 +158,10 @@ def dateinput_map( storage, umcp_part ):
 mapper.add( umcd.DateInput, dateinput_map )
 
 def password_map( storage, umcp_part ):
-	quest = question_secure( unicode( umcp_part ), utils.layout_attrs( storage, umcp_part ),
+	attributes = utils.layout_attrs( storage, umcp_part )
+	if not umcp_part.syntax.may_change:
+		attributes[ 'passive' ] = 'true'
+	quest = question_secure( unicode( umcp_part ), attributes,
 							{ 'usertext' : '' } )
 	storage[ umcp_part.id() ] = ( quest, umcp_part )
 
@@ -169,6 +172,8 @@ mapper.add( umcd.SecretInput, password_map )
 def longtext_map( storage, umcp_part ):
 	default = utils.default( umcp_part )
 	attributes = utils.layout_attrs( storage, umcp_part )
+	if not umcp_part.syntax.may_change:
+		attributes[ 'passive' ] = 'true'
 	quest = question_ltext( unicode( umcp_part ), attributes,
 						   { 'usertext' : default, 'helptext' : '' } )
 	storage[ umcp_part.id() ] = ( quest, umcp_part )
@@ -184,8 +189,12 @@ def checkbox_map( storage, umcp_part ):
 	else:
 		value = ''
 
+	layout_attrs = utils.layout_attrs( storage, umcp_part )
+	if not umcp_part.syntax.may_change:
+		layout_attrs[ 'passive' ] = 'true'
+
 	attributes.update( { 'usertext' : value, 'helptext' : '' } )
-	quest = question_bool( unicode( umcp_part ), utils.layout_attrs( storage, umcp_part ),
+	quest = question_bool( unicode( umcp_part ), layout_attrs,
 						   attributes )
 	storage[ umcp_part.id() ] = ( quest, umcp_part )
 

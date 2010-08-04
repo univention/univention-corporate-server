@@ -203,7 +203,11 @@ class MultiValueMap( mapper.IMapper ):
 			for key, descr in default:
 				mvaluelist.append( { 'name' : key, 'description' : descr } )
 
-		mselect = question_mselect( _( 'Entries:' ), utils.attributes( umcp_part ),
+		attributes = utils.attributes( umcp_part )
+		if not umcp_part.syntax.may_change:
+			attributes[ 'passive' ] = 'true'
+
+		mselect = question_mselect( _( 'Entries:' ), attributes,
 									{ 'helptext' : _( "Current entries for '%s'" ) % unicode( umcp_part ),
 									  'choicelist' : mvaluelist } )
 
