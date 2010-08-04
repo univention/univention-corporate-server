@@ -1,3 +1,9 @@
+univention-thin-client-ltsp (4.1.2-1) unstable; urgency=low
+
+  * fixed typo of last commit. Bug #12852
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Aug 2010 13:46:11 +0200
+
 univention-thin-client-ltsp (4.1.1-1) unstable; urgency=low
 
   * set permissions for /var/log/univention/ltsp-mounts.log. Bug #12852

@@ -34,7 +34,7 @@
 
 # set permissions for ltsp-mounts.log
 touch /var/log/univention/ltsp-mounts.log
-chiwn "root:adm" /var/log/univention/ltsp-mounts.log
+chown "root:adm" /var/log/univention/ltsp-mounts.log
 chmod 640 /var/log/univention/ltsp-mounts.log
 
 univention-thin-client-apt install ltspfsd
