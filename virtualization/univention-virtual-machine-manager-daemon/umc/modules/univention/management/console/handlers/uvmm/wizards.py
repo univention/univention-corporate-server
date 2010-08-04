@@ -96,7 +96,11 @@ class DriveWizard( umcd.IWizard ):
 			opts[ 'action' ] = 'pool-selected'
 			opts[ 'drive-pool' ] = storage.name
 			action = umcd.Action( umcp.SimpleCommand( self.command, options = opts ) )
-			choices.append( { 'description' : storage.name, 'actions' : [ action, ] } )
+			if storage.name == 'default':
+				descr = _( 'Local directory' )
+			else:
+				descr = storage.name
+			choices.append( { 'description' : descr, 'actions' : [ action, ] } )
 		return umcd.ChoiceButton( _( 'Pool' ), choices = choices, attributes = { 'width' : '300px' } )
 
 	def reset( self ):
@@ -105,30 +109,34 @@ class DriveWizard( umcd.IWizard ):
 		umcd.IWizard.reset( self )
 
 	def setup( self, object, prev = None, next = None, finish = None, cancel = None ):
-		ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: setup! (current: %s, prev_first_page: %s)' % ( str( self.current ), self.prev_first_page ) )
+		ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: setup! (current: %s, prev_first_page: %s)' % ( str( self.current ), self.prev_first_page ) )
 		if self.current == 0 and self.prev_first_page:
 			return umcd.IWizard.setup( self, object, prev = True, next = next, finish = finish, cancel = cancel )
 		return umcd.IWizard.setup( self, object, prev = prev, next = next, finish = finish, cancel = cancel )
 
 	def action( self, object, node ):
-		ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: action! (current: %s)' % str( self.current ) )
+		ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: action! (current: %s)' % str( self.current ) )
 		self.node_uri, self.node = node
 		if self.current == None:
 			# read pool
-			ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: node storage pools: %s' % str( self.node.storages ) )
-			btn = self._create_pool_select_button( object.options )
+			ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: node storage pools: %s' % str( self.node.storages ) )
 			object.options[ 'drive-pool' ] = 'default'
 			object.options[ 'image-size' ] = '8 GB'
-			self[ 2 ].options[ 0 ] = btn
-			self[ 3 ].options[ 0 ] = btn
-
 		return umcd.IWizard.action( self, object )
 
 	def pool_selected( self, object ):
-		ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: node storage volumes: %s' % str( self.node_uri ) )
+		ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: node storage volumes: %s' % str( self.node_uri ) )
 		vols = self.uvmm.storage_pool_volumes( self.node_uri, object.options.get( 'drive-pool', 'default' ), object.options[ 'drive-type' ] )
-		ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: node storage volumes: %s' % map(str, vols))
-		self.image_syntax.update_choices( [ os.path.basename( vol.source ) for vol in vols ] )
+		ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: node storage volumes: %s' % map(str, vols))
+		choices = []
+		for vol in vols:
+			basename = os.path.basename( vol.source )
+			if basename.rfind( '.' ) >= 0:
+				suffix = basename[ basename.rfind( '.' ) + 1 : ]
+				if suffix in ( 'xml', 'snapshot' ):
+					continue
+			choices.append( basename )
+		self.image_syntax.update_choices( choices )
 
 		return self[ self.current ]
 
@@ -156,6 +164,9 @@ class DriveWizard( umcd.IWizard ):
 				self[ 2 ].hint = msg
 			else:
 				raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
+			btn = self._create_pool_select_button( object.options )
+			self[ 2 ].options[ 0 ] = btn
+			self[ 3 ].options[ 0 ] = btn
 		elif self.current == 1: # new or existing disk image?
 			if object.options[ 'existing-or-new-disk' ] == 'disk-new':
 				self.current = 3
@@ -170,33 +181,33 @@ class DriveWizard( umcd.IWizard ):
 		elif self.current in ( 2, 3 ): # 2=create new, 3=select existing disk image
 			pool_path = self._get_pool_path( object.options[ 'drive-pool' ] )
 			if self.current == 2: # select existing disk image
-				ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: collect information about existing disk image: %s' % object.options[ 'drive-image' ] )
+				ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: collect information about existing disk image: %s' % object.options[ 'drive-image' ] )
 				drive_pool = object.options['drive-pool']
 				drive_type = object.options['drive-type']
 				drive_image = object.options['drive-image']
 				vols = self.uvmm.storage_pool_volumes(self.node_uri, drive_pool, drive_type)
 				for vol in vols:
 					if os.path.basename(vol.source) == drive_image:
-						ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: set information about existing disk image: %s' % object.options[ 'drive-image' ] )
+						ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: set information about existing disk image: %s' % object.options[ 'drive-image' ] )
 						object.options[ 'image-name' ] = drive_image
 						object.options[ 'image-size' ] = MemorySize.num2str( vol.size )
 						break
 				else:
-					ud.debug(ud.ADMIN, ud.ERROR, 'Image not found: pool=%s type=%s image=%s vols=%s' % (drive_pool, drive_type, drive_image, map(str, vols)))
+					ud.debug(ud.ADMIN, ud.INFO, 'Image not found: pool=%s type=%s image=%s vols=%s' % (drive_pool, drive_type, drive_image, map(str, vols)))
 					return umcd.WizardResult(False, _('Image not found')) # FIXME
 			elif self.current == 3: # create new disk image
 				object.options[ 'image-size' ] = MemorySize.str2str( object.options[ 'image-size' ], unit = 'MB' )
 			drive_path = os.path.join( pool_path, object.options[ 'image-name' ] )
-			ud.debug( ud.ADMIN, ud.ERROR, 'Check if image %s is already used' % drive_path )
+			ud.debug( ud.ADMIN, ud.INFO, 'Check if image %s is already used' % drive_path )
 			is_used = self.uvmm.is_image_used( self.node_uri, drive_path )
 			if is_used in ( object.options.get( 'domain', '' ), object.options.get( 'name', '' ) ):
-				return umcd.WizardResult( False, _( 'The selected image is already used by this virtual instance! You have to choose a different filename.' ) )
+				return umcd.WizardResult( False, _( 'The selected image is already used by this virtual instance and therefor can not be used.' ) )
 			if not drive_path in object.options.get( '_reuse_image', [] ) and object.options[ 'drive-type' ] == 'disk' and is_used:
 				if '_reuse_image' in object.options:
 					object.options[ '_reuse_image' ].append( drive_path )
 				else:
 					object.options[ '_reuse_image' ] = [ drive_path, ]
-				return umcd.WizardResult( False, _( 'The selected image is already used by the virtual instance %(domain)s. You may consider to choose another image or continue if you are sure that it will not cause any problems.' ) % { 'domain' : is_used } )
+				return umcd.WizardResult( False, _( 'The selected image is already used by the virtual instance %(domain)s. It should be considered to choose another image. Continuing might cause problems.' ) % { 'domain' : is_used } )
 			self.current = 4
 			self[ self.current ].options = []
 			conf = umcd.List()
@@ -305,7 +316,7 @@ class InstanceWizard( umcd.IWizard ):
 			self.profile_syntax.update_choices([item['name'] for item in self.udm.get_profiles(tech) if item['arch'] in self.archs])
 		if self.current == 0:
 			self.profile = self.udm.get_profile( object.options[ 'instance-profile' ], tech )
-			ud.debug( ud.ADMIN, ud.ERROR, 'drive wizard: next: profile boot drives: %s' % str( self.profile[ 'bootdev' ] ) )
+			ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: next: profile boot drives: %s' % str( self.profile[ 'bootdev' ] ) )
 			object.options[ 'name' ] = self.profile[ 'name_prefix' ]
 			object.options[ 'arch' ] = self.profile[ 'arch' ]
 			object.options[ 'type' ] = self.profile[ 'virttech' ]
@@ -320,21 +331,21 @@ class InstanceWizard( umcd.IWizard ):
 			object.options[ 'initrd' ] = self.profile[ 'initramfs' ]
 		if self.current == 1:
 			if object.options[ 'name' ] == self.profile[ 'name_prefix' ]:
-				return umcd.WizardResult( False, _( 'You should modify the name of the virtual instance' ) )
+				return umcd.WizardResult( False, _( 'The name of the virtual instance should be modified' ) )
 			if not self.uvmm.is_domain_name_unique( self.node_uri, object.options[ 'name' ] ):
-				return umcd.WizardResult( False, _( 'The chosen name for the virtual instance is not unique. Please use another one.' ) )
+				return umcd.WizardResult( False, _( 'The chosen name for the virtual instance is not unique. Another one should be chosen.' ) )
 			mem_size = MemorySize.str2num( object.options[ 'memory' ], unit = 'MB' )
 			four_mb = MemorySize.str2num( '4', unit = 'MB' )
 			if mem_size < four_mb:
 				object.options[ 'memory' ] = '4 MB'
-				return umcd.WizardResult( False, _( 'You must at least use 4 MB for a virtual instance.' ) )
+				return umcd.WizardResult( False, _( 'A virtual instance must at least have 4 MB memory.' ) )
 			if mem_size > self.max_memory:
 				object.options[ 'memory' ] = MemorySize.num2str( self.max_memory * 0.75 )
-				return umcd.WizardResult( False, _( 'Your physical server does not have that much memory. As a suggestion the a mount of memory was set to 75% of the available memory.' ) )
+				return umcd.WizardResult( False, _( 'The physical server does not have that much memory. As a suggestion the a mount of memory was set to 75% of the available memory.' ) )
 			# activate drive wizard to add a first mandatory drive
 			if not self.drives:
 				self.drive_wizard.prev_first_page = True
-				self.new_drive( object, cancel = False )
+				self.new_drive( object )
 		return umcd.IWizard.next( self, object )
 
 	def prev( self, object ):
@@ -409,7 +420,7 @@ class InstanceWizard( umcd.IWizard ):
 			domain.vcpus = object.options[ 'cpus' ]
 			# boot devices
 			if object.options[ 'bootdev' ] and object.options[ 'bootdev' ][ 0 ]:
-				ud.debug( ud.ADMIN, ud.ERROR, 'device wizard: boot drives: %s' % str( object.options[ 'bootdev' ] ) )
+				ud.debug( ud.ADMIN, ud.INFO, 'device wizard: boot drives: %s' % str( object.options[ 'bootdev' ] ) )
 				domain.boot = object.options[ 'bootdev' ]
 			# VNC
 			if object.options[ 'vnc' ]:
@@ -451,7 +462,7 @@ class InstanceWizard( umcd.IWizard ):
 	def setup( self, object, prev = None, next = None, finish = None, cancel = None ):
 		if self.drive_wizard_active:
 			return self.drive_wizard.setup( object, finish = _( 'Add' ), cancel = self.drive_wizard_cancel )
-		return umcd.IWizard.setup( self, object, cancel = False )
+		return umcd.IWizard.setup( self, object )
 
 	def cancel( self, object ):
 		if self.drive_wizard_active:
@@ -466,4 +477,5 @@ class InstanceWizard( umcd.IWizard ):
 		self.drives = []
 		self.drive_number = 0
 		self.drive_wizard.reset()
+		self.drive_wizard_active = False
 		umcd.IWizard.reset( self )

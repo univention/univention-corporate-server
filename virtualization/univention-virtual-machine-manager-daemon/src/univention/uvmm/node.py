@@ -933,6 +933,7 @@ def domain_define( uri, domain ):
 			logger.error('Updating LDAP failed: %s %s' % (e, record))
 
 	node.wait_update(domain.uuid, old_stat)
+
 	return domain.uuid
 
 def domain_state(uri, domain, state):
@@ -972,7 +973,7 @@ def domain_state(uri, domain, state):
 			ignore_states = [libvirt.VIR_DOMAIN_NOSTATE]
 			if state == 'RUN':
 				ignore_states.append(libvirt.VIR_DOMAIN_PAUSED)
-			for t in range(10):
+			for t in range(20):
 				cur_state = dom.info()[0]
 				if cur_state not in ignore_states:
 					# xen does not send event, do update explicitly
@@ -989,17 +990,24 @@ def domain_save(uri, domain, statefile):
 		node = node_query(uri)
 		conn = node.conn
 		dom = conn.lookupByUUIDString(domain)
+		old_state = node.domains[ domain ].key()
 		dom.save(statefile)
+		node.domains[ domain ].update( dom )
+		node.wait_update( domain, old_state )
 	except libvirt.libvirtError, e:
 		logger.error(e)
 		raise NodeError(_('Error saving domain "%(domain)s": %(error)s'), domain=domain, error=e)
 
-def domain_restore(uri, statefile):
+def domain_restore(uri, domain, statefile):
 	"""Restore defined domain."""
 	try:
 		node = node_query(uri)
 		conn = node.conn
+		dom = conn.lookupByUUIDString(domain)
+		old_state = node.domains[ domain ].key()
 		conn.restore(statefile)
+		node.domains[ domain ].update( dom )
+		node.wait_update( domain, old_state )
 	except libvirt.libvirtError, e:
 		logger.error(e)
 		raise NodeError(_('Error restoring domain "%(domain)s": %(error)s'), domain=domain, error=e)

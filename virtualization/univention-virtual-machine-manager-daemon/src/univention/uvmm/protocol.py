@@ -149,6 +149,7 @@ class Request_DOMAIN_RESTORE(Request):
 	def _default(self):
 		self.command = 'DOMAIN_RESTORE'
 		self.uri = None
+		self.domain = None
 		self.statefile = None
 class Request_DOMAIN_UNDEFINE(Request):
 	"""Remove domain."""

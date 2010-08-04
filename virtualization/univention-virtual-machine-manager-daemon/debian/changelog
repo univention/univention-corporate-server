@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (0.9.77-1) unstable; urgency=low
+
+  * rename UMC module to 'Virtual Machines (UVMM); Bug #19207
+  * implement save and restore; Bug #19172
+  * wizard: show cancel button when creating an instance; Bug #19190
+  * default storage pool is now called 'local directory'; Bug #19141
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 04 Aug 2010 19:10:48 +0200
+
 univention-virtual-machine-manager-daemon (0.9.76-4) unstable; urgency=low
 
   * Fix /domain/devices/disk/@type='block' handling (Bug #18765)

@@ -195,11 +195,13 @@ class _Commands:
 		"""Restore defined domain."""
 		if not isinstance(request.uri, basestring):
 			raise CommandError('DOMAIN_RESTORE', _('uri != string: %(uri)s'), uri=request.uri)
+		if not isinstance(request.domain, basestring):
+			raise CommandError('DOMAIN_RESTORE', _('domain != string: %(domain)s'), domain=request.domain)
 		if not isinstance(request.statefile, basestring):
 			raise CommandError('DOMAIN_RESTORE', _('statefile != string: %(file)s'), file=request.statefile)
 		logger.debug('DOMAIN_RESTORE %s %s' % (request.uri, request.statefile))
 		try:
-			node.domain_restore(request.uri, request.statefile)
+			node.domain_restore(request.uri, request.domain, request.statefile)
 		except node.NodeError, e:
 			raise CommandError('DOMAIN_RESTORE', e)
 

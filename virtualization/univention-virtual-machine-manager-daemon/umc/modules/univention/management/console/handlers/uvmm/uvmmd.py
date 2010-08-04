@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import os
 import socket
 import time
 
@@ -383,6 +384,36 @@ class Client( notifier.signals.Provider ):
 		if not self.send( req.pack() ):
 			raise ConnectionError()
 		return self.recv_blocking()
+
+	def domain_save( self, node, domain ):
+		req = protocol.Request_DOMAIN_SAVE()
+		req.uri = self.node_name2uri( node )
+		req.domain = domain.uuid
+		snapshot_dir = umc.registry.get( 'uvmm/pool/default/path', '/var/lib/libvirt/images' )
+		req.statefile = os.path.join( snapshot_dir, '%s.snapshot' % domain.uuid )
+		if not self.send( req.pack() ):
+			raise ConnectionError()
+		return self.recv_blocking()
+
+	def domain_restore( self, node, domain ):
+		req = protocol.Request_DOMAIN_RESTORE()
+		req.uri = self.node_name2uri( node )
+		req.domain = domain.uuid
+		snapshot_dir = umc.registry.get( 'uvmm/pool/default/path', '/var/lib/libvirt/images' )
+		req.statefile = os.path.join( snapshot_dir, '%s.snapshot' % domain.uuid )
+		if not self.send( req.pack() ):
+			raise ConnectionError()
+		return self.recv_blocking()
+
+	def snapshot_exists( self, node, domain ):
+		node_uri = self.node_name2uri( node )
+		volumes = self.storage_pool_volumes( node_uri, 'default' )
+		snapshot_file = os.path.join( umc.registry.get( 'uvmm/pool/default/path', '/var/lib/libvirt/images' ), '%s.snapshot' % domain.uuid )
+		for vol in volumes:
+			ud.debug( ud.ADMIN, ud.ERROR, 'UVMM: snapshot exists: %s == %s' % ( snapshot_file, vol.source ) )
+			if vol.source == snapshot_file:
+				return True
+		return False
 
 	def storage_pool_volumes( self, node_uri, pool, type = None ):
 		req = protocol.Request_STORAGE_VOLUMES()

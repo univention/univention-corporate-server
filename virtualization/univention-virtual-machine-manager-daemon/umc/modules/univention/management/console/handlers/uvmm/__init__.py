@@ -63,7 +63,7 @@ _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
 name = 'uvmm'
 icon = 'uvmm/module'
-short_description = _('Virtual Machines')
+short_description = _('Virtual Machines (UVMM)')
 long_description = _('Univention Virtual Machine Manager')
 categories = [ 'system', 'all' ]
 hide_tabs = True
@@ -168,6 +168,18 @@ command_description = {
 				   'source' : umc.String( 'source node' ),
 				   'dest' : dest_node_select,
 				  },
+		),
+	'uvmm/domain/save': umch.command(
+		short_description = _( 'Save virtual instance' ),
+		long_description = _( 'Saves the state of a virtual instances' ),
+		method = 'uvmm_domain_save',
+		values = {},
+		),
+	'uvmm/domain/restore': umch.command(
+		short_description = _( 'Restore virtual instance' ),
+		long_description = _( 'Restores the state of a virtual instances' ),
+		method = 'uvmm_domain_restore',
+		values = {},
 		),
 	'uvmm/domain/state': umch.command(
 		short_description = _( 'Change state of a virtual instance' ),
@@ -284,6 +296,7 @@ class handler( umch.simpleHandler ):
 	def uvmm_overview( self, object ):
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object )
 		if success:
+			self.domain_wizard.reset()
 			res.dialog[ 0 ].set_dialog( umcd.ModuleDescription( 'Univention Virtual Machine Manager (UVMM)', _( 'This module provides a management interface for physical servers that are registered within the UCS domain.\nThe tree view on the left side shows an overview of all existing physical servers and the residing virtual instances. By selecting one of the physical servers statistics of the current state are displayed to get an impression of the health of the hardware system. Additionally actions like start, stop, suspend and resume for each virtual instance can be invoked on each of the instances.\nAlso possible is the remote access to virtual instances via VNC. Therefor it must be activated in the configuration.\nEach virtual instance entry in the tree view provides access to detailed information und gives the possibility to change the configuration or state and migrated it to another physical server.' ) ) )
 		self.finished( object.id(), res )
 
@@ -293,7 +306,7 @@ class handler( umch.simpleHandler ):
 		if not success:
 			self.finished(object.id(), res)
 			return
-
+		self.domain_wizard.reset()
 		nodes = self.uvmm.get_group_info( object.options[ 'group' ] )
 
 		table = umcd.List()
@@ -334,7 +347,7 @@ class handler( umch.simpleHandler ):
 			buttons.append( umcd.LinkButton( _( 'Stop' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
 			buttons.append( comma )
 
-		# Suspend? if state is running or blocked
+		# Suspend? if state is running or idle
 		if domain.state in ( 1, 2):
 			opts = copy.copy( cmd_opts )
 			opts[ 'state' ] = 'PAUSE'
@@ -356,6 +369,21 @@ class handler( umch.simpleHandler ):
 			cmd = umcp.SimpleCommand( 'uvmm/domain/remove/images', options = opts )
 			buttons.append( umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( cmd ), ] ) )
 			buttons.append( comma )
+
+		# TODO: not yet fully implemented
+		# # Save? if machine is idle or running
+		# if domain.state in ( 1, 2 ):
+		# 	opts = copy.copy( cmd_opts )
+		# 	cmd = umcp.SimpleCommand( 'uvmm/domain/save', options = opts )
+		# 	buttons.append( umcd.LinkButton( _( 'Save' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
+		# 	buttons.append( comma )
+
+		# # Restore? if state is not stopped and we have a snapshot
+		# if domain.state in ( 5, ) and self.uvmm.snapshot_exists( object.options[ 'node' ], domain ):
+		# 	opts = copy.copy( cmd_opts )
+		# 	cmd = umcp.SimpleCommand( 'uvmm/domain/restore', options = opts )
+		# 	buttons.append( umcd.LinkButton( _( 'Restore' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
+		# 	buttons.append( comma )
 
 		# create drive
 		# if operations:
@@ -413,6 +441,7 @@ class handler( umch.simpleHandler ):
 		if not success:
 			self.finished(object.id(), res)
 			return
+		self.domain_wizard.reset()
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 		if not node_uri:
@@ -639,6 +668,7 @@ class handler( umch.simpleHandler ):
 		if not success:
 			self.finished(object.id(), res)
 			return
+		self.domain_wizard.reset()
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 		node = self.uvmm.get_node_info( node_uri )
@@ -799,6 +829,12 @@ class handler( umch.simpleHandler ):
 			self.finished(object.id(), res)
 			return
 
+		# user cancelled the wizard
+		if object.options.get( 'action' ) == 'cancel':
+			self.drive_wizard.reset()
+			self.uvmm_node_overview( object )
+			return
+
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 		node = self.uvmm.get_node_info( node_uri )
 
@@ -888,6 +924,37 @@ class handler( umch.simpleHandler ):
 		else:
 			res.status( 201 )
 			self.finished( object.id(), res, report = _( 'The instance <i>%(domain)s</i> was removed successfully' ) % { 'domain' : object.options[ 'domain' ] } )
+
+	def uvmm_domain_save( self, object ):
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain save' )
+		res = umcp.Response( object )
+
+		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
+
+		# save machine
+		resp = self.uvmm.domain_save( object.options[ 'node' ], domain_info )
+
+		if self.uvmm.is_error( resp ):
+			res.status( 301 )
+			self.finished( object.id(), res, report = _( 'Saving the instance <i>%(domain)s</i> failed' ) % { 'domain' : object.options[ 'domain' ] } )
+		else:
+			res.status( 201 )
+			self.finished( object.id(), res, report = _( 'The instance <i>%(domain)s</i> was saved successfully' ) % { 'domain' : object.options[ 'domain' ] } )
+
+	def uvmm_domain_restore( self, object ):
+		ud.debug( ud.ADMIN, ud.INFO, 'Domain restore' )
+		res = umcp.Response( object )
+
+		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
+
+		# save machine
+		resp = self.uvmm.domain_restore( object.options[ 'node' ], domain_info )
+
+		if self.uvmm.is_error( resp ):
+			res.status( 301 )
+			self.finished( object.id(), res, report = _( 'Restoring the instance <i>%(domain)s</i> failed' ) % { 'domain' : object.options[ 'domain' ] } )
 
 	def uvmm_drive_create( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Drive create' )
