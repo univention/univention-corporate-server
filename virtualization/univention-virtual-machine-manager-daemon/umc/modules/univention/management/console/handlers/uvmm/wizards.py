@@ -410,6 +410,7 @@ class InstanceWizard( umcd.IWizard ):
 			if domain.os_type == 'xen':
 				if self.profile[ 'advkernelconf' ] != 'TRUE': # use pyGrub
 					domain.bootloader = '/usr/bin/pygrub'
+					domain.bootloader_args = '-q' # Bug #19249: PyGrub timeout
 				else:
 					domain.kernel = object.options[ 'kernel' ]
 					domain.cmdline = object.options[ 'cmdline' ]

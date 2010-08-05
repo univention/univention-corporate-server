@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.79-5) unstable; urgency=low
+
+  * Disable PyGrub timeout (Bug #19249)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 05 Aug 2010 16:07:10 +0200
+
 univention-virtual-machine-manager-daemon (0.9.79-4) unstable; urgency=low
 
   * Fix LDAP performance problem (Bug #19256)

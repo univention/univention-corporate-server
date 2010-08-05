@@ -791,6 +791,7 @@ class handler( umch.simpleHandler ):
 				domain.initrd = handler._getstr( object, 'initrd' )
 			else:
 				domain.bootloader = '/usr/bin/pygrub'
+				domain.bootloader_args = '-q' # Bug #19249: PyGrub timeout
 		domain.boot = handler._getstr( object, 'bootdevs' )
 		domain.maxMem = MemorySize.str2num( object.options[ 'memory' ] )
 
