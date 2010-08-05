@@ -1,3 +1,9 @@
+univention-webui (4.0.22-1) unstable; urgency=low
+
+  * fix layout bug in IE8; Bug #19146
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 05 Aug 2010 10:25:00 +0200
+
 univention-webui (4.0.21-1) unstable; urgency=low
 
   * fixed read-only text input fields; Bug #19148

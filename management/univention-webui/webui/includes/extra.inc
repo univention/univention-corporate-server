@@ -722,7 +722,7 @@ class button extends extra{
 				}
 
 				$link = $href.'>
-<span class="'.$class.'">'.$this->basket['text'].'</span></a>
+<span class="'.$this->attribute[ 'type' ].'">'.$this->basket['text'].'</span></a>
 ';
 
 				$inp = '<input type="hidden" id="'.$this->byteindex.'" name="usrinput['.$this->byteindex.']" value="'.$this->basket['content'].'"></input>';
