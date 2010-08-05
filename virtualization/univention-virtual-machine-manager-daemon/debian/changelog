@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (0.9.79-1) unstable; urgency=low
+
+  * make selection box of boot devices read-only if instance is not
+    stopped; Bug #19148
+  * update german translation
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 05 Aug 2010 08:40:27 +0200
+
 univention-virtual-machine-manager-daemon (0.9.78-1) unstable; urgency=low
 
   * modifying settings of a virtual instance is just possible if it is stopped; Bug #19148

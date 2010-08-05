@@ -549,6 +549,10 @@ class handler( umch.simpleHandler ):
 					if key == str( dev ):
 						bd_default.append( ( key, descr ) )
 						break
+		if domain_info.state != 5:
+			boot_dev.syntax.may_change = False
+		else:
+			boot_dev.syntax.may_change = True
 		bootdevs = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'bootdevs' ], fields = [ boot_dev ], default = bd_default, attributes = { 'width' : '200' } )
 		if domain_info.state != 5:
 			bootdevs.syntax.may_change = False
