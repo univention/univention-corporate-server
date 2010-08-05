@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.79-2) unstable; urgency=low
+
+  * Fix /domain/devices/disk/@type='block' handling (Bug #18765)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 05 Aug 2010 09:13:49 +0200
+
 univention-virtual-machine-manager-daemon (0.9.79-1) unstable; urgency=low
 
   * make selection box of boot devices read-only if instance is not

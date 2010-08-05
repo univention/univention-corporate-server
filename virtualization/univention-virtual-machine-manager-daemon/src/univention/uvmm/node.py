@@ -824,7 +824,12 @@ def domain_define( uri, domain ):
 		# elem.appendChild( driver )
 
 		source = doc.createElement( 'source' )
-		source.setAttribute( 'file', disk.source )
+		if disk.type == Disk.TYPE_FILE:
+			source.setAttribute('file', disk.source)
+		elif disk.type == Disk.TYPE_BLOCK:
+			source.setAttribute('dev', disk.source)
+		else:
+			raise NodeError(_('Unknown disk type: %(type)d'), type=disk.type)
 		elem.appendChild( source )
 
 		# FIXME: Xen-PV should use xvd[a-z], Kvm-VirtIO uses vd[a-z]
