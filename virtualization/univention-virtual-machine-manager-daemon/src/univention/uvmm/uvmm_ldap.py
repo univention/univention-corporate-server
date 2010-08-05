@@ -216,9 +216,10 @@ def ldap_annotation(uuid, ldap_uri=None):
 		except IOError, e:
 			raise LdapConnectionError(_('Could not open LDAP-Machine connection'))
 	co = None
-	filter = "(uuid=%s)" % (uuid,)
+	dn = "%s=%s,%s" % (uvmm_info.mapping.mapName('uuid'), uuid, base)
+	filter = "(objectclass=*)"
 	try:
-		res = univention.admin.modules.lookup(uvmm_info, co, lo, scope='domain', base=base, filter=filter, required=True, unique=True)
+		res = univention.admin.modules.lookup(uvmm_info, co, lo, scope='base', base=dn, filter=filter, required=True, unique=True)
 		record = res[0]
 		return dict(record)
 	except univention.admin.uexceptions.base:
@@ -236,9 +237,10 @@ def ldap_modify(uuid, ldap_uri=None):
 		except IOError, e:
 			raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
 	co = None
-	filter = "(uuid=%s)" % (uuid,)
+	dn = "%s=%s,%s" % (uvmm_info.mapping.mapName('uuid'), uuid, base)
+	filter = "(objectclass=*)"
 	try:
-		res = univention.admin.modules.lookup(uvmm_info, co, lo, scope='domain', base=base, filter=filter, required=True, unique=True)
+		res = univention.admin.modules.lookup(uvmm_info, co, lo, scope='base', base=dn, filter=filter, required=True, unique=True)
 		record = res[0]
 		record.open()
 		record.commit = record.modify

@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.79-4) unstable; urgency=low
+
+  * Fix LDAP performance problem (Bug #19256)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 05 Aug 2010 14:53:07 +0200
+
 univention-virtual-machine-manager-daemon (0.9.79-3) unstable; urgency=low
 
   * Fix poweroff on KVM (Bug #19235)
