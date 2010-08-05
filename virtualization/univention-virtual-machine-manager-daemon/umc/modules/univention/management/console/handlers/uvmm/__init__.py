@@ -497,7 +497,7 @@ class handler( umch.simpleHandler ):
 		types = []
 		archs = []
 		for template in node.capabilities:
-			tech = '%s-%s' % ( template.domain, template.os_type )
+			tech = '%s-%s' % ( template.domain_type, template.os_type )
 			ud.debug( ud.ADMIN, ud.INFO, 'domain settings: virtualisation technology: %s' % tech )
 			if not tech in VirtTechSelect.MAPPING:
 				continue

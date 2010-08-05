@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.79-3) unstable; urgency=low
+
+  * Fix poweroff on KVM (Bug #19235)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 05 Aug 2010 10:35:04 +0200
+
 univention-virtual-machine-manager-daemon (0.9.79-2) unstable; urgency=low
 
   * Fix /domain/devices/disk/@type='block' handling (Bug #18765)

@@ -164,7 +164,7 @@ class DomainTemplate(object):
 		u'hvm'
 		>>> t[0].arch
 		u'i686'
-		>>> t[0].domain
+		>>> t[0].domain_type
 		u'qemu'
 		>>> t[0].emulator
 		u'/usr/bin/qemu'
@@ -211,7 +211,7 @@ class DomainTemplate(object):
 		self.os_type = os_type
 		self.features = features
 		self.arch = arch.getAttribute('name')
-		self.domain = dom.getAttribute('type')
+		self.domain_type = dom.getAttribute('type')
 
 		for n in [dom, arch]:
 			try:
@@ -220,7 +220,7 @@ class DomainTemplate(object):
 			except IndexError:
 				pass
 		else:
-			logger.error('No emulator specified in %s/%s' % (self.arch, self.domain))
+			logger.error('No emulator specified in %s/%s' % (self.arch, self.domain_type))
 			raise
 
 		for n in [dom, arch]:
@@ -228,7 +228,7 @@ class DomainTemplate(object):
 			if self.machines:
 				break
 		else:
-			logger.error('No machines specified in %s/%s' % (self.arch, self.domain))
+			logger.error('No machines specified in %s/%s' % (self.arch, self.domain_type))
 			raise
 
 		try:
@@ -237,7 +237,11 @@ class DomainTemplate(object):
 			self.loader = None # optional
 
 	def __str__(self):
-		return 'DomainTemplate(type=%s arch=%s dom=%s): %s, %s, %s, %s' % (self.os_type, self.arch, self.domain, self.emulator, self.loader, self.machines, self.features)
+		return 'DomainTemplate(arch=%s dom_type=%s os_type=%s): %s, %s, %s, %s' % (self.arch, self.domain_type, self.os_type, self.emulator, self.loader, self.machines, self.features)
+
+	def matches(self, domain):
+		'''Return True if domain matches os_type, arch and domain_type.'''
+		return self.arch == domain.arch and self.domain_type == domain.domain_type and self.os_type == domain.os_type
 
 class Domain(object):
 	"""Container for domain statistics."""
@@ -725,12 +729,13 @@ def domain_define( uri, domain ):
 
 	# find loader
 	loader = None
-	logger.debug('Searching for loader: %s' % node.pd.capabilities)
+	logger.debug('Searching for template: arch=%s domain_type=%s os_type=%s' % (domain.arch, domain.domain_type, domain.os_type))
 	for template in node.pd.capabilities:
-		logger.debug('template: %s' % str(template.arch))
-		if template.arch == domain.arch and template.os_type == domain.os_type and template.loader:
-			loader = doc.createElement( 'loader' )
-			loader.appendChild( doc.createTextNode( template.loader ) )
+		logger.debug('template: %s' % template)
+		if template.matches(domain):
+			if template.loader:
+				loader = doc.createElement('loader')
+				loader.appendChild(doc.createTextNode(template.loader))
 
 			if template.features:
 				features = doc.createElement('features')
@@ -738,6 +743,7 @@ def domain_define( uri, domain ):
 					feature = doc.createElement(f_name)
 					features.appendChild(feature)
 				doc.documentElement.appendChild(features)
+			break
 
 	type = doc.createElement( 'type' )
 	type.appendChild( doc.createTextNode( domain.os_type ) )
