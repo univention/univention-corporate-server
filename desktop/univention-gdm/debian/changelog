@@ -1,3 +1,9 @@
+univention-gdm (6.0.8-1) unstable; urgency=low
+
+  * multihead: calculate y size correctly and fix a typo. Bug #12124
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 05 Aug 2010 14:51:57 +0200
+
 univention-gdm (6.0.7-1) unstable; urgency=low
 
   * first disable secondary display in multihead mode. Bug #12124

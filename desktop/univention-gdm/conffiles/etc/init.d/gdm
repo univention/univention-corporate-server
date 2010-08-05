@@ -55,8 +55,8 @@ if [ -x /usr/sbin/univention-config-registry ]; then
 		if [ -n "$xorg_display_relative_position" ]; then
 			if [ "$xorg_display_relative_position" = "right" -o "$xorg_display_relative_position" = "left" ]; then
 				new_value="$((x_prim+x_sec)) $(max $y_prim $y_sec)"
-			elif [ "$xorg_display_relative_position" = "above" -o "$xorg_display_relative_position" = "belove" ]; then
-				new_value="$(max $x_prim $x_sec) $(y_prim+y_sec)"
+			elif [ "$xorg_display_relative_position" = "above" -o "$xorg_display_relative_position" = "below" ]; then
+				new_value="$(max $x_prim $x_sec) $((y_prim+y_sec))"
 			fi
 		fi
 		if [ -n "$new_value" ] && [ "$new_value" != "$xorg_display_virtual" ]; then
