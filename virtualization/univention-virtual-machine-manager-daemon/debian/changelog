@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.81-1) unstable; urgency=low
+
+  * add the tablet usb device on hvm machines only. Bug #19244
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 Aug 2010 16:03:38 +0200
+
 univention-virtual-machine-manager-daemon (0.9.80-1) unstable; urgency=low
 
   * always define a tablet usb device which has absolute cursor movement

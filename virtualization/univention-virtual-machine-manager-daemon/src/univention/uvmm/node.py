@@ -877,11 +877,13 @@ def domain_define( uri, domain ):
 			elem.appendChild( target )
 		devices.appendChild( elem )
 
-	tablet = doc.createElement( 'input' )
-	tablet.setAttribute( 'type', 'tablet' )
-	tablet.setAttribute( 'bus', 'usb' )
+  	# define a tablet usb device which has absolute cursor movement for a better VNC experience. Bug #19244
+	if domain.os_type == 'hvm':
+		tablet = doc.createElement( 'input' )
+		tablet.setAttribute( 'type', 'tablet' )
+		tablet.setAttribute( 'bus', 'usb' )
 
-	devices.appendChild( tablet )
+		devices.appendChild( tablet )
 
 	for graphic in domain.graphics:
 		logger.debug('GRAPHIC: %s' % graphic)
