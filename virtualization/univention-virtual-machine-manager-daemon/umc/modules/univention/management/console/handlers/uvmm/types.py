@@ -42,6 +42,9 @@ class DynamicSelect( umc.StaticSelection ):
 		umc.StaticSelection.__init__( self, label, required = required, may_change = may_change )
 
 	def choices( self ):
+		choices = []
+		if self._choices and isinstance( self._choices[ 0 ], ( list, tuple ) ):
+			return self._choices
 		return map( lambda x: ( x, x ), self._choices )
 
 	def update_choices( self, types ):

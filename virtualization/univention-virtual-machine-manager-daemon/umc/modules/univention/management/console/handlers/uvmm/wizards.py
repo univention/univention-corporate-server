@@ -59,6 +59,7 @@ class DriveWizard( umcd.IWizard ):
 		self.actions[ 'pool-selected' ] = self.pool_selected
 		self.uvmm = uvmmd.Client( auto_connect = False )
 		self.reset()
+		self.domain = None
 
 		# page 0
 		page = umcd.Page( self.title, _( 'What type of drive should be created?' ) )
@@ -87,21 +88,25 @@ class DriveWizard( umcd.IWizard ):
 		page = umcd.Page( self.title, _( 'The following drive will be created:' ) )
 		self.append( page )
 
-	def _create_pool_select_button( self, options ):
+	def _create_pool_select_button( self, options, button = True ):
 		choices = []
+		ud.debug( ud.ADMIN, ud.INFO, 'DRIVE-POOL: %s' % options.get( 'drive-pool', 'NOT SET' ) )
+		opts = copy.deepcopy( options )
+		opts[ 'action' ] = 'pool-selected'
+		action = umcd.Action( umcp.SimpleCommand( self.command, options = opts ) )
 		for storage in self.node.storages:
 			if not storage.active:
 				continue
-			opts = copy.copy( options )
-			opts[ 'action' ] = 'pool-selected'
-			opts[ 'drive-pool' ] = storage.name
-			action = umcd.Action( umcp.SimpleCommand( self.command, options = opts ) )
 			if storage.name == 'default':
 				descr = _( 'Local directory' )
 			else:
 				descr = storage.name
-			choices.append( { 'description' : descr, 'actions' : [ action, ] } )
-		return umcd.ChoiceButton( _( 'Pool' ), choices = choices, attributes = { 'width' : '300px' } )
+			choices.append( ( storage.name, descr ) )
+		ud.debug( ud.ADMIN, ud.INFO, 'DRIVE-POOL: %s' % options.get( 'drive-pool', 'NOT SET' ) )
+		if button:
+			return umcd.SimpleSelectButton( _( 'Pool' ), option = 'drive-pool', choices = choices, actions = [ action ], attributes = { 'width' : '300px' }, default = options.get( 'drive-pool' ) )
+		self.pool_syntax.update_choices( choices )
+		return umcd.Selection( ( 'drive-pool', self.pool_syntax ), default = options.get( 'drive-pool' ), attributes = { 'width' : '300px' } )
 
 	def reset( self ):
 		self.replace_title( self.title )
@@ -138,6 +143,11 @@ class DriveWizard( umcd.IWizard ):
 			choices.append( basename )
 		self.image_syntax.update_choices( choices )
 
+		# recreate pool button
+		btn = self._create_pool_select_button( object.options )
+		self[ 2 ].options[ 0 ] = btn
+		self[ 3 ].options[ 0 ] = btn
+
 		return self[ self.current ]
 
 	def _disk_type_text( self, disk_type ):
@@ -164,13 +174,12 @@ class DriveWizard( umcd.IWizard ):
 				self[ 2 ].hint = msg
 			else:
 				raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
-			btn = self._create_pool_select_button( object.options )
-			self[ 2 ].options[ 0 ] = btn
-			self[ 3 ].options[ 0 ] = btn
 		elif self.current == 1: # new or existing disk image?
 			if object.options[ 'existing-or-new-disk' ] == 'disk-new':
 				self.current = 3
+				btn = self._create_pool_select_button( object.options, button = False )
 			else:
+				btn = self._create_pool_select_button( object.options, button = True )
 				self.current = 2
 				if object.options[ 'drive-type' ] == 'disk':
 					self[ self.current ].description = _( 'Each hard drive image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list of available images is updated.' )
@@ -178,6 +187,8 @@ class DriveWizard( umcd.IWizard ):
 					self[ self.current ].description = _( 'Each ISO image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list of available images is updated.' )
 				else:
 					raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
+			self[ 2 ].options[ 0 ] = btn
+			self[ 3 ].options[ 0 ] = btn
 		elif self.current in ( 2, 3 ): # 2=create new, 3=select existing disk image
 			pool_path = self._get_pool_path( object.options[ 'drive-pool' ] )
 			if self.current == 2: # select existing disk image
@@ -194,9 +205,15 @@ class DriveWizard( umcd.IWizard ):
 						break
 				else:
 					ud.debug(ud.ADMIN, ud.INFO, 'Image not found: pool=%s type=%s image=%s vols=%s' % (drive_pool, drive_type, drive_image, map(str, vols)))
-					return umcd.WizardResult(False, _('Image not found')) # FIXME
+					return umcd.WizardResult(False, _('Image not found') ) # FIXME
 			elif self.current == 3: # create new disk image
 				object.options[ 'image-size' ] = MemorySize.str2str( object.options[ 'image-size' ], unit = 'MB' )
+				# TODO: Bug #19281
+				# vol_bytes = MemorySize.str2num( object.options[ 'image-size' ], unit = 'MB' )
+				# pool_bytes = self._available_space( object.options[ 'drive-pool' ] )
+				# if ( pool_bytes - vol_bytes ) < 0:
+				# 	object.options[ 'image-size' ] = MemorySize.num2str( int( pool_bytes * 0.9 ) )
+				# 	return umcd.WizardResult( False, _( 'There is not enough space left in the pool. The size is set to the maximum available space left.' ) )
 			drive_path = os.path.join( pool_path, object.options[ 'image-name' ] )
 			ud.debug( ud.ADMIN, ud.INFO, 'Check if image %s is already used' % drive_path )
 			is_used = self.uvmm.is_image_used( self.node_uri, drive_path )
@@ -245,6 +262,13 @@ class DriveWizard( umcd.IWizard ):
 				return pool.path
 
 		return ''
+
+	def _available_space( self, pool_name ):
+		for pool in self.node.storages:
+			if pool.name == pool_name:
+				return pool.available
+
+		return -1
 
 	def finish( self, object ):
 		# collect information about the drive
@@ -342,6 +366,7 @@ class InstanceWizard( umcd.IWizard ):
 			if mem_size > self.max_memory:
 				object.options[ 'memory' ] = MemorySize.num2str( self.max_memory * 0.75 )
 				return umcd.WizardResult( False, _( 'The physical server does not have that much memory. As a suggestion the a mount of memory was set to 75% of the available memory.' ) )
+			self.uvmm.next_drive_name( self.node_uri, object.options[ 'domain' ], object )
 			# activate drive wizard to add a first mandatory drive
 			if not self.drives:
 				self.drive_wizard.prev_first_page = True
@@ -454,8 +479,9 @@ class InstanceWizard( umcd.IWizard ):
 		# all next, prev and finished events must be redirected to the drive wizard
 		self.drive_wizard_active = True
 		self.drive_wizard_cancel = cancel
-		self.drive_number += 1
-		object.options[ 'image-name' ] = object.options[ 'name' ] + '-%d.img' % self.drive_number
+		# self.drive_number += 1
+		# object.options[ 'image-name' ] = object.options[ 'name' ] + '-%d.img' % self.drive_number
+		self.uvmm.next_drive_name( self.node_uri, object.options[ 'name' ], object, temp_drives = [ os.path.basename( drive.source ) for drive in self.drives ] )
 		object.options[ 'image-size' ] = '8 GB'
 		self.drive_wizard.replace_title( _( 'Add drive to <i>%(name)s</i>' ) % { 'name' : object.options[ 'name' ] } )
 		return self.drive_wizard.action( object, ( self.node_uri, self.node ) )

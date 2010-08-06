@@ -173,16 +173,29 @@ class Client( notifier.signals.Provider ):
 				return False
 		return True
 
-	def is_image_used( self, node, image ):
+	def is_image_used( self, node, image, relative = False ):
 		node_info = self.get_node_info( node )
 		if self.is_error( node_info ):
 			return None
 
+		if relative:
+			func = os.path.basename
+		else:
+			func = lambda x: x
 		for domain in node_info.domains:
 			for disk in domain.disks:
-				if disk.source == image:
+				if func( disk.source ) == image:
 					return domain.name
 		return None
+
+	def next_drive_name( self, node_uri, domain, object, temp_drives = [] ):
+		i = 0
+		pattern = '%s-%d.img'
+		name = pattern % ( domain, i )
+		while self.is_image_used( node_uri, name, relative = True ) or name in temp_drives:
+			i += 1
+			name = pattern % ( domain, i )
+		object.options[ 'image-name' ] = name
 
 	def get_domain_info( self, node, domain ):
 		node_info = self.get_node_info( node )

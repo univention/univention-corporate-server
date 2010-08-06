@@ -263,7 +263,7 @@ class handler( umch.simpleHandler ):
 						key = 'source'
 				options[ 'node' ] = object.options[ key ]
 				keys.append( 'node' )
-				if 'domain' in object.options:
+				if 'domain' in object.options and object.options[ 'domain' ] != 'NONE':
 					keys.append( 'domain' )
 		opts = {}
 		for key in keys[ : -1 ]:
@@ -863,7 +863,9 @@ class handler( umch.simpleHandler ):
 			self.domain_wizard.max_memory = node.phyMem
 			self.domain_wizard.archs = set([t.arch for t in node.capabilities])
 			self.domain_wizard.reset()
+
 		result = self.domain_wizard.action( object, ( node_uri, node ) )
+
 		# domain wizard finished?
 		if self.domain_wizard.result():
 			resp = self.uvmm.domain_configure( object.options[ 'node' ], self.domain_wizard.result() )
@@ -990,8 +992,14 @@ class handler( umch.simpleHandler ):
 		# user cancelled the wizard
 		if object.options.get( 'action' ) == 'cancel':
 			self.drive_wizard.reset()
+			del object.options[ 'action' ]
 			self.uvmm_domain_overview( object )
 			return
+
+		# starting the wizard
+		if not 'action' in object.options:
+			self.uvmm.next_drive_name( node_uri, object )
+			ud.debug( ud.ADMIN, ud.ERROR, 'Drive create: suggestion for drive name: %s' % str( object.options.get( 'drive-image' ) ) )
 
 		result = self.drive_wizard.action( object, ( node_uri, node ) )
 

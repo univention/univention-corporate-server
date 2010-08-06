@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.82-1) unstable; urgency=low
+
+  * re-worked the creation of drive name suggestions; Bug #18611
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 06 Aug 2010 18:26:20 +0200
+
 univention-virtual-machine-manager-daemon (0.9.81-1) unstable; urgency=low
 
   * add the tablet usb device on hvm machines only. Bug #19244
