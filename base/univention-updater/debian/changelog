@@ -1,3 +1,9 @@
+univention-updater (6.0.19-1) unstable; urgency=low
+
+  * execute /usr/sbin/univention-check-templates in postup.sh. Bug #19279
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 Aug 2010 22:09:58 +0200
+
 univention-updater (6.0.18-1) unstable; urgency=low
 
   * support preup and postup scripts for security updates. Bug #17111
