@@ -1,3 +1,9 @@
+univention-management-console (3.0.56-1) unstable; urgency=low
+
+  * add simple selection button; Bug #18611
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 06 Aug 2010 16:44:44 +0200
+
 univention-management-console (3.0.55-1) unstable; urgency=low
 
   * support read-only checkboxes and password fields; Bug #19148

@@ -190,7 +190,7 @@ def checkbox_map( storage, umcp_part ):
 		value = ''
 
 	layout_attrs = utils.layout_attrs( storage, umcp_part )
-	if not umcp_part.syntax.may_change:
+	if umcp_part.syntax and not umcp_part.syntax.may_change:
 		layout_attrs[ 'passive' ] = 'true'
 
 	attributes.update( { 'usertext' : value, 'helptext' : '' } )

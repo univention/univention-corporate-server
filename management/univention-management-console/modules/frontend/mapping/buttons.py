@@ -247,6 +247,60 @@ class SelectionButtonMap( IButtonMap, mapper.IMapper ):
 
 mapper.add( umcd.SelectionButton, SelectionButtonMap() )
 
+class SimpleSelectButtonMap( IButtonMap, mapper.IMapper ):
+	def __init__( self ):
+		IButtonMap.__init__( self )
+		mapper.IMapper.__init__( self )
+
+	def layout( self, storage, umcp_part ):
+		commit_button = button( _( 'Execute' ), {},	{ 'helptext' : '' } )
+		choices = []
+		default = utils.default( umcp_part )
+		for key, descr in umcp_part.choices:
+			if key == default:
+				choices.append( { 'name' : key, 'description' : descr, 'selected' : '1' } )
+			else:
+				choices.append( { 'name' : key, 'description' : descr } )
+
+		attributes = utils.attributes( umcp_part )
+		if not 'width' in attributes:
+			attributes.update( { 'width' : '300' } )
+		selection = question_select( umcp_part.get_text(), attributes, { 'choicelist' : choices, 'button' : commit_button, 'helptext' : umcp_part.get_text() } )
+		storage[ umcp_part.id() ] = ( ( selection, commit_button ), umcp_part )
+
+		return selection
+
+	def _create_request( self, action, value, option ):
+		req = copy.deepcopy( action.command )
+
+		if action.status_range:
+			req.options[ '_range' ] = action.status_range
+
+		if option:
+			req.options[ option ] = value
+
+		return req
+
+	def apply( self, storage, umcp_part, parameters, *args ):
+		self.storage = storage
+		select, btn = parameters
+
+		if not btn.pressed():
+			return []
+
+		value = select.getselected()
+		requests = []
+		for action in umcp_part.actions:
+			req = self._create_request( action, value, umcp_part.option )
+			if req:
+				requests.append( req )
+			else:
+				break
+
+		return requests
+
+mapper.add( umcd.SimpleSelectButton, SimpleSelectButtonMap() )
+
 class ChoiceButtonMap( IButtonMap, mapper.IMapper ):
 	def __init__( self ):
 		IButtonMap.__init__( self )

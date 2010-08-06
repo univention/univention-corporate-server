@@ -113,6 +113,13 @@ class SelectionButton( Button ):
 		Button.__init__( self, label, actions = actions, attributes = attributes, close_dialog = close_dialog )
 		self.choices = choices
 
+class SimpleSelectButton( Button ):
+	def __init__( self, label = '', option = None, choices = [], actions = [], attributes = {}, default = None, close_dialog = True ):
+		Button.__init__( self, label, actions = actions, attributes = attributes, close_dialog = close_dialog )
+		self.choices = choices
+		self.default = default
+		self.option = option
+
 class LinkButton( Button ):
 	def __init__( self, label = '', tag = None, actions = [], attributes = {}, close_dialog = True, helptext = None, current = False ):
 		if 'class' in attributes:
@@ -248,7 +255,7 @@ combination with confirmation dialogs)"""
 					actions = [ '::return' ], attributes = attributes )
 		self.fields = fields
 
-ButtonTypes = ( type( Button() ), type( SelectionButton() ), type( ChoiceButton() ),
+ButtonTypes = ( type( Button() ), type( SelectionButton() ), type( SimpleSelectButton() ), type( ChoiceButton() ),
 				type( CancelButton() ), type( CloseButton() ), type( LinkButton() ), 
 				type( ErrorButton() ), type( ResetButton() ), type( ReturnButton() ), type( SearchButton() ),
 				type( SetButton() ), type( AddButton() ), type( NextButton() ), type( PrevButton() ),
