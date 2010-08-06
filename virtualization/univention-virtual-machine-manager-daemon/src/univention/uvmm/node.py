@@ -877,6 +877,12 @@ def domain_define( uri, domain ):
 			elem.appendChild( target )
 		devices.appendChild( elem )
 
+	tablet = doc.createElement( 'input' )
+	tablet.setAttribute( 'type', 'tablet' )
+	tablet.setAttribute( 'bus', 'usb' )
+
+	devices.appendChild( tablet )
+
 	for graphic in domain.graphics:
 		logger.debug('GRAPHIC: %s' % graphic)
 		elem = doc.createElement( 'graphics' )
