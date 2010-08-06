@@ -4,3 +4,9 @@ ucs-xendomains.patch
 xend-restart-time.patch
 18690_xend_block.diff
 pygrub_empty_root.patch
+upstream-001-2F754ae5d0077d
+upstream-002-2F2bbaf4e06c1d
+upstream-003-2Fc4b9a16c20a2
+upstream-004-2F985dcbf87197
+upstream-005-2Ffb569acd6b94
+upstream-006-2F14709d196e43

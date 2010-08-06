@@ -1,0 +1,244 @@
+
+# HG changeset patch
+# User Keir Fraser <keir.fraser@citrix.com>
+# Date 1276160957 -3600
+# Node ID 985dcbf87197e8f5517ccf8658393cd74a09398c
+# Parent c4b9a16c20a2f8795d3be0b03387c2d2f7c02e4b
+libxc: Remove obsolete xc_find_device_number() declaration.
+
+Signed-off-by: Keir Fraser <keir.fraser@citrix.com>
+xen-unstable changeset:   21528:d4a91417a023
+xen-unstable date:        Fri Jun 04 10:46:32 2010 +0100
+
+
+tools: assume that special Xen devices have been created by the platform
+
+Remove all the magic surrounding the special Xen devices in Linux
+specific code whereby we attempt to figure out what the correct
+major:minor number is and check the the existing device has these
+numbers etc. In 2010 we really should be able to trust that the
+platform has created the devices correctly or provide correct
+configuration settings such that they are without resorting to tearing
+down the platform configured state and rebuilding it.
+
+tools/hotplug/Linux/xen-backend.rules already contains the necessary
+udev rules to create /dev/xen/evtchn and friends in the correct place.
+
+Signed-off-by: Ian Campbell <ian.campbell@citrix.com>
+xen-unstable changeset:   21507:a3bdee5a20da
+xen-unstable date:        Wed Jun 02 10:54:32 2010 +0100
+
+--- a/xen-3.4.3/tools/blktap/drivers/blktapctrl_linux.c	Tue Jun 08 12:00:22 2010 +0100
++++ b/tools/xen/blktap/drivers/blktapctrl_linux.c	Thu Jun 10 10:09:17 2010 +0100
+@@ -79,31 +79,11 @@ int blktap_interface_create(int ctlfd, i
+ 
+ int blktap_interface_open(void)
+ {
+-	char *devname;
+-	int ret;
+ 	int ctlfd;
+ 
+-	/* Attach to blktap0 */
+-	if (asprintf(&devname,"%s/%s0", BLKTAP_DEV_DIR, BLKTAP_DEV_NAME) == -1)
+-		goto open_failed;
+-
+-	ret = xc_find_device_number("blktap0");
+-	if (ret < 0) {
+-		DPRINTF("couldn't find device number for 'blktap0'\n");
+-		goto open_failed;
+-	}
+-
+-	blktap_major = major(ret);
+-	make_blktap_dev(devname,blktap_major, 0);
+-
+-	ctlfd = open(devname, O_RDWR);
+-	if (ctlfd == -1) {
++	ctlfd = open(BLKTAP_DEV_DIR "/" BLKTAP_DEV_NAME "0", O_RDWR);
++	if (ctlfd == -1)
+ 		DPRINTF("blktap0 open failed\n");
+-		goto open_failed;
+-	}
+ 
+ 	return ctlfd;
+-
+-open_failed:
+-	return -1;
+ }
+--- a/xen-3.4.3/tools/libxc/xc_linux.c	Tue Jun 08 12:00:22 2010 +0100
++++ b/tools/xen/libxc/xc_linux.c	Thu Jun 10 10:09:17 2010 +0100
+@@ -167,102 +167,11 @@ int do_xen_hypercall(int xc_handle, priv
+                       (unsigned long)hypercall);
+ }
+ 
+-#define MTAB "/proc/mounts"
+-#define MAX_PATH 255
+-#define _STR(x) #x
+-#define STR(x) _STR(x)
+-
+-static int find_sysfsdir(char *sysfsdir)
+-{
+-    FILE *fp;
+-    char type[MAX_PATH + 1];
+-
+-    if ( (fp = fopen(MTAB, "r")) == NULL )
+-        return -1;
+-
+-    while ( fscanf(fp, "%*s %"
+-                   STR(MAX_PATH)
+-                   "s %"
+-                   STR(MAX_PATH)
+-                   "s %*s %*d %*d\n",
+-                   sysfsdir, type) == 2 )
+-    {
+-        if ( strncmp(type, "sysfs", 5) == 0 )
+-            break;
+-    }
+-
+-    fclose(fp);
+-
+-    return ((strncmp(type, "sysfs", 5) == 0) ? 0 : -1);
+-}
+-
+-int xc_find_device_number(const char *name)
+-{
+-    FILE *fp;
+-    int i, major, minor;
+-    char sysfsdir[MAX_PATH + 1];
+-    static char *classlist[] = { "xen", "misc" };
+-
+-    for ( i = 0; i < (sizeof(classlist) / sizeof(classlist[0])); i++ )
+-    {
+-        if ( find_sysfsdir(sysfsdir) < 0 )
+-            goto not_found;
+-
+-        /* <base>/class/<classname>/<devname>/dev */
+-        strncat(sysfsdir, "/class/", MAX_PATH);
+-        strncat(sysfsdir, classlist[i], MAX_PATH);
+-        strncat(sysfsdir, "/", MAX_PATH);
+-        strncat(sysfsdir, name, MAX_PATH);
+-        strncat(sysfsdir, "/dev", MAX_PATH);
+-
+-        if ( (fp = fopen(sysfsdir, "r")) != NULL )
+-            goto found;
+-    }
+-
+- not_found:
+-    errno = -ENOENT;
+-    return -1;
+-
+- found:
+-    if ( fscanf(fp, "%d:%d", &major, &minor) != 2 )
+-    {
+-        fclose(fp);
+-        goto not_found;
+-    }
+-
+-    fclose(fp);
+-
+-    return makedev(major, minor);
+-}
+-
+-#define EVTCHN_DEV_NAME  "/dev/xen/evtchn"
++#define DEVXEN "/dev/xen/"
+ 
+ int xc_evtchn_open(void)
+ {
+-    struct stat st;
+-    int fd;
+-    int devnum;
+-
+-    devnum = xc_find_device_number("evtchn");
+-
+-    /* Make sure any existing device file links to correct device. */
+-    if ( (lstat(EVTCHN_DEV_NAME, &st) != 0) || !S_ISCHR(st.st_mode) ||
+-         (st.st_rdev != devnum) )
+-        (void)unlink(EVTCHN_DEV_NAME);
+-
+- reopen:
+-    if ( (fd = open(EVTCHN_DEV_NAME, O_RDWR)) == -1 )
+-    {
+-        if ( (errno == ENOENT) &&
+-            ((mkdir("/dev/xen", 0755) == 0) || (errno == EEXIST)) &&
+-             (mknod(EVTCHN_DEV_NAME, S_IFCHR|0600, devnum) == 0) )
+-            goto reopen;
+-
+-        PERROR("Could not open event channel interface");
+-        return -1;
+-    }
+-
+-    return fd;
++    return open(DEVXEN "evtchn", O_RDWR);
+ }
+ 
+ int xc_evtchn_close(int xce_handle)
+@@ -376,34 +285,9 @@ void discard_file_cache(int fd, int flus
+     errno = saved_errno;
+ }
+ 
+-#define GNTTAB_DEV_NAME "/dev/xen/gntdev"
+-
+ int xc_gnttab_open(void)
+ {
+-    struct stat st;
+-    int fd;
+-    int devnum;
+-    
+-    devnum = xc_find_device_number("gntdev");
+-    
+-    /* Make sure any existing device file links to correct device. */
+-    if ( (lstat(GNTTAB_DEV_NAME, &st) != 0) || !S_ISCHR(st.st_mode) ||
+-         (st.st_rdev != devnum) )
+-        (void)unlink(GNTTAB_DEV_NAME);
+-    
+-reopen:
+-    if ( (fd = open(GNTTAB_DEV_NAME, O_RDWR)) == -1 )
+-    {
+-        if ( (errno == ENOENT) &&
+-             ((mkdir("/dev/xen", 0755) == 0) || (errno == EEXIST)) &&
+-             (mknod(GNTTAB_DEV_NAME, S_IFCHR|0600, devnum) == 0) )
+-            goto reopen;
+-        
+-        PERROR("Could not open grant table interface");
+-        return -1;
+-    }
+-    
+-    return fd;
++    return open(DEVXEN "gntdev", O_RDWR);
+ }
+ 
+ int xc_gnttab_close(int xcg_handle)
+--- a/xen-3.4.3/tools/libxc/xc_minios.c	Tue Jun 08 12:00:22 2010 +0100
++++ b/tools/xen/libxc/xc_minios.c	Thu Jun 10 10:09:17 2010 +0100
+@@ -126,12 +126,6 @@ int do_xen_hypercall(int xc_handle, priv
+         return -1;
+     }
+     return call.result;
+-}
+-
+-int xc_find_device_number(const char *name)
+-{
+-    printf("xc_find_device_number(%s)\n", name);
+-    do_exit();
+ }
+ 
+ int xc_evtchn_open(void)
+--- a/xen-3.4.3/tools/libxc/xenctrl.h	Tue Jun 08 12:00:22 2010 +0100
++++ b/tools/xen/libxc/xenctrl.h	Thu Jun 10 10:09:17 2010 +0100
+@@ -96,16 +96,6 @@ int xc_interface_close(int xc_handle);
+ int xc_interface_close(int xc_handle);
+ 
+ /*
+- * KERNEL INTERFACES
+- */
+-
+-/*
+- * Resolve a kernel device name (e.g., "evtchn", "blktap0") into a kernel
+- * device number. Returns -1 on error (and sets errno).
+- */
+-int xc_find_device_number(const char *name);
+-
+-/*
+  * DOMAIN DEBUGGING FUNCTIONS
+  */
+ 
+

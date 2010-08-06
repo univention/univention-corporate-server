@@ -1,3 +1,16 @@
+xen-3.4 (3.4.3-8) unstable; urgency=low
+
+  * added upstream patches from http://xenbits.xensource.com/xen-3.4-
+    testing.hg for Bug #18356:
+    http://xenbits.xensource.com/xen-3.4-testing.hg?rev/754ae5d0077d
+    http://xenbits.xensource.com/xen-3.4-testing.hg?rev/2bbaf4e06c1d
+    http://xenbits.xensource.com/xen-3.4-testing.hg?rev/c4b9a16c20a2
+    http://xenbits.xensource.com/xen-3.4-testing.hg?rev/985dcbf87197
+    http://xenbits.xensource.com/xen-3.4-testing.hg?rev/fb569acd6b94
+    http://xenbits.xensource.com/xen-3.4-testing.hg?rev/14709d196e43
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 Aug 2010 07:00:00 +0200
+
 xen-3.4 (3.4.3-7) unstable; urgency=low
 
   * ignore empty grub entry directive. Bug #18863
