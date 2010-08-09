@@ -8,6 +8,8 @@ from univention.uvmm.eventloop import *
 virEventLoopPureStart()
 virEventLoopPureRegister()
 
+STATE = ['no state', 'running', 'idle', 'paused', 'shut down', 'shut off', 'crashed']
+
 sys.argv += ['xen:///', 'DOS3']
 sys.argv += ['xen://xen4.opendvdi.local/', 'DOS3']
 
@@ -21,11 +23,11 @@ d = c.lookupByName(sys.argv[2])
 state = None
 try:
 	while True:
-	  s = d.info()[0]
-	  if s != state:
-		print "%s\t%s" % (time.time(), s)
-		state = s
-	  time.sleep(1)
+		s = d.info()[0]
+		if s != state:
+			print "%s\t%s" % (time.time(), STATE[s])
+			state = s
+		time.sleep(1)
 except KeyboardInterrupt:
 	pass
 

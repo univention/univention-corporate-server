@@ -66,7 +66,8 @@ def create_storage_pool(conn, dir, pool_name='default'):
 		p.setAutostart(True)
 		p.create( 0 )
 	except libvirt.libvirtError, e:
-		raise StorageError(_('Error creating storage pool "%(pool)s" for "%(domain)s": %(error)s'), pool=pool_name, domain=domain.name, error=e)
+		logger.error(e)
+		raise StorageError(_('Error creating storage pool "%(pool)s" for "%(domain)s": %(error)s'), pool=pool_name, domain=domain.name, error=e.get_error_message())
 
 def create_storage_volume(conn, domain, disk):
 	"""Create disk for domain."""
@@ -77,7 +78,7 @@ def create_storage_volume(conn, domain, disk):
 	except libvirt.libvirtError, e:
 		logger.info( 'create_storage_volume: libvirt error (%d): %s' % ( e.get_error_code(), str( e ) ) )
 		if not e.get_error_code() in ( libvirt.VIR_ERR_INVALID_STORAGE_VOL, libvirt.VIR_ERR_NO_STORAGE_VOL ):
-			raise StorageError(_('Error locating storage volume "%(volume)s" for "%(domain)s": %(error)s'), volume=disk.source, domain=domain.name, error=e)
+			raise StorageError(_('Error locating storage volume "%(volume)s" for "%(domain)s": %(error)s'), volume=disk.source, domain=domain.name, error=e.get_error_message())
 
 	for pool_name in conn.listStoragePools() + conn.listDefinedStoragePools():
 		try:
@@ -89,7 +90,8 @@ def create_storage_volume(conn, domain, disk):
 				break
 		except libvirt.libvirtError, e:
 			if e.get_error_code() != libvirt.VIR_ERR_NO_STORAGE_POOL:
-				raise StorageError(_('Error locating storage pool "%(pool)s" for "%(domain)s": %(error)s'), pool=pool_name, domain=domain.name, error=e)
+				logger.error(e)
+				raise StorageError(_('Error locating storage pool "%(pool)s" for "%(domain)s": %(error)s'), pool=pool_name, domain=domain.name, error=e.get_error_message())
 		except IndexError, e:
 			pass
 	else:
@@ -120,7 +122,8 @@ def create_storage_volume(conn, domain, disk):
 		logger.info('New disk "%s" for "%s"(%s) defined.' % (v.path(), domain.name, domain.uuid))
 		return v
 	except libvirt.libvirtError, e:
-		raise StorageError(_('Error creating storage volume "%(name)s" for "%(domain)s": %(error)s'), name=disk.source, domain=domain.name, error=e)
+		logger.error(e)
+		raise StorageError(_('Error creating storage volume "%(name)s" for "%(domain)s": %(error)s'), name=disk.source, domain=domain.name, error=e.get_error_message())
 
 def get_storage_volumes( uri, pool_name, type = None ):
 	from node import Disk, node_query
@@ -168,9 +171,9 @@ def destroy_storage_volumes(conn, volumes, ignore_error=False):
 			refs.append(ref)
 		except libvirt.libvirtError, e:
 			if ignore_error:
-				logger.warning("Error translating name to volume: %s" % e)
+				logger.warning("Error translating name to volume: %s" % e.get_error_message())
 			else:
-				logger.error("Error translating name to volume: %s. Ignored." % e)
+				logger.error("Error translating name to volume: %s. Ignored." % e.get_error_message())
 				raise
 	# 2. delete them all
 	for volume in refs:
@@ -178,9 +181,9 @@ def destroy_storage_volumes(conn, volumes, ignore_error=False):
 			volume.delete(0)
 		except libvirt.libvirtError, e:
 			if ignore_error:
-				logger.warning("Error deleting volume: %s" % e)
+				logger.warning("Error deleting volume: %s" % e.get_error_message())
 			else:
-				logger.error("Error deleting volume: %s. Ignored." % e)
+				logger.error("Error deleting volume: %s. Ignored." % e.get_error_message())
 				raise
 
 def get_storage_pool_info( node, name ):
@@ -213,4 +216,4 @@ def storage_pools( uri = None, node = None ):
 		return pools
 	except libvirt.libvirtError, e:
 		logger.error(e)
-		raise StorageError(_('Error listing pools at "%(uri)s": %(error)s'), uri=uri, error=e)
+		raise StorageError(_('Error listing pools at "%(uri)s": %(error)s'), uri=uri, error=e.get_error_message())

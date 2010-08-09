@@ -714,7 +714,8 @@ def domain_define( uri, domain ):
 			old_stat = node.domains[domain.uuid].key()
 		except libvirt.libvirtError, e:
 			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
-				raise NodeError(_('Error retrieving old domain "%(domain)s": %(error)s'), domain=domain.name, error=e)
+				logger.error(e)
+				raise NodeError(_('Error retrieving old domain "%(domain)s": %(error)s'), domain=domain.name, error=e.get_error_message())
 	if domain.uuid:
 		elem = doc.createElement( 'uuid' )
 		elem.appendChild( doc.createTextNode( domain.uuid ) )
@@ -911,7 +912,8 @@ def domain_define( uri, domain ):
 			logger.info('Old domain "%s" removed.' % (domain.name,))
 		except libvirt.libvirtError, e:
 			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
-				raise NodeError(_('Error removing domain "%(domain)s": %(error)s'), domain=domain.name, error=e)
+				logger.error(e)
+				raise NodeError(_('Error removing domain "%(domain)s": %(error)s'), domain=domain.name, error=e.get_error_message())
 	if domain.uuid:
 		try:
 			dom = conn.lookupByUUIDString(domain.uuid)
@@ -920,14 +922,16 @@ def domain_define( uri, domain ):
 			logger.info('Old domain "%s" removed.' % (domain.uuid,))
 		except libvirt.libvirtError, e:
 			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
-				raise NodeError(_('Error removing domain "%(domain)s": %(error)s'), domain=domain.uuid, error=e)
+				logger.error(e)
+				raise NodeError(_('Error removing domain "%(domain)s": %(error)s'), domain=domain.name, error=e.get_error_message())
 
 	try:
 		logger.debug('XML DUMP: %s' % doc.toxml())
 		d = conn.defineXML(doc.toxml())
 		domain.uuid = d.UUIDString()
 	except libvirt.libvirtError, e:
-		raise NodeError(_('Error defining domain "%(domain)s: %(error)s'), domain=domain.name, error=e)
+		logger.error(e)
+		raise NodeError(_('Error defining domain "%(domain)s: %(error)s'), domain=domain.name, error=e.get_error_message())
 	logger.info('New domain "%s"(%s) defined.' % (domain.name, domain.uuid))
 
 	if domain.annotations:
@@ -1001,7 +1005,7 @@ def domain_state(uri, domain, state):
 				time.sleep(1)
 	except libvirt.libvirtError, e:
 		logger.error(e)
-		raise NodeError(_('Error managing domain "%(domain)s": %(error)s'), domain=domain, error=e)
+		raise NodeError(_('Error managing domain "%(domain)s": %(error)s'), domain=domain, error=e.get_error_message())
 
 def domain_save(uri, domain, statefile):
 	"""Save defined domain."""
@@ -1015,7 +1019,7 @@ def domain_save(uri, domain, statefile):
 		node.wait_update( domain, old_state )
 	except libvirt.libvirtError, e:
 		logger.error(e)
-		raise NodeError(_('Error saving domain "%(domain)s": %(error)s'), domain=domain, error=e)
+		raise NodeError(_('Error saving domain "%(domain)s": %(error)s'), domain=domain, error=e.get_error_message())
 
 def domain_restore(uri, domain, statefile):
 	"""Restore defined domain."""
@@ -1029,7 +1033,7 @@ def domain_restore(uri, domain, statefile):
 		node.wait_update( domain, old_state )
 	except libvirt.libvirtError, e:
 		logger.error(e)
-		raise NodeError(_('Error restoring domain "%(domain)s": %(error)s'), domain=domain, error=e)
+		raise NodeError(_('Error restoring domain "%(domain)s": %(error)s'), domain=domain, error=e.get_error_message())
 
 def domain_undefine(uri, domain, volumes=[]):
 	"""Undefine a domain and its volumes on a node."""
@@ -1044,7 +1048,7 @@ def domain_undefine(uri, domain, volumes=[]):
 		dom.undefine()
 	except libvirt.libvirtError, e:
 		logger.error(e)
-		raise NodeError(_('Error undefining domain "%(domain)s": %(error)s'), domain=domain, error=e)
+		raise NodeError(_('Error undefining domain "%(domain)s": %(error)s'), domain=domain, error=e.get_error_message())
 
 def domain_migrate(source_uri, domain, target_uri):
 	"""Migrate a domain from node to the target node."""
@@ -1083,7 +1087,7 @@ def domain_migrate(source_uri, domain, target_uri):
 			logger.warning('Domain "%(domain)s" still not migrated from "%(source)s" to "%(target)s"' % {'domain':domain, 'source':source_uri, 'target':target_uri})
 	except libvirt.libvirtError, e:
 		logger.error(e)
-		raise NodeError(_('Error migrating domain "%(domain)s": %(error)s'), domain=domain, error=e)
+		raise NodeError(_('Error migrating domain "%(domain)s": %(error)s'), domain=domain, error=e.get_error_message())
 
 if __name__ == '__main__':
 	XEN_CAPABILITIES = '''<capabilities>

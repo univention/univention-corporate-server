@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.85-1) unstable; urgency=low
+
+  * Only show error_message but log full exception (Bug #19123)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 09 Aug 2010 12:19:39 +0200
+
 univention-virtual-machine-manager-daemon (0.9.84-1) unstable; urgency=low
 
   * when removing a drive from a virtual instance the user may choose to
