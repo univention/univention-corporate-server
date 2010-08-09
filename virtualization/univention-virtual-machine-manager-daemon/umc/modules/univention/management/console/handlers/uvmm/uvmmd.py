@@ -441,6 +441,18 @@ class Client( notifier.signals.Provider ):
 
 		return []
 
+	def storage_volumes_destroy( self, node_uri, volumes ):
+		req = protocol.Request_STORAGE_VOLUMES_DESTROY()
+		req.uri = node_uri
+		req.volumes = volumes
+		if not self.send( req.pack() ):
+			raise ConnectionError()
+		response = self.recv_blocking()
+		if not self.is_error( response ):
+			return True
+
+		return False
+
 if __name__ == '__main__':
 	notifier.init()
 

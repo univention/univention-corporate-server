@@ -267,6 +267,23 @@ class _Commands:
 			raise CommandError( 'STORAGE_VOLUMES', e )
 
 	@staticmethod
+	def STORAGE_VOLUMES_DESTROY( server, request ):
+		'''destroy all given volumes in a pool.'''
+		if not isinstance( request.uri, basestring ):
+			raise CommandError( 'STORAGE_VOLUMES_DESTROY' , _( 'uri != string: %(uri)s' ), uri = request.uri )
+		for vol in request.volumes:
+			if not isinstance( vol, basestring ):
+				raise CommandError( 'STORAGE_VOLUMES_DESTROY', _('volumes[] != string: %(volume)s'), volume = vol )
+		logger.debug('STORAGE_VOLUMES_DESTROY %s]' % request.uri )
+		try:
+			n = node.node_query( request.uri )
+			storage.destroy_storage_volumes( n.conn, request.volumes, ignore_error = True)
+			res = protocol.Response_OK()
+			return res
+		except node.NodeError, e:
+			raise CommandError( 'STORAGE_VOLUMES_DESTROY', e )
+
+	@staticmethod
 	def AUTHENTICATION(server, request):
 		'''Handle authentication.'''
 		# handled in unix.py#AuthenticatedStreamHandler

@@ -180,6 +180,13 @@ class Request_STORAGE_VOLUMES(Request):
 		self.pool = None
 		self.type = None # DISK CDROM
 
+class Request_STORAGE_VOLUMES_DESTROY(Request):
+	"""List all volumes in pool."""
+	def _default(self):
+		self.command = 'STORAGE_VOLUMES_DESTROY'
+		self.uri = None
+		self.volumes = None
+
 class Request_STORAGE_DEFINE(Request):
 	"""Create new volume in pool."""
 	def _default(self):

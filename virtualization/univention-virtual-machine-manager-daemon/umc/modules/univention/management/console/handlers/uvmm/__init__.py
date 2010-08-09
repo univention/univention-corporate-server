@@ -578,6 +578,7 @@ class handler( umch.simpleHandler ):
 			first = True
 			for dev in domain_info.disks:
 				remove_cmd = umcp.SimpleCommand( 'uvmm/drive/remove', options = copy.copy( object.options ) )
+				remove_cmd.incomplete = True
 				bootdev_cmd = umcp.SimpleCommand( 'uvmm/drive/bootdevice', options = copy.copy( object.options ) )
 				remove_cmd.options[ 'disk' ] = None
 				values = {}
@@ -601,7 +602,7 @@ class handler( umch.simpleHandler ):
 					values[ 'size' ] = MemorySize.num2str( dev.size )
 
 				remove_cmd.options[ 'disk' ] = copy.copy( dev.source )
-				remove_btn = umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd ), umcd.Action( overview_cmd ) ] )
+				remove_btn = umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd ) ] )
 				if domain_info.state == 5:
 					if not first:
 						bootdev_cmd.options[ 'disk' ] = dev.source
@@ -1005,7 +1006,7 @@ class handler( umch.simpleHandler ):
 
 		# starting the wizard
 		if not 'action' in object.options:
-			self.uvmm.next_drive_name( node_uri, object )
+			self.uvmm.next_drive_name( node_uri, object.options[ 'domain' ], object )
 			ud.debug( ud.ADMIN, ud.ERROR, 'Drive create: suggestion for drive name: %s' % str( object.options.get( 'drive-image' ) ) )
 
 		result = self.drive_wizard.action( object, ( node_uri, node ) )
@@ -1037,22 +1038,59 @@ class handler( umch.simpleHandler ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Drive remove' )
 		res = umcp.Response( object )
 
-		# remove domain
-		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
-		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
-		new_disks = []
-		for dev in domain_info.disks:
-			if dev.source != object.options[ 'disk' ]:
-				new_disks.append( dev )
-		domain_info.disks = new_disks
-		resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
+		if object.incomplete:
+			ud.debug( ud.ADMIN, ud.INFO, 'drive remove' )
+			( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
+			if not success:
+				self.finished(object.id(), res)
+				return
+			# remove domain
+			# if the attached drive could be removed successfully the user should be ask, if the image should be removed
+			node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+			node = self.uvmm.get_node_info( node_uri )
+			lst = umcd.List()
 
-		if self.uvmm.is_error( resp ):
-			res.status( 301 )
-			self.finished( object.id(), res, report = _( 'Removing the drive <i>%(drive)s</i> failed' ) % { 'drive' : os.path.basename( object.options[ 'disk' ] ) } )
+			lst.add_row( [ umcd.Cell( umcd.Text( _( 'When detaching a disk from the virtual instance the image may also be deleted. Should the image %(image)s be removed also?' ) % { 'image' : object.options[ 'disk' ] } ), attributes = { 'colspan' : '3' } ) ] )
+			opts = copy.copy( object.options )
+			overview = umcp.SimpleCommand( 'uvmm/domain/overview', options = opts )
+			opts = copy.copy( object.options )
+			opts[ 'drive-remove' ] = True
+			remove = umcp.SimpleCommand( 'uvmm/drive/remove', options = opts )
+			opts = copy.copy( object.options )
+			opts[ 'drive-remove' ] = False
+			detach = umcp.SimpleCommand( 'uvmm/drive/remove', options = opts )
+			no = umcd.Button( _( 'No' ), actions = [ umcd.Action( detach ), umcd.Action( overview ) ] )
+			yes = umcd.Button( _( 'Yes' ), actions = [ umcd.Action( remove ), umcd.Action( overview ) ], default = True )
+			lst.add_row( [ '' ] )
+			lst.add_row( [ umcd.Cell( no, attributes = { 'align' : 'right', 'colspan' : '2' } ), umcd.Cell( yes, attributes = { 'align' : 'right' } ) ] )
+			res.dialog[ 0 ].set_dialog( lst )
+			self.finished(object.id(), res)
 		else:
+			node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+			domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
+			new_disks = []
+			for dev in domain_info.disks:
+				if dev.source != object.options[ 'disk' ]:
+					new_disks.append( dev )
+			domain_info.disks = new_disks
+			resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
+
+			if self.uvmm.is_error( resp ):
+				res.status( 301 )
+				self.finished( object.id(), res, report = _( 'Detaching the drive <i>%(drive)s</i> failed' ) % { 'drive' : os.path.basename( object.options[ 'disk' ] ) } )
+				return
+
+			if object.options.get( 'drive-remove', False ):
+				resp = self.uvmm.storage_volumes_destroy( node_uri, [ object.options[ 'disk' ], ] )
+
+				if not resp:
+					res.status( 301 )
+					self.finished( object.id(), res, report = _( 'Removing the image <i>%(disk)s</i> failed. It must be removed manually.' ) % { 'drive' : os.path.basename( object.options[ 'disk' ] ) } )
+					return
+				res.status( 201 )
+				self.finished( object.id(), res, report = _( 'The drive <i>%(drive)s</i> was detached and removed successfully' ) % { 'drive' : os.path.basename( object.options[ 'disk' ] ) } )
 			res.status( 201 )
-			self.finished( object.id(), res, report = _( 'The drive <i>%(drive)s</i> was removed successfully' ) % { 'drive' : os.path.basename( object.options[ 'disk' ] ) } )
+			self.finished( object.id(), res, report = _( 'The drive <i>%(drive)s</i> was detached successfully' ) % { 'drive' : os.path.basename( object.options[ 'disk' ] ) } )
 
 	def uvmm_drive_bootdevice( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Drive boot device' )
