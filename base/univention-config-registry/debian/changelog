@@ -1,4 +1,4 @@
-univention-config-registry (6.0.19-1.1) unstable; urgency=low
+univention-config-registry (6.0.20-1) unstable; urgency=low
 
   * added a script which displays not updated templates. Bug #19279
 
