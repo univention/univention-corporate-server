@@ -1,3 +1,9 @@
+univention-updater (6.0.21-1) unstable; urgency=low
+
+  * fixed preup component test Bug #19081
+
+ -- Felix Botner <botner@univention.de>  Mon, 09 Aug 2010 10:03:09 +0200
+
 univention-updater (6.0.20-1) unstable; urgency=low
 
   * redirect output of "at" to logfile (Bug #19153)

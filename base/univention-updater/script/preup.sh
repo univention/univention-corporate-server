@@ -50,9 +50,9 @@ for scope in scopes:
 
 		available = []
 		updater = UniventionUpdater()
-		available += updater.get_component_repositories(scope, ["2.4"], debug=False)
+		available += updater.get_component_repositories(scope, ["2.4"])
 		updater = LocalUpdater()
-		available += updater.get_component_repositories(scope, ["2.4"], debug=False)
+		available += updater.get_component_repositories(scope, ["2.4"])
 		if not available:
 			print scope
 			sys.exit(1)
@@ -65,6 +65,7 @@ if [ -n "$doUpdateCheck" -a "$doUpdateCheck" = "no" ]; then
 else
 	scope=$(python2.4 $updateCheck)
 	if [ ! $? -eq 0 ]; then
+		scope=$(echo $scope | sed 's|# The site.*was not found ||')
 		echo "An update to UCS 2.4 without the component \"$scope\" is
 not possible because the component \"$scope\" is required."
 		rm -f $updateCheck
