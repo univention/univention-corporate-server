@@ -47,12 +47,12 @@ fi
 
 tmpfile=$(mktemp)
 
-find /etc/univention/templates/files/ -name "*.dpkg-new" >$tmpfile 2>/dev/null
+find /etc/univention/templates/files/ -name "*.dpkg-new" -o -name "*.dpkg-dist" >$tmpfile 2>/dev/null
 
 count=$(wc -l $tmpfile)
 
 if [ "${count% *}" != 0 ]; then
-	echo "WARNING: The following UCR templates were not updated because they are local modified. An updated version was installed as FILENAME.dpkg-new. The difference should be checked."
+	echo "WARNING: The following UCR templates were not updated because they are local modified. An updated version was installed as FILENAME.dpkg-new or FILENAME.dpkg-dist. The difference should be checked."
 	echo "$(sed -e 's|^|  |;s|.dpkg-new$||' $tmpfile )"
 	exit ${count% *}
 fi
