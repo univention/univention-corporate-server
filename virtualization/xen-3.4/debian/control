@@ -42,6 +42,5 @@ XB-Python-Version: ${python:Versions}
 Package: libxenstore3.0
 Architecture: any
 Section: libs
-Depends: xen-3.4 (= ${Source-Version})
 Description: Xenstore communications library for Xen
  This package contains the public libxenstore.

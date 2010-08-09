@@ -1,3 +1,9 @@
+xen-3.4 (3.4.3-9) unstable; urgency=low
+
+  * libxenstore3.0 should not depend on xen-3.4. Bug #19044
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 Aug 2010 10:47:05 +0200
+
 xen-3.4 (3.4.3-8) unstable; urgency=low
 
   * added upstream patches from http://xenbits.xensource.com/xen-3.4-
