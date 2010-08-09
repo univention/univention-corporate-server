@@ -70,7 +70,7 @@ install:
 		m-a -f -u /tmp -l $$kversion -t a-b drbd8-2.6.18; \
 	done \
 
-	$(shell build-drbd-mod.sh)
+	./build-drbd-module.sh
 	mv /tmp/drbd-built/drbd*deb ../
 
 binary-indep: build install
