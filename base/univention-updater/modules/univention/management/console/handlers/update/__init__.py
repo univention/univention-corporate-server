@@ -324,21 +324,7 @@ class handler(umch.simpleHandler):
 			self.finished(object.id(), None)
 
 		elif status == 'execute':
-			cmd = '''echo "Starting dist-upgrade at $(date)" >> %(logfile)s;
-			echo "status=RUNNING" > %(statusfile)s ;
-			DEBIAN_FRONTEND=noninteractive
-			%(cmd)s >> %(logfile)s 2>&1 ;
-			if [ $? = 0 ] ; then
-				echo "status=DONE" > %(statusfile)s ;
-				echo >> %(logfile)s ;
-				echo "The update has been finished successfully at $(date)."  >> %(logfile)s ;
-		    else
-			    echo "status=FAILED" > %(statusfile)s ;
-				echo >> %(logfile)s ;
-				echo "An error occured during update. Please check the logfiles."  >> %(logfile)s ;
-				date >> %(logfile)s ;
-		    fi
-			''' % { 'cmd': self.command_dist_upgrade, 'logfile': FN_LIST_DIST_UPGRADE_LOG[0], 'statusfile': FN_STATUS_DIST_UPGRADE }
+			cmd = '/usr/share/univention-updater/univention-updater-umc-dist-upgrade "%s" "%s"' % (FN_LIST_DIST_UPGRADE_LOG[0], FN_STATUS_DIST_UPGRADE)
 			(returncode, returnstring) = self.__create_at_job(cmd)
 			ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: apt-get dist-upgrade' )
 
