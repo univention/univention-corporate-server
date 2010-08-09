@@ -1050,6 +1050,8 @@ def handler_search( args, opts = {} ):
 	search_keys = opts.get ( 'key', False )
 	search_values = opts.get ( 'value', False )
 	search_all = opts.get ( 'all', False )
+	verbose = opts.get ( 'verbose', False )
+
 	if (search_keys and search_values) or (search_values and search_all) or (search_keys and search_all):
 		sys.stderr.write( 'E: at most one out of [--key|--value|--all] may be set\n' )
 		sys.exit( 1 )
@@ -1106,7 +1108,7 @@ def handler_search( args, opts = {} ):
  				  ( var_triple[0] and reg.search ( var_triple[0] ) ) or \
  				  ( var_triple[1] and reg.search ( var_triple[1].get ( 'description', '' ) ) ) ) \
 				):
- 				print_variable_info_string ( key, var_triple[0], var_triple[1], var_triple[2], show_scope, brief, non_empty )
+ 				print_variable_info_string ( key, var_triple[0], var_triple[1], var_triple[2], show_scope, brief, non_empty, verbose )
 				break
 
 def handler_get( args, opts = {} ):
@@ -1128,7 +1130,7 @@ class UnknownKeyException ( Exception ):
 	def __str__ (self):
 		return repr (self.value)
 
-def print_variable_info_string( key, value, variable_info, scope=None, show_scope=False, brief=False, non_empty=False ):
+def print_variable_info_string( key, value, variable_info, scope=None, show_scope=False, brief=False, non_empty=False, verbose=False ):
 	value_string = None
 	if value == None and not variable_info:
 		raise UnknownKeyException ( 'W: unknown key: "%s"' % key )
@@ -1142,7 +1144,6 @@ def print_variable_info_string( key, value, variable_info, scope=None, show_scop
 			value_string = ''
 	else:
 		value_string = '%s' % value
-
 	if not show_scope or scope in (None, 0) or scope > len(SCOPE):
 		key_value = '%s: %s' % (key, value_string)
 	else:
@@ -1160,7 +1161,8 @@ def print_variable_info_string( key, value, variable_info, scope=None, show_scop
 		if not description or not description.strip ():
 			description = 'no description available'
 		info.append ( ' ' + description )
-
+		if verbose:
+			info.append ( ' Categories: ' + variable_info.get ( 'categories', 'none' ) )
 		info_string = '\n'.join (info)
 
 	if brief:
@@ -1232,6 +1234,7 @@ Actions:
 	--brief: don\'t print descriptions (can be enabled by default via ucr/output/brief)
 	--non-empty: only search in non-empty variables
 	no <regex> given: display all variables
+	--verbose: also print category for each variable
 
   info <key> [... <key>]:
 	display verbose information for the specified variable(s)
@@ -1336,7 +1339,8 @@ opt_commands = {
 	'set' : { 'force' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
 	'unset' : { 'force' : (BOOL, False), 'ldap-policy' : (BOOL, False), 'schedule' : (BOOL, False) },
 	'search' : { 'key' : (BOOL, False), 'value' : (BOOL, False), 'all' : (BOOL, False), \
-				 'brief' : (BOOL, False), 'category' : (STRING, None), 'non-empty' : (BOOL, False) },
+				 'brief' : (BOOL, False), 'category' : (STRING, None), 'non-empty' : (BOOL, False), \
+				 'verbose' : (BOOL, False) },
 	'filter' : { 'encode-utf8' : (BOOL, False) }
 	}
 

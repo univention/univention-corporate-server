@@ -1,3 +1,9 @@
+univention-config-registry (6.0.22-1) unstable; urgency=low
+
+  * added verbose option for ucr search to show category, Bug #18568
+
+ -- Tim Petersen <petersen@univention.de>  Mon, 09 Aug 2010 09:34:00 +0200
+
 univention-config-registry (6.0.21-1) unstable; urgency=low
 
   * Also check for dpkg-dist files. Bug #19279
