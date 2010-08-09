@@ -1,3 +1,9 @@
+univention-updater (6.0.20-1) unstable; urgency=low
+
+  * redirect output of "at" to logfile (Bug #19153)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 09 Aug 2010 09:36:05 +0200
+
 univention-updater (6.0.19-1) unstable; urgency=low
 
   * execute /usr/sbin/univention-check-templates in postup.sh. Bug #19279
