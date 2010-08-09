@@ -482,7 +482,7 @@ msgstr ""
 msgid ""
 "When detaching a disk from the virtual instance the image may also be "
 "deleted. Should the image %(image)s be removed also?"
-msgstr ""
+msgstr "Wenn ein Laufwerk ausgehängt wird, dann kann ebenfalls das Image gelöscht werden. Soll das Image %(image)s entfernt werden?"
 
 #: __init__.py:1062
 msgid "No"
