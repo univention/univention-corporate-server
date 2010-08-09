@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.86-1) unstable; urgency=low
+
+  * add error handler that displays a human readable message if the domain
+    information could not be retrieved; Bug #19219
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 09 Aug 2010 14:41:11 +0200
+
 univention-virtual-machine-manager-daemon (0.9.85-1) unstable; urgency=low
 
   * Only show error_message but log full exception (Bug #19123)

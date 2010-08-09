@@ -684,7 +684,7 @@ class handler( umch.simpleHandler ):
 
 		return sections
 
-	def uvmm_domain_overview( self, object ):
+	def uvmm_domain_overview( self, object, finish = True ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain overview' )
 
 		migrate = object.options.get( 'migrate' )
@@ -699,41 +699,46 @@ class handler( umch.simpleHandler ):
 		self.domain_wizard.reset()
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
-		node = self.uvmm.get_node_info( node_uri )
-		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
+		# node = self.uvmm.get_node_info( node_uri )
+		node, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
 
 		blind_table = umcd.List()
 
-		infos = umcd.List()
-		infos.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Status' ) ), handler.STATES[ domain_info.state ] ] )
-		infos.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Operating System' ) ), getattr(domain_info, 'annotations', {}).get('os', '' ) ] )
-
-		stats = umcd.List()
-		if domain_info.maxMem:
-			pct = int( float( domain_info.curMem ) / domain_info.maxMem * 100 )
+		if not domain_info:
+			blind_table.add_row( [ _( 'The information about the virtual instance could not be retrieved. Clicking the refresh button will retry to collect the information.' ) ] )
 		else:
-			pct = 0
-		mem_usage = percentage( pct, label = '%s / %s' % ( MemorySize.num2str( domain_info.curMem ), MemorySize.num2str( domain_info.maxMem ) ), width = 130 )
-		cpu_usage = percentage( float( domain_info.cputime[ 0 ] ) / 10, width = 130 )
-		stats.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Memory usage' ) ), mem_usage ] )
-		stats.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'CPU usage' ) ), cpu_usage ] )
+			infos = umcd.List()
+			infos.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Status' ) ), handler.STATES[ domain_info.state ] ] )
+			infos.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Operating System' ) ), getattr(domain_info, 'annotations', {}).get('os', '' ) ] )
 
-		ops = umcd.List()
-		buttons = self._create_domain_buttons( object, node, domain_info, overview = 'domain', operations = True )
-		ops.add_row( buttons )
+			stats = umcd.List()
+			if domain_info.maxMem:
+				pct = int( float( domain_info.curMem ) / domain_info.maxMem * 100 )
+			else:
+				pct = 0
+			mem_usage = percentage( pct, label = '%s / %s' % ( MemorySize.num2str( domain_info.curMem ), MemorySize.num2str( domain_info.maxMem ) ), width = 130 )
+			cpu_usage = percentage( float( domain_info.cputime[ 0 ] ) / 10, width = 130 )
+			stats.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Memory usage' ) ), mem_usage ] )
+			stats.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'CPU usage' ) ), cpu_usage ] )
 
-		tab = umcd.List()
-		tab.add_row( [ infos, stats ] )
+			ops = umcd.List()
+			buttons = self._create_domain_buttons( object, node, domain_info, overview = 'domain', operations = True )
+			ops.add_row( buttons )
 
-		tech = '%s-%s' % ( domain_info.domain_type, domain_info.os_type )
-		blind_table.add_row( [ umcd.Section( _( 'Virtual instance %(domain)s - <i>%(tech)s</i>' ) % { 'domain' : domain_info.name, 'tech' : VirtTechSelect.MAPPING[ tech ] }, tab ) ] )
-		blind_table.add_row( [ umcd.Cell( umcd.Section( _( 'Operations' ), ops ) ) ] )
+			tab = umcd.List()
+			tab.add_row( [ infos, stats ] )
 
-		content = self._dlg_domain_settings( object, node, domain_info )
-		blind_table.add_row( [ content ] )
+			tech = '%s-%s' % ( domain_info.domain_type, domain_info.os_type )
+			blind_table.add_row( [ umcd.Section( _( 'Virtual instance %(domain)s - <i>%(tech)s</i>' ) % { 'domain' : domain_info.name, 'tech' : VirtTechSelect.MAPPING[ tech ] }, tab ) ] )
+			blind_table.add_row( [ umcd.Cell( umcd.Section( _( 'Operations' ), ops ) ) ] )
+
+			content = self._dlg_domain_settings( object, node, domain_info )
+			blind_table.add_row( [ content ] )
 
 		self.set_content( res, blind_table )
-		self.finished(object.id(), res)
+		if finish:
+			self.finished(object.id(), res)
+		return res
 
 	def uvmm_domain_migrate( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain migrate' )
@@ -778,8 +783,8 @@ class handler( umch.simpleHandler ):
 		res = umcp.Response( object )
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
-		node = self.uvmm.get_node_info( node_uri )
-		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
+		# node = self.uvmm.get_node_info( node_uri )
+		node, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
 
 		domain = uuv_proto.Data_Domain()
 		if domain_info:
@@ -904,8 +909,8 @@ class handler( umch.simpleHandler ):
 			return
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
-		node = self.uvmm.get_node_info( node_uri )
-		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
+		# node = self.uvmm.get_node_info( node_uri )
+		node, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
 
 		boxes = []
 		lst = umcd.List()
@@ -1019,6 +1024,7 @@ class handler( umch.simpleHandler ):
 			resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
 			new_disk = self.drive_wizard.reset()
 			if self.uvmm.is_error( resp ):
+				res = self.uvmm_domain_overview( object, finish = False )
 				res.status( 301 )
 				self.finished( object.id(), res, report = resp.msg )
 			else:

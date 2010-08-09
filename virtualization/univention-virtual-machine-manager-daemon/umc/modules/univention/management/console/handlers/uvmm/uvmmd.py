@@ -197,15 +197,22 @@ class Client( notifier.signals.Provider ):
 			name = pattern % ( domain, i )
 		object.options[ 'image-name' ] = name
 
-	def get_domain_info( self, node, domain ):
-		node_info = self.get_node_info( node )
-		if self.is_error( node_info ):
-			return None
-		for dom in node_info.domains:
-			if dom.name == domain:
-				return dom
+	def get_domain_info_ext( self, node, domain ):
+		retries = 10
+		while retries:
+			node_info = self.get_node_info( node )
+			if self.is_error( node_info ):
+				return ( None, None )
+			for dom in node_info.domains:
+				if dom.name == domain:
+					return (node_info, dom )
+			time.sleep( 0.1 )
+			retries -= 1
+		return ( None, None )
 
-		return None
+	def get_domain_info( self, node, domain ):
+		node, domain = self.get_domain_info_ext( node, domain )
+		return domain
 
 	def node_name2uri( self, name ):
 		req = protocol.Request_GROUP_LIST()

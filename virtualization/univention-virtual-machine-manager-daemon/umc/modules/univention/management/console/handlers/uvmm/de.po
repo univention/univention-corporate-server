@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-09 11:54+0200\n"
+"POT-Creation-Date: 2010-08-09 14:38+0200\n"
 "PO-Revision-Date: 2010-07-05 14:28+0200\n"
 "Last-Translator: Andreas Büsching <buesching@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -154,7 +154,7 @@ msgstr "Passwort löschen"
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
-#: __init__.py:154 __init__.py:495 __init__.py:709
+#: __init__.py:154 __init__.py:495 __init__.py:712
 msgid "Operating System"
 msgstr "Betriebssystem"
 
@@ -308,11 +308,11 @@ msgstr ""
 msgid "Physical server"
 msgstr "Physikalischer Server"
 
-#: __init__.py:313 __init__.py:468 __init__.py:495 __init__.py:719
+#: __init__.py:313 __init__.py:468 __init__.py:495 __init__.py:722
 msgid "CPU usage"
 msgstr "CPU-Auslastung"
 
-#: __init__.py:313 __init__.py:469 __init__.py:718
+#: __init__.py:313 __init__.py:469 __init__.py:721
 msgid "Memory usage"
 msgstr "Speichernutzung"
 
@@ -320,7 +320,7 @@ msgstr "Speichernutzung"
 msgid "not available"
 msgstr "nicht verfügbar"
 
-#: __init__.py:334 __init__.py:765
+#: __init__.py:334 __init__.py:770
 msgid "Migrate"
 msgstr "Migrieren"
 
@@ -340,7 +340,7 @@ msgstr "Anhalten"
 msgid "Resume"
 msgstr "Fortführen"
 
-#: __init__.py:374 __init__.py:605 __init__.py:932
+#: __init__.py:374 __init__.py:605 __init__.py:937
 msgid "Remove"
 msgstr "Löschen"
 
@@ -410,24 +410,30 @@ msgid "Save"
 msgstr "Speichern"
 
 #: __init__.py:708
+msgid ""
+"The information about the virtual instance could not be retrieved. Clicking "
+"the refresh button will retry to collect the information."
+msgstr "Die Informationen über die virtuelle Instanz konnten nicht abgerufen werden. Mit der Aktualisieren-Schaltfläche kann ein erneuter Versuch gestartet werden."
+
+#: __init__.py:711
 msgid "Status"
 msgstr "Status"
 
-#: __init__.py:729
+#: __init__.py:732
 #, python-format
 msgid "Virtual instance %(domain)s - <i>%(tech)s</i>"
 msgstr "Virtuelle Instanz %(domain)s - <i>%(tech)s</i>"
 
-#: __init__.py:730
+#: __init__.py:733
 msgid "Operations"
 msgstr "Operationen"
 
-#: __init__.py:755
+#: __init__.py:760
 #, python-format
 msgid "Migrate %(domain)s from %(source)s to:"
 msgstr "Migriere die Instanz %(domain)s vom Wirtsystem %(source)s zu:"
 
-#: __init__.py:913
+#: __init__.py:918
 msgid ""
 "When removing a virtual instance the disk images bind to it may be removed "
 "also. Please select the disks that should be remove with the virtual "
@@ -439,80 +445,85 @@ msgstr ""
 "die entfernt werden sollen. Stellen Sie sicher, dass keins der Images von "
 "einer anderen Instanz genutzt wird."
 
-#: __init__.py:931
+#: __init__.py:936
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: __init__.py:936
+#: __init__.py:941
 #, python-format
 msgid "Remove the virtual instance %(instance)s?"
 msgstr "Virtuelle Instanz %(instance)s löschen?"
 
-#: __init__.py:954
+#: __init__.py:959
 #, python-format
 msgid "Removing the instance <i>%(domain)s</i> failed"
 msgstr ""
 "Das Löschen der virtuellen Instanz <i>%(domain)s</i> ist fehlgeschlagen"
 
-#: __init__.py:957
+#: __init__.py:962
 #, python-format
 msgid "The instance <i>%(domain)s</i> was removed successfully"
 msgstr "Die virtuelle Instanz <i>%(domain)s</i> wurde erfolgreich gelöscht"
 
-#: __init__.py:971
+#: __init__.py:976
 #, python-format
 msgid "Saving the instance <i>%(domain)s</i> failed"
 msgstr ""
 "Das Speichern der virtuellen Instanz <i>%(domain)s</i> ist fehlgeschlagen"
 
-#: __init__.py:974
+#: __init__.py:979
 #, python-format
 msgid "The instance <i>%(domain)s</i> was saved successfully"
 msgstr "Die virtuelle Instanz <i>%(domain)s</i> wurde erfolgreich gespeichert"
 
-#: __init__.py:988
+#: __init__.py:993
 #, python-format
 msgid "Restoring the instance <i>%(domain)s</i> failed"
 msgstr ""
 "Das Wiederherstellen der virtuellen Instanz <i>%(domain)s</i> ist "
 "fehlgeschlagen"
 
-#: __init__.py:1053
+#: __init__.py:1059
 #, python-format
 msgid ""
 "When detaching a disk from the virtual instance the image may also be "
 "deleted. Should the image %(image)s be removed also?"
-msgstr "Wenn ein Laufwerk ausgehängt wird, dann kann ebenfalls das Image gelöscht werden. Soll das Image %(image)s entfernt werden?"
+msgstr ""
+"Wenn ein Laufwerk ausgehängt wird, dann kann ebenfalls das Image gelöscht "
+"werden. Soll das Image %(image)s entfernt werden?"
 
-#: __init__.py:1062
+#: __init__.py:1068
 msgid "No"
 msgstr "Nein"
 
-#: __init__.py:1063
+#: __init__.py:1069
 msgid "Yes"
 msgstr "Ja"
 
-#: __init__.py:1080
+#: __init__.py:1086
 #, python-format
 msgid "Detaching the drive <i>%(drive)s</i> failed"
 msgstr "Das Aushängen des Laufwerks <i>%(drive)s</i> ist fehlgeschlagen"
 
-#: __init__.py:1088
+#: __init__.py:1094
 #, python-format
 msgid "Removing the image <i>%(disk)s</i> failed. It must be removed manually."
-msgstr "Das Löschen des Image <i>%(disk)s</i> ist fehlgeschlagen. Es manuell entfernt werden."
+msgstr ""
+"Das Löschen des Image <i>%(disk)s</i> ist fehlgeschlagen. Es manuell "
+"entfernt werden."
 
-#: __init__.py:1091
+#: __init__.py:1097
 #, python-format
 msgid "The drive <i>%(drive)s</i> was detached and removed successfully"
-msgstr "Das Laufwerk <i>%(drive)s</i> wurde erfolgreich ausgehängt und gelöscht"
+msgstr ""
+"Das Laufwerk <i>%(drive)s</i> wurde erfolgreich ausgehängt und gelöscht"
 
-#: __init__.py:1093
+#: __init__.py:1099
 #, python-format
 msgid "The drive <i>%(drive)s</i> was detached successfully"
 msgstr "Das Laufwerk <i>%(drive)s</i> wurde erfolgreich ausgehängt"
 
-#: __init__.py:1112
+#: __init__.py:1118
 #, python-format
 msgid "Setting the drive <i>%(drive)s</i> as boot device as failed"
 msgstr ""
