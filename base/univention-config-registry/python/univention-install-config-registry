@@ -179,3 +179,4 @@ if __name__ == '__main__':
 		prerm.write('\n')
 
 	doIt(["univention-install-config-registry-info"])
+	doIt(["univention-install-service-info"])
