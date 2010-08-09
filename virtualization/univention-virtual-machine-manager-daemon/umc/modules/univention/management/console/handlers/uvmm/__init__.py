@@ -47,6 +47,7 @@ import copy
 import operator
 import os
 import socket
+import time
 
 import notifier.popen
 
@@ -206,6 +207,12 @@ command_description = {
 		short_description = _( 'Set drive as boot device' ),
 		long_description = _('Set drive as boot device' ),
 		method = 'uvmm_drive_bootdevice',
+		values = {},
+		),
+	'uvmm/daemon/restart': umch.command(
+		short_description = _( 'Restarts libvirt service' ),
+		long_description = _( 'Restarts libvirt service' ),
+		method = 'uvmm_daemon_restart',
 		values = {},
 		),
 }
@@ -705,7 +712,11 @@ class handler( umch.simpleHandler ):
 		blind_table = umcd.List()
 
 		if not domain_info:
-			blind_table.add_row( [ _( 'The information about the virtual instance could not be retrieved. Clicking the refresh button will retry to collect the information.' ) ] )
+			resync_cmd = umcd.Action( umcp.SimpleCommand( 'uvmm/daemon/restart', options = copy.copy( object.options ) ) )
+			overview_cmd = umcd.Action( umcp.SimpleCommand( 'uvmm/domain/overview', options = copy.copy( object.options ) ) )
+			resync = umcd.LinkButton( _( 'Resynchronize' ), actions = [ resync_cmd, overview_cmd ] )
+			blind_table.add_row( [ _( 'The information about the virtual instance could not be retrieved. Clicking the refresh button will retry to collect the information. If this does not work a resynchronization can be triggered by clicking the following button.' ) ] )
+			blind_table.add_row( [ umcd.Cell( resync, attributes = { 'align' : 'right' } ) ] )
 		else:
 			infos = umcd.List()
 			infos.add_row( [ umcd.HTML( '<b>%s</b>' % _( 'Status' ) ), handler.STATES[ domain_info.state ] ] )
@@ -1119,3 +1130,15 @@ class handler( umch.simpleHandler ):
 		else:
 			self.finished( object.id(), res )
 
+	def uvmm_daemon_restart( self, object ):
+		ud.debug( ud.ADMIN, ud.INFO, 'Drive boot device' )
+		res = umcp.Response( object )
+
+		child = notifier.popen.run( '/usr/sbin/invoke-rc.d univention-virtual-machine-manager-node-common restart', timeout = 10000, stdout = False, stderr = False, shell = False )
+		if child.exitcode == None: # failed to restart libvirt
+			res.status( 301 )
+			self.finished( object.id(), res, report = _( 'Resynchronisation has failed!' ) )
+			return
+
+		time.sleep( 5 )
+		self.finished( object.id(), res )
