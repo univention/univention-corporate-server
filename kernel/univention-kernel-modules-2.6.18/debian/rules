@@ -69,6 +69,7 @@ install:
 		m-a -t -l $$kversion prepare; \
 		m-a -f -u /tmp -l $$kversion -t a-b drbd8-2.6.18; \
 	done \
+
 	$(shell build-drbd-mod.sh)
 	mv /tmp/drbd-built/drbd*deb ../
 
