@@ -1,3 +1,10 @@
+univention-samba (5.0.18-1) unstable; urgency=low
+
+  * Don't install set_privilege script, the join will be done as backup
+    join on DC Master in 26univention-join.inst. Bug #18616
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 Aug 2010 19:49:53 +0200
+
 univention-samba (5.0.17-1) unstable; urgency=low
 
   * the samba password hashes must be set via net rpc join. Bug #19128
