@@ -395,6 +395,12 @@ class InstanceWizard( umcd.IWizard ):
 			else:
 				return self.drive_wizard.prev( object )
 
+		if self.current == 2:
+			self.replace_title( _( 'Create a virtual instance (profile: %(profile)s)' ) % { 'profile' : object.options[ 'instance-profile' ] } )
+		elif self.current == 1:
+			del object.options[ 'name' ]
+			self.replace_title( _( 'Create a virtual instance' ) )
+
 		return umcd.IWizard.prev( self, object )
 
 	def _list_domain_settings( self, object ):
