@@ -120,14 +120,14 @@ class modredirect(unimodule.unimodule):
 			session_hostname = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 
 		try:
-			ud.debug(ud.ADMIN, ud.WARN, 'modredirect: sending SSO request: session_hostname=%s' % session_hostname)
+			ud.debug(ud.ADMIN, ud.INFO, 'modredirect: sending SSO request: session_hostname=%s' % session_hostname)
 			# always use HTTPS for creating a new session - use temporarily session_hostname as host
 			sso.createSession(host=session_hostname, protocol='https')
-			ud.debug(ud.ADMIN, ud.WARN, 'modredirect: SSO request done - no error')
+			ud.debug(ud.ADMIN, ud.PROCESS, 'modredirect: SSO request done - no error')
 			msg = _('A new window with Univention Management Console will be opened in a few seconds. If this is not the case, please click %(starttag)shere%(endtag)s.')
 		except Exception, e:
 			msg = _('Creating a new session for Univention Management Console on host %(host)s failed. Please click %(starttag)shere%(endtag)s to log in manually.')
-			ud.debug(ud.ADMIN, ud.WARN, 'modredirect: SSO request failed')
+			ud.debug(ud.ADMIN, ud.ERROR, 'modredirect: SSO request failed (session_hostname = %s)' % session_hostname)
 
 		msg = msg % {
 				'host': host_browser,
