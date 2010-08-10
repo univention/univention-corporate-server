@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.14-1) unstable; urgency=low
+
+  * lowered log level of debug output (ERROR ==> WARN) (Bug #14593)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 10 Aug 2010 09:32:08 +0200
+
 univention-directory-manager (8.0.13-1) unstable; urgency=low
 
   * added single sign on in computer modules (Bug #19232)
