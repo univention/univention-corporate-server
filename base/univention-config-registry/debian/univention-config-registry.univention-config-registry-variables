@@ -483,3 +483,9 @@ Description[de]=Eines der hier angegeben Zeichen muss Teil des Passworts sein, a
 Description[en]=One of the given characters must be part of the new password, otherwise the password will be rejected.
 Type=str
 Categories=system-password
+
+[syslog/mail/mirrorto/syslog]
+Description[de]=Definiert, ob Log-Meldungen aus dem Bereich mail in der Log-Datei /var/log/syslog gespeichert werden.
+Description[en]=Specifies whether log messages from the facility mail should be saved in /var/log/syslog.
+Type=str
+Categories=system-base
