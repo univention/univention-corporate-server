@@ -108,7 +108,7 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 	net rpc join -U${samba_account}%${samba_pwd}
 	rc=$?
 	
-	# set defaul printer permissions
+	# set default printer permissions
 	net rpc rights -U${samba_account}%${samba_pwd} grant Printer-Admins SePrintOperatorPrivilege
 	if [ $rc != 0 ]; then
 		echo "ERROR: failed to join via net rpc join"

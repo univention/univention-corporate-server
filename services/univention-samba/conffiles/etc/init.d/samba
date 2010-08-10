@@ -79,12 +79,12 @@ case "$1" in
 		    check_autostart samba samba/autostart
 		fi
 
-	        log_action_msg "Starting Samba daemons: nmbd"
+		log_action_msg "Starting Samba daemons: nmbd"
 		start-stop-daemon --start --quiet --pidfile $NMBDPID  -a /usr/sbin/nmbd -- -D
 
 		if [ "$RUN_MODE" != "inetd" ]; then
 			if [ -z "$samba_smbd_start" ] || [ "$samba_smbd_start" = "yes" ]; then
-				log_action_msg "Starting Samba daemons: nmbd"
+				log_action_msg "Starting Samba daemons: smbd"
 				start-stop-daemon --start --quiet --pidfile $SMBDPID -a /usr/sbin/smbd -- -D
 			fi
 		fi
