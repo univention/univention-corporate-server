@@ -1,3 +1,10 @@
+univention-join (3.0.3-1) unstable; urgency=low
+
+  * For join scripts is an admin account required on DC Backups
+    (Bug #19362)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Aug 2010 20:00:44 +0200
+
 univention-join (3.0.2-1) unstable; urgency=low
 
   * redirect stderr to join.log. Bug #19180

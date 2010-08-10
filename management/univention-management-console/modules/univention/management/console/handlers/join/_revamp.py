@@ -147,8 +147,7 @@ class Web( object ):
 		lst = umcd.List()
 		if object.incomplete:#  or not object.options.get( 'account', None ) or not \
 # 				object.options.get( 'password', None ):
-			if not umc.registry.get( 'server/role', None ) in ( 'domaincontroller_master',
-																'domaincontroller_backup' ):
+			if not umc.registry.get( 'server/role', None ) in ( 'domaincontroller_master' ):
 				user = umcd.make( self[ 'join/script' ][ 'account' ],
 								  default = object.options.get( 'account', self._username ) )
 				pwd =  umcd.make( self[ 'join/script' ][ 'password' ] )

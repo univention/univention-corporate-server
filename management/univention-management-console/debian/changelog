@@ -1,3 +1,10 @@
+univention-management-console (3.0.57-1) unstable; urgency=low
+
+  * For join scripts is an admin account required on DC Backups
+    (Bug #19362)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Aug 2010 19:58:41 +0200
+
 univention-management-console (3.0.56-1) unstable; urgency=low
 
   * add simple selection button; Bug #18611

@@ -138,8 +138,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		else:
 			os.putenv( 'UMC_MODE', 'yes' )
 			logfile = _create_tempfile()
-			if umc.registry.get( 'server/role', None ) in ( 'domaincontroller_master',
-															'domaincontroller_backup' ):
+			if umc.registry.get( 'server/role', None ) in ( 'domaincontroller_master' ):
 				cmd = '/usr/lib/univention-install/%s > %s 2>&1' % \
 					  ( object.options[ 'script' ], logfile )
 			else:

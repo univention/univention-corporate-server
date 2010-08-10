@@ -108,7 +108,7 @@ done
 
 display_header
 
-if [ ! "$server_role" = "domaincontroller_master" -a ! "$server_role" = "domaincontroller_backup" ] ; then
+if [ ! "$server_role" = "domaincontroller_master" ] ; then
 	if [ -z "$DCACCOUNT" ]; then
 		echo -n "Enter DC Master Account : "
 		read DCACCOUNT
@@ -162,7 +162,7 @@ if test -e "/usr/lib/univention-install/"; then
 			continue
 		fi
 
-		if [ ! "$server_role" = "domaincontroller_master" -a ! "$server_role" = "domaincontroller_backup" ] ; then
+		if [ ! "$server_role" = "domaincontroller_master" ] ; then
 			$i --binddn $binddn --bindpwd `cat $DCPWD` >>/var/log/univention/join.log 2>&1
 		else
 			$i >>/var/log/univention/join.log 2>&1
