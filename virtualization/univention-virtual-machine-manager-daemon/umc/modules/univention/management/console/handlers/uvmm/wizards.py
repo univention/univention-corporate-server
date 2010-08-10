@@ -141,6 +141,7 @@ class DriveWizard( umcd.IWizard ):
 				if suffix in ( 'xml', 'snapshot' ):
 					continue
 			choices.append( basename )
+		choices.sort()
 		self.image_syntax.update_choices( choices )
 
 		# recreate pool button
@@ -348,7 +349,9 @@ class InstanceWizard( umcd.IWizard ):
 				self.replace_title( _( 'Create a virtual instance <i>%(name)s</i>' ) % { 'name' : object.options[ 'name' ] } )
 		tech = self.node_uri[ : self.node_uri.find( ':' ) ]
 		if self.current == None:
-			self.profile_syntax.update_choices([item['name'] for item in self.udm.get_profiles(tech) if item['arch'] in self.archs])
+			profiles = [ item[ 'name' ] for item in self.udm.get_profiles(tech) if item[ 'arch' ] in self.archs ]
+			profiles.sort()
+			self.profile_syntax.update_choices( profiles )
 		if self.current == 0:
 			self.profile = self.udm.get_profile( object.options[ 'instance-profile' ], tech )
 			ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: next: profile boot drives: %s' % str( self.profile[ 'bootdev' ] ) )
