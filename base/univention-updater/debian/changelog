@@ -1,3 +1,10 @@
+univention-updater (6.0.23-1) unstable; urgency=low
+
+  * renamed univention-pkg-install to univention-install (Bug #17995)
+  * run apt-get update before installation
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 10 Aug 2010 14:50:47 +0200
+
 univention-updater (6.0.22-1) unstable; urgency=low
 
   * moved package update shell code into its own script file (Bug #18237)
