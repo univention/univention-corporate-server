@@ -1,3 +1,10 @@
+univention-config-registry (6.0.24-1) unstable; urgency=low
+
+  * search --verbose now also shows category when brief is yes Bug #18568
+  * ucr info now shows category again
+
+ -- Tim Petersen <petersen@univention.de>  Mon, 10 Aug 2010 09:15:00 +0200
+
 univention-config-registry (6.0.23-1) unstable; urgency=low
 
   * univention-install-config-registry now executes

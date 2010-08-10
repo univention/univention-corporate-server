@@ -1044,6 +1044,8 @@ def handler_filter( args, opts = {} ):
 	sys.stdout.write(filter(sys.stdin.read(), b, opts = opts))
 
 def handler_search( args, opts = {} ):
+	global info_handler
+	info_handler = None
 	category = opts.get ( 'category', None )
 	non_empty = opts.get ( 'non-empty', False )
 	brief = opts.get ( 'brief', False )
@@ -1150,7 +1152,7 @@ def print_variable_info_string( key, value, variable_info, scope=None, show_scop
 		key_value = '%s (%s): %s' % (key, SCOPE[scope], value_string)
 
 	info_string = None
-	if brief or not variable_info:
+	if brief and not verbose or not variable_info:
 		info_string = key_value
 	else:
 		info = [ key_value ]
@@ -1161,22 +1163,25 @@ def print_variable_info_string( key, value, variable_info, scope=None, show_scop
 		if not description or not description.strip ():
 			description = 'no description available'
 		info.append ( ' ' + description )
-		if verbose:
+		if verbose or info_handler:
 			info.append ( ' Categories: ' + variable_info.get ( 'categories', 'none' ) )
+
 		info_string = '\n'.join (info)
 
-	if brief:
+	if brief and not verbose:
 		print info_string
 	else:
 		print info_string + '\n'
 
 def handler_info( args, opts = {} ):
+	global info_handler
 	reg = ConfigRegistry ()
 	reg.load ()
 	#Import located here, because on module level, a circular import would be created
 	import config_registry_info as cri
 	cri.set_language ( 'en' )
 	info = cri.ConfigRegistryInfo ( install_mode = False )
+	info_handler = True	
 
 	for arg in args:
 		try:
