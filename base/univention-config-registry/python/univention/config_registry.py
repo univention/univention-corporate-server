@@ -207,12 +207,12 @@ class ConfigRegistry( dict ):
 
 	def is_true(self, key, default = False):
 		if key in self:
-			return self.get(key).lower() in ('yes', 'true', '1', 'enable', 'enabled')
+			return self.get(key).lower() in ('yes', 'true', '1', 'enable', 'enabled', 'on')
 		return default
 
 	def is_false(self, key, default = False):
 		if key in self:
-			return self.get(key).lower() in ('no', 'false', '0', 'disable', 'disabled')
+			return self.get(key).lower() in ('no', 'false', '0', 'disable', 'disabled', 'off')
 		return default
 
 class _ConfigRegistry( dict ):
