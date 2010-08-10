@@ -129,8 +129,12 @@ def get_storage_volumes( uri, pool_name, type = None ):
 	from node import Disk, node_query
 
 	node = node_query( uri )
-	pool = node.conn.storagePoolLookupByName( pool_name )
-	pool.refresh( 0 )
+	try:
+		pool = node.conn.storagePoolLookupByName(pool_name)
+		pool.refresh(0)
+	except libvirt.libvirtError, e:
+		logger.error(e)
+		raise StorageError(_('Error listing pools at "%(uri)s": %(error)s'), uri=uri, error=e.get_error_message())
 	volumes = []
 	for name in pool.listVolumes():
 		disk = Disk()

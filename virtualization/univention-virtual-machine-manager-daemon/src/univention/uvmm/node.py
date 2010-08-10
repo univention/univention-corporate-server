@@ -207,13 +207,13 @@ class DomainTemplate(object):
 						f_names.append(c.nodeName)
 		return f_names
 
-	def __init__(self, arch, dom, os_type, features):
+	def __init__(self, arch, domain_type, os_type, features):
 		self.os_type = os_type
 		self.features = features
 		self.arch = arch.getAttribute('name')
-		self.domain_type = dom.getAttribute('type')
+		self.domain_type = domain_type.getAttribute('type')
 
-		for n in [dom, arch]:
+		for n in [domain_type, arch]:
 			try:
 				self.emulator = DomainTemplate.__nv(n, 'emulator')
 				break
@@ -223,7 +223,7 @@ class DomainTemplate(object):
 			logger.error('No emulator specified in %s/%s' % (self.arch, self.domain_type))
 			raise
 
-		for n in [dom, arch]:
+		for n in [domain_type, arch]:
 			self.machines = [m.firstChild.nodeValue for m in n.childNodes if m.nodeName == 'machine']
 			if self.machines:
 				break
@@ -235,6 +235,10 @@ class DomainTemplate(object):
 			self.loader = DomainTemplate.__nv(arch, 'loader')
 		except:
 			self.loader = None # optional
+
+		# Work around for Bug #19120: Xen-Fv-64 needs <pae/>
+		if self.domain_type == 'xen' and self.arch == 'x86_64' and not 'pae' in self.features:
+			self.features.append('pae')
 
 	def __str__(self):
 		return 'DomainTemplate(arch=%s dom_type=%s os_type=%s): %s, %s, %s, %s' % (self.arch, self.domain_type, self.os_type, self.emulator, self.loader, self.machines, self.features)

@@ -265,6 +265,8 @@ class _Commands:
 			return res
 		except node.NodeError, e:
 			raise CommandError( 'STORAGE_VOLUMES', e )
+		except storage.StorageError, e:
+			raise CommandError('STORAGE_VOLUMES', e)
 
 	@staticmethod
 	def STORAGE_VOLUMES_DESTROY( server, request ):

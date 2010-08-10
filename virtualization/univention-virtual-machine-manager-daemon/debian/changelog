@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.88-1) unstable; urgency=low
+
+  * Set <pae/> for Xen-Fv-64 domains (Bug #19120)
+  * Fix exception in STORAGE_VOLUMES().
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 10 Aug 2010 08:27:47 +0200
+
 univention-virtual-machine-manager-daemon (0.9.87-1) unstable; urgency=low
 
   * add a button to the error handler to restart the libvirt daemon; Bug #19219
