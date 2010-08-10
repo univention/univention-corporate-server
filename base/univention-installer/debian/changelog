@@ -1,3 +1,9 @@
+univention-installer (6.0.44-1) unstable; urgency=low
+
+  * virtualization server packages for role basesystem Bug #19045
+
+ -- Felix Botner <botner@univention.de>  Tue, 10 Aug 2010 15:13:06 +0200
+
 univention-installer (6.0.43-1) unstable; urgency=low
 
   * make virtualization server packages in packages list 

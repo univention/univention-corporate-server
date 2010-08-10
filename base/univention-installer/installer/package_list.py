@@ -284,7 +284,7 @@ PackageList=[
 },
 {
 	'Category': _('Virtualization'),
-	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+	'CategoryShow': ['all'],
 	'Description': _('Univention virtualization'),
 	'Packages':
 			[
@@ -303,7 +303,7 @@ PackageList=[
 					'Architecture': [ 'x86' ],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Active': [ ],
-					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem'],
 					'Description': _('Sets up a virtualization server based on Xen'),
 				},
 				{
@@ -312,7 +312,7 @@ PackageList=[
 					'Architecture': [ 'x86' ],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Active': [ ],
-					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem'],
 					'Description': _('Sets up a virtualization server based on KVM'),
 				},
 			],
