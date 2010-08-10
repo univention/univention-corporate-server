@@ -301,7 +301,7 @@ msgstr ""
 "an. Durch die Auswahl eines physikalischen Servers werden Statistiken über "
 "den aktuellen Zustand angezeigt, um einen Eindruck von der Auslastung des "
 "Systems zu bekommen. Zusätzlich gibt es die Möglichkeit Aktion wie das "
-"Starten, Stoppen, Anhalten oder Fortführung durchzuführen.\n"
+"Starten, Beenden, Pausieren oder Fortführung durchzuführen.\n"
 " Des weiteren kann, wenn aktiviert, auch ein Fernzugriff per VNC "
 "durchgeführt werden. Dafür muss dieser in der Konfiguration aktiviert sein.\n"
 "Jeder Eintrag einer virtuellen Instanz in der Baumansicht führt zu einer "
@@ -330,15 +330,15 @@ msgstr "Migrieren"
 
 #: __init__.py:350
 msgid "Start"
-msgstr "Start"
+msgstr "Starten"
 
 #: __init__.py:358
 msgid "Stop"
-msgstr "Stop"
+msgstr "Beenden"
 
 #: __init__.py:366
 msgid "Suspend"
-msgstr "Anhalten"
+msgstr "Pausieren"
 
 #: __init__.py:374
 msgid "Resume"

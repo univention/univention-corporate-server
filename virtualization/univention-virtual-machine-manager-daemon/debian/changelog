@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (0.9.93-1) unstable; urgency=low
+
+  * Fix duplicate 'node' in uvmm-cli (Bug #19357)
+  * Use verbs for start and stop (Bug #19175)
+  * Fix de.po: Suspend=Pausieren, Stop=Beenden (Bug #19358)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 10 Aug 2010 19:56:04 +0200
+
 univention-virtual-machine-manager-daemon (0.9.92-1) unstable; urgency=low
 
   * fixed typo in german translation; Bug #18612
