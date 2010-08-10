@@ -200,4 +200,4 @@ Variables: syslog/.*
 
 Type: subfile
 Multifile: etc/syslog.conf
-Subfile: etc/00syslog.conf
+Subfile: etc/syslog.conf.d/00syslog.conf
