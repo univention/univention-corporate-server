@@ -704,7 +704,7 @@ msgstr ""
 "Jedes Festplatten-Image liegt einem so genannten Speicherbereich. Dies kann "
 "ein lokales Verzeichnis, eine Festplatte, eine LVM-Partition oder eine "
 "Freigabe (beispielsweise eingebunden über iSCSI, NFS oder CIFS) sein. Wird "
-"ein Speicherbereich ausgewählt, wird die Liste der verfügbaren Festplattten-"
+"ein Speicherbereich ausgewählt, wird die Liste der verfügbaren Festplatten-"
 "Images aktualisiert."
 
 #: wizards.py:187
