@@ -148,6 +148,18 @@ class DriveWizard( umcd.IWizard ):
 		self[ 2 ].options[ 0 ] = btn
 		self[ 3 ].options[ 0 ] = btn
 
+		if object.options[ 'drive-type' ] == 'disk':
+			self[ 2 ].hint = None
+		elif object.options['drive-type'] == 'cdrom':
+			if self.image_syntax._choices:
+				msg = _( "If the required ISO image is not found it might be added by copying the file into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>default</i>. After that go to the previous page an return to this one. The image should now be listed." )
+			else:
+				msg = _( "The list of available images is empty! To add an ISO image the file needs to be copied into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>default</i>. After that go to the previous page an return to this one. The image should now be listed." )
+			self[ 2 ].hint = msg
+			self[ 2 ].description = ''
+		else:
+			raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
+
 		return self[ self.current ]
 
 	def _disk_type_text( self, disk_type ):
@@ -164,22 +176,23 @@ class DriveWizard( umcd.IWizard ):
 			self.pool_selected( object )
 			if object.options[ 'drive-type' ] == 'disk':
 				self.current = 1
-				self[ 2 ].hint = None
+				object.options[ 'drive-pool' ] = 'default'
+				object.options[ 'image-size' ] = '8 GB'
+				if object.options.get( 'domain', 'NONE' ) != 'NONE':
+					self.uvmm.next_drive_name( self.node_uri, object.options.get( 'domain' ), object )
+				else:
+					self.uvmm.next_drive_name( self.node_uri, object.options.get( 'name', 'unknown' ), object )
 			elif object.options['drive-type'] == 'cdrom':
 				self.current = 2
-				if self.image_syntax._choices:
-					msg = _( "If the required ISO image is not found it might be added by copying the file into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>default</i>. After that go to the previous page an return to this one. The image should now be listed." )
-				else:
-					msg = _( "The list of available images is empty! To add an ISO image the file needs to be copied into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>default</i>. After that go to the previous page an return to this one. The image should now be listed." )
-				self[ 2 ].hint = msg
-			else:
-				raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
 		elif self.current == 1: # new or existing disk image?
 			if object.options[ 'existing-or-new-disk' ] == 'disk-new':
 				self.current = 3
 				btn = self._create_pool_select_button( object.options, button = False )
+				self[ 2 ].options[ 0 ] = btn
+				self[ 3 ].options[ 0 ] = btn
 			else:
-				btn = self._create_pool_select_button( object.options, button = True )
+				self.pool_selected( object )
+				# btn = self._create_pool_select_button( object.options, button = True )
 				self.current = 2
 				if object.options[ 'drive-type' ] == 'disk':
 					self[ self.current ].description = _( 'Each hard drive image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list of available images is updated.' )
@@ -187,8 +200,6 @@ class DriveWizard( umcd.IWizard ):
 					self[ self.current ].description = _( 'Each ISO image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list of available images is updated.' )
 				else:
 					raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
-			self[ 2 ].options[ 0 ] = btn
-			self[ 3 ].options[ 0 ] = btn
 		elif self.current in ( 2, 3 ): # 2=create new, 3=select existing disk image
 			pool_path = self._get_pool_path( object.options[ 'drive-pool' ] )
 			if self.current == 2: # select existing disk image

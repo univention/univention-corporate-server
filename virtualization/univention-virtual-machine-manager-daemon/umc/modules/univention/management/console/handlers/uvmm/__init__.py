@@ -895,6 +895,13 @@ class handler( umch.simpleHandler ):
 			resp = self.uvmm.domain_configure( object.options[ 'node' ], self.domain_wizard.result() )
 			object.options[ 'domain' ] = object.options[ 'name' ]
 			if self.uvmm.is_error( resp ):
+				# FIXME: something went wrong. We have to erase als 'critical' data and restart with the drive wizard part
+				self.domain_wizard._result = None
+				self.domain_wizard.current = 1
+				self.domain_wizard.drives = []
+				self.domain_wizard.action( object, ( node_uri, node ) )
+				page = self.domain_wizard.setup( object )
+				res.dialog[ 0 ].set_dialog( page )
 				res.status( 301 )
 				self.finished( object.id(), res, report = resp.msg )
 			else:
