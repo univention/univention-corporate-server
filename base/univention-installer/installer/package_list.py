@@ -303,7 +303,7 @@ PackageList=[
 					'Architecture': [ 'x86' ],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Active': [ ],
-					'Possible': ['all'],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Description': _('Sets up a virtualization server based on Xen'),
 				},
 				{
@@ -312,7 +312,7 @@ PackageList=[
 					'Architecture': [ 'x86' ],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Active': [ ],
-					'Possible': ['all'],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Description': _('Sets up a virtualization server based on KVM'),
 				},
 			],
