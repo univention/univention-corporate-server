@@ -673,9 +673,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 						'ipaddr': self['ip'][ 0 ],
 						}]
 		if self.has_key('dnsEntryZoneForward') and self['dnsEntryZoneForward'] and len( self['dnsEntryZoneForward' ] ) > 0:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'DEBUG: dnsEntryZoneForward=%s' % self['dnsEntryZoneForward'] )
 			zone = univention.admin.uldap.explodeDn( self['dnsEntryZoneForward'][0], 1)[0]
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'DEBUG: zone=%s' % zone )
 			if not result:
 				result = [ { 'url': 'https://%s.%s/univention-management-console/' % (self['name'], zone) }]
 			result[0]['fqdn'] = '%s.%s' % (self['name'], zone)

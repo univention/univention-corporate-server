@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.23-1) unstable; urgency=low
+
+  * removed debug output (Bug #19232)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 10 Aug 2010 09:26:32 +0200
+
 univention-directory-manager-modules (6.0.22-1) unstable; urgency=low
 
   * return FQDN and IP address to be able to do single sign on for UMC in
