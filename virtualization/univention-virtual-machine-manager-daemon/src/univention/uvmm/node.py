@@ -1080,8 +1080,12 @@ def domain_migrate(source_uri, domain, target_uri):
 		elif True or source_state in (libvirt.VIR_DOMAIN_PAUSED):
 			raise NodeError(_('Domain "%(domain)s" in state "%(state)s" can not be migrated'), domain=domain, state=STATES[source_state])
 
-		# Updates are handled via the callback mechanism
-		del source_node.domains[domain]
+		# Updates are handled via the callback mechanism, but remove domain
+		# info as soon as possible to not show stale data
+		try:
+			del source_node.domains[domain]
+		except KeyError, e:
+			pass
 		#target_node.domains[domain] = Domain(target_dom)
 		for t in range(10):
 			if domain not in source_node.domains and domain in target_node.domains:
