@@ -1,3 +1,10 @@
+univention-squid (4.0.4-2) unstable; urgency=low
+
+  * revert over-straightening of squid.conf template:
+    keep order of allow and deny rules (Bug #19214)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 11 Aug 2010 17:35:15 +0200
+
 univention-squid (4.0.4-1) unstable; urgency=low
 
   * straightened squid.conf template:
