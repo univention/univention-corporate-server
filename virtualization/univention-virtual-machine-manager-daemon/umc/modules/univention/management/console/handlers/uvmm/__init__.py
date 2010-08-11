@@ -570,6 +570,8 @@ class handler( umch.simpleHandler ):
 		bootdevs = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'bootdevs' ], fields = [ boot_dev ], default = bd_default, attributes = { 'width' : '200' } )
 		if domain_info.state != 5:
 			bootdevs.syntax.may_change = False
+		else:
+			bootdevs.syntax.may_change = True
 		# drive listing
 		drive_sec = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
 		opts = copy.copy( object.options )

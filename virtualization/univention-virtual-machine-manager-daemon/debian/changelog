@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.94-1) unstable; urgency=low
+
+  * explicitly enable boot order list when selecting a stopped instance; Bug #19148
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 11 Aug 2010 11:40:03 +0200
+
 univention-virtual-machine-manager-daemon (0.9.93-1) unstable; urgency=low
 
   * Fix duplicate 'node' in uvmm-cli (Bug #19357)
