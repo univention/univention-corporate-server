@@ -56,7 +56,7 @@ univention-admin dhcp/server create $@ --ignore_exists --superordinate "cn=$doma
 if [ $? != 0 ]; then exit 1; fi
 
 if [ -n "$interfaces_eth0_network" -a -n "$interfaces_eth0_netmask" ]; then
-	univention-admin dhcp/subnet list --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --filter "subnet=$interfaces_eth0_network" | grep ^DN
+	univention-admin dhcp/sharedsubnet list --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --filter "subnet=$interfaces_eth0_network" | grep ^DN
 	if [ $? = 1 ]; then
 		univention-admin dhcp/subnet create $@ --ignore_exists --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --set subnet=$interfaces_eth0_network --set subnetmask=$interfaces_eth0_netmask
 		if [ $? != 0 ]; then exit 1; fi
@@ -64,7 +64,7 @@ if [ -n "$interfaces_eth0_network" -a -n "$interfaces_eth0_netmask" ]; then
 fi
 
 if [ -n "$interfaces_eth1_network" -a -n "$interfaces_eth1_netmask" ]; then
-	univention-admin dhcp/subnet list --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --filter "subnet=$interfaces_eth1_network" | grep ^DN
+	univention-admin dhcp/sharedsubnet list --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --filter "subnet=$interfaces_eth1_network" | grep ^DN
 	if [ $? = 1 ]; then
 		univention-admin dhcp/subnet create $@ --ignore_exists --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --set subnet=$interfaces_eth1_network --set subnetmask=$interfaces_eth1_netmask
 		if [ $? != 0 ]; then exit 1; fi
@@ -72,7 +72,7 @@ if [ -n "$interfaces_eth1_network" -a -n "$interfaces_eth1_netmask" ]; then
 fi
 
 if [ -n "$interfaces_eth2_network" -a -n "$interfaces_eth2_netmask" ]; then
-	univention-admin dhcp/subnet list --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --filter "subnet=$interfaces_eth2_network" | grep ^DN
+	univention-admin dhcp/sharedsubnet list --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --filter "subnet=$interfaces_eth2_network" | grep ^DN
 	if [ $? = 1 ]; then
 		univention-admin dhcp/subnet create $@ --ignore_exists --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --set subnet=$interfaces_eth2_network --set subnetmask=$interfaces_eth2_netmask
 		if [ $? != 0 ]; then exit 1; fi
@@ -80,7 +80,7 @@ if [ -n "$interfaces_eth2_network" -a -n "$interfaces_eth2_netmask" ]; then
 fi
 
 if [ -n "$interfaces_eth3_network" -a -n "$interfaces_eth3_netmask" ]; then
-	univention-admin dhcp/subnet list --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --filter "subnet=$interfaces_eth3_network" | grep ^DN
+	univention-admin dhcp/sharedsubnet list --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --filter "subnet=$interfaces_eth3_network" | grep ^DN
 	if [ $? = 1 ]; then
 		univention-admin dhcp/subnet create $@ --ignore_exists --superordinate "cn=$domainname,cn=dhcp,$ldap_base" --set subnet=$interfaces_eth3_network --set subnetmask=$interfaces_eth3_netmask
 		if [ $? != 0 ]; then exit 1; fi
