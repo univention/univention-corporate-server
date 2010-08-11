@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.24-1) unstable; urgency=low
+
+  * Fixed ucr_overwrite_properties (Bug #18499)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Aug 2010 22:07:45 +0200
+
 univention-directory-manager-modules (6.0.23-1) unstable; urgency=low
 
   * removed debug output (Bug #19232)

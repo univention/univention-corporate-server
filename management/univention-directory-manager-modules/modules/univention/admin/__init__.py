@@ -63,7 +63,7 @@ def ucr_overwrite_properties( module, lo ):
 				if hasattr( module.property_descriptions[ prop ], attr ):
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: set property attribute %s to %s' % ( attr, baseConfig[ var ] ) )
 					if attr in ( 'syntax', ):
-						if hasattr(univention.admin.syntax, baseConfig[ var ]) and False:
+						if hasattr(univention.admin.syntax, baseConfig[ var ]):
 							syntax = getattr( univention.admin.syntax, baseConfig[ var ] )
 							setattr( module.property_descriptions[ prop ], attr, syntax() )
 						else:
