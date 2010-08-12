@@ -34,9 +34,9 @@
 
 export PATH="$PATH:/sbin:/usr/sbin:/bin:/usr/bin"
 
-eval `univention-config-registry shell`
+eval "$(univention-config-registry shell)"
 
-TYPE=0
+TYPE=
 REMOVE_PWD_FILE=""
 
 display_help() {
@@ -447,9 +447,16 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	fi
 
 	echo -n "Sync SSL settings: "
-	eval `echo univention-config-registry set \` univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-config-registry dump ssl/common ssl/country ssl/email ssl/locality ssl/organization ssl/organizationalunit ssl/state | grep ^ssl| sed -e 's|: |="|' \`` >>/var/log/univention/join.log 2>&1
-
-
+	eval "$(univention-ssh --no-split "$DCPWD" "$DCACCOUNT@$DCNAME" /usr/sbin/univention-config-registry shell ssl/country ssl/state ssl/locality ssl/organization ssl/organizationalunit ssl/common ssl/email)"
++	univention-config-registry set \
+		ssl/country="$ssl_country" \
+		ssl/state="$ssl_state" \
+		ssl/locality="$ssl_locality" \
+		ssl/organization="$ssl_organization" \
+		ssl/organizationalunit="$ssl_organizationalunit" \
+		ssl/common="$ssl_common" \
+		ssl/email="$ssl_email" \
+		>>/var/log/univention/join.log 2>&1
 	echo -e "\033[60Gdone"
 
 	echo -n "Restart LDAP Server: "

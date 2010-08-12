@@ -7,7 +7,10 @@ Build-Depends: debhelper
 
 Package: univention-join
 Architecture: all
-Depends: univention-config-registry, univention-ssh, ldap-utils, sysutils
+Depends: univention-config-registry,
+ univention-ssh (>= 3.0.1-2),
+ ldap-utils,
+ sysutils
 Description: UCS - join domains
  This packages allows for the joining of UCS computers to a
  UCS domain.

@@ -1,3 +1,10 @@
+univention-join (3.0.4-1) unstable; urgency=low
+
+  * Fix copying of SSL settings (Bug #14212)
+  * debian/control: Depend on re-implementation of univention-ssh.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 12 Aug 2010 20:01:49 +0200
+
 univention-join (3.0.3-1) unstable; urgency=low
 
   * For join scripts is an admin account required on DC Backups
