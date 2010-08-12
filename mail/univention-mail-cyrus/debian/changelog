@@ -1,8 +1,8 @@
 univention-mail-cyrus (3.0.3-1) unstable; urgency=low
 
-  *  (Bug #15220) 
+  *  fixed name of quotainterval variable (Bug #15220)
 
- -- Tim Petersen <petersen@univention.de>  Thu, 12 Aug 2010 08:20:59 +0200
+ -- Tim Petersen <petersen@univention.de>  Thu, 12 Aug 2010 08:25:59 +0200
 
 univention-mail-cyrus (3.0.2-1) unstable; urgency=low
 
