@@ -367,7 +367,12 @@ class Domain(object):
 			dev.device = Disk.map_device( name = disk.getAttribute( 'device' ) )
 			source = disk.getElementsByTagName( 'source' )
 			if source:
-				dev.source = source[ 0 ].getAttribute( 'file' )
+				if dev.type == Disk.TYPE_FILE:
+					dev.source = source[0].getAttribute('file')
+				elif dev.type == Disk.TYPE_BLOCK:
+					dev.source = source[0].getAttribute('dev')
+				else:
+					raise NodeError(_('Unknown disk type: %(type)d'), type=dev.type)
 			target = disk.getElementsByTagName( 'target' )
 			if target:
 				dev.target_dev = target[ 0 ].getAttribute( 'dev' )
