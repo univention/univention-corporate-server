@@ -1,3 +1,9 @@
+univention-ssh (4.0.0-3) unstable; urgency=low
+
+  * Terminate child ssh on signals (Bug #11870)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 12 Aug 2010 22:31:00 +0200
+
 univention-ssh (4.0.0-2) unstable; urgency=low
 
   * Save filename for exception (Bug #17874)

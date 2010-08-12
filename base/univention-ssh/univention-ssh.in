@@ -225,7 +225,13 @@ try:
 
 				try:
 					# setup timeout
-					sig_alrm = signal.signal(signal.SIGALRM, lambda signum, frame:None)
+					handler = lambda signum, frame:None
+					sig_alrm = signal.signal(signal.SIGALRM, handler) # alarm
+					signal.signal(signal.SIGHUP, handler) # hang up
+					signal.signal(signal.SIGINT, handler) # interrupt
+					signal.signal(signal.SIGTERM, handler) # terminate
+					signal.signal(signal.SIGSEGV, handler) # memory corrupt
+
 					signal.alarm(timeout)
 
 					# wait for child and pass its exit status / signal
@@ -242,7 +248,7 @@ try:
 						self = os.getpid()
 						os.kill(self, sig)
 				except OSError, e:
-					print >>sys.stderr, 'Timeout.'
+					print >>sys.stderr, 'Signal.'
 					os.kill(pid, signal.SIGTERM)
 					cpid, status = os.waitpid(pid, os.WNOHANG)
 					if (cpid, status) == (0, 0):
