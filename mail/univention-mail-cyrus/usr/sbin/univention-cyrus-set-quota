@@ -44,14 +44,14 @@ cyrus_user='cyrus'
 
 if posix.environ.has_key('USER'):
 	user_name=posix.environ['USER']
-	if baseConfig.get('mail/cyrus/imap/quotaintervall') and baseConfig['mail/cyrus/imap/quotaintervall'] != "0":
+	if baseConfig.get('mail/cyrus/imap/quotainterval') and baseConfig['mail/cyrus/imap/quotainterval'] != "0":
 		if os.path.isfile('/var/cache/cyrusquota%s' % user_name):
 			currenttime = time.time()
 			currenttime = int(currenttime)
 			filetime = os.path.getmtime('/var/cache/cyrusquota%s' % user_name)
 			difference = currenttime - filetime # in seconds
 			minutes = difference/60
-			intervall = baseConfig['mail/cyrus/imap/quotaintervall']
+			intervall = baseConfig['mail/cyrus/imap/quotainterval']
 			if minutes < int(intervall):
 				sys.exit(0)
 			else:
