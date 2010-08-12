@@ -1,18 +1,30 @@
+[grub/xenhopt]
+Description[de]=Weitere durch den Grub-Bootloader übergebene Xen-Hypervisor Optionen
+Description[en]=Additional Xen hypervisor options passed by the Grub boot loader
+Type=str
+Categories=system-base
+
 [grub/append]
 Description[de]=Weitere durch den Grub-Bootloader übergebene Kernel-Optionen
-Description[en]=Additional kernel options passed to the Grub boot loader
+Description[en]=Additional kernel options passed by the Grub boot loader
 Type=str
 Categories=system-base
 
 [grub/groot]
-Description[de]=Standard-Festplatte oder -laufwerk für Grub-Bootloader
-Description[en]=Default device of Grub boot loader (Grub notation)
+Description[de]=Boot-Partition (/boot) für Grub-Bootloader (Grub-Notation)
+Description[en]=Boot partition (/boot) for boot loader (Grub notation)
 Type=str
 Categories=system-base
 
 [grub/root]
-Description[de]=Wurzelverzeichnis für Grub-Bootloader
-Description[en]=Root device of Grub boot loader
+Description[de]=Wurzel-Partition (/) für Grub-Bootloader
+Description[en]=Root partition (/) for Grub boot loader
+Type=str
+Categories=system-base
+
+[grub/boot]
+Description[de]=Installationslaufwerk oder -partition für Grub-Bootloader
+Description[en]=Device or partition for Grub boot loader installation
 Type=str
 Categories=system-base
 

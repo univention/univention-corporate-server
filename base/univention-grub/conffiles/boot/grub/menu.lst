@@ -96,7 +96,7 @@ print defoptions
 # lockold=false
 
 ## Xen hypervisor options to use with the default Xen boot option
-# xenhopt=
+# xenhopt=@%@grub/xenhopt@%@
 
 ## Xen Linux kernel options to use with the default Xen boot option
 # xenkopt=console=tty0 fbcon=map:2 nosplash
@@ -123,3 +123,15 @@ print defoptions
 ## can be true or false
 # updatedefaultentry=false
 
+## should update-grub add savedefault to the default options
+## can be true or false
+# savedefault=false
+
+## ## End Default Options ##
+
+### END DEBIAN AUTOMAGIC KERNELS LIST
+
+# title         Other OS
+# root          (hd0,0)
+# makeactive
+# chainloader   +1

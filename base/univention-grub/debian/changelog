@@ -1,3 +1,12 @@
+univention-grub (4.0.3-1) unstable; urgency=low
+
+  * Fix duplicate root= option (Bug #9985)
+  * Update template (Bug #10555)
+  * Document grub/boot UCR variable (Bug #10650)
+  * Add grub/xenhopt for Xen Hypervisor options (Bug #19249)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 12 Aug 2010 08:36:21 +0200
+
 univention-grub (4.0.2-1) unstable; urgency=low
 
   * disable usplash on xen dom0 kernels and in single user mode. Bug

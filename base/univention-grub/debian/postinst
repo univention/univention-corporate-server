@@ -1,6 +1,6 @@
 #!/bin/sh
 
-eval $(univention-baseconfig shell)
+eval "$(univention-config-registry shell)"
 
 if [ "$1" = configure -a -z "$2" ] && [ -z "$grub_append" ]; then
 
@@ -23,14 +23,9 @@ if [ "$1" = configure -a -z "$2" ] && [ -z "$grub_append" ]; then
         fi
 
         if [ -n "$lilo_root" ]; then
-				vars="$vars grub/root=$lilo_root"
-                if [ -n "$grub_append" ]; then
-                        grub_append="$grub_append root=$lilo_root"
-                else
-                        grub_append="root=$lilo_root"
-                fi
+			vars="$vars grub/root=$lilo_root"
 		else
-        	rootdevice=$(grep -w / /etc/fstab | awk '{print $1}')
+			rootdevice=$(awk '$2=="/" {print $1}' /etc/fstab)
 			vars="$vars grub/root=$rootdevice"
         fi
 
@@ -50,7 +45,7 @@ if [ "$1" = configure -a -z "$2" ] && [ -z "$grub_append" ]; then
                 fi
         fi
 
-        root2fstype=$(grep -w / /etc/fstab | awk '{print $3}')
+        root2fstype=$(awk '$2=="/" {print $3}' /etc/fstab)
         if [ -n "$root2fstype" ]; then
                 if [ -n "$grub_append" ]; then
                         grub_append="$grub_append root2fstype=$root2fstype "
@@ -76,15 +71,12 @@ if [ "$1" = configure -a -z "$2" ] && [ -z "$grub_append" ]; then
 
 elif [ -z "$2" ]; then
         # root fs type for quota support on xfs
-        root2fstype=$(grep -w / /etc/fstab | awk '{print $3}')
+        root2fstype=$(awk '$2=="/" {print $3}' /etc/fstab)
         if [ -n "$root2fstype" ]; then
                 append="$append root2fstype=$root2fstype "
         fi
 
-        rootdevice=$(grep -w / /etc/fstab | awk '{print $1}')
-        if [ -n "$root2fstype" ]; then
-                append="$append root=$rootdevice "
-        fi
+        rootdevice=$(awk '$2=="/" {print $1}' /etc/fstab)
 
         univention-baseconfig set grub/timeout?5 \
 								grub/append="$append splash=silent" \
@@ -173,7 +165,7 @@ if [ "$grepcnt" = "0" ] ; then
 	fi
 fi
 
-eval $(univention-baseconfig shell)
+eval "$(univention-config-registry shell)"
 
 #DEBHELPER#
 
@@ -183,7 +175,7 @@ if [ "$1" = configure -a -z "$2" ]; then
 	grub-mkdevicemap $grub_boot
 	# source the update-grub file, so we could use the grub helper functions
 	if [ -n "$grub_boot" ]; then
-		/usr/sbin/grub-install --no-floppy $grub_boot
+		/usr/sbin/grub-install --no-floppy "$grub_boot"
 	fi
 	update-grub -y
 fi
@@ -191,12 +183,14 @@ fi
 # determine grubdevice
 # needs to be called after grub-install: devices.map is created by grub-install
 if [ -z "$grub_groot" ] ; then
-	grubdev=$(mount | grep " on /boot " | cut -d' ' -f1)
-	if [ -z "$grubdev" ] ; then
-		grubdev=$(mount | grep " on / " | cut -d' ' -f1)
+	grubdev=$(df -P / | sed -ne '$s% .*%%p')
+	groot=$(convert "$grubdev")
+	if [ -n "$groot" ]
+	then
+		univention-baseconfig set grub/groot="$groot"
+	else
+		univention-baseconfig unset grub/groot
 	fi
-	groot=$(convert $grubdev)
-	univention-baseconfig set grub/groot="$groot"
 fi
 
 univention-baseconfig set kernel/postinst_hook?"/usr/sbin/update-grub"
@@ -204,4 +198,3 @@ univention-baseconfig set grub/quiet?"no"
 univention-baseconfig set grub/loglevel?"0"
 
 exit 0
-
