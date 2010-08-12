@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (3.0.10-1) unstable; urgency=low
+
+  * fixed name of quotainterval variable (Bug #15220)
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 12 Aug 2010 08:16:29 +0200
+
 univention-mail-cyrus-kolab2 (3.0.9-1) unstable; urgency=low
 
   * added possibility to set quota off (Bug #15220)

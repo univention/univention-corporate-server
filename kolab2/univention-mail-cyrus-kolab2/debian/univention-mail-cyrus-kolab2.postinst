@@ -75,7 +75,7 @@ univention-config-registry set mail/cyrus?yes \
 								ldap/port=389 \
 								mail/cyrus/sieve/listen_host?all \
 								mail/cyrus/idlemethod?idled \
-								mail/cyrus/imap/quotaintervall=60 \
+								mail/cyrus/imap/quotainterval=60 \
 								mail/cyrus/mailbox/rename?no \
 								mail/cyrus/mailbox/delete?no
 

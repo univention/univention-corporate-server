@@ -46,7 +46,7 @@ Description[en]=The maximum amount of free space (in kB) in which to give a quot
 Type=str
 Categories=service-mail
 
-[mail/cyrus/imap/quotaintervall]
+[mail/cyrus/imap/quotainterval]
 Description[de]=Setzt das Zeitintervall, in welchem auf Mailquotaeinstellungen geprüft wird (Minuten)
 Description[en]=Sets time interval for checking mailquota settings (minutes)
 Type=str
