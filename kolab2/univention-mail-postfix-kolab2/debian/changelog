@@ -1,3 +1,10 @@
+univention-mail-postfix-kolab2 (4.0.5-1) unstable; urgency=low
+
+  * set mail/postfix/policy/listfilter to no in postinst
+  * fixed description for mail/postfix/policy/listfilter Bug #17954
+
+ -- Felix Botner <botner@univention.de>  Fri, 13 Aug 2010 12:51:40 +0200
+
 univention-mail-postfix-kolab2 (4.0.4-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

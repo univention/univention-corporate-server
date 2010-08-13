@@ -71,6 +71,8 @@ for file in /etc/univention/templates/info/univention-mail-postfix-forward.info 
   fi
 done
 
+univention-config-registry set mail/postfix/policy/listfilter?no
+
 adduser --quiet --system --home /var/lib/systemmail --shell /bin/bash systemmail
 univention-config-registry set ldap/port?389 \
                                mail/alias/root?systemmail@$hostname.$domainname \

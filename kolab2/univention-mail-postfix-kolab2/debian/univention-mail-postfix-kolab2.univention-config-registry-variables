@@ -150,7 +150,7 @@ Categories=service-mail
 
 [mail/postfix/policy/listfilter]
 Description[de]=Falls diese Variable auf "yes" oder "true" gesetzt ist, wird das Postfix Policy Skript zur Beschränkung von Mailgruppen und Mailverteilerlisten verwendet
-Description[en]=If true or yes, the postfix policy listfiler for restriction of mailgroups and distributions lists is used
+Description[en]=If true or yes, the postfix policy listfilter for restriction of mailgroups and distributions lists is used
 Type=str
 Categories=service-mail
 
