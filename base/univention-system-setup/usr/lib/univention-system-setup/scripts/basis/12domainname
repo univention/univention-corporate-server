@@ -198,7 +198,7 @@ echo `date` : "Create new host certificate"  >> /var/log/univention/setup.log
 
 if [ "$server_role" = "domaincontroller_master" ]; then  # create the new certificate
 	if [ ! -d "/etc/univention/ssl/$hostname.$new_domainname" ]; then
-		univention-certificate new -name "$new_hostname.$domainname"
+		univention-certificate new -name "$hostname.$new_domainname"
 	fi
 	rm -rf /etc/univention/ssl/univention-directory-manager.$old_domainname
 	univention-certificate new -name "univention-directory-manager.$new_domainname"

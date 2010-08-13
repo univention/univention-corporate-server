@@ -1,3 +1,9 @@
+univention-system-setup (4.0.5-1) unstable; urgency=low
+
+  * basis/12domainname: fixed a typo in certificate creation; Bug #19392
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 13 Aug 2010 09:29:52 +0200
+
 univention-system-setup (4.0.4-1) unstable; urgency=low
 
   * install univention-managed-client instead of transition package
