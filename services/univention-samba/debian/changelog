@@ -1,3 +1,9 @@
+univention-samba (5.0.20-1) unstable; urgency=low
+
+  * Allow samba-bdc-common as alternative to samba-common-bin (Bug #18901)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 Aug 2010 16:42:07 +0200
+
 univention-samba (5.0.19-1) unstable; urgency=low
 
   * Show correct daemon name (smbd) while starting via init script.
