@@ -1,3 +1,9 @@
+univention-join (3.0.4-2) unstable; urgency=low
+
+  * Remove + from lines beginning (Bug #14121)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 13 Aug 2010 08:05:22 +0200
+
 univention-join (3.0.4-1) unstable; urgency=low
 
   * Fix copying of SSL settings (Bug #14212)
