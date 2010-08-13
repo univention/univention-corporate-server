@@ -100,6 +100,9 @@ class invalidDhcpEntry(base):
 class invalidDNSAliasEntry(base):
 	message=_('The DNS alias entry for this host should contain the zone name, the alias zone container DN and the alias.')
 
+class InvalidDNS_Information( base ):
+	message = _( 'The provided DNS information are invalid.' )
+
 class nextFreeIp(base):
 	message=_('Next IP address not found.')
 

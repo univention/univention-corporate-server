@@ -29,8 +29,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-21 10:24+0200\n"
-"PO-Revision-Date: 2010-07-21 10:23+0200\n"
+"POT-Creation-Date: 2010-08-13 11:54+0200\n"
+"PO-Revision-Date: 2010-05-04 14:40+0200\n"
+
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1003,84 +1004,88 @@ msgstr ""
 "des Alias-Zonencontainers und den Alias-Namen enthalten."
 
 #: uexceptions.py:104
+msgid "The provided DNS information are invalid."
+msgstr "Die angegebenen DNS-Informationen sind ungültig."
+
+#: uexceptions.py:107
 msgid "Next IP address not found."
 msgstr "Die nächste IP-Adresse wurde nicht gefunden."
 
-#: uexceptions.py:107
+#: uexceptions.py:110
 msgid "The given IP address is not within the range of the selected network"
 msgstr "Die angegebene IP ist nicht im Bereich des zugeordneten Netzwerks."
 
-#: uexceptions.py:110
+#: uexceptions.py:113
 msgid "The MAC address is already in use."
 msgstr "Die MAC-Adresse wird bereits verwendet."
 
-#: uexceptions.py:113
+#: uexceptions.py:116
 msgid "The mail address is already in use."
 msgstr "Die Mail-Adresse wird bereits verwendet."
 
-#: uexceptions.py:116
+#: uexceptions.py:119
 msgid "DHCP server name already used: "
 msgstr "Der DHCP-Servername wird bereits verwendet."
 
-#: uexceptions.py:119
+#: uexceptions.py:122
 msgid "Default Kolab home server does not exist"
 msgstr "Der Standard Kolab Home Server existiert nicht."
 
-#: uexceptions.py:122
+#: uexceptions.py:125
 msgid "Default primary group does not exist"
 msgstr "Die primäre Standardgruppe existiert nicht."
 
-#: uexceptions.py:125
+#: uexceptions.py:128
 msgid "This is a primary group"
 msgstr "Das ist eine primäre Gruppe."
 
-#: uexceptions.py:131
+#: uexceptions.py:134
 msgid "The requested group not be found."
 msgstr "Die angeforderte Gruppe wurde nicht gefunden."
 
-#: uexceptions.py:134
+#: uexceptions.py:137
 msgid "The DHCP entry was not found."
 msgstr "Der DHCP-Eintrag wurde nicht gefunden."
 
-#: uexceptions.py:137
+#: uexceptions.py:140
 msgid "The DNS entry was not found"
 msgstr "Der DNS-Eintrag wurde nicht gefunden."
 
-#: uexceptions.py:140
+#: uexceptions.py:143
 msgid ""
 "The FQDN of this object is too long, it must have less than 64 characters."
 msgstr ""
 "Der FQDN dieses Objekts ist zu lang, er darf nicht mehr als 64 Zeichen haben."
 
-#: uexceptions.py:143
+#: uexceptions.py:146
 msgid "Not all needed information was entered."
 msgstr "Nicht alle benötigten Informationen wurden angegeben."
 
-#: uexceptions.py:146
+#: uexceptions.py:149
 msgid "Cannot overwrite a fixed attribute."
 msgstr "Kann kein unveränderliches Attribut überschreiben."
 
-#: uexceptions.py:149
+#: uexceptions.py:152
 msgid "Dynamic BOOTP leases are not compatible with failover."
 msgstr "Dynamic BOOTP ist nicht kompatibel mit Failover."
 
-#: uexceptions.py:152
+#: uexceptions.py:155
 msgid "No license found."
 msgstr "Es wurde keine Lizenz gefunden."
 
-#: uexceptions.py:155
+#: uexceptions.py:158
 msgid "The license is invalid."
 msgstr "Die Lizenz ist ungültig."
 
-#: uexceptions.py:158
+#: uexceptions.py:161
 msgid "The license is expired."
 msgstr "Die Lizenz ist abgelaufen."
 
-#: uexceptions.py:161
+#: uexceptions.py:164
 msgid "The license is invalid for the current base DN."
 msgstr "Die Lizenz ist ungültig für den aktuellen Basis-DN."
 
-#: uexceptions.py:164
+#: uexceptions.py:167
 msgid ""
 "The license check is disabled. Your are using the GPL version without any "
 "support or maintenance by Univention."
@@ -1088,113 +1093,113 @@ msgstr ""
 "Die Lizenzüberprüfung ist deaktiviert. Sie verwenden die GPL Version ohne "
 "die Support oder Maintenance Unterstüzung von Univention."
 
-#: uexceptions.py:166
+#: uexceptions.py:169
 msgid "Free for personal use edition."
 msgstr ""
 
-#: uexceptions.py:169
+#: uexceptions.py:172
 msgid "Too many user accounts"
 msgstr "Zu viele Benutzerkonten"
 
-#: uexceptions.py:171
+#: uexceptions.py:174
 msgid "Too many client accounts"
 msgstr "Zu viele Client Konten"
 
-#: uexceptions.py:173
+#: uexceptions.py:176
 msgid "Too many desktop accounts"
 msgstr "Zu viele Desktop Konten"
 
-#: uexceptions.py:175
+#: uexceptions.py:178
 msgid "Too many groupware accounts"
 msgstr "Zu viele Groupware Konten"
 
-#: uexceptions.py:177
+#: uexceptions.py:180
 msgid "During this session add and modify are disabled"
 msgstr "Während dieser Sitzung sind Hinzufügen und Bearbeiten nicht verfügbar."
 
-#: uexceptions.py:180
+#: uexceptions.py:183
 msgid "Password has been used before. Please choose a different one."
 msgstr "Das Passwort wurde bereits verwendet. Bitte wählen Sie ein anderes."
 
-#: uexceptions.py:183
+#: uexceptions.py:186
 msgid "The password is to short, at least 8 character!"
 msgstr "Das Passwort ist zu kurz, mindestens 8 Zeichen sind erforderlich."
 
-#: uexceptions.py:186
+#: uexceptions.py:189
 msgid "Network and IP range are incompatible."
 msgstr "Netzwerk und IP-Adressbereich passen nicht zusammen."
 
-#: uexceptions.py:189
+#: uexceptions.py:192
 msgid "The IP range contains its network address. That is not permitted!"
 msgstr ""
 "Der IP-Adressbereich beinhaltet seine Netzwerk Adresse. Das ist nicht "
 "zulässig!"
 
-#: uexceptions.py:192
+#: uexceptions.py:195
 msgid "The IP range contains its broadcast address. That is not permitted!"
 msgstr ""
 "Der IP-Adressbereich beinhaltet die Broadcast-Adresse. Das ist nicht "
 "zulässig!"
 
-#: uexceptions.py:195
+#: uexceptions.py:198
 msgid "Overlapping IP ranges"
 msgstr "Überschneidung in den IP-Adressbereichen"
 
-#: uexceptions.py:198
+#: uexceptions.py:201
 msgid "Invalid combination of options."
 msgstr "Unzulässige Zusammenstellung von Optionen."
 
-#: uexceptions.py:201
+#: uexceptions.py:204
 msgid "Password policy error: "
 msgstr "Fehler in der Passwort-Richtlinie: "
 
-#: uexceptions.py:204
+#: uexceptions.py:207
 msgid "This operation is not allowed on this object."
 msgstr "Die Operation ist für dieses Objekt nicht erlaubt."
 
-#: uexceptions.py:207
+#: uexceptions.py:210
 msgid "Empty printer groups are not possible."
 msgstr "Leere Druckergruppen sind nicht möglich."
 
-#: uexceptions.py:210
+#: uexceptions.py:213
 msgid ""
 "Printer groups with quota support can only have members with quota support."
 msgstr ""
 "Einer Druckergruppen mitUnterstützung für Quota können als Mitglieder nur "
 "Drucker mit Quota haben."
 
-#: uexceptions.py:213
+#: uexceptions.py:216
 msgid "Only printer objects can be members of a printer group."
 msgstr "Nur Drucker-Objekte können Mitglied in einer Druckergruppe sein."
 
-#: uexceptions.py:216
+#: uexceptions.py:219
 msgid "Only existing groups are allowed."
 msgstr "Nur existierende Gruppen sind erlaubt."
 
-#: uexceptions.py:219
+#: uexceptions.py:222
 msgid "Only existing users are allowed."
 msgstr "Nur existierende Benutzer sind erlaubt."
 
-#: uexceptions.py:222
+#: uexceptions.py:225
 #, python-format
 msgid "Invalid syntax in default value. Check these templates: %s."
 msgstr "Falsche Syntax bei Standardwert. Zu prüfende Vorlagen: %s."
 
-#: uexceptions.py:227
+#: uexceptions.py:230
 msgid "Timeperiod Object still in use!"
 msgstr "Nagios-Zeitraum-Objekt wird noch genutzt!"
 
-#: uexceptions.py:230
+#: uexceptions.py:233
 msgid "IP address entry required to assign nagios services!"
 msgstr "Zum Zuweisen von Nagios-Diensten wird eine IP-Adresse benötigt!"
 
-#: uexceptions.py:233
+#: uexceptions.py:236
 msgid "DNS Forward Zone entry required to assign nagios services!"
 msgstr ""
 "Zum Zuweisen von Nagios-Diensten wird ein Eintrag in der DNS Forward Zone "
 "benötigt!"
 
-#: uexceptions.py:236
+#: uexceptions.py:239
 msgid ""
 "The DNS forward entry could not be created. Please remove existing alias "
 "records or comparable DNS objects with the same name as this host from the "
@@ -1204,7 +1209,7 @@ msgstr ""
 "DNS-Alias Records oder vergleichbare DNS-Objekte mit dem Namen dieses "
 "Rechners aus der DNS-Forward-Zone entfernt werden."
 
-#: uexceptions.py:239
+#: uexceptions.py:242
 msgid "Circular group dependency detected: "
 msgstr "Zyklische Gruppen-Abhängigkeit festgestellt: "
 

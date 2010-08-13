@@ -1374,7 +1374,7 @@ class simpleComputer( simpleLdap ):
 			subnet = string.join( subnet, '.' ) + '.'
 			ipPart = ip.replace( subnet, '' )
 			if ipPart == ip:
-				raise univention.admin.uexceptions.missingInformation, _( 'Reverse zone and IP address are incompatible.' )
+				raise univention.admin.uexceptions.InvalidDNS_Information, _( 'Reverse zone and IP address are incompatible.' )
 
 			pointer = string.split( ipPart, '.' )
 			pointer.reverse( )

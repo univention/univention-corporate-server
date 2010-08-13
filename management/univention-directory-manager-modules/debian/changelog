@@ -1,3 +1,13 @@
+univention-directory-manager-modules (6.0.25-1) unstable; urgency=low
+
+  * when creating a domaincontroller host object has failed in the
+    post-create phase (creating DNS or DHCP objects) the cleanup of the
+    already created host object has failed too. Because of that the object
+    could not be created after fixing the DNS and/or DHCP settings. This
+    behaviour is fixed now; Bug #19343
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 13 Aug 2010 19:38:52 +0200
+
 univention-directory-manager-modules (6.0.24-1) unstable; urgency=low
 
   * Fixed ucr_overwrite_properties (Bug #18499)
