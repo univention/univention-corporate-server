@@ -2011,6 +2011,11 @@ class simpleComputer( simpleLdap ):
 			primaryGroupNumber = number['gidNumber']
 		self.newPrimaryGroupDn=self['primaryGroup']
 
+		if 'samba' in self.options:
+			searchResult=self.lo.search(base=self['primaryGroup'], attr=['sambaSID'])
+			for tmp,number in searchResult:
+				primaryGroupSambaNumber = number['sambaSID']
+
 		if self.oldinfo.has_key('primaryGroup'):
 			self.oldPrimaryGroupDn=self.oldinfo['primaryGroup']
 			searchResult=self.lo.search(base=self.oldinfo['primaryGroup'], attr=['gidNumber'])
