@@ -1,3 +1,12 @@
+univention-updater (6.0.24-1) unstable; urgency=low
+
+  * Use --get-selections instead of --list to get the package state to
+    consider hold packages
+  * Update univention-xen manually to resolve apt-get problems (Bug
+    #16841)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 14 Aug 2010 16:42:01 +0200
+
 univention-updater (6.0.23-1) unstable; urgency=low
 
   * renamed univention-pkg-install to univention-install (Bug #17995)

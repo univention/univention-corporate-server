@@ -7,8 +7,8 @@ UPDATE_NEXT_VERSION="$2"
 
 check_and_install ()
 {
-	dpkg -l $1 2>>"$UPDATER_LOG" | grep ^ii >>"$UPDATER_LOG" 2>&1
-	if [ $? = 0 ]; then
+	state="$(dpkg --get-selections $1 2>/dev/null | awk '{print $2}')"
+	if [ "$state" = "install" ]; then
 		DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install $1 >>"$UPDATER_LOG" 2>&1
 	fi
 }
@@ -17,7 +17,11 @@ echo -n "Running postup.sh script:"
 echo >> "$UPDATER_LOG"
 date >>"$UPDATER_LOG" 2>&1
 
-eval $(univention-config-registry shell) >>"$UPDATER_LOG" 2>&1
+eval "$(univention-config-registry shell)" >>"$UPDATER_LOG" 2>&1
+
+for p in univention-xen; do
+	check_and_install $p
+done
 
 if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role" = "basissystem" ]; then
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-basesystem >>"$UPDATER_LOG" 2>&1
