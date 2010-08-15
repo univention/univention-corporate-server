@@ -1,3 +1,11 @@
+univention-installer (6.0.45-1) unstable; urgency=low
+
+  * A valid netbios name can not be longer than 15 characters otherwise
+    the local join (net rpc join) will fail. Now the installer displays
+    a warning (Bug #19454)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 15 Aug 2010 20:25:34 +0200
+
 univention-installer (6.0.44-1) unstable; urgency=low
 
   * virtualization server packages for role basesystem Bug #19045

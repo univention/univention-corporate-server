@@ -44,6 +44,7 @@ import re
 
 class object(content):
 	def __init__(self, max_y, max_x, last, file, cmdline):
+		self.hostname_last_warning = ''
 		self.guessed = {}
 		content.__init__(self, max_y, max_x, last, file, cmdline)
 		self.interactive=False
@@ -197,13 +198,18 @@ class object(content):
 			if not self.ignore('windows_domain'):
 				if focus:
 					self.move_focus( windows_domain_position )
-				return _("The length of then windows domain name is greater than 14 characters.")
+				return _("The length of the windows domain name is greater than 14 characters.")
 			
 		if hostname.strip() == '' or hostname.strip() in ['localhost', 'local'] or hostname.strip().find(' ') != -1 or not self.syntax_is_hostname(hostname):
 			if not self.ignore('hostname'):
 				if focus:
 					self.move_focus( 3 )
 				return _("Please enter a valid hostname in lowercase.")
+		if len(hostname) > 15:
+			# The warning will be displayed only once
+			if hostname != self.hostname_last_warning:
+				self.hostname_last_warning = hostname
+				return _("A valid netbios name can not be longer than 15 characters. If samba is installed, the hostname should be shortened.")
 		if domainname.strip() == '' or domainname.strip().find(' ') != -1 or not self.syntax_is_domainname(domainname):
 			if not self.ignore('domainname'):
 				if focus:
