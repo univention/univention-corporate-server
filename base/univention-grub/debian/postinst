@@ -183,7 +183,7 @@ fi
 # determine grubdevice
 # needs to be called after grub-install: devices.map is created by grub-install
 if [ -z "$grub_groot" ] ; then
-	grubdev=$(df -P / | sed -ne '$s% .*%%p')
+	grubdev=$(df -P /boot | sed -ne '$s% .*%%p')
 	groot=$(convert "$grubdev")
 	if [ -n "$groot" ]
 	then

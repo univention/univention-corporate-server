@@ -1,3 +1,9 @@
+univention-grub (4.0.3-2) unstable; urgency=low
+
+  * Fix calculation of grub/groot UCR variable (Bug #9985)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 16 Aug 2010 14:03:11 +0200
+
 univention-grub (4.0.3-1) unstable; urgency=low
 
   * Fix duplicate root= option (Bug #9985)
