@@ -1,3 +1,10 @@
+univention-mail-cyrus-kolab2 (3.0.11-1) unstable; urgency=low
+
+  * Don't overwrite mail/cyrus/imap/quotainterval during updates (Bug
+    #15520)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 Aug 2010 20:52:25 +0200
+
 univention-mail-cyrus-kolab2 (3.0.10-1) unstable; urgency=low
 
   * fixed name of quotainterval variable (Bug #15220)
