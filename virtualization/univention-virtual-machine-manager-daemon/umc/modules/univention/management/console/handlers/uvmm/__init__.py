@@ -952,7 +952,9 @@ class handler( umch.simpleHandler ):
 			back = umcp.SimpleCommand( 'uvmm/domain/overview', options = opts )
 			req = umcp.SimpleCommand( 'uvmm/domain/remove', options = opts )
 			fail_overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = opts )
-			success_overview_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = opts )
+			opts2 = copy.copy( object.options )
+			del opts2[ 'domain' ]
+			success_overview_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = opts2 )
 			cancel = umcd.Button( _( 'Cancel' ), actions = [ umcd.Action( back ) ] )
 			button = umcd.Button( _( 'Remove' ), actions = [ umcd.Action( req, boxes ), umcd.Action( success_overview_cmd, status_range = umcd.Action.SUCCESS ), umcd.Action( fail_overview_cmd, status_range = umcd.Action.FAILURE ) ], default = True )
 			lst.add_row( [ '' ] )
