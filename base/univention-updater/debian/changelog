@@ -1,3 +1,9 @@
+univention-updater (6.0.25-1) unstable; urgency=low
+
+  * really run apt-get update before installation (Bug #17995)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 16 Aug 2010 11:52:58 +0200
+
 univention-updater (6.0.24-1) unstable; urgency=low
 
   * Use --get-selections instead of --list to get the package state to
