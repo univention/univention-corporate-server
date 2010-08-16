@@ -153,9 +153,9 @@ class DriveWizard( umcd.IWizard ):
 			self[ 2 ].hint = None
 		elif object.options['drive-type'] == 'cdrom':
 			if self.image_syntax._choices:
-				msg = _( "If the required ISO image is not found it might be added by copying the file into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>default</i>. After that go to the previous page an return to this one. The image should now be listed." )
+				msg = _( "If the required ISO image is not found it might be added by copying the file into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>local directory</i>. After that go to the previous page an return to this one. The image should now be listed." )
 			else:
-				msg = _( "The list of available images is empty! To add an ISO image the file needs to be copied into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>default</i>. After that go to the previous page an return to this one. The image should now be listed." )
+				msg = _( "The list of available images is empty! To add an ISO image the file needs to be copied into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>local directory</i>. After that go to the previous page an return to this one. The image should now be listed." )
 			self[ 2 ].hint = msg
 			self[ 2 ].description = ''
 		else:
