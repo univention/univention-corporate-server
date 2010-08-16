@@ -1,3 +1,10 @@
+univention-webui-style (5.0.22-1) unstable; urgency=low
+
+  * english overview page: using links to english Univention website; Bug #19435
+  * update URLs to german Univention website
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 16 Aug 2010 13:31:35 +0200
+
 univention-webui-style (5.0.21-1) unstable; urgency=low
 
   * add new style for list elements with smaller padding; Bug #18863
