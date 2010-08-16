@@ -181,8 +181,6 @@ class DriveWizard( umcd.IWizard ):
 				object.options[ 'image-size' ] = '8 GB'
 				if object.options.get( 'domain', 'NONE' ) != 'NONE':
 					self.uvmm.next_drive_name( self.node_uri, object.options.get( 'domain' ), object )
-				else:
-					self.uvmm.next_drive_name( self.node_uri, object.options.get( 'name', 'unknown' ), object )
 			elif object.options['drive-type'] == 'cdrom':
 				self.current = 2
 		elif self.current == 1: # new or existing disk image?
