@@ -1076,7 +1076,7 @@ class handler( umch.simpleHandler ):
 			node = self.uvmm.get_node_info( node_uri )
 			lst = umcd.List()
 
-			lst.add_row( [ umcd.Cell( umcd.Text( _( 'When detaching a disk from the virtual instance the image may also be deleted. Should the image %(image)s be removed also?' ) % { 'image' : object.options[ 'disk' ] } ), attributes = { 'colspan' : '3' } ) ] )
+			lst.add_row( [ umcd.Cell( umcd.Text( _( 'The drive will be detached from the virtual instance. Additionally the associated image %(image)s may be deleted permanently. Should this be done also?' ) % { 'image' : object.options[ 'disk' ] } ), attributes = { 'colspan' : '3' } ) ] )
 			opts = copy.copy( object.options )
 			overview = umcp.SimpleCommand( 'uvmm/domain/overview', options = opts )
 			opts = copy.copy( object.options )
