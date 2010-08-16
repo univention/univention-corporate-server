@@ -69,7 +69,7 @@ function other() {
 	fi
 	univention-skel
 
-	if [ -z "$univentionAutoStartScript" ]
+	if [ -z "$univentionAutoStartScript" -o "$univentionAutoStartScript" = "none" -o "$univentionAutoStartScript" = "None" ]
 	then
 		exec startkde
 	else
@@ -112,7 +112,7 @@ function thinclient() {
 	fi
 
 	# establish session to application server
-	if [ -z "$univentionAutoStartScript" ]
+	if [ -z "$univentionAutoStartScript" -o "$univentionAutoStartScript" = "none" -o "$univentionAutoStartScript" = "None" ]
 	then
 		timeout=`$SESSION_RSH $SESSION_HOST /usr/sbin/univention-baseconfig get thinclient/session/startup`
 		timeout=`echo $timeout | egrep "^([0-9])+$"`

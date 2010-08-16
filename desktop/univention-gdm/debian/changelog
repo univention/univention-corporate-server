@@ -1,3 +1,9 @@
+univention-gdm (6.0.9-1) unstable; urgency=low
+
+  * fix: allow none as keyword to disable autostart scripts. Bug #18544
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 16 Aug 2010 11:58:31 +0200
+
 univention-gdm (6.0.8-1) unstable; urgency=low
 
   * multihead: calculate y size correctly and fix a typo. Bug #12124
