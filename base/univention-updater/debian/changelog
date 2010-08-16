@@ -1,3 +1,9 @@
+univention-updater (6.0.26-1) unstable; urgency=low
+
+  * Update libxenstore3.0 manually (Bug #16841)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 Aug 2010 16:26:00 +0200
+
 univention-updater (6.0.25-1) unstable; urgency=low
 
   * really run apt-get update before installation (Bug #17995)

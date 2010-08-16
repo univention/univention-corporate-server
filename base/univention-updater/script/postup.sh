@@ -12,6 +12,13 @@ check_and_install ()
 		DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install $1 >>"$UPDATER_LOG" 2>&1
 	fi
 }
+check_and_reinstall ()
+{
+	state="$(dpkg --get-selections $1 2>/dev/null | awk '{print $2}')"
+	if [ "$state" = "install" ]; then
+		DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install --reinstall $1 >>"$UPDATER_LOG" 2>&1
+	fi
+}
 
 echo -n "Running postup.sh script:"
 echo >> "$UPDATER_LOG"
@@ -21,6 +28,10 @@ eval "$(univention-config-registry shell)" >>"$UPDATER_LOG" 2>&1
 
 for p in univention-xen; do
 	check_and_install $p
+done
+
+for p in libxenstore3.0; do
+	check_and_reinstall $p
 done
 
 if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role" = "basissystem" ]; then
