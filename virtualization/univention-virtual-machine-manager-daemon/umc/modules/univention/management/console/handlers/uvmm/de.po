@@ -586,7 +586,7 @@ msgstr "Festplatte"
 
 #: types.py:89
 msgid "Network"
-msgstr "Netz"
+msgstr "Netzwerk"
 
 #: types.py:104
 msgid "CD/DVD-ROM"
