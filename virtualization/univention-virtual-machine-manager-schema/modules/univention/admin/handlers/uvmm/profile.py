@@ -52,7 +52,6 @@ class BootDevice( univention.admin.syntax.select ):
 	choices = [
 		('hd', _( 'hard drive' ) ),
 		('cdrom', _( 'CDROM drive' ) ),
-		('fd', _( 'floppy disk' ) ),
 		('network', _( 'Network' ) ),
 	]
 

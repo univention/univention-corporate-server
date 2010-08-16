@@ -59,13 +59,9 @@ msgstr "Festplatte"
 msgid "CDROM drive"
 msgstr "CDROM-Laufwerk"
 
-#: profile.py:54
-msgid "floppy disk"
-msgstr "Diskettenlaufwerk"
-
 #: profile.py:55
 msgid "Network"
-msgstr "Netz"
+msgstr "Netzwerk"
 
 #: profile.py:68
 msgid "Full virtualization (KVM)"
