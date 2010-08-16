@@ -59,7 +59,13 @@ univention-baseconfig set sshd/autostart?yes
 univention-baseconfig set portmap/autostart?yes
 
 # syslog
-univention-baseconfig set syslog/mail/mirrorto/syslog?yes
+if [ "$1" = configure -a -z "$2" ]; then
+	# installation
+	univention-baseconfig set syslog/mail/mirrorto/syslog?no
+else
+	# update
+	univention-baseconfig set syslog/mail/mirrorto/syslog?yes
+fi
 
 # this must be done _before_ dephelper runs
 if [ "$1" = configure -a \! -e /vmlinuz.install -a \! -e /initrd.img.install ]; then

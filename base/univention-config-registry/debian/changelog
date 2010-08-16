@@ -1,3 +1,10 @@
+univention-config-registry (6.0.30-1) unstable; urgency=low
+
+  * set default for syslog/mail/mirrorto/syslog to no for 
+    new installations Bug #9510 
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Aug 2010 09:35:30 +0200
+
 univention-config-registry (6.0.29-1) unstable; urgency=low
 
   * set default for syslog/mail/mirrorto/syslog to yes Bug #9510
