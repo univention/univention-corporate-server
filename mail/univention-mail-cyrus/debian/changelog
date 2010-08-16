@@ -1,3 +1,11 @@
+univention-mail-cyrus (3.0.4-1) unstable; urgency=low
+
+  * Use univention-config-registry instead of univention-baseconfig in
+    postinst and set mail/cyrus/imap/quotainterval by default during
+    installation (Bug #15220)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 Aug 2010 20:48:35 +0200
+
 univention-mail-cyrus (3.0.3-1) unstable; urgency=low
 
   *  fixed name of quotainterval variable (Bug #15220)
