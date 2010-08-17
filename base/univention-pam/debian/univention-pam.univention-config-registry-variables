@@ -137,7 +137,7 @@ Type=str
 Categories=system-base
 
 [auth/faillog]
-Description[de]=Aktiviert das automatische Sperren von Benutzern falls die Anmeldung zu häufig fehlschläg. (default: no)
+Description[de]=Aktiviert das automatische Sperren von Benutzern falls die Anmeldung zu häufig fehlschlägt. (default: no)
 Description[en]=Enabled user locking if too many login attemps fail. (default: no)
 Type=str
 Categories=system-base

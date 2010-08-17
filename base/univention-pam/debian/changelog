@@ -1,3 +1,9 @@
+univention-pam (4.0.9-1) unstable; urgency=low
+
+  * fix typo (Bug #18987)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 17 Aug 2010 09:30:27 +0200
+
 univention-pam (4.0.8-1) unstable; urgency=low
 
   * support samba 3.3 packages. Bug #18426
