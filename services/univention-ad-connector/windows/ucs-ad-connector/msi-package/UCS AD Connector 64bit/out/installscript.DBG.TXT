@@ -24,14 +24,14 @@
 #####################################################################################
  
  
-[28.07.2010 14:45:33,10 - Diagnostic info cmd]: cscript.exe //NoLogo "C:\Programme\MakeMsi\VersionInformationBox.vbs" 
+[17.08.2010 16:41:06,70 - Diagnostic info cmd]: cscript.exe //NoLogo "C:\Programme\MakeMsi\VersionInformationBox.vbs" 
 
 This computer has Windows Installer 3.0.3790.2538 and WSH 5.6 on Microsoft Windows XP (5.1.2600 Service Pack 2)
 
 MAKEMSI is at version 10.169
                             
                             
-[28.07.2010 14:45:33,77 - Diagnostic info cmd]: set 
+[17.08.2010 16:41:07,36 - Diagnostic info cmd]: set 
 ALLUSERSPROFILE=C:\Dokumente und Einstellungen\All Users
 APPDATA=C:\Dokumente und Einstellungen\stegoh\Anwendungsdaten
 BuffSize=32000
@@ -80,15 +80,15 @@ USERPROFILE=C:\Dokumente und Einstellungen\stegoh
 windir=C:\WINDOWS
                             
                             
-[28.07.2010 14:45:33,88 - CMD]: chcp 1252 
+[17.08.2010 16:41:07,47 - CMD]: chcp 1252 
 Aktive Codepage: 1252.
              
-[28.07.2010 14:45:34,02 - CMD]: reg4mm.exe PPWIZ4MM.4MM '/ConsoleFile:+out\installscript.DBG.TXT' /ErrorFile: /OTHER 'installscript.mm' /Define:MmMode=P /DeleteOnError:N '/Output:out\*.*\IgnoreMe.txt' /Sleep:0,0 '/BuildTitle:/OTHER/Building from {x22}{IS}{x22}' /option:Tabs='4' /IncludePath=*MAKEMSI_USER_FILES_PATH;*MAKEMSI_COMPANY_SUPPORT_DIR;  
+[17.08.2010 16:41:07,61 - CMD]: reg4mm.exe PPWIZ4MM.4MM '/ConsoleFile:+out\installscript.DBG.TXT' /ErrorFile: /OTHER 'installscript.mm' /Define:MmMode=P /DeleteOnError:N '/Output:out\*.*\IgnoreMe.txt' /Sleep:0,0 '/BuildTitle:/OTHER/Building from {x22}{IS}{x22}' /option:Tabs='4' /IncludePath=*MAKEMSI_USER_FILES_PATH;*MAKEMSI_COMPANY_SUPPORT_DIR;  
                  
 
 
 *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
-                       Wednesday, 28 Jul 2010 2:45:35pm
+                        Tuesday, 17 Aug 2010 4:41:09pm
 *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
 
 []---------------------------------------------------------[]
@@ -287,12 +287,12 @@ Building from "installscript.mm"
          * Reading: C:\Programme\MakeMsi\COMPANY.MMH
            - Making: out\installscript.mm\Log\Pass1+2.vbs
 
-           14:45:51  Script : COMPANY.MMH(182) - @VBS0001
-           14:45:51  Command: <$COMPANY_GET_TEMPLATE_AND_OPEN_MSI>
+           16:41:31  Script : COMPANY.MMH(182) - @VBS0001
+           16:41:31  Command: <$COMPANY_GET_TEMPLATE_AND_OPEN_MSI>
 
              >> Row Command for table: LaunchCondition
                 >> Condition       = NoSuchProperty.so.always.false
-                >> Description     = This MSI can't be installed as a MAKEMSI build or update did not successfully complete. <?xCRLF><?xCRLF>The failing script "installscript.mm" was executed at Wed Jul 28 2010 at 2:45:35pm.
+                >> Description     = This MSI can't be installed as a MAKEMSI build or update did not successfully complete. <?xCRLF><?xCRLF>The failing script "installscript.mm" was executed at Tue Aug 17 2010 at 4:41:08pm.
                 >> @Validate       = NEW -MISSINGDATA
                    >> @Validate mode: NEW -MISSINGDATA
 
@@ -304,16 +304,16 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:51  Script : COMPANY.MMH(225) - @VBS0016
-           14:45:51  Command: <$Summary "Security" *Value=^<$COMPANY_SECURITY_VALUE_VBEXP>^>
+           16:41:33  Script : COMPANY.MMH(225) - @VBS0016
+           16:41:33  Command: <$Summary "Security" *Value=^<$COMPANY_SECURITY_VALUE_VBEXP>^>
 
 
-           14:45:51  Script : COMPANY.MMH(256) - @VBS0017
-           14:45:51  Command: <$Table "Error">
+           16:41:33  Script : COMPANY.MMH(256) - @VBS0017
+           16:41:33  Command: <$Table "Error">
 
 
-           14:45:51  Script : COMPANY.MMH(258) - @VBS0018
-           14:45:51  Command: <$@@ErrorMsg "1335">
+           16:41:33  Script : COMPANY.MMH(258) - @VBS0018
+           16:41:33  Command: <$@@ErrorMsg "1335">
 
              >> Row Command for table: Error
                 >> Error           = 1335
@@ -321,8 +321,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:51  Script : COMPANY.MMH(261) - @VBS0020
-           14:45:51  Command: <$@@ErrorMsg "1720">
+           16:41:33  Script : COMPANY.MMH(261) - @VBS0020
+           16:41:33  Command: <$@@ErrorMsg "1720">
 
              >> Row Command for table: Error
                 >> Error           = 1720
@@ -330,8 +330,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:51  Script : COMPANY.MMH(262) - @VBS0022
-           14:45:51  Command: <$@@ErrorMsg "2740">
+           16:41:33  Script : COMPANY.MMH(262) - @VBS0022
+           16:41:33  Command: <$@@ErrorMsg "2740">
 
              >> Row Command for table: Error
                 >> Error           = 2740
@@ -339,8 +339,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:51  Script : COMPANY.MMH(265) - @VBS0024
-           14:45:51  Command: <$@@ErrorMsg "2705"> ;;ICE03 error at validation time, but if not validating...
+           16:41:33  Script : COMPANY.MMH(265) - @VBS0024
+           16:41:33  Command: <$@@ErrorMsg "2705"> ;;ICE03 error at validation time, but if not validating...
 
              >> Row Command for table: Error
                 >> Error           = 2705
@@ -348,8 +348,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:51  Script : COMPANY.MMH(268) - @VBS0026
-           14:45:51  Command: <$@@ErrorMsg "1721">
+           16:41:33  Script : COMPANY.MMH(268) - @VBS0026
+           16:41:33  Command: <$@@ErrorMsg "1721">
 
              >> Row Command for table: Error
                 >> Error           = 1721
@@ -357,8 +357,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(269) - @VBS0028
-           14:45:52  Command: <$@@ErrorMsg "1722">
+           16:41:33  Script : COMPANY.MMH(269) - @VBS0028
+           16:41:33  Command: <$@@ErrorMsg "1722">
 
              >> Row Command for table: Error
                 >> Error           = 1722
@@ -366,8 +366,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(272) - @VBS0030
-           14:45:52  Command: <$@@ErrorMsg "2103">
+           16:41:33  Script : COMPANY.MMH(272) - @VBS0030
+           16:41:33  Command: <$@@ErrorMsg "2103">
 
              >> Row Command for table: Error
                 >> Error           = 2103
@@ -375,8 +375,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(273) - @VBS0032
-           14:45:52  Command: <$@@ErrorMsg "2755">
+           16:41:33  Script : COMPANY.MMH(273) - @VBS0032
+           16:41:33  Command: <$@@ErrorMsg "2755">
 
              >> Row Command for table: Error
                 >> Error           = 2755
@@ -384,8 +384,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(276) - @VBS0034
-           14:45:52  Command: <$@@ErrorMsg "1909">
+           16:41:33  Script : COMPANY.MMH(276) - @VBS0034
+           16:41:33  Command: <$@@ErrorMsg "1909">
 
              >> Row Command for table: Error
                 >> Error           = 1909
@@ -393,28 +393,28 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(277) - @VBS0036
-           14:45:52  Command: <$/Table>
+           16:41:33  Script : COMPANY.MMH(277) - @VBS0036
+           16:41:33  Command: <$/Table>
 
 
-           14:45:52  Script : COMPANY.MMH(314) - @VBS0037
-           14:45:52  Command: <$Table "Billboard">
+           16:41:33  Script : COMPANY.MMH(314) - @VBS0037
+           16:41:33  Command: <$Table "Billboard">
 
 
-           14:45:52  Script : COMPANY.MMH(315) - @VBS0038
-           14:45:52  Command: <$TableDelete>
+           16:41:33  Script : COMPANY.MMH(315) - @VBS0038
+           16:41:33  Command: <$TableDelete>
 
 
-           14:45:52  Script : COMPANY.MMH(316) - @VBS0039
-           14:45:52  Command: <$/Table>
+           16:41:33  Script : COMPANY.MMH(316) - @VBS0039
+           16:41:33  Command: <$/Table>
 
 
-           14:45:52  Script : COMPANY.MMH(321) - @VBS0040
-           14:45:52  Command: <$Table "_Validation">
+           16:41:33  Script : COMPANY.MMH(321) - @VBS0040
+           16:41:33  Command: <$Table "_Validation">
 
 
-           14:45:52  Script : COMPANY.MMH(328) - @VBS0041
-           14:45:52  Command: <$Row @Where="`Table` = 'ListView' AND `Column` = 'Value'" @OK='=1' Category="Formatted" >
+           16:41:33  Script : COMPANY.MMH(328) - @VBS0041
+           16:41:33  Command: <$Row @Where="`Table` = 'ListView' AND `Column` = 'Value'" @OK='=1' Category="Formatted" >
 
              >> Row Command for table: _Validation
                 >> @Where          = `Table` = 'ListView' AND `Column` = 'Value'
@@ -423,36 +423,36 @@ Building from "installscript.mm"
                    >> @Validate mode: FETCH
 
 
-           14:45:52  Script : COMPANY.MMH(329) - @VBS0043
-           14:45:52  Command: <$/Table>
+           16:41:33  Script : COMPANY.MMH(329) - @VBS0043
+           16:41:33  Command: <$/Table>
 
 
-           14:45:52  Script : COMPANY.MMH(335) - @VBS0044
-           14:45:52  Command: <$TableCreate "FeatureComponents" DropExisting="N"> ;;Windows Installer will PV in MSI.DLL (in UI sequence) if missing
+           16:41:33  Script : COMPANY.MMH(335) - @VBS0044
+           16:41:33  Command: <$TableCreate "FeatureComponents" DropExisting="N"> ;;Windows Installer will PV in MSI.DLL (in UI sequence) if missing
 
 
-           14:45:52  Script : COMPANY.MMH(336) - @VBS0047
-           14:45:52  Command: <$TableCreate "File" DropExisting="N"> ;;Windows Installer needs table (even if empty)
+           16:41:33  Script : COMPANY.MMH(336) - @VBS0047
+           16:41:33  Command: <$TableCreate "File" DropExisting="N"> ;;Windows Installer needs table (even if empty)
 
 
-           14:45:52  Script : COMPANY.MMH(337) - @VBS0050
-           14:45:52  Command: <$TableCreate "Media" DropExisting="N"> ;;Windows Installer needs table (even if empty)
+           16:41:33  Script : COMPANY.MMH(337) - @VBS0050
+           16:41:33  Command: <$TableCreate "Media" DropExisting="N"> ;;Windows Installer needs table (even if empty)
 
 
-           14:45:52  Script : COMPANY.MMH(342) - @VBS0053
-           14:45:52  Command: <$TableCreate "<$MAKEMSI_TABLENAME_FILESOURCE>">
+           16:41:33  Script : COMPANY.MMH(342) - @VBS0053
+           16:41:33  Command: <$TableCreate "<$MAKEMSI_TABLENAME_FILESOURCE>">
 
 
-           14:45:52  Script : COMPANY.MMH(388) - @VBS0057
-           14:45:52  Command: <$TableCreate "MsiFileHash">
+           16:41:33  Script : COMPANY.MMH(388) - @VBS0057
+           16:41:33  Command: <$TableCreate "MsiFileHash">
 
 
-           14:45:52  Script : COMPANY.MMH(389) - @VBS0061
-           14:45:52  Command: <$Table "_Validation">
+           16:41:33  Script : COMPANY.MMH(389) - @VBS0061
+           16:41:33  Command: <$Table "_Validation">
 
 
-           14:45:52  Script : COMPANY.MMH(400) - @VBS0062
-           14:45:52  Command: <$Row Table="MsiFileHash" Column="File_" Nullable="N" KeyTable="File" KeyColumn="1" Category="Identifier" Description="Foreign key into the File table." >
+           16:41:33  Script : COMPANY.MMH(400) - @VBS0062
+           16:41:33  Command: <$Row Table="MsiFileHash" Column="File_" Nullable="N" KeyTable="File" KeyColumn="1" Category="Identifier" Description="Foreign key into the File table." >
 
              >> Row Command for table: _Validation
                 >> Table           = MsiFileHash
@@ -465,8 +465,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(411) - @VBS0064
-           14:45:52  Command: <$Row Table="MsiFileHash" Column="Options" Nullable="N" Category="Integer" MinValue="0" MaxValue="0" Description="Reserved option (must be 0)." >
+           16:41:33  Script : COMPANY.MMH(411) - @VBS0064
+           16:41:33  Command: <$Row Table="MsiFileHash" Column="Options" Nullable="N" Category="Integer" MinValue="0" MaxValue="0" Description="Reserved option (must be 0)." >
 
              >> Row Command for table: _Validation
                 >> Table           = MsiFileHash
@@ -479,8 +479,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(422) - @VBS0066
-           14:45:52  Command: <$HashRow "1">
+           16:41:33  Script : COMPANY.MMH(422) - @VBS0066
+           16:41:33  Command: <$HashRow "1">
 
              >> Row Command for table: _Validation
                 >> Table           = MsiFileHash
@@ -491,8 +491,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(423) - @VBS0068
-           14:45:52  Command: <$HashRow "2">
+           16:41:33  Script : COMPANY.MMH(423) - @VBS0068
+           16:41:33  Command: <$HashRow "2">
 
              >> Row Command for table: _Validation
                 >> Table           = MsiFileHash
@@ -503,8 +503,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(424) - @VBS0070
-           14:45:52  Command: <$HashRow "3">
+           16:41:33  Script : COMPANY.MMH(424) - @VBS0070
+           16:41:33  Command: <$HashRow "3">
 
              >> Row Command for table: _Validation
                 >> Table           = MsiFileHash
@@ -515,8 +515,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(425) - @VBS0072
-           14:45:52  Command: <$HashRow "4">
+           16:41:33  Script : COMPANY.MMH(425) - @VBS0072
+           16:41:33  Command: <$HashRow "4">
 
              >> Row Command for table: _Validation
                 >> Table           = MsiFileHash
@@ -527,12 +527,12 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(426) - @VBS0074
-           14:45:52  Command: <$/Table>
+           16:41:33  Script : COMPANY.MMH(426) - @VBS0074
+           16:41:33  Command: <$/Table>
 
 
-           14:45:52  Script : COMPANY.MMH(476) - @VBS0075
-           14:45:52  Command: <$Feature "<$COMPANY_COMPLETE_FEATURE>" Directory_="<$COMPANY_COMPLETE_FEATURE_DIRECTORY>" Title="<$COMPANY_COMPLETE_FEATURE_TITLE>" Description="<$COMPANY_COMPLETE_FEATURE_DESCRIPTION>" Attributes="<$COMPANY_COMPLETE_FEATURE_ATTRIBUTES>" Display="<$COMPANY_COMPLETE_FEATURE_DISPLAY>" >
+           16:41:33  Script : COMPANY.MMH(476) - @VBS0075
+           16:41:33  Command: <$Feature "<$COMPANY_COMPLETE_FEATURE>" Directory_="<$COMPANY_COMPLETE_FEATURE_DIRECTORY>" Title="<$COMPANY_COMPLETE_FEATURE_TITLE>" Description="<$COMPANY_COMPLETE_FEATURE_DESCRIPTION>" Attributes="<$COMPANY_COMPLETE_FEATURE_ATTRIBUTES>" Display="<$COMPANY_COMPLETE_FEATURE_DISPLAY>" >
 
              >> Row Command for table: Feature
                 >> Feature         = ALL.1.0.0.UCS_AD_Connector
@@ -546,8 +546,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(583) - @VBS0080
-           14:45:52  Command: <$COMPANY_SET_PROPERTY_UPGRADECODE> ;;User can override above macros to change behaviour...
+           16:41:34  Script : COMPANY.MMH(583) - @VBS0080
+           16:41:34  Command: <$COMPANY_SET_PROPERTY_UPGRADECODE> ;;User can override above macros to change behaviour...
 
              >> Property command for: UpgradeCode
                 >> Value comes from a VB EXPRESSION: UpgradeCode
@@ -557,8 +557,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(584) - @VBS0087
-           14:45:52  Command: <$COMPANY_SET_PROPERTY_PRODUCTCODE>
+           16:41:34  Script : COMPANY.MMH(584) - @VBS0087
+           16:41:34  Command: <$COMPANY_SET_PROPERTY_PRODUCTCODE>
 
              >> Property command for: ProductCode
                 >> Value comes from a VB EXPRESSION: GuidMake("ProductCode")
@@ -568,12 +568,12 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(585) - @VBS0093
-           14:45:52  Command: <$COMPANY_SET_PROPERTY_PACKAGECODE>
+           16:41:34  Script : COMPANY.MMH(585) - @VBS0093
+           16:41:34  Command: <$COMPANY_SET_PROPERTY_PACKAGECODE>
 
 
-           14:45:52  Script : COMPANY.MMH(595) - @VBS0094
-           14:45:52  Command: <$Property "ALLUSERS" Value="<$COMPANY_ALLUSERS_PROPERTY>">
+           16:41:34  Script : COMPANY.MMH(595) - @VBS0094
+           16:41:34  Command: <$Property "ALLUSERS" Value="<$COMPANY_ALLUSERS_PROPERTY>">
 
              >> Property command for: ALLUSERS
                 >> Value comes from a LITERAL: 1
@@ -583,8 +583,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(607) - @VBS0100
-           14:45:52  Command: <$Property "REINSTALLMODE" Value=^<$COMPANY_REINSTALLMODE>^>
+           16:41:34  Script : COMPANY.MMH(607) - @VBS0100
+           16:41:34  Command: <$Property "REINSTALLMODE" Value=^<$COMPANY_REINSTALLMODE>^>
 
              >> Property command for: REINSTALLMODE
                 >> Value comes from a LITERAL: amus
@@ -594,8 +594,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(619) - @VBS0106
-           14:45:52  Command: <$Property "ProductName" Value="<$COMPANY_PROPERTY_PRODUCTNAME>">
+           16:41:34  Script : COMPANY.MMH(619) - @VBS0106
+           16:41:34  Command: <$Property "ProductName" Value="<$COMPANY_PROPERTY_PRODUCTNAME>">
 
              >> Property command for: ProductName
                 >> Value comes from a LITERAL: UCS AD Connector
@@ -605,52 +605,52 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(637) - @VBS0112
-           14:45:52  Command: <$Summary "TEMPLATE" Value="<$COMPANY_SUMMARY_TEMPLATE>">
+           16:41:34  Script : COMPANY.MMH(637) - @VBS0112
+           16:41:34  Command: <$Summary "TEMPLATE" Value="<$COMPANY_SUMMARY_TEMPLATE>">
 
 
-           14:45:52  Script : COMPANY.MMH(641) - @VBS0113
-           14:45:52  Command: <$Summary "MsiSchema" Value="<$COMPANY_SUMMARY_SCHEMA>">
+           16:41:34  Script : COMPANY.MMH(641) - @VBS0113
+           16:41:34  Command: <$Summary "MsiSchema" Value="<$COMPANY_SUMMARY_SCHEMA>">
 
 
-           14:45:52  Script : COMPANY.MMH(643) - @VBS0114
-           14:45:52  Command: <$Summary "TITLE" VALUE="<$COMPANY_SUMMARY_TITLE>">
+           16:41:34  Script : COMPANY.MMH(643) - @VBS0114
+           16:41:34  Command: <$Summary "TITLE" VALUE="<$COMPANY_SUMMARY_TITLE>">
 
 
-           14:45:52  Script : COMPANY.MMH(644) - @VBS0115
-           14:45:52  Command: <$Summary "Subject" VALUE="<$COMPANY_SUMMARY_SUBJECT>">
+           16:41:34  Script : COMPANY.MMH(644) - @VBS0115
+           16:41:34  Command: <$Summary "Subject" VALUE="<$COMPANY_SUMMARY_SUBJECT>">
 
 
-           14:45:52  Script : COMPANY.MMH(645) - @VBS0116
-           14:45:52  Command: <$Summary "SourceType" Value="<$COMPANY_SUMMARY_SourceType>">
+           16:41:34  Script : COMPANY.MMH(645) - @VBS0116
+           16:41:34  Command: <$Summary "SourceType" Value="<$COMPANY_SUMMARY_SourceType>">
 
 
-           14:45:52  Script : COMPANY.MMH(646) - @VBS0117
-           14:45:52  Command: <$Summary "CREATE_DTM" VALUE="now()">
+           16:41:34  Script : COMPANY.MMH(646) - @VBS0117
+           16:41:34  Command: <$Summary "CREATE_DTM" VALUE="now()">
 
 
-           14:45:52  Script : COMPANY.MMH(647) - @VBS0118
-           14:45:52  Command: <$Summary "EDITTIME" VALUE="now()">
+           16:41:34  Script : COMPANY.MMH(647) - @VBS0118
+           16:41:34  Command: <$Summary "EDITTIME" VALUE="now()">
 
 
-           14:45:52  Script : COMPANY.MMH(648) - @VBS0119
-           14:45:52  Command: <$Summary "LASTSAVE_DTM" *VALUE="Empty"> ;;Don't want
+           16:41:34  Script : COMPANY.MMH(648) - @VBS0119
+           16:41:34  Command: <$Summary "LASTSAVE_DTM" *VALUE="Empty"> ;;Don't want
 
 
-           14:45:52  Script : COMPANY.MMH(649) - @VBS0120
-           14:45:52  Command: <$Summary "LASTPRINTED" *VALUE=^Empty^> ;;Don't want
+           16:41:34  Script : COMPANY.MMH(649) - @VBS0120
+           16:41:34  Command: <$Summary "LASTPRINTED" *VALUE=^Empty^> ;;Don't want
 
 
-           14:45:52  Script : COMPANY.MMH(653) - @VBS0121
-           14:45:52  Command: <$Html2Text VBVAR="VB_COMMENTS" HTML=^<$COMPANY_SUMMARY_COMMENTS>^>
+           16:41:34  Script : COMPANY.MMH(653) - @VBS0121
+           16:41:34  Command: <$Html2Text VBVAR="VB_COMMENTS" HTML=^<$COMPANY_SUMMARY_COMMENTS>^>
 
 
-           14:45:52  Script : COMPANY.MMH(654) - @VBS0124
-           14:45:52  Command: <$Summary "COMMENTS" *VALUE="VB_COMMENTS">
+           16:41:34  Script : COMPANY.MMH(654) - @VBS0124
+           16:41:34  Command: <$Summary "COMMENTS" *VALUE="VB_COMMENTS">
 
 
-           14:45:52  Script : COMPANY.MMH(665) - @VBS0125
-           14:45:52  Command: <$Property "Manufacturer" Value="<$COMPANY_PROPERTY_MANUFACTURER>">
+           16:41:34  Script : COMPANY.MMH(665) - @VBS0125
+           16:41:34  Command: <$Property "Manufacturer" Value="<$COMPANY_PROPERTY_MANUFACTURER>">
 
              >> Property command for: Manufacturer
                 >> Value comes from a LITERAL: My Name
@@ -660,16 +660,16 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(666) - @VBS0131
-           14:45:52  Command: <$Summary "AUTHOR" VALUE="<$COMPANY_SUMMARY_AUTHOR>">
+           16:41:34  Script : COMPANY.MMH(666) - @VBS0131
+           16:41:34  Command: <$Summary "AUTHOR" VALUE="<$COMPANY_SUMMARY_AUTHOR>">
 
 
-           14:45:52  Script : COMPANY.MMH(667) - @VBS0132
-           14:45:52  Command: <$Summary "LastAuthor" VALUE="<$COMPANY_SUMMARY_LASTAUTHOR>">
+           16:41:34  Script : COMPANY.MMH(667) - @VBS0132
+           16:41:34  Command: <$Summary "LastAuthor" VALUE="<$COMPANY_SUMMARY_LASTAUTHOR>">
 
 
-           14:45:52  Script : COMPANY.MMH(676) - @VBS0133
-           14:45:52  Command: <$Property "ARPCONTACT" VALUE=^<$COMPANY_CONTACT_NAME>^>
+           16:41:34  Script : COMPANY.MMH(676) - @VBS0133
+           16:41:34  Command: <$Property "ARPCONTACT" VALUE=^<$COMPANY_CONTACT_NAME>^>
 
              >> Property command for: ARPCONTACT
                 >> Value comes from a LITERAL: My Name
@@ -679,8 +679,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(691) - @VBS0139
-           14:45:52  Command: <$Property "ARPURLINFOABOUT" Value="<$COMPANY_ARP_URL_PUBLISHER>">
+           16:41:34  Script : COMPANY.MMH(691) - @VBS0139
+           16:41:34  Command: <$Property "ARPURLINFOABOUT" Value="<$COMPANY_ARP_URL_PUBLISHER>">
 
              >> Property command for: ARPURLINFOABOUT
                 >> Value comes from a LITERAL: http://www.MyUrl.com/See/ME.MMH/
@@ -690,8 +690,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(695) - @VBS0145
-           14:45:52  Command: <$Property "ARPHELPLINK" Value="<$COMPANY_ARP_URL_TECHNICAL_SUPPORT>">
+           16:41:34  Script : COMPANY.MMH(695) - @VBS0145
+           16:41:34  Command: <$Property "ARPHELPLINK" Value="<$COMPANY_ARP_URL_TECHNICAL_SUPPORT>">
 
              >> Property command for: ARPHELPLINK
                 >> Value comes from a LITERAL: http://www.MyUrl.com/See/ME.MMH/Support
@@ -701,8 +701,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(707) - @VBS0151
-           14:45:52  Command: <$Property "ProductVersion" Value="<$ProductVersion>">
+           16:41:34  Script : COMPANY.MMH(707) - @VBS0151
+           16:41:34  Command: <$Property "ProductVersion" Value="<$ProductVersion>">
 
              >> Property command for: ProductVersion
                 >> Value comes from a LITERAL: 1.0.0
@@ -712,12 +712,12 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:52  Script : COMPANY.MMH(711) - @VBS0157
-           14:45:52  Command: <$Html2Text VBVAR="VB_ARPCOMMENTS" HTML=^<$COMPANY_PROPERTY_ARPCOMMENTS>^>
+           16:41:34  Script : COMPANY.MMH(711) - @VBS0157
+           16:41:34  Command: <$Html2Text VBVAR="VB_ARPCOMMENTS" HTML=^<$COMPANY_PROPERTY_ARPCOMMENTS>^>
 
 
-           14:45:52  Script : COMPANY.MMH(722) - @VBS0160
-           14:45:52  Command: <$Property "ARPCOMMENTS" *VALUE="VB_ARPCOMMENTS">
+           16:41:34  Script : COMPANY.MMH(722) - @VBS0160
+           16:41:34  Command: <$Property "ARPCOMMENTS" *VALUE="VB_ARPCOMMENTS">
 
              >> Property command for: ARPCOMMENTS
                 >> Value comes from a VB EXPRESSION: VB_ARPCOMMENTS
@@ -748,8 +748,8 @@ Building from "installscript.mm"
              >> Looking for config in macro: UpgradeCode_PROPERTY
              >>   Value found: UNINSTALLTHIS
 
-           14:45:53  Script : COMPANY.MMH(735) - @VBS0166
-           14:45:53  Command: <$UpgradeTable "=UpgradeCode"> ;;Use value in VB variable
+           16:41:34  Script : COMPANY.MMH(735) - @VBS0166
+           16:41:34  Command: <$UpgradeTable "=UpgradeCode"> ;;Use value in VB variable
 
              >> Row Command for table: Upgrade
                 >> *UpgradeCode    = UpgradeCode
@@ -777,8 +777,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:53  Script : COMPANY.MMH(756) - @VBS0183
-           14:45:53  Command: <$COMPANY_MOVE_RemoveExistingProducts>
+           16:41:35  Script : COMPANY.MMH(756) - @VBS0183
+           16:41:35  Command: <$COMPANY_MOVE_RemoveExistingProducts>
 
              >> Row Command for table: InstallExecuteSequence
                 >> Action          = RemoveExistingProducts
@@ -786,8 +786,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:53  Script : COMPANY.MMH(911) - @VBS0187
-           14:45:53  Command: <$Icon '<$COMPANY_PRODUCT_ICON>' Product="Y">
+           16:41:35  Script : COMPANY.MMH(911) - @VBS0187
+           16:41:35  Command: <$Icon '<$COMPANY_PRODUCT_ICON>' Product="Y">
 
              >> Row Command for table: Icon
                 >> Data            = C:\Programme\MakeMsi\MmDefaultProductIcon.ico
@@ -805,8 +805,8 @@ Building from "installscript.mm"
              >> MsiValFilter(Case sensitive): MmDefaultProductIcon.1.0.0.ico.exe
                 >> Reason: Microsoft bug in the validation. Ignore any messages mentioning this product icon's key (ICE36 "Icon Bloat" warning).
 
-           14:45:53  Script : COMPANY.MMH(939) - @VBS0198
-           14:45:53  Command: <$CompanyAddStampWithProperty "MakemsiVersion" VALUE=^<$MAKEMSI_VERSION>^>
+           16:41:35  Script : COMPANY.MMH(939) - @VBS0198
+           16:41:35  Command: <$CompanyAddStampWithProperty "MakemsiVersion" VALUE=^<$MAKEMSI_VERSION>^>
 
              >> Property command for: _MAKEMSI_MakemsiVersion
                 >> Value comes from a LITERAL: 10.169
@@ -816,8 +816,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:53  Script : COMPANY.MMH(940) - @VBS0204
-           14:45:53  Command: <$CompanyAddStampWithProperty "BuildComputer" VALUE=^<$MAKEMSI_COMPUTERNAME>^>
+           16:41:35  Script : COMPANY.MMH(940) - @VBS0204
+           16:41:35  Command: <$CompanyAddStampWithProperty "BuildComputer" VALUE=^<$MAKEMSI_COMPUTERNAME>^>
 
              >> Property command for: _MAKEMSI_BuildComputer
                 >> Value comes from a LITERAL: DIANE
@@ -827,8 +827,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:53  Script : COMPANY.MMH(941) - @VBS0210
-           14:45:53  Command: <$CompanyAddStampWithProperty "BuildUser" VALUE=^<$MAKEMSI_USERNAME> in <$MAKEMSI_USERDOMAIN>^>
+           16:41:35  Script : COMPANY.MMH(941) - @VBS0210
+           16:41:35  Command: <$CompanyAddStampWithProperty "BuildUser" VALUE=^<$MAKEMSI_USERNAME> in <$MAKEMSI_USERDOMAIN>^>
 
              >> Property command for: _MAKEMSI_BuildUser
                 >> Value comes from a LITERAL: stegoh in DIANE
@@ -838,19 +838,19 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:53  Script : COMPANY.MMH(942) - @VBS0216
-           14:45:53  Command: <$CompanyAddStampWithProperty "BuildTime" VALUE=^<?CompileTime>^>
+           16:41:35  Script : COMPANY.MMH(942) - @VBS0216
+           16:41:35  Command: <$CompanyAddStampWithProperty "BuildTime" VALUE=^<?CompileTime>^>
 
              >> Property command for: _MAKEMSI_BuildTime
-                >> Value comes from a LITERAL: Wed Jul 28 2010 at 2:45:35pm
+                >> Value comes from a LITERAL: Tue Aug 17 2010 at 4:41:08pm
              >> Row Command for table: Property
                 >> Property        = _MAKEMSI_BuildTime
                 >> *Value          = cb_PropValue
                    >> @Validate mode: FIELD
 
 
-           14:45:53  Script : COMPANY.MMH(943) - @VBS0222
-           14:45:53  Command: <$CompanyAddStampWithProperty "ProcessingMode" VALUE=^<$MMMODE_DESCRIPTION>^>
+           16:41:35  Script : COMPANY.MMH(943) - @VBS0222
+           16:41:35  Command: <$CompanyAddStampWithProperty "ProcessingMode" VALUE=^<$MMMODE_DESCRIPTION>^>
 
              >> Property command for: _MAKEMSI_ProcessingMode
                 >> Value comes from a LITERAL: Production
@@ -860,8 +860,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:53  Script : COMPANY.MMH(944) - @VBS0228
-           14:45:53  Command: <$CompanyAddStampWithProperty "SupportedPlatforms" VALUE=^<$PLATFORM_MsiSupportedWhere>^>
+           16:41:35  Script : COMPANY.MMH(944) - @VBS0228
+           16:41:35  Command: <$CompanyAddStampWithProperty "SupportedPlatforms" VALUE=^<$PLATFORM_MsiSupportedWhere>^>
 
              >> Property command for: _MAKEMSI_SupportedPlatforms
                 >> Value comes from a LITERAL: SUPPORTED on On any Windows Computer.
@@ -871,40 +871,40 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:53  Script : COMPANY.MMH(951) - @VBS0234
-           14:45:53  Command: <$Table "Property">
+           16:41:35  Script : COMPANY.MMH(951) - @VBS0234
+           16:41:35  Command: <$Table "Property">
 
 
-           14:45:53  Script : COMPANY.MMH(952) - @VBS0235
-           14:45:53  Command: <$RowsDelete WHERE="Property = 'ShowUserRegistrationDlg'">
+           16:41:35  Script : COMPANY.MMH(952) - @VBS0235
+           16:41:35  Command: <$RowsDelete WHERE="Property = 'ShowUserRegistrationDlg'">
 
 
-           14:45:53  Script : COMPANY.MMH(953) - @VBS0236
-           14:45:53  Command: <$/Table>
+           16:41:35  Script : COMPANY.MMH(953) - @VBS0236
+           16:41:35  Command: <$/Table>
 
 
-           14:45:53  Script : COMPANY.MMH(954) - @VBS0237
-           14:45:53  Command: <$Table "ControlEvent">
+           16:41:35  Script : COMPANY.MMH(954) - @VBS0237
+           16:41:35  Command: <$Table "ControlEvent">
 
 
-           14:45:53  Script : COMPANY.MMH(955) - @VBS0238
-           14:45:53  Command: <$RowsDelete WHERE=^Dialog_ = 'LicenseAgreementDlg' AND Control_ = 'Next' AND Event = 'NewDialog' AND Argument = 'SetupTypeDlg' AND Condition = 'IAgree = "Yes" AND ShowUserRegistrationDlg <> 1'^>
+           16:41:35  Script : COMPANY.MMH(955) - @VBS0238
+           16:41:35  Command: <$RowsDelete WHERE=^Dialog_ = 'LicenseAgreementDlg' AND Control_ = 'Next' AND Event = 'NewDialog' AND Argument = 'SetupTypeDlg' AND Condition = 'IAgree = "Yes" AND ShowUserRegistrationDlg <> 1'^>
 
 
-           14:45:53  Script : COMPANY.MMH(956) - @VBS0239
-           14:45:53  Command: <$RowsDelete WHERE=^Dialog_ = 'LicenseAgreementDlg' AND Control_ = 'Next' AND Event = 'NewDialog' AND Argument = 'UserRegistrationDlg' AND Condition = 'IAgree = "Yes" AND ShowUserRegistrationDlg = 1'^>
+           16:41:35  Script : COMPANY.MMH(956) - @VBS0239
+           16:41:35  Command: <$RowsDelete WHERE=^Dialog_ = 'LicenseAgreementDlg' AND Control_ = 'Next' AND Event = 'NewDialog' AND Argument = 'UserRegistrationDlg' AND Condition = 'IAgree = "Yes" AND ShowUserRegistrationDlg = 1'^>
 
 
-           14:45:53  Script : COMPANY.MMH(957) - @VBS0240
-           14:45:53  Command: <$RowsDelete WHERE="Dialog_ = 'SetupTypeDlg' AND Control_ = 'Back' AND Event = 'NewDialog' AND Argument = 'LicenseAgreementDlg' AND Condition = 'ShowUserRegistrationDlg <> 1'">
+           16:41:35  Script : COMPANY.MMH(957) - @VBS0240
+           16:41:35  Command: <$RowsDelete WHERE="Dialog_ = 'SetupTypeDlg' AND Control_ = 'Back' AND Event = 'NewDialog' AND Argument = 'LicenseAgreementDlg' AND Condition = 'ShowUserRegistrationDlg <> 1'">
 
 
-           14:45:53  Script : COMPANY.MMH(958) - @VBS0241
-           14:45:53  Command: <$RowsDelete WHERE="Dialog_ = 'SetupTypeDlg' AND Control_ = 'Back' AND Event = 'NewDialog' AND Argument = 'UserRegistrationDlg' AND Condition = 'ShowUserRegistrationDlg = 1'">
+           16:41:35  Script : COMPANY.MMH(958) - @VBS0241
+           16:41:35  Command: <$RowsDelete WHERE="Dialog_ = 'SetupTypeDlg' AND Control_ = 'Back' AND Event = 'NewDialog' AND Argument = 'UserRegistrationDlg' AND Condition = 'ShowUserRegistrationDlg = 1'">
 
 
-           14:45:53  Script : COMPANY.MMH(968) - @VBS0242
-           14:45:53  Command: <$Row Dialog_="LicenseAgreementDlg" Control_="Next" Event="NewDialog" Argument="UserRegistrationDlg" Condition='IAgree = "Yes"' Ordering="1" >
+           16:41:35  Script : COMPANY.MMH(968) - @VBS0242
+           16:41:35  Command: <$Row Dialog_="LicenseAgreementDlg" Control_="Next" Event="NewDialog" Argument="UserRegistrationDlg" Condition='IAgree = "Yes"' Ordering="1" >
 
              >> Row Command for table: ControlEvent
                 >> Dialog_         = LicenseAgreementDlg
@@ -916,8 +916,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:53  Script : COMPANY.MMH(979) - @VBS0244
-           14:45:53  Command: <$Row Dialog_="SetupTypeDlg" Control_="Back" Event="NewDialog" Argument="UserRegistrationDlg" Condition="1" Ordering="" >
+           16:41:35  Script : COMPANY.MMH(979) - @VBS0244
+           16:41:35  Command: <$Row Dialog_="SetupTypeDlg" Control_="Back" Event="NewDialog" Argument="UserRegistrationDlg" Condition="1" Ordering="" >
 
              >> Row Command for table: ControlEvent
                 >> Dialog_         = SetupTypeDlg
@@ -929,8 +929,8 @@ Building from "installscript.mm"
                    >> @Validate mode: FIELD
 
 
-           14:45:53  Script : COMPANY.MMH(980) - @VBS0246
-           14:45:53  Command: <$/Table>
+           16:41:35  Script : COMPANY.MMH(980) - @VBS0246
+           16:41:35  Command: <$/Table>
 
            (@1,010)INFO: Have licence?: installscript.licence.rtf
            (@1,019)INFO: Using licence: lizenz.rtf
@@ -938,12 +938,12 @@ Building from "installscript.mm"
            * Reading: lizenz.rtf
          * Reading: C:\Programme\MakeMsi\COMPANY.MMH
 
-           14:45:56  Script : COMPANY.MMH(1050) - @VBS0247
-           14:45:56  Command: <$Table "Control">
+           16:41:38  Script : COMPANY.MMH(1050) - @VBS0247
+           16:41:38  Command: <$Table "Control">
 
 
-           14:45:56  Script : COMPANY.MMH(1055) - @VBS0248
-           14:45:56  Command: <$Row @Where="Dialog_='LicenseAgreementDlg' and Control='AgreementText'" @OK="? = 1" *Text=~"<??b_Text>"~ >
+           16:41:38  Script : COMPANY.MMH(1055) - @VBS0248
+           16:41:38  Command: <$Row @Where="Dialog_='LicenseAgreementDlg' and Control='AgreementText'" @OK="? = 1" *Text=~"<??b_Text>"~ >
 
              >> Row Command for table: Control
                 >> @Where          = Dialog_='LicenseAgreementDlg' and Control='AgreementText'
@@ -952,12 +952,12 @@ Building from "installscript.mm"
                    >> @Validate mode: FETCH
 
 
-           14:45:56  Script : COMPANY.MMH(1056) - @VBS0250
-           14:45:56  Command: <$/Table>
+           16:41:39  Script : COMPANY.MMH(1056) - @VBS0250
+           16:41:39  Command: <$/Table>
 
 
-           14:45:56  Script : COMPANY.MMH(1066) - @VBS0251
-           14:45:56  Command: <$DialogRemove "UserRegistrationDlg">
+           16:41:39  Script : COMPANY.MMH(1066) - @VBS0251
+           16:41:39  Command: <$DialogRemove "UserRegistrationDlg">
 
              >> Row Command for table: ControlEvent
                 >> @Where          = 
@@ -980,8 +980,8 @@ Building from "installscript.mm"
        (@66)INFO: DLL custom action code will not be compressed (UPX.EXE not found)
    * Reading: installscript.mm
 
-     14:45:56  Script : installscript.mm(15) - @VBS0278
-     14:45:56  Command: <$DialogRemove "SetupTypeDlg"> ;; do not ask for Typical Custom complete
+     16:41:40  Script : installscript.mm(15) - @VBS0278
+     16:41:40  Command: <$DialogRemove "SetupTypeDlg"> ;; do not ask for Typical Custom complete
 
        >> Row Command for table: ControlEvent
           >> @Where          = 
@@ -997,8 +997,8 @@ Building from "installscript.mm"
              >> @Validate mode: FETCH
 
 
-     14:45:56  Script : installscript.mm(16) - @VBS0305
-     14:45:56  Command: <$DialogRemove "LicenseAgreementDlg"> ;;ignore lizenz.rtf File
+     16:41:40  Script : installscript.mm(16) - @VBS0305
+     16:41:40  Command: <$DialogRemove "LicenseAgreementDlg"> ;;ignore lizenz.rtf File
 
        >> Row Command for table: ControlEvent
           >> @Where          = 
@@ -1014,8 +1014,8 @@ Building from "installscript.mm"
              >> @Validate mode: FETCH
 
 
-     14:45:57  Script : installscript.mm(25) - @VBS0332
-     14:45:57  Command: <$DirectoryTree Key="INSTALLDIR" Dir="c:\Windows\UCS-AD-Connector" CHANGE="\" PrimaryFolder="Y">
+     16:41:40  Script : installscript.mm(25) - @VBS0332
+     16:41:40  Command: <$DirectoryTree Key="INSTALLDIR" Dir="c:\Windows\UCS-AD-Connector" CHANGE="\" PrimaryFolder="Y">
 
 
        >> Rexx4MakeDirTree()
@@ -1099,8 +1099,8 @@ Building from "installscript.mm"
              >> @Validate mode: FIELD
 
 
-     14:45:57  Script : installscript.mm(35) - @VBS0370
-     14:45:57  Command: <$Files "files\Programme\UCS-AD-Connector\*.*" DestDir="INSTALLDIR">
+     16:41:40  Script : installscript.mm(35) - @VBS0370
+     16:41:40  Command: <$Files "files\Programme\UCS-AD-Connector\*.*" DestDir="INSTALLDIR">
 
 
        >> Rexx4MakeDirTree()
@@ -1655,7 +1655,7 @@ Building from "installscript.mm"
           >> DT_KEYNAME: INSTALLDIR
 
        >> Row Command for table: Component
-          >> Component       = c7.ALL.1.0.0.UCS_A.INSTALLDIR_1_PwDump.exe
+          >> Component       = c7.ALL.1.0.0.UCS_A.INSTALLDIR_1_msvcr100.dll
           >> *ComponentId    = GuidMake("")
           >> Directory_      = INSTALLDIR
           >> Attributes      = msidbComponentAttributesLocalOnly
@@ -1665,13 +1665,98 @@ Building from "installscript.mm"
 
        >> Row Command for table: FeatureComponents
           >> Feature_        = ALL.1.0.0.UCS_AD_Connector
-          >> Component_      = c7.ALL.1.0.0.UCS_A.INSTALLDIR_1_PwDump.exe
+          >> Component_      = c7.ALL.1.0.0.UCS_A.INSTALLDIR_1_msvcr100.dll
           >> @Validate       = NEW -MISSINGDATA
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: File
           >> *File           = CurrentFileKey
-          >> Component_      = c7.ALL.1.0.0.UCS_A.INSTALLDIR_1_PwDump.exe
+          >> Component_      = c7.ALL.1.0.0.UCS_A.INSTALLDIR_1_msvcr100.dll
+          >> *FileName       = CurrentFileNameSL
+          >> FileSize        = 827728
+          >> *Version        = CurrentFileVersion
+          >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
+          >> *Language       = FileLanguage()
+          >> Sequence        = 0
+          >> @Validate       = NEW -MISSINGDATA -Sequence:UNDERFLOW
+             >> @Validate mode: NEW -MISSINGDATA -Sequence:UNDERFLOW
+
+       >> Row Command for table: _MAKEMSI_FileSource
+          >> *File_          = CurrentFileKey
+          >> *SourceFile     = CurrentFile
+          >> Date            = 2010-08-17
+          >> Time            = 16:40:08
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: Component
+          >> @Where          = `Component` = 'c7.ALL.1.0.0.UCS_A.INSTALLDIR_1_msvcr100.dll'
+          >> @SelfRef        = {*}
+          >> @OK             = =1
+          >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
+          >> KeyPath         = msvcr100.dll
+             >> @Validate mode: FETCH
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: [INSTALLDIR]\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "[INSTALLDIR]\" begin with "C:\PROGRAM FILES\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "[INSTALLDIR]\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: [INSTALLDIR]
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+
+       >> Rexx4MakeDirTree()
+          >> INPUTS
+          >> ~~~~~~
+          >> DIRECTORY: INSTALLDIR\
+          >> NAME     : 
+
+          >> See if any defined MapUserDir mappings apply (5 items)
+             >> Does "INSTALLDIR\" begin with "C:\PROGRAM FILES\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINDOWS\SYSTEM32\"?
+             >> Does "INSTALLDIR\" begin with "C:\WINNT\SYSTEM32\"?
+          >> See if we can find a directory alias for start of directory
+             >> Look at: INSTALLDIR
+          >> Only a single directory component assume it's an alias
+
+          >> OUTPUTS
+          >> ~~~~~~~
+          >> DT_KEYNAME: INSTALLDIR
+
+       >> Row Command for table: Component
+          >> Component       = c8.ALL.1.0.0.UCS_A.INSTALLDIR_1_PwDump.exe
+          >> *ComponentId    = GuidMake("")
+          >> Directory_      = INSTALLDIR
+          >> Attributes      = msidbComponentAttributesLocalOnly
+          >> Condition       = 
+          >> KeyPath         = 
+             >> @Validate mode: FIELD
+
+       >> Row Command for table: FeatureComponents
+          >> Feature_        = ALL.1.0.0.UCS_AD_Connector
+          >> Component_      = c8.ALL.1.0.0.UCS_A.INSTALLDIR_1_PwDump.exe
+          >> @Validate       = NEW -MISSINGDATA
+             >> @Validate mode: NEW -MISSINGDATA
+
+       >> Row Command for table: File
+          >> *File           = CurrentFileKey
+          >> Component_      = c8.ALL.1.0.0.UCS_A.INSTALLDIR_1_PwDump.exe
           >> *FileName       = CurrentFileNameSL
           >> FileSize        = 313856
           >> *Version        = CurrentFileVersion
@@ -1690,7 +1775,7 @@ Building from "installscript.mm"
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: Component
-          >> @Where          = `Component` = 'c7.ALL.1.0.0.UCS_A.INSTALLDIR_1_PwDump.exe'
+          >> @Where          = `Component` = 'c8.ALL.1.0.0.UCS_A.INSTALLDIR_1_PwDump.exe'
           >> @SelfRef        = {*}
           >> @OK             = =1
           >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
@@ -1740,7 +1825,7 @@ Building from "installscript.mm"
           >> DT_KEYNAME: INSTALLDIR
 
        >> Row Command for table: Component
-          >> Component       = c8.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw.exe
+          >> Component       = c9.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw.exe
           >> *ComponentId    = GuidMake("")
           >> Directory_      = INSTALLDIR
           >> Attributes      = msidbComponentAttributesLocalOnly
@@ -1750,13 +1835,13 @@ Building from "installscript.mm"
 
        >> Row Command for table: FeatureComponents
           >> Feature_        = ALL.1.0.0.UCS_AD_Connector
-          >> Component_      = c8.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw.exe
+          >> Component_      = c9.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw.exe
           >> @Validate       = NEW -MISSINGDATA
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: File
           >> *File           = CurrentFileKey
-          >> Component_      = c8.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw.exe
+          >> Component_      = c9.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw.exe
           >> *FileName       = CurrentFileNameSL
           >> FileSize        = 56320
           >> *Version        = CurrentFileVersion
@@ -1775,7 +1860,7 @@ Building from "installscript.mm"
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: Component
-          >> @Where          = `Component` = 'c8.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw.exe'
+          >> @Where          = `Component` = 'c9.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw.exe'
           >> @SelfRef        = {*}
           >> @OK             = =1
           >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
@@ -1825,7 +1910,7 @@ Building from "installscript.mm"
           >> DT_KEYNAME: INSTALLDIR
 
        >> Row Command for table: Component
-          >> Component       = c9.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw64.exe
+          >> Component       = c10.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw64.exe
           >> *ComponentId    = GuidMake("")
           >> Directory_      = INSTALLDIR
           >> Attributes      = msidbComponentAttributesLocalOnly
@@ -1835,13 +1920,13 @@ Building from "installscript.mm"
 
        >> Row Command for table: FeatureComponents
           >> Feature_        = ALL.1.0.0.UCS_AD_Connector
-          >> Component_      = c9.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw64.exe
+          >> Component_      = c10.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw64.exe
           >> @Validate       = NEW -MISSINGDATA
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: File
           >> *File           = CurrentFileKey
-          >> Component_      = c9.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw64.exe
+          >> Component_      = c10.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw64.exe
           >> *FileName       = CurrentFileNameSL
           >> FileSize        = 69120
           >> *Version        = CurrentFileVersion
@@ -1860,7 +1945,7 @@ Building from "installscript.mm"
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: Component
-          >> @Where          = `Component` = 'c9.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw64.exe'
+          >> @Where          = `Component` = 'c10.ALL.1.0.0.UCS_A.INSTALLDIR_1_servpw64.exe'
           >> @SelfRef        = {*}
           >> @OK             = =1
           >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
@@ -1910,7 +1995,7 @@ Building from "installscript.mm"
           >> DT_KEYNAME: INSTALLDIR
 
        >> Row Command for table: Component
-          >> Component       = c10.ALL.1.0.0.UCS_A.INSTALLDIR_1_ssleay32.dll
+          >> Component       = c11.ALL.1.0.0.UCS_A.INSTALLDIR_1_ssleay32.dll
           >> *ComponentId    = GuidMake("")
           >> Directory_      = INSTALLDIR
           >> Attributes      = msidbComponentAttributesLocalOnly
@@ -1920,13 +2005,13 @@ Building from "installscript.mm"
 
        >> Row Command for table: FeatureComponents
           >> Feature_        = ALL.1.0.0.UCS_AD_Connector
-          >> Component_      = c10.ALL.1.0.0.UCS_A.INSTALLDIR_1_ssleay32.dll
+          >> Component_      = c11.ALL.1.0.0.UCS_A.INSTALLDIR_1_ssleay32.dll
           >> @Validate       = NEW -MISSINGDATA
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: File
           >> *File           = CurrentFileKey
-          >> Component_      = c10.ALL.1.0.0.UCS_A.INSTALLDIR_1_ssleay32.dll
+          >> Component_      = c11.ALL.1.0.0.UCS_A.INSTALLDIR_1_ssleay32.dll
           >> *FileName       = CurrentFileNameSL
           >> FileSize        = 159744
           >> *Version        = CurrentFileVersion
@@ -1945,7 +2030,7 @@ Building from "installscript.mm"
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: Component
-          >> @Where          = `Component` = 'c10.ALL.1.0.0.UCS_A.INSTALLDIR_1_ssleay32.dll'
+          >> @Where          = `Component` = 'c11.ALL.1.0.0.UCS_A.INSTALLDIR_1_ssleay32.dll'
           >> @SelfRef        = {*}
           >> @OK             = =1
           >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
@@ -1995,7 +2080,7 @@ Building from "installscript.mm"
           >> DT_KEYNAME: INSTALLDIR
 
        >> Row Command for table: Component
-          >> Component       = c11.ALL.1.0.0.UCS_A.INSTALLDIR_1_ucs_ad_connector.exe
+          >> Component       = c12.ALL.1.0.0.UCS_A.INSTALLDIR_1_ucs_ad_connector.exe
           >> *ComponentId    = GuidMake("")
           >> Directory_      = INSTALLDIR
           >> Attributes      = msidbComponentAttributesLocalOnly
@@ -2005,13 +2090,13 @@ Building from "installscript.mm"
 
        >> Row Command for table: FeatureComponents
           >> Feature_        = ALL.1.0.0.UCS_AD_Connector
-          >> Component_      = c11.ALL.1.0.0.UCS_A.INSTALLDIR_1_ucs_ad_connector.exe
+          >> Component_      = c12.ALL.1.0.0.UCS_A.INSTALLDIR_1_ucs_ad_connector.exe
           >> @Validate       = NEW -MISSINGDATA
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: File
           >> *File           = CurrentFileKey
-          >> Component_      = c11.ALL.1.0.0.UCS_A.INSTALLDIR_1_ucs_ad_connector.exe
+          >> Component_      = c12.ALL.1.0.0.UCS_A.INSTALLDIR_1_ucs_ad_connector.exe
           >> *FileName       = CurrentFileNameSL
           >> FileSize        = 73216
           >> *Version        = CurrentFileVersion
@@ -2030,7 +2115,7 @@ Building from "installscript.mm"
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: Component
-          >> @Where          = `Component` = 'c11.ALL.1.0.0.UCS_A.INSTALLDIR_1_ucs_ad_connector.exe'
+          >> @Where          = `Component` = 'c12.ALL.1.0.0.UCS_A.INSTALLDIR_1_ucs_ad_connector.exe'
           >> @SelfRef        = {*}
           >> @OK             = =1
           >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
@@ -2038,8 +2123,8 @@ Building from "installscript.mm"
              >> @Validate mode: FETCH
 
 
-     14:45:59  Script : installscript.mm(36) - @VBS0613
-     14:45:59  Command: <$Files "files\temp\*.*" DestDir="[TempFolder]">
+     16:41:46  Script : installscript.mm(36) - @VBS0635
+     16:41:46  Command: <$Files "files\temp\*.*" DestDir="[TempFolder]">
 
 
        >> Rexx4MakeDirTree()
@@ -2091,7 +2176,7 @@ Building from "installscript.mm"
           >> DT_KEYNAME: TempFolder
 
        >> Row Command for table: Component
-          >> Component       = c12.ALL.1.0.0.UCS_A.TempFolder_x
+          >> Component       = c13.ALL.1.0.0.UCS_A.TempFolder_x
           >> *ComponentId    = GuidMake("")
           >> Directory_      = TempFolder
           >> Attributes      = msidbComponentAttributesLocalOnly
@@ -2101,13 +2186,13 @@ Building from "installscript.mm"
 
        >> Row Command for table: FeatureComponents
           >> Feature_        = ALL.1.0.0.UCS_AD_Connector
-          >> Component_      = c12.ALL.1.0.0.UCS_A.TempFolder_x
+          >> Component_      = c13.ALL.1.0.0.UCS_A.TempFolder_x
           >> @Validate       = NEW -MISSINGDATA
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: File
           >> *File           = CurrentFileKey
-          >> Component_      = c12.ALL.1.0.0.UCS_A.TempFolder_x
+          >> Component_      = c13.ALL.1.0.0.UCS_A.TempFolder_x
           >> *FileName       = CurrentFileNameSL
           >> FileSize        = 146
           >> *Version        = CurrentFileVersion
@@ -2126,7 +2211,7 @@ Building from "installscript.mm"
              >> @Validate mode: NEW -MISSINGDATA
 
        >> Row Command for table: Component
-          >> @Where          = `Component` = 'c12.ALL.1.0.0.UCS_A.TempFolder_x'
+          >> @Where          = `Component` = 'c13.ALL.1.0.0.UCS_A.TempFolder_x'
           >> @SelfRef        = {*}
           >> @OK             = =1
           >> Attributes      = ({*} AND NOT msidbComponentAttributesRegistryKeyPath)
@@ -2134,8 +2219,8 @@ Building from "installscript.mm"
              >> @Validate mode: FETCH
 
 
-     14:46:00  Script : installscript.mm(54) - @VBS0641
-     14:46:00  Command: <$ExeCa EXE='[TempFolder]ucs-ad-connector-service.cmd' Args=^"MsgBox Title" "MsgBox text..."^ WorkDir="TempFolder" SEQ="InstallFinalize-" Type="immediate ASync AnyRc" Condition="<$CONDITION_INSTALL_ONLY>" >
+     16:41:47  Script : installscript.mm(54) - @VBS0663
+     16:41:47  Command: <$ExeCa EXE='[TempFolder]ucs-ad-connector-service.cmd' Args=^"MsgBox Title" "MsgBox text..."^ WorkDir="TempFolder" SEQ="InstallFinalize-" Type="immediate ASync AnyRc" Condition="<$CONDITION_INSTALL_ONLY>" >
 
 
        >> Rexx4MakeDirTree()
@@ -2179,10 +2264,10 @@ Building from "installscript.mm"
      (@54)INFO: MAKEMSI told not to backup source code.
      * Reading: C:\Programme\MakeMsi\UiSample.MMH
 
-       14:46:00  Script : UiSample.MMH(152) - @VBS0654
+       16:41:48  Script : UiSample.MMH(152) - @VBS0676
 
 
-       14:46:00  Script : UiSample.MMH(169) - @VBS0655
+       16:41:48  Script : UiSample.MMH(169) - @VBS0677
 
          >> Row Command for table: Control
             >> Dialog_         = ProgressDlg
@@ -2200,13 +2285,13 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       14:46:00  Script : UiSample.MMH(170) - @VBS0657
+       16:41:48  Script : UiSample.MMH(170) - @VBS0679
 
 
-       14:46:00  Script : UiSample.MMH(171) - @VBS0658
+       16:41:48  Script : UiSample.MMH(171) - @VBS0680
 
 
-       14:46:00  Script : UiSample.MMH(180) - @VBS0659
+       16:41:48  Script : UiSample.MMH(180) - @VBS0681
 
          >> Row Command for table: EventMapping
             >> Dialog_         = ProgressDlg
@@ -2216,13 +2301,13 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       14:46:00  Script : UiSample.MMH(181) - @VBS0661
+       16:41:48  Script : UiSample.MMH(181) - @VBS0683
 
 
-       14:46:01  Script : UiSample.MMH(191) - @VBS0662
+       16:41:48  Script : UiSample.MMH(191) - @VBS0684
 
 
-       14:46:01  Script : UiSample.MMH(199) - @VBS0663
+       16:41:48  Script : UiSample.MMH(199) - @VBS0685
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'ProgressDlg' AND `Control` = 'ActionText'
@@ -2232,13 +2317,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(200) - @VBS0665
+       16:41:48  Script : UiSample.MMH(200) - @VBS0687
 
 
-       14:46:01  Script : UiSample.MMH(210) - @VBS0666
+       16:41:48  Script : UiSample.MMH(210) - @VBS0688
 
 
-       14:46:01  Script : UiSample.MMH(218) - @VBS0667
+       16:41:48  Script : UiSample.MMH(218) - @VBS0689
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'ProgressDlg' AND Control = 'Title'
@@ -2248,13 +2333,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(219) - @VBS0669
+       16:41:48  Script : UiSample.MMH(219) - @VBS0691
 
 
-       14:46:01  Script : UiSample.MMH(228) - @VBS0670
+       16:41:48  Script : UiSample.MMH(228) - @VBS0692
 
 
-       14:46:01  Script : UiSample.MMH(235) - @VBS0671
+       16:41:48  Script : UiSample.MMH(235) - @VBS0693
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'ProgressDlg' AND Control = 'ProgressBar'
@@ -2263,13 +2348,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(236) - @VBS0673
+       16:41:48  Script : UiSample.MMH(236) - @VBS0695
 
 
-       14:46:01  Script : UiSample.MMH(245) - @VBS0674
+       16:41:48  Script : UiSample.MMH(245) - @VBS0696
 
 
-       14:46:01  Script : UiSample.MMH(253) - @VBS0675
+       16:41:48  Script : UiSample.MMH(253) - @VBS0697
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'ProgressDlg' AND `Control` = 'StatusLabel'
@@ -2278,7 +2363,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(262) - @VBS0677
+       16:41:48  Script : UiSample.MMH(262) - @VBS0699
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'ProgressDlg' AND `Control` = 'ActionText'
@@ -2288,13 +2373,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(263) - @VBS0679
+       16:41:48  Script : UiSample.MMH(263) - @VBS0701
 
 
-       14:46:01  Script : UiSample.MMH(275) - @VBS0680
+       16:41:48  Script : UiSample.MMH(275) - @VBS0702
 
 
-       14:46:01  Script : UiSample.MMH(283) - @VBS0681
+       16:41:48  Script : UiSample.MMH(283) - @VBS0703
 
          >> Row Command for table: Dialog
             >> @Where          = `Title` = '[ProductName] [Setup]'
@@ -2303,13 +2388,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(294) - @VBS0683
+       16:41:48  Script : UiSample.MMH(294) - @VBS0705
 
 
-       14:46:01  Script : UiSample.MMH(317) - @VBS0684
+       16:41:48  Script : UiSample.MMH(317) - @VBS0706
 
 
-       14:46:01  Script : UiSample.MMH(325) - @VBS0685
+       16:41:48  Script : UiSample.MMH(325) - @VBS0707
 
          >> Row Command for table: RadioButton
             >> @Where          = 
@@ -2318,13 +2403,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(326) - @VBS0687
+       16:41:48  Script : UiSample.MMH(326) - @VBS0709
 
 
-       14:46:01  Script : UiSample.MMH(336) - @VBS0688
+       16:41:48  Script : UiSample.MMH(336) - @VBS0710
 
 
-       14:46:01  Script : UiSample.MMH(344) - @VBS0689
+       16:41:48  Script : UiSample.MMH(344) - @VBS0711
 
          >> Row Command for table: Dialog
             >> @Where          = `Title` = 'Installer Information'
@@ -2333,13 +2418,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(345) - @VBS0691
+       16:41:48  Script : UiSample.MMH(345) - @VBS0713
 
 
-       14:46:01  Script : UiSample.MMH(353) - @VBS0692
+       16:41:48  Script : UiSample.MMH(353) - @VBS0714
 
 
-       14:46:01  Script : UiSample.MMH(360) - @VBS0693
+       16:41:48  Script : UiSample.MMH(360) - @VBS0715
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'VerifyRepairDlg' and `Control` = 'Title'
@@ -2348,7 +2433,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(367) - @VBS0695
+       16:41:48  Script : UiSample.MMH(367) - @VBS0717
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'VerifyRemoveDlg' and `Control` = 'Title'
@@ -2357,13 +2442,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(368) - @VBS0697
+       16:41:48  Script : UiSample.MMH(368) - @VBS0719
 
 
-       14:46:01  Script : UiSample.MMH(391) - @VBS0698
+       16:41:48  Script : UiSample.MMH(391) - @VBS0720
 
 
-       14:46:01  Script : UiSample.MMH(401) - @VBS0699
+       16:41:48  Script : UiSample.MMH(401) - @VBS0721
 
          >> Row Command for table: Dialog
             >> @Where          = `Dialog` = 'ErrorDlg'
@@ -2374,13 +2459,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(402) - @VBS0701
+       16:41:48  Script : UiSample.MMH(402) - @VBS0723
 
 
-       14:46:01  Script : UiSample.MMH(403) - @VBS0702
+       16:41:48  Script : UiSample.MMH(403) - @VBS0724
 
 
-       14:46:01  Script : UiSample.MMH(413) - @VBS0703
+       16:41:48  Script : UiSample.MMH(413) - @VBS0725
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'ErrorDlg' and `Type`='PushButton'
@@ -2391,7 +2476,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(432) - @VBS0705
+       16:41:49  Script : UiSample.MMH(432) - @VBS0727
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'ErrorDlg' and `Control`='ErrorText'
@@ -2404,13 +2489,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(433) - @VBS0707
+       16:41:49  Script : UiSample.MMH(433) - @VBS0729
 
 
-       14:46:01  Script : UiSample.MMH(455) - @VBS0708
+       16:41:49  Script : UiSample.MMH(455) - @VBS0730
 
 
-       14:46:01  Script : UiSample.MMH(463) - @VBS0709
+       16:41:49  Script : UiSample.MMH(463) - @VBS0731
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'WelcomeDlg' and `Control`='Description'
@@ -2420,13 +2505,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(464) - @VBS0711
+       16:41:49  Script : UiSample.MMH(464) - @VBS0733
 
 
-       14:46:01  Script : UiSample.MMH(473) - @VBS0712
+       16:41:49  Script : UiSample.MMH(473) - @VBS0734
 
 
-       14:46:01  Script : UiSample.MMH(481) - @VBS0713
+       16:41:49  Script : UiSample.MMH(481) - @VBS0735
 
          >> Row Command for table: InstallUISequence
             >> @Where          = `Action` = 'MaintenanceWelcomeDlg'
@@ -2435,13 +2520,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(482) - @VBS0715
+       16:41:49  Script : UiSample.MMH(482) - @VBS0737
 
 
-       14:46:01  Script : UiSample.MMH(485) - @VBS0716
+       16:41:49  Script : UiSample.MMH(485) - @VBS0738
 
 
-       14:46:01  Script : UiSample.MMH(493) - @VBS0717
+       16:41:49  Script : UiSample.MMH(493) - @VBS0739
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'MaintenanceTypeDlg' and `Control`='Back'
@@ -2451,13 +2536,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(494) - @VBS0719
+       16:41:49  Script : UiSample.MMH(494) - @VBS0741
 
 
-       14:46:01  Script : UiSample.MMH(505) - @VBS0720
+       16:41:49  Script : UiSample.MMH(505) - @VBS0742
 
 
-       14:46:01  Script : UiSample.MMH(521) - @VBS0721
+       16:41:49  Script : UiSample.MMH(521) - @VBS0743
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'AdminRegistrationDlg' AND Control = 'OrganizationEdit'
@@ -2466,13 +2551,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(522) - @VBS0725
+       16:41:49  Script : UiSample.MMH(522) - @VBS0747
 
 
-       14:46:01  Script : UiSample.MMH(532) - @VBS0726
+       16:41:49  Script : UiSample.MMH(532) - @VBS0748
 
 
-       14:46:01  Script : UiSample.MMH(540) - @VBS0727
+       16:41:49  Script : UiSample.MMH(540) - @VBS0749
 
          >> Row Command for table: ControlEvent
             >> @Where          = Dialog_ = 'AdminWelcomeDlg' AND Control_ = 'Next' AND Event = 'NewDialog' AND Argument = 'AdminRegistrationDlg' AND Condition = '1'
@@ -2481,7 +2566,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(549) - @VBS0729
+       16:41:49  Script : UiSample.MMH(549) - @VBS0751
 
          >> Row Command for table: ControlEvent
             >> @Where          = Dialog_ = 'AdminInstallPointDlg' AND Control_ = 'Back' AND Event = 'NewDialog' AND Argument = 'AdminRegistrationDlg' AND Condition = '1'
@@ -2490,13 +2575,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(550) - @VBS0731
+       16:41:49  Script : UiSample.MMH(550) - @VBS0753
 
 
-       14:46:01  Script : UiSample.MMH(590) - @VBS0732
+       16:41:49  Script : UiSample.MMH(590) - @VBS0754
 
 
-       14:46:01  Script : UiSample.MMH(600) - @VBS0733
+       16:41:49  Script : UiSample.MMH(600) - @VBS0755
 
          >> Row Command for table: Control
             >> @Where          = `Control`='BottomLine' and `Type`='Line' and (`Dialog_` <> 'AdminWelcomeDlg') and (`Dialog_` <> 'ExitDialog') and (`Dialog_` <> 'FatalError') and (`Dialog_` <> 'MaintenanceWelcomeDlg') and (`Dialog_` <> 'PrepareDlg') and (`Dialog_` <> 'ResumeDlg') and (`Dialog_` <> 'UserExit') and (`Dialog_` <> 'WelcomeDlg')
@@ -2507,13 +2592,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(601) - @VBS0735
+       16:41:49  Script : UiSample.MMH(601) - @VBS0757
 
 
-       14:46:01  Script : UiSample.MMH(640) - @VBS0736
+       16:41:49  Script : UiSample.MMH(640) - @VBS0758
 
 
-       14:46:01  Script : UiSample.MMH(650) - @VBS0737
+       16:41:49  Script : UiSample.MMH(650) - @VBS0759
 
          >> Row Command for table: TextStyle
             >> TextStyle       = BrandingLR
@@ -2524,7 +2609,7 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       14:46:01  Script : UiSample.MMH(660) - @VBS0739
+       16:41:49  Script : UiSample.MMH(660) - @VBS0761
 
          >> Row Command for table: TextStyle
             >> TextStyle       = BrandingUL
@@ -2535,13 +2620,13 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       14:46:01  Script : UiSample.MMH(661) - @VBS0741
+       16:41:49  Script : UiSample.MMH(661) - @VBS0763
 
 
-       14:46:01  Script : UiSample.MMH(662) - @VBS0742
+       16:41:49  Script : UiSample.MMH(662) - @VBS0764
 
 
-       14:46:01  Script : UiSample.MMH(681) - @VBS0743
+       16:41:49  Script : UiSample.MMH(681) - @VBS0765
 
          >> Row Command for table: Control
             >> @Where          = `Control`='BottomLine' and `Type`='Line' and (`Dialog_` <> 'AdminWelcomeDlg') and (`Dialog_` <> 'ExitDialog') and (`Dialog_` <> 'FatalError') and (`Dialog_` <> 'MaintenanceWelcomeDlg') and (`Dialog_` <> 'PrepareDlg') and (`Dialog_` <> 'ResumeDlg') and (`Dialog_` <> 'UserExit') and (`Dialog_` <> 'WelcomeDlg')
@@ -2561,7 +2646,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(701) - @VBS0745
+       16:41:50  Script : UiSample.MMH(701) - @VBS0767
 
          >> Row Command for table: Control
             >> @Where          = `Control`='BottomLine' and `Type`='Line' and (`Dialog_` <> 'AdminWelcomeDlg') and (`Dialog_` <> 'ExitDialog') and (`Dialog_` <> 'FatalError') and (`Dialog_` <> 'MaintenanceWelcomeDlg') and (`Dialog_` <> 'PrepareDlg') and (`Dialog_` <> 'ResumeDlg') and (`Dialog_` <> 'UserExit') and (`Dialog_` <> 'WelcomeDlg')
@@ -2582,13 +2667,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:01  Script : UiSample.MMH(702) - @VBS0747
+       16:41:50  Script : UiSample.MMH(702) - @VBS0769
 
 
-       14:46:01  Script : UiSample.MMH(713) - @VBS0748
+       16:41:50  Script : UiSample.MMH(713) - @VBS0770
 
 
-       14:46:02  Script : UiSample.MMH(722) - @VBS0749
+       16:41:50  Script : UiSample.MMH(722) - @VBS0771
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Description'
@@ -2598,7 +2683,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(730) - @VBS0751
+       16:41:50  Script : UiSample.MMH(730) - @VBS0773
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Text'
@@ -2608,7 +2693,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(740) - @VBS0753
+       16:41:50  Script : UiSample.MMH(740) - @VBS0775
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Tree'
@@ -2620,7 +2705,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(750) - @VBS0755
+       16:41:50  Script : UiSample.MMH(750) - @VBS0777
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Box'
@@ -2632,7 +2717,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(760) - @VBS0757
+       16:41:50  Script : UiSample.MMH(760) - @VBS0779
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'LocationLabel'
@@ -2644,7 +2729,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(771) - @VBS0759
+       16:41:50  Script : UiSample.MMH(771) - @VBS0781
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Location'
@@ -2657,7 +2742,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(778) - @VBS0761
+       16:41:50  Script : UiSample.MMH(778) - @VBS0783
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'Browse'
@@ -2666,7 +2751,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(788) - @VBS0763
+       16:41:50  Script : UiSample.MMH(788) - @VBS0785
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'ItemDescription'
@@ -2678,7 +2763,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(798) - @VBS0765
+       16:41:50  Script : UiSample.MMH(798) - @VBS0787
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'CustomizeDlg' AND Control = 'ItemSize'
@@ -2690,13 +2775,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(800) - @VBS0767
+       16:41:50  Script : UiSample.MMH(800) - @VBS0789
 
 
-       14:46:02  Script : UiSample.MMH(803) - @VBS0768
+       16:41:50  Script : UiSample.MMH(803) - @VBS0790
 
 
-       14:46:02  Script : UiSample.MMH(811) - @VBS0769
+       16:41:50  Script : UiSample.MMH(811) - @VBS0791
 
          >> Row Command for table: TextStyle
             >> TextStyle       = FeatureDirFont
@@ -2706,10 +2791,10 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       14:46:02  Script : UiSample.MMH(812) - @VBS0771
+       16:41:50  Script : UiSample.MMH(812) - @VBS0793
 
 
-       14:46:02  Script : UiSample.MMH(823) - @VBS0772
+       16:41:50  Script : UiSample.MMH(823) - @VBS0794
 
          >> Row Command for table: Binary
             >> Data            = C:\Programme\MakeMsi\MmCustomSetup.ico
@@ -2718,7 +2803,7 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       14:46:02  Script : UiSample.MMH(836) - @VBS0777
+       16:41:50  Script : UiSample.MMH(836) - @VBS0799
 
          >> Row Command for table: Binary
             >> Data            = C:\Programme\MakeMsi\white.bmp
@@ -2727,7 +2812,7 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       14:46:02  Script : UiSample.MMH(872) - @VBS0782
+       16:41:50  Script : UiSample.MMH(872) - @VBS0804
 
          >> Row Command for table: Binary
             >> Data            = C:\Programme\MakeMsi\LeftSide.bmp
@@ -2736,10 +2821,10 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       14:46:02  Script : UiSample.MMH(933) - @VBS0787
+       16:41:50  Script : UiSample.MMH(933) - @VBS0809
 
 
-       14:46:02  Script : UiSample.MMH(940) - @VBS0788
+       16:41:50  Script : UiSample.MMH(940) - @VBS0810
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'AdminWelcomeDlg' AND Control = 'Description'
@@ -2748,7 +2833,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(947) - @VBS0790
+       16:41:50  Script : UiSample.MMH(947) - @VBS0812
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'ExitDialog' AND Control = 'Description'
@@ -2757,7 +2842,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(954) - @VBS0792
+       16:41:50  Script : UiSample.MMH(954) - @VBS0814
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'FatalError' AND Control = 'Description1'
@@ -2766,7 +2851,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(961) - @VBS0794
+       16:41:50  Script : UiSample.MMH(961) - @VBS0816
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'FatalError' AND Control = 'Description2'
@@ -2775,7 +2860,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(968) - @VBS0796
+       16:41:50  Script : UiSample.MMH(968) - @VBS0818
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'PrepareDlg' AND Control = 'Description'
@@ -2784,7 +2869,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(976) - @VBS0798
+       16:41:50  Script : UiSample.MMH(976) - @VBS0820
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'PrepareDlg' AND Control = 'ActionText'
@@ -2794,7 +2879,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(983) - @VBS0800
+       16:41:50  Script : UiSample.MMH(983) - @VBS0822
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'PrepareDlg' AND Control = 'ActionData'
@@ -2803,7 +2888,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(990) - @VBS0802
+       16:41:50  Script : UiSample.MMH(990) - @VBS0824
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'UserExit' AND Control = 'Description1'
@@ -2812,7 +2897,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(997) - @VBS0804
+       16:41:50  Script : UiSample.MMH(997) - @VBS0826
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'UserExit' AND Control = 'Description2'
@@ -2821,7 +2906,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(1004) - @VBS0806
+       16:41:50  Script : UiSample.MMH(1004) - @VBS0828
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'MaintenanceWelcomeDlg' AND Control = 'Description'
@@ -2830,7 +2915,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(1011) - @VBS0808
+       16:41:50  Script : UiSample.MMH(1011) - @VBS0830
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'ResumeDlg' AND Control = 'Description'
@@ -2839,7 +2924,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(1018) - @VBS0810
+       16:41:50  Script : UiSample.MMH(1018) - @VBS0832
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'WelcomeDlg' AND Control = 'Description'
@@ -2848,10 +2933,10 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(1019) - @VBS0812
+       16:41:50  Script : UiSample.MMH(1019) - @VBS0834
 
 
-       14:46:02  Script : UiSample.MMH(1083) - @VBS0813
+       16:41:50  Script : UiSample.MMH(1083) - @VBS0835
 
          >> Row Command for table: Dialog
             >> @Where          = `Dialog` = 'CancelDlg'
@@ -2875,7 +2960,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(1091) - @VBS0825
+       16:41:51  Script : UiSample.MMH(1091) - @VBS0847
 
          >> Property command for: MM_REDUCED_UI
             >> Value comes from a LITERAL: 0
@@ -2885,10 +2970,10 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       14:46:02  Script : UiSample.MMH(1094) - @VBS0831
+       16:41:51  Script : UiSample.MMH(1094) - @VBS0853
 
 
-       14:46:02  Script : UiSample.MMH(1102) - @VBS0832
+       16:41:51  Script : UiSample.MMH(1102) - @VBS0854
 
          >> Row Command for table: InstallUISequence
             >> @Where          = Action = 'ExitDialog'
@@ -2897,7 +2982,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(1110) - @VBS0834
+       16:41:51  Script : UiSample.MMH(1110) - @VBS0856
 
          >> Row Command for table: InstallUISequence
             >> @Where          = Action = 'WelcomeDlg'
@@ -2906,7 +2991,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:02  Script : UiSample.MMH(1111) - @VBS0836
+       16:41:51  Script : UiSample.MMH(1111) - @VBS0858
 
 
          >> MsiValFilter(Case sensitive): Row 'VerifyRepairDlg.Repair' in table 'Control' has bits set in the 'Attributes' column that are reserved
@@ -2918,19 +3003,19 @@ Building from "installscript.mm"
          >> MsiValFilter(Case sensitive): Row 'VerifyReadyDlg.Install' in table 'Control' has bits set in the 'Attributes' column that are reserved
             >> Reason: Work around Microsoft's bug in latest validation CUB files (_ReservedBits table)
 
-       14:46:02  Script : UiSample.MMH(1170) - @VBS0837
+       16:41:51  Script : UiSample.MMH(1170) - @VBS0859
 
 
-       14:46:02  Script : UiSample.MMH(1171) - @VBS0838
+       16:41:51  Script : UiSample.MMH(1171) - @VBS0860
 
 
-       14:46:03  Script : UiSample.MMH(1172) - @VBS0839
+       16:41:51  Script : UiSample.MMH(1172) - @VBS0861
 
 
-       14:46:03  Script : UiSample.MMH(1186) - @VBS0840
+       16:41:51  Script : UiSample.MMH(1186) - @VBS0862
 
 
-       14:46:03  Script : UiSample.MMH(1194) - @VBS0841
+       16:41:51  Script : UiSample.MMH(1194) - @VBS0863
 
          >> Row Command for table: ControlEvent
             >> @Where          = Dialog_ = 'CancelDlg' AND Control_ = 'Yes' AND Event = 'EndDialog' AND Argument = 'Exit' AND Condition = '1'
@@ -2939,7 +3024,7 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:03  Script : UiSample.MMH(1206) - @VBS0843
+       16:41:51  Script : UiSample.MMH(1206) - @VBS0865
 
          >> Row Command for table: ControlEvent
             >> Dialog_         = CancelDlg
@@ -2951,13 +3036,13 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       14:46:03  Script : UiSample.MMH(1208) - @VBS0845
+       16:41:51  Script : UiSample.MMH(1208) - @VBS0867
 
 
-       14:46:03  Script : UiSample.MMH(1209) - @VBS0846
+       16:41:51  Script : UiSample.MMH(1209) - @VBS0868
 
 
-       14:46:03  Script : UiSample.MMH(1217) - @VBS0847
+       16:41:51  Script : UiSample.MMH(1217) - @VBS0869
 
          >> Row Command for table: InstallUISequence
             >> @Where          = Action = 'UserExit'
@@ -2966,13 +3051,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:03  Script : UiSample.MMH(1218) - @VBS0849
+       16:41:51  Script : UiSample.MMH(1218) - @VBS0871
 
 
-       14:46:03  Script : UiSample.MMH(1317) - @VBS0850
+       16:41:51  Script : UiSample.MMH(1317) - @VBS0872
 
 
-       14:46:03  Script : UiSample.MMH(1324) - @VBS0851
+       16:41:51  Script : UiSample.MMH(1324) - @VBS0873
 
          >> Row Command for table: Control
             >> @Where          = `Dialog_` = 'FatalError' AND `Control` = 'Title'
@@ -2981,13 +3066,13 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:03  Script : UiSample.MMH(1325) - @VBS0853
+       16:41:51  Script : UiSample.MMH(1325) - @VBS0875
 
 
-       14:46:03  Script : UiSample.MMH(1326) - @VBS0854
+       16:41:51  Script : UiSample.MMH(1326) - @VBS0876
 
 
-       14:46:03  Script : UiSample.MMH(1335) - @VBS0855
+       16:41:51  Script : UiSample.MMH(1335) - @VBS0877
 
          >> Row Command for table: TextStyle
             >> TextStyle       = VerdanaBold13Red
@@ -2998,13 +3083,13 @@ Building from "installscript.mm"
                >> @Validate mode: FIELD
 
 
-       14:46:03  Script : UiSample.MMH(1336) - @VBS0857
+       16:41:51  Script : UiSample.MMH(1336) - @VBS0879
 
 
-       14:46:03  Script : UiSample.MMH(1347) - @VBS0858
+       16:41:51  Script : UiSample.MMH(1347) - @VBS0880
 
 
-       14:46:03  Script : UiSample.MMH(1354) - @VBS0859
+       16:41:51  Script : UiSample.MMH(1354) - @VBS0881
 
          >> Row Command for table: Control
             >> @Where          = Dialog_ = 'VerifyReadyDlg' AND Control = 'Text'
@@ -3013,11 +3098,11 @@ Building from "installscript.mm"
                >> @Validate mode: FETCH
 
 
-       14:46:03  Script : UiSample.MMH(1355) - @VBS0861
+       16:41:51  Script : UiSample.MMH(1355) - @VBS0883
 
    * Reading: installscript.mm
 
-     14:46:03  Script : installscript.mm(54) - @VBS0862
+     16:41:51  Script : installscript.mm(54) - @VBS0884
 
        >> Property command for: _MAKEMSI_Header_MAKEMSI.MMH
           >> Value comes from a LITERAL: C:\Programme\MakeMsi\MakeMsi.MMH (v10.169, 21,924 bytes, dated Tue Nov 24 2009 at 5:41:56pm)
@@ -3063,11 +3148,11 @@ Building from "installscript.mm"
              >> @Validate mode: FIELD
 
 
-     14:46:03  Script : installscript.mm(54) - @VBS0899
-     14:46:03  Command: Processing Merge Modules
+     16:41:52  Script : installscript.mm(54) - @VBS0921
+     16:41:52  Command: Processing Merge Modules
 
 
-     14:46:04  Script : installscript.mm(54) - @VBS0900
+     16:41:52  Script : installscript.mm(54) - @VBS0922
 
        >> Property command for: DiskPrompt
           >> Value comes from a LITERAL: UCS AD Connector version 1.0.0 - [1]
@@ -3136,9 +3221,9 @@ Building from "installscript.mm"
 
      (@54)INFO: Executing the VBS to generate the MSI
 
-#### START: VBSCRIPT PASS 1 (2:46:06pm) ##############################
+#### START: VBSCRIPT PASS 1 (4:41:58pm) ##############################
 
-14:46:07: MAKEMSI version 10.169 - PASS 1
+16:41:59: MAKEMSI version 10.169 - PASS 1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Windows   Version: Microsoft Windows XP (5.1.2600 Service Pack 2)
 WSH       Version: 5.6
@@ -3148,9 +3233,9 @@ Creating a new MSI (template based)
 Creating "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\out\installscript.mm\MSI\setup.msi"
 From "C:\Programme\MakeMsi\UISAMPLE.msi"
 
-14:46:19: Starting compile...  No cache for this compile.
+16:42:14: Starting compile...  No cache for this compile.
 This is the "end of pass 1 compile"
-Compile #01 for 12 file(s) with sequence numbers 1 to 12
+Compile #01 for 13 file(s) with sequence numbers 1 to 13
 
 Media size is 1.998.950.400 bytes.
 Reserving 259.920 bytes on media #1 (1.998.688.256 bytes available):
@@ -3160,28 +3245,28 @@ Reserving 259.920 bytes on media #1 (1.998.688.256 bytes available):
 Compressing the files into CAB file(s)
 Will not cache as this wasn't requested
 
-    | MakeCAB Report: Wed Jul 28 14:46:27 2010
+    | MakeCAB Report: Tue Aug 17 16:42:21 2010
     | 
-    | Total files:             12
-    | Bytes before:     1,909,394
-    | Bytes after:        744,514
-    | After/Before:            38.99% compression
-    | Time:                     6.34 seconds ( 0 hr  0 min  6.34 sec)
-    | Throughput:             294.11 Kb/second
+    | Total files:             13
+    | Bytes before:     2,737,122
+    | Bytes after:      1,064,796
+    | After/Before:            38.90% compression
+    | Time:                     6.13 seconds ( 0 hr  0 min  6.13 sec)
+    | Throughput:             436.40 Kb/second
 
 Generated 1 cab file(s).
 Processing CAB #1: out\installscript.mm\Log\MakeCab\#01\MM01.cab
 Marking MSI updates as complete...
-14:46:32: Finished compile. Took 25,2 seconds.
+16:42:33: Finished compile. Took 34,1 seconds.
 
 Closing the Windows Installer Database (updates completed).
 
 No merge modules to be merged
 
 Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\out\installscript.mm\MSI\setup.msi".
-14:46:32: Took 25,4 seconds.
+16:42:33: Took 34,5 seconds.
 
-#### END:   VBSCRIPT PASS 1 (2:46:33pm) ##############################
+#### END:   VBSCRIPT PASS 1 (4:42:34pm) ##############################
 
      * Reading: out\installscript.mm\Log\FromPass1.TXT
    * Reading: installscript.mm
@@ -3202,23 +3287,43 @@ Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-conne
        * Reading: C:\Programme\MakeMsi\AUTOTAG.MMH
      * Reading: C:\Programme\MakeMsi\HtmlRpt.MMH
    * Reading: installscript.mm
-       >> HTML report - STARTING: 14:46:35
+       >> HTML report - STARTING: 16:42:36
      - Making: out\installscript.mm\MSI\setup.hta
      (@54)INFO: Could not find: "MsiDiff.VBS"!
 
-       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\files\temp\ucs-ad-connector-service.cmd
+       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\files\Programme\UCS-AD-Connector\msvcr100.dll
           >> Look for "STRFILEINFO" in executables...
-             >> The file does not begin with "MZ" (so can't contain STRFILEINFO)
+             >> The file begins with "MZ" (probably an executable)
+             >> Looks like it could contain STRFILEINFO... Will try to obtain...
+                >> FileDescription=Microsoft® C Runtime Library
+                >> FileVersion=10.00.30319.1
+                >> ProductName=Microsoft® Visual Studio® 2010
+                >> ProductVersion=10.00.30319.1
+                >> CompanyName=Microsoft Corporation
+                >> Author=FAILED
+                >> Maintainer=FAILED
+                >> OriginalFileName=msvcr100_clr0400.dll
+                >> Proc. Architecture=FAILED
+                >> Language=FAILED
+                >> Package Type=FAILED
+                >> Applies To=FAILED
+                >> KB Article Number=FAILED
+                >> Build Date=FAILED
+                >> Installer Engine=FAILED
+                >> Installation Type=FAILED
+                >> Installer Version=FAILED
+                >> Self-Extractor Version=FAILED
+                >> Support Link=FAILED
           >> Will try to get document properties from explorer...
              >> Document properties initialization...
-                >> PROPERTY LINE: TaskInfo: 2740 C:\WINDOWS\system32\cmd.exe
+                >> PROPERTY LINE: TaskInfo: 312 C:\WINDOWS\system32\cmd.exe
                 >> PROPERTY LINE: #-1. {ToolTip} = Typ: VBScript Script File{LF}Ge„ndert am: 07.04.2006 18:57{LF}Gr”áe: 8,92 KB
                 >> PROPERTY LINE: # 0. {Name} = MmDocumentProperties
                 >> PROPERTY LINE: # 1. {Gr”áe} = 9 KB
                 >> PROPERTY LINE: # 2. {Typ} = VBScript Script File
                 >> PROPERTY LINE: # 3. {Ge„ndert am} = 07.04.2006 18:57
                 >> PROPERTY LINE: # 4. {Erstellt am} = 07.04.2006 18:57
-                >> PROPERTY LINE: # 5. {Letzter Zugriff am} = 28.07.2010 14:34
+                >> PROPERTY LINE: # 5. {Letzter Zugriff am} = 17.08.2010 16:42
                 >> PROPERTY LINE: # 6. {Attribute} = A
                 >> PROPERTY LINE: # 7. {Status} = Online
                 >> PROPERTY LINE: # 8. {Besitzer} = Administratoren
@@ -3255,6 +3360,13 @@ Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-conne
                 >> PROPERTY LINE: #39. {Produktversion} = 
                 >> PROPERTY LINE: #40. {Keywords} = 
                 >> PROPERTY LINE: 
+             >> Need to determine a template for the extension: DLL
+                >> No template for this extension (won't process)
+
+       >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\files\temp\ucs-ad-connector-service.cmd
+          >> Look for "STRFILEINFO" in executables...
+             >> The file does not begin with "MZ" (so can't contain STRFILEINFO)
+          >> Will try to get document properties from explorer...
              >> Need to determine a template for the extension: CMD
                 >> No template for this extension (won't process)
 
@@ -3289,8 +3401,6 @@ Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-conne
              >> The file begins with "MZ" (probably an executable)
              >> Looks like it could contain STRFILEINFO... Will try to obtain...
           >> Will try to get document properties from explorer...
-             >> Need to determine a template for the extension: DLL
-                >> No template for this extension (won't process)
 
        >> FileInfoRexx2ExtractDocumentProperties() Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\files\Programme\UCS-AD-Connector\lsremora.dll
           >> Look for "STRFILEINFO" in executables...
@@ -3338,7 +3448,7 @@ Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-conne
                 >> No template for this extension (won't process)
      * Reading: installscript.mm
    * Reading: installscript.mm
-       >> HTML report - FINISHED: 14:46:42
+       >> HTML report - FINISHED: 16:42:45
      - Making: out\installscript.mm\Log\Pass1+2.vbs
      (@54)INFO: Inserting second pass processing...
 
@@ -3445,7 +3555,7 @@ Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-conne
           >> *File           = CurrentFileKey
           >> Component_      = MAKEMSI_Documentation
           >> *FileName       = CurrentFileNameSL
-          >> FileSize        = 74457
+          >> FileSize        = 76441
           >> *Version        = CurrentFileVersion
           >> Attributes      = FileAttribs(msidbFileAttributesVital, 0)
           >> Language        = 1033
@@ -3456,8 +3566,8 @@ Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-conne
        >> Row Command for table: _MAKEMSI_FileSource
           >> *File_          = CurrentFileKey
           >> *SourceFile     = CurrentFile
-          >> Date            = 2010-07-28
-          >> Time            = 14:46:52
+          >> Date            = 2010-08-17
+          >> Time            = 16:42:44
           >> @Validate       = NEW -MISSINGDATA
              >> @Validate mode: NEW -MISSINGDATA
 
@@ -3477,8 +3587,8 @@ Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-conne
              >> @Validate mode: FIELD
 
 
-     14:46:44  Script : installscript.mm(54) - @VBS1004
-     14:46:44  Command: #{ SET "SeqTable={ }<??cb_SeqTables>"
+     16:42:46  Script : installscript.mm(54) - @VBS1026
+     16:42:46  Command: #{ SET "SeqTable={ }<??cb_SeqTables>"
 
        >> Row Command for table: InstallExecuteSequence
           >> Action          = PropertyCa03_ARPREADME
@@ -3487,13 +3597,13 @@ Successfully processed "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-conne
              >> @Validate mode: FIELD
 
 
-     14:46:44  Script : installscript.mm(54) - @VBS1008
+     16:42:46  Script : installscript.mm(54) - @VBS1030
 
      (@54)INFO: Executing the VBS to build the MSI
 
-#### START: VBSCRIPT PASS 2 (2:46:45pm) ##############################
+#### START: VBSCRIPT PASS 2 (4:42:46pm) ##############################
 
-14:46:45: MAKEMSI version 10.169 - PASS 2
+16:42:48: MAKEMSI version 10.169 - PASS 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Windows   Version: Microsoft Windows XP (5.1.2600 Service Pack 2)
 WSH       Version: 5.6
@@ -3501,34 +3611,34 @@ Installer Version: 3.0.3790.2538
 
 Opening the MSI "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector 64bit\out\installscript.mm\MSI\setup.msi"
 
-14:46:46: Starting compile...  No cache for this compile.
+16:42:48: Starting compile...  No cache for this compile.
 Compiling the documentation that MAKEMSI generated
-Compile #02 for 1 file(s) with sequence numbers 13 to 13
+Compile #02 for 1 file(s) with sequence numbers 14 to 14
 
 Media size is 1.998.950.400 bytes.
-Reserving 1.014.096 bytes on media #1 (1.997.934.592 bytes available):
-  = MSI      :    964.096
+Reserving 1.338.192 bytes on media #1 (1.997.611.008 bytes available):
+  = MSI      :  1.288.192
   + Reserved :     50.000 (see "COMPILE_RESERVED_BYTES_ON_MEDIA1")
 
 Compressing the files into CAB file(s)
 Will not cache as this wasn't requested
 
-    | MakeCAB Report: Wed Jul 28 14:46:47 2010
+    | MakeCAB Report: Tue Aug 17 16:42:49 2010
     | 
     | Total files:              1
-    | Bytes before:        74,457
-    | Bytes after:         16,080
-    | After/Before:            21.60% compression
-    | Time:                     0.44 seconds ( 0 hr  0 min  0.44 sec)
-    | Throughput:             165.25 Kb/second
+    | Bytes before:        76,441
+    | Bytes after:         16,420
+    | After/Before:            21.48% compression
+    | Time:                     0.38 seconds ( 0 hr  0 min  0.38 sec)
+    | Throughput:             199.07 Kb/second
 
 Generated 1 cab file(s).
 Processing CAB #1: out\installscript.mm\Log\MakeCab\#02\MM02.cab
 Marking MSI updates as complete...
-14:46:49: Finished compile. Took 3,6 seconds.
+16:42:50: Finished compile. Took 2,7 seconds.
 
 
-#### END:   VBSCRIPT PASS 2 (2:46:51pm) ##############################
+#### END:   VBSCRIPT PASS 2 (4:42:51pm) ##############################
 
      (@54)INFO: ====================================================
      (@54)INFO: MSI Validation has been turned off (or not enabled)
@@ -3543,8 +3653,8 @@ Summary
    MSI Name        : out\installscript.mm\MSI\setup.msi
    MSI Version     : 1.0.0
    Return Code     : 0
-   Elapsed Time    : 1 minute 19.27 seconds
+   Elapsed Time    : 1 minute 45.28 seconds
 
                                      
                                      
-[28.07.2010 14:46:57,33 - Diagnostic info STATUS]: OK 
+[17.08.2010 16:42:56,64 - Diagnostic info STATUS]: OK 
