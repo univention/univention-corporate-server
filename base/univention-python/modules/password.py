@@ -115,11 +115,10 @@ class Check:
 				if c in password:
 					raise ValueError('Password contains forbidden characters')
 			if self.required_chars:
-				required_char = False
 				for c in self.required_chars:
-					if c in self.required_chars:
-						required_char = True
-				if not required_char:
+					if c in password:
+						break
+				else:
 					raise ValueError('Password does not contain one of required characters: "%s"' % self.required_chars)
 
 			cracklib.min_length=self.min_length

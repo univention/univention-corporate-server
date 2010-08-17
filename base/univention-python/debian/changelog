@@ -1,3 +1,9 @@
+univention-python (5.0.5-1) unstable; urgency=low
+
+  * fix required character test (Bug #14943)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 17 Aug 2010 18:38:59 +0200
+
 univention-python (5.0.4-1) unstable; urgency=low
 
   * added python-cracklib dependency. Bug #14943
