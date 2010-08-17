@@ -1,3 +1,9 @@
+univention-mail-cyrus (3.0.5-1) unstable; urgency=low
+
+  * fixed postinst, restart cyrus server (Bug #18814) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Aug 2010 15:08:40 +0200
+
 univention-mail-cyrus (3.0.4-1) unstable; urgency=low
 
   * Use univention-config-registry instead of univention-baseconfig in

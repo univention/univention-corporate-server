@@ -99,7 +99,7 @@ fi
 
 univention-config-registry commit /etc/init.d/cyrus21 || true
 univention-config-registry commit /etc/init.d/cyrus2.2 || true
-killall -9 cyrmaster
+killall -15 cyrmaster
 cyrver=`univention-config-registry get mail/cyrus/version`
 if [ "$cyrver" == "2.2" ]; then
     /etc/init.d/cyrus2.2 restart
