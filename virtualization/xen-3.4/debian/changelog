@@ -1,3 +1,9 @@
+xen-3.4 (3.4.3-10) unstable; urgency=low
+
+  * Added copyright file (Bug #19492)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Aug 2010 22:05:03 +0200
+
 xen-3.4 (3.4.3-9) unstable; urgency=low
 
   * libxenstore3.0 should not depend on xen-3.4. Bug #19044
