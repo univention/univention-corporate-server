@@ -89,6 +89,7 @@ install-ext-%:
 	# password daemon
 	install -D -m644 windows/ucs-ad-connector/msi-package/UCS\ AD\ Connector/out/installscript.mm/MSI/setup.msi $(AD_TOOLS_DEST)/usr/share/univention-ad-connector/ucs-ad-connector.msi
 	install -D -m644 windows/ucs-ad-connector/msi-package/UCS\ AD\ Connector\ 64bit/out/installscript.mm/MSI/setup.msi $(AD_TOOLS_DEST)/usr/share/univention-ad-connector/ucs-ad-connector-64bit.msi
+	install -D -m644 windows/ucs-ad-connector/msi-package/vcredist_x86.exe $(AD_TOOLS_DEST)/usr/share/univention-ad-connector/vcredist_x86.exe
 
 	# exchange extension
 	install -m644  files/usr/share/univention-ad-connector/schema/univention-ad-connector-exchange.schema $(EXCHANGE_DEST)/usr/share/univention-ad-connector/schema/univention-ad-connector-exchange.schema
