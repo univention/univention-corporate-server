@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-if /usr/sbin/univention-updater net --check ; then
+if /usr/sbin/univention-updater net --silent --check ; then
 	# return $? == 0  if system is uptodate
 	/usr/sbin/univention-config-registry set update/available=no
 else

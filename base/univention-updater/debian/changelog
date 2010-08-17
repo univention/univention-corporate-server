@@ -1,3 +1,11 @@
+univention-updater (6.0.26-2) unstable; urgency=low
+
+  * use --silent when checking for updates in
+    debian/univention-updater.univention-maintenance.init
+    and script/univention-updater-check (Bug #18465)
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Aug 2010 13:32:01 +0200
+
 univention-updater (6.0.26-1) unstable; urgency=low
 
   * Update libxenstore3.0 manually (Bug #16841)
