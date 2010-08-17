@@ -217,7 +217,7 @@ class List( Element ):
 		self._content.append( Row( row, attributes, default_type = self.default_type ) )
 
 	def insert_row( self, i, row, attributes = {} ):
-		self.__content.insert( i, Row( row, attributes, default_type = self.default_type ) )
+		self._content.insert( i, Row( row, attributes, default_type = self.default_type ) )
 
 	def remove_row( self, i ):
 		try:

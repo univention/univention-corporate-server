@@ -1,3 +1,9 @@
+univention-management-console (3.0.58-1) unstable; urgency=low
+
+  * fixed umcd.List.insert_row() (Bug #18255)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 17 Aug 2010 13:43:32 +0200
+
 univention-management-console (3.0.57-1) unstable; urgency=low
 
   * For join scripts is an admin account required on DC Backups
