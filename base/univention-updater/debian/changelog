@@ -1,3 +1,11 @@
+univention-updater (6.0.27-1) unstable; urgency=low
+
+  * use --silent in
+    univention-directory-policy/univention-policy-maintenance 
+    (Bug #18465)
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Aug 2010 14:12:37 +0200
+
 univention-updater (6.0.26-2) unstable; urgency=low
 
   * use --silent when checking for updates in
