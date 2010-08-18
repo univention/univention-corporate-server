@@ -592,6 +592,9 @@ class handler(umch.simpleHandler):
 			pendingbytes = endpos - curpos
 			logdata += fd.read(pendingbytes)  # get pending data
 
+		# convert "\r?\n" to "<br>"
+		logdata = re.sub( '\r?\n', '<br>', logdata )
+
 		data = { 'contentappend': logdata }
 		if headline:
 			data['tail_headline'] = str(headline)
