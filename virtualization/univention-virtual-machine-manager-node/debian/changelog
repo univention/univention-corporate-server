@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-node (0.1.12-2) unstable; urgency=low
+
+  * add a description for the UCR variables uvmm/kvm/bridge/autostart and
+    uvmm/kvm/bridge/interface; Bug #19059
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 18 Aug 2010 12:00:35 +0200
+
 univention-virtual-machine-manager-node (0.1.12-1) unstable; urgency=low
 
   * init script for KVM nodes: the script can be deactivated via the UCR
