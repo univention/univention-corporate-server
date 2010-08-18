@@ -52,10 +52,10 @@ fi
 
 DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes dist-upgrade >>"$UPDATER_LOG" 2>&1
 
-# updates init ram disks (always required)
-if [ -x /usr/sbin/update-initramfs ]; then
-	update-initramfs -u -k all >>"$UPDATER_LOG" 2>&1
-fi
+# # https://forge.univention.org/bugzilla/show_bug.cgi?id=18529
+# if [ -x /usr/sbin/update-initramfs ]; then
+#	update-initramfs -u -k all >>"$UPDATER_LOG" 2>&1
+# fi
 
 # remove statoverride for UMC; required to ensure that UCM is not restarted during update (always required)
 if [ -e /usr/sbin/univention-management-console-server ]; then
