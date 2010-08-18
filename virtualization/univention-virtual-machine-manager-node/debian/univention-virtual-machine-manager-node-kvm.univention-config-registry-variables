@@ -1,11 +1,11 @@
 [uvmm/kvm/bridge/autostart]
-Description[de]=Definiert, ob automatisch eine Bridge erzeugt werden
+Description[de]=Definiert, ob automatisch eine Bridge erzeugt werden soll
 Description[en]=Defines if a bridge should be created automatically
 Type=str
 Categories=uvmm,system-services
 
 [uvmm/kvm/bridge/interface]
-Description[de]=Definiert das Netzwerk-Interface, das für die Bridge verwendet werden soll 
+Description[de]=Definiert das Netzwerk-Interface, das für die Bridge verwendet werden soll
 Description[en]=Defines which network interface should be used for the bridge
 Type=str
 Categories=uvmm
