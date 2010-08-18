@@ -24,4 +24,23 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public
 License with the Debian GNU/Linux or Univention distribution in file
 /usr/share/common-licenses/AGPL-3; if not, see
-<http://www.gnu.org/licenses/>.
+<http://www.gnu.org/licenses/>
+
+
+=====================================================
+
+The init script univention-virtual-machine-manager-node-kvm is based
+on the bridging scripts from Xen. Therefore the following copyright
+applies to this file:
+
+GNU General Public License
+--------------------------
+
+Most files in this repository are licensed under the terms of the GNU
+General Public License (GPL), a copy of which is attached at the end
+of this notice. Note that the only valid version of the GPL as far as
+the files in this repository are concerned is _this_ particular
+version of the license (i.e., *only* v2, not v2.2 or v3.x or
+whatever), unless explicitly otherwise stated.
+
+

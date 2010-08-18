@@ -32,6 +32,8 @@
 
 eval "$(univention-config-registry shell server/role)"
 
+univention-config-registry set uvmm/kvm/bridge/autostart?yes
+
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]
 then
     /usr/lib/univention-install/44univention-virtual-machine-manager-node-kvm.inst || true

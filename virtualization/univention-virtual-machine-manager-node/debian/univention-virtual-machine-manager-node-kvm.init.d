@@ -2,33 +2,10 @@
 # Univention Virtual Machine Manager KVM Node
 #  init script
 #
-# Copyright 2010 Univention GmbH
-#
-# http://www.univention.de/
-#
-# All rights reserved.
-#
-# The source code of this program is made available
-# under the terms of the GNU Affero General Public License version 3
-# (GNU AGPL V3) as published by the Free Software Foundation.
-#
-# Binary versions of this program provided by Univention to you as
-# well as other copyrighted, protected or trademarked materials like
-# Logos, graphics, fonts, specific documentations and configurations,
-# cryptographic keys etc. are subject to a license agreement between
-# you and Univention and not subject to the GNU AGPL V3.
-#
-# In the case you use this program under the terms of the GNU AGPL V3,
-# the program is provided in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License with the Debian GNU/Linux or Univention distribution in file
-# /usr/share/common-licenses/AGPL-3; if not, see
-# <http://www.gnu.org/licenses/>.
-#
+# Most parts of this script are taken from the xen bridging scripts.
+# Details to the copyright can be found under
+# /usr/share/doc/univention-virtual-machine-manager-node-kvm/copyright
+
 ### BEGIN INIT INFO
 # Provides:          univention-virtual-machine-manager-node-kvm
 # Required-Start:    $network $local_fs
@@ -105,13 +82,19 @@ find_alt_device () {
     echo "$ifs"
 }
 
-netdev=${netdev:-$(ip route list 0.0.0.0/0  | \
-                   sed 's/.*dev \([a-z]\+[0-9]\+\).*$/\1/')}
+eval $(univention-config-registry shell uvmm/kvm/bridge/interface)
+if [ -n "$uvmm_kvm_bridge_interface" ]; then
+	netdev=$uvmm_kvm_bridge_interface
+else
+	netdev=${netdev:-$(ip route list 0.0.0.0/0  | \
+        sed 's/.*dev \([a-z]\+[0-9]\+\).*$/\1/')}
+fi
+
 if is_network_root ; then
     altdevs=$(find_alt_device $netdev)
     for netdev in $altdevs; do break; done
     if [ -z "$netdev" ]; then
-        [ -x /usr/bin/logger ] && /usr/bin/logger "network-bridge: bridging not supported on network root; not starting"
+        [ -x /usr/bin/logger ] && /usr/bin/logger "univention-virtual-machine-manager-node-kvm: bridging not supported on network root; not starting"
         exit
     fi
 fi
@@ -323,6 +306,12 @@ add_to_bridge2() {
 command=$1
 case "$command" in
     start)
+        # check ucr autostart setting
+        if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+            source "/usr/share/univention-config-registry/init-autostart.lib"
+            check_autostart univention-virtual-machine-manager-node-kvm uvmm/kvm/bridge/autostart
+        fi
+
 		op_start
 		;;
     stop)

@@ -1,3 +1,13 @@
+univention-virtual-machine-manager-node (0.1.12-1) unstable; urgency=low
+
+  * init script for KVM nodes: the script can be deactivated via the UCR
+    variable uvmm/kvm/bridge/autostart
+  * if the UCR variable uvmm/kvm/bridge/interface is set the value is used
+    as the interface for the bridge
+  * the copyright for the init script is the same as for xen; Bug #19059
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 18 Aug 2010 11:46:07 +0200
+
 univention-virtual-machine-manager-node (0.1.11-1) unstable; urgency=low
 
   * add init script to create a bridging interface on KVM nodes; Bug #19059
