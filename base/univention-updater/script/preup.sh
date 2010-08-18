@@ -164,9 +164,9 @@ mv /boot/*.bak /var/backups/univention-initrd.bak/ &>/dev/null
 if [ ! "$update23_checkfilesystems" = "no" ]
 then
 
-	check_space "/var/cache/apt/archives" "250000" "250 MB"
+	check_space "/var/cache/apt/archives" "1250000" "1,25 GB"
 	check_space "/boot" "40000" "40 MB"
-	check_space "/" "500000" "500 MB"
+	check_space "/" "2500000" "2,5 GB"
 
 else
     echo "WARNING: skipped disk-usage-test as requested"

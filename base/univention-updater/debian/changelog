@@ -1,3 +1,9 @@
+univention-updater (6.0.29-1) unstable; urgency=low
+
+  * Adjust free space check for UCS 2.4 (Bug #18529)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Aug 2010 13:44:54 +0200
+
 univention-updater (6.0.28-1) unstable; urgency=low
 
   * send <br> instead of \r\n to AJAX widget (Bug #17666)
