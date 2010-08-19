@@ -1,3 +1,11 @@
+univention-updater (6.0.31-1) unstable; urgency=low
+
+  * RefreshFrame: reduce maxlen from 300000 to 120000 (Bug #17666)
+  * RefreshFrame: changed refresh interval from 1000 to 1500ms
+  * fixed dist-upgrade error detection
+  
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 19 Aug 2010 10:56:50 +0200
+
 univention-updater (6.0.30-1) unstable; urgency=low
 
   * Don't call update-initramfs for all kernel after the update (Bug

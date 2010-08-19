@@ -537,7 +537,7 @@ class handler(umch.simpleHandler):
 				self._reinit()
 
 				# read status
-				status = self._get_status_file(FN_STATUS_SECURITY_UPDATE)
+				status = self._get_status_file(FN_STATUS_DIST_UPGRADE)
 				if not status or not 'status' in status:
 					# updater does not support status-file or status file is defect
 					headline = _('Update finished')
@@ -647,7 +647,7 @@ class handler(umch.simpleHandler):
 			opts['filename%d' % i] = fn
 			i += 1
 		# add refresh frame
-		lst.add_row( [ umcd.RefreshFrame( self._sessionid, 'update/tail_logfile', opts, attributes = { 'colspan': '3', 'width': '900', 'height': '400' }, refresh_interval=1000) ] )
+		lst.add_row( [ umcd.RefreshFrame( self._sessionid, 'update/tail_logfile', opts, attributes = { 'colspan': '3', 'width': '900', 'height': '400' }, refresh_interval=1500, maxlen=120000) ] )
 		# add close button
 		cmd = umcp.Command( args = [ 'update/overview' ], opts = { } )
 		item_btn = umcd.Button( _('Close'), 'actions/ok', actions = [ umcd.Action( cmd ) ] )
