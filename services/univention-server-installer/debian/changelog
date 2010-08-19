@@ -1,3 +1,10 @@
+univention-server-installer (4.0.2-1) unstable; urgency=low
+
+  * Use linux.bin for the ramdisk link instead of linux-server.bin
+    (Bug #19512)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Aug 2010 07:29:34 +0200
+
 univention-server-installer (4.0.1-1) unstable; urgency=low
 
   * Added links to UCS 2.4 net installer kernel (Bug #19512)
