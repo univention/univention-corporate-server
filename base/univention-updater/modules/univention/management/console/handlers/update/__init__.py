@@ -187,8 +187,6 @@ class handler(umch.simpleHandler):
 
 		self.tail_fn2fd = {}
 
-		self.command_dist_upgrade = self.updater.configRegistry.get('update/commands/distupgrade', 'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -u dist-upgrade')
-
 
 	def overview(self, object):
 		_d = ud.function('update.handler.overview')
@@ -1083,7 +1081,7 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 
 
 	def __is_dist_upgrade_running(self):
-		return self.__is_process_running( self.command_dist_upgrade )
+		return self.__is_process_running( 'univention-updater-umc-dist-upgrade' )
 
 
 	def __remove_status_messages(self, text):

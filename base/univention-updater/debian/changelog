@@ -1,3 +1,9 @@
+univention-updater (6.0.32-1) unstable; urgency=low
+
+  * fixed end of dist-upgrade (Bug #17666)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 19 Aug 2010 14:13:57 +0200
+
 univention-updater (6.0.31-1) unstable; urgency=low
 
   * RefreshFrame: reduce maxlen from 300000 to 120000 (Bug #17666)
