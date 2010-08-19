@@ -417,21 +417,22 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 		if self.dn:
 
-			primaryGroupNumber=self.oldattr.get('gidNumber',[''])[0]
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'primary group number = %s' % (primaryGroupNumber))
-			if primaryGroupNumber:
-				primaryGroupResult=self.lo.searchDn('(&(objectClass=posixGroup)(gidNumber='+primaryGroupNumber+'))')
-				if primaryGroupResult:
-					self['primaryGroup']=primaryGroupResult[0]
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Set primary group = %s' % (self['primaryGroup']))
+			if 'posix' in self.options and not self.info.get( 'primaryGroup' ):
+				primaryGroupNumber=self.oldattr.get('gidNumber',[''])[0]
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'primary group number = %s' % (primaryGroupNumber))
+				if primaryGroupNumber:
+					primaryGroupResult=self.lo.searchDn('(&(objectClass=posixGroup)(gidNumber='+primaryGroupNumber+'))')
+					if primaryGroupResult:
+						self['primaryGroup']=primaryGroupResult[0]
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Set primary group = %s' % (self['primaryGroup']))
+					else:
+						self['primaryGroup']=None
+						self.save()
+						raise univention.admin.uexceptions.primaryGroup
 				else:
 					self['primaryGroup']=None
 					self.save()
 					raise univention.admin.uexceptions.primaryGroup
-			else:
-				self['primaryGroup']=None
-				self.save()
-				raise univention.admin.uexceptions.primaryGroup
 			self.save()
 		else:
 			self.modifypassword=0
@@ -529,7 +530,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 	def _ldap_pre_remove(self):
 		self.open()
-		if 'posix' in self.options:
+		if 'posix' in self.options and self.oldattr.get( 'uidNumber' ):
 			self.uidNum=self.oldattr['uidNumber'][0]
 
 	def _ldap_post_remove(self):
@@ -546,6 +547,10 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 		self.nagios_ldap_post_remove()
 		univention.admin.handlers.simpleComputer._ldap_post_remove( self )
+		# Need to clean up oldinfo. If remove was invoked, because the
+		# creation of the object has failed, the next try will result in
+		# a 'object class violation' (Bug #19343)
+		self.oldinfo = {}
 
 	def krb5_principal(self):
 		if hasattr(self, '__krb5_principal'):
