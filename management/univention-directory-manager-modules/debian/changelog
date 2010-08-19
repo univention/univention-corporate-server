@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.28-1) unstable; urgency=low
+
+  * implement same fix for managed and mobile clients as the one added for
+    DCs in version 6.0.25-1; Bug #19343
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 19 Aug 2010 10:25:57 +0200
+
 univention-directory-manager-modules (6.0.27-1) unstable; urgency=low
 
   * implement same fix for memberserver as the one added for DCs in
