@@ -1,3 +1,9 @@
+univention-updater (6.0.33-1) unstable; urgency=low
+
+  * fixed traceback if local/repository=yes (Bug #18237)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 19 Aug 2010 15:31:42 +0200
+
 univention-updater (6.0.32-1) unstable; urgency=low
 
   * fixed end of dist-upgrade (Bug #17666)

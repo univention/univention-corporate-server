@@ -864,11 +864,11 @@ class handler(umch.simpleHandler):
 			list_settings_component_txt = umcd.List()
 			list_settings_component_txt.add_row([ _('In addition to the standard repositories, additional software components can also be integrated by adding component repositories.') ])
 
+			list_settings_component = umcd.List()
 			local_repo = self.updater.configRegistry.get( 'local/repository', 'no' ).lower() in ( 'yes', 'true' )
 			if local_repo:
 				list_settings_component.add_row( [ umcd.InfoBox( _( 'The component management has been deactivated as this server has a local repository.' ), columns = 2 ) ] )
 			else:
-				list_settings_component = umcd.List()
 				list_settings_component.set_header( [ _('Component Name'), _( 'Status' ), '' ] )
 				for component_name in self.updater.get_all_components():
 					component = self.updater.get_component(component_name)
