@@ -44,4 +44,4 @@ export DEBIAN_FRONTEND=noninteractive
 eval "$(ucr shell)"
 echo "***** Starting \"univention-pkg-install $@\" on $(date)" >> /var/log/univention/actualise.log
 $update_commands_update | tee -a /var/log/univention/actualise.log
-exec $update_commands_install "$@" | tee -a /var/log/univention/actualise.log
+exec $update_commands_install_interactive "$@" | tee -a /var/log/univention/actualise.log

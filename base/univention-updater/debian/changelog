@@ -1,3 +1,10 @@
+univention-updater (6.0.34-1) unstable; urgency=low
+
+  * use new UCR variable update/commands/install/interactive
+    for univention-install (Bug #17995)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 19 Aug 2010 15:42:34 +0200
+
 univention-updater (6.0.33-1) unstable; urgency=low
 
   * fixed traceback if local/repository=yes (Bug #18237)

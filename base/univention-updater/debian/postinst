@@ -127,6 +127,7 @@ univention-config-registry set \
 		update/commands/update?"apt-get update" \
 		update/commands/show?"apt-cache show" \
 		update/commands/install?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install" \
+		update/commands/install/interactive?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir install" \
 		update/commands/remove?"apt-get --yes remove" \
 		update/commands/configure?"dpkg --configure -a" \
 		update/commands/distupgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -us dist-upgrade" \
