@@ -1,3 +1,10 @@
+univention-updater (6.0.35-1) unstable; urgency=low
+
+  * Added an OpenOffice.org check to preup.sh (Bug #18529)
+  * Some more preup.sh cleanups
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Aug 2010 07:08:07 +0200
+
 univention-updater (6.0.34-1) unstable; urgency=low
 
   * use new UCR variable update/commands/install/interactive

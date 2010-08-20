@@ -74,6 +74,27 @@ not possible because the component \"$scope\" is required."
 fi
 rm -f $updateCheck
 
+# check for running openoffice.org instances
+check_ooo() {
+	PID=`pgrep soffice.bin | head -n 1`
+	if [ -n "$PID" ]; then
+		echo "OpenOffice.org running!"
+		echo ""
+		echo -n "OpenOffice.org is running right now with pid "
+		echo -n "$PID."
+		echo " This can cause problems"
+		echo "with (de-)registration of components and extensions"
+		echo "Thus the openoffice.org packages will fail to install"
+		echo "You should close all running instances of OpenOffice.org (including"
+		echo "any currently running Quickstarter) before starting with the update."
+		exit 1
+	fi
+}
+
+if [ "$update24_ignoreooo" != "yes" ]; then
+	check_ooo
+fi
+
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
 	if [ "$update24_ignoressh" != "yes" ]; then
@@ -90,34 +111,6 @@ if [ "$TERM" = "xterm" ]; then
 		exit 1
 	fi
 fi
-
-check_cyrus21 ()
-{
-	pkg=$1
-	if dpkg -l $pkg 2>> "$UPDATER_LOG" | grep ^ii  >>"$UPDATER_LOG" ; then
-		if [ "$update23_cyrus21" != "yes" ]; then
-			echo "ERROR: You have installed the Cyrus21 package \"$pkg\"."
-			echo "At the moment this package is not available for UCS 2.3.  You have the following"
-			echo "options to continue: "
-			echo " 1. Migrate to Cyrus 2.2 as described here: "
-			echo "    http://www.univention.de/fileadmin/download/cyrus-migration_091120.pdf"
-			echo " 2. Uninstall the package if it is no longer used:"
-			echo "    mv /etc/default/saslauthd.debian.dpkg-new /etc/default/saslauthd.debian"
-			echo "    apt-get remove $pkg"
-			echo " 3. Set the Univention Configuration Registry variable \"update23/cyrus21\" to"
-			echo "    \"yes\" and ignore this warning. In this case the update may fail."
-			echo " 4. Contact Univention by email <feedback@univention.de>"
-			exit 1
-		else
-			echo "WARNING: update23/cyrus21 is set to yes and $pkg is installed." >>"$UPDATER_LOG"
-		fi
-		
-	fi
-}
-
-check_cyrus21 cyrus21-common
-check_cyrus21 cyrus21-admin
-check_cyrus21 cyrus21-clients
 
 # call custom preup script if configured
 if [ ! -z "$update_custom_preup" ]; then
@@ -145,7 +138,7 @@ check_space(){
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
         echo "         This may interrupt the update and result in an inconsistent system!"
     	echo "         If neccessary you can skip this check by setting the value of the"
-		echo "         baseconfig variable update23/checkfilesystems to \"no\"."
+		echo "         baseconfig variable update24/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
 		echo ""
 		# kill the running univention-updater process
@@ -161,7 +154,7 @@ fi
 mv /boot/*.bak /var/backups/univention-initrd.bak/ &>/dev/null
 
 # check space on filesystems
-if [ ! "$update23_checkfilesystems" = "no" ]
+if [ ! "$update24_checkfilesystems" = "no" ]
 then
 
 	check_space "/var/cache/apt/archives" "1250000" "1,25 GB"
@@ -229,16 +222,6 @@ for pkg in univention-ssl univention-thin-client-basesystem univention-thin-clie
 		echo "done."
 	fi
 done
-
-if [ "$update23_keep_avahi" != "yes" ]; then
-	# remove ucs_2.0-0 packages that cause conflicts
-	olddebs="libnss-mdns avahi-daemon libavahi-core4"	# libavahi-common3 left for evolution etc.
-	for deb in $olddebs; do
-		if dpkg -l $deb >>"$UPDATER_LOG" 2>&1; then
-			dpkg -P $deb >>"$UPDATER_LOG" 2>&1
-		fi
-	done
-fi
 
 echo "Starting update process, this may take a while."
 echo "Check /var/log/univention/updater.log for more information."
