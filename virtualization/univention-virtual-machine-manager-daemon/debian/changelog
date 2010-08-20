@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.102-1) unstable; urgency=low
+
+  * add a confirm message when stopping a virtual instance; Bug #19545
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 20 Aug 2010 12:26:37 +0200
+
 univention-virtual-machine-manager-daemon (0.9.101-1) unstable; urgency=low
 
   * after deleting a virtual instance the location was incorrect; Bug #19224

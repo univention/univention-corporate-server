@@ -191,6 +191,16 @@ command_description = {
 				   'state' : umc.String( 'State' ),
 				  },
 		),
+	'uvmm/domain/stop': umch.command(
+		short_description = _( 'Stop a virtual instance' ),
+		long_description = _('Stop a virtual instances' ),
+		method = 'uvmm_domain_state',
+		confirm = umch.Confirm( _( 'Stop virtual instance' ), _( 'Stopping the virtual instance will turn it off without shutting down the operating system. Should the virtual instance be stopped?' ) ),
+		values = { 'node' : umc.String( _( 'Instance' ) ),
+				   'domain' : umc.String( 'Physical server' ),
+				   'state' : umc.String( 'State' ),
+				  },
+		),
 	'uvmm/drive/create': umch.command(
 		short_description = _( 'New Drive' ),
 		long_description = _('Create a new drive' ),
@@ -354,7 +364,7 @@ class handler( umch.simpleHandler ):
 		if not domain.state in ( 4, 5 ):
 			opts = copy.copy( cmd_opts )
 			opts[ 'state' ] = 'SHUTDOWN'
-			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
+			cmd = umcp.SimpleCommand( 'uvmm/domain/stop', options = opts )
 			buttons.append( umcd.LinkButton( _( 'Stop' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
 			buttons.append( comma )
 
