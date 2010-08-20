@@ -189,6 +189,7 @@ class List( Element ):
 			self.set_second_header( sec_header )
 
 		self._content = []
+		self.__content = self._content # for backward compatibility Bug #19554
 		if content:
 			for line in content:
 				self.add_row( line )
@@ -231,6 +232,7 @@ class List( Element ):
 	def clear_content( self ):
 		del self._content
 		self._content = []
+		self.__content = self._content # for backward compatibility Bug #19554
 
 	def get_content( self ):
 		return self._content

@@ -1,3 +1,10 @@
+univention-management-console (3.0.59-1) unstable; urgency=low
+
+  * dialog.base (List): add reference __content to _content for backward
+    compatibility; Bug #19554
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 20 Aug 2010 13:48:25 +0200
+
 univention-management-console (3.0.58-1) unstable; urgency=low
 
   * fixed umcd.List.insert_row() (Bug #18255)
