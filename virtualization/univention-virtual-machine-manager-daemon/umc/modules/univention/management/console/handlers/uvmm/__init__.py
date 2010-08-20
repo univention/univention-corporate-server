@@ -193,9 +193,9 @@ command_description = {
 		),
 	'uvmm/domain/stop': umch.command(
 		short_description = _( 'Stop a virtual instance' ),
-		long_description = _('Stop a virtual instances' ),
+		long_description = _('Stop a virtual instance' ),
 		method = 'uvmm_domain_state',
-		confirm = umch.Confirm( _( 'Stop virtual instance' ), _( 'Stopping the virtual instance will turn it off without shutting down the operating system. Should the virtual instance be stopped?' ) ),
+		confirm = umch.Confirm( _( 'Stop a virtual instance' ), _( 'Stopping the virtual instance will turn it off without shutting down the operating system. Should the virtual instance be stopped?' ) ),
 		values = { 'node' : umc.String( _( 'Instance' ) ),
 				   'domain' : umc.String( 'Physical server' ),
 				   'state' : umc.String( 'State' ),
@@ -289,6 +289,10 @@ class handler( umch.simpleHandler ):
 			# FIXME: should be removed if UVMMd supports groups
 			if key == 'group' and object.options[ key ] == 'default':
 				text = _( 'Physical servers' )
+			elif key in ( 'node', 'dest', 'source' ):
+				text = object.options[ key ]
+				if text.find( '.' ) >= 0:
+					text = text[ : text.find( '.' ) ]
 			else:
 				text = object.options[ key ]
 			lnk = umcd.LinkButton( text , actions = [ umcd.Action( cmd ) ] )
@@ -301,6 +305,9 @@ class handler( umch.simpleHandler ):
 			text = _( 'Physical servers' )
 		else:
 			text = object.options[ refresh ]
+		if refresh in ( 'node', 'dest', 'source' ):
+			if text.find( '.' ) >= 0:
+				text = text[ : text.find( '.' ) ]
 		row.append( umcd.Cell( umcd.Text( text ), attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) )
 
 		reload_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % refresh, options = copy.copy( opts ) )
@@ -486,7 +493,7 @@ class handler( umch.simpleHandler ):
 		node_table.add_row( [ _( 'Memory usage' ), umcd.Cell( mem_usage, attributes = { 'width' : '100%' } ) ] )
 		content.add_row( [ umcd.Section( _( 'Physical server' ), node_table, attributes = { 'width' : '100%' } ) ] )
 
-		table = umcd.List()
+		table = umcd.List( attributes = { 'type' : 'umc_mini_padding' } )
 		num_buttons = 0
 		for domain in sorted( node.domains, key = operator.attrgetter( 'name' ) ):
 			# ignore XEN Domain-0
@@ -503,13 +510,13 @@ class handler( umch.simpleHandler ):
 			buttons = self._create_domain_buttons( object, node, domain, remove_failure = 'node' )
 			if len( buttons ) > num_buttons:
 				num_buttons = len( buttons )
-			os = getattr( domain, 'annotations', {} ).get( 'os', '' )
-			if len( os ) > 15:
-				os = os[ : 13 ] + '...'
-			table.add_row( [ domain_btn, os, percentage( float( domain.cputime[ 0 ] ) / 10, width = 80 ), umcd.Number( MemorySize.num2str( domain.maxMem ) ), buttons ] )# + buttons )
+			# os = getattr( domain, 'annotations', {} ).get( 'os', '' )
+			# if len( os ) > 15:
+			# 	os = os[ : 13 ] + '...'
+			table.add_row( [ umcd.Cell( domain_btn, attributes = { 'type' : 'umc_mini_padding' } ), umcd.Cell( percentage( float( domain.cputime[ 0 ] ) / 10, width = 80 ), attributes = { 'type' : 'umc_mini_padding' } ), umcd.Cell( umcd.Number( MemorySize.num2str( domain.maxMem ) ), attributes = { 'type' : 'umc_mini_padding' } ), buttons ], attributes = { 'type' : 'umc_mini_padding' } )# + buttons )
 
 		if len( table.get_content() ):
-			table.set_header( [ _( 'Instance' ), _( 'Operating System' ), _( 'CPU usage' ), _( 'Memory' ) ] )
+			table.set_header( [ _( 'Instance' ), _( 'CPU usage' ), _( 'Memory' ) ] )
 
 		content.add_row( [ umcd.Cell( table, attributes = { 'colspan' : '2' } ), ] )
 		self.set_content( res, content )
@@ -692,12 +699,12 @@ class handler( umch.simpleHandler ):
 			sections.add_row( [ umcd.HTML( _( '<b>The settings of a virtual instance can just be modified if it is shut off.</b>' ) ) ] )
 		if not domain_info:
 			sections.add_row( [ umcd.Section( _( 'Drives' ), drive_sec, hideable = False, hidden = False, name = 'drives.newdomain' ) ] )
-			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = False, hidden = False, name = 'settings.newdomain' ) ] )
-			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = False, hidden = False, name = 'extsettings.newdomain' ) ] )
+			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = False, hidden = True, name = 'settings.newdomain' ) ] )
+			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = False, hidden = True, name = 'extsettings.newdomain' ) ] )
 		else:
 			sections.add_row( [ umcd.Section( _( 'Drives' ), drive_sec, hideable = True, hidden = False, name = 'drives.%s' % domain_info.name ) ] )
-			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = True, hidden = False, name = 'settings.%s' % domain_info.name ) ] )
-			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = False, name = 'extsettings.%s' % domain_info.name ) ] )
+			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = True, hidden = True, name = 'settings.%s' % domain_info.name ) ] )
+			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = True, name = 'extsettings.%s' % domain_info.name ) ] )
 		if domain_info.state == 5:
 			sections.add_row( [ umcd.Cell( umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ], default = True ), attributes = { 'align' : 'right' } ) ] )
 

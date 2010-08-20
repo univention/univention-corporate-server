@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (0.9.103-1) unstable; urgency=low
+
+  * cut off server name in location
+  * hide settings and extended settings by default
+  * remove operating system in physical server overview
+  * name of virtual instance may not be longer than 30 characters; Bug #19542
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 20 Aug 2010 14:13:52 +0200
+
 univention-virtual-machine-manager-daemon (0.9.102-1) unstable; urgency=low
 
   * add a confirm message when stopping a virtual instance; Bug #19545

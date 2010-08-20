@@ -366,8 +366,12 @@ class InstanceWizard( umcd.IWizard ):
 			object.options[ 'cmdline' ] = self.profile[ 'kernel_parameter' ]
 			object.options[ 'initrd' ] = self.profile[ 'initramfs' ]
 		if self.current == 1:
+			MAX_NAME_LENGTH = 30
 			if object.options[ 'name' ] == self.profile[ 'name_prefix' ]:
 				return umcd.WizardResult( False, _( 'The name of the virtual instance should be modified' ) )
+			if len( object.options[ 'name' ] ) > MAX_NAME_LENGTH:
+				object.options[ 'name' ] = object.options[ 'name' ][ : MAX_NAME_LENGTH ]
+				return umcd.WizardResult( False, _( 'The name of a virtual instance may not be longer than %(maxlength)d characters!' ) % { 'maxlength' : MAX_NAME_LENGTH } )
 			if not self.uvmm.is_domain_name_unique( self.node_uri, object.options[ 'name' ] ):
 				return umcd.WizardResult( False, _( 'The chosen name for the virtual instance is not unique. Another one should be chosen.' ) )
 			mem_size = MemorySize.str2num( object.options[ 'memory' ], unit = 'MB' )
