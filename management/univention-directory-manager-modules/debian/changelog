@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.29-1) unstable; urgency=low
+
+  * For mail accounts locking is needed and disabling is not possible
+    (Bug #19556)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Aug 2010 16:11:06 +0200
+
 univention-directory-manager-modules (6.0.28-1) unstable; urgency=low
 
   * implement same fix for managed and mobile clients as the one added for
