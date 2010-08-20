@@ -45,7 +45,7 @@ eval `univention-baseconfig shell`
 
 p=`makepasswd --chars 8`
 
-univention-admin users/user create $@ --position "cn=users,$ldap_base" --option mail --option person --set username=spam --set mailPrimaryAddress=spam@$domainname --set lastname="Spam IMAP Account" --set password=$p --set disabled=1
+univention-admin users/user create $@ --position "cn=users,$ldap_base" --option mail --option person --set username=spam --set mailPrimaryAddress=spam@$domainname --set lastname="Spam IMAP Account" --set password=$p --set locked=all
 
 test -n "`grep "univention-spamassassin v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-spamassassin v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
