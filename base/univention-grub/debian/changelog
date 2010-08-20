@@ -1,3 +1,9 @@
+univention-grub (4.0.3-3) unstable; urgency=low
+
+  * Don't unset empty grub/groot (Bug #9985)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 Aug 2010 17:10:29 +0200
+
 univention-grub (4.0.3-2) unstable; urgency=low
 
   * Fix calculation of grub/groot UCR variable (Bug #9985)

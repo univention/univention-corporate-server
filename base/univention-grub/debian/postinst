@@ -188,8 +188,6 @@ if [ -z "$grub_groot" ] ; then
 	if [ -n "$groot" ]
 	then
 		univention-baseconfig set grub/groot="$groot"
-	else
-		univention-baseconfig unset grub/groot
 	fi
 fi
 
