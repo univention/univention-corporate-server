@@ -50,6 +50,9 @@ fi
 if [ "$server_role" != "domaincontroller_master" ] && [ -n "$domain_controller_account" -a -n "$domain_controller_password" ]; then
 	if [ -n "$eth0_type" ] && [ "$eth0_type" = "dynamic" -o "$eth0_type" = "dhcp" ]; then
 		dhclient eth0
+	elif [ -n "$eth0_type" ] ; then
+ 		# be sure eth0 is up and running for join. Bug #19547
+		ifup eth0
 	fi
 	if [ -z "$auto_join" ] || [ "$auto_join" != "FALSE" -a "$auto_join" != "false" -a "$auto_join" != "False" ]; then
 		pwd_file=\`mktemp\`
