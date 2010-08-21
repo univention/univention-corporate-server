@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.30-1) unstable; urgency=low
+
+  * Lock the password for pure posix users if requested and append the
+    userPassword only once (Bug #19566)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 21 Aug 2010 21:50:50 +0200
+
 univention-directory-manager-modules (6.0.29-1) unstable; urgency=low
 
   * For mail accounts locking is needed and disabling is not possible

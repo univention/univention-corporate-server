@@ -1431,6 +1431,10 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		return password
 
 	def __pwd_locked(self, password):
+		# cleartext password?
+		if not password.startswith('{crypt}') and not password.startswith('{LANMAN}'):
+			return "{crypt}!%s" % (univention.admin.password.crypt('password'))
+
 		if not self.__pwd_is_locked(password):
 			if password.startswith("{crypt}"):
 				return password.replace("{crypt}","{crypt}!")
@@ -2437,7 +2441,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 			if self["locked"] in ['all', 'windows']:
 				acctFlags.set('L')
-			elif self["locked"] in ['all', 'posix']:
+			if self["locked"] in ['all', 'posix']:
 				disabled="!"
 
 			#                             FIXME: required for join user root
@@ -2522,12 +2526,14 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						ml.append(('shadowExpire', self.oldattr.get('shadowExpire', [''])[0], shadowExpire))
 		if self.hasChanged('locked'):
 			if 'posix' in self.options or ('samba' in self.options and self['username'] == 'root') or 'mail' in self.options:
-				if self['locked'] in ['all', 'posix']:
-					password_disabled = self.__pwd_locked(self['password'])
-					ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_disabled))
-				else:
-					password_enabled = self.__pwd_unlocked(self['password'])
-					ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_enabled))
+				# if self.modifypassword is set the password was already locked
+				if not self.modifypassword: 
+					if self['locked'] in ['all', 'posix']:
+						password_disabled = self.__pwd_locked(self['password'])
+						ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_disabled))
+					else:
+						password_enabled = self.__pwd_unlocked(self['password'])
+						ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_enabled))
 			if 'samba' in self.options:
 				if self['locked'] in ['all', 'windows']:
 					# lock samba account
