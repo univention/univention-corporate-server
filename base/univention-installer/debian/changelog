@@ -1,3 +1,10 @@
+univention-installer (6.0.45-3) unstable; urgency=low
+
+  * Check for eth0_ip beacuse eth0_type is not used for a static network
+    configuration (Bug #19547)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 21 Aug 2010 17:05:36 +0200
+
 univention-installer (6.0.45-2) unstable; urgency=low
 
   * Activate eth0 in 75_join.sh to be sure the interface is up and
