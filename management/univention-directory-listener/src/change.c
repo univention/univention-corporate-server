@@ -382,6 +382,11 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 	int flags = 0;
 	LDAPDN ldap_dn = NULL;
 
+	if (!strcmp(dn, lp_local->base)) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Ignore parent_dn check because dn is ldap base.");
+		return LDAP_SUCCESS;
+	}
+
 	rv = ldap_str2dn(dn, &ldap_dn, flags);
 	if ( rv != LDAP_SUCCESS || ! ldap_dn )
 		return rv;
