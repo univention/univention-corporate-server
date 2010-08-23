@@ -53,8 +53,13 @@ def rows_map( storage, umcp_part ):
 				part.append( storage.to_uniparts( item ) )
 				args.update( utils.layout_attrs( storage, item, default_type = default_type ) )
 		elif isinstance( elem, umcd.Cell ):
-			part.append( storage.to_uniparts( elem.item ) )
-			args.update( utils.layout_attrs( storage, elem, default_type = default_type ) )
+			if isinstance( elem.item, ( list, tuple ) ):
+				for item in elem.item:
+					part.append( storage.to_uniparts( item ) )
+					args.update( utils.layout_attrs( storage, elem, default_type = default_type ) )
+			else:
+				part.append( storage.to_uniparts( elem.item ) )
+				args.update( utils.layout_attrs( storage, elem, default_type = default_type ) )
 		else:
 			part.append( storage.to_uniparts( elem ) )
 			args = utils.layout_attrs( storage, elem, default_type = default_type )

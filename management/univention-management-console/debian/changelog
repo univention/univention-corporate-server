@@ -1,3 +1,9 @@
+univention-management-console (3.0.60-1) unstable; urgency=low
+
+  * fixed a bug, when mapping Cell objects that contain a list or tuple; Bug #19542
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 23 Aug 2010 08:39:39 +0200
+
 univention-management-console (3.0.59-1) unstable; urgency=low
 
   * dialog.base (List): add reference __content to _content for backward
