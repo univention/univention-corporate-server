@@ -195,7 +195,7 @@ command_description = {
 		short_description = _( 'Stop a virtual instance' ),
 		long_description = _('Stop a virtual instance' ),
 		method = 'uvmm_domain_state',
-		confirm = umch.Confirm( _( 'Stop a virtual instance' ), _( 'Stopping the virtual instance will turn it off without shutting down the operating system. Should the virtual instance be stopped?' ) ),
+		confirm = umch.Confirm( _( 'Stop' ), _( 'Stopping the virtual instance will turn it off without shutting down the operating system. Should the virtual instance be stopped?' ) ),
 		values = { 'node' : umc.String( _( 'Instance' ) ),
 				   'domain' : umc.String( 'Physical server' ),
 				   'state' : umc.String( 'State' ),

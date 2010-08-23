@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-20 14:10+0200\n"
+"POT-Creation-Date: 2010-08-23 08:43+0200\n"
 "PO-Revision-Date: 2010-07-05 14:28+0200\n"
 "Last-Translator: Andreas Büsching <buesching@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -50,7 +50,7 @@ msgstr "Virtuelle Maschinen (UVMM)"
 msgid "Univention Virtual Machine Manager"
 msgstr "Univention Virtual Machine Manager"
 
-#: __init__.py:73 __init__.py:592
+#: __init__.py:73 __init__.py:599
 msgid "Type"
 msgstr "Typ"
 
@@ -126,7 +126,7 @@ msgstr "Name"
 msgid "MAC address"
 msgstr "MAC-Adresse"
 
-#: __init__.py:144 __init__.py:512 wizards.py:412
+#: __init__.py:144 __init__.py:519 wizards.py:412
 msgid "Memory"
 msgstr "Speicher"
 
@@ -154,7 +154,7 @@ msgstr "Passwort löschen"
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
-#: __init__.py:155 __init__.py:735
+#: __init__.py:155 __init__.py:742
 msgid "Operating System"
 msgstr "Betriebssystem"
 
@@ -210,13 +210,17 @@ msgstr "Ändern des Status einer virtuellen Instanz"
 msgid "Change state of virtual instances"
 msgstr "Ändern des Status von virtuellen Instanzen"
 
-#: __init__.py:189 __init__.py:199 __init__.py:512
+#: __init__.py:189 __init__.py:199 __init__.py:519
 msgid "Instance"
 msgstr "Instanz"
 
-#: __init__.py:195 __init__.py:196 __init__.py:198
+#: __init__.py:195 __init__.py:196
 msgid "Stop a virtual instance"
 msgstr "Beenden einer virtuellen Instanz"
+
+#: __init__.py:198 __init__.py:375
+msgid "Stop"
+msgstr "Beenden"
 
 #: __init__.py:198
 msgid ""
@@ -251,7 +255,7 @@ msgstr "Das Laufwerk ans Boot-Medium setzen"
 msgid "Restarts libvirt service"
 msgstr "Startet den libvirt Dienst neu"
 
-#: __init__.py:233 __init__.py:619 wizards.py:172
+#: __init__.py:233 __init__.py:626 wizards.py:172
 msgid "unknown"
 msgstr "Unbekannt"
 
@@ -283,15 +287,15 @@ msgstr "abgestürzt"
 msgid "Location:"
 msgstr "Ort:"
 
-#: __init__.py:291 __init__.py:301 treeview.py:134
+#: __init__.py:291 __init__.py:305 treeview.py:134
 msgid "Physical servers"
 msgstr "Physikalische Server"
 
-#: __init__.py:307
+#: __init__.py:314
 msgid "Refresh"
 msgstr "Aktualisieren"
 
-#: __init__.py:317
+#: __init__.py:324
 msgid ""
 "This module provides a management interface for physical servers that are "
 "registered within the UCS domain.\n"
@@ -321,88 +325,84 @@ msgstr ""
 "detaillierten Anzeige von Einstellungen. Diese können dort entsprechend "
 "bearbeitet und gespeichert werden."
 
-#: __init__.py:330 __init__.py:487
+#: __init__.py:337 __init__.py:494
 msgid "Physical server"
 msgstr "Physikalischer Server"
 
-#: __init__.py:330 __init__.py:485 __init__.py:512 __init__.py:745
+#: __init__.py:337 __init__.py:492 __init__.py:519 __init__.py:752
 msgid "CPU usage"
 msgstr "CPU-Auslastung"
 
-#: __init__.py:330 __init__.py:486 __init__.py:744
+#: __init__.py:337 __init__.py:493 __init__.py:751
 msgid "Memory usage"
 msgstr "Speichernutzung"
 
-#: __init__.py:338
+#: __init__.py:345
 msgid "not available"
 msgstr "nicht verfügbar"
 
-#: __init__.py:351 __init__.py:793
+#: __init__.py:358 __init__.py:800
 msgid "Migrate"
 msgstr "Migrieren"
 
-#: __init__.py:360
+#: __init__.py:367
 msgid "Start"
 msgstr "Starten"
 
-#: __init__.py:368
-msgid "Stop"
-msgstr "Beenden"
-
-#: __init__.py:376
+#: __init__.py:383
 msgid "Suspend"
 msgstr "Pausieren"
 
-#: __init__.py:384
+#: __init__.py:391
 msgid "Resume"
 msgstr "Fortführen"
 
-#: __init__.py:391 __init__.py:624 __init__.py:969
+#: __init__.py:398 __init__.py:631 __init__.py:976
 msgid "Remove"
 msgstr "Löschen"
 
-#: __init__.py:437
+#: __init__.py:444
 #, python-format
 msgid "%(dn)s on %(nn)s"
 msgstr "%(dn)s auf %(nn)s"
 
-#: __init__.py:455 wizards.py:168 wizards.py:428
+#: __init__.py:462 wizards.py:168 wizards.py:428
 msgid "hard drive"
 msgstr "Festplatte"
 
-#: __init__.py:457 types.py:89 wizards.py:170 wizards.py:430
+#: __init__.py:464 types.py:89 wizards.py:170 wizards.py:430
 msgid "CDROM drive"
 msgstr "CDROM-Laufwerk"
 
-#: __init__.py:469
+#: __init__.py:476
 msgid "The physical server is not available at the moment"
 msgstr "Der physikalische Server ist momentan nicht erreichbar"
 
-#: __init__.py:482
+#: __init__.py:489
 msgid "CPU usage not available"
 msgstr "CPU-Auslastung nicht verfügbar"
 
-#: __init__.py:590
+#: __init__.py:597
 msgid "Add new drive"
 msgstr "Neues Laufwerk hinzufügen"
 
-#: __init__.py:592
+#: __init__.py:599
 msgid "Image"
 msgstr "Image"
 
-#: __init__.py:592
+#: __init__.py:599
 msgid "Size"
 msgstr "Größe"
 
-#: __init__.py:592 wizards.py:107
+#: __init__.py:599 wizards.py:107
 msgid "Pool"
 msgstr "Speicherbereich"
 
-#: __init__.py:628
+#: __init__.py:635
 msgid "Set as boot device"
 msgstr "Als Boot-Medium setzen"
 
-#: __init__.py:692
+#: __init__.py:699
 msgid ""
 "<b>The settings of a virtual instance can just be modified if it is shut off."
 "</b>"
@@ -410,27 +410,27 @@ msgstr ""
 "<b>Die Einstellungen einer virtuellen Instanz können nur geändert werden, "
 "wenn diese ausgeschaltet ist.</b>"
 
-#: __init__.py:694 __init__.py:698
+#: __init__.py:701 __init__.py:705
 msgid "Drives"
 msgstr "Laufwerk"
 
-#: __init__.py:695 __init__.py:699
+#: __init__.py:702 __init__.py:706
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: __init__.py:696 __init__.py:700
+#: __init__.py:703 __init__.py:707
 msgid "Extended Settings"
 msgstr "Erweiterte Einstellungen"
 
-#: __init__.py:702
+#: __init__.py:709
 msgid "Save"
 msgstr "Speichern"
 
-#: __init__.py:729
+#: __init__.py:736
 msgid "Resynchronize"
 msgstr "Resynchronisation"
 
-#: __init__.py:730
+#: __init__.py:737
 msgid ""
 "The information about the virtual instance could not be retrieved. Clicking "
 "the refresh button will retry to collect the information. If this does not "
@@ -441,25 +441,25 @@ msgstr ""
 "werden. Sollte dies nicht funktionieren, kann eine Resynchronisation über "
 "die folgende Schaltfläche ausgeführt werden."
 
-#: __init__.py:734
+#: __init__.py:741
 msgid "Status"
 msgstr "Status"
 
-#: __init__.py:755
+#: __init__.py:762
 #, python-format
 msgid "Virtual instance %(domain)s - <i>%(tech)s</i>"
 msgstr "Virtuelle Instanz %(domain)s - <i>%(tech)s</i>"
 
-#: __init__.py:756
+#: __init__.py:763
 msgid "Operations"
 msgstr "Operationen"
 
-#: __init__.py:783
+#: __init__.py:790
 #, python-format
 msgid "Migrate %(domain)s from %(source)s to:"
 msgstr "Migriere die Instanz %(domain)s vom Wirtsystem %(source)s zu:"
 
-#: __init__.py:948
+#: __init__.py:955
 msgid ""
 "When removing a virtual instance the disk images bind to it may be removed "
 "also. Please select the disks that should be remove with the virtual "
@@ -471,45 +471,45 @@ msgstr ""
 "die entfernt werden sollen. Stellen Sie sicher, dass keins der Images von "
 "einer anderen Instanz genutzt wird."
 
-#: __init__.py:968
+#: __init__.py:975
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: __init__.py:973
+#: __init__.py:980
 #, python-format
 msgid "Remove the virtual instance %(instance)s?"
 msgstr "Virtuelle Instanz %(instance)s löschen?"
 
-#: __init__.py:991
+#: __init__.py:998
 #, python-format
 msgid "Removing the instance <i>%(domain)s</i> failed"
 msgstr ""
 "Das Löschen der virtuellen Instanz <i>%(domain)s</i> ist fehlgeschlagen"
 
-#: __init__.py:994
+#: __init__.py:1001
 #, python-format
 msgid "The instance <i>%(domain)s</i> was removed successfully"
 msgstr "Die virtuelle Instanz <i>%(domain)s</i> wurde erfolgreich gelöscht"
 
-#: __init__.py:1008
+#: __init__.py:1015
 #, python-format
 msgid "Saving the instance <i>%(domain)s</i> failed"
 msgstr ""
 "Das Speichern der virtuellen Instanz <i>%(domain)s</i> ist fehlgeschlagen"
 
-#: __init__.py:1011
+#: __init__.py:1018
 #, python-format
 msgid "The instance <i>%(domain)s</i> was saved successfully"
 msgstr "Die virtuelle Instanz <i>%(domain)s</i> wurde erfolgreich gespeichert"
 
-#: __init__.py:1025
+#: __init__.py:1032
 #, python-format
 msgid "Restoring the instance <i>%(domain)s</i> failed"
 msgstr ""
 "Das Wiederherstellen der virtuellen Instanz <i>%(domain)s</i> ist "
 "fehlgeschlagen"
 
-#: __init__.py:1091
+#: __init__.py:1098
 #, python-format
 msgid ""
 "The drive will be detached from the virtual instance. Additionally the "
@@ -520,44 +520,44 @@ msgstr ""
 "verknüpfte Image %(image)s permanent gelöscht werden. Soll dies durchgeführt "
 "werden?"
 
-#: __init__.py:1100
+#: __init__.py:1107
 msgid "No"
 msgstr "Nein"
 
-#: __init__.py:1101
+#: __init__.py:1108
 msgid "Yes"
 msgstr "Ja"
 
-#: __init__.py:1118
+#: __init__.py:1125
 #, python-format
 msgid "Detaching the drive <i>%(drive)s</i> failed"
 msgstr "Das Aushängen des Laufwerks <i>%(drive)s</i> ist fehlgeschlagen"
 
-#: __init__.py:1126
+#: __init__.py:1133
 #, python-format
 msgid "Removing the image <i>%(disk)s</i> failed. It must be removed manually."
 msgstr ""
 "Das Löschen des Image <i>%(disk)s</i> ist fehlgeschlagen. Es manuell "
 "entfernt werden."
 
-#: __init__.py:1129
+#: __init__.py:1136
 #, python-format
 msgid "The drive <i>%(drive)s</i> was detached and removed successfully"
 msgstr ""
 "Das Laufwerk <i>%(drive)s</i> wurde erfolgreich ausgehängt und gelöscht"
 
-#: __init__.py:1131
+#: __init__.py:1138
 #, python-format
 msgid "The drive <i>%(drive)s</i> was detached successfully"
 msgstr "Das Laufwerk <i>%(drive)s</i> wurde erfolgreich ausgehängt"
 
-#: __init__.py:1150
+#: __init__.py:1157
 #, python-format
 msgid "Setting the drive <i>%(drive)s</i> as boot device as failed"
 msgstr ""
 "Das Setzen des Laufwerks <i>%(drive)s</i> als Boot-Medium ist fehlgeschlagen"
 
-#: __init__.py:1161
+#: __init__.py:1168
 msgid "Resynchronisation has failed!"
 msgstr ""
 

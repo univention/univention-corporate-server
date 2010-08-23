@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.105-1) unstable; urgency=low
+
+  * shorten title of confirmation dialog when stopping an instance; Bug #19545
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 23 Aug 2010 08:51:56 +0200
+
 univention-virtual-machine-manager-daemon (0.9.104-1) unstable; urgency=low
 
   * reduce maximum instance name length to 25 characters; Bug #19542
