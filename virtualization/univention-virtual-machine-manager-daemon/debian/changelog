@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.104-1) unstable; urgency=low
+
+  * reduce maximum instance name length to 25 characters; Bug #19542
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 23 Aug 2010 08:40:53 +0200
+
 univention-virtual-machine-manager-daemon (0.9.103-1) unstable; urgency=low
 
   * cut off server name in location

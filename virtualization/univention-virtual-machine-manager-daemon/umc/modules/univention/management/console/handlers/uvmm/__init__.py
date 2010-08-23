@@ -513,7 +513,7 @@ class handler( umch.simpleHandler ):
 			# os = getattr( domain, 'annotations', {} ).get( 'os', '' )
 			# if len( os ) > 15:
 			# 	os = os[ : 13 ] + '...'
-			table.add_row( [ umcd.Cell( domain_btn, attributes = { 'type' : 'umc_mini_padding' } ), umcd.Cell( percentage( float( domain.cputime[ 0 ] ) / 10, width = 80 ), attributes = { 'type' : 'umc_mini_padding' } ), umcd.Cell( umcd.Number( MemorySize.num2str( domain.maxMem ) ), attributes = { 'type' : 'umc_mini_padding' } ), buttons ], attributes = { 'type' : 'umc_mini_padding' } )# + buttons )
+			table.add_row( [ umcd.Cell( domain_btn, attributes = { 'type' : 'umc_mini_padding' } ), umcd.Cell( percentage( float( domain.cputime[ 0 ] ) / 10, width = 80 ), attributes = { 'type' : 'umc_mini_padding' } ), umcd.Cell( umcd.Number( MemorySize.num2str( domain.maxMem ) ), attributes = { 'type' : 'umc_mini_padding' } ), umcd.Cell( buttons, attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) ], attributes = { 'type' : 'umc_mini_padding' } )# + buttons )
 
 		if len( table.get_content() ):
 			table.set_header( [ _( 'Instance' ), _( 'CPU usage' ), _( 'Memory' ) ] )

@@ -366,7 +366,7 @@ class InstanceWizard( umcd.IWizard ):
 			object.options[ 'cmdline' ] = self.profile[ 'kernel_parameter' ]
 			object.options[ 'initrd' ] = self.profile[ 'initramfs' ]
 		if self.current == 1:
-			MAX_NAME_LENGTH = 30
+			MAX_NAME_LENGTH = 25
 			if object.options[ 'name' ] == self.profile[ 'name_prefix' ]:
 				return umcd.WizardResult( False, _( 'The name of the virtual instance should be modified' ) )
 			if len( object.options[ 'name' ] ) > MAX_NAME_LENGTH:
