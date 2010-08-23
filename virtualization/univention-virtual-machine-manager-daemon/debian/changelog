@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.106-1) unstable; urgency=low
+
+  * fixed typo in german translation; Bug #19545
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 23 Aug 2010 09:10:16 +0200
+
 univention-virtual-machine-manager-daemon (0.9.105-1) unstable; urgency=low
 
   * shorten title of confirmation dialog when stopping an instance; Bug #19545

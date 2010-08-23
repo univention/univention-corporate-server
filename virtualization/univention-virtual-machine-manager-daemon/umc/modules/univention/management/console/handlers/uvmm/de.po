@@ -228,7 +228,7 @@ msgid ""
 "operating system. Should the virtual instance be stopped?"
 msgstr ""
 "Das Beenden der virtuellen Instanz schaltet diese aus ohne das "
-"Betriebssystem zuvor runterzufahren. Soll die virtuelle Instanz beendet "
+"Betriebssystem zuvor herunterzufahren. Soll die virtuelle Instanz beendet "
 "werden?"
 
 #: __init__.py:205
