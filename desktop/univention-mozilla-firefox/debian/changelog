@@ -1,3 +1,9 @@
+univention-mozilla-firefox (5.0.1-2) unstable; urgency=low
+
+  * Set default homepage to 2.4-0 and create Downloads directory (Bug #19660)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 25 Aug 2010 18:51:58 +0200
+
 univention-mozilla-firefox (5.0.1-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
