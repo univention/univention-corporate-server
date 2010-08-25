@@ -70,24 +70,11 @@ if [ "$1" = "2.4" ]; then
 	done
 
 else
-
-	unset mounted remove
-	cleanup ( ) {
-		[ -z "$mounted" ] || /bin/umount "${sysfsmtpt}"
-		[ -z "$remove"  ] || /bin/rmdir "${sysfsmtpt}"
-	}
-	trap cleanup exit
-
-	# prepare sysfs
-	sysfsmtpt=$(/bin/mount | /bin/grep "type sysfs" |
-		    /bin/sed 's|.\+ on \(.\+\) type sysfs.*|\1|');
-	[[ -n "${sysfsmtpt}" ]] || {
-	  sysfsmtpt=/sys
-	  [[ -d "${sysfsmtpt}" ]] || { /bin/mkdir "${sysfsmtpt}"; remove=1; }
-	  /bin/mount -tsysfs -onodev,noexec,nosuid sysfs "${sysfsmtpt}" >/dev/null 2>&1\
-	  || exit 1
-	  mounted=1
-	}
+	sysfsmtpt=/sys
+	if ! grep -q sysfs /proc/mounts; then
+		[[ -d "${sysfsmtpt}" ]] || { /bin/mkdir "${sysfsmtpt}"; }
+		/bin/mount -tsysfs -onodev,noexec,nosuid sysfs "${sysfsmtpt}" >/dev/null 2>&1 || exit 1
+	fi
 
 	# this works for kernel < 2.6.30
 	# get info
@@ -124,7 +111,7 @@ else
 		device=$(echo $s | awk -F / {'print $NF'})
 		vendor=$(cat $s/device/vendor)
 		media=$(cat $s/device/type)
-		for sub in `/bin/ls -d ${dir}/*:*/host*/target*:*:*/*:*:*:*/block/${device}/${devices}* 2>/dev/null`; do
+		for sub in `/bin/ls -d ${dir}/*:*/host*/target*:*:*/*:*:*:*/block/${device}/${device}* 2>/dev/null`; do
 			device_sub=$(echo $sub | awk -F / {'print $NF'})
 			vendor_sub=$(cat $s/device/vendor)
 			media_sub=$(cat $s/device/type)

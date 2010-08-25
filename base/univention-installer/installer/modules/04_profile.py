@@ -223,8 +223,6 @@ class object(content):
 				self.sub.draw()
 			elif self.media == 'usb':
 				self.sub=self.active(self,'Initialize USB Devices','','sleep',10)
-				uname=os.popen('/bin/uname -r')
-				self.container['kernelversion']=uname.readline().strip()
 				usbdev=self.searchusb()
 				self.sub=self.active(self,'Mounting USB-Device','','mount',usbdev)
 				self.sub.draw()
@@ -373,6 +371,9 @@ class object(content):
 		self.sub=self.active(self,_('Initialize USB Devices'),'','sleep',10)
 		self.sub.draw()
 		usbdev=[]
+		uname=os.popen('/bin/uname -r')
+		self.container['kernelversion']=uname.readline().strip()
+
 		if os.path.exists('/lib/univention-installer/usb-device.sh'):
 			if self.container['kernelversion'].startswith('2.4.'):
 				devices=os.popen('/lib/univention-installer/usb-device.sh 2.4')
