@@ -1,3 +1,9 @@
+univention-kolab2-webclient (6.0.2-19) unstable; urgency=low
+
+  * Reactivate pear imap patches from UCS 2.3 (Bug #19644)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 25 Aug 2010 13:56:33 +0200
+
 univention-kolab2-webclient (6.0.2-18) unstable; urgency=low
 
   * set ownership and mode after replacing old templates (Bug #18975)
