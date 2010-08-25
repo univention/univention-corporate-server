@@ -1,3 +1,9 @@
+univention-installer (6.0.47-2) unstable; urgency=low
+
+  * typo fixed (Bug #17611)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Aug 2010 20:19:14 +0200
+
 univention-installer (6.0.47-1) unstable; urgency=low
 
   * fix profile comments (Bug #17611)

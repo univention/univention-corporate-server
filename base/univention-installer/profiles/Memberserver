@@ -30,7 +30,7 @@ system_role="memberserver"
 # [Settings]
 windows_domain="EXAMPLE"
 hostname="memberserver"
-## determine hostname by reverse DNS lookup of IP, works only with valid nameserver1:
+## determine hostname by reverse DNS lookup of IP, works only with valid nameserver_1:
 #scan=hostname
 domainname="example.com"
 ## use root_password with care
