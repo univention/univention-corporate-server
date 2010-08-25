@@ -46,7 +46,8 @@ install: build
 	find $(HORDESHARE) -type d -name .svn | xargs -r rm -rf # remove the svn dirs
 
 	# translation
-	msgfmt -o ${HORDESHARE}/kronolith/locale/de_DE/LC_MESSAGES/kronolith.mo ${HORDESHARE}/kronolith/po/de_DE.po
+	pear install Console_Table File_Find
+	(cd ${HORDESHARE}/po && ./translation.php  make )
 
 	## Horde Demo Cfg files
 	(cd ${HORDESHARE}/config && find . ! -path "*.svn*" -type f -exec install -D -m 0644 {} $(D)/etc/horde/horde3/{} \;)

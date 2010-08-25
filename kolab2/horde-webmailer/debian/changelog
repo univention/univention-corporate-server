@@ -1,3 +1,9 @@
+horde-webmailer (1.2.5~2.2.3-11) unstable; urgency=low
+
+  * Rebuild translation during package build (Bug #19616)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 25 Aug 2010 13:58:09 +0200
+
 horde-webmailer (1.2.5~2.2.3-10) unstable; urgency=low
 
   * checkin applied but missing imp_HK_UV_fix_login_by_uid patch
