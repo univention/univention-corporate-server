@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper, quilt, gettext, php5-cli, php5-pear
+Build-Depends: debhelper, quilt, gettext, php5-cli, php-pear
 
 Package: horde-webmailer
 Architecture: all

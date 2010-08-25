@@ -1,3 +1,9 @@
+horde-webmailer (1.2.5~2.2.3-12) unstable; urgency=low
+
+  * Use php-pear as dependency instead of php5-pear (Bug #19616)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 25 Aug 2010 14:05:16 +0200
+
 horde-webmailer (1.2.5~2.2.3-11) unstable; urgency=low
 
   * Rebuild translation during package build (Bug #19616)
