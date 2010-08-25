@@ -1,11 +1,13 @@
 #### UCS-Basesystem-Profile ####
-to_check="hostname domainname"	## to_check makes the installer ask for a value, with a default provided by the profile
+## to_check makes the installer ask for a value, with a default provided by the profile
+to_check="hostname domainname"
 
 # [Hardware detection]
 #modules=''
 
 # [Partition]
-#auto_part="full_disk"	## use with care, uses all storage attached
+## use with care, uses all storage attached
+#auto_part="full_disk"
 
 # [Bootloader]
 #bootloader_record=/dev/sda
@@ -28,7 +30,8 @@ system_role="basesystem"
 # [Settings]
 hostname="basesystem"
 domainname="example.com"
-#root_password=''	## use with care
+## use root_password with care
+#root_password=''
 
 # [Network]
 #gateway=''

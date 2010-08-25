@@ -1,11 +1,13 @@
 #### UCS-Slave-Profile ####
-to_check="hostname domainname"	## to_check makes the installer ask for a value, with a default provided by the profile
+## to_check makes the installer ask for a value, with a default provided by the profile
+to_check="hostname domainname"
 
 # [Hardware detection]
 #modules=''
 
 # [Partition]
-#auto_part="full_disk"	## use with care, uses all storage attached
+## use with care, uses all storage attached
+#auto_part="full_disk"
 
 # [Bootloader]
 #bootloader_record=/dev/sda
@@ -28,13 +30,16 @@ system_role="domaincontroller_slave"
 # [Settings]
 windows_domain="EXAMPLE"
 hostname="dc-slave"
-#scan=hostname		## determine hostname by reverse DNS lookup of IP, works only with valid nameserver1
+## determine hostname by reverse DNS lookup of IP, works only with valid nameserver1:
+#scan=hostname
 domainname="example.com"
-#root_password=''	## use with care
+## use root_password with care
+#root_password=''
 
 # [Join settings]
 domain_controller_account="Administrator"
-#domain_controller_password=''	## use with care
+## use domain_controller_password with care
+#domain_controller_password=''
 auto_reboot=yes
 
 # [Network]

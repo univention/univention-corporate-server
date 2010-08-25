@@ -1,11 +1,13 @@
 #### UGS-Master-Profile ####
-to_check="hostname domainname ldap_base"	## to_check makes the installer ask for a value, with a default given below
+## to_check makes the installer ask for a value, with a default given below
+to_check="hostname domainname ldap_base"
 
 # [Hardware detection]
 #modules=''
 
 # [Partition]
-#auto_part="full_disk"	## use with care, uses all storage attached
+## use with care, uses all storage attached
+#auto_part="full_disk"
 
 # [Bootloader]
 #bootloader_record=/dev/sda
@@ -30,7 +32,8 @@ windows_domain="EXAMPLE"
 hostname="dc-master"
 domainname="ugs.example.com"
 ldap_base="dc=ugs,dc=example,dc=com"
-#root_password=''	## use with care
+## use root_password with care
+#root_password=''
 
 # [Network]
 #gateway=''
