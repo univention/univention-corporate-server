@@ -1,3 +1,9 @@
+univention-samba (5.0.23-1) unstable; urgency=low
+
+  * Fixed bash typo (Bug #7081)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Aug 2010 09:11:11 +0200
+
 univention-samba (5.0.22-1) unstable; urgency=low
 
   * If the first net rpc join fails try the next join against the DC

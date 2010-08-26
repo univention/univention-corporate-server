@@ -108,7 +108,7 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 	net rpc join -U${samba_account}%${samba_pwd}
 	if [ $? != 0 ]; then
 		net rpc join -U${samba_account}%${samba_pwd} -S${ldap_master}
-		if [ $? != 0 ];
+		if [ $? != 0 ]; then
 			echo "ERROR: Failed to join via net rpc join. Please run \"net rpc join\" manually."
 		fi
 	fi
