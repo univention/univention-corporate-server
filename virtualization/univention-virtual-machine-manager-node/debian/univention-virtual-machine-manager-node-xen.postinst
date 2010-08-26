@@ -32,6 +32,8 @@
 
 eval "$(univention-config-registry shell server/role)"
 
+univention-config-registry set xen/server/relocation?yes
+
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	univention-config-registry set xen/server/unix_server?yes
 fi
