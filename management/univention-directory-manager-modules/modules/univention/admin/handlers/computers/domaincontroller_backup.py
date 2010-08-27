@@ -638,7 +638,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				ml.append(('uid', self.oldattr.get('uid', [None])[0], self.uid))
 
 			if 'samba' in self.options:
-				ml.append(('displayName', self.oldattr.get('name', [None])[0], self['name']))
+				ml.append(('displayName', self.oldattr.get('displayName', [None])[0], self['name']))
 
 		# add samba option
 		if 'samba' in self.options and not self.old_samba_option:

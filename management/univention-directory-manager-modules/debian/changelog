@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.31-1) unstable; urgency=low
+
+  * fixed renaming of domaincontroller objects (Bug #19735)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 27 Aug 2010 21:00:19 +0200
+
 univention-directory-manager-modules (6.0.30-1) unstable; urgency=low
 
   * Lock the password for pure posix users if requested and append the
