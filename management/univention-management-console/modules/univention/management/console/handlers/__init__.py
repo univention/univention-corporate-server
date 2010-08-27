@@ -168,7 +168,8 @@ class simpleHandler( signals.Provider ):
 							  'text' : unicode( traceback.format_exc() ) }
 			res.status( 500 )
 			self.signal_emit( 'failure', res )
-			del self.__requests[ object.id() ]
+			if object.id() in self.__requests:
+				del self.__requests[ object.id() ]
 
 	def __partial( self, id, dialog, type ):
 		if self.__requests.has_key( id ):

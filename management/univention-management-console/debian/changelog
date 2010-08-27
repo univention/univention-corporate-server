@@ -1,3 +1,10 @@
+univention-management-console (3.0.61-1) unstable; urgency=low
+
+  * fixed traceback in error handler (Bug #19728)
+  * fixed traceback in reboot module (Bug #19728)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 27 Aug 2010 18:40:23 +0200
+
 univention-management-console (3.0.60-1) unstable; urgency=low
 
   * fixed a bug, when mapping Cell objects that contain a list or tuple; Bug #19542

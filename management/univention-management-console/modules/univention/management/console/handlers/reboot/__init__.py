@@ -90,9 +90,9 @@ class handler( umch.simpleHandler, _revamp.Web ):
 			# shellescaped_message = object.options['message'].replace('"', '\\"')
 
 			self.finished( object.id(), object.options['message'] )
-			ret = subprocess.call( ( 'logger', '-f', '/var/log/syslog', '-t', 'UMC', object.options[ 'message' ] ) )
+			ret = subprocess.call( ( 'logger', '-f', '/var/log/syslog', '-t', 'UMC', str(object.options[ 'message' ]) ) )
 			if not ret:
-				subprocess.call( ( 'shutdown', '-%s' % do, 'now', object.options[ 'message' ] ) )
+				subprocess.call( ( 'shutdown', '-%s' % do, 'now', str(object.options[ 'message' ]) ) )
 
 		else:	
 			self.finished( object.id(), None)
