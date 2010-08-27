@@ -1,0 +1,202 @@
+Index: horde-webmailer/horde-webmail/kronolith/lib/Driver/kolab.php
+===================================================================
+--- horde-webmailer.orig/horde-webmail/kronolith/lib/Driver/kolab.php	2010-08-27 23:17:12.000000000 +0200
++++ horde-webmailer/horde-webmail/kronolith/lib/Driver/kolab.php	2010-08-28 00:49:41.000000000 +0200
+@@ -1135,6 +1135,8 @@
+      */
+     function listEvents($startDate = null, $endDate = null, $hasAlarm = false)
+     {
++        $this->_store->_data->synchronize();
++        $this->reset();
+         $result = $this->synchronize();
+         if (is_a($result, 'PEAR_Error')) {
+             return $result;
+Index: horde-webmailer/horde-webmail/kronolith/lib/api.php
+===================================================================
+--- horde-webmailer.orig/horde-webmail/kronolith/lib/api.php	2010-08-27 23:17:12.000000000 +0200
++++ horde-webmailer/horde-webmail/kronolith/lib/api.php	2010-08-28 00:49:59.000000000 +0200
+@@ -131,11 +131,6 @@
+     'type' => 'boolean',
+ );
+ 
+-$_services['synchronize'] = array(
+-    'args' => array(),
+-    'type' => 'boolean'
+-);
+-
+ /**
+  * Returns a list of available permissions.
+  *
+@@ -1437,35 +1432,3 @@
+         return PEAR::raiseError('Unknown calendar specification');
+     }
+ }
+-
+-/**
+- * Synchronizes kronolith with the IMAP backend
+- *
+- * @return boolean  False if something went wrong
+- */
+-function _kronolith_synchronize()
+-{
+-    require_once dirname(__FILE__) . '/base.php';
+-    global $kronolith_driver;
+-
+-    $calendar = Kronolith::getDefaultCalendar();
+-
+-    if (!array_key_exists($calendar,
+-                          Kronolith::listCalendars(false, PERMS_READ))) {
+-        return False;
+-    }
+-
+-    $kronolith_driver->open($calendar);
+-
+-    if (get_class ($kronolith_driver) == 'Kronolith_Driver_kolab' &&
+-        get_class ($kronolith_driver->_wrapper) == 'Kronolith_Driver_kolab_wrapper_new') {
+-
+-        $kronolith_driver->_wrapper->synchronize (true);
+-
+-        if (get_class ($kronolith_driver->_wrapper->_store) == 'Kolab_IMAP') {
+-            $kronolith_driver->_wrapper->_store->_synchronize ();
+-        }
+-    }
+-
+-    return True;
+-}
+Index: horde-webmailer/horde-webmail/mnemo/lib/Driver/kolab.php
+===================================================================
+--- horde-webmailer.orig/horde-webmail/mnemo/lib/Driver/kolab.php	2010-08-27 23:17:12.000000000 +0200
++++ horde-webmailer/horde-webmail/mnemo/lib/Driver/kolab.php	2010-08-28 00:47:40.000000000 +0200
+@@ -719,6 +719,7 @@
+      */
+     function retrieve()
+     {
++        $this->_store->_data->synchronize();
+         $memos = array();
+ 
+         $note_list = $this->_store->getObjects();
+Index: horde-webmailer/horde-webmail/mnemo/lib/api.php
+===================================================================
+--- horde-webmailer.orig/horde-webmail/mnemo/lib/api.php	2010-08-27 23:17:12.000000000 +0200
++++ horde-webmailer/horde-webmail/mnemo/lib/api.php	2010-08-28 00:47:18.000000000 +0200
+@@ -70,11 +70,6 @@
+     'type' => 'boolean'
+ );
+ 
+-$_services['synchronize'] = array(
+-    'args' => array(),
+-    'type' => 'boolean'
+-);
+-
+ /**
+  * Returns a list of available permissions.
+  *
+@@ -538,35 +533,3 @@
+         return PEAR::raiseError(sprintf(_("Unsupported Content-Type: %s"),$contentType));
+     }
+ }
+-
+-/**
+- * Synchronizes mnemo with the IMAP backend
+- *
+- * @return boolean  False if something went wrong
+- */
+-function _mnemo_synchronize()
+-{
+-    require_once dirname(__FILE__) . '/base.php';
+-
+-    /* Make sure we have a valid notepad. */
+-    if (empty($notepad)) {
+-        $notepad = Mnemo::getDefaultNotepad();
+-    }
+-
+-    if (!array_key_exists($notepad,
+-                          Mnemo::listNotepads(false, PERMS_READ))) {
+-        return False;
+-    }
+-
+-    $storage = &Mnemo_Driver::singleton($notepad);
+-    if (get_class ($storage) == 'Mnemo_Driver_kolab' &&
+-        get_class ($storage->_wrapper) == 'Mnemo_Driver_kolab_wrapper_new') {
+-
+-        $storage->_wrapper->connect ();
+-        if (get_class ($storage->_wrapper->_store) == 'Kolab_IMAP') {
+-            $storage->_wrapper->_store->_synchronize ();
+-        }
+-    }
+-
+-    return True;
+-}
+Index: horde-webmailer/horde-webmail/nag/lib/Driver/kolab.php
+===================================================================
+--- horde-webmailer.orig/horde-webmail/nag/lib/Driver/kolab.php	2010-08-27 23:17:12.000000000 +0200
++++ horde-webmailer/horde-webmail/nag/lib/Driver/kolab.php	2010-08-28 00:46:36.000000000 +0200
+@@ -953,6 +953,7 @@
+      */
+     function retrieve($completed = 1)
+     {
++        $this->_store->_data->synchronize();
+         $dict = array();
+         $tasks = new Nag_Task();
+ 
+Index: horde-webmailer/horde-webmail/nag/lib/api.php
+===================================================================
+--- horde-webmailer.orig/horde-webmail/nag/lib/api.php	2010-08-27 23:17:12.000000000 +0200
++++ horde-webmailer/horde-webmail/nag/lib/api.php	2010-08-28 00:46:55.000000000 +0200
+@@ -113,11 +113,6 @@
+     'type' => '{urn:horde}hashHash'
+ );
+ 
+-$_services['synchronize'] = array(
+-    'args' => array(),
+-    'type' => 'boolean'
+-);
+-
+ /**
+  * Returns a list of available permissions.
+  *
+@@ -1393,32 +1388,3 @@
+ 
+     return $alarm_list;
+ }
+-
+-/**
+- * Synchronizes nag with the IMAP backend
+- *
+- * @return boolean  False if something went wrong
+- */
+-function _nag_synchronize()
+-{
+-    require_once dirname(__FILE__) . '/base.php';
+-
+-    $tasklist = Nag::getDefaultTasklist(PERMS_READ);
+-
+-    if (!array_key_exists($tasklist,
+-                          Nag::listTasklists(false, PERMS_READ))) {
+-        return False;
+-    }
+-
+-    $storage = &Nag_Driver::singleton($tasklist);
+-    if (get_class ($storage) == 'Nag_Driver_kolab' &&
+-        get_class ($storage->_wrapper) == 'Nag_Driver_kolab_wrapper_new') {
+-
+-        $storage->_wrapper->connect ();
+-        if (get_class ($storage->_wrapper->_store) == 'Kolab_IMAP') {
+-            $storage->_wrapper->_store->_synchronize ();
+-        }
+-    }
+-
+-    return True;
+-}
+Index: horde-webmailer/horde-webmail/turba/lib/Driver/kolab.php
+===================================================================
+--- horde-webmailer.orig/horde-webmail/turba/lib/Driver/kolab.php	2010-08-27 23:17:12.000000000 +0200
++++ horde-webmailer/horde-webmail/turba/lib/Driver/kolab.php	2010-08-28 00:43:45.000000000 +0200
+@@ -805,6 +805,7 @@
+      */
+     function _search($criteria, $fields)
+     {
++        $this->_store->_data->synchronize();
+         $result = $this->connect();
+         if (is_a($result, 'PEAR_Error')) {
+             return $result;
