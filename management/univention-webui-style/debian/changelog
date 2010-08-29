@@ -1,3 +1,9 @@
+univention-webui-style (5.0.23-1) unstable; urgency=low
+
+  * Update links to UCS 2.4 docs (Bug #18493)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 29 Aug 2010 14:10:40 +0200
+
 univention-webui-style (5.0.22-1) unstable; urgency=low
 
   * english overview page: using links to english Univention website; Bug #19435
