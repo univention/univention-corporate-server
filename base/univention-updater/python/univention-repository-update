@@ -126,6 +126,14 @@ def update_net( options ):
 		print >> options.teefile, 'Error: The local repository is not activated. Set the Univention Configuration Registry variable local/repository to yes'
 		sys.exit( 1 )
 
+	# create mirror_base and symbolic link "univention-repository" if missing
+	destdir = os.path.join(_mirror_base, 'mirror')
+	if not os.path.exists(destdir):
+		os.makedirs(destdir)
+	destlink = os.path.join(destdir, 'univention-repository')
+	if not os.path.exists(destlink):
+		os.symlink('.', destlink)
+
 	if options.sync:
 		mirror.run()
 	elif options.security_only:
@@ -139,6 +147,8 @@ def update_net( options ):
 		mirror_run = False
 		while nextupdate:
 			ucr.handler_set( [ 'repository/mirror/version/end=%s' % nextupdate ] )
+			# UCR variable repository/mirror/version/end has change - reinit Mirror object
+			mirror = UniventionMirror()
 			mirror.run()
 			mirror_run = True
 			nextupdate = mirror.release_update_available( nextupdate )

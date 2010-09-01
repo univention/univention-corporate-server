@@ -61,7 +61,7 @@ class UniventionMirror( UniventionUpdater ):
 		'''downloads the given path from the repository server'''
 		# path MUST NOT contain the schema and hostname
 		proxy_headers = self.open_connection()
-		site = '%s/%s/%s' % (self.proxy_prefix, self.repository_prefix, path)
+		site = '%s/%s' % (self.proxy_prefix, path)
 
 		replace_slash = re.compile ('[/]{2,}')
 		site = replace_slash.sub ('/', site)

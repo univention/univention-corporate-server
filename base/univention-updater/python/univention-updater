@@ -521,7 +521,7 @@ def main():
 
 		# Download the pre and postup scripts
 		scriptPath = tempdir
-		download_sh_files(updater, '%s/%s/maintained/%s-%s/all' % (updater.repository_prefix, next_vv, next_vv, next_vp), tempdir)
+		download_sh_files(updater, '%s/maintained/%s-%s/all' % (next_vv, next_vv, next_vp), tempdir)
 
 	# Call the preup.sh
 	if scriptPath:

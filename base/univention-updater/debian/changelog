@@ -1,3 +1,13 @@
+univention-updater (4.0.81-2) unstable; urgency=low
+
+  * Backport fixes from UCS-2.3 and UCS-2.4: (Bug #18937)
+  * Fix duplicate repository_prefix. (Bug #18040)
+  * univention-repository-update: create mirrorbase directory and create
+    symlink "univention-repository" if missing (Bug #16596)
+  * Reinit mirror object to fetch all {pre,post}up.sh scripts (Bug #16668)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 01 Sep 2010 12:25:33 +0200
+
 univention-updater (4.0.81-1) unstable; urgency=low
 
   * updated preup.sh for UCS 2.2-3 (Bug #17525)
