@@ -1,3 +1,9 @@
+univention-join (2.0.25-2) unstable; urgency=low
+
+  * fixed join with users with very long binddn (Ticket#: 2009081910000139)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 01 Sep 2010 14:31:36 +0200
+
 univention-join (2.0.22-1) unstable; urgency=low
 
   * force removal of /usr/share/univention-join/.joined during symlink
