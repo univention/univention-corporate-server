@@ -1,0 +1,3 @@
+/usr/share/univention-join/univention-join /usr/sbin/univention-join
+/usr/share/univention-join/univention-run-join-scripts /usr/sbin/univention-run-join-scripts
+/usr/share/univention-join/check_join_status /usr/sbin/univention-check-join-status
