@@ -1,0 +1,189 @@
+#!/bin/sh
+#
+# Univention Run Join Scripts
+#
+# Copyright 2004-2010 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+. /usr/share/univention-join/joinscripthelper.lib
+
+export PATH="$PATH:/sbin:/usr/sbin:/bin:/usr/bin"
+
+eval `univention-config-registry shell`
+
+display_help() {
+	display_header
+	cat <<-EOL
+	Syntax:
+	  univention-run-join-scripts [options]
+
+	Options:
+	  -dcaccount <account>:    name of DC master account
+	  -dcpwd <password file>:  file with DC master password
+
+	  -h | --help | -?:        print this usage message and exit program
+	  --version:               print version information and exit program
+
+	Description:
+	  univention-run-join-scripts runs all join scripts existing on local computer.
+
+	Known-Bugs:
+	  -None-
+
+	EOL
+}
+
+display_header() {
+	echo "univention-run-join-scripts: runs all join scripts existing on local computer."
+	echo "copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany"
+	echo ""
+}
+
+display_version() {
+	echo "univention-run-join-scripts @%@package_version@%@"
+}
+
+
+failed_message () {
+	echo ""
+	echo ""
+	echo "**************************************************************************"
+	echo "* Running join scripts failed!                                           *"
+	echo "**************************************************************************"
+	echo "* Message:  $@"
+	echo "**************************************************************************"
+	if [ -n "$REMOVE_PWD_FILE" -a -n "$DCPWD" ]; then
+		rm -f $DCPWD
+	fi
+	exit 1
+}
+
+while [ $# -gt 0 ]
+do
+	case "$1" in
+		"-dcaccount")
+			shift
+			DCACCOUNT=$1
+			shift
+			;;
+		"-dcpwd")
+			shift
+			DCPWD=$1
+			shift
+			;;
+		"--version")
+			display_version
+			exit 1
+			;;
+		*)
+			display_help
+			exit 1
+			;;
+	esac
+done
+
+display_header
+
+if [ ! "$server_role" = "domaincontroller_master" ] ; then
+	if [ -z "$DCACCOUNT" ]; then
+		echo -n "Enter DC Master Account : "
+		read DCACCOUNT
+	fi
+	if [ -z "$DCPWD" ]; then
+		echo -n "Enter DC Master Password: "
+		read -s password
+		DCPWD=$(mktemp)
+		echo "$password" >>$DCPWD
+		REMOVE_PWD_FILE="1"
+		echo ""
+		echo ""
+	fi
+
+	echo -n "Search LDAP binddn "
+	binddn=""
+	for i in `ldapsearch -x -LLL -b $ldap_base "(&(uid=$DCACCOUNT)(objectClass=person))" | ldapsearch-wrapper | grep ^dn | sed -e 's|dn: ||'`; do
+		if [ -n "$binddn" ]; then
+			failed_message "binddn for user $DCACCOUNT not unique, $i and $binddn"
+		fi
+		echo -e "\033[60Gdone"
+		binddn="$i"
+	done
+	if [ -z "$binddn" ]; then
+		failed_message "binddn for user $DCACCOUNT not found"
+	else
+		ldapsearch -x -LLL -b "$ldap_base" -D "$binddn" -w `cat $DCPWD` -LLL -s base >/dev/null 2>&1
+		if [ $? != 0 ]; then
+			failed_message "Invalid credentials"
+		fi
+	fi
+fi
+
+echo >>/var/log/univention/join.log 2>&1
+echo "univention-run-join-scripts started"  >>/var/log/univention/join.log 2>&1
+date >>/var/log/univention/join.log 2>&1
+echo >>/var/log/univention/join.log 2>&1
+if test -e "/usr/lib/univention-install/"; then
+	for i in /usr/lib/univention-install/*.inst; do
+		echo -n "Running `basename $i` "
+		echo "RUNNING `basename $i` " >>/var/log/univention/join.log
+
+		if ! joinscript_extern_init "$i"; then
+			echo -e "\033[60Gskipped (invalid joinscript)"
+			echo "EXITCODE=invalid_joinscript" >>/var/log/univention/join.log 2>&1
+			continue
+		fi
+		if joinscript_check_already_executed; then
+			echo -e "\033[60Gskipped (already executed)"
+			echo "EXITCODE=already_executed" >>/var/log/univention/join.log 2>&1
+			continue
+		fi
+
+		if [ ! "$server_role" = "domaincontroller_master" ] ; then
+			$i --binddn $binddn --bindpwd `cat $DCPWD` >>/var/log/univention/join.log 2>&1
+		else
+			$i >>/var/log/univention/join.log 2>&1
+		fi
+		RET=$?
+		echo "EXITCODE=$RET" >>/var/log/univention/join.log 2>&1
+		if [ $RET != 0 ]; then
+			echo -e "\033[60Gfailed (exitcode: $RET)"
+		else
+			echo -e "\033[60Gdone"
+		fi
+	done
+fi
+
+if [ -n "$REMOVE_PWD_FILE" -a -n "$DCPWD" ]; then
+	rm -f $DCPWD
+fi
+
+echo >>/var/log/univention/join.log 2>&1
+date >>/var/log/univention/join.log 2>&1
+echo "univention-run-join-scripts finished"  >>/var/log/univention/join.log 2>&1
+echo >>/var/log/univention/join.log 2>&1
+
+exit 0
