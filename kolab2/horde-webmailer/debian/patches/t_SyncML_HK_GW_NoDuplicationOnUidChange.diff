@@ -1,0 +1,38 @@
+From: root <Gunnar Wrobel wrobel@pardus.de>
+Subject: [PATCH] t/SyncML/HK/GW/DoubleSyncFix
+
+When the uid validity of an IMAP folder changes this confuses the Kolab storage
+driver and leads to double entries. The attached patch has been proposed by
+Univention and should be applied after some cleanup.
+
+REF: https://issues.kolab.org/issue3238
+
+Signed-off-by: root <Gunnar Wrobel wrobel@pardus.de>
+---
+Index: a/a/a/SyncML/Backend/Horde.php
+===================================================================
+--- a/a/a/SyncML/Backend/Horde.php	2008-10-20 16:28:27.000000000 +0200
++++ b/a/a/SyncML/Backend/Horde.php	2008-10-20 16:32:09.000000000 +0200
+@@ -186,7 +186,12 @@
+                 continue;
+             }
+ 
+-            if ($slowsync) {
++            // Add should only be done once on an existing entry -
++            // if it's performed a second time it's very likely that
++            // there is something wrong. Therefore all adds are
++            // filtered that already have a corresponding mapping in
++            // the database
++            //if ($slowsync) {
+                 // SlowSync: Ignore all entries where there already in a
+                 // map entry.
+                 $cuid = $this->_getCuid($database, $suid);
+@@ -196,7 +201,7 @@
+                         __FILE__, __LINE__, PEAR_LOG_DEBUG);
+                     continue;
+                 }
+-            }
++	    //}
+             $add_ts[$suid] = $registry->call($database . '/getActionTimestamp',
+                                              array($suid, 'add', SyncML_Backend::getParameter($databaseURI, 'source')));
+             $sync_ts = $this->_getChangeTS($database, $suid);

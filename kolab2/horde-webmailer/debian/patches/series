@@ -21,3 +21,4 @@ t_horde_UV_fix_shutdown_call.diff
 t_horde_alarm_HK_UV_fix_listAlarms_authentication_failure_slowness.diff
 01_CVE-2008-1284.patch
 univention_add_synchronization_to_kronolith_nag_mnemo_and_turba.patch
+t_SyncML_HK_GW_NoDuplicationOnUidChange.diff

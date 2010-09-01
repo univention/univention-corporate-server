@@ -1,3 +1,10 @@
+horde-webmailer (1.2.5~2.2.3-14) unstable; urgency=low
+
+  * readded uid validity patch to avoid double contact entries 
+    (Bug #19757)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 01 Sep 2010 10:36:57 +0200
+
 horde-webmailer (1.2.5~2.2.3-13) unstable; urgency=low
 
   * Fixed issues related to synchronization problems with the kolab backend. Bug #19671
