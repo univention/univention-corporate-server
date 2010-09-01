@@ -9,10 +9,10 @@ REF: https://issues.kolab.org/issue3238
 
 Signed-off-by: root <Gunnar Wrobel wrobel@pardus.de>
 ---
-Index: a/a/a/SyncML/Backend/Horde.php
+Index: a/horde-webmail/lib/SyncML/Backend/Horde.php
 ===================================================================
---- a/a/a/SyncML/Backend/Horde.php	2008-10-20 16:28:27.000000000 +0200
-+++ b/a/a/SyncML/Backend/Horde.php	2008-10-20 16:32:09.000000000 +0200
+--- a/horde-webmail/lib/SyncML/Backend/Horde.php	2008-10-20 16:28:27.000000000 +0200
++++ b/horde-webmail/lib/SyncML/Backend/Horde.php	2008-10-20 16:32:09.000000000 +0200
 @@ -186,7 +186,12 @@
                  continue;
              }
