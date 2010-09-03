@@ -1,3 +1,9 @@
+univention-mail-postfix-forward (3.0.1-1) unstable; urgency=low
+
+  * fixed typo in mailrelay.py Bug #19465 
+
+ -- Felix Botner <botner@univention.de>  Fri, 03 Sep 2010 09:55:48 +0200
+
 univention-mail-postfix-forward (3.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

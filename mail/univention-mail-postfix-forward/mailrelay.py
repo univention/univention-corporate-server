@@ -63,7 +63,7 @@ def handler(dn, new, old):
 			baseConfig.save()
 		try:
 			os.spawnv(os.P_WAIT, '/usr/sbin/univention-baseconfig', ['univention-baseconfig', 'commit', '/etc/postfix/main.cf'])
-		except Exceptionn, e:
+		except Exception, e:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Reload postfix failed: %s' % str(e))
 
 	finally:
@@ -75,7 +75,7 @@ def postrun():
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'mailrelay: Reloading postfix')
 		try:
 			os.spawnv(os.P_WAIT, '/etc/init.d/postfix', ['postfix', 'reload'])
-		except Exceptionn, e:
+		except Exception, e:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Reload postfix failed: %s' % str(e))
 	finally:
 		listener.unsetuid()
