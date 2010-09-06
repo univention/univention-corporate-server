@@ -1,3 +1,9 @@
+univention-updater (6.0.37-1) unstable; urgency=low
+
+  * fix UCR variable description (Bug #19384)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 06 Sep 2010 14:10:57 +0200
+
 univention-updater (6.0.36-1) unstable; urgency=low
 
   * fix preup.sh to suggest new --ignore-* (Bug #18700)

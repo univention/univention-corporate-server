@@ -108,7 +108,7 @@ Categories=service-software-management
 
 [repository/online/unmaintained]
 Description[de]=Pakete aus dem Unmaintained-Bereich verwenden [no]
-Description[en]=Use packages from the maintained section [no]
+Description[en]=Use packages from the unmaintained section [no]
 Type=bool
 Categories=service-software-management
 
