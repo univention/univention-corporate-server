@@ -46,7 +46,7 @@ if [ -z "$DEFAULT_DAYS" ]; then
 	DEFAULT_DAYS=1825
 fi
 DEFAULT_MD=$(/usr/sbin/univention-config-registry get ssl/default/hashfunction)
-if [ -z "$DEFAULT_DAYS" ]; then
+if [ -z "$DEFAULT_MD" ]; then
 	DEFAULT_MD=sha1
 fi
 
