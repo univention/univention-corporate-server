@@ -99,7 +99,7 @@ fi
 if [ -n "$SSH_CLIENT" ]; then
 	if [ "$update24_ignoressh" != "yes" ]; then
 		echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
-		echo "Please log in under the console or set the Univention Configuration Registry variable \"update24/ignoressh\" to \"yes\" to ignore it."
+		echo "Please log in under the console or run univention-updater with \"--ignoressh\" to ignore it."
 		exit 1
 	fi
 fi
@@ -107,7 +107,7 @@ fi
 if [ "$TERM" = "xterm" ]; then
 	if [ "$update24_ignoreterm" != "yes" ]; then
 		echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
-		echo "Please log in under the console or set the Univention Configuration Registry variable \"update24/ignoreterm\" to \"yes\" to ignore it."
+		echo "Please log in under the console or run univention-updater with \"--ignoreterm\" to ignore it."
 		exit 1
 	fi
 fi

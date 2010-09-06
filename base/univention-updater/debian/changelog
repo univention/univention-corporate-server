@@ -1,3 +1,9 @@
+univention-updater (6.0.36-1) unstable; urgency=low
+
+  * fix preup.sh to suggest new --ignore-* (Bug #18700)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 06 Sep 2010 13:56:43 +0200
+
 univention-updater (6.0.35-1) unstable; urgency=low
 
   * Added an OpenOffice.org check to preup.sh (Bug #18529)
