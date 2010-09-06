@@ -1,3 +1,9 @@
+univention-management-console (3.0.62-1) unstable; urgency=low
+
+  * fix typo (Bug #9763)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 06 Sep 2010 13:47:47 +0200
+
 univention-management-console (3.0.61-1) unstable; urgency=low
 
   * fixed traceback in reboot module (Bug #19728)
