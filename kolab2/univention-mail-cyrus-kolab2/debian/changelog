@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (3.0.12-1) unstable; urgency=low
+
+  * check kolabHomeServer in cyrus-sieve.py (Bug #19785) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 07 Sep 2010 13:17:44 +0200
+
 univention-mail-cyrus-kolab2 (3.0.11-1) unstable; urgency=low
 
   * Don't overwrite mail/cyrus/imap/quotainterval during updates (Bug

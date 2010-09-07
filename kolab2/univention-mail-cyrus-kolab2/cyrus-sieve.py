@@ -48,6 +48,7 @@ def create_cyrus_mailbox(new):
 			listener.unsetuid()
 
 def handler(dn, new, old):
+	fqdn = '%s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])
 	if not new and old:
 		pass
 	else:
@@ -60,7 +61,11 @@ def handler(dn, new, old):
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'Do not not write a  sieve script for user: %s' % new['mailPrimaryAddress'][0])
 				return
 
-			create_cyrus_mailbox(new)
+			if new.has_key('kolabHomeServer') and new['kolabHomeServer'][0] != fqdn:
+				# do not create mailbox if this is not our kolabHomeServer
+				pass
+			else:
+				create_cyrus_mailbox(new)
 
 			cyrus_id=pwd.getpwnam('cyrus')[2]
 			mail_id=grp.getgrnam('mail')[2]
