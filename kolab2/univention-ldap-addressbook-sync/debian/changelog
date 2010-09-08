@@ -1,3 +1,11 @@
+univention-ldap-addressbook-sync (4.0.2-1) unstable; urgency=low
+
+  * read group membership directly from LDAP server; Bug #19796, Bug #19795
+  * re-authenticate and re-connected on errors during search; Bug #19841
+  * optimized processing of users; Bug #19843
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 08 Sep 2010 14:45:49 +0200
+
 univention-ldap-addressbook-sync (4.0.1-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

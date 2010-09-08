@@ -49,6 +49,18 @@ import univention.uldap
 cfgRegistry = ucr.ConfigRegistry()
 cfgRegistry.load()
 _options = None
+ldapConnection = None
+
+class LDAP_Connection( univention.uldap.access ):
+	def __init__( self ):
+		bindpw = open( '/etc/machine.secret' ).read()
+		if bindpw[ -1 ] == '\n':
+			bindpw=bindpw[ 0 : -1 ]
+		univention.uldap.access.__init__( self, host = cfgRegistry[ 'ldap/server/name' ], base = cfgRegistry[ 'ldap/base' ], binddn = cfgRegistry[ 'ldap/hostdn' ], bindpw = bindpw )
+
+	def is_member( self, username, group ):
+		result = self.search( filter = '(&(objectClass=univentionGroup)(cn=%s)(memberUid=%s))' % ( group, username ), attr = [ 'dn' ] )
+		return len( result ) > 0
 
 class KolabContact( email.MIMEMultipart.MIMEMultipart, object ):
 	def __init__( self, dn ):
@@ -194,13 +206,6 @@ http://www.kolab.org/kolab2-clients.html
 
 class IMAP_Client( object ):
 	def __init__( self, folder = None, groups = None ):
-		try:
-			fd = open( '/etc/cyrus.secret', 'r' )
-		except:
-			ud.debug( ud.ADMIN, ud.ERROR, 'Failed to read password for user cyrus. Is there a IMAP server installed?' )
-			sys.exit( 1 )
-		password = fd.readline().rstrip('\n')
-		fd.close()
 
 		if not folder:
 			# check for IMAP folder
@@ -217,19 +222,9 @@ class IMAP_Client( object ):
 		else:
 			self.groups = groups
 
-		# try to connect
-		try:
-			self.imap4 = imaplib.IMAP4( 'localhost' )
-		except Exception, e:
-			raise RuntimeError( 'Connection to local IMAP server failed!' )
-			sys.exit( 1 )
-
-		# try to log in
-		try:
-			self.imap4.login( 'cyrus', password )
-		except:
-			raise RuntimeError( 'Login to IMAP server failed!' )
-			sys.exit( 1 )
+		self.imap4 = None
+		# try to connect and authenticate
+		self.auth()
 
 		# set ACLs (required!)
 		(type, data) = self.imap4.setacl( self.folder, 'cyrus', 'lrswipcda' )
@@ -241,9 +236,44 @@ class IMAP_Client( object ):
 		if type != 'OK':
 			raise RuntimeError( 'Select folder failed: %s' % repr(data) )
 
+	def auth( self ):
+		reconnect = False
+		if not self.imap4:
+			reconnect = True
+		elif self.imap4.socket():
+			try:
+				peer = self.imap4.socket().getpeername()
+			except:
+				reconnect = True
+		if reconnect:
+			try:
+				self.imap4 = imaplib.IMAP4( 'localhost' )
+			except Exception, e:
+				raise RuntimeError( 'Connection to local IMAP server failed!' )
+				sys.exit( 1 )
+
+		try:
+			fd = open( '/etc/cyrus.secret', 'r' )
+		except:
+			ud.debug( ud.ADMIN, ud.ERROR, 'Failed to read password for user cyrus. Is there a IMAP server installed?' )
+			sys.exit( 1 )
+		password = fd.readline().rstrip('\n')
+		fd.close()
+
+		# try to log in
+		try:
+			self.imap4.login( 'cyrus', password )
+		except:
+			raise RuntimeError( 'Login to IMAP server failed!' )
+			sys.exit( 1 )
+
 	def find( self, dn ):
 		# find it
-		typ, data = self.imap4.search( 'UTF-8', '(HEADER "X-Univention-LDAP-DN" "%s")' % dn )
+		try:
+			typ, data = self.imap4.search( 'UTF-8', '(HEADER "X-Univention-LDAP-DN" "%s")' % dn )
+		except imaplib.error:
+			self.auth()
+			typ, data = self.imap4.search( 'UTF-8', '(HEADER "X-Univention-LDAP-DN" "%s")' % dn )
 
 		if data and data[ 0 ]:
 			ud.debug( ud.ADMIN, ud.INFO, 'IMAP: found message: %s' % data[ 0 ].split()[ 0 ] )
@@ -283,12 +313,7 @@ class IMAP_Client( object ):
 		if self.groups and uid:
 			for group in self.groups:
 				ud.debug( ud.ADMIN, ud.INFO, 'IMAP_Client: check if %s is in group %s' % ( uid, group ) )
-				try:
-					name, pw, id, members = grp.getgrnam( group )
-				except Exception, e:
-					ud.debug( ud.ADMIN, ud.ERROR, 'IMAP_Client: error retrieving group info (%s): %s' % ( group, str( e ) ) )
-					continue
-				if uid in members:
+				if ldapConnection.is_member( uid, group ):
 					ud.debug( ud.ADMIN, ud.INFO, 'IMAP_Client: %s is member of group %s' % ( uid, group ) )
 					break
 			else:
@@ -326,7 +351,7 @@ class Synchronisation( object ):
 	def remove_all( self ):
 		for client in self.imap_clients:
 			client.remove_all()
-		
+
 	def process( self, dn , old, new ):
 		if old and new:
 			self.modify( dn, old, new )
@@ -338,7 +363,6 @@ class Synchronisation( object ):
 	def modify( self, dn, old, new ):
 		self.remove( dn )
 		self.add( dn, old, new )
-
 
 	def __map_displayname( self, obj, display ):
 		for key in obj.keys():
@@ -358,10 +382,12 @@ class Synchronisation( object ):
 		return text
 
 	def add( self, dn, old, new ):
-		ud.debug( ud.ADMIN, ud.INFO, 'IMAP: add new message: %s' % dn )
-
 		contact = KolabContact( dn )
 		obj_classes = new.get( 'objectClass', [] )
+		# IMPORTANT: if another attribute is added, than the listener
+		# module MUST be changed as the pickle file is just created if a
+		# relevant attribute has been modified.
+
 		# user contact
 		if 'inetOrgPerson' in obj_classes:
 			homeAddress = new.get( 'homePostalAddress', False)
@@ -500,4 +526,5 @@ def main():
 	fd.close()
 
 if __name__ == "__main__":
+	ldapConnection = LDAP_Connection()
 	main()

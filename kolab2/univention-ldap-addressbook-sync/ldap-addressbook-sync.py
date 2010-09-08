@@ -61,16 +61,23 @@ def __add_cache_entry( dn, new, old ):
 	finally:
 		listener.unsetuid()
 
+def __relevant_attrs_changed( new, old, attrs ):
+	for attr in attrs:
+		if new.get( attr, None ) != old.get( attr, None ):
+			return True
+	return False
+
 def __check_relevance( obj, dn, new, old ):
 	obj_classes = obj.get( 'objectClass', [] )
 	# mail address available ?
 	univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, str( obj ) )
-	if ( 'univentionGroup' in obj_classes or 'univentionKolabGroup' in obj_classes ) and \
-		   obj.get( 'mailPrimaryAddress', None ):
-		__add_cache_entry( dn, new, old )
+	if ( 'univentionGroup' in obj_classes or 'univentionKolabGroup' in obj_classes ) and obj.get( 'mailPrimaryAddress', None ):
+		if __relevant_attrs_changed( new, old, ( 'cn', 'mailPrimaryAddress' ) ):
+			__add_cache_entry( dn, new, old )
 		return True
 	elif 'inetOrgPerson' in obj_classes:
-		__add_cache_entry( dn, new, old )
+		if __relevant_attrs_changed( new, old, ( 'homePostalAddress', 'mail', 'givenName', 'sn', 'telephoneNumber', 'homePhone', 'mobile', 'o', 'postalCode', 'street', 'l', 'title', 'univentionBirthday' ) ):
+			__add_cache_entry( dn, new, old )
 		return True
 
 	return False
@@ -89,8 +96,6 @@ def handler( dn, new, old ):
 	else:
 		univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, 'LDAP ADDRESSBOOK SYNC: modify' )
 		__check_relevance( old, dn, new, old )
-		if not __check_relevance( new, dn, new, old ):
-			__check_relevance( old, dn, new, old )
 
 def clean():
 	univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, 'LDAP ADDRESSBOOK SYNC: reset addressbook folder (clean)' )
