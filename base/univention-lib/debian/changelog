@@ -1,3 +1,9 @@
+univention-lib (0.0.1-2) unstable; urgency=low
+
+  * fix python import (Bug #16610)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 14 Sep 2010 11:55:41 +0200
+
 univention-lib (0.0.1-1) unstable; urgency=low
 
   * initial framework (Bug #16610)

@@ -68,8 +68,7 @@ install-ext-%:
 	dh_installdirs
 
 	install -d                             debian/python-univention-lib/usr/lib/python2.4/site-packages/univention/lib/
-	install -m 0644 /dev/null              debian/python-univention-lib/usr/lib/python$*/site-packages/univention/lib/__init__.py
-	install -m 0644 python/all.py          debian/python-univention-lib/usr/lib/python$*/site-packages/univention/lib/
+	install -m 0644 python/__init__.py     debian/python-univention-lib/usr/lib/python$*/site-packages/univention/lib/
 	install -m 0644 python/error.py        debian/python-univention-lib/usr/lib/python$*/site-packages/univention/lib/
 
 	install -d                             debian/shell-univention-lib/usr/share/univention-lib/
