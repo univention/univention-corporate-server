@@ -1,3 +1,9 @@
+univention-python (5.0.6-1) unstable; urgency=low
+
+  * replace old ucr varname in password.py (Bug #19585)
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 16 Sep 2010 09:50:00 +0200
+
 univention-python (5.0.5-1) unstable; urgency=low
 
   * fix required character test (Bug #14943)

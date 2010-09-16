@@ -61,8 +61,8 @@ class Check:
 
 
 	def _systemPolicy(self):
-		if self.ConfigRegistry.get('password/quality/credit/digist', '0'):
-			cracklib.dig_credit=int(self.ConfigRegistry.get('password/quality/credit/digist', '0'))*-1
+		if self.ConfigRegistry.get('password/quality/credit/digits', '0'):
+			cracklib.dig_credit=int(self.ConfigRegistry.get('password/quality/credit/digits', '0'))*-1
 		if self.ConfigRegistry.get('password/quality/credit/upper', '0'):
 			cracklib.up_credit=int(self.ConfigRegistry.get('password/quality/credit/upper', '0'))*-1
 		if self.ConfigRegistry.get('password/quality/credit/lower', '0'):
