@@ -81,6 +81,14 @@ fi
 
 #DEBHELPER#
 
+password_quality_credit_digist=$(univention-config-registry get password/quality/credit/digist)
+if [ -n "$password_quality_credit_digist" ]
+then
+    univention-config-registry set password/quality/credit/digits="$password_quality_credit_digist"
+    univention-config-registry unset password/quality/credit/digist
+fi
+
+
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.5; then
 	eval `univention-baseconfig shell nameserver`
 	if [ -n "$nameserver" ]; then

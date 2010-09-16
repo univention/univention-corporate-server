@@ -1,3 +1,9 @@
+univention-config-registry (6.0.31-1) unstable; urgency=low
+
+  * renamed ucr variable password/quality/credit/digist to digits, Bug #19585 
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 16 Sep 2010 09:50:00 +0200
+
 univention-config-registry (6.0.30-1) unstable; urgency=low
 
   * set default for syslog/mail/mirrorto/syslog to no for 
