@@ -1,3 +1,9 @@
+univention-pam (4.0.10-1) unstable; urgency=low
+
+  * change auth-check in access-admin, root - Domain Admins (Bug #19851)
+
+ -- Tim Petersen <petersen@univention.de>  Tue, 16 Sep 2010 13:35:27 +0200
+
 univention-pam (4.0.9-1) unstable; urgency=low
 
   * fix typo (Bug #18987)
