@@ -36,6 +36,12 @@ eval `univention-baseconfig shell`
 
 univention-baseconfig set kerberos/autostart?yes
 
+if [ -n "$password_quality_credit_digist" ]
+then
+	/usr/sbin/univention-config-registry set password/quality/credit/digits="$password_quality_credit_digist"
+	/usr/sbin/univention-config-registry unset password/quality/credit/digist
+fi
+
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/11univention-heimdal-init.inst || true
 	/usr/lib/univention-install/15univention-heimdal-kdc.inst || true
@@ -86,7 +92,7 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1;
 		univention-config-registry unset kerberos/password/quality/diff_ok
 	fi
 	if [ -n "$kerberos_password_quality_dig_credit" ]; then
-		univention-config-registry set password/quality/credit/digist="$kerberos_password_quality_dig_credit"
+		univention-config-registry set password/quality/credit/digits="$kerberos_password_quality_dig_credit"
 		univention-config-registry unset kerberos/password/quality/dig_credit
 	fi
 	if [ -n "$kerberos_password_quality_low_credit" ]; then
