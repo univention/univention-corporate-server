@@ -1,3 +1,9 @@
+univention-join (3.0.4-3) unstable; urgency=low
+
+  * Improve check for join status (Bug #19361,#13495,#13497,#18120)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 12 Aug 2010 19:38:02 +0200
+
 univention-join (3.0.4-2) unstable; urgency=low
 
   * Remove + from lines beginning (Bug #14121)

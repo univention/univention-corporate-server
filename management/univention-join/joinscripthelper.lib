@@ -231,3 +231,4 @@ function joinscript_init () {
 		joinscript_abort "Error determining last executed version"
 	fi
 }
+# vim:set ft=sh:

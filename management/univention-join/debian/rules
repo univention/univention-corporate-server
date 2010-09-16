@@ -30,24 +30,23 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
-copyrightyear=`date +%Y`
+version := $(shell dpkg-parsechangelog | sed -ne 's/Version: //p')
+copyrightyear := $(shell date +%Y)
 
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	touch configure-stamp
+	touch $@
 
 build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
-	touch build-stamp
+	touch $@
 
 clean:
 	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-	rm -f *~ univention-name-to-unicode
+	$(RM) build-stamp configure-stamp
+	$(RM) *~ univention-name-to-unicode
 
 	dh_clean
 
@@ -64,15 +63,13 @@ install: build
 	install -m755 univention-server-join_tmp2 ${D}/usr/share/univention-join/univention-server-join
 	rm univention-server-join_tmp*
 
-	cat univention-join | sed -e "s/@%@package_version@%@/${version}/" > univention-join_tmp
-	cat univention-join_tmp | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-join_tmp2
-	install -m755 univention-join_tmp2 ${D}/usr/share/univention-join/univention-join
-	rm univention-join_tmp*
+	sed -e "s/@%@package_version@%@/${version}/" -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" < univention-join > univention-join_tmp
+	install -m755 univention-join_tmp ${D}/usr/share/univention-join/univention-join
+	$(RM) univention-join_tmp*
 
-	cat univention-run-join-scripts | sed -e "s/@%@package_version@%@/${version}/" | \
-									  sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-run-join-scripts_tmp
+	cat univention-run-join-scripts | sed -e "s/@%@package_version@%@/${version}/" -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-run-join-scripts_tmp
 	install -m755 univention-run-join-scripts_tmp ${D}/usr/share/univention-join/univention-run-join-scripts
-	rm univention-run-join-scripts_tmp
+	$(RM) univention-run-join-scripts_tmp
 
 	install -m644 joinscripthelper.lib ${D}/usr/share/univention-join/joinscripthelper.lib
 
