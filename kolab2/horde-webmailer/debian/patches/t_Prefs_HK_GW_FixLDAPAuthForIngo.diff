@@ -1,0 +1,47 @@
+From: Gunnar Wrobel <p@rdus.de>
+Subject: [PATCH] t/Prefs/HK/GW/FixLDAPAuthForIngo
+
+Fix the authentication with the Kolab/LDAP backend to always use the credentials of the current user. Without this it won't 
+be possible to store the filters within Ingo in LDAP.
+
+FIXME: This is only a hack. The right thing to do would be to store the filter settings within the Kolab format rather than 
+the preferences.
+
+Signed-off-by: Gunnar Wrobel <p@rdus.de>
+
+---
+ horde-webmail/lib/Horde/Prefs/kolab.php |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+diff --git a/horde-webmail/lib/Horde/Prefs/kolab.php b/horde-webmail/lib/Horde/Prefs/kolab.php
+index 55075db..0ebd4fd 100644
+--- a/horde-webmail/lib/Horde/Prefs/kolab.php
++++ b/horde-webmail/lib/Horde/Prefs/kolab.php
+@@ -1,5 +1,6 @@
+ <?php
+ 
++require_once 'Horde/Auth.php';
+ require_once 'Horde/Prefs/ldap.php';
+ require_once 'Horde/Kolab.php';
+ 
+@@ -42,7 +43,8 @@ class Prefs_kolab extends Prefs_ldap {
+                         'searchpw' => $GLOBALS['conf']['kolab']['ldap']['phppw'],
+                         'uid' => 'mail');
+ 
+-        parent::Prefs_ldap($user, $password, $scope, $params, $caching);
++        parent::Prefs_ldap(Auth::getAuth(), Auth::getCredential('password'),
++                           $scope, $params, $caching);
+     }
+ 
+ }
+-- 
+tg: (ba51448..) t/Prefs/HK/GW/FixLDAPAuthForIngo (depends on: t/SyncML/HK/GW/CombinedFixes)
+-- 
+TOPGIT patch commit log
+=======================
+
+commit 1f1947c6b2ead4f66d54f280b2b243f4fcb8ef1f
+Author: Gunnar Wrobel <p@rdus.de>
+Date:   Sun Feb 1 18:30:02 2009 +0000
+
+    Added patch release/HK-GW-Fix_Prefs_for_Ingo.patch from the mercurial release queue.

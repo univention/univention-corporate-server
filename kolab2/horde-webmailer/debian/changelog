@@ -1,3 +1,10 @@
+horde-webmailer (1.2.5~2.2.4-1) unstable; urgency=low
+
+  * added missing kolab upstream patches from univention-kolab2-
+    webclient package (Bug #19855)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 17 Sep 2010 13:44:35 +0200
+
 horde-webmailer (1.2.5~2.2.3-15) unstable; urgency=low
 
   * Fixed format of syncml patch (Bug #19757)
