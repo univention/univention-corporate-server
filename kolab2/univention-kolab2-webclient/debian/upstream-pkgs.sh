@@ -67,9 +67,27 @@ for pkginfo in ${KOLAB_SRCDIR}/${KOLABPEAR}/*/package.info; do
 	patchlist="$(ls ${pkgpatchdir}/*.diff ${pkgpatchdir}/*.patch 2>/dev/null)"
 
 	# skip the Horde_* and Kolab_* packages, they are included in horde-webmailer and/or kolab-framework
-	[[ "${PEAR_PACKAGE}" == Horde_* ]] && continue
-	[[ "${PEAR_PACKAGE}" == Kolab_* ]] && continue
-	[[ "${PEAR_PACKAGE}" == File ]] && continue
+	if [[ "${PEAR_PACKAGE}" == Horde_* ]]; then
+		if [ -n "${patchlist}" ]; then
+			echo "WARNING: Please test the following patches which might be integrated into the horde-webmailer package: "
+			echo "${patchlist}"
+		fi
+		continue
+	fi
+	if [[ "${PEAR_PACKAGE}" == Kolab_* ]]; then
+		if [ -n "${patchlist}" ]; then
+			echo "WARNING: Please test the following patches which might be integrated into the horde-webmailer package: "
+			echo "${patchlist}"
+		fi
+		continue
+	fi
+	if [[ "${PEAR_PACKAGE}" == File ]]; then
+		if [ -n "${patchlist}" ]; then
+			echo "WARNING: Please test the following patches which might be integrated into the horde-webmailer package: "
+			echo "${patchlist}"
+		fi
+		continue
+	fi
 
 	## 3. download upstream tarball and apply kolab patches if present
 	if [ -z "${patchlist}" ]; then
