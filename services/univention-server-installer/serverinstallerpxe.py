@@ -105,10 +105,10 @@ LABEL linux
 				f.write(pxeconfig_start)
 				if new.has_key('univentionServerInstallationText') and new['univentionServerInstallationText'][0] == '1':
 					f.write(' use_text ')
-				if new.has_key('univentionServerInstallationProfile') and new['univentionServerInstallationProfile'][0]:
-					f.write('profile=%s \n' % new['univentionServerInstallationProfile'][0])
 				if new.has_key('univentionServerInstallationOption') and new['univentionServerInstallationOption'][0]:
 					f.write(new['univentionServerInstallationOption'][0])
+				if new.has_key('univentionServerInstallationProfile') and new['univentionServerInstallationProfile'][0]:
+					f.write(' profile=%s \n' % new['univentionServerInstallationProfile'][0])
 				else:
 					f.write('\n')
 				f.write(pxeconfig_end)
