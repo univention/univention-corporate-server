@@ -1,0 +1,104 @@
+From: Gunnar Wrobel <p@rdus.de>
+Subject: [PATCH] t/nag/HK/GW/ZpushAnnotations
+
+Allows to modify the Zpush configuration.
+
+Signed-off-by: Gunnar Wrobel <p@rdus.de>
+
+diff -Naur a/lib/Forms/EditTaskList.php b/lib/Forms/EditTaskList.php
+--- a/lib/Forms/EditTaskList.php	2010-05-10 08:10:16.000000000 +0200
++++ b/lib/Forms/EditTaskList.php	2010-05-10 08:18:34.000000000 +0200
+@@ -40,16 +40,47 @@
+         parent::Horde_Form($vars, sprintf(_("Edit %s"), $tasklist->get('name')));
+ 
+         $this->addHidden('', 't', 'text', true);
+-        $this->addVariable(_("Task List Name"), 'name', 'text', true);
++        if ($this->_tasklist->get('owner') != Auth::getAuth()) {
++            $this->addVariable(_("Task List Name"), 'name', 'text', false, true);
++            $this->addVariable(_("Task List Description"), 'description', 'longtext', false, true);
++        } else {
++            $this->addVariable(_("Task List Name"), 'name', 'text', true);
++            $this->addVariable(_("Task List Description"), 'description', 'longtext', false, false, null, array(4, 60));
++        }
+-        $this->addVariable(_("Task List Description"), 'description', 'longtext', false, false, null, array(4, 60));
+ 
+         $this->setButtons(array(_("Save")));
+     }
+ 
++    function activeSyncSegment($devices)
++    {
++        $this->addHidden('', 'activesync_devices', 'text');
++        $this->addVariable('', '', 'spacer');
++        $this->addVariable(_("Synchronize this calendar with the following ActiveSync devices"), '', 'header');
++        foreach ($devices as $id => $config) {
++            $this->addVariable(sprintf("Device \"%s\"", $id), 'activesync_' . $id, 'radio', false, false, null, 
++                           array(array(_("does not synchronize with this tasklist"), _("synchronizes with this tasklist but ignores alarms"), _("synchronizes with this tasklist including alarms"))));
++        }
++    }
++
+     function execute()
+     {
+-        $this->_tasklist->set('name', $this->_vars->get('name'));
++        if ($this->_tasklist->get('owner') == Auth::getAuth()) {
++            $this->_tasklist->set('name', $this->_vars->get('name'));
++        }
+         $this->_tasklist->set('desc', $this->_vars->get('description'));
++
++        if ($this->_vars->get('activesync_devices', '')) {
++            $params = array();
++            $ids = explode('|', $this->_vars->get('activesync_devices', ''));
++            foreach ($ids as $id) {
++                $sync = (int) $this->_vars->get('activesync_' . $id, 0);
++                if ($sync === 0 || $sync === 1 || $sync === 2) {
++                    $params['activesync']['FOLDER'][$id]['S'] = $sync;
++                }
++            }
++            $this->_tasklist->set('params', serialize($params));
++        }
++
+         $result = $this->_tasklist->save();
+         if (is_a($result, 'PEAR_Error')) {
+             return PEAR::raiseError(sprintf(_("Unable to save task list \"%s\": %s"), $id, $result->getMessage()));
+diff -Naur a/tasklists/edit.php b/tasklists/edit.php
+--- a/tasklists/edit.php	2010-05-10 08:10:16.000000000 +0200
++++ b/tasklists/edit.php	2010-05-10 08:22:49.000000000 +0200
+@@ -24,10 +24,6 @@
+     $notification->push($tasklist, 'horde.error');
+     header('Location: ' . Horde::applicationUrl('tasklists/', true));
+     exit;
+-} elseif ($tasklist->get('owner') != Auth::getAuth()) {
+-    $notification->push(_("You are not allowed to change this task list."), 'horde.error');
+-    header('Location: ' . Horde::applicationUrl('tasklists/', true));
+-    exit;
+ }
+ $form = new Nag_EditTaskListForm($vars, $tasklist);
+ 
+@@ -51,6 +51,28 @@
+ 
+ $vars->set('name', $tasklist->get('name'));
+ $vars->set('description', $tasklist->get('desc'));
++
++$params = @unserialize($tasklist->get('params'));
++if (isset($params['activesync'])) {
++    if ($params['activesync']['NAMESPACE'] == Horde_Kolab_Storage_Namespace::PERSONAL) {
++        $default = 1;
++    } else {
++        $default = 0;
++    }
++    require_once 'Horde/Kolab/Storage.php';
++    $folder = Kolab_Storage::getFolder('INBOX');
++    $result = $folder->getActiveSync();
++    $devices = isset($result['DEVICE']) ? $result['DEVICE'] : null;
++    if (!empty($devices)) {
++        $folders = $params['activesync']['FOLDER'];
++        $vars->set('activesync_devices', implode('|', array_keys($devices)));
++        foreach ($devices as $id => $config) {
++            $vars->set('activesync_' . $id, isset($folders[$id]['S']) ? $folders[$id]['S'] : $default);
++        }
++        $form->activeSyncSegment($devices);
++    }
++}
++
+ $title = $form->getTitle();
+ require NAG_TEMPLATES . '/common-header.inc';
+ require NAG_TEMPLATES . '/menu.inc';

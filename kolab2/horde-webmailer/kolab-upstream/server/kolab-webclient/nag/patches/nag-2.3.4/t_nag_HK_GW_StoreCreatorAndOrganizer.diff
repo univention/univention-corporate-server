@@ -1,0 +1,23 @@
+From: Gunnar Wrobel <wrobel@pardus.de>
+
+kolab/issue3888 (Organizer field not saved in Tasks written by kolab-webclient) 
+
+REF: https://issues.kolab.org/issue3888
+
+STATUS: MERGED
+
+--- a/lib/Driver/kolab.php	2010-03-05 07:45:22.260592311 +0100
++++ b/lib/Driver/kolab.php	2010-03-05 07:41:44.139282202 +0100
+@@ -823,10 +823,10 @@
+                                           'estimate' => $estimate,
+                                           'completed_date' => $completed_date,
+                                           'creator' => array(
+-                                              'smpt-address' => $owner,
++                                              'smtp-address' => $owner,
+                                           ),
+                                           'organizer' => array(
+-                                              'smpt-address' => $assignee,
++                                              'smtp-address' => $assignee,
+                                           ),
+                                       ),
+                                       $old_uid);

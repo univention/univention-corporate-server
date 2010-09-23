@@ -6,12 +6,11 @@ HORDESHARE=$(D)/usr/share/horde3/
 ## The Univention patches in debian/patches are applied by quilt
 include /usr/share/quilt/quilt.make
 
-prepare: debian/prepare-stamp
-debian/prepare-stamp:
+prepare: prepare-stamp
+prepare-stamp:
 	## extract Horde upstream packages and apply Kolab patches
-	# debian/prepare_horde-webmailer.sh	# this expects horde-webmailer to be removed in clean target
-	tar xzf horde-webmail.tar.gz
-	touch debian/prepare-stamp
+	sh debian/prepare_horde-webmailer.sh
+	touch prepare-stamp
 
 configure: configure-stamp
 configure-stamp: prepare patch
@@ -29,7 +28,7 @@ clean: unpatch
 	rm -f build-stamp configure-stamp
 	rm -rf horde-webmail
 	rm -rf $(QUILT_STAMPFN)
-	rm -rf debian/prepare-stamp
+	rm -rf prepare-stamp
 	rm -f *~
 	dh_clean
 

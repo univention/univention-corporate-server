@@ -1,0 +1,51 @@
+From: Gunnar Wrobel <p@rdus.de>
+Subject: [PATCH] t/turba/HK/GW/ConfigurationOverride
+
+Allow overriding configuration defaults.
+
+STATUS: HACK
+
+Signed-off-by: Gunnar Wrobel <p@rdus.de>
+
+---
+ lib/Object.php     |    6 +++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+--- a/config/sources.php.dist	2009-08-05 23:06:10.000000000 +0200
++++ b/config/sources.php.dist	2010-03-09 22:21:04.000000000 +0100
+@@ -1074,3 +1074,16 @@
+     );
+ }
+ /* End Kolab sources. */
++
++// Load global configuration stanzas in .d directory
++$directory = dirname(__FILE__) . '/sources.d';
++if (file_exists($directory) && is_dir($directory)) {
++    $sub_files = glob("$directory/*.php");
++    if ($sub_files) {
++        foreach ($sub_files as $sub_file) {
++            ob_start();
++            $success = include $sub_file;
++            $output = ob_get_clean();
++        }
++    }
++}
+--- a/config/attributes.php.dist	2008-11-12 07:29:26.000000000 +0100
++++ b/config/attributes.php.dist	2010-03-09 22:21:26.000000000 +0100
+@@ -610,3 +610,16 @@
+     'type' => 'number',
+     'required' => false,
+ );
++
++// Load global configuration stanzas in .d directory
++$directory = dirname(__FILE__) . '/attributes.d';
++if (file_exists($directory) && is_dir($directory)) {
++    $sub_files = glob("$directory/*.php");
++    if ($sub_files) {
++        foreach ($sub_files as $sub_file) {
++            ob_start();
++            $success = include $sub_file;
++            $output = ob_get_clean();
++        }
++    }
++}

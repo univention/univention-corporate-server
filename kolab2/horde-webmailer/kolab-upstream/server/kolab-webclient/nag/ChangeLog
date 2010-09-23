@@ -1,0 +1,22 @@
+2010-06-07  Gunnar Wrobel  <p@rdus.de>
+
+	* patches/nag-2.3.4/t_nag_HK_GW_ZpushAnnotations.diff:
+
+	 - Allow modifications of foreign shares.
+	 - Update list of devices immediately rather than reading them
+	   from the share parameters.
+	 - Adapt from SYNC/ALARM to S parameter.
+
+2010-05-10  Gunnar Wrobel  <p@rdus.de>
+
+	* patches/nag-2.3.4/t_nag_HK_GW_ZpushAnnotations.diff:
+
+	Support setting Zpush configuration values.
+
+2010-03-05  Gunnar Wrobel  <p@rdus.de>
+
+	* patches/nag-2.3.4/t_nag_HK_GW_StoreCreatorAndOrganizer.diff:
+
+	kolab/issue3888 (Organizer field not saved in Tasks written by
+	kolab-webclient)
+

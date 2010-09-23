@@ -1,3 +1,4 @@
+# these patches are missing in the kolab-upstream series files
 t_kronolith_HK_UV_addZeroMinutesAlarms.diff
 t_kronolith_HK_UV_fixAddressCompletion.diff
 # t_kronolith_HK_UV_searchTabs.diff # accepted upstream
@@ -26,3 +27,4 @@ t_SyncML_HK_GW_iCalendar.diff
 t_SyncML_HK_GW_SynchronizeBackendBeforeSync.diff
 t_SyncML_HK_GW_SyncML_CombinedFixes.diff
 t_Prefs_HK_GW_FixLDAPAuthForIngo.diff
+

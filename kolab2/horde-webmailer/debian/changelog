@@ -1,3 +1,13 @@
+horde-webmailer (1.2.5~2.2.5-1) unstable; urgency=low
+
+  * Update to latest CVS Head kolab patches (Bug #19855)
+  * Remove horde-webmail.tar.gz which will be rebuild directly during
+    the package build
+  * Add t_turba_HK_UV_SyncMLSyncBackendBeforeSync.diff to series file,
+    see https://issues.kolab.org/issue3237
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 23 Sep 2010 15:24:03 +0200
+
 horde-webmailer (1.2.5~2.2.4-1) unstable; urgency=low
 
   * added missing kolab upstream patches from univention-kolab2-
