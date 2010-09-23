@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.32 (1.0.11-1) unstable; urgency=low
+
+  * Update to latest kernel version (Bug #20070)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 23 Sep 2010 07:15:38 +0200
+
 univention-kernel-image-2.6.32 (1.0.10-1) unstable; urgency=low
 
   * Update to latest kernel version (Bug #20042)
