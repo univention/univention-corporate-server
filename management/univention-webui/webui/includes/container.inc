@@ -217,6 +217,19 @@ function umc_info_dialog( title, message ) {
 	infoDialog.show();
 }
 //-->
+function umc_checkbox_toggle( ids, value ) {
+    for ( var i = 0; i < ids.length; i++ ) {
+		dijit_item = dijit.byId( ids[ i ] );
+        if ( value === undefined ) {
+     		if ( dijit_item.checked )
+     			dijit_item.setValue( false );
+     		else
+     			dijit_item.setValue( true );
+        } else {
+            dijit_item.setValue( value );
+        }
+	}
+}
 </script>
 </head>
 ';

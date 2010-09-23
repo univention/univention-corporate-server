@@ -1,3 +1,10 @@
+univention-webui (4.0.23-1) unstable; urgency=low
+
+  * add javascript function to toggle value of a list of checkboxes
+  * map attribute webui-id in question_bool; Bug #19779
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 22 Sep 2010 11:44:48 +0200
+
 univention-webui (4.0.22-1) unstable; urgency=low
 
   * fix layout bug in IE8; Bug #19146

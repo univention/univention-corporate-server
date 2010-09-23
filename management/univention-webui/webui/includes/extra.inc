@@ -477,9 +477,9 @@ class question_secure extends extra{
 
 class question_bool extends extra{
 	function show(){
-	  if (isset($this->attribute['passive'])) 
+	  if (isset($this->attribute['passive']))
 	    $access = 'disabled';
-	  if (trim($this->basket['content'])!='') 
+	  if (trim($this->basket['content'])!='')
 	    $is='checked';
 
 	  $str .= '<script type="text/javascript">dojo.require("dijit.form.CheckBox");</script>
@@ -487,8 +487,14 @@ class question_bool extends extra{
 <td valign="middle">
 <input dojoType="dijit.form.CheckBox" title="'.$this->basket['helptext'].'"
  tabindex="'.$this->tabindex.'" class="bool" type="checkbox" '.$access.' ';
-	  if ($this->js && isset($this->basket['update'])) 
+	  if (isset($this->attribute['webui-id']))
+	    $str .= 'id="'.$this->attribute['webui-id'].'" ';
+
+	  if ($this->js && isset($this->basket['update']))
 	    $str .= 'onChange="sendForm('.$this->update_byteindex.')" ';
+	  if(isset($this->attribute['webui-id'])) {
+		  $str .= 'id="'.$this->attribute['webui-id'].'" ';
+	  }
 	  $str .= 'name="usrinput['.$this->byteindex.']" value="checked" '.$is.'></input></td>';
 	  if (trim($this->basket['description']) != '')
 	    {
@@ -496,13 +502,13 @@ class question_bool extends extra{
 '.$this->basket["description"].'</td>';
 	    }
 	  $str .= '<td>';
-	  if ($this->warn) 
+	  if ($this->warn)
 	    $str .= '<img src="style/'.$this->warn.'.gif" alt="" class="warn"></img>';
-	  if (isset($this->basket['update'])) 
+	  if (isset($this->basket['update']))
 	    $str .= $this->basket['update'];
 	  $str .= '</td></tr></table>';
 	  $is='';
-	  
+
 	  return $str;
 	}
 }
