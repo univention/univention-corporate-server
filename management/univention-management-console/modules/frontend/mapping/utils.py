@@ -59,7 +59,7 @@ def layout_attrs( storage, umcp_part, default_type = None ):
 	args = storage.create_tag_attributes( umcp_part, default_type = default_type )
 	if not isinstance( umcp_part, basestring ) and umcp_part.has_attributes():
 		attrs = umcp_part.attributes()
-		for key in ( 'valign', 'colspan', 'rowspan', 'align', 'type', 'width', 'warning', 'onmouseover', 'onmouseout', 'class' ):
+		for key in ( 'valign', 'colspan', 'rowspan', 'align', 'type', 'width', 'warning', 'onmouseover', 'onmouseout', 'class', 'webui-id' ):
 			if attrs.has_key( key ):
 				args[ key ] = attrs[ key ]
 	return args

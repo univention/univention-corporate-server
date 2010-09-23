@@ -31,7 +31,11 @@
 # <http://www.gnu.org/licenses/>.
 
 import base
+
+import univention.management.console.locales as locales
 import univention.management.console.tools as umct
+
+_ = locales.Translation( 'univention.management.console.dialog' ).translate
 
 class Link( base.Text ):
 	def __init__( self, description = '', link = '', icon = None, icon_and_text = False, attributes = {} ):
@@ -63,4 +67,42 @@ class Link( base.Text ):
 		'''
 		self._link = link
 
-LinkTypes = ( type( Link() ), )
+class JS_Link( Link ):
+	def __init__( self, description = '', function = '', *args ):
+		Link.__init__( self, description )
+		self.set_link( function, *args )
+
+	def set_link( self, function, *args ):
+		self._link = JS_Link.invoke_js( function, *args )
+
+	@staticmethod
+	def invoke_js( function, *args ):
+		parameters = []
+		for arg in args:
+			if isinstance( arg, ( tuple, list ) ):
+				parameters.append( "new Array( '%s' )" % "', '".join( arg ) )
+			elif isinstance( arg, bool ):
+				parameters.append( str( arg ).lower() )
+			elif isinstance( arg, ( int, float ) ):
+				parameters.append( str( arg ) )
+			else:
+				parameters.append( "'%s'" % str( arg ) )
+
+		return 'javascript:%s(%s)' % ( function, ', '.join( parameters ) )
+
+class ToggleCheckboxes( base.HTML ):
+	def __init__( self ):
+		base.HTML.__init__( self )
+
+	def checkboxes( self, ids ):
+		jsall = JS_Link.invoke_js( 'umc_checkbox_toggle', ids, True )
+		jsnone = JS_Link.invoke_js( 'umc_checkbox_toggle', ids, False )
+		self._text = '%s&nbsp;(<a href="%s">%s</a>/<a href="%s">%s</a>)' % ( _( 'Select' ), jsall,_( 'All' ), jsnone, _( 'None' ) )
+
+	def __unicode__( self ):
+		return unicode( self._text )
+
+	def __str__( self ):
+		return self._text
+
+LinkTypes = ( type( Link() ), type( JS_Link() ), type( ToggleCheckboxes() ) )

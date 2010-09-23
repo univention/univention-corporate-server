@@ -55,6 +55,7 @@ def html_map( storage, umcp_part ):
 					 { 'htmltext' : [ umcp_part.get_text() ] } )
 
 mapper.add( umcd.HTML, html_map )
+mapper.add( umcd.ToggleCheckboxes, html_map )
 mapper.add( umcd.RefreshFrame, html_map )
 
 def moduledescription_map( storage, umcp_part ):
@@ -122,6 +123,7 @@ def link_map( storage, umcp_part ):
 	return text
 
 mapper.add( umcd.Link, link_map )
+mapper.add( umcd.JS_Link, link_map )
 
 def _input_map( storage, umcp_part, attributes ):
 	default = utils.default( umcp_part )

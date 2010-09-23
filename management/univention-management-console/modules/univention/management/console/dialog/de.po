@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-01 10:30+0200\n"
+"POT-Creation-Date: 2010-09-22 10:59+0200\n"
 "PO-Revision-Date: 2008-06-16 13:46+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,47 +15,47 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: button.py:86 helper.py:72
+#: button.py:91 helper.py:72
 msgid "Search"
 msgstr "Suchen"
 
-#: button.py:92
+#: button.py:97
 msgid "Set"
 msgstr "Setzen"
 
-#: button.py:96
+#: button.py:101 wizard.py:156
 msgid "Previous"
 msgstr "Zurück"
 
-#: button.py:100
+#: button.py:105 wizard.py:132
 msgid "Next"
 msgstr "Weiter"
 
-#: button.py:103
+#: button.py:108
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: button.py:152
+#: button.py:167
 msgid "Invert selection"
 msgstr "Auswahl umkehren"
 
-#: button.py:154
+#: button.py:169
 msgid "Select all"
 msgstr "Alle auswählen"
 
-#: button.py:212 wizard.py:111
+#: button.py:227 wizard.py:148
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: button.py:219
+#: button.py:234
 msgid "Close"
 msgstr "Schließen"
 
-#: button.py:225 helper.py:53
+#: button.py:240 helper.py:53
 msgid "Ok"
 msgstr "OK"
 
-#: button.py:231 button.py:238
+#: button.py:246 button.py:253
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -79,6 +79,18 @@ msgstr "Nein"
 msgid "Results per page"
 msgstr "Ergebnisse pro Seite"
 
-#: wizard.py:105
+#: link.py:100
+msgid "Select"
+msgstr "Auswählen"
+
+#: link.py:100
+msgid "All"
+msgstr "Alle"
+
+#: link.py:100
+msgid "None"
+msgstr "Keine"
+
+#: wizard.py:139
 msgid "Finish"
 msgstr "Fertigstellen"

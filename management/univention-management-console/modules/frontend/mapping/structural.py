@@ -141,7 +141,7 @@ dojo.addOnLoad(function(){
 
 	attrs = utils.layout_attrs( storage, umcp_part )
 	attrs[ 'type' ] = 'umc_section'
-	
+
 	return table( '', attrs, { 'obs' : rows } )
 
 mapper.add( umcd.Section, section_map )
@@ -150,7 +150,10 @@ def list_map( storage, umcp_part ):
 	headers = []
 	default_type = getattr( umcp_part, 'default_type', None )
 	for col in umcp_part.get_header():
-		head = header( unicode( col ), { 'type' : '4' }, {} )
+		if isinstance( col, umcd.ToggleCheckboxes ):
+			head = htmltext( '', {}, { 'htmltext' : [ '<span class="h7">%s</span>' % str( col ) ] } )
+		else:
+			head = header( unicode( col ), { 'type' : '6' }, {} )
 		args = utils.layout_attrs( storage, col, default_type = default_type )
 		if not umcp_part.get_second_header():
 			args.update( { 'type' : 'umc_list_head' } )
@@ -165,7 +168,7 @@ def list_map( storage, umcp_part ):
 	headers = []
 	if umcp_part.get_second_header():
 		for col in umcp_part.get_second_header():
-			head = header( unicode( col ), { 'type' : '5' }, {} )
+			head = header( unicode( col ), { 'type' : '7' }, {} )
 			args = utils.layout_attrs( storage, col, default_type = default_type )
 			args.update( { 'type' : 'umc_list_head_second' } )
 			headers.append( tablecol( '', args, { 'obs' : [ head ] } ) )

@@ -1,3 +1,14 @@
+univention-management-console (3.0.63-1) unstable; urgency=low
+
+  * univention-management-console (3.1.2-1) unstable; urgency=low
+  * always set webui-id attribute for checkboxes; Bug #19779
+  * add button ToggleCheckboxes; Bug #19779
+  * update mapping for umcd.List to support ToggleCheckboxes in header
+  * updated german translation
+  * bump version; Bug #19774
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 23 Sep 2010 09:00:39 +0200
+
 univention-management-console (3.0.62-1) unstable; urgency=low
 
   * fix typo (Bug #9763)

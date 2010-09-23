@@ -106,6 +106,8 @@ class Checkbox( Input ):
 	def __init__( self, option = ( None, None ), default = False, static_options = {},
 				  attributes = {} ):
 		Input.__init__( self, option, default, static_options, attributes )
+		if not self[ 'webui-id' ]:
+			self[ 'webui-id' ] = self.id()
 
 class Selection( Input ):
 	"""This class represents a selection list. 'choices' contains a list
