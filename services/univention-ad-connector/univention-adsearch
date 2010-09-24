@@ -129,7 +129,12 @@ if not (baseConfig.has_key('%s/ad/ldap/host' % CONFIGBASENAME)
 	sys.exit(1)
 	
 
-ldapuri = "ldap://%s:%d" % (baseConfig['%s/ad/ldap/host' % CONFIGBASENAME],int(baseConfig['%s/ad/ldap/port' % CONFIGBASENAME]))
+protocol='ldap'
+ldaps = baseConfig.get('%s/ad/ldap/ldaps' % CONFIGBASENAME, 'no').lower() # tls or ssl
+if ldaps in [ 'yes', 'true', 'enabled', '1']:
+	protocol='ldaps'
+
+ldapuri = "%s://%s:%d" % (protocol, baseConfig['%s/ad/ldap/host' % CONFIGBASENAME],int(baseConfig['%s/ad/ldap/port' % CONFIGBASENAME]))
 
 login_dn = baseConfig['%s/ad/ldap/binddn' % CONFIGBASENAME]
 pw_file = baseConfig['%s/ad/ldap/bindpw' % CONFIGBASENAME]

@@ -112,6 +112,12 @@ Description[en]=
 Type=str
 Categories=service-adcon
 
+[con.*/ad/ldap/ldaps]
+Description[de]=Verwendung von ldaps anstatt Start TLS beim Zugriff auf die LDAP-Schnittstelle des AD  (default: no)
+Description[en]=Use ldaps instead of Start TLS when accessing the LDAP interface of the AD (default: no)
+Type=str
+Categories=service-adcon
+
 [con.*/password/service/encoding]
 Description[de]=Erwartetes Encoding des Passwortdienstes unter Windows für den Benutzernamen.
 Description[en]=

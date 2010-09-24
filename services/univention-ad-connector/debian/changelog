@@ -1,3 +1,13 @@
+univention-ad-connector (5.0.7-1) unstable; urgency=low
+
+  * Windows 2000 AD does not understand StartTLS over the ldap port. To
+    use an encrypted connection to the Windows 2000 AD the following (new)
+    UCR variables must be set connector/ad/ldap/ldaps=yes and
+    connector/ad/ldap/port=636. Alternatively can the Windows version be
+    set to 2000 in the UMC module (Bug #19606)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Sep 2010 10:58:27 +0200
+
 univention-ad-connector (5.0.6-1) unstable; urgency=low
 
   * Added a link to vcredist_x86.exe in the www directory (Bug #15651)
