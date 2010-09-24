@@ -216,7 +216,6 @@ function umc_info_dialog( title, message ) {
 	});
 	infoDialog.show();
 }
-//-->
 function umc_checkbox_toggle( ids, value ) {
     for ( var i = 0; i < ids.length; i++ ) {
 		dijit_item = dijit.byId( ids[ i ] );
@@ -230,6 +229,7 @@ function umc_checkbox_toggle( ids, value ) {
         }
 	}
 }
+//-->
 </script>
 </head>
 ';
