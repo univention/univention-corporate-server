@@ -1,3 +1,10 @@
+univention-python (5.0.7-1) unstable; urgency=low
+
+  * Support ldaps:// connections in access class. This is neeeded for
+    encrypted connections to Windows 2000 systems (Bug #19606)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Sep 2010 11:00:38 +0200
+
 univention-python (5.0.6-1) unstable; urgency=low
 
   * replace old ucr varname in password.py (Bug #19585)

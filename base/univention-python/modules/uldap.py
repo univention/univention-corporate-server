@@ -95,7 +95,7 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[]):
 
 class access:
 
-	def __init__(self, host='localhost', port=389, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[]):
+	def __init__(self, host='localhost', port=389, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[], use_ldaps=False):
 		"""start_tls = 0 (no); 1 (try); 2 (must)"""
 		self.host = host
 		self.port = port
@@ -104,6 +104,12 @@ class access:
 		self.bindpw = bindpw
 		self.start_tls = start_tls
 		self.ca_certfile = ca_certfile
+
+		# http://www.openldap.org/faq/data/cache/605.html
+		self.protocol = 'ldap'
+		if use_ldaps:
+			self.protocol = 'ldaps'
+
 		if not decode_ignorelist or decode_ignorelist == []:
 			baseConfig = univention_baseconfig.baseConfig()
 			baseConfig.load()
@@ -136,22 +142,23 @@ class access:
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
 
 		ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, self.ca_certfile )
-		self.lo=ldap.ldapobject.SmartLDAPObject(uri="ldap://"+str(self.host)+":"+str(self.port), start_tls=self.start_tls, tls_cacertfile=self.ca_certfile)
+		self.lo=ldap.ldapobject.SmartLDAPObject(uri=self.protocol+"://"+str(self.host)+":"+str(self.port), start_tls=self.start_tls, tls_cacertfile=self.ca_certfile)
 		self.lo.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
 
 	def __open(self):
 		_d=univention.debug.function('uldap.__open host=%s port=%d base=%s' % (self.host, self.port, self.base))
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
-		self.lo=ldap.initialize("ldap://"+str(self.host)+":"+str(self.port))
+		self.lo=ldap.initialize(self.protocol+"://"+str(self.host)+":"+str(self.port))
 
-		if self.start_tls == 1:
-			try:
+		if self.protocol.lower() != 'ldaps':
+			if self.start_tls == 1:
+				try:
+					self.lo.start_tls_s()
+				except:
+					univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'Could not start TLS')
+			elif self.start_tls == 2:
 				self.lo.start_tls_s()
-			except:
-				univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'Could not start TLS')
-		elif self.start_tls == 2:
-			self.lo.start_tls_s()
 
 		if self.binddn:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'bind binddn=%s' % self.binddn)
