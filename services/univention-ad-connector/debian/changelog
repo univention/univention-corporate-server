@@ -1,3 +1,10 @@
+univention-ad-connector (5.0.8-1) unstable; urgency=low
+
+  * Check for */ad/ldap/ssl before creating the new CA file
+    (Bug #19372)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 27 Sep 2010 07:13:49 +0200
+
 univention-ad-connector (5.0.7-1) unstable; urgency=low
 
   * Windows 2000 AD does not understand StartTLS over the ldap port. To
