@@ -137,7 +137,7 @@ def connect():
 		f.close()
 		sys.exit(1)
 
-	if baseConfig.get('%s/ad/ldap/ssl' % CONFIGBASENAME, 'true').is_true() or baseConfig.get('%s/ad/ldap/ldaps' % CONFIGBASENAME, 'true').is_true():
+	if baseConfig.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME, 'true') or baseConfig.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, 'true'):
 		# create a new CAcert file, which contains the UCS CA and the AD CA,
 		# see Bug #17768 for details
 		#  https://forge.univention.org/bugzilla/show_bug.cgi?id=17768
