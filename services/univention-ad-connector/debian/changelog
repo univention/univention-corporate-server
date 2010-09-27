@@ -1,3 +1,11 @@
+univention-ad-connector (5.0.10-1) unstable; urgency=low
+
+  * Use the environment variable SYSTEMROOT to detect the c:\windows
+    directory, otherwise the service registration failed on Windows 2000
+    (Bug #19610)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 27 Sep 2010 08:04:09 +0200
+
 univention-ad-connector (5.0.9-1) unstable; urgency=low
 
   * Fix is_true() call for checking ssl ucr variables (Bug #19372 and

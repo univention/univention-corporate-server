@@ -2,7 +2,7 @@
 ' Generator   : PPWIZARD version 08.307
 '             : FREE tool for Windows, OS/2, DOS and UNIX by Dennis Bareis (dbareis@gmail.com)
 '             : http://dennisbareis.com/ppwizard.htm
-' Time        : Wednesday, 28 Jul 2010 2:38:02pm
+' Time        : Monday, 27 Sep 2010 8:41:18am
 ' Input File  : Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\installscript.mm
 ' Output File : Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\out\installscript.mm\Log\Pass1+2.vbs
 '*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
@@ -445,7 +445,7 @@ RowPrepare 2
 
 MmID = "@VBS0004"
 oRec.StringData(1) = "NoSuchProperty.so.always.false"
-oRec.StringData(2) = "This MSI can't be installed as a MAKEMSI build or update did not successfully complete. " & vbCRLF & "" & vbCRLF & "The failing script ""installscript.mm"" was executed at Wed Jul 28 2010 at 2:38:02pm."
+oRec.StringData(2) = "This MSI can't be installed as a MAKEMSI build or update did not successfully complete. " & vbCRLF & "" & vbCRLF & "The failing script ""installscript.mm"" was executed at Mon Sep 27 2010 at 8:41:18am."
 ValidateNEW(0)
 RowUpdate()
  
@@ -1249,7 +1249,7 @@ MmLT = "<$Summary ""Subject"" VALUE=""<$COMPANY_SUMMARY_SUBJECT>"">"
 
 
 MmID = "@VBS0115"
-SummaryItem PID_Subject, "1.0.0 (created Wed Jul 28 2010 at 2:38:02pm)"
+SummaryItem PID_Subject, "1.0.0 (created Mon Sep 27 2010 at 8:41:18am)"
 
 
 
@@ -1537,7 +1537,7 @@ on error resume next
 
 
 
-dim VB_ARPCOMMENTS : VB_ARPCOMMENTS = Html2Text("UCS AD Connector (1.0.0)" & vbCRLF & "was created Wed Jul 28 2010 at 2:38:02pm." & vbCRLF & "" & vbCRLF & "Testinstall" & vbCRLF & "Packaged by My Name (My Address (see ""ME.MMH""))." & vbCRLF & "" & vbCRLF & "SUPPORTED on On any Windows Computer.")
+dim VB_ARPCOMMENTS : VB_ARPCOMMENTS = Html2Text("UCS AD Connector (1.0.0)" & vbCRLF & "was created Mon Sep 27 2010 at 8:41:18am." & vbCRLF & "" & vbCRLF & "Testinstall" & vbCRLF & "Packaged by My Name (My Address (see ""ME.MMH""))." & vbCRLF & "" & vbCRLF & "SUPPORTED on On any Windows Computer.")
 err.clear()         'Ignore any error in called routine...
 
 
@@ -1864,7 +1864,7 @@ MmLT = "<$CompanyAddStampWithProperty ""BuildTime"" VALUE=^<?CompileTime>^>"
 
 
 MmID = "@VBS0216"
-cb_PropValue = "Wed Jul 28 2010 at 2:38:02pm"
+cb_PropValue = "Mon Sep 27 2010 at 8:41:18am"
 
 MmID = "@VBS0217"
 TableNowMk "Property"
@@ -2896,8 +2896,8 @@ RowPrepare 4
 MmID = "@VBS0387"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = CurrentFile
-oRec.StringData(3) = "2009-07-31"
-oRec.StringData(4) = "07:36:10"
+oRec.StringData(3) = "2010-08-17"
+oRec.StringData(4) = "19:25:30"
 ValidateNEW(0)
 RowUpdate()
 
@@ -3002,8 +3002,8 @@ RowPrepare 4
 MmID = "@VBS0409"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = CurrentFile
-oRec.StringData(3) = "2009-07-31"
-oRec.StringData(4) = "07:36:10"
+oRec.StringData(3) = "2010-08-17"
+oRec.StringData(4) = "19:25:30"
 ValidateNEW(0)
 RowUpdate()
 
@@ -3108,8 +3108,8 @@ RowPrepare 4
 MmID = "@VBS0431"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = CurrentFile
-oRec.StringData(3) = "2009-07-31"
-oRec.StringData(4) = "07:36:10"
+oRec.StringData(3) = "2010-08-17"
+oRec.StringData(4) = "19:25:30"
 ValidateNEW(0)
 RowUpdate()
 
@@ -3214,8 +3214,8 @@ RowPrepare 4
 MmID = "@VBS0453"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = CurrentFile
-oRec.StringData(3) = "2009-07-31"
-oRec.StringData(4) = "07:36:10"
+oRec.StringData(3) = "2010-08-17"
+oRec.StringData(4) = "19:25:30"
 ValidateNEW(0)
 RowUpdate()
 
@@ -3320,8 +3320,8 @@ RowPrepare 4
 MmID = "@VBS0475"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = CurrentFile
-oRec.StringData(3) = "2009-07-31"
-oRec.StringData(4) = "07:36:10"
+oRec.StringData(3) = "2010-08-17"
+oRec.StringData(4) = "19:25:30"
 ValidateNEW(0)
 RowUpdate()
 
@@ -3426,8 +3426,8 @@ RowPrepare 4
 MmID = "@VBS0497"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = CurrentFile
-oRec.StringData(3) = "2009-07-31"
-oRec.StringData(4) = "07:36:10"
+oRec.StringData(3) = "2010-08-17"
+oRec.StringData(4) = "19:25:30"
 ValidateNEW(0)
 RowUpdate()
 
@@ -3540,7 +3540,7 @@ MmID = "@VBS0521"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = "c7.ALL.1.0.0.UCS_A.TempFolder_x"
 oRec.StringData(3) = CurrentFileNameSL
-oRec.IntegerData(4) = 146
+oRec.IntegerData(4) = 148
 oRec.StringData(5) = CurrentFileVersion
 oRec.IntegerData(7) = FileAttribs(msidbFileAttributesVital, 0)
 oRec.StringData(6) = FileLanguage()
@@ -3560,8 +3560,8 @@ RowPrepare 4
 MmID = "@VBS0525"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = CurrentFile
-oRec.StringData(3) = "2010-07-26"
-oRec.StringData(4) = "08:44:30"
+oRec.StringData(3) = "2010-09-27"
+oRec.StringData(4) = "07:53:24"
 ValidateNEW(0)
 RowUpdate()
 
@@ -5944,7 +5944,7 @@ TableNow ""
 
 
 MmID = "@VBS0759"
-cb_PropValue = "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\installscript.mm (2,601 bytes, dated Wed Jul 28 2010 at 2:37:44pm)"
+cb_PropValue = "Z:\11_wrk\svn\dev\trunk\ucs\services\univention-ad-connector\windows\ucs-ad-connector\msi-package\UCS AD Connector\installscript.mm (2,601 bytes, dated Tue Aug 17 2010 at 7:25:30pm)"
 
 MmID = "@VBS0760"
 TableNowMk "Property"
@@ -6183,7 +6183,7 @@ end function
 '=========================================================================
 sub Need83NameStart()
 '=========================================================================
-Need83BaseDir = TmpDir & "\MM83-52715"
+Need83BaseDir = TmpDir & "\MM83-31313"
 if  not ofs.FolderExists(Need83BaseDir) Then
 set oNeed83BaseDir = oFS.CreateFolder(Need83BaseDir)
 end if
@@ -9195,8 +9195,8 @@ RowPrepare 4
 MmID = "@VBS0883"
 oRec.StringData(1) = CurrentFileKey
 oRec.StringData(2) = CurrentFile
-oRec.StringData(3) = "2010-07-28"
-oRec.StringData(4) = "14:39:28"
+oRec.StringData(3) = "2010-09-27"
+oRec.StringData(4) = "08:42:26"
 ValidateNEW(0)
 RowUpdate()
 
