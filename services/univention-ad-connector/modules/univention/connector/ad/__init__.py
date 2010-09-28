@@ -123,7 +123,7 @@ def encode_ad_resultlist(ad_resultlist):
 
 def unix2ad_time(l):
 	d=116444736000000000L #difference between 1601 and 1970
-	return long(time.mktime(time.gmtime(time.mktime(time.strptime(l,"%d.%m.%y"))+90000)))*10000000+d # 90000s are one day and one hour
+	return long(time.mktime(time.gmtime(time.mktime(time.strptime(l,"%Y-%m-%d"))+90000)))*10000000+d # 90000s are one day and one hour
 
 def ad2unix_time(l):
 	d=116444736000000000L #difference between 1601 and 1970
@@ -570,7 +570,7 @@ class ad(univention.connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO,"__init__: LDAP-connection to AD switched of by UCR.")
 			tls_mode = 0
 
-		ldaps = baseConfig.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, 'false') # tls or ssl
+		ldaps = baseConfig.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False) # tls or ssl
 
 		self.lo_ad=univention.uldap.access(host=ad_ldap_host, port=int(ad_ldap_port), base=ad_ldap_base, binddn=ad_ldap_binddn, bindpw=ad_ldap_bindpw, start_tls=tls_mode, use_ldaps = ldaps, ca_certfile=ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
 
@@ -1441,7 +1441,7 @@ class ad(univention.connector.ucs):
 
 		modlist=[]
 
-		if ucs_admin_object['disabled'] == '1':
+		if not ucs_admin_object['disabled'].lower() in [ 'none', '0' ]:
 			# user disabled in UCS
 			if ldap_object_ad.has_key('userAccountControl') and (int(ldap_object_ad['userAccountControl'][0]) & 2 ) == 0:
 				#user enabled in AD -> change
@@ -1485,15 +1485,15 @@ class ad(univention.connector.ucs):
 
 		if ldap_object_ad.has_key('userAccountControl') and (int(ldap_object_ad['userAccountControl'][0]) & 2) == 0:
 			#user enabled in AD
-			if ucs_admin_object['disabled'] == '1':
+			if not ucs_admin_object['disabled'].lower() in [ 'none', '0' ]:
 				#user disabled in UCS -> change
-				ucs_admin_object['disabled']='0'
+				ucs_admin_object['disabled']='none'
 				modified=1
 		else:
 			#user disabled in AD
-			if ucs_admin_object['disabled'] == '0':
+			if ucs_admin_object['disabled'].lower() in [ 'none', '0' ]:
 				#user enabled in UCS -> change
-				ucs_admin_object['disabled']='1'
+				ucs_admin_object['disabled']='all'
 				modified=1
 		if ldap_object_ad.has_key('accountExpires') and ( long(ldap_object_ad['accountExpires'][0]) == long(9223372036854775807) or ldap_object_ad['accountExpires'][0] == '0'):
 			# ad account not expired

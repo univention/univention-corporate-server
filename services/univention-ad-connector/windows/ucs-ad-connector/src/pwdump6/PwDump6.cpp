@@ -701,7 +701,7 @@ int main(int argc, char* argv[])
 			}
 		}
 
-        // throw "Completed.\n";
+        throw "Completed.\n";
     }
 
     // clean up
@@ -728,8 +728,12 @@ int main(int argc, char* argv[])
 		if (resourceName[0] != 0)
 			WNetCancelConnection2(resourceName, 0, false);
 
-        if(msg) 
-			printf(msg);
+        if(msg) {
+			// Do not print the completed message
+        	if (strcmp(msg, "Completed.\n")) {
+				printf(msg);
+			}
+		}
 		
         if(outfile) 
 			fclose(outfile);
