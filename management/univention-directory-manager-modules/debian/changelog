@@ -1,3 +1,11 @@
+univention-directory-manager-modules (6.0.32-1) unstable; urgency=low
+
+  * Use associatedDomain to determine the nagios client fqdn, so the
+    nagios configuration should be valid if the host account is in a sub
+    domain or the host has got two dns enties (Bug #12060)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Sep 2010 13:27:04 +0200
+
 univention-directory-manager-modules (6.0.31-1) unstable; urgency=low
 
   * fixed renaming of domaincontroller objects (Bug #19735)

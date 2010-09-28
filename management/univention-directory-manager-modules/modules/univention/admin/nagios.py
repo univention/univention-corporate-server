@@ -137,7 +137,12 @@ class Support( object ):
 
 
 	def nagiosGetAssignedServices(self):
-		if self.oldattr.has_key('aRecord') and self.oldattr['aRecord']:
+		fqdn = None
+
+		if self.oldattr.get('associatedDomain', None):
+			fqdn = '%s.%s' % (self.oldattr['cn'][0], self.oldattr['associatedDomain'][0])
+
+		elif self.oldattr.has_key('aRecord') and self.oldattr['aRecord']:
 			res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*))' % self.oldattr['aRecord'][0])
 			if not res:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'nagios.py: NGAS: couldn''t find fqdn of %s' % self.dn)
@@ -145,12 +150,13 @@ class Support( object ):
 				# found my own fqdn
 				fqdn = res[0][1]['relativeDomainName'][0]+'.'+res[0][1]['zoneName'][0]
 
-				searchResult=self.lo.search( filter = '(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))' % fqdn,
-											 base = self.position.getDomain(), attr = [] )
-				dnlist = []
-				for (dn, attrs) in searchResult:
-					dnlist.append(dn)
-				return dnlist
+		if fqdn:
+			searchResult=self.lo.search( filter = '(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))' % fqdn,
+										 base = self.position.getDomain(), attr = [] )
+			dnlist = []
+			for (dn, attrs) in searchResult:
+				dnlist.append(dn)
+			return dnlist
 
 		return []
 
@@ -194,12 +200,17 @@ class Support( object ):
 		if self.hasChanged('nagiosParents'):
 			parentlist = []
 			for parentdn in self.info['nagiosParents']:
-				aRecords = self.lo.getAttr(parentdn, 'aRecord')
-				if aRecords and aRecords[0]:
-					res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*))' % aRecords[0])
-					if res:
-						fqdn = res[0][1]['relativeDomainName'][0]+'.'+res[0][1]['zoneName'][0]
-						parentlist.append(fqdn)
+				domain = self.lo.getAttr(parentdn, 'associatedDomain')
+				if domain and domain[0]:
+					cn = self.lo.getAttr(parentdn, 'cn')
+					parentlist.append('%s.%s' % ( cn[0], domain[0]) )
+				else:
+					aRecords = self.lo.getAttr(parentdn, 'aRecord')
+					if aRecords and aRecords[0]:
+						res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*))' % aRecords[0])
+						if res:
+							fqdn = res[0][1]['relativeDomainName'][0]+'.'+res[0][1]['zoneName'][0]
+							parentlist.append(fqdn)
 
 			ml.insert(0, ('univentionNagiosParent', self.oldattr.get('univentionNagiosParent', []), parentlist))
 
@@ -211,10 +222,11 @@ class Support( object ):
 				for i,j in self.alloc:
 					univention.admin.allocators.release(self.lo, self.position, i, j)
 				raise univention.admin.uexceptions.nagiosARecordRequired
-			if (not self.info.has_key('dnsEntryZoneForward')) or (not self.info['dnsEntryZoneForward']) or (len(self.info['dnsEntryZoneForward'])==1 and self.info['dnsEntryZoneForward'][0]==''):
-				for i,j in self.alloc:
-					univention.admin.allocators.release(self.lo, self.position, i, j)
-				raise univention.admin.uexceptions.nagiosDNSForwardZoneEntryRequired
+			if not self.info.get('domain', None):
+				if (not self.info.has_key('dnsEntryZoneForward')) or (not self.info['dnsEntryZoneForward']) or (len(self.info['dnsEntryZoneForward'])==1 and self.info['dnsEntryZoneForward'][0]==''):
+					for i,j in self.alloc:
+						univention.admin.allocators.release(self.lo, self.position, i, j)
+					raise univention.admin.uexceptions.nagiosDNSForwardZoneEntryRequired
 
 		#	add nagios option
 		if 'nagios' in self.options and not self.old_nagios_option:
@@ -253,26 +265,29 @@ class Support( object ):
 	def nagiosModifyServiceList(self):
 		fqdn = ''
 
-		arecord = None
-		if self.oldattr.has_key('aRecord') and self.oldattr['aRecord']:
-			arecord = self.oldattr['aRecord'][0]
-		elif self.has_key('aRecord') and self['aRecord']:
-			arecord = self['aRecord'][0]
-		elif self.has_key('ip') and self['ip']:
-			arecord = self['ip'][0]
-		if not arecord:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'nagios.py: NMSL: couldn\'t get aRecord of %s' % self.dn)
-			return
-
-		res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*))' % arecord)
-		if not res:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'nagios.py: NMSL: couldn''t find fqdn of %s (aRecord=%s)' % (self.dn, arecord))
-			for i,j in self.alloc:
-				univention.admin.allocators.release(self.lo, self.position, i, j)
-			raise univention.admin.uexceptions.noObject, _('cannot find fqdn of ') + str(self.dn) + ' (' + arecord + ')'
+		if self.has_key('domain') and self['domain']:
+			fqdn = '%s.%s' % (self['name'], self['domain'])
 		else:
-			# found my own fqdn
-			fqdn = res[0][1]['relativeDomainName'][0]+'.'+res[0][1]['zoneName'][0]
+			arecord = None
+			if self.oldattr.has_key('aRecord') and self.oldattr['aRecord']:
+				arecord = self.oldattr['aRecord'][0]
+			elif self.has_key('aRecord') and self['aRecord']:
+				arecord = self['aRecord'][0]
+			elif self.has_key('ip') and self['ip']:
+				arecord = self['ip'][0]
+			if not arecord:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'nagios.py: NMSL: couldn\'t get aRecord of %s' % self.dn)
+				return
+
+			res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*))' % arecord)
+			if not res:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'nagios.py: NMSL: couldn''t find fqdn of %s (aRecord=%s)' % (self.dn, arecord))
+				for i,j in self.alloc:
+					univention.admin.allocators.release(self.lo, self.position, i, j)
+				raise univention.admin.uexceptions.noObject, _('cannot find fqdn of ') + str(self.dn) + ' (' + arecord + ')'
+			else:
+				# found my own fqdn
+				fqdn = res[0][1]['relativeDomainName'][0]+'.'+res[0][1]['zoneName'][0]
 
 		# remove host from services
 		if self.old_nagios_option:
@@ -296,6 +311,8 @@ class Support( object ):
 							oldmembers = self.lo.getAttr(servicedn, 'univentionNagiosHostname')
 							newmembers = copy.deepcopy( oldmembers )
 							newmembers.append(fqdn)
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'nagios.py: NMSL: oldmembers: %s' % oldmembers)
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'nagios.py: NMSL: newmembers: %s' % newmembers)
 							self.lo.modify(servicedn, [ ('univentionNagiosHostname', oldmembers, newmembers) ])
 
 
@@ -303,7 +320,12 @@ class Support( object ):
 	def nagiosRemoveHostFromServices(self):
 		self.nagiosRemoveFromServices = False
 
-		if self.oldattr.has_key('aRecord') and self.oldattr['aRecord']:
+		fqdn = None
+
+		if self.oldattr.get('associatedDomain', None):
+			fqdn = '%s.%s' % (self.oldattr['cn'][0], self.oldattr['associatedDomain'][0])
+
+		elif self.oldattr.has_key('aRecord') and self.oldattr['aRecord']:
 			res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*))' % self.oldattr['aRecord'][0])
 			if not res:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'nagios.py: NRHFS: couldn''t find fqdn of %s' % self.dn)
@@ -311,18 +333,24 @@ class Support( object ):
 				# found my own fqdn
 				fqdn = res[0][1]['relativeDomainName'][0]+'.'+res[0][1]['zoneName'][0]
 
-				searchResult=self.lo.search( filter = '(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))' % fqdn,
-											 base = self.position.getDomain(), attr = [ 'univentionNagiosHostname' ] )
+		if fqdn:
+			searchResult=self.lo.search( filter = '(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))' % fqdn,
+										 base = self.position.getDomain(), attr = [ 'univentionNagiosHostname' ] )
 
-				for (dn, attrs) in searchResult:
-					oldattrs = attrs['univentionNagiosHostname']
-					newattrs = filter(lambda x: x != fqdn, attrs['univentionNagiosHostname'])
-					self.lo.modify(dn, [ ('univentionNagiosHostname', oldattrs, newattrs) ])
+			for (dn, attrs) in searchResult:
+				oldattrs = attrs['univentionNagiosHostname']
+				newattrs = filter(lambda x: x != fqdn, attrs['univentionNagiosHostname'])
+				self.lo.modify(dn, [ ('univentionNagiosHostname', oldattrs, newattrs) ])
 
 	def nagiosRemoveHostFromParent(self):
 		self.nagiosRemoveFromParent = False
 
-		if self.oldattr.has_key('aRecord') and self.oldattr['aRecord']:
+		fqdn = None
+
+		if self.oldattr.get('associatedDomain', None):
+			fqdn = '%s.%s' % (self.oldattr['cn'][0], self.oldattr['associatedDomain'][0])
+
+		elif self.oldattr.has_key('aRecord') and self.oldattr['aRecord']:
 			res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*))' % self.oldattr['aRecord'][0])
 			if not res:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'nagios.py: NRHFP: couldn''t find fqdn of %s' % self.dn)
@@ -330,13 +358,14 @@ class Support( object ):
 				# found my own fqdn
 				fqdn = res[0][1]['relativeDomainName'][0]+'.'+res[0][1]['zoneName'][0]
 
-				searchResult=self.lo.search( filter = '(&(objectClass=univentionNagiosHostClass)(univentionNagiosParent=%s))' % fqdn,
-											 base = self.position.getDomain(), attr = [ 'univentionNagiosParent' ] )
+		if fqdn:
+			searchResult=self.lo.search( filter = '(&(objectClass=univentionNagiosHostClass)(univentionNagiosParent=%s))' % fqdn,
+										 base = self.position.getDomain(), attr = [ 'univentionNagiosParent' ] )
 
-				for (dn, attrs) in searchResult:
-					oldattrs = attrs['univentionNagiosParent']
-					newattrs = filter(lambda x: x != fqdn, attrs['univentionNagiosParent'])
-					self.lo.modify(dn, [ ('univentionNagiosParent', oldattrs, newattrs) ])
+			for (dn, attrs) in searchResult:
+				oldattrs = attrs['univentionNagiosParent']
+				newattrs = filter(lambda x: x != fqdn, attrs['univentionNagiosParent'])
+				self.lo.modify(dn, [ ('univentionNagiosParent', oldattrs, newattrs) ])
 
 
 	def nagios_ldap_post_modify(self):
