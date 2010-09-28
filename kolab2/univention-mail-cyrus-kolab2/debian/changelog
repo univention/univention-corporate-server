@@ -1,3 +1,12 @@
+univention-mail-cyrus-kolab2 (3.0.13-1) unstable; urgency=low
+
+  * set mail/antispam/globalfolder in postinst
+  * create sieve script for user with mail address from
+    mail/antispam/globalfolder, but never use global
+    spam folder for this user (Bug #19592)
+
+ -- Felix Botner <botner@univention.de>  Tue, 28 Sep 2010 17:51:25 +0200
+
 univention-mail-cyrus-kolab2 (3.0.12-1) unstable; urgency=low
 
   * check kolabHomeServer in cyrus-sieve.py (Bug #19785) 

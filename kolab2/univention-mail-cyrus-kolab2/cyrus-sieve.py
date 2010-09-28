@@ -52,7 +52,7 @@ def handler(dn, new, old):
 	if not new and old:
 		pass
 	else:
-		if new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0] and new['mailPrimaryAddress'][0].lower() != listener.baseConfig.get('mail/antispam/globalfolder', '').lower():
+		if new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0]:
 			if old and old.has_key('mailPrimaryAddress') and old['mailPrimaryAddress'][0] != new['mailPrimaryAddress'][0]: # changed mailPrimaryAddress
 				mailboxrename = listener.baseConfig.get('mail/cyrus/mailbox/rename')
 				if mailboxrename and mailboxrename.lower() in ['true', 'yes']:
@@ -124,6 +124,10 @@ def handler(dn, new, old):
 			sc_spamloc='fileinto "INBOX/Spam";'
 			#Forward Spam?
 			sc_spamfwd=''
+			# never redirect spam for address in mail/antispam/globalfolder to itself
+			if new['mailPrimaryAddress'][0].lower() == listener.baseConfig.get('mail/antispam/globalfolder', '').lower():
+				sc_spamglo=sc_spamloc
+				
 
 
 			#forwarding

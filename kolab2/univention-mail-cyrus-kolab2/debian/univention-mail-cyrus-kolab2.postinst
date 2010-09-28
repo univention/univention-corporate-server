@@ -77,7 +77,8 @@ univention-config-registry set mail/cyrus?yes \
 								mail/cyrus/idlemethod?idled \
 								mail/cyrus/imap/quotainterval?60 \
 								mail/cyrus/mailbox/rename?no \
-								mail/cyrus/mailbox/delete?no
+								mail/cyrus/mailbox/delete?no \
+								mail/antispam/globalfolder?"spam@$domainname"
 
 dpkg-statoverride --add root sasl 660 /etc/sasldb2 || true
 
