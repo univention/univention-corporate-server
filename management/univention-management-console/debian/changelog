@@ -1,3 +1,9 @@
+univention-management-console (3.0.64-1) unstable; urgency=low
+
+  * fixed traceback module server (Bug #20177)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 29 Sep 2010 16:05:54 +0200
+
 univention-management-console (3.0.63-2) unstable; urgency=low
 
   * meta package depends on all other UMC binary package with the same

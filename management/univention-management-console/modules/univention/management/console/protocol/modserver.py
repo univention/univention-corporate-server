@@ -246,7 +246,7 @@ class ModuleServer( Server ):
 # 		self.response( resp )
 # 		return True
 
-	def _do_send( self, socket ):
+	def _do_send( self, sock ):
 		if len(self.__queue) > 0:
 			length = len( self.__queue )
 			try:
