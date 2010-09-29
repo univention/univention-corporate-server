@@ -1,3 +1,9 @@
+univention-ldap (7.0.7-1) unstable; urgency=low
+
+  * made univentionWindowsReinstall world wide readable Bug #19865
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Sep 2010 16:31:29 +0200
+
 univention-ldap (7.0.6-1) unstable; urgency=low
 
   * added pwQualityCheck to control password quality checks. Bug #14943
