@@ -1708,6 +1708,18 @@ class simpleComputer( simpleLdap ):
 
 		self.update_groups()
 
+	def __remove_associated_domain( self, entry ):
+		dn, ip = self.__split_dns_line( entry )
+		domain = string.join(ldap.explode_rdn(dn)[0].split('=')[1:], '=')
+		if self.info.get('domain', None) == domain:
+			self.info['domain'] = None
+	
+	def __set_associated_domain( self, entry ):
+		dn, ip = self.__split_dns_line( entry )
+		domain = string.join(ldap.explode_rdn(dn)[0].split('=')[1:], '=')
+		if not self.info.get('domain', None):
+			self.info['domain'] = domain
+
 
 	def _ldap_modlist( self ):
 		self.__changes =  {	'mac': {'remove': [ ], 'add': [ ]}, 'ip': {'remove': [ ], 'add': [ ]}, 'name': None,
@@ -1784,9 +1796,11 @@ class simpleComputer( simpleLdap ):
 				for entry in self.oldinfo[ 'dnsEntryZoneForward' ]:
 					if not entry in self.info[ 'dnsEntryZoneForward' ]:
 						self.__changes[ 'dnsEntryZoneForward' ][ 'remove' ].append( entry )
+						self.__remove_associated_domain ( entry )
 			for entry in self.info[ 'dnsEntryZoneForward' ]:
 				if not self.oldinfo.has_key( 'dnsEntryZoneForward' ) or not entry in self.oldinfo[ 'dnsEntryZoneForward' ]:
 					self.__changes[ 'dnsEntryZoneForward' ][ 'add' ].append( entry )
+				self.__set_associated_domain( entry )
 
 		if self.hasChanged( 'dnsEntryZoneReverse' ):
 			if self.oldinfo.has_key( 'dnsEntryZoneReverse' ):

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.33-1) unstable; urgency=low
+
+  * Automatically set associatedDomain while setting dns entries
+    (Bug #14885)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 29 Sep 2010 10:53:34 +0200
+
 univention-directory-manager-modules (6.0.32-1) unstable; urgency=low
 
   * Use associatedDomain to determine the nagios client fqdn, so the
