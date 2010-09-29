@@ -262,8 +262,31 @@ class Support( object ):
 	def nagios_ldap_pre_create(self):
 		pass
 
+	def __change_fqdn(self, oldfqdn, newfqdn):
+		for servicedn in self.oldinfo['nagiosServices']:
+			oldmembers = self.lo.getAttr(servicedn, 'univentionNagiosHostname')
+			if oldfqdn in oldmembers:
+				newmembers = copy.deepcopy( oldmembers )
+				newmembers.remove(oldfqdn)
+				newmembers.append(newfqdn)
+				self.lo.modify(servicedn, [ ('univentionNagiosHostname', oldmembers, newmembers) ])
+
 	def nagiosModifyServiceList(self):
 		fqdn = ''
+
+		if self.old_nagios_option:
+			if self.hasChanged('name') and self.hasChanged('domain'):
+				oldfqdn = '%s.%s' % (self.oldinfo['name'], self.oldinfo['domain'])
+				newfqdn = '%s.%s' % (self['name'], self['domain'])
+				self.__change_fqdn(oldfqdn, newfqdn)
+			elif self.hasChanged('name'):
+				oldfqdn = '%s.%s' % (self.oldinfo['name'], self['domain'])
+				newfqdn = '%s.%s' % (self['name'], self['domain'])
+				self.__change_fqdn(oldfqdn, newfqdn)
+			elif self.hasChanged('domain'):
+				oldfqdn = '%s.%s' % (self.oldinfo['name'], self.oldinfo['domain'])
+				newfqdn = '%s.%s' % (self['name'], self['domain'])
+				self.__change_fqdn(oldfqdn, newfqdn)
 
 		if self.has_key('domain') and self['domain']:
 			fqdn = '%s.%s' % (self['name'], self['domain'])

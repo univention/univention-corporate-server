@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.34-1) unstable; urgency=low
+
+  * Remove the old fqdn entry for the host from the nagios service if
+    the associated domain was changed (Bug #14885 and Bug #12060)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 29 Sep 2010 11:58:47 +0200
+
 univention-directory-manager-modules (6.0.33-1) unstable; urgency=low
 
   * Automatically set associatedDomain while setting dns entries
