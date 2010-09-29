@@ -1,3 +1,10 @@
+univention-config-registry (6.0.32-1) unstable; urgency=low
+
+  * compress log files in /var/log/univention with logrotate Bug #19608
+  * added script and cron job univention-system-stats Bug#20121
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Sep 2010 15:43:04 +0200
+
 univention-config-registry (6.0.31-1) unstable; urgency=low
 
   * renamed ucr variable password/quality/credit/digist to digits, Bug #19585 

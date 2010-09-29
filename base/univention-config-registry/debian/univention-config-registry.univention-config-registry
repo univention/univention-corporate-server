@@ -126,6 +126,7 @@ Variables: hosts/static/.*
 Type: file
 File: etc/logrotate.conf
 Variables: log/rotate/weeks
+Variables: log/rotate/univention/compress
 
 Type: file
 File: etc/cron.weekly/sysklogd
@@ -201,3 +202,8 @@ Variables: syslog/.*
 Type: subfile
 Multifile: etc/syslog.conf
 Subfile: etc/syslog.conf.d/00syslog.conf
+
+Type: file
+File: etc/cron.d/univention-system-stats
+Variables: system/stats
+Variables: system/stats/cron

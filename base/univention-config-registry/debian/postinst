@@ -45,6 +45,10 @@ univention-baseconfig set ldap/binaryattributes?""
 univention-baseconfig set browser-cache?0
 
 univention-baseconfig set log/rotate/weeks?12
+univention-baseconfig set log/rotate/univention/compress?yes
+
+univention-baseconfig set system/stats?yes
+univention-baseconfig set system/stats/cron?'0,30 * * * * '
 
 univention-baseconfig set nameserver/option/timeout?2
 

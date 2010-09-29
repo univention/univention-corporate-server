@@ -322,6 +322,12 @@ Description[en]=Rotation interval for system log files (in weeks)
 Type=str
 Categories=system-base
 
+[log/rotate/univention/compress]
+Description[de]=Definiert, ob die Logdateien in /var/log/univention bei der Rotation komprimiert werden sollen.
+Description[en]=Defines whether to compress log files in /var/log/univention on rotation.
+Type=str
+Categories=system-base
+
 [nameserver1]
 Description[de]=1. DNS-Server
 Description[en]=1. DNS server
@@ -487,5 +493,17 @@ Categories=system-password
 [syslog/mail/mirrorto/syslog]
 Description[de]=Definiert, ob Log-Meldungen aus dem Bereich mail in der Log-Datei /var/log/syslog gespeichert werden.
 Description[en]=Specifies whether log messages from the facility mail should be saved in /var/log/syslog.
+Type=str
+Categories=system-base
+
+[system/stats]
+Description[de]=Definiert, ob Systemstatistiken mit univention-system-stats per cron gesammelt werden sollen.
+Description[en]=Defines whether system statistics with are collected via cron.
+Type=str
+Categories=system-base
+
+[system/stats/cron]
+Description[de]=Definiert das Intervall, in der Systemstatistiken mit univention-system-stats per cron gesammelt werden sollen.
+Description[en]=Defines the cron interval for collecting system statistics with univention-system-stats.
 Type=str
 Categories=system-base
