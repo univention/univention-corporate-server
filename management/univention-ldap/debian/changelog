@@ -1,3 +1,9 @@
+univention-ldap (7.0.7-2) unstable; urgency=low
+
+  * undone previous change Bug #19865
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Sep 2010 16:52:24 +0200
+
 univention-ldap (7.0.7-1) unstable; urgency=low
 
   * made univentionWindowsReinstall world wide readable Bug #19865
