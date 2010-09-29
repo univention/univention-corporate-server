@@ -63,11 +63,13 @@ fi
 
 # backup mailbox db
 su cyrus -c "/usr/sbin/ctl_mboxlist -C /etc/imapd/imapd.conf -d" > "$mailboxbackup"
+gzip -f "$mailboxbackup"
 
 # annotations, is there a way to dump this file?
 if [ -e "$annofile" ]; then
 	cp "$annofile" "$annobackup"
 fi
+gzip -f "$annobackup"
 
 # something else?
 # ...

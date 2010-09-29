@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (3.0.14-2) unstable; urgency=low
+
+  * gzip cyrus mailbox backup files Bug #20120 
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Sep 2010 12:31:48 +0200
+
 univention-mail-cyrus-kolab2 (3.0.14-1) unstable; urgency=low
 
   * added cron job for backing up the cyrus mailbox Bug #20120
