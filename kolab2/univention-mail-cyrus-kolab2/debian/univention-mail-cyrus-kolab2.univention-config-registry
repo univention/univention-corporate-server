@@ -120,3 +120,7 @@ File: etc/init.d/cyrus2.2
 Type: file
 File: etc/cron.d/univention-cyrus-squatter
 Variables: mail/cyrus/squatter/cron
+
+Type: file
+File: etc/cron.d/univention-cyrus-backup-metadata
+Variables: mail/cyrus/backup-metadata/cron

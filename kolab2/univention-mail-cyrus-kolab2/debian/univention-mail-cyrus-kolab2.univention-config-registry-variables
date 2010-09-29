@@ -101,6 +101,12 @@ Description[en]=Defines the interval to have the indexservice squatter process m
 Type=str
 Categories=service-mail
 
+[mail/cyrus/backup-metadata/cron]
+Description[de]=Definiert das Intervall, in der die Mailbox und Annotations Datenbanken gesichert werden
+Description[en]=Defines the interval to backup the mailbox and annotations database files
+Type=str
+Categories=service-mail
+
 [mail/cyrus/mailbox/rename]
 Description[de]=Definiert, ob eine Cyrus Mailbox umbenannt werden soll, wenn eine primäre Mailadresse geändert wurde
 Description[en]=Defines if a cyrus mailbox should be renamed, if a primary mailaddress was modified
