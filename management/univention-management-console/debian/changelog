@@ -1,3 +1,10 @@
+univention-management-console (3.0.63-2) unstable; urgency=low
+
+  * meta package depends on all other UMC binary package with the same
+    version; Bug #19779
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 29 Sep 2010 16:04:32 +0200
+
 univention-management-console (3.0.63-1) unstable; urgency=low
 
   * always set webui-id attribute for checkboxes; Bug #20095
