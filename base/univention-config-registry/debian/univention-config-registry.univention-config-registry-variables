@@ -495,15 +495,3 @@ Description[de]=Definiert, ob Log-Meldungen aus dem Bereich mail in der Log-Date
 Description[en]=Specifies whether log messages from the facility mail should be saved in /var/log/syslog.
 Type=str
 Categories=system-base
-
-[system/stats]
-Description[de]=Definiert, ob Systemstatistiken mit univention-system-stats per cron gesammelt werden sollen.
-Description[en]=Defines whether system statistics with are collected via cron.
-Type=str
-Categories=system-base
-
-[system/stats/cron]
-Description[de]=Definiert das Intervall, in der Systemstatistiken mit univention-system-stats per cron gesammelt werden sollen.
-Description[en]=Defines the cron interval for collecting system statistics with univention-system-stats.
-Type=str
-Categories=system-base

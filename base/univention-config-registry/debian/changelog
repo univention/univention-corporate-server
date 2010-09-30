@@ -1,3 +1,9 @@
+univention-config-registry (6.0.32-2) unstable; urgency=low
+
+  * moved univention-system-stats to univention-maintenance Bug#20121 
+
+ -- Felix Botner <botner@univention.de>  Thu, 30 Sep 2010 13:02:26 +0200
+
 univention-config-registry (6.0.32-1) unstable; urgency=low
 
   * compress log files in /var/log/univention with logrotate Bug #19608
