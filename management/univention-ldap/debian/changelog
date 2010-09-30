@@ -1,3 +1,11 @@
+univention-ldap (7.0.8-1) unstable; urgency=low
+
+  * added univentionShareGid,univentionShareSambaName,
+    univentionShareWriteable,secretary to ldap/index/eq
+    Bug #19609 #20156
+
+ -- Felix Botner <botner@univention.de>  Thu, 30 Sep 2010 15:26:30 +0200
+
 univention-ldap (7.0.7-2) unstable; urgency=low
 
   * undone previous change Bug #19865
