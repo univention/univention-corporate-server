@@ -1,0 +1,17 @@
+[mrtg/cron]
+Description[de]=Definiert, ob und wann univention-maintenance über cron ausgeführt wird.
+Description[en]=Defines whether and when to run univention-maintenance from cron.
+Type=str
+Categories=system-statistics
+
+[system/stats]
+Description[de]=Definiert, ob Systemstatistiken mit univention-system-stats per cron gesammelt werden sollen.
+Description[en]=Defines whether system statistics are collected with univention-system-stats via cron.
+Type=str
+Categories=system-statistics
+
+[system/stats/cron]
+Description[de]=Definiert das Intervall, in der Systemstatistiken mit univention-system-stats per cron gesammelt werden sollen.
+Description[en]=Defines the cron interval for collecting system statistics with univention-system-stats.
+Type=str
+Categories=system-statistics

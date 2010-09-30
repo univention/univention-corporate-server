@@ -32,6 +32,10 @@
 
 set -e
 
+# installation
+if [ "$1" = configure -a -z "$2" ]; then
+	univention-config-registry set system/stats?yes system/stats/cron?'0,30 * * * * '
+fi
 
 case "$1" in
     configure)

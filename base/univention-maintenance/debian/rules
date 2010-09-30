@@ -64,8 +64,9 @@ install: build
 	
 	cat univention-maintenance | sed -e "s/@%@package_version@%@/${version}/" > univention-maintenance_tmp
 	install -m755 univention-maintenance_tmp $(CURDIR)/debian/univention-maintenance/usr/sbin/univention-mrtg
+	install -m755 univention-system-stats $(CURDIR)/debian/univention-maintenance/usr/sbin/
 	rm univention-maintenance_tmp
-	univention-install-baseconfig
+	univention-install-config-registry	
 
 
 # Build architecture-independent files here.
