@@ -55,7 +55,7 @@ class Check:
 		if os.path.exists('/etc/ldap.secret'):
 			self.lo = univention.uldap.getAdminConnection()
 		elif os.path.exists('/etc/machine.secret'):
-			self.lo = univention.uldap.getMachineConnection(start_tls, decode_ignorelist)
+			self.lo = univention.uldap.getMachineConnection(start_tls=2)
 		else:
 			self.lo = univention.uldap.access(host=self.ConfigRegistry.get('ldap/master'), base=self.ConfigRegistry.get('ldap/base'), start_tls=2)
 
