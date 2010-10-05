@@ -1,0 +1,10 @@
+var/lib/univention-client-root/thin-client-archive/session-xenapp
+usr/lib/univention-install/
+etc/gdm/Sessions
+etc/gdm/Autostart
+usr/bin
+usr/share/icafiles
+etc/gdm/PostLogin/scripts
+etc/gdm/PreSession/scripts
+etc/gdm/PostSession/scripts
+usr/share/univention-gdm-sessions/

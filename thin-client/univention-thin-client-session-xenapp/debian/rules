@@ -1,0 +1,94 @@
+#!/usr/bin/make -f
+#
+# Univention Thinclient session script for Citrix XenApp
+#  rules script for the debian package
+#
+# Copyright (C) 2010 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+
+	dh_clean
+
+D=$(CURDIR)/debian/univention-thin-client-session-xenapp
+DC=$(CURDIR)/debian/univention-thin-client-session-xenapp-config
+
+install: install-stamp
+install-stamp:
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	install -m 0755 autostart/Citrix-Receiver ${DC}/etc/gdm/Autostart/
+	install -m 0755 51univention-thin-client-session-xenapp.inst ${D}/usr/lib/univention-install/
+
+	install -m 0755 Citrix-XenApp debian/univention-thin-client-session-xenapp-config/etc/gdm/Sessions/
+	install -m 0755 Citrix-XenApp.desktop debian/univention-thin-client-session-xenapp-config/etc/gdm/Sessions/
+
+	install -m 0755 000_univention-citrix-entropy.sh debian/univention-thin-client-session-xenapp-config/etc/gdm/PostLogin/scripts/
+	install -m 0755 020_generate_ica_file debian/univention-thin-client-session-xenapp-config/etc/gdm/PreSession/scripts/
+	install -m 0755 020_remove_ica_file debian/univention-thin-client-session-xenapp-config/etc/gdm/PostSession/scripts/
+	install -m 0755 020_remove_ica_file debian/univention-thin-client-session-xenapp-config/etc/gdm/PostSession/scripts/
+	install -m 0755 save_pass-base64.sh debian/univention-thin-client-session-xenapp-config/usr/bin/
+
+	univention-install-config-registry
+	univention-thin-client-download-debs -d ${D}/var/lib/univention-client-root/thin-client-archive/session-xenapp/ -p libxp6 libmotif3
+
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+	dh_installcron
+	dh_installman
+	dh_installinfo
+	dh_installchangelogs
+	dh_pycentral
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+
+binary-arch: build install
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install
