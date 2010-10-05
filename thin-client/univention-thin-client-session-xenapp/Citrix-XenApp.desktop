@@ -1,8 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Name=Citrix XenApp
-Comment=Citrix XenApp
-Exec=/etc/gdm/Sessions/Citrix-XenApp
-Icon=
-Type=Application
-
