@@ -64,7 +64,7 @@ install-stamp:
 	install -m 0755 save_pass-base64.sh debian/univention-thin-client-session-xenapp-config/usr/bin/
 
 	univention-install-config-registry
-	univention-thin-client-download-debs -d ${D}/var/lib/univention-client-root/thin-client-archive/session-xenapp/ -p libxp6 libmotif3
+	univention-thin-client-download-debs -d ${D}/var/lib/univention-client-root/thin-client-archive/session-xenapp/ -p libxp6 libmotif3 gstreamer0.10-plugins-base-apps gstreamer0.10-plugins-base gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly gstreamer0.10-tools gstreamer0.10-ffmpeg gstreamer0.10-x
 
 binary-indep: build install
 	dh_testdir

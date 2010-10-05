@@ -1,3 +1,15 @@
+univention-thin-client-session-xenapp (2.1.1-1) unstable; urgency=low
+
+  * added gstreamer packages for HDX support Bug #19474 
+
+ -- Felix Botner <botner@univention.de>  Tue, 05 Oct 2010 17:10:41 +0200
+
+univention-thin-client-session-xenapp (2.1.0-1) unstable; urgency=low
+
+  * bump version for UCS TCS 3.1 Bug #19474 
+
+ -- Felix Botner <botner@univention.de>  Tue, 05 Oct 2010 17:04:44 +0200
+
 univention-thin-client-session-xenapp (2.0.2-1) unstable; urgency=low
 
   * fix quoting in join script; Bug #17524
