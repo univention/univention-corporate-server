@@ -1,3 +1,9 @@
+univention-security-update (5.0.0-2) unstable; urgency=low
+
+  * First security update for UCS 2.4 (Bug #20244)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 05 Oct 2010 10:42:39 +0200
+
 univention-security-update (5.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
