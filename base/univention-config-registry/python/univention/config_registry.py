@@ -160,7 +160,7 @@ class ConfigRegistry( dict ):
 	__iter__ = iterkeys
 
 	def get( self, key, default = None, getscope = False ):
-		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP, ConfigRegistry.NORMAL ):
+		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP, ConfigRegistry.NORMAL, ConfigRegistry.CUSTOM):
 			if self._registry[ reg ].has_key( key ):
 				if getscope:
 					return (reg, self._registry[ reg ][ key ])
