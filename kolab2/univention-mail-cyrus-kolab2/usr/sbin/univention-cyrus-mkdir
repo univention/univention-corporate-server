@@ -143,8 +143,9 @@ for mb in mbs:
 	#    BAD - command unknown or arguments invalid
 	# we need OK
 	res, msg = imap.create(mb)
-	if res.lower() != "ok":
-		failed(mailPrimaryAddress, remote, msg)
+	#if res.lower() != "ok":
+	#	failed(mailPrimaryAddress, remote, msg)
+	#
 
 imap.logout
 

@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (3.0.15-2) unstable; urgency=low
+
+  * fixed univention-cyrus-mkdir Bug #19767 
+
+ -- Felix Botner <botner@univention.de>  Wed, 06 Oct 2010 16:45:25 +0200
+
 univention-mail-cyrus-kolab2 (3.0.15-1) unstable; urgency=low
 
   * use python imaplib in univention-cyrus-mkdir instead of pexpect and
