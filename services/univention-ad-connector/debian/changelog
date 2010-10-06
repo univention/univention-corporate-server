@@ -1,3 +1,9 @@
+univention-ad-connector (5.0.12-1) unstable; urgency=low
+
+  * By default */ad/ldap/ldaps is false (Bug #19606)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 06 Oct 2010 06:10:42 +0200
+
 univention-ad-connector (5.0.11-1) unstable; urgency=low
 
   * Use correct is_true call for UCR (Bug #19372 and Bug #19606)
