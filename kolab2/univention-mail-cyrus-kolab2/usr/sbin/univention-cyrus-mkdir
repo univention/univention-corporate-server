@@ -31,122 +31,122 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-adminuser=0
-import os, string, pwd, grp, sys, univention_baseconfig, getopt
-from pexpect import *
-def cyrescape(address):
-	address=address.replace("@","\@")
-	address=address.replace(".","\^")
-	return address.strip()
-def usage():
-	print 'usage: univention-cyrus-mkdir [-a] <USERNAME>'
-	print 'use -a only for the mail admin user'
-	print ''
-	print 'to create Cyrus accounts on a remote machine, use'
-	print 'univention-cyrus-mkdir -h <HOSTNAME> -u <ADMINUSER> -p <PASSWORD> <USERNAME>'
+import imaplib
+import sys
+import pwd
+import grp
+import os
+import optparse
+import univention.config_registry
+
+# save mailbox name if creation failed
+def failed(mailBox, remote, e):
+
+	sys.stderr.write("creation of mailbox %s failed with: %s\n" % (mailBox, e))
+	path = os.path.join('/var/spool/cyrus/jobs/mailbox/create/user', mailBox)
+	if not os.path.exists(path) and not remote:
+		fd = os.open(path, os.O_CREAT)
+		os.close(fd)
 	sys.exit(1)
 
-import smtplib
+cr = univention.config_registry.ConfigRegistry()
+cr.load()
 
-from email.MIMEText import MIMEText
+# options
+password = ""
+if os.path.isfile("/etc/cyrus.secret"):
+	password = open('/etc/cyrus.secret').read()
+	if password[-1] == '\n':
+		password = password[0:-1]
 
+usage = "usage: %prog [options] mailPrimaryAddress\n\n"
+usage += "to create cyrus account for user with mailPrimaryAddress"
 
-baseConfig = univention_baseconfig.baseConfig()
-baseConfig.load()
+parser = optparse.OptionParser(usage=usage, conflict_handler="resolve")
+parser.add_option("-u", "--username", dest="username",
+	help="Connect to imap server as this user instead of the default (cyrus).")
+parser.add_option("-h", "--hostname", dest="hostname",
+	help="Connect to this imap server instead of the default (localhost).")
+parser.add_option("-p", "--password", dest="password", 
+	help="Use this password for the connection instead of the default (/etc/cyrus.secret).")
+parser.set_defaults (username="cyrus")
+parser.set_defaults (hostname="localhost")
+parser.set_defaults (password=password)
+options, args = parser.parse_args()
 
+# test options
+if len(args) < 1:
+	parser.print_help()
+	sys.exit(1)
+if args[0].find('@') < 0:
+	parser.print_help()
+	sys.exit(1)
 
-cyrus_user='cyrus'
-hostname='localhost'
-adminuser=''
-remotehost=''
-remoteadm=''
-password=''
+# get domain and user part
+mailPrimaryAddress = args[0].lower()
+user, domain = mailPrimaryAddress.split('@')
+fsUser = user.replace(".", "^")
+remote = False
 
-optlist, mail_user = getopt.getopt(sys.argv[1:], 'ah:p:u:')
-for option, value in optlist:
-	if option == '-a':
-		adminuser=1
-	elif option == '-h':
-		remotehost=value
-	elif option == '-u':
-		remoteadm=value
-	elif option == '-p':
-		password=value
-	else:
-		usage()
+# remote or not remote
+if options.hostname != "localhost":
+	remote = True
+	
+# create sieve directory on localhost
+if not remote:
+	sieve = '/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domain[0], domain, fsUser[0], fsUser)
+	if not os.path.exists(sieve):
+		os.makedirs(sieve, mode=0777)
+		cyrus_id=pwd.getpwnam('cyrus')[2]
+		mail_id=grp.getgrnam('mail')[2]
+		os.chown(sieve, cyrus_id, mail_id)
 
-if not mail_user:
-	usage()
+# overwrite hostname if mail/cyrus/murder/backend/hostname 
+if not remote:
+	murder = cr.get("mail/cyrus/murder/backend/hostname", "")
+	if murder:
+		hostname = murder
 
-user_name=mail_user[0]
+		
+# create imap connection
+try:
+	imap = imaplib.IMAP4_SSL(options.hostname)
+except Exception, e:
+	failed(mailPrimaryAddress, remote, e)
 
-# Entweder -a, keine oder alle drei remote Optionen
-if ( adminuser and ( remotehost or remoteadm or password ) ) or ( ( remotehost or remoteadm or password ) and not ( remotehost and remoteadm and password ) ):
-	usage()
+try:
+	imap.login(options.username, options.password)
+except Exception, e:
+	failed(mailPrimaryAddress, remote, e)
 
-remote=''
-if ( hostname != 'localhost' or remoteadm or password ):
-	remote=1
+# get extra folders
+mbs = []
+mbs.append("user/" + mailPrimaryAddress)
+if not remote:
+	# old
+	mbs.append("user/%s/Spam@%s" % (user, domain))
+	mbs.append("user/%s/Ham@%s" % (user, domain))
+	# new 
+	#for folder in ['spam', 'drafts', 'sent', 'trash', 'ham']:
+	#	name = cr.get('horde/folder/%s' % folder, "")
+	#	if name and not name.lower() == 'none':
+	#		mbs.append("user/%s/%s@%s" % (user, name, domain))
+	#for folder in cr.get("mail/cyrus/mailbox/predefined_folders", "").split(";"):
+	#	if folder and not folder.lower() == 'none':
+	#		mbs.append("user/%s/%s@%s" % (user, folder, domain))
 
-if remoteadm:
-	cyrus_user=remoteadm
-if remotehost:
-	hostname=remotehost
+# create mailbox and extra folder
+for mb in mbs:
+	# IMAP CREATE results (http://www.faqs.org/rfcs/rfc3501.html)
+	#    OK - create completed
+	#    NO - create failure: can't create mailbox with that name
+	#    BAD - command unknown or arguments invalid
+	# we need OK
+	res, msg = imap.create(mb)
+	if res.lower() != "ok":
+		failed(mailPrimaryAddress, remote, msg)
 
+imap.logout
 
-user_name=user_name.strip()
-domainpart=user_name.split('@')[1]
-domainpart=string.lower(domainpart)
-userpart=user_name.split('@')[0]
-userpart=string.lower(userpart)
-userpart_modified=userpart.replace(".", "^")
+sys.exit(0)
 
-sieve_path='/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domainpart[0], domainpart, userpart_modified[0], userpart_modified)
-if not os.path.exists(sieve_path) and not remote:
-	os.makedirs(sieve_path, mode=0777)
-	cyrus_id=pwd.getpwnam('cyrus')[2]
-	mail_id=grp.getgrnam('mail')[2]
-	os.chown(sieve_path, cyrus_id, mail_id)
-
-if not os.path.exists('/var/spool/cyrus/mail/domain/%s/%s/%s/user/%s/Spam' % (domainpart[0], domainpart, userpart_modified[0], userpart_modified)) or remote:
-
-	if not remote:
-		password=open('/etc/cyrus.secret').read()
-		if password[-1] == '\n':
-			password=password[0:-1]
-
-		if baseConfig.has_key('mail/cyrus/murder/backend/hostname') and baseConfig['mail/cyrus/murder/backend/hostname']:
-			hostname = baseConfig['mail/cyrus/murder/backend/hostname']
-
-	child = spawn('/usr/bin/cyradm -u %s %s' % (cyrus_user, hostname))
-	i=0
-	while not i == 3:
-		i = child.expect(['IMAP Password:', '>', 'cyradm: cannot connect to server', EOF], timeout=60)
-		if i == 0:
-			child.sendline(password)
-		elif i == 1:
-			child.sendline('cm user/%s' % user_name)
-			if not remote:
-				child.sendline('cm user/%s/Spam@%s' % (userpart, domainpart))
-				child.sendline('cm user/%s/Ham@%s' % (userpart, domainpart))
-			child.sendline('disc')
-			child.sendline('exit')
-		elif i == 2 and not remote:
-			if adminuser:
-				job_path=os.path.join('/var/spool/cyrus/jobs/mailbox/create/admin', user_name)
-			else:
-				job_path=os.path.join('/var/spool/cyrus/jobs/mailbox/create/user', user_name)
-
-			if not os.path.exists(job_path):
-				fd=os.open(job_path, os.O_CREAT)
-				os.close(fd)
-			sys.exit(1)
-
-	if not remote:
-		if adminuser:
-			job_path=os.path.join('/var/spool/cyrus/jobs/mailbox/create/admin', user_name)
-		else:
-			job_path=os.path.join('/var/spool/cyrus/jobs/mailbox/create/user', user_name)
-
-		if os.path.exists(job_path):
-			os.unlink(job_path)

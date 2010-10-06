@@ -37,22 +37,29 @@ name='cyrus-sieve'
 description='Create sieve mail filters'
 filter='(|(objectClass=kolabInetOrgPerson)(objectClass=univentionMail))'
 
-def create_cyrus_mailbox(new):
-	if new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0]:
-		try:
-			listener.setuid(0)
-
-			p = os.popen('/usr/sbin/univention-cyrus-mkdir %s' % (string.lower(new['mailPrimaryAddress'][0])))
-			p.close()
-		finally:
-			listener.unsetuid()
-
 def handler(dn, new, old):
 	fqdn = '%s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])
 	if not new and old:
 		pass
 	else:
 		if new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0]:
+
+			cyrus_id=pwd.getpwnam('cyrus')[2]
+			mail_id=grp.getgrnam('mail')[2]
+			user_name = new['mailPrimaryAddress'][0]
+			userpart=user_name.split('@')[0]
+			userpart=string.lower(userpart)
+			userpart=userpart.replace(".", "^")
+			domainpart=user_name.split('@')[1]
+			domainpart=string.lower(domainpart)
+
+
+			sieveDir = '/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domainpart[0], domainpart, userpart[0], userpart)
+			if not os.path.exists(sieveDir):
+				os.makedirs(sieveDir, mode=0777)
+				os.chown(sieveDir, cyrus_id, mail_id)
+				
+			
 			if old and old.has_key('mailPrimaryAddress') and old['mailPrimaryAddress'][0] != new['mailPrimaryAddress'][0]: # changed mailPrimaryAddress
 				mailboxrename = listener.baseConfig.get('mail/cyrus/mailbox/rename')
 				if mailboxrename and mailboxrename.lower() in ['true', 'yes']:
@@ -61,21 +68,6 @@ def handler(dn, new, old):
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'Do not not write a  sieve script for user: %s' % new['mailPrimaryAddress'][0])
 				return
 
-			if new.has_key('kolabHomeServer') and new['kolabHomeServer'][0] != fqdn:
-				# do not create mailbox if this is not our kolabHomeServer
-				pass
-			else:
-				create_cyrus_mailbox(new)
-
-			cyrus_id=pwd.getpwnam('cyrus')[2]
-			mail_id=grp.getgrnam('mail')[2]
-
-			user_name = new['mailPrimaryAddress'][0]
-			userpart=user_name.split('@')[0]
-			userpart=string.lower(userpart)
-			userpart=userpart.replace(".", "^")
-			domainpart=user_name.split('@')[1]
-			domainpart=string.lower(domainpart)
 
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'User: %s' % user_name)
 

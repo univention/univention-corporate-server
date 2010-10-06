@@ -1,3 +1,10 @@
+univention-mail-cyrus-kolab2 (3.0.15-1) unstable; urgency=low
+
+  * use python imaplib in univention-cyrus-mkdir instead of pexpect and
+    cyradm Bug #19767
+
+ -- Felix Botner <botner@univention.de>  Wed, 06 Oct 2010 11:44:45 +0200
+
 univention-mail-cyrus-kolab2 (3.0.14-2) unstable; urgency=low
 
   * gzip cyrus mailbox backup files Bug #20120 
