@@ -392,12 +392,12 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 	char *attrs_local[] = {"dn", NULL};
 	char *attrs[] = {"*", "+", NULL};
 	struct timeval timeout;
-	/* max wait for 5 minutes */
-	timeout.tv_sec = 300;
+	/* max wait for 60 seconds */
+	timeout.tv_sec = 60;
 	timeout.tv_usec = 0;
 
 		/* TODO: fix indentation */
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "checking parent_dn of %s in local LDAP", dn);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "checking parent_dn of %s in local LDAP", dn);
 
 		/* try to open a connection to the local LDAP for the parent DN check */
 		if (lp_local->ld == NULL) {
@@ -434,7 +434,7 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 						ldap_msgfree( res );
 						return LDAP_INSUFFICIENT_ACCESS;
 					} else { /* found data for parent_dn in remote LDAP */
-						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "change_update_entry for parent_dn: %s", parent_dn);
+						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_PROCESS, "change_update_entry for parent_dn: %s", parent_dn);
 						rv = change_update_entry(lp, id, cur, 'n');	/* add parent_dn object */
 						ldap_memfree( parent_dn );
 						ldap_msgfree( res );	// cur points into res
