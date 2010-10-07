@@ -1,3 +1,9 @@
+univention-directory-listener (5.0.8-3) unstable; urgency=low
+
+  * fix parentheses (broken in 4.1.7-2) (Bug #20295)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Oct 2010 17:43:34 +0200
+
 univention-directory-listener (5.0.8-2) unstable; urgency=low
 
   * remove cache-check workaround from check_parent_dn (Bug #20295)

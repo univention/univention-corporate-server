@@ -480,7 +480,7 @@ int change_update_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, 
 			/* entry exists, so make sure the schema is up-to-date and
 			 * then update it */
 			if ((rv = change_update_schema(lp)) == LDAP_SUCCESS) {
-				if (lp_local->host != NULL) {    // we are a replicating system
+				if (lp_local->host != NULL)     // we are a replicating system
 					rv = check_parent_dn(lp, id, dn, lp_local);
 				rv = change_update_entry(lp, id, cur, command);
 			}
