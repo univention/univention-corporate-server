@@ -1,3 +1,9 @@
+univention-directory-listener (5.0.8-1) unstable; urgency=low
+
+  * continue replication if check_parent_dn fails (Bug #20295)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 16 Sep 2010 18:41:18 +0200
+
 univention-directory-listener (5.0.7-1) unstable; urgency=low
 
   * Skip parent dn check if the DN is the ldap base (Bug #17063)

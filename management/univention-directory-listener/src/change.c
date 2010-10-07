@@ -359,23 +359,6 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 	return rv;
 }
 
-int connect_to_local_ldap(univention_ldap_parameters_t *lp_local)
-{
-
-	/* XXX: Fix when using krb5 */
-	while (univention_ldap_open(lp_local) != 0 ) {
-		if ( lp_local->ld != NULL ) {
-			ldap_unbind_ext(lp_local->ld, NULL, NULL);
-		}
-		lp_local->ld = NULL;
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to local ldap server (%s), retrying in 30 seconds", lp_local->host);
-		sleep(30);
-	}
-
-	return LDAP_SUCCESS;
-
-}
-
 int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, univention_ldap_parameters_t *lp_local)
 {
 	int rv = 0;
@@ -416,10 +399,12 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 	if ((rv=cache_get_entry_lower_upper(id-1, parent_dn, &entry)) == DB_NOTFOUND) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "checking parent_dn of %s in local LDAP", dn);
 
-		/* ensure that connection to local LDAP is open */
+		/* try to open a connection to the local LDAP for the parent DN check */
 		if (lp_local->ld == NULL) {
-			if ((rv = connect_to_local_ldap(lp_local)) != 0) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to connect to local LDAP");
+			/* XXX: Fix when using krb5 */
+			rv = univention_ldap_open(lp_local);
+			if ( rv != LDAP_SUCCESS) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "check_parent_dn: bind to local LDAP failed");
 				ldap_memfree( parent_dn );
 				return rv;
 			}
@@ -459,8 +444,10 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 				}
 				return LDAP_OTHER; /* safetybelt, should not get here */
 			}
+			ldap_memfree( parent_dn );
 			return rv; /* check_parent_dn(parent_dn) failed, something is wrong with parent_dn */
 		}
+		ldap_memfree( parent_dn );
 		return rv;	/* LDAP_SUCCESS or other than LDAP_NO_SUCH_OBJECT */
 	}
 	// univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "parent of DN: %s is in cache", dn);
@@ -497,10 +484,9 @@ int change_update_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, 
 			/* entry exists, so make sure the schema is up-to-date and
 			 * then update it */
 			if ((rv = change_update_schema(lp)) == LDAP_SUCCESS) {
-				if (lp_local->host != NULL)     // we are a replicating system
+				if (lp_local->host != NULL) {    // we are a replicating system
 					rv = check_parent_dn(lp, id, dn, lp_local);
-				if ( rv == LDAP_SUCCESS )
-					rv = change_update_entry(lp, id, cur, command);
+				rv = change_update_entry(lp, id, cur, command);
 			}
 		}
 	}
