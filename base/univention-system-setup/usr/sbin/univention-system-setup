@@ -48,7 +48,10 @@ from objects import *
 #start logging
 date = datetime.datetime.now()
 now = date.strftime("%Y-%m-%d %H:%M")
-os.system('echo -e "\n\n%s running univention-system-setup\n\n" >>/var/log/univention/setup.log 2>&1' %now)
+
+f = open('/var/log/univention/setup.log', 'a')
+f.write('\n\n%s running univention-system-setup\n\n' %now)
+f.close()
 
 #initialize the global cmdline dictonary and parse the cmdline
 cmdline={}
