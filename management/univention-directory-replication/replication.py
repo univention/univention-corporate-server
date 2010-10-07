@@ -43,6 +43,7 @@ import univention_baseconfig, univention.debug
 import smtplib
 from email.MIMEText import MIMEText
 import univention.uldap
+import sys
 
 
 name='replication'
@@ -926,9 +927,13 @@ def handler(dn, new, listener_old):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Constraint violation: dn=%s: %s' % (dn,msg[0]['desc']))
 	except ldap.LDAPError, msg:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'dn=%s: %s' % (dn,msg[0]['desc']))
-		reconnect=1
-		connect(ldif=1)
-		handler(dn, new, old)
+		if listener.baseConfig.get('ldap/replication/fallback', 'ldif') == 'restart':
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Uncaught LDAPError exception during modify operation. Exiting Univention Directory Listener to retry replication with an updated copy of the current upstream object.')
+			sys.exit(1)	## retry a bit later after restart via runsv
+		else:
+			reconnect=1
+			connect(ldif=1)
+			handler(dn, new, old)
 
 def clean():
 	global slave

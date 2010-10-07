@@ -1,3 +1,11 @@
+univention-directory-replication (4.0.2-3) unstable; urgency=low
+
+  * New UCR variable ldap/replication/fallback with default 'ldif'
+    If manually set to 'restart', the listener exits&restarts
+    in case of a general LDAPError exception. (Bug #20288)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Oct 2010 18:37:49 +0200
+
 univention-directory-replication (4.0.2-2) unstable; urgency=low
 
   * reverting changes for 4.0.2-1, fixed in listener (Bug #17063)
