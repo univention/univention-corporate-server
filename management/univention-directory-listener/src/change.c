@@ -396,7 +396,7 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 	timeout.tv_sec = 300;
 	timeout.tv_usec = 0;
 
-	if ((rv=cache_get_entry_lower_upper(id-1, parent_dn, &entry)) == DB_NOTFOUND) {
+		/* TODO: fix indentation */
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "checking parent_dn of %s in local LDAP", dn);
 
 		/* try to open a connection to the local LDAP for the parent DN check */
@@ -449,10 +449,6 @@ int check_parent_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, u
 		}
 		ldap_memfree( parent_dn );
 		return rv;	/* LDAP_SUCCESS or other than LDAP_NO_SUCH_OBJECT */
-	}
-	// univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "parent of DN: %s is in cache", dn);
-	ldap_memfree( parent_dn );
-	return LDAP_SUCCESS;
 }
 
 /* Update DN from LDAP; this is a higher level interface for

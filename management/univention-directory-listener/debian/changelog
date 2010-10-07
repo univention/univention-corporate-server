@@ -1,3 +1,9 @@
+univention-directory-listener (5.0.8-2) unstable; urgency=low
+
+  * remove cache-check workaround from check_parent_dn (Bug #20295)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Oct 2010 17:24:56 +0200
+
 univention-directory-listener (5.0.8-1) unstable; urgency=low
 
   * continue replication if check_parent_dn fails (Bug #20295)
