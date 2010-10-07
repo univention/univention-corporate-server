@@ -36,6 +36,7 @@ import types, traceback, thread
 import curses, curses.ascii
 import md5, apt_pkg, tempfile
 import univention_baseconfig
+import datetime
 
 sys.path.append("/lib/univention-installer")
 sys.path.append("/lib/univention-installer/modules")
@@ -44,6 +45,10 @@ import objects
 from local import _
 from objects import *
 
+#start logging
+date = datetime.datetime.now()
+now = date.strftime("%Y-%m-%d %H:%M")
+os.system('echo -e "\n\n%s running univention-system-setup\n\n" >>/var/log/univention/setup.log 2>&1' %now)
 
 #initialize the global cmdline dictonary and parse the cmdline
 cmdline={}

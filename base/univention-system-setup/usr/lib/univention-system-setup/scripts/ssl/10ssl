@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-exec >/var/log/univention/setup.log 2>&1
-
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 eval $(univention-config-registry shell)

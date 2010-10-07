@@ -1,3 +1,9 @@
+univention-system-setup (4.0.7-1) unstable; urgency=low
+
+  * don't flush setup.log, append new changes with timestamp Bug #16897
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 07 Oct 2010 08:36:35 +0200
+
 univention-system-setup (4.0.6-1) unstable; urgency=low
 
   * restart univention-bind and univention-bind-proxy after
