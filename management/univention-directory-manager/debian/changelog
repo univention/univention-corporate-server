@@ -1,3 +1,12 @@
+univention-directory-manager (8.0.16-1) unstable; urgency=low
+
+  * Make default search path and type configurable via Univention
+  	Configuration Registry variables
+  	directory/manager/web/modules/MODULE/search/path and
+  	directory/manager/web/modules/MODULE/search/type (Bug #18932)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Sep 2010 13:46:11 +0200
+
 univention-directory-manager (8.0.15-1) unstable; urgency=low
 
   * tweaked log level of debug output (Bug #14593)

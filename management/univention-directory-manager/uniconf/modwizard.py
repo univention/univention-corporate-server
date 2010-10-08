@@ -880,6 +880,10 @@ class modwizard(unimodule.unimodule):
 
 		path_preselect=self.save.get('wizard_path')
 		if not path_preselect:
+			path_default = ucr.get('directory/manager/web/modules/%s/search/path' % search_module.module, None)
+			path_preselect = {'CONTAINERS': allstr, 'DOMAIN': domainstr, 'SUBDOMAINS': domainincsubstr}.get(path_default, path_default)
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "%s.find() default=%s path_preselect=%s" % (search_module.module, path_default, path_preselect))
+		if not path_preselect:
 			if pathlist and not hasattr(search_module,"wizardsuperordinates"):
 				path_preselect=allstr
 			elif pathlist and hasattr(search_module,"wizardsuperordinates"):
@@ -991,13 +995,21 @@ class modwizard(unimodule.unimodule):
 			childlist.sort()
 
 			# super module search type/module is no longer needed
-			if self.save.get("wizard_search_type"):
-				search_type=self.save.get("wizard_search_type")
-				search_module=univention.admin.modules.get(search_type)
-				module_description=univention.admin.modules.short_description(search_module)
+			type_preselect = self.save.get("wizard_search_type")
+			if not type_preselect:
+				type_preselect = ucr.get('directory/manager/web/modules/%s/search/type' % search_module.module, None)
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "%s.find() type_preselect=%s" % (search_module.module, type_preselect))
+			if type_preselect:
+				# switch to selected child module only if it exists
+				child_module = univention.admin.modules.get(type_preselect)
+				if child_module:
+					search_type = type_preselect
+					search_module = child_module
+					module_description = univention.admin.modules.short_description(search_module)
 			for i in childlist:
 				if i["name"]==search_type:
 					i["selected"]="1"
+					break
 			else:
 				childlist[0]["selected"]="1"
 			self.child_module_button=button('go',{},{'helptext':_('go ahead')})

@@ -4657,8 +4657,6 @@ class modedit(unimodule.unimodule):
 												attr = attr[ 0 ]
 									except:
 										attr = ''
-										if isinstance( attr, ( list, tuple ) ):
-											attr = attr[ 0 ]
 								else:
 									# attr contains "<ldap-attr>"
 									if attrs.has_key(attr):
@@ -4807,8 +4805,6 @@ class modedit(unimodule.unimodule):
 												attr = attr[ 0 ]
 									except:
 										attr = ''
-										if isinstance( attr, ( list, tuple ) ):
-											attr = attr[ 0 ]
 								else:
 									# attr contains "<ldap-attr>"
 									if attrs.has_key(attr):
