@@ -56,15 +56,15 @@ all responses:
 _status - a number representing the success or failure of the
 	  request. predefined values are:
 
-  	200 - OK, successful
+	200 - OK, successful
 	210 - OK, partial response
 	300 - command currently not available/possible
-    400 - invalid UVCP message
+	400 - invalid UVCP message
 	401 - unknown command
 	402 - invalid command arguments
 	403 - incomplete command
 	404 - invalid body object
-    405 - unparsable message header
+	405 - unparsable message header
 	410 - unauthorized
 	411 - authentication failed
 	412 - account is expired
@@ -72,7 +72,7 @@ _status - a number representing the success or failure of the
 	414 - access to console daemon is prohibited
           The user could be authenticated, but has no access
           to the console daemon.
-    500 - request could not be found
+	500 - request could not be found
 
 _hosts - a list of FQDNs. This is the list of the destination hosts
 	  where the command will be performed. If this key is not set the
@@ -108,7 +108,7 @@ GET
 * Arguments
   modules/list - retrieves a list of all allowed console daemon modules
   hosts/list - retrieves a list of available hosts according to the given authentication credentials
-    
+
 SET
 ---
 

@@ -20,7 +20,7 @@ haben. Im folgenden werden nun diese Teile weiter zerlegt.
 
 - Implementierung
   Eine Implementierung von UVCP sollte der Anwendung eine einfache Schnittstelle bieten, die keine detailierten Kenntnisse über das Protokoll erfordern
-  
+
 - Verschlüsselung
   Das Protokoll sollte seine Daten verschlüsselt übertragen. Für die ersten Test reicht eine Klartext Übertragung, d.h. die Verschlüsselung soll erst später nachgerüstet werden.
 
@@ -42,14 +42,14 @@ nämlich möglich sein die Anfrage an einen anderen Univention Console
 Daemon weiterzuleiten mit dem das Frontend gerade gar nicht verbunden
 ist. Diese Weiterleitung sowie die notwendige Authentisierung soll von
 dem Proxy übernommen werden.
-  
+
 * Core
 
 Der Kern des Daemon übernimmt die Verarbeitung der Anfrage und die
 Kontrolle über die einzelnen Module, die dann die jeweiligen Befehle
 ausführen. Des weiteren enthält der Kern eine Basis Implementierung
 für Module.
-  
+
 * Modules
 
 Module implementieren ähnlich wie beim Admin die Verwaltung einer
@@ -84,12 +84,3 @@ beispielsweise ein LDAP-Request ziemlich lange, dann wird das nicht
 helfen. Hier evtl. tatsächlich auf einen Thread zurückgegriffen
 werden. Da es hier aber nur um einen unidirectionalen Datenaustausch
 geht, sollte das keine größeren Problem bereiten.
-
-
-
-
-
-
-
-
-

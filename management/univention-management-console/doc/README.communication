@@ -1,8 +1,8 @@
-In den Request-/Response-Objekten mÃŒssen zwei Arten Kommunikation abgewickelt werden:
+In den Request-/Response-Objekten müssen zwei Arten Kommunikation abgewickelt werden:
  Frontend <-> Daemon
  Daemon <-> Daemon
 
-Die Kommunikation zwischen Daemon und Frontend muss folgende Aufgaben erfÃŒllen:
+Die Kommunikation zwischen Daemon und Frontend muss folgende Aufgaben erfüllen:
 
 - das Fronted sendet Anfragen und Kommandos
 - der Daemon sendet dem Frontend Informationen:
@@ -24,37 +24,37 @@ Die Antworten der meisten Requests enthalten "dialog"-Elemente zur
 Darstellung von Inhalten im Frontend. Darin beschrieben werden Struktur
 und Inhalte der Darstellung. Ausnahmen bilden besondere Requests zum
 Austausch zwischen Frontend und Daemon (z.B. auth, Abfrage der
-Modulliste etc.). Zusaetzlich wird mit dem key "module"
+Modulliste etc.). Zusätzlich wird mit dem key "module"
 Statusinformation zum Modul gegeben (u.a. ob das Modul aktiv ist oder
 Nachrichten vorhaelt).
 
 Aufbau module:
 - Name, Beschreibung als string
-- status: liste von "Flags", moeglich ist "active" (modul kann seinen
+- status: liste von "Flags", möglich ist "active" (modul kann seinen
   status ohne erneuten request aendern), "message" (modul hat
-  Nachrichten fuer den User), "warning" (modul hat wichtige Nachrichten
-  fuer den User)
+  Nachrichten für den User), "warning" (modul hat wichtige Nachrichten
+  für den User)
 - categories: Unterkategorien und Requests um diese zu erreichen, bilden
   das submenue im Modul
 
 Aufbau dialog:
-- content: dict, enhÃ€lt Inhaltselemente,der key wird aus structure
+- content: dict, enhält Inhaltselemente, der key wird aus structure
   referenziert
-- options: dict, enthaelt spezifische Infos,
-- dependencies: definiert Abhaengigkeiten der Inhaltselemente
-- structure: enthaelt Strukturelemene, bei Bedarf ineinander
+- options: dict, enthält spezifische Infos,
+- dependencies: definiert Abhängigkeiten der Inhaltselemente
+- structure: enthält Strukturelemene, bei Bedarf ineinander
   verschachtelt
 
 
 Aufbau Strukturelmente:
 - type: definiert den Typ
-- content: Liste, abhaengig vom Typ, einfache Strings sind keys aus dem
+- content: Liste, abhängig vom Typ, einfache Strings sind keys aus dem
   content-Bereich von "dialog"
-- mÃ¶gliche Struktur-Typen:
+- mögliche Struktur-Typen:
 * list: Liste von Elementen, content ist eine verschachtelte Liste, alle
   "Zeilen" sollten eine identische Anzahl von Elementen haben, options
-  kann "headline" als Liste von Ãberschriftelementen enthalten.
-* table: Tabelle, content enhÃ€lt eine Liste von Elementen vom Typ
+  kann "headline" als Liste von Überschriftelementen enthalten.
+* table: Tabelle, content enhält eine Liste von Elementen vom Typ
   tablerow
 * tablerow: "options" kann "rowspan":Nr und "head" enthalten, content
   eine Liste von Elementen vom Typ tablecol
@@ -63,22 +63,22 @@ Aufbau Strukturelmente:
 
 Aufbau Inhalte:
 - type: definiert den Typ, angelegt an univention.admin.syntax (Verweise
-  sind moeglich und gewuenscht), moegliche einfache Typen:
+  sind möglich und gewünscht), mögliche einfache Typen:
 * text: einfacher Text, options kann "bold" oder "head":Nr sein
 * icon: Icon,
 * Fomularfelder (Eingabefelder, Drop-Downs, Multivalues, definiert per
   admin-syntax)
 - request: erzeugt Links mit dem hinterlegtem Request (Schrift = text
   mit option "link", Icons, Buttons), bei Buttons wird an den Request
-  die aktuelle "content"-Liste des dialogs mit gesetzten Werten gehaengt
+  die aktuelle "content"-Liste des dialogs mit gesetzten Werten gehängt
 - syntax: Verweis auf univention.admin.syntax oder basis-elemente (text,
   icon, button)
 
-Im Datenformat mÃŒssen unterschiedliche Inhaltselemente entsprechend der
-syntax.py aus univention-webui definiert werden kÃ¶nnen. Dazu kÃ¶nnen
+Im Datenformat müssen unterschiedliche Inhaltselemente entsprechend der
+syntax.py aus univention-webui definiert werden können. Dazu können
 viele der syntax-routinen aus modedit geholt werden.
 
-Beispiel DruckerÃŒbersicht:
+Beispiel Druckerübersicht:
 
 import univention.management.console.dialog as umcd
 import univention.management.console.protocol as umcp
@@ -181,20 +181,20 @@ Body:
 			},
 	}
 
-Einfuegen von Formularinhalten in Requests:
-Die Formularinhalte eines Dialogs muessen an den Daemon uebergeben
+Einfügen von Formularinhalten in Requests:
+Die Formularinhalte eines Dialogs müssen an den Daemon übergeben
 werden. Dazu werden die aktuellen Formularfelder mit Inhalten an den
-Request gehaengt. Im einfachen Wizard-Dialog wird an
+Request gehängt. Im einfachen Wizard-Dialog wird an
 dialog['options']['submitRequest']['body'] ein Liste 'content' mit den
-aktuellen content-Elementen angehaengt.
+aktuellen content-Elementen angehängt.
 
 === REQUESTS ===
 
-MÃ¶gliche Requests:
+Mögliche Requests:
 - Modulspezifisch: werden von den Modulen erzeugt und in die Responses
   gepackt
 * Daemon <-> Frontend: die Requests werden vom Modul generiert und in
-  dem Response an Aktionen (Button, Link etc.) gehÃ€ngt
+  dem Response an Aktionen (Button, Link etc.) gehängt
 * Daemon <-> Daemon: es kann Modulspezifische Requests und Responses
   geben, um Seiten zu erstellen auf denen Informationen von mehreren
   Daemons gesammelt dargestellt werden
@@ -203,7 +203,7 @@ MÃ¶gliche Requests:
 - Generisch: werden vom Frontend erzeugt, z.B.:
 * VERSION
 * AUTH
-* Liste der Module die am User angezeigt werden dÃŒrfen (command GET)
+* Liste der Module die am User angezeigt werden dürfen (command GET)
 * CLOSE
 
 Aufbau der Modulspezifischen Requests:
