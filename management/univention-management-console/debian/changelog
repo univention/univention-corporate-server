@@ -1,3 +1,9 @@
+univention-management-console (3.0.65-1) unstable; urgency=low
+
+  * Fix re-occurring pop-up message (Bug #20356)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 15 Oct 2010 10:15:07 +0200
+
 univention-management-console (3.0.64-1) unstable; urgency=low
 
   * fixed traceback module server (Bug #20177)

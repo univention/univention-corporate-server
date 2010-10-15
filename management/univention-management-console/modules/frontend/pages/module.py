@@ -284,17 +284,19 @@ class Module( base.Page ):
 								cmd.cache = self.__layout
 
 				self.__storage.clear()
+				layout = self.__layout # do not add popups to cached layout or redisplay on reload (Bug #20356)
 				if popup_infos:
 					ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: show popup dialog' )
+					layout = copy.deepcopy(self.__layout)
 					js = '''<script type="text/javascript">
 dojo.addOnLoad( function () {
 umc_info_dialog( '%s', '%s' );
 } );
 </script>
 ''' % ( '%s - %s' % ( self._title, _( 'Messages' ) ), '<br>'.join( popup_infos ).replace( "'", "\\'" ) )
-					self.__layout.append( umcd.HTML( js ) )
+					layout.append( umcd.HTML( js ) )
 
-				self.__dialog = self.__storage.to_uniparts( self.__layout )
+				self.__dialog = self.__storage.to_uniparts(layout)
 				col = uniparts.tablecol( '', {}, { 'obs' : [ self.__dialog ] } )
 				row = uniparts.tablerow( '', {}, { 'obs' : [ col ] } )
 				rows.append( row )
