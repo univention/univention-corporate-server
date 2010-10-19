@@ -1,3 +1,12 @@
+univention-management-console (3.0.66-1) unstable; urgency=low
+
+  * myreq.set_flag('web:switch_module_if_required', True)
+    if web:switch_module_if_required has been set and the specified umcp command
+    does not belong to current module, the target module will be started/selected
+    and the sent request will be displayed in new module (Bug #20422)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 19 Oct 2010 10:47:55 +0200
+
 univention-management-console (3.0.65-1) unstable; urgency=low
 
   * Fix re-occurring pop-up message (Bug #20356)

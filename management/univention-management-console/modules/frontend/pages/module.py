@@ -374,6 +374,21 @@ umc_info_dialog( '%s', '%s' );
 		self.active.single( client.request_send( cmd.request ) )
 		return False
 
+
+	def send_requests( self, requests, check_startups=False ):
+		ud.debug( ud.ADMIN, ud.INFO, 'Module.send_requests: reset active list' )
+		self.active.reset()
+		if len( requests ) > 1:
+			ud.debug( ud.ADMIN, ud.INFO, 'Module.send_requests: add action group with %d requests' % len( requests ) )
+			self.active.group( client.request_group_send( requests ) )
+		elif requests:
+			ud.debug( ud.ADMIN, ud.INFO, 'Module.send_requests: add single action %s' % requests[ 0 ].arguments[ 0 ] )
+			self.active.single( client.request_send( requests[ 0 ] ) )
+
+		if check_startups:
+			self.__startup_request( requests[-1] )
+
+
 	def apply( self ):
 		if self.active: return
 		base.Page.apply( self )
@@ -504,14 +519,18 @@ umc_info_dialog( '%s', '%s' );
 						# is a startup request?
 						self.__startup_request( req )
 
-				ud.debug( ud.ADMIN, ud.INFO, 'Module.apply: reset active list' )
-				self.active.reset()
-				if len( requests ) > 1:
-					ud.debug( ud.ADMIN, ud.INFO, 'Module.apply: add action group with %d requests' % len( requests ) )
-					self.active.group( client.request_group_send( requests ) )
-				elif requests:
-					ud.debug( ud.ADMIN, ud.INFO, 'Module.apply: add single action %s' % requests[ 0 ].arguments[ 0 ] )
-					self.active.single( client.request_send( requests[ 0 ] ) )
+				# if flag "switch_module_if_required" has been set for last request in list of requests
+				# then check if that request is dedicated to another module. If True, stop here an return
+				# list of requests as return value.
+				if requests:
+					if requests[-1].has_flag( 'web:switch_module_if_required' ) and requests[-1].get_flag( 'web:switch_module_if_required' ):
+						ud.debug( ud.ADMIN, ud.INFO, 'Module.apply: switch_module_if_required has been set')
+						if requests[-1].command not in self.__module[ 'commands' ]:
+							ud.debug( ud.ADMIN, ud.INFO, 'Module.apply: switch_module_if_required: %s is not dedicated to local module' % requests[-1].command )
+							return { 'requests': requests, 'switch_module': True }
+
+				ud.debug( ud.ADMIN, ud.INFO, 'Module.apply: send requests' )
+				self.send_requests( requests )
 
 				# there can be just one button that was pressed -> break
 				break

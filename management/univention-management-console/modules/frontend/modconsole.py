@@ -695,7 +695,31 @@ class modconsole(unimodule.unimodule):
 
 		elif self.save.get('consolemode') == 'process':
 			global notebook_widget
-			notebook_widget.apply()
+			nw_result = notebook_widget.apply()
+			if nw_result:
+				if 'switch_module' in nw_result and 'requests' in nw_result:
+					ud.debug( ud.ADMIN, ud.INFO, 'modconsole: switch_module')
+					req = umcp.Request( 'GET', args = [ 'modules/list' ] )
+					id = client.request_send( req )
+					response = client.response_wait( id, timeout = 30 )
+					if response:
+						all_modules = response.body[ 'modules' ]
+						modulename = None
+						for modname in all_modules:
+							if nw_result['requests'][-1].arguments[0] in all_modules[modname].get('commands',{}).keys():
+								modulename = modname
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modconsole: switch_module: switch to module %s for command %s' % (modulename, nw_result['requests'][-1].arguments[0]))
+						if modulename:
+							if notebook_widget.existsPage( modulename ):
+								notebook_widget.selectPage( modulename )
+								univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modconsole: switch_module: module exists - sending requests')
+								notebook_widget.getCurrentPage().send_requests( nw_result['requests'], check_startups=True )
+							else:
+								mod = pages.Module( modulename, all_modules[ modulename ] )
+								mod.send_requests( nw_result['requests'], check_startups=True )
+								notebook_widget.appendPage( mod )
+								univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modconsole: switch_module: created module %s' % modulename)
+
 			report = notebook_widget.report()
 			if report:
 				self.userinfo( report )

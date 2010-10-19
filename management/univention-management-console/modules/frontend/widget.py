@@ -51,6 +51,10 @@ class Notebook( object ):
 		# create default page: overview
 		self.pages.extend( [ pages.Overview( self ) ] )
 
+	def getCurrentPage( self ):
+		''' returns currently selected page '''
+		return self.pages[ self.selected ]
+
 	def existsPage( self, name ):
 		'''Checks whether a page already exists or not. This is used to
 		determine if a module page is already opened.'''
@@ -144,6 +148,7 @@ class Notebook( object ):
 		'''If the selection has changed the user has selected another
 		page/module. Otherwise the user has clicked anything on the
 		current page that should be evaulated by the associated object'''
+		result = None
 		self.closedModule = self.notebook.getclosed()
 		ud.debug(ud.ADMIN, ud.INFO, 'SYNTAX: Notebook.apply: closedModule=%s' % self.closedModule )
 		if self.closedModule > -1:
@@ -171,4 +176,5 @@ class Notebook( object ):
 					self.selected = 0
 				self.pages[ self.selected ].focused()
 			else:
-				self.pages[ self.selected ].apply()
+				result = self.pages[ self.selected ].apply()
+		return result
