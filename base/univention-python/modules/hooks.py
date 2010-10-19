@@ -45,7 +45,7 @@ class HookManager:
 		return ['Mein', 'Result', 123]
 
 	def other_hook(*args, **kwargs):
-		print 'TEST_HOOK:', args, kwargs
+		print 'MY_SECOND_TEST_HOOK:', args, kwargs
 		return ['Mein', 'Result', 123]
 
 	def register_hooks():
@@ -57,7 +57,7 @@ class HookManager:
 	saved and returned by call_hook() as a list. If no method has been registered for
 	specified hookname, an empty list will be returned.
 
-	If drop_exceptions has been set to True, exceptions while loading python modules will be
+	If raise_exceptions has been set to False, exceptions while loading python modules will be
 	discarded silently. If a hook raises an exception, it will be catched and returned in
 	result list of call_hooks() instead of corresponding return value. E.g.,
 	[['Mein', 'Result', 123], <exceptions.ValueError instance at 0x7f80496f6638>]
@@ -65,8 +65,8 @@ class HookManager:
 
 	How to use HookManager:
 	------------------------------------------------------------------------------------------
-	>>> import hooks
-	>>> hm = hooks.HookManager('./test')
+	>>> import univention.hooks
+	>>> hm = univention.hooks.HookManager('./test')
 	>>> hm.get_hook_list()
 	['test_hook', 'pre_hook']
 	>>> hm.call_hook('test_hook', 'abc', 123, x=1, y='B')
@@ -147,7 +147,7 @@ class HookManager:
 	def call_hook(self, name, *args, **kwargs):
 		"""
 		All additional arguments are passed to hook methods.
-		If self.__drop_exceptions is True, all exceptions while calling hooks will be catched and returned in result list
+		If self.__raise_exceptions is False, all exceptions while calling hooks will be catched and returned in result list
 		If return value is an empty list, no hook has been called.
 
 		"""

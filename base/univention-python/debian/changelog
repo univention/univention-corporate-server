@@ -1,6 +1,12 @@
+univention-python (5.0.9-2) unstable; urgency=low
+
+  * fixed documentation of class HookManager() (Bug #20428)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 19 Oct 2010 15:57:44 +0200
+
 univention-python (5.0.9-1) unstable; urgency=low
 
-  * added hook manager (OX-US5309)
+  * added hook manager (Bug #20428)
 
  -- Sönke Schwardt <schwardt@univention.de>  Fri, 15 Oct 2010 13:45:40 +0200
 
