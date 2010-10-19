@@ -38,6 +38,7 @@ import univention.management.console.handlers as umch
 import univention.management.console.dialog as umcd
 import univention.management.console.tools as umct
 
+import univention.hooks
 import univention.debug as ud
 
 import univention.config_registry
@@ -177,6 +178,7 @@ class handler(umch.simpleHandler):
 		umch.simpleHandler.__init__(self, command_description)
 
 		self.updater = UniventionUpdater()
+		self.hooks = univention.hooks.HookManager('/usr/lib/python2.4/site-packages/univention/management/console/handlers/update/hooks') # , raise_exceptions=False
 
 		self.next_release_update_checked = False
 		self.next_release_update = None
@@ -670,6 +672,22 @@ class handler(umch.simpleHandler):
 			list_info.add_row( [ '', umcd.Button( _( 'Reboot system' ), 'actions/ok', actions = [ umcd.Action( cmd ) ] ) ] )
 		#### UCS Releases
 
+		# get hook information to be displayed
+		hook_info_frames = self.hooks.call_hook('update_overview_info_frames')
+		hook_info_frames = [ x for x in hook_info_frames if not isinstance(x, Exception) and not x == None ]
+
+		# check if update is prohibited by hook
+		hook_update_prohibited = self.hooks.call_hook('update_overview_prohibit_update')
+		# if at least one hook returned True, the update will be blocked and output is stopped here
+		if True in hook_update_prohibited:
+			res.dialog = hook_info_frames
+			# if no info element has been returned by hooks, a short info will displayed
+			if not res.dialog:
+				lst = umcd.List()
+				lst.add_row( [ umcd.InfoBox( _( 'The update module has been deactivated.' ), columns = 2 ) ] )
+				res.dialog = [ lst ]
+			self.revamped(object.id(), res)
+
 		# ==== UCS RELEASE UPDATES =====
 		list_update_release = umcd.List()
 
@@ -808,6 +826,10 @@ class handler(umch.simpleHandler):
 		frame_update_packages = umcd.Frame([list_update_packages], _('Package updates'))
 
 		res.dialog = [frame_update_release, frame_update_security, frame_update_packages]
+		# add hook info frames
+		for frm in hook_info_frames:
+			res.dialog.insert( 0, frm )
+		# add reboot info frame
 		if frame_info:
 			res.dialog.insert( 0, frame_info )
 

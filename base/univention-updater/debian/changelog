@@ -1,3 +1,11 @@
+univention-updater (6.0.38-1) unstable; urgency=low
+
+  * added hook directory for displaying additional information and
+  	blocking update (Bug #20429)
+    (/usr/lib/python2.4/site-packages/u/m/c/handlers/update/hooks)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 19 Oct 2010 10:51:00 +0200
+
 univention-updater (6.0.37-1) unstable; urgency=low
 
   * fix UCR variable description (Bug #19384)
