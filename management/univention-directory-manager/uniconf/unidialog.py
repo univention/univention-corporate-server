@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import sys, os, re, string, copy, types, locale
+import univention.hooks
 ldir = '/usr/share/univention-webui/modules'
 sys.path.append(ldir)
 os.chdir(ldir)
@@ -440,6 +441,18 @@ class unidialog(unimodule.unimodule):
 							self.subobjs.append(updatemsg)
 
 
+				# display additional messages returned by hooks
+				hookmanager = univention.hooks.HookManager('/usr/share/pyshared/univention/admin/hookmanager', raise_exceptions=False)
+				result = hookmanager.call_hook('udm_unidialog_welcome_msg')
+				for hookresult in result:
+					# be sure that hookresult is no exception
+					if type(hookresult) == dict:
+						self.subobjs.extend( hookresult.get('subobjs',[]) )
+						self.mbutlist.extend( hookresult.get('mbutlist',[]) )
+					elif isinstance(hookresult, Exception):
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "unidialog: hookmsg: exception occured: %s: %s" % (hookresult.__class__.__name__, hookresult))
+
+				# display body
 				welcomemessage = htmltext ('', {}, \
 					{'htmltext': ["""
 					<div id="content-wrapper-relative">
