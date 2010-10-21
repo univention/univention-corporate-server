@@ -1,3 +1,10 @@
+horde-webmailer (1.2.5~2.2.5-2) unstable; urgency=low
+
+  * Add t_SyncML_HK_UV_Nokia_convertServer2Client.diff (Bug #19855),
+    see https://issues.kolab.org/issue4647
+
+ -- Arvid Requate <requate@univention.de>  Thu, 21 Oct 2010 13:07:13 +0200
+
 horde-webmailer (1.2.5~2.2.5-1) unstable; urgency=low
 
   * Update to latest CVS Head kolab patches (Bug #19855)
