@@ -44,8 +44,10 @@ import univention.config_registry
 import traceback
 import urlparse
 import urllib
+import subprocess
 
 HTTP_PROXY_DEFAULT_PORT = 3128
+RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
 
 class ExceptionUpdaterRequiredComponentMissing(Exception):
 	def __init__(self, version, component):
@@ -576,6 +578,53 @@ class UniventionUpdater:
 				var = key.split('repository/online/component/%s/' % name)[1]
 				component[var] = self.configRegistry[key]
 		return component
+
+	def get_component_defaultpackage(self, componentname):
+		"""
+		returns a list of (meta) package names to be installed for this component
+		return value:
+			[ <string>, ... ]
+		"""
+		lst = []
+		for var in ('defaultpackages', 'defaultpackage'):
+			if componentname and self.configRegistry.get('repository/online/component/%s/%s' % (componentname, var)):
+				val = self.configRegistry.get('repository/online/component/%s/%s' % (componentname, var), '')
+				# split at " " and "," and remove empty items
+				lst.extend( [ x for x in re.split('[ ,]', val) if x ] )
+		return list(set(lst))
+
+	def is_component_defaultpackage_installed(self, componentname, ignore_invalid_package_names=True):
+		"""
+		returns installation status of component's default packages
+		return value:
+		    None  ==> no default packages are defined
+			True  ==> all default packages are installed
+			False ==> at least one package is not installed
+		function raises an ValueError exception if UCR variable contains invalid package names if ignore_invalid_package_names=False
+		"""
+		pkglist = self.get_component_defaultpackage(componentname)
+		result = True
+		if not pkglist:
+			return None
+
+		# check package names
+		for pkg in pkglist:
+			match = RE_ALLOWED_DEBIAN_PKGNAMES.search(pkg)
+			if not match:
+				if ignore_invalid_package_names:
+					continue
+				raise ValueError('invalid package name (%s)' % pkg)
+
+		# call "dpkg -s $PKGLIST"
+		cmd = [ '/usr/bin/dpkg', '-s' ]
+		cmd.extend( pkglist )
+		p = subprocess.Popen( cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE )
+		stdout = p.communicate()[0]
+		# count number of "Status: install ok installed" lines
+		installed_correctly = len([ x for x in stdout.splitlines() if x == 'Status: install ok installed' ])
+		# if pkg count and number of counted lines match, all packages are installed
+		return len(pkglist) == installed_correctly
+
 
 	def _iterate_versions(self, ver, start, end, parts, archs, **netConf):
 		'''Iterate through all versions of repositories between start and end.'''

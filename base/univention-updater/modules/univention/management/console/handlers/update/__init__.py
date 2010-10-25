@@ -65,10 +65,12 @@ UCR_ALLOWED_CHARACTERS = '^[^#:@]+$'
 FN_LIST_SECURITY_UPDATE_LOG = [ '/var/log/univention/security-updates.log' ]
 FN_LIST_RELEASE_UPDATE_LOG = [ '/var/log/univention/updater.log' ]
 FN_LIST_DIST_UPGRADE_LOG = [ '/var/log/univention/updater.log' ]
+FN_LIST_ACTUALISE_LOG = [ '/var/log/univention/actualise.log' ]
 
 FN_STATUS_UPDATER = '/var/lib/univention-updater/univention-updater.status'
 FN_STATUS_SECURITY_UPDATE = '/var/lib/univention-updater/univention-security-update.status'
 FN_STATUS_DIST_UPGRADE = '/var/lib/univention-updater/umc-dist-upgrade.status'
+FN_STATUS_UNIVENTION_INSTALL = '/var/lib/univention-updater/umc-univention-install.status'
 
 command_description = {
 	'update/overview': umch.command(
@@ -152,7 +154,13 @@ command_description = {
 		values = {
 		},
 	),
-
+	'update/install_component_defaultpackages': umch.command(
+		short_description = _('Component Installation'),
+		method = 'install_component_defaultpackages',
+		values = {
+			'component': umc.String( _( 'Name of component' ), required = True ),
+		},
+	),
 }
 
 
@@ -184,9 +192,12 @@ class handler(umch.simpleHandler):
 		self.next_release_update = None
 		self.next_securtiy_update = None
 
-		self.ucr_reinit = False
+		# None  ==> no previous value
+		# False ==> cmd was not running at last check
+		# True  ==> cmd was running at last check
 		self.last_running_status = {}
 
+		self.ucr_reinit = False
 		self.tail_fn2fd = {}
 
 
@@ -328,7 +339,7 @@ class handler(umch.simpleHandler):
 			(returncode, returnstring) = self.__create_at_job(cmd)
 			ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: apt-get dist-upgrade' )
 
-			self.last_running_status['dist-upgrade'] = False
+			self.last_running_status['dist-upgrade'] = None
 
 			self.finished(object.id(), None)
 
@@ -399,7 +410,7 @@ class handler(umch.simpleHandler):
 			(returncode, returnstring) = self.__create_at_job('univention-updater net --updateto %s' % self.next_release_update)
 			ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: univention-updater net --updateto %s' % self.next_release_update)
 
-		self.last_running_status['release'] = False
+		self.last_running_status['release'] = None
 
 		if returncode != 0:
 			self.finished(object.id(), None, returnstring, success = False)
@@ -412,7 +423,7 @@ class handler(umch.simpleHandler):
 		(returncode, returnstring) = self.__create_at_job('univention-security-update net' )
 		ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: univention-security-update net' )
 
-		self.last_running_status['security'] = False
+		self.last_running_status['security'] = None
 
 		if returncode != 0:
 			self.finished(object.id(), None, returnstring, success = False)
@@ -426,6 +437,27 @@ class handler(umch.simpleHandler):
 	def tail_logfile_dialog(self, object):
 		_d = ud.function('update.handler.tail_logfile_dialog')
 		self.finished(object.id(), None)
+
+	def install_component_defaultpackages(self, object):
+		_d = ud.function('update.handler.install_component_defaultpackages')
+
+		component = object.options.get('component')
+		if component:
+			self.last_running_status['install-component'] = None
+
+			pkglist = self.updater.get_component_defaultpackage(component)
+			ud.debug(ud.ADMIN, ud.INFO, 'install_component_defaultpackages: component=%s pkglist=%s' % (component, repr(pkglist)) )
+			cmd = '/usr/share/univention-updater/univention-updater-umc-univention-install %s' % (' '.join(pkglist))
+			ud.debug(ud.ADMIN, ud.PROCESS, 'install_component_defaultpackages: cmd: %s' % cmd)
+			(returncode, returnstring) = self.__create_at_job( cmd, reboot=False )
+			ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: %s' % cmd)
+
+			if returncode != 0:
+				self.finished(object.id(), None, returnstring, success = False)
+				return
+
+		self.finished(object.id(), None)
+
 
 	#######################
 	# The revamp functions
@@ -454,14 +486,16 @@ class handler(umch.simpleHandler):
 		windowtype = object.options.get('windowtype')
 		headline = None
 		headline_msg = None
+		ud.debug(ud.ADMIN, ud.INFO, '_web_tail_logfile: windowtype=%s' % windowtype)
 
 		# test if update has finished and check status of update
 		if windowtype == 'release':
 			cur_running_status = self.__is_updater_running()
-			if not cur_running_status and self.last_running_status.get(windowtype):
+			if not cur_running_status and self.last_running_status.get(windowtype) in (True, None):
 				self._reinit()
 				# read status
 				status = self._get_status_file(FN_STATUS_UPDATER)
+				ud.debug(ud.ADMIN, ud.INFO, '_web_tail_logfile: status=%s' % status)
 				if not status or not 'status' in status:
 					# updater does not support status-file or status file is defect
 					headline = _('Update finished')
@@ -495,11 +529,12 @@ class handler(umch.simpleHandler):
 
 		elif windowtype == 'security':
 			cur_running_status = self.__is_security_update_running()
-			if not cur_running_status and self.last_running_status.get(windowtype):
+			if not cur_running_status and self.last_running_status.get(windowtype) in (True, None):
 				self._reinit()
 
 				# read status
 				status = self._get_status_file(FN_STATUS_SECURITY_UPDATE)
+				ud.debug(ud.ADMIN, ud.INFO, '_web_tail_logfile: status=%s' % status)
 				if not status or not 'status' in status:
 					# updater does not support status-file or status file is defect
 					headline = _('Update finished')
@@ -533,11 +568,12 @@ class handler(umch.simpleHandler):
 
 		elif windowtype == 'dist-upgrade':
 			cur_running_status = self.__is_dist_upgrade_running()
-			if not cur_running_status and self.last_running_status.get(windowtype):
+			if not cur_running_status and self.last_running_status.get(windowtype) in (True, None):
 				self._reinit()
 
 				# read status
 				status = self._get_status_file(FN_STATUS_DIST_UPGRADE)
+				ud.debug(ud.ADMIN, ud.INFO, '_web_tail_logfile: status=%s' % status)
 				if not status or not 'status' in status:
 					# updater does not support status-file or status file is defect
 					headline = _('Update finished')
@@ -554,6 +590,31 @@ class handler(umch.simpleHandler):
 						headline = _('Update failed')
 						logfile = '/var/log/univention/updater.log'
 						headline_msg = _('An error occured during package update. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+
+		elif windowtype == 'install-component':
+			cur_running_status = self.__is_univention_install_running()
+			if not cur_running_status and self.last_running_status.get(windowtype) in (True, None):
+				self._reinit()
+
+				# read status
+				status = self._get_status_file(FN_STATUS_UNIVENTION_INSTALL)
+				ud.debug(ud.ADMIN, ud.INFO, '_web_tail_logfile: status=%s' % status)
+				if not status or not 'status' in status:
+					# updater does not support status-file or status file is defect
+					headline = _('Installation finished')
+					headline_msg = _('The package installation has been finished. During installation some log messages have been shown in window below. Please check the output for error messages.')
+				else:
+					# status-file has been found
+					if status.get('status') == 'DONE':
+						# update was successful
+						headline = _('Installation has been finished successfully')
+						headline_msg = _('The package installation has been finished. During installation some log messages have been shown in window below.')
+
+					elif status.get('status') == 'FAILED':
+						# update failed
+						headline = _('Installation failed')
+						logfile = '/var/log/univention/actualise.log'
+						headline_msg = _('An error occured during package installation. Please check %(logfile)s carefully.') % { 'logfile': logfile }
 
 		else:
 			cur_running_status = None
@@ -631,6 +692,10 @@ class handler(umch.simpleHandler):
 			txt_headline = _('Update progress')
 			txt_headline_msg = _('The update process has been started. During update log messages will be shown in window below. Please wait until the update has been finished.')
 			filenames = FN_LIST_DIST_UPGRADE_LOG
+		elif windowtype == 'install-component':
+			txt_headline = _('Installing component')
+			txt_headline_msg = _('The installation process has been started. During installation log messages will be shown in window below. Please wait until the installation has been finished.')
+			filenames = FN_LIST_ACTUALISE_LOG
 		else:
 			ud.debug(ud.ADMIN, ud.ERROR, 'update.handler.__create_tail_window: unknown window type: %s' % (windowtype) )
 			txt_headline = 'ERROR'
@@ -697,7 +762,7 @@ class handler(umch.simpleHandler):
 			btn_view_log = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
 			list_update_release.add_row([ umcd.Text(_('The update is still in progress.')), btn_view_log])
 
-		elif self.__is_security_update_running() or self.__is_dist_upgrade_running():
+		elif self.__is_security_update_running() or self.__is_dist_upgrade_running() or self.__is_univention_install_running():
 			# release update button is disabled due to running updates
 			txt = umcd.Text( _('The currently installed release version is %s.') % self.updater.get_ucs_version() )
 			txt['colspan'] = '2'
@@ -760,7 +825,7 @@ class handler(umch.simpleHandler):
 			btn_view_log = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
 			list_update_security.add_row([ umcd.Text(_('The security update is still in progress.')), btn_view_log])
 
-		elif self.__is_updater_running() or self.__is_dist_upgrade_running():
+		elif self.__is_updater_running() or self.__is_dist_upgrade_running() or self.__is_univention_install_running():
 			# release update button is disabled due to running updates
 			txt = umcd.Text( _('The currently installed security update version is %s.') % self.updater.security_patchlevel )
 			txt['colspan'] = '2'
@@ -792,7 +857,7 @@ class handler(umch.simpleHandler):
 		# ==== UCS PACKAGE UPDATES =====
 		list_update_packages = umcd.List()
 
-		if self.__is_updater_running() or self.__is_security_update_running():
+		if self.__is_updater_running() or self.__is_security_update_running() or self.__is_univention_install_running():
 			# disable buttons if update is running
 			list_update_packages.add_row([ umcd.Text('Check for new packages has been skipped since an update is currently running.') ])
 
@@ -883,11 +948,20 @@ class handler(umch.simpleHandler):
 			list_settings_release.add_row([ btn_release ])
 
 			# COMPONENT SETTINGS
+			local_repo = self.updater.configRegistry.get( 'local/repository', 'no' ).lower() in ( 'yes', 'true' )
+			is_univention_install_running = self.__is_univention_install_running()
+
 			list_settings_component_txt = umcd.List()
-			list_settings_component_txt.add_row([ _('In addition to the standard repositories, additional software components can also be integrated by adding component repositories.') ])
+			if not local_repo and not is_univention_install_running:
+				list_settings_component_txt.add_row([ _('In addition to the standard repositories, additional software components can also be integrated by adding component repositories.') ])
+			elif not local_repo and is_univention_install_running:
+				list_settings_component_txt.add_row( [ umcd.InfoBox( _( 'Editing components has been deactivated due to currently running package installation.' ), columns = 2 ) ] )
+				req = self.__get_logfile_request( { 'windowtype': 'install-component' } )
+				btn_show_logfile = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
+				list_settings_component_txt.add_row( [ btn_show_logfile ] )
+
 
 			list_settings_component = umcd.List()
-			local_repo = self.updater.configRegistry.get( 'local/repository', 'no' ).lower() in ( 'yes', 'true' )
 			if local_repo:
 				list_settings_component.add_row( [ umcd.InfoBox( _( 'The component management has been deactivated as this server has a local repository.' ), columns = 2 ) ] )
 			else:
@@ -901,21 +975,43 @@ class handler(umch.simpleHandler):
 					req.set_flag('web:startup_dialog', True)
 					req.set_flag('web:startup_referrer', True)
 					req.set_flag('web:startup_format', _('Modify component %s' )  % description )
+					btnlist = [ umcd.Button(_('Configure'), 'update/gear', actions=[umcd.Action(req)]) ]
 					txt = umcd.Text(_('This component is disabled.'))
 					if component.get('activated', '').lower() in ['true', 'yes', '1', 'enabled']:
 						txt = umcd.Text(_('This component is enabled.'))
-					btn = umcd.Button(_('Configure'), 'update/gear', actions=[umcd.Action(req)])
-					list_settings_component.add_row([ umcd.Text(description), txt, btn ])
+						# check if default package are installed
+						if self.updater.is_component_defaultpackage_installed( component_name ) == False:
+							# create install request
+							req_inst = umcp.Command(args=['update/install_component_defaultpackages'], opts = {'component': component_name})
+							# create log_view request
+							req_log = self.__get_logfile_request( { 'windowtype': 'install-component' } )
+							req_log.set_flag('web:startup', True)
+							req_log.set_flag('web:startup_cache', False)
+							req_log.set_flag('web:startup_dialog', True)
+							req_log.set_flag('web:startup_referrer', True)
+							req_log.set_flag('web:startup_format', _('Installing component %s' )  % description )
+							# create actionlist
+							actionlist = [ umcd.Action( req_inst ), umcd.Action( req_log ) ]
+							# get warning request
+							req_warn = self.__get_warning_request({'type': 'install-component', 'actionlist': actionlist })
+							req_warn.set_flag('web:startup_format', _('Installation warning'))
+							# create button and pass actionlist to warning dialog request
+							btnlist.append( umcd.Button( _('Install component'), 'update/gear', actions=[ umcd.Action( req_warn )] ) )
+					# remove buttons if installation is running
+					if is_univention_install_running:
+						btnlist = ''
+					list_settings_component.add_row([ umcd.Text(description), txt, btnlist ])
 
-				req = umcp.Command(args=['update/components_settings'])
-				req.set_flag('web:startup', True)
-				req.set_flag('web:startup_cache', False)
-				req.set_flag('web:startup_dialog', True)
-				req.set_flag('web:startup_referrer', True)
-				req.set_flag('web:startup_format', _('Add a new component'))
-				btn_add_component = umcd.Button(_('Add a new component'), 'actions/plus', actions = [umcd.Action(req)])
-				btn_add_component['colspan'] = '2'
-				list_settings_component.add_row([ btn_add_component ])
+				if not is_univention_install_running:
+					req = umcp.Command(args=['update/components_settings'])
+					req.set_flag('web:startup', True)
+					req.set_flag('web:startup_cache', False)
+					req.set_flag('web:startup_dialog', True)
+					req.set_flag('web:startup_referrer', True)
+					req.set_flag('web:startup_format', _('Add a new component'))
+					btn_add_component = umcd.Button(_('Add a new component'), 'actions/plus', actions = [umcd.Action(req)])
+					btn_add_component['colspan'] = '2'
+					list_settings_component.add_row([ btn_add_component ])
 
 			res.dialog = [ umcd.Frame([list_settings_release], _('Repository settings')), umcd.Frame([list_settings_component_txt, list_settings_component], _('Component settings')) ]
 		self.revamped(object.id(), res)
@@ -1032,19 +1128,27 @@ class handler(umch.simpleHandler):
 
 		result = umcd.List()
 
-		if res.options['type'] == 'security':
-			command = 'update/install_security_updates'
-		else:
-			command = 'update/install_release_updates'
+		if res.options['type'] in ('security', 'release'):
+			if res.options['type'] == 'security':
+				command = 'update/install_security_updates'
+			else:
+				command = 'update/install_release_updates'
 
-		html = self.__get_update_warning()
+			html = self.__get_update_warning()
 
-		updateto = object.options.get('updateto',[None])
-		ud.debug(ud.ADMIN, ud.PROCESS, '_web_update_warning: updateto=%s' % updateto )
+			updateto = object.options.get('updateto',[None])
+			ud.debug(ud.ADMIN, ud.PROCESS, '_web_update_warning: updateto=%s' % updateto )
 
-		result.add_row([ umcd.HTML(html, attributes = { 'colspan' : str(2) })])
-		req = umcp.Command(args=[command], opts={ 'updateto': updateto } )
-		btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req), umcd.Action(self.__get_logfile_request( { 'windowtype': res.options['type'] } ))])
+			result.add_row([ umcd.HTML(html, attributes = { 'colspan' : str(2) })])
+			req = umcp.Command(args=[command], opts={ 'updateto': updateto } )
+			btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req), umcd.Action(self.__get_logfile_request( { 'windowtype': res.options['type'] } ))])
+
+		if res.options['type'] == 'install-component':
+			result.add_row([ umcd.HTML(self.__get_warning_install_component(), attributes = { 'colspan' : str(2) })])
+			actionlist = res.options.get('actionlist')
+			if not actionlist:
+				raise Exception('actionlist is empty')
+			btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = actionlist)
 
 		result.add_row([ umcd.CancelButton(), btn_continue])
 		res.dialog = [ result]
@@ -1055,19 +1159,26 @@ class handler(umch.simpleHandler):
 	# Some helper scripts
 	#######################
 
-	def __create_at_job(self, command):
+	def __create_at_job(self, command, reboot=True):
+		rebootcmd = ''
+		if reboot:
+			rebootcmd = '''if [ $? -eq 0 ]; then
+	univention-config-registry set update/reboot/required=yes
+fi
+'''
+
 		script = '''
 dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-server
 dpkg-statoverride --add root root 0644 /usr/sbin/apache2
 chmod -x /usr/sbin/univention-management-console-server /usr/sbin/apache2
-%s < /dev/null
-if [ $? -eq 0 ]; then
-	univention-config-registry set update/reboot/required=yes
-fi
+%(command)s < /dev/null
+%(reboot)s
 dpkg-statoverride --remove /usr/sbin/univention-management-console-server
 dpkg-statoverride --remove /usr/sbin/apache2
 chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
-''' % command
+''' % { 'command': command, 'reboot': rebootcmd }
+
+		
 		p1 = subprocess.Popen( [ 'LC_ALL=C at now', ], stdin = subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True )
 		(stdout,stderr) = p1.communicate( script )
 		ud.debug(ud.ADMIN, ud.WARN, 'executing "%s"' % command)
@@ -1106,6 +1217,10 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 		return self.__is_process_running( 'univention-updater-umc-dist-upgrade' )
 
 
+	def __is_univention_install_running(self):
+		return self.__is_process_running( 'univention-updater-umc-univention-install' )
+
+
 	def __remove_status_messages(self, text):
 		result = []
 		for line in text.split('\n'):
@@ -1113,6 +1228,21 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 				continue
 			result.append(line)
 		return '<br />'.join(result).replace('\n', '<br />')
+
+
+	def __get_warning_install_component(self):
+		return _( '''<h2>Attention!</h2><br><p>
+		Installing new packages is a significant change to this system and could have impact<br>
+		to other systems. In normal case, trouble-free use by users is not possible during the installation,<br>
+		since system services may need to be restarted. Thus, new packages shouldn\'t be installed<br>
+		on a live system.<br>
+		<br>
+		During setup, the web server may be stopped, leading to a termination of the HTTP<br>
+		connection. Nonetheless, the installation proceeds and the installation can be monitored from a<br>
+		new UMC session. Logfiles can be found in the directory /var/log/univention/.<br>
+		<br>
+		Do you really wish to proceed?
+		</p>''' )
 
 
 	def __get_update_warning(self):
