@@ -192,6 +192,10 @@ class modabout(unimodule.unimodule):
 			self.subobjs.append(htmltext ('', {}, {'htmltext': ['<h3 class="about">%s</h3>' % _('Open-Xchange')]}))
 			self.div_start('form-wrapper about', divtype='class')
 
+			maintkey = baseConfig.get( 'ox/licensekey' )
+			if maintkey:
+				self.__add_row( _('Maintenance Key'), maintkey)
+
 			### get ox context and integration versions
 			ldap_base = baseConfig['ldap_base']
 			domain_name = "%s.%s" % (baseConfig['hostname'], baseConfig['domainname'])
@@ -208,7 +212,7 @@ class modabout(unimodule.unimodule):
 				if ox_context_info.has_key("oxGuiVersion"):
 					self.__add_row( _('GUI Version'), ox_context_info['oxGuiVersion'][0])
 				if ox_context_info.has_key("oxIntegrationVersion"):
-					self.__add_row( _('Integration Version:'), ox_context_info['oxIntegrationVersion'][0])
+					self.__add_row( _('Integration Version'), ox_context_info['oxIntegrationVersion'][0])
 
 
 		## Licence
