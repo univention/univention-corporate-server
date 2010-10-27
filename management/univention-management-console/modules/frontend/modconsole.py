@@ -64,7 +64,10 @@ LANG_EN = 'C'
 #LANG_DEFAULT = configRegistry.get ('directory/manager/web/language', locale.getdefaultlocale ())
 LANG_DEFAULT = configRegistry.get ('umc/web/language', LANG_EN)
 
-RESPONSE_TIMEOUT = configRegistry.get( 'umc/web/response/timeout', 30 )
+try:
+	RESPONSE_TIMEOUT = int( configRegistry.get( 'umc/web/response/timeout', '30' ) )
+except ValueError:
+	RESPONSE_TIMEOUT = 30
 
 _ = umc.Translation( 'univention.management.console.frontend' ).translate
 

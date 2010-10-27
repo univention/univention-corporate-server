@@ -1,3 +1,9 @@
+univention-management-console (3.0.68-1) unstable; urgency=low
+
+  * log errors in command execution; Bug #19738
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 27 Oct 2010 14:57:35 +0200
+
 univention-management-console (3.0.67-1) unstable; urgency=low
 
   * add UCR variable umc/web/response/timeout to define the amount of time

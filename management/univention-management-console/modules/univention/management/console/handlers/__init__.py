@@ -166,9 +166,11 @@ class simpleHandler( signals.Provider ):
 			res.report = _( "Execution of command '%(command)s' has failed:\n\n%(text)s" ) % \
 							{ 'command' : object.arguments[ 0 ],
 							  'text' : unicode( traceback.format_exc() ) }
+			ud.debug( ud.ADMIN, ud.ERROR, res.report )
 			res.status( 500 )
 			self.signal_emit( 'failure', res )
-			del self.__requests[ object.id() ]
+			if object.id() in self.__requests:
+				del self.__requests[ object.id() ]
 
 	def __partial( self, id, dialog, type ):
 		if self.__requests.has_key( id ):
