@@ -64,6 +64,8 @@ LANG_EN = 'C'
 #LANG_DEFAULT = configRegistry.get ('directory/manager/web/language', locale.getdefaultlocale ())
 LANG_DEFAULT = configRegistry.get ('umc/web/language', LANG_EN)
 
+RESPONSE_TIMEOUT = configRegistry.get( 'umc/web/response/timeout', 30 )
+
 _ = umc.Translation( 'univention.management.console.frontend' ).translate
 
 notebook_widget = None
@@ -507,7 +509,7 @@ class modconsole(unimodule.unimodule):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Function: myinit: connection to UMCP server')
 			if not self.save.get( 'umc_connected', False ):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Function: myinit: trying ...')
-				if not client.connect( timeout = 10 ):
+				if not client.connect( timeout = RESPONSE_TIMEOUT ):
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Function: myinit: FAILED')
 
 			if client.error_get() != client.NOERROR:
@@ -534,7 +536,7 @@ class modconsole(unimodule.unimodule):
 
 				req = umcp.Request( 'GET', args = [ 'modules/list' ] )
 				id = client.request_send( req )
-				response = client.response_wait( id, timeout = 10 )
+				response = client.response_wait( id, timeout = RESPONSE_TIMEOUT )
 				if response:
 					all_modules = response.body[ 'modules' ]
 					# all_modules = { 'MODULENAME' : {
@@ -610,7 +612,7 @@ class modconsole(unimodule.unimodule):
 				req.body[ 'password' ] = authPassword
 
 				id = client.request_send( req )
-				response = client.response_wait( id, timeout = 10 )
+				response = client.response_wait( id, timeout = RESPONSE_TIMEOUT )
 				if response:
 					(authenticated, status, statusinformation) = \
 						( response.status() == 200, response.status(),
@@ -649,7 +651,7 @@ class modconsole(unimodule.unimodule):
 
 						req = umcp.Request( 'SET', args = ('locale', language ) )
 						id = client.request_send( req )
-						response = client.response_wait( id, timeout = 10 )
+						response = client.response_wait( id, timeout = RESPONSE_TIMEOUT )
 						if response:
 							(status, statusinformation) = \
 									 ( response.status(), umcp.status_information( response.status() ) )
@@ -662,7 +664,7 @@ class modconsole(unimodule.unimodule):
 					# pass sessionid to UMC server after successful authentication
 					req = umcp.Request( 'SET', args = ('sessionid', client._sessionId ) )
 					id = client.request_send( req )
-					response = client.response_wait( id, timeout = 10 )
+					response = client.response_wait( id, timeout = RESPONSE_TIMEOUT )
 					if response:
 						(status, statusinformation) = ( response.status(), umcp.status_information( response.status() ) )
 						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,

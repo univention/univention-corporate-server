@@ -16,4 +16,10 @@ Description[en]=Language of the UMC web frontend
 Type=str
 Categories=management-umc
 
+[umc/web/response/timeout]
+Description[de]=Defines the amount of time in seconds the web frontend waits for response from the UMC server (default: 30)
+Description[en]=Definiert das Zeitintervall in Sekunden für die Wartezeit auf Antworten vom UMC Server (Vorgabe: 30)
+Type=str
+Categories=management-umc
+
 

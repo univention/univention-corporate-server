@@ -86,6 +86,8 @@ fi
 
 createLogfile /var/log/univention/management-console-web.log "www-data:adm" 640
 
+univention-config-registry set umc/web/response/timeout?30
+
 #DEBHELPER#
 
 a2ensite univention-management-console
