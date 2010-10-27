@@ -31,6 +31,8 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+LOGFILE="/var/log/univention/actualise.log"
+
 if [ -z "$1" -o "$1" = "-h" -o "$1" = "--help" ] ; then
 	echo "$(basename $0) <package> [<package> ...]"
 	echo
@@ -42,6 +44,8 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 eval "$(ucr shell)"
-echo "***** Starting \"univention-pkg-install $@\" on $(date)" >> /var/log/univention/actualise.log
-$update_commands_update | tee -a /var/log/univention/actualise.log
-exec $update_commands_install_interactive "$@" | tee -a /var/log/univention/actualise.log
+echo "***** Starting \"univention-install $@\" on $(date)" >> "$LOGFILE"
+set -e
+set -o pipefail
+$update_commands_update 2>&1 | tee -a "$LOGFILE"
+exec $update_commands_install_interactive "$@" 2>&1 | tee -a "$LOGFILE"
