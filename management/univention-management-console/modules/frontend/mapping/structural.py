@@ -150,16 +150,29 @@ def list_map( storage, umcp_part ):
 	headers = []
 	default_type = getattr( umcp_part, 'default_type', None )
 	for col in umcp_part.get_header():
+		head = []
 		if isinstance( col, umcd.ToggleCheckboxes ):
-			head = htmltext( '', {}, { 'htmltext' : [ '<span class="h7">%s</span>' % str( col ) ] } )
+			head = [ htmltext( '', {}, { 'htmltext' : [ '<span class="h7">%s</span>' % str( col ) ] } ) ]
+			args = utils.layout_attrs( storage, col, default_type = default_type )
+		elif isinstance( col, umcd.Cell ):
+			args = {}
+			if isinstance( col.item, ( list, tuple ) ):
+				for item in col.item:
+					head.append( storage.to_uniparts( item ) )
+					args.update( utils.layout_attrs( storage, col, default_type = default_type ) )
+			else:
+				head.append( storage.to_uniparts( col.item ) )
+				args.update( utils.layout_attrs( storage, col, default_type = default_type ) )
 		else:
-			head = header( unicode( col ), { 'type' : '6' }, {} )
-		args = utils.layout_attrs( storage, col, default_type = default_type )
+			head = [ header( unicode( col ), { 'type' : '6' }, {} ) ]
+			args = utils.layout_attrs( storage, col, default_type = default_type )
 		if not umcp_part.get_second_header():
-			args.update( { 'type' : 'umc_list_head' } )
+			if not 'type' in args:
+				args.update( { 'type' : 'umc_list_head' } )
 		else:
-			args.update( { 'type' : 'umc_list_head_first' } )
-		headers.append( tablecol( '', args, { 'obs' : [ head ] } ) )
+			if not 'type' in args:
+				args.update( { 'type' : 'umc_list_head_first' } )
+		headers.append( tablecol( '', args, { 'obs' : head } ) )
 	if headers:
 		rows = [ tablerow( '', { 'type' : 'umc_list_head' }, { 'obs' : headers } ) ]
 	else:
