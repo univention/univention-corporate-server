@@ -1593,7 +1593,7 @@ class categorylist{
 
 	function show()
 	{
-		$str_start = '<!-- start of categorylist--> 
+		$str_start = '<!-- start of categorylist-->
 <div id="category">
 <table border="0" cellspacing="0" cellpadding="0">
 <tr><td nowrap valign="top">
@@ -1611,24 +1611,31 @@ class categorylist{
 		$str_buttons = '';
 		for($i=1; $i < $this->count+1; $i++) # i is index for button-object-array
 		{
-			if ( $this->category_buttons[$i]->attribute['closeable'] )
+			if ( $this->category_buttons[$i]->attribute['closeable'] ) {
 				$cssclass = 'categoryitemactivecloseable';
-			else
+			} else {
 				$cssclass = "categoryitem-active";
-			if( $this->category_buttons[$i]->basket[active] )
-			{ // active button
-				if(!$this->category_buttons[$i]->attribute['closebutton'] == "1")
-					$str_buttons .= '<span class="categoryitem-active">';
+			}
+			if ( $this->category_buttons[$i]->attribute['closeable'] == '1' ) {
+				$end = '';
+				if ( $this->category_buttons[$i]->basket[ active ] ) {
+					$start = '<div class="categoryitem-active categoryitemnormal">';
+				} else {
+					$start = '<div class="categoryitemnormal">';
+				}
+			} else if ( $this->category_buttons[$i]->attribute['closebutton'] == '1' ) {
+				$start = '';
+				$end = '</div>';
+			} else {
+				if ( $this->category_buttons[$i]->basket[ active ] ) {
+					$start = '<div class="categoryitem-active categoryitemnormal">';
+				} else {
+					$start = '<div class="categoryitemnormal">';
+				}
+				$end = '</div>';
 			}
 
-			// the button
-			$str_buttons .= $this->category_buttons[$i]->show();
-
-			if( $this->category_buttons[$i]->basket[active] )
-			{ // active button
-				if($this->category_buttons[$i]->attribute['closebutton'] == "1" || !$this->category_buttons[$i]->attribute['closeable'])
-					$str_buttons .= '</span>';
-			}
+			$str_buttons .= $start.$this->category_buttons[$i]->show().$end;
 		}
 
 		return $str_start.$str_buttons.$str_end;

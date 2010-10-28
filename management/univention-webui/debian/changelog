@@ -1,3 +1,9 @@
+univention-webui (4.0.25-1) unstable; urgency=low
+
+  * re-worked layout of category tabs; Bug #19445
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 28 Oct 2010 16:12:04 +0200
+
 univention-webui (4.0.24-1) unstable; urgency=low
 
   * minor fix in container.inc; Bug #19779
