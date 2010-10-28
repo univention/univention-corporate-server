@@ -64,5 +64,51 @@ print "    'value' => %s," % value
     'shared' => false,
     'type' => 'implicit');
 
+@!@
+## // default charset for sending messages
+ucr_key="horde/prefs/imp/sending_charset"
+if ucr_key in baseConfig:
+	print "$_prefs['sending_charset']['value'] = '%s';\n" % baseConfig.get(ucr_key)
+if baseConfig.is_true("horde/prefs/imp/sending_charset/locked"):
+	print "$_prefs['sending_charset']['locked'] = true;\n"
+
+## // save attachments when saving in sent-mail folder?
+ucr_key="horde/prefs/imp/save_attachments"
+if ucr_key in baseConfig:
+	print "$_prefs['save_attachments']['value'] = '%s';\n" % baseConfig.get(ucr_key)
+
+## // precede the signature with dashes ('-- ')?
+ucr_key="horde/prefs/imp/sig_dashes"
+if ucr_key in baseConfig:
+	bin_value={True: 1, False: 0}[ baseConfig.is_true(ucr_key, False) ]
+	print "$_prefs['sig_dashes']['value'] = %s;\n" % bin_value
+
+## // default sorting column
+ucr_key="horde/prefs/imp/sortby"
+if ucr_key in baseConfig:
+	print "$_prefs['sortby']['value'] = %s;\n" % baseConfig.get(ucr_key)
+ 
+## // default sorting direction
+ucr_key="horde/prefs/imp/sortdir"
+if ucr_key in baseConfig:
+	bin_value={True: 1, False: 0}[ baseConfig.get(ucr_key).lower() in ('descending', '1') ]
+	print "$_prefs['sortdir']['value'] = %s;\n" % bin_value
+
+## // When replying/forwarding to a message, should we use the format of the
+## // original message?
+ucr_key="horde/prefs/imp/reply_format"
+if ucr_key in baseConfig:
+	bin_value={True: 1, False: 0}[ baseConfig.get(ucr_key).lower() in ('original', '1') ]
+	print "$_prefs['reply_format']['value'] = %s;\n" % bin_value
+
+## // The default JS HTML editor.
+ucr_key="horde/prefs/imp/jseditor"
+if ucr_key in baseConfig:
+	print "$_prefs['jseditor']['value'] = '%s';\n" % baseConfig.get(ucr_key)
+
+## // The layout of buttons to show in FCKeditor
+print "$_prefs['fckeditor_buttons']['value'] = \"[['FitWindow','Preview','Save','-','Templates'],['Undo','Redo','-','Find','Replace','-','SelectAll', 'RemoveFormat'],['Cut','Copy','Paste', 'PasteText','PasteWord','-','Print','SpellCheck'],'/',['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],['OrderedList','UnorderedList','-','Outdent','Indent','Blockquote'],['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],'/',['Link','Unlink', 'Anchor'],['Table','Rule','PageBreak','NewPage','Image','TextColor','BGColor','Smiley','SpecialChar'],['Source','ShowBlocks','DocProps','-','About'],'/',['Style','FontFormat', 'FontName','FontSize']]\";\n"
+
+@!@
 // End Personal Information preferences
 ?>

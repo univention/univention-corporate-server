@@ -49,9 +49,14 @@ def __create_db_identity( mail, fullname ):
 def __tuples_exist ( db, mail, scope ):
 	return 0 < db.query( "select * from horde_prefs where pref_uid='%s' and pref_scope='%s';" % (mail, scope) ).ntuples()
 
+def __imp_settings ( db, mail ):
+	if not __tuples_exist ( db, mail, 'imp' ):
+		db.query( "insert into horde_prefs values('%s', 'imp', 'search_sources', '%s\tkolab_global');" % (mail, mail))
+
 def __turba_settings ( db, mail ):
 	if not __tuples_exist ( db, mail, 'turba' ):
 		db.query( "insert into horde_prefs values('%s', 'turba', 'default_dir', '%s');" % (mail, mail))
+		db.query( "insert into horde_prefs values('%s', 'turba', 'addressbooks', '%s');" % (mail, mail))
 
 def __kronolith_settings ( db, mail ):
 	if not __tuples_exist ( db, mail, 'kronolith' ):
@@ -69,6 +74,8 @@ def __kronolith_settings ( db, mail ):
 		db.query( "insert into horde_prefs values('%s', 'kronolith', 'defaultview', 'week');" % mail)
 		db.query( "insert into horde_prefs values('%s', 'kronolith', 'confirm_delete', '1');" % mail)
 		db.query( "insert into horde_prefs values('%s', 'kronolith', 'default_share', '%s');" % (mail, mail))
+		db.query( "insert into horde_prefs values('%s', 'kronolith', 'fb_cals', 'a:1:{i:0;s:%d:\"%s\";}');" % (mail, len(mail), mail))
+		db.query( "insert into horde_prefs values('%s', 'kronolith', 'display_cals', 'a:1:{i:0;s:%d:\"%s\";}');" % (mail, len(mail), mail))
 
 def __horde_settings ( db, mail, fullname ):
 	if not __tuples_exist ( db, mail, 'horde' ):
@@ -118,6 +125,7 @@ def handler(dn, new, old):
 				__horde_settings( db, mail = new['mailPrimaryAddress'][0], fullname = new[ 'displayName' ][0] )
 				__kronolith_settings( db, mail = new['mailPrimaryAddress'][0] )
 				__turba_settings( db, mail = new['mailPrimaryAddress'][0] )
+				__imp_settings( db, mail = new['mailPrimaryAddress'][0] )
 			finally:
 				db.close()
 		finally:

@@ -140,7 +140,15 @@ univention-baseconfig set	horde/application/turba?true \
 							horde/folder/sent?'sent-mail' \
 							horde/folder/drafts?'drafts' \
 							horde/folder/trash?'trash' \
-							horde/folder/spam?'Spam'
+ 							horde/folder/spam?'Spam' \
+							horde/prefs/imp/sending_charset?'UTF-8' \
+							horde/prefs/imp/save_attachments?'always' \
+							horde/prefs/imp/sig_dashes?'yes' \
+							horde/prefs/imp/sortby?'SORTDATE' \
+							horde/prefs/imp/sortdir?'descending' \
+							horde/prefs/imp/reply_format?'original' \
+							horde/prefs/imp/jseditor?'fckeditor' \
+							horde/mime_settings/imp/html/inline?'yes'
 
 univention-baseconfig set	php/memory/limit?64 \
 							php/memory/executiontime?150 \

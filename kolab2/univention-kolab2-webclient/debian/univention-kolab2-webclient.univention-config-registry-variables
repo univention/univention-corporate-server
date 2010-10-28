@@ -189,3 +189,87 @@ Description[de]=Maximale Größe einer Beschreibung/Notiz, die per SyncML übert
 Description[en]=Maximum size of a description/note that is transferred via SyncML
 Type=int
 Categories=service-mail
+
+[horde/folder/sent]
+Description[de]=Benennung des Ordners für Gesendete Objekte
+Description[en]=Name of folder for sent objects
+Type=str
+Categories=service-mail
+
+[horde/folder/drafts]
+Description[de]=Benennung des Ordners für Entwürfe
+Description[en]=Name of folder for drafts
+Type=str
+Categories=service-mail
+
+[horde/folder/spam]
+Description[de]=Benennung des Ordners für Spam
+Description[en]=Name of folder for spam
+Type=str
+Categories=service-mail
+
+[horde/folder/trash]
+Description[de]=Benennung des Ordners für Gelöschte Objekte
+Description[en]=Name of folder for deleted objects
+Type=str
+Categories=service-mail
+
+[horde/prefs/imp/sending_charset]
+Description[de]=Standard-Zeichensatz für Emailversand (z.B. 'UTF-8')
+Description[en]=Default charset for sending messages
+Type=str
+Categories=service-mail
+
+[horde/prefs/imp/sending_charset/locked]
+Description[de]=Standard-Zeichensatz für Emailversand unveränderbar machen
+Description[en]=Lock the default charset setting
+Type=str
+Categories=service-mail
+
+[horde/prefs/imp/save_attachments]
+Description[de]=Email-Attachments mit im Ordner für gesendete Nachrichten speichern
+Description[en]=Save email attachments in the sent mail folder
+Type=str
+Categories=service-mail
+
+[horde/prefs/imp/sig_dashes]
+Description[de]=Email-Signatur mit Standard-Trennlinie einleiten ('-- ')?
+Description[en]=Precede the signature with dashes ('-- ')?
+Type=str
+Categories=service-mail
+
+[horde/prefs/imp/sortby]
+Description[de]=Vorgabewert für das Sortierkriterium der Emails
+Description[en]=Default sorting column
+Type=str
+Categories=service-mail
+
+[horde/prefs/imp/sortdir]
+Description[de]=Vorgabewert für die Sortierrichtung der Emails
+Description[en]=Default sorting direction
+Type=str
+Categories=service-mail
+
+[horde/prefs/imp/reply_format]
+Description[de]=Emails im Format der Originalnachricht beantworten/weiterleiten (z.B. HTML)
+Description[en]=Reply/forward messages in the same format as the original message (e.g. HTML)
+Type=str
+Categories=service-mail
+ 
+[horde/prefs/imp/jseditor]
+Description[de]=Vorauswahl für den Javascript HTML Editor
+Description[en]=The default Javascript HTML editor
+Type=str
+Categories=service-mail
+ 
+[horde/mime_settings/imp/html/inline]
+Description[de]=HTML-EMails direkt anzeigen
+Description[en]=Display HTML mails inline
+Type=str
+Categories=service-mail
+
+[horde/prefs/do_maintenance]
+Description[de]=Aufräumarbeiten nach dem Login starten
+Description[en]=Perform maintenance operations on login
+Type=str
+Categories=service-mail

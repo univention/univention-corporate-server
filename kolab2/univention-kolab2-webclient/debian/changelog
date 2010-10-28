@@ -1,3 +1,24 @@
+univention-kolab2-webclient (6.0.3-1) unstable; urgency=low
+
+  * Add UCR variable descriptions for horde/folder/* (Bug #16566)
+  * Select personal addressbook in turba for new users
+    Use personal and LDAP addressbook in autocompletion for new users
+    Include personal calendar for generating Free/Busy URLs for new users
+    Add personal calendar to default set of display calendars (new users)
+    UCR horde/imp/sending_charset with new installation default 'UTF-8'
+    UCR horde/prefs/imp/save_attachments with new inst. default 'always'
+    UCR horde/prefs/imp/sig_dashes with new inst. default 'yes'
+    UCR horde/prefs/imp/sortby with new installation default 'SORTDATE'
+    UCR horde/prefs/imp/reply_format with new inst. default 'original'
+    UCR horde/mime_settings/imp/html/inline with new inst. default 'yes'
+    (Bug #19355)
+  * Optional UCR horde/prefs/do_maintenance
+  * Optional UCR horde/imp/sending_charset/locked (Bug #19355)
+  * UCR horde/prefs/imp/jseditor with new inst. default 'fckeditor'
+    (Bug #18978)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Oct 2010 12:33:15 +0200
+
 univention-kolab2-webclient (6.0.2-19) unstable; urgency=low
 
   * Reactivate pear imap patches from UCS 2.3 (Bug #19644)

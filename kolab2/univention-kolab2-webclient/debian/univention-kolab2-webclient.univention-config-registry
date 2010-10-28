@@ -20,6 +20,7 @@ Type: file
 File: etc/horde/horde3/prefs.d/20-prefs_ucs.php
 User: www-data
 Mode: 640
+Variables: horde/prefs/do_maintenance
 
 Type: file
 File: etc/horde/horde3/registry.d/20-registry_ucs.php
@@ -47,6 +48,20 @@ Variables: horde/folder/sent
 Variables: horde/folder/drafts
 Variables: horde/folder/trash
 Variables: horde/folder/spam
+Variables: horde/prefs/imp/sending_charset
+Variables: horde/prefs/imp/sending_charset/locked
+Variables: horde/prefs/imp/save_attachments
+Variables: horde/prefs/imp/sig_dashes
+Variables: horde/prefs/imp/sortby
+Variables: horde/prefs/imp/sortdir
+Variables: horde/prefs/imp/reply_format
+Variables: horde/prefs/imp/jseditor
+
+Type: file
+File: etc/horde/imp4/mime_drivers.d/20-mime_drivers_ucs.php
+User: www-data
+Mode: 640
+Variables: horde/mime_settings/imp/html/inline
 
 Type: file
 File: etc/horde/imp4/servers.d/20-servers_ucs.php
