@@ -1,3 +1,9 @@
+univention-webui-style (5.0.24-1) unstable; urgency=low
+
+  * re-worked layout of category tabs; Bug #19445
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 28 Oct 2010 16:09:49 +0200
+
 univention-webui-style (5.0.23-1) unstable; urgency=low
 
   * Update links to UCS 2.4 docs (Bug #18493)
