@@ -4,3 +4,4 @@ etc/init.d
 var/lib/univention-updater/
 usr/share/univention-updater
 usr/lib/univention-install/
+usr/lib/python2.4/site-packages/univention/management/console/handlers/update/hooks

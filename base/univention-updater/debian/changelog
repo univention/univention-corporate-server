@@ -1,3 +1,9 @@
+univention-updater (6.0.41-1) unstable; urgency=low
+
+  * added empty hook directory (Bug #20429)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 28 Oct 2010 17:29:59 +0200
+
 univention-updater (6.0.40-1) unstable; urgency=low
 
   * fixed stderr redirection of univention-install (Bug #20498)
