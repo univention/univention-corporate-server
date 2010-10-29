@@ -256,12 +256,6 @@ Description[en]=Reply/forward messages in the same format as the original messag
 Type=str
 Categories=service-mail
  
-[horde/prefs/imp/jseditor]
-Description[de]=Vorauswahl für den Javascript HTML Editor
-Description[en]=The default Javascript HTML editor
-Type=str
-Categories=service-mail
- 
 [horde/mime_settings/imp/html/inline]
 Description[de]=HTML-EMails direkt anzeigen
 Description[en]=Display HTML mails inline
@@ -271,5 +265,11 @@ Categories=service-mail
 [horde/prefs/do_maintenance]
 Description[de]=Aufräumarbeiten nach dem Login starten
 Description[en]=Perform maintenance operations on login
+Type=str
+Categories=service-mail
+
+[horde/identities/from_attr]
+Description[de]=LDAP-Attribut, aus dem die Standard-Absenderadresse ermittelt wird
+Description[en]=LDAP attribute providing the default sender address
 Type=str
 Categories=service-mail

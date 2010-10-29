@@ -100,15 +100,6 @@ ucr_key="horde/prefs/imp/reply_format"
 if ucr_key in baseConfig:
 	bin_value={True: 1, False: 0}[ baseConfig.get(ucr_key).lower() in ('original', '1') ]
 	print "$_prefs['reply_format']['value'] = %s;\n" % bin_value
-
-## // The default JS HTML editor.
-ucr_key="horde/prefs/imp/jseditor"
-if ucr_key in baseConfig:
-	print "$_prefs['jseditor']['value'] = '%s';\n" % baseConfig.get(ucr_key)
-
-## // The layout of buttons to show in FCKeditor
-print "$_prefs['fckeditor_buttons']['value'] = \"[['FitWindow','Preview','Save','-','Templates'],['Undo','Redo','-','Find','Replace','-','SelectAll', 'RemoveFormat'],['Cut','Copy','Paste', 'PasteText','PasteWord','-','Print','SpellCheck'],'/',['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],['OrderedList','UnorderedList','-','Outdent','Indent','Blockquote'],['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],'/',['Link','Unlink', 'Anchor'],['Table','Rule','PageBreak','NewPage','Image','TextColor','BGColor','Smiley','SpecialChar'],['Source','ShowBlocks','DocProps','-','About'],'/',['Style','FontFormat', 'FontName','FontSize']]\";\n"
-
 @!@
 // End Personal Information preferences
 ?>

@@ -55,7 +55,6 @@ Variables: horde/prefs/imp/sig_dashes
 Variables: horde/prefs/imp/sortby
 Variables: horde/prefs/imp/sortdir
 Variables: horde/prefs/imp/reply_format
-Variables: horde/prefs/imp/jseditor
 
 Type: file
 File: etc/horde/imp4/mime_drivers.d/20-mime_drivers_ucs.php

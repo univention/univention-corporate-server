@@ -1,3 +1,11 @@
+univention-kolab2-webclient (6.0.3-2) unstable; urgency=low
+
+  * remove horde/prefs/imp/jseditor (Bug #18978)
+  * New UCR variable horde/identities/from_attr (Bug #19355)
+  * Update horde identity sender mail address from LDAP (Bug #19355)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 29 Oct 2010 09:30:37 +0200
+
 univention-kolab2-webclient (6.0.3-1) unstable; urgency=low
 
   * Add UCR variable descriptions for horde/folder/* (Bug #16566)

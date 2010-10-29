@@ -41,10 +41,10 @@ import univention.debug
 import pg, string
 
 
-def __create_db_identity( mail, fullname ):
+def __create_db_identity( mail, fullname, from_addr ):
  	name = 'Default Identity'
 	return 'a:1:{i:0;a:4:{s:2:\"id\";s:%d:\"%s\";s:8:\"fullname\";s:%d:\"%s\";s:9:\"from_addr\";s:%d:\"%s\";s:16:\"default_identity\";s:1:\"1\";}}' % \
-			( len( name ), name, len( fullname ), fullname, len( mail ), mail )
+			( len( name ), name, len( fullname ), fullname, len( from_addr ), from_addr )
 
 def __tuples_exist ( db, mail, scope ):
 	return 0 < db.query( "select * from horde_prefs where pref_uid='%s' and pref_scope='%s';" % (mail, scope) ).ntuples()
@@ -52,6 +52,12 @@ def __tuples_exist ( db, mail, scope ):
 def __imp_settings ( db, mail ):
 	if not __tuples_exist ( db, mail, 'imp' ):
 		db.query( "insert into horde_prefs values('%s', 'imp', 'search_sources', '%s\tkolab_global');" % (mail, mail))
+
+def __triple_exist ( db, mail, scope, name ):
+	return 0 < db.query( "select * from horde_prefs where pref_uid='%s' and pref_scope='%s' and pref_name='%s';" % (mail, scope, name) ).ntuples()
+
+def __quadruple_exist ( db, mail, scope, name, value ):
+	return 0 < db.query( "select * from horde_prefs where pref_uid='%s' and pref_scope='%s' and pref_name='%s' and pref_value='%s';" % (mail, scope, name, value) ).ntuples()
 
 def __turba_settings ( db, mail ):
 	if not __tuples_exist ( db, mail, 'turba' ):
@@ -77,7 +83,7 @@ def __kronolith_settings ( db, mail ):
 		db.query( "insert into horde_prefs values('%s', 'kronolith', 'fb_cals', 'a:1:{i:0;s:%d:\"%s\";}');" % (mail, len(mail), mail))
 		db.query( "insert into horde_prefs values('%s', 'kronolith', 'display_cals', 'a:1:{i:0;s:%d:\"%s\";}');" % (mail, len(mail), mail))
 
-def __horde_settings ( db, mail, fullname ):
+def __horde_settings ( db, mail, fullname, from_addr ):
 	if not __tuples_exist ( db, mail, 'horde' ):
 		baseConfig = univention_baseconfig.baseConfig()
 		baseConfig.load()
@@ -88,7 +94,7 @@ def __horde_settings ( db, mail, fullname ):
 			if k.startswith('horde/calendar/category/'):
 				categories[k.split('/')[-1]] = '#%s' % baseConfig[k]
 
-		db.query( "insert into horde_prefs values('%s','horde', 'identities','%s');" % (mail, __create_db_identity( mail, fullname )) )
+		db.query( "insert into horde_prefs values('%s','horde', 'identities','%s');" % (mail, __create_db_identity( mail, fullname, from_addr )) )
 		db.query( "insert into horde_prefs values('%s', 'horde', 'confirm_maintenance', '0');" % mail )
 		db.query( "insert into horde_prefs values('%s', 'horde', 'do_maintenance', '0');" % mail )
 		db.query( "insert into horde_prefs values('%s', 'horde', 'show_last_login', '1');" % mail )
@@ -112,6 +118,8 @@ def __horde_settings ( db, mail, fullname ):
 				category_colors = '%s:%s|%s' % (k, categories[k],category_colors)
 			db.query( "insert into horde_prefs values('%s', 'horde', 'category_colors', '%s');" % (mail,category_colors))
 			#category_colors          | bla:#FFFFFF|foobar:#112233|_default_:#FFFFFF|_unfiled_:#DDDDDD
+	elif __triple_exist(db, mail, 'horde', 'identities') and not __quadruple_exist(db, mail, 'horde', 'identities', __create_db_identity( mail, fullname, from_addr )):
+		db.query( "update horde_prefs set pref_value='%s' where pref_uid='%s' and pref_scope='%s' and pref_name='%s';" % (__create_db_identity( mail, fullname, from_addr ), mail, 'horde', 'identities'))
 
 def handler(dn, new, old):
 	if new and new.has_key( 'mailPrimaryAddress' ):
@@ -122,7 +130,15 @@ def handler(dn, new, old):
 			secret.close()
 			db = pg.connect( dbname = 'horde', user = 'horde', passwd = password )
 			try:
-				__horde_settings( db, mail = new['mailPrimaryAddress'][0], fullname = new[ 'displayName' ][0] )
+				from_attr=listener.baseConfig.get('horde/identities/from_attr', 'mailPrimaryAddress')
+				from_addr_list=new.get(from_attr)
+				if from_addr_list:
+					from_addr=from_addr_list[0]
+				else:
+					univention.debug.debug(debug.LISTENER, debug.WARN, '%s: Attribute "%s" is not set for user with mailPrimaryAddress %s' % (__file__, from_attr, new['mailPrimaryAddress'][0]))
+					from_addr=''
+
+				__horde_settings( db, mail = new['mailPrimaryAddress'][0], fullname = new[ 'displayName' ][0], from_addr=from_addr )
 				__kronolith_settings( db, mail = new['mailPrimaryAddress'][0] )
 				__turba_settings( db, mail = new['mailPrimaryAddress'][0] )
 				__imp_settings( db, mail = new['mailPrimaryAddress'][0] )
