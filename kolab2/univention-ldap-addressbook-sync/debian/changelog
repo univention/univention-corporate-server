@@ -1,3 +1,9 @@
+univention-ldap-addressbook-sync (4.0.3-1) unstable; urgency=low
+
+  * catch all exception while processing an pickle object and keep it; Bug #19841
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 29 Oct 2010 18:03:54 +0200
+
 univention-ldap-addressbook-sync (4.0.2-1) unstable; urgency=low
 
   * read group membership directly from LDAP server; Bug #19796, Bug #19795
