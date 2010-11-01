@@ -1,3 +1,10 @@
+univention-gdm (6.0.10-1) unstable; urgency=low
+
+  * ucs gdm theme layout changes Bug #20183
+  * gdm init script optimization
+
+ -- Felix Botner <botner@univention.de>  Mon, 01 Nov 2010 15:31:44 +0100
+
 univention-gdm (6.0.9-1) unstable; urgency=low
 
   * fix: allow none as keyword to disable autostart scripts. Bug #18544
