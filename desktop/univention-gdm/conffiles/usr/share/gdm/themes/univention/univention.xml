@@ -37,7 +37,8 @@ License with the Debian GNU/Linux or Univention distribution in file
 @!@
 
 bcolor="000000"
-bcolor="056b27"
+#bcolor="056b27"
+tcolor="000000"
 pos = {}
 
 pos["640x480"] = {}
@@ -52,7 +53,6 @@ pos["640x480"]["button_w"] = 70
 pos["640x480"]["button_h"] = 22
 pos["640x480"]["font"] = "Sans 13"
 pos["640x480"]["fontbold"] = "Sans bold 13"
-pos["640x480"]["bcolor"] = bcolor
 
 pos["800x600"] = {}
 pos["800x600"]["login_w"] = 180
@@ -66,7 +66,6 @@ pos["800x600"]["button_w"] = 85
 pos["800x600"]["button_h"] = 26
 pos["800x600"]["font"] = "Sans 13"
 pos["800x600"]["fontbold"] = "Sans bold 13"
-pos["800x600"]["bcolor"] = bcolor
 
 pos["1024x768"] = {}
 pos["1024x768"]["login_w"] = 218
@@ -80,7 +79,6 @@ pos["1024x768"]["button_w"] = 102
 pos["1024x768"]["button_h"] = 26
 pos["1024x768"]["font"] = "Sans 13"
 pos["1024x768"]["fontbold"] = "Sans bold 13"
-pos["1024x768"]["bcolor"] = bcolor
 
 pos["1280x1024"] = {}
 pos["1280x1024"]["login_w"] = 271
@@ -94,7 +92,6 @@ pos["1280x1024"]["button_w"] = 127
 pos["1280x1024"]["button_h"] = 31
 pos["1280x1024"]["font"] = "Sans 16"
 pos["1280x1024"]["fontbold"] = "Sans bold 16"
-pos["1280x1024"]["bcolor"] = bcolor
 
 pos["1400x1050"] = {}
 pos["1400x1050"]["login_w"] = 339
@@ -108,7 +105,6 @@ pos["1400x1050"]["button_w"] = 159
 pos["1400x1050"]["button_h"] = 39
 pos["1400x1050"]["font"] = "Sans 16"
 pos["1400x1050"]["fontbold"] = "Sans bold 16"
-pos["1400x1050"]["bcolor"] = bcolor
 
 pos["1440x900"] = {}
 pos["1440x900"]["login_w"] = 290
@@ -122,7 +118,6 @@ pos["1440x900"]["button_w"] = 136
 pos["1440x900"]["button_h"] = 33
 pos["1440x900"]["font"] = "Sans 16"
 pos["1440x900"]["fontbold"] = "Sans bold 16"
-pos["1440x900"]["bcolor"] = bcolor
 
 pos["1600x1200"] = {}
 pos["1600x1200"]["login_w"] = 339
@@ -136,7 +131,6 @@ pos["1600x1200"]["button_w"] = 159
 pos["1600x1200"]["button_h"] = 39
 pos["1600x1200"]["font"] = "Sans 18"
 pos["1600x1200"]["fontbold"] = "Sans bold 18"
-pos["1600x1200"]["bcolor"] = bcolor
 
 pos["1680x1050"] = {}
 pos["1680x1050"]["login_w"] = 339
@@ -150,7 +144,6 @@ pos["1680x1050"]["button_w"] = 159
 pos["1680x1050"]["button_h"] = 39
 pos["1680x1050"]["font"] = "Sans 18"
 pos["1680x1050"]["fontbold"] = "Sans bold 18"
-pos["1680x1050"]["bcolor"] = bcolor
 
 pos["1920x1200"] = {}
 pos["1920x1200"]["login_w"] = 387
@@ -164,7 +157,6 @@ pos["1920x1200"]["button_w"] = 181
 pos["1920x1200"]["button_h"] = 44
 pos["1920x1200"]["font"] = "Sans 22"
 pos["1920x1200"]["fontbold"] = "Sans bold 22"
-pos["1920x1200"]["bcolor"] = bcolor
 
 pos["1920x1080"] = {}
 pos["1920x1080"]["login_w"] = 339
@@ -178,7 +170,6 @@ pos["1920x1080"]["button_w"] = 159
 pos["1920x1080"]["button_h"] = 39
 pos["1920x1080"]["font"] = "Sans 22"
 pos["1920x1080"]["fontbold"] = "Sans bold 22"
-pos["1920x1080"]["bcolor"] = bcolor
 
 defaultRes = "1280x1024"
 res = baseConfig.get("xorg/resolution", defaultRes)
@@ -204,7 +195,8 @@ for xy in pos.keys():
 	maxX, maxY = xy.split("x")
 	maxX = int(maxX)
 	maxY = int(maxY)
-
+	pos[xy]["tcolor"] = tcolor
+	pos[xy]["bcolor"] = bcolor
 	pos[xy]["pamEntry_width"] = maxX / 4 * 3
 
 print ''
@@ -220,7 +212,7 @@ print '\t<item type="rect" id="caps-lock-warning">'
 print '\t\t<pos x="50%%" y="73%%" width="box" height="box"/>' % pos[res]
 print '\t\t<box orientation="vertical">'
 print '\t\t\t<item type="label">'
-print '\t\t\t\t<normal color="#FFFFFF" font="%(font)s"/>' % pos[res]
+print '\t\t\t\t<normal color="#%(tcolor)s" font="%(font)s"/>' % pos[res]
 print '\t\t\t\t<pos anchor="center"/>'
 print '\t\t\t\t<stock type="caps-lock-warning"/>'
 print '\t\t\t</item>'
@@ -240,7 +232,7 @@ print '\t<item type="rect">'
 print '\t\t<pos x="50%" y="40%" width="100%" height="box" anchor="c" />'
 print '\t\t<box orientation="vertical">'
 print '\t\t\t<item type="label" id="pam-prompt">'
-print '\t\t\t\t<normal color="#ffffff" font="%(fontbold)s"/>' % pos[res]
+print '\t\t\t\t<normal color="#%(tcolor)s" font="%(fontbold)s"/>' % pos[res]
 print '\t\t\t\t<stock type="username-label"/>'
 print '\t\t\t\t<pos x="50%" anchor="c" />'
 print '\t\t\t</item>'
@@ -266,7 +258,7 @@ print '\t<item type="rect">'
 print '\t\t<pos x="50%%" y="68%%" width="box" height="box"/>' % pos[res]
 print '\t\t<box orientation="vertical" min-width="%(pamEntry_width)s" >' % pos[res]
 print '\t\t\t<item type="label" id="pam-error">'
-print '\t\t\t\t<normal color="#FFFFFF" font="%(font)s"/>' % pos[res]
+print '\t\t\t\t<normal color="#%(tcolor)s" font="%(font)s"/>' % pos[res]
 print '\t\t\t\t<pos anchor="center" />'
 print '\t\t\t\t<text></text>'
 print '\t\t\t</item>'
@@ -335,7 +327,7 @@ if autostart:
 	print '\t\t<pos x="50%%" y="76.5%%" width="box" height="box"/>' % pos[res]
 	print '\t\t<box orientation="vertical">' % pos[res]
 	print '\t\t\t<item type="label" id="timed-label">'
-	print '\t\t\t\t<normal color="#FFFFFF" font="%(font)s"/>' % pos[res]
+	print '\t\t\t\t<normal color="#%(tcolor)s" font="%(font)s"/>' % pos[res]
 	print '\t\t\t\t<pos anchor="center"/>'
 	print '\t\t\t\t<!-- Stock label for: User %s will login in %d seconds -->'
 	print '\t\t\t\t<stock type="timed-label"/>'

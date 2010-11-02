@@ -1,3 +1,9 @@
+univention-gdm (6.0.10-2) unstable; urgency=low
+
+  * changed gdm login text color (Bug #20183) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Nov 2010 09:17:09 +0100
+
 univention-gdm (6.0.10-1) unstable; urgency=low
 
   * ucs gdm theme layout changes Bug #20183
