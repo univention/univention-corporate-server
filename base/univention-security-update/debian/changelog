@@ -1,3 +1,9 @@
+univention-security-update (4.0.0-5) unstable; urgency=low
+
+  * Fifth security update for UCS 2.3 (Bug #20588)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Nov 2010 18:27:17 +0100
+
 univention-security-update (4.0.0-4) unstable; urgency=low
 
   * Fourth security update for UCS 2.3 (Bug #18873)
