@@ -1,4 +1,4 @@
-univention-application-server (4.0.1-1) unstable; urgency=low
+univention-application-server (4.0.1-2) unstable; urgency=low
 
   * run join script only on master and backup (Bug #20594) 
 
