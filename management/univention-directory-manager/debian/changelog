@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.20-1) unstable; urgency=low
+
+  * fixed wrong UCR comparing values for true and false (Bug #20186)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 05 Nov 2010 08:15:48 +0100
+
 univention-directory-manager (8.0.19-1) unstable; urgency=low
 
   * always create hook directory (Bug #20452)
