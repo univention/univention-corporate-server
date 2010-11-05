@@ -748,19 +748,26 @@ def postrun():
 	p = os.popen('pidof /usr/sbin/nagios2')
 	pidlist = p.read()
 	p.close()
-	if not pidlist.strip():
-		if listener.baseConfig.has_key("nagios/server/autostart") and ( listener.baseConfig["nagios/server/autostart"].lower() in ["yes", "true", '1']):
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: nagios2 not running - restarting server')
+	st = os.popen('nagios2 -v /etc/nagios2/nagios.cfg >/dev/null; echo $?')
+	status = st.read().strip()
+	st.close()
+	if status and status == '0':
+		if not pidlist.strip():
+			if listener.baseConfig.has_key("nagios/server/autostart") and ( listener.baseConfig["nagios/server/autostart"].lower() in ["yes", "true", '1']):
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: nagios2 not running - restarting server')
 
+				listener.setuid(0)
+				try:
+					listener.run(initscript, ['nagios2', 'restart'], uid=0)
+				finally:
+					listener.unsetuid()
+		else:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: reloading server')
 			listener.setuid(0)
 			try:
-				listener.run(initscript, ['nagios2', 'restart'], uid=0)
+				listener.run(initscript, ['nagios2', 'reload'], uid=0)
 			finally:
 				listener.unsetuid()
 	else:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: reloading server')
-		listener.setuid(0)
-		try:
-			listener.run(initscript, ['nagios2', 'reload'], uid=0)
-		finally:
-			listener.unsetuid()
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: nagios2 reported an error in configfile /etc/nagios2/nagios.cfg')
+		listener.unsetuid()
