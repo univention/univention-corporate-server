@@ -1,5 +1,11 @@
 univention-system-setup (4.0.8-1) unstable; urgency=low
 
+  * add whois to the dependencies because we need mkpasswd Bug #18496
+
+ -- Felix Botner <botner@univention.de>  Fri, 05 Nov 2010 15:08:45 +0100
+
+univention-system-setup (4.0.8-1) unstable; urgency=low
+
   * don't use os.system for logging message Bug #16897
 
  -- Tim Petersen <petersen@univention.de>  Thu, 07 Oct 2010 09:27:35 +0200
