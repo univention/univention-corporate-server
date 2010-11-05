@@ -1,3 +1,9 @@
+univention-application-server (4.0.1-1) unstable; urgency=low
+
+  * run join script only on master and backup (Bug #20594) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 05 Nov 2010 14:45:05 +0100
+
 univention-application-server (4.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

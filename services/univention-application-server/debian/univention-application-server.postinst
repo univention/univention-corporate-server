@@ -32,5 +32,9 @@
 
 #DEBHELPER#
 
-/usr/lib/univention-install/80univention-application-server.inst || true
+eval `univention-baseconfig shell`
+
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	/usr/lib/univention-install/80univention-application-server.inst || true
+fi
 
