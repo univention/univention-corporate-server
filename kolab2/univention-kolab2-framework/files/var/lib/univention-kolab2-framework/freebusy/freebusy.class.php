@@ -60,7 +60,7 @@ class FreeBusy {
   }
 
   function imapLogin() {
-    myLog("imap login: ".$this->username."-".$this->password, RM_LOG_DEBUG);
+    myLog("imap login: ".$this->username, RM_LOG_DEBUG);
     return $this->imap->login($this->username,$this->password, false, false);
   }
 
