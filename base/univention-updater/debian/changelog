@@ -1,3 +1,9 @@
+univention-updater (6.0.42-1) unstable; urgency=low
+
+  * remove obsolete killall/rm from cleanup() (Bug #19520)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 08 Nov 2010 13:35:45 +0100
+
 univention-updater (6.0.41-1) unstable; urgency=low
 
   * added empty hook directory (Bug #20429)

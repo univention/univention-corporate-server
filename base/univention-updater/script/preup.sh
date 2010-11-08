@@ -12,9 +12,6 @@ eval $(univention-config-registry shell) >>"$UPDATER_LOG" 2>&1
 
 # Bug #16454: Workaround to remove source.list on failed upgrades
 function cleanup() {
-	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
-	killall univention-updater
-
 	# remove statoverride for UMC and apache in case of error during preup script
 	if [ -e /usr/sbin/univention-management-console-server ]; then
 		dpkg-statoverride --remove /usr/sbin/univention-management-console-server >/dev/null 2>&1
