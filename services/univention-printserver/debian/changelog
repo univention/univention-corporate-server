@@ -1,3 +1,10 @@
+univention-printserver (4.0.8-1) unstable; urgency=low
+
+  * Always add auth-info-required=none to printers.conf otherwise cups
+    will disable the remote printing support from time to time (Bug #20615)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 08 Nov 2010 10:52:26 +0100
+
 univention-printserver (4.0.7-1) unstable; urgency=low
 
   * removed dependency on univention-samba (Bug #16791)

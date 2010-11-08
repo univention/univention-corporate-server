@@ -218,8 +218,7 @@ def handler(dn, new, old):
 
 		if new.has_key('univentionPrinterACLtype'):
 			if new['univentionPrinterACLtype'][0] == 'allow all':
-				args.append('-u')
-				args.append('allow:all')
+				args+=['-u', 'allow:all', '-o', 'auth-info-required=none']
 			elif (new.has_key('univentionPrinterACLUsers') and len(new['univentionPrinterACLUsers']) > 0) or (new.has_key('univentionPrinterACLGroups') and len(new['univentionPrinterACLGroups']) > 0):
 				args.append('-u')
 				argument = "%s:" % new['univentionPrinterACLtype'][0]
@@ -230,6 +229,8 @@ def handler(dn, new, old):
 					for groupDn in new['univentionPrinterACLGroups']:
 						argument += '@%s,' % groupDn[groupDn.find('=')+1:groupDn.find(',')]
 				args.append(argument[:-1])
+		else:
+			args+=['-o', 'auth-info-required=none']
 
 		# Add/Modify Printergroup
 		if printer_is_group:
