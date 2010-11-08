@@ -256,7 +256,13 @@ class UniventionUpdater:
 		if not self.nameserver_available:
 			raise socket.gaierror, (socket.EAI_NONAME, 'The repository server %s could not be resolved.' % server)
 
-		if self.proxy not in (None, ''):
+		# check no_proxy
+		no_proxy = False		
+		for i in self.no_proxy:
+			if server.endswith(i):
+				no_proxy = True
+
+		if self.proxy not in (None, '') and not no_proxy:
 			if '://' in self.proxy:
 				r = urlparse.urlsplit(self.proxy)
 				if r[0] != 'http':
@@ -304,6 +310,15 @@ class UniventionUpdater:
 			self.proxy = os.environ['http_proxy']
 		else:
 			self.proxy = None
+
+		self.no_proxy = []
+		no_proxy_tmp = self.configRegistry.get("proxy/no_proxy", "")
+		if not no_proxy_tmp:
+			no_proxy_tmp = os.environ.get("no_proxy", "")
+		for i in no_proxy_tmp.split(","):
+			i = i.strip()
+			if i:
+				self.no_proxy.append(i)
 
 		# check for maintained and unmaintained
 		self.parts = []

@@ -1,3 +1,9 @@
+univention-updater (6.0.43-1) unstable; urgency=low
+
+  * honour the no_proxy env/ucr in univention-updater (Bug #16020) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 08 Nov 2010 14:29:25 +0100
+
 univention-updater (6.0.42-1) unstable; urgency=low
 
   * remove obsolete killall/rm from cleanup() (Bug #19520)
