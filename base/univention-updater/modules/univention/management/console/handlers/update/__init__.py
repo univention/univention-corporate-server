@@ -383,6 +383,13 @@ class handler(umch.simpleHandler):
 
 			ud.debug(ud.ADMIN, ud.INFO, 'Set the following component settings: %s' % res)
 			univention.config_registry.handler_set(res)
+			p1 = subprocess.Popen(['apt-get','-qq','update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, env={"LC_ALL": "C", "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"})
+			(stdout,stderr) = p1.communicate()
+			ud.debug(ud.ADMIN, ud.PROCESS, 'run "apt-get update", the returncode is %d' % p1.returncode)
+			if stderr:
+				ud.debug(ud.ADMIN, ud.PROCESS, 'stderr=%s' % stderr)
+			if stdout:
+				ud.debug(ud.ADMIN, ud.INFO, 'stdout=%s' % stdout)
 			ud.debug(ud.ADMIN, ud.INFO, 'And reinit the updater modul')
 			self.updater.ucr_reinit()
 
