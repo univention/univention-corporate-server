@@ -4,6 +4,12 @@ Description[en]=Proxy for HTTP connections
 Type=str
 Categories=system-base
 
+[proxy/no_proxy]
+Description[de]=Kommaseparierte Liste von Domänennamen für die der Proxy nicht verwendet werden soll
+Description[en]=Comma-separated list of domain names for which the proxy should not be consulted
+Type=str
+Categories=system-base
+
 [locale/default]
 Description[de]=Standard-Lokalisierung (Sprache der Oberfläche, Zeichensätze, etc.)
 Description[en]=Default localisation (Interface language, character sets, etc.)

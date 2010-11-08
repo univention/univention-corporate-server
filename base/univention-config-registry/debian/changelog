@@ -1,3 +1,9 @@
+univention-config-registry (6.0.36-1) unstable; urgency=low
+
+  * added UCR var proxy/no_proxy (Bug #16020) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 08 Nov 2010 14:01:07 +0100
+
 univention-config-registry (6.0.35-1) unstable; urgency=low
 
   * legacy conversion script univention-config-registry-policy-encoding

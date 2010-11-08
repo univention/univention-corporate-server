@@ -38,6 +38,11 @@ else:
 @!@
 
 @!@
+if configRegistry.has_key('proxy/no_proxy') and configRegistry['proxy/no_proxy']:
+    print 'export no_proxy="%s"' % configRegistry['proxy/no_proxy']
+@!@
+
+@!@
 if configRegistry.has_key('locale/default') and configRegistry['locale/default']:
     print 'export LANG="%s"' % configRegistry['locale/default'].split(":")[0]
 @!@

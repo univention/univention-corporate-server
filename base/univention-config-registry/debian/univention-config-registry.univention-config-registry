@@ -1,6 +1,7 @@
 Type: file
 File: etc/profile
 Variables: proxy/http
+Variables: proxy/no_proxy
 Variables: locale/default
 Variables: umask
 
