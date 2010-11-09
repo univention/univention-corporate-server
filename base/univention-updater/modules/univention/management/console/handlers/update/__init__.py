@@ -1104,7 +1104,7 @@ class handler(umch.simpleHandler):
 				req.set_flag('web:startup_dialog', True)
 				req.set_flag('web:startup_referrer', False)
 				req.set_flag('web:startup_format', _('Confirm the updater warning'))
-				btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req)])
+				btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req)], default=True)
 
 				result.add_row([ umcd.CancelButton(), btn_continue])
 			else:
@@ -1121,7 +1121,7 @@ class handler(umch.simpleHandler):
 			req.set_flag('web:startup_referrer', False)
 			req.set_flag('web:startup_format', _('Execute the update'))
 			tail_action = umcd.Action(self.__get_logfile_request( { 'windowtype': 'dist-upgrade' } ))
-			btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req), tail_action])
+			btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req), tail_action], default=True)
 
 			result.add_row([ umcd.CancelButton(), btn_continue])
 		elif object.options['status'] == 'execute':
@@ -1148,14 +1148,14 @@ class handler(umch.simpleHandler):
 
 			result.add_row([ umcd.HTML(html, attributes = { 'colspan' : str(2) })])
 			req = umcp.Command(args=[command], opts={ 'updateto': updateto } )
-			btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req), umcd.Action(self.__get_logfile_request( { 'windowtype': res.options['type'] } ))])
+			btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = [umcd.Action(req), umcd.Action(self.__get_logfile_request( { 'windowtype': res.options['type'] } ))], default=True)
 
 		if res.options['type'] == 'install-component':
 			result.add_row([ umcd.HTML(self.__get_warning_install_component(), attributes = { 'colspan' : str(2) })])
 			actionlist = res.options.get('actionlist')
 			if not actionlist:
 				raise Exception('actionlist is empty')
-			btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = actionlist)
+			btn_continue = umcd.Button(_('Continue'), 'actions/ok', actions = actionlist, default=True)
 
 		result.add_row([ umcd.CancelButton(), btn_continue])
 		res.dialog = [ result]

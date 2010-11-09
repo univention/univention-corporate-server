@@ -1,3 +1,9 @@
+univention-updater (6.0.45-1) unstable; urgency=low
+
+  * set default buttons in UMC module (Bug #19559)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 09 Nov 2010 17:32:25 +0100
+
 univention-updater (6.0.44-1) unstable; urgency=low
 
   * run apt-get update on change of component settings (Bug #20129)
