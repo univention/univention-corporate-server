@@ -135,7 +135,7 @@ def handler(dn, new, old):
 				if from_addr_list:
 					from_addr=from_addr_list[0]
 				else:
-					univention.debug.debug(debug.LISTENER, debug.WARN, '%s: Attribute "%s" is not set for user with mailPrimaryAddress %s' % (__file__, from_attr, new['mailPrimaryAddress'][0]))
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: Attribute "%s" is not set for user with mailPrimaryAddress %s' % (__file__, from_attr, new['mailPrimaryAddress'][0]))
 					from_addr=''
 
 				__horde_settings( db, mail = new['mailPrimaryAddress'][0], fullname = new[ 'displayName' ][0], from_addr=from_addr )

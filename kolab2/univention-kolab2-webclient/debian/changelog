@@ -1,3 +1,9 @@
+univention-kolab2-webclient (6.0.3-4) unstable; urgency=low
+
+  * fix debug traceback in horde-prefs.py (Bug #20554)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Nov 2010 16:44:37 +0100
+
 univention-kolab2-webclient (6.0.3-3) unstable; urgency=low
 
   * remove horde/prefs/imp/jseditor from postinst (Bug #18978)
