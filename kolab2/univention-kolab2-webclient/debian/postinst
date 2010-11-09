@@ -147,7 +147,6 @@ univention-baseconfig set	horde/application/turba?true \
 							horde/prefs/imp/sortby?'SORTDATE' \
 							horde/prefs/imp/sortdir?'descending' \
 							horde/prefs/imp/reply_format?'original' \
-							horde/prefs/imp/jseditor?'fckeditor' \
 							horde/mime_settings/imp/html/inline?'yes'
 
 univention-baseconfig set	php/memory/limit?64 \
