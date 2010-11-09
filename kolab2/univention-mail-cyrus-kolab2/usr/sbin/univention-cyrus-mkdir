@@ -89,7 +89,7 @@ fsUser = user.replace(".", "^")
 remote = False
 
 # remote or not remote
-if options.hostname != "localhost":
+if options.hostname != "localhost" or options.username != "cyrus" or options.password != password:
 	remote = True
 	
 # create sieve directory on localhost
@@ -119,21 +119,35 @@ try:
 except Exception, e:
 	failed(mailPrimaryAddress, remote, e)
 
-# get extra folders
+# get folders
 mbs = []
 mbs.append("user/" + mailPrimaryAddress)
 if not remote:
-	# old
-	mbs.append("user/%s/Spam@%s" % (user, domain))
-	mbs.append("user/%s/Ham@%s" % (user, domain))
-	# new 
-	#for folder in ['spam', 'drafts', 'sent', 'trash', 'ham']:
-	#	name = cr.get('horde/folder/%s' % folder, "")
-	#	if name and not name.lower() == 'none':
-	#		mbs.append("user/%s/%s@%s" % (user, name, domain))
-	#for folder in cr.get("mail/cyrus/mailbox/predefined_folders", "").split(";"):
-	#	if folder and not folder.lower() == 'none':
-	#		mbs.append("user/%s/%s@%s" % (user, folder, domain))
+	
+	# default folders are Spam and Ham nothing else
+	
+	# spam
+	spamFolder = cr.get('mail/cyrus/folder/spam', "Spam")
+	if not spamFolder: spamFolder = "Spam"
+	if spamFolder.lower() != 'none':
+		mbs.append("user/%s/%s@%s" % (user, spamFolder, domain))
+
+	# ham
+	hamFolder = cr.get('mail/cyrus/folder/ham', "Ham")
+	if not hamFolder: hamFolder = "Ham"
+	if hamFolder.lower() != 'none':
+		mbs.append("user/%s/%s@%s" % (user, hamFolder, domain))
+
+	# drafts, sent, trash
+	for folder in ['drafts', 'sent', 'trash']:
+		name = cr.get('mail/cyrus/folder/%s' % folder, "")
+		if name and not name.lower() == 'none':
+			mbs.append("user/%s/%s@%s" % (user, name, domain))
+
+	# other folders
+	for folder in cr.get("mail/cyrus/folder/predefined_folders", "").split(";"):
+		if folder and not folder.lower() == 'none':
+			mbs.append("user/%s/%s@%s" % (user, folder, domain))
 
 # create mailbox and extra folder
 for mb in mbs:

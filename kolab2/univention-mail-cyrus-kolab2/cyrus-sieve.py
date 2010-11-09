@@ -56,8 +56,12 @@ def handler(dn, new, old):
 
 			sieveDir = '/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domainpart[0], domainpart, userpart[0], userpart)
 			if not os.path.exists(sieveDir):
-				os.makedirs(sieveDir, mode=0777)
-				os.chown(sieveDir, cyrus_id, mail_id)
+				listener.setuid(0)
+				try:
+					os.makedirs(sieveDir, mode=0777)
+					os.chown(sieveDir, cyrus_id, mail_id)
+				finally:
+					listener.unsetuid()
 				
 			
 			if old and old.has_key('mailPrimaryAddress') and old['mailPrimaryAddress'][0] != new['mailPrimaryAddress'][0]: # changed mailPrimaryAddress
@@ -113,7 +117,12 @@ def handler(dn, new, old):
 			else:
 				sc_spamglo=''
 			#local spam folder
-			sc_spamloc='fileinto "INBOX/Spam";'
+			spamFolder = listener.baseConfig.get('mail/cyrus/folder/spam', "Spam")
+			if not spamFolder:
+				spamFolder = "Spam"
+			if spamFolder.lower() == "none":
+				spamFolder = ""
+			sc_spamloc='fileinto "INBOX/%s";' % spamFolder
 			#Forward Spam?
 			sc_spamfwd=''
 			# never redirect spam for address in mail/antispam/globalfolder to itself

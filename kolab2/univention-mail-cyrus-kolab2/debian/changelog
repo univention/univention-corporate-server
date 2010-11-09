@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (3.0.16-1) unstable; urgency=low
+
+  * made cyrus standard folder configurable via mail/cyrus/folder/* ucr vars Bug #18767
+
+ -- Felix Botner <botner@univention.de>  Tue, 09 Nov 2010 08:55:59 +0100
+
 univention-mail-cyrus-kolab2 (3.0.15-2) unstable; urgency=low
 
   * fixed univention-cyrus-mkdir Bug #19767 
