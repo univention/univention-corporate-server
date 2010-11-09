@@ -1,3 +1,9 @@
+univention-spamassassin (3.0.3-1) unstable; urgency=low
+
+  * made spam/ham folder configurable via mail/cyrus/folder/* ucr vars Bug #18767
+
+ -- Felix Botner <botner@univention.de>  Tue, 09 Nov 2010 13:00:59 +0100
+
 univention-spamassassin (3.0.2-1) unstable; urgency=low
 
   * Lock spam account while creating (Bug #19556)
