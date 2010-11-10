@@ -143,15 +143,15 @@ class handler( umch.simpleHandler, _revamp.Web, partition.Commands,
 		for part in partitions:
 			mounted = mt.get( part.spec )
 			written = ( 'usrquota' in part.options )
+			size = '-'
+			free = '-'
+			used = False
 			if mounted:
 				info = df.DeviceInfo( part.mount_point )
 				size = tools.block2byte( info.size(), 1 )
 				free = tools.block2byte( info.free(), 1 )
 				used = ( 'usrquota' in mounted.options )
 				ud.debug( ud.ADMIN, ud.INFO, "%s: used: %s, written: %s" % ( part.mount_point, used, written ) )
-			else:
-				size = '-'
-				free = '-'
 			result.append( Partition( part, written, used, mounted, size, free ) )
 
 		self.finished( object.id(), result )

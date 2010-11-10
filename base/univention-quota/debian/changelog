@@ -1,3 +1,9 @@
+univention-quota (5.0.3-1) unstable; urgency=low
+
+  * fix traceback (Bug #20166)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 10 Nov 2010 09:49:40 +0100
+
 univention-quota (5.0.2-1) unstable; urgency=low
 
   * add univention-group-quota (Bug #18113)
