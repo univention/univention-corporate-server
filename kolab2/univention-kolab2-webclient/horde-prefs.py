@@ -52,6 +52,7 @@ def __tuples_exist ( db, mail, scope ):
 def __imp_settings ( db, mail ):
 	if not __tuples_exist ( db, mail, 'imp' ):
 		db.query( "insert into horde_prefs values('%s', 'imp', 'search_sources', '%s\tkolab_global');" % (mail, mail))
+		db.query( "insert into horde_prefs values('%s', 'imp', 'search_fields', '%s\tfirstname\tlastname\temails\r\nkolab_global\tname\tfirstname\tlastname\temail');" % (mail, mail))
 
 def __triple_exist ( db, mail, scope, name ):
 	return 0 < db.query( "select * from horde_prefs where pref_uid='%s' and pref_scope='%s' and pref_name='%s';" % (mail, scope, name) ).ntuples()
@@ -62,7 +63,7 @@ def __quadruple_exist ( db, mail, scope, name, value ):
 def __turba_settings ( db, mail ):
 	if not __tuples_exist ( db, mail, 'turba' ):
 		db.query( "insert into horde_prefs values('%s', 'turba', 'default_dir', '%s');" % (mail, mail))
-		db.query( "insert into horde_prefs values('%s', 'turba', 'addressbooks', '%s');" % (mail, mail))
+		db.query( "insert into horde_prefs values('%s', 'turba', 'addressbooks', '%s\nkolab_global');" % (mail, mail))
 
 def __kronolith_settings ( db, mail ):
 	if not __tuples_exist ( db, mail, 'kronolith' ):
@@ -110,6 +111,7 @@ def __horde_settings ( db, mail, fullname, from_addr ):
 		db.query( "insert into horde_prefs values('%s', 'horde', 'twentyFour', '1');" % mail )
 		db.query( "insert into horde_prefs values('%s', 'horde', 'timezone', '0');" % mail )
 		db.query( "insert into horde_prefs values('%s', 'horde', 'language', '0');" % mail )
+		db.query( "insert into horde_prefs values('%s', 'horde', 'add_source', '%s');" % (mail, mail) )
 
 		if len(categories) > 0:
 			db.query( "insert into horde_prefs values('%s', 'horde', 'categories', '%s');" % (mail,string.join(categories.keys(),'|') ) )

@@ -1,3 +1,13 @@
+univention-kolab2-webclient (6.0.3-5) unstable; urgency=low
+
+  * Re-enable LDAP-addressbook in turba for new users
+    to include it in IMP-autocompletion (Bug #19355)
+  * Preselect reasonable attributes (Given-, Lastname, Email(s))
+    to search in IMP-autocompletion
+  * Preselect personal addressbook for contact saving
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Nov 2010 11:01:11 +0100
+
 univention-kolab2-webclient (6.0.3-4) unstable; urgency=low
 
   * fix debug traceback in horde-prefs.py (Bug #20554)
