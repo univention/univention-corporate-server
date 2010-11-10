@@ -1,3 +1,9 @@
+univention-nagios (4.0.6-1) unstable; urgency=low
+
+  * Reload nagios service on changes only (Bug #20505)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Nov 2010 07:57:15 +0100
+
 univention-nagios (4.0.5-1) unstable; urgency=low
 
   * check nagios config before restart/reload (Bug #18119)

@@ -98,6 +98,7 @@ __exthostinfo_mapping = { 'unknown' : { 'icon_image'     : 'univention/unknown.g
 															 'statusmap_image': 'univention/domaincontroller_slave.gd2' }
 							}
 
+__reload = False
 
 def writeTimeperiod( filename, name, alias, periods ):
 	listener.setuid(0)
@@ -681,6 +682,8 @@ def handleHost(dn, new, old):
 
 def handler(dn, new, old):
 
+	global __reload
+
 #	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: IN dn=%s' % str(dn))
 #	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: IN old=%s' % str(old))
 #	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: IN new=%s' % str(new))
@@ -688,15 +691,18 @@ def handler(dn, new, old):
 	if ((old and old.has_key('objectClass') and 'univentionNagiosServiceClass' in old['objectClass']) or
 		(new and new.has_key('objectClass') and 'univentionNagiosServiceClass' in new['objectClass'])):
 		handleService(dn, new, old)
+		__reload = True
 
 	elif ((old and old.has_key('objectClass') and 'univentionNagiosHostClass' in old['objectClass']) or
 		(new and new.has_key('objectClass') and 'univentionNagiosHostClass' in new['objectClass'])):
 		handleHost(dn, new, old)
+		__reload = True
+
 
 	elif ((old and old.has_key('objectClass') and 'univentionNagiosTimeperiodClass' in old['objectClass']) or
 		(new and new.has_key('objectClass') and 'univentionNagiosTimeperiodClass' in new['objectClass'])):
 		handleTimeperiod(dn, new, old)
-
+		__reload = True
 
 
 def initialize():
@@ -741,33 +747,38 @@ def clean():
 
 
 def postrun():
-	global __initscript
-	initscript = __initscript
-	# restart nagios if not running and nagios/server/autostart is set to yes/true/1
-	# otherwise if nagios is running, ask nagios to reload config
-	p = os.popen('pidof /usr/sbin/nagios2')
-	pidlist = p.read()
-	p.close()
-	st = os.popen('nagios2 -v /etc/nagios2/nagios.cfg >/dev/null; echo $?')
-	status = st.read().strip()
-	st.close()
-	if status and status == '0':
-		if not pidlist.strip():
-			if listener.baseConfig.has_key("nagios/server/autostart") and ( listener.baseConfig["nagios/server/autostart"].lower() in ["yes", "true", '1']):
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: nagios2 not running - restarting server')
+	global __reload
+ 
+	if __reload:
+		global __initscript
+		initscript = __initscript
+		# restart nagios if not running and nagios/server/autostart is set to yes/true/1
+		# otherwise if nagios is running, ask nagios to reload config
+		p = os.popen('pidof /usr/sbin/nagios2')
+		pidlist = p.read()
+		p.close()
+		st = os.popen('nagios2 -v /etc/nagios2/nagios.cfg >/dev/null; echo $?')
+		status = st.read().strip()
+		st.close()
+		if status and status == '0':
+			if not pidlist.strip():
+				if listener.baseConfig.has_key("nagios/server/autostart") and ( listener.baseConfig["nagios/server/autostart"].lower() in ["yes", "true", '1']):
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: nagios2 not running - restarting server')
 
+					listener.setuid(0)
+					try:
+						listener.run(initscript, ['nagios2', 'restart'], uid=0)
+					finally:
+						listener.unsetuid()
+			else:
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: reloading server')
 				listener.setuid(0)
 				try:
-					listener.run(initscript, ['nagios2', 'restart'], uid=0)
+					listener.run(initscript, ['nagios2', 'reload'], uid=0)
 				finally:
 					listener.unsetuid()
 		else:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: reloading server')
-			listener.setuid(0)
-			try:
-				listener.run(initscript, ['nagios2', 'reload'], uid=0)
-			finally:
-				listener.unsetuid()
-	else:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: nagios2 reported an error in configfile /etc/nagios2/nagios.cfg')
-		listener.unsetuid()
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: nagios2 reported an error in configfile /etc/nagios2/nagios.cfg')
+			listener.unsetuid()
+		__reload = False
+
