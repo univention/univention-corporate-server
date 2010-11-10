@@ -131,24 +131,6 @@ Description[en]=Name of an IMAP folder for ham that is created when creating a n
 Type=str
 Categories=service-mail
 
-[mail/cyrus/folder/sent]
-Description[de]=Name eines IMAP Ordners für gesendete Objekte, der beim Anlegen eines Mail-Accounts erzeugt wird (default: none)
-Description[en]=Name of an IMAP folder for sent objects that is created when creating a new mail account (default: none)
-Type=str
-Categories=service-mail
-
-[mail/cyrus/folder/trash]
-Description[de]=Name eines IMAP Ordners für gelöschte Objekte, der beim Anlegen eines Mail-Accounts erzeugt wird (default: none)
-Description[en]=Name of an IMAP folder for deleted objects that is created when creating a new mail account (default: none)
-Type=str
-Categories=service-mail
-
-[mail/cyrus/folder/drafts]
-Description[de]=Name eines IMAP Ordners für Vorlagen, der beim Anlegen eines Mail-Accounts erzeugt wird (default: none)
-Description[en]=Name of an IMAP folder for drafts that is created when creating a new mail account (default: none)
-Type=str
-Categories=service-mail
-
 [mail/cyrus/folder/predefined_folders]
 Description[de]=Eine semikolon separierte Liste von Namen von IMAP Ordnern, die beim Anlegen eines Mail-Accounts erzeugt werden (default: none)
 Description[en]=A semicolon-separated list of IMAP folder names that are created when creating a new mail account (default: none)

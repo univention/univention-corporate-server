@@ -138,12 +138,6 @@ if not remote:
 	if hamFolder.lower() != 'none':
 		mbs.append("user/%s/%s@%s" % (user, hamFolder, domain))
 
-	# drafts, sent, trash
-	for folder in ['drafts', 'sent', 'trash']:
-		name = cr.get('mail/cyrus/folder/%s' % folder, "")
-		if name and not name.lower() == 'none':
-			mbs.append("user/%s/%s@%s" % (user, name, domain))
-
 	# other folders
 	for folder in cr.get("mail/cyrus/folder/predefined_folders", "").split(";"):
 		if folder and not folder.lower() == 'none':
