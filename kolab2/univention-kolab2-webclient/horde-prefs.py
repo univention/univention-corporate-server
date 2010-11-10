@@ -52,7 +52,7 @@ def __tuples_exist ( db, mail, scope ):
 def __imp_settings ( db, mail ):
 	if not __tuples_exist ( db, mail, 'imp' ):
 		db.query( "insert into horde_prefs values('%s', 'imp', 'search_sources', '%s\tkolab_global');" % (mail, mail))
-		db.query( "insert into horde_prefs values('%s', 'imp', 'search_fields', '%s\tfirstname\tlastname\temails\r\nkolab_global\tname\tfirstname\tlastname\temail');" % (mail, mail))
+		db.query( "insert into horde_prefs values('%s', 'imp', 'search_fields', '%s\tfirstname\tlastname\temails\r\nkolab_global\tfirstname\tlastname\temail');" % (mail, mail))
 
 def __triple_exist ( db, mail, scope, name ):
 	return 0 < db.query( "select * from horde_prefs where pref_uid='%s' and pref_scope='%s' and pref_name='%s';" % (mail, scope, name) ).ntuples()
@@ -83,6 +83,8 @@ def __kronolith_settings ( db, mail ):
 		db.query( "insert into horde_prefs values('%s', 'kronolith', 'default_share', '%s');" % (mail, mail))
 		db.query( "insert into horde_prefs values('%s', 'kronolith', 'fb_cals', 'a:1:{i:0;s:%d:\"%s\";}');" % (mail, len(mail), mail))
 		db.query( "insert into horde_prefs values('%s', 'kronolith', 'display_cals', 'a:1:{i:0;s:%d:\"%s\";}');" % (mail, len(mail), mail))
+		db.query( "insert into horde_prefs values('%s', 'kronolith', 'search_sources', '%s\tkolab_global');" % (mail, mail))
+		db.query( "insert into horde_prefs values('%s', 'kronolith', 'search_fields', '%s\tfirstname\tlastname\temails\r\nkolab_global\tfirstname\tlastname\temail');" % (mail, mail))
 
 def __horde_settings ( db, mail, fullname, from_addr ):
 	if not __tuples_exist ( db, mail, 'horde' ):
