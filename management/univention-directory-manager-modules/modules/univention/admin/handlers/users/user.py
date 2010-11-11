@@ -2786,19 +2786,16 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		f=univention.admin.filter.expression('uniqueMember', self.dn)
 		groupObjects=univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=f)
 		if groupObjects:
-			for i in range(0, len(groupObjects)):
-				groupObjects[i].open()
-				for users_dn in groupObjects[i]['users']:
-					if users_dn.lower() == self.dn.lower():
-						groupObjects[i]['users'].remove(users_dn)
-						groupObjects[i].modify(ignore_license=1)
+			uid = univention.admin.uldap.explodeDn(self.dn, 1)[0]
+			for groupObject in groupObjects:
+				groupObject.fast_member_remove( [ self.dn ], [ uid ] )
 
- 		admin_settings_dn='uid=%s,cn=admin-settings,cn=univention,%s' % (self['username'], self.lo.base)
- 		# delete admin-settings object of user if it exists
- 		try:
- 			self.lo.delete(admin_settings_dn)
- 		except univention.admin.uexceptions.noObject:
- 			pass
+		admin_settings_dn='uid=%s,cn=admin-settings,cn=univention,%s' % (self['username'], self.lo.base)
+		# delete admin-settings object of user if it exists
+		try:
+			self.lo.delete(admin_settings_dn)
+		except univention.admin.uexceptions.noObject:
+			pass
 
 	def _move(self, newdn, modify_childs = True, ignore_license = False):
 		olddn = self.dn

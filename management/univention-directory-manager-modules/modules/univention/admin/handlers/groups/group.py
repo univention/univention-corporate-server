@@ -230,6 +230,27 @@ mapping.register('description', 'description', None, univention.admin.mapping.Li
 mapping.register('sambaGroupType', 'sambaGroupType', None, univention.admin.mapping.ListToString)
 mapping.register('mailAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
 
+def _case_insensitive_in_list(dn, list):
+	for element in list:
+		if dn.decode('utf8').lower() == element.decode('utf8').lower():
+			return True
+	return False
+
+def _case_insensitive_get_item_in_list(dn, list):
+	for element in list:
+		if dn.decode('utf8').lower() == element.decode('utf8').lower():
+			return element
+	return None
+
+def _case_insensitive_remove_from_list(dn, list):
+	remove_element = None
+	for element in list:
+		if dn.decode('utf8').lower() == element.decode('utf8').lower():
+			remove_element = element
+	if remove_element:
+		list.remove(remove_element)
+	return list
+
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
@@ -303,6 +324,78 @@ class object(univention.admin.handlers.simpleLdap):
 				self['allowedEmailGroups'] = self.oldattr['univentionAllowedEmailGroups']
 
 			self.save()
+
+	def fast_member_add(self, memberdnlist, uidlist):
+		ml = []
+		uids = []
+		members = []
+		searchResult = self.lo.search(base=self.dn, attr=['uniqueMember','memberUid'])
+		if searchResult:
+			uids = searchResult[0][1].get('memberUid',[])
+			members = searchResult[0][1].get('uniqueMember',[])
+
+		add_uidlist = []
+		for uid in uidlist:
+			if uid and not _case_insensitive_in_list(uid, uids):
+				add_uidlist.append( uid )
+		if add_uidlist:
+			ml.append( ( 'memberUid', '', add_uidlist ) )
+
+		add_memberdnlist = []
+		for memberdn in memberdnlist:
+			if memberdn and not _case_insensitive_in_list(memberdn, members):
+				add_memberdnlist.append(memberdn)
+		if add_memberdnlist:
+			ml.append( ( 'uniqueMember', '', add_memberdnlist ) )
+
+		if ml:
+			try:
+				return self.lo.modify(self.dn, ml)
+			except ldap.NO_SUCH_OBJECT, msg:
+				raise univention.admin.uexceptions.noObject
+			except ldap.INSUFFICIENT_ACCESS, msg:
+				raise univention.admin.uexceptions.permissionDenied
+			except ldap.LDAPError, msg:
+				raise univention.admin.uexceptions.ldapError, msg[0]['desc']
+
+		# return True if object has been modified
+		return bool(ml)
+
+	def fast_member_remove(self, memberdnlist, uidlist):
+		ml = []
+		uids = []
+		members = []
+		searchResult = self.lo.search(base=self.dn, attr=['uniqueMember','memberUid'])
+		if searchResult:
+			uids = searchResult[0][1].get('memberUid',[])
+			members = searchResult[0][1].get('uniqueMember',[])
+
+		remove_uidlist = []
+		for uid in uidlist:
+			if uid and _case_insensitive_in_list(uid, uids):
+				remove_uidlist.append( _case_insensitive_get_item_in_list(uid, uids) )
+		if remove_uidlist:
+			ml.append( ( 'memberUid', remove_uidlist, '' ) )
+
+		remove_memberdnlist = []
+		for memberdn in memberdnlist:
+			if memberdn and _case_insensitive_in_list(memberdn, members):
+				remove_memberdnlist.append( _case_insensitive_get_item_in_list(memberdn, members) )
+		if remove_memberdnlist:
+			ml.append( ( 'uniqueMember', remove_memberdnlist, '' ) )
+
+		if ml:
+			try:
+				return self.lo.modify(self.dn, ml)
+			except ldap.NO_SUCH_OBJECT, msg:
+				raise univention.admin.uexceptions.noObject
+			except ldap.INSUFFICIENT_ACCESS, msg:
+				raise univention.admin.uexceptions.permissionDenied
+			except ldap.LDAPError, msg:
+				raise univention.admin.uexceptions.ldapError, msg[0]['desc']
+
+		# return True if object has been modified
+		return bool(ml)
 
 	def exists(self):
 		return self._exists
