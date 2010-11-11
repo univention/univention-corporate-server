@@ -1414,6 +1414,9 @@ mapping.register('kolabInvitationPolicy', 'kolabInvitationPolicy')
 mapping.register('userCertificate', 'userCertificate;binary')
 mapping.register('jpegPhoto', 'jpegPhoto')
 
+# global caching variable
+kolab2server_present = None
+
 class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 	module=module
 
@@ -1480,7 +1483,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		global options
 		global mapping
 		global property_descriptions
-		global default_property_descriptions
+		global default_property_descriptions, kolab2server_present
 
 		# homePostalAddress backward compatibility
 		# change mapping only if new syntax is used (via ucr)
@@ -1511,9 +1514,18 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
 		mungeddial.Support.__init__( self )
 
-		searchResult = self.lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=kolab2))', attr = ['aRecord'])
-		if not [ dn for (dn, attr) in searchResult if attr.has_key('aRecord') ]:
-			options['groupware'].default = False
+		# kolab2server_present is a global caching variable than can be
+		# None ==> ldap has not been checked for servers with service "kolab2"
+		# True ==> at least one server with IP address (aRecord) is present
+		# False ==> no server is present
+		if kolab2server_present == None:
+			searchResult = self.lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=kolab2))', attr = ['aRecord'])
+			kolab2server_present = True
+			if not [ dn for (dn, attr) in searchResult if attr.has_key('aRecord') ]:
+				options['groupware'].default = False
+				kolab2server_present = False
+		else:
+			options['groupware'].default = kolab2server_present
 
 		self.options=[]
 		if self.oldattr.has_key('objectClass'):
