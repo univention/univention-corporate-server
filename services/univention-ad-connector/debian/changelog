@@ -1,3 +1,9 @@
+univention-ad-connector (5.0.13-1) unstable; urgency=low
+
+  * Use newer disabled syntax for user objects (Bug #19942)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Nov 2010 09:51:06 +0100
+
 univention-ad-connector (5.0.12-1) unstable; urgency=low
 
   * By default */ad/ldap/ldaps is false (Bug #19606)

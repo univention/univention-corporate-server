@@ -1441,7 +1441,8 @@ class ad(univention.connector.ucs):
 
 		modlist=[]
 
-		if not ucs_admin_object['disabled'].lower() in [ 'none', '0' ]:
+		ud.debug(ud.LDAP, ud.INFO, "Disabled state: %s" % ucs_admin_object['disabled'].lower())
+		if not (ucs_admin_object['disabled'].lower() in [ 'none', '0' ]):
 			# user disabled in UCS
 			if ldap_object_ad.has_key('userAccountControl') and (int(ldap_object_ad['userAccountControl'][0]) & 2 ) == 0:
 				#user enabled in AD -> change
