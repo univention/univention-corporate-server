@@ -279,25 +279,20 @@ class object(univention.admin.handlers.simpleLdap):
 				groupMembers=self.oldattr['uniqueMember']
 
 				for i in groupMembers:
-					saved=0
-					try:
-						result = self.lo.searchDn(base=i, filter = 'objectClass=univentionGroup', unique=0)
-						if result:
-							self['nestedGroup'].append(i)
-							saved=1
-					except univention.admin.uexceptions.noObject:
-						pass
-
-					try:
-						result = self.lo.searchDn(base=i, filter = 'objectClass=univentionHost', unique=0)
-						if result:
-							self['hosts'].append(i)
-							saved=1
-					except univention.admin.uexceptions.noObject:
-						pass
-
-					if not saved:
+					if i.startswith('uid='):
 						self['users'].append(i)
+					else:
+						result = self.lo.getAttr(i, 'objectClass' )
+						if result:
+							if 'univentionGroup' in result:
+								self['nestedGroup'].append(i)
+							elif 'univentionHost' in result:
+								self['hosts'].append(i)
+							else:
+								self['users'].append(i)
+						else:
+							# removing following line breaks deletion of computers from groups
+							self['users'].append(i)
 
 			self['allowedEmailUsers'] = []
 			if self.oldattr.has_key('univentionAllowedEmailUsers'):

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.35-1) unstable; urgency=low
+
+  * improve performance on opening groups (Bug #20330)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 05 Nov 2010 11:49:07 +0100
+
 univention-directory-manager-modules (6.0.34-1) unstable; urgency=low
 
   * Remove the old fqdn entry for the host from the nagios service if
