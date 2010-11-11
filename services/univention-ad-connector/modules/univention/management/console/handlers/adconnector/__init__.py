@@ -47,6 +47,8 @@ import os, stat, shutil
 
 import subprocess, time, grp
 
+import string, ldap
+
 FN_BINDPW = '/etc/univention/connector/ad/bindpw'
 DIR_WEB_AD = '/var/www/univention-ad-connector'
 
@@ -92,6 +94,7 @@ command_description = {
 			'ad_windows_version': UMC_AD_StaticSelection( title=_('Version of Windows server'),
 													choices = ( ( 'win2000', _( 'Windows 2000' ) ), ( 'win2003', _( 'Windows 2003/2008' ) ) ) ),
 			'ad_retry_rejected': umc.String( _('Retry interval for rejected objects'), regex = '^[0-9]+$' ),
+			'ad_kerberosdomain': umc.String( _('Kerberos domain of Active Directory server'), required = False ),
 			# Workaround for Bug #13139: '_0_' up to '_4_' is a workaround
 			'debug_level': UMC_AD_StaticSelection( title=_('Debug level of Active Directory Connector'),
 													choices = ( ( '_0_', _( '0' ) ), ( '_1_', _( '1' ) ), ( '_2_', _( '2' ) ), ( '_3_', _( '3' ) ), ( '_4_', _( '4' ) ) ) ),
@@ -197,6 +200,7 @@ class handler(umch.simpleHandler):
 			for umckey, ucrkey in ( ( 'ad_ldap_host', 'connector/ad/ldap/host' ),
 									( 'ad_ldap_base', 'connector/ad/ldap/base' ),
 									( 'ad_ldap_binddn', 'connector/ad/ldap/binddn' ),
+									( 'ad_kerberosdomain', 'connector/ad/mapping/kerberosdomain' ),
 									( 'ad_poll_sleep', 'connector/ad/poll/sleep' ),
 									( 'ad_retry_rejected', 'connector/ad/retryrejected' ),
 									( 'debug_level', 'connector/debug/level' ),
@@ -573,6 +577,16 @@ class handler(umch.simpleHandler):
 		inp_windows_version = umcd.make( self['adconnector/configure']['ad_windows_version'], default = self.configRegistry.get('connector/ad/windows_version', 'win2003') )
 		list_id.append( inp_windows_version.id() )
 
+		# ask for kerberos domain
+		kerberosdomain = self.configRegistry.get('connector/ad/mapping/kerberosdomain', '')
+		if not kerberosdomain and self.guessed_baseDN:
+			try:
+				kerberosdomain = string.join(ldap.explode_dn(basedn, 1),'.')
+			except:
+				pass
+		inp_kerberosdomain = umcd.make( self['adconnector/configure']['ad_kerberosdomain'], default = kerberosdomain)
+		list_id.append( inp_kerberosdomain.id() )
+
 		# ask for mapping syncmode
 		inp_sync_mode = umcd.make( self['adconnector/configure']['ad_mapping_sync_mode'], default = self.configRegistry.get('connector/ad/mapping/syncmode', 'sync') )
 		list_id.append( inp_sync_mode.id() )
@@ -621,9 +635,9 @@ class handler(umch.simpleHandler):
 		list_items = umcd.List()
 
 		list_items.add_row( [ inp_ldap_host ] )
-		list_items.add_row( [ btn_guess ] )
-		list_items.add_row( [ inp_ldap_base, inp_windows_version ] )
+		list_items.add_row( [ inp_ldap_base, btn_guess ] )
 		list_items.add_row( [ inp_ldap_binddn, inp_ldap_bindpw ] )
+		list_items.add_row( [ inp_windows_version, inp_kerberosdomain ] )
 		list_items.add_row( [ inp_mapping_language, inp_sync_mode ] )
 		list_items.add_row( [ inp_poll_sleep, inp_retry_rejected ] )
 		list_items.add_row( [ inp_debug_level, inp_debug_function ] )

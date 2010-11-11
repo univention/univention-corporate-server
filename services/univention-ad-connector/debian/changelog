@@ -1,3 +1,12 @@
+univention-ad-connector (5.0.14-1) unstable; urgency=low
+
+  * A user which was synced to Windows 2008 R2 is not a valid kerberos
+    user because the kerberos principal is missing. If the UCR variable
+    ad/mapping/kerberosdomain is set the kerberos principal will be set
+    during the first sync (Bug #20518)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Nov 2010 14:43:24 +0100
+
 univention-ad-connector (5.0.13-1) unstable; urgency=low
 
   * Use newer disabled syntax for user objects (Bug #19942)
@@ -15,6 +24,7 @@ univention-ad-connector (5.0.11-1) unstable; urgency=low
   * Use correct is_true call for UCR (Bug #19372 and Bug #19606)
   * Fixed disabled / locked handling based on UCS 2.4 changes
     (Bug #19942)
+  * Fixed account expiry synchronisation (Bug #18271)
   * Automatically remove registered pwdump services on 64 bit windows hosts
     (Bug #20141)
 

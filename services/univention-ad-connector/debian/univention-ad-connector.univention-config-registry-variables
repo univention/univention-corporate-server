@@ -123,3 +123,9 @@ Description[de]=Erwartetes Encoding des Passwortdienstes unter Windows für den 
 Description[en]=
 Type=str
 Categories=service-adcon
+
+[con.*/ad/mapping/kerberosdomain]
+Description[de]=Kerberos-Domain für Windows Accounts (ergibt mit dem UCS-Benutzernamen den AD Kerberos Principal sofern dieser noch nicht gesetzt ist).
+Description[en]=
+Type=str
+Categories=service-adcon

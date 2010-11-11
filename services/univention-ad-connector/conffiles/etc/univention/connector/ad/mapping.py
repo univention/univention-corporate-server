@@ -98,7 +98,8 @@ ad_mapping = {
 						 univention.connector.set_primary_group_user
 						 ],
 
-			post_con_modify_functions=[ univention.connector.ad.password.password_sync_ucs,
+			post_con_modify_functions=[ univention.connector.ad.set_userPrincipalName_from_ucr,
+						    univention.connector.ad.password.password_sync_ucs,
 						    univention.connector.ad.primary_group_sync_from_ucs,
 						    univention.connector.ad.object_memberships_sync_from_ucs,
 						    univention.connector.ad.disable_user_from_ucs,
