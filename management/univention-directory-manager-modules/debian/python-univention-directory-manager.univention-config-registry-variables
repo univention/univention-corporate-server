@@ -3,3 +3,9 @@ Description[de]=UDM Syntax der privaten Adresse homePostalAddress (z.B. "postalA
 Description[en]=UDM syntax of the private address homePostalAddress (e.g. "postalAddress" for extended syntax)
 Type=str
 Categories=management-udm
+
+[directory/manager/web/modules/groups/group/caching/uniqueMember/timeout]
+Description[de]=Timeout für das Caching des Typs von Gruppenmitgliedern (Angabe in Sekunden; Standard: 300; Deaktivieren des Cache: -1)
+Description[en]=Caching timeout of group member's type - given in seconds (default: 300; cache disabled: -1)
+Type=str
+Categories=management-udm

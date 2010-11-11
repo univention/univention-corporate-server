@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.36-1) unstable; urgency=low
+
+  * implemented caching for group member's type (user/host/group) (Bug #20330)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 09 Nov 2010 16:41:48 +0100
+
 univention-directory-manager-modules (6.0.35-1) unstable; urgency=low
 
   * improve performance on opening groups (Bug #20330)

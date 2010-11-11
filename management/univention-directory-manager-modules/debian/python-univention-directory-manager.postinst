@@ -34,5 +34,11 @@
 
 if [ "$1" = configure -a -z "$2" ]; then
         # only set this for new installations
-	univention-config-registry set directory/manager/web/modules/users/user/properties/homePostalAddress/syntax=postalAddress	
+	univention-config-registry set directory/manager/web/modules/users/user/properties/homePostalAddress/syntax=postalAddress
 fi
+
+if [ "$1" = "configure" ]; then
+	ucr set directory/manager/web/modules/groups/group/caching/uniqueMember/timeout?300
+fi
+
+exit 0

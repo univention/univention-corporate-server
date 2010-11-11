@@ -30,12 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string, copy, re
+import sys, string, copy, re, os, time
 import univention.admin
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.allocators
 import univention.admin.localization
+import univention.debug
 
 translation=univention.admin.localization.translation('univention.admin.handlers.groups')
 _=translation.translate
@@ -251,6 +252,48 @@ def _case_insensitive_remove_from_list(dn, list):
 		list.remove(remove_element)
 	return list
 
+class AgingCache(object):
+	def __new__(type, *args, **kwargs):
+		# Falls es noch keine Instanz dieser Klasse gibt, wird eine erstellt und in _the_instance abgelegt.
+		# Diese wird dann jedes mal zurückgegeben.
+		if not '_the_instance' in type.__dict__:
+			type._the_instance = object.__new__(type, *args, **kwargs)
+		return type._the_instance
+
+	def __init__(self):
+		if not '_ready' in dir(self):
+			self._ready = True
+			self.timeout = 300
+			self.data = {}
+			self.timer = {}
+
+	def is_valid(self, item):
+		if item in self.timer:
+			if self.timer.get(item,-1) > time.time():
+				return True
+			del self.timer[item]
+			del self.data[item]
+		return False
+
+	def get(self, item):
+		return self.data.get(item,{})
+
+	def set(self, item, data):
+		if not type(data) == dict:
+			raise Exception('AgingCache.set() requires a dict as data value')
+		self.data[item] = copy.deepcopy(data)
+		self.timer[item] = time.time() + self.timeout
+
+	def remove(self, item):
+		if item in self.timer:
+			del self.timer[item]
+			del self.data[item]
+
+	def set_timeout(self, timeout):
+		self.timer = timeout
+
+cache_uniqueMember = AgingCache()
+
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
@@ -270,10 +313,15 @@ class object(univention.admin.handlers.simpleLdap):
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
 
-
 	def open(self):
 		global options
 		univention.admin.handlers.simpleLdap.open(self)
+
+		try:
+			caching_timeout = int(univention.admin.baseConfig.get('directory/manager/web/modules/groups/group/caching/uniqueMember/timeout','300'))
+			self.cache_uniqueMember.set_timeout( caching_timeout )
+		except:
+			pass
 
 		self.options=[]
 		if self.oldattr.has_key('objectClass'):
@@ -295,25 +343,42 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.dn:
 			self['memberOf']=self.lo.searchDn(filter='(&(objectClass=posixGroup)(uniqueMember=%s))' % univention.admin.filter.escapeForLdapFilter(self.dn))
 
+			time_start = time.time()
+
 			self['users']=self['hosts']=self['nestedGroup']=[]
 			if self.oldattr.has_key('uniqueMember'):
 				groupMembers=self.oldattr['uniqueMember']
 
 				for i in groupMembers:
-					if i.startswith('uid='):
+					if cache_uniqueMember.is_valid(i):
+						membertype = cache_uniqueMember.get(i).get('type')
+						if membertype == 'user':
+							self['users'].append(i)
+						elif membertype == 'group':
+							self['nestedGroup'].append(i)
+						elif membertype == 'host':
+							self['hosts'].append(i)
+					elif i.startswith('uid='):
 						self['users'].append(i)
+						cache_uniqueMember.set(i, { 'type': 'user' })
 					else:
 						result = self.lo.getAttr(i, 'objectClass' )
 						if result:
 							if 'univentionGroup' in result:
 								self['nestedGroup'].append(i)
+								cache_uniqueMember.set(i, { 'type': 'group' })
 							elif 'univentionHost' in result:
 								self['hosts'].append(i)
+								cache_uniqueMember.set(i, { 'type': 'host' })
 							else:
 								self['users'].append(i)
 						else:
 							# removing following line breaks deletion of computers from groups
 							self['users'].append(i)
+
+			time_end = time.time()
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: open(): member check duration: %1.2fs' % (time_end - time_start))
+
 
 			self['allowedEmailUsers'] = []
 			if self.oldattr.has_key('univentionAllowedEmailUsers'):
