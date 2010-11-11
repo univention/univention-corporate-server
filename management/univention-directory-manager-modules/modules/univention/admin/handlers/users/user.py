@@ -1161,6 +1161,20 @@ layout=[
 # append tab with CTX flags
 layout.append( mungeddial.tab )
 
+def case_insensitive_in_list(dn, list):
+	for element in list:
+		if dn.decode('utf8').lower() == element.decode('utf8').lower():
+			return True
+	return False
+
+def case_insensitive_remove_from_list(dn, list):
+	for element in list:
+		if dn.decode('utf8').lower() == element.decode('utf8').lower():
+			remove_element = element
+	list.remove(remove_element)
+	return list
+
+
 def posixDaysToDate(days):
 	return time.strftime("%Y-%m-%d",time.gmtime(long(days)*3600*24))
 
@@ -1877,57 +1891,24 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			for group in new_groups:
 				self.__rewrite_member_uid( group )
 
-		def case_insensitive_in_list(dn, list):
-			
-			for element in list:
-				if dn.decode('utf8').lower() == element.decode('utf8').lower():
-					return True
-			return False
-
-		def case_insensitive_remove_from_list(dn, list):
-			for element in list:
-				if dn.decode('utf8').lower() == element.decode('utf8').lower():
-					remove_element = element
-			list.remove(remove_element)
-			return list
+		group_mod = univention.admin.modules.get('groups/group')
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: check groups in old_groups')
 		for group in old_groups:
 			if group and not case_insensitive_in_list(group, self.info.get('groups', [])) and group.lower() != self['primaryGroup'].lower():
-				remove_from_group.append(group)
+				grpobj = group_mod.object(None, self.lo, self.position, group)
+				grpobj.fast_member_remove( [ self.dn ], [ old_uid ] )
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: check groups in info[groups]')
 		for group in self.info.get('groups', []):
 			if group and not case_insensitive_in_list(group, old_groups):
-				add_to_group.append(group)
+				grpobj = group_mod.object(None, self.lo, self.position, group)
+				grpobj.fast_member_add( [ self.dn ], [ new_uid ] )
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: check primaryGroup')
 		if self.newPrimaryGroupDn and not case_insensitive_in_list(self.newPrimaryGroupDn,add_to_group):
-			add_to_group.append(self.newPrimaryGroupDn)
-
-		for group in add_to_group:
-			if type(group) == type([]):
-				group=group[0]
-			members=self.lo.getAttr(group, 'uniqueMember')
-			if case_insensitive_in_list(self.dn, members):
-				continue
-			newmembers=copy.deepcopy(members)
-			newmembers.append(self.dn)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: add to group %s'%group)
-			self.lo.modify(group, [('uniqueMember', members, newmembers)])
-			self.__rewrite_member_uid( group, newmembers )
-
-		for group in remove_from_group:
-			if type(group) == type([]):
-				group=group[0]
-			members=self.lo.getAttr(group, 'uniqueMember')
-			if not case_insensitive_in_list(self.dn, members):
-				continue
-			newmembers=copy.deepcopy(members)
-			newmembers=case_insensitive_remove_from_list(self.dn, newmembers)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: remove from group %s'%group)
-			self.lo.modify(group, [('uniqueMember', members, newmembers)])
-			self.__rewrite_member_uid( group, newmembers )
+			grpobj = group_mod.object(None, self.lo, self.position, self.newPrimaryGroupDn)
+			grpobj.fast_member_add( [ self.dn ], [ new_uid ] )
 
 	def __rewrite_member_uid( self, group, members = [] ):
 		uids = self.lo.getAttr( group, 'memberUid' )
@@ -1982,19 +1963,12 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set sambaPrimaryGroupSID')
 				self.lo.modify(self.dn, [('sambaPrimaryGroupSID',oldNumber, primaryGroupSambaNumber[0])])
 
-		def case_insensitive_in_list(dn, list):
-			for element in list:
-				if dn.decode('utf8').lower() == element.decode('utf8').lower():
-					return True
-			return False
+		new_uid = self.info.get('username')
+		group_mod = univention.admin.modules.get('groups/group')
+		grpobj = group_mod.object(None, self.lo, self.position, self.newPrimaryGroupDn)
+		grpobj.fast_member_add( [ self.dn ], [ new_uid ] )
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: adding to new primaryGroup %s' % self.newPrimaryGroupDn)
 
-		members=self.lo.getAttr(self.newPrimaryGroupDn, 'uniqueMember')
-		if not  case_insensitive_in_list(self.dn, members):
-			newmembers=copy.deepcopy(members)
-			newmembers.append(self.dn)
-			self.lo.modify(self.newPrimaryGroupDn, [('uniqueMember', members, newmembers)])
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: rewrite memberuid in %s' % self.newPrimaryGroupDn)
-		self.__rewrite_member_uid(self.newPrimaryGroupDn)
 		self.save()
 
 	def krb5_principal(self):
