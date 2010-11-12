@@ -1,114 +1,114 @@
 [con.*/ad/listener/dir]
 Description[de]=Verzeichnis-Pfad in dem UCS-Änderungen durch das Directory-Listener-Plugin gespeichert werden.
-Description[en]=
+Description[en]=Changes in the UCS LDAP directory are tracked by the Univention Directory Listener Plugin and stored in this file path.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/poll/sleep]
 Description[de]=Wartezeit in Sekunden bevor auf neue Änderungen in AD oder UCS geprüft wird.
-Description[en]=
+Description[en]=Delay in seconds until the LDAP directories (AD or UCS) are checked for new changes.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/retryrejected]
-Description[de]=Anzahl der durch Synchronisationsläufe bevor erneut versucht wird fehgeschlagene Änderungen zu synchronisieren.
-Description[en]=
+Description[de]=Anzahl der Synchronisationsläufe bevor erneut versucht wird fehlgeschlagene Änderungen zu synchronisieren.
+Description[en]=The amount of synchronisation runs until a resync of failed changes is performed.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/ldap/port]
 Description[de]=TCP-Port über den das AD-LDAP erreichbar ist (default: 389).
-Description[en]=
+Description[en]=The TCP port of the Active Directory (as standard: 389)
 Type=str
 Categories=service-adcon
 
 [con.*/ad/ldap/host]
 Description[de]=FQDN des Active Directory Servers.
-Description[en]=
+Description[en]=The fully qualified domain name of the Active Directory server.
 Type=str
 Categories=service-adcon
 
 [con.*/debug/function]
 Description[de]=Debug-Level für die Rückverfolgung von Funktionsaufrufen im AD-Connector (0 oder 1).
-Description[en]=
+Description[en]=Controls, whether function calls should be traced in the debug log (0 or 1)
 Type=str
 Categories=service-adcon
 
 [con.*/debug/level]
 Description[de]=Debug-Level für die Ausgaben in der connector.log (0-4).
-Description[en]=
+Description[en]=The debug level of actions logged into connector.log (0-4).
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/user/primarymail]
 Description[de]=Konfiguriert, ob die Synchronisation der primären Mailadresse von Benutzern durchgeführt werden soll (default: false).
-Description[en]=
+Description[en]=Controls, whether the primary email address of users should be synchronised (as standard: false).
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/user/win2000/description]
 Description[de]=Konfiguriert, ob der Abgleich von Benutzer-Beschreibungen bei der Synchronisation mit Windows 2000 Domänencontrolern aktiviert werden soll.
-Description[en]=
+Description[en]=Controls, whether the description attribute of users should be synchronised when replicating against Windows 2000.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/group/primarymail]
 Description[de]=Konfiguriert, ob die Synchronisation der primären Mailadresse von Gruppen durchgeführt werden soll (default: false).
-Description[en]=
+Description[en]=Controls, whether the primary email address of group objects shoud be synchronised (as standard: no).
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/group/language]
 Description[de]=Konfiguriert, ob ein Mapping der englischen Standardgruppen im UCS auf anderssprachige Standardgruppen im AD durchgeführt werden soll (default: de).
-Description[en]=
+Description[en]=Allows the mapping of translated names of standard groups in Active Directory (e.g. "Domain Users") to the English default names in the UCS directory (as standard: de).
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/group/win2000/description]
 Description[de]=Konfiguriert, ob der Abgleich von Gruppen-Beschreibungen bei der Synchronisation mit Windows 2000 Domänencontrolern aktiviert werden soll.
-Description[en]=
+Description[en]=Controls, whether the description attribute of groups should be synchronised when replicating against Windows 2000.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/syncmode]
 Description[de]=Konfiguriert, ob bidirectional ("sync", default) oder unidirektional ("read" oder "write") synchronisiert werden soll.
-Description[en]=
+Description[en]=The synchronisation mode: With the standard setting ("sync") objects created in Active Directory are replicated to UCS and vice versa. "write" only synchronises into Active Directory and "read" only replicates objects created in Active Directory to UCS.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/windows_version]
-Description[de]=Definiert die Windows-Server Version, mit der Active Directory betrieben wird, ohne Angabe wird Windows 2003 vorausgesetzt..
-Description[en]=
+Description[de]=Definiert die Windows-Server Version, mit der Active Directory betrieben wird, ohne Angabe wird Windows 2003 vorausgesetzt.
+Description[en]=The version of Windows Server running Active Directory. If not specified, Windows 2003 is assumed.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/ldap/base]
 Description[de]=LDAP Basis des Active Directories.
-Description[en]=
+Description[en]=The LDAP base DN of the Active Directory.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/ldap/binddn]
 Description[de]=LDAP-DN des Synchronisationsaccounts im Active Directory.
-Description[en]=
+Description[en]=The LDAP DN of the account in Active Directory to be used for replication.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/ldap/bindpw]
 Description[de]=Pfad zur Datei aus der das Passwort des Synchronisationsaccounts gelesen werden soll.
-Description[en]=
+Description[en]=The filename, in which the password of the account in Active Directory to be used for replication is stored.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/ldap/certificate]
 Description[de]=Pfad zum SSL-Zertifikat des Active Directory Servers.
-Description[en]=
+Description[en]=Filename of the SSL certificate of the Active Directory server.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/ldap/ssl]
 Description[de]=Verwendung von SSL beim Zugriff auf die LDAP-Schnittstelle des AD aktivieren/deaktivieren.
-Description[en]=
+Description[en]=Controls, whether SSL should be used when accessing the Active Directory.
 Type=str
 Categories=service-adcon
 
@@ -120,18 +120,18 @@ Categories=service-adcon
 
 [con.*/password/service/encoding]
 Description[de]=Erwartetes Encoding des Passwortdienstes unter Windows für den Benutzernamen.
-Description[en]=
+Description[en]=The encoding the Windows password services uses for user names.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/kerberosdomain]
 Description[de]=Kerberos-Domain für Windows Accounts (ergibt mit dem UCS-Benutzernamen den AD Kerberos Principal sofern dieser noch nicht gesetzt ist).
-Description[en]=
+Description[en]=The Kerberos domain of Windows accounts (used to construct the AD Kerberos principal unless already set).
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/organisation]
 Description[de]=Konfiguriert auf welches Attribut im Active Directory das Attribut Organisation synchronisiert wird (default: company)
-Description[en]=
+Description[en]=Controls the Active Directory attribute to which the UCS attribute Organisation is mapped (as standard: company)
 Type=str
 Categories=service-adcon

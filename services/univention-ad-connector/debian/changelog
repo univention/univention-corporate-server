@@ -1,3 +1,9 @@
+univention-ad-connector (5.0.15-2) unstable; urgency=low
+
+  * Add English descriptions to UCR variables (Bug #12485)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 12 Nov 2010 10:21:25 +0100
+
 univention-ad-connector (5.0.15-1) unstable; urgency=low
 
   * Added ucr variable to configure the organisation mapping and change
