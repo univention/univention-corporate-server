@@ -1,3 +1,10 @@
+univention-kolab2-webclient (6.0.3-7) unstable; urgency=low
+
+  * provide default for from_addr in horde-prefs.py to honour
+    the horde/identities/from_attr setting (Bug #20554)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 12 Nov 2010 17:10:40 +0100
+
 univention-kolab2-webclient (6.0.3-6) unstable; urgency=low
 
   * Enable personal and LDAP-addressbook in kronolith for new users
