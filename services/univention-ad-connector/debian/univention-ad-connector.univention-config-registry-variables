@@ -1,6 +1,6 @@
 [con.*/ad/listener/dir]
 Description[de]=Verzeichnis-Pfad in dem UCS-Änderungen durch das Directory-Listener-Plugin gespeichert werden.
-Description[en]=Changes in the UCS LDAP directory are tracked by the Univention Directory Listener Plugin and stored in this file path.
+Description[en]=Changes in the UCS LDAP directory are tracked by the Univention Directory Listener module and stored in this directory.
 Type=str
 Categories=service-adcon
 
@@ -18,7 +18,7 @@ Categories=service-adcon
 
 [con.*/ad/ldap/port]
 Description[de]=TCP-Port über den das AD-LDAP erreichbar ist (default: 389).
-Description[en]=The TCP port of the Active Directory (as standard: 389)
+Description[en]=The TCP port of the Active Directory (as standard: 389).
 Type=str
 Categories=service-adcon
 
@@ -54,13 +54,13 @@ Categories=service-adcon
 
 [con.*/ad/mapping/group/primarymail]
 Description[de]=Konfiguriert, ob die Synchronisation der primären Mailadresse von Gruppen durchgeführt werden soll (default: false).
-Description[en]=Controls, whether the primary email address of group objects shoud be synchronised (as standard: no).
+Description[en]=Controls, whether the primary email address of group objects should be synchronised (as standard: no).
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/group/language]
 Description[de]=Konfiguriert, ob ein Mapping der englischen Standardgruppen im UCS auf anderssprachige Standardgruppen im AD durchgeführt werden soll (default: de).
-Description[en]=Allows the mapping of translated names of standard groups in Active Directory (e.g. "Domain Users") to the English default names in the UCS directory (as standard: de).
+Description[en]=Allows the mapping of translated names of standard groups in Active Directory to the English names in the UCS directory (as standard: de).
 Type=str
 Categories=service-adcon
 

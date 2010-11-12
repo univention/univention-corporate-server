@@ -1,8 +1,14 @@
+univention-ad-connector (5.0.15-3) unstable; urgency=low
+
+  * Update English descriptions to UCR variables (Bug #12485)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 12 Nov 2010 10:39:23 +0100
+
 univention-ad-connector (5.0.15-2) unstable; urgency=low
 
   * Add English descriptions to UCR variables (Bug #12485)
 
- -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 12 Nov 2010 10:21:25 +0100
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 12 Nov 2010 10:39:21 +0100
 
 univention-ad-connector (5.0.15-1) unstable; urgency=low
 
