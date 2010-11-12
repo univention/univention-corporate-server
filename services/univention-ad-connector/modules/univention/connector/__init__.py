@@ -817,7 +817,7 @@ class ucs:
 					position=univention.admin.uldap.position(self.lo.base)
 					position.setDn(object['dn'])
 					univention.admin.modules.init(self.lo,position,ucs_module)
-					ud.debug(ud.LDAP, ud.WARN, '__set_values: no ldap_attribute defined in %s, we unset the key %s in the ucs-object' % (attributes, ucs_key))
+					ud.debug(ud.LDAP, ud.INFO, '__set_values: no ldap_attribute defined in %s, we unset the key %s in the ucs-object' % (attributes, ucs_key))
 
 					if ucs_key not in mandatory_attrs:
 						ucs_object[ucs_key] = []

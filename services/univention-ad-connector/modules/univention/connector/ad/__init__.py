@@ -97,7 +97,7 @@ def encode_ad_object(ad_object):
 		for key in ad_object.keys():
 			if key == 'objectSid':
 				ad_object[key]=[decode_sid(ad_object[key][0])]
-			elif key in ['objectGUID','ipsecData','repsFrom','replUpToDateVector','userCertificate','dNSProperty','dnsRecord','securityIdentifier','mS-DS-CreatorSID','logonHours','mSMQSites','mSMQSignKey','currentLocation','dSASignature','linkTrackSecret','mSMQDigests','mSMQEncryptKey','mSMQSignCertificates','may','sIDHistory', 'msExchMailboxSecurityDescriptor', 'msExchMailboxGuid']:
+			elif key in ['objectGUID','ipsecData','repsFrom','replUpToDateVector','userCertificate','dNSProperty','dnsRecord','securityIdentifier','mS-DS-CreatorSID','logonHours','mSMQSites','mSMQSignKey','currentLocation','dSASignature','linkTrackSecret','mSMQDigests','mSMQEncryptKey','mSMQSignCertificates','may','sIDHistory', 'msExchMailboxSecurityDescriptor', 'msExchMailboxGuid', 'msExchMasterAccountSid', 'replicationSignature', 'repsTo']:
 				ud.debug(ud.LDAP, ud.INFO,
 						       "encode_ad_object: attrib %s ignored during encoding" % key) # don't recode
 			else:
@@ -1215,7 +1215,7 @@ class ad(univention.connector.ucs):
 		except ldap.NO_SUCH_OBJECT:
 			group_rid = ''
 
-		tmp_members = ad_members_from_ucs
+		tmp_members = copy.deepcopy(ad_members_from_ucs)
 		for member_dn in tmp_members:			
 			member_object = self.get_object(member_dn)
 			if member_object and member_object.has_key('primaryGroupID') and member_object['primaryGroupID'][0] == group_rid:

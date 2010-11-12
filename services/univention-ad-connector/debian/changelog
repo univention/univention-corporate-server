@@ -1,3 +1,19 @@
+univention-ad-connector (5.0.15-1) unstable; urgency=low
+
+  * Added ucr variable to configure the organisation mapping and change
+    the default from department to company:
+    connector/ad/mapping/organisation (Bug #13362)
+  * Copy a temporary member dict with deepcopy to avoid a traceback
+    during sync (Bug #19481)
+  * Added msExchMasterAccountSid, replicationSignature and repsTo to the
+    list of attributes which will not be encoded (Bug #19643)
+  * Set info message about key unsetting from warning to info (Bug
+    #19646)
+  * Cleanup the ad connector download page required for IE 8 (Bug
+    #20113)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 12 Nov 2010 09:50:44 +0100
+
 univention-ad-connector (5.0.14-1) unstable; urgency=low
 
   * A user which was synced to Windows 2008 R2 is not a valid kerberos

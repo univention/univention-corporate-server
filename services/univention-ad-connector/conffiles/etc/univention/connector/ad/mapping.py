@@ -115,7 +115,9 @@ ad_mapping = {
 					'organisation': univention.connector.attribute (
 							ucs_attribute='organisation',
 							ldap_attribute='o',
-							con_attribute='department',
+							@!@
+print 'con_attribute=\'%s\',' % (baseConfig.get('connector/ad/mapping/organisation', 'company'))
+							@!@
 						),
 						@!@
 if baseConfig.has_key('connector/ad/mapping/user/exchange') and baseConfig['connector/ad/mapping/user/exchange'] in ['yes','true']:

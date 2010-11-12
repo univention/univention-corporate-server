@@ -129,3 +129,9 @@ Description[de]=Kerberos-Domain für Windows Accounts (ergibt mit dem UCS-Benutz
 Description[en]=
 Type=str
 Categories=service-adcon
+
+[con.*/ad/mapping/organisation]
+Description[de]=Konfiguriert auf welches Attribut im Active Directory das Attribut Organisation synchronisiert wird (default: company)
+Description[en]=
+Type=str
+Categories=service-adcon
