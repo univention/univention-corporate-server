@@ -114,7 +114,7 @@ def __horde_settings ( db, mail, fullname, from_addr ):
 		db.query( "insert into horde_prefs values('%s', 'horde', 'timezone', '0');" % mail )
 		db.query( "insert into horde_prefs values('%s', 'horde', 'language', '0');" % mail )
 		db.query( "insert into horde_prefs values('%s', 'horde', 'add_source', '%s');" % (mail, mail) )
-		db.query( "insert into horde_prefs values('%s', 'horde', 'from_addr', '%s');" % (mail, mail) )
+		db.query( "insert into horde_prefs values('%s', 'horde', 'from_addr', '%s');" % (mail, from_addr) )
 
 		if len(categories) > 0:
 			db.query( "insert into horde_prefs values('%s', 'horde', 'categories', '%s');" % (mail,string.join(categories.keys(),'|') ) )
