@@ -1,3 +1,10 @@
+univention-directory-manager (8.0.20-2) unstable; urgency=low
+
+  * Fix lost default-subtype after changing search path (Bug #18932)
+  * Fix one comment and do small reformatting.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 15 Nov 2010 12:45:09 +0100
+
 univention-directory-manager (8.0.20-1) unstable; urgency=low
 
   * fixed wrong UCR comparing values for true and false (Bug #20186)

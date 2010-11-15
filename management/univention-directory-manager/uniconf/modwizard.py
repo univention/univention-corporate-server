@@ -1006,6 +1006,7 @@ class modwizard(unimodule.unimodule):
 					search_type = type_preselect
 					search_module = child_module
 					module_description = univention.admin.modules.short_description(search_module)
+					self.save.put('wizard_search_type', search_type)
 			for i in childlist:
 				if i["name"]==search_type:
 					i["selected"]="1"
@@ -1769,7 +1770,7 @@ class modwizard(unimodule.unimodule):
 			self.save.put('wizard_search_value', None)
 			# Enable this to save the search for values when another property type is
 			# selected
-			# WARNING: different property types have expect different input! -
+			# WARNING: different property types expect different input! -
 			# i.e. any = *, Disabled = 0/1 Boolean/Int - if you enable this
 			# without any modifications the user might run into trouble because
 			# he doesn't know what kind of input is expected
@@ -1817,7 +1818,6 @@ class modwizard(unimodule.unimodule):
 			return
 
 		if hasattr(self, 'delboxes') and hasattr(self, 'selection_commit_button'):
-
 			selected_dns=self.save.get('wizard_selected_dns', {})
 
 			invert_selection=self.selection_select.getselected() == "invert" and self.selection_commit_button.pressed()
@@ -1886,6 +1886,7 @@ class modwizard(unimodule.unimodule):
 				self.save.put('uc_module', 'edit')
 				self.save.put('wizard_table_start', old_start)
 				return
+
 	def waitmessage(self):
 		if hasattr(self, 'multidelete_status'):
 			return _('Removed %d/%d objects (%d errors).') % (self.multidelete_status[0], self.multidelete_status[1], self.multidelete_status[2])
