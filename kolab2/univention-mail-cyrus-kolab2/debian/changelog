@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (3.0.18-1) unstable; urgency=low
+
+  * fixed univention-cyrus-mkdir Bug #19767 
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Nov 2010 11:32:57 +0100
+
 univention-mail-cyrus-kolab2 (3.0.17-2) unstable; urgency=low
 
   * removed mail/cyrus/folder/(sent|drafts|trash) Bug #18767

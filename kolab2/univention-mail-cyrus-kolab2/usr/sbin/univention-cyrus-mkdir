@@ -39,11 +39,13 @@ import os
 import optparse
 import univention.config_registry
 
+jobPath="/var/spool/cyrus/jobs/mailbox/create/user"
+
 # save mailbox name if creation failed
 def failed(mailBox, remote, e):
 
 	sys.stderr.write("creation of mailbox %s failed with: %s\n" % (mailBox, e))
-	path = os.path.join('/var/spool/cyrus/jobs/mailbox/create/user', mailBox)
+	path = os.path.join(jobPath, mailBox)
 	if not os.path.exists(path) and not remote:
 		fd = os.open(path, os.O_CREAT)
 		os.close(fd)
@@ -156,6 +158,11 @@ for mb in mbs:
 	#
 
 imap.logout
+
+if not remote:
+	path = os.path.join(jobPath, mailPrimaryAddress)
+	if os.path.exists(path):
+		os.unlink(path)
 
 sys.exit(0)
 
