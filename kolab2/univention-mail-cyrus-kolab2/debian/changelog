@@ -1,3 +1,11 @@
+univention-mail-cyrus-kolab2 (3.0.19-1) unstable; urgency=low
+
+  * use mail/hosteddomains OR mail/cyrus/loginrealms in imapd.conf
+    template (two lines starting with "loginrealms:" cause an error)
+    Bug #18415
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Nov 2010 11:48:25 +0100
+
 univention-mail-cyrus-kolab2 (3.0.18-1) unstable; urgency=low
 
   * fixed univention-cyrus-mkdir Bug #19767 
