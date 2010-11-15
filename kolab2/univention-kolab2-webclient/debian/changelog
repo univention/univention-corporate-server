@@ -1,3 +1,9 @@
+univention-kolab2-webclient (6.0.3-9) unstable; urgency=low
+
+  * update the from_addr if the user object changed (Bug #20554)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Nov 2010 16:36:33 +0100
+
 univention-kolab2-webclient (6.0.3-8) unstable; urgency=low
 
   * initialize from_addr from customized from_attr (Bug #20554)
