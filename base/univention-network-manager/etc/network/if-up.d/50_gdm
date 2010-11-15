@@ -36,9 +36,7 @@ ucs_ignore_interface
 uptime=$(seconds_since_systemstart)
 
 if [ -x /etc/init.d/gdm ]; then
-	if [ 90 -lt $uptime ]; then
-		/etc/init.d/gdm reload
-	fi
+	/etc/init.d/gdm reload
 fi
 
 exit 0
