@@ -35,3 +35,7 @@ function ucs_ignore_interface() {
 		exit 0
 	fi
 }
+
+function seconds_since_systemstart {
+	echo $(more /proc/uptime | awk -F . {'print $1'})
+}

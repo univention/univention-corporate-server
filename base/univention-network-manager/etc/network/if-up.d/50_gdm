@@ -33,9 +33,12 @@
 
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
+uptime=$(seconds_since_systemstart)
 
 if [ -x /etc/init.d/gdm ]; then
-	/etc/init.d/gdm reload
+	if [ 90 -lt $uptime ]; then
+		/etc/init.d/gdm reload
+	fi
 fi
 
 exit 0
