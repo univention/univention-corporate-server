@@ -34,6 +34,7 @@ import listener
 import os, re, string, stat
 import univention.debug
 import univention_baseconfig
+import subprocess
 
 name='nagios-server'
 description='Create configuration for Nagios server'
@@ -757,13 +758,13 @@ def postrun():
 		p = os.popen('pidof /usr/sbin/nagios2')
 		pidlist = p.read()
 		p.close()
-		st = os.popen('nagios2 -v /etc/nagios2/nagios.cfg >/dev/null; echo $?')
-		status = st.read().strip()
-		st.close()
-		if status and status == '0':
-			if not pidlist.strip():
+		listener.setuid(0)
+		retcode = subprocess.call(['nagios2', '-v', '/etc/nagios2/nagios.cfg'], shell=False, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+		listener.unsetuid()
+		if not pidlist.strip():
+			if retcode == 0:
 				if listener.baseConfig.has_key("nagios/server/autostart") and ( listener.baseConfig["nagios/server/autostart"].lower() in ["yes", "true", '1']):
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: nagios2 not running - restarting server')
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: nagios2 not running - restarting server' + str(retcode))
 
 					listener.setuid(0)
 					try:
@@ -771,14 +772,19 @@ def postrun():
 					finally:
 						listener.unsetuid()
 			else:
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: nagios2 reported an error in configfile /etc/nagios2/nagios.cfg')
+				listener.unsetuid()
+
+		else:
+			if retcode == 0:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: reloading server')
 				listener.setuid(0)
 				try:
 					listener.run(initscript, ['nagios2', 'reload'], uid=0)
 				finally:
 					listener.unsetuid()
-		else:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: nagios2 reported an error in configfile /etc/nagios2/nagios.cfg')
-			listener.unsetuid()
+			else:
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: nagios2 reported an error in configfile /etc/nagios2/nagios.cfg' + str(retcode))
+				listener.unsetuid()
 		__reload = False
 
