@@ -32,7 +32,7 @@
 
 export DH_COMPAT=7
 
-ABI := ucs17
+ABI := ucs20
 
 amd64_SOURCE_VERSION := 2.6.32
 amd64_VERSION := 2.6.32-${ABI}-amd64
@@ -105,38 +105,6 @@ binary-arch: build install
 	dh_gencontrol -punivention-kernel-source-2.6.32 -u-VF:KernelVersion="${SOURCEVERSION}"
 	dh_md5sums -punivention-kernel-source-2.6.32
 	dh_builddeb -punivention-kernel-source-2.6.32
-
-	#dh_gencontrol -punivention-kernel-image-2.6 -u-VF:KernelVersion="${KERNELVERSION}"
-	#dh_md5sums -punivention-kernel-image-2.6
-	#dh_builddeb -punivention-kernel-image-2.6
-	#
-	#dh_gencontrol -punivention-kernel-image-2.6-64gb -u-VF:KernelVersion="${KERNELVERSION}"
-	#dh_md5sums -punivention-kernel-image-2.6-64gb
-	#dh_builddeb -punivention-kernel-image-2.6-64gb
-	#
-	#dh_gencontrol -punivention-kernel-headers-2.6 -u-VF:KernelVersion="${KERNELVERSION}"
-	#dh_md5sums -punivention-kernel-headers-2.6
-	#dh_builddeb -punivention-kernel-headers-2.6
-	#
-	#dh_gencontrol -punivention-kernel-headers-2.6-64gb -u-VF:KernelVersion="${KERNELVERSION}"
-	#dh_md5sums -punivention-kernel-headers-2.6-64gb
-	#dh_builddeb -punivention-kernel-headers-2.6-64gb
-	#
-	#dh_gencontrol -punivention-kernel-image -u-VF:KernelVersion="${KERNELVERSION}"
-	#dh_md5sums -punivention-kernel-image
-	#dh_builddeb -punivention-kernel-image
-	#
-	#dh_gencontrol -punivention-kernel-image-64gb -u-VF:KernelVersion="${KERNELVERSION}"
-	#dh_md5sums -punivention-kernel-image-64gb
-	#dh_builddeb -punivention-kernel-image-64gb
-	#
-	#dh_gencontrol -punivention-kernel-headers -u-VF:KernelVersion="${KERNELVERSION}"
-	#dh_md5sums -punivention-kernel-headers
-	#dh_builddeb -punivention-kernel-headers
-	#
-	#dh_gencontrol -punivention-kernel-headers-64gb -u-VF:KernelVersion="${KERNELVERSION}"
-	#dh_md5sums -punivention-kernel-headers-64gb
-	#dh_builddeb -punivention-kernel-headers-64gb
 
 	dh_gencontrol -punivention-avm-capi-fcpci-modules-2.6.32 -u-VF:KernelVersion="${KERNELVERSION}"
 	dh_md5sums -punivention-avm-capi-fcpci-modules-2.6.32
