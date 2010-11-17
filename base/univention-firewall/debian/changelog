@@ -1,3 +1,9 @@
+univention-firewall (3.0.4-1) unstable; urgency=low
+
+  * fixed header in 17localhost and 20pop3 (Bug #20688)
+
+ -- Tim Petersen <petersen@univention.de>  Wed, 17 Nov 2010 09:33:00 +0200
+
 univention-firewall (3.0.3-1) unstable; urgency=low
 
   * renamed 20localhost to 17localhost (Bug #18407)
