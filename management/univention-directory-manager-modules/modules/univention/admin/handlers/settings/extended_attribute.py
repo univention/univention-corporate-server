@@ -152,7 +152,7 @@ property_descriptions={
 	'tabName': univention.admin.property(
 			short_description=_('Tab Name'),
 			long_description='',
-			syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
+			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
 			required=0,

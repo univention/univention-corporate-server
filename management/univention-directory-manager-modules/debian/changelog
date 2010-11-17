@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.38-1) unstable; urgency=low
+
+  * edit syntax for extendedAttribute tabName (Bug #20063)
+
+ -- Tim Petersen <petersen@univention.de>  Wed, 17 Nov 2010 15:40:00 +0100
+
 univention-directory-manager-modules (6.0.37-1) unstable; urgency=low
 
   * do not look for kolab2 services several times (Bug #20632)
