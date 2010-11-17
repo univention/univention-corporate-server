@@ -615,7 +615,7 @@ class button extends extra{
 		$str = '<span class="submit">';
 		$str .= '<input type="hidden" id="'.$byteindex.'" name="usrinput['.$byteindex.']" value="'.$content.'"></input>';
 		if ($defaultbutton) {
-			$str .= $this->default_button($byteindex);	
+			$str .= $this->default_button($byteindex);
 		}
 		$str .= '<span>';
 		if (isset($this->attribute['link'])) {
@@ -714,17 +714,16 @@ class button extends extra{
 
 		if(isset($this->attribute['webui-confirm-title']))
 			$onclick = ' onClick="umc_popup_confirm( \''.$this->attribute['webui-confirm-title'].'\', \''.$this->attribute['webui-confirm-question'].'\', \''.$this->attribute['webui-confirm-yes'].'\', \''.$this->attribute['webui-confirm-no'].'\', \''.$onclick_func.'\', '.$this->byteindex.')"';
-			
+
 		if( $this->js && $class == 'linkbutton' ){
 			// define form-contens
 			if(!isset($this->attribute['passive'])){
-				$href = '<a class="'.$class.'"';
-
-				$href .= $onclick;	
-				$href .= ' title="'.$this->basket['helptext'].'" ';
+				$href = '<a class="'.$class.'"'.$onclick.' title="'.$this->basket['helptext'].'" ';
 
 				if ( isset( $this->attribute[ 'icon' ] ) ) {
-					$img = '<input src="'.$this->attribute['icon'].'" tabindex="'.$this->tabindex.'" name="usrinput['.$this->byteindex.']" type="image" value="pressed" class="button_icon" onClick="sendForm('.$this->byteindex.')" title="'.$this->basket['helptext'].'"></input>';
+					$img = $href.'>
+<img class="button_icon" src="'.$this->attribute[ 'icon' ].'"/></a>
+';
 				}
 
 				$link = $href.'>
@@ -734,17 +733,20 @@ class button extends extra{
 				$inp = '<input type="hidden" id="'.$this->byteindex.'" name="usrinput['.$this->byteindex.']" value="'.$this->basket['content'].'"></input>';
 				if(isset($this->attribute['defaultbutton'])){
 					$inp .= '<div style="position:absolute;top:-1000px;left:-1000px;"><input type="submit" name="usrinput['.$this->byteindex.']" id="defaultbutton"></div>';
-				//if(isset($this->attribute['nodefault'])){
-				$inp .= '<script type="text/javascript">';
-				$inp .= 'dojo.addOnLoad(function(stopReturn){';
-				$inp .= 'submitform = document.getElementById( "form" );';
-				$inp .= 'dojo.connect(submitform, "onkeypress",function(evt) {';
-				$inp .= 'var b = document.getElementById("defaultbutton");';
-				$inp .= 'var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);';
-				$inp .= 'if ((evt.keyCode == 13 && b != null)) {dojo.stopEvent(evt);';
-				$inp .= 'b.click();}})});';
-				$inp .= '</script>';
-				//}
+					$inp .= '
+<script type="text/javascript">
+  dojo.addOnLoad(function(stopReturn){
+    submitform = document.getElementById( "form" );
+    dojo.connect(submitform, "onkeypress",function(evt) {
+      var b = document.getElementById("defaultbutton");
+      var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+      if ((evt.keyCode == 13 && b != null)) {
+        dojo.stopEvent(evt);
+        b.click();
+      }
+    })
+  });
+</script>';
 				}
 			}
 			else
@@ -761,10 +763,10 @@ class button extends extra{
 			} else {
 				$class = "button";
 			}
-					
+
 			$str .= '<table class="'.$class.'"><tr>';
 			$text_col = '<td class="button_link">'.$link.'</td>';
-		
+
 			$btn_row = '';
 			if ( isset( $img ) ) {
 				$icon_col = '<td class="button_icon">'.$inp.$img.'</td>';
@@ -787,8 +789,9 @@ class button extends extra{
 
 				$href .= ' title="'.$this->basket['helptext'].'" ';
 
-				$img = '<input src="'.$this->attribute['icon'].'" tabindex="'.$this->tabindex.'" name="usrinput['.$this->byteindex.']" type="image" value="pressed" class="button_icon" onClick="sendForm('.$this->byteindex.')" title="'.$this->basket['helptext'].'"></input>';
-
+				$img = $href.'>
+<img class="button_icon" src="'.$this->attribute['icon'].'"/></a>
+';
 				$link = $href.'>
 <span class="'.$class.'">'.$this->basket['text'].'</span></a>
 ';
@@ -797,15 +800,20 @@ class button extends extra{
 				if(isset($this->attribute['defaultbutton'])){
 					$inp .= '<div style="position:absolute;top:-1000px;left:-1000px;"><input type="submit" name="usrinput['.$this->byteindex.']" id="defaultbutton"></div>';
 				//if(isset($this->attribute['nodefault'])){
-				$inp .= '<script type="text/javascript">';
-				$inp .= 'dojo.addOnLoad(function(stopReturn){';
-				$inp .= 'submitform = document.getElementById( "form" );';
-				$inp .= 'dojo.connect(submitform, "onkeypress",function(evt) {';
-				$inp .= 'var b = document.getElementById("defaultbutton");';
-				$inp .= 'var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);';
-				$inp .= 'if ((evt.keyCode == 13 && b != null)) {dojo.stopEvent(evt);';
-				$inp .= 'b.click();}})});';
-				$inp .= '</script>';
+					$inp .= '
+<script type="text/javascript">
+  dojo.addOnLoad(function(stopReturn){
+    submitform = document.getElementById( "form" );
+    dojo.connect(submitform, "onkeypress",function(evt) {
+      var b = document.getElementById("defaultbutton");
+      var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+      if ((evt.keyCode == 13 && b != null)) {
+        dojo.stopEvent(evt);
+        b.click();
+      }
+    })
+  });
+</script>';
 				//}
 				}
 			}
@@ -817,6 +825,7 @@ class button extends extra{
 		    }
 
 			// build html
+			// FIXME: are these classes (menu*) still in use?
 			if ( $class == 'menu2'  ||  $class == 'menu2_on' ) {
 				$str .= $this->menu2_item($this->basket['text'], $this->attribute['icon'], $this->byteindex, $this->basket['content']);
 			} elseif ($class == 'menu3' || $class == 'menu3_on' ) {

@@ -1,3 +1,9 @@
+univention-webui (4.0.26-1) unstable; urgency=low
+
+  * ensure that icon buttons work in internet explorer (versions 6 to 8); Bug #19155
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 17 Nov 2010 10:14:56 +0100
+
 univention-webui (4.0.25-1) unstable; urgency=low
 
   * re-worked layout of category tabs; Bug #19445
