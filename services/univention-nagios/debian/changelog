@@ -1,3 +1,9 @@
+univention-nagios (4.0.8-1) unstable; urgency=low
+
+  * Check if the nagios related attributes were changed (Bug #20505)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 18 Nov 2010 08:13:29 +0100
+
 univention-nagios (4.0.7-1) unstable; urgency=low
 
   * fix: check nagios config before restart/reload (Bug #18119)

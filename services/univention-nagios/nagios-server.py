@@ -696,10 +696,13 @@ def handler(dn, new, old):
 
 	elif ((old and old.has_key('objectClass') and 'univentionNagiosHostClass' in old['objectClass']) or
 		(new and new.has_key('objectClass') and 'univentionNagiosHostClass' in new['objectClass'])):
-		handleHost(dn, new, old)
-		__reload = True
-
-
+		# check if the nagios related attributes were changed
+		for attr in ['aRecord', 'associatedDomain', 'uid', 'cn', 'description', 'univentionNagiosParent', 'univentionNagiosEnabled' ]:
+			if not (new.get(attr, None) == old.get(attr, None)):
+				handleHost(dn, new, old)
+				__reload = True
+				break
+			
 	elif ((old and old.has_key('objectClass') and 'univentionNagiosTimeperiodClass' in old['objectClass']) or
 		(new and new.has_key('objectClass') and 'univentionNagiosTimeperiodClass' in new['objectClass'])):
 		handleTimeperiod(dn, new, old)
