@@ -1,3 +1,10 @@
+horde-webmailer (1.2.5~2.2.6-1) unstable; urgency=low
+
+  * Added patch to solve php convert error messages
+    (http://bugs.horde.org/ticket/7802) (Bug #19893)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Nov 2010 12:09:31 +0100
+
 horde-webmailer (1.2.5~2.2.5-3) unstable; urgency=low
 
   * svn add the patch as well.. (Bug #19855)
