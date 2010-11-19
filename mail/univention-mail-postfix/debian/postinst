@@ -57,7 +57,8 @@ univention-config-registry set ldap/port?389 \
                                mail/alias/root?systemmail@$hostname.$domainname \
                                mail/alias/postmaster?root \
                                mail/messagesizelimit?10240000 \
-                               mail/postfix/ldap/timeout?15
+                               mail/postfix/ldap/timeout?15 \
+                               mail/smtpauth?yes
 newaliases
 
 adduser postfix sasl

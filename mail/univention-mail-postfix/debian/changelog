@@ -1,3 +1,9 @@
+univention-mail-postfix (3.0.2-1) unstable; urgency=low
+
+  * by default enable smtp auth for postfix via saslauthd (Bug #20574)
+
+ -- Felix Botner <botner@univention.de>  Fri, 19 Nov 2010 13:23:14 +0100
+
 univention-mail-postfix (3.0.1-1) unstable; urgency=low
 
   * use mail/hosteddomains in postfix mydestinations if

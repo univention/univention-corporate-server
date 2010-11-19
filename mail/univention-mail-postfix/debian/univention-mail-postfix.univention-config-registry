@@ -66,3 +66,8 @@ File: etc/postfix/sasl/smtpd.conf
 Type: module
 Module: mail_hosteddomains.py
 Variables: mail/hosteddomains
+
+Type: file
+File: etc/postfix/sasl/pam_ldap_smtp.conf
+Variables: ldap/server/name
+Variables: ldap/base
