@@ -29,3 +29,4 @@ t_SyncML_HK_GW_SyncML_CombinedFixes.diff
 t_Prefs_HK_GW_FixLDAPAuthForIngo.diff
 t_SyncML_HK_UV_Nokia_convertServer2Client.diff
 univention_horde_ticket_7802.diff
+univention_issue4174_smtp_auth_login_by_uid.diff

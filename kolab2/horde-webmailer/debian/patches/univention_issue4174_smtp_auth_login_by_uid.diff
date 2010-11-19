@@ -1,0 +1,11 @@
+--- a/horde-webmail/imp/lib/Compose.php	2010-11-19 16:15:53.000000000 +0100
++++ b/horde-webmail/imp/lib/Compose.php	2010-11-19 16:16:14.000000000 +0100
+@@ -936,7 +936,7 @@
+          * current IMAP / POP3 connection are valid for SMTP authentication as
+          * well. */
+         if (!empty($params['auth']) && empty($params['username'])) {
+-            $params['username'] = $_SESSION['imp']['user'];
++            $params['username'] = $_SESSION['imp']['uniquser'];
+             $params['password'] = Secret::read(Secret::getKey('imp'), $_SESSION['imp']['pass']);
+         }
+ 

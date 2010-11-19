@@ -1,3 +1,9 @@
+horde-webmailer (1.2.5~2.2.8-1) unstable; urgency=low
+
+  * Support login by uid for smtp auth (Bug #19893)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Nov 2010 20:04:34 +0100
+
 horde-webmailer (1.2.5~2.2.7-1) unstable; urgency=low
 
   * Fixed path in patch (Bug #19893)
