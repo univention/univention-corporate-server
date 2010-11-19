@@ -64,6 +64,12 @@ Description[en]=Enable/Disable SMTP-Authentication
 Type=str
 Categories=service-mail
 
+[mail/smtpauth/login_attr]
+Description[de]=Definiert das LDAP Attribut für die SMTP Authentifikation (default: mailPrimaryAddress)
+Description[en]=Defines the ldap attribute for the smtp authentication (default: mailPrimaryAddress)
+Type=str
+Categories=service-mail
+
 [mail/smtpport]
 Description[de]=Port des SMTP-Servers
 Description[en]=Port for SMTP server to use

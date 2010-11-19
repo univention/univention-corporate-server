@@ -9,7 +9,13 @@
 # 
 
 auth    sufficient    pam_unix.so
-auth	requisite     pam_univentionmailcyrus.so ldap_host=@%@ldap/server/name@%@ ldap_base=@%@ldap/base@%@ from_attr=mailPrimaryAddress to_attr=uid
+
+@!@
+ldapServer = baseConfig.get("ldap/server/name")
+ldapBase = baseConfig.get("ldap/base")
+from_attr = baseConfig.get("mail/smtpauth/login_attr", "mailPrimaryAddress")
+print "auth\trequisite\tpam_univentionmailcyrus.so ldap_host=%s ldap_base=%s from_attr=%s to_attr=uid" % (ldapServer, ldapBase, from_attr)
+@!@
 auth    sufficient    pam_ldap.so use_first_pass config=/etc/postfix/sasl/pam_ldap_smtp.conf
 auth    required      pam_krb5.so use_first_pass
 

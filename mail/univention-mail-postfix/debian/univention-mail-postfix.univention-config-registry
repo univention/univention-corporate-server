@@ -59,6 +59,9 @@ Variables: mail/archivefolder
 
 Type: file
 File: etc/pam.d/smtp
+Variables: ldap/server/name
+Variables: ldap/base
+Variables: mail/smtpauth/login_attr
 
 Type: file
 File: etc/postfix/sasl/smtpd.conf

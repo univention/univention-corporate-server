@@ -1,3 +1,10 @@
+univention-mail-postfix (3.0.3-1) unstable; urgency=low
+
+  * made from_attr in /etc/pam.d/smtp configurable via
+    mail/smtpauth/login_attr (Bug #20574)
+
+ -- Felix Botner <botner@univention.de>  Fri, 19 Nov 2010 15:13:19 +0100
+
 univention-mail-postfix (3.0.2-1) unstable; urgency=low
 
   * by default enable smtp auth for postfix via saslauthd (Bug #20574)
