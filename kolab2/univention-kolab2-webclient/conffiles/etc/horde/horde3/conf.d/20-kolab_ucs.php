@@ -65,8 +65,8 @@ if horde_auth.lower() == 'kolab':
 	print "$conf['auth']['params']['login_block'] = false;"
 	print "$conf['auth']['params']['login_block_count'] = 3;"
 	print "$conf['auth']['params']['login_block_time'] = 5;"
-	print "$conf['auth']['params']['port'] = 143;"
-	print "$conf['auth']['params']['protocol'] = 'imap/notls';"
+	print "$conf['auth']['params']['port'] = %s;" % baseConfig.get('horde/imapport', '993')
+	print "$conf['auth']['params']['protocol'] = '%s';" % baseConfig.get('horde/imapprotocol', 'imap/ssl/novalidate-cert')
 	print "$conf['auth']['params']['imapconfig'] = 'separate';"
 	print "$conf['auth']['params']['app'] = 'imp';"
 	print "$conf['auth']['driver'] = 'application';"
@@ -128,32 +128,25 @@ if mailer_is_sendmail:
 	print "$conf['mailer']['params']['sendmail_args'] = '-oi';"
 
 if not mailer_is_sendmail:
-	if baseConfig.has_key('horde/mailer/smtp/host'):
-		print "$conf['mailer']['params']['host'] = '%s';" % baseConfig['horde/mailer/smtp/host']
+	mailer_port = baseConfig.get('horde/mailer/smtp/port', '465')
+	mailer_host = baseConfig.get('horde/mailer/smtp/host', '%s.%s' %(baseConfig['hostname'], baseConfig['domainname']))
+	mailer_name = baseConfig.get('horde/mailer/smtp/name', '%s.%s' %(baseConfig['hostname'], baseConfig['domainname']))
+	if mailer_port == '465':
+		print "$conf['mailer']['params']['host'] = 'ssl://%s';" % mailer_host
 	else:
-		print "$conf['mailer']['params']['host'] = 'localhost';"
+		print "$conf['mailer']['params']['host'] = '%s';" % mailer_host
 
-	if baseConfig.has_key('horde/mailer/smtp/port'):
-		print "$conf['mailer']['params']['port'] = %s;" % baseConfig['horde/mailer/smtp/port']
-	else:
-		print "$conf['mailer']['params']['port'] = 25;"
+	print "$conf['mailer']['params']['port'] = '%s';" % mailer_port
+	print "$conf['mailer']['params']['name'] = '%s';" % mailer_name
 
-	if baseConfig.has_key('horde/mailer/smtp/name'):
-		print "$conf['mailer']['params']['name'] = '%s';" % baseConfig['horde/mailer/smtp/name']
-	else:
-		print "$conf['mailer']['params']['name'] = 'localhost';"
-
-	if baseConfig.has_key('horde/mailer/smtp/auth'):
-		if baseConfig['horde/mailer/smtp/auth'].lower() in [ 'false', 'no', '0' ]:
-			print "$conf['mailer']['params']['auth'] = '0';"
-		elif baseConfig['horde/mailer/smtp/auth'].lower() in [ 'true', 'yes', '1' ]:
-			print "$conf['mailer']['params']['auth'] = '1';"
-		elif baseConfig['horde/mailer/smtp/auth'].upper() in [ 'DIGEST-MD5', 'CRAM-MD5', 'LOGIN', 'PLAIN' ]:
-			print "$conf['mailer']['params']['auth'] = '%s';" % baseConfig['horde/mailer/smtp/auth'].upper()
-		else:
-			print "$conf['mailer']['params']['auth'] = '1';"
-	else:
+	mailer_auth = baseConfig.get('horde/mailer/smtp/auth', 'PLAIN') # [ 'DIGEST-MD5', 'CRAM-MD5', 'LOGIN', 'PLAIN' ]:
+	if mailer_auth.lower() in [ 'false', 'no', '0' ]:
 		print "$conf['mailer']['params']['auth'] = '0';"
+	elif mailer_auth.lower() in [ 'true', 'yes', '1' ]:
+		print "$conf['mailer']['params']['auth'] = 'PLAIN';"
+	else:
+		print "$conf['mailer']['params']['auth'] = '%s';" % mailer_auth.upper()
+
 @!@
 $conf['mailformat']['brokenrfc2231'] = false;
 $conf['tmpdir'] = '/var/cache/horde';

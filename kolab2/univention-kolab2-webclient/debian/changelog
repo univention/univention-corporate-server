@@ -1,3 +1,21 @@
+univention-kolab2-webclient (6.0.4-10) unstable; urgency=low
+
+  * Bug #20661:
+    * Use imaps by default, to overwrite set the UCR variable
+      horde/imapport. And changed the default to 993. To get the previous
+      default set the value to 143
+    * Added UCR varable horde/imapprotocol and set the default to
+      imap/ssl/novalidate-cert. To get the previous default set the value
+      to imap/notls
+    * Switch the default smtp port to 465. To get the previous default
+      the UCR variable horde/mailer/smtp/port must be set to 25
+    * Added automatically ssl:// to the smtp hostname if port 465 (imaps)
+      is configured
+    * Activate smtp auth by default. To disable the smtp authentication
+      the UCR variable horde/mailer/smtp/auth must be set to 0
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Nov 2010 08:27:43 +0100
+
 univention-kolab2-webclient (6.0.3-9) unstable; urgency=low
 
   * update the from_addr if the user object changed (Bug #20554)

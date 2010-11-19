@@ -100,6 +100,18 @@ Description[en]=FQDN of the IMAP server
 Type=str
 Categories=service-mail
 
+[horde/imapport]
+Description[de]=Port des IMAP-Servers (Standard: 993)
+Description[en]=Port of the IMAP server (default: 993)
+Type=str
+Categories=service-mail
+
+[horde/imapprotocol]
+Description[de]=Protokoll für den Zugriff auf den IMAP-Server (Standard: imap/ssl/novalidate-cert) (Mögliche Werte: imap, imap/novalidate-cert, imap/notls, imap/tls, imap/tls/novalidate-cert, imap/ssl, imap/ssl/novalidate-cert)
+Description[en]=Protocol for access to the IMAP server (default: imap/ssl/novalidate-cert) (possible values: imap, imap/novalidate-cert, imap/notls, imap/tls, imap/tls/novalidate-cert, imap/ssl, imap/ssl/novalidate-cert)
+Type=str
+Categories=service-mail
+
 [horde/kronolith/reminders/cron]
 Description[de]=Aktiviert einen Cronjob zum Verschicken von Erinnerungen
 Description[en]=Activates a Cronjob that sends reminders
@@ -107,7 +119,7 @@ Type=str
 Categories=service-mail
 
 [horde/mailer/smtp/auth]
-Description[de]=Authentifizierungsmethode gegenüber dem SMTP-Server (flase schaltet die Authentifizierung ab; true, DIGEST-MD5, CRAM-MD5, LOGIN, PLAIN)
+Description[de]=Authentifizierungsmethode gegenüber dem SMTP-Server (false schaltet die Authentifizierung ab; true, DIGEST-MD5, CRAM-MD5, LOGIN, PLAIN)
 Description[en]=Authentication method to use for the SMTP server (false deactivates authentication; true, DIGEST-MD5, CRAM-MD5, LOGIN, PLAIN)
 Type=str
 Categories=service-mail
