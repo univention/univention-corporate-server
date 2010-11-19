@@ -1,3 +1,11 @@
+xen-3.4 (3.4.3-12) unstable; urgency=low
+
+  * Fix etherboot compile (Ticket#: 2010111510003474)
+    - Reset Xens ([HOST]C|LD)FLAGS for Etherboot
+    - Re-create split config files after clean
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 19 Nov 2010 16:52:43 +0100
+
 xen-3.4 (3.4.3-11) unstable; urgency=low
 
   * Increase dhcp-timeout from 10 to 20 seconds to work-around default "bridge
