@@ -50,12 +50,18 @@ if [ -z "$auth_user_methods_default" ]; then
 	/usr/sbin/univention-baseconfig set auth/user/methods/default="$auth_user_methods" >/dev/null
 fi
 
+# do we need to run run-parts etc/network/if-$1.d
+run_parts=false
+if [ -n "$1" -a "$1" = "runParts" ]; then
+	run_parts=true
+fi
+
 
 action () {
 	dir="/etc/network/if-$1.d"
 	export MODE=$1
 
-	if [ -d "$dir" ]; then
+	if [ -d "$dir" -a "$run_parts" = "true" ]; then
 		run-parts "$dir" >/dev/null
 	fi
 }

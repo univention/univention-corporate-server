@@ -1,3 +1,11 @@
+univention-server (6.0.3-1) unstable; urgency=low
+
+  * execute run-parts on /etc/network/if-ACTION.d in check_connection
+    only if called with $1=runParts to avoid multiple runs on
+    /etc/network/if-ACTION.d when called via networkManager Bug #20697
+
+ -- Felix Botner <botner@univention.de>  Fri, 19 Nov 2010 16:11:14 +0100
+
 univention-server (6.0.2-1) unstable; urgency=low
 
   * undo last commit. Bug #19218
