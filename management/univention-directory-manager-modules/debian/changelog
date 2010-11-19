@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.38-2) unstable; urgency=low
+
+  * Fix typo in display policy (Bug #19647)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 19 Nov 2010 14:38:09 +0100
+
 univention-directory-manager-modules (6.0.38-1) unstable; urgency=low
 
   * edit syntax for extendedAttribute tabName (Bug #20063)

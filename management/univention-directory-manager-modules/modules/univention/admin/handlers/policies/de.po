@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-27 20:21+0200\n"
+"POT-Creation-Date: 2010-11-19 14:35+0100\n"
 "PO-Revision-Date: 2009-11-09 15:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1059,6 +1059,10 @@ msgstr "Passwort-Richtlinie"
 msgid "Password quality check"
 msgstr "Passwort-Qualitätsprüfung"
 
+#: pwhistory.py:109
+msgid "Enables/disables password quality checks for example dictonaty entries"
+msgstr ""
+
 #: registry.py:56
 msgid "Policy: Univention Configuration Registry"
 msgstr "Richtlinie: Univention Configuration Registry"
@@ -1265,9 +1269,9 @@ msgstr "Automatische Erkennung"
 msgid "Resolution"
 msgstr "Auflösung"
 
-#: xfree.py:47
-msgid "secondaryresolution"
-msgstr "Auflösung"
+#: xfree.py:47 xfree.py:104
+msgid "Resolution of secondary display"
+msgstr "Auflösung des sekundären Monitors"
 
 #: xfree.py:48 xfree.py:116
 msgid "Color depth"
@@ -1345,10 +1349,6 @@ msgstr "Display-Einstellungen"
 msgid "Resolution of primary display"
 msgstr "Auflösung des primären Monitors"
 
-#: xfree.py:104
-msgid "Resolution of secondary disaplay"
-msgstr "Auflösung des sekundären Monitors"
-
 #: xfree.py:242
 msgid "Empty Attributes"
 msgstr "Leere Attribute"
@@ -1358,7 +1358,7 @@ msgid "Display size (mm)"
 msgstr "Display-Grösse (mm)"
 
 #: xfree.py:297
-msgid "Position of secondary disaplay"
+msgid "Position of secondary display"
 msgstr "Position des sekundären Monitors"
 
 #: xfree.py:308
@@ -1384,6 +1384,9 @@ msgstr "Eingabegeräte"
 #: xfree.py:379
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
+
+#~ msgid "secondaryresolution"
+#~ msgstr "Auflösung"
 
 #~ msgid "VNC"
 #~ msgstr "VNC"

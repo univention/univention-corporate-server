@@ -44,7 +44,7 @@ class xfreeFixedAttributes(univention.admin.syntax.select):
 	choices=[
 		('univentionXAutoDetect',_('Automatic detection')),
 		('univentionXResolution',_('Resolution')),
-		('univentionXResolutionSecondary',_('Resolution of secondary disaplay')),
+		('univentionXResolutionSecondary',_('Resolution of secondary display')),
 		('univentionXColorDepth',_('Color depth')),
 		('univentionXMouseProtocol',_('Mouse protocol')),
 		('univentionXMouseDevice',_('Mouse device')),
@@ -101,7 +101,7 @@ property_descriptions={
 			configAttributeName='univentionXResolutionChoices'
 		),
 	'secondaryresolution': univention.admin.property(
-			short_description=_('Resolution of secondary disaplay'),
+			short_description=_('Resolution of secondary display'),
 			long_description='',
 			syntax=univention.admin.syntax.XResolution,
 			multivalue=0,
@@ -294,7 +294,7 @@ property_descriptions={
 			default=('', [])
 		),
 	'displayposition': univention.admin.property(
-			short_description=_('Position of secondary disaplay'),
+			short_description=_('Position of secondary display'),
 			long_description='',
 			syntax=univention.admin.syntax.XDisplayPosition,
 			multivalue=0,
