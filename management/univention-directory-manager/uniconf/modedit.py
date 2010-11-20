@@ -1923,8 +1923,11 @@ class modedit(unimodule.unimodule):
 
 
 						if not host_choicelist_has_current and value:
-							for v in value:
-								host_choicelist.append({'name': v, 'description': v, 'selected': '1'})
+							if type(value) == types.ListType:
+								for v in value:
+									host_choicelist.append({'name': v, 'description': v, 'selected': '1'})
+							else:
+								host_choicelist.append({'name': value, 'description': value, 'selected': '1'})
 
 						host_choicelist.sort()
 

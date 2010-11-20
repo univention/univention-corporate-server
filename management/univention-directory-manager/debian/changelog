@@ -1,3 +1,10 @@
+univention-directory-manager (8.0.21-1) unstable; urgency=low
+
+  * Show correct hostname for a share if the host is unknown
+    (Bug #19863)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 20 Nov 2010 15:01:35 +0100
+
 univention-directory-manager (8.0.20-2) unstable; urgency=low
 
   * Fix lost default-subtype after changing search path (Bug #18932)
