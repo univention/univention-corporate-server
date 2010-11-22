@@ -107,7 +107,7 @@ Archive: <a href="https://%s/univention-system-info-upload/archives/%s">%s</a>
 </p>
 </body>
 </html>
-''' % ( infoTable, socket.getfqdn(), filename, filename ), 'html' )
+''' % ( infoTable, socket.getfqdn(), filename, filename ), 'html', 'utf-8' )
 	msg[ 'Subject' ] = 'Univention System Info Upload'
 	sender = configRegistry.get( 'umc/sysinfo/upload/sender', 'root' )
 	recipient = configRegistry.get( 'umc/sysinfo/upload/recipient', sender )

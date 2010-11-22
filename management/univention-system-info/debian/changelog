@@ -1,3 +1,9 @@
+univention-system-info (1.0.2-1) unstable; urgency=low
+
+  * made utf-8 default (Bug #20097)
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 22 Nov 2010 15:02:38 +0200
+
 univention-system-info (1.0.1-1) unstable; urgency=low
 
   * Add Info to mail (Bug #20097)
