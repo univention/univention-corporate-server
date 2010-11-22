@@ -1,3 +1,9 @@
+univention-server (6.0.4-2) unstable; urgency=low
+
+  * fixed check_connection path in managed-client start script Bug #20753
+
+ -- Felix Botner <botner@univention.de>  Mon, 22 Nov 2010 14:27:46 +0100
+
 univention-server (6.0.3-1) unstable; urgency=low
 
   * execute run-parts on /etc/network/if-ACTION.d in check_connection
