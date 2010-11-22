@@ -40,6 +40,7 @@ import subprocess
 import smtplib
 import sys
 import time
+import tarfile
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
@@ -80,19 +81,33 @@ ok, filename = save_uploaded_file( 'filename', path, configRegistry.get( 'umc/sy
 if not ok:
 	print 'ERROR: wrong file type or file to big'
 else:
+	infoTable = ''
+	# get contents of info file
+	try:
+		tarFile = tarfile.open( os.path.join(path, filename), 'r' )
+		infoTable = '<table>\n'
+		for line in tarFile.extractfile( tarFile.getmember('%s/info' % filename[:-7]) ).readlines():
+			key, val = line.strip().split(':')
+			infoTable += '<tr><td>%s:</td><td>%s</td></tr>\n' % (key.strip(), val.strip())
+		infoTable += '</table>'
+	except:
+		pass
+
 	msg = MIMEText('''
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head/>
 <body>
 <p>A new Univention system info archive has been uploaded.</p>
+%s
 
 <p>
 Archive: <a href="https://%s/univention-system-info-upload/archives/%s">%s</a>
 </p>
 </body>
 </html>
-''' % ( socket.getfqdn(), filename, filename ), 'html' )
+''' % ( infoTable, socket.getfqdn(), filename, filename ), 'html' )
 	msg[ 'Subject' ] = 'Univention System Info Upload'
 	sender = configRegistry.get( 'umc/sysinfo/upload/sender', 'root' )
 	recipient = configRegistry.get( 'umc/sysinfo/upload/recipient', sender )
