@@ -1,3 +1,31 @@
+univention-virtual-machine-manager-node (0.2.3-1) unstable; urgency=low
+
+  * README.restore: fixed typos; add description how to start virtual instance
+  * do not throw exception if there are no backups to restore; Bug #19864
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 14 Sep 2010 15:03:43 +0200
+
+univention-virtual-machine-manager-node (0.2.2-1) unstable; urgency=low
+
+  * enhance error handling in UCR module uvmm_restore; Bug #19864
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 14 Sep 2010 10:00:05 +0200
+
+univention-virtual-machine-manager-node (0.2.1-1) unstable; urgency=low
+
+  * add link to README.restore in current backup directory; Bug #19864
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 09 Sep 2010 17:16:05 +0200
+
+univention-virtual-machine-manager-node (0.2.0-1) unstable; urgency=low
+
+  * add script to restore virtual instances; Bug #19864
+  * add README describing the usage of the restore tool
+  * add UCR variable uvmm/backup/directory defining the diretory for
+    backups
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 09 Sep 2010 16:22:38 +0200
+
 univention-virtual-machine-manager-node (0.1.13-1) unstable; urgency=low
 
   * activate xen's relocation server by default; Bug #19689

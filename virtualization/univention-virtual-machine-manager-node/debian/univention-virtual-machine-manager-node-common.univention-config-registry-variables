@@ -4,6 +4,12 @@ Description[en]=List of host names allowed to manage the virtual instances of th
 Type=str
 Categories=uvmm
 
+[uvmm/backup/directory]
+Description[de]=Verzeichnis in dem Sicherung der Konfiguration der virtuellen Instanzen abgelegt werden
+Description[en]=Directory used for backups of the configuration of virtual instances
+Type=str
+Categories=uvmm
+
 [libvirt/autostart]
 Description[de]=Definiert, ob der libvirt-Dienst automatisch gestartet werden soll
 Description[en]=Defines if the libvirt service should be started automatically

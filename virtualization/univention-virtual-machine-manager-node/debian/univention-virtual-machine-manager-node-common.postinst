@@ -32,6 +32,8 @@
 
 eval "$(univention-config-registry shell server/role)"
 
+univention-config-registry set "uvmm/backup/directory?/var/backups/univention-virtual-machine-manager-daemon"
+
 case "$1" in
     configure)
 	if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then

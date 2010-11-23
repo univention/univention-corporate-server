@@ -7,3 +7,7 @@ Variables: uvmm/managers
 
 Type: file
 File: etc/default/libvirt-bin
+
+Type: module
+Module: uvmm_restore.py
+Variables: uvmm/backup/directory

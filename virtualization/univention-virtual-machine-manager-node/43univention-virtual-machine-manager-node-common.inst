@@ -39,13 +39,13 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-univention-directory-manager groups/group create $@ \
+univention-directory-manager groups/group create "$@" \
 	--ignore_exists \
 	--position="cn=groups,$ldap_base" \
 	--set name="UVMM Nodes" \
 	--set UVMMGroup=1
 
-univention-directory-manager groups/group modify $@ \
+univention-directory-manager groups/group modify "$@" \
 	--dn "cn=UVMM Nodes,cn=groups,$ldap_base" \
 	--ignore_exists \
 	--append hosts="$ldap_hostdn"
