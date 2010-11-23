@@ -17,3 +17,20 @@ https://forge.univention.org/bugzilla/show_bug.cgi?id=20661
      }
  
      /**
+--- a/horde-webmail/lib/Horde/Kolab/IMAP/cclient.php	2009-12-15 19:17:05.000000000 +0100
++++ b/horde-webmail/lib/Horde/Kolab/IMAP/cclient.php	2010-11-23 10:39:42.000000000 +0100
+@@ -67,11 +67,13 @@
+      * @return boolean|PEAR_Error  True in case the connection was opened
+      *                             successfully.
+      */
+-    function connect($login, $password, $tls = false)
++    function connect($login, $password, $tls = true)
+     {
+         $options = '';
+         if (!$tls) {
+             $options = '/notls';
++        } else {
++            $options = '/tls/novalidate-cert';
+         }
+ 
+         $mbox = '{' . $this->_server . ':' . $this->_port
