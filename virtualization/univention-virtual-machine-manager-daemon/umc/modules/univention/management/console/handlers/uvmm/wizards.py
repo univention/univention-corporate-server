@@ -61,30 +61,31 @@ class DriveWizard( umcd.IWizard ):
 		self.reset()
 		self.domain = None
 
-		# page 0
+		# page 0: Select HD or ROM
 		page = umcd.Page( self.title, _( 'What type of drive should be created?' ) )
 		page.options.append( umcd.make( ( 'drive-type', DriveTypeSelect( _( 'Type of drive' ) ) ) ) )
 		self.append( page )
 
-		# page 1
+		# page 1: [Only HD] Select existing or new
 		page = umcd.Page( self.title, _( 'For the hard drive a new image can be created or an existing one can be chosen. An existing image should only be used by one virtual instance at a time.' ) )
 		page.options.append( umcd.make( ( 'existing-or-new-disk', DiskSelect( '' ) ) ) )
 		self.append( page )
 
-		# page 2
+		# page 2: Select existing image
 		page = umcd.Page( self.title )
 		page.options.append( umcd.Text( '' ) ) # will be replaced with pool selection button
 		page.options.append( umcd.make( ( 'drive-image', self.image_syntax ) ) )
 		self.append( page )
 
-		# page 3
+		# page 3: [Only new HD] Select name and size
 		page = umcd.Page( self.title, _( 'Each hard drive image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). The newly create image will have the specified name and size provided by the following settings. Currently these was been set to default images. It has to be ensured that there is enough space left in the defined storage pool.' ) )
 		page.options.append( umcd.Text( '' ) ) # will be replaced with pool selection button
 		page.options.append( umcd.make( ( 'image-name', umc.String( _( 'Filename' ) ) ) ) )
+		#page.options.append(umcd.make(('image-format', BlockDriverSelect(_('Image format'))))
 		page.options.append( umcd.make( ( 'image-size', umc.String( _( 'Size (default unit MB)' ), regex = MemorySize.SIZE_REGEX ) ) ) )
 		self.append( page )
 
-		# page 4
+		# page 4: Show summary
 		page = umcd.Page( self.title, _( 'The following drive will be created:' ) )
 		self.append( page )
 
@@ -126,10 +127,12 @@ class DriveWizard( umcd.IWizard ):
 			# read pool
 			ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: node storage pools: %s' % str( self.node.storages ) )
 			object.options[ 'drive-pool' ] = 'default'
+			object.options['image-format'] = 'raw'
 			object.options[ 'image-size' ] = '8 GB'
 		return umcd.IWizard.action( self, object )
 
 	def pool_selected( self, object ):
+		"""Update list of known images in pool."""
 		ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: node storage volumes: %s' % str( self.node_uri ) )
 		vols = self.uvmm.storage_pool_volumes( self.node_uri, object.options.get( 'drive-pool', 'default' ), object.options[ 'drive-type' ] )
 		ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: node storage volumes: %s' % map(str, vols))
@@ -172,17 +175,21 @@ class DriveWizard( umcd.IWizard ):
 			return _('unknown')
 
 	def next( self, object ):
+		"""Switch wizard to next page based on current state."""
 		if self.current == 0: # which drive type?
 			# initialize pool and image selection
 			self.pool_selected( object )
 			if object.options[ 'drive-type' ] == 'disk':
 				self.current = 1
 				object.options[ 'drive-pool' ] = 'default'
+				object.options['image-format'] = 'raw'
 				object.options[ 'image-size' ] = '8 GB'
 				if object.options.get( 'domain', 'NONE' ) != 'NONE':
-					self.uvmm.next_drive_name( self.node_uri, object.options.get( 'domain' ), object )
+					object.options['image-name'] = self.uvmm.next_drive_name(self.node_uri, object.options.get('domain'))
 			elif object.options['drive-type'] == 'cdrom':
 				self.current = 2
+			else:
+				raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
 		elif self.current == 1: # new or existing disk image?
 			if object.options[ 'existing-or-new-disk' ] == 'disk-new':
 				self.current = 3
@@ -199,18 +206,20 @@ class DriveWizard( umcd.IWizard ):
 					self[ self.current ].description = _( 'Each ISO image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list of available images is updated.' )
 				else:
 					raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
-		elif self.current in ( 2, 3 ): # 2=create new, 3=select existing disk image
+		elif self.current in ( 2, 3 ): # 2=select existing disk image, 3=create new
 			pool_path = self._get_pool_path( object.options[ 'drive-pool' ] )
 			if self.current == 2: # select existing disk image
-				ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: collect information about existing disk image: %s' % object.options[ 'drive-image' ] )
+				drive_image = object.options['drive-image']
+				ud.debug(ud.ADMIN, ud.INFO, 'drive wizard: collect information about existing disk image: %s' % drive_image)
 				drive_pool = object.options['drive-pool']
 				drive_type = object.options['drive-type']
-				drive_image = object.options['drive-image']
+				image_type = object.options['image-format']
 				vols = self.uvmm.storage_pool_volumes(self.node_uri, drive_pool, drive_type)
 				for vol in vols:
 					if os.path.basename(vol.source) == drive_image:
-						ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: set information about existing disk image: %s' % object.options[ 'drive-image' ] )
+						ud.debug(ud.ADMIN, ud.INFO, 'drive wizard: set information about existing disk image: %s' % drive_image)
 						object.options[ 'image-name' ] = drive_image
+						object.options['image-format'] = image_type
 						object.options[ 'image-size' ] = MemorySize.num2str( vol.size )
 						break
 				else:
@@ -241,6 +250,7 @@ class DriveWizard( umcd.IWizard ):
 			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Drive type' ) ), self._disk_type_text( object.options[ 'drive-type' ] ) ] )
 			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Storage pool' ) ), _( 'path: %(path)s' ) % { 'path' : pool_path } ] )
 			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image filename' ) ), object.options[ 'image-name' ] ] )
+			conf.add_row([umcd.HTML('<i>%s</i>' % _('Image format')), object.options['image-format']])
 			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image size' ) ), object.options[ 'image-size' ] ] )
 			self[ self.current ].options.append( conf )
 		else:
@@ -257,7 +267,7 @@ class DriveWizard( umcd.IWizard ):
 		elif self.current == 3:
 			self.current = 1
 		elif self.current == 4:
-			if object.options['drive-type' ]== 'disk' and object.options['existing-or-new-disk'] == 'disk-new':
+			if object.options['drive-type'] == 'disk' and object.options['existing-or-new-disk'] == 'disk-new':
 				self.current = 3
 			else:
 				self.current = 2
@@ -382,7 +392,7 @@ class InstanceWizard( umcd.IWizard ):
 			if mem_size > self.max_memory:
 				object.options[ 'memory' ] = MemorySize.num2str( self.max_memory * 0.75 )
 				return umcd.WizardResult( False, _( 'The physical server does not have that much memory. As a suggestion the a mount of memory was set to 75% of the available memory.' ) )
-			self.uvmm.next_drive_name( self.node_uri, object.options[ 'domain' ], object )
+			object.options['image-name'] = self.uvmm.next_drive_name(self.node_uri, object.options['domain'])
 			# activate drive wizard to add a first mandatory drive
 			if not self.drives:
 				self.drive_wizard.prev_first_page = True
@@ -503,7 +513,8 @@ class InstanceWizard( umcd.IWizard ):
 		self.drive_wizard_cancel = cancel
 		# self.drive_number += 1
 		# object.options[ 'image-name' ] = object.options[ 'name' ] + '-%d.img' % self.drive_number
-		self.uvmm.next_drive_name( self.node_uri, object.options[ 'name' ], object, temp_drives = [ os.path.basename( drive.source ) for drive in self.drives ] )
+		object.options['image-name'] = self.uvmm.next_drive_name(self.node_uri, object.options['name'], temp_drives=[os.path.basename(drive.source) for drive in self.drives])
+		object.options['image-format'] = image_type
 		object.options[ 'image-size' ] = '8 GB'
 		self.drive_wizard.replace_title( _( 'Add drive to <i>%(name)s</i>' ) % { 'name' : object.options[ 'name' ] } )
 		return self.drive_wizard.action( object, ( self.node_uri, self.node ) )

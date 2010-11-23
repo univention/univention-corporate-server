@@ -139,7 +139,7 @@ def createDaemon(options):
 if __name__ == '__main__':
 	locale.setlocale(locale.LC_ALL, '')
 
-	parser = OptionParser(usage=_('usage: %prog [options] command'))
+	parser = OptionParser(usage=_('usage: %prog [options] [uri...]'))
 
 	socket_group = OptionGroup(parser, _('Connection options'))
 	socket_group.add_option('-u', '--unix',
@@ -180,7 +180,7 @@ if __name__ == '__main__':
 			help=_('Path to the ini-file [%(default)s]') % {'default':'%default'})
 	daemon_group.add_option('-I', '--no-ini',
 			action='store_false', dest='read_ini', default=True,
-			help=_('Skip reading ini file'))
+			help=_('Skip reading ini-file'))
 	parser.add_option_group(daemon_group)
 
 	(options, arguments) = parser.parse_args()

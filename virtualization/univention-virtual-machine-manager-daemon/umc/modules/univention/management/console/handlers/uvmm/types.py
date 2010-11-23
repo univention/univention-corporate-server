@@ -37,6 +37,7 @@ import univention.management.console.dialog as umcd
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
 class DynamicSelect( umc.StaticSelection ):
+	"""List, which is updateable during run-time."""
 	def __init__( self, label, required = True, may_change = True ):
 		self._choices = []
 		umc.StaticSelection.__init__( self, label, required = required, may_change = may_change )
@@ -51,6 +52,7 @@ class DynamicSelect( umc.StaticSelection ):
 		self._choices = types
 
 class VirtTechSelect( umc.StaticSelection ):
+	"""List of virtualization techs."""
 	MAPPING = {
 		'kvm-hvm' : _( 'Full virtualization (KVM)' ),
 		'xen-hvm' : _( 'Full virtualization (XEN)' ),
@@ -67,6 +69,7 @@ class VirtTechSelect( umc.StaticSelection ):
 		self._choices = types
 
 class ArchSelect( umc.StaticSelection ):
+	"""List of architectures."""
 	MAPPING = {
 		'i686' : '32 Bit',
 		'x86_64' : '64 Bit',
@@ -82,16 +85,19 @@ class ArchSelect( umc.StaticSelection ):
 		self._choices = types
 
 class KBLayoutSelect( umc.StaticSelection ):
+	"""List of keyboard layouts."""
 	def choices( self ):
 		return ( ( 'de', _( 'German' ) ), ( 'en-us', _( 'American' ) ) )
 
 class BootDeviceSelect( umc.StaticSelection ):
+	"""List of devices to boot from."""
 	CHOICES = ( ( 'hd', _( 'Hard drive' ) ), ( 'cdrom', _( 'CDROM drive' ) ), ( 'network', _( 'Network' ) ) )
 
 	def choices( self ):
 		return BootDeviceSelect.CHOICES
 
 class NumberSelect( umc.StaticSelection ):
+	"""List of numbers."""
 	def __init__( self, label, max = 8, required = True, may_change = True ):
 		self.max = max
 		umc.StaticSelection.__init__( self, label, required = required, may_change = may_change )
@@ -100,14 +106,22 @@ class NumberSelect( umc.StaticSelection ):
 		return map( lambda x: ( str( x ), str( x ) ), range( 1, self.max + 1 ) )
 
 class DriveTypeSelect( umc.StaticSelection ):
+	"""List of block device types."""
 	def choices( self ):
 		return ( ( 'disk', _( 'Hard drive' ) ), ( 'cdrom', _( 'CD/DVD-ROM' ) ) )
 
+class BlockDriverSelect(umc.StaticSelection):
+	"""List of known block-image-file formats."""
+	def choices(self):
+		return (('raw', _('Raw format')), ('vhd', _('Virtual Hard Disk')), ('vmdk', _('VMWare Disk')), ('qcow2', _('Qemu copy-on-write 2')))
+
 class DiskSelect( umc.StaticSelection ):
+	"""Select between creating a new or reusing an existing image."""
 	def choices( self ):
 		return ( ( 'disk-new', _( 'Create a new image' ) ), ( 'disk-exists', _( 'Choose existing image' ) ) )
 
 class NodeSelect( umc.StaticSelection ):
+	"""List of known nodes."""
 	def __init__( self, label, required = True, may_change = True ):
 		self._choices = []
 		umc.StaticSelection.__init__( self, label, required = required, may_change = may_change )
@@ -129,3 +143,4 @@ umcd.copy( umc.StaticSelection, DriveTypeSelect )
 umcd.copy( umc.StaticSelection, NodeSelect )
 umcd.copy( umc.StaticSelection, DiskSelect )
 umcd.copy( umc.StaticSelection, ArchSelect )
+umcd.copy(umc.StaticSelection,  BlockDriverSelect)

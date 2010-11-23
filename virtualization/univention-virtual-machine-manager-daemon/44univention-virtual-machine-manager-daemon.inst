@@ -35,7 +35,7 @@ VERSION="2"
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
-CREDENTIALS="$@"
+declare -a CREDENTIALS=("$@")
 
 eval "$(univention-config-registry shell ldap/base server/role ldap/hostdn)"
 NAME="Virtual Machine Manager"
@@ -95,16 +95,37 @@ univention-directory-manager container/cn create "$@" \
 
 # create machine profiles
 
+# determin kernel image
 kernel=$(readlink -e /vmlinuz)
 
+# determin keyboard layout
+eval "$(ucr shell locale/keymap)"
+while [ -n "$locale_keymap" ]
+do
+	for virttech in xen/qemu kvm qemu
+	do
+		if [ -e "/usr/share/${virttech}/keymaps/${locale_keymap}" ]
+		then
+			break 2
+		fi
+	done
+	if [[ "${locale_keymap}" = *[^a-z][a-z]* ]]
+	then
+		locale_keymap="${locale_keymap%[^a-z][a-z]*}"
+	else
+		locale_keymap=
+	fi
+done
+: ${locale_keymap:=en-us}
+
 create_hvm_profile() {
-	cn="$1"
-	prefix="$2"
-	virttech="$3"
-	arch="$4"
-	ram="$5"
+	local cn="$1"
+	local prefix="$2"
+	local virttech="$3"
+	local arch="$4"
+	local ram="$5"
 	# create machine profile
-	univention-directory-manager uvmm/profile create $CREDENTIALS \
+	univention-directory-manager uvmm/profile create "${CREDENTIALS[@]}" \
 		--ignore_exists \
 		--position="cn=${virttech},cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
 		--set name="$cn" \
@@ -117,16 +138,16 @@ create_hvm_profile() {
 		--append bootdev=cdrom \
 		--append bootdev=hd \
 		--set vnc=1 \
-		--set kblayout=de
+		--set kblayout="${locale_keymap}"
 }
 
 create_xen_profile() {
-	cn="$1"
-	prefix="$2"
-	arch="$3"
-	ram="$4"
+	local cn="$1"
+	local prefix="$2"
+	local arch="$3"
+	local ram="$4"
 	# create machine profile
-	univention-directory-manager uvmm/profile create $CREDENTIALS \
+	univention-directory-manager uvmm/profile create "${CREDENTIALS[@]}" \
 		--ignore_exists \
 		--position="cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
 		--set name="$cn" \
@@ -137,7 +158,7 @@ create_xen_profile() {
 		--set ram="${ram}" \
 		--set interface=eth0 \
 		--set vnc=1 \
-		--set kblayout=de \
+		--set kblayout="${locale_keymap}" \
 		--set advkernelconf=FALSE
 }
 

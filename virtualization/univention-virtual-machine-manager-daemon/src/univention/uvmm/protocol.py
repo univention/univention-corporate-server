@@ -112,12 +112,12 @@ class Request_NODE_FREQUENCY(Request):
 		self.hz = None # 1/ms
 		self.uri = None # xen:/// xen+unix:/// xen+ssh://root@bs22.pmhahn22.qa/ qemu:///system qemu+unix:///system qemu+ssh://root@bs22.pmhahn22.qa/system
 class Request_NODE_LIST(Request):
-	"""Query for list of watched nodes."""
+	"""Query for list of watched nodes in specific group."""
 	def _default(self):
 		self.command = 'NODE_LIST'
 		self.group = None
 class Request_GROUP_LIST(Request):
-	"""Query for list of watched nodes."""
+	"""Query for list of known groups."""
 	def _default(self):
 		self.command = 'GROUP_LIST'
 class Request_BYE(Request):
@@ -276,6 +276,7 @@ class Data_Node(object):
 		self.capabilities = {} # node.DomainTemplate
 		self.last_try = 0.0
 		self.last_update = 0.0
+		self.supports_suspend = False
 class Data_Pool(object):
 	"""Container for storage pool statistics."""
 	def __init__(self):

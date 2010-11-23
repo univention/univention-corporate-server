@@ -188,14 +188,16 @@ class Client( notifier.signals.Provider ):
 					return domain.name
 		return None
 
-	def next_drive_name( self, node_uri, domain, object, temp_drives = [] ):
+	def next_drive_name(self, node_uri, domain, temp_drives=[]):
+		"""Return next unused image name."""
 		i = 0
 		pattern = '%s-%d.img'
-		name = pattern % ( domain, i )
-		while self.is_image_used( node_uri, name, relative = True ) or name in temp_drives:
-			i += 1
+		while True:
 			name = pattern % ( domain, i )
-		object.options[ 'image-name' ] = name
+			if self.is_image_used(node_uri, name, relative=True) or name in temp_drives:
+				i += 1
+			else:
+				return name
 
 	def get_domain_info_ext( self, node, domain ):
 		retries = 10
@@ -379,8 +381,8 @@ class Client( notifier.signals.Provider ):
 	def domain_configure( self, node, data ):
 		req = protocol.Request_DOMAIN_DEFINE()
 		req.uri = self.node_name2uri( node )
-		ud.debug( ud.ADMIN, ud.ERROR, 'disks to send: %s' % data.disks )
-		ud.debug( ud.ADMIN, ud.ERROR, 'interfaces to send: %s' % data.interfaces )
+		ud.debug(ud.ADMIN, ud.INFO, 'disks to send: %s' % data.disks)
+		ud.debug(ud.ADMIN, ud.INFO, 'interfaces to send: %s' % data.interfaces)
 		self._verify_device_files( data )
 		req.domain = data
 		if not self.send( req.pack() ):

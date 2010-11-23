@@ -102,7 +102,7 @@ class TreeView( object ):
 				options[ opt ] = item
 				if level == 2:
 					node_uri = uvmm.node_name2uri( item )
-					# FIXME: need to know to virtualization technology of offline nodes
+					# FIXME: need to know the virtualization technology of offline nodes
 					icon = 'uvmm/node-kvm-off'
 					try:
 						node_info = get_node_info(node_uri)

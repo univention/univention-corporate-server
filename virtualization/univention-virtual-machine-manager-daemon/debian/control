@@ -28,7 +28,7 @@ Description: Univention Virtual Machine Manager Daemon
 Package: python-univention-virtual-machine-manager
 Architecture: all
 Depends: python-libvirt,
- python-univention-management-console (>= 3.0.16),
+ python-univention-management-console (>= 3.0.71),
  python-openssl,
  ${python:Depends}, ${misc:Depends}
 Provides: ${python:Provides}

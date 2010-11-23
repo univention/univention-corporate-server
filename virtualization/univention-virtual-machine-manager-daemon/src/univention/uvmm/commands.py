@@ -167,7 +167,7 @@ class _Commands:
 			raise CommandError('DOMAIN_STATE', _('uri != string: %(uri)s'), uri=request.uri)
 		if not isinstance(request.domain, basestring):
 			raise CommandError('DOMAIN_STATE', _('domain != string: %(domain)s'), domain=request.domain)
-		if not request.state in ('RUN', 'PAUSE', 'SHUTDOWN', 'RESTART'):
+		if not request.state in ('RUN', 'PAUSE', 'SHUTDOWN', 'RESTART', 'SUSPEND'):
 			raise CommandError('DOMAIN_STATE', _('unsupported state: %(state)s'), state=request.state)
 		logger.debug('DOMAIN_STATE %s#%s %s' % (request.uri, request.domain, request.state))
 		try:

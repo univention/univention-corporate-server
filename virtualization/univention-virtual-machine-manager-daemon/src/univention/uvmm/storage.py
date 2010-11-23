@@ -72,6 +72,7 @@ def create_storage_pool(conn, dir, pool_name='default'):
 def create_storage_volume(conn, domain, disk):
 	"""Create disk for domain."""
 	try:
+		# BUG #19342: does not find volumes in sub-directories
 		v = conn.storageVolLookupByPath(disk.source)
 		logger.warning('Reusing existing volume "%s" for domain "%s"' % (disk.source, domain.name))
 		return v
@@ -80,48 +81,71 @@ def create_storage_volume(conn, domain, disk):
 		if not e.get_error_code() in ( libvirt.VIR_ERR_INVALID_STORAGE_VOL, libvirt.VIR_ERR_NO_STORAGE_VOL ):
 			raise StorageError(_('Error locating storage volume "%(volume)s" for "%(domain)s": %(error)s'), volume=disk.source, domain=domain.name, error=e.get_error_message())
 
+	pool = (0, None)
 	for pool_name in conn.listStoragePools() + conn.listDefinedStoragePools():
 		try:
 			p = conn.storagePoolLookupByName(pool_name)
 			xml = p.XMLDesc(0)
 			doc = parseString(xml)
 			path = doc.getElementsByTagName('path')[0].firstChild.nodeValue
+			if '/' != path[-1]:
+				path += '/'
 			if disk.source.startswith(path):
-				break
+				l = len(path)
+				if l > pool[0]:
+					pool = (l, p)
 		except libvirt.libvirtError, e:
 			if e.get_error_code() != libvirt.VIR_ERR_NO_STORAGE_POOL:
 				logger.error(e)
 				raise StorageError(_('Error locating storage pool "%(pool)s" for "%(domain)s": %(error)s'), pool=pool_name, domain=domain.name, error=e.get_error_message())
 		except IndexError, e:
 			pass
-	else:
+	if not pool[0]:
 		logger.warning('Volume "%(volume)s" for "%(domain)s" in not located in any storage pool.' % {'volume': disk.source, 'domain': domain.name})
 		return None # FIXME
 		#raise StorageError(_('Volume "%(volume)s" for "%(domain)s" in not located in any storage pool.'), volume=disk.source, domain=domain.name)
 		#create_storage_pool(conn, path.dirname(disk.source))
+	l, p = pool
+	try:
+		p.refresh(0)
+		v = p.storageVolLookupByName(disk.source[l:])
+		logger.warning('Reusing existing volume "%s" for domain "%s"' % (disk.source, domain.name))
+		return v
+	except libvirt.libvirtError, e:
+		logger.info( 'create_storage_volume: libvirt error (%d): %s' % ( e.get_error_code(), str( e ) ) )
+		if not e.get_error_code() in (libvirt.VIR_ERR_INVALID_STORAGE_VOL, libvirt.VIR_ERR_NO_STORAGE_VOL):
+			raise StorageError(_('Error locating storage volume "%(volume)s" for "%(domain)s": %(error)s'), volume=disk.source, domain=domain.name, error=e.get_error_message())
 
-	if disk.size:
+	if hasattr(disk, 'size') and disk.size:
 		size = disk.size
 	else:
-		size = 8589934592
+		size = 8 << 30 # GiB
+	if hasattr(disk, 'driver_type') and disk.driver_type:
+		type = disk.driver_type
+	else:
+		type = 'raw'
 	xml = '''
 	<volume>
 		<name>%(name)s</name>
 		<allocation>0</allocation>
 		<capacity>%(size)ld</capacity>
 		<target>
-			<format type="raw"/>
+			<format type="%(type)s"/>
 		</target>
 	</volume>
 	''' % {
 			'name': os.path.basename(disk.source),
 			'size': size,
+			'type': type,
 			}
 	try:
 		v = p.createXML(xml, 0)
 		logger.info('New disk "%s" for "%s"(%s) defined.' % (v.path(), domain.name, domain.uuid))
 		return v
 	except libvirt.libvirtError, e:
+		if e.get_error_code() in (libvirt.VIR_ERR_NO_STORAGE_VOL,):
+			logger.warning('Reusing existing volume "%s" for domain "%s"' % (disk.source, domain.name))
+			return None
 		logger.error(e)
 		raise StorageError(_('Error creating storage volume "%(name)s" for "%(domain)s": %(error)s'), name=disk.source, domain=domain.name, error=e.get_error_message())
 
@@ -171,13 +195,13 @@ def destroy_storage_volumes(conn, volumes, ignore_error=False):
 	refs = []
 	for name in volumes:
 		try:
-			ref = conn.storageVolLookupByKey(name)
+			ref = conn.storageVolLookupByPath(name)
 			refs.append(ref)
 		except libvirt.libvirtError, e:
 			if ignore_error:
-				logger.warning("Error translating name to volume: %s" % e.get_error_message())
+				logger.warning("Error translating '%s' to volume: %s" % (name, e.get_error_message()))
 			else:
-				logger.error("Error translating name to volume: %s. Ignored." % e.get_error_message())
+				logger.error("Error translating '%s' to volume: %s. Ignored." % (name, e.get_error_message()))
 				raise
 	# 2. delete them all
 	for volume in refs:

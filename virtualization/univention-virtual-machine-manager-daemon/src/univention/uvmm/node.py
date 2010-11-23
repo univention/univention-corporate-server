@@ -78,7 +78,7 @@ class StoragePool(object):
 
 def _map( dictionary, id = None, name = None ):
 	"""Map id to name or reverse using the dictionary."""
-	if id != None and id in dictionary:
+	if id is not None and id in dictionary:
 		return dictionary[ id ]
 	if name:
 		for key, value in dictionary.items():
@@ -93,14 +93,18 @@ class Disk( object ):
 	DEVICE_MAP = { DEVICE_DISK : 'disk', DEVICE_CDROM : 'cdrom', DEVICE_FLOPPY : 'floppy' }
 	(TYPE_FILE, TYPE_BLOCK) = range(2)
 	TYPE_MAP = {TYPE_FILE: 'file', TYPE_BLOCK: 'block'}
+	(CACHE_DEFAULT, CACHE_NONE, CACHE_WT, CACHE_WB) = range(4)
+	CACHE_MAP = {CACHE_DEFAULT: 'default', CACHE_NONE: 'none', CACHE_WT: 'writethrough', CACHE_WB: 'writeback'}
 	def __init__( self ):
-		self.type = Disk.TYPE_FILE
-		self.device = Disk.DEVICE_DISK
-		self.driver = 'file'
-		self.source = ''
-		self.readonly = False
-		self.target_dev = ''
-		self.target_bus = 'ide'
+		self.type = Disk.TYPE_FILE	# disk/@type
+		self.device = Disk.DEVICE_DISK	# disk/@device
+		self.driver = None	# disk/driver/@name
+		self.driver_type = None	# disk/driver/@type
+		self.driver_cache = Disk.CACHE_DEFAULT	# disk/driver/@cache
+		self.source = ''	# disk/source/@file | disk/source/@dev
+		self.readonly = False	# disk/readonly
+		self.target_dev = ''	# disk/target/@dev
+		self.target_bus = None	# disk/target/@bus
 		self.size = None # not defined
 
 	@staticmethod
@@ -110,6 +114,10 @@ class Disk( object ):
 	@staticmethod
 	def map_type( id = None, name = None ):
 		return _map( Disk.TYPE_MAP, id, name )
+
+	@staticmethod
+	def map_cache(id=None, name=None):
+		return _map(Disk.CACHE_MAP, id, name)
 
 	def __str__( self ):
 		return 'Disk(%s,%s): %s, %s' % ( Disk.map_device( id = self.device ), Disk.map_type( id = self.type ), self.source, self.target_dev )
@@ -124,6 +132,7 @@ class Interface( object ):
 		self.source = None
 		self.target = None
 		self.script = None
+		self.model = None
 
 	@staticmethod
 	def map_type( id = None, name = None ):
@@ -365,6 +374,11 @@ class Domain(object):
 			dev = Disk()
 			dev.type = Disk.map_type( name = disk.getAttribute( 'type' ) )
 			dev.device = Disk.map_device( name = disk.getAttribute( 'device' ) )
+			driver = disk.getElementsByTagName('driver')
+			if driver:
+				dev.driver = driver[0].getAttribute('name')
+				dev.driver_type = driver[0].getAttribute('type')
+				dev.driver_cache = driver[0].getAttribute('cache')
 			source = disk.getElementsByTagName( 'source' )
 			if source:
 				if dev.type == Disk.TYPE_FILE:
@@ -399,6 +413,9 @@ class Domain(object):
 			target = iface.getElementsByTagName( 'target' )
 			if target:
 				dev.target_dev = target[ 0 ].getAttribute( 'dev' )
+			model = iface.getElementsByTagName( 'model' )
+			if model:
+				dev.model = model[ 0 ].getAttribute( 'type' )
 
 			self.pd.interfaces.append(dev)
 
@@ -406,18 +423,18 @@ class Domain(object):
 		graphics = devices.getElementsByTagName( 'graphics' )
 		for graphic in graphics:
 			dev = Graphic()
-			dev.type = Graphic.map_type( name = graphic.getAttribute( 'type' ) )
-			dev.port = int( graphic.getAttribute( 'port' ) )
-			dev.autoport = graphic.getAttribute( 'autoport' )
-			if graphic.hasAttribute( 'listen' ):
-				dev.listen = graphic.getAttribute( 'listen' )
-			if graphic.hasAttribute( 'passwd' ):
-				dev.passwd = graphic.getAttribute( 'passwd' )
-			if dev.autoport.lower() == 'yes':
-				dev.autoport = True
+			type = graphic.getAttribute('type')
+			dev.type = Graphic.map_type(name=type)
+			if dev.type == Graphic.TYPE_VNC:
+				dev.port = int(graphic.getAttribute('port'))
+				dev.autoport = graphic.getAttribute('autoport').lower() == 'yes'
+				if graphic.hasAttribute('listen'):
+					dev.listen = graphic.getAttribute('listen')
+				if graphic.hasAttribute('passwd'):
+					dev.passwd = graphic.getAttribute('passwd')
+				dev.keymap = graphic.getAttribute('keymap')
 			else:
-				dev.autoport = False
-			dev.keymap = graphic.getAttribute( 'keymap' )
+				logger.error('Unsupported graphics type: %s' % type)
 			self.pd.graphics.append(dev)
 
 	def key(self):
@@ -517,6 +534,20 @@ class Node(object):
 		self.pd.cores = info[4:8]
 		xml = self.conn.getCapabilities()
 		self.pd.capabilities = DomainTemplate.list_from_xml(xml)
+		type = self.conn.getType()
+		self.pd.supports_suspend = False
+		if type == 'QEMU':
+			# Qemu/Kvm supports managedSave
+			self.pd.supports_suspend = True
+		elif type == 'Xen':
+			# As of libvirt-0.8.5 Xen doesn't support managedSave, but test dom0
+			try:
+				d = self.conn.lookupByID(0)
+				d.hasManagedSaveImage(0)
+				self.pd.supports_suspend = True
+			except libvirt.libvirtError, e:
+				if e.get_error_code() != libvirt.VIR_ERR_NO_SUPPORT:
+					logger.error('Exception %s: %s' % (e, traceback.format_exc()))
 
 		def domain_callback(conn, dom, event, detail, node):
 			try:
@@ -683,23 +714,28 @@ def group_list():
 	"""Return list of groups for nodes."""
 	return ['default'] # FIXME
 
-def _domain_backup(dom):
+def _domain_backup(dom, save=True):
 	"""Save domain definition to backup file."""
+	backup_dir = configRegistry.get('uvmm/backup/directory', '/var/backups/univention-virtual-machine-manager-daemon')
 	uuid = dom.UUIDString()
 	xml = dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
 	if len(xml) < 300: # minimal XML descriptor length
 		logger.error("Failed to backup domain %s: %s" % (uuid, xml))
 		raise NodeError("Failed to backup domain %(domain)s: %(xml)s", domain=uuid, xml=xml)
 	now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-	tmp_file = "/var/backups/univention-virtual-machine-manager-daemon/%s_%s.xml" % (uuid, now)
-	file = "/var/backups/univention-virtual-machine-manager-daemon/%s.xml" % (uuid,)
+	suffix = 'xml'
+	if save:
+		suffix += '.save'
+	tmp_file = os.path.join(backup_dir, "%s_%s.%s" % (uuid, now, suffix))
+	file = os.path.join(backup_dir, "%s.%s" % (uuid, suffix))
+	umask = os.umask(0177)
 	f = open(tmp_file, "w")
 	try:
 		f.write(xml)
 	finally:
 		f.close()
+	os.umask(umask)
 	os.rename(tmp_file, file)
-	os.chmod(file, 0440)
 	logger.info("Domain backuped to %s." % (file,))
 
 def domain_define( uri, domain ):
@@ -720,12 +756,12 @@ def domain_define( uri, domain ):
 		try:
 			old_dom = conn.lookupByName(domain.name)
 			domain.uuid = old_dom.UUIDString()
-			old_stat = node.domains[domain.uuid].key()
 		except libvirt.libvirtError, e:
 			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 				logger.error(e)
 				raise NodeError(_('Error retrieving old domain "%(domain)s": %(error)s'), domain=domain.name, error=e.get_error_message())
 	if domain.uuid:
+		old_stat = node.domains[domain.uuid].key()
 		elem = doc.createElement( 'uuid' )
 		elem.appendChild( doc.createTextNode( domain.uuid ) )
 		doc.documentElement.appendChild( elem )
@@ -763,7 +799,7 @@ def domain_define( uri, domain ):
 	if loader:
 		os.appendChild( loader )
 
-	if domain.bootloader:
+	if hasattr(domain, 'bootloader') and domain.bootloader:
 		text = doc.createTextNode( domain.bootloader )
 		bootloader = doc.createElement( 'bootloader' )
 		bootloader.appendChild( text )
@@ -834,10 +870,14 @@ def domain_define( uri, domain ):
 		elem.setAttribute( 'device', disk.map_device( id = disk.device ) )
 		devices.appendChild( elem )
 
-		# FIXME: KVM doesn't like it -> Xen/libvirt adds this automatically
-		# driver = doc.createElement( 'driver' )
-		# driver.setAttribute( 'name', disk.driver )
-		# elem.appendChild( driver )
+		if hasattr(disk, 'driver') and disk.driver:
+			driver = doc.createElement('driver')
+			driver.setAttribute('name', disk.driver)
+			if hasattr(disk, 'driver_type') and disk.driver_type:
+				driver.setAttribute('type', disk.driver_type)
+			if hasattr(disk, 'driver_cache') and disk.driver_cache:
+				driver.setAttribute('cache', disk.map_cache(id=disk.driver_cache))
+			elem.appendChild(driver)
 
 		source = doc.createElement( 'source' )
 		if disk.type == Disk.TYPE_FILE:
@@ -852,7 +892,8 @@ def domain_define( uri, domain ):
 		target = doc.createElement( 'target' )
 		target.setAttribute( 'dev', disk.target_dev )
 		# TODO: Xen an KVM have their default based on the device names
-		# target.setAttribute( 'bus', disk.target_bus )
+		if disk.target_bus:
+			target.setAttribute('bus', disk.target_bus)
 		elem.appendChild( target )
 
 		if disk.readonly:
@@ -885,9 +926,13 @@ def domain_define( uri, domain ):
 			target = doc.createElement( 'target' )
 			target.setAttribute( 'dev', iface.target )
 			elem.appendChild( target )
+		if hasattr(iface, 'model') and iface.model:
+			model = doc.createElement( 'model' )
+			model.setAttribute( 'type', iface.model )
+			elem.appendChild( model )
 		devices.appendChild( elem )
 
-  	# define a tablet usb device which has absolute cursor movement for a better VNC experience. Bug #19244
+	# define a tablet usb device which has absolute cursor movement for a better VNC experience. Bug #19244
 	if domain.os_type == 'hvm':
 		tablet = doc.createElement( 'input' )
 		tablet.setAttribute( 'type', 'tablet' )
@@ -906,7 +951,7 @@ def domain_define( uri, domain ):
 			elem.setAttribute( 'autoport', 'no' )
 		if graphic.listen:
 			elem.setAttribute( 'listen', graphic.listen )
-		if graphic.passwd:
+		if hasattr(graphic, 'passwd') and graphic.passwd:
 			elem.setAttribute( 'passwd', graphic.passwd )
 		elem.setAttribute( 'keymap', graphic.keymap )
 		devices.appendChild( elem )
@@ -938,6 +983,7 @@ def domain_define( uri, domain ):
 		logger.debug('XML DUMP: %s' % doc.toxml())
 		d = conn.defineXML(doc.toxml())
 		domain.uuid = d.UUIDString()
+		_domain_backup(d, save=False)
 	except libvirt.libvirtError, e:
 		logger.error(e)
 		raise NodeError(_('Error defining domain "%(domain)s: %(error)s'), domain=domain.name, error=e.get_error_message())
@@ -981,10 +1027,12 @@ def domain_state(uri, domain, state):
 					(libvirt.VIR_DOMAIN_RUNNING,  'RESTART' ): lambda:dom.destroy(None),
 					(libvirt.VIR_DOMAIN_RUNNING,  'RUN'     ): None,
 					(libvirt.VIR_DOMAIN_RUNNING,  'SHUTDOWN'): dom.destroy,
+					(libvirt.VIR_DOMAIN_RUNNING,  'SUSPEND' ): lambda:dom.managedSave(0),
 					(libvirt.VIR_DOMAIN_BLOCKED,  'PAUSE'   ): dom.suspend,
 					(libvirt.VIR_DOMAIN_BLOCKED,  'RESTART' ): lambda:dom.destroy(None),
 					(libvirt.VIR_DOMAIN_BLOCKED,  'RUN'     ): None,
 					(libvirt.VIR_DOMAIN_BLOCKED,  'SHUTDOWN'): dom.destroy,
+					(libvirt.VIR_DOMAIN_BLOCKED,  'SUSPEND' ): lambda:dom.managedSave(0),
 					(libvirt.VIR_DOMAIN_PAUSED,   'PAUSE'   ): None,
 					(libvirt.VIR_DOMAIN_PAUSED,   'RUN'     ): dom.resume,
 					(libvirt.VIR_DOMAIN_PAUSED,   'SHUTDOWN'): dom.destroy,
@@ -1012,6 +1060,9 @@ def domain_state(uri, domain, state):
 					dom_stat.pd.state = cur_state
 					break
 				time.sleep(1)
+	except KeyError, e:
+		logger.error("Domain %s not found" % (e,))
+		raise NodeError(_('Error managing domain "%(domain)s"'), domain=domain)
 	except libvirt.libvirtError, e:
 		logger.error(e)
 		raise NodeError(_('Error managing domain "%(domain)s": %(error)s'), domain=domain, error=e.get_error_message())

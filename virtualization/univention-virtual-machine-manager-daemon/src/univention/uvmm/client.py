@@ -36,12 +36,13 @@ import socket
 import protocol
 from helpers import TranslatableException, N_ as _
 from OpenSSL import SSL
+import PAM
 
 class ClientError(TranslatableException):
 	"""Error during communication with UVMM daemon."""
 	pass
 
-class UVMM_ClientSocket:
+class UVMM_ClientSocket(object):
 	"""UVMM client."""
 
 	def send(self, req):
@@ -51,7 +52,7 @@ class UVMM_ClientSocket:
 			self.sock.send(packet)
 			return self.receive()
 		except socket.error, (errno, msg):
-			raise ClientError("Could not send request: %(errno)d", errno=errno)
+			raise ClientError(_("Could not send request: %(errno)d"), errno=errno)
 
 	def receive(self):
 		"""Get response."""
@@ -104,6 +105,43 @@ class UVMM_ClientUnixSocket(UVMM_ClientSocket):
 	def __str__(self):
 		return "UNIX Socket %s" % (self.sock.getpeername(),)
 
+class UVMM_ClientAuthenticatedSocket(UVMM_ClientSocket):
+	"""Mixin-class to handle client connection requiring authentication.
+
+	class Auth(UVMM_ClientSSLSocket, UVMM_ClientAuthenticatedSocket): pass
+	c = Auth('xen1.opendvdi.local', 2106)
+	c.set_auth_data('Administrator', 'univention')
+	res = c.send(...)
+	"""
+
+	def set_auth_data(self, username, password):
+		"""Register username and password for authentication."""
+		self.username = username
+		self.password = password
+
+	def send(self, req):
+		"""Send request, wait for and return answer."""
+		response = super(UVMM_ClientAuthenticatedSocket, self).send(req)
+		while isinstance(response, protocol.Response_AUTHENTICATION):
+			resp = []
+			for query, type in response.challenge:
+				if type == PAM.PAM_PROMPT_ECHO_ON:
+					resp.append((self.username, PAM.PAM_SUCCESS))
+				elif type == PAM.PAM_PROMPT_ECHO_OFF:
+					resp.append((self.password, PAM.PAM_SUCCESS))
+				elif type == PAM.PAM_PROMPT_ERROR_MSG:
+					raise ClientError(_("PAM error: %(msg)s"), msg=query)
+				elif type == PAM.PAM_PROMPT_TEXT_INFO:
+					raise ClientError(_("PAM info: %(msg)s"), msg=query)
+				else:
+					raise ClientError(_("Unknown PAM type: %(type)s"), type=type)
+			request = protocol.Request_AUTHENTICATION(response=resp)
+			response = super(UVMM_ClientAuthenticatedSocket, self).send(request)
+			if isinstance(response, protocol.Response_OK):
+				# repeat original request
+				return self.send(req)
+		return response
+
 class UVMM_ClientTCPSocket(UVMM_ClientSocket):
 	"""UVMM client TCP socket to (str(host), int(port))."""
 	def __init__(self, host, port=2105):
@@ -142,3 +180,6 @@ class UVMM_ClientSSLSocket(UVMM_ClientSocket):
 	def __str__(self):
 		return "TCP-SSL Socket %s:%d -> %s:%d" % (self.sock.getsockname() + self.sock.getpeername())
 
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()

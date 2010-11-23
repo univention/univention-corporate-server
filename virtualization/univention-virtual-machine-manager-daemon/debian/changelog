@@ -1,3 +1,108 @@
+univention-virtual-machine-manager-daemon (0.10.4-11) unstable; urgency=low
+
+  * Fix enabling VNC (Bug #19663)
+  * Fix VNC-password handling (Bug #19348)
+  * Fix VNC-port-numer out-of-date.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Nov 2010 21:26:49 +0100
+
+univention-virtual-machine-manager-daemon (0.10.4-10) unstable; urgency=low
+
+  * Add UVMM documentation (Bug #18653)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 05 Nov 2010 10:36:18 +0100
+
+univention-virtual-machine-manager-daemon (0.10.4-9) unstable; urgency=low
+
+  * Don't delete ISOs by default (Bug #19561)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 04 Nov 2010 10:00:22 +0100
+
+univention-virtual-machine-manager-daemon (0.10.4-8) unstable; urgency=low
+
+  * Allow removal of VMs without disks (Bug #19231)
+  * Show VNC-Port as tool-tip (Bug #19499)
+  * Delete VM-images by default (Bug #19561)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 04 Nov 2010 09:24:07 +0100
+
+univention-virtual-machine-manager-daemon (0.10.4-7) unstable; urgency=low
+
+  * Support managed-save / suspend (Bug #19172)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 01 Nov 2010 15:17:22 +0100
+
+univention-virtual-machine-manager-daemon (0.10.4-6) unstable; urgency=low
+
+  * Support qcow2 image files (Bug #18765)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 20 Oct 2010 16:08:36 +0200
+
+univention-virtual-machine-manager-daemon (0.10.4-5) unstable; urgency=low
+
+  * Sort list of servers (Bug #20345)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 19 Oct 2010 16:21:40 +0200
+
+univention-virtual-machine-manager-daemon (0.10.4-4) unstable; urgency=low
+
+  * Tolerate usage of SDL instead of VNC (Bug #20253)
+  * Fix KeyError in domain_state().
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 14 Oct 2010 11:51:28 +0200
+
+univention-virtual-machine-manager-daemon (0.10.4-3) unstable; urgency=low
+
+  * Refresh pool before lookup (Bug #19342)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 28 Sep 2010 12:30:40 +0200
+
+univention-virtual-machine-manager-daemon (0.10.4-2) unstable; urgency=low
+
+  * Use storageVolLookupByPath() instead of ByKey() (Bug #19342)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 24 Sep 2010 11:41:23 +0200
+
+univention-virtual-machine-manager-daemon (0.10.4-1) unstable; urgency=low
+
+  * check root before ALL Groups (Bug #19851)
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 16 Sep 2010 14:05:00 +0200
+
+univention-virtual-machine-manager-daemon (0.10.3-1) unstable; urgency=low
+
+  * updated uvmmd-access.conf, check root before Groups (Bug #19851)
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 16 Sep 2010 13:37:00 +0200
+
+univention-virtual-machine-manager-daemon (0.10.2-2) unstable; urgency=low
+
+  * Fix DirectoryStoragePool not supporting sub-directories (Bug #19342)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 14 Sep 2010 11:36:27 +0200
+
+univention-virtual-machine-manager-daemon (0.10.2-1) unstable; urgency=low
+
+  * Fix DirectoryStoragePool not supporting sub-directories (Bug #19342)
+  * Add ClientAuthenticatedSocked mix-in class.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 10 Sep 2010 16:44:20 +0200
+
+univention-virtual-machine-manager-daemon (0.10.1-1) unstable; urgency=low
+
+  * use UCR varialbe uvmm/backup/directory to determine location for backups
+  * also create backups after defining machines
+  * set permissions for backups to 0600; Bug #19864
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 09 Sep 2010 16:25:21 +0200
+
+univention-virtual-machine-manager-daemon (0.10.0-1) unstable; urgency=low
+
+  * import UVMM daemon from 2.4-0
+  * apply patch to sort mode attribute of interface definition; Bug #19449
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 01 Sep 2010 08:24:24 +0200
+
 univention-virtual-machine-manager-daemon (0.9.106-1) unstable; urgency=low
 
   * fixed typo in german translation; Bug #19545
