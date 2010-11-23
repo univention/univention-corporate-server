@@ -101,14 +101,14 @@ Type=str
 Categories=service-mail
 
 [horde/imapport]
-Description[de]=Port des IMAP-Servers (Standard: 993)
-Description[en]=Port of the IMAP server (default: 993)
+Description[de]=Port des IMAP-Servers (Standard: 143)
+Description[en]=Port of the IMAP server (default: 143)
 Type=str
 Categories=service-mail
 
 [horde/imapprotocol]
-Description[de]=Protokoll für den Zugriff auf den IMAP-Server (Standard: imap/ssl/novalidate-cert) (Mögliche Werte: imap, imap/novalidate-cert, imap/notls, imap/tls, imap/tls/novalidate-cert, imap/ssl, imap/ssl/novalidate-cert)
-Description[en]=Protocol for access to the IMAP server (default: imap/ssl/novalidate-cert) (possible values: imap, imap/novalidate-cert, imap/notls, imap/tls, imap/tls/novalidate-cert, imap/ssl, imap/ssl/novalidate-cert)
+Description[de]=Protokoll für den Zugriff auf den IMAP-Server (Standard: imap/tls/novalidate-cert) (Mögliche Werte: imap, imap/novalidate-cert, imap/notls, imap/tls, imap/tls/novalidate-cert, imap/ssl, imap/ssl/novalidate-cert)
+Description[en]=Protocol for access to the IMAP server (default: imap/tls/novalidate-cert) (possible values: imap, imap/novalidate-cert, imap/notls, imap/tls, imap/tls/novalidate-cert, imap/ssl, imap/ssl/novalidate-cert)
 Type=str
 Categories=service-mail
 

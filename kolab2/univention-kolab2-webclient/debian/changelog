@@ -1,3 +1,9 @@
+univention-kolab2-webclient (6.0.6-1) unstable; urgency=low
+
+  * Use latest Net_IMAP pear package which supports TLS (Bug #20661)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 23 Nov 2010 10:25:19 +0100
+
 univention-kolab2-webclient (6.0.5-1) unstable; urgency=low
 
   * Activate TLS for the IMAP connections by default (Bug #20661)
