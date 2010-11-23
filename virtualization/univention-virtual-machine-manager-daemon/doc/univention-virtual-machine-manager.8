@@ -1,0 +1,166 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH UNIVENTION-VIRTUAL-MACHINE-MANAGER 8 2010-11-08 UCS
+
+.SH NAME
+\fBunivention\-virtual\-machine\-manager\fP \- management user interface
+
+.SH SYNOPSIS
+.B univention\-virtual\-machine\-manager
+.RI [ options ]
+.I mode
+.IR arguments...
+.br
+.B uvmm
+.RI [ options ]
+.I mode
+.IR arguments...
+
+.SH DESCRIPTION
+This manual page documents briefly the
+.B univention\-virtual\-machine\-manager
+command, a tool to manage virtual machines in an UCS environment.
+It is a command-line tool to communicates directly with the
+.BR univention\-virtual\-machine\-manager\-daemon (8)
+and can be used instead of the UMC-Web-module to script repeating tasks or to
+debug problems.
+.br
+Normally it communicates directly with the local
+.BR univention\-virtual\-machine\-manager\-daemon (8)
+using a UNIX-domain socket, but it can also be used to communicate to remote
+daemons over an unencrypted or SSL-encrypted TCP-connection.
+.br
+The first argument
+.I mode
+selects the command, while all following arguments are command specific.
+
+.SH OPTIONS
+A summary of options is included below.
+.TP
+\fB\-h\fP, \fB\-\-help\fP\fP
+Show this help message and exit.
+.TP
+\fB\-u\fP \fISOCKET\fP, \fB\-\-unix=\fP\fISOCKET\fP
+Path to the UNIX socket.
+.TP
+\fB\-t\fP \fIHOST\fP[\fB:\fP\fIPORT\fP], \fB\-\-tcp=\fP\fIHOST\fP[\fB:\fP\fIPORT\fP]
+Use \fIHOST\fP and \fIPORT\fP number for the TCP socket connection.
+Default \fIPORT\fP is \fB2105\fP.
+.TP
+\fB\-s\fP \fIHOST\fP[\fB:\fP\fIPORT\fP], \fB\-\-ssl=\fP\fIHOST\fP[\fB:\fP\fIPORT\fP]
+Use \fIHOST\fP and \fIPORT\fP number for the SSL encrypted TCP socket connection.
+Default \fIPORT\fP is \fB2106\fP.
+.TP
+\fB\-v\fP, \fB\-\-verbose\fP
+Print additional information during command execution.
+.TP
+\fB\-b \fBldap://\fP\fIHOST\fP\fB:\fP\fIPORT\fP\fB/\fP\fIBASE\fP|\fB''\fP, \fB\-\-ldap\-base \fBldap://\fP\fIHOST\fP\fB:\fP\fIPORT\fP\fB/\fP\fIBASE\fP|\fB''\fP
+Base-LDAP-uri for searching the hosts to manage.
+All nodes matching \fB(univentionService=* Host)\fP will be added as managed nodes.
+To disable this feature pass an empty argument, e.g. \fB''\fP.
+
+.SH COMMANDS
+.SS Daemon management
+.TP
+\fBunivention\-virtual\-machine\-manager groups\fP
+Return the names of groups of virtualization server.
+.TP
+\fBunivention\-virtual\-machine\-manager nodes\fP \fIgroup\fP
+Return the list of uris used to specify the virtualization server,
+which belong to the given \fIgroup\fP.
+.TP
+\fBunivention\-virtual\-machine\-manager add\fP \fIuri\fP
+Add the virtualization server specified by \fIuri\fP to the UVMM.
+.TP
+\fBunivention\-virtual\-machine\-manager remove\fP \fIuri\fP
+Remove the virtualization server specified by \fIuri\fP from the UVMM.
+.TP
+ \fBunivention\-virtual\-machine\-manager ldap\fP
+Query LDAP for all virtualization servers and add them to the UVMM.
+Use option \fB\-b\fP to explicitly specify a LDAP server and LDAP base.
+.TP
+\fBunivention\-virtual\-machine\-manager frequency\fP \fIfrequency\fP [\fIuri\fP]
+Set the interval how often UVMM queries all registers or the specific
+virtualization server corresponding to \fIuri\fP. The frequency is given in
+[ms].
+.TP
+\fBunivention\-virtual\-machine\-manager bye\fP
+End the connection. Only useful for debugging.
+
+.SS Domain management
+.TP
+\fBunivention\-virtual\-machine\-manager define\fP \fIuri file_or_xml\fP
+Define a new domain on the virtualization server specifies by \fIuri\fP.
+\fIfile_or_xml\fP can either be a file name or an inline XML string
+according to the format used by libvirt.
+.TP
+\fBunivention\-virtual\-machine\-manager undefine\fP \fIuri\fP \fIdomain\fP
+Undefine the domain \fIdomain\fP on the virtualization server specifies by
+\fIuri\fP.
+.TP
+\fBunivention\-virtual\-machine\-manager query\fP \fIuri\fP
+Query virtualization server specifies by \fIuri\fP for all its domains and
+storage pools.
+.TP
+\fBunivention\-virtual\-machine\-manager\state\fP  \fIuri\fP \fIdomain\fP \fIstate\fP
+Change the state of domain \fIdomain\fP on the virtualization server specifies by
+\fIuri\fP to the given state \fIstate\fP, which can be one of
+\fBRUN\fP, \fBPAUSE\fP, \fBSUSPEND\fP, \fBRESTART\fP, \fBSHUTDOWN\fP.
+.TP
+\fBunivention\-virtual\-machine\-manager migrate\fP \fIuri statefile target_uri\fP
+Migrate the domain \fIdomain\fP from the virtualization server specifies by
+\fIuri\fP to the virtualization server specifies by \fItarget_uri\fP.
+.TP
+\fBunivention\-virtual\-machine\-manager save\fP \fIuri\fP \fIdomain\fP \fIstatefile\fP
+On the virtualization server specified by \fIuri\fP save the domain
+specified by its UUID \fIdomain\fP locally to the file \fIstatefile\fP.
+The domain will be turned off.
+.TP
+\fBunivention\-virtual\-machine\-manager restore\fP \fIuri\fP \fIstatefile\fP
+On the virtualization server specified by \fIuri\fP restore a domain locally
+from the file \fIstatefile\fP.
+
+.SS Storage management
+.TP
+\fBunivention\-virtual\-machine\-manager pools\fP \fIuri\fP
+Return the names of all storage-pools on the virtualization server
+specified by \fIuri\fP.
+.TP
+\fBunivention\-virtual\-machine\-manager volume_define\fP \fIuri\fP \fIpool\fP \fIname\fP \fIsize\fP
+Create a new storage-volume named \fIname\fP and the size \fIsize\fP in bytes
+in the storage-pool named \fIpool\fP on the virtualization server specified by
+\fIuri\fP.
+.TP
+\fBunivention\-virtual\-machine\-manager volumes\fP \fIuri\fP \fIpool\fP [\fItype\fP]
+Return the names of all storage-volumes on the virtualization server
+specified by \fIuri\fP in the storage-pool named \fIpool\fP.
+\fItype\fP can be used to limit the volumes to a specific type; valid
+values are \fB0\fP=Disk.DEVICE_DISK, \fB1\fP=Disk.DEVICE_CDROM, \fB2\fP=Disk.DEVICE_FLOPPY
+
+.SH EXAMPLES
+.TP
+\fBunivention\-virtual\-machine\-manager\fP groups
+List the known groups. 
+.TP
+\fBunivention\-virtual\-machine\-manager\fP nodes default
+List the known nodes in the \fIdefaults\fP group. 
+.TP
+\fBunivention\-virtual\-machine\-manager\fP query xen://xen.server.local/
+Query the state of server \fIxen://xen.server.local/\fP.
+
+.SH FILES
+.TP
+.I /var/run/uvmm.socket
+
+.SH BUGS
+This tool is very low-level.
+.br
+Bugs can be reported using the Univention Bugzilla bug-tracker at
+.BR https://forge.univention.org/bugzilla/enter_bug.cgi?product=UCS&component=Virtual+Machine+Manager+(UVMM) .
+
+.SH SEE ALSO
+.BR univention\-virtual\-machine\-manager\-daemon (8),
+.BR http://wiki.univention.de/index.php?title=UVMM ,
+.BR virsh (1).
+
+.SH AUTHOR
+Copyright (c) 2009-2010 Univention GmbH, Germany

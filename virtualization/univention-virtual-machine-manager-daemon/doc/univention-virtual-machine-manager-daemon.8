@@ -1,0 +1,93 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH UNIVENTION-VIRTUAL-MACHINE-MANAGER 8 2010-11-08 UCS
+
+.SH NAME
+\fBunivention\-virtual\-machine\-manager\-daemon\fP \- virtual machine management
+
+.SH SYNOPSIS
+.B univention\-virtual\-machine\-manager\-daemon
+.RI [ options ]
+.IR uri ...
+
+.SH DESCRIPTION
+This manual page documents briefly the
+.B univention\-virtual\-machine\-manager\-daemon
+command, a daemon to manage and monitor virtual machines in an UCS environment.
+The UMC-UVMM-module or
+.BR univention\-virtual\-machine\-manager (8)
+can be used to interact with the daemon.
+
+.SH OPTIONS
+A summary of options is included below.
+.TP
+\fB\-h\fP, \fB\-\-help\fP\fP
+Show this help message and exit.
+.TP
+\fIuri\fP...
+Add the virtualization server specified by \fIuri\fP to the UVMM.
+.SS Connection options
+.TP
+\fB\-u\fP \fISOCKET\fP, \fB\-\-unix=\fP\fISOCKET\fP
+Path to the UNIX socket.
+.TP
+\fB\-t\fP \fIHOST\fP[\fB:\fP\fIPORT\fP], \fB\-\-tcp=\fP\fIHOST\fP[\fB:\fP\fIPORT\fP]
+Use \fIHOST\fP and \fIPORT\fP number for the TCP socket connection.
+Default \fIPORT\fP is \fB2105\fP.
+.TP
+\fB\-s\fP \fIHOST\fP[\fB:\fP\fIPORT\fP], \fB\-\-ssl=\fP\fIHOST\fP[\fB:\fP\fIPORT\fP]
+Use \fIHOST\fP and \fIPORT\fP number for the SSL encrypted TCP socket connection.
+Default \fIPORT\fP is \fB2106\fP.
+.SS LDAP options
+.TP
+\fB\-c\fP \fICACHE\fP, \fB\-\-cache=\fP\fICACHE\fP
+Cache LDAP data in the given directory.
+Used when the LDAP-server is unavailable during runtime.
+.TP
+\fB\-b \fBldap://\fP\fIHOST\fP\fB:\fP\fIPORT\fP\fB/\fP\fIBASE\fP|\fB''\fP, \fB\-\-ldap\-base \fBldap://\fP\fIHOST\fP\fB:\fP\fIPORT\fP\fB/\fP\fIBASE\fP|\fB''\fP
+Base-LDAP-uri for searching the hosts to manage.
+All nodes matching \fB(univentionService=* Host)\fP will be added as managed
+nodes.
+An empty argument (e.g. \fB''\fP) can be used to disable automatically adding any host.
+.SS Daemon options
+.TP
+\fB\-p\fP \fIPIDFILE\fP, \fB\-\-pidfile=\fP\fIPIDFILE\fP
+Path to the PID-file.
+.TP
+\fB\-d\fP, \fB\-\-daemon\fP
+Fork daemon into background.
+.TP
+\fB\-v\fP, \fB\-\-verbose\fP
+Print additional information during runtime.
+.TP
+\fB\-l\fP \fILOGFILE\fP, \fB\-\-log=\fP\fILOGFILE\fP
+Path to the log-file.
+.TP
+\fB\-i\fP \fICONFFILE\fP, \fB\-\-config=\fP\fICONFFILE\fP
+Path to the ini-file.
+.TP
+\fB\-I\fP, \fB\-\-no\-ini\fP.
+Skip reading ini-file.
+
+.SH FILES
+.TP
+.I /etc/univention/uvmmd.ini
+.TP
+.I /var/cache/univention-virtual-machine-manager-daemon
+.TP
+.I /var/log/univention/virtual-machine-manager-daemon.log
+.TP
+.I /var/run/uvmm.socket
+.TP
+.I /var/run/uvmmd.pid
+
+.SH BUGS
+Bugs can be reported using the Univention Bugzilla bug-tracker at
+.BR https://forge.univention.org/bugzilla/enter_bug.cgi?product=UCS&component=Virtual+Machine+Manager+(UVMM) .
+
+.SH SEE ALSO
+.BR univention\-virtual\-machine\-manager (8),
+.BR http://wiki.univention.de/index.php?title=UVMM ,
+.BR virsh (1).
+
+.SH AUTHOR
+Copyright (c) 2009-2010 Univention GmbH, Germany
