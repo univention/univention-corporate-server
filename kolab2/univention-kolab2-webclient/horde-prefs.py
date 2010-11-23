@@ -123,7 +123,7 @@ def __horde_settings ( db, mail, fullname, from_addr ):
 				category_colors = '%s:%s|%s' % (k, categories[k],category_colors)
 			db.query( "insert into horde_prefs values('%s', 'horde', 'category_colors', '%s');" % (mail,category_colors))
 			#category_colors          | bla:#FFFFFF|foobar:#112233|_default_:#FFFFFF|_unfiled_:#DDDDDD
-	else:
+	elif baseConfig.is_true('horde/ldap/update/identities'):
 		if __triple_exist(db, mail, 'horde', 'identities') and not __quadruple_exist(db, mail, 'horde', 'identities', __create_db_identity( mail, fullname, from_addr )):
 			db.query( "update horde_prefs set pref_value='%s' where pref_uid='%s' and pref_scope='%s' and pref_name='%s';" % (__create_db_identity( mail, fullname, from_addr ), mail, 'horde', 'identities'))
 		if __triple_exist(db, mail, 'horde', 'from_addr'):

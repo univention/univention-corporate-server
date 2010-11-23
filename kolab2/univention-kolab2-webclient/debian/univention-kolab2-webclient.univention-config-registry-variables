@@ -285,3 +285,9 @@ Description[de]=LDAP-Attribut, aus dem die Standard-Absenderadresse ermittelt wi
 Description[en]=LDAP attribute providing the default sender address
 Type=str
 Categories=service-mail
+
+[horde/ldap/update/identities]
+Description[de]=Horde Mail-Identität überschreiben lassen, wenn sich die 'from_attr' Mailadresse im LDAP ändert?
+Description[en]=Option to update the Horde mail identity when the 'from_attr' mail address is changed in LDAP.
+Type=str
+Categories=service-mail
