@@ -1,0 +1,14 @@
+--- univention-kolab2-webclient-1.0.13/debian/univention-kolab2-webclient/usr/share/horde3/lib/Net/IMAPProtocol.php.orig	2010-04-01 21:29:47.000000000 +0200
++++ univention-kolab2-webclient-1.0.13/debian/univention-kolab2-webclient/usr/share/horde3/lib/Net/IMAPProtocol.php	2010-04-01 21:35:11.000000000 +0200
+@@ -2569,9 +2569,9 @@
+         }
+         switch(substr($str, 0, 1)) {
+         case '{':
+-            if ($posClosingBraces = $this->_getClosingBracesPos($str, 
++            if (($posClosingBraces = $this->_getClosingBracesPos($str, 
+                                                                 '{', 
+-                                                                '}') == false) {
++                                                                 '}')) === false) {
+                 $this->_protError('_getClosingBracesPos() error!!!', 
+                                   __LINE__, 
+                                   __FILE__);

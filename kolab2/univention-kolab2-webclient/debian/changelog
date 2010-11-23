@@ -1,3 +1,10 @@
+univention-kolab2-webclient (6.0.9-1) unstable; urgency=low
+
+  * Fixed parsing error in Net/IMAPProtocol.php. See upstream bug:
+    http://pear.php.net/bugs/bug.php?id=16891 (Bug #20661)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 23 Nov 2010 12:13:44 +0100
+
 univention-kolab2-webclient (6.0.8-1) unstable; urgency=low
 
   * Adjust 01_PEAR_IMAP_unitialized_index_0.patch to new upstream
