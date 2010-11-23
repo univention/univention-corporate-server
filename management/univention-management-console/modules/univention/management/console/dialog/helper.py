@@ -100,4 +100,4 @@ class SearchForm( base.List ):
 		self.add_row( [ num_result, btnlst ] )
 		self.add_row( [ base.Fill( 2 ) ] )
 
-HelperTypes = ( type( InfoBox() ), type( Question() ), type( YesNoQuestion() ), type( SearchForm() ) )
+HelperTypes = (InfoBox, Question, YesNoQuestion, SearchForm)

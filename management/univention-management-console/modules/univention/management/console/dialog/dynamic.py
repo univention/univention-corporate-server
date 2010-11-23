@@ -183,4 +183,9 @@ class FileUpload( input.Input ):
 		if default:
 			self.save['uploadFilelist'] = default
 
-DynamicTypes = ( type( DynamicList() ), type( MultiValue() ), type( ObjectSelect() ), type( FileUpload() ) )
+class SecretInput(input.Input):
+	"""This class represent a password input field."""
+	def __init__(self, option=(None, None), default='', static_options={}, attributes={}):
+		input.Input.__init__(self, option, default, static_options, attributes)
+
+DynamicTypes = (DynamicList, MultiValue, ObjectSelect, FileUpload, SecretInput)

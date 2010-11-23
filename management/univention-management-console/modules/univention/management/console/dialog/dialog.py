@@ -36,4 +36,4 @@ class Dialog( base.Frame ):
 	def __init__(self, elements = [] ):
 		base.Frame.__init__( self, elements )
 
-DialogTypes = ( type( Dialog() ), )
+DialogTypes = (Dialog,)

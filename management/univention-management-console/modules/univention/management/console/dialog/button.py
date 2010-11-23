@@ -255,8 +255,8 @@ combination with confirmation dialogs)"""
 					actions = [ '::return' ], attributes = attributes )
 		self.fields = fields
 
-ButtonTypes = ( type( Button() ), type( SelectionButton() ), type( SimpleSelectButton() ), type( ChoiceButton() ),
-				type( CancelButton() ), type( CloseButton() ), type( LinkButton() ), 
-				type( ErrorButton() ), type( ResetButton() ), type( ReturnButton() ), type( SearchButton() ),
-				type( SetButton() ), type( AddButton() ), type( NextButton() ), type( PrevButton() ),
-				type( FilteringSelectButton() ), type( ComboboxButton() ) )
+ButtonTypes = (Button, SelectionButton, SimpleSelectButton, ChoiceButton,
+				CancelButton, CloseButton, LinkButton,
+				ErrorButton, ResetButton, ReturnButton, SearchButton,
+				SetButton, AddButton, NextButton, PrevButton,
+				FilteringSelectButton, ComboboxButton)

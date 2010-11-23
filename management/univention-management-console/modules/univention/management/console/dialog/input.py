@@ -36,10 +36,10 @@ import base
 class Input( base.Text ):
 	"""This class is the base class for all kinds of input fields. It
 	provides a label for the field, a 'value' attribute to store the
-	input given by the user and an eextra attribute for a default
+	input given by the user and an extra attribute for a default
 	value. The 'option' attribute is used to identify the UMCP command
 	option name that is associated with the input field. The attribute
-	'static_options' provides a possibility associate other options with
+	'static_options' provides a possibility to associate other options with
 	specific static values additional to the option provided by the
 	input field itself."""
 	def __init__( self, option = ( None, None ), default = None, static_options = {},
@@ -85,11 +85,6 @@ class DateInput( Input ):
 	def __init__( self, option = ( None, None ), default = '', static_options = {}, attributes = {} ):
 		Input.__init__( self, option, default, static_options, attributes )
 
-class SecretInput( Input ):
-	"""This class represent a password input field."""
-	def __init__( self, option = ( None, None ), default = '', static_options = {}, attributes = {} ):
-		Input.__init__( self, option, default, static_options, attributes )
-
 class MultiLineInput( Input ):
 	"""This class represent a simple string input field."""
 	def __init__( self, option = ( None, None ), default = '', static_options = {}, attributes = {} ):
@@ -131,6 +126,4 @@ class Selection( Input ):
 				return ( key, descr )
 		return ( value, value )
 
-InputTypes = ( type( ReadOnlyInput() ), type( TextInput() ), type( SecretInput() ),
-	       type( Checkbox() ), type( Selection() ), type( MultiLineInput() ),
-	       type( DateInput() ) )
+InputTypes = (ReadOnlyInput, TextInput, Checkbox, Selection, MultiLineInput, DateInput)

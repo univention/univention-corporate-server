@@ -76,6 +76,7 @@ class Storage( dict ):
 			return self.__convert_elements( umcp_parts )
 
 		return None
+
 	def create_tag_attributes( self, elem, default_type = None ):
 		if not default_type:
 			args = { 'type' : 'umc_list_element' }
@@ -108,7 +109,7 @@ class Storage( dict ):
 			if type( umcp ) in umcd.InputTypes:
 				inputs.append( ( uni, umcp ) )
 			elif type( umcp ) in umcd.ButtonTypes:
- 				buttons.append( ( uni, umcp ) )
+				buttons.append( ( uni, umcp ) )
 			elif type( umcp ) in umcd.DynamicElementTypes:
 				dynamics.append( ( uni, umcp ) )
 

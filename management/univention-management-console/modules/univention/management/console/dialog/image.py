@@ -63,4 +63,4 @@ class ImageURL( base.Element ):
 	def get_image( self ):
 		return self.__url
 
-ImageTypes = ( type( Image() ), type( ImageURL() ) )
+ImageTypes = (Image, ImageURL)

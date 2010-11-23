@@ -159,17 +159,38 @@ def dateinput_map( storage, umcp_part ):
 
 mapper.add( umcd.DateInput, dateinput_map )
 
-def password_map( storage, umcp_part ):
-	attributes = utils.layout_attrs( storage, umcp_part )
-	if not umcp_part.syntax.may_change:
-		attributes[ 'passive' ] = 'true'
-	quest = question_secure( unicode( umcp_part ), attributes,
-							{ 'usertext' : '' } )
-	storage[ umcp_part.id() ] = ( quest, umcp_part )
+class PasswordMap(mapper.IMapper):
+	NO_PASSWORD_CHANGE = '*' * 8;
+	def layout(self, storage, umcp_part):
+		"""Convert internal state to external representation."""
+		attributes = utils.layout_attrs(storage, umcp_part)
+		if not umcp_part.syntax.may_change:
+			attributes['passive'] = 'true'
 
-	return quest
+		old_password = utils.default(umcp_part)
+		if old_password:
+			default = PasswordMap.NO_PASSWORD_CHANGE
+		else:
+			default = ''
+		quest = question_secure(unicode(umcp_part), attributes,
+								{'usertext': default})
 
-mapper.add( umcd.SecretInput, password_map )
+		storage[umcp_part.id()] = ((quest, old_password), umcp_part)
+		return quest
+
+	def apply(self, storage, umcp_part, parameter, *args):
+		"""Apply internal state to external representation. Return no reload is required."""
+		return False
+
+	def parse(self, storage, umcp_part, parameter):
+		"""Parse internal state from external representation."""
+		quest, old_password = parameter
+		new_password = quest.get_input()
+		if PasswordMap.NO_PASSWORD_CHANGE == new_password:
+			return old_password
+		else:
+			return new_password
+mapper.add(umcd.SecretInput, PasswordMap())
 
 def longtext_map( storage, umcp_part ):
 	default = utils.default( umcp_part )

@@ -125,7 +125,7 @@ class ModuleDescription( Text ):
 		Text.__init__( self, text, attributes )
 		self.title = title
 
-TextTypes = ( type( ModuleDescription() ), type( Progressbar() ), type( Text() ), type( Date() ), type( Number() ), type( HTML() ), type( Fill() ) )
+TextTypes = (ModuleDescription, Progressbar, Text, Date, Number, HTML, Fill)
 
 def _verify_list_items( sequence ):
 	# map strings to umcd.Text
@@ -279,4 +279,4 @@ class Section( Element ):
 		self.hidden = hidden
 		self.name = name
 
-ListTypes = ( type( Section() ), type( Frame() ), type( List() ), type( Row() ), type( Cell() ), type( SimpleTreeTable() ), type( SimpleTreeView() ) )
+ListTypes = (Section, Frame, List, Row, Cell, SimpleTreeTable, SimpleTreeView)

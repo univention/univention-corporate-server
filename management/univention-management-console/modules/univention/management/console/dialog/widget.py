@@ -48,6 +48,7 @@ def register( syntax, function ):
 		_widget_generator[ syntax ] = function
 
 def copy( base, new ):
+	"""Reuse widget-binding of class 'base' also for class 'new'."""
 	global _widget_generator
 	if _widget_generator.has_key( base ):
 		_widget_generator[ new ] = _widget_generator[ base ]
@@ -87,7 +88,7 @@ register( values.IP_Address, _text_input )
 # Password
 def _password_input( option, **kwargs ):
 	name, syntax = option
-	return input.SecretInput( option, **kwargs )
+	return dynamic.SecretInput( option, **kwargs )
 
 register( values.Password, _password_input )
 

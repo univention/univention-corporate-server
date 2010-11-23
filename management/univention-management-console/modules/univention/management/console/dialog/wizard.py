@@ -71,7 +71,7 @@ class Wizard( Element ):
 		else:
 			return Section( self._title, self._content, attributes = { 'width' : '100%' } )
 
-WizardTypes = ( type( Wizard() ), )
+WizardTypes = (Wizard,)
 
 # the following classes help to setup a wizard based on the Wizard
 # dialog class above. An example can be found in the UVMM UMC module

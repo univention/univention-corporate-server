@@ -1,3 +1,9 @@
+univention-management-console (3.0.71-1) unstable; urgency=low
+
+  * Enable showing existing password (Bug #20672)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 23 Nov 2010 08:10:50 +0100
+
 univention-management-console (3.0.70-1) unstable; urgency=low
 
   * If the kerberos authentication fails the login will be prohibit (Bug #19567)

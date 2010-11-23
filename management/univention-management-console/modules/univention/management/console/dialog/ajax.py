@@ -144,4 +144,4 @@ dojo.addOnLoad (function() {
 		base.HTML.__init__( self, html, attributes = attributes )
 
 
-AjaxTypes = ( type( RefreshFrame('','') ), )
+AjaxTypes = (RefreshFrame,)

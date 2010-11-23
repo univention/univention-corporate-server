@@ -105,4 +105,4 @@ class ToggleCheckboxes( base.HTML ):
 	def __str__( self ):
 		return self._text
 
-LinkTypes = ( type( Link() ), type( JS_Link() ), type( ToggleCheckboxes() ) )
+LinkTypes = (Link, JS_Link, ToggleCheckboxes)
