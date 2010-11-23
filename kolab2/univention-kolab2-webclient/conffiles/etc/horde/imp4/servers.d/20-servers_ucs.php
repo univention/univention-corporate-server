@@ -6,7 +6,7 @@ if ($GLOBALS['conf']['kolab']['enabled']) {
         $imapParams = array(
 			'hostspec' => $GLOBALS['conf']['kolab']['imap']['server'],
 			'port'     => $GLOBALS['conf']['kolab']['imap']['port'],
-            'protocol' => 'imap/notls/novalidate-cert',
+            'protocol' => 'imap/tls/novalidate-cert',
         );
 	}
     $servers['kolab'] = array(

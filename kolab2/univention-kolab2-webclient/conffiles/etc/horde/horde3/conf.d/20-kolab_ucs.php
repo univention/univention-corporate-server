@@ -65,8 +65,8 @@ if horde_auth.lower() == 'kolab':
 	print "$conf['auth']['params']['login_block'] = false;"
 	print "$conf['auth']['params']['login_block_count'] = 3;"
 	print "$conf['auth']['params']['login_block_time'] = 5;"
-	print "$conf['auth']['params']['port'] = %s;" % baseConfig.get('horde/imapport', '993')
-	print "$conf['auth']['params']['protocol'] = '%s';" % baseConfig.get('horde/imapprotocol', 'imap/ssl/novalidate-cert')
+	print "$conf['auth']['params']['port'] = %s;" % baseConfig.get('horde/imapport', '143')
+	print "$conf['auth']['params']['protocol'] = '%s';" % baseConfig.get('horde/imapprotocol', 'imap/tls/novalidate-cert')
 	print "$conf['auth']['params']['imapconfig'] = 'separate';"
 	print "$conf['auth']['params']['app'] = 'imp';"
 	print "$conf['auth']['driver'] = 'application';"
@@ -208,6 +208,8 @@ if horde_auth.lower() == 'kolab':
 	print "$conf['kolab']['ldap']['binddn'] = '';"
 	print "$conf['kolab']['ldap']['bindpw'] = '';"
 	print "$conf['kolab']['imap']['port'] = 143;"
+	print "$conf['kolab']['imap']['port'] = %s;" % baseConfig.get('horde/imapport', '143')
+	print "$conf['kolab']['imap']['protocol'] = '%s';" % baseConfig.get('horde/imapprotocol', 'imap/tls/novalidate-cert')
 	print "$conf['kolab']['imap']['sieveport'] = 2000;"
 	print "$conf['kolab']['imap']['maildomain'] = '%s';" % res;
 	print "$conf['problems']['maildomain'] = '%s';" % res;

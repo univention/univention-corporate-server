@@ -148,8 +148,8 @@ univention-baseconfig set	horde/application/turba?true \
 							horde/prefs/imp/sortdir?'descending' \
 							horde/prefs/imp/reply_format?'original' \
 							horde/mime_settings/imp/html/inline?'yes' \
-							horde/imapprotocol?imap/ssl/novalidate-cert \
-							horde/imapport?993 \
+							horde/imapprotocol?imap/tls/novalidate-cert \
+							horde/imapport?143 \
 
 univention-baseconfig set	php/memory/limit?64 \
 							php/memory/executiontime?150 \
