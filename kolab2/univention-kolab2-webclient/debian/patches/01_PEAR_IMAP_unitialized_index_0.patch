@@ -1,10 +1,10 @@
 --- univention-kolab2-webclient-1.0.13/debian/univention-kolab2-webclient/usr/share/horde3/lib/Net/IMAPProtocol.php.orig	2007-08-16 09:23:30.527991000 +0200
 +++ univention-kolab2-webclient-1.0.13/debian/univention-kolab2-webclient/usr/share/horde3/lib/Net/IMAPProtocol.php	2007-08-16 09:23:41.476675250 +0200
 @@ -2269,7 +2269,7 @@
-             $content=$str;
+             $content = $str;
              return $len;
          }
--        switch( $str[0] ){
+-        switch ($str[0]) {
 +	switch(substr($str, 0, 1)) {
          case '{':
              if ($posClosingBraces = $this->_getClosingBracesPos($str, 
