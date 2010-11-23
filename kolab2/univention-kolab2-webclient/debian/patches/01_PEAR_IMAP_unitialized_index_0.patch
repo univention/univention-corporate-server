@@ -7,5 +7,5 @@
 -        switch( $str[0] ){
 +	switch(substr($str, 0, 1)) {
          case '{':
-             if( ($posClosingBraces = $this->_getClosingBracesPos($str, '{' , '}' )) == false ){
-                 $this->_prot_error("_getClosingBracesPos() error!!!" , __LINE__ , __FILE__ );
+             if ($posClosingBraces = $this->_getClosingBracesPos($str, 
+                                                                 '{', 
