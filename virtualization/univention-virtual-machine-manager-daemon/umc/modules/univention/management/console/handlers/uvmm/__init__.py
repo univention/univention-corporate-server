@@ -794,7 +794,7 @@ class handler( umch.simpleHandler ):
 		else:
 			domains = self.uvmm.get_group_info( object.options[ 'group' ] )
 			dest_node_select.update_choices( [ domain.name for domain in domains ], object.options[ 'source' ] )
-			content.set_header( [ umcd.Text( _( 'Migrate %(domain)s from %(source)s to:' ) % object.options ) ] )
+			content.set_header( [ umcd.Text( _( 'Migrate virtual instance %(domain)s from physical server %(source)s to:' ) % object.options ) ] )
 			dest = umcd.make( self[ 'uvmm/domain/migrate' ][ 'dest' ] )
 			content.add_row( [ dest, '' ] )
 			opts = copy.copy( object.options )
