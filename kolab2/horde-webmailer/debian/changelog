@@ -1,3 +1,12 @@
+horde-webmailer (1.2.5~2.2.9-1) unstable; urgency=low
+
+  * Disable t_framework_UV_fixed_group_permissions.diff which searches
+    all groups on every click (Bug #20748)
+  * Added a new conf variable 'kolab imap protocol' to set the IMAP
+    protocol (Bug #20661)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 23 Nov 2010 08:52:45 +0100
+
 horde-webmailer (1.2.5~2.2.8-1) unstable; urgency=low
 
   * Support login by uid for smtp auth (Bug #19893)

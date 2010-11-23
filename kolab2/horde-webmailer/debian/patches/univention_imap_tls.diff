@@ -1,0 +1,19 @@
+https://forge.univention.org/bugzilla/show_bug.cgi?id=20661
+
+--- a/horde-webmail/lib/Horde/Kolab/Session.php	2009-12-15 19:17:05.000000000 +0100
++++ b/horde-webmail/lib/Horde/Kolab/Session.php	2010-11-22 13:27:43.000000000 +0100
+@@ -231,7 +231,13 @@
+             }
+         }
+ 
+-        $this->_imap_params['protocol'] = 'imap/notls/novalidate-cert';
++        if (!isset($this->_imap_params['protocol'])) {
++            if (isset($conf['kolab']['imap']['protocol'])) {
++                $this->_imap_params['protocol'] = $conf['kolab']['imap']['protocol'];
++            } else {
++                $this->_imap_params['protocol'] = 'imap/notls/novalidate-cert';
++            }
++        }
+     }
+ 
+     /**

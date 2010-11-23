@@ -13,7 +13,7 @@ t_kronolith_HK_UV_lastModificationOfEvents.diff
 # t_kronolith_HK_UV_optionalInvitationCheckbox.diff # does not apply
 # t_horde_HK_UV_hideOptionsInSidebar.diff # does not apply
 t_kronolith_HK_UV_Kolab_Folder-shared-unixhierarchysep.diff
-t_framework_UV_fixed_group_permissions.diff
+# t_framework_UV_fixed_group_permissions.diff
 # t_kronolith_HK_UV_fix_group_permissions.diff
 # t_imp_HK_UV_fix_login_by_uid.diff
 t_horde_HK__MP_ConfdStyleConfigurationOverride.diff
@@ -30,3 +30,4 @@ t_Prefs_HK_GW_FixLDAPAuthForIngo.diff
 t_SyncML_HK_UV_Nokia_convertServer2Client.diff
 univention_horde_ticket_7802.diff
 univention_issue4174_smtp_auth_login_by_uid.diff
+univention_imap_tls.diff
