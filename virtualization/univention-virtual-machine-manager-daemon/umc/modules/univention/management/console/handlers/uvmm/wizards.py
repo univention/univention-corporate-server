@@ -514,7 +514,7 @@ class InstanceWizard( umcd.IWizard ):
 		# self.drive_number += 1
 		# object.options[ 'image-name' ] = object.options[ 'name' ] + '-%d.img' % self.drive_number
 		object.options['image-name'] = self.uvmm.next_drive_name(self.node_uri, object.options['name'], temp_drives=[os.path.basename(drive.source) for drive in self.drives])
-		object.options['image-format'] = image_type
+		object.options['image-format'] = 'raw'
 		object.options[ 'image-size' ] = '8 GB'
 		self.drive_wizard.replace_title( _( 'Add drive to <i>%(name)s</i>' ) % { 'name' : object.options[ 'name' ] } )
 		return self.drive_wizard.action( object, ( self.node_uri, self.node ) )

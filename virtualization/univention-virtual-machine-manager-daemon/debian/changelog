@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.11.0-2) unstable; urgency=low
+
+  * Fix preliminary support for qcow2 image files (Bug #18765)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 23 Nov 2010 11:58:50 +0100
+
 univention-virtual-machine-manager-daemon (0.11.0-1) unstable; urgency=low
 
   * Adopt Bugs from UVMM component (Bug #19797)
