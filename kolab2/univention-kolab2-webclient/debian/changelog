@@ -1,3 +1,9 @@
+univention-kolab2-webclient (6.0.9-3) unstable; urgency=low
+
+  * fix baseConfig load order (Bug #20554)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 23 Nov 2010 16:40:23 +0100
+
 univention-kolab2-webclient (6.0.9-2) unstable; urgency=low
 
   * new UCR variable horde/ldap/update/identities (Bug #20554)

@@ -87,9 +87,10 @@ def __kronolith_settings ( db, mail ):
 		db.query( "insert into horde_prefs values('%s', 'kronolith', 'search_fields', '%s\tfirstname\tlastname\temails\r\nkolab_global\tfirstname\tlastname\temail');" % (mail, mail))
 
 def __horde_settings ( db, mail, fullname, from_addr ):
+	baseConfig = univention_baseconfig.baseConfig()
+	baseConfig.load()
+
 	if not __tuples_exist ( db, mail, 'horde' ):
-		baseConfig = univention_baseconfig.baseConfig()
-		baseConfig.load()
 
 		menu_width = baseConfig.get('horde/menu/width', '200')
 		categories = {}
