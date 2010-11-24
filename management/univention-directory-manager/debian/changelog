@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.22-1) unstable; urgency=low
+
+  * fixed wrong UCR comparing values for true and false (Bug #20186)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 24 Nov 2010 15:06:11 +0100
+
 univention-directory-manager (8.0.21-1) unstable; urgency=low
 
   * Show correct hostname for a share if the host is unknown

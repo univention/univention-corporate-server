@@ -1132,8 +1132,8 @@ class modwizard(unimodule.unimodule):
 		###########################################################################
 
 		# display default search results
-		_off = ('0', 'false', 'off', 'yes')
-		_on = ('1', 'true', 'on', 'no')
+		_off = ('0', 'false', 'off', 'no')
+		_on = ('1', 'true', 'on', 'yes')
 		autosearch = True
 		if ucr.get ('directory/manager/web/modules/autosearch', '0').lower () in _on:
 			# default value MUST be 1 because autosearch is already switched on
