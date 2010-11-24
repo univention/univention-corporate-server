@@ -1,4 +1,4 @@
-univention-thin-client-basesystem (7.1.4-3) unstable; urgency=low
+univention-thin-client-basesystem (7.1.5-1) unstable; urgency=low
 
   * adjust sources.list to include scope ucs2.4-1 (Bug #20300)
 
