@@ -354,8 +354,8 @@ class handler( umch.simpleHandler ):
 		buttons = []
 		overview_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % overview, options = object.options )
 		comma = umcd.HTML( '&nbsp;' )
-		# migrate? if parameter set
-		if operations:
+		# migrate? if parameter set and state is not paused
+		if operations and domain.state != 3:
 			cmd = umcp.SimpleCommand( 'uvmm/domain/migrate', options = { 'group' : object.options[ 'group' ], 'source' : node.name, 'domain' : domain.name } )
 			buttons.append( umcd.LinkButton( _( 'Migrate' ), actions = [ umcd.Action( cmd ) ] ) )
 			buttons.append( comma )

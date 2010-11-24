@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.10.9-1) unstable; urgency=low
+
+  * do not show migrate button is instance is paused; Bug #19718
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 24 Nov 2010 10:54:34 +0100
+
 univention-virtual-machine-manager-daemon (0.10.8-1) unstable; urgency=low
 
   * reset wizard state before it is started; Bug #19727
