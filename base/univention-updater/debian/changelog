@@ -1,3 +1,9 @@
+univention-updater (6.0.46-1) unstable; urgency=low
+
+  * Adapt pre- and postup.sh to UCS 2.4-1 (Bug #20779)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Nov 2010 08:13:56 +0100
+
 univention-updater (6.0.45-1) unstable; urgency=low
 
   * set default buttons in UMC module (Bug #19559)

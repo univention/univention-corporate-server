@@ -26,13 +26,13 @@ date >>"$UPDATER_LOG" 2>&1
 
 eval "$(univention-config-registry shell)" >>"$UPDATER_LOG" 2>&1
 
-for p in univention-xen; do
-	check_and_install $p
-done
-
-for p in libxenstore3.0; do
-	check_and_reinstall $p
-done
+## for p in univention-xen; do
+## 	check_and_install $p
+## done
+## 
+## for p in libxenstore3.0; do
+## 	check_and_reinstall $p
+## done
 
 if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role" = "basissystem" ]; then
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install univention-basesystem >>"$UPDATER_LOG" 2>&1
