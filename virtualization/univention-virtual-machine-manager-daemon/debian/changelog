@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.10.8-1) unstable; urgency=low
+
+  * reset wizard state before it is started; Bug #19727
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 24 Nov 2010 09:40:43 +0100
+
 univention-virtual-machine-manager-daemon (0.10.7-1) unstable; urgency=low
 
   * adapt version number

@@ -1056,6 +1056,7 @@ class handler( umch.simpleHandler ):
 
 		# starting the wizard
 		if not 'action' in object.options:
+			self.drive_wizard.reset()
 			object.options['image-name'] = self.uvmm.next_drive_name(node_uri, object.options['domain'])
 			ud.debug(ud.ADMIN, ud.INFO, 'Drive create: suggestion for drive name: %s' % object.options['image-name'])
 
