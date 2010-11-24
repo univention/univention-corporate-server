@@ -1,4 +1,4 @@
-univention-directory-manager (8.0.22-1) unstable; urgency=low
+univention-directory-manager (8.0.23-1) unstable; urgency=low
 
   * fixed wrong UCR comparing values for true and false (Bug #20186)
 
