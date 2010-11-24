@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (7.1.4-3) unstable; urgency=low
+
+  * adjust sources.list to include scope ucs2.4-1 (Bug #20300)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 24 Nov 2010 16:37:05 +0100
+
 univention-thin-client-basesystem (7.1.4-2) unstable; urgency=low
 
   * use /bin/bash for etc/init.d/thin-client-ldap. Bug #18809
