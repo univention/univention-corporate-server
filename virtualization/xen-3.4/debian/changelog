@@ -1,3 +1,10 @@
+xen-3.4 (3.4.3-13) unstable; urgency=low
+
+  * Increase dhcp-timeout from 60 seconds to work-around default "bridge
+  	forwarding delay" of 15 seconds for xen instances (Ticket#: 2010111510003474)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 25 Nov 2010 15:53:23 +0100
+
 xen-3.4 (3.4.3-12) unstable; urgency=low
 
   * Fix etherboot compile (Ticket#: 2010111510003474)

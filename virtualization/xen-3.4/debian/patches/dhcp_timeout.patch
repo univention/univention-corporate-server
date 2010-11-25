@@ -1,5 +1,5 @@
 Ticket#: 2010111510003474
-Increase dhcp-timeout from 10 to 20 seconds to work-around default "bridge forwarding delay" of 15 seconds for xen instances.
+Increase dhcp-timeout from 10 to 60 seconds to work-around default "bridge forwarding delay" of 15 seconds for xen instances.
 Dummy-change to Config is needed to update the time-stamp on Config to force make to remake etherboot.
 --- a/xen-3.4.3/tools/firmware/Makefile	2010-11-17 08:35:01.000000000 +0100
 +++ b/xen-3.4.3/tools/firmware/Makefile	2010-11-17 08:35:07.000000000 +0100
@@ -28,7 +28,7 @@ Dummy-change to Config is needed to update the time-stamp on Config to force mak
 + /** Timeouts for sending DHCP packets */
 + #define DHCP_MIN_TIMEOUT ( 1 * TICKS_PER_SEC )
 +-#define DHCP_MAX_TIMEOUT ( 10 * TICKS_PER_SEC )
-++#define DHCP_MAX_TIMEOUT ( 20 * TICKS_PER_SEC )
+++#define DHCP_MAX_TIMEOUT ( 60 * TICKS_PER_SEC )
 + 
 + /** Settings block name used for DHCP responses */
 + #define DHCP_SETTINGS_NAME "dhcp"
