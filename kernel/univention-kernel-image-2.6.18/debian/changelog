@@ -1,6 +1,12 @@
+univention-kernel-image-2.6.18 (3.0.2-4) unstable; urgency=low
+
+	  * Rebuild for latest security update (Bug #20736)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Nov 2010 09:54:57 +0100
+
 univention-kernel-image-2.6.18 (3.0.2-3) unstable; urgency=low
 
-  * Rebuild for latest security update (Bug #17035)
+	  * Rebuild for latest security update (Bug #17035)
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 24 Mar 2010 16:16:36 +0100
 
