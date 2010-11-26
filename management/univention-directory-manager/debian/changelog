@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.24-1) unstable; urgency=low
+
+  * edit report() call (Bug #18344)
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 26 Nov 2010 12:41:11 +0100
+
 univention-directory-manager (8.0.23-1) unstable; urgency=low
 
   * fixed wrong UCR comparing values for true and false (Bug #20186)

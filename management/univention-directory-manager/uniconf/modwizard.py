@@ -1609,7 +1609,21 @@ class modwizard(unimodule.unimodule):
 			self.add(self.save.get("uc_virtualmodule"))
 		else:
 			if self.save.get( 'uc_report' ) == True:
-				self.report( self.save.get( 'wizard_search_type', self.save.get( "uc_virtualmodule" ) ) )
+
+				'''We have to check the following, because this construct is
+				paradoxically working when hitting the report button for the first time
+				with THREE parameters for report(self,search_type)
+
+				The correct, new call is located at the else 
+				with TWO parameters, this works also at changes
+				'''
+
+				if self.save.get( 'wizard_search_type'):
+					self.report( self.save.get( 'wizard_search_type', self.save.get( "uc_virtualmodule" ) ) ) # paradoxically working
+
+				else:
+					self.report(self.save.get("uc_virtualmodule")) # the correct way
+
 			else:
 				self.find(self.save.get("uc_virtualmodule"))
 
