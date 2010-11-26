@@ -220,6 +220,7 @@ class Response_DUMP(Response_OK):
 	def _default(self):
 		self.status = 'OK'
 		self.data = {}
+		self.messages = None
 
 class Response_AUTHENTICATION(Response):
 	"""Authentication required, contains PAM challanges."""

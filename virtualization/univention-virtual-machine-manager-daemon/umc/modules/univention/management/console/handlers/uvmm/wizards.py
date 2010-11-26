@@ -357,11 +357,24 @@ class InstanceWizard( umcd.IWizard ):
 				self.replace_title( _( 'Create a virtual instance <i>%(name)s</i>' ) % { 'name' : object.options[ 'name' ] } )
 		tech = self.node_uri[ : self.node_uri.find( ':' ) ]
 		if self.current == None:
-			profiles = [ item[ 'name' ] for item in self.udm.get_profiles(tech) if item[ 'arch' ] in self.archs ]
+			try:
+				profiles = [ item[ 'name' ] for item in self.udm.get_profiles(tech) if item[ 'arch' ] in self.archs ]
+			except udm.LDAP_ConnectionError:
+				umcd.IWizard.next( self, object )
+				self.profile_syntax.update_choices( [] )
+				return umcd.WizardResult( False, _( 'No profiles could be found! These are required to create new virtual instances. Ensure that the LDAP server can be reached.' ) )
 			profiles.sort()
 			self.profile_syntax.update_choices( profiles )
 		if self.current == 0:
-			self.profile = self.udm.get_profile( object.options[ 'instance-profile' ], tech )
+			try:
+				self.profile = self.udm.get_profile( object.options[ 'instance-profile' ], tech )
+			except udm.LDAP_ConnectionError:
+				del object.options[ 'instance-profile' ]
+				umcd.IWizard.next( self, object )
+				# reset current page to this one
+				self.current = 0
+				return umcd.WizardResult( False, _( 'The selected profile could not be read! Without the information the new virtual instance can not be created. Ensure that the LDAP server can be reached.' ) )
+
 			ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: next: profile boot drives: %s' % str( self.profile[ 'bootdev' ] ) )
 			object.options[ 'name' ] = self.profile[ 'name_prefix' ]
 			object.options[ 'arch' ] = self.profile[ 'arch' ]

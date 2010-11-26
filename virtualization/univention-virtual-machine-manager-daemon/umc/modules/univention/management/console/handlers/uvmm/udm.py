@@ -35,26 +35,98 @@ import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.handlers.uvmm.profile as uvmm_profile
 
+import univention.config_registry as ucr
+
 import univention.debug as ud
 
 import univention.management.console as umc
 
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
-class ConnectionError( Exception ):
+registry = ucr.ConfigRegistry()
+registry.load()
+
+class LDAP_ConnectionError( Exception ):
 	pass
+
+# decorators
+def ensureLDAP_Connection_Admin( func ):
+	return ensureLDAP_Connection( func, 'admin' )
+
+def ensureLDAP_Connection_Machine( func ):
+	return ensureLDAP_Connection( func, 'machine' )
+
+class ensureLDAP_Connection( object ):
+	'''A decorator that creates an LDAP connection and sets class
+	attributes to access it from within the class method:
+
+	ldap_conn: univention.uldap.access object
+	ldap_pos: univention.uldap.position object
+
+	for class methods:
+	class Test():
+		@classmethod
+		@ensureLDAP_Connection
+		def do_ldap_stuff( self, bla ):
+			self.ldap_conn ...
+
+	for global functions:
+	@ensureLDAP_Connection
+	def do_ldap_stuff( bla ):
+		do_ldap_stuff.ldap_conn ...
+	'''
+	def __init__( self, f, account ):
+		self.f = f
+		self.account = account
+
+	def open( self, klass ):
+		# LDAP connection already open?
+		if hasattr( klass, 'ldap_conn' ) and klass.ldap_conn:
+			return True
+
+		host = registry.get( 'ldap/server/name' )
+		base = registry.get( 'ldap/base' )
+		if self.account == 'machine':
+			pwfile = '/etc/machine.secret'
+			binddn = registry.get( 'ldap/hostdn' )
+		elif self.account == 'admin':
+			pwfile = '/etc/ldap.secret'
+			binddn = 'cn=admin,%s' % base
+		bindpw = open( pwfile ).read()
+		if bindpw[ -1 ] == '\n':
+			bindpw = bindpw[ 0 : -1 ]
+
+		klass.ldap_conf = None
+		try:
+			klass.ldap_conn = univention.admin.uldap.access( host = host, base = base, binddn = binddn, bindpw = bindpw )
+		except:
+			klass.ldap_conn = None
+			raise LDAP_ConnectionError()
+
+		klass.ldap_pos = univention.admin.uldap.position( klass.ldap_conn.base )
+
+		return True
+
+	def __call__( self, *args, **kwargs ):
+		klass = args[ 0 ]
+		if not isinstance( klass, type ):
+			klass = self
+		self.open( klass )
+		try:
+			return self.f( *args, **kwargs )
+		except univention.admin.uexceptions.base, e:
+			# try to reopen connection
+			klass.ldap_conn = None
+			self.open( klass )
+			try:
+				return self.f( *args, **kwargs )
+			except univention.admin.uexceptions.base, e:
+				raise LDAP_Error( str( e ) )
 
 class Client( object ):
 	PROFILE_RDN = 'cn=Profiles,cn=Virtual Machine Manager'
 
-	def __init__( self ):
-		self.co = None
-		try:
-			self.lo, self.position = univention.admin.uldap.getMachineConnection()
-			self.base = "%s,%s" % ( Client.PROFILE_RDN, self.position.getDn() )
-		except IOError, e:
-			raise ConnectionError( _( 'Could not open LDAP connection' ) )
-
+	@classmethod
 	def _tech_filter( self, tech ):
 		if tech:
 			# FIXME: we need a way to make things unique e.g. kvm == qemu
@@ -65,24 +137,22 @@ class Client( object ):
 			filter='univentionVirtualMachineProfileVirtTech=*'
 		return filter
 
+	@classmethod
+	@ensureLDAP_Connection_Machine
 	def get_profiles( self, tech = None ):
-		try:
-			res = univention.admin.modules.lookup( uvmm_profile, self.co, self.lo, scope='sub', filter=self._tech_filter(tech), base = self.base, required = False, unique = False )
-		except univention.admin.uexceptions.base, e:
-			ud.debug( ud.ADMIN, ud.ERROR, 'UVMM/UDM: get_profiles: error while searching for template: %s' % str( e ) )
-			return []
+		base = "%s,%s" % ( Client.PROFILE_RDN, self.ldap_pos.getDn() )
+		res = univention.admin.modules.lookup( uvmm_profile, self.ldap_conf, self.ldap_conn, scope='sub', filter=self._tech_filter(tech), base = base, required = False, unique = False )
 
 		return res
 
+	@classmethod
+	@ensureLDAP_Connection_Machine
 	def get_profile( self, name, tech ):
 		name = name.replace( '(', '\(' )
 		name = name.replace( ')', '\)' )
 		filter = '(&(%s)(cn=%s))' % (self._tech_filter(tech), name)
-		try:
-			res = univention.admin.modules.lookup( uvmm_profile, self.co, self.lo, filter = filter, scope='sub', base = self.base, required = False, unique = True )
-		except univention.admin.uexceptions.base, e:
-			ud.debug( ud.ADMIN, ud.ERROR, 'UVMM/UDM: get_profile: error while searching for template: %s' % str( e ) )
-			return {}
+		base = "%s,%s" % ( Client.PROFILE_RDN, self.ldap_pos.getDn() )
+		res = univention.admin.modules.lookup( uvmm_profile, self.ldap_conf, self.ldap_conn, filter = filter, scope='sub', base = base, required = False, unique = True )
 
 		ud.debug( ud.ADMIN, ud.ERROR, 'UVMM/UDM: get_profile: profile: %s' % str( res ) )
 		return res[ 0 ]

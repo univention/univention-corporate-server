@@ -745,6 +745,7 @@ def domain_define( uri, domain ):
 
 	old_dom = None
 	old_stat = None
+	warnings = []
 
 	impl = getDOMImplementation()
 	doc = impl.createDocument( None, 'domain', None )
@@ -1005,14 +1006,14 @@ def domain_define( uri, domain ):
 				record.commit()
 		except LdapConnectionError, e:
 			logger.error('Updating LDAP failed, insufficient permissions: %s' % (e,))
-		except univention.admin.uexceptions.objectExists, e:
+			warnings.append( _( 'Failed to update the additionally information in the LDAP directory' ) )
+		except ( univention.admin.uexceptions.ldapError, univention.admin.uexceptions.objectExists ), e:
 			logger.error('Updating LDAP failed: %s %s' % (e, record))
-		except univention.admin.uexceptions.ldapError, e:
-			logger.error('Updating LDAP failed: %s %s' % (e, record))
+			warnings.append( _( 'Failed to update the additionally information in the LDAP directory' ) )
 
 	node.wait_update(domain.uuid, old_stat)
 
-	return domain.uuid
+	return ( domain.uuid, warnings )
 
 def domain_state(uri, domain, state):
 	"""Change running state of domain on node and wait for updated state."""

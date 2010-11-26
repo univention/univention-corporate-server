@@ -40,7 +40,7 @@ except ImportError:
 	import pickle
 import univention.config_registry as ucr
 import univention.uldap
-from ldap import LDAPError
+from ldap import LDAPError, SERVER_DOWN
 import ldapurl
 import univention.admin.uldap
 import univention.admin.modules
@@ -213,7 +213,7 @@ def ldap_annotation(uuid, ldap_uri=None):
 		try:
 			lo, position = univention.admin.uldap.getMachineConnection()
 			base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
-		except IOError, e:
+		except ( SERVER_DOWN, IOError ), e:
 			raise LdapConnectionError(_('Could not open LDAP-Machine connection'))
 	co = None
 	dn = "%s=%s,%s" % (uvmm_info.mapping.mapName('uuid'), uuid, base)
@@ -234,7 +234,7 @@ def ldap_modify(uuid, ldap_uri=None):
 		try:
 			lo, position = univention.admin.uldap.getAdminConnection()
 			base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
-		except IOError, e:
+		except (SERVER_DOWN, IOError ), e:
 			raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
 	co = None
 	dn = "%s=%s,%s" % (uvmm_info.mapping.mapName('uuid'), uuid, base)

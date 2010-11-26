@@ -61,6 +61,7 @@ configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
+_uvmm_locale = umc.Translation('univention.virtual.machine.manager').translate
 
 name = 'uvmm'
 icon = 'uvmm/module'
@@ -875,7 +876,12 @@ class handler( umch.simpleHandler ):
 			res.status( 301 )
 			self.finished( object.id(), res, report = resp.msg )
 		else:
-			self.finished( object.id(), res )
+			if resp.messages:
+				res.status( 201 )
+				msg = _( 'Some information of the virtual instance could not be saved!<br/>' ) + '<br/>'.join( [ str( _uvmm_locale( text ) ) for text in resp.messages ] )
+			else:
+				msg = ''
+			self.finished( object.id(), res, report = msg )
 
 	def uvmm_domain_state( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain State' )

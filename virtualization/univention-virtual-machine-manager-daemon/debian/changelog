@@ -1,3 +1,13 @@
+univention-virtual-machine-manager-daemon (0.10.10-1) unstable; urgency=low
+
+  * UMC module and UVMM daemon: enhance error handling if LDAP server is
+    not available
+  * reestablish lost LDAP connections (UMC module)
+  * use LDAP server set via UCR variable ldap/server/name
+  * updated german translation; Bug #19501
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 26 Nov 2010 18:01:27 +0100
+
 univention-virtual-machine-manager-daemon (0.10.9-1) unstable; urgency=low
 
   * do not show migrate button if instance is paused; Bug #19718
