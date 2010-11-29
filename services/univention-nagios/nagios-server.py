@@ -698,9 +698,6 @@ def handler(dn, new, old):
 		(new and new.has_key('objectClass') and 'univentionNagiosHostClass' in new['objectClass'])):
 		# check if the nagios related attributes were changed
 		for attr in ['aRecord', 'associatedDomain', 'uid', 'cn', 'description', 'univentionNagiosParent', 'univentionNagiosEnabled' ]:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'Check attr: %s' attr)
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'Check old: %s' old.get(attr, None))
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'Check new: %s' new.get(attr, None))
 			if not (new.get(attr, None) == old.get(attr, None)):
 				handleHost(dn, new, old)
 				__reload = True

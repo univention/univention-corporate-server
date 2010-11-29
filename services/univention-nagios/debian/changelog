@@ -1,3 +1,9 @@
+univention-nagios (4.0.10-1) unstable; urgency=low
+
+  * Removed unused debug messages (Bug #18119)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Nov 2010 16:43:55 +0100
+
 univention-nagios (4.0.9-1) unstable; urgency=low
 
   * Clarify listener error messages (Bug #18119)
