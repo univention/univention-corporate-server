@@ -118,7 +118,7 @@ print '   by dn.regex="[^,]+,cn=dc,cn=computers,%s" %s' % ( ldap_base, usr )
 print '   by dn.regex="[^,]+,cn=memberserver,cn=computers,%s" read' % ( ldap_base )
 print '   by * none'
 
-print 'access to attrs=shadowMax,krb5PasswordEnd'
+print 'access to attrs=shadowMax,krb5PasswordEnd,shadowLastChange'
 print '   by dn.base="cn=admin,%s" %s' % ( ldap_base, usr )
 if nestedGroups:
 	print '   by set="user & [cn=Domain Admins,cn=groups,%s]/uniqueMember*" %s' % ( ldap_base, usr )

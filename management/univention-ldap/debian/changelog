@@ -1,3 +1,11 @@
+univention-ldap (7.0.10-1) unstable; urgency=low
+
+  * Added write access for DC Slaves to shadowLastChange, otherwise a
+    user can't change his password on a slave pdc when he have a
+    password expiry interval. (Bug #20239)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Nov 2010 06:27:02 +0100
+
 univention-ldap (7.0.9-1) unstable; urgency=low
 
   * added write access for DC slaves to shadowMax and krb5PasswordEnd (Bug #20239)
