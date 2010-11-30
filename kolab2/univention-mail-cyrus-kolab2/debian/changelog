@@ -1,3 +1,10 @@
+univention-mail-cyrus-kolab2 (3.0.21-3) unstable; urgency=low
+
+  * fixed ucr var description for mail/cyrus/folder/predefined_folders,
+    mail/cyrus/folder/ham and mail/cyrus/folder/spam Bug # 18767
+
+ -- Felix Botner <botner@univention.de>  Tue, 30 Nov 2010 15:32:18 +0100
+
 univention-mail-cyrus-kolab2 (3.0.20-2) unstable; urgency=low
 
   * fixed univention-cyrus-mkdir Bug #19767

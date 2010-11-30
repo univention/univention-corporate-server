@@ -120,19 +120,19 @@ Type=str
 Categories=service-mail
 
 [mail/cyrus/folder/spam]
-Description[de]=Name eines IMAP Ordners für Spam, der beim Anlegen eines Mail-Accounts erzeugt wird (default: Spam) - Achtung - diese Variable sollte nicht geändert werden nachdem Mail Accounts angelegt wurden, da die Sieve Skript zum Verschieben von Spam in den Spam Ordner dann ebenfalls den neuen Spam Ordner verwenden, dieser in den alten Accounts aber nicht exsitiert
-Description[en]=Name of an IMAP folder for spam that is created when creating a new mail account (default: Spam) - Attention - this variable should not be changed after mail accounts have been created because the sieve scripts for moving spam into the spam folder then also use this new spam folder, which does not exist for old accounts
+Description[de]=Name des IMAP-Ordners für Spam-Mails, der beim Anlegen eines Mail-Kontos automatisch erzeugt wird (default: Spam). Achtung: diese Variable sollte nicht geändert werden, nachdem bereits Mail-Konten angelegt wurden.
+Description[en]=Name of IMAP folder for spam mails that is created automatically when creating a new mail account (default: Spam). Attention: this variable should not be changed after mail accounts have been created.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/folder/ham]
-Description[de]=Name eines IMAP Ordners für Ham, der beim Anlegen eines Mail-Accounts erzeugt wird (default: Ham)
-Description[en]=Name of an IMAP folder for ham that is created when creating a new mail account (default: Ham)
+Description[de]=Name des IMAP-Ordners für Ham-Mails, der beim Anlegen eines Mail-Kontos automatisch erzeugt wird (default: Ham).
+Description[en]=Name of IMAP folder for ham mails that is created automatically when creating a new mail account (default: Ham).
 Type=str
 Categories=service-mail
 
 [mail/cyrus/folder/predefined_folders]
-Description[de]=Eine semikolon separierte Liste von Namen von IMAP Ordnern, die beim Anlegen eines Mail-Accounts erzeugt werden (default: none)
-Description[en]=A semicolon-separated list of IMAP folder names that are created when creating a new mail account (default: none)
+Description[de]=Eine semikolon-separierte Liste mit IMAP-Ordner-Namen, die beim Anlegen eines Mail-Accounts automatisch erzeugt werden (default: none).
+Description[en]=A semicolon-separated list of IMAP folder names that are created automatically when creating a new mail account (default: none).
 Type=str
 Categories=service-mail
