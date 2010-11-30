@@ -157,7 +157,7 @@ for mb in mbs:
 	#	failed(mailPrimaryAddress, remote, msg)
 	#
 
-imap.logout
+imap.logout()
 
 if not remote:
 	path = os.path.join(jobPath, mailPrimaryAddress)

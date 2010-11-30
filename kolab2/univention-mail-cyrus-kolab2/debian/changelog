@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (3.0.20-2) unstable; urgency=low
+
+  * fixed univention-cyrus-mkdir Bug #19767
+
+ -- Felix Botner <botner@univention.de>  Tue, 30 Nov 2010 12:33:49 +0100
+
 univention-mail-cyrus-kolab2 (3.0.19-1) unstable; urgency=low
 
   * use mail/hosteddomains OR mail/cyrus/loginrealms in imapd.conf
