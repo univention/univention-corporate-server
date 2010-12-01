@@ -1,3 +1,16 @@
+univention-virtual-machine-manager-daemon (0.10.11-1) unstable; urgency=low
+
+  * Fix extended xen-pv configuration (Bug #20819)
+  * Fix block device naming for all xen-pv domains.
+  * Deprecate node_info.storage (Bug #19370)
+  * Add preliminary SDL support (Bug #19980)
+  * Swap CPU and RAM usage in domain overview (Bug #19131)
+  * Add preliminary LVM/iSCSI support (Bug #19804)
+  * Add support for Qcow2 support for snapshots (Bug #19575)
+  * Hide buttons via UCR-variables uvmm/umc/show/.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 01 Dec 2010 20:14:30 +0100
+
 univention-virtual-machine-manager-daemon (0.10.10-1) unstable; urgency=low
 
   * UMC module and UVMM daemon: enhance error handling if LDAP server is

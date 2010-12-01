@@ -48,7 +48,7 @@ import traceback
 from univention.uvmm.eventloop import *
 import threading
 from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_all_storage_volumes, StorageError, storage_pools, get_storage_pool_info
-from protocol import Data_Domain, Data_Node
+from protocol import Data_Domain, Data_Node, Data_Snapshot
 import os
 
 import univention.config_registry as ucr
@@ -91,10 +91,13 @@ class Disk( object ):
 	'''Container for disk objects'''
 	( DEVICE_DISK, DEVICE_CDROM, DEVICE_FLOPPY ) = range( 3 )
 	DEVICE_MAP = { DEVICE_DISK : 'disk', DEVICE_CDROM : 'cdrom', DEVICE_FLOPPY : 'floppy' }
+
 	(TYPE_FILE, TYPE_BLOCK) = range(2)
 	TYPE_MAP = {TYPE_FILE: 'file', TYPE_BLOCK: 'block'}
+
 	(CACHE_DEFAULT, CACHE_NONE, CACHE_WT, CACHE_WB) = range(4)
 	CACHE_MAP = {CACHE_DEFAULT: 'default', CACHE_NONE: 'none', CACHE_WT: 'writethrough', CACHE_WB: 'writeback'}
+
 	def __init__( self ):
 		self.type = Disk.TYPE_FILE	# disk/@type
 		self.device = Disk.DEVICE_DISK	# disk/@device
@@ -143,8 +146,8 @@ class Interface( object ):
 
 class Graphic( object ):
 	'''Container for graphic objects'''
-	( TYPE_VNC, ) = range( 1 )
-	TYPE_MAP = { TYPE_VNC : 'vnc' }
+	( TYPE_VNC, TYPE_SDL ) = range( 2 )
+	TYPE_MAP = { TYPE_VNC: 'vnc', TYPE_SDL: 'sdl' }
 	def __init__( self ):
 		self.type = Graphic.TYPE_VNC
 		self.port = -1
@@ -259,7 +262,8 @@ class DomainTemplate(object):
 class Domain(object):
 	"""Container for domain statistics."""
 	CPUTIMES = (10, 60, 5*60) # 10s 60s 5m
-	def __init__(self, domain):
+	def __init__(self, domain, node):
+		self.node = node
 		self.pd = Data_Domain() # public data
 		self.pd.uuid = domain.UUIDString()
 		self.pd.os_type = domain.OSType()
@@ -326,7 +330,34 @@ class Domain(object):
 
 	def update_expensive(self, domain):
 		"""Update statistics."""
+		# Full XML efinition
 		self.xml2obj( domain )
+		# List of snapshots
+
+		snapshots = None
+		if self.node.pd.supports_snapshot:
+			has_snapshot_disk = False
+			for dev in self.pd.disks:
+				if dev.readonly:
+					continue
+				if dev.driver_type in ('qcow2',):
+					has_snapshot_disk = True
+					continue
+				break
+			else:
+				if has_snapshot_disk:
+					snapshots = {}
+					for name in domain.snapshotListNames(0):
+						snap = domain.snapshotLookupByName(name, 0)
+						xml = snap.getXMLDesc(0)
+						doc = parseString(xml)
+						ctime = doc.getElementsByTagName('creationTime')[0].firstChild.nodeValue
+						s = Data_Snapshot()
+						s.name = name
+						s.ctime = int(ctime)
+						snapshots[name] = s
+		self.pd.snapshots = snapshots
+		# Annotations from LDAP
 		try:
 			self.pd.annotations = ldap_annotation(self.pd.uuid)
 		except LdapError, e:
@@ -433,6 +464,8 @@ class Domain(object):
 				if graphic.hasAttribute('passwd'):
 					dev.passwd = graphic.getAttribute('passwd')
 				dev.keymap = graphic.getAttribute('keymap')
+			elif dev.type == Graphic.TYPE_SDL:
+				pass
 			else:
 				logger.error('Unsupported graphics type: %s' % type)
 			self.pd.graphics.append(dev)
@@ -475,7 +508,6 @@ class Node(object):
 				self.conn = libvirt.open(self.uri)
 				logger.info("Connected to '%s'" % (self.uri,))
 				self.update_once()
-				self._get_storages()
 				self._register_default_pool()
 				# reset timer after successful re-connect
 				self.current_frequency = self.config_frequency
@@ -510,20 +542,18 @@ class Node(object):
 	def __del__(self):
 		"""Free Node and deregister callbacks."""
 		self.unregister()
-		del self.pd.storages
 		del self.pd
 		del self.domains
 
 	def _register_default_pool( self ):
 		'''create a default storage pool if not available'''
-		for pool in self.pd.storages:
+		for pool in storage_pools(node=self):
 			if pool.name == 'default':
 				logger.debug("default pool already registered on %s" % self.pd.name)
 				break
 		else:
-			logger.debug("register default pool on %s" % self.pd.name)
+			logger.info("creating default pool on %s" % self.pd.name)
 			create_storage_pool( self.conn, configRegistry.get( 'uvmm/pool/default/path', '/var/lib/libvirt/images' ) )
-			self.pd.storages.append(get_storage_pool_info(self, 'default'))
 
 	def update_once(self):
 		"""Update once on (re-)connect."""
@@ -536,15 +566,24 @@ class Node(object):
 		self.pd.capabilities = DomainTemplate.list_from_xml(xml)
 		type = self.conn.getType()
 		self.pd.supports_suspend = False
+		self.pd.supports_snapshot = False
 		if type == 'QEMU':
 			# Qemu/Kvm supports managedSave
 			self.pd.supports_suspend = True
+			self.pd.supports_snapshot = True
 		elif type == 'Xen':
 			# As of libvirt-0.8.5 Xen doesn't support managedSave, but test dom0
+			d = self.conn.lookupByID(0)
 			try:
-				d = self.conn.lookupByID(0)
 				d.hasManagedSaveImage(0)
 				self.pd.supports_suspend = True
+			except libvirt.libvirtError, e:
+				if e.get_error_code() != libvirt.VIR_ERR_NO_SUPPORT:
+					logger.error('Exception %s: %s' % (e, traceback.format_exc()))
+			# As of libvirt-0.8.5 Xen doesn't support snapshot-*, but test dom0
+			try:
+				d.snapshotListNames(0)
+				self.pd.supports_snapshot = True
 			except libvirt.libvirtError, e:
 				if e.get_error_code() != libvirt.VIR_ERR_NO_SUPPORT:
 					logger.error('Exception %s: %s' % (e, traceback.format_exc()))
@@ -556,7 +595,7 @@ class Node(object):
 				logger.debug("domain_callback %s(%s) %s %d" % (dom.name(), dom.ID(), eventStrings[event], detail))
 				uuid = dom.UUIDString()
 				if event == libvirt.VIR_DOMAIN_EVENT_DEFINED:
-					domStat = Domain(dom)
+					domStat = Domain(dom, node=self)
 					self.domains[uuid] = domStat
 				elif event == libvirt.VIR_DOMAIN_EVENT_UNDEFINED:
 					if uuid in self.domains:
@@ -593,18 +632,18 @@ class Node(object):
 		self.current_frequency = hz
 		virEventUpdateTimerImpl(self.timerID, hz)
 
-	def _get_storages( self ):
-		'''read the list of available storage pool'''
-		self.pd.storages = storage_pools(node=self)
-
 	def update(self):
 		"""Update node statistics."""
 		curMem = 0
 		maxMem = 0
 		cpu_usage = 0
 		cached_domains = self.domains.keys()
-		for dom in [self.conn.lookupByID(id) for id in self.conn.listDomainsID()] + \
-			[self.conn.lookupByName(name) for name in self.conn.listDefinedDomains()]:
+		def all_domains():
+			for id in self.conn.listDomainsID():
+				yield self.conn.lookupByID(id)
+			for name in self.conn.listDefinedDomains():
+				yield self.conn.lookupByName(name)
+		for dom in all_domains():
 			uuid = dom.UUIDString()
 			if uuid in self.domains:
 				# Update existing domains
@@ -616,7 +655,7 @@ class Node(object):
 					pass
 			else:
 				# Add new domains
-				domStat = Domain(dom)
+				domStat = Domain(dom, node=self)
 				self.domains[uuid] = domStat
 			curMem += domStat.pd.curMem
 			maxMem += domStat.pd.maxMem
@@ -987,7 +1026,7 @@ def domain_define( uri, domain ):
 		_domain_backup(d, save=False)
 	except libvirt.libvirtError, e:
 		logger.error(e)
-		raise NodeError(_('Error defining domain "%(domain)s: %(error)s'), domain=domain.name, error=e.get_error_message())
+		raise NodeError(_('Error defining domain "%(domain)s": %(error)s'), domain=domain.name, error=e.get_error_message())
 	logger.info('New domain "%s"(%s) defined.' % (domain.name, domain.uuid))
 
 	if domain.annotations:
@@ -1143,7 +1182,7 @@ def domain_migrate(source_uri, domain, target_uri):
 			del source_node.domains[domain]
 		except KeyError, e:
 			pass
-		#target_node.domains[domain] = Domain(target_dom)
+		#target_node.domains[domain] = Domain(target_dom, node=target_node)
 		for t in range(10):
 			if domain not in source_node.domains and domain in target_node.domains:
 				break
@@ -1153,6 +1192,76 @@ def domain_migrate(source_uri, domain, target_uri):
 	except libvirt.libvirtError, e:
 		logger.error(e)
 		raise NodeError(_('Error migrating domain "%(domain)s": %(error)s'), domain=domain, error=e.get_error_message())
+
+def domain_snapshot_create(uri, domain, snapshot):
+	"""Create new snapshot of domain."""
+	try:
+		node = node_query(uri)
+		if not node.pd.supports_snapshot:
+			raise NodeError(_('Snapshot not supported "%(node)s"'), node=uri)
+		conn = node.conn
+		dom = conn.lookupByUUIDString(domain)
+		dom_stat = node.domains[domain]
+		if dom_stat.pd.snapshots is None:
+			raise NodeError(_('Snapshot not supported "%(node)s"'), node=uri)
+		old_state = dom_stat.key()
+		xml = '''<domainsnapshot><name>%s</name></domainsnapshot>''' % snapshot
+		s = dom.snapshotCreateXML(xml, 0)
+
+		dom_stat.update(dom)
+		node.wait_update(domain, old_state)
+	except libvirt.libvirtError, e:
+		logger.error(e)
+		raise NodeError(_('Error creating "%(domain)s" snapshot: %(error)s'), domain=domain, error=e.get_error_message())
+
+def domain_snapshot_revert(uri, domain, snapshot):
+	"""Revert to snapshot of domain."""
+	try:
+		node = node_query(uri)
+		if not node.pd.supports_snapshot:
+			raise NodeError(_('Snapshot not supported "%(node)s"'), node=uri)
+		conn = node.conn
+		dom = conn.lookupByUUIDString(domain)
+		dom_stat = node.domains[domain]
+		if dom_stat.pd.snapshots is None:
+			raise NodeError(_('Snapshot not supported "%(node)s"'), node=uri)
+		old_state = dom_stat.key()
+		snap = dom.snapshotLookupByName(snapshot, 0)
+		r = dom.revertToSnapshot(snap, 0)
+		if r != 0:
+			raise NodeError(_('Error reverting "%(domain)s" to snapshot: %(error)s'), domain=domain, error=e.get_error_message())
+
+		dom_stat.update(dom)
+		node.wait_update(domain, old_state)
+	except libvirt.libvirtError, e:
+		logger.error(e)
+		raise NodeError(_('Error reverting "%(domain)s" to snapshot: %(error)s'), domain=domain, error=e.get_error_message())
+
+def domain_snapshot_delete(uri, domain, snapshot):
+	"""Delete snapshot of domain."""
+	try:
+		node = node_query(uri)
+		if not node.pd.supports_snapshot:
+			raise NodeError(_('Snapshot not supported "%(node)s"'), node=uri)
+		conn = node.conn
+		dom = conn.lookupByUUIDString(domain)
+		dom_stat = node.domains[domain]
+		if dom_stat.pd.snapshots is None:
+			raise NodeError(_('Snapshot not supported "%(node)s"'), node=uri)
+		old_state = dom_stat.key()
+		snap = dom.snapshotLookupByName(snapshot, 0)
+		r = snap.delete(0)
+		if r != 0:
+			raise NodeError(_('Error deleting "%(domain)s" snapshot: %(error)s'), domain=domain, error=e.get_error_message())
+
+		try:
+			del node.domains[domain].pd.snapshots[snapshot]
+		except KeyError, e:
+			dom_stat.update(dom)
+			node.wait_update(domain, old_state)
+	except libvirt.libvirtError, e:
+		logger.error(e)
+		raise NodeError(_('Error deleting "%(domain)s" snapshot: %(error)s'), domain=domain, error=e.get_error_message())
 
 if __name__ == '__main__':
 	XEN_CAPABILITIES = '''<capabilities>

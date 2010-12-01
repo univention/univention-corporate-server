@@ -490,6 +490,42 @@ class Client(object):
 		"""
 		return protocol.Request_STORAGE_DEFINE(uri=uri, pool=pool, name=name, size=size)
 
+	def snap_create(self, uri, domain, snapshot):
+		"""
+		%prog snap_create <uri> <domain> <snapshot>
+
+		On the virtualization server specified by <uri> create a snapshot named
+		<snapshot> of the domain specified by its UUID <domain>.
+		The state of the running domain is unaffected.
+		Examples:
+			%prog snap_create qemu:///system 1-2-3-4-5 before-update
+		"""
+		return protocol.Request_DOMAIN_SNAPSHOT_CREATE(uri=uri, domain=domain, snapshot=snapshot)
+
+	def snap_revert(self, uri, domain, snapshot):
+		"""
+		%prog snap_revert <uri> <domain> <snapshot>
+
+		On the virtualization server specified by <uri> revert the domain
+		specified by its UUID <domain> back to the snapshot named <snapshot>.
+		The state of the running domain is destroyed.
+		Examples:
+			%prog snap_revert qemu:///system 1-2-3-4-5 before-update
+		"""
+		return protocol.Request_DOMAIN_SNAPSHOT_REVERT(uri=uri, domain=domain, snapshot=snapshot)
+
+	def snap_delete(self, uri, domain, snapshot):
+		"""
+		%prog snap_delete <uri> <domain> <snapshot>
+
+		On the virtualization server specified by <uri> delete the snapshot
+		named <snapshot> of the domain specified by its UUID <domain>.
+		The state of the running domain is unaffected.
+		Examples:
+			%prog snap_delete qemu:///system 1-2-3-4-5 before-update
+		"""
+		return protocol.Request_DOMAIN_SNAPSHOT_DELETE(uri=uri, domain=domain, snapshot=snapshot)
+
 if __name__ == '__main__':
 	locale.setlocale(locale.LC_ALL, '')
 

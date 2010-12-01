@@ -110,11 +110,6 @@ class DriveTypeSelect( umc.StaticSelection ):
 	def choices( self ):
 		return ( ( 'disk', _( 'Hard drive' ) ), ( 'cdrom', _( 'CD/DVD-ROM' ) ) )
 
-class BlockDriverSelect(umc.StaticSelection):
-	"""List of known block-image-file formats."""
-	def choices(self):
-		return (('raw', _('Raw format')), ('vhd', _('Virtual Hard Disk')), ('vmdk', _('VMWare Disk')), ('qcow2', _('Qemu copy-on-write 2')))
-
 class DiskSelect( umc.StaticSelection ):
 	"""Select between creating a new or reusing an existing image."""
 	def choices( self ):
@@ -143,4 +138,3 @@ umcd.copy( umc.StaticSelection, DriveTypeSelect )
 umcd.copy( umc.StaticSelection, NodeSelect )
 umcd.copy( umc.StaticSelection, DiskSelect )
 umcd.copy( umc.StaticSelection, ArchSelect )
-umcd.copy(umc.StaticSelection,  BlockDriverSelect)

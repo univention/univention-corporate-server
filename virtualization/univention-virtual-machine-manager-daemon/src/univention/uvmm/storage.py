@@ -120,25 +120,45 @@ def create_storage_volume(conn, domain, disk):
 		size = disk.size
 	else:
 		size = 8 << 30 # GiB
-	if hasattr(disk, 'driver_type') and disk.driver_type:
-		type = disk.driver_type
-	else:
-		type = 'raw'
-	xml = '''
-	<volume>
-		<name>%(name)s</name>
-		<allocation>0</allocation>
-		<capacity>%(size)ld</capacity>
-		<target>
-			<format type="%(type)s"/>
-		</target>
-	</volume>
-	''' % {
+
+	values = {
 			'name': os.path.basename(disk.source),
 			'size': size,
-			'type': type,
 			}
+
+	# determin pool type
+	xml = p.XMLDesc(0)
+	doc = parseString(xml)
+	pool_type = doc.firstChild.getAttribute('type')
+	if pool_type == 'dir':
+		if hasattr(disk, 'driver_type') and disk.driver_type not in (None, 'iso'):
+			values['type'] = disk.driver_type
+		else:
+			values['type'] = 'raw'
+		template = '''
+		<volume>
+			<name>%(name)s</name>
+			<allocation>0</allocation>
+			<capacity>%(size)ld</capacity>
+			<target>
+				<format type="%(type)s"/>
+			</target>
+		</volume>
+		'''
+	elif pool_type == 'logical':
+		template = '''
+		<volume>
+			<name>%(name)s</name>
+			<capacity>%(size)ld</capacity>
+		</volume>
+		'''
+	else:
+		logger.error("Unsupported storage-pool-type %s for %s:%s" % (pool_type, domain.name, disk.source))
+		raise StorageError(_('Unsupported storage-pool-type "%(pool_type)s for "%(domain)s"'), pool_type=pool_type, domain=domain.name)
+
+	xml = template % values
 	try:
+		logger.debug('XML DUMP: %s' % xml)
 		v = p.createXML(xml, 0)
 		logger.info('New disk "%s" for "%s"(%s) defined.' % (v.path(), domain.name, domain.uuid))
 		return v
@@ -168,11 +188,17 @@ def get_storage_volumes( uri, pool_name, type = None ):
 		disk.size = int( doc.getElementsByTagName( 'capacity' )[ 0 ].firstChild.nodeValue )
 		target = doc.getElementsByTagName( 'target' )[ 0 ]
 		disk.source = target.getElementsByTagName( 'path' )[ 0 ].firstChild.nodeValue
-		format = target.getElementsByTagName( 'format' )[ 0 ].getAttribute( 'type' )
-		if format == 'iso':
-			disk.device = Disk.DEVICE_CDROM
-		else:
+		try: # Only directory-based pools have /volume/format/@type
+			disk.driver_type = target.getElementsByTagName('format')[0].getAttribute('type')
+			disk.type = Disk.TYPE_FILE
+			if disk.driver_type == 'iso':
+				disk.device = Disk.DEVICE_CDROM
+			else:
+				disk.device = Disk.DEVICE_DISK
+		except IndexError, e:
+			disk.type = Disk.TYPE_BLOCK
 			disk.device = Disk.DEVICE_DISK
+			disk.driver_type = None # raw
 		if not type or Disk.map_device( disk.device ) == type:
 			volumes.append( disk )
 
@@ -226,6 +252,7 @@ def get_storage_pool_info( node, name ):
 	pool.available = int( doc.getElementsByTagName( 'available' )[ 0 ].firstChild.nodeValue )
 	pool.path = doc.getElementsByTagName( 'path' )[ 0 ].firstChild.nodeValue
 	pool.active = p.isActive() == 1
+	pool.type = doc.firstChild.getAttribute('type') # pool/@type
 
 	return pool
 

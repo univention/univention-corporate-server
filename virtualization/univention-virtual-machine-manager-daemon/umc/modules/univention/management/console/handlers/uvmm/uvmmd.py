@@ -47,7 +47,12 @@ import univention.debug as ud
 
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
-class ConnectionError( Exception ):
+class UvmmError(Exception):
+	"""UVMM-request was not successful."""
+	pass
+
+class ConnectionError(UvmmError):
+	"""UVMM-request was not successful because of broken connection."""
 	pass
 
 class Client( notifier.signals.Provider ):
@@ -151,9 +156,9 @@ class Client( notifier.signals.Provider ):
 	def is_error( self, response ):
 		return isinstance( response, protocol.Response_ERROR )
 
-	def get_node_info( self, node ):
+	def get_node_info( self, node_uri ):
 		req = protocol.Request_NODE_QUERY()
-		req.uri = node
+		req.uri = node_uri
 		if not self.send( req.pack() ):
 			raise ConnectionError()
 		node_info = self.recv_blocking()
@@ -163,18 +168,19 @@ class Client( notifier.signals.Provider ):
 
 		return node_info.data
 
-	def is_domain_name_unique( self, node, domain_name ):
-		node_info = self.get_node_info( node )
+	def is_domain_name_unique( self, node_uri, domain_name ):
+		node_info = self.get_node_info( node_uri )
 		if self.is_error( node_info ):
 			return None
 
-		for domain in node_info.domains:
-			if domain.name == domain_name:
+		for domain_info in node_info.domains:
+			if domain_info.name == domain_name:
 				return False
 		return True
 
-	def is_image_used( self, node, image, relative = False ):
-		node_info = self.get_node_info( node )
+	def is_image_used( self, node_uri, image, relative = False ):
+		"""Return name of domain using image."""
+		node_info = self.get_node_info( node_uri )
 		if self.is_error( node_info ):
 			return None
 
@@ -182,41 +188,44 @@ class Client( notifier.signals.Provider ):
 			func = os.path.basename
 		else:
 			func = lambda x: x
-		for domain in node_info.domains:
-			for disk in domain.disks:
+		for domain_info in node_info.domains:
+			for disk in domain_info.disks:
 				if func( disk.source ) == image:
-					return domain.name
+					return domain_info.name
 		return None
 
-	def next_drive_name(self, node_uri, domain, temp_drives=[]):
+	def next_drive_name(self, node_uri, domain_name, suffix='.img', temp_drives=[]):
 		"""Return next unused image name."""
 		i = 0
-		pattern = '%s-%d.img'
+		pattern = '%s-%d' + suffix
+		ud.debug(ud.ADMIN, ud.INFO, 'NEXT DRIVE: dn=%s bl=%s s=%s' % (domain_name, temp_drives, suffix))
+		#ud.debug(ud.ADMIN, ud.INFO, 'NEXT DRIVE: dn=%s bl=%s s=%s p=%s' % (domain_name, temp_drives, suffix, pattern))
 		while True:
-			name = pattern % ( domain, i )
-			if self.is_image_used(node_uri, name, relative=True) or name in temp_drives:
+			name = pattern % ( domain_name, i )
+			ud.debug(ud.ADMIN, ud.INFO, 'NEXT DRIVE: p=%s' % name)
+			if name in temp_drives or self.is_image_used(node_uri, name, relative=True):
 				i += 1
 			else:
 				return name
 
-	def get_domain_info_ext( self, node, domain ):
+	def get_domain_info_ext( self, node_uri, domain_name ):
 		retries = 10
 		while retries:
-			node_info = self.get_node_info( node )
+			node_info = self.get_node_info( node_uri )
 			if self.is_error( node_info ):
 				return ( None, None )
-			for dom in node_info.domains:
-				if dom.name == domain:
-					return (node_info, dom )
+			for domain_info in node_info.domains:
+				if domain_info.name == domain_name:
+					return (node_info, domain_info )
 			time.sleep( 0.1 )
 			retries -= 1
 		return ( None, None )
 
-	def get_domain_info( self, node, domain ):
-		node, domain = self.get_domain_info_ext( node, domain )
-		return domain
+	def get_domain_info( self, node_uri, domain_name ):
+		node_info, domain_info = self.get_domain_info_ext( node_uri, domain_name )
+		return domain_info
 
-	def node_name2uri( self, name ):
+	def node_name2uri( self, node_name ):
 		req = protocol.Request_GROUP_LIST()
 		if not self.send( req.pack() ):
 			raise ConnectionError()
@@ -224,24 +233,24 @@ class Client( notifier.signals.Provider ):
 		groups = self.recv_blocking()
 
 		tree_data = []
-		for grp in groups.data:
+		for group_name in groups.data:
 			group = []
 			req = protocol.Request_NODE_LIST()
-			req.group = grp
+			req.group = group_name
 			if not self.send( req.pack() ):
 				raise ConnectionError()
 			node_uris = self.recv_blocking()
-			for node in node_uris.data:
+			for node_uri in node_uris.data:
 				domains = []
 				req = protocol.Request_NODE_QUERY()
-				req.uri = node
+				req.uri = node_uri
 				if not self.send( req.pack() ):
 					raise ConnectionError()
 				node_info = self.recv_blocking()
 				if self.is_error( node_info ):
 					continue
-				if node_info.data.name == name:
-					return node
+				if node_info.data.name == node_name:
+					return node_uri
 
 		return None
 
@@ -254,9 +263,9 @@ class Client( notifier.signals.Provider ):
 		group = []
 		if self.is_error( node_uris ):
 			return group
-		for node in node_uris.data:
+		for node_uri in node_uris.data:
 			req = protocol.Request_NODE_QUERY()
-			req.uri = node
+			req.uri = node_uri
 			if not self.send( req.pack() ):
 				raise ConnectionError()
 			node_info = self.recv_blocking()
@@ -272,40 +281,51 @@ class Client( notifier.signals.Provider ):
 
 		groups = self.recv_blocking()
 
+		def uri2name(uri):
+			"""Strip schema and path from uri."""
+			i = uri.find('://')
+			if i >= 0:
+				uri = uri[i + 3:]
+			j = uri.find('/')
+			if j >= 0:
+				uri = uri[:j]
+			return uri
+
 		tree_data = []
 		groups.data.sort()
-		for grp in groups.data:
+		for group_name in groups.data:
 			group = []
 			req = protocol.Request_NODE_LIST()
-			req.group = grp
+			req.group = group_name
 			if not self.send( req.pack() ):
 				raise ConnectionError()
 			node_uris = self.recv_blocking()
-			node_uris.data.sort(lambda a, b: cmp(a[a.find('://')+3:], b[b.find('://')+3:]))
-			for node in node_uris.data:
+			nodes = [(uri2name(uri), uri) for uri in node_uris.data]
+			nodes.sort()
+			for (node_name, node_uri) in nodes:
 				domains = []
 				req = protocol.Request_NODE_QUERY()
-				req.uri = node
+				req.uri = node_uri
 				if not self.send( req.pack() ):
 					raise ConnectionError()
 				node_info = self.recv_blocking()
 
 				if self.is_error( node_info ):
-					group.extend( [ node[ node.find( '://' ) + 3 : node.rfind( '/' ) ], None ]  )
+					group.extend( [node_name, None ]  )
 				else:
 					node_info.data.domains.sort(lambda a, b: cmp(a.name, b.name))
-					for dom in node_info.data.domains:
-						domains.append( dom.name )
-					group.extend( [ node_info.data.name, domains ] )
-			tree_data.append( [ grp, group ] )
+					for domain_info in node_info.data.domains:
+						domains.append( domain_info.name )
+					group.extend( [ node_name, domains ] )
+			tree_data.append( [ group_name, group ] )
 
 		return tree_data
 
-	def domain_set_state( self, node, domain, state ):
-		uri = self.node_name2uri( node )
-		domain_info = self.get_domain_info( uri, domain )
+	def domain_set_state( self, node_name, domain_name, state ):
+		node_uri = self.node_name2uri( node_name )
+		domain_info = self.get_domain_info( node_uri, domain_name )
 		req = protocol.Request_DOMAIN_STATE()
-		req.uri = uri
+		req.uri = node_uri
 		req.domain = domain_info.uuid
 		# RUN PAUSE SHUTDOWN RESTART
 		req.state = state
@@ -321,21 +341,21 @@ class Client( notifier.signals.Provider ):
 		exclude.append( char )
 		return char
 
-	# def _verify_device_files( self, domain ):
+	# def _verify_device_files( self, domain_info ):
 	# 	cdrom_name = 'a'
 	# 	cdrom_prefix = 'hd%s'
 	# 	dev_name = 'a'
 	# 	device_prefix = 'hd%s'
-	# 	if domain.domain_type == 'xen' and domain.bootloader:
+	# 	if domain_info.domain_type == 'xen' and domain_info.os_type == 'linux':
 	# 		device_prefix = 'xvd%s'
-	# 	elif domain.domain_type == 'kvm':
+	# 	elif domain_info.domain_type == 'kvm':
 	# 		device_prefix = 'vd%s' # virtio instead of ide
 
 	# 	dev_exclude = []
 	# 	cdrom_exclude = []
-	# 	for dev in domain.disks:
+	# 	for dev in domain_info.disks:
 	# 		if dev.target_dev:
-	# 			if dev.device == node.Disk.DEVICE_CDROM and domain.domain_type == 'kvm':
+	# 			if dev.device == node_info.Disk.DEVICE_CDROM and domain_info.domain_type == 'kvm':
 	# 				cdrom_exclude.append( dev.target_dev[ -1 ] )
 	# 			else:
 	# 				dev_exclude.append( dev.target_dev[ -1 ] )
@@ -345,9 +365,9 @@ class Client( notifier.signals.Provider ):
 	# 	if dev_name in dev_exclude:
 	# 		dev_name = self.__next_letter( dev_name, dev_exclude )
 
-	# 	for dev in domain.disks:
+	# 	for dev in domain_info.disks:
 	# 		# CDROM drive need to use the ide driver as booting from virtio devices does not work
-	# 		if dev.device == node.Disk.DEVICE_CDROM and domain.domain_type == 'kvm':
+	# 		if dev.device == node_info.Disk.DEVICE_CDROM and domain_info.domain_type == 'kvm':
 	# 			if not dev.target_dev:
 	# 				dev.target_dev = cdrom_prefix % cdrom_name
 	# 				cdrom_name = self.__next_letter( cdrom_name, cdrom_exclude )
@@ -359,28 +379,28 @@ class Client( notifier.signals.Provider ):
 	# FIXME: currently we need to use IDE only for KVM as Windows is
 	# not able to handle virtio drives!!! The profile should contain the
 	# information which platform will be installed.
-	def _verify_device_files( self, domain ):
+	def _verify_device_files( self, domain_info ):
 		dev_name = 'a'
 		device_prefix = 'hd%s'
-		if domain.domain_type == 'xen' and domain.bootloader:
+		if domain_info.domain_type == 'xen' and domain_info.os_type == 'linux':
 			device_prefix = 'xvd%s'
 
 		dev_exclude = []
-		for dev in domain.disks:
+		for dev in domain_info.disks:
 			if dev.target_dev:
 				dev_exclude.append( dev.target_dev[ -1 ] )
 
 		if dev_name in dev_exclude:
 			dev_name = self.__next_letter( dev_name, dev_exclude )
 
-		for dev in domain.disks:
+		for dev in domain_info.disks:
 			if not dev.target_dev:
 				dev.target_dev = device_prefix % dev_name
 				dev_name = self.__next_letter( dev_name, dev_exclude )
 
-	def domain_configure( self, node, data ):
+	def domain_configure( self, node_name, data ):
 		req = protocol.Request_DOMAIN_DEFINE()
-		req.uri = self.node_name2uri( node )
+		req.uri = self.node_name2uri( node_name )
 		ud.debug(ud.ADMIN, ud.INFO, 'disks to send: %s' % data.disks)
 		ud.debug(ud.ADMIN, ud.INFO, 'interfaces to send: %s' % data.interfaces)
 		self._verify_device_files( data )
@@ -389,53 +409,89 @@ class Client( notifier.signals.Provider ):
 			raise ConnectionError()
 		return self.recv_blocking()
 
-	def domain_migrate( self, source, dest, domain ):
+	def domain_migrate( self, source, dest, domain_uuid ):
 		req = protocol.Request_DOMAIN_MIGRATE()
 		req.uri = source
-		req.domain = domain
+		req.domain = domain_uuid
 		req.target_uri = dest
 		if not self.send( req.pack() ):
 			raise ConnectionError()
 		return self.recv_blocking()
 
-	def domain_undefine( self, node, domain, drives ):
+	def domain_undefine( self, node_uri, domain_uuid, drives ):
 		req = protocol.Request_DOMAIN_UNDEFINE()
-		req.uri = node
-		req.domain = domain
+		req.uri = node_uri
+		req.domain = domain_uuid
 		req.volumes = drives
 		if not self.send( req.pack() ):
 			raise ConnectionError()
 		return self.recv_blocking()
 
-	def domain_save( self, node, domain ):
+	def domain_save( self, node_name, domain_info ):
 		req = protocol.Request_DOMAIN_SAVE()
-		req.uri = self.node_name2uri( node )
-		req.domain = domain.uuid
+		req.uri = self.node_name2uri( node_name )
+		req.domain = domain_info.uuid
 		snapshot_dir = umc.registry.get( 'uvmm/pool/default/path', '/var/lib/libvirt/images' )
-		req.statefile = os.path.join( snapshot_dir, '%s.snapshot' % domain.uuid )
+		req.statefile = os.path.join( snapshot_dir, '%s.snapshot' % domain_info.uuid )
 		if not self.send( req.pack() ):
 			raise ConnectionError()
 		return self.recv_blocking()
 
-	def domain_restore( self, node, domain ):
+	def domain_restore( self, node_name, domain_info ):
 		req = protocol.Request_DOMAIN_RESTORE()
-		req.uri = self.node_name2uri( node )
-		req.domain = domain.uuid
+		req.uri = self.node_name2uri( node_name )
+		req.domain = domain_info.uuid
 		snapshot_dir = umc.registry.get( 'uvmm/pool/default/path', '/var/lib/libvirt/images' )
-		req.statefile = os.path.join( snapshot_dir, '%s.snapshot' % domain.uuid )
+		req.statefile = os.path.join( snapshot_dir, '%s.snapshot' % domain_info.uuid )
 		if not self.send( req.pack() ):
 			raise ConnectionError()
 		return self.recv_blocking()
 
-	def snapshot_exists( self, node, domain ):
-		node_uri = self.node_name2uri( node )
-		volumes = self.storage_pool_volumes( node_uri, 'default' )
-		snapshot_file = os.path.join( umc.registry.get( 'uvmm/pool/default/path', '/var/lib/libvirt/images' ), '%s.snapshot' % domain.uuid )
-		for vol in volumes:
-			ud.debug( ud.ADMIN, ud.ERROR, 'UVMM: snapshot exists: %s == %s' % ( snapshot_file, vol.source ) )
-			if vol.source == snapshot_file:
-				return True
-		return False
+	def domain_snapshot_create(self, node_uri, domain_info, snapshot_name):
+		"""Create new snapshot of domain."""
+		req = protocol.Request_DOMAIN_SNAPSHOT_CREATE()
+		req.uri = node_uri
+		req.domain = domain_info.uuid
+		req.snapshot = snapshot_name
+		if not self.send( req.pack() ):
+			raise ConnectionError()
+		response = self.recv_blocking()
+		if self.is_error(response):
+			raise UvmmError(response.msg)
+
+	def domain_snapshot_revert(self, node_uri, domain_info, snapshot_name):
+		"""Revert to snapshot of domain."""
+		req = protocol.Request_DOMAIN_SNAPSHOT_REVERT()
+		req.uri = node_uri
+		req.domain = domain_info.uuid
+		req.snapshot = snapshot_name
+		if not self.send( req.pack() ):
+			raise ConnectionError()
+		response = self.recv_blocking()
+		if self.is_error(response):
+			raise UvmmError(response.msg)
+
+	def domain_snapshot_delete(self, node_uri, domain_info, snapshot_name):
+		"""Delete snapshot of domain."""
+		req = protocol.Request_DOMAIN_SNAPSHOT_DELETE()
+		req.uri = node_uri
+		req.domain = domain_info.uuid
+		req.snapshot = snapshot_name
+		if not self.send( req.pack() ):
+			raise ConnectionError()
+		response = self.recv_blocking()
+		if self.is_error(response):
+			raise UvmmError(response.msg)
+
+	def storage_pools(self, node_uri):
+		"""Get pools of node."""
+		req = protocol.Request_STORAGE_POOLS(uri=node_uri)
+		if not self.send( req.pack() ):
+			raise ConnectionError()
+		response = self.recv_blocking()
+		if self.is_error( response ):
+			raise UvmmError(response.msg)
+		return response.data
 
 	def storage_pool_volumes( self, node_uri, pool, type = None ):
 		req = protocol.Request_STORAGE_VOLUMES()

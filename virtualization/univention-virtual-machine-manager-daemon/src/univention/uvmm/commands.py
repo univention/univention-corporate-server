@@ -240,6 +240,51 @@ class _Commands:
 			raise CommandError('DOMAIN_MIGRATE', e)
 
 	@staticmethod
+	def DOMAIN_SNAPSHOT_CREATE(server, request):
+		"""Create new snapshot of domain."""
+		if not isinstance(request.uri, basestring):
+			raise CommandError('DOMAIN_SNAPSHOT_CREATE', _('uri != string: %(uri)s'), uri=request.uri)
+		if not isinstance(request.domain, basestring):
+			raise CommandError('DOMAIN_SNAPSHOT_CREATE', _('domain != string: %(domain)s'), domain=request.domain)
+		if not isinstance(request.snapshot, basestring):
+			raise CommandError('DOMAIN_SNAPSHOT_CREATE', _('snapshot != string: %(snapshot)s'), snapshot=request.snapshot)
+		logger.debug('DOMAIN_SNAPSHOT_CREATE %s#%s %s' % (request.uri, request.domain, request.snapshot))
+		try:
+			node.domain_snapshot_create(request.uri, request.domain, request.snapshot)
+		except node.NodeError, e:
+			raise CommandError('DOMAIN_SNAPSHOT_CREATE', e)
+
+	@staticmethod
+	def DOMAIN_SNAPSHOT_REVERT(server, request):
+		"""Revert to snapshot of domain."""
+		if not isinstance(request.uri, basestring):
+			raise CommandError('DOMAIN_SNAPSHOT_REVERT', _('uri != string: %(uri)s'), uri=request.uri)
+		if not isinstance(request.domain, basestring):
+			raise CommandError('DOMAIN_SNAPSHOT_REVERT', _('domain != string: %(domain)s'), domain=request.domain)
+		if not isinstance(request.snapshot, basestring):
+			raise CommandError('DOMAIN_SNAPSHOT_REVERT', _('snapshot != string: %(snapshot)s'), snapshot=request.snapshot)
+		logger.debug('DOMAIN_SNAPSHOT_REVERT %s#%s %s' % (request.uri, request.domain, request.snapshot))
+		try:
+			node.domain_snapshot_revert(request.uri, request.domain, request.snapshot)
+		except node.NodeError, e:
+			raise CommandError('DOMAIN_SNAPSHOT_REVERT', e)
+
+	@staticmethod
+	def DOMAIN_SNAPSHOT_DELETE(server, request):
+		"""Delete snapshot of domain."""
+		if not isinstance(request.uri, basestring):
+			raise CommandError('DOMAIN_SNAPSHOT_DELETE', _('uri != string: %(uri)s'), uri=request.uri)
+		if not isinstance(request.domain, basestring):
+			raise CommandError('DOMAIN_SNAPSHOT_DELETE', _('domain != string: %(domain)s'), domain=request.domain)
+		if not isinstance(request.snapshot, basestring):
+			raise CommandError('DOMAIN_SNAPSHOT_DELETE', _('snapshot != string: %(snapshot)s'), snapshot=request.snapshot)
+		logger.debug('DOMAIN_SNAPSHOT_DELETE %s#%s %s' % (request.uri, request.domain, request.snapshot))
+		try:
+			node.domain_snapshot_delete(request.uri, request.domain, request.snapshot)
+		except node.NodeError, e:
+			raise CommandError('DOMAIN_SNAPSHOT_DELETE', e)
+
+	@staticmethod
 	def STORAGE_POOLS(server, request):
 		"""List all pools."""
 		if not isinstance(request.uri, basestring):

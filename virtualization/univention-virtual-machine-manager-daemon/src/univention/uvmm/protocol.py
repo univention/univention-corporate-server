@@ -38,7 +38,7 @@ except ImportError:
 import struct
 from helpers import TranslatableException, N_ as _
 
-VERSION = (1, 1)
+VERSION = (1, 2)
 MAX_MSG_SIZE = 4096
 
 class PacketError(TranslatableException):
@@ -166,6 +166,30 @@ class Request_DOMAIN_MIGRATE(Request):
 		self.domain = None
 		self.target_uri = None
 
+class Request_DOMAIN_SNAPSHOT_CREATE(Request):
+	"""Create new snapshot of domain."""
+	def _default(self):
+		self.command = 'DOMAIN_SNAPSHOT_CREATE'
+		self.uri = None
+		self.domain = None
+		self.snapshot = None
+
+class Request_DOMAIN_SNAPSHOT_REVERT(Request):
+	"""Revert to snapshot of domain."""
+	def _default(self):
+		self.command = 'DOMAIN_SNAPSHOT_REVERT'
+		self.uri = None
+		self.domain = None
+		self.snapshot = None
+
+class Request_DOMAIN_SNAPSHOT_DELETE(Request):
+	"""Delete snapshot of domain."""
+	def _default(self):
+		self.command = 'DOMAIN_SNAPSHOT_DELETE'
+		self.uri = None
+		self.domain = None
+		self.snapshot = None
+
 class Request_STORAGE_POOLS(Request):
 	"""List all pools."""
 	def _default(self):
@@ -234,6 +258,9 @@ class Data_StoragePool(object):
 		self.name = None
 		self.capacity = None
 		self.available = None
+		self.path = None
+		self.active = None # True False
+		self.type = None # logical 
 class Data_Domain(object):
 	"""Container for domain statistics."""
 	def __init__(self):
@@ -262,6 +289,7 @@ class Data_Domain(object):
 		self.disks = [] # node.Disk
 		self.graphics = [] # node.Graphics
 		self.annotations = {}
+		self.snapshots = None # ID: Data_Snapshot
 class Data_Node(object):
 	"""Container for node statistics."""
 	def __init__(self):
@@ -272,12 +300,12 @@ class Data_Node(object):
 		self.cpu_usage = None
 		self.cpus = None
 		self.cores = [None, None, None, None]
-		self.storages = [] # Data_StoragePool
 		self.domains = [] # Data_Domain
 		self.capabilities = {} # node.DomainTemplate
 		self.last_try = 0.0
 		self.last_update = 0.0
 		self.supports_suspend = False
+		self.supports_snapshot = False
 class Data_Pool(object):
 	"""Container for storage pool statistics."""
 	def __init__(self):
@@ -287,3 +315,10 @@ class Data_Pool(object):
 		self.available = 0L
 		self.path = None # optional
 		self.active = False
+		self.type = None
+
+class Data_Snapshot(object):
+	"""Container for snapshot data."""
+	def __init__(self):
+		self.name = None
+		self.ctime = 0 # UNIX time
