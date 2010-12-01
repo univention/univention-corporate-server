@@ -118,6 +118,8 @@ install-ext-%:
 
 	install -m 0755 41univention-updater.inst debian/univention-updater/usr/lib/univention-install/
 
+	touch debian/univention-updater/usr/lib/python2.4/site-packages/univention/management/console/handlers/update/hooks/.hidden
+
     # install UMC module
 	make PACKAGE=univention-updater install-modules
 	make PACKAGE=univention-updater install-locales-backend

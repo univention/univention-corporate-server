@@ -1,3 +1,9 @@
+univention-updater (6.0.46-2) unstable; urgency=low
+
+  * create missing directory by creating dot-file (Bug #20429)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 01 Dec 2010 18:36:35 +0100
+
 univention-updater (6.0.46-1) unstable; urgency=low
 
   * Adapt pre- and postup.sh to UCS 2.4-1 (Bug #20779)
