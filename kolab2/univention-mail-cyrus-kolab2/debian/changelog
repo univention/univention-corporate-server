@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (3.0.22-1) unstable; urgency=low
+
+  * fixed usage of murder hostname Bug #19767 
+
+ -- Felix Botner <botner@univention.de>  Thu, 02 Dec 2010 16:58:06 +0100
+
 univention-mail-cyrus-kolab2 (3.0.21-3) unstable; urgency=low
 
   * fixed ucr var description for mail/cyrus/folder/predefined_folders,

@@ -107,7 +107,7 @@ if not remote:
 if not remote:
 	murder = cr.get("mail/cyrus/murder/backend/hostname", "")
 	if murder:
-		hostname = murder
+		options.hostname = murder
 
 		
 # create imap connection
