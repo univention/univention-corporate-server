@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.10.11-2) unstable; urgency=low
+
+  * Fix UCR-variable descriptions and translations (Bug #19575)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Dec 2010 10:14:11 +0100
+
 univention-virtual-machine-manager-daemon (0.10.11-1) unstable; urgency=low
 
   * Fix extended xen-pv configuration (Bug #20819)

@@ -715,7 +715,7 @@ msgstr ""
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:464
 msgid "Snapshots"
-msgstr "Sicherungsstände"
+msgstr "Sicherungspunkte"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:930
 msgid "Some information of the virtual instance could not be saved!<br/>"

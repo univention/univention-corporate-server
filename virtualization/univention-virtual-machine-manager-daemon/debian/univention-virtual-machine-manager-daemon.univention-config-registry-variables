@@ -17,19 +17,19 @@ Type=str
 Categories=uvmm
 
 [uvmm/umc/show/migrate]
-Description[de]=Erlaubt das Migrieren von Instanzen im UMC-Modul an.
+Description[de]=Erlaubt das Migrieren von Instanzen im UMC-Modul.
 Description[en]=Allow migration of instances in UMC module.
 Type=bool
 Categories=uvmm
 
 [uvmm/umc/show/pause]
-Description[de]=Erlaubt das Pausieren von Instanzen im UMC-Modul an.
+Description[de]=Erlaubt das Pausieren von Instanzen im UMC-Modul.
 Description[en]=Allow pause of instances in UMC module.
 Type=bool
 Categories=uvmm
 
 [uvmm/umc/show/suspend]
-Description[de]=Erlaubt das Suspendieren von Instanzen im UMC-Modul an.
+Description[de]=Erlaubt das Suspendieren von Instanzen im UMC-Modul.
 Description[en]=Allow suspend of instances in UMC module.
 Type=bool
 Categories=uvmm
