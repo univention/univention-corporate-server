@@ -414,7 +414,7 @@ msgstr "Lesen der ini-Datei überspringen"
 #: src/univention/uvmm/node.py:1245 src/univention/uvmm/node.py:1250
 #, python-format
 msgid "Snapshot not supported \"%(node)s\""
-msgstr "\"%(node)s\" unterstützt keine Sicherungsstände."
+msgstr "\"%(node)s\" unterstützt keine Sicherungspunkte."
 
 #: src/univention/uvmm/client.py:137
 #, python-format

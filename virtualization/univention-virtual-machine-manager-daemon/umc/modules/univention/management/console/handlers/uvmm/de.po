@@ -102,11 +102,11 @@ msgstr "Architektur"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:187
 msgid "Are you sure that the instance should be reverted to this snapshot?"
-msgstr "Sind Sie sicher, dass die virtuelle Instanz auf den Sicherungsstand zurückgesetzt werden soll?"
+msgstr "Sind Sie sicher, dass die virtuelle Instanz auf den Sicherungspunkt zurückgesetzt werden soll?"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:198
 msgid "Are you sure that the snapshot should be removed?"
-msgstr "Sind Sie sicher, dass der Sicherungsstand gelöscht werden soll?"
+msgstr "Sind Sie sicher, dass der Sicherungspunkt gelöscht werden soll?"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:136
 msgid "Are you sure that the virtual instance should be removed?"
@@ -219,7 +219,7 @@ msgstr "Erstellen einer virtuellen Instanz <i>%(name)s</i>"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:440
 msgid "Create new snapshot"
-msgstr "Neuen Sicherungsstand erstellen"
+msgstr "Neuen Sicherungspunkt erstellen"
 
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:454
 msgid "Create new virtual instance"
@@ -227,15 +227,15 @@ msgstr "Erstellen neuer virtuellen Instanz"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1093
 msgid "Create snapshot"
-msgstr "Sicherungsstand erstellen"
+msgstr "Sicherungspunkt erstellen"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:195
 msgid "Delete snapshot"
-msgstr "Sicherungsstand löschen"
+msgstr "Sicherungspunkt löschen"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:196
 msgid "Delete the state of a virtual instance"
-msgstr "Sicherungsstand einer virtuellen Instanz löschen"
+msgstr "Sicherungspunkt einer virtuellen Instanz löschen"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1152
 #, python-format
@@ -243,7 +243,7 @@ msgid ""
 "Deleting the snapshot <i>%(snapshot)s</i> of instance <i>%(domain)s</i> "
 "failed"
 msgstr ""
-"Das Löschen des Sicherungsstands <i>%(snapshot)s</i> der virtuellen Instanz <i>%(domain)s</i> ist "
+"Das Löschen des Sicherungspunktes <i>%(snapshot)s</i> der virtuellen Instanz <i>%(domain)s</i> ist "
 "fehlgeschlagen"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:80
@@ -321,7 +321,7 @@ msgstr "VNC Fernzugriff aktivieren"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1097
 msgid "Enter the name for the snapshot"
-msgstr "Geben die den Namen für den Sicherungsstand ein"
+msgstr "Geben die den Namen für den Sicherungspunkt ein"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:755
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:759
@@ -584,7 +584,7 @@ msgstr "Laufwerke einer virtuellen Instanz löschen"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:198
 msgid "Remove snapshot"
-msgstr "Sicherungsstand löschen"
+msgstr "Sicherungspunkt löschen"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1040
 #, python-format
@@ -619,7 +619,7 @@ msgstr "Startet den libvirt Dienst neu"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:185
 msgid "Restore the state of a virtual instance"
-msgstr "Zustand der virtuellen Instanz aus Sicherungsstand wiederherstellen"
+msgstr "Zustand der virtuellen Instanz aus Sicherungspunkt wiederherstellen"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:184
 msgid "Restore virtual instance"
@@ -640,7 +640,7 @@ msgstr "Wiederherstellen von %s"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:187
 msgid "Revert to snapshot"
-msgstr "Sicherungsstand wiederherstellen"
+msgstr "Sicherungspunkt wiederherstellen"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1132
 #, python-format
@@ -648,7 +648,7 @@ msgid ""
 "Reverting to snapshot <i>%(snapshot)s</i> of instance <i>%(domain)s</i> "
 "failed"
 msgstr ""
-"Das Wiederherstellen des Sicherungsstands <i>%(snapshot)s</i> der virtuellen Instanz <i>%(domain)s</i> ist "
+"Das Wiederherstellen des Sicherungspunktes <i>%(snapshot)s</i> der virtuellen Instanz <i>%(domain)s</i> ist "
 "fehlgeschlagen"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:761
@@ -832,14 +832,14 @@ msgstr "Die virtuelle Instanz <i>%(domain)s</i> wurde erfolgreich gelöscht"
 msgid ""
 "The instance <i>%(domain)s</i> was reverted to snapshot <i>%(snapshot)s</i> "
 "successfully"
-msgstr "Die virtuelle Instanz <i>%(domain)s</i> wurde auf den Sicherungsstand <i>%(snapshot)s</i> zurückgesetzt."
+msgstr "Die virtuelle Instanz <i>%(domain)s</i> wurde auf den Sicherungspunkt <i>%(snapshot)s</i> zurückgesetzt."
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:1109
 #, python-format
 msgid ""
 "The instance <i>%(domain)s</i> was snapshoted to <i>%(snapshot)s</i> "
 "successfully"
-msgstr "Die virtuelle Instanz <i>%(domain)s</i> wurde im Sicherungsstand <i>%(snapshot)s</i> gesichert."
+msgstr "Die virtuelle Instanz <i>%(domain)s</i> wurde im Sicherungspunkt <i>%(snapshot)s</i> gesichert."
 
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:207
 msgid ""
@@ -912,7 +912,7 @@ msgstr ""
 msgid ""
 "The snapshot <i>%(snapshot)s of instance <i>%(domain)s</i> was deleted "
 "successfully"
-msgstr "Der Sicherungsstand <i>%(snapshot)s</i> der virtuelle Instanz <i>%(domain)s</i> wurde erfolgreich gelöscht"
+msgstr "Der Sicherungspunkt <i>%(snapshot)s</i> der virtuelle Instanz <i>%(domain)s</i> wurde erfolgreich gelöscht"
 
 #: umc/modules/univention/management/console/handlers/uvmm/wizards.py:480
 msgid ""
@@ -1070,7 +1070,7 @@ msgstr "ausgeschaltet"
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:191
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:202
 msgid "snapshot name"
-msgstr "Name für den Sicherungsstand"
+msgstr "Name für den Sicherungspunkt"
 
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:253
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:674
