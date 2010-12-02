@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.10.11-3) unstable; urgency=low
+
+  * Symlink manual page for uvmm (Bug #18653)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Dec 2010 12:26:13 +0100
+
 univention-virtual-machine-manager-daemon (0.10.11-2) unstable; urgency=low
 
   * Fix UCR-variable descriptions and translations (Bug #19575)
