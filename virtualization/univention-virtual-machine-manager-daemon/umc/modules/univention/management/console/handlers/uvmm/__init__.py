@@ -370,16 +370,83 @@ class handler( umch.simpleHandler ):
 		self.set_content( res, table )
 		self.finished(object.id(), res)
 
+	def _create_domain_snapshots( self, object, node_info, domain_info, overview = 'node', operations = False, remove_failure = 'domain' ):
+		"""Create snapshot settings."""
+		if not ( configRegistry.is_true( 'uvmm/umc/show/snapshot', True ) and hasattr( domain_info, 'snapshots' ) and isinstance( domain_info.snapshots, dict ) ):
+			return None
+
+		overview_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % overview, options = object.options )
+		opts = copy.deepcopy( object.options )
+
+		table = umcd.List()
+
+		lst = umcd.List()
+		btntoggle = umcd.ToggleCheckboxes()
+		lst.set_header( [ btntoggle, _( 'Name' ), _( 'Date' ), '' ] )
+
+		# no snapshots available
+		if not domain_info.snapshots:
+			lst.add_row( [ '', umcd.Fill( 3, _( 'There are no snapshots available' ) ) ] )
+			table.add_row( [ lst ] )
+			return table
+
+		# show list of snapshots
+		f = lambda s: s[ 1 ].ctime
+		idlist = []
+		for snapshot_name, snap in sorted( domain_info.snapshots.items(), key=f, reverse = True ):
+			ctime = time.strftime( "%Y-%m-%d %H:%M:%S", time.localtime( snap.ctime ) )
+			name = '%s (%s)' % ( snapshot_name, ctime )
+			opts = copy.copy( object.options )
+
+			chkbox = umcd.Checkbox( static_options = { 'snapshot' : snapshot_name } )
+			idlist.append( chkbox.id() )
+			revert_cmd = umcp.SimpleCommand( 'uvmm/domain/snapshot/revert', options = opts )
+			revert_act = [ umcd.Action( revert_cmd ), umcd.Action( overview_cmd ) ]
+			revert_btn = umcd.LinkButton( _( 'Revert' ), actions = revert_act )
+			delete_cmd = umcp.SimpleCommand( 'uvmm/domain/snapshot/delete', options = opts )
+			delete_act = [ umcd.Action( delete_cmd ), umcd.Action( overview_cmd ) ]
+			delete_btn = umcd.LinkButton( _( 'Delete' ), actions = delete_act )
+
+			lst.add_row( [ chkbox, snapshot_name, ctime, [ revert_btn, delete_btn ] ] )
+
+		btntoggle.checkboxes( idlist )
+		delete_cmd = umcp.SimpleCommand( 'uvmm/domain/snapshot/delete', options = opts )
+		delete_act = [ umcd.Action( delete_cmd, idlist ), umcd.Action( overview_cmd ) ]
+		lst.add_row( [ umcd.Cell( [ umcd.HTML( '<b>%s</b>:&nbsp;' % _( 'Selection' ) ), umcd.LinkButton( _( 'Delete' ), actions = delete_act ) ], attributes = { 'colspan' : '5' } ) ] )
+		# FIXME: add button to delete selected snapshots
+		table.add_row( [ lst ] )
+		create_cmd = umcp.SimpleCommand( 'uvmm/domain/snapshot/create', options = opts )
+		create_cmd.incomplete = True
+		create_act = [umcd.Action(create_cmd),]
+		table.add_row( [ umcd.LinkButton( _( 'Create new snapshot' ), actions = create_act ) ] )
+
+		return table
+
+	def _show_op( self, variable, node_uri ):
+		var = 'uvmm/umc/show/%s' % variable
+		if configRegistry.is_true( var, True ):
+			return True
+		if configRegistry.is_false( var, False ):
+			return False
+
+		pos = node_uri.find( ':' )
+		if pos == -1:
+			return False
+		value = configRegistry.get( var )
+		schema = node_uri[ : pos ]
+		if value == 'xen' and schema == 'xen':
+			return True
+		if value in ( 'kvm', 'qemu' ) and schema == 'qemu':
+			return True
+
+		return False
+
 	def _create_domain_buttons( self, object, node_info, domain_info, overview = 'node', operations = False, remove_failure = 'domain' ):
 		"""Create buttons to manage domain."""
 		buttons = []
 		overview_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % overview, options = object.options )
 		comma = umcd.HTML( '&nbsp;' )
-		# migrate? if parameter set and state is not paused
-		if configRegistry.is_true('uvmm/umc/show/migrate', True) and operations and domain_info.state != 3:
-			cmd = umcp.SimpleCommand( 'uvmm/domain/migrate', options = { 'group' : object.options[ 'group' ], 'source' : node_info.name, 'domain' : domain_info.name } )
-			buttons.append( umcd.LinkButton( _( 'Migrate' ), actions = [ umcd.Action( cmd ) ] ) )
-			buttons.append( comma )
+		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 
 		# Start? if state is not running, blocked or paused
 		cmd_opts = { 'group' : object.options[ 'group' ], 'node' : node_info.name, 'domain' : domain_info.name }
@@ -390,54 +457,8 @@ class handler( umch.simpleHandler ):
 			buttons.append( umcd.LinkButton( _( 'Start' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
 			buttons.append( comma )
 
-		# Stop? if state is not stopped
-		if not domain_info.state in ( 4, 5 ):
-			opts = copy.copy( cmd_opts )
-			opts[ 'state' ] = 'SHUTDOWN'
-			cmd = umcp.SimpleCommand( 'uvmm/domain/stop', options = opts )
-			buttons.append( umcd.LinkButton( _( 'Stop' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
-			buttons.append( comma )
-
-		# Pause? if state is running or idle
-		if configRegistry.is_true('uvmm/umc/show/pause', True) and domain_info.state in ( 1, 2):
-			opts = copy.copy( cmd_opts )
-			opts[ 'state' ] = 'PAUSE'
-			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
-			buttons.append( umcd.LinkButton( _( 'Pause' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
-			buttons.append( comma )
-
-		# Suspend? if state is running or idle
-		if configRegistry.is_true('uvmm/umc/show/suspend', True) and hasattr(node_info, 'supports_suspend') and node_info.supports_suspend and domain_info.state in (1, 2):
-			opts = copy.copy(cmd_opts)
-			opts['state'] = 'SUSPEND'
-			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
-			buttons.append(umcd.LinkButton(_('Suspend'), actions = [umcd.Action(cmd), umcd.Action(overview_cmd)]))
-			buttons.append(comma)
-
-		# Resume? if state is paused
-		if configRegistry.is_true('uvmm/umc/show/pause', True) and domain_info.state in ( 3, ):
-			opts = copy.copy( cmd_opts )
-			opts[ 'state' ] = 'RUN'
-			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
-			buttons.append( umcd.LinkButton( _( 'Unpause' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
-			buttons.append( comma )
-
-		# Remove? always
-		if operations:
-			opts = copy.copy( cmd_opts )
-			cmd = umcp.SimpleCommand( 'uvmm/domain/remove/images', options = opts )
-			buttons.append( umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( cmd ), ] ) )
-			buttons.append( comma )
-
-		# create drive
-		# if operations:
-		# 	opts = copy.copy( cmd_opts )
-		# 	cmd = umcp.SimpleCommand( 'uvmm/drive/create', options = opts )
-		# 	buttons.append( umcd.LinkButton( _( 'New Drive' ), actions = [ umcd.Action( cmd ), ] ) )
-		# 	buttons.append( comma )
-
 		# VNC? if running and activated
-		if configRegistry.is_true('uvmm/umc/show/vnc', True) and domain_info.state in ( 1, 2 ) and domain_info.graphics and domain_info.graphics[ 0 ].port != -1:
+		if self._show_op( 'vnc', node_uri ) and domain_info.state in ( 1, 2 ) and domain_info.graphics and domain_info.graphics[ 0 ].port != -1:
 			vnc = domain_info.graphics[0]
 			host = node_info.name
 			try:
@@ -468,44 +489,61 @@ class handler( umch.simpleHandler ):
 				               "</body></html>") % {'h': host, 'p': vnc.port, 'nn': node_info.name, 'dn': domain_info.name}
 				id = ''.join([c for c in '%s%s' % (host, vnc.port) if c.lower() in set('abcdefghijklmnopqrstuvwxyz0123456789') ])
 				javascript = "var w=window.open('','VNC%s','dependent=no,resizable=yes');if(w.document.applets.length > 0){w.focus();}else{w.document.write('%s');w.document.close();};return false;" % (id, popupwindow.replace("'", "\\'"))
-				html = umcd.HTML('<a class="nounderline" href="#" onClick="%s" title="%s"><span class="content">VNC</span></a>' % (javascript, helptext))
+				html = umcd.HTML( '<a class="nounderline" href="#" onClick="%s" title="%s"><span class="content">%s</span></a>' % ( javascript, helptext, _( 'Direct access' ) ) )
 			buttons.append( html )
 			buttons.append( comma )
 
-		# Snapshot? always
-		if operations and configRegistry.is_true('uvmm/umc/show/snapshot', True) and hasattr(domain_info, 'snapshots') and isinstance(domain_info.snapshots, dict):
+		# Suspend? if state is running or idle
+		if self._show_op( 'suspend', node_uri ) and hasattr(node_info, 'supports_suspend') and node_info.supports_suspend and domain_info.state in (1, 2):
 			opts = copy.copy(cmd_opts)
-			create_cmd = umcp.SimpleCommand('uvmm/domain/snapshot/create', options=opts)
-			create_cmd.incomplete = True
-			create_act = [umcd.Action(create_cmd),]
-			choices = [
-					{'description': '---', 'actions': '::none'},
-					{'description': _('Create new snapshot'), 'actions': create_act},
-					]
-			revert_choices = []
-			delete_choices = []
-			f = lambda s: s[1].ctime
-			for snapshot_name, snap in sorted(domain_info.snapshots.items(), key=f, reverse=True):
-				ctime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(snap.ctime))
-				name = '%s (%s)' % (snapshot_name, ctime)
-				opts = copy.copy(cmd_opts)
-				opts['snapshot'] = snapshot_name
-
-				revert_cmd = umcp.SimpleCommand('uvmm/domain/snapshot/revert', options=opts)
-				revert_act = [umcd.Action(revert_cmd), umcd.Action(overview_cmd)]
-				revert_choices.append({'description': _('Revert to %s') % name, 'actions': revert_act})
-
-				delete_cmd = umcp.SimpleCommand('uvmm/domain/snapshot/delete', options=opts)
-				delete_act = [umcd.Action(delete_cmd), umcd.Action(overview_cmd)]
-				delete_choices.append({'description': _('Remove %s') % name, 'actions': delete_act})
-			if revert_choices:
-				#choices.append({'description': '---', 'actions': '::none'}) # FIXME: dnw
-				choices.extend(revert_choices)
-			if delete_choices:
-				#choices.append({'description': '---', 'actions': '::none'}) # FIXME: dnw
-				choices.extend(delete_choices)
-			buttons.append(umcd.ChoiceButton(_('Snapshots'), choices))
+			opts['state'] = 'SUSPEND'
+			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
+			buttons.append( umcd.LinkButton( _( 'Suspend' ), actions = [umcd.Action(cmd), umcd.Action(overview_cmd)]))
 			buttons.append(comma)
+
+		# Resume? if state is paused
+		if self._show_op( 'pause', node_uri ) and domain_info.state in ( 3, ):
+			opts = copy.copy( cmd_opts )
+			opts[ 'state' ] = 'RUN'
+			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
+			buttons.append( umcd.LinkButton( _( 'Unpause' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
+			buttons.append( comma )
+
+		# Pause? if state is running or idle
+		if self._show_op( 'pause', node_uri ) and domain_info.state in ( 1, 2):
+			opts = copy.copy( cmd_opts )
+			opts[ 'state' ] = 'PAUSE'
+			cmd = umcp.SimpleCommand( 'uvmm/domain/state', options = opts )
+			buttons.append( umcd.LinkButton( _( 'Pause' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
+			buttons.append( comma )
+
+		# migrate? if parameter set and state is not paused
+		if self._show_op( 'migrate', node_uri ) and operations and domain_info.state != 3:
+			cmd = umcp.SimpleCommand( 'uvmm/domain/migrate', options = { 'group' : object.options[ 'group' ], 'source' : node_info.name, 'domain' : domain_info.name } )
+			buttons.append( umcd.LinkButton( _( 'Migrate' ), actions = [ umcd.Action( cmd ) ] ) )
+			buttons.append( comma )
+
+		# Stop? if state is not stopped
+		if not domain_info.state in ( 4, 5 ):
+			opts = copy.copy( cmd_opts )
+			opts[ 'state' ] = 'SHUTDOWN'
+			cmd = umcp.SimpleCommand( 'uvmm/domain/stop', options = opts )
+			buttons.append( umcd.LinkButton( _( 'Stop' ), actions = [ umcd.Action( cmd ), umcd.Action( overview_cmd ) ] ) )
+			buttons.append( comma )
+
+		# Remove? always
+		if operations:
+			opts = copy.copy( cmd_opts )
+			cmd = umcp.SimpleCommand( 'uvmm/domain/remove/images', options = opts )
+			buttons.append( umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( cmd ), ] ) )
+			buttons.append( comma )
+
+		# create drive
+		# if operations:
+		# 	opts = copy.copy( cmd_opts )
+		# 	cmd = umcp.SimpleCommand( 'uvmm/drive/create', options = opts )
+		# 	buttons.append( umcd.LinkButton( _( 'New Drive' ), actions = [ umcd.Action( cmd ), ] ) )
+		# 	buttons.append( comma )
 
 		return buttons[ : -1 ]
 
@@ -806,6 +844,8 @@ class handler( umch.simpleHandler ):
 			buttons = self._create_domain_buttons( object, node_info, domain_info, overview = 'domain', operations = True )
 			ops.add_row( buttons )
 
+			snapshots = self._create_domain_snapshots( object, node_info, domain_info )
+
 			tab = umcd.List()
 			tab.add_row(w_status + w_cpu)
 			tab.add_row(w_os + w_mem)
@@ -813,6 +853,8 @@ class handler( umch.simpleHandler ):
 			tech = '%s-%s' % ( domain_info.domain_type, domain_info.os_type )
 			blind_table.add_row( [ umcd.Section( _( 'Virtual instance %(domain)s - <i>%(tech)s</i>' ) % { 'domain' : domain_info.name, 'tech' : VirtTechSelect.MAPPING[ tech ] }, tab ) ] )
 			blind_table.add_row( [ umcd.Cell( umcd.Section( _( 'Operations' ), ops ) ) ] )
+			if snapshots:
+				blind_table.add_row( [ umcd.Section( _( 'Snapshots' ), snapshots, hideable = True, hidden = True, name = 'domain.snapshots' ) ] )
 
 			content = self._dlg_domain_settings( object, node_info, domain_info )
 			blind_table.add_row( [ content ] )
