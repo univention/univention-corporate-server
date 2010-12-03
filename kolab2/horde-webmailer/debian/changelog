@@ -1,3 +1,9 @@
+horde-webmailer (1.2.5~2.2.11-1) unstable; urgency=low
+
+  * Another patch for login by uid for smtp auth (Bug #20863)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 03 Dec 2010 20:17:10 +0100
+
 horde-webmailer (1.2.5~2.2.10-1) unstable; urgency=low
 
   * Enable TLS for cclient by default (Bug #20661)
