@@ -1,3 +1,9 @@
+univention-policy (4.0.1-1) unstable; urgency=low
+
+  * Replaced deprecated ldap functions (Bug #18913)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 03 Dec 2010 21:58:20 +0100
+
 univention-policy (4.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

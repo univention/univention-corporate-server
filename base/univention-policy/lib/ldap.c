@@ -156,12 +156,13 @@ int univention_ldap_set_admin_connection( univention_ldap_parameters_t *lp )
 
 int univention_ldap_open(univention_ldap_parameters_t *lp)
 {
-	int rv;
+	int rv = 0;
+	struct berval cred;
 
 	if (lp == NULL)
 		return 1;
 	if (lp->ld != NULL) {
-		ldap_unbind(lp->ld);
+		ldap_unbind_ext(lp->ld, NULL, NULL);
 		lp->ld=NULL;
 	}
 
@@ -212,10 +213,13 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 		}
 	/* otherwise connect to host:port */
 	} else {
+		char uri[1024];
+		snprintf(uri,1024, "ldap://%s:%d", lp->host, lp->port);
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "connecting to ldap://%s:%d/", lp->host, lp->port);
-		if ((lp->ld=ldap_init(lp->host, lp->port)) == NULL) {
-			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_init: %s", ldap_err2string(rv));
-			return LDAP_OTHER;
+		if ((rv=ldap_initialize(&lp->ld, uri)) != LDAP_SUCCESS) {
+			ldap_unbind_ext(lp->ld, NULL, NULL);
+			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_initialize: %s", ldap_err2string(rv));
+			return rv;
 		}
 	}
 
@@ -237,16 +241,24 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "sasl_bind");
 		if ((rv = ldap_sasl_interactive_bind_s(lp->ld, lp->binddn, lp->sasl_mech, NULL, NULL, LDAP_SASL_QUIET, sasl_interact, (void*) lp)) != LDAP_SUCCESS) {
 			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_sasl_interactive_bind: %s", ldap_err2string(rv));
-			ldap_unbind(lp->ld);
+			ldap_unbind_ext(lp->ld, NULL, NULL);
 			lp->ld = NULL;
 			return rv;
 		}
 	/* simple bind */
 	} else {
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "simple_bind as %s", lp->binddn);
-		if ((rv = ldap_simple_bind_s(lp->ld, lp->binddn, lp->bindpw)) != LDAP_SUCCESS) {
+		if (lp->bindpw == NULL) {
+			cred.bv_val=NULL;
+			cred.bv_len=0;
+		} else {
+			cred.bv_val=lp->bindpw;
+			cred.bv_len=strlen(lp->bindpw);
+		}
+
+		if ((rv = ldap_sasl_bind_s(lp->ld, lp->binddn, LDAP_SASL_SIMPLE, &cred, NULL, NULL, NULL) != LDAP_SUCCESS)) {
 			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_simple_bind: %s", ldap_err2string(rv));
-			ldap_unbind(lp->ld);
+			ldap_unbind_ext(lp->ld, NULL, NULL);
 			lp->ld = NULL;
 			return rv;
 		}
@@ -261,7 +273,7 @@ void univention_ldap_close(univention_ldap_parameters_t* lp)
 		return;
 	if (lp->ld != NULL) {
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "closing connection");
-		ldap_unbind(lp->ld);
+		ldap_unbind_ext(lp->ld, NULL, NULL);
 		lp->ld = NULL;
 	}
 	if (lp->uri != NULL) {

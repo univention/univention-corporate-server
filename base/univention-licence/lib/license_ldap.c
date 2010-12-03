@@ -99,26 +99,42 @@ char* univention_license_ldap_get_basedn(void)
 */
 int univention_license_ldap_open_connection(void)
 {
+	
 	if (ldap_connection != NULL)
 		return 1;
 	else
 	{		
 		int	version = LDAP_VERSION3;
 		int	rc;
+		char uri[1024];
+		struct berval cred;
 	
-		if (( ldap_connection = ldap_init( ldap_server, ldap_port )) == NULL )
+		snprintf( uri, 1024, "ldap://%s:%d", ldap_server, ldap_port );
+
+		if (( rc=ldap_initialize(&ldap_connection, uri) ) != LDAP_SUCCESS )
 		{
-			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "Can't connect to LDAP-Server(%s:%i).",ldap_server,ldap_port);
+			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "Can't connect to LDAP-Server(%si).",uri);
 			return 0;
 		}
 	
 		ldap_set_option(ldap_connection, LDAP_OPT_PROTOCOL_VERSION, &version );
 	
-        /* Keine Moeglichkeit irgendwie eine Bind DN und ein Pwd mitzugeben? */
-		if ( ( rc = ldap_bind_s(ldap_connection, NULL, NULL, LDAP_AUTH_SIMPLE ) ) != LDAP_SUCCESS )
+		/* TODO: binddn and bindpw should be used
+		if (data->bindpw == NULL) {
+			cred.bv_val=NULL;
+			cred.bv_len=0;
+		} else {
+			cred.bv_val=data->bindpw;
+			cred.bv_len=strlen(data->bindpw);
+		}
+		*/
+		cred.bv_val=NULL;
+		cred.bv_len=0;
+
+		if ( ( rc = ldap_sasl_bind_s(ldap_connection, NULL, LDAP_SASL_SIMPLE, &cred, NULL, NULL, NULL) ) != LDAP_SUCCESS)
 		{
 			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "Can't bind LDAP Connection. Error:%s|%d.",ldap_err2string(rc),rc);
-			ldap_unbind( ldap_connection );
+			ldap_unbind_ext( ldap_connection, NULL, NULL );
 			ldap_connection = NULL;
 			return 0;
 		}
@@ -135,7 +151,7 @@ void univention_license_ldap_close_connection(void)
 {
 	if (ldap_connection != NULL)
 	{
-		ldap_unbind( ldap_connection );
+		ldap_unbind_ext( ldap_connection, NULL, NULL );
 		ldap_connection = NULL;
 	}
 }
@@ -301,7 +317,7 @@ lObj* univention_license_ldap_get(char* search_base, int scope, char* filter, ch
 		timeout.tv_usec=0;
 		
 		//univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "LDAPSearch: searchBaseDN '%s', scope '%i' filter '%s' attr[0] '%s'",search_base, scope, filter, attr[0]);
-		if ((rc = ldap_search_st(ldap_connection, search_base, scope, filter, attr, 0, &timeout, &result)) != LDAP_SUCCESS)
+		if ((rc = ldap_search_ext_s(ldap_connection, search_base, scope, filter, attr, 0, NULL, NULL, &timeout, 0, &result)) != LDAP_SUCCESS)
 		{
 			if ( rc == LDAP_NO_SUCH_OBJECT ) 
 			{
@@ -355,12 +371,12 @@ lObj* univention_license_ldap_get(char* search_base, int scope, char* filter, ch
 					{
 						if (strncmp(attrFilter,attributeName,strlen(attrFilter)) == 0)
 						{
-							char** values=NULL;
-							values = ldap_get_values(ldap_connection, element, attributeName);
+							struct berval** values=NULL;
+							values = ldap_get_values_len(ldap_connection, element, attributeName);
 							
 							if ( values != NULL)
 							{
-								valuecount+= ldap_count_values(values);
+								valuecount+= ldap_count_values_len(values);
 							}
 						}
 						else
@@ -382,22 +398,23 @@ lObj* univention_license_ldap_get(char* search_base, int scope, char* filter, ch
 						{
 							if (strncmp(attrFilter,attributeName,strlen(attrFilter)) == 0)
 							{
-								char** values=NULL;
-								values = ldap_get_values(ldap_connection, element, attributeName);
+								struct berval** values = NULL;
+
+								values = ldap_get_values_len(ldap_connection, element, attributeName);
 								if ( values != NULL)
 								{
-									int count = ldap_count_values(values);
+									int count = ldap_count_values_len(values);
 									int x = 0;
 									while (x < count)
 									{
 										ret->key[i] = strdup(attributeName);
-										ret->val[i] = strdup(values[x]);
+										ret->val[i] = strdup(values[x]->bv_val);
 										//printf("%p:key[%i]:%s.\n",ret->key[i],i,ret->key[i]);
 										//printf("%p:val[%i]:%s.\n",ret->val[i],i,ret->val[i]);
 										i++;
 										x++;
 									}
-									ldap_value_free( values );
+									ldap_value_free_len( values );
 								}
 							}
 						}
