@@ -1,3 +1,9 @@
+univention-webui-style (5.0.25-1) unstable; urgency=low
+
+  * use a bold font for list headers; Bug #19575
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 03 Dec 2010 16:32:03 +0100
+
 univention-webui-style (5.0.24-1) unstable; urgency=low
 
   * re-worked layout of category tabs; Bug #19445

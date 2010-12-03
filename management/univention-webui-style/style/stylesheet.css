@@ -1807,6 +1807,10 @@ td.umc_list_element table.button td.button_icon input.button_icon
 	padding-bottom: 3px;
 }
 
+.umc_list_head {
+	font-weight: bold;
+}
+
 .umc_list_element_narrow {
 	padding-right: 4px;
 	padding-top: 3px;
