@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.10.11-6) unstable; urgency=low
+
+  * Delete cached list of storage pools (Bug #19370)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 03 Dec 2010 16:18:27 +0100
+
 univention-virtual-machine-manager-daemon (0.10.11-5) unstable; urgency=low
 
   * Fix creating volumes with existing names (Bug #19342)

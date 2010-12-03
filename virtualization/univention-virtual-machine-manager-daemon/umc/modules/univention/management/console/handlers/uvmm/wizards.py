@@ -151,6 +151,10 @@ class DriveWizard( umcd.IWizard ):
 		self.prev_first_page = False
 		self.domain_name = None
 		self.blacklist = []
+		try: # delete cached list of storage pools
+			del self._storage_pools
+		except AttributeError, e:
+			pass
 		umcd.IWizard.reset( self )
 
 	def setup( self, object, prev = None, next = None, finish = None, cancel = None ):
