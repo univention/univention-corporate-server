@@ -277,12 +277,12 @@ class DriveWizard( umcd.IWizard ):
 				else:
 					raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
 		elif self.current in ( 2, 3 ): # 2=select existing disk image, 3=create new
-			pool_path = self._get_pool_path( object.options[ 'drive-pool' ] )
+			drive_type = object.options['drive-type']
+			drive_pool = object.options['drive-pool']
+			pool_path = self._get_pool_path(drive_pool)
 			if self.current == 2: # select existing disk image
 				drive_image = object.options['drive-image']
 				ud.debug(ud.ADMIN, ud.INFO, 'drive wizard: collect information about existing disk image: %s' % drive_image)
-				drive_pool = object.options['drive-pool']
-				drive_type = object.options['drive-type']
 				vols = self.uvmm.storage_pool_volumes(self.node_uri, drive_pool, drive_type)
 				for vol in vols:
 					if os.path.basename(vol.source) == drive_image:
@@ -305,33 +305,44 @@ class DriveWizard( umcd.IWizard ):
 				# if ( pool_bytes - vol_bytes ) < 0:
 				# 	object.options[ 'image-size' ] = MemorySize.num2str( int( pool_bytes * 0.9 ) )
 				# 	return umcd.WizardResult( False, _( 'There is not enough space left in the pool. The size is set to the maximum available space left.' ) )
+
 			image_name = object.options['image-name']
 			drive_path = os.path.join(pool_path, image_name)
 			ud.debug( ud.ADMIN, ud.INFO, 'Check if image %s is already used' % drive_path )
+
 			if image_name in self.blacklist:
 				is_used = self.domain_name
+			elif drive_type == 'cdrom':
+				is_used = None # read-only-volumes can be shared
 			else:
 				is_used = self.uvmm.is_image_used( self.node_uri, drive_path )
+
 			if is_used in ( object.options.get( 'domain', '' ), object.options.get( 'name', '' ) ):
 				return umcd.WizardResult( False, _( 'The selected image is already used by this virtual instance and therefor can not be used.' ) )
-			if not drive_path in object.options.get( '_reuse_image', [] ) and object.options[ 'drive-type' ] == 'disk' and is_used:
-				if '_reuse_image' in object.options:
-					object.options[ '_reuse_image' ].append( drive_path )
-				else:
-					object.options[ '_reuse_image' ] = [ drive_path, ]
-				return umcd.WizardResult( False, _( 'The selected image is already used by the virtual instance %(domain)s. It should be considered to choose another image. Continuing might cause problems.' ) % { 'domain' : is_used } )
+
+			if self.current == 2: # select existing disk image (part 2)
+				reuse_image = object.options.setdefault('_reuse_image', [])
+				if is_used and drive_path not in reuse_image:
+					reuse_image.append(drive_path)
+					msg = _('The selected image is already used by the virtual instance %(domain)s. It should be considered to choose another image. Continuing might cause problems.')
+					return umcd.WizardResult(False, msg % {'domain': is_used})
+			elif self.current == 3: # create new disk image (part 2)
+				volumes = self.uvmm.storage_pool_volumes(self.node_uri, drive_pool)
+				for volume in volumes:
+					if volume.source == drive_path:
+						if is_used:
+							msg = _('An image with this name already exists and is used by virtual instance %(domain)s. The name must be unique for a new image.')
+						else:
+							msg = _('An unused image with this name already exists. The name must be unique for a new image.')
+						return umcd.WizardResult(False, msg % {'domain': is_used})
+
 			self.current = 4
 			self[ self.current ].options = []
 			conf = umcd.List()
-			ud.debug(ud.ADMIN, ud.INFO, 'SUMMARY: dt=%s' % object.options['drive-type'])
-			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Drive type' ) ), self._disk_type_text( object.options[ 'drive-type' ] ) ] )
-			ud.debug(ud.ADMIN, ud.INFO, 'SUMMARY: pp=%s' % pool_path)
+			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Drive type' ) ), self._disk_type_text(drive_type) ] )
 			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Storage pool' ) ), _( 'path: %(path)s' ) % { 'path' : pool_path } ] )
-			ud.debug(ud.ADMIN, ud.INFO, 'SUMMARY: if=%s' % object.options['image-name'])
 			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image filename' ) ), object.options[ 'image-name' ] ] )
-			ud.debug(ud.ADMIN, ud.INFO, 'SUMMARY: dt=%s' % object.options['driver-type'])
 			conf.add_row([umcd.HTML('<i>%s</i>' % _('Image format')), object.options['driver-type']])
-			ud.debug(ud.ADMIN, ud.INFO, 'SUMMARY: is=%s' % object.options['image-size'])
 			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image size' ) ), object.options[ 'image-size' ] ] )
 			self[ self.current ].options.append( conf )
 		else:

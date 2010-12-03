@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.10.11-5) unstable; urgency=low
+
+  * Fix creating volumes with existing names (Bug #19342)
+  * Update german translation (Bug #19575)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 03 Dec 2010 12:45:23 +0100
+
 univention-virtual-machine-manager-daemon (0.10.11-4) unstable; urgency=low
 
   * re-order operations
