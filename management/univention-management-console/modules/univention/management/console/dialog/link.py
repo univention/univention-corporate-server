@@ -88,16 +88,18 @@ class JS_Link( Link ):
 			else:
 				parameters.append( "'%s'" % str( arg ) )
 
-		return 'javascript:%s(%s)' % ( function, ', '.join( parameters ) )
+		return '%s(%s)' % ( function, ', '.join( parameters ) )
 
 class ToggleCheckboxes( base.HTML ):
 	def __init__( self ):
 		base.HTML.__init__( self )
+		self.checkboxes()
 
-	def checkboxes( self, ids ):
+	def checkboxes( self, ids = () ):
 		jsall = JS_Link.invoke_js( 'umc_checkbox_toggle', ids, True )
 		jsnone = JS_Link.invoke_js( 'umc_checkbox_toggle', ids, False )
-		self._text = '%s&nbsp;(<a href="%s">%s</a>/<a href="%s">%s</a>)' % ( _( 'Select' ), jsall,_( 'All' ), jsnone, _( 'None' ) )
+		# self._text = '%s&nbsp;(<a href="javascript:%s">%s</a>/<a href="javascript:%s">%s</a>)' % ( _( 'Select' ), jsall,_( 'All' ), jsnone, _( 'None' ) )
+		self._text = '<input id="%s" name="%s" dojoType="dijit.form.CheckBox" value="checked" onChange="if ( arguments[0] == true ) { %s; } else { %s; }"">' % ( self.id(), self.id(), jsall, jsnone )
 
 	def __unicode__( self ):
 		return unicode( self._text )
