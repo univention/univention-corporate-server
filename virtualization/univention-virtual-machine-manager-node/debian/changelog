@@ -1,29 +1,29 @@
-univention-virtual-machine-manager-node (0.3.0-1) unstable; urgency=low
+univention-virtual-machine-manager-node (0.1.18-1) unstable; urgency=low
 
   * Adopt Bugs from UVMM component (Bug #19797)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 23 Nov 2010 10:04:38 +0100
 
-univention-virtual-machine-manager-node (0.2.3-1) unstable; urgency=low
+univention-virtual-machine-manager-node (0.1.17-1) unstable; urgency=low
 
   * README.restore: fixed typos; add description how to start virtual instance
   * do not throw exception if there are no backups to restore; Bug #19864
 
  -- Andreas Büsching <buesching@univention.de>  Tue, 14 Sep 2010 15:03:43 +0200
 
-univention-virtual-machine-manager-node (0.2.2-1) unstable; urgency=low
+univention-virtual-machine-manager-node (0.1.16-1) unstable; urgency=low
 
   * enhance error handling in UCR module uvmm_restore; Bug #19864
 
  -- Andreas Büsching <buesching@univention.de>  Tue, 14 Sep 2010 10:00:05 +0200
 
-univention-virtual-machine-manager-node (0.2.1-1) unstable; urgency=low
+univention-virtual-machine-manager-node (0.1.15-1) unstable; urgency=low
 
   * add link to README.restore in current backup directory; Bug #19864
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 09 Sep 2010 17:16:05 +0200
 
-univention-virtual-machine-manager-node (0.2.0-1) unstable; urgency=low
+univention-virtual-machine-manager-node (0.1.14-1) unstable; urgency=low
 
   * add script to restore virtual instances; Bug #19864
   * add README describing the usage of the restore tool
