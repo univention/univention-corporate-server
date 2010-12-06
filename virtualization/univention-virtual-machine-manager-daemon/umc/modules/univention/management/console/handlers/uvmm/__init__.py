@@ -145,7 +145,7 @@ command_description = {
 				   'memory' : umc.String( _( 'Memory' ) ),
 				   'interface' : umc.String( _( 'Interface' ) ),
 				   'cpus' : cpus_select,
-				   'vnc' : umc.Boolean( _( 'VNC remote access' ) ),
+				   'vnc' : umc.Boolean( _( 'Direct access' ) ),
 				   'vnc_global' : umc.Boolean( _( 'Available globally' ) ),
 				   'vnc_passwd' : umc.Password( _( 'Password' ), required = False ),
 				   'kblayout' : KBLayoutSelect( _( 'Keyboard layout' ) ),
@@ -196,6 +196,17 @@ command_description = {
 		long_description=_('Delete the state of a virtual instance'),
 		method='uvmm_domain_snapshot_delete',
 		confirm=umch.Confirm(_('Remove snapshot'), _('Are you sure that the snapshot should be removed?')),
+		values={
+			'node': umc.String('node'),
+			'domain': umc.String('domain'),
+			'snapshot': umc.String(_('snapshot name')),
+			},
+		),
+	'uvmm/domain/snapshots/delete': umch.command(
+		short_description=_('Delete selected snapshots'),
+		long_description=_('Delete list of states of a virtual instance'),
+		method='uvmm_domain_snapshot_delete',
+		confirm=umch.Confirm(_('Remove snapshots'), _('Are you sure that the selected snapshots should be deleted?')),
 		values={
 			'node': umc.String('node'),
 			'domain': umc.String('domain'),
@@ -342,7 +353,7 @@ class handler( umch.simpleHandler ):
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object )
 		if success:
 			self.domain_wizard.reset()
-			res.dialog[ 0 ].set_dialog( umcd.ModuleDescription( 'Univention Virtual Machine Manager (UVMM)', _( 'This module provides a management interface for physical servers that are registered within the UCS domain.\nThe tree view on the left side shows an overview of all existing physical servers and the residing virtual instances. By selecting one of the physical servers statistics of the current state are displayed to get an impression of the health of the hardware system. Additionally actions like start, stop, suspend and resume for each virtual instance can be invoked on each of the instances.\nAlso possible is the remote access to virtual instances via VNC. Therefor it must be activated in the configuration.\nEach virtual instance entry in the tree view provides access to detailed information und gives the possibility to change the configuration or state and migrated it to another physical server.' ) ) )
+			res.dialog[ 0 ].set_dialog( umcd.ModuleDescription( 'Univention Virtual Machine Manager (UVMM)', _( 'This module provides a management interface for physical servers that are registered within the UCS domain.\nThe tree view on the left side shows an overview of all existing physical servers and the residing virtual instances. By selecting one of the physical servers statistics of the current state are displayed to get an impression of the health of the hardware system. Additionally actions like start, stop, suspend and resume for each virtual instance can be invoked on each of the instances.\nAlso possible is direct access to virtual instances. Therefor it must be activated in the configuration.\nEach virtual instance entry in the tree view provides access to detailed information und gives the possibility to change the configuration or state and migrated it to another physical server.' ) ) )
 		self.finished( object.id(), res )
 
 	def uvmm_group_overview( self, object ):
@@ -370,16 +381,24 @@ class handler( umch.simpleHandler ):
 		self.set_content( res, table )
 		self.finished(object.id(), res)
 
-	def _create_domain_snapshots( self, object, node_info, domain_info, overview = 'node', operations = False, remove_failure = 'domain' ):
+	def _create_domain_snapshots( self, object, node_info, domain_info ):
 		"""Create snapshot settings."""
 		if not ( configRegistry.is_true( 'uvmm/umc/show/snapshot', True ) and hasattr( domain_info, 'snapshots' ) and isinstance( domain_info.snapshots, dict ) ):
 			return None
 
-		overview_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % overview, options = object.options )
+		overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = object.options )
 		opts = copy.deepcopy( object.options )
 
 		table = umcd.List()
 
+		# button: create new snapshot
+		opts = copy.copy( object.options )
+		create_cmd = umcp.SimpleCommand( 'uvmm/domain/snapshot/create', options = opts )
+		create_cmd.incomplete = True
+		create_act = [umcd.Action(create_cmd),]
+		table.add_row( [ umcd.LinkButton( _( 'Create new snapshot' ), actions = create_act ) ] )
+
+		# listing of existing snapshots
 		lst = umcd.List()
 		btntoggle = umcd.ToggleCheckboxes()
 		lst.set_header( [ btntoggle, _( 'Name' ), _( 'Date' ), '' ] )
@@ -396,13 +415,15 @@ class handler( umch.simpleHandler ):
 		for snapshot_name, snap in sorted( domain_info.snapshots.items(), key=f, reverse = True ):
 			ctime = time.strftime( "%Y-%m-%d %H:%M:%S", time.localtime( snap.ctime ) )
 			name = '%s (%s)' % ( snapshot_name, ctime )
-			opts = copy.copy( object.options )
-
 			chkbox = umcd.Checkbox( static_options = { 'snapshot' : snapshot_name } )
 			idlist.append( chkbox.id() )
+			opts = copy.copy( object.options )
+			opts[ 'snapshot' ] =  snapshot_name
 			revert_cmd = umcp.SimpleCommand( 'uvmm/domain/snapshot/revert', options = opts )
 			revert_act = [ umcd.Action( revert_cmd ), umcd.Action( overview_cmd ) ]
 			revert_btn = umcd.LinkButton( _( 'Revert' ), actions = revert_act )
+			opts = copy.copy( object.options )
+			opts[ 'snapshot' ] =  [ snapshot_name ]
 			delete_cmd = umcp.SimpleCommand( 'uvmm/domain/snapshot/delete', options = opts )
 			delete_act = [ umcd.Action( delete_cmd ), umcd.Action( overview_cmd ) ]
 			delete_btn = umcd.LinkButton( _( 'Delete' ), actions = delete_act )
@@ -410,15 +431,12 @@ class handler( umch.simpleHandler ):
 			lst.add_row( [ chkbox, snapshot_name, ctime, [ revert_btn, delete_btn ] ] )
 
 		btntoggle.checkboxes( idlist )
-		delete_cmd = umcp.SimpleCommand( 'uvmm/domain/snapshot/delete', options = opts )
+		opts = copy.copy( object.options )
+		opts[ 'snapshot' ] = []
+		delete_cmd = umcp.SimpleCommand( 'uvmm/domain/snapshots/delete', options = opts )
 		delete_act = [ umcd.Action( delete_cmd, idlist ), umcd.Action( overview_cmd ) ]
 		lst.add_row( [ umcd.Cell( [ umcd.HTML( '<b>%s</b>:&nbsp;' % _( 'Selection' ) ), umcd.LinkButton( _( 'Delete' ), actions = delete_act ) ], attributes = { 'colspan' : '5' } ) ] )
-		# FIXME: add button to delete selected snapshots
 		table.add_row( [ lst ] )
-		create_cmd = umcp.SimpleCommand( 'uvmm/domain/snapshot/create', options = opts )
-		create_cmd.incomplete = True
-		create_act = [umcd.Action(create_cmd),]
-		table.add_row( [ umcd.LinkButton( _( 'Create new snapshot' ), actions = create_act ) ] )
 
 		return table
 
@@ -476,7 +494,7 @@ class handler( umch.simpleHandler ):
 			helptext = '%s:%s' % (host, vnc.port)
 			if configRegistry.get('uvmm/umc/vnc', 'internal').lower() in ('external', ):
 				uri = 'vnc://%s:%s' % (host, vnc.port)
-				html = umcd.HTML('<a class="nounderline" target="_blank" href="%s" title="%s"><span class="content">VNC</span></a>' % (uri, helptext))
+				html = umcd.HTML('<a class="nounderline" target="_blank" href="%s" title="%s"><span class="content">%s</span></a>' % (uri, helptext, _( 'Direct access' ) ) )
 			else:
 				popupwindow = ("<html><head><title>" + \
 				               _("%(dn)s on %(nn)s") + \
@@ -674,8 +692,12 @@ class handler( umch.simpleHandler ):
 		boot_dev.syntax.may_change = domain_is_off
 		bootdevs = umcd.MultiValue( self[ 'uvmm/domain/configure' ][ 'bootdevs' ], fields = [ boot_dev ], default = bd_default, attributes = { 'width' : '200' } )
 		bootdevs.syntax.may_change = domain_is_off
+
 		# drive listing
 		drive_sec = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
+		if domain_is_off:
+			cmd = umcp.SimpleCommand('uvmm/drive/create', options=copy.copy(object.options))
+			drive_sec.add_row([umcd.LinkButton(_('Add new drive'), actions=[umcd.Action(cmd),])])
 		disk_list = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
 		disk_list.set_header( [ _( 'Type' ), _( 'Image' ), _( 'Size' ), _( 'Pool' ), '' ] )
 		if domain_info and domain_info.disks:
@@ -729,9 +751,6 @@ class handler( umch.simpleHandler ):
 				if domain_info.os_type == 'xen':
 					first = False
 		drive_sec.add_row( [disk_list ] )
-		if domain_is_off:
-			cmd = umcp.SimpleCommand('uvmm/drive/create', options=copy.copy(object.options))
-			drive_sec.add_row([umcd.LinkButton(_('Add new drive'), actions=[umcd.Action(cmd),])])
 
 		vnc_bool = False
 		vnc_global = True
@@ -786,7 +805,7 @@ class handler( umch.simpleHandler ):
 
 		sections = umcd.List()
 		if not domain_is_off:
-			sections.add_row( [ umcd.HTML( _( '<b>The settings of a virtual instance can just be modified if it is shut off.</b>' ) ) ] )
+			sections.add_row( [ umcd.InfoBox( _( 'The settings of a virtual instance can just be modified if it is shut off.' ) ) ] )
 		if not domain_info:
 			sections.add_row( [ umcd.Section( _( 'Drives' ), drive_sec, hideable = False, hidden = False, name = 'drives.newdomain' ) ] )
 			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = False, hidden = True, name = 'settings.newdomain' ) ] )
@@ -1132,7 +1151,7 @@ class handler( umch.simpleHandler ):
 			create_cmd = umcp.SimpleCommand('uvmm/domain/snapshot/create', options=opts)
 
 			create_act = [umcd.Action(create_cmd, [snapshot_cel.id()]), umcd.Action(overview_cmd)]
-			create_btn = umcd.LinkButton(_('Create snapshot'), actions=create_act)
+			create_btn = umcd.Button( _( 'Create' ), actions = create_act, default = True )
 			create_cel = umcd.Cell(create_btn, attributes={'align': 'right'})
 
 			lst = umcd.List()
@@ -1180,20 +1199,37 @@ class handler( umch.simpleHandler ):
 		ud.debug(ud.ADMIN, ud.INFO, 'Domain snapshot delete')
 		node = object.options['node']
 		domain = object.options['domain']
-		snapshot_name = object.options['snapshot']
-
+		failure = []
+		success = []
 		res = umcp.Response(object)
-		try:
-			node_uri = self.uvmm.node_name2uri(node)
-			domain_info = self.uvmm.get_domain_info(node_uri, domain)
-			resp = self.uvmm.domain_snapshot_delete(node_uri, domain_info, snapshot_name)
-			res.status(201)
-			report = _('The snapshot <i>%(snapshot)s of instance <i>%(domain)s</i> was deleted successfully')
-		except uvmmd.UvmmError, e:
-			res.status(301)
-			report = _('Deleting the snapshot <i>%(snapshot)s</i> of instance <i>%(domain)s</i> failed')
-		values = {'domain': domain, 'snapshot': snapshot_name}
-		self.finished(object.id(), res, report=report % values)
+
+		ud.debug(ud.ADMIN, ud.ERROR, 'Domain snapshot delete: %s' % str( object.options['snapshot'] ) )
+		for snapshot in object.options['snapshot']:
+			try:
+				node_uri = self.uvmm.node_name2uri(node)
+				domain_info = self.uvmm.get_domain_info(node_uri, domain)
+				resp = self.uvmm.domain_snapshot_delete( node_uri, domain_info, snapshot )
+				success.append( snapshot )
+			except uvmmd.UvmmError, e:
+				failure.append( snapshot )
+
+		# all snapshots could be deleted
+		if success and not failure:
+			res.status( 201 )
+			if len( success ) == 1:
+				report = _( 'The snapshot <i>%(snapshot)s of instance <i>%(domain)s</i> was deleted successfully' ) % { 'snapshot' : success[ 0 ], 'domain': domain }
+			else:
+				report = _( 'All selected snapshots of instance <i>%(domain)s</i> were deleted successfully:<br/>%(snapshots)s' ) % { 'snapshots' : ', '.join( success ), 'domain': domain }
+		elif success and failure:
+			res.status( 301 )
+			report = _( 'Not all of the selected snapshots of instance <i>%(domain)s</i> could be deleted! The following snapshots still exists:<br/>%(snapshots)s' ) % { 'snapshots' : ', '.join( failure ), 'domain': domain }
+		else:
+			res.status( 301 )
+			if len( failure ) == 1:
+				report = _( 'The snapshot <i>%(snapshot)s of instance <i>%(domain)s</i> could not be deleted' ) % { 'snapshot' : failure[ 0 ], 'domain': domain }
+			else:
+				report = _( 'The selected snapshots of instance <i>%(domain)s</i> could not be deleted:<br/>%(snapshots)s' ) % { 'snapshots' : ', '.join( failure ), 'domain': domain }
+		self.finished( object.id(), res, report = report )
 
 	def uvmm_drive_create( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Drive create' )

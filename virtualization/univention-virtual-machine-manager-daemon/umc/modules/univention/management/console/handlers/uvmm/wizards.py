@@ -488,7 +488,7 @@ class InstanceWizard( umcd.IWizard ):
 		page.options.append( umcd.make( ( 'name', umc.String( _( 'Name' ) ) ) ) )
 		page.options.append( umcd.make( ( 'memory', umc.String( _( 'Memory (in MB)' ), regex = MemorySize.SIZE_REGEX ) ) ) )
 		page.options.append( umcd.make( ( 'cpus', NumberSelect( _( 'CPUs' ) ) ) ) )
-		page.options.append( umcd.make( ( 'vnc', umc.Boolean( _( 'Enable VNC remote access' ) ) ) ) )
+		page.options.append( umcd.make( ( 'vnc', umc.Boolean( _( 'Enable direct access' ) ) ) ) )
 		self.append( page )
 
 		# page 2
@@ -594,7 +594,7 @@ class InstanceWizard( umcd.IWizard ):
 			value = _( 'activated' )
 		else:
 			value = _( 'deactivated' )
-		settings.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'VNC access' ) ), value ] )
+		settings.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Direct access' ) ), value ] )
 		rows.append( [ settings ] )
 
 		rows.append( [ umcd.HTML( '<b>%s</b><br>' % _( 'Attached drives' ) ), ] )
