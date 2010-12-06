@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.120-1) unstable; urgency=low
+
+  * Fix extended xen-pv configuration (Bug #20819)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 06 Dec 2010 16:10:25 +0100
+
 univention-virtual-machine-manager-daemon (0.9.119-1) unstable; urgency=low
 
   * use non technical description for image formats; Bug #19575

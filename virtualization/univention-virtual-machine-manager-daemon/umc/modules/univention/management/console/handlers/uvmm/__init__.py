@@ -799,7 +799,7 @@ class handler( umch.simpleHandler ):
 
 		content2.add_row( [ umcd.Text( '' ) ] )
 
-		ids = (name.id(), os_widget.id(), virt_tech.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), vnc.id(), vnc_global.id(), vnc_passwd.id(), kblayout.id(), bootdevs.id())
+		ids = (name.id(), os_widget.id(), virt_tech.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), advkernelconf.id(), vnc.id(), vnc_global.id(), vnc_passwd.id(), kblayout.id(), bootdevs.id())
 		cfg_cmd = umcp.SimpleCommand( 'uvmm/domain/configure', options = object.options )
 		overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = object.options )
 
@@ -937,12 +937,17 @@ class handler( umch.simpleHandler ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: architecture: %s' % domain_info.arch )
 		domain_info.vcpus = int( object.options[ 'cpus' ] )
 		# if para-virtualized machine ...
-		if domain_info.domain_type == 'xen' and domain_info.os_type == 'linux':
+		if domain_info.domain_type == 'xen' and domain_info.os_type in ('linux', 'xen'):
 			if object.options.get( 'advkernelconf', False ):
 				domain_info.kernel = handler._getstr( object, 'kernel' )
 				domain_info.cmdline = handler._getstr( object, 'cmdline' )
 				domain_info.initrd = handler._getstr( object, 'initrd' )
+				domain_info.bootloader = None
+				domain_info.bootloader_args = None
 			else:
+				domain_info.kernel = None
+				domain_info.cmdline = None
+				domain_info.initrd = None
 				domain_info.bootloader = '/usr/bin/pygrub'
 				domain_info.bootloader_args = '-q' # Bug #19249: PyGrub timeout
 		domain_info.boot = handler._getstr( object, 'bootdevs' )
