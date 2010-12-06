@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.122-1) unstable; urgency=low
+
+  * fixed typos in german translation; Bug #19501
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 06 Dec 2010 17:51:21 +0100
+
 univention-virtual-machine-manager-daemon (0.9.121-1) unstable; urgency=low
 
   * modify layout if no snapshots are available ; Bug #19575

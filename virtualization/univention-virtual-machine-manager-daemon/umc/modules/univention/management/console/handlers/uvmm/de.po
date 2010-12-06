@@ -539,7 +539,7 @@ msgstr ""
 #: __init__.py:991
 msgid "Some information of the virtual instance could not be saved!<br/>"
 msgstr ""
-"Einige der Informationen zur virtuellel Instanz konnten nicht gespeichert "
+"Einige der Informationen zur virtuellen Instanz konnten nicht gespeichert "
 "werden!</br>"
 
 #: __init__.py:1076
@@ -1025,8 +1025,8 @@ msgid ""
 "No profiles could be found! These are required to create new virtual "
 "instances. Ensure that the LDAP server can be reached."
 msgstr ""
-"Es konnte kein Profil gefundne werden! Diese werden benötigt, um neue "
-"virtuelle Instanzen anzulegem. Stellen Sie sicher, daß der LDAP-Server "
+"Es konnte kein Profil gefunden werden! Diese werden benötigt, um neue "
+"virtuelle Instanzen anzulegen. Stellen Sie sicher, daß der LDAP-Server "
 "erreichbar ist."
 
 #: wizards.py:533
