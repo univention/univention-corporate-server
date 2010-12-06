@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-06 09:33+0100\n"
+"POT-Creation-Date: 2010-12-06 16:04+0100\n"
 "PO-Revision-Date: 2010-07-05 14:28+0200\n"
 "Last-Translator: Andreas Büsching <buesching@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -242,7 +242,9 @@ msgstr "Sicherungspunkte löschen"
 
 #: __init__.py:209
 msgid "Are you sure that the selected snapshots should be deleted?"
-msgstr "Sind Sie sicher, dass die ausgewählten Sicherungspunkte gelöscht werden sollen?"
+msgstr ""
+"Sind Sie sicher, dass die ausgewählten Sicherungspunkte gelöscht werden "
+"sollen?"
 
 #: __init__.py:217
 msgid "Change state of a virtual instance"
@@ -476,8 +478,8 @@ msgstr "Als Boot-Medium setzen"
 msgid ""
 "The settings of a virtual instance can just be modified if it is shut off."
 msgstr ""
-"Die Einstellungen einer virtuellen Instanz können nur geändert werden, "
-"wenn diese ausgeschaltet ist."
+"Die Einstellungen einer virtuellen Instanz können nur geändert werden, wenn "
+"diese ausgeschaltet ist."
 
 #: __init__.py:810 __init__.py:814
 msgid "Drives"
@@ -831,12 +833,12 @@ msgid "Local directory"
 msgstr "Lokales Verzeichnis"
 
 #: wizards.py:117 wizards.py:128 wizards.py:132
-msgid "Raw format"
-msgstr "Rohformat"
+msgid "Simple format (raw)"
+msgstr "Einfaches Format (raw)"
 
 #: wizards.py:126
-msgid "Qemu copy-on-write 2"
-msgstr "Qemu copy-on-write 2"
+msgid "Extended format (qcow2)"
+msgstr "Erweitertes Format (qcow2)"
 
 #: wizards.py:209
 msgid ""
@@ -1093,6 +1095,12 @@ msgstr ""
 #, python-format
 msgid "Add drive to <i>%(name)s</i>"
 msgstr "Laufwerk zu <i>%(name)s</i> hinzufügen"
+
+#~ msgid "Raw format"
+#~ msgstr "Rohformat"
+
+#~ msgid "Qemu copy-on-write 2"
+#~ msgstr "Qemu copy-on-write 2"
 
 #~ msgid "Create snapshot"
 #~ msgstr "Sicherungspunkt erstellen"

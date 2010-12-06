@@ -114,7 +114,7 @@ class DriveWizard( umcd.IWizard ):
 		opts['action'] = 'type-selected'
 		action = umcd.Action(umcp.SimpleCommand(self.command, options=opts), items)
 		choices = (
-				('RAW', _('Raw format')),
+				('RAW', _('Simple format (raw)')),
 				)
 		try:
 			drive_pool = options['drive-pool']
@@ -123,13 +123,13 @@ class DriveWizard( umcd.IWizard ):
 				if self.node_uri.startswith('qemu'):
 					choices = (
 							#('qcow', _('Qemu copy-on-write')),
-							('qcow2', _('Qemu copy-on-write 2')),
+							('qcow2', _('Extended format (qcow2)')),
 							#('vmdk', _('VMWare Disk')),
-							('raw', _('Raw format')),
+							('raw', _('Simple format (raw)')),
 							)
 				elif self.node_uri.startswith('xen'):
 					choices = (
-							('raw', _('Raw format')),
+							('raw', _('Simple format (raw)')),
 							#('qcow2', _('Qemu copy-on-write 2')),
 							#('vhd', _('Virtual Hard Disk')),
 							#('vmdk', _('VMWare Disk')),

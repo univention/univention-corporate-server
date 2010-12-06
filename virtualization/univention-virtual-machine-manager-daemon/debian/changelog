@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.119-1) unstable; urgency=low
+
+  * use non technical description for image formats; Bug #19575
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 06 Dec 2010 16:06:39 +0100
+
 univention-virtual-machine-manager-daemon (0.9.118-1) unstable; urgency=low
 
   * support removal of several snapshots at once
