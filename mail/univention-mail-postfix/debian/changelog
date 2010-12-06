@@ -1,3 +1,9 @@
+univention-mail-postfix (3.0.4-1) unstable; urgency=low
+
+  * smtp auth should not be the default (Bug #20574)  
+
+ -- Felix Botner <botner@univention.de>  Mon, 06 Dec 2010 18:07:23 +0100
+
 univention-mail-postfix (3.0.3-1) unstable; urgency=low
 
   * made from_attr in /etc/pam.d/smtp configurable via
