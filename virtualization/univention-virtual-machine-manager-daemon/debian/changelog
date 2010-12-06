@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.121-1) unstable; urgency=low
+
+  * modify layout if no snapshots are available ; Bug #19575
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 06 Dec 2010 16:20:01 +0100
+
 univention-virtual-machine-manager-daemon (0.9.120-1) unstable; urgency=low
 
   * Fix extended xen-pv configuration (Bug #20819)

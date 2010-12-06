@@ -401,13 +401,14 @@ class handler( umch.simpleHandler ):
 		# listing of existing snapshots
 		lst = umcd.List()
 		btntoggle = umcd.ToggleCheckboxes()
-		lst.set_header( [ btntoggle, _( 'Name' ), _( 'Date' ), '' ] )
 
 		# no snapshots available
 		if not domain_info.snapshots:
-			lst.add_row( [ '', umcd.Fill( 3, _( 'There are no snapshots available' ) ) ] )
+			lst.add_row( [ _( 'There are no snapshots available' ) ] )
 			table.add_row( [ lst ] )
 			return table
+
+		lst.set_header( [ btntoggle, _( 'Name' ), _( 'Date' ), '' ] )
 
 		# show list of snapshots
 		f = lambda s: s[ 1 ].ctime
