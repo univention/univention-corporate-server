@@ -254,10 +254,10 @@ msgid "Failed to fork daemon."
 msgstr "Dämon konnte sich nicht abspalten."
 
 #: src/univention/uvmm/node.py:1048 src/univention/uvmm/node.py:1051
-msgid "Failed to update the additionally information in the LDAP directory"
+msgid "Failed to update the additionally information in the LDAP directory."
 msgstr ""
 "Die Aktualisierung zusätzlicher Informationen im LDAP-Verzeichnis ist "
-"fehlgeschlagen"
+"fehlgeschlagen."
 
 #: src/univention-virtual-machine-manager-daemon:171
 msgid "Fork into background"

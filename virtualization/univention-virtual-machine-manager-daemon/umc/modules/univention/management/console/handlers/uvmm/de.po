@@ -540,7 +540,7 @@ msgstr ""
 msgid "Some information of the virtual instance could not be saved!<br/>"
 msgstr ""
 "Einige der Informationen zur virtuellen Instanz konnten nicht gespeichert "
-"werden!</br>"
+"werden!<br/>"
 
 #: __init__.py:1076
 msgid ""

@@ -1045,10 +1045,10 @@ def domain_define( uri, domain ):
 				record.commit()
 		except LdapConnectionError, e:
 			logger.error('Updating LDAP failed, insufficient permissions: %s' % (e,))
-			warnings.append( _( 'Failed to update the additionally information in the LDAP directory' ) )
+			warnings.append( _( 'Failed to update the additionally information in the LDAP directory.' ) )
 		except ( univention.admin.uexceptions.ldapError, univention.admin.uexceptions.objectExists ), e:
 			logger.error('Updating LDAP failed: %s %s' % (e, record))
-			warnings.append( _( 'Failed to update the additionally information in the LDAP directory' ) )
+			warnings.append( _( 'Failed to update the additionally information in the LDAP directory.' ) )
 
 	node.wait_update(domain.uuid, old_stat)
 
