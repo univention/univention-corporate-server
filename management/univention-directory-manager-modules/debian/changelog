@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.39-1) unstable; urgency=low
+
+  * fixed traceback due to missing import (Bug #20330)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 07 Dec 2010 13:22:46 +0100
+
 univention-directory-manager-modules (6.0.38-3) unstable; urgency=low
 
   * Bump version for reimport (Bug #19647)
