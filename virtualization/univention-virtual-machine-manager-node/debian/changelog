@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (0.1.18-2) unstable; urgency=low
+
+  * Fix documentation (Bug #20812)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 07 Dec 2010 12:37:23 +0100
+
 univention-virtual-machine-manager-node (0.1.18-1) unstable; urgency=low
 
   * Adopt Bugs from UVMM component (Bug #19797)

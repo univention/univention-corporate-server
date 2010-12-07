@@ -6,10 +6,10 @@ of the configuration as XML files. The files are stored in the directory
 defined by the UCR variable uvmm/backup/directory.
 
 Restoring a virtual instance on a virtualization server is only possible
-of the following conditions are fulfilled:
+if the following conditions are fulfilled:
 
 * the hard drive and CDROM images must still be available in the same
-  directory
+  location
 * the virtualization technology must be same as before (Xen or KVM)
 
 To get a list of all available backups the following command can be
@@ -18,7 +18,7 @@ used:
 univention-virtual-machine-manager-restore -l
 
 If the list is too long to find the correct instance, a pattern for the
-instance name can be defined like this:
+instance name can be specified like this:
 
 univention-virtual-machine-manager-restore -l -p "*winxp*"
 
@@ -27,11 +27,11 @@ To restore a virtual instance the following command can be invoked:
 univention-virtual-machine-manager-restore -r <name>
 
 The argument <name> must be replaced with the name of the virtual
-instance or the UUID. If a virtual instance with the same name does
+instance or its UUID. If a virtual instance with the same name does
 already exists on the server the restore is aborted unless the option -f
-is given to force the replacement of it.
+is used to force the replacement.
 
-After the machine is restored successfully it can be started with the
-following command (as root):
+After the machine is restored successfully it can be started using UVMM or with
+the following command (as root):
 
 virsh start <name>
