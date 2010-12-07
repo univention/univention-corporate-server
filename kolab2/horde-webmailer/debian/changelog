@@ -1,3 +1,12 @@
+horde-webmailer (1.2.5~2.2.12-1) unstable; urgency=low
+
+  * Re-enabled the first part of
+    t_framework_UV_fixed_group_permissions.diff patch, otherwise the
+    group permissoons for a shared folder are not evaluated correctly
+    (Bug #20748)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 07 Dec 2010 08:51:58 +0100
+
 horde-webmailer (1.2.5~2.2.11-1) unstable; urgency=low
 
   * Another patch for login by uid for smtp auth (Bug #20863)
