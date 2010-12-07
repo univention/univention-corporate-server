@@ -1,4 +1,4 @@
-univention-directory-manager-modules (6.0.39-1) unstable; urgency=low
+univention-directory-manager-modules (6.0.38-4) unstable; urgency=low
 
   * fixed traceback due to missing import (Bug #20330)
 
