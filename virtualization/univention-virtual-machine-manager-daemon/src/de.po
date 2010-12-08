@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager 0.9.10-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2010-12-01 19:45+0100\n"
+"POT-Creation-Date: 2010-12-08 12:47+0100\n"
 "PO-Revision-Date: 2010-05-28 11:30+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -103,17 +103,22 @@ msgstr "Konnte Socket nicht öffnen: %(errno)d"
 msgid "Daemon options"
 msgstr "Dämonoptionen"
 
-#: src/univention/uvmm/node.py:1177
+#: src/univention/uvmm/node.py:1170
 #, python-format
 msgid "Domain \"%(domain)s\" in state \"%(state)s\" can not be migrated"
 msgstr ""
 "Domain \"%(domain)s\" im Zustand \"%(state)s\" kann nicht migriert werden"
 
+#: src/univention/uvmm/node.py:789
+#, python-format
+msgid "Domain name \"%(domain)s\" already used by \"%(uuid)s\": %(error)s"
+msgstr "Domain-Name \"%(domain)s\" wird bereits von \"%(uuid)s\" verwendet: %(error)s"
+
 #: src/univention/uvmm/client.py:84
 msgid "EOS while waiting for answer."
 msgstr "Ende des Datenstroms beim Warten auf eine Antwort"
 
-#: src/univention/uvmm/node.py:1215
+#: src/univention/uvmm/node.py:1208
 #, python-format
 msgid "Error creating \"%(domain)s\" snapshot: %(error)s"
 msgstr "Fehler beim Sichern der Domäne \"%(domain)s\": %(error)s"
@@ -133,15 +138,16 @@ msgstr ""
 "Fehler beim Erzeugen des Speichermediums \"%(name)s\" für \"%(domain)s\": %"
 "(error)s"
 
-#: src/univention/uvmm/node.py:1029
+#: src/univention/uvmm/node.py:1022
 #, python-format
 msgid "Error defining domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Definieren der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:1255 src/univention/uvmm/node.py:1264
+#: src/univention/uvmm/node.py:1248 src/univention/uvmm/node.py:1257
 #, python-format
 msgid "Error deleting \"%(domain)s\" snapshot: %(error)s"
-msgstr "Fehler beim Löschen des Sciherungsstandes von \"%(domain)s\": %(error)s"
+msgstr ""
+"Fehler beim Löschen des Sciherungsstandes von \"%(domain)s\": %(error)s"
 
 #: src/univention/uvmm/storage.py:181 src/univention/uvmm/storage.py:274
 #, python-format
@@ -163,17 +169,17 @@ msgstr ""
 "Fehler beim Finden der Speichermediums \"%(volume)s\" von \"%(domain)s\": %"
 "(error)s"
 
-#: src/univention/uvmm/node.py:1105
+#: src/univention/uvmm/node.py:1098
 #, python-format
 msgid "Error managing domain \"%(domain)s\""
 msgstr "Fehler beim Verwalten der Domäne \"%(domain)s\""
 
-#: src/univention/uvmm/node.py:1108
+#: src/univention/uvmm/node.py:1101
 #, python-format
 msgid "Error managing domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Verwalten der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:1194
+#: src/univention/uvmm/node.py:1187
 #, python-format
 msgid "Error migrating domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Migrieren der Domäne \"%(domain)s\": %(error)s"
@@ -193,7 +199,7 @@ msgstr "Fehler beim Lesen der unvollständigen Datei %(file)s"
 msgid "Error removing %(file)s.old: %(msg)s"
 msgstr "Fehler beim Entfernen der Datei %(file)s.old: %(msg)s"
 
-#: src/univention/uvmm/node.py:1010 src/univention/uvmm/node.py:1020
+#: src/univention/uvmm/node.py:1013
 #, python-format
 msgid "Error removing domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Löschen der Domäne \"%(domain)s\": %(error)s"
@@ -208,28 +214,27 @@ msgstr "Fehler beim Umbenennen der Datei %(file)s.new: %(msg)s"
 msgid "Error renaming %(file)s: %(msg)s"
 msgstr "Fehler beim Umbenennen der Datei %(file)s: %(msg)s"
 
-#: src/univention/uvmm/node.py:1136
+#: src/univention/uvmm/node.py:1129
 #, python-format
 msgid "Error restoring domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Wiederherstellen der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:802
+#: src/univention/uvmm/node.py:793
 #, python-format
 msgid "Error retrieving old domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Auslesen der alten Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:1232
-#: src/univention/uvmm/node.py:1238
+#: src/univention/uvmm/node.py:1225 src/univention/uvmm/node.py:1231
 #, python-format
 msgid "Error reverting \"%(domain)s\" to snapshot: %(error)s"
 msgstr "Fehler beim Wiederherstellen der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:1122
+#: src/univention/uvmm/node.py:1115
 #, python-format
 msgid "Error saving domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Speichern der Domäne \"%(domain)s\": %(error)s"
 
-#: src/univention/uvmm/node.py:1151
+#: src/univention/uvmm/node.py:1144
 #, python-format
 msgid "Error undefining domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Löschen der Domäne \"%(domain)s\": %(error)s"
@@ -253,7 +258,7 @@ msgstr "Fehler: %(exception)s"
 msgid "Failed to fork daemon."
 msgstr "Dämon konnte sich nicht abspalten."
 
-#: src/univention/uvmm/node.py:1048 src/univention/uvmm/node.py:1051
+#: src/univention/uvmm/node.py:1041 src/univention/uvmm/node.py:1044
 msgid "Failed to update the additionally information in the LDAP directory."
 msgstr ""
 "Die Aktualisierung zusätzlicher Informationen im LDAP-Verzeichnis ist "
@@ -409,9 +414,9 @@ msgstr "Ausführliche Informationen ausgeben"
 msgid "Skip reading ini-file"
 msgstr "Lesen der ini-Datei überspringen"
 
-#: src/univention/uvmm/node.py:1201 src/univention/uvmm/node.py:1206
-#: src/univention/uvmm/node.py:1222 src/univention/uvmm/node.py:1227
-#: src/univention/uvmm/node.py:1245 src/univention/uvmm/node.py:1250
+#: src/univention/uvmm/node.py:1194 src/univention/uvmm/node.py:1199
+#: src/univention/uvmm/node.py:1215 src/univention/uvmm/node.py:1220
+#: src/univention/uvmm/node.py:1238 src/univention/uvmm/node.py:1243
 #, python-format
 msgid "Snapshot not supported \"%(node)s\""
 msgstr "\"%(node)s\" unterstützt keine Sicherungspunkte."
@@ -426,7 +431,7 @@ msgstr "Unbekannter PAM-Typ: %(type)s"
 msgid "Unknown command \"%(command)s"
 msgstr "Unbekannter Befehl \"%(command)s\""
 
-#: src/univention/uvmm/node.py:420 src/univention/uvmm/node.py:928
+#: src/univention/uvmm/node.py:420 src/univention/uvmm/node.py:929
 #, python-format
 msgid "Unknown disk type: %(type)d"
 msgstr "Unbekannter Laufwerkstyp: %(type)d"
@@ -437,7 +442,7 @@ msgstr "Unbekannter Laufwerkstyp: %(type)d"
 msgid "Unknown mode \"%(mode)s\""
 msgstr "Unbekannter Modus \"%(mode)s\""
 
-#: src/univention/uvmm/node.py:1089
+#: src/univention/uvmm/node.py:1082
 #, python-format
 msgid "Unsupported state transition %(cur_state)s to %(next_state)s"
 msgstr "Ungültiger Zustandsübergang von %(cur_state)s zu %(next_state)s"
@@ -446,7 +451,8 @@ msgstr "Ungültiger Zustandsübergang von %(cur_state)s zu %(next_state)s"
 #, python-format
 msgid "Unsupported storage-pool-type \"%(pool_type)s for \"%(domain)s\""
 msgstr ""
-"Speicherbereichstyp \"%(pool_type)s\" wird nicht unterstützt für \"%(domain)s\""
+"Speicherbereichstyp \"%(pool_type)s\" wird nicht unterstützt für \"%(domain)s"
+"\""
 
 #: src/univention/uvmm/commands.py:153
 #, python-format

@@ -782,7 +782,16 @@ def domain_define( uri, domain ):
 	node = node_query(uri)
 	conn = node.conn
 
-	old_dom = None
+	# Check for (name,uuid) collision
+	try:
+		old_dom = conn.lookupByName(domain.name)
+		if old_dom.UUIDString() != domain.uuid:
+			raise NodeError(_('Domain name "%(domain)s" already used by "%(uuid)s": %(error)s'), domain=domain.name, uuid=domain.uuid, error=e.get_error_message())
+	except libvirt.libvirtError, e:
+		if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
+			logger.error(e)
+			raise NodeError(_('Error retrieving old domain "%(domain)s": %(error)s'), domain=domain.name, error=e.get_error_message())
+
 	old_stat = None
 	warnings = []
 
@@ -792,14 +801,6 @@ def domain_define( uri, domain ):
 	elem.appendChild( doc.createTextNode( domain.name ) )
 	doc.documentElement.appendChild( elem )
 	doc.documentElement.setAttribute('type', domain.domain_type.lower()) # TODO: verify
-	if not domain.uuid:
-		try:
-			old_dom = conn.lookupByName(domain.name)
-			domain.uuid = old_dom.UUIDString()
-		except libvirt.libvirtError, e:
-			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
-				logger.error(e)
-				raise NodeError(_('Error retrieving old domain "%(domain)s": %(error)s'), domain=domain.name, error=e.get_error_message())
 	if domain.uuid:
 		old_stat = node.domains[domain.uuid].key()
 		elem = doc.createElement( 'uuid' )
@@ -999,25 +1000,17 @@ def domain_define( uri, domain ):
 	doc.documentElement.appendChild( devices )
 
 	# remove old domain definitions
-	if old_dom:
-		try:
-			_domain_backup(old_dom)
-			old_dom.undefine()
-			logger.info('Old domain "%s" removed.' % (domain.name,))
-		except libvirt.libvirtError, e:
-			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
-				logger.error(e)
-				raise NodeError(_('Error removing domain "%(domain)s": %(error)s'), domain=domain.name, error=e.get_error_message())
 	if domain.uuid:
 		try:
 			dom = conn.lookupByUUIDString(domain.uuid)
 			_domain_backup(dom)
-			dom.undefine()
-			logger.info('Old domain "%s" removed.' % (domain.uuid,))
+			if dom.name() != domain.name: # rename needs undefine
+				dom.undefine() # all snapshots are destroyed!
+				logger.info('Old domain "%s" removed.' % (domain.uuid,))
 		except libvirt.libvirtError, e:
 			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 				logger.error(e)
-				raise NodeError(_('Error removing domain "%(domain)s": %(error)s'), domain=domain.name, error=e.get_error_message())
+				raise NodeError(_('Error removing domain "%(domain)s": %(error)s'), domain=domain.uuid, error=e.get_error_message())
 
 	try:
 		logger.debug('XML DUMP: %s' % doc.toxml())
