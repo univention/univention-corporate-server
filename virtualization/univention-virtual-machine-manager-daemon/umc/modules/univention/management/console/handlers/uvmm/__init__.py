@@ -636,6 +636,8 @@ class handler( umch.simpleHandler ):
 	def _dlg_domain_settings( self, object, node_info, domain_info ):
 		"""Create domain setting widgets."""
 		domain_is_off = 5 == domain_info.state
+		domain_has_snapshots = getattr( domain_info, 'snapshots', None ) != None and domain_info.snapshots
+
 		content = umcd.List()
 
 		types = []
@@ -654,15 +656,10 @@ class handler( umch.simpleHandler ):
 
 		# if domain is not stopped ...
 		make_func = domain_is_off and umcd.make or umcd.make_readonly
-		name = make_func( self[ 'uvmm/domain/configure' ][ 'name' ], default = handler._getattr( domain_info, 'name', '' ), attributes = { 'width' : '250' } )
+
 		tech_default = '%s-%s' % ( handler._getattr( domain_info, 'domain_type', 'xen' ), handler._getattr( domain_info, 'os_type', 'hvm' ) )
-		virt_tech = umcd.make_readonly( self[ 'uvmm/domain/configure' ][ 'type' ], default = tech_default, attributes = { 'width' : '250' } )
-		arch = make_func( self[ 'uvmm/domain/configure' ][ 'arch' ], default = handler._getattr( domain_info, 'arch', 'i686' ), attributes = { 'width' : '250' } )
-		os_widget = make_func( self[ 'uvmm/domain/configure' ][ 'os' ], default = getattr(domain_info, 'annotations', {}).get('os', ''), attributes = { 'width' : '250' } )
 		cpus_select.max = int( node_info.cpus )
-		cpus = make_func( self[ 'uvmm/domain/configure' ][ 'cpus' ], default = handler._getattr( domain_info, 'vcpus', '1' ), attributes = { 'width' : '250' } )
 		mem = handler._getattr(domain_info, 'maxMem', str(512<<10)) # KiB
-		memory = make_func( self[ 'uvmm/domain/configure' ][ 'memory' ], default = MemorySize.num2str( mem ), attributes = { 'width' : '250' } )
 		if domain_info and domain_info.interfaces:
 			iface = domain_info.interfaces[ 0 ]
 			iface_mac = iface.mac_address
@@ -670,8 +667,20 @@ class handler( umch.simpleHandler ):
 		else:
 			iface_mac = ''
 			iface_source = 'eth0'
-		mac = make_func( self[ 'uvmm/domain/configure' ][ 'mac' ], default = iface_mac, attributes = { 'width' : '250' } )
-		interface = make_func( self[ 'uvmm/domain/configure' ][ 'interface' ], default = iface_source, attributes = { 'width' : '250' } )
+		virt_tech = umcd.make_readonly( self[ 'uvmm/domain/configure' ][ 'type' ], default = tech_default, attributes = { 'width' : '250' } )
+		os_widget = make_func( self[ 'uvmm/domain/configure' ][ 'os' ], default = getattr(domain_info, 'annotations', {}).get('os', ''), attributes = { 'width' : '250' } )
+
+		if domain_has_snapshots:
+			make_func2 = umcd.make_readonly
+		else:
+			make_func2 = make_func
+		name = make_func2( self[ 'uvmm/domain/configure' ][ 'name' ], default = handler._getattr( domain_info, 'name', '' ), attributes = { 'width' : '250' } )
+		arch = make_func2( self[ 'uvmm/domain/configure' ][ 'arch' ], default = handler._getattr( domain_info, 'arch', 'i686' ), attributes = { 'width' : '250' } )
+		cpus = make_func2( self[ 'uvmm/domain/configure' ][ 'cpus' ], default = handler._getattr( domain_info, 'vcpus', '1' ), attributes = { 'width' : '250' } )
+		memory = make_func2( self[ 'uvmm/domain/configure' ][ 'memory' ], default = MemorySize.num2str( mem ), attributes = { 'width' : '250' } )
+		mac = make_func2( self[ 'uvmm/domain/configure' ][ 'mac' ], default = iface_mac, attributes = { 'width' : '250' } )
+		interface = make_func2( self[ 'uvmm/domain/configure' ][ 'interface' ], default = iface_source, attributes = { 'width' : '250' } )
+
 		# if no bootloader is set we use the advanced kernel configuration options
 		if handler._getattr( domain_info, 'bootloader', '' ):
 			akc = False
@@ -696,7 +705,7 @@ class handler( umch.simpleHandler ):
 
 		# drive listing
 		drive_sec = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
-		if domain_is_off:
+		if domain_is_off and not domain_has_snapshots:
 			cmd = umcp.SimpleCommand('uvmm/drive/create', options=copy.copy(object.options))
 			drive_sec.add_row([umcd.LinkButton(_('Add new drive'), actions=[umcd.Action(cmd),])])
 		disk_list = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
@@ -738,7 +747,7 @@ class handler( umch.simpleHandler ):
 
 				remove_cmd.options[ 'disk' ] = copy.copy( dev.source )
 				remove_btn = umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd ) ] )
-				if domain_is_off:
+				if domain_is_off and not domain_has_snapshots:
 					if not first:
 						bootdev_cmd.options[ 'disk' ] = dev.source
 						bootdev_btn = umcd.LinkButton( _( 'Set as boot device' ), actions = [ umcd.Action( bootdev_cmd, options = { 'disk' : dev.source } ), umcd.Action( overview_cmd ) ] )
@@ -807,6 +816,8 @@ class handler( umch.simpleHandler ):
 		sections = umcd.List()
 		if not domain_is_off:
 			sections.add_row( [ umcd.InfoBox( _( 'The settings of a virtual instance can just be modified if it is shut off.' ) ) ] )
+		elif domain_has_snapshots:
+			sections.add_row( [ umcd.InfoBox( _( 'Some of the settings can not be modified currently. The reason therefore are the available snapshots. Modifying these settings would make the snapshots invalid, i.e. the snapshots can not be restored anymore. If these settings must be edited the snapshots have to be removed first.' ) ) ] )
 		if not domain_info:
 			sections.add_row( [ umcd.Section( _( 'Drives' ), drive_sec, hideable = False, hidden = False, name = 'drives.newdomain' ) ] )
 			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = False, hidden = True, name = 'settings.newdomain' ) ] )
