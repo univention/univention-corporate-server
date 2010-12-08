@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.38-5) unstable; urgency=low
+
+  * fixed error message if user shall be deleted without valid or overdraw
+    license (Bug #20330)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 08 Dec 2010 10:54:48 +0100
+
 univention-directory-manager-modules (6.0.38-4) unstable; urgency=low
 
   * fixed traceback due to missing import (Bug #20330)

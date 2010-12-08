@@ -426,7 +426,7 @@ class object(univention.admin.handlers.simpleLdap):
 		# return True if object has been modified
 		return bool(ml)
 
-	def fast_member_remove(self, memberdnlist, uidlist):
+	def fast_member_remove(self, memberdnlist, uidlist, ignore_license=0):
 		ml = []
 		uids = []
 		members = []
@@ -451,7 +451,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if ml:
 			try:
-				return self.lo.modify(self.dn, ml)
+				return self.lo.modify(self.dn, ml, ignore_license=ignore_license)
 			except ldap.NO_SUCH_OBJECT, msg:
 				raise univention.admin.uexceptions.noObject
 			except ldap.INSUFFICIENT_ACCESS, msg:

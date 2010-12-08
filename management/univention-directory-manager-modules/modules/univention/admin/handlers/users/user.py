@@ -2774,7 +2774,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		if groupObjects:
 			uid = univention.admin.uldap.explodeDn(self.dn, 1)[0]
 			for groupObject in groupObjects:
-				groupObject.fast_member_remove( [ self.dn ], [ uid ] )
+				groupObject.fast_member_remove( [ self.dn ], [ uid ], ignore_license=1 )
 
 		admin_settings_dn='uid=%s,cn=admin-settings,cn=univention,%s' % (self['username'], self.lo.base)
 		# delete admin-settings object of user if it exists
