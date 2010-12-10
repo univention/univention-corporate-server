@@ -128,8 +128,11 @@ if mailer_is_sendmail:
 	print "$conf['mailer']['params']['sendmail_args'] = '-oi';"
 
 if not mailer_is_sendmail:
-	mailer_port = baseConfig.get('horde/mailer/smtp/port', '465')
-	mailer_host = baseConfig.get('horde/mailer/smtp/host', '%s.%s' %(baseConfig['hostname'], baseConfig['domainname']))
+	mailer_port = baseConfig.get('horde/mailer/smtp/port', '25')
+	if baseConfig.get("horde/imapserver"):
+		mailer_host = baseConfig.get('horde/mailer/smtp/host', baseConfig.get("horde/imapserver"))
+	else:
+		mailer_host = baseConfig.get('horde/mailer/smtp/host', '%s.%s' %(baseConfig['hostname'], baseConfig['domainname']))
 	mailer_name = baseConfig.get('horde/mailer/smtp/name', '%s.%s' %(baseConfig['hostname'], baseConfig['domainname']))
 	if mailer_port == '465':
 		print "$conf['mailer']['params']['host'] = 'ssl://%s';" % mailer_host

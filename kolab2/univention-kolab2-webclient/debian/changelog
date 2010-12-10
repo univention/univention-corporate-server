@@ -1,3 +1,11 @@
+univention-kolab2-webclient (6.0.10-1) unstable; urgency=low
+
+  * Use port 25 for smtp beacause horde use STARTTLS over port 25 and
+    use by default horde/imapserver if horde/mailer/smtp/host is not set
+    (Bug #20661)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 10 Dec 2010 08:42:55 +0100
+
 univention-kolab2-webclient (6.0.9-3) unstable; urgency=low
 
   * fix baseConfig load order (Bug #20554)
