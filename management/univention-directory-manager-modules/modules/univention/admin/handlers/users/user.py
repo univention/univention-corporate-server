@@ -1538,8 +1538,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			if not [ dn for (dn, attr) in searchResult if attr.has_key('aRecord') ]:
 				options['groupware'].default = False
 				kolab2server_present = False
-		else:
-			options['groupware'].default = kolab2server_present
+		elif not kolab2server_present:
+			options['groupware'].default = False
 
 		self.options=[]
 		if self.oldattr.has_key('objectClass'):

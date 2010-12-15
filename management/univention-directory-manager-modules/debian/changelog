@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.38-6) unstable; urgency=low
+
+  * fixed default groupware detection (Bug #20981)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 15 Dec 2010 10:59:26 +0100
+
 univention-directory-manager-modules (6.0.38-5) unstable; urgency=low
 
   * fixed error message if user shall be deleted without valid or overdraw
