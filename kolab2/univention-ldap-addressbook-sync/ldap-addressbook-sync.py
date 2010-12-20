@@ -70,16 +70,28 @@ def __relevant_attrs_changed( new, old, attrs ):
 def __check_relevance( obj, dn, new, old ):
 	obj_classes = obj.get( 'objectClass', [] )
 	# mail address available ?
-	univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, str( obj ) )
-	if ( 'univentionGroup' in obj_classes or 'univentionKolabGroup' in obj_classes ) and obj.get( 'mailPrimaryAddress', None ):
-		if __relevant_attrs_changed( new, old, ( 'cn', 'mailPrimaryAddress' ) ):
+	univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, 
+				"ldap-addressbook-sync: check_relevance for %s" % dn )
+
+	if ( 'univentionGroup' in obj_classes or 'univentionKolabGroup' in obj_classes ):
+		univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, 
+					"ldap-addressbook-sync: check_relevance: detected a group" )
+		if __relevant_attrs_changed( new, old, ( 'cn', 'mailPrimaryAddress', 'uniqueMember' ) ):
+			univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, 
+						"ldap-addressbook-sync: check_relevance: object has changed" )
 			__add_cache_entry( dn, new, old )
 		return True
 	elif 'inetOrgPerson' in obj_classes:
-		if __relevant_attrs_changed( new, old, ( 'homePostalAddress', 'mail', 'givenName', 'sn', 'telephoneNumber', 'homePhone', 'mobile', 'o', 'postalCode', 'street', 'l', 'title', 'univentionBirthday' ) ):
+		univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, 
+					"ldap-addressbook-sync: check_relevance: detected a user" )
+		if __relevant_attrs_changed( new, old, ( 'homePostalAddress', 'mail', 'givenName', 'sn', 'telephoneNumber', 'homePhone', 'mobile', 'o', 'postalCode', 'street', 'l', 'title', 'univentionBirthday', 'departmentNumber' ) ):
 			__add_cache_entry( dn, new, old )
+			univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, 
+						"ldap-addressbook-sync: check_relevance: object has changed" )
 		return True
 
+	univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, 
+				"ldap-addressbook-sync: check_relevance: unknown object type" )
 	return False
 
 def handler( dn, new, old ):

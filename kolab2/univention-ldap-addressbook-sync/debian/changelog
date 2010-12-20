@@ -1,3 +1,15 @@
+univention-ldap-addressbook-sync (4.0.4-1) unstable; urgency=low
+
+  * sync department number (Bug #13581)
+  * XML-Attribute "job_title" instead of "title" (Bug #20682)
+  * Filter DN via regular expression (Bug #20730)
+  * List recipients for groups (Bug #20732)
+  * Filter attributes (Bug #20733)
+  * sync not triggered when adding a primary address to a group (Bug #20734)
+  * disable default folder (Bug #20735)
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 20 Dec 2010 16:30:22 +0100
+
 univention-ldap-addressbook-sync (4.0.3-1) unstable; urgency=low
 
   * catch all exception while processing an pickle object and keep it; Bug #19841

@@ -62,12 +62,29 @@ class LDAP_Connection( univention.uldap.access ):
 		result = self.search( filter = '(&(objectClass=univentionGroup)(cn=%s)(memberUid=%s))' % ( group, username ), attr = [ 'dn' ] )
 		return len( result ) > 0
 
+	def member_addresses( self, dn ):
+		result = self.search( base = dn, attr = ['uniqueMember'] )
+		ud.debug( ud.ADMIN, ud.INFO, 'LDAP_Connection: %s ' % ( result ) )
+		members = []
+		if result[0][1].has_key('uniqueMember'):
+			for member_dn in result[0][1]['uniqueMember']:
+				try:
+					user_result = self.search( base = member_dn, attr = ['mail', 'displayName'] )	
+					if user_result[0][1].has_key( 'mail' ):
+						members.append( '%s <%s>' % ( user_result[0][1]['displayName'][0], user_result[0][1]['mail'][0] ) )
+				except:
+					ud.debug( ud.ADMIN, ud.INFO, 'LDAP_Connection: cannot find user %s ' % ( member_dn ) )
+					pass
+					
+		return members
+
 class KolabContact( email.MIMEMultipart.MIMEMultipart, object ):
 	def __init__( self, dn ):
 		email.MIMEMultipart.MIMEMultipart.__init__( self )
 		self._id = '%s@%s.%s' % ( time.time(), cfgRegistry.get( 'hostname', '' ), cfgRegistry.get( 'domainname', '' ) )
 		self[ 'subject' ] = self._id
 		self[ 'X-Univention-LDAP-DN' ] = dn
+		self.dn = dn
 		self.__setup_object()
 		self.__attached = False
 
@@ -80,9 +97,6 @@ class KolabContact( email.MIMEMultipart.MIMEMultipart, object ):
 
 		# id
 		self.__create_element( 'uid', self._id, self._doc.documentElement )
-
-		# comment
-		self.__create_element( 'body', parent = self._doc.documentElement )
 
 		# categories
 		self.__create_element( 'categories', parent = self._doc.documentElement )
@@ -106,6 +120,7 @@ class KolabContact( email.MIMEMultipart.MIMEMultipart, object ):
 		self.__create_element( 'given-name', parent = elem, prefix = 'name' )
 		self.__create_element( 'last-name', parent = elem, prefix = 'name' )
 		self.__create_element( 'full-name', parent = elem, prefix = 'name' )
+		self.__create_element( 'prefix', parent = elem, prefix = 'name' )
 		self._doc.documentElement.appendChild( elem )
 
 		# organization
@@ -130,6 +145,14 @@ class KolabContact( email.MIMEMultipart.MIMEMultipart, object ):
 			self.__create_element( 'type', text = phone, parent = elem, prefix = phone )
 			self.__create_element( 'number', parent = elem, prefix = phone )
 			self._doc.documentElement.appendChild( elem )
+
+		# comment
+		try:
+			self.__create_element( 'body', text = '\n'.join( ldapConnection.member_addresses( self.dn ) ), parent = self._doc.documentElement )
+			ud.debug( ud.ADMIN, ud.INFO, 'KolabContact: created body for %s (dn: %s)' % ( self._id, self.dn ) )
+		except:
+			ud.debug( ud.ADMIN, ud.INFO, 'KolabContact: did not create body for %s' % ( self._id ) )
+
 
 	def add_email_addresses(  self, display, addresses ):
 		i = 0
@@ -205,7 +228,9 @@ http://www.kolab.org/kolab2-clients.html
 		return self.as_string()
 
 class IMAP_Client( object ):
-	def __init__( self, folder = None, groups = None ):
+	def __init__( self, folder = None, groups = None, filter = [], dnpattern = None ):
+		
+		self.dnpattern = dnpattern
 
 		if not folder:
 			# check for IMAP folder
@@ -226,10 +251,13 @@ class IMAP_Client( object ):
 		# try to connect and authenticate
 		self.auth()
 
+		# set filter
+		self.filter = filter
+
 		# set ACLs (required!)
 		(type, data) = self.imap4.setacl( self.folder, 'cyrus', 'lrswipcda' )
 		if type != 'OK':
-			raise RuntimeError( 'SetACL failed: %s' % repr(data) )
+			raise RuntimeError( 'SetACL failed: %s folder: %s' % ( repr(data), folder ) )
 
 		# select mailbox (checks existance)
 		(type, data) = self.imap4.select( self.folder )
@@ -307,19 +335,48 @@ class IMAP_Client( object ):
 		# expunge
 		self.imap4.expunge()
 
-	def add( self, message, uid = None ):
+	def _checkRelevance( self, contact, uid = None ):
+		'''check constraints given by group membership and regular expression if object is relevant for sync'''
 		if self.groups and uid:
 			for group in self.groups:
 				ud.debug( ud.ADMIN, ud.INFO, 'IMAP_Client: check if %s is in group %s' % ( uid, group ) )
 				if ldapConnection.is_member( uid, group ):
 					ud.debug( ud.ADMIN, ud.INFO, 'IMAP_Client: %s is member of group %s' % ( uid, group ) )
-					break
+					return True
 			else:
 				ud.debug( ud.ADMIN, ud.INFO, 'IMAP_Client: do NOT add %s to folder %s' % ( uid, self.folder ) )
 				return False
 
+		if self.dnpattern:
+			ud.debug( ud.ADMIN, ud.INFO, 'IMAP_Client: check if %s matches %s' % ( contact.dn, self.dnpattern.pattern ) )
+			if self.dnpattern.match(contact.dn):
+				ud.debug( ud.ADMIN, ud.INFO, 'IMAP_Client: %s matches %s' % ( contact.dn, self.dnpattern.pattern ) )
+				return True
+			else:
+				ud.debug( ud.ADMIN, ud.INFO, 'IMAP_Client: do NOT add %s to folder %s' % ( uid, self.folder ) )
+				return False
+		return True # default: if no constraints given sync all
+
+
+	def add( self, contact, uid = None ):
+		if not self._checkRelevance( contact, uid = None ):
+			return False
+
+		for item in (self.filter + _filter):
+			if item == 'homePostalAddress':
+				contact.home_street = ''
+				contact.home_postal_code = ''
+				contact.home_locality = ''
+			elif item == 'uniqueMember':
+				contact.body = ''
+			else:
+                        	try:
+                                	setattr(contact, _mapping[item], '')
+                        	except:
+                                	pass
+
 		# add new message
-		self.imap4.append( self.folder, None, None, message )
+		self.imap4.append( self.folder, None, None, str( contact ) )
 
 
 class Synchronisation( object ):
@@ -330,7 +387,11 @@ class Synchronisation( object ):
 											  '%(cn)s (Gruppe)' )
 		self.display_list = cfgRegistry.get( 'ldap/addressbook/sync/display/list',
 											 '%(cn)s (Liste)' )
-		self.imap_clients = [ IMAP_Client(), ]
+		if cfgRegistry.get( 'ldap/addressbook/sync/folder', None ) not in [None, '']:
+			self.imap_clients = [ IMAP_Client(), ]
+		else:
+			# no default folder given
+			self.imap_clients = [ ]
 		self._check_additional_folders()
 
 	def _check_additional_folders( self ):
@@ -344,7 +405,9 @@ class Synchronisation( object ):
 				if groups:
 					groups = groups.split( ';' )
 				ud.debug( ud.ADMIN, ud.INFO, 'IMAP_Client: folder: %s / groups:  %s' % ( folder, groups ) )
-				self.imap_clients.append( IMAP_Client( folder, groups ) )
+                                filter = cfgRegistry.get('ldap/addressbook/sync/additional/attributefilter/' + name, '').split(" ")
+				dnpattern = re.compile(cfgRegistry.get('ldap/addressbook/sync/additional/dnregexp/' + name, ''))
+                                self.imap_clients.append( IMAP_Client( folder, groups, filter = filter, dnpattern = dnpattern ) )
 
 	def remove_all( self ):
 		for client in self.imap_clients:
@@ -394,6 +457,7 @@ class Synchronisation( object ):
 			contact.name_given_name = new.get( 'givenName', '' )
 			contact.name_last_name = new.get( 'sn', '' )
 			contact.name_full_name = displayName
+			contact.name_prefix = new.get( 'title', '' )
 			ud.debug( ud.ADMIN, ud.INFO, 'IMAP: add mail addresses: %s' % addresses )
 			contact.add_email_addresses( displayName, addresses )
 			contact.business1_number = new.get( 'telephoneNumber', '' )
@@ -403,7 +467,7 @@ class Synchronisation( object ):
 			contact.business_postal_code = new.get( 'postalCode', '' )
 			contact.business_street = new.get( 'street', '' )
 			contact.business_locality = new.get( 'l', '' )
-			contact.job_title = new.get( 'title', '' )
+			contact.department = new.get( 'departmentNumber', '' )
 			if 'univentionPerson' in obj_classes:
 				# bd -> yyyy-mm-dd
 				bd = new.get( 'univentionBirthday', '' )
@@ -431,9 +495,8 @@ class Synchronisation( object ):
 			ud.debug( ud.ADMIN, ud.INFO, 'IMAP: add message: %s' % str( contact ) )
 			return
 
-		contact_text = str( contact )
 		for client in self.imap_clients:
-			client.add( contact_text, new.get( 'uid', None ) )
+			client.add( copy.deepcopy( contact ), new.get( 'uid', None ) )
 
 	def remove( self, dn ):
 		ud.debug( ud.ADMIN, ud.INFO, 'IMAP: remove message: %s' % dn )
@@ -465,6 +528,8 @@ def read_changes( dirname ):
 
 def main():
 	global _options
+	global _filter 
+        global _mapping
 
 	debug_level = int( cfgRegistry.get( 'ldap/addressbook/sync/debug/level','0' ) )
 
@@ -480,6 +545,22 @@ def main():
 					   help = 'if given all contacts in the global folder will be deleted' )
 
 	( _options, args ) = parser.parse_args()
+
+        _filter = cfgRegistry.get('ldap/addressbook/sync/attributefilter', '').split(" ")
+
+        _mapping = {'givenName':'name_given_name',
+                    'sn':'name_last_name',
+                    'displayName':'name_full_name',
+                    'telephoneNumber':'business1_number',
+                    'homePhone':'home1_number',
+                    'mobile':'mobile_number',
+                    'o':'organization',
+                    'postalCode':'business_postal_code',
+                    'street':'business_street',
+                    'l':'business_locality',
+                    'departmentNumber':'department',
+                    'title':'job_title',
+		    'univentionBirthday':'birthday'}
 
 	# open logging
 	ud.init( '/var/log/univention/ldap-addressbook-sync.log', 1, 1 )
