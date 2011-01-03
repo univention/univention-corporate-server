@@ -25,9 +25,12 @@
 
 # The default Cyrus IMAP config file that the scripts should
 # use.  You better know what you're doing if you change this
-CONF=/etc/imapd
+CONF=/etc/imapd/imapd.conf
 
 # Check spool condition with chk_cyrus on daily cronjob
 # Set to 1 to enable, default is disabled
 #CHKCYRUS=0
 
+# The default cyrus master config file that the scripts shoud
+# use. You better know what you're doing if you change this.
+MASTERCONF=/etc/imapd/cyrus.conf

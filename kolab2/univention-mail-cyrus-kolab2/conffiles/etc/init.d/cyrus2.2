@@ -28,14 +28,15 @@ export LC_ALL
 # Overridable defaults
 unset CYRUS_VERBOSE
 unset LISTENQUEUE
+unset CONF
+unset MASTERCONF
 [ -r /etc/default/cyrus2.2 ] && . /etc/default/cyrus2.2
 
 [ "x${CYRUS_VERBOSE}" != "x" ] && export CYRUS_VERBOSE
 OPTIONS="-d"
+[ "x${CONF}" != "x" ] && OPTIONS="-C ${CONF} ${OPTIONS}"
+[ "x${MASTERCONF}" != "x" ] && OPTIONS="-M ${MASTERCONF} ${OPTIONS}"
 [ "x${LISTENQUEUE}" != "x" ] && OPTIONS="-l ${LISTENQUEUE} ${OPTIONS}"
-if [ -n "$CONF" ]; then
-	OPTIONS="${OPTIONS} -M $CONF/cyrus.conf -C $CONF/imapd.conf"
-fi
 
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DAEMON=/usr/sbin/cyrmaster

@@ -1,3 +1,10 @@
+univention-mail-cyrus-kolab2 (3.0.23-1) unstable; urgency=low
+
+  * split CONF (imapd.conf and cyrus.conf) into CONF (imapd.conf)
+    and MASTERCONF (cyrus.conf) in cyrus configuration Bug #21067
+
+ -- Felix Botner <botner@univention.de>  Mon, 03 Jan 2011 11:59:25 +0100
+
 univention-mail-cyrus-kolab2 (3.0.22-1) unstable; urgency=low
 
   * fixed usage of murder hostname Bug #19767 
