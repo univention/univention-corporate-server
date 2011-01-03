@@ -1,3 +1,9 @@
+univention-management-console (3.0.73-3) unstable; urgency=low
+
+  * added another GNU APGL V3 header (Bug #9620)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 03 Jan 2011 16:33:30 +0100
+
 univention-management-console (3.0.73-2) unstable; urgency=low
 
   * added GNU APGL V3 header (Bug #9620)
