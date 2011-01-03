@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (4.0.7-1) unstable; urgency=low
+
+  * fixed join script (Bug #10648) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 03 Jan 2011 14:23:34 +0100
+
 univention-mail-postfix-kolab2 (4.0.6-1) unstable; urgency=low
 
   * do not override existing mailRelay ldap attribute in join script

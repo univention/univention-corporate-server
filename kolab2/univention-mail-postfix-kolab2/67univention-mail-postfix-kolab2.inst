@@ -43,8 +43,8 @@ test -n "`grep "univention-mail-postfix-kolab2 v${VERSION} successful" /usr/lib/
 
 eval `univention-baseconfig shell`
 
-res=`univention-admin container/dc list $@ --dn "$ldap_base" | grep ".*mailRelay: "`
-if [ -z "$res" ]; then
+res=$(univention-admin container/dc list $@ --dn "$ldap_base" | grep ".*mailRelay: " | awk -F ': ' '{print $2}')
+if [ "$res" = "None" ]; then
 	univention-admin container/dc modify $@ --dn "$ldap_base" --set mailRelay="$hostname.$domainname"
 fi
 
