@@ -43,12 +43,8 @@ test -n "`grep "univention-mail-postfix-kolab2 v${VERSION} successful" /usr/lib/
 
 eval `univention-baseconfig shell`
 
-if [ "$server_role" = "domaincontroller_backup" ]; then
-	res=`univention-admin container/dc list $@ --dn "$ldap_base" | grep ".*mailRelay: "`
-	if [ -z "$res" ]; then
-		univention-admin container/dc modify $@ --dn "$ldap_base" --set mailRelay="$hostname.$domainname"
-	fi
-else
+res=`univention-admin container/dc list $@ --dn "$ldap_base" | grep ".*mailRelay: "`
+if [ -z "$res" ]; then
 	univention-admin container/dc modify $@ --dn "$ldap_base" --set mailRelay="$hostname.$domainname"
 fi
 
