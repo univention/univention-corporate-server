@@ -1,3 +1,9 @@
+univention-grub (4.0.3-4) unstable; urgency=low
+
+  * added GNU APGL V3 header (Bug #9620)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 03 Jan 2011 16:11:24 +0100
+
 univention-grub (4.0.3-3) unstable; urgency=low
 
   * Don't unset empty grub/groot (Bug #9985)
