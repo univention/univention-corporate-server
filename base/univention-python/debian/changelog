@@ -1,3 +1,9 @@
+univention-python (5.0.9-3) unstable; urgency=low
+
+  * fixed typo in replaces and conflicts (Bug #10556)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 03 Jan 2011 12:29:48 +0100
+
 univention-python (5.0.9-2) unstable; urgency=low
 
   * fixed documentation of class HookManager() (Bug #20428)
