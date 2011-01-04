@@ -1,3 +1,9 @@
+horde-webmailer (1.2.5~2.2.14-2) unstable; urgency=low
+
+  * Adapt patches to the enforced quilt level (Bug #20191)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 04 Jan 2011 13:28:47 +0100
+
 horde-webmailer (1.2.5~2.2.14-1) unstable; urgency=low
 
   * Merge patches for CVE-2010-3077, CVE-2010-3694, CVE-2010-3693
