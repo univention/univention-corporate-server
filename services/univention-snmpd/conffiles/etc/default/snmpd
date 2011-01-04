@@ -1,3 +1,5 @@
+@%@BCWARNING=#@%@
+
 # This file controls the activity of snmpd and snmptrapd
 
 # MIB directories.  /usr/share/snmp/mibs is the default, but

@@ -1,3 +1,9 @@
+univention-snmpd (3.0.0-2) unstable; urgency=low
+
+  * added UCR header to etc/default/snmpd (Bug #15938)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 04 Jan 2011 14:05:07 +0100
+
 univention-snmpd (3.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
