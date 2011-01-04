@@ -1,3 +1,10 @@
+horde-webmailer (1.2.5~2.2.14-1) unstable; urgency=low
+
+  * Merge patches for CVE-2010-3077, CVE-2010-3694, CVE-2010-3693
+    and CVE-2010-3695 (Bug #20191)	 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 04 Jan 2011 13:19:36 +0100
+
 horde-webmailer (1.2.5~2.2.13-1) unstable; urgency=low
 
   * Set  to false by default for the connect function. Otherwise we get
