@@ -1,3 +1,9 @@
+univention-policy (4.0.2-1) unstable; urgency=low
+
+  * fixed typo in univention-policy-result (Bug #11149)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 05 Jan 2011 16:41:26 +0100
+
 univention-policy (4.0.1-1) unstable; urgency=low
 
   * Replaced deprecated ldap functions (Bug #18913)

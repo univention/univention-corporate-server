@@ -16,7 +16,7 @@ void usage(void)
 	fprintf(stderr, "\t-w\tbindpw\n");
 	
 	fprintf(stderr, "\t-s\tShell output\n");
-	fprintf(stderr, "\t-b\tBaseconfig output\n");
+	fprintf(stderr, "\t-b\tConfiguration Registry output\n");
 	exit(1);
 }
 
