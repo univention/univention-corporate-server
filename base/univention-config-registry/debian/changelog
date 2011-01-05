@@ -1,3 +1,9 @@
+univention-config-registry (6.0.37-1) unstable; urgency=low
+
+  * sysklogd init script read default config file (Bug #11241)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 05 Jan 2011 10:40:54 +0100
+
 univention-config-registry (6.0.36-2) unstable; urgency=low
 
   * small fix in etc/profile template (Bug #16020) 
