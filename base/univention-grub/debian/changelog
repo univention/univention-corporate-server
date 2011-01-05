@@ -1,3 +1,9 @@
+univention-grub (4.0.3-5) unstable; urgency=low
+
+  * added memtest86+ to the dependency list (Bug #10584)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 05 Jan 2011 11:53:29 +0100
+
 univention-grub (4.0.3-4) unstable; urgency=low
 
   * added GNU APGL V3 header (Bug #9620)
