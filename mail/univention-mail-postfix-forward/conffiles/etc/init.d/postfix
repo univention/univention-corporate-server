@@ -1,3 +1,4 @@
+#!/bin/sh -e
 # Warning: This file is auto-generated and might be overwritten by 
 #          univention-baseconfig.
 #          Please edit the following file instead:
@@ -7,7 +8,6 @@
 # 
 # 	/etc/univention/templates/files/etc/init.d/postfix
 # 
-#!/bin/sh -e
 
 # Start or stop Postfix
 #

@@ -1,3 +1,9 @@
+univention-mail-postfix-forward (3.0.2-1) unstable; urgency=low
+
+  * fixed postfix hashbang (Bug #20846)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 05 Jan 2011 15:23:19 +0100
+
 univention-mail-postfix-forward (3.0.1-1) unstable; urgency=low
 
   * fixed typo in mailrelay.py Bug #19465 
