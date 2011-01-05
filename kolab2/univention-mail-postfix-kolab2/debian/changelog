@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (4.0.8-1) unstable; urgency=low
+
+  * fixed postfix hashbang (Bug #20846)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 05 Jan 2011 15:16:04 +0100
+
 univention-mail-postfix-kolab2 (4.0.7-1) unstable; urgency=low
 
   * fixed join script (Bug #10648) 
