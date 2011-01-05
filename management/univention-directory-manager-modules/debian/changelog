@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.42-1) unstable; urgency=low
+
+  * Added hsync, displaysize and vrefresh for secondary display on the
+    xfree policy (Bug #21108)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 Jan 2011 08:47:42 +0100
+
 univention-directory-manager-modules (6.0.38-6) unstable; urgency=low
 
   * fixed default groupware detection (Bug #20981)

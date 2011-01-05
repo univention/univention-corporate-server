@@ -43,7 +43,7 @@ class xfreeFixedAttributes(univention.admin.syntax.select):
 	name='xfreeFixedAttributes'
 	choices=[
 		('univentionXAutoDetect',_('Automatic detection')),
-		('univentionXResolution',_('Resolution')),
+		('univentionXResolution',_('Resolution of primary display')),
 		('univentionXResolutionSecondary',_('Resolution of secondary display')),
 		('univentionXColorDepth',_('Color depth')),
 		('univentionXMouseProtocol',_('Mouse protocol')),
@@ -51,10 +51,13 @@ class xfreeFixedAttributes(univention.admin.syntax.select):
 		('univentionXKeyboardDevice',_('Keyboard layout')),
 		('univentionXKeyboardVariant',_('Keyboard variant')),
 		('univentionXKeyboardLayout', _('Keyboard layout')),
-		('univentionXHSync',_('Horizontal sync')),
-		('univentionXVRefresh',_('Vertical refresh')),
+		('univentionXHSync',_('Horizontal sync of primary display')),
+		('univentionXHSyncSecondary',_('Horizontal sync of secondary display')),
+		('univentionXVRefresh',_('Vertical refresh of primary display')),
+		('univentionXVRefreshSecondary',_('Vertical refresh of secondary display')),
 		('univentionXModule',_('Graphics adapter driver')),
-		('univentionXDisplaySize',_('Display size')),
+		('univentionXDisplaySize',_('Display size of primary display')),
+		('univentionXDisplaySizeSecondary',_('Display size of secondary display')),
 		('univentionXVNCExportType',_('Enable VNC export')),
 		('univentionXVNCExportViewonly',_('Viewonly VNC export')),
 		('univentionXVideoRam',_('Amount of RAM on the graphics adapter')),
@@ -110,7 +113,7 @@ property_descriptions={
 			may_change=1,
 			identifies=0,
 			configObjectPosition='cn=xconfig choices,cn=univention',
-			configAttributeName='univentionXResolutionChoices'
+			configAttributeName='univentionXResolutionSecondaryChoices'
 		),
 	'colorDepth': univention.admin.property(
 			short_description=_('Color depth'),
@@ -173,7 +176,7 @@ property_descriptions={
 			configAttributeName='univentionXKeyboardVariantChoices'
 		),
 	'hSync': univention.admin.property(
-			short_description=_('Horizontal sync'),
+			short_description=_('Horizontal sync of primary display'),
 			long_description='',
 			syntax=univention.admin.syntax.XSync,
 			multivalue=0,
@@ -184,8 +187,20 @@ property_descriptions={
 			configObjectPosition='cn=xconfig choices,cn=univention',
 			configAttributeName='univentionXHSyncChoices'
 		),
+	'hSyncSecondary': univention.admin.property(
+			short_description=_('Horizontal sync of secondary display'),
+			long_description='',
+			syntax=univention.admin.syntax.XSync,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0,
+			configObjectPosition='cn=xconfig choices,cn=univention',
+			configAttributeName='univentionXHSyncSecondaryChoices'
+		),
 	'vRefresh': univention.admin.property(
-			short_description=_('Vertical refresh'),
+			short_description=_('Vertical refresh of primary display'),
 			long_description='',
 			syntax=univention.admin.syntax.XSync,
 			multivalue=0,
@@ -195,6 +210,18 @@ property_descriptions={
 			identifies=0,
 			configObjectPosition='cn=xconfig choices,cn=univention',
 			configAttributeName='univentionXVRefreshChoices'
+		),
+	'vRefreshSecondary': univention.admin.property(
+			short_description=_('Vertical refresh of secondary display'),
+			long_description='',
+			syntax=univention.admin.syntax.XSync,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0,
+			configObjectPosition='cn=xconfig choices,cn=univention',
+			configAttributeName='univentionXVRefreshSecondaryChoices'
 		),
 	'xModule': univention.admin.property(
 			short_description=_('Graphics adapter driver'),
@@ -249,7 +276,7 @@ property_descriptions={
 			identifies=0
 		),
 	'displaySize': univention.admin.property(
-			short_description=_('Display size (mm)'),
+			short_description=_('Display size (mm) of primary display'),
 			long_description='',
 			syntax=univention.admin.syntax.XResolution,
 			multivalue=0,
@@ -259,6 +286,18 @@ property_descriptions={
 			identifies=0,
 			configObjectPosition='cn=xconfig choices,cn=univention',
 			configAttributeName='univentionXDisplaySizeChoices'
+		),
+	'displaySizeSecondary': univention.admin.property(
+			short_description=_('Display size (mm) of secondary display'),
+			long_description='',
+			syntax=univention.admin.syntax.XResolution,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0,
+			configObjectPosition='cn=xconfig choices,cn=univention',
+			configAttributeName='univentionXDisplaySizeSecondaryChoices'
 		),
 	'vncExport': univention.admin.property(
 			short_description=_('Enable VNC export'),
@@ -385,6 +424,26 @@ property_descriptions={
 			identifies=0,
 			dontsearch=1
 		),
+	'info_text_advanced_primary': univention.admin.property(
+			short_description=_('Advanced settings of primary display'),
+			long_description='',
+			syntax=univention.admin.syntax.info_text,
+			multivalue=0,
+			required=0,
+			may_change=1,
+			identifies=0,
+			dontsearch=1
+		),
+	'info_text_advanced_secondary': univention.admin.property(
+			short_description=_('Advanced settings of secondary display'),
+			long_description='',
+			syntax=univention.admin.syntax.info_text,
+			multivalue=0,
+			required=0,
+			may_change=1,
+			identifies=0,
+			dontsearch=1
+		),
 }
 layout=[
 	univention.admin.tab(_('General'),_('Display settings'), [
@@ -399,10 +458,13 @@ layout=[
 		[univention.admin.field('keyboardLayout'), univention.admin.field('keyboardVariant')],
 		[univention.admin.field('info_text_advanced')],
         [univention.admin.field('vncExport'), univention.admin.field('vncExportViewonly')],
+		[univention.admin.field('videoRam'), univention.admin.field('virtualsize')],
+		[univention.admin.field('info_text_advanced_primary')],
+		[univention.admin.field('primarydisplay'),univention.admin.field('displaySize')],
 		[univention.admin.field('hSync'), univention.admin.field('vRefresh')],
-		[univention.admin.field('displaySize'), univention.admin.field('videoRam')],
-		[univention.admin.field('primarydisplay'),univention.admin.field('secondarydisplay')],
-		[univention.admin.field('virtualsize')],
+		[univention.admin.field('info_text_advanced_secondary')],
+		[univention.admin.field('secondarydisplay'),univention.admin.field('displaySizeSecondary')],
+		[univention.admin.field('hSyncSecondary'), univention.admin.field('vRefreshSecondary')],
 	]),
 	univention.admin.tab(_('Object'),_('Object'), [
 		[univention.admin.field('requiredObjectClasses') , univention.admin.field('prohibitedObjectClasses') ],
@@ -432,6 +494,10 @@ mapping.register('primarydisplay', 'univentionXDisplayPrimary', None, univention
 mapping.register('secondarydisplay', 'univentionXDisplaySecondary', None, univention.admin.mapping.ListToString)
 mapping.register('displayposition', 'univentionXDisplayPosition', None, univention.admin.mapping.ListToString)
 mapping.register('virtualsize', 'univentionXDisplayVirtualSize', None, univention.admin.mapping.ListToString)
+
+mapping.register('displaySizeSecondary', 'univentionXDisplaySizeSecondary', None, univention.admin.mapping.ListToString)
+mapping.register('hSyncSecondary', 'univentionXHSyncSecondary', None, univention.admin.mapping.ListToString)
+mapping.register('vRefreshSecondary', 'univentionXVRefreshSecondary', None, univention.admin.mapping.ListToString)
 
 mapping.register('requiredObjectClasses', 'requiredObjectClasses')
 mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')

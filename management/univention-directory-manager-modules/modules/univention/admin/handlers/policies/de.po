@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-19 14:35+0100\n"
+"POT-Creation-Date: 2011-01-04 13:37+0100\n"
 "PO-Revision-Date: 2009-11-09 15:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,7 +59,7 @@ msgstr "Univention Directory Manager Container Konfiguration"
 #: nfsmounts.py:66 policy.py:65 print_quota.py:69 printserver.py:66
 #: pwhistory.py:68 registry.py:63 release.py:66 repositoryserver.py:66
 #: repositorysync.py:67 share_userquota.py:69 slavepackages.py:67 sound.py:67
-#: thinclient.py:71 windowsinstallation.py:66 xfree.py:82
+#: thinclient.py:71 windowsinstallation.py:66 xfree.py:85
 msgid "Name"
 msgstr "Name"
 
@@ -77,7 +77,7 @@ msgstr "Verfügbare Univention Directory Manager Module"
 #: printserver.py:86 pwhistory.py:118 registry.py:83 release.py:96
 #: repositoryserver.py:86 repositorysync.py:127 share_userquota.py:119
 #: slavepackages.py:97 sound.py:97 thinclient.py:131 windowsinstallation.py:86
-#: xfree.py:212
+#: xfree.py:239
 msgid "Required object classes"
 msgstr "Benötigte Objektklassen"
 
@@ -91,7 +91,7 @@ msgstr "Benötigte Objektklassen"
 #: printserver.py:96 pwhistory.py:128 registry.py:93 release.py:106
 #: repositoryserver.py:96 repositorysync.py:137 share_userquota.py:129
 #: slavepackages.py:107 sound.py:107 thinclient.py:141
-#: windowsinstallation.py:96 xfree.py:222
+#: windowsinstallation.py:96 xfree.py:249
 msgid "Excluded object classes"
 msgstr "Ausgeschlossene Objektklassen"
 
@@ -105,7 +105,7 @@ msgstr "Ausgeschlossene Objektklassen"
 #: print_quota.py:129 printserver.py:106 pwhistory.py:138 registry.py:103
 #: release.py:116 repositoryserver.py:106 repositorysync.py:147
 #: share_userquota.py:139 slavepackages.py:117 sound.py:117 thinclient.py:151
-#: windowsinstallation.py:106 xfree.py:232
+#: windowsinstallation.py:106 xfree.py:259
 msgid "Fixed attributes"
 msgstr "Festgelegte Attribute"
 
@@ -131,7 +131,7 @@ msgstr "Leere Attribute"
 #: print_quota.py:160 printserver.py:137 pwhistory.py:169 registry.py:134
 #: release.py:147 repositoryserver.py:137 repositorysync.py:178
 #: share_userquota.py:170 slavepackages.py:148 sound.py:148 thinclient.py:182
-#: windowsinstallation.py:137 xfree.py:390
+#: windowsinstallation.py:137 xfree.py:449
 msgid "General"
 msgstr "Allgemein"
 
@@ -149,7 +149,7 @@ msgstr "Univention Directory Manager Konfiguration"
 #: print_quota.py:165 printserver.py:141 pwhistory.py:174 registry.py:138
 #: release.py:151 repositoryserver.py:141 repositorysync.py:184
 #: share_userquota.py:175 slavepackages.py:153 sound.py:153 thinclient.py:188
-#: windowsinstallation.py:141 xfree.py:407
+#: windowsinstallation.py:141 xfree.py:469
 msgid "Object"
 msgstr "Objekt"
 
@@ -1261,129 +1261,164 @@ msgstr "Richtlinie: Windows-Installation"
 msgid "Windows installation"
 msgstr "Windows-Installation"
 
-#: xfree.py:45 xfree.py:340
+#: xfree.py:45 xfree.py:379
 msgid "Automatic detection"
 msgstr "Automatische Erkennung"
 
-#: xfree.py:46
-msgid "Resolution"
-msgstr "Auflösung"
-
-#: xfree.py:47 xfree.py:104
-msgid "Resolution of secondary display"
-msgstr "Auflösung des sekundären Monitors"
-
-#: xfree.py:48 xfree.py:116
-msgid "Color depth"
-msgstr "Farbtiefe"
-
-#: xfree.py:49 xfree.py:128
-msgid "Mouse protocol"
-msgstr "Maus Protokoll"
-
-#: xfree.py:50 xfree.py:140
-msgid "Mouse device"
-msgstr "Mausanschluss"
-
-#: xfree.py:51 xfree.py:53 xfree.py:152
-msgid "Keyboard layout"
-msgstr "Tastaturbelegung"
-
-#: xfree.py:52 xfree.py:164
-msgid "Keyboard variant"
-msgstr "Variante der Tastaturbelegung"
-
-#: xfree.py:54 xfree.py:176
-msgid "Horizontal sync"
-msgstr "Horizontale Synchronisation"
-
-#: xfree.py:55 xfree.py:188
-msgid "Vertical refresh"
-msgstr "Vertikale Wiederholfrequenz"
-
-#: xfree.py:56 xfree.py:200
-msgid "Graphics adapter driver"
-msgstr "Graphikkarten-Treiber"
-
-#: xfree.py:57
-msgid "Display size"
-msgstr "Display-Grösse"
-
-#: xfree.py:58 xfree.py:264
-msgid "Enable VNC export"
-msgstr "Erlaube VNC Display-Freigabe"
-
-#: xfree.py:59 xfree.py:275
-msgid "Viewonly VNC export"
-msgstr "VNC Display-Freigabe nur anzeigen"
-
-#: xfree.py:60
-msgid "Amount of RAM on the graphics adapter"
-msgstr "Die Größe des RAM auf der Grafikkarte"
-
-#: xfree.py:61
-msgid "Primary display"
-msgstr "Primärer Monitor"
-
-#: xfree.py:62
-msgid "Secondary display"
-msgstr "Sekundärer Monitor"
-
-#: xfree.py:63
-msgid "Relative position of secondary display"
-msgstr "Relative Position des zweiten Monitors"
-
-#: xfree.py:64 xfree.py:286
-msgid "Virtual size of dual monitor desktop"
-msgstr "Größe des virtuellen Desktops im Zwei-Monitor-Betrieb"
-
-#: xfree.py:75
-msgid "Policy: Display"
-msgstr "Richtlinie: Display"
-
-#: xfree.py:76 xfree.py:390
-msgid "Display settings"
-msgstr "Display-Einstellungen"
-
-#: xfree.py:92
+#: xfree.py:46 xfree.py:95
 msgid "Resolution of primary display"
 msgstr "Auflösung des primären Monitors"
 
-#: xfree.py:242
+#: xfree.py:47 xfree.py:107
+msgid "Resolution of secondary display"
+msgstr "Auflösung des sekundären Monitors"
+
+#: xfree.py:48 xfree.py:119
+msgid "Color depth"
+msgstr "Farbtiefe"
+
+#: xfree.py:49 xfree.py:131
+msgid "Mouse protocol"
+msgstr "Maus Protokoll"
+
+#: xfree.py:50 xfree.py:143
+msgid "Mouse device"
+msgstr "Mausanschluss"
+
+#: xfree.py:51 xfree.py:53 xfree.py:155
+msgid "Keyboard layout"
+msgstr "Tastaturbelegung"
+
+#: xfree.py:52 xfree.py:167
+msgid "Keyboard variant"
+msgstr "Variante der Tastaturbelegung"
+
+#: xfree.py:54 xfree.py:179
+msgid "Horizontal sync of primary display"
+msgstr "Horizontale Synchronisation des primären Monitors"
+
+#: xfree.py:55 xfree.py:191
+msgid "Horizontal sync of secondary display"
+msgstr "Horizontale Synchronisation des sekundären Monitors"
+
+#: xfree.py:56 xfree.py:203
+msgid "Vertical refresh of primary display"
+msgstr "Vertikale Wiederholfrequenz des primären Monitor"
+
+#: xfree.py:57 xfree.py:215
+msgid "Vertical refresh of secondary display"
+msgstr "Vertikale Wiederholfrequenz des sekundären Monitors"
+
+#: xfree.py:58 xfree.py:227
+msgid "Graphics adapter driver"
+msgstr "Graphikkarten-Treiber"
+
+#: xfree.py:59
+msgid "Display size of primary display"
+msgstr "Display-Grösse des primären Monitor"
+
+#: xfree.py:60
+msgid "Display size of secondary display"
+msgstr "Display-Grösse des sekundären Monitors"
+
+#: xfree.py:61 xfree.py:303
+msgid "Enable VNC export"
+msgstr "Erlaube VNC Display-Freigabe"
+
+#: xfree.py:62 xfree.py:314
+msgid "Viewonly VNC export"
+msgstr "VNC Display-Freigabe nur anzeigen"
+
+#: xfree.py:63
+msgid "Amount of RAM on the graphics adapter"
+msgstr "Die Größe des RAM auf der Grafikkarte"
+
+#: xfree.py:64
+msgid "Primary display"
+msgstr "Primärer Monitor"
+
+#: xfree.py:65
+msgid "Secondary display"
+msgstr "Sekundärer Monitor"
+
+#: xfree.py:66
+msgid "Relative position of secondary display"
+msgstr "Relative Position des zweiten Monitors"
+
+#: xfree.py:67 xfree.py:325
+msgid "Virtual size of dual monitor desktop"
+msgstr "Größe des virtuellen Desktops im Zwei-Monitor-Betrieb"
+
+#: xfree.py:78
+msgid "Policy: Display"
+msgstr "Richtlinie: Display"
+
+#: xfree.py:79 xfree.py:449
+msgid "Display settings"
+msgstr "Display-Einstellungen"
+
+#: xfree.py:269
 msgid "Empty Attributes"
 msgstr "Leere Attribute"
 
-#: xfree.py:252
-msgid "Display size (mm)"
-msgstr "Display-Grösse (mm)"
+#: xfree.py:279
+msgid "Display size (mm) of primary display"
+msgstr "Display-Grösse (mm) des primären Monitor"
 
-#: xfree.py:297
+#: xfree.py:291
+msgid "Display size (mm) of secondary display"
+msgstr "Display-Grösse (mm) des sekundären Monitors"
+
+#: xfree.py:336
 msgid "Position of secondary display"
 msgstr "Position des sekundären Monitors"
 
-#: xfree.py:308
+#: xfree.py:347
 msgid "Name of primary display"
 msgstr "Name des primären Monitor"
 
-#: xfree.py:319
+#: xfree.py:358
 msgid "Name of secondary display"
 msgstr "Name des sekundären Monitors"
 
-#: xfree.py:330
+#: xfree.py:369
 msgid "RAM on the graphics adapter in kB"
 msgstr "RAM auf der Grafikkarte in kB"
 
-#: xfree.py:359
+#: xfree.py:398
 msgid "General settings"
 msgstr "Basiseinstellungen"
 
-#: xfree.py:369
+#: xfree.py:408
 msgid "Input devices"
 msgstr "Eingabegeräte"
 
-#: xfree.py:379
+#: xfree.py:418
 msgid "Advanced settings"
 msgstr "Erweiterte Einstellungen"
+
+#: xfree.py:428
+msgid "Advanced settings of primary display"
+msgstr "Erweiterte Einstellungen des primären Monitors"
+
+#: xfree.py:438
+msgid "Advanced settings of secondary display"
+msgstr "Erweiterte Einstellungen des sekundären Monitors"
+
+#~ msgid "Resolution"
+#~ msgstr "Auflösung"
+
+#~ msgid "Horizontal sync"
+#~ msgstr "Horizontale Synchronisation"
+
+#~ msgid "Vertical refresh"
+#~ msgstr "Vertikale Wiederholfrequenz"
+
+#~ msgid "Display size"
+#~ msgstr "Display-Grösse"
+
+#~ msgid "Display size (mm)"
+#~ msgstr "Display-Grösse (mm)"
 
 #~ msgid "secondaryresolution"
 #~ msgstr "Auflösung"
