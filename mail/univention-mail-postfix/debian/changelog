@@ -1,3 +1,9 @@
+univention-mail-postfix (3.0.6-1) unstable; urgency=low
+
+  * fixed postfix hashbang (Bug #20846)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 05 Jan 2011 15:21:35 +0100
+
 univention-mail-postfix (3.0.5-2) unstable; urgency=low
 
   * fixed join script (Bug #10648)
