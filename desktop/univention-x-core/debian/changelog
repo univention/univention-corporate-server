@@ -1,3 +1,10 @@
+univention-x-core (4.0.3-1) unstable; urgency=low
+
+  * Support for hsync and vrefresh in dual head mode (Bug #21109)
+  * Set primary option to true for the primary display (Bug #21109)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 05 Jan 2011 08:44:21 +0100
+
 univention-x-core (4.0.2-1) unstable; urgency=low
 
   * fixed typo in UCR templates xorg.conf; Bug #20539

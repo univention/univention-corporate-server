@@ -224,3 +224,9 @@ Description[de]=Die relative Position des zweiten Monitors gegenüber dem primä
 Description[en]=The relative position of the secondary monitor to the first primary (mögliche Werte: left, right, above, below)
 Type=str
 Categories=system-desktop
+
+[xorg/autodetect/dri]
+Description[de]=Definiert, ob im Autodetect Modus des X Server DRI aktiviert wird.
+Description[en]=Defines if DRI is enabled in the X servers autodetect mode.
+Type=str
+Categories=system-desktop
