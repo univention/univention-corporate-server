@@ -1,3 +1,10 @@
+univention-server (6.0.5-1) unstable; urgency=low
+
+  * updated copyright 
+  * always set ldap/server/addition=%s if policy is available Bug #20849
+
+ -- Felix Botner <botner@univention.de>  Fri, 07 Jan 2011 14:26:26 +0100
+
 univention-server (6.0.4-2) unstable; urgency=low
 
   * fixed check_connection path in managed-client start script Bug #20753
