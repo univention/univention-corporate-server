@@ -1,3 +1,10 @@
+univention-server-installer (4.0.5-2) unstable; urgency=low
+
+  * run join script in postinst on domaincontroller master and backup
+    (Bug #20896)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 10 Jan 2011 14:52:08 +0100
+
 univention-server-installer (4.0.5-1) unstable; urgency=low
 
   * append optional parameter before profile name (Bug #19652)
