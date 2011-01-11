@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.27-1) unstable; urgency=low
+
+  * respect wizardoperations in modwizard (Bug #18265)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 11 Jan 2011 10:28:36 +0100
+
 univention-directory-manager (8.0.25-1) unstable; urgency=low
 
   * only use correct report() call (Bug #18344)

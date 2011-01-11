@@ -342,8 +342,9 @@ class modwizard(unimodule.unimodule):
 				if hasattr(module,"wizardtypesforsuper"):
 					if child_id not in module.wizardtypesforsuper.get(self.save.get("wizard_superordinatetype"),[]):
 						continue
-				childmodule=univention.admin.modules.get(child_id)
-				childlist.append({"name":univention.admin.modules.name(childmodule), "description":"%s"%univention.admin.modules.short_description(childmodule).split(':',1)[-1]})
+				if univention.admin.modules.wizardOperations(child_id).get('add'):
+					childmodule=univention.admin.modules.get(child_id)
+					childlist.append({"name":univention.admin.modules.name(childmodule), "description":"%s"%univention.admin.modules.short_description(childmodule).split(':',1)[-1]})
 			childlist.sort()
 			child_preselect=self.save.get('wizard_child')
 			if not child_preselect:
@@ -990,8 +991,9 @@ class modwizard(unimodule.unimodule):
 				if hasattr(search_module,"wizardtypesforsuper"):
 					if child_id not in search_module.wizardtypesforsuper.get(self.save.get("wizard_superordinatetype"),[]):
 						continue
-				childmodule=univention.admin.modules.get(child_id)
-				childlist.append({"name":univention.admin.modules.name(childmodule), "description":'%s'%univention.admin.modules.short_description(childmodule).split(':',1)[-1]})
+				if univention.admin.modules.wizardOperations(child_id).get('find'):
+					childmodule=univention.admin.modules.get(child_id)
+					childlist.append({"name":univention.admin.modules.name(childmodule), "description":'%s'%univention.admin.modules.short_description(childmodule).split(':',1)[-1]})
 			childlist.sort()
 
 			# super module search type/module is no longer needed
