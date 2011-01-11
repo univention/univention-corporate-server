@@ -311,7 +311,7 @@ class _ConfigRegistry( dict ):
 		return seq
 
 	def __str__(self):
-		return '\n'.join(['%s: %s' % (key, self.removeInvalidChars (val)) for key, val in self.items()])
+		return '\n'.join(['%s: %s' % (key, self.removeInvalidChars (val)) for key, val in sorted(self.items())])
 
 # old class name
 baseConfig = ConfigRegistry

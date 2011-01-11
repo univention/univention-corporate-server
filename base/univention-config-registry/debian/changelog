@@ -1,3 +1,10 @@
+univention-config-registry (6.0.37-2) unstable; urgency=low
+
+  * Keep the data in base.conf alphabetically sorted, this allows
+    easier maintenance of UCR data in a version control system (Bug #20771)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 11 Jan 2011 14:05:04 +0100
+
 univention-config-registry (6.0.37-1) unstable; urgency=low
 
   * sysklogd init script read default config file (Bug #11241)
