@@ -118,13 +118,37 @@ class property:
 		def repl(match):
 			key = match.group('key')
 			ext = match.group('ext')
+			strCommands = []
+
+			# check within the key for additional commands to be applied on the string
+			# (e.g., 'firstname:lower,umlaut') these commands are found after a ':'
+			if ':' in key:
+				# get the corrected key without following commands
+				key, tmpStr = key.rsplit(':', 1)
+
+				# get all commands in lower case and without leading/trailing spaces
+				strCommands = [iCmd.lower().strip() for iCmd in tmpStr.split(',')]
+
+			# make sure the key value exists
 			if object.has_key(key) and object[key]:
+				# get the value of 'object[key]'
+				val = object[key]
+
+				# apply all string commands
+				for iCmd in strCommands:
+					if iCmd == 'lower':
+						val = val.lower()
+					elif iCmd == 'upper':
+						val = val.upper()
+						
+				# try to apply the indexing instructions, indicated through '[...]'
 				if ext:
 					try:
-						return eval('object["%s"]%s' % (key, ext))
+						return eval('val%s' % (ext))
 					except SyntaxError:
-						return object[key]
-				return object[key]
+						return val
+				return val
+
 			elif key == 'dn' and object.dn:
 				return object.dn
 			return ''

@@ -1,3 +1,19 @@
+univention-directory-manager-modules (6.0.71-1) unstable; urgency=low
+
+  * removed option to choose day=0 when creating a new policy of maintenance;
+    only the values 1-31 are valid options for cron (Bug #14203)
+
+ -- Alexander Klaeser <klaeser@univention.de>  Wed, 24 Nov 2010 15:02:41 +0100
+
+univention-directory-manager-modules (6.0.70-1) unstable; urgency=low
+
+  * added string commands in order to support automatic conversion to lower/
+    upper case of variable values used in templates; added string commands 
+    'lower' and 'upper', e.g.: "<firstname:lower>[1].<lastname:upper>@company.com"
+    (Bug #20302)
+
+ -- Alexander Klaeser <klaeser@univention.de>  Wed, 24 Nov 2010 09:21:42 +0100
+
 univention-directory-manager-modules (6.0.42-1) unstable; urgency=low
 
   * Added hsync, displaysize and vrefresh for secondary display on the
