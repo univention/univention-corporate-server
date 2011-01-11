@@ -372,6 +372,16 @@ class modwizard(unimodule.unimodule):
 			for template in univention.admin.modules.lookup(template_module,None,self.lo,scope='sub'):
 				template.open()
 				templatelist.append({"name":template.dn,"description":template["name"]})
+			
+			# check the UCR for a default template to be selected automatically 
+			# when creating a new instance (e.g., a new user)
+			template_preselected = ucr.get ('directory/manager/web/modules/%s/add/default' % (module.module), None)
+			if template_preselected:
+				for i in templatelist:
+					if i['description'] == template_preselected:
+						i['selected']=i['name']
+					else:
+						i['selected']=''
 
 			self.template_select=question_select(_("Select Template:"),{},{"helptext":_("Which template should new the new object be based on?"),
 																		   "choicelist":templatelist})
@@ -1820,8 +1830,22 @@ class modwizard(unimodule.unimodule):
 			return
 
 		if hasattr(self, 'delboxes') and hasattr(self, 'selection_commit_button'):
+			# get all selected elements
 			selected_dns=self.save.get('wizard_selected_dns', {})
 
+			# check and remove a dns entry that does not exist .. check only when one entry 
+			# is selected since then its name (and thus dn) may have been modified (Bug #18349)
+			listDns = [key for key, val in selected_dns.iteritems() if val == 1]
+			if len(listDns) == 1:
+				iDn = listDns[0]
+				try:
+					# try to find the DN
+					self.lo.searchDn(base=iDn[0], scope='base')
+				except Exception, e:
+					# exception is thrown in case the DN does not exist, therefore remove 
+					# entry from the selected_dns list to avoid problems
+					selected_dns.pop(iDn)
+						
 			invert_selection=self.selection_select.getselected() == "invert" and self.selection_commit_button.pressed()
 
 			if invert_selection:

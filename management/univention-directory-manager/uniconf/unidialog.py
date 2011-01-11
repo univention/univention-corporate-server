@@ -266,17 +266,30 @@ class unidialog(unimodule.unimodule):
 			else:
 				lang = 'en'
 			header_item = []
-			usermenu = htmltext ('', {}, \
+
+			# add a peseudo button for the text "directory manager" below the logo
+			# this button leads back to the beginning screen
+			welcomemessage = htmltext ('', {}, \
 				{'htmltext': ["""
             <div id="header">
                 <!-- @start header-title -->
                 <h1 class="header-title">
-                    <span class="hide">univention</span> <a href="#" title="Start">directory manager</a>
+                    <span class="hide">univention</span> 
+				"""
+				]})
+			header_item.append(welcomemessage)
+			mbut=button(_('directory manager'),{'link':'1'},{'helptext':'Start'})
+			# "none" leads explicitly to no module, i.e., to the beginning screen
+			self.mbutlist.append([mbut, 'none', None])
+			header_item.append(mbut)
+			welcomemessage = htmltext ('', {}, \
+				{'htmltext': ["""
                 </h1>
                 <!-- @end header-title -->
-            <!-- @end header -->
-					"""]})
-			header_item.append(usermenu)
+	            <!-- @end header -->
+			"""]})
+			header_item.append(welcomemessage)
+
 			usermenu = htmltext ('', {}, \
 				{'htmltext': ["""
 					<div id="user-menu">

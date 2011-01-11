@@ -70,6 +70,12 @@ Description[en]=The given computer type will be preselected when a new computer 
 Type=str
 Categories=management-udm
 
+[directory/manager/web/modules/users/user/add/default]
+Description[de]=Die angegebene Benutzervorlage (bspw. "master.mydomain Groupware Account") wird beim Hinzufügen eines neuen Benutzers vorausgewählt (default: nicht gesetzt)
+Description[en]=The given user template (e.g., "master.mydomain Groupware Account") will be preselected when a new user is added to the system (default: not set)
+Type=str
+Categories=management-udm
+
 [directory/manager/web/searchresult/showicons]
 Description[de]=Wenn diese Option auf no gesetzt wird, werden in den Suchergenissen keine Icons mehr angezeigt (default: yes)
 Description[en]=No icons will be shown in the search result if this option is set to no (default: yes)

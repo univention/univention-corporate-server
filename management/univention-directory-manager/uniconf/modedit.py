@@ -691,25 +691,35 @@ class modedit(unimodule.unimodule):
 			]}))
 
 			# compare functions to sort dictionairies
-			def compare_dicts_by_attr(attr):
+			def myCmp(i, j, ignoreCase=False):
+				'''compare two objects with the standard cmp function and for strings with the option to compare case insensitive'''
+				if ignoreCase:
+					# catch any error in case the two objects are not strings
+					try:
+						return cmp(i.lower(), j.lower())
+					except: 
+						pass
+				return cmp(i, j)
+
+			def compare_dicts_by_attr(attr, ignoreCase=True):
 				def compare_dicts(dict1,dict2):
 					if attr in dict1.keys() and attr in dict2.keys():
-						return cmp(dict1[attr],dict2[attr])
+						return myCmp(dict1[attr],dict2[attr],ignoreCase=ignoreCase)
 					else:
-						return cmp(dict1,dict2)
+						return myCmp(dict1,dict2,ignoreCase=ignoreCase)
 				return compare_dicts
 
-			def compare_dicts_by_two_attr(attr1,attr2):
+			def compare_dicts_by_two_attr(attr1,attr2,ignoreCase=True):
 				def compare_dicts(dict1,dict2):
 					if attr1 in dict1.keys() and attr1 in dict2.keys():
 						if dict1[attr1] == dict2[attr1] and attr2 in dict1.keys() and attr2 in dict2.keys():
-							return cmp(dict1[attr2],dict2[attr2])
+							return myCmp(dict1[attr2],dict2[attr2],ignoreCase=ignoreCase)
 						else:
-							return cmp(dict1[attr1],dict2[attr1])
+							return myCmp(dict1[attr1],dict2[attr1],ignoreCase=ignoreCase)
 					elif attr2 in dict1.keys() and attr2 in dict2.keys():
-						return cmp(dict1[attr2],dict2[attr2])
+						return myCmp(dict1[attr2],dict2[attr2],ignoreCase=ignoreCase)
 					else:
-						return cmp(dict1,dict2)
+						return myCmp(dict1,dict2,ignoreCase=ignoreCase)
 				return compare_dicts
 
 			def split_dns_alias_line( entry ):
@@ -3866,8 +3876,8 @@ class modedit(unimodule.unimodule):
 
 						atts=copy.deepcopy(attributes)
 
-						printer_manufs.sort(compare_dicts_by_attr('name'))
-						printer_models.sort(compare_dicts_by_attr('name'))
+						printer_manufs.sort(compare_dicts_by_attr('description'))
+						printer_models.sort(compare_dicts_by_attr('description'))
 
 						self.search_property_button=button('pmanusel',{},{'helptext':_('Select manufacturer')})
 

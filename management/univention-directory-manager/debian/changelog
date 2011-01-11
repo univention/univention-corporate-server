@@ -1,3 +1,40 @@
+univention-directory-manager (8.0.54-1) unstable; urgency=low
+
+  * check for existing DN only if one element is selected (Bug #18349)
+
+ -- Alexander Klaeser <aklaeser@omar.knut.univention.de>  Wed, 08 Dec 2010 17:46:24 +0100
+
+univention-directory-manager (8.0.53-1) unstable; urgency=low
+
+  * fixed error with spurious entries: selecting an entry (group, user, etc) 
+    and changing its name, the old name remained selected and caused problems
+    for later actions (e.g., delete, edit) (Bug #18349)
+
+ -- Alexander Klaeser <klaeser@univention.de>  Wed, 08 Dec 2010 17:11:53 +0100
+
+univention-directory-manager (8.0.52-1) unstable; urgency=low
+
+  * added link to startup screen when clicking in UDM on "directory manager"
+    below the Univention logo (Bug #19591)
+
+ -- Alexander Klaeser <klaeser@univention.de>  Thu, 25 Nov 2010 16:05:53 +0100
+
+univention-directory-manager (8.0.51-1) unstable; urgency=low
+
+  * added case-insensitive sorting for printer manufacturers and printer models
+    when editing a printer (Bug #2377)
+
+ -- Alexander Klaeser <klaeser@univention.de>  Wed, 24 Nov 2010 12:24:46 +0100
+
+univention-directory-manager (8.0.50-1) unstable; urgency=low
+
+  * made the default wizard add submodule configureable to preselect a template
+    (e.g., when adding a new user) via UCR:
+    directory/manager/web/modules/users/user/add/default
+    and registered variable description (Bug #13073)
+
+ -- Alexander Klaeser <klaeser@univention.de>  Mon, 22 Nov 2010 17:59:31 +0100
+
 univention-directory-manager (8.0.27-2) unstable; urgency=low
 
   * Fix typo in UCR variable description (Bug #20747)
