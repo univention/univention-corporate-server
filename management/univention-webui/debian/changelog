@@ -1,3 +1,10 @@
+univention-webui (4.0.60-1) unstable; urgency=low
+
+  * keep the license entry "personal_use" in class request.new_saver when 
+    clearing all values; Bug #19591
+
+ -- Alexander Klaeser <klaeser@univention.de>  Thu, 25 Nov 2010 16:07:46 +0100
+
 univention-webui (4.0.26-1) unstable; urgency=low
 
   * ensure that icon buttons work in internet explorer (versions 6 to 8); Bug #19155

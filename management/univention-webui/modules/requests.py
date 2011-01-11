@@ -81,7 +81,7 @@ class new_saver:
 			return None
 		return self.dict.get(var, default)
 	def clear(self):
-		dontclear=["uc_module","uc_virtualmodule","uc_submodule","user","pass","ldap_position","modok","thinclients_off","thinclients_checked","auth_ok","settings"]
+		dontclear=["uc_module","uc_virtualmodule","uc_submodule","user","pass","ldap_position","modok","thinclients_off","thinclients_checked","auth_ok","settings","personal_use"]
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'saver clear')
 		for key in self.dict.keys():
 			if not key in dontclear:
