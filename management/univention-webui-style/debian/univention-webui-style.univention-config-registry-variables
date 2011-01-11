@@ -1,0 +1,24 @@
+[directory/manager/web/onlinehelp/include]
+Description[de]=Pfad zu einer PHP-Include-Datei, die den Hilfetext für die Online-Hilfe des UDM-Moduls in mehreren Sprachen enthält.
+Description[en]=Path to PHP include file which contains the help text of the online help for the UDM module in multiple languages.
+Type=str
+Categories=management-udm
+    
+[directory/manager/web/onlinehelp/layout]
+Description[de]=Pfad zu einer PHP-Include-Datei, die das HTML-Layout der Online-Hilfe des UDM-Moduls enthält.
+Description[en]=Path to PHP include file which contains the HTML-layout of the online help for the UDM module.
+Type=str
+Categories=management-udm
+    
+[umc/web/onlinehelp/include]
+Description[de]=Pfad zu einer PHP-Include-Datei, die den Hilfetext für die Online-Hilfe des UMC-Moduls in mehreren Sprachen enthält.
+Description[en]=Path to PHP include file which contains the help text of the online help for the UMC module in multiple languages.
+Type=str
+Categories=management-umc
+    
+[umc/web/onlinehelp/layout]
+Description[de]=Pfad zu einer PHP-Include-Datei, die das HTML-Layout der Online-Hilfe des UMC-Moduls enthält.
+Description[en]=Path to PHP include file which contains the HTML-layout of the online help for the UMC module.
+Type=str
+Categories=management-umc
+

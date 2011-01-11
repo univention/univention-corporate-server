@@ -44,8 +44,25 @@ if [ -n "$locale_default" ]; then
 fi
 
 univention-config-registry set apache2/startsite?"$default_site" \
-	directory/manager/web/onlinehelp/index?"/var/www/onlinehelp/index.udm.%s.html" \
-	umc/web/onlinehelp/index?"/var/www/onlinehelp/index.umc.%s.html"
+	directory/manager/web/onlinehelp/include?"/var/www/onlinehelp/udm.inc.php" \
+	directory/manager/web/onlinehelp/layout?"/var/www/onlinehelp/layout.inc.php" \
+	umc/web/onlinehelp/include?"/var/www/onlinehelp/umc.inc.php" \
+	umc/web/onlinehelp/layout?"/var/www/onlinehelp/layout.inc.php"
+
+# delete old UCR variables that are not used anymore when updating from 
+# VERSION < 5.0.61-1 to current Version
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.61-1; then
+	eval "$(univention-config-registry shell umc/web/onlinehelp/index)"
+	if [ "$umc_web_onlinehelp_index" = "/var/www/onlinehelp/index.umc.%s.html" ]; then
+		echo "Removing old UCR variable umc/web/onlinehelp/index ..."
+		univention-config-registry unset umc/web/onlinehelp/index
+	fi
+	eval "$(univention-config-registry shell directory/manager/web/onlinehelp/index)"
+	if [ "$directory_manager_web_onlinehelp_index" = "/var/www/onlinehelp/index.udm.%s.html" ]; then
+		echo "Removing obsolete UCR variable directory/manager/web/onlinehelp/index ..."
+		univention-config-registry unset directory/manager/web/onlinehelp/index
+	fi
+fi
 
 exit 0
 

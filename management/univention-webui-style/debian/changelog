@@ -1,3 +1,23 @@
+univention-webui-style (5.0.61-1) unstable; urgency=low
+
+  * applied Univention corporate style to the online help of UDM and UMC;
+    refactored online help modules and added new UCR variables to control help
+    text as well as layout information:
+        directory/manager/web/onlinehelp/include, directory/manager/web/onlinehelp/layout
+        umc/web/onlinehelp/include, umc/web/onlinehelp/layout
+    The formerly used variables where removed:
+        directory/manager/web/onlinehelp/index, umc/web/onlinehelp/index
+    Updated and adapted the online help text (Bugs #18457, #18458)
+
+ -- Alexander Klaeser <aklaeser@mammut.knut.univention.de>  Fri, 26 Nov 2010 16:15:33 +0100
+
+univention-webui-style (5.0.60-1) unstable; urgency=low
+
+  * validated style/stylesheet.css against http://jigsaw.w3.org/css-validator/
+    and fixed all occurring errors (Bug #20294)
+
+ -- Alexander Klaeser <klaeser@univention.de>  Tue, 23 Nov 2010 12:23:52 +0100
+
 univention-webui-style (5.0.26-1) unstable; urgency=low
 
   * use a bold font for list headers; Bug #19575

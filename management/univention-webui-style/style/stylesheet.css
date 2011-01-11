@@ -16,7 +16,7 @@ html
 
 body
 {
-	font-family: Lucida Grande, Arial, sans-serif;
+	font-family: "Lucida Grande", Arial, sans-serif;
 	font-size: 13px;
 	font-weight: normal;
 	line-height: 17px;
@@ -936,7 +936,7 @@ div.search-result table
 
 div.search-result tr.header
 {
-	text-decoration: bold;
+	font-weight: bold;
 }
 div.search-result td
 {
@@ -1012,7 +1012,7 @@ table.button_right{
 }
 
 table.button_center{
-	float:center;
+	/* float:center; # 'center' is not a valid value for 'float' */
 }
 
 
@@ -1145,7 +1145,7 @@ td.tab_on_first
 {
 	vertical-align:top;
 	min-width: 90px;
-	align:center;
+	text-align:center;
 }
 
 td.tab,
@@ -1327,7 +1327,7 @@ select, input
 }
 td.tab_layout_bottom_space
 {
-	align: center;
+	text-align: center;
 }
 
 select option
@@ -1400,12 +1400,12 @@ td.multi_remove_img{
 width:20px;
 }
 td.multi_add,
-td.multi_add_top,
+td.multi_add_top
 {
 background-color:#CCCCCC;
 }
 td.multi_remove,
-td.multi_remove_img,
+td.multi_remove_img
 {
 background-color:#FFFFFF;
 }
@@ -1747,10 +1747,9 @@ tr.desktopicon, tr.desktop {
 }
 td.desktopicon, td.desktop {
 	background-color:#FFFFFF;
-	margin-left.20px;
+	margin-left:20px;
 }
 tr.desktopicon,td.desktopicon {
-	align:center;
 	text-align:center;
 }
 td.desktopicon input.button_icon {
@@ -1827,7 +1826,6 @@ td.umc_list_element table.button td.button_icon input.button_icon
 
 td.umc_list_head,
 td.umc_list_head_second {
-	align: center;
 	text-align:left;
     border-bottom: 1px solid white;
     padding-top: 5px;
@@ -1841,7 +1839,6 @@ color:#aaaaaa;
 
 td.umc_list_element_part_left {
 	text-align: right;
-	align: right;
 	padding-left: 10px;
 	padding-top: 5px;
 	padding-bottom: 5px;
@@ -1849,7 +1846,7 @@ td.umc_list_element_part_left {
 }
 
 td.umc_list_element_part_right {
-	align: baseline;
+	vertical-align: baseline;
 	text-align: left;
 	padding-left: 0px;
 	padding-top: 5px;
@@ -1898,10 +1895,9 @@ tr.desktopicon, tr.desktop {
 }
 td.desktopicon, td.desktop {
 	background-color:#FFFFFF;
-	margin-left.20px;
+	margin-left:20px;
 }
 tr.desktopicon,td.desktopicon {
-	align:center;
 	text-align:center;
 }
 
@@ -1942,7 +1938,6 @@ tr.desktopicon,td.desktopicon {
 
 td.umc_list_head,
 td.umc_list_head_second {
-	align: center;
 	text-align:left;
     border-bottom: 1px solid white;
     padding-top: 15px;
@@ -1961,7 +1956,6 @@ td.umc_list_element label
 
 td.umc_list_element_part_left {
 	text-align: right;
-	align: right;
 	padding-left: 10px;
 	padding-top: 5px;
 	padding-bottom: 5px;
@@ -1969,7 +1963,7 @@ td.umc_list_element_part_left {
 }
 
 td.umc_list_element_part_right {
-	align: baseline;
+	vertical-align: baseline;
 	text-align: left;
 	padding-left: 0px;
 	padding-top: 5px;
@@ -1982,7 +1976,7 @@ td.umc_list_element_part_right {
 }
 
 td.umc_tree_view_item_level1 {
-	align: baseline;
+	vertical-align: baseline;
 	text-align: left;
 	padding-left: 0px;
 	padding-top: 0px;
@@ -1991,7 +1985,7 @@ td.umc_tree_view_item_level1 {
 }
 
 td.umc_tree_view_item_level2 {
-	align: baseline;
+	vertical-align: baseline;
 	text-align: left;
 	padding-left: 15px;
 	padding-top: 0px;
@@ -2000,7 +1994,7 @@ td.umc_tree_view_item_level2 {
 }
 
 td.umc_tree_view_item_level3 {
-	align: baseline;
+	vertical-align: baseline;
 	text-align: left;
 	padding-left: 44px;
 	padding-top: 0px;

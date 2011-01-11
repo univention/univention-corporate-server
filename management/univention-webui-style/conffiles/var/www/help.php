@@ -32,13 +32,22 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-$DEFAULT_LANG = 'en';
+// default application in case the given one does not exist
 $DEFAULT_APP = 'udm';
-// add new help index pages here!
-$PATH_HELPFILE = array (
-	'udm' => '@%@directory/manager/web/onlinehelp/index@%@',
-	'umc' => '@%@umc/web/onlinehelp/index@%@'
-  );
+
+// the inlcude file containing the online help layout is set for each module
+// separately in the following UCR variables
+$LAYOUT_INCLUDE = array (
+	'udm' => '@%@directory/manager/web/onlinehelp/layout@%@',
+	'umc' => '@%@umc/web/onlinehelp/layout@%@'
+);
+
+// include files for help text with different language versions are set in 
+// the following UCR variables
+$HELP_INCLUDE = array (
+	'udm' => '@%@directory/manager/web/onlinehelp/include@%@',
+	'umc' => '@%@umc/web/onlinehelp/include@%@'
+);
 
 function get_sanitized_argument($name) {
   // get GET/POST argument "$name"
@@ -51,33 +60,13 @@ function get_sanitized_argument($name) {
   return $var;
 }
 
-$lang = get_sanitized_argument( "lang" );
-if ( empty($lang) || (strlen($lang) != 2)) {  // use fallback if lang is unset or contains wrong number of characters
-  $lang = $DEFAULT;
-}
-
+// get the current active application and include layout as well as help text files
 $app = get_sanitized_argument( "app" );
-if ( empty($app) ) {  // use fallback if lang is unset or contains wrong number of characters
-  $lang = $DEFAULT_APP;
-}
+include($HELP_INCLUDE[array_key_exists($app, $HELP_INCLUDE) ? $app : $DEFAULT_APP]); // includes help texts for current module in different languages
+include($LAYOUT_INCLUDE[array_key_exists($app, $LAYOUT_INCLUDE) ? $app : $DEFAULT_APP]); // includes the layout information with print_help() function
 
-// select application specific online help index
-if (isset($PATH_HELPFILE[$app])) {
-  $prefilename = $PATH_HELPFILE[$app];
-} else {
-  $prefilename = $PATH_HELPFILE[$DEFAULT_APP];
-}
-
-// return selected file in specified language
-$filename = str_replace("%s", $lang, $prefilename);
-if (is_file($filename)) {
-  readfile($filename);
-} else {
-  $filename = str_replace("%s", $DEFAULT_LANG, $prefilename);
-  if (is_file($filename)) {
-	readfile($filename);
-  } else {
-	echo "cannot find $filename";
-  }
-}
+// get the current language option and print the help
+$lang = get_sanitized_argument( "lang" );
+print_help($lang);
 ?>
+
