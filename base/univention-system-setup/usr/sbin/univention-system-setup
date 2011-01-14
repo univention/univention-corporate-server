@@ -301,6 +301,7 @@ class mods:
 			'ssl/organizationalunit':	'ssl_organizationalunit',
 			'ssl/state':			'ssl_state',
 			'ssl/locality':			'ssl_locality',
+			'ox/mail/domain/primary':	'ox_primary_maildomain',
 		}
 		for i in range(0,4):
 			mapping['interfaces/eth%d/type' % (i)]='eth%d_type' % (i)

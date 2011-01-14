@@ -1,3 +1,9 @@
+univention-system-setup (4.0.10-2) unstable; urgency=low
+
+  * add mapping for ox/mail/domain/primary (Bug #21203)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 14 Jan 2011 11:30:13 +0100
+
 univention-system-setup (4.0.9-1) unstable; urgency=low
 
   * add whois to the dependencies because we need mkpasswd Bug #18496
