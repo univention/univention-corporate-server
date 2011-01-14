@@ -1,3 +1,12 @@
+univention-bind (5.0.22-1) unstable; urgency=low
+
+  * bumped version (for integration of 2.4-2 version at a later point)
+  * included directory var/cache/univention-bind-proxy in 
+    debian/univention-bind{,-proxy}.dirs and removed mkdir command for this
+    directory from debian/univention-bind-proxy.postinst (Bug #21197)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 14 Jan 2011 10:22:47 +0100
+
 univention-bind (5.0.2-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
