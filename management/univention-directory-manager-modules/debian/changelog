@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.72-1) unstable; urgency=low
+
+  * extended replacement of diacritic characters when converting the user's
+    name for the GECOS attribute (Bug #21210)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 17 Jan 2011 12:56:51 +0100
+
 univention-directory-manager-modules (6.0.71-1) unstable; urgency=low
 
   * removed option to choose day=0 when creating a new policy of maintenance;
