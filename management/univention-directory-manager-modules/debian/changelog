@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.82-1) unstable; urgency=low
+
+  * bump version for integration purposes (Bug #21210)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 17 Jan 2011 15:06:44 +0100
+
 univention-directory-manager-modules (6.0.72-1) unstable; urgency=low
 
   * extended replacement of diacritic characters when converting the user's
