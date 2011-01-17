@@ -89,34 +89,6 @@ def init(lo, position, module, template_object=None):
 	# overwrite property descriptions
 	univention.admin.ucr_overwrite_properties( module, lo )
 
-	# get defaults from template
-	if template_object:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules_init: got template object %s' % template_object)
-		template_object.open()
-		for key in template_object.keys():
-			if not (key=="name" or key=="description"): # these keys are part of the template itself
-				if key == '_options':
-					if not template_object[key] == ['']:
-						for option in module.options.keys():
-							module.options[option].default = option in template_object[key]
-					else:
-						for option in module.options.keys():
-							module.options[option].default = True
-				else:
-					if template_object.descriptions[key].multivalue:
-						if module.property_descriptions[key].multivalue:
-							module.property_descriptions[key].base_default=[]
-							for i in range(0,len(template_object[key])):
-								module.property_descriptions[key].base_default.append(template_object[key][i])
-						else: univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules.init: template and object values not both multivalue !!')
-
-					else:
-						module.property_descriptions[key].base_default=template_object[key]
-					module.property_descriptions[key].templates.append(template_object)
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules_init: module.property_description after template: %s' % module.property_descriptions)
-	else:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules_init: got no template')
-
 	# append custom properties
 	custom_fields = {}
 	module.ldap_extra_objectclasses=[]
@@ -241,6 +213,55 @@ def init(lo, position, module, template_object=None):
 
 	# add new properties
 	update_extended_attributes( lo, module, position )
+
+	# get defaults from template
+	if template_object:
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules_init: got template object %s' % template_object)
+		template_object.open()
+		template_object.property_descriptions={}
+		template_object.layout=[]
+		univention.admin.modules.init(lo, position, template_object)
+
+		# add template ext. attr. defaults
+		if hasattr(template_object, 'property_descriptions'):
+			for property_name, property in template_object.property_descriptions.items():
+				if not (property_name == "name" or property_name == "description"): 
+					default = property.base_default
+					if default and module.property_descriptions.has_key(property_name):
+						if property.multivalue:
+							if module.property_descriptions[property_name].multivalue:
+								module.property_descriptions[property_name].base_default=[]
+								for i in range(0,len(default)):
+									module.property_descriptions[property_name].base_default.append(default[i])
+						else:
+							module.property_descriptions[property_name].base_default=default
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "modules.init: added template default (%s) to property %s" % (property.base_default, property_name))
+
+		# add template defaults
+		for key in template_object.keys():
+			if not (key=="name" or key=="description"): # these keys are part of the template itself
+				if key == '_options':
+					if not template_object[key] == ['']:
+						for option in module.options.keys():
+							module.options[option].default = option in template_object[key]
+					else:
+						for option in module.options.keys():
+							module.options[option].default = True
+				else:
+					if template_object.descriptions[key].multivalue:
+						if module.property_descriptions[key].multivalue:
+							module.property_descriptions[key].base_default=[]
+							for i in range(0,len(template_object[key])):
+								module.property_descriptions[key].base_default.append(template_object[key][i])
+						else: univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules.init: template and object values not both multivalue !!')
+
+					else:
+						module.property_descriptions[key].base_default=template_object[key]
+					module.property_descriptions[key].templates.append(template_object)
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules_init: module.property_description after template: %s' % module.property_descriptions)
+	else:
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules_init: got no template')
+
 
 	# re-build layout if there any overwrites defined
 	univention.admin.ucr_overwrite_module_layout( module )
