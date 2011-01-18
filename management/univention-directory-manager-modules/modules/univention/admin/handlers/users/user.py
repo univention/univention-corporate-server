@@ -1598,8 +1598,12 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				return
 
 		try:
-			self['firstname']=self.oldattr.get('givenName',[''])[0]
-			self['lastname']=self.oldattr.get('sn',[''])[0]
+			givenName=self.oldattr.get('givenName',[''])[0]
+			if givenName:
+				self['firstname']=givenName
+			sn=self.oldattr.get('sn',[''])[0]
+			if sn:
+				self['lastname']=sn
 		except Exception, e:					# FIXME: we should NEVER catch all exceptions
 			# at least write some debuging output..
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Cought exception: %s' % e )

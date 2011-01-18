@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.84-1) unstable; urgency=low
+
+  * check for value before assigning firstname (Bug #21234)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 18 Jan 2011 15:47:04 +0100
+
 univention-directory-manager-modules (6.0.83-1) unstable; urgency=low
 
   * process templates at the and of admin/modules.init()
