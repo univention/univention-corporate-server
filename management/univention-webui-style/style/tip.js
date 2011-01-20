@@ -56,12 +56,14 @@ function sendForm(id,value){ // Formular mit Link senden und Button auf pressed 
 	}
 
    if(!value)value='pressed';
+  if( 'cache' in document.forms )
    document.forms['cache'].elements['cache'].value=id;
    document.getElementById(id).value=value;
    document.forms['content'].submit();
 }
 
 function sendForm2(id){ // Formular mit Link senden und Button auf pressed setzen
+  if( 'cache' in document.forms )
    document.forms['cache'].elements['cache'].value=id;
    document.getElementById(id).value="pressed";
    document.forms['menu'].submit();
@@ -78,11 +80,13 @@ if(navigator.appName=="Microsoft Internet Explorer"){
 */
 }
 function clear_cached(){
+ if( 'cache' in document.forms )
   if(document.forms['cache'].elements['cache'].value)
    document.getElementById(document.forms['cache'].elements['cache'].value).value="";
+ if( 'content' in document.forms )
   if(!document.forms['content'].elements['is_js'].value)
    document.forms['content'].elements['is_js'].value=1;
-  if( document.forms['menu'] != undefined )
+  if( 'menu' in document.forms )
    if(!document.forms['menu'].elements['is_js'].value)
     document.forms['menu'].elements['is_js'].value=1;
 }

@@ -1,3 +1,9 @@
+univention-webui-style (5.0.62-1) unstable; urgency=low
+
+  * fix freeze in UDM (Bug #17324)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 20 Jan 2011 10:02:36 +0100
+
 univention-webui-style (5.0.61-1) unstable; urgency=low
 
   * applied Univention corporate style to the online help of UDM and UMC;
