@@ -1,3 +1,11 @@
+univention-directory-manager-modules (6.0.85-1) unstable; urgency=low
+
+  * replace invalid characters of tab name with underscore when
+    reading UCR variable
+    directory/manager/web/modules/$MODULE/layout/$TABNAME (Bug #21318)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 24 Jan 2011 14:58:04 +0100
+
 univention-directory-manager-modules (6.0.84-1) unstable; urgency=low
 
   * check for value before assigning firstname (Bug #21234)
