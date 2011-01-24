@@ -278,11 +278,11 @@ init () {
 	touch ${CA}/index.txt;
 
 	# make the root-CA configuration file
-	mk_config openssl.cnf $PASSWD 730 "Univention Corporate Server Root CA"
+	mk_config openssl.cnf $PASSWD $DEFAULT_DAYS "Univention Corporate Server Root CA"
 
 
 	openssl genrsa -des3 -passout pass:"$PASSWD" -out ${CA}/private/CAkey.pem 2048
-	yes '' | openssl req -config openssl.cnf -new -x509 -days 730 -key ${CA}/private/CAkey.pem -out ${CA}/CAcert.pem
+	yes '' | openssl req -config openssl.cnf -new -x509 -days $DEFAULT_DAYS -key ${CA}/private/CAkey.pem -out ${CA}/CAcert.pem
 
 	# copy the public key to a place, from where browsers can access it
 	openssl x509 -in ${CA}/CAcert.pem -out /var/www/ucs-root-ca.crt
@@ -399,7 +399,7 @@ gencert () {
 
 	days=$(/usr/sbin/univention-baseconfig get ssl/default/days)
 	if [ -z "$days" ]; then
-		days=730
+		days=$DEFAULT_DAYS
 	fi
 	# generate a key pair
 	mkdir -pm 700 $name
