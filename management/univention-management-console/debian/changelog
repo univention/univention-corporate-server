@@ -1,3 +1,10 @@
+univention-management-console (3.0.74-1) unstable; urgency=low
+
+  * added reboot message to UMC login page if update/reboot/required=true
+    is set (Bug #21323)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 24 Jan 2011 18:01:03 +0100
+
 univention-management-console (3.0.73-3) unstable; urgency=low
 
   * added another GNU APGL V3 header (Bug #9620)

@@ -205,6 +205,18 @@ class modconsole(unimodule.unimodule):
 					""" % {'login': _('Univention Management Console Login')}]})
 		self.subobjs.append(login_message)
 
+		rebootrequired = None
+		if configRegistry.is_true('update/reboot/required'):
+					description_caption = _('Reboot Required')
+					description1 = _('This system has been updated recently. A reboot is required to finish update.')
+					rebootrequired = htmltext ('', {}, \
+							{'htmltext': ["""
+								<div class=error message>
+								<h3>%s</h3>
+								<p>%s</p>
+								</div>
+								""" % (description_caption, description1)]})
+
 		sessioninvalid = None
 		if self.req and self.req.meta and self.req.meta.has_key ('Sessioninvalid') \
 				and self.req.meta['Sessioninvalid'] == '1':
@@ -270,6 +282,9 @@ class modconsole(unimodule.unimodule):
 		self.cabut=button(_("Cancel"),{'class':'cancel', 'link': '/'},{"helptext":_("Abort login")})
 		self.passwdin=question_secure(_("Password"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_passwd"),"helptext":_("Please enter your password.")})
 		self.okbut=button(_("Login"),{'class':'submit', 'defaultbutton':'1'},{"helptext":_("Login")})
+
+		if rebootrequired:
+			self.subobjs.append(rebootrequired)
 
 		if unsecureconnection:
 			self.subobjs.append(unsecureconnection)
