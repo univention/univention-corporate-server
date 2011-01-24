@@ -2,7 +2,7 @@
 #
 # Univention Xen postinst
 #
-# Copyright 2007-2010 Univention GmbH
+# Copyright 2007-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,10 +33,18 @@ univention-config-registry set xen/repository?"file:///var/lib/univention-server
 
 eval "$(univention-config-registry shell kernel/modules)"
 
-echo "$kernel_modules" | grep xen-evtchn >/dev/null
-if [ $? = 1 ]; then
-	univention-config-registry set kernel/modules="$kernel_modules;xen-evtchn"
+modules=
+echo "$kernel_modules" | grep -qs '\<xen[_-]evtchn\>' || modules="$modules;xen-evtchn"
+
+dpkg-query -s xen-4.0 >/dev/null 2>&1
+
+if [ $? = 0 ]; then
+	# Only necessary in Xen 4 environments
+	echo "$kernel_modules" | grep -qs '\<xenfs\>' || modules="$modules;xenfs"
+	echo "$kernel_modules" | grep -qs '\<blktap\>' || modules="$modules;blktap"
 fi
+
+[ -n "$modules" ] && univention-config-registry set kernel/modules="${kernel_modules}${modules}"
 
 #DEBHELPER#
 

@@ -10,7 +10,7 @@ Package: univention-xen
 Architecture: i386 amd64
 Depends: xen-tools,
  wget,
- xen-3.4,
+ xen-3.4 | xen-4.0,
  libc6-xen [i386],
  univention-kernel-image-2.6.32-xen | univention-kernel-image-2.6.18-xen.org | univention-kernel-image-2.6.18-xen,
  bridge-utils
