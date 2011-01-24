@@ -1,3 +1,10 @@
+univention-mail-cyrus (3.0.6-1) unstable; urgency=low
+
+  * only create symlink in usr/sbin/univention-cyrus-mkdir if source files exist;
+    changes applied from Bug #21271 (Bug #21314)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 24 Jan 2011 10:40:05 +0100
+
 univention-mail-cyrus (3.0.5-1) unstable; urgency=low
 
   * fixed postinst, restart cyrus server (Bug #18814) 

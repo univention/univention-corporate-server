@@ -123,7 +123,8 @@ def create_sieve_scripts(user_name, sievepath, call_sievec):
 	if not adminuser:
 		symlink_src = '%s/global.sieve' % (templatepath)
 		symlink_dest = '%s/global.sieve.script' % (sievepath)
-		if not os.path.exists(symlink_dest):
+		# only create symlink if source file exists
+		if not os.path.exists(symlink_dest) and os.path.exists(symlink_src):
 			try:
 				os.symlink(symlink_src, symlink_dest)
 				os.chown(symlink_dest, cyrus_id, mail_id)
@@ -132,7 +133,8 @@ def create_sieve_scripts(user_name, sievepath, call_sievec):
 
 		symlink_src = '%s/local.sieve' % (templatepath)
 		symlink_dest = '%s/local.sieve.script' % (sievepath)
-		if not os.path.exists(symlink_dest):
+		# only create symlink if source file exists
+		if not os.path.exists(symlink_dest) and os.path.exists(symlink_src):
 			try:
 				os.symlink(symlink_src, symlink_dest)
 				os.chown(symlink_dest, cyrus_id, mail_id)
@@ -144,15 +146,17 @@ def create_sieve_scripts(user_name, sievepath, call_sievec):
 		symlink_dest = '%s/%s' % (sievepath, sievedefault)
 		if os.path.exists(symlink_dest):
 			os.remove(symlink_dest)
-		try:
-			os.symlink(symlink_src, symlink_dest)
-			os.chown(symlink_dest, cyrus_id, mail_id)
-			if call_sievec: #cyrus2.2
-				os.system('/usr/lib/cyrus/bin/sievec %s %s%s' % (symlink_dest, symlink_dest, "bc"))
-				os.chown("%s%s"%(symlink_dest, 'bc'), cyrus_id, mail_id)
-				os.chown("%s%s"%(symlink_dest, 'bc'), cyrus_id, mail_id)
-		except:
-			raise
+		# only create symlink if source file exists
+		if os.path.exists(symlink_src):
+			try:
+				os.symlink(symlink_src, symlink_dest)
+				os.chown(symlink_dest, cyrus_id, mail_id)
+				if call_sievec: #cyrus2.2
+					os.system('/usr/lib/cyrus/bin/sievec %s %s%s' % (symlink_dest, symlink_dest, "bc"))
+					os.chown("%s%s"%(symlink_dest, 'bc'), cyrus_id, mail_id)
+					os.chown("%s%s"%(symlink_dest, 'bc'), cyrus_id, mail_id)
+			except:
+				raise
 
 
 def create_cyrus21(user_name):
