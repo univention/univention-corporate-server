@@ -116,6 +116,7 @@ class webui_container{
 	}
 
 	function show_head() {
+	    $sid = $this->ref_config->session_id;
 		echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
@@ -125,9 +126,9 @@ class webui_container{
 <link id="themeStyles" rel="stylesheet" href="/univention-dojo/dijit/themes/tundra/tundra.css" type="text/css"></link>
 <link rel="stylesheet" href="/style/stylesheet.css" type="text/css" media="screen" title="style.css" charset="utf-8"></link>
 <link rel="stylesheet" href="/style/univention-dijit.css" type="text/css"></link>
-<script type="text/javascript" src="/style/tip.js"></script>
-<script type="text/javascript" src="/univention-dojo/dojo/dojo.js" ></script>
-<script type="text/javascript" src="/univention-dojo/unijit/unijit.js"></script>
+<script type="text/javascript" src="/style/tip.js?refresh=', $sid, '"></script>
+<script type="text/javascript" src="/univention-dojo/dojo/dojo.js?refresh=', $sid, '" ></script>
+<script type="text/javascript" src="/univention-dojo/unijit/unijit.js?refresh=', $sid, '"></script>
 <script type="text/javascript"> 
 <!-- Todo: this should be moved into the univention-dojo package -->
 	 var hideLoader = function(){

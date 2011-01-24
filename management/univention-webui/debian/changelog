@@ -1,3 +1,10 @@
+univention-webui (4.0.61-1) unstable; urgency=low
+
+  * added session id to tip.js, dojo.js and unijit.js to prevent caching
+    issues (Bug #17324)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 24 Jan 2011 18:08:35 +0100
+
 univention-webui (4.0.60-1) unstable; urgency=low
 
   * keep the license entry "personal_use" in class request.new_saver when 
