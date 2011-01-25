@@ -53,4 +53,8 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.15; then
     test -f "/var/cache/univention-config/cache" && rm -f "/var/cache/univention-config/cache"
 fi
 
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+    /usr/lib/univention-install/91univention-client-boot-pxe.inst || true
+fi
+
 exit 0
