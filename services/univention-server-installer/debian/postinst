@@ -60,7 +60,6 @@ if [ "$1" = "configure" ]; then
 	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]
 	then
 		/usr/lib/univention-install/81univention-server-installation.inst
-		/usr/lib/univention-install/20univention-join.inst
 	fi
 	if test -f /etc/init.d/univention-directory-listener
 		then
