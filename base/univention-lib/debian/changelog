@@ -1,3 +1,10 @@
+univention-lib (0.0.3-1) unstable; urgency=low
+
+  * Import shell.py and policy_result.py in __init__.py
+    (Bug #19977 and Bug #20048)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Jan 2011 12:19:36 +0100
+
 univention-lib (0.0.2-1) unstable; urgency=low
 
   * Copy shell.py and policy_result.py from univention-dvs-common
