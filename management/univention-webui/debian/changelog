@@ -1,3 +1,10 @@
+univention-webui (4.0.62-1) unstable; urgency=low
+
+  * Added a new property for extended attributes which allows to add an
+    empty value (Bug #20432)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Jan 2011 08:16:41 +0100
+
 univention-webui (4.0.61-1) unstable; urgency=low
 
   * added session id to tip.js, dojo.js and unijit.js to prevent caching

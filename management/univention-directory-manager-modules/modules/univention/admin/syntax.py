@@ -2096,7 +2096,7 @@ class LDAP_Search( select ):
 
 	def __init__( self, syntax_name = None, filter = None,
 				  attribute = [], base = '', value = 'dn',
-				  viewonly = False ):
+				  viewonly = False, addEmptyValue = False ):
 		self.__syntax = syntax_name
 		if filter:
 		  	self.__syntax = None
@@ -2108,6 +2108,7 @@ class LDAP_Search( select ):
 		self.choices = []
 		self.name = self.__class__.__name__
 		self.viewonly = viewonly
+		self.addEmptyValue = addEmptyValue
 
 	def parse( self, text ):
 		return text
