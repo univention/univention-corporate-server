@@ -1,3 +1,9 @@
+univention-webui (4.0.63-1) unstable; urgency=low
+
+  * Fixed typo in last commit (Bug #20432)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Jan 2011 08:44:05 +0100
+
 univention-webui (4.0.62-1) unstable; urgency=low
 
   * Added a new property for extended attributes which allows to add an

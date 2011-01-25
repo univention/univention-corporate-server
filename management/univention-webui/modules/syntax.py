@@ -370,7 +370,7 @@ class question_syntax(uniconf.uniconf):
 				if value == '*':
 					choicelist[-1]['selected']='1'
 
-			if hasattr(self.prop, 'addEmptyValue') and self.prop.addEmptyValue:
+			if hasattr(self.syntax, 'addEmptyValue') and self.syntax.addEmptyValue:
 				choicelist.append({'name': '', 'description': ''})
 
 			for opt_name, opt_value in self.syntax.choices:
