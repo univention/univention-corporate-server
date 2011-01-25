@@ -211,23 +211,66 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'os': univention.admin.property(
+			short_description= _('Operating system'),
+			long_description= _('Operating system'),
+			syntax = univention.admin.syntax.string,
+			multivalue = False,
+			options=[],
+			required = False,
+			may_change = True,
+			identifies = False
+		),
+	'pvdisk': univention.admin.property(
+			short_description = _('Use para-virtual driver for hard drives'),
+			syntax=univention.admin.syntax.boolean,
+			multivalue = False,
+			options = [],
+			required = False,
+			may_change = True,
+			identifies = False
+		),
+	'pvinterface': univention.admin.property(
+			short_description = _('Use para-virtual driver for network interface'),
+			syntax=univention.admin.syntax.boolean,
+			multivalue = False,
+			options = [],
+			required = False,
+			may_change = True,
+			identifies = False
+		),
+	'txt_hardware': univention.admin.property(
+		short_description = _('Hardware'),
+		syntax=univention.admin.syntax.info_text,
+		),
+	'txt_boot': univention.admin.property(
+		short_description = _('Boot'),
+		syntax=univention.admin.syntax.info_text,
+		),
+	'txt_virt': univention.admin.property(
+		short_description = _('Virtualization'),
+		syntax=univention.admin.syntax.info_text,
+		),
 }
 
-
-layout=[
+layout = [
 	univention.admin.tab( _('General'), _('Virtual machine profile'),
-	      [
-			[ univention.admin.field( "name" ), ],
-			[ univention.admin.field( "name_prefix" ), ],
-			[ univention.admin.field( "arch" ), univention.admin.field( "cpus" ) ],
-			[ univention.admin.field( "virttech" ), univention.admin.field( "ram" ) ],
-			[ univention.admin.field( "interface" ), ],
-			[ univention.admin.field( "vnc" ), univention.admin.field( "kblayout" ) ],
-			[ univention.admin.field( "bootdev" )  ],
-			[ univention.admin.field( "advkernelconf" ), ],
-			[ univention.admin.field( "kernel" ), univention.admin.field( "kernel_parameter" ) ],
-			[ univention.admin.field( "initramfs" )  ],
-		  ] )
+						  [ [ univention.admin.field( "name" ), univention.admin.field( "os" ) ],
+							[ univention.admin.field( "name_prefix" ), ],
+							[ univention.admin.field( "txt_hardware" ), ],
+							[ univention.admin.field( "arch" ), univention.admin.field( "cpus" ) ],
+							[ univention.admin.field( "ram" ), ],
+							[ univention.admin.field( "interface" ), ],
+							[ univention.admin.field( "vnc" ), univention.admin.field( "kblayout" ) ],
+							[ univention.admin.field( "txt_boot" ), ],
+							[ univention.admin.field( "bootdev" ), ],
+							[ univention.admin.field( "advkernelconf" ), ],
+							[ univention.admin.field( "kernel" ), univention.admin.field( "kernel_parameter" ) ],
+							[ univention.admin.field( "initramfs" ), ],
+							[ univention.admin.field( "txt_virt" ), ],
+							[ univention.admin.field( "virttech" ), ],
+							[ univention.admin.field( "pvdisk" ), univention.admin.field( "pvinterface" ) ]
+							] )
 	]
 
 def list2str( lst ):
@@ -253,6 +296,9 @@ mapping.register('kernel_parameter', 'univentionVirtualMachineProfileKernelParam
 mapping.register('initramfs', 'univentionVirtualMachineProfileInitRAMfs', None, univention.admin.mapping.ListToString)
 mapping.register('advkernelconf', 'univentionVirtualMachineAdvancedKernelConfig', None, univention.admin.mapping.ListToString)
 mapping.register('bootdev', 'univentionVirtualMachineProfileBootDevices', list2str, str2list )
+mapping.register('os', 'univentionVirtualMachineProfileOS', None, univention.admin.mapping.ListToString)
+mapping.register('pvdisk', 'univentionVirtualMachineProfilePVDisk', None, univention.admin.mapping.ListToString)
+mapping.register('pvinterface', 'univentionVirtualMachineProfilePVInterface', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
