@@ -534,6 +534,7 @@ class InstanceWizard( umcd.IWizard ):
 
 			ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: next: profile boot drives: %s' % str( self.profile[ 'bootdev' ] ) )
 			object.options[ 'name' ] = self.profile[ 'name_prefix' ]
+			object.options[ 'os' ] = self.profile[ 'os' ]
 			object.options[ 'arch' ] = self.profile[ 'arch' ]
 			object.options[ 'type' ] = self.profile[ 'virttech' ]
 			object.options[ 'memory' ] = self.profile[ 'ram' ]
@@ -545,6 +546,8 @@ class InstanceWizard( umcd.IWizard ):
 			object.options[ 'kernel' ] = self.profile[ 'kernel' ]
 			object.options[ 'cmdline' ] = self.profile[ 'kernel_parameter' ]
 			object.options[ 'initrd' ] = self.profile[ 'initramfs' ]
+			object.options[ 'pvdisk' ] = self.profile[ 'pvdisk' ]
+			object.options[ 'pvinterface' ] = self.profile[ 'pvinterface' ]
 		if self.current == 1:
 			MAX_NAME_LENGTH = 25
 			if object.options[ 'name' ] == self.profile[ 'name_prefix' ]:
@@ -655,7 +658,21 @@ class InstanceWizard( umcd.IWizard ):
 				gfx.listen = '0.0.0.0'
 				gfx.keymap = object.options[ 'kblayout' ]
 				domain_info.graphics = [gfx,]
+			# annotations
+			domain_info.annotations[ 'os' ] = object.options[ 'os' ]
 			# drives
+			# check if PV drives should be used
+			ud.debug( ud.ADMIN, ud.INFO, 'CRUNCHY: domain_type: %s, os_type: %s, pvdisk: %s' % ( domain_info.domain_type, domain_info.os_type, object.options[ 'pvdisk' ] ) )
+			if object.options[ 'pvdisk' ] == '1' and domain_info.os_type == 'hvm':
+				ud.debug( ud.ADMIN, ud.INFO, 'CRUNCHY: use pvdisk' )
+				for dev in self.drives:
+					if dev.device != uvmmn.Disk.DEVICE_DISK:
+						continue
+					if domain_info.domain_type == 'xen':
+						ud.debug( ud.ADMIN, ud.INFO, 'CRUNCHY: set target to xen for %s' % str( dev ) )
+						dev.target_bus = 'xen'
+					elif domain_info.domain_type in ( 'kvm', 'qemu' ):
+						dev.target_bus = 'virtio'
 			domain_info.disks = self.drives
 			self.uvmm._verify_device_files(domain_info)
 			# on PV machines we should move the CDROM drive to first position
@@ -671,7 +688,14 @@ class InstanceWizard( umcd.IWizard ):
 			if object.options[ 'interface' ]:
 				iface = uvmmn.Interface()
 				iface.source = object.options[ 'interface' ]
+				if object.options[ 'pvinterface' ] == '1' and domain_info.os_type == 'hvm':
+					ud.debug( ud.ADMIN, ud.INFO, 'CRUNCHY: use pvinterface' )
+					if domain_info.domain_type == 'xen':
+						iface.model = 'xen'
+					elif domain_info.domain_type in ( 'kvm', 'qemu' ):
+						iface.model = 'virtio'
 				domain_info.interfaces = [iface,]
+
 			self._result = domain_info
 
 		return umcd.WizardResult()

@@ -55,6 +55,39 @@ class ConnectionError(UvmmError):
 	"""UVMM-request was not successful because of broken connection."""
 	pass
 
+class Bus( object ):
+	def __init__( self, name, prefix, default = False ):
+		self._next_letter = 'a'
+		self._connected = []
+		self.name = name
+		self.prefix = prefix
+		self.default = default
+
+	def compatible( self, dev ):
+		return dev.target_bus == self.name or ( not dev.target_bus and self.default )
+
+	def attach( self, devices ):
+		for dev in devices:
+			if dev.target_dev:
+				letter = dev.target_dev[ -1 ]
+				if not letter in self._connected:
+					self._connected.append( letter )
+
+	def connect( self, dev ):
+		if not self.compatible( dev ) or dev.target_dev:
+			return False
+		dev.target_dev = self.prefix % self._next_letter
+		self._connected.append( self._next_letter )
+		self.__next_letter()
+		return True
+
+	def __next_letter( self ):
+		self._next_letter = chr( ord( self._next_letter ) + 1 )
+		while self._next_letter in self._connected:
+			self._next_letter = chr( ord( self._next_letter ) + 1 )
+
+		return self._next_letter
+
 class Client( notifier.signals.Provider ):
 	def __init__( self, unix_socket = '/var/run/uvmm.socket', auto_connect = True ):
 		notifier.signals.Provider.__init__( self )
@@ -379,24 +412,38 @@ class Client( notifier.signals.Provider ):
 	# FIXME: currently we need to use IDE only for KVM as Windows is
 	# not able to handle virtio drives!!! The profile should contain the
 	# information which platform will be installed.
+	# def _verify_device_files( self, domain_info ):
+	# 	dev_name = 'a'
+	# 	device_prefix = 'hd%s'
+	# 	if domain_info.domain_type == 'xen' and domain_info.os_type == 'linux':
+	# 		device_prefix = 'xvd%s'
+
+	# 	dev_exclude = []
+	# 	for dev in domain_info.disks:
+	# 		if dev.target_dev:
+	# 			dev_exclude.append( dev.target_dev[ -1 ] )
+
+	# 	if dev_name in dev_exclude:
+	# 		dev_name = self.__next_letter( dev_name, dev_exclude )
+
+	# 	for dev in domain_info.disks:
+	# 		if not dev.target_dev:
+	# 			dev.target_dev = device_prefix % dev_name
+	# 			dev_name = self.__next_letter( dev_name, dev_exclude )
+
 	def _verify_device_files( self, domain_info ):
-		dev_name = 'a'
-		device_prefix = 'hd%s'
 		if domain_info.domain_type == 'xen' and domain_info.os_type == 'linux':
-			device_prefix = 'xvd%s'
+			busses = ( Bus( 'ide', 'hd%s' ), Bus( 'xen', 'xvd%s', default = True ), Bus( 'virtio', 'vd%s' ) )
+		else:
+			busses = ( Bus( 'ide', 'hd%s', default = True ), Bus( 'xen', 'xvd%s' ), Bus( 'virtio', 'vd%s' ) )
 
-		dev_exclude = []
-		for dev in domain_info.disks:
-			if dev.target_dev:
-				dev_exclude.append( dev.target_dev[ -1 ] )
-
-		if dev_name in dev_exclude:
-			dev_name = self.__next_letter( dev_name, dev_exclude )
+		for bus in busses:
+			bus.attach( domain_info.disks )
 
 		for dev in domain_info.disks:
-			if not dev.target_dev:
-				dev.target_dev = device_prefix % dev_name
-				dev_name = self.__next_letter( dev_name, dev_exclude )
+			for bus in busses:
+				if bus.compatible( dev ):
+					bus.connect( dev )
 
 	def domain_configure( self, node_name, data ):
 		req = protocol.Request_DOMAIN_DEFINE()
