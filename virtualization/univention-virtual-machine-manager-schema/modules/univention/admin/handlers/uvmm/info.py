@@ -80,14 +80,23 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'contact': univention.admin.property(
+			short_description = _('Contact'),
+			syntax=univention.admin.syntax.boolean,
+			multivalue = False,
+			options = [],
+			required = False,
+			may_change = True,
+			identifies = False
+		),
 }
 
 
 layout=[
 	univention.admin.tab( _('General'), _('Virtual machine information'),
 	      [
-			[ univention.admin.field( "uuid" ), univention.admin.field( "description" ) ],
-			[ univention.admin.field( "os" ) ],
+			[ univention.admin.field( "uuid" ), univention.admin.field( "contact" ) ],
+			[ univention.admin.field( "os" ), univention.admin.field( "description" ) ],
 		  ] )
 	]
 
@@ -97,6 +106,7 @@ mapping=univention.admin.mapping.mapping()
 mapping.register('uuid', 'univentionVirtualMachineUUID', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('os', 'univentionVirtualMachineOS', None, univention.admin.mapping.ListToString)
+mapping.register('contact', 'univentionVirtualMachineContact', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):
