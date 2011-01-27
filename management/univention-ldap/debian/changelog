@@ -1,3 +1,10 @@
+univention-ldap (7.0.13-1) unstable; urgency=low
+
+  * do not include updateref on slave slapd configuration
+    if ldap/online/master is set and not true (Bug #20789)
+
+ -- Felix Botner <botner@univention.de>  Thu, 27 Jan 2011 13:32:02 +0100
+
 univention-ldap (7.0.12-1) unstable; urgency=low
 
   * Added a new property for extended attributes which allows to add an

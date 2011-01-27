@@ -64,10 +64,11 @@ limits users time.soft=-1 time.hard=-1
 
 @!@
 if baseConfig['ldap/server/type'] == "slave":
-	print 'rootdn\t"cn=update,%s"'%baseConfig['ldap/base']
-	print 'include\t"/etc/ldap/rootpw.conf"'
-	print 'updatedn\t"cn=update,%s"'%baseConfig["ldap/base"]
-	print 'updateref\tldap://%s'%baseConfig["ldap/master"]
+	if configRegistry.is_true("ldap/online/master", True):
+		print 'rootdn\t"cn=update,%s"'%baseConfig['ldap/base']
+		print 'include\t"/etc/ldap/rootpw.conf"'
+		print 'updatedn\t"cn=update,%s"'%baseConfig["ldap/base"]
+		print 'updateref\tldap://%s'%baseConfig["ldap/master"]
 @!@
 
 directory	"/var/lib/univention-ldap/ldap"
