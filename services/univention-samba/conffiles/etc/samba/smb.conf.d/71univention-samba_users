@@ -1,6 +1,8 @@
 @!@
 print '\tguest account = %s' % baseConfig.get('samba/guest_account', 'nobody')	
 print '\tmap to guest = %s' % baseConfig.get('samba/map_to_guest', 'Bad User')	
-print '\tinvalid users = %s' % baseConfig.get('samba/invalid_users', '# no invalid users')	
+invalid_users=baseConfig.get('samba/invalid_users', '')
+if invalid_users:
+	print '\tinvalid users = %s' % invalid_users
 @!@
 	admin users = @%@samba/adminusers@%@

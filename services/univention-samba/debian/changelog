@@ -1,3 +1,9 @@
+univention-samba (5.0.24-1) unstable; urgency=low
+
+  * fix invalid users (Bug #21143)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 27 Jan 2011 15:11:44 +0100
+
 univention-samba (5.0.23-1) unstable; urgency=low
 
   * Fixed bash typo (Bug #7081)
