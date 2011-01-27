@@ -662,14 +662,11 @@ class InstanceWizard( umcd.IWizard ):
 			domain_info.annotations[ 'os' ] = object.options[ 'os' ]
 			# drives
 			# check if PV drives should be used
-			ud.debug( ud.ADMIN, ud.INFO, 'CRUNCHY: domain_type: %s, os_type: %s, pvdisk: %s' % ( domain_info.domain_type, domain_info.os_type, object.options[ 'pvdisk' ] ) )
 			if object.options[ 'pvdisk' ] == '1' and domain_info.os_type == 'hvm':
-				ud.debug( ud.ADMIN, ud.INFO, 'CRUNCHY: use pvdisk' )
 				for dev in self.drives:
 					if dev.device != uvmmn.Disk.DEVICE_DISK:
 						continue
 					if domain_info.domain_type == 'xen':
-						ud.debug( ud.ADMIN, ud.INFO, 'CRUNCHY: set target to xen for %s' % str( dev ) )
 						dev.target_bus = 'xen'
 					elif domain_info.domain_type in ( 'kvm', 'qemu' ):
 						dev.target_bus = 'virtio'
@@ -689,7 +686,6 @@ class InstanceWizard( umcd.IWizard ):
 				iface = uvmmn.Interface()
 				iface.source = object.options[ 'interface' ]
 				if object.options[ 'pvinterface' ] == '1' and domain_info.os_type == 'hvm':
-					ud.debug( ud.ADMIN, ud.INFO, 'CRUNCHY: use pvinterface' )
 					if domain_info.domain_type == 'xen':
 						iface.model = 'xen'
 					elif domain_info.domain_type in ( 'kvm', 'qemu' ):

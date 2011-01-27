@@ -46,6 +46,7 @@ import univention.uvmm.protocol as uuv_proto
 import copy
 import operator
 import os
+import re
 import socket
 import time
 
@@ -153,6 +154,8 @@ command_description = {
 				   'type' : type_select,
 				   'drives' : umc.StringList( _( 'Drive' ) ),
 				   'os' : umc.String( _( 'Operating System' ), required = False ),
+				   'description' : umc.String( _( 'Description' ), required = False ),
+				   'contact' : umc.String( _( 'Contact' ), required = False ),
 				   'user' : umc.String( _( 'User' ), required = False ),
 				   'advkernelconf' : umc.Boolean( _( 'Advanved kernel configuration' ), required = False ),
 				   'initrd' : umc.String( _( 'RAM disk' ), required = False ),
@@ -269,6 +272,8 @@ class handler( umch.simpleHandler ):
 		5 : _( 'shut off' ),
 		6 : _( 'crashed' ),
 		}
+
+	MAIL_REGEX = re.compile( '(^|(?P<name>.*?)[ \t]+)<?(?P<address>[^ @]*@[^ >]*).*' )
 
 	def __init__( self ):
 		global command_description
@@ -669,6 +674,8 @@ class handler( umch.simpleHandler ):
 			iface_source = 'eth0'
 		virt_tech = umcd.make_readonly( self[ 'uvmm/domain/configure' ][ 'type' ], default = tech_default, attributes = { 'width' : '250' } )
 		os_widget = make_func( self[ 'uvmm/domain/configure' ][ 'os' ], default = getattr(domain_info, 'annotations', {}).get('os', ''), attributes = { 'width' : '250' } )
+		contact_widget = make_func( self[ 'uvmm/domain/configure' ][ 'contact' ], default = getattr(domain_info, 'annotations', {}).get('contact', ''), attributes = { 'width' : '250' } )
+		description_widget = make_func( self[ 'uvmm/domain/configure' ][ 'description' ], default = getattr(domain_info, 'annotations', {}).get('description', ''), attributes = { 'width' : '250' } )
 
 		if domain_has_snapshots:
 			make_func2 = umcd.make_readonly
@@ -788,6 +795,7 @@ class handler( umch.simpleHandler ):
 		vnc_passwd = make_func(self['uvmm/domain/configure']['vnc_passwd'], default=old_passwd, attributes={'width': '250'})
 
 		content.add_row( [ name, os_widget ] )
+		content.add_row( [ contact_widget, description_widget ] )
 		content.add_row( [ arch, '' ] )
 		content.add_row( [ cpus, mac ] )
 		content.add_row( [ memory, interface ] )
@@ -809,7 +817,7 @@ class handler( umch.simpleHandler ):
 
 		content2.add_row( [ umcd.Text( '' ) ] )
 
-		ids = (name.id(), os_widget.id(), virt_tech.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), advkernelconf.id(), vnc.id(), vnc_global.id(), vnc_passwd.id(), kblayout.id(), bootdevs.id())
+		ids = (name.id(), os_widget.id(), contact_widget.id(), description_widget.id(), virt_tech.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), advkernelconf.id(), vnc.id(), vnc_global.id(), vnc_passwd.id(), kblayout.id(), bootdevs.id())
 		cfg_cmd = umcp.SimpleCommand( 'uvmm/domain/configure', options = object.options )
 		overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = object.options )
 
@@ -861,6 +869,19 @@ class handler( umch.simpleHandler ):
 			infos = umcd.List()
 			w_status = [umcd.HTML('<b>%s</b>' % _('Status')), handler.STATES[domain_info.state]]
 			w_os = [umcd.HTML('<b>%s</b>' % _('Operating System')), getattr(domain_info, 'annotations', {}).get('os', '' )]
+			contact = getattr(domain_info, 'annotations', {}).get('contact', '' )
+			if contact:
+				match = handler.MAIL_REGEX.match( contact )
+				if match:
+					infos = match.groupdict()
+					if infos[ 'address' ]:
+						if infos[ 'name' ]:
+							contact = umcd.HTML( '<a href="mailto:%(address)s">%(name)s</a>' % infos )
+						else:
+							contact = umcd.HTML( '<a href="mailto:%(address)s">%(address)s</a>' % infos )
+
+			w_contact = [umcd.HTML('<b>%s</b>' % _('Contact')), contact ]
+			w_description = [umcd.HTML('<b>%s</b>' % _('Description')), getattr(domain_info, 'annotations', {}).get('description', '' )]
 
 			if domain_info.maxMem:
 				pct = int( float( domain_info.curMem ) / domain_info.maxMem * 100 )
@@ -880,6 +901,7 @@ class handler( umch.simpleHandler ):
 			tab = umcd.List()
 			tab.add_row(w_status + w_cpu)
 			tab.add_row(w_os + w_mem)
+			tab.add_row( w_contact + w_description )
 
 			tech = '%s-%s' % ( domain_info.domain_type, domain_info.os_type )
 			blind_table.add_row( [ umcd.Section( _( 'Virtual instance %(domain)s - <i>%(tech)s</i>' ) % { 'domain' : domain_info.name, 'tech' : VirtTechSelect.MAPPING[ tech ] }, tab ) ] )
@@ -945,6 +967,8 @@ class handler( umch.simpleHandler ):
 		domain_info.domain_type, domain_info.os_type = object.options[ 'type' ].split( '-' )
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: operating system: %s' % handler._getstr( object, 'os' ) )
 		domain_info.annotations['os'] = handler._getstr( object, 'os' )
+		domain_info.annotations['description'] = handler._getstr( object, 'description' )
+		domain_info.annotations['contact'] = handler._getstr( object, 'contact' )
 		domain_info.arch = object.options[ 'arch' ]
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: architecture: %s' % domain_info.arch )
 		domain_info.vcpus = int( object.options[ 'cpus' ] )

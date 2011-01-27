@@ -248,5 +248,7 @@ def ldap_modify(uuid, ldap_uri=None):
 		position.setDn(base)
 		record = uvmm_info.object(co, lo, position)
 		record['uuid'] = uuid
+		record['description'] = None
+		record['contact'] = None
 		record.commit = record.create
 	return record
