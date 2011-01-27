@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.127-1) unstable; urgency=low
+
+  * show information why migrating is not possible if there is just one
+    physical server; Bug #20901
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 27 Jan 2011 15:23:11 +0100
+
 univention-virtual-machine-manager-daemon (0.9.126-1) unstable; urgency=low
 
   * add description and contact fields to virtual instance settings; Bug #20018

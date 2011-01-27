@@ -937,14 +937,18 @@ class handler( umch.simpleHandler ):
 			content.set_header( [ umcd.Text( _( 'Migrate virtual instance %(domain)s from physical server %(source)s to:' ) % object.options ) ] )
 			dest = umcd.make( self[ 'uvmm/domain/migrate' ][ 'dest' ] )
 			content.add_row( [ dest, '' ] )
-			opts = copy.copy( object.options )
-			opts[ 'migrate' ] = 'success'
-			cmd_success = umcd.Action( umcp.SimpleCommand( 'uvmm/domain/overview', options = opts ), [ dest.id(), ], status_range = umcd.Action.SUCCESS )
-			opts2 = copy.copy( object.options )
-			opts2[ 'migrate' ] = 'failure'
-			cmd_failure = umcd.Action( umcp.SimpleCommand( 'uvmm/domain/overview', options = opts2 ), status_range = umcd.Action.FAILURE )
+			if dest_node_select._choices:
+				opts = copy.copy( object.options )
+				opts[ 'migrate' ] = 'success'
+				cmd_success = umcd.Action( umcp.SimpleCommand( 'uvmm/domain/overview', options = opts ), [ dest.id(), ], status_range = umcd.Action.SUCCESS )
+				opts2 = copy.copy( object.options )
+				opts2[ 'migrate' ] = 'failure'
+				cmd_failure = umcd.Action( umcp.SimpleCommand( 'uvmm/domain/overview', options = opts2 ), status_range = umcd.Action.FAILURE )
 
-			content.add_row( [ '', umcd.Button( _( 'Migrate' ), actions = [ umcd.Action( umcp.SimpleCommand( 'uvmm/domain/migrate', options = object.options ), [ dest.id() ] ), cmd_success, cmd_failure ], default = True ) ] )
+				content.add_row( [ '', umcd.Button( _( 'Migrate' ), actions = [ umcd.Action( umcp.SimpleCommand( 'uvmm/domain/migrate', options = object.options ), [ dest.id() ] ), cmd_success, cmd_failure ], default = True ) ] )
+			else:
+				info = umcd.InfoBox( _( 'Migrating the instance is not possible beause there is just one physical server available.' ) )
+				content.add_row( [ info ] )
 			res.dialog[ 0 ].set_dialog( content )
 			resp = None
 
