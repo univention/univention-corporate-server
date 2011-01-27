@@ -82,7 +82,7 @@ property_descriptions={
 		),
 	'contact': univention.admin.property(
 			short_description = _('Contact'),
-			syntax=univention.admin.syntax.boolean,
+			syntax=univention.admin.syntax.string,
 			multivalue = False,
 			options = [],
 			required = False,
