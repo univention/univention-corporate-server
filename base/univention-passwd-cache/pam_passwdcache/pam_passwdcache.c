@@ -700,15 +700,10 @@ static int _create_new_grouplist( void )
 
   FILE          *ucs_pwfile;
   struct passwd *ucs_pwent;
-  int           user_count  = 0;
-  char          **user_list = NULL; /* for member groups */
-  int           group_count = 0;
-  __gid_t       *group_list = NULL; /* for primary group */
-
   int           new_group_count = 0;
-  __gid_t       *new_group_list = NULL;
+  __gid_t       *new_group_list = NULL; /* for primary group */
 
-  int           i;
+  int           i, j;
   int           found;
 
   struct group  *grent;
@@ -729,137 +724,56 @@ static int _create_new_grouplist( void )
   {
     while( (ucs_pwent = fgetpwent( ucs_pwfile ))!=NULL )
     {
-      /* user-entries are unique, no search for duplicate */
-      ++user_count;
-      user_list = realloc( user_list, user_count * sizeof(char *) );
-      if( user_list == NULL )
+      /* lookup the groups the user currently belongs to */
       {
-	#ifdef DEBUG
-	fprintf( stderr, "Debug: _create_new_grouplist() realloc() for user_list fail\n" );
-	#endif
-	return PAM_SYSTEM_ERR;
-      }
-      user_list[user_count - 1] = strdup( ucs_pwent->pw_name );
-      if( user_list[user_count - 1] == NULL )
-      {
-	#ifdef DEBUG
-	fprintf( stderr, "Debug: _create_new_grouplist() strdup() for user_list fail\n" );
-	#endif
-	return PAM_SYSTEM_ERR;
-      }
-
-      /* group-entries are not unique, search for duplicate */
-      found = 0;
-      for( i=0; i<group_count; i++ )
-      {
-        if( ucs_pwent->pw_gid == group_list[i] )
-	{
-	  found = 1;
-	  break;
-	}
-      }
-      if( found == 0 )
-      {
-        ++group_count;
-	group_list = realloc( group_list, group_count * sizeof(__gid_t) );
-	if( group_list == NULL )
-	{
-	  #ifdef DEBUG
-	  fprintf( stderr, "Debug: _create_new_grouplist() realloc() for group_list fail\n" );
-	  #endif
-	  return PAM_SYSTEM_ERR;
-	}
-	group_list[group_count - 1] = ucs_pwent->pw_gid;
+        gid_t *groupids = NULL;
+        int ngroups = 1;
+        gid_t *newgroupids = NULL; 
+        groupids = (gid_t *) malloc(ngroups * sizeof(gid_t)); 
+        if (getgrouplist(ucs_pwent->pw_name, ucs_pwent->pw_gid, groupids, &ngroups) == -1) { 
+          newgroupids = (gid_t *) malloc(ngroups * sizeof(gid_t));
+          if (newgroupids != NULL) {
+            free (groupids);
+            groupids = newgroupids;
+            getgrouplist (ucs_pwent->pw_name, ucs_pwent->pw_gid, groupids, &ngroups);
+          } else {
+            ngroups = 1;
+          }
+        }
+        /* extend the list of unique groups */
+        for (i = 0; i < ngroups; i++)
+        {
+          grent = getgrgid(groupids[i]);
+          found = 0;
+          for( j=0; j<new_group_count; j++ )    // check if the group already is in the new_group_list
+          {
+            if ( grent->gr_gid == new_group_list[j] )
+            {
+              found = 1;
+              break;
+            }
+          }
+          if( found == 0 )
+          {
+            ++new_group_count;
+            new_group_list = realloc( new_group_list, new_group_count * sizeof(__gid_t) );
+            if( new_group_list == NULL )
+            {
+              #ifdef DEBUG
+              fprintf( stderr, "Debug: _create_new_grouplist() realloc() for new_group_list fail\n" );
+              #endif
+              return PAM_SYSTEM_ERR;
+            }
+            new_group_list[new_group_count - 1] = grent->gr_gid;
+          }
+        }
+        free(groupids);
       }
     }
     fclose( ucs_pwfile );
   }
 
-  /* make a unique group list                            */
-  /* --------------------------------------------------- */
-  setgrent();
-  while( (grent = getgrent()) != NULL )
-  {
-    found = 0;
-    for( i=0; i<group_count; i++ )
-    {
-      if( grent->gr_gid == group_list[i] )
-      {
-        /* found primary group */
-        found = 1;
-	break;
-      }
-    }
-
-    if( found == 0 )
-    {
-      if( grent->gr_mem )
-      {
-	p = grent->gr_mem;
-	while( (*p!=NULL) && (found==0) )
-	{
-	  for( i=0; i<user_count; i++ )
-	  {
-            if( strcmp( *p, user_list[i] ) == 0 )
-	    {
-	      found = 1;
-	      break;
-	    }
-	  }
-          ++p;
-	}
-      }
-      else
-      {
-        #ifdef DEBUG
-        fprintf( stderr, "Debug: _create_new_grouplist() no members in group %u\n", grent->gr_gid );
-        #endif
-      }
-    }
-
-    if( found == 1 )
-    {
-      found = 0;
-      for( i=0; i<new_group_count; i++ )
-      {
-        if( grent->gr_gid == new_group_list[i] )
-	{
-          found = 1;
-	  break;
-        }
-      }
-      if( found == 0 )
-      {
-        ++new_group_count;
-	new_group_list = realloc( new_group_list, new_group_count * sizeof(__gid_t) );
-	if( new_group_list == NULL )
-	{
-	  #ifdef DEBUG
-	  fprintf( stderr, "Debug: _create_new_grouplist() realloc() for new_group_list fail\n" );
-	  #endif
-	  return PAM_SYSTEM_ERR;
-	}
-	new_group_list[new_group_count - 1] = grent->gr_gid;
-      }
-    }
-  }
-  endgrent();
-
-  if( group_list != NULL )
-  {
-    free( group_list );
-  }
-
-  if( user_count > 0 )
-  {
-    for( i=0; i<user_count; i++ )
-    {
-      free( user_list[i] );
-    }
-    free( user_list );
-  }
-
-  /* write current userlist of primary and member groups */
+  /* write current list of primary and member groups */
   /* --------------------------------------------------- */
   oldmask = umask(077);
   new_grfile = fopen( GR_DATAFILE_TMP, "w" );
