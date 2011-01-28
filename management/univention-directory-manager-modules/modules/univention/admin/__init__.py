@@ -266,7 +266,7 @@ def ucr_overwrite_layout (module, ucr_property, tab):
 	if hasattr (tab.short_description, 'data'):
 		desc = tab.short_description.data
 	# replace invalid characters by underscores
-	desc = re.sub(univention.baseconfig.invalid_key_chars, '_', desc)
+	desc = re.sub(univention.baseconfig.invalid_key_chars, '_', desc).replace('/','_')
 	p_v = baseConfig.get ('directory/manager/web/modules/%s/layout/%s/%s' % (module, desc, ucr_property), None)
 	if not p_v:
 		return None
@@ -292,7 +292,7 @@ def ucr_overwrite_module_layout( module ):
 			desc = tab.short_description.data
 
 		# replace invalid characters by underscores
-		desc = re.sub(univention.baseconfig.invalid_key_chars, '_', desc)
+		desc = re.sub(univention.baseconfig.invalid_key_chars, '_', desc).replace('/','_')
 
 		tab_layout = baseConfig.get( 'directory/manager/web/modules/%s/layout/%s' % ( module.module, desc ) )
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, "layout overwrite: tab_layout='%s'" % tab_layout )
