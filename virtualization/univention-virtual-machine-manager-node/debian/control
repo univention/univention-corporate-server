@@ -31,7 +31,12 @@ Description: UCS - Univention Virtual Machine Manager node using xen
 
 Package: univention-virtual-machine-manager-node-kvm
 Architecture: all
-Depends: ${misc:Depends}, univention-virtual-machine-manager-node-common, qemu-kvm, bridge-utils, iproute
+Depends: ${misc:Depends},
+ univention-virtual-machine-manager-node-common,
+ qemu-kvm,
+ bridge-utils,
+ iproute,
+ shell-univention-lib,
 Provides: univention-virtual-machine-manager-node
 Description: UCS - Univention Virtual Machine Manager node using kvm
  This meta-package provides basic configuration for virtualization nodes using
