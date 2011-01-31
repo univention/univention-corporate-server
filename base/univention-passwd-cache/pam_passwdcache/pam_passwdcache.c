@@ -305,6 +305,8 @@ static char *_passwdcache_crypt_password( const char *old  )
   else
   {
     fgets( salt, sizeof(salt), rand_file );
+	salt[0] = bin_to_ascii(salt[0] & 0x3f);
+	salt[1] = bin_to_ascii(salt[1] & 0x3f);
     fclose( rand_file );
   }
 
