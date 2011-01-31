@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import copy
+
 import univention.management.console as umc
 import univention.management.console.dialog as umcd
 
@@ -111,9 +113,20 @@ class DriveTypeSelect( umc.StaticSelection ):
 		return ( ( 'disk', _( 'Hard drive' ) ), ( 'cdrom', _( 'CD/DVD-ROM' ) ) )
 
 class DiskSelect( umc.StaticSelection ):
-	"""Select between creating a new or reusing an existing image."""
+	"""Select between creating a new, reusing an existing image or integrating a local block device."""
+	def __init__( self ):
+		umc.StaticSelection.__init__(self, '' )
+		self._default = [ ( 'disk-new', _( 'Create a new image' ) ), ( 'disk-exists', _( 'Choose existing image' ) ), ( 'disk-block', _( 'Use a local device' ) ) ]
+		self._choices = None
+		self.set_choices()
+
+	def set_choices( self, with_new = True ):
+		self._choices = copy.copy( self._default )
+		if not with_new:
+			del self._choices[ 0 ]
+
 	def choices( self ):
-		return ( ( 'disk-new', _( 'Create a new image' ) ), ( 'disk-exists', _( 'Choose existing image' ) ) )
+		return self._choices
 
 class NodeSelect( umc.StaticSelection ):
 	"""List of known nodes."""

@@ -729,24 +729,29 @@ class handler( umch.simpleHandler ):
 				remove_cmd.options[ 'disk' ] = None
 				values = {}
 				values[ 'type' ] = self._drive_name( dev.device )
-				values[ 'image' ] = os.path.basename( dev.source )
-				dir = os.path.dirname( dev.source )
-				values[ 'pool' ] = dir
-				try:
-					storages
-				except NameError:
-					node_uri = self.uvmm.node_name2uri(object.options['node'])
-					storages = self.uvmm.storage_pools(node_uri)
-				for pool in storages:
-					if pool.path == dir:
-						values[ 'pool' ] = pool.name
-						if not pool.name in storage_volumes:
-							storage_volumes[ pool.name ] = self.uvmm.storage_pool_volumes(node_uri, pool.name)
-						for vol in storage_volumes[ pool.name ]:
-							if vol.source == dev.source:
-								dev.size = vol.size
-								break
-						break
+				if dev.type == uvmmn.Disk.TYPE_FILE:
+					values[ 'image' ] = os.path.basename( dev.source )
+					dir = os.path.dirname( dev.source )
+					values[ 'pool' ] = dir
+					try:
+						storages
+					except NameError:
+						node_uri = self.uvmm.node_name2uri(object.options['node'])
+						storages = self.uvmm.storage_pools(node_uri)
+					for pool in storages:
+						if pool.path == dir:
+							values[ 'pool' ] = pool.name
+							if not pool.name in storage_volumes:
+								storage_volumes[ pool.name ] = self.uvmm.storage_pool_volumes(node_uri, pool.name)
+							for vol in storage_volumes[ pool.name ]:
+								if vol.source == dev.source:
+									dev.size = vol.size
+									break
+							break
+				elif dev.type == uvmmn.Disk.TYPE_BLOCK:
+					values[ 'image' ] = dev.source
+					values[ 'pool' ] = '-'
+
 				if not dev.size:
 					values[ 'size' ] = _( 'unknown' )
 				else:
@@ -1345,7 +1350,6 @@ class handler( umch.simpleHandler ):
 			is_shared_image = disk.device == uvmmn.Disk.DEVICE_CDROM
 			lst = umcd.List()
 
-			lst.add_row( [ umcd.Cell( umcd.Text( _( 'The drive will be detached from the virtual instance. Additionally the associated image %(image)s may be deleted permanently. Should this be done also?' ) % { 'image' : object.options[ 'disk' ] } ), attributes = { 'colspan' : '3' } ) ] )
 			opts = copy.copy( object.options )
 			overview = umcp.SimpleCommand( 'uvmm/domain/overview', options = opts )
 			opts = copy.copy( object.options )
@@ -1354,25 +1358,41 @@ class handler( umch.simpleHandler ):
 			opts = copy.copy( object.options )
 			opts[ 'drive-remove' ] = False
 			detach = umcp.SimpleCommand( 'uvmm/drive/remove', options = opts )
-			no = umcd.Button(_('No'), actions=[umcd.Action(detach), umcd.Action(overview)], default=is_shared_image)
-			yes = umcd.Button(_('Yes'), actions=[umcd.Action(remove), umcd.Action(overview)], default=not is_shared_image)
-			lst.add_row( [ '' ] )
-			lst.add_row( [ umcd.Cell( no, attributes = { 'align' : 'right', 'colspan' : '2' } ), umcd.Cell( yes, attributes = { 'align' : 'right' } ) ] )
+
+			if disk.type != uvmmn.Disk.TYPE_BLOCK:
+				lst.add_row( [ umcd.Cell( umcd.Text( _( 'The drive will be detached from the virtual instance. Additionally the associated image %(image)s may be deleted permanently. Should this be done also?' ) % { 'image' : object.options[ 'disk' ] } ), attributes = { 'colspan' : '3' } ) ] )
+				no = umcd.Button(_('No'), actions=[umcd.Action(detach), umcd.Action(overview)], default=is_shared_image)
+				yes = umcd.Button(_('Yes'), actions=[umcd.Action(remove), umcd.Action(overview)], default=not is_shared_image)
+				lst.add_row( [ '' ] )
+				lst.add_row( [ umcd.Cell( no, attributes = { 'align' : 'right', 'colspan' : '2' } ), umcd.Cell( yes, attributes = { 'align' : 'right' } ) ] )
+			else:
+				lst.add_row( [ umcd.Cell( umcd.Text( _( 'The drive will be detached from the virtual instance and the associated local device will be kept as is.' ) ), attributes = { 'colspan' : '3' } ) ] )
+				btn_detach = umcd.Button(_('Detach'), actions = [ umcd.Action( detach ), umcd.Action( overview ) ] )
+				lst.add_row( [ '' ], attributes = { 'colspan' : '3' } )
+				lst.add_row( [ '', '', umcd.Cell( btn_detach, attributes = { 'align' : 'right' } ) ] )
+
 			res.dialog[ 0 ].set_dialog( lst )
 			self.finished(object.id(), res)
 		else:
 			node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 			domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
 			new_disks = []
+			rm_disk = None
 			for dev in domain_info.disks:
 				if dev.source != object.options[ 'disk' ]:
 					new_disks.append( dev )
+				else:
+					rm_disk = dev
 			domain_info.disks = new_disks
 			resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
 
+			if rm_disk and rm_disk.type == uvmmn.Disk.TYPE_BLOCK:
+				drive = object.options[ 'disk' ]
+			else:
+				drive = os.path.basename( object.options[ 'disk' ] )
 			if self.uvmm.is_error( resp ):
 				res.status( 301 )
-				self.finished( object.id(), res, report = _( 'Detaching the drive <i>%(drive)s</i> failed' ) % { 'drive' : os.path.basename( object.options[ 'disk' ] ) } )
+				self.finished( object.id(), res, report = _( 'Detaching the drive <i>%(drive)s</i> failed' ) % { 'drive' : drive } )
 				return
 
 			if object.options.get( 'drive-remove', False ):
@@ -1380,12 +1400,12 @@ class handler( umch.simpleHandler ):
 
 				if not resp:
 					res.status( 301 )
-					self.finished( object.id(), res, report = _( 'Removing the image <i>%(disk)s</i> failed. It must be removed manually.' ) % { 'drive' : os.path.basename( object.options[ 'disk' ] ) } )
+					self.finished( object.id(), res, report = _( 'Removing the image <i>%(disk)s</i> failed. It must be removed manually.' ) % { 'drive' : drive } )
 					return
 				res.status( 201 )
-				self.finished( object.id(), res, report = _( 'The drive <i>%(drive)s</i> was detached and removed successfully' ) % { 'drive' : os.path.basename( object.options[ 'disk' ] ) } )
+				self.finished( object.id(), res, report = _( 'The drive <i>%(drive)s</i> was detached and removed successfully' ) % { 'drive' : drive } )
 			res.status( 201 )
-			self.finished( object.id(), res, report = _( 'The drive <i>%(drive)s</i> was detached successfully' ) % { 'drive' : os.path.basename( object.options[ 'disk' ] ) } )
+			self.finished( object.id(), res, report = _( 'The drive <i>%(drive)s</i> was detached successfully' ) % { 'drive' : drive } )
 
 	def uvmm_drive_bootdevice( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Drive boot device' )

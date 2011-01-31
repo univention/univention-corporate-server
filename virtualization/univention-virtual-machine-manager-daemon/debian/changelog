@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.128-1) unstable; urgency=low
+
+  * support disks assoziated with block devices; Bug #19574
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 31 Jan 2011 17:00:33 +0100
+
 univention-virtual-machine-manager-daemon (0.9.127-1) unstable; urgency=low
 
   * show information why migrating is not possible if there is just one
