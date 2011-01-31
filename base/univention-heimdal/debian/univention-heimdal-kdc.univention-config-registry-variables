@@ -27,3 +27,106 @@ Description[de]=Die Passwortstärkenüberprüfung über cracklib2 kann über den
 Description[en]=Check of password strength by cracklib2 can be activated by setting this value to 'yes'.
 Type=str
 Categories=System
+
+[kerberos/password/quality/ascii_lowercase]
+Description[de]=Die Zeichen, die als Kleinbuchstaben behandelt werden.
+Description[en]=The characters, which are treated as lower case characters.
+Type=str
+Categories=System
+
+[kerberos/password/quality/ascii_uppercase]
+Description[de]=Die Zeichen, die als Großbuchstaben behandelt werden.
+Description[en]=The characters, which are treated as upper case characters.
+Type=str
+Categories=System
+
+[kerberos/password/quality/diff_ok]
+Description[de]=Die Anzahl von Zeichen die min. gegenüber dem vorherigen Passwort geändert sein müssen.
+Description[en]=The minimum amount of characters changed in comparison to the previous password.
+Type=str
+Categories=System
+
+[kerberos/password/quality/dig_credit]
+Description[de]=Die Mindestanzahl an Ziffern im neuen Passwort (anzugeben als negative Zahl!).
+Description[en]=The minimum amount of digits in the new password (specified as a negative number!).
+Type=str
+Categories=System
+
+[kerberos/password/quality/low_credit]
+Description[de]=Die Mindestanzahl an Kleinbuchstaben im neuen Passwort (anzugeben als negative Zahl!).
+Description[en]=The minimum amount of lower case characters in the new password (specified as a negative number!).
+Type=str
+Categories=System
+
+[kerberos/password/quality/min_length]
+Description[de]=Die Mindestpasswortlänge + 1
+Description[en]=Die minimum passwort length +1 
+Type=str
+Categories=System
+
+[kerberos/password/quality/oth_credit]
+Description[de]=Die Mindestanzahl an sonstigen Zeichen (keine Klein- oder Großbuchstaben und Ziffern) im neuen Passwort (anzugeben als negative Zahl!).
+Description[en]=The minimum amount of other characters (neither lower/upper case characters, nor digits) in the new password (specified as a negative number!).
+Type=str
+Categories=System
+
+[kerberos/password/quality/up_credit]
+Description[de]=Die Mindestanzahl an Großbuchstaben im neuen Passwort (anzugeben als negative Zahl!).
+Description[en]=The minimum amount of upper case characters in the new password (specified as a negative number!).
+Type=str
+Categories=System
+
+[kerberos/afscell]
+Description[de]=Der Name der AFS-Zelle, einer administrativen Einheit im AFS-Dateisystem
+Description[en]=The name of the AFS cell, an administrative unit in the AFS filesystem
+Type=str
+Categories=System
+
+[kerberos/v4tickets]
+Description[de]=Konfiguriert, ob Tickets im veralteten Kerberos-Format 4 ausgestellt werden sollen
+Description[en]=Configures, whether tickets should be issued in the deprecated Kerberos format 4
+Type=str
+Categories=System
+
+[kerberos/enable/kerberos4]
+Description[de]=Aktiviert das veraltete Kerberos-Format 4
+Description[en]=Activates the deprecated Kerberos format 4
+Type=str
+Categories=System
+
+[kerberos/enable/524]
+Description[de]=Aktiviert den Dienst zur Umwandlung von Kerberos 5 Berechtigungen in das Kerberos 4-Format
+Description[en]=Activates the Kerberos Version 5 to Version 4 credentials conversion service
+Type=str
+Categories=System
+
+[kerberos/enable/kaserver]
+Description[de]=Kaserver ist die vom AFS-Dateisystem verwendete Kerberos 4 Protokollvariante.
+Description[en]=Kaserver is the Kerberos 4 protocol variant used in the AFS file system.
+Type=str
+Categories=System
+
+[kerberos/kadmin/default/keys]
+Description[de]=Vom Kadmin-Dienst unterstütze Schlüsseltypen
+Description[en]=Keytypes supported by kadmin
+Type=str
+Categories=System
+
+[kerberos/defaults/enctypes/tgs]
+Description[de]=Die Verschlüsselungsvariante im Session-Key für Service Tickets.
+Description[en]=The encryption types for the session key of service tickets.
+Type=str
+Categories=System
+
+[kerberos/defaults/enctypes/tkt]
+Description[de]=Die Verschlüsselungsvariante im Session-Key für das Ticket Granting Ticket.
+Description[de]=The encryption types for the session key of the ticket granting ticket.
+Description[en]=
+Type=str
+Categories=System
+
+[kerberos/defaults/enctypes/permitted]
+Description[de]=Die von Services verwendbaren Verschlüsselungsvarianten.
+Description[en]=The encryption types permitted for services.
+Type=str
+Categories=System

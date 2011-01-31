@@ -1,3 +1,9 @@
+univention-heimdal (4.0.2-2) unstable; urgency=low
+
+  * Document new Kerberos variables added in Bug 13423 and 1430 (Bug #19009)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 31 Jan 2011 16:30:00 +0100
+
 univention-heimdal (4.0.2-1) unstable; urgency=low
 
   * update ucr set in postinst because of renamed ucr var. Bug #19585
