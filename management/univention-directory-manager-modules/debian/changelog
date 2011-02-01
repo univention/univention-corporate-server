@@ -1,3 +1,12 @@
+univention-directory-manager-modules (6.0.87-2) unstable; urgency=low
+
+  * Update the selection of Xorg keyboard layouts (Bug #11199)
+  * Also add a script (convert-xorg-keyboard-list-to-udm-syntax-definitions.py)
+    to the source package to generate the syntax definition from the
+    Xorg meta data.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 01 Feb 2011 10:19:25 +0100
+
 univention-directory-manager-modules (6.0.87-1) unstable; urgency=low
 
   * also replace slashes in $TABNAME with underscores (Bug #21318)
