@@ -1,3 +1,10 @@
+univention-join (3.0.4-4) unstable; urgency=low
+
+  * Display a warning and error out if univention-run-join-scripts
+    is run on a system not yet joined (Bug #20050)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 01 Feb 2011 09:32:08 +0100
+
 univention-join (3.0.4-3) unstable; urgency=low
 
   * Improve check for join status (Bug #19361,#13495,#13497,#18120)

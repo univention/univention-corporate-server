@@ -108,6 +108,12 @@ done
 
 display_header
 
+if [ ! -e /var/univention-join/joined ]; then
+    echo "The system hasn't been joined yet. univention-run-join-scripts can only be"
+    echo "used after an initial, successful join. You should run univention-join instead." 
+    exit 1
+fi
+
 if [ ! "$server_role" = "domaincontroller_master" ] ; then
 	if [ -z "$DCACCOUNT" ]; then
 		echo -n "Enter DC Master Account : "
