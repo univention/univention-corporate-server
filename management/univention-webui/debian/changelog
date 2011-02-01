@@ -1,3 +1,10 @@
+univention-webui (4.0.64-1) unstable; urgency=low
+
+  * added session id to javascript and css files only during login 
+  * do explicit "invalidate" of unijit_en-us.js during login (Bug #17324)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 01 Feb 2011 15:01:09 +0100
+
 univention-webui (4.0.63-1) unstable; urgency=low
 
   * Fixed typo in last commit (Bug #20432)
