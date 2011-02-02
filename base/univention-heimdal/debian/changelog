@@ -1,3 +1,9 @@
+univention-heimdal (4.0.3-1) unstable; urgency=low
+
+  * use fqdn (hostname.domain) for kerberos/kdc Bug #19020 
+
+ -- Felix Botner <botner@univention.de>  Wed, 02 Feb 2011 16:32:03 +0100
+
 univention-heimdal (4.0.2-2) unstable; urgency=low
 
   * Document new Kerberos variables added in Bug 13423 and 1430 (Bug #19009)

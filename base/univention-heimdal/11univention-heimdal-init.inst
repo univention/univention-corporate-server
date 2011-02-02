@@ -50,7 +50,7 @@ if [ -z "$kerberos_realm" ]; then
 	univention-baseconfig set kerberos/realm?$realm
 fi
 
-univention-baseconfig set kerberos/kdc?$hostname
+univention-baseconfig set kerberos/kdc?$hostname.$domainname
 
 eval `univention-baseconfig shell kerberos/realm`
 
