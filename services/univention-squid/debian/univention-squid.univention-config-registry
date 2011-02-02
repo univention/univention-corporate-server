@@ -21,6 +21,7 @@ Variables: interfaces/.*/address
 Variables: interfaces/.*/netmask
 Variables: squid/ntlmauth/children
 Variables: squid/ntlmauth/keepalive
+Variables: squid/ipauth/.*
 
 Type: file
 File: etc/security/netfilter.d/20squid
