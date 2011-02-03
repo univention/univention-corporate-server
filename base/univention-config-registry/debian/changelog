@@ -1,3 +1,9 @@
+univention-config-registry (6.0.37-3) unstable; urgency=low
+
+  * Do not display the scope in shell export filter (Bug #19640)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 03 Feb 2011 16:36:29 +0100
+
 univention-config-registry (6.0.37-2) unstable; urgency=low
 
   * Keep the data in base.conf alphabetically sorted, this allows

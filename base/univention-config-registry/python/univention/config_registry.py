@@ -4,7 +4,7 @@
 # Univention Configuration Registry
 #  main configuration registry classes
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -1149,7 +1149,11 @@ def print_variable_info_string( key, value, variable_info, scope=None, show_scop
 	if not show_scope or scope in (None, 0) or scope > len(SCOPE):
 		key_value = '%s: %s' % (key, value_string)
 	else:
-		key_value = '%s (%s): %s' % (key, SCOPE[scope], value_string)
+		if opt_filters[ 99 ][ 2 ]: # Do not display scope in shell export filter
+			key_value = '%s: %s' % (key, value_string)
+		else:
+			key_value = '%s (%s): %s' % (key, SCOPE[scope], value_string)
+			
 
 	info_string = None
 	if brief and not verbose or not variable_info:
