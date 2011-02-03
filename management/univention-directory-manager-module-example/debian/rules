@@ -17,6 +17,8 @@
 #export DH_OPTIONS
 
 PYVERS=$(shell pyversions -vr)
+D=debian/univention-directory-manager-module-example
+DS=debian/univention-directory-manager-module-example-schema
 
 build:
 
@@ -31,10 +33,12 @@ install: build
 	dh_installdirs
 
 	univention-install-config-registry
-	install -m 0644 ip-phone.py debian/univention-directory-manager-module-example/usr/lib/python2.4/site-packages/univention/admin/handlers/test/
-	install -m 0644 ip-phone.schema debian/univention-directory-manager-module-example/usr/share/univention-ldap/schema/
+	install -m 0644 schema/ip-phone.schema ${DS}/usr/share/univention-ldap/schema/
+	install -m 0644 modules/ip_phone.py ${D}/usr/lib/python2.4/site-packages/univention/admin/handlers/test/
+	install -m 0644 modules/__init__.py ${D}/usr/lib/python2.4/site-packages/univention/admin/handlers/test/
+	install -m 0755 scripts/ip-phone-tool ${D}/usr/sbin/
 
-	dh_install
+	dh_install --exclude=".svn"
 
 binary-indep: build install
 	dh_testdir -i

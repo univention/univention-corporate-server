@@ -1,5 +1,5 @@
 @!@
-if baseConfig['ldap/server/type']=="master":
+if configRegistry['ldap/server/type']=='master':
 	print 'include         /usr/share/univention-ldap/schema/ip-phone.schema'
 @!@
 

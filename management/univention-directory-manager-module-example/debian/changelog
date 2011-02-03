@@ -1,3 +1,11 @@
+univention-directory-manager-module-example (2.0.1-1) unstable; urgency=low
+
+  * first update of the example module (Bug #17915)
+  * the UDM module shows the usage of advanced taps and options
+  * ip-phone-tool shows how to use the UDM python API
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Feb 2011 17:03:17 +0100
+
 univention-directory-manager-module-example (2.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
