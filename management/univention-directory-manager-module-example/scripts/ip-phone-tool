@@ -1,0 +1,227 @@
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
+#
+# Copyright 2004-2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+"""Univention IP-Phone Example UDM Client."""
+
+import sys, os
+import univention.debug
+univention.debug.init('/var/log/univention/ip-phone-tool.log', 1, 0)
+
+import univention.config_registry
+import univention.admin.uldap
+import univention.admin.config
+import univention.admin.modules
+import univention.admin.objects
+import univention.admin.filter
+import univention.admin.uexceptions
+import univention.admin.localization
+import univention.admin.handlers.test.ip_phone
+from optparse import OptionParser, OptionValueError
+
+translation=univention.admin.localization.translation('univention.admin.handlers.test')	## missing in this example
+_=translation.translate
+
+class ipphonetool:
+
+	def __init__(self, options, ucr=None):
+		"""Initialize an authenticated LDAP connection
+		"""
+
+		if not ucr:
+			ucr = univention.config_registry.ConfigRegistry()
+			ucr.load()
+
+		ldap_master = ucr.get('ldap/master', '')
+		self.ldap_base = ucr.get('ldap/base', '')
+		if not options.binddn:
+			binddn = ','.join(('cn=admin', self.ldap_base))
+			server_role = ucr.get('server/role', '')
+			if server_role in ('domaincontroller_master', 'domaincontroller_backup'):
+				bindpw = open('/etc/ldap.secret','r').read().strip()
+			else:
+				print >>sys.stderr, "No credentials available"
+				sys.exit(1)
+
+		try:
+			self.lo=univention.admin.uldap.access(host=ldap_master, base=self.ldap_base, binddn=binddn, bindpw=bindpw, start_tls=2)
+		except Exception, e:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
+			print 'authentication error: %s' % str(e)
+			sys.exit(1)
+
+		self.co = univention.admin.config.config()
+
+
+	def set(self, options, name, ip, priuser):
+		"""This uses the lookup function of the udm module, allowing filtering in terms of UDM properties
+		"""
+
+		filter=univention.admin.filter.expression('name', name)
+		position=univention.admin.uldap.position(self.ldap_base)
+
+		objs = univention.admin.handlers.test.ip_phone.lookup(self.co, self.lo, filter, scope='domain', base=position.getDomain(), unique=1)
+		if objs:
+			obj=objs[0]
+		else:
+			obj=univention.admin.handlers.test.ip_phone.object(self.co, self.lo, position)
+			obj['name']=name
+
+		if not ip == obj['ip']:
+			obj['ip'] = ip
+		if not priuser == obj['priuser']:
+			obj['priuser'] = priuser
+
+		if options.redirect:
+			obj.options.append('redirection')
+			obj['redirect_user'] = options.redirect
+		else:		## if no redirection is given, this example removes the objectclass
+			if 'redirection' in obj.options:
+				obj.options.remove('redirection')
+			obj['redirect_user'] = options.redirect
+
+		if objs:
+			obj.modify()
+		else:
+			obj.create()
+
+	def remove(self, name):
+		"""remove the object, no safty belt in this example"""
+
+		filter=univention.admin.filter.expression('name', name)
+		position=univention.admin.uldap.position(self.ldap_base)
+
+		objs = univention.admin.handlers.test.ip_phone.lookup(self.co, self.lo, filter, scope='domain', base=position.getDomain(), unique=1)
+		if objs:
+			obj=objs[0]
+			obj.remove()
+
+	def clear_redirect(self, name):
+		"""This example uses a raw LDAP search instead of performing a lookup to determine the dn
+		"""
+		try:
+			filter = unicode('(&(cn=%s)(objectClass=testPhoneCallRedirect))' % name, 'utf8')
+			dn=self.lo.searchDn(filter=filter, base=self.ldap_base, unique=1)
+			if not dn:
+				print "No object found matching filter %s" % filter
+				sys.exit(1)
+
+			module=univention.admin.modules.get('test/ip_phone')	## retrive the module
+			position=univention.admin.uldap.position(self.ldap_base)
+			univention.admin.modules.init(self.lo, position, module)	## inititalize it
+
+			object=univention.admin.objects.get(module, self.co, self.lo, position=position, dn=dn[0])
+			object.open()						## open the object
+
+			if 'redirection' in object.options:
+				object.options.remove('redirection')
+
+			object['redirect_user']=''
+
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ip-phone-tool: redirect_user cleared, modify object')
+			dn=object.modify()
+
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ip-phone-tool: Redirection deactivated')
+
+		except univention.admin.uexceptions.valueError, e:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'error: invalid syntax (%s)' % e)
+
+
+if __name__ == '__main__':
+
+	usage = """usage: %prog [options] arguments
+   e.g. ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local
+   or   ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local --redirect sip:otheruser@dom.local
+   or   ip-phone-tool clear_redirect voip1
+   or   ip-phone-tool remove voip1"""
+
+	parser = OptionParser(usage=usage)
+	parser.add_option( '-D', '--binddn',
+			action = 'store', dest = 'binddn',
+			help = _('Bind DN') )
+	parser.add_option( '-w', '--bindpw',
+			action = 'store', dest = 'bindpw',
+			help = _('Bind Password') )
+	parser.add_option( '-W',
+			action = 'store_true', dest = 'ask_pass', default = False,
+			help = _('Prompt for password') )
+	parser.add_option( '-y', '--password-file',
+			action = 'store', dest = 'password_file',
+			help = _('Read password from file') )
+	parser.add_option( '-v', '--verbose',
+			action = 'count', dest = 'verbose',
+			help = _('Print additional information') )
+
+	def check_debuglevel(option, opt_str, value, parser):
+		if value < 0 or value > 4:
+			raise OptionValueError("valid values for option %s are [0-4]" % opt_str)
+		setattr(parser.values, option.dest, value)
+	parser.add_option( '-d', type = 'int', dest = 'debuglevel', default = 1,
+			action = 'callback', callback = check_debuglevel,
+			help = _('Set debug level') )
+	parser.add_option( '-U', '--user',
+			action = 'store', dest = 'username',
+			help = _('Username') )
+
+	parser.add_option( '', '--redirect',
+			action = 'store', dest = 'redirect',
+			help = _('Redirect address') )
+	(options, arguments) = parser.parse_args()
+
+	if options.debuglevel:
+		univention.debug.set_level(univention.debug.LDAP, options.debuglevel)
+		univention.debug.set_level(univention.debug.ADMIN, options.debuglevel)
+
+
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+
+	if len(arguments) < 1:
+		parser.print_help()
+		sys.exit(1)
+
+	udm_ipphone = ipphonetool(options, ucr)
+	if arguments[0] == 'set':
+		if len(arguments) < 4:
+			parser.print_usage()
+			sys.exit(1)
+		udm_ipphone.set( options, arguments[1], arguments[2], arguments[3] )
+	elif  arguments[0] == 'remove':
+		if len(arguments) < 2:
+			parser.print_usage()
+			sys.exit(1)
+		udm_ipphone.remove( arguments[1] )
+	elif  arguments[0] == 'clear_redirect':
+		if len(arguments) < 2:
+			parser.print_usage()
+			sys.exit(1)
+		udm_ipphone.clear_redirect( arguments[1] )
+	else:		
+		parser.print_usage()
+		sys.exit(0)
