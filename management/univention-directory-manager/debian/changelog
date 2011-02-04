@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.55-1) unstable; urgency=low
+
+  * Raise version number for reimport (Bug #20747)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 04 Feb 2011 15:24:18 +0100
+
 univention-directory-manager (8.0.54-1) unstable; urgency=low
 
   * check for existing DN only if one element is selected (Bug #18349)
