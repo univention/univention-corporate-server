@@ -93,10 +93,12 @@ class KBLayoutSelect( umc.StaticSelection ):
 
 class BootDeviceSelect( umc.StaticSelection ):
 	"""List of devices to boot from."""
-	CHOICES = ( ( 'hd', _( 'Hard drive' ) ), ( 'cdrom', _( 'CDROM drive' ) ), ( 'network', _( 'Network' ) ) )
+	def __init__( self ):
+		umc.StaticSelection.__init__( self, _( 'Boot order' ) )
+		self._choices = ( ( 'hd', _( 'Hard drive' ) ), ( 'cdrom', _( 'CDROM drive' ) ), ( 'network', _( 'Network' ) ) )
 
 	def choices( self ):
-		return BootDeviceSelect.CHOICES
+		return self._choices
 
 class NumberSelect( umc.StaticSelection ):
 	"""List of numbers."""

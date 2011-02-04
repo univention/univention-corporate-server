@@ -76,7 +76,8 @@ drive_type = umcd.make( ( 'type', DriveTypeSelect( _( 'Type' ) ) ), attributes =
 drive_uri = umcd.make( ( 'uri', umc.String( 'URI' ) ), attributes = { 'width' : '250' } )
 drive_dev = umcd.make( ( 'dev', umc.String( _( 'Drive' ) ) ), attributes = { 'width' : '250' } )
 
-boot_dev = umcd.make( ( 'bootdev', BootDeviceSelect( _( 'Boot order' ) ) ), attributes = { 'width' : '200' } )
+boot_dev_select = BootDeviceSelect()
+boot_dev = umcd.make( ( 'bootdev', boot_dev_select ), attributes = { 'width' : '200' } )
 
 dest_node_select = NodeSelect( _( 'Destination host' ) )
 arch_select = ArchSelect( _( 'Architecture' ) )
@@ -720,7 +721,7 @@ class handler( umch.simpleHandler ):
 		bd_default = []
 		if bootdev_default:
 			for dev in bootdev_default:
-				for key, descr in BootDeviceSelect.CHOICES:
+				for key, descr in boot_dev_select.choices():
 					ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: boot devices (compare): %s == %s' % ( key, dev ) )
 					if key == str( dev ):
 						bd_default.append( ( key, descr ) )
