@@ -127,8 +127,8 @@ class Disk( object ):
 
 class Interface( object ):
 	'''Container for interface objects'''
-	( TYPE_BRIDGE, ) = range( 1 )
-	TYPE_MAP = { TYPE_BRIDGE : 'bridge' }
+	( TYPE_BRIDGE, TYPE_NETWORK ) = range( 2 )
+	TYPE_MAP = { TYPE_BRIDGE : 'bridge', TYPE_NETWORK : 'network' }
 	def __init__( self ):
 		self.type = Interface.TYPE_BRIDGE
 		self.mac_address = None
@@ -437,7 +437,7 @@ class Domain(object):
 				dev.mac_address = mac[ 0 ].getAttribute( 'address' )
 			source = iface.getElementsByTagName( 'source' )
 			if source:
-				dev.source = source[ 0 ].getAttribute( 'bridge' )
+				dev.source = source[ 0 ].getAttribute( dev.map_type( id = dev.type ) )
 			script = iface.getElementsByTagName( 'script' )
 			if script:
 				dev.script = script[ 0 ].getAttribute( 'path' )
@@ -957,7 +957,7 @@ def domain_define( uri, domain ):
 			mac.setAttribute( 'address', iface.mac_address )
 			elem.appendChild( mac )
 		source = doc.createElement( 'source' )
-		source.setAttribute( 'bridge', iface.source )
+		source.setAttribute( iface.map_type( id = iface.type ), iface.source )
 		elem.appendChild( source )
 		if iface.script:
 			script = doc.createElement( 'script' )

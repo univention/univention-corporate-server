@@ -76,12 +76,15 @@ class Bus( object ):
 	def connect( self, dev ):
 		if not self.compatible( dev ) or dev.target_dev:
 			return False
+		self.__next_letter()
 		dev.target_dev = self.prefix % self._next_letter
 		self._connected.append( self._next_letter )
 		self.__next_letter()
 		return True
 
 	def __next_letter( self ):
+		if not self._next_letter in self._connected:
+			return self._next_letter
 		self._next_letter = chr( ord( self._next_letter ) + 1 )
 		while self._next_letter in self._connected:
 			self._next_letter = chr( ord( self._next_letter ) + 1 )
@@ -432,7 +435,7 @@ class Client( notifier.signals.Provider ):
 	# 			dev_name = self.__next_letter( dev_name, dev_exclude )
 
 	def _verify_device_files( self, domain_info ):
-		if domain_info.domain_type == 'xen' and domain_info.os_type == 'linux':
+		if domain_info.domain_type == 'xen' and domain_info.os_type in ( 'linux', 'xen' ):
 			busses = ( Bus( 'ide', 'hd%s' ), Bus( 'xen', 'xvd%s', default = True ), Bus( 'virtio', 'vd%s' ) )
 		else:
 			busses = ( Bus( 'ide', 'hd%s', default = True ), Bus( 'xen', 'xvd%s' ), Bus( 'virtio', 'vd%s' ) )

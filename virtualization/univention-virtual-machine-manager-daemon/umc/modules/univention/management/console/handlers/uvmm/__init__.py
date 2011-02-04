@@ -82,6 +82,7 @@ dest_node_select = NodeSelect( _( 'Destination host' ) )
 arch_select = ArchSelect( _( 'Architecture' ) )
 type_select = VirtTechSelect( _( 'Virtualization Technology' ), may_change = False )
 cpus_select = NumberSelect( _( 'Number of CPUs' ) )
+nic_driver_select = NIC_DriverSelect()
 
 command_description = {
 	'uvmm/overview': umch.command(
@@ -252,6 +253,24 @@ command_description = {
 		long_description = _('Set drive as boot device' ),
 		method = 'uvmm_drive_bootdevice',
 		values = {},
+		),
+	'uvmm/nic/create': umch.command(
+		short_description = _( 'New network interface' ),
+		long_description = _('Create a new network interface' ),
+		method = 'uvmm_nic_create',
+		values = {
+			'nictype' : umc.String( '' ),
+			'driver' : nic_driver_select,
+			'source' : umc.String( _( 'Source' ) ),
+			'mac' : umc.String( _( 'MAC address' ), required = False ),
+			},
+		),
+	'uvmm/nic/remove': umch.command(
+		short_description = _( 'Remove network interface' ),
+		long_description = _('Remove a network interface' ),
+		method = 'uvmm_nic_remove',
+		values = {},
+		confirm = umch.Confirm( _( 'Remove network interface' ), _( 'Should the network interface be removed?')),
 		),
 	'uvmm/daemon/restart': umch.command(
 		short_description = _( 'Restarts libvirt service' ),
@@ -774,6 +793,48 @@ class handler( umch.simpleHandler ):
 					first = False
 		drive_sec.add_row( [disk_list ] )
 
+		# network interfaces
+		nic_sec = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
+		if domain_is_off and not domain_has_snapshots:
+			cmd = umcp.SimpleCommand( 'uvmm/nic/create', options = copy.copy( object.options ) )
+			cmd.incomplete = True
+			nic_sec.add_row( [ umcd.LinkButton( _( 'Add new network interface' ), actions = [ umcd.Action( cmd ), ] ) ] )
+		nic_list = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
+		nic_list.set_header( [ _( 'Typ' ), _( 'Source' ), _( 'Driver' ), _( 'MAC address' ), '' ] )
+		if domain_info and domain_info.interfaces:
+			defaults = []
+			overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = copy.copy( object.options ) )
+			storage_volumes = {}
+			for iface in domain_info.interfaces:
+				opts = copy.copy( object.options )
+				opts[ 'nictype' ] = iface.map_type( id = iface.type )
+				opts[ 'source' ] = iface.source
+				opts[ 'mac' ] = iface.mac_address
+				remove_cmd = umcp.SimpleCommand( 'uvmm/nic/remove', options = opts )
+
+				values = {}
+				if iface.type == uvmmn.Interface.TYPE_BRIDGE:
+					nic_type = _( 'Bridge' )
+				elif iface.type == uvmmn.Interface.TYPE_NETWORK:
+					nic_type = _( 'NAT' )
+				else:
+					nic_type = _( 'unknown' )
+				nic_source = iface.source
+				if iface.model:
+					nic_driver = iface.model
+				else:
+					nic_driver = ''
+
+				if domain_is_off and not domain_has_snapshots:
+					remove_cmd.options[ 'iface' ] = copy.copy( iface.source )
+					buttons = [ umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd ), umcd.Action( overview_cmd ) ] ), ]
+				else:
+					buttons = []
+
+				nic_list.add_row( [ nic_type, iface.source, nic_driver, iface.mac_address, buttons ] )
+
+		nic_sec.add_row( [ nic_list ] )
+
 		vnc_bool = False
 		vnc_global = True
 		vnc_keymap = 'de'
@@ -833,10 +894,12 @@ class handler( umch.simpleHandler ):
 			sections.add_row( [ umcd.InfoBox( _( 'Some of the settings can not be modified currently. The reason therefore are the available snapshots. Modifying these settings would make the snapshots invalid, i.e. the snapshots can not be restored anymore. If these settings must be edited the snapshots have to be removed first.' ) ) ] )
 		if not domain_info:
 			sections.add_row( [ umcd.Section( _( 'Drives' ), drive_sec, hideable = False, hidden = False, name = 'drives.newdomain' ) ] )
+			sections.add_row( [ umcd.Section( _( 'Network Interfaces' ), nic_sec, hideable = False, hidden = False, name = 'interfaces.newdomain' ) ] )
 			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = False, hidden = True, name = 'settings.newdomain' ) ] )
 			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = False, hidden = True, name = 'extsettings.newdomain' ) ] )
 		else:
 			sections.add_row( [ umcd.Section( _( 'Drives' ), drive_sec, hideable = True, hidden = False, name = 'drives.%s' % domain_info.name ) ] )
+			sections.add_row( [ umcd.Section( _( 'Network Interfaces' ), nic_sec, hideable = True, hidden = False, name = 'interfaces.%s' % domain_info.name ) ] )
 			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = True, hidden = True, name = 'settings.%s' % domain_info.name ) ] )
 			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = True, name = 'extsettings.%s' % domain_info.name ) ] )
 		if domain_is_off:
@@ -1367,9 +1430,10 @@ class handler( umch.simpleHandler ):
 				lst.add_row( [ umcd.Cell( no, attributes = { 'align' : 'right', 'colspan' : '2' } ), umcd.Cell( yes, attributes = { 'align' : 'right' } ) ] )
 			else:
 				lst.add_row( [ umcd.Cell( umcd.Text( _( 'The drive will be detached from the virtual instance and the associated local device will be kept as is.' ) ), attributes = { 'colspan' : '3' } ) ] )
-				btn_detach = umcd.Button(_('Detach'), actions = [ umcd.Action( detach ), umcd.Action( overview ) ] )
 				lst.add_row( [ '' ], attributes = { 'colspan' : '3' } )
-				lst.add_row( [ '', '', umcd.Cell( btn_detach, attributes = { 'align' : 'right' } ) ] )
+				btn_detach = umcd.Button( _( 'Detach' ), actions = [ umcd.Action( detach ), umcd.Action( overview ) ], default = True )
+				btn_cancel = umcd.Button( _( 'Cancel' ), actions=[ umcd.Action( overview ) ] )
+				lst.add_row( [ btn_cancel, '', umcd.Cell( btn_detach, attributes = { 'align' : 'right' } ) ] )
 
 			res.dialog[ 0 ].set_dialog( lst )
 			self.finished(object.id(), res)
@@ -1427,6 +1491,102 @@ class handler( umch.simpleHandler ):
 			self.finished( object.id(), res, report = _( 'Setting the drive <i>%(drive)s</i> as boot device as failed' ) % { 'drive' : os.path.basename( object.options[ 'disk' ] ) } )
 		else:
 			self.finished( object.id(), res )
+
+	def uvmm_nic_create( self, object ):
+		ud.debug( ud.ADMIN, ud.INFO, 'Network interface create' )
+		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
+		if not success:
+			self.finished(object.id(), res)
+			return
+		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
+
+		report = ''
+		if object.incomplete:
+			nic_driver_select.virttech = domain_info.domain_type
+			nic_list = umcd.List( attributes = { 'width' : '100%' } )
+			ids = []
+
+			nic_list.add_row( [ umcd.HTML( _( "Two types of network interfaces are support. The first one is <i>bridge</i> that requires a static network connection on the physical server that is configurated to be used for bridging. By default the network interface called eth0 is setup for such a case on each UVMM node. If a virtual instance should have more than one bridging network interface, additional network interfaces on the physical server must be configured first. The second type called <i>NAT</i> provides a private network for virtual instances on the physical server and permits access to the external network via network address translation (NAT). This network typ is useful for computers with varying network connections like notebooks." ), attributes = { 'colspan' : '2' } ) ] )
+			cmd = umcp.SimpleCommand( 'uvmm/nic/create', options = copy.copy( object.options ) )
+			cmd.incomplete = True
+			choices = ( ( 'bridge', _( 'Bridge' ) ), ( 'network:default', _( 'NAT' ) ) )
+			nic_type = umcd.SimpleSelectButton( _( 'Type' ), option = 'nictype', choices = choices, actions = [ umcd.Action( cmd ) ], default = object.options.get( 'nictype', 'bridge' ) )
+			# nic_type = umcd.make( self[ 'uvmm/nic/create' ][ 'nictype' ] )
+			if object.options.get( 'nictype', '' ).startswith( 'network:' ):
+				info = umcd.InfoBox( _( 'By default the private network is 192.168.122.0/24' ) )
+			else:
+				info = ''
+			nic_list.add_row( [ nic_type, info ] )
+			ids.append( nic_type.id() )
+
+			nic_driver = umcd.make( self[ 'uvmm/nic/create' ][ 'driver' ], default = object.options.get( 'driver', 'auto' ) )
+			nic_list.add_row( [ nic_driver, '' ] )
+			ids.append( nic_driver.id() )
+
+			if object.options.get( 'nictype', 'bridge' ) == 'bridge':
+				nic_source = umcd.make( self[ 'uvmm/nic/create' ][ 'source' ], default = object.options.get( 'source', 'eth0' ) )
+				info = umcd.InfoBox( _( 'The source is the name of the network interface on the phyiscal server that is configured for bridging. By default it is eth0.' ) )
+				nic_list.add_row( [ nic_source, info ] )
+				ids.append( nic_source.id() )
+
+			nic_mac = umcd.make( self[ 'uvmm/nic/create' ][ 'mac' ], default = object.options.get( 'mac', '' ) )
+			nic_list.add_row( [ nic_mac, '' ] )
+			ids.append( nic_mac.id() )
+
+			opts = copy.copy( object.options )
+			cmd = umcp.SimpleCommand( 'uvmm/nic/create', options = opts )
+			overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = object.options )
+
+			nic_type.actions[ 0 ].options = ids
+
+			nic_list.add_row( [ umcd.Button( _( 'Cancel' ), actions = [ umcd.Action( overview_cmd ) ] ), umcd.Cell( umcd.Button( _( 'Add' ), actions = [ umcd.Action( cmd, ids ), umcd.Action( overview_cmd ) ], default = True ), attributes = { 'align' : 'right' } ) ] )
+			res.dialog[ 0 ].set_dialog( umcd.Section( _( 'Adding network interface' ), nic_list, attributes = { 'width' : '100%' } ) )
+		else:
+			iface = uvmmn.Interface()
+			if object.options[ 'nictype' ].startswith( 'network:' ):
+				typ, src = object.options[ 'nictype' ].split( ':', 1 )
+				iface.type = iface.map_type( name = typ )
+				iface.source = src
+			else:
+				iface.type = iface.map_type( name = object.options[ 'nictype' ] )
+				iface.source = object.options[ 'source' ]
+			if object.options[ 'driver' ] != 'auto':
+				iface.model = iface.map_type( name = object.options[ 'driver' ] )
+			if object.options[ 'mac' ]:
+				iface.mac_address = object.options[ 'mac' ]
+
+			domain_info.interfaces.append( iface )
+			resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
+			if self.uvmm.is_error( resp ):
+				res.status( 301 )
+				report = _( 'Failed to add network interface: %s' ) % str( resp.msg )
+		self.finished( object.id(), res, report = report )
+
+	def uvmm_nic_remove( self, object ):
+		ud.debug( ud.ADMIN, ud.INFO, 'Network interface remove' )
+		res = umcp.Response( object )
+
+		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
+
+		interfaces = []
+		typ = object.options[ 'nictype' ]
+		src = object.options[ 'source' ]
+		mac = object.options[ 'mac' ]
+		for iface in domain_info.interfaces:
+			if iface.map_type( id = iface.type ) == typ and iface.source == src and iface.mac_address == mac:
+				continue
+			interfaces.append( iface )
+
+		domain_info.interfaces = interfaces
+
+		resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
+		report = ''
+		if self.uvmm.is_error( resp ):
+			res.status( 301 )
+			report = _( 'Failed to remove network interface: %s' ) % str( resp.msg )
+		self.finished( object.id(), res, report = report )
 
 	def uvmm_daemon_restart( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Drive boot device' )

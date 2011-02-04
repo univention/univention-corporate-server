@@ -112,6 +112,36 @@ class DriveTypeSelect( umc.StaticSelection ):
 	def choices( self ):
 		return ( ( 'disk', _( 'Hard drive' ) ), ( 'cdrom', _( 'CD/DVD-ROM' ) ) )
 
+class NIC_DriverSelect( umc.StaticSelection ):
+	"""List of network interface drivers."""
+	def __init__( self, virttech = None ):
+		umc.StaticSelection.__init__( self, _( 'Driver' ) )
+		self.virttech = virttech
+		self._xen = ( ( 'auto', _( 'Automatic' ) ),
+					   ( 'netfront', _( 'Para virtual Device' ) ),
+					   ( 'rtl8139', 'RealTek RTL-8139' ),
+					   ( 'e1000', 'Intel PRO/1000' ),
+					   ( 'ne2k_pci', 'PCI NE2000' ),
+					   ( 'pcnet', 'PCnet32, PCnetPCI' )
+					   )
+		self._kvm = ( ( 'auto', _( 'Automatic' ) ),
+					   ( 'virtio', _( 'Para virtual Device' ) ),
+					   ( 'rtl8139', 'RealTek RTL-8139' ),
+					   ( 'e1000', 'Intel PRO/1000' ),
+					   ( 'i82551', 'Intel 82551' ),
+					   ( 'i82557b', 'Intel EtherExpress Pro 10/100B' ),
+					   ( 'i82559er', 'Intel 82559ER' ),
+					   ( 'ne2k_pci', 'PCI NE2000' ),
+					   ( 'pcnet', 'PCnet32, PCnetPCI' )
+					   )
+
+	def choices( self ):
+		if self.virttech == 'xen':
+			return self._xen
+		elif self.virttech in ( 'kvm', 'qemu' ):
+			return self._kvm
+		return ()
+
 class DiskSelect( umc.StaticSelection ):
 	"""Select between creating a new, reusing an existing image or integrating a local block device."""
 	def __init__( self ):
@@ -151,3 +181,4 @@ umcd.copy( umc.StaticSelection, DriveTypeSelect )
 umcd.copy( umc.StaticSelection, NodeSelect )
 umcd.copy( umc.StaticSelection, DiskSelect )
 umcd.copy( umc.StaticSelection, ArchSelect )
+umcd.copy( umc.StaticSelection, NIC_DriverSelect )

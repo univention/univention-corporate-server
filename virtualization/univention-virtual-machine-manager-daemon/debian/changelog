@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.129-1) unstable; urgency=low
+
+  * support several network interfaces; Bug #19573
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 04 Feb 2011 11:07:18 +0100
+
 univention-virtual-machine-manager-daemon (0.9.128-1) unstable; urgency=low
 
   * support disks assoziated with block devices; Bug #19574
