@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (0.1.18-4) unstable; urgency=low
+
+  * add dependency to dnsmasq-base; Bug #19573
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 04 Feb 2011 10:04:41 +0100
+
 univention-virtual-machine-manager-node (0.1.18-3) unstable; urgency=low
 
   * Call kvm with -no-kvm-irqchip to work around suspend bug (Bug #21130)

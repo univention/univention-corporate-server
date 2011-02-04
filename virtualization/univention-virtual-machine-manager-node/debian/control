@@ -12,6 +12,7 @@ Package: univention-virtual-machine-manager-node-common
 Architecture: all
 Depends: ${misc:Depends},
  libvirt-bin,
+ dnsmasq-base,
  univention-runit,
  univention-ssl,
  univention-virtual-machine-manager-schema,
