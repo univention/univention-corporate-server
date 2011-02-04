@@ -243,7 +243,8 @@ class MultiValueMap( mapper.IMapper ):
 					dyn.cached = list( dyn.default )
 				else:
 					dyn.cached = []
-			dyn.cached.append( ( key, value ) )
+			if not ( key, value ) in dyn.cached:
+				dyn.cached.append( ( key, value ) )
 			return True
 		# remove item
 		elif btn_remove.pressed():

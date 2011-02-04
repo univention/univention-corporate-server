@@ -1,3 +1,10 @@
+univention-management-console (3.0.75-1) unstable; urgency=low
+
+  * MultiValue mapping: ensure that a value is just added once to the
+    list; Bug #20012
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 04 Feb 2011 14:21:07 +0100
+
 univention-management-console (3.0.74-1) unstable; urgency=low
 
   * added reboot message to UMC login page if update/reboot/required=true
