@@ -1,0 +1,21 @@
+High-Level-Overview
+
+modules/univention/updater/tools.py#UCS_Version
+	Representation of a UCS-Version, e.g. $major.$minor-$patchlevel
+
+modules/univention/updater/tools.py#UCSRepo{,Pool,Dist}
+	Structure on a repository server, relative to some UCS*Server
+
+modules/univention/updater/tools.py#UCS{Http,Local}Server
+	Access to a repository server, providing the root for UCSRepo*
+
+modules/univention/updater/tools.py#UniventionUpdater
+	High level functions to handle releases, security updates and components.
+	Using UCR variables repository/online**
+
+modules/univention/updater/tools.py#LocalUpdater
+	Specialized version ot UniventionUpdater using local file access for the local repository.
+
+modules/univention/updater/mirror.py#UniventionMiror
+	High level functions to handle the mirroring of remote repositories to the local repository, normally /var/lib/univention-repository/
+	Using UCR variables repository/mirror**

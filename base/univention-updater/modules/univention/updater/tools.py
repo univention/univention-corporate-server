@@ -38,15 +38,18 @@ import re
 import os
 import copy
 import httplib
-import base64
 import socket
 import univention.config_registry
 import traceback
-import urlparse
-import urllib
+# Proxy-Support for no_proxy in 2.4 is missing, get version from 2.6
+import urllib2_proxy26 as urllib2
+from urllib import quote
 import subprocess
+from operator import attrgetter, itemgetter
+import new
+import tempfile
+import shutil
 
-HTTP_PROXY_DEFAULT_PORT = 3128
 RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
 
 class ExceptionUpdaterRequiredComponentMissing(Exception):
@@ -56,12 +59,15 @@ class ExceptionUpdaterRequiredComponentMissing(Exception):
 	def __str__(self):
 		return "An update to UCS %s without the component '%s' is not possible because the component '%s' is marked as required." % (self.version, self.component, self.component)
 
+class ExceptionUpdaterPrecondition(Exception):
+	pass
+
 class UCS_Version( object ):
 	'''Version object consisting of major-, minor-number and patch-level'''
 	FORMAT = '%(major)d.%(minor)d'
 	FULLFORMAT = '%(major)d.%(minor)d-%(patchlevel)d'
 	# regular expression matching a UCS version X.Y-Z
-	_regexp = re.compile( '(?P<major>[0-9]*)\.(?P<minor>[0-9]*)-(?P<patch>[0-9]*)' )
+	_regexp = re.compile( '(?P<major>[0-9]+)\.(?P<minor>[0-9]+)-(?P<patch>[0-9]+)' )
 
 	def __init__( self, version ):
 		'''version must a string matching the pattern X.Y-Z or a triple
@@ -106,7 +112,7 @@ class UCS_Version( object ):
 		'''Parse string and set version.'''
 		match = UCS_Version._regexp.match( version )
 		if not match:
-			raise AttributeError( 'string does not match UCS version pattern' )
+			raise ValueError( 'string does not match UCS version pattern' )
 		self.major, self.minor, self.patchlevel = map(int, match.groups())
 
 	def __getitem__(self, k):
@@ -115,6 +121,16 @@ class UCS_Version( object ):
 	def __str__(self):
 		'''Return full version string.'''
 		return UCS_Version.FULLFORMAT % self
+
+	def __hash__(self):
+		return hash((self.major, self.minor, self.patchlevel))
+
+	def __eq__(self, other):
+		return isinstance(other, UCS_Version) and (self.major, self.minor, self.patchlevel) == (other.major, other.minor, other.patchlevel)
+
+	def __repr__(self):
+		'''Return canonical string representation.'''
+		return 'UCS_Version((%d,%d,%r))' % (self.major, self.minor, self.patchlevel)
 
 class UCSRepo(UCS_Version):
 	'''Debian repository.'''
@@ -126,7 +142,7 @@ class UCSRepo(UCS_Version):
 			else:
 				setattr(self, k, v)
 	def __repr__(self):
-		return repr(self.__dict__)
+		return '%s(**%r)' % (self.__class__.__name__, self.__dict__)
 	def _format(self, format):
 		'''Format longest path for directory/file access.'''
 		while format:
@@ -137,7 +153,10 @@ class UCSRepo(UCS_Version):
 				i = format.index('%%(%s)' % k)
 				format = format[:i]
 				# strip partial part
-				i = format.rindex('/') + 1
+				try:
+					i = format.rindex('/') + 1
+				except ValueError:
+					i = 0
 				format = format[:i]
 	class _substitution:
 		'''Helper to print dynamically substituted variable.
@@ -177,18 +196,18 @@ class UCSRepoPool(UCSRepo):
 		fmt = "%(prefix)s%(version)s/%(part)s/ %(patch)s/%(arch)s/"
 		return "%s %s" % (type, super(UCSRepoPool,self)._format(fmt))
 	def path(self, file='Packages.gz'):
-		'''Format pool for directory/file access.
+		'''Format pool for directory/file access. Returns relative path.
 
 		>>> UCSRepoPool(prefix='http://apt.univention.de/',major=2,minor=3).path()
-		'/2.3/'
+		'2.3/'
 		>>> UCSRepoPool(major=2,minor=3,part='maintained').path()
-		'/2.3/maintained/'
+		'2.3/maintained/'
 		>>> UCSRepoPool(major=2,minor=3,patchlevel=1,part='maintained').path()
-		'/2.3/maintained/2.3-1/'
+		'2.3/maintained/2.3-1/'
 		>>> UCSRepoPool(major=2,minor=3,patchlevel=1,part='maintained',arch='i386').path()
-		'/2.3/maintained/2.3-1/i386/Packages.gz'
+		'2.3/maintained/2.3-1/i386/Packages.gz'
 		'''
-		fmt = "/%(version)s/%(part)s/%(patch)s/%(arch)s/" + file
+		fmt = "%(version)s/%(part)s/%(patch)s/%(arch)s/" + file
 		return super(UCSRepoPool,self)._format(fmt)
 	def clean(self):
 		'''Format for /etc/apt/mirror.list'''
@@ -211,19 +230,167 @@ class UCSRepoDist(UCSRepo):
 		fmt = "%(prefix)s%(version)s/%(part)s/%(patch)s/ dists/univention/main/binary-%(arch)s/"
 		return "%s %s" % (type, super(UCSRepoDist,self)._format(fmt))
 	def path(self, file='Packages.gz'):
-		'''Format dist for directory/file access.
+		'''Format dist for directory/file access. Returns relative path.
 
 		>>> UCSRepoDist(prefix='http://apt.univention.de/',major=2,minor=2).path()
-		'/2.2/'
+		'2.2/'
 		>>> UCSRepoDist(major=2,minor=2,part='maintained').path()
-		'/2.2/maintained/'
+		'2.2/maintained/'
 		>>> UCSRepoDist(major=2,minor=2,patchlevel=0,part='maintained').path()
-		'/2.2/maintained/2.2-0/dists/univention/main/'
+		'2.2/maintained/2.2-0/dists/univention/main/'
 		>>> UCSRepoDist(major=2,minor=2,patchlevel=0,part='maintained',arch='i386').path()
-		'/2.2/maintained/2.2-0/dists/univention/main/binary-i386/Packages.gz'
+		'2.2/maintained/2.2-0/dists/univention/main/binary-i386/Packages.gz'
 		'''
-		fmt = "/%(version)s/%(part)s/%(patch)s/dists/univention/main/binary-%(arch)s/" + file
+		fmt = "%(version)s/%(part)s/%(patch)s/dists/univention/main/binary-%(arch)s/" + file
 		return super(UCSRepoDist,self)._format(fmt)
+
+class UCSHttpServer(object):
+	'''Access to UCS compatible remote update server.'''
+
+	class HTTPHeadHandler(urllib2.BaseHandler):
+		'''Handle fallback from HEAD to GET if unimplemented.'''
+		def http_error_501(self, req, fp, code, msg, headers): # httplib.NOT_IMPLEMENTED
+			m = req.get_method()
+			if m == 'HEAD' == UCSHttpServer.http_method:
+				ud.debug(ud.NETWORK, ud.INFO, "HEAD not implemented at %s, switching to GET." % req)
+				UCSHttpServer.http_method = 'GET'
+				return self.parent.open(req)
+			else:
+				return None
+
+	def __init__(self, server, port=80, prefix='', username=None, password=None):
+		self.server = server
+		self.port = int(port)
+		prefix = str(prefix).strip('/')
+		if prefix:
+			self.prefix = '%s/' % prefix
+		else:
+			self.prefix = ''
+		self.username = username
+		self.password = password
+
+	http_method = 'HEAD'
+	head_handler = HTTPHeadHandler()
+	pass_handler = urllib2.HTTPPasswordMgrWithDefaultRealm()
+	auth_handler = urllib2.HTTPBasicAuthHandler(pass_handler)
+	proxy_handler = urllib2.ProxyHandler()
+	opener = urllib2.build_opener(head_handler, auth_handler, proxy_handler)
+	failed_hosts = set()
+
+	@classmethod
+	def reinit(self):
+		'''Reload proxy settings and reset failed hosts.'''
+		self.proxy_handler = urllib2.ProxyHandler()
+		self.opener = urllib2.build_opener(self.head_handler, self.auth_handler, self.proxy_handler)
+		self.failed_hosts = set()
+
+	def __getitem__(self, item):
+		'''Convert attributes to dict.'''
+		if item == 'server':
+			return self.server
+		elif item == 'prefix':
+			return self.prefix
+		elif item == 'port':
+			if self.port == 80:
+				return ''
+			else:
+				return ':%d' % self.port
+		elif item == 'cred':
+			if self.username:
+				# FIXME http://bugs.debian.org/500560: [@:/] don't work
+				return "%s:%s@" % (quote(self.username), quote(self.password))
+			else:
+				return ''
+		else:
+			raise KeyError(item)
+
+	def __str__(self):
+		'''URI with credentials.'''
+		return 'http://%(cred)s%(server)s%(port)s/%(prefix)s' % self
+
+	def __repr__(self):
+		'''Return canonical string representation.'''
+		return 'UCSHttpServer(%r, port=%d, prefix=%r, username=%r, password=%r)' % (self.server, self.port, self.prefix, self.username, self.password)
+
+	def __add__(self, rel):
+		'''Append relative URI.'''
+		uri = copy.copy(self)
+		uri.prefix += '%s/' % str(rel).strip('/')
+		return uri
+
+	def access(self, rel, get=False):
+		'''Access URI and optionally get data. Return None on errors.'''
+		uri = 'http://%(server)s%(port)s/%(prefix)s' % self
+		uri += str(rel).lstrip('/')
+		if self.username:
+			UCSHttpServer.auth_handler.add_password(realm=None, uri=uri, user=self.username, passwd=self.password)
+		req = urllib2.Request(uri)
+		if req.get_host() in self.failed_hosts:
+			return (0, None)
+		if not get and UCSHttpServer.http_method != 'GET':
+			# Overwrite get_method() to return "HEAD"
+			def get_method(self, orig=req.get_method):
+				method = orig()
+				if method == 'GET':
+					return UCSHttpServer.http_method
+				else:
+					return method
+			req.get_method = new.instancemethod(get_method, req, urllib2.Request)
+
+		ud.debug(ud.NETWORK, ud.ALL, "updater: %s %s", (req.get_method(), req.get_full_url()))
+		try:
+			res = UCSHttpServer.opener.open(req)
+			try:
+				return (res.code, res.read())
+			finally:
+				res.close()
+		except urllib2.HTTPError, res:
+			return (res.code, None)
+		except urllib2.URLError, e:
+			if isinstance(e.reason, socket.gaierror) and e.reason.args[0] == socket.EAI_NONAME:
+				self.failed_hosts.add(req.get_host())
+			return (0, None)
+
+class UCSLocalServer(object):
+	'''Access to UCS compatible local update server.'''
+	def __init__(self, prefix):
+		prefix = str(prefix).strip('/')
+		if prefix:
+			self.prefix = '/%s/' % prefix
+		else:
+			self.prefix = '/'
+
+	def __str__(self):
+		'''Absolute file-URI.'''
+		return 'file://%s' % self.prefix
+
+	def __repr__(self):
+		'''Return canonical string representation.'''
+		return 'UCSLocalServer(prefix=%r)' % (self.prefix,)
+
+	def __add__(self, rel):
+		'''Append relative URI.'''
+		uri = copy.copy(self)
+		uri.prefix += str(rel).lstrip('/')
+		return uri
+
+	def access(self, rel, get=False):
+		'''Access URI and optionally get data. Return None on errors.'''
+		uri = self.__str__() + str(rel).lstrip('/')
+		ud.debug(ud.NETWORK, ud.ALL, "updater: %s", uri)
+		# urllib2.urlopen() doesn't work for directories
+		assert uri.startswith('file://')
+		path = uri[len('file://'):]
+		if os.path.exists(path):
+			if os.path.isdir(path):
+				return (httplib.OK, '') # 200
+			elif os.path.isfile(path):
+				f = open(path, 'r')
+				try:
+					return (httplib.OK, f.read()) # 200
+				finally:
+					f.close()
+		return (0, None)
 
 class UniventionUpdater:
 	'''Handle Univention package repositories.'''
@@ -235,100 +402,33 @@ class UniventionUpdater:
 
 	def config_repository( self ):
 		'''Retrieve configuration to access repository. Overridden in UniventionMirror.'''
-		self.online_repository = self.configRegistry.get('repository/online', 'True')
-		if self.online_repository.lower() in ('yes', 'true', 'enabled', '1'):
-			self.online_repository = True
-		else:
-			self.online_repository = False
+		self.online_repository = self.configRegistry.is_true('repository/online', True)
 		self.repository_server = self.configRegistry.get('repository/online/server', 'apt.univention.de')
 		self.repository_port = self.configRegistry.get('repository/online/port', '80')
 		self.repository_prefix = self.configRegistry.get('repository/online/prefix', '').strip('/')
-		self.sources = self.configRegistry.get('repository/online/sources', 'no' ).lower() in ('yes', 'true', 'enabled', '1')
-		self.http_method = self.configRegistry.get('repository/online/httpmethod', 'HEAD').upper()
-
-	def open_connection(self, server=None, port=None):
-		'''Open http-connection to server:port'''
-		if not server:
-			server = self.repository_server
-		if port in (None, ''):
-			port = self.repository_port
-
-		if not self.nameserver_available:
-			raise socket.gaierror, (socket.EAI_NONAME, 'The repository server %s could not be resolved.' % server)
-
-		# check no_proxy
-		no_proxy = False		
-		for i in self.no_proxy:
-			if server.endswith(i):
-				no_proxy = True
-
-		if self.proxy not in (None, '') and not no_proxy:
-			if '://' in self.proxy:
-				r = urlparse.urlsplit(self.proxy)
-				if r[0] != 'http':
-					raise NotImplemented('Scheme %s not supported' % r[0])
-				netloc = r[1]
-			else:
-				netloc = self.proxy
-
-			proxy_headers = {}
-			# re-implementation of urlparse for Python < 2.5
-			if "@" in netloc:
-				userinfo, netloc = netloc.rsplit("@", 1)
-				if ":" in userinfo:
-					username, password = map(urllib.unquote, userinfo.split(":", 1))
-					# setup basic authentication
-					user_pass = base64.encodestring('%s:%s' % (username, password)).strip()
-					proxy_headers['Proxy-Authorization'] = 'Basic %s' % user_pass
-			if ":" in netloc:
-				hostname, port = netloc.rsplit(":", 1)
-			else:
-				hostname, port = netloc, HTTP_PROXY_DEFAULT_PORT
-
-			#print "# %s:%s" % (hostname, port)
-			self.connection = httplib.HTTPConnection(hostname, int(port))
-
-			return proxy_headers
-		else:
-			#print "# %s:%s" % (server, port)
-			self.connection = httplib.HTTPConnection(server, int(port))
-
-	def close_connection(self):
-		'''Close http-connection'''
-		self.connection.close()
+		self.sources = self.configRegistry.is_true('repository/online/sources', False)
+		UCSHttpServer.http_method = self.configRegistry.get('repository/online/httpmethod', 'HEAD').upper()
 
 	def ucr_reinit(self):
 		'''Re-initialize settings'''
 		self.configRegistry=univention.config_registry.ConfigRegistry()
 		self.configRegistry.load()
 
-		self.is_repository_server = self.configRegistry.get( 'local/repository', 'no' ) in ( 'yes', 'true' )
+		self.is_repository_server = self.configRegistry.is_true('local/repository', False)
 
-		if self.configRegistry.has_key('proxy/http') and self.configRegistry['proxy/http']:
-			self.proxy = self.configRegistry['proxy/http']
-		elif os.environ.has_key('http_proxy') and os.environ['http_proxy']:
-			self.proxy = os.environ['http_proxy']
-		else:
-			self.proxy = None
-
-		self.no_proxy = []
-		no_proxy_tmp = self.configRegistry.get("proxy/no_proxy", "")
-		if not no_proxy_tmp:
-			no_proxy_tmp = os.environ.get("no_proxy", "")
-		for i in no_proxy_tmp.split(","):
-			i = i.strip()
-			if i:
-				self.no_proxy.append(i)
+		if 'proxy/http' in self.configRegistry and self.configRegistry['proxy/http']:
+			os.environ['http_proxy'] = self.configRegistry['proxy/http']
+			UCSHttpServer.reinit()
+		if 'proxy/no_proxy' in self.configRegistry and self.configRegistry['proxy/no_proxy']:
+			os.environ['no_proxy'] = self.configRegistry['proxy/no_proxy']
 
 		# check for maintained and unmaintained
 		self.parts = []
 
-		maintained = self.configRegistry.get('repository/online/maintained', 'True')
-		if maintained.lower() in ('yes', 'true', 'enabled', '1'):
+		if self.configRegistry.is_true('repository/online/maintained', True):
 			self.parts.append('maintained')
 
-		unmaintained = self.configRegistry.get('repository/online/unmaintained', 'False')
-		if unmaintained.lower() in ('yes', 'true', 'enabled', '1'):
+		if self.configRegistry.is_true('repository/online/unmaintained', False):
 			self.parts.append('unmaintained')
 
 		#UCS version
@@ -338,110 +438,15 @@ class UniventionUpdater:
 		self.version_major, self.version_minor = map(int, self.ucs_version.split('.'))
 
 		# should hotfixes be used
-		self.hotfixes = self.configRegistry.get('repository/online/hotfixes', 'no' ).lower() in ('yes', 'true', 'enabled', '1')
+		self.hotfixes = self.configRegistry.is_true('repository/online/hotfixes', False)
 
 		# UniventionMirror needs to provide its own settings
 		self.config_repository()
 
-		# check availability of the repository server
-		try:
-			socket.gethostbyname(self.repository_server)
-			self.nameserver_available=True
-		except socket.gaierror:
-			self.nameserver_available=False
-
-		# check for prefix on repository server (if the repository server is reachable)
-		try:
-			if not self.repository_prefix and self.net_path_exists( '/univention-repository/' ):
-				self.repository_prefix = 'univention-repository'
-		except:
-			self.repository_prefix = ''
-
-	def net_path_exists (self, path, server='', port='', prefix='', username='', password='', debug=False):
-		# path MUST NOT contain the schema and hostname
-		proxy_headers = self.open_connection(server=server, port=port)
-		#if we use a different server we should also use a different prefix
-		if not server:
-			server = self.repository_server
-			port = self.repository_port
-			prefix = self.repository_prefix
-		site = '/%s' % '/'.join(filter(None, [prefix, path]))
-		site = re.sub('[/]{2,}', '/', site)
-		url = 'http://%s:%s%s' % (server, port, site)
-
-		if proxy_headers is not None:
-			# proxy needs full URL
-			self.connection.putrequest(self.http_method, url, skip_accept_encoding=1)
-			for k, v in proxy_headers.items():
-				self.connection.putheader(k, v)
-		else:
-			# direct connection only gets path
-			self.connection.putrequest(self.http_method, site)
-
-		if username and password:
-			user_pass = base64.encodestring('%s:%s' % (username, password)).strip()
-			self.connection.putheader('Authorization', 'Basic %s' % user_pass)
-		self.connection.endheaders ()
-		response = self.connection.getresponse()
-		response.read()
-		ud.debug(ud.NETWORK, ud.ALL, "%d %s %s" % (response.status, self.http_method, url))
-		#print "# %d %s %s" % (response.status, self.http_method, url) # TODO
-
-		if response.status == httplib.OK: # 200
-			self.close_connection()
-			return True
-
-		if response.status == httplib.NOT_IMPLEMENTED and self.http_method == 'HEAD': # 501
-			# fall-back to GET if not implemented
-			ud.debug(ud.NETWORK, ud.INFO, "HEAD not implemented at %s, switching to GET." % url)
-			self.http_method = 'GET'
-			self.close_connection()
-			return self.net_path_exists(self, path, server, port, prefix, username, password, debug)
-
-		if debug:
-			if response.status == httplib.NOT_FOUND: # 404
-				print '# The site %s was not found' % (url,)
-			elif response.status == httplib.UNAUTHORIZED: # 401
-				if username and password:
-					url = 'http://%s:%s%s' % (username, password, url[len('http://'):])
-					print '# Authentication failure for %s' % (url,)
-				else:
-					print '# Username and password are required for %s' % (url,)
-			else:
-				print '# The http error code (%d) was returned for %s' % (response.status, url)
-
-		self.close_connection()
-		return False
-
-	def retrieve_url(self, path):
-		'''downloads the given path from the repository server'''
-		# path MUST NOT contain the schema and hostname
-		proxy_headers = self.open_connection()
-		site = '/%s' % (path,)
-		site = re.sub('[/]{2,}', '/', site)
-
-		if proxy_headers is not None:
-			# proxy needs full URL
-			url = 'http://%s:%s%s' % (self.repository_server, self.repository_port, site)
-			self.connection.putrequest('GET', url, skip_accept_encoding=1)
-			for k, v in proxy_headers.items():
-				self.connection.putheader(k, v)
-		else:
-			self.connection.putrequest('GET', site)
-
-		try:
-			self.connection.endheaders()
-			response = self.connection.getresponse()
-			body = response.read()
-
-			if response.status == httplib.OK: # 200
-				self.close_connection()
-				return body
-		except:
-			print >>sys.stderr, traceback.format_exc()
-
-		self.close_connection()
-		return None
+		# Auto-detect prefix
+		self.server = UCSHttpServer(server=self.repository_server, port=self.repository_port, prefix=self.repository_prefix)
+		if not self.repository_prefix and self.server.access('/univention-repository/')[1] is not None:
+			self.server += '/univention-repository/'
 
 	def get_next_version(self, version, components=[], errorsto='stderr'):
 		'''Check if a new patchlevel, minor or major release is available for the given version.
@@ -455,7 +460,8 @@ class UniventionUpdater:
 			{'major':version.major  , 'minor':version.minor+1, 'patchlevel':0},
 			{'major':version.major+1, 'minor':0              , 'patchlevel':0}
 			]:
-			if self.net_path_exists(UCSRepoPool(part='maintained', **ver).path(), debug=debug):
+			repo = UCSRepoPool(prefix=self.server, part='maintained', **ver)
+			if self.server.access(repo.path())[1] is not None:
 				for component in components:
 					mm_version = UCS_Version.FORMAT % ver
 					if not self.get_component_repositories(component, [mm_version], False, debug=debug):
@@ -475,13 +481,13 @@ class UniventionUpdater:
 		     ucs_version: starts travelling through available version from version 'ucs_version'
 		   Return value: tuple(versions, blocking component)
 		     versions: available UCS versions (list of strings)
-			 blocking component: None or name of update blocking component
+		     blocking component: None or name of update blocking component
 		 '''
 
 		if not ucs_version:
 			ucs_version = self.current_version
 
-		components = filter(lambda c: 'current' in self.configRegistry.get('repository/online/component/%s/version' % c, '').split(','), self.get_components())
+		components = self.get_current_components()
 
 		result = []
 		while ucs_version:
@@ -500,7 +506,7 @@ class UniventionUpdater:
 		if not ucs_version:
 			ucs_version = self.current_version
 
-		components = filter(lambda c: 'current' in self.configRegistry.get('repository/online/component/%s/version' % c, '').split(','), self.get_components())
+		components = self.get_current_components()
 
 		return self.get_next_version(UCS_Version(ucs_version), components, errorsto)
 
@@ -510,14 +516,13 @@ class UniventionUpdater:
 			components = self.get_components()
 
 		mmp_version = UCS_Version(version)
-		mm_version = UCS_Version.FORMAT % mmp_version
 		archs = ['all', 'extern'] + self.architectures
 
 		result = []
-		for ver in self._iterate_versions(UCSRepoPool(), mmp_version, mmp_version, self.parts, archs):
+		for server, ver in self._iterate_version_repositories(mmp_version, mmp_version, self.parts, archs):
 			result.append(ver.deb())
 		for component in components:
-			result += self.get_component_repositories(component, [mm_version], False)
+			result += self.get_component_repositories(component, [mmp_version], False)
 		return result
 
 	def security_update_temporary_sources_list(self):
@@ -526,7 +531,7 @@ class UniventionUpdater:
 		archs = ['all', 'extern'] + self.architectures
 
 		sources_list = []
-		for ver in self._iterate_versions(UCSRepoPool(patch="sec%(patchlevel)d"), start, end, self.parts, archs):
+		for server, ver in self._iterate_security_repositories(start, end, self.parts, archs):
 			sources_list.append( ver.deb() )
 		return sources_list
 
@@ -534,13 +539,13 @@ class UniventionUpdater:
 		'''Returns a list of all available security updates for current major.minor version'''
 		result = []
 		archs = ['all', 'extern'] + self.architectures
-		for sp in xrange(self.security_patchlevel+1, 999):
+		for sp in xrange(self.security_patchlevel + 1, 99):
 			version = UCS_Version( (self.version_major, self.version_minor, sp) )
 			secver = self.security_update_available(version)
-			if secver == False:
-				return result
-			else:
+			if secver:
 				result.append( secver )
+			else:
+				break
 		return result
 
 	def security_update_available(self, version=None):
@@ -550,7 +555,7 @@ class UniventionUpdater:
 		else:
 			start = end = UCS_Version( (self.version_major, self.version_minor, self.security_patchlevel+1) )
 		archs = ['all', 'extern'] + self.architectures
-		for ver in self._iterate_versions(UCSRepoPool(patch="sec%(patchlevel)d"), start, end, self.parts, archs):
+		for server, ver in self._iterate_security_repositories(start, end, self.parts, archs):
 			return 'sec%(patchlevel)s' % ver
 		return False
 
@@ -568,9 +573,21 @@ class UniventionUpdater:
 		components = []
 		for key in self.configRegistry.keys():
 			if key.startswith('repository/online/component/'):
-				component_part = key.split('repository/online/component/')[1]
-				if component_part.find('/') == -1 and self.configRegistry[key].lower() in ('yes', 'true', 'enabled', '1'):
+				component_part = key[len('repository/online/component/'):]
+				if '/' not in component_part and self.configRegistry.is_true(key):
 					components.append(component_part)
+		return components
+
+	def get_current_components(self):
+		'''Return all components marked as current.'''
+		all_components = self.get_components()
+		components = []
+		for component in all_components:
+			key = 'repository/online/component/%s/version' % component
+			value = self.configRegistry.get(key, '')
+			versions = value.split(',')
+			if 'current' in versions:
+				components.append(component)
 		return components
 
 	def get_all_components(self):
@@ -618,7 +635,6 @@ class UniventionUpdater:
 		function raises an ValueError exception if UCR variable contains invalid package names if ignore_invalid_package_names=False
 		"""
 		pkglist = self.get_component_defaultpackage(componentname)
-		result = True
 		if not pkglist:
 			return None
 
@@ -641,31 +657,26 @@ class UniventionUpdater:
 		return len(pkglist) == installed_correctly
 
 
-	def _iterate_versions(self, ver, start, end, parts, archs, **netConf):
+	def _iterate_versions(self, ver, start, end, parts, archs, server):
 		'''Iterate through all versions of repositories between start and end.'''
 		(ver.major, ver.minor, ver.patchlevel) = (start.major, start.minor, start.patchlevel)
-		# TODO: s/self.repository_XYZ/netConf[XYZ]/
-		if self.repository_prefix:
-			ver.prefix = 'http://%s:%s/%s/' % ( self.repository_server, self.repository_port, self.repository_prefix )
-		else:
-			ver.prefix = 'http://%s:%s/' % ( self.repository_server, self.repository_port )
 
 		# Workaround version of start << first available repository version,
 		# e.g. repository starts at 2.3-0, but called with start=2.0-0
 		findFirst = True
 		while ver <= end: # major
-			while self.net_path_exists(ver.path(), **netConf): # minor
+			while server.access(ver.path())[1] is not None: # minor
 				findFirst = False
 				# reset patchlevel for each nested part
 				saved_patchlevel = ver.patchlevel
 				for ver.part in parts: # part
 					ver.patchlevel = saved_patchlevel
-					while self.net_path_exists(ver.path(), **netConf): # patchlevel
+					while server.access(ver.path())[1] is not None: # patchlevel
 						for ver.arch in archs: # architecture
-							if self.net_path_exists(ver.path(), **netConf):
+							if server.access(ver.path())[1] is not None:
 								yield ver
 						del ver.arch
-						if isinstance(ver.patch, str): # patchlevel not used
+						if isinstance(ver.patch, basestring): # patchlevel not used
 							break
 						ver.patchlevel += 1
 						if ver > end:
@@ -682,6 +693,50 @@ class UniventionUpdater:
 				ver.major += 1
 				ver.minor = 0
 
+	def _iterate_version_repositories(self, start, end, parts, archs, dists=False):
+		'''Iterate over all releases and return (server, version).'''
+		server = self.server
+		if dists:
+			struct = UCSRepoDist(prefix=self.server)
+			for ver in self._iterate_versions(struct, start, end, parts, archs, server):
+				yield server, ver
+		struct = UCSRepoPool(prefix=self.server)
+		for ver in self._iterate_versions(struct, start, end, parts, archs, server):
+			yield server, ver
+
+	def _iterate_security_repositories(self, start, end, parts, archs, hotfixes=False):
+		'''Iterate over all security releases and return (server, version).'''
+		server = self.server
+		struct = UCSRepoPool(prefix=self.server, patch="sec%(patchlevel)d", patchlevel_reset=1)
+		for ver in self._iterate_versions(struct, start, end, parts, archs, server):
+			yield server, ver
+		if hotfixes:
+			# hotfixes don't use patchlevel, but UCS_Version.__cmp__ uses them
+			start.patchlevel = end.patchlevel = None
+			struct = UCSRepoPool(prefix=self.server, patch="hotfixes", patchlevel_reset=None)
+			for ver in self._iterate_versions(struct, start, end, parts, archs, server):
+				yield server, ver
+
+	def _iterate_component_repositories(self, components, start, end, archs):
+		'''Iterate over all components and return (server, version).'''
+		# Components are ... different:
+		for component in components:
+			# server, port, prefix
+			server = self._get_component_server(component)
+			# parts
+			parts = self.configRegistry.get('repository/online/component/%s/parts' % component, 'maintained')
+			parts = ['%s/component' % part for part in parts.split(',')]
+			# versions
+			if start == end:
+				versions = (start,)
+			else:
+				versions = self._get_component_versions(component, start, end)
+
+			struct = UCSRepoPool(prefix=server, patch=component)
+			for version in versions:
+				for ver in self._iterate_versions(struct, version, version, parts, archs, server):
+					yield server, ver
+
 	def print_version_repositories( self, clean = False, dists = False, start = None, end = None ):
 		'''Return a string of Debian repository statements for all UCS versions
 		between start and end.
@@ -695,7 +750,7 @@ class UniventionUpdater:
 			return ''
 
 		if clean:
-			clean = self.configRegistry.get('online/repository/clean', 'False').lower() in ('yes', 'true', 'enabled', '1')
+			clean = self.configRegistry.is_true('online/repository/clean', False)
 
 		if not start:
 			start = UCS_Version( ( self.version_major, 0, 0 ) )
@@ -706,17 +761,14 @@ class UniventionUpdater:
 		archs = ['all', 'extern'] + self.architectures
 		result = []
 
-		if dists:
-			for ver in self._iterate_versions(UCSRepoDist(), start, end, self.parts, self.architectures):
-				result.append( ver.deb() )
-		for ver in self._iterate_versions(UCSRepoPool(), start, end, self.parts, archs):
+		for server, ver in self._iterate_version_repositories(start, end, self.parts, archs, dists):
 			result.append( ver.deb() )
-			if ver.arch == archs[-1]: # after architectures but before next patch(level)
+			if isinstance(ver, UCSRepoPool) and ver.arch == archs[-1]: # after architectures but before next patch(level)
 				if clean:
 					result.append( ver.clean() )
 				if self.sources:
 					ver.arch = "source"
-					if self.net_path_exists(ver.path("Sources.gz")):
+					if server.access(ver.path("Source.gz"))[1] is not None:
 						result.append( ver.deb("deb-src") )
 
 		return '\n'.join(result)
@@ -735,7 +787,7 @@ class UniventionUpdater:
 			return ''
 
 		if clean:
-			clean = self.configRegistry.get('online/repository/clean', 'False').lower() in ('yes', 'true', 'enabled', '1')
+			clean = self.configRegistry.is_true('online/repository/clean', False)
 
 		if start:
 			start = copy.copy(start)
@@ -754,23 +806,58 @@ class UniventionUpdater:
 		archs = ['all', 'extern'] + self.architectures
 		result = []
 
-		for ver in self._iterate_versions(UCSRepoPool(patch="sec%(patchlevel)d", patchlevel_reset=1), start, end, self.parts, archs):
+		for server, ver in self._iterate_security_repositories(start, end, self.parts, archs, self.hotfixes):
 			result.append( ver.deb() )
 			if ver.arch == archs[-1]: # after architectures but before next patch(level)
 				if clean:
 					result.append( ver.clean() )
 				if self.sources:
 					ver.arch = "source"
-					if self.net_path_exists(ver.path("Sources.gz")):
+					if server.access(ver.path("Source.gz"))[1] is not None:
 						result.append( ver.deb("deb-src") )
 
-		if self.hotfixes:
-			# hotfixes don't use patchlevel, but UCS_Version.__cmp__ uses them
-			start.patchlevel = end.patchlevel = None
-			for ver in self._iterate_versions(UCSRepoPool(patch="hotfixes"), start, end, self.parts, archs):
-				result.append( ver.deb() )
-
 		return '\n'.join(result)
+
+	def _get_component_server(self, component):
+		'''Return UCSServer as configures via UCR.'''
+		if not self.is_repository_server:
+			server = self.configRegistry.get('repository/online/component/%s/server' % component, self.repository_server)
+			port = self.configRegistry.get('repository/online/component/%s/port' % component, self.repository_port)
+		else:
+			server = self.repository_server
+			port = self.repository_port
+		prefix = self.configRegistry.get('repository/online/component/%s/prefix' % component, '')
+		username = self.configRegistry.get('repository/online/component/%s/username' % component, None)
+		password = self.configRegistry.get('repository/online/component/%s/password' % component, None)
+
+		server = UCSHttpServer(server=server, port=port, prefix='', username=username, password=password)
+		# allow None as a component prefix
+		if not prefix:
+			server2 = server + '/univention-repository/'
+			if server2.access('')[1] is not None:
+				server = server2
+			elif self.repository_prefix:
+				server3 = server + self.repository_prefix
+				if server3.access('')[1] is not None:
+					server = server3
+		elif prefix.lower() != 'none':
+			server = server + prefix
+		return server
+
+	def _get_component_versions(self, component, start, end):
+		'''Return versions available for component.'''
+		str = self.configRegistry.get('repository/online/component/%s/version' % component, '')
+		versions = set()
+		for version in str.split(','):
+			if version in ('current', ''): # all from start to end, defaults to same major
+				# Cache releases because it is network expensive
+				try: mm_versions
+				except NameError:
+					mm_versions = self._releases_in_range(start, end)
+				versions |= set(mm_versions)
+			else:
+				versions.add(version)
+		return versions
 
 	def get_component_repositories(self, component, versions, clean=False, debug=True):
 		'''Return array of Debian repository statements for requested component.
@@ -779,68 +866,37 @@ class UniventionUpdater:
 		archs = ['all', 'extern'] + self.architectures
 		result = []
 
-		repo = UCSRepoPool(patch=component)
-		netConf = {'prefix':''}
-		if not self.is_repository_server:
-			netConf['server'] = self.configRegistry.get('repository/online/component/%s/server' % component, self.repository_server)
-			netConf['port'] = self.configRegistry.get('repository/online/component/%s/port' % component, self.repository_port)
-		else:
-			netConf['server'] = self.repository_server
-			netConf['port'] = self.repository_port
-		repository_prefix = self.configRegistry.get( 'repository/online/component/%s/prefix' % component, '' )
-
-		parts = self.configRegistry.get('repository/online/component/%s/parts' % component, 'maintained').split(',')
-		netConf['username'] = self.configRegistry.get('repository/online/component/%s/username' % component, None)
-		netConf['password'] = self.configRegistry.get('repository/online/component/%s/password' % component, None)
 		cleanComponent = False
 		if clean:
-			cleanComponent = self.configRegistry.get('repository/online/component/%s/clean' % component, 'False').lower() in ('yes', 'true', 'enabled', '1')
+			cleanComponent = self.configRegistry.is_true('repository/online/component/%s/clean' % component, False)
 
-		repo.prefix = "http://"
-		if netConf['username'] and netConf['password']:
-			# rfc1738: unsafe characters
-			# FIXME http://bugs.debian.org/500560: [@:/] don't work
-			repo.prefix += "%s:%s@" % (urllib.quote(netConf['username'],''), urllib.quote(netConf['password'],''))
-		repo.prefix += "%(server)s:%(port)s/" % netConf
-		# allow None as a component prefix
-		if not repository_prefix:
-			# check for prefix on component repository server (if the repository server is reachable)
-			try:
-				if self.net_path_exists( '/univention-repository/', **netConf ):
-					netConf['prefix'] = 'univention-repository'
-					repo.prefix += 'univention-repository/'
-				elif self.repository_prefix and self.net_path_exists('/%s/' % self.repository_prefix, **netConf):
-					netConf['prefix'] = self.repository_prefix
-					repo.prefix += '%s/' % self.repository_prefix
-			except:
-				pass
-		elif repository_prefix.lower() != 'none':
-			netConf['prefix'] = repository_prefix.strip('/')
-			repo.prefix += '%s/' % repository_prefix.strip('/')
-		netConf['debug'] = debug
+		for version in versions:
+			if isinstance(version, basestring):
+				if '-' in version:
+					version = UCS_Version(version)
+				else:
+					version = UCS_Version('%s-0' % version)
+			for server, ver in self._iterate_component_repositories([component], version, version, archs):
+				result.append( ver.deb() )
+				if ver.arch == archs[-1]: # after architectures but before next patch(level)
+					if clean:
+						result.append( ver.clean() )
+					if self.sources:
+						ver.arch = "source"
+						if server.access(ver.path("Source.gz"))[1] is not None:
+							result.append( ver.deb("deb-src") )
 
+		# support different repository format without architecture (e.g. used by OX)
+		parts = self.configRegistry.get('repository/online/component/%s/parts' % component, 'maintained').split(',')
+		server = self._get_component_server(component)
+		repo = UCSRepoPool(prefix=server, patch=component)
 		for repo.version in versions:
 			for repo.part in ["%s/component" % part for part in parts]:
-				if not self.net_path_exists(repo.path(), **netConf):
-					continue
-
-				# support different repository format without architecture (e.g. used by OX)
-				path = '/%(version)s/%(part)s/%(patch)s/Packages.gz' % repo
-				if self.net_path_exists(path, **netConf):
+				path = '%(version)s/%(part)s/%(patch)s/Packages.gz' % repo
+				if server.access(path)[1] is not None:
 					result.append('deb %(prefix)s%(version)s/%(part)s/%(patch)s/ ./' % repo)
 					if cleanComponent:
 						result.append('clean %(prefix)s%(version)s/%(part)s/%(patch)s/' % repo)
-				else:
-					for repo.arch in archs:
-						if self.net_path_exists(repo.path(), **netConf):
-							result.append( repo.deb() )
-					if cleanComponent:
-						result.append( repo.clean() )
-					if self.sources:
-						repo.arch = "source"
-						if self.net_path_exists(repo.path("Sources.gz"), **netConf):
-							result.append( repo.deb("deb-src") )
-					del repo.arch
 
 		return result
 
@@ -854,13 +910,14 @@ class UniventionUpdater:
 
 		result = []
 
-		version = UCSRepoPool()
+		version = UCSRepoPool(prefix=self.server)
 		version.minor = start.minor
+		version.patchlevel = 0
 		foundFirst = False
 		for version.major in range(start.major, end.major + 1):
 			while (version.major, version.minor) <= (end.major, end.minor):
-				if self.net_path_exists(version.path()):
-					result.append(UCS_Version.FORMAT % version)
+				if self.server.access(version.path())[1] is not None:
+					result.append(UCS_Version(version))
 				elif foundFirst or version.minor > 99:
 					break
 				version.minor += 1
@@ -876,41 +933,130 @@ class UniventionUpdater:
 			return ''
 
 		if clean:
-			clean = self.configRegistry.get('online/repository/clean', 'False').lower() in ('yes', 'true', 'enabled', '1')
+			clean = self.configRegistry.is_true('online/repository/clean', False)
 
 		result = []
-
 		for component in self.get_components():
-			str = self.configRegistry.get('repository/online/component/%s/version' % component, '')
-			versions = set()
-			for version in str.split(','):
-				if version in ('current', ''): # all from start to end, defaults to same major
-					try: mm_versions
-					except NameError:
-						mm_versions = self._releases_in_range(start, end)
-					versions |= set(mm_versions)
-				else:
-					versions.add(version)
+			versions = self._get_component_versions(component, start, end)
 			result += self.get_component_repositories(component, versions, clean)
-
 		return '\n'.join(result)
+
+	@staticmethod
+	def call_sh_files(scripts, logname, *args):
+		'''Get pre- and postup.sh files and call them in the right order.
+		> u = UniventionUpdater()
+		> struct = u._iterate_*(ver, ver, ['maintained'], ['all'])
+		> scripts = u.get_sh_files(struct)
+		> for part, phase in u.call_sh_files(scripts, '/var/log/univention/updater.log', '2.4-1'):
+		>   if (part, phase) == ('update', 'main'):
+		>     ...
+		'''
+		# create temporary directory for scripts
+		tempdir = tempfile.mkdtemp()
+		old_exitfunc = getattr(sys, 'exitfunc', None)
+		def do_cleanup(all=True):
+			'''Cleanup temporary files.'''
+			shutil.rmtree(tempdir, ignore_errors=True)
+			if old_exitfunc and all:
+				old_exitfunc()
+		sys.exitfunc = do_cleanup
+
+		def call(*cmd):
+			"""Execute script."""
+			commandline = ' '.join(["'%s'" % a.replace("'", "'\\''") for a in cmd])
+			ud.debug(ud.PROCESS, ud.INFO, "Calling %s" % commandline)
+			p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False)
+			tee = subprocess.Popen(('tee', '-a', logname), stdin=p.stdout)
+			# Order is important! See bug #16454
+			tee.wait()
+			p.wait()
+			return p.returncode
+
+		# download scripts
+		yield "update", "pre"
+		main = {'preup': [], 'postup': []}
+		comp = {'preup': [], 'postup': []}
+		# save scripts to temporary files
+		for server, struct, phase, path, script in scripts:
+			assert script is not None
+			fd, name = tempfile.mkstemp(suffix='.sh', prefix=phase, dir=tempdir)
+			try:
+				size = os.write(fd, script)
+				os.chmod(name, 0744)
+				if size == len(script):
+					ud.debug(ud.NETWORK, ud.INFO, "%s saved to %s" % (path, name))
+					if '/component/' in path: # FIXME better detection
+						comp[phase].append(name)
+					else:
+						main[phase].append(name)
+			finally:
+				os.close(fd)
+			ud.debug(ud.NETWORK, ud.ERROR, "Error saving %s to %s" % (path, name))
+
+		# call component/preup.sh pre $args
+		yield "preup", "pre"
+		for script in comp['preup']:
+			if call(script, 'pre', *args) != 0:
+				raise ExceptionUpdaterPrecondition('Preup1 component failed', script)
+
+		# call $next_version/preup.sh
+		yield "preup", "main"
+		for script in main['preup']:
+			if call(script, *args) != 0:
+				raise ExceptionUpdaterPrecondition('Main preup failed', script)
+
+		# call component/preup.sh post $args
+		yield "preup", "post"
+		for script in comp['preup']:
+			if call(script, 'post', *args) != 0:
+				raise ExceptionUpdaterPrecondition('Preup2 component failed', script)
+
+		# call $update/commands/distupgrade or $update/commands/upgrade
+		yield "update", "main"
+
+		# call component/postup.sh pos $args
+		yield "postup", "pre"
+		for script in comp['postup']:
+			if call(script, 'pre', *args) != 0:
+				raise ExceptionUpdaterPrecondition('Postup1 component failed', script)
+
+		# call $next_version/postup.sh
+		yield "postup", "main"
+		for script in main['postup']:
+			if call(script, *args) != 0:
+				raise ExceptionUpdaterPrecondition('Main postup failed', script)
+
+		# call component/postup.sh post $args
+		yield "postup", "post"
+		for script in comp['postup']:
+			if call(script, 'post', *args) != 0:
+				raise ExceptionUpdaterPrecondition('Postup2 component failed', script)
+
+		# clean up
+		yield "update", "post"
+		do_cleanup(all=False)
+
+	@staticmethod
+	def get_sh_files(repositories):
+		'''Return all preup- and postup-scripts of repositories.
+		repositories: iteratable (server, struct)s
+		Returns: iteratable (server, struct, phase, path, script)
+		'''
+		for server, struct in repositories:
+			for phase in ('preup', 'postup'):
+				name = '%s.sh' % phase
+				path = struct.path(name)
+				ud.debug(ud.ADMIN, ud.ALL, "Accessing %s" % path)
+				code, script = server.access(path, get=True)
+				if script is not None:
+					yield server, struct, phase, path, script
 
 class LocalUpdater(UniventionUpdater):
 	"""Direct file access to local repository."""
 	def __init__(self):
 		UniventionUpdater.__init__(self)
-		self.repository_path = self.configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
-	def net_path_exists(self, path, server='', port='', prefix='', username='', password='', debug=False):
-		if path.strip('/') == 'univention-repository':
-			return False
-		return os.path.exists("%s/mirror/%s/%s" % (self.repository_path, prefix, path))
-	def open_connection(self, server=None, port=None):
-		raise NotImplemented()
-	def _iterate_versions(self, ver, start, end, parts, archs, **netConf):
-		prefix = "file://%s/mirror/" % self.repository_path
-		for v in UniventionUpdater._iterate_versions(self, ver, start, end, parts, archs, **netConf):
-			v.prefix = prefix
-			yield v
+		repository_path = self.configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
+		self.server = UCSLocalServer("%s/mirror/" % repository_path)
 
 if __name__ == '__main__':
 	import doctest

@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, string
+import os
 import shutil, sys
 import getopt, time
 
@@ -60,7 +60,6 @@ def compare(version1, version2):
 	""" Test if version1 is newer than version2 """
 	resultCode=os.system('dpkg --compare-versions %s gt %s >/dev/null 2>&1' % (version1, version2))
 	return resultCode == 0
-	
 
 def walking(arg, dirname, names):
 	""" Update l_package hash with new and p_remove hash with obsolete .deb files """
@@ -76,11 +75,11 @@ def walking(arg, dirname, names):
 			for line in out.readlines():
 				line=line.strip()
 				if line.startswith('Package: '):
-					package=string.join(line.split(' ',1)[1:])
+					package = ' '.join(line.split(' ', 1)[1:])
 				if line.startswith('Version: '):
-					version=string.join(line.split(' ',1)[1:])
+					version = ' '.join(line.split(' ', 1)[1:])
 				if line.startswith('Architecture: '):
-					arch=string.join(line.split(' ',1)[1:])
+					arch = ' '.join(line.split(' ', 1)[1:])
 
 			key = (package, arch)
 			if l_package.has_key(key):
@@ -91,7 +90,6 @@ def walking(arg, dirname, names):
 					p_remove.append(file)
 			else:
 				l_package[key]=[file, version, arg]
-	
 
 def cleanup_repository( directory ):
 	""" Remove all .deb files recursively from directory """
@@ -140,7 +138,7 @@ if __name__ == '__main__':
 	if not destination_dir:
 		usage()
 		sys.exit(1)
-	
+
 	destination_dir = urepo.get_repo_basedir( destination_dir )
 
 	if len(source_dirs) < 1:

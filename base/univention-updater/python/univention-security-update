@@ -33,20 +33,22 @@
 import os
 import sys
 import getopt
-import tempfile
-import shutil
 import univention.config_registry as ucr
 import time
 import subprocess
 import traceback
 import socket
+import shlex
 
 import univention.updater
+from univention.updater.commands import cmd_dist_upgrade, cmd_update
 
 updater = univention.updater.UniventionUpdater()
 updater_status = {}
 
 FN_STATUS = '/var/lib/univention-updater/univention-security-update.status'
+TMPSOURCE = '/etc/apt/sources.list.d/00_ucs_temporary_security_update.list'
+LOGFILE = '/var/log/univention/security-updates.log'
 
 def update_status(**kwargs):
 	'''
@@ -73,7 +75,6 @@ def update_status(**kwargs):
 	except:
 		dprint('Warning: cannot update %s' % FN_STATUS)
 
-
 def dprint(str, fd=[]):
 	""" print message to multiple destinations or stdout """
 	if len(fd) < 1:
@@ -82,42 +83,13 @@ def dprint(str, fd=[]):
 		print >>f, str
 
 def add_temporary_sources_list ( debline ):
-	filename = '/etc/apt/sources.list.d/00_ucs_temporary_security_update.list'
-	fp = open(filename, 'a+')
+	fp = open(TMPSOURCE, 'a+')
 	fp.write(debline+'\n')
 	fp.close()
 
 def remove_temporary_sources_list ():
-	filename = '/etc/apt/sources.list.d/00_ucs_temporary_security_update.list'
-	if os.path.exists(filename):
-		os.remove(filename)
-
-def copy_sh_files(tempdir,path):
-	""" Copy pre- and postup.sh from tempdir to path. """
-	for sh in ['preup.sh', 'postup.sh']:
-		if os.path.exists(os.path.join(tempdir,sh)):
-			os.remove(os.path.join(tempdir,sh))
-		if os.path.exists(os.path.join(path,sh)):
-			shutil.copy(os.path.join(path,sh), os.path.join(tempdir,sh))
-			os.chmod(os.path.join(tempdir, sh), 0744)
-
-def download_sh_files(updater, server_path, tempdir):
-	""" Retrieve pre- und postup.sh from remote repository into tempdir. """
-	for sh in ['preup.sh', 'postup.sh']:
-		filename = os.path.join(tempdir, sh)
-		if os.path.exists(filename):
-			os.remove(filename)
-
-		path = "%s/%s/%s" % (updater.repository_prefix, server_path, sh)
-		response_data = updater.retrieve_url(path)
-		if not response_data:
-			dprint('failed to download %s' % path, [fp_debug])
-			continue
-
-		f = open(filename, 'w+' )
-		f.write(response_data)
-		f.close()
-		os.chmod(filename, 0744)
+	if os.path.exists(TMPSOURCE):
+		os.remove(TMPSOURCE)
 
 def usage(fd=sys.stdout):
 	print >> fd, 'univention-security-update: tool for including security updates into local repository'
@@ -157,7 +129,7 @@ def update_ucr_updatestatus():
 if __name__ == '__main__':
 	# parse options
 
-	fp_debug=open('/var/log/univention/security-updates.log', 'a+')
+	fp_debug = open(LOGFILE, 'a+')
 	call_upgrade=True
 	file=''
 
@@ -202,7 +174,7 @@ if __name__ == '__main__':
 				sys.exit(1)
 			file = os.path.abspath( file )
 		if opt == '--silent':
-			sys.stdout = open('/dev/null', 'w+')
+			sys.stdout = open(os.path.devnull, 'w+')
 		if opt == '--noupdate':
 			call_upgrade=False
 		elif opt == '--check':
@@ -214,20 +186,9 @@ if __name__ == '__main__':
 	configRegistry = ucr.ConfigRegistry()
 	configRegistry.load()
 
-	tempdir = tempfile.mkdtemp()
-	dprint('using tempdir = %s' % tempdir, [fp_debug])
-
-	old_exitfunc = getattr(sys, 'exitfunc', None)
-	def do_cleanup():
-		"""Remove temporary direcotry on exit."""
-		shutil.rmtree(tempdir, ignore_errors=True)
-		if (old_exitfunc):
-			old_exitfunc()
-	sys.exitfunc = do_cleanup
-
 	local_repository = False
 	# update local repository
-	if configRegistry.get( 'local/repository', 'no' ) in ( 'true', 'yes'):
+	if configRegistry.is_true('local/repository', False):
 		local_repository = True
 		# if there is no _new_ repository server -> exit
 		if configRegistry.has_key( 'repository/local/old' ):
@@ -259,9 +220,6 @@ if __name__ == '__main__':
 		sys.exit( 1 )
 
 	# install security updates
-	cmd_dist_upgrade = configRegistry.get( 'update/commands/distupgrade', 'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -u dist-upgrade' )
-	cmd_update = configRegistry.get( 'update/commands/update', 'apt-get update' )
-
 	filename = '/etc/apt/sources.list.d/00_ucs_temporary_installation.list'
 	if os.path.exists(filename):
 		dprint( 'Warning: Found `%s`\nfrom incomplete univention-updater run. Deleted.' % (filename), [fp_debug,sys.stdout] )
@@ -281,7 +239,7 @@ if __name__ == '__main__':
 			if code == socket.EAI_NONAME:
 				dprint( 'Error: The name %s is not known.\n       Please check your network settings or set the UCR variable repository/online/server to a different value.' % (updater.repository_server), [fp_debug,sys.stderr] )
 			else:
-				dprint( 'Error: An error occurs during the connection to %s.\n       Please check your network settings and check the logfile /var/log/univention/security-updates.log' % (updater.repository_server), [fp_debug,sys.stderr] )
+				dprint( 'Error: An error occurs during the connection to %s.\n       Please check your network settings and check the logfile %s' % (updater.repository_server, LOGFILE), [fp_debug,sys.stderr] )
 			update_status( status='FAILED', errorsource='SETTINGS' )
 
 			sys.exit( 1 )
@@ -290,54 +248,49 @@ if __name__ == '__main__':
 		if nextupdate == upgraded:
 			break
 
-		if nextupdate:
-			dprint( 'Update to Security Update %s-%s' % (updater.ucs_version, nextupdate), [fp_debug,sys.stdout] )
+		if not nextupdate:
+			if not upgraded:
+				dprint( 'No Security Update available!', [fp_debug,sys.stdout] )
+			break
 
-			remove_temporary_sources_list()
-			sources_list_entries = updater.security_update_temporary_sources_list()
-			upgraded = nextupdate
-			if call_upgrade and sources_list_entries:
-				add_temporary_sources_list('\n'.join(sources_list_entries))
+		secver = updater.current_version
+		secver.patchlevel = int(nextupdate[len('sec'):])
+		dprint( 'Update to Security Update %s' % secver, [fp_debug,sys.stdout] )
 
-				# Download the pre and postup scripts
-				scriptPath = tempdir
-				download_sh_files(updater, '%s/maintained/%s/all' % (updater.ucs_version, nextupdate), tempdir)
+		remove_temporary_sources_list()
+		sources_list_entries = updater.security_update_temporary_sources_list()
+		upgraded = nextupdate
+		if not call_upgrade or not sources_list_entries:
+			continue
 
-				if scriptPath:
-					dprint('Call the preup.sh file with the path: %s' % scriptPath, [fp_debug])
-					if os.path.exists(os.path.join(scriptPath, 'preup.sh')):
-						dprint('Execute %s' % os.path.join(scriptPath, 'preup.sh'), [fp_debug])
-						os.chmod(os.path.join(scriptPath, 'preup.sh'), 0744)
-						preup = subprocess.Popen((os.path.join(scriptPath, 'preup.sh'), nextupdate), stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
-						tee = subprocess.Popen(('tee', '-a', '/var/log/univention/security-updates.log'), stdin=preup.stdout)
-						# Order is important! See bug #16454
-						tee.wait()
-						preup.wait()
-						if preup.returncode != 0:
-							dprint( 'Error: Failed to execute "preup.sh"', [fp_debug,sys.stdout] )
-							sys.exit(1)
+		add_temporary_sources_list('\n'.join(sources_list_entries))
 
+		# Download the pre and postup scripts
+		sec = updater._iterate_security_repositories(secver, secver, ('maintained',), ('all',))
+		scripts = updater.get_sh_files(sec)
+		for part, phase in updater.call_sh_files(scripts, LOGFILE, str(secver)):
+			if (part, phase) == ('update', 'main'):
 				# Execute the dist-upgrade!
-				count=0
-				while os.path.exists('/var/run/apt-get.lock') and count < 300:
+				count = 300
+				while os.path.exists('/var/run/apt-get.lock') and count > 0:
 					time.sleep(1)
-					count=count+1
+					count -= 1
 				# create lock file
 				try:
 					fd = open( '/var/run/apt-get.lock', 'w' )
+					fd.close()
 				except:
 					pass
-				fd.close()
 				# check for preup.sh
 
 				# update indices
-				ret = subprocess.call( cmd_update.split( ' ' ), stdout=fp_debug, stderr=fp_debug )
+				ret = subprocess.call(shlex.split(cmd_update), stdout=fp_debug, stderr=fp_debug)
 				if ret:
 					update_status( status='FAILED', errorsource='PREPARATION' )
 					dprint( 'Error: Failed to update APT indices', [fp_debug,sys.stderr] )
 				else:
 					os.environ[ 'DEBIAN_FRONTEND' ] = 'noninteractive'
-					ret = subprocess.call( cmd_dist_upgrade.split( ' ' ), stdout=fp_debug, stderr=fp_debug )
+					ret = subprocess.call(shlex.split(cmd_dist_upgrade), stdout=fp_debug, stderr=fp_debug)
 					if ret:
 						update_status( status='FAILED', errorsource='UPDATE' )
 						dprint( 'Error: Failed to upgrade packages', [fp_debug,sys.stderr] )
@@ -347,26 +300,7 @@ if __name__ == '__main__':
 					os.unlink('/var/run/apt-get.lock')
 				if ret:
 					sys.exit( ret )
-				
-				# Call the postup.sh
-				if scriptPath:
-					dprint('Call the postup.sh file with the path: %s' % scriptPath, [fp_debug])
-					if os.path.exists(os.path.join(scriptPath, 'postup.sh')):
-						dprint('Execute %s' % os.path.join(scriptPath, 'postup.sh'), [fp_debug])
-						os.chmod(os.path.join(scriptPath, 'postup.sh'), 0744)
-						postup = subprocess.Popen((os.path.join(scriptPath, 'postup.sh'), nextupdate), stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
-						tee = subprocess.Popen(('tee', '-a', '/var/log/univention/security-updates.log'), stdin=postup.stdout)
-						# Order is important! See bug #16454
-						tee.wait()
-						postup.wait()
-						if postup.returncode != 0:
-							update_status( status='FAILED', errorsource='POSTUP' )
-							dprint('Error: Failed to execute "postup.sh"', [fp_debug,sys.stderr] )
-			updater.ucr_reinit()
-		else:
-			if not upgraded:
-				dprint( 'No Security Update available!', [fp_debug,sys.stdout] )
-			break
+		updater.ucr_reinit()
 
 	update_ucr_updatestatus()
 	update_status( status='DONE' )

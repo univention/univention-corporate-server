@@ -4,7 +4,7 @@
 # Univention Debmirror
 #  mirrors a repository server
 #
-# Copyright 2009-2010 Univention GmbH
+# Copyright 2009-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,11 +31,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, re
+import os
+import errno
+import re
 import subprocess
-import urllib
+import itertools
 
 from tools import UniventionUpdater, UCS_Version
+import univention.debug as ud
 
 class UniventionMirror( UniventionUpdater ):
 	def __init__( self ):
@@ -65,19 +68,6 @@ class UniventionMirror( UniventionUpdater ):
 		self.http_method = self.configRegistry.get('repository/mirror/httpmethod', 'HEAD').upper()
 
 
-	def copy_script( self, script, repository, directory ):
-		'''retriebes a script from a remote repository and copies it to
-		the local repository'''
-		filename = os.path.join( directory, script )
-		if os.path.exists( filename ):
-			return False
-		body = self.retrieve_url( '%s/%s' % ( repository, script ) )
-		if not body:
-			return False
-		fd = open( filename, 'w' )
-		fd.write( body )
-		fd.close()
-
 	def mirror_repositories( self ):
 		'''uses apt-mirror to copy a repository'''
 		# check if the repository directory structure exists, otherwise create it
@@ -89,27 +79,56 @@ class UniventionMirror( UniventionUpdater ):
 			path = os.path.join( self.repository_path, dir )
 			if not os.path.exists( path ):
 				os.makedirs( path )
+		path = os.path.join(self.repository_path, 'mirror', 'univention-repository')
+		if not os.path.exists(path):
+			os.symlink('.', path)
 
-		return subprocess.call( '/usr/bin/apt-mirror >>/var/log/univention/repository.log', shell = True )
+		log = open('/var/log/univention/repository.log', 'a')
+		try:
+			return subprocess.call('/usr/bin/apt-mirror', stdout=log, stderr=log, shell=False)
+		finally:
+			log.close()
 
 	def mirror_update_scripts( self ):
 		'''mirrors the preup.sh and postup.sh scripts'''
-		# check the main repositories for preup and postup scripts
-		repos = self.print_version_repositories( start = self.version_start, end = self.version_end )
-		sec = self.print_security_repositories( start = self.version_start, end = self.version_end )
+		start = self.version_start
+		end = self.version_end
+		parts = self.parts
+		archs = ('all',)
 
-		for repo in repos.split( '\n' )+sec.split('\n'):
-			if not repo:
-				continue
-			deb, url, comp = repo.split( ' ' )
-			if deb != 'deb':
-				continue
+		repos = self._iterate_version_repositories(start, end, parts, archs)
 
-			uri = '%s%s' % ( url, comp )
-			schema, rest = urllib.splittype( uri )
-			host, path = urllib.splithost( rest )
-			for script in ( 'preup.sh', 'postup.sh' ):
-				self.copy_script( script, path, os.path.join( self.repository_path, 'mirror', path[ 1 : ] ) )
+		end_sec = UCS_Version((end.major, end.minor, 99)) # get all available for mirror
+		hotfixes = self.hotfixes
+		sec = self._iterate_security_repositories(start, end_sec, parts, archs, hotfixes)
+
+		components = self.get_components()
+		comp = self._iterate_component_repositories(components, start, end, archs)
+
+		all_repos = itertools.chain(repos, sec, comp)
+		for server, struct, phase, path, script in UniventionUpdater.get_sh_files(all_repos):
+			assert script is not None, 'No script'
+			filename = os.path.join(self.repository_path, 'mirror', path)
+			if os.path.exists(filename):
+				ud.debug(ud.NETWORK, ud.ALL, "Script already exists, skipping: %s" % filename)
+				continue
+			dirname = os.path.dirname(filename)
+			try:
+				os.makedirs(dirname, 0755)
+			except OSError, e:
+				if e.errno == errno.EEXIST:
+					pass
+				else:
+					raise
+			fd = open(filename, "w")
+			try:
+				wsize = fd.write(script)
+				if wsize == len(script):
+					ud.debug(ud.ADMIN, ud.INFO, "Successfully mirrored script: %s" % filename)
+				else:
+					ud.debug(ud.ADMIN, ud.ERROR, "Error writing script: %s" % filename)
+			finally:
+				fd.close()
 
 	def list_local_repositories( self, start = None, end = None, maintained = True, unmaintained = False ):
 		'''
@@ -193,3 +212,7 @@ class UniventionMirror( UniventionUpdater ):
 		self.mirror_repositories()
 		self.mirror_update_scripts()
 		self.update_dists_files()
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()
