@@ -1,3 +1,9 @@
+univention-updater (6.0.48-1) unstable; urgency=low
+
+  * Bump version (Bug #21127)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 04 Feb 2011 11:21:34 +0100
+
 univention-updater (6.0.47-1) unstable; urgency=low
 
   * pre-/postup.sh scripts for components (Bug #21127)
