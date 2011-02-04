@@ -8,19 +8,23 @@ def print_proxy(proxy):
 	print '{'
 	print '    http'
 	print '    {'
-	proxyString='Proxy "http://'
-	if configRegistry['proxy/username'] and configRegistry['proxy/password']:
-		proxyString+='%s:%s\x40' % (configRegistry['proxy/username'],configRegistry['proxy/password'])
-	proxyString+='%s"' % proxy
-	print '        %s;' % (proxyString)
+	print '        Proxy "%s";' % proxy
 	print '    }'
 	print '}'
 
-if configRegistry.has_key('proxy/http') and configRegistry['proxy/http']:
-	print_proxy(configRegistry['proxy/http'].lower().replace('http://',''))
-elif configRegistry['proxy/address']:
-	proxy='%s' % (configRegistry['proxy/address'])
-	if configRegistry['proxy/port']:
-		proxy+=':%s' % (configRegistry['proxy/port'])
+proxy = configRegistry.get('proxy/http', None) 
+if not proxy: # fallback
+	proxy = configRegistry.get('proxy/address', None)
+	port = configRegistry.get('proxy/port', None)
+	if proxy and port:
+		proxy = "%s:%s" % (proxy, port)
+	username = configRegistry.get('proxy/username', None)
+	password = configRegistry.get('proxy/password', None)
+	if proxy and username and password:
+		from urllib import quote
+		proxy = "%s:%s@%s" % (quote(username), quote(password), proxy)
+if proxy:
+	if '://' not in proxy:
+		proxy = 'http://%s' % proxy
 	print_proxy(proxy)
 @!@

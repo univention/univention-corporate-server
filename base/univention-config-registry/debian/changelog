@@ -1,3 +1,9 @@
+univention-config-registry (6.0.38-1) unstable; urgency=low
+
+  * Fix apt.conf.d/80proxy template (Bug #18393)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 04 Feb 2011 09:40:58 +0100
+
 univention-config-registry (6.0.37-3) unstable; urgency=low
 
   * Do not display the scope in shell export filter (Bug #19640)
