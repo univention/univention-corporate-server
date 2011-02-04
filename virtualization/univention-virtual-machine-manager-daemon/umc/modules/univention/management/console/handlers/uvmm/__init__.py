@@ -923,6 +923,8 @@ class handler( umch.simpleHandler ):
 		self.domain_wizard.reset()
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		if not node_uri:
+			return self.uvmm_node_overview( object )
 		node_info, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
 
 		blind_table = umcd.List()
@@ -1134,6 +1136,8 @@ class handler( umch.simpleHandler ):
 			return
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		if not node_uri:
+			return self.uvmm_node_overview( object )
 		node_info = self.uvmm.get_node_info( node_uri )
 
 		if not 'action' in object.options:
@@ -1180,6 +1184,8 @@ class handler( umch.simpleHandler ):
 			return
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		if not node_uri:
+			return self.uvmm_node_overview( object )
 		node_info, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
 
 		boxes = []
@@ -1219,6 +1225,8 @@ class handler( umch.simpleHandler ):
 		res = umcp.Response( object )
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		if not node_uri:
+			return self.uvmm_node_overview( object )
 		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
 
 		# shutdown machine before removing it
@@ -1351,6 +1359,8 @@ class handler( umch.simpleHandler ):
 			self.finished(object.id(), res)
 			return
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		if not node_uri:
+			return self.uvmm_node_overview( object )
 		node_info = self.uvmm.get_node_info( node_uri )
 
 		ud.debug( ud.ADMIN, ud.INFO, 'Drive create: action: %s' % str( object.options.get( 'action' ) ) )
@@ -1406,6 +1416,8 @@ class handler( umch.simpleHandler ):
 			# remove domain
 			# if the attached drive could be removed successfully the user should be ask, if the image should be removed
 			node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+			if not node_uri:
+				return self.uvmm_node_overview( object )
 			node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, object.options['domain'])
 			for disk in domain_info.disks:
 				if disk.source == object.options['disk']:
@@ -1439,6 +1451,8 @@ class handler( umch.simpleHandler ):
 			self.finished(object.id(), res)
 		else:
 			node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+			if not node_uri:
+				return self.uvmm_node_overview( object )
 			domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
 			new_disks = []
 			rm_disk = None
@@ -1476,6 +1490,8 @@ class handler( umch.simpleHandler ):
 		res = umcp.Response( object )
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		if not node_uri:
+			return self.uvmm_node_overview( object )
 		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
 		new_disks = []
 		for dev in domain_info.disks:
@@ -1499,6 +1515,8 @@ class handler( umch.simpleHandler ):
 			self.finished(object.id(), res)
 			return
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		if not node_uri:
+			return self.uvmm_node_overview( object )
 		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
 
 		report = ''
@@ -1568,6 +1586,8 @@ class handler( umch.simpleHandler ):
 		res = umcp.Response( object )
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		if not node_uri:
+			return self.uvmm_node_overview( object )
 		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
 
 		interfaces = []
