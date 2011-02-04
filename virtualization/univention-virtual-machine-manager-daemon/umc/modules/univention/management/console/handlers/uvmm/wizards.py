@@ -665,7 +665,7 @@ class InstanceWizard( umcd.IWizard ):
 			domain_info.arch = object.options[ 'arch' ]
 			domain_info.domain_type, domain_info.os_type = object.options['type'].split('-')
 			# check configuration for para-virtualized machines
-			if domain_info.os_type == 'xen':
+			if domain_info.os_type in ( 'linux', 'xen' ):
 				if self.profile[ 'advkernelconf' ] != 'TRUE': # use pyGrub
 					domain_info.bootloader = '/usr/bin/pygrub'
 					domain_info.bootloader_args = '-q' # Bug #19249: PyGrub timeout
@@ -702,7 +702,7 @@ class InstanceWizard( umcd.IWizard ):
 			domain_info.disks = self.drives
 			self.uvmm._verify_device_files(domain_info)
 			# on PV machines we should move the CDROM drive to first position
-			if domain_info.os_type == 'xen':
+			if domain_info.os_type in ( 'linux', 'xen' ):
 				non_disks, disks = [], []
 				for dev in domain_info.disks:
 					if dev.device == uvmmn.Disk.DEVICE_DISK:

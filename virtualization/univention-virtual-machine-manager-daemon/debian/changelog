@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.130-1) unstable; urgency=low
+
+  * ensure that Xen-PV isntances are detected correctly (os type may be
+    linux or xen); Bug #21003
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 04 Feb 2011 11:17:38 +0100
+
 univention-virtual-machine-manager-daemon (0.9.129-1) unstable; urgency=low
 
   * support several network interfaces; Bug #19573

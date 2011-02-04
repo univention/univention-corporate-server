@@ -789,7 +789,7 @@ class handler( umch.simpleHandler ):
 					buttons = []
 
 				disk_list.add_row( [ values[ 'type' ], values[ 'image' ], values[ 'size' ], values[ 'pool' ], buttons ] )
-				if domain_info.os_type == 'xen':
+				if domain_info.os_type in ( 'linux', 'xen' ):
 					first = False
 		drive_sec.add_row( [disk_list ] )
 
