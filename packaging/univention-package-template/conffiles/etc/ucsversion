@@ -1,0 +1,14 @@
+@%@UCRWARNING=# @%@
+
+UCS_Version = @%@version/version@%@
+
+@!@
+ # Python Code
+import os
+if os.path.exists('/etc/issue'):
+	print 'Issue=/etc/issue'
+
+if configRegistry.get('foobar'):
+	print 'Foobar=%s' % configRegistry.get('foobar')
+@!@
+

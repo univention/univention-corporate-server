@@ -1,0 +1,6 @@
+[wfoobar]
+Description[de]=Test
+Description[en]=Test
+Type=string
+Categories=test
+

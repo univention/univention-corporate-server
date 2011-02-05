@@ -1,0 +1,2 @@
+template-tool usr/sbin/
+76univention-package-template.inst usr/lib/univention-install/
