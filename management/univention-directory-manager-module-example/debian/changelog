@@ -1,3 +1,12 @@
+univention-directory-manager-module-example (2.0.2-1) unstable; urgency=low
+
+  * add missing schema.postinst file to restart slapd
+  * kill udm-cli processes in postinst
+  * let pycentral figure out the current python version
+  * register the ucr templates (Bug #17915)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 07 Feb 2011 09:35:55 +0100
+
 univention-directory-manager-module-example (2.0.1-1) unstable; urgency=low
 
   * first update of the example module (Bug #17915)

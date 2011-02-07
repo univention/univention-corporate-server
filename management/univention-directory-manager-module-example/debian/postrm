@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention Directory Manager Example Module
-#  postinst file for the directory manager example module debian package
+#  postrm file for the directory manager example module debian package
 #
 # Copyright 2004-2011 Univention GmbH
 #

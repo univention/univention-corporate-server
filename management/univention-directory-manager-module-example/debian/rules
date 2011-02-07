@@ -40,6 +40,9 @@ install: build
 
 	dh_install --exclude=".svn"
 
+	univention-install-config-registry
+	univention-install-config-registry-info
+
 binary-indep: build install
 	dh_testdir -i
 	dh_testroot -i
