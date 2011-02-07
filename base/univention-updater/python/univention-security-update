@@ -33,6 +33,7 @@
 import os
 import sys
 import getopt
+import univention.debug as ud
 import univention.config_registry as ucr
 import time
 import subprocess
@@ -129,6 +130,7 @@ def update_ucr_updatestatus():
 if __name__ == '__main__':
 	# parse options
 
+	ud.init(LOGFILE, ud.NO_FLUSH, ud.NO_FUNCTION)
 	fp_debug = open(LOGFILE, 'a+')
 	call_upgrade=True
 	file=''

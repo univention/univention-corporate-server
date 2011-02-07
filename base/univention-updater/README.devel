@@ -2,6 +2,7 @@ High-Level-Overview
 
 modules/univention/updater/tools.py#UCS_Version
 	Representation of a UCS-Version, e.g. $major.$minor-$patchlevel
+	Also used for security updates, e.g. $major.$minor-$security_patchlevel
 
 modules/univention/updater/tools.py#UCSRepo{,Pool,Dist}
 	Structure on a repository server, relative to some UCS*Server

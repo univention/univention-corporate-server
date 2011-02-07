@@ -45,6 +45,7 @@ import socket
 import datetime
 import itertools
 
+import univention.debug as ud
 import univention.config_registry as ucr
 
 from univention.updater import UniventionUpdater, UCS_Version
@@ -292,9 +293,10 @@ def main():
 	iso=None
 	global nostdout
 
-	fp_debug=open('/var/log/univention/updater.log', 'a+')
+	ud.init(LOGNAME, ud.NO_FLUSH, ud.NO_FUNCTION)
+	fp_debug=open(LOGNAME, 'a+')
 	stdout_orig=sys.stdout
-	sys.stdout=fp_debug
+	#sys.stdout=fp_debug
 
 	log('**** Starting univention-updater with parameter=%s' % sys.argv)
 
@@ -344,6 +346,7 @@ def main():
 		elif opt == "--updateto":
 			try:
 				updateto = UCS_Version(val)
+				updateto_args = ['--updateto', val]
 			except ValueError, e:
 				dprint("%s" % e)
 				sys.exit(2)
@@ -391,13 +394,6 @@ def main():
 
 	update_status( current_version=lastversion, type=command.upper(), status='RUNNING' )
 
-	if updateto:
-		if updateto <= UCS_Version(lastversion):
-			dprint('System is up to date (UCS %s)' % lastversion)
-			fp_debug.close()
-			raise UpToDateNoError(reboot)
-		updateto_args = [ '--updateto', '%s' % updateto ]
-
 	log('Version=%s' % vv)
 	log('Patchlevel=%s' % vp)
 
@@ -440,10 +436,14 @@ def main():
 		dprint('System is up to date (UCS %s)' % lastversion)
 		fp_debug.close()
 		raise UpToDateNoError(reboot)
+	new_version = UCS_Version(nextversion)
+	if updateto and new_version > updateto:
+		dprint('Update hold at %s, next %s is after %s' % (lastversion, new_version, updateto))
+		fp_debug.close()
+		raise UpToDateNoError(reboot)
 
 	dprint('Update to = %s' % nextversion)
 	update_status(next_version=nextversion)
-	new_version = UCS_Version(nextversion)
 
 	if ignoressh:
 		os.putenv('update%d%d_ignoressh' % (new_version.major, new_version.minor, ), 'yes')
@@ -477,7 +477,8 @@ def main():
 
 	rel = updater._iterate_version_repositories(new_version, new_version, ('maintained',), ('all',))
 
-	components = filter(lambda c: 'current' in baseConfig.get('repository/online/component/%s/version' % c, '').split(','), updater.get_components())
+	components = updater.get_components()
+	#components = filter(lambda c: 'current' in baseConfig.get('repository/online/component/%s/version' % c, '').split(','), components)
 	com = updater._iterate_component_repositories(components, new_version, new_version, ('all',))
 
 	all = itertools.chain(rel, com)

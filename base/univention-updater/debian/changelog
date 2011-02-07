@@ -1,3 +1,13 @@
+univention-updater (6.0.48-2) unstable; urgency=low
+
+  * Call pre-/postup.sh of all enabled components (Bug #21127)
+  * Fix handling of --updateto (Bug #19754)
+  * Initialize univention.debug.
+  * Fix ProxyHandler to be a subclass of broken itself.
+  * Clean up Makefile and debian/rules
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 07 Feb 2011 13:35:06 +0100
+
 univention-updater (6.0.48-1) unstable; urgency=low
 
   * Bump version (Bug #21127)
