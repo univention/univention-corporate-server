@@ -231,3 +231,9 @@ Description[de]=Diese Variable wird automatisch gesetzt und gibt an, ob Updates 
 Description[en]=This variable is set automatically and indicates if updates are available (boolean)
 Type=bool
 Categories=service-software-management
+
+[update/umc/updateprocess/easy]
+Description[de]=Einfaches Update-Verfahren im UMC-Modul "Online Updates" aktivieren (boolean)
+Description[en]=Activate easy update procedure in UMC module "Online Updates" (boolean)
+Type=bool
+Categories=service-software-management

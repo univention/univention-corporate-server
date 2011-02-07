@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import univention.debug as ud
+from commands import cmd_update, cmd_dist_upgrade_sim, cmd_dist_upgrade
 
 import sys
 import re
@@ -394,6 +395,13 @@ class UCSLocalServer(object):
 
 class UniventionUpdater:
 	'''Handle Univention package repositories.'''
+	COMPONENT_AVAILABLE = 'available'
+	COMPONENT_NOT_FOUND = 'not_found'
+	COMPONENT_DISABLED = 'disabled'
+	COMPONENT_UNKNOWN = 'unknown'
+	COMPONENT_PERMISSION_DENIED = 'permission_denied'
+	FN_UPDATER_APTSOURCES_COMPONENT = '/etc/apt/sources.list.d/20_ucs-online-component.list'
+
 	def __init__(self):
 		self.connection = None
 		self.architectures = [ os.popen('dpkg-architecture -qDEB_BUILD_ARCH 2>/dev/null').readline()[:-1] ]
@@ -611,6 +619,36 @@ class UniventionUpdater:
 				component[var] = self.configRegistry[key]
 		return component
 
+	def get_current_component_status(self, name):
+		"""
+		returns the current status of specified component based on /etc/apt/sources.list.d/20_ucs-online-component.list
+		return value: <string>
+		      COMPONENT_DISABLED              component has been disabled via UCR
+			  COMPONENT_AVAILABLE             component is enabled and at least one valid repo string has been found in .list file
+			  COMPONENT_NOT_FOUND             component is enabled but no valid repo string has been found in .list file
+			  COMPONENT_PERMISSION_DENIED     component is enabled but authentication failed
+			  COMPONENT_UNKNOWN				  component's status is unknown
+		"""
+		data = self.get_component(name)
+		if not self.configRegistry.is_true('repository/online/component/%s' % name, False):
+			return self.COMPONENT_DISABLED
+
+		try:
+			lines = open(self.FN_UPDATER_APTSOURCES_COMPONENT,'r').readlines()
+		except:
+			return self.COMPONENT_UNKNOWN
+
+		for line in lines:
+			if line.startswith('deb ') and ('/maintained/component/%s/' % name) in line:
+				# stop immediately if at least one repo has been found
+				return self.COMPONENT_AVAILABLE
+			elif line.startswith('# Authentication failure for') and ('/maintained/component/%s/' % name) in line:
+				# stop immediately if at least one repo has authentication problems
+				return self.COMPONENT_PERMISSION_DENIED
+		# file contains no valid repo entry
+		return self.COMPONENT_NOT_FOUND
+
+
 	def get_component_defaultpackage(self, componentname):
 		"""
 		returns a list of (meta) package names to be installed for this component
@@ -655,6 +693,48 @@ class UniventionUpdater:
 		installed_correctly = len([ x for x in stdout.splitlines() if x == 'Status: install ok installed' ])
 		# if pkg count and number of counted lines match, all packages are installed
 		return len(pkglist) == installed_correctly
+
+	def component_update_available(self):
+		new, upgrade = self.component_update_get_packages()
+		return bool(new + upgrade)
+
+	def component_update_get_packages(self):
+		p1 = subprocess.Popen(['univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list; LC_ALL=C %s >/dev/null; LC_ALL=C %s' % (cmd_update, cmd_dist_upgrade_sim)],
+							  stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+		(stdout,stderr) = p1.communicate()
+		ud.debug(ud.NETWORK, ud.PROCESS, 'check for updates with "dist-upgrade -s", the returncode is %d' % p1.returncode)
+		ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
+		ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout)
+
+		new_packages = []
+		upgraded_packages = []
+		for line in stdout.splitlines():
+			if line.startswith('Inst '):
+				line_split = line.split(' ')
+				# upgrade:
+				#	Inst univention-updater [3.1.1-5] (3.1.1-6.408.200810311159 192.168.0.10)
+				# inst:
+				#	Inst mc (1:4.6.1-6.12.200710211124 oxae-update.open-xchange.com)
+				if len(line_split) > 3:
+					if line_split[2].startswith('[') and line_split[2].endswith(']'):
+						ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of upgraded packages' % line_split[1])
+						upgraded_packages.append((line_split[1], line_split[2].replace('[','').replace(']',''), line_split[3].replace('(','')))
+					else:
+						ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of new packages' % line_split[1])
+						new_packages.append((line_split[1], line_split[2].replace('(','')))
+				else:
+					ud.debug(ud.NETWORK, ud.WARN, 'unable to parse the update line: %s' % line)
+					continue
+
+		return ( new_packages, upgraded_packages )
+
+	def run_dist_upgrade( self ):
+		cmd = 'echo "Starting dist-upgrade at $(date)">>/var/log/univention/upgrade.log ;'
+		cmd += 'export DEBIAN_FRONTEND=noninteractive; %s 2>&1 | tee -a /var/log/univention/upgrade.log 2>&1 ;' % cmd_dist_upgrade
+		cmd += 'echo "Finished dist-upgrade at $(date)">>/var/log/univention/upgrade.log'
+		p = subprocess.Popen([ cmd ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+		(stdout,stderr) = p.communicate()
+		return p.returncode, stdout, stderr
 
 
 	def _iterate_versions(self, ver, start, end, parts, archs, server):

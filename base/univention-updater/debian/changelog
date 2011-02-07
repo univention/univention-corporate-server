@@ -1,3 +1,29 @@
+univention-updater (6.0.52-2) unstable; urgency=low
+
+  * added easy update mechanism (Bug #21398)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 07 Feb 2011 16:42:31 +0100
+
+univention-updater (6.0.52-1) unstable; urgency=low
+
+  * Adopt to common APT commands (Bug #21324)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 04 Feb 2011 15:07:51 +0100
+
+univention-updater (6.0.51-1) unstable; urgency=low
+
+  * fixed translation bug (Bug #21324)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 02 Feb 2011 16:43:15 +0100
+
+univention-updater (6.0.50-1) unstable; urgency=low
+
+  * added function to determine current status of component (Bug #21324)
+  * UMC online update modules now shows current status of configured
+    components
+
+ -- Sönke Schwardt <schwardt@univention.de>  Sat, 29 Jan 2011 18:17:14 +0100
+
 univention-updater (6.0.49-1) unstable; urgency=low
 
   * set PATH environment variable in univention-security-update (Bug #19791)

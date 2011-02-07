@@ -66,11 +66,15 @@ FN_LIST_SECURITY_UPDATE_LOG = [ '/var/log/univention/security-updates.log' ]
 FN_LIST_RELEASE_UPDATE_LOG = [ '/var/log/univention/updater.log' ]
 FN_LIST_DIST_UPGRADE_LOG = [ '/var/log/univention/updater.log' ]
 FN_LIST_ACTUALISE_LOG = [ '/var/log/univention/actualise.log' ]
+FN_LIST_UPGRADE_LOG = [ '/var/log/univention/updater.log', '/var/log/univention/security-updates.log', '/var/log/univention/actualise.log', '/var/log/univention/upgrade.log' ]
 
+FN_STATUS_UPGRADE = '/var/lib/univention-updater/univention-upgrade.status'
 FN_STATUS_UPDATER = '/var/lib/univention-updater/univention-updater.status'
 FN_STATUS_SECURITY_UPDATE = '/var/lib/univention-updater/univention-security-update.status'
 FN_STATUS_DIST_UPGRADE = '/var/lib/univention-updater/umc-dist-upgrade.status'
 FN_STATUS_UNIVENTION_INSTALL = '/var/lib/univention-updater/umc-univention-install.status'
+
+CMD_UNIVENTION_UPGRADE = '/usr/sbin/univention-upgrade'
 
 command_description = {
 	'update/overview': umch.command(
@@ -127,6 +131,11 @@ command_description = {
 	'update/install_release_updates': umch.command(
 		short_description = _('Installs a release update'),
 		method = 'install_release_updates',
+		values = { },
+	),
+	'update/install_release_updates_easy': umch.command(
+		short_description = _('Installs all available update'),
+		method = 'install_release_updates_easy',
 		values = { },
 	),
 	'update/install_security_updates': umch.command(
@@ -399,6 +408,19 @@ class handler(umch.simpleHandler):
 		_d = ud.function('update.handler.release_update_warning')
 		self.finished(object.id(), None)
 
+	def install_release_updates_easy(self, object):
+		_d = ud.function('update.handler.install_release_updates_easy')
+
+		(returncode, returnstring) = self.__create_at_job(CMD_UNIVENTION_UPGRADE)
+		ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: univention-upgrade')
+
+		self.last_running_status['easyupdate'] = None
+
+		if returncode != 0:
+			self.finished(object.id(), None, returnstring, success = False)
+		else:
+			self.finished(object.id(), None)
+
 	def install_release_updates(self, object):
 		_d = ud.function('update.handler.install_release_updates')
 
@@ -496,7 +518,45 @@ class handler(umch.simpleHandler):
 		ud.debug(ud.ADMIN, ud.INFO, '_web_tail_logfile: windowtype=%s' % windowtype)
 
 		# test if update has finished and check status of update
-		if windowtype == 'release':
+		if windowtype == 'easyupdate':
+			cur_running_status = self.__is_univention_upgrade_running()
+			if not cur_running_status and self.last_running_status.get(windowtype) in (True, None):
+				self._reinit()
+				# read status
+				status = self._get_status_file(FN_STATUS_UPGRADE)
+				ud.debug(ud.ADMIN, ud.INFO, '_web_tail_logfile: status=%s' % status)
+				if not status or not 'status' in status:
+					# updater does not support status-file or status file is defect
+					headline = _('Update finished')
+					headline_msg = _('The update has been finished. During update some log messages have been shown in window below. Please check the output for error messages.')
+				else:
+					# status-file has been found
+					if status.get('status') == 'DONE':
+						# update was successful
+						headline = _('Update has been finished successfully')
+						headline_msg = _('The update has been finished. During update some log messages have been shown in window below.')
+
+					elif status.get('status') == 'FAILED':
+						# update failed
+						headline = _('Update failed')
+						logfile = ', '.join( FN_LIST_UPGRADE_LOG )
+
+						if status.get('errorsource') in ['PREPARATION', 'SETTINGS']:
+							headline_msg = _('An error occured during update preparation. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						elif status.get('errorsource') in ['PREUP']:
+							headline_msg = _('An error occured during pre-update checks in preup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						elif status.get('errorsource') in ['UPDATE']:
+							headline_msg = _('An error occured during update. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						elif status.get('errorsource') in ['POSTUP']:
+							headline_msg = _('An error occured in post-update script postup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						else:
+							headline_msg = _('An error occured. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+
+						txt_version_from_to = status.get('TXT_VERSION_FROM_TO','')
+						if txt_version_from_to:
+							headline_msg = '%s<br />%s' % (headline_msg, txt_version_from_to)
+
+		elif windowtype == 'release':
 			cur_running_status = self.__is_updater_running()
 			if not cur_running_status and self.last_running_status.get(windowtype) in (True, None):
 				self._reinit()
@@ -687,7 +747,11 @@ class handler(umch.simpleHandler):
 		windowtype = object.options.get('windowtype','undefined-local')
 
 		# depending on window type set headline, headline message and logfiles
-		if windowtype == 'release':
+		if windowtype == 'easyupdate':
+			txt_headline = _('Update progress')
+			txt_headline_msg = _('The update process has been started. During update log messages will be shown in window below. Please wait until the release update has been finished.')
+			filenames = FN_LIST_UPGRADE_LOG
+		elif windowtype == 'release':
 			txt_headline = _('Update progress')
 			txt_headline_msg = _('The release update process has been started. During update log messages will be shown in window below. Please wait until the release update has been finished.')
 			filenames = FN_LIST_RELEASE_UPDATE_LOG
@@ -760,6 +824,47 @@ class handler(umch.simpleHandler):
 				res.dialog = [ lst ]
 			self.revamped(object.id(), res)
 
+		# ==== ONE BUTTON RELEASE UPDATE ====
+
+		if self.updater.configRegistry.is_true( 'update/umc/updateprocess/easy', False ):
+
+			list_easy_update = umcd.List()
+			if self.__is_univention_upgrade_running():
+				req = self.__get_logfile_request( { 'windowtype': 'easyupdate' } )
+				btn_view_log = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
+				list_easy_update.add_row([ umcd.Text(_('The update is still in progress.')), btn_view_log])
+
+			else:
+				version = '%s-%s' % (self.updater.configRegistry.get('version/version','0.0'), self.updater.configRegistry.get('version/patchlevel','0'))
+				secversion = self.updater.configRegistry.get('version/security-patchlevel','0')
+				if not secversion == '0':
+					version = '%s sec%s' % (version, secversion)
+				list_easy_update.add_row( [ umcd.Text( _('The currently installed UCS release version is %(version)s.') % { 'version': version } ) ] )
+
+				presult = umct.run_process( '%s --check' % CMD_UNIVENTION_UPGRADE, timeout=300000, shell=True, output=True )
+				if presult['exit'] == 0:
+					# update is available
+					btn_update_all = umcd.Button(_('Install updates'), 'actions/install', actions = [umcd.Action(self.__get_warning_request({'type': 'easyupdate'}))])
+					list_easy_update.add_row([ umcd.Text(_('Updates have been found.')), btn_update_all])
+				elif presult['exit'] == 1:
+					reComponentName = re.compile(".*without the component '([^']+)' is not possible because the component.*", re.DOTALL)
+					match = reComponentName.match( presult['stderr'].read() )
+					if match:
+						blocking_component = match.group(1)
+						list_easy_update.add_row( [ umcd.Text(_('Further release updates are available but the update is blocked by required component "%s".') % blocking_component) ] )
+					else:
+						list_easy_update.add_row( [ umcd.Text(_('System is up-to-date. No updates available.')) ] )
+				elif presult['exit'] == 3:
+					list_easy_update.add_row( [ umcd.Text(_('The connection to the repository server failed. Please check the repository configuration and the network connection.')) ] )
+				else:
+					req = self.__get_logfile_request( { 'windowtype': 'easyupdate' } )
+					btn_view_log = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
+					list_easy_update.add_row([ umcd.Text(_('Update command returned error code %s. Please check logfile.') % presult['exit']), btn_view_log])
+
+			# show easy update frame just here
+			res.dialog = umcd.Frame([list_easy_update], _('Release Information'))
+			self.revamped(object.id(), res)
+
 		# ==== UCS RELEASE UPDATES =====
 		list_update_release = umcd.List()
 
@@ -785,7 +890,7 @@ class handler(umch.simpleHandler):
 				errormsg = _( 'The connection to the repository server failed: %s. Please check the repository settings and the network connection.' ) % str( e[ 1 ] )
 			except Exception, e:
 				ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % (traceback.format_exc()))
-				errormsg = _( 'An error occured during network operation: %s' % traceback.format_exc().replace('%','§'))
+				errormsg = _( 'An error occured during network operation: %s' ) % traceback.format_exc().replace('%','§')
 
 			if errormsg:
 				list_update_release.add_row([ errormsg ])
@@ -846,7 +951,7 @@ class handler(umch.simpleHandler):
 				errormsg = _( 'The connection to the repository server failed: %s. Please check the repository settings and the network connection.' ) % str( e[ 1 ] )
 			except Exception, e:
 				ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % traceback.format_exc().replace('%','§'))
-				errormsg = _( 'An error occured during network operation: %s' % traceback.format_exc())
+				errormsg = _( 'An error occured during network operation: %s') % traceback.format_exc()
 
 			if errormsg:
 				list_update_security.add_row([ errormsg ])
@@ -985,9 +1090,19 @@ class handler(umch.simpleHandler):
 					btnlist = [ umcd.Button(_('Configure'), 'update/gear', actions=[umcd.Action(req)]) ]
 					txt = umcd.Text(_('This component is disabled.'))
 					if component.get('activated', '').lower() in ['true', 'yes', '1', 'enabled']:
-						txt = umcd.Text(_('This component is enabled.'))
+
+						status = self.updater.get_current_component_status( component_name )
+						if status == self.updater.COMPONENT_AVAILABLE:
+							txt = umcd.Text(_('This component is enabled.'))
+						elif status == self.updater.COMPONENT_PERMISSION_DENIED:
+							txt = umcd.Text( _('The access to this component has been denied.') )
+						elif status == self.updater.COMPONENT_NOT_FOUND:
+							txt = umcd.Text( _('The component has not been found on server.') )
+						elif status == self.updater.COMPONENT_UNKNOWN:
+							txt = umcd.Text( _('The status of this component is unknown.') )
+
 						# check if default package are installed
-						if self.updater.is_component_defaultpackage_installed( component_name ) == False:
+						if status == self.updater.COMPONENT_AVAILABLE and self.updater.is_component_defaultpackage_installed( component_name ) == False:
 							# create install request
 							req_inst = umcp.Command(args=['update/install_component_defaultpackages'], opts = {'component': component_name})
 							# create log_view request
@@ -1135,8 +1250,10 @@ class handler(umch.simpleHandler):
 
 		result = umcd.List()
 
-		if res.options['type'] in ('security', 'release'):
-			if res.options['type'] == 'security':
+		if res.options['type'] in ('security', 'release', 'easyupdate'):
+			if res.options['type'] == 'easyupdate':
+				command = 'update/install_release_updates_easy'
+			elif res.options['type'] == 'security':
 				command = 'update/install_security_updates'
 			else:
 				command = 'update/install_release_updates'
@@ -1226,6 +1343,10 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 
 	def __is_univention_install_running(self):
 		return self.__is_process_running( 'univention-updater-umc-univention-install' )
+
+
+	def __is_univention_upgrade_running(self):
+		return self.__is_process_running( CMD_UNIVENTION_UPGRADE )
 
 
 	def __remove_status_messages(self, text):

@@ -78,6 +78,7 @@ install-prep:
 	dh_clean -k
 	dh_installdirs
 install-stamp: build-stamp install-prep $(PYVERS:%=install-ext-%)
+	install -m 755 python/univention-upgrade debian/univention-updater/usr/sbin/univention-upgrade
 	install -m 755 python/univention-updater_tmp debian/univention-updater/usr/sbin/univention-updater
 	install -m 755 python/univention-repository-create_tmp debian/univention-updater/usr/sbin/univention-repository-create
 	install -m 755 python/univention-repository-merge_tmp debian/univention-updater/usr/sbin/univention-repository-merge
