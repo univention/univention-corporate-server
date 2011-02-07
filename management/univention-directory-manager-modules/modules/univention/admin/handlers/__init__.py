@@ -985,6 +985,17 @@ class simpleComputer( simpleLdap ):
 		self.network_object = False
 		self.old_network = 'None'
 		self.__saved_dhcp_entry = None
+		# read-only attribute containing the FQDN of the host
+		self.descriptions[ 'fqdn' ] = univention.admin.property(
+			short_description = 'FQDN',
+			long_description = '',
+			syntax=univention.admin.syntax.string,
+			multivalue = False,
+			options = [],
+			required = False,
+			may_change = False,
+			identifies = 0
+		)
 		self[ 'dnsAlias' ] = [ ]	# defined here to avoid pseudo non-None value of [''] in modwizard search
 
 	# HELPER
@@ -1153,6 +1164,8 @@ class simpleComputer( simpleLdap ):
 			for warn in open_warnings:
 				self.open_warning += '\n'+warn
 
+		if 'name' in self.info and 'domain' in self.info:
+			self[ 'fqdn' ] = '%s.%s' % ( self[ 'name' ], self[ 'domain' ] )
 
 	def __modify_dhcp_object( self, position, name, ip, mac ):
 		# identify the dhcp object with the mac address
