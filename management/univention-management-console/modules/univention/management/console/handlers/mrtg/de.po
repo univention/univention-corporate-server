@@ -72,11 +72,11 @@ msgstr "Auslastung des Auslagerungsspeichers in Prozent"
 
 #: _revamp.py:50
 msgid ""
-"Could not find any statistics. Check if univention-maintance is installed "
+"Could not find any statistics. Check if univention-maintenance is installed "
 "correctly."
 msgstr ""
 "Es konnten keine Statistiken gefunden werden. Überprüfen Sie, ob univention-"
-"maintance korrekt installiert ist."
+"maintenance korrekt installiert ist."
 
 #: __init__.py:47 __init__.py:53
 msgid "System load"

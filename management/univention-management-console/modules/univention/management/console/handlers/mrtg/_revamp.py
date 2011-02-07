@@ -55,7 +55,7 @@ class Web( object ):
 			lst.append( umcd.Frame( [ umcd.ImageURL( '/statistik/%s' % img ) ], text[ key ] ) )
 
 		if not lst:
-			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintance is installed correctly.' ) ) )
+			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintenance is installed correctly.' ) ) )
 		lst.insert(0, umcd.HTML('<b>' + _( 'System load in percent' ) + '</b>'))
 
 		res.dialog = lst
@@ -71,7 +71,7 @@ class Web( object ):
 			lst.append( umcd.Frame( [ umcd.ImageURL( '/statistik/%s' % img ) ], text[ key ] ) )
 
 		if not lst:
-			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintance is installed correctly.' ) ) )
+			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintenance is installed correctly.' ) ) )
 		lst.insert(0, umcd.HTML('<b>' + _( 'Number of active terminal server sessions' ) + '</b>'))
 
 		res.dialog = lst
@@ -87,7 +87,7 @@ class Web( object ):
 			lst.append( umcd.Frame( [ umcd.ImageURL( '/statistik/%s' % img ) ], text[ key ] ) )
 
 		if not lst:
-			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintance is installed correctly.' ) ) )
+			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintenance is installed correctly.' ) ) )
 		lst.insert(0, umcd.HTML('<b>' + _( 'Utilization of system memory in percent' ) + '</b>'))
 
 		res.dialog = lst
@@ -103,7 +103,7 @@ class Web( object ):
 			lst.append( umcd.Frame( [ umcd.ImageURL( '/statistik/%s' % img ) ], text[ key ] ) )
 
 		if not lst:
-			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintance is installed correctly.' ) ) )
+			lst.append( umcd.InfoBox( _( 'Could not find any statistics. Check if univention-maintenance is installed correctly.' ) ) )
 		lst.insert(0, umcd.HTML('<b>' + _( 'Utilization of swap space in percent' ) + '</b>'))
 
 		res.dialog = lst
