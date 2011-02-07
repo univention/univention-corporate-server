@@ -32,7 +32,7 @@
 
 TEMPDIR=$(mktemp -d)
 PROCFILES="cpuinfo devices dma filesystems interrupts meminfo partitions version scsi/scsi mounts"
-PROGRAMS="lspci__-v lsmod dmidecode univention-config-registry__search__--brief__version/version__version/patchlevel__version/security-patchlevel"
+PROGRAMS="lspci__-vnn lsmod dmidecode univention-config-registry__search__--brief__version/version__version/patchlevel__version/security-patchlevel"
 
 manufacturer=
 model=

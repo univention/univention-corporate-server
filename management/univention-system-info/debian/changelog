@@ -1,3 +1,9 @@
+univention-system-info (1.0.3-1) unstable; urgency=low
+
+  * added -vnn option for lspci (Bug #18352)
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 07 Feb 2011 14:00:00 +0200
+
 univention-system-info (1.0.2-1) unstable; urgency=low
 
   * made utf-8 default (Bug #20097)
