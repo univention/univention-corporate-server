@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.133-1) unstable; urgency=low
+
+  * add link to SDB article explaining the network interface settings
+  * adapt german translation; Bug #19573
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 07 Feb 2011 09:07:44 +0100
+
 univention-virtual-machine-manager-daemon (0.9.132-1) unstable; urgency=low
 
   * fixed a problem with translations in the boot device list; Bug #20887
