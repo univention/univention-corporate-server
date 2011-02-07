@@ -129,6 +129,7 @@ def update_ucr_updatestatus():
 
 if __name__ == '__main__':
 	# parse options
+	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
 
 	ud.init(LOGFILE, ud.NO_FLUSH, ud.NO_FUNCTION)
 	fp_debug = open(LOGFILE, 'a+')
