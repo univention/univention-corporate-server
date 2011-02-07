@@ -638,11 +638,12 @@ class UniventionUpdater:
 		except:
 			return self.COMPONENT_UNKNOWN
 
+		rePath = re.compile('(un)?maintained/component/ ?%s/' % name)
 		for line in lines:
-			if line.startswith('deb ') and ('/maintained/component/%s/' % name) in line:
+			if line.startswith('deb ') and rePath.search(line):
 				# stop immediately if at least one repo has been found
 				return self.COMPONENT_AVAILABLE
-			elif line.startswith('# Authentication failure for') and ('/maintained/component/%s/' % name) in line:
+			elif line.startswith('# Authentication failure for') and rePath.search(line):
 				# stop immediately if at least one repo has authentication problems
 				return self.COMPONENT_PERMISSION_DENIED
 		# file contains no valid repo entry

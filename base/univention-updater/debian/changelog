@@ -1,3 +1,9 @@
+univention-updater (6.0.53-1) unstable; urgency=low
+
+  * fixed logic for getting component status (Bug #21398)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 31 Jan 2011 17:27:17 +0100
+
 univention-updater (6.0.52-2) unstable; urgency=low
 
   * added easy update mechanism (Bug #21398)
