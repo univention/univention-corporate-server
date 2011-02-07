@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-schema (1.0.22-1) unstable; urgency=low
+
+  * add attribute and object class for additional host information
+  * add extend attribute to define list of management nodes for a
+    virtualisation host; Bug #19532
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 07 Feb 2011 15:43:13 +0100
+
 univention-virtual-machine-manager-schema (1.0.21-1) unstable; urgency=low
 
   * fixed syntax of attribute contact in module uvmm/info; Bug #20018

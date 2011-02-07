@@ -140,3 +140,13 @@ objectclass ( 1.3.6.1.4.1.10176.4101.4.1 NAME 'univentionVirtualMachineProfile'
 	MAY ( univentionVirtualMachineProfileNamePrefix $ univentionVirtualMachineProfileArch $ univentionVirtualMachineProfileCPUs $ univentionVirtualMachineProfileVirtTech $ univentionVirtualMachineProfileRAM $ univentionVirtualMachineProfileVNC $ univentionVirtualMachineProfileInterface $ univentionVirtualMachineProfileKBLayout $ univentionVirtualMachineProfileKernel $ univentionVirtualMachineProfileKernelParameter $ univentionVirtualMachineProfileInitRAMfs $ univentionVirtualMachineProfileBootDevices $ univentionVirtualMachineAdvancedKernelConfig $ univentionVirtualMachineProfileOS $ univentionVirtualMachineProfilePVDisk $ univentionVirtualMachineProfilePVInterface )
     )
 
+attributetype ( 1.3.6.1.4.1.10176.4101.5.1 NAME 'univentionVirtualMachineManageableBy'
+	DESC 'defines a list of management nodes that may access this system'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+objectclass ( 1.3.6.1.4.1.10176.4101.6.1 NAME 'univentionVirtualMachineHostOC'
+	DESC 'Univention Virtual Machine host objectclass'
+	SUP top AUXILIARY
+	MAY ( univentionVirtualMachineManageableBy ) )
