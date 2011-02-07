@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.134-1) unstable; urgency=low
+
+  * extend LDAP filter for search of manageable hosts: ensure that the
+    host should be managed by this node; Bug #19532
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 07 Feb 2011 15:45:29 +0100
+
 univention-virtual-machine-manager-daemon (0.9.133-1) unstable; urgency=low
 
   * add link to SDB article explaining the network interface settings

@@ -62,6 +62,7 @@ SERVICES = {
 LDAP_UVMM_RDN = "cn=Virtual Machine Manager"
 LDAP_INFO_RDN = "cn=Information,%s" % LDAP_UVMM_RDN
 LDAP_PROFILES_RDN = "cn=Profiles,%s" % LDAP_UVMM_RDN
+HOST_FQDN = '%s.%s' % ( configRegistry.get( 'hostname' ), configRegistry.get( 'domainname' ) )
 
 class LdapError(TranslatableException):
 	"""LDAP error."""
@@ -178,14 +179,17 @@ def ldap_uris(ldap_uri=None):
 	"""Return all nodes registered in LDAP."""
 	if len(SERVICES) == 0:
 		raise LdapConfigurationError(_('No SERVICES defined.'))
-	
+
 	# Build filter to find all Virtualization nodes
 	filter_list = ["(univentionService=%s)" % service for service in SERVICES]
 	if len(filter_list) > 1:
 		filter = "(|%s)" % "".join(filter_list)
 	else:
 		filter = filter_list[0]
-	
+
+	# ensure that we should manage the host
+	filter = '(&%s(|(!(univentionVirtualMachineManageableBy=*))(univentionVirtualMachineManageableBy=%s)))' % ( filter, HOST_FQDN )
+	logger.info( 'Find servers to manage "%s"' % filter )
 	ldap_uri = _ldap_uri(ldap_uri)
 	ldap_conn = ldap_uri.connect()
 	try:
