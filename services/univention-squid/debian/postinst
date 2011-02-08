@@ -32,6 +32,11 @@
 
 #DEBHELPER#
 
+LOCALINCLUDE=/etc/squid/local.conf
+if [ ! -e "$LOCALINCLUDE" ]; then
+	echo "# add local config here" >> "$LOCALINCLUDE"
+fi
+
 case "$1" in
     configure)
 

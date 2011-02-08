@@ -1,6 +1,12 @@
+univention-squid (4.0.6-1) unstable; urgency=low
+
+  * added include for local squid config Bug #20325 
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Feb 2011 13:32:39 +0100
+
 univention-squid (4.0.5-1) unstable; urgency=low
 
-  * add support for IP based authentication caching; Bug #19110 
+  * add support for IP based authentication caching Bug #19110 
 
  -- Felix Botner <botner@univention.de>  Wed, 02 Feb 2011 17:23:51 +0100
 
