@@ -1,3 +1,9 @@
+univention-config-registry (6.0.39-1) unstable; urgency=low
+
+  * show warning if value for assignment is missing (Bug #21167)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 08 Feb 2011 14:51:02 +0100
+
 univention-config-registry (6.0.38-1) unstable; urgency=low
 
   * Fix apt.conf.d/80proxy template (Bug #18393)
