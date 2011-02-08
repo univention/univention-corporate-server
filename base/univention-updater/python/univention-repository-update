@@ -189,7 +189,7 @@ def update_net( options ):
 		inst_fd.close()
 
 if __name__ == '__main__':
-	# FIXME: no clue why we need this
+	# PATH does not contain */sbin when called from cron
 	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
 
 	parser = OptionParser( usage = "usage: %prog (net|cdrom) [options] " )

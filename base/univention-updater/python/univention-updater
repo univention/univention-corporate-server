@@ -287,6 +287,7 @@ def call_local(updateto=None, clean=None):
 	sys.exit(1)
 
 def main():
+	# PATH does not contain */sbin when called from cron
 	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
 
 	cdrom_mount_point='/cdrom'
