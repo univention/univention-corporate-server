@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (0.1.19-2) unstable; urgency=low
+
+  * fixed typo in template of qemu.conf; Bug #21212
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 08 Feb 2011 16:02:25 +0100
+
 univention-virtual-machine-manager-node (0.1.19-1) unstable; urgency=low
 
   * add support for adjusting the ownership of the qemu processes; Bug #21212
