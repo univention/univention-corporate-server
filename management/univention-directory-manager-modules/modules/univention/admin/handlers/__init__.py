@@ -1767,9 +1767,14 @@ class simpleComputer( simpleLdap ):
 				if self.oldinfo.has_key( 'ip' ) and ipAddress in self.oldinfo[ 'ip' ]:
 					continue
 				if not self.ip_alredy_requested:
-					IpAddr = univention.admin.allocators.request( self.lo, self.position, 'aRecord', value = ipAddress )
-					if not IpAddr:
+					try:
+						IpAddr = univention.admin.allocators.request( self.lo, self.position, 'aRecord', value = ipAddress )
+						if not IpAddr:
+							self.cancel( )
+							raise univention.admin.uexceptions.noLock
+					except univention.admin.uexceptions.noLock:
 						self.cancel( )
+						self.ip_alredy_requested = 0
 						raise univention.admin.uexceptions.ipAlreadyUsed, ' %s' % ipAddress
 				else:
 					IpAddr = ipAddress

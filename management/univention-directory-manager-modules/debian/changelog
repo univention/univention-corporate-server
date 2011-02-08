@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.89-1) unstable; urgency=low
+
+  * corrected error handling for an existing IP-address when entering a new 
+    client (Bug #18966)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 08 Feb 2011 14:45:04 +0100
+
 univention-directory-manager-modules (6.0.88-1) unstable; urgency=low
 
   * add read-only attribute fqdn to simpleComputer; Bug #21493
