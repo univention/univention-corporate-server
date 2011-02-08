@@ -2084,8 +2084,11 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					searchResult=self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
 					domainsid=searchResult[0][1]['sambaSID'][0]
 					sid = domainsid+'-'+self['sambaRID']
-					self.userSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
-					self.alloc.append(('sid', self.userSid))
+					try:
+						self.userSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
+						self.alloc.append(('sid', self.userSid))
+					except univention.admin.uexceptions.noLock, e:
+						raise univention.admin.uexceptions.sidAlreadyUsed, ': %s' % self['sambaRID']
 
 				else:
 

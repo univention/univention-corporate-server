@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.90-1) unstable; urgency=low
+
+  * added a more descriptive error message when adding a new user with a
+    relative ID (for SAMBA) that already is in use (Bug #1746)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 08 Feb 2011 15:48:35 +0100
+
 univention-directory-manager-modules (6.0.89-1) unstable; urgency=low
 
   * corrected error handling for an existing IP-address when entering a new 
