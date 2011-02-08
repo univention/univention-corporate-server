@@ -1330,6 +1330,11 @@ msgstr ""
 msgid "Your SSL certificate will expire in %d days."
 msgstr "Das SSL-Zertifikat läuft in %d Tagen ab."
 
+#: modrelogin.py:431 modrelogin.py:433
+#, python-format
+msgid "Your Root CA certificate will expire in %d days."
+msgstr "Das Zertifikat der Zertifizierungsstelle (Root CA) läuft in %d Tagen ab."
+
 #: modself.py:76
 msgid "Account"
 msgstr "Konto"

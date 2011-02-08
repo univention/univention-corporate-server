@@ -425,12 +425,18 @@ class modrelogin(unimodule.unimodule):
 				warning = int( configRegistry.get( 'ssl/validity/warning', 30 ) )
 				days = int( configRegistry.get( 'ssl/validity/days', 0 ) )
 				now = int( time.time() / 60 / 60 / 24 )
+
 				if days and ( days - now ) < warning:
+
+					sslMsg = _( "Your SSL certificate will expire in %d days." ) % ( days - now )
+					if configRegistry.is_true("ssl/validity/ca"):
+						sslMsg = _( "Your Root CA certificate will expire in %d days." ) % ( days - now )
+
 					if gpl_version:
 						self.usermessage += "<br> "
-						self.usermessage += _( "Your SSL certificate will expire in %d days." ) % ( days - now )
+						self.usermessage += sslMsg
 					else:
-						self.usermessage( _( "Your SSL certificate will expire in %d days." ) % ( days - now ) )
+						self.usermessage(sslMsg)
 
 					self.userinfo(_("Login successful"))
 					self.save.put( "uc_module", "none" )
