@@ -1,3 +1,10 @@
+univention-management-console (3.0.77-1) unstable; urgency=low
+
+  * prevent error msg if UCR category has no description 
+    (Bug #21094) (Bug #21163)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 11 Jan 2011 14:20:00 +0100
+
 univention-management-console (3.0.76-1) unstable; urgency=low
 
   * fixed typo "maintance", Bug #20881

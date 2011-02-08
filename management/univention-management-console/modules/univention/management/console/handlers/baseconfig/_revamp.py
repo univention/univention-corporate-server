@@ -162,8 +162,8 @@ class Web( object ):
 
 		# category
 		fields = [ umcd.make( ( None, _types.category ) ) ]
+		default = []
 		if variable != None:
-			default = []
 			cats = variable.get( 'categories', None )
 			if cats:
 				info = ConfigRegistryInfo( install_mode = True )
@@ -172,8 +172,7 @@ class Web( object ):
 					cat_info = info.get_category( cat )
 					if cat_info:
 						default.append( ( string.lower( cat ), cat_info[ 'name' ] ) )
-					else:
-						default.append( ( string.lower( cat ), '' ) )
+		if default:
 			category = umcd.make( self[ 'baseconfig/set' ][ 'categories' ], fields = fields,
 								  default = default )
 		else:
