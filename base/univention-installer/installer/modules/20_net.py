@@ -952,28 +952,6 @@ class object(content):
 					self.current=self.get_elem_id('edit.INPUT_IP')	# set the tab cursor
 				self.get_elem_by_id(self.current).set_on()	# set the focus highlight
 				self.draw()
-			elif key == 260:
-				#move left
-				active=0
-				for elemid in ['edit.BUTTON_OK']:
-					if self.get_elem(elemid).active:
-						active=self.get_elem_id(elemid)
-				if active:
-					self.get_elem_by_id(active).set_off()
-					self.get_elem_by_id(active-1).set_on()
-					self.current=active-1
-					self.draw()
-			elif key == 261:
-				#move right
-				active=0
-				for elemid in ['edit.BUTTON_CANCEL']:
-					if self.get_elem(elemid).active:
-						active=self.get_elem_id(elemid)
-				if active:
-					self.get_elem_by_id(active).set_off()
-					self.get_elem_by_id(active+1).set_on()
-					self.current=active+1
-					self.draw()
 			elif self.elements[self.current].usable():
 				self.elements[self.current].key_event(key)
 			return 1

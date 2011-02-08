@@ -1,3 +1,9 @@
+univention-installer (6.0.48-1) unstable; urgency=low
+
+  * cursor keys (left/right) now work again in text input fields (Bug #18610)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 08 Feb 2011 15:39:21 +0100
+
 univention-installer (6.0.47-2) unstable; urgency=low
 
   * typo fixed (Bug #17611)
