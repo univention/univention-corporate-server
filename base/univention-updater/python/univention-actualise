@@ -313,7 +313,7 @@ def main():
 					print "Installing packages: %s" % package
 					createLock()
 					os.environ[ 'DEBIAN_FRONTEND' ] = 'noninteractive'
-					res = subprocess.call(shlex.slit(cmd_config), stdout=logfile, stderr=logfile)
+					res = subprocess.call(shlex.split(cmd_config), stdout=logfile, stderr=logfile)
 					if not res:
 						res = subprocess.call(shlex.split(cmd_install) + [package], stdout=logfile, stderr=logfile)
 				else:
