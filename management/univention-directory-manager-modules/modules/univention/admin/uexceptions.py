@@ -83,7 +83,7 @@ class uidAlreadyUsed(base):
 	message=_('The username is already in use.')
 
 class sidAlreadyUsed(base):
-	message=_('The relative ID is already in use.')
+	message=_('The relative ID (SAMBA) is already in use.')
 
 class groupNameAlreadyUsed(base):
 	message=_('The groupname is already in use.')

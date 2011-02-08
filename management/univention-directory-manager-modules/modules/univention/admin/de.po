@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-08 15:38+0100\n"
+"POT-Creation-Date: 2011-02-08 16:06+0100\n"
 "PO-Revision-Date: 2010-05-04 14:40+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -971,8 +971,8 @@ msgid "The username is already in use."
 msgstr "Der Benutzername wird bereits verwendet."
 
 #: uexceptions.py:86
-msgid "The relative ID is already in use."
-msgstr "Die relative ID wird bereits verwendet."
+msgid "The relative ID (SAMBA) is already in use."
+msgstr "Die relative ID (SAMBA) wird bereits verwendet."
 
 #: uexceptions.py:89
 msgid "The groupname is already in use."

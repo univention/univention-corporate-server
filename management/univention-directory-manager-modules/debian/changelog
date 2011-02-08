@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.91-1) unstable; urgency=low
+
+  * adapted error message for relative ID (Bug #1746)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 08 Feb 2011 16:07:07 +0100
+
 univention-directory-manager-modules (6.0.90-1) unstable; urgency=low
 
   * added a more descriptive error message when adding a new user with a
