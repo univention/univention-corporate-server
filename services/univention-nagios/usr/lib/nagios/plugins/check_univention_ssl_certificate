@@ -117,6 +117,8 @@ class SSLCertificateCheck:
 				state = 'OK'
 
 			msg = 'SSL certificate expires in %s days (warn@%s - crit@%s)' % (diff, self.days_warning, self.days_critical)
+			if _bc.is_true('ssl/validity/ca'):
+				msg = 'SSL Root CA certificate expires in %s days (warn@%s - crit@%s)' % (diff, self.days_warning, self.days_critical)
 		else:
 			msg = 'unable to determine expire date - baseconfig variable ssl/validity/days is not set'
 

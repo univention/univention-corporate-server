@@ -1,3 +1,10 @@
+univention-nagios (4.0.11-1) unstable; urgency=low
+
+  * check ssl/validity/ca in check_univention_ssl_certificate and
+    return appropriate warning message Bug #20664
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Feb 2011 15:52:35 +0100
+
 univention-nagios (4.0.10-1) unstable; urgency=low
 
   * Removed unused debug messages (Bug #18119)
