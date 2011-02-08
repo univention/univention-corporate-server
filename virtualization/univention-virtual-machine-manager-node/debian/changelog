@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (0.1.18-5) unstable; urgency=low
+
+  * Configure KVM to suspend VMs on host shutdown (Bug #21501)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Feb 2011 12:43:07 +0100
+
 univention-virtual-machine-manager-node (0.1.18-4) unstable; urgency=low
 
   * add dependency to dnsmasq-base; Bug #19573

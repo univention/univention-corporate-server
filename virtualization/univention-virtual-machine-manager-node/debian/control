@@ -33,6 +33,7 @@ Description: UCS - Univention Virtual Machine Manager node using xen
 Package: univention-virtual-machine-manager-node-kvm
 Architecture: all
 Depends: ${misc:Depends},
+ libvirt-bin (>= 0.8.7),
  univention-virtual-machine-manager-node-common,
  qemu-kvm,
  bridge-utils,
