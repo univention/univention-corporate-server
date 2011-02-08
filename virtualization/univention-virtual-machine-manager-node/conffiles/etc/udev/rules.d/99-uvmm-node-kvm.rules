@@ -1,0 +1,6 @@
+@%@UCRWARNING=# @%@
+@!@
+group = configRegistry.get( 'uvmm/kvm/udev/group' )
+if group:
+	print 'KERNEL=="kvm",										GROUP="%s"' % group
+@!@

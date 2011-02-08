@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (0.1.19-1) unstable; urgency=low
+
+  * add support for adjusting the ownership of the qemu processes; Bug #21212
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 08 Feb 2011 15:17:39 +0100
+
 univention-virtual-machine-manager-node (0.1.18-5) unstable; urgency=low
 
   * Configure KVM to suspend VMs on host shutdown (Bug #21501)
