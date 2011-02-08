@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.135-1) unstable; urgency=low
+
+  * UMC drive wizard: verify that drive device is set; Bug #19574
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 08 Feb 2011 16:43:39 +0100
+
 univention-virtual-machine-manager-daemon (0.9.134-1) unstable; urgency=low
 
   * extend LDAP filter for search of manageable hosts: ensure that the

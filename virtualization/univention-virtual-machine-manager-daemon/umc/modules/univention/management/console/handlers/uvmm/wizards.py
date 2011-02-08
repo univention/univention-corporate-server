@@ -421,7 +421,7 @@ class DriveWizard( umcd.IWizard ):
 		drive_pool = object.options['drive-pool']
 		image_name = object.options['image-name']
 		image_size = object.options['image-size']
-		drive_device = object.options['drive-device']
+		drive_device = object.options.get( 'drive-device', None )
 		driver_type = object.options['driver-type'].lower()
 
 		disk = uvmmn.Disk()
