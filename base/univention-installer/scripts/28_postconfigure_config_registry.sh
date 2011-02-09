@@ -3,7 +3,7 @@
 # Univention Installer
 #  Configure Univention Config Registry
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -277,6 +277,10 @@ mkdir -p /etc/console
 
 univention-config-registry set locale/keymap="$keymap"
 univention-config-registry set xorg/keyboard/options/XkbLayout=$(echo $keymap | sed -e 's|-.*||')
+
+if [ -n "$ox_primary_maildomain" ] ; then
+	univention-config-registry set ox/mail/domain/primary=$ox_primary_maildomain
+fi
 
 univention-config-registry set version/version=$version_version
 univention-config-registry set version/patchlevel=$version_patchlevel

@@ -4,7 +4,7 @@
 # Univention Installer
 #  installer module: network configuration
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -53,10 +53,9 @@ class object(content):
 		else:
 			self.already_redraw=0
 
-		if self.cmdline.has_key('edition') and self.cmdline['edition'] == 'oxae':
-			self.ask_forwarder=False
-		else:
-			self.ask_forwarder=True
+		self.ox = False
+		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxae':
+			self.ox = True
 
 		self.interfaces=[]
 
@@ -476,6 +475,9 @@ class object(content):
 			self.ask_forwarder=False
 		else:
 			self.ask_forwarder=True
+
+		if self.ox:
+			self.ask_forwarder=False
 
 		if self.ask_forwarder:
 			proxyY=16

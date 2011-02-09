@@ -1,3 +1,10 @@
+univention-installer (6.0.49-1) unstable; urgency=low
+
+  * merged changes from component oxse4ucs (-r 21773:HEAD), 
+    except installer/package_list.py (Bug #21184)
+
+ -- Felix Botner <botner@univention.de>  Wed, 09 Feb 2011 14:26:29 +0100
+
 univention-installer (6.0.48-1) unstable; urgency=low
 
   * cursor keys (left/right) now work again in text input fields (Bug #18610)
