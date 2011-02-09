@@ -45,3 +45,21 @@ Description[de]=Zeigt VNC-Link im UMC-Modul an.
 Description[en]=Show VNC-Link in UMC module.
 Type=bool
 Categories=uvmm
+
+[uvmm/volume/permissions/mode]
+Description[de]=Defines the file mode permissions for new hard drive images that are created in a storage pool
+Description[en]=Definiert die Berechtigungen, die für neu erzeugte Festplatten-Images verwendet werden
+Type=int
+Categories=uvmm
+
+[uvmm/volume/permissions/owner]
+Description[de]=Defines the owner for new hard drive images that are created in a storage pool
+Description[en]=Definiert den Besitzer, der für neu erzeugte Festplatten-Images verwendet wird
+Type=int
+Categories=uvmm
+
+[uvmm/volume/permissions/group]
+Description[de]=Defines the group for new hard drive images that are created in a storage pool
+Description[en]=Definiert Die Gruppe, die für neu erzeugte Festplatten-Images verwendet wird
+Type=int
+Categories=uvmm

@@ -40,6 +40,10 @@ import logging
 from xml.dom.minidom import getDOMImplementation, parseString
 from helpers import TranslatableException, N_ as _
 import os.path
+import univention.config_registry as ucr
+
+configRegistry = ucr.ConfigRegistry()
+configRegistry.load()
 
 logger = logging.getLogger('uvmmd.storage')
 
@@ -135,16 +139,30 @@ def create_storage_volume(conn, domain, disk):
 			values['type'] = disk.driver_type
 		else:
 			values['type'] = 'raw'
+		# permissions
+		permissions = '<permissions>\n'
+		found = True
+		for access in ( 'owner', 'group', 'mode' ):
+			value = configRegistry.get( 'uvmm/volume/permissions/%s' % access, None )
+			if value:
+				permissions += '<%(tag)s>%(value)s</%(tag)s>\n' % { 'tag' : access, 'value' : value }
+				found = True
+		if found:
+			permissions += '</permissions>'
+		else:
+			permissions = ''
+
 		template = '''
 		<volume>
-			<name>%(name)s</name>
+			<name>%%(name)s</name>
 			<allocation>0</allocation>
-			<capacity>%(size)ld</capacity>
+			<capacity>%%(size)ld</capacity>
 			<target>
-				<format type="%(type)s"/>
+				<format type="%%(type)s"/>
+				%s
 			</target>
 		</volume>
-		'''
+		''' % permissions
 	elif pool_type == 'logical':
 		template = '''
 		<volume>

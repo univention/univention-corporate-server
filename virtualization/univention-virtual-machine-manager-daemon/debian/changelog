@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.137-1) unstable; urgency=low
+
+  * add UCR variables uvmm/volume/permissions/(mode|owner|group) to set
+    the permissions for newly created hard drive images; Bug #21529
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 09 Feb 2011 19:20:56 +0100
+
 univention-virtual-machine-manager-daemon (0.9.136-1) unstable; urgency=low
 
   * Implement common function as UVMM API (Bug #21331)
