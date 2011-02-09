@@ -5302,8 +5302,18 @@ class modedit(unimodule.unimodule):
 					continue
 			new=None
 			try:
+				# get the new user input for the specific field
 				new=field.get_input()
-				if property.syntax.name == "passwd" and not new:
+
+				# check whether we are modifying a new or an existing object
+				_objExists = 1
+				_tmpObj = self.save.get('edit_object')
+				if _tmpObj:
+					_objExists = _tmpObj.exists()
+
+				# for a password, we do not want to require a new password entry 
+				# if the object is modified; password is only required for a new object
+				if property.syntax.name == "passwd" and not new and _objExists:
 					pass
 				else:
 					current_object[key]=new

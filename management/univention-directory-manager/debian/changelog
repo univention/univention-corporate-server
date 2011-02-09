@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.59-1) unstable; urgency=low
+
+  * force password syntax check when entering a new object (Bug #21223)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 09 Feb 2011 17:56:09 +0100
+
 univention-directory-manager (8.0.58-1) unstable; urgency=low
 
   * univention-directory-manager.py checks now how many bytes have been
