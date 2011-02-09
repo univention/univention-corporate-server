@@ -1,3 +1,9 @@
+univention-squid (4.0.7-2) unstable; urgency=low
+
+  * added support for unlimited interfaces in squid.conf Bug #19243 
+
+ -- Felix Botner <botner@univention.de>  Wed, 09 Feb 2011 13:26:24 +0100
+
 univention-squid (4.0.6-1) unstable; urgency=low
 
   * added include for local squid config Bug #20325 
