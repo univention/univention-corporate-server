@@ -1296,8 +1296,11 @@ class modedit(unimodule.unimodule):
 																'button':update_choices}))
 
 							if value:
+								# build the multi-value list for the GUI containing all DNS alias entries
 								canonical_name=current_object[ 'name' ]
 								i = 0
+
+								# iterate over each alias entry
 								for v in value:
 									vstr =  syntax.tostring(v)
 
@@ -1305,12 +1308,13 @@ class modedit(unimodule.unimodule):
 									#univention-directory-manager.zoneName=univention.test,cn=dns,dc=univention,dc=test.&nbsp;&nbsp;&nbsp;univention.test</option>
 									#zoneName=univention.test,cn=dns,dc=univention,dc=test&nbsp;&nbsp;&nbsp;univention.test</option>
 
+									# build the final string that is shown in the GUI
 									zone_name, alias_zone_name, alias = split_dns_alias_line( vstr )
 									if zone_name and alias_zone_name and alias:
-										mvaluelist.append({'name': unicode(i), 'description': '%s.%s.&nbsp;&nbsp;&nbsp;%s.%s.' % ( alias, zone_name, canonical_name, alias_zone_name ) } )
+										mvaluelist.append({'name': unicode(i), 'description': '%s.%s.&nbsp;&nbsp;&nbsp;%s.%s.' % ( alias, alias_zone_name, canonical_name, zone_name ) } )
 										i+=1
 									elif zone_name and alias_zone_name:	# FIXME: Does this case occurr?
-										mvaluelist.append({'name': unicode(i), 'description': '%s&nbsp;&nbsp;&nbsp;%s.%s.' % ( zone_name, canonical_name, alias_zone_name ) } )
+										mvaluelist.append({'name': unicode(i), 'description': '%s&nbsp;&nbsp;&nbsp;%s.%s.' % ( alias_zone_name, canonical_name, zone_name ) } )
 										i+=1
 									elif zone_name:
 										mvaluelist.append({'name': unicode(i), 'description': '%s.%s.' % ( canonical_name, zone_name ) } )
