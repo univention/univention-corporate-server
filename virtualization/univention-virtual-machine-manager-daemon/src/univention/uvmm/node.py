@@ -999,6 +999,25 @@ def domain_define( uri, domain ):
 
 	doc.documentElement.appendChild( devices )
 
+	if domain.domain_type in ('kvm'): # 'qemu'
+		doc.documentElement.setAttribute("xmlns:qemu", "http://libvirt.org/schemas/domain/qemu/1.0")
+		commandline = doc.createElement('qemu:commandline')
+
+		models = set()
+		for iface in domain.interfaces:
+			if hasattr(iface, 'model') and iface.model:
+				models.add(iface.model)
+		models &= set(['e1000', 'ne2k_isa', 'ne2k_pci', 'pcnet', 'rtl8139', 'virtio'])
+		for model in models:
+			arg = doc.createElement('qemu:arg')
+			arg.setAttribute('value', '-option-rom')
+			commandline.appendChild(arg)
+			arg = doc.createElement('qemu:arg')
+			arg.setAttribute('value', '/usr/share/kvm/pxe-%s.bin' % model)
+			commandline.appendChild(arg)
+
+		doc.documentElement.appendChild(commandline)
+
 	# remove old domain definitions
 	if domain.uuid:
 		try:

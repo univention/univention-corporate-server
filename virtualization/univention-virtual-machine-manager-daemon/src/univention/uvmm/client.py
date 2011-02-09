@@ -34,9 +34,22 @@
 
 import socket
 import protocol
-from helpers import TranslatableException, N_ as _
+from helpers import TranslatableException, FQDN, N_ as _
 from OpenSSL import SSL
 import PAM
+import univention.config_registry as ucr
+
+__all__ = [
+		'ClientError',
+		'UVMM_ClientSocket',
+		'UVMM_ClientUnixSocket',
+		'UVMM_ClientAuthenticatedSocket',
+		'UVMM_ClientTCPSocket',
+		'UVMM_ClientSSLSocket',
+		'UVMM_ClientAuthSSLSocket',
+		'uvmm_connect',
+		'uvmm_cmd',
+		]
 
 class ClientError(TranslatableException):
 	"""Error during communication with UVMM daemon."""
@@ -157,8 +170,8 @@ class UVMM_ClientTCPSocket(UVMM_ClientSocket):
 
 class UVMM_ClientSSLSocket(UVMM_ClientSocket):
 	"""UVMM client SSL enctrypted TCP socket to (str(host), int(port))."""
-	privatekey = '/etc/univention/ssl/%s/private.key' % socket.getfqdn()
-	certificate = '/etc/univention/ssl/%s/cert.pem' % socket.getfqdn()
+	privatekey = '/etc/univention/ssl/%s/private.key' % FQDN
+	certificate = '/etc/univention/ssl/%s/cert.pem' % FQDN
 	cas = '/etc/univention/ssl/ucsCA/CAcert.pem'
 
 	def __init__(self, host, port=2106):
@@ -179,6 +192,98 @@ class UVMM_ClientSSLSocket(UVMM_ClientSocket):
 
 	def __str__(self):
 		return "TCP-SSL Socket %s:%d -> %s:%d" % (self.sock.getsockname() + self.sock.getpeername())
+
+class UVMM_ClientAuthSSLSocket(UVMM_ClientSSLSocket, UVMM_ClientAuthenticatedSocket):
+	"""SSL-socket plus authentication."""
+	pass
+
+__ucr = ucr.ConfigRegistry()
+__ucr.load()
+
+def __auth_machine():
+	"""Get machine connection."""
+	username = "%s$" % __ucr['hostname']
+	f = open('/etc/machine.secret', 'r')
+	try:
+		password = f.readline().rstrip()
+	finally:
+		f.close()
+	return (username, password)
+
+def __debug(msg):
+	"""Output debugging messages."""
+	try:
+		if int(__ucr['dvs/uvmm/debug']) > 0:
+			import sys
+			print >>sys.stderr, msg
+	except:
+		pass
+
+def uvmm_connect(managers=None, cred=None):
+	"""Get connection to UVMM.
+	managers: space separated list of hosts or iteratable.
+	cred: tupel of (username, password), defaults to machine credential."""
+	if not managers:
+		managers = __ucr.get('uvmm/managers', '')
+	if isinstance(managers, basestring):
+		managers = managers.split(' ')
+	try:
+		for uvmmd in managers:
+			try:
+				__debug("Opening connection to UVMMd %s ..." % uvmmd)
+				uvmm = UVMM_ClientAuthSSLSocket(uvmmd)
+				if not cred:
+					cred = __auth_machine()
+				uvmm.set_auth_data(*cred)
+				break
+			except Exception, e:
+				__debug("Failed: %s" % e)
+				pass
+		else:
+			__debug("Opening connection to local UVVMd...")
+			uvmm = UVMM_ClientUnixSocket('/var/run/uvmm.socket')
+	except ClientError, e:
+		raise ClientError('Can not open connection to UVMM daemon: %s' % e)
+	return uvmm
+
+__uvmm = None
+def uvmm_cmd(request, managers=None, cred=None):
+	"""Send request to UVMM.
+	cred: tupel of (username, password), defaults to machine credential."""
+	global __uvmm
+	if __uvmm is None:
+		__uvmm = uvmm_connect(managers=managers, cred=cred)
+	assert __uvmm is not None, "No connection to UVMM daemon."
+
+	response = __uvmm.send(request)
+	if not response or isinstance(response, Response_ERROR):
+		raise ClientError(response.msg)
+	return response
+
+import os.path
+def uvmm_local_uri(local=False):
+	"""Return libvirt-URI for local host.
+	If local=True, use UNIX-socket instead of TCP-socket.
+	Raises ClientError() if neither KVM nor XEN is currently available.
+
+	> uvmm_local_uri() #doctest: +ELLIPSIS +IGNORE_EXCEPTION_DETAIL
+	'qemu://.../system'
+	'xen://.../'
+	Traceback (most recent call last):
+	ClientError: ...
+
+	> uvmm_local_uri(local=True) #doctest: +ELLIPSIS +IGNORE_EXCEPTION_DETAIL
+	'qemu:///system'
+	'xen+unix:///'
+	Traceback (most recent call last):
+	ClientError: ...
+	"""
+	if os.path.exists('/dev/kvm'):
+		return local and 'qemu:///system' or 'qemu://%s/system' % FQDN
+	elif os.path.exists('/proc/xen/privcmd'):
+		return local and 'xen+unix:///' or 'xen://%s/' % FQDN
+	else:
+		raise ClientError('Host does not support required virtualization technology.')
 
 if __name__ == '__main__':
 	import doctest

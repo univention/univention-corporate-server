@@ -382,7 +382,7 @@ class Client( notifier.signals.Provider ):
 	# 	cdrom_prefix = 'hd%s'
 	# 	dev_name = 'a'
 	# 	device_prefix = 'hd%s'
-	# 	if domain_info.domain_type == 'xen' and domain_info.os_type == 'linux':
+	# 	if domain_info.domain_type == 'xen' and domain_info.os_type in ('linux', 'xen'):
 	# 		device_prefix = 'xvd%s'
 	# 	elif domain_info.domain_type == 'kvm':
 	# 		device_prefix = 'vd%s' # virtio instead of ide

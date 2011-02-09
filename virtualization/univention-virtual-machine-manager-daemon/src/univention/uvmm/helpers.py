@@ -37,6 +37,9 @@ __all__ = [
 		'TranslatableException',
 		'LIBVIRT_ERR',
 		'ms',
+		'FQDN',
+		'uri_netloc',
+		'match_self',
 		]
 
 import gettext
@@ -79,6 +82,49 @@ def ms(ms):
 	hm, s = divmod(ms, 60000)
 	h, m = divmod(hm, 60)
 	return "%d:%02d:%06.3f" % (h, m, s / 1000.0)
+
+import re
+import socket
+
+RE_VIRT_URI = re.compile('(?P<scheme>[a-z+]+)://(?P<netloc>[^/]*)(?P<path>/.*)')
+
+FQDN = socket.getfqdn()
+
+def uri_netloc(uri):
+	"""Extract the net-location part from the uri.
+
+	>>> uri_netloc('xen://hostname.domainname/')
+	'hostname.domainname'
+	"""
+	try:
+		m = RE_VIRT_URI.match(uri)
+		g = m.groupdict()
+		return g['netloc']
+	except:
+		raise TypeError('Not a valid uri')
+
+def match_self(uris):
+	"""Check if uris contains own hostname, fqdn or 'all'.
+	
+	>>> match_self(['all'])
+	True
+	>>> match_self(['xen://%s/' % FQDN])
+	True
+	>>> match_self(['xen://%s/' % FQDN.split('.')[0]])
+	True
+	>>> match_self(['invalid host name'])
+	False
+	"""
+	global __self_set
+	for uri in uris:
+		if 'all' == uri:
+			return True
+		try:
+			if uri_netloc(uri) in __self_set:
+				return True
+		except TypeError, e:
+			pass
+	return False
 
 if __name__ == '__main__':
 	import doctest

@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.136-1) unstable; urgency=low
+
+  * Implement common function as UVMM API (Bug #21331)
+  * debian/control: Tighten dependency between UVMM packages.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 09 Feb 2011 15:14:36 +0100
+
 univention-virtual-machine-manager-daemon (0.9.135-1) unstable; urgency=low
 
   * UMC drive wizard: verify that drive device is set; Bug #19574
