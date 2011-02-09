@@ -716,12 +716,12 @@ def doit(arglist):
 
 			if parsed_options:
 				object.options=parsed_options
-				
-			object.open()      	
+
+			object.open()
 			if hasattr(object,'	open_warning') and object.open_warning:
 				out.append('WAR	NING:%s'%object.open_warning)
-			exists=0           	
-			try:               	
+			exists=0
+			try:
 				out.extend(object_input(module, object, input, append=append))
 			except univention.admin.uexceptions.nextFreeIp:
 				if not ignore_exists:
@@ -740,39 +740,39 @@ def doit(arglist):
 			exists=0
 			try:
 				dn=object.create()
-			except univention.admin.uexceptions.objectExists:
+			except univention.admin.uexceptions.objectExists, dn:
 				if not ignore_exists:
-					out.append('E: Object exists')
+					out.append('E: Object exists: %s' % dn)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
-			except univention.admin.uexceptions.uidAlreadyUsed:
+			except univention.admin.uexceptions.uidAlreadyUsed, user:
 				if not ignore_exists:
-					out.append('E: Object exists')
+					out.append('E: Object exists (uid)%s' % user)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
-			except univention.admin.uexceptions.groupNameAlreadyUsed:
+			except univention.admin.uexceptions.groupNameAlreadyUsed, group:
 				if not ignore_exists:
-					out.append('E: Object exists')
+					out.append('E: Object exists (group): %s' % group)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
-			except univention.admin.uexceptions.dhcpServerAlreadyUsed:
+			except univention.admin.uexceptions.dhcpServerAlreadyUsed, name:
 				if not ignore_exists:
-					out.append('E: Object exists')
+					out.append('E: Object exists (dhcpserver): %s' % name)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
-			except univention.admin.uexceptions.macAlreadyUsed:
+			except univention.admin.uexceptions.macAlreadyUsed, mac:
 				if not ignore_exists:
-					out.append('E: Object exists')
+					out.append('E: Object exists (mac): %s' % mac)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
-			except univention.admin.uexceptions.noLock:
+			except univention.admin.uexceptions.noLock, e:
 				if not ignore_exists:
-					out.append('E: Object exists')
+					out.append('E: Object exists (nolock): %s' % e)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
@@ -781,7 +781,7 @@ def doit(arglist):
 				return out + ["OPERATION FAILED"]
 			except univention.admin.uexceptions.invalidOptions, e:
 				if not ignore_exists:
-					out.append('E: invalid Options: %s'%e)
+					out.append('E: invalid Options: %s' % e)
 					return out + ["OPERATION FAILED"]
 			except univention.admin.uexceptions.insufficientInformation:
 				out.append('E: Insufficient information')
@@ -792,8 +792,8 @@ def doit(arglist):
 						if not object.has_key(i) or not object[i]:
 							out.append(i)
 				return out + ["OPERATION FAILED"]
-			except univention.admin.uexceptions.noObject:
-				out.append('E: object not found')
+			except univention.admin.uexceptions.noObject, e:
+				out.append('E: object not found: %s' % e)
 				return out + ["OPERATION FAILED"]
 			except univention.admin.uexceptions.circularGroupDependency, e:
 				out.append('E: circular group dependency detected: %s' % e)

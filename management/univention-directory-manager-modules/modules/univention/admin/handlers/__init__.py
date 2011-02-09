@@ -297,7 +297,7 @@ class base(object):
 		'''create object'''
 
 		if self.exists():
-			raise univention.admin.uexceptions.objectExists
+			raise univention.admin.uexceptions.objectExists, self.dn
 		if hasattr(self,"_ldap_pre_ready"):
 			self._ldap_pre_ready()
 
@@ -1514,8 +1514,8 @@ class simpleComputer( simpleLdap ):
 										( 'zoneName', univention.admin.uldap.explodeDn( zoneDn, 1 )[ 0 ]),\
 										( 'ARecord', [ ip ]),\
 										( 'relativeDomainName', [ name ])])
-				except univention.admin.uexceptions.objectExists:
-					raise univention.admin.uexceptions.dnsAliasRecordExists
+				except univention.admin.uexceptions.objectExists, dn:
+					raise univention.admin.uexceptions.dnsAliasRecordExists, dn
 
 				# TODO: check if zoneDn really a forwardZone, maybe it is a container under a zone
 				zone = univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zoneDn )
@@ -2321,7 +2321,7 @@ class simplePolicy(simpleLdap):
 			self.oldinfo={}
 			simpleLdap.create(self)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.create: created object: info=%s' % (self.info))
-		except univention.admin.uexceptions.objectExists:
+		except univention.admin.uexceptions.objectExists, dn:
 			self.__makeUnique()
 			self.create()
 

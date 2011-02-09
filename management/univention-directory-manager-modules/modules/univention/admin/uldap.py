@@ -335,7 +335,7 @@ class access:
 		try:
 			return self.lo.add(dn, al)
 		except ldap.ALREADY_EXISTS, msg:
-			raise univention.admin.uexceptions.objectExists
+			raise univention.admin.uexceptions.objectExists, dn
 		except ldap.INSUFFICIENT_ACCESS, msg:
 			raise univention.admin.uexceptions.permissionDenied
 		except ldap.LDAPError, msg:
