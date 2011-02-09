@@ -1,3 +1,10 @@
+univention-directory-manager (8.0.58-1) unstable; urgency=low
+
+  * univention-directory-manager.py checks now how many bytes have been
+    sent by socket.send() and retries again if some bytes are left (Bug #21146)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 09 Feb 2011 17:19:27 +0100
+
 univention-directory-manager (8.0.57-1) unstable; urgency=low
 
   * fixed wrong visualization of dns alias entries (Bug #18481)

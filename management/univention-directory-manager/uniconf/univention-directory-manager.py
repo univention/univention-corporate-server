@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, os, getopt, string, copy, socket, select, locale
+import sys, os, getopt, string, copy, socket, select, locale, time
 
 sys.path.append('/usr/share/univention-webui/modules/')
 ldir = '/usr/share/univention-directory-manager/uniconf/'
@@ -181,9 +181,26 @@ def main(argv):
 			if debugging >= 2:
 				open('/tmp/xmlout', 'w').write(xmlout)
 
-			# send output
-			conn.send(xmlout+'\0')
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sent output')
+			# convert unicode to bytestring (UTF-8)
+			data = (xmlout+'\0').encode('UTF-8')
+			datalen = len(data)
+			while data:
+				sent = conn.send(data)
+				if sent == 0:
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'sent output failed: socket seems to be bad - stopping here and closing socket')
+					data = None
+				elif sent >= 0 and sent < datalen:
+					# data has been sent only partial - retrying with remaining data
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'sent only %d bytes' % sent)
+					data = data[sent:]
+					datalen = len(data)
+					time.sleep(0.005) # sleep 5ms and try again
+				elif sent == datalen:
+					# everythin has been sent
+					data = None
+				# elif sent < 0 ==> try again
+
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'sent output')
 			conn.close()
 
 			# Do cleanup work after the connection has been closed,
