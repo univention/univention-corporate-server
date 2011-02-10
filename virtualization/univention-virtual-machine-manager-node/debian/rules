@@ -45,7 +45,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m 0644 uvmm-node.py debian/univention-virtual-machine-manager-node-common/usr/lib/univention-directory-listener/system/
+	install -m 0644 libvirtd-acl.py debian/univention-virtual-machine-manager-node-common/usr/lib/univention-directory-listener/system/
 	install -m 0755 univention-virtual-machine-manager-restore.py debian/univention-virtual-machine-manager-node-common/usr/sbin/univention-virtual-machine-manager-restore
 	@for virttech in xen kvm; do \
 		install -m 0755 44univention-virtual-machine-manager-node-$$virttech.inst debian/univention-virtual-machine-manager-node-$$virttech/usr/lib/univention-install/; \

@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-node (0.1.20-1) unstable; urgency=low
+
+  * Allow migration between all VM hosts (Bug #19828)
+  * Rename listener script for consistency.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 10 Feb 2011 09:01:43 +0100
+
 univention-virtual-machine-manager-node (0.1.19-2) unstable; urgency=low
 
   * fixed typo in template of qemu.conf; Bug #21212

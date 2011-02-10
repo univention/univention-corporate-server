@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Virtual Machine Manager Node
-#  listener module
+#  libvirtd listener module
 #
-# Copyright 2010 Univention GmbH
+# Copyright 2010-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,8 +33,8 @@
 """Watch for addition or deletion of management stations and update
 /etc/libvirt/libvirtd.conf and the UCR variable uvmm/managers accordingly."""
 
-name='uvmm-node'
-description='Update Univention Virtual Machine Manager permissions'
+name='libvirtd-acl'
+description='Update Univention Virtual Machine Manager libvirtd permissions'
 filter='(objectClass=univentionHost)'
 attributes=['univentionService']
 
@@ -43,7 +43,7 @@ import univention.config_registry as ucr
 import univention.debug as debug
 import subprocess
 
-service_name = "Virtual Machine Manager"
+service_names = set(["Virtual Machine Manager", "XEN Host", "KVM Host"])
 need_restart = False
 
 def initialize():
@@ -55,21 +55,21 @@ def handler(dn, new, old):
 	reg = ucr.ConfigRegistry()
 	reg.load()
 	value = reg.get('uvmm/managers','')
-	debug.debug(debug.LISTENER, debug.ALL, "old UVMM daemon: %s" % value)
+	debug.debug(debug.LISTENER, debug.ALL, "old hosts: %s" % value)
 	tls_allowed_dn_list = value.split()
 
 	old_host = None
-	if old and service_name in old.get('univentionService', []):
+	if old and service_names & set(old.get('univentionService', [])):
 		try:
 			domain = old['associatedDomain'][0]
 		except KeyError:
 			domain = ucr.get('domainname')
 		old_host = "%s.%s" % (old['cn'][0], domain)
 		if old_host in tls_allowed_dn_list:
-			debug.debug(debug.LISTENER, debug.INFO, "removing UVMM daemon %s" % (old_host,))
+			debug.debug(debug.LISTENER, debug.INFO, "removing host %s" % (old_host,))
 			tls_allowed_dn_list.remove(old_host)
 	new_host = None
-	if new and service_name in new.get('univentionService', []):
+	if new and service_names & set(new.get('univentionService', [])):
 		try:
 			domain = new['associatedDomain'][0]
 		except KeyError:
@@ -77,12 +77,12 @@ def handler(dn, new, old):
 		new_host = "%s.%s" % (new['cn'][0], domain)
 		debug.debug(debug.LISTENER, debug.INFO, "+uvmm %s" % (new_host,))
 		if new_host not in tls_allowed_dn_list:
-			debug.debug(debug.LISTENER, debug.INFO, "adding UVMM daemon %s" % (new_host,))
+			debug.debug(debug.LISTENER, debug.INFO, "adding host %s" % (new_host,))
 			tls_allowed_dn_list.append(new_host)
 
 	if old_host != new_host:
 		value = ' '.join(tls_allowed_dn_list)
-		debug.debug(debug.LISTENER, debug.ALL, "new UVMM daemon: %s" % value)
+		debug.debug(debug.LISTENER, debug.ALL, "new hosts: %s" % value)
 		key_value = 'uvmm/managers=%s' % (value,)
 		listener.setuid(0)
 		try:

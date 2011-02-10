@@ -39,6 +39,21 @@ case "$1" in
 	if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 		/usr/lib/univention-install/43univention-virtual-machine-manager-node-common.inst || true
 	fi
+	# Rename listener from "uvmm-node" to "libvirtd-acl"
+	if dpkg --compare-versions "$2" lt-nl 0.1.20
+	then
+		old=/var/lib/univention-directory-listener/handlers/uvmm-node
+		new=/var/lib/univention-directory-listener/handlers/libvirtd-acl
+		if [ -e "$old" ]
+		then
+			if [ -e "$new" ]
+			then
+				rm -f "$old"
+			else
+				mv "$old" "$new"
+			fi
+		fi
+	fi
 	invoke-rc.d univention-directory-listener restart
 	update-rc.d -f libvirt-bin remove
 	test -e /etc/runit/univention/univention-libvirt || \
