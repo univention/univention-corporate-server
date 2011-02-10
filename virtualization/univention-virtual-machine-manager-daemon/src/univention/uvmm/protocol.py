@@ -78,9 +78,12 @@ class Packet(object):
 		if len(buffer) < offset + SIZE + length:
 			return None
 		(data,) = struct.unpack('%ds' % length, buffer[offset + SIZE:offset + SIZE + length])
-		packet = pickle.loads(data)
+		try:
+			packet = pickle.loads(data)
+		except Exception, e:
+			raise PacketError(_('Not a valid Packet: %(msg)s'), msg=str(e))
 		if not isinstance(packet, Packet):
-			raise PacketError(_('Not a Packet'))
+			raise PacketError(_('Not a Packet: %(type)s'), type=type(packet))
 		else:
 			return (SIZE + length, packet)
 

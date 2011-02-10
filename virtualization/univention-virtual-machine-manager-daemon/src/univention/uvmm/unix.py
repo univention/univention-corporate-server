@@ -91,8 +91,10 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 					packet = protocol.Packet.parse(buffer)
 					if packet == None:
 						continue # waiting
-				except protocol.PacketError, (msg,):
-					logger.error("[%d] Invalid packet received: %s" % (self.client_id, msg,))
+				except protocol.PacketError, e: # (translatable_text, dict):
+					logger.warning("[%d] Invalid packet received: %s" % (self.client_id, e))
+					if logger.isEnabledFor(logging.DEBUG):
+						logger.debug("[%d] Dump: %r" % (self.client_id, data))
 					break
 
 				logger.debug('[%d] Received packet.' % (self.client_id,))
@@ -102,7 +104,7 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 				if isinstance(command, protocol.Request):
 					res = self.handle_command(command)
 				else:
-					logger.error('[%d] Packet is no UVMM Request. Ignored.' % (self.client_id,))
+					logger.warning('[%d] Packet is no UVMM Request. Ignored.' % (self.client_id,))
 					res = protocol.Response_ERROR()
 					res.translatable_text = _('Packet is no UVMM Request: %(type)s')
 					res.values = {

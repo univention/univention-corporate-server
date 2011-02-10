@@ -89,8 +89,8 @@ class UVMM_ClientSocket(object):
 					raise ClientError(_('Not a UVMM_Response.'))
 				else:
 					return res
-		except protocol.PacketError, (msg,):
-			raise ClientError(_('Invalid packet received: %(msg)s'), msg=msg)
+		except protocol.PacketError, (translatable_text, dict):
+			raise ClientError(translatable_text, **dict)
 		except socket.error, (errno, msg):
 			raise ClientError(_('Error while waiting for answer: %(errno)d'), errno=errno)
 		except EOFError:
