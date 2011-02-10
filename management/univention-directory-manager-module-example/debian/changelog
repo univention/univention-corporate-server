@@ -1,3 +1,9 @@
+univention-directory-manager-module-example (2.0.3-2) unstable; urgency=low
+
+  * adjust debian package filenames (Bug #17915)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Feb 2011 16:20:05 +0100
+
 univention-directory-manager-module-example (2.0.3-1) unstable; urgency=low
 
   * suggestions from QA feedback (Bug #17915)
