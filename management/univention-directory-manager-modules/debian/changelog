@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.93-1) unstable; urgency=low
+
+  * remove the corresponding DHCP entries when removing IP/MAC address from a
+    computer entry (Bug #18966)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 10 Feb 2011 15:22:20 +0100
+
 univention-directory-manager-modules (6.0.92-1) unstable; urgency=low
 
   * also print dn etc. if "Object exists" exceptions happens (Bug #12915)

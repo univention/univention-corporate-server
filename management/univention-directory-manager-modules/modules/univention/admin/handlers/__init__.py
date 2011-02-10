@@ -1795,6 +1795,26 @@ class simpleComputer( simpleLdap ):
 			ml.append( ( 'sn', self.oldattr.get( 'sn', [ None ] )[ 0 ], self[ 'name' ] ) )
 			self.__changes[ 'name' ] = ( self.oldattr.get( 'sn', [ None ] )[ 0 ], self[ 'name' ] )
 
+		# remove the corresponding dhcp-entries when removing an IP or MAC address (bug #18966)
+		if self.hasChanged('ip') or self.hasChanged('mac'):
+			# get all IP addresses that have been removed
+			removedIPs = []
+			if self.oldinfo.has_key('ip'):
+				removedIPs = [ ip for ip in self.oldinfo['ip'] if ip and ip not in self['ip'] ]
+
+			# get all MAC addresses that have been removed
+			removedMACs = []
+			if self.oldinfo.has_key('mac'):
+				removedMACs = [ mac for mac in self.oldinfo['mac'] if mac and mac not in self['mac'] ]
+
+			# remove all DHCP-entries that have been associated with any of these IP/MAC addresses
+			newDhcpEntries = []
+			for entry in self['dhcpEntryZone']:
+				dn, ip, mac = self.__split_dhcp_line(entry)
+				if ip not in removedIPs and mac not in removedMACs:
+					newDhcpEntries.append(entry)
+			self['dhcpEntryZone'] = newDhcpEntries
+
 		if self.hasChanged( 'dhcpEntryZone' ):
 			if self.oldinfo.has_key( 'dhcpEntryZone' ):
 				for entry in self.oldinfo[ 'dhcpEntryZone' ]:
