@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.94-1) unstable; urgency=low
+
+  * ignore systemuser "oxadmin" during license check (Bug #14674)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 10 Feb 2011 17:50:55 +0100
+
 univention-directory-manager-modules (6.0.93-1) unstable; urgency=low
 
   * remove the corresponding DHCP entries when removing IP/MAC address from a
