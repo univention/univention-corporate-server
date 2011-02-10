@@ -30,6 +30,23 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+set -e
+
 #DEBHELPER#
 
-invoke-rc.d slapd restart
+case "$1" in
+remove)
+	/usr/sbin/univention-config-registry commit /etc/ldap/slapd.conf
+	invoke-rc.d slapd restart
+	;;
+
+purge|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+	;;
+
+*)
+	echo "postrm called with unknown argument \`$1'" >&2
+	exit 1
+	;;
+esac
+
+:

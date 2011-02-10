@@ -30,6 +30,26 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+set -e
+
 #DEBHELPER#
 
-invoke-rc.d slapd restart
+case "$1" in
+configure)
+	case "$(/usr/sbin/univention-config-registry get server/role)" in
+	domaincontroller_master)
+		invoke-rc.d slapd restart
+		;;
+	esac
+	;;
+
+abort-upgrade|abort-remove|abort-deconfigure)
+	;;
+
+*)
+	echo "postinst called with unknown argument \`$1'" >&2
+	exit 1
+	;;
+esac
+
+:

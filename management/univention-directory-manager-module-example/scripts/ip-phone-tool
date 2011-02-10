@@ -222,6 +222,6 @@ if __name__ == '__main__':
 			parser.print_usage()
 			sys.exit(1)
 		udm_ipphone.clear_redirect( arguments[1] )
-	else:		
+	else:
 		parser.print_usage()
 		sys.exit(0)

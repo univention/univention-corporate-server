@@ -2,14 +2,22 @@ Source: univention-directory-manager-module-example
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev, python2.4, python-all-dev, python-central
+Build-Depends: debhelper,
+ univention-config-dev,
+ python2.4,
+ python-all-dev,
+ python-central
 Standards-Version: 3.7.2
 XS-Python-Version: 2.4
 
 Package: univention-directory-manager-module-example
 Architecture: all
-Depends: univention-config-registry, univention-directory-manager-tools, univention-directory-manager-module-example-schema
-XB-Python-Version: 2.4
+Depends: univention-config-registry,
+ univention-directory-manager-tools,
+ ${misc:Depends},
+ ${python:Depends}
+Recommends: univention-directory-manager-module-example-schema
+XB-Python-Version: ${python:Versions}
 Description: Univention Directory Manager example module to manage IP phones
  This package contains an Univention Directory Manager module that
  demonstrates how custom LDAP objects can be managed with the
@@ -17,10 +25,12 @@ Description: Univention Directory Manager example module to manage IP phones
 
 Package: univention-directory-manager-module-example-schema
 Architecture: all
-Depends: univention-config-registry, univention-directory-manager-tools
-XB-Python-Version: 2.4
+Depends: univention-config-registry,
+ ${misc:Depends}
+XB-Python-Version: ${python:Versions}
 Description: Univention Directory Manager example module to manage IP phones
  This package contains the LDAP-schema for univention-directory-manager-module-example.
+ .
  It needs to be installed on the DC Master to be available for LDAP operations,
  and is strongly recommended to be installed in the DC Backup to be available
  in case the DC Backup has to replace the DC Master (univention-backup2master).

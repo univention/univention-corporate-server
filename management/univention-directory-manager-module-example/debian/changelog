@@ -1,3 +1,9 @@
+univention-directory-manager-module-example (2.0.3-1) unstable; urgency=low
+
+  * suggestions from QA feedback (Bug #17915)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Feb 2011 15:07:56 +0100
+
 univention-directory-manager-module-example (2.0.2-1) unstable; urgency=low
 
   * add missing schema.postinst file to restart slapd
