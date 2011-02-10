@@ -271,6 +271,7 @@ class Domain(object):
 		self._time_used = 0L
 		self._cpu_usage = 0
 		self.update(domain)
+		self.update_ldap()
 
 	def __eq__(self, other):
 		return self.pd.uuid == other.pd.uuid;
@@ -357,7 +358,9 @@ class Domain(object):
 						s.ctime = int(ctime)
 						snapshots[name] = s
 		self.pd.snapshots = snapshots
-		# Annotations from LDAP
+
+	def update_ldap(self):
+		"""Update annotations from LDAP."""
 		try:
 			self.pd.annotations = ldap_annotation(self.pd.uuid)
 		except LdapError, e:
@@ -1274,6 +1277,45 @@ def domain_snapshot_delete(uri, domain, snapshot):
 	except libvirt.libvirtError, e:
 		logger.error(e)
 		raise NodeError(_('Error deleting "%(domain)s" snapshot: %(error)s'), domain=domain, error=e.get_error_message())
+
+def domain_update(domain):
+	"""Trigger update of domain.
+	Unfound domains are ignored."""
+	global nodes
+	for node in nodes.itervalues():
+		conn = node.conn
+		try:
+			dom_stat = node.domains[domain]
+			dom = conn.lookupByUUIDString(domain)
+			dom_stat.update(dom)
+			dom_stat.update_ldap()
+			return
+		except libvirt.libvirtError, e:
+			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
+				logger.error(e)
+				raise NodeError(_('Error updating domain "%(domain)s"'), domain=domain)
+			# remove stale data
+			del node.domains[domain]
+		except KeyError, e:
+			# domain not on this node
+			pass
+	# failed to find existing data, search again all hosts
+	for node in nodes.itervalues():
+		conn = node.conn
+		try:
+			dom = conn.lookupByUUIDString(domain)
+			dom_stat = Domain(dom, node=node)
+			node.domains[uuid] = domStat
+			return
+		except libvirt.libvirtError, e:
+			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
+				logger.error(e)
+				raise NodeError(_('Error updating domain "%(domain)s"'), domain=domain)
+			else:
+				continue # skip this node
+	else:
+		logger.info('Domain %s not found for update' % domain)
+		raise NodeError(_('Failto to update domain "%(domain)s"'), domain=domain)
 
 if __name__ == '__main__':
 	XEN_CAPABILITIES = '''<capabilities>

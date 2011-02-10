@@ -285,6 +285,17 @@ class _Commands:
 			raise CommandError('DOMAIN_SNAPSHOT_DELETE', e)
 
 	@staticmethod
+	def DOMAIN_UPDATE(server, request):
+		"""Trigger update of domain."""
+		if not isinstance(request.domain, basestring):
+			raise CommandError( 'DOMAIN_UPDATE', _('domain != string: %(domain)s'), domain=request.domain)
+		logger.debug('DOMAIN_UPDATE %s' % request.domain)
+		try:
+			node.domain_update(request.domain)
+		except node.NodeError, e:
+			raise CommandError('DOMAIN_UPDATE', e)
+
+	@staticmethod
 	def STORAGE_POOLS(server, request):
 		"""List all pools."""
 		if not isinstance(request.uri, basestring):

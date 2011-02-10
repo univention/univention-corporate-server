@@ -45,7 +45,7 @@ import ldapurl
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.handlers.uvmm.info as uvmm_info
-from helpers import TranslatableException, N_ as _
+from helpers import TranslatableException, N_ as _, FQDN as HOST_FQDN
 import logging
 
 configRegistry = ucr.ConfigRegistry()
@@ -62,7 +62,6 @@ SERVICES = {
 LDAP_UVMM_RDN = "cn=Virtual Machine Manager"
 LDAP_INFO_RDN = "cn=Information,%s" % LDAP_UVMM_RDN
 LDAP_PROFILES_RDN = "cn=Profiles,%s" % LDAP_UVMM_RDN
-HOST_FQDN = '%s.%s' % ( configRegistry.get( 'hostname' ), configRegistry.get( 'domainname' ) )
 
 class LdapError(TranslatableException):
 	"""LDAP error."""
@@ -124,7 +123,7 @@ class _ldap_uri(object):
 		except LDAPError, e:
 			raise LdapConnectionError(_('Could not connect to "%(uri)s"'), uri=str(self))
 		return conn
-	
+
 	def __str__(self):
 		return "ldap://%s:%d/%s" % (self.host, self.port, self.dn)
 	__repr__ = __str__
@@ -189,7 +188,7 @@ def ldap_uris(ldap_uri=None):
 
 	# ensure that we should manage the host
 	filter = '(&%s(|(!(univentionVirtualMachineManageableBy=*))(univentionVirtualMachineManageableBy=%s)))' % ( filter, HOST_FQDN )
-	logger.info( 'Find servers to manage "%s"' % filter )
+	logger.debug('Find servers to manage "%s"' % filter)
 	ldap_uri = _ldap_uri(ldap_uri)
 	ldap_conn = ldap_uri.connect()
 	try:
@@ -202,6 +201,7 @@ def ldap_uris(ldap_uri=None):
 					if service in data['univentionService']:
 						uri = SERVICES[service] % fqdn
 						nodes.append(uri)
+			logger.debug('Registered URIs: %s' % ', '.join(nodes))
 			return nodes
 		except LDAPError, e:
 			raise LdapConnectionError(_('Could not query "%(uri)s"'), uri=ldap_uri)
@@ -222,6 +222,7 @@ def ldap_annotation(uuid, ldap_uri=None):
 	co = None
 	dn = "%s=%s,%s" % (uvmm_info.mapping.mapName('uuid'), uuid, base)
 	filter = "(objectclass=*)"
+	logger.debug('Querying domain infos "%s"' % dn)
 	try:
 		res = univention.admin.modules.lookup(uvmm_info, co, lo, scope='base', base=dn, filter=filter, required=True, unique=True)
 		record = res[0]
@@ -243,6 +244,7 @@ def ldap_modify(uuid, ldap_uri=None):
 	co = None
 	dn = "%s=%s,%s" % (uvmm_info.mapping.mapName('uuid'), uuid, base)
 	filter = "(objectclass=*)"
+	logger.debug('Updating domain infos "%s"' % dn)
 	try:
 		res = univention.admin.modules.lookup(uvmm_info, co, lo, scope='base', base=dn, filter=filter, required=True, unique=True)
 		record = res[0]

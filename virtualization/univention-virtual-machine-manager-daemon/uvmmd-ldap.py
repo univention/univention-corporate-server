@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Virtual Machine Manager Daemon
-#  listener module
+#  listener module for guests
 #
-# Copyright 2010 Univention GmbH
+# Copyright 2010-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,23 +30,18 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-"""Watch for addition or deletion of virtualization nodes and notify UVMM daemon
+"""Watch for changes in virtualized guests and notify UVMM daemon
 accordingly."""
 
-name='uvmm'
-description='Univention Virtual Machine Manager'
-filter='(objectClass=univentionHost)'
-attributes=['univentionService']
+name = 'uvmmd-ldap'
+description = 'Univention Virtual Machine Manager Daemon LDAP monitor'
+filter = '(objectClass=univentionVirtualMachine)'
+attributes = []
 
 import listener
 import univention.debug as debug
-from univention.uvmm.uvmm_ldap import SERVICES, ldap2fqdn
-
-def uvmm(mode, uri):
-	"""Invoke UVMM CLI as root."""
-	# We call the external program, because for some unknown reason pickle
-	# prepends the class name with absolute path to this file.
-	return listener.run("/usr/sbin/univention-virtual-machine-manager", ["univention-virtual-machine-manager", mode, uri], 0, True)
+#import univention.uvmm.client as uvmm_c
+#import univention.uvmm.protocol as uvmm_p
 
 def initialize():
 	"""Called once on first initialization."""
@@ -54,34 +49,27 @@ def initialize():
 
 def handler(dn, new, old):
 	"""Called on each change."""
-	try:
-		old_services = old.get('univentionService', [])
-		old_fqdn = ldap2fqdn(old)
-	except StandardError, e: # NameError, KeyError
-		old_services = []
-		old_fqdn = ""
+	uuids = set()
+	if old:
+		uuids |= set(old.get('univentionVirtualMachineUUID', []))
+	if new:
+		uuids |= set(new.get('univentionVirtualMachineUUID', []))
+	for uuid in uuids:
+		# Bug #21534: listener breaks pickle, using external CLI instead
+		rc = listener.run("/usr/sbin/univention-virtual-machine-manager", ["univention-virtual-machine-manager", "domain_update", uuid], 0, True)
+		debug.debug(debug.LISTENER, debug.INFO, "Requested update for %s: %d" % (', '.join(uuids), rc))
+		continue
 
-	try:
-		new_services = new.get('univentionService', [])
-		new_fqdn = ldap2fqdn(new)
-	except StandardError, e: # NameError, KeyError
-		new_services = []
-		new_fqdn = ""
-	
-	for service in old_services:
-		if service not in SERVICES:
-			continue
-		if old_fqdn != new_fqdn or service not in new_services:
-			uri = SERVICES[service] % (old_fqdn,)
-			rc = uvmm("remove", uri)
-			debug.debug(debug.LISTENER, debug.INFO, "removing node %s: %d" % (uri, rc))
-	for service in new_services:
-		if service not in SERVICES:
-			continue
-		if old_fqdn != new_fqdn or service not in old_services:
-			uri = SERVICES[service] % (new_fqdn,)
-			rc = uvmm("add", uri)
-			debug.debug(debug.LISTENER, debug.INFO, "adding node %s: %d" % (uri, rc))
+		try:
+			r = uvmm_p.Request_DOMAIN_UPDATE(domain=uuid)
+			listener.setuid(0)
+			try:
+				uvmm_c.uvmm_cmd(request=r, managers=[])
+			finally:
+				listener.unsetuid()
+			debug.debug(debug.LISTENER, debug.INFO, "Requested update for %s" % ', '.join(uuids))
+		except uvmm_c.ClientError, e:
+			debug.debug(debug.LISTENER, debug.INFO, "Failed request for update of %s: %s" % (', '.join(uuids), e))
 
 def postrun():
 	"""Called 15s after handler."""

@@ -24,11 +24,17 @@ install:: install-modules install-locales install-images
 	install -m 0755 -d $(DESTDIR)/usr/sbin
 	install -m 0755 -t $(DESTDIR)/usr/sbin src/univention-virtual-machine-manager-daemon
 	install -m 0755 -t $(DESTDIR)/usr/sbin src/univention-virtual-machine-manager
+	$(RM) $(DESTDIR)/usr/sbin/uvmm
 	ln -s univention-virtual-machine-manager $(DESTDIR)/usr/sbin/uvmm
 	install -m 0755 -d $(DESTDIR)/var/www
 	install -m 0444 -t $(DESTDIR)/var/www TightVncViewer.jar
 	install -m 0755 -d $(DESTDIR)/usr/share/man/man8
 	install -m 0644 -t $(DESTDIR)/usr/share/man/man8 doc/*.8
+	install -m 0755 -d $(DESTDIR)/usr/lib/univention-directory-listener/system
+	install -m 0644 -t $(DESTDIR)/usr/lib/univention-directory-listener/system uvmmd-nodes.py
+	install -m 0644 -t $(DESTDIR)/usr/lib/univention-directory-listener/system uvmmd-ldap.py
+	install -m 0755 -d $(DESTDIR)/usr/lib/univention-install
+	install -m 0755 -t $(DESTDIR)/usr/lib/univention-install 44univention-virtual-machine-manager-daemon.inst
 
 .PHONY: uninstall
 uninstall:
@@ -40,6 +46,13 @@ uninstall:
 	-rmdir -p $(DESTDIR)/usr/share/pyshared/univention/uvmm
 	$(RM) $(DESTDIR)/etc/univention/uvmmd.ini
 	-rmdir -p $(DESTDIR)/etc/univention
+	$(RM) $(DESTDIR)/var/www/TightVncViewer.jar
+	-rmdir -p $(DESTDIR)/var/www
+	$(RM) $(DESTDIR)/usr/lib/univention-directory-listener/system/uvmmd-nodes.py
+	$(RM) $(DESTDIR)/usr/lib/univention-directory-listener/system/uvmmd-ldap.py
+	-rmdir -p $(DESTDIR)/usr/lib/univention-directory-listener/system
+	$(RM) $(DESTDIR)/usr/lib/univention-install/44univention-virtual-machine-manager-daemon.inst
+	-rmdir -p $(DESTDIR)/usr/lib/univention-install
 
 .PHONY: clean
 clean::
@@ -80,9 +93,12 @@ install-locales: $(MO_FILES)
 		install -m 644 $$i $$o;\
 	done
 
+DIRS := src umc/modules/univention/management/console/handlers/$(MODULENAME)
+clean::
+	$(RM) $(foreach d,$(DIRS),$(d)/messages.pot)
+
 ifeq ($(M),1)
 LANGUAGES := de
-DIRS := src umc/modules/univention/management/console/handlers/$(MODULENAME)
 
 .PHONY: maintainer-locales
 maintainer-locales: $(foreach d,$(DIRS),$(d)/messages.pot)
@@ -110,9 +126,6 @@ src/messages.pot: $(shell find src/univention/uvmm -name \*.py)
 		--msgid-bugs-address="packages@univention.de" \
 		--copyright-holder="Univention GmbH" \
 		$^
-
-clean::
-	$(RM) $(foreach d,$(DIRS),$(d)/messages.pot)
 
 
 IMAGES_12 := domain group node

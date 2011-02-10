@@ -48,9 +48,6 @@ install:
 	dh_installdirs
 	$(MAKE) DESTDIR=debian/tmp install
 
-	install -m 0644 uvmm.py     debian/$(PACKAGE_NAME)/usr/lib/univention-directory-listener/system/
-	install -m 0755 44univention-virtual-machine-manager-daemon.inst debian/$(PACKAGE_NAME)/usr/lib/univention-install/
-
 binary-arch:
 
 binary-indep: build install

@@ -526,6 +526,16 @@ class Client(object):
 		"""
 		return protocol.Request_DOMAIN_SNAPSHOT_DELETE(uri=uri, domain=domain, snapshot=snapshot)
 
+	def domain_update(self, domain):
+		"""
+		%prog domain_update <domain>
+
+		Trigger an update of the domain specified by its UUID <domain>.
+		Examples:
+			%prog ldap_update 1-2-3-4-5
+		"""
+		return protocol.Request_DOMAIN_UPDATE(domain=domain)
+
 if __name__ == '__main__':
 	locale.setlocale(locale.LC_ALL, '')
 

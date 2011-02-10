@@ -2,8 +2,12 @@ univention-virtual-machine-manager-daemon (0.9.138-1) unstable; urgency=low
 
   * Fix PacketError handling (Bug #21534)
   * Fix common UVMM API (Bug #21331)
+  * Reduce number of LDAP queries (Bug #19319)
+  * Rename listener script for consistency.
+  * debian/control: Fix descriptions and dependencies.
+  * debian/rules, Makefile: Prepare for debhelper7.
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 10 Feb 2011 11:34:27 +0100
+ -- Philipp Hahn <hahn@univention.de>  Thu, 10 Feb 2011 13:03:31 +0100
 
 univention-virtual-machine-manager-daemon (0.9.137-1) unstable; urgency=low
 
