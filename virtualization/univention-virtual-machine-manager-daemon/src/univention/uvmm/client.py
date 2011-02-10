@@ -223,7 +223,7 @@ def uvmm_connect(managers=None, cred=None):
 	"""Get connection to UVMM.
 	managers: space separated list of hosts or iteratable.
 	cred: tupel of (username, password), defaults to machine credential."""
-	if not managers:
+	if managers is None:
 		managers = __ucr.get('uvmm/managers', '')
 	if isinstance(managers, basestring):
 		managers = managers.split(' ')
@@ -256,7 +256,9 @@ def uvmm_cmd(request, managers=None, cred=None):
 	assert __uvmm is not None, "No connection to UVMM daemon."
 
 	response = __uvmm.send(request)
-	if not response or isinstance(response, Response_ERROR):
+	if response is None:
+		raise ClientError("UVMM daemon did not answer.")
+	if isinstance(response, Response_ERROR):
 		raise ClientError(response.msg)
 	return response
 
