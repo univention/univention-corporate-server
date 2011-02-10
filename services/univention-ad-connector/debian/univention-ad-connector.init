@@ -47,7 +47,7 @@ case "$1" in
 		;;
 	stop)
 		log_action_msg "Stopping univention-ad-connector daemon"
-		start-stop-daemon --stop --quiet --pidfile "$ADCONNECTORPID" -a /usr/sbin/univention-ad-connector
+		start-stop-daemon --stop --retry TERM/300/KILL --quiet --pidfile "$ADCONNECTORPID" -a /usr/sbin/univention-ad-connector
 		log_action_end_msg 0
 		;;
 	restart|force-reload)
