@@ -371,32 +371,39 @@ class handler(umch.simpleHandler):
 
 		ud.debug(ud.ADMIN, ud.INFO, 'Component settings for %s' % component_name)
 		if component_name:
+			UCRVBase = 'repository/online/component/%s' % component_name
 			res = []
+			unset = []
 			if component_activated:
-				res.append('repository/online/component/%s=enabled' % component_name)
+				res.append(UCRVBase + '=enabled')
 			else:
-				res.append('repository/online/component/%s=disabled' % component_name)
-			if component_description:
-				res.append('repository/online/component/%s/description=%s' % (component_name,component_description))
-			if component_server:
-				res.append('repository/online/component/%s/server=%s' % (component_name,component_server))
-			if component_prefix:
-				res.append('repository/online/component/%s/prefix=%s' % (component_name,component_prefix))
-			if component_username:
-				res.append('repository/online/component/%s/username=%s' % (component_name,component_username))
-			if component_password:
-				res.append('repository/online/component/%s/password=%s' % (component_name,component_password))
+				res.append(UCRVBase + '=disabled')
+			directFields = {'description': component_description,
+			                'server': component_server,
+			                'prefix': component_prefix,
+			                'username': component_username,
+			                'password': component_password,
+			                'version': component_version,
+			                }
+			ud.debug(ud.ADMIN, ud.INFO, 'HERE')
+			for (UCRV, field, ) in directFields.items():
+				ud.debug(ud.ADMIN, ud.INFO, '%s %s' % (field, UCRV))
+				if field:
+					res.append('%s/%s=%s' % (UCRVBase, UCRV, field, ))
+				else:
+					unset.append('%s/%s' % (UCRVBase, UCRV, ))
+			ud.debug(ud.ADMIN, ud.INFO, 'HERE')
 			parts = []
 			if component_use_maintained:
 				parts.append('maintained')
 			if component_use_unmaintained:
 				parts.append('unmaintained')
-			if component_version:
-				res.append('repository/online/component/%s/version=%s' % (component_name,component_version))
-			res.append('repository/online/component/%s/parts=%s' % (component_name, ','.join(parts)))
+			res.append('%s/parts=%s' % (UCRVBase, ','.join(parts), ))
 
 			ud.debug(ud.ADMIN, ud.INFO, 'Set the following component settings: %s' % res)
 			univention.config_registry.handler_set(res)
+			ud.debug(ud.ADMIN, ud.INFO, 'Unset the following component settings: %s' % unset)
+			univention.config_registry.handler_unset(unset)
 			p1 = subprocess.Popen(['apt-get','-qq','update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, env={"LC_ALL": "C", "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"})
 			(stdout,stderr) = p1.communicate()
 			ud.debug(ud.ADMIN, ud.PROCESS, 'run "apt-get update", the returncode is %d' % p1.returncode)

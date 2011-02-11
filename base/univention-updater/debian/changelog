@@ -1,3 +1,9 @@
+univention-updater (6.0.55-1) unstable; urgency=low
+
+  * enable unset of component settings (Bug #15631)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 11 Feb 2011 17:32:46 +0100
+
 univention-updater (6.0.54-1) unstable; urgency=low
 
   * add component version to UMC module (Bug #19230)
