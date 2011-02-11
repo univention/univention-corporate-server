@@ -1,3 +1,11 @@
+univention-directory-manager (8.0.61-1) unstable; urgency=low
+
+  * use the default search path
+  	directory/manager/web/modules/MODULE/search/path
+    also when creating reports (Bug #20972)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 11 Feb 2011 09:22:25 +0100
+
 univention-directory-manager (8.0.60-1) unstable; urgency=low
 
   * corrected empty error message when deleting a single object in UDM 

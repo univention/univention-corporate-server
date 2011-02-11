@@ -902,6 +902,9 @@ class modwizard(unimodule.unimodule):
 			else:
 				path_preselect=domainstr
 
+		if path_preselect:
+			self.save.put('wizard_path', path_preselect)
+
 		for i in displaypathlist:
 			if i['name'] == path_preselect:
 				i['selected']=i['name']
