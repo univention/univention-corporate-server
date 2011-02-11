@@ -237,7 +237,7 @@ def ldap_modify(uuid, ldap_uri=None):
 		lo = base.connect()
 	else:
 		try:
-			lo, position = univention.admin.uldap.getAdminConnection()
+			lo, position = univention.admin.uldap.getMachineConnection()
 			base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
 		except (SERVER_DOWN, IOError ), e:
 			raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
