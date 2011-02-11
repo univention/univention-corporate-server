@@ -59,6 +59,7 @@ long_description = _('Manage system updates')
 categories = ['all', 'system']
 
 UCR_ALLOWED_CHARACTERS = '^[^#:@]+$'
+COMPONENT_VERSION_FORMAT = '^((([0-9]+.[0-9]+|current),)*([0-9]+.[0-9]+|current))?$'
 
 # display specified logfiles when running update -
 # FN_LIST_DIST_UPGRADE_LOG: the first filename is also used actively as logfile
@@ -126,6 +127,7 @@ command_description = {
 			'component_password': umc.String(_('Password'), required = False, regex = UCR_ALLOWED_CHARACTERS),
 			'use_maintained': umc.Boolean( _( 'Use maintained repositories' ), required = False ),
 			'use_unmaintained': umc.Boolean( _( 'Use unmaintained repositories' ), required = False ),
+			'component_version': umc.String(_('Version'), required = False, regex = COMPONENT_VERSION_FORMAT),
 		},
 	),
 	'update/install_release_updates': umch.command(
@@ -365,6 +367,7 @@ class handler(umch.simpleHandler):
 		component_password = object.options.get('component_password', '')
 		component_use_maintained = object.options.get('use_maintained', '')
 		component_use_unmaintained = object.options.get('use_unmaintained', '')
+		component_version = object.options.get('component_version', '')
 
 		ud.debug(ud.ADMIN, ud.INFO, 'Component settings for %s' % component_name)
 		if component_name:
@@ -388,6 +391,8 @@ class handler(umch.simpleHandler):
 				parts.append('maintained')
 			if component_use_unmaintained:
 				parts.append('unmaintained')
+			if component_version:
+				res.append('repository/online/component/%s/version=%s' % (component_name,component_version))
 			res.append('repository/online/component/%s/parts=%s' % (component_name, ','.join(parts)))
 
 			ud.debug(ud.ADMIN, ud.INFO, 'Set the following component settings: %s' % res)
@@ -1151,6 +1156,7 @@ class handler(umch.simpleHandler):
 		username = ''
 		password = ''
 		parts = [ 'maintained' ]
+		version = ''
 
 		# build the default values
 		if res.options.has_key('component'):
@@ -1167,6 +1173,7 @@ class handler(umch.simpleHandler):
 			username = res.options['component'].get('username', '')
 			password = res.options['component'].get('password', '')
 			parts = re.split('[, ]', res.options['component'].get('parts', 'maintained'))
+			version = res.options['component'].get('version', '')
 
 		if not server:
 			server=self.updater.repository_server
@@ -1188,18 +1195,20 @@ class handler(umch.simpleHandler):
 		inpt_password = umcd.make(self['update/components_settings']['component_password'], default = password)
 		inpt_maintained = umcd.make( self[ 'update/components_settings' ][ 'use_maintained' ], default = 'maintained' in parts )
 		inpt_unmaintained = umcd.make( self[ 'update/components_settings' ][ 'use_unmaintained' ], default = 'unmaintained' in parts )
+		inpt_version = umcd.make(self['update/components_settings']['component_version'], default = version)
 
 		list_release.add_row([inpt_activated])
 		list_release.add_row([inpt_name, inpt_description])
 		list_release.add_row([inpt_server, inpt_prefix])
 		list_release.add_row([inpt_username, inpt_password])
-		list_release.add_row([inpt_maintained, inpt_unmaintained])
+		list_release.add_row([inpt_version, inpt_maintained])
+		list_release.add_row([umcd.Fill(1), inpt_unmaintained])
 
 		req = umcp.Command(args = ['update/components_settings'])
 		cancel = umcd.CancelButton()
 		list_release.add_row([cancel, umcd.SetButton(umcd.Action(req, [inpt_activated.id(), inpt_name.id(), inpt_description.id(), inpt_server.id(),
 																	   inpt_prefix.id(), inpt_username.id(), inpt_password.id(), inpt_maintained.id(),
-																	   inpt_unmaintained.id()]))])
+																	   inpt_unmaintained.id(), inpt_version.id()]))])
 
 
 		res.dialog = [frame_release]
