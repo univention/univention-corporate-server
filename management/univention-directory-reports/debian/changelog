@@ -1,3 +1,9 @@
+univention-directory-reports (3.0.2-1) unstable; urgency=low
+
+  * submitted users.csv template (Bug #17425)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 14 Feb 2011 14:45:17 +0100
+
 univention-directory-reports (3.0.1-1) unstable; urgency=low
 
   * add multi-language support for report generation (Bug #17425)
