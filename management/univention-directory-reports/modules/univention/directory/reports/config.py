@@ -32,6 +32,7 @@
 
 import ConfigParser
 import shlex
+import locale
 
 class Config( ConfigParser.ConfigParser ):
 	def __init__( self, filename = '/etc/univention/directory/reports/config.ini' ):
@@ -43,6 +44,7 @@ class Config( ConfigParser.ConfigParser ):
 		self._reports = {}
 		
 		# get the language, defaults to English if nothing is set
+		self._lang = locale.getlocale(locale.LC_MESSAGES)[0]
 		if not self._lang:
 			self._lang = "en_US"
 

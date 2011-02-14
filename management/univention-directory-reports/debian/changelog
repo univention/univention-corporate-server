@@ -1,3 +1,9 @@
+univention-directory-reports (3.0.3-1) unstable; urgency=low
+
+  * added language detection via locale.getlocale() (Bug #17425)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 14 Feb 2011 16:52:04 +0100
+
 univention-directory-reports (3.0.2-1) unstable; urgency=low
 
   * submitted users.csv template (Bug #17425)
