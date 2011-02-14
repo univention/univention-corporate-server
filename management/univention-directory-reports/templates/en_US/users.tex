@@ -1,0 +1,133 @@
+%% -*- coding: utf-8 -*-
+%%
+%% Univention Reports
+%%  template file for user reports
+%%
+%% Copyright 2007-2010 Univention GmbH
+%%
+%% http://www.univention.de/
+%%
+%% All rights reserved.
+%%
+%% The source code of this program is made available
+%% under the terms of the GNU Affero General Public License version 3
+%% (GNU AGPL V3) as published by the Free Software Foundation.
+%%
+%% Binary versions of this program provided by Univention to you as
+%% well as other copyrighted, protected or trademarked materials like
+%% Logos, graphics, fonts, specific documentations and configurations,
+%% cryptographic keys etc. are subject to a license agreement between
+%% you and Univention and not subject to the GNU AGPL V3.
+%%
+%% In the case you use this program under the terms of the GNU AGPL V3,
+%% the program is provided in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+%% GNU Affero General Public License for more details.
+%%
+%% You should have received a copy of the GNU Affero General Public
+%% License with the Debian GNU/Linux or Univention distribution in file
+%% /usr/share/common-licenses/AGPL-3; if not, see
+%% <http://www.gnu.org/licenses/>.
+
+\ihead{User report: <@attribute name="lastname"@><@attribute name="firstname" prepend=", "@>}
+
+
+\begin{multicols}{2}[\section*{User record: <@attribute name="lastname"@>, <@attribute name="firstname"@>}]
+\raggedcolumns
+\section*{}
+\vspace{-8mm}
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}X}
+Name &     <@attribute name="lastname"@><@attribute name="firstname" prepend=", "@> \\
+User name & <@attribute name="username"@> \\
+Description & <@attribute name="description"@>\\
+Organisation & <@attribute name="organisation"@>\\
+\end{tabularx}
+
+\section*{}
+\vspace{-8mm}
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}X}
+Employee number & <@attribute name="employeeNumber"@>\\
+Employee type & <@attribute name="employeeType"@>\\
+Room number & <@attribute name="roomNumber"@>\\
+Superior &
+<@resolve module="users/user" dn-attribute="secretary" alternative=""@>
+    <@attribute name="lastname"@><@attribute name="firstname" prepend=", "@>
+<@/resolve@>
+\end{tabularx}
+\end{multicols}
+
+\vspace{5mm}
+
+\begin{multicols}{2}
+\raggedcolumns
+\subsection*{Contact}
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}X}
+Phone & <@attribute name="phone"@> \\
+Mobile phone & <@attribute name="mobileTelephoneNumber"@>\\
+Street & <@attribute name="street"@>\\
+\end{tabularx}
+
+\subsection*{Password policy}
+
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}X}
+Inherited & <@policy module="policies/pwdhistory" inherited=""@> \\
+History length & <@attribute name="length"@>\\
+Password length & <@attribute name="pwLength"@>\\
+Expiry interval & <@attribute name="expiryInterval" default="-"@>\\
+\end{tabularx}
+\end{multicols}
+
+\begin{multicols}{2}
+\raggedcolumns
+\section*{Account settings}
+
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}X}
+Disabled & <@attribute name="disabled" default="No"@> \\
+Locked & <@attribute name="locked" default="No"@> \\
+Account expiry date & <@attribute name="userexpiry" default="Not set"@> \\
+Password expiry date & <@attribute name="passwordexpiry" default="Not set"@> \\
+Change password & <@attribute name="pwdChangeNextLogin" default="No"@> \\
+\end{tabularx}
+\section*{Mail}
+
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}X}
+E-mail address & <@attribute name="mailPrimaryAddress" default="None"@> \\
+Alternative address & <@attribute name="mailAlternativeAddress" default="None"@> \\
+Global SPAM folder & <@attribute name="mailGlobalSpamFolder" default="-"@>
+\end{tabularx}
+\end{multicols}
+
+\begin{multicols}{2}
+\raggedcolumns
+\section*{Linux/UNIX}
+
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}X}
+User ID & <@attribute name="uidNumber"@> \\
+Group ID & <@attribute name="gidNumber"@>\\
+Login shell & <@attribute name="shell"@> \\
+
+Home directory & <@attribute name="unixhome"@> \\
+Share path & <@attribute name="homeSharePath"@> \\
+Share & <@resolve module="shares/share" dn-attribute="homeShare"@>
+    <@attribute name="printablename"@>
+<@/resolve@> \\
+\end{tabularx}
+\section*{Windows}
+
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}X}
+Home directory & <@attribute name="sambahome"@> \\
+Home drive  & <@attribute name="homedrive"@> \\
+Profile path & <@attribute name="profilepath"@> \\
+Logon script & <@attribute name="scriptpath"@> \\
+Relative ID & <@attribute name="sambaRID"@> \\
+\end{tabularx}
+\end{multicols}
+
+\section*{Member of the following groups}
+
+<@query module="groups/group" start="groups" next="memberOf" regex="name=^[^(s\-)([a\-)(i\-)(h\-)]" header="\begin{description}" footer="\end{description}" alternative="The user is not member of any other gropu"@>
+  \item[<@attribute name="name"@>] (<@attribute name="description"@>)
+<@/query@>
+
+\newpage

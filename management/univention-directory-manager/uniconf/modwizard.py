@@ -687,7 +687,7 @@ class modwizard(unimodule.unimodule):
 		udr.admin.clear_cache()
 		cfg = udr.Config()
 		template = cfg.get_report( module_name, report_name )
-		doc = udr.Document( template, header = cfg.get_header(), footer = cfg.get_footer() )
+		doc = udr.Document( template, header = cfg.get_header(module_name, report_name), footer = cfg.get_footer(module_name, report_name) )
 		tmpfile = doc.create_source( [ item[ 1 ] for item in sorting_helper_list ] )
 		if doc._type == udr.Document.TYPE_LATEX:
 			pdffile = doc.create_pdf( tmpfile )

@@ -42,7 +42,6 @@ import univention_baseconfig as ub
 import univention.debug as ud
 
 import re
-from locales import *
 from filter import *
 
 __all__ = [ 'connect', 'get_object', 'cache_object', 'connected', 'identify', 'set_format' ]

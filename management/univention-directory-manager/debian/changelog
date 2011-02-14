@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.62-1) unstable; urgency=low
+
+  * add multi-language support for report generation (Bug #17425)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 14 Feb 2011 14:22:58 +0100
+
 univention-directory-manager (8.0.61-1) unstable; urgency=low
 
   * use the default search path

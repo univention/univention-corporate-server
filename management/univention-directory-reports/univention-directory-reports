@@ -4,7 +4,7 @@
 # Univention Reports
 #  Creates reports from LaTeX templates
 #
-# Copyright 2007-2010 Univention GmbH
+# Copyright 2007-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -124,7 +124,7 @@ def main():
 					   base = options.base, start_tls = 0 )
 
 	template = cfg.get_report( options.module, options.report )
-	doc = udr.Document( template, header = cfg.get_header(), footer = cfg.get_footer() )
+	doc = udr.Document( template, header = cfg.get_header(options.module, options.report), footer = cfg.get_footer(options.module, options.report) )
 	tmpfile = doc.create_source( args )
 	if template.endswith( '.tex' ):
 		pdffile = doc.create_pdf( tmpfile )

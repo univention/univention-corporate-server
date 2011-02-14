@@ -35,8 +35,11 @@ import univention.admin.objects as ua_objects
 import univention.admin.uldap as ua_ldap
 
 from tokens import *
-from locales import *
 import admin
+
+import univention.admin.localization
+translation=univention.admin.localization.translation('univention-directory-reports')
+_=translation.translate
 
 import copy
 import fnmatch
@@ -148,18 +151,19 @@ class Interpreter( object ):
 		if token.attrs.has_key( 'module' ) and ( token.attrs.has_key( 'inherited' ) or
 												 token.attrs.has_key( 'direct' ) ):
 			policy = ua_objects.getPolicyReference( base, token.attrs[ 'module' ] )
-			token.value = _( 'No' )
+			# need to call str() directly in order to force a correct translation
+			token.value = str(_( 'No' ))
 			if token.attrs.has_key( 'direct' ) and policy:
-				token.value = _( 'Yes' )
+				token.value = str(_( 'Yes' ))
 			elif token.attrs.has_key( 'inherited' ) and not policy:
-				token.value = _( 'Yes' )
+				token.value = str(_( 'Yes' ))
 
 	def attribute( self, token, base ):
 		if token.attrs.has_key( 'name' ):
 			if base.info.has_key( token.attrs[ 'name' ] ):
 				value = base.info[ token.attrs[ 'name' ] ]
 				if isinstance( value, ( list, tuple ) ):
-					if not value:
+					if not value or (type(value) is str and value.lower() == 'none'):
 						if token.attrs.has_key( 'default' ):
 							token.value = token.attrs[ 'default' ]
 						else:
