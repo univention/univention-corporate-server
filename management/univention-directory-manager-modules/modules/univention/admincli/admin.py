@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
-#  command line frontend to univention-admin (module)
+#  command line frontend to univention-directory-manager (module)
 #
 # Copyright 2004-2010 Univention GmbH
 #
@@ -48,12 +48,12 @@ univention.admin.syntax.update_choices()
 # usage information
 def usage():
 	out=[]
-	out.append('univention-admin: command line interface for managing UCS')
+	out.append('univention-directory-manager: command line interface for managing UCS')
 	out.append('copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany')
 	out.append('')
 	out.append('Syntax:')
-	out.append('  univention-admin module action [options]')
-	out.append('  univention-admin [--help] [--version]')
+	out.append('  univention-directory-manager module action [options]')
+	out.append('  univention-directory-manager [--help] [--version]')
 	out.append('')
 	out.append('actions:')
 	out.append('  %-32s %s' % ('create:', 'Create a new object'))
@@ -118,9 +118,9 @@ def usage():
 	out.append('  --%-30s %s' % ('position', 'Move to position in tree'))
 	out.append('')
 	out.append('Description:')
-	out.append('  univention-admin is a tool to handle the configuration for UCS')
+	out.append('  univention-directory-manager is a tool to handle the configuration for UCS')
 	out.append('  on command line level.')
-	out.append('  Use "univention-admin modules" for a list of available modules.')
+	out.append('  Use "univention-directory-manager modules" for a list of available modules.')
 	out.append('')
 	out.append('Known-Bugs:')
 	out.append('  -None-')
@@ -129,7 +129,7 @@ def usage():
 
 def version():
 	o=[]
-	o.append('univention-admin @%@package_version@%@')
+	o.append('univention-directory-manager @%@package_version@%@')
 	return o
 
 def module_usage(information, action=''):

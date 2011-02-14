@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.95-1) unstable; urgency=low
+
+  * replaced univention-admin with univention-directory-manager in 
+    help message (Bug #9476)
+
+ -- Felix Botner <botner@univention.de>  Mon, 14 Feb 2011 14:09:36 +0100
+
 univention-directory-manager-modules (6.0.94-1) unstable; urgency=low
 
   * ignore systemuser "oxadmin" during license check (Bug #14674)
