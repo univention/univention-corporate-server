@@ -1,0 +1,123 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH UNIVENTION-INSTALL-CONFIG-REGISTRY 1 2010-04-09 UCS
+
+.SH NAME
+univention\-install\-config\-registry \- install UCR template files into package build directories
+
+.SH SYNOPSIS
+.B univention\-install\-config\-registry
+
+.SH DESCRIPTION
+.B univention\-install\-config\-registry
+is a debhelper like programm that is responsible for installing template files using univention config registry (UCR) variables into
+.I etc/univention/templates/
+in the package build directory. The templates references by
+.I debian/PACKAGE.univention\-config\-registry
+are installed.
+
+.SH EXAMPLES
+A
+.I .univention\-config\-registry
+file has the following formats:
+.SS Single file
+Each time one of the listed UCR variables gets changed, the File will be re-created.
+.RS 5
+.nf
+Type: file
+File: etc/file_name
+Variables: variable_name
+Preinst: name_of_module_in_/etc/univention/templates/modules/
+Postinst: name_of_module_in_/etc/univention/templates/modules/
+User: user_name
+Group: goup_name
+Mode: octal_file_mode
+Encode-utf8: true|yes
+.fi
+.RE
+If \fBPreinst\fP und \fBPostinst\fP are used, the module must implement the following functions:
+.RS 5
+.nf
+def preinst(config_registry, changes):
+    """Called before the update.
+    'config_registry' is an instance of univention.config_registry.ConfigRegistry, which contains the updated values.
+    'changes' is a list of the variable names, which were changed.
+    """
+
+def postinst(config_registry, changes):
+    """Called after the update.
+    'config_registry' is an instance of univention.config_registry.ConfigRegistry, which contains the updated values.
+    'changes' is a list of the variable names, which were changed.
+    """
+.fi
+.RE
+If a script \fI/etc/univention/templates/scripts/$full_path_to_file\fP exists, it will be called after the file has been created from the template.
+The script is called with the argument \fBpostinst\fP and receives the list of changes as \fIkey\fP\fB@%@\fP\fIold_value\fP\fB@%@\fP\fInew_value\fP on stdin.
+
+.SS Multi file
+Each time one of the listed UCR variables gets changed, the Multifile will be re-created by concatenating the Subfiles in order.
+.RS 5
+.nf
+Type: multifile
+Multifile: etc/name_of_aggregating_file
+User: $user_name [OPTIONAL]
+Group: $goup_name [OPTIONAL]
+Mode: $octal_file_mode [OPTIONAL]
+Encode-utf8: true|yes [OPTIONAL]
+
+Type: subfile
+Multifile: etc/name_of_aggregating_file
+Subfile: etc/00name_of_partial_file
+Variables: variable_name
+.fi
+.RE
+
+.SS Script file
+Each time one of the listed UCR variables gets changed, the script will be executed with the argument \fBgenerate\fP.
+.RS 5
+.nf
+Type: script
+Script: name_of_executable_in_/etc/univention/templates/scripts/
+Variables: variable_name
+.fi
+.RE
+The script receives the list of changes as \fIkey\fP\fB@%@\fP\fIold_value\fP\fB@%@\fP\fInew_value\fP on stdin.
+
+.SS Module
+Each time one of the listed UCR variables gets changed, the Python module will be executed.
+.RS 5
+.nf
+Type: module
+Module: name_of_module_in_/etc/univention/templates/modules/
+Variables: variable_name
+.fi
+.RE
+The module should implement the following functions:
+.RS 5
+.nf
+def handler(config_registry, changes):
+    """Called to do the update.
+    'config_registry' is an instance of univention.config_registry.ConfigRegistry.
+    'changes' is a list of the changed variable names.
+    """
+.fi
+.RE
+
+.SH NOTES
+Note that this command is not idempotent.
+.BR dh_prep (1)
+should be called between invocations of this command.
+Otherwise, it may cause multiple instances of the same text to be added to maintainer scripts.
+
+.SH BUGS
+File names must not start with the leading slash, they should be relative to \fI/\fP.
+
+.SH SEE ALSO
+.BR univention\-install\-config\-registry\-info (1),
+.BR univention\-install\-service\-info (1),
+.BR debhelper (7).
+.br
+This program is documented fully in the
+.IR "Univention Corporate Server Manual" .
+
+.SH AUTHOR
+Copyright (c) 2010 Univention GmbH, Germany

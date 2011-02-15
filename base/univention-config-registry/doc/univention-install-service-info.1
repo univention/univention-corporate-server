@@ -1,0 +1,57 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH UNIVENTION-INSTALL-SERVICE-INFO 1 2010-04-09 UCS
+
+.SH NAME
+univention\-install\-service\-info \- install UCS service description files into package build directories
+
+.SH SYNOPSIS
+.B univention\-install\-service\-info
+
+.SH DESCRIPTION
+.B univention\-install\-service\-info
+is a debhelper like programm that is responsible for installing a service description file into
+.I etc/univention/service.info/services/
+in the package build directory. The files
+.I debian/PACKAGE.univention\-service
+are installed.
+
+.SH EXAMPLES
+A service description file has the following format:
+.RS 5
+.nf
+[service_name]
+description[de]=Beschreibung
+description[en]=Description
+start_type=service_name/autostart
+icon=service/icon_name
+programs=/usr/sbin/executable
+.fi
+.RE
+.IP \fB[\fP\fIservice_name\fP\fB]\fP
+Starts the description of the service.
+.IP \fBdescription\fP[\fIlanguage\fP]\fB=\fP\fItext\fP
+Description for the service for different languages.
+.IP \fBstart_type=\fP\fIvariable\fP
+Name of the Univention Config Registry-variable used to controll if the service should be started automatically, manually or never.
+Defaults to \fIservice_name\fP\fB/autostart\fP.
+.IP \fBicon=\fP\fIname\fP
+Name for an icon relative to \fI???\fP.
+.B Unused!
+.IP \fBprograms=\fP\fIname\fP[\fI,...\fP]
+Names of the executables, which must be running to flag this service as running.
+
+.SH ENVIRONMENT
+.IP "\s-1DH_VERBOSE\s0" 4
+Set to 1 to enable verbose mode.
+Debhelper will output every command it runs that modifies files on the build system.
+
+.SH SEE ALSO
+.BR univention\-install\-config\-registry\-info (1),
+.BR univention\-install\-config\-registry (1),
+.BR debhelper (7).
+.br
+This program is documented fully in the
+.IR "Univention Corporate Server Manual" .
+
+.SH AUTHOR
+Copyright (c) 2010 Univention GmbH, Germany
