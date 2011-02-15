@@ -1,0 +1,126 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH UNIVENTION-DIRECTORY-REPORT 1 2011-02-11 UCS
+
+.SH NAME
+univention\-directory\-reports \- generate report over UDM objects
+
+.SH SYNOPSIS
+.B univention\-directory\-reports
+.RI [ options ]
+.BI \-m\  module
+.IR dn1 ...
+
+.SH DESCRIPTION
+This manual page documents briefly the
+.B univention\-directory\-reports
+command.
+It is a tool to generate a report over UDM objects stored in the LDAP tree.
+Currently supported output formats include Comma Separated Values (CSV) and PDF generated through LaTeX.
+
+.SH OPTIONS
+A summary of options is included below.
+.TP
+\fB\-h\fP, \fB\-\-help\fP
+Show a help message and exit.
+.TP
+\fB\-u\fP \fIUSERDN\fP, \fB\-\-user=\fP\fIUSERDN\fP
+Distinguished Name \fIbinddn\fP used for LDAP simple authentication.
+.TP
+\fB\-p\fP \fIPASSWORD\fP, \fB\-\-password=\fP\fIPASSWORD\fP
+Password for LDAP simple authentication.
+.TP
+\fB\-H\fP \fIHEADER\fP, \fB\-\-header=\fP\fIHEADER\fP
+File containing the header for the report.
+.TP
+\fB\-F\fP \fIFOOTER\fP, \fB\-\-footer=\fP\fIFOOTER\fP
+File containing the footer for the report.
+.TP
+\fB\-s\fP \fISERVER\fP, \fB\-\-server=\fP\fISERVER\fP
+Name of the LDAP server.
+.TP
+\fB\-b\fP \fIBASE\fP, \fB\-\-base=\fP\fIBASE\fP
+Use searchbase as the starting point for the search instead of the default.
+.TP
+\fB\-m\fP \fIMODULE\fP, \fB\-\-module=\fP\fIMODULE\fP
+Admin module defining the report to generate.
+Use \fB-l\fP to list the available modules.
+.TP
+\fB\-r\fP \fIREPORT\fP, \fB\-\-report=\fP\fIREPORT\fP
+Name of the report to use.
+Use \fB-l\fP to list the available reports.
+.TP
+\fB-l\fP, \fB--list\fP
+List names of available modules and reports.
+.TP
+\fB\-n\fP, \fB\-\-no\-cleanup\fP
+Do not remove the temporary LaTeX files (for debugging).
+.TP
+\fB\-c\fP \fICONFIG\fP, \fB\-\-config=\fP\fICONFIG\fP
+Location of an alternative configuration file.
+.TP
+\fB\-d\fP \fIDEBUG\fP, \fB\-\-debug=\fP\fIDEBUG\fP
+If given than debugging is activated and set to the specified level.
+
+.SH UNIVENTION CONFIG REGISTRY VARIABLES
+.TP
+.B directory/reports/default
+Name of the default report when not explicitly specified using \fB\-r\fP.
+.TP
+.BR directory/reports/templates/pdf/ ...,\  directory/reports/templates/csv/ ...
+Definition of registered templates, each a space separated 3- or 4-tuple
+specifying the \fImodule\fP, \fIreport name\fP and \fItemplate file\fP or ...
+\fItemplate base directory\fP and \fItemplate base file name\fP, where the
+\fIlocale\fP is inserted in between.
+Shell-quoting can be used to include spaces in the \fIreport name\fP, e.g.
+.IP
+.RS 10
+module/name "My Report" /usr/local/share/my_template.csv
+.br
+module/name "My Report" /usr/local/share my_template.csv
+.RE
+.IP
+The second entry will be expanded to \fI/usr/local/share/$LANG/my_template.csv\fP.
+
+.SH ENVIRONMENT
+.TP
+LANG
+Defines locatisation for reports.
+
+.SH FILES
+.TP
+.I /etc/univention/directory/reports/config.ini
+Configuration file defining defaults and available reports.
+This file is auto-generated from the Univention Config Registry settings.
+.TP
+.IR /etc/univention/directory/reports/.../$LANG/header.tex ,\  /etc/univention/directory/reports/header.tex
+Default header for LaTeX reports.
+The first path will only be used for localized templates.
+.TP
+.IR /etc/univention/directory/reports/.../$LANG/footer.tex ,\  /etc/univention/directory/reports/footer.tex
+Default footer for LaTeX reports.
+The first path will only be used for localized templates.
+
+.SH BUG
+The \fIDN\fPs must be specified on the command line, possibly using
+.BR univention\-directory\-manager (8)
+or
+.BR ldapsearch (1)
+to retrieve the \fIDN\fPs of the wanted objects.
+
+.SH EXAMPLE
+.nf
+IFS=$'\\n'
+univention-directory-reports -m computers/computer \\
+$(udm computers/computer list | sed -ne 's/^DN: //p')
+.fi
+
+.SH SEE ALSO
+.BR univention\-directory\-manager (8),
+.BR univention\-directory\-reports (5),
+.BR ldapsearch (1).
+.br
+This program is documented fully in the
+.IR "Univention Corporate Server Manual" .
+
+.SH AUTHOR
+Copyright (c) 2011 Univention GmbH, Germany

@@ -1,3 +1,20 @@
+univention-directory-reports (3.0.4-1) unstable; urgency=low
+
+  * debian/control: transition from TeTeX to TexLive (Bug #21233)
+  * univention-directory-reports:
+    - Handle invalid reports specification (Bug #17930)
+    - Fix --help messages.
+    - Fix handling of header and footer.
+    - List modules with available reports.
+    - Don't delete generated CSV reports (Bug #19985)
+    - Handle not existing DNs (Bug #18345)
+  * Clean up missing and superfluous imports.
+  * Track down TeX-encoding (Bug #20676, Bug #17723)
+  * Handle missing files (Bug #9137)
+  * Add preliminary manual page to source only, pending QA.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 14 Feb 2011 13:25:51 +0100
+
 univention-directory-reports (3.0.3-1) unstable; urgency=low
 
   * added language detection via locale.getlocale() (Bug #17425)

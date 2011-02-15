@@ -30,14 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import base64
+import sys
 import codecs
 import os
+import tempfile
 
 from parser import *
 from output import *
 from interpreter import *
 import admin
+import subprocess
 
 class Document( object ):
 	( TYPE_LATEX, TYPE_CSV, TYPE_UNKNOWN ) = range( 3 )
@@ -63,21 +65,18 @@ class Document( object ):
 			files = tuple()
 		for filename in files:
 			if not os.path.isfile( filename ):
-				raise Exception( "error: required file '%s' does not exist or is not readable" % \
+				raise NameError( "error: required file '%s' does not exist or is not readable" % \
 								 filename )
 
 	def __create_tempfile( self ):
 		if self._type == Document.TYPE_LATEX:
 			suffix = '.src'
-		else:
+		elif self._type == Document.TYPE_CSV:
 			suffix = '.csv'
-		umask = os.umask( 0077 )
-		unique = base64.encodestring( os.urandom( 12 ) )[ : -1 ]
-		unique = unique.replace( '/', '-' )
-		filename = os.path.join( '/tmp', 'univention-directory-reports-%d-%s%s' % ( os.getpid(), unique, suffix ) )
-		fd = open( filename, 'w' )
-		fd.close()
-		os.umask( umask )
+		else:
+			suffix = self._template.rsplit('.', 1)[1]
+		fd, filename = tempfile.mkstemp(suffix, 'univention-directory-reports-')
+		os.close(fd)
 
 		return filename
 
@@ -87,6 +86,7 @@ class Document( object ):
 		tmpfd.close()
 
 	def create_source( self, objects = [] ):
+		"""Create report from objects (list of DNs)."""
 		tmpfile = self.__create_tempfile()
 		admin.set_format( self._type == Document.TYPE_LATEX )
 		parser = Parser( filename = self._template )
@@ -103,6 +103,9 @@ class Document( object ):
 				obj = admin.get_object( None, dn )
 			else:
 				obj = admin.cache_object( dn )
+			if obj is None:
+				print >>sys.stderr, "warning: dn '%s' not found, skipped." % dn
+				continue
 			tks = copy.deepcopy( tokens )
 			interpret = Interpreter( obj, tks )
 			interpret.run()
@@ -117,14 +120,14 @@ class Document( object ):
 		return tmpfile
 
 	def create_pdf( self, latex_file ):
-		cmd = 'pdflatex -interaction=nonstopmode -halt-on-error -output-directory=%s %s' % \
-			  ( os.path.dirname( latex_file ), latex_file )
-		if not os.system( '%s &> /dev/null' % cmd ):
-			if not os.system( '%s &> /dev/null' % cmd ):
-				return latex_file[ : -4 ] + '.pdf'
-			else:
-				print >>sys.stderr, "error: failed to create PDF file"
-		else:
+		"""Run pdflatex on latex_file and return path to generated file or None on errors."""
+		cmd = ['pdflatex', '-interaction=nonstopmode', '-halt-on-error', '-output-directory=%s' % os.path.dirname(latex_file), latex_file]
+		devnull = open(os.path.devnull, 'w')
+		try:
+			if not subprocess.call(cmd, stdout=devnull, stderr=devnull):
+				if not subprocess.call(cmd, stdout=devnull, stderr=devnull):
+					return '%s.pdf' % latex_file.rsplit('.', 1)[0]
 			print >>sys.stderr, "error: failed to create PDF file"
-
-		return None
+			return None
+		finally:
+			devnull.close()
