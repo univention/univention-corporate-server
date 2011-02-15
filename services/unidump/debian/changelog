@@ -1,3 +1,9 @@
+unidump (2.0.1-2) unstable; urgency=low
+
+  * added GNU APGL V3 header (Bug #9620)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 15 Feb 2011 11:09:48 +0100
+
 unidump (2.0.1-1) unstable; urgency=low
 
   * added mt-st to the dependecies. Bug #16801
