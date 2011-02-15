@@ -50,7 +50,7 @@ __all__ = [ 'connect', 'get_object', 'cache_object', 'connected', 'identify', 's
 _admin = None
 
 TEX_ESCAPE = {
-		'€': 'EUR',
+		u'€': 'EUR',
 		'"': "''",
 		'\\': '\\textbackslash{}',
 		'&': '\\&',
@@ -62,18 +62,25 @@ TEX_ESCAPE = {
 		'~': '\\textasciitilde{}',
 		'^': '\\^{\,}',
 		'$': '\\$',
-		'°': '$^{\\circ}$',
-		'´': '',
+		u'°': '$^{\\circ}$',
+		u'´': '',
 		}
 def texClean(str):
-	"""Escape string for use in LaTeX.
+	u"""Escape string for use in LaTeX.
 	
 	>>> texClean('Test')
 	'Test'
-	>>> texClean('@"\\&%#_{}~^$°´')
-	'EUR''\\textbackslash{}\\&\\%\\#\\_\\{\\}\\textasciitilde{}\\^{\,\}\\$$^{\\circ}$'
+	>>> texClean('"\\&%#_{}~^$')
+	"''\\\\textbackslash{}\\\\&\\\\%\\\\#\\\\_\\\\{\\\\}\\\\textasciitilde{}\\\\^{\\\\,}\\\\$"
+	>>> texClean('€°´')
+	'EUR$^{\\\\circ}$'
 	"""
-	return ''.join(map(lambda c: TEX_ESCAPE.get(c, c), str))
+	esc = ''.join(map(lambda c: TEX_ESCAPE.get(c, c), str))
+	# str ist NOT unicode, so '€°´' are non-ASCII characters, which use multiple bytes. See Bug #16637
+	esc = esc.replace('€', 'EUR')
+	esc = esc.replace('°', '$^{\\circ}$')
+	esc = esc.replace('´', '')
+	return esc
 
 class AdminConnection( object ):
 	def __init__( self, userdn = None, password = None, host = 'localhost', base = None, start_tls = 2, access = None, format = True ):
@@ -274,3 +281,7 @@ def identify( dn ):
 def connected():
 	global _admin
 	return _admin != None
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()

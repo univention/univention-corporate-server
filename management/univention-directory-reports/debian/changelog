@@ -1,3 +1,10 @@
+univention-directory-reports (3.0.4-2) unstable; urgency=low
+
+  * Handle non-ASCII multi-byte encoding (Bug #16637)
+  * Enable doctest.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 15 Feb 2011 12:21:19 +0100
+
 univention-directory-reports (3.0.4-1) unstable; urgency=low
 
   * debian/control: transition from TeTeX to TexLive (Bug #21233)
