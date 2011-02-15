@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.96-1) unstable; urgency=low
+
+  * allow renaming if the only difference is 
+    upper/lower case in username (Bug #21467)
+
+ -- Felix Botner <botner@univention.de>  Tue, 15 Feb 2011 11:46:26 +0100
+
 univention-directory-manager-modules (6.0.95-1) unstable; urgency=low
 
   * replaced univention-admin with univention-directory-manager in 
