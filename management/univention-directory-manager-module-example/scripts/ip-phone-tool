@@ -42,7 +42,6 @@ import univention.admin.objects
 import univention.admin.filter
 import univention.admin.uexceptions
 import univention.admin.localization
-import univention.admin.handlers.test.ip_phone
 from optparse import OptionParser, OptionValueError
 
 translation=univention.admin.localization.translation('univention.admin.handlers.test')	## missing in this example
@@ -76,21 +75,23 @@ class ipphonetool:
 			print 'authentication error: %s' % str(e)
 			sys.exit(1)
 
+		self.position = univention.admin.uldap.position(self.ldap_base)
 		self.co = univention.admin.config.config()
-
+		# Get univention.admin.handlers.test.ip_phone + custom/extended attributes + UCR modificaations
+		self.module = univention.admin.modules.get('test/ip_phone')
+		univention.admin.modules.init(self.lo, self.position, self.module)
 
 	def set(self, options, name, ip, priuser):
 		"""This uses the lookup function of the udm module, allowing filtering in terms of UDM properties
 		"""
 
 		filter=univention.admin.filter.expression('name', name)
-		position=univention.admin.uldap.position(self.ldap_base)
 
-		objs = univention.admin.handlers.test.ip_phone.lookup(self.co, self.lo, filter, scope='domain', base=position.getDomain(), unique=1)
+		objs = self.module.lookup(self.co, self.lo, filter, scope='domain', base=self.position.getDomain(), unique=1)
 		if objs:
 			obj=objs[0]
 		else:
-			obj=univention.admin.handlers.test.ip_phone.object(self.co, self.lo, position)
+			obj = self.module.object(self.co, self.lo, self.position)
 			obj['name']=name
 
 		if not ip == obj['ip']:
@@ -115,9 +116,8 @@ class ipphonetool:
 		"""remove the object, no safty belt in this example"""
 
 		filter=univention.admin.filter.expression('name', name)
-		position=univention.admin.uldap.position(self.ldap_base)
 
-		objs = univention.admin.handlers.test.ip_phone.lookup(self.co, self.lo, filter, scope='domain', base=position.getDomain(), unique=1)
+		objs = self.module.lookup(self.co, self.lo, filter, scope='domain', base=self.position.getDomain(), unique=1)
 		if objs:
 			obj=objs[0]
 			obj.remove()
@@ -132,11 +132,7 @@ class ipphonetool:
 				print "No object found matching filter %s" % filter
 				sys.exit(1)
 
-			module=univention.admin.modules.get('test/ip_phone')	## retrive the module
-			position=univention.admin.uldap.position(self.ldap_base)
-			univention.admin.modules.init(self.lo, position, module)	## inititalize it
-
-			object=univention.admin.objects.get(module, self.co, self.lo, position=position, dn=dn[0])
+			object=univention.admin.objects.get(self.module, self.co, self.lo, position=self.position, dn=dn[0])
 			object.open()						## open the object
 
 			if 'redirection' in object.options:
@@ -197,7 +193,6 @@ if __name__ == '__main__':
 	if options.debuglevel:
 		univention.debug.set_level(univention.debug.LDAP, options.debuglevel)
 		univention.debug.set_level(univention.debug.ADMIN, options.debuglevel)
-
 
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
