@@ -1,14 +1,35 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
-# Sample debian/rules that uses debhelper.
 #
-# This file was originally written by Joey Hess and Craig Small.
-# As a special exception, when this file is copied by dh-make into a
-# dh-make output file, you may use that output file without restriction.
-# This special exception was added by Craig Small in version 0.37 of dh-make.
+# Univention Directory Manager Example Module
+#  rules file for creating the deb package
 #
-# Modified to make a template file for a multi-binary package with separated
-# build-arch and build-indep targets  by Bill Allombert 2001
+# Copyright 2010-2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
@@ -84,7 +105,7 @@ install: build-stamp
 
 	# Install conffiles registered in debian/*.univention-config-registry
 	univention-install-config-registry
-	# Install Univention Config Registry Info files debian/*.univention-config-registry-info
+	# Install Univention Config Registry Info files debian/*.univention-config-registry-variables
 	univention-install-config-registry-info
 
 binary-indep: build install

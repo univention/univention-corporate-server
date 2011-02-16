@@ -1,3 +1,6 @@
+Type: multifile
+Multifile: etc/ldap/slapd.conf
+
 Type: subfile
 Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/11univention-ip-phone_schema
