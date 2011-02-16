@@ -1,3 +1,9 @@
+univention-directory-manager-module-example (2.0.7-1) unstable; urgency=low
+
+  * fix default value for TrueFalseUp syntax (Bug #17915)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Feb 2011 15:56:32 +0100
+
 univention-directory-manager-module-example (2.0.6-3) unstable; urgency=low
 
   * fix globbing in debian/rules (Bug #17915)

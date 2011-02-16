@@ -124,7 +124,7 @@ property_descriptions = {
 			multivalue = False,
 			options = [],
 			required = False,								# Eigenschaft muss nicht zwingend angegeben werden
-			default = '1',								# Eigenschaft ist standardmäßig aktiviert
+			default = 'TRUE',								# Eigenschaft ist standardmäßig aktiviert
 			may_change = True,							# Eigenschaft darf modifiziert werden
 			identifies = False
 		),
