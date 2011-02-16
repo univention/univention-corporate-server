@@ -1,3 +1,20 @@
+univention-directory-manager-module-example (2.0.6-1) unstable; urgency=low
+
+  * Add translation file and script (Bug #17915)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Feb 2011 10:28:12 +0100
+
+univention-directory-manager-module-example (2.0.5-1) unstable; urgency=low
+
+  * Prepare for translation (Bug #17915)
+  * Restart slapd only on domaincontroller_master.
+  * Fix unicode strings.
+  * Add missing DocString to exists() and _remove_attr().
+  * Document advanced=True.
+  * Use True and False instead of 1 and 0.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 16 Feb 2011 07:59:08 +0100
+
 univention-directory-manager-module-example (2.0.4-1) unstable; urgency=low
 
   * suggestions from QA feedback (Bug #17915)

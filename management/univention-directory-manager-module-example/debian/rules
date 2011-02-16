@@ -16,32 +16,75 @@
 # This has to be exported to make some magic below work.
 #export DH_OPTIONS
 
-PYVERS := $(shell pyversions -vr)
-D  := debian/univention-directory-manager-module-example
-DS := debian/univention-directory-manager-module-example-schema
+PACKAGE_NAME = univention-directory-manager-module-example
 
-build:
+D  := debian/${PACKAGE_NAME}
+DS := debian/${PACKAGE_NAME}-schema
+
+PYVERS := $(shell pyversions -vr)
+
+MO_FILES=$(shell find modules -name '*.po' | sed 's/\.po/\.mo/g')
+
+%.mo:	%.po
+	msgfmt -o $@ $<
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+build: configure-stamp build-stamp $(MO_FILES)
+build-stamp:
+	dh_testdir
+	touch build-stamp
 
 clean:
 	dh_testdir
+	dh_testroot
 	dh_clean
+	rm -f build-stamp configure-stamp
 	$(RM) debian/*.conffiles
+	rm -f *~
 
-install: build
+install: build-stamp
 	dh_testdir
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
 
-	univention-install-config-registry
+	# Install Schema for Univention Directory Manager Module into Schema Package
+
 	install -m 0644 schema/ip-phone.schema ${DS}/usr/share/univention-ldap/schema/
-	install -m 0644 modules/ip_phone.py ${D}/usr/share/pyshared/univention/admin/handlers/test/
-	install -m 0644 modules/__init__.py ${D}/usr/share/pyshared/univention/admin/handlers/test/
+
+	# Install Univention Directory Manager Modules
+
+	@for i in $(shell find modules/univention/admin/ -name '*.py'); do\
+		o=${D}/usr/share/pyshared/$${i#modules/};\
+		install -d "`dirname $$o`";\
+		install -m755 $$i $$o;\
+	done
+	@for i in modules/univention/admin/handlers/*/*.gif modules/univention/admin/handlers/*/*.png; do\
+		o=${D}/usr/share/univention-webui-style/icon/$${i#modules/univention/admin/handlers/};\
+		install -d "`dirname $$o`";\
+		install -m 644 $$i $$o;\
+	done
+	@for i in $(MO_FILES); do\
+		lang=`basename $$i .mo`;\
+		domain=`dirname $$i | sed 's,^modules/,,;s,/,-,g'`;\
+		o=debian/${D}/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
+		install -d "`dirname $$o`";\
+		install -m 644 $$i $$o;\
+	done
+
+	# Install example script
+
 	install -m 0755 scripts/ip-phone-tool ${D}/usr/sbin/
 
 	dh_install --exclude=".svn"
 
+	# Install conffiles registered in debian/*.univention-config-registry
 	univention-install-config-registry
+	# Install Univention Config Registry Info files debian/*.univention-config-registry-info
 	univention-install-config-registry-info
 
 binary-indep: build install
@@ -58,4 +101,4 @@ binary-indep: build install
 binary-arch: build install
 
 binary: binary-arch binary-indep
-.PHONY: build clean binary-indep binary-arch binary install
+.PHONY: build clean binary-indep binary-arch binary install configure

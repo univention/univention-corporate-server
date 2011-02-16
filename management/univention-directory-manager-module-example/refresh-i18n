@@ -1,9 +1,9 @@
-#!/bin/sh
+#! /bin/sh
 #
-# Example Schema for Univention Directory Manager Example Module
-#  postrm file for the example schema debian package for the directory manager example module
+# Univention I18N updater
+#  Refresh gettext entries
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2010-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,27 +30,38 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-set -e
+po=de
+i18nfile=./modules/univention/admin/handlers/test/$po
 
-#DEBHELPER#
+xgettext -L Python -o $po.pot modules/univention/admin/handlers/test/*.py scripts/ip-phone-tool
 
-case "$1" in
-remove)
-	case "$(/usr/sbin/univention-config-registry get server/role)" in
-	domaincontroller_master)
-		/usr/sbin/univention-config-registry commit /etc/ldap/slapd.conf
-		invoke-rc.d slapd restart
-		;;
-	esac
-	;;
+grep "Content-Type: text/plain; charset=CHARSET" $po.pot
 
-purge|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
-	;;
+if [ $? -eq 0 ]; then
+	echo "Rewriting encoding information from CHARSET to ISO-8859-15"
+	sed -i "s#Content-Type: text/plain; charset=CHARSET#Content-Type: text/plain; charset=ISO-8859-15#" $po.pot
+fi
 
-*)
-	echo "postrm called with unknown argument \`$1'" >&2
-	exit 1
-	;;
-esac
+echo "Merging old gettext data with newly introduced strings"
+msgmerge $i18nfile.po  $po.pot > $po.pox
 
-:
+echo "Now you need to fix up all "fuzzy" entries in your editor"
+read
+
+if [ -n "$EDITOR" ]; then
+    $EDITOR $po.pox
+else
+	nano $po.pox
+fi
+
+echo "Use this entry? (Y/n)"
+read yn
+
+if [ -z "$yn" -o "$yn" = "y" ]; then
+    echo "Copying po file"
+    cp $po.pox $i18nfile.po
+    echo "Regenerating mo file"
+    msgfmt -o $i18nfile.mo $i18nfile.po
+fi
+
+rm -rf $po.pot $po.pox

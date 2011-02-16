@@ -160,10 +160,10 @@ if __name__ == '__main__':
 	parser = OptionParser(usage=usage)
 	parser.add_option( '-D', '--binddn',
 			action = 'store', dest = 'binddn',
-			help = _('Bind DN') )
+			help = _('LDAP Bind DN') )
 	parser.add_option( '-w', '--bindpw',
 			action = 'store', dest = 'bindpw',
-			help = _('Bind Password') )
+			help = _('LDAP Bind Password') )
 	parser.add_option( '-W',
 			action = 'store_true', dest = 'ask_pass', default = False,
 			help = _('Prompt for password') )

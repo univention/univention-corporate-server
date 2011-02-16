@@ -1,0 +1,136 @@
+#: modules/univention/admin/handlers/test/ip_phone.py:46
+msgid "VoIP_Protocol"
+msgstr "VoIP_Protokoll"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:57
+msgid "VoIP_Address"
+msgstr "VoIP-Adresse"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:65
+msgid "Not a valid VoIP Address"
+msgstr "Keine gltige VoIP Adresse"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:77
+msgid "IP-Phone"
+msgstr "IP-Telefon"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:79
+msgid "An example module for the Univention Directory Manager"
+msgstr "Beispielmodul fr den Univention Directory Manager"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:97
+msgid "Call redirect option"
+msgstr "Option zur Rufumleitung"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:110
+msgid "Name"
+msgstr "Name"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:111
+msgid "ID of the IP-phone"
+msgstr "ID des IP-Telefons"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:121
+msgid "active"
+msgstr "aktiv"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:122
+msgid "The IP-phone can be deactivated"
+msgstr "Das IP-Telefon kann deaktiviert werden"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:132
+msgid "Protocol"
+msgstr "Protokoll"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:133
+msgid "Supported VoIP protocols"
+msgstr "Untersttzte VoIP Protokolle"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:143
+msgid "IP-Address"
+msgstr "IP-Adresse"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:144
+msgid "IP-Address of the IP-phone"
+msgstr "IP-Adresse des IP-Telefons"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:153
+msgid "Primary User"
+msgstr "Hauptbenutzer"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:154
+msgid "The primary user of this IP-phone"
+msgstr "Primrer Benutzer dieses IP-Telefons"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:163
+msgid "Additional Users"
+msgstr "Weitere Benutzer"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:164
+msgid "Users, that may register with this phone"
+msgstr "Benutzer, die dieses Telefon registrieren drfen"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:173
+msgid "Redirection User"
+msgstr "Rufumleitung zu Benutzer"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:174
+msgid "Address for call redirection"
+msgstr "Rufumleitungsadresse"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:194
+msgid "General"
+msgstr "Allgemein"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:194
+msgid "Basic Settings"
+msgstr "Basis-Einstellungen"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:199
+msgid "Advanced"
+msgstr "Erweiterte Einstellungen"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:199
+msgid "Advanced Settings"
+msgstr "Erweiterte Einstellungen"
+
+# w modules/univention/admin/handlers/test/ip_phone.py:202
+#: modules/univention/admin/handlers/test/ip_phone.py:202
+msgid "Redirect"
+msgstr "Rufumleitung"
+
+#: modules/univention/admin/handlers/test/ip_phone.py:202
+msgid "Redirect Option"
+msgstr "Rufumleitungsoption"
+
+#: scripts/ip-phone-tool:163
+msgid "LDAP Bind DN"
+msgstr "LDAP Bind DN"
+
+#: scripts/ip-phone-tool:166
+msgid "LDAP Bind Password"
+msgstr "LDAP Bind Password"
+
+#: scripts/ip-phone-tool:169
+msgid "Prompt for password"
+msgstr "Nach Passwort fragen"
+
+#: scripts/ip-phone-tool:172
+msgid "Read password from file"
+msgstr "Passwort aus Datei lesen"
+
+#: scripts/ip-phone-tool:175
+msgid "Print additional information"
+msgstr "Mehr Information ausgeben"
+
+#: scripts/ip-phone-tool:183
+msgid "Set debug level"
+msgstr "Debug Level setzen"
+
+#: scripts/ip-phone-tool:186
+msgid "Username"
+msgstr "Benutzername"
+
+#: scripts/ip-phone-tool:190
+msgid "Redirect address"
+msgstr "Rufumleitungsadresse"
