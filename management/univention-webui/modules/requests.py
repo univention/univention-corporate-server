@@ -73,10 +73,16 @@ class new_saver:
 	def __init__(self):
 		self.dict={}
 	def put(self, var, content):
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'saver put %s=%s' % (var, content))
+		dbg = content
+		if "pass" in var:
+			dbg = "password string"
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'saver put %s=%s' % (var, dbg))
 		self.dict[var]=content
 	def get(self, var, default=''):
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'saver get %s=%s' % (var, self.dict.get(var, '')))
+		dbg = self.dict.get(var, '')
+		if "pass" in var:
+			dbg = "password string"
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'saver get %s=%s' % (var, dbg))
 		if var in ["uc_submodule","uc_module","noorder"] and not self.dict.has_key(var):
 			return None
 		return self.dict.get(var, default)
