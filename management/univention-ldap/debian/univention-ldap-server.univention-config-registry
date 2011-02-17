@@ -25,6 +25,7 @@ Variables: ldap/index/approx
 Variables: ldap/replog
 Variables: ldap/translogfile
 Variables: ldap/timeout
+Variables: ldap/online/master
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -50,3 +51,4 @@ Variables: ldap/database/bdb/checkpoint
 Variables: ldap/index/eq
 Variables: ldap/index/pres
 Variables: ldap/index/sub
+Variables: ldap/online/master

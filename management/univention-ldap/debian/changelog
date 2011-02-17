@@ -1,3 +1,9 @@
+univention-ldap (7.0.14-1) unstable; urgency=low
+
+  * added registration and description of ldap/online/master (Bug #20789)
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Feb 2011 15:18:58 +0100
+
 univention-ldap (7.0.13-1) unstable; urgency=low
 
   * do not include updateref on slave slapd configuration
