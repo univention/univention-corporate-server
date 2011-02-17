@@ -30,9 +30,10 @@
 
 """Univention IP-Phone Example UDM Client."""
 
-import sys, os
+import sys
+import os
 import univention.debug
-univention.debug.init('/var/log/univention/ip-phone-tool.log', 1, 0)
+univention.debug.init('/var/log/univention/ip-phone-tool.log', univention.debug.FLUSH, univention.debug.NO_FUNCTION)
 
 import univention.config_registry
 import univention.admin.uldap
@@ -45,9 +46,12 @@ import univention.admin.localization
 from optparse import OptionParser, OptionValueError
 
 translation=univention.admin.localization.translation('univention.admin.handlers.test')	## missing in this example
-_=translation.translate
+_ = translation.translate
 
 class ipphonetool:
+	"""Simple example demonstrating how to implement and how to use custom Univention Directory Manager modules.
+	This is an example tool to manage IP phones.
+	"""
 
 	def __init__(self, options, ucr=None):
 		"""Initialize an authenticated LDAP connection
@@ -63,13 +67,17 @@ class ipphonetool:
 			binddn = ','.join(('cn=admin', self.ldap_base))
 			server_role = ucr.get('server/role', '')
 			if server_role in ('domaincontroller_master', 'domaincontroller_backup'):
-				bindpw = open('/etc/ldap.secret','r').read().strip()
+				try:
+					bindpw = open('/etc/ldap.secret','r').read().strip()
+				except IOError, e:
+					print >>sys.stderr, "Could not read credentials."
+					sys.exit(1)
 			else:
 				print >>sys.stderr, "No credentials available"
 				sys.exit(1)
 
 		try:
-			self.lo=univention.admin.uldap.access(host=ldap_master, base=self.ldap_base, binddn=binddn, bindpw=bindpw, start_tls=2)
+			self.lo = univention.admin.uldap.access(host=ldap_master, base=self.ldap_base, binddn=binddn, bindpw=bindpw, start_tls=2)
 		except Exception, e:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
 			print 'authentication error: %s' % str(e)
@@ -85,14 +93,14 @@ class ipphonetool:
 		"""This uses the lookup function of the udm module, allowing filtering in terms of UDM properties
 		"""
 
-		filter=univention.admin.filter.expression('name', name)
+		filter = univention.admin.filter.expression('name', name)
 
 		objs = self.module.lookup(self.co, self.lo, filter, scope='domain', base=self.position.getDomain(), unique=1)
 		if objs:
-			obj=objs[0]
+			obj = objs[0]
 		else:
 			obj = self.module.object(self.co, self.lo, self.position)
-			obj['name']=name
+			obj['name'] = name
 
 		if not ip == obj['ip']:
 			obj['ip'] = ip
@@ -100,7 +108,8 @@ class ipphonetool:
 			obj['priuser'] = priuser
 
 		if options.redirect:
-			obj.options.append('redirection')
+			if 'redirection' not in obj.options:
+				obj.options.append('redirection')
 			obj['redirect_user'] = options.redirect
 		else:		## if no redirection is given, this example removes the objectclass
 			if 'redirection' in obj.options:
@@ -108,45 +117,69 @@ class ipphonetool:
 			obj['redirect_user'] = options.redirect
 
 		if objs:
-			obj.modify()
+			try:
+				obj.modify()
+			except univention.admin.uexceptions.ldapError, e:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Could not modify entry: %s' % e)
+				print >>sys.stderr, 'Could not modify entry: %s' % name
+				sys.exit(1)
 		else:
-			obj.create()
+			try:
+				obj.create()
+			except univention.admin.uexceptions.ldapError, e:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Could not create entry: %s' % e)
+				print >>sys.stderr, 'Could not create entry: %s' % name
+				sys.exit(1)
 
 	def remove(self, name):
 		"""remove the object, no safty belt in this example"""
 
-		filter=univention.admin.filter.expression('name', name)
+		filter = univention.admin.filter.expression('name', name)
 
 		objs = self.module.lookup(self.co, self.lo, filter, scope='domain', base=self.position.getDomain(), unique=1)
 		if objs:
-			obj=objs[0]
-			obj.remove()
+			obj = objs[0]
+			try:
+				obj.remove()
+			except univention.admin.uexceptions.ldapError, e:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Could not remove entry: %s' % e)
+				print >>sys.stderr, 'Could not remove entry: %s' % name
+				sys.exit(1)
+		else:
+			print >>sys.stderr, 'Entry not found: %s' % name
+			sys.exit(1)
 
 	def clear_redirect(self, name):
 		"""This example uses a raw LDAP search instead of performing a lookup to determine the dn
 		"""
 		try:
 			filter = unicode('(&(cn=%s)(objectClass=testPhoneCallRedirect))' % name, 'utf8')
-			dn=self.lo.searchDn(filter=filter, base=self.ldap_base, unique=1)
+			dn = self.lo.searchDn(filter=filter, base=self.ldap_base, unique=1)
 			if not dn:
 				print "No object found matching filter %s" % filter
 				sys.exit(1)
 
-			object=univention.admin.objects.get(self.module, self.co, self.lo, position=self.position, dn=dn[0])
+			object = univention.admin.objects.get(self.module, self.co, self.lo, position=self.position, dn=dn[0])
 			object.open()						## open the object
 
 			if 'redirection' in object.options:
 				object.options.remove('redirection')
 
-			object['redirect_user']=''
+			object['redirect_user'] = ''
 
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ip-phone-tool: redirect_user cleared, modify object')
-			dn=object.modify()
+			dn = object.modify()
 
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ip-phone-tool: Redirection deactivated')
 
 		except univention.admin.uexceptions.valueError, e:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'error: invalid syntax (%s)' % e)
+			print >>sys.stderr, 'Could not modify entry: %s' % name
+			sys.exit(1)
+		except univention.admin.uexceptions.ldapError, e:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Could not modify entry: %s' % e)
+			print >>sys.stderr, 'Could not modify entry: %s' % name
+			sys.exit(1)
 
 
 if __name__ == '__main__':
@@ -185,7 +218,7 @@ if __name__ == '__main__':
 			action = 'store', dest = 'username',
 			help = _('Username') )
 
-	parser.add_option( '', '--redirect',
+	parser.add_option( '--redirect',
 			action = 'store', dest = 'redirect',
 			help = _('Redirect address') )
 	(options, arguments) = parser.parse_args()
@@ -198,25 +231,25 @@ if __name__ == '__main__':
 	ucr.load()
 
 	if len(arguments) < 1:
-		parser.print_help()
-		sys.exit(1)
+		parser.print_help(sys.stderr)
+		sys.exit(2)
 
 	udm_ipphone = ipphonetool(options, ucr)
 	if arguments[0] == 'set':
 		if len(arguments) < 4:
-			parser.print_usage()
-			sys.exit(1)
+			parser.print_usage(sys.stderr)
+			sys.exit(2)
 		udm_ipphone.set( options, arguments[1], arguments[2], arguments[3] )
 	elif  arguments[0] == 'remove':
 		if len(arguments) < 2:
-			parser.print_usage()
-			sys.exit(1)
+			parser.print_usage(sys.stderr)
+			sys.exit(2)
 		udm_ipphone.remove( arguments[1] )
 	elif  arguments[0] == 'clear_redirect':
 		if len(arguments) < 2:
-			parser.print_usage()
-			sys.exit(1)
+			parser.print_usage(sys.stderr)
+			sys.exit(2)
 		udm_ipphone.clear_redirect( arguments[1] )
 	else:
-		parser.print_usage()
-		sys.exit(0)
+		parser.print_usage(sys.stderr)
+		sys.exit(2)

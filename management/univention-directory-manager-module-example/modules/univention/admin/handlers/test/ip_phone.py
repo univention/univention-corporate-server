@@ -266,15 +266,18 @@ class object(univention.admin.handlers.simpleLdap):
 		## weitere Entscheidungen getroffen werden können.
 		self.options = []
 		if self.oldattr.has_key('objectClass'):
+			# Das Objekt existiert bereits im LDAP und wurde von dort geladen
 			ocs = set(self.oldattr['objectClass'])
 			for opt in ('redirection', ):
 				if options[opt].matches(ocs):
 					self.options.append(opt)
+			self.old_options = copy.deepcopy(self.options)
 		else:
+			# Das Objekt existiert nocht nicht im LDAP und wird neu angelegt.
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '%s: reset options to default by _define_options' % module)
 			self._define_options(options)
+			self.old_options = []
 
-		self.old_options = copy.deepcopy(self.options)
 
 	def exists(self):
 		u"""Von SimpleLdap intern verwendete Methode, um zu entscheiden, ob ein
@@ -285,7 +288,7 @@ class object(univention.admin.handlers.simpleLdap):
 		u"""Öffnen des LDAP-Objekts."""
 
 		univention.admin.handlers.simpleLdap.open(self)
-		## In dieser Methode können die Eigenschaften des Objekts in self.info dynamisch Vor-initialisiert werden. 
+		## In dieser Methode können die Eigenschaften des Objekts in self.info dynamisch vor-initialisiert werden.
 		## Das self.info Dictionary kann indirekt angesprochen werden, d.h. z.B. durch self['active'] = 1
 		## Da der Basistyp von 'simpleLdap' (und damit von 'object') die Klasse 'base' ist, verhält sich
 		## 'self' wie ein spezielles Dictionary. Es überprüft Operationen anhand der 'property_descriptions'
@@ -296,7 +299,6 @@ class object(univention.admin.handlers.simpleLdap):
 		## in self.oldinfo und self.oldpolicies gespeichert. Diese dienen später zum Vergleich mit dem
 		## aktualisierten Eigenschaften in self.info.
 		self.save()
-		self.old_options = copy.deepcopy(self.options) # Optionen zum späteren Vergleich speichern.
 
 	def _ldap_pre_create(self):
 		u"""Wird vor dem Anlegen des LDAP Objektes aufgerufen."""
@@ -323,6 +325,8 @@ class object(univention.admin.handlers.simpleLdap):
 		pass
 
 	def _update_policies(self):
+		u""""Wird bim Anlegen und Modifizieren des Objekts aufgerufen, um ggf.
+		aktivierte Policies auf das Objekt anzuwenden."""
 		pass
 
 	def _ldap_addlist(self):

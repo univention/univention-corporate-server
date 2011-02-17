@@ -1,3 +1,15 @@
+univention-directory-manager-module-example (2.0.8-1) unstable; urgency=low
+
+  * Fix installation path of translation catalog (Bug #17915)
+  * Fix creating entry with immediate --redirect.
+  * Handle errors in ip-phone-tool.
+  * Parameter errors should exit with 2.
+  * debian/rules: Fix clean target.
+  * Fix quoting.
+  * Add simple script to test implementation.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 17 Feb 2011 07:08:03 +0100
+
 univention-directory-manager-module-example (2.0.7-1) unstable; urgency=low
 
   * fix default value for TrueFalseUp syntax (Bug #17915)

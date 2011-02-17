@@ -44,7 +44,8 @@ DS := debian/${PACKAGE_NAME}-schema
 
 PYVERS := $(shell pyversions -vr)
 
-MO_FILES=$(shell find modules -name '*.po' | sed 's/\.po/\.mo/g')
+PO_FILES := $(shell find modules -name '*.po')
+MO_FILES := $(PO_FILES:%.po=%.mo)
 
 %.mo:	%.po
 	msgfmt -o $@ $<
@@ -52,20 +53,20 @@ MO_FILES=$(shell find modules -name '*.po' | sed 's/\.po/\.mo/g')
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	touch configure-stamp
+	touch $@
 
-build: configure-stamp build-stamp $(MO_FILES)
-build-stamp:
+build: configure-stamp build-stamp
+build-stamp: $(MO_FILES)
 	dh_testdir
-	touch build-stamp
+	touch $@
 
 clean:
 	dh_testdir
-	dh_testroot
 	dh_clean
-	rm -f build-stamp configure-stamp
+	$(RM) build-stamp configure-stamp
 	$(RM) debian/*.conffiles
-	rm -f *~
+	$(RM) $(MO_FILES)
+	$(RM) *~
 
 install: build-stamp
 	dh_testdir
@@ -81,20 +82,20 @@ install: build-stamp
 
 	@for i in $(shell find modules/univention/admin/ -name '*.py'); do\
 		o=${D}/usr/share/pyshared/$${i#modules/};\
-		install -d "`dirname $$o`";\
-		install -m755 $$i $$o;\
+		install -d "`dirname "$$o"`";\
+		install -m755 "$$i" "$$o";\
 	done
 	@for i in `find modules/univention/admin/handlers/ -name "*.png" -o -name "*.gif"`; do\
 		o=${D}/usr/share/univention-webui-style/icon/$${i#modules/univention/admin/handlers/};\
-		install -d "`dirname $$o`";\
-		install -m 644 $$i $$o;\
+		install -d "`dirname "$$o"`";\
+		install -m 644 "$$i" "$$o";\
 	done
 	@for i in $(MO_FILES); do\
-		lang=`basename $$i .mo`;\
-		domain=`dirname $$i | sed 's,^modules/,,;s,/,-,g'`;\
-		o=debian/${D}/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
-		install -d "`dirname $$o`";\
-		install -m 644 $$i $$o;\
+		lang=`basename "$$i" .mo`;\
+		domain=`dirname "$$i" | sed 's,^modules/,,;s,/,-,g'`;\
+		o=${D}/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
+		install -d "`dirname "$$o"`";\
+		install -m 644 "$$i" "$$o";\
 	done
 
 	# Install example script
