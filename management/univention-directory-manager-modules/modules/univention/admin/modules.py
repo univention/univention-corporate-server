@@ -216,11 +216,8 @@ def init(lo, position, module, template_object=None):
 
 	# get defaults from template
 	if template_object:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules_init: got template object %s' % template_object)
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules_init: got template object %s' % template_object.dn)
 		template_object.open()
-		template_object.property_descriptions={}
-		template_object.layout=[]
-		univention.admin.modules.init(lo, position, template_object)
 
 		# add template ext. attr. defaults
 		if hasattr(template_object, 'property_descriptions'):

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.97-1) unstable; urgency=low
+
+  * moved module init to modedit.py to make template work immediately
+    after login (Bug #21180)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 18 Feb 2011 13:35:28 +0100
+
 univention-directory-manager-modules (6.0.96-1) unstable; urgency=low
 
   * allow renaming if the only difference is 
