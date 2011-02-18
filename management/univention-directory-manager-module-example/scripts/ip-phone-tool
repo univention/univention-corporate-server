@@ -45,7 +45,8 @@ import univention.admin.uexceptions
 import univention.admin.localization
 from optparse import OptionParser, OptionValueError
 
-translation=univention.admin.localization.translation('univention.admin.handlers.test')	## missing in this example
+univention.admin.localization.locale.setlocale(univention.admin.localization.locale.LC_ALL, '')
+translation = univention.admin.localization.translation('univention.admin.handlers.test')
 _ = translation.translate
 
 class ipphonetool:
@@ -184,11 +185,11 @@ class ipphonetool:
 
 if __name__ == '__main__':
 
-	usage = """usage: %prog [options] arguments
+	usage = _("""usage: %prog [options] arguments
    e.g. ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local
    or   ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local --redirect sip:otheruser@dom.local
    or   ip-phone-tool clear_redirect voip1
-   or   ip-phone-tool remove voip1"""
+   or   ip-phone-tool remove voip1""")
 
 	parser = OptionParser(usage=usage)
 	parser.add_option( '-D', '--binddn',

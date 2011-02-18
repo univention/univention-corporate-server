@@ -1,3 +1,19 @@
+# Translation for UDM example module
+# Copyright (C) Copyright 2005-2011 Univention GmbH
+# This file is distributed under the same license as the univention-directory-manager-module-example package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-directory-manager-module-example 2.0.9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-02-18 11:21+0100\n"
+"PO-Revision-Date: 2011-02-18 11:16+0100\n"
+"Last-Translator: Philipp Hahn <hahn@univention.de>\n"
+"Language-Team: German <de@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
 #: modules/univention/admin/handlers/test/ip_phone.py:46
 msgid "VoIP_Protocol"
 msgstr "VoIP_Protokoll"
@@ -103,34 +119,50 @@ msgstr "Rufumleitung"
 msgid "Redirect Option"
 msgstr "Rufumleitungsoption"
 
-#: scripts/ip-phone-tool:163
+#: scripts/ip-phone-tool:188
+msgid ""
+"usage: %prog [options] arguments\n"
+"   e.g. ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local\n"
+"   or   ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local --redirect sip:"
+"otheruser@dom.local\n"
+"   or   ip-phone-tool clear_redirect voip1\n"
+"   or   ip-phone-tool remove voip1"
+msgstr ""
+"usage: %prog [Optionen] Argumente\n"
+"   z.B. ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local\n"
+"   oder ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local --redirect sip:"
+"otheruser@dom.local\n"
+"   oder ip-phone-tool clear_redirect voip1\n"
+"   oder ip-phone-tool remove voip1"
+
+#: scripts/ip-phone-tool:197
 msgid "LDAP Bind DN"
 msgstr "LDAP Bind DN"
 
-#: scripts/ip-phone-tool:166
+#: scripts/ip-phone-tool:200
 msgid "LDAP Bind Password"
 msgstr "LDAP Bind Password"
 
-#: scripts/ip-phone-tool:169
+#: scripts/ip-phone-tool:203
 msgid "Prompt for password"
 msgstr "Nach Passwort fragen"
 
-#: scripts/ip-phone-tool:172
+#: scripts/ip-phone-tool:206
 msgid "Read password from file"
 msgstr "Passwort aus Datei lesen"
 
-#: scripts/ip-phone-tool:175
+#: scripts/ip-phone-tool:209
 msgid "Print additional information"
 msgstr "Mehr Information ausgeben"
 
-#: scripts/ip-phone-tool:183
+#: scripts/ip-phone-tool:217
 msgid "Set debug level"
 msgstr "Debug Level setzen"
 
-#: scripts/ip-phone-tool:186
+#: scripts/ip-phone-tool:220
 msgid "Username"
 msgstr "Benutzername"
 
-#: scripts/ip-phone-tool:190
+#: scripts/ip-phone-tool:224
 msgid "Redirect address"
 msgstr "Rufumleitungsadresse"

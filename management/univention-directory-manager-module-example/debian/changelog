@@ -1,3 +1,10 @@
+univention-directory-manager-module-example (2.0.9-1) unstable; urgency=low
+
+  * Initialize locale (Bug #17915)
+  * Update german translation.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 18 Feb 2011 11:30:56 +0100
+
 univention-directory-manager-module-example (2.0.8-1) unstable; urgency=low
 
   * Fix installation path of translation catalog (Bug #17915)

@@ -35,7 +35,7 @@ import univention.admin.handlers	# Enthält simpleLdap, die Basisklasse für 'ob
 import univention.admin.syntax		# Liefert standard Syntax-Definitionen für die UDM 'property_descriptions' unten
 
 # Für das Einbinden von Übersetzungskatalogen für verschiedene Sprachen
-translation=univention.admin.localization.translation('univention.admin.handlers.test')
+translation = univention.admin.localization.translation('univention.admin.handlers.test')
 _ = translation.translate
 
 ############################ <Syntax definitions> #############################
