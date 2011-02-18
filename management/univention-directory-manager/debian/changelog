@@ -1,3 +1,10 @@
+univention-directory-manager (8.0.63-1) unstable; urgency=low
+
+  * moved module init to modedit.py to make template work immediately
+    after login (Bug #21180)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 18 Feb 2011 13:28:09 +0100
+
 univention-directory-manager (8.0.62-1) unstable; urgency=low
 
   * add multi-language support for report generation (Bug #17425)

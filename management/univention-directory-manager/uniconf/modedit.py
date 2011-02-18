@@ -183,6 +183,7 @@ class modedit(unimodule.unimodule):
 			if hasattr(module,'template') and module.template:
 				template_module = univention.admin.modules.get(module.template)
 				template_object = None
+				univention.admin.modules.init(self.lo, position, template_module)
 				# there must be a more efficient way then parsing all templates...
 				for template in univention.admin.modules.lookup(template_module,None,self.lo,scope='sub'):
 					if template.dn == self.save.get('template_dn'):
