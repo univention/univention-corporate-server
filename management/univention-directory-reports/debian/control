@@ -10,6 +10,7 @@ Package: univention-directory-reports
 Architecture: all
 Depends: python-univention-directory-reports,
  texlive,
+ texlive-latex-extra,
  texlive-lang-german
 Description: Creates reports about Univention Admin objects
  Univention Report Generator creates reports in PDF format using
