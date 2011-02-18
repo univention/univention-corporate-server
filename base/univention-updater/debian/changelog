@@ -1,3 +1,10 @@
+univention-updater (6.0.56-1) unstable; urgency=low
+
+  * call hook "update_finished"
+  * display "reboot required" msg in component settings dialog (OX-Bug #18366) 
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 17 Feb 2011 16:54:21 +0100
+
 univention-updater (6.0.55-1) unstable; urgency=low
 
   * enable unset of component settings (Bug #15631)

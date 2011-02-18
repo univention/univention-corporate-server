@@ -533,7 +533,9 @@ class handler(umch.simpleHandler):
 		if windowtype == 'easyupdate':
 			cur_running_status = self.__is_univention_upgrade_running()
 			if not cur_running_status and self.last_running_status.get(windowtype) in (True, None):
+				self.hooks.call_hook('update_finished', windowtype=windowtype)
 				self._reinit()
+
 				# read status
 				status = self._get_status_file(FN_STATUS_UPGRADE)
 				ud.debug(ud.ADMIN, ud.INFO, '_web_tail_logfile: status=%s' % status)
@@ -571,7 +573,9 @@ class handler(umch.simpleHandler):
 		elif windowtype == 'release':
 			cur_running_status = self.__is_updater_running()
 			if not cur_running_status and self.last_running_status.get(windowtype) in (True, None):
+				self.hooks.call_hook('update_finished', windowtype=windowtype)
 				self._reinit()
+
 				# read status
 				status = self._get_status_file(FN_STATUS_UPDATER)
 				ud.debug(ud.ADMIN, ud.INFO, '_web_tail_logfile: status=%s' % status)
@@ -609,6 +613,7 @@ class handler(umch.simpleHandler):
 		elif windowtype == 'security':
 			cur_running_status = self.__is_security_update_running()
 			if not cur_running_status and self.last_running_status.get(windowtype) in (True, None):
+				self.hooks.call_hook('update_finished', windowtype=windowtype)
 				self._reinit()
 
 				# read status
@@ -648,6 +653,7 @@ class handler(umch.simpleHandler):
 		elif windowtype == 'dist-upgrade':
 			cur_running_status = self.__is_dist_upgrade_running()
 			if not cur_running_status and self.last_running_status.get(windowtype) in (True, None):
+				self.hooks.call_hook('update_finished', windowtype=windowtype)
 				self._reinit()
 
 				# read status
@@ -673,6 +679,7 @@ class handler(umch.simpleHandler):
 		elif windowtype == 'install-component':
 			cur_running_status = self.__is_univention_install_running()
 			if not cur_running_status and self.last_running_status.get(windowtype) in (True, None):
+				self.hooks.call_hook('update_finished', windowtype=windowtype)
 				self._reinit()
 
 				# read status
@@ -698,6 +705,7 @@ class handler(umch.simpleHandler):
 		else:
 			cur_running_status = None
 			ud.debug(ud.ADMIN, ud.ERROR, 'update.handler._web_tail_logfile: unknown window type: %s' % (windowtype) )
+
 
 		fdlist = []
 		for key in object.options.keys():
@@ -812,7 +820,7 @@ class handler(umch.simpleHandler):
 
 		frame_info = None
 		# Is a reboot required?
-		if self.updater.configRegistry.get( 'update/reboot/required', 'no' ) == 'yes':
+		if self.updater.configRegistry.is_true( 'update/reboot/required', False):
 			list_info = umcd.List()
 			frame_info = umcd.Frame( [ list_info ], _( 'Important Information' ) )
 			list_info.add_row( [ umcd.InfoBox( _( 'The system has been updated to a newer version of UCS. It is suggested that the system should be rebooted after the update. This has not been done yet.' ), columns = 2 ) ] )
@@ -874,7 +882,9 @@ class handler(umch.simpleHandler):
 					list_easy_update.add_row([ umcd.Text(_('Update command returned error code %s. Please check logfile.') % presult['exit']), btn_view_log])
 
 			# show easy update frame just here
-			res.dialog = umcd.Frame([list_easy_update], _('Release Information'))
+			res.dialog = [ umcd.Frame([list_easy_update], _('Release Information')) ]
+			if frame_info:
+				res.dialog.insert(0, frame_info)
 			self.revamped(object.id(), res)
 
 		# ==== UCS RELEASE UPDATES =====
@@ -1058,6 +1068,17 @@ class handler(umch.simpleHandler):
 			lst.add_row( [ umcd.InfoBox( _( 'The settings dialog has been disabled since an update is currently running. It will be reenabled if update process has finished.' ), columns = 2 ) ] )
 			res.dialog = [ umcd.Frame( [lst], _('Settings') ) ]
 		else:
+			# IMPORTANT INFORMATION
+
+			frame_info = None
+			# Is a reboot required?
+			if self.updater.configRegistry.is_true( 'update/reboot/required', False):
+				list_info = umcd.List()
+				frame_info = umcd.Frame( [ list_info ], _( 'Important Information' ) )
+				list_info.add_row( [ umcd.InfoBox( _( 'The system has been updated to a newer version of UCS. It is suggested that the system should be rebooted after the update. This has not been done yet.' ), columns = 2 ) ] )
+				cmd = umcp.Command( args = [ 'reboot/do' ], opts = { 'action' : 'reboot', 'message' : _( 'Rebooting the system after an update' ) } )
+				list_info.add_row( [ '', umcd.Button( _( 'Reboot system' ), 'actions/ok', actions = [ umcd.Action( cmd ) ] ) ] )
+
 			# RELEASE SETTINGS
 			list_settings_release = umcd.List()
 			req = umcp.Command(args=['update/release_settings'])
@@ -1148,6 +1169,9 @@ class handler(umch.simpleHandler):
 					list_settings_component.add_row([ btn_add_component ])
 
 			res.dialog = [ umcd.Frame([list_settings_release], _('Repository settings')), umcd.Frame([list_settings_component_txt, list_settings_component], _('Component settings')) ]
+			if frame_info:
+				res.dialog.insert(0, frame_info)
+
 		self.revamped(object.id(), res)
 
 
