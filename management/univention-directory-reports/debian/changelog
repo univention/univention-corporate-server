@@ -1,3 +1,9 @@
+univention-directory-reports (3.0.4-4) unstable; urgency=low
+
+  * debian/control: Depends +texlive-latex-recommended (Bug #16637)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 18 Feb 2011 08:44:33 +0100
+
 univention-directory-reports (3.0.4-3) unstable; urgency=low
 
   * debian/control: Depends +texlive-latex-extra (Bug #16637)
