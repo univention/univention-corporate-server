@@ -939,7 +939,7 @@ class handler( umch.simpleHandler ):
 		else:
 			infos = umcd.List()
 			w_status = [umcd.HTML('<b>%s</b>' % _('Status')), handler.STATES[domain_info.state]]
-			w_os = [umcd.HTML('<b>%s</b>' % _('Operating System')), getattr(domain_info, 'annotations', {}).get('os', '' )]
+			w_os = [umcd.HTML('<b>%s</b>' % _('Operating System')), umcd.Cell( umcd.Text( getattr(domain_info, 'annotations', {}).get('os', '' ) ), attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) ]
 			contact = getattr(domain_info, 'annotations', {}).get('contact', '' )
 			if contact:
 				match = handler.MAIL_REGEX.match( contact )

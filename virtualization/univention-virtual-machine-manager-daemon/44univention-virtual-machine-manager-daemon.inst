@@ -199,8 +199,8 @@ create_hvm_profile "Microsoft Windows 2008" "w2k8-" "kvm" "i686" "1024MB" "0"
 create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "xen" "x86_64" "1024MB" "0"
 create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "kvm" "x86_64" "1024MB" "0"
 
-create_xen_profile "Univention Corporate Server 2.4" "ucs24-" "i686" "512MB"
-create_xen_profile "Univention Corporate Server 2.4 (64 Bit)" "ucs24-64-" "x86_64" "512MB"
+create_xen_profile "UCS 2.4" "ucs24-" "i686" "512MB"
+create_xen_profile "UCS 2.4 (64 Bit)" "ucs24-64-" "x86_64" "512MB"
 
 create_hvm_profile "Univention Corporate Server 2.4" "ucs24-" "kvm" "i686" "512MB" "1"
 create_hvm_profile "Univention Corporate Server 2.4 (64 Bit)" "ucs24-64-" "kvm" "x86_64" "512MB" "1"
