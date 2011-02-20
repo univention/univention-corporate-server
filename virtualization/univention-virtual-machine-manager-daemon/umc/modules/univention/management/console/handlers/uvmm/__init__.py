@@ -1554,6 +1554,8 @@ class handler( umch.simpleHandler ):
 			ids.append( nic_mac.id() )
 
 			opts = copy.copy( object.options )
+			if not 'nictype' in opts:
+				opts[ 'nictype' ] = 'bridge'
 			cmd = umcp.SimpleCommand( 'uvmm/nic/create', options = opts )
 			overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = object.options )
 

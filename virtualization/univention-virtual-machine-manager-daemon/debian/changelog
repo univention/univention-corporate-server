@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.141-1) unstable; urgency=low
+
+  * fixed a problem creating new network interfaces; Bug #19573
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 20 Feb 2011 13:10:59 +0100
+
 univention-virtual-machine-manager-daemon (0.9.140-1) unstable; urgency=low
 
   * shorten operating system in UCS profiles
