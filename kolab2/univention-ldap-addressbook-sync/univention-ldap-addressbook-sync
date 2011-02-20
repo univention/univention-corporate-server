@@ -370,10 +370,10 @@ class IMAP_Client( object ):
 			elif item == 'uniqueMember':
 				contact.body = ''
 			else:
-                        	try:
-                                	setattr(contact, _mapping[item], '')
-                        	except:
-                                	pass
+				try:
+					setattr(contact, _mapping[item], '')
+				except:
+					pass
 
 		# add new message
 		self.imap4.append( self.folder, None, None, str( contact ) )
@@ -546,21 +546,23 @@ def main():
 
 	( _options, args ) = parser.parse_args()
 
-        _filter = cfgRegistry.get('ldap/addressbook/sync/attributefilter', '').split(" ")
+	_filter = cfgRegistry.get('ldap/addressbook/sync/attributefilter', '').split(" ")
 
-        _mapping = {'givenName':'name_given_name',
-                    'sn':'name_last_name',
-                    'displayName':'name_full_name',
-                    'telephoneNumber':'business1_number',
-                    'homePhone':'home1_number',
-                    'mobile':'mobile_number',
-                    'o':'organization',
-                    'postalCode':'business_postal_code',
-                    'street':'business_street',
-                    'l':'business_locality',
-                    'departmentNumber':'department',
-                    'title':'job_title',
-		    'univentionBirthday':'birthday'}
+	_mapping = {
+		'givenName' : 'name_given_name',
+		'sn' : 'name_last_name',
+		'displayName' : 'name_full_name',
+		'telephoneNumber' : 'business1_number',
+		'homePhone' : 'home1_number',
+		'mobile' : 'mobile_number',
+		'o' : 'organization',
+		'postalCode' : 'business_postal_code',
+		'street' : 'business_street',
+		'l' : 'business_locality',
+		'departmentNumber' : 'department',
+		'title' : 'name_prefix',
+		'univentionBirthday' : 'birthday'
+		}
 
 	# open logging
 	ud.init( '/var/log/univention/ldap-addressbook-sync.log', 1, 1 )
