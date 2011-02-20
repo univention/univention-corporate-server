@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (1.0.24-1) unstable; urgency=low
+
+  * remove default value for extended attribute ManageableBy; Bug #19532
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 20 Feb 2011 12:32:48 +0100
+
 univention-virtual-machine-manager-schema (1.0.23-1) unstable; urgency=low
 
   * fixed typo in LDAP ACLs; Bug #21560

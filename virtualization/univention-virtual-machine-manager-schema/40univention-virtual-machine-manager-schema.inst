@@ -77,7 +77,6 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set tabName="UVMM" \
 	--set syntax="ManagementServer" \
 	--set tabAdvanced="1" \
-	--set default="0" \
 	--set mayChange="1" \
 	--set multivalue="1" \
 	--set deleteObjectClass="0" \
