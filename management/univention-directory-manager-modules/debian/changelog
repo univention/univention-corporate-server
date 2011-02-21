@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.98-1) unstable; urgency=low
+
+  * add full width extended attributes (Bug #21623)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 21 Feb 2011 14:30:14 +0100
+
 univention-directory-manager-modules (6.0.97-1) unstable; urgency=low
 
   * moved module init to modedit.py to make template work immediately

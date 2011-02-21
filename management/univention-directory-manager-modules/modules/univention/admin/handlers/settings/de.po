@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-25 08:13+0100\n"
+"POT-Creation-Date: 2011-02-21 14:33+0100\n"
 "PO-Revision-Date: 2009-05-08 12:32+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,7 +62,7 @@ msgstr "Sichtbare Module"
 
 #: admin.py:86 cn.py:63 console_acl.py:123 console_operation.py:91
 #: customattribute.py:173 default.py:166 directory.py:177
-#: extended_attribute.py:317 lock.py:77 packages.py:78 printermodel.py:78
+#: extended_attribute.py:327 lock.py:77 packages.py:78 printermodel.py:78
 #: printeruri.py:78 prohibited_username.py:77 sambaconfig.py:181
 #: sambadomain.py:235 service.py:63 syntax.py:144 usertemplate.py:536
 #: xconfig_choices.py:177
@@ -70,7 +70,7 @@ msgid "General"
 msgstr "Allgemein"
 
 #: admin.py:86 cn.py:63 customattribute.py:173 default.py:166 directory.py:177
-#: extended_attribute.py:317 sambaconfig.py:181 sambadomain.py:235
+#: extended_attribute.py:327 sambaconfig.py:181 sambadomain.py:235
 #: service.py:63 syntax.py:144 usertemplate.py:536
 msgid "Basic Values"
 msgstr "Grundeinstellungen"
@@ -177,20 +177,20 @@ msgstr "Nummer auf der Karteikarte"
 msgid "LDAP Mapping"
 msgstr "LDAP-Abbildung"
 
-#: customattribute.py:142 extended_attribute.py:243
+#: customattribute.py:142 extended_attribute.py:253
 msgid "Object Class"
 msgstr "Objektklasse"
 
 # customattribute.py:06
-#: customattribute.py:152 extended_attribute.py:253
+#: customattribute.py:152 extended_attribute.py:263
 msgid "Delete Object Class"
 msgstr "Objektklasse löschen"
 
-#: customattribute.py:162 extended_attribute.py:263
+#: customattribute.py:162 extended_attribute.py:273
 msgid "Needed Module"
 msgstr "Benötigtes Modul"
 
-#: customattribute.py:163 extended_attribute.py:264
+#: customattribute.py:163 extended_attribute.py:274
 msgid "\"users/user\" or \"computer/thinclient\""
 msgstr "\"users/user\" oder \"computer/thinclient\""
 
@@ -443,62 +443,66 @@ msgid "Overwrite existing widget"
 msgstr "Existierendes Eingabefeld überschreiben"
 
 #: extended_attribute.py:203
+msgid "Span both columns"
+msgstr "Beide Spalten umfassen"
+
+#: extended_attribute.py:213
 msgid "Add an empty value to choicelist"
 msgstr "Einen leeren Wert zur Auswahlliste hinzufügen"
 
-#: extended_attribute.py:213 extended_attribute.py:338
+#: extended_attribute.py:223 extended_attribute.py:349
 msgid "LDAP mapping"
 msgstr "LDAP-Abbildung"
 
-#: extended_attribute.py:223
+#: extended_attribute.py:233
 msgid "May change"
 msgstr "Nachträglich modifizierbar"
 
-#: extended_attribute.py:233
+#: extended_attribute.py:243
 msgid "Value required"
 msgstr "Wert wird benötigt"
 
-#: extended_attribute.py:273
+#: extended_attribute.py:283
 msgid "Version of extended attribute"
 msgstr "Version des erweiterten Attributs"
 
-#: extended_attribute.py:284
+#: extended_attribute.py:294
 msgid "UDM CLI name of extended attribute"
 msgstr "UDM-CLI Attributname"
 
-#: extended_attribute.py:295 usertemplate.py:510
+#: extended_attribute.py:305 usertemplate.py:510
 msgid "Options"
 msgstr "Optionen"
 
-#: extended_attribute.py:305
+#: extended_attribute.py:315
 msgid "Unsearchable"
 msgstr "Nicht durchsuchbar"
 
-#: extended_attribute.py:322
+#: extended_attribute.py:332
 msgid "UDM Web"
 msgstr "UDM Web"
 
-#: extended_attribute.py:322
+#: extended_attribute.py:332
 msgid "Settings for UDM web interface"
 msgstr "UDM-Web-spezifische Einstellungen"
 
-#: extended_attribute.py:329
+#: extended_attribute.py:340
 msgid "UDM General"
 msgstr "UDM Allgemein"
 
-#: extended_attribute.py:329
+#: extended_attribute.py:340
 msgid "UDM related settings"
 msgstr "UDM-spezifische Einstellungen"
 
-#: extended_attribute.py:333
+#: extended_attribute.py:344
 msgid "Data type"
 msgstr "Datentyp"
 
-#: extended_attribute.py:333
+#: extended_attribute.py:344
 msgid "Data type definition"
 msgstr "Datentyp-Definition"
 
-#: extended_attribute.py:338
+#: extended_attribute.py:349
 msgid "LDAP"
 msgstr "LDAP"
 

@@ -376,6 +376,7 @@ def update_extended_attributes(lo, module, position):
 		tabname = attrs.get('univentionUDMPropertyTranslationTabName;entry-%s' % lang, attrs.get('univentionUDMPropertyLayoutTabName',[ _('Custom') ]) )[0]
 		overwriteTab = ( attrs.get('univentionUDMPropertyLayoutOverwriteTab',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
 		overwritePosition = ( attrs.get('univentionUDMPropertyLayoutOverwritePosition',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
+		fullWidth = ( attrs.get('univentionUDMPropertyLayoutFullWidth',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
 		deleteObjectClass = ( attrs.get('univentionUDMPropertyDeleteObjectClass', ['0'])[0].upper() in [ '1', 'TRUE' ] )
 		tabAdvanced = ( attrs.get('univentionUDMPropertyLayoutTabAdvanced',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
 
@@ -406,14 +407,17 @@ def update_extended_attributes(lo, module, position):
 			overwritePosition = False
 
 		if tabPosition == -1:
-			for (pos, field, tabAdvanced, overwritePosition) in properties4tabs[tabname]:
+			for (pos, field, tabAdvanced, overwritePosition, fullWidth) in properties4tabs[tabname]:
 				try:
 					if pos <= tabPosition:
 						tabPosition = pos-1
 				except:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to set tabPosition' % tabname)
 
-		properties4tabs[ tabname ].append( (tabPosition, univention.admin.field(pname), tabAdvanced, overwritePosition) )
+		if fullWidth:
+			properties4tabs[ tabname ].append( (tabPosition, univention.admin.field(pname, colspan=2), tabAdvanced, overwritePosition, fullWidth) )
+		else:
+			properties4tabs[ tabname ].append( (tabPosition, univention.admin.field(pname), tabAdvanced, overwritePosition, fullWidth) )
 
 		module.extended_udm_attributes.extend( [ univention.admin.extended_attribute( pname, attrs.get('univentionUDMPropertyObjectClass', [])[0],
 																			  attrs['univentionUDMPropertyLdapMapping'][0], deleteObjectClass,
@@ -473,7 +477,7 @@ def update_extended_attributes(lo, module, position):
 			freshTab = (len(fields) == 0)
 
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: lastprio=%s   lastfield=%s'% (lastprio,lastfield))
-			for (prio, field, tabAdvanced, overwritePosition) in priofields:
+			for (prio, field, tabAdvanced, overwritePosition, fullWidth) in priofields:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: custom fields found prio %s'% prio)
 				if currentTab.advanced and not tabAdvanced:
 					currentTab.advanced = False
@@ -501,7 +505,12 @@ def update_extended_attributes(lo, module, position):
 						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
 											   'modules update_extended_attributes: added new field "%s" on position "%s" (%s,%s)' % (field.property, prio, fline, fpos))
 				else:
-					if not lastfield:
+					if fullWidth:
+						fields.append([field])
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_attributes: full width field added %s' % fields)
+						lastfield = ''
+						lastprio = ''
+					elif not lastfield:
 						# first item in line ==> remember item and do nothing
 						lastfield = field
 						lastprio = prio
