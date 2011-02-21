@@ -849,7 +849,7 @@ class UniventionUpdater:
 					result.append( ver.clean() )
 				if self.sources:
 					ver.arch = "source"
-					if server.access(ver.path("Source.gz"))[1] is not None:
+					if server.access(ver.path("Sources.gz"))[1] is not None:
 						result.append( ver.deb("deb-src") )
 
 		return '\n'.join(result)
@@ -894,7 +894,7 @@ class UniventionUpdater:
 					result.append( ver.clean() )
 				if self.sources:
 					ver.arch = "source"
-					if server.access(ver.path("Source.gz"))[1] is not None:
+					if server.access(ver.path("Sources.gz"))[1] is not None:
 						result.append( ver.deb("deb-src") )
 
 		return '\n'.join(result)
@@ -964,7 +964,7 @@ class UniventionUpdater:
 						result.append( ver.clean() )
 					if self.sources:
 						ver.arch = "source"
-						if server.access(ver.path("Source.gz"))[1] is not None:
+						if server.access(ver.path("Sources.gz"))[1] is not None:
 							result.append( ver.deb("deb-src") )
 
 		# support different repository format without architecture (e.g. used by OX)
