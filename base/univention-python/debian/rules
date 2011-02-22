@@ -33,15 +33,14 @@
 PACKAGE_NAME=univention
 MODULE_NAME=univention
 
-DEB_UPSTREAM_VERSION=$(shell dpkg-parsechangelog \
-        | grep ^Version: | cut -d ' ' -f 2 | cut -d '-' -f 1)
+DEB_UPSTREAM_VERSION := $(shell dpkg-parsechangelog | sed -ne 's/^Version: \([^-]\+\).*/\1/p')
 
-PYVERS=$(shell pyversions -vr)
+PYVERS := $(shell pyversions -vr)
 
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	touch configure-stamp
+	touch $@
 
 build: configure-stamp build-stamp
 build-stamp: $(PYVERS:%=build-ext-%)
@@ -53,7 +52,6 @@ build-ext-%:
 
 clean:
 	dh_testdir
-	dh_testroot
 	rm -f build-stamp configure-stamp build-ext-2.4
 	dh_clean
 
@@ -67,7 +65,7 @@ install-ext-%:
 	dh_clean -k
 	dh_installdirs
 
-	install -d debian/python-univention/usr/lib/python2.4/site-packages/univention/
+	install -d debian/python-univention/usr/lib/python$*/site-packages/univention/
 	install -m 0644 modules/sitecustomize.py debian/python-univention/usr/lib/python$*/site-packages/
 	install -m 0644 modules/dns.py debian/python-univention/usr/lib/python$*/site-packages/univention/
 	install -m 0644 modules/misc.py debian/python-univention/usr/lib/python$*/site-packages/univention/
