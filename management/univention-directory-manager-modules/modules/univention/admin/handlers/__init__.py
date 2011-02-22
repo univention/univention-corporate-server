@@ -51,7 +51,7 @@ class base(object):
 		self.dn=dn
 
 		self.set_defaults = 0
-		if not self.dn: # this object is newly created an so we can use the default values
+		if not self.dn: # this object is newly created and so we can use the default values
 			self.set_defaults = 1
 
 		if not hasattr(self, 'position'):
@@ -111,7 +111,7 @@ class base(object):
 			for item in changes[ : ]:
 				key, old, new = item
 				# removing a key is ok
-				if new == None:
+				if new in (None, []):
 					continue
 				if self.descriptions[ key ].options:
 					for opt in self.descriptions[ key ].options:
@@ -165,7 +165,6 @@ class base(object):
 			return 0
 		p=self.descriptions[key]
 		if hasattr(self, 'options') and p.options:
-			in_options=0
 			for o in p.options:
 				if o in self.options:
 					return 1

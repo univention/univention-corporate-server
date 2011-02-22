@@ -321,7 +321,7 @@ def update_extended_attributes(lo, module, position):
 		# value is required
 		valueRequired = ( attrs.get('univentionUDMPropertyValueRequired',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
 
-		# value is required
+		# value not available for searching
 		try:
 			doNotSearch = int( attrs.get('univentionUDMPropertyDoNotSearch',[ '0' ])[0] )
 		except:

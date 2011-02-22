@@ -25,7 +25,8 @@ Description: UCS - Modules for administration tools
 
 Package: python-univention-directory-manager-cli
 Architecture: all
-Depends: python (>= 2.4), python-univention
+Depends: python (>= 2.4),
+ python-univention (>5.0.5)
 Conflicts: python2.4-univention-admin (<< 2.1)
 Provides: ${python:Provides}
 XB-Python-Version: 2.4

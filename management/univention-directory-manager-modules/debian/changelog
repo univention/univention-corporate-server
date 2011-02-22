@@ -1,3 +1,15 @@
+univention-directory-manager-modules (6.0.99-1) unstable; urgency=low
+
+  * Allow removing multi-valued attributes (Bug #21635)
+  * Fix ipProtocol translation (Bug #20162)
+  * debian/control: Depend on newer python-univention (Bug #14943)
+  * Delete unreachable code.
+  * Add DocTest to syntax.py and filter.py
+  * Add documentation to LDAP_Search.
+  * Correct spelling and wrong comments.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 22 Feb 2011 12:24:20 +0100
+
 univention-directory-manager-modules (6.0.98-1) unstable; urgency=low
 
   * add full width extended attributes (Bug #21623)

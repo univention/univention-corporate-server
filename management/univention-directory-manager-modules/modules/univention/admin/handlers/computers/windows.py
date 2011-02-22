@@ -506,7 +506,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				self.dn=None
 				self._exists=0
 				raise univention.admin.uexceptions.uidAlreadyUsed, ': %s' % requested_uid
-				return []
 
 			self.alloc.append(('uid', self.uid))
 			ml.append(('uid', self.oldattr.get('uid', [None])[0], self.uid))
