@@ -26,9 +26,6 @@ test -x $binpath || exit 0
 #
 SYSLOGD="-m0"
 
-# Reads config file (will override defaults above)
-[ -r /etc/default/syslogd ] && . /etc/default/syslogd
-
 create_xconsole()
 {
     if [ ! -e /dev/xconsole ]; then
