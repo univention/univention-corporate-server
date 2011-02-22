@@ -1,3 +1,9 @@
+univention-directory-replication (4.0.3-1) unstable; urgency=low
+
+  * log diagnostic message in case of a general LDAP_ERROR (Bug #14878)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 Feb 2011 18:34:38 +0100
+
 univention-directory-replication (4.0.2-3) unstable; urgency=low
 
   * New UCR variable ldap/replication/fallback with default 'ldif'
