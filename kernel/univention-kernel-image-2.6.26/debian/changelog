@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.26 (4.0.1-8) unstable; urgency=low
+
+  * Rebuild for security update (Bug #17572)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 23 Feb 2011 14:59:03 +0100
+
 univention-kernel-image-2.6.26 (4.0.1-7) unstable; urgency=low
 
   * Rebuild for security update (Bug #17572)
