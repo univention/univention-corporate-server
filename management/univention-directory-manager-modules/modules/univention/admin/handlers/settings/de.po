@@ -29,10 +29,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-21 14:33+0100\n"
+"POT-Creation-Date: 2011-02-23 08:23+0100\n"
 "PO-Revision-Date: 2009-05-08 12:32+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
@@ -44,9 +44,10 @@ msgstr "Einstellungen: Univention Directory Manager Globale Einstellungen"
 
 #: admin.py:54 cn.py:52 console_acl.py:56 console_acl.py:57
 #: console_operation.py:57 console_operation.py:58 customattribute.py:51
-#: default.py:54 directory.py:55 extended_attribute.py:52 license.py:56
-#: license.py:57 lock.py:56 lock.py:57 packages.py:56 packages.py:57
-#: printermodel.py:56 printermodel.py:57 printeruri.py:56 printeruri.py:57
+#: default.py:54 directory.py:55 extended_attribute.py:51
+#: extended_options.py:54 extended_options.py:55 license.py:56 license.py:57
+#: lock.py:56 lock.py:57 packages.py:56 packages.py:57 printermodel.py:56
+#: printermodel.py:57 printeruri.py:56 printeruri.py:57
 #: prohibited_username.py:56 prohibited_username.py:57 usertemplate.py:52
 #: xconfig_choices.py:56
 msgid "Name"
@@ -62,16 +63,16 @@ msgstr "Sichtbare Module"
 
 #: admin.py:86 cn.py:63 console_acl.py:123 console_operation.py:91
 #: customattribute.py:173 default.py:166 directory.py:177
-#: extended_attribute.py:327 lock.py:77 packages.py:78 printermodel.py:78
-#: printeruri.py:78 prohibited_username.py:77 sambaconfig.py:181
-#: sambadomain.py:235 service.py:63 syntax.py:144 usertemplate.py:536
-#: xconfig_choices.py:177
+#: extended_attribute.py:337 extended_options.py:146 lock.py:77 packages.py:78
+#: printermodel.py:78 printeruri.py:78 prohibited_username.py:77
+#: sambaconfig.py:181 sambadomain.py:235 service.py:63 syntax.py:144
+#: usertemplate.py:536 xconfig_choices.py:177
 msgid "General"
 msgstr "Allgemein"
 
 #: admin.py:86 cn.py:63 customattribute.py:173 default.py:166 directory.py:177
-#: extended_attribute.py:327 sambaconfig.py:181 sambadomain.py:235
-#: service.py:63 syntax.py:144 usertemplate.py:536
+#: extended_attribute.py:337 extended_options.py:146 sambaconfig.py:181
+#: sambadomain.py:235 service.py:63 syntax.py:144 usertemplate.py:536
 msgid "Basic Values"
 msgstr "Grundeinstellungen"
 
@@ -153,19 +154,19 @@ msgstr "Kurzbeschreibung"
 msgid "Long Description"
 msgstr "Ausführliche Beschreibung"
 
-#: customattribute.py:81 extended_attribute.py:112
+#: customattribute.py:81 extended_attribute.py:111
 msgid "Syntax"
 msgstr "Syntax"
 
-#: customattribute.py:91 extended_attribute.py:132
+#: customattribute.py:91 extended_attribute.py:131
 msgid "Multivalue"
 msgstr "Mehrfachwert"
 
-#: customattribute.py:102 extended_attribute.py:143
+#: customattribute.py:102 extended_attribute.py:142
 msgid "Default Value"
 msgstr "Vorgabewert"
 
-#: customattribute.py:112 extended_attribute.py:153
+#: customattribute.py:112 extended_attribute.py:152
 msgid "Tab Name"
 msgstr "Name der Karteikarte"
 
@@ -177,20 +178,20 @@ msgstr "Nummer auf der Karteikarte"
 msgid "LDAP Mapping"
 msgstr "LDAP-Abbildung"
 
-#: customattribute.py:142 extended_attribute.py:253
+#: customattribute.py:142 extended_attribute.py:263 extended_options.py:134
 msgid "Object Class"
 msgstr "Objektklasse"
 
 # customattribute.py:06
-#: customattribute.py:152 extended_attribute.py:263
+#: customattribute.py:152 extended_attribute.py:273
 msgid "Delete Object Class"
 msgstr "Objektklasse löschen"
 
-#: customattribute.py:162 extended_attribute.py:273
+#: customattribute.py:162 extended_attribute.py:283 extended_options.py:124
 msgid "Needed Module"
 msgstr "Benötigtes Modul"
 
-#: customattribute.py:163 extended_attribute.py:274
+#: customattribute.py:163 extended_attribute.py:284
 msgid "\"users/user\" or \"computer/thinclient\""
 msgstr "\"users/user\" oder \"computer/thinclient\""
 
@@ -398,113 +399,178 @@ msgstr "Lizenz"
 msgid "License Links"
 msgstr "Lizenzverweise"
 
-#: extended_attribute.py:46
+#: extended_attribute.py:45
 msgid "Settings: extended attribute"
 msgstr "Einstellungen: Erweitertes Attribut"
 
-#: extended_attribute.py:62
+#: extended_attribute.py:61 extended_options.py:64
 msgid "Default short description"
 msgstr "Standard-Kurzbeschreibung"
 
-#: extended_attribute.py:72
+#: extended_attribute.py:71 extended_options.py:74
 msgid "Default Long Description"
 msgstr "Ausführliche Standardbeschreibung"
 
-#: extended_attribute.py:82
+#: extended_attribute.py:81 extended_options.py:84
 msgid "Translation of short description "
 msgstr "Übersetzung der Kurzbeschreibung"
 
-#: extended_attribute.py:92
+#: extended_attribute.py:91 extended_options.py:94
 msgid "Translation of long description "
 msgstr "Übersetzung der ausführlichen Beschreibung"
 
-#: extended_attribute.py:102
+#: extended_attribute.py:101
 msgid "Translation of tab name"
 msgstr "Übersetzung des Karteikartennamens"
 
-#: extended_attribute.py:122
+#: extended_attribute.py:121
 msgid "Hook"
 msgstr "Hook"
 
-#: extended_attribute.py:163
+#: extended_attribute.py:162
 msgid "Position number on tab"
 msgstr "Positionsnummer auf der Karteikarte"
 
-#: extended_attribute.py:173
+#: extended_attribute.py:172
 msgid "Advanced tab"
 msgstr "Karteikarte mit erweiterten Einstellungen"
 
-#: extended_attribute.py:183
+#: extended_attribute.py:182
 msgid "Overwrite existing tab"
 msgstr "Existierende Karteikarte überschreiben"
 
-#: extended_attribute.py:193
+#: extended_attribute.py:192
 msgid "Overwrite existing widget"
 msgstr "Existierendes Eingabefeld überschreiben"
 
-#: extended_attribute.py:203
+#: extended_attribute.py:202
 msgid "Span both columns"
 msgstr "Beide Spalten umfassen"
 
-#: extended_attribute.py:213
+#: extended_attribute.py:212
 msgid "Add an empty value to choicelist"
 msgstr "Einen leeren Wert zur Auswahlliste hinzufügen"
 
-#: extended_attribute.py:223 extended_attribute.py:349
+#: extended_attribute.py:222 extended_attribute.py:360
 msgid "LDAP mapping"
 msgstr "LDAP-Abbildung"
 
-#: extended_attribute.py:233
+#: extended_attribute.py:232
 msgid "May change"
 msgstr "Nachträglich modifizierbar"
 
+#: extended_attribute.py:242
+msgid "Value editable"
+msgstr "Wert ist änderbar"
+
 #: extended_attribute.py:243
+msgid "Disabling this option will only allow hooks to change the value"
+msgstr "Das Deaktivieren dieser Option führt dazu, daß der Wert nur noch über Hooks änderbar ist."
+
+#: extended_attribute.py:253
 msgid "Value required"
 msgstr "Wert wird benötigt"
 
-#: extended_attribute.py:283
+#: extended_attribute.py:293
 msgid "Version of extended attribute"
 msgstr "Version des erweiterten Attributs"
 
-#: extended_attribute.py:294
+#: extended_attribute.py:304
 msgid "UDM CLI name of extended attribute"
 msgstr "UDM-CLI Attributname"
 
-#: extended_attribute.py:305 usertemplate.py:510
+#: extended_attribute.py:315 usertemplate.py:510
 msgid "Options"
 msgstr "Optionen"
 
-#: extended_attribute.py:315
+#: extended_attribute.py:325
 msgid "Unsearchable"
 msgstr "Nicht durchsuchbar"
 
-#: extended_attribute.py:332
+#: extended_attribute.py:342
 msgid "UDM Web"
 msgstr "UDM Web"
 
-#: extended_attribute.py:332
+#: extended_attribute.py:342
 msgid "Settings for UDM web interface"
 msgstr "UDM-Web-spezifische Einstellungen"
 
-#: extended_attribute.py:340
+#: extended_attribute.py:350
 msgid "UDM General"
 msgstr "UDM Allgemein"
 
-#: extended_attribute.py:340
+#: extended_attribute.py:350
 msgid "UDM related settings"
 msgstr "UDM-spezifische Einstellungen"
 
-#: extended_attribute.py:344
+#: extended_attribute.py:354
 msgid "Data type"
 msgstr "Datentyp"
 
-#: extended_attribute.py:344
+#: extended_attribute.py:354
 msgid "Data type definition"
 msgstr "Datentyp-Definition"
 
-#: extended_attribute.py:349
+#: extended_attribute.py:360
 msgid "LDAP"
 msgstr "LDAP"
+
+#: extended_options.py:46
+msgid "Settings: extended options"
+msgstr "Einstellungen: Erweiterte Optionen"
+
+#: extended_options.py:47
+msgid "Options for extended attributes"
+msgstr "Optionen für erweiterte Attribute"
+
+#: extended_options.py:65
+msgid "Short description for the option as shown on the Option tab."
+msgstr ""
+"Kurze Beschreibung für die Option, wie sie im Optionen-Reiter angezeigt wird."
+
+#: extended_options.py:75
+msgid "Long description for the option as shown on the Option tab."
+msgstr ""
+"Lange Beschreibung für die Option, wie sie im Optionen-Reiter angezeigt wird."
+
+#: extended_options.py:85
+msgid ""
+"Translation of the short description for the option as shown on the Option "
+"tab"
+msgstr ""
+"Übersetzung der kurzen Beschreibung, wie sie im Optionen-Reiter angezeigt "
+"wird."
+
+#: extended_options.py:95
+msgid ""
+"Translation of the long description for the option as shown on the Option tab"
+msgstr ""
+"Übersetzung der langen Beschreibung, wie sie im Optionen-Reiter angezeigt "
+"wird."
+
+#: extended_options.py:104
+msgid "Default"
+msgstr "Vorgabewert"
+
+#: extended_options.py:105
+msgid "Enable option by default."
+msgstr "Setzt die Option standardmäßig."
+
+#: extended_options.py:114
+msgid "Editable"
+msgstr "Editierbar"
+
+#: extended_options.py:115
+msgid "Option may be repeatly turned on and off."
+msgstr "Die Option kann wiederholg gesetzt und entfernt werden."
+
+#: extended_options.py:125
+msgid "List of modules this option applies to."
+msgstr "Liste der Module, auf die diese Option angewandt wird."
+
+#: extended_options.py:135
+msgid "Mapping to LDAP objectClasses"
+msgstr "Abbildung auf LDAP-Objektklassen"
 
 #: license.py:50
 msgid "Settings: License"
@@ -1138,6 +1204,12 @@ msgstr "Bildschirm Grösse (mm)"
 #: xconfig_choices.py:177
 msgid "X Configuration Choices"
 msgstr "X Konfiguration Auswahl"
+
+#~ msgid "Default value"
+#~ msgstr "Vorgabewert"
+
+#~ msgid "Enable editing"
+#~ msgstr "Erlaubt das Editieren"
 
 #~ msgid "Settings: UDM property"
 #~ msgstr "Einstellungen: UDM Property"

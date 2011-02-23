@@ -1,3 +1,11 @@
+univention-directory-manager-modules (6.0.100-1) unstable; urgency=low
+
+  * Ticket#: 2010121410001136
+    - Add support for defining options via LDAP (Bug #21644)
+    - Add support for editable=False properties (Bug #21643)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Feb 2011 06:23:07 +0100
+
 univention-directory-manager-modules (6.0.99-1) unstable; urgency=low
 
   * Allow removing multi-valued attributes (Bug #21635)

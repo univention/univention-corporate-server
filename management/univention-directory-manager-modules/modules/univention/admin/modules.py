@@ -212,6 +212,7 @@ def init(lo, position, module, template_object=None):
 					subsyn._load( lo )
 
 	# add new properties
+	update_extended_options(lo, module, position)
 	update_extended_attributes( lo, module, position )
 
 	# get defaults from template
@@ -277,6 +278,33 @@ def is_property_in_layout(itemlist, field):
 	return False
 
 
+def update_extended_options(lo, module, position):
+	"""Overwrite options defined via LDAP."""
+
+	# get current language
+	lang = locale.getlocale(locale.LC_MESSAGES)[0]
+	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules update_extended_options: LANG=%s' % lang)
+	if lang:
+		lang = lang.replace('_','-').lower()
+	else:
+		lang = 'xxxxx'
+
+	# append UDM extended options
+	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMOption)(univentionUDMOptionModule=%s))' % name(module)):
+		oname = attrs['cn'][0]
+		shortdesc = attrs.get('univentionUDMOptionTranslationShortDescription;entry-%s' % lang, attrs['univentionUDMOptionShortDescription'])[0]
+		longdesc = attrs.get('univentionUDMOptionTranslationLongDescription;entry-%s' % lang, attrs.get('univentionUDMOptionLongDescription', ['']))[0]
+		default = attrs.get('univentionUDMOptionDefault', ['0'])[0] == '1'
+		editable = attrs.get('univentionUDMOptionEditable', ['0'])[0] == '1'
+		classes = attrs.get('univentionUDMOptionObjectClass', [])
+
+		module.options[oname] = univention.admin.option(
+				short_description=shortdesc,
+				long_description=longdesc,
+				default=default,
+				editable=editable,
+				objectClasses=classes)
+
 def update_extended_attributes(lo, module, position):
 
 	# add list of tabnames created by extended attributes
@@ -317,6 +345,13 @@ def update_extended_attributes(lo, module, position):
 		except:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyValueMayChange throwed exception - assuming mayChange=0')
 			mayChange = 0
+
+		# value is editable (only via hooks or direkt module.info[] access)
+		try:
+			editable = int(attrs.get('univentionUDMPropertyValueEditable', ['1'])[0])
+		except:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyValueEditable throwed exception - assuming editable=True')
+			editable = True
 
 		# value is required
 		valueRequired = ( attrs.get('univentionUDMPropertyValueRequired',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )
@@ -364,7 +399,8 @@ def update_extended_attributes(lo, module, position):
 			may_change = mayChange,
 			dontsearch = doNotSearch,
 			identifies = 0,
-			default = propertyDefault
+			default = propertyDefault,
+			editable = editable
 		)
 
 		# add LDAP mapping
