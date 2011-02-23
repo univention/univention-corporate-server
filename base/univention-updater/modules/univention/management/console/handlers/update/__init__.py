@@ -385,14 +385,11 @@ class handler(umch.simpleHandler):
 			                'password': component_password,
 			                'version': component_version,
 			                }
-			ud.debug(ud.ADMIN, ud.INFO, 'HERE')
 			for (UCRV, field, ) in directFields.items():
-				ud.debug(ud.ADMIN, ud.INFO, '%s %s' % (field, UCRV))
 				if field:
 					res.append('%s/%s=%s' % (UCRVBase, UCRV, field, ))
 				else:
 					unset.append('%s/%s' % (UCRVBase, UCRV, ))
-			ud.debug(ud.ADMIN, ud.INFO, 'HERE')
 			parts = []
 			if component_use_maintained:
 				parts.append('maintained')
