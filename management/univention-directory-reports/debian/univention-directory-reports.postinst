@@ -52,25 +52,44 @@ if [ -n "$directory_reports_templates_default2" ]; then
 	univention-config-registry unset directory/reports/templates/default2
 fi
 
-# remove old variables
+# migration from older package version
 if dpkg --compare-versions "$2" lt-nl 3.0.1-1; then
-	for i in \
-		directory/reports/templates/pdf/user1 \
-		directory/reports/templates/pdf/group1 \
-		directory/reports/templates/pdf/computer1 \
-		directory/reports/templates/csv/user1 \
-		directory/reports/templates/csv/group1 \
-		directory/reports/templates/csv/computer1
-		do univention-config-registry unset $i
+	# unset old UCR variables if they have not been changed in the meanwhile
+	echo 'directory/reports/templates/csv/computer1 computers/computer "Standard CSV Report" /etc/univention/directory/reports/default/computers.csv
+	directory/reports/templates/csv/group1 groups/group "Standard CSV Report" /etc/univention/directory/reports/default/groups.csv
+	directory/reports/templates/csv/user1 users/user "Standard CSV Report" /etc/univention/directory/reports/default/users.csv
+	directory/reports/templates/pdf/computer1 computers/computer "Standard Report" /etc/univention/directory/reports/default/computers.tex
+	directory/reports/templates/pdf/group1 groups/group "Standard Report" /etc/univention/directory/reports/default/groups.tex
+	directory/reports/templates/pdf/user1 users/user "Standard Report" /etc/univention/directory/reports/default/users.tex' \
+	| (
+		keyList=()
+		while read key val; do
+			[ "$(univention-config-registry get "$key")" = "$val" ] && keyList+=("$key")
+		done
+
+		# unset all keys at once
+		[ "${#keyList[@]}" -gt 0 ] && univention-config-registry unset "${keyList[@]}"
+	)
+
+	# for compatibility reasons, try to set a link to the header.tex and footer.tex 
+	# files, so that old reports do not break .. only do this in case the original 
+	# template has not been modified
+	tmpPath=/etc/univention/directory/reports
+	for ifile in header.tex footer.tex; do
+		if [ ! -e /etc/univention/templates/files/$tmpPath/$ifile ]; then
+			rm -f $tmpPath/$ifile 
+			ln -s $tmpPath/default/de_DE/$ifile $tmpPath/$ifile
+		fi
 	done
 fi
 
-univention-config-registry set directory/reports/logo?/usr/share/univention-directory-reports/univention_logo.png
-univention-config-registry set directory/reports/templates/pdf/user1?'users/user "Standard Report" /etc/univention/directory/reports/default users.tex'
-univention-config-registry set directory/reports/templates/pdf/group1?'groups/group "Standard Report" /etc/univention/directory/reports/default groups.tex'
-univention-config-registry set directory/reports/templates/pdf/computer1?'computers/computer "Standard Report" /etc/univention/directory/reports/default computers.tex'
-univention-config-registry set directory/reports/templates/csv/user1?'users/user "Standard CSV Report" /etc/univention/directory/reports/default users.csv'
-univention-config-registry set directory/reports/templates/csv/group1?'groups/group "Standard CSV Report" /etc/univention/directory/reports/default groups.csv'
-univention-config-registry set directory/reports/templates/csv/computer1?'computers/computer "Standard CSV Report" /etc/univention/directory/reports/default computers.csv'
+# set default values for UCR variables
+univention-config-registry set directory/reports/logo?/usr/share/univention-directory-reports/univention_logo.png \
+	directory/reports/templates/pdf/user1?'users/user "Standard Report" /etc/univention/directory/reports/default users.tex' \
+	directory/reports/templates/pdf/group1?'groups/group "Standard Report" /etc/univention/directory/reports/default groups.tex' \
+	directory/reports/templates/pdf/computer1?'computers/computer "Standard Report" /etc/univention/directory/reports/default computers.tex' \
+	directory/reports/templates/csv/user1?'users/user "Standard CSV Report" /etc/univention/directory/reports/default users.csv' \
+	directory/reports/templates/csv/group1?'groups/group "Standard CSV Report" /etc/univention/directory/reports/default groups.csv' \
+	directory/reports/templates/csv/computer1?'computers/computer "Standard CSV Report" /etc/univention/directory/reports/default computers.csv'
 
 exit 0

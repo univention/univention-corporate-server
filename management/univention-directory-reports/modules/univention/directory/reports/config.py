@@ -33,6 +33,7 @@
 import ConfigParser
 import shlex
 import locale
+import os.path
 
 class Config( ConfigParser.ConfigParser ):
 	def __init__( self, filename = '/etc/univention/directory/reports/config.ini' ):
@@ -40,6 +41,8 @@ class Config( ConfigParser.ConfigParser ):
 		self._filename = filename
 		self.read( filename )
 		defaults = self.defaults()
+		self._oldHeader = defaults.get( 'header', None )
+		self._oldFooter = defaults.get( 'footer', None )
 		self.default_report_name = defaults.get( 'report', None )
 		self._reports = {}
 		
@@ -49,10 +52,22 @@ class Config( ConfigParser.ConfigParser ):
 			self._lang = "en_US"
 
 		for key, value in self.items( 'reports' ):
-			try:
-				module, name, dir, filename = shlex.split( value )
-			except:
+			# Entries are expected to have the form (see also config.ini):
+			#   <module> <name> <directoryPath> <templateFile>
+			# For compatibility reasons, we need also to accept the deprecated format:
+			#   <module> <name> <templateFilePath>
+			# make sure that the entries match this format
+			module, name, dir, filename = [''] * 4
+			tmpList = shlex.split( value )
+			if len(tmpList) == 3:
+				# old format, insert empty string for 'directory'
+				tmpList.insert(2, '')
+			if not len(tmpList) == 4:
+				# wrong format
 				continue
+			module, name, dir, filename = tmpList
+
+			# save the entry to our internal list
 			if self._reports.has_key( module ):
 				self._reports[ module ].append( ( name, dir, filename ) )
 			else:
@@ -73,17 +88,42 @@ class Config( ConfigParser.ConfigParser ):
 		# if anything fails, return None
 		return None
 
+	def _guess_path( self, directory, fileName, alternativePath = ''):
+		"""Guess the correct path for a given template file. Possible paths:
+		(1) directory/<language>/fileName
+		(2) directory/fileName
+		(3) alternativePath"""
+		# guess the header/footer path in order to support the old format
+		guessedPaths = []
+
+		# if the directory path is non-empty, this is how it should be, our first guess
+		if directory:
+			guessedPaths.append(os.path.join(directory, self._lang, fileName))
+		# in case there is no language directory, our second guess
+		# (works also for emtpy directory)
+		guessedPaths.append(os.path.join(directory, fileName))
+		# if given, our last guess is the alternative path
+		if alternativePath:
+			guessedPaths.append(alternativePath)
+
+		# get the first valid path
+		while len(guessedPaths):
+			path = guessedPaths.pop(0)
+			if os.path.exists(path):
+				return path
+		return None
+
 	def get_header( self, module, name = None ):
 		report = self._get_report_entry(module, name)
 		if not report:
 			return None
-		return "%s/%s/header.tex" % (report[1], self._lang)
+		return self._guess_path(report[1], 'header.tex', self._oldHeader)
 
 	def get_footer( self, module, name = None ):
 		report = self._get_report_entry(module, name)
 		if not report:
 			return None
-		return "%s/%s/footer.tex" % (report[1], self._lang)
+		return self._guess_path(report[1], 'footer.tex', self._oldFooter)
 
 	def get_report_names( self, module ):
 		reports = self._reports.get( module, [] )
@@ -93,5 +133,5 @@ class Config( ConfigParser.ConfigParser ):
 		report = self._get_report_entry(module, name)
 		if not report:
 			return None
-		return "%s/%s/%s" % (report[1], self._lang, report[2])
+		return self._guess_path(report[1], report[2])
 

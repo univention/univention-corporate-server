@@ -1,3 +1,9 @@
+univention-directory-reports (3.0.5-1) unstable; urgency=low
+
+  * added support for report entries in old format (Bug #17425)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Feb 2011 17:50:52 +0100
+
 univention-directory-reports (3.0.4-4) unstable; urgency=low
 
   * debian/control: Depends +texlive-latex-recommended (Bug #16637)
