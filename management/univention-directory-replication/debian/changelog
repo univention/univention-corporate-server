@@ -1,3 +1,10 @@
+univention-directory-replication (4.0.5-1) unstable; urgency=low
+
+  * fix undefined exception (this case seems to be very rare..)
+    (Bug #14878)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 23 Feb 2011 10:42:38 +0100
+
 univention-directory-replication (4.0.4-1) unstable; urgency=low
 
   * print info and matched fields for all LPAP exceptions (Bug #14878)

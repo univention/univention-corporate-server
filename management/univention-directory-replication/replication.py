@@ -932,7 +932,7 @@ def handler(dn, new, listener_old):
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '\tmachted dn: %s' % (dn,msg[0]['matched']))
 		try:
 			cur = l.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)')[0][1]
-		except LDAPError, msg:
+		except ldap.LDAPError, msg:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: going into LDIF mode' % msg[0]['desc'])
 			if 'info' in msg[0]:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tadditional info: %s' % (dn,msg[0]['info']))
