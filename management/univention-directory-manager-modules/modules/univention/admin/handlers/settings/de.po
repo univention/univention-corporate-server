@@ -27,11 +27,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-23 08:23+0100\n"
-"PO-Revision-Date: 2009-05-08 12:32+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-02-23 11:42+0100\n"
+"PO-Revision-Date: 2011-02-23 11:42+0100\n"
+"Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -460,12 +460,14 @@ msgid "May change"
 msgstr "Nachträglich modifizierbar"
 
 #: extended_attribute.py:242
-msgid "Value editable"
-msgstr "Wert ist änderbar"
+msgid "Value not editable"
+msgstr "Wert ist nicht änderbar"
 
 #: extended_attribute.py:243
 msgid "Disabling this option will only allow hooks to change the value"
-msgstr "Das Deaktivieren dieser Option führt dazu, daß der Wert nur noch über Hooks änderbar ist."
+msgstr ""
+"Das Deaktivieren dieser Option führt dazu, daß der Wert nur noch über Hooks "
+"änderbar ist."
 
 #: extended_attribute.py:253
 msgid "Value required"

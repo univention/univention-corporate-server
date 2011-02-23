@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.100-2) unstable; urgency=low
+
+  * Rename univentionUDMPropertyValue{Not,}Editable to fix default (Bug #21643)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Feb 2011 11:14:38 +0100
+
 univention-directory-manager-modules (6.0.100-1) unstable; urgency=low
 
   * Ticket#: 2010121410001136

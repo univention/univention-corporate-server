@@ -347,11 +347,7 @@ def update_extended_attributes(lo, module, position):
 			mayChange = 0
 
 		# value is editable (only via hooks or direkt module.info[] access)
-		try:
-			editable = int(attrs.get('univentionUDMPropertyValueEditable', ['1'])[0])
-		except:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyValueEditable throwed exception - assuming editable=True')
-			editable = True
+		editable = attrs.get('univentionUDMPropertyValueNotEditable', ['0'])[0] not in ['1', 'TRUE']
 
 		# value is required
 		valueRequired = ( attrs.get('univentionUDMPropertyValueRequired',[ '0' ])[0].upper() in [ '1', 'TRUE' ] )

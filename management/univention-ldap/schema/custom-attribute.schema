@@ -253,8 +253,8 @@ attributetype ( 1.3.6.1.4.1.10176.200.125 NAME 'univentionUDMPropertyLayoutFullW
 		SUBSTR caseIgnoreSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
 
-attributetype ( 1.3.6.1.4.1.10176.200.126 NAME 'univentionUDMPropertyValueEditable'
-        DESC ' defines if value is readonly on createn '
+attributetype ( 1.3.6.1.4.1.10176.200.126 NAME 'univentionUDMPropertyValueNotEditable'
+        DESC ' defines if the user can directly modify the value '
         EQUALITY caseIgnoreMatch
 		SUBSTR caseIgnoreSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
@@ -279,7 +279,7 @@ objectclass ( 1.3.6.1.4.1.10176.200.199
 			  univentionUDMPropertyDeleteObjectClass $ 
 			  univentionUDMPropertyValueMayChange $ 
 			  univentionUDMPropertyValueRequired $
-			  univentionUDMPropertyValueEditable $
+			  univentionUDMPropertyValueNotEditable $
 			  univentionUDMPropertyLayoutTabName $ 
 			  univentionUDMPropertyLayoutOverwriteTab $
 			  univentionUDMPropertyLayoutOverwritePosition $
