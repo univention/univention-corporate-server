@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.64-1) unstable; urgency=low
+
+  * fixed traceback when deleting a single object (Bug #21154, Bug #21647)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Feb 2011 10:14:37 +0100
+
 univention-directory-manager (8.0.63-1) unstable; urgency=low
 
   * moved module init to modedit.py to make template work immediately
