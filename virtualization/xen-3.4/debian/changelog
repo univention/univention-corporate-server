@@ -1,3 +1,9 @@
+xen-3.4 (3.4.3-14) unstable; urgency=low
+
+  * Backport blktap2 support from Xen 4.0.1 (Bug #19345)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Feb 2011 20:48:10 +0100
+
 xen-3.4 (3.4.3-13) unstable; urgency=low
 
   * Increase dhcp-timeout from 60 seconds to work-around default "bridge
