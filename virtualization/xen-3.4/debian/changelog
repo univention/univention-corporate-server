@@ -1,3 +1,9 @@
+xen-3.4 (3.4.3-15) unstable; urgency=low
+
+  * Added uuid-dev to build depends which is needed by vhd (Bug #19345)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Feb 2011 21:29:53 +0100
+
 xen-3.4 (3.4.3-14) unstable; urgency=low
 
   * Backport blktap2 support from Xen 4.0.1 (Bug #19345)

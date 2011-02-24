@@ -11,7 +11,7 @@ Build-Depends: debhelper (>> 7), lsb-release, quilt,
  texlive-latex-base,
  texlive-fonts-recommended,
  texlive-latex-recommended,
- udev
+ udev, uuid-dev
 XS-Python-Version: all
 
 Package: xen-3.4
