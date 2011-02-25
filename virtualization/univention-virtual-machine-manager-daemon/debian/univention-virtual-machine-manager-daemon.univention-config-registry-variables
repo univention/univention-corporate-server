@@ -47,19 +47,25 @@ Type=bool
 Categories=uvmm
 
 [uvmm/volume/permissions/mode]
-Description[de]=Defines the file mode permissions for new hard drive images that are created in a storage pool
-Description[en]=Definiert die Berechtigungen, die für neu erzeugte Festplatten-Images verwendet werden
+Description[en]=Defines the file mode permissions for new hard drive images that are created in a storage pool
+Description[de]=Definiert die Berechtigungen, die für neu erzeugte Festplatten-Images verwendet werden
 Type=int
 Categories=uvmm
 
 [uvmm/volume/permissions/owner]
-Description[de]=Defines the owner for new hard drive images that are created in a storage pool
-Description[en]=Definiert den Besitzer, der für neu erzeugte Festplatten-Images verwendet wird
+Description[en]=Defines the owner for new hard drive images that are created in a storage pool
+Description[de]=Definiert den Besitzer, der für neu erzeugte Festplatten-Images verwendet wird
 Type=int
 Categories=uvmm
 
 [uvmm/volume/permissions/group]
-Description[de]=Defines the group for new hard drive images that are created in a storage pool
-Description[en]=Definiert Die Gruppe, die für neu erzeugte Festplatten-Images verwendet wird
+Description[en]=Defines the group for new hard drive images that are created in a storage pool
+Description[de]=Definiert die Gruppe, die für neu erzeugte Festplatten-Images verwendet wird
 Type=int
+Categories=uvmm
+
+[uvmm/xen/images/tap2]
+Description[de]=Xen Images als blktap2 Devices anlegen. Ab UCS 2.4-2 ist dies unterstützt und standardmäßig aktiviert.
+Description[en]=Create Xen images as blktap2 devices. It is supported and enabled by default since UCS 2.4-2.
+Type=bool
 Categories=uvmm

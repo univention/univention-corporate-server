@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (0.9.144-1) unstable; urgency=low
+
+  * By default UVMM creates Xen images as blktap2 devices. If the UCR
+    variable uvmm/xen/images/tap2 is set to false the old loopback
+    device will be used (Bug #19345)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Feb 2011 20:34:38 +0100
+
 univention-virtual-machine-manager-daemon (0.9.143-1) unstable; urgency=low
 
   * Reopen logfiles on SIGHUP (Bug #20465)

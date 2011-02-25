@@ -39,6 +39,7 @@ import univention.management.console.dialog as umcd
 import univention.management.console.protocol as umcp
 
 import univention.debug as ud
+import univention.config_registry as ucr
 
 import univention.uvmm.node as uvmmn
 import univention.uvmm.protocol as uvmmp
@@ -442,28 +443,22 @@ class DriveWizard( umcd.IWizard ):
 		if self.node_uri.startswith('qemu'):
 			disk.driver = 'qemu'
 			disk.driver_type = driver_type.lower()
-		elif self.node_uri.startswith('xen4FIXME'): # FIXME
-			if is_file_pool:
-				disk.driver = 'tap2'
-				if driver_type == 'raw':
-					disk.driver_type = 'aio'
-				else: # qcow vhd
-					disk.driver_type = driver_type
-			else:
-				disk.driver = 'block'
-		elif self.node_uri.startswith('xen3FIXME'): # FIXME
-			if is_file_pool:
-				disk.driver = 'tap'
-				if driver_type == 'raw':
-					disk.driver_type = 'aio'
-				else: # qcow qcow2 vmdk vhd
-					disk.driver_type = driver_type
-			else:
-				disk.driver = 'block'
 		elif self.node_uri.startswith('xen'):
+			# Since UCS 2.4-2 Xen 3.4.4 contains the blktab2 driver
+			# from Xen 4.0.1
 			if is_file_pool:
-				disk.driver = 'file'
-				disk.driver_type = None # only raw support
+				configRegistry = ucr.ConfigRegistry()
+				configRegistry.load()
+				if configRegistry.is_true('uvmm/xen/images/tap2', True):
+					disk.driver = 'tap2'
+					if driver_type == 'raw':
+						disk.driver_type = 'aio'
+					else: # qcow vhd
+						disk.driver_type = driver_type
+				else:
+					disk.driver = 'file'
+					disk.driver_type = None # only raw support
+
 			else:
 				disk.driver = 'block'
 		else:
