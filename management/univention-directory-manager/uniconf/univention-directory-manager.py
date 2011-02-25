@@ -61,6 +61,7 @@ def main(argv):
 
 	socket_filename=''
 	socket_timeout=60*5
+	socket_timeout_short = 30
 	debugging = 0
 	language = configRegistry.get ('directory/manager/web/language', LANG_EN)
 	https = 0 
@@ -128,8 +129,13 @@ def main(argv):
 		daemonize()
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'waiting for connections')
 
+		RequestCount = 0
 		while 1:
-			rfds, wfds, xfds = select.select([sock], [], [], socket_timeout)
+			if RequestCount <= 1:
+				rfds, wfds, xfds = select.select([sock], [], [], socket_timeout_short)
+			else:
+				rfds, wfds, xfds = select.select([sock], [], [], socket_timeout)
+			RequestCount += 1
 			if not rfds and not wfds and not xfds:
 				break # timeout
 			elif not rfds:
