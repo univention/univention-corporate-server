@@ -3,7 +3,7 @@
 VERSION := $(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 UVMM := univention-virtual-machine-manager
 
-MODULES=$(shell find umc/modules/univention/management -name '*.py')
+MODULES := $(shell find umc/modules/univention/management -name '*.py')
 PO_FILES := $(shell find umc/modules/univention/management src -name '*.po')
 MO_FILES := $(PO_FILES:%.po=%.mo)
 IMAGES := $(shell find umc/images -name '*.gif' -o -name '*.png')
@@ -59,6 +59,7 @@ clean::
 	find -name \*.pyc -exec $(RM) {} +
 	$(RM) src/virtual-machine-manager-daemon.log
 	$(RM) $(MO_FILES)
+	$(RM) tags
 
 .PHONY: modules
 modules: $(MODULES)
@@ -148,3 +149,6 @@ $(foreach size,$(SIZES),$(eval $(call CONVERT_template,$(size))))
 	convert $< $@
 
 endif
+
+tags: $(shell find src umc -name \*.py)
+	ctags-exuberant -o $@ $^

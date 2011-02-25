@@ -39,33 +39,15 @@ import logging
 import logging.config
 from optparse import OptionParser, OptionGroup
 from univention.uvmm.helpers import TranslatableException, _, N_
+import os
+import signal
 
 def createDaemon(options):
 	"""http://code.activestate.com/recipes/278731/"""
-	import os
-	import signal
 	UMASK = 0037
 	WORKDIR = "/"
-	REDIRECT_TO = os.devnull
+	REDIRECT_TO = os.path.devnull
 	MAXFD = 1024
-
-	def signal_handler_restart(signum, frame):
-		"""Handle HUP signal."""
-		self = os.path.abspath(sys.argv[0])
-		args = sys.argv[:]
-		logger.info("Re-executing self: %s %s" % (self, args))
-		os.execv(self, args)
-		logger.error("Failed to re-executing self.")
-		sys.exit(1)
-
-	def signal_handler_terminate(signum, frame):
-		"""Handle TERM signal."""
-		if os.path.exists(options.pidfile):
-			os.remove(options.pidfile)
-		if os.path.exists(options.socket):
-			os.remove(options.socket)
-		signal.signal(signum, signal.SIG_DFL)
-		os.kill(os.getpid(), signum)
 
 	try:
 		(read_end, write_end) = os.pipe()
@@ -96,7 +78,7 @@ def createDaemon(options):
 			if (maxfd == resource.RLIM_INFINITY):
 				maxfd = MAXFD
 
-			dev_null = file(os.devnull, 'r')
+			dev_null = file(os.path.devnull, 'r')
 			os.dup2(dev_null.fileno(), sys.stdin.fileno())
 			out_log = file(REDIRECT_TO, 'a+')
 			os.dup2(out_log.fileno(), sys.stdout.fileno())
@@ -113,10 +95,6 @@ def createDaemon(options):
 			signal.signal(signal.SIGTSTP, signal.SIG_IGN) # terminal stop
 			signal.signal(signal.SIGTTOU, signal.SIG_IGN) # terminal text out
 			signal.signal(signal.SIGTTIN, signal.SIG_IGN) # termianl text in
-			signal.signal(signal.SIGHUP, signal_handler_restart) # hang up
-			signal.signal(signal.SIGINT, signal_handler_terminate) # interrupt
-			signal.signal(signal.SIGTERM, signal_handler_terminate) # terminate
-			signal.signal(signal.SIGSEGV, signal_handler_terminate) # memory corrupt
 		else: # 1st child
 			os._exit(0)
 	else: # parent
@@ -135,6 +113,52 @@ def createDaemon(options):
 				sys.exit(1)
 		except OSError, e:
 			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=e.strerror, errno=e.errno)
+
+def install_signal_handlers(options):
+	u"""Install signal handlers."""
+
+	def signal_handler_restart(signum, frame):
+		"""Handle HUP signal to restart daemon."""
+		self = os.path.abspath(sys.argv[0])
+		args = sys.argv[:]
+		logger.info("Re-executing self: %s %s" % (self, args))
+		os.execv(self, args)
+		logger.error("Failed to re-executing self.")
+		sys.exit(1)
+
+	def signal_handler_logrotate(signum, frame):
+		"""Handle USR1 signal to re-open logfile."""
+		logger = logging.getLogger("uvmmd")
+		logger.info('Closing logfile.')
+		# Inspired by <http://www.cherrypy.org/ticket/679>
+		for x in logger.manager.loggerDict.itervalues():
+			try:
+				for h in x.handlers:
+					if isinstance(h, logging.FileHandler):
+						h.acquire()
+						try:
+							h.stream.close()
+							h.stream = open(h.baseFilename, h.mode)
+						finally:
+							h.release()
+			except AttributeError:
+				pass
+		logger.info('Logfile reopened.')
+
+	def signal_handler_terminate(signum, frame):
+		"""Handle TERM signal to cleanup before terminate."""
+		if os.path.exists(options.pidfile):
+			os.remove(options.pidfile)
+		if os.path.exists(options.socket):
+			os.remove(options.socket)
+		signal.signal(signum, signal.SIG_DFL)
+		os.kill(os.getpid(), signum)
+
+	signal.signal(signal.SIGHUP, signal_handler_logrotate) # hang up
+	signal.signal(signal.SIGUSR1, signal_handler_restart) # user1
+	signal.signal(signal.SIGINT, signal_handler_terminate) # interrupt
+	signal.signal(signal.SIGTERM, signal_handler_terminate) # terminate
+	signal.signal(signal.SIGSEGV, signal_handler_terminate) # memory corrupt
 
 if __name__ == '__main__':
 	locale.setlocale(locale.LC_ALL, '')
@@ -187,6 +211,8 @@ if __name__ == '__main__':
 
 	if options.daemonize:
 		createDaemon(options)
+
+	install_signal_handlers(options)
 
 	config = ConfigParser.ConfigParser()
 	if options.read_ini:

@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.143-1) unstable; urgency=low
+
+  * Reopen logfiles on SIGHUP (Bug #20465)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 25 Feb 2011 10:29:25 +0100
+
 univention-virtual-machine-manager-daemon (0.9.142-1) unstable; urgency=low
 
   * Fix s/domStat/dom_stat/ (Bug #21658)

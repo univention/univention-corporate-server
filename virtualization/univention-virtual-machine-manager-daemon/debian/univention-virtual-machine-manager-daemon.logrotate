@@ -1,0 +1,15 @@
+/var/log/univention/virtual-machine-manager-daemon.log {
+	rotate 7
+	daily
+	compress
+	delaycompress
+	missingok
+	notifempty
+	create 640 root adm
+	postrotate
+		if [ -e /var/run/uvmmd.pid ]
+		then
+			kill -HUP "`cat /var/run/uvmmd.pid`"
+		fi
+	endscript
+}

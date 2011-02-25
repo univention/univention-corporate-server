@@ -77,7 +77,7 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 			while not self.eos:
 				try:
 					data = self.request.recv(1024)
-				except socket.error, (err, msg):
+				except socket.error, (err, errmsg):
 					if err == errno.EINTR:
 						continue
 					else:
@@ -118,7 +118,7 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 				logger.debug('[%d] Done.' % (self.client_id,))
 		except EOFError:
 			pass
-		except socket.error, (err, msg):
+		except socket.error, (err, errmsg):
 			if err != errno.ECONNRESET:
 				logger.error('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
 				raise
@@ -397,8 +397,13 @@ def unix(options):
 	while keep_running:
 		try:
 			rlist, wlist, xlist = select.select(sockets.keys(), [], [], None)
-			for socket in rlist:
-				sockets[socket].handle_request()
+			for fd in rlist:
+				sockets[fd].handle_request()
+		except (select.error, socket.error), (err, errmsg):
+			if err == errno.EINTR:
+				continue
+			else:
+				raise
 		except KeyboardInterrupt:
 			keep_running = False
 
