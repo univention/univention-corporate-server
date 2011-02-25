@@ -109,7 +109,9 @@ install-ext-%:
 	install -m 755 univention-directory-policy/nfsmounts.py debian/univention-config-registry/usr/lib/univention-directory-policy/nfsmounts
 	install -m 755 univention-directory-policy/univention-policy-update-config-registry.py debian/univention-config-registry/usr/lib/univention-directory-policy/univention-policy-update-config-registry
 
-	PATH=$(CURDIR)/debian/univention-config-dev/usr/bin:${PATH} univention-install-config-registry
+	PYTHONPATH=debian/python-univention-config-registry/usr/lib/python$*/site-packages \
+	PATH=$(CURDIR)/debian/univention-config-dev/usr/bin:${PATH} \
+		 univention-install-config-registry
 	# the previous internally already calls the following
 	#PATH=$(CURDIR)/debian/univention-config-dev/usr/bin:${PATH} univention-install-service-info
 	#PATH=$(CURDIR)/debian/univention-config-dev/usr/bin:${PATH} univention-install-config-registry-info
