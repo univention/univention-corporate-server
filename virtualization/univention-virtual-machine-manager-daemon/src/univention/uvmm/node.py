@@ -1305,7 +1305,7 @@ def domain_update(domain):
 		try:
 			dom = conn.lookupByUUIDString(domain)
 			dom_stat = Domain(dom, node=node)
-			node.domains[uuid] = domStat
+			node.domains[uuid] = dom_stat
 			return
 		except libvirt.libvirtError, e:
 			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:

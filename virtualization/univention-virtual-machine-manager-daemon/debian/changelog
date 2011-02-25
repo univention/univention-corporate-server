@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.142-1) unstable; urgency=low
+
+  * Fix s/domStat/dom_stat/ (Bug #21658)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 25 Feb 2011 09:47:08 +0100
+
 univention-virtual-machine-manager-daemon (0.9.141-1) unstable; urgency=low
 
   * fixed a problem creating new network interfaces; Bug #19573
