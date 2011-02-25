@@ -1,3 +1,9 @@
+univention-management-console (3.0.78-1) unstable; urgency=low
+
+  * short lived session when not logged in (Bug #18115)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 25 Feb 2011 17:50:02 +0100
+
 univention-management-console (3.0.77-1) unstable; urgency=low
 
   * prevent error msg if UCR category has no description 

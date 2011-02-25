@@ -49,6 +49,7 @@ configRegistry.load()
 
 watchdog = time.time()
 watchdog_timeout = 60 * 5
+watchdog_timeout_short = 30
 
 THREAD_ERRORS = []
 
@@ -322,12 +323,17 @@ def main(argv):
 
 		reset_watchdog()
 
+		RequestCount = 0
 		while 1:
-			rfds, wfds, xfds = select.select( [ sock, rawsock ], [], [], 60 )
+			if RequestCount <= 1:
+				rfds, wfds, xfds = select.select( [ sock, rawsock ], [], [], watchdog_timeout_short )
+			else:
+				rfds, wfds, xfds = select.select( [ sock, rawsock ], [], [], 60 )
+			RequestCount += 1
 			log_errors()
 			if not rfds and not wfds and not xfds:
 				# select timeout occurred - check if watchdog is overdue
-				if not watchdog_timed_out():
+				if RequestCount > 1 and not watchdog_timed_out():
 					# watchdog is NOT overdue ==> continue
 					continue
 
