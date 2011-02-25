@@ -444,7 +444,7 @@ class DriveWizard( umcd.IWizard ):
 			disk.driver = 'qemu'
 			disk.driver_type = driver_type.lower()
 		elif self.node_uri.startswith('xen'):
-			# Since UCS 2.4-2 Xen 3.4.4 contains the blktab2 driver
+			# Since UCS 2.4-2 Xen 3.4.3 contains the blktab2 driver
 			# from Xen 4.0.1
 			if is_file_pool:
 				configRegistry = ucr.ConfigRegistry()
