@@ -33,6 +33,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#ifndef __USE_GNU
+# define __USE_GNU
+#endif
+#include <string.h>
 
 #include <univention/config.h>
 #include <univention/debug.h>

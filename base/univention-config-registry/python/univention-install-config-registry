@@ -31,13 +31,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, string
+import os, sys
+import subprocess
 import univention.config_registry
 
-#  we need a way to allow spaces in directory and file names
 def doIt(argv):
-	print '%s' % string.join(argv, ' ')
-	os.spawnvp(os.P_WAIT, argv[0], argv)
+	"""Execute argv and wait."""
+	if os.environ.get('DH_VERBOSE', False):
+		print '\t%s' % ' '.join(argv)
+	return subprocess.call(argv)
 
 def getPackages():
 	packages = []

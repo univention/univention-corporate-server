@@ -1,3 +1,13 @@
+univention-config-registry (6.0.41-1) unstable; urgency=low
+
+  * Don't logrotate /var/log/univention/virtual-machine-manager-daemon.log 
+    (Bug #18002, Bug #20465)
+  * python/univention-install-*: Support DH_VERBOSE.
+  * debian/rules: Use $(shell ...) instead of `...`
+  * lib/config.c: #include <string.h>, -luniventiondebug
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 25 Feb 2011 18:52:25 +0100
+
 univention-config-registry (6.0.40-1) unstable; urgency=low
 
   * revert changes from 6.0.37-1 (Bug #11241)

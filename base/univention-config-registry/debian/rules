@@ -30,13 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
-copyrightyear=`date +%Y`
+version := $(shell dpkg-parsechangelog | sed -ne 's/Version: //p')
+copyrightyear := $(shell date +%Y)
 
 PACKAGE_NAME=python-univention-config-registry
 MODULE_NAME=univention-config-registry
 
-PYVERS=$(shell pyversions -vr)
+PYVERS := $(shell pyversions -vr)
 
 configure: configure-stamp
 configure-stamp:
@@ -45,7 +45,7 @@ configure-stamp:
 	autoconf
 	automake-1.4 -a
 	./configure --prefix=/usr
-	touch configure-stamp
+	touch $@
 
 build: configure-stamp build-stamp
 build-stamp: $(PYVERS:%=build-ext-%)
@@ -53,20 +53,20 @@ build-stamp: $(PYVERS:%=build-ext-%)
 	touch $@
 build-ext-%:
 	dh_testdir
-	PYTHON=python$* make
+	PYTHON=python$* $(MAKE)
 	touch $@
 
 clean:
 	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp build-ext-2.4
+	rm -f build-stamp configure-stamp build-ext-*
 	rm -f *~
 	test -f Makefile && make distclean || true
 	find -name Makefile.in -o -name Makefile | xargs rm -f
 	rm -f aclocal.m4 config.* install-sh missing mkinstalldirs
+	$(RM) ltmain.sh configure
+	$(RM) python/univention/config_registry.py_tmp*
+	$(RM) debian/*.conffiles
 	dh_clean
-
-D=$(CURDIR)/debian/univention-config-registry
 
 install: install-stamp
 install-stamp: build-stamp $(PYVERS:%=install-ext-%)
@@ -76,7 +76,7 @@ install-ext-%:
 	dh_clean -k
 	dh_installdirs
 
-	PYTHON=$* make install DESTDIR=`pwd`/debian/tmp
+	PYTHON=python$* make install DESTDIR=$(CURDIR)/debian/tmp
 
 	install -m 755 scripts/jitter debian/univention-config/usr/sbin
 	install -m 755 scripts/univention-set-logfile-permissions debian/univention-config/usr/sbin
@@ -85,7 +85,7 @@ install-ext-%:
 	install -m 755 scripts/univention-keyboardmapping debian/univention-config/usr/bin
 	install -m 755 scripts/univention-check-templates debian/univention-config/usr/sbin
 
-	cat python/univention/config_registry.py | sed -e "s/@%@package_version@%@/${version}/;s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention/config_registry.py_tmp
+	sed -e "s/@%@package_version@%@/${version}/;s/@%@copyright_lastyear@%@/${copyrightyear}/" < python/univention/config_registry.py > python/univention/config_registry.py_tmp
 
 	install -d debian/python-univention-config-registry/usr/lib/python$*/site-packages/univention/
 	install -m 0644 python/univention/__init__.py debian/python-univention-config-registry/usr/lib/python$*/site-packages/univention/__init__.py
@@ -100,7 +100,6 @@ install-ext-%:
 	install -m 755 python/univention-install-config-registry debian/univention-config-dev/usr/bin
 	install -m 755 python/univention-install-config-registry-info debian/univention-config-dev/usr/bin
 	install -m 755 python/univention-install-service-info debian/univention-config-dev/usr/bin
-	rm python/univention/config_registry.py_tmp*
 
 	install -d debian/univention-config-registry/usr/share/univention-config-registry
 	install -m 644 scripts/init-autostart.lib debian/univention-config-registry/usr/share/univention-config-registry/
@@ -110,11 +109,10 @@ install-ext-%:
 	install -m 755 univention-directory-policy/nfsmounts.py debian/univention-config-registry/usr/lib/univention-directory-policy/nfsmounts
 	install -m 755 univention-directory-policy/univention-policy-update-config-registry.py debian/univention-config-registry/usr/lib/univention-directory-policy/univention-policy-update-config-registry
 
-	chmod 755 python/univention-install-config-registry python/univention-install-config-registry-info
-
-	./python/univention-install-config-registry
-	./python/univention-install-config-registry-info
-	./python/univention-install-service-info
+	PATH=$(CURDIR)/debian/univention-config-dev/usr/bin:${PATH} univention-install-config-registry
+	# the previous internally already calls the following
+	#PATH=$(CURDIR)/debian/univention-config-dev/usr/bin:${PATH} univention-install-service-info
+	#PATH=$(CURDIR)/debian/univention-config-dev/usr/bin:${PATH} univention-install-config-registry-info
 
 
 binary-indep: build install
