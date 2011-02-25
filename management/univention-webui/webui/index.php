@@ -103,7 +103,9 @@ if(!isset($logout))	{
 	}
 	$trans = new webui_translator($container, $config);
 	$parser = new webui_in($config, $trans);
-	if(!isset($session_id)) {
+	# is login request but backend process died
+	$BackendRestartLogin = (isset($session_id) && $config->number <= 1 && !file_exists($config->socket_filename));
+	if(!isset($session_id) || $BackendRestartLogin) {
 		$container->set_body_class("login");
 		#################### For orig. Python Backend   ############
 		// spawn off daemon
@@ -161,8 +163,17 @@ if(!isset($logout))	{
 		}
 		fclose($fp);
 		fclose($pipe);
+		if ($BackendRestartLogin) {
+			# reinitialize required things - to simulate fresh execution of this script (with session set and backend alive)
+			# TODO: UMC does not work completely
+			$container = new webui_container($config, $glob_tabindex, False); # required
+			$container->set_body_class("component"); # required for $container
+			$trans = new webui_translator($container, $config); # depends on $container
+			$parser = new webui_in($config, $trans); # depends on $trans
+		}
 		############################################################
-    } if(@current($long_table)) {
+    }
+    if(@current($long_table)) {
 		switch ($long_table[key($long_table)]) {
 		case "<<":
 			$long_table[key($long_table)] = $visible*($previous-2);

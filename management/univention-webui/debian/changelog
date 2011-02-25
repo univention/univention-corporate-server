@@ -1,3 +1,9 @@
+univention-webui (4.0.66-1) unstable; urgency=low
+
+  * enable login even if session died (Bug #18115)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 25 Feb 2011 17:34:44 +0100
+
 univention-webui (4.0.65-1) unstable; urgency=low
 
   * do not log password strings in saver.get and put Bug #21586
