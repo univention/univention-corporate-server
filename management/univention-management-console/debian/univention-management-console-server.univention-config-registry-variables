@@ -33,3 +33,9 @@ Description[de]=Timeout für UMC-Requests des Univention Management Console AJAX
 Description[en]=Timeout for UMC requests of the Univention Management Console AJAX frontend
 Type=str
 Categories=Management
+
+[auth/passwdcache]
+Description[de]=Passwort Cache aktivieren oder deaktivieren
+Description[en]=Enable or disable password cache
+Type=str
+Categories=Management
