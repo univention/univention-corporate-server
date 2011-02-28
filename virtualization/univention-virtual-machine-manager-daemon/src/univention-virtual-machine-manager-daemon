@@ -46,7 +46,6 @@ def createDaemon(options):
 	"""http://code.activestate.com/recipes/278731/"""
 	UMASK = 0037
 	WORKDIR = "/"
-	REDIRECT_TO = os.path.devnull
 	MAXFD = 1024
 
 	try:
@@ -80,7 +79,7 @@ def createDaemon(options):
 
 			dev_null = file(os.path.devnull, 'r')
 			os.dup2(dev_null.fileno(), sys.stdin.fileno())
-			out_log = file(REDIRECT_TO, 'a+')
+			out_log = open(options.logfile, 'a+')
 			os.dup2(out_log.fileno(), sys.stdout.fileno())
 			os.dup2(out_log.fileno(), sys.stderr.fileno())
 			keep_fd = (sys.stdin.fileno(), sys.stdout.fileno(), sys.stderr.fileno(), write_end)
@@ -144,6 +143,14 @@ def install_signal_handlers(options):
 			except AttributeError:
 				pass
 		logger.info('Logfile reopened.')
+		# Re-open STDOUT, STDERR logfile
+		if options.daemonize:
+			out_log = open(options.logfile, 'a+')
+			try:
+				os.dup2(out_log.fileno(), sys.stdout.fileno())
+				os.dup2(out_log.fileno(), sys.stderr.fileno())
+			finally:
+				out_log.close()
 
 	def signal_handler_terminate(signum, frame):
 		"""Handle TERM signal to cleanup before terminate."""
