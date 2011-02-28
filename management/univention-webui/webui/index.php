@@ -165,9 +165,12 @@ if(!isset($logout))	{
 		fclose($pipe);
 		if ($BackendRestartLogin) {
 			# reinitialize required things - to simulate fresh execution of this script (with session set and backend alive)
-			# TODO: UMC does not work completely
 			$container = new webui_container($config, $glob_tabindex, False); # required
-			$container->set_body_class("component"); # required for $container
+			if($config->layout_type && $config->layout_type=='menuless') {
+				$container->set_body_class("component-menuless");
+			} else {
+				$container->set_body_class("component");
+			}
 			$trans = new webui_translator($container, $config); # depends on $container
 			$parser = new webui_in($config, $trans); # depends on $trans
 		}
