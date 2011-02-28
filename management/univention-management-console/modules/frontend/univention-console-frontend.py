@@ -323,20 +323,19 @@ def main(argv):
 
 		reset_watchdog()
 
-		RequestCount = 0
+		RequestCount = -1
 		while 1:
+			RequestCount += 1
 			if RequestCount <= 1:
 				rfds, wfds, xfds = select.select( [ sock, rawsock ], [], [], watchdog_timeout_short )
 			else:
 				rfds, wfds, xfds = select.select( [ sock, rawsock ], [], [], 60 )
-			RequestCount += 1
 			log_errors()
 			if not rfds and not wfds and not xfds:
-				# select timeout occurred - check if watchdog is overdue
+				# select timeout occurred - check if watchdog is overdue (ignore watchdog for first request)
 				if RequestCount > 1 and not watchdog_timed_out():
 					# watchdog is NOT overdue ==> continue
 					continue
-
 				ud.debug(ud.ADMIN, ud.INFO, 'TIMED OUT! EXIT!')
 				raise Exception( 'timeout' ) # timeout
 
