@@ -1,6 +1,8 @@
+@%@BCWARNING=# @%@
+
 /var/log/univention/virtual-machine-manager-daemon.log {
-	rotate 7
-	daily
+	rotate @%@log/rotate/weeks@%@
+	weekly
 	compress
 	delaycompress
 	missingok

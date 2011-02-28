@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.145-1) unstable; urgency=low
+
+  * Convert logrotate file to template (Bug #20465)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 28 Feb 2011 08:27:40 +0100
+
 univention-virtual-machine-manager-daemon (0.9.144-1) unstable; urgency=low
 
   * By default UVMM creates Xen images as blktap2 devices. If the UCR
