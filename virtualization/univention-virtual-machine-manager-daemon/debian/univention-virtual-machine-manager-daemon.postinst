@@ -63,6 +63,13 @@ case "$1" in
 			fi
 		fi
 	fi
+
+	if dpkg --compare-versions "$2" lt-nl 0.9.147; then
+        if [ -f "/usr/share/univention-join/.joined" ] && [ ! -e /etc/runit/univention/univention-virtual-machine-manager-daemon ]; then
+            ln -s /etc/runit/univention-virtual-machine-manager-daemon /etc/runit/univention/univention-virtual-machine-manager-daemon
+        fi
+    fi
+
     invoke-rc.d univention-directory-listener restart
     ;;
 

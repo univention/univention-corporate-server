@@ -214,6 +214,10 @@ create_hvm_profile "Other (64 Bit)" "other-" "kvm" "x86_64" "256MB" "0"
 
 # TODO: profiles for xen-xen
 
+if [ ! -e /etc/runit/univention/univention-virtual-machine-manager-daemon ]; then
+	ln -s /etc/runit/univention-virtual-machine-manager-daemon /etc/runit/univention/univention-virtual-machine-manager-daemon
+fi
+
 joinscript_save_current_version
 
 exit 0

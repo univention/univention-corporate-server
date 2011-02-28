@@ -1,0 +1,18 @@
+#! /bin/sh -e
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+DAEMON=/usr/sbin/univention-virtual-machine-manager-daemon  # Introduce the server's location here
+NAME="uvmmd"              # Introduce the short server's name here
+LOGDIR=/var/log/univention # Log directory to use
+
+LOGFILE="$LOGDIR/$NAME.log"  # Server logfile
+
+DAEMON_OPTS="-s 0.0.0.0"        # Additional options given to the server
+
+if [ -f "/etc/default/$NAME" ] ; then
+	. "/etc/default/$NAME"
+fi
+
+"$DAEMON" $DAEMON_OPTS >> $LOGFILE 2>&1
+

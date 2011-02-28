@@ -35,6 +35,8 @@ install:: install-modules install-locales install-images
 	install -m 0644 -t $(DESTDIR)/usr/lib/univention-directory-listener/system uvmmd-ldap.py
 	install -m 0755 -d $(DESTDIR)/usr/lib/univention-install
 	install -m 0755 -t $(DESTDIR)/usr/lib/univention-install 44univention-virtual-machine-manager-daemon.inst
+	install -m 0755 -d $(DESTDIR)/etc/runit/univention-virtual-machine-manager-daemon
+	install -m 0755 univention-virtual-machine-manager-daemon.runit $(DESTDIR)/etc/runit/univention-virtual-machine-manager-daemon/run
 
 .PHONY: uninstall
 uninstall:
@@ -53,6 +55,8 @@ uninstall:
 	-rmdir -p $(DESTDIR)/usr/lib/univention-directory-listener/system
 	$(RM) $(DESTDIR)/usr/lib/univention-install/44univention-virtual-machine-manager-daemon.inst
 	-rmdir -p $(DESTDIR)/usr/lib/univention-install
+	$(RM) $(DESTDIR)/etc/runit/univention-virtual-machine-manager-daemon/run
+	-rmdir -p $(DESTDIR)/etc/runit/univention-virtual-machine-manager-daemon
 
 .PHONY: clean
 clean::
