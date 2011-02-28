@@ -1,3 +1,9 @@
+univention-xen (3.0.6-3) unstable; urgency=low
+
+  * Load blktap and xen-blkfront by default (Bug #19345)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Feb 2011 07:14:56 +0100
+
 univention-xen (3.0.6-2) unstable; urgency=low
 
   * Bump version to make buildsystem happy (Bug #21306)

@@ -35,14 +35,9 @@ eval "$(univention-config-registry shell kernel/modules)"
 
 modules=
 echo "$kernel_modules" | grep -qs '\<xen[_-]evtchn\>' || modules="$modules;xen-evtchn"
-
-dpkg-query -s xen-4.0 >/dev/null 2>&1
-
-if [ $? = 0 ]; then
-	# Only necessary in Xen 4 environments
-	echo "$kernel_modules" | grep -qs '\<xenfs\>' || modules="$modules;xenfs"
-	echo "$kernel_modules" | grep -qs '\<blktap\>' || modules="$modules;blktap"
-fi
+echo "$kernel_modules" | grep -qs '\<xenfs\>' || modules="$modules;xenfs"
+echo "$kernel_modules" | grep -qs '\<blktap\>' || modules="$modules;xen-blkfront"
+echo "$kernel_modules" | grep -qs '\<blktap\>' || modules="$modules;blktap"
 
 [ -n "$modules" ] && univention-config-registry set kernel/modules="${kernel_modules}${modules}"
 
