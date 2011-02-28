@@ -129,13 +129,13 @@ def main(argv):
 		daemonize()
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'waiting for connections')
 
-		RequestCount = 0
+		RequestCount = -1
 		while 1:
+			RequestCount += 1
 			if RequestCount <= 1:
 				rfds, wfds, xfds = select.select([sock], [], [], socket_timeout_short)
 			else:
 				rfds, wfds, xfds = select.select([sock], [], [], socket_timeout)
-			RequestCount += 1
 			if not rfds and not wfds and not xfds:
 				break # timeout
 			elif not rfds:
