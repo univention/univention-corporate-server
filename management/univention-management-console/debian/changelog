@@ -1,3 +1,10 @@
+univention-management-console (3.0.80-1) unstable; urgency=low
+
+  * simplify umc pam stack in case auth/passwdcache is disabled.
+    (Ticket#2011022810000861 and Bug #20956)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 28 Feb 2011 17:02:44 +0100
+
 univention-management-console (3.0.79-1) unstable; urgency=low
 
   * passwd_cache can be disabled by setting auth/passwdcache=no
