@@ -1,3 +1,9 @@
+univention-xen (3.0.8-1) unstable; urgency=low
+
+  * Restart xend during update (Bug #19345)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Feb 2011 16:50:32 +0100
+
 univention-xen (3.0.7-1) unstable; urgency=low
 
   * Fixed typo and load blktap module during update (Bug #19345)

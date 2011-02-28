@@ -43,5 +43,9 @@ echo "$kernel_modules" | grep -qs '\<blktap\>' || ( modules="$modules;blktap"; m
 
 #DEBHELPER#
 
+if [ -x /etc/init.d/xend ]; then
+	/etc/init.d/xend restart
+fi
+
 exit 0
 
