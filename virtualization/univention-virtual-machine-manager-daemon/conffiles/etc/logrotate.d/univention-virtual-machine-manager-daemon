@@ -1,5 +1,6 @@
 @%@BCWARNING=# @%@
 
+# /var/log/univention/uvmmd.log
 /var/log/univention/virtual-machine-manager-daemon.log {
 	rotate @%@log/rotate/weeks@%@
 	weekly

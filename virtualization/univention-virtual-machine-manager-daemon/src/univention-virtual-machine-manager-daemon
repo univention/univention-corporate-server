@@ -78,10 +78,16 @@ def createDaemon(options):
 				maxfd = MAXFD
 
 			dev_null = file(os.path.devnull, 'r')
-			os.dup2(dev_null.fileno(), sys.stdin.fileno())
+			try:
+				os.dup2(dev_null.fileno(), sys.stdin.fileno())
+			finally:
+				dev_null.close()
 			out_log = open(options.logfile, 'a+')
-			os.dup2(out_log.fileno(), sys.stdout.fileno())
-			os.dup2(out_log.fileno(), sys.stderr.fileno())
+			try:
+				os.dup2(out_log.fileno(), sys.stdout.fileno())
+				os.dup2(out_log.fileno(), sys.stderr.fileno())
+			finally:
+				out_log.close()
 			keep_fd = (sys.stdin.fileno(), sys.stdout.fileno(), sys.stderr.fileno(), write_end)
 			for fd in range(maxfd):
 				try:
@@ -104,8 +110,10 @@ def createDaemon(options):
 
 			if pid:
 				fd = open(options.pidfile, "w")
-				fd.write(pid)
-				fd.close()
+				try:
+					fd.write(pid)
+				finally:
+					fd.close()
 				sys.exit(0)
 			else:
 				print >>sys.stderr, _("Failed to fork daemon.")
@@ -201,7 +209,7 @@ if __name__ == '__main__':
 			action='store_true', dest='daemonize', default=False,
 			help=_('Fork into background'))
 	daemon_group.add_option('-l', '--log',
-			action='store', dest='logfile', default="/var/log/univention/virtual-machine-manager-daemon.log",
+			action='store', dest='logfile', default="/var/log/univention/uvmmd.log",
 			help=_('Path to the log-file [%(default)s]') % {'default':'%default'})
 	daemon_group.add_option('-v', '--verbose',
 			action='store_true', dest='verbose', default=False,
