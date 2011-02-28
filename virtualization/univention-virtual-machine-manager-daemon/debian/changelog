@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.148-1) unstable; urgency=low
+
+  * drive wizard: add option to create paravirtual drives; Bug #21591
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 28 Feb 2011 17:24:21 +0100
+
 univention-virtual-machine-manager-daemon (0.9.147-1) unstable; urgency=low
 
   * Start uvmmd via runit (Bug #21663)

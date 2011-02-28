@@ -120,14 +120,14 @@ class NIC_DriverSelect( umc.StaticSelection ):
 		umc.StaticSelection.__init__( self, _( 'Driver' ) )
 		self.virttech = virttech
 		self._xen = ( ( 'auto', _( 'Automatic' ) ),
-					   ( 'netfront', _( 'Para virtual Device' ) ),
+					   ( 'netfront', _( 'Paravirtual device' ) ),
 					   ( 'rtl8139', 'RealTek RTL-8139' ),
 					   ( 'e1000', 'Intel PRO/1000' ),
 					   ( 'ne2k_pci', 'PCI NE2000' ),
 					   ( 'pcnet', 'PCnet32, PCnetPCI' )
 					   )
 		self._kvm = ( ( 'auto', _( 'Automatic' ) ),
-					   ( 'virtio', _( 'Para virtual Device' ) ),
+					   ( 'virtio', _( 'Paravirtual device' ) ),
 					   ( 'rtl8139', 'RealTek RTL-8139' ),
 					   ( 'e1000', 'Intel PRO/1000' ),
 					   ( 'i82551', 'Intel 82551' ),

@@ -52,16 +52,19 @@ import uvmmd
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
 class DriveWizard( umcd.IWizard ):
-	def __init__( self, command ):
+	def __init__( self, command, show_paravirtual = False ):
 		umcd.IWizard.__init__( self, command )
 		self.title = _( 'Add a drive' )
 		self.pool_syntax = DynamicSelect( _( 'Storage pool' ) )
 		self.image_syntax = DynamicSelect( _( 'Drive image' ) )
-		self.driver_syntax = DynamicSelect(_('Image format'))
+		self.driver_syntax = DynamicSelect( _( 'Image format' ) )
 		self.disk_select = DiskSelect()
 		self.actions[ 'pool-selected' ] = self.pool_selected
 		self.actions['type-selected'] = self.type_selected
 		self.uvmm = uvmmd.Client( auto_connect = False )
+		self.domain_name = None
+		self.node_uri = None
+		self.node_info = None
 		self.reset()
 
 		# page 0: Select HD or ROM
@@ -96,6 +99,20 @@ class DriveWizard( umcd.IWizard ):
 		# page 5: Show summary
 		page = umcd.Page( self.title, _( 'The following drive will be created:' ) )
 		self.append( page )
+
+		self.show_paravirtual( show_paravirtual )
+
+	def set_node( self, uri = None, info = None ):
+		self.node_uri = uri
+		self.node_info = info
+
+	def show_paravirtual( self, show = True ):
+		if show:
+			if len( self[ 0 ].options ) == 1:
+				self[ 0 ].options.append( umcd.make( ( 'drive-paravirtual', umc.Boolean( _( 'Setup as paravirtual drive' ) ) ) ) )
+		else:
+			if len( self[ 0 ].options ) == 2:
+				del self[ 0 ].options[ 1 ]
 
 	def _create_pool_select_button(self, options):
 		choices = []
@@ -170,9 +187,8 @@ class DriveWizard( umcd.IWizard ):
 			return umcd.IWizard.setup( self, object, prev = True, next = next, finish = finish, cancel = cancel )
 		return umcd.IWizard.setup( self, object, prev = prev, next = next, finish = finish, cancel = cancel )
 
-	def action( self, object, data ):
+	def action( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: action! (current: %s)' % str( self.current ) )
-		self.node_uri, self.node_info = data # node_info is None for new domains!
 		if self.current == None:
 			# read pool
 			ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: node storage pools: %s' % self.node_uri)
@@ -258,6 +274,10 @@ class DriveWizard( umcd.IWizard ):
 		[None]Start→[0]cdrom|hd                   —[old]⬏                     [4]summary
 		                       —[hd]———→[1]old|new—[new]→[3]sp+name+type+size⬏
 		"""
+		if self.current == None:
+			# by default no paravirtual drive:
+			if not 'drive-paravirtual' in object.options:
+				object.options[ 'drive-paravirtual' ] = '0'
 		if self.current == 0: # which drive type?
 			# initialize pool and image selection
 			self.pool_selected( object )
@@ -424,6 +444,7 @@ class DriveWizard( umcd.IWizard ):
 		image_size = object.options['image-size']
 		drive_device = object.options.get( 'drive-device', None )
 		driver_type = object.options['driver-type'].lower()
+		driver_pv = object.options[ 'drive-paravirtual' ]
 
 		disk = uvmmn.Disk()
 		if drive_type == 'disk':
@@ -443,7 +464,11 @@ class DriveWizard( umcd.IWizard ):
 		if self.node_uri.startswith('qemu'):
 			disk.driver = 'qemu'
 			disk.driver_type = driver_type.lower()
+			if driver_pv:
+				disk.target_bus = 'virtio'
 		elif self.node_uri.startswith('xen'):
+			if driver_pv:
+				disk.target_bus = 'xen'
 			# Since UCS 2.4-2 Xen 3.4.3 contains the blktab2 driver
 			# from Xen 4.0.1
 			if is_file_pool:
@@ -589,6 +614,8 @@ class InstanceWizard( umcd.IWizard ):
 			# activate drive wizard to add a first mandatory drive
 			if not self.drives:
 				self.drive_wizard.prev_first_page = True
+				self.drive_wizard.show_paravirtual( self.profile[ 'virttech' ].endswith( '-hvm' ) )
+				object.options[ 'drive-paravirtual' ] = self.profile[ 'pvdisk' ] == '1'
 				self.new_drive( object )
 		return umcd.IWizard.next( self, object )
 
@@ -685,15 +712,6 @@ class InstanceWizard( umcd.IWizard ):
 			# annotations
 			domain_info.annotations[ 'os' ] = object.options[ 'os' ]
 			# drives
-			# check if PV drives should be used
-			if object.options[ 'pvdisk' ] == '1' and domain_info.os_type == 'hvm':
-				for dev in self.drives:
-					if dev.device != uvmmn.Disk.DEVICE_DISK:
-						continue
-					if domain_info.domain_type == 'xen':
-						dev.target_bus = 'xen'
-					elif domain_info.domain_type in ( 'kvm', 'qemu' ):
-						dev.target_bus = 'virtio'
 			domain_info.disks = self.drives
 			self.uvmm._verify_device_files(domain_info)
 			# on PV machines we should move the CDROM drive to first position
@@ -729,7 +747,8 @@ class InstanceWizard( umcd.IWizard ):
 		self.drive_wizard.domain_name = name
 		self.drive_wizard.blacklist = [os.path.basename(drive.source) for drive in self.drives]
 		ud.debug(ud.ADMIN, ud.INFO, 'NEW DRIVE: bl=%s' % self.drive_wizard.blacklist)
-		return self.drive_wizard.action( object, ( self.node_uri, self.node_info ) )
+		self.drive_wizard.set_node( self.node_uri, self.node_info )
+		return self.drive_wizard.action( object )
 
 	def setup( self, object, prev = None, next = None, finish = None, cancel = None ):
 		if self.drive_wizard_active:

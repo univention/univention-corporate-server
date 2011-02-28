@@ -1374,11 +1374,14 @@ class handler( umch.simpleHandler ):
 
 		# starting the wizard
 		if not 'action' in object.options:
+			domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
 			self.drive_wizard.reset()
+			self.drive_wizard.show_paravirtual( domain_info.os_type == 'hvm' )
 			self.drive_wizard.domain_name = object.options['domain']
 			self.drive_wizard.blacklist = [] # does query domains
+			self.drive_wizard.set_node( node_uri, node_info )
 
-		result = self.drive_wizard.action( object, ( node_uri, node_info ) )
+		result = self.drive_wizard.action( object )
 
 		# domain wizard finished?
 		if self.drive_wizard.result():
