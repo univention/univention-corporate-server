@@ -1160,6 +1160,13 @@ def domain_undefine(uri, domain, volumes=[]):
 		if volumes is None:
 			volumes = get_all_storage_volumes(conn, dom,)
 		destroy_storage_volumes(conn, volumes, ignore_error=True)
+		try:
+			if dom.hasManagedSaveImage(0):
+				ret = dom.managedSaveRemove(0)
+		except libvirt.libvirtError, e:
+			# libvirt returns an 'internal error' when no save image exists
+			if e.get_error_code() != libvirt.VIR_ERR_INTERNAL_ERROR:
+				logger.debug(e)
 		dom.undefine()
 	except libvirt.libvirtError, e:
 		logger.error(e)

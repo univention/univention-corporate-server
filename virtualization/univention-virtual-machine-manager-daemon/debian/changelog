@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.150-1) unstable; urgency=low
+
+  * Remove saved state on VM deletion (Bug #21564)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 01 Mar 2011 08:27:44 +0100
+
 univention-virtual-machine-manager-daemon (0.9.149-1) unstable; urgency=low
 
   * Exec the runit job (Bug #21663)
