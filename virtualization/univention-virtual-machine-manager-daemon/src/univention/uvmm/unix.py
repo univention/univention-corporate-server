@@ -82,6 +82,10 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 						continue
 					else:
 						raise
+				except SSL.SysCallError, (err, errmsg):
+					if err == -1: # and errmsg == 'Unexpected EOF': # Bug 20467
+						self.eos = True
+						break
 				logger.debug('[%d] Data recveived: %d' % (self.client_id, len(data)))
 				if data == '':
 					self.eos = True

@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.152-1) unstable; urgency=low
+
+  * Ignore EOF detected by OpenSSL (Bug #20467)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 01 Mar 2011 09:58:16 +0100
+
 univention-virtual-machine-manager-daemon (0.9.151-1) unstable; urgency=low
 
   * removed network interface configuration from the settings section; Bug #19573
