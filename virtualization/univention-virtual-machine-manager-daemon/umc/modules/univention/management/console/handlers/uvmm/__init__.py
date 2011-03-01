@@ -144,9 +144,7 @@ command_description = {
 		method = 'uvmm_domain_configure',
 		values = { 'domain' : umc.String( 'instance' ), # last name, which was used to load the configuration
 				   'name' : umc.String( _( 'Name' ) ), # new name
-				   'mac' : umc.String( _( 'MAC address' ), required = False ),
 				   'memory' : umc.String( _( 'Memory' ) ),
-				   'interface' : umc.String( _( 'Interface' ) ),
 				   'cpus' : cpus_select,
 				   'vnc' : umc.Boolean( _( 'Direct access' ) ),
 				   'vnc_global' : umc.Boolean( _( 'Available globally' ) ),
@@ -685,13 +683,6 @@ class handler( umch.simpleHandler ):
 		tech_default = '%s-%s' % ( handler._getattr( domain_info, 'domain_type', 'xen' ), handler._getattr( domain_info, 'os_type', 'hvm' ) )
 		cpus_select.max = int( node_info.cpus )
 		mem = handler._getattr(domain_info, 'maxMem', str(512<<10)) # KiB
-		if domain_info and domain_info.interfaces:
-			iface = domain_info.interfaces[ 0 ]
-			iface_mac = iface.mac_address
-			iface_source = iface.source
-		else:
-			iface_mac = ''
-			iface_source = 'eth0'
 		virt_tech = umcd.make_readonly( self[ 'uvmm/domain/configure' ][ 'type' ], default = tech_default, attributes = { 'width' : '250' } )
 		os_widget = make_func( self[ 'uvmm/domain/configure' ][ 'os' ], default = getattr(domain_info, 'annotations', {}).get('os', ''), attributes = { 'width' : '250' } )
 		contact_widget = make_func( self[ 'uvmm/domain/configure' ][ 'contact' ], default = getattr(domain_info, 'annotations', {}).get('contact', ''), attributes = { 'width' : '250' } )
@@ -705,8 +696,6 @@ class handler( umch.simpleHandler ):
 		arch = make_func2( self[ 'uvmm/domain/configure' ][ 'arch' ], default = handler._getattr( domain_info, 'arch', 'i686' ), attributes = { 'width' : '250' } )
 		cpus = make_func2( self[ 'uvmm/domain/configure' ][ 'cpus' ], default = handler._getattr( domain_info, 'vcpus', '1' ), attributes = { 'width' : '250' } )
 		memory = make_func2( self[ 'uvmm/domain/configure' ][ 'memory' ], default = MemorySize.num2str( mem ), attributes = { 'width' : '250' } )
-		mac = make_func2( self[ 'uvmm/domain/configure' ][ 'mac' ], default = iface_mac, attributes = { 'width' : '250' } )
-		interface = make_func2( self[ 'uvmm/domain/configure' ][ 'interface' ], default = iface_source, attributes = { 'width' : '250' } )
 
 		# if no bootloader is set we use the advanced kernel configuration options
 		if handler._getattr( domain_info, 'bootloader', '' ):
@@ -864,8 +853,7 @@ class handler( umch.simpleHandler ):
 		content.add_row( [ name, os_widget ] )
 		content.add_row( [ contact_widget, description_widget ] )
 		content.add_row( [ arch, '' ] )
-		content.add_row( [ cpus, mac ] )
-		content.add_row( [ memory, interface ] )
+		content.add_row( [ cpus, memory ] )
 
 		content2 = umcd.List()
 		content2.add_row( [ virt_tech ] )
@@ -884,7 +872,7 @@ class handler( umch.simpleHandler ):
 
 		content2.add_row( [ umcd.Text( '' ) ] )
 
-		ids = (name.id(), os_widget.id(), contact_widget.id(), description_widget.id(), virt_tech.id(), arch.id(), cpus.id(), mac.id(), memory.id(), interface.id(), ram_disk.id(), root_part.id(), kernel.id(), advkernelconf.id(), vnc.id(), vnc_global.id(), vnc_passwd.id(), kblayout.id(), bootdevs.id())
+		ids = (name.id(), os_widget.id(), contact_widget.id(), description_widget.id(), virt_tech.id(), arch.id(), cpus.id(), memory.id(), ram_disk.id(), root_part.id(), kernel.id(), advkernelconf.id(), vnc.id(), vnc_global.id(), vnc_passwd.id(), kblayout.id(), bootdevs.id())
 		cfg_cmd = umcp.SimpleCommand( 'uvmm/domain/configure', options = object.options )
 		overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = object.options )
 
@@ -1063,16 +1051,6 @@ class handler( umch.simpleHandler ):
 				domain_info.bootloader_args = '-q' # Bug #19249: PyGrub timeout
 		domain_info.boot = handler._getstr( object, 'bootdevs' )
 		domain_info.maxMem = MemorySize.str2num( object.options[ 'memory' ] )
-
-		# interface
-		# TODO: Allow unconnected hosts?
-		try:
-			iface = domain_info.interfaces[0]
-		except (AttributeError, IndexError), e:
-			iface = uuv_node.Interface()
-			domain_info.interfaces.append( iface )
-		iface.mac_address = handler._getstr( object, 'mac' )
-		iface.source = handler._getstr( object, 'interface' )
 
 		# graphics
 		ud.debug( ud.ADMIN, ud.INFO, 'Configure Domain: graphics: %s' % object.options[ 'vnc' ] )

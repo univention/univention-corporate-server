@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.151-1) unstable; urgency=low
+
+  * removed network interface configuration from the settings section; Bug #19573
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 01 Mar 2011 09:23:48 +0100
+
 univention-virtual-machine-manager-daemon (0.9.150-1) unstable; urgency=low
 
   * Remove saved state on VM deletion (Bug #21564)
