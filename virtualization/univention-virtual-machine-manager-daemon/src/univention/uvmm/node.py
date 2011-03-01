@@ -789,7 +789,7 @@ def domain_define( uri, domain ):
 	try:
 		old_dom = conn.lookupByName(domain.name)
 		if old_dom.UUIDString() != domain.uuid:
-			raise NodeError(_('Domain name "%(domain)s" already used by "%(uuid)s": %(error)s'), domain=domain.name, uuid=domain.uuid, error=e.get_error_message())
+			raise NodeError(_('Domain name "%(domain)s" already used by "%(uuid)s"'), domain=domain.name, uuid=domain.uuid)
 	except libvirt.libvirtError, e:
 		if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 			logger.error(e)
