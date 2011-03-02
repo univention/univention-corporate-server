@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.102-1) unstable; urgency=low
+
+  * improved performance of module groups/group (Bug #21315)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 02 Mar 2011 15:54:13 +0100
+
 univention-directory-manager-modules (6.0.101-1) unstable; urgency=low
 
   * fixed wrong value for 'policy_oc' in modules autostart.py and 
