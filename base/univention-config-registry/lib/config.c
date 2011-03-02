@@ -44,26 +44,36 @@
 #include <errno.h>
 
 #define BASECONFIG_FILE     "/etc/univention/base.conf"
-#define BASECONFIG_MAX_LINE 256
+#define BASECONFIG_MAX_LINE 1024
 
 
 char* univention_config_get_string ( char *value )
 {
 	FILE *file;
 	char line[BASECONFIG_MAX_LINE];
+	char *nvalue;
+	int len;
 
 	if( (file=fopen(BASECONFIG_FILE,"r")) == NULL )
 	{
 		univention_debug(UV_DEBUG_CONFIG,UV_DEBUG_ERROR,"Error on opening \"%s\n",BASECONFIG_FILE);
 		return NULL;
 	}
+	
+	len = strlen(value);
+
+	nvalue = calloc(len + 2 /* ':' + '\0'*/, sizeof(char));
+	memcpy(nvalue, value, len);
+	nvalue[len] = ':';
 
 	while( fgets(line, BASECONFIG_MAX_LINE, file) != NULL )
 	{
-		if( !strncmp(line, value, strlen(value) ) )
+		if( !strncmp(line, nvalue, strlen(nvalue) ) )
 		{
 			fclose (file);
-			return (char*)strndup(&(line[strlen(value)+2]), strlen(line) - (strlen(value)+2) - 1 );
+			free (nvalue);
+
+			return (char*)strndup(&(line[len+2]), strlen(line) - (len+2) - 1 );
 																								/* no newline */
 		}
 	}
@@ -72,6 +82,7 @@ char* univention_config_get_string ( char *value )
 
     univention_debug(UV_DEBUG_USERS, UV_DEBUG_INFO,"Did not find \"%s\"\n",value);
 
+	free(nvalue);
 	return NULL;
 }
 
