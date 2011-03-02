@@ -1,3 +1,10 @@
+univention-directory-manager (8.0.67-1) unstable; urgency=low
+
+  * univention-directory-manager.py checks now how many bytes have been
+    sent by socket.send() and retries again if some bytes are left (Bug #21146)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 02 Mar 2011 10:46:56 +0100
+
 univention-directory-manager (8.0.66-1) unstable; urgency=low
 
   * fixed bug in which properties of inherited UCR policies were not shown in

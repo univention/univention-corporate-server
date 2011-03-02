@@ -197,16 +197,17 @@ def main(argv):
 					data = None
 				elif sent >= 0 and sent < datalen:
 					# data has been sent only partial - retrying with remaining data
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'sent only %d bytes' % sent)
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'udm: sent chunk of %d bytes to frontend' % sent)
 					data = data[sent:]
 					datalen = len(data)
 					time.sleep(0.005) # sleep 5ms and try again
 				elif sent == datalen:
 					# everythin has been sent
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'udm: sent last chunk of %d bytes to frontend' % sent)
 					data = None
 				# elif sent < 0 ==> try again
 
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'sent output')
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sent output')
 			conn.close()
 
 			# Do cleanup work after the connection has been closed,
