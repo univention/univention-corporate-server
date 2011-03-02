@@ -36,10 +36,13 @@ eval "$(univention-config-registry shell kernel/modules)"
 modules=
 echo "$kernel_modules" | grep -qs '\<xen[_-]evtchn\>' || modules="$modules;xen-evtchn"
 echo "$kernel_modules" | grep -qs '\<xenfs\>' || modules="$modules;xenfs"
-echo "$kernel_modules" | grep -qs '\<xen-blkfront\>' || ( modules="$modules;xen-blkfront"; modprobe xen-blkfront; )
-echo "$kernel_modules" | grep -qs '\<blktap\>' || ( modules="$modules;blktap"; modprobe blktap; )
+echo "$kernel_modules" | grep -qs '\<xen-blkfront\>' || modules="$modules;xen-blkfront"
+echo "$kernel_modules" | grep -qs '\<blktap\>' || modules="$modules;blktap"
 
 [ -n "$modules" ] && univention-config-registry set kernel/modules="${kernel_modules}${modules}"
+
+lsmod | grep -qs '\<xen-blkfront\>' || modprobe xen-blkfront
+lsmod | grep -qs '\<blktap\>' || modprobe blktap
 
 #DEBHELPER#
 
