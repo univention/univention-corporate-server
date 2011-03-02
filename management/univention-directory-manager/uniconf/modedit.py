@@ -633,23 +633,17 @@ class modedit(unimodule.unimodule):
 					except:
 						pass
 
-				# policy select box
-				policydnlist=[]
-
-				# receive path info from 'cn=directory,cn=univention,<current domain>' object
-				pathResult = self.lo.get('cn=directory,cn=univention,'+self.position.getDomain())
-				if not pathResult:
-					pathResult = self.lo.get('cn=default containers,cn=univention,'+self.position.getDomain())
-				infoattr="univentionPolicyObject"
-				if pathResult.has_key(infoattr) and pathResult[infoattr]:
-					for i in pathResult[infoattr]:
-						try:
-							for policydn, policyattr in self.lo.search(base=i, scope="domain"):
-								if univention.admin.modules.recognize(current_module, policydn, policyattr):
-									if not policydn in policydnlist: # if containers and their subcontainers are in i we get results twice
-										policydnlist.append(policydn)
-						except:
-							pass
+				# policy select box - find all existing policies of the correct type
+				# NOTE: this replaces the previous behavior of finding only policies in 
+				#       registered containers (Bug #20992)
+				policydnlist = []
+				try:
+					policydnlist = [
+						dn for dn, attr in self.lo.search("(objectClass=univentionPolicy)") 
+						if univention.admin.modules.recognize(current_module, dn, attr)
+					]
+				except:
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "modedit collecting policy objects failed!")
 
 				# build all property descriptions for the registry module
 				if univention.admin.modules.name(current_module) == 'policies/registry':
