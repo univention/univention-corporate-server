@@ -800,17 +800,17 @@ def handler(dn, new, listener_old):
 			if connect_count >= 30:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: going into LDIF mode' % msg[0]['desc'])
 				if 'info' in msg[0]:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tadditional info: %s' % (dn,msg[0]['info']))
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tadditional info: %s' % msg[0]['info'])
 				if 'matched' in msg[0]:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tmachted dn: %s' % (dn,msg[0]['matched']))
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
 				reconnect=1
 				l=connect(ldif=1)
 			else:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'Can not connect LDAP Server (%s), retry in 10 seconds' % msg[0]['desc'])
 				if 'info' in msg[0]:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '\tadditional info: %s' % (dn,msg[0]['info']))
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tadditional info: %s' % msg[0]['info'])
 				if 'matched' in msg[0]:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '\tmachted dn: %s' % (dn,msg[0]['matched']))
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
 				time.sleep(10)
 		else:
 			connected=1
@@ -919,25 +919,25 @@ def handler(dn, new, listener_old):
 	except ldap.SERVER_DOWN, msg:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: retrying' % msg[0]['desc'])
 		if 'info' in msg[0]:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '\tadditional info: %s' % (dn,msg[0]['info']))
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '\tadditional info: %s' % msg[0]['info'])
 		if 'matched' in msg[0]:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '\tmachted dn: %s' % (dn,msg[0]['matched']))
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '\tmachted dn: %s' % msg[0]['matched'])
 		reconnect=1
 		handler(dn, new, old)
 	except ldap.ALREADY_EXISTS, msg:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: %s; trying to apply changes' % (msg[0]['desc'], dn))
 		if 'info' in msg[0]:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '\tadditional info: %s' % (dn,msg[0]['info']))
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '\tadditional info: %s' % msg[0]['info'])
 		if 'matched' in msg[0]:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '\tmachted dn: %s' % (dn,msg[0]['matched']))
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '\tmachted dn: %s' % msg[0]['matched'])
 		try:
 			cur = l.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)')[0][1]
 		except ldap.LDAPError, msg:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: going into LDIF mode' % msg[0]['desc'])
 			if 'info' in msg[0]:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tadditional info: %s' % (dn,msg[0]['info']))
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tadditional info: %s' % msg[0]['info'])
 			if 'matched' in msg[0]:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tmachted dn: %s' % (dn,msg[0]['matched']))
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
 			reconnect=1
 			connect(ldif=1)
 			handler(dn, new, old)
@@ -948,9 +948,9 @@ def handler(dn, new, listener_old):
 	except ldap.LDAPError, msg:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'dn=%s: %s' % (dn,msg[0]['desc']))
 		if 'info' in msg[0]:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tadditional info: %s' % (dn,msg[0]['info']))
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tadditional info: %s' % msg[0]['info'])
 		if 'matched' in msg[0]:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tmachted dn: %s' % (dn,msg[0]['matched']))
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
 		if listener.baseConfig.get('ldap/replication/fallback', 'ldif') == 'restart':
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Uncaught LDAPError exception during modify operation. Exiting Univention Directory Listener to retry replication with an updated copy of the current upstream object.')
 			sys.exit(1)	## retry a bit later after restart via runsv
