@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.156-1) unstable; urgency=low
+
+  * Fix exception during rename 2 (Bug #21677, Bug #21701)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 03 Mar 2011 10:32:50 +0100
+
 univention-virtual-machine-manager-daemon (0.9.155-1) unstable; urgency=low
 
   * Do not change the RAM setting in the UVMM profiles if

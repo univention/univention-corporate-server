@@ -1289,6 +1289,7 @@ def domain_update(domain):
 	"""Trigger update of domain.
 	Unfound domains are ignored."""
 	global nodes
+	# 1st: find domain on the previous host using only (stale) internal data
 	for node in nodes.itervalues():
 		conn = node.conn
 		try:
@@ -1306,13 +1307,13 @@ def domain_update(domain):
 		except KeyError, e:
 			# domain not on this node
 			pass
-	# failed to find existing data, search again all hosts
+	# 2nd: failed to find existing data, search again all hosts
 	for node in nodes.itervalues():
 		conn = node.conn
 		try:
 			dom = conn.lookupByUUIDString(domain)
 			dom_stat = Domain(dom, node=node)
-			node.domains[uuid] = dom_stat
+			node.domains[domain] = dom_stat
 			return
 		except libvirt.libvirtError, e:
 			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
