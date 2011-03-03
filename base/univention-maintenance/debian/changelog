@@ -1,3 +1,9 @@
+univention-maintenance (4.0.2-1) unstable; urgency=low
+
+  * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Mar 2011 17:56:08 +0100
+
 univention-maintenance (4.0.1-1) unstable; urgency=low
 
   * added univention-system-stats Bug #20121 
