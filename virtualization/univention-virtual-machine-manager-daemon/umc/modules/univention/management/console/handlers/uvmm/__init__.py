@@ -316,7 +316,7 @@ class handler( umch.simpleHandler ):
 
 	def set_content( self, object, content ):
 		# create position links
-		lst = umcd.List( attributes = { 'width' : '100%', 'type' : 'umc_mini_padding umc_nowrap' } )
+		lst = umcd.List( attributes = { 'width' : '100%', 'type' : 'umc_mini_padding umc_nowrap' }, default_type = 'uvmm_table' )
 		row = []
 		options = {}
 		keys = []
@@ -369,7 +369,7 @@ class handler( umch.simpleHandler ):
 		reload_btn.set_size( umct.SIZE_SMALL )
 		row.append( umcd.Cell( reload_btn, attributes = { 'width' : '100%', 'align' : 'right', 'type' : 'umc_mini_padding' } ) )
 		lst.add_row( row, attributes = { 'type' : 'umc_mini_padding' } )
-		object.dialog[ 0 ].set_dialog( umcd.List( content = [ [ lst, ], [ content, ] ] ) )
+		object.dialog[ 0 ].set_dialog( umcd.List( content = [ [ lst, ], [ content, ] ], default_type = 'uvmm_table' ) )
 
 	def uvmm_overview( self, object ):
 		"""Toplevel overview: show info."""
@@ -389,7 +389,7 @@ class handler( umch.simpleHandler ):
 		self.domain_wizard.reset()
 		nodes = self.uvmm.get_group_info( object.options[ 'group' ] )
 
-		table = umcd.List()
+		table = umcd.List( default_type = 'uvmm_table')
 		table.set_header( [ _( 'Physical server' ), _( 'CPU usage' ), _( 'Memory usage' ) ] )
 		for node_info in sorted(nodes, key=operator.attrgetter('name')):
 			node_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = { 'group' : object.options[ 'group' ], 'node' : node_info.name } )
@@ -412,7 +412,7 @@ class handler( umch.simpleHandler ):
 		overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = object.options )
 		opts = copy.deepcopy( object.options )
 
-		table = umcd.List()
+		table = umcd.List( default_type = 'uvmm_table' )
 
 		# button: create new snapshot
 		opts = copy.copy( object.options )
@@ -422,7 +422,7 @@ class handler( umch.simpleHandler ):
 		table.add_row( [ umcd.LinkButton( _( 'Create new snapshot' ), actions = create_act ) ] )
 
 		# listing of existing snapshots
-		lst = umcd.List()
+		lst = umcd.List( default_type = 'uvmm_table' )
 		btntoggle = umcd.ToggleCheckboxes()
 
 		# no snapshots available
@@ -612,9 +612,9 @@ class handler( umch.simpleHandler ):
 			return
 		node_info = self.uvmm.get_node_info( node_uri )
 
-		content = umcd.List( attributes = { 'width' : '100%' } )
+		content = umcd.List( attributes = { 'width' : '100%' }, default_type = 'uvmm_table' )
 
-		node_table = umcd.List( attributes = { 'width' : '100%' } )
+		node_table = umcd.List( attributes = { 'width' : '100%' }, default_type = 'uvmm_table' )
 		# node_cmd = umcp.SimpleCommand( 'uvmm/node/overview', options = { 'group' : object.options[ 'group' ], 'node' : node_info.name } )
 		# node_btn = umcd.LinkButton( node.name, actions = [ umcd.Action( node_cmd ) ] )
 		if node_uri.startswith( 'xen' ):
@@ -627,7 +627,7 @@ class handler( umch.simpleHandler ):
 		node_table.add_row( [ _( 'Memory usage' ), umcd.Cell( mem_usage, attributes = { 'width' : '100%' } ) ] )
 		content.add_row( [ umcd.Section( _( 'Physical server' ), node_table, attributes = { 'width' : '100%' } ) ] )
 
-		table = umcd.List( attributes = { 'type' : 'umc_mini_padding' } )
+		table = umcd.List( attributes = { 'type' : 'umc_mini_padding' }, default_type = 'uvmm_table' )
 		num_buttons = 0
 		for domain_info in sorted( node_info.domains, key = operator.attrgetter( 'name' ) ):
 			# ignore XEN Domain-0
@@ -661,7 +661,7 @@ class handler( umch.simpleHandler ):
 		domain_is_off = 5 == domain_info.state
 		domain_has_snapshots = getattr( domain_info, 'snapshots', None ) != None and domain_info.snapshots
 
-		content = umcd.List()
+		content = umcd.List( default_type = 'uvmm_settings_table' )
 
 		types = []
 		archs = []
@@ -855,7 +855,7 @@ class handler( umch.simpleHandler ):
 		content.add_row( [ arch, '' ] )
 		content.add_row( [ cpus, memory ] )
 
-		content2 = umcd.List()
+		content2 = umcd.List( default_type = 'uvmm_settings_table' )
 		content2.add_row( [ virt_tech ] )
 		if domain_info.os_type == 'hvm':
 			content2.add_row( [ bootdevs ] )
@@ -876,7 +876,7 @@ class handler( umch.simpleHandler ):
 		cfg_cmd = umcp.SimpleCommand( 'uvmm/domain/configure', options = object.options )
 		overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = object.options )
 
-		sections = umcd.List()
+		sections = umcd.List( default_type = 'uvmm_table' )
 		if not domain_is_off:
 			sections.add_row( [ umcd.InfoBox( _( 'The settings of a virtual instance can just be modified if it is shut off.' ) ) ] )
 		elif domain_has_snapshots:
@@ -916,7 +916,7 @@ class handler( umch.simpleHandler ):
 			return self.uvmm_node_overview( object )
 		node_info, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
 
-		blind_table = umcd.List()
+		blind_table = umcd.List( default_type = 'uvmm_table' )
 
 		if not domain_info:
 			resync_cmd = umcd.Action( umcp.SimpleCommand( 'uvmm/daemon/restart', options = copy.copy( object.options ) ) )
@@ -925,7 +925,7 @@ class handler( umch.simpleHandler ):
 			blind_table.add_row( [ _( 'The information about the virtual instance could not be retrieved. Clicking the refresh button will retry to collect the information. If this does not work a resynchronization can be triggered by clicking the following button.' ) ] )
 			blind_table.add_row( [ umcd.Cell( resync, attributes = { 'align' : 'right' } ) ] )
 		else:
-			infos = umcd.List()
+			infos = umcd.List( default_type = 'uvmm_table' )
 			w_status = [umcd.HTML('<b>%s</b>' % _('Status')), handler.STATES[domain_info.state]]
 			w_os = [umcd.HTML('<b>%s</b>' % _('Operating System')), umcd.Cell( umcd.Text( getattr(domain_info, 'annotations', {}).get('os', '' ) ), attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) ]
 			contact = getattr(domain_info, 'annotations', {}).get('contact', '' )
@@ -951,13 +951,13 @@ class handler( umch.simpleHandler ):
 			w_mem = [umcd.HTML('<b>%s</b>' % _('Memory usage')), mem_usage]
 			w_cpu = [umcd.HTML('<b>%s</b>' % _('CPU usage')), cpu_usage]
 
-			ops = umcd.List()
+			ops = umcd.List( default_type = 'uvmm_table' )
 			buttons = self._create_domain_buttons( object, node_info, domain_info, overview = 'domain', operations = True )
 			ops.add_row( buttons )
 
 			snapshots = self._create_domain_snapshots( object, node_info, domain_info )
 
-			tab = umcd.List()
+			tab = umcd.List( default_type = 'uvmm_table' )
 			tab.add_row(w_status + w_cpu)
 			tab.add_row(w_os + w_mem)
 			tab.add_row( w_contact + w_description )
@@ -983,7 +983,7 @@ class handler( umch.simpleHandler ):
 			self.finished(object.id(), res)
 			return
 
-		content = umcd.List()
+		content = umcd.List( default_type = 'uvmm_table' )
 		if 'dest' in object.options:
 			src_uri = self.uvmm.node_name2uri( object.options[ 'source' ] )
 			dest_uri = self.uvmm.node_name2uri( object.options[ 'dest' ] )
@@ -1168,7 +1168,7 @@ class handler( umch.simpleHandler ):
 		node_info, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
 
 		boxes = []
-		lst = umcd.List()
+		lst = umcd.List( default_type = 'uvmm_table' )
 
 		if domain_info.disks:
 			lst.add_row([umcd.Cell(umcd.Text(_('When removing a virtual instance the disk images bind to it may be removed also. Please select the disks that should be remove with the virtual instance. Be sure that none of the images to be delete are used by any other instance.')), attributes={'colspan': '3'})])
@@ -1254,7 +1254,7 @@ class handler( umch.simpleHandler ):
 			create_btn = umcd.Button( _( 'Create' ), actions = create_act, default = True )
 			create_cel = umcd.Cell(create_btn, attributes={'align': 'right'})
 
-			lst = umcd.List()
+			lst = umcd.List( default_type = 'uvmm_table' )
 			lst.add_row([umcd.Cell(umcd.Text(_('Enter the name for the snapshot')), attributes={'colspan': '3'})])
 			lst.add_row([snapshot_cel,])
 			lst.add_row([cancel_cel, create_cel])
@@ -1405,7 +1405,7 @@ class handler( umch.simpleHandler ):
 				if disk.source == object.options['disk']:
 					break
 			is_shared_image = disk.device == uvmmn.Disk.DEVICE_CDROM
-			lst = umcd.List()
+			lst = umcd.List( default_type = 'uvmm_table' )
 
 			opts = copy.copy( object.options )
 			overview = umcp.SimpleCommand( 'uvmm/domain/overview', options = opts )
@@ -1504,7 +1504,7 @@ class handler( umch.simpleHandler ):
 		report = ''
 		if object.incomplete:
 			nic_driver_select.virttech = domain_info.domain_type
-			nic_list = umcd.List( attributes = { 'width' : '100%' } )
+			nic_list = umcd.List( attributes = { 'width' : '100%' }, default_type = 'uvmm_table'  )
 			ids = []
 
 			nic_list.add_row( [ umcd.HTML( _( 'Two types of network interfaces are support. The first one is <i>Bridge</i> that requires a static network connection on the physical server that is configurated to be used for bridging. By default the network interface called eth0 is setup for such a case on each UVMM node. If a virtual instance should have more than one bridging network interface, additional network interfaces on the physical server must be configured first. The second type is <i>NAT</i> provides a private network for virtual instances on the physical server and permits access to the external network. This network typ is useful for computers with varying network connections like notebooks. Further details about the network configuration can be found in <a href="http://sdb.univention.de/1172" target="_blank">this article</a>.' ), attributes = { 'colspan' : '2' } ) ] )

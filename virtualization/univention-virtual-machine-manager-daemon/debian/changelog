@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.157-1) unstable; urgency=low
+
+  * reduce paddings to fix layout issues; Bug #21617
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 03 Mar 2011 14:42:15 +0100
+
 univention-virtual-machine-manager-daemon (0.9.156-1) unstable; urgency=low
 
   * Fix exception during rename 2 (Bug #21677, Bug #21701)

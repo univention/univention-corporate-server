@@ -163,7 +163,7 @@ class TreeView( object ):
 			table.set_tree_data( [] )
 			table.set_dialog( umcd.InfoBox( _( 'The connection to the Univention Virtual Machine Manager service could not be established. Please verify that it is started. You may use the UMC service module therefor.' ) ) )
 			success = False
-		res.dialog = [ table ]
+		res.dialog = umcd.Dialog( [ table ], attributes = { 'type' : 'uvmm_frame' } )
 
 		return ( success, res )
 
