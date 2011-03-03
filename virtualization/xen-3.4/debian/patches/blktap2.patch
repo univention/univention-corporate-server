@@ -37355,6 +37355,14 @@ diff -Nur a/xen-3.4.3/tools/python/xen/xend/XendDevices.py b/xen-3.4.3/tools/pyt
 diff -Nur a/xen-3.4.3/tools/python/xen/xend/XendDomainInfo.py b/xen-3.4.3/tools/python/xen/xend/XendDomainInfo.py
 --- a/xen-3.4.3/tools/python/xen/xend/XendDomainInfo.py	2010-05-29 18:49:18.000000000 +0200
 +++ b/xen-3.4.3/tools/python/xen/xend/XendDomainInfo.py	2011-02-24 10:11:00.000000000 +0100
+@@ -28,6 +28,7 @@
+ import time
+ import threading
+ import re
++import thread
+ import copy
+ import os
+ import traceback
 @@ -53,6 +53,7 @@
  from xen.xend.XendConstants import *
  from xen.xend.XendAPIConstants import *

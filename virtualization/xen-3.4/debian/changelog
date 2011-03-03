@@ -1,3 +1,9 @@
+xen-3.4 (3.4.3-17) unstable; urgency=low
+
+  * blktap2: fixed backport, import missing thread module (Bug #19345)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Mar 2011 20:51:00 +0100
+
 xen-3.4 (3.4.3-15) unstable; urgency=low
 
   * Added uuid-dev to build depends which is needed by vhd (Bug #19345)
