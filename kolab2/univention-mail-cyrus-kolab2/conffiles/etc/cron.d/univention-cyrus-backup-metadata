@@ -1,5 +1,7 @@
 @%@BCWARNING=# @%@
 
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
+
 @!@
 cron = baseConfig.get("mail/cyrus/backup-metadata/cron", "15 3 * * *")
 file = "/usr/sbin/univention-cyrus-backup-metadata"
