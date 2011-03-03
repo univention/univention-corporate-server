@@ -195,11 +195,13 @@ def handle_sock( conn, session, options ):
 
 	number = int(meta.get('Number', '-1'))
 
-	if options.debug >= 2:
-		open('/tmp/xmlin', 'w').write(xmlin)
+	if options.debug >= 4:
+		ud.debug(ud.ADMIN, ud.INFO, 'Logging XML representation of input:')
+		ud.debug(ud.ADMIN, ud.INFO, str(xmlin))
 	xmlout = session.startRequest( xmlin, number, ignore_ldap_connection=True, timeout = None, meta=meta )
-	if options.debug >= 2:
-		open('/tmp/xmlout', 'w').write( xmlout )
+	if options.debug >= 4:
+		ud.debug(ud.ADMIN, ud.INFO, 'Logging XML representation of output:')
+		ud.debug(ud.ADMIN, ud.INFO, str(xmlout))
 
 	# send output
 	conn.send( xmlout + '\0' )

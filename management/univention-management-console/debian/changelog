@@ -1,3 +1,12 @@
+univention-management-console (3.0.80-2) unstable; urgency=low
+
+  * Stop logging the XML representation of input and output to /tmp/xmlin, since
+    leaks information into /tmp depending on the umask and permits symlink attacks
+    against data owned by www-data (Bug #21685)	 
+  * Only log these files if debug level is 4 or higher	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 03 Mar 2011 09:07:36 +0100
+
 univention-management-console (3.0.80-1) unstable; urgency=low
 
   * simplify umc pam stack in case auth/passwdcache is disabled.
