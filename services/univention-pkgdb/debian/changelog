@@ -1,3 +1,9 @@
+univention-pkgdb (4.0.4-1) unstable; urgency=low
+
+  * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Mar 2011 17:55:48 +0100
+
 univention-pkgdb (4.0.3-1) unstable; urgency=low
 
   * fix traceback in join script (missing cn=services) (Bug #19022)
