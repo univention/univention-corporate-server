@@ -1,4 +1,7 @@
 @%@BCWARNING=# @%@
+
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
+
 @!@
 import sys
 
