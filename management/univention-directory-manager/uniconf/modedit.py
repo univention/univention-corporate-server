@@ -5494,15 +5494,22 @@ class modedit(unimodule.unimodule):
 
 			# remove
 			if mitem[3].pressed():
+				cpnew=copy.deepcopy(new)
 				selected=mitem[2].getselected()
 				selected.reverse()
 				for value in selected:
 					try:
-						new.remove(current_object[key][int(value)])
+						cpnew.remove(current_object[key][int(value)])
 					except ValueError:
 						# maybe the value was not a integer, but a dn
 						val = current_object[key].index( value )
-						new.remove(current_object[key][val])
+						cpnew.remove(current_object[key][val])
+				try:
+					current_object[key]=cpnew
+					new=cpnew
+				except univention.admin.uexceptions.valueError, e:
+					invalid[key]=new
+
 			# up
 			elif len(mitem) > 4 and mitem[4].pressed():
 				selected=mitem[2].getselected()

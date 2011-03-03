@@ -1,3 +1,11 @@
+univention-directory-manager (8.0.68-1) unstable; urgency=low
+
+  * fixed bug which prevented removing servers from multi-value lists; the
+    error occurred when editing the advanced thin client tab "[Thin client 
+    configuration]" (Bug #19730)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 03 Mar 2011 17:03:22 +0100
+
 univention-directory-manager (8.0.67-2) unstable; urgency=low
 
   * Stop logging the XML representation of input and output to /tmp/xmlin, since
