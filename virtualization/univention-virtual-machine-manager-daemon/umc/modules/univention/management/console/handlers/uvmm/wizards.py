@@ -612,9 +612,11 @@ class InstanceWizard( umcd.IWizard ):
 			if mem_size < four_mb:
 				object.options[ 'memory' ] = '4 MB'
 				return umcd.WizardResult( False, _( 'A virtual instance must at least have 4 MB memory.' ) )
-			if mem_size > self.max_memory:
+			elif mem_size > self.max_memory:
 				object.options[ 'memory' ] = MemorySize.num2str( self.max_memory * 0.75 )
 				return umcd.WizardResult( False, _( 'The physical server does not have that much memory. As a suggestion the a mount of memory was set to 75% of the available memory.' ) )
+			else:
+				object.options[ 'memory' ] = MemorySize.num2str( mem_size )
 			# activate drive wizard to add a first mandatory drive
 			if not self.drives:
 				self.drive_wizard.prev_first_page = True
