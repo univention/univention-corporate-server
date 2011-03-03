@@ -139,13 +139,18 @@ def _verify_list_items( sequence ):
 	return sequence
 
 class Frame( Element, list ):
-	def __init__( self, elements = [], title = '' ):
-		Element.__init__( self )
+	def __init__( self, elements = [], title = '', attributes = {} ):
+		Element.__init__( self, attributes = attributes )
 		list.__init__( self, _verify_list_items( elements ) )
 		if title:
 			self.set_title( title )
 		else:
 			self.__title = None
+
+	def __getitem__( self, key ):
+		if Element.__contains__( self, key ):
+			return Element.__getitem__( self, key )
+		return list.__getitem__( self, key )
 
 	def __str__( self ):
 		return "%s:\n  %s" % ( Element.__str__( self ), _str_list( self ) )

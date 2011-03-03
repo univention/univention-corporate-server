@@ -33,7 +33,7 @@
 import base
 
 class Dialog( base.Frame ):
-	def __init__(self, elements = [] ):
-		base.Frame.__init__( self, elements )
+	def __init__(self, elements = [], attributes = {} ):
+		base.Frame.__init__( self, elements = elements, title = '', attributes = attributes )
 
 DialogTypes = (Dialog,)

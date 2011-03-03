@@ -634,6 +634,7 @@ dojo.addOnLoad(function(){
 });
 </script>''' % ( ', '.join( items ), utils.img_minus, utils.img_plus ) ] } )
 	tablerows.append( on_load )
+	args[ 'type' ] = 'umc_no_right_padding'
 	return table( '', args, { 'obs' : tablerows } )
 
 mapper.add( umcd.SimpleTreeView, simple_treeview_map )
