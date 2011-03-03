@@ -1,3 +1,9 @@
+univention-kolab2-webclient (6.0.11-1) unstable; urgency=low
+
+  * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Mar 2011 17:54:12 +0100
+
 univention-kolab2-webclient (6.0.10-1) unstable; urgency=low
 
   * Use port 25 for smtp beacause horde use STARTTLS over port 25 and
