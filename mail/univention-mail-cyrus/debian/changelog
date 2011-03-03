@@ -1,3 +1,9 @@
+univention-mail-cyrus (3.0.7-1) unstable; urgency=low
+
+  * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Mar 2011 17:54:42 +0100
+
 univention-mail-cyrus (3.0.6-1) unstable; urgency=low
 
   * only create symlink in usr/sbin/univention-cyrus-mkdir if source files exist;
