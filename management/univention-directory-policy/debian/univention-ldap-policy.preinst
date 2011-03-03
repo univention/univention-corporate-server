@@ -68,8 +68,12 @@ uninstall_config_registry() {
 		--remove /etc/cron.d/${PKGNAME}
 }
 
-uninstall_config_registry univention-ldap-policy
-purge_obsolete_conffiles univention-ldap-policy
+case "$1" in
+install|upgrade)
+	uninstall_config_registry univention-ldap-policy
+	purge_obsolete_conffiles univention-ldap-policy
+	;;
+esac
 
 exit 0
 

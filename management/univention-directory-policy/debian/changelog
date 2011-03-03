@@ -1,10 +1,16 @@
+univention-directory-policy (4.0.0-4) unstable; urgency=low
+
+  * minor preinst fix (Bug #10457)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Mar 2011 15:28:22 +0100
+
 univention-directory-policy (4.0.0-3) unstable; urgency=low
 
   * call uninstall_config_registry and purge_obsolete_conffiles functions
     in univention-ldap-policy.preinst to clean up legacy ucr conffiles
     (Bug #10457)
 
- -- Arvid Requate <requate@univention.de>  Thu, 03 Mar 2011 15:24:30 +0100
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Mar 2011 15:28:21 +0100
 
 univention-directory-policy (4.0.0-2) unstable; urgency=low
 
