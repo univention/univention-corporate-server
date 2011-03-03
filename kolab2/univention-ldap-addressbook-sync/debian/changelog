@@ -1,3 +1,9 @@
+univention-ldap-addressbook-sync (4.0.6-1) unstable; urgency=low
+
+  * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Mar 2011 17:54:23 +0100
+
 univention-ldap-addressbook-sync (4.0.5-1) unstable; urgency=low
 
   * tabify univention-ldap-addressbook-sync
