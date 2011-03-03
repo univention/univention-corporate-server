@@ -1,4 +1,5 @@
 @%@BCWARNING=# @%@
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
 # /etc/cron.d/univention-home-mounter: crontab fragment to unmount home directories
 
