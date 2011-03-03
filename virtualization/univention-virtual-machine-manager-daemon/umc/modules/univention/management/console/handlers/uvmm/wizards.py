@@ -194,7 +194,10 @@ class DriveWizard( umcd.IWizard ):
 			ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: node storage pools: %s' % self.node_uri)
 			object.options[ 'drive-pool' ] = 'default'
 			object.options['driver-type'] = None
-			object.options[ 'image-size' ] = '8 GB'
+			if object.options['diskspace']:
+				object.options[ 'image-size' ] = object.options['diskspace'] # use the diskspace value from profile
+			else:
+				object.options[ 'image-size' ] = '8GB' # default
 			object.options['image-name'] = None
 		return umcd.IWizard.action( self, object )
 
@@ -584,6 +587,7 @@ class InstanceWizard( umcd.IWizard ):
 			object.options[ 'arch' ] = self.profile[ 'arch' ]
 			object.options[ 'type' ] = self.profile[ 'virttech' ]
 			object.options[ 'memory' ] = self.profile[ 'ram' ]
+			object.options[ 'diskspace' ] = self.profile[ 'diskspace' ]
 			object.options[ 'cpus' ] = self.profile[ 'cpus' ]
 			object.options[ 'bootdev' ] = self.profile[ 'bootdev' ]
 			object.options[ 'vnc' ] = self.profile[ 'vnc' ]

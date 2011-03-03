@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-daemon (0.9.154-1) unstable; urgency=low
+
+  * Added disk space to the UVMM profiles (Bug #21517)
+  * Change default values for ram in the profiles to the system
+    requirements (Bug #21517)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Mar 2011 09:20:14 +0100
+
 univention-virtual-machine-manager-daemon (0.9.153-1) unstable; urgency=low
 
   * Fix exception during rename (Bug #21677)
