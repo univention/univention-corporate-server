@@ -37,7 +37,7 @@ joinscript_init
 
 declare -a CREDENTIALS=("$@")
 
-eval "$(univention-config-registry shell ldap/base server/role ldap/hostdn)"
+eval "$(univention-config-registry shell)"
 NAME="Virtual Machine Manager"
 
 # add service
@@ -99,7 +99,6 @@ univention-directory-manager container/cn create "$@" \
 kernel=$(readlink -e /vmlinuz)
 
 # determin keyboard layout
-eval "$(ucr shell locale/keymap)"
 while [ -n "$locale_keymap" ]
 do
 	for virttech in xen/qemu kvm qemu
@@ -153,9 +152,17 @@ create_hvm_profile() {
 			--set pvinterface="$pv"
 	fi
 	if [ "$JS_LAST_EXECUTED_VERSION" = "3" ]; then
-		univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
-			--dn "cn=${cn},cn=${virttech},cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-			--set diskspace="${diskspace}"
+		if [ "$uvmm_profile_autoupdate" = "false" ]; then
+			# update ram only if uvmm/profile/autoupdate is not set to false
+			univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
+				--dn "cn=${cn},cn=${virttech},cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
+				--set diskspace="${diskspace}"
+		else
+			univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
+				--dn "cn=${cn},cn=${virttech},cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
+				--set diskspace="${diskspace}" \
+				--set ram="${ram}"
+		fi
 	fi
 }
 
@@ -187,10 +194,17 @@ create_xen_profile() {
 			--set os="$cn"
 	fi
 	if [ "$JS_LAST_EXECUTED_VERSION" = "3" ]; then
-		univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
-			--dn "cn=${cn},cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-			--set diskspace="${diskspace}" \
-			--set ram="${ram}"
+		if [ "$uvmm_profile_autoupdate" != "false" ]; then
+			# update ram only if uvmm/profile/autoupdate is not set to false
+			univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
+				--dn "cn=${cn},cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
+				--set diskspace="${diskspace}"
+		else
+			univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
+				--dn "cn=${cn},cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
+				--set diskspace="${diskspace}" \
+				--set ram="${ram}"
+		fi
 	fi
 }
 

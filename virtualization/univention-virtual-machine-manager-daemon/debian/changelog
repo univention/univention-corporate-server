@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.155-1) unstable; urgency=low
+
+  * Do not change the RAM setting in the UVMM profiles if
+    uvmm/profile/autoupdate is set to false (Bug #21517)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Mar 2011 09:41:11 +0100
+
 univention-virtual-machine-manager-daemon (0.9.154-1) unstable; urgency=low
 
   * Added disk space to the UVMM profiles (Bug #21517)
