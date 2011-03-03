@@ -1,3 +1,9 @@
+univention-webui-style (5.0.63-1) unstable; urgency=low
+
+  * add styles for the UVMM module (smaller paddings); Bug #21617
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 03 Mar 2011 14:27:36 +0100
+
 univention-webui-style (5.0.62-1) unstable; urgency=low
 
   * fix freeze in UDM (Bug #17324)

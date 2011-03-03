@@ -2096,3 +2096,25 @@ p.online_help {
 .dijitDialog {
 	border: 1px solid #CDCDC8 !important;
 }
+
+.uvmm_table {
+	padding: 3px;
+}
+
+.uvmm_settings_table {
+	padding-right: 16px;
+	padding-bottom: 3px;
+	padding-top: 3px;
+}
+
+.uvmm_frame {
+	padding: 0px;
+	margin: 0px;
+}
+
+.umc_no_padding_right {
+	padding-right: 0px !important;
+	padding-bottom: 3px;
+	padding-top: 3px;
+	padding-left: 0px;
+}
