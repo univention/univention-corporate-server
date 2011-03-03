@@ -1,3 +1,10 @@
+univention-config-registry (6.0.45-1) unstable; urgency=low
+
+  * default SYSLOGD to -m0 if /etc/default/syslogd leaves it empty
+    (Bug #11241)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Mar 2011 19:18:03 +0100
+
 univention-config-registry (6.0.44-1) unstable; urgency=low
 
   * Read /etc/default/syslogd in init.d (Bug #11241)
