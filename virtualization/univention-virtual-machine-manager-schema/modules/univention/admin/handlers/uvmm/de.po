@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager-schema\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-27 10:00+0100\n"
+"POT-Creation-Date: 2011-03-03 09:03+0100\n"
 "PO-Revision-Date: 2010-07-22 15:10+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -31,7 +31,7 @@ msgstr "Beschreibung"
 msgid "Description of virtual machine"
 msgstr "Beschreibung der virtuellen Maschine"
 
-#: info.py:74 profile.py:215 profile.py:216
+#: info.py:74 profile.py:225 profile.py:226
 msgid "Operating system"
 msgstr "Betriebssystem"
 
@@ -43,7 +43,7 @@ msgstr "Name des Betriebssystem"
 msgid "Contact"
 msgstr "Kontakt"
 
-#: info.py:96 profile.py:257
+#: info.py:96 profile.py:267
 msgid "General"
 msgstr "Allgemein"
 
@@ -120,42 +120,50 @@ msgid "Amount of memory"
 msgstr "Größe des Speichers"
 
 #: profile.py:135
+msgid "Disk space"
+msgstr "Festplatten Speicherplatz"
+
+#: profile.py:136
+msgid "Amount of disk space"
+msgstr "Größe der Festplatte"
+
+#: profile.py:145
 msgid "Network interface"
 msgstr "Netz-Interface"
 
-#: profile.py:136
+#: profile.py:146
 msgid "Bridging interface"
 msgstr "Bridging Interface"
 
-#: profile.py:145
+#: profile.py:155
 msgid "Remote access"
 msgstr "Fernzugriff"
 
-#: profile.py:146
+#: profile.py:156
 msgid "Active VNC remote acess"
 msgstr "Aktiviert den VNC Fernzugriff"
 
-#: profile.py:155 profile.py:156
+#: profile.py:165 profile.py:166
 msgid "Keyboard layout"
 msgstr "Tastaturlayout"
 
-#: profile.py:165 profile.py:166
+#: profile.py:175 profile.py:176
 msgid "Kernel"
 msgstr "Kernel"
 
-#: profile.py:175 profile.py:176
+#: profile.py:185 profile.py:186
 msgid "Kernel parameter"
 msgstr "Kernel Parameter"
 
-#: profile.py:185 profile.py:186
+#: profile.py:195 profile.py:196
 msgid "Initramfs disk"
 msgstr "Iinitramfs Disk"
 
-#: profile.py:195
+#: profile.py:205
 msgid "Use advanced kernel configuarion"
 msgstr "Verwende erweiterte Kernelkonfiguration"
 
-#: profile.py:196
+#: profile.py:206
 msgid ""
 "Manually specify the kernel configuration for paravirtualized machines or "
 "use pyGrub as bootloader"
@@ -163,34 +171,34 @@ msgstr ""
 "Entweder kann manuell die Kernelkonfiguration für die paravirtualisierte "
 "Maschine angegeben werden oder es wird pyGrub als Bootloder verwendet"
 
-#: profile.py:205
+#: profile.py:215
 msgid "Boot devices"
 msgstr "Boot-Device"
 
-#: profile.py:206
+#: profile.py:216
 msgid "Order of boot devices"
 msgstr "Reihenfolge der Boot-Devices"
 
-#: profile.py:225
+#: profile.py:235
 msgid "Use para-virtual driver for hard drives"
 msgstr "Verwende paravirtualisierte Treiber für Festplatten"
 
-#: profile.py:234
+#: profile.py:244
 msgid "Use para-virtual driver for network interface"
 msgstr "Verwende paravirtualisierte Treiber für Netzwerkkarten"
 
-#: profile.py:243
+#: profile.py:253
 msgid "Hardware"
 msgstr "Hardware"
 
-#: profile.py:247
+#: profile.py:257
 msgid "Boot"
 msgstr "Bootvorgang"
 
-#: profile.py:251
+#: profile.py:261
 msgid "Virtualization"
 msgstr "Virtualisierung"
 
-#: profile.py:257
+#: profile.py:267
 msgid "Virtual machine profile"
 msgstr "Profil für eine virtuelle Maschine"

@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (1.0.25-1) unstable; urgency=low
+
+  * Added disk space to the UVMM profiles (Bug #21517)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 03 Mar 2011 09:07:56 +0100
+
 univention-virtual-machine-manager-schema (1.0.24-1) unstable; urgency=low
 
   * remove default value for extended attribute ManageableBy; Bug #19532

@@ -131,6 +131,16 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'diskspace': univention.admin.property(
+			short_description= _('Disk space'),
+			long_description= _('Amount of disk space'),
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	'interface': univention.admin.property(
 			short_description= _('Network interface'),
 			long_description= _('Bridging interface'),
@@ -259,7 +269,7 @@ layout = [
 							[ univention.admin.field( "name_prefix" ), ],
 							[ univention.admin.field( "txt_hardware" ), ],
 							[ univention.admin.field( "arch" ), univention.admin.field( "cpus" ) ],
-							[ univention.admin.field( "ram" ), ],
+							[ univention.admin.field( "ram" ), univention.admin.field( "diskspace" ) ],
 							[ univention.admin.field( "interface" ), ],
 							[ univention.admin.field( "vnc" ), univention.admin.field( "kblayout" ) ],
 							[ univention.admin.field( "txt_boot" ), ],
@@ -288,6 +298,7 @@ mapping.register('arch', 'univentionVirtualMachineProfileArch', None, univention
 mapping.register('cpus', 'univentionVirtualMachineProfileCPUs', None, univention.admin.mapping.ListToString)
 mapping.register('virttech', 'univentionVirtualMachineProfileVirtTech', None, univention.admin.mapping.ListToString)
 mapping.register('ram', 'univentionVirtualMachineProfileRAM', None, univention.admin.mapping.ListToString)
+mapping.register('diskspace', 'univentionVirtualMachineProfileDiskspace', None, univention.admin.mapping.ListToString)
 mapping.register('vnc', 'univentionVirtualMachineProfileVNC', None, univention.admin.mapping.ListToString)
 mapping.register('interface', 'univentionVirtualMachineProfileInterface', None, univention.admin.mapping.ListToString)
 mapping.register('kblayout', 'univentionVirtualMachineProfileKBLayout', None, univention.admin.mapping.ListToString)
