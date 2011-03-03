@@ -14,6 +14,11 @@
 
 # /etc/init.d/sysklogd: start the system log daemon.
 
+# Reads config file (will override defaults above)
+if [ -r /etc/default/syslogd ]; then
+	. /etc/default/syslogd
+fi
+
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 
 pidfile=/var/run/syslogd.pid
