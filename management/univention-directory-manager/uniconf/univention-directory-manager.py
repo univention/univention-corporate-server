@@ -181,11 +181,13 @@ def main(argv):
 			if number != -1 and meta.has_key ('Sessioninvalid'):
 				del meta['Sessioninvalid']
 
-			if debugging >= 2:
-				open('/tmp/xmlin', 'w').write(xmlin)
+			if debugging >= 4:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Logging XML representation of input:')
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, str(xmlin))
 			xmlout = session.startRequest(xmlin, number, meta=meta)
-			if debugging >= 2:
-				open('/tmp/xmlout', 'w').write(xmlout)
+			if debugging >= 4:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Logging XML representation of output:')
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, str(xmlout))
 
 			# convert unicode to bytestring (UTF-8)
 			data = (xmlout+'\0').encode('UTF-8')

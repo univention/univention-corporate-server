@@ -1,3 +1,12 @@
+univention-directory-manager (8.0.67-2) unstable; urgency=low
+
+  * Stop logging the XML representation of input and output to /tmp/xmlin, since
+    leaks information into /tmp depending on the umask and permits symlink attacks
+    against data owned by www-data (Bug #21685)	 
+  * Only log these files if debug level is 4 or higher	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 03 Mar 2011 08:40:45 +0100
+
 univention-directory-manager (8.0.67-1) unstable; urgency=low
 
   * univention-directory-manager.py checks now how many bytes have been
