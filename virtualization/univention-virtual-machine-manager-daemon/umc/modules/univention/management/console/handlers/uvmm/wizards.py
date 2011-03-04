@@ -194,10 +194,10 @@ class DriveWizard( umcd.IWizard ):
 			ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: node storage pools: %s' % self.node_uri)
 			object.options[ 'drive-pool' ] = 'default'
 			object.options['driver-type'] = None
-			if object.options['diskspace']:
+			if object.options.get('diskspace'):
 				object.options[ 'image-size' ] = object.options['diskspace'] # use the diskspace value from profile
 			else:
-				object.options[ 'image-size' ] = '8GB' # default
+				object.options[ 'image-size' ] = '12GB' # default
 			object.options['image-name'] = None
 		return umcd.IWizard.action( self, object )
 
