@@ -32,6 +32,8 @@
 
 #DEBHELPER#
 
+eval "$(univention-config-registry shell)"
+
 if [ "$1" = configure -a -z "$2" ]; then
         # only set this for new installations
 	univention-config-registry set directory/manager/web/modules/users/user/properties/homePostalAddress/syntax=postalAddress

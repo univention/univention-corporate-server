@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.107-4) unstable; urgency=low
+
+  * added import of UCR variables to postinst script (Bug #18374)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Mar 2011 16:31:16 +0100
+
 univention-directory-manager-modules (6.0.107-3) unstable; urgency=low
 
   * fixed version comparison in postinst script (Bug #18374)
