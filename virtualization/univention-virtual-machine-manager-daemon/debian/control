@@ -15,6 +15,8 @@ Architecture: all
 Depends: univention-ssl,
  python-elementtree,
  python-pam,
+ python-univention (>>5.0.10),
+ python-univention-directory-manager (>>6.0.103),
  python-univention-virtual-machine-manager (= ${source:Version}),
  ${python:Depends}, ${misc:Depends}
 Recommends: libvirt-bin,

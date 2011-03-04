@@ -196,9 +196,6 @@ if __name__ == '__main__':
 	ldap_group.add_option('-c', '--cache',
 			action='store', dest='cache', default="/var/cache/univention-virtual-machine-manager-daemon",
 			help=_('LDAP cache directory [%(default)s]') % {'default':'%default'})
-	ldap_group.add_option('-b', '--ldap-base',
-			action='store', dest='ldap_uri', default=None, metavar=_("ldap://HOST:PORT/BASE"),
-			help=_('LDAP-uri for searching initial nodes'))
 	parser.add_option_group(ldap_group)
 
 	daemon_group = OptionGroup(parser, _('Daemon options'))
@@ -263,19 +260,18 @@ if __name__ == '__main__':
 		node_add(uri)
 
 	# Add nodes from LDAP
-	if options.ldap_uri != '':
-		from univention.uvmm.uvmm_ldap import ldap_cached, ldap_uris, LdapError
-		try:
-			if options.cache != '':
-				get_ldap_uris = lambda:ldap_uris(options.ldap_uri)
-				uris = ldap_cached("%s/ldap.pic" % (options.cache,), get_ldap_uris)
-			else:
-				uris = ldap_uris(options.ldap_uri)
+	from univention.uvmm.uvmm_ldap import ldap_cached, ldap_uris, LdapError
+	try:
+		if options.cache != '':
+			get_ldap_uris = lambda:ldap_uris()
+			uris = ldap_cached("%s/ldap.pic" % (options.cache,), get_ldap_uris)
+		else:
+			uris = ldap_uris()
 
-			for uri in uris:
-				node_add(uri)
-		except LdapError, msg:
-			logger.warning(msg)
+		for uri in uris:
+			node_add(uri)
+	except LdapError, msg:
+		logger.warning(msg)
 
 	from univention.uvmm.unix import unix
 	unix(options)

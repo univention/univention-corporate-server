@@ -126,7 +126,7 @@ def from_ldap(options):
 	"""Add all nodes registered in LDAP."""
 	from univention.uvmm.uvmm_ldap import ldap_uris, LdapError
 	try:
-		uris = ldap_uris(options.ldap_uri)
+		uris = ldap_uris()
 	except LdapError, (translatable_text, dict):
 		print >>sys.stderr, "ERROR:"
 		print >>sys.stderr, _(translatable_text) % dict
@@ -564,9 +564,6 @@ if __name__ == '__main__':
 	parser.add_option( '-v', '--verbose',
 			action='store_true', dest='verbose', default=False,
 			help=_('Print additional information'))
-	parser.add_option('-b', '--ldap-base',
-			action='store', dest='ldap_uri', metavar=_("ldap://HOST:PORT/BASE"),
-			help=_('LDAP-uri for searching initial nodes'))
 
 	(options, arguments) = parser.parse_args()
 

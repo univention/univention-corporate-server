@@ -83,51 +83,6 @@ def ldap2fqdn(ldap_result):
 		domain = ldap_result[ 'associatedDomain' ][ 0 ]
 	return "%s.%s" % (ldap_result['cn'][0], domain)
 
-class _ldap_uri(object):
-	"""LDAP URI."""
-	def __init__(self, uri, rdn=None):
-		"""Create LDAP uri with default host and base from Univention Config Registry."""
-		try:
-			u = ldapurl.LDAPUrl(uri)
-		except ValueError, e:
-			raise LdapConfigurationError(_('Illegal URI: %(uri)s'), uri=uri)
-
-		if not u.hostport:
-			u.hostport = configRegistry['ldap/server/name']
-			logger.debug('Retrieved ldap-host %s' % (u.hostport,))
-			if not u.hostport:
-				raise LdapConfigurationError(_('No LDAP server in ldap/server/name.'))
-		if ':' in u.hostport:
-			self.host, port = u.hostport.rsplit(':', 1)
-			u.port = int(port)
-		else:
-			self.host = u.hostport
-			import socket
-			self.port = socket.getservbyname(u.urlscheme)
-		if not u.dn:
-			u.dn = configRegistry['ldap/base']
-			logger.debug('Retrieved ldap-dn %s' % (u.dn,))
-			if not u.dn:
-				raise LdapConfigurationError(_('No LDAP base in ldap/base.'))
-		if rdn:
-			self.dn = "%s,%s" % (rdn, u.dn)
-		else:
-			self.dn = u.dn
-
-	def connect(self):
-		"""Connect to ldap://host/base."""
-		try:
-			conn = univention.uldap.access(host=self.host, port=self.port, base=self.dn)
-			if not conn:
-				raise LDAPError() # catched below
-		except LDAPError, e:
-			raise LdapConnectionError(_('Could not connect to "%(uri)s"'), uri=str(self))
-		return conn
-
-	def __str__(self):
-		return "ldap://%s:%d/%s" % (self.host, self.port, self.dn)
-	__repr__ = __str__
-
 def ldap_cached(cachefile, func):
 	"""Cache result of function or return cached result on LdapConnectionException."""
 	try:
@@ -189,36 +144,28 @@ def ldap_uris(ldap_uri=None):
 	# ensure that we should manage the host
 	filter = '(&%s(|(!(univentionVirtualMachineManageableBy=*))(univentionVirtualMachineManageableBy=%s)))' % ( filter, HOST_FQDN )
 	logger.debug('Find servers to manage "%s"' % filter)
-	ldap_uri = _ldap_uri(ldap_uri)
-	ldap_conn = ldap_uri.connect()
+	lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
 	try:
-		try:
-			nodes = []
-			res = ldap_conn.search(filter)
-			for dn, data in res:
-				fqdn = ldap2fqdn(data)
-				for service in SERVICES:
-					if service in data['univentionService']:
-						uri = SERVICES[service] % fqdn
-						nodes.append(uri)
-			logger.debug('Registered URIs: %s' % ', '.join(nodes))
-			return nodes
-		except LDAPError, e:
-			raise LdapConnectionError(_('Could not query "%(uri)s"'), uri=ldap_uri)
-	finally:
-		ldap_conn.lo.unbind()
+		nodes = []
+		res = lo.search(filter)
+		for dn, data in res:
+			fqdn = ldap2fqdn(data)
+			for service in SERVICES:
+				if service in data['univentionService']:
+					uri = SERVICES[service] % fqdn
+					nodes.append(uri)
+		logger.debug('Registered URIs: %s' % ', '.join(nodes))
+		return nodes
+	except LDAPError, e:
+		raise LdapConnectionError(_('Could not query "%(uri)s"'), uri=ldap_uri)
 
-def ldap_annotation(uuid, ldap_uri=None):
+def ldap_annotation(uuid):
 	"""Load annotations for domain from LDAP."""
-	if ldap_uri:
-		base = _ldap_uri(ldap_uri, LDAP_INFO_RDN)
-		lo = base.connect()
-	else:
-		try:
-			lo, position = univention.admin.uldap.getMachineConnection()
-			base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
-		except ( SERVER_DOWN, IOError ), e:
-			raise LdapConnectionError(_('Could not open LDAP-Machine connection'))
+	try:
+		lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
+		base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
+	except ( SERVER_DOWN, IOError ), e:
+		raise LdapConnectionError(_('Could not open LDAP-Machine connection'))
 	co = None
 	dn = "%s=%s,%s" % (uvmm_info.mapping.mapName('uuid'), uuid, base)
 	filter = "(objectclass=*)"
@@ -230,17 +177,13 @@ def ldap_annotation(uuid, ldap_uri=None):
 	except univention.admin.uexceptions.base:
 		return {}
 
-def ldap_modify(uuid, ldap_uri=None):
+def ldap_modify(uuid):
 	"""Modify annotations for domain from LDAP."""
-	if ldap_uri:
-		base = _ldap_uri(ldap_uri, LDAP_INFO_RDN)
-		lo = base.connect()
-	else:
-		try:
-			lo, position = univention.admin.uldap.getMachineConnection()
-			base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
-		except (SERVER_DOWN, IOError ), e:
-			raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
+	try:
+		lo, position = univention.admin.uldap.getMachineConnection(ldap_master=True)
+		base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
+	except (SERVER_DOWN, IOError ), e:
+		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
 	co = None
 	dn = "%s=%s,%s" % (uvmm_info.mapping.mapName('uuid'), uuid, base)
 	filter = "(objectclass=*)"

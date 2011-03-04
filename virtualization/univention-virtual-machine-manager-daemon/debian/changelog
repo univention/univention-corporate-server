@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (0.9.160-1) unstable; urgency=low
+
+  * uvmm_ldap.py: cleanup ldap code and use the new getMachineConnection
+    funktion (Bug #21559)
+  * removed --ldap-base option from univention-virtual-machine-manager
+    and univention-virtual-machine-manager-daemon (Bug #21559)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Mar 2011 10:28:54 +0100
+
 univention-virtual-machine-manager-daemon (0.9.159-1) unstable; urgency=low
 
   * diskspace: fixed traceback if no profile was selected (Bug #21517)
