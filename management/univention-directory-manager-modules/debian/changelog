@@ -1,3 +1,12 @@
+univention-directory-manager-modules (6.0.103-1) unstable; urgency=low
+
+  * uldap.getMachineConnection: added a parameter ldap_master to control
+    if the connection goes to the DC Master. Otherwise the function
+    tries to connect to ldap/server/name and if ldap/server/name is down
+    too the ldap/server/addition servers will be checked (Bug #21559)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Mar 2011 10:20:50 +0100
+
 univention-directory-manager-modules (6.0.102-1) unstable; urgency=low
 
   * improved performance of module groups/group (Bug #21315)

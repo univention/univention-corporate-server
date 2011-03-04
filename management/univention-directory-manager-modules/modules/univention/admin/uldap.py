@@ -57,8 +57,8 @@ def getAdminConnection(start_tls=2,decode_ignorelist=[]):
 	pos=position(lo.base)
 	return access(lo=lo), pos
 
-def getMachineConnection(start_tls=2,decode_ignorelist=[]):
-	lo=univention.uldap.getMachineConnection(start_tls, decode_ignorelist=decode_ignorelist)
+def getMachineConnection(start_tls=2,decode_ignorelist=[], ldap_master = True):
+	lo=univention.uldap.getMachineConnection(start_tls, decode_ignorelist=decode_ignorelist, ldap_master=ldap_master)
 	pos=position(lo.base)
 	return access(lo=lo), pos
 
