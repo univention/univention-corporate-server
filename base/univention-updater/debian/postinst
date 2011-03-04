@@ -50,10 +50,10 @@ if [ "$1" = "configure" ]; then
 	fi
 	# coloured warning in univention-maintenance
 	univention-config-registry	set update/warning?"no" \
-								set update/warning/coloured?"no" \
-								set update/warning/lang?"default" \
-								set update/warning/tty?"/dev/tty1 /dev/tty2 /dev/tty3 /dev/tty4 /dev/tty5 /dev/tty6 /dev/tty7" \
-								set update/umc/nextversion?true 
+								    update/warning/coloured?"no" \
+								    update/warning/lang?"default" \
+								    update/warning/tty?"/dev/tty1 /dev/tty2 /dev/tty3 /dev/tty4 /dev/tty5 /dev/tty6 /dev/tty7" \
+								    update/umc/nextversion?true 
 
 fi
 
