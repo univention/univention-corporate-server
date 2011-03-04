@@ -735,41 +735,48 @@ def doit(arglist):
 				return out + ['OPERATION FAILED']
 
 			exists=0
+			exists_msg=None
 			try:
 				dn=object.create()
 			except univention.admin.uexceptions.objectExists, dn:
+				exists_msg = dn
 				if not ignore_exists:
-					out.append('E: Object exists: %s' % dn)
+					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
 			except univention.admin.uexceptions.uidAlreadyUsed, user:
+				exists_msg = '(uid) %s' % user
 				if not ignore_exists:
-					out.append('E: Object exists (uid)%s' % user)
+					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
 			except univention.admin.uexceptions.groupNameAlreadyUsed, group:
+				exists_msg = '(group) %s' % group
 				if not ignore_exists:
-					out.append('E: Object exists (group): %s' % group)
+					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
 			except univention.admin.uexceptions.dhcpServerAlreadyUsed, name:
+				exists_msg = '(dhcpserver) %s' % name
 				if not ignore_exists:
-					out.append('E: Object exists (dhcpserver): %s' % name)
+					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
 			except univention.admin.uexceptions.macAlreadyUsed, mac:
+				exists_msg = '(mac) %s' % mac
 				if not ignore_exists:
-					out.append('E: Object exists (mac): %s' % mac)
+					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
 			except univention.admin.uexceptions.noLock, e:
+				exists_dn = '(nolock) %s' % str(e)
 				if not ignore_exists:
-					out.append('E: Object exists (nolock): %s' % e)
+					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
@@ -822,7 +829,10 @@ def doit(arglist):
 				lo.modify(dn,modlist)
 
 			if exists == 1:
-				out.append('Object exists')
+				if exists_msg:
+					out.append('Object exists: %s' % exists_msg)
+				else:
+					out.append('Object exists')
 			else:
 				if not dn:
 					dn=object.dn

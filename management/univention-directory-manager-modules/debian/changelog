@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.105-1) unstable; urgency=low
+
+  * also print dn etc. if "Object exists" exceptions happens and
+    --ignore_exists is set (Bug #12915)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 04 Mar 2011 11:00:29 +0100
+
 univention-directory-manager-modules (6.0.104-1) unstable; urgency=low
 
   * show valueInvalidSyntax msg even if --ignore_exists is set (Bug #14814)
