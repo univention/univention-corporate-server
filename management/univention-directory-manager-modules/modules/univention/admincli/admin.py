@@ -728,11 +728,8 @@ def doit(arglist):
 					out.append('E: No free IP address found')
 					return out + ['OPERATION FAILED']
 			except univention.admin.uexceptions.valueInvalidSyntax, err:
-				if not ignore_exists:
-					out.append('E: Invalid Syntax: %s' % err)
-					return out + ["OPERATION FAILED"]
-				else:
-					exists=1
+				out.append('E: Invalid Syntax: %s' % err)
+				return out + ["OPERATION FAILED"]
 			except Exception, err:
 				out.append('E: Option %s is not valid' %err)
 				return out + ['OPERATION FAILED']

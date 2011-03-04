@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.104-1) unstable; urgency=low
+
+  * show valueInvalidSyntax msg even if --ignore_exists is set (Bug #14814)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 03 Mar 2011 14:34:29 +0100
+
 univention-directory-manager-modules (6.0.103-1) unstable; urgency=low
 
   * uldap.getMachineConnection: added a parameter ldap_master to control
