@@ -94,7 +94,7 @@ class Bus( object ):
 class Client( notifier.signals.Provider ):
 	def __init__( self, unix_socket = '/var/run/uvmm.socket', auto_connect = True ):
 		notifier.signals.Provider.__init__( self )
-		self._socket = socket.socket( socket.AF_UNIX, socket.SOCK_STREAM )
+		self._socket = None
 		self._buffer = ''
 		self._response = None
 		self._unix_socket = unix_socket
@@ -106,6 +106,9 @@ class Client( notifier.signals.Provider ):
 			self.connect()
 
 	def is_connected( self ):
+		if not self._socket:
+			return False
+
 		try:
 			self.socket.getpeername()
 			return True
@@ -116,6 +119,8 @@ class Client( notifier.signals.Provider ):
 		# we need to provide a dispatcher function to activate the minimal timeout
 		def fake_dispatcher(): return True
 		notifier.dispatcher_add( fake_dispatcher )
+
+		self._socket = socket.socket( socket.AF_UNIX, socket.SOCK_STREAM )
 
 		countdown = umct.CountDown( self.connection_wait * 1000 )
 		errno = self._socket.connect_ex( self._unix_socket )
@@ -145,6 +150,9 @@ class Client( notifier.signals.Provider ):
 		return self.connect()
 
 	def _receive( self, socket ):
+		if not self._socket:
+			self.connect()
+
 		data = self._socket.recv( 4096 )
 
 		# connection closed?
@@ -184,6 +192,9 @@ class Client( notifier.signals.Provider ):
 		return self._packet
 
 	def send( self, packet, retry = True ):
+		if not self._socket:
+			self.connect()
+
 		try:
 			self._socket.send( packet )
 		except:
