@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.106-1) unstable; urgency=low
+
+  * added script which determines missing associatedDomain attributes
+    and adds them in case that dnsZone is obvious (Bug #21678)
+
+ -- Tim Petersen <petersen@univention.de>  Fri, 04 Mar 2011 11:14:00 +0100
+
 univention-directory-manager-modules (6.0.105-1) unstable; urgency=low
 
   * also print dn etc. if "Object exists" exceptions happens and
