@@ -43,7 +43,7 @@ fi
 
 # correct xfree-policies with the invalid entry "displayposition=1" (Bug #18374)
 # the syntax XDisplayPosition only defines [ "", "left", "right", "above", "below" ]
-if dpkg --compare-versions "6.0.105-12312312" lt-nl 6.0.106-1 && [ "$server_role" = 'domaincontroller_master' ]; then
+if dpkg --compare-versions "$2" lt-nl 6.0.106-1 && [ "$server_role" = 'domaincontroller_master' ]; then
 	univention-directory-manager policies/xfree list --filter displayposition=1 | grep DN: | while read tmp dn; do 
 		univention-directory-manager policies/xfree modify --dn "$dn" --set displayposition=""
 	done

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.107-3) unstable; urgency=low
+
+  * fixed version comparison in postinst script (Bug #18374)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Mar 2011 16:25:03 +0100
+
 univention-directory-manager-modules (6.0.107-2) unstable; urgency=low
 
   * correct xfree-policies with the invalid entry "displayposition=1" in the
