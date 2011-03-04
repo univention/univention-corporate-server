@@ -1,3 +1,11 @@
+univention-directory-manager-modules (6.0.107-1) unstable; urgency=low
+
+  * fixed bug in which display policies were automatically generated, when
+    setting the policy back to inherited in a thin client's display tab 
+    (Bug #18374)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Mar 2011 15:35:12 +0100
+
 univention-directory-manager-modules (6.0.106-1) unstable; urgency=low
 
   * added script which determines missing associatedDomain attributes

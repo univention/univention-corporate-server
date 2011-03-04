@@ -341,7 +341,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
-			default=('1', [])
+			default=('', [])
 		),
 	'primarydisplay': univention.admin.property(
 			short_description=_('Name of primary display'),
