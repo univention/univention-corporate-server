@@ -38,6 +38,7 @@ import traceback
 import univention.config_registry
 
 from univention.updater import UniventionUpdater, UCS_Version
+import univention.updater.tools
 
 FN_STATUS = '/var/lib/univention-updater/univention-upgrade.status'
 
@@ -305,4 +306,11 @@ def main():
 			univention.config_registry.handler_set( [ '%s=no' % UCR_UPDATE_AVAILABLE] )
 
 if __name__ == '__main__':
-	main()
+	if not univention.updater.tools.updater_lock_acquire():
+		print 'Another updater process is currently running - abort'
+		sys.exit(1)
+	try:
+		main()
+	finally:
+		if not univention.updater.tools.updater_lock_release():
+			print 'WARNING: updater-lock already released!'

@@ -39,6 +39,7 @@ import subprocess
 
 import univention_baseconfig
 import  univention.updater.repository as urepo
+import univention.updater.tools
 
 def usage(fd=sys.stdout):
 	""" Print usage message """
@@ -113,51 +114,58 @@ if __name__ == '__main__':
 		print >> sys.stderr, 'Error: The local repository is disabled. Check if univention-debmirror ist installed.'
 		sys.exit(1)
 
-	packages_path = urepo.get_repo_basedir( packages_dir )
+	if not univention.updater.tools.updater_lock_acquire():
+		print 'Another updater process is currently running - abort'
+		sys.exit(1)
+	try:
+		packages_path = urepo.get_repo_basedir( packages_dir )
 
-	# if file expansion is used (as in --file /tmp/*.deb), and no such file exists,
-	# we should issue a warning
-	fileProcessed = False
+		# if file expansion is used (as in --file /tmp/*.deb), and no such file exists,
+		# we should issue a warning
+		fileProcessed = False
 
-	regexp_arch = re.compile( '.*_([a-z0-9]*).deb' )
-	for file in files:
-		if file.endswith('.deb') and os.path.exists(file):
-			fileProcessed = True
-			match = regexp_arch.match( file )
-			if not match:
-				print >> sys.stderr, 'Warning: Could not determine architecture of package %s. It will not be added' % file
-				continue
-			arch = match.groups()
-			targetfilename = os.path.join( packages_path, arch[ 0 ], rewrite_url( file.split( '/' )[ -1 ] ) )
-			try:
-				shutil.copyfile( os.path.join( file ), targetfilename )
-			except Exception, e:
-				print >> sys.stderr, "Warning: copying of %s failed: %s" % (file, str(e))
-				if os.path.exists(targetfilename):
-					os.remove(targetfilename) #remove incomplete package file
-					print >>sys.stderr, "Warning: Removed incomplete file"
-				if isinstance(e,exceptions.KeyboardInterrupt):
-					out=os.popen('touch Packages.lock')
-					print >>sys.stdout, "Interrupted by user."
-					sys.exit(1)
+		regexp_arch = re.compile( '.*_([a-z0-9]*).deb' )
+		for file in files:
+			if file.endswith('.deb') and os.path.exists(file):
+				fileProcessed = True
+				match = regexp_arch.match( file )
+				if not match:
+					print >> sys.stderr, 'Warning: Could not determine architecture of package %s. It will not be added' % file
+					continue
+				arch = match.groups()
+				targetfilename = os.path.join( packages_path, arch[ 0 ], rewrite_url( file.split( '/' )[ -1 ] ) )
+				try:
+					shutil.copyfile( os.path.join( file ), targetfilename )
+				except Exception, e:
+					print >> sys.stderr, "Warning: copying of %s failed: %s" % (file, str(e))
+					if os.path.exists(targetfilename):
+						os.remove(targetfilename) #remove incomplete package file
+						print >>sys.stderr, "Warning: Removed incomplete file"
+					if isinstance(e,exceptions.KeyboardInterrupt):
+						out=os.popen('touch Packages.lock')
+						print >>sys.stdout, "Interrupted by user."
+						sys.exit(1)
 
-	os.chdir(packages_dir)
+		os.chdir(packages_dir)
 
-	if not fileProcessed and not os.path.exists('Packages.lock'):
-		print >>sys.stdout, "Warning: No packages found, no packages added"
-		# shortcut exit, since there's nothing left to be done
-		sys.exit(0)
+		if not fileProcessed and not os.path.exists('Packages.lock'):
+			print >>sys.stdout, "Warning: No packages found, no packages added"
+			# shortcut exit, since there's nothing left to be done
+			sys.exit(0)
 
-	count=0
-	if os.path.exists('Packages.lock') and count < 300:
-		time.sleep(1)
-		count=count+1
+		count=0
+		if os.path.exists('Packages.lock') and count < 300:
+			time.sleep(1)
+			count=count+1
 
-	# these might not exist if creating a new repository
-	urepo.create_packages( packages_path, '.' )
-	if packages_path[ -1 ] == '/':
-		packages_path = packages_path[ : -1 ]
+		# these might not exist if creating a new repository
+		urepo.create_packages( packages_path, '.' )
+		if packages_path[ -1 ] == '/':
+			packages_path = packages_path[ : -1 ]
 
-	head, tail = os.path.split( packages_path )
-	for arch in urepo.ARCHITECTURES:
-		urepo.create_packages( head, '%s/%s' % ( tail, arch ) )
+		head, tail = os.path.split( packages_path )
+		for arch in urepo.ARCHITECTURES:
+			urepo.create_packages( head, '%s/%s' % ( tail, arch ) )
+	finally:
+		if not univention.updater.tools.updater_lock_release():
+			print 'WARNING: updater-lock already released!'

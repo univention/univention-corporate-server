@@ -1,3 +1,9 @@
+univention-updater (6.0.60-1) unstable; urgency=low
+
+  * add locking to updater commands (Bug #15144)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 04 Mar 2011 13:10:52 +0100
+
 univention-updater (6.0.59-2) unstable; urgency=low
 
   * fixed UCR statement in postinst (Bug #21580)

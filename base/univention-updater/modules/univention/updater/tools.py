@@ -34,6 +34,8 @@
 import univention.debug as ud
 from commands import cmd_update, cmd_dist_upgrade_sim, cmd_dist_upgrade
 
+import errno
+import time
 import sys
 import re
 import os
@@ -1138,6 +1140,38 @@ class LocalUpdater(UniventionUpdater):
 		UniventionUpdater.__init__(self)
 		repository_path = self.configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
 		self.server = UCSLocalServer("%s/mirror/" % repository_path)
+
+__UPDATER_LOCK_FILE_NAME='/var/lock/univention-updater'
+def updater_lock_acquire(timeout=0):
+	'''Acquire the updater-lock
+	Returns True if it could be acquired within <timeout> seconds
+	Returns False otherwise'''
+	deadline = time.time() + timeout
+	while True:
+		try:
+			os.close(os.open(__UPDATER_LOCK_FILE_NAME, os.O_WRONLY | os.O_CREAT | os.O_EXCL))
+			return True
+		except OSError, error:
+			if error.errno == errno.EEXIST:
+				if time.time() > deadline:
+					return False
+				else:
+					time.sleep(1)
+			else:
+				raise
+
+def updater_lock_release():
+	'''Release the updater-lock
+	Returns True if it has been unlocked
+	Returns False if it was already unlocked'''
+	try:
+		os.remove(__UPDATER_LOCK_FILE_NAME)
+		return True
+	except OSError, error:
+		if error.errno == errno.ENOENT:
+			return False
+		else:
+			raise
 
 if __name__ == '__main__':
 	import doctest

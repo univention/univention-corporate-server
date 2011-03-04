@@ -38,6 +38,7 @@ import subprocess
 
 import univention.config_registry as ucr
 from univention.updater.commands import *
+import univention.updater.tools
 
 LOGNAME = '/var/log/univention/actualise.log'
 
@@ -370,22 +371,29 @@ def main():
 					os.system('/usr/sbin/univention-pkgdb-scan > /dev/null')
 
 if __name__ == '__main__':
-	failure = '/var/lib/univention-updater/update-failed'
-	if os.path.exists(failure):
-		print 'univention-actualise: univention-updater failed, stopping...'
-		print '    remove `%s\' to proceed' % failure
-		sys.exit(2)
-
+	if not univention.updater.tools.updater_lock_acquire():
+		print 'Another updater process is currently running - abort'
+		sys.exit(1)
 	try:
-		for root, dirs, files in os.walk('/etc/apt/sources.list.d'):
-			for file in [file for file in files if file.startswith('00_ucs_temporary_')]:
-				filename = os.path.join(root, file)
-				print 'Warning: Deleting `%s` from incomplete update.' % filename
-				os.remove(filename)
-			del dirs[:]
-	except:
-		print 'Failed, aborting.'
-		sys.exit(2)
+		failure = '/var/lib/univention-updater/update-failed'
+		if os.path.exists(failure):
+			print 'univention-actualise: univention-updater failed, stopping...'
+			print '    remove `%s\' to proceed' % failure
+			sys.exit(2)
 
-	main()
-	sys.exit(0)
+		try:
+			for root, dirs, files in os.walk('/etc/apt/sources.list.d'):
+				for file in [file for file in files if file.startswith('00_ucs_temporary_')]:
+					filename = os.path.join(root, file)
+					print 'Warning: Deleting `%s` from incomplete update.' % filename
+					os.remove(filename)
+				del dirs[:]
+		except:
+			print 'Failed, aborting.'
+			sys.exit(2)
+
+		main()
+		sys.exit(0)
+	finally:
+		if not univention.updater.tools.updater_lock_release():
+			print 'WARNING: updater-lock already released!'

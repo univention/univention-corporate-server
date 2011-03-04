@@ -51,6 +51,7 @@ import univention.config_registry as ucr
 from univention.updater import UniventionUpdater, UCS_Version
 from univention.updater.tools import LocalUpdater
 from univention.updater.commands import cmd_update, cmd_dist_upgrade
+import univention.updater.tools
 
 # TODO:
 #   * check the local repository path /var/lib/univention-reposiotry
@@ -535,6 +536,9 @@ if __name__ == '__main__':
 		sys.exit(0)
 
 	fd_log = open(LOGNAME, 'a+')
+	if not univention.updater.tools.updater_lock_acquire():
+		print 'Another updater process is currently running - abort'
+		sys.exit(1)
 	try:
 		try:
 			main()
@@ -569,3 +573,5 @@ if __name__ == '__main__':
 			sys.exit(0)
 	finally:
 		fd_log.close()
+		if not univention.updater.tools.updater_lock_release():
+			print 'WARNING: updater-lock already released!'

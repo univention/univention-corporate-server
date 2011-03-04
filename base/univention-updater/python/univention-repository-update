@@ -43,6 +43,7 @@ import time
 import univention.config_registry as ucr
 import univention.updater.repository as urepo
 from univention.updater import UniventionMirror, UCS_Version
+import univention.updater.tools
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
@@ -241,20 +242,27 @@ if __name__ == '__main__':
 		print >> options.teefile, 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old structure and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no". Information on how to migrate the repository can be found in the release notes for UCS 2.2-0'
 		sys.exit( 1 )
 
-	if command == 'net':
-		local_server='%s.%s' % (configRegistry['hostname'], configRegistry['domainname'])
+	if not univention.updater.tools.updater_lock_acquire():
+		print >> sys.stderr, 'Another updater process is currently running - abort'
+		sys.exit(1)
+	try:
+		if command == 'net':
+			local_server='%s.%s' % (configRegistry['hostname'], configRegistry['domainname'])
 
-		if configRegistry['repository/mirror/server'] == local_server:
-			print >> options.teefile, 'Error: The local server is configured as mirror source server (repository/mirror/server)'
-			sys.exit(1)
+			if configRegistry['repository/mirror/server'] == local_server:
+				print >> options.teefile, 'Error: The local server is configured as mirror source server (repository/mirror/server)'
+				sys.exit(1)
 
-		update_net( options )
-	elif command == 'cdrom':
-		update_cdrom( options )
-	else:
-		if command == 'local':
-			print >> options.teefile, 'Error: This mode is not supported anymore by univention-repository-update'
+			update_net( options )
+		elif command == 'cdrom':
+			update_cdrom( options )
 		else:
-			print >> options.teefile, 'Error: Unknown mode %s for univention-repsitory-update' % command
-		parser.print_usage()
-		sys.exit( 1 )
+			if command == 'local':
+				print >> options.teefile, 'Error: This mode is not supported anymore by univention-repository-update'
+			else:
+				print >> options.teefile, 'Error: Unknown mode %s for univention-repsitory-update' % command
+			parser.print_usage()
+			sys.exit( 1 )
+	finally:
+		if not univention.updater.tools.updater_lock_release():
+			print >> sys.stderr, 'WARNING: updater-lock already released!'

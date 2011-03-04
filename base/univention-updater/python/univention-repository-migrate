@@ -43,6 +43,7 @@ import time
 import univention.config_registry as ucr
 import univention.updater.repository as urepo
 from univention.updater import UniventionMirror, UCS_Version
+import univention.updater.tools
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
@@ -205,8 +206,15 @@ if __name__ == '__main__':
 		print >> options.teefile, msg
 		sys.exit( 1 )
 
-	migrate_repository( options )
+	if not univention.updater.tools.updater_lock_acquire():
+		print 'Another updater process is currently running - abort'
+		sys.exit(1)
+	try:
+		migrate_repository( options )
 
-	# unset UCR variable makring old repository
-	if configRegistry.has_key( 'repository/local/old' ):
-		os.system('/usr/sbin/univention-config-registry unset repository/local/old')
+		# unset UCR variable makring old repository
+		if configRegistry.has_key( 'repository/local/old' ):
+			os.system('/usr/sbin/univention-config-registry unset repository/local/old')
+	finally:
+		if not univention.updater.tools.updater_lock_release():
+			print 'WARNING: updater-lock already released!'
