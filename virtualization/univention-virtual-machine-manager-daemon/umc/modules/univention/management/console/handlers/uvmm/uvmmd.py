@@ -135,6 +135,15 @@ class Client( notifier.signals.Provider ):
 
 		return ret
 
+	def reconnect( self ):
+		# the uvmmd start may take a few seconds
+		time.sleep(6)
+
+		# reinitialise the socket
+		self._socket = socket.socket( socket.AF_UNIX, socket.SOCK_STREAM )
+		
+		return self.connect()
+
 	def _receive( self, socket ):
 		data = self._socket.recv( 4096 )
 
@@ -181,7 +190,7 @@ class Client( notifier.signals.Provider ):
 			ud.debug( ud.ADMIN, ud.WARN, 'UVMM: send failed' )
 			if not self.is_connected():
 				ud.debug( ud.ADMIN, ud.INFO, 'UVMM: try to reconnect' )
-				if not self.connect():
+				if not self.reconnect():
 					return False
 				if retry:
 					return self.send( packet, False )
