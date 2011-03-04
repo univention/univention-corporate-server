@@ -76,21 +76,43 @@ def getBackupConnection(start_tls=2, decode_ignorelist=[]):
 		bindpw=bindpw[0:-1]
 	try:
 		lo=access(host=baseConfig['ldap/master'], base=baseConfig['ldap/base'], binddn='cn=backup,'+baseConfig['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
-	except ldap.SERVER_DOWN:
+	except ldap.SERVER_DOWN, e:
 		if baseConfig['ldap/backup']:
 			backup=string.split(baseConfig['ldap/backup'],' ')[0]
 			lo=access(host=backup, base=baseConfig['ldap/base'], binddn='cn=backup,'+baseConfig['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
 		else:
-			raise ldap.SERVER_DOWN
+			raise ldap.SERVER_DOWN, e
 	return lo
 
-def getMachineConnection(start_tls=2, decode_ignorelist=[]):
+def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True):
 	baseConfig=univention_baseconfig.baseConfig()
 	baseConfig.load()
+
 	bindpw=open('/etc/machine.secret').read()
 	if bindpw[-1] == '\n':
 		bindpw=bindpw[0:-1]
-	lo=access(host=baseConfig['ldap/master'], base=baseConfig['ldap/base'], binddn=baseConfig['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+
+	port = int(baseConfig.get('ldap/port', '389'))
+	if ldap_master:
+		# Connect to DC Master
+		lo=access(host=baseConfig['ldap/master'], port=port, base=baseConfig['ldap/base'], binddn=baseConfig['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+	else:
+		# Connect to ldap/server/name
+		try:
+			lo=access(host=baseConfig['ldap/server/name'], port=port, base=baseConfig['ldap/base'], binddn=baseConfig['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+		except ldap.SERVER_DOWN, e:
+			# ldap/server/name is down, try next server
+			if not baseConfig.get('ldap/server/addition'):
+				raise ldap.SERVER_DOWN, e
+			for server in baseConfig.get('ldap/server/addition', []):
+				try:
+					lo=access(host=server, port=port, base=baseConfig['ldap/base'], binddn=baseConfig['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+				except ldap.SERVER_DOWN, e:
+					pass
+				else:
+					return lo
+			raise ldap.SERVER_DOWN, e
+
 	return lo
 
 class access:
