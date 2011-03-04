@@ -1,3 +1,10 @@
+univention-updater (6.0.61-1) unstable; urgency=low
+
+  * do not call univention-pkgdb-scan several times in
+    univention-actualise (Bug #20793)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 04 Mar 2011 13:14:21 +0100
+
 univention-updater (6.0.60-1) unstable; urgency=low
 
   * add locking to updater commands (Bug #15144)

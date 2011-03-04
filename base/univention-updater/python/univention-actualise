@@ -236,6 +236,7 @@ def main():
 	os.environ['LC_ALL'] = 'C'
 
 	pkgdb = None
+	pkgdb_scope = None
 	silent = False
 	print_usage = False
 	dist_upgrade = False
@@ -279,9 +280,11 @@ def main():
 
 			# temporarily disable pkgdb
 			if configRegistry.has_key('pkgdb/scan') and configRegistry['pkgdb/scan']:
-				pkgdb=configRegistry['pkgdb/scan']
+				# get value and UCR scope of variable pkgdb/scan
+				pkgdb_scope, pkgdb = configRegistry.get('pkgdb/scan', getscope=True)
 				if pkgdb:
-					ucr.handler_set(['pkgdb/scan=no'])
+					# disable pkgdb in UCR scope FORCED
+					ucr.handler_set(['pkgdb/scan=no'], {'force':True})
 
 			rem_packages=getPackageList(configRegistry, 'remove')
 			for package in rem_packages:
@@ -363,7 +366,13 @@ def main():
 
 	finally:
 		if pkgdb:
-			ucr.handler_set(['pkgdb/scan=%s' % pkgdb])
+			if pkgdb_scope == ucr.ConfigRegistry.FORCED:
+				# old value was set in FORCED scope
+				ucr.handler_set(['pkgdb/scan=%s' % pkgdb], {'force': True})
+			else:
+				# old value was set in any other scope ==> remove value in FORCED scope
+				ucr.handler_unset(['pkgdb/scan'], {'force': True})
+
 			if str(pkgdb).lower() in ("yes","enable","enabled","true","1"):
 				if not silent:
 					os.system('/usr/sbin/univention-pkgdb-scan')
