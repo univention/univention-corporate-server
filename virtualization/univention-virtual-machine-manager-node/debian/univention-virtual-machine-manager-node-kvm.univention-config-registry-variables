@@ -16,30 +16,6 @@ Description[en]=Deactivates the in-kernel APIC support
 Type=bool
 Categories=uvmm
 
-[uvmm/libvirt/action/uris]
-Description[de]=URIs für die Verwaltung von Gästen
-Description[en]=URIs to check for running guests
-Type=str
-Categories=uvmm
-
-[uvmm/libvirt/action/boot]
-Description[de]=Aktion für Gäste beim Hochfahren des Hosts
-Description[en]=Action for guests taken on host boot
-Type=str
-Categories=uvmm
-
-[uvmm/libvirt/action/shutdown]
-Description[de]=Aktion für Gäste beim Herunterfahren des Hosts
-Description[en]=Action for guests taken on host shutdown
-Type=str
-Categories=uvmm
-
-[uvmm/libvirt/action/shutdown]
-Description[de]=Wartezeit für das Herunterfahren der Gäste
-Description[en]=Timeout for waiting for huest to shut down
-Type=str
-Categories=uvmm
-
 [uvmm/kvm/udev/group]
 Description[de]=Definiert die Gruppe, der das Gerät /dev/kvm gehören soll
 Description[en]=Defines the group that owns the device /dev/kvm

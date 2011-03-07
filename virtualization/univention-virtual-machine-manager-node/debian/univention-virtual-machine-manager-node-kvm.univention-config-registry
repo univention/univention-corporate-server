@@ -1,8 +1,4 @@
 Type: file
-File: etc/default/libvirt-guests
-Variables: uvmm/libvirt/action/*
-
-Type: file
 File: etc/libvirt/qemu.conf
 Variables: uvmm/kvm/qemu/*
 

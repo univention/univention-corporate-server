@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-node (0.1.21-1) unstable; urgency=low
+
+  * Move UCR temaplate etc/default/libvirt-guests to common package
+    (Bug #21733)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 07 Mar 2011 12:14:36 +0100
+
 univention-virtual-machine-manager-node (0.1.20-1) unstable; urgency=low
 
   * Allow migration between all VM hosts (Bug #19828)

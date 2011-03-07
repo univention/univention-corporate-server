@@ -32,7 +32,9 @@
 
 eval "$(univention-config-registry shell server/role)"
 
-univention-config-registry set xen/server/relocation?yes
+univention-config-registry set xen/server/relocation?yes \
+	uvmm/libvirt/action/boot?ignore \
+	uvmm/libvirt/action/shutdown?ignore 
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	univention-config-registry set xen/server/unix_server?yes
