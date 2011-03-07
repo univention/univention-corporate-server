@@ -503,4 +503,20 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.8-1; t
 	fi
 fi
 
+# Bug 21187
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.17-1; then
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		if univention-directory-manager settings/packages list --filter=name=Univention | grep -iq univention-prinquota; then 
+			univention-directory-manager settings/packages modify \
+				--dn "cn=Univention,cn=packages,cn=univention,$ldap_base" \
+				--remove packageList=univention-prinquota
+		fi
+		if ! univention-directory-manager settings/packages list --filter=name=Univention | grep -iq univention-printquota; then
+			univention-directory-manager settings/packages modify \
+				--dn "cn=Univention,cn=packages,cn=univention,$ldap_base" \
+				--append packageList=univention-printquota
+		fi
+	fi
+fi
+
 exit 0
