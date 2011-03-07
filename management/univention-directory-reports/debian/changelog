@@ -1,3 +1,9 @@
+univention-directory-reports (3.0.6-1) unstable; urgency=low
+
+  * Handle invalid files (Bug #9137)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 07 Mar 2011 15:50:42 +0100
+
 univention-directory-reports (3.0.5-5) unstable; urgency=low
 
   * fixed postinst (Bug #17425) 
