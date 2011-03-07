@@ -1,3 +1,10 @@
+univention-directory-reports (3.0.5-2) unstable; urgency=low
+
+  * minor changes for the postinst script, did not remove old files properly
+    (Bug #17425)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 07 Mar 2011 11:47:21 +0100
+
 univention-directory-reports (3.0.5-1) unstable; urgency=low
 
   * added support for report entries in old format (Bug #17425)
