@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.108-1) unstable; urgency=low
+
+  * added directory/manager/usercn/attributes to customize user's
+    cn and displayName attributes (Bug #20028)
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 Mar 2011 09:37:37 +0100
+
 univention-directory-manager-modules (6.0.107-4) unstable; urgency=low
 
   * added import of UCR variables to postinst script (Bug #18374)

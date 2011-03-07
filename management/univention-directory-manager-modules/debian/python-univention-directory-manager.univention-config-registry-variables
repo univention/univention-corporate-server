@@ -9,3 +9,9 @@ Description[de]=Timeout für das Caching des Typs von Gruppenmitgliedern (Angabe
 Description[en]=Caching timeout of group member's type - given in seconds (default: 300; cache disabled: -1)
 Type=str
 Categories=management-udm
+
+[directory/manager/usercn/attributes]
+Description[de]=Kommaseparierte Liste von UDM Benutzerattributen, die für die "cn" und "displayName" Attribute von Benutzeraccounts verwendet werden (default: "firstname,lastname")   
+Description[en]=Comma-separated list of UDM user attributes used for the "cn" and "displayName" user attributes (default: "firstname,lastname")
+Type=str
+Categories=management-udm

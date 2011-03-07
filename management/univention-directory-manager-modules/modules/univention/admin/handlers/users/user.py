@@ -2286,10 +2286,12 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 
 		if  self.hasChanged(['firstname', 'lastname']):
-			if self['firstname']:
-				cn = "%s %s" % (self.info.get('firstname', ''), self.info.get('lastname', ''))
-			else:
-				cn = "%s" % self.info.get('lastname', '')
+			cnAtts = univention.admin.baseConfig.get('directory/manager/usercn/attributes', "firstname,lastname").split(",")
+			cn = ""
+			for i in cnAtts:
+				if self[i]:
+					cn = cn + " " + self.info.get(i, '')
+			cn = cn.strip()
 			ml.append(('cn', self.oldattr.get('cn', [''])[0], cn))
 			ml.append(('sn', self.oldattr.get('cn', [''])[0], self['lastname']))
 			if 'person' in self.options:
