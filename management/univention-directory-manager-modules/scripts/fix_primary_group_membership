@@ -1,0 +1,49 @@
+#!/bin/sh
+#
+eval "$(ucr shell)"
+
+if [ "$1" = "-h" -o "$1" = "--help" ] ; then
+	echo "$(basename "$0") [-h] [-f]"
+	echo "-h   prints this helptext"
+	echo "-f   perform changes"
+	echo "     (default is dry-run)"
+	exit 0
+fi
+FORCE=""
+if [ "$1" = "-f" ] ; then
+	FORCE="1"
+fi
+
+OLDIFS="$IFS"
+IFS=$'\n'
+gidNumberList="$(ldapsearch -LLLx "(&(objectClass=univentionHost)(gidNumber=*))" gidNumber | sed -ne "s,^gidNumber: ,,p" | sort -u)"
+for gidNumber in $gidNumberList ; do
+	grpDn="$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber}))" dn | sed -ne 's,dn: ,,p')"
+	for dn in $(ldapsearch -LLLx "(&(objectClass=univentionHost)(gidNumber=${gidNumber}))" dn | sed -ne "s,^dn: ,,p") ; do
+		if [ -z "$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(uniqueMember=${dn}))")" ] ; then
+			echo "*** $dn is missing in group with gidNumber $gidNumber ($grpDn)"
+			if [ -n "$FORCE" ] ; then
+				ldapmodify -x -D "cn=admin,$ldap_base" -w "$(< /etc/ldap.secret)" <<EOF
+dn: $grpDn
+changetype: modify
+add: uniqueMember
+uniqueMember: $dn
+EOF
+		    fi
+		fi
+		hostuid="$(ldapsearch -xLLL -b "$dn" uid | sed -ne 's,^uid: ,,p')"
+		if [ -z "$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(memberUid=${hostuid}))")" ] ; then
+			echo "*** $hostuid is missing in group with gidNumber $gidNumber ($grpDn)"
+			if [ -n "$FORCE" ] ; then
+				ldapmodify -x -D "cn=admin,$ldap_base" -w "$(< /etc/ldap.secret)" <<EOF
+dn: $grpDn
+changetype: modify
+add: memberUid
+memberUid: $hostuid
+EOF
+		    fi
+		fi
+	done
+done
+
+exit 0
