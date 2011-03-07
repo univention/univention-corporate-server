@@ -2283,19 +2283,18 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					ml.insert(0, ('objectClass', 'simpleSecurityObject', ''))
 					ml.insert(0, ('objectClass', 'uidObject', ''))
 
-
+		# set cn and displayName
+		cnAtts = univention.admin.baseConfig.get('directory/manager/usercn/attributes', "<firstname> <lastname>")
+		prop = univention.admin.property()
+		cn = prop._replace(cnAtts, self)
+		cn = cn.strip()
+		ml.append(('cn', self.oldattr.get('cn', [''])[0], cn))
+		if 'person' in self.options:
+			ml.append(('displayName', self.oldattr.get('displayName', [''])[0], cn))
 
 		if  self.hasChanged(['firstname', 'lastname']):
-			cnAtts = univention.admin.baseConfig.get('directory/manager/usercn/attributes', "firstname,lastname").split(",")
-			cn = ""
-			for i in cnAtts:
-				if self[i]:
-					cn = cn + " " + self.info.get(i, '')
-			cn = cn.strip()
-			ml.append(('cn', self.oldattr.get('cn', [''])[0], cn))
 			ml.append(('sn', self.oldattr.get('cn', [''])[0], self['lastname']))
 			if 'person' in self.options:
-				ml.append(('displayName', self.oldattr.get('displayName', [''])[0], cn))
 				ml.append(('givenName', self.oldattr.get('givenName', [''])[0], self['firstname']))
 
 			if 'posix' in self.options:
