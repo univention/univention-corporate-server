@@ -11,7 +11,7 @@ Type=str
 Categories=management-udm
 
 [directory/manager/usercn/attributes]
-Description[de]=Kommaseparierte Liste von UDM Benutzerattributen, die für die "cn" und "displayName" Attribute von Benutzeraccounts verwendet werden (default: "firstname,lastname")   
-Description[en]=Comma-separated list of UDM user attributes used for the "cn" and "displayName" user attributes (default: "firstname,lastname")
+Description[de]=Vorlage-Zeichenkette mit UDM Benutzerattribut-Variablen für die Benutzerattribute "cn" und "displayName" (default: "<firstname> <lastname>")
+Description[en]=Template string with UDM user attribut variables for the "cn" and "displayName" user attributes (default: "<firstname> <lastname>")
 Type=str
 Categories=management-udm

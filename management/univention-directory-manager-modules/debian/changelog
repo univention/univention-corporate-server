@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.108-3) unstable; urgency=low
+
+  * fixed description for directory/manager/usercn/attributes
+    (Bug #20028)
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 Mar 2011 11:37:01 +0100
+
 univention-directory-manager-modules (6.0.108-2) unstable; urgency=low
 
   * use template style variables in directory/manager/usercn/attributes 
