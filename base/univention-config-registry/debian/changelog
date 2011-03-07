@@ -1,3 +1,9 @@
+univention-config-registry (6.0.45-2) unstable; urgency=low
+
+  * remove reduntant modification introduced in 6.0.43-1 (Bug #12168)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 07 Mar 2011 09:29:24 +0100
+
 univention-config-registry (6.0.45-1) unstable; urgency=low
 
   * default SYSLOGD to -m0 if /etc/default/syslogd leaves it empty
