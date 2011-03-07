@@ -1,3 +1,9 @@
+univention-directory-reports (3.0.5-3) unstable; urgency=low
+
+  * added debug output to postinst script (Bug #17425)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 07 Mar 2011 11:54:26 +0100
+
 univention-directory-reports (3.0.5-2) unstable; urgency=low
 
   * minor changes for the postinst script, did not remove old files properly
