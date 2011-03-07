@@ -2001,12 +2001,12 @@ class simpleComputer( simpleLdap ):
 					univention.admin.allocators.release( self.lo, self.position, 'aRecord', ipAddress )
 
 		# remove computer from groups
-		for group in self['groups']:
-			groupObject=univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
-			groupObject.open()
-			if self.dn in groupObject['hosts']:
-				groupObject['hosts'].remove(self.dn)
-				groupObject.modify(ignore_license=1)
+		groups = copy.deepcopy(self['groups'])
+		if self.oldinfo.get('primaryGroup'):
+			groups.append( self.oldinfo.get('primaryGroup') )
+		for group in groups:
+			groupObject = univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
+			groupObject.fast_member_remove( [ self.dn ], self.oldattr.get('uid',[]), ignore_license=1 )
 
 	def update_groups(self):
 		if not self.hasChanged('groups') and \

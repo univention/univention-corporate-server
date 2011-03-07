@@ -1,3 +1,10 @@
+univention-updater (6.0.62-1) unstable; urgency=low
+
+  * call fix_primary_group_membership in postup.sh on 
+    domaincontroller master (Bug #21711)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 07 Mar 2011 15:43:16 +0100
+
 univention-updater (6.0.61-1) unstable; urgency=low
 
   * do not call univention-pkgdb-scan several times in

@@ -81,6 +81,7 @@ install-ext-%:
 	install -m755 scripts/proof_hostShadowAccounts ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
 	install -m755 scripts/proof_dns_dhcp_records ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
 	install -m755 scripts/proof_associatedDomain ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
+	install -m755 scripts/fix_primary_group_membership ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
 	install -m755 scripts/listpwexpiry ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
 
 	# new tools with daemon mode

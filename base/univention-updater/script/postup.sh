@@ -77,6 +77,13 @@ if dpkg -l lilo 2>> "$UPDATER_LOG" >> "$UPDATER_LOG" ; then
 	dpkg-divert --rename --divert /usr/share/initramfs-tools/bootsplash.debian --remove /usr/share/initramfs-tools/hooks/bootsplash 2>> "$UPDATER_LOG" >> "$UPDATER_LOG"
 fi
 
+# fix primary group membership of computer objects if neccessary (Bug #21711)
+if [ ! "$update_fix_computer_primarygroupmembership" = "no" -a ! "$update_fix_computer_primarygroupmembership" = "false" ] ; then
+	if [ "$server_role" = "domaincontroller_master" ] ; then
+		/usr/share/univention-directory-manager-tools/fix_primary_group_membership -f
+	fi
+fi
+
 # executes custom postup script (always required)
 if [ ! -z "$update_custom_postup" ]; then
 	if [ -f "$update_custom_postup" ]; then

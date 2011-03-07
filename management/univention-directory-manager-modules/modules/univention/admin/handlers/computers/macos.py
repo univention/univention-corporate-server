@@ -361,7 +361,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 					self['primaryGroup']=res
 
 
-		self.save()
+#		self.save()
 
 	def exists(self):
 		return self._exists
