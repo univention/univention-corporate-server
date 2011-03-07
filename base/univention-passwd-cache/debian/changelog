@@ -1,3 +1,10 @@
+univention-passwd-cache (2.0.3-1) unstable; urgency=low
+
+  * use /dev/urandom to avoid entropy gathering delays
+    for cached password salting (Bug #20956)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 07 Mar 2011 11:39:31 +0100
+
 univention-passwd-cache (2.0.2-1) unstable; urgency=low
 
   * fix salt masking (Bug #21379)
