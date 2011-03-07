@@ -57,6 +57,8 @@ from treeview import TreeView
 from tools import *
 from types import *
 from wizards import *
+from nic import *
+from drive import *
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
@@ -83,7 +85,6 @@ dest_node_select = NodeSelect( _( 'Destination host' ) )
 arch_select = ArchSelect( _( 'Architecture' ) )
 type_select = VirtTechSelect( _( 'Virtualization Technology' ), may_change = False )
 cpus_select = NumberSelect( _( 'Number of CPUs' ) )
-nic_driver_select = NIC_DriverSelect()
 
 command_description = {
 	'uvmm/overview': umch.command(
@@ -247,6 +248,12 @@ command_description = {
 		method = 'uvmm_drive_remove',
 		values = {},
 		),
+	'uvmm/drive/edit': umch.command(
+		short_description = _( 'Edit drive settings' ),
+		long_description = _('Edit drive' ),
+		method = 'uvmm_drive_edit',
+		values = {},
+		),
 	'uvmm/drive/bootdevice': umch.command(
 		short_description = _( 'Set drive as boot device' ),
 		long_description = _('Set drive as boot device' ),
@@ -257,6 +264,17 @@ command_description = {
 		short_description = _( 'New network interface' ),
 		long_description = _('Create a new network interface' ),
 		method = 'uvmm_nic_create',
+		values = {
+			'nictype' : umc.String( '' ),
+			'driver' : nic_driver_select,
+			'source' : umc.String( _( 'Source' ) ),
+			'mac' : umc.String( _( 'MAC address' ), required = False ),
+			},
+		),
+	'uvmm/nic/edit': umch.command(
+		short_description = _( 'Edit network interface' ),
+		long_description = _('Edit a network interface' ),
+		method = 'uvmm_nic_edit',
 		values = {
 			'nictype' : umc.String( '' ),
 			'driver' : nic_driver_select,
@@ -279,7 +297,7 @@ command_description = {
 		),
 }
 
-class handler( umch.simpleHandler ):
+class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 	# level 0 is the container list
 	STATES = {
 		0 : _( 'unknown' ),
@@ -734,6 +752,8 @@ class handler( umch.simpleHandler ):
 			for dev in domain_info.disks:
 				remove_cmd = umcp.SimpleCommand( 'uvmm/drive/remove', options = copy.copy( object.options ) )
 				remove_cmd.incomplete = True
+				edit_cmd = umcp.SimpleCommand( 'uvmm/drive/edit', options = copy.copy( object.options ) )
+				edit_cmd.incomplete = True
 				bootdev_cmd = umcp.SimpleCommand( 'uvmm/drive/bootdevice', options = copy.copy( object.options ) )
 				remove_cmd.options[ 'disk' ] = None
 				values = {}
@@ -766,15 +786,16 @@ class handler( umch.simpleHandler ):
 				else:
 					values[ 'size' ] = MemorySize.num2str( dev.size )
 
-				remove_cmd.options[ 'disk' ] = copy.copy( dev.source )
-				remove_btn = umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd ) ] )
 				if domain_is_off and not domain_has_snapshots:
+					remove_cmd.options[ 'disk' ] = copy.copy( dev.source )
+					remove_btn = umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd ) ] )
+					edit_cmd.options[ 'disk' ] = copy.copy( dev.source )
+					edit_btn = umcd.LinkButton( _( 'Edit' ), actions = [ umcd.Action( edit_cmd ) ] )
+					buttons = [ remove_btn, edit_btn ]
 					if not first:
 						bootdev_cmd.options[ 'disk' ] = dev.source
 						bootdev_btn = umcd.LinkButton( _( 'Set as boot device' ), actions = [ umcd.Action( bootdev_cmd, options = { 'disk' : dev.source } ), umcd.Action( overview_cmd ) ] )
-						buttons = [ remove_btn, bootdev_btn ]
-					else:
-						buttons = [ remove_btn, ]
+						buttons.append( bootdev_btn )
 				else:
 					buttons = []
 
@@ -800,7 +821,10 @@ class handler( umch.simpleHandler ):
 				opts[ 'nictype' ] = iface.map_type( id = iface.type )
 				opts[ 'source' ] = iface.source
 				opts[ 'mac' ] = iface.mac_address
+				opts[ 'driver' ] = iface.model
 				remove_cmd = umcp.SimpleCommand( 'uvmm/nic/remove', options = opts )
+				edit_cmd = umcp.SimpleCommand( 'uvmm/nic/edit', options = opts )
+				edit_cmd.incomplete = True
 
 				values = {}
 				if iface.type == uvmmn.Interface.TYPE_BRIDGE:
@@ -817,7 +841,8 @@ class handler( umch.simpleHandler ):
 
 				if domain_is_off and not domain_has_snapshots:
 					remove_cmd.options[ 'iface' ] = copy.copy( iface.source )
-					buttons = [ umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd ), umcd.Action( overview_cmd ) ] ), ]
+					buttons = [ umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd ), umcd.Action( overview_cmd ) ] ),
+								umcd.LinkButton( _( 'Edit' ), actions = [ umcd.Action( edit_cmd ) ] ) ]
 				else:
 					buttons = []
 
@@ -876,25 +901,32 @@ class handler( umch.simpleHandler ):
 		cfg_cmd = umcp.SimpleCommand( 'uvmm/domain/configure', options = object.options )
 		overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = object.options )
 
-		sections = umcd.List( default_type = 'uvmm_table' )
+		sections = []
 		if not domain_is_off:
-			sections.add_row( [ umcd.InfoBox( _( 'The settings of a virtual instance can just be modified if it is shut off.' ) ) ] )
+			sections.append( [ umcd.InfoBox( _( 'The settings of a virtual instance can just be modified if it is shut off.' ) ) ] )
 		elif domain_has_snapshots:
-			sections.add_row( [ umcd.InfoBox( _( 'Some of the settings can not be modified currently. The reason therefore are the available snapshots. Modifying these settings would make the snapshots invalid, i.e. the snapshots can not be restored anymore. If these settings must be edited the snapshots have to be removed first.' ) ) ] )
+			sections.append( [ umcd.InfoBox( _( 'Some of the settings can not be modified currently. The reason therefore are the available snapshots. Modifying these settings would make the snapshots invalid, i.e. the snapshots can not be restored anymore. If these settings must be edited the snapshots have to be removed first.' ) ) ] )
 		if not domain_info:
-			sections.add_row( [ umcd.Section( _( 'Drives' ), drive_sec, hideable = False, hidden = False, name = 'drives.newdomain' ) ] )
-			sections.add_row( [ umcd.Section( _( 'Network Interfaces' ), nic_sec, hideable = False, hidden = False, name = 'interfaces.newdomain' ) ] )
-			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = False, hidden = True, name = 'settings.newdomain' ) ] )
-			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = False, hidden = True, name = 'extsettings.newdomain' ) ] )
+			sections.append( [ umcd.Section( _( 'Drives' ), drive_sec, hideable = False, hidden = False, name = 'drives.newdomain' ) ] )
+			sections.append( [ umcd.Section( _( 'Network Interfaces' ), nic_sec, hideable = False, hidden = False, name = 'interfaces.newdomain' ) ] )
+			sections.append( [ umcd.Section( _( 'Settings' ), content, hideable = False, hidden = True, name = 'settings.newdomain' ) ] )
+			sections.append( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = False, hidden = True, name = 'extsettings.newdomain' ) ] )
 		else:
-			sections.add_row( [ umcd.Section( _( 'Drives' ), drive_sec, hideable = True, hidden = False, name = 'drives.%s' % domain_info.name ) ] )
-			sections.add_row( [ umcd.Section( _( 'Network Interfaces' ), nic_sec, hideable = True, hidden = False, name = 'interfaces.%s' % domain_info.name ) ] )
-			sections.add_row( [ umcd.Section( _( 'Settings' ), content, hideable = True, hidden = True, name = 'settings.%s' % domain_info.name ) ] )
-			sections.add_row( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = True, name = 'extsettings.%s' % domain_info.name ) ] )
+			sections.append( [ umcd.Section( _( 'Drives' ), drive_sec, hideable = True, hidden = False, name = 'drives.%s' % domain_info.name ) ] )
+			sections.append( [ umcd.Section( _( 'Network Interfaces' ), nic_sec, hideable = True, hidden = False, name = 'interfaces.%s' % domain_info.name ) ] )
+			sections.append( [ umcd.Section( _( 'Settings' ), content, hideable = True, hidden = True, name = 'settings.%s' % domain_info.name ) ] )
+			sections.append( [ umcd.Section( _( 'Extended Settings' ), content2, hideable = True, hidden = True, name = 'extsettings.%s' % domain_info.name ) ] )
 		if domain_is_off:
-			sections.add_row( [ umcd.Cell( umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ], default = True ), attributes = { 'align' : 'right' } ) ] )
+			sections.append( [ umcd.Cell( umcd.Button( _( 'Save' ), actions = [ umcd.Action( cfg_cmd, ids ), umcd.Action( overview_cmd ) ], default = True ), attributes = { 'align' : 'right' } ) ] )
 
 		return sections
+
+	def _create_resync_info( self, object, table ):
+		resync_cmd = umcd.Action( umcp.SimpleCommand( 'uvmm/daemon/restart', options = copy.copy( object.options ) ) )
+		overview_cmd = umcd.Action( umcp.SimpleCommand( 'uvmm/domain/overview', options = copy.copy( object.options ) ) )
+		resync = umcd.LinkButton( _( 'Resynchronize' ), actions = [ resync_cmd, overview_cmd ] )
+		table.add_row( [ _( 'The information about the virtual instance could not be retrieved. Clicking the refresh button will retry to collect the information. If this does not work a resynchronization can be triggered by clicking the following button.' ) ] )
+		table.add_row( [ umcd.Cell( resync, attributes = { 'align' : 'right' } ) ] )
 
 	def uvmm_domain_overview( self, object, finish = True ):
 		"""Single domain overview."""
@@ -919,11 +951,7 @@ class handler( umch.simpleHandler ):
 		blind_table = umcd.List( default_type = 'uvmm_table' )
 
 		if not domain_info:
-			resync_cmd = umcd.Action( umcp.SimpleCommand( 'uvmm/daemon/restart', options = copy.copy( object.options ) ) )
-			overview_cmd = umcd.Action( umcp.SimpleCommand( 'uvmm/domain/overview', options = copy.copy( object.options ) ) )
-			resync = umcd.LinkButton( _( 'Resynchronize' ), actions = [ resync_cmd, overview_cmd ] )
-			blind_table.add_row( [ _( 'The information about the virtual instance could not be retrieved. Clicking the refresh button will retry to collect the information. If this does not work a resynchronization can be triggered by clicking the following button.' ) ] )
-			blind_table.add_row( [ umcd.Cell( resync, attributes = { 'align' : 'right' } ) ] )
+			self._create_resync_info( object, blind_table )
 		else:
 			infos = umcd.List( default_type = 'uvmm_table' )
 			w_status = [umcd.HTML('<b>%s</b>' % _('Status')), handler.STATES[domain_info.state]]
@@ -969,7 +997,8 @@ class handler( umch.simpleHandler ):
 				blind_table.add_row( [ umcd.Section( _( 'Snapshots' ), snapshots, hideable = True, hidden = True, name = 'domain.snapshots' ) ] )
 
 			content = self._dlg_domain_settings( object, node_info, domain_info )
-			blind_table.add_row( [ content ] )
+			for line in content:
+				blind_table.add_row( line )
 
 		self.set_content( res, blind_table )
 		if finish:
@@ -1018,14 +1047,28 @@ class handler( umch.simpleHandler ):
 		else:
 			self.finished( object.id(), res )
 
-	def uvmm_domain_configure( self, object ):
+	def uvmm_domain_configure( self, object, create = False ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure' )
 		res = umcp.Response( object )
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 		node_info, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
 		if domain_info is None:
-			domain_info = uuv_proto.Data_Domain()
+			if create:
+				domain_info = uuv_proto.Data_Domain()
+			elif 'domain-uuid' in object.options:
+				node_info, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain-uuid' ] )
+
+		if not domain_info:
+			( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
+			if not success:
+				self.finished(object.id(), res)
+				return
+			table = umcd.List( default_type = 'uvmm_table' )
+			self._create_resync_info( object, table )
+			self.set_content( res, table )
+			self.finished( object.id(), res )
+			return
 		domain_info.name = object.options[ 'name' ]
 		domain_info.domain_type, domain_info.os_type = object.options[ 'type' ].split( '-' )
 		ud.debug( ud.ADMIN, ud.INFO, 'Domain configure: operating system: %s' % handler._getstr( object, 'os' ) )
@@ -1128,7 +1171,7 @@ class handler( umch.simpleHandler ):
 
 		# domain wizard finished?
 		if self.domain_wizard.result():
-			resp = self.uvmm.domain_configure( object.options[ 'node' ], self.domain_wizard.result() )
+			resp = self.uvmm.domain_configure( object.options[ 'node' ], self.domain_wizard.result(), create = True )
 			object.options[ 'domain' ] = object.options[ 'name' ]
 			if self.uvmm.is_error( resp ):
 				# FIXME: something went wrong. We have to erase als 'critical' data and restart with the drive wizard part
@@ -1329,267 +1372,6 @@ class handler( umch.simpleHandler ):
 				report = _( 'The snapshot <i>%(snapshot)s of instance <i>%(domain)s</i> could not be deleted' ) % { 'snapshot' : failure[ 0 ], 'domain': domain }
 			else:
 				report = _( 'The selected snapshots of instance <i>%(domain)s</i> could not be deleted:<br/>%(snapshots)s' ) % { 'snapshots' : ', '.join( failure ), 'domain': domain }
-		self.finished( object.id(), res, report = report )
-
-	def uvmm_drive_create( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Drive create' )
-		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
-		if not success:
-			self.finished(object.id(), res)
-			return
-		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
-		if not node_uri:
-			return self.uvmm_node_overview( object )
-		node_info = self.uvmm.get_node_info( node_uri )
-
-		ud.debug( ud.ADMIN, ud.INFO, 'Drive create: action: %s' % str( object.options.get( 'action' ) ) )
-		# user cancelled the wizard
-		if object.options.get( 'action' ) == 'cancel':
-			self.drive_wizard.reset()
-			del object.options[ 'action' ]
-			self.uvmm_domain_overview( object )
-			return
-
-		# starting the wizard
-		if not 'action' in object.options:
-			domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
-			self.drive_wizard.reset()
-			self.drive_wizard.show_paravirtual( domain_info.os_type == 'hvm' )
-			self.drive_wizard.domain_name = object.options['domain']
-			self.drive_wizard.blacklist = [] # does query domains
-			self.drive_wizard.set_node( node_uri, node_info )
-
-		result = self.drive_wizard.action( object )
-
-		# domain wizard finished?
-		if self.drive_wizard.result():
-			new_disk = self.drive_wizard.result()
-			domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
-			domain_info.disks.append( new_disk )
-			resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
-			new_disk = self.drive_wizard.reset()
-			if self.uvmm.is_error( resp ):
-				res = self.uvmm_domain_overview( object, finish = False )
-				res.status( 301 )
-				self.finished( object.id(), res, report = resp.msg )
-			else:
-				self.uvmm_domain_overview( object )
-			return
-		# navigating in the wizard ...
-		page = self.drive_wizard.setup( object )
-		res.dialog[ 0 ].set_dialog( page )
-		if not result:
-			res.status( 201 )
-			report = result.text
-		else:
-			report = ''
-		self.finished( object.id(), res, report = report )
-
-	def uvmm_drive_remove( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Drive remove' )
-		res = umcp.Response( object )
-
-		if object.incomplete:
-			ud.debug( ud.ADMIN, ud.INFO, 'drive remove' )
-			( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
-			if not success:
-				self.finished(object.id(), res)
-				return
-			# remove domain
-			# if the attached drive could be removed successfully the user should be ask, if the image should be removed
-			node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
-			if not node_uri:
-				return self.uvmm_node_overview( object )
-			node_info, domain_info = self.uvmm.get_domain_info_ext(node_uri, object.options['domain'])
-			for disk in domain_info.disks:
-				if disk.source == object.options['disk']:
-					break
-			is_shared_image = disk.device == uvmmn.Disk.DEVICE_CDROM
-			lst = umcd.List( default_type = 'uvmm_table' )
-
-			opts = copy.copy( object.options )
-			overview = umcp.SimpleCommand( 'uvmm/domain/overview', options = opts )
-			opts = copy.copy( object.options )
-			opts[ 'drive-remove' ] = True
-			remove = umcp.SimpleCommand( 'uvmm/drive/remove', options = opts )
-			opts = copy.copy( object.options )
-			opts[ 'drive-remove' ] = False
-			detach = umcp.SimpleCommand( 'uvmm/drive/remove', options = opts )
-
-			if disk.type != uvmmn.Disk.TYPE_BLOCK:
-				lst.add_row( [ umcd.Cell( umcd.Text( _( 'The drive will be detached from the virtual instance. Additionally the associated image %(image)s may be deleted permanently. Should this be done also?' ) % { 'image' : object.options[ 'disk' ] } ), attributes = { 'colspan' : '3' } ) ] )
-				no = umcd.Button(_('No'), actions=[umcd.Action(detach), umcd.Action(overview)], default=is_shared_image)
-				yes = umcd.Button(_('Yes'), actions=[umcd.Action(remove), umcd.Action(overview)], default=not is_shared_image)
-				lst.add_row( [ '' ] )
-				lst.add_row( [ umcd.Cell( no, attributes = { 'align' : 'right', 'colspan' : '2' } ), umcd.Cell( yes, attributes = { 'align' : 'right' } ) ] )
-			else:
-				lst.add_row( [ umcd.Cell( umcd.Text( _( 'The drive will be detached from the virtual instance and the associated local device will be kept as is.' ) ), attributes = { 'colspan' : '3' } ) ] )
-				lst.add_row( [ '' ], attributes = { 'colspan' : '3' } )
-				btn_detach = umcd.Button( _( 'Detach' ), actions = [ umcd.Action( detach ), umcd.Action( overview ) ], default = True )
-				btn_cancel = umcd.Button( _( 'Cancel' ), actions=[ umcd.Action( overview ) ] )
-				lst.add_row( [ btn_cancel, '', umcd.Cell( btn_detach, attributes = { 'align' : 'right' } ) ] )
-
-			res.dialog[ 0 ].set_dialog( lst )
-			self.finished(object.id(), res)
-		else:
-			node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
-			if not node_uri:
-				return self.uvmm_node_overview( object )
-			domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
-			new_disks = []
-			rm_disk = None
-			for dev in domain_info.disks:
-				if dev.source != object.options[ 'disk' ]:
-					new_disks.append( dev )
-				else:
-					rm_disk = dev
-			domain_info.disks = new_disks
-			resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
-
-			if rm_disk and rm_disk.type == uvmmn.Disk.TYPE_BLOCK:
-				drive = object.options[ 'disk' ]
-			else:
-				drive = os.path.basename( object.options[ 'disk' ] )
-			if self.uvmm.is_error( resp ):
-				res.status( 301 )
-				self.finished( object.id(), res, report = _( 'Detaching the drive <i>%(drive)s</i> failed' ) % { 'drive' : drive } )
-				return
-
-			if object.options.get( 'drive-remove', False ):
-				resp = self.uvmm.storage_volumes_destroy( node_uri, [ object.options[ 'disk' ], ] )
-
-				if not resp:
-					res.status( 301 )
-					self.finished( object.id(), res, report = _( 'Removing the image <i>%(disk)s</i> failed. It must be removed manually.' ) % { 'drive' : drive } )
-					return
-				res.status( 201 )
-				self.finished( object.id(), res, report = _( 'The drive <i>%(drive)s</i> was detached and removed successfully' ) % { 'drive' : drive } )
-			res.status( 201 )
-			self.finished( object.id(), res, report = _( 'The drive <i>%(drive)s</i> was detached successfully' ) % { 'drive' : drive } )
-
-	def uvmm_drive_bootdevice( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Drive boot device' )
-		res = umcp.Response( object )
-
-		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
-		if not node_uri:
-			return self.uvmm_node_overview( object )
-		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
-		new_disks = []
-		for dev in domain_info.disks:
-			if dev.source != object.options[ 'disk' ]:
-				new_disks.append( dev )
-			else:
-				new_disks.insert( 0, dev )
-		domain_info.disks = new_disks
-		resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
-
-		if self.uvmm.is_error( resp ):
-			res.status( 301 )
-			self.finished( object.id(), res, report = _( 'Setting the drive <i>%(drive)s</i> as boot device as failed' ) % { 'drive' : os.path.basename( object.options[ 'disk' ] ) } )
-		else:
-			self.finished( object.id(), res )
-
-	def uvmm_nic_create( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Network interface create' )
-		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, ( 'group', 'node', 'domain' ) )
-		if not success:
-			self.finished(object.id(), res)
-			return
-		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
-		if not node_uri:
-			return self.uvmm_node_overview( object )
-		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
-
-		report = ''
-		if object.incomplete:
-			nic_driver_select.virttech = domain_info.domain_type
-			nic_list = umcd.List( attributes = { 'width' : '100%' }, default_type = 'uvmm_table'  )
-			ids = []
-
-			nic_list.add_row( [ umcd.HTML( _( 'Two types of network interfaces are support. The first one is <i>Bridge</i> that requires a static network connection on the physical server that is configurated to be used for bridging. By default the network interface called eth0 is setup for such a case on each UVMM node. If a virtual instance should have more than one bridging network interface, additional network interfaces on the physical server must be configured first. The second type is <i>NAT</i> provides a private network for virtual instances on the physical server and permits access to the external network. This network typ is useful for computers with varying network connections like notebooks. Further details about the network configuration can be found in <a href="http://sdb.univention.de/1172" target="_blank">this article</a>.' ), attributes = { 'colspan' : '2' } ) ] )
-			cmd = umcp.SimpleCommand( 'uvmm/nic/create', options = copy.copy( object.options ) )
-			cmd.incomplete = True
-			choices = ( ( 'bridge', _( 'Bridge' ) ), ( 'network:default', _( 'NAT' ) ) )
-			nic_type = umcd.SimpleSelectButton( _( 'Type' ), option = 'nictype', choices = choices, actions = [ umcd.Action( cmd ) ], default = object.options.get( 'nictype', 'bridge' ) )
-			# nic_type = umcd.make( self[ 'uvmm/nic/create' ][ 'nictype' ] )
-			if object.options.get( 'nictype', '' ).startswith( 'network:' ):
-				info = umcd.InfoBox( _( 'By default the private network is 192.168.122.0/24' ) )
-			else:
-				info = ''
-			nic_list.add_row( [ nic_type, info ] )
-			ids.append( nic_type.id() )
-
-			nic_driver = umcd.make( self[ 'uvmm/nic/create' ][ 'driver' ], default = object.options.get( 'driver', 'auto' ) )
-			nic_list.add_row( [ nic_driver, '' ] )
-			ids.append( nic_driver.id() )
-
-			if object.options.get( 'nictype', 'bridge' ) == 'bridge':
-				nic_source = umcd.make( self[ 'uvmm/nic/create' ][ 'source' ], default = object.options.get( 'source', 'eth0' ) )
-				info = umcd.InfoBox( _( 'The source is the name of the network interface on the phyiscal server that is configured for bridging. By default it is eth0.' ) )
-				nic_list.add_row( [ nic_source, info ] )
-				ids.append( nic_source.id() )
-
-			nic_mac = umcd.make( self[ 'uvmm/nic/create' ][ 'mac' ], default = object.options.get( 'mac', '' ) )
-			nic_list.add_row( [ nic_mac, '' ] )
-			ids.append( nic_mac.id() )
-
-			opts = copy.copy( object.options )
-			if not 'nictype' in opts:
-				opts[ 'nictype' ] = 'bridge'
-			cmd = umcp.SimpleCommand( 'uvmm/nic/create', options = opts )
-			overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = object.options )
-
-			nic_type.actions[ 0 ].options = ids
-
-			nic_list.add_row( [ umcd.Button( _( 'Cancel' ), actions = [ umcd.Action( overview_cmd ) ] ), umcd.Cell( umcd.Button( _( 'Add' ), actions = [ umcd.Action( cmd, ids ), umcd.Action( overview_cmd ) ], default = True ), attributes = { 'align' : 'right' } ) ] )
-			res.dialog[ 0 ].set_dialog( umcd.Section( _( 'Adding network interface' ), nic_list, attributes = { 'width' : '100%' } ) )
-		else:
-			iface = uvmmn.Interface()
-			if object.options[ 'nictype' ].startswith( 'network:' ):
-				typ, src = object.options[ 'nictype' ].split( ':', 1 )
-				iface.type = iface.map_type( name = typ )
-				iface.source = src
-			else:
-				iface.type = iface.map_type( name = object.options[ 'nictype' ] )
-				iface.source = object.options[ 'source' ]
-			if object.options[ 'driver' ] != 'auto':
-				iface.model = iface.map_type( name = object.options[ 'driver' ] )
-			if object.options[ 'mac' ]:
-				iface.mac_address = object.options[ 'mac' ]
-
-			domain_info.interfaces.append( iface )
-			resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
-			if self.uvmm.is_error( resp ):
-				res.status( 301 )
-				report = _( 'Failed to add network interface: %s' ) % str( resp.msg )
-		self.finished( object.id(), res, report = report )
-
-	def uvmm_nic_remove( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Network interface remove' )
-		res = umcp.Response( object )
-
-		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
-		if not node_uri:
-			return self.uvmm_node_overview( object )
-		domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
-
-		interfaces = []
-		typ = object.options[ 'nictype' ]
-		src = object.options[ 'source' ]
-		mac = object.options[ 'mac' ]
-		for iface in domain_info.interfaces:
-			if iface.map_type( id = iface.type ) == typ and iface.source == src and iface.mac_address == mac:
-				continue
-			interfaces.append( iface )
-
-		domain_info.interfaces = interfaces
-
-		resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
-		report = ''
-		if self.uvmm.is_error( resp ):
-			res.status( 301 )
-			report = _( 'Failed to remove network interface: %s' ) % str( resp.msg )
 		self.finished( object.id(), res, report = report )
 
 	def uvmm_daemon_restart( self, object ):

@@ -264,14 +264,14 @@ class Client( notifier.signals.Provider ):
 			else:
 				return name
 
-	def get_domain_info_ext( self, node_uri, domain_name ):
+	def get_domain_info_ext( self, node_uri, domain_name_or_uuid ):
 		retries = 10
 		while retries:
 			node_info = self.get_node_info( node_uri )
 			if self.is_error( node_info ):
 				return ( None, None )
 			for domain_info in node_info.domains:
-				if domain_info.name == domain_name:
+				if domain_info.name == domain_name_or_uuid or domain_info.uuid == domain_name_or_uuid:
 					return (node_info, domain_info )
 			time.sleep( 0.1 )
 			retries -= 1

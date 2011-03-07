@@ -52,7 +52,7 @@ import uvmmd
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
 class DriveWizard( umcd.IWizard ):
-	def __init__( self, command, show_paravirtual = False ):
+	def __init__( self, command ): #, show_paravirtual = False
 		umcd.IWizard.__init__( self, command )
 		self.title = _( 'Add a drive' )
 		self.pool_syntax = DynamicSelect( _( 'Storage pool' ) )
@@ -100,19 +100,19 @@ class DriveWizard( umcd.IWizard ):
 		page = umcd.Page( self.title, _( 'The following drive will be created:' ) )
 		self.append( page )
 
-		self.show_paravirtual( show_paravirtual )
+		# self.show_paravirtual( show_paravirtual )
 
 	def set_node( self, uri = None, info = None ):
 		self.node_uri = uri
 		self.node_info = info
 
-	def show_paravirtual( self, show = True ):
-		if show:
-			if len( self[ 0 ].options ) == 1:
-				self[ 0 ].options.append( umcd.make( ( 'drive-paravirtual', umc.Boolean( _( 'Setup as paravirtual drive' ) ) ) ) )
-		else:
-			if len( self[ 0 ].options ) == 2:
-				del self[ 0 ].options[ 1 ]
+	# def show_paravirtual( self, show = True ):
+	# 	if show:
+	# 		if len( self[ 0 ].options ) == 1:
+	# 			self[ 0 ].options.append( umcd.make( ( 'drive-paravirtual', umc.Boolean( _( 'Setup as paravirtual drive' ) ) ) ) )
+	# 	else:
+	# 		if len( self[ 0 ].options ) == 2:
+	# 			del self[ 0 ].options[ 1 ]
 
 	def _create_pool_select_button(self, options):
 		choices = []
@@ -620,8 +620,8 @@ class InstanceWizard( umcd.IWizard ):
 			# activate drive wizard to add a first mandatory drive
 			if not self.drives:
 				self.drive_wizard.prev_first_page = True
-				self.drive_wizard.show_paravirtual( self.profile[ 'virttech' ].endswith( '-hvm' ) )
-				object.options[ 'drive-paravirtual' ] = self.profile[ 'pvdisk' ] == '1'
+				# self.drive_wizard.show_paravirtual( self.profile[ 'virttech' ].endswith( '-hvm' ) )
+				# object.options[ 'drive-paravirtual' ] = self.profile[ 'pvdisk' ] == '1'
 				self.new_drive( object )
 		return umcd.IWizard.next( self, object )
 

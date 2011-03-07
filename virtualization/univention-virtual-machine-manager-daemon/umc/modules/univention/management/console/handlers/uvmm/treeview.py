@@ -124,6 +124,7 @@ class TreeView( object ):
 					icon = 'uvmm/domain'
 					for domain_info in node_info.domains:
 						if domain_info.name == item:
+							options[ 'domain-uuid' ] = domain_info.uuid
 							if domain_info.state in ( 1, 2 ):
 								icon = 'uvmm/domain-on'
 							elif domain_info.state in ( 3, ):
