@@ -1,3 +1,11 @@
+univention-directory-reports (3.0.6-2) unstable; urgency=low
+
+  * Add even more detailed error report (Bug #9137)
+  * Handle invalid syntax in LDAP DN.
+  * Add test/failures.sh.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Mar 2011 08:27:45 +0100
+
 univention-directory-reports (3.0.6-1) unstable; urgency=low
 
   * Handle invalid files (Bug #9137)

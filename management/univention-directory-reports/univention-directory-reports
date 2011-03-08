@@ -132,11 +132,16 @@ def main():
 			print >>sys.stderr, "error: specified module '%s' does not exist" % options.module
 			options.module = None
 		elif options.report is not None:
-			if cfg._get_report_entry(options.module, options.report) is None:
+			report_entry = cfg._get_report_entry(options.module, options.report)
+			if report_entry is None:
 				print >>sys.stderr, "error: specified report '%s' does not exist" % options.report
 			else:
 				print >>sys.stderr, "error: specified report '%s' is unavailable" % options.report
-				print >>sys.stderr, "check settings in file '%s'" % cfg._filename
+				name, dir, filename = report_entry
+				if not os.path.exists(filename):
+					print >>sys.stderr, "Template file '%s' seems to be missing." % filename
+				else:
+					print >>sys.stderr, "Check settings in file '%s'." % cfg._filename
 				sys.exit(2)
 		else:
 			print >>sys.stderr, "error: no report found for module '%s'" % options.module

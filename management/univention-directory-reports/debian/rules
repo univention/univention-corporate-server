@@ -38,7 +38,8 @@ PYVERS := $(shell pyversions -vr)
 package=univention-directory-reports
 destdir=debian/univention-directory-reports/
 
-MO_FILES := $(shell find modules -name '*.po' | sed 's/\.po/\.mo/g')
+PO_FILES := $(shell find modules -name '*.po')
+MO_FILES := $(PO_FILES:%.po=%.mo)
 TEMPLATE_FILES=$(shell find templates -name '*.tex' -o -name '*.csv' | sed 's/^templates\///')
 
 %.mo:	%.po
@@ -47,7 +48,7 @@ TEMPLATE_FILES=$(shell find templates -name '*.tex' -o -name '*.csv' | sed 's/^t
 build: build-stamp $(MO_FILES)
 build-stamp:
 	dh_testdir
-	touch build-stamp
+	touch $@
 
 clean:
 	dh_testdir

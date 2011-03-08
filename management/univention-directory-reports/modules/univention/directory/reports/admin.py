@@ -267,7 +267,10 @@ def get_object( module, dn ):
 	global _admin
 	if not _admin:
 		return None
-	return _admin.get_object( module, dn )
+	try:
+		return _admin.get_object( module, dn )
+	except ua_exceptions.ldapError:
+		return None
 
 def set_format( format ):
 	global _admin
