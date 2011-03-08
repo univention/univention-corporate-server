@@ -1,3 +1,9 @@
+univention-installer (6.0.50-1) unstable; urgency=low
+
+  * fixed usb detection in installer/usb-device.sh Bug #21757
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Mar 2011 16:19:59 +0100
+
 univention-installer (6.0.49-1) unstable; urgency=low
 
   * merged changes from component oxse4ucs (-r 21773:HEAD), 
