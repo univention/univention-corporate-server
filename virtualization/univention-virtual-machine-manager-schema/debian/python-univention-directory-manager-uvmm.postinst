@@ -1,8 +1,8 @@
 #!/bin/sh
 # -*- coding: utf-8 -*-
 #
-# Univention Virtual Machine Manager Daemon
-#  postinst script for python-univention-virtual-machine-manager
+# Univention Virtual Machine Manager Schema
+#  postinst script for python-univention-directory-manager-uvmm
 #
 # Copyright 2010 Univention GmbH
 #
