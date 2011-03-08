@@ -563,14 +563,43 @@ class InstanceWizard( umcd.IWizard ):
 				self.replace_title( _( 'Create a virtual instance <i>%(name)s</i>' ) % { 'name' : object.options[ 'name' ] } )
 		tech = self.node_uri[ : self.node_uri.find( ':' ) ]
 		if self.current == None:
+
+			tech_types = []
+			for template in self.node_info.capabilities:
+				template_tech = '%s-%s' % ( template.domain_type, template.os_type )
+				if not template_tech in VirtTechSelect.MAPPING:
+					continue
+				if not template_tech in tech_types:
+					tech_types.append( template_tech )
+			
+			if 'xen-xen' in tech_types and not 'xen-hvm' in tech_types:
+				# Set tech to xen-xen because the CPU extensions is not available
+				tech = 'xen-xen'
+
 			try:
 				profiles = [ item[ 'name' ] for item in self.udm.get_profiles(tech) if item[ 'arch' ] in self.archs ]
+				ud.debug( ud.ADMIN, ud.INFO, 'PROFILE: profiles: %s' % profiles)
 			except udm.LDAP_ConnectionError:
 				umcd.IWizard.next( self, object )
 				self.profile_syntax.update_choices( [] )
 				return umcd.WizardResult( False, _( 'No profiles could be found! These are required to create new virtual instances. Ensure that the LDAP server can be reached.' ) )
+
 			profiles.sort()
 			self.profile_syntax.update_choices( profiles )
+
+			if tech == 'xen-xen':
+				# Only paravirtualization 
+				umcd.IWizard.next( self, object )
+				return umcd.WizardResult( False, _( 'The server does not have the virtualization extension (Intel VT or AMD-V). Only profiles with full paravirtualization will be appear.' ) )
+			elif len(tech_types) == 0:
+				# KVM is installed and the CPU extension is missing
+				umcd.IWizard.next( self, object )
+				return umcd.WizardResult( False, _( 'The server does not have the virtualization extension (Intel VT or AMD-V). For virtualization with KVM this extension is required.' ) )
+			elif len(profiles) == 0:
+				# Hmm ...
+				umcd.IWizard.next( self, object )
+				return umcd.WizardResult( False, _( 'No profiles could be found! Please check your installation and run all join scripts, e.g. using univention-run-join-scripts.' ) )
+
 		if self.current == 0:
 			try:
 				self.profile = self.udm.get_profile( object.options[ 'instance-profile' ], tech )
