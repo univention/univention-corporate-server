@@ -1,3 +1,9 @@
+univention-updater (6.0.65-1) unstable; urgency=low
+
+  * accept further "True" values (Bug #21398)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 08 Mar 2011 15:53:53 +0100
+
 univention-updater (6.0.64-1) unstable; urgency=low
 
   * updated translations of UMC module (Bug #21398)

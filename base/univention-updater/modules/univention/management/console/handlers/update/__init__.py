@@ -1119,7 +1119,7 @@ class handler(umch.simpleHandler):
 					req.set_flag('web:startup_format', _('Modify component %s' )  % description )
 					btnlist = [ umcd.Button(_('Configure'), 'update/gear', actions=[umcd.Action(req)]) ]
 					txt = umcd.Text(_('This component is disabled.'))
-					if component.get('activated', '').lower() in ['true', 'yes', '1', 'enabled']:
+					if component.get('activated', '').lower() in ['yes', 'true', '1', 'enable', 'enabled', 'on']:
 
 						status = self.updater.get_current_component_status( component_name )
 						if status == self.updater.COMPONENT_AVAILABLE:
@@ -1189,7 +1189,7 @@ class handler(umch.simpleHandler):
 		# build the default values
 		if res.options.has_key('component'):
 			activated_component = res.options['component'].get('activated', '')
-			if activated_component.lower() in ['true', 'yes', '1', 'enabled']:
+			if activated_component.lower() in ['yes', 'true', '1', 'enable', 'enabled', 'on']:
 				activated = True
 			else:
 				activated = False
