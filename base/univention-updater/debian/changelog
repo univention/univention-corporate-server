@@ -1,3 +1,9 @@
+univention-updater (6.0.63-1) unstable; urgency=low
+
+  * removed call of fix_primary_group_membership (Bug #21711)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 08 Mar 2011 14:18:38 +0100
+
 univention-updater (6.0.62-1) unstable; urgency=low
 
   * call fix_primary_group_membership in postup.sh on 
