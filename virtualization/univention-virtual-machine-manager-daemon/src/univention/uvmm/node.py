@@ -1010,6 +1010,8 @@ def domain_define( uri, domain ):
 		for iface in domain.interfaces:
 			model = getattr(iface, 'model', None) or 'rtl8139'
 			models.add(model)
+		if 'network' not in domain.boot: # qemu-kvm_0.12.4 ignores boot-order and always prefers Network
+			models = set()
 		models &= set(['e1000', 'ne2k_isa', 'ne2k_pci', 'pcnet', 'rtl8139', 'virtio'])
 		for model in models:
 			arg = doc.createElement('qemu:arg')

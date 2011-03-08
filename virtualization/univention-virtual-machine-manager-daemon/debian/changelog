@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.168-1) unstable; urgency=low
+
+  * Disable PXE-BIOS when networks-boot is not selected (Bug #20898)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Mar 2011 16:24:15 +0100
+
 univention-virtual-machine-manager-daemon (0.9.167-1) unstable; urgency=low
 
   * Check if driver_pv is set to '1' for paravirtualization (Bug #21591)
