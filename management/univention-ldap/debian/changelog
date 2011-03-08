@@ -1,3 +1,12 @@
+univention-ldap (7.0.18-1) unstable; urgency=low
+
+  * call fix_primary_group_membership of
+    univention-directory-manager-tools (Bug #21711)
+  * added dependency to 
+  	univention-directory-manager-tools (>>6.0.110)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 08 Mar 2011 14:09:24 +0100
+
 univention-ldap (7.0.17-1) unstable; urgency=low
 
   * fixed typo (univention-prinquota) in join script 
