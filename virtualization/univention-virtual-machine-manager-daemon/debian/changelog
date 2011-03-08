@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.165-1) unstable; urgency=low
+
+  * Fix support for default PXE-boot with KVM (Bug #20898)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Mar 2011 08:54:07 +0100
+
 univention-virtual-machine-manager-daemon (0.9.164-1) unstable; urgency=low
 
   * Removed needless parameter for uvmm.domain_configure (Bug #21591)

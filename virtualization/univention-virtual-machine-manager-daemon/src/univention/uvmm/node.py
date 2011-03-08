@@ -1008,8 +1008,8 @@ def domain_define( uri, domain ):
 
 		models = set()
 		for iface in domain.interfaces:
-			if hasattr(iface, 'model') and iface.model:
-				models.add(iface.model)
+			model = getattr(iface, 'model', None) or 'rtl8139'
+			models.add(model)
 		models &= set(['e1000', 'ne2k_isa', 'ne2k_pci', 'pcnet', 'rtl8139', 'virtio'])
 		for model in models:
 			arg = doc.createElement('qemu:arg')
