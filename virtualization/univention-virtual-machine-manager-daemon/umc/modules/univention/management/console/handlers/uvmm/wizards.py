@@ -467,10 +467,10 @@ class DriveWizard( umcd.IWizard ):
 		if self.node_uri.startswith('qemu'):
 			disk.driver = 'qemu'
 			disk.driver_type = driver_type.lower()
-			if driver_pv:
+			if driver_pv == '1':
 				disk.target_bus = 'virtio'
 		elif self.node_uri.startswith('xen'):
-			if driver_pv:
+			if driver_pv == '1':
 				disk.target_bus = 'xen'
 			# Since UCS 2.4-2 Xen 3.4.3 contains the blktab2 driver
 			# from Xen 4.0.1
