@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.166-2) unstable; urgency=low
+
+  * Fixed typo in german translation (Bug #20068)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 Mar 2011 09:32:59 +0100
+
 univention-virtual-machine-manager-daemon (0.9.166-1) unstable; urgency=low
 
   * Show a message if the CPU extension is missing and show only

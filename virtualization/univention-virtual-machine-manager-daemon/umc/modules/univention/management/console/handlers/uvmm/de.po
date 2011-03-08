@@ -1254,7 +1254,7 @@ msgid ""
 "No profiles could be found! Please check your installation and run all join "
 "scripts, e.g. using univention-run-join-scripts."
 msgstr ""
-"Es wiurden keine Profile gefunden. Bitte prüfen Sie Ihre Installation und "
+"Es wurden keine Profile gefunden. Bitte prüfen Sie Ihre Installation und "
 "führen Sie alle Joinskripte aus, z.B. mit Hilfe von univention-run-join-"
 "scripts."
 
