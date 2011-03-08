@@ -1171,7 +1171,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 		# domain wizard finished?
 		if self.domain_wizard.result():
-			resp = self.uvmm.domain_configure( object.options[ 'node' ], self.domain_wizard.result(), create = True )
+			resp = self.uvmm.domain_configure( object.options[ 'node' ], self.domain_wizard.result() )
 			object.options[ 'domain' ] = object.options[ 'name' ]
 			if self.uvmm.is_error( resp ):
 				# FIXME: something went wrong. We have to erase als 'critical' data and restart with the drive wizard part
