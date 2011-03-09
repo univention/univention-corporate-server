@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.169-1) unstable; urgency=low
+
+  * Show the image size and a more meaningful description for the driver
+    type (Bug #21591)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 09 Mar 2011 07:24:50 +0100
+
 univention-virtual-machine-manager-daemon (0.9.168-1) unstable; urgency=low
 
   * Disable PXE-BIOS when networks-boot is not selected (Bug #20898)

@@ -146,7 +146,7 @@ class DriveWizard( umcd.IWizard ):
 			if self._is_file_pool(drive_pool):
 				if self.node_uri.startswith('qemu'):
 					choices = (
-							#('qcow', _('Qemu copy-on-write')),
+							#('qcow', _('Extended format (qcow)')),
 							('qcow2', _('Extended format (qcow2)')),
 							#('vmdk', _('VMWare Disk')),
 							('raw', _('Simple format (raw)')),

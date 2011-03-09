@@ -213,16 +213,39 @@ class DriveCommands( object ):
 				for pool in self.uvmm.storage_pools( node_uri ):
 					if pool.path.startswith( dirname ):
 						pool_name = pool.name
+
+				# detect the volume size
+				for vol in self.uvmm.storage_pool_volumes(node_uri, pool_name):
+					if vol.source == drive.source:
+						drive.size = vol.size
+						break
+
 				if pool_name == 'default':
 					pool_name = _( 'Local directory' )
+
+				# show a more meaningful description
+				# TODO: see wizards.py the description should be defined at one point
+				if not drive.driver_type or drive.driver_type in ['aio', 'raw']:
+					driver_type = _('Simple format (raw)')
+				elif drive.driver_type == 'qcow2':
+					driver_type = _('Extended format (qcow2)')
+				elif drive.driver_type == 'qcow':
+					driver_type = _('Extended format (qcow)')
+				elif drive.driver_type == 'vmdk':
+					driver_type = _('VMWare Disk')
+				elif drive.driver_type == 'vhd':
+					driver_type = _('Virtual Hard Disk')
+				else:
+					driver_type = drive.driver_type
+
 				if drive.size:
 					size = MemorySize.num2str( drive.size )
 				else:
 					size = _( 'unknown' )
 				conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Storage pool' ) ), pool_name ] )
 				conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image filename' ) ), basename ] )
-				conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image format' ) ), drive.driver_type ] )
-				conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image size' ) ),  ] )
+				conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image format' ) ), driver_type ] )
+				conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image size' ) ), size ] )
 			else:
 				conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Device filename' ) ), drive.source ] )
 
