@@ -535,6 +535,7 @@ class InstanceWizard( umcd.IWizard ):
 		# page 1
 		page = umcd.Page( self.title, _( 'The following settings were read from the selected profile and can be modified now.' ) )
 		page.options.append( umcd.make( ( 'name', umc.String( _( 'Name' ) ) ) ) )
+		page.options.append( umcd.make( ( 'description', umc.String( _( 'Description' ), required = False ) ) ) )
 		page.options.append( umcd.make( ( 'memory', umc.String( _( 'Memory (in MB)' ), regex = MemorySize.SIZE_REGEX ) ) ) )
 		page.options.append( umcd.make( ( 'cpus', NumberSelect( _( 'CPUs' ) ) ) ) )
 		page.options.append( umcd.make( ( 'vnc', umc.Boolean( _( 'Enable direct access' ) ) ) ) )
@@ -674,8 +675,11 @@ class InstanceWizard( umcd.IWizard ):
 		'''add list with domain settings to page 2'''
 		rows = []
 		settings = umcd.List()
-		for text, key in ( ( _( 'Name' ), 'name' ), ( _( 'CPUs' ), 'cpus' ), ( _( 'Memory' ), 'memory' ) ):
-			settings.add_row( [ umcd.HTML( '<i>%s</i>' % text ), object.options.get( key, '' ) ] )
+		for text, key in ( ( _( 'Name' ), 'name' ), ( _( 'Description' ), 'description' ), ( _( 'CPUs' ), 'cpus' ), ( _( 'Memory' ), 'memory' ) ):
+			if object.options.get( key ):
+				settings.add_row( [ umcd.HTML( '<i>%s</i>' % text ), object.options.get( key, '' ) ] )
+			else:
+				settings.add_row( [ umcd.HTML( '<i>%s</i>' % text ) ] )
 		if object.options.get( 'vnc' ):
 			value = _( 'activated' )
 		else:
@@ -746,6 +750,7 @@ class InstanceWizard( umcd.IWizard ):
 				domain_info.graphics = [gfx,]
 			# annotations
 			domain_info.annotations[ 'os' ] = object.options[ 'os' ]
+			domain_info.annotations[ 'description' ] = object.options[ 'description' ]
 			# drives
 			domain_info.disks = self.drives
 			self.uvmm._verify_device_files(domain_info)
