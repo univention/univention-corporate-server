@@ -104,7 +104,7 @@ layout=[
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('uuid', 'univentionVirtualMachineUUID', None, univention.admin.mapping.ListToString)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
+mapping.register('description', 'univentionVirtualMachineDescription', None, univention.admin.mapping.ListToString)
 mapping.register('os', 'univentionVirtualMachineOS', None, univention.admin.mapping.ListToString)
 mapping.register('contact', 'univentionVirtualMachineContact', None, univention.admin.mapping.ListToString)
 
