@@ -563,7 +563,7 @@ if __name__ == '__main__':
 			sys.exit(1)
 		except KeyboardInterrupt:
 			update_status( status='FAILED' )
-			dprint("\nUpdate stopped by user (ctrl-c)\n")
+			dprint("\nUpdate aborted by user (ctrl-c)\n")
 			subprocess.call(['touch', failure])
 			# set executable flags for apache and UMC
 			devnull = open(os.path.devnull, 'w' )
