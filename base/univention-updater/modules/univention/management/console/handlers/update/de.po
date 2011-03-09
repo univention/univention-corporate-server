@@ -30,8 +30,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-08 15:21+0100\n"
-"PO-Revision-Date: 2011-03-08 15:25+0100\n"
+"POT-Creation-Date: 2011-03-09 12:01+0100\n"
+"PO-Revision-Date: 2011-03-09 12:58+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -320,7 +320,7 @@ msgstr ""
 "Ein Fehler ist während der Installation aufgetreten. Die Logdatei %(logfile)"
 "s sollte geprüft werden."
 
-#: __init__.py:768 __init__.py:772 __init__.py:780 __init__.py:1442
+#: __init__.py:768 __init__.py:772 __init__.py:780 __init__.py:1448
 msgid "Update progress"
 msgstr "Updatevorgang anzeigen"
 
@@ -329,7 +329,10 @@ msgid ""
 "The update process has been started. During update log messages will be "
 "shown in window below. Please wait until the release update has been "
 "finished."
-msgstr "Der Updatevorgang wurde gestartet. Während des Updatevorgangs werden Logmeldungen im Fenster unten angezeigt. Bitte warten Sie, bis das Update abgeschlossen ist."
+msgstr ""
+"Der Updatevorgang wurde gestartet. Während des Updatevorgangs werden "
+"Logmeldungen im Fenster unten angezeigt. Bitte warten Sie, bis das Update "
+"abgeschlossen ist."
 
 #: __init__.py:773
 msgid ""
@@ -434,7 +437,9 @@ msgstr "Es wurden Updates gefunden."
 msgid ""
 "Further release updates are available but the update is blocked by required "
 "component \"%s\"."
-msgstr "Weitere Releaseupdates sind verfügbar, werden aber durch die benötigte Komponente \"%s\" blockiert."
+msgstr ""
+"Weitere Releaseupdates sind verfügbar, werden aber durch die benötigte "
+"Komponente \"%s\" blockiert."
 
 #: __init__.py:873
 msgid "System is up-to-date. No updates available."
@@ -444,12 +449,16 @@ msgstr "Das System ist aktuell. Es stehen keine Updates zur Verfügung."
 msgid ""
 "The connection to the repository server failed. Please check the repository "
 "configuration and the network connection."
-msgstr "Die Verbindung zum Repository-Server ist fehlgeschlagen. Bitte überprüfen Sie die Repository-Konfiguration und die Netzwerkverbindung."
+msgstr ""
+"Die Verbindung zum Repository-Server ist fehlgeschlagen. Bitte überprüfen "
+"Sie die Repository-Konfiguration und die Netzwerkverbindung."
 
 #: __init__.py:879
 #, python-format
 msgid "Update command returned error code %s. Please check logfile."
-msgstr "Der Update-Befehl hat sich mit dem Rückgabewert %s beendet. Bitte die Logdateien überprüfen."
+msgstr ""
+"Der Update-Befehl hat sich mit dem Rückgabewert %s beendet. Bitte die "
+"Logdateien überprüfen."
 
 #: __init__.py:882
 msgid "Release Information"
@@ -719,7 +728,8 @@ msgstr "Es stehen keine Updates zur Verfügung."
 msgid "Execute the update"
 msgstr "Das Update durchführen"
 
-#: __init__.py:1399
+#: __init__.py:1400
+#, python-format
 msgid ""
 "<h2>Attention!</h2><br><p>\n"
 "\t\tInstalling new packages is a significant change to this system and could "
@@ -737,38 +747,39 @@ msgid ""
 "\t\tnew UMC session. Logfiles can be found in the directory /var/log/"
 "univention/.<br>\n"
 "\t\t<br>\n"
+"\t\tBefore installing components please check release notes and "
+"changelogs carefully.<br>\n"
+"\t\tThese documents can be found at <a href=\"%(url)s\">%(description)s.</"
+"a><br>\n"
+"\t\t<br>\n"
 "\t\tDo you really wish to proceed?\n"
 "\t\t</p>"
 msgstr ""
 "<h2>Achtung</h2><br><p>\n"
-"Die Installation neuer Pakete ist eine signifikante Veränderung des "
-"betreffenden<br>\n"
-"System, die auch Auswirkungen auf andere Systeme haben kann. Im Normalfall "
-"ist<br>\n"
-"während der Installation kein störungsfreies Arbeiten von Anwendern möglich, "
-"da<br>\n"
-"bspw. Dienste neu gestartet werden. Deshalb sollte eine Paketinstallation "
-"nicht<br>\n"
+"Die Installation neuer Pakete ist eine signifikante Veränderung des betreffenden<br>\n"
+"System, die auch Auswirkungen auf andere Systeme haben kann. Im Normalfall ist<br>\n"
+"während der Installation kein störungsfreies Arbeiten von Anwendern möglich, da<br>\n"
+"bspw. Dienste neu gestartet werden. Deshalb sollte eine Paketinstallation nicht<br>\n"
 "im laufenden Betrieb eingespielt werden.<br>\n"
 "<br>\n"
-"Während des Updates kann es vorkommen, dass der Webserver beendet wird und "
-"diese<br>\n"
-"Verbindung unterbrochen wird. Die Installation wird trotzdem weiter "
-"durchgeführt<br>\n"
-"und in einer neuen UMC-Sitzung kann der Vorgang der Installation dann "
-"weiter<br>\n"
-"beobachtet werden. Logdateien können im Verzeichnis /var/log/univention/ "
-"eingesehen<br>\n"
+"Während des Updates kann es vorkommen, dass der Webserver beendet wird und diese<br>\n"
+"Verbindung unterbrochen wird. Die Installation wird trotzdem weiter durchgeführt<br>\n"
+"und in einer neuen UMC-Sitzung kann der Vorgang der Installation dann weiter<br>\n"
+"beobachtet werden. Logdateien können im Verzeichnis /var/log/univention/ eingesehen<br>\n"
 "werden.<br>\n"
+"<br>\n"
+"Vor der Installation sollten Release Notes und Changelogs eingehend geprüft werden.<br>\n"
+"Diese Dokumente können unter <a href=\"%(url)s\">%(description)s</a><br>\n"
+"abgerufen werden.<br>\n"
 "<br>\n"
 "Wollen Sie wirklich fortfahren?\n"
 "</p>"
 
-#: __init__.py:1414
+#: __init__.py:1420
 msgid "Attention!"
 msgstr "Warnung!"
 
-#: __init__.py:1415
+#: __init__.py:1421
 msgid ""
 "Installing an system update is a significant change to this system and could "
 "have impact<br>"
@@ -776,7 +787,7 @@ msgstr ""
 "Das Einspielen eines Updates ist eine signifikante Veränderung des "
 "betreffenden Systems, die auch<br>"
 
-#: __init__.py:1416
+#: __init__.py:1422
 msgid ""
 "to other systems. In normal case, trouble-free use by users is not possible "
 "during the update,<br>"
@@ -784,7 +795,7 @@ msgstr ""
 "Auswirkungen auf andere Systeme haben kann. Im Normalfall ist während des "
 "Updates kein störungsfreies Arbeiten<br>"
 
-#: __init__.py:1417
+#: __init__.py:1423
 msgid ""
 "since system services may need to be restarted. Thus, updates shouldn't be "
 "installed<br>"
@@ -792,18 +803,18 @@ msgstr ""
 "von Anwendern möglich, da bspw. Dienste neu gestartet werden. Deshalb "
 "sollten Sie das Update<br>"
 
-#: __init__.py:1418
+#: __init__.py:1424
 msgid ""
 "on a live system. It is also recommended to evaluate the update in a test "
 "environment<br>"
 msgstr "nicht im laufenden Betrieb einspielen. Tests in einer Testumgebung<br>"
 
-#: __init__.py:1419
+#: __init__.py:1425
 msgid "and to create a backup of the system."
 msgstr ""
 "und die Erstellung einer Sicherung des Systems werden ebenfalls empfohlen."
 
-#: __init__.py:1421
+#: __init__.py:1427
 msgid ""
 "During setup, the web server may be stopped, leading to a termination of the "
 "HTTP<br>"
@@ -811,7 +822,7 @@ msgstr ""
 "Während des Updates kann es vorkommen, dass der Webserver beendet wird und "
 "diese Verbindung unterbrochen<br>"
 
-#: __init__.py:1422
+#: __init__.py:1428
 msgid ""
 "connection. Nonetheless, the update proceeds and the update can be monitored "
 "from a<br>"
@@ -819,32 +830,44 @@ msgstr ""
 "wird. Das Update wird trotzdem weiter durchgeführt und in einer neuen UMC-"
 "Sitzung kann der Vorgang des Updates<br>"
 
-#: __init__.py:1423
+#: __init__.py:1429
 msgid ""
 "new UMC session. Logfiles can be found in the directory /var/log/univention/."
 msgstr ""
 "dann weiter beobachtet werden. Logdateien können im Verzeichnis /var/log/"
 "univention/ gefunden werden."
 
-#: __init__.py:1425
+#: __init__.py:1431
 msgid ""
-"Please also consider the release notes, changelogs and references posted in "
-"the<br>"
+"Before installing updates please check the release notes and changelogs "
+"carefully.<br>"
+msgstr "Vor dem Einspielen von Updates prüfen Sie bitte eingehend die Release-Notes und Changelogs.<br>"
+
+#: __init__.py:1432
+#, python-format
+msgid ""
+"These documents can be found at <a href=\"%(url)s\">%(description)s</a>."
 msgstr ""
-"Bitte beachten Sie auch die Release Notes, Changelogs und Hinweise zu dem "
-"jeweiligen Update in dem<br>"
+"Diese Dokumente können unter <a href=\"%(url)s\">%(description)s</a> bezogen "
+"werden."
 
-#: __init__.py:1426
-msgid "<a href=http://forum.univention.de>Univention Forum</a>."
-msgstr "<a href=http://forum.univention.de>Univention Forum</a>."
-
-#: __init__.py:1428
+#: __init__.py:1434
 msgid "Do you really wish to proceed?"
 msgstr "Wollen Sie wirklich fortfahren?"
 
-#: __init__.py:1452
+#: __init__.py:1458
 msgid "Update warning"
 msgstr "Update-Warnung"
+
+#~ msgid ""
+#~ "Please also consider the release notes, changelogs and references posted "
+#~ "in the<br>"
+#~ msgstr ""
+#~ "Bitte beachten Sie auch die Release Notes, Changelogs und Hinweise zu dem "
+#~ "jeweiligen Update in dem<br>"
+
+#~ msgid "<a href=http://forum.univention.de>Univention Forum</a>."
+#~ msgstr "<a href=http://forum.univention.de>Univention Forum</a>."
 
 #~ msgid "Overview"
 #~ msgstr "Übersicht"

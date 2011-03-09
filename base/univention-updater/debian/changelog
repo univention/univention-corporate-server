@@ -1,3 +1,11 @@
+univention-updater (6.0.66-1) unstable; urgency=low
+
+  * clarified hint to release notes and changelogs (Bug #19584)
+  * url to release notes is now customizable
+  * added release notes/changelog hint to preup.sh
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 08 Mar 2011 17:47:25 +0100
+
 univention-updater (6.0.65-1) unstable; urgency=low
 
   * accept further "True" values (Bug #21398)

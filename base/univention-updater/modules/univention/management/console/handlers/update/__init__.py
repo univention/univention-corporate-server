@@ -1332,6 +1332,7 @@ fi
 dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-server
 dpkg-statoverride --add root root 0644 /usr/sbin/apache2
 chmod -x /usr/sbin/univention-management-console-server /usr/sbin/apache2
+export update_warning_releasenotes_umc=no
 %(command)s < /dev/null
 %(reboot)s
 dpkg-statoverride --remove /usr/sbin/univention-management-console-server
@@ -1396,6 +1397,8 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 
 
 	def __get_warning_install_component(self):
+		doc_url = self.updater.configRegistry.get( 'update/doc/releasenotes/url','http://download.univention.de')
+		doc_descr = self.updater.configRegistry.get( 'update/doc/releasenotes/description','download.univention.de')
 		return _( '''<h2>Attention!</h2><br><p>
 		Installing new packages is a significant change to this system and could have impact<br>
 		to other systems. In normal case, trouble-free use by users is not possible during the installation,<br>
@@ -1406,11 +1409,16 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 		connection. Nonetheless, the installation proceeds and the installation can be monitored from a<br>
 		new UMC session. Logfiles can be found in the directory /var/log/univention/.<br>
 		<br>
+		Before installing components please check release notes and changelogs carefully.<br>
+		These documents can be found at <a href="%(url)s">%(description)s.</a><br>
+		<br>
 		Do you really wish to proceed?
-		</p>''' )
+		</p>''') % { 'url': doc_url, 'description': doc_descr }
 
 
 	def __get_update_warning(self):
+		doc_url = self.updater.configRegistry.get( 'update/doc/releasenotes/url','http://download.univention.de')
+		doc_descr = self.updater.configRegistry.get( 'update/doc/releasenotes/description','download.univention.de')
 		html = '<h2>' + _('Attention!') + '</h2>' + '<body>'
 		html += _('Installing an system update is a significant change to this system and could have impact<br>')
 		html += _('to other systems. In normal case, trouble-free use by users is not possible during the update,<br>')
@@ -1422,8 +1430,8 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 		html += _('connection. Nonetheless, the update proceeds and the update can be monitored from a<br>')
 		html += _('new UMC session. Logfiles can be found in the directory /var/log/univention/.')
 		html += '<br><br>'
-		html += _('Please also consider the release notes, changelogs and references posted in the<br>')
-		html += _('<a href=http://forum.univention.de>Univention Forum</a>.')
+		html += _('Before installing updates please check the release notes and changelogs carefully.<br>')
+		html += _('These documents can be found at <a href="%(url)s">%(description)s</a>.') % { 'url': doc_url, 'description': doc_descr }
 		html += '<br><br>'
 		html += _('Do you really wish to proceed?')
 		html += '<br><br>'
