@@ -28,17 +28,15 @@ trap cleanup EXIT
 # RELEASE NOTES SECTION (Bug #19584)
 # Please update URL to release notes and changelog on every release update
 ###########################################################################
-(
-  echo
-  echo "HINT:"
-  echo "Please check the following documents carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-#  echo "Release Notes: http://download.univention.de/doc/release-notes-2.4.pdf"
-  echo "Changelog: http://download.univention.de/doc/changelog-2.4-2.pdf"
-  echo
-  echo "Please also consider documents of following release updates and"
-  echo "3rd party components."
-  echo
-) | tee -a "$UPDATER_LOG"
+echo
+echo "HINT:"
+echo "Please check the following documents carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
+#echo "Release Notes: http://download.univention.de/doc/release-notes-2.4.pdf"
+echo "Changelog: http://download.univention.de/doc/changelog-2.4-2.pdf"
+echo
+echo "Please also consider documents of following release updates and"
+echo "3rd party components."
+echo
 if [ ! "$update_warning_releasenotes" = "no" -a ! "$update_warning_releasenotes" = "false" -a ! "$update_warning_releasenotes_umc" = "no" ] ; then
 	echo "Update will wait here for 60 seconds..."
 	echo "Press CTRL-c to abort update or wait to continue"

@@ -237,3 +237,21 @@ Description[de]=Einfaches Update-Verfahren im UMC-Modul "Online Updates" aktivie
 Description[en]=Activate easy update procedure in UMC module "Online Updates" (boolean)
 Type=bool
 Categories=service-software-management
+
+[update/doc/releasenotes/url]
+Description[de]=URL zu den offiziellen Release Notes
+Description[en]=URL refers to official release notes
+Type=string
+Categories=service-software-management
+
+[update/doc/releasenotes/description]
+Description[de]=Beschreibung zur Release-Notes-URL
+Description[en]=Description for release notes URL
+Type=string
+Categories=service-software-management
+
+[update/warning/releasenotes]
+Description[de]=Aktiviere/deaktiviere Hinweis auf Release Notes vor Updates (boolean)
+Description[en]=Enable/disable release notes hint before starting update (boolean)
+Type=bool
+Categories=service-software-management
