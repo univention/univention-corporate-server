@@ -1,3 +1,9 @@
+univention-updater (6.0.67-1) unstable; urgency=low
+
+  * do not print traceback if update is stopped by ctrl-c (Bug #19584)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 09 Mar 2011 14:07:43 +0100
+
 univention-updater (6.0.66-1) unstable; urgency=low
 
   * clarified hint to release notes and changelogs (Bug #19584)

@@ -561,6 +561,20 @@ if __name__ == '__main__':
 			remove_temporary_sources_list()
 			devnull.close()
 			sys.exit(1)
+		except KeyboardInterrupt:
+			update_status( status='FAILED' )
+			dprint("\nUpdate stopped by user (ctrl-c)\n")
+			subprocess.call(['touch', failure])
+			# set executable flags for apache and UMC
+			devnull = open(os.path.devnull, 'w' )
+			for prog in ( 'apache2', 'univention-management-console-server' ):
+				filename = os.path.join( '/usr/sbin/', prog )
+				if os.path.isfile( filename ):
+					os.chmod( filename, 0755 )
+					subprocess.call( ( 'dpkg-statoverride', '--remove', filename ), stdout = devnull, stderr = devnull )
+			remove_temporary_sources_list()
+			devnull.close()
+			sys.exit(1)
 		except UpToDateNoError, error:
 			update_ucr_updatestatus()
 			update_status( status='DONE' )
