@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.111-1) unstable; urgency=low
+
+  * reverted changes from rev 22580 (Bug #21467)
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Mar 2011 17:30:10 +0100
+
 univention-directory-manager-modules (6.0.110-1) unstable; urgency=low
 
   * added missing script (Bug #21711)
