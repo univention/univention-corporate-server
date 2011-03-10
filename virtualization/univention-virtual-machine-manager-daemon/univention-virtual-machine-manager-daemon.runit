@@ -14,5 +14,4 @@ if [ -f "/etc/default/$NAME" ] ; then
 	. "/etc/default/$NAME"
 fi
 
-exec "$DAEMON" $DAEMON_OPTS >> $LOGFILE 2>&1
-
+exec "$DAEMON" $DAEMON_OPTS >>"$LOGFILE" 2>&1

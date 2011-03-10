@@ -1035,7 +1035,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 				content.add_row( [ '', umcd.Button( _( 'Migrate' ), actions = [ umcd.Action( umcp.SimpleCommand( 'uvmm/domain/migrate', options = object.options ), [ dest.id() ] ), cmd_success, cmd_failure ], default = True ) ] )
 			else:
-				info = umcd.InfoBox( _( 'Migrating the instance is not possible beause there is just one physical server available.' ) )
+				info = umcd.InfoBox( _( 'Migrating the virtual instance is not possible because there is just one physical server available.' ) )
 				content.add_row( [ info ] )
 			res.dialog[ 0 ].set_dialog( content )
 			resp = None

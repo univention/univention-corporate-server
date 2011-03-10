@@ -727,10 +727,10 @@ msgstr ""
 
 #: __init__.py:1038
 msgid ""
-"Migrating the instance is not possible beause there is just one physical "
+"Migrating the virtual instance is not possible because there is just one physical "
 "server available."
 msgstr ""
-"Das Migrieren der Instanz ist nicht möglich, da nur ein physikalischer "
+"Das Migrieren der virtuellen Instanz ist nicht möglich, da nur ein physikalischer "
 "Server verfügbar ist."
 
 #: __init__.py:1128
