@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.173-1) unstable; urgency=low
+
+  * Added univention-virtual-machine-manager-schema as dependency
+    (Bug #21740, Bug #21690)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Mar 2011 09:33:24 +0100
+
 univention-virtual-machine-manager-daemon (0.9.172-1) unstable; urgency=low
 
   * Rename the xen profile too (Bug #19133)

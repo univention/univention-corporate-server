@@ -17,10 +17,10 @@ Depends: univention-ssl,
  python-pam,
  python-univention (>>5.0.10),
  python-univention-directory-manager (>>6.0.103),
+ univention-virtual-machine-manager-schema (>= 1.0.25),
  python-univention-virtual-machine-manager (= ${source:Version}),
  ${python:Depends}, ${misc:Depends}
-Recommends: libvirt-bin,
- univention-virtual-machine-manager-schema (>= 1.0.25),
+Recommends: libvirt-bin
 XB-Python-Version: ${python:Versions}
 Description: Univention Virtual Machine Manager Daemon
  This package contains the Univention Virtual Machine Manager Daemon
