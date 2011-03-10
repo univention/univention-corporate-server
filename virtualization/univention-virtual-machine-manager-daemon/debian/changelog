@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.178-1) unstable; urgency=low
+
+  * Fix network driver selection (Bug #19573)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 10 Mar 2011 14:35:26 +0100
+
 univention-virtual-machine-manager-daemon (0.9.177-1) unstable; urgency=low
 
   * debian/control: Fix dependencies and recommend UMC (Bug #21783)

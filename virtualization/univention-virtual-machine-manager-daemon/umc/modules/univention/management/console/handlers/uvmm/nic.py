@@ -198,7 +198,7 @@ class NIC_Commands( object ):
 			iface.type = iface.map_type( name = options[ 'nictype' ] )
 			iface.source = options[ 'source' ]
 		if options[ 'driver' ] != 'auto':
-			iface.model = iface.map_type( name = options[ 'driver' ] )
+			iface.model = options['driver']
 		if options[ 'mac' ]:
 			iface.mac_address = options[ 'mac' ]
 
