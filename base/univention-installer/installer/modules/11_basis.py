@@ -47,6 +47,7 @@ class object(content):
 		self.guessed = {}
 		content.__init__(self, max_y, max_x, last, file, cmdline)
 		self.interactive=False
+		self.oxae = (self.cmdline.get('edition') and self.cmdline['edition'][0] == 'oxae')
 
 	def checkname(self):
 		return ['hostname','domainname','ldap_base']
@@ -67,9 +68,25 @@ class object(content):
 		if self.check('root_password') and self.check('root_password_crypted'):
 			return False
 		if self.all_results.has_key('root_password_crypted'):
-			self.message=self.check_values(self.all_results['hostname'], self.all_results['domainname'], self.all_results['windows_domain'], self.all_results['ldap_base'], "XXXXXXXXXX", "XXXXXXXXXX", focus=False)
+			self.message=self.check_values(
+				self.all_results['hostname'],
+				self.all_results['domainname'],
+				self.all_results['ox_primary_maildomain'],
+				self.all_results['windows_domain'],
+				self.all_results['ldap_base'],
+				"XXXXXXXXXX",
+				"XXXXXXXXXX",
+				focus=False)
 		else:
-			self.message=self.check_values(self.all_results['hostname'], self.all_results['domainname'], self.all_results['windows_domain'], self.all_results['ldap_base'], self.all_results['root_password'], self.all_results['root_password'], focus=False)
+			self.message=self.check_values(
+				self.all_results['hostname'],
+				self.all_results['domainname'],
+				self.all_results['ox_primary_maildomain'],
+				self.all_results['windows_domain'],
+				self.all_results['ldap_base'],
+				self.all_results['root_password'],
+				self.all_results['root_password'],
+				focus=False)
 		if self.message:
 			return False
 
