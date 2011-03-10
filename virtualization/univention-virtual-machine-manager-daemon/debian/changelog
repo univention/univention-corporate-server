@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.177-1) unstable; urgency=low
+
+  * debian/control: Fix dependencies and recommend UMC (Bug #21783)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 10 Mar 2011 11:49:22 +0100
+
 univention-virtual-machine-manager-daemon (0.9.176-1) unstable; urgency=low
 
   * Handle SIGHUP using runit (Bug #20465)
