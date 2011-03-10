@@ -1,6 +1,6 @@
 [directory/manager/web/debug/level]
-Description[de]=Debug-Level des Univention Directory Manager Webfrontends
-Description[en]=Debug level of the Univention Directory Manager web frontend
+Description[de]=Debug-Level des Univention Directory Manager Webfrontends (ab debug/level 99 werden XML Daten und Klartext-Passwörter im Log-File gespeichert)
+Description[en]=Debug level of the Univention Directory Manager web frontend (with debug/level >= 99 xml data and cleartest password will be saved in log files)
 Type=str
 Categories=management-udm
 
@@ -23,8 +23,8 @@ Type=str
 Categories=management-udm
 
 [directory/manager/cmd/debug/level]
-Description[de]=Debug-Level des Univention Directory Manager-Kommandozeilenfrontends
-Description[en]=Debug level of the commandline Univention Directory Manager
+Description[de]=Debug-Level des Univention Directory Manager-Kommandozeilenfrontends (ab debug/level 99 werden XML Daten und Klartext-Passwörter im Log-File gespeichert)
+Description[en]=Debug level of the commandline Univention Directory Manager (with debug/level >= 99 xml data and cleartest password will be saved in log files)
 Type=str
 Categories=management-udm
 

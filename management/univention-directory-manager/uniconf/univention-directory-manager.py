@@ -181,11 +181,11 @@ def main(argv):
 			if number != -1 and meta.has_key ('Sessioninvalid'):
 				del meta['Sessioninvalid']
 
-			if debugging >= 4:
+			if debugging >= 99:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Logging XML representation of input:')
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, str(xmlin))
 			xmlout = session.startRequest(xmlin, number, meta=meta)
-			if debugging >= 4:
+			if debugging >= 99:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Logging XML representation of output:')
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, str(xmlout))
 
