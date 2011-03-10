@@ -96,7 +96,7 @@ class object(content):
 		return True
 
 	def modvars(self):
-		return ['hostname','domainname','ldap_base','root_password', 'windows_domain']
+		return ['hostname','domainname','ldap_base','root_password', 'windows_domain', 'ox_primary_maildomain']
 
 	def depends(self):
 		return {'system_role':['ldap_base', 'hostname']}

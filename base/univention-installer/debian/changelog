@@ -1,6 +1,12 @@
+univention-installer (6.0.52-1) unstable; urgency=low
+
+  * fixed profile based installation Bug #21757
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Mar 2011 13:46:04 +0100
+
 univention-installer (6.0.51-1) unstable; urgency=low
 
-  * fixed profile base installation Bug #21757
+  * fixed profile based installation Bug #21757
 
  -- Felix Botner <botner@univention.de>  Thu, 10 Mar 2011 10:50:05 +0100
 
