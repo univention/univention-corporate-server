@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (0.1.22-1) unstable; urgency=low
+
+  * added package "Recommends:" to nagios plugins (Bug #21328) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Mar 2011 11:05:23 +0100
+
 univention-virtual-machine-manager-node (0.1.21-1) unstable; urgency=low
 
   * Move UCR temaplate etc/default/libvirt-guests to common package
