@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.172-1) unstable; urgency=low
+
+  * Rename the xen profile too (Bug #19133)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Mar 2011 08:24:36 +0100
+
 univention-virtual-machine-manager-daemon (0.9.171-1) unstable; urgency=low
 
   * Rename KVM profiles from Univention Corporate Server 2.4 to UCS 2.4

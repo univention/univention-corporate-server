@@ -263,14 +263,16 @@ create_hvm_profile "Microsoft Windows 2008" "w2k8-" "kvm" "i686" "2048MB" "0" "4
 create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "xen" "x86_64" "2048MB" "0" "48GB"
 create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "kvm" "x86_64" "2048MB" "0" "48GB"
 
-create_xen_profile "UCS 2.4" "ucs24-" "i686" "1024MB" "20GB"
-create_xen_profile "UCS 2.4 (64 Bit)" "ucs24-64-" "x86_64" "1024MB" "20GB"
-
 if [ "$JS_LAST_EXECUTED_VERSION" -lt 4 ] && [ "$JS_LAST_EXECUTED_VERSION" -gt 0 ]; then
 	# rename from Univention Corporate Server 2.4 to UCS 2.4
 	univention-directory-manager uvmm/profile modify "$@" --dn "cn=Univention Corporate Server 2.4 (64 Bit),cn=kvm,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" --set name="UCS 2.4 (64 Bit)"
 	univention-directory-manager uvmm/profile modify "$@" --dn "cn=Univention Corporate Server 2.4,cn=kvm,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" --set name="UCS 2.4"
+	univention-directory-manager uvmm/profile modify "$@" --dn "cn=Univention Corporate Server 2.4 (64 Bit),cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" --set name="UCS 2.4 (64 Bit)"
+	univention-directory-manager uvmm/profile modify "$@" --dn "cn=Univention Corporate Server 2.4,cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" --set name="UCS 2.4"
 fi
+
+create_xen_profile "UCS 2.4" "ucs24-" "i686" "1024MB" "20GB"
+create_xen_profile "UCS 2.4 (64 Bit)" "ucs24-64-" "x86_64" "1024MB" "20GB"
 
 create_hvm_profile "UCS 2.4" "ucs24-" "kvm" "i686" "1024MB" "1" "20GB"
 create_hvm_profile "UCS 2.4 (64 Bit)" "ucs24-64-" "kvm" "x86_64" "1024MB" "1" "20GB"
