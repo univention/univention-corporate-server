@@ -263,7 +263,7 @@ create_hvm_profile "Microsoft Windows 2008" "w2k8-" "kvm" "i686" "2048MB" "0" "4
 create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "xen" "x86_64" "2048MB" "0" "48GB"
 create_hvm_profile "Microsoft Windows 2008 R2 (64 Bit)" "w2k8r2-" "kvm" "x86_64" "2048MB" "0" "48GB"
 
-if [ "$JS_LAST_EXECUTED_VERSION" -lt 4 ] && [ "$JS_LAST_EXECUTED_VERSION" -gt 0 ]; then
+if [ -n "$JS_LAST_EXECUTED_VERSION" ] && [ "$JS_LAST_EXECUTED_VERSION" -lt 4 ] && [ "$JS_LAST_EXECUTED_VERSION" -gt 0 ]; then
 	# rename from Univention Corporate Server 2.4 to UCS 2.4
 	univention-directory-manager uvmm/profile modify "$@" --dn "cn=Univention Corporate Server 2.4 (64 Bit),cn=kvm,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" --set name="UCS 2.4 (64 Bit)"
 	univention-directory-manager uvmm/profile modify "$@" --dn "cn=Univention Corporate Server 2.4,cn=kvm,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" --set name="UCS 2.4"
