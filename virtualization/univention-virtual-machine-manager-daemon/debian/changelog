@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.175-1) unstable; urgency=low
+
+  * added package "Recommends:" to univention-nagios-uvmmd (Bug #21328)
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Mar 2011 11:02:38 +0100
+
 univention-virtual-machine-manager-daemon (0.9.174-1) unstable; urgency=low
 
   * Restart uvmmd only if the join was successful (Bug #21633)
