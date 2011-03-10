@@ -195,11 +195,11 @@ def handle_sock( conn, session, options ):
 
 	number = int(meta.get('Number', '-1'))
 
-	if options.debug >= 4:
+	if options.debug >= 99:
 		ud.debug(ud.ADMIN, ud.INFO, 'Logging XML representation of input:')
 		ud.debug(ud.ADMIN, ud.INFO, str(xmlin))
 	xmlout = session.startRequest( xmlin, number, ignore_ldap_connection=True, timeout = None, meta=meta )
-	if options.debug >= 4:
+	if options.debug >= 99:
 		ud.debug(ud.ADMIN, ud.INFO, 'Logging XML representation of output:')
 		ud.debug(ud.ADMIN, ud.INFO, str(xmlout))
 

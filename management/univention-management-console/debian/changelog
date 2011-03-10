@@ -1,3 +1,10 @@
+univention-management-console (3.0.82-1) unstable; urgency=low
+
+  * print xml representation of input/output data only with debug/level
+    >= 99, fixed description of debug/level UCR var Bug #21586
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Mar 2011 12:13:14 +0100
+
 univention-management-console (3.0.81-1) unstable; urgency=low
 
   * Dialog, Frame: support layout attributes
