@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.174-1) unstable; urgency=low
+
+  * Restart uvmmd only if the join was successful (Bug #21633)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Mar 2011 09:55:47 +0100
+
 univention-virtual-machine-manager-daemon (0.9.173-1) unstable; urgency=low
 
   * Added univention-virtual-machine-manager-schema as dependency
