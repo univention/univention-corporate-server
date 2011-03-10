@@ -37,8 +37,8 @@ void my_alarm_handler (int signo) {
 
 void usage() {
 
-	printf("usage: -k|-x [OPTIONS]\n");
-	printf("\t-t SECONDS - libvirtd timout\n");
+	printf("usage: [OPTIONS]\n");
+	printf("\t-t SECONDS - uvmmd timout\n");
 	printf("\t-h|--help  - help message\n");
 	
 	exit(1);
