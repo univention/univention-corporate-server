@@ -1,0 +1,55 @@
+Source: univention-nagios-virtualization
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, univention-config-dev, build-essential
+Standards-Version: 3.5.2
+
+Package: univention-nagios-libvirtd
+Architecture: any
+Depends: univention-nagios-client
+Description: nagios libvirtd plugin
+ This package installs a nagios plugin to monitor the
+ libvirt daemon.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-nagios-libvirtd-kvm
+Architecture: any
+Depends: univention-nagios-client, univention-nagios-libvirtd
+Description: nagios libvirtd plugin
+ This package installs a nagios plugin to monitor the
+ libvirt daemon.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-nagios-libvirtd-xen
+Architecture: any
+Depends: univention-nagios-client, univention-nagios-libvirtd
+Description: nagios libvirtd plugin
+ This package installs a nagios plugin to monitor the
+ libvirt daemon.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+
+Package: univention-nagios-uvmmd
+Architecture: any
+Depends: univention-nagios-client
+Description: nagios uvmmd plugin
+ This package installs a nagios plugin to monitor the
+ univention-virtual-machine-manager daemon.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
