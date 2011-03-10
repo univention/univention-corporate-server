@@ -78,13 +78,13 @@ Categories=service-webproxy
 
 [squid/ipauth/allow]
 Description[de]=Liste von Netzen. Clients aus diesen Netzen verwenden den IP-basierten Authentisierungscache (Leerzeichen separariert)
-Description[en]=List of networks. Clients in these networks will use the IP-base authentiction cache (space separated)
+Description[en]=List of networks. Clients in these networks will use the IP-based authentication cache (space separated)
 Type=str
 Categories=service-websquid
 
 [squid/ipauth/deny]
 Description[de]=Liste von Netzen. Clients aus diesen Netzen werden vom IP-basierten Authentisierungscache ausgeschlossen (Leerzeichen separariert)
-Description[en]=List of networks. Clients in these networks will be excluded from the usage of the IP-base authentiction cache (space separated)
+Description[en]=List of networks. Clients in these networks will be excluded from the usage of the IP-based authentication cache (space separated)
 Type=str
 Categories=service-websquid
 
