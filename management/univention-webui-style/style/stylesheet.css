@@ -16,7 +16,7 @@ html
 
 body
 {
-	font-family: "Lucida Grande", Arial, sans-serif;
+	font-family: "Lucida Grande", Arial, "Nimbus Sans L", sans-serif;
 	font-size: 13px;
 	font-weight: normal;
 	line-height: 17px;
@@ -2006,14 +2006,14 @@ td.umc_tree_view_item_level3 {
 table.umc_tree_view_table {
 	width: 100%;
 	/* Bad hack for UVMM view */
-    margin-left: -20px;
-    margin-top: -15px;
+    margin-left: -10px;
+    margin-top: -12px;
 }
 
 td.umc_tree_table_treeview {
 	vertical-align: top;
-	min-width: 230px;
-	width: 10px;
+	min-width: 270px;
+	/* width: 10px;*/
 }
 
 td.umc_tree_table_separator {
