@@ -1,3 +1,11 @@
+univention-management-console (3.0.83-1) unstable; urgency=low
+
+  * Don't add umc_frame by default. If umc_frame is active the pages are
+    not well formatted for example traceback sites (Bug #21617)
+  * Consider helpdesk for buttons
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Mar 2011 06:46:56 +0100
+
 univention-management-console (3.0.82-1) unstable; urgency=low
 
   * print xml representation of input/output data only with debug/level

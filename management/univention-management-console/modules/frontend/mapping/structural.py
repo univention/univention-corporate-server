@@ -92,8 +92,8 @@ def frame_map( storage, umcp_part ):
 							   { 'obs' : [ col ] } ) )
 
 	attrs = utils.layout_attrs( storage, umcp_part )
-	if not 'type' in attrs:
-		attrs[ 'type' ] = 'umc_frame'
+	#if not 'type' in attrs:
+	attrs[ 'type' ] = 'umc_frame'
 	return table( '', attrs, { 'obs' : rows } )
 
 mapper.add( umcd.Frame, frame_map )

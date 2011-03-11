@@ -145,7 +145,10 @@ class ButtonMap( IButtonMap, mapper.IMapper ):
 
 		self.confirm_attributes( storage, umcp_part, attributes )
 
-		but = button( unicode( umcp_part ), attributes, { 'helptext' : unicode( umcp_part ) } )
+		if attributes.get('helptext'):
+			but = button( unicode( umcp_part ), attributes, { 'helptext' : attributes.get('helptext') } )
+		else:
+			but = button( unicode( umcp_part ), attributes, { 'helptext' : unicode( umcp_part ) } )
 		storage[ umcp_part.id() ] = ( but, umcp_part )
 
 		return but
@@ -634,7 +637,7 @@ dojo.addOnLoad(function(){
 });
 </script>''' % ( ', '.join( items ), utils.img_minus, utils.img_plus ) ] } )
 	tablerows.append( on_load )
-	args[ 'type' ] = 'umc_no_right_padding'
+	# args[ 'type' ] = 'umc_no_right_padding'
 	return table( '', args, { 'obs' : tablerows } )
 
 mapper.add( umcd.SimpleTreeView, simple_treeview_map )
