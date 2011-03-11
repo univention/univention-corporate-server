@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.180-1) unstable; urgency=low
+
+  * Some more minor layout issues for the domain view (Bug #21617)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Mar 2011 09:05:42 +0100
+
 univention-virtual-machine-manager-daemon (0.9.179-1) unstable; urgency=low
 
   * Changes for the node overview site: (Bug #21617, Bug #20018)

@@ -94,7 +94,7 @@ univention-config-registry set auth/uvmmd/accessfile?/etc/security/access-uvmmd.
 if [ -x /etc/init.d/univention-virtual-machine-manager-daemon ] && [ -d "/etc/runit/univention/univention-virtual-machine-manager-daemon/supervise" ]; then
     if [ "$1" = "configure" ] && [ -z "$2" ]; then
         invoke-rc.d univention-virtual-machine-manager-daemon crestart
-    elif [ "$1" = "configure" ] && [ -z "$2" ]; then
+    elif [ "$1" = "configure" ] && [ -n "$2" ]; then
         invoke-rc.d univention-virtual-machine-manager-daemon restart 
     fi
 fi

@@ -641,7 +641,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			cpu_usage = umcd.HTML( '<i>%s</i>' % _( 'not available' ) )
 		mem_usage = percentage( float( node_info.curMem ) / node_info.phyMem * 100, '%s / %s' % ( MemorySize.num2str( node_info.curMem ), MemorySize.num2str( node_info.phyMem ) ), width = 150 )
 		# node_table.add_row( [ _( 'Physical server' ), node_btn ] )
-		node_table.add_row( [ umcd.HTML('<b>%s</b>' % _( 'CPU usage' )), umcd.Cell( cpu_usage, attributes = { 'width' : '50%' } ) ,  umcd.HTML('<b>%s</b>' % _( 'Memory usage' )), umcd.Cell( mem_usage, attributes = { 'width' : '500%' } ) ] )
+		node_table.add_row( [ umcd.HTML('<b>%s</b>' % _( 'CPU usage' ), attributes = {'type':'umc_nowrap'}), umcd.Cell( cpu_usage, attributes = { 'width' : '50%', 'type': 'umc_nowrap' } ) ,  umcd.HTML('<b>%s</b>' % _( 'Memory' ), attributes = {'type':'umc_nowrap'}), umcd.Cell( mem_usage, attributes = { 'width' : '50%' } ) ] )
 		content.add_row( [ umcd.Section( _( '%s (Physical server)' ) % node_info.name.split('.')[0], node_table, attributes = { 'width' : '100%' } ) ] )
 
 		table = umcd.List( attributes = { 'type' : 'umc_mini_padding' }, default_type = 'uvmm_table' )
@@ -671,10 +671,10 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			# os = getattr( domain_info, 'annotations', {} ).get( 'os', '' )
 			# if len( os ) > 15:
 			# 	os = os[ : 13 ] + '...'
-			table.add_row( [ umcd.Cell( domain_btn, attributes = { 'type' : 'umc_mini_padding' } ), umcd.Cell( percentage( float( domain_info.cputime[ 0 ] ) / 10, width = 80 ), attributes = { 'type' : 'umc_mini_padding' } ), umcd.Cell( umcd.Number( MemorySize.num2str( domain_info.maxMem ) ), attributes = { 'type' : 'umc_mini_padding' } ), umcd.Cell( buttons, attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) ], attributes = { 'type' : 'umc_mini_padding' } )# + buttons )
+			if not len( table.get_content() ):
+				table.set_header( [ umcd.HTML( _('Instance'), attributes = { 'width': '100%', 'type' : 'umc_nowrap'} ), umcd.HTML( _('CPU usage') , attributes = { 'type' : 'umc_nowrap' , 'align':'right'} ), umcd.HTML( _('Memory') , attributes = { 'type' : 'umc_nowrap' , 'align':'right'} ) ] )
 
-		if len( table.get_content() ):
-			table.set_header( [ _( 'Instance' ), _( 'CPU usage' ), _( 'Memory' ) ] )
+			table.add_row( [ umcd.Cell( domain_btn, attributes = { 'type' : 'umc_mini_padding', 'width': '100%' } ), umcd.Cell( percentage( float( domain_info.cputime[ 0 ] ) / 10, width = 80 ), attributes = { 'type' : 'umc_mini_padding', 'align': 'center' } ), umcd.Cell( umcd.Number( MemorySize.num2str( domain_info.maxMem ) ), attributes = { 'type' : 'umc_mini_padding umc_nowrap', 'align': 'right' } ), umcd.Cell( buttons, attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) ], attributes = { 'type' : 'umc_mini_padding' } )# + buttons )
 
 		content.add_row( [ umcd.Cell( table, attributes = { 'colspan' : '2' } ), ] )
 		self.set_content( res, content )

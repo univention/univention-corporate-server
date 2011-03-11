@@ -256,7 +256,7 @@ msgstr "Name"
 
 #: __init__.py:148 __init__.py:677 wizards.py:678
 msgid "Memory"
-msgstr "Arbeitsspeicher"
+msgstr "Speicher"
 
 #: __init__.py:150 __init__.py:539 __init__.py:552 wizards.py:687
 msgid "Direct access"
