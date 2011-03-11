@@ -1,3 +1,14 @@
+univention-virtual-machine-manager-daemon (0.9.179-1) unstable; urgency=low
+
+  * Changes for the node overview site: (Bug #21617, Bug #20018)
+    - change padding
+    - put CPU usage and memory usage in one line
+    - add the hostname to the section
+    - show the description in the tooltip
+    - cut the VM name at 22 chars
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Mar 2011 06:50:22 +0100
+
 univention-virtual-machine-manager-daemon (0.9.178-1) unstable; urgency=low
 
   * Fix network driver selection (Bug #19573)

@@ -339,8 +339,8 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		options = {}
 		keys = []
 		refresh = ''
-		slash = umcd.Cell( umcd.HTML( '&rarr;' ), attributes = { 'type' : 'umc_mini_padding umc_nowrap' } )
-		row.append( umcd.Cell( umcd.HTML( '<b>%s</b>' % _( 'Location:' ) ), attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) )
+		slash = umcd.Cell( umcd.HTML( '&rarr;' ), attributes = { 'type' : 'umc_nowrap' } )
+		row.append( umcd.Cell( umcd.HTML( '<b>%s</b>' % _( 'Location:' ) ), attributes = { 'type' : 'umc_nowrap' } ) )
 		if 'group' in object.options:
 			keys.append( 'group' )
 			if 'node' in object.options or 'source' in object.options or 'dest' in object.options:
@@ -368,7 +368,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			else:
 				text = object.options[ key ]
 			lnk = umcd.LinkButton( text , actions = [ umcd.Action( cmd ) ] )
-			row.append( umcd.Cell( lnk, attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) )
+			row.append( umcd.Cell( lnk, attributes = { 'type' : 'umc_nowrap' } ) )
 			row.append( slash )
 		refresh = keys[ -1 ]
 		opts[ keys[ -1 ] ] = object.options[ keys[ -1 ] ]
@@ -380,7 +380,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		if refresh in ( 'node', 'dest', 'source' ):
 			if '.' in text:
 				text = text[ : text.find( '.' ) ]
-		row.append( umcd.Cell( umcd.Text( text ), attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) )
+		row.append( umcd.Cell( umcd.Text( text ), attributes = { 'type' : 'umc_nowrap' } ) )
 
 		reload_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % refresh, options = copy.copy( opts ) )
 		reload_btn = umcd.LinkButton( _( 'Refresh' ), 'actions/refresh', actions = [ umcd.Action( reload_cmd ) ] )
@@ -638,12 +638,11 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		if node_uri.startswith( 'xen' ):
 			cpu_usage = percentage(float(node_info.cpu_usage) / 10.0, width=150)
 		else:
-			cpu_usage = umcd.HTML( '<i>%s</i>' % _( 'CPU usage not available' ) )
+			cpu_usage = umcd.HTML( '<i>%s</i>' % _( 'not available' ) )
 		mem_usage = percentage( float( node_info.curMem ) / node_info.phyMem * 100, '%s / %s' % ( MemorySize.num2str( node_info.curMem ), MemorySize.num2str( node_info.phyMem ) ), width = 150 )
 		# node_table.add_row( [ _( 'Physical server' ), node_btn ] )
-		node_table.add_row( [ _( 'CPU usage' ), umcd.Cell( cpu_usage, attributes = { 'width' : '100%' } ) ] )
-		node_table.add_row( [ _( 'Memory usage' ), umcd.Cell( mem_usage, attributes = { 'width' : '100%' } ) ] )
-		content.add_row( [ umcd.Section( _( 'Physical server' ), node_table, attributes = { 'width' : '100%' } ) ] )
+		node_table.add_row( [ umcd.HTML('<b>%s</b>' % _( 'CPU usage' )), umcd.Cell( cpu_usage, attributes = { 'width' : '50%' } ) ,  umcd.HTML('<b>%s</b>' % _( 'Memory usage' )), umcd.Cell( mem_usage, attributes = { 'width' : '500%' } ) ] )
+		content.add_row( [ umcd.Section( _( '%s (Physical server)' ) % node_info.name.split('.')[0], node_table, attributes = { 'width' : '100%' } ) ] )
 
 		table = umcd.List( attributes = { 'type' : 'umc_mini_padding' }, default_type = 'uvmm_table' )
 		num_buttons = 0
@@ -657,7 +656,14 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				domain_icon = 'uvmm/domain-on'
 			elif domain_info.state in ( 3, ):
 				domain_icon = 'uvmm/domain-paused'
-			domain_btn = umcd.LinkButton( domain_info.name, tag = domain_icon, actions = [ umcd.Action( domain_cmd ) ] )
+			helptext = domain_info.name
+			if domain_info.annotations.get('description'):
+				helptext += '- %s' % (domain_info.annotations.get('description'))
+
+			name = domain_info.name
+			if len(domain_info.name) > 22:
+				name = domain_info.name[0:18] + '...'
+			domain_btn = umcd.LinkButton( name, tag = domain_icon, actions = [ umcd.Action( domain_cmd ) ], attributes = {'helptext': helptext} )
 			domain_btn.set_size( umct.SIZE_SMALL )
 			buttons = self._create_domain_buttons( object, node_info, domain_info, remove_failure = 'node' )
 			if len( buttons ) > num_buttons:
