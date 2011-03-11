@@ -63,7 +63,10 @@ class ExceptionUpdaterRequiredComponentMissing(Exception):
 		return "An update to UCS %s without the component '%s' is not possible because the component '%s' is marked as required." % (self.version, self.component, self.component)
 
 class ExceptionUpdaterPrecondition(Exception):
-	pass
+    """Signal abort by release or component pre-/post-update script.
+    args=(phase=preup|postup, order=pre|main|post, component, script-filename)."""
+    def __init__(self, phase, order, component, script):
+        Exception.__init__(self, phase, order, component, script)
 
 class UCS_Version( object ):
 	'''Version object consisting of major-, minor-number and patch-level'''
@@ -321,10 +324,15 @@ class UCSHttpServer(object):
 		uri.prefix += '%s/' % str(rel).strip('/')
 		return uri
 
-	def access(self, rel, get=False):
-		'''Access URI and optionally get data. Return None on errors.'''
+	def join(self, rel):
+		'''Return joind URI without credential.'''
 		uri = 'http://%(server)s%(port)s/%(prefix)s' % self
 		uri += str(rel).lstrip('/')
+		return uri
+
+	def access(self, rel, get=False):
+		'''Access URI and optionally get data. Return None on errors.'''
+		uri = self.join(rel)
 		if self.username:
 			UCSHttpServer.auth_handler.add_password(realm=None, uri=uri, user=self.username, passwd=self.password)
 		req = urllib2.Request(uri)
@@ -377,9 +385,15 @@ class UCSLocalServer(object):
 		uri.prefix += str(rel).lstrip('/')
 		return uri
 
+	def join(self, rel):
+		'''Return joind URI without credential.'''
+		uri = self.__str__()
+		uri += str(rel).lstrip('/')
+		return uri
+
 	def access(self, rel, get=False):
 		'''Access URI and optionally get data. Return None on errors.'''
-		uri = self.__str__() + str(rel).lstrip('/')
+		uri = self.join(rel)
 		ud.debug(ud.NETWORK, ud.ALL, "updater: %s", uri)
 		# urllib2.urlopen() doesn't work for directories
 		assert uri.startswith('file://')
@@ -1028,10 +1042,15 @@ class UniventionUpdater:
 	def call_sh_files(scripts, logname, *args):
 		'''Get pre- and postup.sh files and call them in the right order.
 		> u = UniventionUpdater()
-		> struct = u._iterate_*(ver, ver, ['maintained'], ['all'])
+		> ver = u.current_version
+		> struct = u._iterate_version_repositories(ver, ver, u.parts, u.architectures)
+		> struct = u._iterate_component_repositories(['ucd'], ver, ver, u.architectures)
+		> sec_ver = UCS_Version((u.version_major, u.version_minor, 1))
+		> struct = u._iterate_security_repositories(sec_ver, sec_ver, u.parts, u.architectures)
 		> scripts = u.get_sh_files(struct)
-		> for part, phase in u.call_sh_files(scripts, '/var/log/univention/updater.log', '2.4-1'):
-		>   if (part, phase) == ('update', 'main'):
+		> next_ver = u.get_next_version(u.current_version)
+		> for phase, order in u.call_sh_files(scripts, '/var/log/univention/updater.log', next_ver):
+		>   if (phase, order) == ('update', 'main'):
 		>     ...
 		'''
 		# create temporary directory for scripts
@@ -1062,58 +1081,60 @@ class UniventionUpdater:
 		# save scripts to temporary files
 		for server, struct, phase, path, script in scripts:
 			assert script is not None
+			uri = server.join(path)
 			fd, name = tempfile.mkstemp(suffix='.sh', prefix=phase, dir=tempdir)
 			try:
 				size = os.write(fd, script)
 				os.chmod(name, 0744)
 				if size == len(script):
-					ud.debug(ud.NETWORK, ud.INFO, "%s saved to %s" % (path, name))
-					if '/component/' in path: # FIXME better detection
-						comp[phase].append(name)
+					ud.debug(ud.NETWORK, ud.INFO, "%s saved to %s" % (uri, name))
+					if struct.part.endswith('/component'):
+						comp[phase].append((name, struct.patch))
 					else:
-						main[phase].append(name)
+						main[phase].append((name, struct.patch))
+					continue
 			finally:
 				os.close(fd)
-			ud.debug(ud.NETWORK, ud.ERROR, "Error saving %s to %s" % (path, name))
+			ud.debug(ud.NETWORK, ud.ERROR, "Error saving %s to %s" % (uri, name))
 
 		# call component/preup.sh pre $args
 		yield "preup", "pre"
-		for script in comp['preup']:
+		for (script, patch) in comp['preup']:
 			if call(script, 'pre', *args) != 0:
-				raise ExceptionUpdaterPrecondition('Preup1 component failed', script)
+				raise ExceptionUpdaterPrecondition('preup', 'pre', patch, script)
 
 		# call $next_version/preup.sh
 		yield "preup", "main"
-		for script in main['preup']:
+		for (script, patch) in main['preup']:
 			if call(script, *args) != 0:
-				raise ExceptionUpdaterPrecondition('Main preup failed', script)
+				raise ExceptionUpdaterPrecondition('preup', 'main', patch, script)
 
 		# call component/preup.sh post $args
 		yield "preup", "post"
-		for script in comp['preup']:
+		for (script, patch) in comp['preup']:
 			if call(script, 'post', *args) != 0:
-				raise ExceptionUpdaterPrecondition('Preup2 component failed', script)
+				raise ExceptionUpdaterPrecondition('preup', 'post', patch, script)
 
 		# call $update/commands/distupgrade or $update/commands/upgrade
 		yield "update", "main"
 
 		# call component/postup.sh pos $args
 		yield "postup", "pre"
-		for script in comp['postup']:
+		for (script, patch) in comp['postup']:
 			if call(script, 'pre', *args) != 0:
-				raise ExceptionUpdaterPrecondition('Postup1 component failed', script)
+				raise ExceptionUpdaterPrecondition('postup', 'pre', patch, script)
 
 		# call $next_version/postup.sh
 		yield "postup", "main"
-		for script in main['postup']:
+		for (script, patch) in main['postup']:
 			if call(script, *args) != 0:
-				raise ExceptionUpdaterPrecondition('Main postup failed', script)
+				raise ExceptionUpdaterPrecondition('postup', 'main', patch, script)
 
 		# call component/postup.sh post $args
 		yield "postup", "post"
-		for script in comp['postup']:
+		for (script, patch) in comp['postup']:
 			if call(script, 'post', *args) != 0:
-				raise ExceptionUpdaterPrecondition('Postup2 component failed', script)
+				raise ExceptionUpdaterPrecondition('postup', 'post', patch, script)
 
 		# clean up
 		yield "update", "post"

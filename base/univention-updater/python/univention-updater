@@ -49,7 +49,7 @@ import univention.debug as ud
 import univention.config_registry as ucr
 
 from univention.updater import UniventionUpdater, UCS_Version
-from univention.updater.tools import LocalUpdater
+from univention.updater.tools import LocalUpdater, ExceptionUpdaterPrecondition
 from univention.updater.commands import cmd_update, cmd_dist_upgrade
 import univention.updater.tools
 
@@ -485,12 +485,12 @@ def main():
 
 	all = itertools.chain(rel, com)
 	scripts = updater.get_sh_files(all)
-	for part, phase in updater.call_sh_files(scripts, LOGNAME, str(new_version)):
-		if (part, phase) == ('update', 'pre'):
+	for phase, order in updater.call_sh_files(scripts, LOGNAME, str(new_version)):
+		if (phase, order) == ('update', 'pre'):
 			log('**** Downloading scripts at %s' % datetime.datetime.now().ctime())
-		elif (part, phase) == ('preup', 'pre'):
+		elif (phase, order) == ('preup', 'pre'):
 			log('**** Starting actual update at %s' % datetime.datetime.now().ctime())
-		elif (part, phase) == ('update', 'main'):
+		elif (phase, order) == ('update', 'main'):
 			count = 300
 			while os.path.exists('/var/run/apt-get.lock') and count > 0:
 				time.sleep(1)
@@ -538,11 +538,31 @@ if __name__ == '__main__':
 	fd_log = open(LOGNAME, 'a+')
 	if not univention.updater.tools.updater_lock_acquire():
 		print 'Another updater process is currently running - abort'
-		sys.exit(1)
+		sys.exit(5)
 	try:
 		try:
-			main()
-			update_ucr_updatestatus()
+			try:
+				main()
+				update_ucr_updatestatus()
+			except ExceptionUpdaterPrecondition, (phase, order, component, script):
+				if phase == 'preup':
+					phase = 'pre-update'
+					errorsource = 'PREUP'
+				elif phase == 'postup':
+					phase = 'post-update'
+					errorsource = 'POSTUP'
+				else:
+					errorsource = 'UPDATE'
+
+				if order == 'main':
+					order = 'release %s' % component
+				elif order == 'pre':
+					order = 'component %s before calling release script' % component
+				elif order == 'post':
+					order = 'component %s after calling release script' % component
+
+				msg = 'Update aborted by %s script of %s' % (phase, order)
+				raise UpdateError(msg, errorsource=errorsource)
 		except UpdateError, msg:
 			if msg.errorsource:
 				update_status( status='FAILED', errorsource=msg.errorsource )
@@ -558,7 +578,6 @@ if __name__ == '__main__':
 				if os.path.isfile( filename ):
 					os.chmod( filename, 0755 )
 					subprocess.call( ( 'dpkg-statoverride', '--remove', filename ), stdout = devnull, stderr = devnull )
-			remove_temporary_sources_list()
 			devnull.close()
 			sys.exit(1)
 		except KeyboardInterrupt:
@@ -589,3 +608,7 @@ if __name__ == '__main__':
 		fd_log.close()
 		if not univention.updater.tools.updater_lock_release():
 			print 'WARNING: updater-lock already released!'
+		try:
+			remove_temporary_sources_list()
+		except:
+			print >>sys.stderr, "Failed to remove %s." % TMPSOURCE
