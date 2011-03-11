@@ -1168,14 +1168,43 @@ def updater_lock_acquire(timeout=0):
 	Returns True if it could be acquired within <timeout> seconds
 	Returns False otherwise'''
 	deadline = time.time() + timeout
+	my_pid = "%d\n" % os.getpid()
+	parent_pid = "%d\n" % os.getppid()
 	while True:
 		try:
-			os.close(os.open(__UPDATER_LOCK_FILE_NAME, os.O_WRONLY | os.O_CREAT | os.O_EXCL))
+			lock_fd = os.open(__UPDATER_LOCK_FILE_NAME, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0644)
+			bytes_written = os.write(lock_fd, my_pid)
+			assert bytes_written == len(my_pid)
+			os.close(lock_fd)
 			return True
 		except OSError, error:
 			if error.errno == errno.EEXIST:
+				try:
+					lock_fd = os.open(__UPDATER_LOCK_FILE_NAME, os.O_RDONLY | os.O_EXCL)
+					try:
+						lock_pid = os.read(lock_fd, 11) # sizeof(s32) + len('\n')
+					finally:
+						os.close(lock_fd)
+					if my_pid == lock_pid:
+						return True
+					if parent_pid == lock_pid: # u-repository-* called from u-updater
+						return True
+					else:
+						try:
+							os.kill(int(lock_pid), 0)
+						except ValueError, e:
+							print >>sys.stderr, 'Invalid PID %s in lockfile %s.' % (lock_pid, __UPDATER_LOCK_FILE_NAME)
+							return False
+						except OSError, error:
+							if error.errno == errno.ESRCH:
+								print >>sys.stderr, 'Stale PID %s in lockfile %s, removing.' % (lock_pid, __UPDATER_LOCK_FILE_NAME)
+								os.remove(__UPDATER_LOCK_FILE_NAME)
+								continue # redo acquire
+						# PID is valid and process is still alive...
+				except OSError, error:
+					pass
 				if time.time() > deadline:
-					return False
+					return False # TODO: Better return lock_pid for error reporting like "Lock stale or held my process %(pid)d"? 
 				else:
 					time.sleep(1)
 			else:
