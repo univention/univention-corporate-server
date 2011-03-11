@@ -1470,6 +1470,7 @@ padding-right: 8px;
 	padding-top: 0px;
 	padding-right: 2px;
 	padding-bottom: 0px;
+	width: 100%;
 }
 
 .umc_listing {
@@ -2004,10 +2005,14 @@ td.umc_tree_view_item_level3 {
 
 table.umc_tree_view_table {
 	width: 100%;
+	/* Bad hack for UVMM view */
+    margin-left: -20px;
+    margin-top: -15px;
 }
 
 td.umc_tree_table_treeview {
 	vertical-align: top;
+	min-width: 230px;
 	width: 10px;
 }
 
@@ -2019,7 +2024,7 @@ td.umc_tree_table_separator {
 .umc_tree_table_dialog {
 	vertical-align: top;
 	width: 100%;
-	padding-left: 6px;
+	padding-left: 3px;
 }
 
 .umc_module_description {
@@ -2118,3 +2123,12 @@ p.online_help {
 	padding-top: 3px;
 	padding-left: 0px;
 }
+	
+table#treeview-table.umc_list_element {
+	padding-right: 6px;
+}
+/* get a better VM state */
+tbody tr.uvmm_table td.uvmm_table table.uvmm_table tbody tr.uvmm_table td.uvmm_table table.umc_section {
+	width: 100%;
+}
+
