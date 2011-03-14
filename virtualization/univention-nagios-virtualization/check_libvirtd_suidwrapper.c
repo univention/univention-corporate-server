@@ -1,3 +1,34 @@
+/*
+ * Univention libvirt nagios plugin
+ *
+ * Copyright 2011 Univention GmbH
+ *
+ * http://www.univention.de/
+ *
+ * All rights reserved.
+ *
+ * The source code of this program is made available
+ * under the terms of the GNU Affero General Public License version 3
+ * (GNU AGPL V3) as published by the Free Software Foundation.
+ *
+ * Binary versions of this program provided by Univention to you as
+ * well as other copyrighted, protected or trademarked materials like
+ * Logos, graphics, fonts, specific documentations and configurations,
+ * cryptographic keys etc. are subject to a license agreement between
+ * you and Univention and not subject to the GNU AGPL V3.
+ *
+ * In the case you use this program under the terms of the GNU AGPL V3,
+ * the program is provided in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License with the Debian GNU/Linux or Univention distribution in file
+ * /usr/share/common-licenses/AGPL-3; if not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
 #include <unistd.h>
 #include <string.h>
 #include <signal.h>
@@ -5,11 +36,12 @@
 #include <stdio.h>
 #include <sys/wait.h>
 #include <fcntl.h>
+#include <netdb.h>
 
 #define COMMAND "/usr/bin/virsh"
 #define COMMAND_ARGS "list --all"
 #define URI_SWITCH "-c"
-#define XEN_URI "xen:///"
+#define XEN_URI "xen://"
 #define KVM_URI "qemu:///system"
 
 #define NAGIOS_OK 0
@@ -33,7 +65,7 @@ int timeout = 10;
 void my_alarm_handler (int signo) {
 
 	kill(pid, 9);
-	printf("%s %s timed out after %d seconds!\n", NAGIOS_CRITICAL_MSG, COMMAND, timeout);
+	printf("%s libvirtd timed out after %d seconds!\n", NAGIOS_CRITICAL_MSG, timeout);
 	exit(NAGIOS_CRITICAL);
 }
 
@@ -54,6 +86,18 @@ main (int argc, char ** argv, char ** envp) {
 	int status;
 	uid_t uid = getuid();
 	char uri[MAX_STR_LEN] = "";
+	char hostname[MAX_STR_LEN] = "";
+	char fqdn[MAX_STR_LEN] = "";
+	struct hostent *hp;
+
+	/* get host and domain name */
+	gethostname(hostname, MAX_STR_LEN);
+	hp = gethostbyname(hostname);
+	if (hp == NULL) {
+		printf("\n%s failed to get host's fqdn\n", NAGIOS_CRITICAL_MSG);
+		exit(NAGIOS_CRITICAL);
+	}
+	strncpy(fqdn, hp->h_name, MAX_STR_LEN);
 
 	/* get options */
 	for (i = 0; i < argc; i++) {
@@ -70,6 +114,8 @@ main (int argc, char ** argv, char ** envp) {
                 if (strcmp("-x", argv[i]) == 0 ) {
                         /* XEN */
                         strncat(uri, XEN_URI, MAX_STR_LEN);
+                        strncat(uri, fqdn, MAX_STR_LEN);
+                        strncat(uri, "/", MAX_STR_LEN);
                 }
 
 		if ((strcmp("-h", argv[i]) == 0) || (strcmp("--help", argv[i]) == 0 )) {
@@ -122,11 +168,11 @@ main (int argc, char ** argv, char ** envp) {
 			exit(NAGIOS_CRITICAL);
 		}
 		else {
-			printf("%s %s is running\n", NAGIOS_OK_MSG, COMMAND);
+			printf("%s libvirtd is running\n", NAGIOS_OK_MSG);
 			exit(NAGIOS_OK);
 		}
 	}
 	
-	printf("%s %s unknown\n", NAGIOS_UNKNOWN_MSG, COMMAND);
+	printf("%s libvirtd unknown\n", NAGIOS_UNKNOWN_MSG);
 	exit(NAGIOS_UNKNOWN);
 }
