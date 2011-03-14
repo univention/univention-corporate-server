@@ -1,3 +1,11 @@
+univention-updater (6.0.72-1) unstable; urgency=low
+
+  * added repository/online/component/%s/localmirror=BOOL
+    to enable/disable component mirroring if local system
+    is a repository server (Bug #18848)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 14 Mar 2011 17:21:43 +0100
+
 univention-updater (6.0.71-1) unstable; urgency=low
 
   * Write PID to lock file and check that, if it already exists (Bug #15144)

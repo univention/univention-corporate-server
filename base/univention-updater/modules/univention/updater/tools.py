@@ -62,6 +62,13 @@ class ExceptionUpdaterRequiredComponentMissing(Exception):
 	def __str__(self):
 		return "An update to UCS %s without the component '%s' is not possible because the component '%s' is marked as required." % (self.version, self.component, self.component)
 
+class ExceptionUpdaterCannotResolveComponentServer(Exception):
+	def __init__(self, component, for_mirror_list):
+		self.component = component
+		self.for_mirror_list = for_mirror_list
+	def __str__(self):
+		return "Cannot resolve component server for disabled component '%s' (mirror_list=%s)." % (self.component, self.for_mirror_list)
+
 class ExceptionUpdaterPrecondition(Exception):
     """Signal abort by release or component pre-/post-update script.
     args=(phase=preup|postup, order=pre|main|post, component, script-filename)."""
@@ -592,13 +599,24 @@ class UniventionUpdater:
 		'''Return current (major.minor-patchlevel) version as string.'''
 		return str(self.current_version)
 
-	def get_components(self):
-		'''Retrieve all enabled components from registry as list'''
+	def get_components(self, only_localmirror_enabled=False):
+		'''
+			Retrieve all enabled components from registry as list.
+			By default, only "enabled" components will be returned (repository/online/component/%s=$TRUE).
+			If only_localmirror_enabled is True, then all components with
+			repository/online/component/%s/localmirror=$TRUE will be returned.
+
+			If repository/online/component/%s/localmirror is not set, then the value of
+			repository/online/component/%s is used (backward compatibility).
+		'''
 		components = []
 		for key in self.configRegistry.keys():
 			if key.startswith('repository/online/component/'):
 				component_part = key[len('repository/online/component/'):]
-				if '/' not in component_part and self.configRegistry.is_true(key):
+				component_enabled = self.configRegistry.is_true(key)
+				if '/' not in component_part and (
+					( not only_localmirror_enabled and component_enabled ) or
+					( only_localmirror_enabled and self.configRegistry.is_true('repository/online/component/%s/localmirror' % component_part, component_enabled) ) ):
 					components.append(component_part)
 		return components
 
@@ -814,12 +832,17 @@ class UniventionUpdater:
 			for ver in self._iterate_versions(struct, start, end, parts, archs, server):
 				yield server, ver
 
-	def _iterate_component_repositories(self, components, start, end, archs):
-		'''Iterate over all components and return (server, version).'''
+	def _iterate_component_repositories(self, components, start, end, archs, for_mirror_list=False):
+		'''
+			Iterate over all components and return (server, version).
+			for_mirror_list shall be True if the code shall iterate over component
+			repositories for mirror.list.
+		'''
+
 		# Components are ... different:
 		for component in components:
 			# server, port, prefix
-			server = self._get_component_server(component)
+			server = self._get_component_server(component, for_mirror_list=for_mirror_list)
 			# parts
 			parts = self.configRegistry.get('repository/online/component/%s/parts' % component, 'maintained')
 			parts = ['%s/component' % part for part in parts.split(',')]
@@ -915,14 +938,77 @@ class UniventionUpdater:
 
 		return '\n'.join(result)
 
-	def _get_component_server(self, component):
-		'''Return UCSServer as configures via UCR.'''
+	def _get_component_server(self, component, for_mirror_list=False):
+		'''
+        Return UCSServer as configures via UCR.
+        If for_repo_server=True then the
+
+        CS = value of repository/online/component/%s/server
+        MS = value of repository/mirror/server
+        RS = value of repository/online/server
+        Y = value is "True"
+        N = value is "False"
+        - = value is unset or no entry
+        ? = value is irrelevant
+
+                     component  component    component |        R E S U L T
+        isRepoServer enabled    localmirror  server    | sources.list  mirror.list
+        ===============================================|==========================
+            N           N          N           -       |      -             -
+            N           Y          ?           -       |      RS            -
+            N           Y          ?           CS      |      CS            -
+        --------------------------------------------------------------------------
+            Y           N          N           ?       |      -             -
+            Y           N          Y           -       |      -             MS
+            Y           N          Y           CS      |      -             CS
+            Y           Y          N           -       |      MS            -
+            Y           Y          N           CS      |      CS            -
+            Y           Y          Y           -       |      RS            MS
+            Y           Y          Y           CS      |      RS            CS
+        --------------------------------------------------------------------------
+            Y           N =======>(-)          -       |      -             -
+            Y           Y =======>(-)          -       |      RS            MS
+            Y           Y =======>(-)          CS      |      RS            CS
+
+        if repository/online/component/%s/localmirror is unset, then the value of
+        repository/online/component/%s will be used to achieve backward compatibility.
+		'''
+
 		if not self.is_repository_server:
 			server = self.configRegistry.get('repository/online/component/%s/server' % component, self.repository_server)
 			port = self.configRegistry.get('repository/online/component/%s/port' % component, self.repository_port)
 		else:
-			server = self.repository_server
-			port = self.repository_port
+			m_server = self.configRegistry.get('repository/mirror/server', None)
+			m_port = self.configRegistry.get('repository/mirror/port', self.repository_port)
+			c_enabled = self.configRegistry.is_true('repository/online/component/%s' % component, False)
+			c_localmirror = self.configRegistry.is_true('repository/online/component/%s/localmirror' % component, c_enabled)
+
+			if not for_mirror_list:
+				# server/port for sources.list
+
+				if c_enabled and c_localmirror:
+					server = self.repository_server
+					port   = self.repository_port
+
+				elif c_enabled and not c_localmirror:
+					server = self.configRegistry.get('repository/online/component/%s/server' % component, m_server)
+					port   = self.configRegistry.get('repository/online/component/%s/port' % component,   m_port)
+
+				else:
+					# if component is not enabled, then why is this method called?
+					raise ExceptionUpdaterCannotResolveComponentServer(component, for_mirror_list)
+
+			else:
+				# server/port for mirror.list
+
+				if c_localmirror:
+					server = self.configRegistry.get('repository/online/component/%s/server' % component, m_server)
+					port   = self.configRegistry.get('repository/online/component/%s/port' % component,   m_port)
+
+				else:
+					# if component is not enabled for mirroring, then why is this method called?
+					raise ExceptionUpdaterCannotResolveComponentServer(component, for_mirror_list)
+
 		prefix = self.configRegistry.get('repository/online/component/%s/prefix' % component, '')
 		username = self.configRegistry.get('repository/online/component/%s/username' % component, None)
 		password = self.configRegistry.get('repository/online/component/%s/password' % component, None)
@@ -956,9 +1042,10 @@ class UniventionUpdater:
 				versions.add(version)
 		return versions
 
-	def get_component_repositories(self, component, versions, clean=False, debug=True):
+	def get_component_repositories(self, component, versions, clean=False, debug=True, for_mirror_list=False):
 		'''Return array of Debian repository statements for requested component.
-		With clean=True, additional clean statements for apt-mirror are added.
+	       With clean=True, additional clean statements for apt-mirror are added.
+		   Component repositories for mirror.list are returned if for_mirror_list=True.
 		'''
 		archs = ['all', 'extern'] + self.architectures
 		result = []
@@ -973,7 +1060,7 @@ class UniventionUpdater:
 					version = UCS_Version(version)
 				else:
 					version = UCS_Version('%s-0' % version)
-			for server, ver in self._iterate_component_repositories([component], version, version, archs):
+			for server, ver in self._iterate_component_repositories([component], version, version, archs, for_mirror_list=for_mirror_list):
 				result.append( ver.deb() )
 				if ver.arch == archs[-1]: # after architectures but before next patch(level)
 					if clean:
@@ -985,7 +1072,7 @@ class UniventionUpdater:
 
 		# support different repository format without architecture (e.g. used by OX)
 		parts = self.configRegistry.get('repository/online/component/%s/parts' % component, 'maintained').split(',')
-		server = self._get_component_server(component)
+		server = self._get_component_server(component, for_mirror_list=for_mirror_list)
 		repo = UCSRepoPool(prefix=server, patch=component)
 		for repo.version in versions:
 			for repo.part in ["%s/component" % part for part in parts]:
@@ -1022,9 +1109,10 @@ class UniventionUpdater:
 
 		return result
 
-	def print_component_repositories(self, clean=False, start=None, end=None):
+	def print_component_repositories(self, clean=False, start=None, end=None, for_mirror_list=False):
 		'''Return a string of Debian repository statements for all enabled components.
 		With clean=True, repository/online/component/%s/clean controls if additional clean statements for apt-mirror are added.
+		With for_mirror_list=True, component entries for mirror.list will be returned, otherwise component entries for local sources.list.
 		'''
 		if not self.online_repository:
 			return ''
@@ -1033,10 +1121,11 @@ class UniventionUpdater:
 			clean = self.configRegistry.is_true('online/repository/clean', False)
 
 		result = []
-		for component in self.get_components():
+		for component in self.get_components(only_localmirror_enabled=for_mirror_list):
 			versions = self._get_component_versions(component, start, end)
-			result += self.get_component_repositories(component, versions, clean)
+			result += self.get_component_repositories(component, versions, clean, for_mirror_list=for_mirror_list)
 		return '\n'.join(result)
+
 
 	@staticmethod
 	def call_sh_files(scripts, logname, *args):
