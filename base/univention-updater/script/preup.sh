@@ -37,10 +37,10 @@ echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
 echo
-if [ ! "$update_warning_releasenotes" = "no" -a ! "$update_warning_releasenotes" = "false" -a ! "$update_warning_releasenotes_umc" = "no" ] ; then
+if [ ! "$update_warning_releasenotes" = "no" -a ! "$update_warning_releasenotes" = "false" -a ! "$update_warning_releasenotes_internal" = "no" ] ; then
 	echo "Update will wait here for 60 seconds..."
-	echo "Press CTRL-c to abort update or wait to continue"
-	sleep 60s
+	echo "Press CTRL-c to abort update or press ENTER to continue"
+	read -t 60 somevar
 fi
 
 ## # Bug #19081:

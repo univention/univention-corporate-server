@@ -1,3 +1,10 @@
+univention-updater (6.0.73-1) unstable; urgency=low
+
+  * added --ignore-releasenotes (Bug #19584)
+  * added possibility to press ENTER to skip waiting time
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 15 Mar 2011 11:53:27 +0100
+
 univention-updater (6.0.72-1) unstable; urgency=low
 
   * added repository/online/component/%s/localmirror=BOOL

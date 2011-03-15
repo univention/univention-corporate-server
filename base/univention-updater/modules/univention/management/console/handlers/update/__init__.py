@@ -1332,7 +1332,7 @@ fi
 dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-server
 dpkg-statoverride --add root root 0644 /usr/sbin/apache2
 chmod -x /usr/sbin/univention-management-console-server /usr/sbin/apache2
-export update_warning_releasenotes_umc=no
+export update_warning_releasenotes_internal=no
 %(command)s < /dev/null
 %(reboot)s
 dpkg-statoverride --remove /usr/sbin/univention-management-console-server

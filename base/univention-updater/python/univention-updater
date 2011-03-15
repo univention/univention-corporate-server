@@ -324,9 +324,10 @@ def main():
 	clean  = True
 	ignoressh = False
 	ignoreterm = False
+	ignorereleasenotes = False
 	nostdout = False
 
-	longopts=['src=','device=', 'cdrom=', 'iso=', 'updateto=', 'reboot=', 'no-clean', 'check', 'ignoressh', 'ignoreterm', 'silent']
+	longopts=['src=','device=', 'cdrom=', 'iso=', 'updateto=', 'reboot=', 'no-clean', 'check', 'ignoressh', 'ignoreterm', 'ignore-releasenotes', 'silent']
 	try:
 		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
 	except getopt.error, msg:
@@ -373,6 +374,8 @@ def main():
 			else:
 				dprint('System is up to date') # Sync with /etc/cron.d/univention-maintenance
 			sys.exit(0)
+		elif opt == '--ignore-releasenotes':
+			ignorereleasenotes = True
 		elif opt == '--ignoressh':
 			ignoressh = True
 		elif opt == '--ignoreterm':
@@ -447,6 +450,8 @@ def main():
 	dprint('Update to = %s' % nextversion)
 	update_status(next_version=nextversion)
 
+	if ignorereleasenotes:
+		os.putenv('update_warning_releasenotes_internal', 'no')
 	if ignoressh:
 		os.putenv('update%d%d_ignoressh' % (new_version.major, new_version.minor, ), 'yes')
 	if ignoreterm:
