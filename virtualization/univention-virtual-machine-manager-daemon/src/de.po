@@ -408,8 +408,8 @@ msgstr "Pfad zur ini-Datei [%(default)s]"
 
 #: src/univention-virtual-machine-manager-daemon:213
 #, python-format
-msgid "Path to the log-file [%(default)s]"
-msgstr "Pfad zur Log-Datei [%(default)s]"
+msgid "Path to the log-file"
+msgstr "Pfad zur Log-Datei"
 
 #: src/univention-virtual-machine-manager-daemon:207
 #, python-format

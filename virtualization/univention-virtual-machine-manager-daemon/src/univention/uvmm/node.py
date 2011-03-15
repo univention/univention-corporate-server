@@ -123,7 +123,7 @@ class Disk( object ):
 		return _map(Disk.CACHE_MAP, id, name)
 
 	def __str__( self ):
-		return 'Disk(%s,%s): %s, %s' % ( Disk.map_device( id = self.device ), Disk.map_type( id = self.type ), self.source, self.target_dev )
+		return 'Disk(device=%s, type=%s, driver=%s, source=%s, target=%s, size=%s)' % (Disk.map_device(id=self.device), Disk.map_type(id=self.type), self.driver, self.source, self.target_dev, self.size)
 
 class Interface( object ):
 	'''Container for interface objects'''
@@ -142,7 +142,7 @@ class Interface( object ):
 		return _map( Interface.TYPE_MAP, id, name )
 
 	def __str__( self ):
-		return 'Interface(%s): %s, %s' % ( Interface.map_type( id = self.type ), self.mac_address, self.source )
+		return 'Interface(type=%s, mac=%s, source=%s, target=%s, script=%s, model=%s)' % (Interface.map_type(id=self.type), self.mac_address, self.source, self.target, self.script, self.model)
 
 class Graphic( object ):
 	'''Container for graphic objects'''
@@ -161,7 +161,7 @@ class Graphic( object ):
 		return _map( Graphic.TYPE_MAP, id, name )
 
 	def __str__( self ):
-		return 'Graphic(%s): %s, %s' % ( Graphic.map_type( id = self.type ), self.port, self.keymap )
+		return 'Graphic(type=%s, port=%s, autoport=%s, keymap=%s, listen=%s, passwd=%s' % (Graphic.map_type(id=self.type), self.port, self.autoport, self.keymap, self.listen, bool(self.passwd))
 
 class DomainTemplate(object):
 	'''Container for node capability.'''
@@ -368,9 +368,12 @@ class Domain(object):
 
 	def xml2obj( self, domain ):
 		"""Parse XML into python object."""
-		doc = parseString(domain.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE))
+		xml = domain.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+		doc = parseString(xml)
 		devices = doc.getElementsByTagName( 'devices' )[ 0 ]
 		self.pd.domain_type = doc.documentElement.getAttribute('type')
+		if not self.pd.domain_type:
+			logger.error("Failed /domain/@type from %s" % xml)
 		os = doc.getElementsByTagName( 'os' )
 		if os:
 			os = os[ 0 ]
@@ -498,7 +501,7 @@ class Node(object):
 				finally:
 					self._lock.release()
 			except Exception, e:
-				logger.error("Exception %s: %s" % (e, traceback.format_exc()))
+				logger.error("%s: Exception in timer_callbck", (self.uri,), exc_info=True)
 				# don't crash the event handler
 
 		self.timerID = virEventAddTimerImpl(self.current_frequency, timer_callback, (None,None))
@@ -529,13 +532,13 @@ class Node(object):
 				try:
 					self.conn.domainEventDeregister(self.domainCB)
 				except Exception, e:
-					logger.error('Exception %s: %s' % (e, traceback.format_exc()))
+					logger.error("%s: Exception in domainEventRegister", (self.uri,), exc_info=True)
 					pass
 				self.domainCB = None
 				try:
 					self.conn.close()
 				except Exception, e:
-					logger.error('Exception %s: %s' % (e, traceback.format_exc()))
+					logger.error('%s: Exception in conn.close', (self.uri,), exc_info=True)
 					pass
 				self.conn = None
 
@@ -582,14 +585,14 @@ class Node(object):
 				self.pd.supports_suspend = True
 			except libvirt.libvirtError, e:
 				if e.get_error_code() != libvirt.VIR_ERR_NO_SUPPORT:
-					logger.error('Exception %s: %s' % (e, traceback.format_exc()))
+					logger.error('%s: Exception testing managedSave' % (self.uri,), exc_info=True)
 			# As of libvirt-0.8.5 Xen doesn't support snapshot-*, but test dom0
 			try:
 				d.snapshotListNames(0)
 				self.pd.supports_snapshot = True
 			except libvirt.libvirtError, e:
 				if e.get_error_code() != libvirt.VIR_ERR_NO_SUPPORT:
-					logger.error('Exception %s: %s' % (e, traceback.format_exc()))
+					logger.error('%s: Exception testing snapshots' % (self.uri,), exc_info=True)
 
 		def domain_callback(conn, dom, event, detail, node):
 			try:
@@ -611,7 +614,7 @@ class Node(object):
 						# during migration events are not ordered causal
 						pass
 			except Exception, e:
-				logger.error("Exception %s: %s" % (e, traceback.format_exc()))
+				logger.error('%s: Exception handling callback' % (self.uri,), exc_info=True)
 				# don't crash the event handler
 
 		self.conn.domainEventRegister(domain_callback, self)
@@ -809,6 +812,7 @@ def domain_define( uri, domain ):
 		elem = doc.createElement( 'uuid' )
 		elem.appendChild( doc.createTextNode( domain.uuid ) )
 		doc.documentElement.appendChild( elem )
+
 	elem = doc.createElement( 'memory' )
 	elem.appendChild( doc.createTextNode( str( domain.maxMem / 1024 ) ) )
 	doc.documentElement.appendChild( elem )

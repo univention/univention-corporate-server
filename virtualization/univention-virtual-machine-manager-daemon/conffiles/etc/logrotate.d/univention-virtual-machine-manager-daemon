@@ -1,7 +1,7 @@
 @%@BCWARNING=# @%@
 
 # /var/log/univention/uvmmd.log
-/var/log/univention/virtual-machine-manager-daemon.log {
+/var/log/univention/virtual-machine-manager-daemon.log /var/log/univention/virtual-machine-manager-daemon-errors.log {
 	rotate @%@log/rotate/weeks@%@
 	weekly
 	compress

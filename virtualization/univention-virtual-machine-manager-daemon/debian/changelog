@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.181-1) unstable; urgency=low
+
+  * Only log CRITICAL errors to stderr by default (Bug #21662)
+  * Improve internal exception logging.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 10 Mar 2011 12:25:44 +0100
+
 univention-virtual-machine-manager-daemon (0.9.180-2) unstable; urgency=low
 
   * Fix typo (Bug #19788)

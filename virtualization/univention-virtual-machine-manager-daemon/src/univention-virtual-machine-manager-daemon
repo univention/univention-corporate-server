@@ -82,7 +82,7 @@ def createDaemon(options):
 				os.dup2(dev_null.fileno(), sys.stdin.fileno())
 			finally:
 				dev_null.close()
-			out_log = open(options.logfile, 'a+')
+			out_log = open(options.logfile or os.path.devnull, 'a+')
 			try:
 				os.dup2(out_log.fileno(), sys.stdout.fileno())
 				os.dup2(out_log.fileno(), sys.stderr.fileno())
@@ -152,7 +152,7 @@ def install_signal_handlers(options):
 				pass
 		logger.info('Logfile reopened.')
 		# Re-open STDOUT, STDERR logfile
-		if options.daemonize:
+		if options.logfile:
 			out_log = open(options.logfile, 'a+')
 			try:
 				os.dup2(out_log.fileno(), sys.stdout.fileno())
@@ -206,8 +206,8 @@ if __name__ == '__main__':
 			action='store_true', dest='daemonize', default=False,
 			help=_('Fork into background'))
 	daemon_group.add_option('-l', '--log',
-			action='store', dest='logfile', default="/var/log/univention/uvmmd.log",
-			help=_('Path to the log-file [%(default)s]') % {'default':'%default'})
+			action='store', dest='logfile', default=None,
+			help=_('Path to the log-file'))
 	daemon_group.add_option('-v', '--verbose',
 			action='store_true', dest='verbose', default=False,
 			help=_('Print additional information'))
@@ -229,7 +229,7 @@ if __name__ == '__main__':
 	config = ConfigParser.ConfigParser()
 	if options.read_ini:
 		config.read(options.conffile)
-	logging.basicConfig(filename=options.logfile)
+	logging.basicConfig(level=logging.CRITICAL, filename=options.logfile)
 	try:
 		logging.config.fileConfig(options.conffile)
 		logger = logging.getLogger("uvmmd")
