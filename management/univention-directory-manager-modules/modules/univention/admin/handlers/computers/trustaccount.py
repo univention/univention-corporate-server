@@ -147,6 +147,7 @@ class object(univention.admin.handlers.simpleLdap):
 			else:
 				self.machineSid=None
 
+		self.alloc.append(('sid',self.machineSid))
 		acctFlags=univention.admin.samba.acctFlags(flags={'I':1})
 
 		al=[]

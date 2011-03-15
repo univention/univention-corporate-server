@@ -997,6 +997,16 @@ class simpleComputer( simpleLdap ):
 		)
 		self[ 'dnsAlias' ] = [ ]	# defined here to avoid pseudo non-None value of [''] in modwizard search
 
+	def getMachineSid(self, lo, position, uidNum):
+		num = uidNum
+		machineSid = ""
+		while not machineSid or machineSid == 'None':
+			try:
+				machineSid = univention.admin.allocators.requestUserSid(lo, position, num)
+			except univention.admin.uexceptions.noLock, e:
+				num = str(int(num)+1)
+		return machineSid
+
 	# HELPER
 	def __ip_from_ptr( self, zoneName, relativeDomainName ):
 

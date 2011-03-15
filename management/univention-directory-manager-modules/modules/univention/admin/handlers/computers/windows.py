@@ -382,18 +382,11 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 		self.uidNum = None
 		self.machineSid = None
-		while not self.uidNum or not self.machineSid:
+		while not self.uidNum:
 			self.uidNum=univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
-			if self.uidNum:
-				self.alloc.append(('uidNumber',self.uidNum))
-				try:
-					self.machineSid=univention.admin.allocators.requestUserSid(self.lo, self.position, self.uidNum)
-				except:
-					pass
-				else:
-					self.alloc.append(('sid',self.machineSid))
-			else:
-				self.machineSid=None
+		self.alloc.append(('uidNumber',self.uidNum))
+		self.machineSid = self.getMachineSid(self.lo, self.position, self.uidNum)
+		self.alloc.append(('sid',self.machineSid))
 
 		acctFlags=univention.admin.samba.acctFlags(flags={'W':1})
 
