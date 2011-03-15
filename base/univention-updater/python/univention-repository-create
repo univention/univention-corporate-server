@@ -230,7 +230,7 @@ if __name__ == '__main__':
 		fqdn = '%s.%s' % ( configRegistry.get( 'hostname' ), configRegistry.get( 'domainname' ) )
 		ucr.handler_set( [ 'repository/online/server=%s' % fqdn ] )
 
-		# unset UCR variable makring old repository
+		# unset UCR variable marking old repository
 		if configRegistry.has_key( 'repository/local/old' ):
 			ucr.handler_unset( 'repository/local/old' )
 

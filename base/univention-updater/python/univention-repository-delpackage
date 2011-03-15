@@ -30,9 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, string
-import shutil, sys
-import getopt, time
+import os
+import sys
+import getopt
 
 import univention_baseconfig
 import univention.updater.repository as urepo

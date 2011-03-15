@@ -31,14 +31,13 @@
 # <http://www.gnu.org/licenses/>.
 
 import exceptions
-import os, string
+import os
 import shutil, sys
 import getopt, time
 import re
-import subprocess
 
 import univention_baseconfig
-import  univention.updater.repository as urepo
+import univention.updater.repository as urepo
 import univention.updater.tools
 
 def usage(fd=sys.stdout):

@@ -32,7 +32,7 @@
 
 import os
 import shutil, sys
-import getopt, time
+import getopt
 
 import univention.config_registry as ucr
 import univention.updater.repository as urepo

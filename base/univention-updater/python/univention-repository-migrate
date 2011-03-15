@@ -33,10 +33,7 @@
 from optparse import OptionParser
 import copy
 import os
-import re
 import shutil
-import string
-import subprocess
 import sys
 import time
 
