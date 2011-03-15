@@ -32,7 +32,7 @@
 
 # TODO: use UCR variables for update, upgrade, install and remove commands
 
-import os, sys, string, time, tempfile, commands
+import os, sys, time, tempfile, commands
 import shlex
 import subprocess
 
