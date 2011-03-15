@@ -263,7 +263,7 @@ msgid "Direct access"
 msgstr "Direktzugriff"
 
 #: __init__.py:151
-msgid "Available globally"
+msgid "Globally available"
 msgstr "Global verfügbar"
 
 #: __init__.py:152

@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: management of virtualization servers
 #
-# Copyright 2010 Univention GmbH
+# Copyright 2010-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -148,7 +148,7 @@ command_description = {
 				   'memory' : umc.String( _( 'Memory' ) ),
 				   'cpus' : cpus_select,
 				   'vnc' : umc.Boolean( _( 'Direct access' ) ),
-				   'vnc_global' : umc.Boolean( _( 'Available globally' ) ),
+				   'vnc_global' : umc.Boolean( _( 'Globally available' ) ),
 				   'vnc_passwd' : umc.Password( _( 'Password' ), required = False ),
 				   'kblayout' : KBLayoutSelect( _( 'Keyboard layout' ) ),
 				   'arch' : arch_select,
