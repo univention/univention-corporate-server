@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.184-1) unstable; urgency=low
+
+  * Only consider servers with the same virtualization technology for
+    the migration (Bug #20901)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Mar 2011 09:45:17 +0100
+
 univention-virtual-machine-manager-daemon (0.9.183-1) unstable; urgency=low
 
   * Show migration button only if more than one physical server is
