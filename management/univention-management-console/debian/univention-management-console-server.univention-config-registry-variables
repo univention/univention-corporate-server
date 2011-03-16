@@ -1,6 +1,6 @@
 [umc/server/debug/level]
 Description[de]=Univention Management Console Server Debuglevel (ab debug/level 99 werden XML Daten und Klartext-Passwörter im Log-File gespeichert)
-Description[en]=Univention Management Console Server debug level (with debug/level >= 99 xml data and cleartest password will be saved in log files)
+Description[en]=Univention Management Console Server debug level (with debug/level >= 99 xml data and cleartext password will be saved in log files)
 Type=str
 Categories=Management
 

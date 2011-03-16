@@ -1,3 +1,9 @@
+univention-management-console (3.0.83-2) unstable; urgency=low
+
+  * fixed typo in UCR description (Bug #21586)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 16 Mar 2011 15:40:04 +0100
+
 univention-management-console (3.0.83-1) unstable; urgency=low
 
   * Don't add umc_frame by default. If umc_frame is active the pages are
