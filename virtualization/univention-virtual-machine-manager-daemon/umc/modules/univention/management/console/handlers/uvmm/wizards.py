@@ -578,7 +578,7 @@ class InstanceWizard( umcd.IWizard ):
 				tech = 'xen-xen'
 
 			try:
-				profiles = [ item[ 'name' ] for item in self.udm.get_profiles(tech) if item[ 'arch' ] in self.archs ]
+				profiles = [ item[ 'name' ] for item in self.udm.get_profiles(tech) if item[ 'arch' ] in self.archs or item[ 'arch' ] == 'automatic' ]
 				ud.debug( ud.ADMIN, ud.INFO, 'PROFILE: profiles: %s' % profiles)
 			except udm.LDAP_ConnectionError:
 				umcd.IWizard.next( self, object )
@@ -614,7 +614,13 @@ class InstanceWizard( umcd.IWizard ):
 			ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: next: profile boot drives: %s' % str( self.profile[ 'bootdev' ] ) )
 			object.options[ 'name' ] = self.profile[ 'name_prefix' ]
 			object.options[ 'os' ] = self.profile[ 'os' ]
-			object.options[ 'arch' ] = self.profile[ 'arch' ]
+			if self.profile[ 'arch' ] == 'automatic':
+				if 'x86_64' in self.archs:
+					object.options[ 'arch' ] = 'x86_64'
+				else:
+					object.options[ 'arch' ] = 'i686'
+			else:
+				object.options[ 'arch' ] = self.profile[ 'arch' ]
 			object.options[ 'type' ] = self.profile[ 'virttech' ]
 			object.options[ 'memory' ] = self.profile[ 'ram' ]
 			object.options[ 'diskspace' ] = self.profile[ 'diskspace' ]

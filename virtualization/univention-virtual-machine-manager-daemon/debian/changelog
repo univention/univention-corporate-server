@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (0.9.182-1) unstable; urgency=low
+
+  * Added the arch automatic and change the default 32 bit profiles to
+    this arch. On a i386 physical server those VMs will be created as 64
+    bit systems. So the virtualisation technologie must not emulate a 32
+    bit CPU which will fail in some cases (Bug #21383)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Mar 2011 07:21:45 +0100
+
 univention-virtual-machine-manager-daemon (0.9.181-1) unstable; urgency=low
 
   * Only log CRITICAL errors to stderr by default (Bug #21662)
