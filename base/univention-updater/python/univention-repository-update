@@ -152,6 +152,7 @@ def update_net( options ):
 		ucr.handler_set( [ 'repository/mirror/version/end=%s' % options.update_to ] )
 		mirror.run()
 	else:
+		ucr.handler_commit( [ '/etc/apt/mirror.list' ] )
 		nextupdate = mirror.release_update_available()
 		mirror_run = False
 		while nextupdate:

@@ -1,3 +1,9 @@
+univention-updater (6.0.74-1) unstable; urgency=low
+
+  * commit mirror.list so security updates get mirrored too (Bug #19781)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 16 Mar 2011 17:34:59 +0100
+
 univention-updater (6.0.73-1) unstable; urgency=low
 
   * added --ignore-releasenotes (Bug #19584)
