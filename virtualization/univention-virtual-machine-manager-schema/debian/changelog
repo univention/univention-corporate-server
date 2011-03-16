@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-schema (1.0.29-1) unstable; urgency=low
+
+  * Added the arch automatic and change the default 32 bit profiles to
+    this arch. On a i386 physical server those VMs will be created as 64
+    bit systems. So the virtualisation technologie must not emulate a 32
+    bit CPU which will fail in some cases (Bug #21383)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Mar 2011 07:21:56 +0100
+
 univention-virtual-machine-manager-schema (1.0.28-1) unstable; urgency=low
 
   * Give memberserver access to uvmm objects (Bug #21560)

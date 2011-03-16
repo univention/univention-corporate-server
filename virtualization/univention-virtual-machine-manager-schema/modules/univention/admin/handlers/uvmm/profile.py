@@ -58,6 +58,7 @@ class BootDevice( univention.admin.syntax.select ):
 class Architecture( univention.admin.syntax.select ):
 	name = 'Architecture'
 	choices = [
+		('automatic', _('Automatic') ),
 		('i686', '32 Bit' ),
 		('x86_64', '64 Bit' ),
 	]
