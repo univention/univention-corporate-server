@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.113-1) unstable; urgency=low
+
+  * added missing "import sys" to scripts/proof_associatedDomain (Bug #21678)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 16 Mar 2011 12:07:11 +0100
+
 univention-directory-manager-modules (6.0.112-1) unstable; urgency=low
 
   * fixed sid generation in computer/* modules (Bug #21597)
