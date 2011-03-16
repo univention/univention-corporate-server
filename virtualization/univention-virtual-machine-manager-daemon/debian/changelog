@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.183-1) unstable; urgency=low
+
+  * Show migration button only if more than one physical server is
+    available (Bug #20901)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Mar 2011 08:16:01 +0100
+
 univention-virtual-machine-manager-daemon (0.9.182-1) unstable; urgency=low
 
   * Added the arch automatic and change the default 32 bit profiles to
