@@ -36,7 +36,7 @@ univention-config-registry set uvmm/kvm/bridge/autostart?yes \
 	uvmm/libvirt/action/uris?qemu:///system \
 	uvmm/libvirt/action/boot?start \
 	uvmm/libvirt/action/shutdown?suspend \
-	uvmm/kvm/no_irqchip?yes
+	uvmm/kvm/no_irqchip?no
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]
 then
