@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.114-1) unstable; urgency=low
+
+  * fixed uniqueMember and memberUid for primaryGroups (Bug #21711)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 17 Mar 2011 13:45:53 +0100
+
 univention-directory-manager-modules (6.0.113-1) unstable; urgency=low
 
   * added missing "import sys" to scripts/proof_associatedDomain (Bug #21678)

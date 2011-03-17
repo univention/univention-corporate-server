@@ -1878,19 +1878,14 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		if self.exists():
 			old_groups = self.oldinfo.get('groups', [])
 			old_uid = self.oldinfo.get( 'username', '' )
-			new_uid = self.info.get('username')
-			new_groups = self.info.get('groups', [])
 		else:
 			old_groups = []
 			old_uid = ""
-			new_uid=""
-			new_groups = []
-
-		add_to_group=[]
-		remove_from_group=[]
+		new_uid = self.info.get('username','')
+		new_groups = self.info.get('groups', [])
 
 		# change memberUid if we have a new username
-		if not old_uid == new_uid:
+		if not old_uid == new_uid and self.exists():
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: rewrite memberuid after rename')
 			for group in new_groups:
 				self.__rewrite_member_uid( group )
@@ -1910,8 +1905,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				grpobj.fast_member_add( [ self.dn ], [ new_uid ] )
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: check primaryGroup')
-		if self.newPrimaryGroupDn and not case_insensitive_in_list(self.newPrimaryGroupDn,add_to_group):
-			grpobj = group_mod.object(None, self.lo, self.position, self.newPrimaryGroupDn)
+		if not self.exists() and self.info.get('primaryGroup'):
+			grpobj = group_mod.object(None, self.lo, self.position, self.info.get('primaryGroup'))
 			grpobj.fast_member_add( [ self.dn ], [ new_uid ] )
 
 	def __rewrite_member_uid( self, group, members = [] ):
@@ -1971,7 +1966,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		group_mod = univention.admin.modules.get('groups/group')
 		grpobj = group_mod.object(None, self.lo, self.position, self.newPrimaryGroupDn)
 		grpobj.fast_member_add( [ self.dn ], [ new_uid ] )
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: adding to new primaryGroup %s' % self.newPrimaryGroupDn)
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: adding to new primaryGroup %s (uid=%s)' % (self.newPrimaryGroupDn, new_uid))
 
 		self.save()
 
