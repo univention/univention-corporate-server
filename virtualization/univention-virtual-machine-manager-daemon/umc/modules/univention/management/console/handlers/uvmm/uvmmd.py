@@ -226,7 +226,7 @@ class Client( notifier.signals.Provider ):
 
 	def is_domain_name_unique( self, node_uri, domain_name ):
 		node_info = self.get_node_info( node_uri )
-		if self.is_error( node_info ):
+		if not node_info:
 			return None
 
 		for domain_info in node_info.domains:
@@ -237,7 +237,7 @@ class Client( notifier.signals.Provider ):
 	def is_image_used( self, node_uri, image, relative = False ):
 		"""Return name of domain using image."""
 		node_info = self.get_node_info( node_uri )
-		if self.is_error( node_info ):
+		if not node_info:
 			return None
 
 		if relative:
@@ -268,7 +268,7 @@ class Client( notifier.signals.Provider ):
 		retries = 10
 		while retries:
 			node_info = self.get_node_info( node_uri )
-			if self.is_error( node_info ):
+			if not node_info:
 				return ( None, None )
 			for domain_info in node_info.domains:
 				if domain_info.name == domain_name_or_uuid or domain_info.uuid == domain_name_or_uuid:

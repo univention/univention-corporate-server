@@ -642,7 +642,12 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			res.dialog[ 0 ].set_dialog( umcd.InfoBox( _( 'The physical server is not available at the moment' ) ) )
 			self.finished(object.id(), res)
 			return
+
 		node_info = self.uvmm.get_node_info( node_uri )
+		if not node_info:
+			res.dialog[ 0 ].set_dialog( umcd.InfoBox( _( 'The physical server is not available at the moment' ) ) )
+			self.finished(object.id(), res)
+			return
 
 		content = umcd.List( attributes = { 'width' : '100%' }, default_type = 'uvmm_table' )
 
@@ -1011,7 +1016,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			tab.add_row( w_contact + w_description )
 
 			tech = '%s-%s' % ( domain_info.domain_type, domain_info.os_type )
-			blind_table.add_row( [ umcd.Section( _( 'Virtual instance %(domain)s - <i>%(tech)s</i>' ) % { 'domain' : domain_info.name, 'tech' : VirtTechSelect.MAPPING[ tech ] }, tab ) ] )
+			blind_table.add_row( [ umcd.Section( _( 'Virtual instance %(domain)s - <i>%(tech)s</i>' ) % { 'domain' : domain_info.name, 'tech' : VirtTechSelect.MAPPING.get( tech, '' )  }, tab ) ] )
 			blind_table.add_row( [ umcd.Cell( umcd.Section( _( 'Operations' ), ops ) ) ] )
 			if snapshots:
 				blind_table.add_row( [ umcd.Section( _( 'Snapshots' ), snapshots, hideable = True, hidden = True, name = 'domain.snapshots' ) ] )
@@ -1175,7 +1180,10 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 		if not node_uri:
 			return self.uvmm_node_overview( object )
+
 		node_info = self.uvmm.get_node_info( node_uri )
+		if not node_info:
+			return self.uvmm_node_overview( object )
 
 		if not 'action' in object.options:
 			self.domain_wizard.max_memory = node_info.phyMem
@@ -1223,7 +1231,10 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 		if not node_uri:
 			return self.uvmm_node_overview( object )
+
 		node_info, domain_info = self.uvmm.get_domain_info_ext( node_uri, object.options[ 'domain' ] )
+		if not node_info:
+			return self.uvmm_node_overview( object )
 
 		boxes = []
 		lst = umcd.List( default_type = 'uvmm_table' )
