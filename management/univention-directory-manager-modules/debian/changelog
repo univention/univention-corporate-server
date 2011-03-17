@@ -1,6 +1,6 @@
 univention-directory-manager-modules (6.0.114-1) unstable; urgency=low
 
-  * fixed uniqueMember and memberUid for primaryGroups (Bug #21711)
+  * fixed uniqueMember and memberUid for primaryGroups (Bug #21782)
 
  -- Sönke Schwardt <schwardt@univention.de>  Thu, 17 Mar 2011 13:45:53 +0100
 
