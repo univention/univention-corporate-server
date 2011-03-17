@@ -521,6 +521,7 @@ fi
 
 # fix primary group membership of computer objects if neccessary (Bug #21711)
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.18-1; then
+	eval "$(ucr shell)"
 	if [ ! "$update_fix_computer_primarygroupmembership" = "no" -a ! "$update_fix_computer_primarygroupmembership" = "false" ] ; then
 		if [ "$server_role" = "domaincontroller_master" ] ; then
 			/usr/share/univention-directory-manager-tools/fix_primary_group_membership -c -f

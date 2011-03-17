@@ -1,3 +1,9 @@
+univention-ldap (7.0.19-2) unstable; urgency=low
+
+  * call eval "$(ucr shell)" in postinst (Bug #21711)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 17 Mar 2011 15:27:31 +0100
+
 univention-ldap (7.0.19-1) unstable; urgency=low
 
   * call fix_primary_group_membership of
