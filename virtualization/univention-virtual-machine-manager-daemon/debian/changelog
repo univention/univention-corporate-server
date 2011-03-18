@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.185-2) unstable; urgency=low
+
+  * Add help text to hard disk settings dialogue (Bug #21879)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 18 Mar 2011 08:55:22 +0100
+
 univention-virtual-machine-manager-daemon (0.9.185-1) unstable; urgency=low
 
   * The function get_node_info already checks if a UMC error occurs and do
