@@ -43,12 +43,11 @@ import univention.debug as ud
 
 import univention.config_registry
 
-from univention.updater import UniventionUpdater
-from json import JsonReader, JsonWriter
+from univention.updater import UniventionUpdater, ConfigurationError
+from json import JsonWriter
 
-import os
 import subprocess
-import socket, re
+import re
 import traceback
 
 _ = umc.Translation('univention.management.console.handlers.update').translate
@@ -196,7 +195,7 @@ class handler(umch.simpleHandler):
 
 		umch.simpleHandler.__init__(self, command_description)
 
-		self.updater = UniventionUpdater()
+		self.updater = UniventionUpdater(check_access=False)
 		self.hooks = univention.hooks.HookManager('/usr/lib/python2.4/site-packages/univention/management/console/handlers/update/hooks') # , raise_exceptions=False
 
 		self.next_release_update_checked = False
@@ -208,7 +207,6 @@ class handler(umch.simpleHandler):
 		# True  ==> cmd was running at last check
 		self.last_running_status = {}
 
-		self.ucr_reinit = False
 		self.tail_fn2fd = {}
 
 
@@ -286,8 +284,6 @@ class handler(umch.simpleHandler):
 	def _reinit(self):
 		try:
 			self.updater.ucr_reinit()
-		except (socket.error, socket.gaierror), e:
-			ud.debug(ud.ADMIN, ud.ERROR, 'updater: socket.gaierror: %s' % traceback.format_exc().replace('%','§'))
 		except Exception, e:
 			ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % (traceback.format_exc().replace('%','§')))
 
@@ -409,7 +405,7 @@ class handler(umch.simpleHandler):
 			if stdout:
 				ud.debug(ud.ADMIN, ud.INFO, 'stdout=%s' % stdout)
 			ud.debug(ud.ADMIN, ud.INFO, 'And reinit the updater modul')
-			self.updater.ucr_reinit()
+			self._ucr_reinit()
 
 		self.finished(object.id(), None)
 
@@ -852,10 +848,9 @@ class handler(umch.simpleHandler):
 				list_easy_update.add_row([ umcd.Text(_('The update is still in progress.')), btn_view_log])
 
 			else:
-				version = '%s-%s' % (self.updater.configRegistry.get('version/version','0.0'), self.updater.configRegistry.get('version/patchlevel','0'))
-				secversion = self.updater.configRegistry.get('version/security-patchlevel','0')
-				if not secversion == '0':
-					version = '%s sec%s' % (version, secversion)
+				version = self.updater.get_ucs_version()
+				if self.updater.security_patchlevel != '0':
+					version = '%s sec%s' % (version, self.updater.security_patchlevel)
 				list_easy_update.add_row( [ umcd.Text( _('The currently installed UCS release version is %(version)s.') % { 'version': version } ) ] )
 
 				presult = umct.run_process( '%s --check' % CMD_UNIVENTION_UPGRADE, timeout=300000, shell=True, output=True )
@@ -904,8 +899,8 @@ class handler(umch.simpleHandler):
 			errormsg = None
 			try:
 				available_release_updates, blocking_component = self.updater.get_all_available_release_updates()
-			except (socket.error, socket.gaierror), e:
-				ud.debug(ud.ADMIN, ud.ERROR, 'updater: socket.gaierror: %s' % traceback.format_exc().replace('%','§'))
+			except ConfigurationError, e:
+				ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % traceback.format_exc().replace('%','§'))
 				errormsg = _( 'The connection to the repository server failed: %s. Please check the repository settings and the network connection.' ) % str( e[ 1 ] )
 			except Exception, e:
 				ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % (traceback.format_exc()))
@@ -965,8 +960,8 @@ class handler(umch.simpleHandler):
 		else:
 			try:
 				available_security_updates = self.updater.get_all_available_security_updates()
-			except (socket.error, socket.gaierror), e:
-				ud.debug(ud.ADMIN, ud.ERROR, 'updater: socket.gaierror: %s' % traceback.format_exc().replace('%','§'))
+			except ConfigurationError, e:
+				ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % traceback.format_exc().replace('%','§'))
 				errormsg = _( 'The connection to the repository server failed: %s. Please check the repository settings and the network connection.' ) % str( e[ 1 ] )
 			except Exception, e:
 				ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % traceback.format_exc().replace('%','§'))
@@ -1090,7 +1085,7 @@ class handler(umch.simpleHandler):
 			list_settings_release.add_row([ btn_release ])
 
 			# COMPONENT SETTINGS
-			local_repo = self.updater.configRegistry.get( 'local/repository', 'no' ).lower() in ( 'yes', 'true' )
+			local_repo = self.updater.configRegistry.is_true( 'local/repository', False)
 			is_univention_install_running = self.__is_univention_install_running()
 
 			list_settings_component_txt = umcd.List()

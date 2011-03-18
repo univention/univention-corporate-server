@@ -33,3 +33,4 @@
 from tools import UniventionUpdater, UCS_Version
 from mirror import UniventionMirror
 from repository import *
+from errors import *

@@ -41,15 +41,14 @@ import time
 import getopt
 import subprocess
 import traceback
-import socket
 import datetime
 import itertools
 
 import univention.debug as ud
 import univention.config_registry as ucr
 
-from univention.updater import UniventionUpdater, UCS_Version
-from univention.updater.tools import LocalUpdater, ExceptionUpdaterPrecondition
+from univention.updater import UniventionUpdater, UCS_Version, PreconditionError, ConfigurationError
+from univention.updater.tools import LocalUpdater
 from univention.updater.commands import cmd_update, cmd_dist_upgrade
 import univention.updater.tools
 
@@ -190,9 +189,10 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 
 		if not updater:
 			updater = LocalUpdater()
-		if updater.server.access('')[1] is not None:
+		try:
+			assert updater.server.access('')
 			nextversion = updater.release_update_available()
-		else:
+		except DownloadError:
 			raise UpdateError('A local repository was not found.\n' +
 					'       Please check the UCR variable repository/mirror/basepath\n' +
 					'       or try to install via "univention-updater net"', errorsource='SETTINGS')
@@ -248,20 +248,10 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 						raise UpdateError('The required component %s is missing for version %s.' % (component, mm_version), errorsource='PREPARATION')
 
 	elif mode == 'net':
-		try:
-			dprint('Checking network repository')
-			if not updater:
-				updater = UniventionUpdater()
-			nextversion = updater.release_update_available()
-		except socket.gaierror, msg:
-			log(traceback.format_exc ())
-
-			code, message = msg
-
-			if code == socket.EAI_NONAME:
-				raise UpdateError('The name %s is not known.\n       Please check your network settings or set the UCR variable repository/online/server to a different value.' % (updater.repository_server), errorsource='SETTINGS')
-			else:
-				raise UpdateError('An error occured during the connection to %s.\n       Please check your network settings.' % updater.repository_server, errorsource='SETTINGS')
+		dprint('Checking network repository')
+		if not updater:
+			updater = UniventionUpdater()
+		nextversion = updater.release_update_available()
 
 	if nextversion in (None,'none'):
 		return None
@@ -563,7 +553,10 @@ if __name__ == '__main__':
 			try:
 				main()
 				update_ucr_updatestatus()
-			except ExceptionUpdaterPrecondition, (phase, order, component, script):
+			except ConfigurationError, e:
+				msg = 'Update aborted due to configuration error: %s' % e
+				raise UpdateError(msg, errorsource='SETTINGS')
+			except PreconditionError, (phase, order, component, script):
 				if phase == 'preup':
 					phase = 'pre-update'
 					errorsource = 'PREUP'

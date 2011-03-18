@@ -30,14 +30,14 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-import os, sys, time, socket
+import os, sys, time
 import optparse
 import subprocess
 import traceback
 
 import univention.config_registry
 
-from univention.updater import UniventionUpdater, UCS_Version
+from univention.updater import UniventionUpdater, UCS_Version, ConfigurationError
 import univention.updater.tools
 
 FN_STATUS = '/var/lib/univention-updater/univention-upgrade.status'
@@ -195,8 +195,9 @@ def performUpdate(updateto=None, checkForUpdates=False):
 		#######################################################################
 		# reinit updater module
 		updater.ucr_reinit()
+		current_security_update = None
 		next_security_update = updater.security_update_available()
-		while next_security_update:
+		while next_security_update > current_security_update:
 			# updates available ==> stop here in "check-mode"
 			if checkForUpdates:
 				dprint('Security update has been found.')
@@ -215,6 +216,7 @@ def performUpdate(updateto=None, checkForUpdates=False):
 			time.sleep(1)
 
 			updater.ucr_reinit()
+			current_security_update = next_security_update
 			next_security_update = updater.security_update_available()
 
 	# updates available ==> stop here in "check-mode"
@@ -249,8 +251,8 @@ def main():
 			update_available = performUpdate(options.updateto, checkForUpdates=True)
 		except SystemExit, e:
 			sys.exit(e)
-		except socket.gaierror, e:
-			print 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % str( e[ 1 ] )
+		except ConfigurationError, e:
+			print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
 			sys.exit(3)
 		except Exception, e:
 			print 'An error occured - stopping here.'
@@ -273,9 +275,9 @@ def main():
 			performUpdate(options.updateto)
 		except SystemExit, e:
 			sys.exit(e)
-		except socket.gaierror, e:
+		except ConfigurationError, e:
 			update_status( status='FAILED', errorsource='SETTINGS' )
-			print 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % str( e[ 1 ] )
+			print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
 			sys.exit(3)
 		except Exception, e:
 			update_status( status='FAILED' )
@@ -291,8 +293,8 @@ def main():
 			update_available = performUpdate(options.updateto, checkForUpdates=True)
 		except SystemExit, e:
 			sys.exit(e)
-		except socket.gaierror, e:
-			print 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % str( e[ 1 ] )
+		except ConfigurationError, e:
+			print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
 			sys.exit(3)
 		except Exception, e:
 			print 'An error occured - stopping here.'

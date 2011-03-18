@@ -33,6 +33,7 @@
 
 import univention.debug as ud
 from commands import cmd_update, cmd_dist_upgrade_sim, cmd_dist_upgrade
+from errors import *
 
 import errno
 import time
@@ -54,26 +55,6 @@ import tempfile
 import shutil
 
 RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
-
-class ExceptionUpdaterRequiredComponentMissing(Exception):
-	def __init__(self, version, component):
-		self.version = version
-		self.component = component
-	def __str__(self):
-		return "An update to UCS %s without the component '%s' is not possible because the component '%s' is marked as required." % (self.version, self.component, self.component)
-
-class ExceptionUpdaterCannotResolveComponentServer(Exception):
-	def __init__(self, component, for_mirror_list):
-		self.component = component
-		self.for_mirror_list = for_mirror_list
-	def __str__(self):
-		return "Cannot resolve component server for disabled component '%s' (mirror_list=%s)." % (self.component, self.for_mirror_list)
-
-class ExceptionUpdaterPrecondition(Exception):
-    """Signal abort by release or component pre-/post-update script.
-    args=(phase=preup|postup, order=pre|main|post, component, script-filename)."""
-    def __init__(self, phase, order, component, script):
-        Exception.__init__(self, phase, order, component, script)
 
 class UCS_Version( object ):
 	'''Version object consisting of major-, minor-number and patch-level'''
@@ -287,6 +268,7 @@ class UCSHttpServer(object):
 	pass_handler = urllib2.HTTPPasswordMgrWithDefaultRealm()
 	auth_handler = urllib2.HTTPBasicAuthHandler(pass_handler)
 	proxy_handler = urllib2.ProxyHandler()
+	# No need for ProxyBasicAuthHandler, since ProxyHandler parses netloc for @
 	opener = urllib2.build_opener(head_handler, auth_handler, proxy_handler)
 	failed_hosts = set()
 
@@ -344,7 +326,7 @@ class UCSHttpServer(object):
 			UCSHttpServer.auth_handler.add_password(realm=None, uri=uri, user=self.username, passwd=self.password)
 		req = urllib2.Request(uri)
 		if req.get_host() in self.failed_hosts:
-			return (0, None)
+			raise DownloadError(uri, -1)
 		if not get and UCSHttpServer.http_method != 'GET':
 			# Overwrite get_method() to return "HEAD"
 			def get_method(self, orig=req.get_method):
@@ -362,12 +344,39 @@ class UCSHttpServer(object):
 				return (res.code, res.read())
 			finally:
 				res.close()
+		# direct   | proxy                                        | Error cause
+		#          | valid     closed   filter   DNS     auth     |
+		# HTTP:200 | HTTP:200  URL:111  URL:110  GAI:-2  HTTP:407 | OK
+		# HTTP:404 | HTTP:404  URL:111  URL:110  GAI:-2  HTTP:407 | Path unknown
+		# ---------+----------------------------------------------+----------------------
+		# URL:111  | HTTP:404  URL:111  URL:110  GAI:-2  HTTP:407 | Port closed
+		# URL:110  | HTTP:404  URL:111  URL:110  GAI:-2  HTTP:407 | Port filtered
+		# GAI:-2   | HTTP:502  URL:111  URL:110  GAI:-2  HTTP:407 | Host name unknown
+		# HTTP:401 | HTTP:401  URL:111  URL:110  GAI:-2  HTTP:407 | Authorization required
 		except urllib2.HTTPError, res:
-			return (res.code, None)
-		except urllib2.URLError, e:
-			if isinstance(e.reason, socket.gaierror) and e.reason.args[0] == socket.EAI_NONAME:
+			if res.code == httplib.UNAUTHORIZED: # 401
+				raise ConfigurationError(uri, 'credentials not accepted')
+			if res.code == httplib.PROXY_AUTHENTICATION_REQUIRED: # 407
+				raise ProxyError(uri, 'credentials not accepted')
+			if res.code == httplib.BAD_GATEWAY: # 502
 				self.failed_hosts.add(req.get_host())
-			return (0, None)
+				raise ConfigurationError(uri, 'host is unresolvable')
+			raise DownloadError(uri, res.code)
+		except urllib2.URLError, e:
+			reason = e.reason.args[1] # default value for error message
+			if isinstance(e.reason, socket.gaierror):
+				if e.reason.args[0] == socket.EAI_NONAME: # -2
+					reason = 'host is unresolvable'
+			else:
+				if e.reason.args[0] == errno.ETIMEDOUT: # 110
+					reason = 'port is blocked'
+				elif e.reason.args[0] == errno.ECONNREFUSED: # 111
+					reason = 'port is closed'
+			if '/' == req.get_selector()[0]: # direct
+				self.failed_hosts.add(req.get_host())
+				raise ConfigurationError(uri, reason)
+			else: # proxy
+				raise ProxyError(uri, reason)
 
 class UCSLocalServer(object):
 	'''Access to UCS compatible local update server.'''
@@ -414,7 +423,7 @@ class UCSLocalServer(object):
 					return (httplib.OK, f.read()) # 200
 				finally:
 					f.close()
-		return (0, None)
+		raise DownloadError(uri, -1)
 
 class UniventionUpdater:
 	'''Handle Univention package repositories.'''
@@ -425,7 +434,10 @@ class UniventionUpdater:
 	COMPONENT_PERMISSION_DENIED = 'permission_denied'
 	FN_UPDATER_APTSOURCES_COMPONENT = '/etc/apt/sources.list.d/20_ucs-online-component.list'
 
-	def __init__(self):
+	def __init__(self, check_access=True):
+		"""Create new updater with settings from UCS.
+		Throws ConfigurationError when configured server is not available immediately."""
+		self.check_access = check_access
 		self.connection = None
 		self.architectures = [ os.popen('dpkg-architecture -qDEB_BUILD_ARCH 2>/dev/null').readline()[:-1] ]
 
@@ -476,8 +488,23 @@ class UniventionUpdater:
 
 		# Auto-detect prefix
 		self.server = UCSHttpServer(server=self.repository_server, port=self.repository_port, prefix=self.repository_prefix)
-		if not self.repository_prefix and self.server.access('/univention-repository/')[1] is not None:
-			self.server += '/univention-repository/'
+		try:
+			if not self.repository_prefix:
+				try:
+					assert self.server.access('/univention-repository/')
+					self.server += '/univention-repository/'
+				except DownloadError, e:
+					ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+				return # already validated or implicit /
+			# Validate server settings
+			try:
+				assert self.server.access('')
+			except DownloadError, e:
+				uri, code = e
+				raise ConfigurationError(uri, 'non-existing prefix')
+		except ConfigurationError, e:
+			if self.check_access:
+				raise
 
 	def get_next_version(self, version, components=[], errorsto='stderr'):
 		'''Check if a new patchlevel, minor or major release is available for the given version.
@@ -492,17 +519,20 @@ class UniventionUpdater:
 			{'major':version.major+1, 'minor':0              , 'patchlevel':0}
 			]:
 			repo = UCSRepoPool(prefix=self.server, part='maintained', **ver)
-			if self.server.access(repo.path())[1] is not None:
+			try:
+				assert self.server.access(repo.path())
 				for component in components:
 					mm_version = UCS_Version.FORMAT % ver
 					if not self.get_component_repositories(component, [mm_version], False, debug=debug):
 						if errorsto == 'stderr':
 							print >>sys.stderr, "An update to UCS %s without the component '%s' is not possible because the component '%s' is marked as required." % (mm_version, component, component)
 						elif errorsto == 'exception':
-							raise ExceptionUpdaterRequiredComponentMissing( mm_version, component )
+							raise RequiredComponentError( mm_version, component )
 						return None
 				else:
 					return UCS_Version.FULLFORMAT % ver
+			except DownloadError, e:
+				ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 		return None
 
 	def get_all_available_release_updates( self, ucs_version = None ):
@@ -524,7 +554,7 @@ class UniventionUpdater:
 		while ucs_version:
 			try:
 				ucs_version = self.get_next_version(UCS_Version(ucs_version), components, errorsto='exception')
-			except ExceptionUpdaterRequiredComponentMissing, e:
+			except RequiredComponentError, e:
 				# e.component blocks update to next version ==> return current list and blocking component
 				return result, e.component
 
@@ -547,13 +577,19 @@ class UniventionUpdater:
 			components = self.get_components()
 
 		mmp_version = UCS_Version(version)
+		current_components = self.get_current_components()
 		archs = ['all', 'extern'] + self.architectures
 
 		result = []
 		for server, ver in self._iterate_version_repositories(mmp_version, mmp_version, self.parts, archs):
 			result.append(ver.deb())
 		for component in components:
-			result += self.get_component_repositories(component, [mmp_version], False)
+			repos = self.get_component_repositories(component, [mmp_version], False)
+			if not repos and component in current_components:
+				server = self._get_component_server(component)
+				uri = server.join('%s/component/%s/' % (version, component))
+				raise ConfigurationError(uri, 'component not found')
+			result += repos
 		return result
 
 	def security_update_temporary_sources_list(self):
@@ -609,7 +645,7 @@ class UniventionUpdater:
 			If repository/online/component/%s/localmirror is not set, then the value of
 			repository/online/component/%s is used (backward compatibility).
 		'''
-		components = []
+		components = set()
 		for key in self.configRegistry.keys():
 			if key.startswith('repository/online/component/'):
 				component_part = key[len('repository/online/component/'):]
@@ -617,29 +653,29 @@ class UniventionUpdater:
 				if '/' not in component_part and (
 					( not only_localmirror_enabled and component_enabled ) or
 					( only_localmirror_enabled and self.configRegistry.is_true('repository/online/component/%s/localmirror' % component_part, component_enabled) ) ):
-					components.append(component_part)
+					components.add(component_part)
 		return components
 
 	def get_current_components(self):
 		'''Return all components marked as current.'''
 		all_components = self.get_components()
-		components = []
+		components = set()
 		for component in all_components:
 			key = 'repository/online/component/%s/version' % component
 			value = self.configRegistry.get(key, '')
 			versions = value.split(',')
 			if 'current' in versions:
-				components.append(component)
+				components.add(component)
 		return components
 
 	def get_all_components(self):
 		'''Retrieve all configured components from registry as list'''
-		components = []
+		components = set()
 		for key in self.configRegistry.keys():
 			if key.startswith('repository/online/component/'):
 				component_part = key.split('repository/online/component/')[1]
 				if component_part.find('/') == -1:
-					components.append(component_part)
+					components.add(component_part)
 		return components
 
 	def get_component(self, name):
@@ -663,26 +699,26 @@ class UniventionUpdater:
 			  COMPONENT_PERMISSION_DENIED     component is enabled but authentication failed
 			  COMPONENT_UNKNOWN				  component's status is unknown
 		"""
-		data = self.get_component(name)
-		if not self.configRegistry.is_true('repository/online/component/%s' % name, False):
+		if name not in self.get_components():
 			return self.COMPONENT_DISABLED
 
 		try:
-			lines = open(self.FN_UPDATER_APTSOURCES_COMPONENT,'r').readlines()
-		except:
+			comp_file = open(self.FN_UPDATER_APTSOURCES_COMPONENT, 'r')
+		except IOError, e:
 			return self.COMPONENT_UNKNOWN
-
 		rePath = re.compile('(un)?maintained/component/ ?%s/' % name)
-		for line in lines:
-			if line.startswith('deb ') and rePath.search(line):
-				# stop immediately if at least one repo has been found
-				return self.COMPONENT_AVAILABLE
-			elif line.startswith('# Authentication failure for') and rePath.search(line):
-				# stop immediately if at least one repo has authentication problems
-				return self.COMPONENT_PERMISSION_DENIED
-		# file contains no valid repo entry
-		return self.COMPONENT_NOT_FOUND
-
+		try:
+			for line in comp_file:
+				if line.startswith('deb ') and rePath.search(line):
+					# stop immediately if at least one repo has been found
+					return self.COMPONENT_AVAILABLE
+				elif 'credentials not accepted' in line:
+					# stop immediately if at least one repo has authentication problems
+					return self.COMPONENT_PERMISSION_DENIED
+			# file contains no valid repo entry
+			return self.COMPONENT_NOT_FOUND
+		finally:
+			comp_file.close()
 
 	def get_component_defaultpackage(self, componentname):
 		"""
@@ -723,17 +759,19 @@ class UniventionUpdater:
 		cmd = [ '/usr/bin/dpkg', '-s' ]
 		cmd.extend( pkglist )
 		p = subprocess.Popen( cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE )
-		stdout = p.communicate()[0]
+		stdout, stderr = p.communicate()
 		# count number of "Status: install ok installed" lines
 		installed_correctly = len([ x for x in stdout.splitlines() if x == 'Status: install ok installed' ])
 		# if pkg count and number of counted lines match, all packages are installed
 		return len(pkglist) == installed_correctly
 
 	def component_update_available(self):
+		"""Check if any component has new or upgradeable packages available."""
 		new, upgrade = self.component_update_get_packages()
 		return bool(new + upgrade)
 
 	def component_update_get_packages(self):
+		"""Return tuple with list of (new, upgradeable) packages."""
 		p1 = subprocess.Popen(['univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list; LC_ALL=C %s >/dev/null; LC_ALL=C %s' % (cmd_update, cmd_dist_upgrade_sim)],
 							  stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 		(stdout,stderr) = p1.communicate()
@@ -780,27 +818,38 @@ class UniventionUpdater:
 		# e.g. repository starts at 2.3-0, but called with start=2.0-0
 		findFirst = True
 		while ver <= end: # major
-			while server.access(ver.path())[1] is not None: # minor
-				findFirst = False
-				# reset patchlevel for each nested part
-				saved_patchlevel = ver.patchlevel
-				for ver.part in parts: # part
-					ver.patchlevel = saved_patchlevel
-					while server.access(ver.path())[1] is not None: # patchlevel
-						for ver.arch in archs: # architecture
-							if server.access(ver.path())[1] is not None:
-								yield ver
-						del ver.arch
-						if isinstance(ver.patch, basestring): # patchlevel not used
-							break
-						ver.patchlevel += 1
-						if ver > end:
-							break
-				del ver.part
-				ver.minor += 1
-				ver.patchlevel = ver.patchlevel_reset
-				if ver > end:
-					break
+			try:
+				while True:
+					assert server.access(ver.path()) # minor
+					findFirst = False
+					# reset patchlevel for each nested part
+					saved_patchlevel = ver.patchlevel
+					for ver.part in parts: # part
+						ver.patchlevel = saved_patchlevel
+						try:
+							while True:
+								assert server.access(ver.path()) # patchlevel
+								for ver.arch in archs: # architecture
+									try:
+										assert server.access(ver.path())
+										yield ver
+									except DownloadError, e:
+										ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+								del ver.arch
+								if isinstance(ver.patch, basestring): # patchlevel not used
+									break
+								ver.patchlevel += 1
+								if ver > end:
+									break
+						except DownloadError, e:
+							ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+					del ver.part
+					ver.minor += 1
+					ver.patchlevel = ver.patchlevel_reset
+					if ver > end:
+						break
+			except DownloadError, e:
+				ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 			if findFirst and ver.minor < 99:
 				ver.minor += 1
 				ver.patchlevel = ver.patchlevel_reset
@@ -888,8 +937,11 @@ class UniventionUpdater:
 					result.append( ver.clean() )
 				if self.sources:
 					ver.arch = "source"
-					if server.access(ver.path("Sources.gz"))[1] is not None:
+					try:
+						assert server.access(ver.path("Sources.gz"))
 						result.append( ver.deb("deb-src") )
+					except DownloadError, e:
+						ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
 		return '\n'.join(result)
 
@@ -933,8 +985,11 @@ class UniventionUpdater:
 					result.append( ver.clean() )
 				if self.sources:
 					ver.arch = "source"
-					if server.access(ver.path("Sources.gz"))[1] is not None:
+					try:
+						assert server.access(ver.path("Sources.gz"))
 						result.append( ver.deb("deb-src") )
+					except DownloadError, e:
+						ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
 		return '\n'.join(result)
 
@@ -996,7 +1051,7 @@ class UniventionUpdater:
 
 				else:
 					# if component is not enabled, then why is this method called?
-					raise ExceptionUpdaterCannotResolveComponentServer(component, for_mirror_list)
+					raise CannotResolveComponentServerError(component, for_mirror_list)
 
 			else:
 				# server/port for mirror.list
@@ -1007,24 +1062,41 @@ class UniventionUpdater:
 
 				else:
 					# if component is not enabled for mirroring, then why is this method called?
-					raise ExceptionUpdaterCannotResolveComponentServer(component, for_mirror_list)
+					raise CannotResolveComponentServerError(component, for_mirror_list)
 
 		prefix = self.configRegistry.get('repository/online/component/%s/prefix' % component, '')
 		username = self.configRegistry.get('repository/online/component/%s/username' % component, None)
 		password = self.configRegistry.get('repository/online/component/%s/password' % component, None)
 
 		server = UCSHttpServer(server=server, port=port, prefix='', username=username, password=password)
-		# allow None as a component prefix
-		if not prefix:
-			server2 = server + '/univention-repository/'
-			if server2.access('')[1] is not None:
-				server = server2
-			elif self.repository_prefix:
-				server3 = server + self.repository_prefix
-				if server3.access('')[1] is not None:
-					server = server3
-		elif prefix.lower() != 'none':
-			server = server + prefix
+		try:
+			# allow None as a component prefix
+			if not prefix:
+				server2 = server + '/univention-repository/'
+				try:
+					assert server2.access('')
+					server = server2
+				except DownloadError, e:
+					ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+					if self.repository_prefix:
+						server3 = server + self.repository_prefix
+						try:
+							assert server3.access('')
+							server = server3
+						except DownloadError, e:
+							ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+				return server # already validated or implicit /
+			elif prefix.lower() != 'none':
+				server = server + prefix
+			# Validate server settings
+			try:
+				assert server.access('')
+			except DownloadError, e:
+				uri, code = e
+				raise ConfigurationError(uri, 'non-existing prefix')
+		except ConfigurationError, e:
+			if self.check_access:
+				raise
 		return server
 
 	def _get_component_versions(self, component, start, end):
@@ -1067,8 +1139,11 @@ class UniventionUpdater:
 						result.append( ver.clean() )
 					if self.sources:
 						ver.arch = "source"
-						if server.access(ver.path("Sources.gz"))[1] is not None:
+						try:
+							assert server.access(ver.path("Sources.gz"))
 							result.append( ver.deb("deb-src") )
+						except DownloadError, e:
+							ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
 		# support different repository format without architecture (e.g. used by OX)
 		parts = self.configRegistry.get('repository/online/component/%s/parts' % component, 'maintained').split(',')
@@ -1077,10 +1152,13 @@ class UniventionUpdater:
 		for repo.version in versions:
 			for repo.part in ["%s/component" % part for part in parts]:
 				path = '%(version)s/%(part)s/%(patch)s/Packages.gz' % repo
-				if server.access(path)[1] is not None:
+				try:
+					assert server.access(path)
 					result.append('deb %(prefix)s%(version)s/%(part)s/%(patch)s/ ./' % repo)
 					if cleanComponent:
 						result.append('clean %(prefix)s%(version)s/%(part)s/%(patch)s/' % repo)
+				except DownloadError, e:
+					ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
 		return result
 
@@ -1100,10 +1178,12 @@ class UniventionUpdater:
 		foundFirst = False
 		for version.major in range(start.major, end.major + 1):
 			while (version.major, version.minor) <= (end.major, end.minor):
-				if self.server.access(version.path())[1] is not None:
+				try:
+					assert self.server.access(version.path())
 					result.append(UCS_Version(version))
-				elif foundFirst or version.minor > 99:
-					break
+				except DownloadError:
+					if foundFirst or version.minor > 99:
+						break
 				version.minor += 1
 			version.minor = 0
 
@@ -1123,7 +1203,13 @@ class UniventionUpdater:
 		result = []
 		for component in self.get_components(only_localmirror_enabled=for_mirror_list):
 			versions = self._get_component_versions(component, start, end)
-			result += self.get_component_repositories(component, versions, clean, for_mirror_list=for_mirror_list)
+			repos = self.get_component_repositories(component, versions, clean, for_mirror_list=for_mirror_list)
+			if versions and not repos:
+				server = self._get_component_server(component)
+				version = ','.join(map(str, versions))
+				uri = server.join('%s/component/%s/' % (version, component))
+				raise ConfigurationError(uri, 'component not found')
+			result += repos
 		return '\n'.join(result)
 
 
@@ -1190,19 +1276,19 @@ class UniventionUpdater:
 		yield "preup", "pre"
 		for (script, patch) in comp['preup']:
 			if call(script, 'pre', *args) != 0:
-				raise ExceptionUpdaterPrecondition('preup', 'pre', patch, script)
+				raise PreconditionError('preup', 'pre', patch, script)
 
 		# call $next_version/preup.sh
 		yield "preup", "main"
 		for (script, patch) in main['preup']:
 			if call(script, *args) != 0:
-				raise ExceptionUpdaterPrecondition('preup', 'main', patch, script)
+				raise PreconditionError('preup', 'main', patch, script)
 
 		# call component/preup.sh post $args
 		yield "preup", "post"
 		for (script, patch) in comp['preup']:
 			if call(script, 'post', *args) != 0:
-				raise ExceptionUpdaterPrecondition('preup', 'post', patch, script)
+				raise PreconditionError('preup', 'post', patch, script)
 
 		# call $update/commands/distupgrade or $update/commands/upgrade
 		yield "update", "main"
@@ -1211,19 +1297,19 @@ class UniventionUpdater:
 		yield "postup", "pre"
 		for (script, patch) in comp['postup']:
 			if call(script, 'pre', *args) != 0:
-				raise ExceptionUpdaterPrecondition('postup', 'pre', patch, script)
+				raise PreconditionError('postup', 'pre', patch, script)
 
 		# call $next_version/postup.sh
 		yield "postup", "main"
 		for (script, patch) in main['postup']:
 			if call(script, *args) != 0:
-				raise ExceptionUpdaterPrecondition('postup', 'main', patch, script)
+				raise PreconditionError('postup', 'main', patch, script)
 
 		# call component/postup.sh post $args
 		yield "postup", "post"
 		for (script, patch) in comp['postup']:
 			if call(script, 'post', *args) != 0:
-				raise ExceptionUpdaterPrecondition('postup', 'post', patch, script)
+				raise PreconditionError('postup', 'post', patch, script)
 
 		# clean up
 		yield "update", "post"
@@ -1240,9 +1326,11 @@ class UniventionUpdater:
 				name = '%s.sh' % phase
 				path = struct.path(name)
 				ud.debug(ud.ADMIN, ud.ALL, "Accessing %s" % path)
-				code, script = server.access(path, get=True)
-				if script is not None:
+				try:
+					code, script = server.access(path, get=True)
 					yield server, struct, phase, path, script
+				except DownloadError, e:
+					ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
 class LocalUpdater(UniventionUpdater):
 	"""Direct file access to local repository."""

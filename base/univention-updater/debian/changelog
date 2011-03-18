@@ -1,3 +1,9 @@
+univention-updater (6.0.75-1) unstable; urgency=low
+
+  * Overhaul errors handling in configuration (Bug #21127)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 17 Mar 2011 14:15:38 +0100
+
 univention-updater (6.0.74-1) unstable; urgency=low
 
   * commit mirror.list so security updates get mirrored too (Bug #19781)

@@ -38,14 +38,12 @@ import univention.config_registry as ucr
 import time
 import subprocess
 import traceback
-import socket
 import shlex
 
 import univention.updater
 from univention.updater.commands import cmd_dist_upgrade, cmd_update
 import univention.updater.tools
 
-updater = univention.updater.UniventionUpdater()
 updater_status = {}
 
 FN_STATUS = '/var/lib/univention-updater/univention-security-update.status'
@@ -105,20 +103,10 @@ def usage(fd=sys.stdout):
 def checkForUpdate(command):
 	""" Check for availability of security updates """
 	if command == 'local':
-		configRegistry = ucr.ConfigRegistry()
-		configRegistry.load()
-		repo_path = configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
-		next_security_version = "sec%d" % (int(updater.security_patchlevel) + 1)
-		for part in updater.parts:
-			if os.path.exists(os.path.join(repo_path, 'mirror', updater.ucs_version, part, next_security_version)):
-					return True
+		updater = univention.updater.LocalUpdater()
 	elif command == 'net':
-		try:
-			if updater.security_update_available():
-				return True
-		except socket.gaierror:
-			pass
-	return False
+		updater = univention.updater.UniventionUpdater()
+	return updater.security_update_available()
 
 def update_ucr_updatestatus():
 	try:
@@ -182,10 +170,15 @@ if __name__ == '__main__':
 		if opt == '--noupdate':
 			call_upgrade=False
 		elif opt == '--check':
-			if checkForUpdate(command):
-				sys.exit(1)	# reversed: 1=update available
-			else:
-				sys.exit(0)	# reversed: 0=no updates
+			try:
+				if checkForUpdate(command):
+					sys.exit(1)	# reversed: 1=update available
+				else:
+					sys.exit(0)	# reversed: 0=no updates
+			except Exception, e:
+				dprint(traceback.format_exc(), [fp_debug])
+				dprint("Failure to query repository: %s" % e)
+				sys.exit(0) # no updates available because of error :-(
 
 	if not univention.updater.tools.updater_lock_acquire():
 		print 'Another updater process is currently running - abort'
@@ -238,18 +231,12 @@ if __name__ == '__main__':
 		upgraded = None
 		while True:
 			try:
+				updater = univention.updater.UniventionUpdater()
 				nextupdate = updater.security_update_available()
-			except socket.gaierror, msg:
+			except univention.updater.ConfigurationError, e:
 				dprint(traceback.format_exc(), [fp_debug])
-
-				code, message = msg
-
-				if code == socket.EAI_NONAME:
-					dprint( 'Error: The name %s is not known.\n       Please check your network settings or set the UCR variable repository/online/server to a different value.' % (updater.repository_server), [fp_debug,sys.stderr] )
-				else:
-					dprint( 'Error: An error occurs during the connection to %s.\n       Please check your network settings and check the logfile %s' % (updater.repository_server, LOGFILE), [fp_debug,sys.stderr] )
+				dprint('Error: an error occured during the update: %s.\n\tPlease check the logfile %s' % (e, LOGFILE), [fp_debug, sys.stderr])
 				update_status( status='FAILED', errorsource='SETTINGS' )
-
 				sys.exit( 1 )
 
 			# we don't want an endless loop
@@ -308,7 +295,6 @@ if __name__ == '__main__':
 						os.unlink('/var/run/apt-get.lock')
 					if ret:
 						sys.exit( ret )
-			updater.ucr_reinit()
 
 		update_ucr_updatestatus()
 		update_status( status='DONE' )
