@@ -280,7 +280,7 @@ class DriveWizard( umcd.IWizard ):
 		if self.current == None:
 			# by default no paravirtual drive:
 			if not 'drive-paravirtual' in object.options:
-				object.options[ 'drive-paravirtual' ] = '0'
+				object.options[ 'drive-paravirtual' ] = False
 		if self.current == 0: # which drive type?
 			# initialize pool and image selection
 			self.pool_selected( object )
@@ -467,10 +467,10 @@ class DriveWizard( umcd.IWizard ):
 		if self.node_uri.startswith('qemu'):
 			disk.driver = 'qemu'
 			disk.driver_type = driver_type.lower()
-			if driver_pv == '1':
+			if driver_pv:
 				disk.target_bus = 'virtio'
 		elif self.node_uri.startswith('xen'):
-			if driver_pv == '1':
+			if driver_pv:
 				disk.target_bus = 'xen'
 			# Since UCS 2.4-2 Xen 3.4.3 contains the blktab2 driver
 			# from Xen 4.0.1
@@ -611,7 +611,7 @@ class InstanceWizard( umcd.IWizard ):
 				self.current = 0
 				return umcd.WizardResult( False, _( 'The selected profile could not be read! Without the information the new virtual instance can not be created. Ensure that the LDAP server can be reached.' ) )
 
-			ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: next: profile boot drives: %s' % str( self.profile[ 'bootdev' ] ) )
+			ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: next: profile: %s' % str( dict( self.profile ) ) )
 			object.options[ 'name' ] = self.profile[ 'name_prefix' ]
 			object.options[ 'os' ] = self.profile[ 'os' ]
 			if self.profile[ 'arch' ] == 'automatic':
@@ -657,7 +657,7 @@ class InstanceWizard( umcd.IWizard ):
 			if not self.drives:
 				self.drive_wizard.prev_first_page = True
 				# self.drive_wizard.show_paravirtual( self.profile[ 'virttech' ].endswith( '-hvm' ) )
-				# object.options[ 'drive-paravirtual' ] = self.profile[ 'pvdisk' ] == '1'
+				object.options[ 'drive-paravirtual' ] = object.options[ 'pvdisk' ] == '1'
 				self.new_drive( object )
 		return umcd.IWizard.next( self, object )
 
@@ -775,7 +775,7 @@ class InstanceWizard( umcd.IWizard ):
 				iface.source = object.options[ 'interface' ]
 				if object.options[ 'pvinterface' ] == '1' and domain_info.os_type == 'hvm':
 					if domain_info.domain_type == 'xen':
-						iface.model = 'xen'
+						iface.model = 'netfront'
 					elif domain_info.domain_type in ( 'kvm', 'qemu' ):
 						iface.model = 'virtio'
 				domain_info.interfaces = [iface,]

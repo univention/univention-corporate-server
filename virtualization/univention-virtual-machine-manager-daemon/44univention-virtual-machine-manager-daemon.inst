@@ -144,13 +144,6 @@ create_hvm_profile() {
 		--set kblayout="${locale_keymap}" \
 		--set pvdisk="$pv" \
 		--set pvinterface="$pv"
-	if [ "$VERSION" = "3" ]; then
-		univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
-			--dn "cn=${cn},cn=${virttech},cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-			--set os="$cn" \
-			--set pvdisk="$pv" \
-			--set pvinterface="$pv"
-	fi
 	if [ "$JS_LAST_EXECUTED_VERSION" -lt 4 ] && [ "$JS_LAST_EXECUTED_VERSION" -gt 0 ]; then
 		if [ "$uvmm_profile_autoupdate" != "false" ]; then
 			# update profile settings if uvmm/profile/autoupdate is not set to false
@@ -158,11 +151,17 @@ create_hvm_profile() {
 				--dn "cn=${cn},cn=${virttech},cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
 				--set diskspace="${diskspace}" \
 				--set arch="${arch}" \
-				--set ram="${ram}"
+				--set ram="${ram}" \
+				--set os="$cn" \
+				--set pvdisk="$pv" \
+				--set pvinterface="$pv"
 		else
 			univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
 				--dn "cn=${cn},cn=${virttech},cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-				--set diskspace="${diskspace}"
+				--set diskspace="${diskspace}" \
+				--set os="$cn" \
+				--set pvdisk="$pv" \
+				--set pvinterface="$pv"
 		fi
 	fi
 }
@@ -189,11 +188,6 @@ create_xen_profile() {
 		--set vnc=1 \
 		--set kblayout="${locale_keymap}" \
 		--set advkernelconf=FALSE
-	if [ "$VERSION" = "3" ]; then
-		univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
-			--dn "cn=${cn},cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-			--set os="$cn"
-	fi
 	if [ "$JS_LAST_EXECUTED_VERSION" -lt 4 ] && [ "$JS_LAST_EXECUTED_VERSION" -gt 0 ]; then
 		if [ "$uvmm_profile_autoupdate" != "false" ]; then
 			# update profile settings if uvmm/profile/autoupdate is not set to false
@@ -201,11 +195,13 @@ create_xen_profile() {
 				--dn "cn=${cn},cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
 				--set diskspace="${diskspace}" \
 				--set arch="${arch}" \
-				--set ram="${ram}"
+				--set ram="${ram}" \
+				--set os="${cn}"
 		else
 			univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
 				--dn "cn=${cn},cn=xen,cn=Profiles,cn=Virtual Machine Manager,$ldap_base" \
-				--set diskspace="${diskspace}"
+				--set diskspace="${diskspace}" \
+				--set os="${cn}"
 		fi
 	fi
 }

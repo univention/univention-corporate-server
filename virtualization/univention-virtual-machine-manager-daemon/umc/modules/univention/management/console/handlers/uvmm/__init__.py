@@ -861,7 +861,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				if iface.model:
 					nic_driver = iface.model
 				else:
-					nic_driver = ''
+					nic_driver = 'rtl8139'
 
 				if domain_is_off and not domain_has_snapshots:
 					remove_cmd.options[ 'iface' ] = copy.copy( iface.source )
@@ -870,7 +870,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				else:
 					buttons = []
 
-				nic_list.add_row( [ nic_type, iface.source, nic_driver, iface.mac_address, buttons ] )
+				nic_list.add_row( [ nic_type, iface.source, nic_driver_select.description( nic_driver ), iface.mac_address, buttons ] )
 
 		nic_sec.add_row( [ nic_list ] )
 

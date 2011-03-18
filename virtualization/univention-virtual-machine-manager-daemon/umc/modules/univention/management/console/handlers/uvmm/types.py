@@ -119,29 +119,21 @@ class NIC_DriverSelect( umc.StaticSelection ):
 	def __init__( self, virttech = None ):
 		umc.StaticSelection.__init__( self, _( 'Driver' ) )
 		self.virttech = virttech
-		self._xen = ( ( 'auto', _( 'Automatic' ) ),
-					   ( 'netfront', _( 'Paravirtual device' ) ),
-					   ( 'rtl8139', 'RealTek RTL-8139' ),
+		self._list = ( ( 'rtl8139', _( 'Default (RealTek RTL-8139)' ) ),
 					   ( 'e1000', 'Intel PRO/1000' ),
-					   ( 'ne2k_pci', 'PCI NE2000' ),
-					   ( 'pcnet', 'PCnet32, PCnetPCI' )
 					   )
-		self._kvm = ( ( 'auto', _( 'Automatic' ) ),
-					   ( 'virtio', _( 'Paravirtual device' ) ),
-					   ( 'rtl8139', 'RealTek RTL-8139' ),
-					   ( 'e1000', 'Intel PRO/1000' ),
-					   ( 'i82551', 'Intel 82551' ),
-					   ( 'i82557b', 'Intel EtherExpress Pro 10/100B' ),
-					   ( 'i82559er', 'Intel 82559ER' ),
-					   ( 'ne2k_pci', 'PCI NE2000' ),
-					   ( 'pcnet', 'PCnet32, PCnetPCI' )
-					   )
+		self._xen = ( ( 'netfront', _( 'Paravirtual device (xen)' ) ), )
+		self._kvm = ( ( 'virtio', _( 'Paravirtual device (virtio)' ) ), )
+		self._all = self._kvm + self._xen + self._list
+
+	def description( self, key ):
+		return dict( self._all ).get( key, _( 'Unknown' ) )
 
 	def choices( self ):
 		if self.virttech == 'xen':
-			return self._xen
+			return self._xen + self._list
 		elif self.virttech in ( 'kvm', 'qemu' ):
-			return self._kvm
+			return self._kvm + self._list
 		return ()
 
 class DiskSelect( umc.StaticSelection ):
