@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.186-3) unstable; urgency=low
+
+  * Split help text into three rows (Bug #21879)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 18 Mar 2011 13:43:59 +0100
+
 univention-virtual-machine-manager-daemon (0.9.186-2) unstable; urgency=low
 
   * Added missing check script from last commit (Bug #21874)
