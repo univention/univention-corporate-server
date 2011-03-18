@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (0.1.23-2) unstable; urgency=low
+
+  * Fix naming of ucr in libvirtd-acl.py (Bug #19828)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 18 Mar 2011 13:41:04 +0100
+
 univention-virtual-machine-manager-node (0.1.23-1) unstable; urgency=low
 
   * Disable no_irqchip parameter by default because this makes some

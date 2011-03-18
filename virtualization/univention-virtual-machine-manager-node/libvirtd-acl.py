@@ -35,11 +35,12 @@
 
 name='libvirtd-acl'
 description='Update Univention Virtual Machine Manager libvirtd permissions'
+#filter='(|(objectClass=univentionHost)(&(objectClass=univentionVirtualMachineGroupOC)(univentionVirtualMachineGroup=1)))'
 filter='(objectClass=univentionHost)'
 attributes=['univentionService']
 
 import listener
-import univention.config_registry as ucr
+from univention.config_registry import ConfigRegistry, handler_set
 import univention.debug as debug
 import subprocess
 
@@ -52,9 +53,9 @@ def initialize():
 
 def handler(dn, new, old):
 	"""Called on each change."""
-	reg = ucr.ConfigRegistry()
-	reg.load()
-	value = reg.get('uvmm/managers','')
+	ucr = ConfigRegistry()
+	ucr.load()
+	value = ucr.get('uvmm/managers','')
 	debug.debug(debug.LISTENER, debug.ALL, "old hosts: %s" % value)
 	tls_allowed_dn_list = value.split()
 
@@ -86,7 +87,7 @@ def handler(dn, new, old):
 		key_value = 'uvmm/managers=%s' % (value,)
 		listener.setuid(0)
 		try:
-			ucr.handler_set([key_value])
+			handler_set([key_value])
 			global need_restart
 			need_restart = True
 		finally:
