@@ -591,9 +591,9 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 						grouplist.append(domain_member)
 		# migrate? if parameter set and state is not paused and more than two physical servers are available
 		if len(grouplist) < 2:
-			ud.debug( ud.ADMIN, ud.INFO, 'Migration button is disabled. At least two servers with the same virtualization tecvhnologie in this group are required.' )
+			ud.debug( ud.ADMIN, ud.INFO, 'Migration button is disabled. At least two servers with the same virtualization technologie in this group are required.' )
 		elif self._show_op( 'migrate', node_uri ) and operations and domain_info.state != 3:
-			cmd = umcp.SimpleCommand( 'uvmm/domain/migrate', options = { 'group' : grouplist, 'source' : node_info.name, 'domain' : domain_info.name } )
+			cmd = umcp.SimpleCommand( 'uvmm/domain/migrate', options = { 'group' : object.options['group'], 'grouplist': grouplist, 'source' : node_info.name, 'domain' : domain_info.name } )
 			buttons.append( umcd.LinkButton( _( 'Migrate' ), actions = [ umcd.Action( cmd ) ] ) )
 			buttons.append( comma )
 
@@ -1044,7 +1044,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			ud.debug( ud.ADMIN, ud.INFO, 'Domain migrate: %s, %s, %s' % ( src_uri, dest_uri, domain_info ) )
 			resp = self.uvmm.domain_migrate( src_uri, dest_uri, domain_info.uuid )
 		else:
-			dest_node_select.update_choices( [ domain_info.name for domain_info in object.options['group'] ], object.options[ 'source' ] )
+			dest_node_select.update_choices( [ domain_info.name for domain_info in object.options['grouplist'] ], object.options[ 'source' ] )
 			content.set_header( [ umcd.Text( _( 'Migrate virtual instance %(domain)s from physical server %(source)s to:' ) % object.options ) ] )
 			dest = umcd.make( self[ 'uvmm/domain/migrate' ][ 'dest' ] )
 			content.add_row( [ dest, '' ] )
