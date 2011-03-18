@@ -163,10 +163,7 @@ class DriveCommands( object ):
 			domain_info.disks = new_disks
 			resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
 
-			if rm_disk and rm_disk.type == uvmmn.Disk.TYPE_BLOCK:
-				drive = object.options[ 'disk' ]
-			else:
-				drive = os.path.basename( object.options[ 'disk' ] )
+			drive = os.path.basename( object.options[ 'disk' ] )
 			if self.uvmm.is_error( resp ):
 				res.status( 301 )
 				self.finished( object.id(), res, report = _( 'Detaching the drive <i>%(drive)s</i> failed' ) % { 'drive' : drive } )

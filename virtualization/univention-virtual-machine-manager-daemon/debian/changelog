@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.191-1) unstable; urgency=low
+
+  * strip /dev/ from block device options in web frontend
+  * if entered path for block device is not absolute prepend /dev/; Bug #19574
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 18 Mar 2011 17:25:25 +0100
+
 univention-virtual-machine-manager-daemon (0.9.190-1) unstable; urgency=low
 
   * The profile options for para-virtual devices were not interpreted anymore
