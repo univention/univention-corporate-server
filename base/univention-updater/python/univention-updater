@@ -545,8 +545,10 @@ if __name__ == '__main__':
 		sys.exit(0)
 
 	fd_log = open(LOGNAME, 'a+')
-	if not univention.updater.tools.updater_lock_acquire():
-		print 'Another updater process is currently running - abort'
+	try:
+		lock = univention.updater.tools.updater_lock_acquire()
+	except univention.updater.tools.LockingError, e:
+		print >>sys.stderr, e
 		sys.exit(5)
 	try:
 		try:
@@ -602,7 +604,7 @@ if __name__ == '__main__':
 			sys.exit(0)
 	finally:
 		fd_log.close()
-		if not univention.updater.tools.updater_lock_release():
+		if not univention.updater.tools.updater_lock_release(lock):
 			print 'WARNING: updater-lock already released!'
 		try:
 			remove_temporary_sources_list()

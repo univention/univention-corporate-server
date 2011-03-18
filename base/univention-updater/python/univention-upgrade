@@ -308,11 +308,13 @@ def main():
 			univention.config_registry.handler_set( [ '%s=no' % UCR_UPDATE_AVAILABLE] )
 
 if __name__ == '__main__':
-	if not univention.updater.tools.updater_lock_acquire():
-		print 'Another updater process is currently running - abort'
-		sys.exit(1)
+	try:
+		lock = univention.updater.tools.updater_lock_acquire()
+	except univention.updater.tools.LockingError, e:
+		print >>sys.stderr, e
+		sys.exit(5)
 	try:
 		main()
 	finally:
-		if not univention.updater.tools.updater_lock_release():
+		if not univention.updater.tools.updater_lock_release(lock):
 			print 'WARNING: updater-lock already released!'

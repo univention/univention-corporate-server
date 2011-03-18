@@ -380,9 +380,11 @@ def main():
 					os.system('/usr/sbin/univention-pkgdb-scan > /dev/null')
 
 if __name__ == '__main__':
-	if not univention.updater.tools.updater_lock_acquire():
-		print 'Another updater process is currently running - abort'
-		sys.exit(1)
+	try:
+		lock = univention.updater.tools.updater_lock_acquire()
+	except univention.updater.tools.LockingError, e:
+		print >>sys.stderr, e
+		sys.exit(5)
 	try:
 		failure = '/var/lib/univention-updater/update-failed'
 		if os.path.exists(failure):
@@ -404,5 +406,5 @@ if __name__ == '__main__':
 		main()
 		sys.exit(0)
 	finally:
-		if not univention.updater.tools.updater_lock_release():
+		if not univention.updater.tools.updater_lock_release(lock):
 			print 'WARNING: updater-lock already released!'

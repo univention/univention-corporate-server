@@ -128,9 +128,11 @@ if __name__ == '__main__':
 		print msg
 		sys.exit(1)
 
-	if not univention.updater.tools.updater_lock_acquire():
-		print 'Another updater process is currently running - abort'
-		sys.exit(1)
+	try:
+		lock = univention.updater.tools.updater_lock_acquire()
+	except univention.updater.tools.LockingError, e:
+		print >>sys.stderr, e
+		sys.exit(5)
 	try:
 		source_dirs=[]
 		for opt, val in opts:
@@ -189,5 +191,5 @@ if __name__ == '__main__':
 		urepo.update_indexes( packages_dir, stdout = fp_debug, stderr = fp_debug )
 		fp_debug.close()
 	finally:
-		if not univention.updater.tools.updater_lock_release():
+		if not univention.updater.tools.updater_lock_release(lock):
 			print 'WARNING: updater-lock already released!'

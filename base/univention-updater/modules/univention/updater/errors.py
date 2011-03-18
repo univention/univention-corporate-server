@@ -71,3 +71,7 @@ class ProxyError(ConfigurationError):
 	def __str__(self):
 		return "Proxy configuration error: %s" % self.args[1]
 
+class LockingError(UpdaterException):
+	"""Signal other updater process running."""
+	def __str__(self):
+		return "Another updater process is currently running - abort\n%s" % self.args[0]

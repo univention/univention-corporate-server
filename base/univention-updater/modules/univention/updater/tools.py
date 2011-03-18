@@ -1346,9 +1346,10 @@ class LocalUpdater(UniventionUpdater):
 
 __UPDATER_LOCK_FILE_NAME='/var/lock/univention-updater'
 def updater_lock_acquire(timeout=0):
-	'''Acquire the updater-lock
-	Returns True if it could be acquired within <timeout> seconds
-	Returns False otherwise'''
+	'''Acquire the updater-lock.
+	Returns 0 if it could be acquired within <timeout> seconds.
+	Returns a value >= 1 if locked by parent.
+	Returns LockingError otherwise.'''
 	deadline = time.time() + timeout
 	my_pid = "%d\n" % os.getpid()
 	parent_pid = "%d\n" % os.getppid()
@@ -1358,7 +1359,7 @@ def updater_lock_acquire(timeout=0):
 			bytes_written = os.write(lock_fd, my_pid)
 			assert bytes_written == len(my_pid)
 			os.close(lock_fd)
-			return True
+			return 0
 		except OSError, error:
 			if error.errno == errno.EEXIST:
 				try:
@@ -1368,15 +1369,15 @@ def updater_lock_acquire(timeout=0):
 					finally:
 						os.close(lock_fd)
 					if my_pid == lock_pid:
-						return True
+						return 0
 					if parent_pid == lock_pid: # u-repository-* called from u-updater
-						return True
+						return 1
 					else:
 						try:
 							os.kill(int(lock_pid), 0)
 						except ValueError, e:
-							print >>sys.stderr, 'Invalid PID %s in lockfile %s.' % (lock_pid, __UPDATER_LOCK_FILE_NAME)
-							return False
+							msg = 'Invalid PID %s in lockfile %s.' % (lock_pid, __UPDATER_LOCK_FILE_NAME)
+							raise LockingError(msg)
 						except OSError, error:
 							if error.errno == errno.ESRCH:
 								print >>sys.stderr, 'Stale PID %s in lockfile %s, removing.' % (lock_pid, __UPDATER_LOCK_FILE_NAME)
@@ -1386,16 +1387,20 @@ def updater_lock_acquire(timeout=0):
 				except OSError, error:
 					pass
 				if time.time() > deadline:
-					return False # TODO: Better return lock_pid for error reporting like "Lock stale or held my process %(pid)d"? 
+					msg = 'Timeout: still locked by PID %d. Check lockfile %s' % (lock_pid, __UPDATER_LOCK_FILE_NAME)
+					raise LockingError(msg)
 				else:
 					time.sleep(1)
 			else:
 				raise
 
-def updater_lock_release():
-	'''Release the updater-lock
-	Returns True if it has been unlocked
-	Returns False if it was already unlocked'''
+def updater_lock_release(lock):
+	'''Release the updater-lock.
+	Returns True if it has been unlocked (or decremented when nested).
+	Returns False if it was already unlocked.'''
+	if lock > 0:
+		# parent process still owns the lock, do nothing and just return success
+		return True
 	try:
 		os.remove(__UPDATER_LOCK_FILE_NAME)
 		return True

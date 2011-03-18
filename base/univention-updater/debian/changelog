@@ -1,3 +1,9 @@
+univention-updater (6.0.77-1) unstable; urgency=low
+
+  * Handle unlock after nested updater->mirror invocation (Bug #15144)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 18 Mar 2011 12:19:03 +0100
+
 univention-updater (6.0.76-1) unstable; urgency=low
 
   * added repository/online/architectures (Bug #18911)
