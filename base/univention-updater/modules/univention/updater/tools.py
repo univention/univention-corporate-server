@@ -483,6 +483,11 @@ class UniventionUpdater:
 		# should hotfixes be used
 		self.hotfixes = self.configRegistry.is_true('repository/online/hotfixes', False)
 
+		# override automatically detected architecture by UCR variable repository/online/architectures (comma or space separated)
+		archlist = self.configRegistry.get('repository/online/architectures', '')
+		if archlist:
+			self.architectures = re.split('[ ,]+', archlist)
+
 		# UniventionMirror needs to provide its own settings
 		self.config_repository()
 

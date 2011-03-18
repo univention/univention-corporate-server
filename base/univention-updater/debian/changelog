@@ -1,3 +1,11 @@
+univention-updater (6.0.76-1) unstable; urgency=low
+
+  * added repository/online/architectures (Bug #18911)
+    given architectures (space separated) will be included in local
+    sources.list
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 18 Mar 2011 11:21:14 +0100
+
 univention-updater (6.0.75-1) unstable; urgency=low
 
   * Overhaul errors handling in configuration (Bug #21127)

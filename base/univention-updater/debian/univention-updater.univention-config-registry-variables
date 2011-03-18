@@ -124,6 +124,13 @@ Description[en]=HTTP methode for testing the availability of updates [HEAD]
 Type=str
 Categories=service-software-management
 
+[repository/online/architectures]
+Description[de]=Liste der einzubindenden Architekturen, durch Leerzeichen getrennt
+Description[en]=List of architectures to be used on local system, space separated
+Type=str
+Categories=service-software-management
+
+
 [repository/mirror]
 Description[de]=Aktiviere/Deaktiviere das Spiegeln der Pakete in das lokale Repository [yes]
 Description[en]=Enable/Disable mirroring packages into the local repository [yes]
