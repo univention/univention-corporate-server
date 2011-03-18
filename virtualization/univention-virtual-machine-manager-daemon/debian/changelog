@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.186-1) unstable; urgency=low
+
+  * Added a simple uvmmd check scripts which restarts the uvmmd if the
+    daemon does not answer. Self-healing software ... (Bug #21874)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Mar 2011 10:23:30 +0100
+
 univention-virtual-machine-manager-daemon (0.9.185-2) unstable; urgency=low
 
   * Add help text to hard disk settings dialogue (Bug #21879)

@@ -29,6 +29,8 @@ install:: install-modules install-locales install-images
 	install -m 0755 -d $(DESTDIR)/var/www
 	install -m 0444 -t $(DESTDIR)/var/www TightVncViewer.jar
 	install -m 0755 -d $(DESTDIR)/usr/share/man/man8
+	install -m 0755 -d $(DESTDIR)/usr/lib/univention-virtual-machine-manager-daemon
+	install -m 0755 -t $(DESTDIR)/usr/lib/univention-virtual-machine-manager-daemon uvmmd-check.sh
 	install -m 0644 -t $(DESTDIR)/usr/share/man/man8 doc/*.8
 	install -m 0755 -d $(DESTDIR)/usr/lib/univention-directory-listener/system
 	install -m 0644 -t $(DESTDIR)/usr/lib/univention-directory-listener/system uvmmd-nodes.py
@@ -50,6 +52,8 @@ uninstall:
 	-rmdir -p $(DESTDIR)/etc/univention
 	$(RM) $(DESTDIR)/var/www/TightVncViewer.jar
 	-rmdir -p $(DESTDIR)/var/www
+	$(RM) $(DESTDIR)/usr/lib/univention-virtual-machine-manager-daemon/uvmmd-check.sh
+	-rmdir -p $(DESTDIR)/usr/lib/univention-virtual-machine-manager-daemon
 	$(RM) $(DESTDIR)/usr/lib/univention-directory-listener/system/uvmmd-nodes.py
 	$(RM) $(DESTDIR)/usr/lib/univention-directory-listener/system/uvmmd-ldap.py
 	-rmdir -p $(DESTDIR)/usr/lib/univention-directory-listener/system

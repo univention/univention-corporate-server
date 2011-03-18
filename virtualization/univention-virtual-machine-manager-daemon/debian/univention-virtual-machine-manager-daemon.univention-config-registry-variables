@@ -69,3 +69,15 @@ Description[de]=Xen Images als blktap2 Devices anlegen. Ab UCS 2.4-2 ist dies un
 Description[en]=Create Xen images as blktap2 devices. It is supported and enabled by default since UCS 2.4-2.
 Type=bool
 Categories=uvmm
+
+[uvmm/check/interval]
+Description[de]=Intervall in Minuten für die Überprüfung des UVMM-Dienstes. 0 deaktiviert die Prüfung.
+Description[en]=Interval in minutes for the check of the UVMM daemon. 0 disables the check.
+Type=int
+Categories=uvmm
+
+[uvmm/check/timeout]
+Description[de]=Timeout in Sekunden in dem der UVMM-Dienst auf die Überprüfung antworten muss (Default: 5)
+Description[en]=Timeout in seconds in which the UVMM daemon must reply on the check (Default: 5)
+Type=int
+Categories=uvmm
