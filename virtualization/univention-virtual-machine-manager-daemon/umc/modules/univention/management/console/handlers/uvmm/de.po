@@ -650,6 +650,11 @@ msgstr ""
 "Migriere die virtuelle Instanz %(domain)s vom physikalischen Server %(source)"
 "s zu:"
 
+#: umc/modules/univention/management/console/handlers/uvmm/__init__.py:858
+#, python-format
+msgid "Migrate %(domain)s"
+msgstr "Migriere %(domain)s"
+
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:169
 #: umc/modules/univention/management/console/handlers/uvmm/__init__.py:170
 msgid "Migration of virtual instances"

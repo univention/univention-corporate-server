@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.189-1) unstable; urgency=low
+
+  * Make the migration layout more standard (Bug #21865)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Mar 2011 16:19:41 +0100
+
 univention-virtual-machine-manager-daemon (0.9.188-1) unstable; urgency=low
 
   * Don't overwrite the group parameter for the migration command,

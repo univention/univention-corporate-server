@@ -1036,7 +1036,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			self.finished(object.id(), res)
 			return
 
-		content = umcd.List( default_type = 'uvmm_table' )
+		content = umcd.List( )
 		if 'dest' in object.options:
 			src_uri = self.uvmm.node_name2uri( object.options[ 'source' ] )
 			dest_uri = self.uvmm.node_name2uri( object.options[ 'dest' ] )
@@ -1044,8 +1044,8 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			ud.debug( ud.ADMIN, ud.INFO, 'Domain migrate: %s, %s, %s' % ( src_uri, dest_uri, domain_info ) )
 			resp = self.uvmm.domain_migrate( src_uri, dest_uri, domain_info.uuid )
 		else:
-			dest_node_select.update_choices( [ domain_info.name for domain_info in object.options['grouplist'] ], object.options[ 'source' ] )
-			content.set_header( [ umcd.Text( _( 'Migrate virtual instance %(domain)s from physical server %(source)s to:' ) % object.options ) ] )
+			dest_node_select.update_choices( [ domain_info.name for domain_info in object.options.get('grouplist') ], object.options[ 'source' ] )
+			content.add_row( [ umcd.Text( _( 'Migrate virtual instance %(domain)s from physical server %(source)s to:' ) % object.options , attributes = { 'colspan' : '2' } ) ] )
 			dest = umcd.make( self[ 'uvmm/domain/migrate' ][ 'dest' ] )
 			content.add_row( [ dest, '' ] )
 			opts = copy.copy( object.options )
@@ -1056,7 +1056,8 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			cmd_failure = umcd.Action( umcp.SimpleCommand( 'uvmm/domain/overview', options = opts2 ), status_range = umcd.Action.FAILURE )
 
 			content.add_row( [ '', umcd.Button( _( 'Migrate' ), actions = [ umcd.Action( umcp.SimpleCommand( 'uvmm/domain/migrate', options = object.options ), [ dest.id() ] ), cmd_success, cmd_failure ], default = True ) ] )
-			res.dialog[ 0 ].set_dialog( content )
+			sec = umcd.Section( _( 'Migrate %(domain)s' ) % object.options,  content, attributes = { 'width' : '100%' } )
+			res.dialog[ 0 ].set_dialog( sec )
 			resp = None
 
 		if resp and self.uvmm.is_error( resp ):
