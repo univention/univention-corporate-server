@@ -68,7 +68,7 @@ class TreeView( object ):
 		return link
 
 	@staticmethod
-	def convert(data, current, level=0, options={}, additional_buttons={}, uvmm=None, node_uri=None, cache={}):
+	def convert(data, current, level=0, options={}, additional_buttons={}, uvmm=None, node_uri=None, cache=None):
 		"""
 		Convert nested list|tuple into TreeView of buttons.
 		Depth-first recursion which creation on return path.
@@ -89,6 +89,8 @@ class TreeView( object ):
 				node_info = cache.setdefault(node_uri, uvmm.get_node_info(node_uri))
 			return node_info
 
+		if cache is None:
+			cache = {}
 		treedata = []
 		opt = TreeView.LEVELS[ level ]
 		command = 'uvmm/%s/overview' % opt
@@ -96,9 +98,9 @@ class TreeView( object ):
 		icon = 'uvmm/' + opt
 
 		for item in data:
-			if item == None:
+			if item is None:
 				continue
-			if type( item ) not in ( list, tuple ):
+			if not isinstance(item, (list, tuple)):
 				options[ opt ] = item
 				if level == 2:
 					node_uri = uvmm.node_name2uri( item )
@@ -120,7 +122,11 @@ class TreeView( object ):
 				elif level == 3:
 					if item == 'Domain-0':
 						continue
+					if node_uri is None:
+						continue
 					node_info = get_node_info(node_uri)
+					if node_info is None:
+						continue
 					icon = 'uvmm/domain'
 					for domain_info in node_info.domains:
 						if domain_info.name == item:
@@ -170,10 +176,13 @@ class TreeView( object ):
 
 	@staticmethod
 	def get_tree( uvmm_client, current ):
-		additional_buttons = { 2 : ( ( _( 'Add' ), 'uvmm/add', 'uvmm/domain/create', { 'domain' : 'NONE' } ), ) }
+		node_tree = uvmm_client.get_node_tree()
+		additional_buttons = {
+				2: (
+					(_('Add'), 'uvmm/add', 'uvmm/domain/create', {'domain': 'NONE'}),
+					)
+				}
+		tree_view = TreeView.convert(node_tree, current, additional_buttons=additional_buttons, uvmm=uvmm_client, cache={})
 		table = umcd.SimpleTreeTable( collapsible = 2 )
-		table.set_tree_data( TreeView.convert( uvmm_client.get_node_tree(), current, additional_buttons = additional_buttons, uvmm = uvmm_client, cache = {} ) )
-
+		table.set_tree_data(tree_view)
 		return table
-
-

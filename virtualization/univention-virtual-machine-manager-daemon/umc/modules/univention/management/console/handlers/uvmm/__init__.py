@@ -840,7 +840,6 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		if domain_info and domain_info.interfaces:
 			defaults = []
 			overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = copy.copy( object.options ) )
-			storage_volumes = {}
 			for iface in domain_info.interfaces:
 				opts = copy.copy( object.options )
 				opts[ 'nictype' ] = iface.map_type( id = iface.type )

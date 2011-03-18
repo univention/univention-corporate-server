@@ -44,6 +44,7 @@ import univention.management.console.tools as umct
 from univention.uvmm import protocol, node
 
 import univention.debug as ud
+import traceback
 
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
@@ -56,9 +57,10 @@ class ConnectionError(UvmmError):
 	pass
 
 class Bus( object ):
+	"""Periphery bus like IDE-, SCSI-, Xen-, VirtIO-Bus."""
 	def __init__( self, name, prefix, default = False ):
 		self._next_letter = 'a'
-		self._connected = []
+		self._connected = set()
 		self.name = name
 		self.prefix = prefix
 		self.default = default
@@ -67,31 +69,36 @@ class Bus( object ):
 		return dev.target_bus == self.name or ( not dev.target_bus and self.default )
 
 	def attach( self, devices ):
+		"""Register each device in devices list at bus."""
 		for dev in devices:
 			if dev.target_dev:
 				letter = dev.target_dev[ -1 ]
-				if not letter in self._connected:
-					self._connected.append( letter )
+				self._connected.add(letter)
 
 	def connect( self, dev ):
+		"""Connect new device at bus and assign new drive letter."""
 		if not self.compatible( dev ) or dev.target_dev:
 			return False
-		self.__next_letter()
+		self.next_letter()
 		dev.target_dev = self.prefix % self._next_letter
-		self._connected.append( self._next_letter )
-		self.__next_letter()
+		self._connected.add(self._next_letter)
+		self.next_letter()
 		return True
 
-	def __next_letter( self ):
-		if not self._next_letter in self._connected:
-			return self._next_letter
-		self._next_letter = chr( ord( self._next_letter ) + 1 )
+	def next_letter( self ):
+		"""Find and return next un-used drive letter.
+		>>> b = Bus('', '')
+		>>> b._next_letter = 'a' ; b._connected.add('a') ; b.next_letter()
+		'b'
+		>>> b._next_letter = 'z' ; b._connected.add('z') ; b.next_letter()
+		'aa'
+		"""
 		while self._next_letter in self._connected:
 			self._next_letter = chr( ord( self._next_letter ) + 1 )
-
 		return self._next_letter
 
 class Client( notifier.signals.Provider ):
+	"""Connection to UVMMd."""
 	def __init__( self, unix_socket = '/var/run/uvmm.socket', auto_connect = True ):
 		notifier.signals.Provider.__init__( self )
 		self._socket = None
@@ -187,7 +194,7 @@ class Client( notifier.signals.Provider ):
 		self.signal_disconnect( 'received', self._signal_received )
 
 		if self.is_error( self._packet ):
-			ud.debug( ud.ADMIN, ud.ERROR, 'UVMM: request failed: %s' % self._packet.msg )
+			ud.debug( ud.ADMIN, ud.INFO, 'UVMM: failure received: %s' % self._packet.msg )
 
 		return self._packet
 
@@ -213,6 +220,10 @@ class Client( notifier.signals.Provider ):
 		return isinstance( response, protocol.Response_ERROR )
 
 	def get_node_info( self, node_uri ):
+		"""Retrieve information for node_uri."""
+		if node_uri is None:
+			ud.debug(ud.ADMIN, ud.ALL, "Invalid node_uri: %r" % traceback.format_list(traceback.extract_stack()))
+			return None
 		req = protocol.Request_NODE_QUERY()
 		req.uri = node_uri
 		if not self.send( req.pack() ):
@@ -331,6 +342,15 @@ class Client( notifier.signals.Provider ):
 		return group
 
 	def get_node_tree( self ):
+		"""Return tree of names for all groups, nodes, and domains.
+		[
+		 [group_name, [
+		               node_name, [domain, ...],
+		               node_name, None,
+		               ...
+		              ],
+		 ],
+		]"""
 		req = protocol.Request_GROUP_LIST()
 		if not self.send( req.pack() ):
 			raise ConnectionError()
@@ -589,9 +609,13 @@ class Client( notifier.signals.Provider ):
 		return False
 
 if __name__ == '__main__':
+	import doctest
+	doctest.testmod()
+
 	notifier.init()
 
 	notifier.timer_add( 1000, lambda: True )
 	c = Client()
-	print c.get_node_tree()
+	import pprint
+	pprint.pprint(c.get_node_tree())
 	notifier.loop()
