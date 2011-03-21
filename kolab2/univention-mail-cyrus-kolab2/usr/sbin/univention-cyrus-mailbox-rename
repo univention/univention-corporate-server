@@ -170,7 +170,7 @@ if prefix == 'user':
 			if os.path.exists(src_subfile):
 				os.renames(src_subfile, dst_subfile)
 				fix_permissions(dst_subfile, 0700, 0600, 'cyrus', 'mail', lastitems=4)
-				call(["/bin/sed", "-i", "-e", 's|^%s!user.%s|%s!user.%s|g' % (src_domainpart, src_userpart, dst_domainpart, dst_userpart), dst_subfile])
+				call(["/bin/sed", "-i", "-e", 's|^%s!user.%s|%s!user.%s|g' % (src_domainpart, src_userpart_modified, dst_domainpart, dst_userpart_modified), dst_subfile])
 		else:
 			print >>sys.stderr, "Warning: Source sieve directory did not exist"
 

@@ -1,3 +1,10 @@
+univention-mail-cyrus-kolab2 (3.0.25-1) unstable; urgency=low
+
+  * fixed renaming of folder subscriptions in
+    univention-cyrus-mailbox-rename (Bug #21923)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 21 Mar 2011 15:39:33 +0100
+
 univention-mail-cyrus-kolab2 (3.0.24-1) unstable; urgency=low
 
   * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)
