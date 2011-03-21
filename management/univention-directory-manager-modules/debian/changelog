@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.116-1) unstable; urgency=low
+
+  * fixed handling of read-only attribute fqdn; Bug #21493
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 21 Mar 2011 17:20:44 +0100
+
 univention-directory-manager-modules (6.0.115-1) unstable; urgency=low
 
   * search complete ldap for forwardzones in proof_associatedDomain (Bug #21678)

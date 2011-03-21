@@ -1174,7 +1174,7 @@ class simpleComputer( simpleLdap ):
 				self.open_warning += '\n'+warn
 
 		if 'name' in self.info and 'domain' in self.info:
-			self[ 'fqdn' ] = '%s.%s' % ( self[ 'name' ], self[ 'domain' ] )
+			self.info[ 'fqdn' ] = '%s.%s' % ( self[ 'name' ], self[ 'domain' ] )
 
 	def __modify_dhcp_object( self, position, name, ip, mac ):
 		# identify the dhcp object with the mac address
