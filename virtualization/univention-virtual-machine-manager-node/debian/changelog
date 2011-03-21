@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-node (0.1.24-1) unstable; urgency=low
+
+  * Added patch from Philipp, remove /var/run/libvirtd.pid if libvirtd
+    is not running (Bug #21758)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 Mar 2011 16:07:17 +0100
+
 univention-virtual-machine-manager-node (0.1.23-2) unstable; urgency=low
 
   * Fix naming of ucr in libvirtd-acl.py (Bug #19828)
