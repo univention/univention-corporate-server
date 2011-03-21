@@ -144,7 +144,7 @@ def create_storage_volume(conn, domain, disk):
 		found = True
 		for access in ( 'owner', 'group', 'mode' ):
 			value = configRegistry.get( 'uvmm/volume/permissions/%s' % access, None )
-			if value:
+			if value and value.isdigit():
 				permissions += '<%(tag)s>%(value)s</%(tag)s>\n' % { 'tag' : access, 'value' : value }
 				found = True
 		if found:

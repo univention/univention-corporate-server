@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.193-1) unstable; urgency=low
+
+  * permissions for volumes (owner and group) must be set as numeric IDs; Bug #21529
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 21 Mar 2011 16:49:11 +0100
+
 univention-virtual-machine-manager-daemon (0.9.192-1) unstable; urgency=low
 
   * fixed automatic allaction of drive device names

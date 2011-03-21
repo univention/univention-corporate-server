@@ -47,20 +47,20 @@ Type=bool
 Categories=uvmm
 
 [uvmm/volume/permissions/mode]
-Description[en]=Defines the file mode permissions for new hard drive images that are created in a storage pool
-Description[de]=Definiert die Berechtigungen, die für neu erzeugte Festplatten-Images verwendet werden
+Description[en]=Defines the file mode permissions as an octal number for new hard drive images that are created in a storage pool
+Description[de]=Definiert die Berechtigungen als Oktalzahl, die für neu erzeugte Festplatten-Images verwendet werden
 Type=int
 Categories=uvmm
 
 [uvmm/volume/permissions/owner]
-Description[en]=Defines the owner for new hard drive images that are created in a storage pool
-Description[de]=Definiert den Besitzer, der für neu erzeugte Festplatten-Images verwendet wird
+Description[en]=Defines the numeric owner ID for new hard drive images that are created in a storage pool
+Description[de]=Definiert den numerische Besitzer-ID, der für neu erzeugte Festplatten-Images verwendet wird
 Type=int
 Categories=uvmm
 
 [uvmm/volume/permissions/group]
-Description[en]=Defines the group for new hard drive images that are created in a storage pool
-Description[de]=Definiert die Gruppe, die für neu erzeugte Festplatten-Images verwendet wird
+Description[en]=Defines the numeric group ID for new hard drive images that are created in a storage pool
+Description[de]=Definiert die numerische Gruppen-ID, die für neu erzeugte Festplatten-Images verwendet wird
 Type=int
 Categories=uvmm
 
