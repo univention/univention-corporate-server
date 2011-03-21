@@ -160,6 +160,9 @@ class access:
 
 	def __smart_open(self):
 		_d=univention.debug.function('uldap.__smart_open host=%s port=%d base=%s' % (self.host, self.port, self.base))
+	
+		if not hasattr(self, 'protocol'):
+			self.protocol = 'ldap'
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
 
@@ -169,6 +172,9 @@ class access:
 
 	def __open(self):
 		_d=univention.debug.function('uldap.__open host=%s port=%d base=%s' % (self.host, self.port, self.base))
+
+		if not hasattr(self, 'protocol'):
+			self.protocol = 'ldap'
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
 		self.lo=ldap.initialize(self.protocol+"://"+str(self.host)+":"+str(self.port))
