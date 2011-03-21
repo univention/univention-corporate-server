@@ -64,7 +64,7 @@ if options.complete_search:
 	computers_base = ldap_base
 else:
 	computers_base = 'cn=computers,'+ldap_base
-dns_base = 'cn=dns,'+ldap_base
+dns_base = ldap_base
 
 # get computer objects without associatedDomain
 # computers = {{'cn': ['dn']}
