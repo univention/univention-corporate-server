@@ -16,12 +16,6 @@ Description[en]=Deactivates the in-kernel APIC support
 Type=bool
 Categories=uvmm
 
-[uvmm/kvm/udev/group]
-Description[de]=Definiert die Gruppe, der das Gerät /dev/kvm gehören soll
-Description[en]=Defines the group that owns the device /dev/kvm
-Type=str
-Categories=uvmm
-
 [uvmm/kvm/qemu/user]
 Description[de]=Definiert den Benutzer als der die QEMU Prozesse laufen
 Description[en]=Defines the user that owns the QEMU processes
