@@ -57,21 +57,26 @@ class ConnectionError(UvmmError):
 	pass
 
 class Bus( object ):
-	"""Periphery bus like IDE-, SCSI-, Xen-, VirtIO-Bus."""
-	def __init__( self, name, prefix, default = False ):
+	"""Periphery bus like IDE-, SCSI-, Xen-, VirtIO- und FDC-Bus."""
+	def __init__( self, name, prefix, default = False, unsupported = ( node.Disk.DEVICE_FLOPPY, ) ):
 		self._next_letter = 'a'
 		self._connected = set()
 		self.name = name
 		self.prefix = prefix
 		self.default = default
+		self.unsupported = unsupported
 
 	def compatible( self, dev ):
-		return dev.target_bus == self.name or ( not dev.target_bus and self.default )
+		'''Checks the compatibility of the given device with the bus
+		specification: the device type must be supported by the bus and
+		if the bus of the device is set it must match otherwise the bus
+		must be defined as default.'''
+		return ( not dev.device in self.unsupported ) and ( dev.target_bus == self.name or ( not dev.target_bus and self.default ) )
 
 	def attach( self, devices ):
 		"""Register each device in devices list at bus."""
 		for dev in devices:
-			if dev.target_dev:
+			if dev.target_dev and ( dev.target_bus == self.name or ( not dev.target_bus and self.default ) ):
 				letter = dev.target_dev[ -1 ]
 				self._connected.add(letter)
 
@@ -81,6 +86,7 @@ class Bus( object ):
 			return False
 		self.next_letter()
 		dev.target_dev = self.prefix % self._next_letter
+		ud.debug( ud.ADMIN, ud.INFO, 'Connected device: %s, %s' % ( dev.target_bus, dev.target_dev ) )
 		self._connected.add(self._next_letter)
 		self.next_letter()
 		return True
@@ -153,7 +159,7 @@ class Client( notifier.signals.Provider ):
 
 		# reinitialise the socket
 		self._socket = socket.socket( socket.AF_UNIX, socket.SOCK_STREAM )
-		
+
 		return self.connect()
 
 	def _receive( self, socket ):
@@ -478,15 +484,15 @@ class Client( notifier.signals.Provider ):
 		if domain_info.domain_type == 'xen' and domain_info.os_type in ( 'linux', 'xen' ):
 			busses = ( Bus( 'ide', 'hd%s' ), Bus( 'xen', 'xvd%s', default = True ), Bus( 'virtio', 'vd%s' ) )
 		else:
-			busses = ( Bus( 'ide', 'hd%s', default = True ), Bus( 'xen', 'xvd%s' ), Bus( 'virtio', 'vd%s' ) )
+			busses = ( Bus( 'ide', 'hd%s', default = True ), Bus( 'xen', 'xvd%s' ), Bus( 'virtio', 'vd%s' ), Bus( 'fdc', 'fd%s', default = True, unsupported = ( node.Disk.DEVICE_DISK, node.Disk.DEVICE_CDROM ) ) )
 
 		for bus in busses:
 			bus.attach( domain_info.disks )
 
 		for dev in domain_info.disks:
 			for bus in busses:
-				if bus.compatible( dev ):
-					bus.connect( dev )
+				if bus.connect( dev ):
+					break
 
 	def domain_configure( self, node_name, data ):
 		req = protocol.Request_DOMAIN_DEFINE()

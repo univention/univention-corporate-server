@@ -74,9 +74,9 @@ categories = [ 'system', 'all' ]
 hide_tabs = True
 
 # fields of a drive definition
-drive_type = umcd.make( ( 'type', DriveTypeSelect( _( 'Type' ) ) ), attributes = { 'width' : '250' } )
-drive_uri = umcd.make( ( 'uri', umc.String( 'URI' ) ), attributes = { 'width' : '250' } )
-drive_dev = umcd.make( ( 'dev', umc.String( _( 'Drive' ) ) ), attributes = { 'width' : '250' } )
+# drive_type = umcd.make( ( 'type', DriveTypeSelect( _( 'Type' ) ) ), attributes = { 'width' : '250' } )
+# drive_uri = umcd.make( ( 'uri', umc.String( 'URI' ) ), attributes = { 'width' : '250' } )
+# drive_dev = umcd.make( ( 'dev', umc.String( _( 'Drive' ) ) ), attributes = { 'width' : '250' } )
 
 boot_dev_select = BootDeviceSelect()
 boot_dev = umcd.make( ( 'bootdev', boot_dev_select ), attributes = { 'width' : '200' } )
@@ -625,8 +625,12 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		"""Translate disk type to display-string."""
 		if drive == uvmmn.Disk.DEVICE_DISK:
 			return _( 'hard drive' )
-		else:
+		elif drive == uvmmn.Disk.DEVICE_CDROM:
 			return _( 'CDROM drive' )
+		elif drive == uvmmn.Disk.DEVICE_FLOPPY:
+			return _( 'floppy drive' )
+		else:
+			return _( 'unknown' )
 
 	def uvmm_node_overview( self, object ):
 		"""Node overview: show node utilization and all domains."""
@@ -814,9 +818,11 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				if domain_is_off and not domain_has_snapshots:
 					remove_cmd.options[ 'disk' ] = copy.copy( dev.source )
 					remove_btn = umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd ) ] )
-					edit_cmd.options[ 'disk' ] = copy.copy( dev.source )
-					edit_btn = umcd.LinkButton( _( 'Edit' ), actions = [ umcd.Action( edit_cmd ) ] )
-					buttons = [ remove_btn, edit_btn ]
+					buttons = [ remove_btn, ]
+					if dev.device != uvmmn.Disk.DEVICE_FLOPPY:
+						edit_cmd.options[ 'disk' ] = copy.copy( dev.source )
+						edit_btn = umcd.LinkButton( _( 'Edit' ), actions = [ umcd.Action( edit_cmd ) ] )
+						buttons.append( edit_btn )
 					if not first:
 						bootdev_cmd.options[ 'disk' ] = dev.source
 						bootdev_btn = umcd.LinkButton( _( 'Set as boot device' ), actions = [ umcd.Action( bootdev_cmd, options = { 'disk' : dev.source } ), umcd.Action( overview_cmd ) ] )

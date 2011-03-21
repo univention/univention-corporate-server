@@ -1,3 +1,12 @@
+univention-virtual-machine-manager-daemon (0.9.192-1) unstable; urgency=low
+
+  * fixed automatic allaction of drive device names
+  * add device bus fdc for floppy drives
+  * update german translation
+  * drive wizard: support floppy drives; Bug #19515
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 21 Mar 2011 15:47:03 +0100
+
 univention-virtual-machine-manager-daemon (0.9.191-1) unstable; urgency=low
 
   * strip /dev/ from block device options in web frontend

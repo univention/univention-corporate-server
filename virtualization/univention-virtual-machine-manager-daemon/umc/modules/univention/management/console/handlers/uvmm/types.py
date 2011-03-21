@@ -111,8 +111,16 @@ class NumberSelect( umc.StaticSelection ):
 
 class DriveTypeSelect( umc.StaticSelection ):
 	"""List of block device types."""
+	def __init__( self ):
+		self.floppies = True
+		self._types = ( ( 'disk', _( 'Hard drive' ) ), ( 'cdrom', _( 'CD/DVD-ROM' ) ) )
+		umc.StaticSelection.__init__( self, _( 'Type of drive' ) )
+
 	def choices( self ):
-		return ( ( 'disk', _( 'Hard drive' ) ), ( 'cdrom', _( 'CD/DVD-ROM' ) ) )
+		if self.floppies:
+			return self._types + ( ( 'floppy', _( 'Floppy drive' ) ), )
+
+		return self._types
 
 class NIC_DriverSelect( umc.StaticSelection ):
 	"""List of network interface drivers."""

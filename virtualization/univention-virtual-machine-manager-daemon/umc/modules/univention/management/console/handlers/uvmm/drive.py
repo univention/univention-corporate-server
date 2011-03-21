@@ -72,7 +72,7 @@ class DriveCommands( object ):
 		if not 'action' in object.options:
 			domain_info = self.uvmm.get_domain_info( node_uri, object.options[ 'domain' ] )
 			self.drive_wizard.reset()
-			# self.drive_wizard.show_paravirtual( domain_info.os_type == 'hvm' )
+			self.drive_wizard.drive_type_select.floppies = domain_info.os_type == 'hvm'
 			self.drive_wizard.domain_name = object.options['domain']
 			self.drive_wizard.blacklist = [] # does query domains
 			self.drive_wizard.set_node( node_uri, node_info )
@@ -121,7 +121,7 @@ class DriveCommands( object ):
 			for disk in domain_info.disks:
 				if disk.source == object.options['disk']:
 					break
-			is_shared_image = disk.device == uvmmn.Disk.DEVICE_CDROM
+			is_shared_image = disk.device in ( uvmmn.Disk.DEVICE_CDROM, uvmmn.Disk.DEVICE_FLOPPY )
 			lst = umcd.List( default_type = 'uvmm_table' )
 
 			opts = copy.copy( object.options )

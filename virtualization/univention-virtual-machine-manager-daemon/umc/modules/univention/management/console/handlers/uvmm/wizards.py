@@ -58,6 +58,7 @@ class DriveWizard( umcd.IWizard ):
 		self.pool_syntax = DynamicSelect( _( 'Storage pool' ) )
 		self.image_syntax = DynamicSelect( _( 'Drive image' ) )
 		self.driver_syntax = DynamicSelect( _( 'Image format' ) )
+		self.drive_type_select = DriveTypeSelect()
 		self.disk_select = DiskSelect()
 		self.actions[ 'pool-selected' ] = self.pool_selected
 		self.actions['type-selected'] = self.type_selected
@@ -69,7 +70,7 @@ class DriveWizard( umcd.IWizard ):
 
 		# page 0: Select HD or ROM
 		page = umcd.Page( self.title, _( 'What type of drive should be created?' ) )
-		page.options.append( umcd.make( ( 'drive-type', DriveTypeSelect( _( 'Type of drive' ) ) ) ) )
+		page.options.append( umcd.make( ( 'drive-type', self.drive_type_select ) ) )
 		self.append( page )
 
 		# page 1: Select (new or )existing or block device
@@ -105,14 +106,6 @@ class DriveWizard( umcd.IWizard ):
 	def set_node( self, uri = None, info = None ):
 		self.node_uri = uri
 		self.node_info = info
-
-	# def show_paravirtual( self, show = True ):
-	# 	if show:
-	# 		if len( self[ 0 ].options ) == 1:
-	# 			self[ 0 ].options.append( umcd.make( ( 'drive-paravirtual', umc.Boolean( _( 'Setup as paravirtual drive' ) ) ) ) )
-	# 	else:
-	# 		if len( self[ 0 ].options ) == 2:
-	# 			del self[ 0 ].options[ 1 ]
 
 	def _create_pool_select_button(self, options):
 		choices = []
@@ -206,7 +199,10 @@ class DriveWizard( umcd.IWizard ):
 		ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: node storage volumes: %s' % self.node_uri)
 		drive_pool = object.options.get('drive-pool', 'default')
 		drive_type = object.options['drive-type']
-		vols = self.uvmm.storage_pool_volumes(self.node_uri, drive_pool, drive_type)
+		if drive_type == 'cdrom':
+			vols = self.uvmm.storage_pool_volumes(self.node_uri, drive_pool, drive_type )
+		else:
+			vols = self.uvmm.storage_pool_volumes(self.node_uri, drive_pool, 'disk' )
 		ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: node storage volumes: %s' % map(str, vols))
 		choices = []
 		for vol in vols:
@@ -230,11 +226,11 @@ class DriveWizard( umcd.IWizard ):
 
 		if drive_type == 'disk':
 			self[ 2 ].hint = None
-		elif drive_type == 'cdrom':
+		elif drive_type in ( 'cdrom', 'floppy' ):
 			if self.image_syntax._choices:
-				msg = _( "If the required ISO image is not found it might be added by copying the file into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>local directory</i>. After that go to the previous page an return to this one. The image should now be listed." )
+				msg = _( "If the required image is not found it might be added by copying the file into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>local directory</i>. After that go to the previous page an return to this one. The image should now be listed." )
 			else:
-				msg = _( "The list of available images is empty! To add an ISO image the file needs to be copied into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>local directory</i>. After that go to the previous page an return to this one. The image should now be listed." )
+				msg = _( "The list of available images is empty! To add an image the file needs to be copied into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool <i>local directory</i>. After that go to the previous page an return to this one. The image should now be listed." )
 			self[ 2 ].hint = msg
 			self[ 2 ].description = ''
 		else:
@@ -268,6 +264,8 @@ class DriveWizard( umcd.IWizard ):
 			return _( 'hard drive' )
 		elif disk_type == 'cdrom':
 			return _( 'CDROM drive' )
+		elif disk_type == 'floppy':
+			return _( 'floppy drive' )
 		else:
 			return _('unknown')
 
@@ -288,7 +286,7 @@ class DriveWizard( umcd.IWizard ):
 			self.current = 1
 			if object.options[ 'drive-type' ] == 'disk':
 				self.disk_select.set_choices()
-			elif object.options['drive-type'] == 'cdrom':
+			elif object.options['drive-type'] in ( 'cdrom', 'floppy' ):
 				self.disk_select.set_choices( with_new = False )
 			else:
 				raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
@@ -307,8 +305,8 @@ class DriveWizard( umcd.IWizard ):
 				self.current = 2
 				if object.options[ 'drive-type' ] == 'disk':
 					self[ self.current ].description = _( 'Each hard drive image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list of available images is updated.' )
-				elif object.options['drive-type'] == 'cdrom':
-					self[ self.current ].description = _( 'Each ISO image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list of available images is updated.' )
+				elif object.options['drive-type'] in ( 'cdrom', 'floppy' ):
+					self[ self.current ].description = _( 'Each image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list of available images is updated.' )
 				else:
 					raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
 			elif object.options[ 'existing-or-new-disk' ] == 'disk-block':
@@ -317,6 +315,8 @@ class DriveWizard( umcd.IWizard ):
 					object.options['drive-device'] = ''
 				elif object.options['drive-type'] == 'cdrom':
 					object.options['drive-device'] = 'cdrom'
+				elif object.options['drive-type'] == 'floppy':
+					object.options['drive-device'] = 'fd0'
 		elif self.current in ( 2, 3, 4 ): # 2=select existing disk image, 3=create new
 			drive_type = object.options['drive-type']
 			drive_pool = object.options['drive-pool']
@@ -324,7 +324,10 @@ class DriveWizard( umcd.IWizard ):
 			if self.current == 2: # select existing disk image
 				drive_image = object.options['drive-image']
 				ud.debug(ud.ADMIN, ud.INFO, 'drive wizard: collect information about existing disk image: %s' % drive_image)
-				vols = self.uvmm.storage_pool_volumes(self.node_uri, drive_pool, drive_type)
+				if drive_type == 'cdrom':
+					vols = self.uvmm.storage_pool_volumes( self.node_uri, drive_pool, drive_type )
+				else:
+					vols = self.uvmm.storage_pool_volumes( self.node_uri, drive_pool, 'disk' )
 				for vol in vols:
 					if os.path.basename(vol.source) == drive_image:
 						ud.debug(ud.ADMIN, ud.INFO, 'drive wizard: set information about existing disk image: %s' % drive_image)
@@ -359,8 +362,8 @@ class DriveWizard( umcd.IWizard ):
 
 				if image_name in self.blacklist:
 					is_used = self.domain_name
-				elif drive_type == 'cdrom':
-					is_used = None # read-only-volumes can be shared
+				elif drive_type in ( 'cdrom', 'floppy' ):
+					is_used = None # read-only-volumes (and floppies) can be shared
 				else:
 					is_used = self.uvmm.is_image_used( self.node_uri, drive_path )
 
@@ -455,6 +458,8 @@ class DriveWizard( umcd.IWizard ):
 		elif drive_type == 'cdrom':
 			disk.device = uvmmn.Disk.DEVICE_CDROM
 			driver_type = 'raw' # ISOs need driver/@type='raw'
+		elif drive_type == 'floppy':
+			disk.device = uvmmn.Disk.DEVICE_FLOPPY
 		else:
 			raise Exception('Invalid drive-type "%s"' % drive_type)
 
@@ -467,10 +472,10 @@ class DriveWizard( umcd.IWizard ):
 		if self.node_uri.startswith('qemu'):
 			disk.driver = 'qemu'
 			disk.driver_type = driver_type.lower()
-			if driver_pv:
+			if driver_pv and drive_type != 'floppy':
 				disk.target_bus = 'virtio'
 		elif self.node_uri.startswith('xen'):
-			if driver_pv:
+			if driver_pv and drive_type != 'floppy':
 				disk.target_bus = 'xen'
 			# Since UCS 2.4-2 Xen 3.4.3 contains the blktab2 driver
 			# from Xen 4.0.1
@@ -659,6 +664,7 @@ class InstanceWizard( umcd.IWizard ):
 			# activate drive wizard to add a first mandatory drive
 			if not self.drives:
 				self.drive_wizard.prev_first_page = True
+				self.drive_wizard.drive_type_select.floppies = self.profile[ 'virttech' ].endswith( '-hvm' )
 				# self.drive_wizard.show_paravirtual( self.profile[ 'virttech' ].endswith( '-hvm' ) )
 				object.options[ 'drive-paravirtual' ] = object.options[ 'pvdisk' ] == '1'
 				self.new_drive( object )
@@ -703,8 +709,13 @@ class InstanceWizard( umcd.IWizard ):
 			values = {}
 			if dev.device == uvmmn.Disk.DEVICE_DISK:
 				values[ 'type' ] = _( 'hard drive' )
-			else:
+			elif dev.device == uvmmn.Disk.DEVICE_CDROM:
 				values[ 'type' ] = _( 'CDROM drive' )
+			elif dev.device == uvmmn.Disk.DEVICE_FLOPPY:
+				values[ 'type' ] = _( 'floppy drive' )
+			else:
+				values[ 'type' ] = _( 'unknown' )
+
 			values[ 'size' ] = MemorySize.num2str( dev.size )
 			if dev.type == uvmmn.Disk.TYPE_FILE:
 				values[ 'image' ] = os.path.basename( dev.source )
