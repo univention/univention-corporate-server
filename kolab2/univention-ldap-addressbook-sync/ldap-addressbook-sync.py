@@ -76,7 +76,7 @@ def __check_relevance( obj, dn, new, old ):
 	if ( 'univentionGroup' in obj_classes or 'univentionKolabGroup' in obj_classes ):
 		univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, 
 					"ldap-addressbook-sync: check_relevance: detected a group" )
-		if __relevant_attrs_changed( new, old, ( 'cn', 'mailPrimaryAddress', 'uniqueMember' ) ):
+		if __relevant_attrs_changed( new, old, ( 'cn', 'mailPrimaryAddress', 'uniqueMember', 'univentionKolabMember' ) ):
 			univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, 
 						"ldap-addressbook-sync: check_relevance: object has changed" )
 			__add_cache_entry( dn, new, old )
@@ -84,7 +84,7 @@ def __check_relevance( obj, dn, new, old ):
 	elif 'inetOrgPerson' in obj_classes:
 		univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, 
 					"ldap-addressbook-sync: check_relevance: detected a user" )
-		if __relevant_attrs_changed( new, old, ( 'homePostalAddress', 'mail', 'givenName', 'sn', 'telephoneNumber', 'homePhone', 'mobile', 'o', 'postalCode', 'street', 'l', 'title', 'univentionBirthday', 'departmentNumber' ) ):
+		if __relevant_attrs_changed( new, old, ( 'homePostalAddress', 'mail', 'givenName', 'sn', 'telephoneNumber', 'homePhone', 'mobile', 'o', 'postalCode', 'street', 'l', 'title', 'univentionBirthday', 'departmentNumber', 'sambaAcctFlags' ) ):
 			__add_cache_entry( dn, new, old )
 			univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, 
 						"ldap-addressbook-sync: check_relevance: object has changed" )

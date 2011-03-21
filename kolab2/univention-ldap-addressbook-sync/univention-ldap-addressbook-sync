@@ -63,9 +63,11 @@ class LDAP_Connection( univention.uldap.access ):
 		return len( result ) > 0
 
 	def member_addresses( self, dn ):
-		result = self.search( base = dn, attr = ['uniqueMember'] )
+		result = self.search( base = dn, attr = ['uniqueMember', 'univentionKolabMember'] )
 		ud.debug( ud.ADMIN, ud.INFO, 'LDAP_Connection: %s ' % ( result ) )
 		members = []
+
+		# groups
 		if result[0][1].has_key('uniqueMember'):
 			for member_dn in result[0][1]['uniqueMember']:
 				try:
@@ -75,6 +77,11 @@ class LDAP_Connection( univention.uldap.access ):
 				except:
 					ud.debug( ud.ADMIN, ud.INFO, 'LDAP_Connection: cannot find user %s ' % ( member_dn ) )
 					pass
+
+		# mailinglists
+		if result[0][1].has_key('univentionKolabMember'):
+			for member_mail in result[0][1]['univentionKolabMember']:
+				members.append( '<%s>' % member_mail)
 					
 		return members
 
@@ -414,6 +421,13 @@ class Synchronisation( object ):
 			client.remove_all()
 
 	def process( self, dn , old, new ):
+
+		# remove entry if account is disabled
+		if new:
+			if "D" in new.get("sambaAcctFlags", [""])[0]:
+				self.remove( dn )
+				return
+
 		if old and new:
 			self.modify( dn, old, new )
 		elif not old and new:

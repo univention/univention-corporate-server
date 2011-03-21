@@ -1,3 +1,14 @@
+univention-ldap-addressbook-sync (4.0.7-1) unstable; urgency=low
+
+  * added support for members of mailinglist (univentionKolabMember) 
+    and sambaAcctFlags for users in listener
+  * add members of mailinglist to addressbook entry
+  * remove addressbook entry if account is disabled 
+    (if "D" in sambaAcctFlags)
+    Bug #21696 #21698
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Mar 2011 09:48:26 +0100
+
 univention-ldap-addressbook-sync (4.0.6-1) unstable; urgency=low
 
   * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)
