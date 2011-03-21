@@ -1,3 +1,9 @@
+univention-updater (6.0.78-1) unstable; urgency=low
+
+  * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 21 Mar 2011 15:32:46 +0100
+
 univention-updater (6.0.77-1) unstable; urgency=low
 
   * Handle unlock after nested updater->mirror invocation (Bug #15144)
