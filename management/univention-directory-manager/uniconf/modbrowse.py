@@ -105,7 +105,7 @@ class modbrowse(unimodule.unimodule):
 		if len(removelist) > 1:
 			self.subobjs.append(header(_("Are you sure you want to delete these %d objects and referring objects if enabled?") % len(removelist),{"type":"3"},{}))
 		elif len(removelist) > 0:
-			self.subobjs.append(header(_("Are you sure you want to delete this object as well as referring objects if enabled?") % len(removelist),{"type":"3"},{}))
+			self.subobjs.append(header(_("Are you sure you want to delete this object as well as referring objects if enabled?"),{"type":"3"},{}))
 		self.div_stop('browse_layout_header')
 
 		rows=[]
