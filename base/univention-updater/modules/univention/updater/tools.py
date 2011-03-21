@@ -1372,22 +1372,26 @@ def updater_lock_acquire(timeout=0):
 						return 0
 					if parent_pid == lock_pid: # u-repository-* called from u-updater
 						return 1
-					else:
-						try:
-							os.kill(int(lock_pid), 0)
-						except ValueError, e:
-							msg = 'Invalid PID %s in lockfile %s.' % (lock_pid, __UPDATER_LOCK_FILE_NAME)
-							raise LockingError(msg)
-						except OSError, error:
-							if error.errno == errno.ESRCH:
-								print >>sys.stderr, 'Stale PID %s in lockfile %s, removing.' % (lock_pid, __UPDATER_LOCK_FILE_NAME)
-								os.remove(__UPDATER_LOCK_FILE_NAME)
-								continue # redo acquire
-						# PID is valid and process is still alive...
+					try:
+						lock_pid = lock_pid.strip() or '?'
+						lock_pid = int(lock_pid)
+						os.kill(lock_pid, 0)
+					except ValueError, e:
+						msg = 'Invalid PID %s in lockfile %s.' % (lock_pid, __UPDATER_LOCK_FILE_NAME)
+						raise LockingError(msg)
+					except OSError, error:
+						if error.errno == errno.ESRCH:
+							print >>sys.stderr, 'Stale PID %s in lockfile %s, removing.' % (lock_pid, __UPDATER_LOCK_FILE_NAME)
+							os.remove(__UPDATER_LOCK_FILE_NAME)
+							continue # redo acquire
+					# PID is valid and process is still alive...
 				except OSError, error:
 					pass
 				if time.time() > deadline:
-					msg = 'Timeout: still locked by PID %d. Check lockfile %s' % (lock_pid, __UPDATER_LOCK_FILE_NAME)
+					if timeout > 0:
+						msg = 'Timeout: still locked by PID %s. Check lockfile %s' % (lock_pid, __UPDATER_LOCK_FILE_NAME)
+					else:
+						msg = 'Locked by PID %s. Check lockfile %s' % (lock_pid or '?', __UPDATER_LOCK_FILE_NAME)
 					raise LockingError(msg)
 				else:
 					time.sleep(1)

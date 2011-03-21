@@ -1,3 +1,9 @@
+univention-updater (6.0.79-1) unstable; urgency=low
+
+  * Fix handling of invalid PID in lockfile (Bug #15144)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 21 Mar 2011 19:07:56 +0100
+
 univention-updater (6.0.78-1) unstable; urgency=low
 
   * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)
