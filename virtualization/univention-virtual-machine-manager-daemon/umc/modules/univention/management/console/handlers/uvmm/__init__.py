@@ -706,7 +706,6 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 	def _dlg_domain_settings( self, object, node_info, domain_info ):
 		"""Create domain setting widgets."""
 		domain_is_off = 5 == domain_info.state
-		domain_has_snapshots = getattr( domain_info, 'snapshots', None ) != None and domain_info.snapshots
 
 		content = umcd.List( default_type = 'uvmm_settings_table' )
 
@@ -735,14 +734,10 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		contact_widget = make_func( self[ 'uvmm/domain/configure' ][ 'contact' ], default = getattr(domain_info, 'annotations', {}).get('contact', ''), attributes = { 'width' : '250' } )
 		description_widget = make_func( self[ 'uvmm/domain/configure' ][ 'description' ], default = getattr(domain_info, 'annotations', {}).get('description', ''), attributes = { 'width' : '250' } )
 
-		if domain_has_snapshots:
-			make_func2 = umcd.make_readonly
-		else:
-			make_func2 = make_func
-		name = make_func2( self[ 'uvmm/domain/configure' ][ 'name' ], default = handler._getattr( domain_info, 'name', '' ), attributes = { 'width' : '250' } )
-		arch = make_func2( self[ 'uvmm/domain/configure' ][ 'arch' ], default = handler._getattr( domain_info, 'arch', 'i686' ), attributes = { 'width' : '250' } )
-		cpus = make_func2( self[ 'uvmm/domain/configure' ][ 'cpus' ], default = handler._getattr( domain_info, 'vcpus', '1' ), attributes = { 'width' : '250' } )
-		memory = make_func2( self[ 'uvmm/domain/configure' ][ 'memory' ], default = MemorySize.num2str( mem ), attributes = { 'width' : '250' } )
+		name = make_func( self[ 'uvmm/domain/configure' ][ 'name' ], default = handler._getattr( domain_info, 'name', '' ), attributes = { 'width' : '250' } )
+		arch = make_func( self[ 'uvmm/domain/configure' ][ 'arch' ], default = handler._getattr( domain_info, 'arch', 'i686' ), attributes = { 'width' : '250' } )
+		cpus = make_func( self[ 'uvmm/domain/configure' ][ 'cpus' ], default = handler._getattr( domain_info, 'vcpus', '1' ), attributes = { 'width' : '250' } )
+		memory = make_func( self[ 'uvmm/domain/configure' ][ 'memory' ], default = MemorySize.num2str( mem ), attributes = { 'width' : '250' } )
 
 		# if no bootloader is set we use the advanced kernel configuration options
 		if handler._getattr( domain_info, 'bootloader', '' ):
@@ -768,7 +763,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 		# drive listing
 		drive_sec = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
-		if domain_is_off and not domain_has_snapshots:
+		if domain_is_off:
 			cmd = umcp.SimpleCommand('uvmm/drive/create', options=copy.copy(object.options))
 			drive_sec.add_row([umcd.LinkButton(_('Add new drive'), actions=[umcd.Action(cmd),])])
 		disk_list = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
@@ -815,7 +810,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				else:
 					values[ 'size' ] = MemorySize.num2str( dev.size )
 
-				if domain_is_off and not domain_has_snapshots:
+				if domain_is_off:
 					remove_cmd.options[ 'disk' ] = copy.copy( dev.source )
 					remove_btn = umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd ) ] )
 					buttons = [ remove_btn, ]
@@ -837,7 +832,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 		# network interfaces
 		nic_sec = umcd.List( attributes = { 'width' : '100%' }, default_type = 'umc_list_element_narrow' )
-		if domain_is_off and not domain_has_snapshots:
+		if domain_is_off:
 			cmd = umcp.SimpleCommand( 'uvmm/nic/create', options = copy.copy( object.options ) )
 			cmd.incomplete = True
 			nic_sec.add_row( [ umcd.LinkButton( _( 'Add new network interface' ), actions = [ umcd.Action( cmd ), ] ) ] )
@@ -869,7 +864,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				else:
 					nic_driver = 'rtl8139'
 
-				if domain_is_off and not domain_has_snapshots:
+				if domain_is_off:
 					remove_cmd.options[ 'iface' ] = copy.copy( iface.source )
 					buttons = [ umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd ), umcd.Action( overview_cmd ) ] ),
 								umcd.LinkButton( _( 'Edit' ), actions = [ umcd.Action( edit_cmd ) ] ) ]
@@ -934,8 +929,6 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		sections = []
 		if not domain_is_off:
 			sections.append( [ umcd.InfoBox( _( 'The settings of a virtual instance can just be modified if it is shut off.' ) ) ] )
-		elif domain_has_snapshots:
-			sections.append( [ umcd.InfoBox( _( 'Some of the settings can not be modified currently. The reason therefore are the available snapshots. Modifying these settings would make the snapshots invalid, i.e. the snapshots can not be restored anymore. If these settings must be edited the snapshots have to be removed first.' ) ) ] )
 		if not domain_info:
 			sections.append( [ umcd.Section( _( 'Drives' ), drive_sec, hideable = False, hidden = False, name = 'drives.newdomain' ) ] )
 			sections.append( [ umcd.Section( _( 'Network Interfaces' ), nic_sec, hideable = False, hidden = False, name = 'interfaces.newdomain' ) ] )
