@@ -1,3 +1,11 @@
+univention-directory-manager (8.0.71-1) unstable; urgency=low
+
+  * avoid traceback when the given search path for UCR variable
+    directory/manager/web/modules/<module>/search/path
+    does not exist (Bug #20972, comment #2)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 22 Mar 2011 12:32:07 +0100
+
 univention-directory-manager (8.0.70-1) unstable; urgency=low
 
   * fixed traceback when deleting a single object (Bug #21154)
