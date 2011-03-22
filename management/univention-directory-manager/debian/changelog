@@ -1,3 +1,11 @@
+univention-directory-manager (8.0.72-2) unstable; urgency=low
+
+  * version bump, wrong changelog for version 8.0.72-1
+  * when verifying whether an LDAP DN exists, catch only uexceptions.noObject
+    instead of Exception (concerns Bug #20972 and #18349)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 22 Mar 2011 14:18:47 +0100
+
 univention-directory-manager (8.0.72-1) unstable; urgency=low
 
   * fixed traceback when deleting a single object (Bug #21154)
