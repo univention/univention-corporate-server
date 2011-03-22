@@ -900,7 +900,7 @@ class modwizard(unimodule.unimodule):
 			try:
 				# try to find the DN
 				self.lo.searchDn(base=path_preselect, scope='base')
-			except Exception, e:
+			except univention.admin.uexceptions.noObject, e:
 				# since the error is certainly related to a wrong UCR search path setting, 
 				# log an error message 
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Could not find given search path '%s', please check your UCR variable 'directory/manager/web/modules/%s/search/path'" % (path_preselect, search_module.module))
@@ -1857,7 +1857,7 @@ class modwizard(unimodule.unimodule):
 				try:
 					# try to find the DN
 					self.lo.searchDn(base=iDn[0], scope='base')
-				except Exception, e:
+				except univention.admin.uexceptions.noObject, e:
 					# exception is thrown in case the DN does not exist, therefore remove 
 					# entry from the selected_dns list to avoid problems
 					selected_dns.pop(iDn)
