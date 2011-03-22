@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.195-1) unstable; urgency=low
+
+  * if no interface model is set, the default is rtl8139; Bug #19573
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 22 Mar 2011 08:58:57 +0100
+
 univention-virtual-machine-manager-daemon (0.9.194-1) unstable; urgency=low
 
   * allow modifying the configuration of an instance if snapshots available; Bug #21636

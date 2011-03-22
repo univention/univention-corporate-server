@@ -73,7 +73,10 @@ class NIC_Commands( object ):
 		nic_list.add_row( [ nic_type, info ] )
 		ids.append( nic_type.id() )
 
-		nic_driver = umcd.make( self[ 'uvmm/nic/create' ][ 'driver' ], default = object.options.get( 'driver', 'rtl8139' ) )
+		default_driver = object.options.get( 'driver', 'rtl8139' )
+		if default_driver == None:
+			default_driver = 'rtl8139'
+		nic_driver = umcd.make( self[ 'uvmm/nic/create' ][ 'driver' ], default = default_driver )
 		nic_list.add_row( [ nic_driver, '' ] )
 		ids.append( nic_driver.id() )
 
