@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.196-1) unstable; urgency=low
+
+  * reset drive wizard values before each invocation; Bug #21718
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 22 Mar 2011 09:51:14 +0100
+
 univention-virtual-machine-manager-daemon (0.9.195-1) unstable; urgency=low
 
   * if no interface model is set, the default is rtl8139; Bug #19573
