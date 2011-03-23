@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.116-2) unstable; urgency=low
+
+  * version bump; wrong bug number for changelog entry in version (6.0.93-1),
+    the correct one is Bug #18965
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Mar 2011 15:50:48 +0100
+
 univention-directory-manager-modules (6.0.116-1) unstable; urgency=low
 
   * fixed handling of read-only attribute fqdn; Bug #21493
