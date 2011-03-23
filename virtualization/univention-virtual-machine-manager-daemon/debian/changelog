@@ -1,3 +1,14 @@
+univention-virtual-machine-manager-daemon (0.9.198-1) unstable; urgency=low
+
+  * floppy drives and block devices can not be modified
+  * default NIC driver for xen pv instances is 'netfront'
+  * by default do not suggest to remove device files when deleting an
+    instance
+  * KVM: floppies and block devices may not use virtio
+  * Xen PV: block devices must be attached as pv devices; Bug #19574
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 23 Mar 2011 17:01:15 +0100
+
 univention-virtual-machine-manager-daemon (0.9.197-1) unstable; urgency=low
 
   * Keep modifications to Domain XML (Bug #20253)

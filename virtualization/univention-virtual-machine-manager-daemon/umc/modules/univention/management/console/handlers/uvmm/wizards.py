@@ -64,6 +64,7 @@ class DriveWizard( umcd.IWizard ):
 		self.actions['type-selected'] = self.type_selected
 		self.uvmm = uvmmd.Client( auto_connect = False )
 		self.domain_name = None
+		self.domain_virttech = VirtTech()
 		self.node_uri = None
 		self.node_info = None
 		self.reset()
@@ -167,6 +168,7 @@ class DriveWizard( umcd.IWizard ):
 		self.replace_title( self.title )
 		self.prev_first_page = False
 		self.domain_name = None
+		self.domain_virttech( None )
 		self.blacklist = []
 		try: # delete cached list of storage pools
 			del self._storage_pools
@@ -470,14 +472,18 @@ class DriveWizard( umcd.IWizard ):
 			disk.type = uvmmp.Disk.TYPE_FILE
 		else:
 			disk.type = uvmmp.Disk.TYPE_BLOCK
+			disk.target_bus = 'ide'
 
 		if self.node_uri.startswith('qemu'):
 			disk.driver = 'qemu'
 			disk.driver_type = driver_type.lower()
-			if driver_pv and drive_type != 'floppy':
+			if driver_pv and drive_type != 'floppy' and disk.type != uvmmn.Disk.TYPE_BLOCK:
 				disk.target_bus = 'virtio'
 		elif self.node_uri.startswith('xen'):
-			if driver_pv and drive_type != 'floppy':
+			if driver_pv and drive_type != 'floppy' and disk.type != uvmmn.Disk.TYPE_BLOCK:
+				disk.target_bus = 'xen'
+			# block devices of para-virtual xen instances must use bus xen
+			if self.domain_virttech.pv() and disk.type == uvmmn.Disk.TYPE_BLOCK:
 				disk.target_bus = 'xen'
 			# Since UCS 2.4-2 Xen 3.4.3 contains the blktab2 driver
 			# from Xen 4.0.1
@@ -493,9 +499,8 @@ class DriveWizard( umcd.IWizard ):
 				else:
 					disk.driver = 'file'
 					disk.driver_type = None # only raw support
-
 			else:
-				disk.driver = 'block'
+				disk.driver = 'phy'
 		else:
 			raise Exception('Unknown virt-tech "%s"' % self.node_uri)
 
@@ -807,6 +812,7 @@ class InstanceWizard( umcd.IWizard ):
 		self.drive_wizard_cancel = cancel
 		self.drive_wizard.replace_title(_('Add drive to <i>%(name)s</i>') % {'name': name})
 		self.drive_wizard.domain_name = name
+		self.drive_wizard.domain_virttech( object.options['type'] )
 		self.drive_wizard.blacklist = [os.path.basename(drive.source) for drive in self.drives]
 		ud.debug(ud.ADMIN, ud.INFO, 'NEW DRIVE: bl=%s' % self.drive_wizard.blacklist)
 		self.drive_wizard.set_node( self.node_uri, self.node_info )

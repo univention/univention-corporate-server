@@ -814,12 +814,13 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 					remove_cmd.options[ 'disk' ] = copy.copy( dev.source )
 					remove_btn = umcd.LinkButton( _( 'Remove' ), actions = [ umcd.Action( remove_cmd ) ] )
 					buttons = [ remove_btn, ]
-					if dev.device != uvmmn.Disk.DEVICE_FLOPPY:
+					unchangeable = dev.device == uvmmn.Disk.DEVICE_FLOPPY or dev.type == uvmmn.Disk.TYPE_BLOCK
+					if not unchangeable:
 						edit_cmd.options[ 'disk' ] = copy.copy( dev.source )
 						edit_btn = umcd.LinkButton( _( 'Edit' ), actions = [ umcd.Action( edit_cmd ) ] )
 						buttons.append( edit_btn )
 					if not first:
-						bootdev_cmd.options[ 'disk' ] = dev.source
+						bootdev_cmd.options[ 'disk' ] = copy.copy( dev.source )
 						bootdev_btn = umcd.LinkButton( _( 'Set as boot device' ), actions = [ umcd.Action( bootdev_cmd, options = { 'disk' : dev.source } ), umcd.Action( overview_cmd ) ] )
 						buttons.append( bootdev_btn )
 				else:
@@ -862,7 +863,10 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				if iface.model:
 					nic_driver = iface.model
 				else:
-					nic_driver = 'rtl8139'
+					if domain_info.os_type in ( 'xen', 'linux' ):
+						nic_driver = 'netfront'
+					else:
+						nic_driver = 'rtl8139'
 
 				if domain_is_off:
 					remove_cmd.options[ 'iface' ] = copy.copy( iface.source )
@@ -1245,7 +1249,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			for disk in domain_info.disks:
 				if not disk.source: continue
 				static_options = { 'drives' : disk.source }
-				default = disk.device != uvmmn.Disk.DEVICE_CDROM
+				default = disk.device != uvmmn.Disk.DEVICE_CDROM and disk.type != uvmmn.Disk.TYPE_BLOCK
 				chk_button = umcd.Checkbox(static_options=static_options, default=default)
 				chk_button.set_text( '%s: %s' % ( self._drive_name( disk.device ), disk.source ) )
 				boxes.append( chk_button.id() )

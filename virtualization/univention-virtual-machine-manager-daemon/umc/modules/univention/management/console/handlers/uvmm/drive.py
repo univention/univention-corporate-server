@@ -74,6 +74,7 @@ class DriveCommands( object ):
 			self.drive_wizard.reset()
 			self.drive_wizard.drive_type_select.floppies = domain_info.os_type == 'hvm'
 			self.drive_wizard.domain_name = object.options['domain']
+			self.drive_wizard.domain_virttech( '%s-%s' % ( domain_info.domain_type, domain_info.os_type ) )
 			self.drive_wizard.blacklist = [] # does query domains
 			self.drive_wizard.set_node( node_uri, node_info )
 
@@ -297,7 +298,7 @@ class DriveCommands( object ):
 		self.finished( object.id(), res, report = _( 'The drive configuration has been saved successfully' ) )
 
 	def uvmm_drive_bootdevice( self, object ):
-		ud.debug( ud.ADMIN, ud.INFO, 'Drive boot device' )
+		ud.debug( ud.ADMIN, ud.INFO, 'Drive boot device should be %s' % object.options[ 'disk' ] )
 		res = umcp.Response( object )
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
@@ -309,6 +310,7 @@ class DriveCommands( object ):
 			if dev.source != object.options[ 'disk' ]:
 				new_disks.append( dev )
 			else:
+				ud.debug( ud.ADMIN, ud.INFO, 'found new boot device %s' % object.options[ 'disk' ] )
 				new_disks.insert( 0, dev )
 		domain_info.disks = new_disks
 		resp = self.uvmm.domain_configure( object.options[ 'node' ], domain_info )
