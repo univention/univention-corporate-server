@@ -1,3 +1,10 @@
+univention-webui-style (5.0.66-1) unstable; urgency=low
+
+  * fixed missing argument for function print_help_title() in layout.inc
+    (Bug #18457)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Mar 2011 16:49:55 +0100
+
 univention-webui-style (5.0.65-1) unstable; urgency=low
 
   * Use a proper font for Linux desktops without the MS fonts

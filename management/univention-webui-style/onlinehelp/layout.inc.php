@@ -7,7 +7,7 @@ function print_help($lang) {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $lang; ?>">
 <head>
-<title>Univention <?php print_help_title(); ?></title>
+<title>Univention <?php print_help_title($lang); ?></title>
 <link rel="SHORTCUT ICON" href="/icon/about.png" />
 <link rel="stylesheet" href="/style/stylesheet.css" type="text/css" media="screen" title="style.css" charset="utf-8" />
 <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
