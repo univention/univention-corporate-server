@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.200-1) unstable; urgency=low
+
+  * fixed typo in exception name; Bug #21947
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 23 Mar 2011 17:18:24 +0100
+
 univention-virtual-machine-manager-daemon (0.9.199-1) unstable; urgency=low
 
   * updated description for adding block devices; Bug #19574

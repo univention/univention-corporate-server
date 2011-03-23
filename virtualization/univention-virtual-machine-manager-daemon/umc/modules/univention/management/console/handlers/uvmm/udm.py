@@ -121,7 +121,7 @@ class ensureLDAP_Connection( object ):
 			try:
 				return self.f( *args, **kwargs )
 			except univention.admin.uexceptions.base, e:
-				raise LDAP_Error( str( e ) )
+				raise LDAP_ConnectionError( str( e ) )
 
 class Client( object ):
 	PROFILE_RDN = 'cn=Profiles,cn=Virtual Machine Manager'
