@@ -39,7 +39,7 @@ import libvirt
 import time
 import socket
 import logging
-from xml.dom.minidom import getDOMImplementation, parseString
+from xml.dom.minidom import parseString
 import math
 from helpers import TranslatableException, ms, N_ as _
 from uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify
@@ -48,8 +48,14 @@ import traceback
 from univention.uvmm.eventloop import *
 import threading
 from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_all_storage_volumes, StorageError, storage_pools, get_storage_pool_info
-from protocol import Data_Domain, Data_Node, Data_Snapshot
+from protocol import Data_Domain, Data_Node, Data_Snapshot, _map, Disk, Interface, Graphic
 import os
+try:
+	import xml.etree.ElementTree as ET
+except ImportError:
+	import elementtree.ElementTree as ET
+QEMU_URI = 'http://libvirt.org/schemas/domain/qemu/1.0'
+QEMU_PXE_PREFIX = '/usr/share/kvm/pxe'
 
 import univention.config_registry as ucr
 
@@ -76,92 +82,6 @@ class StoragePool(object):
 		"""Update statistics."""
 		state, self.capacity, allocation, self.available = pool.info()
 
-def _map( dictionary, id = None, name = None ):
-	"""Map id to name or reverse using the dictionary."""
-	if id is not None and id in dictionary:
-		return dictionary[ id ]
-	if name:
-		for key, value in dictionary.items():
-			if name == value:
-				return key
-
-	return ''
-
-class Disk( object ):
-	'''Container for disk objects'''
-	( DEVICE_DISK, DEVICE_CDROM, DEVICE_FLOPPY ) = range( 3 )
-	DEVICE_MAP = { DEVICE_DISK : 'disk', DEVICE_CDROM : 'cdrom', DEVICE_FLOPPY : 'floppy' }
-
-	(TYPE_FILE, TYPE_BLOCK) = range(2)
-	TYPE_MAP = {TYPE_FILE: 'file', TYPE_BLOCK: 'block'}
-
-	(CACHE_DEFAULT, CACHE_NONE, CACHE_WT, CACHE_WB) = range(4)
-	CACHE_MAP = {CACHE_DEFAULT: 'default', CACHE_NONE: 'none', CACHE_WT: 'writethrough', CACHE_WB: 'writeback'}
-
-	def __init__( self ):
-		self.type = Disk.TYPE_FILE	# disk/@type
-		self.device = Disk.DEVICE_DISK	# disk/@device
-		self.driver = None	# disk/driver/@name
-		self.driver_type = None	# disk/driver/@type
-		self.driver_cache = Disk.CACHE_DEFAULT	# disk/driver/@cache
-		self.source = ''	# disk/source/@file | disk/source/@dev
-		self.readonly = False	# disk/readonly
-		self.target_dev = ''	# disk/target/@dev
-		self.target_bus = None	# disk/target/@bus
-		self.size = None # not defined
-
-	@staticmethod
-	def map_device( id = None, name = None ):
-		return _map( Disk.DEVICE_MAP, id, name )
-
-	@staticmethod
-	def map_type( id = None, name = None ):
-		return _map( Disk.TYPE_MAP, id, name )
-
-	@staticmethod
-	def map_cache(id=None, name=None):
-		return _map(Disk.CACHE_MAP, id, name)
-
-	def __str__( self ):
-		return 'Disk(device=%s, type=%s, driver=%s, source=%s, target=%s, size=%s)' % (Disk.map_device(id=self.device), Disk.map_type(id=self.type), self.driver, self.source, self.target_dev, self.size)
-
-class Interface( object ):
-	'''Container for interface objects'''
-	( TYPE_BRIDGE, TYPE_NETWORK ) = range( 2 )
-	TYPE_MAP = { TYPE_BRIDGE : 'bridge', TYPE_NETWORK : 'network' }
-	def __init__( self ):
-		self.type = Interface.TYPE_BRIDGE
-		self.mac_address = None
-		self.source = None
-		self.target = None
-		self.script = None
-		self.model = None
-
-	@staticmethod
-	def map_type( id = None, name = None ):
-		return _map( Interface.TYPE_MAP, id, name )
-
-	def __str__( self ):
-		return 'Interface(type=%s, mac=%s, source=%s, target=%s, script=%s, model=%s)' % (Interface.map_type(id=self.type), self.mac_address, self.source, self.target, self.script, self.model)
-
-class Graphic( object ):
-	'''Container for graphic objects'''
-	( TYPE_VNC, TYPE_SDL ) = range( 2 )
-	TYPE_MAP = { TYPE_VNC: 'vnc', TYPE_SDL: 'sdl' }
-	def __init__( self ):
-		self.type = Graphic.TYPE_VNC
-		self.port = -1
-		self.autoport = True
-		self.keymap = 'de'
-		self.listen = None
-		self.passwd = None
-
-	@staticmethod
-	def map_type( id = None, name = None ):
-		return _map( Graphic.TYPE_MAP, id, name )
-
-	def __str__( self ):
-		return 'Graphic(type=%s, port=%s, autoport=%s, keymap=%s, listen=%s, passwd=%s' % (Graphic.map_type(id=self.type), self.port, self.autoport, self.keymap, self.listen, bool(self.passwd))
 
 class DomainTemplate(object):
 	'''Container for node capability.'''
@@ -443,7 +363,12 @@ class Domain(object):
 				dev.mac_address = mac[ 0 ].getAttribute( 'address' )
 			source = iface.getElementsByTagName( 'source' )
 			if source:
-				dev.source = source[ 0 ].getAttribute( dev.map_type( id = dev.type ) )
+				if dev.type == Interface.TYPE_BRIDGE:
+					dev.source = source[0].getAttribute('bridge')
+				elif dev.type == Interface.TYPE_NETWORK:
+					dev.source = source[0].getAttribute('network')
+				elif dev.type == Interface.TYPE_DIRECT:
+					dev.source = source[0].getAttribute('dev')
 			script = iface.getElementsByTagName( 'script' )
 			if script:
 				dev.script = script[ 0 ].getAttribute( 'path' )
@@ -783,171 +708,320 @@ def _domain_backup(dom, save=True):
 	os.rename(tmp_file, file)
 	logger.info("Domain backuped to %s." % (file,))
 
+def _domain_edit(node, dom_stat, xml):
+	"""Apply python object 'dom_stat' to an XML domain description."""
+	if xml:
+		defaults = False
+	else:
+		xml = '<domain/>'
+		defaults = True
+
+	def update(_node_parent, _node_name, _node_value, **attr):
+		'''Create, update or delete node named '_node_name' of '_node_parent'.'''
+		node = _node_parent.find(_node_name)
+		if _node_value is None and not filter(lambda v: v is not None, attr.values()):
+			if node is not None:
+				_node_parent.remove(node)
+		else:
+			if node is None:
+				node = ET.SubElement(_node_parent, _node_name)
+			node.text = _node_value or ''
+			node.attrib.update(attr)
+		return node
+
+	# find loader
+	logger.debug('Searching for template: arch=%s domain_type=%s os_type=%s' % (dom_stat.arch, dom_stat.domain_type, dom_stat.os_type))
+	for template in node.pd.capabilities:
+		logger.debug('template: %s' % template)
+		if template.matches(dom_stat):
+			break
+	else:
+		template = None
+
+	# /domain @type
+	domain = ET.fromstring(xml)
+	domain.attrib['type'] = dom_stat.domain_type
+	# /domain/uuid
+	domain_uuid = update(domain, 'uuid', dom_stat.uuid)
+	# /domain/name
+	domain_name = update(domain, 'name', dom_stat.name)
+	# /domain/description
+	description = dom_stat.annotations.get('description') or None
+	domain_description = update(domain, 'description', description)
+	# /domain/os
+	domain_os = domain.find('os')
+	if domain_os is None:
+		domain_os = ET.SubElement(domain, 'os')
+	# /domain/os/type @arch
+	domain_os_type = update(domain_os, 'type', dom_stat.os_type, arch=dom_stat.arch)
+	# /domain/os/loader
+	if defaults and template and template.loader:
+		domain_os_loader = update(domain_os, 'loader', template.loader)
+	if dom_stat.os_type in ('linux', 'xen'):
+		# /domain/os/kernel
+		domain_os_kernel = update(domain_os, 'kernel', dom_stat.kernel)
+		# /domain/os/cmdline
+		domain_os_cmdline = update(domain_os, 'cmdline', dom_stat.cmdline)
+		# /domain/os/initrd
+		domain_os_initrd = update(domain_os, 'initrd', dom_stat.initrd)
+	elif dom_stat.os_type == 'hvm':
+		# /domain/os/boot[]
+		domain_os_boots = domain_os.findall('boot')
+		boot = {}
+		for domain_os_boot in domain_os_boots:
+			dev = domain_os_boot.attrib['dev']
+			boot[dev] = domain_os_boot
+			domain_os.remove(domain_os_boot)
+		for dev in dom_stat.boot:
+			try:
+				domain_os_boot = boot[dev]
+				domain_os.append(domain_os_boot)
+			except LookupError, e:
+				domain_os_boot = ET.SubElement(domain_os, 'boot', dev=dev)
+	else:
+		raise NodeError("Unknown os/type='%(type)s'", type=d.os_type)
+	if dom_stat.bootloader:
+		# /domain/bootloader
+		domain_bootloader = update(domain, 'bootloader', dom_stat.bootloader)
+		# /domain/bootloader_args
+		domain_bootloader_args = update(domain, 'bootloader_args', dom_stat.bootloader_args)
+	# /domain/memory
+	domain_memory = update(domain, 'memory', '%d' % (dom_stat.maxMem >> 10)) # KiB
+	if False:
+		# /domain/currentMemory
+		domain_currentMemory = update(domain, 'currentMemory', '%d' % (dom_stat.curMem >> 10)) # KiB
+	# /domain/vcpu
+	domain_vcpu = update(domain, 'vcpu', '%d' % dom_stat.vcpus)
+
+	# /domain/features
+	if defaults and template and template.features:
+		domain_features = update(domain, 'features', '')
+		for f_name in template.features:
+			domain_features_x = update(domain_features, f_name, '')
+
+	# /domain/clock @offset @timezone @adjustment
+	if defaults and False:
+		domain_clock = update(domain, 'clock', '', offset='localtime') # timezone='', adjustment=0
+	# /domain/on_poweroff
+	if defaults:
+		domain_on_poweroff = update(domain, 'on_poweroff', 'destroy') # (destroy|restart|preserve|rename-restart)
+	# /domain/on_reboot
+	if defaults:
+		domain_on_reboot = update(domain, 'on_reboot', 'destroy') # (destroy|restart|preserve|rename-restart)
+	# /domain/on_crash
+	if defaults:
+		domain_on_crash = update(domain, 'on_crash', 'destroy') # (destroy|restart|preserve|rename-restart)
+
+	# /domain/devices/*[]
+	domain_devices = update(domain, 'devices', '')
+
+	# /domain/devices/emulator
+	if defaults and template and template.emulator:
+		domain_devices_emulator = update(domain_devices, 'emulator', template.emulator)
+
+	# /domain/devices/disk[]
+	domain_devices_disks = domain_devices.findall('disk')
+	disks = {}
+	for domain_devices_disk in domain_devices_disks:
+		domain_devices_disk_target = domain_devices_disk.find('target')
+		bus = domain_devices_disk_target.attrib['bus']
+		dev = domain_devices_disk_target.attrib['dev']
+		key = (bus, dev)
+		disks[key] = domain_devices_disk
+		domain_devices.remove(domain_devices_disk)
+	for disk in dom_stat.disks:
+		logger.debug('DISK: %s' % disk)
+		# /domain/devices/disk @type @device
+		try:
+			key = (disk.target_bus, disk.target_dev)
+			domain_devices_disk = disks[key]
+			domain_devices.append(domain_devices_disk)
+		except LookupError, e:
+			domain_devices_disk = ET.SubElement(domain_devices, 'disk')
+			# /domain/devices/disk/target @bus @dev
+			domain_devices_disk_target = ET.SubElement(domain_devices_disk, 'target')
+			domain_devices_disk_target.attrib['bus'] = disk.target_bus
+			domain_devices_disk_target.attrib['dev'] = disk.target_dev
+		domain_devices_disk.attrib['type'] = Disk.map_type(id=disk.type)
+		domain_devices_disk.attrib['device'] = Disk.map_device(id=disk.device)
+		# /domain/devices/disk/driver @name @type @cache
+		domain_devices_disk_driver = update(domain_devices_disk, 'driver', None, name=disk.driver, type=disk.driver_type, cache=Disk.map_cache(id=disk.driver_cache))
+		# /domain/devices/disk/source @file @dev
+		if disk.type == Disk.TYPE_FILE:
+			domain_devices_disk_source = update(domain_devices_disk, 'source', '', file=disk.source, dev=None)
+		elif disk.type == Disk.TYPE_BLOCK:
+			domain_devices_disk_source = update(domain_devices_disk, 'source', '', file=None, dev=disk.source)
+		else:
+			raise NodeError("Unknown disk/type='%(type)s'", type=disk.type)
+		# /domain/devices/disk/readonly
+		domain_devices_disk_readonly = domain_devices_disk.find('readonly')
+		if disk.readonly:
+			if domain_devices_disk_readonly is None:
+				ET.SubElement(domain_devices_disk, 'readonly')
+		else:
+			if domain_devices_disk_readonly is not None:
+				domain_devices_disk.remove(domain_devices_disk_readonly)
+
+	# /domain/devices/interface[]
+	domain_devices_interfaces = domain_devices.findall('interface')
+	interfaces = {}
+	for domain_devices_interface in domain_devices_interfaces:
+		domain_devices_interface_mac = domain_devices_interface.find('mac')
+		key = domain_devices_interface_mac.attrib['address']
+		interfaces[key] = domain_devices_interface
+		domain_devices.remove(domain_devices_interface)
+	for interface in dom_stat.interfaces:
+		logger.debug('INTERFACE: %s' % interface)
+		# /domain/devices/interface @type @device
+		try:
+			key = interface.mac_address
+			domain_devices_interface = interfaces[key]
+			domain_devices.append(domain_devices_interface)
+		except LookupError, e:
+			domain_devices_interface = ET.SubElement(domain_devices, 'interface')
+			# /domain/devices/interface/mac @address
+			domain_devices_interface_mac = ET.SubElement(domain_devices_interface, 'mac')
+			domain_devices_interface_mac.attrib['address'] = interface.mac_address
+		domain_devices_interface.attrib['type'] = Interface.map_type(id=interface.type)
+		# /domain/devices/interface/source @bridge @network @dev
+		if interface.type == Interface.TYPE_BRIDGE:
+			domain_devices_interface_source = update(domain_devices_interface, 'source', '', bridge=interface.source, network=None, dev=None)
+		elif interface.type == Interface.TYPE_NETWORK:
+			domain_devices_interface_source = update(domain_devices_interface, 'source', '', bridge=None, network=interface.source, dev=None)
+		elif interface.type == Interface.TYPE_DIRECT:
+			domain_devices_interface_source = update(domain_devices_interface, 'source', '', bridge=None, network=None, dev=interface.source)
+		else:
+			raise NodeError("Unknown interface/type='%(type)s'", type=interface.type)
+		# /domain/devices/interface/script @bridge
+		domain_devices_interface_script = update(domain_devices_interface, 'script', None, path=interface.script)
+		# /domain/devices/interface/target @dev
+		domain_devices_interface_target = update(domain_devices_interface, 'target', None, dev=interface.target)
+		# /domain/devices/interface/model @dev
+		domain_devices_interface_model = update(domain_devices_interface, 'model', None, type=interface.model)
+
+	# /domain/devices/input @type @bus
+	if dom_stat.os_type == 'hvm':
+		# define a tablet usb device which has absolute cursor movement for a better VNC experience. Bug #19244
+		domain_devices_inputs = domain_devices.findall('input')
+		for domain_devices_input in domain_devices_inputs:
+			if domain_devices_input.attrib['type'] == 'tablet' and domain_devices_input.attrib['bus'] == 'usb':
+				break
+		else:
+			domain_devices_input = ET.SubElement(domain_devices, 'input', type='tablet', bus='usb')
+
+	# /domain/devices/graphics[]
+	domain_devices_graphics = domain_devices.findall('graphics')
+	for domain_devices_graphic in domain_devices_graphics:
+		domain_devices.remove(domain_devices_graphic)
+	for graphics in dom_stat.graphics:
+		# /domain/devices/graphics @type
+		key = Graphic.map_type(id=graphics.type)
+		for domain_devices_graphic in domain_devices_graphics:
+			if key == domain_devices_graphic.attrib['type']:
+				domain_devices.append(domain_devices_graphic)
+				break
+		else:
+			domain_devices_graphic = ET.SubElement(domain_devices, 'graphics', type=key)
+		# /domain/devices/graphics @autoport
+		if graphics.autoport:
+			domain_devices_graphic.attrib['autoport'] = 'yes'
+		else:
+			domain_devices_graphic.attrib['autoport'] = 'no'
+		# /domain/devices/graphics @port @keymap @listen @passwd
+		domain_devices_graphic.attrib['port'] = '%d' % graphics.port
+		domain_devices_graphic.attrib['keymap'] = graphics.keymap
+		domain_devices_graphic.attrib['listen'] = graphics.listen
+		domain_devices_graphic.attrib['passwd'] = graphics.passwd
+	
+	if dom_stat.domain_type in ('kvm'): # 'qemu'
+		models = set()
+		for iface in dom_stat.interfaces:
+			model = getattr(iface, 'model', None) or 'rtl8139'
+			models.add(model)
+		if 'network' not in dom_stat.boot: # qemu-kvm_0.12.4 ignores boot-order and always prefers Network
+			models = set()
+		models &= set(['e1000', 'ne2k_isa', 'ne2k_pci', 'pcnet', 'rtl8139', 'virtio'])
+		roms = set(['%s-%s.bin' % (QEMU_PXE_PREFIX, model) for model in models])
+
+		# install XML Name Space mapping: prefix must be qemu!
+		ET._namespace_map[QEMU_URI] = 'qemu'
+		domain.attrib['xmlns:qemu'] = QEMU_URI
+
+		# /domain/qemu:commandline/
+		QEMU_COMMANDLINE = '{%s}commandline' % QEMU_URI
+		domain_qemu_commandline = update(domain, QEMU_COMMANDLINE, '')
+		# /domain/qemu:commandline/qemu:arg
+		QEMU_ARG = '{%s}arg' % QEMU_URI
+		i = 0
+		i_option_rom = None
+		while i < len(domain_qemu_commandline):
+			if domain_qemu_commandline[i].tag == QEMU_ARG:
+				val = domain_qemu_commandline[i].attrib['value']
+				if val == '-option-rom':
+					i_option_rom = i
+				elif i_option_rom is not None and val.startswith(QEMU_PXE_PREFIX):
+					try:
+						roms.remove(val)
+					except LookupError, e:
+						del domain_qemu_commandline[i]
+						del domain_qemu_commandline[i_option_rom]
+						i -= 2
+						i_option_rom = None
+			i += 1
+		for rom in roms:
+			domain_qemu_commandline_arg = ET.SubElement(domain_qemu_commandline, QEMU_ARG, value='-option-rom')
+			domain_qemu_commandline_arg = ET.SubElement(domain_qemu_commandline, QEMU_ARG, value=rom)
+
+	# Make ET happy and cleanup None values
+	for n in domain.getiterator():
+		if n.text is None:
+			n.text = ''
+		for k, v in n.attrib.items():
+			if v is None or v == '':
+				del n.attrib[k]
+			elif not isinstance(v, basestring):
+				n.attrib[k] = '%s' % v
+
+	return ET.tostring(domain)
+
 def domain_define( uri, domain ):
 	"""Convert python object to an XML document."""
 	node = node_query(uri)
 	conn = node.conn
+	logger.debug('PY DUMP: %r' % domain.__dict__)
 
 	# Check for (name,uuid) collision
+	old_dom = None
+	old_xml = None
 	try:
 		old_dom = conn.lookupByName(domain.name)
 		if old_dom.UUIDString() != domain.uuid:
 			raise NodeError(_('Domain name "%(domain)s" already used by "%(uuid)s"'), domain=domain.name, uuid=domain.uuid)
+		old_xml = old_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
 	except libvirt.libvirtError, e:
 		if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 			logger.error(e)
 			raise NodeError(_('Error retrieving old domain "%(domain)s": %(error)s'), domain=domain.name, error=e.get_error_message())
+		# rename: name changed, uuid unchanged
+		try:
+			if domain.uuid:
+				old_dom = conn.lookupByUUIDString(domain.uuid)
+				old_xml = old_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
+		except libvirt.libvirtError, e:
+			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
+				logger.error(e)
+				raise NodeError(_('Error retrieving old domain "%(domain)s": %(error)s'), domain=domain.uuid, error=e.get_error_message())
 
 	old_stat = None
 	warnings = []
-
-	impl = getDOMImplementation()
-	doc = impl.createDocument( None, 'domain', None )
-	elem = doc.createElement( 'name' )
-	elem.appendChild( doc.createTextNode( domain.name ) )
-	doc.documentElement.appendChild( elem )
-	doc.documentElement.setAttribute('type', domain.domain_type.lower()) # TODO: verify
 	if domain.uuid:
 		old_stat = node.domains[domain.uuid].key()
-		elem = doc.createElement( 'uuid' )
-		elem.appendChild( doc.createTextNode( domain.uuid ) )
-		doc.documentElement.appendChild( elem )
+	
+	new_xml = _domain_edit(node, domain, old_xml)
 
-	elem = doc.createElement( 'memory' )
-	elem.appendChild( doc.createTextNode( str( domain.maxMem / 1024 ) ) )
-	doc.documentElement.appendChild( elem )
-	if domain.vcpus:
-		elem = doc.createElement('vcpu')
-		elem.appendChild( doc.createTextNode(str(domain.vcpus)))
-		doc.documentElement.appendChild(elem)
-
-	# find loader
-	loader = None
-	logger.debug('Searching for template: arch=%s domain_type=%s os_type=%s' % (domain.arch, domain.domain_type, domain.os_type))
-	for template in node.pd.capabilities:
-		logger.debug('template: %s' % template)
-		if template.matches(domain):
-			if template.loader:
-				loader = doc.createElement('loader')
-				loader.appendChild(doc.createTextNode(template.loader))
-
-			if template.features:
-				features = doc.createElement('features')
-				for f_name in template.features:
-					feature = doc.createElement(f_name)
-					features.appendChild(feature)
-				doc.documentElement.appendChild(features)
-			break
-
-	type = doc.createElement( 'type' )
-	type.appendChild( doc.createTextNode( domain.os_type ) )
-	type.setAttribute( 'arch', domain.arch )
-	os = doc.createElement( 'os' )
-	os.appendChild( type )
-	if loader:
-		os.appendChild( loader )
-
-	if hasattr(domain, 'bootloader') and domain.bootloader:
-		text = doc.createTextNode( domain.bootloader )
-		bootloader = doc.createElement( 'bootloader' )
-		bootloader.appendChild( text )
-		doc.documentElement.appendChild( bootloader )
-		if domain.bootloader_args:
-			text = doc.createTextNode( domain.bootloader_args )
-			bootloader_args = doc.createElement( 'bootloader_args' )
-			bootloader_args.appendChild( text )
-			doc.documentElement.appendChild( bootloader_args )
-
-	if domain.kernel:
-		text = doc.createTextNode( domain.kernel )
-		kernel = doc.createElement( 'kernel' )
-		kernel.appendChild( text )
-		os.appendChild( kernel )
-	if domain.cmdline:
-		text = doc.createTextNode( domain.cmdline )
-		cmdline = doc.createElement( 'cmdline' )
-		cmdline.appendChild( text )
-		os.appendChild( cmdline )
-	if domain.initrd:
-		text = doc.createTextNode( domain.initrd )
-		initrd = doc.createElement( 'initrd' )
-		initrd.appendChild( text )
-		os.appendChild( initrd )
-	if domain.os_type == 'hvm':
-		for dev in domain.boot: # (hd|cdrom|network|fd)+
-			boot = doc.createElement('boot')
-			boot.setAttribute('dev', dev)
-			os.appendChild(boot)
-
-	if False: # FIXME optional
-		clock = doc.createElement('clock')
-		clock.setAttribute('offset', 'localtime') # FIXME: (utc|localtime|timezone|variable)
-		#clock.setAttribute('timezone', '') # @offset='timezone' only
-		#clock.setAttribute('adjustment', 0) # @offset='variable' only
-		os.appendChild(clock)
-
-	if False: # FIXME optional
-		text = doc.createTextNode('destroy') # (destroy|restart|preserve|rename-restart)
-		poweroff = doc.createElement('on_poweroff')
-		poweroff.appendChild(text)
-		doc.appendChild(poweroff)
-	if False: # FIXME optional
-		text = doc.createTextNode('restart') # (destroy|restart|preserve|rename-restart)
-		reboot = doc.createElement('on_reboot')
-		reboot.appendChild(text)
-		doc.appendChild(reboot)
-	if False: # FIXME optional
-		text = doc.createTextNode('destroy') # (destroy|restart|preserve|rename-restart)
-		crash = doc.createElement('on_crash')
-		crash.appendChild(text)
-		doc.appendChild(crash)
-
-	doc.documentElement.appendChild( os )
-	devices = doc.createElement( 'devices' )
-	if False: # FIXME
-		text = doc.createTextNode('/usr/lib64/xen/bin/qemu-dm') # FIXME
-		emulator = doc.createElement('emulator')
-		emulator.appendChild(text)
-		os.appendChild(emulator)
-
+	# create new disks
 	logger.debug('DISKS: %s' % domain.disks)
 	for disk in domain.disks:
-		logger.debug('DISK: %s' % disk)
-		elem = doc.createElement( 'disk' )
-		elem.setAttribute( 'type', disk.map_type( id = disk.type ) )
-		elem.setAttribute( 'device', disk.map_device( id = disk.device ) )
-		devices.appendChild( elem )
-
-		if hasattr(disk, 'driver') and disk.driver:
-			driver = doc.createElement('driver')
-			driver.setAttribute('name', disk.driver)
-			if hasattr(disk, 'driver_type') and disk.driver_type:
-				driver.setAttribute('type', disk.driver_type)
-			if hasattr(disk, 'driver_cache') and disk.driver_cache:
-				driver.setAttribute('cache', disk.map_cache(id=disk.driver_cache))
-			elem.appendChild(driver)
-
-		source = doc.createElement( 'source' )
-		if disk.type == Disk.TYPE_FILE:
-			source.setAttribute('file', disk.source)
-		elif disk.type == Disk.TYPE_BLOCK:
-			source.setAttribute('dev', disk.source)
-		else:
-			raise NodeError(_('Unknown disk type: %(type)d'), type=disk.type)
-		elem.appendChild( source )
-
-		# FIXME: Xen-PV should use xvd[a-z], Kvm-VirtIO uses vd[a-z]
-		target = doc.createElement( 'target' )
-		target.setAttribute( 'dev', disk.target_dev )
-		# TODO: Xen an KVM have their default based on the device names
-		if disk.target_bus:
-			target.setAttribute('bus', disk.target_bus)
-		elem.appendChild( target )
-
-		if disk.readonly:
-			readonly = doc.createElement( 'readonly' )
-			elem.appendChild( readonly )
-
 		if disk.device == Disk.DEVICE_DISK:
 			try:
 				# FIXME: If the volume is outside any pool, ignore error
@@ -955,85 +1029,12 @@ def domain_define( uri, domain ):
 			except StorageError, e:
 				raise NodeError(e)
 
-	for iface in domain.interfaces:
-		logger.debug('INTERFACE: %s' % iface)
-		elem = doc.createElement( 'interface' )
-		elem.setAttribute( 'type', iface.map_type( id = iface.type ) )
-		if iface.mac_address:
-			mac = doc.createElement( 'mac' )
-			mac.setAttribute( 'address', iface.mac_address )
-			elem.appendChild( mac )
-		source = doc.createElement( 'source' )
-		source.setAttribute( iface.map_type( id = iface.type ), iface.source )
-		elem.appendChild( source )
-		if iface.script:
-			script = doc.createElement( 'script' )
-			script.setAttribute( 'path', iface.script )
-			elem.appendChild( script )
-		if iface.target:
-			target = doc.createElement( 'target' )
-			target.setAttribute( 'dev', iface.target )
-			elem.appendChild( target )
-		if hasattr(iface, 'model') and iface.model:
-			model = doc.createElement( 'model' )
-			model.setAttribute( 'type', iface.model )
-			elem.appendChild( model )
-		devices.appendChild( elem )
-
-	# define a tablet usb device which has absolute cursor movement for a better VNC experience. Bug #19244
-	if domain.os_type == 'hvm':
-		tablet = doc.createElement( 'input' )
-		tablet.setAttribute( 'type', 'tablet' )
-		tablet.setAttribute( 'bus', 'usb' )
-
-		devices.appendChild( tablet )
-
-	for graphic in domain.graphics:
-		logger.debug('GRAPHIC: %s' % graphic)
-		elem = doc.createElement( 'graphics' )
-		elem.setAttribute( 'type', Graphic.map_type( id = graphic.type ) )
-		elem.setAttribute( 'port', str( graphic.port ) )
-		if graphic.autoport:
-			elem.setAttribute( 'autoport', 'yes' )
-		else:
-			elem.setAttribute( 'autoport', 'no' )
-		if graphic.listen:
-			elem.setAttribute( 'listen', graphic.listen )
-		if hasattr(graphic, 'passwd') and graphic.passwd:
-			elem.setAttribute( 'passwd', graphic.passwd )
-		elem.setAttribute( 'keymap', graphic.keymap )
-		devices.appendChild( elem )
-
-	doc.documentElement.appendChild( devices )
-
-	if domain.domain_type in ('kvm'): # 'qemu'
-		doc.documentElement.setAttribute("xmlns:qemu", "http://libvirt.org/schemas/domain/qemu/1.0")
-		commandline = doc.createElement('qemu:commandline')
-
-		models = set()
-		for iface in domain.interfaces:
-			model = getattr(iface, 'model', None) or 'rtl8139'
-			models.add(model)
-		if 'network' not in domain.boot: # qemu-kvm_0.12.4 ignores boot-order and always prefers Network
-			models = set()
-		models &= set(['e1000', 'ne2k_isa', 'ne2k_pci', 'pcnet', 'rtl8139', 'virtio'])
-		for model in models:
-			arg = doc.createElement('qemu:arg')
-			arg.setAttribute('value', '-option-rom')
-			commandline.appendChild(arg)
-			arg = doc.createElement('qemu:arg')
-			arg.setAttribute('value', '/usr/share/kvm/pxe-%s.bin' % model)
-			commandline.appendChild(arg)
-
-		doc.documentElement.appendChild(commandline)
-
 	# remove old domain definitions
-	if domain.uuid:
+	if old_dom:
 		try:
-			dom = conn.lookupByUUIDString(domain.uuid)
-			_domain_backup(dom)
-			if dom.name() != domain.name: # rename needs undefine
-				dom.undefine() # all snapshots are destroyed!
+			_domain_backup(old_dom)
+			if old_dom.name() != domain.name: # rename needs undefine
+				old_dom.undefine() # all snapshots are destroyed!
 				logger.info('Old domain "%s" removed.' % (domain.uuid,))
 		except libvirt.libvirtError, e:
 			if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
@@ -1041,8 +1042,8 @@ def domain_define( uri, domain ):
 				raise NodeError(_('Error removing domain "%(domain)s": %(error)s'), domain=domain.uuid, error=e.get_error_message())
 
 	try:
-		logger.debug('XML DUMP: %s' % doc.toxml())
-		d = conn.defineXML(doc.toxml())
+		logger.debug('XML DUMP: %s' % new_xml.replace('\n', ' '))
+		d = conn.defineXML(new_xml)
 		domain.uuid = d.UUIDString()
 		_domain_backup(d, save=False)
 	except libvirt.libvirtError, e:

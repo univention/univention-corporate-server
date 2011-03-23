@@ -454,22 +454,22 @@ class DriveWizard( umcd.IWizard ):
 		driver_type = object.options['driver-type'].lower()
 		driver_pv = object.options[ 'drive-paravirtual' ]
 
-		disk = uvmmn.Disk()
+		disk = uvmmp.Disk()
 		if drive_type == 'disk':
-			disk.device = uvmmn.Disk.DEVICE_DISK
+			disk.device = uvmmp.Disk.DEVICE_DISK
 		elif drive_type == 'cdrom':
-			disk.device = uvmmn.Disk.DEVICE_CDROM
+			disk.device = uvmmp.Disk.DEVICE_CDROM
 			driver_type = 'raw' # ISOs need driver/@type='raw'
 		elif drive_type == 'floppy':
-			disk.device = uvmmn.Disk.DEVICE_FLOPPY
+			disk.device = uvmmp.Disk.DEVICE_FLOPPY
 		else:
 			raise Exception('Invalid drive-type "%s"' % drive_type)
 
 		is_file_pool = self._is_file_pool(drive_pool)
 		if is_file_pool:
-			disk.type = uvmmn.Disk.TYPE_FILE
+			disk.type = uvmmp.Disk.TYPE_FILE
 		else:
-			disk.type = uvmmn.Disk.TYPE_BLOCK
+			disk.type = uvmmp.Disk.TYPE_BLOCK
 
 		if self.node_uri.startswith('qemu'):
 			disk.driver = 'qemu'
@@ -500,7 +500,7 @@ class DriveWizard( umcd.IWizard ):
 			raise Exception('Unknown virt-tech "%s"' % self.node_uri)
 
 		disk.size = MemorySize.str2num(image_size, unit='MB')
-		if disk.type == uvmmn.Disk.TYPE_FILE:
+		if disk.type == uvmmp.Disk.TYPE_FILE:
 			disk.source = os.path.join(self._get_pool_path(drive_pool), image_name)
 		else:
 			if drive_device[ 0 ] != '/':
@@ -709,17 +709,17 @@ class InstanceWizard( umcd.IWizard ):
 		html = '<ul class="umc_listing">'
 		for dev in self.drives:
 			values = {}
-			if dev.device == uvmmn.Disk.DEVICE_DISK:
+			if dev.device == uvmmp.Disk.DEVICE_DISK:
 				values[ 'type' ] = _( 'hard drive' )
-			elif dev.device == uvmmn.Disk.DEVICE_CDROM:
+			elif dev.device == uvmmp.Disk.DEVICE_CDROM:
 				values[ 'type' ] = _( 'CDROM drive' )
-			elif dev.device == uvmmn.Disk.DEVICE_FLOPPY:
+			elif dev.device == uvmmp.Disk.DEVICE_FLOPPY:
 				values[ 'type' ] = _( 'floppy drive' )
 			else:
 				values[ 'type' ] = _( 'unknown' )
 
 			values[ 'size' ] = MemorySize.num2str( dev.size )
-			if dev.type == uvmmn.Disk.TYPE_FILE:
+			if dev.type == uvmmp.Disk.TYPE_FILE:
 				values[ 'image' ] = os.path.basename( dev.source )
 				dir = os.path.dirname( dev.source )
 				values[ 'pool' ] = dir
@@ -766,7 +766,7 @@ class InstanceWizard( umcd.IWizard ):
 				domain_info.boot = object.options['bootdev']
 			# VNC
 			if object.options[ 'vnc' ]:
-				gfx = uvmmn.Graphic()
+				gfx = uvmmp.Graphic()
 				gfx.listen = '0.0.0.0'
 				gfx.keymap = object.options[ 'kblayout' ]
 				domain_info.graphics = [gfx,]
@@ -780,14 +780,14 @@ class InstanceWizard( umcd.IWizard ):
 			if domain_info.os_type in ( 'linux', 'xen' ):
 				non_disks, disks = [], []
 				for dev in domain_info.disks:
-					if dev.device == uvmmn.Disk.DEVICE_DISK:
+					if dev.device == uvmmp.Disk.DEVICE_DISK:
 						disks.append(dev)
 					else:
 						non_disks.append(dev)
 				domain_info.disks = non_disks + disks
 			# network interface
 			if object.options[ 'interface' ]:
-				iface = uvmmn.Interface()
+				iface = uvmmp.Interface()
 				iface.source = object.options[ 'interface' ]
 				if object.options[ 'pvinterface' ] == '1' and domain_info.os_type == 'hvm':
 					if domain_info.domain_type == 'xen':

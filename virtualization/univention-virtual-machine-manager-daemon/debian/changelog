@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.197-1) unstable; urgency=low
+
+  * Keep modifications to Domain XML (Bug #20253)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Mar 2011 14:49:43 +0100
+
 univention-virtual-machine-manager-daemon (0.9.196-1) unstable; urgency=low
 
   * reset drive wizard values before each invocation; Bug #21718
