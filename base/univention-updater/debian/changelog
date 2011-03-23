@@ -1,3 +1,9 @@
+univention-updater (6.0.80-1) unstable; urgency=low
+
+  * Just report missing components in mirror.list (Bug #21933)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Mar 2011 08:16:06 +0100
+
 univention-updater (6.0.79-1) unstable; urgency=low
 
   * Fix handling of invalid PID in lockfile (Bug #15144)
