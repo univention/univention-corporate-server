@@ -94,7 +94,7 @@ class DriveWizard( umcd.IWizard ):
 		self.append( page )
 
 		# page 4: Select block device
-		page = umcd.Page( self.title, _( 'To bind the drive to a local device the filename of the associated block device must be specified.' ) )
+		page = umcd.Page( self.title, _( 'To bind the drive to a local device the filename of the associated block device must be specified. If no absolute path (e.g. /dev/cdrom) is given, the directory /dev/ will be prepended.' ) )
 		page.options.append( umcd.make( ( 'drive-device', umc.String( _( 'Device filename' ) ) ) ) )
 		self.append( page )
 
