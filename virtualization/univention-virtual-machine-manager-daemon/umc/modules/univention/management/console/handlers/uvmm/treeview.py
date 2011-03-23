@@ -106,15 +106,16 @@ class TreeView( object ):
 					node_uri = uvmm.node_name2uri( item )
 					# FIXME: need to know the virtualization technology of offline nodes
 					icon = 'uvmm/node-kvm-off'
-					try:
-						node_info = get_node_info(node_uri)
-						if node_info.last_try == node_info.last_update:
-							if node_uri.startswith( 'xen:' ):
-								icon = 'uvmm/node-xen'
-							else:
-								icon = 'uvmm/node-kvm'
-					except Exception, e:
-						pass
+					if node_uri is not None: # currently unavailable
+						try:
+							node_info = get_node_info(node_uri)
+							if node_info.last_try == node_info.last_update:
+								if node_uri.startswith( 'xen:' ):
+									icon = 'uvmm/node-xen'
+								else:
+									icon = 'uvmm/node-kvm'
+						except Exception, e:
+							pass
 					# remove domain name from hostname
 					dot = item.find( '.' )
 					if  dot > -1:
