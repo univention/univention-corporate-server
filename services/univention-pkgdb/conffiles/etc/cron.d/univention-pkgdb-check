@@ -2,5 +2,5 @@
 
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
-# Run queue every 5 minutes
+# Run queue every 15 minutes
 */15 * * * *	root	if [ -x /usr/sbin/univention-pkgdb-check ]; then /usr/sbin/univention-pkgdb-check; fi

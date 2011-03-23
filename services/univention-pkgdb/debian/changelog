@@ -1,3 +1,9 @@
+univention-pkgdb (4.0.4-4) unstable; urgency=low
+
+  * fix comment in univention-pkgdb-check (Bug #12168)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 23 Mar 2011 09:31:04 +0100
+
 univention-pkgdb (4.0.4-3) unstable; urgency=low
 
   * remove template header from non-template (Bug #12168)
