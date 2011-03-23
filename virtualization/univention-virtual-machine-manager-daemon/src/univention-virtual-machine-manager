@@ -41,6 +41,10 @@ from univention.uvmm.helpers import TranslatableException, _, N_
 import PAM
 from getpass import getpass
 from pprint import pprint
+try:
+	import xml.etree.ElementTree as ET
+except ImportError:
+	import elementtree.ElementTree as ET
 __builtins__._ = _
 
 class ParameterModeError(TranslatableException):
@@ -340,10 +344,6 @@ class Client(object):
 			%prog define qemu://server.domain.name/system ./domain.xml
 			%prog define xen://server.domain.name/ '<domain type="xen"><name>Name</name>...</domain>'
 		"""
-		try:
-			import xml.etree.ElementTree as ET
-		except ImportError:
-			import elementtree.ElementTree as ET
 		if file_or_xml.startswith('<'):
 			root = ET.fromstring(file_or_xml)
 		else:
@@ -365,7 +365,7 @@ class Client(object):
 			except AttributeError: pass
 			except KeyError: pass
 		else:
-			raise "Unknown os/typ='%s'" % (domain.os_type,)
+			raise "Unknown os/type='%s'" % (domain.os_type,)
 		try: domain.bootloader = root.findtext('bootloader')
 		except AttributeError: pass
 		try: domain.bootloader_args = root.findtext('bootloader_args')
@@ -410,7 +410,7 @@ class Client(object):
 			try: i.source = interface.find('source').attrib['bridge']
 			except AttributeError: pass
 			except KeyError: pass
-			try: i.target = interface.find('script').attrib['path']
+			try: i.script = interface.find('script').attrib['path']
 			except AttributeError: pass
 			except KeyError: pass
 			try: i.target = interface.find('target').attrib['dev']

@@ -759,7 +759,7 @@ class InstanceWizard( umcd.IWizard ):
 			# memory
 			domain_info.maxMem = MemorySize.str2num(object.options['memory'], unit='MB')
 			# CPUs
-			domain_info.vcpus = object.options['cpus']
+			domain_info.vcpus = int(object.options['cpus'])
 			# boot devices
 			if object.options[ 'bootdev' ] and object.options[ 'bootdev' ][ 0 ]:
 				ud.debug( ud.ADMIN, ud.INFO, 'device wizard: boot drives: %s' % str( object.options[ 'bootdev' ] ) )
