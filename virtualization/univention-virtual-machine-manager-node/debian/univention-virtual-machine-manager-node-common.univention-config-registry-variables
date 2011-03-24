@@ -36,7 +36,7 @@ Categories=uvmm
 
 [uvmm/libvirt/action/shutdown_timeout]
 Description[de]=Wartezeit für das Herunterfahren der Gäste
-Description[en]=Timeout for waiting for huest to shut down
+Description[en]=Timeout for waiting for guest to shut down
 Type=str
 Categories=uvmm
 
@@ -60,6 +60,6 @@ Categories=uvmm
 
 [uvmm/libvirt/action/shutdown_timeout]
 Description[de]=Wartezeit für das Herunterfahren der Gäste
-Description[en]=Timeout for waiting for huest to shut down
+Description[en]=Timeout for waiting for guest to shut down
 Type=str
 Categories=uvmm

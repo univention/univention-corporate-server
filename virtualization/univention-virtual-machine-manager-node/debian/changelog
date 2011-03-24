@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (0.1.29-1) unstable; urgency=low
+
+  * Fixed typo in UCR description (Bug #21733)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Mar 2011 16:20:50 +0100
+
 univention-virtual-machine-manager-node (0.1.28-1) unstable; urgency=low
 
   * Set URI to an empty value if the shutdown action is set to ignore
