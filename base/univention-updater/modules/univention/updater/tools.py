@@ -351,14 +351,14 @@ class UCSHttpServer(object):
 		# ---------+----------------------------------------------+----------------------
 		# URL:111  | HTTP:404  URL:111  URL:110  GAI:-2  HTTP:407 | Port closed
 		# URL:110  | HTTP:404  URL:111  URL:110  GAI:-2  HTTP:407 | Port filtered
-		# GAI:-2   | HTTP:502  URL:111  URL:110  GAI:-2  HTTP:407 | Host name unknown
+		# GAI:-2   | HTTP:502/4URL:111  URL:110  GAI:-2  HTTP:407 | Host name unknown
 		# HTTP:401 | HTTP:401  URL:111  URL:110  GAI:-2  HTTP:407 | Authorization required
 		except urllib2.HTTPError, res:
 			if res.code == httplib.UNAUTHORIZED: # 401
 				raise ConfigurationError(uri, 'credentials not accepted')
 			if res.code == httplib.PROXY_AUTHENTICATION_REQUIRED: # 407
 				raise ProxyError(uri, 'credentials not accepted')
-			if res.code == httplib.BAD_GATEWAY: # 502
+			if res.code in (httplib.BAD_GATEWAY, httplib.GATEWAY_TIMEOUT): # 502 504
 				self.failed_hosts.add(req.get_host())
 				raise ConfigurationError(uri, 'host is unresolvable')
 			raise DownloadError(uri, res.code)
