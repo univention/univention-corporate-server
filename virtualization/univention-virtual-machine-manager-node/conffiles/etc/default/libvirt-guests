@@ -4,7 +4,7 @@
 # example: URIS='default xen:/// vbox+tcp://host/system lxc:///'
 #URIS=default
 @!@
-print 'URIS="%s"' % configRegistry.get('uvmm/libvirt/action/uris', '')
+if 'uvmm/libvirt/action/uris' in configRegistry: print 'URIS=%(uvmm/libvirt/action/uris)s' % configRegistry
 @!@
 
 # action taken on host boot

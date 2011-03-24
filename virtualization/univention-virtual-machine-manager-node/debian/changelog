@@ -1,11 +1,4 @@
-univention-virtual-machine-manager-node (0.1.26-1) unstable; urgency=low
-
-  * Set URIS to an empty value in etc/default/libvirt-guests if
-    uvmm/libvirt/action/uris is not set (Bug #21733)
-
- -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Mar 2011 15:46:01 +0100
-
-univention-virtual-machine-manager-node (0.1.25-1) unstable; urgency=low
+univention-virtual-machine-manager-node (0.1.27-1) unstable; urgency=low
 
   * Use UCR variable uvmm/kvm/qemu/group instead of uvmm/kvm/udev/group to
     define owner group of /dev/kvm; Bug #21212
