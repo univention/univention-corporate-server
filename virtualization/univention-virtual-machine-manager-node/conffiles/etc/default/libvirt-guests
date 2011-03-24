@@ -4,7 +4,11 @@
 # example: URIS='default xen:/// vbox+tcp://host/system lxc:///'
 #URIS=default
 @!@
-if 'uvmm/libvirt/action/uris' in configRegistry: print 'URIS=%(uvmm/libvirt/action/uris)s' % configRegistry
+# Set URI to an empty value if the shutdown action is set to ignore
+if configRegistry.get('uvmm/libvirt/action/shutdown', '') == 'ignore':
+	print 'URIS=""'
+elif 'uvmm/libvirt/action/uris' in configRegistry:
+	print 'URIS=%(uvmm/libvirt/action/uris)s' % configRegistry
 @!@
 
 # action taken on host boot
