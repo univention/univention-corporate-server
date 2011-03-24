@@ -52,10 +52,10 @@ IFS=$'\n'
 
 if [ -z "$ONLYUSER" ] ; then
 	# TEST COMPUTERS
-	gidNumberList="$(ldapsearch -LLLx "(&(objectClass=univentionHost)(gidNumber=*))" gidNumber | sed -ne "s,^gidNumber: ,,p" | sort -u)"
+	gidNumberList="$(ldapsearch -LLLx "(&(objectClass=univentionHost)(gidNumber=*))" gidNumber | ldapsearch-wrapper | sed -ne "s,^gidNumber: ,,p" | sort -u)"
 	for gidNumber in $gidNumberList ; do
-	 	grpDn="$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber}))" dn | sed -ne 's,dn: ,,p')"
-	 	for dn in $(ldapsearch -LLLx "(&(objectClass=univentionHost)(gidNumber=${gidNumber}))" dn | sed -ne "s,^dn: ,,p") ; do
+	 	grpDn="$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber}))" dn | ldapsearch-wrapper | sed -ne 's,dn: ,,p')"
+	 	for dn in $(ldapsearch -LLLx "(&(objectClass=univentionHost)(gidNumber=${gidNumber}))" dn | ldapsearch-wrapper | sed -ne "s,^dn: ,,p") ; do
 	 		if [ -z "$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(uniqueMember=${dn}))")" ] ; then
 	 			echo "*** $dn is missing in group with gidNumber $gidNumber ($grpDn)"
 	 			if [ -n "$FORCE" ] ; then
@@ -67,7 +67,7 @@ uniqueMember: $dn
 EOF
 	 		    fi
 	 		fi
-	 		hostuid="$(ldapsearch -xLLL -b "$dn" uid | sed -ne 's,^uid: ,,p')"
+	 		hostuid="$(ldapsearch -xLLL -b "$dn" uid | ldapsearch-wrapper | sed -ne 's,^uid: ,,p')"
 	 		if [ -z "$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(memberUid=${hostuid}))")" ] ; then
 	 			echo "*** $hostuid is missing in group with gidNumber $gidNumber ($grpDn)"
 	 			if [ -n "$FORCE" ] ; then
@@ -85,10 +85,10 @@ fi
 
 if [ -z "$ONLYCOMPUTER" ] ; then
 	# TEST USERS
-	gidNumberList="$(ldapsearch -LLLx "(&(objectClass=posixAccount)(uid=*)(!(uid=*$))(gidNumber=*))" gidNumber | sed -ne "s,^gidNumber: ,,p" | sort -u)"
+	gidNumberList="$(ldapsearch -LLLx "(&(objectClass=posixAccount)(uid=*)(!(uid=*$))(gidNumber=*))" gidNumber | ldapsearch-wrapper | sed -ne "s,^gidNumber: ,,p" | sort -u)"
 	for gidNumber in $gidNumberList ; do
-	 	grpDn="$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber}))" dn | sed -ne 's,dn: ,,p')"
-	 	for dn in $(ldapsearch -LLLx "(&(objectClass=posixAccount)(uid=*)(!(uid=*$))(gidNumber=${gidNumber}))" dn | sed -ne "s,^dn: ,,p") ; do
+	 	grpDn="$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber}))" dn | ldapsearch-wrapper | sed -ne 's,dn: ,,p')"
+	 	for dn in $(ldapsearch -LLLx "(&(objectClass=posixAccount)(uid=*)(!(uid=*$))(gidNumber=${gidNumber}))" dn | ldapsearch-wrapper | sed -ne "s,^dn: ,,p") ; do
 	 		if [ -z "$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(uniqueMember=${dn}))")" ] ; then
 	 			echo "*** $dn is missing in group with gidNumber $gidNumber ($grpDn)"
 	 			if [ -n "$FORCE" ] ; then
@@ -100,7 +100,7 @@ uniqueMember: $dn
 EOF
 	 		    fi
 	 		fi
-	 		useruid="$(ldapsearch -xLLL -b "$dn" uid | sed -ne 's,^uid: ,,p')"
+	 		useruid="$(ldapsearch -xLLL -b "$dn" uid | ldapsearch-wrapper | sed -ne 's,^uid: ,,p')"
 	 		if [ -z "$(ldapsearch -xLLL "(&(objectClass=univentionGroup)(gidNumber=${gidNumber})(memberUid=${useruid}))")" ] ; then
 	 			echo "*** $useruid is missing in group with gidNumber $gidNumber ($grpDn)"
 	 			if [ -n "$FORCE" ] ; then

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.117-1) unstable; urgency=low
+
+  * added ldapsearch-wrapper to fix_primary_group_membership (Bug #21782)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 24 Mar 2011 11:47:10 +0100
+
 univention-directory-manager-modules (6.0.116-2) unstable; urgency=low
 
   * version bump; wrong bug number for changelog entry in version (6.0.93-1),
