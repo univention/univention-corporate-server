@@ -39,7 +39,7 @@ univention-config-registry set "uvmm/pool/default/path?/var/lib/libvirt/images" 
 			"uvmm/umc/vnc?internal" \
 			"uvmm/umc/show/pause?xen" \
             "uvmm/check/interval?2" \
-            "uvmm/check/timeout?5"
+            "uvmm/check/timeout?10"
 
 case "$1" in
     configure)

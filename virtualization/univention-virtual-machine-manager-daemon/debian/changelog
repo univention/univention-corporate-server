@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.203-2) unstable; urgency=low
+
+  * changed default value for uvmm/check/timeout in postinst script from 5 to 
+    10 seconds (Bug #21998)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 25 Mar 2011 16:49:55 +0100
+
 univention-virtual-machine-manager-daemon (0.9.203-1) unstable; urgency=low
 
   * Fix handling of Block Device Storage Pools (Bug #19574)
