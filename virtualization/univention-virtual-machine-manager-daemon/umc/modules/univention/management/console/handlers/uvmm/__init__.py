@@ -782,28 +782,26 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				remove_cmd.options[ 'disk' ] = None
 				values = {}
 				values[ 'type' ] = self._drive_name( dev.device )
-				if dev.type == uvmmn.Disk.TYPE_FILE:
-					values[ 'image' ] = os.path.basename( dev.source )
-					dir = os.path.dirname( dev.source )
-					values[ 'pool' ] = dir
-					try:
-						storages
-					except NameError:
-						node_uri = self.uvmm.node_name2uri(object.options['node'])
-						storages = self.uvmm.storage_pools(node_uri)
-					for pool in storages:
-						if pool.path == dir:
-							values[ 'pool' ] = pool.name
-							if not pool.name in storage_volumes:
-								storage_volumes[ pool.name ] = self.uvmm.storage_pool_volumes(node_uri, pool.name)
-							for vol in storage_volumes[ pool.name ]:
-								if vol.source == dev.source:
-									dev.size = vol.size
-									break
+
+				values[ 'image' ] = os.path.basename( dev.source )
+				dir = os.path.dirname( dev.source )
+				values[ 'pool' ] = dir
+				try:
+					storages
+				except NameError:
+					node_uri = self.uvmm.node_name2uri(object.options['node'])
+					storages = self.uvmm.storage_pools(node_uri)
+				for pool in storages:
+					if pool.path != dir:
+						continue
+					values[ 'pool' ] = pool.name
+					if not pool.name in storage_volumes:
+						storage_volumes[ pool.name ] = self.uvmm.storage_pool_volumes(node_uri, pool.name)
+					for vol in storage_volumes[ pool.name ]:
+						if vol.source == dev.source:
+							dev.size = vol.size
 							break
-				elif dev.type == uvmmn.Disk.TYPE_BLOCK:
-					values[ 'image' ] = dev.source
-					values[ 'pool' ] = '-'
+					break
 
 				if not dev.size:
 					values[ 'size' ] = _( 'unknown' )
@@ -1249,7 +1247,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			for disk in domain_info.disks:
 				if not disk.source: continue
 				static_options = { 'drives' : disk.source }
-				default = disk.device != uvmmn.Disk.DEVICE_CDROM and disk.type != uvmmn.Disk.TYPE_BLOCK
+				default = disk.device == uvmmn.Disk.DEVICE_DISK and disk.type == uvmmn.Disk.TYPE_FILE
 				chk_button = umcd.Checkbox(static_options=static_options, default=default)
 				chk_button.set_text( '%s: %s' % ( self._drive_name( disk.device ), disk.source ) )
 				boxes.append( chk_button.id() )

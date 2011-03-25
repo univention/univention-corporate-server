@@ -45,21 +45,11 @@ msgstr ""
 #: drive.py:138
 #, python-format
 msgid ""
-"The drive will be detached from the virtual instance. Additionally the "
-"associated image %(image)s may be deleted permanently. Should this be done "
-"also?"
+"The drive will be detached from the virtual instance.<br/>Additionally the "
+"associated image <i>%(image)s</i> may be deleted permanently."
 msgstr ""
-"Das Laufwerk wird im folgenden Schritt ausgehängt. Zusätzlich kann das "
-"verknüpfte Image %(image)s permanent gelöscht werden. Soll dies durchgeführt "
-"werden?"
-
-#: drive.py:139
-msgid "No"
-msgstr "Nein"
-
-#: drive.py:140
-msgid "Yes"
-msgstr "Ja"
+"Das Laufwerk wird im folgenden Schritt ausgehängt.<br/>Zusätzlich kann das "
+"verknüpfte Image <i>%(image)s</i> permanent gelöscht werden."
 
 #: drive.py:144
 msgid ""
@@ -1079,11 +1069,11 @@ msgstr "Welche Art von Laufwerk soll erstellt werden?"
 
 #: wizards.py:78
 msgid ""
-"For the hard drive a new image can be created or an existing one can be "
+"For the drive a new image can be created or an existing one can be "
 "chosen. An existing image should only be used by one virtual instance at a "
 "time."
 msgstr ""
-"Für die Festplatte kann ein Image erzeugt oder ein existierendes ausgewählt "
+"Für das Laufwerk kann ein Image erzeugt oder ein existierendes ausgewählt "
 "werden. Dabei sollte ein Festplatten-Image immer nur von einer virtuellen "
 "Instanz zur Zeit verwendet werden."
 

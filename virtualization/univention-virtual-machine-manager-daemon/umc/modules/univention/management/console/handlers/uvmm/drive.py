@@ -135,11 +135,12 @@ class DriveCommands( object ):
 			detach = umcp.SimpleCommand( 'uvmm/drive/remove', options = opts )
 
 			if disk.type != uvmmn.Disk.TYPE_BLOCK:
-				lst.add_row( [ umcd.Cell( umcd.Text( _( 'The drive will be detached from the virtual instance. Additionally the associated image %(image)s may be deleted permanently. Should this be done also?' ) % { 'image' : object.options[ 'disk' ] } ), attributes = { 'colspan' : '3' } ) ] )
-				no = umcd.Button(_('No'), actions=[umcd.Action(detach), umcd.Action(overview)], default=is_shared_image)
-				yes = umcd.Button(_('Yes'), actions=[umcd.Action(remove), umcd.Action(overview)], default=not is_shared_image)
+				lst.add_row([umcd.Cell(umcd.HTML(_('The drive will be detached from the virtual instance.<br/>Additionally the associated image <i>%(image)s</i> may be deleted permanently.') % {'image': object.options['disk']}), attributes={'colspan': '3'})])
+				btn_cancel = umcd.Button(_('Cancel'), actions=[umcd.Action(overview)])
+				btn_detach = umcd.Button(_('Detach'), actions=[umcd.Action(detach), umcd.Action(overview)], default=is_shared_image)
+				btn_delete = umcd.Button(_('Delete'), actions=[umcd.Action(remove), umcd.Action(overview)], default=not is_shared_image)
 				lst.add_row( [ '' ] )
-				lst.add_row( [ umcd.Cell( no, attributes = { 'align' : 'right', 'colspan' : '2' } ), umcd.Cell( yes, attributes = { 'align' : 'right' } ) ] )
+				lst.add_row([btn_cancel, '', umcd.Cell(btn_detach, attributes={'align': 'right', 'colspan': '2'}), umcd.Cell(btn_delete, attributes={'align': 'right'})])
 			else:
 				lst.add_row( [ umcd.Cell( umcd.Text( _( 'The drive will be detached from the virtual instance and the associated local device will be kept as is.' ) ), attributes = { 'colspan' : '3' } ) ] )
 				lst.add_row( [ '' ], attributes = { 'colspan' : '3' } )
@@ -210,46 +211,47 @@ class DriveCommands( object ):
 			conf.add_row( [ umcd.HTML( _( 'Hard drive images can be administrated in two ways on KVM systems; by default images are saved in the <i>Extended format (qcow2)</i>. This format supports copy-on-write which means that changes do not overwrite the original version, but store new versions in different locations. The internal references of the file administration are then updated to allow both access to the original and the new version. This technique is a prerequisite for efficiently managing snapshots of virtual machines. <p> Alternatively, you can also access a hard drive image in <i>Simple format (raw)</i>. Snapshots can only be created when using hard drive images in <i>Extended format</i>. Only the <i>Simple format</i> is available on Xen systems.' ), attributes = { 'colspan' : '3' } ) ] )
 			conf.add_row( [ umcd.HTML( _( 'Paravirtualisation is a special variant of virtualisation in which the virtualised operating system is adapted to the underlying virtualisation technology. This improves the performance. Linux systems usually support paravirtualisation out of the box. For Windows systems additional support drivers need to be installed, see the <a href="http://wiki.univention.de/index.php?title=UVMM_Technische_Details"> Univention wiki </a> for details (currently only available in German).' ), attributes = { 'colspan' : '3' } ) ] )
 			conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Drive type' ) ), self._drive_name( drive.device ) ] )
-			if drive.type == uvmmn.Disk.TYPE_FILE:
-				pool_name = ''
-				dirname = os.path.dirname( drive.source )
-				basename = os.path.basename( drive.source )
-				for pool in self.uvmm.storage_pools( node_uri ):
-					if pool.path.startswith( dirname ):
+
+			dirname = os.path.dirname(drive.source)
+			basename = os.path.basename(drive.source)
+			for pool in self.uvmm.storage_pools(node_uri):
+				if pool.path.startswith(dirname):
+					# detect the volume size
+					for vol in self.uvmm.storage_pool_volumes(node_uri, pool.name):
+						if vol.source == drive.source:
+							drive.size = vol.size
+							break
+					if drive.size:
+						size = MemorySize.num2str( drive.size )
+					else:
+						size = _( 'unknown' )
+
+					if pool.name == 'default':
+						pool_name = _( 'Local directory' )
+					else:
 						pool_name = pool.name
 
-				# detect the volume size
-				for vol in self.uvmm.storage_pool_volumes(node_uri, pool_name):
-					if vol.source == drive.source:
-						drive.size = vol.size
-						break
+					# show a more meaningful description
+					# TODO: see wizards.py the description should be defined at one point
+					if not drive.driver_type or drive.driver_type in ['aio', 'raw']:
+						driver_type = _('Simple format (raw)')
+					elif drive.driver_type == 'qcow2':
+						driver_type = _('Extended format (qcow2)')
+					elif drive.driver_type == 'qcow':
+						driver_type = _('Extended format (qcow)')
+					elif drive.driver_type == 'vmdk':
+						driver_type = _('VMWare Disk')
+					elif drive.driver_type == 'vhd':
+						driver_type = _('Virtual Hard Disk')
+					else:
+						driver_type = drive.driver_type
 
-				if pool_name == 'default':
-					pool_name = _( 'Local directory' )
+					conf.add_row([umcd.HTML('<i>%s</i>' % _('Storage pool')), pool_name])
+					conf.add_row([umcd.HTML('<i>%s</i>' % _('Image filename')), basename])
+					conf.add_row([umcd.HTML('<i>%s</i>' % _('Image format')), driver_type])
+					conf.add_row([umcd.HTML('<i>%s</i>' % _('Image size')), size])
 
-				# show a more meaningful description
-				# TODO: see wizards.py the description should be defined at one point
-				if not drive.driver_type or drive.driver_type in ['aio', 'raw']:
-					driver_type = _('Simple format (raw)')
-				elif drive.driver_type == 'qcow2':
-					driver_type = _('Extended format (qcow2)')
-				elif drive.driver_type == 'qcow':
-					driver_type = _('Extended format (qcow)')
-				elif drive.driver_type == 'vmdk':
-					driver_type = _('VMWare Disk')
-				elif drive.driver_type == 'vhd':
-					driver_type = _('Virtual Hard Disk')
-				else:
-					driver_type = drive.driver_type
-
-				if drive.size:
-					size = MemorySize.num2str( drive.size )
-				else:
-					size = _( 'unknown' )
-				conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Storage pool' ) ), pool_name ] )
-				conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image filename' ) ), basename ] )
-				conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image format' ) ), driver_type ] )
-				conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Image size' ) ), size ] )
+					break
 			else:
 				conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Device filename' ) ), drive.source ] )
 
