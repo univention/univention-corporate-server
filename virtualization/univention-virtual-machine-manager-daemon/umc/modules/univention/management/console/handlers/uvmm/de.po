@@ -1114,11 +1114,10 @@ msgstr "Größe (Standardeinheit MB)"
 #: wizards.py:97
 msgid ""
 "To bind the drive to a local device the filename of the associated block "
-"device must be specified. If no absolute path (e.g. /dev/cdrom) is given, "
-"the directory /dev/ will be prepended."
+"device must be specified."
 msgstr ""
 "Um das Laufwerk an ein lokales Gerät zu binden, muss der Dateiname der "
-"zugehörigen Gerätedatei angeben werden. Wird kein absoluter Pfad angeben (z.B. /dev/cdrom) so wird das Verzeichnis /dev/ angenommen."
+"zugehörigen Gerätedatei angeben werden."
 
 #: wizards.py:102
 msgid "The following drive will be created:"

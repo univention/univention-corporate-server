@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.202-1) unstable; urgency=low
+
+  * Fixed description related to /dev (Bug #19574)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Mar 2011 09:02:14 +0100
+
 univention-virtual-machine-manager-daemon (0.9.201-1) unstable; urgency=low
 
   * Undo r23086 which breaks LVM support. Do not strip /dev from block
