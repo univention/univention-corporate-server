@@ -802,7 +802,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 									break
 							break
 				elif dev.type == uvmmn.Disk.TYPE_BLOCK:
-					values[ 'image' ] = os.path.basename( dev.source )
+					values[ 'image' ] = dev.source
 					values[ 'pool' ] = '-'
 
 				if not dev.size:

@@ -316,11 +316,11 @@ class DriveWizard( umcd.IWizard ):
 			elif object.options[ 'existing-or-new-disk' ] == 'disk-block':
 				self.current = 4
 				if object.options[ 'drive-type' ] == 'disk':
-					object.options['drive-device'] = ''
+					object.options['drive-device'] = '/dev/'
 				elif object.options['drive-type'] == 'cdrom':
-					object.options['drive-device'] = 'cdrom'
+					object.options['drive-device'] = '/dev/cdrom'
 				elif object.options['drive-type'] == 'floppy':
-					object.options['drive-device'] = 'fd0'
+					object.options['drive-device'] = '/dev/fd0'
 		elif self.current in ( 2, 3, 4 ): # 2=select existing disk image, 3=create new
 			drive_type = object.options['drive-type']
 			drive_pool = object.options['drive-pool']
@@ -508,10 +508,7 @@ class DriveWizard( umcd.IWizard ):
 		if disk.type == uvmmp.Disk.TYPE_FILE:
 			disk.source = os.path.join(self._get_pool_path(drive_pool), image_name)
 		else:
-			if drive_device[ 0 ] != '/':
-				disk.source = '/dev/' + drive_device
-			else:
-				disk.source = drive_device
+			disk.source = drive_device
 
 		self._result = disk
 		return umcd.WizardResult()
