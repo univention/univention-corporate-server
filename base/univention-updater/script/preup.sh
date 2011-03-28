@@ -11,7 +11,7 @@ date >>"$UPDATER_LOG" 2>&1
 eval "$(univention-config-registry shell)" >>"$UPDATER_LOG" 2>&1
 
 # Bug #16454: Workaround to remove source.list on failed upgrades
-function cleanup() {
+cleanup () {
 	# remove statoverride for UMC and apache in case of error during preup script
 	if [ -e /usr/sbin/univention-management-console-server ]; then
 		dpkg-statoverride --remove /usr/sbin/univention-management-console-server >/dev/null 2>&1
@@ -39,7 +39,8 @@ echo "3rd party components."
 echo
 if [ ! "$update_warning_releasenotes" = "no" -a ! "$update_warning_releasenotes" = "false" -a ! "$update_warning_releasenotes_internal" = "no" ] ; then
 	echo "Update will wait here for 60 seconds..."
-	echo "Press CTRL-c to abort update or press ENTER to continue"
+	echo "Press CTRL-c to abort or press ENTER to continue"
+	# BUG: 'read -t' is a bash'ism, but she-bang is /bin/sh, not /bin/bash!
 	read -t 60 somevar
 fi
 
@@ -110,6 +111,39 @@ fi
 ## if [ "$update24_ignoreooo" != "yes" ]; then
 ## 	check_ooo
 ## fi
+
+# Bug #21993: Check for suspend KVM instances
+if [ yes != "$update24_ignorekvm" ] && which kvm >/dev/null && which virsh >/dev/null
+then
+	running= suspended=
+	for vm in $(LC_ALL=C virsh -c qemu:///system list --all | sed -e '1,2d' -nre 's/^ *[-0-9]+ +(.+) (no state|running|idle|paused|in shutdown|shut off|crashed)$/\1/p')
+	do
+		if [ -S "/var/lib/libvirt/qemu/$vm.monitor" ]
+		then
+			running="${running:+$running }'$vm'"
+		elif [ -s "/var/lib/libvirt/qemu/save/$vm.save" ]
+		then
+			suspended="${suspended:+$suspended }'$vm'"
+		fi
+	done
+	if [ -n "$running" ] || [ -n "$suspended" ]
+	then
+		echo "\
+WARNING: Qemu-kvm will be updated to version 0.14, which is incompatible with
+previous versions. Please use UVMM or virsh to stop all running and suspended
+virtual machines before updating, or set the Univention Configuration Registry
+variable \"update24/ignorekvm\" to \"yes\" to ignore this check."
+		if [ -n "$running" ]
+		then
+			echo "Running virtual machines: $running" | fmt
+		fi
+		if [ -n "$suspended" ]
+		then
+			echo "Suspended virtual machines: $suspended" | fmt
+		fi
+		exit 1
+	fi
+fi
 
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then

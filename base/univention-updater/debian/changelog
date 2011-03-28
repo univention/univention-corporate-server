@@ -1,3 +1,10 @@
+univention-updater (6.0.81-1) unstable; urgency=low
+
+  * preup.sh: Test for running and suspended VMs (Bug #21993)
+  * preup.sh: Fix non-portable function declaration.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 28 Mar 2011 09:51:25 +0200
+
 univention-updater (6.0.80-2) unstable; urgency=low
 
   * Also handle GATEWAY_TIMOUT from (Squid-)proxy (Bug #21583)
