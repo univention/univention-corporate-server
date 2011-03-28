@@ -37,7 +37,7 @@ then
 		then
 			suspended="${suspended:+$suspended }'$vm'"
 		fi
-		if grep -q "<target.* bus='virtio'.*/>" "/etc/libvirt/qemu/$vm.xml"
+		if grep -q "<target.* bus='virtio'.*/>\|<model.* type='virtio'.*/>" "/etc/libvirt/qemu/$vm.xml"
 		then
 			virtio="${virtio:+$virtio }'$vm'"
 		fi

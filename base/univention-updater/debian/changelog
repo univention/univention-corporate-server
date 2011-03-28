@@ -1,3 +1,9 @@
+univention-updater (6.0.81-3) unstable; urgency=low
+
+  * preup.sh: Test for VirtIO-network as well (Bug #21993)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 28 Mar 2011 10:43:48 +0200
+
 univention-updater (6.0.81-2) unstable; urgency=low
 
   * preup.sh: Test for VirtIO (Bug #21993)
