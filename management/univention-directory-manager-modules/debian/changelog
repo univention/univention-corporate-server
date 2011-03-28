@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.119-1) unstable; urgency=low
+
+  * fixed primary group handling of computers/windows during host creation (Bug #21711)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 28 Mar 2011 18:03:43 +0200
+
 univention-directory-manager-modules (6.0.118-1) unstable; urgency=low
 
   * some small speed improvements for fix_primary_group_membership (Bug #21782)
