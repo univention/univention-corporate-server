@@ -786,10 +786,15 @@ def _domain_edit(node, dom_stat, xml):
 		# /domain/bootloader_args
 		domain_bootloader_args = update(domain, 'bootloader_args', dom_stat.bootloader_args)
 	# /domain/memory
+	try:
+		old_maxMem = int(domain.find('memory').text) << 10 # KiB
+	except:
+		old_maxMem = -1
 	domain_memory = update(domain, 'memory', '%d' % (dom_stat.maxMem >> 10)) # KiB
-	if False:
+	# On change, reset currentMemory to new maxMem as well
+	if old_maxMem != dom_stat.maxMem:
 		# /domain/currentMemory
-		domain_currentMemory = update(domain, 'currentMemory', '%d' % (dom_stat.curMem >> 10)) # KiB
+		domain_currentMemory = update(domain, 'currentMemory', '%d' % (dom_stat.maxMem >> 10)) # KiB
 	# /domain/vcpu
 	domain_vcpu = update(domain, 'vcpu', '%d' % dom_stat.vcpus)
 
