@@ -454,4 +454,3 @@ class Graphic(object):
 
 	def __str__(self):
 		return 'Graphic(type=%s, port=%s, autoport=%s, keymap=%s, listen=%s, passwd=%s' % (Graphic.map_type(id=self.type), self.port, self.autoport, self.keymap, self.listen, bool(self.passwd))
-

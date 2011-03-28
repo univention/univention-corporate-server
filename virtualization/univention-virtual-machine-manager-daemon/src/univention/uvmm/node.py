@@ -49,6 +49,7 @@ from univention.uvmm.eventloop import *
 import threading
 from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_all_storage_volumes, StorageError, storage_pools, get_storage_pool_info
 from protocol import Data_Domain, Data_Node, Data_Snapshot, _map, Disk, Interface, Graphic
+from network import network_start, NetworkError
 import os
 try:
 	import xml.etree.ElementTree as ET
@@ -1116,6 +1117,11 @@ def domain_state(uri, domain, state):
 			raise NodeError(_('Unsupported state transition %(cur_state)s to %(next_state)s'), cur_state=cur_state, next_state=state)
 
 		if transition:
+			if state == 'RUN':
+				# if interfaces of type NETWORK exist, verify that the network is active
+				for nic in dom_stat.pd.interfaces:
+					if nic.type == Interface.TYPE_NETWORK:
+						network_start( conn, nic.source )
 			transition()
 			ignore_states = [libvirt.VIR_DOMAIN_NOSTATE]
 			if state == 'RUN':
@@ -1130,6 +1136,9 @@ def domain_state(uri, domain, state):
 	except KeyError, e:
 		logger.error("Domain %s not found" % (e,))
 		raise NodeError(_('Error managing domain "%(domain)s"'), domain=domain)
+	except NetworkError, e:
+		logger.error(e)
+		raise NodeError( _( 'Error managing domain "%(domain)s": %(error)s' ), domain = domain, error = str( e ) )
 	except libvirt.libvirtError, e:
 		logger.error(e)
 		raise NodeError(_('Error managing domain "%(domain)s": %(error)s'), domain=domain, error=e.get_error_message())
