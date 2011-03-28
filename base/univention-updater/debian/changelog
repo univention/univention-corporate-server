@@ -1,3 +1,9 @@
+univention-updater (6.0.81-2) unstable; urgency=low
+
+  * preup.sh: Test for VirtIO (Bug #21993)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 28 Mar 2011 10:40:52 +0200
+
 univention-updater (6.0.81-1) unstable; urgency=low
 
   * preup.sh: Test for running and suspended VMs (Bug #21993)
