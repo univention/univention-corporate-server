@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.208-1) unstable; urgency=low
+
+  * fixed typo in error message; Bug #19573
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 29 Mar 2011 15:14:33 +0200
+
 univention-virtual-machine-manager-daemon (0.9.207-1) unstable; urgency=low
 
   * activate required networks when starting an instance; Bug #19573

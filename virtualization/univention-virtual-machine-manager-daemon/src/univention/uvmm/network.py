@@ -66,7 +66,7 @@ def network_start( conn, name ):
 		return True
 	except libvirt.libvirtError, e:
 		logger.error( e )
-		raise NetworkError( _( 'Error starting network %(name): %(error)s' ), name = name, error = e.get_error_message() )
+		raise NetworkError( _( 'Error starting network %(name)s: %(error)s' ), name = name, error = e.get_error_message() )
 
 def network_find_by_bridge( conn, bridge ):
 	try:
@@ -79,10 +79,11 @@ def network_find_by_bridge( conn, bridge ):
 			net = conn.networkLookupByName( name )
 		except libvirt.libvirtError, e:
 			logger.error( e )
-			raise NetworkError( _( 'Error retrieving network "%(name)s": %(error)s' ), name = name, error = e.get_error_message() )
 		if net.bridgeName() == bridge:
 			network = Network()
 			network.uuid = net.UUIDString()
 			network.name = net.name()
 			network.bridge = net.bridgeName()
 			return network
+
+	return None

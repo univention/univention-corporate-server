@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager 0.9.10-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-03-29 11:46+0200\n"
+"POT-Creation-Date: 2011-03-29 15:15+0200\n"
 "PO-Revision-Date: 2011-02-10 12:41+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -224,11 +224,6 @@ msgstr "Fehler beim Auslesen der aktiven Netzwerke: %(error)s"
 msgid "Error retrieving list of networks: %(error)s"
 msgstr "Fehler beim Auslesen der Netzwerke: %(error)s"
 
-#: src/univention/uvmm/network.py:82
-#, python-format
-msgid "Error retrieving network \"%(name)s\": %(error)s"
-msgstr "Fehler beim Lesen des Netzwerks %(name)s: %(error)s"
-
 #: src/univention/uvmm/node.py:1010 src/univention/uvmm/node.py:1019
 #, python-format
 msgid "Error retrieving old domain \"%(domain)s\": %(error)s"
@@ -245,7 +240,8 @@ msgid "Error saving domain \"%(domain)s\": %(error)s"
 msgstr "Fehler beim Speichern der Domäne \"%(domain)s\": %(error)s"
 
 #: src/univention/uvmm/network.py:69
-msgid "Error starting network %(name): %(error)s"
+#, python-format
+msgid "Error starting network %(name)s: %(error)s"
 msgstr "Fehler beim Starten des Netzwerks %(name)s: %(error)s"
 
 #: src/univention/uvmm/node.py:1198
@@ -550,6 +546,9 @@ msgstr "volumes[] != Zeichenkette: %(volume)s"
 
 #~ msgid "Domain required"
 #~ msgstr "Domäne erwartet"
+
+#~ msgid "Error retrieving network \"%(name)s\": %(error)s"
+#~ msgstr "Fehler beim Lesen des Netzwerks %(name)s: %(error)s"
 
 #~ msgid "File name or XML required"
 #~ msgstr "Dateiname oder XML erwartet"
