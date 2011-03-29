@@ -491,6 +491,9 @@ class DriveWizard( umcd.IWizard ):
 		elif self.node_uri.startswith('xen'):
 			if driver_pv and drive_type != 'floppy' and disk.type != uvmmn.Disk.TYPE_BLOCK:
 				disk.target_bus = 'xen'
+			elif self.domain_virttech.pv() and not driver_pv:
+				# explicitly set ide bus
+				disk.target_bus = 'ide'
 			# block devices of para-virtual xen instances must use bus xen
 			if self.domain_virttech.pv() and disk.type == uvmmn.Disk.TYPE_BLOCK:
 				disk.target_bus = 'xen'
