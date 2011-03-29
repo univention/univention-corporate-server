@@ -55,6 +55,7 @@ import tempfile
 import shutil
 
 RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
+RE_SPLIT_MULTI = re.compile('[ ,]+')
 
 class UCS_Version( object ):
 	'''Version object consisting of major-, minor-number and patch-level'''
@@ -284,7 +285,7 @@ class UCSHttpServer(object):
 		if item == 'server':
 			return self.server
 		elif item == 'prefix':
-			return self.prefix
+			return quote(self.prefix)
 		elif item == 'port':
 			if self.port == 80:
 				return ''
@@ -316,7 +317,7 @@ class UCSHttpServer(object):
 	def join(self, rel):
 		'''Return joind URI without credential.'''
 		uri = 'http://%(server)s%(port)s/%(prefix)s' % self
-		uri += str(rel).lstrip('/')
+		uri += quote(str(rel).lstrip('/'))
 		return uri
 
 	def access(self, rel, get=False):
@@ -486,7 +487,7 @@ class UniventionUpdater:
 		# override automatically detected architecture by UCR variable repository/online/architectures (comma or space separated)
 		archlist = self.configRegistry.get('repository/online/architectures', '')
 		if archlist:
-			self.architectures = re.split('[ ,]+', archlist)
+			self.architectures = RE_SPLIT_MULTI.split(archlist)
 
 		# UniventionMirror needs to provide its own settings
 		self.config_repository()
@@ -668,7 +669,7 @@ class UniventionUpdater:
 		for component in all_components:
 			key = 'repository/online/component/%s/version' % component
 			value = self.configRegistry.get(key, '')
-			versions = value.split(',')
+			versions = RE_SPLIT_MULTI.split(value)
 			if 'current' in versions:
 				components.add(component)
 		return components
@@ -678,7 +679,7 @@ class UniventionUpdater:
 		components = set()
 		for key in self.configRegistry.keys():
 			if key.startswith('repository/online/component/'):
-				component_part = key.split('repository/online/component/')[1]
+				component_part = key[len('repository/online/component/'):]
 				if component_part.find('/') == -1:
 					components.add(component_part)
 		return components
@@ -690,7 +691,7 @@ class UniventionUpdater:
 		component['activated'] = self.configRegistry.get('repository/online/component/%s' % name, 'disabled')
 		for key in self.configRegistry.keys():
 			if key.startswith('repository/online/component/%s/' % name):
-				var = key.split('repository/online/component/%s/' % name)[1]
+				var = key[len('repository/online/component/%s/' % name):]
 				component[var] = self.configRegistry[key]
 		return component
 
@@ -727,17 +728,18 @@ class UniventionUpdater:
 
 	def get_component_defaultpackage(self, componentname):
 		"""
-		returns a list of (meta) package names to be installed for this component
+		returns a set of (meta) package names to be installed for this component
 		return value:
-			[ <string>, ... ]
+			set([ <string>, ... ])
 		"""
-		lst = []
+		lst = set()
 		for var in ('defaultpackages', 'defaultpackage'):
 			if componentname and self.configRegistry.get('repository/online/component/%s/%s' % (componentname, var)):
 				val = self.configRegistry.get('repository/online/component/%s/%s' % (componentname, var), '')
 				# split at " " and "," and remove empty items
-				lst.extend( [ x for x in re.split('[ ,]', val) if x ] )
-		return list(set(lst))
+				lst |= set(RE_SPLIT_MULTI.split(val))
+		lst.discard('')
+		return lst
 
 	def is_component_defaultpackage_installed(self, componentname, ignore_invalid_package_names=True):
 		"""
@@ -899,7 +901,7 @@ class UniventionUpdater:
 			server = self._get_component_server(component, for_mirror_list=for_mirror_list)
 			# parts
 			parts = self.configRegistry.get('repository/online/component/%s/parts' % component, 'maintained')
-			parts = ['%s/component' % part for part in parts.split(',')]
+			parts = ['%s/component' % part for part in RE_SPLIT_MULTI.split(parts)]
 			# versions
 			if start == end:
 				versions = (start,)
@@ -1108,7 +1110,7 @@ class UniventionUpdater:
 		'''Return versions available for component.'''
 		str = self.configRegistry.get('repository/online/component/%s/version' % component, '')
 		versions = set()
-		for version in str.split(','):
+		for version in RE_SPLIT_MULTI.split(str):
 			if version in ('current', ''): # all from start to end, defaults to same major
 				# Cache releases because it is network expensive
 				try: mm_versions
@@ -1131,12 +1133,20 @@ class UniventionUpdater:
 		if clean:
 			cleanComponent = self.configRegistry.is_true('repository/online/component/%s/clean' % component, False)
 
+		versions_mm = set()
+		versions_mmp = []
 		for version in versions:
 			if isinstance(version, basestring):
 				if '-' in version:
 					version = UCS_Version(version)
 				else:
 					version = UCS_Version('%s-0' % version)
+			elif not isinstance(version, UCS_Version):
+				raise TypeError('Not a UCS Version', version)
+			versions_mm.add(UCS_Version.FORMAT % version)
+			versions_mmp.append(version)
+
+		for version in versions_mmp:
 			for server, ver in self._iterate_component_repositories([component], version, version, archs, for_mirror_list=for_mirror_list):
 				result.append( ver.deb() )
 				if ver.arch == archs[-1]: # after architectures but before next patch(level)
@@ -1150,11 +1160,11 @@ class UniventionUpdater:
 						except DownloadError, e:
 							ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
-		# support different repository format without architecture (e.g. used by OX)
-		parts = self.configRegistry.get('repository/online/component/%s/parts' % component, 'maintained').split(',')
+		# support repository format with one Packages for all architectures (e.g. used by OX)
+		parts = RE_SPLIT_MULTI.split(self.configRegistry.get('repository/online/component/%s/parts' % component, 'maintained'))
 		server = self._get_component_server(component, for_mirror_list=for_mirror_list)
 		repo = UCSRepoPool(prefix=server, patch=component)
-		for repo.version in versions:
+		for repo.version in versions_mm:
 			for repo.part in ["%s/component" % part for part in parts]:
 				path = '%(version)s/%(part)s/%(patch)s/Packages.gz' % repo
 				try:

@@ -1,3 +1,12 @@
+univention-updater (6.0.82-1) unstable; urgency=low
+
+  * Fix RegEx to split parts (Bug #18848)
+  * Fix handling of one Packages for all architectures format (Bug #22015)
+  * Partially fix URL-quoting (Bug #18848).
+  * umc: Fix reinit()-call.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 29 Mar 2011 14:29:59 +0200
+
 univention-updater (6.0.81-3) unstable; urgency=low
 
   * preup.sh: Test for VirtIO-network as well (Bug #21993)

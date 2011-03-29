@@ -405,7 +405,7 @@ class handler(umch.simpleHandler):
 			if stdout:
 				ud.debug(ud.ADMIN, ud.INFO, 'stdout=%s' % stdout)
 			ud.debug(ud.ADMIN, ud.INFO, 'And reinit the updater modul')
-			self._ucr_reinit()
+			self._reinit()
 
 		self.finished(object.id(), None)
 
