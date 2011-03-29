@@ -38,6 +38,7 @@ This module implements functions to handle network configurations.
 import libvirt
 import logging
 from helpers import TranslatableException, N_ as _
+from protocol import Network
 
 logger = logging.getLogger('uvmmd.network')
 
@@ -66,3 +67,22 @@ def network_start( conn, name ):
 	except libvirt.libvirtError, e:
 		logger.error( e )
 		raise NetworkError( _( 'Error starting network %(name): %(error)s' ), name = name, error = e.get_error_message() )
+
+def network_find_by_bridge( conn, bridge ):
+	try:
+		networks = conn.listNetworks() + conn.listDefinedNetworks()
+	except libvirt.libvirtError, e:
+		logger.error( e )
+		raise NetworkError( _( 'Error retrieving list of networks: %(error)s' ), error = e.get_error_message() )
+	for name in networks:
+		try:
+			net = conn.networkLookupByName( name )
+		except libvirt.libvirtError, e:
+			logger.error( e )
+			raise NetworkError( _( 'Error retrieving network "%(name)s": %(error)s' ), name = name, error = e.get_error_message() )
+		if net.bridgeName() == bridge:
+			network = Network()
+			network.uuid = net.UUIDString()
+			network.name = net.name()
+			network.bridge = net.bridgeName()
+			return network

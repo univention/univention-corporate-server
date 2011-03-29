@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.207-1) unstable; urgency=low
+
+  * activate required networks when starting an instance; Bug #19573
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 29 Mar 2011 11:46:15 +0200
+
 univention-virtual-machine-manager-daemon (0.9.206-1) unstable; urgency=low
 
   * Xen PV profiles: activate flags fpr para-virtual disks and interfaces;

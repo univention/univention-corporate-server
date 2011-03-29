@@ -49,7 +49,7 @@ from univention.uvmm.eventloop import *
 import threading
 from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_all_storage_volumes, StorageError, storage_pools, get_storage_pool_info
 from protocol import Data_Domain, Data_Node, Data_Snapshot, _map, Disk, Interface, Graphic
-from network import network_start, NetworkError
+from network import network_start, network_find_by_bridge, NetworkError
 import os
 try:
 	import xml.etree.ElementTree as ET
@@ -1122,6 +1122,10 @@ def domain_state(uri, domain, state):
 				for nic in dom_stat.pd.interfaces:
 					if nic.type == Interface.TYPE_NETWORK:
 						network_start( conn, nic.source )
+					elif nic.type == Interface.TYPE_BRIDGE:
+						network = network_find_by_bridge( conn, nic.source )
+						if network:
+							network_start( conn, network.name )
 			transition()
 			ignore_states = [libvirt.VIR_DOMAIN_NOSTATE]
 			if state == 'RUN':
