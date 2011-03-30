@@ -278,8 +278,8 @@ fi
 create_xen_profile "UCS 2.4" "ucs24-" "automatic" "1024MB" "20GB"
 create_xen_profile "UCS 2.4 (64 Bit)" "ucs24-64-" "x86_64" "1024MB" "20GB"
 
-create_hvm_profile "UCS 2.4" "ucs24-" "kvm" "automatic" "1024MB" "1" "20GB"
-create_hvm_profile "UCS 2.4 (64 Bit)" "ucs24-64-" "kvm" "x86_64" "1024MB" "1" "20GB"
+create_hvm_profile "UCS 2.4" "ucs24-" "kvm" "automatic" "1024MB" "0" "20GB"
+create_hvm_profile "UCS 2.4 (64 Bit)" "ucs24-64-" "kvm" "x86_64" "1024MB" "0" "20GB"
 
 create_hvm_profile "Other" "other-" "xen" "automatic" "512MB" "0" "20GB"
 create_hvm_profile "Other" "other-" "kvm" "automatic" "512MB" "0" "20GB"

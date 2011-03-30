@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.210-1) unstable; urgency=low
+
+  * UCS KVM profiles: do not use para-virtual devices; Bug #19136
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 30 Mar 2011 17:15:19 +0200
+
 univention-virtual-machine-manager-daemon (0.9.209-1) unstable; urgency=low
 
   * change default for 'on reboot' from destroy to restart; Bug #20253
