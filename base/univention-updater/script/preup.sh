@@ -157,7 +157,7 @@ then
 
 	check_space "/var/cache/apt/archives" "700000" "0,7 GB"
 	check_space "/boot" "40000" "40 MB"
-	check_space "/" "2500000" "1,5 GB"
+	check_space "/" "1500000" "1,5 GB"
 
 else
     echo "WARNING: skipped disk-usage-test as requested"
