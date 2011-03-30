@@ -93,74 +93,6 @@ if [ ! "$update_warning_releasenotes" = "no" -a ! "$update_warning_releasenotes"
 	read -t 60 somevar
 fi
 
-## # Bug #19081:
-## # check if scope is active and available for 2.4-0
-## # this test can be removed after 2.4-0
-## updateCheck=$(mktemp)
-## echo '
-## #!/usr/bin/python2.4
-## 
-## from univention.updater import UniventionUpdater, UCS_Version
-## from univention.updater.tools import LocalUpdater
-## import univention.config_registry
-## import sys
-## 
-## configRegistry = univention.config_registry.ConfigRegistry()
-## configRegistry.load()
-## yes = ["enabled", "true", "1", "yes", "enable"]
-## scopes = ["ucd"]
-## 
-## for scope in scopes:
-## 
-## 	if configRegistry.get("repository/online/component/%s" % scope, "").lower() in yes and configRegistry.get("update/check/component/%s" % scope, "yes").lower() in yes:
-## 
-## 		available = []
-## 		updater = UniventionUpdater()
-## 		available += updater.get_component_repositories(scope, ["2.4"])
-## 		updater = LocalUpdater()
-## 		available += updater.get_component_repositories(scope, ["2.4"])
-## 		if not available:
-## 			print scope
-## 			sys.exit(1)
-## sys.exit(0)
-## ' >> $updateCheck
-## 
-## doUpdateCheck=$(ucr get update/check/component)
-## if [ -n "$doUpdateCheck" -a "$doUpdateCheck" = "no" ]; then
-## 	continue
-## else
-## 	scope=$(python2.4 $updateCheck)
-## 	if [ ! $? -eq 0 ]; then
-## 		scope=$(echo $scope | sed 's|# The site.*was not found ||')
-## 		echo "An update to UCS 2.4 without the component \"$scope\" is
-## not possible because the component \"$scope\" is required."
-## 		rm -f $updateCheck
-## 		exit 1
-## 	fi
-## fi
-## rm -f $updateCheck
-
-## # check for running openoffice.org instances
-## check_ooo() {
-## 	PID=`pgrep soffice.bin | head -n 1`
-## 	if [ -n "$PID" ]; then
-## 		echo "OpenOffice.org running!"
-## 		echo ""
-## 		echo -n "OpenOffice.org is running right now with pid "
-## 		echo -n "$PID."
-## 		echo " This can cause problems"
-## 		echo "with (de-)registration of components and extensions"
-## 		echo "Thus the openoffice.org packages will fail to install"
-## 		echo "You should close all running instances of OpenOffice.org (including"
-## 		echo "any currently running Quickstarter) before starting with the update."
-## 		exit 1
-## 	fi
-## }
-## 
-## if [ "$update24_ignoreooo" != "yes" ]; then
-## 	check_ooo
-## fi
-
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
 	if [ "$update24_ignoressh" != "yes" ]; then
@@ -223,7 +155,7 @@ mv /boot/*.bak /var/backups/univention-initrd.bak/ &>/dev/null
 if [ ! "$update24_checkfilesystems" = "no" ]
 then
 
-	check_space "/var/cache/apt/archives" "1250000" "1,5 GB"
+	check_space "/var/cache/apt/archives" "700000" "0,7 GB"
 	check_space "/boot" "40000" "40 MB"
 	check_space "/" "2500000" "1,5 GB"
 

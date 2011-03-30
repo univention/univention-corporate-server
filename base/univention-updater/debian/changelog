@@ -1,3 +1,9 @@
+univention-updater (6.0.83-1) unstable; urgency=low
+
+  * check free disk space for update (Bug #22026)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 30 Mar 2011 14:46:58 +0200
+
 univention-updater (6.0.82-1) unstable; urgency=low
 
   * Fix RegEx to split parts (Bug #18848)
