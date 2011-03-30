@@ -813,7 +813,7 @@ def _domain_edit(node, dom_stat, xml):
 		domain_on_poweroff = update(domain, 'on_poweroff', 'destroy') # (destroy|restart|preserve|rename-restart)
 	# /domain/on_reboot
 	if defaults:
-		domain_on_reboot = update(domain, 'on_reboot', 'destroy') # (destroy|restart|preserve|rename-restart)
+		domain_on_reboot = update(domain, 'on_reboot', 'restart') # (destroy|restart|preserve|rename-restart)
 	# /domain/on_crash
 	if defaults:
 		domain_on_crash = update(domain, 'on_crash', 'destroy') # (destroy|restart|preserve|rename-restart)
