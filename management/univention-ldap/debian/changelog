@@ -1,3 +1,10 @@
+univention-ldap (7.0.20-1) unstable; urgency=low
+
+  * added attributes "zoneName", "relativeDomainName" and "name" to ldap
+    indices (Bug #22020)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 30 Mar 2011 10:17:19 +0200
+
 univention-ldap (7.0.19-2) unstable; urgency=low
 
   * call eval "$(ucr shell)" in postinst (Bug #21711)
