@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.211-1) unstable; urgency=low
+
+  * interpret new profile option pvcdrom; Bug #19136
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 31 Mar 2011 09:32:27 +0200
+
 univention-virtual-machine-manager-daemon (0.9.210-1) unstable; urgency=low
 
   * UCS KVM profiles: do not use para-virtual devices; Bug #19136

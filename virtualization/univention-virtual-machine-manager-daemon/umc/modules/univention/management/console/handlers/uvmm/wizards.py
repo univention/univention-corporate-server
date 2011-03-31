@@ -184,20 +184,23 @@ class DriveWizard( umcd.IWizard ):
 			prev = True
 		return umcd.IWizard.setup( self, object, prev = prev, next = next, finish = finish, cancel = cancel )
 
+	def set_defaults( self, object ):
+		for opt in ( 'existing-or-new-disk', 'drive-type' ):
+			if opt in object.options:
+				del object.options[ opt ]
+		object.options[ 'pool-name' ] = 'default'
+		if object.options.get('diskspace'):
+			object.options[ 'image-size' ] = object.options['diskspace'] # use the diskspace value from profile
+		else:
+			object.options[ 'image-size' ] = '12GB' # default
+		object.options['vol-name'] = None
+
 	def action( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: action! (current: %s)' % str( self.current ) )
 		if self.current == None:
 			# read pool
 			ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: node storage pools: %s' % self.node_uri)
-			for opt in ( 'existing-or-new-disk', 'drive-type' ):
-				if opt in object.options:
-					del object.options[ opt ]
-			object.options[ 'pool-name' ] = 'default'
-			if object.options.get('diskspace'):
-				object.options[ 'image-size' ] = object.options['diskspace'] # use the diskspace value from profile
-			else:
-				object.options[ 'image-size' ] = '12GB' # default
-			object.options['vol-name'] = None
+			self.set_defaults( object )
 		return umcd.IWizard.action( self, object )
 
 	def pool_selected( self, object ):
@@ -287,6 +290,7 @@ class DriveWizard( umcd.IWizard ):
 			# by default no paravirtual drive:
 			if not 'drive-paravirtual' in object.options:
 				object.options[ 'drive-paravirtual' ] = False
+				object.options[ 'cdrom-paravirtual' ] = False
 
 		if self.current == DriveWizard.PAGE_INIT: # which drive type?
 			# initialize pool and image selection
@@ -463,14 +467,15 @@ class DriveWizard( umcd.IWizard ):
 		vol_name = object.options['vol-name']
 		image_size = object.options['image-size']
 		driver_type = object.options['driver-type'].lower()
-		driver_pv = object.options[ 'drive-paravirtual' ]
 
 		disk = uvmmp.Disk()
 		if drive_type == 'disk':
 			disk.device = uvmmp.Disk.DEVICE_DISK
+			driver_pv = object.options[ 'drive-paravirtual' ]
 		elif drive_type == 'cdrom':
 			disk.device = uvmmp.Disk.DEVICE_CDROM
 			driver_type = 'raw' # ISOs need driver/@type='raw'
+			driver_pv = object.options[ 'cdrom-paravirtual' ]
 		elif drive_type == 'floppy':
 			disk.device = uvmmp.Disk.DEVICE_FLOPPY
 		else:
@@ -662,6 +667,7 @@ class InstanceWizard( umcd.IWizard ):
 			object.options[ 'cmdline' ] = self.profile[ 'kernel_parameter' ]
 			object.options[ 'initrd' ] = self.profile[ 'initramfs' ]
 			object.options[ 'pvdisk' ] = self.profile[ 'pvdisk' ]
+			object.options[ 'pvcdrom' ] = self.profile[ 'pvcdrom' ]
 			object.options[ 'pvinterface' ] = self.profile[ 'pvinterface' ]
 		if self.current == InstanceWizard.PAGE_BASIC:
 			MAX_NAME_LENGTH = 25
@@ -688,6 +694,7 @@ class InstanceWizard( umcd.IWizard ):
 				self.drive_wizard.drive_type_select.floppies = self.profile[ 'virttech' ].endswith( '-hvm' )
 				# self.drive_wizard.show_paravirtual( self.profile[ 'virttech' ].endswith( '-hvm' ) )
 				object.options[ 'drive-paravirtual' ] = object.options[ 'pvdisk' ] == '1'
+				object.options[ 'cdrom-paravirtual' ] = object.options[ 'pvcdrom' ] == '1'
 				self.new_drive( object )
 		return umcd.IWizard.next( self, object )
 
