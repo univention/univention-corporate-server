@@ -259,8 +259,8 @@ create_hvm_profile "Microsoft Windows 2003 R2 (64 Bit)" "w2k3r2-" "kvm" "x86_64"
 #   Available Disk Space
 #     Minimum: 10GB
 #      Recommended: 40GB or greater
-create_hvm_profile "Microsoft Windows 2008" "w2k8-" "xen" "automatic" "2048MB" "0" "48GB"
-create_hvm_profile "Microsoft Windows 2008" "w2k8-" "kvm" "automatic" "2048MB" "0" "48GB"
+create_hvm_profile "Microsoft Windows 2008" "w2k8-" "xen" "automatic" "2048MB" "0" "0" "0" "48GB"
+create_hvm_profile "Microsoft Windows 2008" "w2k8-" "kvm" "automatic" "2048MB" "0" "0" "0" "48GB"
 
 # http://www.microsoft.com/windowsserver2008/en/us/system-requirements.aspx
 #   Memory
