@@ -250,6 +250,15 @@ property_descriptions={
 			may_change = True,
 			identifies = False
 		),
+	'pvcdrom': univention.admin.property(
+			short_description = _( 'Use para-virtual driver for CDROM drives' ),
+			syntax = univention.admin.syntax.boolean,
+			multivalue = False,
+			options = [],
+			required = False,
+			may_change = True,
+			identifies = False
+		),
 	'txt_hardware': univention.admin.property(
 		short_description = _('Hardware'),
 		syntax=univention.admin.syntax.info_text,
@@ -280,7 +289,8 @@ layout = [
 							[ univention.admin.field( "initramfs" ), ],
 							[ univention.admin.field( "txt_virt" ), ],
 							[ univention.admin.field( "virttech" ), ],
-							[ univention.admin.field( "pvdisk" ), univention.admin.field( "pvinterface" ) ]
+							[ univention.admin.field( "pvdisk" ), univention.admin.field( "pvinterface" ) ],
+							[ univention.admin.field( "pvcdrom" ), ],
 							] )
 	]
 
@@ -311,6 +321,7 @@ mapping.register('bootdev', 'univentionVirtualMachineProfileBootDevices', list2s
 mapping.register('os', 'univentionVirtualMachineProfileOS', None, univention.admin.mapping.ListToString)
 mapping.register('pvdisk', 'univentionVirtualMachineProfilePVDisk', None, univention.admin.mapping.ListToString)
 mapping.register('pvinterface', 'univentionVirtualMachineProfilePVInterface', None, univention.admin.mapping.ListToString)
+mapping.register('pvcdrom', 'univentionVirtualMachineProfilePVCDROM', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module

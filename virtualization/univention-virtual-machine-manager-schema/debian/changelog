@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (1.0.30-1) unstable; urgency=low
+
+  * profile schema: add LDAP attribute for PV CDROM drives; Bug #19136
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 31 Mar 2011 08:46:53 +0200
+
 univention-virtual-machine-manager-schema (1.0.29-1) unstable; urgency=low
 
   * Added the arch automatic and change the default 32 bit profiles to
