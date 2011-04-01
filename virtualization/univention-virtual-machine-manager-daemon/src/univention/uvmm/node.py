@@ -260,7 +260,7 @@ class Domain(object):
 		if self.node.pd.supports_snapshot:
 			has_snapshot_disk = False
 			for dev in self.pd.disks:
-				if dev.readonly:
+				if dev.readonly or dev.device == Disk.DEVICE_FLOPPY:
 					continue
 				if dev.driver_type in ('qcow2',):
 					has_snapshot_disk = True
