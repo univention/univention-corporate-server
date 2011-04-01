@@ -194,6 +194,7 @@ create_xen_profile() {
 		--set kblayout="${locale_keymap}" \
 		--set advkernelconf=FALSE \
 		--set pvdisk=1 \
+		--set pvcdrom=1 \
 		--set pvinterface=1
 	if [ "$JS_LAST_EXECUTED_VERSION" -lt 4 ] && [ "$JS_LAST_EXECUTED_VERSION" -gt 0 ]; then
 		if [ "$uvmm_profile_autoupdate" != "false" ]; then
@@ -205,6 +206,7 @@ create_xen_profile() {
 				--set ram="${ram}" \
 				--set os="${cn}" \
 				--set pvdisk=1 \
+				--set pvcdrom=1 \
 				--set pvinterface=1
 		else
 			univention-directory-manager uvmm/profile modify "${CREDENTIALS[@]}" \
@@ -212,6 +214,7 @@ create_xen_profile() {
 				--set diskspace="${diskspace}" \
 				--set os="${cn}"
 				--set pvdisk=1 \
+				--set pvcdrom=1 \
 				--set pvinterface=1
 		fi
 	fi

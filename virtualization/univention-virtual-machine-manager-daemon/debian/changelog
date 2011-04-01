@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.215-1) unstable; urgency=low
+
+  * Set CDROM as pv device for xen profiles (Bug #19136)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 01 Apr 2011 15:09:06 +0200
+
 univention-virtual-machine-manager-daemon (0.9.214-1) unstable; urgency=low
 
   * Allow snapshots for instance which use a floppy device (Bug #22061)
