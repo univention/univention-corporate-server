@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (0.9.213-1) unstable; urgency=low
+
+  * Initialize driver_pv while adding a floppy device. This prevents a
+    python exception (Bug #19136)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 01 Apr 2011 07:56:48 +0200
+
 univention-virtual-machine-manager-daemon (0.9.212-1) unstable; urgency=low
 
   * fixed typo in join script; Bug #19136

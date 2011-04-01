@@ -478,6 +478,7 @@ class DriveWizard( umcd.IWizard ):
 			driver_pv = object.options[ 'cdrom-paravirtual' ]
 		elif drive_type == 'floppy':
 			disk.device = uvmmp.Disk.DEVICE_FLOPPY
+			driver_pv = None
 		else:
 			raise Exception('Invalid drive-type "%s"' % drive_type)
 
