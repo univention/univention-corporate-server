@@ -1,0 +1,24 @@
+[lilo/append]
+Description[de]=Zusätzliche Kernel Optionen
+Description[en]=Additional kernel options
+Type=str
+Categories=System
+
+[lilo/root]
+Description[de]=Boot Partition
+Description[en]=Boot partition
+Type=str
+Categories=System
+
+[lilo/timeout]
+Description[de]=Wartezeit in Sekunden bevor der Standardkernel gebootet wird
+Description[en]=Timeout in seconds, before automatically booting the default entry
+Type=str
+Categories=System
+
+[lilo/vga]
+Description[de]=Lilo VGA-Code
+Description[en]=Lilo vga code
+Type=str
+Categories=System
+

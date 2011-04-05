@@ -1,0 +1,6 @@
+
+[lilo/timeout]
+Description[de]=Mit Latin-1 Umlauten öäüÖÄÜß geht das nicht
+Description[en]=Timeout in seconds, before automatically booting the default entry
+Type=str
+Categories=System

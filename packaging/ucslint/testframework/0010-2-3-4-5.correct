@@ -1,0 +1,6 @@
+E:0010-2: file testframework/0010-2-3-4-5/34univention-management-console-server.inst contains no copyright text block
+E:0010-2: file testframework/0010-2-3-4-5/conffiles/etc/cron.daily/univention-ssl-validity contains no copyright text block
+E:0010-4: cannot find copyright line containing year in file testframework/0010-2-3-4-5/make-certificates.sh
+E:0010-5: file testframework/0010-2-3-4-5/debian/copyright is missing
+W:0010-3: copyright line in file testframework/0010-2-3-4-5/univention-certificate seems to be outdated
+W:0010-3: copyright line in file testframework/0010-2-3-4-5/univention-certificate-check-validity seems to be outdated

@@ -1,0 +1,7 @@
+E:0011-2: source package name differs in debian/changelog and debian/control
+E:0011-5: debian/control: wrong Maintainer entry - should be "Univention GmbH <packages@univention.de>"
+E:0011-6: debian/control: XS-Python-Version is used but no python-central in Build-Depends
+E:0011-7: debian/control: XS-Python-Version is used without XB-Python-Version in binary section
+W:0011-3: debian/control: wrong Section entry - should be "univention"
+W:0011-4: debian/control: wrong Priority entry - should be "optional"
+W:0011-8: debian/control: XS-Python-Version should be "2.4"

@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+
+if [ "$KATZE" = "HUND" ] ; then
+   univention-admin users/user create --position cn=users,dc=superhelden,dc=comic --set username="SuperDog" --set password="KatzenMagINed"
+fi
+
+# univention-directory-manager users/user create --position cn=users,dc=superhelden,dc=comic --set username="SuperCat" --set password="CatsRulez"
+
+exit 0

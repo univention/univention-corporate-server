@@ -1,0 +1,2 @@
+W:0004-14: template file testframework/0004-14-15/conffiles/etc/hosts.d/99-ucs-test is not registered in *.univention-config-registry
+W:0004-15: UCR template file etc/not-present is registered but not found in conffiles/ (1)

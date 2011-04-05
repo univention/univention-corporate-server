@@ -1,0 +1,72 @@
+[ssl/common]
+Description[de]=Common name für das Root SSL-Zertifikat
+Description[en]=Common name for the root SSL certificate
+Type=str
+Categories=system-ssl
+
+[ssl/country]
+Description[de]=In SSL-Zertifikaten verwendeter ISO-Ländercode (zwei Buchstaben)
+Description[en]=Two letter country code to use in SSL certificates
+Type=str
+Categories=system-ssl
+
+[ssl/email]
+Description[de]=In SSL-Zertifikaten verwendete Email-Adresse
+Description[en]=E-mail address to use in SSL certificates
+Type=str
+Categories=system-ssl
+
+[ssl/state]
+Description[de]=In SSL-Zertifikaten verwendetes Bundesland/Region
+Description[en]=State to use in SSL certificates
+Type=str
+Categories=system-ssl
+
+[ssl/locality]
+Description[de]=In SSL-Zertifikaten verwendeter Ort
+Description[en]=Locality used in SSL certificates
+Type=str
+Categories=system-ssl
+
+[ssl/organization]
+Description[de]=In SSL-Zertifikaten verwendete Organisation/Firma
+Description[en]=Organization used in SSL certificates
+Type=str
+Categories=system-ssl
+
+[ssl/organizationalunit]
+Description[de]=In SSL-Zertifikaten verwendete Abteilung der Organisation/Firma
+Description[en]=Organizational unit used in SSL certificates
+Type=str
+Categories=system-ssl
+
+[ssl/default/days]
+Description[de]=Standard Lebensdauer für neue SSL-Zertifikate
+Description[en]=Default lifetime of new SSL certificates
+Type=str
+Categories=system-ssl
+
+[ssl/default/hashfunction]
+Description[de]=Standard Hashfunktion für neue SSL-Zertifikate
+Description[en]=Default hash function for new SSL certificates
+Type=str
+Categories=system-ssl
+
+[ssl/validity/check]
+Description[de]=Aktiviere/Deaktiviere die regelmäßige Gültigkeitsprüfung für Zertifikate
+Description[en]=Enable/Disable regular checks for certificate validity
+Type=str
+Categories=system-ssl
+
+[ssl/validity/days]
+Description[de]=Anzahl an Tagen die das Root SSL-Zertifikat gültig ist
+Description[en]=Number of days which the root certificate is valid
+Type=str
+Categories=system-ssl
+
+[ssl/validity/warning]
+Description[de]=Warnmeldungen ausgeben wenn die Gültigkeit des Root-Zertifikats die angegebenen Tage unterschreitet
+Description[en]=Print warnings if the root certificates validity ends within this amount of days
+Type=str
+Categories=system-ssl
+

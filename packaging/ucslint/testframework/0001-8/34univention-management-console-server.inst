@@ -1,0 +1,275 @@
+#!/bin/sh
+
+VERSION=3
+
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
+
+touch /usr/lib/univention-install/.index.txt
+
+test -n "`grep "univention-management-console-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+eval "$( univention-baseconfig shell ldap/base )"
+
+univention-directory-manager container/cn create "$@" --ignore_exists --position cn=univention,$ldap_base --set name=console
+univention-directory-manager container/cn create "$@" --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=acls
+univention-directory-manager container/cn create "$@" --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=operations
+
+# create mrtg operations
+univention-directory-manager settings/console_operation create "$@" --ignore_exists \
+	--position cn=operations,cn=console,cn=univention,$ldap_base \
+	--set name=mrtg \
+	--set description="Load Statistics" \
+	--append operation="mrtg/*" \
+	--append operation="mrtg/view"
+
+# create modutils operations
+univention-directory-manager settings/console_operation create "$@" --ignore_exists \
+	--position cn=operations,cn=console,cn=univention,$ldap_base \
+	--set name=modutils \
+	--set description="Kernel Module" \
+	--append operation="modutils/*" \
+	--append operation="modutils/search" \
+	--append operation="modutils/load"
+
+# create vnc operations
+univention-directory-manager settings/console_operation create "$@" --ignore_exists \
+	--position cn=operations,cn=console,cn=univention,$ldap_base \
+	--set name=vnc \
+	--set description="VNC Session" \
+	--append operation="vnc/*"
+
+# create reboot operations
+univention-directory-manager settings/console_operation create "$@" --ignore_exists \
+       --position cn=operations,cn=console,cn=univention,$ldap_base \
+       --set name=reboot \
+       --set description="System Stop and Reboot" \
+       --append operation="reboot/*"
+
+# create join operations
+univention-directory-manager settings/console_operation create "$@" --ignore_exists \
+	--position cn=operations,cn=console,cn=univention,$ldap_base \
+	--set name=join \
+	--set description="Join to UCS Domain" \
+	--append operation="join/*"
+
+# create baseconfig operations
+univention-directory-manager settings/console_operation create "$@" --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
+																				 --set name=baseconfig \
+																				 --set description="Univention Configuration Registry operations" \
+																				 --append operation="baseconfig/*" \
+																				 --append operation="baseconfig/set" \
+																				 --append operation="baseconfig/get"
+
+# create service operations
+univention-directory-manager settings/console_operation create "$@" --ignore_exists \
+	--position cn=operations,cn=console,cn=univention,$ldap_base \
+	--set name=service \
+	--set description="Service Operations" \
+	--append operation="service/*" \
+	--append operation="service/list" \
+	--append operation="service/start" \
+	--append operation="service/stop"
+
+# create mail server wizard acls
+univention-directory-manager settings/console_acl create "$@" --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=wizard-mailserver-all \
+	--set category="Wizard Mail Server" \
+	--set ldapbase="$ldap_base" \
+	--set command="wizard/mailserver/*" \
+	--set description="Mail Server Wizard"
+
+# create basis wizard acls
+univention-directory-manager settings/console_acl create "$@" --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=wizard-basis-all \
+	--set category="Wizard Basis" \
+	--set ldapbase="$ldap_base" \
+	--set command="wizard/basis/*" \
+	--set description="Basis Wizard"
+
+# create package acls
+univention-directory-manager settings/console_acl create "$@" --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=packages-all \
+	--set category="Package Management" \
+	--set ldapbase="$ldap_base" \
+	--set command="packages/*" \
+	--set description="All Package Management Operations"
+
+# search package acls
+univention-directory-manager settings/console_acl create "$@" --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=packages-search \
+	--set category="Package Management" \
+	--set ldapbase="$ldap_base" \
+	--set command="packages/search" \
+	--set description="Search packages"
+
+# search package acls
+univention-directory-manager settings/console_acl create "$@" --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=packages-show \
+	--set category="Package Management" \
+	--set ldapbase="$ldap_base" \
+	--set command="packages/show" \
+	--set description="Show packages"
+
+# install package acls
+univention-directory-manager settings/console_acl create "$@" --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=packages-install \
+	--set category="Package Management" \
+	--set ldapbase="$ldap_base" \
+	--set command="packages/install" \
+	--set description="Install packages"
+
+# create process overview acls
+univention-directory-manager settings/console_acl create "$@" --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=top-all \
+	--set category="Process Overview" \
+	--set ldapbase="$ldap_base" \
+	--set command="top/*" \
+	--set description="All Process Overview Operations"
+
+univention-directory-manager settings/console_acl create "$@" --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=top-all \
+	--set category="Process Overview" \
+	--set ldapbase="$ldap_base" \
+	--set command="top/view" \
+	--set description="Show Processes"
+
+# create mrtg overview acls
+univention-directory-manager settings/console_acl create "$@" --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=mrtg-all \
+	--set category="Load Statistic" \
+	--set ldapbase="$ldap_base" \
+	--set command="mrtg/*" \
+	--set description="All Operations"
+
+# create modutils overview acls
+univention-directory-manager settings/console_acl create "$@" --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=modutils-all \
+	--set category="Kernel Module" \
+	--set ldapbase="$ldap_base" \
+	--set command="modutils/*" \
+	--set description="All Kernel Module Operations"
+
+# create vnc session acls
+univention-directory-manager settings/console_acl create "$@" --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=vnc-all \
+	--set category="VNC Session" \
+	--set ldapbase="$ldap_base" \
+	--set command="vnc/*" \
+	--set description="All VNC Session Operations"
+
+# create reboot acls
+univention-directory-manager settings/console_acl create "$@" --ignore_exists \
+       --position cn=acls,cn=console,cn=univention,$ldap_base \
+       --set name=reboot-all \
+       --set category="Reboot" \
+       --set ldapbase="$ldap_base" \
+       --set command="reboot/*" \
+       --set description="System Stop and Reboot"
+
+# create join acls
+univention-directory-manager settings/console_acl create "$@" --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=join-all \
+	--set category="Domain Join" \
+	--set ldapbase="$ldap_base" \
+	--set command="join/*" \
+	--set description="All Domain Join Operations"
+
+# create baseconfig acls
+univention-directory-manager settings/console_acl create "$@" --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=baseconfig-get \
+																				 --set category="Univention Configuration Registry" \
+																				 --set ldapbase="$ldap_base" \
+																				 --set command=baseconfig/get \
+																				 --set description="Read all Univention Configuration Registry variables"
+
+univention-directory-manager settings/console_acl create "$@" --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=baseconfig-set-all \
+																				 --set category="Univention Configuration Registry" \
+																				 --set ldapbase="$ldap_base" \
+																				 --set command=baseconfig/set \
+																				 --set description="Set all Univention Configuration Registry variables"
+
+univention-directory-manager settings/console_acl create "$@" --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=baseconfig-all \
+																				 --set category="Univention Configuration Registry" \
+																				 --set ldapbase="$ldap_base" \
+																				 --set command="baseconfig/*" \
+																				 --set description="All Univention Configuration Registry variable operations"
+
+univention-directory-manager settings/console_acl create "$@" --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=baseconfig-set-net \
+																				 --set category="Univention Configuration Registry" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="baseconfig/set:key=interfaces/*" \
+																				 --append command="baseconfig/set:key=gateway" \
+																				 --append command="baseconfig/set:key=nameserver1" \
+																				 --append command="baseconfig/set:key=nameserver2" \
+																				 --append command="baseconfig/set:key=nameserver3" \
+																				 --set description="Set network based Univention Configuration Registry variables"
+
+univention-directory-manager settings/console_acl create "$@" --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=baseconfig-set-samba \
+																				 --set category="Univention Configuration Registry" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="baseconfig/set:key=samba/*" \
+																				 --append command="baseconfig/set:key=windows/*" \
+																				 --set description="Set samba and windows based Univention Configuration Registry variables"
+
+# create service acls
+univention-directory-manager settings/console_acl create "$@" --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=service-all \
+																				 --set category="Dienste" \
+																				 --set ldapbase="$ldap_base" \
+																				 --set command="service/*" \
+																				 --set description="All Operations on Services"
+
+
+
+# policy container
+univention-directory-manager container/cn create "$@" --ignore_exists --position cn=policies,$ldap_base --set name=console --set policyPath=1
+
+# default policies
+univention-directory-manager policies/console_access create "$@" --ignore_exists \
+	--position cn=console,cn=policies,$ldap_base \
+	--set name=default-admin
+
+univention-directory-manager policies/console_access modify "$@" --ignore_exists \
+	--dn cn=default-admin,cn=console,cn=policies,$ldap_base \
+	--append allow=cn=baseconfig-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=service-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=wizard-mailserver-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=wizard-basis-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=top-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=mrtg-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=modutils-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=join-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=packages-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=vnc-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=reboot-all,cn=acls,cn=console,cn=univention,$ldap_base
+
+univention-directory-manager policies/console_access create "$@" --ignore_exists \
+	--position cn=console,cn=policies,$ldap_base \
+	--set name=baseconfig-admin \
+	--append allow=cn=baseconfig-all,cn=acls,cn=console,cn=univention,$ldap_base
+
+# join default admin policy to the domain admins
+univention-directory-manager groups/group modify "$@" --ignore_exists --dn "cn=Domain Admins,cn=groups,$ldap_base" \
+	--policy-reference="cn=default-admin,cn=console,cn=policies,$ldap_base"
+
+
+test -n "`grep "univention-management-console-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-management-console-server v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+
+exit 0

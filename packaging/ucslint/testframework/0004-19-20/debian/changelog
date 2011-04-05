@@ -1,0 +1,5 @@
+univention-lilo (1.0.0-1) unstable; urgency=low
+
+  * initial release
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Oct 2007 11:59:46 +0200

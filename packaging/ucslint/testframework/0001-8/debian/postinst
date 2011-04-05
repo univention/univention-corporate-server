@@ -1,0 +1,7 @@
+#!/bin/sh
+#
+#DEBHELPER#
+
+set -e
+
+/usr/lib/univention-install/34univention-management-console-server.inst

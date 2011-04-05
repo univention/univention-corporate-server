@@ -1,0 +1,34 @@
+E:0004-12: template file testframework/0004-12/conffiles/etc/lilo.conf contains variables that are not registered in file entry:
+	- not/in/info/file/registered/file/configregistry
+	- not/in/info/file/registered/file/baseconfig
+E:0004-29: template file testframework/0004-12/conffiles/etc/hosts.d/99-ucs-test contains variables that are not registered in multifile entry:
+	- not/in/info/file/registered/configregistryA1
+	- not/in/info/file/registered/configregistryB1
+	- not/in/info/file/registered/baseconfigC1
+	- not/in/info/file/registered/baseconfigD1
+	- not/in/info/file/registered/configregistryE1
+	- not/in/info/file/registered/baseconfigF1
+	- not/in/info/file/registered/configregistryA3
+	- not/in/info/file/registered/configregistryB3
+	- not/in/info/file/registered/baseconfigC3
+	- not/in/info/file/registered/baseconfigD3
+	- not/in/info/file/registered/configregistryE3
+	- not/in/info/file/registered/baseconfigF3
+	- not/in/info/file/registered/configregistryA2
+	- not/in/info/file/registered/configregistryB2
+	- not/in/info/file/registered/baseconfigC2
+	- not/in/info/file/registered/baseconfigD2
+	- not/in/info/file/registered/configregistryE2
+	- not/in/info/file/registered/baseconfigF2
+	- not/in/info/file/registered/configregistryA4
+	- not/in/info/file/registered/configregistryA5
+	- not/in/info/file/registered/configregistryB4
+	- not/in/info/file/registered/configregistryB5
+	- not/in/info/file/registered/baseconfigC4
+	- not/in/info/file/registered/baseconfigC5
+	- not/in/info/file/registered/baseconfigD4
+	- not/in/info/file/registered/baseconfigD5
+	- not/in/info/file/registered/configregistryE4
+	- not/in/info/file/registered/configregistryE5
+	- not/in/info/file/registered/baseconfigF4
+	- not/in/info/file/registered/baseconfigF5

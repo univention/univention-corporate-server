@@ -1,0 +1,32 @@
+Type: file
+File: etc/lilo.conf
+Variables: lilo/vga
+Variables: lilo/append
+Variables: lilo/append/acpi
+Variables: lilo/append/pci_acpi
+Variables: lilo/default
+Variables: version/version
+Variables: version/patchlevel
+Variables: version/security-patchlevel
+Variables: lilo/compact
+Variables: server/role
+
+Type: module
+Module: lilo.py
+Variables: lilo/root
+Variables: lilo/boot
+Variables: lilo/vga
+Variables: lilo/append
+Variables: lilo/append/acpi
+Variables: lilo/append/pci_acpi
+Variables: lilo/default
+Variables: version/version
+Variables: version/patchlevel
+Variables: version/security-patchlevel
+Variables: lilo/compact
+
+Type: multifile
+Multifile: etc/hosts
+
+Type: file
+File: etc/not-present

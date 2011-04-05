@@ -1,0 +1,11 @@
+[lilo/append]
+Description[de]=Zusätzliche Kernel Optionen
+Description[en]=Additional kernel options
+Type=str
+Categories=System
+
+[lilo/root]
+Description[de]=Boot Partition
+Description[en]=Boot partition
+Type=str
+Categories=System

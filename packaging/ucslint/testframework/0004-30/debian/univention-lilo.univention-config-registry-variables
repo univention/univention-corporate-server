@@ -1,0 +1,24 @@
+[lilo/append]
+Description[de]=ZusÃ¤tzliche Kernel Optionen
+Description[en]=Additional kernel options
+Type=str
+Categories=System
+
+[lilo/root]
+Description[de]=Boot Partition
+Description[en]=Boot partition
+Type=str
+Categories=System
+
+[lilo/timeout]
+Description[de]=Mit Latin-1 Umlauten öäüÖÄÜß geht das nicht
+Description[en]=Timeout in seconds, before automatically booting the default entry
+Type=str
+Categories=System
+
+[lilo/vga]
+Description[de]=Mit ISO 8859-15-Umlauten öäüÖÄÜß rummst das
+Description[en]=Lilo vga code
+Type=str
+Categories=System
+

@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+#DEBHELPER#
+
+set -e
+
+ldapsearch -x -b dc=univention,dc=qa
+ldapsearch -x -b dc=univention,dc=test
+ldapsearch -x -b dc=univention,dc=local
+ldapsearch -x -b dc=schule,dc=bremen,dc=de
+ldapsearch -x -b dc=nstx,dc=de
+ldapsearch -x -b dc=deadlock,dc=org
+echo "univention.qa"
+echo "univention.test"
+echo "univention.local"
+echo "schule.bremen.de"
+echo "nstx.de"
+echo "deadlock.org"
+
+/usr/lib/univention-install/34univention-management-console-server.inst || true

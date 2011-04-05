@@ -1,0 +1,2 @@
+E:0001-14: Join script 34univention-management-console-server.inst does not use joinscript_init
+E:0001-15: Join script 34univention-management-console-server.inst does not use joinscript_save_current_version

@@ -1,0 +1,7 @@
+#
+# 	/etc/univention/templates/files/etc/hosts.d/99-ucs-test
+#
+
+127.0.0.10	anotherlocalinterface
+
+

@@ -1,0 +1,2 @@
+W:0004-16: UCR header is missing in etc/lilo.conf
+W:0004-17: UCR template file etc/hosts.d/99-ucs-test-unknown is registered but not found in conffiles/ (2)

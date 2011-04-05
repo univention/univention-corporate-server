@@ -1,0 +1,142 @@
+ucslint (1.0.19-1) unstable; urgency=low
+
+  * fixed traceback in 0010-Copyright.py (Bug #13192)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 28 Jun 2010 11:19:07 +0200
+
+ucslint (1.0.18-1) unstable; urgency=low
+
+  * added test for configRegistry.is_(true|false) (Bug #18805)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 25 Jun 2010 17:50:44 +0200
+
+ucslint (1.0.17-1) unstable; urgency=low
+
+  * switched to AGPL 3 (Bug #13192)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 25 Jun 2010 18:42:39 +0200
+
+ucslint (1.0.16-1) unstable; urgency=low
+
+  * Fix test for missing character set in *.po files (Bug #18567)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 22 Jun 2010 10:42:03 +0200
+
+ucslint (1.0.15-1) unstable; urgency=low
+
+  * test for invalid character set in *.po files (Bug #18567)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 07 Jun 2010 17:45:53 +0200
+
+ucslint (1.0.14-1) unstable; urgency=low
+
+  * test for invalid characters in debian/$PACKAGENAME.univention-config-registry-variables (Bug #13012)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 07 Jun 2010 17:44:50 +0200
+
+ucslint (1.0.13-1) unstable; urgency=low
+
+  * find empty translation strings in .po files (Bug #18593)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 07 Jun 2010 17:43:58 +0200
+
+ucslint (1.0.12-1) unstable; urgency=low
+
+  * test new-style join scripts (Bug #18592)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 07 Jun 2010 17:41:20 +0200
+
+ucslint (1.0.11-1) unstable; urgency=low
+
+  * test for unquoted "eval $(ucr shell)" calls (Bug #18444)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Sun, 06 Jun 2010 18:14:23 +0200
+
+ucslint (1.0.10-1) unstable; urgency=low
+
+  * ignore .svn directories (Bug #13016)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Sun, 06 Jun 2010 18:11:43 +0200
+
+ucslint (1.0.9-1) unstable; urgency=low
+
+  * fixed traceback if file is empty (Bug #12793)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Sun, 06 Jun 2010 17:46:16 +0200
+
+ucslint (1.0.8-1) unstable; urgency=low
+
+  * added checks for debian/control (Bug #18574)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Sun, 06 Jun 2010 17:44:23 +0200
+
+ucslint (1.0.7-1) unstable; urgency=low
+
+  * added option to disable certain modules (Bug #18573)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Sun, 06 Jun 2010 17:36:56 +0200
+
+ucslint (1.0.6-1) unstable; urgency=low
+
+  * fixed traceback in 0009-Python.py (Bug: #13016)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Sat, 17 Oct 2009 23:29:11 +0200
+
+ucslint (1.0.5-1) unstable; urgency=low
+
+  * added check "script contains 'exit 0' at end of file" (Bug: #13014)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 10 Nov 2009 22:29:46 +0100
+
+ucslint (1.0.4-1) unstable; urgency=low
+
+  * added module 0007-Changelog testing for missing bug/ticket number in
+    latest changelog entry (Bug: #13017)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 10 Jun 2009 19:00:57 +0200
+
+ucslint (1.0.3-1) unstable; urgency=low
+
+  * added option to specify error categories to be displayed (Bug: #14742)
+  * ucslint returns exitcode 1 if at least one msg has been
+    displayed - otherwise exitcode 0
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 10 Jun 2009 18:18:52 +0200
+
+ucslint (1.0.2-2) unstable; urgency=low
+
+  * fixed python hashbang test module (Bug: #13016)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 08 Jun 2009 18:15:17 +0200
+
+ucslint (1.0.2-1) unstable; urgency=low
+
+  * added python hashbang test module (Bug: #13016)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 08 Jun 2009 17:49:01 +0200
+
+ucslint (1.0.1-3) unstable; urgency=low
+
+  * fixed missing python modules while running testframework
+
+ -- Sönke Schwardt <schwardt@univention.de>  Sat, 28 Mar 2009 18:18:53 +0100
+
+ucslint (1.0.1-2) unstable; urgency=low
+
+  * failing testframework should not interfere with package build until
+    testframework works on all systems
+
+ -- Sönke Schwardt <schwardt@univention.de>  Sat, 28 Mar 2009 15:37:34 +0100
+
+ucslint (1.0.1-1) unstable; urgency=low
+
+  * fixed missing python module while running testframework
+
+ -- Sönke Schwardt <schwardt@univention.de>  Sat, 28 Mar 2009 15:22:28 +0100
+
+ucslint (1.0.0-1) unstable; urgency=low
+
+  * first version of ucslint
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 12 Nov 2008 10:20:18 +0100
+

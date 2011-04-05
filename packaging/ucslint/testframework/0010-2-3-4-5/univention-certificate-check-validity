@@ -1,0 +1,70 @@
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
+#
+# Univention SSL
+#  checks validity of the local SSL certificate
+#
+# Copyright 2008 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import time
+import datetime
+import calendar
+
+from M2Crypto import X509
+
+import univention_baseconfig
+
+_bc = univention_baseconfig.baseConfig()
+_bc.load()
+
+def get_validity_date():
+	""" returns the validity date fo the locale SSL certificate or None on failure"""
+	global _bc
+	try:
+		fqdn = '.'.join( [ _bc[ 'hostname' ], _bc[ 'domainname' ] ] )
+
+		x509 = X509.load_cert( '/etc/univention/ssl/%s/cert.pem' % fqdn )
+		return str( x509.get_not_after() )
+	except:
+		return None
+
+def get_validity_days():
+	"""returns the validity of the local SSL certificate in days. If the
+	validity could not be determined 0 is returned"""
+	after = get_validity_date()
+	if after:
+		time_after = time.strptime( after, "%b %d %H:%M:%S %Y %Z" )
+		return calendar.timegm( time_after ) / 60 / 60 / 24
+
+	return 0
+
+if __name__ == '__main__':
+	days = get_validity_days()
+	if days and days != _bc.get( 'ssl/validity/days', -1 ):
+		_bc[ 'ssl/validity/days' ] = str( days )
+		_bc.save()

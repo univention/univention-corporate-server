@@ -1,0 +1,16 @@
+Source: ucslint
+Section: tools
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 4.0.0), python-central
+Standards-Version: 3.6.1
+XS-Python-Version: 2.4
+
+Package: ucslint
+Architecture: all
+Depends: python (>=2.4)
+Conflicts: ucs-tools (<< 1.2.5)
+XB-Python-Version: ${python:Versions}
+Description: tool to check for common univention specific packaging mistakes
+ Package contains ucslint
+

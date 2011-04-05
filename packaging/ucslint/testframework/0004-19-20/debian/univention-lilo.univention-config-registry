@@ -1,0 +1,57 @@
+Type: file
+File: etc/lilo.conf
+Variables: lilo/vga
+Variables: lilo/append
+Variables: lilo/append/acpi
+Variables: lilo/append/pci_acpi
+Variables: lilo/default
+Variables: version/version
+Variables: version/patchlevel
+Variables: version/security-patchlevel
+Variables: lilo/compact
+Variables: server/role
+
+Type: module
+Module: lilo.py
+Variables: lilo/root
+Variables: lilo/boot
+Variables: lilo/vga
+Variables: lilo/append
+Variables: lilo/append/acpi
+Variables: lilo/append/pci_acpi
+Variables: lilo/default
+Variables: version/version
+Variables: version/patchlevel
+Variables: version/security-patchlevel
+Variables: lilo/compact
+
+Type: multifile
+Multifile: etc/hosts
+
+Type: subfile
+Multifile: etc/hosts
+Subfile: etc/hosts.d/99-ucs-test
+Preinst: foobar.sh
+Postinst: foobar2.sh
+
+Type: subfile
+Multifile: etc/hosts
+Subfile: etc/hosts.d/99-ucs-test
+Postinst: foobar2.sh
+
+Type: subfile
+Multifile: etc/hosts
+Subfile: etc/hosts.d/99-ucs-test
+Preinst: foobar.sh
+
+Type: subfile
+Multifile: etc/hosts
+Subfile: etc/hosts.d/99-ucs-test
+Preinst: foobar.sh
+Preinst: foobar.sh
+
+Type: subfile
+Multifile: etc/hosts
+Subfile: etc/hosts.d/99-ucs-test
+Postinst: foobar2.sh
+Postinst: foobar2.sh

@@ -1,0 +1,243 @@
+univention-differs (4.0.1-1) unstable; urgency=low
+
+  * provide new UCR category system-ssl (Bug #13505)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  7 Jul 2009 15:34:50 +0200
+
+univention-ssl (4.0.0-0) unstable; urgency=low
+
+  * bump version for UCS 2.3
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 10 Jun 2009 08:20:32 +0200
+
+univention-ssl (3.0.4-3) unstable; urgency=low
+
+  * change default to sha1 since openssl-0.9.8c does not support sha256 (Bug #14231)
+
+ -- Arvid Requate <requate@univention.de>  Thu,  4 Jun 2009 09:49:24 +0200
+
+univention-ssl (3.0.4-2) unstable; urgency=low
+
+  * set UCR:ssl/default/hashfunction to md5 on update installations (Bug #14231)
+
+ -- Arvid Requate <requate@univention.de>  Wed,  3 Jun 2009 11:14:13 +0200
+
+univention-ssl (3.0.4-1) unstable; urgency=low
+
+  * change default message digest algorithm from md5 to sha256 (for Bug #14231)
+  * new UCR variable ssl/default/hashfunction allows fallback to sha1
+
+ -- Arvid Requate <requate@univention.de>  Wed,  3 Jun 2009 10:58:34 +0200
+
+univention-ssl (3.0.3-1) unstable; urgency=low
+
+  * create a link from /etc/univention/ssl/<hostname>.<domainname> to
+    /etc/univention/ssl/<hostname> like the listener module does. Bug #13598
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Mar 2009 16:00:18 +0100
+
+univention-ssl (3.0.2-1) unstable; urgency=low
+
+  * use time.fu-berlin.de instead of pool.ntp.org beacause we are using
+    rdate. Bug #13549
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Feb 2009 11:10:54 +0100
+
+univention-ssl (3.0.1-1) unstable; urgency=low
+
+  * updated the copyright. Bug #6875
+  * try to set the clock before generating the root CA, otherwise it is
+    possible that the certificate is not valid at the end of the
+    installation. Bug #13549
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Feb 2009 09:55:21 +0100
+
+univention-ssl (2.0.2-2) unstable; urgency=low
+
+  * Depend on openssl-blacklist
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  8 Jul 2008 16:55:01 +0200
+
+univention-ssl (2.0.2-1) unstable; urgency=low
+
+  * no longer change the owner and group of all ssl certificates under
+    /etc/univention/ssl after revoke or renew a certifcate with
+    univention-certificate
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Nov 2007 21:27:52 +0100
+
+univention-ssl (2.0.1-9) unstable; urgency=low
+
+  * Fix Config Registry descriptions.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 31 Oct 2007 10:35:35 +0100
+
+univention-ssl (2.0.1-8) unstable; urgency=low
+
+  * fixed permissions of ssl-sync.log
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 Sep 2007 13:25:23 +0200
+
+univention-ssl (2.0.1-7) unstable; urgency=low
+
+  * renamed /etc/univention/ssl/udsCA to /etc/univention/ssl/ucsCA
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 23 Aug 2007 14:17:02 +0200
+
+univention-ssl (2.0.1-6) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 31 Jul 2007 15:02:10 +0200
+
+univention-ssl (2.0.1-5) unstable; urgency=low
+
+  * Adapt code to Univention Directory Listener.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Jul 2007 14:31:54 +0200
+
+univention-ssl (2.0.1-4) unstable; urgency=low
+
+  * Depend on Univention Directory Listener
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Jul 2007 14:21:14 +0200
+
+univention-ssl (2.0.1-3) unstable; urgency=low
+
+  * don't fail if the listener crestart wasn't successful
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Jun 2007 17:18:45 +0200
+
+univention-ssl (2.0.1-2) unstable; urgency=low
+
+  * call exit 0 at the end of the postinst scripts
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Jun 2007 14:13:00 +0200
+
+univention-ssl (2.0.1-1) unstable; urgency=low
+
+  * create host certificate
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Jun 2007 13:26:46 +0200
+
+univention-ssl (2.0.0-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 11:21:49 +0200
+
+univention-ssl (2.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 May 2007 16:02:11 +0200
+
+univention-ssl (1.10.4-1) unstable; urgency=low
+
+  * add shebang line to cron script 
+
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 20 Dec 2006 08:48:33 +0100
+
+univention-ssl (1.10.3-2) unstable; urgency=low
+
+  * add a script that reads information about the validity of the SSL
+    certificate and stores it Univention Baseconfig (ssl/validity/*)
+  * add a daily cron that updates the validity information if
+    ssl/validity/check=yes
+  * add #DEBHELPER# to postinst 
+
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 19 Dec 2006 18:01:23 +0100
+
+univention-ssl (1.10-7) unstable; urgency=low
+
+  * check if the domainname was really changed
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 13 Dec 2006 07:20:55 +0100
+
+univention-ssl (1.10-6) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Dec 2006 11:36:51 +0100
+
+univention-ssl (1.10-5) unstable; urgency=low
+
+  * added baseconfig variable ssl/default/days for the default ssl certificate
+  lifetime
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Oct 2006 17:16:46 +0200
+
+univention-ssl (1.10-3) unstable; urgency=low
+
+  * check for the associatedDomain attribute when creating the certificate
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  6 Jun 2006 06:53:16 +0200
+
+univention-ssl (1.10-1) unstable; urgency=low
+
+  * set owner of new certificates to host-account
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 29 Mar 2006 15:49:37 +0200
+
+univention-ssl (1.10-0) unstable; urgency=low
+
+  * check if FQDN is too long for creation of certificate
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 27 Oct 2005 12:52:15 +0200
+
+univention-ssl (1.9) unstable; urgency=low
+
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 29 Apr 2004 11:23:52 +0200
+
+univention-ssl (1.8) unstable; urgency=low
+
+  * create client & memberserver certificate
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Apr 2004 15:37:38 +0200
+
+univention-ssl (1.7) unstable; urgency=low
+
+  * ssl config managed with baseconfig
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 17 Apr 2004 10:18:29 +0200
+
+univention-ssl (1.6) unstable; urgency=low
+
+  * create symlinx /etc/univention/ssl/$host.$domain /etc/univention/ssl/$host
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Apr 2004 07:46:22 +0200
+
+univention-ssl (1.5) unstable; urgency=low
+
+  * set path to hostname.domainname
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  5 Apr 2004 15:14:14 +0200
+
+univention-ssl (1.4) unstable; urgency=low
+
+  * chgrp after create
+  * support for -days on create
+  * bugfix check for valid cert
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Mar 2004 15:48:08 +0200
+
+univention-ssl (1.3) unstable; urgency=low
+
+  * generate root ca request
+  * added univention-certificate frontend
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Feb 2004 08:19:38 +0100
+
+univention-ssl (1.2) unstable; urgency=low
+
+  * new versioning scheme
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 20 May 2003 13:48:02 +0200
+
+univention-ssl (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Mon,  8 Oct 2001 13:47:19 +0200

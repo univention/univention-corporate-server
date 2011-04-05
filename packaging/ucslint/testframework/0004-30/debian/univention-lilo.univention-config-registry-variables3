@@ -1,0 +1,7 @@
+
+[lilo/vga]
+Description[de]=Mit ISO 8859-15-Umlauten öäüÖÄÜß rummst das
+Description[en]=Lilo vga code
+Type=str
+Categories=System
+

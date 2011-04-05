@@ -1,0 +1,14 @@
+@%@BCWARNING=# @%@
+#
+# 	/etc/univention/templates/files/etc/hosts.d/99-ucs-test
+#
+
+127.0.0.10	anotherlocalinterface
+
+
+@%@my/invalid/chäracter/variable@%@
+@%@also/inv_alid@%@
+
+@!@
+print configRegistry.get('also/not/v(a)lid')
+@!@

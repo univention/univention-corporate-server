@@ -1,0 +1,2 @@
+E:0004-9: testframework/0004-9/debian/univention-lilo.univention-config-registry contains entry without valid "Type:" entry (Type: myTestTypeForUcslint)
+W:0004-14: template file testframework/0004-9/conffiles/etc/lilo.conf is not registered in *.univention-config-registry

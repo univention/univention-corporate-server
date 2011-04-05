@@ -1,0 +1,3 @@
+E:0004-4: testframework/0004-4-5/debian/univention-lilo.univention-config-registry contains multifile entry without "Multifile:" line
+E:0004-5: testframework/0004-4-5/debian/univention-lilo.univention-config-registry contains subfile entry without "Subfile:" line
+W:0004-14: template file testframework/0004-4-5/conffiles/etc/lilo.conf is not registered in *.univention-config-registry

@@ -1,0 +1,12 @@
+@%@BCWARNING=# @%@
+#
+# 	/etc/univention/templates/files/etc/hosts.d/99-ucs-test
+#
+
+127.0.0.10	anotherlocalinterface
+
+
+@!@
+print configRegistry.get('not/in/info/file/registered/multifile/configregistry','YES')
+print baseConfig.get('not/in/info/file/registered/multifile/baseconfig','YES')
+@!@
