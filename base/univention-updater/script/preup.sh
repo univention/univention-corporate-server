@@ -201,7 +201,7 @@ if [ ! "$update24_checkfilesystems" = "no" ]
 then
 
 	check_space "/var/cache/apt/archives" "700000" "0,7 GB"
-	check_space "/boot" "55000" "55 MB"
+	check_space "/boot" "50000" "50 MB"
 	check_space "/" "1500000" "1,5 GB"
 
 else

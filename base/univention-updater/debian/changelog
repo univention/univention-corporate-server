@@ -1,3 +1,9 @@
+univention-updater (6.0.84-2) unstable; urgency=low
+
+  * prune old kernel during update (Bug #22093)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 05 Apr 2011 13:28:57 +0200
+
 univention-updater (6.0.84-1) unstable; urgency=low
 
   * prune old kernel during update (Bug #22093)
