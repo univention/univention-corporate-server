@@ -125,6 +125,46 @@ if [ ! -z "$update_custom_preup" ]; then
 	fi
 fi
 
+#################### Bug #22093
+
+get_latest_kernel_pkg () {
+	# returns latest kernel package for given kernel version
+	# currently running kernel is NOT included!
+
+	kernel_version="$1"
+
+	latest_dpkg=""
+	latest_kver=""
+	for kver in $(COLUMNS=200 dpkg -l linux-image-${kernel_version}-ucs\* 2>/dev/null | grep linux-image- | awk '{ print $2 }' | sort -n | grep -v "linux-image-$(uname -r)") ; do
+		dpkgver="$(apt-cache show $kver | sed -nre 's/Version: //p')"
+		if dpkg --compare-versions "$dpkgver" gt "$latest_dpkg" ; then
+			latest_dpkg="$dpkgver"
+			latest_kver="$kver"
+		fi
+	done
+	echo "$latest_kver"
+}
+
+pruneOldKernel () {
+	# removes all kernel packages of given kernel version
+	# EXCEPT currently running kernel and latest kernel package
+	# ==> at least one and at most two kernel should remain for given kernel version
+	kernel_version="$1"
+
+	ignore_kver="$(get_latest_kernel_pkg "$kernel_version")"
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes remove --purge $(COLUMNS=200 dpkg -l linux-image-${kernel_version}-ucs\* 2>/dev/null | grep linux-image- | awk '{ print $2 }' | sort -n | egrep -v "linux-image-$(uname -r)|$ignore_kver" | tr "\n" " ") >>/var/log/univention/updater.log 2>&1
+}
+
+if [ "$update24_pruneoldkernel" = "yes" -o "$univention_ox_directory_integration_oxae" = "true" ]; then
+	echo "Purging old kernel..." | tee -a /var/log/univention/updater.log
+	pruneOldKernel "2.6.18"
+	pruneOldKernel "2.6.26"
+	pruneOldKernel "2.6.32"
+	echo "done" | tee -a /var/log/univention/updater.log
+fi
+
+#####################
+
 check_space(){
 	partition=$1
 	size=$2
@@ -136,8 +176,13 @@ check_space(){
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
         echo "         This may interrupt the update and result in an inconsistent system!"
     	echo "         If neccessary you can skip this check by setting the value of the"
-		echo "         baseconfig variable update24/checkfilesystems to \"no\"."
+		echo "         config registry variable update24/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
+		if [ "$partition" = "/boot" -a ! "$update24_pruneoldkernel" = "yes" -a ! "$univention_ox_directory_integration_oxae" = "true" ] ; then
+			echo "         Old kernel versions on /boot can be pruned automatically during"
+			echo "         next update attempt by setting config registry variable"
+			echo "         update24/pruneoldkernel to \"yes\"."
+		fi
 		echo ""
 		# kill the running univention-updater process
 		exit 1
