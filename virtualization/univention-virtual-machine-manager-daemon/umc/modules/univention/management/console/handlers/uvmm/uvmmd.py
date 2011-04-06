@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: UVMM client
 #
-# Copyright 2010 Univention GmbH
+# Copyright 2010, 2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import fnmatch
 import os
 import socket
 import time
@@ -45,6 +46,8 @@ from univention.uvmm import protocol, node
 
 import univention.debug as ud
 import traceback
+
+from tools import *
 
 _ = umc.Translation('univention.management.console.handlers.uvmm').translate
 
@@ -327,6 +330,48 @@ class Client( notifier.signals.Provider ):
 
 		return None
 
+	def search( self, pattern, option ):
+		req = protocol.Request_GROUP_LIST()
+		if not self.send( req.pack() ):
+			raise ConnectionError()
+
+		pattern = str2pat( pattern )
+		groups = self.recv_blocking()
+
+		result = []
+		groups.data.sort()
+		for group_name in groups.data:
+			group = []
+			req = protocol.Request_NODE_LIST()
+			req.group = group_name
+			if not self.send( req.pack() ):
+				raise ConnectionError()
+			node_uris = self.recv_blocking()
+			for uri in node_uris.data:
+				node = self.get_node_info( uri )
+				if not node:
+					continue
+				node.uri = uri
+
+				domains = []
+				for domain in node.domains:
+					if domain.name == 'Domain-0':
+						continue
+					if option in ( 'all', 'domains' ) and fnmatch.fnmatch( domain.name, pattern ):
+						domains.append( domain )
+						continue
+					if option in ( 'all', 'contacts' ) and fnmatch.fnmatch( domain.annotations.get( 'contact', '' ), pattern ):
+						domains.append( domain )
+						continue
+					if option in ( 'all', 'descriptions' ) and fnmatch.fnmatch( domain.annotations.get( 'description', '' ), pattern ):
+						domains.append( domain )
+						continue
+
+				if ( option in ( 'all', 'nodes' ) and fnmatch.fnmatch( node.name, pattern ) ) or domains:
+					result.append( ( node, domains ) )
+
+		return result
+
 	def get_group_info( self, group ):
 		req = protocol.Request_NODE_LIST()
 		req.group = group
@@ -347,6 +392,17 @@ class Client( notifier.signals.Provider ):
 
 		return group
 
+	@staticmethod
+	def _uri2name( uri ):
+		"""Strip schema and path from uri."""
+		i = uri.find('://')
+		if i >= 0:
+			uri = uri[i + 3:]
+		j = uri.find('/')
+		if j >= 0:
+			uri = uri[:j]
+		return uri
+
 	def get_node_tree( self ):
 		"""Return tree of names for all groups, nodes, and domains.
 		[
@@ -363,16 +419,6 @@ class Client( notifier.signals.Provider ):
 
 		groups = self.recv_blocking()
 
-		def uri2name(uri):
-			"""Strip schema and path from uri."""
-			i = uri.find('://')
-			if i >= 0:
-				uri = uri[i + 3:]
-			j = uri.find('/')
-			if j >= 0:
-				uri = uri[:j]
-			return uri
-
 		tree_data = []
 		groups.data.sort()
 		for group_name in groups.data:
@@ -382,7 +428,7 @@ class Client( notifier.signals.Provider ):
 			if not self.send( req.pack() ):
 				raise ConnectionError()
 			node_uris = self.recv_blocking()
-			nodes = [(uri2name(uri), uri) for uri in node_uris.data]
+			nodes = [(Client._uri2name( uri ), uri) for uri in node_uris.data]
 			nodes.sort()
 			for (node_name, node_uri) in nodes:
 				domains = []

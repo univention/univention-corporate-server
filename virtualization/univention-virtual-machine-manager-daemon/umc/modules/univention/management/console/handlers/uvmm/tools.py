@@ -39,6 +39,16 @@ import univention.management.console.dialog as umcd
 def percentage( percent, label = None, width = 100 ):
 	return umcd.Progressbar( percent, label = label, attributes = { 'width' : '%dpx' % width } )
 
+def str2pat( string ):
+	if not string:
+		return '*'
+	if not string[ -1 ] == '*':
+		string += '*'
+	if not string[ 0 ] == '*':
+		string = '*' + string
+
+	return string
+
 class MemorySize( object ):
 	"""Parse and convert size with optional prefix from and to numbers."""
 	UNITS = ( 'B', 'KB', 'MB', 'GB', 'TB' )

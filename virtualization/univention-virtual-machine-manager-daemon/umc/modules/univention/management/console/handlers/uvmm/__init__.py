@@ -94,6 +94,15 @@ command_description = {
 		values = {},
 		startup = True,
 		),
+	'uvmm/search': umch.command(
+		short_description = _( 'Search' ),
+		long_description = _( 'Search' ),
+		method = 'uvmm_search',
+		values = {
+			'pattern' : umc.String( _( 'Filter' ) ),
+			'option' : SearchOptions( _( 'Search in' ) )
+			},
+		),
 	'uvmm/group/overview': umch.command(
 		short_description = _('Show group information'),
 		long_description = _('Show group information'),
@@ -332,61 +341,72 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			value = default
 		return value
 
-	def set_content( self, object, content ):
+	def __get_path_item( self, object, key ):
+		# FIXME: should be removed if UVMMd supports groups
+		if key == 'group' and object.options[ key ] == 'default':
+			return _( 'Physical servers' )
+		elif key == 'node': # in ( 'node', 'dest', 'source' ):
+			text = object.options[ key ]
+			if '.' in text:
+				text = text[ : text.find( '.' ) ]
+			return text
+
+		return object.options[ key ]
+
+	def set_content( self, object, content, location = True, refresh = True, search = True ):
 		# create position links
 		lst = umcd.List( attributes = { 'width' : '100%', 'type' : 'umc_mini_padding umc_nowrap' }, default_type = 'uvmm_table' )
 		row = []
-		options = {}
-		keys = []
-		refresh = ''
-		slash = umcd.Cell( umcd.HTML( '&rarr;' ), attributes = { 'type' : 'umc_nowrap' } )
-		row.append( umcd.Cell( umcd.HTML( '<b>%s</b>' % _( 'Location:' ) ), attributes = { 'type' : 'umc_nowrap' } ) )
-		if 'group' in object.options:
-			keys.append( 'group' )
-			if 'node' in object.options or 'source' in object.options or 'dest' in object.options:
-				if 'node' in object.options:
-					key = 'node'
-				else:
-					key = 'dest'
-					if 'source' in object.options:
-						key = 'source'
-				options[ 'node' ] = object.options[ key ]
-				keys.append( 'node' )
-				if 'domain' in object.options and object.options[ 'domain' ] != 'NONE':
-					keys.append( 'domain' )
-		opts = {}
-		for key in keys[ : -1 ]:
-			opts[ key ] = object.options[ key ]
-			cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % key , options = copy.copy( opts ) )
-			# FIXME: should be removed if UVMMd supports groups
-			if key == 'group' and object.options[ key ] == 'default':
-				text = _( 'Physical servers' )
-			elif key in ( 'node', 'dest', 'source' ):
-				text = object.options[ key ]
-				if '.' in text:
-					text = text[ : text.find( '.' ) ]
-			else:
-				text = object.options[ key ]
-			lnk = umcd.LinkButton( text , actions = [ umcd.Action( cmd ) ] )
-			row.append( umcd.Cell( lnk, attributes = { 'type' : 'umc_nowrap' } ) )
-			row.append( slash )
-		refresh = keys[ -1 ]
-		opts[ keys[ -1 ] ] = object.options[ keys[ -1 ] ]
-		# FIXME: should be removed if UVMMd supports groups
-		if refresh == 'group' and opts[ refresh ] == 'default':
-			text = _( 'Physical servers' )
+		if location:
+			options = {}
+			keys = []
+			refresh = ''
+			slash = umcd.Cell( umcd.HTML( '&rarr;' ), attributes = { 'type' : 'umc_nowrap' } )
+			row.append( umcd.Cell( umcd.HTML( '<b>%s</b>' % _( 'Location:' ) ), attributes = { 'type' : 'umc_nowrap' } ) )
+			if 'group' in object.options:
+				keys.append( 'group' )
+				for key in  ( 'node', 'dest', 'source' ):
+					if key in object.options:
+						options[ 'node' ] = object.options[ key ]
+						keys.append( 'node' )
+						if 'domain' in object.options and object.options[ 'domain' ] != 'NONE':
+							keys.append( 'domain' )
+						break
+			opts = {}
+			for key in keys[ : -1 ]:
+				opts[ key ] = object.options[ key ]
+				cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % key , options = copy.copy( opts ) )
+				lnk = umcd.LinkButton( self.__get_path_item( object, key ) , actions = [ umcd.Action( cmd ) ] )
+				row.append( umcd.Cell( lnk, attributes = { 'type' : 'umc_nowrap' } ) )
+				row.append( slash )
+			refresh = keys[ -1 ]
+			opts[ keys[ -1 ] ] = object.options[ keys[ -1 ] ]
+			row.append( umcd.Cell( umcd.Text( self.__get_path_item( object, refresh ) ), attributes = { 'type' : 'umc_nowrap', 'width' : '100%' } ) )
 		else:
-			text = object.options[ refresh ]
-		if refresh in ( 'node', 'dest', 'source' ):
-			if '.' in text:
-				text = text[ : text.find( '.' ) ]
-		row.append( umcd.Cell( umcd.Text( text ), attributes = { 'type' : 'umc_nowrap' } ) )
+			row.append( umcd.Cell( umcd.Text( '' ), attributes = { 'type' : 'umc_nowrap', 'width' : '100%' } ) )
 
-		reload_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % refresh, options = copy.copy( opts ) )
-		reload_btn = umcd.LinkButton( _( 'Refresh' ), 'actions/refresh', actions = [ umcd.Action( reload_cmd ) ] )
-		reload_btn.set_size( umct.SIZE_SMALL )
-		row.append( umcd.Cell( reload_btn, attributes = { 'width' : '100%', 'align' : 'right', 'type' : 'umc_mini_padding' } ) )
-		lst.add_row( row, attributes = { 'type' : 'umc_mini_padding' } )
+		buttons = None
+		if refresh or search:
+			buttons = umcd.List( attributes = { 'type' : 'uvmm_frame', 'align' : 'left' }, default_type = 'uvmm_frame' )
+
+		if refresh:
+			reload_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % refresh, options = copy.copy( opts ) )
+			reload_btn = umcd.LinkButton( _( 'Refresh' ), 'actions/refresh', actions = [ umcd.Action( reload_cmd ) ] )
+			reload_btn.set_size( umct.SIZE_SMALL )
+			buttons.add_row( [ umcd.Cell( reload_btn, attributes = { 'type' : 'uvmm_frame', 'align' : 'left' } ), ] )
+		if search:
+			search_cmd = umcp.SimpleCommand( 'uvmm/search', options = copy.copy( object.options ) )
+			search_cmd.incomplete = True
+			search_btn = umcd.LinkButton( _( 'Search' ), 'uvmm/search', actions = [ umcd.Action( search_cmd ) ] )
+			search_btn.set_size( umct.SIZE_SMALL )
+			buttons.add_row( [ umcd.Cell( search_btn, attributes = { 'type' : 'uvmm_frame', 'align' : 'left' } ), ] )
+			# buttons.append( search_btn )
+
+		if buttons:
+			row.append( umcd.Cell( buttons, attributes = { 'width' : '100%', 'align' : 'right', 'type' : 'umc_mini_padding' } ) )
+
+		if location or refresh or search:
+			lst.add_row( row, attributes = { 'type' : 'umc_mini_padding' } )
 		object.dialog[ 0 ].set_dialog( umcd.List( content = [ [ lst, ], [ content, ] ], default_type = 'uvmm_table' ) )
 
 	def uvmm_overview( self, object ):
@@ -394,7 +414,67 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		( success, res ) = TreeView.safely_get_tree( self.uvmm, object )
 		if success:
 			self.domain_wizard.reset()
-			res.dialog[ 0 ].set_dialog( umcd.ModuleDescription( 'Univention Virtual Machine Manager (UVMM)', _( 'This module provides a management interface for physical servers that are registered within the UCS domain.\nThe tree view on the left side shows an overview of all existing physical servers and the residing virtual instances. By selecting one of the physical servers statistics of the current state are displayed to get an impression of the health of the hardware system. Additionally actions like start, stop, suspend and resume for each virtual instance can be invoked on each of the instances.\nAlso possible is direct access to virtual instances. Therefor it must be activated in the configuration.\nEach virtual instance entry in the tree view provides access to detailed information und gives the possibility to change the configuration or state and migrated it to another physical server.' ) ) )
+			self.set_content( res, umcd.ModuleDescription( 'Univention Virtual Machine Manager (UVMM)', _( 'This module provides a management interface for physical servers that are registered within the UCS domain.\nThe tree view on the left side shows an overview of all existing physical servers and the residing virtual instances. By selecting one of the physical servers statistics of the current state are displayed to get an impression of the health of the hardware system. Additionally actions like start, stop, suspend and resume for each virtual instance can be invoked on each of the instances.\nAlso possible is direct access to virtual instances. Therefor it must be activated in the configuration.\nEach virtual instance entry in the tree view provides access to detailed information und gives the possibility to change the configuration or state and migrated it to another physical server.' ) ), location = False, refresh = False )
+		self.finished( object.id(), res )
+
+	def uvmm_search( self, object ):
+		'''performs a search for physical servers, virtual instances etc.'''
+		def _widget( key, default = True ):
+			return umcd.make( self[ 'uvmm/search' ][ key ], default = object.options.get( key, default ) )
+
+		ud.debug( ud.ADMIN, ud.INFO, 'Search' )
+		( success, res ) = TreeView.safely_get_tree( self.uvmm, object, tuple() )
+		if not success:
+			self.finished(object.id(), res)
+			return
+		pattern = _widget( 'pattern', '*' )
+		option = umcd.make( self[ 'uvmm/search' ][ 'option' ], default = object.options.get( 'option', 'all' ), attributes = { 'width' : '250px' } )
+
+		fields = [ [ ( option, 'all' ), ],
+				   [ ( pattern, '*' ) ], ]
+		form = umcd.SearchForm( 'uvmm/search', fields )
+
+		if object.incomplete:
+			self.set_content( res, [ form ], location = False, refresh = False, search = False )
+			self.finished( object.id(), res )
+			return
+
+		blind = umcd.List( default_type = 'uvmm_table' )
+		blind.add_row( [ form ] )
+		results = self.uvmm.search( object.options[ 'pattern' ], object.options[ 'option' ] )
+		result_list = umcd.List()
+		result_list.set_header( [ umcd.Cell( umcd.Text( '' ), attributes = { 'width' : '20px' } ), umcd.HTML( _( 'Instance' ), attributes = { 'width': '100%', 'type' : 'umc_nowrap' } ), umcd.HTML( _( 'CPU usage' ) , attributes = { 'type' : 'umc_nowrap', 'align' : 'right' } ), umcd.HTML( _( 'Memory' ) , attributes = { 'type' : 'umc_nowrap' , 'align' : 'right' } ), '' ] )
+		object.options[ 'group' ] = 'default'
+		for node, domains in results:
+			opts = copy.copy( object.options )
+			if node.uri.startswith( 'xen:' ):
+				icon = 'uvmm/node-xen'
+			else:
+				icon = 'uvmm/node-kvm'
+			i = node.name.find( '.' )
+			if i >= 0:
+				opts[ 'node' ] = node.name[ : i ]
+			else:
+				opts[ 'node' ] = node.name
+			opts[ 'node-uri' ] = node.uri
+			node_btn = TreeView.button_create( opts[ 'node' ], icon, 'uvmm/node/overview', opts, False )
+			result_list.add_row( [ umcd.Cell( node_btn, attributes = { 'colspan' : '5' } ) ] )
+			for domain in domains:
+				domain_opts = copy.copy( opts )
+				domain_opts[ 'domain' ] = domain.name
+				icon = 'uvmm/domain'
+				if domain.state in ( 1, 2 ):
+					icon = 'uvmm/domain-on'
+				elif domain.state in ( 3, ):
+					icon = 'uvmm/domain-paused'
+				domain_btn = TreeView.button_create( domain.name, icon, 'uvmm/domain/overview', domain_opts, False )
+				buttons = self._create_domain_buttons( domain_opts, node, domain, remove_failure = 'node' )
+				result_list.add_row( [ '', domain_btn, umcd.Cell( percentage( float( domain.cputime[ 0 ] ) / 10, width = 80 ), attributes = { 'type' : 'umc_mini_padding', 'align': 'center' } ), umcd.Cell( umcd.Number( MemorySize.num2str( domain.maxMem ) ), attributes = { 'type' : 'umc_mini_padding umc_nowrap', 'align': 'right' } ), umcd.Cell( buttons, attributes = { 'type' : 'umc_mini_padding umc_nowrap' } ) ] )
+
+		# blind.add_row( [ umcd.Frame( [ result_list ], _( 'Search results' ) ) ] )
+		blind.add_row( [ umcd.Section( _( 'Search results' ), result_list ) ] )
+
+		self.set_content( res, blind, location = False, refresh = False, search = False )
 		self.finished( object.id(), res )
 
 	def uvmm_group_overview( self, object ):
@@ -501,15 +581,18 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 		return False
 
-	def _create_domain_buttons( self, object, node_info, domain_info, overview = 'node', operations = False, remove_failure = 'domain' ):
+	def _create_domain_buttons( self, options, node_info, domain_info, overview = 'node', operations = False, remove_failure = 'domain' ):
 		"""Create buttons to manage domain."""
 		buttons = []
-		overview_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % overview, options = object.options )
+		overview_cmd = umcp.SimpleCommand( 'uvmm/%s/overview' % overview, options = options )
 		comma = umcd.HTML( '&nbsp;' )
-		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
+		if 'node-uri' in options:
+			node_uri = options[ 'node-uri' ]
+		else:
+			node_uri = self.uvmm.node_name2uri( options[ 'node' ] )
 
 		# Start? if state is not running, blocked or paused
-		cmd_opts = { 'group' : object.options[ 'group' ], 'node' : node_info.name, 'domain' : domain_info.name }
+		cmd_opts = { 'group' : options[ 'group' ], 'node' : node_info.name, 'domain' : domain_info.name }
 		if not domain_info.state in ( 1, 2, 3 ):
 			opts = copy.copy( cmd_opts )
 			opts[ 'state' ] = 'RUN'
@@ -582,9 +665,9 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		for capability in node_info.capabilities:
 			if not capability.domain_type in node_type:
 				node_type.append(capability.domain_type)
-			
+
 		grouplist = []
-		for domain_member in self.uvmm.get_group_info(object.options['group']):
+		for domain_member in self.uvmm.get_group_info( options[ 'group' ] ):
 			for capability in domain_member.capabilities:
 				if capability.domain_type in node_type:
 					if not domain_member in grouplist:
@@ -593,7 +676,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		if len(grouplist) < 2:
 			ud.debug( ud.ADMIN, ud.INFO, 'Migration button is disabled. At least two servers with the same virtualization technologie in this group are required.' )
 		elif self._show_op( 'migrate', node_uri ) and operations and domain_info.state != 3:
-			cmd = umcp.SimpleCommand( 'uvmm/domain/migrate', options = { 'group' : object.options['group'], 'grouplist': grouplist, 'source' : node_info.name, 'domain' : domain_info.name } )
+			cmd = umcp.SimpleCommand( 'uvmm/domain/migrate', options = { 'group' : options['group'], 'grouplist': grouplist, 'source' : node_info.name, 'domain' : domain_info.name } )
 			buttons.append( umcd.LinkButton( _( 'Migrate' ), actions = [ umcd.Action( cmd ) ] ) )
 			buttons.append( comma )
 
@@ -643,13 +726,13 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 		node_uri = self.uvmm.node_name2uri( object.options[ 'node' ] )
 		if not node_uri:
-			res.dialog[ 0 ].set_dialog( umcd.InfoBox( _( 'The physical server is not available at the moment' ) ) )
+			self.set_content( res, umcd.InfoBox( _( 'The physical server is not available at the moment' ) ) )
 			self.finished(object.id(), res)
 			return
 
 		node_info = self.uvmm.get_node_info( node_uri )
 		if not node_info:
-			res.dialog[ 0 ].set_dialog( umcd.InfoBox( _( 'The physical server is not available at the moment' ) ) )
+			self.set_content( res, umcd.InfoBox( _( 'The physical server is not available at the moment' ) ) )
 			self.finished(object.id(), res)
 			return
 
@@ -688,7 +771,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				name = domain_info.name[0:18] + '...'
 			domain_btn = umcd.LinkButton( name, tag = domain_icon, actions = [ umcd.Action( domain_cmd ) ], attributes = {'helptext': helptext} )
 			domain_btn.set_size( umct.SIZE_SMALL )
-			buttons = self._create_domain_buttons( object, node_info, domain_info, remove_failure = 'node' )
+			buttons = self._create_domain_buttons( object.options, node_info, domain_info, remove_failure = 'node' )
 			if len( buttons ) > num_buttons:
 				num_buttons = len( buttons )
 			# os = getattr( domain_info, 'annotations', {} ).get( 'os', '' )
@@ -1005,7 +1088,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			w_cpu = [umcd.HTML('<b>%s</b>' % _('CPU usage')), cpu_usage]
 
 			ops = umcd.List( default_type = 'uvmm_table' )
-			buttons = self._create_domain_buttons( object, node_info, domain_info, overview = 'domain', operations = True )
+			buttons = self._create_domain_buttons( object.options, node_info, domain_info, overview = 'domain', operations = True )
 			ops.add_row( buttons )
 
 			snapshots = self._create_domain_snapshots( object, node_info, domain_info )
@@ -1058,7 +1141,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 			content.add_row( [ '', umcd.Button( _( 'Migrate' ), actions = [ umcd.Action( umcp.SimpleCommand( 'uvmm/domain/migrate', options = object.options ), [ dest.id() ] ), cmd_success, cmd_failure ], default = True ) ] )
 			sec = umcd.Section( _( 'Migrate %(domain)s' ) % object.options,  content, attributes = { 'width' : '100%' } )
-			res.dialog[ 0 ].set_dialog( sec )
+			self.set_content( res, sec, location = False, refresh = False )
 			resp = None
 
 		if resp and self.uvmm.is_error( resp ):
@@ -1328,7 +1411,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 			lst.add_row([umcd.Cell(umcd.Text(_('Enter the name for the snapshot')), attributes={'colspan': '3'})])
 			lst.add_row([snapshot_cel,])
 			lst.add_row([cancel_cel, create_cel])
-			res.dialog[0].set_dialog(lst)
+			self.set_content( res, lst, location = False, refresh = False )
 			self.finished(object.id(), res)
 		else:
 			res = umcp.Response(object)

@@ -86,6 +86,11 @@ class ArchSelect( umc.StaticSelection ):
 	def update_choices( self, types ):
 		self._choices = types
 
+class SearchOptions( umc.StaticSelection ):
+	"""List of search options."""
+	def choices( self ):
+		return ( ( 'all', _( 'All' ) ), ( 'nodes', _( 'Physical servers' ) ), ( 'domains', _( 'Instance names' ) ), ( 'contacts', _( 'Contact information' ) ), ( 'descriptions', _( 'Descriptions' ) ) )
+
 class KBLayoutSelect( umc.StaticSelection ):
 	"""List of keyboard layouts."""
 	def choices( self ):
@@ -174,6 +179,7 @@ class NodeSelect( umc.StaticSelection ):
 		if ignore in self._choices:
 			self._choices.remove( ignore )
 
+umcd.copy( umc.StaticSelection, SearchOptions )
 umcd.copy( umc.StaticSelection, DynamicSelect )
 umcd.copy( umc.StaticSelection, VirtTechSelect )
 umcd.copy( umc.StaticSelection, KBLayoutSelect )
