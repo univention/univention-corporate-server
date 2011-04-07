@@ -1,8 +1,15 @@
+univention-ldap (7.0.21-3) unstable; urgency=low
+
+  * fixed samba.schema (added univentionSambaPrivilegeList to
+    sambaGroupMapping) Bug #2619
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Apr 2011 16:09:05 +0200
+
 univention-ldap (7.0.21-2) unstable; urgency=low
 
   * fixed indices Bug #2619 
 
- -- Felix Botner <botner@univention.de>  Thu, 07 Apr 2011 15:23:29 +0200
+ -- Felix Botner <botner@univention.de>  Thu, 07 Apr 2011 16:09:03 +0200
 
 univention-ldap (7.0.21-1) unstable; urgency=low
 
