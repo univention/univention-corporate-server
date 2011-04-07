@@ -1,3 +1,11 @@
+univention-ldap (7.0.21-1) unstable; urgency=low
+
+  * added univentionSambaPrivilegeList attribute
+    and added this attribute to the ldap_index_sub, ldap_index_pres and
+    ldap_index_eq indices Bug #2619
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Apr 2011 14:34:19 +0200
+
 univention-ldap (7.0.20-1) unstable; urgency=low
 
   * added attributes "zoneName", "relativeDomainName" and "name" to ldap
