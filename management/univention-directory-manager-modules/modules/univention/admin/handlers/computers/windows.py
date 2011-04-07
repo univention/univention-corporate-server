@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import re
 import sys, string, ldap, copy
 import univention.admin.filter
 import univention.admin.config
@@ -526,9 +527,10 @@ def rewrite(filter, mapping):
 	else:
 		univention.admin.mapping.mapRewrite(filter, mapping)
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 	res=[]
+	filter_s = univention.admin.filter.replace_fqdn_filter( str( filter_s ) )
 	if str(filter_s).find('(dnsAlias=') != -1:
 		filter_s=univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
 		if filter_s:

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.200-1) unstable; urgency=low
+
+  * add functionality to search for the read-only attribute fqdn of
+    computer objects; Bug #22139
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 07 Apr 2011 15:59:15 +0200
+
 univention-directory-manager-modules (6.0.119-1) unstable; urgency=low
 
   * fixed primary group handling of computers/windows during host creation (Bug #21711)
