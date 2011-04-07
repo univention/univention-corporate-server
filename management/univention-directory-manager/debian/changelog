@@ -1,3 +1,9 @@
+univention-directory-manager (8.0.73-1) unstable; urgency=low
+
+  * added sambaPrivileges Bug #2619
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Apr 2011 15:14:28 +0200
+
 univention-directory-manager (8.0.72-2) unstable; urgency=low
 
   * version bump, wrong changelog for version 8.0.72-1

@@ -3730,6 +3730,105 @@ class modedit(unimodule.unimodule):
 
 					################################
 
+					elif property.syntax.name == 'sambaPrivileges':
+						self.minput[name]=[]
+						minput_rows=[]
+						atts=copy.deepcopy(attributes)
+						mvaluelist=[]
+						i=0
+						if value:
+							for v in value:
+								try:
+									mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
+								except univention.admin.uexceptions.valueInvalidSyntax, e:
+									pass
+								i+=1
+						if name:
+							# [0]: input field (or several input fields in case of a complex syntax property)
+
+							packages = property.syntax.privileges
+
+							self.minput[name].append(question_select(property.short_description,atts,{'choicelist':packages,'helptext':_('select Server')}))
+							atts=copy.deepcopy(attributes)
+							b_atts=copy.deepcopy(attributes)
+							b2_atts=copy.deepcopy(attributes)
+							# [1]: add button
+							self.minput[name].append(get_addbutton(b_atts,_("Add %s") % name))
+							# [2]: mselect list widget
+							self.minput[name].append(question_mselect(_("Entries:"),atts,{"helptext":_("Current entries for '%s'") % name,"choicelist":mvaluelist}))
+							# [3]: remove button
+							self.minput[name].append(get_removebutton(b_atts,_("Remove selected '%s' entrie(s) from list") % name))
+
+							# move buttons:
+							# [4]: up button [ ^ ]
+							self.minput[name].append(get_upbutton(b2_atts,_("Move upwards")))
+							# [5]: down button [ v ]
+							self.minput[name].append(get_downbutton(b2_atts,_("Move downwards")))
+
+							# put the widgets/buttons from minput[name] into a table
+							#                 |                |
+							#                 |----------------|
+							#  <input field>  | <add button>   |
+							# ---------------------------------|
+							#                 | <up button>    |
+							#                 |----------------|
+							#                 | <remove button>|
+							#  <mselect list> |----------------|
+							#                 | <down button>  |
+							#----------------------------------|
+							minput_rows.append(tablerow("",{},{"obs":[\
+										tablecol('',{'rowspan':'2'}, {'obs': [\
+											#input field
+											self.minput[name][0]\
+										]}),\
+										tablecol('',{}, {'obs': [\
+											# needed freespace
+											htmltext("",{},{'htmltext':['&nbsp;']})
+										]})\
+									]}))
+							minput_rows.append(tablerow("",{},{"obs":[\
+										tablecol('',{'type':'multi_add_top'}, {'obs': [\
+											#add button
+											self.minput[name][1]\
+										]})\
+									]}))
+							minput_rows.append(tablerow("",{},{"obs":[\
+										tablerow("",{},{"obs":[\
+											tablecol('',{'rowspan':'3'}, {'obs': [\
+												#mselect list
+												self.minput[name][2]\
+											]}),\
+											tablecol('',{'type':'multi_remove'}, {'obs': [\
+												#up button
+												self.minput[name][4]\
+											]})\
+										]}),\
+										tablerow("",{},{"obs":[\
+											tablecol('',{'type':'multi_remove'}, {'obs': [\
+												#remove button
+												self.minput[name][3]\
+											]})\
+										]}),\
+										tablerow("",{},{"obs":[\
+											tablecol('',{'type':'multi_remove_img'}, {'obs': [\
+												#down button
+												self.minput[name][5]\
+											]})\
+										]})\
+									]}))
+						else:
+							minput_rows.append(tablerow("",{},{"obs":[\
+										tablecol('',{}, {'obs': [\
+										]}),\
+										tablecol('',{}, {'obs': [\
+										]})\
+									]}))
+						cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [table("",{'type':'multi'},{"obs":minput_rows})]}))
+
+					
+
+					################################
+
 					elif property.syntax.name == 'ldapServer':
 						self.minput[name]=[]
 						minput_rows=[]
