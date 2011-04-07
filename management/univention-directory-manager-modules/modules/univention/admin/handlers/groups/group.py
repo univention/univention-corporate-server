@@ -109,6 +109,17 @@ property_descriptions={
 			default=('2',[]),
 			options=['samba']
 		),
+	'sambaPrivileges': univention.admin.property(
+			short_description=_('Samba priviliges'),
+			long_description=('Manage samba priviliges'),
+			syntax=univention.admin.syntax.sambaPrivileges,
+			multivalue=1,
+			options=['samba'],
+			required=0,
+			dontsearch=0,
+			may_change=1,
+			identifies=0,
+	),
 	'description': univention.admin.property(
 			short_description=_('Description'),
 			long_description='',
@@ -222,6 +233,9 @@ layout=[
 	], advanced = True ),
 	univention.admin.tab(_('Allowed groups'),_('Groups that are allowed to send e-mails to the group'),[
 		[univention.admin.field("allowedEmailGroups")]
+	], advanced = True ),
+	univention.admin.tab(_('Windows'),_('Windows account settings'),[
+		[univention.admin.field("sambaPrivileges")]
 	], advanced = True )
 ]
 
@@ -231,6 +245,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('sambaGroupType', 'sambaGroupType', None, univention.admin.mapping.ListToString)
 mapping.register('mailAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
+mapping.register('sambaPrivileges', 'univentionSambaPrivilegeList')
 
 def _case_insensitive_in_list(dn, list):
 	for element in list:

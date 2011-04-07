@@ -1116,6 +1116,22 @@ class ldapServer(simple):
 	name='ldapServer'
 	def parse(self, text):
 		return text
+
+class sambaPrivileges(simple):
+	name='sambaPrivileges'
+	privileges = [
+		{ "name" : "SeMachineAccountPrivilege", "description" : _("Add machines to domain") },
+		{ "name" : "SeTakeOwnershipPrivilege",  "description" : _("Take ownership of files or other objects") },
+		{ "name" : "SeBackupPrivilege",         "description" : _("Back up files and directories") },
+		{ "name" : "SeRestorePrivilege",        "description" : _("Restore files and directories") },
+		{ "name" : "SeRemoteShutdownPrivilege", "description" : _("Force shutdown from a remote system") },
+		{ "name" : "SePrintOperatorPrivilege",  "description" : _("Manage printers") },
+		{ "name" : "SeAddUsersPrivilege",       "description" : _("Add users and groups to the domain") },
+		{ "name" : "SeDiskOperatorPrivilege",   "description" : _("Manage disk shares") },
+	]
+	def parse(self, text):
+		return text
+
 class printerServer(simple):
 	name='printerServer'
 	def parse(self, text):

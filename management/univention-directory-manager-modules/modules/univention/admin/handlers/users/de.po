@@ -286,6 +286,14 @@ msgstr "Relative ID"
 msgid "Groups"
 msgstr "Gruppen"
 
+#: user.py:528
+msgid "Samba priviliges"
+msgstr "Samba Privilegien"
+
+#: user.py:529
+msgid "Manage samba priviliges"
+msgstr "Samba Privilegien verwalten"
+
 #: user.py:538
 msgid "Primary group"
 msgstr "Primäre Gruppe"

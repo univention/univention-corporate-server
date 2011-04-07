@@ -524,6 +524,17 @@ property_descriptions={
 			identifies=0,
 			options=['samba']
 		),
+	'sambaPrivileges': univention.admin.property(
+			short_description=_('Samba priviliges'),
+			long_description=('Manage samba priviliges'),
+			syntax=univention.admin.syntax.sambaPrivileges,
+			multivalue=1,
+			options=['samba'],
+			required=0,
+			dontsearch=0,
+			may_change=1,
+			identifies=0,
+		),
 	'groups': univention.admin.property(
 			short_description=_('Groups'),
 			long_description='',
@@ -1114,7 +1125,7 @@ layout=[
 	univention.admin.tab(_('Windows'),_('Windows account settings'),[
 		[univention.admin.field("sambahome"), univention.admin.field("homedrive")],
 		[univention.admin.field("scriptpath"), univention.admin.field("profilepath")],
-		[univention.admin.field("sambaRID")],
+		[univention.admin.field("sambaRID"), univention.admin.field("sambaPrivileges")],
 		[univention.admin.field("sambaLogonHours"), univention.admin.field("sambaUserWorkstations")]
 	]),
 	univention.admin.tab(_('Groups'),_('Group memberships'), [
@@ -1402,6 +1413,7 @@ mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToStr
 mapping.register('sambahome', 'sambaHomePath', None, univention.admin.mapping.ListToString)
 mapping.register('sambaUserWorkstations', 'sambaUserWorkstations', sambaWorkstationsMap, sambaWorkstationsUnmap)
 mapping.register('sambaLogonHours', 'sambaLogonHours', logonHoursMap, logonHoursUnmap)
+mapping.register('sambaPrivileges', 'univentionSambaPrivilegeList')
 mapping.register('scriptpath', 'sambaLogonScript', None, univention.admin.mapping.ListToString)
 mapping.register('profilepath', 'sambaProfilePath', None, univention.admin.mapping.ListToString)
 mapping.register('homedrive', 'sambaHomeDrive', None, univention.admin.mapping.ListToString)

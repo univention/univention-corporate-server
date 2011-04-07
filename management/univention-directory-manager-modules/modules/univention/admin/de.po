@@ -572,6 +572,38 @@ msgstr "Über dem primären Monitor"
 msgid "Below primary display"
 msgstr "Unter dem primären Monitor"
 
+#: syntax.py:1123
+msgid "Add machines to domain"
+msgstr "Maschinen zur Domäne hinzufügen"
+
+#: syntax.py:1124
+msgid "Take ownership of files or other objects"
+msgstr "Besitz von Dateien oder anderen Objekten übernehmen"
+
+#: syntax.py:1125
+msgid "Back up files and directories"
+msgstr "Dateien und Verzeichnisse sichern"
+
+#: syntax.py:1126
+msgid "Restore files and directories"
+msgstr "Dateien und Verzeichnisse wiederherstellen"
+
+#: syntax.py:1127
+msgid "Force shutdown from a remote system"
+msgstr "Herunterfahren von Remote-System erzwingen"
+
+#: syntax.py:1128
+msgid "Manage printers"
+msgstr "Drucker verwalten"
+
+#: syntax.py:1129
+msgid "Add users and groups to the domain"
+msgstr "Benutzer und Gruppen hinzufügen"
+
+#: syntax.py:1130
+msgid "Manage disk shares"
+msgstr "Freigaben verwalten"
+
 #: syntax.py:1247
 msgid "User ID"
 msgstr "Benutzer-ID"

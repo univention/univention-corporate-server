@@ -1,3 +1,9 @@
+univention-directory-manager-modules (6.0.201-1) unstable; urgency=low
+
+  * added sambaPrivileges to user and group module Bug #2619 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Apr 2011 16:26:51 +0200
+
 univention-directory-manager-modules (6.0.200-1) unstable; urgency=low
 
   * add functionality to search for the read-only attribute fqdn of
