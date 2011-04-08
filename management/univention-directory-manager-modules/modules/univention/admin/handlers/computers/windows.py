@@ -530,7 +530,7 @@ def rewrite(filter, mapping):
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 	res=[]
-	filter_s = univention.admin.filter.replace_fqdn_filter( str( filter_s ) )
+	filter_s = univention.admin.filter.replace_fqdn_filter( filter_s )
 	if str(filter_s).find('(dnsAlias=') != -1:
 		filter_s=univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
 		if filter_s:
@@ -553,7 +553,6 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-	
 	return 'univentionHost' in attr.get('objectClass', []) and\
 		'univentionWindows' in attr.get('objectClass', []) and\
 		'posixAccount' in attr.get('objectClass', []) and not\

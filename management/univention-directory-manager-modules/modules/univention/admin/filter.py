@@ -213,6 +213,8 @@ def replace_fqdn_filter( filter_s ):
 
 	fqdn=host.doain.tld -> (&(cn=host)(associatedDomain=domain.tld))
 	'''
+	if not isinstance( filter_s, basestring ):
+		return filter_s
 	if filter_s.find( 'fqdn=' ) != -1:
 		match = FQDN_REGEX.match( str( filter_s ) )
 		if match:
