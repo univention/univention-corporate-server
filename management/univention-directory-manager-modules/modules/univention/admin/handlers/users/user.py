@@ -2239,6 +2239,16 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		shadowLastChangeValue = ''	# if is filled, it will be added to ml in the end
 		sambaPwdLastSetValue = ''	# if is filled, it will be added to ml in the end
 
+		# samba privileges
+		if self.hasChanged("sambaPrivileges") and "samba" in self.options:
+			o = self.oldattr.get('objectClass', [])
+			# add univentionSambaPrivileges objectclass
+			if self["sambaPrivileges"] and not "univentionSambaPrivileges" in o:
+				ml.insert(0, ('objectClass', '', 'univentionSambaPrivileges'))
+			# remove univentionSambaPrivileges objectclass
+			if not self["sambaPrivileges"] and "univentionSambaPrivileges" in o:
+				ml.insert(0, ('objectClass', 'univentionSambaPrivileges', ''))			
+
 		if self.options != self.old_options:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'options: %s' % self.options)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'old_options: %s' % self.old_options)

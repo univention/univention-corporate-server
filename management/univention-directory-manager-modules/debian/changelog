@@ -1,3 +1,10 @@
+univention-directory-manager-modules (6.0.202-1.1) unstable; urgency=low
+
+  * manage univentionSambaPrivileges objectclass in user.py and group.py
+    Bug #2619 
+
+ -- Felix Botner <botner@univention.de>  Fri, 08 Apr 2011 09:33:59 +0200
+
 univention-directory-manager-modules (6.0.202-1) unstable; urgency=low
 
   * search for fqdn: just modify filter if filter_s is of type string; Bug #22139

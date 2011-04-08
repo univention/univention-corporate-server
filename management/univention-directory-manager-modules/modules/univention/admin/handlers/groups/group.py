@@ -584,6 +584,17 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_modlist( self ):
 
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist( self )
+
+		# samba privileges
+		if self.hasChanged("sambaPrivileges") and "samba" in self.options:
+			o = self.oldattr.get('objectClass', [])
+			# add univentionSambaPrivileges objectclass
+			if self["sambaPrivileges"] and not "univentionSambaPrivileges" in o:
+				ml.insert(0, ('objectClass', '', 'univentionSambaPrivileges'))
+			# remove univentionSambaPrivileges objectclass
+			if not self["sambaPrivileges"] and "univentionSambaPrivileges" in o:
+				ml.insert(0, ('objectClass', 'univentionSambaPrivileges', ''))
+
 		if self.hasChanged( 'mailAddress' ) and self[ 'mailAddress' ]:
 			for i, j in self.alloc:
 				if i == 'mailPrimaryAddress': break
