@@ -591,9 +591,10 @@ class object(univention.admin.handlers.simpleLdap):
 			# add univentionSambaPrivileges objectclass
 			if self["sambaPrivileges"] and not "univentionSambaPrivileges" in o:
 				ml.insert(0, ('objectClass', '', 'univentionSambaPrivileges'))
-			# remove univentionSambaPrivileges objectclass
-			if not self["sambaPrivileges"] and "univentionSambaPrivileges" in o:
-				ml.insert(0, ('objectClass', 'univentionSambaPrivileges', ''))
+			# do not remove univentionSambaPrivileges objectclass
+			# (we need it in the listener filter)
+			#if not self["sambaPrivileges"] and "univentionSambaPrivileges" in o:
+			#	ml.insert(0, ('objectClass', 'univentionSambaPrivileges', ''))
 
 		if self.hasChanged( 'mailAddress' ) and self[ 'mailAddress' ]:
 			for i, j in self.alloc:

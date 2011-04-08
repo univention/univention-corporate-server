@@ -2245,9 +2245,10 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			# add univentionSambaPrivileges objectclass
 			if self["sambaPrivileges"] and not "univentionSambaPrivileges" in o:
 				ml.insert(0, ('objectClass', '', 'univentionSambaPrivileges'))
-			# remove univentionSambaPrivileges objectclass
-			if not self["sambaPrivileges"] and "univentionSambaPrivileges" in o:
-				ml.insert(0, ('objectClass', 'univentionSambaPrivileges', ''))			
+			# do not remove univentionSambaPrivileges objectclass
+			# (we need it in the listener filter)
+			#if not self["sambaPrivileges"] and "univentionSambaPrivileges" in o:
+			#	ml.insert(0, ('objectClass', 'univentionSambaPrivileges', ''))			
 
 		if self.options != self.old_options:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'options: %s' % self.options)
