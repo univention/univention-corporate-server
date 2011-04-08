@@ -1,3 +1,9 @@
+univention-samba (5.0.25-1) unstable; urgency=low
+
+  * added samba-privileges.py listener plugin Bug #2619 
+
+ -- Felix Botner <botner@univention.de>  Fri, 08 Apr 2011 12:24:41 +0200
+
 univention-samba (5.0.24-1) unstable; urgency=low
 
   * fix invalid users (Bug #21143)
