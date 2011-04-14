@@ -1,10 +1,9 @@
-univention-installer (6.0.53-1) unstable; urgency=low
+univention-installer (6.0.53-2) unstable; urgency=low
 
-  * added grub keyword "debugshell" to get a shell during installer boot
-    (Bug #21984)
-  * added grub keyword "loadxendriver" to load xen drivers in any case
+  * only switch from /dev/tty1 to /dev/hvc0 if /dev/hvc0 exists 
+  	(Bug #21984) 
 
- -- Sönke Schwardt <schwardt@univention.de>  Thu, 14 Apr 2011 11:06:28 +0200
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 14 Apr 2011 14:23:22 +0200
 
 univention-installer (6.0.52-1) unstable; urgency=low
 
