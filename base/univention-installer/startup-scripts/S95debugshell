@@ -1,7 +1,0 @@
-#!/bin/sh
-
-if ! grep -iq '\<debugshell\>' /proc/cmdline ; then
-	echo "no debug shell requested"
-else
-	/bin/sh
-fi
