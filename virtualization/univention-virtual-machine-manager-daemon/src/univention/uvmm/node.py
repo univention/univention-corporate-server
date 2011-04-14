@@ -1001,8 +1001,9 @@ def domain_define( uri, domain ):
 	old_xml = None
 	try:
 		old_dom = conn.lookupByName(domain.name)
-		if old_dom.UUIDString() != domain.uuid:
-			raise NodeError(_('Domain name "%(domain)s" already used by "%(uuid)s"'), domain=domain.name, uuid=domain.uuid)
+		old_uuid = old_dom.UUIDString()
+		if old_uuid != domain.uuid:
+			raise NodeError(_('Domain name "%(domain)s" already used by "%(uuid)s"'), domain=domain.name, uuid=old_uuid)
 		old_xml = old_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
 	except libvirt.libvirtError, e:
 		if e.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
@@ -1089,6 +1090,7 @@ def domain_state(uri, domain, state):
 		conn = node.conn
 		dom = conn.lookupByUUIDString(domain)
 		dom_stat = node.domains[domain]
+		stat_key = dom_stat.key()
 		try:
 			TRANSITION = {
 					(libvirt.VIR_DOMAIN_RUNNING,  'PAUSE'   ): dom.suspend,
@@ -1137,6 +1139,7 @@ def domain_state(uri, domain, state):
 					dom_stat.pd.state = cur_state
 					break
 				time.sleep(1)
+			node.wait_update(domain, stat_key)
 	except KeyError, e:
 		logger.error("Domain %s not found" % (e,))
 		raise NodeError(_('Error managing domain "%(domain)s"'), domain=domain)

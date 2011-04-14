@@ -197,7 +197,7 @@ class DriveWizard( umcd.IWizard ):
 
 	def action( self, object ):
 		ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: action! (current: %s)' % str( self.current ) )
-		if self.current == None:
+		if self.current is None:
 			# read pool
 			ud.debug( ud.ADMIN, ud.INFO, 'drive wizard: node storage pools: %s' % self.node_uri)
 			self.set_defaults( object )
@@ -243,7 +243,7 @@ class DriveWizard( umcd.IWizard ):
 			self[DriveWizard.PAGE_OLD].hint = msg
 			self[DriveWizard.PAGE_OLD].description = ''
 		else:
-			raise Exception('Invalid drive-type "%s"' % drive_type)
+			raise ValueError('Invalid drive-type "%s"' % drive_type)
 
 		return self.type_selected(object)
 
@@ -286,7 +286,7 @@ class DriveWizard( umcd.IWizard ):
 		                                                 —[dev]→[4]name—————————————⬏
 		"""
 		ud.debug(ud.ADMIN, ud.INFO, 'next(pool-name=%s drive-type=%s vol-name=%s' % (object.options.get('pool-name'), object.options.get('drive-type'), object.options.get('vol-name')))
-		if self.current == None:
+		if self.current is None:
 			# by default no paravirtual drive:
 			if not 'drive-paravirtual' in object.options:
 				object.options[ 'drive-paravirtual' ] = False
@@ -302,7 +302,7 @@ class DriveWizard( umcd.IWizard ):
 			elif object.options['drive-type'] in ( 'cdrom', 'floppy' ):
 				self.disk_select.set_choices( with_new = False )
 			else:
-				raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
+				raise ValueError('Invalid drive-type "%s"' % object.options['drive-type'])
 
 		elif self.current == DriveWizard.PAGE_HD: # new or existing disk image?
 			if object.options[ 'existing-or-new-disk' ] == 'disk-new':
@@ -322,7 +322,7 @@ class DriveWizard( umcd.IWizard ):
 				elif object.options['drive-type'] in ( 'cdrom', 'floppy' ):
 					self[ self.current ].description = _( 'Each image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list of available images is updated.' )
 				else:
-					raise Exception('Invalid drive-type "%s"' % object.options['drive-type'])
+					raise ValueError('Invalid drive-type "%s"' % object.options['drive-type'])
 			elif object.options[ 'existing-or-new-disk' ] == 'disk-block':
 				self.current = DriveWizard.PAGE_MANUAL
 				object.options['pool-name'] = None
@@ -416,7 +416,7 @@ class DriveWizard( umcd.IWizard ):
 				conf.add_row( [ umcd.HTML( '<i>%s</i>' % _( 'Device filename' ) ), vol_path ] )
 			self[ self.current ].options.append( conf )
 		else:
-			if self.current == None:
+			if self.current is None:
 				self.current = 0
 			else:
 				self.current += 1
@@ -480,7 +480,7 @@ class DriveWizard( umcd.IWizard ):
 			disk.device = uvmmp.Disk.DEVICE_FLOPPY
 			driver_pv = None
 		else:
-			raise Exception('Invalid drive-type "%s"' % drive_type)
+			raise ValueError('Invalid drive-type "%s"' % drive_type)
 
 		is_file_pool = self._is_file_pool(pool_name)
 		if is_file_pool:
@@ -520,7 +520,7 @@ class DriveWizard( umcd.IWizard ):
 			else:
 				disk.driver = 'phy'
 		else:
-			raise Exception('Unknown virt-tech "%s"' % self.node_uri)
+			raise ValueError('Unknown virt-tech "%s"' % self.node_uri)
 
 		disk.size = MemorySize.str2num(image_size, unit='MB')
 		if pool_name:
@@ -598,7 +598,7 @@ class InstanceWizard( umcd.IWizard ):
 			else:
 				self.replace_title( _( 'Create a virtual instance <i>%(name)s</i>' ) % { 'name' : object.options[ 'name' ] } )
 		tech = self.node_uri[ : self.node_uri.find( ':' ) ]
-		if self.current == None:
+		if self.current is None:
 
 			tech_types = []
 			for template in self.node_info.capabilities:
@@ -626,7 +626,7 @@ class InstanceWizard( umcd.IWizard ):
 			if tech == 'xen-xen':
 				# Only paravirtualization 
 				umcd.IWizard.next( self, object )
-				return umcd.WizardResult( False, _( 'The server does not have the virtualization extension (Intel VT or AMD-V). Only profiles with full paravirtualization will be appear.' ) )
+				return umcd.WizardResult( False, _( 'The server does not have the virtualization extension (Intel VT or AMD-V). Only profiles using paravirtualization will work.' ) )
 			elif len(tech_types) == 0:
 				# KVM is installed and the CPU extension is missing
 				umcd.IWizard.next( self, object )

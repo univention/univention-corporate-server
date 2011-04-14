@@ -1,3 +1,13 @@
+univention-virtual-machine-manager-daemon (0.9.302-1) unstable; urgency=low
+
+  * Fix error message on redefinition (Bug #22218)
+  * Wait for update after state transition (Bug #19174)
+  * Fix comparison for None.
+  * Throw more specific ValueError instead of Exception.
+  * Fix bad English wording.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 14 Apr 2011 08:24:39 +0200
+
 univention-virtual-machine-manager-daemon (0.9.301-1) unstable; urgency=low
 
   * Allow the users of UVMM Nodes to logon to uvmm (Bug #22215)
