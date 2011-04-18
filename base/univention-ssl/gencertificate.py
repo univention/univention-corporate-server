@@ -3,7 +3,7 @@
 # Univention SSL
 #  listener ssl module
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -135,7 +135,7 @@ def create_certificate(name, serverUidNumber, domainname):
 		return
 
 	try:
-		gidNumber = int(pwd.getpwnam('%s$' % (name) )[3])
+		gidNumber = int(pwd.getpwnam('DC Backup Hosts$')[3])
 	except:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % name)
 		gidNumber = 0
