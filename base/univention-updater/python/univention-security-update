@@ -237,7 +237,7 @@ if __name__ == '__main__':
 				nextupdate = updater.security_update_available()
 			except univention.updater.ConfigurationError, e:
 				dprint(traceback.format_exc(), [fp_debug])
-				dprint('Error: an error occured during the update: %s.\n\tPlease check the logfile %s' % (e, LOGFILE), [fp_debug, sys.stderr])
+				dprint('Error: an error occurred during the update: %s.\n\tPlease check the logfile %s' % (e, LOGFILE), [fp_debug, sys.stderr])
 				update_status( status='FAILED', errorsource='SETTINGS' )
 				sys.exit( 1 )
 

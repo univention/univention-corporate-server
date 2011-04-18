@@ -1,3 +1,9 @@
+univention-updater (6.0.84-3) unstable; urgency=low
+
+  * Fix spelling mistake: occur_r_ed (Bug #22225)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 14 Apr 2011 13:46:42 +0200
+
 univention-updater (6.0.84-2) unstable; urgency=low
 
   * prune old kernel during update (Bug #22093)
@@ -1713,7 +1719,7 @@ univention-updater (4.0.40-1) unstable; urgency=low
 
 univention-updater (4.0.39-1) unstable; urgency=low
 
-  * fixed a bug in univention-updater that occured on systems with a local
+  * fixed a bug in univention-updater that occurred on systems with a local
     repository when running 'univention-updater cdrom' (Bug #12511)
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 12 Mar 2009 10:43:04 +0100

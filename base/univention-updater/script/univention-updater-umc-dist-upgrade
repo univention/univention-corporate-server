@@ -57,7 +57,7 @@ $update_commands_distupgrade >> "$LOGFILE" 2>&1
 if [ ! $? = 0 ] ; then
 	echo "status=FAILED" > "$STATUSFILE"
 	echo >> "$LOGFILE"
-	echo "ERROR: An error occured during update. Please check the logfiles."  >> "$LOGFILE"
+	echo "ERROR: An error occurred during update. Please check the logfiles."  >> "$LOGFILE"
 	date >> "$LOGFILE"
 	exit 1
 fi
