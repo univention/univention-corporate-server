@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.304-1) unstable; urgency=low
+
+  * Allow UUID of new domains to be pre-configured (Bug #22270)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 19 Apr 2011 16:09:09 +0200
+
 univention-virtual-machine-manager-daemon (0.9.303-1) unstable; urgency=low
 
   * fixed type test for the volumes arguments to DOMAIN_UNDEFINE (None is
@@ -24,7 +30,7 @@ univention-virtual-machine-manager-daemon (0.9.301-1) unstable; urgency=low
 univention-virtual-machine-manager-daemon (0.9.300-2) unstable; urgency=low
 
   * UMC module: add a search function; Bug #19576
-  * bup version for UCS 2.4-3
+  * bump version for UCS 2.4-3
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 06 Apr 2011 09:05:26 +0200
 

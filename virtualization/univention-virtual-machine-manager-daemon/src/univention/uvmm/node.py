@@ -1022,7 +1022,12 @@ def domain_define( uri, domain ):
 	old_stat = None
 	warnings = []
 	if domain.uuid:
-		old_stat = node.domains[domain.uuid].key()
+		try:
+			dom = node.domains[domain.uuid]
+		except KeyError, e:
+			pass # New domain with pre-configured UUID
+		else:
+			old_stat = dom.key()
 	
 	new_xml = _domain_edit(node, domain, old_xml)
 
