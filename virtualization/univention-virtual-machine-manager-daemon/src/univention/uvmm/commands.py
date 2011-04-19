@@ -213,12 +213,15 @@ class _Commands:
 			raise CommandError('DOMAIN_UNDEFINE', _('uri != string: %(uri)s'), uri=request.uri)
 		if not isinstance(request.domain, basestring):
 			raise CommandError('DOMAIN_UNDEFINE', _('domain != string: %(domain)s'), domain=request.domain)
-		if not isinstance(request.volumes, (list, tuple)):
-			raise CommandError('DOMAIN_UNDEFINE', _('volumes != list: %(volumes)s'), volumes=request.volumes)
-		for vol in request.volumes:
-			if not isinstance(vol, basestring):
-				raise CommandError('DOMAIN_UNDEFINE', _('volumes[] != string: %(volume)s'), volume=vol)
-		logger.debug('DOMAIN_UNDEFINE %s#%s [%s]' % (request.uri, request.domain, ','.join(request.volumes)))
+		if not request.volumes is None and not isinstance(request.volumes, (list, tuple)):
+			raise CommandError('DOMAIN_UNDEFINE', _('volumes != list or None: %(volumes)s'), volumes=request.volumes)
+		if not request.volumes is None:
+			for vol in request.volumes:
+				if not isinstance(vol, basestring):
+					raise CommandError('DOMAIN_UNDEFINE', _('volumes[] != string: %(volume)s'), volume=vol)
+			logger.debug('DOMAIN_UNDEFINE %s#%s [%s]' % (request.uri, request.domain, ','.join(request.volumes)))
+		else:
+			logger.debug('DOMAIN_UNDEFINE %s#%s None (-> all volumes will be removed)' % (request.uri, request.domain))
 		try:
 			node.domain_undefine(request.uri, request.domain, request.volumes)
 		except node.NodeError, e:
