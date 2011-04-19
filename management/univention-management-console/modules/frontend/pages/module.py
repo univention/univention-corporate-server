@@ -262,9 +262,13 @@ class Module( base.Page ):
 					ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: check last response message: %s' % str( last_resp.arguments ) )
 					# if there is no dialog
 					if len( last_resp.dialog ) == 1 and list.__getitem__( last_resp.dialog, 0 ) == None:
-						ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: info layout' )
+						ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: no dialog found' )
+						# ... check if there is a referrer and popup_infos
+						if last_resp.status() in ( 201, 301 ) and self.__restore_referrer:
+							self.__layout = cmd.cache
+							self.__restore_referrer = False
 						# ... display simple info message if report is set
-						if last_resp.report:
+						elif last_resp.report:
 							self.__layout = cmd.info_message( last_resp.report )
 						# ... re-invoke startup command or show cache
 						else:

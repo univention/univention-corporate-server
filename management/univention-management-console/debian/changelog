@@ -1,3 +1,12 @@
+univention-management-console (3.0.100-1) unstable; urgency=low
+
+  * if there is no dialog returned and the status code of the last reponse
+    is 201 or 301 and there is a referrer set it is shown instead of an
+    info message; Bug #22264
+  * bump version for UCS 2.4-3
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 19 Apr 2011 11:20:13 +0200
+
 univention-management-console (3.0.83-2) unstable; urgency=low
 
   * fixed typo in UCR description (Bug #21586)
