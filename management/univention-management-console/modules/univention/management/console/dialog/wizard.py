@@ -145,7 +145,7 @@ class Page( object ):
 				opts[ 'action' ] = 'cancel'
 				cmd = umcp.SimpleCommand( command, opts )
 				cmd.verify_options = False
-				cancel_btn = Cell( Button( _( 'Cancel' ), actions = ( Action( cmd, items ) ), close_dialog = False ), attributes = { 'type' : 'button_padding' } )
+				cancel_btn = Cell( Button( _( 'Cancel' ), actions = ( Action( cmd, items ) ) ), attributes = { 'type' : 'button_padding' } )
 			else:
 				cancel_btn = ''
 			if prev:
