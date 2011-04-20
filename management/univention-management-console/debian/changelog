@@ -1,3 +1,9 @@
+univention-management-console (3.0.101-1) unstable; urgency=low
+
+  *  Wizard, Page: buttons should not close the dialog; Bug #22275
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 20 Apr 2011 09:45:10 +0200
+
 univention-management-console (3.0.100-1) unstable; urgency=low
 
   * if there is no dialog returned and the status code of the last reponse

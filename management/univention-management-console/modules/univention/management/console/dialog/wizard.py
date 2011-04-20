@@ -129,7 +129,7 @@ class Page( object ):
 			if next:
 				opts = copy_module.copy( options )
 				opts[ 'action' ] = 'next'
-				next_btn = Button( _( 'Next' ), actions = ( Action( umcp.SimpleCommand( command, opts ), items ), ), attributes = { 'class' : 'button_right' }, default = True )
+				next_btn = Button( _( 'Next' ), actions = ( Action( umcp.SimpleCommand( command, opts ), items ), ), attributes = { 'class' : 'button_right' }, default = True, close_dialog = False )
 			elif finish:
 				opts = copy_module.copy( options )
 				opts[ 'action' ] = 'finish'
@@ -145,7 +145,7 @@ class Page( object ):
 				opts[ 'action' ] = 'cancel'
 				cmd = umcp.SimpleCommand( command, opts )
 				cmd.verify_options = False
-				cancel_btn = Cell( Button( _( 'Cancel' ), actions = ( Action( cmd, items ) ) ), attributes = { 'type' : 'button_padding' } )
+				cancel_btn = Cell( Button( _( 'Cancel' ), actions = ( Action( cmd, items ) ), close_dialog = False ), attributes = { 'type' : 'button_padding' } )
 			else:
 				cancel_btn = ''
 			if prev:
@@ -153,7 +153,7 @@ class Page( object ):
 				opts[ 'action' ] = 'prev'
 				prev = umcp.SimpleCommand( command, opts )
 				prev.verify_options = False
-				prev_btn = Cell( Button( _( 'Previous' ), actions = ( Action( prev, items ), ), attributes = { 'class' : 'cancel' } ), attributes = { 'type' : 'button_padding' } )
+				prev_btn = Cell( Button( _( 'Previous' ), actions = ( Action( prev, items ), ), attributes = { 'class' : 'cancel' }, close_dialog = False ), attributes = { 'type' : 'button_padding' } )
 			else:
 				prev_btn = ''
 
