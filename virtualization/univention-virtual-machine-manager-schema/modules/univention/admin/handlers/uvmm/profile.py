@@ -71,6 +71,14 @@ class VirtTech( univention.admin.syntax.select ):
 		( 'xen-xen', _( 'Paravirtualization (XEN)' )  ),
 	]
 
+class ClockOffset(univention.admin.syntax.select):
+	"""Setup for Real-Time-Clock. <http://libvirt.org/formatdomain.html#elementsTime>"""
+	name = 'ClockOffset'
+	choices = [
+		('utc', _('Coordinated Universal Time')),
+		('localtime', _('Local time zone')),
+	]
+
 property_descriptions={
 	'name': univention.admin.property(
 			short_description= _('Name'),
@@ -259,6 +267,16 @@ property_descriptions={
 			may_change = True,
 			identifies = False
 		),
+	'rtcoffset': univention.admin.property(
+			short_description=_('Real Time Clock offset'),
+			long_description=_('Offset of instances Real Time Clock to host computers clock'),
+			syntax=ClockOffset,
+			multivalue=False,
+			options=[],
+			required=False,
+			may_change=True,
+			identifies=False
+			),
 	'txt_hardware': univention.admin.property(
 		short_description = _('Hardware'),
 		syntax=univention.admin.syntax.info_text,
@@ -280,7 +298,7 @@ layout = [
 							[ univention.admin.field( "txt_hardware" ), ],
 							[ univention.admin.field( "arch" ), univention.admin.field( "cpus" ) ],
 							[ univention.admin.field( "ram" ), univention.admin.field( "diskspace" ) ],
-							[ univention.admin.field( "interface" ), ],
+							[ univention.admin.field( "interface" ), univention.admin.field('rtcoffset') ],
 							[ univention.admin.field( "vnc" ), univention.admin.field( "kblayout" ) ],
 							[ univention.admin.field( "txt_boot" ), ],
 							[ univention.admin.field( "bootdev" ), ],
@@ -322,6 +340,7 @@ mapping.register('os', 'univentionVirtualMachineProfileOS', None, univention.adm
 mapping.register('pvdisk', 'univentionVirtualMachineProfilePVDisk', None, univention.admin.mapping.ListToString)
 mapping.register('pvinterface', 'univentionVirtualMachineProfilePVInterface', None, univention.admin.mapping.ListToString)
 mapping.register('pvcdrom', 'univentionVirtualMachineProfilePVCDROM', None, univention.admin.mapping.ListToString)
+mapping.register('rtcoffset', 'univentionVirtualMachineProfileRTCOffset', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module

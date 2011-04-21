@@ -371,6 +371,9 @@ class Client(object):
 		try: domain.bootloader_args = root.findtext('bootloader_args')
 		except AttributeError: pass
 		domain.maxMem = int(root.findtext('memory')) << 10 # KiB
+		try: domain.rtc_offset = root.find('clock').attrib['offset']
+		except AttributeError: pass
+		except KeyError: pass
 		from univention.uvmm.node import Disk, Interface, Graphic
 		for disk in root.find('devices').findall('disk'):
 			d = Disk()

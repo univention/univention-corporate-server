@@ -670,6 +670,7 @@ class InstanceWizard( umcd.IWizard ):
 			object.options[ 'pvdisk' ] = self.profile[ 'pvdisk' ]
 			object.options[ 'pvcdrom' ] = self.profile[ 'pvcdrom' ]
 			object.options[ 'pvinterface' ] = self.profile[ 'pvinterface' ]
+			object.options['rtc_offset'] = self.profile['rtcoffset']
 		if self.current == InstanceWizard.PAGE_BASIC:
 			MAX_NAME_LENGTH = 25
 			if object.options[ 'name' ] == self.profile[ 'name_prefix' ]:
@@ -798,6 +799,8 @@ class InstanceWizard( umcd.IWizard ):
 			# annotations
 			domain_info.annotations[ 'os' ] = object.options[ 'os' ]
 			domain_info.annotations[ 'description' ] = object.options[ 'description' ]
+			# RTC offset
+			domain_info.rtc_offset = object.options['rtc_offset']
 			# drives
 			domain_info.disks = self.drives
 			self.uvmm._verify_device_files(domain_info)

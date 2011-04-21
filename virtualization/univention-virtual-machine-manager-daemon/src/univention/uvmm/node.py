@@ -325,6 +325,9 @@ class Domain(object):
 			args = doc.getElementsByTagName( 'bootloader_args' )
 			if args and args[ 0 ].firstChild and args[ 0 ].firstChild.nodeValue:
 				self.pd.bootloader_args = args[ 0 ].firstChild.nodeValue
+		clock = doc.getElementsByTagName('clock')
+		if clock:
+			self.pd.rtc_offset = clock[0].getAttribute('offset')
 
 		self.pd.disks = []
 		disks = devices.getElementsByTagName( 'disk' )
@@ -806,8 +809,8 @@ def _domain_edit(node, dom_stat, xml):
 			domain_features_x = update(domain_features, f_name, '')
 
 	# /domain/clock @offset @timezone @adjustment
-	if defaults and False:
-		domain_clock = update(domain, 'clock', '', offset='localtime') # timezone='', adjustment=0
+	if dom_stat.rtc_offset:
+		domain_clock = update(domain, 'clock', '', offset=dom_stat.rtc_offset) # timezone='', adjustment=0
 	# /domain/on_poweroff
 	if defaults:
 		domain_on_poweroff = update(domain, 'on_poweroff', 'destroy') # (destroy|restart|preserve|rename-restart)

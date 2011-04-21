@@ -172,6 +172,7 @@ command_description = {
 				   'cmdline' : umc.String( _( 'Kernel parameter' ), required = False ),
 				   'kernel' : umc.String( _( 'Kernel' ), required = False ),
 				   'bootdevs' : umc.StringList( _( 'Boot order' ), required = False ),
+				   'rtc_offset': RtcOffsetSelect(_('RTC reference'), required=False),
 				   },
 		),
 	'uvmm/domain/migrate': umch.command(
@@ -985,6 +986,8 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		vnc_global = make_func( self[ 'uvmm/domain/configure' ][ 'vnc_global' ], default = vnc_global, attributes = { 'width' : '250' } )
 		vnc_passwd = make_func(self['uvmm/domain/configure']['vnc_passwd'], default=old_passwd, attributes={'width': '250'})
 
+		rtc_offset = make_func(self[ 'uvmm/domain/configure']['rtc_offset'], default=handler._getattr( domain_info, 'rtc_offset', ''), attributes={'width': '250'})
+
 		content.add_row( [ name, os_widget ] )
 		content.add_row( [ contact_widget, description_widget ] )
 		content.add_row( [ arch, '' ] )
@@ -1007,7 +1010,11 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 
 		content2.add_row( [ umcd.Text( '' ) ] )
 
-		ids = (name.id(), os_widget.id(), contact_widget.id(), description_widget.id(), virt_tech.id(), arch.id(), cpus.id(), memory.id(), ram_disk.id(), root_part.id(), kernel.id(), advkernelconf.id(), vnc.id(), vnc_global.id(), vnc_passwd.id(), kblayout.id(), bootdevs.id())
+		content2.add_row([rtc_offset])
+
+		content2.add_row([umcd.Text('')])
+
+		ids = (name.id(), os_widget.id(), contact_widget.id(), description_widget.id(), virt_tech.id(), arch.id(), cpus.id(), memory.id(), ram_disk.id(), root_part.id(), kernel.id(), advkernelconf.id(), vnc.id(), vnc_global.id(), vnc_passwd.id(), kblayout.id(), bootdevs.id(), rtc_offset.id())
 		cfg_cmd = umcp.SimpleCommand( 'uvmm/domain/configure', options = object.options )
 		overview_cmd = umcp.SimpleCommand( 'uvmm/domain/overview', options = object.options )
 
@@ -1198,6 +1205,7 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 				domain_info.bootloader_args = '-q' # Bug #19249: PyGrub timeout
 		domain_info.boot = handler._getstr( object, 'bootdevs' )
 		domain_info.maxMem = MemorySize.str2num( object.options[ 'memory' ] )
+		domain_info.rtc_offset = handler._getstr(object, 'rtc_offset')
 
 		# graphics
 		ud.debug( ud.ADMIN, ud.INFO, 'Configure Domain: graphics: %s' % object.options[ 'vnc' ] )

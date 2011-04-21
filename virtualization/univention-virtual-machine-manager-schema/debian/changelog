@@ -1,3 +1,11 @@
+univention-virtual-machine-manager-schema (1.0.31-1) unstable; urgency=low
+
+  * profile schema: add LDAP attribute for clock offset (Bug #22259)
+  * slapd.conf: Check if file exists before including it.
+  * debian/rules: No need to be root to clean, cleanup
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 21 Apr 2011 07:40:03 +0200
+
 univention-virtual-machine-manager-schema (1.0.30-1) unstable; urgency=low
 
   * profile schema: add LDAP attribute for PV CDROM drives; Bug #19136

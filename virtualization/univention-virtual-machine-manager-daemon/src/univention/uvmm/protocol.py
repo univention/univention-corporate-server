@@ -278,6 +278,7 @@ class Data_Domain(object):
 		self.domain_type = None # xen, qemu, kvm
 		self.arch = 'i686' # i686, x86_64
 		self.os_type = None # linux(=Xen-PV), hvm(=Xen-FV)
+		self.rtc_offset = None
 
 		# Xen-PV
 		self.kernel = None

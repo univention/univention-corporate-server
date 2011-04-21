@@ -179,6 +179,15 @@ class NodeSelect( umc.StaticSelection ):
 		if ignore in self._choices:
 			self._choices.remove( ignore )
 
+class RtcOffsetSelect(umc.StaticSelection):
+	"""List of RTC offsets."""
+	def choices(self):
+		return (
+				('utc', _('Coordinated Universal Time')),
+				('localtime', _('Local time zone')),
+				)
+
+# Copy factory method for widget creation
 umcd.copy( umc.StaticSelection, SearchOptions )
 umcd.copy( umc.StaticSelection, DynamicSelect )
 umcd.copy( umc.StaticSelection, VirtTechSelect )
@@ -190,3 +199,4 @@ umcd.copy( umc.StaticSelection, NodeSelect )
 umcd.copy( umc.StaticSelection, DiskSelect )
 umcd.copy( umc.StaticSelection, ArchSelect )
 umcd.copy( umc.StaticSelection, NIC_DriverSelect )
+umcd.copy(umc.StaticSelection, RtcOffsetSelect)

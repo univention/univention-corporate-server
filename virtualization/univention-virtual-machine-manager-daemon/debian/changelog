@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.305-1) unstable; urgency=low
+
+  * Add configuration for RTC-offset (Bug #22033, Bug #22259)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 21 Apr 2011 09:33:58 +0200
+
 univention-virtual-machine-manager-daemon (0.9.304-1) unstable; urgency=low
 
   * Allow UUID of new domains to be pre-configured (Bug #22270)
