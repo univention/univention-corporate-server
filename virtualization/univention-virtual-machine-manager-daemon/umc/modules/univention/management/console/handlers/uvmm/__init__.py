@@ -446,20 +446,23 @@ class handler( umch.simpleHandler, DriveCommands, NIC_Commands ):
 		result_list = umcd.List()
 		result_list.set_header( [ umcd.Cell( umcd.Text( '' ), attributes = { 'width' : '20px' } ), umcd.HTML( _( 'Instance' ), attributes = { 'width': '100%', 'type' : 'umc_nowrap' } ), umcd.HTML( _( 'CPU usage' ) , attributes = { 'type' : 'umc_nowrap', 'align' : 'right' } ), umcd.HTML( _( 'Memory' ) , attributes = { 'type' : 'umc_nowrap' , 'align' : 'right' } ), '' ] )
 		object.options[ 'group' ] = 'default'
+		results.sort( key = operator.itemgetter( 0 ), cmp = lambda a, b: cmp( a.name.lower(), b.name.lower() ) )
 		for node, domains in results:
 			opts = copy.copy( object.options )
 			if node.uri.startswith( 'xen:' ):
 				icon = 'uvmm/node-xen'
 			else:
 				icon = 'uvmm/node-kvm'
+			opts[ 'node' ] = node.name
 			i = node.name.find( '.' )
 			if i >= 0:
-				opts[ 'node' ] = node.name[ : i ]
+				text = node.name[ : i ]
 			else:
-				opts[ 'node' ] = node.name
+				text = node.name
 			opts[ 'node-uri' ] = node.uri
-			node_btn = TreeView.button_create( opts[ 'node' ], icon, 'uvmm/node/overview', opts, False )
+			node_btn = TreeView.button_create( text, icon, 'uvmm/node/overview', opts, False )
 			result_list.add_row( [ umcd.Cell( node_btn, attributes = { 'colspan' : '5' } ) ] )
+			domains.sort( cmp = lambda a, b: cmp( a.name.lower(), b.name.lower() ) )
 			for domain in domains:
 				domain_opts = copy.copy( opts )
 				domain_opts[ 'domain' ] = domain.name

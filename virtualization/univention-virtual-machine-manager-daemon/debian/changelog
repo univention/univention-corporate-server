@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (0.9.306-1) unstable; urgency=low
+
+  * search function: fixed node button and sort the result list; Bug #19576
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 21 Apr 2011 17:28:44 +0200
+
 univention-virtual-machine-manager-daemon (0.9.305-1) unstable; urgency=low
 
   * Add configuration for RTC-offset (Bug #22033, Bug #22259)
