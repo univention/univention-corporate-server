@@ -94,42 +94,51 @@ var umc = {};
 umc.ajax = {};
 umc.ajax.refreshframe = {};
 umc.ajax.refreshframe.updateData = function(refreshurl, wndid, dataid, maxlen) {
-    var xhrArgs = {
-            url: refreshurl,
-            handleAs: 'json',
-            preventCache: true,
-            load: function(data) {
-				if (!(data['contentappend'] === undefined)) {
-					var newdata = dojo.byId( dataid ).innerHTML + data['contentappend'];
-					if (newdata.length > maxlen) {
-						newdata = newdata.substr(newdata.length - maxlen, maxlen);
+	var xhrArgs = {
+			url: refreshurl,
+			handleAs: 'json',
+			preventCache: true,
+			load: function(data) {
+				try {
+					var contentappend = data['contentappend'];
+					if (contentappend !== undefined && contentappend.length > 0) {
+						var dataobj = dojo.byId(dataid);
+						var newdata = dataobj.innerHTML + contentappend;
+						if (newdata.length > maxlen) {
+							newdata = newdata.substr(newdata.length - maxlen, maxlen);
+						}
+						dataobj.innerHTML = newdata;
+						var winobj = dojo.byId(wndid);
+						winobj.scrollTop = winobj.scrollHeight;
 					}
-					dojo.byId( dataid ).innerHTML = newdata;
-					if (data['contentappend'].length > 0) {
-						dojo.byId( wndid ).scrollTop = dojo.byId( wndid ).scrollHeight;
+				} catch(err) { ; }
+				try {
+					var content = data['content'];
+					if (content !== undefined && content.length > 0) {
+						var dataobj = dojo.byId(dataid);
+						dataobj.innerHTML = content;
+						var winobj = dojo.byId(wndid);
+						winobj.scrollTop = winobj.scrollHeight;
 					}
-				}
-				if (!(data['content'] === undefined)) {
-					dojo.byId( dataid ).innerHTML = data['content'];
-					if (data['contentappend'].length > 0) {
-						dojo.byId( wndid ).scrollTop = dojo.byId( wndid ).scrollHeight;
-					}
-				}
+				} catch(err) { ; }
 				for (var curdataid in data) {
-				    if ((curdataid != 'contentappend') && (curdataid != 'content')) {
-						dojo.byId( curdataid ).innerHTML = data[curdataid];
+					if ((curdataid != 'contentappend') && (curdataid != 'content')) {
+						try {
+							var dataobj = dojo.byId(curdataid);
+							dataobj.innerHTML = data[curdataid];
+						} catch(err) { ; }
 					}
 				}
-            },
-        }
-    var deferred = dojo.xhrGet(xhrArgs);
+			},
+		}
+	var deferred = dojo.xhrGet(xhrArgs);
 };
 dojo.addOnLoad (function() {
-    url = 'ajax.py?session_id=%(sessionid)s&umcpcmd=%(command)s&%(options)s';
-	wndid = 'wnd%(identifier)s';
-	dataid = 'data%(identifier)s';
+	var url = 'ajax.py?session_id=%(sessionid)s&umcpcmd=%(command)s&%(options)s';
+	var wndid = 'wnd%(identifier)s';
+	var dataid = 'data%(identifier)s';
 	umc.ajax.refreshframe.updateData(url, wndid, dataid, %(maxlen)d);
-    window.setInterval( function() { umc.ajax.refreshframe.updateData(url, wndid, dataid, %(maxlen)d);}, %(interval)s);
+	window.setInterval( function() { umc.ajax.refreshframe.updateData(url, wndid, dataid, %(maxlen)d);}, %(interval)s);
 });
 </script>
 """ % { 'sessionid': sessionid,

@@ -44,6 +44,7 @@ import copy as copy_module
 _ = locales.Translation( 'univention.management.console.dialog' ).translate
 
 class Wizard( Element ):
+	"""Low-level graphical representation for a Wizard page."""
 	def __init__( self, title = '' ):
 		Element.__init__( self )
 		self._title = title
@@ -51,12 +52,15 @@ class Wizard( Element ):
 		self._image = None
 
 	def set_image( self, image ):
+		"""Set top-left image to instance of umcd.Image."""
 		self._image = image
 
 	def add_option( self, text, option ):
+		"""Add widget to this Wizard page."""
 		self._content.add_row( [ option, text ] )
 
 	def add_buttons( self, *args ):
+		"""Add buttons to this Wizard page."""
 		if self._image:
 			self._content.add_row( [ Fill( 2 ) ] )
 			self._content.add_row( [ '', args ] )
@@ -65,6 +69,7 @@ class Wizard( Element ):
 			self._content.add_row( [ args ] )
 
 	def setup( self ):
+		"""Convert Wizard to dialog element."""
 		if self._image:
 			self._image[ 'width' ] = '100'
 			return Frame( [ List( content = [ [ Cell( self._image, { 'valign' : 'top' } ), self._content ] ], attributes = { 'width' : '100%' } ) ], self._title )
@@ -77,6 +82,7 @@ WizardTypes = (Wizard,)
 # dialog class above. An example can be found in the UVMM UMC module
 
 class Page( object ):
+	"""High-level implementation of a wizard page."""
 	def __init__( self, title = '', description = '' ):
 		self.title = title
 		self.description = description
@@ -86,6 +92,7 @@ class Page( object ):
 		self.hint = None
 
 	def setup( self, command, options, prev = True, next = True, finish = False, cancel = True ):
+		"""Convert this page into graphical representation. Returns a Wizard instance containing description, hint, options and buttons."""
 		wizard = Wizard( self.title )
 		# add description
 		if self.description:
@@ -166,14 +173,17 @@ class Page( object ):
 		return wizard.setup()
 
 class WizardResult( object ):
+	"""Encapsulate result of a Wizard page. value=True to continue to next page, value=False & text to stay on the current page."""
 	def __init__( self, value =True, text = '' ):
 		self.value = value
 		self.text = text
 
 	def __nonzero__( self ):
+		"""Return True, if the Wizard page in complete and the next Wizard should switch to the next page."""
 		return self.value
 
 class IWizard( list ):
+	"""High-level implementation of a wizard containing a list of wizard pages, stacked on top of each other in card layout fashion."""
 	def __init__( self, command = '' ):
 		list.__init__( self )
 		self.current = None
@@ -182,13 +192,16 @@ class IWizard( list ):
 		self._result = None
 
 	def replace_title( self, title ):
+		"""Set title of all pages."""
 		for page in self:
 			page.title = title
 
 	def result( self ):
+		"""Return the result storged by the last Wizard page."""
 		return self._result
 
 	def action( self, object ):
+		"""Call the function responsible for handling the action (object.options['action']), falling back to 'next'."""
 		if 'action' in object.options:
 			action = object.options[ 'action' ]
 			del object.options[ 'action' ]
@@ -201,17 +214,18 @@ class IWizard( list ):
 		return WizardResult( False, 'Unknown wizard action: %s' % action )
 
 	def setup( self, object, prev = None, next = None, finish = None, cancel = None ):
+		"""Create graphical representation for the current Wizard page."""
 		if prev == True:
 			force_prev = True
 		else:
 			force_prev = False
-		if prev == None:
+		if prev is None:
 			prev = True
-		if next == None:
+		if next is None:
 			next = True
-		if finish == None:
+		if finish is None:
 			finish = False
-		if cancel == None:
+		if cancel is None:
 			cancel = True
 		if self.current == ( len( self ) - 1 ): # last page
 			next = False
@@ -219,12 +233,16 @@ class IWizard( list ):
 				finish = True
 		elif not self.current:
 			prev = force_prev
-		return self[ self.current ].setup( self.command, object.options, prev = prev, next = next, finish = finish, cancel = cancel )
+
+		page = self[self.current]
+		return page.setup(self.command, object.options, prev=prev, next=next, finish=finish, cancel=cancel)
 
 	def finish( self, object ):
+		"""Convert the internally collected data of this Wizard into the external representation."""
 		return WizardResult( False, 'finish is not implemented!' )
 
 	def next( self, object ):
+		"""Transition to the next Wizard page."""
 		if self.current == None:
 			self.current = 0
 		elif self.current == ( len( self ) - 1 ):
@@ -234,8 +252,8 @@ class IWizard( list ):
 
 		return WizardResult()
 
-
 	def prev( self, object ):
+		"""Transition to the previous Wizard page."""
 		if self.current == 0:
 			return None
 		else:
@@ -244,9 +262,10 @@ class IWizard( list ):
 		return WizardResult()
 
 	def cancel( self, object ):
+		"""Cancel the complete Wizard."""
 		return WizardResult( False, 'cancel is not implemented!' )
 
 	def reset( self ):
+		"""Reset Wizard back to initial values."""
 		self.current = None
 		self._result = None
-

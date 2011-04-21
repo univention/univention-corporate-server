@@ -1,3 +1,10 @@
+univention-management-console (3.0.102-1) unstable; urgency=low
+
+  * Fix AJAX-RefreshFrame (Bug #22268).
+  * Fix and add source code comments.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 19 Apr 2011 15:36:22 +0200
+
 univention-management-console (3.0.101-2) unstable; urgency=low
 
   *  Wizard, Page: buttons should not close the dialog; Bug #22275

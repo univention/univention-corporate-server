@@ -265,7 +265,7 @@ class simpleHandler( signals.Provider ):
 
 
 	def revamped( self, id, res, rawresult = False ):
-		"""this method should in invoked by '_revamp' functions that are
+		"""this method should be invoked by '_revamp' functions that are
 		called after a command was successfully processed. It should be
 		used to modify the result dialog to fit the specified client
 		interface"""
