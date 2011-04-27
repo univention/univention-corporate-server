@@ -287,11 +287,11 @@ msgid "Groups"
 msgstr "Gruppen"
 
 #: user.py:528
-msgid "Samba priviliges"
+msgid "Samba privileges"
 msgstr "Samba Privilegien"
 
 #: user.py:529
-msgid "Manage samba priviliges"
+msgid "Manage samba privileges"
 msgstr "Samba Privilegien verwalten"
 
 #: user.py:538
