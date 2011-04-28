@@ -1,3 +1,9 @@
+univention-security-update (5.0.0-4) unstable; urgency=low
+
+  * Third security update for UCS 2.4 (Bug #22327)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 28 Apr 2011 08:45:47 +0200
+
 univention-security-update (5.0.0-3) unstable; urgency=low
 
   * Second security update for UCS 2.4 (Bug #21513)

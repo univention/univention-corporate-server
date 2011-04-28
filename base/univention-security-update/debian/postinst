@@ -3,7 +3,7 @@
 # Univention Security Update
 #  postinst script for the debian package
 #
-# Copyright 2005-2010 Univention GmbH
+# Copyright 2005-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -34,6 +34,6 @@ set -e
 
 #DEBHELPER#
 
-univention-baseconfig set version/security-patchlevel=2
+univention-baseconfig set version/security-patchlevel=3
 
 
