@@ -81,22 +81,21 @@ extern char univention_debug_flush;
 
 #endif
 
-#define univention_debug(id, level, args...)				\
+#define univention_debug(id, level, fmt, ...)				\
   if( univention_debug_file && level <= univention_debug_level[id] )	\
   {									\
     time_t    t   = time(NULL);						\
     struct tm *tm = localtime(&t);					\
     fprintf( univention_debug_file,					\
-             "%02d.%02d.%02d %02d:%02d:%02d  %s %s",			\
+             "%02d.%02d.%02d %02d:%02d:%02d  %s %s" fmt "\n",			\
              tm->tm_mday, tm->tm_mon+1, tm->tm_year-100,		\
              tm->tm_hour,tm->tm_min, tm->tm_sec,			\
              univention_debug_id_text[id],				\
-             univention_debug_level_text[level]);			\
-    fprintf( univention_debug_file,  ##args);				\
-    fprintf( univention_debug_file, "\n");				\
+             univention_debug_level_text[level]		\
+             ,## __VA_ARGS__);			\
     if( level == UV_DEBUG_ERROR )					\
     {									\
-      syslog( LOG_ERR, ##args);						\
+      syslog( LOG_ERR, fmt ,## __VA_ARGS__ );						\
     }									\
     if( univention_debug_flush == UV_DEBUG_FLUSH )			\
     {									\

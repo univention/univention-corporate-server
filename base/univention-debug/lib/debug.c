@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 #define _DEBUG_ARRAY_
 #include <univention/debug.h>
@@ -95,7 +96,7 @@ void univention_debug_init( char *logfile, char flush, char function )
 	else if ( logfile != NULL ) {
 		if( (univention_debug_file = fopen(logfile, "a+"))  == NULL ) {
 			fprintf(stderr,"Could not open logfile \"%s\"\n", univention_debug_filename);
-			return 1;
+			return /*1*/;
 		}
 	}
 
@@ -126,7 +127,7 @@ void univention_debug_reopen( void )
 	else if ( univention_debug_filename != NULL ) {
 		if( (univention_debug_file = fopen(univention_debug_filename, "a+"))  == NULL ) {
 			fprintf(stderr,"Could not open logfile \"%s\"\n", univention_debug_filename);
-			return 1;
+			return /*1*/;
 		}
 	}
 }

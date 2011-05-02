@@ -1,3 +1,9 @@
+univention-debug (4.2.0-1) unstable; urgency=low
+
+  * Fix format string vulnerability (Bug #21642)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 02 May 2011 15:26:47 +0200
+
 univention-debug (4.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
