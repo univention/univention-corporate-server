@@ -105,6 +105,8 @@ class ModuleProcess( Client ):
 		self.signal_new( 'result' )
 		self.signal_new( 'finished' )
 		self.name = module
+		self.running = False
+		self._queued_requests = []
 
 	def __del__( self ):
 		ud.debug( ud.ADMIN, ud.PROCESS, 'ModuleProcess: dying' )
@@ -326,7 +328,11 @@ class Processor( signals.Provider ):
 				notifier.timer_add( 50, cb )
 			else:
 				ud.debug( ud.ADMIN, ud.INFO, 'passing new request to running module %s' % module_name )
-				self.__processes[ module_name ].request( msg )
+				proc = self.__processes[ module_name ]
+				if proc.running:
+					proc.request( msg )
+				else:
+					proc._queued_requests.append( msg )
 
 	def _mod_connect( self, mod, msg ):
 		ud.debug( ud.ADMIN, ud.PROCESS, 'trying to connect' )
@@ -343,6 +349,7 @@ class Processor( signals.Provider ):
 				return True
 		else:
 			ud.debug( ud.ADMIN, ud.INFO, 'ok')
+			mod.running = True
 
 			# send acls
 			acls = self.acls.acls
@@ -368,6 +375,9 @@ class Processor( signals.Provider ):
 				mod.request( req )
 
 			mod.request( msg )
+			for req in mod._queued_requests:
+				mod.request( req )
+			mod._queued_requests = []
 
 		return False
 
