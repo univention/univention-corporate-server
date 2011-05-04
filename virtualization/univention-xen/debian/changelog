@@ -1,14 +1,14 @@
-univention-xen (3.0.6-2) unstable; urgency=low
+univention-xen (3.0.7-1) unstable; urgency=low
 
-  * Bump version to make buildsystem happy (Bug #21306)
+  * Updated for xen 4.1 (Bug #18357)
 
- -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Jan 2011 10:37:44 +0100
+ -- Markus Groß <gross@univention.de>  Wed, 27 Apr 2011 12:29:54 +0200
 
 univention-xen (3.0.6-1) unstable; urgency=low
 
-  * Make univention-xen compatible to xen-4.0 (Bug #21306)
+  * For xen-4.0 (Bug #19943)
 
- -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Jan 2011 09:04:36 +0100
+ -- Philipp Hahn <hahn@univention.de>  Thu, 11 Nov 2010 10:29:31 +0100
 
 univention-xen (3.0.5-1) unstable; urgency=low
 

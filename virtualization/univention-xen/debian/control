@@ -10,15 +10,15 @@ Package: univention-xen
 Architecture: i386 amd64
 Depends: xen-tools,
  wget,
- xen-3.4 | xen-4.0,
+ xen-4.1,
  libc6-xen [i386],
- univention-kernel-image-2.6.32-xen | univention-kernel-image-2.6.18-xen.org | univention-kernel-image-2.6.18-xen,
+ univention-kernel-image-2.6.32-xen,
  bridge-utils
 Description: UCS - Xen configuration and management subsystem
  This packages provides the basic configuration for the
  Xen virtualisation technology.
  .
- This meta package depends on all packages required for a Xen-3.4
+ This meta package depends on all packages required for a Xen-4.1
  dom0 host system.
  .
  It is part of Univention Corporate Server (UCS), an

@@ -33,7 +33,6 @@ build:
 
 clean:
 	dh_testdir
-	dh_testroot
 	dh_clean
 
 install: build
