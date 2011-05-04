@@ -1,3 +1,9 @@
+univention-lib (1.0.0-2) unstable; urgency=low
+
+  * added create_logfile and create_logfile_if_missing
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 04 May 2011 18:10:00 +0200
+
 univention-lib (1.0.0-1) unstable; urgency=low
 
   * bumped version for UCS 3.0 (Bug #22160)
