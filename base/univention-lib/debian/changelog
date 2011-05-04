@@ -1,6 +1,7 @@
 univention-lib (1.0.0-2) unstable; urgency=low
 
   * added create_logfile and create_logfile_if_missing (shell)
+  * added call_joinscript (shell)
   * added locking functions (python)
 
  -- Sönke Schwardt <schwardt@univention.de>  Wed, 04 May 2011 18:10:00 +0200
