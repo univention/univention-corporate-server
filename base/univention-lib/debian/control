@@ -2,8 +2,8 @@ Source: univention-lib
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, python2.4, python-all-dev, python-central
-XS-Python-Version: 2.4
+Build-Depends: debhelper, python2.6, python-all-dev, python-central
+XS-Python-Version: 2.6
 
 Package: python-univention-lib
 Architecture: all

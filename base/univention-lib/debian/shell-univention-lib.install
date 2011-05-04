@@ -1,0 +1,2 @@
+shell/all.sh usr/share/univention-lib/
+shell/ucr.sh usr/share/univention-lib/

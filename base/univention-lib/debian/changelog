@@ -1,3 +1,9 @@
+univention-lib (1.0.0-1) unstable; urgency=low
+
+  * bumped version for UCS 3.0 (Bug #22160)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 04 May 2011 16:18:28 +0200
+
 univention-lib (0.0.3-1) unstable; urgency=low
 
   * Import shell.py and policy_result.py in __init__.py

@@ -1,8 +1,9 @@
-#!/usr/bin/python
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
 #
 # Univention Common Python Library
 #
-# Copyright 2010 Univention GmbH
+# Copyright 2010-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
