@@ -66,3 +66,10 @@ call_joinscript () {
 		fi
 	fi
 }
+
+#
+# stops any currently running UDM CLI server
+#
+stop_udm_cli_server () {
+    pkill -f "/usr/bin/python.* /usr/share/univention-directory-manager-tools/univention-cli-server"
+}
