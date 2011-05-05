@@ -2,12 +2,14 @@ Source: univention-lib
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, python2.6, python-all-dev, python-central
-XS-Python-Version: 2.6
+Build-Depends: debhelper (>= 8), 
+			   python2.6, 
+			   python2.6-dev, 
+			   python-support
 
 Package: python-univention-lib
 Architecture: all
-XB-Python-Version: ${python:Versions}
+Depends: ${python:Depends}, ${misc:Depends}
 Description: UCS - common scripting functions for Python scripts
  This package contains Python functions used by various
  components of UCS.
@@ -19,7 +21,6 @@ Description: UCS - common scripting functions for Python scripts
 
 Package: shell-univention-lib
 Architecture: all
-XB-Python-Version: ${python:Versions}
 Description: UCS - common scripting functions for shell scripts
  This package contains shell functions used by various
  components of UCS.
