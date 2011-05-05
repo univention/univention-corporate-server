@@ -361,10 +361,9 @@ def filter(template, dir, srcfiles=[], opts = {}):
 			start = i.next()
 			end = i.next()
 
-			p = subprocess.Popen('/usr/bin/python2.4', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
+			p = subprocess.Popen(('/usr/bin/python2.4', ), stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
 			child_stdin, child_stdout = p.stdin, p.stdout
-			if opts.get( 'encode-utf8', False ):
-				child_stdin.write('# -*- coding: utf-8 -*-\n')
+			child_stdin.write('# -*- coding: utf-8 -*-\n')
 			child_stdin.write('import univention.config_registry\n')
 			child_stdin.write('configRegistry = univention.config_registry.ConfigRegistry()\n')
 			child_stdin.write('configRegistry.load()\n')
@@ -417,7 +416,6 @@ class configHandlerMultifile(configHandler):
 		self.user = None
 		self.group = None
 		self.mode = None
-		self.encode_utf8 = False
 
 	def addSubfiles(self, subfiles):
 		for from_file, variables in subfiles:
@@ -443,8 +441,6 @@ class configHandlerMultifile(configHandler):
 		to_fp = open(self.to_file, 'w')
 
 		filter_opts = {}
-		if self.encode_utf8:
-			filter_opts['encode-utf8'] = True
 
 		for from_file in self.from_files:
 			try:
@@ -475,7 +471,6 @@ class configHandlerFile(configHandler):
 		self.user = None
 		self.group = None
 		self.mode = None
-		self.encode_utf8 = False
 
 	def __call__(self, args):
 		bc, changed = args
@@ -498,8 +493,6 @@ class configHandlerFile(configHandler):
 		to_fp = open(self.to_file, 'w')
 
 		filter_opts = {}
-		if self.encode_utf8:
-			filter_opts['encode-utf8'] = True
 
 		to_fp.write(filter(from_fp.read(), bc, srcfiles = [self.from_file], opts = filter_opts))
 
@@ -639,8 +632,6 @@ class configHandlers:
 					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
 			if entry.has_key('Mode'):
 				object.mode = int(entry['Mode'][0], 8)
-			if entry.has_key('Encode-utf8') and entry['Encode-utf8'][0].lower() in ['true', 'yes'] :
-				object.encode_utf8 = True
 		elif entry['Type'][0] == 'script':
 			if not entry.has_key('Variables') or not entry.has_key('Script'):
 				return None
@@ -672,8 +663,6 @@ class configHandlers:
 					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
 			if entry.has_key('Mode'):
 				object.mode = int(entry['Mode'][0])
-			if entry.has_key('Encode-utf8') and entry['Encode-utf8'][0].lower() in ['true', 'yes'] :
-				object.encode_utf8 = True
 			self._multifiles[entry['Multifile'][0]] = object
 			if self._subfiles.has_key(entry['Multifile'][0]):
 				object.addSubfiles(self._subfiles[entry['Multifile'][0]])
@@ -1258,9 +1247,8 @@ Actions:
 	rebuild configuration file from univention template; if
 	no file is specified ALL configuration files are rebuilt
 
-  filter [--encode-utf8] [file]:
-	evaluate a template file, optionaly expect python
-	inline code in UTF8 (default: US-ASCII)
+  filter [file]:
+	evaluate a template file, expects python inline code in UTF-8 or US-ASCII
 
 Description:
   univention-config-registry is a tool to handle the basic configuration for UCS
