@@ -1,3 +1,9 @@
+univention-config-registry (7.0.0-0) unstable; urgency=low
+
+  * bump version (Bug #22160)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 05 May 2011 17:15:27 +0200
+
 univention-config-registry (6.0.45-2) unstable; urgency=low
 
   * remove reduntant modification introduced in 6.0.43-1 (Bug #12168)
