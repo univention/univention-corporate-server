@@ -871,6 +871,7 @@ def handler_set( args, opts = {}, quiet = False ):
 			sep_set = arg.find('=') # set
 			sep_def = arg.find('?') # set if not already set
 			if sep_set == -1 and sep_def == -1:
+				print "Warning: Missing value for config registry variable '%s'" % arg
 				continue
 			else:
 				if sep_set > 0 and sep_def == -1:

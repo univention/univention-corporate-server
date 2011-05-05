@@ -1,0 +1,78 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH UNIVENTION-INSTALL-CONFIG-REGISTRY-INFO 1 2010-05-03 UCS
+
+.SH NAME
+univention\-install\-config\-registry\-info \- install UCR variable description into package build directories
+
+.SH SYNOPSIS
+.B univention\-install\-config\-registry\-info
+
+.SH DESCRIPTION
+.B univention\-install\-config\-registry\-info
+is a debhelper like programm that is responsible for installing univention config registry (UCR) variable and category descriptions into
+.I etc/univention/registry.info/variables/
+and
+.I /etc/univention/registry.info/categories/
+in the package build directory. The files
+.I debian/PACKAGE.univention\-config\-registry\-variables
+and
+.I debian/PACKAGE.univention\-config\-registry\-categories
+are installed.
+
+.SH EXAMPLES
+A variable description file has the following format:
+.RS 5
+.nf
+[top_level/sub_level/variable_name]
+Description[de]=Beschreibung
+Description[en]=Description
+Type=str|bool|int (currently unused)
+Categories=Management|...
+.fi
+.RE
+.IP \fB[\fP\fItop_level/sub_level/variable_name\fP\fB]\fP
+Name of the UCR-variable.
+.IP \fBdescription\fP[\fIlanguage\fP]\fB=\fP\fItext\fP
+Description for the service for different languages.
+.IP \fBType=\fP\fItype\fP
+Type of the variable used for syntax checking, currently unused.
+On of \fBstr\fP (for string), \fBbool\fP (for boolean), \fBint\fP (for integer).
+.IP \fBCategories=\fP\fIstring\fP.
+Category the UCR-variable belongs to.
+Currenty used values are:
+.RS 5
+AD\-Connector, Connector\-Notes, Desktop, digitemp, LDAP, Mail, Management, management\-udm, management\-umc, Misc, Network, Printing, Samba, service\-adcon, service\-apache, service\-apache, system\-services, service\-backup, service\-bind, service\-bind, system\-services, service\-cups, service\-dhcp, service\-dhcp, system\-services, service\-heimdal, service\-ldap, service\-mail, service\-mail, system\-network, service\-mail, system\-services, service\-nagios, service\-nagios, system\-services, service\-pkgdb, service\-proxy, service\-samba, service\-software\-management, service\-ssh, service\-webproxy, service\-xen, SSL, System, system\-base, system\-desktop, system\-locale, system\-network, system\-services, system\-ssl, system\-swmon, uvmm
+.RE
+Multiple variables can be defined in one file separated by one blank line between two descriptions.
+.P
+A category description file has the following format:
+.RS 5
+.nf
+[category_name]
+name[de]=Name
+name[en]=Name
+icon=icon.gif
+.fi
+.RE
+.IP \fB[\fP\fIcategory_name\fP\fB]\fP
+Name of the UCR-variable category.
+.IP \fBname\fP[\fIlanguage\fP]\fB=\fP\fItext\fP
+Name for the category for different languages.
+.IP \fBicon=\fP\fIfile-name\fP
+The name of an file containing an icon for the category.
+
+.SH ENVIRONMENT
+.IP "\s-1DH_VERBOSE\s0" 4
+Set to 1 to enable verbose mode.
+Debhelper will output every command it runs that modifies files on the build system.
+
+.SH SEE ALSO
+.BR univention\-install\-config\-registry (1),
+.BR univention\-install\-service\-info (1),
+.BR debhelper (7).
+.br
+This program is documented fully in the
+.IR "Univention Corporate Server Manual" .
+
+.SH AUTHOR
+Copyright (c) 2010 Univention GmbH, Germany

@@ -8,7 +8,19 @@ XS-Python-Version: 2.4
 
 Package: univention-config-registry
 Architecture: all
-Depends: univention-config, locales, ntp, ntpdate, rdate, coreutils,  acl, xfsprogs, lsof, console-data, console-tools, console-common, bzip2, psmisc, lsb-base, bash-completion
+Depends: univention-config,
+ locales,
+ ntp, ntpdate, rdate,
+ coreutils,
+ acl,
+ xfsprogs,
+ lsof,
+ console-data, console-tools, console-common,
+ bzip2,
+ psmisc,
+ lsb-base,
+ bash-completion,
+ ${misc:Depends}
 Pre-Depends: cron (>= 3.0pl1-100), netbase (>= 4.29)
 Replaces: univention-baseconfig
 Conflicts: univention-baseconfig (<=2.2.0)
@@ -23,7 +35,8 @@ Description: UCS - base configuration
 
 Package: univention-baseconfig
 Architecture: all
-Depends: univention-config-registry
+Depends: univention-config-registry,
+ ${misc:Depends}
 Description: Transition package
  Package to ease upgrading from old package
  univention-baseconfig to the new package.  This package
@@ -32,7 +45,8 @@ Description: Transition package
 
 Package: univention-config
 Architecture: all
-Depends: python-univention, pciutils, python-univention-config-registry
+Depends: python-univention, pciutils, python-univention-config-registry,
+ ${misc:Depends}
 Description: UCS - configuration manager
  This package contains the univention-config configuration
  manager, primarily used by the UCS base configuration.
@@ -47,7 +61,8 @@ Architecture: all
 Provides: univention-baseconfig-dev
 Replaces: univention-baseconfig-dev
 Conflicts: univention-baseconfig-dev
-Depends: python2.4, univention-config
+Depends: python2.4, univention-config,
+ ${misc:Depends}
 Description: UCS - configuration manager (development files)
  This package contains the files needed to develop packages
  that use univention-config.
@@ -71,7 +86,8 @@ Description: UCS - C interface to configuration manager
 
 Package: libunivention-config-dev
 Architecture: all
-Depends: libunivention-config0
+Depends: libunivention-config0,
+ ${misc:Depends}
 Description: UCS - C interface to configuration manager (development files)
  This package includes the development files to access
  the UCS configuration manager from C.
@@ -83,9 +99,9 @@ Description: UCS - C interface to configuration manager (development files)
 
 Package: python-univention-config-registry
 Architecture: all
-Depends: ${python:Depends}
+Depends: ${python:Depends}, ${misc:Depends}
 Provides: ${python:Provides}
-XB-Python-Version: 2.4
+XB-Python-Version: ${python:Versions}
 Conflicts: python-univention-baseconfig (<<2.4.2)
 Description: UCS - Python interface to configuration registry
  This package includes the Python interface to the
@@ -98,7 +114,10 @@ Description: UCS - Python interface to configuration registry
 
 Package: python-univention-baseconfig
 Architecture: any
-Depends: python-univention-config-registry
+Depends: python-univention-config-registry,
+ ${python:Depends}, ${misc:Depends}
+Provides: ${python:Provides}
+XB-Python-Version: ${python:Versions}
 Description: Transition package
  Package to ease upgrading from old package
  python-univention-baseconfig to the new package.  This package

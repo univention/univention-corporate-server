@@ -2,7 +2,8 @@
 # check autostart variable of service and exit (a)
 # if variable eq false or no and (b) if var eq manually
 # and system boot is in progress
-function check_autostart () {
+check_autostart () {
+    local service variable ucr
 
     service=$1
     variable=$2
@@ -33,4 +34,4 @@ function check_autostart () {
 
     return 0
 }
-
+# vim:set ft=sh:

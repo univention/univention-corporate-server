@@ -1,3 +1,63 @@
+univention-config-registry (6.0.45-2) unstable; urgency=low
+
+  * remove reduntant modification introduced in 6.0.43-1 (Bug #12168)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 07 Mar 2011 09:29:24 +0100
+
+univention-config-registry (6.0.45-1) unstable; urgency=low
+
+  * default SYSLOGD to -m0 if /etc/default/syslogd leaves it empty
+    (Bug #11241)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Mar 2011 19:18:03 +0100
+
+univention-config-registry (6.0.44-1) unstable; urgency=low
+
+  * Read /etc/default/syslogd in init.d (Bug #11241)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Mar 2011 18:56:26 +0100
+
+univention-config-registry (6.0.43-1) unstable; urgency=low
+
+  * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Mar 2011 17:53:29 +0100
+
+univention-config-registry (6.0.42-1) unstable; urgency=low
+
+  * univention_config_get_string: fixed overlapping variables
+    (Bug #21181)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Mar 2011 17:02:00 +0100
+
+univention-config-registry (6.0.41-2) unstable; urgency=low
+
+  * Fix Build-Depends: self recursion (Bug #21660)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 25 Feb 2011 19:16:25 +0100
+
+univention-config-registry (6.0.41-1) unstable; urgency=low
+
+  * Don't logrotate /var/log/univention/virtual-machine-manager-daemon.log 
+    (Bug #18002, Bug #20465)
+  * python/univention-install-*: Support DH_VERBOSE.
+  * debian/rules: Use $(shell ...) instead of `...`
+  * lib/config.c: #include <string.h>, -luniventiondebug
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 25 Feb 2011 18:52:25 +0100
+
+univention-config-registry (6.0.40-1) unstable; urgency=low
+
+  * revert changes from 6.0.37-1 (Bug #11241)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 22 Feb 2011 15:08:34 +0100
+
+univention-config-registry (6.0.39-1) unstable; urgency=low
+
+  * show warning if value for assignment is missing (Bug #21167)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 08 Feb 2011 14:51:02 +0100
+
 univention-config-registry (6.0.38-1) unstable; urgency=low
 
   * Fix apt.conf.d/80proxy template (Bug #18393)
