@@ -38,7 +38,7 @@
  *
  * import univention.debug
  *
- * univention.debug.init("stdout", DEBUG_NO_FLUSH, DEBUG_FUNCTION)
+ * univention.debug.init("stdout", univention.debug.DEBUG_NO_FLUSH, univention.debug.DEBUG_FUNCTION)
  * univention.debug.set_level(univention.debug.LISTENER, univention.debug.ERROR)
  * univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Fatal error, var = '+j)
  *
@@ -55,7 +55,7 @@ static PyObject *py_univention_debug_debug(PyObject *self, PyObject *args)
         return NULL;
     }
 
-    univention_debug(id, level, string);
+    univention_debug(id, level, "%s", string);
 
     Py_INCREF(Py_None);
     return Py_None;
