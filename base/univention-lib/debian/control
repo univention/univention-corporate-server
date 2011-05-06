@@ -3,7 +3,6 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 8), 
-			   python2.6, 
 			   python2.6-dev, 
 			   python-support
 
