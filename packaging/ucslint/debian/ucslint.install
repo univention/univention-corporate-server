@@ -1,0 +1,2 @@
+ucslint.py usr/bin
+ucslint/*.py usr/share/pyshared/ucslint/univention/ucslint/

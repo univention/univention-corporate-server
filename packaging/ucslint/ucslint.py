@@ -1,5 +1,34 @@
-#!/usr/bin/python2.4
-# -*- coding: iso-8859-15 -*-
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
+# Univention ucslint
+#
+# Copyright 2008-2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
 #
 #
 import os, sys, imp, optparse
@@ -163,7 +192,7 @@ if __name__ == '__main__':
 		print "ERROR: %s/debian does not exist or is not a directory!" % pkgpath
 		sys.exit(1)
 
-	plugindirs = [ '~/.ucslint', '/usr/lib/python2.4/site-packages/univention/ucslint' ]
+	plugindirs = [ '~/.ucslint', '/usr/lib/python2.4/site-packages/univention/ucslint', '/usr/lib/python2.6/dist-packages/univention/ucslint' ]
 
 	# override plugin directories
 	if options.plugindir:
