@@ -11,8 +11,9 @@ univention-ldap (8.0.1-1) unstable; urgency=low
     * Update to debhelper 7
   * Use slapcat for dumping the ldap backup (Bug #20215)
   * Set ldap/idetimeout by default to 360 seconds (Bug #17706)
+  * Set ldap/maxopenfiles to 8192 (Bug #21640)
 
- -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 May 2011 08:39:13 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 May 2011 09:06:14 +0200
 
 univention-ldap (7.0.20-1) unstable; urgency=low
 
