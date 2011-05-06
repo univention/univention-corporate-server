@@ -1,3 +1,9 @@
+univention-admingrp-user-passwordreset (2.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 May 2011 11:13:01 +0200
+
 univention-admingrp-user-passwordreset (1.0.3-1) unstable; urgency=low
 
   * renamed acl file to be compatible with UCS@school (Bug #18685)
