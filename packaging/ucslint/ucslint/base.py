@@ -20,11 +20,22 @@ RESULT_INT2STR = {
 	}
 
 class UPCMessage(object):
-	def __init__(self, id, msg):
+	def __init__(self, id, msg=None, filename=None, line=None, pos=None):
 		self.id = id
 		self.msg = msg
+		self.filename = filename
+		self.line = line
+		self.pos = pos
 
 	def __str__(self):
+		s = ''
+		if self.filename:
+			s = '%s' % self.filename
+			if self.line != None:
+				s += ':%s' % self.line
+				if self.pos != None:
+					s += ':%s' % self.pos
+			return '%s: %s: %s' % (self.id, s, self.msg)
 		return '%s: %s' % (self.id, self.msg)
 
 	def getId(self):
