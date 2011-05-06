@@ -92,6 +92,7 @@ binary-arch: build install
 	dh_fixperms
 	dh_installdeb
 	dh_shlibdeps
+	ucslint
 
 	# Server kernel packages
 	dh_gencontrol -punivention-kernel-image-2.6.32 -u-VF:KernelVersion="${KERNELVERSION}"

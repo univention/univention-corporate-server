@@ -2,14 +2,13 @@ Source: univention-kernel-image-2.6.32
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7)
+Build-Depends: debhelper (>= 7), ucslint
 Standards-Version: 3.8.2
 
 Package: univention-kernel-image-2.6.32
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
 Depends: linux-image-${F:KernelVersion}, xfsprogs, firmware-bnx2, firmware-bnx2x, firmware-intelwimax, firmware-ipw2x00, firmware-iwlwifi, firmware-linux, firmware-linux-free, firmware-linux-nonfree, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware
-Conflicts: univention-kernel-image-2.6 (<<1.0.1), univention-kernel-image (<<1.0.1)
 Description: UCS - Linux kernel
  This meta-package installs the current kernel image.
  .
@@ -34,7 +33,6 @@ Package: univention-kernel-image-2.6.32-64gb
 Architecture: any
 Pre-Depends: univention-initrd
 Depends: linux-image-${F:KernelVersion64}, xfsprogs, firmware-bnx2, firmware-bnx2x, firmware-intelwimax, firmware-ipw2x00, firmware-iwlwifi, firmware-linux, firmware-linux-free, firmware-linux-nonfree, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware
-Conflicts: univention-kernel-image-2.6-64gb (<<1.0.1), univention-kernel-image-64gb (<<1.0.1)
 Description: UCS - Linux kernel
  This meta-package installs the current kernel image.
  .

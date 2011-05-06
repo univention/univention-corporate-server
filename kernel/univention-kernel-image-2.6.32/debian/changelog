@@ -4,6 +4,8 @@ univention-kernel-image-2.6.32 (2.0.0-1) unstable; urgency=low
   * Drop obsolete metapackages for cpqhealth, avm, serverview, fsc-srv, vmware4,
     vmware5, vmware-gsx, vmware-gsx3, vmware-server, vmware-player, capi-fcpci,
     drbd	
+  * Drop historic Conflicts	
+  * Integrate ucslint	
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 06 May 2011 12:24:43 +0200
 
