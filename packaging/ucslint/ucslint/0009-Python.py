@@ -16,6 +16,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				 '0009-2': [ uub.RESULT_ERROR, 'python file does not specify python version in hashbang' ],
 				 '0009-3': [ uub.RESULT_ERROR, 'python file specifies wrong python version in hashbang' ],
 				 '0009-4': [ uub.RESULT_WARN, 'python file contains whitespace and maybe arguments after python command' ],
+				 '0009-5': [ uub.RESULT_WARN, 'dict.has_key is deprecated in python3 - please use "if key in dict:"' ],
 				 }
 
 	def postinit(self, path):
@@ -36,6 +37,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			if '/.svn/' in dirpath or dirpath.endswith('/.svn'):   # ignore svn files
 				continue
 			for fn in filenames:
+				if fn.endswith('~'):
+					continue
 				try:
 					content = open( os.path.join( dirpath, fn), 'r').read(100)
 					if content.startswith('#!'):
@@ -43,6 +46,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				except:
 					pass
 
+		tester = uub.UPCFileTester()
+		tester.addTest( re.compile('.has_key\s*\('), '0009-5', 'dict.has_key is deprecated in python3 - please use "if key in dict:"', cntmax=0 )
 		for fn in py_files:
 			try:
 				content = open(fn, 'r').read(100)
@@ -53,6 +58,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 			if not content:
 				continue
+
+			tester.open(fn)
+			msglist = tester.runTests()
+			self.msg.extend( msglist )
 
 			firstline = content.splitlines()[0]
 			if firstline.startswith('#! /'):
