@@ -8,7 +8,7 @@ Variables: ldap/maxopenfiles
 
 Type: file
 File: var/lib/univention-ldap/ldap/DB_CONFIG
-Variables: ldap/database/bdb/*
+Variables: ldap/database/bdb/.*
 Variables: ldap/database/type
 
 Type: multifile

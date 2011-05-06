@@ -3,7 +3,7 @@
 # Univention LDAP Client
 #  join script
 #
-# Copyright 2001-2010 Univention GmbH
+# Copyright 2001-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -41,14 +41,14 @@ touch /usr/lib/univention-install/.index.txt
 
 test -n "`grep "univention-ldap-client v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-univention-baseconfig set nsswitch/ldap=yes
+univention-config-registry set nsswitch/ldap=yes
 
 test -x /etc/init.d/nscd && /etc/init.d/nscd restart
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
 if [ "$server_role" = "memberserver" -o "$server_role" = "fatclient" -o "$server_role" = "mobileclient" ]; then
-	univention-baseconfig set  ldap/server/name="$ldap_master"
+	univention-config-registry set  ldap/server/name="$ldap_master"
 fi
 
 test -n "`grep "univention-ldap-client v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-ldap-client v${VERSION} successful" >>/usr/lib/univention-install/.index.txt

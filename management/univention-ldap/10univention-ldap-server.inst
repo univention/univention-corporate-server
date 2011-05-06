@@ -3,7 +3,7 @@
 # Univention LDAP Server
 #  join script
 #
-# Copyright 2001-2010 Univention GmbH
+# Copyright 2001-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -41,7 +41,7 @@ touch /usr/lib/univention-install/.index.txt
 
 test -n "`grep "univention-ldap-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
 subnet=`univention-ipcalc --netmask $interfaces_eth0_netmask --ip $interfaces_eth0_address --output network --calcdns`
 reverse=`univention-ipcalc --netmask $interfaces_eth0_netmask --ip $interfaces_eth0_address --output reverse --calcdns`
@@ -50,14 +50,14 @@ sleep 5
 if [ "$server_role" != "domaincontroller_master" ]; then
 	continue=1; while [ $continue == "1" ];do echo "wait for named ?"; timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`; if [ -z "$timeout" ]; then continue=0; fi; done
 fi
-/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv ldap tcp 0 0 389 $hostname.$domainname.
+/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists $domainname add srv ldap tcp 0 0 389 $hostname.$domainname.
 if [ $? != 0 ]; then exit 1; fi
 
 sleep 5
 if [ "$server_role" != "domaincontroller_master" ]; then
 	continue=1; while [ $continue == "1" ];do echo "wait for named ?"; timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`; if [ -z "$timeout" ]; then continue=0; fi; done
 fi
-/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists --reverse $reverse add zone root@$domainname. 1 28800 10800 604800 108001 $hostname.$domainname.
+/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists --reverse $reverse add zone root@$domainname. 1 28800 10800 604800 108001 $hostname.$domainname.
 if [ $? != 0 ]; then exit 1; fi
 sleep 5
 if [ "$server_role" != "domaincontroller_master" ]; then
@@ -65,20 +65,20 @@ if [ "$server_role" != "domaincontroller_master" ]; then
 fi
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-	forwardZone=`univention-admin dns/forward_zone list $@ --filter zone=$domainname | grep DN | head -1 | sed -e 's/DN: //g'`
-	reverseZone=`univention-admin dns/reverse_zone list $@ --filter subnet=$reverse | grep DN | head -1 | sed -e 's/DN: //g'`
+	forwardZone=`univention-directory-manager dns/forward_zone list "$@" --filter zone=$domainname | grep DN | head -1 | sed -e 's/DN: //g'`
+	reverseZone=`univention-directory-manager dns/reverse_zone list "$@" --filter subnet=$reverse | grep DN | head -1 | sed -e 's/DN: //g'`
 
 	if [ -z "$forwardZone" ]; then echo "DNS forward zone not found"; exit 1; fi
 	if [ -z "$reverseZone" ]; then echo "DNS reverse zone not found"; exit 1; fi
 
 	computerPassword=`makepasswd --chars 8`
 
-	searchResult=`univention-admin computers/domaincontroller_master list $@ | grep name | grep $hostname`
+	searchResult=`univention-directory-manager computers/domaincontroller_master list "$@" | grep name | grep $hostname`
 	if [ -z "$searchResult" -a $server_role = "domaincontroller_master" ]; then
-		univention-admin computers/domaincontroller_master create --tls 0 --position "cn=dc,cn=computers,$ldap_base" --set name=$hostname  --set domain=$domainname --set ip=$interfaces_eth0_address --set dnsEntryZoneForward=$forwardZone --set dnsEntryZoneReverse=$reverseZone --set password=$computerPassword --set unixhome=/dev/null --set shell=/bin/sh --set primaryGroup="cn=DC Backup Hosts,cn=groups,$ldap_base"
+		univention-directory-manager computers/domaincontroller_master create --tls 0 --position "cn=dc,cn=computers,$ldap_base" --set name=$hostname  --set domain=$domainname --set ip=$interfaces_eth0_address --set dnsEntryZoneForward=$forwardZone --set dnsEntryZoneReverse=$reverseZone --set password=$computerPassword --set unixhome=/dev/null --set shell=/bin/sh --set primaryGroup="cn=DC Backup Hosts,cn=groups,$ldap_base"
 		#if [ $? != 0 ]; then exit 1; fi
 
-		univention-baseconfig set ldap/hostdn="cn=$hostname,cn=dc,cn=computers,$ldap_base"
+		univention-config-registry set ldap/hostdn="cn=$hostname,cn=dc,cn=computers,$ldap_base"
 
 		if [ -e /etc/machine.secret ]; then
 			cat /etc/machine.secret >>/etc/machine.secret.SAVE
@@ -93,7 +93,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	if [ "$server_role" != "domaincontroller_master" ]; then
 		continue=1; while [ $continue == "1" ];do echo "wait for named ?"; timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`; if [ -z "$timeout" ]; then continue=0; fi; done
 	fi
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv domaincontroller_master tcp 0 0 0 $hostname.$domainname.
+	/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists $domainname add srv domaincontroller_master tcp 0 0 0 $hostname.$domainname.
 
 
 	sleep 5
@@ -101,7 +101,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		continue=1; while [ $continue == "1" ];do echo "wait for named ?"; timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`; if [ -z "$timeout" ]; then continue=0; fi; done
 	fi
 
-        univention-admin settings/packages create --superordinate "cn=packages,cn=univention,$ldap_base" --set name=Univention \
+        univention-directory-manager settings/packages create --superordinate "cn=packages,cn=univention,$ldap_base" --set name=Univention \
                                                         --append packageList=univention-5250 \
                                                         --append packageList=univention-application-server  \
                                                         --append packageList=univention-fax-client  \
@@ -127,7 +127,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
                                                         --append packageList=univention-slave-pdc  \
                                                         --append packageList=univention-management-console
 
-        univention-admin settings/packages create --superordinate "cn=packages,cn=univention,$ldap_base" --set name=Fernwartung \
+        univention-directory-manager settings/packages create --superordinate "cn=packages,cn=univention,$ldap_base" --set name=Fernwartung \
                                                         --append packageList=openssh-client  \
                                                         --append packageList=openssh-server  \
                                                         --append packageList=tightvncserver  \
@@ -137,7 +137,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
                                                         --append packageList=krfb  \
 							--append packageList=nxclient 
 
-        univention-admin settings/packages create --superordinate "cn=packages,cn=univention,$ldap_base" --set name=Tools \
+        univention-directory-manager settings/packages create --superordinate "cn=packages,cn=univention,$ldap_base" --set name=Tools \
                                                         --append packageList=wget  \
                                                         --append packageList=screen  \
                                                         --append packageList=mutt  \
@@ -156,7 +156,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 							--append packageList=memtester  \
 							--append packageList=traceroute
 
-        univention-admin settings/packages create --superordinate "cn=packages,cn=univention,$ldap_base" --set name=Multimedia \
+        univention-directory-manager settings/packages create --superordinate "cn=packages,cn=univention,$ldap_base" --set name=Multimedia \
                                                         --append packageList=mplayer  \
                                                         --append packageList=msttcorefonts  \
                                                         --append packageList=k3b  \
@@ -165,7 +165,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
                                                         --append packageList=amarok  \
                                                         --append packageList=kaffeine
 
-        univention-admin settings/packages create --superordinate "cn=packages,cn=univention,$ldap_base" --set name=Entwicklung \
+        univention-directory-manager settings/packages create --superordinate "cn=packages,cn=univention,$ldap_base" --set name=Entwicklung \
                                                         --append packageList=debhelper  \
                                                         --append packageList=build-essential  \
                                                         --append packageList=autoconf  \

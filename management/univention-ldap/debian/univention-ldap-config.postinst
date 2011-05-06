@@ -3,7 +3,7 @@
 # Univention LDAP Configuration
 #  postinst script for the debian package
 #
-# Copyright 2001-2010 Univention GmbH
+# Copyright 2001-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -38,9 +38,9 @@ then
     server_role=$(ucr get server/role)
     if [ "$server_role" = "domaincontroller_master" ]
 	then
-	/etc/init.d/slapd restart
+		/etc/init.d/slapd restart
     else
-	grep -q crestart /etc/init.d/slapd && /etc/init.d/slapd crestart || true
+		grep -q crestart /etc/init.d/slapd && /etc/init.d/slapd crestart || true
     fi
 fi
 

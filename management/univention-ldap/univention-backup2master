@@ -3,7 +3,7 @@
 # Univention LDAP Server
 #  converts a UCS backup into a UCS master
 #
-# Copyright 2001-2010 Univention GmbH
+# Copyright 2001-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval `univention-baseconfig shell`
+eval `univention-config-registry shell`
 
 #remove replication listener modul
 dpkg-divert --divert /usr/lib/univention-directory-listener/replication.py.divert --rename --add /usr/lib/univention-directory-listener/system/replication.py
@@ -44,12 +44,12 @@ test -x /etc/init.d/univention-directory-listener && /etc/init.d/univention-dire
 
 old_ldap_master="$ldap_master"
 # set baseconfig variables
-univention-baseconfig set ldap/master=$hostname.$domainname
-univention-baseconfig set ldap/server/type=master
-univention-baseconfig set server/role=domaincontroller_master
-univention-baseconfig set kerberos/adminserver=$hostname.$domainname
-univention-baseconfig set windows/wins-support=yes
-univention-baseconfig set ldap/translogfile=/var/lib/univention-ldap/listener/listener
+univention-config-registry set ldap/master=$hostname.$domainname
+univention-config-registry set ldap/server/type=master
+univention-config-registry set server/role=domaincontroller_master
+univention-config-registry set kerberos/adminserver=$hostname.$domainname
+univention-config-registry set windows/wins-support=yes
+univention-config-registry set ldap/translogfile=/var/lib/univention-ldap/listener/listener
 
 if [ -e /etc/univention/ssl/ucsCA/CAcert.pem ]; then
 	cp /etc/univention/ssl/ucsCA/CAcert.pem /var/www/ucs-root-ca.crt
@@ -67,7 +67,7 @@ test -x /etc/init.d/univention-directory-listener && /etc/init.d/univention-dire
 
 # set ServerRole to master
 temp_file=`mktemp`
-echo "dn: `univention-baseconfig get ldap/hostdn`"    >>$temp_file
+echo "dn: `univention-config-registry get ldap/hostdn`"    >>$temp_file
 echo "changetype: modify"                             >>$temp_file
 echo "replace: univentionServerRole"                  >>$temp_file
 echo "univentionServerRole: master"                   >>$temp_file

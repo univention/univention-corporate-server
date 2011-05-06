@@ -3,11 +3,11 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper, univention-config-dev
+Build-Depends: debhelper (>> 7), univention-config-dev, ucslint
 
 Package: univention-ldap-server
 Architecture: all
-Pre-Depends: slapd (>>2.1), univention-ldap-client, univention-config-registry | univention-baseconfig
+Pre-Depends: slapd (>>2.1), univention-ldap-client, univention-config-registry
 Depends: db4.7-util, univention-ssl, univention-ldap-config, whois, makepasswd, univention-directory-manager-tools (>>6.0.110), univention-newsid, univention-ipcalc, univention-ldap-acl-master | univention-ldap-acl-slave, bind9-host
 Conflicts: univention-5250 (<< 0.5), univention-mail-cyrus-quota-master, univention-admin-nagios (<< 1.0)
 Replaces: univention-mail-cyrus-quota-master
@@ -22,7 +22,7 @@ Description: UCS - LDAP server configuration
 
 Package: univention-ldap-client
 Architecture: all
-Depends: ldap-utils, univention-config-registry | univention-baseconfig, libldap2 (>> 2.1), univention-pam
+Depends: ldap-utils, univention-config-registry, libldap2 (>> 2.1), univention-pam
 Description: UCS - LDAP client configuration
  This package contains the configuration for the OpenLDAP
  client tools.

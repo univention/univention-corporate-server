@@ -3,7 +3,7 @@
 # Univention LDAP Server
 #  creates an LDIF backup on UCS master and UCS backup
 #
-# Copyright 2001-2010 Univention GmbH
+# Copyright 2001-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 
-eval `univention-baseconfig shell`
+eval `univention-config-registry shell`
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 
@@ -41,7 +41,7 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 
 	chmod 600 $ldapbackupname
 
-	ldapsearch -h localhost -LLL -x -w `cat /etc/ldap.secret` -D "cn=admin,$ldap_base" -b "$ldap_base" >>$ldapbackupname 2>&1 || echo "LDAP could not be dumped!"
+	slapcat >$ldapbackupname 2>&1 || echo "LDAP could not be dumped!"
 
 	gzip -9 $ldapbackupname 2>/dev/null
 

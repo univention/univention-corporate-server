@@ -3,7 +3,7 @@
 # Univention LDAP Client
 #  postinst script for the debian package
 #
-# Copyright 2001-2010 Univention GmbH
+# Copyright 2001-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.6; then
-	univention-baseconfig set nsswitch/ldap=yes
+	univention-config-registry set nsswitch/ldap=yes
 
 	test -x /etc/init.d/nscd && /etc/init.d/nscd restart
 fi

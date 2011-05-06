@@ -1,3 +1,19 @@
+univention-ldap (8.0.1-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22431):
+    * Bump version for UCS 3.0
+    * Replace univention-baseconfig with univention-config-registry
+    * Replace static UCR header in the UCR templates with '@%@UCRWARNING=#
+      @%@'
+    * Removed no longer used univention-ldap-server.preinst
+    * Removed old transition code from postinst files
+    * Update copyright to 2011
+    * Update to debhelper 7
+  * Use slapcat for dumping the ldap backup (Bug #20215)
+  * Set ldap/idetimeout by default to 360 seconds (Bug #17706)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 May 2011 08:39:13 +0200
+
 univention-ldap (7.0.20-1) unstable; urgency=low
 
   * added attributes "zoneName", "relativeDomainName" and "name" to ldap

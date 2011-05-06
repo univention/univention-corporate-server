@@ -3,7 +3,7 @@
 # Univention LDAP Server
 #  join script
 #
-# Copyright 2001-2010 Univention GmbH
+# Copyright 2001-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -41,7 +41,7 @@ touch /usr/lib/univention-install/.index.txt
 
 test -n "`grep "univention-ldap-server-init v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
 if [ -z "$ldap_server_type" ]; then
 	echo "ldap/server/type not set"
@@ -70,7 +70,7 @@ if [ -z "$files" ] ; then
 	killall -9 slapd >/dev/null 2>&1
 
 	rm -f /var/lib/univention-ldap/ldap/*
-	univention-baseconfig commit /var/lib/univention-ldap/ldap/DB_CONFIG
+	univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
 
 	if [ -z "$LDAP_SECRET" ]; then
 		pw_crypt=`mkpasswd --hash=md5 -s < /etc/ldap.secret`
@@ -92,11 +92,11 @@ if [ -z "$files" ] ; then
 	cat /usr/share/univention-ldap/base.ldif | \
 		 sed -e \
 		"s|@@%%@@ldap\.pw@@%%@@|$pw_crypt|;s|@@%%@@backup\.pw@@%%@@|$backup_crypt|;s|@@%%@@sambadomain@@%%@@|$sambadomain|;s|@@%%@@firstdc@@%%@@|$firstdc|;s|@@%%@@realm@@%%@@|$realm|;s|@@%%@@sid@@%%@@|$sid|;s|@@%@@domain@@%@@|$Domain|" | \
-		univention-baseconfig filter | slapadd >>/var/log/univention/join.log 2>&1
+		univention-config-registry filter | slapadd >>/var/log/univention/join.log 2>&1
 
 
-	univention-baseconfig set windows/domain?$sambadomain
-	univention-baseconfig set kerberos/realm?$realm
+	univention-config-registry set windows/domain?$sambadomain
+	univention-config-registry set kerberos/realm?$realm
 	/etc/init.d/slapd start
 
 	test -x /usr/sbin/nscd && /usr/sbin/nscd -i passwd
