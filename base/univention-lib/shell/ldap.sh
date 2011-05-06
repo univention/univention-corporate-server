@@ -87,3 +87,41 @@ ucs_getGroupMembersRecursive(){ # <groupDN>
 		fi
 	done < <(ucs_getGroupMembersDirect "$1") | sort -u
 }
+
+#
+# ucs_addServiceToLocalhost adds a new service entry to local UDM host object. This can be easily used
+# in join scripts to add a new service (like "nagios-server") after installation of corresponding service 
+# package (luke "univention-nagios-server"). Additional arguments like UDM credentials will be passed 
+# through.
+# ucs_addServiceToLocalhost <servicename> [<udm-credentials>]
+# e.g. ucs_addServiceToLocalhost "nagios-server" "$@"
+#
+ucs_addServiceToLocalhost () { # <servicename> [<udm-credentials>]
+	local server_role ldap_base ldap_hostdn
+	local servicename="$1"
+	eval "$(ucr shell server/role ldap/base ldap/hostdn)"
+	shift
+	ucs_addServiceToHost "$servicename" "$server_role" "$ldap_hostdn" "$@"
+}
+
+#
+# ucs_addServiceToLocalhost adds a new service entry to specified UDM host object. This can be easily used
+# in e.g. join scripts to add a new service. Additional arguments like UDM credentials will be passed 
+# through.
+# ucs_addServiceToHost <servicename> <udm-module-name> <dn> [<udm-credentials>]
+# e.g. ucs_addServiceToHost "nagios-server" "domaincontroller_slave" "cn=myslave,cn=dc,cn=computers,dc=test,dc=system" "$@"
+#
+ucs_addServiceToHost () { # <servicename> <udm-module-name> <dn> [options]
+	   local servicename="$1"
+	   local modulename="$2"
+	   local hostdn="$3"
+	   local ldap_base="$(ucr get ldap/base)"
+	   if ! shift 3
+	   then
+			   echo "ucs_addServiceToHost: wrong argument number" >&2
+			   return 2
+	   fi
+	   univention-directory-manager container/cn	  create "$@" --ignore_exists --set name="services" --position "cn=univention,$ldap_base"
+	   univention-directory-manager settings/service  create "$@" --ignore_exists --set name="$servicename"  --position "cn=services,cn=univention,$ldap_base"
+	   univention-directory-manager "computers/$modulename" modify "$@" --dn "$hostdn" --append service="$servicename"
+}

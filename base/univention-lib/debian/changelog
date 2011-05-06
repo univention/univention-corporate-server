@@ -1,3 +1,9 @@
+univention-lib (1.0.3-1) unstable; urgency=low
+
+  * added shell functions for adding a new service entry (Bug #21265)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 06 May 2011 12:43:02 +0200
+
 univention-lib (1.0.2-2) unstable; urgency=low
 
   * set compat level to 7 (Bug #22160)
