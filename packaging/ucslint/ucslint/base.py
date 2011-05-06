@@ -1,6 +1,8 @@
 # -*- coding: iso-8859-15 -*-
 #
 
+import re
+
 RESULT_UNKNOWN = -1
 RESULT_OK = 0
 RESULT_WARN = 1
@@ -56,3 +58,56 @@ class UniventionPackageCheckBase(object):
 		""" return result """
 		return self.msg
 
+class UCSLintException(Exception): pass
+
+class DebianControlNotEnoughSections(UCSLintException): pass
+
+class DebianControlParsingError(UCSLintException): pass
+
+class FailedToReadFile(UCSLintException):
+	def __init__(self, fn):
+		UCSLintException.__init__(self)
+		self.fn = fn
+
+class DebianControlEntry(dict):
+	def __init__(self, content):
+		dict.__init__(self)
+
+		lines = content.splitlines()
+		i = 0
+		inDescription = False
+		# handle multiline entries and merge them into one line
+		while i < len(lines):
+			if lines[i].startswith(' ') or lines[i].startswith('\t'):
+				if not inDescription:
+					lines[i-1] += ' %s' % lines[i].lstrip(' \t')
+					del lines[i]
+					continue
+			i += 1
+
+		# split lines into dictionary
+		for line in lines:
+			if not ':' in line:
+				raise DebianControlParsingError()
+			key, val = line.split(': ',1)
+			self[ key ] = val
+
+
+class ParserDebianControl(object):
+	def __init__(self, filename):
+		self.filename = filename
+		self.source_section = None
+		self.binary_sections = []
+
+		try:
+			content = open(self.filename, 'r').read()
+		except:
+			raise FailedToReadFile(self.filename)
+
+		parts = content.split('\n\n')
+		if len(parts) < 2:
+			raise DebianControlNotEnoughSections()
+
+		self.source_section = DebianControlEntry(parts[0])
+		for part in parts[1:]:
+			self.binary_sections.append( DebianControlEntry(part) )

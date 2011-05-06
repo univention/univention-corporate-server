@@ -12,7 +12,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		self.name = '0011-Control'
 
 	def getMsgIds(self):
-		return { '0011-1': [ uub.RESULT_WARN, 'failed to open file' ],
+		return { '0011-1': [ uub.RESULT_WARN, 'failed to open/read file' ],
 				 '0011-2': [ uub.RESULT_ERROR, 'source package name differs in debian/control an debian/changelog' ],
 				 '0011-3': [ uub.RESULT_WARN, 'wrong section - should be "Univention"' ],
 				 '0011-4': [ uub.RESULT_WARN, 'wrong priority - should be "optional"' ],
@@ -21,6 +21,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				 '0011-7': [ uub.RESULT_ERROR, 'XS-Python-Version without XB-Python-Version in binary package entries' ],
 				 '0011-8': [ uub.RESULT_WARN, 'XS-Python-Version should be "2.4"' ],
 				 '0011-9': [ uub.RESULT_ERROR, 'cannot determine source package name' ],
+				 '0011-10': [uub.RESULT_ERROR, 'parsing error in debian/control' ],
+				 '0011-11': [uub.RESULT_WARN,  'debian/control: XS-Python-Version is not required any longer' ],
+				 '0011-12': [uub.RESULT_ERROR, 'debian/control: please use python-support instead of python-central in Build-Depends' ],
+				 '0011-13': [uub.RESULT_WARN,  'debian/control: ucslint is missing in Build-Depends' ],
 				 }
 
 	def postinit(self, path):
@@ -39,14 +43,17 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			content_changelog = open(fn, 'r').read(1024)
 		except:
 			self.msg.append( uub.UPCMessage( '0011-1', 'failed to open and read file %s' % fn ) )
+			return
 
 		fn = os.path.join(path, 'debian', 'control')
 		try:
-			content_control = open(fn, 'r').read()
-		except:
+			parser = uub.ParserDebianControl(fn)
+		except uub.FailedToReadFile:
 			self.msg.append( uub.UPCMessage( '0011-1', 'failed to open and read file %s' % fn ) )
 			return
-
+		except uub.UCSLintException:
+			self.msg.append( uub.UPCMessage( '0011-10', 'parsing error in %s' % fn ) )
+			return
 
 		# compare package name
 		reChangelogPackage = re.compile('^([a-z0-9-]+) \((.*?)\) (.*?)\n')
@@ -57,12 +64,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			srcpkgname = None
 			self.msg.append( uub.UPCMessage( '0011-9', 'cannot determine source package name in debian/changelog' ) )
 
-		reControlPackage = re.compile('^Source: ([a-z0-9-]+)\n')
-		match = reControlPackage.match(content_control)
-		if match:
-			controlpkgname = match.group(1)
-		else:
-			controlpkgname = None
+		controlpkgname = parser.source_section.get('Source')
+		if not controlpkgname:
 			self.msg.append( uub.UPCMessage( '0011-9', 'cannot determine source package name in debian/control' ) )
 
 		if srcpkgname and controlpkgname:
@@ -71,31 +74,20 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 
 		# parse source section of debian/control
-		source_entries = {}
-		for line in content_control.splitlines():
-			if line == '':
-				break
-			key, val = line.split(': ',1)
-			source_entries[ key ] = val
-
-		if not source_entries.get('Section', '') in ( 'univention' ):
+		if not parser.source_section.get('Section', '') in ( 'univention' ):
 			self.msg.append( uub.UPCMessage( '0011-3', 'debian/control: wrong Section entry - should be "univention"' ) )
 
-		if not source_entries.get('Priority', '') in ( 'optional' ):
+		if not parser.source_section.get('Priority', '') in ( 'optional' ):
 			self.msg.append( uub.UPCMessage( '0011-4', 'debian/control: wrong Priority entry - should be "optional"' ) )
 
-		if not source_entries.get('Maintainer', '') in ( 'Univention GmbH <packages@univention.de>' ):
+		if not parser.source_section.get('Maintainer', '') in ( 'Univention GmbH <packages@univention.de>' ):
 			self.msg.append( uub.UPCMessage( '0011-5', 'debian/control: wrong Maintainer entry - should be "Univention GmbH <packages@univention.de>"' ) )
 
-		if source_entries.get('XS-Python-Version', ''):
-			if not source_entries.get('XS-Python-Version', '') in ( '2.4' ):
-				self.msg.append( uub.UPCMessage( '0011-8', 'debian/control: XS-Python-Version should be "2.4"' ) )
+		if parser.source_section.get('XS-Python-Version', ''):
+			self.msg.append( uub.UPCMessage( '0011-11', 'debian/control: XS-Python-Version is not required any longer' ) )
 
-			if not 'python-central' in source_entries.get('Build-Depends', ''):
-				self.msg.append( uub.UPCMessage( '0011-6', 'debian/control: XS-Python-Version is used but no python-central in Build-Depends' ) )
+		if 'python-central' in parser.source_section.get('Build-Depends', ''):
+			self.msg.append( uub.UPCMessage( '0011-12', 'debian/control: please use python-support instead of python-central in Build-Depends' ) )
 
-			for l in content_control.splitlines():
-				if l.startswith('XB-Python-Version: '):
-					break
-			else:
-				self.msg.append( uub.UPCMessage( '0011-7', 'debian/control: XS-Python-Version is used without XB-Python-Version in binary section' ) )
+		if not 'ucslint' in parser.source_section.get('Build-Depends', ''):
+			self.msg.append( uub.UPCMessage( '0011-13', 'debian/control: ucslint is missing in Build-Depends' ) )
