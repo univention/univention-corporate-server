@@ -2,7 +2,7 @@
  * Univention Debug
  *  debug.c
  *
- * Copyright 2004-2010 Univention GmbH
+ * Copyright 2004-2011 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -30,25 +30,28 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <time.h>
+#include <syslog.h>
 
-#define _DEBUG_ARRAY_
 #include <univention/debug.h>
 
 #define UV_DEBUG_DEFAULT        UV_DEBUG_WARN
 
-int  *univention_debug_level;
-char *univention_debug_filename = NULL;
-FILE *univention_debug_file = NULL;
-char univention_debug_flush;
-char univention_debug_function;
+static enum uv_debug_level *univention_debug_level;
+static const char *univention_debug_filename = NULL;
+static FILE *univention_debug_file = NULL;
+static enum uv_debug_flag_flush univention_debug_flush;
+static enum uv_debug_flag_function univention_debug_function;
 
-static char debug_init = 0;
+static bool univention_debug_ready = false;
 
-const char *univention_debug_id_text[]={
+static const char *univention_debug_id_text[] = {
 	"MAIN       ",
 	"LDAP       ",
 	"USERS      ",
@@ -65,7 +68,7 @@ const char *univention_debug_id_text[]={
 	"KERBEROS   "
 };
 
-const char *univention_debug_level_text[]={
+static const char *univention_debug_level_text[] = {
 	"( ERROR   ) : ",
 	"( WARN    ) : ",
 	"( PROCESS ) : ",
@@ -73,91 +76,148 @@ const char *univention_debug_level_text[]={
 	"( ALL     ) : "
 };
 
-void univention_debug_init( char *logfile, char flush, char function )
+void univention_debug_init(const char *logfile, enum uv_debug_flag_flush flush, enum uv_debug_flag_function function)
 {
 	int i;
 	time_t t;
-	struct tm *tm;
+	struct tm tm;
 
-	if ( debug_init == 1 ) {
+	if (univention_debug_ready) {
 		return;
 	}
 
-	debug_init = 1;
-	
-	univention_debug_level = malloc (DEBUG_MODUL_COUNT * sizeof(int));
-	for( i=0; i<DEBUG_MODUL_COUNT; i++)
-	{
+	univention_debug_level = malloc(DEBUG_MODUL_COUNT * sizeof(int));
+	if (univention_debug_level == NULL) {
+		fprintf(stderr, "Could not initialize univention_debug!\n");
+		return;
+	}
+
+	for (i=0; i<DEBUG_MODUL_COUNT; i++) {
 		univention_debug_level[i] = UV_DEBUG_DEFAULT;
 	}
 
-    if ( !strcmp(logfile,"stderr" ) )  univention_debug_file = stderr;
-    else if ( !strcmp(logfile,"stdout" ) )  univention_debug_file = stdout;
-	else if ( logfile != NULL ) {
-		if( (univention_debug_file = fopen(logfile, "a+"))  == NULL ) {
-			fprintf(stderr,"Could not open logfile \"%s\"\n", univention_debug_filename);
-			return /*1*/;
-		}
-	}
-
-	if ( flush == UV_DEBUG_FLUSH) univention_debug_flush = UV_DEBUG_FLUSH;
-	else univention_debug_flush = UV_DEBUG_NO_FLUSH;
-
-	if ( function == UV_DEBUG_FUNCTION) univention_debug_function = UV_DEBUG_FUNCTION;
-	else univention_debug_function = UV_DEBUG_NO_FUNCTION;
-
-	t=time(NULL);
-	tm=localtime(&t);
-
-	fprintf(univention_debug_file,"%02d.%02d.%02d %02d:%02d:%02d  DEBUG_INIT\n",tm->tm_mday, tm->tm_mon+1, tm->tm_year-100, tm->tm_hour,tm->tm_min, tm->tm_sec );
-	fflush(univention_debug_file);
-}
-
-void univention_debug_reopen( void )
-{
-	if ( univention_debug_file == stderr || univention_debug_file == stdout)
-		return;
-	if ( univention_debug_file != NULL )
-		fclose(univention_debug_file);
-	
-	if ( strcmp(univention_debug_filename, "stderr" ) == 0 )
+	if (!strcmp(logfile,"stderr"))
 		univention_debug_file = stderr;
-	else if ( strcmp(univention_debug_filename ,"stdout" ) == 0 )
+	else if (!strcmp(logfile,"stdout"))
 		univention_debug_file = stdout;
-	else if ( univention_debug_filename != NULL ) {
-		if( (univention_debug_file = fopen(univention_debug_filename, "a+"))  == NULL ) {
-			fprintf(stderr,"Could not open logfile \"%s\"\n", univention_debug_filename);
+	else if (logfile != NULL) {
+		if ((univention_debug_file = fopen(logfile, "a+")) == NULL) {
+			free(univention_debug_level);
+			univention_debug_level = NULL;
+			fprintf(stderr, "Could not open logfile \"%s\"\n", univention_debug_filename);
+			return /*1*/;
+		}
+	}
+
+	univention_debug_flush = flush;
+	univention_debug_function = function;
+
+	t = time(NULL);
+	localtime_r(&t, &tm);
+
+	fprintf(univention_debug_file, "%02d.%02d.%02d %02d:%02d:%02d  DEBUG_INIT\n", tm.tm_mday, tm.tm_mon+1, tm.tm_year-100, tm.tm_hour,tm.tm_min, tm.tm_sec);
+	fflush(univention_debug_file);
+
+	univention_debug_ready = true;
+}
+
+void univention_debug(enum uv_debug_category id, enum uv_debug_level level, const char *fmt, ...)
+{
+	va_list ap;
+	time_t t;
+	struct tm tm;
+	if (univention_debug_file && level <= univention_debug_level[id]) {
+		t = time(NULL);
+		localtime_r(&t, &tm);
+		fprintf(univention_debug_file,
+				"%02d.%02d.%02d %02d:%02d:%02d  %s %s",
+				tm.tm_mday, tm.tm_mon+1, tm.tm_year-100,
+				tm.tm_hour, tm.tm_min, tm.tm_sec,
+				univention_debug_id_text[id],
+				univention_debug_level_text[level]);
+		va_start(ap, fmt);
+		vfprintf(univention_debug_file, fmt, ap);
+		va_end(ap);
+		fprintf(univention_debug_file, "\n");
+		if (level == UV_DEBUG_ERROR) {
+			va_start(ap, fmt);
+			vsyslog(LOG_ERR, fmt, ap);
+			va_end(ap);
+		}
+		if (univention_debug_flush == UV_DEBUG_FLUSH) {
+			fflush(univention_debug_file);
+		}
+	}
+}
+
+void univention_debug_begin(const char *s)
+{
+	if (univention_debug_file && univention_debug_function == UV_DEBUG_FUNCTION) {
+		fprintf(univention_debug_file, "UNIVENTION_DEBUG_BEGIN  : %s\n", s);
+		if (univention_debug_flush == UV_DEBUG_FLUSH)
+			fflush(univention_debug_file);
+	}
+}
+
+void univention_debug_end(const char *s)
+{
+	if (univention_debug_file && univention_debug_function == UV_DEBUG_FUNCTION) {
+		fprintf(univention_debug_file, "UNIVENTION_DEBUG_END    : %s\n", s);
+		if (univention_debug_flush == UV_DEBUG_FLUSH)
+			fflush(univention_debug_file);
+	}
+}
+
+void univention_debug_reopen(void)
+{
+	if (univention_debug_file == stderr || univention_debug_file == stdout)
+		return;
+	if (univention_debug_file != NULL) {
+		fclose(univention_debug_file);
+		univention_debug_file = NULL;
+	}
+
+	if (!strcmp(univention_debug_filename, "stderr" ))
+		univention_debug_file = stderr;
+	else if (!strcmp(univention_debug_filename ,"stdout"))
+		univention_debug_file = stdout;
+	else if (univention_debug_filename != NULL) {
+		if ((univention_debug_file = fopen(univention_debug_filename, "a+")) == NULL) {
+			fprintf(stderr, "Could not open logfile \"%s\"\n", univention_debug_filename);
 			return /*1*/;
 		}
 	}
 }
 
-void univention_debug_exit ( void )
+void univention_debug_exit(void)
 {
 	time_t t;
-	struct tm *tm;
+	struct tm tm;
 
-	if ( debug_init == 0 ) {
+	if (!univention_debug_ready) {
 		return;
 	}
-	debug_init = 0;
-	
-	t=time(NULL);
-	tm=localtime(&t);
 
-	fprintf(univention_debug_file,"%02d.%02d.%02d %02d:%02d:%02d  DEBUG_EXIT\n",tm->tm_mday, tm->tm_mon+1, tm->tm_year-100, tm->tm_hour,tm->tm_min, tm->tm_sec );
+	t = time(NULL);
+	localtime_r(&t, &tm);
+
+	fprintf(univention_debug_file, "%02d.%02d.%02d %02d:%02d:%02d  DEBUG_EXIT\n", tm.tm_mday, tm.tm_mon+1, tm.tm_year-100, tm.tm_hour,tm.tm_min, tm.tm_sec);
 	fflush(univention_debug_file);
 	fclose(univention_debug_file);
 	univention_debug_file = NULL;
+
+	free(univention_debug_level);
+	univention_debug_level = NULL;
+
+	univention_debug_ready = false;
 }
 
-void univention_debug_set_level ( int id, int level )
+void univention_debug_set_level(enum uv_debug_category id, enum uv_debug_level level)
 {
 	univention_debug_level[id] = level;
 }
 
-void univention_debug_set_function ( char function )
+void univention_debug_set_function(enum uv_debug_flag_function function)
 {
 	univention_debug_function = function;
 }
-

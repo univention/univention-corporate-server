@@ -1,3 +1,14 @@
+univention-debug (5.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.0 (Bug #22160)
+  * Switch to python2.6
+  * Switch to debhelper7.
+  * Convert python/Makefile to setup.py using distutil.
+  * Fix memeory leak on univention_debug_exit().
+  * Switch from macro to function declaration.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 06 May 2011 12:47:09 +0200
+
 univention-debug (4.2.0-1) unstable; urgency=low
 
   * Fix format string vulnerability (Bug #21642)

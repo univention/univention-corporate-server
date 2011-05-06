@@ -2,7 +2,7 @@
  * Univention Debug
  *  py_debug.c
  *
- * Copyright 2004-2010 Univention GmbH
+ * Copyright 2004-2011 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -50,8 +50,7 @@ static PyObject *py_univention_debug_debug(PyObject *self, PyObject *args)
     int level;
     char *string;
 
-    if ( !PyArg_ParseTuple(args,"iis",&id,&level,&string) )
-    {
+    if (!PyArg_ParseTuple(args, "iis", &id, &level, &string)) {
         return NULL;
     }
 
@@ -64,10 +63,9 @@ static PyObject *py_univention_debug_debug(PyObject *self, PyObject *args)
 static PyObject *py_univention_debug_init(PyObject *self, PyObject *args)
 {
     char *logfile;
-    int flush,function;
+    int flush, function;
 
-    if ( !PyArg_ParseTuple(args,"sii",&logfile,&flush,&function))
-    {
+    if (!PyArg_ParseTuple(args, "sii", &logfile, &flush, &function)) {
         return NULL;
     }
 
@@ -82,12 +80,11 @@ static PyObject *py_univention_debug_set_level(PyObject *self, PyObject *args)
     int id;
     int level;
 
-    if ( !PyArg_ParseTuple(args,"ii",&id,&level))
-    {
+    if (!PyArg_ParseTuple(args, "ii", &id, &level)) {
         return NULL;
     }
 
-    univention_debug_set_level(id,level);
+    univention_debug_set_level(id, level);
 
     Py_INCREF(Py_None);
     return Py_None;
@@ -97,8 +94,7 @@ static PyObject *py_univention_debug_set_function(PyObject *self, PyObject *args
 {
     int function;
 
-    if ( !PyArg_ParseTuple(args,"i",&function))
-    {
+    if (!PyArg_ParseTuple(args, "i", &function)) {
         return NULL;
     }
 
@@ -112,8 +108,7 @@ static PyObject *py_univention_debug_begin(PyObject *self, PyObject *args)
 {
     char *string;
 
-    if ( !PyArg_ParseTuple(args,"s",&string))
-    {
+    if (!PyArg_ParseTuple(args, "s", &string)) {
         return NULL;
     }
 
@@ -127,8 +122,7 @@ static PyObject *py_univention_debug_end(PyObject *self, PyObject *args)
 {
     char *string;
 
-    if ( !PyArg_ParseTuple(args,"s",&string))
-    {
+    if (!PyArg_ParseTuple(args, "s", &string)) {
         return NULL;
     }
 
@@ -140,25 +134,25 @@ static PyObject *py_univention_debug_end(PyObject *self, PyObject *args)
 
 static PyObject *py_univention_debug_exit(PyObject *self, PyObject *args)
 {
-	univention_debug_exit();
+    univention_debug_exit();
 
-	Py_INCREF(Py_None);
+    Py_INCREF(Py_None);
     return Py_None;
 }
 
 
 static struct PyMethodDef debug_methods[] = {
     {"debug", py_univention_debug_debug, METH_VARARGS, "Print a debug message" },
-    {"init",py_univention_debug_init, METH_VARARGS, "Init the debug module"},
+    {"init", py_univention_debug_init, METH_VARARGS, "Init the debug module"},
     {"set_level", py_univention_debug_set_level, METH_VARARGS, "set the level for one debug modul"},
     {"set_function", py_univention_debug_set_function, METH_VARARGS, "Printing funcion entry"},
     {"begin", py_univention_debug_begin, METH_VARARGS, "Function starts here"},
     {"end", py_univention_debug_end, METH_VARARGS, "Function ends here"},
-	{"exit", py_univention_debug_exit, METH_VARARGS, "Close debuglog"},
+    {"exit", py_univention_debug_exit, METH_VARARGS, "Close debuglog"},
     { NULL, NULL, 0, NULL}
 };
 
-void init_debug()
+void init_debug(void)
 {
     PyObject *module, *dict;
 
@@ -166,29 +160,30 @@ void init_debug()
 
     dict = PyModule_GetDict(module);
 
-    PyDict_SetItemString(dict, "ERROR",PyInt_FromLong( UV_DEBUG_ERROR));
-    PyDict_SetItemString(dict, "WARN",PyInt_FromLong( UV_DEBUG_WARN));
-    PyDict_SetItemString(dict, "PROCESS",PyInt_FromLong( UV_DEBUG_PROCESS));
-    PyDict_SetItemString(dict, "INFO",PyInt_FromLong( UV_DEBUG_INFO));
-    PyDict_SetItemString(dict, "ALL",PyInt_FromLong( UV_DEBUG_ALL));
+    PyDict_SetItemString(dict, "ERROR", PyInt_FromLong(UV_DEBUG_ERROR));
+    PyDict_SetItemString(dict, "WARN", PyInt_FromLong(UV_DEBUG_WARN));
+    PyDict_SetItemString(dict, "PROCESS", PyInt_FromLong(UV_DEBUG_PROCESS));
+    PyDict_SetItemString(dict, "INFO", PyInt_FromLong(UV_DEBUG_INFO));
+    PyDict_SetItemString(dict, "ALL", PyInt_FromLong(UV_DEBUG_ALL));
 
-    PyDict_SetItemString(dict, "MAIN",PyInt_FromLong( UV_DEBUG_MAIN));
-    PyDict_SetItemString(dict, "LDAP",PyInt_FromLong( UV_DEBUG_LDAP));
-    PyDict_SetItemString(dict, "USERS",PyInt_FromLong( UV_DEBUG_USERS));
-    PyDict_SetItemString(dict, "NETWORK",PyInt_FromLong( UV_DEBUG_NETWORK));
-    PyDict_SetItemString(dict, "SSL",PyInt_FromLong( UV_DEBUG_SSL));
-    PyDict_SetItemString(dict, "SLAPD",PyInt_FromLong( UV_DEBUG_SLAPD));
-    PyDict_SetItemString(dict, "SEARCH",PyInt_FromLong( UV_DEBUG_SEARCH));
-    PyDict_SetItemString(dict, "TRANSFILE",PyInt_FromLong( UV_DEBUG_TRANSFILE));
-    PyDict_SetItemString(dict, "LISTENER",PyInt_FromLong( UV_DEBUG_LISTENER));
-    PyDict_SetItemString(dict, "POLICY",PyInt_FromLong( UV_DEBUG_POLICY));
-    PyDict_SetItemString(dict, "ADMIN",PyInt_FromLong( UV_DEBUG_ADMIN));
-    PyDict_SetItemString(dict, "CONFIG",PyInt_FromLong( UV_DEBUG_CONFIG));
+    PyDict_SetItemString(dict, "MAIN", PyInt_FromLong(UV_DEBUG_MAIN));
+    PyDict_SetItemString(dict, "LDAP", PyInt_FromLong(UV_DEBUG_LDAP));
+    PyDict_SetItemString(dict, "USERS", PyInt_FromLong(UV_DEBUG_USERS));
+    PyDict_SetItemString(dict, "NETWORK", PyInt_FromLong(UV_DEBUG_NETWORK));
+    PyDict_SetItemString(dict, "SSL", PyInt_FromLong(UV_DEBUG_SSL));
+    PyDict_SetItemString(dict, "SLAPD", PyInt_FromLong(UV_DEBUG_SLAPD));
+    PyDict_SetItemString(dict, "SEARCH", PyInt_FromLong(UV_DEBUG_SEARCH));
+    PyDict_SetItemString(dict, "TRANSFILE", PyInt_FromLong(UV_DEBUG_TRANSFILE));
+    PyDict_SetItemString(dict, "LISTENER", PyInt_FromLong(UV_DEBUG_LISTENER));
+    PyDict_SetItemString(dict, "POLICY", PyInt_FromLong(UV_DEBUG_POLICY));
+    PyDict_SetItemString(dict, "ADMIN", PyInt_FromLong(UV_DEBUG_ADMIN));
+    PyDict_SetItemString(dict, "CONFIG", PyInt_FromLong(UV_DEBUG_CONFIG));
 
-    PyDict_SetItemString(dict, "NO_FLUSH",PyInt_FromLong( UV_DEBUG_NO_FLUSH));
-    PyDict_SetItemString(dict, "FLUSH",PyInt_FromLong( UV_DEBUG_FLUSH));
+    PyDict_SetItemString(dict, "NO_FLUSH", PyInt_FromLong(UV_DEBUG_NO_FLUSH));
+    PyDict_SetItemString(dict, "FLUSH", PyInt_FromLong(UV_DEBUG_FLUSH));
 
-    PyDict_SetItemString(dict, "NO_FUNCTION",PyInt_FromLong( UV_DEBUG_NO_FUNCTION));
-    PyDict_SetItemString(dict, "FUNCTION",PyInt_FromLong( UV_DEBUG_FUNCTION));
-
+    PyDict_SetItemString(dict, "NO_FUNCTION", PyInt_FromLong(UV_DEBUG_NO_FUNCTION));
+    PyDict_SetItemString(dict, "FUNCTION", PyInt_FromLong(UV_DEBUG_FUNCTION));
 }
+
+/* vim:set ts=4 sw=4 et: */

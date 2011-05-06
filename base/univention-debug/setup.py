@@ -1,8 +1,9 @@
+#!/usr/bin/python
 #
 # Univention Debug
-#  python Makefile
+#  setup.py
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,11 +29,18 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-#
-_debug.so: py_debug.c
-	gcc -Wall py_debug.c -c -fpic -I/usr/include/$(PYTHON) -I../include -L../lib/.libs/ -I -luniventiondebug -o py_debug.o
-	gcc -shared py_debug.o  -o _debug.so -L../lib/.libs/ -luniventiondebug
-	rm -f py_debug.o
-clean:
-	rm -f _debug.so
+from distutils.core import setup, Extension
 
+setup(name='univention-debug',
+	version='1.0',
+	py_modules=['univention.debug', 'univention.debug2'],
+	package_dir={'univention': 'python'},
+	ext_modules=[Extension('univention._debug', ['python/py_debug.c'],
+		include_dirs=['include'],
+		library_dirs=['lib/.libs'],
+		libraries=['univentiondebug'])],
+	author='Univention GmbH',
+	author_email='packages@univention.de',
+	url='http://www.univention.de/',
+	description='Univention debugging and logging library',
+)

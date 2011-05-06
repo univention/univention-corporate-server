@@ -3,7 +3,7 @@
 # Univention Debug
 #  rules file for the debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,84 +30,30 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# export DH_VERBOSE=1
+%:
+	dh $@
 
-PACKAGE_NAME=univention-debug
-MODULE_NAME=univention-debug
+override_dh_auto_clean:
+	dh_auto_clean --buildsystem=python_distutils
+	[ ! -f Makefile ] || $(MAKE) maintainer-clean
+	$(RM) Makefile.in lib/Makefile.in include/Makefile.in include/univention/Makefile.in
+	$(RM) configure
+	$(RM) aclocal.m4 config.* install-sh ltmain.sh missing mkinstalldirs
 
-DEB_UPSTREAM_VERSION=$(shell dpkg-parsechangelog \
-        | grep ^Version: | cut -d ' ' -f 2 | cut -d '-' -f 1)
-
-PYVERS=$(shell pyversions -vr)
-
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
+override_dh_auto_configure:
 	aclocal-1.4
 	autoconf
 	automake-1.4 -a
 	./configure --prefix=/usr
-	touch configure-stamp
+	dh_auto_configure --buildsystem=python_distutils
 
-build: configure-stamp build-stamp
-build-stamp: $(PYVERS:%=build-ext-%)
-	dh_testdir
-	touch $@
-build-ext-%:
-	dh_testdir
-	PYTHON=python$* make
-	touch $@
+override_dh_auto_build:
+	dh_auto_build --buildsystem=makefile
+	dh_auto_build --buildsystem=python_distutils
 
+override_dh_auto_install:
+	dh_auto_install --buildsystem=makefile
+	dh_auto_install --buildsystem=python_distutils
 
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp build-ext-2.4
-	rm -f *~
-	test -f Makefile && make distclean || true
-	find -name Makefile.in -o -name Makefile -path './python' -prune | xargs rm -f
-	rm -f aclocal.m4 config.* install-sh ltmain.sh missing mkinstalldirs
-	(cd python && make clean)
-	dh_clean
-
-install: install-stamp
-install-stamp: build-stamp $(PYVERS:%=install-ext-%)
-install-ext-%:
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-	(cd python && PYTHON=python$* make clean _debug.so)
-	make install DESTDIR=`pwd`/debian/tmp
-	install -m 0755 tools/univention-debug-viewlog debian/univention-debug-tools/usr/bin/
-	install -d debian/python-univention-debug/usr/lib/python$*/site-packages/univention/
-	install -m 0644 python/_debug.so python/debug.py python/debug2.py debian/python-univention-debug/usr/lib/python$*/site-packages/univention/
-
-
-binary-indep: build install
-
-binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_movefiles
-	dh_installdocs
-	dh_installexamples
-	dh_installmenu
-	dh_installcron
-	dh_installman
-	dh_installinfo
-	dh_installchangelogs
-	dh_install --sourcedir=debian/tmp
-	dh_pycentral
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+override_dh_auto_test:
+	[ ! -x /usr/bin/ucslint ] || /usr/bin/ucslint

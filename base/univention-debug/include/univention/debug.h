@@ -2,7 +2,7 @@
  * Univention Debug
  *  debug.h
  *
- * Copyright 2004-2010 Univention GmbH
+ * Copyright 2004-2011 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -32,98 +32,76 @@
 
 #ifndef __DEBUG_H__
 #define __DEBUG_H__
-#include <stdio.h>
-#include <time.h>
-#include <syslog.h>
 
+enum uv_debug_level {
+	UV_DEBUG_ERROR = 0,
+	UV_DEBUG_WARN = 1,
+	UV_DEBUG_PROCESS = 2,
+	UV_DEBUG_INFO = 3,
+	UV_DEBUG_ALL = 4
+};
 
-#define UV_DEBUG_ERROR     0
-#define UV_DEBUG_WARN      1
-#define UV_DEBUG_PROCESS   2
-#define UV_DEBUG_INFO      3
-#define UV_DEBUG_ALL       4
+enum uv_debug_category {
+	UV_DEBUG_MAIN = 0x00,
+	UV_DEBUG_LDAP = 0x01,
+	UV_DEBUG_USERS = 0x02,
+	UV_DEBUG_NETWORK = 0x03,
+	UV_DEBUG_SSL = 0x04,
+	UV_DEBUG_SLAPD = 0x05,
+	UV_DEBUG_SEARCH = 0x06,
+	UV_DEBUG_TRANSFILE = 0x07,
+	UV_DEBUG_LISTENER = 0x08,
+	UV_DEBUG_POLICY = 0x09,
+	UV_DEBUG_ADMIN = 0x0A,
+	UV_DEBUG_CONFIG = 0x0B,
+	UV_DEBUG_LICENSE = 0x0C,
+	UV_DEBUG_KERBEROS = 0x0D,
+	UV_DEBUG_DHCP = 0x0E,
+	DEBUG_MODUL_COUNT =0x0F
+};
 
+enum uv_debug_flag_flush {
+	UV_DEBUG_NO_FLUSH = 0x00,
+	UV_DEBUG_FLUSH = 0x01
+};
 
-#define UV_DEBUG_MAIN           0x00
-#define UV_DEBUG_LDAP           0x01
-#define UV_DEBUG_USERS          0x02
-#define UV_DEBUG_NETWORK        0x03
-#define UV_DEBUG_SSL            0x04
-#define UV_DEBUG_SLAPD          0x05
-#define UV_DEBUG_SEARCH         0x06
-#define UV_DEBUG_TRANSFILE      0x07
-#define UV_DEBUG_LISTENER       0x08
-#define UV_DEBUG_POLICY         0x09
-#define UV_DEBUG_ADMIN          0x0A
-#define UV_DEBUG_CONFIG         0x0B
-#define UV_DEBUG_LICENSE		0x0C
-#define UV_DEBUG_KERBEROS		0x0D
-#define UV_DEBUG_DHCP			0x0E
+enum uv_debug_flag_function {
+	UV_DEBUG_NO_FUNCTION = 0x00,
+	UV_DEBUG_FUNCTION = 0x01
+};
 
-#define DEBUG_MODUL_COUNT       0x0F
-
-#define UV_DEBUG_NO_FLUSH       0x00
-#define UV_DEBUG_FLUSH          0x01
-
-#define UV_DEBUG_NO_FUNCTION       0x00
-#define UV_DEBUG_FUNCTION          0x01
-
-
-#ifndef _DEBUG_ARRAY_
-
-extern int        *univention_debug_level;
-extern FILE       *univention_debug_file;
-extern char       univention_debug_function;
-extern const char *univention_debug_id_text[];
-extern const char *univention_debug_level_text[];
-
-extern char univention_debug_flush;
-
-#endif
-
-#define univention_debug(id, level, fmt, ...)				\
-  if( univention_debug_file && level <= univention_debug_level[id] )	\
-  {									\
-    time_t    t   = time(NULL);						\
-    struct tm *tm = localtime(&t);					\
-    fprintf( univention_debug_file,					\
-             "%02d.%02d.%02d %02d:%02d:%02d  %s %s" fmt "\n",			\
-             tm->tm_mday, tm->tm_mon+1, tm->tm_year-100,		\
-             tm->tm_hour,tm->tm_min, tm->tm_sec,			\
-             univention_debug_id_text[id],				\
-             univention_debug_level_text[level]		\
-             ,## __VA_ARGS__);			\
-    if( level == UV_DEBUG_ERROR )					\
-    {									\
-      syslog( LOG_ERR, fmt ,## __VA_ARGS__ );						\
-    }									\
-    if( univention_debug_flush == UV_DEBUG_FLUSH )			\
-    {									\
-      fflush( univention_debug_file );					\
-    }									\
-  }
-
-#define univention_debug_begin(s)					\
-  if( univention_debug_file && univention_debug_function == UV_DEBUG_FUNCTION )\
-  {									\
-    fprintf( univention_debug_file, "UNIVENTION_DEBUG_BEGIN  : %s\n",s);\
-    if( univention_debug_flush == UV_DEBUG_FLUSH )			\
-      fflush(univention_debug_file);					\
-  }
-
-#define univention_debug_end(s)						\
-  if( univention_debug_file && univention_debug_function == UV_DEBUG_FUNCTION )\
-  {									\
-    fprintf( univention_debug_file, "UNIVENTION_DEBUG_END    : %s\n",s);\
-    if( univention_debug_flush == UV_DEBUG_FLUSH )			\
-      fflush(univention_debug_file);					\
-  }
-
-void univention_debug_set_level ( int id, int level );
-void univention_debug_set_function ( char function );
-void univention_debug_init      ( char *logfile, char flush , char function);
-void univention_debug_reopen	( void );
-void univention_debug_exit	( void );
-
+/**
+ * Log message of level and category id.
+ */
+void univention_debug(enum uv_debug_category id, enum uv_debug_level level, const char *fmt, ...)
+	__attribute__ ((format (printf, 3, 4)));
+/**
+ * Log begin of function s.
+ */
+void univention_debug_begin(const char *s);
+/**
+ * Log end of function s.
+ */
+void univention_debug_end(const char *s);
+/**
+ * Set debug level of category id to specified level.
+ */
+void univention_debug_set_level(enum uv_debug_category id, enum uv_debug_level level);
+/**
+ * Enable or disable logging of function begin and end.
+ */
+void univention_debug_set_function(enum uv_debug_flag_function function);
+/**
+ * Initialize debugging library.
+ */
+void univention_debug_init(const char *logfile, enum uv_debug_flag_flush flush, enum uv_debug_flag_function function);
+/**
+ * Close old logfile and re-open it.
+ */
+void univention_debug_reopen(void);
+/**
+ * De-initialize debugging library to flush and close logfile.
+ */
+void univention_debug_exit(void);
 
 #endif

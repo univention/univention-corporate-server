@@ -1,10 +1,10 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention Debug
 #  debug.py
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,17 +30,32 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+"""Univention debugging and logging library.
+
+example:
+
+>>> import univention.debug as ud
+>>> ud.init("stdout", ud.NO_FLUSH, ud.FUNCTION) #doctest: +ELLIPSIS
+... ...  DEBUG_INIT
+>>> ud.set_level(ud.LISTENER, ud.ERROR)
+>>> ud.debug(ud.LISTENER, ud.ERROR, 'Fatal error: var=%s' % 42) #doctest: +ELLIPSIS
+... ...  LISTENER    ( ERROR   ) : Fatal error: var=42
+"""
 
 import _debug
 from _debug import *
 
-def debug(id, level, ustring, utf8=1):
+def debug(id, level, ustring, utf8=True):
 	_debug.debug(id, level, ustring)
 
 class function:
-	def __init__(self, text,  utf8=1):
-		self.text=text
+	def __init__(self, text, utf8=True):
+		self.text = text
 		_debug.begin(self.text)
 
 	def __del__(self):
 		_debug.end(self.text)
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()

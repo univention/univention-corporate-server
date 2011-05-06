@@ -1,10 +1,10 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention Debug2
 #  debug2.py
 #
-# Copyright 2008-2010 Univention GmbH
+# Copyright 2008-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -188,8 +188,7 @@ def set_function( activated ):
 	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 	_enable_function = activated
 
-
-def debug( id, level, msg, utf8=1 ):
+def debug( id, level, msg, utf8=True):
 	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 	new_id = _map_id_old2new.get(id, 'MAIN')
 	new_level = _map_lvl_old2new[ level ]
@@ -202,7 +201,7 @@ def debug( id, level, msg, utf8=1 ):
 					handler.flush()
 
 class function:
-	def __init__(self, text,  utf8=1):
+	def __init__(self, text, utf8=True):
 		global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 		self.text=text
 		if _enable_function:
