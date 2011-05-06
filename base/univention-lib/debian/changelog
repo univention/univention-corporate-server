@@ -1,3 +1,10 @@
+univention-lib (1.0.2-2) unstable; urgency=low
+
+  * set compat level to 7 (Bug #22160)
+  * added specific dependency to python-support version
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 06 May 2011 09:52:33 +0200
+
 univention-lib (1.0.2-1) unstable; urgency=low
 
   * added LDAP shell functions (Bug #19975)
