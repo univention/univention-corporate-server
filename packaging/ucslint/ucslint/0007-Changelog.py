@@ -37,7 +37,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		try:
 			content = open(fn, 'r').read()
 		except:
-			self.msg.append( uub.UPCMessage( '0007-1', 'failed to open and read file %s' % fn ) )
+			self.addmsg( '0007-1', 'failed to open and read file %s' % fn )
 			return
 
 		REchangelog = re.compile('^ -- [^<]+ <[^>]+>', re.M )
@@ -46,4 +46,4 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		firstEntry = REchangelog.split( content )[0]
 		match = REticket.search(firstEntry)
 		if not match:
-			self.msg.append( uub.UPCMessage( '0007-2', 'latest changelog entry does not contain bug or ticket number' ) )
+			self.addmsg( '0007-2', 'latest changelog entry does not contain bug or ticket number' )

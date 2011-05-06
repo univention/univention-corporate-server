@@ -75,7 +75,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			try:
 				content = open( os.path.join(path, js), 'r').read()
 			except:
-				self.msg.append( uub.UPCMessage( '0001-9', 'failed to open and read file %s' % fn ) )
+				self.addmsg( '0001-9', 'failed to open and read file %s' % fn )
 				continue
 
 			lines = content.splitlines()
@@ -121,49 +121,49 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 					self.debug('line contains unquoted $@:\n%s' % line)
 
 			if cnt['old_cmd_name'] > 0:
-				self.msg.append( uub.UPCMessage( '0001-1', 'Join script %s contains %d lines using "univention-admin"' % (js, cnt['old_cmd_name']) ) )
+				self.addmsg( '0001-1', 'Join script %s contains %d lines using "univention-admin"' % (js, cnt['old_cmd_name']) )
 			if cnt['credential_arg_missing'] > 0:
-				self.msg.append( uub.UPCMessage( '0001-2', 'Join script %s contains %s lines with missing "$@"' % (js, cnt['credential_arg_missing']) ) )
+				self.addmsg( '0001-2', 'Join script %s contains %s lines with missing "$@"' % (js, cnt['credential_arg_missing']) )
 			if cnt['unquoted_credential_arg'] > 0:
-				self.msg.append( uub.UPCMessage( '0001-11', 'Join script %s contains %d lines with unquoted $@' % (js, cnt['unquoted_credential_arg']) ) )
+				self.addmsg( '0001-11', 'Join script %s contains %d lines with unquoted $@' % (js, cnt['unquoted_credential_arg']) )
 
 			if cnt['version'] == 0:
-				self.msg.append( uub.UPCMessage( '0001-3', 'Join script %s does not set VERSION' % js ) )
+				self.addmsg( '0001-3', 'Join script %s does not set VERSION' % js )
 			if cnt['version'] > 1:
-				self.msg.append( uub.UPCMessage( '0001-12', 'Join script %s does set VERSION more than once' % js ) )
+				self.addmsg( '0001-12', 'Join script %s does set VERSION more than once' % js )
 
 			if cnt['unquoted_ucr_shell'] > 0:
-				self.msg.append( uub.UPCMessage( '0001-10', 'Join script %s contains %s lines with unquoted calls of eval $(ucr shell)' % (js, cnt['unquoted_ucr_shell']) ) )
+				self.addmsg( '0001-10', 'Join script %s contains %s lines with unquoted calls of eval $(ucr shell)' % (js, cnt['unquoted_ucr_shell']) )
 
 			if not cnt['joinscripthelper.lib']:
 				# no usage of joinscripthelper.lib
 				if cnt['vversion'] > 0 and cnt['vversion'] < 2:
-					self.msg.append( uub.UPCMessage( '0001-4', 'Join script %s does not grep for " v${VERSION} "' % js ) )
+					self.addmsg( '0001-4', 'Join script %s does not grep for " v${VERSION} "' % js )
 				elif cnt['vversion'] == 0:
-					self.msg.append( uub.UPCMessage( '0001-13', 'Join script %s does not use joinscripthelper.lib' % js ) )
+					self.addmsg( '0001-13', 'Join script %s does not use joinscripthelper.lib' % js )
 			else:
 				if not cnt['joinscript_init']:
-					self.msg.append( uub.UPCMessage( '0001-14', 'Join script %s does not use joinscript_init' % js ) )
+					self.addmsg( '0001-14', 'Join script %s does not use joinscript_init' % js )
 				if not cnt['joinscript_save_current_version']:
-					self.msg.append( uub.UPCMessage( '0001-15', 'Join script %s does not use joinscript_save_current_version' % js ) )
+					self.addmsg( '0001-15', 'Join script %s does not use joinscript_save_current_version' % js )
 
 		#
 		# check if join scripts are present in debian/rules
 		#
 		fn = os.path.join( path, 'debian', 'rules' )
 		if not os.path.exists( fn ):
-			self.msg.append( uub.UPCMessage( '0001-5', 'debian/rules is missing' ) )
+			self.addmsg( '0001-5', 'debian/rules is missing' )
 			return
 		else:
 			try:
 				content = open(fn, 'r').read()
 			except:
-				self.msg.append( uub.UPCMessage( '0001-9', 'failed to open and read file %s' % fn ) )
+				self.addmsg( '0001-9', 'failed to open and read file %s' % fn )
 
 			for js in fnlist_joinscripts.keys():
 				self.debug('looking for %s in debian/rules' % js)
 				if not js in content:
-					self.msg.append( uub.UPCMessage( '0001-6', 'Join script %s is not mentioned in debian/rules' % js ) )
+					self.addmsg( '0001-6', 'Join script %s is not mentioned in debian/rules' % js )
 
 		#
 		# check if join scripts are present in debian/*postinst
@@ -175,7 +175,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				try:
 					content = open(fn, 'r').read()
 				except:
-					self.msg.append( uub.UPCMessage( '0001-9', 'failed to open and read file %s' % fn ) )
+					self.addmsg( '0001-9', 'failed to open and read file %s' % fn )
 					continue
 
 				for js in fnlist_joinscripts.keys():
@@ -191,10 +191,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 								if js in line:
 									match = RElineEndsWithTrue.search(line)
 									if not match:
-										self.msg.append( uub.UPCMessage( '0001-8', 'In %s the join script %s is not called with "|| true" but "set -e" is set' % (fn, js) ) )
+										self.addmsg( '0001-8', 'In %s the join script %s is not called with "|| true" but "set -e" is set' % (fn, js) )
 
 
 		for js in fnlist_joinscripts.keys():
 			if not fnlist_joinscripts[js]:
-				self.msg.append( uub.UPCMessage( '0001-7', 'Join script %s is not mentioned in debian/*.postinst' % js ) )
+				self.addmsg( '0001-7', 'Join script %s is not mentioned in debian/*.postinst' % js )
 

@@ -54,7 +54,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			try:
 				content = open(fn, 'r').read()
 			except:
-				self.msg.append( uub.UPCMessage( '0008-2', 'failed to open and read file %s' % fn ) )
+				self.addmsg( '0008-2', 'failed to open and read file %s' % fn )
 				continue
 			self.debug('testing %s' % fn)
 			for regex in (regEx1, regEx2):
@@ -67,7 +67,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 					else:
 						line = content.count('\n', 0, match.start()) + 1
 						pos = match.end()
-						self.msg.append( uub.UPCMessage( '0008-1', '%s contains construct like _("foo %%s bar" %% var) in line %d' % (fn, line) ) )
+						self.addmsg( '0008-1', '%s contains construct like _("foo %%s bar" %% var) in line %d' % (fn, line) )
 
 		regEx1 = re.compile('\n#.*?fuzzy')
 		regEx2 = re.compile('msgstr ""\n\n', re.DOTALL)
@@ -77,14 +77,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			try:
 				content = open(fn, 'r').read()
 			except:
-				self.msg.append( uub.UPCMessage( '0008-2', 'failed to open and read file %s' % fn ) )
+				self.addmsg( '0008-2', 'failed to open and read file %s' % fn )
 				continue
 
 			match = regExCharset.search( content )
 			if not match:
-				self.msg.append( uub.UPCMessage( '0008-5', 'cannot find charset definition in %s' % fn ) )
+				self.addmsg( '0008-5', 'cannot find charset definition in %s' % fn )
 			elif not match.group(1).lower() in ('utf-8'):
-				self.msg.append( uub.UPCMessage( '0008-6', 'invalid charset (%s) defined in %s' % (match.group(1), fn) ) )
+				self.addmsg( '0008-6', 'invalid charset (%s) defined in %s' % (match.group(1), fn) )
 
 			self.debug('testing %s' % fn)
 			for regex, errid, errtxt in [ (regEx1, '0008-3', '%s contains "fuzzy" in line %d'),
@@ -99,5 +99,5 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 						# match.start() + 1 ==> avoid wrong line numbers because regEx1 starts with \n
 						line = content.count('\n', 0, match.start() + 1 ) + 1
 						pos = match.end()
-						self.msg.append( uub.UPCMessage( errid, errtxt % (fn, line) ) )
+						self.addmsg( errid, errtxt % (fn, line) )
 

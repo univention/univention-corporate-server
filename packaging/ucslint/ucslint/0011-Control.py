@@ -42,17 +42,17 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		try:
 			content_changelog = open(fn, 'r').read(1024)
 		except:
-			self.msg.append( uub.UPCMessage( '0011-1', 'failed to open and read file %s' % fn ) )
+			self.addmsg( '0011-1', 'failed to open and read file %s' % fn )
 			return
 
 		fn = os.path.join(path, 'debian', 'control')
 		try:
 			parser = uub.ParserDebianControl(fn)
 		except uub.FailedToReadFile:
-			self.msg.append( uub.UPCMessage( '0011-1', 'failed to open and read file %s' % fn ) )
+			self.addmsg( '0011-1', 'failed to open and read file %s' % fn )
 			return
 		except uub.UCSLintException:
-			self.msg.append( uub.UPCMessage( '0011-10', 'parsing error in %s' % fn ) )
+			self.addmsg( '0011-11', 'parsing error in %s' % fn )
 			return
 
 		# compare package name
@@ -62,32 +62,32 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			srcpkgname = match.group(1)
 		else:
 			srcpkgname = None
-			self.msg.append( uub.UPCMessage( '0011-9', 'cannot determine source package name in debian/changelog' ) )
+			self.addmsg( '0011-9', 'cannot determine source package name in debian/changelog' )
 
 		controlpkgname = parser.source_section.get('Source')
 		if not controlpkgname:
-			self.msg.append( uub.UPCMessage( '0011-9', 'cannot determine source package name in debian/control' ) )
+			self.addmsg( '0011-9', 'cannot determine source package name in debian/control' )
 
 		if srcpkgname and controlpkgname:
 			if srcpkgname != controlpkgname:
-				self.msg.append( uub.UPCMessage( '0011-2', 'source package name differs in debian/changelog and debian/control' ) )
+				self.addmsg( '0011-2', 'source package name differs in debian/changelog and debian/control' )
 
 
 		# parse source section of debian/control
 		if not parser.source_section.get('Section', '') in ( 'univention' ):
-			self.msg.append( uub.UPCMessage( '0011-3', 'debian/control: wrong Section entry - should be "univention"' ) )
+			self.addmsg( '0011-3', 'debian/control: wrong Section entry - should be "univention"' )
 
 		if not parser.source_section.get('Priority', '') in ( 'optional' ):
-			self.msg.append( uub.UPCMessage( '0011-4', 'debian/control: wrong Priority entry - should be "optional"' ) )
+			self.addmsg( '0011-4', 'debian/control: wrong Priority entry - should be "optional"' )
 
 		if not parser.source_section.get('Maintainer', '') in ( 'Univention GmbH <packages@univention.de>' ):
-			self.msg.append( uub.UPCMessage( '0011-5', 'debian/control: wrong Maintainer entry - should be "Univention GmbH <packages@univention.de>"' ) )
+			self.addmsg( '0011-5', 'debian/control: wrong Maintainer entry - should be "Univention GmbH <packages@univention.de>"' )
 
 		if parser.source_section.get('XS-Python-Version', ''):
-			self.msg.append( uub.UPCMessage( '0011-11', 'debian/control: XS-Python-Version is not required any longer' ) )
+			self.addmsg( '0011-11', 'debian/control: XS-Python-Version is not required any longer' )
 
 		if 'python-central' in parser.source_section.get('Build-Depends', ''):
-			self.msg.append( uub.UPCMessage( '0011-12', 'debian/control: please use python-support instead of python-central in Build-Depends' ) )
+			self.addmsg( '0011-12', 'debian/control: please use python-support instead of python-central in Build-Depends' )
 
 		if not 'ucslint' in parser.source_section.get('Build-Depends', ''):
-			self.msg.append( uub.UPCMessage( '0011-13', 'debian/control: ucslint is missing in Build-Depends' ) )
+			self.addmsg( '0011-13', 'debian/control: ucslint is missing in Build-Depends' )

@@ -47,6 +47,9 @@ class UniventionPackageCheckBase(object):
 		self.msg = []
 		self.debuglevel = 0
 
+	def addmsg(self, msgid, msg=None, filename=None):
+		self.msg.append( UPCMessage( msgid, msg=msg, filename=filename ) )
+
 	def getMsgIds(self):
 		return {}
 

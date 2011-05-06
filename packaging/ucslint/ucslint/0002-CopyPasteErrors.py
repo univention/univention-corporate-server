@@ -53,16 +53,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			try:
 				content = open(fn, 'r').read()
 			except:
-				self.msg.append( uub.UPCMessage( '0002-1', 'failed to open and read file %s' % fn ) )
+				self.addmsg( '0002-1', 'failed to open and read file %s' % fn )
 				continue
 
 			for txt in [ 'dc=univention,dc=local', 'dc=univention,dc=qa', 'dc=univention,dc=test', 'dc=schule,dc=bremen,dc=de', 'dc=nstx,dc=de', 'dc=deadlock' ]:
 				for line in self._searchString(content, txt):
-					self.msg.append( uub.UPCMessage( '0002-2', '%s contains invalid basedn in line %d' % (fn, line) ) )
+					self.addmsg( '0002-2', '%s contains invalid basedn in line %d' % (fn, line) )
 
 			for txt in [ 'univention.local', 'univention.qa', 'univention.test', 'schule.bremen.de', 'nstx.de', 'deadlock.org' ]:
 				for line in self._searchString(content, txt):
-					self.msg.append( uub.UPCMessage( '0002-3', '%s contains invalid domainname in line %d' % (fn, line) ) )
+					self.addmsg( '0002-3', '%s contains invalid domainname in line %d' % (fn, line) )
 
 
 	def _searchString(self, content, txt):
