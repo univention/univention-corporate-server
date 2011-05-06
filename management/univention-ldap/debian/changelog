@@ -1,3 +1,66 @@
+univention-ldap (7.0.20-1) unstable; urgency=low
+
+  * added attributes "zoneName", "relativeDomainName" and "name" to ldap
+    indices (Bug #22020)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 30 Mar 2011 10:17:19 +0200
+
+univention-ldap (7.0.19-2) unstable; urgency=low
+
+  * call eval "$(ucr shell)" in postinst (Bug #21711)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 17 Mar 2011 15:27:31 +0100
+
+univention-ldap (7.0.19-1) unstable; urgency=low
+
+  * call fix_primary_group_membership of
+    univention-directory-manager-tools (Bug #21782)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 17 Mar 2011 15:09:11 +0100
+
+univention-ldap (7.0.18-1) unstable; urgency=low
+
+  * call fix_primary_group_membership of
+    univention-directory-manager-tools (Bug #21711)
+  * added dependency to 
+  	univention-directory-manager-tools (>>6.0.110)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 08 Mar 2011 14:09:24 +0100
+
+univention-ldap (7.0.17-1) unstable; urgency=low
+
+  * fixed typo (univention-prinquota) in join script 
+    10univention-ldap-server.inst and replace value
+    in settings/packages during update (Bug #21187)
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 Mar 2011 12:03:58 +0100
+
+univention-ldap (7.0.16-2) unstable; urgency=low
+
+  * Rename univentionUDMPropertyValue{Not,}Editable to fix default (Bug #21643)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Feb 2011 11:16:57 +0100
+
+univention-ldap (7.0.16-1) unstable; urgency=low
+
+  * Ticket#: 2010121410001136
+    - Add support for defining options via LDAP (Bug #21644)
+    - Add support for editable=False properties (Bug #21643)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Feb 2011 08:30:25 +0100
+
+univention-ldap (7.0.15-1) unstable; urgency=low
+
+  * add full width extended attributes (Bug #21623)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 21 Feb 2011 14:29:03 +0100
+
+univention-ldap (7.0.14-1) unstable; urgency=low
+
+  * added registration and description of ldap/online/master (Bug #20789)
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Feb 2011 15:18:58 +0100
+
 univention-ldap (7.0.13-1) unstable; urgency=low
 
   * do not include updateref on slave slapd configuration

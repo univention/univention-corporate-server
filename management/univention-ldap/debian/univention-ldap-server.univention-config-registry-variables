@@ -129,3 +129,9 @@ Description[de]=LDAP-Indizes bei Updates automatisch anpassen und neu erzeugen
 Description[en]=Adjust and rebuild LDAP indices automatically during updates
 Type=str
 Categories=service-ldap
+
+[ldap/online/master]
+Description[de]=Falls auf no oder false gesetzt, wird auf DC Slaves das Update Referral zum DC Master nicht aktiviert
+Description[en]=If no or false the Update Referral to the DC Master on DC Slaves will not be activated
+Type=str
+Categories=service-ldap

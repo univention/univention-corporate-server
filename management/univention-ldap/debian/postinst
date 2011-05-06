@@ -101,7 +101,7 @@ fi
 udm_prop_attrs="univentionUDMPropertyVersion,univentionUDMPropertyModule,univentionUDMPropertyShortDescription,univentionUDMPropertyLongDescription,univentionUDMPropertySyntax,univentionUDMPropertyMultivalue,univentionUDMPropertyDefault,univentionUDMPropertyLdapMapping,univentionUDMPropertyObjectClass,univentionUDMPropertyDeleteObjectClass,univentionUDMPropertyValueMayChange,univentionUDMPropertyLayoutTabName,univentionUDMPropertyLayoutOverwriteTab,univentionUDMPropertyLayoutOverwritePosition,univentionUDMPropertyLayoutPosition,univentionUDMPropertyCLIName,univentionUDMPropertyTranslationShortDescription,univentionUDMPropertyTranslationLongDescription,univentionUDMPropertyTranslationTabName,univentionUDMPropertyOptions,univentionUDMPropertyLayoutTabAdvanced,univentionUDMPropertyValueRequired,univentionUDMPropertyHook,univentionUDMPropertyDoNotSearch"
 # recommended index settings
 recommended_ldap_index_eq="objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,sambaSID,sambaPrimaryGroupSID,sambaDomainName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,relativeDomainName,pTRRecord,zoneName,mailPrimaryAddress,mailAlternativeAddress,univentionServerRole,univentionService,kolabHomeServer,automountInformation,sambaAcctFlags,univentionPolicyReference,homeDirectory,$udm_prop_attrs,univentionLicenseModule,cNAMERecord,univentionNagiosHostname,univentionLicenseObject,sambaSIDList,sambaGroupType,univentionShareGid,univentionShareSambaName,univentionShareWriteable,secretary"
-recommended_ldap_index_pres="objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,mailPrimaryAddress,mailAlternativeAddress,kolabHomeServer,univentionPolicyReference,homeDirectory,automountInformation,$udm_prop_attrs"
+recommended_ldap_index_pres="objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,mailPrimaryAddress,mailAlternativeAddress,kolabHomeServer,univentionPolicyReference,homeDirectory,automountInformation,zoneName,relativeDomainName,name,$udm_prop_attrs"
 recommended_ldap_index_sub="uid,cn,sn,givenName,mail,description,displayName,mailPrimaryAddress,mailAlternativeAddress,default,zoneName,sambaSID,automountInformation"
 recommended_ldap_index_approx="uid,mail,alias,cn,sn,givenName"
 
@@ -500,6 +500,37 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.8-1; t
 			--dn cn=Fernwartung,cn=packages,cn=univention,$ldap_base \
 			--remove packageList=opnessh-server \
 			--append packageList=openssh-server
+	fi
+fi
+
+# Bug 21187
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.17-1; then
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		if univention-directory-manager settings/packages list --filter=name=Univention | grep -iq univention-prinquota; then 
+			univention-directory-manager settings/packages modify \
+				--dn "cn=Univention,cn=packages,cn=univention,$ldap_base" \
+				--remove packageList=univention-prinquota
+		fi
+		if ! univention-directory-manager settings/packages list --filter=name=Univention | grep -iq univention-printquota; then
+			univention-directory-manager settings/packages modify \
+				--dn "cn=Univention,cn=packages,cn=univention,$ldap_base" \
+				--append packageList=univention-printquota
+		fi
+	fi
+fi
+
+# fix primary group membership of computer objects if neccessary (Bug #21711)
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.18-1; then
+	eval "$(ucr shell)"
+	if [ ! "$update_fix_computer_primarygroupmembership" = "no" -a ! "$update_fix_computer_primarygroupmembership" = "false" ] ; then
+		if [ "$server_role" = "domaincontroller_master" ] ; then
+			/usr/share/univention-directory-manager-tools/fix_primary_group_membership -c -f
+		fi
+	fi
+	if [ ! "$update_fix_user_primarygroupmembership" = "no" -a ! "$update_fix_user_primarygroupmembership" = "false" ] ; then
+		if [ "$server_role" = "domaincontroller_master" ] ; then
+			/usr/share/univention-directory-manager-tools/fix_primary_group_membership -u -f
+		fi
 	fi
 fi
 

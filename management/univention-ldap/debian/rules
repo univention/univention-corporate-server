@@ -35,11 +35,10 @@ package=univention-ldap-server
 build: build-stamp
 build-stamp:
 	dh_testdir
-	touch build-stamp
+	touch $@
 
 clean:
 	dh_testdir
-	dh_testroot
 	rm -f build-stamp
 	dh_clean
 
