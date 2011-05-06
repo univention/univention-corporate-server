@@ -35,29 +35,28 @@
 eval "$(univention-config-registry shell)"
 
 case "$1" in
-    configure)
+	configure)
 
 		# call the join script
 		if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-    		/usr/lib/univention-install/76univention-package-template.inst
+			/usr/lib/univention-install/76univention-package-template.inst
 		fi
 
-        # if [ -z "$2" ]; then    # installation
-        # fi
+		# if [ -z "$2" ]; then    # installation
+		# fi
 
 		# if [ -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.9-1; then #upgrade
 		# fi
 
-        ;;
+		;;
 
-    abort-upgrade|abort-remove|abort-deconfigure)
-        ;;
+	abort-upgrade|abort-remove|abort-deconfigure)
+		;;
 
-    *)
-        echo "postinst called with unknown argument \`$1'" >&2
-        exit 1
-        ;;
+	*)
+		echo "postinst called with unknown argument \`$1'" >&2
+		exit 1
+		;;
 esac
-
 
 exit 0

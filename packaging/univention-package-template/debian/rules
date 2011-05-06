@@ -36,6 +36,10 @@ override_dh_auto_install:
 	# make ucslint happy
 	# 76univention-package-template.inst univention-install-config-registry-info
 
+override_dh_fixperms:
+	dh_fixperms
+	chmod 755 debian/univention-package-template/usr/lib/univention-install/76univention-package-template.inst
+
 override_dh_auto_build:
 	ucslint
 	dh_auto_build
