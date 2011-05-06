@@ -1,3 +1,15 @@
+ucslint (2.0.1-1) unstable; urgency=low
+
+  * only exit on errors (Bug #22092)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 06 May 2011 10:22:10 +0200
+
+ucslint (2.0.0-1) unstable; urgency=low
+
+  * bumped version for UCS 2 (Bug #22092)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 06 May 2011 10:22:10 +0200
+
 ucslint (1.0.19-1) unstable; urgency=low
 
   * fixed traceback in 0010-Copyright.py (Bug #13192)

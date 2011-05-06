@@ -73,8 +73,9 @@ class DebianPackageCheck(object):
 					self.msgidlist[ curid ][0] = level
 
 
-	def printResult(self, ignore_IDs, display_only_IDs, display_only_categories ):
-		cnt = 0
+	def printResult(self, ignore_IDs, display_only_IDs, display_only_categories, exitcode_categories ):
+		incident_cnt = 0
+		exitcode_cnt = 0
 		for msg in self.msglist:
 			if msg.getId() in ignore_IDs:
 				continue
@@ -83,9 +84,12 @@ class DebianPackageCheck(object):
 			category = uub.RESULT_INT2STR.get( self.msgidlist.get( msg.getId(), ['FIXME'] )[0], 'FIXME')
 			if category in display_only_categories or display_only_categories == '':
 				print '%s:%s' % (category , str(msg))
-				cnt += 1
+				incident_cnt += 1
 
-		return cnt
+				if category in exitcode_categories or exitcode_categories == '':
+					exitcode_cnt += 1
+
+		return incident_cnt, exitcode_cnt
 
 def clean_id(idstr):
 	if not '-' in idstr:
@@ -137,6 +141,10 @@ if __name__ == '__main__':
 					   dest = 'display_only_categories', default = '',
 					   help = 'categories to be displayed (e.g. -c EWIS)' )
 
+	parser.add_option( '-e', '--exitcode-categories', action = 'store', type = 'string',
+					   dest = 'exitcode_categories', default = 'E',
+					   help = 'categories that cause an exitcode != 0 (e.g. -e EWIS)' )
+
 	( options, args ) = parser.parse_args()
 
 	pkgpath = '.'
@@ -183,9 +191,9 @@ if __name__ == '__main__':
 
 	chk = DebianPackageCheck( pkgpath, plugindirs, enabled_modules=options.enabled_modules, disabled_modules=options.disabled_modules, debuglevel=options.debug )
 	chk.check()
-	cnt = chk.printResult( options.ignore_IDs, options.display_only_IDs, options.display_only_categories )
+	incident_cnt, exitcode_cnt = chk.printResult( options.ignore_IDs, options.display_only_IDs, options.display_only_categories, options.exitcode_categories )
 
-	if cnt:
+	if exitcode_cnt:
 		sys.exit(1)
 	sys.exit(0)
 
