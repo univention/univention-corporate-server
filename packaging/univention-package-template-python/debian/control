@@ -1,0 +1,18 @@
+Source: univention-package-template-python
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 7), 
+			   python2.6-dev, 
+			   python-support (>> 1.0.10)
+
+Package: python-univention-package-template
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends}
+Description: UCS - python module template
+ This package contains an example Python module.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

@@ -1,0 +1,5 @@
+univention-package-template-python (1.0.0-0) unstable; urgency=low
+
+  * initial framework
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 06 May 2011 10:01:43 +0200
