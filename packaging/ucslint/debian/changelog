@@ -1,3 +1,10 @@
+ucslint (2.0.3-3) unstable; urgency=low
+
+  * improved UPCMessage (Bug #22437)
+  * added UPCFileTester (Bug #22437)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 06 May 2011 17:43:15 +0200
+
 ucslint (2.0.2-2) unstable; urgency=low
 
   * bumped version (Bug #22092)

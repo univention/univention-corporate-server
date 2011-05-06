@@ -1,7 +1,7 @@
 # -*- coding: iso-8859-15 -*-
 #
 
-import re
+import os
 
 RESULT_UNKNOWN = -1
 RESULT_OK = 0
@@ -122,3 +122,149 @@ class ParserDebianControl(object):
 		self.source_section = DebianControlEntry(parts[0])
 		for part in parts[1:]:
 			self.binary_sections.append( DebianControlEntry(part) )
+
+class RegExTest(object):
+	def __init__(self, regex, msgid, msg, cntmin=None, cntmax=None):
+		self.regex = regex
+		self.msgid = msgid
+		self.msg = msg
+		self.formatmsg = False
+		self.cntmin = cntmin
+		self.cntmax = cntmax
+		self.cnt = 0
+
+		for val in [ '%(startline)s', '%(startpos)s', '%(endline)s', '%(endpos)s', '%(basename)s', '%(filename)s' ]:
+			if val in msg:
+				self.formatmsg = True
+				break
+
+class UPCFileTester(object):
+	""" Univention Package Check - File Tester
+		simple class to test if a certain text exists/does not exist in a textfile
+
+		By default only the first 100k of the file will be read.
+
+		>>>	import re
+		>>>	x = UPCFileTester()
+		>>>	x.open('/etc/fstab')
+		>>>	x.addTest( re.compile('ext[234]'), '5432-1', 'Habe ein extfs in Zeile %(startline)s und Position %(startpos)s in Datei %(basename)s gefunden.', cntmax=0)
+		>>>	x.addTest( re.compile('squashfs'), '1234-5', 'Habe kein squashfs in Datei %(basename)s gefunden.', cntmin=1)
+		>>>	msglist = x.runTests()
+		>>>	for msg in msglist:
+		>>>		print '%s ==> %s ==> %s' % (msg.id, msg.filename, msg.msg)
+		5432-1: /etc/fstab:4:29: Habe ein extfs in Zeile 4 und Position 29 in Datei fstab gefunden.
+		5432-1: /etc/fstab:7:19: Habe ein extfs in Zeile 7 und Position 19 in Datei fstab gefunden.
+		1234-5: /etc/fstab: Habe kein squashfs in Datei fstab gefunden.
+	"""
+
+	def __init__(self, maxsize=100*1024):
+		"""
+		creates a new UPCFileTester object
+		maxsize: maximum number of bytes read from specified file
+		"""
+		self.maxsize = maxsize
+		self.filename = None
+		self.raw = None
+		self.lines = []
+		self.tests = []
+
+	def open(self, filename):
+		"""
+		opens the specified file and reads up to 'maxsize' bytes into memory
+		"""
+		self.filename = filename
+		self.basename = os.path.basename(self.filename)
+		# hold raw file in memory (self.raw) and a unwrapped version (self.lines)
+		# the raw version is required to calculate the correct position.
+		# tests will be done with unwrapped version.
+		self.raw = open(filename,'r').read(self.maxsize)
+		self.raw.rstrip('\n')
+		lines = self.raw.replace('\\\n','  ').replace('\\\r\n','   ')
+		self.lines = lines.splitlines()
+
+	def _getpos(self, linenumber, pos_in_line):
+		"""
+		Converts 'unwrapped' position values (line and position in line) into
+		position values corresponding to the raw file.
+		Counting of lines and position starts at 1, so first byte is at line 1 pos 1!
+		"""
+		pos = sum(map(len, self.lines[:linenumber]))
+		pos += linenumber
+		pos += pos_in_line
+		raw = self.raw[:pos]
+		realpos = len(raw) - raw.rfind('\n')
+		realline = raw.count('\n')
+		return (realline+1, realpos)
+
+	def addTest(self, regex, msgid, msg, cntmin=None, cntmax=None):
+		"""
+		add a new test
+		regex: regular expression
+		msgid: msgid for UPCMessage
+		msg: message for UPCMessage
+			 if msg contains one or more of the keywords '%(startline)s', '%(startpos)s', '%(endline)s', '%(endpos)s' or '%(basename)s'
+			 they will get replaced by their corresponding value.
+		cntmin: 'regex' has to match at least 'cntmin' times otherwise a UPCMessage will be added
+		cntmax: 'regex' has to match at most 'cntmax' times otherwise a UPCMessage will be added
+
+		an exception will be raised if neither cntmin nor cntmax has been set
+		"""
+		if cntmin==None and cntmax==None:
+			raise ValueError('cntmin or cntmax has to be set')
+		self.tests.append( RegExTest( regex, msgid, msg, cntmin, cntmax) )
+
+	def runTests(self):
+		"""
+		runs all given tests on loaded file and returns a list of UPCMessage objects
+		"""
+		if not self.filename:
+			raise Exception('no file has been loaded')
+
+		msglist = []
+		linenum = 0
+		for t in self.tests:
+			t.cnt = 0
+		# iterate over all lines
+		for line in self.lines:
+			# iterate over all tests
+			for t in self.tests:
+				# test regex with current line
+				match = t.regex.search(line)
+				if match:
+					# found a match ==> increase counter
+					t.cnt += 1
+					if t.cntmax != None and t.cnt > t.cntmax:
+						# a maximum counter has been defined and maximum has been exceeded
+						startline, startpos = self._getpos( linenum, match.start(0) )
+						endline, endpos = self._getpos( linenum, match.end(0) )
+						msg = t.msg
+						if t.formatmsg:
+							# format msg
+							msg = msg % { 'startline': startline, 'startpos': startpos, 'endline': endline, 'endpos': endpos, 'basename': self.basename, 'filename': self.filename }
+						# append UPCMessage
+						msglist.append( UPCMessage( t.msgid, msg=msg, filename=self.filename, line=startline, pos=startpos ) )
+			linenum += 1
+
+		# check if mincnt has been reached by counter - if not then add UPCMessage
+		for t in self.tests:
+			if t.cntmin != None and t.cnt < t.cntmin:
+				msg = t.msg
+				if t.formatmsg:
+					msg = msg % { 'basename': self.basename, 'filename': self.filename }
+					# append msg
+					msglist.append( UPCMessage( t.msgid, msg=msg, filename=self.filename ) )
+		return msglist
+
+if __name__ == '__main__':
+	import re
+	x = UPCFileTester()
+	x.addTest( re.compile('ext[234]'), '5432-1', 'Habe ein extfs in Zeile %(startline)s und Position %(startpos)s in Datei %(basename)s gefunden.', cntmax=0)
+	x.addTest( re.compile('squashfs'), '1234-5', 'Habe kein squashfs in Datei %(basename)s gefunden.', cntmin=1)
+	x.open('/etc/fstab')
+	msglist = x.runTests()
+	for msg in msglist:
+		print str(msg)
+	x.open('/etc/passwd')
+	msglist = x.runTests()
+	for msg in msglist:
+		print str(msg)
