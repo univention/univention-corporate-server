@@ -69,7 +69,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			if firstline.startswith('#!/usr/bin/python'):
 				if firstline == '#!/usr/bin/python' or firstline.startswith('#!/usr/bin/python '):
 					self.addmsg( '0009-2', '%s does not specify python version in hashbang' % (fn) )
-				elif firstline.startswith('#!/usr/bin/python2.3') or firstline.startswith('#!/usr/bin/python2.5'):
+				elif firstline.startswith('#!/usr/bin/python2.') and not firstline.startswith('#!/usr/bin/python2.6'):
 					self.addmsg( '0009-3', '%s specifies wrong python version in hashbang' % (fn) )
-				elif firstline.startswith('#!/usr/bin/python2.4 '):
+				elif firstline.startswith('#!/usr/bin/python3'):
+					self.addmsg( '0009-3', '%s specifies wrong python version in hashbang' % (fn) )
+				elif firstline.startswith('#!/usr/bin/python2.6 '):
 					self.addmsg( '0009-4', '%s contains whitespace after python command' % (fn) )
