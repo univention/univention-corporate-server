@@ -2,7 +2,7 @@ Source: ucslint
 Section: tools
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 4.0.0), python-central
+Build-Depends: debhelper (>= 4.0.0), python-central, python
 Standards-Version: 3.6.1
 XS-Python-Version: 2.4
 

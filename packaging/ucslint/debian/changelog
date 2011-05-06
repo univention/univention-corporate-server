@@ -1,3 +1,9 @@
+ucslint (2.0.2-2) unstable; urgency=low
+
+  * bumped version (Bug #22092)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 06 May 2011 16:21:47 +0200
+
 ucslint (2.0.2-1) unstable; urgency=low
 
   * fixed parsing of debian/control files (Bug #22443)
@@ -12,7 +18,7 @@ ucslint (2.0.1-1) unstable; urgency=low
 
 ucslint (2.0.0-1) unstable; urgency=low
 
-  * bumped version for UCS 2 (Bug #22092)
+  * bumped version for UCS 3 (Bug #22092)
 
  -- Sönke Schwardt <schwardt@univention.de>  Fri, 06 May 2011 10:22:10 +0200
 
