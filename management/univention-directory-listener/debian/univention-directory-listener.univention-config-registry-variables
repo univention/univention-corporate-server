@@ -1,0 +1,5 @@
+[listener/debug/level]
+Description[de]=Debug level des Univention Directory Listener (0-4)
+Description[en]=Debug level of Univention Directory Listener (0-4)
+Type=str
+Categories=service-ldap

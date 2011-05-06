@@ -2,7 +2,7 @@
  * Univention Directory Listener
  *  abstract change handling
  *
- * Copyright 2004-2010 Univention GmbH
+ * Copyright 2004-2011 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -294,7 +294,7 @@ int change_delete_dn(NotifierID id, char *dn, char command)
 /* Make sure schema is up-to-date */
 int change_update_schema(univention_ldap_parameters_t *lp)
 {
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 	CacheMasterEntry	 master_entry;
 #else
 	NotifierID		 id = 0;
@@ -319,7 +319,7 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 	timeout.tv_sec = 300;
 	timeout.tv_usec = 0;
 
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 	if ((rv=cache_get_master_entry(&master_entry)) == DB_NOTFOUND) {
 		master_entry.id = 0;
 		master_entry.schema_id = 0;
@@ -333,7 +333,7 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 		return LDAP_OTHER;
 	}
 
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 	if (new_id > master_entry.schema_id) {
 #else
 	if (new_id > id) {
@@ -350,7 +350,7 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not receive schema (%s)", ldap_err2string(rv));
 		}
 
-#ifndef WITH_DB42
+#ifndef WITH_DB48
 		if (rv == 0)
 			cache_set_schema_id("notifier_schema_id", new_id);
 #endif

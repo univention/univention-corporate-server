@@ -2,7 +2,7 @@
  * Univention Directory Listener
  *  main.c
  *
- * Copyright 2004-2010 Univention GmbH
+ * Copyright 2004-2011 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -178,7 +178,7 @@ static void usage(void)
 
 static void convert_cookie(void)
 {
-#ifndef WITH_DB42
+#ifndef WITH_DB48
 	char *f;
 	struct stat stbuf;
 
@@ -304,7 +304,7 @@ int main(int argc, char* argv[])
 					 write_transaction_file = 0;
 	int				 rv;
 	NotifierID			 id = -1;
-#ifndef WITH_DB42
+#ifndef WITH_DB48
 	NotifierID			 old_id = -1;
 #else
 	CacheMasterEntry		 master_entry;
@@ -540,7 +540,7 @@ int main(int argc, char* argv[])
 	signals_unblock();
 
 	/* if no ID is set, assume the database has just been initialized */
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 	if ((rv=cache_get_master_entry(&master_entry)) == DB_NOTFOUND) {
 		master_entry.id = id;
 		if ((rv=cache_update_master_entry(&master_entry, NULL)) != 0)

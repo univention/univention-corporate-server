@@ -2,7 +2,7 @@
  * Univention Directory Listener
  *  notifier.c
  *
- * Copyright 2004-2010 Univention GmbH
+ * Copyright 2004-2011 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -102,7 +102,7 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 {
 	NotifierID	id;
 
-#ifndef WITH_DB42
+#ifndef WITH_DB48
 	/* we should only get here, if the cache has previously been
 	   initialized; thus, *some* ID should've been stored in the
 	   cache */
@@ -203,7 +203,7 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 		}
 
 		id = entry.id;
-#ifndef WITH_DB42
+#ifndef WITH_DB48
 		cache_set_int("notifier_id", id);
 #endif
 		notifier_entry_free(&entry);

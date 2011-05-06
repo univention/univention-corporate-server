@@ -3,7 +3,7 @@
 # Univention Directory Listener
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,27 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-createLogfile () {
-	if [ ! -e $1 ] ; then
-		touch $1
-		chown $2 $1
-		chmod $3 $1
-	fi
-}
+. /usr/share/univention-lib/all.sh
 
-
-univention-baseconfig set listener/autostart?yes
+univention-config-registry set listener/autostart?yes
 
 adduser --quiet --system --home /var/lib/univention-directory-listener listener
 
-# This is only needed for the transition from univention-ldap-listener to univention-directory-listener
-# and can be removed in UCS 2.1
-if [ -h "/var/service/univention-ldap-listener" ]; then
-       ln -s /etc/runit/univention-directory-listener /var/service/univention-directory-listener
-       rm /var/service/univention-ldap-listener
-fi
-
-createLogfile /var/log/univention/listener.log "root:adm" 640
+create_logfile /var/log/univention/listener.log "root:adm" 640
 
 mkdir -p /var/lib/univention-ldap/listener
 if [ ! -e /var/lib/univention-ldap/listener/listener ]; then
@@ -65,11 +51,11 @@ update-rc.d -f univention-ldap-listener remove >/dev/null 2>&1
 
 #DEBHELPER#
 
-univention-baseconfig set listener/debug/level?2
+univention-config-registry set listener/debug/level?2
 
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=17998
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=18692
-univention-baseconfig set	listener/memberuid/skip?yes \
+univention-config-registry set	listener/memberuid/skip?yes \
 							listener/uniquemember/skip?yes 
 
 mkdir -p /var/lib/univention-ldap/schema/id/
@@ -86,15 +72,7 @@ if [ -e /var/lib/univention-ldap/replog/replog ]; then
 	chmod 600 /var/lib/univention-ldap/replog/replog
 fi
 
-/usr/lib/univention-install/03univention-directory-listener.inst || true
-
-
-# This is only needed for the transition from univention-ldap-listener to univention-directory-listener
-# and can be removed in UCS 2.1
-if [ -h "/var/service/univention-ldap-listener" ]; then
-       ln -s /etc/runit/univention-directory-listener /var/service/univention-directory-listener
-       rm /var/service/univention-ldap-listener
-fi
+call_joinscript 03univention-directory-listener.inst
 
 if [ "$1" = "configure" -a -n "$2" ]; then
 	if dpkg --compare-versions "$2" lt 1.12; then

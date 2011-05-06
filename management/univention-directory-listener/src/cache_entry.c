@@ -2,7 +2,7 @@
  * Univention Directory Listener
  *  entries in the cache
  *
- * Copyright 2004-2010 Univention GmbH
+ * Copyright 2004-2011 Univention GmbH
  *
  * http://www.univention.de/
  *

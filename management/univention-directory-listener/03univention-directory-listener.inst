@@ -3,7 +3,7 @@
 # Univention Directory Listener
 #  join script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -56,7 +56,7 @@ if [ -e "/var/lib/univention-directory-replication" ]; then
 	rm -Rf /var/lib/univention-directory-replication/*
 fi
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	test -n "`grep "univention-directory-listener v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-directory-listener v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
@@ -72,7 +72,7 @@ if [ "$server_role" != "domaincontroller_master" ]; then
 	fi
 fi
 
-univention-baseconfig set ldap/database/ldbm/dbsync="10"
+univention-config-registry set ldap/database/ldbm/dbsync="10"
 
 if [ "`echo $ldap_master_bind | tr A-Z a-z`" = "gssapi" ]; then
 	options="$options -K"
@@ -88,7 +88,7 @@ if [ -n "$server_role" ]; then
 	if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 		/usr/sbin/univention-directory-listener $options -D "cn=admin,$ldap_base" -y /etc/ldap.secret
 	else
-		/usr/sbin/univention-directory-listener $options -D "`univention-baseconfig get ldap/hostdn`" -y /etc/machine.secret
+		/usr/sbin/univention-directory-listener $options -D "`univention-config-registry get ldap/hostdn`" -y /etc/machine.secret
 	fi
 	
 else
@@ -97,7 +97,7 @@ fi
 
 exit_status=$?
 
-univention-baseconfig set ldap/database/ldbm/dbsync=$ldap_database_ldbm_dbsync
+univention-config-registry set ldap/database/ldbm/dbsync=$ldap_database_ldbm_dbsync
 
 # needed for db sync
 sleep 15

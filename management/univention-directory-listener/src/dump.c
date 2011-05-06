@@ -3,7 +3,7 @@
  *  header information for base64.c
  *  tool to dump the cache.
  *
- * Copyright 2004-2010 Univention GmbH
+ * Copyright 2004-2011 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
 		case 'r':
 			broken_only=1;
 			break;
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 		case 'i':
 			id_only=1;
 			break;
@@ -132,7 +132,7 @@ int main(int argc, char* argv[])
 	if (cache_init() != 0)
 		exit(1);
 
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 	if (id_only) {
 
 		CacheMasterEntry master_entry;
@@ -158,7 +158,7 @@ int main(int argc, char* argv[])
 	}
 	cache_free_cursor(cur);
 
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 	}
 #endif
 	

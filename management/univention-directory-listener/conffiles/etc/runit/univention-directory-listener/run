@@ -1,14 +1,5 @@
 #!/bin/sh -e
-
-# Warning: This file is auto-generated and might be overwritten by
-#          univention-baseconfig.
-#          Please edit the following file instead:
-# Warnung: Diese Datei wurde automatisch generiert und kann durch
-#          univention-baseconfig überschrieben werden.
-#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
-#
-# 	/etc/univention/templates/files/etc/runit/univention-directory-listener/run
-#
+@%@UCRWARNING=# @%@
 
 
 # check if startup is in progress, need to wait then
@@ -21,7 +12,7 @@ for dir in "$cachedir" /var/lib/univention-ldap/listener; do
 	find "$dir" ! -user listener -exec chown listener {} \;
 done
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
 if [ "$server_role" != "domaincontroller_master" ]; then
 	if [ -e "/var/lib/univention-ldap/notify/transaction" ]; then

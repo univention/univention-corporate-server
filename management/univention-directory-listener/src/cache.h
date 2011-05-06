@@ -2,7 +2,7 @@
  * Univention Directory Listener
  *  header information for cache.c
  *
- * Copyright 2004-2010 Univention GmbH
+ * Copyright 2004-2011 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -40,19 +40,18 @@
 #include <stdbool.h>
 
 
-#ifdef WITH_DB42
-struct _CacheMasterEntry {
+int	cache_init				(void);
+
+#ifdef WITH_DB48
+typedef struct _CacheMasterEntry {
 	NotifierID id;
 	NotifierID schema_id;
 } CacheMasterEntry;
+
+int	cache_get_master_entry			(CacheMasterEntry *master_entry);
+int	cache_update_master_entry		(CacheMasterEntry *master_entry, DB_TXN *dptxnp);
 #endif
 
-int	cache_init				(void);
-#ifdef WITH_DB42
-int	cache_get_master_entry			(CacheMasterEntry	 *master_entry);
-int	cache_update_master_entry		(CacheMasterEntry	 *master_entry,
-						 DB_TXN			 *dptxnp);
-#endif
 int	cache_update_entry			(NotifierID		  id,
 						 char			 *dn,
 						 CacheEntry		 *entry);
