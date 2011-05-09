@@ -1,12 +1,8 @@
 #!/bin/sh -e
+@%@UCRWARNING=# @%@
 
-@%@BCWARNING=# @%@
+eval "$(univention-config-registry shell)"
 
-eval `univention-baseconfig shell`
-
-#if [ "$server_role" != "domaincontroller_master" ]; then
-#	options="-o"
-#fi
 # Read from transactions log file in every case
 options="-o"
 

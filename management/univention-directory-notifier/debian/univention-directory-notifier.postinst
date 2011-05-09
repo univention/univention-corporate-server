@@ -3,7 +3,7 @@
 # Univention Directory Notifier
 #  postinst
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,15 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-univention-baseconfig set notifier/autostart?yes
+. /usr/share/univention-lib/all.sh
 
-createLogfile () {
-	if [ ! -e $1 ] ; then
-		touch $1
-		chown $2 $1
-		chmod $3 $1
-	fi
-}
+univention-config-registry set notifier/autostart?yes
 
 #DEBHELPER#
 
@@ -94,14 +88,15 @@ if [ ! -e /var/lib/univention-ldap/$i.lock ]; then
 fi
 
 
-univention-baseconfig set notifier/debug/level?1
-univention-baseconfig unset notifier/replog/sleep
+univention-config-registry set notifier/debug/level?1
 
-univention-baseconfig set listener/supply/notifier?yes
+univention-config-registry unset notifier/replog/sleep
 
-createLogfile /var/log/univention/notifier.log "root:adm" 640
+univention-config-registry set listener/supply/notifier?yes
 
-/usr/lib/univention-install/02univention-directory-notifier.inst || true
+create_logfile /var/log/univention/notifier.log "root:adm" 640
+
+call_joinscript 02univention-directory-notifier.inst
 
 if [ -h /etc/runit/univention/univention-ldap-notifier ]; then
 	ln -sf /etc/runit/univention-directory-notifier /etc/runit/univention/univention-directory-notifier
@@ -118,4 +113,4 @@ elif [ "$1" = "configure" ]; then
 	/etc/init.d/univention-directory-notifier restart || true
 fi
 
-
+exit 0
