@@ -1,9 +1,9 @@
-#!/usr/bin/python2.4 -OO
+#!/usr/bin/python2.6
 #
 # Univention Directory Replication
 #  replicate one LDAP object
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #

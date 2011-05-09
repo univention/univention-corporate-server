@@ -3,7 +3,7 @@
 # Univention Directory Replication
 #  listener module for Directory replication
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -983,7 +983,7 @@ def clean():
 			os.unlink(LDIF_FILE)
 	finally:
 		listener.unsetuid()
-	listener.run('/usr/sbin/univention-baseconfig', ['univention-baseconfig','commit', '/var/lib/univention-ldap/ldap/DB_CONFIG'], uid=0)
+	listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry','commit', '/var/lib/univention-ldap/ldap/DB_CONFIG'], uid=0)
 
 def initialize():
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'REPLICATION:  initialize')
