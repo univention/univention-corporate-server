@@ -30,63 +30,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-package=univention-directory-listener
-
-build:
-	dh_testdir
-	touch build-stamp
-	cd src; $(MAKE) clean; $(MAKE) DB_CFLAGS="-I/usr/include/db -DWITH_DB48" DB_LDADD="-ldb-4.8"; cd -
-
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp
-
+override_dh_auto_clean:
 	cd src; $(MAKE) clean; cd -
+	dh_auto_clean
 
-	dh_clean
-
-install:
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	install -m 755 src/listener debian/univention-directory-listener/usr/sbin/univention-directory-listener
-	install -m 755 src/dump debian/univention-directory-listener/usr/sbin/univention-directory-listener-dump
-	install -m 755 src/verify debian/univention-directory-listener/usr/sbin/univention-directory-listener-verify
-	
-	install -m 755 src/listener-ctrl debian/univention-directory-listener/usr/sbin/univention-directory-listener-ctrl
-	install -m 644 python/listener.py debian/univention-directory-listener/usr/lib/python2.4/site-packages
-	install -m 755 python/ldap_server.py debian/univention-directory-listener/usr/lib/univention-directory-listener/system
-	install -m 755 03univention-directory-listener.inst debian/univention-directory-listener/usr/lib/univention-install/
-	install -m 755 python/get_notifier_id.py debian/univention-directory-listener/usr/share/univention-directory-listener/
-
-	touch debian/univention-directory-listener/etc/runit/univention-directory-listener/down
+override_dh_auto_install:
 	univention-install-config-registry
-	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-directory-listener/etc/runit/univention-directory-listener/finish
+	dh_auto_install 
 
-	dh_install
-
-binary-arch: build install
-	dh_testdir -a
-	dh_testroot -a
-	dh_installchangelogs -a
-	dh_installdocs -a
-	dh_installexamples -a
+override_dh_installinit:
 	dh_installinit -a --no-start -r -u"defaults 50"
-	dh_installman -a
-	dh_link -a
-	dh_compress -a
-	dh_fixperms -a
-	dh_shlibdeps -a
-	dh_installdeb -a
-	dh_gencontrol -a
-	dh_md5sums -a
-	dh_builddeb -a
 
-binary-indep: build install
+override_dh_auto_build:
+	cd src; $(MAKE) clean; $(MAKE) DB_CFLAGS="-I/usr/include/db -DWITH_DB48" DB_LDADD="-ldb-4.8"; cd -
+	#ucslint
+	dh_auto_build
 
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install
+%:
+	dh $@
+

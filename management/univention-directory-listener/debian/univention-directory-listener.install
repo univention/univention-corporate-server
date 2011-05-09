@@ -1,0 +1,6 @@
+src/listener usr/sbin/univention-directory-listener
+src/dump usr/sbin/univention-directory-listener-dump
+src/verify usr/sbin/univention-directory-listener-verify
+src/listener-ctrl usr/sbin/univention-directory-listener-ctrl
+python/*.py usr/lib/python2.4/site-packages
+03univention-directory-listener.inst usr/lib/univention-install/
