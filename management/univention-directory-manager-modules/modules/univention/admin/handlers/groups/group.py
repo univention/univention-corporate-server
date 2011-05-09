@@ -32,6 +32,7 @@
 
 import sys, string, copy, re, os, time, ldap
 import univention.admin
+import univention.admin.uldap
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.allocators
@@ -579,32 +580,50 @@ class object(univention.admin.handlers.simpleLdap):
 					self.cancel()
 					raise univention.admin.uexceptions.mailAddressUsed
 
-		old = self.oldinfo.get( 'users', [] ) + self.oldinfo.get('hosts', []) + self.oldinfo.get('nestedGroup', []) 
-		new = self.info.get('users', []) + self.info.get('hosts', []) + self.info.get('nestedGroup', [])
+		old = set( self.oldinfo.get( 'users', [] ) + self.oldinfo.get('hosts', []) + self.oldinfo.get('nestedGroup', []) )
+		new = set( self.info.get('users', []) + self.info.get('hosts', []) + self.info.get('nestedGroup', []) )
 		if old != new:
-			ml.append( ( 'uniqueMember', old, new ) )
-			uids = self.lo.getAttr( self.dn, 'memberUid' )
-			new_uids = []
-			for member in new:
-				if member.startswith('uid='): # UID is stored in DN --> use UID directly
-					new_uids.append( member[ member.find('=') + 1 : member.find(',') ] ) # string between first '=' and first ','
-				else: # UID is not stored in DN --> fetch UID by DN
-					uid_list = self.lo.getAttr(member, 'uid')
-					# a group have no uid attribute, see Bug #12644
-					if len(uid_list) > 0:
-						new_uids.append(uid_list[0])
-						if len(uid_list) > 1:
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'groups/group: A groupmember has multiple UIDs (%s %s)' % (member, str(uid_list)))
-			ml.append( ( 'memberUid', uids, new_uids ) )
+			# create lists for uniqueMember entries to be added or removed
+			uniqueMemberAdd = list( new - old )    #  (new - old) ==> new set with elements in "new" but not in "old"
+			uniqueMemberRemove = list( old - new ) #  (old - new) ==> new set with elements in "old" but not in "new"
+
+
+			def getUidList(uniqueMembers):
+				result = []
+				for uniqueMember in uniqueMembers:
+					if uniqueMember.startswith('uid='): # UID is stored in DN --> use UID directly
+						result.append( univention.admin.uldap.explodeDn(uniqueMember, 1)[0] )
+					else:
+						# UID is not stored in DN --> fetch UID by DN
+						uid_list = self.lo.getAttr(uniqueMember, 'uid')
+						# a group have no uid attribute, see Bug #12644
+						if len(uid_list) > 0:
+							result.append( uid_list[0] )
+							if len(uid_list) > 1:
+								univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'groups/group: A groupmember has multiple UIDs (%s %s)' % (uniqueMember, str(uid_list)))
+				return result
+
+			# create lists for memberUid entries to be added or removed
+			memberUidAdd    = getUidList(uniqueMemberAdd)
+			memberUidRemove = getUidList(uniqueMemberRemove)
+
+			if uniqueMemberRemove:
+				ml.append( ( 'uniqueMember', uniqueMemberRemove, '' ) )
+			if uniqueMemberAdd:
+				ml.append( ( 'uniqueMember', '', uniqueMemberAdd ) )
+			if memberUidRemove:
+				ml.append( ( 'memberUid', memberUidRemove, '' ) )
+			if memberUidAdd:
+				ml.append( ( 'memberUid', '', memberUidAdd ) )
 
 		oldEmailUsers = self.oldinfo.get( 'allowedEmailUsers', [] )
 		newEmailUsers = self.info.get( 'allowedEmailUsers', [] )
-		if oldEmailUsers != newEmailUsers:
+		if set(oldEmailUsers) != set(newEmailUsers): # compare sets since the order of values does not matter
 			ml.append( ('univentionAllowedEmailUsers', oldEmailUsers, newEmailUsers) )
 
 		oldEmailGroups = self.oldinfo.get( 'allowedEmailGroups', [] )
 		newEmailGroups = self.info.get( 'allowedEmailGroups', [] )
-		if oldEmailGroups != newEmailGroups:
+		if set(oldEmailGroups) != set(newEmailGroups): # compare sets since the order of values does not matter
 			ml.append( ('univentionAllowedEmailGroups', oldEmailGroups, newEmailGroups) )
 
 		return ml

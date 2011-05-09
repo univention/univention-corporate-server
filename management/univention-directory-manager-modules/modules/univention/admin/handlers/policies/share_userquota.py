@@ -54,7 +54,7 @@ class shareUserQuotaFixedAttributes(univention.admin.syntax.select):
 module='policies/share_userquota'
 operations=['add','edit','remove','search']
 
-policy_oc='univentionPolicyShareUserquota'
+policy_oc='univentionPolicyShareUserQuota'
 policy_apply_to=["shares/share"]
 policy_position_dn_prefix="cn=userquota,cn=shares"
 
@@ -213,12 +213,12 @@ class object(univention.admin.handlers.simplePolicy):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicyShareUserquota']) ]
+		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicyShareUserQuota']) ]
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', 'univentionPolicyShareUserquota')
+		univention.admin.filter.expression('objectClass', 'univentionPolicyShareUserQuota')
 		])
 
 	if filter_s:

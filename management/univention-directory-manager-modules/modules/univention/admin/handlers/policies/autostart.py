@@ -51,7 +51,7 @@ class autoStartFixedAttributes(univention.admin.syntax.select):
 module='policies/autostart'
 operations=['add','edit','remove','search']
 
-policy_oc='univentionPolicyUpdate'
+policy_oc='univentionPolicyAutoStart'
 policy_apply_to=["computers/thinclient", 'computers/managedclient', 'computers/mobileclient' ]
 policy_position_dn_prefix="cn=thinclient"
 

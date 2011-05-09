@@ -65,7 +65,7 @@ def __register_choice_update_function(func):
 	choice_update_functions.append(func)
 
 def update_choices():
-	''' udpate choices which are defined in LDAP '''
+	''' update choices which are defined in LDAP '''
 	for func in choice_update_functions:
 		func()
 
@@ -80,6 +80,9 @@ class simple:
 		return '*'
 
 class select:
+	"""Select item from list of choices.
+	self.choice = [(id, _("Display text"), ...]
+	"""
 	type='select'
 
 	def parse(self, text):
@@ -240,6 +243,28 @@ class jpegPhoto(file):
 			return ''
 
 class integer(simple):
+	"""
+	>>> integer().parse('1')
+	'1'
+	>>> integer().parse('0')
+	'0'
+	>>> integer().parse('-1') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> integer().parse('1.1') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> integer().parse('text') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> integer().parse('') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	"""
 	name='integer'
 	min_length=1
 	max_length=0
@@ -252,6 +277,26 @@ class integer(simple):
 			raise univention.admin.uexceptions.valueError, _("Value must be a number!")
 
 class boolean(simple):
+	"""
+	>>> boolean().parse('')
+	''
+	>>> boolean().parse('0')
+	'0'
+	>>> boolean().parse('1')
+	'1'
+	>>> boolean().parse('2') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> boolean().parse('0.1') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> boolean().parse('text') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	"""
 	name='boolean'
 	min_length=1
 	max_length=1
@@ -264,6 +309,34 @@ class boolean(simple):
 			raise univention.admin.uexceptions.valueError, _("Value must be 0 or 1")
 
 class filesize(simple):
+	"""
+	>>> filesize().parse('0')
+	'0'
+	>>> filesize().parse('1b')
+	'1b'
+	>>> filesize().parse('2kB')
+	'2kB'
+	>>> filesize().parse('3Mb')
+	'3Mb'
+	>>> filesize().parse('4GB')
+	'4GB'
+	>>> filesize().parse('5pb') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> filesize().parse('-6') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> filesize().parse('-7.8') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> filesize().parse('text') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	"""
 	name='filesize'
 	min_length=1
 	max_length=0
@@ -276,6 +349,22 @@ class filesize(simple):
 			raise univention.admin.uexceptions.valueError, _("Value must be an integer followed by one of GB,MB,KB,B or nothing (equals B)!")
 
 class mail_folder_name(simple):
+	"""
+	>>> mail_folder_name().parse('folder_name')
+	'folder_name'
+	>>> mail_folder_name().parse('folder name') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> mail_folder_name().parse('folder\tname') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> mail_folder_name().parse('folder!name') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	"""
 	name='mail_folder_name'
 
 	def parse(self,text):
@@ -285,6 +374,23 @@ class mail_folder_name(simple):
 			return text
 
 class mail_folder_type(select):
+	"""
+	>>> mail_folder_type().parse('')
+	''
+	>>> mail_folder_type().parse('mail')
+	'mail'
+	>>> mail_folder_type().parse('event')
+	'event'
+	>>> mail_folder_type().parse('contact')
+	'contact'
+	>>> mail_folder_type().parse('task')
+	'task'
+	>>> mail_folder_type().parse('note')
+	'note'
+	>>> mail_folder_type().parse('journal')
+	'journal'
+	>>> mail_folder_type().parse('invalid')
+	"""
 	name='mail_folder_type'
 	choices=[
 		('',        _('undefined') ),
@@ -297,6 +403,44 @@ class mail_folder_type(select):
 	]
 
 class string_numbers_letters_dots(simple):
+	"""
+	>>> string_numbers_letters_dots().parse('a') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> string_numbers_letters_dots().parse('A') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> string_numbers_letters_dots().parse('0') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> string_numbers_letters_dots().parse('aA')
+	'aA'
+	>>> string_numbers_letters_dots().parse('a.A')
+	'a.A'
+	>>> string_numbers_letters_dots().parse('a_A')
+	'a_A'
+	>>> string_numbers_letters_dots().parse('a-A')
+	'a-A'
+	>>> string_numbers_letters_dots().parse('.') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> string_numbers_letters_dots().parse('_') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> string_numbers_letters_dots().parse('-') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> string_numbers_letters_dots().parse('/') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	"""
 	name='string_numbers_letters_dots'
 
 	_re = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)')
@@ -308,6 +452,50 @@ class string_numbers_letters_dots(simple):
 			raise univention.admin.uexceptions.valueError, _("Value must not contain anything other than digits, letters or dots, must be at least 2 characters long, and start and end with a digit or letter!")
 
 class string_numbers_letters_dots_spaces(simple):
+	"""
+	>>> string_numbers_letters_dots_spaces().parse('a') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> string_numbers_letters_dots_spaces().parse('A') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> string_numbers_letters_dots_spaces().parse('0') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> string_numbers_letters_dots_spaces().parse('aA')
+	'aA'
+	>>> string_numbers_letters_dots_spaces().parse('a.A')
+	'a.A'
+	>>> string_numbers_letters_dots_spaces().parse('a_A')
+	'a_A'
+	>>> string_numbers_letters_dots_spaces().parse('a-A')
+	'a-A'
+	>>> string_numbers_letters_dots_spaces().parse('a A')
+	'a A'
+	>>> string_numbers_letters_dots_spaces().parse('.') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> string_numbers_letters_dots_spaces().parse('_') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> string_numbers_letters_dots_spaces().parse('-') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> string_numbers_letters_dots_spaces().parse(' ') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> string_numbers_letters_dots_spaces().parse('/') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	"""
 	name='string_numbers_letters_dots_spaces'
 
 	_re = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._ -]*([a-zA-Z0-9]$)')
@@ -320,10 +508,22 @@ class string_numbers_letters_dots_spaces(simple):
 
 
 class phone(simple):
+	"""
+	>>> phone().parse('+49 421 22232-0')
+	'+49 421 22232-0'
+	>>> phone().parse('++49 (0)700 Vanity')
+	'++49 (0)700 Vanity'
+	>>> phone().parse('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._ ()\/+-')
+	'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._ ()\\\/+-'
+	>>> phone().parse('^°!$§%&[]{}<>|*~#",.;:') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	"""
 	name='phone'
 	min_length=1
 	max_length=16
-	_re = re.compile('(?u)[a-zA-Z0-9._ ()\/+-]*$')
+	_re = re.compile('(?u)[a-zA-Z0-9._ ()\\\/+-]*$')
 
 	def parse(self, text):
 		if self._re.match(text) != None:
@@ -332,6 +532,14 @@ class phone(simple):
 			raise univention.admin.uexceptions.valueError, _("Value must not contain anything other than digits, letters, dots, brackets, slash, plus, or minus!")
 
 class IA5string(string):
+	"""
+	>>> IA5string().parse(''' !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~''')
+	' !"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
+	>>> IA5string().parse('öäüÖÄÜß€') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	"""
 	name='IA5string'
 
 	def parse(self, text):
@@ -342,6 +550,50 @@ class IA5string(string):
 		return text
 
 class uid(simple):
+	"""
+	>>> uid().parse('a') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> uid().parse('A') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> uid().parse('0') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> uid().parse('aA')
+	'aA'
+	>>> uid().parse('a.A')
+	'a.A'
+	>>> uid().parse('a_A')
+	'a_A'
+	>>> uid().parse('a-A')
+	'a-A'
+	>>> uid().parse('.') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> uid().parse('_') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> uid().parse('-') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> uid().parse('/') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> uid().parse('admin') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> uid().parse('Admin')
+	'Admin'
+	"""
 	name='uid'
 	min_length=1
 	max_length=16
@@ -557,7 +809,7 @@ class ipRange(complex):
 
 class ipProtocol(select):
 	name='ipProtocol'
-	choices=[(_('tcp'), 'TCP'), (_('udp'), 'UDP')]
+	choices=[('tcp', _('TCP')), ('udp', _('UDP'))]
 
 class absolutePath(simple):
 	name='absolutePath'
@@ -610,20 +862,49 @@ class iso8601Date(simple):
 		raise univention.admin.uexceptions.valueError,_("The given date does not conform to iso8601, example: \"2009-01-01\".")
 
 class date(simple):
+	"""
+	Either a date in ISO (YYYY-MM-DD) or German (DD.MM.YY) format.
+	Bug: Centuries are always stripped!
+
+	>>> date().parse('21.12.03')
+	'21.12.03'
+	>>> date().parse('1961-01-01')
+	'01.01.61'
+	>>> date().parse('2061-01-01')
+	'01.01.61'
+	>>> date().parse('01.02.00')
+	'01.02.00'
+	>>> date().parse('01.02.99')
+	'01.02.99'
+	>>> date().parse('00.00.01') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> date().parse('01x02y03') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+
+	Bug #20230:
+	>>> date().parse('31.2.1') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	"""
 	name='date'
 	min_length=5
 	max_length=0
 	_re_iso = re.compile('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
-	_re_de = re.compile('^[0-9]+.[0-9]+.[0-9]+$')
+	_re_de = re.compile('^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]+$')
 
 	def parse(self, text):
 		if self._re_iso.match(text) != None:
 			year, month, day = map(lambda(x): int(x), text.split('-'))
-			if year > 1960 and year < 2100 and month < 13 and day < 32:
+			if 1960 < year < 2100 and 1 <= month <= 12 and 1 <= day <= 31:
 				return '%02d.%02d.%s' % ( day, month, str( year )[ 2 : ] )
 		if self._re_de.match(text) != None:
 			day, month, year = map(lambda(x): int(x), text.split('.'))
-			if year > 0 and year < 99 and month < 13 and day < 32:
+			if 0 <= year <= 99 and 1 <= month <= 12 and 1 <= day <= 31:
 				return text
 		raise univention.admin.uexceptions.valueError,_("Not a valid Date")
 		
@@ -699,6 +980,11 @@ class dnsMX(complex):
 	all_required=1
 
 class dnsSRVName(complex):
+	"""DNS Service Record.
+
+	>>> dnsSRVName().parse(['ldap', 'tcp'])
+	['ldap', 'tcp']
+	"""
 	name='dnsSRVName'
 	subsyntaxes=[(_('Service'), string), (_('Protocol'), ipProtocol)]
 	all_required=1
@@ -804,6 +1090,11 @@ class userAttributeList(string):
 		return text
 
 class ldapDn(simple):
+	"""LDAP distinguished name.
+
+	>>> ldapDn().parse('dc=foo,dc=bar,dc=test')
+	'dc=foo,dc=bar,dc=test'
+	"""
 	name='ldapDn'
 	_re=re.compile('^([^=,]+=[^=,]+,)*[^=,]+=[^=,]+$')
 
@@ -1353,15 +1644,6 @@ class share(ldapDnOrNone):
 	searchFilter='(objectClass=univentionShare)'
 	description=_('Share')
 
-if __name__ == '__main__':
-	s=date()
-	print s.parse('31.12.02')
-	m=dnsMX()
-	print m.parse(['7', 'test.univentoin.de'])
-	q=dnsSRVName()
-	print q.parse(['ldap','tcp'])
-	d=ldapDn()
-	print d.parse('dc=foo,dc=bar,dc=test')
 class AllowDenyIgnore(select):
 	name='AllowDenyIgnore'
 	choices=[
@@ -1972,7 +2254,7 @@ class univentionAdminModules(select):
 				return text
 		raise univention.admin.uexceptions.valueInvalidSyntax, _('"%s" is not a Univention Admin Module.') % text
 
-# Unfortunatly, Python doesn't seem to support (static) class methods;
+# Unfortunately, Python doesn't seem to support (static) class methods;
 # however, (static) class variables such as "choices" seem to work;
 # so, we'll modify "choices" using this global method
 def univentionAdminModules_update():
@@ -2022,6 +2304,7 @@ class listAttributes(select):
 		return text
 
 class timeSpec(select):
+	"""Time format used by 'at'."""
 	name = 'timeSpec'
 	_times  = [(time, time) for hour in range(0, 24)
 				for minute in range(0, 60, 15)
@@ -2106,6 +2389,14 @@ class configRegistryKey(simple):
 
 
 class LDAP_Search( select ):
+	"""Selection list from LDAP search.
+
+	Searches can be either defined dynamically via a UDM settings/syntax
+	definition and using LDAP_Search(syntax_name="NAME"), or programmatically
+	by directly instantiating LDAP_Search(filter="(LDAP-Search-Filter)",
+	attribute=["LDAP attributes", ...], value="LDAP attribute", base="LDAP
+	base").
+	"""
 	FILTER_PATTERN = '(&(objectClass=univentionSyntax)(cn=%s))'
 
 	def __init__( self, syntax_name = None, filter = None,
@@ -2113,7 +2404,8 @@ class LDAP_Search( select ):
 				  viewonly = False, addEmptyValue = False ):
 		self.__syntax = syntax_name
 		if filter:
-		  	self.__syntax = None
+			# programmatically
+			self.__syntax = None
 			self.filter = filter
 			self.attributes = attribute
 			self.__base = base
@@ -2129,9 +2421,12 @@ class LDAP_Search( select ):
 
 	def _load( self, lo ):
 		if not self.__syntax:
+			# programmatically
 			if self.viewonly:
 				self.__value = 'dn'
 			return
+
+		# get values from UDM settings/syntax
 		try:
 			filter = LDAP_Search.FILTER_PATTERN % self.__syntax
 			dn, attrs = lo.search( filter = filter )[ 0 ]
@@ -2220,3 +2515,7 @@ class locked( select ):
 		( 'windows', _( 'Locked Windows/Kerberos only' ) ),
 		( 'posix', _( 'Locked POSIX/LDAP only' ) ),
 	)
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()

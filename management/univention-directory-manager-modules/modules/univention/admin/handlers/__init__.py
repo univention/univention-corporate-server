@@ -51,7 +51,7 @@ class base(object):
 		self.dn=dn
 
 		self.set_defaults = 0
-		if not self.dn: # this object is newly created an so we can use the default values
+		if not self.dn: # this object is newly created and so we can use the default values
 			self.set_defaults = 1
 
 		if not hasattr(self, 'position'):
@@ -111,7 +111,7 @@ class base(object):
 			for item in changes[ : ]:
 				key, old, new = item
 				# removing a key is ok
-				if new == None:
+				if new in (None, []):
 					continue
 				if self.descriptions[ key ].options:
 					for opt in self.descriptions[ key ].options:
@@ -165,7 +165,6 @@ class base(object):
 			return 0
 		p=self.descriptions[key]
 		if hasattr(self, 'options') and p.options:
-			in_options=0
 			for o in p.options:
 				if o in self.options:
 					return 1
@@ -297,7 +296,7 @@ class base(object):
 		'''create object'''
 
 		if self.exists():
-			raise univention.admin.uexceptions.objectExists
+			raise univention.admin.uexceptions.objectExists, self.dn
 		if hasattr(self,"_ldap_pre_ready"):
 			self._ldap_pre_ready()
 
@@ -985,7 +984,28 @@ class simpleComputer( simpleLdap ):
 		self.network_object = False
 		self.old_network = 'None'
 		self.__saved_dhcp_entry = None
+		# read-only attribute containing the FQDN of the host
+		self.descriptions[ 'fqdn' ] = univention.admin.property(
+			short_description = 'FQDN',
+			long_description = '',
+			syntax=univention.admin.syntax.string,
+			multivalue = False,
+			options = [],
+			required = False,
+			may_change = False,
+			identifies = 0
+		)
 		self[ 'dnsAlias' ] = [ ]	# defined here to avoid pseudo non-None value of [''] in modwizard search
+
+	def getMachineSid(self, lo, position, uidNum):
+		num = uidNum
+		machineSid = ""
+		while not machineSid or machineSid == 'None':
+			try:
+				machineSid = univention.admin.allocators.requestUserSid(lo, position, num)
+			except univention.admin.uexceptions.noLock, e:
+				num = str(int(num)+1)
+		return machineSid
 
 	# HELPER
 	def __ip_from_ptr( self, zoneName, relativeDomainName ):
@@ -1153,6 +1173,8 @@ class simpleComputer( simpleLdap ):
 			for warn in open_warnings:
 				self.open_warning += '\n'+warn
 
+		if 'name' in self.info and 'domain' in self.info:
+			self.info[ 'fqdn' ] = '%s.%s' % ( self[ 'name' ], self[ 'domain' ] )
 
 	def __modify_dhcp_object( self, position, name, ip, mac ):
 		# identify the dhcp object with the mac address
@@ -1501,8 +1523,8 @@ class simpleComputer( simpleLdap ):
 										( 'zoneName', univention.admin.uldap.explodeDn( zoneDn, 1 )[ 0 ]),\
 										( 'ARecord', [ ip ]),\
 										( 'relativeDomainName', [ name ])])
-				except univention.admin.uexceptions.objectExists:
-					raise univention.admin.uexceptions.dnsAliasRecordExists
+				except univention.admin.uexceptions.objectExists, dn:
+					raise univention.admin.uexceptions.dnsAliasRecordExists, dn
 
 				# TODO: check if zoneDn really a forwardZone, maybe it is a container under a zone
 				zone = univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zoneDn )
@@ -1754,9 +1776,14 @@ class simpleComputer( simpleLdap ):
 				if self.oldinfo.has_key( 'ip' ) and ipAddress in self.oldinfo[ 'ip' ]:
 					continue
 				if not self.ip_alredy_requested:
-					IpAddr = univention.admin.allocators.request( self.lo, self.position, 'aRecord', value = ipAddress )
-					if not IpAddr:
+					try:
+						IpAddr = univention.admin.allocators.request( self.lo, self.position, 'aRecord', value = ipAddress )
+						if not IpAddr:
+							self.cancel( )
+							raise univention.admin.uexceptions.noLock
+					except univention.admin.uexceptions.noLock:
 						self.cancel( )
+						self.ip_alredy_requested = 0
 						raise univention.admin.uexceptions.ipAlreadyUsed, ' %s' % ipAddress
 				else:
 					IpAddr = ipAddress
@@ -1776,6 +1803,26 @@ class simpleComputer( simpleLdap ):
 		if self.hasChanged( 'name' ):
 			ml.append( ( 'sn', self.oldattr.get( 'sn', [ None ] )[ 0 ], self[ 'name' ] ) )
 			self.__changes[ 'name' ] = ( self.oldattr.get( 'sn', [ None ] )[ 0 ], self[ 'name' ] )
+
+		# remove the corresponding dhcp-entries when removing an IP or MAC address (bug #18966)
+		if self.hasChanged('ip') or self.hasChanged('mac'):
+			# get all IP addresses that have been removed
+			removedIPs = []
+			if self.oldinfo.has_key('ip'):
+				removedIPs = [ ip for ip in self.oldinfo['ip'] if ip and ip not in self['ip'] ]
+
+			# get all MAC addresses that have been removed
+			removedMACs = []
+			if self.oldinfo.has_key('mac'):
+				removedMACs = [ mac for mac in self.oldinfo['mac'] if mac and mac not in self['mac'] ]
+
+			# remove all DHCP-entries that have been associated with any of these IP/MAC addresses
+			newDhcpEntries = []
+			for entry in self['dhcpEntryZone']:
+				dn, ip, mac = self.__split_dhcp_line(entry)
+				if ip not in removedIPs and mac not in removedMACs:
+					newDhcpEntries.append(entry)
+			self['dhcpEntryZone'] = newDhcpEntries
 
 		if self.hasChanged( 'dhcpEntryZone' ):
 			if self.oldinfo.has_key( 'dhcpEntryZone' ):
@@ -1964,12 +2011,12 @@ class simpleComputer( simpleLdap ):
 					univention.admin.allocators.release( self.lo, self.position, 'aRecord', ipAddress )
 
 		# remove computer from groups
-		for group in self['groups']:
-			groupObject=univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
-			groupObject.open()
-			if self.dn in groupObject['hosts']:
-				groupObject['hosts'].remove(self.dn)
-				groupObject.modify(ignore_license=1)
+		groups = copy.deepcopy(self['groups'])
+		if self.oldinfo.get('primaryGroup'):
+			groups.append( self.oldinfo.get('primaryGroup') )
+		for group in groups:
+			groupObject = univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
+			groupObject.fast_member_remove( [ self.dn ], self.oldattr.get('uid',[]), ignore_license=1 )
 
 	def update_groups(self):
 		if not self.hasChanged('groups') and \
@@ -2303,7 +2350,7 @@ class simplePolicy(simpleLdap):
 			self.oldinfo={}
 			simpleLdap.create(self)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.create: created object: info=%s' % (self.info))
-		except univention.admin.uexceptions.objectExists:
+		except univention.admin.uexceptions.objectExists, dn:
 			self.__makeUnique()
 			self.create()
 

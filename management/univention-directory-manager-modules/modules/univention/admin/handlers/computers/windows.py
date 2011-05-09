@@ -37,6 +37,7 @@ import univention.admin.handlers
 import univention.admin.password
 import univention.admin.password
 import univention.admin.localization
+import univention.admin.modules
 import univention.admin.uldap
 import univention.admin.nagios as nagios
 import univention.admin.handlers.dns.forward_zone
@@ -382,18 +383,11 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 		self.uidNum = None
 		self.machineSid = None
-		while not self.uidNum or not self.machineSid:
+		while not self.uidNum:
 			self.uidNum=univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
-			if self.uidNum:
-				self.alloc.append(('uidNumber',self.uidNum))
-				try:
-					self.machineSid=univention.admin.allocators.requestUserSid(self.lo, self.position, self.uidNum)
-				except:
-					pass
-				else:
-					self.alloc.append(('sid',self.machineSid))
-			else:
-				self.machineSid=None
+		self.alloc.append(('uidNumber',self.uidNum))
+		self.machineSid = self.getMachineSid(self.lo, self.position, self.uidNum)
+		self.alloc.append(('sid',self.machineSid))
 
 		acctFlags=univention.admin.samba.acctFlags(flags={'W':1})
 
@@ -420,23 +414,25 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		if self.hasChanged('machineAccountGroup'):
 			self.newPrimaryGroup=self['machineAccountGroup']
 
+		group_mod = univention.admin.modules.get('groups/group')
+
 		if self.oldPrimaryGroup and self.newPrimaryGroup:
-			members=self.lo.getAttr(self.oldPrimaryGroup, 'uniqueMember')
-			newmembers=copy.deepcopy(members)
-			if self.dn in newmembers:
-				newmembers.remove(self.dn)
-				self.lo.modify(self.oldPrimaryGroup, [('uniqueMember', members, newmembers)])
-				self.oldPrimaryGroup=None
-			
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'computers/windows: post_create: removing from old primary group: %s' % str(self.oldPrimaryGroup))
+			grpobj = group_mod.object(None, self.lo, self.position, self.oldPrimaryGroup)
+			uidlist = []
+			if hasattr(self, 'uid') and self.uid:
+				uidlist.append(self.uid)
+			grpobj.fast_member_remove( [ self.dn ], uidlist )
+
 		if self.newPrimaryGroup:
-			members=self.lo.getAttr(self.newPrimaryGroup, 'uniqueMember')
-			newmembers=copy.deepcopy(members)
-			newmembers.append(self.dn)
-			self.lo.modify(self.newPrimaryGroup, [('uniqueMember', members, newmembers)])
-			self.newPrimaryGroup=None
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'computers/windows: post_create: adding to new primary group: %s' % str(self.newPrimaryGroup))
+			grpobj = group_mod.object(None, self.lo, self.position, self.newPrimaryGroup)
+			uidlist = []
+			if hasattr(self, 'uid') and self.uid:
+				uidlist.append(self.uid)
+			grpobj.fast_member_add( [ self.dn ], uidlist )
 
 		univention.admin.handlers.simpleComputer._ldap_post_create( self )
-
 
 		if hasattr(self, 'uidNum') and self.uidNum and hasattr(self, 'machineSid') and self.machineSid:
 			univention.admin.allocators.confirm(self.lo, self.position, 'uidNumber', self.uidNum)
@@ -452,22 +448,8 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		if self.hasChanged('machineAccountGroup'):
 			self.newPrimaryGroup=self['machineAccountGroup']
 
-		if self.oldPrimaryGroup and self.newPrimaryGroup:
-			members=self.lo.getAttr(self.oldPrimaryGroup, 'uniqueMember')
-			newmembers=copy.deepcopy(members)
-			if self.dn in newmembers: # may be removed by changing the group directly
-				newmembers.remove(self.dn)
-				self.lo.modify(self.oldPrimaryGroup, [('uniqueMember', members, newmembers)])
-				self.oldPrimaryGroup=None
-			
-		if self.newPrimaryGroup:
-			members=self.lo.getAttr(self.newPrimaryGroup, 'uniqueMember')
-			newmembers=copy.deepcopy(members)
-			if not self.dn in members:
-				newmembers.append(self.dn)
-				self.lo.modify(self.newPrimaryGroup, [('uniqueMember', members, newmembers)])
-				self.newPrimaryGroup=None
-
+		univention.admin.handlers.simpleComputer.primary_group( self )
+		univention.admin.handlers.simpleComputer.update_groups( self )
 		univention.admin.handlers.simpleComputer._ldap_post_modify( self )
 		self.nagios_ldap_post_modify()
 
@@ -506,7 +488,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				self.dn=None
 				self._exists=0
 				raise univention.admin.uexceptions.uidAlreadyUsed, ': %s' % requested_uid
-				return []
 
 			self.alloc.append(('uid', self.uid))
 			ml.append(('uid', self.oldattr.get('uid', [None])[0], self.uid))

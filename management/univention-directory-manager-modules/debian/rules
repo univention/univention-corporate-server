@@ -33,31 +33,32 @@
 PACKAGE_NAME=univention-directory-manager
 MODULE_NAME=univention-directory-manager
 
-PYVERS=$(shell pyversions -vr)
+PYVERS := $(shell pyversions -vr)
 
-version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
-copyrightyear=`date +%Y`
+version := $(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
+copyrightyear := $(shell date +%Y)
 
-MO_FILES=$(shell find modules -name '*.po' | sed 's/\.po/\.mo/g')
+PO_FILES := $(shell find modules -name '*.po')
+MO_FILES := $(PO_FILES:%.po=%.mo)
 
 %.mo:	%.po
-	msgfmt -o $@ $<
+	msgfmt --check -o $@ $<
 
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	touch configure-stamp
+	touch $@
 
 build: configure-stamp build-stamp $(MO_FILES)
 build-stamp:
 	dh_testdir
-	touch build-stamp
+	touch $@
 
 clean:
 	dh_testdir
-	dh_testroot
 	rm -f build-stamp configure-stamp
 	rm -f *~
+	$(RM) $(MO_FILES)
 	dh_clean
 
 TOOLS_DEST=$(CURDIR)/debian/univention-directory-manager-tools
@@ -79,6 +80,8 @@ install-ext-%:
 	install -m755 scripts/proof_class_b_reverse ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
 	install -m755 scripts/proof_hostShadowAccounts ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
 	install -m755 scripts/proof_dns_dhcp_records ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
+	install -m755 scripts/proof_associatedDomain ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
+	install -m755 scripts/fix_primary_group_membership ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
 	install -m755 scripts/listpwexpiry ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
 
 	# new tools with daemon mode
@@ -91,22 +94,25 @@ install-ext-%:
 
 	# install admin modules
 
-	@for i in $(shell find modules/univention/admin/ -name '*.py'); do\
+	@set -e;\
+	for i in $(shell find modules/univention/admin/ -name '*.py'); do\
 		o=debian/python-univention-directory-manager/usr/lib/python$*/site-packages/$${i#modules/};\
-		install -d "`dirname $$o`";\
-		install -m755 $$i $$o;\
+		install -d "`dirname "$$o"`";\
+		install -m755 "$$i" "$$o";\
 	done
-	@for i in modules/univention/admin/handlers/*/*.gif modules/univention/admin/handlers/*/*.png; do\
+	@set -e;\
+	for i in modules/univention/admin/handlers/*/*.gif modules/univention/admin/handlers/*/*.png; do\
 		o=debian/python-univention-directory-manager/usr/share/univention-webui-style/icon/$${i#modules/univention/admin/handlers/};\
-		install -d "`dirname $$o`";\
-		install -m 644 $$i $$o;\
+		install -d "`dirname "$$o"`";\
+		install -m 644 "$$i" "$$o";\
 	done
-	@for i in $(MO_FILES); do\
-		lang=`basename $$i .mo`;\
-		domain=`dirname $$i | sed 's,^modules/,,;s,/,-,g'`;\
+	@set -e;\
+	for i in $(MO_FILES); do\
+		lang=`basename "$$i" .mo`;\
+		domain=`dirname "$$i" | sed 's,^modules/,,;s,/,-,g'`;\
 		o=debian/python-univention-directory-manager/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
-		install -d "`dirname $$o`";\
-		install -m 644 $$i $$o;\
+		install -d "`dirname "$$o"`";\
+		install -m 644 "$$i" "$$o";\
 	done
 
 	# install admin-cli modules

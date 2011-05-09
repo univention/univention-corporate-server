@@ -1878,19 +1878,14 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		if self.exists():
 			old_groups = self.oldinfo.get('groups', [])
 			old_uid = self.oldinfo.get( 'username', '' )
-			new_uid = self.info.get('username')
-			new_groups = self.info.get('groups', [])
 		else:
 			old_groups = []
 			old_uid = ""
-			new_uid=""
-			new_groups = []
-
-		add_to_group=[]
-		remove_from_group=[]
+		new_uid = self.info.get('username','')
+		new_groups = self.info.get('groups', [])
 
 		# change memberUid if we have a new username
-		if not old_uid == new_uid:
+		if not old_uid == new_uid and self.exists():
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: rewrite memberuid after rename')
 			for group in new_groups:
 				self.__rewrite_member_uid( group )
@@ -1910,8 +1905,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				grpobj.fast_member_add( [ self.dn ], [ new_uid ] )
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: check primaryGroup')
-		if self.newPrimaryGroupDn and not case_insensitive_in_list(self.newPrimaryGroupDn,add_to_group):
-			grpobj = group_mod.object(None, self.lo, self.position, self.newPrimaryGroupDn)
+		if not self.exists() and self.info.get('primaryGroup'):
+			grpobj = group_mod.object(None, self.lo, self.position, self.info.get('primaryGroup'))
 			grpobj.fast_member_add( [ self.dn ], [ new_uid ] )
 
 	def __rewrite_member_uid( self, group, members = [] ):
@@ -1971,7 +1966,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		group_mod = univention.admin.modules.get('groups/group')
 		grpobj = group_mod.object(None, self.lo, self.position, self.newPrimaryGroupDn)
 		grpobj.fast_member_add( [ self.dn ], [ new_uid ] )
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: adding to new primaryGroup %s' % self.newPrimaryGroupDn)
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: adding to new primaryGroup %s (uid=%s)' % (self.newPrimaryGroupDn, new_uid))
 
 		self.save()
 
@@ -2084,8 +2079,11 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					searchResult=self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
 					domainsid=searchResult[0][1]['sambaSID'][0]
 					sid = domainsid+'-'+self['sambaRID']
-					self.userSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
-					self.alloc.append(('sid', self.userSid))
+					try:
+						self.userSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
+						self.alloc.append(('sid', self.userSid))
+					except univention.admin.uexceptions.noLock, e:
+						raise univention.admin.uexceptions.sidAlreadyUsed, ': %s' % self['sambaRID']
 
 				else:
 
@@ -2279,17 +2277,18 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					ml.insert(0, ('objectClass', 'simpleSecurityObject', ''))
 					ml.insert(0, ('objectClass', 'uidObject', ''))
 
-
+		# set cn and displayName
+		cnAtts = univention.admin.baseConfig.get('directory/manager/usercn/attributes', "<firstname> <lastname>")
+		prop = univention.admin.property()
+		cn = prop._replace(cnAtts, self)
+		cn = cn.strip()
+		ml.append(('cn', self.oldattr.get('cn', [''])[0], cn))
+		if 'person' in self.options:
+			ml.append(('displayName', self.oldattr.get('displayName', [''])[0], cn))
 
 		if  self.hasChanged(['firstname', 'lastname']):
-			if self['firstname']:
-				cn = "%s %s" % (self.info.get('firstname', ''), self.info.get('lastname', ''))
-			else:
-				cn = "%s" % self.info.get('lastname', '')
-			ml.append(('cn', self.oldattr.get('cn', [''])[0], cn))
 			ml.append(('sn', self.oldattr.get('cn', [''])[0], self['lastname']))
 			if 'person' in self.options:
-				ml.append(('displayName', self.oldattr.get('displayName', [''])[0], cn))
 				ml.append(('givenName', self.oldattr.get('givenName', [''])[0], self['firstname']))
 
 			if 'posix' in self.options:

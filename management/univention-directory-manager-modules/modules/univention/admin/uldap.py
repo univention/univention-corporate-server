@@ -57,8 +57,8 @@ def getAdminConnection(start_tls=2,decode_ignorelist=[]):
 	pos=position(lo.base)
 	return access(lo=lo), pos
 
-def getMachineConnection(start_tls=2,decode_ignorelist=[]):
-	lo=univention.uldap.getMachineConnection(start_tls, decode_ignorelist=decode_ignorelist)
+def getMachineConnection(start_tls=2,decode_ignorelist=[], ldap_master = True):
+	lo=univention.uldap.getMachineConnection(start_tls, decode_ignorelist=decode_ignorelist, ldap_master=ldap_master)
 	pos=position(lo.base)
 	return access(lo=lo), pos
 
@@ -335,7 +335,7 @@ class access:
 		try:
 			return self.lo.add(dn, al)
 		except ldap.ALREADY_EXISTS, msg:
-			raise univention.admin.uexceptions.objectExists
+			raise univention.admin.uexceptions.objectExists, dn
 		except ldap.INSUFFICIENT_ACCESS, msg:
 			raise univention.admin.uexceptions.permissionDenied
 		except ldap.LDAPError, msg:

@@ -32,6 +32,8 @@
 
 #DEBHELPER#
 
+eval "$(univention-config-registry shell)"
+
 if [ "$1" = configure -a -z "$2" ]; then
         # only set this for new installations
 	univention-config-registry set directory/manager/web/modules/users/user/properties/homePostalAddress/syntax=postalAddress
@@ -39,6 +41,14 @@ fi
 
 if [ "$1" = "configure" ]; then
 	ucr set directory/manager/web/modules/groups/group/caching/uniqueMember/timeout?300
+fi
+
+# correct xfree-policies with the invalid entry "displayposition=1" (Bug #18374)
+# the syntax XDisplayPosition only defines [ "", "left", "right", "above", "below" ]
+if dpkg --compare-versions "$2" lt-nl 6.0.106-1 && [ "$server_role" = 'domaincontroller_master' ]; then
+	univention-directory-manager policies/xfree list --filter displayposition=1 | grep DN: | while read tmp dn; do 
+		univention-directory-manager policies/xfree modify --dn "$dn" --set displayposition=""
+	done
 fi
 
 exit 0

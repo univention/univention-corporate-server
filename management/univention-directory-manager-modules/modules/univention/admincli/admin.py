@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
-#  command line frontend to univention-admin (module)
+#  command line frontend to univention-directory-manager (module)
 #
 # Copyright 2004-2010 Univention GmbH
 #
@@ -48,12 +48,12 @@ univention.admin.syntax.update_choices()
 # usage information
 def usage():
 	out=[]
-	out.append('univention-admin: command line interface for managing UCS')
+	out.append('univention-directory-manager: command line interface for managing UCS')
 	out.append('copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany')
 	out.append('')
 	out.append('Syntax:')
-	out.append('  univention-admin module action [options]')
-	out.append('  univention-admin [--help] [--version]')
+	out.append('  univention-directory-manager module action [options]')
+	out.append('  univention-directory-manager [--help] [--version]')
 	out.append('')
 	out.append('actions:')
 	out.append('  %-32s %s' % ('create:', 'Create a new object'))
@@ -118,9 +118,9 @@ def usage():
 	out.append('  --%-30s %s' % ('position', 'Move to position in tree'))
 	out.append('')
 	out.append('Description:')
-	out.append('  univention-admin is a tool to handle the configuration for UCS')
+	out.append('  univention-directory-manager is a tool to handle the configuration for UCS')
 	out.append('  on command line level.')
-	out.append('  Use "univention-admin modules" for a list of available modules.')
+	out.append('  Use "univention-directory-manager modules" for a list of available modules.')
 	out.append('')
 	out.append('Known-Bugs:')
 	out.append('  -None-')
@@ -129,7 +129,7 @@ def usage():
 
 def version():
 	o=[]
-	o.append('univention-admin @%@package_version@%@')
+	o.append('univention-directory-manager @%@package_version@%@')
 	return o
 
 def module_usage(information, action=''):
@@ -716,63 +716,67 @@ def doit(arglist):
 
 			if parsed_options:
 				object.options=parsed_options
-				
-			object.open()      	
+
+			object.open()
 			if hasattr(object,'	open_warning') and object.open_warning:
 				out.append('WAR	NING:%s'%object.open_warning)
-			exists=0           	
-			try:               	
+			exists=0
+			try:
 				out.extend(object_input(module, object, input, append=append))
 			except univention.admin.uexceptions.nextFreeIp:
 				if not ignore_exists:
 					out.append('E: No free IP address found')
 					return out + ['OPERATION FAILED']
 			except univention.admin.uexceptions.valueInvalidSyntax, err:
-				if not ignore_exists:
-					out.append('E: Invalid Syntax: %s' % err)
-					return out + ["OPERATION FAILED"]
-				else:
-					exists=1
+				out.append('E: Invalid Syntax: %s' % err)
+				return out + ["OPERATION FAILED"]
 			except Exception, err:
 				out.append('E: Option %s is not valid' %err)
 				return out + ['OPERATION FAILED']
 
 			exists=0
+			exists_msg=None
 			try:
 				dn=object.create()
-			except univention.admin.uexceptions.objectExists:
+			except univention.admin.uexceptions.objectExists, dn:
+				exists_msg = dn
 				if not ignore_exists:
-					out.append('E: Object exists')
+					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
-			except univention.admin.uexceptions.uidAlreadyUsed:
+			except univention.admin.uexceptions.uidAlreadyUsed, user:
+				exists_msg = '(uid) %s' % user
 				if not ignore_exists:
-					out.append('E: Object exists')
+					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
-			except univention.admin.uexceptions.groupNameAlreadyUsed:
+			except univention.admin.uexceptions.groupNameAlreadyUsed, group:
+				exists_msg = '(group) %s' % group
 				if not ignore_exists:
-					out.append('E: Object exists')
+					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
-			except univention.admin.uexceptions.dhcpServerAlreadyUsed:
+			except univention.admin.uexceptions.dhcpServerAlreadyUsed, name:
+				exists_msg = '(dhcpserver) %s' % name
 				if not ignore_exists:
-					out.append('E: Object exists')
+					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
-			except univention.admin.uexceptions.macAlreadyUsed:
+			except univention.admin.uexceptions.macAlreadyUsed, mac:
+				exists_msg = '(mac) %s' % mac
 				if not ignore_exists:
-					out.append('E: Object exists')
+					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
-			except univention.admin.uexceptions.noLock:
+			except univention.admin.uexceptions.noLock, e:
+				exists_dn = '(nolock) %s' % str(e)
 				if not ignore_exists:
-					out.append('E: Object exists')
+					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
@@ -781,7 +785,7 @@ def doit(arglist):
 				return out + ["OPERATION FAILED"]
 			except univention.admin.uexceptions.invalidOptions, e:
 				if not ignore_exists:
-					out.append('E: invalid Options: %s'%e)
+					out.append('E: invalid Options: %s' % e)
 					return out + ["OPERATION FAILED"]
 			except univention.admin.uexceptions.insufficientInformation:
 				out.append('E: Insufficient information')
@@ -792,8 +796,8 @@ def doit(arglist):
 						if not object.has_key(i) or not object[i]:
 							out.append(i)
 				return out + ["OPERATION FAILED"]
-			except univention.admin.uexceptions.noObject:
-				out.append('E: object not found')
+			except univention.admin.uexceptions.noObject, e:
+				out.append('E: object not found: %s' % e)
 				return out + ["OPERATION FAILED"]
 			except univention.admin.uexceptions.circularGroupDependency, e:
 				out.append('E: circular group dependency detected: %s' % e)
@@ -825,7 +829,10 @@ def doit(arglist):
 				lo.modify(dn,modlist)
 
 			if exists == 1:
-				out.append('Object exists')
+				if exists_msg:
+					out.append('Object exists: %s' % exists_msg)
+				else:
+					out.append('Object exists')
 			else:
 				if not dn:
 					dn=object.dn

@@ -54,7 +54,7 @@ class License( object ):
 		self.disable_add = 0
 		self._expired = False
 		self.types= []
-		self.sysAccountNames = ( 'Administrator', 'join-backup', 'join-slave', 'spam' )
+		self.sysAccountNames = ( 'Administrator', 'join-backup', 'join-slave', 'spam', 'oxadmin' )
 		self.sysAccountsFound = 0
 		self.licenses = {
 				License.CLIENT : None, License.ACCOUNT : None,

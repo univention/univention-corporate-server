@@ -124,6 +124,16 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0
+		),
+	'fqdn' : univention.admin.property(
+			short_description = 'FQDN',
+			long_description = '',
+			syntax=univention.admin.syntax.string,
+			multivalue = False,
+			options = [],
+			required = False,
+			may_change = False,
+			identifies = 0
 		)
 }
 
@@ -153,7 +163,12 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def exists(self):
 		return self._exists
-	
+
+	def open( self ):
+		super( object, self ).open()
+		if 'name' in self.info and 'domain' in self.info:
+			self[ 'fqdn' ] = '%s.%s' % ( self[ 'name' ], self[ 'domain' ] )
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	res=[]

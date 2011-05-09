@@ -1,3 +1,265 @@
+univention-directory-manager-modules (6.0.119-1) unstable; urgency=low
+
+  * fixed primary group handling of computers/windows during host creation (Bug #21711)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 28 Mar 2011 18:03:43 +0200
+
+univention-directory-manager-modules (6.0.118-1) unstable; urgency=low
+
+  * some small speed improvements for fix_primary_group_membership (Bug #21782)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 28 Mar 2011 16:24:03 +0200
+
+univention-directory-manager-modules (6.0.117-1) unstable; urgency=low
+
+  * added ldapsearch-wrapper to fix_primary_group_membership (Bug #21782)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 24 Mar 2011 11:47:10 +0100
+
+univention-directory-manager-modules (6.0.116-2) unstable; urgency=low
+
+  * version bump; wrong bug number for changelog entry in version (6.0.93-1),
+    the correct one is Bug #18965
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Mar 2011 15:50:48 +0100
+
+univention-directory-manager-modules (6.0.116-1) unstable; urgency=low
+
+  * fixed handling of read-only attribute fqdn; Bug #21493
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 21 Mar 2011 17:20:44 +0100
+
+univention-directory-manager-modules (6.0.115-1) unstable; urgency=low
+
+  * search complete ldap for forwardzones in proof_associatedDomain (Bug #21678)
+
+ -- Tim Petersen <petersen@univention.de>  Thu, 21 Mar 2011 09:10:00 +0100
+
+univention-directory-manager-modules (6.0.114-1) unstable; urgency=low
+
+  * fixed uniqueMember and memberUid for primaryGroups (Bug #21782)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 17 Mar 2011 13:45:53 +0100
+
+univention-directory-manager-modules (6.0.113-1) unstable; urgency=low
+
+  * added missing "import sys" to scripts/proof_associatedDomain (Bug #21678)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 16 Mar 2011 12:07:11 +0100
+
+univention-directory-manager-modules (6.0.112-1) unstable; urgency=low
+
+  * fixed sid generation in computer/* modules (Bug #21597)
+
+ -- Felix Botner <botner@univention.de>  Tue, 15 Mar 2011 09:42:39 +0100
+
+univention-directory-manager-modules (6.0.111-1) unstable; urgency=low
+
+  * reverted changes from rev 22580 (Bug #21467)
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Mar 2011 17:30:10 +0100
+
+univention-directory-manager-modules (6.0.110-1) unstable; urgency=low
+
+  * added missing script (Bug #21711)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 07 Mar 2011 15:57:49 +0100
+
+univention-directory-manager-modules (6.0.109-1) unstable; urgency=low
+
+  * fixed computer/* modules: computer objects have not been added to
+    their primaryGroup (Bug #21711)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 07 Mar 2011 15:13:26 +0100
+
+univention-directory-manager-modules (6.0.108-3) unstable; urgency=low
+
+  * fixed description for directory/manager/usercn/attributes
+    (Bug #20028)
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 Mar 2011 11:37:01 +0100
+
+univention-directory-manager-modules (6.0.108-2) unstable; urgency=low
+
+  * use template style variables in directory/manager/usercn/attributes 
+    (Bug #20028) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 Mar 2011 11:22:50 +0100
+
+univention-directory-manager-modules (6.0.108-1) unstable; urgency=low
+
+  * added directory/manager/usercn/attributes to customize user's
+    cn and displayName attributes (Bug #20028)
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 Mar 2011 09:37:37 +0100
+
+univention-directory-manager-modules (6.0.107-4) unstable; urgency=low
+
+  * added import of UCR variables to postinst script (Bug #18374)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Mar 2011 16:31:16 +0100
+
+univention-directory-manager-modules (6.0.107-3) unstable; urgency=low
+
+  * fixed version comparison in postinst script (Bug #18374)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Mar 2011 16:25:03 +0100
+
+univention-directory-manager-modules (6.0.107-2) unstable; urgency=low
+
+  * correct xfree-policies with the invalid entry "displayposition=1" in the
+    postinst script (Bug #18374)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Mar 2011 16:10:53 +0100
+
+univention-directory-manager-modules (6.0.107-1) unstable; urgency=low
+
+  * fixed bug in which display policies were automatically generated, when
+    setting the policy back to inherited in a thin client's display tab 
+    (Bug #18374)
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Mar 2011 15:35:12 +0100
+
+univention-directory-manager-modules (6.0.106-1) unstable; urgency=low
+
+  * added script which determines missing associatedDomain attributes
+    and adds them in case that dnsZone is obvious (Bug #21678)
+
+ -- Tim Petersen <petersen@univention.de>  Fri, 04 Mar 2011 11:14:00 +0100
+
+univention-directory-manager-modules (6.0.105-1) unstable; urgency=low
+
+  * also print dn etc. if "Object exists" exceptions happens and
+    --ignore_exists is set (Bug #12915)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 04 Mar 2011 11:00:29 +0100
+
+univention-directory-manager-modules (6.0.104-1) unstable; urgency=low
+
+  * show valueInvalidSyntax msg even if --ignore_exists is set (Bug #14814)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 03 Mar 2011 14:34:29 +0100
+
+univention-directory-manager-modules (6.0.103-1) unstable; urgency=low
+
+  * uldap.getMachineConnection: added a parameter ldap_master to control
+    if the connection goes to the DC Master. Otherwise the function
+    tries to connect to ldap/server/name and if ldap/server/name is down
+    too the ldap/server/addition servers will be checked (Bug #21559)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Mar 2011 10:20:50 +0100
+
+univention-directory-manager-modules (6.0.102-1) unstable; urgency=low
+
+  * improved performance of module groups/group (Bug #21315)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 02 Mar 2011 15:54:13 +0100
+
+univention-directory-manager-modules (6.0.101-1) unstable; urgency=low
+
+  * fixed wrong value for 'policy_oc' in modules autostart.py and 
+    share_userquota.py (Bug #20992)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 02 Mar 2011 15:33:36 +0100
+
+univention-directory-manager-modules (6.0.100-2) unstable; urgency=low
+
+  * Rename univentionUDMPropertyValue{Not,}Editable to fix default (Bug #21643)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Feb 2011 11:14:38 +0100
+
+univention-directory-manager-modules (6.0.100-1) unstable; urgency=low
+
+  * Ticket#: 2010121410001136
+    - Add support for defining options via LDAP (Bug #21644)
+    - Add support for editable=False properties (Bug #21643)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Feb 2011 06:23:07 +0100
+
+univention-directory-manager-modules (6.0.99-1) unstable; urgency=low
+
+  * Allow removing multi-valued attributes (Bug #21635)
+  * Fix ipProtocol translation (Bug #20162)
+  * debian/control: Depend on newer python-univention (Bug #14943)
+  * Delete unreachable code.
+  * Add DocTest to syntax.py and filter.py
+  * Add documentation to LDAP_Search.
+  * Correct spelling and wrong comments.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 22 Feb 2011 12:24:20 +0100
+
+univention-directory-manager-modules (6.0.98-1) unstable; urgency=low
+
+  * add full width extended attributes (Bug #21623)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 21 Feb 2011 14:30:14 +0100
+
+univention-directory-manager-modules (6.0.97-1) unstable; urgency=low
+
+  * moved module init to modedit.py to make template work immediately
+    after login (Bug #21180)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 18 Feb 2011 13:35:28 +0100
+
+univention-directory-manager-modules (6.0.96-1) unstable; urgency=low
+
+  * allow renaming if the only difference is 
+    upper/lower case in username (Bug #21467)
+
+ -- Felix Botner <botner@univention.de>  Tue, 15 Feb 2011 11:46:26 +0100
+
+univention-directory-manager-modules (6.0.95-1) unstable; urgency=low
+
+  * replaced univention-admin with univention-directory-manager in 
+    help message (Bug #9476)
+
+ -- Felix Botner <botner@univention.de>  Mon, 14 Feb 2011 14:09:36 +0100
+
+univention-directory-manager-modules (6.0.94-1) unstable; urgency=low
+
+  * ignore systemuser "oxadmin" during license check (Bug #14674)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 10 Feb 2011 17:50:55 +0100
+
+univention-directory-manager-modules (6.0.93-1) unstable; urgency=low
+
+  * remove the corresponding DHCP entries when removing IP/MAC address from a
+    computer entry (Bug #18966)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 10 Feb 2011 15:22:20 +0100
+
+univention-directory-manager-modules (6.0.92-1) unstable; urgency=low
+
+  * also print dn etc. if "Object exists" exceptions happens (Bug #12915)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 09 Feb 2011 14:29:47 +0100
+
+univention-directory-manager-modules (6.0.91-1) unstable; urgency=low
+
+  * adapted error message for relative ID (Bug #1746)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 08 Feb 2011 16:07:07 +0100
+
+univention-directory-manager-modules (6.0.90-1) unstable; urgency=low
+
+  * added a more descriptive error message when adding a new user with a
+    relative ID (for SAMBA) that already is in use (Bug #1746)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 08 Feb 2011 15:48:35 +0100
+
+univention-directory-manager-modules (6.0.89-1) unstable; urgency=low
+
+  * corrected error handling for an existing IP-address when entering a new 
+    client (Bug #18966)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 08 Feb 2011 14:45:04 +0100
+
+univention-directory-manager-modules (6.0.88-1) unstable; urgency=low
+
+  * add read-only attribute fqdn to simpleComputer; Bug #21493
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 07 Feb 2011 12:16:59 +0100
+
 univention-directory-manager-modules (6.0.87-2) unstable; urgency=low
 
   * Update the selection of Xorg keyboard layouts (Bug #11199)

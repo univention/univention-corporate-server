@@ -440,7 +440,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				res=univention.admin.config.getDefaultValue(self.lo, 'univentionDefaultMemberserverGroup', position=self.position)
 				if res:
 					self['primaryGroup']=res
-					self.save()
+					#self.save()
 
 
 	def exists(self):
@@ -501,12 +501,8 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			self.modifypassword=0
 		if 'samba' in self.options:
 			acctFlags=univention.admin.samba.acctFlags(flags={'W':1})
-			try:
-				self.machineSid=univention.admin.allocators.requestUserSid(self.lo, self.position, self.uidNum)
-			except:
-				pass
-			else:
-				self.alloc.append(('sid',self.machineSid))
+			self.machineSid = self.getMachineSid(self.lo, self.position, self.uidNum)
+			self.alloc.append(('sid',self.machineSid))
 			ocs.append('sambaSamAccount')
 			al.append(('sambaSID', [self.machineSid]))
 			al.append(('sambaAcctFlags', [acctFlags.decode()]))
@@ -626,7 +622,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		# add samba option
 		if 'samba' in self.options and not self.old_samba_option:
 			acctFlags=univention.admin.samba.acctFlags(flags={'W':1})
-			self.machineSid=univention.admin.allocators.requestUserSid(self.lo, self.position, self.oldattr['uidNumber'][0])
+			self.machineSid = self.getMachineSid(self.lo, self.position, self.oldattr['uidNumber'][0])
 			self.alloc.append(('sid',self.machineSid))
 			ml.insert(0, ('objectClass', '', 'sambaSamAccount'))
 			ml.append(('sambaSID', '', [self.machineSid]))

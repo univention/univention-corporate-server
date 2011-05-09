@@ -30,38 +30,110 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import string, types
+import types
 import univention.admin.uexceptions
 
 def escapeForLdapFilter(txt):
+	"""Escape LDAP filter value.
+	Bug #19976: According to RFC2254 [*()\\\0] must be \\%02x encoded.
+
+	>>> escapeForLdapFilter('key=value')
+	'key=value'
+	>>> escapeForLdapFilter('description=Number (1)')
+	'description=Number \\\\281\\\\29'
+	"""
 	# parenthesis mess up ldap filters - they should be escaped
 	return txt.replace('(', '\(').replace(')', '\)')
 
-
 class conjunction:
+	"""LDAP filter conjunction (&) or disjunction (|)."""
 	_type_='conjunction'
+
 	def __init__(self, type, expressions):
+		'''Create LDAP filter conjunction or disjunction.
+
+		>>> c = conjunction('&', '(objectClass=*)')
+		>>> c = conjunction('|', '(objectClass=*)')
+		'''
 		self.type=type
 		self.expressions=expressions
+
 	def __str__(self):
-		return '('+self.type+string.join(map(lambda(x): unicode(x), self.expressions), '')+')'
+		'''Return string representation.
+
+		>>> str(conjunction('&', '(objectClass=*)'))
+		'(&(objectClass=*))'
+		>>> str(conjunction('|', '(objectClass=*)'))
+		'(|(objectClass=*))'
+		'''
+		return '(%s%s)' % (self.type, ''.join(map(unicode, self.expressions)))
+
 	def __unicode__(self):
 		return self.__str__()
 
+	def __repr__(self):
+		'''Return canonical representation.
+
+		>>> conjunction('&', '(objectClass=*)')
+		conjunction('&', '(objectClass=*)')
+		>>> conjunction('|', '(objectClass=*)')
+		conjunction('|', '(objectClass=*)')
+		'''
+		return '%s(%r, %r)' % (self.__class__._type_, self.type, self.expressions)
+
 class expression:
+	"""LDAP filter expression."""
 	_type_='expression'
-	def __init__(self, variable='', value=''):
+
+	def __init__(self, variable='', value='', operator='='):
+		'''Create LDAP filter expression.
+
+		>>> e = expression('objectClass', '*')
+		>>> e = expression('objectClass', '*', '!=')
+		'''
 		self.variable=variable
 		self.value=value
-		self.operator='='
+		self.operator=operator
 
 	def __str__(self):
+		'''Return string representation.
+
+		>>> str(expression('objectClass', '*'))
+		'(objectClass=*)'
+		>>> str(expression('objectClass', '*', '!='))
+		'(!(objectClass=*))'
+		'''
 		if self.operator == '!=':
 			return '(!(%s=%s))' % ( self.variable, self.value )
 		else:
 			return '(%s=%s)' % ( self.variable, self.value )
 
+	def __unicode__(self):
+		return self.__str__()
+
+	def __repr__(self):
+		'''Return canonical representation.
+
+		>>> expression('objectClass', '*')
+		expression('objectClass', '*', '=')
+		>>> expression('objectClass', '*', '!=')
+		expression('objectClass', '*', '!=')
+		'''
+		return '%s(%r, %r, %r)' % (self.__class__._type_, self.variable, self.value, self.operator)
+
 def parse(filter_s, begin=0, end=-1):
+	"""Parse LDAP filter string.
+
+	>>> filter_s='(|(&(!(zone=univention.de))(soa=test))(nameserver=bar))'
+	>>> parse(filter_s)
+	conjunction('|', [conjunction('&', [conjunction('!', [expression('zone', 'univention.de', '=')]), expression('soa', 'test', '=')]), expression('nameserver', 'bar', '=')])
+	>>> parse('(&(key=va\\\\28!\\\\29ue))')
+	conjunction('&', [expression('key', 'va\\\\28!\\\\29ue', '=')])
+
+	Bug: This will break if parentheses are not quoted correctly:
+	>> parse('(&(key=va\\)!\\(ue))')
+	conjunction('&', [expression('key', 'va)!(ue', '=')])
+	"""
 	def split(str):
 		expressions=[]
 		depth=0
@@ -86,7 +158,7 @@ def parse(filter_s, begin=0, end=-1):
 
 	if end == -1:
 		end=len(filter_s)-1
-	
+
 	if filter_s[begin] == '(' and filter_s[end] == ')':
 		begin+=1
 		end-=1
@@ -109,6 +181,20 @@ def parse(filter_s, begin=0, end=-1):
 		return expression(variable, value)
 
 def walk(filter, expression_walk_function=None, conjunction_walk_function=None, arg=None):
+	"""Walk LDAP filter expression tree.
+
+	>>> filter='(|(&(!(zone=univention.de))(soa=test))(nameserver=bar))'
+	>>> tree = parse(filter)
+	>>> def trace(e, a): print a, e
+	>>> walk(tree, trace, None, 'e')
+	e (zone=univention.de)
+	e (soa=test)
+	e (nameserver=bar)
+	>>> walk(tree, None, trace, 'c')
+	c (!(zone=univention.de))
+	c (&(!(zone=univention.de))(soa=test))
+	c (|(&(!(zone=univention.de))(soa=test))(nameserver=bar))
+	"""
 	if filter._type_ == 'conjunction':
 		for e in filter.expressions:
 			walk(e, expression_walk_function, conjunction_walk_function, arg)
@@ -119,7 +205,5 @@ def walk(filter, expression_walk_function=None, conjunction_walk_function=None, 
 			expression_walk_function(filter, arg)
 
 if __name__ == '__main__':
-	filter='(|(&(!(zone=univention.de))(soa=test))(nameserver=bar))'
-	print filter
-	p=parse(filter)
-	print p
+	import doctest
+	doctest.testmod()
