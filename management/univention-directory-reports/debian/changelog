@@ -1,3 +1,13 @@
+univention-directory-reports (4.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22431)
+    * Bump version for UCS 3.0
+    * Update copyright to 2011
+    * Update to debhelper 7
+    * Switch from python2.4 to python2.6
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 May 2011 13:26:04 +0200
+
 univention-directory-reports (3.0.6-2) unstable; urgency=low
 
   * Add even more detailed error report (Bug #9137)

@@ -30,45 +30,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-PACKAGE_NAME=univention-directory-reports
-MODULE_NAME=univention-directory-reports
-
-PYVERS := $(shell pyversions -vr)
-
-package=univention-directory-reports
-destdir=debian/univention-directory-reports/
+TEMPLATE_FILES=$(shell find templates -name '*.tex' -o -name '*.csv' | sed 's/^templates\///')
 
 PO_FILES := $(shell find modules -name '*.po')
 MO_FILES := $(PO_FILES:%.po=%.mo)
-TEMPLATE_FILES=$(shell find templates -name '*.tex' -o -name '*.csv' | sed 's/^templates\///')
-
 %.mo:	%.po
 	msgfmt -o $@ $<
 
-build: build-stamp $(MO_FILES)
-build-stamp:
-	dh_testdir
-	touch $@
+override_dh_auto_build: $(MO_FILES)
+	# ucslint
+	dh_auto_build
 
-clean:
-	dh_testdir
-	$(RM) build-stamp install-stamp
-	rm -rf *~ debian/tmp debian/*~ debian/files* debian/substvars debian/*.conffiles
-	$(RM) $(MO_FILES)
-	dh_clean
-
-install: install-stamp
-install-stamp: build-stamp $(PYVERS:%=install-ext-%)
-install-ext-%:
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	@for i in $(shell find modules/univention/directory/ -name '*.py'); do\
-		o=debian/python-univention-directory-reports/usr/lib/python$*/site-packages/$${i#modules/};\
-		install -d "`dirname $$o`";\
-		install -m755 $$i $$o;\
+override_dh_auto_install:
+	dh_auto_install
+	@for i in $(TEMPLATE_FILES); do\
+		install -m 644 templates/$$i debian/univention-directory-reports/etc/univention/directory/reports/default/$$i;\
 	done
 	@for i in $(MO_FILES); do\
 		lang=`basename $$i .mo`;\
@@ -78,34 +54,7 @@ install-ext-%:
 		install -m 644 $$i $$o;\
 	done
 
-	@for i in $(TEMPLATE_FILES); do\
-		install -m 644 templates/$$i $(destdir)/etc/univention/directory/reports/default/$$i;\
-	done
+%:
+	dh $@
 
-	install -m 644 univention_logo.png $(destdir)/usr/share/$(package)/
-	install -m 755 univention-directory-reports $(destdir)/usr/bin/
 
-	univention-install-config-registry
-	univention-install-config-registry-info
-	univention-install-service-info
-
-binary-indep: build install
-	dh_testdir -i
-	dh_testroot -i
-	dh_installchangelogs -i
-	dh_installdocs -i
-	dh_installexamples -i
-	dh_installman -i
-	dh_pycentral -Nunivention-directory-reports
-	dh_link -i
-	dh_compress -i
-	dh_fixperms -i
-	dh_installdeb -i
-	dh_gencontrol -i
-	dh_md5sums -i
-	dh_builddeb -i
-
-binary-arch: build install
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install
