@@ -88,12 +88,12 @@ extern char *cache_dir;
 
 DB *dbp;
 DBC *dbc_cur = NULL;
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 DB_ENV *dbenvp;
 #endif
 static FILE *lock_fp=NULL;
 
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 static void cache_panic_call(DB_ENV *dbenvp, int errval)
 {
 	exit(1);
@@ -116,7 +116,11 @@ char* _convert_to_lower(char *dn)
 	return lower_dn;
 }
 
+#ifdef WITH_DB48
+static void cache_error_message(const DB_ENV *dbenvp, const char *errpfx, const char *msg)
+#else
 static void cache_error_message(const char *errpfx, char *msg)
+#endif
 {
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
 			"database error: %s", msg);
@@ -146,7 +150,7 @@ int cache_init(void)
 	}
 	lockf(fileno(lock_fp), F_LOCK, 0);
 
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 	if ((rv = db_env_create(&dbenvp, 0)) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
 				"creating database environment failed");
@@ -249,7 +253,7 @@ int cache_get_int(const char *key, long *value, const long def)
 	return fclose(fp);
 }
 
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 int cache_get_master_entry(CacheMasterEntry *master_entry)
 {
 	DBT key, data;
@@ -298,7 +302,7 @@ int cache_update_master_entry(CacheMasterEntry *master_entry, DB_TXN *dbtxnp)
 	data.data=(void*)master_entry;
 	data.size=sizeof(CacheMasterEntry);
 
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 	if (dbtxnp == NULL)
 		flags = DB_AUTO_COMMIT;
 	else
@@ -322,7 +326,7 @@ int cache_update_master_entry(CacheMasterEntry *master_entry, DB_TXN *dbtxnp)
 
 DB_TXN* cache_new_transaction(NotifierID id, char *dn)
 {
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 	DB_TXN			*dbtxnp;
 	CacheMasterEntry	 master_entry;
 	NotifierID		*old_id;
@@ -365,7 +369,7 @@ DB_TXN* cache_new_transaction(NotifierID id, char *dn)
 /* XXX: The NotifierID is passed for future use. Once the journal is
    implemented, entries other than the most recent one can be returned.
    At the moment, the id parameters for cache_update_entry, and
-   cache_delete_entry do nothing (at least if WITH_DB42 is undefined) */
+   cache_delete_entry do nothing (at least if WITH_DB48 is undefined) */
 inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 {
 	DBT key, data;
@@ -384,7 +388,7 @@ inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "put %d bytes", data.size);
 
 	signals_block();
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 	dbtxnp = cache_new_transaction(id, dn);
 	if (dbtxnp == NULL) {
 		signals_unblock();
@@ -403,14 +407,14 @@ inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
 				"storing entry in database failed: %s", dn);
 		dbp->err(dbp, rv, "put");
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 		dbtxnp->abort(dbtxnp);
 #endif
 		free(data.data);
 		return rv;
 	}
 
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 	dbtxnp->commit(dbtxnp, 0);
 #endif
 	if ( !INIT_ONLY ) {
@@ -446,7 +450,7 @@ int cache_delete_entry(NotifierID id, char *dn)
 	key.size=strlen(dn)+1;
 
 	signals_block();
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 	dbtxnp = cache_new_transaction(id, dn);
 	if (dbtxnp == NULL) {
 		signals_unblock();
@@ -463,7 +467,7 @@ int cache_delete_entry(NotifierID id, char *dn)
 		dbp->err(dbp, rv, "del");
 	}
 
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 	dbtxnp->commit(dbtxnp, 0);
 #endif
 	if ( !INIT_ONLY ) {
@@ -663,7 +667,7 @@ int cache_close(void)
 	if ((rv = dbp->close(dbp, 0)) != 0) {
 		dbp->err(dbp, rv, "close");
 	}
-#ifdef WITH_DB42
+#ifdef WITH_DB48
 	if ((rv = dbenvp->close(dbenvp, 0)) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
 				"closing database environment failed");

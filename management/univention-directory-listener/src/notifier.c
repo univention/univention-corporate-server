@@ -59,7 +59,7 @@
 #include "transfile.h"
 #include "select_server.h"
 
-extern maxnbackups;
+extern int maxnbackups;
 extern char *current_server_list;
 extern struct server_list *server_list;
 extern int server_list_entries;

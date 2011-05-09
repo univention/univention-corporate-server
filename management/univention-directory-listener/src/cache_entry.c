@@ -78,7 +78,7 @@ int cache_dump_entry(char *dn, CacheEntry *entry, FILE *fp)
 {
 	CacheEntryAttribute **attribute;
 	char **module;
-	char **value;
+	unsigned char **value;
 	
 	fprintf(fp, "dn: %s\n", dn);
 	for (attribute=entry->attributes; attribute != NULL && *attribute != NULL; attribute++) {

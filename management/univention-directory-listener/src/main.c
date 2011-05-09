@@ -68,7 +68,7 @@ char *cache_dir = "/var/lib/univention-directory-listener";
 char **module_dirs = NULL;
 int module_dir_count = 0;
 char pidfile[PATH_MAX];
-extern maxnbackups;
+extern int maxnbackups;
 
 static char* read_pwd_from_file(char *filename)
 {
@@ -292,10 +292,10 @@ int main(int argc, char* argv[])
 	univention_ldap_parameters_t	*lp_local;
 	char *server_role;
 #ifdef WITH_KRB5
-	univention_krb5_parameters_t	*kp;
+	univention_krb5_parameters_t	*kp = NULL;
 	int				 do_kinit = 0;
 #else
-	void				*kp;
+	void				*kp = NULL ;
 #endif
 	int 				 debugging = 0,
 					 from_scratch = 0,

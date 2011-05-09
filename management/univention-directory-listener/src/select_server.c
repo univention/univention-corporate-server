@@ -74,9 +74,7 @@ char *select_server()
 	char *ldap_backups = NULL;
 	char *notify_master;
 	int nbackups = 0;
-	int i = 0;
 	int randval = 0;
-	struct server_list *retval = NULL;
 
 	server_role = univention_config_get_string("server/role");
 	ldap_master = univention_config_get_string("ldap/master");
