@@ -75,10 +75,10 @@ stop_udm_cli_server () {
 }
 
 #
-# if isDomainController; then
-#         ... do domainController stuff ...
-#  fi
+# if is_domain_controller; then
+#         ... do domain controller stuff ...
+# fi
 #
-isDomainController () {
+is_domain_controller () {
 	[[ "$(ucr get server/role)" == domaincontroller_* ]]
 }
