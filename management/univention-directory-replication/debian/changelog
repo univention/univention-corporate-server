@@ -1,3 +1,28 @@
+univention-directory-replication (4.0.6-1) unstable; urgency=low
+
+  * fix syntax issues (Bug #14878)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Mar 2011 11:15:09 +0100
+
+univention-directory-replication (4.0.5-1) unstable; urgency=low
+
+  * fix undefined exception (this case seems to be very rare..)
+    (Bug #14878)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 23 Feb 2011 10:42:38 +0100
+
+univention-directory-replication (4.0.4-1) unstable; urgency=low
+
+  * print info and matched fields for all LPAP exceptions (Bug #14878)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 23 Feb 2011 09:59:01 +0100
+
+univention-directory-replication (4.0.3-1) unstable; urgency=low
+
+  * log diagnostic message in case of a general LDAP_ERROR (Bug #14878)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 Feb 2011 18:34:38 +0100
+
 univention-directory-replication (4.0.2-3) unstable; urgency=low
 
   * New UCR variable ldap/replication/fallback with default 'ldif'
