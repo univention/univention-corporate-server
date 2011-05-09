@@ -8,8 +8,8 @@ Standards-Version: 3.8.2
 Package: univention-kernel-image-2.6.32
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
-Depends: linux-image-${F:KernelVersion}, xfsprogs, firmware-bnx2, firmware-bnx2x, firmware-intelwimax, firmware-ipw2x00, firmware-iwlwifi, firmware-linux, firmware-linux-free, firmware-linux-nonfree, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware
-Description: UCS - Linux kernel
+Depends: linux-image-${F:KernelVersion}, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-ipw2x00, firmware-ivtv, firmware-iwlwifi, firmware-linux, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware
+Description: UCS - Linux kernel (standard)
  This meta-package installs the current kernel image.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -20,8 +20,8 @@ Description: UCS - Linux kernel
 Package: univention-kernel-image-2.6.32-xen
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
-Depends: linux-image-${F:KernelVersionXen}, xfsprogs, firmware-bnx2, firmware-bnx2x, firmware-intelwimax, firmware-ipw2x00, firmware-iwlwifi, firmware-linux, firmware-linux-free, firmware-linux-nonfree, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware
-Description: UCS - Linux kernel
+Depends: linux-image-${F:KernelVersionXen}, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-ipw2x00, firmware-ivtv, firmware-iwlwifi, firmware-linux, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware
+Description: UCS - Linux kernel (Xen)
  This meta-package installs the current kernel image.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -32,8 +32,8 @@ Description: UCS - Linux kernel
 Package: univention-kernel-image-2.6.32-64gb
 Architecture: any
 Pre-Depends: univention-initrd
-Depends: linux-image-${F:KernelVersion64}, xfsprogs, firmware-bnx2, firmware-bnx2x, firmware-intelwimax, firmware-ipw2x00, firmware-iwlwifi, firmware-linux, firmware-linux-free, firmware-linux-nonfree, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware
-Description: UCS - Linux kernel
+Depends: linux-image-${F:KernelVersion64}, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-ipw2x00, firmware-ivtv, firmware-iwlwifi, firmware-linux, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware
+Description: UCS - Linux kernel (PAE)
  This meta-package installs the current kernel image.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -44,7 +44,7 @@ Description: UCS - Linux kernel
 Package: univention-kernel-headers-2.6.32
 Architecture: any
 Depends: linux-headers-${F:KernelVersion}
-Description: UCS - Linux kernel headers
+Description: UCS - Linux kernel headers (standard)
  This meta-package installs the current kernel headers.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -55,7 +55,7 @@ Description: UCS - Linux kernel headers
 Package: univention-kernel-headers-2.6.32-64gb
 Architecture: any
 Depends: linux-headers-${F:KernelVersion64}
-Description: UCS - Linux kernel headers
+Description: UCS - Linux kernel headers (PAE)
  This meta-package installs the current kernel headers.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -66,7 +66,7 @@ Description: UCS - Linux kernel headers
 Package: univention-kernel-headers-2.6.32-xen
 Architecture: any
 Depends: linux-headers-${F:KernelVersionXen}
-Description: UCS - Linux kernel headers
+Description: UCS - Linux kernel headers (Xen)
  This meta-package installs the current kernel headers.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -77,7 +77,7 @@ Description: UCS - Linux kernel headers
 Package: univention-kernel-source-2.6.32
 Architecture: any
 Depends: linux-source-${F:KernelVersion}
-Description: UCS - Linux kernel source
+Description: UCS - Linux kernel source (standard)
  This meta-package installs the current kernel source.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -88,7 +88,7 @@ Description: UCS - Linux kernel source
 Package: univention-kernel-source-2.6.32-64gb
 Architecture: any
 Depends: linux-source-${F:KernelVersion64}
-Description: UCS - Linux kernel source
+Description: UCS - Linux kernel source (PAE)
  This meta-package installs the current kernel source.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -99,8 +99,8 @@ Description: UCS - Linux kernel source
 Package: univention-kernel-image-mobileclient-2.6.32
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
-Depends: linux-image-${F:KernelVersion}, xfsprogs, firmware-bnx2, firmware-bnx2x, firmware-intelwimax, firmware-ipw2x00, firmware-iwlwifi, firmware-linux, firmware-linux-free, firmware-linux-nonfree, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware
-Description: UCS - Linux kernel
+Depends: linux-image-${F:KernelVersion}, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-ipw2x00, firmware-ivtv, firmware-iwlwifi, firmware-linux, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware
+Description: UCS - Linux kernel for mobile clients (standard)
  This meta-package installs the current kernel image.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -111,8 +111,8 @@ Description: UCS - Linux kernel
 Package: univention-kernel-image-mobileclient-2.6.32-64gb
 Architecture: any
 Pre-Depends: univention-initrd
-Depends: linux-image-${F:KernelVersion64}, xfsprogs, firmware-bnx2, firmware-bnx2x, firmware-intelwimax, firmware-ipw2x00, firmware-iwlwifi, firmware-linux, firmware-linux-free, firmware-linux-nonfree, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware
-Description: UCS - Linux kernel
+Depends: linux-image-${F:KernelVersion64}, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-ipw2x00, firmware-ivtv, firmware-iwlwifi, firmware-linux, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware
+Description: UCS - Linux kernel for mobile clients (PAE)
  This meta-package installs the current kernel image.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -123,7 +123,7 @@ Description: UCS - Linux kernel
 Package: univention-kernel-headers-mobileclient-2.6.32
 Architecture: any
 Depends: linux-headers-${F:KernelVersion}
-Description: UCS - Linux kernel headers
+Description: UCS - Linux kernel headers for mobile clients (standard)
  This meta-package installs the current kernel headers.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -134,7 +134,7 @@ Description: UCS - Linux kernel headers
 Package: univention-kernel-headers-mobileclient-2.6.32-64gb
 Architecture: any
 Depends: linux-headers-${F:KernelVersion64}
-Description: UCS - Linux kernel headers
+Description: UCS - Linux kernel headers for mobile clients (PAE)
  This meta-package installs the current kernel headers.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -145,7 +145,7 @@ Description: UCS - Linux kernel headers
 Package: univention-kernel-source-mobileclient-2.6.32
 Architecture: any
 Depends: linux-source-${F:KernelVersion}
-Description: UCS - Linux kernel source
+Description: UCS - Linux kernel source for mobile clients
  This meta-package installs the current kernel source.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -156,7 +156,7 @@ Description: UCS - Linux kernel source
 Package: univention-kernel-source-mobileclient-2.6.32-64gb
 Architecture: any
 Depends: linux-source-${F:KernelVersion64}
-Description: UCS - Linux kernel source
+Description: UCS - Linux kernel source for mobile clients (PAE)
  This meta-package installs the current kernel source.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -167,8 +167,8 @@ Description: UCS - Linux kernel source
 Package: univention-kernel-image-managedclient-2.6.32
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
-Depends: linux-image-${F:KernelVersion}, xfsprogs, firmware-bnx2, firmware-bnx2x, firmware-intelwimax, firmware-ipw2x00, firmware-iwlwifi, firmware-linux, firmware-linux-free, firmware-linux-nonfree, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware
-Description: UCS - Linux kernel
+Depends: linux-image-${F:KernelVersion}, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-ipw2x00, firmware-ivtv, firmware-iwlwifi, firmware-linux, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware
+Description: UCS - Linux kernel for managed clients (standard)
  This meta-package installs the current kernel image.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -179,8 +179,8 @@ Description: UCS - Linux kernel
 Package: univention-kernel-image-managedclient-2.6.32-64gb
 Architecture: any
 Pre-Depends: univention-initrd
-Depends: linux-image-${F:KernelVersion64}, xfsprogs, firmware-bnx2, firmware-bnx2x, firmware-intelwimax, firmware-ipw2x00, firmware-iwlwifi, firmware-linux, firmware-linux-free, firmware-linux-nonfree, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware
-Description: UCS - Linux kernel
+Depends: linux-image-${F:KernelVersion64}, xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-ipw2x00, firmware-ivtv, firmware-iwlwifi, firmware-linux, firmware-linux-nonfree, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware
+Description: UCS - Linux kernel for managed clients (PAE)
  This meta-package installs the current kernel image.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -191,7 +191,7 @@ Description: UCS - Linux kernel
 Package: univention-kernel-headers-managedclient-2.6.32
 Architecture: any
 Depends: linux-headers-${F:KernelVersion}
-Description: UCS - Linux kernel headers
+Description: UCS - Linux kernel headers for managed clients (standard)
  This meta-package installs the current kernel headers.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -202,7 +202,7 @@ Description: UCS - Linux kernel headers
 Package: univention-kernel-headers-managedclient-2.6.32-64gb
 Architecture: any
 Depends: linux-headers-${F:KernelVersion64}
-Description: UCS - Linux kernel headers
+Description: UCS - Linux kernel headers for managed clients (PAE)
  This meta-package installs the current kernel headers.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -213,7 +213,7 @@ Description: UCS - Linux kernel headers
 Package: univention-kernel-source-managedclient-2.6.32
 Architecture: any
 Depends: linux-source-${F:KernelVersion}
-Description: UCS - Linux kernel source
+Description: UCS - Linux kernel source for managed clients (standard)
  This meta-package installs the current kernel source.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -224,7 +224,7 @@ Description: UCS - Linux kernel source
 Package: univention-kernel-source-managedclient-2.6.32-64gb
 Architecture: any
 Depends: linux-source-${F:KernelVersion64}
-Description: UCS - Linux kernel source
+Description: UCS - Linux kernel source for managed clients (PAE)
  This meta-package installs the current kernel source.
  .
  It is part of Univention Corporate Server (UCS), an

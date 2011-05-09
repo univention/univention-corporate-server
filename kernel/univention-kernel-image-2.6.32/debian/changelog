@@ -5,7 +5,9 @@ univention-kernel-image-2.6.32 (2.0.0-1) unstable; urgency=low
     vmware5, vmware-gsx, vmware-gsx3, vmware-server, vmware-player, capi-fcpci,
     drbd	
   * Drop historic Conflicts	
-  * Integrate ucslint	
+  * Integrate ucslint
+  * Improve package descriptions (Bug #16161)	
+  * Update dependencies on firmware packages (Bug #21321)	
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 06 May 2011 12:24:43 +0200
 
