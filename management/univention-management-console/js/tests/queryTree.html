@@ -1,0 +1,115 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--<link id="themeStyles" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dijit/themes/claro/claro.css" type="text/css"></link>
+<link id="themeStyles" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/resources/dojo.css" type="text/css"></link>
+<link id="themeStyles" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojox/grid/resources/Grid.css" type="text/css"></link>
+<link id="themeStyles" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojox/grid/resources/claroGrid.css" type="text/css"></link>
+<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js"></script>-->
+<link id="themeStyles" rel="stylesheet" href="/dojo/dijit/themes/claro/claro.css" type="text/css"></link>
+<link id="themeStyles" rel="stylesheet" href="/dojo/dojo/resources/dojo.css" type="text/css"></link>
+<link id="themeStyles" rel="stylesheet" href="/dojo/dojox/grid/resources/Grid.css" type="text/css"></link>
+<link id="themeStyles" rel="stylesheet" href="/dojo/dojox/grid/resources/claroGrid.css" type="text/css"></link>
+<script src="/dojo/dojo/dojo.js"></script>
+<script type="text/javascript">
+dojo.require("dijit.tree.ForestStoreModel");
+dojo.require("dojox.grid.TreeGrid");
+dojo.require("dijit.layout.BorderContainer");
+dojo.require("dijit.form.Button");
+dojo.require("dojo.data.ItemFileReadStore");
+dojo.require("dojo.data.ItemFileWriteStore");
+
+var myData = {
+  "identifier": "id", 
+  "label": "label",
+  "items": [
+    {
+      "id": "top1", 
+      "label": "top1",
+      "children": [
+        {
+          "id": "top1/sub1", 
+          "label": "sub1",
+          "children": [
+            {
+              "id": "/top1/sub1/subsub1", 
+              "value": "Foo", 
+              "label": "subsub1"
+            },
+            {
+              "id": "/top1/sub1/subsub2", 
+              "value": "Bar", 
+              "label": "subsub1"
+            }
+          ]
+        }
+      ]
+    }, 
+    {
+      "id": "top2", 
+      "label": "top2",
+      "children": [
+        {
+          "id": "top2/sub1", 
+          "label": "sub1",
+          "children": [
+            {
+              "id": "/top2/sub1/subsub1", 
+              "value": "Bar", 
+              "label": "subsub1"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+var store = null;
+var model = null;
+var treeGrid = null;
+
+dojo.addOnLoad(function() {
+    var topContainer = new dijit.layout.BorderContainer( {
+        style: "height: 100%; width: 800px; margin-left: auto; margin-right: auto;"
+    }).placeAt(dojo.body());
+
+	var structure = [{
+		field: 'label',
+		name: 'Variable',
+		width: 'auto'
+	},{ 
+		field: 'value',
+		name: 'Value',
+		width: 'auto'
+	}];
+	store = new dojo.data.ItemFileWriteStore({ data: myData });
+	model = new dijit.tree.ForestStoreModel({
+		store: store,
+		childrenAttrs: ['children']
+	});
+	treeGrid = new dojox.grid.TreeGrid({
+		id: 'tree',
+		region: 'center',
+		structure: structure,
+		store: store
+		//treeModel: model
+		//defaultOpen: true
+	});
+	var button = new dijit.form.Button({
+		label: 'Search "Bar"',
+		region: 'top',
+		onClick: dojo.hitch(treeGrid, function() {
+			this.filter({value: "Bar" }, true);
+		})
+	});
+	topContainer.addChild(button);
+	topContainer.addChild(treeGrid);
+	topContainer.startup();
+});
+
+</script>
+</head>
+<body class="claro">
+</body>
+</html>

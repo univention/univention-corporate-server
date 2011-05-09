@@ -1,0 +1,49 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link id="themeStyles" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/claro.css" type="text/css"></link>
+<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/dojo.xd.js"></script>
+<script type="text/javascript">
+dojo.require("dijit.form.FilteringSelect");
+dojo.require("dijit.form.Button");
+dojo.require("dojo.data.ItemFileWriteStore");
+var myData = {
+	identifier: 'myid',
+	label: 'mylabel',
+	items: [
+		{ mylabel: 'Variable', myid: 'variable' },
+		{ mylabel: 'Value', myid: 'value' },
+		{ mylabel: 'Description', myid: 'description' }
+	]
+};
+var store = null;
+var count = 1;
+dojo.addOnLoad(function() {
+	store = new dojo.data.ItemFileWriteStore({
+		data: myData
+		//clearOnClose: true
+	});
+	select = new dijit.form.FilteringSelect({
+		searchAttr: 'mylabel',
+		store: store
+	}).placeAt(dojo.body());
+	new dijit.form.Button({
+		label: 'Add element',
+		onClick: function() {
+			store.newItem({
+				mylabel: 'Test' + count,
+				myid: 'test' + count
+			});
+			store.save();
+			//store.clearOnClose = true;
+			//store.close();
+			++count;
+		}
+	}).placeAt(dojo.body());
+});
+
+</script>
+</head>
+<body class="claro">
+</body>
+</html>

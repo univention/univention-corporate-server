@@ -1,0 +1,138 @@
+<html>
+<head>
+<link id="themeStyles" rel="stylesheet" href="/dojo/dijit/themes/claro/claro.css" type="text/css"></link>
+<link id="themeStyles" rel="stylesheet" href="/dojo/dojox/layout/resources/FloatingPane.css" type="text/css"></link>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="/dojo/dojo/dojo.js"></script>
+<script type="text/javascript">
+dojo.require("dijit._Container");
+dojo.require("dojox.layout.FloatingPane");
+dojo.require("dijit.form.Button");
+dojo.require("dijit.form.TextBox");
+dojo.require("dijit.layout.ContentPane");
+dojo.require("dojox.layout.TableContainer");
+
+dojo.declare("MyLogPane", dojox.layout.FloatingPane, {
+	constructor: function() {
+		console.log("method: constructor");
+		console.log("  before - domNode: " + this.domNode + " containerNode: " + this.containerNode + " srcNodeRef: " + this.srcNodeRef);
+		this.inherited(arguments);
+		console.log("  after - domNode: " + this.domNode + " containerNode: " + this.containerNode + " srcNodeRef: " + this.srcNodeRef);
+	},
+	postMixInProperties: function() {
+		console.log("method: postMixInProperties");
+		console.log("  before - domNode: " + this.domNode + " containerNode: " + this.containerNode + " srcNodeRef: " + this.srcNodeRef);
+		this.inherited(arguments);
+		console.log("  after - domNode: " + this.domNode + " containerNode: " + this.containerNode + " srcNodeRef: " + this.srcNodeRef);
+	},
+	buildRendering: function() {
+		console.log("method: buildRendering");
+		console.log("  before - domNode: " + this.domNode + " containerNode: " + this.containerNode + " srcNodeRef: " + this.srcNodeRef);
+		this.inherited(arguments);
+		console.log("  after - domNode: " + this.domNode + " containerNode: " + this.containerNode + " srcNodeRef: " + this.srcNodeRef);
+	},
+	postCreate: function() {
+		console.log("method: postCreate");
+		console.log("  before - domNode: " + this.domNode + " containerNode: " + this.containerNode + " srcNodeRef: " + this.srcNodeRef);
+		this.inherited(arguments);
+		console.log("  after - domNode: " + this.domNode + " containerNode: " + this.containerNode + " srcNodeRef: " + this.srcNodeRef);
+	},
+	startup: function() {
+		console.log("method: startup");
+		console.log("  before - domNode: " + this.domNode + " containerNode: " + this.containerNode + " srcNodeRef: " + this.srcNodeRef);
+		this.inherited(arguments);
+		console.log("  after - domNode: " + this.domNode + " containerNode: " + this.containerNode + " srcNodeRef: " + this.srcNodeRef);
+	}
+});
+
+dojo.declare("LabelWidget", dijit._Widget, {
+	text: "",
+
+	postCreate: function() {
+		this.inherited(arguments);
+		this.domNode.innerHtml = this.text;
+	}
+});
+
+dojo.declare("MyPaneWithButtons", [dojox.layout.FloatingPane], {
+	style: "visibility: hidden",
+	_layoutContainer: null,
+	postCreate: function() {
+		// call superclass' postCreate()
+		this.inherited(arguments);
+
+		// first create a table container
+		this._layoutContainer = new dojox.layout.TableContainer({
+			cols: 1,
+			showLabels: true
+			//labelWidth: "160"
+		}).placeAt(this.containerNode);
+
+		// add a field for the username
+		this._layoutContainer.addChild(new dijit.form.TextBox({
+			label: "User name"
+		}));
+
+		// add a field for the password
+		this._layoutContainer.addChild(new dijit.form.TextBox({
+			label: "Password"
+		}));
+
+		// call startup to make sure everything is rendered correctly
+		this._layoutContainer.startup();
+		//this._layoutContainer.placeAt(this.containerNode);
+	}
+});
+
+function createPaneWithButtons() {
+	var pane = new MyPaneWithButtons({
+		title: "Pane with buttons...",
+		resizable: true,
+		dockable: false,
+		doLayout: true,
+	}).placeAt(dojo.body());
+	pane.startup();
+	pane.resize({w:300, h:200});
+	pane.show();
+}
+
+function createLogPane() {
+	// create a floating pane for adding a new user
+	console.log("CREATING");
+	var pane = new MyLogPane({
+		title: "Sample pane logging things...",
+		resizable: true,
+		dockable: false,
+		doLayout: true
+	}).placeAt(dojo.body());
+	console.log("DONE CREATING");
+	pane.resize({w:200, h:200});
+
+	// show the pane
+	console.log("CALLING: startup()");
+	pane.startup();
+	pane.show();
+}
+
+dojo.addOnLoad(function() {
+	new dijit.form.Button({
+		label: "Open custom pane with buttons.",
+		onClick: function(event) {
+			createPaneWithButtons();
+		}
+	}).placeAt(dojo.body());
+
+	new dijit.form.Button({
+		label: "Open custom pane logging lifecycle methods.",
+		onClick: function(event) {
+			createLogPane();
+		}
+	}).placeAt(dojo.body());
+});
+
+
+</script>
+</head>
+<body class="claro">
+</body>
+</html>
