@@ -4,7 +4,7 @@
 # Univention Installer
 #  installer module: network configuration
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -53,10 +53,9 @@ class object(content):
 		else:
 			self.already_redraw=0
 
-		if self.cmdline.has_key('edition') and self.cmdline['edition'] == 'oxae':
-			self.ask_forwarder=False
-		else:
-			self.ask_forwarder=True
+		self.ox = False
+		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxae':
+			self.ox = True
 
 		self.interfaces=[]
 
@@ -476,6 +475,9 @@ class object(content):
 			self.ask_forwarder=False
 		else:
 			self.ask_forwarder=True
+
+		if self.ox:
+			self.ask_forwarder=False
 
 		if self.ask_forwarder:
 			proxyY=16
@@ -952,28 +954,6 @@ class object(content):
 					self.current=self.get_elem_id('edit.INPUT_IP')	# set the tab cursor
 				self.get_elem_by_id(self.current).set_on()	# set the focus highlight
 				self.draw()
-			elif key == 260:
-				#move left
-				active=0
-				for elemid in ['edit.BUTTON_OK']:
-					if self.get_elem(elemid).active:
-						active=self.get_elem_id(elemid)
-				if active:
-					self.get_elem_by_id(active).set_off()
-					self.get_elem_by_id(active-1).set_on()
-					self.current=active-1
-					self.draw()
-			elif key == 261:
-				#move right
-				active=0
-				for elemid in ['edit.BUTTON_CANCEL']:
-					if self.get_elem(elemid).active:
-						active=self.get_elem_id(elemid)
-				if active:
-					self.get_elem_by_id(active).set_off()
-					self.get_elem_by_id(active+1).set_on()
-					self.current=active+1
-					self.draw()
 			elif self.elements[self.current].usable():
 				self.elements[self.current].key_event(key)
 			return 1

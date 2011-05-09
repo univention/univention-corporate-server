@@ -4,7 +4,7 @@
 # Univention Installer
 #  main function for the installation interface
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -163,6 +163,7 @@ def createSuccessMsg():
 	msg.append( _('press ok to reboot this system.') )
 	msg.append( '' )
 	msg.append( _('Administrative frontends:') )
+	msg.append( '' )
 
 	fqdn = '%s.%s' % (profile.get('hostname'), profile.get('domainname'))
 	postfix_udm = 'univention-directory-manager'
@@ -178,6 +179,16 @@ def createSuccessMsg():
 			msg.append( _('  https://%s/%s/') % (profile.get('eth0_ip'), postfix_udm) )
 		msg.append( _('  Administrative account name: Administrator') )
 		msg.append( '' )
+
+	# open xchange stuff
+	if profile.get('ox_primary_maildomain'):
+		msg.append( _(' Open-Xchange frontend'))
+		msg.append( _('  https://%s/ox6/') % fqdn )
+		if profile.get('eth0_ip'):
+			msg.append( _('  https://%s/ox6/') % profile.get('eth0_ip') )
+		msg.append( _('  Administrative account name: oxadmin') )
+		msg.append( '' )
+
 	msg.append( _(' Univention Management Console') )
 	msg.append( _('  https://%s/%s/') % (fqdn, postfix_umc) )
 	if profile.get('eth0_ip'):

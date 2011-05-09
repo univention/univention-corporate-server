@@ -3,7 +3,7 @@
 # Univention Installer
 #  setup required user accounts
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -41,11 +41,17 @@ cat >>/instmnt/ldap.sh <<__EOT__
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	eval \`univention-config-registry shell\`
+
 	echo "Create User Administrator"
-	univention-directory-manager users/user create --position="cn=users,\$ldap_base" --set username=Administrator --set sambaRID=500 --set unixhome=/home/Administrator --set lastname=Administrator --set password="\$root_password" --set primaryGroup="cn=Domain Admins,cn=groups,\$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,\$ldap_base" >/dev/null 2>&1
+	# mailPrimaryAddress is required on ox systems
+	if [ -n "$ox_primary_maildomain" ] ; then
+		univention-directory-manager users/user create --position="cn=users,\$ldap_base" --set mailPrimaryAddress="administrator@$ox_primary_maildomain" --set firstname="Admin" --set username=Administrator --set sambaRID=500 --set unixhome=/home/Administrator --set lastname=Administrator --set password="\$root_password" --set primaryGroup="cn=Domain Admins,cn=groups,\$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,\$ldap_base"
+	else	
+		univention-directory-manager users/user create --position="cn=users,\$ldap_base" --set username=Administrator --set sambaRID=500 --set unixhome=/home/Administrator --set lastname=Administrator --set password="\$root_password" --set primaryGroup="cn=Domain Admins,cn=groups,\$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,\$ldap_base"
+	fi
 	unset root_password
-	univention-directory-manager groups/group modify --dn "cn=DC Backup Hosts,cn=groups,\$ldap_base" --append users="uid=Administrator,cn=users,\$ldap_base" > /dev/null 2>&1
-	univention-directory-manager groups/group modify --dn "cn=Domain Users,cn=groups,\$ldap_base" --append users="uid=Administrator,cn=users,\$ldap_base" > /dev/null 2>&1
+	univention-directory-manager groups/group modify --dn "cn=DC Backup Hosts,cn=groups,\$ldap_base" --append users="uid=Administrator,cn=users,\$ldap_base"
+	univention-directory-manager groups/group modify --dn "cn=Domain Users,cn=groups,\$ldap_base" --append users="uid=Administrator,cn=users,\$ldap_base"
 
 	#create default network
 	forwardZone=\`univention-directory-manager dns/forward_zone list --filter zone=\$domainname | grep DN | head -1 | sed -e 's/DN: //g'\`

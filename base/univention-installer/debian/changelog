@@ -1,3 +1,34 @@
+univention-installer (6.0.52-1) unstable; urgency=low
+
+  * fixed profile based installation Bug #21757
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Mar 2011 13:46:04 +0100
+
+univention-installer (6.0.51-1) unstable; urgency=low
+
+  * fixed profile based installation Bug #21757
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Mar 2011 10:50:05 +0100
+
+univention-installer (6.0.50-1) unstable; urgency=low
+
+  * fixed usb detection in installer/usb-device.sh Bug #21757
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Mar 2011 16:19:59 +0100
+
+univention-installer (6.0.49-1) unstable; urgency=low
+
+  * merged changes from component oxse4ucs (-r 21773:HEAD), 
+    except installer/package_list.py (Bug #21184)
+
+ -- Felix Botner <botner@univention.de>  Wed, 09 Feb 2011 14:26:29 +0100
+
+univention-installer (6.0.48-1) unstable; urgency=low
+
+  * cursor keys (left/right) now work again in text input fields (Bug #18610)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 08 Feb 2011 15:39:21 +0100
+
 univention-installer (6.0.47-2) unstable; urgency=low
 
   * typo fixed (Bug #17611)

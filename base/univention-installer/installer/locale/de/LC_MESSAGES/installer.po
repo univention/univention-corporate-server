@@ -1,4 +1,4 @@
-# Copyright 2010 Univention GmbH
+# Copyright 2010-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -75,6 +75,18 @@ msgstr "AdministrationsoberflÃ¤chen:"
 #: installer/end.py:175
 msgid " Univention Directory Manager"
 msgstr " Univention Directory Manager"
+
+#: installer/end.py
+msgid " Open-Xchange frontend"
+msgstr " Open-Xchange-OberflÃ¤che"
+
+#: installer/end.py
+msgid "  https://%s/ox6/"
+msgstr "  https://%s/ox6/"
+
+#: installer/end.py
+msgid "  Administrative account name: oxadmin"
+msgstr "  Administratives Konto: oxadmin"
 
 #: installer/end.py:176 installer/end.py:178 installer/end.py:182
 #: installer/end.py:184
@@ -1056,13 +1068,21 @@ msgstr ""
 msgid "System role"
 msgstr "Systemrolle"
 
+#: installer/modules/11_basis.py:92
+msgid "Fully qualified domain name (e.g. host.example.com):"
+msgstr "Vollständiger Rechnername (z.B. host.example.com):"
+
+#: installer/modules/11_basis.py:92
+msgid "Mail domain (e.g. example.com):"
+msgstr "Maildomäne (z.B. example.com):"
+
 #: installer/modules/11_basis.py:89
 msgid "Hostname:"
-msgstr "Systemname"
+msgstr "Systemname:"
 
 #: installer/modules/11_basis.py:92
 msgid "Domain name:"
-msgstr "Domänenname"
+msgstr "Domänenname:"
 
 #: installer/modules/11_basis.py:97
 msgid "LDAP base:"
@@ -1070,15 +1090,21 @@ msgstr "LDAP-Basis"
 
 #: installer/modules/11_basis.py:104
 msgid "Windows domain:"
-msgstr "Windows-Domäne"
+msgstr "Windows-Domäne:"
 
 #: installer/modules/11_basis.py:109
 msgid "Root password:"
-msgstr "Root-Passwort"
+msgstr "Root-Passwort:"
 
 #: installer/modules/11_basis.py:112
 msgid "Root password (retype):"
-msgstr "Passwort (zur Bestätigung bitte nochmal eingeben)"
+msgstr "Passwort (zur Bestätigung bitte nochmal eingeben):"
+
+#: installer/modules/11_basis.py:112
+msgid ""
+"Please enter a valid fully qualified domain name in lowercase (e.g. host."
+"example.com)."
+msgstr "Bitte geben Sie einen klein-geschriebenen und vollst<E4>ndigen Rechnernamen an (z.B. host.example.com)."
 
 #: installer/modules/11_basis.py:195
 msgid "Please enter a valid windows domain name."
@@ -1091,6 +1117,11 @@ msgstr "Die Länge des Windows Domain Names ist größer als 14 Zeichen."
 #: installer/modules/11_basis.py:207
 msgid "Please enter a valid hostname in lowercase."
 msgstr "Bitte geben Sie einen gültigen, klein-geschriebenen Systemnamen an."
+
+#: installer/modules/11_basis.py:207
+msgid "Please enter a valid mail domain in lowercase (e.g. example.com)."
+msgstr "Bitte geben Sie eine gültige, klein-geschriebenen Maildomäne an (z.B. example.com)."
+
 
 #: installer/modules/11_basis.py:212
 msgid ""
@@ -1159,17 +1190,29 @@ msgstr "Ungültiges Passwort: Leerzeichen nicht möglich"
 msgid "Illegal password: A password may not contain quotation marks."
 msgstr "Ungültiges Passwort: Anführungszeichen nicht möglich"
 
+#: installer/modules/11_basis.py:361
+msgid ""
+"Settings  \n"
+" \n"
+" Configuration of basic system settings like fully qualified domain name, "
+"mail domain, windows domain and root password."
+msgstr ""
+"Optionen \n"
+" \n"
+" Konfiguration grundlegender Einstellungen wie vollständigem Rechnernamen, "
+"Maildomäne, Windowsdomäne und Root-Passwort."
+
 #: installer/modules/11_basis.py:331
 msgid ""
 "Settings  \n"
 " \n"
 " Configuration of basic system settings like hostname, domain name and LDAP "
-"base and root password"
+"base and root password."
 msgstr ""
 "Optionen \n"
 " \n"
 " Konfiguration grundlegender Einstellungen wie Hostname, Domänenname, LDAP-"
-"Basis und Root-Passwort"
+"Basis und Root-Passwort."
 
 #: installer/modules/11_basis.py:334
 msgid "Settings"

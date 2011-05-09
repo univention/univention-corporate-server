@@ -3,7 +3,7 @@
 # Univention Installer
 #  helper script: scanning for USB mass storage devices
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -108,13 +108,13 @@ else
 	i=0
 	dir="${sysfsmtpt}/bus/usb/drivers/usb-storage"
 	for s in `/bin/ls -d ${dir}/*:*/host*/target*:*:*/*:*:*:*/block/* 2>/dev/null`; do
-		device=$(echo $s | awk -F / {'print $NF'})
-		vendor=$(cat $s/device/vendor)
-		media=$(cat $s/device/type)
+		device=$(echo $s | awk -F / '{ print $NF }' | /bin/sed -e 's| *$||' -e 's| |_|g')
+		vendor=$(cat $s/device/vendor | /bin/sed -e 's| *$||' -e 's| |_|g')
+		media=$(cat $s/device/type | /bin/sed -e 's| *$||' -e 's| |_|g')
 		for sub in `/bin/ls -d ${dir}/*:*/host*/target*:*:*/*:*:*:*/block/${device}/${device}* 2>/dev/null`; do
-			device_sub=$(echo $sub | awk -F / {'print $NF'})
-			vendor_sub=$(cat $s/device/vendor)
-			media_sub=$(cat $s/device/type)
+			device_sub=$(echo $sub | awk -F / '{ print $NF }' | /bin/sed -e 's| *$||' -e 's| |_|g')
+			vendor_sub=$(cat $s/device/vendor | /bin/sed -e 's| *$||' -e 's| |_|g')
+			media_sub=$(cat $s/device/type | /bin/sed -e 's| *$||' -e 's| |_|g')
 			echo $i "$vendor_sub" "$media_sub" "$device_sub"
 			i=$(($i + 1))
 		done
