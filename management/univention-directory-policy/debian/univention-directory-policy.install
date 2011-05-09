@@ -1,0 +1,3 @@
+20univention-directory-policy.inst usr/lib/univention-install/
+univention-directory-policy-cron usr/share/univention-directory-policy/
+

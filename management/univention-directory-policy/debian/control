@@ -2,12 +2,12 @@ Source: univention-directory-policy
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev
+Build-Depends: debhelper (>> 7), univention-config-dev, ucslint
 Standards-Version: 3.5.2
 
 Package: univention-directory-policy
 Architecture: all
-Depends: univention-config-registry, netcat
+Depends: univention-config-registry, shell-univention-lib, netcat
 Conflicts: univention-ldap-policy (<<1.1.1)
 Description: UCS - Directory Policy handler
  This package manages the scripts in /usr/lib/univention-directory-policy
@@ -16,12 +16,3 @@ Description: UCS - Directory Policy handler
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
-
-Package: univention-ldap-policy
-Architecture: any
-Depends: univention-directory-policy
-Description: Transition package
- Package to ease upgrading from old package
- univention-ldap-policy to the new package.  This package
- can be purged at anytime once the
- univention-directory-policy package has been installed.

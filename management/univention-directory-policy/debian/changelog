@@ -1,3 +1,13 @@
+univention-directory-policy (5.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22431)
+    * Bump version for UCS 3.0
+    * Update copyright to 2011
+    * Update to debhelper 7
+    * Removed transition package univention-ldap-policy
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 May 2011 09:06:52 +0200
+
 univention-directory-policy (4.0.1-1) unstable; urgency=low
 
   * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)
