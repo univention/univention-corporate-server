@@ -1,3 +1,13 @@
+univention-python (6.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22431)
+    * Bump version for UCS 3.0
+    * Update copyright to 2011
+    * Update to debhelper 7
+    * Switch from python2.4 to python2.6
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 May 2011 14:12:22 +0200
+
 univention-python (5.0.11-1) unstable; urgency=low
 
   * Initialize protocol with a default value. This is required if an old
