@@ -8,6 +8,7 @@ univention-directory-listener (6.0.0-1) unstable; urgency=low
     * Update copyright to 2011
     * Update to debhelper 7
     * Removed transition package univention-ldap-listener
+    * Switch from python2.4 to python2.6
   * Build against db 4.8
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 May 2011 15:26:32 +0200

@@ -1,8 +1,8 @@
-src/listener usr/sbin/univention-directory-listener
-src/dump usr/sbin/univention-directory-listener-dump
-src/verify usr/sbin/univention-directory-listener-verify
-src/listener-ctrl usr/sbin/univention-directory-listener-ctrl
+src/listener usr/sbin/
+src/dump usr/sbin/
+src/verify usr/sbin/
+src/listener-ctrl usr/sbin/
 python/get_notifier_id.py usr/share/univention-directory-listener/
-python/ldap_server.py usr/lib/univention-directory-listener/system
-python/listener.py usr/lib/python2.4/site-packages
+python/ldap_server.py usr/lib/univention-directory-listener/system/
+python/listener.py usr/lib/python2.6/site-packages/
 03univention-directory-listener.inst usr/lib/univention-install/

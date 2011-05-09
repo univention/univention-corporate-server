@@ -41,10 +41,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <python2.4/Python.h>
-#include <python2.4/compile.h>
-#include <python2.4/marshal.h>
-#include <python2.4/node.h>
+#include <python2.6/Python.h>
+#include <python2.6/compile.h>
+#include <python2.6/marshal.h>
+#include <python2.6/node.h>
 #include <univention/debug.h>
 
 #include "cache_lowlevel.h"

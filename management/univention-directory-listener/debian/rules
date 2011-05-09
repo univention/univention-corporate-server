@@ -39,6 +39,13 @@ override_dh_auto_install:
 	dh_auto_install 
 	touch debian/univention-directory-listener/etc/runit/univention-directory-listener/down
 
+override_dh_install:
+	dh_install
+	mv debian/univention-directory-listener/usr/sbin/listener debian/univention-directory-listener/usr/sbin/univention-directory-listener
+	mv debian/univention-directory-listener/usr/sbin/dump debian/univention-directory-listener/usr/sbin/univention-directory-listener-dump
+	mv debian/univention-directory-listener/usr/sbin/verify debian/univention-directory-listener/usr/sbin/univention-directory-listener-verify
+	mv debian/univention-directory-listener/usr/sbin/listener-ctrl debian/univention-directory-listener/usr/sbin/univention-directory-listener-ctrl
+
 override_dh_installinit:
 	dh_installinit -a --no-start -r -u"defaults 50"
 
