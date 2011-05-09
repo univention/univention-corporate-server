@@ -1,3 +1,9 @@
+univention-python (6.0.1-2) unstable; urgency=low
+
+  * Install python modules in pyshared/univention/ (Bug #22160)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 May 2011 14:30:34 +0200
+
 univention-python (6.0.1-1) unstable; urgency=low
 
   * Depend on python2.6-dev (Bug #22160)
