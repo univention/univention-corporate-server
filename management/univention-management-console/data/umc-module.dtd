@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT umc (module)>
+<!ELEMENT module (name, description, command)*
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT command (description*, attribute*)>
+<!ELEMENT command (description*, attribute*)>
+

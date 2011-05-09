@@ -1,0 +1,7 @@
+include setup.py
+include MANIFEST.in
+recursive-include data *.xml
+include scripts/*.py
+recursive-include src *.py
+recursive-include doc *.8
+recursive-include debian control rules changelog

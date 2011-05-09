@@ -1,0 +1,97 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
+# Univention Management Console
+#  Python distutils setup
+#
+# Copyright 2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+from distutils.core import setup
+from distutils.command.install_data import install_data
+from distutils.command.build import build
+from distutils import cmd
+
+import os
+import subprocess
+
+UMC_MODULES = ( 'ucr', )
+
+class BuildI18N( cmd.Command ):
+	description = 'Compile .po files into .mo files'
+	def initialize_options( self ):
+		pass
+	def finalize_options( self ):
+		pass
+
+	def run( self ):
+		data_files = self.distribution.data_files
+
+		po_dir = os.path.join( os.path.dirname( os.curdir ), 'src/' )
+		for path, names, filenames in os.walk( po_dir ):
+			rel_path = path[ len( po_dir ) : ]
+			for f in filenames:
+				if not f.endswith( '.po' ):
+					continue
+				lang = f[ : -3 ]
+				src = os.path.join( path, f )
+				dest_path = os.path.join( 'build', 'locale', lang, 'LC_MESSAGES' )
+				dest_file = '%s.mo' % rel_path.replace( '/', '-' )
+				dest = os.path.join( dest_path, dest_file )
+				if not os.path.exists( dest_path ):
+					os.makedirs( dest_path )
+				if not os.path.exists( dest ):
+					print 'Compiling %s' % src
+					subprocess.call( [ 'msgfmt', src, '-o', dest ] )
+				else:
+					src_mtime = os.stat(src)[8]
+					dest_mtime = os.stat(dest)[8]
+					if src_mtime > dest_mtime:
+						print 'Compiling %s' % src
+						subprocess.call( [ 'msgfmt', src, '-o', dest ] )
+				data_files.append( ( 'share/locale/%s/LC_MESSAGES' % lang, ( dest, ) ) )
+
+class Build( build ):
+	sub_commands = build.sub_commands + [ ( 'build_i18n', None ) ]
+	def run( self ):
+		build.run( self )
+
+setup( name = 'univention-management-console',
+	   description = 'Univention Management Console',
+	   author = 'Univention GmbH',
+	   author_email = 'packages@univention.de',
+	   version = '1.0',
+	   package_dir = { '' : 'src' },
+	   packages = [ 'univention', 'univention.management', 'univention.management.console',	'univention.management.console.protocol', 'univention.management.console.modules' ] + map( lambda x: 'univention.management.console.modules.' + x, UMC_MODULES ),
+	   scripts = [ 'scripts/univention-management-console-server', 'scripts/univention-management-console-module', 'scripts/univention-management-console-client', 'scripts/umc-acls' ],
+	   data_files = [ ( 'share/univention-management-console/syntax', [ 'data/syntax/global.xml', 'data/syntax/ucr.xml' ] ),
+					  ( 'share/univention-management-console/modules', [ 'data/modules/ucr.xml', ] ),
+					  ( 'share/univention-management-console/categories', [ 'data/categories/default.xml', ] ), ],
+	   cmdclass = { 'build' : Build,
+	   				'build_i18n' : BuildI18N }
+      )
+
