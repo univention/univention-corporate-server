@@ -1,3 +1,19 @@
+univention-python (5.0.11-1) unstable; urgency=low
+
+  * Initialize protocol with a default value. This is required if an old
+    uldap pickle file is loaded (Bug #21007)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 Mar 2011 17:12:34 +0100
+
+univention-python (5.0.10-1) unstable; urgency=low
+
+  * uldap.getMachineConnection: added a parameter ldap_master to control
+    if the connection goes to the DC Master. Otherwise the function
+    tries to connect to ldap/server/name and if ldap/server/name is down
+    too the ldap/server/addition servers will be checked (Bug #21559)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Mar 2011 10:17:13 +0100
+
 univention-python (5.0.9-3) unstable; urgency=low
 
   * fixed typo in replaces and conflicts (Bug #10556)
