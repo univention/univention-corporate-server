@@ -1,3 +1,9 @@
+univention-debug (5.0.1-2) unstable; urgency=low
+
+  * libud.a file moved to libud-dev conflicts old libud0 (Bug #22160)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 09 May 2011 14:33:44 +0200
+
 univention-debug (5.0.1-1) unstable; urgency=low
 
   * Switch to newer autoconf-1.11 (Bug #22160)
