@@ -1,3 +1,9 @@
+ucslint (2.0.4-2) unstable; urgency=low
+
+  * fixed packaging of ucslint (Bug #22092)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 09 May 2011 15:37:50 +0200
+
 ucslint (2.0.4-1) unstable; urgency=low
 
   * fixed packaging of ucslint (Bug #22092)
