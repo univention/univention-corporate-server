@@ -1,10 +1,10 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  session handling
 #
-# Copyright 2006-2010 Univention GmbH
+# Copyright 2006-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -327,7 +327,7 @@ class Processor( signals.Provider ):
 				return
 			if not module_name in self.__processes:
 				ud.debug( ud.ADMIN, ud.INFO, 'creating new module and passing new request to module %s: %s' % (module_name, str(msg._id)) )
-				if umc.configRegistry.has_key( 'umc/module/debug/level' ):
+				if umc.configRegistry.get( 'umc/module/debug/level' ):
 					mod_proc = ModuleProcess( module_name, self.__interface,
 								  debug = umc.configRegistry[ 'umc/module/debug/level' ],
 								  locale = self.__locale )

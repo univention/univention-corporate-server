@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -87,7 +87,7 @@ setup( name = 'univention-management-console',
 	   version = '1.0',
 	   package_dir = { '' : 'src' },
 	   packages = [ 'univention', 'univention.management', 'univention.management.console',	'univention.management.console.protocol', 'univention.management.console.modules' ] + map( lambda x: 'univention.management.console.modules.' + x, UMC_MODULES ),
-	   scripts = [ 'scripts/univention-management-console-server', 'scripts/univention-management-console-module', 'scripts/univention-management-console-client', 'scripts/umc-acls' ],
+	   scripts = [ 'scripts/univention-management-console-server', 'scripts/univention-management-console-module', 'scripts/univention-management-console-client', 'scripts/univention-management-console-acls' ],
 	   data_files = [ ( 'share/univention-management-console/syntax', [ 'data/syntax/global.xml', 'data/syntax/ucr.xml' ] ),
 					  ( 'share/univention-management-console/modules', [ 'data/modules/ucr.xml', ] ),
 					  ( 'share/univention-management-console/categories', [ 'data/categories/default.xml', ] ), ],

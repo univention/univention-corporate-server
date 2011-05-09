@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -55,7 +55,7 @@ class Instance( umcm.Base ):
 		for line in options[ 'descriptions' ]:
 			text = line[ 'text' ]
 			if not text: continue
-			if line.has_key( 'lang' ):
+			if 'lang' in line:
 				var[ 'description[%s]' % line[ 'lang' ] ] = text
 			else:
 				var[ 'description' ] = text

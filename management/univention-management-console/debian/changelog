@@ -1,3 +1,111 @@
+univention-management-console (4.0.0-1) unstable; urgency=low
+
+  * new generation of UMC
+  * bumped version for UCS 3.0; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 09 May 2011 16:03:30 +0200
+
+univention-management-console (3.0.103-1) unstable; urgency=low
+
+  * ensure that incoming requests for a currently starting process will
+    not get lost; Bug #22364
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 03 May 2011 09:45:02 +0200
+
+univention-management-console (3.0.102-1) unstable; urgency=low
+
+  * Fix AJAX-RefreshFrame (Bug #22268).
+  * Fix and add source code comments.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 19 Apr 2011 15:36:22 +0200
+
+univention-management-console (3.0.101-2) unstable; urgency=low
+
+  *  Wizard, Page: buttons should not close the dialog; Bug #22275
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 20 Apr 2011 09:45:10 +0200
+
+univention-management-console (3.0.100-1) unstable; urgency=low
+
+  * if there is no dialog returned and the status code of the last reponse
+    is 201 or 301 and there is a referrer set it is shown instead of an
+    info message; Bug #22264
+  * bump version for UCS 2.4-3
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 19 Apr 2011 11:20:13 +0200
+
+univention-management-console (3.0.83-2) unstable; urgency=low
+
+  * fixed typo in UCR description (Bug #21586)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 16 Mar 2011 15:40:04 +0100
+
+univention-management-console (3.0.83-1) unstable; urgency=low
+
+  * Don't add umc_frame by default. If umc_frame is active the pages are
+    not well formatted for example traceback sites (Bug #21617)
+  * Consider helpdesk for buttons
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Mar 2011 06:46:56 +0100
+
+univention-management-console (3.0.82-1) unstable; urgency=low
+
+  * print xml representation of input/output data only with debug/level
+    >= 99, fixed description of debug/level UCR var Bug #21586
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Mar 2011 12:13:14 +0100
+
+univention-management-console (3.0.81-1) unstable; urgency=low
+
+  * Dialog, Frame: support layout attributes
+  * TreeView: reduce padding; Bug #21617
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 03 Mar 2011 14:31:01 +0100
+
+univention-management-console (3.0.80-2) unstable; urgency=low
+
+  * Stop logging the XML representation of input and output to /tmp/xmlin, since
+    leaks information into /tmp depending on the umask and permits symlink attacks
+    against data owned by www-data (Bug #21685)
+  * Only log these files if debug level is 4 or higher
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 03 Mar 2011 09:07:36 +0100
+
+univention-management-console (3.0.80-1) unstable; urgency=low
+
+  * simplify umc pam stack in case auth/passwdcache is disabled.
+    (Ticket#2011022810000861 and Bug #20956)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 28 Feb 2011 17:02:44 +0100
+
+univention-management-console (3.0.79-1) unstable; urgency=low
+
+  * passwd_cache can be disabled by setting auth/passwdcache=no
+    (Ticket#2011022810000861)
+  * fix return status for pam_krb5.so success 
+    (Ticket#2011022810000861 and Bug #20956)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 28 Feb 2011 16:36:42 +0100
+
+univention-management-console (3.0.78-1) unstable; urgency=low
+
+  * short lived session when not logged in (Bug #18115)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 25 Feb 2011 17:50:02 +0100
+
+univention-management-console (3.0.77-1) unstable; urgency=low
+
+  * prevent error msg if UCR category has no description 
+    (Bug #21094) (Bug #21163)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 11 Jan 2011 14:20:00 +0100
+
+univention-management-console (3.0.76-1) unstable; urgency=low
+
+  * fixed typo "maintance", Bug #20881
+
+ -- Tim Petersen <petersen@univention.de>  Mon, 07 Feb 2011 09:45:00 +0100
+
 univention-management-console (3.0.75-1) unstable; urgency=low
 
   * MultiValue mapping: ensure that a value is just added once to the

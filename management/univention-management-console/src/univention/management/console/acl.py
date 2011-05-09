@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -67,7 +67,7 @@ class ACLs:
 	def _expand_hostlist( self, hostlist ):
 		hosts = [ ]
 		if not self.__ldap_base:
-			if umc.baseconfig.has_key( 'ldap/base' ):
+			if 'ldap/base' in umc.configRegistry:
 				self.__ldap_base = umc.baseconfig[ 'ldap/base' ]
 
 		servers = []
@@ -89,7 +89,7 @@ class ACLs:
 
 				if servers:
 					for server in servers:
-						if server.has_key( 'name' ):
+						if 'name' in server:
 							hosts.append( server[ 'name' ] )
 
 			elif host.startswith( 'service:' ):
@@ -99,11 +99,11 @@ class ACLs:
 
 				if servers:
 					for server in servers:
-						if server.has_key( 'name' ):
+						if 'name' in server:
 							hosts.append( server[ 'name' ] )
 
 			elif host == '*':
-				if not self.__cache.has_key( self.__ldap_base ):
+				if not self.__ldap_base in self.__cache:
 					self.__cache[ self.__ldap_base ] = [ ]
 
 					for role in ACLs._systemroles:
@@ -111,7 +111,7 @@ class ACLs:
 
 					if servers:
 						for server in servers:
-							if server.has_key( 'name' ):
+							if 'name' in server:
 								hosts.append( server[ 'name' ] )
 								self.__cache[ self.__ldap_base ].append( server[ 'name' ] )
 				else:
@@ -123,7 +123,7 @@ class ACLs:
 
 				if servers:
 					for server in servers:
-						if server.has_key( 'name' ):
+						if 'name' in server:
 							hosts.append( server[ 'name' ] )
 
 		return hosts
@@ -195,7 +195,7 @@ class ACLs:
 	def __option_match( self, opt_pattern, opts ):
 		match = ACLs.MATCH_FULL
 		for key, value in opt_pattern.items():
-			if opts.has_key( key ):
+			if key in opts:
 				if isinstance( opts[ key ], basestring ):
 					options = ( opts[ key ], )
 				else:
@@ -316,10 +316,7 @@ class ConsoleACLs ( ACLs ):
 	def _get_policy_for_dn( self, dn ):
 		policy = self.lo.getPolicies( dn, policies=[ ], attrs={ }, result={ }, fixedattrs={ } )
 
-		if policy.has_key( 'univentionPolicyConsoleAccess' ):
-			return policy[ 'univentionPolicyConsoleAccess' ]
-		return None
-
+		return policy.get( 'univentionPolicyConsoleAccess', None )
 
 	def _read_from_ldap( self ):
 		# TODO: check for fixed attributes
@@ -327,10 +324,10 @@ class ConsoleACLs ( ACLs ):
 		# userDisallow = [ ]
 		policy = self._get_policy_for_dn ( self.lo.binddn )
 		if policy:
-			if policy.has_key( 'univentionConsoleAllow' ):
+			if 'univentionConsoleAllow' in policy:
 				for value in policy[ 'univentionConsoleAllow' ][ 'value' ]:
 					self._append_allow( self.FROM_USER, self.lo.get( value ) ) #value.split( ':' )[ 0 ], value.split( ':' )[ 1], value.split( ':' )[ 2] )
-			if policy.has_key( 'univentionConsoleDisallow' ):
+			if 'univentionConsoleDisallow' in policy:
 				for value in policy[ 'univentionConsoleDisallow' ][ 'value' ]:
 					self._append_disallow( self.FROM_USER, self.lo.get( value ) ) #value.split( ':' )[ 0 ], value.split( ':' )[ 1], value.split( ':' )[ 2] )
 
@@ -342,11 +339,11 @@ class ConsoleACLs ( ACLs ):
 		for gDN in groupDNs:
 			policy = self._get_policy_for_dn ( gDN )
 			if policy:
-				if policy.has_key( 'univentionConsoleAllow' ):
+				if 'univentionConsoleAllow' in policy:
 					# groupAllow.append( policy[ 'univentionConsoleAllow' ][ 'value' ] )
 					for value in policy[ 'univentionConsoleAllow' ][ 'value' ]:
 						self._append_allow( self.FROM_GROUP, self.lo.get( value ) )
-				if policy.has_key( 'univentionConsoleDisallow' ):
+				if 'univentionConsoleDisallow' in policy:
 					for value in policy[ 'univentionConsoleDisallow' ][ 'value' ]:
 						self._append_disallow( self.FROM_GROUP, self.lo.get( value ) )
 

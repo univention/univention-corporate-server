@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-18 18:28+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2011-05-09 17:58+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,23 +21,23 @@ msgstr "Alle Module"
 
 #: categories.py:80
 msgid "Configuration and monitoring of system services"
-msgstr ""
+msgstr "Konfiguration und Überwachung von Systemdiensten"
 
 #: categories.py:81
 msgid "System"
-msgstr ""
+msgstr "System"
 
 #: categories.py:82
 msgid "System overview"
-msgstr ""
+msgstr "Systemüberblick"
 
 #: categories.py:83
 msgid "Wizards"
-msgstr ""
+msgstr "Assistenten"
 
 #: categories.py:84
 msgid "Wizards for simple configuration"
-msgstr ""
+msgstr "Assistenen zur einfachen Konfiguration"
 
 #: syntax.py:119
 #, python-format
@@ -70,7 +70,6 @@ msgid "Value is not an integer"
 msgstr "Es ist kein ganzzahliger Wert"
 
 #: verify.py:77
-#, fuzzy
 msgid "Value is not n floating point number"
 msgstr "Es ist keine Gleitkommazahl"
 

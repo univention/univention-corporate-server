@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -77,7 +77,7 @@ def main():
 	except:
 		ud.debug(ud.ADMIN, ud.ERROR, 'univention-management-console-server.py: specified locale is not available (cmdline: %s)' % options.language)
 	if not localeok:
-		if configRegistry.has_key('umc/web/language') and configRegistry['umc/web/language']:
+		if configRegistry.get( 'umc/web/language' ):
 			try:
 				locale.setlocale( locale.LC_MESSAGES, locale.normalize( configRegistry['umc/web/language'] ) )
 				localeok = True

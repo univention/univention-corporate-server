@@ -1,10 +1,10 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  version information for the UMC protocol
 #
-# Copyright 2007-2010 Univention GmbH
+# Copyright 2007-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,8 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-major_number    = 0
-minor_number    = 1
+major_number    = 2
+minor_number    = 0
 revision_number = 0
 extension       = ''
 
