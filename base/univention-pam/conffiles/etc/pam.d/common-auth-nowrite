@@ -1,22 +1,14 @@
-# Warning: This file is auto-generated and might be overwritten by 
-#          univention-baseconfig.
-#          Please edit the following file instead:
-# Warnung: Diese Datei wurde automatisch generiert und kann durch 
-#          univention-baseconfig überschrieben werden. 
-#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
-# 
-# 	/etc/univention/templates/files/etc/pam.d/common-auth-nowrite
-# 
+@%@UCRWARNING=# @%@
 
 auth     requisite                          pam_nologin.so
 @!@
-if baseConfig.get('auth/faillog', 'no').lower() in ['yes', 'true', 'enabled', '1']:
+if baseConfig.is_true('auth/faillog', False): 
 	tally_option='per_user deny=%s' % baseConfig.get('auth/faillog/limit', '5')
-	if baseConfig.get('auth/faillog/root', 'no') in ['yes', 'true', 'enabled', '1']:
+	if baseConfig.is_true('auth/faillog/root', False):
 		tally_option+=' even_deny_root_account'
 	if baseConfig.get('auth/faillog/unlock_time', '0') != '0':
 		tally_option+=' unlock_time=%s' % baseConfig.get('auth/faillog/unlock_time')
-	if baseConfig.get('auth/faillog/lock_global', 'false').lower() in [ 'true', 'yes', 'on', '1']:
+	if baseConfig.is_true('auth/faillog/lock_global', False):
 		print 'auth	[success=1 user_unknown=1 default=bad]	pam_tally.so %s' % tally_option
 		print 'auth	[default=die]	pam_runasroot.so program=/usr/lib/univention-pam/lock-user'
 	else:

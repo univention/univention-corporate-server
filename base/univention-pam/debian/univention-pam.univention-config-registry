@@ -85,6 +85,7 @@ Variables: auth/faillog
 Variables: auth/faillog/root
 Variables: auth/faillog/unlock_time
 Variables: auth/faillog/limit
+Variables: auth/faillog/lock_global
 
 Type: file
 File: etc/pam.d/admin-auth-nowrite
@@ -94,6 +95,7 @@ Variables: auth/faillog
 Variables: auth/faillog/root
 Variables: auth/faillog/unlock_time
 Variables: auth/faillog/limit
+Variables: auth/faillog/lock_global
 
 Type: file
 File: etc/pam.d/admin-password
@@ -117,6 +119,7 @@ Variables: auth/faillog
 Variables: auth/faillog/root
 Variables: auth/faillog/unlock_time
 Variables: auth/faillog/limit
+Variables: auth/faillog/lock_global
 
 Type: subfile
 Multifile: etc/pam.d/common-auth
@@ -147,6 +150,7 @@ Variables: auth/faillog
 Variables: auth/faillog/root
 Variables: auth/faillog/unlock_time
 Variables: auth/faillog/limit
+Variables: auth/faillog/lock_global
 
 Type: file
 File: etc/pam.d/common-password

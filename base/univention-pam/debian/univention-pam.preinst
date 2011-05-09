@@ -3,7 +3,7 @@
 # Univention PAM
 #  preinst script for the debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -74,85 +74,8 @@ EOF
 	done
 fi
 
-if [ "$1" = upgrade -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.11; then
-	if [ -e "/etc/pam.d/ssh" ]; then
-		res=`grep "auth.*required.*pam_listfile.so.*onerr=succeed.*item=user.*sense=deny.*file=" /etc/pam.d/ssh`
-		if [ -n "$res" ]; then
-			univention-baseconfig set ssh/rootlogin=disallow
-		fi
-	fi
-fi
-
-if [ "$1" = upgrade -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.2.2; then
-	#move chfn and chsh to user auth methods
-
-	admin_auth=$(univention-baseconfig get auth/admin/services)
-	user_auth=$(univention-baseconfig get auth/user/services)
-	chfn=$(echo "$user_auth" | grep chfn)
-	chsh=$(echo "$user_auth" | grep chsh)
-
-	if [ -z "$chfn" -a -z "$chsh" ]; then
-		univention-baseconfig set auth/admin/services="$(echo $admin_auth | sed -e 's|chfn||;s|chsh||')"
-		univention-baseconfig set auth/user/services="$user_auth chfn chsh"
-	elif [ -z "$chfn" ]; then
-		univention-baseconfig set auth/admin/services="$(echo $admin_auth | sed -e 's|chfn||')"
-		univention-baseconfig set auth/user/services="$user_auth chfn"
-	elif [ -z "$chsh" ]; then
-		univention-baseconfig set auth/admin/services="$(echo $admin_auth | sed -e 's|chsh||')"
-		univention-baseconfig set auth/user/services="$user_auth chsh"
-	fi
-fi
-
-# Bug #18884: follow rename of "ssh" to "sshd"
-# Code copied from http://wiki.debian.org/DpkgConffileHandling
-# Prepare to move a conffile without triggering a dpkg question
-prep_mv_conffile() {
-	local PKGNAME="$1"
-	local CONFFILE="$2"
-
-	[ -e "$CONFFILE" ] || return 0
-
-	local md5sum="$(md5sum "$CONFFILE" | sed -e 's/ .*//')"
-	local old_md5sum="$(dpkg-query -W -f='${Conffiles}' "$PKGNAME" | \
-	sed -n -e "\' $CONFFILE ' { s/ obsolete$//; s/.* //; p; q }")"
-	if [ "$md5sum" = "$old_md5sum" ]; then
-		rm -f "$CONFFILE"
-	fi
-}
-
-case "$1" in
-install|upgrade)
-	if dpkg --compare-versions "$2" le 4.0.6
-	then
-		if test -e /etc/pam.d/ssh
-		then
-			if univention-config-registry filter </etc/univention/templates/files/etc/pam.d/ssh | cmp -s /etc/pam.d/ssh -
-			then
-				rm -f /etc/pam.d/ssh
-			else
-				mv -f /etc/pam.d/ssh{,.dpkg-del}
-			fi
-		fi
-		prep_mv_conffile univention-pam /etc/univention/templates/files/etc/pam.d/ssh
-		dpkg-divert --rename --quiet --divert /etc/pam.d/ssh.debian --remove /etc/pam.d/ssh || true
-	fi
-	;;
-esac
 
 #DEBHELPER#
-
-if [ "$1" = upgrade -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.2.2; then
-	# we need the pam_rootok.so in the pam file during the slapd upgrade
-	echo "auth  sufficient   pam_rootok.so" >/etc/pam.d/chfn
-	echo "@include common-auth"             >>/etc/pam.d/chfn
-	echo "@include common-account"          >>/etc/pam.d/chfn
-	echo "@include common-session"          >>/etc/pam.d/chfn
-
-	echo "auth  sufficient   pam_rootok.so" >/etc/pam.d/chsh
-	echo "@include common-auth"             >>/etc/pam.d/chsh
-	echo "@include common-account"          >>/etc/pam.d/chsh
-	echo "@include common-session"          >>/etc/pam.d/chsh
-fi
 
 if [ "$1" = "install" -a -z "$2" ] ; then
 	# pam stack file have been moved during installation so currently most

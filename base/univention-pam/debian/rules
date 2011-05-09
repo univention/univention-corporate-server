@@ -3,7 +3,7 @@
 # Univention PAM
 #  rules file for the debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,53 +30,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-package=univention-pam
-
-build: build-stamp
-
-build-stamp:
-	dh_testdir
-	touch build-stamp
-
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp
-	dh_clean
-
-install:
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	install -m 0755 univention-create-homedir debian/univention-pam/usr/sbin/univention-create-homedir
-	install -m 0755 nscd.py debian/univention-pam/usr/lib/univention-directory-listener/system/
-	install -m 0755 faillog.py debian/univention-pam/usr/lib/univention-directory-listener/system/
-	install -m 0755 lock-user debian/univention-pam/usr/lib/univention-pam/
+override_dh_auto_install:
+	# make ucslint happy: univention-install-config-registry-info
 	univention-install-config-registry
-	univention-install-config-registry-info
-	sed -i -e '\!/etc/!d' debian/univention-pam.conffiles # Bug #18924
-	dh_install
+	dh_auto_install
 
-binary-indep: build install
-	dh_testdir -i
-	dh_testroot -i
-	dh_installchangelogs -i
-	dh_installdocs -i
-	dh_installexamples -i
-	dh_installman -i
-	dh_link -i
-	dh_compress -i
-	dh_fixperms -i
-	dh_shlibdeps -i
-	dh_installdeb -i
-	dh_gencontrol -i
-	dh_md5sums -i
-	dh_builddeb -i
+override_dh_auto_build:
+	#ucslint
+	dh_auto_build
 
-binary-arch: build install
+override_dh_fixperms:
+	dh_fixperms
 
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install
+%:
+	dh $@

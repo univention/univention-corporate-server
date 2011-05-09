@@ -1,10 +1,10 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention nscd Updater
 #  Univention Listener Module
 #
-# Copyright 2001-2010 Univention GmbH
+# Copyright 2001-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -47,7 +47,7 @@ def postrun():
 	baseConfig = univention_baseconfig.baseConfig()
 	baseConfig.load()
 
-	if baseConfig.get('nscd/group/invalidate_cache_on_changes', 'false').lower() in [ 'true', 'yes', 'on']:
+	if baseConfig.is_true('nscd/group/invalidate_cache_on_changes', False):
 		listener.setuid(0)
 		try:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "calling 'nscd -i group'")
