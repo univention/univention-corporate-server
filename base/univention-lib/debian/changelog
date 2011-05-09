@@ -1,3 +1,9 @@
+univention-lib (1.0.4-1) unstable; urgency=low
+
+  * added shell func isDomainController (Bug #22456)
+
+ -- Felix Botner <botner@univention.de>  Mon, 09 May 2011 13:24:49 +0200
+
 univention-lib (1.0.3-1) unstable; urgency=low
 
   * added shell functions for adding a new service entry (Bug #21265)

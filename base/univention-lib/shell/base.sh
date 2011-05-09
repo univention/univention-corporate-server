@@ -73,3 +73,12 @@ call_joinscript () {
 stop_udm_cli_server () {
     pkill -f "/usr/bin/python.* /usr/share/univention-directory-manager-tools/univention-cli-server"
 }
+
+#
+# if isDomainController; then
+#         ... do domainController stuff ...
+#  fi
+#
+isDomainController () {
+	[[ "$(ucr get server/role)" == domaincontroller_* ]]
+}
