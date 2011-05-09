@@ -31,7 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
-import sys
 import shlex
 
 from tokens import *

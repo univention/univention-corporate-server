@@ -1,0 +1,6 @@
+<@header@>
+Rechnername	Beschreibung	MAC-Adresse	Netzwerk	IP-Adresse
+<@/header@>
+<@attribute name="name"@>	<@attribute name="description"@>	<@attribute name="mac"@>	<@resolve module="networks/network" dn-attribute="network" alternative=""@><@attribute name="name"@><@/resolve@>	<@attribute name="ip"@>
+<@footer@>
+<@/footer@>

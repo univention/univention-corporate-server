@@ -1,0 +1,6 @@
+<@header@>
+Name	Beschreibung	Gruppen ID	Relative ID	Gruppentyp	E-Mail-Adresse	Adressbucheintrag	Mitglied folgender Gruppen	Gruppen in dieser Gruppe	Benutzer in dieser Gruppe
+<@/header@>
+<@attribute name="name"@>	<@attribute name="description" default="-"@>	<@attribute name="gidNumber"@>	<@attribute name="sambaRID"@>	<@attribute name="sambaGroupType"@>	<@attribute name="mailAddress" default="-"@>	<@attribute name="HideUserEntry"@>	<@resolve module="groups/group" dn-attribute="memberOf" alternative="Diese Gruppe ist in keiner anderen Gruppe Mitglied." separator=","@><@attribute name="name"@> (<@attribute name="description"@>)<@/resolve@>	<@query module="groups/group" start="nestedGroup" next="nestedGroup" alternative="Keine Gruppe ist Mitglied dieser Gruppe." separator=","@><@attribute name="name"@> (<@attribute name="description"@>)<@/query@>	<@resolve module="users/user" dn-attribute="users" alternative="Kein Benutzer ist Mitglied dieser Gruppe." separator=","@><@attribute name="username"@> (<@attribute name="lastname"@>, <@attribute name="firstname"@>)<@/resolve@>
+<@footer@>
+<@/footer@>

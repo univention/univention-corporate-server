@@ -1,3 +1,103 @@
+univention-directory-reports (3.0.6-2) unstable; urgency=low
+
+  * Add even more detailed error report (Bug #9137)
+  * Handle invalid syntax in LDAP DN (Bug #18345).
+  * Add test/failures.sh.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Mar 2011 08:27:45 +0100
+
+univention-directory-reports (3.0.6-1) unstable; urgency=low
+
+  * Handle invalid files (Bug #9137)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 07 Mar 2011 15:50:42 +0100
+
+univention-directory-reports (3.0.5-5) unstable; urgency=low
+
+  * fixed postinst (Bug #17425) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 07 Mar 2011 12:18:53 +0100
+
+univention-directory-reports (3.0.5-4) unstable; urgency=low
+
+  * version bump (Bug #17425) 
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 07 Mar 2011 12:04:46 +0100
+
+univention-directory-reports (3.0.5-3) unstable; urgency=low
+
+  * added debug output to postinst script (Bug #17425)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 07 Mar 2011 11:54:26 +0100
+
+univention-directory-reports (3.0.5-2) unstable; urgency=low
+
+  * minor changes for the postinst script, did not remove old files properly
+    (Bug #17425)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 07 Mar 2011 11:47:21 +0100
+
+univention-directory-reports (3.0.5-1) unstable; urgency=low
+
+  * added support for report entries in old format (Bug #17425)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 23 Feb 2011 17:50:52 +0100
+
+univention-directory-reports (3.0.4-4) unstable; urgency=low
+
+  * debian/control: Depends +texlive-latex-recommended (Bug #16637)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 18 Feb 2011 08:44:33 +0100
+
+univention-directory-reports (3.0.4-3) unstable; urgency=low
+
+  * debian/control: Depends +texlive-latex-extra (Bug #16637)
+  * Add test/all.sh script for testing.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 18 Feb 2011 08:37:11 +0100
+
+univention-directory-reports (3.0.4-2) unstable; urgency=low
+
+  * Handle non-ASCII multi-byte encoding (Bug #16637)
+  * Enable doctest.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 15 Feb 2011 12:21:19 +0100
+
+univention-directory-reports (3.0.4-1) unstable; urgency=low
+
+  * debian/control: transition from TeTeX to TexLive (Bug #21233)
+  * univention-directory-reports:
+    - Handle invalid reports specification (Bug #17930)
+    - Fix --help messages.
+    - Fix handling of header and footer.
+    - List modules with available reports.
+    - Don't delete generated CSV reports (Bug #19985)
+    - Handle not existing DNs (Bug #18345)
+  * Clean up missing and superfluous imports.
+  * Track down TeX-encoding (Bug #20676, Bug #17723)
+  * Handle missing files (Bug #9137)
+  * Add preliminary manual page to source only, pending QA.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 14 Feb 2011 13:25:51 +0100
+
+univention-directory-reports (3.0.3-1) unstable; urgency=low
+
+  * added language detection via locale.getlocale() (Bug #17425)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 14 Feb 2011 16:52:04 +0100
+
+univention-directory-reports (3.0.2-1) unstable; urgency=low
+
+  * submitted users.csv template (Bug #17425)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 14 Feb 2011 14:45:17 +0100
+
+univention-directory-reports (3.0.1-1) unstable; urgency=low
+
+  * add multi-language support for report generation (Bug #17425)
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 14 Feb 2011 14:24:42 +0100
+
 univention-directory-reports (3.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

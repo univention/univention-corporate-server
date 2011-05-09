@@ -36,18 +36,51 @@ import univention.admin.modules as ua_modules
 import univention.admin.mapping as ua_mapping
 import univention.admin.syntax as ua_syntax
 import univention.admin.config as ua_config
+import univention.admin.uexceptions as ua_exceptions
 
 import univention_baseconfig as ub
 
 import univention.debug as ud
 
 import re
-from locales import *
 from filter import *
 
 __all__ = [ 'connect', 'get_object', 'cache_object', 'connected', 'identify', 'set_format' ]
 
 _admin = None
+
+TEX_ESCAPE = {
+		u'€': 'EUR',
+		'"': "''",
+		'\\': '\\textbackslash{}',
+		'&': '\\&',
+		'%': '\\%',
+		'#': '\\#',
+		'_': '\\_',
+		'{': '\\{',
+		'}': '\\}',
+		'~': '\\textasciitilde{}',
+		'^': '\\^{\,}',
+		'$': '\\$',
+		u'°': '$^{\\circ}$',
+		u'´': '',
+		}
+def texClean(str):
+	u"""Escape string for use in LaTeX.
+	
+	>>> texClean('Test')
+	'Test'
+	>>> texClean('"\\&%#_{}~^$')
+	"''\\\\textbackslash{}\\\\&\\\\%\\\\#\\\\_\\\\{\\\\}\\\\textasciitilde{}\\\\^{\\\\,}\\\\$"
+	>>> texClean('€°´')
+	'EUR$^{\\\\circ}$'
+	"""
+	esc = ''.join(map(lambda c: TEX_ESCAPE.get(c, c), str))
+	# str ist NOT unicode, so '€°´' are non-ASCII characters, which use multiple bytes. See Bug #16637
+	esc = esc.replace('€', 'EUR')
+	esc = esc.replace('°', '$^{\\circ}$')
+	esc = esc.replace('´', '')
+	return esc
 
 class AdminConnection( object ):
 	def __init__( self, userdn = None, password = None, host = 'localhost', base = None, start_tls = 2, access = None, format = True ):
@@ -70,6 +103,11 @@ class AdminConnection( object ):
 											binddn = userdn, bindpw = password, start_tls = start_tls )
 		self._config = ua_config.config( host = host )
 
+	def __repr__(self):
+		fmt = '%s(userdn=%r, password=%r, host=%r, base=%r, start_tls=%r, access=%r, format=%r)' 
+		val = (self.__class__.__name__, self._access.binddn, self._access.bindpw, self._access.host, self._access.base, self._access.start_tls, self._access, self._format)
+		return fmt % val
+
 	def cache_object( self, obj ):
 		return self.get_object( ua_objects.module( obj ), obj.dn )
 
@@ -86,7 +124,10 @@ class AdminConnection( object ):
 			if not len(possible_real_DNs) == 1:
 				raise ValueError('ambiguous DNs, cannot unescape %s (possibilities: %s)' % (repr(dn), repr(possible_real_DNs)))
 			dn = possible_real_DNs[0]
-		return self.get_object_real(module, dn)
+		try:
+			return self.get_object_real(module, dn)
+		except ua_exceptions.noObject, e:
+			return None
 
 	def get_object_real( self, module, dn ):
 		if self._cached.has_key( dn ):
@@ -164,27 +205,6 @@ class AdminConnection( object ):
 	def format_property_real( self, props, key, value ):
 		prop = props.get( key, None )
 
-		def texClean(string):
-			string = string.replace('€', "EUR")
-			string = string.replace('"', "''")
-			string = string.replace('\\', '$\\backslash$')
-			for c in '&%#_{}':
-				string = string.replace(c, '\\%s' % c)
-			string = string.replace('~', '\\textasciitilde{}')
-			string = string.replace('^', '\\^{\,}')
-
-			# following regular expression replaces $ with \$ if and only if
-			# - no leading $\backslash exists and    ==> prevents replacement of the second $ character
-			# - it does not match $\backslash$       ==> prevents replacement of the first $ character
-			string = re.sub(r'(?<![$]\\backslash)(?![$]\\backslash[$])[$]', '\\$', string)
-
-			string = string.replace('°', '$^{\\circ}$')
-
-			# Unicode char \u8:´ not set up for use with LaTeX.
-			string = string.replace('´', "")
-
-			return string
-
 		if not prop:
 			return ( key, value )
 		else:
@@ -247,7 +267,10 @@ def get_object( module, dn ):
 	global _admin
 	if not _admin:
 		return None
-	return _admin.get_object( module, dn )
+	try:
+		return _admin.get_object( module, dn )
+	except ua_exceptions.ldapError:
+		return None
 
 def set_format( format ):
 	global _admin
@@ -261,3 +284,7 @@ def identify( dn ):
 def connected():
 	global _admin
 	return _admin != None
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()

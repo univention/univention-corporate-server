@@ -1,0 +1,71 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH UNIVENTION-DIRECTORY-REPORT 5 2011-02-14 UCS
+.SH NAME
+univention\-directory\-reports \- template for reports over UDM objects
+
+.SH SYNOPSIS
+.B univention\-directory\-reports \-l
+
+.SH DESCRIPTION
+.TP
+\fB<@attribute\fP [\fBprepend="\fP\fIprefix\fP\fB"\fP] \fBname="\fP\fIname\fP\fB"\fP [\fBappend="\fP\fIsuffix\fP\fB"\fP] [\fBdefault="\fP\fIvalue\fP\fB"\fP] \fB@>\fP
+Output the value of the attribute named \fIname\fP, optionally prepended with the text \fIprefix\fP and appended with the text \fIsuffix\fP.
+Default can be used to supply a default \fIvalue\fP if the attribute is unset.
+.TP
+\fB<@header@>\fP...\fB<@/header@>\fP
+Everything in between in put in front of the report, but after the LaTeX header.
+.TP
+\fB<@footer@>\fP...\fB<@/footer@>\fP
+Everything in between in put at the end after the report, but before the LaTeX footer.
+.TP
+\fB<@resolve module="\fP\fImodule\fP\fB" dn-attribute="\fP\fIattribute\fP\fB"\fP [\fBalternative="\fP\fItext\fP\fB"\fP] [\fBseparator="\fP\fIsep\fP\fB"\fP] [\fBheader="\fP\fIheader\fP\fB"\fP] [\fBfooter="\fP\fIfooter\fP\fB"\fP] \fB@>\fP...\fB<@/resolve@>\fP
+Looks up the entry, whos distinguished name equals the value of \fIattribute\fP using the module \fImodule\fP.
+For each entry, the templates between \fB<@resolve@>\fP and \fB<@/resolve@>\fP are evaluated.
+If no such object exists, \fBalternative\fP specifies a \fItext\fP used instead.
+If multiple objects exists, \fBseperator\fP specifies a \fIseparator\fP, which is printed in between the entries.
+\fIheader\fP and \fIfooter\fP can be used to print additional text before the first and after the last entry.
+.TP
+\fB<@query module="\fP\fImodule\fP\fB" start="\fP\fIstart\fP\fB"\fP \fBnext="\fP\fInext\fP\fB"\fP [\fBregex="\fP\fIregex\fP\fB"\fP] [\fBseparator="\fP\fIsep\fP\fB"\fP] [\fBalternative="\fP\fItext\fP\fB"\fP] [\fBheader="\fP\fIheader\fP\fB"\fP] [\fBfooter="\fP\fIfooter\fP\fB"\fP] \fB@>\fP...\fB<@/query@>\fP
+Executes a recursive for entries handled by the module \fImodule\fP.
+Initially the \fIstart\fP attribute is used to get the distinguished name of the first entry, while the \fInext\fP attribute is then used recursively to find all nested entries.
+Only entries matching \fIregex\fP are handled.
+For each entry, the templates between \fB<@resolve@>\fP and \fB<@/resolve@>\fP are evaluated.
+If no such object exists, \fBalternative\fP specifies a \fItext\fP used instead.
+If multiple objects exists, \fBseperator\fP specifies a \fIseparator\fP, which is printed in between the entries.
+\fIheader\fP and \fIfooter\fP can be used to print additional text before the first and after the last entry.
+.TP
+\fB<@policy@ module="\fP\fImodule\fP\fB"\fP [\fBinherited=""\fP|\fBdirect=""\fP] \fB@>\fP
+Signals, if the entry has an associated policy of type \fImodule\fP.
+Either \fBinherited=""\fP or \fBdirect=""\fP should be specified, if respectively \fBYes\fP should be printed when the policy is inherited or not.
+
+.SH FILES
+.TP
+.I /etc/univention/directory/reports/config.ini
+Configuration file defining defaults and available reports.
+This file is auto-generated from the Univention Config Registry settings.
+.TP
+.IR /etc/univention/directory/reports/.../$LANG/header.tex ,\  /etc/univention/directory/reports/header.tex
+Default header for LaTeX reports.
+.TP
+.IR /etc/univention/directory/reports/.../$LANG/footer.tex ,\  /etc/univention/directory/reports/footer.tex
+Default footer for LaTeX reports.
+
+.SH EXAMPLE
+.RS 5
+.nf
+<@header@>
+Text at the beginning.
+<@/header@>
+The value of attribute 'name' is '<@attribute name="name"@>'
+<@footer@>
+Text at the end.
+<@/footer@>
+.fi
+.RE
+
+.SH SEE ALSO
+.BR univention\-directory\-reports (1),
+.BR univention\-config\-registry (8),
+
+.SH AUTHOR
+Copyright (c) 2011 Univention GmbH, Germany
