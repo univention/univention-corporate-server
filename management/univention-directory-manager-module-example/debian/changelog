@@ -1,3 +1,84 @@
+univention-directory-manager-module-example (2.0.9-1) unstable; urgency=low
+
+  * Initialize locale (Bug #17915)
+  * Update german translation.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 18 Feb 2011 11:30:56 +0100
+
+univention-directory-manager-module-example (2.0.8-1) unstable; urgency=low
+
+  * Fix installation path of translation catalog (Bug #17915)
+  * Fix creating entry with immediate --redirect.
+  * Handle errors in ip-phone-tool.
+  * Parameter errors should exit with 2.
+  * debian/rules: Fix clean target.
+  * Fix quoting.
+  * Add simple script to test implementation.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 17 Feb 2011 07:08:03 +0100
+
+univention-directory-manager-module-example (2.0.7-1) unstable; urgency=low
+
+  * fix default value for TrueFalseUp syntax (Bug #17915)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Feb 2011 15:56:32 +0100
+
+univention-directory-manager-module-example (2.0.6-3) unstable; urgency=low
+
+  * fix globbing in debian/rules (Bug #17915)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Feb 2011 13:43:19 +0100
+
+univention-directory-manager-module-example (2.0.6-2) unstable; urgency=low
+
+  * mode directory structure changes and ucslint (Bug #17915)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Feb 2011 10:53:14 +0100
+
+univention-directory-manager-module-example (2.0.6-1) unstable; urgency=low
+
+  * Add translation file and script (Bug #17915)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Feb 2011 10:28:12 +0100
+
+univention-directory-manager-module-example (2.0.5-1) unstable; urgency=low
+
+  * Prepare for translation (Bug #17915)
+  * Restart slapd only on domaincontroller_master.
+  * Fix unicode strings.
+  * Add missing DocString to exists() and _remove_attr().
+  * Document advanced=True.
+  * Use True and False instead of 1 and 0.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 16 Feb 2011 07:59:08 +0100
+
+univention-directory-manager-module-example (2.0.4-1) unstable; urgency=low
+
+  * suggestions from QA feedback (Bug #17915)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 15 Feb 2011 18:22:24 +0100
+
+univention-directory-manager-module-example (2.0.3-2) unstable; urgency=low
+
+  * adjust debian package filenames (Bug #17915)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Feb 2011 16:20:05 +0100
+
+univention-directory-manager-module-example (2.0.3-1) unstable; urgency=low
+
+  * suggestions from QA feedback (Bug #17915)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Feb 2011 15:07:56 +0100
+
+univention-directory-manager-module-example (2.0.2-1) unstable; urgency=low
+
+  * add missing schema.postinst file to restart slapd
+  * kill udm-cli processes in postinst
+  * let pycentral figure out the current python version
+  * register the ucr templates (Bug #17915)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 07 Feb 2011 09:35:55 +0100
+
 univention-directory-manager-module-example (2.0.1-1) unstable; urgency=low
 
   * first update of the example module (Bug #17915)

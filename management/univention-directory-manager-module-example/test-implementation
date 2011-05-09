@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+# Test module and script
+#
+set -e
+
+alias udm=univention-directory-manager
+
+ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local
+ip-phone-tool set voip1 10.1.0.42 sip:user1@dom.local --redirect sip:otheruser@dom.local
+ip-phone-tool set voip2 10.1.0.43 sip:user2@dom.local --redirect sip:otheruser@dom.local
+ip-phone-tool clear_redirect voip1
+ip-phone-tool remove voip1
+ip-phone-tool remove voip2
+
+udm test/ip_phone create --set name=voip1 --set ip=10.1.0.42 --set active=TRUE --set priuser=sip:user1@dom.local
+dn=$(udm test/ip_phone list --filter name=voip1 | sed -ne 's/^DN: //p')
+udm test/ip_phone modify --dn "$dn" --option redirection --set redirect_user=sip:otheruser@dom.local
+udm test/ip_phone create --set name=voip2 --set ip=10.1.0.43 --set active=TRUE --set priuser=sip:user2@dom.local --option redirection --set redirect_user=sip:otheruser@dom.local
+udm test/ip_phone modify --dn "$dn" --set redirect_user=
+udm test/ip_phone remove --dn "$dn"
+udm test/ip_phone remove --filter name=voip2
+
+echo "Success."

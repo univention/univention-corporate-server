@@ -1,14 +1,35 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
-# Sample debian/rules that uses debhelper.
 #
-# This file was originally written by Joey Hess and Craig Small.
-# As a special exception, when this file is copied by dh-make into a
-# dh-make output file, you may use that output file without restriction.
-# This special exception was added by Craig Small in version 0.37 of dh-make.
+# Univention Directory Manager Example Module
+#  rules file for creating the deb package
 #
-# Modified to make a template file for a multi-binary package with separated
-# build-arch and build-indep targets  by Bill Allombert 2001
+# Copyright 2010-2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
@@ -16,29 +37,77 @@
 # This has to be exported to make some magic below work.
 #export DH_OPTIONS
 
-PYVERS=$(shell pyversions -vr)
-D=debian/univention-directory-manager-module-example
-DS=debian/univention-directory-manager-module-example-schema
+PACKAGE_NAME = univention-directory-manager-module-example
 
-build:
+D  := debian/${PACKAGE_NAME}
+DS := debian/${PACKAGE_NAME}-schema
+
+PYVERS := $(shell pyversions -vr)
+
+PO_FILES := $(shell find modules -name '*.po')
+MO_FILES := $(PO_FILES:%.po=%.mo)
+
+%.mo:	%.po
+	msgfmt -o $@ $<
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch $@
+
+build: configure-stamp build-stamp
+build-stamp: $(MO_FILES)
+	dh_testdir
+	touch $@
 
 clean:
 	dh_testdir
 	dh_clean
+	$(RM) build-stamp configure-stamp
+	$(RM) debian/*.conffiles
+	$(RM) $(MO_FILES)
+	$(RM) *~
 
-install: build
+install: build-stamp
 	dh_testdir
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
 
-	univention-install-config-registry
+	# Install Schema for Univention Directory Manager Module into Schema Package
+
 	install -m 0644 schema/ip-phone.schema ${DS}/usr/share/univention-ldap/schema/
-	install -m 0644 modules/ip_phone.py ${D}/usr/lib/python2.4/site-packages/univention/admin/handlers/test/
-	install -m 0644 modules/__init__.py ${D}/usr/lib/python2.4/site-packages/univention/admin/handlers/test/
+
+	# Install Univention Directory Manager Modules
+
+	@for i in $(shell find modules/univention/admin/ -name '*.py'); do\
+		o=${D}/usr/share/pyshared/$${i#modules/};\
+		install -d "`dirname "$$o"`";\
+		install -m755 "$$i" "$$o";\
+	done
+	@for i in `find modules/univention/admin/handlers/ -name "*.png" -o -name "*.gif"`; do\
+		o=${D}/usr/share/univention-webui-style/icon/$${i#modules/univention/admin/handlers/};\
+		install -d "`dirname "$$o"`";\
+		install -m 644 "$$i" "$$o";\
+	done
+	@for i in $(MO_FILES); do\
+		lang=`basename "$$i" .mo`;\
+		domain=`dirname "$$i" | sed 's,^modules/,,;s,/,-,g'`;\
+		o=${D}/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
+		install -d "`dirname "$$o"`";\
+		install -m 644 "$$i" "$$o";\
+	done
+
+	# Install example script
+
 	install -m 0755 scripts/ip-phone-tool ${D}/usr/sbin/
 
 	dh_install --exclude=".svn"
+
+	# Install conffiles registered in debian/*.univention-config-registry
+	univention-install-config-registry
+	# Install Univention Config Registry Info files debian/*.univention-config-registry-variables
+	univention-install-config-registry-info
 
 binary-indep: build install
 	dh_testdir -i
@@ -54,4 +123,4 @@ binary-indep: build install
 binary-arch: build install
 
 binary: binary-arch binary-indep
-.PHONY: build clean binary-indep binary-arch binary install
+.PHONY: build clean binary-indep binary-arch binary install configure
