@@ -1,6 +1,6 @@
 AC_INIT(lib/debug.c)
 
-AM_INIT_AUTOMAKE(univentiondebug, 0.1)
+AM_INIT_AUTOMAKE(univentiondebug, 5.0)
 AM_PROG_LIBTOOL
 
 LIB_CURRENT=1
@@ -14,4 +14,4 @@ AC_PROG_INSTALL
 AC_LANG_C
 AC_HEADER_STDC
 
-AC_OUTPUT(Makefile include/univention/Makefile include/Makefile lib/Makefile)
+AC_OUTPUT(Makefile include/univention/Makefile include/Makefile lib/Makefile setup.py)

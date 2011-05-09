@@ -1,0 +1,9 @@
+libuniventiondebug.so.1 libunivention-debug1 #MINVER#
+ univention_debug@Base 5.0.0
+ univention_debug_begin@Base 5.0.0
+ univention_debug_end@Base 5.0.0
+ univention_debug_exit@Base 5.0.0
+ univention_debug_init@Base 5.0.0
+ univention_debug_reopen@Base 5.0.0
+ univention_debug_set_function@Base 5.0.0
+ univention_debug_set_level@Base 5.0.0
