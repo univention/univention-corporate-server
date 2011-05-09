@@ -234,7 +234,7 @@ User-Tests:
 | Traceback (most recent call last):
 |   File "/usr/share/univention-admin-tools/univention-cli-server", line 227, in doit
 |     output = univention.admincli.admin.doit(arglist)
-|   File "/usr/lib/python2.4/site-packages/univention/admincli/admin.py", line 704, in doit
+|   File "/usr/lib/python2.6/site-packages/univention/admincli/admin.py", line 704, in doit
 |     dn=object.create()
 |   File "modules/univention/admin/handlers/__init__.py", line 288, in create
 |   File "modules/univention/admin/handlers/__init__.py", line 538, in _create

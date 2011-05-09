@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  unit tests: modules list tests
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -42,7 +42,7 @@ _FORBIDDEN_MODULES = set((
 # So... process handling with subprocess is really broken: it just hangs on
 # large amounts of output.  To check for yourself, run the following command:
 #
-# > python2.4 -c "import subprocess; subprocess.call(('univention-admin', 'settings/printermodel', 'list'), stdout=subprocess.PIPE)"
+# > python2.6 -c "import subprocess; subprocess.call(('univention-admin', 'settings/printermodel', 'list'), stdout=subprocess.PIPE)"
 #
 # So we had to look for alternatives, of which subprocess names a few:
 # - os.system

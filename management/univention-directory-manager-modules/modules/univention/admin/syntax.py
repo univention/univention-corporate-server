@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  syntax definitions
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -655,7 +655,7 @@ class sharePath(simple):
 			raise univention.admin.uexceptions.valueInvalidSyntax, _(', a path must begin with "/"!')
 		for path in ["tmp", "root", "proc", "dev", "sys"]:
 			if re.match("(^/%s$)|(^/%s/)" % (path, path), os.path.realpath(text)):
-				raise univention.admin.uexceptions.valueError, _('Path may not start with "%s" !' % path)
+				raise univention.admin.uexceptions.valueError, _('Path may not start with "%s" !') % path
 		if self._re.match(text) == None:
 			return text
 		else:
@@ -673,7 +673,7 @@ class passwd(simple):
 		if len(text) >= self.min_length:
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError, _('The password is too short, at least %d characters needed.' % self.min_length)
+			raise univention.admin.uexceptions.valueError, _('The password is too short, at least %d characters needed.') % self.min_length
 class userPasswd(simple):
 	name="passwd"
 
@@ -1637,7 +1637,7 @@ class dnsEntryAlias(ldapDnOrNone):
 	def parse(self, text):
 		if self._re.match(text) != None:
 			return text
-		raise univention.admin.uexceptions.valueError,_("Entry does not have dnsEntryAlias Syntax: %s" % text)
+		raise univention.admin.uexceptions.valueError,_("Entry does not have dnsEntryAlias Syntax: %s") % text
 
 class share(ldapDnOrNone):
 	name='share'

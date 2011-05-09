@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin policy for the DHCP dnsupdate settings
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #

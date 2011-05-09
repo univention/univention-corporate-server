@@ -3,7 +3,7 @@
 # Univention Directory Manager Modules
 #  rules file for creating the deb package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,11 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-PACKAGE_NAME=univention-directory-manager
-MODULE_NAME=univention-directory-manager
-
-PYVERS := $(shell pyversions -vr)
-
 version := $(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 copyrightyear := $(shell date +%Y)
 
@@ -44,62 +39,14 @@ MO_FILES := $(PO_FILES:%.po=%.mo)
 %.mo:	%.po
 	msgfmt --check -o $@ $<
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	touch $@
+override_dh_auto_build: $(MO_FILES)
+	ucslint
+	dh_auto_build
 
-build: configure-stamp build-stamp $(MO_FILES)
-build-stamp:
-	dh_testdir
-	touch $@
+override_dh_auto_install:
+	dh_auto_install
+	univention-install-config-registry
 
-clean:
-	dh_testdir
-	rm -f build-stamp configure-stamp
-	rm -f *~
-	$(RM) $(MO_FILES)
-	dh_clean
-
-TOOLS_DEST=$(CURDIR)/debian/univention-directory-manager-tools
-
-install: install-stamp
-install-stamp: build-stamp $(PYVERS:%=install-ext-%)
-install-ext-%:
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	install -m755 univention-dnsedit ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
-	install -m755 scripts/check_group_recursion ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
-	install -m755 scripts/proof_uniqueMembers ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
-	install -m755 scripts/proof_policies ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
-	install -m755 scripts/proof_kerberos_deactivation ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
-	install -m755 scripts/proof_sambaAccountFlags ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
-	install -m755 scripts/proof_class_b_reverse ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
-	install -m755 scripts/proof_hostShadowAccounts ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
-	install -m755 scripts/proof_dns_dhcp_records ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
-	install -m755 scripts/proof_associatedDomain ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
-	install -m755 scripts/fix_primary_group_membership ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
-	install -m755 scripts/listpwexpiry ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
-
-	# new tools with daemon mode
-	install -m755 univention-cli-client $(TOOLS_DEST)/usr/share/univention-directory-manager-tools/univention-cli-client
-	install -m755 univention-cli-server $(TOOLS_DEST)/usr/share/univention-directory-manager-tools/univention-cli-server
-
-	install -m755 univention-sync-memberuid $(TOOLS_DEST)/usr/share/univention-directory-manager-tools/univention-sync-memberuid
-
-	install -m 644 etc/bash_completion.d/univention-directory-manager $(TOOLS_DEST)/etc/bash_completion.d/univention-directory-manager
-
-	# install admin modules
-
-	@set -e;\
-	for i in $(shell find modules/univention/admin/ -name '*.py'); do\
-		o=debian/python-univention-directory-manager/usr/lib/python$*/site-packages/$${i#modules/};\
-		install -d "`dirname "$$o"`";\
-		install -m755 "$$i" "$$o";\
-	done
 	@set -e;\
 	for i in modules/univention/admin/handlers/*/*.gif modules/univention/admin/handlers/*/*.png; do\
 		o=debian/python-univention-directory-manager/usr/share/univention-webui-style/icon/$${i#modules/univention/admin/handlers/};\
@@ -115,46 +62,9 @@ install-ext-%:
 		install -m 644 "$$i" "$$o";\
 	done
 
-	# install admin-cli modules
-	cat modules/univention/admincli/admin.py| sed -e "s/@%@package_version@%@/${version}/" > modules/univention/admincli/admin.py_tmp
-	cat modules/univention/admincli/admin.py_tmp| sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > modules/univention/admincli/admin.py_tmp2
-
-	#admin cli package
-	install -d -m755 debian/python-univention-directory-manager-cli/usr/lib/python$*/site-packages/univention/admincli
-	install -m644 modules/univention/admincli/admin.py_tmp2 debian/python-univention-directory-manager-cli/usr/lib/python$*/site-packages/univention/admincli/admin.py
-	rm modules/univention/admincli/admin.py_tmp*
-	install -m644 modules/univention/admincli/adduser.py debian/python-univention-directory-manager-cli/usr/lib/python$*/site-packages/univention/admincli/adduser.py
-	install -m644 modules/univention/admincli/passwd.py debian/python-univention-directory-manager-cli/usr/lib/python$*/site-packages/univention/admincli/passwd.py
-	install -m644 modules/univention/admincli/license_check.py debian/python-univention-directory-manager-cli/usr/lib/python$*/site-packages/univention/admincli/license_check.py
-	install -m644 modules/univention/admincli/__init__.py debian/python-univention-directory-manager-cli/usr/lib/python$*/site-packages/univention/admincli/__init__.py
+override_dh_install:
 	dh_install
+	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/python-univention-directory-manager-cli/usr/share/pyshared/univention/admincli/admin.py
 
-	univention-install-config-registry
-	univention-install-config-registry-info
-	univention-install-service-info
-
-binary-arch: build install
-
-binary-indep: build install
-	dh_testdir
-	dh_testroot
-	dh_installdocs
-	dh_installexamples
-	dh_installmenu
-	dh_installcron
-	dh_installman
-	dh_installinfo
-	dh_installchangelogs
-	dh_pycentral
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+%:
+	dh $@

@@ -3,7 +3,7 @@
 # Univention Directory Manager Modules
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,9 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#DEBHELPER#
-
 eval "$(univention-config-registry shell)"
+
+#DEBHELPER#
 
 if [ "$1" = configure -a -z "$2" ]; then
         # only set this for new installations
@@ -43,12 +43,5 @@ if [ "$1" = "configure" ]; then
 	ucr set directory/manager/web/modules/groups/group/caching/uniqueMember/timeout?300
 fi
 
-# correct xfree-policies with the invalid entry "displayposition=1" (Bug #18374)
-# the syntax XDisplayPosition only defines [ "", "left", "right", "above", "below" ]
-if dpkg --compare-versions "$2" lt-nl 6.0.106-1 && [ "$server_role" = 'domaincontroller_master' ]; then
-	univention-directory-manager policies/xfree list --filter displayposition=1 | grep DN: | while read tmp dn; do 
-		univention-directory-manager policies/xfree modify --dn "$dn" --set displayposition=""
-	done
-fi
 
 exit 0

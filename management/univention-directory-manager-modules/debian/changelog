@@ -1,3 +1,15 @@
+univention-directory-manager-modules (7.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22431)
+    * Bump version for UCS 3.0
+    * Replace univention-baseconfig with univention-config-registry
+    * Update copyright to 2011
+    * Update to debhelper 7
+    * Removed admin transition packages
+    * Switch from python2.4 to python2.6
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 May 2011 16:26:41 +0200
+
 univention-directory-manager-modules (6.0.119-1) unstable; urgency=low
 
   * fixed primary group handling of computers/windows during host creation (Bug #21711)

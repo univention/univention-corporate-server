@@ -1,4 +1,4 @@
-# Copyright 2010 Univention GmbH
+# Copyright 2010-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -671,7 +671,7 @@ msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen erforderlich!"
 #: user.py:2363
 #, python-format
 msgid "%s"
-msgstr ""
+msgstr "%s"
 
 #: user.py:2718
 msgid "DN given as share is not valid."

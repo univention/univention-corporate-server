@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  wrapper around univention.uldap that replaces exceptions
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -125,7 +125,7 @@ class position:
 					self.__indomain=1
 					break
 		except ValueError:
-			raise univention.admin.uexceptions.noObject, _("DN not found: %s." % dn)
+			raise univention.admin.uexceptions.noObject, _("DN not found: %s.") % dn
 
 	def getRdn(self):
 		components=explodeDn(self.getDn(),0)

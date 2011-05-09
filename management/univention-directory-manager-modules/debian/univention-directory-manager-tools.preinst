@@ -3,7 +3,7 @@
 # Univention Directory Manager Modules
 #  preinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,15 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/all.sh
 
 #DEBHELPER#
 
 echo "kill all running univention-cli-server"
-pid=`ps xaw | grep univention-cli-server | grep -v grep | awk '{print $1}'`
+stop_udm_cli_server
 
-if [ -n "$pid" ] 
-	then
-	kill $pid
-fi
-	
 exit 0

@@ -3,7 +3,7 @@
 # Univention Directory Manager Modules
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,33 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval `univention-baseconfig shell`
-
-createLogfile () {
-	if [ ! -e $1 ] ; then
-		touch $1
-		chown $2 $1
-		chmod $3 $1
-	fi
-}
-
-# rename baseconfig variables
-function bc_rename() {
-	old=$1
-	new=$2
-	predefined=$3
-	if [ -n "$old" ]; then
-		univention-baseconfig set "${new}?${old}"
-	else
-		univention-baseconfig set "${new}?${predefined}"
-	fi
-}
-
-bc_rename "$admin_cmd_debug_level" "directory/manager/cmd/debug/level" "0"
-bc_rename "$admin_cmd_timeout" "directory/manager/cmd/timeout" "300"
-
-createLogfile /var/log/univention/admin-cmd.log "root:adm" 640
-createLogfile /var/log/univention/directory-manager-cmd.log "root:adm" 640
-createLogfile /var/log/univention/sync-memberuid.log "root:adm" 640
+. /usr/share/univention-lib/all.sh
 
 #DEBHELPER#
+
+univention-config-registry set "directory/manager/cmd/debug/level" "0" \
+					"directory/manager/cmd/timeout" "300"
+
+create_logfile /var/log/univention/admin-cmd.log "root:adm" 640
+create_logfile /var/log/univention/directory-manager-cmd.log "root:adm" 640
+create_logfile /var/log/univention/sync-memberuid.log "root:adm" 640
+
+exit 0
