@@ -2,7 +2,7 @@ Source: univention-python
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, ucslint, python-2.6-dev, python-support
+Build-Depends: debhelper, ucslint, python2.6-dev, python-support
 
 Package: python-univention
 Architecture: all
