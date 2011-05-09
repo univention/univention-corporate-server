@@ -3,7 +3,7 @@
 # Univention Join
 #  helper script: checks the join status of the local system
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -91,7 +91,7 @@ then
 	log_error "Not all install files configured: $MISSING missing"
 fi
 
-echo "Joined successful"
+echo "Joined successfully"
 echo "Joined successfully" >>"$LOG_FILE"
 
 exit 0

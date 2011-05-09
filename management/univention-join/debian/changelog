@@ -1,3 +1,13 @@
+univention-join (4.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22431)
+    * Bump version for UCS 3.0
+    * Replace univention-admin with univention-directory-manager
+    * Update copyright to 2011
+    * Update to debhelper 7
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 May 2011 13:53:45 +0200
+
 univention-join (3.0.4-4) unstable; urgency=low
 
   * Display a warning and error out if univention-run-join-scripts

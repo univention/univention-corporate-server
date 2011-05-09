@@ -3,7 +3,7 @@
 # Univention Join
 #  joins a server to an univention domain
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -163,7 +163,7 @@ do
 	esac
 done
 
-# extend options for univention-admin
+# extend options for univention-directory-manager
 if [ "$BINDACCOUNT" ]; then
     BINDDN=`ldapsearch -x "(&(uid=$BINDACCOUNT)(objectclass=posixAccount))" dn | ldapsearch-wrapper | grep ^dn | sed -e 's|dn: ||'`
     log 0 "found BINDDN: $BINDDN" >>$LOGFILE
@@ -204,7 +204,7 @@ create_entry () {
 # $5 group
 	log 0 "Join $1"
 
-	old_dn=`univention-admin $2 list --filter name=$HOSTNAME  $ADMINOPTIONS | ldapsearch-wrapper | grep "DN: " | sed -e "s|.*DN: ||"`
+	old_dn=`univention-directory-manager $2 list --filter name=$HOSTNAME  $ADMINOPTIONS | ldapsearch-wrapper | grep "DN: " | sed -e "s|.*DN: ||"`
 	if [ $? = 1 ]; then
 		log 1 "E: failed search $1 [$old_dn]"
 		exit 1
@@ -231,7 +231,7 @@ create_entry () {
 			fi
 		fi
 
-		rc=`univention-admin $2 create --position "$3"\
+		rc=`univention-directory-manager $2 create --position "$3"\
 			--set name=$HOSTNAME $ip_cmd \
 			--set domain=$DOMAINNAME \
 			--set password=$computerPassword --set unixhome=/dev/null --set shell=/bin/sh --set primaryGroup="$4" $mac_cmd $ADMINOPTIONS`
@@ -254,7 +254,7 @@ create_entry () {
 		echo "ldap_dn=\"$ldap_dn\""
 
 		if [ -n "$5" ]; then
-			rc=`univention-admin groups/group modify --dn="$5" --append users="$ldap_dn" $ADMINOPTIONS`
+			rc=`univention-directory-manager groups/group modify --dn="$5" --append users="$ldap_dn" $ADMINOPTIONS`
 		fi
 	else
 		log 0 "Modify $1 [$old_dn]"
@@ -265,7 +265,7 @@ create_entry () {
 		if [ -n "$IP" ]; then
 			ip_cmd="--set ip=$IP"
 		fi
-		rc=`univention-admin $2 modify --dn "$old_dn" --set password=$computerPassword --set domain=$DOMAINNAME $mac_cmd $ip_cmd $ADMINOPTIONS`
+		rc=`univention-directory-manager $2 modify --dn "$old_dn" --set password=$computerPassword --set domain=$DOMAINNAME $mac_cmd $ip_cmd $ADMINOPTIONS`
 
 		if [ $? = 1 ]; then
 			log 1 "E: failed to modify $1 $old_dn [$rc]"
@@ -282,9 +282,9 @@ if [ -n "$IP" ]; then
 	subnet=`univention-ipcalc --ip $IP --netmask $interfaces_eth0_netmask --output network --calcdns`
 	log 0 "	Calculated subnet = $subnet"
 
-	forwardZone=`univention-admin dns/forward_zone list --filter zone=$DOMAINNAME  $ADMINOPTIONS | ldapsearch-wrapper | grep DN | sed -e 's/DN: //g'`
-	reverseZone=`univention-admin dns/reverse_zone list --filter subnet=$subnet  $ADMINOPTIONS | ldapsearch-wrapper | grep DN | sed -e 's/DN: //g'`
-	dhcpEntry=`univention-admin dhcp/service list --filter name=$DOMAINNAME  $ADMINOPTIONS | ldapsearch-wrapper | grep DN | sed -e 's/DN: //g'`
+	forwardZone=`univention-directory-manager dns/forward_zone list --filter zone=$DOMAINNAME  $ADMINOPTIONS | ldapsearch-wrapper | grep DN | sed -e 's/DN: //g'`
+	reverseZone=`univention-directory-manager dns/reverse_zone list --filter subnet=$subnet  $ADMINOPTIONS | ldapsearch-wrapper | grep DN | sed -e 's/DN: //g'`
+	dhcpEntry=`univention-directory-manager dhcp/service list --filter name=$DOMAINNAME  $ADMINOPTIONS | ldapsearch-wrapper | grep DN | sed -e 's/DN: //g'`
 
 	log 0 "	forwardZone $forwardZone "
 	log 0 "	reverseZone $reverseZone "
