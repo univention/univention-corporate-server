@@ -3,7 +3,7 @@
 # Univention Directory Logger
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -60,7 +60,7 @@ if [ "$1" = "configure" ]; then
 	/etc/init.d/slapd restart
 
 	# exclude temporary objects by default
-	eval `univention-config-registry shell ldap/base`
+	eval "$(univention-config-registry shell ldap/base)"
 	univention-config-registry set "${registrySection}/exclude1"?"cn=temporary,cn=univention,$ldap_base"
 
 	## load the listener module
@@ -68,3 +68,4 @@ if [ "$1" = "configure" ]; then
 
 fi
 
+exit 0

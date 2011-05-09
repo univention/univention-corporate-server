@@ -1,3 +1,13 @@
+univention-directory-logger (4.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22431)
+    * Bump version for UCS 3.0
+    * Replace univention-baseconfig with univention-config-registry
+    * Update copyright to 2011
+    * Update to debhelper 7
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 May 2011 08:56:51 +0200
+
 univention-directory-logger (3.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
