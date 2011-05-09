@@ -1,3 +1,9 @@
+univention-package-template-python (1.0.1-1) unstable; urgency=low
+
+  * Install python files into pyshared/univention/mymodule (Bug #21476)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 May 2011 16:46:41 +0200
+
 univention-package-template-python (1.0.0-0) unstable; urgency=low
 
   * initial framework
