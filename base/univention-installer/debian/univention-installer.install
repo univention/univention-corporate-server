@@ -1,0 +1,14 @@
+scripts/*.sh lib/univention-installer-scripts.d/
+startup-scripts/S* lib/univention-installer-startup.d/
+etc/inittab etc/
+etc/passwd  etc/
+etc/apt/sources.list etc/apt/
+sbin/univention-installer sbin/
+sbin/univention-installer-startup sbin/
+parted/PartedCreate sbin/
+profiles/[a-zA-Z]* profiles/
+boot/grub/menu* boot/grub/
+boot/grub/uniboot.xpm.gz boot/grub/
+
+
+

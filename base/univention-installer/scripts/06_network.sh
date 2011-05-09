@@ -57,7 +57,7 @@ for ifaceregex in "^eth[0-9]+_" "^eth[0-9]+_[0-9]+_" ; do
     	fi
     	dynamic=`echo $line | sed -e 's|.*=||' -e 's|"||g' -e "s|'||g"`
     	if [ -n "$dynamic" ] && [ "$dynamic" = "dynamic" -o "$dynamic" = "dhcp" ]; then
-    		python2.4 /sbin/univention-config-registry set interfaces/$ucr_network_device/type=dhcp
+    		python2.6 /sbin/univention-config-registry set interfaces/$ucr_network_device/type=dhcp
 
 			address=`set | egrep "^${ucr_network_device}_ip=" | sed -e 's|.*=||' -e 's|"||g' -e "s|'||g"`
 			if [ -n "$address" ]; then
@@ -68,7 +68,7 @@ for ifaceregex in "^eth[0-9]+_" "^eth[0-9]+_[0-9]+_" ; do
 					# for serverroles with ${ucr_network_device}_type='dynamic' or 'dhcp' the installer module 20_net also outputs
 					# the data that was determined by dhclient at configuration time,
 					# these values are recorded here to reflect the status that is written in the directory
-					python2.4 /sbin/univention-config-registry set \
+					python2.6 /sbin/univention-config-registry set \
 						interfaces/$ucr_network_device/fallback/address=$address \
 						interfaces/$ucr_network_device/fallback/netmask=$netmask \
 						interfaces/$ucr_network_device/fallback/broadcast=$broadcast \
@@ -102,10 +102,10 @@ for ifaceregex in "^eth[0-9]+_" "^eth[0-9]+_[0-9]+_" ; do
     	fi
 
 		# Note: if installer saved an address then configure the device now with that address, even if type=dynamic
-		python2.4 /sbin/univention-config-registry set interfaces/$network_device/address=$address
-		python2.4 /sbin/univention-config-registry set interfaces/$network_device/netmask=$netmask
-		python2.4 /sbin/univention-config-registry set interfaces/$network_device/broadcast=$broadcast
-		python2.4 /sbin/univention-config-registry set interfaces/$network_device/network=$network
+		python2.6 /sbin/univention-config-registry set interfaces/$network_device/address=$address
+		python2.6 /sbin/univention-config-registry set interfaces/$network_device/netmask=$netmask
+		python2.6 /sbin/univention-config-registry set interfaces/$network_device/broadcast=$broadcast
+		python2.6 /sbin/univention-config-registry set interfaces/$network_device/network=$network
 
 		network_device=`echo $network_device | sed -e 's|_|:|g'`
 
@@ -114,9 +114,9 @@ for ifaceregex in "^eth[0-9]+_" "^eth[0-9]+_[0-9]+_" ; do
 done
 
 if [ -n "$gateway" ]; then
-	python2.4 /sbin/univention-config-registry set gateway=$gateway
+	python2.6 /sbin/univention-config-registry set gateway=$gateway
 
-	nm=$(python2.4 /sbin/univention-config-registry get interfaces/eth0/netmask)
+	nm=$(python2.6 /sbin/univention-config-registry get interfaces/eth0/netmask)
 	if [ -n "$nm" ]; then
 		if [ "$nm" = "255.255.255.255" ]; then
 			ip route add $gateway/32 dev eth0
@@ -128,20 +128,20 @@ fi
 
 if [ -n "$nameserver_1" ]; then
 	echo "nameserver $nameserver_1" >>/etc/resolv.conf
-	python2.4 /sbin/univention-config-registry set nameserver1=$nameserver_1
+	python2.6 /sbin/univention-config-registry set nameserver1=$nameserver_1
 fi
 
 if [ -n "$nameserver_2" ]; then
 	echo "nameserver $nameserver_2" >>/etc/resolv.conf
-	python2.4 /sbin/univention-config-registry set nameserver2=$nameserver_2
+	python2.6 /sbin/univention-config-registry set nameserver2=$nameserver_2
 fi
 
 if [ -n "$nameserver_3" ]; then
 	echo "nameserver $nameserver_3" >>/etc/resolv.conf
-	python2.4 /sbin/univention-config-registry set nameserver3=$nameserver_3
+	python2.6 /sbin/univention-config-registry set nameserver3=$nameserver_3
 fi
 
 if [ -n "$proxy_http" ]; then
-	python2.4 /sbin/univention-config-registry set proxy/http=$proxy_http
-	python2.4 /sbin/univention-config-registry set proxy/ftp=$proxy_http
+	python2.6 /sbin/univention-config-registry set proxy/http=$proxy_http
+	python2.6 /sbin/univention-config-registry set proxy/ftp=$proxy_http
 fi

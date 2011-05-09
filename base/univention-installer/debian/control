@@ -2,14 +2,14 @@ Source: univention-installer
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Standards-Version: 3.5.2
-Build-Depends: debhelper, libparted1.8-dev, gettext
+Standards-Version: 3.8.2
+Build-Depends: debhelper, libparted1.8-dev, gettext, ucslint
 
 Package: univention-installer
 Architecture: any
-Depends: univention-installer-modules, python2.4
+Depends: univention-installer-modules, python2.6
 Conflicts: univention-server-master, univention-server-backup, univention-server-slave, univention-server-member
-Description: univention installer envoirnment
+Description: univention installer environment
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing

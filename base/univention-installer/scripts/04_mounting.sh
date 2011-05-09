@@ -35,7 +35,7 @@
 echo -n "Mounting Partitions: " >>/instmnt/.log
 echo -n "Mounting Partitions: "
 
-ucr="python2.4 /sbin/univention-config-registry"
+ucr="python2.6 /sbin/univention-config-registry"
 tmp="/tmp/installer.partitions.tmp"
 
 $ucr search --brief installer > $tmp

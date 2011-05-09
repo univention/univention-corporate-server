@@ -180,21 +180,21 @@ set | egrep "^dev_" | while read line; do
 	echo "device_mp=$device_mp"
 
 	if [ "$device_mp" = '/' ]; then
-		python2.4 /sbin/univention-config-registry set installer/device/0/name?$device_num
-		python2.4 /sbin/univention-config-registry set installer/device/0/fs?$device_fs
-		python2.4 /sbin/univention-config-registry set installer/device/0/mp?$device_mp
+		python2.6 /sbin/univention-config-registry set installer/device/0/name?$device_num
+		python2.6 /sbin/univention-config-registry set installer/device/0/fs?$device_fs
+		python2.6 /sbin/univention-config-registry set installer/device/0/mp?$device_mp
 	else
-		python2.4 /sbin/univention-config-registry set installer/device/$count/name?$device_num
-		python2.4 /sbin/univention-config-registry set installer/device/$count/fs?$device_fs
-		python2.4 /sbin/univention-config-registry set installer/device/$count/mp?$device_mp
+		python2.6 /sbin/univention-config-registry set installer/device/$count/name?$device_num
+		python2.6 /sbin/univention-config-registry set installer/device/$count/fs?$device_fs
+		python2.6 /sbin/univention-config-registry set installer/device/$count/mp?$device_mp
 		count=$((count+1))
 	fi
 done
 echo "Done"
 
 # mount root filesystem
-fs=$(python2.4 /sbin/univention-config-registry get installer/device/0/fs)
-dev=$(python2.4 /sbin/univention-config-registry get installer/device/0/name)
+fs=$(python2.6 /sbin/univention-config-registry get installer/device/0/fs)
+dev=$(python2.6 /sbin/univention-config-registry get installer/device/0/name)
 msg=$(/bin/mount -t $fs $dev /instmnt $LOG 2<&1)
 
 # error message if root could not be mounted
@@ -206,9 +206,9 @@ fi
 touch /instmnt/.log
 
 if [ -n "$bootloader_record" ]; then
-	python2.4 /sbin/univention-config-registry set grub/boot?$bootloader_record
+	python2.6 /sbin/univention-config-registry set grub/boot?$bootloader_record
 elif [ -n "$bootloader_device" ]; then
-	python2.4 /sbin/univention-config-registry set grub/boot?$bootloader_device
+	python2.6 /sbin/univention-config-registry set grub/boot?$bootloader_device
 else
-	python2.4 /sbin/univention-config-registry set grub/boot?$grub_boot_fallback
+	python2.6 /sbin/univention-config-registry set grub/boot?$grub_boot_fallback
 fi
