@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debootstrap, debhelper
+Build-Depends: debootstrap, debhelper, ucslint
 
 Package: univention-debootstrap
 Architecture: all

@@ -1,3 +1,13 @@
+univention-debootstrap (4.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22431)
+    * Bump version for UCS 3.0
+    * Update copyright to 2011
+    * Update to debhelper 7
+    * Update debootstrap file to squeeze
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 May 2011 09:28:38 +0200
+
 univention-debootstrap (3.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
