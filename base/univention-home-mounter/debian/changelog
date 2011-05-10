@@ -1,3 +1,9 @@
+univention-home-mounter (3.0.1-1) unstable; urgency=low
+
+  * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Mar 2011 17:53:41 +0100
+
 univention-home-mounter (3.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)
