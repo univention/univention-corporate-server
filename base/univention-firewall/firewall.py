@@ -1,10 +1,10 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention Firewall
 #  firewall script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -40,7 +40,7 @@ baseConfig.load()
 def open_iptables_script (file):
 	fh = open(file, 'w')
 	fh.write('#!/bin/sh\n\n')
-	fh.write('#\n# Written by univention-baseconfig at '+time.strftime('%H:%M   %d %b %Y')+' \n#\n\n')
+	fh.write('#\n# Written by univention-config-registry at '+time.strftime('%H:%M   %d %b %Y')+' \n#\n\n')
 	fh.write('iptables=/sbin/iptables\n\n')
 	return fh
 
