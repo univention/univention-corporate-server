@@ -1,3 +1,13 @@
+univention-directory-manager-module-example (3.0.1-1) unstable; urgency=low
+
+  * debian/rules: Fix ucslint invocation (Bug #22431)
+  * debian/control: Fix dependency on debhelper and python-all.
+  * debian/control: all-all-Package-dependencies should use source:Version.
+  * debian/control: all-Package needs no python-dev.
+  * debian/source/format: Switch to 3.0 (native)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 10 May 2011 16:06:02 +0200
+
 univention-directory-manager-module-example (3.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #22431)

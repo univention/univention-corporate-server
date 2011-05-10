@@ -41,7 +41,6 @@ D  := debian/${PACKAGE_NAME}
 	msgfmt --check -o $@ $<
 
 override_dh_auto_build: $(MO_FILES)
-	ucslint
 	dh_auto_build
 
 override_dh_auto_install:
@@ -65,6 +64,8 @@ override_dh_auto_install:
 		install -m 644 "$$i" "$$o";\
 	done
 
+override_dh_auto_test:
+	ucslint
+
 %:
 	dh $@
-

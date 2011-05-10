@@ -2,11 +2,10 @@ Source: univention-directory-manager-module-example
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper,
+Build-Depends: debhelper (>= 7.0.50~),
  univention-config-dev,
  ucslint,
- python2.6,
- python2.6-dev,
+ python-all,
  python-support
 Standards-Version: 3.7.2
 
@@ -15,7 +14,7 @@ Architecture: all
 Depends: univention-config-registry,
  univention-directory-manager-tools,
  shell-univention-lib (>> 1.0.1-1),
- univention-directory-manager-module-example-schema (= ${binary:Version}),
+ univention-directory-manager-module-example-schema (= ${source:Version}),
  ${misc:Depends},
  ${python:Depends}
 Recommends: univention-directory-manager-module-example-schema
