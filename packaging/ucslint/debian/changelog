@@ -1,3 +1,9 @@
+ucslint (2.0.4-4) unstable; urgency=low
+
+  * removed superfluous dependency (Bug #22092)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 10 May 2011 09:45:27 +0200
+
 ucslint (2.0.4-3) unstable; urgency=low
 
   * fixed dependencies (Bug #22092)
