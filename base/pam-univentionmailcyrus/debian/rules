@@ -3,7 +3,7 @@
 # PAM Univention Mail Cyrus
 #  rules file for the pam-univentionmailcyrus debian package
 #
-# Copyright 2005-2010 Univention GmbH
+# Copyright 2005-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,41 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-build: build-stamp
-build-stamp:
-	dh_testdir
-	$(MAKE)
-	touch build-stamp
+override_dh_auto_test:
+	ucslint
+	dh_auto_test
 
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp
-	-$(MAKE) clean
-	dh_clean
+%:
+	dh $@
 
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-	$(MAKE) install DESTDIR=$(CURDIR)/debian/libpam-univentionmailcyrus
-
-binary-indep: build install
-binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_installdocs
-	dh_installchangelogs
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install
