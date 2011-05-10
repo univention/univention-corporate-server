@@ -3,7 +3,7 @@
 # Univention Home Mounter
 #  mount the homedir
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -105,7 +105,7 @@ fi
 # though.
 homeattr=`ldapsearch -x -z 1 "(&(objectClass=posixAccount)(objectClass=automount)(uid=$USER))" automountInformation -LLL | /usr/bin/ldapsearch-wrapper | sed -n 's/automountInformation: \(.*\)/\1/p'`
 if [ -z "$homeattr" ]; then
-	eval `univention-baseconfig shell server/role`
+	eval "$(univention-config-registry shell server/role)"
 
 	if [ -z "$server_role" ]; then
 		# Thin Client
@@ -116,7 +116,7 @@ if [ -z "$homeattr" ]; then
 			exit 0
 		fi
 		# Otherwise look for servers
-		eval `univention-baseconfig shell ldap/mydn`
+		eval "$(univention-config-registry shell ldap/mydn)"
 		for server in `univention_policy_result -s "$ldap_mydn" | grep "univentionFileServer" | sed -e 's|.*univentionFileServer=||' | sed -e 's|"||g'`; do
 			if [ -n "$server" ]; then
 				# mount in heartbeat-situations needs to be done from /ha/home, but normally /home fits
