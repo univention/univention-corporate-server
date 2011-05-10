@@ -3,7 +3,7 @@
 # Univention initrd
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,8 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-univention-baseconfig set	initramfs/modules?most \
-							initramfs/busybox?yes
+univention-config-registry set	initramfs/modules?most \
+								initramfs/busybox?yes
 
 #DEBHELPER#
 
