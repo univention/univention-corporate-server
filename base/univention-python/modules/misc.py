@@ -1,4 +1,3 @@
-#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention Python
@@ -31,22 +30,75 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import platform
 import os
+import resource
+
+def filemax_global():
+	"""
+	Get maximum number of files the kernel can open.
+
+	>>> filemax_global() #doctest: +ELLIPSIS
+	...
+	"""
+	f = open('/proc/sys/fs/file-max', 'r')
+	try:
+		s = f.read()
+		return int(s[:-1])
+	finally:
+		f.close()
 
 def filemax():
-	return int(open('/proc/sys/fs/file-max').read()[0:-1])
+	"""
+	Get maximum number of files a process can open.
+	
+	>>> filemax() #doctest: +ELLIPSIS
+	...
+	"""
+	return resource.getrlimit(resource.RLIMIT_NOFILE)[1]
+
+def close_fds():
+	"""
+	Close all open file descriptors and open /dev/null as stdin, stdout, and stderr.
+	
+	>>> close_fds()
+	"""
+	if platform.system() == 'Linux':
+		fds = map(int, os.listdir('/proc/%d/fd' % os.getpid()))
+	else:
+		fds = xrange(0, filemax())
+	for i in fds:
+		try:
+			os.close(i)
+		except OSError:
+			pass
+	assert 0 == os.open(os.path.devnull, os.O_RDONLY)
+	assert 1 == os.open(os.path.devnull, os.O_WRONLY)
+	assert 2 == os.open(os.path.devnull, os.O_WRONLY)
 
 def close_fd_spawn(file, args):
+	"""
+	Close all open file descriptors before doing execv().
+	
+	>>> close_fd_spawn("/bin/bash", ["bash", "-c", "exit `find /proc/$$/fd -mindepth 1 -lname /dev/null | wc -l`"])
+	3
+	"""
 	pid = os.fork()
-	if pid == 0:
-		for i in range(0, filemax()):
-			try:
-				os.close(i)
-			except OSError:
-				pass
-		os.open('/dev/null', os.O_RDONLY)
-		os.open('/dev/null', os.O_WRONLY)
-		os.open('/dev/null', os.O_WRONLY)
+	if pid == 0: # child
+		close_fds()
 		os.execv(file, args)
-	elif pid > 0:
-		os.waitpid(pid, 0)
+		os._exit(127)
+	elif pid > 0: # parent
+		pid, status = os.waitpid(pid, 0)
+		if os.WIFEXITED(status):
+			return os.WEXITSTATUS(status)
+		elif os.WIFSIGNALED(status):
+			return -os.WTERMSIG(status)
+		else:
+			raise OSError('Child %d terminated by unknown cause: %04x' % (pid, status))
+	else:
+		raise OSError('Faild to fork child process.')
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()

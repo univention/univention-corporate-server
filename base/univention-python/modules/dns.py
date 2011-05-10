@@ -1,4 +1,3 @@
-#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention Python
@@ -36,10 +35,23 @@ import DNS
 DNS.DiscoverNameServers()
 
 def lookup(query, type='a'):
-	result=map(lambda(x): x['data'], DNS.DnsRequest(query, qtype=type).req().answers)
+	"""
+	Lookup DNS entries of specified type.
+
+	>>> lookup('localhost')
+	['127.0.0.1']
+	"""
+	rr = DNS.DnsRequest(query, qtype=type).req().answers
+	result = map(lambda x: x['data'], rr)
 	return result
 
 def splitDotted(ip):
+	"""
+	Split IPv4 address from dotted quad string.
+
+	>>> splitDotted('1.2.3.4')
+	[1, 2, 3, 4]
+	"""
 	quad = [0, 0, 0, 0]
 
 	i = 0
@@ -51,28 +63,44 @@ def splitDotted(ip):
 	return quad
 
 def joinDotted(ip):
+	"""
+	Convert IPv4 address to dotted quad string.
+
+	>>> joinDotted([1, 2, 3, 4])
+	'1.2.3.4'
+	"""
 	return '%d.%d.%d.%d' % (ip[0], ip[1], ip[2], ip[3])
 
 def networkNumber(dottedIp, dottedNetmask):
+	"""
+	Calculate network number from dotted quad IPv4 address string and network mask.
+
+	>>> networkNumber('1.2.3.4', '255.255.254.0')
+	'1.2.2.0'
+	"""
 	ip = splitDotted(dottedIp)
 	netmask = splitDotted(dottedNetmask)
-	network = [0,0,0,0]
 
-	for i in range(0,4):
-		network[i] = ip[i] & netmask[i]
+	network = map(lambda (i, n): i & n, zip(ip, netmask))
 
 	return joinDotted(network)
 
 def broadcastNumber(dottedNetwork, dottedNetmask):
+	"""
+	Calculate broadcast address from dotted quad IPv4 address string and network mask.
+
+	>>> broadcastNumber('1.2.2.0', '255.255.254.0')
+	'1.2.3.255'
+	>>> broadcastNumber('1.2.3.4', '255.255.254.0')
+	'1.2.3.255'
+	"""
 	network = splitDotted(dottedNetwork)
 	netmask = splitDotted(dottedNetmask)
-	broadcast = [0,0,0,0]
 
-	for i in range(0,4):
-		broadcast[i] = (network[i] ^ 255) ^ netmask[i]
+	broadcast = map(lambda (n, m): n | (255 ^ m), zip(network, netmask))
 
 	return joinDotted(broadcast)
 
 if __name__ == '__main__':
-	print networkNumber('192.168.0.1', '255.255.255.0')
-	print broadcastNumber('192.168.0.0', '255.255.255.0')
+	import doctest
+	doctest.testmod()

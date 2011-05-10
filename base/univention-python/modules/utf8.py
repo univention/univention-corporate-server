@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Python
 #  UTF-8 helper functions
@@ -30,54 +31,85 @@
 # <http://www.gnu.org/licenses/>.
 
 import codecs
-import types
-import sys
 
-(utf8_encode,utf8_decode,utf8_reader,utf8_writer)=codecs.lookup('utf-8')
-(iso_encode,iso_decode,isoblar,isoblaw)=codecs.lookup('iso-8859-1')
+(utf8_encode, utf8_decode, utf8_reader, utf8_writer) = codecs.lookup('utf-8')
+(iso_encode,  iso_decode,  iso_reader,  iso_writer)  = codecs.lookup('iso-8859-1')
 
 def decode(ob, ignore=[]):
+	u"""
+	Decode object from UTF-8.
+
+	>>> decode(None)
+	>>> decode(chr(0xc3) + chr(0xa4)) == u'ä'
+	True
+	>>> decode([chr(0xc3) + chr(0xa4)]) == [u'ä']
+	True
+	>>> decode((chr(0xc3) + chr(0xa4),)) == (u'ä',)
+	True
+	>>> decode({42: chr(0xc3) + chr(0xa4)}) == {42: u'ä'}
+	True
+	>>> decode(set((chr(0xc3) + chr(0xa4),))) == set([u'ä'])
+	True
+	"""
 	if ob == None:
 		return ob
-	if isinstance(ob,types.StringType) or isinstance(ob,types.UnicodeType):
+	elif isinstance(ob, basestring):
 		return utf8_decode(ob)[0]
-	if isinstance(ob,types.ListType):
-		ls=[]
-		for i in ob:
-			ls.append(decode(i, ignore))
-		return ls
-	if isinstance(ob,types.TupleType):
-		return tuple(decode(list(ob), ignore))
-	if isinstance(ob,types.DictType):
-		dict={}
-		for k in ob.keys():
+	elif isinstance(ob, list):
+		return map(decode, ob)
+	elif isinstance(ob, tuple):
+		return tuple(map(decode, ob))
+	elif isinstance(ob, set):
+		return set(map(decode, ob))
+	elif isinstance(ob, dict):
+		d = {}
+		for k, v in ob.items():
 			if k in ignore:
-				dict[k]=ob[k]
+				d[k] = v
 			else:
-				dict[k]=decode(ob[k], ignore)
-		return dict
-
-def encode(ob):
-	if ob == None:
-		return ob
-	if isinstance(ob,types.StringType) or isinstance(ob,types.UnicodeType):
-		try:
-			return utf8_encode(ob)[0]
-		except Exception,ex:
-			if isinstance(ob,types.StringType):
-				return utf8_encode(ob)[0]
-
-	if isinstance(ob,types.ListType):
-		ls=[]
-		for i in ob:
-			ls.append(encode(i))
-		return ls
-	if isinstance(ob,types.TupleType):
-		return tuple(encode(list(ob)))
-	if isinstance(ob,types.DictType):
-		dict={}
-		for k in ob.keys():
-			dict[k]=encode(ob[k])
-		return dict
+				d[k] = decode(v, ignore)
+		return d
 	else:
 		return ob
+
+def encode(ob):
+	u"""
+	Encode object to UTF-8.
+
+	>>> encode(None)
+	>>> encode(u'ä')
+	'\\xc3\\xa4'
+	>>> encode([u'ä'])
+	['\\xc3\\xa4']
+	>>> encode((u'ä',))
+	('\\xc3\\xa4',)
+	>>> encode({42: u'ä'})
+	{42: '\\xc3\\xa4'}
+	>>> encode(set((u'ä',)))
+	set(['\\xc3\\xa4'])
+	"""
+	if ob == None:
+		return ob
+	elif isinstance(ob, basestring):
+		try:
+			return utf8_encode(ob)[0]
+		except Exception, ex:
+			return ob
+	elif isinstance(ob, list):
+		return map(encode, ob)
+	elif isinstance(ob, tuple):
+		return tuple(map(encode, ob))
+	elif isinstance(ob, set):
+		return set(map(encode, ob))
+	elif isinstance(ob, dict):
+		return dict(map(lambda (k, v): (k, encode(v)), ob.items()))
+	else:
+		return ob
+
+if __name__ == '__main__':
+	# http://stackoverflow.com/questions/1733414/how-do-i-include-unicode-strings-in-python-doctests
+	import sys
+	reload(sys)
+	sys.setdefaultencoding("UTF-8")
+	import doctest
+	doctest.testmod()

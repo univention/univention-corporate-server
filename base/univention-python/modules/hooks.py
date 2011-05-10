@@ -29,7 +29,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, imp
+import os
+import imp
 
 class HookManager:
 	"""

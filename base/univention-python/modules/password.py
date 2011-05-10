@@ -1,5 +1,5 @@
-#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
+#
 # Copyright 2010-2011 Univention GmbH
 # 
 # http://www.univention.de/
@@ -28,8 +28,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import cracklib
-import sys, os
-import subprocess
+import os
 import univention.uldap
 import univention.config_registry as ucr
 
