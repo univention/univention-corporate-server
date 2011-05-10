@@ -64,8 +64,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 		for fn in py_files:
 			try:
-				with open(fn, 'r') as f:
+				f = open(fn, 'r')
+				try:
 					content = f.read()
+				finally:
+					f.close()
 			except IOError:
 				self.addmsg( '0008-2', 'failed to open and read file', fn )
 				continue

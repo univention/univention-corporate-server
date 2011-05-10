@@ -1,3 +1,9 @@
+ucslint (2.0.6-2) unstable; urgency=low
+
+  * Fix python2.5 not handling with...as... (Bug #22092)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 10 May 2011 20:27:35 +0200
+
 ucslint (2.0.6-1) unstable; urgency=low
 
   * debian/control: Fix dependency on debhelper and python-all (Bug #22092)
