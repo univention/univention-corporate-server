@@ -13,7 +13,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 	def getMsgIds(self):
 		return { '0007-1': [ uub.RESULT_WARN, 'failed to open file' ],
-				 '0007-2': [ uub.RESULT_ERROR, 'changelog does not contain ticket number or bug number' ],
+				 '0007-2': [ uub.RESULT_WARN, 'changelog does not contain ticket number or bug number' ],
 				 }
 
 	def postinit(self, path):
