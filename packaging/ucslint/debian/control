@@ -2,12 +2,12 @@ Source: ucslint
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7), python-support, python2.6 | python2.4
+Build-Depends: debhelper (>> 7), python-support, python2.6
 Standards-Version: 3.6.1
 
 Package: ucslint
 Architecture: all
-Depends: python (>=2.4)
+Depends: python2.6, ${python:Depends}, ${misc:Depends}
 Conflicts: ucs-tools (<< 1.2.5)
 Description: ucslint - Univention packaging check tool
  This package contains the Univention tool ucslint that
