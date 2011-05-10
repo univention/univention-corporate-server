@@ -34,8 +34,9 @@ TEMPLATE_FILES=$(shell find templates -name '*.tex' -o -name '*.csv' | sed 's/^t
 
 PO_FILES := $(shell find modules -name '*.po')
 MO_FILES := $(PO_FILES:%.po=%.mo)
+
 %.mo:	%.po
-	msgfmt -o $@ $<
+	msgfmt --check -o $@ $<
 
 override_dh_auto_build: $(MO_FILES)
 	# ucslint
