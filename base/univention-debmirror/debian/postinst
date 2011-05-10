@@ -3,7 +3,7 @@
 # Univention Debmirror
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,13 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/all.sh
+
+eval "$(univention-config-registry shell)"
+
 #DEBHELPER#
 
-eval $(univention-config-registry shell hostname domainname server/role repository/online/server)
 
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	/usr/lib/univention-install/77univention-debmirror.inst || true
-fi
+call_joinscript 77univention-debmirror.inst
 
 # on installation, definitely set local repository
 if [ "$1" = configure -a -z "$2" ]; then
@@ -68,3 +69,5 @@ fi
 
 a2ensite univention-repository
 /etc/init.d/apache2 reload || true
+
+exit 0

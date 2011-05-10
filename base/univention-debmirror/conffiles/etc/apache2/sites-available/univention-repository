@@ -1,4 +1,4 @@
-@%@BCWARNING=#@%@
+@%@UCRWARNING=#@%@
 
 alias /univention-repository @%@repository/mirror/basepath@%@/mirror
 

@@ -3,7 +3,7 @@
 # Univention Debmirror
 #  join script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -41,10 +41,10 @@ touch /usr/lib/univention-install/.index.txt
 
 test -n "`grep "univention-debmirror v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-eval $(univention-config-registry shell hostname domainname local/repository server/role ldap/hostdn ldap/base)
+eval "$(univention-config-registry shell hostname domainname local/repository server/role ldap/hostdn ldap/base)"
 
-univention-directory-manager container/cn create --ignore_exists $@ --position cn=univention,$ldap_base --set name=services
-univention-directory-manager settings/service create $@ --ignore_exists --position cn=services,cn=univention,$ldap_base --set name=Repository-Server
+univention-directory-manager container/cn create --ignore_exists "$@" --position cn=univention,$ldap_base --set name=services
+univention-directory-manager settings/service create "$@" --ignore_exists --position cn=services,cn=univention,$ldap_base --set name=Repository-Server
 
 if [ -n "$local_repository" ] && [ "$local_repository" = "true" -o "$local_repository" = "True" -o "$local_repository" = "yes" ]; then
 	# there is already another repository server
@@ -52,10 +52,10 @@ if [ -n "$local_repository" ] && [ "$local_repository" = "true" -o "$local_repos
 		univention-config-registry set repository/mirror/server=univention-repository.$domainname
 	else
 		univention-config-registry set repository/mirror/server=apt.univention.de
-		/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --ignore-exists --stoptls $domainname add cname univention-repository $hostname
+		/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists --stoptls $domainname add cname univention-repository $hostname
 	fi
 
-	univention-directory-manager computers/$server_role modify $@ --dn $ldap_hostdn --append service="Repository-Server"
+	univention-directory-manager computers/$server_role modify "$@" --dn $ldap_hostdn --append service="Repository-Server"
 fi
 
 test -n "`grep "univention-debmirror v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-debmirror v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
