@@ -1,3 +1,11 @@
+univention-package-template (1.0.2-1) unstable; urgency=low
+
+  * debian/rules: Fix ucslint invocation (Bug #21476)
+  * debian/control: Add misc:Depends.
+  * debian/source/format: Switch to 3.0 (native)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 10 May 2011 15:56:43 +0200
+
 univention-package-template (1.0.1-1) unstable; urgency=low
 
   * Added an example to overwrite file permissions (Bug #21476)
@@ -9,4 +17,3 @@ univention-package-template (1.0.0-1) unstable; urgency=low
   * Initial Release (Bug #21476)
 
  -- Stefan Gohmann <gohmann@univention.de>  Sat, 05 Feb 2011 09:39:45 +0100
-
