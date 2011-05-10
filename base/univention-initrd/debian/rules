@@ -35,9 +35,9 @@ override_dh_auto_install:
 	dh_auto_install 
 
 override_dh_auto_test:
-	dh_auto_test
 	# https://forge.univention.org/bugzilla/show_bug.cgi?id=22475
 	# ucslint
+	dh_auto_test
 
 %:
 	dh $@
