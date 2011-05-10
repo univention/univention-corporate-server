@@ -135,3 +135,15 @@ Description[de]=Falls auf no oder false gesetzt, wird auf DC Slaves das Update R
 Description[en]=If no or false the Update Referral to the DC Master on DC Slaves will not be activated
 Type=str
 Categories=service-ldap
+
+[ldap/acl/read/anonymous]
+Description[de]=Falls auf yes oder true gesetzt, wird anonyme Suche im Verzeichnisdienst auf alle Objekte erlaubt, für die keine spezifischeren ACLs greifen
+Description[en]=If set to yes or true anonymous search in the directory is allowed on objects not matching more specific ACLs
+Type=str
+Categories=service-ldap
+
+[ldap/acl/read/ips]
+Description[de]=IP Adressen, von denen aus anonyme LDAP-Suche erlaubt ist
+Description[en]=IP addresses for which anonymous directory search is allowed
+Type=str
+Categories=service-ldap
