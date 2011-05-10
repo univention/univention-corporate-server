@@ -1,0 +1,14 @@
+modules/univention/admin/*.py usr/share/pyshared/univention/admin/
+modules/univention/admin/handlers/*.py usr/share/pyshared/univention/admin/handlers/
+modules/univention/admin/handlers/dhcp/*.py usr/share/pyshared/univention/admin/handlers/dhcp/
+modules/univention/admin/handlers/mail/*.py usr/share/pyshared/univention/admin/handlers/mail/
+modules/univention/admin/handlers/nagios/*.py usr/share/pyshared/univention/admin/handlers/nagios/
+modules/univention/admin/handlers/container/*.py usr/share/pyshared/univention/admin/handlers/container/
+modules/univention/admin/handlers/policies/*.py usr/share/pyshared/univention/admin/handlers/policies/
+modules/univention/admin/handlers/shares/*.py usr/share/pyshared/univention/admin/handlers/shares/
+modules/univention/admin/handlers/users/*.py usr/share/pyshared/univention/admin/handlers/users/
+modules/univention/admin/handlers/groups/*.py usr/share/pyshared/univention/admin/handlers/groups/
+modules/univention/admin/handlers/dns/*.py usr/share/pyshared/univention/admin/handlers/dns/
+modules/univention/admin/handlers/networks/*.py usr/share/pyshared/univention/admin/handlers/networks/
+modules/univention/admin/handlers/settings/*.py usr/share/pyshared/univention/admin/handlers/settings/
+modules/univention/admin/handlers/computers/*.py usr/share/pyshared/univention/admin/handlers/computers/

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.1-1) unstable; urgency=low
+
+  * Added missing install files (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 May 2011 06:37:14 +0200
+
 univention-directory-manager-modules (7.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #22431)
