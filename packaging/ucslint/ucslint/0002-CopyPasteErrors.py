@@ -44,8 +44,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		# scan directory recursively
 		for dir in [ 'conffiles' ]:
 			for dirpath, dirnames, filenames in os.walk( os.path.join(path, dir) ):
-				if '/.svn/' in dirpath or dirpath.endswith('/.svn'):   # ignore svn files
-					continue
+				try: dirnames.remove('.svn') # prune svn directory
+				except ValueError: pass
 				for fn in filenames:
 					files.append( os.path.join( dirpath, fn ) )
 

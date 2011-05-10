@@ -1,3 +1,0 @@
-E:0009-2: testframework/0009-2-3-4/src/irgendwas.py does not specify python version in hashbang
-E:0009-3: testframework/0009-2-3-4/src/nur25.py specifies wrong python version in hashbang
-W:0009-4: testframework/0009-2-3-4/src/mitWhitespace.py contains whitespace after python command

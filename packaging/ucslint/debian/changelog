@@ -1,3 +1,14 @@
+ucslint (2.0.6-1) unstable; urgency=low
+
+  * debian/control: Fix dependency on debhelper and python-all (Bug #22092)
+  * debian/source/format: Switch to 3.0 (native)
+  * Add encoding line for python files.
+  * Fix pruning of .svn directory.
+  * 0008: Fix regexp for finding substitutions before translation.
+  * base: Add line number to filename output.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 10 May 2011 20:13:42 +0200
+
 ucslint (2.0.5-1) unstable; urgency=low
 
   * missing bug/ticket number is no real error during build (Bug #22092)

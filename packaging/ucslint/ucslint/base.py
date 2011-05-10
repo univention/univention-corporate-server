@@ -31,9 +31,9 @@ class UPCMessage(object):
 		s = ''
 		if self.filename:
 			s = '%s' % self.filename
-			if self.line != None:
+			if self.line is not None:
 				s += ':%s' % self.line
-				if self.pos != None:
+				if self.pos is not None:
 					s += ':%s' % self.pos
 			return '%s: %s: %s' % (self.id, s, self.msg)
 		return '%s: %s' % (self.id, self.msg)
@@ -47,8 +47,8 @@ class UniventionPackageCheckBase(object):
 		self.msg = []
 		self.debuglevel = 0
 
-	def addmsg(self, msgid, msg=None, filename=None):
-		self.msg.append( UPCMessage( msgid, msg=msg, filename=filename ) )
+	def addmsg(self, msgid, msg=None, filename=None, line=None, pos=None):
+		self.msg.append( UPCMessage( msgid, msg=msg, filename=filename, line=line, pos=None ) )
 
 	def getMsgIds(self):
 		return {}

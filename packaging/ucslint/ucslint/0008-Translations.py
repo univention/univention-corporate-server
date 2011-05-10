@@ -4,7 +4,8 @@ try:
 	import univention.ucslint.base as uub
 except:
 	import ucslint.base as uub
-import re, os
+import re
+import os
 
 # 1) check if translation strings are correct; detect something like  _('foo %s bar' % var)  ==> _('foo %s bar') % var
 # 2) check if all translation strings are translated in de.po file
@@ -36,14 +37,25 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			print "ERROR: directory %s does not exist!" % path
 			return
 
-		regEx1 = re.compile("[\\(\\[\\{\s,:]_\\(\s*'[^']+'\s*%", re.DOTALL)
-		regEx2 = re.compile('[\\(\\[\\{\s,:]_\\(\s*"[^"]+"\s*%', re.DOTALL)
+		regEx1 = re.compile("""^(?:[^'"#\n]| # non string, non comment prefix
+				(?: # matched strings
+					('''|""\").*?(?<!\\\\)\\1
+					|'(?:[^'\n]|\\\\')*?'
+					|"(?:[^"\n]|\\\\")*?"
+				))*
+				[([{\s,:](_\\(\s* # translation
+				(?: # matched strings
+					('''|""\").*?(?<!\\\\)\\3
+					|'(?:[^'\n]|\\\\')*?'
+					|"(?:[^"\n]|\\\\")*?"
+				)\s*%\s*	# substitution
+				(?:[^)]+\\))?)""", re.DOTALL | re.MULTILINE | re.VERBOSE)
 
 		py_files = []
 		po_files = []
 		for dirpath, dirnames, filenames in os.walk( path ):
-			if '/.svn/' in dirpath and dirpath.endswith('/.svn'):   # ignore svn files
-				continue
+			try: dirnames.remove('.svn') # prune svn directory
+			except ValueError: pass
 			for fn in filenames:
 				if fn.endswith('.py'):
 					py_files.append( os.path.join( dirpath, fn ) )
@@ -52,12 +64,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 		for fn in py_files:
 			try:
-				content = open(fn, 'r').read()
-			except:
-				self.addmsg( '0008-2', 'failed to open and read file %s' % fn )
+				with open(fn, 'r') as f:
+					content = f.read()
+			except IOError:
+				self.addmsg( '0008-2', 'failed to open and read file', fn )
 				continue
 			self.debug('testing %s' % fn)
-			for regex in (regEx1, regEx2):
+			for regex in (regEx1,):
 				flen = len(content)
 				pos = 0
 				while pos < flen:
@@ -67,7 +80,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 					else:
 						line = content.count('\n', 0, match.start()) + 1
 						pos = match.end()
-						self.addmsg( '0008-1', '%s contains construct like _("foo %%s bar" %% var) in line %d' % (fn, line) )
+						self.addmsg( '0008-1', 'substitutes before translation: %s' % match.group(2), fn, line)
 
 		regEx1 = re.compile('\n#.*?fuzzy')
 		regEx2 = re.compile('msgstr ""\n\n', re.DOTALL)
@@ -77,18 +90,18 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			try:
 				content = open(fn, 'r').read()
 			except:
-				self.addmsg( '0008-2', 'failed to open and read file %s' % fn )
+				self.addmsg( '0008-2', 'failed to open and read file', fn )
 				continue
 
 			match = regExCharset.search( content )
 			if not match:
-				self.addmsg( '0008-5', 'cannot find charset definition in %s' % fn )
+				self.addmsg( '0008-5', 'cannot find charset definition', fn )
 			elif not match.group(1).lower() in ('utf-8'):
-				self.addmsg( '0008-6', 'invalid charset (%s) defined in %s' % (match.group(1), fn) )
+				self.addmsg( '0008-6', 'invalid charset (%s) defined' % match.group(1), fn )
 
 			self.debug('testing %s' % fn)
-			for regex, errid, errtxt in [ (regEx1, '0008-3', '%s contains "fuzzy" in line %d'),
-										  (regEx2, '0008-4', '%s contains empty msgstr in line %d') ]:
+			for regex, errid, errtxt in [ (regEx1, '0008-3', 'contains "fuzzy"'),
+										  (regEx2, '0008-4', 'contains empty msgstr') ]:
 				flen = len(content)
 				pos = 0
 				while pos < flen:
@@ -99,5 +112,5 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 						# match.start() + 1 ==> avoid wrong line numbers because regEx1 starts with \n
 						line = content.count('\n', 0, match.start() + 1 ) + 1
 						pos = match.end()
-						self.addmsg( errid, errtxt % (fn, line) )
+						self.addmsg( errid, errtxt, fn, line )
 

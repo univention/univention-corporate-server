@@ -94,10 +94,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 		if os.path.isdir( os.path.join(path, 'conffiles') ):
 			for dirpath, dirnames, filenames in os.walk( os.path.join( path, 'conffiles' ) ):
-				if not '/.svn/' in dirpath and not dirpath.endswith('/.svn'):   # ignore svn files
-					for fn in filenames:
-						if not fn.endswith('~'):
-							conffiles[ os.path.join( dirpath, fn ) ] = { 'headerfound': False, 'variables': [], 'placeholder': [], 'bcwarning': False, 'ucrwarning': False }
+				try: dirnames.remove('.svn') # prune svn directory
+				except ValueError: pass
+				for fn in filenames:
+					if not fn.endswith('~'):
+						conffiles[ os.path.join( dirpath, fn ) ] = { 'headerfound': False, 'variables': [], 'placeholder': [], 'bcwarning': False, 'ucrwarning': False }
 			self.debug('found conffiles: %s' % conffiles.keys())
 
 
