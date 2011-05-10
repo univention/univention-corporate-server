@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Copyright 2004-2011 Univention GmbH
@@ -265,7 +265,7 @@ class object(univention.admin.handlers.simpleLdap):
 		## Auswahl sollte als # self.options an diesem Objekt notiert werden, damit darauf basierend
 		## weitere Entscheidungen getroffen werden können.
 		self.options = []
-		if self.oldattr.has_key('objectClass'):
+		if 'objectClass' in self.oldattr:
 			# Das Objekt existiert bereits im LDAP und wurde von dort geladen
 			ocs = set(self.oldattr['objectClass'])
 			for opt in ('redirection', ):

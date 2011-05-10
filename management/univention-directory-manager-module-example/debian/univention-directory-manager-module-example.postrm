@@ -30,6 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/all.sh
+
 #DEBHELPER#
 
-pkill -f "/usr/bin/python.* /usr/share/univention-directory-manager-tools/univention-cli-server" || true
+stop_udm_cli_server
+
+exit 0

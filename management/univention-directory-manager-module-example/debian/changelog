@@ -1,3 +1,13 @@
+univention-directory-manager-module-example (3.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22431)
+    * Bump version for UCS 3.0
+    * Update copyright to 2011
+    * Update to debhelper 7
+    * Switch from python2.4 to python2.6
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 May 2011 06:26:04 +0200
+
 univention-directory-manager-module-example (2.0.9-1) unstable; urgency=low
 
   * Initialize locale (Bug #17915)

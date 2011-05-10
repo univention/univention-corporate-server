@@ -31,66 +31,33 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
-
-# This has to be exported to make some magic below work.
-#export DH_OPTIONS
-
-PACKAGE_NAME = univention-directory-manager-module-example
-
-D  := debian/${PACKAGE_NAME}
-DS := debian/${PACKAGE_NAME}-schema
-
-PYVERS := $(shell pyversions -vr)
-
 PO_FILES := $(shell find modules -name '*.po')
 MO_FILES := $(PO_FILES:%.po=%.mo)
 
+PACKAGE_NAME = univention-directory-manager-module-example
+D  := debian/${PACKAGE_NAME}
+
 %.mo:	%.po
-	msgfmt -o $@ $<
+	msgfmt --check -o $@ $<
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	touch $@
+override_dh_auto_build: $(MO_FILES)
+	ucslint
+	dh_auto_build
 
-build: configure-stamp build-stamp
-build-stamp: $(MO_FILES)
-	dh_testdir
-	touch $@
+override_dh_auto_install:
+	dh_auto_install
+	univention-install-config-registry
 
-clean:
-	dh_testdir
-	dh_clean
-	$(RM) build-stamp configure-stamp
-	$(RM) debian/*.conffiles
-	$(RM) $(MO_FILES)
-	$(RM) *~
+	# Install Univention Directory Manager Images and PO files
 
-install: build-stamp
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	# Install Schema for Univention Directory Manager Module into Schema Package
-
-	install -m 0644 schema/ip-phone.schema ${DS}/usr/share/univention-ldap/schema/
-
-	# Install Univention Directory Manager Modules
-
-	@for i in $(shell find modules/univention/admin/ -name '*.py'); do\
-		o=${D}/usr/share/pyshared/$${i#modules/};\
-		install -d "`dirname "$$o"`";\
-		install -m755 "$$i" "$$o";\
-	done
-	@for i in `find modules/univention/admin/handlers/ -name "*.png" -o -name "*.gif"`; do\
+	@set -e;\
+	for i in `find modules/univention/admin/handlers/ -name "*.png" -o -name "*.gif"`; do\
 		o=${D}/usr/share/univention-webui-style/icon/$${i#modules/univention/admin/handlers/};\
 		install -d "`dirname "$$o"`";\
 		install -m 644 "$$i" "$$o";\
 	done
-	@for i in $(MO_FILES); do\
+	@set -e;\
+	for i in $(MO_FILES); do\
 		lang=`basename "$$i" .mo`;\
 		domain=`dirname "$$i" | sed 's,^modules/,,;s,/,-,g'`;\
 		o=${D}/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
@@ -98,29 +65,6 @@ install: build-stamp
 		install -m 644 "$$i" "$$o";\
 	done
 
-	# Install example script
+%:
+	dh $@
 
-	install -m 0755 scripts/ip-phone-tool ${D}/usr/sbin/
-
-	dh_install --exclude=".svn"
-
-	# Install conffiles registered in debian/*.univention-config-registry
-	univention-install-config-registry
-	# Install Univention Config Registry Info files debian/*.univention-config-registry-variables
-	univention-install-config-registry-info
-
-binary-indep: build install
-	dh_testdir -i
-	dh_testroot -i
-	dh_installchangelogs -i
-	dh_pycentral
-	dh_shlibdeps
-	dh_md5sums
-	dh_gencontrol
-	dh_installdeb
-	dh_builddeb
-
-binary-arch: build install
-
-binary: binary-arch binary-indep
-.PHONY: build clean binary-indep binary-arch binary install configure
