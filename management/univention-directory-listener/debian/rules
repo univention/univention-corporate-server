@@ -51,8 +51,11 @@ override_dh_installinit:
 
 override_dh_auto_build:
 	cd src; $(MAKE) clean; $(MAKE) DB_CFLAGS="-I/usr/include/db -DWITH_DB48" DB_LDADD="-ldb-4.8"; cd -
-	#ucslint
 	dh_auto_build
+
+override_dh_auto_test:
+	ucslint
+	dh_auto_test
 
 %:
 	dh $@

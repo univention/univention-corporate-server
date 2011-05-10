@@ -44,8 +44,11 @@ override_dh_installinit:
 
 override_dh_auto_build:
 	cd src; $(MAKE); cd -
-	# ucslint
 	dh_auto_build
+
+override_dh_auto_test:
+	ucslint
+	dh_auto_test
 
 %:
 	dh $@
