@@ -1,11 +1,3 @@
-E:0008-1: testframework/0008-1-3/src/irgendwas.py:10: substitutes before translation: _('foo %s bar' % x)
-E:0008-1: testframework/0008-1-3/src/irgendwas.py:11: substitutes before translation: _('foo %s \'bar' % x)
-E:0008-1: testframework/0008-1-3/src/irgendwas.py:12: substitutes before translation: _("foo %s bar" % x)
-E:0008-1: testframework/0008-1-3/src/irgendwas.py:13: substitutes before translation: _("foo %s \"bar" % x)
-E:0008-1: testframework/0008-1-3/src/irgendwas.py:14: substitutes before translation: _('''foo %s bar''' % x)
-E:0008-1: testframework/0008-1-3/src/irgendwas.py:15: substitutes before translation: _("""foo %s bar""" % x)
-E:0008-1: testframework/0008-1-3/src/irgendwas.py:16: substitutes before translation: _('''foo %s \'''bar''' % x)
-E:0008-1: testframework/0008-1-3/src/irgendwas.py:17: substitutes before translation: _("""foo %s \"""bar""" % x)
-E:0008-1: testframework/0008-1-3/src/irgendwas.py:8: substitutes before translation: _('Aber %s knallts' % x)
-E:0008-3: testframework/0008-1-3/src/de.po:59: contains "fuzzy"
-E:0008-3: testframework/0008-1-3/src/de.po:80: contains "fuzzy"
+E:0008-1: testframework/0008-1-3/src/irgendwas.py contains construct like _("foo %s bar" % var) in line 9
+E:0008-3: testframework/0008-1-3/src/de.po contains "fuzzy" in line 59
+E:0008-3: testframework/0008-1-3/src/de.po contains "fuzzy" in line 80

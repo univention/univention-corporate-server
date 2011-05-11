@@ -1,6 +1,0 @@
-E:0009-2: testframework/0009-2-3-4-5/src/irgendwas.py does not specify python version in hashbang
-E:0009-3: testframework/0009-2-3-4-5/src/mitWhitespace.py specifies wrong python version in hashbang
-E:0009-3: testframework/0009-2-3-4-5/src/nur24.py specifies wrong python version in hashbang
-E:0009-3: testframework/0009-2-3-4-5/src/nur25.py specifies wrong python version in hashbang
-W:0009-5: testframework/0009-2-3-4-5/src/haskey.py:7:6: dict.has_key is deprecated in python3 - please use "if key in dict:"
-W:0009-5: testframework/0009-2-3-4-5/src/haskey.py:9:6: dict.has_key is deprecated in python3 - please use "if key in dict:"

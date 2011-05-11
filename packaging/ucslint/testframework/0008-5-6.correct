@@ -1,2 +1,2 @@
-E:0008-5: testframework/0008-5-6/src/de.po: cannot find charset definition
-E:0008-6: testframework/0008-5-6/src/fr.po: invalid charset (CHARSET) defined
+E:0008-5: cannot find charset definition in testframework/0008-5-6/src/de.po
+E:0008-6: invalid charset (CHARSET) defined in testframework/0008-5-6/src/fr.po

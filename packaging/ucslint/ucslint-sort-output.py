@@ -1,8 +1,6 @@
-#!/usr/bin/python2.6
-# -*- coding: utf-8 -*-
+#!/usr/bin/python
 #
-import sys
-import re
+import sys, os, re
 
 if len(sys.argv) < 2:
 	print 'ucslint-sort-output.py <filename>'

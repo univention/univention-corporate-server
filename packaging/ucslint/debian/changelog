@@ -1,3 +1,9 @@
+ucslint (2.0.6-3) unstable; urgency=low
+
+  * Revert: svn merge -r 24045:24031 . (Bug #22092)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 11 May 2011 08:51:44 +0200
+
 ucslint (2.0.6-2) unstable; urgency=low
 
   * Fix python2.5 not handling with...as... (Bug #22092)

@@ -30,5 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+override_dh_auto_install:
+	dh_auto_install
+
+override_dh_auto_build:
+	dh_auto_build
+
 %:
 	dh $@

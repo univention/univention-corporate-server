@@ -2,18 +2,14 @@ Source: ucslint
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
- python-support,
- python-all
+Build-Depends: debhelper (>> 7), python-support, python2.6
 Standards-Version: 3.6.1
-XS-Python-Version: all
 
 Package: ucslint
 Architecture: all
 Depends: ${python:Depends}, ${misc:Depends}
 Conflicts: ucs-tools (<< 1.2.5)
-XB-Python-Version: ${python:Versions}
-Description: check Univention packaging
+Description: ucslint - Univention packaging check tool
  This package contains the Univention tool ucslint that
  is able to check debian source packages against common
  packaging mistakes.
@@ -22,3 +18,5 @@ Description: check Univention packaging
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+

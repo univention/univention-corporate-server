@@ -1,41 +1,42 @@
-#!/bin/bash
+#!/bin/sh
 #
-# Run ucslint on test framework
-#
-declare -i RETVAL=0
+RETVAL=0
 
 if [ "$1" = "--update" ] ; then
 	update="1"
 fi
 
 TMPFN=$(mktemp)
-trap "rm -f '$TMPFN'" EXIT
 
 for dir in testframework/* ; do
   if [ -d "$dir" ] ; then
-	  echo -n "Testing $dir	"
+	  echo "---------------------------------------------------------------"
+	  echo "Testing $dir"
+	  echo "---------------------------------------------------------------"
 
-	  DIRNAME=$(basename "$dir")
+	  DIRNAME=$(basename $dir)
 	  MODULE="${DIRNAME:0:4}"
 
-	  PYTHONPATH=. \
-	  bin/ucslint -p "ucslint" -m "$MODULE" "${dir}" >"$TMPFN"
-	  ./ucslint-sort-output.py "$TMPFN" >"${dir}.test"
+	  ./ucslint.py -p "ucslint" -m $MODULE "${dir}" > $TMPFN
+	  ./ucslint-sort-output.py $TMPFN > ${dir}.test
 
-	  if diff "${dir}.correct" "${dir}.test" >/dev/null 2>&1
-      then
-          echo "OK"
-      else
-          echo "FAILED"
-          RETVAL+=1
+	  diff "${dir}.correct" "${dir}.test" > /dev/null
+	  RET="$?"
+	  echo -n "Testresult: "
+	  if [ ! "$RET" = "0" ] ; then
+          RETVAL=1
+		  echo "FAILED"
+	  else
+		  echo "OK"
       fi
 
 	  if [ -n "$update" ] ; then
 		  echo "USING TESTRESULT AS NEW TEST TEMPLATE"
 		  cp "${dir}.test" "${dir}.correct"
 	  fi
+
+	  echo
   fi
 done
 
 exit $RETVAL
-# vim:set ts=4 sw=4 et:

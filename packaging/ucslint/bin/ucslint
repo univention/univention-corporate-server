@@ -1,4 +1,4 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Univention ucslint
@@ -31,10 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 #
 #
-import os
-import sys
-import imp
-import optparse
+import os, sys, imp, optparse
 try:
 	import univention.ucslint.base as uub
 except ImportError:
@@ -139,6 +136,10 @@ def clean_msgid(msgid):
 		raise Exception('msgid contains invalid characters: %s' % msgid)
 	return '%d' % int(msgid)
 
+
+def usage():
+	print 'ucslint [-d] [<path>]'
+
 if __name__ == '__main__':
 	parser = optparse.OptionParser()
 	parser.add_option( '-d', '--debug', action = 'store', type = 'int',
@@ -180,15 +181,15 @@ if __name__ == '__main__':
 		pkgpath = args[0]
 
 	if not os.path.exists( pkgpath ):
-		print >>sys.stderr, "ERROR: directory %s does not exist!" % pkgpath
+		print "ERROR: directory %s does not exist!" % pkgpath
 		sys.exit(1)
 
 	if not os.path.isdir( pkgpath ):
-		print >>sys.stderr, "ERROR: %s is no directory!" % pkgpath
+		print "ERROR: %s is no directory!" % pkgpath
 		sys.exit(1)
 
 	if not os.path.isdir( os.path.join(pkgpath, 'debian') ):
-		print >>sys.stderr, "ERROR: %s/debian does not exist or is not a directory!" % pkgpath
+		print "ERROR: %s/debian does not exist or is not a directory!" % pkgpath
 		sys.exit(1)
 
 	plugindirs = [ '~/.ucslint', '/usr/lib/python2.4/site-packages/univention/ucslint', '/usr/lib/pymodules/python2.6/univention/ucslint' ]
@@ -224,3 +225,4 @@ if __name__ == '__main__':
 	if exitcode_cnt:
 		sys.exit(1)
 	sys.exit(0)
+

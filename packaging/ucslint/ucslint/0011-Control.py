@@ -4,8 +4,7 @@ try:
 	import univention.ucslint.base as uub
 except:
 	import ucslint.base as uub
-import re
-import os
+import re, os
 
 class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 	def __init__(self):
@@ -17,7 +16,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				 '0011-2': [ uub.RESULT_ERROR, 'source package name differs in debian/control an debian/changelog' ],
 				 '0011-3': [ uub.RESULT_WARN, 'wrong section - should be "Univention"' ],
 				 '0011-4': [ uub.RESULT_WARN, 'wrong priority - should be "optional"' ],
-				 '0011-5': [ uub.RESULT_ERROR, 'wrong maintainer - should be "Univention GmbH <packages@univention.de>"' ],
+				 '0011-5': [ uub.RESULT_ERROR, 'wrong maintainer - should be "univention GmbH <packages@univention.de>"' ],
 				 '0011-6': [ uub.RESULT_ERROR, 'XS-Python-Version without python-central in build-dependencies' ],
 				 '0011-7': [ uub.RESULT_ERROR, 'XS-Python-Version without XB-Python-Version in binary package entries' ],
 				 '0011-8': [ uub.RESULT_WARN, 'XS-Python-Version should be "2.4"' ],
@@ -43,14 +42,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		try:
 			content_changelog = open(fn, 'r').read(1024)
 		except:
-			self.addmsg( '0011-1', 'failed to open and read file', fn )
+			self.addmsg( '0011-1', 'failed to open and read file %s' % fn )
 			return
 
 		fn = os.path.join(path, 'debian', 'control')
 		try:
 			parser = uub.ParserDebianControl(fn)
 		except uub.FailedToReadFile:
-			self.addmsg( '0011-1', 'failed to open and read file', fn )
+			self.addmsg( '0011-1', 'failed to open and read file %s' % fn )
 			return
 		except uub.UCSLintException:
 			self.addmsg( '0011-11', 'parsing error in %s' % fn )

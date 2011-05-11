@@ -34,8 +34,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 		py_files = []
 		for dirpath, dirnames, filenames in os.walk( path ):
-			try: dirnames.remove('.svn') # prune svn directory
-			except ValueError: pass
+			if '/.svn/' in dirpath or dirpath.endswith('/.svn'):   # ignore svn files
+				continue
 			for fn in filenames:
 				if fn.endswith('~'):
 					continue
