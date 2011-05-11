@@ -1,11 +1,11 @@
-/*global dojo dijit dojox umc2 console window */
+/*global dojo dijit dojox umc console window */
 
-dojo.provide("umc2.widgets.ContainerPane");
+dojo.provide("umc.widgets.ContainerPane");
 
 dojo.require("dijit._Container");
 dojo.require("dijit.layout.ContentPane");
 
-dojo.declare("umc2.widgets.ContainerPane", [dijit.layout.ContentPane, dijit._Container], {
+dojo.declare("umc.widgets.ContainerPane", [dijit.layout.ContentPane, dijit._Container], {
 	// description:
 	//		Combination of ContentPane and Container class.
 	// summary:

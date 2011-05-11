@@ -1,10 +1,10 @@
-/*global dojo dijit dojox umc2 console window */
+/*global dojo dijit dojox umc console window */
 
-dojo.provide("umc2.widgets.FilteringSelect");
+dojo.provide("umc.widgets.FilteringSelect");
 
 dojo.require("dijit.form.FilteringSelect");
 
-dojo.declare("umc2.widgets.FilteringSelect", dijit.form.FilteringSelect, {
+dojo.declare("umc.widgets.FilteringSelect", dijit.form.FilteringSelect, {
 	// description:
 	//		This class just an extension of dijit.form.FilteringSelect
 	//		which provides a default item which is set on calling reset().

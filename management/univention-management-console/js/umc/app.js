@@ -1,16 +1,25 @@
-/*global dojo dijit dojox umc2 console window */
+/*global dojo dijit dojox umc console window */
 
-dojo.provide('umc2.app');
+dojo.provide('umc.app');
 
 dojo.require("dijit.Dialog");
 dojo.require("dijit.layout.BorderContainer");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.layout.TabContainer");
-dojo.require("umc2.widgets.LoginDialog");
-dojo.require("umc2.widgets.ContainerPane");
-dojo.require("umc2.widgets.OverviewWidget");
+dojo.require("umc.widgets.LoginDialog");
+dojo.require("umc.widgets.ContainerPane");
+dojo.require("umc.widgets.OverviewWidget");
 
-dojo.mixin(umc2.app, {
+// start the application when everything has been loaded
+dojo.addOnLoad(function() {
+	umc.app.start();
+    /*window.onerror = function (msg, url, num) {
+		console.log(msg + ';' + url + ';' + num);
+		return true;
+	};*/
+});
+
+dojo.mixin(umc.app, {
 
 	alert: function(message) {
 		this.alertDialog.set('content', message);
@@ -39,7 +48,7 @@ dojo.mixin(umc2.app, {
 
 		// create login dialog
 		this.loggingIn = true;
-		this.loginDialog = umc2.widgets.LoginDialog({});
+		this.loginDialog = umc.widgets.LoginDialog({});
 		dojo.connect(this.loginDialog, 'onLogin', dojo.hitch(this, this.onLogin));
 
 		// create alert dialog
@@ -108,8 +117,8 @@ dojo.mixin(umc2.app, {
 			//autoWidth: true,
 			//autoHeight: true
 		});
-		umc2.widgets._tabContainer.addChild(tab);
-		umc2.widgets._tabContainer.selectChild(tab, true);
+		umc.widgets._tabContainer.addChild(tab);
+		umc.widgets._tabContainer.selectChild(tab, true);
 	},
 
 	isSetupGUI: false,
@@ -128,14 +137,14 @@ dojo.mixin(umc2.app, {
 		}).placeAt(dojo.body());
 
 		// container for all modules tabs
-		umc2.widgets._tabContainer = new dijit.layout.TabContainer({
+		umc.widgets._tabContainer = new dijit.layout.TabContainer({
 			//style: "height: 100%; width: 100%;",
 			region: "center"
 		});
-		topContainer.addChild(umc2.widgets._tabContainer);
+		topContainer.addChild(umc.widgets._tabContainer);
 
 		// the container for all category panes
-		var overviewContainer = new umc2.widgets.ContainerPane({ 
+		var overviewContainer = new umc.widgets.ContainerPane({ 
 			//style: "overflow:visible; width: 80%"
 			title: 'Overview'
 		});
@@ -144,7 +153,7 @@ dojo.mixin(umc2.app, {
 		dojo.forEach(this.getCategories(), dojo.hitch(this, function(icat) {
 			// create a new overview widget for all modules in the given category
 			//console.log('### add category: ' + icat);
-			var overviewWidget = new umc2.widgets.OverviewWidget({
+			var overviewWidget = new umc.widgets.OverviewWidget({
 				modules: this.getModules(icat.id),
 				title: icat.title
 			});
@@ -155,7 +164,7 @@ dojo.mixin(umc2.app, {
 			// add overview widget to container
 			overviewContainer.addChild(overviewWidget);
 		}));
-		umc2.widgets._tabContainer.addChild(overviewContainer);
+		umc.widgets._tabContainer.addChild(overviewContainer);
 		
 		// the header
 		var header = new dijit.layout.ContentPane({
@@ -171,14 +180,14 @@ dojo.mixin(umc2.app, {
 		topContainer.startup();
 
 		// set a flag that GUI has been build up
-		umc2.widgets.isSetupGUI = true;
+		umc.widgets.isSetupGUI = true;
 	},
 
 	_modules: [],
 	_categories: [],
 	loadModules: function() {
 		//console.log('### loadModules');
-		umc2.tools.xhrPostJSON(
+		umc.tools.xhrPostJSON(
 			{}, 
 			'/umcp/get/modules/list',
 			dojo.hitch(this, function(data, ioargs) {
@@ -192,9 +201,9 @@ dojo.mixin(umc2.app, {
 				// get all given categories
 				dojo.forEach(dojo.getObject('categories', false, data), dojo.hitch(this, function(i) {
 					var cat = {
-						id: i[ 'id' ],
-						description: i[ 'name' ],
-						title: i[ 'name' ]
+						id: i.id,
+						description: i.name,
+						title: i.name
 					};
 					this._categories.push(cat); 
 				}));
@@ -202,11 +211,11 @@ dojo.mixin(umc2.app, {
 				// get all given modules
 				for (var imod in dojo.getObject('modules', false, data)) {
 					if (data.modules.hasOwnProperty(imod)) {
-						//console.log('### load module data: umc2.modules.' + imod);
-						dojo.require('umc2.modules.' + imod);
+						//console.log('### load module data: umc.modules.' + imod);
+						dojo.require('umc.modules.' + imod);
 						//console.log('### module data loaded');
 						this._modules.push({
-							BaseClass: dojo.getObject('umc2.modules.' + imod), 
+							BaseClass: dojo.getObject('umc.modules.' + imod), 
 							id: imod, 
 							title: data.modules[imod].name,
 							description: data.modules[imod].description,

@@ -1,17 +1,18 @@
-/*global dojo dijit dojox umc2 console window */
+/*global dojo dijit dojox umc console window */
 
-dojo.provide("umc2.widgets.SearchWidget");
+dojo.provide("umc.widgets.SearchWidget");
 
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit._Widget");
 dojo.require("dijit.form.TextBox");
 dojo.require("dijit.form.Button");
 dojo.require("dojox.layout.TableContainer");
-dojo.require("umc2.widgets.ContainerForm");
-dojo.require("umc2.widgets.ContainerWidget");
-dojo.require("umc2.widgets.FilteringSelect");
+dojo.require("umc.widgets.ContainerForm");
+dojo.require("umc.widgets.ContainerWidget");
+dojo.require("umc.widgets.FilteringSelect");
+dojo.require("umc.tools");
 
-dojo.declare('umc2.widgets.SearchWidget', dijit.layout.ContentPane, {
+dojo.declare('umc.widgets.SearchWidget', dijit.layout.ContentPane, {
 	_layoutContainer: null,
 	_form: null,
 	_connects: [],
@@ -44,7 +45,7 @@ dojo.declare('umc2.widgets.SearchWidget', dijit.layout.ContentPane, {
 		var widget;
 		if ('store' in obj) {
 			// create the widget
-			widget = new umc2.widgets.FilteringSelect({
+			widget = new umc.widgets.FilteringSelect({
 				_key: obj.id,
 				label: obj.label,
 				style: 'width: 300px',
@@ -105,7 +106,7 @@ dojo.declare('umc2.widgets.SearchWidget', dijit.layout.ContentPane, {
 		this.inherited(arguments);
 
 		// embed layout container within a form-element
-		this._form = new umc2.widgets.ContainerForm({
+		this._form = new umc.widgets.ContainerForm({
 			onSubmit: dojo.hitch(this, function(evt) {
 				dojo.stopEvent(evt);
 				console.log('### submit search form');
@@ -128,7 +129,7 @@ dojo.declare('umc2.widgets.SearchWidget', dijit.layout.ContentPane, {
 		}, this);
 
 		// add 'search' button
-		var buttonContainer = new umc2.widgets.ContainerWidget();
+		var buttonContainer = new umc.widgets.ContainerWidget();
 		buttonContainer.addChild(new dijit.form.Button({
 			label: 'Search',
 			type: 'submit',
@@ -169,12 +170,12 @@ dojo.declare('umc2.widgets.SearchWidget', dijit.layout.ContentPane, {
 		//		Collect a property map of all currently entered/selected values.
 		var map = {};
 		console.log('### getValues');
-		for (var el in this._formWidgets) {
-			console.log(el);
-			if ('value' in this._formWidgets[el]) {
-				map[el] = this._formWidgets[el].get('value');
+		umc.tools.forIn(this._formWidgets, function(el, ikey) {
+			console.log(ikey);
+			if ('value' in el) {
+				map[ikey] = el.get('value');
 			}
-		}
+		});
 		console.log('### return');
 		return map; // Object
 	},

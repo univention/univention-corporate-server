@@ -1,13 +1,13 @@
-/*global dojo dijit dojox umc2 console window */
+/*global dojo dijit dojox umc console window */
 
-dojo.provide("umc2.widgets.OverviewWidget");
+dojo.provide("umc.widgets.OverviewWidget");
 
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit._Contained");
 dojo.require("dijit._Container");
 dojo.require("dijit.TitlePane");
 
-dojo.declare( "umc2.widgets._OverviewItemWidget", [dijit.layout.ContentPane, dijit._Contained], {
+dojo.declare( "umc.widgets._OverviewItemWidget", [dijit.layout.ContentPane, dijit._Contained], {
 	modID: '',
 	description: '',
 
@@ -39,7 +39,7 @@ dojo.declare( "umc2.widgets._OverviewItemWidget", [dijit.layout.ContentPane, dij
 	}
 });
 
-dojo.declare( "umc2.widgets.OverviewWidget", [dijit.TitlePane, dijit._Container], {
+dojo.declare( "umc.widgets.OverviewWidget", [dijit.TitlePane, dijit._Container], {
 	// summary:
 	//		Widget that displays an overview of all modules belonging to a 
 	//		given category along with their icon and description.
@@ -61,7 +61,7 @@ dojo.declare( "umc2.widgets.OverviewWidget", [dijit.TitlePane, dijit._Container]
 		// iterate over all modules
 		dojo.forEach(this.modules, dojo.hitch(this, function(imod) {
 			// create a new button widget for each module
-			var modWidget = new umc2.widgets._OverviewItemWidget({
+			var modWidget = new umc.widgets._OverviewItemWidget({
 				modID: imod.id,
 				description: imod.title
 			});

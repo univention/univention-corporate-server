@@ -1,18 +1,18 @@
-/*global dojo dijit dojox umc2 console window */
+/*global dojo dijit dojox umc console window */
 
-dojo.provide("umc2.widgets.LoginDialog");
+dojo.provide("umc.widgets.LoginDialog");
 
 dojo.require("dijit.form.Button");
 dojo.require("dijit.form.TextBox");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dojox.layout.TableContainer");
 dojo.require("dojox.widget.Dialog");
-dojo.require("umc2.tools");
-dojo.require("umc2.widgets.StandbyMixin");
-dojo.require("umc2.widgets.ContainerForm");
-dojo.require("umc2.widgets.ContainerWidget");
+dojo.require("umc.tools");
+dojo.require("umc.widgets.StandbyMixin");
+dojo.require("umc.widgets.ContainerForm");
+dojo.require("umc.widgets.ContainerWidget");
 
-dojo.declare('umc2.widgets.LoginDialog', [ dojox.widget.Dialog, umc2.widgets.StandbyMixin ], {
+dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.StandbyMixin ], {
 	// our own variables
 	_layoutContainer: null,
 	_passwordTextBox: null,
@@ -35,7 +35,7 @@ dojo.declare('umc2.widgets.LoginDialog', [ dojox.widget.Dialog, umc2.widgets.Sta
 		this.inherited(arguments);
 
 		// embed layout container within a form-element
-		this._form = new umc2.widgets.ContainerForm({
+		this._form = new umc.widgets.ContainerForm({
 			onSubmit: dojo.hitch(this, function(evt) {
 				// stop the event and call LoginDialog.onSubmit()
 				dojo.stopEvent(evt);
@@ -78,7 +78,7 @@ dojo.declare('umc2.widgets.LoginDialog', [ dojox.widget.Dialog, umc2.widgets.Sta
 		this._layoutContainer.addChild(this._passwordTextBox);
 
 		// add 'login' button
-		var buttonContainer = new umc2.widgets.ContainerWidget();
+		var buttonContainer = new umc.widgets.ContainerWidget();
 		buttonContainer.addChild(new dijit.form.Button({
 			id: this.id + 'LoginButton',
 			label: '<b>Login</b>',
@@ -128,7 +128,7 @@ dojo.declare('umc2.widgets.LoginDialog', [ dojox.widget.Dialog, umc2.widgets.Sta
 
 	_authenticate: function(username, password) {
 		this.standby(true);
-		umc2.tools.xhrPostJSON(
+		umc.tools.xhrPostJSON(
 			{
 				username: username,
 				password: password

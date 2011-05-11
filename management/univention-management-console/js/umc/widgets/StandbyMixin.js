@@ -1,11 +1,11 @@
-/*global console MyError dojo dojox dijit umc2 */
+/*global console MyError dojo dojox dijit umc */
 
-dojo.provide("umc2.widgets.StandbyMixin");
+dojo.provide("umc.widgets.StandbyMixin");
 
 dojo.require("dojox.widget.Standby");
 dojo.require("dijit._Widget");
 
-dojo.declare("umc2.widgets.StandbyMixin", dijit._Widget, {
+dojo.declare("umc.widgets.StandbyMixin", dijit._Widget, {
 	// summary:
 	//		Mixin class to make a widget "standby-able"
 

@@ -34,3 +34,10 @@ html, body
 .submitButton {
 	font-weight: bold !important;
 }
+
+/* fix for bug with form submission: http://bugs.dojotoolkit.org/ticket/12331 */
+.dijitOffScreen { 
+	visibility: visible !important; 
+}
+
+

@@ -1,9 +1,9 @@
-/*global console MyError dojo dojox dijit umc2 */
+/*global console MyError dojo dojox dijit umc */
 
-dojo.provide("umc2.modules.ucr");
+dojo.provide("umc.modules.ucr");
 
-dojo.require("umc2.modules.Module");
-dojo.require("umc2.tools");
+dojo.require("umc.modules.Module");
+dojo.require("umc.tools");
 dojo.require("dojo.data.ItemFileReadStore");
 dojo.require("dojo.data.ItemFileWriteStore");
 dojo.require("dojox.grid.EnhancedGrid");
@@ -20,12 +20,12 @@ dojo.require("dijit.form.Textarea");
 dojo.require("dijit.form.ComboBox");
 dojo.require("dojox.form.CheckedMultiSelect");
 dojo.require("dojox.widget.Standby");
-dojo.require("umc2.widgets.SearchWidget");
-dojo.require("umc2.widgets.ContainerWidget");
-dojo.require("umc2.widgets.ContainerForm");
-dojo.require("umc2.widgets.StandbyMixin");
+dojo.require("umc.widgets.SearchWidget");
+dojo.require("umc.widgets.ContainerWidget");
+dojo.require("umc.widgets.ContainerForm");
+dojo.require("umc.widgets.StandbyMixin");
 
-dojo.declare("umc2.modules._ucrDetailDialog", [ dijit.Dialog, umc2.widgets.StandbyMixin ], {
+dojo.declare("umc.modules._ucrDetailDialog", [ dijit.Dialog, umc.widgets.StandbyMixin ], {
 	_fields: {},
 	_form: null,
 	_langStore: null,
@@ -54,7 +54,7 @@ dojo.declare("umc2.modules._ucrDetailDialog", [ dijit.Dialog, umc2.widgets.Stand
 		this.inherited(arguments);
 
 		// embed layout container within a form-element
-		this._form = new umc2.widgets.ContainerForm({
+		this._form = new umc.widgets.ContainerForm({
 			region: 'bottom',
 			onSubmit: dojo.hitch(this, function(evt) {
 				dojo.stopEvent(evt);
@@ -137,7 +137,7 @@ dojo.declare("umc2.modules._ucrDetailDialog", [ dijit.Dialog, umc2.widgets.Stand
 		this._container.addChild(this._grid);
 
 		// add 'search' button
-		var buttonContainer = new umc2.widgets.ContainerWidget({
+		var buttonContainer = new umc.widgets.ContainerWidget({
 			style: 'text-align: right; width: 100%'
 		});
 		this._container.addChild(buttonContainer);
@@ -187,7 +187,7 @@ dojo.declare("umc2.modules._ucrDetailDialog", [ dijit.Dialog, umc2.widgets.Stand
 		this.show();
 
 		// query JSON data 
-		umc2.tools.xhrPostJSON(
+		umc.tools.xhrPostJSON(
 			{ variable: ucrVariable },
 			'/umcp/command/ucr/get',
 			dojo.hitch(this, function(data, ioargs) {
@@ -238,18 +238,18 @@ dojo.declare("umc2.modules._ucrDetailDialog", [ dijit.Dialog, umc2.widgets.Stand
 			label: 'lang',
 			items: [ ]
 		};
-		for (var key in obj) {
+		umc.tools.forIn(obj, function(el, ikey) {
 			// try to match the key
-			var m = r.exec(key);
+			var m = r.exec(ikey);
 			if (m) {
 				// matched :) .. we found a new descrption
 				var lang = m[1];
 				newData.items.push({
 					lang: lang,
-					description: obj[key]
+					description: el
 				});
 			}
-		}
+		}, this);
 		
 		// create a new data store and assign it to the grid
 		this._descriptionStore = new dojo.data.ItemFileWriteStore({
@@ -262,12 +262,11 @@ dojo.declare("umc2.modules._ucrDetailDialog", [ dijit.Dialog, umc2.widgets.Stand
 		// description:
 		//		Collect a property map of all currently entered/selected values.
 		var map = {};
-		for (var ikey in this._fields) {
-			var el = this._fields[ikey];
+		umc.tools.forIn(this._fields, function(el, ikey) {
 			if ('value' in el) {
 				map[ikey] = el.get('value');
 			}
-		}
+		}, this);
 		return map; // Object
 	},
 
@@ -276,7 +275,7 @@ dojo.declare("umc2.modules._ucrDetailDialog", [ dijit.Dialog, umc2.widgets.Stand
 	}
 });
 
-dojo.declare("umc2.modules.ucr", umc2.modules.Module, {
+dojo.declare("umc.modules.ucr", umc.modules.Module, {
 	// summary:
 	//		Module for modifying and displaying UCR variables on the system.
 
@@ -315,7 +314,7 @@ dojo.declare("umc2.modules.ucr", umc2.modules.Module, {
 		this.inherited(arguments);
 
 		// add search widget
-		this._searchWidget = new umc2.widgets.SearchWidget({
+		this._searchWidget = new umc.widgets.SearchWidget({
 			fields: [
 				{
 					id: 'category',
@@ -361,7 +360,7 @@ dojo.declare("umc2.modules.ucr", umc2.modules.Module, {
 		//this.addChild(gridContainer);
 
 		// create the toolbar container
-		var toolBar = new umc2.widgets.ContainerWidget({
+		var toolBar = new umc.widgets.ContainerWidget({
 			region: 'bottom',
 			style: 'text-align: right'
 		});
@@ -554,7 +553,7 @@ dojo.declare("umc2.modules.ucr", umc2.modules.Module, {
 		});
 
 		// create dialog for UCR variable details
-		this._detailDialog = new umc2.modules._ucrDetailDialog({});
+		this._detailDialog = new umc.modules._ucrDetailDialog({});
 		this._detailDialog.startup();
 
 		// register to the onSubmit event of our dialog
@@ -579,7 +578,7 @@ dojo.declare("umc2.modules.ucr", umc2.modules.Module, {
 		// query categories from server 
 		//
 
-		umc2.tools.xhrPostJSON(
+		umc.tools.xhrPostJSON(
 			{},
 			'/umcp/command/ucr/categories',
 			dojo.hitch(this, function(data, ioargs) {
@@ -590,15 +589,15 @@ dojo.declare("umc2.modules.ucr", umc2.modules.Module, {
 
 				// add categories as new items to the categories of the detail dialog 
 				// and the search widget
-				for (var ikey in data._result) {
-					console.log('### adding: ' + ikey + ' ' + data._result[ikey].name.en);
+				umc.tools.forIn(data._result, function(el, ikey) {
+					console.log('### adding: ' + ikey + ' ' + el.name.en);
 					var newItem = {
 						id: ikey,
-						name: data._result[ikey].name.en
+						name: el.name.en
 					};
 					this._categoryStore.newItem(newItem);
 					this._detailDialog._categoryStore.newItem(newItem);
-				}
+				}, this);
 
 				// save changes
 				this._categoryStore.save();
@@ -646,7 +645,7 @@ dojo.declare("umc2.modules.ucr", umc2.modules.Module, {
 		this.standby(true);
 		
 		// query JSON data
-		umc2.tools.xhrPostJSON(
+		umc.tools.xhrPostJSON(
 			{
 				filter: valMap.search,
 				key: valMap.mask,
@@ -680,7 +679,7 @@ dojo.declare("umc2.modules.ucr", umc2.modules.Module, {
 		};
 
 		// send off the data
-		umc2.tools.xhrPostJSON(
+		umc.tools.xhrPostJSON(
 			jsonObj,
 			'/umcp/command/ucr/unset',
 			dojo.hitch(this, function(data, ioargs) {
@@ -698,7 +697,7 @@ dojo.declare("umc2.modules.ucr", umc2.modules.Module, {
 		dojo.setObject('variables.' + variable, value, jsonObj);
 
 		// send off the data
-		umc2.tools.xhrPostJSON(
+		umc.tools.xhrPostJSON(
 			jsonObj, 
 			'/umcp/command/ucr/set', 
 			dojo.hitch(this, function(dataOrError, ioargs) {
