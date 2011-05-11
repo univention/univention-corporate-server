@@ -27,3 +27,10 @@ Architecture: any
 Section: libs
 Description: Xenstore communications library for Xen
  This package contains the public libxenstore.
+
+Package: libxen-dev
+Architecture: any
+Section: libdevel
+Depends: libxenstore3.0 (= ${binary:Version}), ${misc:Depends}
+Description: Public headers and libs for Xen
+ This package contains the public headers and static libraries for Xen.

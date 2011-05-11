@@ -1,3 +1,11 @@
+xen-4.1 (4.1.0-2) unstable; urgency=low
+
+  * Install header files and static libs into a separate binary package
+    to retain compatibility with other Xen applications in Debian
+    (Bug #22199)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 11 May 2011 16:08:10 +0200
+
 xen-4.1 (4.1.0-1) unstable; urgency=low
 
   * Initial release (Bug #18357)
