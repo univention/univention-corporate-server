@@ -56,7 +56,3 @@ if __name__ == '__main__':
 
 		doIt(['install', '-m', '755', '-d', dest_path])
 		doIt(['install', '-m', '644', source, dest])
-
-		real_conffile = os.path.join( us_info.ServiceInfo.BASE_DIR,
-					      us_info.ServiceInfo.SERVICES,
-					      package + us_info.ServiceInfo.FILE_SUFFIX )

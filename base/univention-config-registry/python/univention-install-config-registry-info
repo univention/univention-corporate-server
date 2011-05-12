@@ -75,7 +75,3 @@ if __name__ == '__main__':
 
 		doIt(['install', '-m', '755', '-d', dest_path])
 		doIt(['install', '-m', '644', source, dest])
-
-		real_conffile = os.path.join( ucr_info.ConfigRegistryInfo.BASE_DIR,
-									  ucr_info.ConfigRegistryInfo.VARIABLES,
-									  package + '.cfg' )
