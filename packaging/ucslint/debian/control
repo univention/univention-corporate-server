@@ -2,7 +2,9 @@ Source: ucslint
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7), python-support, python2.6
+Build-Depends: debhelper (>> 7),
+ python-support,
+ python2.6
 Standards-Version: 3.6.1
 
 Package: ucslint
@@ -18,5 +20,3 @@ Description: ucslint - Univention packaging check tool
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
-
-
