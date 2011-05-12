@@ -93,9 +93,9 @@ install-arch: install-arch-common $(PYVERS:%=install-python%)
 	mv $(CURDIR)/xen-4.1.0/tools/xenstore/xs.h debian/libxen-dev/usr/include/
 	mv $(CURDIR)/xen-4.1.0/tools/include/xen debian/libxen-dev/usr/include/
 	rm -rf debian/xen-4.1/usr/include
-	rm -rf debian/libxen-dev/usr/lib/libxenctrl.a
-	rm -rf debian/libxen-dev/usr/lib/libxenguest.a
-	rm -rf debian/libxen-dev/usr/lib/libxenstore.a
+	rm -rf debian/xen-4.1/usr/lib/libxenctrl.a
+	rm -rf debian/xen-4.1/usr/lib/libxenguest.a
+	rm -rf debian/xen-4.1/usr/lib/libxenstore.a
 	dh_install -s
 
 # Must not depend on anything. This is to be called by
