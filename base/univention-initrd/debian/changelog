@@ -1,3 +1,10 @@
+univention-initrd (4.0.0-2) unstable; urgency=low
+
+  * Temporarily drop dependency on univention-bootsplash, not yet
+    ported. (Bug #22431)	
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 12 May 2011 15:51:10 +0200
+
 univention-initrd (4.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #22431)
