@@ -31,27 +31,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys
-import subprocess
+import os
+import sys
 import univention.config_registry
-
-def doIt(argv):
-	"""Execute argv and wait."""
-	if os.environ.get('DH_VERBOSE', False):
-		print '\t%s' % ' '.join(argv)
-	return subprocess.call(argv)
-
-def getPackages():
-	packages = []
-	fp = open('debian/control')
-	for line in fp.readlines():
-		if not line.startswith('Package: '):
-			continue
-		line = line[0:-1]
-		field, value = line.split(': ')
-		packages.append(value)
-	fp.close()
-	return packages
+from univention.debhelper import doIt, binary_packages
 
 def tmpDir(package):
 	return 'debian/'+package
@@ -60,6 +43,7 @@ def extFile(package, ext):
 	return 'debian/'+package+'.'+ext
 
 def srcPath(file):
+	"""Find file in source directory."""
 	f = 'conffiles/'+file
 	if os.path.exists(f): return f
 	f = file
@@ -67,7 +51,7 @@ def srcPath(file):
 	if file.startswith('etc/'):
 		f = 'conffiles/'+file[4:]
 		if os.path.exists(f): return f
-	print "file "+file+" was not found"
+	print >>sys.stderr, "file %s was not found" % file
 	sys.exit(1)
 
 def destPath(file, package, type='files'):
@@ -78,96 +62,95 @@ def destDir(file, package, type='files'):
 
 def typeDir(type):
 	if type == 'script':
-		return type
+		return 'script'
 	else:
 		return 'file'
 
+def do_package(package):
+	n_ucr = extFile(package, 'univention-config-registry')
+	if not os.path.exists(n_ucr):
+		return
+
+	f_postinst = open(extFile(package, 'postinst.debhelper'), 'a')
+	f_preinst = open(extFile(package, 'preinst.debhelper'), 'a')
+	f_postrm = open(extFile(package, 'postrm.debhelper'), 'a')
+	f_prerm = open(extFile(package, 'prerm.debhelper'), 'a')
+	f_ucr = open(n_ucr, 'r')
+	
+	def do_divert(f, filelist=set()):
+		if f[0] != '/':
+			f = '/%s' % f
+		if f in filelist:
+			return
+		d = '%s.debian' % f
+		f_preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert "%s" --add "%s" || true\n' % (d, f))
+		f_postrm.write('test "$1" = "remove" && rm -f "%s" && dpkg-divert --rename --quiet --divert "%s" --remove "%s" || true\n' % (f, d, f))
+		f_postinst.write('res=$(dpkg-divert --list --quiet "%s") && if [ -z "$res" ]; then dpkg-divert --quiet --divert "%s" --add "%s"; fi || true\n' % (f, d, f))
+		filelist.add(f)
+
+	for item in univention.config_registry.parseRfc822(f_ucr.read()):
+		typ = item['Type'][0]
+		if typ == 'file':
+			f = item['File'][0]
+			doIt(['install', '-d', destDir(f, package)])
+			doIt(['cp', '-a', srcPath(f), destPath(f, package)])
+			for key in ('Preinst', 'Postinst'):
+				if key in item:
+					mod = item[key][0]
+					doIt(['install', '-d', destDir(mod, package, 'modules')])
+					doIt(['cp', '-a', srcPath(mod), destPath(mod, package, 'modules')])
+		elif typ == 'subfile':
+			f = item['Subfile'][0]
+			doIt(['install', '-d', destDir(f, package)])
+			doIt(['cp', '-a', srcPath(f), destPath(f, package)])
+		elif typ == 'multifile':
+			f = item['Multifile'][0]
+			if os.path.exists(f):
+				doIt(['install', '-d', destDir(f, package)])
+				doIt(['cp', '-a', srcPath(f), destPath(f, package)])
+		elif typ == 'script':
+			f = item['Script'][0]
+			doIt(['install', '-d', destDir(f, package, 'scripts')])
+			doIt(['cp', '-a', srcPath(f), destPath(f, package, 'scripts')])
+			doIt(['chmod', 'a+x', destPath(f, package, 'scripts')])
+		elif typ == 'module':
+			f = item['Module'][0]
+			doIt(['install', '-d', destDir(f, package, 'modules')])
+			doIt(['cp', '-a', srcPath(f), destPath(f, package, 'modules')])
+		else:
+			print >>sys.stderr, 'Unknown type: %s' % typ
+			return
+
+		if item.get('File'):
+			for f in item['File']:
+				do_divert(f)
+		elif item.get('Subfile'):
+			for f in item['Subfile']:
+				do_divert(f)
+		elif item.get('Multifile'):
+			for f in item['Multifile']:
+				do_divert(f)
+
+	f_ucr.close()
+
+	doIt(['install', '-d', destDir('', package, 'info')])
+	doIt(['install', '-m644', n_ucr, destPath(package+'.info', package, 'info')])
+	mapping_file = extFile( package, 'univention-config-registry-mapping')
+	if os.path.exists(mapping_file):
+		doIt(['install', '-d', destDir('', package, 'mapping')])
+		doIt(['install', '-m644', mapping_file, destPath(package+'.univention-config-registry-mapping', package, 'mapping')])
+
+	f_postinst.write('test -x /usr/sbin/univention-config-registry && univention-config-registry register "%s" || true\n' % package)
+
+	f_prerm.write('\n')
+	f_prerm.write('if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then\n')
+	f_prerm.write('	test -x /usr/sbin/univention-config-registry && univention-config-registry unregister "%s" || true\n' % package)
+	f_prerm.write('fi\n')
+	f_prerm.write('\n')
+
 if __name__ == '__main__':
-	for package in getPackages():
-		file = extFile(package, 'univention-config-registry')
-		if not os.path.exists(file):
-			continue
-
-		postinst = open(extFile(package, 'postinst.debhelper'), 'a')
-		preinst = open(extFile(package, 'preinst.debhelper'), 'a')
-		postrm = open(extFile(package, 'postrm.debhelper'), 'a')
-		prerm = open(extFile(package, 'prerm.debhelper'), 'a')
-		fp = open(file)
-		filelist = []
-		for item in univention.config_registry.parseRfc822(fp.read()):
-			if item['Type'][0] == 'file':
-				f = item['File'][0]
-				doIt(['install', '-d', destDir(f, package)])
-				doIt(['cp', '-a', srcPath(f), destPath(f, package)])
-				for key in ('Preinst', 'Postinst'):
-					if item.has_key(key):
-						mod = item[key][0]
-						doIt(['install', '-d', destDir(mod, package, 'modules')])
-						doIt(['cp', '-a', srcPath(mod), destPath(mod, package, 'modules')])
-			elif item['Type'][0] == 'subfile':
-				f = item['Subfile'][0]
-				doIt(['install', '-d', destDir(f, package)])
-				doIt(['cp', '-a', srcPath(f), destPath(f, package)])
-			elif item['Type'][0] == 'multifile':
-				f = item['Multifile'][0]
-				if os.path.exists(f):
-					doIt(['install', '-d', destDir(f, package)])
-					doIt(['cp', '-a', srcPath(f), destPath(f, package)])
-			elif item['Type'][0] == 'script':
-				f = item['Script'][0]
-				doIt(['install', '-d', destDir(f, package, 'scripts')])
-				doIt(['cp', '-a', srcPath(f), destPath(f, package, 'scripts')])
-				doIt(['chmod', 'a+x', destPath(f, package, 'scripts')])
-			elif item['Type'][0] == 'module':
-				f = item['Module'][0]
-				doIt(['install', '-d', destDir(f, package, 'modules')])
-				doIt(['cp', '-a', srcPath(f), destPath(f, package, 'modules')])
-			if item.has_key('File'):
-				for f in item['File']:
-					if f[0] != '/':
-						f = '/'+f
-					if not f in filelist:
-						preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert %s --add %s || true\n' % (f+'.debian', f))
-						postrm.write('test "$1" = "remove" && rm -f %s && dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f, f+'.debian', f))
-						postinst.write('res=$(dpkg-divert --list --quiet %s) && if [ -z "$res" ]; then dpkg-divert --quiet --divert %s --add %s; fi || true\n' % (f,f+'.debian', f))
-						filelist.append(f)
-			elif item.has_key('Subfile'):
-				for f in item['Subfile']:
-					if f[0] != '/':
-						f = '/'+f
-					if not f in filelist:
-						preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert %s --add %s || true\n' % (f+'.debian', f))
-						postrm.write('test "$1" = "remove" && rm -f %s && dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f, f+'.debian', f))
-						postinst.write('res=$(dpkg-divert --list --quiet %s) && if [ -z "$res" ]; then dpkg-divert --quiet --divert %s --add %s; fi || true\n' % (f,f+'.debian', f))
-						filelist.append(f)
-						filelist.append(f)
-			elif item.has_key('Multifile'):
-				for f in item['Multifile']:
-					if f[0] != '/':
-						f = '/'+f
-					if not f in filelist:
-						preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert %s --add %s || true\n' % (f+'.debian', f))
-						postrm.write('test "$1" = "remove" && rm -f %s && dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f, f+'.debian', f))
-						postinst.write('res=$(dpkg-divert --list --quiet %s) && if [ -z "$res" ]; then dpkg-divert --quiet --divert %s --add %s; fi || true\n' % (f,f+'.debian', f))
-						filelist.append(f)
-						filelist.append(f)
-
-		fp.close()
-
-		doIt(['install', '-d', destDir('', package, 'info')])
-		doIt(['install', '-m644', file, destPath(package+'.info', package, 'info')])
-		mapping_file = extFile( package, 'univention-config-registry-mapping')
-		if os.path.exists(mapping_file):
-			doIt(['install', '-d', destDir('', package, 'mapping')])
-			doIt(['install', '-m644', mapping_file, destPath(package+'.univention-config-registry-mapping', package, 'mapping')])
-
-		postinst.write('test -x /usr/sbin/univention-config-registry && univention-config-registry register %s || true\n' % package)
-
-		prerm.write('\n')
-		prerm.write('if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then\n')
-		prerm.write('	test -x /usr/sbin/univention-config-registry && univention-config-registry unregister %s || true\n' % package)
-		prerm.write('fi\n')
-		prerm.write('\n')
+	for package in binary_packages():
+		do_package(package)
 
 	doIt(["univention-install-config-registry-info"])
 	doIt(["univention-install-service-info"])

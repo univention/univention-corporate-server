@@ -32,25 +32,8 @@
 # <http://www.gnu.org/licenses/>.
 
 import os, sys
-import subprocess
 import univention.service_info as us_info
-
-def doIt(argv):
-	"""Execute argv and wait."""
-	if os.environ.get('DH_VERBOSE', False):
-		print '\t%s' % ' '.join(argv)
-	return subprocess.call(argv)
-
-def binary_packages():
-	_prefix = 'Package: '
-	packages = []
-	fp = open( 'debian/control' )
-	for line in fp.readlines():
-		if not line.startswith( _prefix ):
-			continue
-		packages.append( line[ len( _prefix ) :  -1 ] )
-	fp.close()
-	return packages
+from univention.debhelper import doIt, binary_packages
 
 if __name__ == '__main__':
 	info = us_info.ServiceInfo( install_mode = True )

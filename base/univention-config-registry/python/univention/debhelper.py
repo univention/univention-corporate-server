@@ -1,9 +1,9 @@
-#!/usr/bin/make -f
+# -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
-#  rules file for the debian package
+"""Debhelper compatible routines."""
 #
-# Copyright 2004-2011 Univention GmbH
+# Copyright 2010-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,31 +30,24 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-%:
-	dh $@
+import os
+import subprocess
 
-override_dh_auto_clean:
-	[ ! -f Makefile ] || $(MAKE) maintainer-clean
-	$(RM) Makefile.in lib/Makefile.in include/Makefile.in include/univention/Makefile.in
-	$(RM) configure
-	$(RM) aclocal.m4 config.* install-sh ltmain.sh missing mkinstalldirs depcomp
+def doIt(argv):
+	"""Execute argv and wait."""
+	if os.environ.get('DH_VERBOSE', False):
+		print '\t%s' % ' '.join(argv)
+	return subprocess.call(argv)
 
-override_dh_auto_configure:
-	libtoolize
-	aclocal
-	autoconf
-	automake --add-missing
-	./configure --prefix=/usr
-
-version := $(shell dpkg-parsechangelog | sed -ne 's/Version: //p')
-override_dh_auto_install:
-	dh_auto_install --buildsystem=makefile
-
-	install -d debian/tmp/usr/share/pyshared/univention
-	sed -e 's/@%@package_version@%@/$(version)/' <python/univention/config_registry.py >debian/tmp/usr/share/pyshared/univention/config_registry.py
-
-	PYTHONPATH=$(CURDIR)/python \
-	PATH=$(CURDIR)/python:${PATH} \
-		 $(CURDIR)/python/univention-install-config-registry
-
-override_dh_installinit: ; # BUG: install -p -m755 debian/univention-config-registry.univention-config-registry debian/univention-config-registry/etc/init.d/univention-config-registry
+def binary_packages():
+	_prefix = 'Package: '
+	packages = []
+	f = open('debian/control', 'r')
+	try:
+		for line in f:
+			if not line.startswith(_prefix):
+				continue
+			packages.append(line[len( _prefix): -1])
+	finally:
+		f.close()
+	return packages

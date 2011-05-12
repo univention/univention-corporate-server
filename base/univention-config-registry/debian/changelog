@@ -1,3 +1,10 @@
+univention-config-registry (7.0.2-3) unstable; urgency=low
+
+  * Fix embedded package version in ucr (Bug #22160)
+  * Prepare source for dpkg-divert cleanup.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 12 May 2011 12:30:52 +0200
+
 univention-config-registry (7.0.2-2) unstable; urgency=low
 
   * Drop global logrotate for /var/log/univention/* (Bug #18002)

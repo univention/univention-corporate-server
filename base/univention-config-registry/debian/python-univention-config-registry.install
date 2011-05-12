@@ -1,4 +1,5 @@
 python/univention/config_registry_info.py usr/share/pyshared/univention/
-python/univention/config_registry.py usr/share/pyshared/univention/
 python/univention/info_tools.py usr/share/pyshared/univention/
 python/univention/service_info.py usr/share/pyshared/univention/
+python/univention/debhelper.py usr/share/pyshared/univention/
+usr/share/pyshared/univention/config_registry.py 

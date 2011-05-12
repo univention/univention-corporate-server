@@ -1181,7 +1181,7 @@ def handler_info( args, opts = {} ):
 def handler_help( args, opts = {} ):
 	print '''
 univention-config-registry: base configuration for UCS
-copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany
+copyright (c) 2001-2011 Univention GmbH, Germany
 
 Syntax:
   univention-config-registry [options] <action> [options] [parameters]
@@ -1255,7 +1255,7 @@ Known-Bugs:
 
 def handler_version( args, opts = {} ):
 	print 'univention-config-registry @%@package_version@%@'
-	sys.exit(0);
+	sys.exit(0)
 
 def missing_parameter(action):
 	print 'error: too few arguments for command [%s]' % action
