@@ -1,3 +1,9 @@
+xen-4.1 (4.1.0-4) unstable; urgency=low
+
+  * Fix includes (Bug #22199)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 12 May 2011 14:06:10 +0200
+
 xen-4.1 (4.1.0-3) unstable; urgency=low
 
   * Fix installation of static libs (Bug #22199)
