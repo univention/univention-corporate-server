@@ -16,10 +16,17 @@ if baseConfig['ldap/hostdn']:
 	print '   by dn.base="%s" read' % baseConfig['ldap/hostdn']
 @!@   by * none
 
-access to *
-   by * read
-
 @!@
+print 'access to *'
+if baseConfig.is_false('ldap/acl/read/anonymous'):
+	print '   by users read'
+	ldap_acl_read_anonymous_ips = baseConfig.get('ldap/acl/read/ips', '127.0.0.1').strip()
+	for ip in ldap_acl_read_anonymous_ips.split(','):
+		print '   by peername.ip=%s read' % ip
+else:
+	print '   by * read'
+print
+
 if configRegistry.get('ldap/replog', '').lower() in ('true', 'yes'):
 	print "replogfile /var/lib/univention-ldap/replog/replog"
 @!@
