@@ -65,7 +65,15 @@ static const char *univention_debug_id_text[] = {
 	"ADMIN      ",
 	"CONFIG     ",
 	"LICENSE    ",
-	"KERBEROS   "
+	"KERBEROS   ",
+	"DHCP       ",
+	"PROTOCOL   ",
+	"MODULE     ",
+	"ACL        ",
+	"RESOURCES  ",
+	"PARSER     ",
+	"LOCALE     ",
+	"AUTH       ",
 };
 
 static const char *univention_debug_level_text[] = {

@@ -178,6 +178,16 @@ void init_debug(void)
     PyDict_SetItemString(dict, "POLICY", PyInt_FromLong(UV_DEBUG_POLICY));
     PyDict_SetItemString(dict, "ADMIN", PyInt_FromLong(UV_DEBUG_ADMIN));
     PyDict_SetItemString(dict, "CONFIG", PyInt_FromLong(UV_DEBUG_CONFIG));
+    PyDict_SetItemString(dict, "LICENSE", PyInt_FromLong(UV_DEBUG_LICENSE));
+    PyDict_SetItemString(dict, "KERBEROS", PyInt_FromLong(UV_DEBUG_KERBEROS));
+    PyDict_SetItemString(dict, "DHCP", PyInt_FromLong(UV_DEBUG_DHCP));
+    PyDict_SetItemString(dict, "PROTOCOL", PyInt_FromLong(UV_DEBUG_PROTOCOL));
+    PyDict_SetItemString(dict, "MODULE", PyInt_FromLong(UV_DEBUG_MODULE));
+    PyDict_SetItemString(dict, "ACL", PyInt_FromLong(UV_DEBUG_ACL));
+    PyDict_SetItemString(dict, "RESOURCES", PyInt_FromLong(UV_DEBUG_RESOURCES));
+    PyDict_SetItemString(dict, "PARSER", PyInt_FromLong(UV_DEBUG_PARSER));
+    PyDict_SetItemString(dict, "LOCALE", PyInt_FromLong(UV_DEBUG_LOCALE));
+    PyDict_SetItemString(dict, "AUTH", PyInt_FromLong(UV_DEBUG_AUTH));
 
     PyDict_SetItemString(dict, "NO_FLUSH", PyInt_FromLong(UV_DEBUG_NO_FLUSH));
     PyDict_SetItemString(dict, "FLUSH", PyInt_FromLong(UV_DEBUG_FLUSH));
