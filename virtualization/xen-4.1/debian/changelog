@@ -1,3 +1,9 @@
+xen-4.1 (4.1.0-5) unstable; urgency=low
+
+  * Also include xen/sys headers (Bug #22199)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 12 May 2011 15:02:43 +0200
+
 xen-4.1 (4.1.0-4) unstable; urgency=low
 
   * Fix includes (Bug #22199)

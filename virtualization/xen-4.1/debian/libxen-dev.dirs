@@ -1,2 +1,2 @@
 usr/lib
-usr/include/xen
+usr/include/xen/sys
