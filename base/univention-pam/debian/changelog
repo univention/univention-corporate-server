@@ -1,3 +1,9 @@
+univention-pam (5.0.1-1) unstable; urgency=low
+
+  * configure rootbinddn for nss_ldap and pam_ldap (Bug #17519)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 12 May 2011 20:10:48 +0200
+
 univention-pam (5.0.0-2) unstable; urgency=low
 
   * added univention-pam.install (Bug #20138) 

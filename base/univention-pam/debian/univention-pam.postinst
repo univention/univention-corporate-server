@@ -49,6 +49,14 @@ univention-config-registry set \
 	nssldap/tls/checkpeer?no \
 	auth/faillog?no
 
+eval "$(univention-config-registry shell)"
+# /etc/pam_ldap.secret is required for rootbinddn in /etc/pam_ldap.conf
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	ln -sf /etc/ldap.secret /etc/pam_ldap.secret
+else
+	ln -sf /etc/machine.secret /etc/pam_ldap.secret
+fi
+
 if [ "$1" = "configure" -a -z "$2" ]; then
 	univention-config-registry set nscd/group/invalidate_cache_on_changes="true"
 fi
