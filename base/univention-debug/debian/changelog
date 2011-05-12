@@ -1,3 +1,9 @@
+univention-debug (5.0.2-2) unstable; urgency=low
+
+  * add build dependency to python-support; Bug #22160
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 12 May 2011 12:22:59 +0200
+
 univention-debug (5.0.2-1) unstable; urgency=low
 
   * Add several new debug ids; Bug #22496
