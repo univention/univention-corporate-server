@@ -33,12 +33,12 @@
 import os
 import subprocess
 
-def postinst(baseConfig, changes):
-	if baseConfig.get( 'interfaces/handler', 'ifplugd' ) == 'networkmanager':
+def postinst(configRegistry, changes):
+	if configRegistry.get( 'interfaces/handler', 'ifplugd' ) == 'networkmanager':
 		return
-	for key in baseConfig.keys():
+	for key in configRegistry.keys():
 		if key.startswith('interfaces/') and key.endswith('/type'):
-			if baseConfig[key] == 'dhcp' and os.path.exists('/sbin/dhclient'):
+			if configRegistry[key] == 'dhcp' and os.path.exists('/sbin/dhclient'):
 				iface=key.split('/')[1]
 				subprocess.call( [ 'ifdown', iface ] )
 				subprocess.call( [ 'ifup', iface ] )

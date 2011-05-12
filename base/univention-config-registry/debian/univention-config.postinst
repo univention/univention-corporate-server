@@ -37,7 +37,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.13; th
 	/usr/sbin/univention-config-registry set nsswitch/ldap=no
 
 	for group in scanner nvram rdma fuse kvm; do
-		gidNumber=`getent group $group | awk -F':' '{print $3}'`
+		gidNumber=$(getent group "$group" | awk -F':' '{print $3}')
 		if [ -z "$gidNumber" ]; then
 			continue
 		fi
@@ -46,22 +46,23 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.13; th
 			continue
 		fi
 
-		members=`getent group $group | awk -F':' '{print $4}'`
-		delgroup $group
+		members=$(getent group "$group" | awk -F':' '{print $4}')
+		delgroup "$group"
 		if [ -x /usr/sbin/nscd ]; then
 			nscd -i group
 		fi
-		addgroup --system $group
+		addgroup --system "$group"
 		if [ -n "$members" ]; then
-			for member in `echo $members | sed -e 's|,| |g'`; do
-				adduser $member $group
+			for member in $(echo "$members" | sed -e 's|,| |g')
+			do
+				adduser "$member" "$group"
 			done
 		fi
 	done
 
-	/usr/sbin/univention-config-registry set nsswitch/ldap=$nsswitch_ldap
+	/usr/sbin/univention-config-registry set nsswitch/ldap="$nsswitch_ldap"
 	
-	uidNumber=`getent passwd tss | awk -F':' '{print $3}'`
+	uidNumber=$(getent passwd tss | awk -F':' '{print $3}')
 	if [ "$uidNumber" -gt 999 ]; then
 		userdel tss
 		useradd --system tss
@@ -95,8 +96,6 @@ if ! getent group kvm | grep -q '^kvm'; then
     addgroup --system kvm
 fi
 
-
 #DEBHELPER#
 
 exit 0
-

@@ -13,37 +13,37 @@ menutitle=''
 serversystem=False
 recommend_ussnet=False
 
-if   baseConfig['server/role'] == 'fatclient':
+if   configRegistry['server/role'] == 'fatclient':
 	menutitle="Univention Managed Client"
-elif baseConfig['server/role'] =='mobileclient':
+elif configRegistry['server/role'] =='mobileclient':
 	menutitle="Univention Mobile Client"
-elif baseConfig['server/role'] =='domaincontroller_master':
+elif configRegistry['server/role'] =='domaincontroller_master':
 	menutitle="Univention DC Master"
 	serversystem=True
-elif baseConfig['server/role'] =='domaincontroller_backup':
+elif configRegistry['server/role'] =='domaincontroller_backup':
 	menutitle="Univention DC Backup"
 	serversystem=True
-elif baseConfig['server/role'] =='domaincontroller_slave':
+elif configRegistry['server/role'] =='domaincontroller_slave':
 	menutitle="Univention DC Slave"
 	serversystem=True
-elif baseConfig['server/role'] =='memberserver':
+elif configRegistry['server/role'] =='memberserver':
 	menutitle="Univention Memberserver"
 	serversystem=True
 else:
 	menutitle="Univention Corporate Server"
 
-if baseConfig.has_key('version/version'):
-	print  '%s %s-%s-%s' % (menutitle, baseConfig['version/version'], baseConfig['version/patchlevel'], baseConfig['version/security-patchlevel'])
+if configRegistry.get('version/version'):
+	print  '%s %s-%s-%s' % (menutitle, configRegistry['version/version'], configRegistry['version/patchlevel'], configRegistry['version/security-patchlevel'])
 else:
 	print 'Univention Thin Client'
 
 if serversystem:
 	for device in ['eth0', 'eth1', 'eth2', 'eth3']:
-		type=baseConfig.get('interfaces/%s/type' % device)
+		type=configRegistry.get('interfaces/%s/type' % device)
 		if type == 'dhcp':
-			fallback_address=baseConfig.get('interfaces/%s/fallback/address' % device)
+			fallback_address=configRegistry.get('interfaces/%s/fallback/address' % device)
 			if fallback_address:
-		  		current_address=baseConfig.get('interfaces/%s/address' % device )
+		  		current_address=configRegistry.get('interfaces/%s/address' % device )
 		  		if current_address != fallback_address:
 					print ''
 					print 'Warning: Network device %s currently uses the IP address "%s", obtained via dhcp,' % (device, current_address)

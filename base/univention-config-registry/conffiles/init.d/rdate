@@ -1,6 +1,6 @@
-@%@BCWARNING=# @%@
-
 #!/bin/sh
+
+@%@UCRWARNING=# @%@
 
 PATH=/sbin:/bin
 

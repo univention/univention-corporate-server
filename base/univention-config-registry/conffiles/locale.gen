@@ -17,7 +17,7 @@
 
 
 @!@
-if configRegistry.has_key('locale') and configRegistry['locale']:
+if configRegistry.get('locale'):
 	for l in configRegistry['locale'].split(' '):
 		print l.replace(':', ' ')
 @!@

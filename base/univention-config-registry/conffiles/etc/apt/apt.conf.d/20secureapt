@@ -1,12 +1,9 @@
 /*
-@%@BCWARNING=# @%@
+@%@UCRWARNING=# @%@
 */
 @!@
-if baseConfig.has_key('update/secure_apt'):
-	if baseConfig['update/secure_apt'].lower() in ['true', 'yes']:
-		print 'APT::Get::AllowUnauthenticated 0 ;'
-	else:
-		print 'APT::Get::AllowUnauthenticated 1 ;'
+if configRegistry.is_true('update/secure_apt', False):
+	print 'APT::Get::AllowUnauthenticated 0 ;'
 else:
 	print 'APT::Get::AllowUnauthenticated 1 ;'
 @!@

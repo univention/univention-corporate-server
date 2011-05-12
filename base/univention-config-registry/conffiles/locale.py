@@ -38,6 +38,6 @@ def mk_locale_archive():
 def locale_gen():
 	os.system('/usr/sbin/locale-gen')
 
-def handler(baseConfig, changes):
+def handler(configRegistry, changes):
 	mk_locale_archive()
 	locale_gen()

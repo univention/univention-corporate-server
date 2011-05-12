@@ -1,3 +1,18 @@
+univention-config-registry (7.0.2-1) unstable; urgency=low
+
+  * Set hashbang to python2.6 (Bug #22160)
+  * Change to debhelper7.
+  * Drop all references to baseconfig.
+  * debian/control:
+    - Change libunivention-config-dev from all to any.
+    - Tighten inter-package-dependencies 
+    - Cleanup external Depends.
+    - Switch to newer autoconf-1.11.
+  * conffiles/init.d/rdate: Fix she-bang after BCWARNING (Bug #21431)
+  * Fix quoting.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 12 May 2011 10:05:02 +0200
+
 univention-config-registry (7.0.1-1) unstable; urgency=low
 
   * default to UTF-8 for template script processing (Bug #22428)
@@ -1660,7 +1675,7 @@ univention-config-registry (2.2.7-2) unstable; urgency=low
 
  -- Janis Meybohm <meybohm@univention.de>  Fri, 27 Jul 2007 11:40:05 +0200
 
-univention-config-registry (2.2.7-1 ) unstable; urgency=low
+univention-config-registry (2.2.7-1) unstable; urgency=low
 
   * UnicodeConfig: removed function 'read' as the codecs module does not help
     to fix the encoding problem

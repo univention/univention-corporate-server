@@ -1,10 +1,6 @@
 @%@UCRWARNING=# @%@
 
 @!@
-if baseConfig.has_key( 'locale/default' ):
-       try:
-               print 'LANG=%s' % baseConfig[ 'locale/default' ].split(':')[0]
-
-       except:
-               pass
+if configRegistry.get('locale/default'):
+	print 'LANG=%s' % configRegistry['locale/default'].split(':')[0]
 @!@

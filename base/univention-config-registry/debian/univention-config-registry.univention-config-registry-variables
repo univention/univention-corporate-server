@@ -19,55 +19,55 @@ Categories=system-base
 [umask]
 Description[de]=Standard umask für Benutzer
 Description[en]=Default umask for Users
-Type=str
+Type=int
 Categories=system-base
 
 [sshd/autostart]
 Description[de]=Definiert, ob der SSH-Dienst automatisch gestartet werden soll
 Description[en]=defines if the SSH daemon should be started automatically
-Type=str
+Type=bool
 Categories=service-ssh
 
 [sshd/port]
 Description[de]=Port für den SSH-Dienst
 Description[en]=Port for the SSH daemon
-Type=str
+Type=int
 Categories=service-ssh
 
 [sshd/permitroot]
 Description[de]=root Zugang per SSH erlauben
 Description[en]=permit root access via SSH
-Type=str
+Type=bool
 Categories=service-ssh
 
 [sshd/xforwarding]
 Description[de]=Portweiterleitung für die X-Sitzung
 Description[en]=Port forwarding for the X session
-Type=str
+Type=bool
 Categories=service-ssh
 
 [sshd/xdisplayoffset]
 Description[de]=Erster Port für die Weiterleitung der X-Sitzung
 Description[en]=First port for forwarded X sessions
-Type=str
+Type=int
 Categories=service-ssh
 
 [sshd/xuselocalhost]
 Description[de]=Den lokalen Rechner die Weiterleitung verwenden
 Description[en]=Use localhost for the port forwarding
-Type=str
+Type=bool
 Categories=service-ssh
 
 [sshd/challengeresponse]
 Description[de]=Aktiviere/Deaktiviere challenge response authentication
 Description[en]=Enable/Disable challenge response authentication
-Type=str
+Type=bool
 Categories=service-ssh
 
 [sshd/passwordauthentication]
 Description[de]=Aktiviere/Deaktiviere password authentication direkt über sshd
 Description[en]=Enable/Disable password authentication via sshd directly
-Type=str
+Type=bool
 Categories=service-ssh
 
 [domainname]
@@ -181,13 +181,13 @@ Categories=system-base
 [kernel/do_bootfloppy]
 Description[de]=Unterbinde Fragen bzgl. Erstellung einer Bootdiskette
 Description[en]=Prevent questions about creating a boot floppy
-Type=str
+Type=bool
 Categories=system-base
 
 [kernel/do_initrd]
 Description[de]=Unterbinde Warnmeldungen wenn ein Initrd Kernel installiert wird
 Description[en]=Prevent warning message when installing an initrd kernel
-Type=str
+Type=bool
 Categories=system-base
 
 [kernel/postinst_hook]
@@ -211,7 +211,7 @@ Categories=system-base
 [kernel/silent_loader]
 Description[de]=Überspringe die Frage ob der Bootloader gestartet werden soll
 Description[en]=Skip the question asked before running the bootloader
-Type=str
+Type=bool
 Categories=system-base
 
 [ldap/backup]
@@ -325,7 +325,7 @@ Categories=System
 [log/rotate/weeks]
 Description[de]=Rotations-Intervall für System-Logdateien (in Wochen)
 Description[en]=Rotation interval for system log files (in weeks)
-Type=str
+Type=int
 Categories=system-base
 
 [log/rotate/univention/compress]
@@ -355,7 +355,7 @@ Categories=system-network
 [nameserver/option/timeout]
 Description[de]=Nach wievielen Sekunden der nächste DNS-Server gefragt wird
 Description[en]=After how may seconds the next DNS servers is used
-Type=str
+Type=int
 Categories=system-network
 
 [proxy/password]
@@ -397,19 +397,19 @@ Categories=system-network
 [ucr/output/brief]
 Description[de]=UCR aktiviert für das Kommando search standardmäßig die Option --brief (yes, no)
 Description[en]=UCR activates the option --brief of the search-command by default (yes, no)
-Type=str
+Type=bool
 Categories=system-base
 
 [version/patchlevel]
 Description[de]=Patchlevel der UCS Version
 Description[en]=Patchlevel of the UCS version
-Type=str
+Type=int
 Categories=system-base
 
 [version/security-patchlevel]
 Description[de]=Security-Patchlevel der UCS Version
 Description[en]=Security patchlevel of the UCS version
-Type=str
+Type=int
 Categories=system-base
 
 [version/version]
@@ -463,25 +463,25 @@ Categories=Misc
 [password/quality/credit/digits]
 Description[de]=Dies ist die minimale Anzahl von Zahlen, die in dem neuen Passwort vorkommen muss.
 Description[en]=This is the minimum number of digits that must be met for a new password.
-Type=str
+Type=int
 Categories=system-password
 
 [password/quality/credit/upper]
 Description[de]=Dies ist die minimale Anzahl von Grossbuchstaben, die in dem neuen Passwort vorkommen muss.
 Description[en]=This is the minimum number of upper case letters that must be met for a new password.
-Type=str
+Type=int
 Categories=system-password
 
 [password/quality/credit/lower]
 Description[de]=Dies ist die minimale Anzahl von Kleinbuchstaben, die in dem neuen Passwort vorkommen muss.
 Description[en]=This is the minimum number of lower case letters that must be met for a new password. 
-Type=str
+Type=int
 Categories=system-password
 
 [password/quality/credit/other]
 Description[de]=Dies ist die minimale Anzahl von anderen Zeichen, die in dem neuen Passwort vorkommen muss.
 Description[en]=This is the minimum number of other characters that must be met for a new password. 
-Type=str
+Type=int
 Categories=system-password
 
 [password/quality/forbidden/chars]
@@ -499,5 +499,5 @@ Categories=system-password
 [syslog/mail/mirrorto/syslog]
 Description[de]=Definiert, ob Log-Meldungen aus dem Bereich mail in der Log-Datei /var/log/syslog gespeichert werden.
 Description[en]=Specifies whether log messages from the facility mail should be saved in /var/log/syslog.
-Type=str
+Type=bool
 Categories=system-base

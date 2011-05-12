@@ -35,48 +35,42 @@ test -f "/etc/univention/templates/cache" && rm -f "/etc/univention/templates/ca
 dpkg-statoverride --add root adm 0750 /var/log/
 dpkg-statoverride --add root adm 0750 /var/log/univention
 
-univention-baseconfig set ldap/base?dc=univention,dc=unconfigured
-
-univention-baseconfig set ldap/server/name?ds1
-univention-baseconfig set ldap/server/ip?127.0.0.1
-
-univention-baseconfig set ldap/binaryattributes?""
-
-univention-baseconfig set browser-cache?0
-
-univention-baseconfig set log/rotate/weeks?12
-univention-baseconfig set log/rotate/univention/compress?yes
-
-univention-baseconfig set nameserver/option/timeout?2
-
-univention-baseconfig set update/secure_apt?no
+univention-config-registry set ldap/base?dc=univention,dc=unconfigured \
+	ldap/server/name?ds1 \
+	ldap/server/ip?127.0.0.1 \
+	ldap/binaryattributes?"" \
+	browser-cache?0 \
+	log/rotate/weeks?12 \
+	log/rotate/univention/compress?yes \
+	set nameserver/option/timeout?2 \
+	update/secure_apt?no \
 
 # services
-univention-baseconfig set cron/autostart?yes
-univention-baseconfig set inetd/autostart?yes
-univention-baseconfig set nscd/autostart?yes
-univention-baseconfig set ntp/autostart?yes
-univention-baseconfig set sshd/autostart?yes
-univention-baseconfig set portmap/autostart?yes
+univention-config-registry set cron/autostart?yes \
+	inetd/autostart?yes \
+	nscd/autostart?yes \
+	ntp/autostart?yes \
+	sshd/autostart?yes \
+	portmap/autostart?yes \
 
 # syslog
 if [ "$1" = configure -a -z "$2" ]; then
 	# installation
-	univention-baseconfig set syslog/mail/mirrorto/syslog?no
+	univention-config-registry set syslog/mail/mirrorto/syslog?no
 else
 	# update
-	univention-baseconfig set syslog/mail/mirrorto/syslog?yes
+	univention-config-registry set syslog/mail/mirrorto/syslog?yes
 fi
 
 # this must be done _before_ dephelper runs
 if [ "$1" = configure -a \! -e /vmlinuz.install -a \! -e /initrd.img.install ]; then
-	newestkernel=`readlink /vmlinuz`
-	if [ -z "$newestkernel" ]; then newestkernel=boot/vmlinuz-`uname -r`; fi
-	newestinitrd=`readlink /initrd.img`
-	if [ -z "$newestinitrd" ]; then newestinitrd=boot/initrd.img-`uname -r`; fi
+	newestkernel=$(readlink /vmlinuz)
+	if [ -z "$newestkernel" ]; then newestkernel=boot/vmlinuz-$(uname -r); fi
+	newestinitrd=$(readlink /initrd.img)
+	if [ -z "$newestinitrd" ]; then newestinitrd=boot/initrd.img-$(uname -r); fi
 	if [ -n "$newestkernel" -a -n "$newestinitrd" ]; then
-		ln -s $newestkernel /vmlinuz.install
-		ln -s $newestinitrd /initrd.img.install
+		ln -s "$newestkernel" /vmlinuz.install
+		ln -s "$newestinitrd" /initrd.img.install
 	fi
 fi
 
@@ -91,10 +85,10 @@ fi
 
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.5; then
-	eval `univention-baseconfig shell nameserver`
+	eval "$(univention-config-registry shell nameserver)"
 	if [ -n "$nameserver" ]; then
-		univention-baseconfig set nameserver1=$nameserver
-		univention-baseconfig unset nameserver
+		univention-config-registry set nameserver1="$nameserver"
+		univention-config-registry unset nameserver
 	fi
 fi
 
@@ -106,8 +100,8 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.5-3; t
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.9; then
-	find /var/log/univention/ -name *.log.[0-9].* | xargs rm -f
-	find /var/log/univention/ -name *.log.[0-9][0-9].* | xargs rm -f
+	find /var/log/univention/ -name \*.log.[0-9].\* | xargs rm -f
+	find /var/log/univention/ -name \*.log.[0-9][0-9].\* | xargs rm -f
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.17;  then
@@ -121,47 +115,47 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.30; then
 	sshdconf="/etc/ssh/sshd_config.debian"
 
 	if [ -e "$sshdconf" ]; then
-		port=`egrep "Port" $sshdconf | awk '{print $2}'` #22
-        	permroot=`egrep "PermitRootLogin" $sshdconf | awk '{print $2}'` #yes
-	        xforw=`egrep "X11Forwarding" $sshdconf | awk '{print $2}'` #no
+		port=$(egrep "Port" $sshdconf | awk '{print $2}') #22
+        	permroot=$(egrep "PermitRootLogin" $sshdconf | awk '{print $2}') #yes
+	        xforw=$(egrep "X11Forwarding" $sshdconf | awk '{print $2}') #no
 	else
 		port="22"
 		permroot="yes"
 		xforw="no"
 	fi
-	univention-baseconfig set sshd/port?$port
-	univention-baseconfig set sshd/permitroot?$permroot
-	univention-baseconfig set sshd/xforwarding?$xforw
+	univention-config-registry set sshd/port?$port \
+		sshd/permitroot?$permroot \
+		sshd/xforwarding?$xforw
 fi
 
-univention-baseconfig set sshd/port?22
-univention-baseconfig set sshd/permitroot?yes
-univention-baseconfig set sshd/xforwarding?no
+univention-config-registry set sshd/port?22 \
+	sshd/permitroot?yes \
+	sshd/xforwarding?no \
 
 # to use pam_tally (account locking) via ssh the passwordauthentication
 # must be disabled otherwise the pam stack won't use for authentication
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=18750
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.7-1; then
-	univention-baseconfig set	sshd/challengeresponse?no \
+	univention-config-registry set	sshd/challengeresponse?no \
 								sshd/passwordauthentication?yes
 elif [ "$1" = configure -a -z "$2" ]; then
-	univention-baseconfig set	sshd/challengeresponse?yes \
+	univention-config-registry set	sshd/challengeresponse?yes \
 								sshd/passwordauthentication?no
 fi
 
 
 # http://en.wikipedia.org/wiki/Nothofagus_solandri
-# univention-baseconfig set version/releasename="mountain beech" # UCS 2.1
+# univention-config-registry set version/releasename="mountain beech" # UCS 2.1
 
 # http://en.wikipedia.org/wiki/European_Beech
-# univention-baseconfig set version/releasename="copper beech" # UCS 2.2
+# univention-config-registry set version/releasename="copper beech" # UCS 2.2
 
 # http://en.wikipedia.org/wiki/Hornbeam
-# univention-baseconfig set version/releasename="hornbeam" # UCS 2.3
+# univention-config-registry set version/releasename="hornbeam" # UCS 2.3
 
 # http://en.wikipedia.org/wiki/Fagus_sylvatica
-univention-baseconfig set version/releasename="golden beech" # UCS 2.4
+univention-config-registry set version/releasename="golden beech" # UCS 2.4
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.33; then
 	chown root:root /tmp/
@@ -178,17 +172,17 @@ if [ -e /etc/init.d/rdate ]; then
 fi
 
 if [ "$locale" = "de_DE@euro" ]; then
-	univention-baseconfig set locale="de_DE@euro:ISO-8859-15"
+	univention-config-registry set locale="de_DE@euro:ISO-8859-15"
 elif [ "$locale" = "de_DE" ]; then
-	univention-baseconfig set locale="de_DE:ISO-8859-15"
+	univention-config-registry set locale="de_DE:ISO-8859-15"
 fi
 
-eval `univention-baseconfig shell locale`
+eval "$(univention-config-registry shell locale)"
 if [ -n "$locale" ]; then
 	/usr/sbin/locale-gen || true
 fi
 
-eval `univention-baseconfig shell locale/keymap`
+eval "$(univention-config-registry shell locale/keymap)"
 if [ -z "$locale_keymap" ]; then
 	# try to catch the keymap from /etc/console/boottime.kmap.gz
 	if [ -e /etc/console/boottime.kmap.gz ]; then
@@ -197,9 +191,9 @@ if [ -z "$locale_keymap" ]; then
 			if [ -d "$f" ]; then
 				continue
 			fi
-			md5_file=$(md5sum $f | sed -e 's| .*||')
+			md5_file=$(md5sum "$f" | sed -e 's| .*||')
 			if [ "$md5_boottime" = "$md5_file" ]; then
-				ucr set locale/keymap=$(echo $f | sed -e 's|.*/||;s|.kmap.gz||')
+				ucr set locale/keymap=$(echo "$f" | sed -e 's|.*/||;s|.kmap.gz||')
 				break
 			fi
 		done
@@ -209,11 +203,11 @@ fi
 update-rc.d rdate defaults 21 >/dev/null 2>&1 || true
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.53-6; then
-    eval `univention-baseconfig shell proxy/address proxy/port proxy/http`
+    eval "$(univention-config-registry shell proxy/address proxy/port proxy/http)"
     if [ -n "$proxy_http" ];
 	then
 	echo "remove deprecated config registry variables proxy/address and proxy/port in favor to proxy/http"
-	univention-baseconfig set proxy/port="" proxy/address=""
+	univention-config-registry set proxy/port="" proxy/address=""
     else
 	if [ -n "$proxy_address" ];
 	    then
@@ -223,7 +217,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.53-6; th
 	    then
 	    proxy_http="$proxy_http":"$proxy_port"
 	fi
-	univention-baseconfig set proxy/port="" proxy/address="" proxy/http="$proxy_http"
+	univention-config-registry set proxy/port="" proxy/address="" proxy/http="$proxy_http"
     fi
 fi
 
@@ -232,20 +226,20 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.54-35; t
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.1.8-1; then
-	univention-baseconfig set server/role?basesystem
+	univention-config-registry set server/role?basesystem
 fi
 
-univention-baseconfig set kernel/do_initrd?yes
-univention-baseconfig set kernel/do_bootfloppy?no
-univention-baseconfig set kernel/silent_loader?yes
+univention-config-registry set kernel/do_initrd?yes \
+	kernel/do_bootfloppy?no \
+	kernel/silent_loader?yes \
 
-architecture=`/bin/uname -m`
+architecture=$(/bin/uname -m)
 if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
-	univention-baseconfig set kernel/ramdisk?"mkinitramfs mkinitrd.yaird"
+	univention-config-registry set kernel/ramdisk?"mkinitramfs mkinitrd.yaird"
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.6.11-6; then
-	eval `univention-baseconfig shell server/role`
+	eval "$(univention-config-registry shell server/role)"
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		/usr/lib/univention-directory-policy/univention-config-registry-policy-encoding --convert -v || true
 	fi

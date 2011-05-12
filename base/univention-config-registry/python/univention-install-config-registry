@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
@@ -86,9 +86,7 @@ if __name__ == '__main__':
 	for package in getPackages():
 		file = extFile(package, 'univention-config-registry')
 		if not os.path.exists(file):
-			file = extFile(package, 'univention-baseconfig')
-			if not os.path.exists(file):
-				continue
+			continue
 
 		postinst = open(extFile(package, 'postinst.debhelper'), 'a')
 		preinst = open(extFile(package, 'preinst.debhelper'), 'a')

@@ -1,4 +1,3 @@
-#!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
@@ -313,8 +312,6 @@ class _ConfigRegistry( dict ):
 	def __str__(self):
 		return '\n'.join(['%s: %s' % (key, self.removeInvalidChars (val)) for key, val in sorted(self.items())])
 
-# old class name
-baseConfig = ConfigRegistry
 
 def directoryFiles(dir):
 	all = []
@@ -361,14 +358,12 @@ def filter(template, dir, srcfiles=[], opts = {}):
 			start = i.next()
 			end = i.next()
 
-			p = subprocess.Popen(('/usr/bin/python2.4', ), stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
+			p = subprocess.Popen((sys.executable, ), stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
 			child_stdin, child_stdout = p.stdin, p.stdout
 			child_stdin.write('# -*- coding: utf-8 -*-\n')
 			child_stdin.write('import univention.config_registry\n')
 			child_stdin.write('configRegistry = univention.config_registry.ConfigRegistry()\n')
 			child_stdin.write('configRegistry.load()\n')
-			# for compatibility
-			child_stdin.write('baseConfig = configRegistry\n')
 			child_stdin.write(template[start.end():end.start()])
 			child_stdin.close()
 			value=child_stdout.read()
@@ -393,13 +388,13 @@ def runScript(script, arg, changes):
 	p_out.close()
 	p_in.close()
 
-def runModule(modpath, arg, bc, changes):
+def runModule(modpath, arg, ucr, changes):
 	arg2meth = { 'generate': lambda obj: getattr(obj, 'handler'),
 		     'preinst':  lambda obj: getattr(obj, 'preinst'),
 		     'postinst': lambda obj: getattr(obj, 'postinst') }
 	try:
 		module = __import__(os.path.join(module_dir, os.path.splitext(modpath)[0]))
-		arg2meth[arg](module)(bc, changes)
+		arg2meth[arg](module)(ucr, changes)
 	except (AttributeError, ImportError), err:
 		print err
 
@@ -426,7 +421,7 @@ class configHandlerMultifile(configHandler):
 					self.variables.append(variable)
 
 	def __call__(self, args):
-		bc, changed = args
+		ucr, changed = args
 		self.from_files.sort(filesort)
 		print 'Multifile: %s' % self.to_file
 
@@ -447,7 +442,7 @@ class configHandlerMultifile(configHandler):
 				from_fp = open(from_file)
 			except IOError:
 				continue
-			to_fp.write(filter(from_fp.read(), bc, srcfiles = self.from_files, opts = filter_opts))
+			to_fp.write(filter(from_fp.read(), ucr, srcfiles = self.from_files, opts = filter_opts))
 
 		if self.user or self.group or self.mode:
 			if self.mode:
@@ -473,10 +468,10 @@ class configHandlerFile(configHandler):
 		self.mode = None
 
 	def __call__(self, args):
-		bc, changed = args
+		ucr, changed = args
 
 		if hasattr( self, 'preinst') and self.preinst:
-			runModule(self.preinst, 'preinst', bc, changed)
+			runModule(self.preinst, 'preinst', ucr, changed)
 
 		print 'File: %s' % self.to_file
 
@@ -494,7 +489,7 @@ class configHandlerFile(configHandler):
 
 		filter_opts = {}
 
-		to_fp.write(filter(from_fp.read(), bc, srcfiles = [self.from_file], opts = filter_opts))
+		to_fp.write(filter(from_fp.read(), ucr, srcfiles = [self.from_file], opts = filter_opts))
 
 		if self.user or self.group or self.mode:
 			if self.mode:
@@ -511,7 +506,7 @@ class configHandlerFile(configHandler):
 		to_fp.close()
 
 		if hasattr( self, 'postinst' ) and self.postinst:
-			runModule(self.postinst, 'postinst', bc, changed)
+			runModule(self.postinst, 'postinst', ucr, changed)
 
 		script_file = self.from_file.replace(file_dir, script_dir)
 		if os.path.isfile(script_file):
@@ -523,7 +518,7 @@ class configHandlerScript(configHandler):
 		self.script = script
 
 	def __call__(self, args):
-		bc, changed = args
+		ucr, changed = args
 		print 'Script: '+self.script
 		if os.path.isfile(self.script):
 			runScript(self.script, 'generate', changed)
@@ -534,9 +529,9 @@ class configHandlerModule(configHandler):
 		self.module = module
 
 	def __call__(self, args):
-		bc, changed = args
+		ucr, changed = args
 		print 'Module: '+self.module
-		runModule(self.module, 'generate', bc, changed)
+		runModule(self.module, 'generate', ucr, changed)
 
 def parseRfc822(f):
 	res = []
@@ -720,7 +715,7 @@ class configHandlers:
 		p.dump(self._multifiles)
 		fp.close()
 
-	def register(self, package, bc):
+	def register(self, package, ucr):
 
 		objects = []
 		file = os.path.join(info_dir, package+'.info')
@@ -732,10 +727,10 @@ class configHandlers:
 		for object in objects:
 			d = {}
 			for v in object.variables:
-				d[v] = bc[v]
-			object((bc, d))
+				d[v] = ucr[v]
+			object((ucr, d))
 
-	def unregister(self, package, bc):
+	def unregister(self, package, ucr):
 
 		file = os.path.join(info_dir, package+'.info')
 		for s in parseRfc822(open(file).read()):
@@ -760,7 +755,7 @@ class configHandlers:
 		for h in handlers:
 			h(arg)
 
-	def commit(self, bc, filelist=[]):
+	def commit(self, ucr, filelist=[]):
 
 		_filelist = []
 		if filelist:
@@ -811,11 +806,11 @@ class configHandlers:
 							val=v.replace(".*","%s"%i)
 							regex = re.compile('(%s)'%v)
 							match = regex.search("%s"%self._handlers.keys())
-							d[val] = bc[val]
+							d[val] = ucr[val]
 							i+=1
 					else:
-						d[v] = bc[v]
-			object((bc, d))
+						d[v] = ucr[v]
+			object((ucr, d))
 
 
 def randpw():

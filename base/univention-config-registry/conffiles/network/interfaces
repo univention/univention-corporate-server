@@ -5,6 +5,7 @@ auto lo
 iface lo inet loopback
 
 @!@
+from univention.dns import splitDotted, networkNumber
 
 eth_devices=[]
 
@@ -17,17 +18,15 @@ for key,value in configRegistry.items():
 eth_devices.sort()
 
 def check_gateway (ip, netmask, gateway):
-	if not gateway:
-		return 0
-	samenet=1
-	for k in range(0,4):
-		if not (int(ip[k])&int(netmask[k])) == (int(gateway[k])&int(netmask[k])):
-			samenet=0
-	if samenet == 0:
-		return 0
-	if samenet == 1:
-		return 1
+	"""
+	Check if the 'ip' is in the same network as the 'gatewy'.
 
+	>>> check_gateway([1,2,3,4], [255.255.255.0], [1,2,3,1])
+	True
+	"""
+	if not gateway:
+		return False
+	return networkNumber(ip, netmask) == networkNumber(gateway, netmask)
 
 gateway=False
 configExists=False
@@ -37,12 +36,12 @@ ifhandler=configRegistry.get('interfaces/handler','ifplugd')
 for i in eth_devices:
 	configExists=False
 	iface = i.replace("_", ":")
-	if configRegistry.has_key('interfaces/%s/type' % i) and configRegistry['interfaces/%s/type' % i] == 'dhcp':
-		if ifhandler == 'ifplugd' and configRegistry.get('interfaces/%s/ifplugd' % i, 'yes' ).lower() in ( 'yes', 'true', '1' ):
+	if configRegistry.get('interfaces/%s/type' % i) == 'dhcp':
+		if ifhandler == 'ifplugd' and configRegistry.is_true('interfaces/%s/ifplugd' % i, True):
 			print 'auto %s' % iface
 			print 'iface %s inet dhcp' % iface
 			configExists=True
-		elif ifhandler == 'networkmanager' and configRegistry.get('interfaces/%s/networkmanager' % i, 'yes' ).lower() in ( 'no', 'false', '0' ):
+		elif ifhandler == 'networkmanager' and configRegistry.is_false('interfaces/%s/networkmanager' % i, True):
 			print 'auto %s' % iface
 			print 'iface %s inet dhcp' % iface
 			configExists=True
@@ -58,7 +57,7 @@ for i in eth_devices:
 		if configRegistry['interfaces/%s/broadcast' % i]:
 			print 'broadcast '+configRegistry['interfaces/%s/broadcast' % i]
 		if configRegistry['interfaces/%s/address' % i] and configRegistry['interfaces/%s/netmask' % i] and configRegistry['gateway'] and not gateway:
-			if check_gateway(configRegistry['interfaces/%s/address' % i].split('.'), configRegistry['interfaces/%s/netmask' % i].split('.'), configRegistry['gateway'].split('.')):
+			if check_gateway(splitDotted(address), splitDotted(netmask), splitDotted(gateway)):
 				print 'gateway '+configRegistry['gateway']
 				gateway=True
 		configExists=True

@@ -37,4 +37,3 @@ if test "$1" = "purge"; then
 fi
 
 #DEBHELPER#
-

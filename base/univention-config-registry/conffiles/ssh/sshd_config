@@ -42,9 +42,9 @@ Port @%@sshd/port@%@
 PermitRootLogin @%@sshd/permitroot@%@
 X11Forwarding @%@sshd/xforwarding@%@
 @!@
-if configRegistry.has_key('sshd/xdisplayoffset') and configRegistry['sshd/xdisplayoffset']:
+if configRegistry.get('sshd/xdisplayoffset'):
 	print "X11DisplayOffset %s" % configRegistry['sshd/xdisplayoffset']
-if configRegistry.has_key('sshd/xuselocalhost') and configRegistry['sshd/xuselocalhost']:
+if configRegistry.get('sshd/xuselocalhost'):
 	print "X11UseLocalhost %s" % configRegistry['sshd/xuselocalhost']
 @!@
 

@@ -57,8 +57,7 @@ _uniucr () {
 	esac
 	return 0
 }
-complete -F _uniucr ucr univention-config-registry univention-baseconfig
+complete -F _uniucr ucr univention-config-registry
 
 }
 # vim:set ft=sh:
-

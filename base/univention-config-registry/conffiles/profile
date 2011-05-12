@@ -30,16 +30,16 @@ if [ "$PS1" ]; then
 fi
 
 @!@
-if configRegistry.has_key('proxy/http') and configRegistry['proxy/http']:
+if configRegistry.get('proxy/http'):
     print 'http_proxy="%s"' % configRegistry['proxy/http']
     print 'export PATH PS1 http_proxy'
 else:
     print 'export PATH PS1'
 
-if configRegistry.has_key('proxy/no_proxy') and configRegistry['proxy/no_proxy']:
+if configRegistry.get('proxy/no_proxy'):
     print 'export no_proxy="%s"' % configRegistry['proxy/no_proxy']
 
-if configRegistry.has_key('locale/default') and configRegistry['locale/default']:
+if configRegistry.get('locale/default'):
     print 'export LANG="%s"' % configRegistry['locale/default'].split(":")[0]
 @!@
 
@@ -48,7 +48,7 @@ if [ -e "$HOME/.univention-environment" ]; then
 fi
 
 @!@
-if configRegistry.has_key('umask') and configRegistry['umask']:
+if configRegistry.get('umask'):
 	print 'umask %s' % configRegistry['umask']
 else:
 	print 'umask 022'

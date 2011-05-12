@@ -1,6 +1,6 @@
 Univention Config
 
- * Kompaitibilitaet zu dem jetzigen univention-baseconfig
+ * Kompaitibilitaet zu dem jetzigen univention-config-registry
    + Inline Python code
    + Template Ersetzungen
  * Evtl. neue Funktionen

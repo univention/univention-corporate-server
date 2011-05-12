@@ -2,16 +2,22 @@ Source: univention-config-registry
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, autoconf, automake1.4, locales, libtool, libunivention-debug-dev,  python2.4, python-all-dev, python-central
+Build-Depends: debhelper (>= 7.0.50~),
+ autoconf,
+ automake,
+ locales,
+ libtool,
+ libunivention-debug-dev,
+ python-all-dev
 Standards-Version: 3.5.2
-XS-Python-Version: 2.4
+XS-Python-Version: all
 
 Package: univention-config-registry
 Architecture: all
 Depends: univention-config,
- locales,
+ ${misc:Depends}
+Enhances: locales,
  ntp, ntpdate, rdate,
- coreutils,
  acl,
  xfsprogs,
  lsof,
@@ -20,11 +26,7 @@ Depends: univention-config,
  psmisc,
  lsb-base,
  bash-completion,
- ${misc:Depends}
 Pre-Depends: cron (>= 3.0pl1-100), netbase (>= 4.29)
-Replaces: univention-baseconfig
-Conflicts: univention-baseconfig (<=2.2.0)
-Provides: univention-baseconfig
 Description: UCS - base configuration
  This package contains the base configuration for UCS.
  .
@@ -33,20 +35,11 @@ Description: UCS - base configuration
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-baseconfig
-Architecture: all
-Depends: univention-config-registry,
- ${misc:Depends}
-Description: Transition package
- Package to ease upgrading from old package
- univention-baseconfig to the new package.  This package
- can be purged at anytime once the
- univention-config-registry package has been installed.
-
 Package: univention-config
 Architecture: all
 Depends: python-univention, pciutils, python-univention-config-registry,
- ${misc:Depends}
+ ${misc:Depends}, ${python:Depends}
+Replaces: univention-config-registry (< 7)
 Description: UCS - configuration manager
  This package contains the univention-config configuration
  manager, primarily used by the UCS base configuration.
@@ -58,11 +51,8 @@ Description: UCS - configuration manager
 
 Package: univention-config-dev
 Architecture: all
-Provides: univention-baseconfig-dev
-Replaces: univention-baseconfig-dev
-Conflicts: univention-baseconfig-dev
-Depends: python2.4, univention-config,
- ${misc:Depends}
+Depends: univention-config (= ${binary:Version}),
+ ${misc:Depends}, ${python:Depends}
 Description: UCS - configuration manager (development files)
  This package contains the files needed to develop packages
  that use univention-config.
@@ -74,8 +64,8 @@ Description: UCS - configuration manager (development files)
 
 Package: libunivention-config0
 Architecture: any
-Depends: ${shlibs:Depends}
-Description: UCS - C interface to configuration manager
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: UCS - C library to configuration manager
  The included library provides a C API to access the
  UCS configuration manager.
  .
@@ -85,9 +75,10 @@ Description: UCS - C interface to configuration manager
  refer to: http://www.univention.de/
 
 Package: libunivention-config-dev
-Architecture: all
-Depends: libunivention-config0,
+Architecture: any
+Depends: libunivention-config0 (= ${binary:Version}),
  ${misc:Depends}
+Replaces: libunivention-config0 (< 7)
 Description: UCS - C interface to configuration manager (development files)
  This package includes the development files to access
  the UCS configuration manager from C.
@@ -102,7 +93,6 @@ Architecture: all
 Depends: ${python:Depends}, ${misc:Depends}
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
-Conflicts: python-univention-baseconfig (<<2.4.2)
 Description: UCS - Python interface to configuration registry
  This package includes the Python interface to the
  UCS configuration manager.
@@ -111,15 +101,3 @@ Description: UCS - Python interface to configuration registry
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
-
-Package: python-univention-baseconfig
-Architecture: any
-Depends: python-univention-config-registry,
- ${python:Depends}, ${misc:Depends}
-Provides: ${python:Provides}
-XB-Python-Version: ${python:Versions}
-Description: Transition package
- Package to ease upgrading from old package
- python-univention-baseconfig to the new package.  This package
- can be purged at anytime once the
- python-univention-config-registry package has been installed.

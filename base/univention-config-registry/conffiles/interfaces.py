@@ -67,17 +67,17 @@ def restore_gateway(gateway, netmask):
 			os.system('route del default >/dev/null 2>&1')
 			os.system('route add default gw %s' % gateway)
 
-def preinst(baseConfig, changes):
+def preinst(configRegistry, changes):
 	for iface in set(changes):
-		if baseConfig.has_key(iface):
+		if iface in configRegistry:
 			stop_iface(interface(iface))
 
-def postinst(baseConfig, changes):
+def postinst(configRegistry, changes):
 	for iface in set(changes):
-		if baseConfig.has_key(iface):
+		if iface in configRegistry:
 			start_iface(interface(iface))
 	if 'gateway' in set(changes) or 'interfaces/eth0/netmask' in set(changes):
 		if 'gateway' in set(changes):
-			restore_gateway(changes['gateway'], baseConfig.get("interfaces/eth0/netmask", False))
+			restore_gateway(changes['gateway'], configRegistry.get("interfaces/eth0/netmask", False))
 		else:
-			restore_gateway(baseConfig.get("gateway", False), baseConfig.get("interfaces/eth0/netmask", False))
+			restore_gateway(configRegistry.get("gateway", False), configRegistry.get("interfaces/eth0/netmask", False))

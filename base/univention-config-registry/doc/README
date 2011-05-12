@@ -1,5 +1,5 @@
-univention-baseconfig
----------------------
+univention-config-registry
+--------------------------
 
 Konfigurationsdateien (file):
 
@@ -8,7 +8,7 @@ Konfigurationsdateien (file):
  - Fuer eigene Eintraege in der base.conf, sollte das postinst default
    Werte festlegen:
 
-   univention-baseconfig set key?value
+   univention-config-registry set key?value
 
    Das Fragezeichen gibt an, dass der Schluessel "key" nur ueberschrieben
    wird, wenn noch kein Wert gesetzt ist.
@@ -19,7 +19,7 @@ Konfigurationsdateien (file):
 
  - Variablen der Form @%@variable@%@ werden durch ihren Wert ersetzt.
    Inline Python Code wird innerhalb von @!@...@!@ geschrieben. Es steht
-   dort das Objekt baseConfig zur Verfuegung.
+   dort das Objekt configRegistry zur Verfuegung.
 
  - werden in /etc/univention/templates/info/ bekannt gemacht
 
