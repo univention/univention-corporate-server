@@ -92,9 +92,6 @@ if __name__ == '__main__':
 		preinst = open(extFile(package, 'preinst.debhelper'), 'a')
 		postrm = open(extFile(package, 'postrm.debhelper'), 'a')
 		prerm = open(extFile(package, 'prerm.debhelper'), 'a')
-		try:	bla=open('debian/'+package+'.conffiles').readlines()
-		except IOError:	bla=[]
-		conffiles = open('debian/'+package+'.conffiles','a')
 		fp = open(file)
 		filelist = []
 		for item in univention.config_registry.parseRfc822(fp.read()):
@@ -107,7 +104,6 @@ if __name__ == '__main__':
 						mod = item[key][0]
 						doIt(['install', '-d', destDir(mod, package, 'modules')])
 						doIt(['cp', '-a', srcPath(mod), destPath(mod, package, 'modules')])
-						doIt(['chmod', 'a+x', destPath(mod, package, 'modules')])					
 			elif item['Type'][0] == 'subfile':
 				f = item['Subfile'][0]
 				doIt(['install', '-d', destDir(f, package)])
@@ -126,11 +122,6 @@ if __name__ == '__main__':
 				f = item['Module'][0]
 				doIt(['install', '-d', destDir(f, package, 'modules')])
 				doIt(['cp', '-a', srcPath(f), destPath(f, package, 'modules')])
-				doIt(['chmod', 'a+x', destPath(f, package, 'modules')])
-			dpath = '/etc/univention/templates/'+typeDir(item['Type'][0])+'s/'+f
-			print dpath
-			if not dpath+"\n" in bla and os.path.exists(destPath(f, package)):
-				conffiles.write(dpath+"\n")
 			if item.has_key('File'):
 				for f in item['File']:
 					if f[0] != '/':

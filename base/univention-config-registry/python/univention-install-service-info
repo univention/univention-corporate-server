@@ -55,15 +55,6 @@ def binary_packages():
 if __name__ == '__main__':
 	info = us_info.ServiceInfo( install_mode = True )
 	for package in binary_packages():
-		# package's conffiles
-		conffilename = os.path.join( 'debian', package + '.conffiles' )
-		try:
-			current_conffiles = open( conffilename ).readlines()
-		except IOError:
-			current_conffiles = []
-
-		conffiles = open( conffilename, 'a' )
-
 		# services
 		source = os.path.join( 'debian', package + '.univention-service' )
 
@@ -86,8 +77,3 @@ if __name__ == '__main__':
 		real_conffile = os.path.join( us_info.ServiceInfo.BASE_DIR,
 					      us_info.ServiceInfo.SERVICES,
 					      package + us_info.ServiceInfo.FILE_SUFFIX )
-		if not real_conffile + '\n' in current_conffiles:
-			conffiles.write( real_conffile + '\n' )
-
-		# close files
-		conffiles.close()

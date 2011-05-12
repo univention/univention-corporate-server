@@ -55,15 +55,6 @@ def binary_packages():
 if __name__ == '__main__':
 	info = ucr_info.ConfigRegistryInfo( install_mode = True )
 	for package in binary_packages():
-		# package's conffiles
-		conffilename = os.path.join( 'debian', package + '.conffiles' )
-		try:
-			current_conffiles = open( conffilename ).readlines()
-		except IOError:
-			current_conffiles = []
-
-		conffiles = open( conffilename, 'a' )
-
 		# categories
 		source = os.path.join( 'debian', package + '.univention-config-registry-categories' )
 		if os.path.exists( source ):
@@ -83,8 +74,6 @@ if __name__ == '__main__':
 			real_conffile = os.path.join( ucr_info.ConfigRegistryInfo.BASE_DIR,
 										  ucr_info.ConfigRegistryInfo.CATEGORIES,
 										  package + '.cfg' )
-			if not real_conffile + '\n' in current_conffiles:
-				conffiles.write( real_conffile + '\n' )
 
 		# variables
 		source = os.path.join( 'debian', package + '.univention-config-registry-variables' )
@@ -107,8 +96,3 @@ if __name__ == '__main__':
 		real_conffile = os.path.join( ucr_info.ConfigRegistryInfo.BASE_DIR,
 									  ucr_info.ConfigRegistryInfo.VARIABLES,
 									  package + '.cfg' )
-		if not real_conffile + '\n' in current_conffiles:
-			conffiles.write( real_conffile + '\n' )
-
-		# close files
-		conffiles.close()

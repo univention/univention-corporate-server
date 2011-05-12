@@ -1,6 +1,8 @@
 univention-config-registry (7.0.2-2) unstable; urgency=low
 
   * Drop global logrotate for /var/log/univention/* (Bug #18002)
+  * debian/control: Re-add missing python-support (Bug #22160)
+  * python/u-i-*: Don't append /etc/ files to debian/*.conffiles
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 12 May 2011 10:20:02 +0200
 
