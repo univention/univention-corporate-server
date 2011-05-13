@@ -1,3 +1,12 @@
+univention-passwd-cache (3.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22431)
+    * Bump version for UCS 3.0
+    * Update copyright to 2011
+    * Update to debhelper 7
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 May 2011 09:01:58 +0200
+
 univention-passwd-cache (2.0.3-1) unstable; urgency=low
 
   * use /dev/urandom to avoid entropy gathering delays

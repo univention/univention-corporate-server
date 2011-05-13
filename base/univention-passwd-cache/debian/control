@@ -2,7 +2,7 @@ Source: univention-passwd-cache
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0), libpam0g-dev
+Build-Depends: debhelper (>> 3.0.0), ucslint, libpam0g-dev
 Standards-Version: 3.5.2
 
 Package: libnss-passwdcache
