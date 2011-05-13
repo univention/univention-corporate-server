@@ -3,7 +3,7 @@
 # Univention ifplugd
 #  postinst script
 #
-# Copyright 2009-2010 Univention GmbH
+# Copyright 2009-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,7 +32,7 @@
 
 #DEBHELPER#
 
-eval $(univention-config-registry shell)
+eval "$(univention-config-registry shell)"
 
 if [ -z "$ifplugd_action_mount" ]; then
 	   ifplugd_action_mount="yes"
@@ -47,7 +47,7 @@ univention-config-registry set networkmanager/dhcp/options/fallback?"no"
 univention-config-registry set dhclient/options/timeout?"40"
 univention-config-registry set dhclient/options/retry?"60"
 
-for i in $(seq 0 4); do
+for i in $(seq 0 10); do
 	var="interfaces_eth${i}_networkmanager"
 
 	if [ -n "${!var}" -a "${!var}" = "no" ]; then
@@ -56,10 +56,5 @@ for i in $(seq 0 4); do
 	fi
 done
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.4.11-1; then
-	if [ -e /etc/network/if-up.d/99_resolvconf ]; then
-		mv /etc/network/if-up.d/99_resolvconf /etc/network/if-up.d/00_resolvconf
-	fi
-fi
 
 exit 0

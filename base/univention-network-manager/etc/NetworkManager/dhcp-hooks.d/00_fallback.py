@@ -1,9 +1,9 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 #
 # Univention Network Manager
 #  script used by NM as dhclient script
 #
-# Copyright 2009-2010 Univention GmbH
+# Copyright 2009-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
