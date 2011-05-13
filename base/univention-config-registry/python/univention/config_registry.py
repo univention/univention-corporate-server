@@ -62,9 +62,6 @@ Warnung: Diese Datei wurde automatisch generiert und kann durch
          univention-config-registry überschrieben werden.
          Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):'''
 
-
-sys.path.insert(0, '')
-
 def warning_string(prefix='# ', width=80, srcfiles=[], enforce_ascii=False):
 	res = []
 
@@ -392,14 +389,19 @@ def runScript(script, arg, changes):
 	p_in.close()
 
 def runModule(modpath, arg, ucr, changes):
+	"""loads the python module that MUST be located in 'module_dir' or any subdirectory."""
 	arg2meth = { 'generate': lambda obj: getattr(obj, 'handler'),
 		     'preinst':  lambda obj: getattr(obj, 'preinst'),
 		     'postinst': lambda obj: getattr(obj, 'postinst') }
+	# temporarily prepend module_dir to load path
+	sys.path.insert( 0, module_dir )
+	module_name = os.path.splitext( modpath )[ 0 ]
 	try:
-		module = __import__(os.path.join(module_dir, os.path.splitext(modpath)[0]))
+		module = __import__( module_name.replace( os.path.sep, '.' ) )
 		arg2meth[arg](module)(ucr, changes)
 	except (AttributeError, ImportError), err:
 		print err
+	del sys.path[ 0 ]
 
 class configHandler:
 	variables = []
