@@ -58,7 +58,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				 '0004-23': [ uub.RESULT_ERROR,  'debian/*.univention-config-registry exists but debian/rules contains no univention-install-config-registry' ],
 				 '0004-24': [ uub.RESULT_STYLE,	 'debian/*.univention-config-registry exists but no corresponding debian/*.univention-config-registry-variables file' ],
 				 '0004-25': [ uub.RESULT_STYLE,  'debian/rules contains old univention-install-baseconfig call' ],
-				 '0004-26': [ uub.RESULT_ERROR,  'debian/*.univention-config-registry-variables exists but debian/rules contains no univention-install-config-registry-info' ],
+				 '0004-26': [ uub.RESULT_STYLE,  'debian/*.univention-config-registry-variables exists but debian/rules contains no univention-install-config-registry-info' ],
 				 '0004-27': [ uub.RESULT_WARN,   'cannot open/read file' ],
 				 '0004-28': [ uub.RESULT_ERROR,  'invalid formatted line without ":" found' ],
 				 '0004-29': [ uub.RESULT_ERROR,  'UCR template file contains UCR variables that are not registered in .info-file' ],
