@@ -407,16 +407,14 @@ def runScript(script, arg, changes):
 	Execute script with command line arguments using a shell and pass changes on STDIN.
 	For each changed variable a line with the 'name of the variable', the 'old value', and the 'new value' are passed seperated by '@%@'.
 	"""
-	diff = ''
+	diff = []
 	for key, value in changes.items():
 		if value and len(value) > 1 and value[0] and value[1]:
-			diff += '%s@%%@%s@%%@%s\n' % (key, value[0], value[1])
+			diff.append('%s@%%@%s@%%@%s\n' % (key, value[0], value[1]))
 
-	p = subprocess.Popen(script+" "+arg, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
-	p_out, p_in = p.stdin, p.stdout
-	p_out.write(diff)
-	p_out.close()
-	p_in.close()
+	with open(os.path.devnull, 'w') as null:
+		p = subprocess.Popen(script + " " + arg, shell=True, stdin=subprocess.PIPE, stdout=null, close_fds=True)
+		p.communicate(''.join(diff))
 
 def runModule(modpath, arg, ucr, changes):
 	"""loads the python module that MUST be located in 'module_dir' or any subdirectory."""
