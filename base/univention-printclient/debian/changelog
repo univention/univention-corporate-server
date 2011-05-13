@@ -1,3 +1,13 @@
+univention-printclient (6.0.0-1) unstable; urgency=low
+
+  [Felix Botner]
+  * removed "-r" in lpr parameters for use with kprinter
+  * lp and lpr now printing direct via lp.debian and
+    lpr.debian without running kprinter (Bug #17987)
+  * fixed lpr and lp replacements for kde4 (Bug #17987)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 May 2011 10:01:03 +0200
+
 univention-printclient (5.0.1-1) unstable; urgency=low
 
   * Added univention-printclient.install (Bug #22433)

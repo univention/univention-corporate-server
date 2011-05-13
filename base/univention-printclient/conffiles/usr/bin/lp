@@ -33,7 +33,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-if [ -n "$DISPLAY" ]; then
+kpr=$(/usr/sbin/ucr get cups/lp/command)
+
+if [ -n "$DISPLAY" -a -n "$kpr" -a "$kpr" = "kprinter" ]; then
 	exec kprinter $(echo "$@" | sed 's,^-s,,;s, -s , ,;s, -s$,,')
 else
 	exec lp.debian "$@"

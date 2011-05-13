@@ -33,8 +33,24 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-if [ -n "$DISPLAY" ]; then
-	exec kprinter "$@"
+# remove -r from options because kprinter
+# does not know -r (lpr does)
+declare -a opts
+for i in "$@"; do
+	case "$i" in
+		"-r")
+			;;
+		*)
+			opts+=("$i")
+			;;
+	esac
+done
+
+kpr=$(/usr/sbin/ucr get cups/lpr/command)
+
+# run kprinter if display is set and ...
+if [ -n "$DISPLAY" -a -n "$kpr" -a "$kpr" = "kprinter" ]; then
+	exec kprinter "${opts[@]}"
 else
 	exec lpr.debian "$@"
 fi
