@@ -595,72 +595,77 @@ class configHandlers:
 		return path.replace(basepath, '')
 
 	def getHandler(self, entry):
+		typ = entry.get('Type')
+		if not typ:
+			handler = None
 
-		if not entry.has_key('Type'):
-			object = None
-		elif entry['Type'][0] == 'file':
+		elif typ == 'file':
 			from_path = os.path.join(file_dir, entry['File'][0])
 			to_path = os.path.join('/', entry['File'][0])
 			if not entry.has_key('File') or not os.path.exists(from_path):
 				return None
-			object = configHandlerFile(from_path, to_path)
-			if not object:
+			handler = configHandlerFile(from_path, to_path)
+			if not handler:
 				return None
-			object.variables = grepVariables(open(from_path).read())
+			handler.variables = grepVariables(open(from_path).read())
 			if entry.has_key('Preinst'):
-				object.preinst = entry['Preinst'][0]
+				handler.preinst = entry['Preinst'][0]
 			if entry.has_key('Postinst'):
-				object.postinst = entry['Postinst'][0]
+				handler.postinst = entry['Postinst'][0]
 			if entry.has_key('Variables'):
-				object.variables += entry['Variables']
+				handler.variables += entry['Variables']
 			if entry.has_key('User'):
 				try:
-					object.user = pwd.getpwnam(entry['User'][0]).pw_uid
+					handler.user = pwd.getpwnam(entry['User'][0]).pw_uid
 				except:
 					print 'Warning: failed to convert the username %s to the uid' % entry['User'][0]
 			if entry.has_key('Group'):
 				try:
-					object.group = grp.getgrnam(entry['Group'][0]).gr_gid
+					handler.group = grp.getgrnam(entry['Group'][0]).gr_gid
 				except:
 					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
 			if entry.has_key('Mode'):
-				object.mode = int(entry['Mode'][0], 8)
-		elif entry['Type'][0] == 'script':
+				handler.mode = int(entry['Mode'][0], 8)
+
+		elif typ == 'script':
 			if not entry.has_key('Variables') or not entry.has_key('Script'):
 				return None
-			object = configHandlerScript(os.path.join(script_dir, entry['Script'][0]))
-			object.variables = entry['Variables']
-		elif entry['Type'][0] == 'module':
+			handler = configHandlerScript(os.path.join(script_dir, entry['Script'][0]))
+			handler.variables = entry['Variables']
+
+		elif typ == 'module':
 			if not entry.has_key('Variables') or not entry.has_key('Module'):
 				return None
-			object = configHandlerModule(os.path.splitext(entry['Module'][0])[0])
-			object.variables = entry['Variables']
-		elif entry['Type'][0] == 'multifile':
+			handler = configHandlerModule(os.path.splitext(entry['Module'][0])[0])
+			handler.variables = entry['Variables']
+
+		elif typ == 'multifile':
 			if not entry.has_key('Multifile'):
 				return None
 			if self._multifiles.has_key(entry['Multifile'][0]):
-				object = self._multifiles[entry['Multifile'][0]]
+				handler = self._multifiles[entry['Multifile'][0]]
 			else:
-				object = configHandlerMultifile(os.path.join(file_dir, entry['Multifile'][0]), os.path.join('/', entry['Multifile'][0]))
+				handler = configHandlerMultifile(os.path.join(file_dir, entry['Multifile'][0]), os.path.join('/', entry['Multifile'][0]))
 			if entry.has_key('Variables'):
-				object.variables += entry['Variables']
+				handler.variables += entry['Variables']
 			if entry.has_key('User'):
 				try:
-					object.user = pwd.getpwnam(entry['User'][0]).pw_uid
+					handler.user = pwd.getpwnam(entry['User'][0]).pw_uid
 				except:
 					print 'Warning: failed to convert the username %s to the uid' % entry['User'][0]
 			if entry.has_key('Group'):
 				try:
-					object.group = grp.getgrnam(entry['Group'][0]).gr_gid
+					handler.group = grp.getgrnam(entry['Group'][0]).gr_gid
 				except:
 					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
 			if entry.has_key('Mode'):
-				object.mode = int(entry['Mode'][0])
-			self._multifiles[entry['Multifile'][0]] = object
+				handler.mode = int(entry['Mode'][0])
+			self._multifiles[entry['Multifile'][0]] = handler
 			if self._subfiles.has_key(entry['Multifile'][0]):
-				object.addSubfiles(self._subfiles[entry['Multifile'][0]])
+				handler.addSubfiles(self._subfiles[entry['Multifile'][0]])
 				del(self._subfiles[entry['Multifile'][0]])
-		elif entry['Type'][0] == 'subfile':
+
+		elif typ == 'subfile':
 			if not entry.has_key('Multifile') or not entry.has_key('Subfile'):
 				return None
 			mfile = entry['Multifile'][0]
@@ -669,17 +674,18 @@ class configHandlers:
 			except IOError:
 				print "The following Subfile doesnt exist: \n%s \nunivention-config-registry commit aborted" %(os.path.join(file_dir, entry['Subfile'][0]))
 				sys.exit(1)
-			# if multifile object does not exist jet, queue subfiles
+			# if multifile handler does not exist jet, queue subfiles
 			if self._multifiles.has_key(mfile):
 				self._multifiles[mfile].addSubfiles([qentry])
 				return self._multifiles[mfile]
 			elif not self._subfiles.has_key(mfile):
 				self._subfiles[mfile]=[]
 			self._subfiles[mfile].append(qentry)
-			object = None
+			handler = None
+
 		else:
-			object = None
-		return object
+			handler = None
+		return handler
 
 	def update(self):
 
@@ -688,21 +694,21 @@ class configHandlers:
 		self._multifiles.clear()
 		self._subfiles.clear()
 
-		objects = []
+		handlers = []
 		for file in directoryFiles(info_dir):
 			if not file.endswith('.info'):
 				continue
 			for section in parseRfc822(open(file).read()):
 				if not section.has_key('Type'):
 					continue
-				object = self.getHandler(section)
-				if object:
-					objects.append(object)
-		for object in objects:
-			for variable in object.variables:
+				handler = self.getHandler(section)
+				if handler:
+					handlers.append(handler)
+		for handler in handlers:
+			for variable in handler.variables:
 				if not self._handlers.has_key(variable):
 					self._handlers[variable] = []
-				self._handlers[variable].append(object)
+				self._handlers[variable].append(handler)
 
 		fp = open(cache_file, 'w')
 		fp.write(cache_version_notice)
@@ -715,24 +721,24 @@ class configHandlers:
 
 	def register(self, package, ucr):
 
-		objects = []
+		handlers = []
 		file = os.path.join(info_dir, package+'.info')
 		for section in parseRfc822(open(file).read()):
-			object = self.getHandler(section)
-			if object and not object in objects:
-				objects.append(object)
+			handler = self.getHandler(section)
+			if handler and not handler in handlers:
+				handlers.append(handler)
 
-		for object in objects:
-			d = {}
-			for variable in object.variables:
-				d[variable] = ucr[variable]
-			object((ucr, d))
+		for handler in handlers:
+			values = {}
+			for variable in handler.variables:
+				values[variable] = ucr[variable]
+			handler((ucr, values))
 
 	def unregister(self, package, ucr):
 
 		file = os.path.join(info_dir, package+'.info')
 		for section in parseRfc822(open(file).read()):
-			object = self.getHandler(section)
+			handler = self.getHandler(section)
 			if section.has_key('File'):
 				for f in section['File']:
 					if f[0] != '/':
@@ -764,51 +770,51 @@ class configHandlers:
 					_filelist.append(_f)
 				else:
 					_filelist.append(os.path.normpath(os.path.join(cwd, _f)))
-		objects = []
+		pending_handlers = []
 		for file in directoryFiles(info_dir):
 			for section in parseRfc822(open(file).read()):
 				if not section.has_key('Type'):
 					continue
-				object = None
+				handler = None
 				if _filelist:
 					if section.has_key('File'):
-						object = None
+						handler = None
 						for f in section['File']:
 							if f[0] != '/':
 								f = '/'+f
 							if f in _filelist:
-								object = self.getHandler(section)
+								handler = self.getHandler(section)
 								break
-						if not object:
+						if not handler:
 							continue
 					elif section.has_key('Multifile'):
-						object = None
+						handler = None
 						for f in section['Multifile']:
 							if f[0] != '/':
 								f = '/'+f
 							if f in _filelist:
-								object = self.getHandler(section)
+								handler = self.getHandler(section)
 								break
-						if not object:
+						if not handler:
 							continue
 				else:
-					object = self.getHandler(section)
-				if object and not object in objects:
-					objects.append(object)
-		for object in objects:
-			d = {}
-			for variable in object.variables:
+					handler = self.getHandler(section)
+				if handler and not handler in handlers:
+					pending_handlers.append(handler)
+		for handler in pending_handlers:
+			values = {}
+			for variable in handler.variables:
 				if variable in self._handlers.keys():
 					if ".*" in variable:
 						for i in range(0,4):
 							val = variable.replace(".*", "%s" % i)
-							regex = re.compile('(%s)'%v)
+							regex = re.compile('(%s)' % val)
 							match = regex.search("%s"%self._handlers.keys())
-							d[val] = ucr[val]
+							values[val] = ucr[val]
 							i+=1
 					else:
-						d[variable] = ucr[variable]
-			object((ucr, d))
+						values[variable] = ucr[variable]
+			handler((ucr, values))
 
 
 def randpw():
