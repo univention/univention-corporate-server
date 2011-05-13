@@ -35,7 +35,6 @@ import sys
 import re
 import string
 import cPickle
-import types
 import copy
 import subprocess
 import fcntl
@@ -350,14 +349,14 @@ def directoryFiles(dir):
 
 def filter(template, dir, srcfiles=[], opts = {}):
 	"""Process a template file: susbstitute variables and call hook scripts and modules."""
-	while 1:
+	while True:
 		i = variable_token.finditer(template)
 		try:
 			start = i.next()
 			end = i.next()
 			name = template[start.end():end.start()]
 
-			if dir.has_key(name):
+			if name in dir:
 				value = dir[name]
 			else:
 				match = warning_pattern.match(name)
@@ -371,13 +370,13 @@ def filter(template, dir, srcfiles=[], opts = {}):
 				else:
 					value = ''
 
-			if type(value) == types.ListType or type(value) == types.TupleType:
+			if isinstance(value, (list, tuple)):
 				value = value[0]
 			template = template[:start.start()]+value+template[end.end():]
 		except StopIteration:
 			break
 
-	while 1:
+	while True:
 		i = execute_token.finditer(template)
 		try:
 			start = i.next()
@@ -393,9 +392,9 @@ def filter(template, dir, srcfiles=[], opts = {}):
 			child_stdin.write('baseConfig = configRegistry\n')
 			child_stdin.write(template[start.end():end.start()])
 			child_stdin.close()
-			value=child_stdout.read()
+			value = child_stdout.read()
 			child_stdout.close()
-			template = template[:start.start()]+value+template[end.end():]
+			template = template[:start.start()] + value + template[end.end():]
 
 		except StopIteration:
 			break
@@ -472,7 +471,7 @@ class configHandlerMultifile(configHandler):
 
 		for from_file in self.from_files:
 			try:
-				from_fp = open(from_file)
+				from_fp = open(from_file, 'r')
 			except IOError:
 				continue
 			to_fp.write(filter(from_fp.read(), ucr, srcfiles = self.from_files, opts = filter_opts))
@@ -837,14 +836,10 @@ class configHandlers:
 					if ".*" in variable:
 						for i in range(0,4):
 							val = variable.replace(".*", "%s" % i)
-							regex = re.compile('(%s)' % val)
-							match = regex.search("%s"%self._handlers.keys())
 							values[val] = ucr[val]
-							i+=1
 					else:
 						values[variable] = ucr[variable]
 			handler((ucr, values))
-
 
 def randpw():
 	"""Create random password."""
@@ -905,7 +900,7 @@ def handler_set( args, opts = {}, quiet = False ):
 			key = arg[0:sep]
 			value = arg[sep+1:]
 			old = reg[key]
-			if (reg[key] == None or sep == sep_set) and validateKey(key):
+			if (reg[key] is None or sep == sep_set) and validateKey(key):
 				if not quiet:
 					if reg.has_key( key, write_registry_only = True ):
 						print 'Setting '+key
@@ -1027,7 +1022,7 @@ def replaceUmlaut(line):
 def keyShellEscape(line):
 	'''Escape variable name by substituting shell invalid characters by '_'.'''
 	if not line:
-		raise Exception ('got empty line')
+		raise ValueError('got empty line')
 	new_line = []
 	if line[0] in string.digits:
 		new_line.append ('_')
@@ -1112,12 +1107,8 @@ def handler_search( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
 
- 	show_scope = False
- 	if b.get('ucr/output/scope', 'no').lower() in ('yes', 'enabled', 'true', '1'):
- 		show_scope = True
- 
-	if not brief and b.get ('ucr/output/brief', 'no') in ('yes', 'enabled', 'true', '1'):
-		brief = True
+	show_scope = b.is_true('ucr/output/scope', False)
+	brief |= b.is_true('ucr/output/brief', False)
 
 	all_vars = {}
 	for key, var in info.get_variables (category).items ():
@@ -1214,7 +1205,7 @@ def handler_info( args, opts = {} ):
 	import config_registry_info as cri
 	cri.set_language ( 'en' )
 	info = cri.ConfigRegistryInfo ( install_mode = False )
-	info_handler = True	
+	info_handler = True
 
 	for arg in args:
 		try:
