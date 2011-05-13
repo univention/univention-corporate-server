@@ -674,7 +674,7 @@ class configHandlers:
 				except:
 					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
 			if entry.has_key('Mode'):
-				handler.mode = int(entry['Mode'][0])
+				handler.mode = int(entry['Mode'][0], 8)
 			self._multifiles[entry['Multifile'][0]] = handler
 			if self._subfiles.has_key(entry['Multifile'][0]):
 				handler.addSubfiles(self._subfiles[entry['Multifile'][0]])
