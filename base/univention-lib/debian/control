@@ -4,7 +4,8 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7), 
  python-all,
- python-support (>= 0.90)
+ python-support (>= 0.90),
+ ucslint
 
 Package: python-univention-lib
 Architecture: all

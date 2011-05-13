@@ -1,3 +1,10 @@
+univention-lib (1.0.5-2) unstable; urgency=low
+
+  * debian/control: Build-Depends: +ucslint (Bug #22160)
+  * debian/source/format: 3.0 (native)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 13 May 2011 18:07:21 +0200
+
 univention-lib (1.0.5-1) unstable; urgency=low
 
   * Fix Python installation (Bug #22160)
