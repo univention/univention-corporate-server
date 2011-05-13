@@ -73,6 +73,7 @@ def do_package(package):
 
 	f_postinst = open(extFile(package, 'postinst.debhelper'), 'a')
 	f_preinst = open(extFile(package, 'preinst.debhelper'), 'a')
+	f_postrm = open(extFile(package, 'postrm.debhelper'), 'a')
 	f_prerm = open(extFile(package, 'prerm.debhelper'), 'a')
 	f_ucr = open(n_ucr, 'r')
 	
@@ -83,6 +84,8 @@ def do_package(package):
 			return
 		d = '%s.debian' % f
 		f_preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert "%s" --add "%s" || true\n' % (d, f))
+		f_postrm.write('test "$1" = "remove" && rm -f "%s" && dpkg-divert --rename --quiet --divert "%s" --remove "%s" || true\n' % (f, d, f))
+		f_postinst.write('res=$(dpkg-divert --list --quiet "%s") && if [ -z "$res" ]; then dpkg-divert --quiet --divert "%s" --add "%s"; fi || true\n' % (f, d, f))
 		filelist.add(f)
 
 	for item in univention.config_registry.parseRfc822(f_ucr.read()):

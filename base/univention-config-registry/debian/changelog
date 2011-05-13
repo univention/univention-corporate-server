@@ -1,23 +1,3 @@
-univention-config-registry (7.0.3-2) unstable; urgency=low
-
-  * Code cleanup:
-    - s → section
-    - [vd] → variable
-    - objects? → handlers?-
-    - entry['Multifile'][0] → mfile
-  * Remove dead code in configHandlers.commit()
-  * Parse multifile mode as octal (Bug #21014)
-  * Fix deadlock due pipe overflow (Bug #22517)
-
- -- Philipp Hahn <hahn@univention.de>  Fri, 13 May 2011 13:08:29 +0200
-
-univention-config-registry (7.0.3-1) unstable; urgency=low
-
-  * changed method for loading UCR modules as the old one is not supported
-    by python 2.6; Bug #22515
-
- -- Andreas Büsching <buesching@univention.de>  Fri, 13 May 2011 12:07:58 +0200
-
 univention-config-registry (7.0.2-4) unstable; urgency=low
 
   * Move parseRfc822 to univention.debhelper
