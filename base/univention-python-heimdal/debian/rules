@@ -3,7 +3,7 @@
 # Python Heimdal
 #  rules file for the python-heimdal debian package
 #
-# Copyright 2003-2010 Univention GmbH
+# Copyright 2003-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -38,71 +38,13 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-PACKAGE_NAME=python-univention-heimdal
-MODULE_NAME=python-univention-heimdal
+.PHONY: override_dh_strip
+override_dh_strip:
+	dh_strip --dbg-package=python-univention-heimdal
 
-PYVERS=$(shell pyversions -vr)
+override_dh_auto_test:
+	ucslint
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	touch configure-stamp
+%:
+	dh $@
 
-build: configure-stamp build-stamp
-build-stamp: $(PYVERS:%=build-ext-%)
-	dh_testdir
-	touch $@
-build-ext-%:
-	dh_testdir
-	# Build the package for each version of python we support.
-	/usr/bin/python$* setup.py clean --all --build-lib build$*
-	/usr/bin/python$* setup.py build --build-lib build$*
-	touch $@
-
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp build-ext-2.4
-	/usr/bin/python2.4 setup.py clean --all --build-lib build2.4
-	-rm -fr build build2.4 html icons
-	dh_clean
-
-install: install-stamp
-install-stamp: build-stamp $(PYVERS:%=install-ext-%)
-install-ext-%:
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	/usr/bin/python$* setup.py install --prefix=`pwd`/debian/python-univention-heimdal/usr --no-compile
-
-
-
-binary-arch: build install
-
-binary-indep: build install
-	dh_testdir
-	dh_testroot
-	dh_installdocs
-	dh_installexamples
-	dh_installmenu
-	dh_installcron
-	dh_installman
-	dh_installinfo
-	dh_installchangelogs
-	dh_install --sourcedir=debian/tmp
-	dh_pycentral
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure

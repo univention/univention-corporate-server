@@ -87,7 +87,7 @@ void ccache_close(krb5CcacheObject *self)
 	ret = krb5_cc_close(self->context, self->ccache);
 	if (ret)
 		krb5_exception (self->context, 1, ret, "krb5_cc_close");
-	PyMem_DEL(self);
+	PyObject_Del(self);
 }
 
 PyObject *ccache_destroy(krb5CcacheObject *self, PyObject *args)
@@ -97,10 +97,9 @@ PyObject *ccache_destroy(krb5CcacheObject *self, PyObject *args)
 	if (ret) {
 		krb5_exception(self->context, ret, "krb5_cc_destroy");
 	}
-	PyMem_DEL(self);
+	PyObject_Del(self);
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_RETURN_NONE;
 }
 
 static PyObject *ccache_list(krb5CcacheObject *self, PyObject *args)
@@ -165,8 +164,7 @@ static PyObject *ccache_initialize(krb5CcacheObject *self, PyObject *args)
 	if (error)
 		return NULL;
 	else {
-		Py_INCREF(Py_None);
-		return Py_None;
+		Py_RETURN_NONE;
 	}
 }
 
@@ -193,8 +191,7 @@ static PyObject *ccache_store_cred(krb5CcacheObject *self, PyObject *args)
 	if (error)
 		return NULL;
 	else {
-		Py_INCREF(Py_None);
-		return Py_None;
+		Py_RETURN_NONE;
 	}
 }
 

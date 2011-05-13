@@ -41,7 +41,7 @@
 krb5TicketObject *ticket_new(PyObject *unused, PyObject *args)
 {
 	krb5ContextObject *context;
-	krb5TicketObject *self = (krb5TicketObject *) PyObject_NEW(krb5TicketObject, &krb5TicketType);
+	krb5TicketObject *self = (krb5TicketObject *) PyObject_New(krb5TicketObject, &krb5TicketType);
 
 	if (!PyArg_ParseTuple(args, "O", &context))
 		return NULL;
@@ -56,7 +56,7 @@ krb5TicketObject *ticket_new(PyObject *unused, PyObject *args)
 void ticket_destroy(krb5TicketObject *self)
 {
 	krb5_free_ticket(self->context, &self->ticket);
-	PyMem_DEL(self);
+	PyObject_Del(self);
 }
 
 PyTypeObject krb5TicketType = {
@@ -79,4 +79,4 @@ PyTypeObject krb5TicketType = {
 	0,				/*tp_hash*/
 };
 
-static struct PyMethodDef ticket_methods[] = {};
+//static struct PyMethodDef ticket_methods[] = {};

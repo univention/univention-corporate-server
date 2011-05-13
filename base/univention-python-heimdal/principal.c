@@ -46,7 +46,7 @@ krb5PrincipalObject *principal_new(PyObject *unused, PyObject *args)
 	krb5_error_code ret;
 	krb5ContextObject *context;
 	char *principal_string;
-	krb5PrincipalObject *self = (krb5PrincipalObject *) PyObject_NEW(krb5PrincipalObject, &krb5PrincipalType);
+	krb5PrincipalObject *self = (krb5PrincipalObject *) PyObject_New(krb5PrincipalObject, &krb5PrincipalType);
 	int error = 0;
 
 	if (!PyArg_ParseTuple(args, "Os", &context, &principal_string))
@@ -109,7 +109,7 @@ PyObject *principal_realm(krb5PrincipalObject *self, PyObject *args)
 void principal_destroy(krb5PrincipalObject *self)
 {
 	krb5_free_principal(self->context, self->principal);
-	PyMem_DEL(self);
+	PyObject_Del(self);
 }
 
 static PyObject *principal_getattr(krb5PrincipalObject *self, char *name)

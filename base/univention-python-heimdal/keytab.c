@@ -75,7 +75,7 @@ krb5KeytabObject *keytab_open(PyObject *unused, PyObject *args)
 	krb5_error_code ret;
 	char keytab_buf[256];
 	krb5ContextObject *context;
-	krb5KeytabObject *self = (krb5KeytabObject *) PyObject_NEW(krb5KeytabObject, &krb5KeytabType);
+	krb5KeytabObject *self = (krb5KeytabObject *) PyObject_New(krb5KeytabObject, &krb5KeytabType);
 
 	if (!PyArg_ParseTuple(args, "Os", &context, &keytab_string))
 		return NULL;
@@ -120,7 +120,7 @@ static void keytab_destroy(krb5KeytabObject *self)
 		free(self->context);
 	}
 
-	PyMem_DEL(self);
+	PyMem_Del(self);
 }
 
 static PyObject *keytab_add(krb5KeytabObject *self, PyObject *args)
@@ -195,8 +195,7 @@ static PyObject *keytab_add(krb5KeytabObject *self, PyObject *args)
  out:
 	krb5_kt_free_entry(*self->context, &entry);
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_RETURN_NONE;
 }
 
 static PyObject *keytab_list(krb5KeytabObject *self, PyObject *args)

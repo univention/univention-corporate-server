@@ -54,7 +54,8 @@ static struct PyMethodDef module_methods[] = {
 	{NULL, NULL, 0, NULL}
 };
 
-void initheimdal(void)
+PyMODINIT_FUNC
+initheimdal(void)
 {
 	PyObject *module, *self;
 	module = Py_InitModule("heimdal", module_methods);

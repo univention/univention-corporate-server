@@ -50,7 +50,7 @@ krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args)
 	krb5EnctypeObject *enctype;
 	char *password;
 	PyObject *arg;
-	krb5KeyblockObject *self = (krb5KeyblockObject *) PyObject_NEW(krb5KeyblockObject, &krb5KeyblockType);
+	krb5KeyblockObject *self = (krb5KeyblockObject *) PyObject_New(krb5KeyblockObject, &krb5KeyblockType);
 	int error = 0;
 
 	if (!PyArg_ParseTuple(args, "OOsO", &context, &enctype, &password,
@@ -105,7 +105,7 @@ void keyblock_destroy(krb5KeyblockObject *self)
 {
 	/* FIXME: this segfaults: krb5_free_keyblock(self->context, &self->keyblock); */
 	krb5_free_keyblock_contents(self->context, &self->keyblock);
-	PyMem_DEL(self);
+	PyObject_Del(self);
 }
 
 static PyObject *keyblock_getattr(krb5KeyblockObject *self, char *name)

@@ -43,7 +43,7 @@ PyObject* asn1_encode_key(PyObject *self, PyObject* args)
 	krb5SaltObject *salt;
 	int mkvno;
 	krb5_error_code ret;
-	unsigned char *buf;
+	char *buf;
 	size_t len;
 	Key asn1_key;
 	Salt asn1_salt;
@@ -64,8 +64,7 @@ PyObject* asn1_encode_key(PyObject *self, PyObject* args)
 
 	ASN1_MALLOC_ENCODE(Key, buf, len, &asn1_key, &len, ret);
 	if (ret != 0) {
-		Py_INCREF(Py_None);
-		return Py_None;
+		Py_RETURN_NONE;
 	} else {
 		PyObject *s = PyString_FromStringAndSize(buf, len);
 		Py_INCREF(s); /* FIXME */

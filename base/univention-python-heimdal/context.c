@@ -106,7 +106,7 @@ static PyObject *context_getattr(krb5ContextObject *self, char *name)
 void context_destroy(krb5ContextObject *self)
 {
 	krb5_free_context(self->context);
-	PyMem_DEL(self);
+	PyObject_Del( self );
 }
 
 PyTypeObject krb5ContextType = {

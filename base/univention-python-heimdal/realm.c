@@ -40,7 +40,7 @@
 
 krb5RealmObject *realm_from_realm(krb5_context context, krb5_realm *realm)
 {
-	krb5RealmObject *self = (krb5RealmObject *) PyObject_NEW(krb5RealmObject, &krb5RealmType);
+	krb5RealmObject *self = (krb5RealmObject *) PyObject_New(krb5RealmObject, &krb5RealmType);
 
 	self->context = context;
 	self->realm = realm;
@@ -50,7 +50,7 @@ krb5RealmObject *realm_from_realm(krb5_context context, krb5_realm *realm)
 
 void realm_destroy(krb5RealmObject *self)
 {
-	PyMem_DEL(self);
+	PyObject_Del(self);
 }
 
 PyTypeObject krb5RealmType = {

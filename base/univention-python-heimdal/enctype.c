@@ -120,7 +120,7 @@ static PyObject *enctype_getattr(krb5EnctypeObject *self, char *name)
 void enctype_destroy(krb5EnctypeObject *self)
 {
 	/* enctype really is integer; nothing to free */
-	PyMem_DEL(self);
+	PyObject_Del( self );
 }
 
 PyTypeObject krb5EnctypeType = {

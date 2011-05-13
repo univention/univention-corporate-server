@@ -43,7 +43,7 @@ static struct PyMethodDef salt_methods[];
 
 krb5SaltObject *salt_from_salt(krb5_context context, krb5_salt salt)
 {
-	krb5SaltObject *self = (krb5SaltObject *) PyObject_NEW(krb5SaltObject, &krb5SaltType);
+	krb5SaltObject *self = (krb5SaltObject *) PyObject_New(krb5SaltObject, &krb5SaltType);
 
 	if (self == NULL)
 		return NULL;
@@ -87,7 +87,7 @@ krb5SaltObject *salt_new(PyObject *unused, PyObject *args)
 void salt_destroy(krb5SaltObject *self)
 {
 	krb5_free_salt(self->context, self->salt);
-	PyMem_DEL(self);
+	PyObject_Del(self);
 }
 
 PyTypeObject krb5SaltType = {
@@ -110,4 +110,4 @@ PyTypeObject krb5SaltType = {
 	0,				/*tp_hash*/
 };
 
-static struct PyMethodDef salt_methods[] = {};
+//static struct PyMethodDef salt_methods[] = {};

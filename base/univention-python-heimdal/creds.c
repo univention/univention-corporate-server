@@ -59,7 +59,7 @@ static krb5_error_code kerb_prompter(krb5_context ctx, void *data,
 
 krb5CredsObject *creds_from_creds(krb5_context context, krb5_creds creds)
 {
-	krb5CredsObject *self = (krb5CredsObject *) PyObject_NEW(krb5CredsObject, &krb5CredsType);
+	krb5CredsObject *self = (krb5CredsObject *) PyObject_New(krb5CredsObject, &krb5CredsType);
 
 	self->context = context;
 	self->creds = creds;
@@ -165,7 +165,8 @@ PyObject *creds_change_password(krb5CredsObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s", &newpw))
 		return NULL;
 
-	ret = krb5_change_password(self->context, &self->creds, newpw, &result_code,
+	// principal is set to NULL -> set_password uses the default principal in set case
+	ret = krb5_set_password(self->context, &self->creds, newpw, NULL, &result_code,
 			&result_code_string, &result_string);
 	if (ret) {
 		error = 1;
@@ -179,15 +180,14 @@ PyObject *creds_change_password(krb5CredsObject *self, PyObject *args)
 	if (error)
 		return NULL;
 	else {
-		Py_INCREF(Py_None);
-		return Py_None;
+		Py_RETURN_NONE;
 	}
 }
 
 void creds_destroy(krb5CredsObject *self)
 {
 	krb5_free_cred_contents(self->context, &self->creds);
-	PyMem_DEL(self);
+	PyObject_Del(self);
 }
 
 static PyObject *creds_getattr(krb5CredsObject *self, char *name)
