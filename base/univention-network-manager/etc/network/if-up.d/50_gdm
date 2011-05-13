@@ -33,10 +33,36 @@
 
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
-uptime=$(seconds_since_systemstart)
+reload=true
+gdm_pid=""
+
+for i in $(pidof gdm); do
+	if [ -z "$gdm_pid" ]; then
+		gdm_pid=$i
+	else
+		if [ $i -lt $gdm_pid ]; then
+			gdm_pid=$i
+		fi
+	fi
+done
+
+if [ -n "$gdm_pid" ]; then
+	# reload gdm only if start was at least 5 seconds ago
+	seconds_since_gdm_start=$(stat -c %X /proc/$gdm_pid)
+	seconds_since_epoch=$(date +%s)
+	diff=$(($seconds_since_epoch - $seconds_since_gdm_start))
+	if [ $diff -lt 5 ]; then
+		reload=false
+	fi
+else
+        # do not reload gdm if it is not running
+        reload=false
+fi
 
 if [ -x /etc/init.d/gdm ]; then
-	/etc/init.d/gdm reload
+	if [ "$reload" = "true" ]; then
+		/etc/init.d/gdm reload
+	fi
 fi
 
 exit 0
