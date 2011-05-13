@@ -33,6 +33,7 @@
 import os, sys, re, string, cPickle, types, copy, subprocess
 import fcntl
 import pwd, grp
+from debhelper import parseRfc822
 
 variable_pattern = re.compile('@%@([^@]+)@%@')
 variable_token = re.compile('@%@')
@@ -364,6 +365,8 @@ def filter(template, dir, srcfiles=[], opts = {}):
 			child_stdin.write('import univention.config_registry\n')
 			child_stdin.write('configRegistry = univention.config_registry.ConfigRegistry()\n')
 			child_stdin.write('configRegistry.load()\n')
+			# for compatibility
+			child_stdin.write('baseConfig = configRegistry\n')
 			child_stdin.write(template[start.end():end.start()])
 			child_stdin.close()
 			value=child_stdout.read()
@@ -533,21 +536,6 @@ class configHandlerModule(configHandler):
 		print 'Module: '+self.module
 		runModule(self.module, 'generate', ucr, changed)
 
-def parseRfc822(f):
-	res = []
-	entries = f.split('\n\n')
-	for entry in entries:
-		ent = {}
-		lines = entry.split('\n')
-		for line in lines:
-			if line.find(': ') == -1:
-				continue
-			key, value = line.split(': ', 1)
-			if not ent.has_key(key):
-				ent[key] = []
-			ent[key].append(value)
-		res.append(ent)
-	return res
 
 def grepVariables(f):
 	return variable_pattern.findall(f)
@@ -1247,9 +1235,6 @@ Actions:
 
 Description:
   univention-config-registry is a tool to handle the basic configuration for UCS
-
-Known-Bugs:
-  -None-
 '''
 	sys.exit(0)
 

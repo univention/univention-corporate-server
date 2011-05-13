@@ -74,7 +74,7 @@ doopt() {
 }
 
 domac () {
-    eval $(univention-config-registry shell)
+    eval "$(univention-config-registry shell)"
 
     for i in 0 1 2 3; do
         var=interfaces_eth${i}_mac

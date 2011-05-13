@@ -1,3 +1,12 @@
+univention-config-registry (7.0.2-4) unstable; urgency=low
+
+  * Move parseRfc822 to univention.debhelper
+  * Ignore empty sections in rfc822 files (Bug #3952)
+  * Re-add baseConfig compatibility for UCR-Templates.
+  * Fix one more eval "$(ucr shell)" quoting (Bug #18443)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 13 May 2011 09:36:50 +0200
+
 univention-config-registry (7.0.2-3) unstable; urgency=low
 
   * Fix embedded package version in ucr (Bug #22160)
@@ -9,7 +18,7 @@ univention-config-registry (7.0.2-2) unstable; urgency=low
 
   * Drop global logrotate for /var/log/univention/* (Bug #18002)
   * debian/control: Re-add missing python-support (Bug #22160)
-  * python/u-i-*: Don't append /etc/ files to debian/*.conffiles
+  * python/u-i-*: Don't append /etc/ files to debian/*.conffiles (Bug #18924)
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 12 May 2011 10:20:02 +0200
 
