@@ -88,10 +88,15 @@ def warning_string(prefix='# ', width=80, srcfiles=[], enforce_ascii=False):
 	return "\n".join(res)
 
 def filesort(x,y):
+	"""Sort names by base file name."""
 	return cmp(os.path.basename(x), os.path.basename(y))
 
 SCOPE = ['normal', 'ldap', 'schedule', 'forced', 'custom']
 class ConfigRegistry( dict ):
+	"""
+	Merged persistent value store.
+	This is a merged view of several sub-registries.
+	"""
 	NORMAL, LDAP, SCHEDULE, FORCED, CUSTOM = range( 5 )
 	PREFIX = '/etc/univention'
 	BASES = { NORMAL : 'base.conf', LDAP : 'base-ldap.conf', SCHEDULE : 'base-schedule.conf', FORCED : 'base-forced.conf' }
@@ -211,16 +216,22 @@ class ConfigRegistry( dict ):
 		return '\n'.join( [ '%s: %s' % ( key, val ) for key, val in merge.items() ] )
 
 	def is_true(self, key, default = False):
+		"""Return if the strings value of key is considered as true."""
 		if key in self:
 			return self.get(key).lower() in ('yes', 'true', '1', 'enable', 'enabled', 'on')
 		return default
 
 	def is_false(self, key, default = False):
+		"""Return if the strings value of key is considered as false."""
 		if key in self:
 			return self.get(key).lower() in ('no', 'false', '0', 'disable', 'disabled', 'off')
 		return default
 
 class _ConfigRegistry( dict ):
+	"""
+	Persistent value store.
+	This is a single value store using a text file.
+	"""
 	def __init__(self, file = None):
 		dict.__init__( self )
 		if file:
@@ -318,8 +329,8 @@ class _ConfigRegistry( dict ):
 	def __str__(self):
 		return '\n'.join(['%s: %s' % (key, self.removeInvalidChars (val)) for key, val in sorted(self.items())])
 
-
 def directoryFiles(dir):
+	"""Return a list of all files in the given directory."""
 	all = []
 	def _walk(all, dirname, files):
 		for file in files:
@@ -330,7 +341,7 @@ def directoryFiles(dir):
 	return all
 
 def filter(template, dir, srcfiles=[], opts = {}):
-
+	"""Process a template file: susbstitute variables and call hook scripts and modules."""
 	while 1:
 		i = variable_token.finditer(template)
 		try:
@@ -384,7 +395,10 @@ def filter(template, dir, srcfiles=[], opts = {}):
 	return template
 
 def runScript(script, arg, changes):
-
+	"""
+	Execute script with command line arguments using a shell and pass changes on STDIN.
+	For each changed variable a line with the 'name of the variable', the 'old value', and the 'new value' are passed seperated by '@%@'.
+	"""
 	diff = ''
 	for key, value in changes.items():
 		if value and len(value) > 1 and value[0] and value[1]:
@@ -548,14 +562,15 @@ class configHandlerModule(configHandler):
 
 
 def grepVariables(f):
+	"""Return list of all variables inside @%@ delimiters."""
 	return variable_pattern.findall(f)
 
 class configHandlers:
 
-	_handlers = {}
-	_files = {}
-	_multifiles = {}
-	_subfiles = {}
+	_handlers = {} # variable -> [handlers]
+	_files = {} # unused
+	_multifiles = {} # multifile -> handler
+	_subfiles = {} # multifile -> [subfiles] // pending
 
 	def _check_cache_version(self, fp):
 		version = 0
@@ -688,7 +703,7 @@ class configHandlers:
 		return handler
 
 	def update(self):
-
+		"""Parse .info files to build list of handlers."""
 		self._handlers.clear()
 		self._files.clear()
 		self._multifiles.clear()
@@ -720,7 +735,7 @@ class configHandlers:
 		fp.close()
 
 	def register(self, package, ucr):
-
+		"""Register new info file for package."""
 		handlers = []
 		file = os.path.join(info_dir, package+'.info')
 		for section in parseRfc822(open(file).read()):
@@ -735,7 +750,7 @@ class configHandlers:
 			handler((ucr, values))
 
 	def unregister(self, package, ucr):
-
+		"""Un-register info file for package."""
 		file = os.path.join(info_dir, package+'.info')
 		for section in parseRfc822(open(file).read()):
 			handler = self.getHandler(section)
@@ -747,6 +762,7 @@ class configHandlers:
 						os.unlink(f)
 
 	def __call__(self, variables, arg):
+		"""Call handlers registered for changes in variables."""
 		pending_handlers = []
 
 		for variable in variables:
@@ -760,7 +776,7 @@ class configHandlers:
 			handler(arg)
 
 	def commit(self, ucr, filelist=[]):
-
+		"""Call handlers to (re-)generate files."""
 		_filelist = []
 		if filelist:
 			cwd = os.getcwd()
@@ -770,6 +786,7 @@ class configHandlers:
 					_filelist.append(_f)
 				else:
 					_filelist.append(os.path.normpath(os.path.join(cwd, _f)))
+		# find handlers
 		pending_handlers = []
 		for file in directoryFiles(info_dir):
 			for section in parseRfc822(open(file).read()):
@@ -801,6 +818,7 @@ class configHandlers:
 					handler = self.getHandler(section)
 				if handler and not handler in handlers:
 					pending_handlers.append(handler)
+		# call handlers
 		for handler in pending_handlers:
 			values = {}
 			for variable in handler.variables:
@@ -818,6 +836,7 @@ class configHandlers:
 
 
 def randpw():
+	"""Create random password."""
 	valid = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
 		'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
 		'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
@@ -833,6 +852,10 @@ def randpw():
 	return pw
 
 def handler_set( args, opts = {}, quiet = False ):
+	"""
+	Set config registry variables in args.
+	Args is an array of strings 'key=value' or 'key?value'.
+	"""
 	c = configHandlers()
 	c.load()
 
@@ -896,6 +919,9 @@ def handler_set( args, opts = {}, quiet = False ):
 	c( changed.keys(), ( reg, changed ) )
 
 def handler_unset( args, opts = {} ):
+	"""
+	Unset config registry variables in args.
+	"""
  	current_scope = ConfigRegistry.NORMAL
 	reg = None
 	if opts.get( 'ldap-policy', False ):
@@ -988,6 +1014,7 @@ def replaceUmlaut(line):
 	return replaceDict(line, umlauts)
 
 def keyShellEscape(line):
+	'''Escape variable name by substituting shell invalid characters by '_'.'''
 	if not line:
 		raise Exception ('got empty line')
 	new_line = []
@@ -1011,6 +1038,7 @@ def valueShellEscape(line):
 	return replaceDict(line, escapes)
 
 def validateKey(k):
+	"""Check if key consists of only shell valid characters."""
 	old = k
 	k = replaceUmlaut(k)
 
@@ -1028,6 +1056,7 @@ def validateKey(k):
 	return 0
 
 def handler_filter( args, opts = {} ):
+	"""Run filter on STDIN to STDOUT."""
 	b = ConfigRegistry()
 	b.load()
 	sys.stdout.write(filter(sys.stdin.read(), b, opts = opts))
