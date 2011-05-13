@@ -40,7 +40,7 @@ Package: univention-config
 Architecture: all
 Depends: python-univention, pciutils, python-univention-config-registry,
  ${misc:Depends}, ${python:Depends}
-Replaces: univention-config-registry (< 7)
+Replaces: univention-config-registry (<< 7)
 Description: UCS - configuration manager
  This package contains the univention-config configuration
  manager, primarily used by the UCS base configuration.
@@ -79,7 +79,7 @@ Package: libunivention-config-dev
 Architecture: any
 Depends: libunivention-config0 (= ${binary:Version}),
  ${misc:Depends}
-Replaces: libunivention-config0 (< 7)
+Replaces: libunivention-config0 (<< 7)
 Description: UCS - C interface to configuration manager (development files)
  This package includes the development files to access
  the UCS configuration manager from C.

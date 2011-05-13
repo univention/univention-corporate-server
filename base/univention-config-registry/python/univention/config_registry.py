@@ -692,7 +692,7 @@ class configHandlers:
 		elif typ == 'subfile':
 			try:
 				mfile = entry['Multifile'][0]
-				subfile = entry['Subfile'][0]:
+				subfile = entry['Subfile'][0]
 			except KeyError:
 				return None
 			try:
@@ -807,7 +807,7 @@ class configHandlers:
 					continue
 				handler = None
 				if _filelist:
-					files = secion.get('File') || section.get('Multifile') || ()
+					files = secion.get('File') or section.get('Multifile') or ()
 					for f in files:
 						if f[0] != '/':
 							f = '/' + f

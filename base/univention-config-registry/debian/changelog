@@ -1,3 +1,10 @@
+univention-config-registry (7.0.4-2) unstable; urgency=low
+
+  * Fix Python mistakes (Bug #17913)
+  * Fix debian/control <<.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 13 May 2011 16:21:57 +0200
+
 univention-config-registry (7.0.4-1) unstable; urgency=low
 
   * Parse multifile mode as octal (Bug #21014)
