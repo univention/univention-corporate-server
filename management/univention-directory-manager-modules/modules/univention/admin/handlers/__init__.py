@@ -364,8 +364,7 @@ class base(object):
 						subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
 						if not subobject or not (univention.admin.modules.supports(submodule,'move') or
 												 univention.admin.modules.supports(submodule,'subtree_move')):
-							raise univention.admin.uexceptions.invalidOperation, _('Unable to move object %s (%s) in subtree, trying to revert changes.' )
-																				   % (subolddn[:subolddn.find(',')],univention.admin.modules.identifyOne(subolddn, suboldattrs))
+							raise univention.admin.uexceptions.invalidOperation, _('Unable to move object %s (%s) in subtree, trying to revert changes.' ) % (subolddn[:subolddn.find(',')],univention.admin.modules.identifyOne(subolddn, suboldattrs))
 						subobject.open()
 						subobject.move(subnewdn)
 						moved.append((subolddn,subnewdn))
@@ -402,8 +401,7 @@ class base(object):
 					subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
 					if not subobject or not (univention.admin.modules.supports(submodule, 'move') or
 								 univention.admin.modules.supports(submodule, 'subtree_move')):
-						raise univention.admin.uexceptions.invalidOperation, _('Unable to move object %s (%s) in subtree, trying to revert changes.')
-												       % (subolddn[:subolddn.find(',')], univention.admin.modules.identifyOne(subolddn, suboldattrs))
+						raise univention.admin.uexceptions.invalidOperation, _('Unable to move object %s (%s) in subtree, trying to revert changes.') % (subolddn[:subolddn.find(',')], univention.admin.modules.identifyOne(subolddn, suboldattrs))
 					subobject.open()
 					subobject._move(subnewdn)
 					moved.append((subolddn,subnewdn))

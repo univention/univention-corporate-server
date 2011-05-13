@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.3-1) unstable; urgency=low
+
+  * fixed some syntax errors; Bug #22439
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 13 May 2011 16:09:48 +0200
+
 univention-directory-manager-modules (7.0.2-1) unstable; urgency=low
 
   * Make the import of the modules python2.6 compatible (Bug #22439)
