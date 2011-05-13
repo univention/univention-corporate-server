@@ -142,7 +142,7 @@ class ConfigRegistry( dict ):
 
 	def __delitem__( self, key ):
 		registry = self._registry[self._write_registry]
-		registry[key]
+		del registry[key]
 
 	def __getitem__( self, key ):
 		return self.get( key )

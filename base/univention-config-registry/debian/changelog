@@ -1,3 +1,9 @@
+univention-config-registry (7.0.4-5) unstable; urgency=low
+
+  * Fix __delitem__() from svn24135 (Bug #22160)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 13 May 2011 19:00:50 +0200
+
 univention-config-registry (7.0.4-4) unstable; urgency=low
 
   * Workaround _ConfigRegistry[key] rturning '' (Bug #17913)
