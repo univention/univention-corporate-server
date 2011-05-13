@@ -41,6 +41,10 @@ import fcntl
 import pwd
 import grp
 from debhelper import parseRfc822
+try:
+	from univention.lib.shell import escape_value
+except ImportError:
+	def escape_value(v): sys.exit(1) # FIXME: univention.lib clashed during install
 
 variable_pattern = re.compile('@%@([^@]+)@%@')
 variable_token = re.compile('@%@')
@@ -62,7 +66,7 @@ Warnung: Diese Datei wurde automatisch generiert und kann durch
          univention-config-registry überschrieben werden.
          Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):'''
 
-def warning_string(prefix='# ', width=80, srcfiles=[], enforce_ascii=False):
+def warning_string(prefix='# ', width=80, srcfiles=set(), enforce_ascii=False):
 	res = []
 
 	for line in warning_text.split('\n'):
@@ -78,10 +82,6 @@ def warning_string(prefix='# ', width=80, srcfiles=[], enforce_ascii=False):
 	res.append(prefix)
 
 	return "\n".join(res)
-
-def filesort(x,y):
-	"""Sort names by base file name."""
-	return cmp(os.path.basename(x), os.path.basename(y))
 
 SCOPE = ['normal', 'ldap', 'schedule', 'forced', 'custom']
 class ConfigRegistry( dict ):
@@ -169,6 +169,8 @@ class ConfigRegistry( dict ):
 		for reg in (ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP, ConfigRegistry.NORMAL, ConfigRegistry.CUSTOM):
 			try:
 				registry = self._registry[reg]
+				if key not in registry: # BUG: _ConfigRegistry[key] does not raise a KeyError for unset keys, but returns ''
+					continue
 				value = registry[key]
 				if getscope:
 					return (reg, value)
@@ -244,14 +246,14 @@ class _ConfigRegistry( dict ):
 
 	def load(self):
 		self.clear()
-		import_failed = 0
+		import_failed = False
 		try:
 			fp = open(self.file, 'r')
 		except:
-			import_failed = 1
+			import_failed = True
 
 		if import_failed or len(fp.readlines()) < 3: # only comment or nothing
-			import_failed = 1 # not set if file is to short
+			import_failed = True # not set if file is to short
 			try:
 				fp = open(self.backup_file, 'r')
 			except IOError:
@@ -340,7 +342,7 @@ def directoryFiles(dir):
 	os.path.walk(dir, _walk, all)
 	return all
 
-def filter(template, dir, srcfiles=[], opts = {}):
+def filter(template, dir, srcfiles=set(), opts = {}):
 	"""Process a template file: susbstitute variables and call hook scripts and modules."""
 	while True:
 		i = variable_token.finditer(template)
@@ -427,7 +429,7 @@ def runModule(modpath, arg, ucr, changes):
 	del sys.path[ 0 ]
 
 class configHandler:
-	variables = []
+	variables = set()
 
 class configHandlerMultifile(configHandler):
 
@@ -443,11 +445,10 @@ class configHandlerMultifile(configHandler):
 	def addSubfiles(self, subfiles):
 		for from_file, variables in subfiles:
 			self.from_files.add(from_file)
-			self.variables |= set(variables)
+			self.variables |= variables
 
 	def __call__(self, args):
 		ucr, changed = args
-		self.from_files.sort(filesort)
 		print 'Multifile: %s' % self.to_file
 
 		to_dir = os.path.dirname(self.to_file)
@@ -462,7 +463,7 @@ class configHandlerMultifile(configHandler):
 
 		filter_opts = {}
 
-		for from_file in self.from_files:
+		for from_file in sorted(self.from_files, key=lambda x: os.path.basename(x)):
 			try:
 				from_fp = open(from_file, 'r')
 			except IOError:
@@ -509,7 +510,7 @@ class configHandlerFile(configHandler):
 		except OSError:
 			print "The referenced template file does not exist"
 			return None
-		from_fp = open(self.from_file)
+		from_fp = open(self.from_file, 'r')
 		to_fp = open(self.to_file, 'w')
 
 		filter_opts = {}
@@ -560,8 +561,8 @@ class configHandlerModule(configHandler):
 
 
 def grepVariables(f):
-	"""Return list of all variables inside @%@ delimiters."""
-	return variable_pattern.findall(f)
+	"""Return set of all variables inside @%@ delimiters."""
+	return set(variable_pattern.findall(f))
 
 class configHandlers:
 	"""Manage handlers for configuration variables."""
@@ -617,14 +618,15 @@ class configHandlers:
 		return path.replace(basepath, '')
 
 	def getHandler(self, entry):
-		typ = entry.get('Type')
-		if not typ:
-			handler = None
+		try:
+			typ = entry.get('Type')[0]
+		except LookupError:
+			return None
 
-		elif typ == 'file':
+		if typ == 'file':
 			try:
 				name = entry['File'][0]
-			except KeyError:
+			except LookupError:
 				return None
 			from_path = os.path.join(file_dir, name)
 			if not os.path.exists(from_path):
@@ -633,13 +635,13 @@ class configHandlers:
 			handler = configHandlerFile(from_path, to_path)
 			if not handler:
 				return None
-			handler.variables = grepVariables(open(from_path).read())
+			handler.variables = grepVariables(open(from_path, 'r').read())
 			if entry.has_key('Preinst'):
 				handler.preinst = entry['Preinst'][0]
 			if entry.has_key('Postinst'):
 				handler.postinst = entry['Postinst'][0]
 			if entry.has_key('Variables'):
-				handler.variables += entry['Variables']
+				handler.variables |= set(entry['Variables'])
 			if entry.has_key('User'):
 				try:
 					handler.user = pwd.getpwnam(entry['User'][0]).pw_uid
@@ -657,18 +659,18 @@ class configHandlers:
 			if not entry.has_key('Variables') or not entry.has_key('Script'):
 				return None
 			handler = configHandlerScript(os.path.join(script_dir, entry['Script'][0]))
-			handler.variables = entry['Variables']
+			handler.variables = set(entry['Variables'])
 
 		elif typ == 'module':
 			if not entry.has_key('Variables') or not entry.has_key('Module'):
 				return None
 			handler = configHandlerModule(os.path.splitext(entry['Module'][0])[0])
-			handler.variables = entry['Variables']
+			handler.variables = set(entry['Variables'])
 
 		elif typ == 'multifile':
 			try:
-				mfile = entry.get['Multifile'][0]
-			except KeyError:
+				mfile = entry['Multifile'][0]
+			except LookupError:
 				return None
 			try:
 				handler = self._multifiles[mfile]
@@ -677,7 +679,7 @@ class configHandlers:
 				to_path = os.path.join('/', mfile)
 				handler = configHandlerMultifile(from_path, to_path)
 			if entry.has_key('Variables'):
-				handler.variables += entry['Variables']
+				handler.variables |= set(entry['Variables'])
 			if entry.has_key('User'):
 				try:
 					handler.user = pwd.getpwnam(entry['User'][0]).pw_uid
@@ -699,11 +701,11 @@ class configHandlers:
 			try:
 				mfile = entry['Multifile'][0]
 				subfile = entry['Subfile'][0]
-			except KeyError:
+			except LookupError:
 				return None
 			try:
 				name = os.path.join(file_dir, subfile)
-				qentry = (name, grepVariables(open(name).read()))
+				qentry = (name, grepVariables(open(name, 'r').read()))
 			except IOError:
 				print "The following Subfile doesnt exist: \n%s \nunivention-config-registry commit aborted" % name
 				sys.exit(1)
@@ -729,7 +731,7 @@ class configHandlers:
 		for file in directoryFiles(info_dir):
 			if not file.endswith('.info'):
 				continue
-			for section in parseRfc822(open(file).read()):
+			for section in parseRfc822(open(file, 'r').read()):
 				if not section.get('Type'):
 					continue
 				handler = self.getHandler(section)
@@ -751,7 +753,7 @@ class configHandlers:
 		"""Register new info file for package."""
 		handlers = set()
 		file = os.path.join(info_dir, package+'.info')
-		for section in parseRfc822(open(file).read()):
+		for section in parseRfc822(open(file, 'r').read()):
 			handler = self.getHandler(section)
 			if handler:
 				handlers.add(handler)
@@ -765,7 +767,7 @@ class configHandlers:
 	def unregister(self, package, ucr):
 		"""Un-register info file for package."""
 		file = os.path.join(info_dir, package+'.info')
-		for section in parseRfc822(open(file).read()):
+		for section in parseRfc822(open(file, 'r').read()):
 			handler = self.getHandler(section)
 			try:
 				files = secion['File']
@@ -808,12 +810,12 @@ class configHandlers:
 		# find handlers
 		pending_handlers = set()
 		for file in directoryFiles(info_dir):
-			for section in parseRfc822(open(file).read()):
+			for section in parseRfc822(open(file, 'r').read()):
 				if not section.get('Type'):
 					continue
 				handler = None
 				if _filelist:
-					files = secion.get('File') or section.get('Multifile') or ()
+					files = section.get('File') or section.get('Multifile') or ()
 					for f in files:
 						if f[0] != '/':
 							f = '/' + f
@@ -848,7 +850,7 @@ def randpw():
 		'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5',
 		'6', '7', '8', '9' ]
 	pw = ''
-	fp = open('/dev/urandom')
+	fp = open('/dev/urandom', 'r')
 	for i in range(0,8):
 		o = fp.read(1)
 		pw += valid[(ord(o) % len(valid))]
@@ -1030,16 +1032,6 @@ def keyShellEscape(line):
 		else:
 			new_line.append ('_')
 	return ''.join (new_line)
-
-def valueShellEscape(line):
-	escapes = {
-		'"': '\\"',
-		'$': '\\$',
-		'\\': '\\\\',
-		'`': '\\`',
-	}
-
-	return replaceDict(line, escapes)
 
 def validateKey(k):
 	"""Check if key consists of only shell valid characters."""
@@ -1305,7 +1297,7 @@ def filter_shell( args, text ):
 		except ValueError:
 			var = line
 			value = ''
-		out.append( '%s="%s"' % ( keyShellEscape( var ), valueShellEscape( value ) ) )
+		out.append('%s=%s' % (keyShellEscape(var), escape_value(value)))
 	return out
 
 def filter_keys_only( args, text ):

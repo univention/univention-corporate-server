@@ -1,3 +1,14 @@
+univention-config-registry (7.0.4-4) unstable; urgency=low
+
+  * Workaround _ConfigRegistry[key] rturning '' (Bug #17913)
+  * Expect LookupError in rfc822 parsing.
+  * Fix section_s_.
+  * s/0|1/False|True/
+  * More conversion to set().
+  * Use escape_value from univention-lib (Bug #22521)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 13 May 2011 18:53:18 +0200
+
 univention-config-registry (7.0.4-3) unstable; urgency=low
 
   * Work-around with...as-problem for Python < 2.6 (Bug #17913)
