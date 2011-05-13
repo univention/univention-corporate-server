@@ -72,22 +72,9 @@ def do_package(package):
 		return
 
 	f_postinst = open(extFile(package, 'postinst.debhelper'), 'a')
-	f_preinst = open(extFile(package, 'preinst.debhelper'), 'a')
-	f_postrm = open(extFile(package, 'postrm.debhelper'), 'a')
 	f_prerm = open(extFile(package, 'prerm.debhelper'), 'a')
 	f_ucr = open(n_ucr, 'r')
 	
-	def do_divert(f, filelist=set()):
-		if f[0] != '/':
-			f = '/%s' % f
-		if f in filelist:
-			return
-		d = '%s.debian' % f
-		f_preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert "%s" --add "%s" || true\n' % (d, f))
-		f_postrm.write('test "$1" = "remove" && rm -f "%s" && dpkg-divert --rename --quiet --divert "%s" --remove "%s" || true\n' % (f, d, f))
-		f_postinst.write('res=$(dpkg-divert --list --quiet "%s") && if [ -z "$res" ]; then dpkg-divert --quiet --divert "%s" --add "%s"; fi || true\n' % (f, d, f))
-		filelist.add(f)
-
 	for item in univention.config_registry.parseRfc822(f_ucr.read()):
 		typ = item['Type'][0]
 		if typ == 'file':
@@ -120,16 +107,6 @@ def do_package(package):
 		else:
 			print >>sys.stderr, 'Unknown type: %s' % typ
 			return
-
-		if item.get('File'):
-			for f in item['File']:
-				do_divert(f)
-		elif item.get('Subfile'):
-			for f in item['Subfile']:
-				do_divert(f)
-		elif item.get('Multifile'):
-			for f in item['Multifile']:
-				do_divert(f)
 
 	f_ucr.close()
 

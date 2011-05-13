@@ -41,6 +41,7 @@ import fcntl
 import pwd
 import grp
 from debhelper import parseRfc822
+import shutil
 try:
 	from univention.lib.shell import escape_value
 except ImportError:
@@ -428,16 +429,51 @@ def runModule(modpath, arg, ucr, changes):
 		print err
 	del sys.path[ 0 ]
 
-class configHandler:
+class configHandler(object):
+	"""Base class of all config handlers."""
 	variables = set()
 
-class configHandlerMultifile(configHandler):
+class configHandlerDiverting(configHandler):
+	"""File diverting config handler."""
+
+	def __init__(self, to_file):
+		self.to_file = os.path.join('/', to_file)
+
+	def _call_divert(self, *args):
+		"""Call dpkg-divert with default arguments and stdin, stdout, and stderr redirected to NULL."""
+		cmd = ['dpkg-divert', '--quiet'] + list(args)
+		null = open(os.path.devnull, 'rw')
+		try:
+			return subprocess.call(cmd, stdin=null, stdout=null, stderr=null)
+		finally:
+			null.close()
+
+	def install_divert(self):
+		"""Prepare file for diversion."""
+		d = '%s.debian' % self.to_file
+		self._call_divert('--rename', '--divert', d, '--add', self.to_file)
+		try: # Make sure a valid file still exists
+			if not os.path.exists(self.to_file):
+				shutil.copy2(d, self.to_file)
+		except IOError:
+			pass
+
+	def uninstall_divert(self):
+		"""Undo diversion of file."""
+		try:
+			os.unlink(self.to_file)
+		except OSError:
+			pass
+		d = '%s.debian' % self.to_file
+		self._call_divert('--rename', '--divert', d, '--remove', self.to_file)
+
+class configHandlerMultifile(configHandlerDiverting):
 
 	def __init__(self, dummy_from_file, to_file):
+		configHandlerDiverting.__init__(self, to_file)
 		self.variables = set()
 		self.from_files = set()
 		self.dummy_from_file = dummy_from_file
-		self.to_file = to_file
 		self.user = None
 		self.group = None
 		self.mode = None
@@ -446,6 +482,12 @@ class configHandlerMultifile(configHandler):
 		for from_file, variables in subfiles:
 			self.from_files.add(from_file)
 			self.variables |= variables
+
+	def remove_subfile(self, subfile):
+		"""Remove subfile and return is set is now empty."""
+		self.from_files.discard(subfile)
+		if not self.from_files:
+			self.uninstall_divert()
 
 	def __call__(self, args):
 		ucr, changed = args
@@ -482,11 +524,11 @@ class configHandlerMultifile(configHandler):
 		elif st:
 			os.chmod(self.to_file, st[0])
 
-class configHandlerFile(configHandler):
+class configHandlerFile(configHandlerDiverting):
 
 	def __init__(self, from_file, to_file):
+		configHandlerDiverting.__init__(self, to_file)
 		self.from_file = from_file
-		self.to_file = to_file
 		self.preinst = None
 		self.postinst = None
 		self.user = None
@@ -631,8 +673,7 @@ class configHandlers:
 			from_path = os.path.join(file_dir, name)
 			if not os.path.exists(from_path):
 				return None
-			to_path = os.path.join('/', name)
-			handler = configHandlerFile(from_path, to_path)
+			handler = configHandlerFile(from_path, name)
 			if not handler:
 				return None
 			handler.variables = grepVariables(open(from_path, 'r').read())
@@ -676,8 +717,7 @@ class configHandlers:
 				handler = self._multifiles[mfile]
 			except KeyError:
 				from_path = os.path.join(file_dir, mfile)
-				to_path = os.path.join('/', mfile)
-				handler = configHandlerMultifile(from_path, to_path)
+				handler = configHandlerMultifile(from_path, mfile)
 			if entry.has_key('Variables'):
 				handler.variables |= set(entry['Variables'])
 			if entry.has_key('User'):
@@ -692,6 +732,7 @@ class configHandlers:
 					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
 			if entry.has_key('Mode'):
 				handler.mode = int(entry['Mode'][0], 8)
+			# Add pending subfiles from earlier entries
 			self._multifiles[mfile] = handler
 			if self._subfiles.has_key(mfile):
 				handler.addSubfiles(self._subfiles[mfile])
@@ -703,15 +744,15 @@ class configHandlers:
 				subfile = entry['Subfile'][0]
 			except LookupError:
 				return None
+			name = os.path.join(file_dir, subfile)
 			try:
-				name = os.path.join(file_dir, subfile)
 				qentry = (name, grepVariables(open(name, 'r').read()))
 			except IOError:
 				print "The following Subfile doesnt exist: \n%s \nunivention-config-registry commit aborted" % name
 				sys.exit(1)
 			# if multifile handler does not exist jet, queue subfiles
 			try:
-				handler = self._multifiles.get(mfile)
+				handler = self._multifiles[mfile]
 				handler.addSubfiles([qentry])
 			except KeyError:
 				self._subfiles.setdefault(mfile, []).append(qentry)
@@ -759,6 +800,8 @@ class configHandlers:
 				handlers.add(handler)
 
 		for handler in handlers:
+			if isinstance(handler, configHandlerDiverting):
+				handler.install_divert()
 			values = {}
 			for variable in handler.variables:
 				values[variable] = ucr[variable]
@@ -769,18 +812,27 @@ class configHandlers:
 		file = os.path.join(info_dir, package+'.info')
 		for section in parseRfc822(open(file, 'r').read()):
 			handler = self.getHandler(section)
+			# Handle Type=file
 			try:
-				files = secion['File']
+				files = section['File']
 			except KeyError:
 				pass
 			else:
 				for f in files:
-					if f[0] != '/':
-						f = '/%s' % f
-					try:
-						os.unlink(f)
-					except OSError:
-						pass
+					handler.uninstall_divert()
+			# Handle Type=subfile
+			try:
+				mfile = section['Multifile'][0]
+				sfile = section['Subfile'][0]
+				handler = self._multifiles[mfile] # associated handler
+				assert isinstance(handler, configHandlerMultifile)
+			except LookupError:
+				pass
+			except AssertionError:
+				pass
+			else:
+				name = os.path.join(file_dir, sfile)
+				handler.remove_subfile(name)
 
 	def __call__(self, variables, arg):
 		"""Call handlers registered for changes in variables."""
