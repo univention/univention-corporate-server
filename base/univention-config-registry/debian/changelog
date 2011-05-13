@@ -1,8 +1,16 @@
-univention-config-registry (7.0.2-5) unstable; urgency=low
+univention-config-registry (7.0.4-1) unstable; urgency=low
 
   * Parse multifile mode as octal (Bug #21014)
+  * Fix deadlock due pipe overflow (Bug #22517)
 
- -- Philipp Hahn <hahn@univention.de>  Fri, 13 May 2011 14:59:07 +0200
+ -- Philipp Hahn <hahn@univention.de>  Fri, 13 May 2011 15:10:30 +0200
+
+univention-config-registry (7.0.3-1) unstable; urgency=low
+
+  * changed method for loading UCR modules as the old one is not supported
+    by python 2.6; Bug #22515
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 13 May 2011 12:07:58 +0200
 
 univention-config-registry (7.0.2-4) unstable; urgency=low
 
