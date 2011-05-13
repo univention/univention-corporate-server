@@ -47,6 +47,8 @@ override_dh_auto_test:
 
 override_dh_auto_install:
 	dh_auto_install
+	univention-install-config-registry
+
 	@for i in $(TEMPLATE_FILES); do\
 		install -m 644 templates/$$i debian/univention-directory-reports/etc/univention/directory/reports/default/$$i;\
 	done
