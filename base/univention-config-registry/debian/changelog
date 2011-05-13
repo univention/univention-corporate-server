@@ -5,8 +5,9 @@ univention-config-registry (7.0.4-1) unstable; urgency=low
   * Remove dead code in configHandlers.commit()
   * Use ucs.is_true()
   * Clean up old code.
+  * Convert configHandler._multifile to set().
 
- -- Philipp Hahn <hahn@univention.de>  Fri, 13 May 2011 15:19:44 +0200
+ -- Philipp Hahn <hahn@univention.de>  Fri, 13 May 2011 16:12:45 +0200
 
 univention-config-registry (7.0.3-1) unstable; urgency=low
 

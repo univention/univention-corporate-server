@@ -50,13 +50,6 @@ file_dir = '/etc/univention/templates/files'
 script_dir = '/etc/univention/templates/scripts'
 module_dir = '/etc/univention/templates/modules'
 info_dir = '/etc/univention/templates/info'
-cache_file = '/var/cache/univention-config/cache'
-cache_version = 1
-cache_version_min = 0
-cache_version_max = 1
-cache_version_text = 'univention-config cache, version'
-cache_version_notice = '%s %s\n' % (cache_version_text, cache_version)
-cache_version_re = re.compile('^%s (P<version>[0-9]+)$' % cache_version_text)
 
 invalid_key_chars = re.compile ('[\\r\\n\!\"\§\$\%\&\(\)\[\]\{\}\=\?\`\+\#\'\,\;\<\>\\\]')
 invalid_value_chars = '\r\n'
@@ -436,8 +429,8 @@ class configHandler:
 class configHandlerMultifile(configHandler):
 
 	def __init__(self, dummy_from_file, to_file):
-		self.variables = []
-		self.from_files = []
+		self.variables = set()
+		self.from_files = set()
 		self.dummy_from_file = dummy_from_file
 		self.to_file = to_file
 		self.user = None
@@ -446,11 +439,8 @@ class configHandlerMultifile(configHandler):
 
 	def addSubfiles(self, subfiles):
 		for from_file, variables in subfiles:
-			if not from_file in self.from_files:
-				self.from_files.append(from_file)
-			for variable in variables:
-				if not variable in self.variables:
-					self.variables.append(variable)
+			self.from_files.add(from_file)
+			self.variables |= set(variables)
 
 	def __call__(self, args):
 		ucr, changed = args
@@ -571,45 +561,51 @@ def grepVariables(f):
 	return variable_pattern.findall(f)
 
 class configHandlers:
+	"""Manage handlers for configuration variables."""
+	CACHE_FILE = '/var/cache/univention-config/cache'
+	# 0: without version
+	# 1: with version header
+	# 2: switch to handlers mapping to set, drop file
+	VERSION = 2
+	VERSION_MIN = 0
+	VERSION_MAX = 2
+	VERSION_TEXT = 'univention-config cache, version'
+	VERSION_NOTICE = '%s %s\n' % (VERSION_TEXT, VERSION)
+	VERSION_RE = re.compile('^%s (P<version>[0-9]+)$' % VERSION_TEXT)
 
-	_handlers = {} # variable -> [handlers]
-	_files = {} # unused
+	_handlers = {} # variable -> set(handlers)
 	_multifiles = {} # multifile -> handler
 	_subfiles = {} # multifile -> [subfiles] // pending
 
-	def _check_cache_version(self, fp):
-		version = 0
+	def _get_cache_version(self, fp):
 		line = fp.readline()	# IOError is propagated
-		match = cache_version_re.match(line)
+		match = configHandlers.VERSION_RE.match(line)
 		if match:
 			version = int(match.group('version'))
 		# "Old style" cache (version 0) doesn't contain version notice
 		else:
 			fp.seek(0)
-		return cache_version_min <= version <= cache_version_max
+			version = 0
+		return version
 
 	def load(self):
 		try:
-			fp = open(cache_file, 'r')
-			if not self._check_cache_version(fp):
-				print "Invalid cache file version, exiting."
-				fp.close()
-				self.update()
-				return
-		except (IOError, ValueError):
+			with open(configHandlers.CACHE_FILE, 'r') as fp:
+				version = self._get_cache_version(fp)
+				if not configHandlers.VERSION_MIN <= version <= configHandlers.VERSION_MAX:
+					raise TypeError("Invalid cache file version.")
+				p = cPickle.Unpickler(fp)
+				self._handlers = p.load()
+				if version <= 1:
+					# version <= 1: _handlers[multifile] -> [handlers]
+					# version >= 2: _handlers[multifile] -> set([handlers])
+					self._handlers = map((k, set(v)) for k, v in self._handlers.items())
+					# version <= 1: _files UNUSED
+					_files = p.load()
+				self._subfiles = p.load()
+				self._multifiles = p.load()
+		except (IOError, TypeError, ValueError, cPickle.UnpicklingError, EOFError, AttributeError):
 			self.update()
-			return
-		p = cPickle.Unpickler(fp)
-		try:
-			self._handlers = p.load()
-			self._files = p.load()
-			self._subfiles = p.load()
-			self._multifiles = p.load()
-		except (cPickle.UnpicklingError, EOFError, AttributeError):
-			fp.close()
-			self.update()
-			return
-		fp.close()
 
 	def stripBasepath(self, path, basepath):
 		return path.replace(basepath, '')
@@ -710,7 +706,7 @@ class configHandlers:
 				handler = self._multifiles.get(mfile)
 				handler.addSubfiles([qentry])
 			except KeyError:
-				self._subfiles.setdefult(mfile, []).append(qentry)
+				self._subfiles.setdefault(mfile, []).append(qentry)
 				handler = None
 
 		else:
@@ -720,7 +716,6 @@ class configHandlers:
 	def update(self):
 		"""Parse .info files to build list of handlers."""
 		self._handlers.clear()
-		self._files.clear()
 		self._multifiles.clear()
 		self._subfiles.clear()
 
@@ -729,34 +724,31 @@ class configHandlers:
 			if not file.endswith('.info'):
 				continue
 			for section in parseRfc822(open(file).read()):
-				if not section.has_key('Type'):
+				if not section.get('Type'):
 					continue
 				handler = self.getHandler(section)
 				if handler:
 					handlers.append(handler)
 		for handler in handlers:
 			for variable in handler.variables:
-				if not self._handlers.has_key(variable):
-					self._handlers[variable] = []
-				self._handlers[variable].append(handler)
+				self._handlers.setdefault(variable, set()).add(handler)
 
-		fp = open(cache_file, 'w')
-		fp.write(cache_version_notice)
+		fp = open(configHandlers.CACHE_FILE, 'w')
+		fp.write(configHandlers.VERSION_NOTICE)
 		p = cPickle.Pickler(fp)
 		p.dump(self._handlers)
-		p.dump(self._files)
 		p.dump(self._subfiles)
 		p.dump(self._multifiles)
 		fp.close()
 
 	def register(self, package, ucr):
 		"""Register new info file for package."""
-		handlers = []
+		handlers = set()
 		file = os.path.join(info_dir, package+'.info')
 		for section in parseRfc822(open(file).read()):
 			handler = self.getHandler(section)
-			if handler and not handler in handlers:
-				handlers.append(handler)
+			if handler:
+				handlers.add(handler)
 
 		for handler in handlers:
 			values = {}
@@ -784,15 +776,15 @@ class configHandlers:
 
 	def __call__(self, variables, arg):
 		"""Call handlers registered for changes in variables."""
-		pending_handlers = []
+		if not variables:
+			return
+		pending_handlers = set()
 
-		for variable in variables:
-			for k in self._handlers.keys():
-				_re=re.compile(k)
+		for reg_var, handlers in self._handlers.items():
+			_re = re.compile(reg_var)
+			for variable in variables:
 				if _re.match(variable):
-					for handler in self._handlers[k]:
-						if not handler in pending_handlers:
-							pending_handlers.append(handler)
+					pending_handlers |= handlers
 		for handler in pending_handlers:
 			handler(arg)
 
@@ -808,10 +800,10 @@ class configHandlers:
 				else:
 					_filelist.append(os.path.normpath(os.path.join(cwd, _f)))
 		# find handlers
-		pending_handlers = []
+		pending_handlers = set()
 		for file in directoryFiles(info_dir):
 			for section in parseRfc822(open(file).read()):
-				if not section.has_key('Type'):
+				if not section.get('Type'):
 					continue
 				handler = None
 				if _filelist:
@@ -826,8 +818,8 @@ class configHandlers:
 						continue
 				else:
 					handler = self.getHandler(section)
-				if handler and not handler in handlers:
-					pending_handlers.append(handler)
+				if handler:
+					pending_handlers.add(handler)
 		# call handlers
 		for handler in pending_handlers:
 			values = {}
