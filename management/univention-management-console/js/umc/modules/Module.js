@@ -14,6 +14,12 @@ dojo.declare("umc.modules.Module", [ dijit.layout.ContentPane, dijit.layout.Bord
 	//border: false,
 	//autoScroll: true,
 	//layout: 'fit'
+
+	postMixInProperties: function() {
+		// set the css class umcModulePane
+		this.class = (this.class || '') + ' umcModulePane';
+		this.liveSplitters = false;
+	}
 	
 });
 

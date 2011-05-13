@@ -52,6 +52,10 @@ dojo.declare( "umc.widgets.OverviewWidget", [dijit.TitlePane, dijit._Container],
 	//		Title of category for which the modules shall be displayed
 	title: '',
 
+	postMixInProperties: function() {
+		this.inherited(arguments);
+	},
+	
 	buildRendering: function() {
 		// summary:
 		//		Render a list of module items for the given category.

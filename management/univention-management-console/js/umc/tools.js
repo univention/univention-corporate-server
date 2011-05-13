@@ -25,7 +25,7 @@ dojo.mixin(umc.tools, {
 		
 		// check special case for 'get' and 'auth' commands .. there we don't
 		// need to add 'command'
-		if ((/^(get|auth)\//).test(commandStr)) {
+		if ((/^(get\/|auth)/).test(commandStr)) {
 			url = '/umcp/' + commandStr;
 		}
 
@@ -103,7 +103,7 @@ dojo.mixin(umc.tools, {
 					umc.app.alert('You are not authorized to perform this action!');
 					return;
 				case 503:
-					umc.app.alert('This service is temporarily not available (staus: 503)!');
+					umc.app.alert('This service is temporarily not available (status: 503)!');
 					return;
 				default:
 					umc.app.alert('An unexpected HTTP-error occurred (status: ' + status + ')');
@@ -184,7 +184,6 @@ dojo.mixin(umc.tools, {
 		// create the new widget according to its type
 		var WidgetClass = dojo.getObject('umc.widgets.' + widgetConf.type);
 		if (!WidgetClass) {
-			console.log('The specified widget type could not be found: ' + widgetConf.type);
 			return undefined; // undefined
 		}
 		return new WidgetClass(conf); // Widget
@@ -281,10 +280,7 @@ dojo.mixin(umc.tools, {
 		// add buttons if specified
 		if (buttons) {
 			// create a container for all buttons since they need a different layout
-			var buttonContainer = new umc.widgets.ContainerWidget({
-				colspan: cols,
-				style: 'text-align: right'
-			});
+			var buttonContainer = new umc.widgets.ContainerWidget({ });
 
 			// add all buttons to the container in the correct order
 			// (i.e., using the interal array field _order) 
@@ -292,7 +288,8 @@ dojo.mixin(umc.tools, {
 				buttonContainer.addChild(ibutton);
 			});
 
-			// add button container to main layout
+			// add button container to main layout into the second column
+			container.addChild(new dijit._Widget({}));
 			container.addChild(buttonContainer);
 		}
 

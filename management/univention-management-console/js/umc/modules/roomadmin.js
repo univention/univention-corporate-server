@@ -3,7 +3,8 @@
 dojo.provide("umc.modules.roomadmin");
 
 dojo.require("umc.modules.Module");
-dojo.require("umc.widgets.Form");
+dojo.require("umc.widgets.FormWidget");
+dojo.require("dojox.grid.EnhancedGrid");
 
 dojo.declare("umc.modules.roomadmin", umc.modules.Module, {
 
@@ -85,13 +86,38 @@ dojo.declare("umc.modules.roomadmin", umc.modules.Module, {
 			[ 'myinput2', 'mychoice2' ]
 		];
 
-		this._form = new umc.widgets.Form({
-			region: 'center',
+		this._form = new umc.widgets.FormWidget({
+			region: 'top',
 			widgets: widgets,
 			buttons: buttons,
 			layout: layout
 		});
 		this.addChild(this._form);
+
+		this._grid = new dojox.grid.EnhancedGrid({
+			//id: 'ucrVariables',
+			region: 'center',
+			query: { object: '*', path: '*' },
+			queryOptions: { ignoreCase: true },
+			structure: layout,
+			clientSort: true,
+			store: new dojo.data.ItemFileReadStore({ data: {
+				identifier: 'id',
+				label: 'object',
+				items: [
+					{ id: 'id1', object: 'Administrator', path: 'univention.qa:/users/' },
+					{ id: 'id2', object: 'join-backup', path: 'univention.qa:/users/' },
+					{ id: 'id3', object: 'join-slave', path: 'univention.qa:/users/' },
+					{ id: 'id4', object: 'spam', path: 'univention.qa:/users/' }
+				]
+			}}),
+			rowSelector: '2px'
+			//sortFields: {
+			//	attribute: 'variable',
+			//	descending: true
+			//},
+		});
+		this.addChild(this._grid);
 
 		/*dojo.connect(form, 'onSubmit', function() {
 			console.log('### submitted');

@@ -11,28 +11,44 @@ html, body
     border: 0; 
 	margin: 0;
 	padding: 0;
-	background-color: #ffffff;
+	background-color: #FFFFFF;
 	overflow: hidden;
+	background: url('../images/mainBackground.png') repeat-x 0px 0px;
 }
 
 /* the header element with univention logo */
 .header
 {
-	background: url('../images/logo.png') no-repeat 20px 15px;
-	padding-left: 49px !important;
-	padding-top: 40px !important;
-	color: #d50029;
+	background: url('../images/header.png') no-repeat 0px 0px;
+	padding: 20px 20px !important;
+	/*color: #d50029;*/
 	/*font-family: tahoma,arial,verdana,sans-serif;*/
-	font-size: 11px;
-	height: 22px;
+	/*font-size: 11px;*/
+	height: 80px;
+	text-align: right;
 }
 
 .dijitTabPane {
 	overflow: auto;
 }
 
-.submitButton {
+.umcSubmitButton {
 	font-weight: bold !important;
+}
+
+/* hack to make the header buttons not look like buttons :) */
+.headerButton .dijitButtonNode {
+	background: none !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+
+.umcModulePane {
+	padding: 8px;
+}
+
+.umcNoBorder {
+	border: 0px !important;
 }
 
 /* fix for bug with form submission: http://bugs.dojotoolkit.org/ticket/12331 */

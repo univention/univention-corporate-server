@@ -6,6 +6,10 @@ dojo.require("dijit.Dialog");
 dojo.require("dijit.layout.BorderContainer");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.layout.TabContainer");
+dojo.require("dijit.form.DropDownButton");
+dojo.require("dijit.form.Button");
+dojo.require("dijit.Menu");
+dojo.require("dojo.cookie");
 dojo.require("umc.widgets.LoginDialog");
 dojo.require("umc.widgets.ContainerPane");
 dojo.require("umc.widgets.OverviewWidget");
@@ -49,7 +53,7 @@ dojo.mixin(umc.app, {
 		// create login dialog
 		this.loggingIn = true;
 		this.loginDialog = umc.widgets.LoginDialog({});
-		dojo.connect(this.loginDialog, 'onLogin', dojo.hitch(this, this.onLogin));
+		dojo.connect(this.loginDialog, 'onLogin', this, 'onLogin');
 
 		// create alert dialog
 		this.alertDialog = new dijit.Dialog({
@@ -63,19 +67,22 @@ dojo.mixin(umc.app, {
 			this.loginDialog.show();
 		}
 		else {
-			this.loginDialog.hide();
-			this.loadModules();
-			console.log('Login is still valid (cookie: ' + sessionCookie + ').');
+			this.onLogin(dojo.cookie('univention.umc.username'));
+			console.log('Login is still valid (cookie: ' + sessionCookie + ', username: ' + this.username + ').');
 		}
 	},
 
 	closeSession: function() {
-		dojo.cookie('UMCSessionId', '', {
-			expires: -1
+		dojo.cookie('UMCSessionId', null, {
+			expires: -1,
+			path: '/'
 		});
 	},
 
-	onLogin: function() {
+	username: null,
+	onLogin: function(username) {
+		this.username = username;
+		dojo.cookie('univention.umc.username', username, { expires: 100, path: '/' });
 		this.loginDialog.hide();
 		this.loadModules();
 	},
@@ -106,6 +113,7 @@ dojo.mixin(umc.app, {
 		}
 
 		// create a new tab
+		//console.log('#A1');
 		var tab = new module.BaseClass({
 			title: module.title,
 			closable: true,
@@ -117,8 +125,13 @@ dojo.mixin(umc.app, {
 			//autoWidth: true,
 			//autoHeight: true
 		});
+		tab.startup();
+		//console.log(tab);
+		//console.log('#A2');
 		umc.widgets._tabContainer.addChild(tab);
+		//console.log('#A3');
 		umc.widgets._tabContainer.selectChild(tab, true);
+		//console.log('#A4');
 	},
 
 	isSetupGUI: false,
@@ -167,20 +180,72 @@ dojo.mixin(umc.app, {
 		umc.widgets._tabContainer.addChild(overviewContainer);
 		
 		// the header
-		var header = new dijit.layout.ContentPane({
+		var header = new umc.widgets.ContainerPane({
 			title: '',
 			'class': 'header',
-			id: 'header',
-			content: 'Management Console',
 			region: 'top'
 		});
 		topContainer.addChild( header );
+
+		// add some buttons
+		header.addChild(new dijit.form.Button({
+			label: 'Hilfe',
+			'class': 'headerButton'
+		}));
+		header.addChild(new dijit.form.Button({
+			label: 'Über UMC',
+			'class': 'headerButton'
+		}));
+
+		// the user context menu
+		var menu = new dijit.Menu({});
+		menu.addChild(new dijit.MenuItem({
+			label: 'Abmelden',
+			onClick: function() {
+				umc.app.closeSession();
+				window.location.reload();
+			}
+		}));
+		menu.addChild(new dijit.CheckedMenuItem({
+			label: 'Tooltips',
+			checked: umc.app.tooltipsVisible(),
+			onClick: function() {
+				console.log('###');
+				console.log(this);
+				console.log(this.checked);
+				umc.app.showTooltips(this.checked);
+			}
+		}));
+		menu.addChild(new dijit.CheckedMenuItem({
+			label: 'Nachfragen',
+			checked: true
+		}));
+		//menu.startup();
+		header.addChild(new dijit.form.DropDownButton({
+			label: 'Benutzer: ' + this.username,
+			'class': 'headerButton',
+			dropDown: menu
+		}));
 
 		// put everything together
 		topContainer.startup();
 
 		// set a flag that GUI has been build up
 		umc.widgets.isSetupGUI = true;
+	},
+
+	showTooltips: function(visible) {
+		if (!visible) {
+			dojo.cookie('univention.umc.tooltips', 'false', { expires: 100, path: '/' } );
+		}
+		else {
+			dojo.cookie('univention.umc.tooltips', null, { expires: -1, path: '/' });
+		}
+	},
+
+	tooltipsVisible: function() {
+		var cookie = dojo.cookie('univention.umc.tooltips');
+		return undefined === cookie || 'true' == cookie;
 	},
 
 	_modules: [],

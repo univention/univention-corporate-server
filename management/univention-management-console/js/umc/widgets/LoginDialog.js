@@ -59,11 +59,12 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 		}).placeAt(this._form);
 
 		// add username input field
+		var username = dojo.cookie('univention.umc.username') || '';
 		this._usernameTextBox = new dijit.form.TextBox({
 			id: this.id + 'UsernameTextBox',
 			label: 'Benutzername',
 			//style: 'width: 300px',
-			value: ''
+			value: username
 		});
 		this._layoutContainer.addChild(this._usernameTextBox);
 
@@ -128,25 +129,25 @@ dojo.declare('umc.widgets.LoginDialog', [ dojox.widget.Dialog, umc.widgets.Stand
 
 	_authenticate: function(username, password) {
 		this.standby(true);
-		umc.tools.xhrPostJSON(
-			{
-				username: username,
-				password: password
-			},
-			'/umcp/auth',
-			dojo.hitch(this, function(data, ioargs) {
-				// disable standby in any case
-				this.standby(false);
+		umc.tools.umcpCommand('auth', {
+			username: username,
+			password: password
+		}).then(dojo.hitch(this, function(data) {
+			// disable standby in any case
+			console.log('# _authenticate - ok');
+			this.standby(false);
 
-				// make sure that we got data
-				if (200 == dojo.getObject('xhr.status', false, ioargs)) {
-					this.onLogin();
-				}
-			})
-		);
+			// make sure that we got data
+			this.onLogin(username);
+		}), dojo.hitch(this, function(error) {
+			// disable standby in any case
+			console.log('# _authenticate - error');
+			console.log(error);
+			this.standby(false);
+		}));
 	},
 
-	onLogin: function() {
+	onLogin: function(/*String*/ username) {
 		// event stub
 	}
 });
