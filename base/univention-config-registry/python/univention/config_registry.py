@@ -30,9 +30,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, re, string, cPickle, types, copy, subprocess
+import os
+import sys
+import re
+import string
+import cPickle
+import types
+import copy
+import subprocess
 import fcntl
-import pwd, grp
+import pwd
+import grp
 from debhelper import parseRfc822
 
 variable_pattern = re.compile('@%@([^@]+)@%@')
@@ -377,14 +385,14 @@ def filter(template, dir, srcfiles=[], opts = {}):
 
 def runScript(script, arg, changes):
 
-	s = ''
+	diff = ''
 	for key, value in changes.items():
 		if value and len(value) > 1 and value[0] and value[1]:
-			s += '%s@%%@%s@%%@%s\n' % (key, value[0], value[1])
+			diff += '%s@%%@%s@%%@%s\n' % (key, value[0], value[1])
 
 	p = subprocess.Popen(script+" "+arg, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
 	p_out, p_in = p.stdin, p.stdout
-	p_out.write(s)
+	p_out.write(diff)
 	p_out.close()
 	p_in.close()
 
@@ -684,17 +692,17 @@ class configHandlers:
 		for file in directoryFiles(info_dir):
 			if not file.endswith('.info'):
 				continue
-			for s in parseRfc822(open(file).read()):
-				if not s.has_key('Type'):
+			for section in parseRfc822(open(file).read()):
+				if not section.has_key('Type'):
 					continue
-				object = self.getHandler(s)
+				object = self.getHandler(section)
 				if object:
 					objects.append(object)
 		for object in objects:
-			for v in object.variables:
-				if not self._handlers.has_key(v):
-					self._handlers[v] = []
-				self._handlers[v].append(object)
+			for variable in object.variables:
+				if not self._handlers.has_key(variable):
+					self._handlers[variable] = []
+				self._handlers[variable].append(object)
 
 		fp = open(cache_file, 'w')
 		fp.write(cache_version_notice)
@@ -709,41 +717,41 @@ class configHandlers:
 
 		objects = []
 		file = os.path.join(info_dir, package+'.info')
-		for s in parseRfc822(open(file).read()):
-			object = self.getHandler(s)
+		for section in parseRfc822(open(file).read()):
+			object = self.getHandler(section)
 			if object and not object in objects:
 				objects.append(object)
 
 		for object in objects:
 			d = {}
-			for v in object.variables:
-				d[v] = ucr[v]
+			for variable in object.variables:
+				d[variable] = ucr[variable]
 			object((ucr, d))
 
 	def unregister(self, package, ucr):
 
 		file = os.path.join(info_dir, package+'.info')
-		for s in parseRfc822(open(file).read()):
-			object = self.getHandler(s)
-			if s.has_key('File'):
-				for f in s['File']:
+		for section in parseRfc822(open(file).read()):
+			object = self.getHandler(section)
+			if section.has_key('File'):
+				for f in section['File']:
 					if f[0] != '/':
 						f = '/'+f
 					if os.path.exists(f):
 						os.unlink(f)
 
 	def __call__(self, variables, arg):
-		handlers = []
+		pending_handlers = []
 
-		for v in variables:
+		for variable in variables:
 			for k in self._handlers.keys():
 				_re=re.compile(k)
-				if _re.match(v):
-					for h in self._handlers[k]:
-						if not h in handlers:
-							handlers.append(h)
-		for h in handlers:
-			h(arg)
+				if _re.match(variable):
+					for handler in self._handlers[k]:
+						if not handler in pending_handlers:
+							pending_handlers.append(handler)
+		for handler in pending_handlers:
+			handler(arg)
 
 	def commit(self, ucr, filelist=[]):
 
@@ -758,48 +766,48 @@ class configHandlers:
 					_filelist.append(os.path.normpath(os.path.join(cwd, _f)))
 		objects = []
 		for file in directoryFiles(info_dir):
-			for s in parseRfc822(open(file).read()):
-				if not s.has_key('Type'):
+			for section in parseRfc822(open(file).read()):
+				if not section.has_key('Type'):
 					continue
 				object = None
 				if _filelist:
-					if s.has_key('File'):
+					if section.has_key('File'):
 						object = None
-						for f in s['File']:
+						for f in section['File']:
 							if f[0] != '/':
 								f = '/'+f
 							if f in _filelist:
-								object = self.getHandler(s)
+								object = self.getHandler(section)
 								break
 						if not object:
 							continue
-					elif s.has_key('Multifile'):
+					elif section.has_key('Multifile'):
 						object = None
-						for f in s['Multifile']:
+						for f in section['Multifile']:
 							if f[0] != '/':
 								f = '/'+f
 							if f in _filelist:
-								object = self.getHandler(s)
+								object = self.getHandler(section)
 								break
 						if not object:
 							continue
 				else:
-					object = self.getHandler(s)
+					object = self.getHandler(section)
 				if object and not object in objects:
 					objects.append(object)
 		for object in objects:
 			d = {}
-			for v in object.variables:
-                                if v in self._handlers.keys():
-					if ".*" in v:
+			for variable in object.variables:
+				if variable in self._handlers.keys():
+					if ".*" in variable:
 						for i in range(0,4):
-							val=v.replace(".*","%s"%i)
+							val = variable.replace(".*", "%s" % i)
 							regex = re.compile('(%s)'%v)
 							match = regex.search("%s"%self._handlers.keys())
 							d[val] = ucr[val]
 							i+=1
 					else:
-						d[v] = ucr[v]
+						d[variable] = ucr[variable]
 			object((ucr, d))
 
 
