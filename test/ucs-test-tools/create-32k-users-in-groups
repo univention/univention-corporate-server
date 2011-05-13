@@ -1,0 +1,150 @@
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
+#
+# UCS Test Tools
+#  create 32k users in groups
+#
+# Copyright 2010-2011 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import sys
+import univention.debug
+import univention.admin
+import univention.admin.modules
+import univention.admin.objects
+import univention.admin.uldap
+import ldap
+import operator
+
+# setup Logger
+univention.debug.init('/dev/stderr', univention.debug.ADMIN, univention.debug.ALL)
+
+# basic LDAP configuration
+config = univention.admin.config.config()
+
+# create LDAP connection
+access, position = univention.admin.uldap.getAdminConnection()
+
+# position of groups and users in LDAP dit
+gp = univention.admin.uldap.position(position.getDn())
+gp.setDn("cn=groups,%s" % position.getBase())
+
+up = univention.admin.uldap.position(position.getDn())
+up.setDn("cn=users,%s" % position.getBase())
+
+# dynamically get modules by name (univention.admin.handlers.$module.object)
+gg = univention.admin.modules.get("groups/group")
+univention.admin.modules.init(access, position, gg)
+
+uu = univention.admin.modules.get("users/user")
+univention.admin.modules.init(access, position, uu)
+
+def group(name, in_groups=None):
+	"""Create group, which is itself member in_groups."""
+	g = gg.object(co=config, lo=access, position=gp)
+	g.options = ['posix', 'samba']
+	g.open()
+	g.info['name'] = name
+	g.info['sambaGroupType'] = "2"
+	if in_groups:
+		g.info['memberOf'] = ["cn=%s,%s" % (in_groups, gp.getDn())]
+	try:
+		dn = g.create()
+		print dn
+		return dn
+	except univention.admin.uexceptions.groupNameAlreadyUsed, e:
+		print >>sys.stderr, 'Group exists: %s' % (e,)
+	except univention.admin.uexceptions.objectExists, e:
+		print >>sys.stderr, 'Object exists: %s' % (e,)
+
+def user(name, groups):
+	"""Create user, which is itself member in groups."""
+	gdn = ["cn=%s,%s" % (group, gp.getDn()) for group in groups]
+	u = uu.object(co=config, lo=access, position=up)
+	#u.options = ['posix', 'samba']
+	u.open()
+	u.info['username'] = name
+	u.info['password'] = 'univention'
+	u.info['firstname'] = name
+	u.info['lastname'] = name
+	u.info['groups'] = gdn
+	# Per default, every user gets added to the default group 'Domain Users',
+	# which gets very slow, since each time the group is loaded, than modified
+	# by removing all previous members before adding them all back plus adding
+	# the new user.
+	u.info['primaryGroup'] = 'cn=Domain Users,%s' % gp.getDn()
+	u.info['unixhome'] = '/home/%s' % name
+	try:
+		dn = u.create()
+		print dn
+		return dn
+	except univention.admin.uexceptions.uidAlreadyUsed, e:
+		print >>sys.stderr, 'User exists: %s' % (e,)
+	except univention.admin.uexceptions.objectExists, e:
+		print >>sys.stderr, 'Object exists: %s' % (e,)
+
+def nscd(*a):
+	"""Create numbered name."""
+	return 'nscd%s' % ''.join(map(lambda d: hex(d)[-1], a))
+
+def group_members(name='Domain Users', uniqueMember=None, memberUid=None):
+	"""Set members of group."""
+	dn = "cn=%s,%s" % (name, gp.getDn())
+	mod = lambda l: bool(l) and ldap.MOD_REPLACE or ldap.MOD_DELETE
+	ml = [
+			(mod(uniqueMember), 'uniqueMember', uniqueMember),
+			(mod(memberUid), 'memberUid', memberUid),
+			]
+	try:
+		r_type, r_data = access.lo.lo.modify_s(dn, ml)
+	except ldap.NO_SUCH_ATTRIBUTE, e:
+		print >>sys.err, e
+	return dn
+
+def create():
+	"""Create hierarchy of groups and users."""
+	group('nscd_all')
+
+	uniqueMember = []
+	memberUid = []
+
+	for a in range(8):
+		group(nscd(a), 'nscd_all')
+		for b in range(16):
+			group(nscd(a, b), nscd(a))
+			for c in range(16):
+				group(nscd(a, b, c), nscd(a, b))
+				for d in range(16):
+					uid = nscd(a, b, c, d)
+					dn = user(uid, [nscd(a, b), nscd(a, b, c)])
+					uniqueMember.append(dn)
+					memberUid.append(uid)
+			group_members()
+	group_members(uniqueMember=uniqueMember, memberUid=memberUid)
+
+if __name__ == '__main__':
+	create()
