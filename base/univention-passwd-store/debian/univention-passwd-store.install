@@ -1,4 +1,4 @@
-files/univention-passwd-store.sh usr/sbin/
+files/univention-passwd-store usr/sbin/
 files/sso-rdesktop usr/bin/
 files/sso-ssh usr/bin/
 
