@@ -294,7 +294,7 @@ static char *_passwdcache_crypt_password( const char *old  )
   time_t tm;
   char salt[3];
 
-  rand_file = fopen( "/dev/random", "r" );
+  rand_file = fopen( "/dev/urandom", "r" );
   if( rand_file == NULL )
   {
     time(&tm);
