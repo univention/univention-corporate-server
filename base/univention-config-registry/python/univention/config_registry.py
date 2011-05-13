@@ -137,28 +137,32 @@ class ConfigRegistry( dict ):
 				reg.load()
 
 	def save( self ):
-		self._registry[ self._write_registry ].save()
+		registry = self._registry[self._write_registry]
+		registry.save()
 
 	def lock( self ):
-		self._registry[ self._write_registry ].lock()
+		registry = self._registry[self._write_registry]
+		registry.lock()
 
 	def unlock( self ):
-		self._registry[ self._write_registry ].unlock()
+		registry = self._registry[self._write_registry]
+		registry.unlock()
 
 	def __delitem__( self, key ):
-		if self._registry[ self._write_registry ].has_key( key ):
-			del self._registry[ self._write_registry ][ key ]
+		registry = self._registry[self._write_registry]
+		registry[key]
 
 	def __getitem__( self, key ):
 		return self.get( key )
 
 	def __setitem__( self, key, value ):
-		self._registry[ self._write_registry ][ key ] = value
+		registry = self._registry[self._write_registry]
+		registry[key] = value
 
 	def __contains__( self, key ):
-		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP,
-					 ConfigRegistry.NORMAL, ConfigRegistry.CUSTOM ):
-			if key in self._registry[ reg ]:
+		for reg in (ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP, ConfigRegistry.NORMAL, ConfigRegistry.CUSTOM):
+			registry = self._registry[reg]
+			if key in registry:
 				return True
 		return False
 
@@ -170,33 +174,37 @@ class ConfigRegistry( dict ):
 	__iter__ = iterkeys
 
 	def get( self, key, default = None, getscope = False ):
-		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP, ConfigRegistry.NORMAL, ConfigRegistry.CUSTOM):
-			if self._registry[ reg ].has_key( key ):
+		for reg in (ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP, ConfigRegistry.NORMAL, ConfigRegistry.CUSTOM):
+			try:
+				registry = self._registry[reg]
+				value = registry[key]
 				if getscope:
-					return (reg, self._registry[ reg ][ key ])
+					return (reg, value)
 				else:
-					return self._registry[ reg ][ key ]
-		
-		return self._registry[ ConfigRegistry.CUSTOM ].get( key, default )
+					return value
+			except KeyError:
+				continue
+		return default
 
 	def has_key( self, key, write_registry_only = False ):
 		if write_registry_only:
-			return self._registry[ self._write_registry ].has_key( key )
+			registry = self._registry[self._write_registry]
+			return key in registry
 		else:
-			return self.get( key, None ) != None
+			return key in self
 
 	def _merge( self, getscope=False ):
 		merge = {}
-		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP, ConfigRegistry.NORMAL,
-					 ConfigRegistry.CUSTOM ):
-			if not isinstance( self._registry[ reg ], _ConfigRegistry ):
+		for reg in (ConfigRegistry.FORCED, ConfigRegistry.SCHEDULE, ConfigRegistry.LDAP, ConfigRegistry.NORMAL, ConfigRegistry.CUSTOM):
+			registry = self._registry[reg]
+			if not isinstance(registry, _ConfigRegistry):
 				continue
-			for key in self._registry[ reg ].keys():
-				if not merge.has_key( key ):
+			for key, value in registry.items():
+				if key not in merge:
 					if getscope:
-						merge[ key ] = (reg, self._registry[ reg ][ key ])
+						merge[key] = (reg, value)
 					else:
-						merge[ key ] = self._registry[ reg ][ key ]
+						merge[key] = registry[key]
 		return merge
 
 	def items( self, getscope=False ):
@@ -615,10 +623,14 @@ class configHandlers:
 			handler = None
 
 		elif typ == 'file':
-			from_path = os.path.join(file_dir, entry['File'][0])
-			to_path = os.path.join('/', entry['File'][0])
-			if not entry.has_key('File') or not os.path.exists(from_path):
+			try:
+				name = entry['File'][0]
+			except KeyError:
 				return None
+			from_path = os.path.join(file_dir, name)
+			if not os.path.exists(from_path):
+				return None
+			to_path = os.path.join('/', name)
 			handler = configHandlerFile(from_path, to_path)
 			if not handler:
 				return None
@@ -655,12 +667,16 @@ class configHandlers:
 			handler.variables = entry['Variables']
 
 		elif typ == 'multifile':
-			if not entry.has_key('Multifile'):
+			try:
+				mfile = entry.get['Multifile'][0]
+			except KeyError:
 				return None
-			if self._multifiles.has_key(entry['Multifile'][0]):
-				handler = self._multifiles[entry['Multifile'][0]]
-			else:
-				handler = configHandlerMultifile(os.path.join(file_dir, entry['Multifile'][0]), os.path.join('/', entry['Multifile'][0]))
+			try:
+				handler = self._multifiles[mfile]
+			except KeyError:
+				from_path = os.path.join(file_dir, mfile)
+				to_path = os.path.join('/', mfile)
+				handler = configHandlerMultifile(from_path, to_path)
 			if entry.has_key('Variables'):
 				handler.variables += entry['Variables']
 			if entry.has_key('User'):
@@ -675,28 +691,30 @@ class configHandlers:
 					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
 			if entry.has_key('Mode'):
 				handler.mode = int(entry['Mode'][0], 8)
-			self._multifiles[entry['Multifile'][0]] = handler
-			if self._subfiles.has_key(entry['Multifile'][0]):
-				handler.addSubfiles(self._subfiles[entry['Multifile'][0]])
-				del(self._subfiles[entry['Multifile'][0]])
+			self._multifiles[mfile] = handler
+			if self._subfiles.has_key(mfile):
+				handler.addSubfiles(self._subfiles[mfile])
+				del self._subfiles[mfile]
 
 		elif typ == 'subfile':
-			if not entry.has_key('Multifile') or not entry.has_key('Subfile'):
-				return None
-			mfile = entry['Multifile'][0]
 			try:
-				qentry = (os.path.join(file_dir, entry['Subfile'][0]), grepVariables(open(os.path.join(file_dir, entry['Subfile'][0])).read()))
+				mfile = entry['Multifile'][0]
+				subfile = entry['Subfile'][0]:
+			except KeyError:
+				return None
+			try:
+				name = os.path.join(file_dir, subfile)
+				qentry = (name, grepVariables(open(name).read()))
 			except IOError:
-				print "The following Subfile doesnt exist: \n%s \nunivention-config-registry commit aborted" %(os.path.join(file_dir, entry['Subfile'][0]))
+				print "The following Subfile doesnt exist: \n%s \nunivention-config-registry commit aborted" % name
 				sys.exit(1)
 			# if multifile handler does not exist jet, queue subfiles
-			if self._multifiles.has_key(mfile):
-				self._multifiles[mfile].addSubfiles([qentry])
-				return self._multifiles[mfile]
-			elif not self._subfiles.has_key(mfile):
-				self._subfiles[mfile]=[]
-			self._subfiles[mfile].append(qentry)
-			handler = None
+			try:
+				handler = self._multifiles.get(mfile)
+				handler.addSubfiles([qentry])
+			except KeyError:
+				self._subfiles.setdefult(mfile, []).append(qentry)
+				handler = None
 
 		else:
 			handler = None
@@ -754,12 +772,18 @@ class configHandlers:
 		file = os.path.join(info_dir, package+'.info')
 		for section in parseRfc822(open(file).read()):
 			handler = self.getHandler(section)
-			if section.has_key('File'):
-				for f in section['File']:
+			try:
+				files = secion['File']
+			except KeyError:
+				pass
+			else:
+				for f in files:
 					if f[0] != '/':
-						f = '/'+f
-					if os.path.exists(f):
+						f = '/%s' % f
+					try:
 						os.unlink(f)
+					except OSError:
+						pass
 
 	def __call__(self, variables, arg):
 		"""Call handlers registered for changes in variables."""
@@ -794,26 +818,15 @@ class configHandlers:
 					continue
 				handler = None
 				if _filelist:
-					if section.has_key('File'):
-						handler = None
-						for f in section['File']:
-							if f[0] != '/':
-								f = '/'+f
-							if f in _filelist:
-								handler = self.getHandler(section)
-								break
-						if not handler:
-							continue
-					elif section.has_key('Multifile'):
-						handler = None
-						for f in section['Multifile']:
-							if f[0] != '/':
-								f = '/'+f
-							if f in _filelist:
-								handler = self.getHandler(section)
-								break
-						if not handler:
-							continue
+					files = secion.get('File') || section.get('Multifile') || ()
+					for f in files:
+						if f[0] != '/':
+							f = '/' + f
+						if f in _filelist:
+							handler = self.getHandler(section)
+							break
+					else:
+						continue
 				else:
 					handler = self.getHandler(section)
 				if handler and not handler in handlers:
