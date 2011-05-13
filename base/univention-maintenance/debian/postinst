@@ -3,7 +3,7 @@
 # Univention Maintenance
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,19 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-set -e
-
-# installation
-if [ "$1" = configure -a -z "$2" ]; then
-	univention-config-registry set system/stats?yes system/stats/cron?'0,30 * * * * '
-fi
 
 case "$1" in
     configure)
-		dpkg -l >/var/univention-backup/paketliste.txt
-		if [ -n "$2" ] && dpkg --compare-versions "$2" lt 1.0-3; then
-		test -e /etc/cron.d/univention-maintenance && rm -f /etc/cron.d/univention-maintenance
-		fi
 		if [ ! -e /var/www/statistik/index.htm ]; then
 			echo "<HTML>"												>>/var/www/statistik/index.htm
 			echo "<HEAD>"												>>/var/www/statistik/index.htm
@@ -58,7 +48,9 @@ case "$1" in
 
 		if [ -z "$2" ]; then
 			#run script every 15 minutes
-			univention-baseconfig set mrtg/cron="*/15 * * * *"
+			univention-config-registry set mrtg/cron?"*/15 * * * *" \
+								system/stats?yes \
+								system/stats/cron?'0,30 * * * * '
 		fi
     ;;
 

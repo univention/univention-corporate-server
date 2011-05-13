@@ -1,4 +1,4 @@
-@%@BCWARNING=# @%@
+@%@UCRWARNING=# @%@
 
 @!@
 roles = ["domaincontroller_backup", "domaincontroller_master", "domaincontroller_slave", "memberserver"]

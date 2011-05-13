@@ -3,7 +3,7 @@
 # Univention Maintenance
 #  maintenance script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -34,13 +34,13 @@
 # LANG is set to UTF-8.
 export LANG=C
 
-# Name der Konfigurationsdatei
+# Name of config file
 configfile="/etc/univention/univention-maintenance.conf"
 
-# Konfigurationsdatei suchen und Werte prüfen
+# Search config file and check values
 test -e $configfile || {
     echo
-    echo "FEHLER: Konfigurationsdatei \"$configfile\" nicht gefunden!"
+    echo "ERROR: Config file \"$configfile\" was not found!"
     echo
     exit 2;
 }
@@ -49,25 +49,24 @@ test -e $configfile || {
 
 test -z "$mrtg_config" && touch "$mrtg_config" 2>/dev/null && {
     echo
-    echo "FEHLER: Konfigurationsvariable \"\$mrtg_config\" nicht gesetzt"
-    echo "oder Datei kann nicht angelegt werden!"
+    echo "ERROR: \"\$mrtg_config\" is not valid."
     echo
     exit 2;
 }
 test -z "$wwwdir" && mkdir -p "$wwwdir" 2>/dev/null && {
     echo
-    echo "FEHLER: Konfigurationsvariable \"\$wwwdir\" nicht gesetzt!"
+    echo "ERROR: Missing \"\$wwwdir\" in $configfile"
     echo
     exit 2;
 }
 test -z $indexhtm && {
     echo
-    echo "FEHLER: Konfigurationsvariable \"\$indexhtm\" nicht gesetzt!"
+    echo "ERROR: Missing \"\$indexhtm\" in $configfile"
     echo
     exit 2;
 }
 
-# Alte MRTG-Dateien löschen
+# Delete old mrtg files
 rm -f $wwwdir/ucs_*.png $wwwdir/ucs_*.txt
 rm -f $wwwdir/uds_*.png $wwwdir/uds_*.txt
 for i in $(ls $wwwdir/uds_*.log 2>/dev/null); do
@@ -128,7 +127,7 @@ mrtg "$mrtg_config" 2>/dev/null
 rm -f $mrtg_config $wwwdir/ucs_*.htm*
 echo "Auslastung des Auslagerungsspeicher: $prctswap%" >$wwwdir/$mrtgname.txt
 
-# Prozessorlast der letzten 15 Minuten prüfen
+# CPU usage of last 15 minutes
 loadavg="`echo \`cat /proc/loadavg |awk '{print $3}'\`*100 | bc | cut -f1 -d"."`"
 mrtgname="ucs_0load"
 echo "WorkDir: $wwwdir" > $mrtg_config
@@ -148,7 +147,7 @@ mrtg "$mrtg_config" 2>/dev/null
 rm -f $mrtg_config $wwwdir/ucs_*.htm*
 echo "Systemlast: $loadavg%" >$wwwdir/$mrtgname.txt
 
-# Anzahl der Sessions prüfen
+# Session count
 nrsessions="`ps -C univention-sess | grep -ic univention-sess`"
 mrtgname="ucs_1sessions"
 echo "WorkDir: $wwwdir" > $mrtg_config
@@ -168,13 +167,13 @@ mrtg "$mrtg_config" 2>/dev/null
 rm -f $mrtg_config $wwwdir/ucs_*.htm*
 echo "Session(s): $nrsessions" >$wwwdir/$mrtgname.txt
 
-# Statistik-HTML schreiben
-cat <<__ENDE__ >$wwwdir/$indexhtm
+# Write HTML file
+cat <<__EOT__ >$wwwdir/$indexhtm
 <HTML>
 <HEAD>
 </HEAD>
 <BODY BGCOLOR="#F0F0F0">
-__ENDE__
+__EOT__
 for file in $wwwdir/*-day.png; do
     echo "<P ALIGN=\"center\"><FONT FACE=\"ARIAL\">" >>$wwwdir/$indexhtm
     cat "`echo \"$file\" | sed \"s/-day.png/.txt/\"`" >>$wwwdir/$indexhtm
@@ -185,8 +184,8 @@ for file in $wwwdir/*-day.png; do
     echo "<IMG SRC=\"`basename $file -day.png`-year.png\"><BR>" >>$wwwdir/$indexhtm
     echo "</FONT></P>" >>$wwwdir/$indexhtm
 done
-cat <<__ENDE__ >>$wwwdir/$indexhtm
+cat <<__EOT__ >>$wwwdir/$indexhtm
 </BODY>
 </HTML>
-__ENDE__
+__EOT__
 
