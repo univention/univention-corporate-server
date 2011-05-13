@@ -1,9 +1,9 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 #
 # Univention Print Client
 #  helper script: set printer server according to policy
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -37,9 +37,7 @@ import univention_baseconfig
 baseConfig=univention_baseconfig.baseConfig()
 baseConfig.load()
 
-local_printserver = baseConfig.get('cups/printserver', 'no')
-
-if local_printserver.lower() in ['yes', 'true', 'on', '1']:
+if baseConfig.is_true('cups/printserver', False):
 	# This host is a printserver. We don't overwrite the UCR variable for the printserver,
 	# because in most instances this makes no sense. Bug #10124
 	sys.exit(0)
