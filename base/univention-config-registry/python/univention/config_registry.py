@@ -404,9 +404,12 @@ def runScript(script, arg, changes):
 		if value and len(value) > 1 and value[0] and value[1]:
 			diff.append('%s@%%@%s@%%@%s\n' % (key, value[0], value[1]))
 
-	with open(os.path.devnull, 'w') as null:
+	null = open(os.path.devnull, 'w')
+	try:
 		p = subprocess.Popen(script + " " + arg, shell=True, stdin=subprocess.PIPE, stdout=null, close_fds=True)
 		p.communicate(''.join(diff))
+	finally:
+		null.close()
 
 def runModule(modpath, arg, ucr, changes):
 	"""loads the python module that MUST be located in 'module_dir' or any subdirectory."""
@@ -590,7 +593,8 @@ class configHandlers:
 
 	def load(self):
 		try:
-			with open(configHandlers.CACHE_FILE, 'r') as fp:
+			fp = open(configHandlers.CACHE_FILE, 'r')
+			try:
 				version = self._get_cache_version(fp)
 				if not configHandlers.VERSION_MIN <= version <= configHandlers.VERSION_MAX:
 					raise TypeError("Invalid cache file version.")
@@ -604,6 +608,8 @@ class configHandlers:
 					_files = p.load()
 				self._subfiles = p.load()
 				self._multifiles = p.load()
+			finally:
+				fp.close()
 		except (IOError, TypeError, ValueError, cPickle.UnpicklingError, EOFError, AttributeError):
 			self.update()
 
