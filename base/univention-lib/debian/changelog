@@ -1,3 +1,9 @@
+univention-lib (1.0.5-1) unstable; urgency=low
+
+  * Fix Python installation (Bug #22160)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 13 May 2011 18:03:32 +0200
+
 univention-lib (1.0.4-1) unstable; urgency=low
 
   * added shell func isDomainController (Bug #22456)
