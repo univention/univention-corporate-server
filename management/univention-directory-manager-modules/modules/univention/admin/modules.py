@@ -58,7 +58,9 @@ def update():
 			p=os.path.join(dir, file).replace(root, '').replace('.py', '')
 			p=p[1:]
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.modules.update: importing "%s"' % p)
-			m=__import__(p)
+			parts=p.split(os.path.sep)
+			mod, name='.'.join(parts), parts[-1:]
+			mod=__import__(mod, globals(), locals(), name)
 			m.initialized=0
 			modules[m.module]=m
 			if isContainer(m):
