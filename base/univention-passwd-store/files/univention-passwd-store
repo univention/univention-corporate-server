@@ -1,9 +1,6 @@
-#!/usr/bin/make -f
+#! /bin/sh
 #
-# Univention Passwd Store
-#  rules file for the debian package
-#
-# Copyright 2009-2011 Univention GmbH
+# Copyright 2006-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,20 +27,44 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
+set -e
 
-override_dh_auto_install:
-	dh_auto_install
-	univention-install-config-registry
+# nothing to be done for root
+if [ "$USER" = "root" ]; then 
+    exit 0
+fi
 
-override_dh_fixperms:
-	chmod 700 debian/univention-passwd-store/usr/sbin/univention-passwd-store
-	chmod 755 debian/univention-passwd-store/usr/bin/sso-rdesktop
-	chmod 755 debian/univention-passwd-store/usr/bin/sso-ssh
-	dh_fixperms
+if [ -z "$PASSWD" ]; then
+	exit 0
+fi
 
-%:
-	dh $@
+# ignore computer accounts
+if [ "$USER" != "${USER%\$}" ]; then
+	exit 0
+fi
+
+PASSWDDIR="$HOME/.univention-passwd-store"
+PASSWDFILE="$PASSWDDIR/session_passwd"
+
+# prepare dir
+test -d "$PASSWDDIR" || mkdir "$PASSWDDIR"
+chown "$USER":nogroup "$PASSWDDIR"
+chmod 0100 "$PASSWDDIR"
+
+if [ -e "$PASSWDFILE"]; then
+	rm -f "$PASSWDFILE"
+fi
+
+# prepare file
+touch "$PASSWDFILE"
+chown "$USER":nogroup "$PASSWDFILE"
+chmod 0600 "$PASSWDFILE"
+
+# store passwd
+echo -n "$PASSWD" > "$PASSWDFILE"
+
+# restrict access
+chmod 0400 "$PASSWDFILE"
+
+exit 0
 
