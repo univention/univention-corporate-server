@@ -1,3 +1,9 @@
+univention-lib (1.0.6-1) unstable; urgency=low
+
+  * fixed typo in base.sh (Bug #21579)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 16 May 2011 15:14:08 +0200
+
 univention-lib (1.0.5-2) unstable; urgency=low
 
   * debian/control: Build-Depends: +ucslint (Bug #22160)

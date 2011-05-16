@@ -59,7 +59,7 @@ create_logfile_if_missing () {
 call_joinscript () {
 	local joinscript
 	joinscript="/usr/lib/univention-install/$1"
-	if [ -x "$joinscript"] ; then
+	if [ -x "$joinscript" ] ; then
 		shift
 		if [ "$(ucr get server/role)" = "domaincontroller_master" ] ; then
 			"$joinscript" "$@"
