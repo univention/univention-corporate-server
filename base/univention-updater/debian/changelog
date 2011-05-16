@@ -1,3 +1,17 @@
+univention-updater (7.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22433)
+    * Bump version for UCS 3.0
+    * Replace univention-baseconfig with univention-config-registry
+    * Replace static UCR header in the UCR templates with '@%@UCRWARNING=#
+      @%@'
+    * Update copyright to 2011
+    * Update to debhelper 7
+    * Switch from python2.4 to python2.6
+    * Add ucslint
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 May 2011 13:23:29 +0200
+
 univention-updater (6.0.83-3) unstable; urgency=low
 
   * check free disk space for update (Bug #22026)

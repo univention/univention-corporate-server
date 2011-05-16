@@ -1,9 +1,10 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
 #
 # Univention Updater
 #  python tools for updater and repository tools
 #
-# Copyright 2009-2010 Univention GmbH
+# Copyright 2009-2011 Univention GmbH
 #
 # http://www.univention.de/
 #

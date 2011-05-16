@@ -3,7 +3,7 @@
 # Univention Updater
 #  join script
 #
-# Copyright 2008-2010 Univention GmbH
+# Copyright 2008-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -41,22 +41,22 @@ touch /usr/lib/univention-install/.index.txt
 
 test -n "`grep "univention-updater v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
 # umc module
 
-univention-admin container/cn create $@ --ignore_exists --position cn=univention,$ldap_base --set name=console
-univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=acls
-univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=operations
+univention-directory-manager container/cn create "$@" --ignore_exists --position cn=univention,$ldap_base --set name=console
+univention-directory-manager container/cn create "$@" --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=acls
+univention-directory-manager container/cn create "$@" --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=operations
 
 # create Updater operations
-univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
+univention-directory-manager settings/console_operation create "$@" --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
 																				 --set name=update \
 																				 --set description="Updater operations" \
 																				 --append operation="update/*" \
 
 # create Updater acls
-univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+univention-directory-manager settings/console_acl create "$@" --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
 																				 --set name=update-all \
 																				 --set category="Updater" \
 																				 --set ldapbase="$ldap_base" \
@@ -64,20 +64,20 @@ univention-admin settings/console_acl create $@ --ignore_exists --position cn=ac
 																				 --set description="All update operations"
 
 # policy container
-univention-admin container/cn create $@ --ignore_exists --position cn=policies,$ldap_base --set name=console --set policyPath=1
+univention-directory-manager container/cn create "$@" --ignore_exists --position cn=policies,$ldap_base --set name=console --set policyPath=1
 
 # default policies
-univention-admin policies/console_access create $@ --ignore_exists \
+univention-directory-manager policies/console_access create "$@" --ignore_exists \
 	--position cn=console,cn=policies,$ldap_base \
-	--set name=default-admin
+	--set name=default-directory-manager
 
-univention-admin policies/console_access modify $@ --ignore_exists \
-	--dn cn=default-admin,cn=console,cn=policies,$ldap_base \
+univention-directory-manager policies/console_access modify "$@" --ignore_exists \
+	--dn cn=default-directory-manager,cn=console,cn=policies,$ldap_base \
 	--append allow=cn=update-all,cn=acls,cn=console,cn=univention,$ldap_base
 
-univention-admin policies/console_access create $@ --ignore_exists \
+univention-directory-manager policies/console_access create "$@" --ignore_exists \
 	--position cn=console,cn=policies,$ldap_base \
-	--set name=update-admin --append allow=cn=update-all,cn=acls,cn=console,cn=univention,$ldap_base
+	--set name=update-directory-manager --append allow=cn=update-all,cn=acls,cn=console,cn=univention,$ldap_base
 
 
 test -n "`grep "univention-updater v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-updater v${VERSION} successful" >>/usr/lib/univention-install/.index.txt

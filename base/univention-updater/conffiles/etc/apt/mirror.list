@@ -1,4 +1,4 @@
-@%@BCWARNING=#@%@
+@%@UCRWARNING=#@%@
 
 set base_path    @%@repository/mirror/basepath@%@
 # set mirror_path  $base_path/mirror

@@ -3,7 +3,7 @@
 # Univention Updater
 #  maintenance init script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -39,7 +39,7 @@ case "$1" in
 		log_action_begin_msg "Checking network for Univention maintenance"
 
 		dmesg -n 1
-		eval `univention-config-registry shell`
+		eval "$(univention-config-registry shell)"
 
 		# clean up updater settings
 		if [ -n "$update_reboot_required" ]; then

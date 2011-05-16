@@ -3,7 +3,7 @@
 # Univention Updater
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,65 +30,65 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-createLogfile () {
-	if [ ! -e $1 ] ; then
-		touch $1
-		chown $2 $1
-		chmod $3 $1
-	fi
-}
+. /usr/share/univention-lib/all.sh
 
-createLogfile /var/log/univention/repository.log "root:adm" 640
-createLogfile /var/log/univention/security-updates.log "root:adm" 640
-createLogfile /var/log/univention/updater.log "root:adm" 640
-createLogfile /var/log/univention/actualise.log "root:adm" 640
+create_logfile /var/log/univention/repository.log "root:adm" 640
+create_logfile /var/log/univention/security-updates.log "root:adm" 640
+create_logfile /var/log/univention/updater.log "root:adm" 640
+create_logfile /var/log/univention/actualise.log "root:adm" 640
 
 if [ "$1" = "configure" ]; then
 	# update cronjob-entries
 	if [ -x /usr/lib/univention-directory-policy/univention-policy-maintenance ]; then
 		/usr/lib/univention-directory-policy/univention-policy-maintenance
 	fi
-	# coloured warning in univention-maintenance
+
 	univention-config-registry	set update/warning?"no" \
 								    update/warning/coloured?"no" \
 								    update/warning/lang?"default" \
 								    update/warning/tty?"/dev/tty1 /dev/tty2 /dev/tty3 /dev/tty4 /dev/tty5 /dev/tty6 /dev/tty7" \
 								    update/umc/nextversion?true \
 									"update/doc/releasenotes/url?http://download.univention.de/doc/" \
-									"update/doc/releasenotes/description?http://download.univention.de/doc/"
+									"update/doc/releasenotes/description?http://download.univention.de/doc/"\
+									repository/online?no \
+									repository/online/port?80 \
+									repository/online/maintained?yes \
+									repository/online/unmaintained?no \
+									repository/online/hotfixes?no \
+									repository/mirror/threads?10 \
+									repository/mirror/recreate_packages?yes \
+									repository/mirror/basepath?/var/lib/univention-repository \
+									update/custom/preup?/var/lib/local-preup.sh \
+									update/custom/postup?/var/lib/local-postup.sh \
+									update/commands/update?"apt-get update" \
+									update/commands/show?"apt-cache show" \
+									update/commands/install?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install" \
+									update/commands/install/interactive?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir install" \
+									update/commands/remove?"apt-get --yes remove" \
+									update/commands/configure?"dpkg --configure -a" \
+									update/commands/distupgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -us dist-upgrade" \
+									update/commands/distupgrade?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -u dist-upgrade" \
+									update/commands/upgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -us upgrade" \
+									update/commands/upgrade?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -u upgrade" \
+									update/check/cron/enabled?yes \
+									update/check/cron/debug?no \
+									"update/check/cron/entry?5 * * * *"  \
+									update/check/boot/enabled?yes \
+									update/check/boot/debug?no \
+									update/available?no
 
 fi
 
-if [ -n "$2" ] && dpkg --compare-versions "$2" lt 1.36-7; then
-	#create index.list
-	if [ -d "/var/lib/univention-server-cdrom/ucs-updates" ]; then
-		rm /var/lib/univention-server-cdrom/ucs-updates/index.list
-		for txt in /var/lib/univention-server-cdrom/ucs-updates/*.txt; do
-			b_txt=`basename $txt`
-			version=`echo "$b_txt" | sed -e 's|ucs_||;s|.txt||'`
-			echo "$version" >>/var/lib/univention-server-cdrom/ucs-updates/index.list
-		done
-	fi
-fi
-
-if [ -n "$2" ] && dpkg --compare-versions "$2" lt 1.36-42; then
-	update-rc.d -f univention-maintenance remove || true
-fi
-
-eval "$(univention-config-registry shell server/role)"
-
-if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
-	/usr/lib/univention-install/41univention-updater.inst || true
-fi
+call_joinscript 41univention-updater.inst
 
 if [ ! -d /etc/apt/sources.list.d ]; then
 	mkdir -p /etc/apt/sources.list.d
 fi
 
-# the UCR debhelper section will be added before the pycentral section,
-# so we added the pycentral section manually
-if which pycentral >/dev/null 2>&1; then
-	pycentral pkginstall univention-updater
+# the UCR debhelper section will be added before the pysupport section,
+# so we added the pysupport section manually
+if which update-python-modules >/dev/null 2>&1; then
+        update-python-modules  univention-updater.public
 fi
 
 #DEBHELPER#
@@ -96,19 +96,6 @@ fi
 if [ -x /etc/init.d/univention-management-console-server ]; then
 	/etc/init.d/univention-management-console-server crestart
 fi
-
-# set the online repository configuration, initialize mirror configuration, but do not activate it
-univention-config-registry set	repository/online?no \
-								repository/online/port?80 \
-								repository/online/maintained?yes \
-								repository/online/unmaintained?no \
-								repository/online/hotfixes?no \
-								repository/mirror/threads?10 \
-								repository/mirror/recreate_packages?yes \
-								repository/mirror/basepath?/var/lib/univention-repository
-
-univention-config-registry set update/custom/preup?/var/lib/local-preup.sh \
-                               update/custom/postup?/var/lib/local-postup.sh
 
 # set the repository server
 eval "$(univention-config-registry shell hostname domainname update/server)"
@@ -119,64 +106,6 @@ elif host univention-repository.$domainname &> /dev/null; then
 	univention-config-registry set repository/online/server?"univention-repository.$domainname"
 else
 	univention-config-registry set repository/online/server?"apt.univention.de"
-fi
-
-# unset old variables
-univention-config-registry unset update/server update/security/server update/security/prefix update/directory
-
-# define update commands
-univention-config-registry set \
-		update/commands/update?"apt-get update" \
-		update/commands/show?"apt-cache show" \
-		update/commands/install?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install" \
-		update/commands/install/interactive?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir install" \
-		update/commands/remove?"apt-get --yes remove" \
-		update/commands/configure?"dpkg --configure -a" \
-		update/commands/distupgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -us dist-upgrade" \
-		update/commands/distupgrade?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -u dist-upgrade" \
-		update/commands/upgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -us upgrade" \
-		update/commands/upgrade?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -u upgrade"
-
-# activate update check
-univention-config-registry set update/check/cron/enabled?yes \
-							   update/check/cron/debug?no \
-							   "update/check/cron/entry?5 * * * *"  \
-							   update/check/boot/enabled?yes \
-							   update/check/boot/debug?no \
-							   update/available?no
-
-if [ -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.73-0; then
-
-	eval "$(univention-config-registry shell repository/mirror/basepath)"
-	if [ -z "${repository_mirror_basepath}" ]; then
-		repository_mirror_basepath=/var/lib/univention-repository
-	fi
-
-	if [ -d "${repository_mirror_basepath}/mirror/2.2/maintained/2.2-1/all" ]; then
-		all_path="${repository_mirror_basepath}/mirror/2.2/maintained/2.2-1/all"
-		for script in preup.sh postup.sh; do
-			if [ ! -e "${all_path}/${script}" ]; then
-				cp "/usr/share/univention-updater/${script}" "${all_path}/"
-			fi
-		done
-	fi
-fi
-
-# activate --force-overwrite and --force-overwrite-dir during updates
-if [ -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.33-1; then
-	eval "$(univention-config-registry shell)"
-	if [ "$update_commands_install" = "apt-get -o DPkg::Options::=--force-confold -y --force-yes install" ] ; then
-		univention-config-registry set update/commands/install="apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install"
-	fi
-	if [ "$update_commands_distupgrade" = "apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade" ] ; then
-		univention-config-registry set update/commands/distupgrade="apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -u dist-upgrade"
-	fi
-	if [ "$update_commands_distupgrade_simulate" = "apt-get -o DPkg::Options::=--force-confold -y --force-yes -us dist-upgrade" ] ; then
-		univention-config-registry set update/commands/distupgrade/simulate="apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -us dist-upgrade"
-	fi
-	if [ "$update_commands_upgrade_simulate" = "apt-get -o DPkg::Options::=--force-confold -y --force-yes -us upgrade" ] ; then
-		univention-config-registry set update/commands/upgrade/simulate="apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes -us upgrade"
-	fi
 fi
 
 exit 0

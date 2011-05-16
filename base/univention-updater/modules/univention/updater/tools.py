@@ -1,10 +1,10 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  module: manages updates
 #
-# Copyright 2008-2010 Univention GmbH
+# Copyright 2008-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -45,8 +45,7 @@ import httplib
 import socket
 import univention.config_registry
 import traceback
-# Proxy-Support for no_proxy in 2.4 is missing, get version from 2.6
-import urllib2_proxy26 as urllib2
+import urllib2
 from urllib import quote
 import subprocess
 from operator import attrgetter, itemgetter
