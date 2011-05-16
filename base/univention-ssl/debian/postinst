@@ -1,9 +1,9 @@
-#!/bin/bash -e
+#!/bin/bash
 #
 # Univention SSL
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -44,26 +44,22 @@ if [ ! -e /etc/univention/ssl/udsCA ] ; then
 	ln -s ucsCA /etc/univention/ssl/udsCA
 fi
 
-eval `univention-baseconfig shell domainname`
+eval "$(univention-config-registry shell domainname)"
 
-univention-baseconfig set ssl/country?DE
-univention-baseconfig set ssl/state?Bremen
-univention-baseconfig set ssl/locality?Bremen
-univention-baseconfig set ssl/organization?"Univention GmbH"
-univention-baseconfig set ssl/organizationalunit?"Univention Corporate Server"
-univention-baseconfig set ssl/common?"Univention Corporate Server Root CA"
-univention-baseconfig set ssl/email?"ssl@$domainname"
-univention-baseconfig set ssl/default/days?1825
-univention-baseconfig set ssl/validity/warning?30
+country="$(echo "$locale_default"  | cut -c 1-2)"
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.5-1; then
-	# on update explicitely set hashfunction to md5 for backwards compatibility
-	univention-config-registry set ssl/default/hashfunction?md5
-fi
-# on new installations, where hashfunction ist unset, default to sha1
-univention-config-registry set ssl/default/hashfunction?sha1
+univention-config-registry set ssl/country?${country:-DE} \
+					ssl/state?${country:-DE} \
+					ssl/locality?${country:-DE} \
+					ssl/organization?"${country:-DE}" \
+					ssl/organizationalunit?"Univention Corporate Server" \
+					ssl/common?"Univention Corporate Server Root CA" \
+					ssl/email?"ssl@$domainname" \
+					ssl/default/days?1825 \
+					ssl/validity/warning?30 \
+					ssl/default/hashfunction?sha1
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
 if [ ! -e "/var/log/univention/ssl-sync.log" ]; then
 	touch /var/log/univention/ssl-sync.log

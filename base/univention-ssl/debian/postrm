@@ -3,7 +3,7 @@
 # Univention SSL
 #  postrm script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,11 +31,10 @@
 # <http://www.gnu.org/licenses/>.
 # postrm script for univention-ssl
 
-set -e
-
 if [ "$1" = "purge" ]; then
 	rm -rf /etc/univention/ssl;
 fi
 
 #DEBHELPER#
 
+exit 0
