@@ -1,4 +1,6 @@
 # /etc/cron.d/univention-pkgdb-check: crontab fragment to check the dbuser for the pkgdb
 
-# Run queue every 5 minutes
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
+
+# Run queue every 15 minutes
 */15 * * * *	root	if [ -x /usr/sbin/univention-pkgdb-check ]; then /usr/sbin/univention-pkgdb-check; fi
