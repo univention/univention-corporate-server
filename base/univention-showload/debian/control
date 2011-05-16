@@ -1,7 +1,6 @@
 Source: univention-showload
 Section: univention
 Priority: optional
-Source: univention-showload
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>> 7), ucslint
 
