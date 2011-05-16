@@ -1,2 +1,2 @@
-E:0004-30: testframework/0004-30/debian/univention-lilo.univention-config-registry-variables contains invalid characters in line 14
-E:0004-30: testframework/0004-30/debian/univention-lilo.univention-config-registry-variables contains invalid characters in line 20
+E:0004-30: debian/univention-lilo.univention-config-registry-variables:14: contains invalid characters
+E:0004-30: debian/univention-lilo.univention-config-registry-variables:20: contains invalid characters

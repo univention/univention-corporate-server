@@ -1,1 +1,1 @@
-S:0004-24: univention-lilo.univention-config-registry exists but corresponding testframework/0004-24/debian/univention-lilo.univention-config-registry-variables is missing
+S:0004-24: debian/univention-lilo.univention-config-registry-variables: univention-lilo.univention-config-registry exists but corresponding ./debian/univention-lilo.univention-config-registry-variables is missing

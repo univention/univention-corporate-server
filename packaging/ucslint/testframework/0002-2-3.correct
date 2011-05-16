@@ -1,12 +1,6 @@
-E:0002-2: testframework/0002-2-3/debian/postinst contains invalid basedn in line 10
-E:0002-2: testframework/0002-2-3/debian/postinst contains invalid basedn in line 11
-E:0002-2: testframework/0002-2-3/debian/postinst contains invalid basedn in line 12
-E:0002-2: testframework/0002-2-3/debian/postinst contains invalid basedn in line 7
-E:0002-2: testframework/0002-2-3/debian/postinst contains invalid basedn in line 8
-E:0002-2: testframework/0002-2-3/debian/postinst contains invalid basedn in line 9
-E:0002-3: testframework/0002-2-3/debian/postinst contains invalid domainname in line 13
-E:0002-3: testframework/0002-2-3/debian/postinst contains invalid domainname in line 14
-E:0002-3: testframework/0002-2-3/debian/postinst contains invalid domainname in line 15
-E:0002-3: testframework/0002-2-3/debian/postinst contains invalid domainname in line 16
-E:0002-3: testframework/0002-2-3/debian/postinst contains invalid domainname in line 17
-E:0002-3: testframework/0002-2-3/debian/postinst contains invalid domainname in line 18
+E:0002-2: debian/postinst:7: contains invalid basedn
+E:0002-2: debian/postinst:8: contains invalid basedn
+E:0002-2: debian/postinst:9: contains invalid basedn
+E:0002-3: debian/postinst:10: contains invalid domainname
+E:0002-3: debian/postinst:11: contains invalid domainname
+E:0002-3: debian/postinst:12: contains invalid domainname

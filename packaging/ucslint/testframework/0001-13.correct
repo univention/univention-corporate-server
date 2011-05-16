@@ -1,1 +1,1 @@
-E:0001-13: Join script 34univention-management-console-server.inst does not use joinscripthelper.lib
+E:0001-13: 34univention-management-console-server.inst: join script does not use joinscripthelper.lib

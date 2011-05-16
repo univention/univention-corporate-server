@@ -1,1 +1,1 @@
-E:0006-6: Script postinst contains no "exit 0" at end of file
+E:0006-6: debian/postinst: script contains no "exit 0" at end of file

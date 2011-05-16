@@ -1,1 +1,1 @@
-E:0004-28: testframework/0004-28/debian/univention-lilo.univention-config-registry contains line without ":"
+E:0004-28: debian/univention-lilo.univention-config-registry: file contains line without ":"

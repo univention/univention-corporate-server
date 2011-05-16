@@ -9,6 +9,9 @@ fi
 TMPFN=$(mktemp)
 trap "rm -f '$TMPFN'" EXIT
 
+export PYTHONPATH="$(pwd):$PYTHONPATH"
+UCSLINTPATH="$(pwd)/ucslint"
+
 for dir in testframework/* ; do
   if [ -d "$dir" ] ; then
 	  echo -n "Testing $dir "
@@ -16,8 +19,7 @@ for dir in testframework/* ; do
 	  DIRNAME=$(basename "$dir")
 	  MODULE="${DIRNAME:0:4}"
 
-	  PYTHONPATH=. \
-	  bin/ucslint -p "ucslint" -m "$MODULE" "${dir}" >"$TMPFN" 2>/dev/null
+	  ( cd "$dir" ; ../../bin/ucslint -p "$UCSLINTPATH" -m "$MODULE" >"$TMPFN" 2>/dev/null)
 	  ./ucslint-sort-output.py "$TMPFN" >"${dir}.test"
 
 	  if diff "${dir}.correct" "${dir}.test" >/dev/null 2>&1
