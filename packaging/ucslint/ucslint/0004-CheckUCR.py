@@ -42,7 +42,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				 '0004-7': [ uub.RESULT_ERROR,  'UCR .info-file contains entry of "Type: subfile" with multiple "Subfile:" line' ],
 				 '0004-8': [ uub.RESULT_ERROR,  'UCR .info-file contains entry of "Type: subfile" with multiple "Multifile:" line' ],
 				 '0004-9': [ uub.RESULT_ERROR,  'UCR .info-file contains entry without valid "Type:" line' ],
-				 '0004-10': [ uub.RESULT_ERROR, 'UCR .info-file contains entry of "Type: subfile" without corresponding entry of "Type: multifile"' ],
+				 '0004-10': [ uub.RESULT_WARN,  'UCR .info-file contains entry of "Type: subfile" without corresponding entry of "Type: multifile"' ],
 				 '0004-11': [ uub.RESULT_ERROR, 'DEPRECATED: UCR .info-file contains entry of "Type: subfile" with variables that are not registered at corresponding multifile entry' ],
 				 '0004-12': [ uub.RESULT_ERROR, 'UCR template file contains UCR variables that are not registered in .info-file' ],
 				 '0004-13': [ uub.RESULT_ERROR, 'UCR template file contains UCR variables with invalid characters' ],
