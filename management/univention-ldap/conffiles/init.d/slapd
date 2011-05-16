@@ -13,44 +13,14 @@ SLAPDCONF=/etc/ldap/slapd.conf
 
 . /lib/lsb/init-functions
 
-determine_bdb_version ()
-{
-DB_LOGMAGIC=040988
-DB_LOGVERSION=$(od -j12 -N8 -tx4 /var/lib/univention-ldap/ldap/log.* \
-   | sed -n "s/^[0-9a-f]* 00${DB_LOGMAGIC} \([0-9a-f]*\)/\1/p")
-case $DB_LOGVERSION in
-	00000005)	echo '4.0';;
-	00000007)	echo '4.1';;
-	00000008)	echo '4.2';;
-	0000000a)	echo '4.3';;
-	0000000b)	echo '4.4';;
-	0000000c)	echo '4.5';;
-	0000000d)	echo '4.6';;
-	0000000e)	echo '4.7';;
-	0000000f)	echo '4.8';;
-	*) echo 'unknown';;
-esac
-}
-
 bdbrecover ()
 {
 	# determine libdb version that back-bdb.so was linked against
 	back_bdb_version="$(/usr/bin/ldd /usr/lib/ldap/back_bdb.so | sed -n 's|.*/usr/lib/libdb-\([0-9.]*\).so.*|\1|p')"
 	DBRECOVER="/usr/bin/db${back_bdb_version}_recover"
+	DBSTAT="/usr/bin/db${back_bdb_version}_stat"
 	if [ -e "${DBRECOVER}" ]; then
-		# if the matching dbX.Y-util package is available
-		# check if the slapd backend database version matches
-		ldapdata_bdb_version="$(determine_bdb_version)"
-		if [ "$back_bdb_version" = "$ldapdata_bdb_version" ]; then
-			# version matches, so try a recover
-			cd /var/lib/univention-ldap/ldap
-			"${DBRECOVER}" -h /var/lib/univention-ldap/ldap
-		elif [ "$ldapdata_bdb_version" = "unknown" ] &&
-			"/usr/bin/db${back_bdb_version}_stat" -e \
-			-h /var/lib/univention-ldap/ldap 2>&1 | \
-			grep -q 'Environment version'; then
-			# version seems to match, so try a recover
-			echo "BDB Version heuristic seems ok, trying ${DBRECOVER}"
+		if "${DBSTAT}" -e -h /var/lib/univention-ldap/ldap/ | grep -q 'Environment version'; then
 			cd /var/lib/univention-ldap/ldap
 			"${DBRECOVER}" -h /var/lib/univention-ldap/ldap
 		else

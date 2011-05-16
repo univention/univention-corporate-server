@@ -1,3 +1,10 @@
+univention-ldap (8.0.2-3) unstable; urgency=low
+
+  * update dependency to db4.8 (Bug #22468)
+  * Adjust init script dbX.Y_recover check (Bug #21705)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 16 May 2011 17:34:29 +0200
+
 univention-ldap (8.0.2-2) unstable; urgency=low
 
   * control anonymous bind also on slaves and for standard attributes
