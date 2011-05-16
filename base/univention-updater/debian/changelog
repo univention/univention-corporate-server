@@ -1,3 +1,9 @@
+univention-updater (7.0.0-2) unstable; urgency=low
+
+  * Add missing file univention-updater.install (Bug #22433)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 May 2011 13:44:57 +0200
+
 univention-updater (7.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #22433)
