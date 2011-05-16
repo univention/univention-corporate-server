@@ -1,3 +1,13 @@
+univention-showload (5.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22431)
+    * Bump version for UCS 3.0
+    * Update copyright to 2011
+    * Update to debhelper 7
+    * Add ucslint
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 May 2011 08:44:50 +0200
+
 univention-showload (4.0.0-2) unstable; urgency=low
 
   * added GNU APGL V3 header (Bug #9620)
