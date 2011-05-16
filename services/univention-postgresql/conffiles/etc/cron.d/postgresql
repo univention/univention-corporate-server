@@ -1,4 +1,4 @@
-@%@BCWARNING=# @%@
+@%@UCRWARNING=# @%@
 # Regular cron jobs for the postgresql package
 #
 # To ensure proper access rights, 'ident sameuser' access for localhost is
