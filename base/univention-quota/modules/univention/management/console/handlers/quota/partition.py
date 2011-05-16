@@ -1,10 +1,10 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  quota module: handles partition related commands
 #
-# Copyright 2006-2010 Univention GmbH
+# Copyright 2006-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -102,7 +102,7 @@ class Commands( object ):
 								 { 'device' : dev, 'message' : message } )
 				failed = True
 			else:
-				messages.append( _( 'Quota support successfully activated for device %s' % dev ) )
+				messages.append( _( 'Quota support successfully activated for device %s' ) % dev )
 		report = '\n'.join( messages )
 		self.finished( object.id(), [], report, success = not failed )
 
@@ -120,6 +120,6 @@ class Commands( object ):
 								 { 'device' : dev, 'message' : message } )
 				failed = True
 			else:
-				messages.append( _( 'Quota support successfully deactivated for device %s' % dev ) )
+				messages.append( _( 'Quota support successfully deactivated for device %s' ) % dev )
 		report = '\n'.join( messages )
 		self.finished( object.id(), [], report, success = not failed )

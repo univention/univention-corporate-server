@@ -3,7 +3,7 @@
 # Univention Quota
 #  rules files for the debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,63 +30,38 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-PYVERS=$(shell pyversions -vr)
+PO_FILES := $(shell find modules -name '*.po')
+MO_FILES := $(PO_FILES:%.po=%.mo)
+IMAGES:=$(shell find images -name '*.gif' -o -name '*.png')
 
-PACKAGE=univention-quota
+%.mo:	%.po
+	msgfmt --check -o $@ $<
 
-build: build-stamp
+override_dh_auto_build: $(MO_FILES)
+	dh_auto_build
 
-build-stamp:
-	dh_testdir
-	touch build-stamp
+override_dh_auto_test:
+	ucslint
+	dh_auto_test
 
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp
-	dh_clean
-
-install: install-stamp
-install-stamp: build-stamp $(PYVERS:%=install-ext-%)
-install-ext-%:
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	install -m 0755 files/univention-group-quota debian/univention-quota/usr/sbin
-	install -m 0755 files/univention-user-quota debian/univention-quota/usr/sbin
-	install -m 0755 files/univention-setquota debian/univention-quota/usr/sbin
-	install -m 0755 71univention-quota.inst debian/univention-quota/usr/lib/univention-install/
+override_dh_auto_install:
+	dh_auto_install
 	univention-install-config-registry
-	univention-install-config-registry-info
-    # install UMC module
-	make PACKAGE=${PACKAGE} install-modules
-	make PACKAGE=${PACKAGE} install-locales-backend
-	make PACKAGE=${PACKAGE} install-images
 
+	set -e;\
+	for i in $(IMAGES); do\
+		o=debian/univention-quota/usr/share/univention-management-console/www/themes/$$i;\
+		install -d "`dirname $$o`";\
+		install -m644 $$i $$o;\
+	done
+	@set -e;\
+	for i in $(MO_FILES); do\
+		lang=`basename "$$i" .mo`;\
+		domain=`dirname "$$i" | sed 's,^modules/,,;s,/,-,g'`;\
+		o=debian/univention-quota/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
+		install -d "`dirname "$$o"`";\
+		install -m 644 "$$i" "$$o";\
+	done
 
-	dh_install
-
-binary-indep: build install
-	dh_testdir -i
-	dh_testroot -i
-	dh_installchangelogs -i
-	dh_installdocs -i
-	dh_installexamples -i
-	dh_installdebconf -i
-	dh_installman -i
-	dh_pycentral -i
-	dh_link -i
-	dh_compress -i
-	dh_fixperms -i
-	dh_shlibdeps -i
-	dh_installdeb -i
-	dh_gencontrol -i
-	dh_md5sums -i
-	dh_builddeb -i
-
-binary-arch: build install
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install
+%:
+	dh $@

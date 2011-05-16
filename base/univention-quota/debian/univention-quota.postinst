@@ -3,7 +3,7 @@
 # Univention Quota
 #  postinst script for the debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,18 +30,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/all.sh
+
 #DEBHELPER#
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
-if [ ! `echo $kernel_modules | grep quota_v2` ]
-	then
-	univention-baseconfig set kernel/modules="$kernel_modules;quota_v2"
+if [ ! `echo $kernel_modules | grep quota_v2` ]; then
+	univention-config-registry set kernel/modules="$kernel_modules;quota_v2"
 fi
 
-if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
-	/usr/lib/univention-install/71univention-quota.inst || true
-fi
+call_joinscript 71univention-quota.inst
 
 if [ -x /etc/init.d/univention-management-console-server ]; then
 	/etc/init.d/univention-management-console-server crestart

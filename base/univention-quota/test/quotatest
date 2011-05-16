@@ -3,7 +3,7 @@
 # Univention Quota
 #  test script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,7 +33,7 @@
 SCRIPT="$(basename $0)"
 DEBUG=""
 
-eval "$(univention-baseconfig shell ldap/base ldap/server/name)"
+eval "$(univention-config-registry shell ldap/base ldap/server/name)"
 temp="$(makepasswd --chars=4 --string=abcdefghijklmnopqrstuvwxyz)"
 local_user="loc_$temp"
 policy_user="pol_$temp"
@@ -239,14 +239,14 @@ _quota() {
 setup() {
 	debug -n "creating users and policies."
 	for u in $local_user $policy_user; do
-		univention-admin users/user create --position="cn=users,$ldap_base" --ignore_exists \
+		univention-directory-manager users/user create --position="cn=users,$ldap_base" --ignore_exists \
 			--set username="$u" --set lastname="quota_test" --set password="univention" &> /dev/null
 		dot
 	done
-	univention-admin policies/share_userquota create --position="cn=userquota,cn=shares,cn=policies,$ldap_base" \
+	univention-directory-manager policies/share_userquota create --position="cn=userquota,cn=shares,cn=policies,$ldap_base" \
 		--set softLimitSpace="$policy_soft" --set hardLimitSpace="$policy_hard" --set name="quota_test" &> /dev/null
 	dot
-	univention-admin container/cn create --position="cn=shares,$ldap_base" --set name="quotatest" &> /dev/null
+	univention-directory-manager container/cn create --position="cn=shares,$ldap_base" --set name="quotatest" &> /dev/null
 	dot
 	echo ""
 	for fs in ${args[@]} ; do
@@ -258,7 +258,7 @@ setup() {
 				name="tmproot"
 			fi
 			debug "creating share for $fs"
-			univention-admin shares/share create --position="cn=quotatest,cn=shares,$ldap_base" \
+			univention-directory-manager shares/share create --position="cn=quotatest,cn=shares,$ldap_base" \
 				--set name="$name" --set host="$ldap_server_name" --set path="$fs" \
 				--set writeable=1 --set directorymode="0775" --set group=5001 &> /dev/null
 
@@ -273,7 +273,7 @@ setup() {
 
 resetup() {
 	debug "setting policy reference for share container..."
-	univention-admin container/cn modify --dn="cn=quotatest,cn=shares,$ldap_base" \
+	univention-directory-manager container/cn modify --dn="cn=quotatest,cn=shares,$ldap_base" \
 		--policy-reference="cn=quota_test,cn=userquota,cn=shares,cn=policies,$ldap_base" &>/dev/null
 	/etc/init.d/quota restart &> /dev/null
 	debug "waiting for nfs (60 sec)..."
@@ -284,19 +284,19 @@ resetup() {
 cleanup() {
 	debug -n "cleaning up leftovers."
 	for u in $local_user $policy_user; do
-		univention-admin users/user remove --dn="uid=$u,cn=users,$ldap_base" &> /dev/null
+		univention-directory-manager users/user remove --dn="uid=$u,cn=users,$ldap_base" &> /dev/null
 		dot
 	done
-	univention-admin policies/share_userquota remove --dn="cn=quota_test,cn=userquota,cn=shares,cn=policies,$ldap_base" &> /dev/null
+	univention-directory-manager policies/share_userquota remove --dn="cn=quota_test,cn=userquota,cn=shares,cn=policies,$ldap_base" &> /dev/null
 	dot
-	univention-admin container/cn remove --dn="cn=quotatest,cn=shares,$ldap_base" &> /dev/null
+	univention-directory-manager container/cn remove --dn="cn=quotatest,cn=shares,$ldap_base" &> /dev/null
 	dot
 	for fs in ${parts[@]} ; do
 		name="$fs"
 		if [[ "$fs" == "/" ]]; then
 			name="tmproot"
 		fi
-		univention-admin shares/share remove --dn="cn=$name,cn=quotatest,cn=shares,$ldap_base" &> /dev/null
+		univention-directory-manager shares/share remove --dn="cn=$name,cn=quotatest,cn=shares,$ldap_base" &> /dev/null
 		dot
 	done
 	for d in ${umountdirs[@]} ; do

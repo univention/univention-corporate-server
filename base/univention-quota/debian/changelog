@@ -1,3 +1,16 @@
+univention-quota (6.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22433)
+    * Bump version for UCS 3.0
+    * Replace univention-baseconfig with univention-config-registry
+    * Update copyright to 2011
+    * Update to debhelper 7
+    * Removed admin transition packages
+    * Switch from python2.4 to python2.6
+    * Add ucslint to build process
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 May 2011 07:13:57 +0200
+
 univention-quota (5.0.3-1) unstable; urgency=low
 
   * fix traceback (Bug #20166)
