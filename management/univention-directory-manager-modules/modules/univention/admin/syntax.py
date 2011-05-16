@@ -195,7 +195,9 @@ class module:
 		self.description=description
 
 		if self.filter == '' or self.description == '':
-			mymodule = __import__( 'univention/admin/handlers/%s' % type)
+			name = type.replace( os.path.sep, '.' )
+			module_name = 'univention.admin.handlers.%s' % name 
+			mymodule = __import__(  module_name, globals(), locals() )
 			if self.filter == '' and hasattr(mymodule,'syntax_filter'):
 				self.filter=mymodule.syntax_filter
 			if self.description == '':

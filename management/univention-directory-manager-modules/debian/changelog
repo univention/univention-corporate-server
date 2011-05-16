@@ -1,3 +1,13 @@
+univention-directory-manager-modules (7.0.4-1) unstable; urgency=low
+
+  * Don't call update() at the end of modules.py because this will cause
+    in a recursion (Bug #22439)
+  * Import modules in syntax.py in a python 2.6 compatible way (Bug
+    #22439)
+  * baseconfig / ucr change in univention/admin/__init__.py (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 May 2011 15:53:44 +0200
+
 univention-directory-manager-modules (7.0.3-1) unstable; urgency=low
 
   * fixed some syntax errors; Bug #22439

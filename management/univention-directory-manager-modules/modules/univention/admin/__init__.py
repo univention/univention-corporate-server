@@ -32,11 +32,11 @@
 
 import copy, types, string, re
 import mapping
-import univention.baseconfig
+import univention.config_registry
 import univention.debug
 
-baseConfig=univention.baseconfig.baseConfig()
-baseConfig.load()
+configRegistry=univention.config_registry.ConfigRegistry()
+configRegistry.load()
 
 __path__.append("handlers")
 
@@ -49,7 +49,7 @@ def ucr_overwrite_properties( module, lo ):
 	if not module:
 		return
 	
-	for var in baseConfig.keys():
+	for var in configRegistry.keys():
 		if not var.startswith( ucr_prefix ):
 			continue
 		try: 
@@ -61,21 +61,21 @@ def ucr_overwrite_properties( module, lo ):
 			if prop in module.property_descriptions:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: found property' )
 				if hasattr( module.property_descriptions[ prop ], attr ):
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: set property attribute %s to %s' % ( attr, baseConfig[ var ] ) )
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: set property attribute %s to %s' % ( attr, configRegistry[ var ] ) )
 					if attr in ( 'syntax', ):
-						if hasattr(univention.admin.syntax, baseConfig[ var ]):
-							syntax = getattr( univention.admin.syntax, baseConfig[ var ] )
+						if hasattr(univention.admin.syntax, configRegistry[ var ]):
+							syntax = getattr( univention.admin.syntax, configRegistry[ var ] )
 							setattr( module.property_descriptions[ prop ], attr, syntax() )
 						else:
-							if lo.search( filter = univention.admin.syntax.LDAP_Search.FILTER_PATTERN % baseConfig[ var ] ):
-								syntax = univention.admin.syntax.LDAP_Search( baseConfig[ var ] )
+							if lo.search( filter = univention.admin.syntax.LDAP_Search.FILTER_PATTERN % configRegistry[ var ] ):
+								syntax = univention.admin.syntax.LDAP_Search( configRegistry[ var ] )
 								syntax._load( lo )
 								setattr( module.property_descriptions[ prop ], attr, syntax )
 							else:
 								syntax = univention.admin.syntax.string()
 								setattr( module.property_descriptions[ prop ], attr, syntax() )
 					else:
-						setattr( module.property_descriptions[ prop ], attr, type( getattr( module.property_descriptions[ prop ], attr ) ) ( baseConfig[ var ] ) )
+						setattr( module.property_descriptions[ prop ], attr, type( getattr( module.property_descriptions[ prop ], attr ) ) ( configRegistry[ var ] ) )
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: get property attribute: %s' % getattr( module.property_descriptions[ prop ], attr ) )
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ucr_overwrite_properties: get property attribute (type): %s' % type( getattr( module.property_descriptions[ prop ], attr ) ) )
 		except Exception, e:
@@ -266,8 +266,8 @@ def ucr_overwrite_layout (module, ucr_property, tab):
 	if hasattr (tab.short_description, 'data'):
 		desc = tab.short_description.data
 	# replace invalid characters by underscores
-	desc = re.sub(univention.baseconfig.invalid_key_chars, '_', desc).replace('/','_')
-	p_v = baseConfig.get ('directory/manager/web/modules/%s/layout/%s/%s' % (module, desc, ucr_property), None)
+	desc = re.sub(univention.config_registry.invalid_key_chars, '_', desc).replace('/','_')
+	p_v = configRegistry.get ('directory/manager/web/modules/%s/layout/%s/%s' % (module, desc, ucr_property), None)
 	if not p_v:
 		return None
 
@@ -292,13 +292,13 @@ def ucr_overwrite_module_layout( module ):
 			desc = tab.short_description.data
 
 		# replace invalid characters by underscores
-		desc = re.sub(univention.baseconfig.invalid_key_chars, '_', desc).replace('/','_')
+		desc = re.sub(univention.config_registry.invalid_key_chars, '_', desc).replace('/','_')
 
-		tab_layout = baseConfig.get( 'directory/manager/web/modules/%s/layout/%s' % ( module.module, desc ) )
+		tab_layout = configRegistry.get( 'directory/manager/web/modules/%s/layout/%s' % ( module.module, desc ) )
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, "layout overwrite: tab_layout='%s'" % tab_layout )
-		tab_name = baseConfig.get( 'directory/manager/web/modules/%s/layout/%s/name' % ( module.module, desc ) )
+		tab_name = configRegistry.get( 'directory/manager/web/modules/%s/layout/%s/name' % ( module.module, desc ) )
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, "layout overwrite: tab_name='%s'" % tab_name )
-		tab_descr = baseConfig.get( 'directory/manager/web/modules/%s/layout/%s/description' % ( module.module, desc ) )
+		tab_descr = configRegistry.get( 'directory/manager/web/modules/%s/layout/%s/description' % ( module.module, desc ) )
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, "layout overwrite: tab_descr='%s'" % tab_descr )
 		if tab_name:
 			tab.short_description = tab_name

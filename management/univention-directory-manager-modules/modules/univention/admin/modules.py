@@ -60,7 +60,7 @@ def update():
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.modules.update: importing "%s"' % p)
 			parts=p.split(os.path.sep)
 			mod, name='.'.join(parts), parts[-1:]
-			mod=__import__(mod, globals(), locals(), name)
+			m=__import__(mod, globals(), locals(), mod)
 			m.initialized=0
 			modules[m.module]=m
 			if isContainer(m):
@@ -911,4 +911,7 @@ def childModules(module_name):
 
 univention.admin.syntax.import_syntax_files()
 univention.admin.hook.import_hook_files()
-update()
+
+# The update will cause in a recursion, see https://forge.univention.org/bugzilla/show_bug.cgi?id=22439
+# update()
+
