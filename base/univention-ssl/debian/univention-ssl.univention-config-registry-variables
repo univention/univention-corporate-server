@@ -70,3 +70,8 @@ Description[en]=Print warnings if the root certificates validity ends within thi
 Type=str
 Categories=system-ssl
 
+[ssl/validity/ca]
+Description[de]=Gibt an, ob sich ssl/validity/days auf das Rechnerzertifikat (false) oder die Root CA (true) bezieht
+Description[en]=Specifies whether ssl/validity/days refers to the host certificate (false) or the root ca (true)
+Type=str
+Categories=system-ssl

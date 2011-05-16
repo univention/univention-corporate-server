@@ -1,3 +1,15 @@
+univention-ssl (5.0.5-1) unstable; urgency=low
+
+  * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 21 Mar 2011 15:35:07 +0100
+
+univention-ssl (5.0.4-1) unstable; urgency=low
+
+  * check also the root ca in univention-certificate-check-validity  Bug #20664
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Feb 2011 14:51:13 +0100
+
 univention-ssl (5.0.3-1) unstable; urgency=low
 
   * use value from ssl/default/days for root ca's days Bug #21287
