@@ -31,7 +31,11 @@
 # <http://www.gnu.org/licenses/>.
 #
 #
-import os, sys, imp, optparse
+import os
+import sys
+import imp
+import optparse
+import re
 try:
 	import univention.ucslint.base as uub
 except ImportError:
@@ -49,6 +53,7 @@ class DebianPackageCheck(object):
 		self.disabled_modules = disabled_modules
 		self.debuglevel = debuglevel
 		self.msgidlist = {}
+		self.overrides = set()
 		self.loadplugins()
 
 
@@ -102,13 +107,68 @@ class DebianPackageCheck(object):
 					self.msgidlist[ curid ][0] = level
 
 
+	def loadOverrides(self):
+		self.overrides = set()
+		fn = os.path.join( self.path, 'debian', 'ucslint.overrides' )
+		if os.path.isfile(fn):
+			lines = []
+			try:
+				lines = open(fn,'r').readlines()
+			except:
+				print >>sys.stderr, 'WARNING: cannot load debian/ucslint.overrides'
+
+			reModule = re.compile('^(\d+-\d+):?\s*')
+			reFilename = re.compile('^(.*?)(:\d+)?$')
+			for line in lines:
+				module = None
+				filename = None
+				linenumber = None
+
+				line = line.strip()
+
+				# find UCR module and cut it off
+				result = reModule.search(line)
+				if not result:
+					continue
+				module = result.group(1)
+				line = line[ result.end(): ]
+
+				# find filename and cut it off
+				result = reFilename.search(line)
+				if not result:
+					self.overrides.add( '%s:%s:%s' % (module, filename, linenumber) )
+					continue
+				filename = result.group(1)
+				if not filename:
+					filename = None
+				linenumber = result.group(2)
+				if linenumber:
+					linenumber = linenumber.strip(':')
+
+				self.overrides.add( '%s:%s:%s' % (module, filename, linenumber) )
+
+	def inOverrides(self, module, filename, linenumber):
+		if '%s:%s:%s' % (module, None, None) in self.overrides:
+			return True
+		if '%s:%s:%s' % (module, filename, None) in self.overrides:
+			return True
+		if '%s:%s:%s' % (module, filename, linenumber) in self.overrides:
+			return True
+		return False
+
 	def printResult(self, ignore_IDs, display_only_IDs, display_only_categories, exitcode_categories ):
 		incident_cnt = 0
 		exitcode_cnt = 0
+
+		self.loadOverrides()
+
 		for msg in self.msglist:
 			if msg.getId() in ignore_IDs:
 				continue
 			if display_only_IDs and not msg.getId() in display_only_IDs:
+				continue
+			if self.inOverrides( msg.getId(), msg.filename, msg.line ):
+				# ignore msg if mentioned in overrides files
 				continue
 			category = uub.RESULT_INT2STR.get( self.msgidlist.get( msg.getId(), ['FIXME'] )[0], 'FIXME')
 			if category in display_only_categories or display_only_categories == '':
