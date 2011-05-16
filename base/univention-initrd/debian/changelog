@@ -1,3 +1,10 @@
+univention-initrd (4.0.0-3) unstable; urgency=low
+
+  * added ucslint.overrides to skip warning about missing copyright header
+    in conffiles/usr/share/initramfs-tools/init (Bug #22475)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 16 May 2011 15:26:02 +0200
+
 univention-initrd (4.0.0-2) unstable; urgency=low
 
   * Temporarily drop dependency on univention-bootsplash, not yet
