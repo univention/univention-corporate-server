@@ -1,0 +1,82 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH UNIVENTION-SSH 8 2011-05-16 UCS
+
+.SH NAME
+univention\-ssh \- OpenSSH password wrapper
+
+.SH SYNOPSIS
+\fBunivention\-ssh\fP [\fIoptions\fP] \fIpassword-file\fP [\fIssh-options\fP] [\fIuser\fP\fB@\fP]\fIhost\fP [\fIcommand\fP...]
+.br
+\fBunivention\-scp\fP [\fIoptions\fP] \fIpassword-file\fP [\fIscp-options\fP] \fIfiles\fP... [\fIuser\fP\fB@\fP]\fIhost\fP\fB:\fP[\fIpath\fP]
+.br
+\fBunivention\-ssh\-rsync\fP [\fIoptions\fP] \fIpassword-file\fP [\fIrsync-options\fP] \fIfiles\fP... [\fIuser\fP\fB@\fP]\fIhost\fP\fB:\fP[\fIpath\fP]
+
+.SH DESCRIPTION
+.BR univention\-ssh ,
+.BR univention\-scp ,
+and
+.B univention\-ssh-rsync
+are wrapper programs to use OpenSSH and other tools with plain text password authentication.
+
+.SH OPTIONS
+A summary of options is included below.
+.TP
+.BR \-h ,\  \-\-help ,\  \-?
+Print usage message and exit the program.
+.TP
+.BI \-timeout \ seconds
+Specify a \fItimeout\fP in seconds, after with the
+.BR ssh (1)
+connection is forcefully terminated.
+.TP
+.BR \-\-no\-split
+Previous versions of this wrapper locally used an intermediate shell to start the ssh command, which performed one extra level of word splitting (See
+.BR sh (1)
+for more information).
+This new version can directly invoke the respective command, which simplifies argument quoting.
+For backward compatibility this is disabled by default, which results in all arguments first being joined by a single white-space-character, before being split again using \fIshlex\fP on any white-space-character.
+.br
+Enabling this option disables this backward compatible processing and directly passes all arguments as-is to
+.BR ssh (1),
+.BR scp (1),\ or
+.BR rsynv (1).
+.br
+Note:
+Using ssh still invokes a shell at the remote host using its \fB\-c\fP option, so arguments must be properly quoted to not be expanded by the remote shell!
+
+.SH EXAMPLES
+Without the \fB\-\-no\-split\fP option, the arguments are first locally split, and then again by the remote shell:
+.RS
+.nf
+# univention-ssh ~/.secret.password user@remote '~/src/toolshed/dump-cmd " 1 2"'
+$1="1"
+$2="2"
+.fi
+.RE
+Adding \fB\-\-no\-split\fP instead calls the program with a single argument:
+.RS
+.nf
+# univention-ssh \-\-no\-split ~/.secret.password user@remote '~/src/toolshed/dump-cmd " 1 2"'
+$1=" 1 2"
+.fi
+.RE
+Reading the password from STDIN also works:
+.RS
+.nf
+# echo 'secret' | univention-ssh /dev/stdin user@remote command
+.fi
+.RE
+
+.SH BUGS
+Storing plain text passwords unencrypted in a file is a security risk.
+
+.SH SEE ALSO
+.BR ssh (1),
+.BR scp (1),
+.BR rsync (1).
+.br
+This program is documented fully in the
+.IR "Univention Corporate Server Manual" .
+
+.SH AUTHOR
+Copyright (c) 2011 Univention GmbH, Germany

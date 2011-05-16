@@ -4,7 +4,7 @@
 # Univention SSH
 #  ssh wrapper script
 #
-# Copyright 2004-@@copyright_lastyear@@ Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -18,9 +18,10 @@
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
-# you and Univention.
+# you and Univention and not subject to the GNU AGPL V3.
 #
-# This program is provided in the hope that it will be useful,
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
@@ -67,7 +68,7 @@ def display_help(out=sys.stdout):
 	if cmd == 'univention-ssh':
 		text = '''
 		%(cmd)s: internal managing tool for UCS clients
-		Copyright (c) 2001-@@copyright_lastyear@@ Univention GmbH, Germany
+		Copyright (c) 2001-2011 Univention GmbH, Germany
 
 		Syntax:
 		  %(cmd)s [-timeout timeout] <pwd_file> [options] [user@]host <command>
@@ -94,7 +95,7 @@ def display_help(out=sys.stdout):
 	else:
 		text = '''
 		%(cmd)s: internal managing tool for UCS clients
-		Copyright (c) 2001-@@copyright_lastyear@@ Univention GmbH, Germany
+		Copyright (c) 2001-2011 Univention GmbH, Germany
 
 		Syntax:
 		  %(cmd)s <pwd_file> [options] files [user@]host:[path]

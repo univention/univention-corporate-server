@@ -3,12 +3,14 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.2
-Build-Depends: debhelper (>= 7)
+Build-Depends: debhelper (>= 7.0.50~),
+ ucslint
 
 Package: univention-ssh
 Architecture: all
 Conflicts: univention-join (<< 0.2)
-Depends: univention-config-registry,
+Depends: python,
+ univention-config-registry,
  rsync,
  openssh-client,
  ${misc:Depends}

@@ -1,0 +1,5 @@
+usr/sbin/univention-ssh usr/sbin/univention-scp
+usr/sbin/univention-ssh usr/sbin/univention-ssh-rsync
+usr/sbin/univention-ssh usr/lib/univention-ssh/univention-ssh-askpass
+usr/share/man/man8/univention-ssh.8 usr/share/man/man8/univention-scp.8
+usr/share/man/man8/univention-ssh.8 usr/share/man/man8/univention-ssh-rsync.8

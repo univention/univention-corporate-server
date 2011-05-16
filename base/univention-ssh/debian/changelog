@@ -1,3 +1,12 @@
+univention-ssh (5.0.0-1) unstable; urgency=low
+
+  * Switch do dh from DebHelper 7 (Bug #22160)
+  * Switch to Python2.6
+  * Update Univention copyright.
+  * Add manual page.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 16 May 2011 11:38:57 +0200
+
 univention-ssh (4.0.0-3) unstable; urgency=low
 
   * Terminate child ssh on signals (Bug #11870)
