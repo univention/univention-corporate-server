@@ -52,7 +52,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			try:
 				content = open(fn, 'r').read(100)
 			except:
-				self.addmsg( '0009-1', 'failed to open and read file %s' % fn )
+				self.addmsg( '0009-1', 'failed to open and read file', filename=fn )
 				continue
 			self.debug('testing %s' % fn)
 
@@ -68,10 +68,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				firstline = '#!' + firstline[3:]
 			if firstline.startswith('#!/usr/bin/python'):
 				if firstline == '#!/usr/bin/python' or firstline.startswith('#!/usr/bin/python '):
-					self.addmsg( '0009-2', '%s does not specify python version in hashbang' % (fn) )
+					self.addmsg( '0009-2', 'file does not specify python version in hashbang', filename=fn )
 				elif firstline.startswith('#!/usr/bin/python2.') and not firstline.startswith('#!/usr/bin/python2.6'):
-					self.addmsg( '0009-3', '%s specifies wrong python version in hashbang' % (fn) )
+					self.addmsg( '0009-3', 'file specifies wrong python version in hashbang', filename=fn )
 				elif firstline.startswith('#!/usr/bin/python3'):
-					self.addmsg( '0009-3', '%s specifies wrong python version in hashbang' % (fn) )
+					self.addmsg( '0009-3', 'file specifies wrong python version in hashbang', filename=fn )
 				elif firstline.startswith('#!/usr/bin/python2.6 '):
-					self.addmsg( '0009-4', '%s contains whitespace after python command' % (fn) )
+					self.addmsg( '0009-4', 'file contains whitespace after python command', filename=fn )

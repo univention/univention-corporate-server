@@ -103,25 +103,23 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		# create result
 		#
 		for js in fnlist_scripts.keys():
+			fn = os.path.join('debian',js)
 			if not fnlist_scripts[js]['debhelper']:
-				self.addmsg( '0006-1', 'Script %s does not contain #DEBHELPER#' % js )
+				self.addmsg( '0006-1', 'script does not contain #DEBHELPER#', fn )
 
 			if fnlist_scripts[js]['set-e-hashbang']:
-				self.addmsg( '0006-4', 'Script %s contains "sh -e" in hashbang' % js )
+				self.addmsg( '0006-4', 'script contains "sh -e" in hashbang', fn )
 
 			if fnlist_scripts[js]['set-e-body']:
-				self.addmsg( '0006-5', 'Script %s contains "set -e"' % js )
+				self.addmsg( '0006-5', 'script contains "set -e"', fn )
 
 			if fnlist_scripts[js]['udm_calls'] > 0:
-				self.addmsg( '0006-2', 'Script debian/%s contains %d calls of univention-directory-manager or univention-admin - use a join script' %
-												 (js, fnlist_scripts[js]['udm_calls']) )
+				self.addmsg( '0006-2', 'script contains %d calls of univention-directory-manager or univention-admin - use a join script' % fnlist_scripts[js]['udm_calls'], fn )
 			if fnlist_scripts[js]['udm_in_line'] > 0:
-				self.addmsg( '0006-3', 'Script debian/%s may contain %d calls of univention-directory-manager or univention-admin - please check and use a join script' %
-												 (js, fnlist_scripts[js]['udm_in_line']) )
+				self.addmsg( '0006-3', 'script may contain %d calls of univention-directory-manager or univention-admin - please check and use a join script' % fnlist_scripts[js]['udm_in_line'], fn )
 
 			if not fnlist_scripts[js]['endswith-exit-0']:
-				self.addmsg( '0006-6', 'Script %s contains no "exit 0" at end of file' % js )
+				self.addmsg( '0006-6', 'script contains no "exit 0" at end of file', fn )
 
 			if fnlist_scripts[js]['unquoted_ucr_shell'] > 0:
-				self.addmsg( '0006-7', 'Script debian/%s contains %d unquoted calls of eval $(ucr shell)' %
-												 (js, fnlist_scripts[js]['unquoted_ucr_shell']) )
+				self.addmsg( '0006-7', 'script contains %d unquoted calls of eval $(ucr shell)' % fnlist_scripts[js]['unquoted_ucr_shell'], fn )

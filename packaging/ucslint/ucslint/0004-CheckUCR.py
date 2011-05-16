@@ -116,7 +116,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			try:
 				content = open(fn,'r').read()
 			except:
-				self.addmsg( '0004-27', 'cannot open/read file %s' % fn )
+				self.addmsg( '0004-27', 'cannot open/read file', fn)
 				continue
 
 			for regEx in (reUCRPlaceholderVar1, ):
@@ -167,7 +167,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				if match:
 					if match.group(2) != fn[ fn.find('/conffiles/')+10 : ]:
 						self.addmsg( '0004-1', 'Path in UCR header seems to be incorrect.\n      - template filename = /etc/univention/templates/files%s\n      - path in header    = %s' %
-											( fn[ fn.find('/conffiles/')+10 : ], match.group(1) ) )
+											( fn[ fn.find('/conffiles/')+10 : ], match.group(1) ), fn )
 
 
 		#
@@ -181,7 +181,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		all_preinst = []     # [ FN, FN, ... ]
 		all_postinst = []    # [ FN, FN, ... ]
 		if not os.path.exists( os.path.join(path, 'debian') ):
-			self.addmsg( '0004-2', 'debian/rules is missing' )
+			self.addmsg( '0004-2', 'file is missing', 'debian/rules' )
 			return
 		else:
 			# read debian/rules
@@ -192,7 +192,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				except:
 					rules_content = ''
 			if 'univention-install-baseconfig' in rules_content:
-				self.addmsg( '0004-25', 'debian/rules contains old univention-install-baseconfig call')
+				self.addmsg( '0004-25', 'file contains old univention-install-baseconfig call', 'debian/rules')
 
 			# find debian/*.u-c-r and check for univention-config-registry-install in debian/rules
 			reUICR = re.compile('[\n\t ]univention-install-(baseconfig|config-registry)[\n\t ]')
@@ -202,13 +202,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 					tmpfn = os.path.join(path, 'debian', '%s.univention-config-registry-variables' % f.rsplit('.')[0])
 					self.debug( 'testing %s' % tmpfn )
 					if not os.path.exists( tmpfn ):
-						self.addmsg( '0004-24', '%s exists but corresponding %s is missing' % (f, tmpfn) )
+						self.addmsg( '0004-24', '%s exists but corresponding %s is missing' % (f, tmpfn), tmpfn )
 					else:
 						# test debian/$PACKAGENAME.u-c-r-variables
 						self.test_config_registry_variables(tmpfn)
 
 					if not reUICR.search(rules_content):
-						self.addmsg( '0004-23', '%s exists but debian/rules contains no univention-install-config-registry' % f )
+						self.addmsg( '0004-23', '%s exists but debian/rules contains no univention-install-config-registry' % f, 'debian/rules' )
 						break
 
 			for f in os.listdir( os.path.join(path, 'debian') ):
@@ -218,7 +218,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 					try:
 						content = open(fn, 'r').read()
 					except Exception, e:
-						self.addmsg( '0004-27', 'cannot open/read file %s' % fn )
+						self.addmsg( '0004-27', 'cannot open/read file', fn )
 						continue
 
 					# OBJ = { 'Type': [ STRING, ... ],
@@ -243,7 +243,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 							try:
 								key, val = line.split(': ',1)
 							except:
-								self.addmsg( '0004-28', '%s contains line without ":"' % fn )
+								self.addmsg( '0004-28', 'file contains line without ":"', fn )
 								continue
 							if entry.has_key(key):
 								entry[key].append(val)
@@ -253,29 +253,29 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 						self.debug('Entry: %s' % entry)
 
 						if not entry.has_key('Type'):
-							self.addmsg( '0004-3', '%s contains entry without "Type:"' % fn )
+							self.addmsg( '0004-3', 'file contains entry without "Type:"', fn )
 						else:
 
 							if entry['Type'][0] == 'multifile':
 								if not entry.has_key('Multifile'):
-									self.addmsg( '0004-4', '%s contains multifile entry without "Multifile:" line' % fn )
+									self.addmsg( '0004-4', 'file contains multifile entry without "Multifile:" line', fn )
 								else:
 									multifiles[ entry['Multifile'][0] ] = entry
 
 							elif entry['Type'][0] == 'subfile':
 								if not entry.has_key('Subfile'):
-									self.addmsg( '0004-5', '%s contains subfile entry without "Subfile:" line' % fn )
+									self.addmsg( '0004-5', 'file contains subfile entry without "Subfile:" line', fn )
 								elif not entry.has_key('Multifile'):
-									self.addmsg( '0004-6', '%s contains subfile entry without "Multifile:" line' % fn )
+									self.addmsg( '0004-6', 'file contains subfile entry without "Multifile:" line', fn )
 								else:
 									if len(entry['Subfile']) != 1:
-										self.addmsg( '0004-7', '%s contains subfile entry with multiple "Subfile:" lines' % fn )
+										self.addmsg( '0004-7', 'file contains subfile entry with multiple "Subfile:" lines', fn )
 									if len(entry['Multifile']) != 1:
-										self.addmsg( '0004-8', '%s contains subfile entry with multiple "Multifile:" lines' % fn )
+										self.addmsg( '0004-8', 'file contains subfile entry with multiple "Multifile:" lines', fn )
 									if len(entry.get('Preinst',[])) > 1:
-										self.addmsg( '0004-19', '%s contains subfile entry with multiple "Preinst:" lines' % fn )
+										self.addmsg( '0004-19', 'file contains subfile entry with multiple "Preinst:" lines', fn )
 									if len(entry.get('Postinst',[])) > 1:
-										self.addmsg( '0004-20', '%s contains subfile entry with multiple "Postinst:" lines' % fn )
+										self.addmsg( '0004-20', 'file contains subfile entry with multiple "Postinst:" lines', fn )
 
 									if subfiles.has_key( entry['Multifile'][0] ):
 										subfiles[ entry['Multifile'][0] ].append( entry )
@@ -292,26 +292,26 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 								if len(entry.get('Preinst',[])) > 0:
 									preinst.append( entry['Preinst'][0] )
 									if len(entry['Preinst']) != 1:
-										self.addmsg( '0004-21', '%s contains file entry with multiple "Preinst:" lines' % fn )
+										self.addmsg( '0004-21', 'file contains file entry with multiple "Preinst:" lines', fn )
 
 								if len(entry.get('Postinst',[])) > 0:
 									postinst.append( entry['Postinst'][0] )
 									if len(entry['Postinst']) != 1:
-										self.addmsg( '0004-22', '%s contains file entry with multiple "Postinst:" lines' % fn )
+										self.addmsg( '0004-22', 'file contains file entry with multiple "Postinst:" lines', fn )
 
 							elif entry['Type'][0] == 'module':
 								modules.append( entry )
 							elif entry['Type'][0] == 'script':
 								scripts.append( entry )
 							else:
-								self.addmsg( '0004-9', '%s contains entry without valid "Type:" entry (Type: %s)' % (fn, entry['Type'][0]) )
+								self.addmsg( '0004-9', 'file contains entry without valid "Type:" entry (Type: %s)' % (entry['Type'][0]), fn )
 
 					self.debug('Multifiles: %s' % multifiles)
 					self.debug('Subfiles: %s' % subfiles)
 					self.debug('Files: %s' % files)
 					for multifile, subfileentries in subfiles.items():
 						if not multifiles.has_key( multifile ):
-							self.addmsg( '0004-10', '%s contains subfile entry without corresponding multifile entry.\n      - subfile = %s\n      - multifile = %s' % (fn, subfileentries[0]['Subfile'][0], multifile) )
+							self.addmsg( '0004-10', 'file contains subfile entry without corresponding multifile entry.\n      - subfile = %s\n      - multifile = %s' % (subfileentries[0]['Subfile'][0], multifile), fn )
 # DISABLED DUE TO BUG #15422
 #						else:
 #							for entry in subfileentries:
@@ -328,7 +328,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 #										else:
 #											notregistered.append(var)
 #								if len(notregistered):
-#									self.addmsg( '0004-11', '%s contains subfile entry whose variables are not registered in multifile\n	  - subfile = %s\n		- multifile = %s\n		- unregistered variables:\n			   %s' % (fn, entry['Subfile'][0], multifile, '\n			 '.join(notregistered)) )
+#									self.addmsg( '0004-11', 'file contains subfile entry whose variables are not registered in multifile\n	  - subfile = %s\n		- multifile = %s\n		- unregistered variables:\n			   %s' % (entry['Subfile'][0], multifile, '\n			 '.join(notregistered)), fn )
 
 					# merge into global list
 					for mfn, item in multifiles.items():
@@ -399,7 +399,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 								invalidUCRVarNames.add(var)
 
 						if len(notregistered):
-							self.addmsg( '0004-29', 'template file %s contains variables that are not registered in multifile entry:\n	- %s' % (conffn, '\n	- '.join(notregistered)))
+							self.addmsg( '0004-29', 'template file contains variables that are not registered in multifile entry:\n	- %s' % ('\n	- '.join(notregistered)), conffn)
 
 					else:
 						# no subfile ==> File, Module, Script
@@ -418,7 +418,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 								invalidUCRVarNames.add(var)
 
 						if len(notregistered):
-							self.addmsg( '0004-12', 'template file %s contains variables that are not registered in file entry:\n	- %s' % (conffn, '\n	- '.join(notregistered)))
+							self.addmsg( '0004-12', 'template file contains variables that are not registered in file entry:\n	- %s' % ('\n	- '.join(notregistered)), conffn)
 
 					for var in conffiles[conffn]['placeholder']:
 						# check for invalid UCR placeholder variable names
@@ -428,7 +428,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 					if invalidUCRVarNames:
 						invalidUCRVarNames = list(invalidUCRVarNames)
 						invalidUCRVarNames.sort()
-						self.addmsg( '0004-13', 'Template %s contains invalid UCR variable names:\n      - %s' % (conffn, '\n      - '.join(invalidUCRVarNames)) )
+						self.addmsg( '0004-13', 'template contains invalid UCR variable names:\n      - %s' % ('\n      - '.join(invalidUCRVarNames)), conffn )
 
 			if not conffnfound:
 				if conffn.rsplit('/')[-1] in all_preinst:
@@ -437,7 +437,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 					conffnfound = True
 
 			if not conffnfound:
-				self.addmsg( '0004-14', 'template file %s is not registered in *.univention-config-registry' % (conffn) )
+				self.addmsg( '0004-14', 'template file is not registered in *.univention-config-registry', conffn )
 
 		#
 		# check if headers are present
@@ -450,12 +450,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			else:
 				conffn = short2conffn.get( fn, '' )
 				if not conffn:
-					self.addmsg( '0004-15', 'UCR template file %s is registered but not found in conffiles/ (1)' % fn )
+					self.addmsg( '0004-15', 'UCR template file is registered but not found in conffiles/ (1)', fn )
 				else:
 					if not conffiles[ conffn ]['headerfound'] and \
 							not conffiles[ conffn ]['bcwarning'] and \
 							not conffiles[ conffn ]['ucrwarning']:
-						self.addmsg( '0004-16', 'UCR header is missing in %s' % fn )
+						self.addmsg( '0004-16', 'UCR header is missing', fn )
 
 		# Part2: subfile templates
 		for mfn, items in all_subfiles.items():
@@ -467,7 +467,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				else:
 					conffn = short2conffn.get( fn, '' )
 					if not conffn:
-						self.addmsg( '0004-17', 'UCR template file %s is registered but not found in conffiles/ (2)' % fn )
+						self.addmsg( '0004-17', 'UCR template file is registered but not found in conffiles/ (2)', fn )
 					else:
 						if conffiles[ conffn ]['headerfound']:
 							found = True
@@ -489,4 +489,4 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			try:
 				x = line.decode('utf-8')
 			except UnicodeError:
-				self.addmsg( '0004-30', '%s contains invalid characters in line %s' % (tmpfn, linecnt) )
+				self.addmsg( '0004-30', 'contains invalid characters', tmpfn, linecnt )

@@ -37,7 +37,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		try:
 			content = open(fn, 'r').read()
 		except:
-			self.addmsg( '0007-1', 'failed to open and read file %s' % fn )
+			self.addmsg( '0007-1', 'failed to open and read file', fn )
 			return
 
 		REchangelog = re.compile('^ -- [^<]+ <[^>]+>', re.M )
