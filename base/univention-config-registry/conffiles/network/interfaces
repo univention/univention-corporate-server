@@ -28,14 +28,16 @@ def check_gateway (ip, netmask, gateway):
 		return False
 	return networkNumber(ip, netmask) == networkNumber(gateway, netmask)
 
-gateway=False
+gateway_found = False
 configExists=False
 ifhandler=configRegistry.get('interfaces/handler','ifplugd')
+gateway = configRegistry.get('gateway')
 
 
 for i in eth_devices:
 	configExists=False
 	iface = i.replace("_", ":")
+	address = configRegistry.get('interfaces/%s/address' % i)
 	if configRegistry.get('interfaces/%s/type' % i) == 'dhcp':
 		if ifhandler == 'ifplugd' and configRegistry.is_true('interfaces/%s/ifplugd' % i, True):
 			print 'auto %s' % iface
@@ -45,21 +47,24 @@ for i in eth_devices:
 			print 'auto %s' % iface
 			print 'iface %s inet dhcp' % iface
 			configExists=True
-	elif  configRegistry['interfaces/%s/address' % i]:
+	elif address:
 		print 'auto %s' % iface
 		print 'iface %s inet static' % iface
 		
-		print 'address '+configRegistry['interfaces/%s/address' % i]
-		if configRegistry['interfaces/%s/network' % i]:
-			print 'network '+configRegistry['interfaces/%s/network' % i]
-		if configRegistry['interfaces/%s/netmask' % i]:
-			print 'netmask '+configRegistry['interfaces/%s/netmask' % i]
-		if configRegistry['interfaces/%s/broadcast' % i]:
-			print 'broadcast '+configRegistry['interfaces/%s/broadcast' % i]
-		if configRegistry['interfaces/%s/address' % i] and configRegistry['interfaces/%s/netmask' % i] and configRegistry['gateway'] and not gateway:
+		print '\taddress %s' % address
+		network = configRegistry.get('interfaces/%s/network' % i)
+		if network:
+			print '\tnetwork %s' % network
+		netmask = configRegistry.get('interfaces/%s/netmask' % i)
+		if netmask:
+			print '\tnetmask %s' % netmask
+		broadcast = configRegistry.get('interfaces/%s/broadcast' % i)
+		if broadcast:
+			print '\tbroadcast %s' % broadcast
+		if address and netmask and gateway and not gateway_found:
 			if check_gateway(splitDotted(address), splitDotted(netmask), splitDotted(gateway)):
-				print 'gateway '+configRegistry['gateway']
-				gateway=True
+				print '\tgateway %s' % gateway
+				gateway_found = True
 		configExists=True
 
 	if configExists:
@@ -72,8 +77,8 @@ for i in eth_devices:
 			if key.startswith('interfaces/%s/options/' % i):
 				print value
 		if i == "eth0":
-			if configRegistry.get('interfaces/eth0/netmask', "") == "255.255.255.255" and configRegistry.get('gateway', False):
-				print "up ip route add %s/32 dev eth0" % configRegistry["gateway"]
-				print "up route add default gw %s" % configRegistry["gateway"]
+			if configRegistry.get('interfaces/eth0/netmask', "") == "255.255.255.255" and gateway:
+				print "\tup ip route add %s/32 dev eth0" % gateway
+				print "\tup route add default gw %s" % gateway
 
 @!@

@@ -1,3 +1,10 @@
+univention-config-registry (7.0.6-1) unstable; urgency=low
+
+  * Re-add baseConfig compatibility (Bug #22160)
+  * Fix gateway handling.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 16 May 2011 15:46:05 +0200
+
 univention-config-registry (7.0.5-1) unstable; urgency=low
 
   * Do dpkg-divert on register and unregister (Bug #17912)
@@ -13,7 +20,7 @@ univention-config-registry (7.0.4-5) unstable; urgency=low
 
 univention-config-registry (7.0.4-4) unstable; urgency=low
 
-  * Workaround _ConfigRegistry[key] rturning '' (Bug #17913)
+  * Workaround _ConfigRegistry[key] returning '' (Bug #17913)
   * Expect LookupError in rfc822 parsing.
   * Fix section_s_.
   * s/0|1/False|True/
