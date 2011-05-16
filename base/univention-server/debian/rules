@@ -30,95 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	touch configure-stamp
+override_dh_auto_install:
+	univention-install-config-registry
+	dh_auto_install 
 
-build: configure-stamp build-stamp
-build-stamp:
-	dh_testdir
-	touch build-stamp
+override_dh_auto_test:
+	ucslint
+	dh_auto_test
 
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-	rm -f *~ univention-name-to-unicode
+%:
+	dh $@
 
-	dh_clean
-
-D=$(CURDIR)/debian/univention-server
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	install -m 644 etc/bootsplash/themes/domaincontroller_master/config/*cfg debian/univention-server-master/etc/bootsplash/themes/domaincontroller_master/config/
-	install -m 644 etc/bootsplash/themes/domaincontroller_master/images/*jpg debian/univention-server-master/etc/bootsplash/themes/domaincontroller_master/images/
-	install -m 644 etc/bootsplash/themes/domaincontroller_backup/config/*cfg debian/univention-server-backup/etc/bootsplash/themes/domaincontroller_backup/config/
-	install -m 644 etc/bootsplash/themes/domaincontroller_backup/images/*jpg debian/univention-server-backup/etc/bootsplash/themes/domaincontroller_backup/images/
-	install -m 644 etc/bootsplash/themes/domaincontroller_slave/config/*cfg debian/univention-server-slave/etc/bootsplash/themes/domaincontroller_slave/config/
-	install -m 644 etc/bootsplash/themes/domaincontroller_slave/images/*jpg debian/univention-server-slave/etc/bootsplash/themes/domaincontroller_slave/images/
-	install -m 644 etc/bootsplash/themes/memberserver/config/*cfg debian/univention-server-member/etc/bootsplash/themes/memberserver/config/
-	install -m 644 etc/bootsplash/themes/memberserver/images/*jpg debian/univention-server-member/etc/bootsplash/themes/memberserver/images/
-
-	install -m 644 etc/bootsplash/themes/mobileclient/config/*cfg debian/univention-mobile-client/etc/bootsplash/themes/mobileclient/config/
-	install -m 644 etc/bootsplash/themes/mobileclient/images/*jpg debian/univention-mobile-client/etc/bootsplash/themes/mobileclient/images/
-
-	install -m 644 etc/bootsplash/themes/managedclient/config/*cfg debian/univention-managed-client/etc/bootsplash/themes/managedclient/config/
-	install -m 644 etc/bootsplash/themes/managedclient/images/*jpg debian/univention-managed-client/etc/bootsplash/themes/managedclient/images/
-
-	install -m 0755 server_password_change debian/univention-server-master/usr/lib/univention-server/
-	install -m 0755 server_password_change debian/univention-server-backup/usr/lib/univention-server/
-	install -m 0755 server_password_change debian/univention-server-slave/usr/lib/univention-server/
-	install -m 0755 server_password_change debian/univention-server-member/usr/lib/univention-server/
-	install -m 0755 univention-directory-policy/univention-set-ldap-server debian/univention-server-member/usr/lib/univention-directory-policy/
-
-	install -m 755 managed-client debian/univention-managed-client/etc/init.d/
-
-	install -m 755 univention-directory-policy/univention-set-ldap-server debian/univention-managed-client/usr/lib/univention-directory-policy/
-	install -m 755 check_connection debian/univention-managed-client/usr/share/univention-managed-client/
-
-	install -m 755 mobile-client debian/univention-mobile-client/etc/init.d/
-	install -m 755 check_connection debian/univention-mobile-client/usr/share/univention-mobile-client/
-
-	install -m 755 univention-directory-policy/univention-set-ldap-server debian/univention-mobile-client/usr/lib/univention-directory-policy/
-
-	@for role in master backup slave member; do \
-		install -d debian/univention-server-$$role/usr/sbin/; \
-		install -m 0755 -t debian/univention-server-$$role/usr/sbin/ univention-ldap-server-available; \
-	done
-	@for role in managed-client mobile-client basesystem; do \
-		install -d debian/univention-$$role/usr/sbin/; \
-		install -m 0755 -t debian/univention-$$role/usr/sbin/ univention-ldap-server-available; \
-	done
-
-	univention-install-baseconfig
-
-binary-arch: build install
-
-binary-indep: build install
-	dh_testdir
-	dh_testroot
-	dh_installdocs
-	dh_installexamples
-	dh_installmenu
-	dh_installcron
-	dh_installman
-	dh_installinfo
-	dh_installchangelogs
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure

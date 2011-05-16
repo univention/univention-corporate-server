@@ -30,16 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-univention-baseconfig set server/password/interval?21
-univention-baseconfig set samba/share/home?no
-univention-baseconfig set samba/share/netlogon?no
-
-if [ -n "$splash_theme" ]; then
-	univention-baseconfig set bootsplash/theme=$splash_theme
-	univention-baseconfig unset splash/theme
-fi
-
-univention-baseconfig set bootsplash/theme?memberserver
+univention-config-registry set server/password/interval?21 \
+					samba/share/home?no \
+					samba/share/netlogon?no \
+					bootsplash/theme?memberserver
 
 if [ "$1" = "configure" -a -z "$2" ]; then
 	update-inetd --add "time            stream  tcp     nowait  root    internal"

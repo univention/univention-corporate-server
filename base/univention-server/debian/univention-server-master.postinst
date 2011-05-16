@@ -30,20 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval $(univention-baseconfig shell)
+eval "$(univention-config-registry shell)"
 
-univention-baseconfig set ldap/server/name=$hostname.$domainname
-univention-baseconfig set ldap/server/type=master
-
-univention-baseconfig set server/password/interval?21
-
-if [ -n "$splash_theme" ]; then
-	univention-baseconfig set bootsplash/theme=$splash_theme
-	univention-baseconfig unset splash/theme
-fi
-
-univention-baseconfig set bootsplash/theme?domaincontroller_master
-
+univention-config-registry set ldap/server/name=$hostname.$domainname \
+					ldap/server/type=master \
+					server/password/interval?21 \
+					bootsplash/theme?domaincontroller_master
 
 mkdir -p /var/lib/samba/netlogon/scripts/
 

@@ -1,4 +1,4 @@
-@%@BCWARNING=# @%@
+@%@UCRWARNING=# @%@
 
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
  0 1 * * * root /usr/sbin/jitter 600 /usr/lib/univention-server/server_password_change

@@ -1,4 +1,4 @@
-@%@BCWARNING=# @%@
+@%@UCRWARNING=# @%@
 @!@
 interfaces = ""
 for i in range(10):

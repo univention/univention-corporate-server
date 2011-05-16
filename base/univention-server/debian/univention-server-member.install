@@ -1,0 +1,6 @@
+etc/bootsplash/themes/memberserver/config/*cfg etc/bootsplash/themes/memberserver/config/
+etc/bootsplash/themes/memberserver/images/*jpg etc/bootsplash/themes/memberserver/images/
+server_password_change usr/lib/univention-server/
+univention-directory-policy/univention-set-ldap-server usr/lib/univention-directory-policy/
+univention-ldap-server-available usr/sbin/
+

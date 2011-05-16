@@ -30,5 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-univention-baseconfig set server/role?domaincontroller_backup
-univention-baseconfig set ldap/server/type?slave
+#DEBHELPER#
+
+univention-config-registry set server/role?domaincontroller_backup \
+					ldap/server/type?slave
+
+exit 0

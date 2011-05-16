@@ -30,16 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
-univention-baseconfig set server/password/interval?21
-
-if [ -n "$splash_theme" ]; then
-	univention-baseconfig set bootsplash/theme=$splash_theme
-	univention-baseconfig unset splash/theme
-fi
-
-univention-baseconfig set bootsplash/theme?domaincontroller_slave
+univention-config-registry set server/password/interval?21 \
+					bootsplash/theme?domaincontroller_slave
 
 if [ "$1" = "configure" -a -z "$2" ]; then
 	update-inetd --add "time            stream  tcp     nowait  root    internal"
