@@ -1,2 +1,1 @@
-E:0004-26: testframework/0004-25-26/debian/univention-lilo.univention-config-registry-variables exists but debian/rules contains no univention-install-config-registry-info
 S:0004-25: debian/rules contains old univention-install-baseconfig call

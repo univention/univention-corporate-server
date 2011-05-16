@@ -1,3 +1,9 @@
+ucslint (2.0.8-1) unstable; urgency=low
+
+  * removed test 0004-26 (not required anymore) (Bug #22092)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 16 May 2011 11:50:39 +0200
+
 ucslint (2.0.7-1) unstable; urgency=low
 
   * fixed testframework (Bug #22092)
