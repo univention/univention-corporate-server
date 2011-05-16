@@ -1,3 +1,10 @@
+univention-directory-notifier (6.0.0-2) unstable; urgency=low
+
+  * Added copyright block to conffiles/etc/runit/univention-directory-
+    notifier/run (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 May 2011 16:52:31 +0200
+
 univention-directory-notifier (6.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #22431)
