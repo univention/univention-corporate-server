@@ -32,64 +32,59 @@
 # Sample debian/rules that uses debhelper.
 # GNU copyright 1997 to 1999 by Joey Hess.
 
-version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
-copyrightyear=`date +%Y`
+version := $(shell dpkg-parsechangelog | sed -ne 's/Version: //p')
+copyrightyear := $(shell date +%Y)
 
 PYVERS=$(shell pyversions -vr)
 
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-
-	touch configure-stamp
+	touch $@
 
 build: configure-stamp build-stamp
 build-stamp: $(PYVERS:%=build-ext-%)
-	touch build-stamp
+	touch $@
+	sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" < python/univention-updater > python/univention-updater_tmp
+	sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" < python/univention-repository-create > python/univention-repository-create_tmp
+	sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" < python/univention-repository-merge > python/univention-repository-merge_tmp
+	sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" < python/univention-repository-update > python/univention-repository-update_tmp
+	sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" < python/univention-security-update > python/univention-security-update_tmp
+	sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" < python/univention-repository-delpackage > python/univention-repository-delpackage_tmp
+	sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" < python/univention-repository-addpackage > python/univention-repository-addpackage_tmp
+	sed -e "s/@%@copyright_lastyear@%@/-${copyrightyear}/" < script/univention-addon-download > script/univention-addon-download_tmp
 build-ext-%:
 	dh_testdir
-	touch build-stamp
 
 clean:
 	dh_testdir
-	dh_testroot
-	$(RM) build-stamp configure-stamp
+	$(RM) configure-stamp build-stamp install-stamp
 	$(MAKE) clean
+	$(RM) python/univention-updater_tmp
+	$(RM) python/univention-repository-create_tmp
+	$(RM) python/univention-repository-merge_tmp
+	$(RM) python/univention-repository-update_tmp
+	$(RM) python/univention-security-update_tmp
+	$(RM) python/univention-repository-delpackage_tmp
+	$(RM) python/univention-repository-addpackage_tmp
+	$(RM) script/univention-addon-download_tmp
 
 	dh_clean
 
 install: install-stamp
-install-stamp: build-stamp $(PYVERS:%=install-ext-%)
-install-ext-%:
+install-prep:
 	dh_testdir
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-
-	cat python/univention-updater | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention-updater_tmp
+install-stamp: build-stamp install-prep $(PYVERS:%=install-ext-%)
+	install -m 755 python/univention-upgrade debian/univention-updater/usr/sbin/univention-upgrade
 	install -m 755 python/univention-updater_tmp debian/univention-updater/usr/sbin/univention-updater
-	rm python/univention-updater_tmp
-
-	cat python/univention-repository-create | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention-repository-create_tmp
 	install -m 755 python/univention-repository-create_tmp debian/univention-updater/usr/sbin/univention-repository-create
-	rm python/univention-repository-create_tmp
-
-	cat python/univention-repository-merge | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention-repository-merge_tmp
 	install -m 755 python/univention-repository-merge_tmp debian/univention-updater/usr/sbin/univention-repository-merge
-	rm python/univention-repository-merge_tmp
-
-	cat python/univention-repository-update | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention-repository-update_tmp
 	install -m 755 python/univention-repository-update_tmp debian/univention-updater/usr/sbin/univention-repository-update
-	rm python/univention-repository-update_tmp
-
-	cat python/univention-security-update | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention-security-update_tmp
 	install -m 755 python/univention-security-update_tmp debian/univention-updater/usr/sbin/univention-security-update
-	rm python/univention-security-update_tmp
-
-	cat python/univention-repository-delpackage | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention-repository-delpackage_tmp
 	install -m 755 python/univention-repository-delpackage_tmp debian/univention-updater/usr/sbin/univention-repository-delpackage
-	rm python/univention-repository-delpackage_tmp
-
 	install -m 755 python/univention-repository-migrate debian/univention-updater/usr/sbin/univention-repository-migrate
 
 	install -m 755 univention-directory-policy/univention-policy-set-repository-server debian/univention-updater/usr/lib/univention-directory-policy/
@@ -98,9 +93,7 @@ install-ext-%:
 	install -m 755 python/univention-actualise debian/univention-updater/usr/sbin/
 	install -m 755 script/univention-install debian/univention-updater/usr/sbin/
 
-	cat python/univention-repository-addpackage | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention-repository-addpackage_tmp
 	install -m 755 python/univention-repository-addpackage_tmp debian/univention-updater/usr/sbin/univention-repository-addpackage
-	rm python/univention-repository-addpackage_tmp
 
 	install -m 644 script/reboot.at debian/univention-updater/var/lib/univention-updater/
 
@@ -112,22 +105,22 @@ install-ext-%:
 	install -m 644 script/preup.sh debian/univention-updater/usr/share/univention-updater/
 	install -m 644 script/postup.sh debian/univention-updater/usr/share/univention-updater/
 
-	test ${copyrightyear} != 2006 && cat script/univention-addon-download | sed -e "s/@%@copyright_lastyear@%@/-${copyrightyear}/" > script/univention-addon-download_tmp && install -m 755 script/univention-addon-download_tmp debian/univention-updater/usr/sbin/univention-addon-download && rm script/univention-addon-download_tmp || true
-
-	test ${copyrightyear} = 2006 && cat script/univention-addon-download | sed -e "s/@%@copyright_lastyear@%@//" > script/univention-addon-download_tmp && install -m 755 script/univention-addon-download_tmp debian/univention-updater/usr/sbin/univention-addon-download && rm script/univention-addon-download_tmp || true
+	install -m 755 script/univention-addon-download_tmp debian/univention-updater/usr/sbin/univention-addon-download
 
 	install -m 0755 41univention-updater.inst debian/univention-updater/usr/lib/univention-install/
 
-	touch debian/univention-updater/usr/lib/python2.4/site-packages/univention/management/console/handlers/update/hooks/.hidden
-
     # install UMC module
-	make PACKAGE=univention-updater install-modules
-	make PACKAGE=univention-updater install-locales-backend
-	make PACKAGE=univention-updater install-images
+	$(MAKE) PACKAGE=univention-updater install-modules
+	$(MAKE) PACKAGE=univention-updater install-locales-backend
+	$(MAKE) PACKAGE=univention-updater install-images
 
 	univention-install-config-registry
 	univention-install-config-registry-info
 
+	touch $@
+
+install-ext-%: install-prep
+	touch debian/univention-updater/usr/lib/python$*/site-packages/univention/management/console/handlers/update/hooks/.hidden
 
 binary-indep: build install
 	dh_installcron -i

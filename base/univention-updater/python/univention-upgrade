@@ -1,0 +1,320 @@
+#!/usr/bin/python2.4
+#
+#
+# Univention Updater
+#  A tool for installing UCS release updates
+#
+# Copyright (C) 2010 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+
+import os, sys, time
+import optparse
+import subprocess
+import traceback
+
+import univention.config_registry
+
+from univention.updater import UniventionUpdater, UCS_Version, ConfigurationError
+import univention.updater.tools
+
+FN_STATUS = '/var/lib/univention-updater/univention-upgrade.status'
+
+UCR_UPDATE_AVAILABLE = 'update/available'
+LOGFN = '/var/log/univention/updater.log'
+
+configRegistry = None
+logfd = None
+def dprint(msg):
+	if logfd:
+		print >>logfd, msg
+		logfd.flush()
+	print msg
+	sys.stdout.flush()
+
+updater_status = {}
+
+def update_status(**kwargs):
+	'''
+	update updater_status and write status to disk
+
+	Keys:
+	- current_version ==> UCS_Version ==> 2.3-1
+	- next_version    ==> UCS_Version ==> 2.3-2
+	- updatetype      ==> (LOCAL|NET|CDROM)
+	- status          ==> (RUNNING|FAILED|DONE)
+	- errorsource     ==> (SETTINGS|PREPARATION|PREUP|UPDATE|POSTUP)
+	'''
+	global updater_status
+	updater_status.update(kwargs)
+	# write temporary file
+	fn = '%s.new' % FN_STATUS
+	try:
+		fd = open( fn, 'w+' )
+		for key, val in updater_status.items():
+			fd.write('%s=%s\n' % (key, val))
+		fd.close()
+	except:
+		dprint('Warning: cannot update %s' % fn)
+	try:
+		os.rename(fn, FN_STATUS)
+	except:
+		dprint('Warning: cannot update %s' % FN_STATUS)
+
+
+def performUpdate(updateto=None, checkForUpdates=False):
+	updater = UniventionUpdater()
+
+	if updateto:
+		version_updateto = UCS_Version(updateto)
+	else:
+		version_updateto = None
+
+	if not checkForUpdates:
+		vv=updater.configRegistry['version/version']
+		vp=updater.configRegistry['version/patchlevel']
+		lastversion='%s-%s' % (vv,vp)
+		update_status( current_version=lastversion, status='RUNNING' )
+
+	run = True
+	while run:
+		#######################################################################
+		# RELEASE UPDATE
+		#######################################################################
+
+		# reinit updater object
+		updater.ucr_reinit()
+		# get next release update version
+		next_release_update = updater.release_update_available()
+		if next_release_update:
+			version_next = UCS_Version(next_release_update)
+			# save "first" release version in this run
+			version_first = UCS_Version(next_release_update)
+		else:
+			version_next = None
+			run = False
+			dprint('No release update has been found.')
+
+		# continue update as long there's a next version and major/minor version are equal ==> do ONE major/minor update and ALL patchlevel updates
+		while run and version_first.major == version_next.major and version_first.minor == version_next.minor:
+			# stop release updates
+			# - if no next version is available
+			# - if updateto is set and updateto is smaller than next_version
+			if not version_next:
+				run = False
+				dprint('No release update has been found.')
+			elif version_updateto and version_updateto < version_next:
+				run = False
+				dprint('Next release update is available but updater has been instructed to stop at version %s.' % updateto)
+				dprint('Checking for component or security updates.')
+			else:
+				# updates available ==> stop here in "check-mode"
+				if checkForUpdates:
+					dprint('Release update %s has been found.' % version_next)
+					return True
+
+				update_status( next_version=version_next )
+
+				# perform release update (only one step!)
+				dprint('Starting update to UCS version %s at %s...' % (version_next, time.ctime()))
+				time.sleep(1)
+				retcode = subprocess.call('univention-updater net --updateto %s' % version_next, shell=True)
+				if retcode:
+					dprint('exitcode of univention-updater: %s' % retcode)
+					dprint('ERROR: update failed. Please check /var/log/univention/updater.log')
+					update_status( status='FAILED', errorsource='UPDATE' )
+					sys.exit(1)
+				dprint('Update to UCS version %s finished at %s...' % (version_next, time.ctime()))
+				time.sleep(1)
+
+			if run:
+				# reinit updater object
+				updater.ucr_reinit()
+				# get next release update version
+				next_release_update = updater.release_update_available()
+				if next_release_update:
+					version_next = UCS_Version(next_release_update)
+				else:
+					version_next = None
+					run = False
+
+
+		#######################################################################
+		# COMPONENT UPDATE
+		#######################################################################
+		# reinit updater module
+		updater.ucr_reinit()
+		# check if component updates are available
+		new_packages, upgraded_packages = updater.component_update_get_packages()
+		update_available = bool(new_packages + upgraded_packages)
+
+		if update_available:
+			# updates available ==> stop here in "check-mode"
+			if checkForUpdates:
+				dprint('New packages in repository have been found.')
+				return True
+
+			time.sleep(1)
+			dprint('Starting dist-update at %s...' % (time.ctime()))
+
+			returncode, stdout, stderr = updater.run_dist_upgrade()
+
+			if returncode:
+				dprint('exitcode of apt-get dist-upgrade: %s' % returncode)
+				dprint(stderr)
+				dprint('ERROR: update failed. Please check /var/log/univention/upgrade.log')
+				update_status( status='FAILED', errorsource='UPDATE' )
+				sys.exit(1)
+			dprint('dist-update finished at %s...' % (time.ctime()))
+			time.sleep(1)
+
+		#######################################################################
+		# SECURITY UPDATE
+		#######################################################################
+		# reinit updater module
+		updater.ucr_reinit()
+		current_security_update = None
+		next_security_update = updater.security_update_available()
+		while next_security_update > current_security_update:
+			# updates available ==> stop here in "check-mode"
+			if checkForUpdates:
+				dprint('Security update has been found.')
+				return True
+
+			# perform security update
+			dprint('Starting security update %s at %s...' % (next_security_update, time.ctime()))
+			time.sleep(1)
+			retcode = subprocess.call('univention-security-update net', shell=True)
+			if retcode:
+				dprint('exitcode of univention-security-update: %s' % retcode)
+				dprint('ERROR: update failed. Please check /var/log/univention/security-updates.log')
+				update_status( status='FAILED', errorsource='UPDATE' )
+				sys.exit(1)
+			dprint('Security update finished %s at %s...' % (next_security_update, time.ctime()))
+			time.sleep(1)
+
+			updater.ucr_reinit()
+			current_security_update = next_security_update
+			next_security_update = updater.security_update_available()
+
+	# updates available ==> stop here in "check-mode"
+	if checkForUpdates:
+		return False
+
+	dprint('')
+	dprint('Update finished. System is uptodate.\n')
+
+
+def main():
+	global configRegistry
+	global logfd
+
+	parser = optparse.OptionParser( )
+	parser.add_option("--updateto", dest="updateto", default=None, action="store", help="update up to specified version")
+	parser.add_option("--check", dest="check", default=False, action="store_true", help="check if updates are available")
+	parser.add_option("--setucr", dest="setucr", default=False, action="store_true", help="if set, variable update/available will be updated if --check is specified too")
+	(options, args) = parser.parse_args()
+
+	try:
+		logfd=open(LOGFN, 'a+')
+	except:
+		print 'Cannot open %s for writing' % LOGFN
+		sys.exit(1)
+
+	configRegistry = univention.config_registry.ConfigRegistry()
+	configRegistry.load()
+
+	if options.check:
+		try:
+			update_available = performUpdate(options.updateto, checkForUpdates=True)
+		except SystemExit, e:
+			sys.exit(e)
+		except ConfigurationError, e:
+			print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
+			sys.exit(3)
+		except Exception, e:
+			print 'An error occured - stopping here.'
+			import traceback
+			print >>logfd, 'Traceback in univention-upgrade:'
+			print >>logfd, traceback.format_exc()
+			sys.exit(2)
+		if update_available:
+			dprint('Please rerun command without --check argument to install.')
+			if options.setucr:
+				univention.config_registry.handler_set( [ '%s=yes' % UCR_UPDATE_AVAILABLE ] )
+			sys.exit(0)
+		else:
+			print 'No update available.'
+			if options.setucr:
+				univention.config_registry.handler_set( [ '%s=no' % UCR_UPDATE_AVAILABLE] )
+			sys.exit(1)
+	else:
+		try:
+			performUpdate(options.updateto)
+		except SystemExit, e:
+			sys.exit(e)
+		except ConfigurationError, e:
+			update_status( status='FAILED', errorsource='SETTINGS' )
+			print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
+			sys.exit(3)
+		except Exception, e:
+			update_status( status='FAILED' )
+			print 'An error occured - stopping here.'
+			import traceback
+			print >>logfd, 'Traceback in univention-upgrade:'
+			print >>logfd, traceback.format_exc()
+			sys.exit(2)
+		update_status( status='DONE' )
+
+		# check for new updates after updating ; update UCR variable
+		try:
+			update_available = performUpdate(options.updateto, checkForUpdates=True)
+		except SystemExit, e:
+			sys.exit(e)
+		except ConfigurationError, e:
+			print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
+			sys.exit(3)
+		except Exception, e:
+			print 'An error occured - stopping here.'
+			import traceback
+			print >>logfd, 'Traceback in univention-upgrade:'
+			print >>logfd, traceback.format_exc()
+			sys.exit(2)
+		if update_available:
+			univention.config_registry.handler_set( [ '%s=yes' % UCR_UPDATE_AVAILABLE ] )
+		else:
+			univention.config_registry.handler_set( [ '%s=no' % UCR_UPDATE_AVAILABLE] )
+
+if __name__ == '__main__':
+	try:
+		lock = univention.updater.tools.updater_lock_acquire()
+	except univention.updater.tools.LockingError, e:
+		print >>sys.stderr, e
+		sys.exit(5)
+	try:
+		main()
+	finally:
+		if not univention.updater.tools.updater_lock_release(lock):
+			print 'WARNING: updater-lock already released!'

@@ -32,10 +32,11 @@
 
 import os
 import shutil, sys
-import getopt, time
+import getopt
 
 import univention.config_registry as ucr
 import univention.updater.repository as urepo
+import univention.updater.tools
 from univention.updater import UniventionMirror, UCS_Version
 
 l_package={}
@@ -127,59 +128,68 @@ if __name__ == '__main__':
 		print msg
 		sys.exit(1)
 
-	source_dirs=[]
-	for opt, val in opts:
-		if opt == '--dest':
-			destination_dir=val
-		elif opt == '--src':
-			src = urepo.get_repo_basedir( val )
-			source_dirs.append( src )
+	try:
+		lock = univention.updater.tools.updater_lock_acquire()
+	except univention.updater.tools.LockingError, e:
+		print >>sys.stderr, e
+		sys.exit(5)
+	try:
+		source_dirs=[]
+		for opt, val in opts:
+			if opt == '--dest':
+				destination_dir=val
+			elif opt == '--src':
+				src = urepo.get_repo_basedir( val )
+				source_dirs.append( src )
 
-	if not destination_dir:
-		usage()
-		sys.exit(1)
+		if not destination_dir:
+			usage()
+			sys.exit(1)
 
-	destination_dir = urepo.get_repo_basedir( destination_dir )
+		destination_dir = urepo.get_repo_basedir( destination_dir )
 
-	if len(source_dirs) < 1:
-		usage()
-		sys.exit(1)
+		if len(source_dirs) < 1:
+			usage()
+			sys.exit(1)
 
-	os.path.walk(destination_dir, walking, 1)
+		os.path.walk(destination_dir, walking, 1)
 
-	for dir in source_dirs:
-		src = urepo.get_repo_basedir( dir )
-		os.path.walk( src, walking, 0 )
+		for dir in source_dirs:
+			src = urepo.get_repo_basedir( dir )
+			os.path.walk( src, walking, 0 )
 
-	packages_dir=os.path.join(destination_dir)
-	if not os.path.exists(packages_dir):
-		os.mkdir(packages_dir)
+		packages_dir=os.path.join(destination_dir)
+		if not os.path.exists(packages_dir):
+			os.mkdir(packages_dir)
 
-	fp_debug=open('/var/log/univention/repository.log', 'a+')
-	for k in l_package.keys():
-		if l_package[k][2] == 0: #if not dest dir
+		fp_debug=open('/var/log/univention/repository.log', 'a+')
+		for k in l_package.keys():
+			if l_package[k][2] == 0: #if not dest dir
+				try:
+					dest = os.path.join( packages_dir, k[ 1 ] )
+					shutil.copy(l_package[k][0], dest )
+				except:
+					fp_debug.write('Error: faild to copy %s\n' % dest )
+
+		for f in p_remove:
 			try:
-				dest = os.path.join( packages_dir, k[ 1 ] )
-				shutil.copy(l_package[k][0], dest )
+				os.remove(f)
 			except:
-				fp_debug.write('Error: faild to copy %s\n' % dest )
+				fp_debug.write('Warning: failed to remove %s\n' % f)
 
-	for f in p_remove:
-		try:
-			os.remove(f)
-		except:
-			fp_debug.write('Warning: failed to remove %s\n' % f)
+		save_dir=os.path.realpath(os.path.curdir)
 
-	save_dir=os.path.realpath(os.path.curdir)
+		for dir in source_dirs:
+			if dir == packages_dir:
+				continue
+			cleanup_repository( dir )
 
-	for dir in source_dirs:
-		if dir == packages_dir:
-			continue
-		cleanup_repository( dir )
+			urepo.update_indexes( dir, stdout = fp_debug, stderr = fp_debug )
 
-		urepo.update_indexes( dir, stdout = fp_debug, stderr = fp_debug )
-
-	os.chdir(save_dir)
-	os.chdir(packages_dir)
-	urepo.update_indexes( packages_dir, stdout = fp_debug, stderr = fp_debug )
-	fp_debug.close()
+		os.chdir(save_dir)
+		os.chdir(packages_dir)
+		urepo.update_indexes( packages_dir, stdout = fp_debug, stderr = fp_debug )
+		fp_debug.close()
+	finally:
+		if not univention.updater.tools.updater_lock_release(lock):
+			print 'WARNING: updater-lock already released!'

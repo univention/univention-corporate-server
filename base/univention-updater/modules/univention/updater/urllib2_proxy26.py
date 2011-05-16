@@ -94,7 +94,7 @@ def _parse_proxy(proxy):
         user = password = None
     return scheme, user, password, hostport
 
-class ProxyHandler(BaseHandler):
+class ProxyHandler(ProxyHandler):
     # Proxies must be in front
     handler_order = 100
 

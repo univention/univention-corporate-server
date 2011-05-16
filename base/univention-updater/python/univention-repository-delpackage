@@ -30,12 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, string
-import shutil, sys
-import getopt, time
+import os
+import sys
+import getopt
 
 import univention_baseconfig
 import univention.updater.repository as urepo
+import univention.updater.tools
 
 def usage(fd=sys.stdout):
 	print >>fd, 'univention-repository-delpackage: tool for removing packages from local repository'
@@ -82,29 +83,38 @@ if __name__ == '__main__':
 		usage()
 		sys.exit(1)
 
-	baseConfig=univention_baseconfig.baseConfig()
-	baseConfig.load()
+	try:
+		lock = univention.updater.tools.updater_lock_acquire()
+	except univention.updater.tools.LockingError, e:
+		print >>sys.stderr, e
+		sys.exit(5)
+	try:
+		baseConfig=univention_baseconfig.baseConfig()
+		baseConfig.load()
 
-	if baseConfig.get('local/repository', 'no').lower() in [ 'no', 'false' ]:
-		print >> sys.stderr, 'Error: The local repository is diabled. Use "univention-config-registry set local/repository=yes" to activate local repository'
-		sys.exit(1)
+		if baseConfig.get('local/repository', 'no').lower() in [ 'no', 'false' ]:
+			print >> sys.stderr, 'Error: The local repository is diabled. Use "univention-config-registry set local/repository=yes" to activate local repository'
+			sys.exit(1)
 
-	dirs=[]
+		dirs=[]
 
-	for file in files:
-		if file.endswith('.deb') and os.path.exists(file):
-			dir, filename = os.path.split( file )
-			basedir = urepo.get_repo_basedir( dir )
-			if not basedir in dirs:
-				dirs.append( basedir )
-			os.unlink( file )
+		for file in files:
+			if file.endswith('.deb') and os.path.exists(file):
+				dir, filename = os.path.split( file )
+				basedir = urepo.get_repo_basedir( dir )
+				if not basedir in dirs:
+					dirs.append( basedir )
+				os.unlink( file )
 
-	for path in dirs:
-		# these might not exist if creating a new repository
-		urepo.create_packages( path, '.' )
-		if path[ -1 ] == '/':
-			path = path[ : -1 ]
+		for path in dirs:
+			# these might not exist if creating a new repository
+			urepo.create_packages( path, '.' )
+			if path[ -1 ] == '/':
+				path = path[ : -1 ]
 
-		head, tail = os.path.split( path )
-		for arch in urepo.ARCHITECTURES:
-			urepo.create_packages( head, '%s/%s' % ( tail, arch ) )
+			head, tail = os.path.split( path )
+			for arch in urepo.ARCHITECTURES:
+				urepo.create_packages( head, '%s/%s' % ( tail, arch ) )
+	finally:
+		if not univention.updater.tools.updater_lock_release(lock):
+			print 'WARNING: updater-lock already released!'

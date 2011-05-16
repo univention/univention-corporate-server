@@ -1,3 +1,288 @@
+univention-updater (6.0.83-3) unstable; urgency=low
+
+  * check free disk space for update (Bug #22026)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 31 Mar 2011 16:59:12 +0200
+
+univention-updater (6.0.83-2) unstable; urgency=low
+
+  * check free disk space for update (Bug #22026)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 30 Mar 2011 17:04:06 +0200
+
+univention-updater (6.0.83-1) unstable; urgency=low
+
+  * check free disk space for update (Bug #22026)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 30 Mar 2011 14:46:58 +0200
+
+univention-updater (6.0.82-1) unstable; urgency=low
+
+  * Fix RegEx to split parts (Bug #18848)
+  * Fix handling of one Packages for all architectures format (Bug #22015)
+  * Partially fix URL-quoting (Bug #18848).
+  * umc: Fix reinit()-call.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 29 Mar 2011 14:29:59 +0200
+
+univention-updater (6.0.81-3) unstable; urgency=low
+
+  * preup.sh: Test for VirtIO-network as well (Bug #21993)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 28 Mar 2011 10:43:48 +0200
+
+univention-updater (6.0.81-2) unstable; urgency=low
+
+  * preup.sh: Test for VirtIO (Bug #21993)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 28 Mar 2011 10:40:52 +0200
+
+univention-updater (6.0.81-1) unstable; urgency=low
+
+  * preup.sh: Test for running and suspended VMs (Bug #21993)
+  * preup.sh: Fix non-portable function declaration.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 28 Mar 2011 09:51:25 +0200
+
+univention-updater (6.0.80-2) unstable; urgency=low
+
+  * Also handle GATEWAY_TIMOUT from (Squid-)proxy (Bug #21583)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 24 Mar 2011 12:40:35 +0100
+
+univention-updater (6.0.80-1) unstable; urgency=low
+
+  * Just report missing components in mirror.list (Bug #21933)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 23 Mar 2011 08:16:06 +0100
+
+univention-updater (6.0.79-1) unstable; urgency=low
+
+  * Fix handling of invalid PID in lockfile (Bug #15144)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 21 Mar 2011 19:07:56 +0100
+
+univention-updater (6.0.78-1) unstable; urgency=low
+
+  * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 21 Mar 2011 15:32:46 +0100
+
+univention-updater (6.0.77-1) unstable; urgency=low
+
+  * Handle unlock after nested updater->mirror invocation (Bug #15144)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 18 Mar 2011 12:19:03 +0100
+
+univention-updater (6.0.76-1) unstable; urgency=low
+
+  * added repository/online/architectures (Bug #18911)
+    given architectures (space separated) will be included in local
+    sources.list
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 18 Mar 2011 11:21:14 +0100
+
+univention-updater (6.0.75-1) unstable; urgency=low
+
+  * Overhaul errors handling in configuration (Bug #21127)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 17 Mar 2011 14:15:38 +0100
+
+univention-updater (6.0.74-1) unstable; urgency=low
+
+  * commit mirror.list so security updates get mirrored too (Bug #19781)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 16 Mar 2011 17:34:59 +0100
+
+univention-updater (6.0.73-1) unstable; urgency=low
+
+  * added --ignore-releasenotes (Bug #19584)
+  * added possibility to press ENTER to skip waiting time
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 15 Mar 2011 11:53:27 +0100
+
+univention-updater (6.0.72-1) unstable; urgency=low
+
+  * added repository/online/component/%s/localmirror=BOOL
+    to enable/disable component mirroring if local system
+    is a repository server (Bug #18848)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 14 Mar 2011 17:21:43 +0100
+
+univention-updater (6.0.71-1) unstable; urgency=low
+
+  * Write PID to lock file and check that, if it already exists (Bug #15144)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 11 Mar 2011 12:00:33 +0100
+
+univention-updater (6.0.70-1) unstable; urgency=low
+
+  * Handle abort by pre/postup script of components (Bug #21127)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 11 Mar 2011 09:22:36 +0100
+
+univention-updater (6.0.69-1) unstable; urgency=low
+
+  * added UCR variable descriptions (Bug #19584)
+  * fixed log entry duplicate
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 09 Mar 2011 14:52:59 +0100
+
+univention-updater (6.0.68-1) unstable; urgency=low
+
+  * changed msg (Bug #19584)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 09 Mar 2011 14:10:31 +0100
+
+univention-updater (6.0.67-1) unstable; urgency=low
+
+  * do not print traceback if update is stopped by ctrl-c (Bug #19584)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 09 Mar 2011 14:07:43 +0100
+
+univention-updater (6.0.66-1) unstable; urgency=low
+
+  * clarified hint to release notes and changelogs (Bug #19584)
+  * url to release notes is now customizable
+  * added release notes/changelog hint to preup.sh
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 08 Mar 2011 17:47:25 +0100
+
+univention-updater (6.0.65-1) unstable; urgency=low
+
+  * accept further "True" values (Bug #21398)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 08 Mar 2011 15:53:53 +0100
+
+univention-updater (6.0.64-1) unstable; urgency=low
+
+  * updated translations of UMC module (Bug #21398)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 08 Mar 2011 15:25:54 +0100
+
+univention-updater (6.0.63-1) unstable; urgency=low
+
+  * removed call of fix_primary_group_membership (Bug #21711)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 08 Mar 2011 14:18:38 +0100
+
+univention-updater (6.0.62-1) unstable; urgency=low
+
+  * call fix_primary_group_membership in postup.sh on 
+    domaincontroller master (Bug #21711)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 07 Mar 2011 15:43:16 +0100
+
+univention-updater (6.0.61-1) unstable; urgency=low
+
+  * do not call univention-pkgdb-scan several times in
+    univention-actualise (Bug #20793)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 04 Mar 2011 13:14:21 +0100
+
+univention-updater (6.0.60-1) unstable; urgency=low
+
+  * add locking to updater commands (Bug #15144)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 04 Mar 2011 13:10:52 +0100
+
+univention-updater (6.0.59-2) unstable; urgency=low
+
+  * fixed UCR statement in postinst (Bug #21580)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 04 Mar 2011 11:29:16 +0100
+
+univention-updater (6.0.59-1) unstable; urgency=low
+
+  * extended default PATH to contain /usr/sbin and /sbin (Bug #12168)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Mar 2011 17:53:54 +0100
+
+univention-updater (6.0.58-1) unstable; urgency=low
+
+  * remove superflous debug output (Bug #15631)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 23 Feb 2011 19:18:54 +0100
+
+univention-updater (6.0.57-1) unstable; urgency=low
+
+  * Fix missing 's' in Sources.gz (Bug #21127)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 21 Feb 2011 09:44:51 +0100
+
+univention-updater (6.0.56-1) unstable; urgency=low
+
+  * call hook "update_finished"
+  * display "reboot required" msg in component settings dialog (OX-Bug #18366) 
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 17 Feb 2011 16:54:21 +0100
+
+univention-updater (6.0.55-1) unstable; urgency=low
+
+  * enable unset of component settings (Bug #15631)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 11 Feb 2011 17:32:46 +0100
+
+univention-updater (6.0.54-1) unstable; urgency=low
+
+  * add component version to UMC module (Bug #19230)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 11 Feb 2011 16:32:59 +0100
+
+univention-updater (6.0.53-2) unstable; urgency=low
+
+  * Fix shlex.split() spelling (Bug #21127)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Feb 2011 09:12:43 +0100
+
+univention-updater (6.0.53-1) unstable; urgency=low
+
+  * fixed logic for getting component status (Bug #21398)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 31 Jan 2011 17:27:17 +0100
+
+univention-updater (6.0.52-2) unstable; urgency=low
+
+  * added easy update mechanism (Bug #21398)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 07 Feb 2011 16:42:31 +0100
+
+univention-updater (6.0.52-1) unstable; urgency=low
+
+  * Adopt to common APT commands (Bug #21324)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 04 Feb 2011 15:07:51 +0100
+
+univention-updater (6.0.51-1) unstable; urgency=low
+
+  * fixed translation bug (Bug #21324)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 02 Feb 2011 16:43:15 +0100
+
+univention-updater (6.0.50-1) unstable; urgency=low
+
+  * added function to determine current status of component (Bug #21324)
+  * UMC online update modules now shows current status of configured
+    components
+
+ -- Sönke Schwardt <schwardt@univention.de>  Sat, 29 Jan 2011 18:17:14 +0100
+
+univention-updater (6.0.49-1) unstable; urgency=low
+
+  * set PATH environment variable in univention-security-update (Bug #19791)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 07 Feb 2011 15:44:33 +0100
+
+univention-updater (6.0.48-2) unstable; urgency=low
+
+  * Call pre-/postup.sh of all enabled components (Bug #21127)
+  * Fix handling of --updateto (Bug #19754)
+  * Initialize univention.debug.
+  * Fix ProxyHandler to be a subclass of broken itself.
+  * Clean up Makefile and debian/rules
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 07 Feb 2011 13:35:06 +0100
+
 univention-updater (6.0.48-1) unstable; urgency=low
 
   * Bump version (Bug #21127)

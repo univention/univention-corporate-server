@@ -40,6 +40,7 @@ import sys
 
 import univention.config_registry as ucr
 import univention.updater.repository as urepo
+import univention.updater.tools
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
@@ -207,35 +208,44 @@ if __name__ == '__main__':
 	if options.silent:
 		sys.stdout = open( '/dev/null', 'w' )
 
-	check_preconditions( options )
-	prepare( options )
-	if not mount( options ):
-		print >>sys.stderr, "Error: Failed to mount CD-ROM device at %s" % options.mount_point
-		sys.exit( 1 )
-
 	try:
-		copy_repository( options )
-		setup_repository( options )
-		setup_pxe( options )
+		lock = univention.updater.tools.updater_lock_acquire()
+	except univention.updater.tools.LockingError, e:
+		print >>sys.stderr, e
+		sys.exit(5)
+	try:
+		check_preconditions( options )
+		prepare( options )
+		if not mount( options ):
+			print >>sys.stderr, "Error: Failed to mount CD-ROM device at %s" % options.mount_point
+			sys.exit( 1 )
+
+		try:
+			copy_repository( options )
+			setup_repository( options )
+			setup_pxe( options )
+		finally:
+			if options.mount:
+				subprocess.call( [ 'umount', options.mount_point ] )
+
+		# set repository server to local system
+		fqdn = '%s.%s' % ( configRegistry.get( 'hostname' ), configRegistry.get( 'domainname' ) )
+		ucr.handler_set( [ 'repository/online/server=%s' % fqdn ] )
+
+		# unset UCR variable marking old repository
+		if configRegistry.has_key( 'repository/local/old' ):
+			ucr.handler_unset( 'repository/local/old' )
+
+		# set start version for synchronsation of repository
+		repo_version = urepo.get_installation_version()
+		if repo_version:
+			ucr.handler_set( [ 'repository/mirror/version/start?%s-0' % repo_version ] )
+
+		# create symbolic link univention-repository
+		os.chdir( os.path.join( configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' ), 'mirror' ) )
+		os.symlink( '.', 'univention-repository' )
+
+		print  "The local repository has been created."
 	finally:
-		if options.mount:
-			subprocess.call( [ 'umount', options.mount_point ] )
-
-	# set repository server to local system
-	fqdn = '%s.%s' % ( configRegistry.get( 'hostname' ), configRegistry.get( 'domainname' ) )
-	ucr.handler_set( [ 'repository/online/server=%s' % fqdn ] )
-
-	# unset UCR variable makring old repository
-	if configRegistry.has_key( 'repository/local/old' ):
-		ucr.handler_unset( 'repository/local/old' )
-
-	# set start version for synchronsation of repository
-	repo_version = urepo.get_installation_version()
-	if repo_version:
-		ucr.handler_set( [ 'repository/mirror/version/start?%s-0' % repo_version ] )
-
-	# create symbolic link univention-repository
-	os.chdir( os.path.join( configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' ), 'mirror' ) )
-	os.symlink( '.', 'univention-repository' )
-
-	print  "The local repository has been created."
+		if not univention.updater.tools.updater_lock_release(lock):
+			print 'WARNING: updater-lock already released!'

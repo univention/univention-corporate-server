@@ -32,12 +32,13 @@
 
 # TODO: use UCR variables for update, upgrade, install and remove commands
 
-import os, sys, string, time, tempfile, commands
+import os, sys, time, tempfile, commands
 import shlex
 import subprocess
 
 import univention.config_registry as ucr
 from univention.updater.commands import *
+import univention.updater.tools
 
 LOGNAME = '/var/log/univention/actualise.log'
 
@@ -235,6 +236,7 @@ def main():
 	os.environ['LC_ALL'] = 'C'
 
 	pkgdb = None
+	pkgdb_scope = None
 	silent = False
 	print_usage = False
 	dist_upgrade = False
@@ -278,9 +280,11 @@ def main():
 
 			# temporarily disable pkgdb
 			if configRegistry.has_key('pkgdb/scan') and configRegistry['pkgdb/scan']:
-				pkgdb=configRegistry['pkgdb/scan']
+				# get value and UCR scope of variable pkgdb/scan
+				pkgdb_scope, pkgdb = configRegistry.get('pkgdb/scan', getscope=True)
 				if pkgdb:
-					ucr.handler_set(['pkgdb/scan=no'])
+					# disable pkgdb in UCR scope FORCED
+					ucr.handler_set(['pkgdb/scan=no'], {'force':True})
 
 			rem_packages=getPackageList(configRegistry, 'remove')
 			for package in rem_packages:
@@ -313,7 +317,7 @@ def main():
 					print "Installing packages: %s" % package
 					createLock()
 					os.environ[ 'DEBIAN_FRONTEND' ] = 'noninteractive'
-					res = subprocess.call(shlex.slit(cmd_config), stdout=logfile, stderr=logfile)
+					res = subprocess.call(shlex.split(cmd_config), stdout=logfile, stderr=logfile)
 					if not res:
 						res = subprocess.call(shlex.split(cmd_install) + [package], stdout=logfile, stderr=logfile)
 				else:
@@ -362,7 +366,13 @@ def main():
 
 	finally:
 		if pkgdb:
-			ucr.handler_set(['pkgdb/scan=%s' % pkgdb])
+			if pkgdb_scope == ucr.ConfigRegistry.FORCED:
+				# old value was set in FORCED scope
+				ucr.handler_set(['pkgdb/scan=%s' % pkgdb], {'force': True})
+			else:
+				# old value was set in any other scope ==> remove value in FORCED scope
+				ucr.handler_unset(['pkgdb/scan'], {'force': True})
+
 			if str(pkgdb).lower() in ("yes","enable","enabled","true","1"):
 				if not silent:
 					os.system('/usr/sbin/univention-pkgdb-scan')
@@ -370,22 +380,31 @@ def main():
 					os.system('/usr/sbin/univention-pkgdb-scan > /dev/null')
 
 if __name__ == '__main__':
-	failure = '/var/lib/univention-updater/update-failed'
-	if os.path.exists(failure):
-		print 'univention-actualise: univention-updater failed, stopping...'
-		print '    remove `%s\' to proceed' % failure
-		sys.exit(2)
-
 	try:
-		for root, dirs, files in os.walk('/etc/apt/sources.list.d'):
-			for file in [file for file in files if file.startswith('00_ucs_temporary_')]:
-				filename = os.path.join(root, file)
-				print 'Warning: Deleting `%s` from incomplete update.' % filename
-				os.remove(filename)
-			del dirs[:]
-	except:
-		print 'Failed, aborting.'
-		sys.exit(2)
+		lock = univention.updater.tools.updater_lock_acquire()
+	except univention.updater.tools.LockingError, e:
+		print >>sys.stderr, e
+		sys.exit(5)
+	try:
+		failure = '/var/lib/univention-updater/update-failed'
+		if os.path.exists(failure):
+			print 'univention-actualise: univention-updater failed, stopping...'
+			print '    remove `%s\' to proceed' % failure
+			sys.exit(2)
 
-	main()
-	sys.exit(0)
+		try:
+			for root, dirs, files in os.walk('/etc/apt/sources.list.d'):
+				for file in [file for file in files if file.startswith('00_ucs_temporary_')]:
+					filename = os.path.join(root, file)
+					print 'Warning: Deleting `%s` from incomplete update.' % filename
+					os.remove(filename)
+				del dirs[:]
+		except:
+			print 'Failed, aborting.'
+			sys.exit(2)
+
+		main()
+		sys.exit(0)
+	finally:
+		if not univention.updater.tools.updater_lock_release(lock):
+			print 'WARNING: updater-lock already released!'

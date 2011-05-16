@@ -43,12 +43,11 @@ import univention.debug as ud
 
 import univention.config_registry
 
-from univention.updater import UniventionUpdater
-from json import JsonReader, JsonWriter
+from univention.updater import UniventionUpdater, ConfigurationError
+from json import JsonWriter
 
-import os
 import subprocess
-import socket, re
+import re
 import traceback
 
 _ = umc.Translation('univention.management.console.handlers.update').translate
@@ -59,6 +58,7 @@ long_description = _('Manage system updates')
 categories = ['all', 'system']
 
 UCR_ALLOWED_CHARACTERS = '^[^#:@]+$'
+COMPONENT_VERSION_FORMAT = '^((([0-9]+.[0-9]+|current),)*([0-9]+.[0-9]+|current))?$'
 
 # display specified logfiles when running update -
 # FN_LIST_DIST_UPGRADE_LOG: the first filename is also used actively as logfile
@@ -66,11 +66,15 @@ FN_LIST_SECURITY_UPDATE_LOG = [ '/var/log/univention/security-updates.log' ]
 FN_LIST_RELEASE_UPDATE_LOG = [ '/var/log/univention/updater.log' ]
 FN_LIST_DIST_UPGRADE_LOG = [ '/var/log/univention/updater.log' ]
 FN_LIST_ACTUALISE_LOG = [ '/var/log/univention/actualise.log' ]
+FN_LIST_UPGRADE_LOG = [ '/var/log/univention/updater.log', '/var/log/univention/security-updates.log', '/var/log/univention/actualise.log', '/var/log/univention/upgrade.log' ]
 
+FN_STATUS_UPGRADE = '/var/lib/univention-updater/univention-upgrade.status'
 FN_STATUS_UPDATER = '/var/lib/univention-updater/univention-updater.status'
 FN_STATUS_SECURITY_UPDATE = '/var/lib/univention-updater/univention-security-update.status'
 FN_STATUS_DIST_UPGRADE = '/var/lib/univention-updater/umc-dist-upgrade.status'
 FN_STATUS_UNIVENTION_INSTALL = '/var/lib/univention-updater/umc-univention-install.status'
+
+CMD_UNIVENTION_UPGRADE = '/usr/sbin/univention-upgrade'
 
 command_description = {
 	'update/overview': umch.command(
@@ -122,11 +126,17 @@ command_description = {
 			'component_password': umc.String(_('Password'), required = False, regex = UCR_ALLOWED_CHARACTERS),
 			'use_maintained': umc.Boolean( _( 'Use maintained repositories' ), required = False ),
 			'use_unmaintained': umc.Boolean( _( 'Use unmaintained repositories' ), required = False ),
+			'component_version': umc.String(_('Version'), required = False, regex = COMPONENT_VERSION_FORMAT),
 		},
 	),
 	'update/install_release_updates': umch.command(
 		short_description = _('Installs a release update'),
 		method = 'install_release_updates',
+		values = { },
+	),
+	'update/install_release_updates_easy': umch.command(
+		short_description = _('Installs all available update'),
+		method = 'install_release_updates_easy',
 		values = { },
 	),
 	'update/install_security_updates': umch.command(
@@ -185,7 +195,7 @@ class handler(umch.simpleHandler):
 
 		umch.simpleHandler.__init__(self, command_description)
 
-		self.updater = UniventionUpdater()
+		self.updater = UniventionUpdater(check_access=False)
 		self.hooks = univention.hooks.HookManager('/usr/lib/python2.4/site-packages/univention/management/console/handlers/update/hooks') # , raise_exceptions=False
 
 		self.next_release_update_checked = False
@@ -197,7 +207,6 @@ class handler(umch.simpleHandler):
 		# True  ==> cmd was running at last check
 		self.last_running_status = {}
 
-		self.ucr_reinit = False
 		self.tail_fn2fd = {}
 
 
@@ -275,8 +284,6 @@ class handler(umch.simpleHandler):
 	def _reinit(self):
 		try:
 			self.updater.ucr_reinit()
-		except (socket.error, socket.gaierror), e:
-			ud.debug(ud.ADMIN, ud.ERROR, 'updater: socket.gaierror: %s' % traceback.format_exc().replace('%','§'))
 		except Exception, e:
 			ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % (traceback.format_exc().replace('%','§')))
 
@@ -356,33 +363,40 @@ class handler(umch.simpleHandler):
 		component_password = object.options.get('component_password', '')
 		component_use_maintained = object.options.get('use_maintained', '')
 		component_use_unmaintained = object.options.get('use_unmaintained', '')
+		component_version = object.options.get('component_version', '')
 
 		ud.debug(ud.ADMIN, ud.INFO, 'Component settings for %s' % component_name)
 		if component_name:
+			UCRVBase = 'repository/online/component/%s' % component_name
 			res = []
+			unset = []
 			if component_activated:
-				res.append('repository/online/component/%s=enabled' % component_name)
+				res.append(UCRVBase + '=enabled')
 			else:
-				res.append('repository/online/component/%s=disabled' % component_name)
-			if component_description:
-				res.append('repository/online/component/%s/description=%s' % (component_name,component_description))
-			if component_server:
-				res.append('repository/online/component/%s/server=%s' % (component_name,component_server))
-			if component_prefix:
-				res.append('repository/online/component/%s/prefix=%s' % (component_name,component_prefix))
-			if component_username:
-				res.append('repository/online/component/%s/username=%s' % (component_name,component_username))
-			if component_password:
-				res.append('repository/online/component/%s/password=%s' % (component_name,component_password))
+				res.append(UCRVBase + '=disabled')
+			directFields = {'description': component_description,
+			                'server': component_server,
+			                'prefix': component_prefix,
+			                'username': component_username,
+			                'password': component_password,
+			                'version': component_version,
+			                }
+			for (UCRV, field, ) in directFields.items():
+				if field:
+					res.append('%s/%s=%s' % (UCRVBase, UCRV, field, ))
+				else:
+					unset.append('%s/%s' % (UCRVBase, UCRV, ))
 			parts = []
 			if component_use_maintained:
 				parts.append('maintained')
 			if component_use_unmaintained:
 				parts.append('unmaintained')
-			res.append('repository/online/component/%s/parts=%s' % (component_name, ','.join(parts)))
+			res.append('%s/parts=%s' % (UCRVBase, ','.join(parts), ))
 
 			ud.debug(ud.ADMIN, ud.INFO, 'Set the following component settings: %s' % res)
 			univention.config_registry.handler_set(res)
+			ud.debug(ud.ADMIN, ud.INFO, 'Unset the following component settings: %s' % unset)
+			univention.config_registry.handler_unset(unset)
 			p1 = subprocess.Popen(['apt-get','-qq','update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, env={"LC_ALL": "C", "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"})
 			(stdout,stderr) = p1.communicate()
 			ud.debug(ud.ADMIN, ud.PROCESS, 'run "apt-get update", the returncode is %d' % p1.returncode)
@@ -391,13 +405,26 @@ class handler(umch.simpleHandler):
 			if stdout:
 				ud.debug(ud.ADMIN, ud.INFO, 'stdout=%s' % stdout)
 			ud.debug(ud.ADMIN, ud.INFO, 'And reinit the updater modul')
-			self.updater.ucr_reinit()
+			self._reinit()
 
 		self.finished(object.id(), None)
 
 	def update_warning(self, object):
 		_d = ud.function('update.handler.release_update_warning')
 		self.finished(object.id(), None)
+
+	def install_release_updates_easy(self, object):
+		_d = ud.function('update.handler.install_release_updates_easy')
+
+		(returncode, returnstring) = self.__create_at_job(CMD_UNIVENTION_UPGRADE)
+		ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: univention-upgrade')
+
+		self.last_running_status['easyupdate'] = None
+
+		if returncode != 0:
+			self.finished(object.id(), None, returnstring, success = False)
+		else:
+			self.finished(object.id(), None)
 
 	def install_release_updates(self, object):
 		_d = ud.function('update.handler.install_release_updates')
@@ -496,10 +523,52 @@ class handler(umch.simpleHandler):
 		ud.debug(ud.ADMIN, ud.INFO, '_web_tail_logfile: windowtype=%s' % windowtype)
 
 		# test if update has finished and check status of update
-		if windowtype == 'release':
+		if windowtype == 'easyupdate':
+			cur_running_status = self.__is_univention_upgrade_running()
+			if not cur_running_status and self.last_running_status.get(windowtype) in (True, None):
+				self.hooks.call_hook('update_finished', windowtype=windowtype)
+				self._reinit()
+
+				# read status
+				status = self._get_status_file(FN_STATUS_UPGRADE)
+				ud.debug(ud.ADMIN, ud.INFO, '_web_tail_logfile: status=%s' % status)
+				if not status or not 'status' in status:
+					# updater does not support status-file or status file is defect
+					headline = _('Update finished')
+					headline_msg = _('The update has been finished. During update some log messages have been shown in window below. Please check the output for error messages.')
+				else:
+					# status-file has been found
+					if status.get('status') == 'DONE':
+						# update was successful
+						headline = _('Update has been finished successfully')
+						headline_msg = _('The update has been finished. During update some log messages have been shown in window below.')
+
+					elif status.get('status') == 'FAILED':
+						# update failed
+						headline = _('Update failed')
+						logfile = ', '.join( FN_LIST_UPGRADE_LOG )
+
+						if status.get('errorsource') in ['PREPARATION', 'SETTINGS']:
+							headline_msg = _('An error occured during update preparation. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						elif status.get('errorsource') in ['PREUP']:
+							headline_msg = _('An error occured during pre-update checks in preup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						elif status.get('errorsource') in ['UPDATE']:
+							headline_msg = _('An error occured during update. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						elif status.get('errorsource') in ['POSTUP']:
+							headline_msg = _('An error occured in post-update script postup.sh. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+						else:
+							headline_msg = _('An error occured. Please check %(logfile)s carefully.') % { 'logfile': logfile }
+
+						txt_version_from_to = status.get('TXT_VERSION_FROM_TO','')
+						if txt_version_from_to:
+							headline_msg = '%s<br />%s' % (headline_msg, txt_version_from_to)
+
+		elif windowtype == 'release':
 			cur_running_status = self.__is_updater_running()
 			if not cur_running_status and self.last_running_status.get(windowtype) in (True, None):
+				self.hooks.call_hook('update_finished', windowtype=windowtype)
 				self._reinit()
+
 				# read status
 				status = self._get_status_file(FN_STATUS_UPDATER)
 				ud.debug(ud.ADMIN, ud.INFO, '_web_tail_logfile: status=%s' % status)
@@ -537,6 +606,7 @@ class handler(umch.simpleHandler):
 		elif windowtype == 'security':
 			cur_running_status = self.__is_security_update_running()
 			if not cur_running_status and self.last_running_status.get(windowtype) in (True, None):
+				self.hooks.call_hook('update_finished', windowtype=windowtype)
 				self._reinit()
 
 				# read status
@@ -576,6 +646,7 @@ class handler(umch.simpleHandler):
 		elif windowtype == 'dist-upgrade':
 			cur_running_status = self.__is_dist_upgrade_running()
 			if not cur_running_status and self.last_running_status.get(windowtype) in (True, None):
+				self.hooks.call_hook('update_finished', windowtype=windowtype)
 				self._reinit()
 
 				# read status
@@ -601,6 +672,7 @@ class handler(umch.simpleHandler):
 		elif windowtype == 'install-component':
 			cur_running_status = self.__is_univention_install_running()
 			if not cur_running_status and self.last_running_status.get(windowtype) in (True, None):
+				self.hooks.call_hook('update_finished', windowtype=windowtype)
 				self._reinit()
 
 				# read status
@@ -626,6 +698,7 @@ class handler(umch.simpleHandler):
 		else:
 			cur_running_status = None
 			ud.debug(ud.ADMIN, ud.ERROR, 'update.handler._web_tail_logfile: unknown window type: %s' % (windowtype) )
+
 
 		fdlist = []
 		for key in object.options.keys():
@@ -687,7 +760,11 @@ class handler(umch.simpleHandler):
 		windowtype = object.options.get('windowtype','undefined-local')
 
 		# depending on window type set headline, headline message and logfiles
-		if windowtype == 'release':
+		if windowtype == 'easyupdate':
+			txt_headline = _('Update progress')
+			txt_headline_msg = _('The update process has been started. During update log messages will be shown in window below. Please wait until the release update has been finished.')
+			filenames = FN_LIST_UPGRADE_LOG
+		elif windowtype == 'release':
 			txt_headline = _('Update progress')
 			txt_headline_msg = _('The release update process has been started. During update log messages will be shown in window below. Please wait until the release update has been finished.')
 			filenames = FN_LIST_RELEASE_UPDATE_LOG
@@ -736,7 +813,7 @@ class handler(umch.simpleHandler):
 
 		frame_info = None
 		# Is a reboot required?
-		if self.updater.configRegistry.get( 'update/reboot/required', 'no' ) == 'yes':
+		if self.updater.configRegistry.is_true( 'update/reboot/required', False):
 			list_info = umcd.List()
 			frame_info = umcd.Frame( [ list_info ], _( 'Important Information' ) )
 			list_info.add_row( [ umcd.InfoBox( _( 'The system has been updated to a newer version of UCS. It is suggested that the system should be rebooted after the update. This has not been done yet.' ), columns = 2 ) ] )
@@ -760,6 +837,48 @@ class handler(umch.simpleHandler):
 				res.dialog = [ lst ]
 			self.revamped(object.id(), res)
 
+		# ==== ONE BUTTON RELEASE UPDATE ====
+
+		if self.updater.configRegistry.is_true( 'update/umc/updateprocess/easy', False ):
+
+			list_easy_update = umcd.List()
+			if self.__is_univention_upgrade_running():
+				req = self.__get_logfile_request( { 'windowtype': 'easyupdate' } )
+				btn_view_log = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
+				list_easy_update.add_row([ umcd.Text(_('The update is still in progress.')), btn_view_log])
+
+			else:
+				version = self.updater.get_ucs_version()
+				if self.updater.security_patchlevel != '0':
+					version = '%s sec%s' % (version, self.updater.security_patchlevel)
+				list_easy_update.add_row( [ umcd.Text( _('The currently installed UCS release version is %(version)s.') % { 'version': version } ) ] )
+
+				presult = umct.run_process( '%s --check' % CMD_UNIVENTION_UPGRADE, timeout=300000, shell=True, output=True )
+				if presult['exit'] == 0:
+					# update is available
+					btn_update_all = umcd.Button(_('Install updates'), 'actions/install', actions = [umcd.Action(self.__get_warning_request({'type': 'easyupdate'}))])
+					list_easy_update.add_row([ umcd.Text(_('Updates have been found.')), btn_update_all])
+				elif presult['exit'] == 1:
+					reComponentName = re.compile(".*without the component '([^']+)' is not possible because the component.*", re.DOTALL)
+					match = reComponentName.match( presult['stderr'].read() )
+					if match:
+						blocking_component = match.group(1)
+						list_easy_update.add_row( [ umcd.Text(_('Further release updates are available but the update is blocked by required component "%s".') % blocking_component) ] )
+					else:
+						list_easy_update.add_row( [ umcd.Text(_('System is up-to-date. No updates available.')) ] )
+				elif presult['exit'] == 3:
+					list_easy_update.add_row( [ umcd.Text(_('The connection to the repository server failed. Please check the repository configuration and the network connection.')) ] )
+				else:
+					req = self.__get_logfile_request( { 'windowtype': 'easyupdate' } )
+					btn_view_log = umcd.Button( _( 'View logfile' ), 'actions/install', actions = [ umcd.Action( req ) ] )
+					list_easy_update.add_row([ umcd.Text(_('Update command returned error code %s. Please check logfile.') % presult['exit']), btn_view_log])
+
+			# show easy update frame just here
+			res.dialog = [ umcd.Frame([list_easy_update], _('Release Information')) ]
+			if frame_info:
+				res.dialog.insert(0, frame_info)
+			self.revamped(object.id(), res)
+
 		# ==== UCS RELEASE UPDATES =====
 		list_update_release = umcd.List()
 
@@ -780,12 +899,12 @@ class handler(umch.simpleHandler):
 			errormsg = None
 			try:
 				available_release_updates, blocking_component = self.updater.get_all_available_release_updates()
-			except (socket.error, socket.gaierror), e:
-				ud.debug(ud.ADMIN, ud.ERROR, 'updater: socket.gaierror: %s' % traceback.format_exc().replace('%','§'))
+			except ConfigurationError, e:
+				ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % traceback.format_exc().replace('%','§'))
 				errormsg = _( 'The connection to the repository server failed: %s. Please check the repository settings and the network connection.' ) % str( e[ 1 ] )
 			except Exception, e:
 				ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % (traceback.format_exc()))
-				errormsg = _( 'An error occured during network operation: %s' % traceback.format_exc().replace('%','§'))
+				errormsg = _( 'An error occured during network operation: %s' ) % traceback.format_exc().replace('%','§')
 
 			if errormsg:
 				list_update_release.add_row([ errormsg ])
@@ -841,12 +960,12 @@ class handler(umch.simpleHandler):
 		else:
 			try:
 				available_security_updates = self.updater.get_all_available_security_updates()
-			except (socket.error, socket.gaierror), e:
-				ud.debug(ud.ADMIN, ud.ERROR, 'updater: socket.gaierror: %s' % traceback.format_exc().replace('%','§'))
+			except ConfigurationError, e:
+				ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % traceback.format_exc().replace('%','§'))
 				errormsg = _( 'The connection to the repository server failed: %s. Please check the repository settings and the network connection.' ) % str( e[ 1 ] )
 			except Exception, e:
 				ud.debug(ud.ADMIN, ud.ERROR, 'updater: %s' % traceback.format_exc().replace('%','§'))
-				errormsg = _( 'An error occured during network operation: %s' % traceback.format_exc())
+				errormsg = _( 'An error occured during network operation: %s') % traceback.format_exc()
 
 			if errormsg:
 				list_update_security.add_row([ errormsg ])
@@ -941,6 +1060,17 @@ class handler(umch.simpleHandler):
 			lst.add_row( [ umcd.InfoBox( _( 'The settings dialog has been disabled since an update is currently running. It will be reenabled if update process has finished.' ), columns = 2 ) ] )
 			res.dialog = [ umcd.Frame( [lst], _('Settings') ) ]
 		else:
+			# IMPORTANT INFORMATION
+
+			frame_info = None
+			# Is a reboot required?
+			if self.updater.configRegistry.is_true( 'update/reboot/required', False):
+				list_info = umcd.List()
+				frame_info = umcd.Frame( [ list_info ], _( 'Important Information' ) )
+				list_info.add_row( [ umcd.InfoBox( _( 'The system has been updated to a newer version of UCS. It is suggested that the system should be rebooted after the update. This has not been done yet.' ), columns = 2 ) ] )
+				cmd = umcp.Command( args = [ 'reboot/do' ], opts = { 'action' : 'reboot', 'message' : _( 'Rebooting the system after an update' ) } )
+				list_info.add_row( [ '', umcd.Button( _( 'Reboot system' ), 'actions/ok', actions = [ umcd.Action( cmd ) ] ) ] )
+
 			# RELEASE SETTINGS
 			list_settings_release = umcd.List()
 			req = umcp.Command(args=['update/release_settings'])
@@ -955,7 +1085,7 @@ class handler(umch.simpleHandler):
 			list_settings_release.add_row([ btn_release ])
 
 			# COMPONENT SETTINGS
-			local_repo = self.updater.configRegistry.get( 'local/repository', 'no' ).lower() in ( 'yes', 'true' )
+			local_repo = self.updater.configRegistry.is_true( 'local/repository', False)
 			is_univention_install_running = self.__is_univention_install_running()
 
 			list_settings_component_txt = umcd.List()
@@ -984,10 +1114,20 @@ class handler(umch.simpleHandler):
 					req.set_flag('web:startup_format', _('Modify component %s' )  % description )
 					btnlist = [ umcd.Button(_('Configure'), 'update/gear', actions=[umcd.Action(req)]) ]
 					txt = umcd.Text(_('This component is disabled.'))
-					if component.get('activated', '').lower() in ['true', 'yes', '1', 'enabled']:
-						txt = umcd.Text(_('This component is enabled.'))
+					if component.get('activated', '').lower() in ['yes', 'true', '1', 'enable', 'enabled', 'on']:
+
+						status = self.updater.get_current_component_status( component_name )
+						if status == self.updater.COMPONENT_AVAILABLE:
+							txt = umcd.Text(_('This component is enabled.'))
+						elif status == self.updater.COMPONENT_PERMISSION_DENIED:
+							txt = umcd.Text( _('The access to this component has been denied.') )
+						elif status == self.updater.COMPONENT_NOT_FOUND:
+							txt = umcd.Text( _('The component has not been found on server.') )
+						elif status == self.updater.COMPONENT_UNKNOWN:
+							txt = umcd.Text( _('The status of this component is unknown.') )
+
 						# check if default package are installed
-						if self.updater.is_component_defaultpackage_installed( component_name ) == False:
+						if status == self.updater.COMPONENT_AVAILABLE and self.updater.is_component_defaultpackage_installed( component_name ) == False:
 							# create install request
 							req_inst = umcp.Command(args=['update/install_component_defaultpackages'], opts = {'component': component_name})
 							# create log_view request
@@ -1021,6 +1161,9 @@ class handler(umch.simpleHandler):
 					list_settings_component.add_row([ btn_add_component ])
 
 			res.dialog = [ umcd.Frame([list_settings_release], _('Repository settings')), umcd.Frame([list_settings_component_txt, list_settings_component], _('Component settings')) ]
+			if frame_info:
+				res.dialog.insert(0, frame_info)
+
 		self.revamped(object.id(), res)
 
 
@@ -1036,11 +1179,12 @@ class handler(umch.simpleHandler):
 		username = ''
 		password = ''
 		parts = [ 'maintained' ]
+		version = ''
 
 		# build the default values
 		if res.options.has_key('component'):
 			activated_component = res.options['component'].get('activated', '')
-			if activated_component.lower() in ['true', 'yes', '1', 'enabled']:
+			if activated_component.lower() in ['yes', 'true', '1', 'enable', 'enabled', 'on']:
 				activated = True
 			else:
 				activated = False
@@ -1052,6 +1196,7 @@ class handler(umch.simpleHandler):
 			username = res.options['component'].get('username', '')
 			password = res.options['component'].get('password', '')
 			parts = re.split('[, ]', res.options['component'].get('parts', 'maintained'))
+			version = res.options['component'].get('version', '')
 
 		if not server:
 			server=self.updater.repository_server
@@ -1073,18 +1218,20 @@ class handler(umch.simpleHandler):
 		inpt_password = umcd.make(self['update/components_settings']['component_password'], default = password)
 		inpt_maintained = umcd.make( self[ 'update/components_settings' ][ 'use_maintained' ], default = 'maintained' in parts )
 		inpt_unmaintained = umcd.make( self[ 'update/components_settings' ][ 'use_unmaintained' ], default = 'unmaintained' in parts )
+		inpt_version = umcd.make(self['update/components_settings']['component_version'], default = version)
 
 		list_release.add_row([inpt_activated])
 		list_release.add_row([inpt_name, inpt_description])
 		list_release.add_row([inpt_server, inpt_prefix])
 		list_release.add_row([inpt_username, inpt_password])
-		list_release.add_row([inpt_maintained, inpt_unmaintained])
+		list_release.add_row([inpt_version, inpt_maintained])
+		list_release.add_row([umcd.Fill(1), inpt_unmaintained])
 
 		req = umcp.Command(args = ['update/components_settings'])
 		cancel = umcd.CancelButton()
 		list_release.add_row([cancel, umcd.SetButton(umcd.Action(req, [inpt_activated.id(), inpt_name.id(), inpt_description.id(), inpt_server.id(),
 																	   inpt_prefix.id(), inpt_username.id(), inpt_password.id(), inpt_maintained.id(),
-																	   inpt_unmaintained.id()]))])
+																	   inpt_unmaintained.id(), inpt_version.id()]))])
 
 
 		res.dialog = [frame_release]
@@ -1135,8 +1282,10 @@ class handler(umch.simpleHandler):
 
 		result = umcd.List()
 
-		if res.options['type'] in ('security', 'release'):
-			if res.options['type'] == 'security':
+		if res.options['type'] in ('security', 'release', 'easyupdate'):
+			if res.options['type'] == 'easyupdate':
+				command = 'update/install_release_updates_easy'
+			elif res.options['type'] == 'security':
 				command = 'update/install_security_updates'
 			else:
 				command = 'update/install_release_updates'
@@ -1178,6 +1327,7 @@ fi
 dpkg-statoverride --add root root 0644 /usr/sbin/univention-management-console-server
 dpkg-statoverride --add root root 0644 /usr/sbin/apache2
 chmod -x /usr/sbin/univention-management-console-server /usr/sbin/apache2
+export update_warning_releasenotes_internal=no
 %(command)s < /dev/null
 %(reboot)s
 dpkg-statoverride --remove /usr/sbin/univention-management-console-server
@@ -1228,6 +1378,10 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 		return self.__is_process_running( 'univention-updater-umc-univention-install' )
 
 
+	def __is_univention_upgrade_running(self):
+		return self.__is_process_running( CMD_UNIVENTION_UPGRADE )
+
+
 	def __remove_status_messages(self, text):
 		result = []
 		for line in text.split('\n'):
@@ -1238,6 +1392,8 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 
 
 	def __get_warning_install_component(self):
+		doc_url = self.updater.configRegistry.get( 'update/doc/releasenotes/url','http://download.univention.de')
+		doc_descr = self.updater.configRegistry.get( 'update/doc/releasenotes/description','download.univention.de')
 		return _( '''<h2>Attention!</h2><br><p>
 		Installing new packages is a significant change to this system and could have impact<br>
 		to other systems. In normal case, trouble-free use by users is not possible during the installation,<br>
@@ -1248,11 +1404,16 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 		connection. Nonetheless, the installation proceeds and the installation can be monitored from a<br>
 		new UMC session. Logfiles can be found in the directory /var/log/univention/.<br>
 		<br>
+		Before installing components please check release notes and changelogs carefully.<br>
+		These documents can be found at <a href="%(url)s">%(description)s.</a><br>
+		<br>
 		Do you really wish to proceed?
-		</p>''' )
+		</p>''') % { 'url': doc_url, 'description': doc_descr }
 
 
 	def __get_update_warning(self):
+		doc_url = self.updater.configRegistry.get( 'update/doc/releasenotes/url','http://download.univention.de')
+		doc_descr = self.updater.configRegistry.get( 'update/doc/releasenotes/description','download.univention.de')
 		html = '<h2>' + _('Attention!') + '</h2>' + '<body>'
 		html += _('Installing an system update is a significant change to this system and could have impact<br>')
 		html += _('to other systems. In normal case, trouble-free use by users is not possible during the update,<br>')
@@ -1264,8 +1425,8 @@ chmod +x /usr/sbin/univention-management-console-server /usr/sbin/apache2
 		html += _('connection. Nonetheless, the update proceeds and the update can be monitored from a<br>')
 		html += _('new UMC session. Logfiles can be found in the directory /var/log/univention/.')
 		html += '<br><br>'
-		html += _('Please also consider the release notes, changelogs and references posted in the<br>')
-		html += _('<a href=http://forum.univention.de>Univention Forum</a>.')
+		html += _('Before installing updates please check the release notes and changelogs carefully.<br>')
+		html += _('These documents can be found at <a href="%(url)s">%(description)s</a>.') % { 'url': doc_url, 'description': doc_descr }
 		html += '<br><br>'
 		html += _('Do you really wish to proceed?')
 		html += '<br><br>'

@@ -41,15 +41,16 @@ import time
 import getopt
 import subprocess
 import traceback
-import socket
 import datetime
 import itertools
 
+import univention.debug as ud
 import univention.config_registry as ucr
 
-from univention.updater import UniventionUpdater, UCS_Version
+from univention.updater import UniventionUpdater, UCS_Version, PreconditionError, ConfigurationError
 from univention.updater.tools import LocalUpdater
 from univention.updater.commands import cmd_update, cmd_dist_upgrade
+import univention.updater.tools
 
 # TODO:
 #   * check the local repository path /var/lib/univention-reposiotry
@@ -188,9 +189,10 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 
 		if not updater:
 			updater = LocalUpdater()
-		if updater.server.access('')[1] is not None:
+		try:
+			assert updater.server.access('')
 			nextversion = updater.release_update_available()
-		else:
+		except DownloadError:
 			raise UpdateError('A local repository was not found.\n' +
 					'       Please check the UCR variable repository/mirror/basepath\n' +
 					'       or try to install via "univention-updater net"', errorsource='SETTINGS')
@@ -246,20 +248,10 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
 						raise UpdateError('The required component %s is missing for version %s.' % (component, mm_version), errorsource='PREPARATION')
 
 	elif mode == 'net':
-		try:
-			dprint('Checking network repository')
-			if not updater:
-				updater = UniventionUpdater()
-			nextversion = updater.release_update_available()
-		except socket.gaierror, msg:
-			log(traceback.format_exc ())
-
-			code, message = msg
-
-			if code == socket.EAI_NONAME:
-				raise UpdateError('The name %s is not known.\n       Please check your network settings or set the UCR variable repository/online/server to a different value.' % (updater.repository_server), errorsource='SETTINGS')
-			else:
-				raise UpdateError('An error occured during the connection to %s.\n       Please check your network settings.' % updater.repository_server, errorsource='SETTINGS')
+		dprint('Checking network repository')
+		if not updater:
+			updater = UniventionUpdater()
+		nextversion = updater.release_update_available()
 
 	if nextversion in (None,'none'):
 		return None
@@ -286,15 +278,17 @@ def call_local(updateto=None, clean=None):
 	sys.exit(1)
 
 def main():
+	# PATH does not contain */sbin when called from cron
 	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
 
 	cdrom_mount_point='/cdrom'
 	iso=None
 	global nostdout
 
-	fp_debug=open('/var/log/univention/updater.log', 'a+')
+	ud.init(LOGNAME, ud.NO_FLUSH, ud.NO_FUNCTION)
+	fp_debug=open(LOGNAME, 'a+')
 	stdout_orig=sys.stdout
-	sys.stdout=fp_debug
+	#sys.stdout=fp_debug
 
 	log('**** Starting univention-updater with parameter=%s' % sys.argv)
 
@@ -320,9 +314,10 @@ def main():
 	clean  = True
 	ignoressh = False
 	ignoreterm = False
+	ignorereleasenotes = False
 	nostdout = False
 
-	longopts=['src=','device=', 'cdrom=', 'iso=', 'updateto=', 'reboot=', 'no-clean', 'check', 'ignoressh', 'ignoreterm', 'silent']
+	longopts=['src=','device=', 'cdrom=', 'iso=', 'updateto=', 'reboot=', 'no-clean', 'check', 'ignoressh', 'ignoreterm', 'ignore-releasenotes', 'silent']
 	try:
 		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
 	except getopt.error, msg:
@@ -344,6 +339,7 @@ def main():
 		elif opt == "--updateto":
 			try:
 				updateto = UCS_Version(val)
+				updateto_args = ['--updateto', val]
 			except ValueError, e:
 				dprint("%s" % e)
 				sys.exit(2)
@@ -368,6 +364,8 @@ def main():
 			else:
 				dprint('System is up to date') # Sync with /etc/cron.d/univention-maintenance
 			sys.exit(0)
+		elif opt == '--ignore-releasenotes':
+			ignorereleasenotes = True
 		elif opt == '--ignoressh':
 			ignoressh = True
 		elif opt == '--ignoreterm':
@@ -390,13 +388,6 @@ def main():
 	nextversion=None
 
 	update_status( current_version=lastversion, type=command.upper(), status='RUNNING' )
-
-	if updateto:
-		if updateto <= UCS_Version(lastversion):
-			dprint('System is up to date (UCS %s)' % lastversion)
-			fp_debug.close()
-			raise UpToDateNoError(reboot)
-		updateto_args = [ '--updateto', '%s' % updateto ]
 
 	log('Version=%s' % vv)
 	log('Patchlevel=%s' % vp)
@@ -440,11 +431,17 @@ def main():
 		dprint('System is up to date (UCS %s)' % lastversion)
 		fp_debug.close()
 		raise UpToDateNoError(reboot)
+	new_version = UCS_Version(nextversion)
+	if updateto and new_version > updateto:
+		dprint('Update hold at %s, next %s is after %s' % (lastversion, new_version, updateto))
+		fp_debug.close()
+		raise UpToDateNoError(reboot)
 
 	dprint('Update to = %s' % nextversion)
 	update_status(next_version=nextversion)
-	new_version = UCS_Version(nextversion)
 
+	if ignorereleasenotes:
+		os.putenv('update_warning_releasenotes_internal', 'no')
 	if ignoressh:
 		os.putenv('update%d%d_ignoressh' % (new_version.major, new_version.minor, ), 'yes')
 	if ignoreterm:
@@ -477,17 +474,18 @@ def main():
 
 	rel = updater._iterate_version_repositories(new_version, new_version, ('maintained',), ('all',))
 
-	components = filter(lambda c: 'current' in baseConfig.get('repository/online/component/%s/version' % c, '').split(','), updater.get_components())
+	components = updater.get_components()
+	#components = filter(lambda c: 'current' in baseConfig.get('repository/online/component/%s/version' % c, '').split(','), components)
 	com = updater._iterate_component_repositories(components, new_version, new_version, ('all',))
 
 	all = itertools.chain(rel, com)
 	scripts = updater.get_sh_files(all)
-	for part, phase in updater.call_sh_files(scripts, LOGNAME, str(new_version)):
-		if (part, phase) == ('update', 'pre'):
+	for phase, order in updater.call_sh_files(scripts, LOGNAME, str(new_version)):
+		if (phase, order) == ('update', 'pre'):
 			log('**** Downloading scripts at %s' % datetime.datetime.now().ctime())
-		elif (part, phase) == ('preup', 'pre'):
+		elif (phase, order) == ('preup', 'pre'):
 			log('**** Starting actual update at %s' % datetime.datetime.now().ctime())
-		elif (part, phase) == ('update', 'main'):
+		elif (phase, order) == ('update', 'main'):
 			count = 300
 			while os.path.exists('/var/run/apt-get.lock') and count > 0:
 				time.sleep(1)
@@ -527,6 +525,20 @@ def main():
 	update_status( status='DONE' )
 	os.execv(sys.argv[0], sys.argv)
 
+def reenable_apache2_and_umc():
+	'''
+		executable flags have been removed at apache2 and umc-server during update
+		to prevent restart of those services. This method reenables these services.
+	'''
+	devnull = open(os.path.devnull, 'w' )
+	for prog in ( 'apache2', 'univention-management-console-server' ):
+		filename = os.path.join( '/usr/sbin/', prog )
+		if os.path.isfile( filename ):
+			os.chmod( filename, 0755 )
+			subprocess.call( ( 'dpkg-statoverride', '--remove', filename ), stdout = devnull, stderr = devnull )
+	devnull.close()
+
+
 if __name__ == '__main__':
 	if '-h' in sys.argv or '-?' in sys.argv or '--help' in sys.argv:
 		usage()
@@ -534,9 +546,37 @@ if __name__ == '__main__':
 
 	fd_log = open(LOGNAME, 'a+')
 	try:
+		lock = univention.updater.tools.updater_lock_acquire()
+	except univention.updater.tools.LockingError, e:
+		print >>sys.stderr, e
+		sys.exit(5)
+	try:
 		try:
-			main()
-			update_ucr_updatestatus()
+			try:
+				main()
+				update_ucr_updatestatus()
+			except ConfigurationError, e:
+				msg = 'Update aborted due to configuration error: %s' % e
+				raise UpdateError(msg, errorsource='SETTINGS')
+			except PreconditionError, (phase, order, component, script):
+				if phase == 'preup':
+					phase = 'pre-update'
+					errorsource = 'PREUP'
+				elif phase == 'postup':
+					phase = 'post-update'
+					errorsource = 'POSTUP'
+				else:
+					errorsource = 'UPDATE'
+
+				if order == 'main':
+					order = 'release %s' % component
+				elif order == 'pre':
+					order = 'component %s before calling release script' % component
+				elif order == 'post':
+					order = 'component %s after calling release script' % component
+
+				msg = 'Update aborted by %s script of %s' % (phase, order)
+				raise UpdateError(msg, errorsource=errorsource)
 		except UpdateError, msg:
 			if msg.errorsource:
 				update_status( status='FAILED', errorsource=msg.errorsource )
@@ -545,15 +585,12 @@ if __name__ == '__main__':
 			dprint("Error: %s" % msg)
 			print >>sys.stderr, 'Error: Please check "%s" for details.' % LOGNAME
 			subprocess.call(['touch', failure])
-			# set executable flags for apache and UMC
-			devnull = open(os.path.devnull, 'w' )
-			for prog in ( 'apache2', 'univention-management-console-server' ):
-				filename = os.path.join( '/usr/sbin/', prog )
-				if os.path.isfile( filename ):
-					os.chmod( filename, 0755 )
-					subprocess.call( ( 'dpkg-statoverride', '--remove', filename ), stdout = devnull, stderr = devnull )
-			remove_temporary_sources_list()
-			devnull.close()
+			reenable_apache2_and_umc()
+			sys.exit(1)
+		except KeyboardInterrupt:
+			update_status( status='FAILED' )
+			dprint("\nUpdate aborted by user (ctrl-c)\n")
+			reenable_apache2_and_umc()
 			sys.exit(1)
 		except UpToDateNoError, error:
 			update_ucr_updatestatus()
@@ -567,3 +604,9 @@ if __name__ == '__main__':
 			sys.exit(0)
 	finally:
 		fd_log.close()
+		if not univention.updater.tools.updater_lock_release(lock):
+			print 'WARNING: updater-lock already released!'
+		try:
+			remove_temporary_sources_list()
+		except:
+			print >>sys.stderr, "Failed to remove %s." % TMPSOURCE

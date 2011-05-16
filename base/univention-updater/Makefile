@@ -1,6 +1,9 @@
-MODULES=$(shell find modules/univention -name '*.py')
-MO_FILES_BACKEND=$(shell find modules/univention/management -name '*.po' | sed 's/\.po/\.mo/g')
-IMAGES=$(shell find images -name '*.gif' -o -name '*.png')
+#!/usr/bin/make -f
+
+MODULES := $(shell find modules/univention -name '*.py')
+PO_FILES_BACKEND := $(shell find modules/univention/management -name '*.po')
+MO_FILES_BACKEND := $(PO_FILES_BACKEND:%.po=%.mo)
+IMAGES := $(shell find images -name '*.gif' -o -name '*.png')
 
 MODULENAME=$(PACKAGE:univention-management-console-%=%)
 

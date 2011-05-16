@@ -8,10 +8,10 @@ UPDATE_NEXT_VERSION="$2"
 echo "Running preup.sh script" >> "$UPDATER_LOG"
 date >>"$UPDATER_LOG" 2>&1
 
-eval $(univention-config-registry shell) >>"$UPDATER_LOG" 2>&1
+eval "$(univention-config-registry shell)" >>"$UPDATER_LOG" 2>&1
 
 # Bug #16454: Workaround to remove source.list on failed upgrades
-function cleanup() {
+cleanup () {
 	# remove statoverride for UMC and apache in case of error during preup script
 	if [ -e /usr/sbin/univention-management-console-server ]; then
 		dpkg-statoverride --remove /usr/sbin/univention-management-console-server >/dev/null 2>&1
@@ -24,73 +24,74 @@ function cleanup() {
 }
 trap cleanup EXIT
 
-## # Bug #19081:
-## # check if scope is active and available for 2.4-0
-## # this test can be removed after 2.4-0
-## updateCheck=$(mktemp)
-## echo '
-## #!/usr/bin/python2.4
-## 
-## from univention.updater import UniventionUpdater, UCS_Version
-## from univention.updater.tools import LocalUpdater
-## import univention.config_registry
-## import sys
-## 
-## configRegistry = univention.config_registry.ConfigRegistry()
-## configRegistry.load()
-## yes = ["enabled", "true", "1", "yes", "enable"]
-## scopes = ["ucd"]
-## 
-## for scope in scopes:
-## 
-## 	if configRegistry.get("repository/online/component/%s" % scope, "").lower() in yes and configRegistry.get("update/check/component/%s" % scope, "yes").lower() in yes:
-## 
-## 		available = []
-## 		updater = UniventionUpdater()
-## 		available += updater.get_component_repositories(scope, ["2.4"])
-## 		updater = LocalUpdater()
-## 		available += updater.get_component_repositories(scope, ["2.4"])
-## 		if not available:
-## 			print scope
-## 			sys.exit(1)
-## sys.exit(0)
-## ' >> $updateCheck
-## 
-## doUpdateCheck=$(ucr get update/check/component)
-## if [ -n "$doUpdateCheck" -a "$doUpdateCheck" = "no" ]; then
-## 	continue
-## else
-## 	scope=$(python2.4 $updateCheck)
-## 	if [ ! $? -eq 0 ]; then
-## 		scope=$(echo $scope | sed 's|# The site.*was not found ||')
-## 		echo "An update to UCS 2.4 without the component \"$scope\" is
-## not possible because the component \"$scope\" is required."
-## 		rm -f $updateCheck
-## 		exit 1
-## 	fi
-## fi
-## rm -f $updateCheck
+# Bug #21993: Check for suspend KVM instances
+if [ yes != "$update24_ignorekvm" ] && which kvm >/dev/null && which virsh >/dev/null
+then
+	running= suspended= virtio=
+	for vm in $(LC_ALL=C virsh -c qemu:///system list --all | sed -e '1,2d' -nre 's/^ *[-0-9]+ +(.+) (no state|running|idle|paused|in shutdown|shut off|crashed)$/\1/p')
+	do
+		if [ -S "/var/lib/libvirt/qemu/$vm.monitor" ]
+		then
+			running="${running:+$running }'$vm'"
+		elif [ -s "/var/lib/libvirt/qemu/save/$vm.save" ]
+		then
+			suspended="${suspended:+$suspended }'$vm'"
+		fi
+		if grep -q "<target.* bus='virtio'.*/>\|<model.* type='virtio'.*/>" "/etc/libvirt/qemu/$vm.xml"
+		then
+			virtio="${virtio:+$virtio }'$vm'"
+		fi
+	done
+	if [ -n "$running" ] || [ -n "$suspended" ] || [ -n "$virtio" ]
+	then
+		echo "\
+WARNING: Qemu-kvm will be updated to version 0.14, which is incompatible with
+previous versions. Virtual machines running Windows and using VirtIO must be
+updated to use at least version 1.1.16 of the VirtIO driver for Windows.
 
-## # check for running openoffice.org instances
-## check_ooo() {
-## 	PID=`pgrep soffice.bin | head -n 1`
-## 	if [ -n "$PID" ]; then
-## 		echo "OpenOffice.org running!"
-## 		echo ""
-## 		echo -n "OpenOffice.org is running right now with pid "
-## 		echo -n "$PID."
-## 		echo " This can cause problems"
-## 		echo "with (de-)registration of components and extensions"
-## 		echo "Thus the openoffice.org packages will fail to install"
-## 		echo "You should close all running instances of OpenOffice.org (including"
-## 		echo "any currently running Quickstarter) before starting with the update."
-## 		exit 1
-## 	fi
-## }
-## 
-## if [ "$update24_ignoreooo" != "yes" ]; then
-## 	check_ooo
-## fi
+All virtual machines should be turned off before updating. Please use UVMM or
+virsh to turn off all running and suspended virtual machines.
+
+This check can be disabled by setting the Univention Configuration Registry
+variable \"update24/ignorekvm\" to \"yes\"."
+		if [ -n "$virtio" ]
+		then
+			echo "VMs using virtio: $virtio" | fmt
+		fi
+		if [ -n "$running" ]
+		then
+			echo "Running VMs: $running" | fmt
+		fi
+		if [ -n "$suspended" ]
+		then
+			echo "Suspended VMs: $suspended" | fmt
+		fi
+	fi
+	if [ -n "$running" ] || [ -n "$suspended" ]
+	then
+		exit 1
+	fi
+fi
+
+###########################################################################
+# RELEASE NOTES SECTION (Bug #19584)
+# Please update URL to release notes and changelog on every release update
+###########################################################################
+echo
+echo "HINT:"
+echo "Please check the following documents carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
+#echo "Release Notes: http://download.univention.de/doc/release-notes-2.4.pdf"
+echo "Changelog: http://download.univention.de/doc/changelog-2.4-2.pdf"
+echo
+echo "Please also consider documents of following release updates and"
+echo "3rd party components."
+echo
+if [ ! "$update_warning_releasenotes" = "no" -a ! "$update_warning_releasenotes" = "false" -a ! "$update_warning_releasenotes_internal" = "no" ] ; then
+	echo "Update will wait here for 60 seconds..."
+	echo "Press CTRL-c to abort or press ENTER to continue"
+	# BUG: 'read -t' is a bash'ism, but she-bang is /bin/sh, not /bin/bash!
+	read -t 60 somevar
+fi
 
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
@@ -154,9 +155,9 @@ mv /boot/*.bak /var/backups/univention-initrd.bak/ &>/dev/null
 if [ ! "$update24_checkfilesystems" = "no" ]
 then
 
-	check_space "/var/cache/apt/archives" "1250000" "1,5 GB"
-	check_space "/boot" "40000" "40 MB"
-	check_space "/" "2500000" "1,5 GB"
+	check_space "/var/cache/apt/archives" "700000" "0,7 GB"
+	check_space "/boot" "55000" "55 MB"
+	check_space "/" "1500000" "1,5 GB"
 
 else
     echo "WARNING: skipped disk-usage-test as requested"

@@ -124,6 +124,13 @@ Description[en]=HTTP methode for testing the availability of updates [HEAD]
 Type=str
 Categories=service-software-management
 
+[repository/online/architectures]
+Description[de]=Liste der einzubindenden Architekturen, durch Leerzeichen getrennt
+Description[en]=List of architectures to be used on local system, space separated
+Type=str
+Categories=service-software-management
+
+
 [repository/mirror]
 Description[de]=Aktiviere/Deaktiviere das Spiegeln der Pakete in das lokale Repository [yes]
 Description[en]=Enable/Disable mirroring packages into the local repository [yes]
@@ -229,5 +236,29 @@ Categories=service-software-management
 [update/available]
 Description[de]=Diese Variable wird automatisch gesetzt und gibt an, ob Updates verfügbar sind (boolean)
 Description[en]=This variable is set automatically and indicates if updates are available (boolean)
+Type=bool
+Categories=service-software-management
+
+[update/umc/updateprocess/easy]
+Description[de]=Einfaches Update-Verfahren im UMC-Modul "Online Updates" aktivieren (boolean)
+Description[en]=Activate easy update procedure in UMC module "Online Updates" (boolean)
+Type=bool
+Categories=service-software-management
+
+[update/doc/releasenotes/url]
+Description[de]=URL zu den offiziellen Release Notes
+Description[en]=URL refers to official release notes
+Type=string
+Categories=service-software-management
+
+[update/doc/releasenotes/description]
+Description[de]=Beschreibung zur Release-Notes-URL
+Description[en]=Description for release notes URL
+Type=string
+Categories=service-software-management
+
+[update/warning/releasenotes]
+Description[de]=Aktiviere/deaktiviere Hinweis auf Release Notes vor Updates (boolean)
+Description[en]=Enable/disable release notes hint before starting update (boolean)
 Type=bool
 Categories=service-software-management
