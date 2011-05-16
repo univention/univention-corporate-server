@@ -1,41 +1,37 @@
-#!/bin/sh
+#!/bin/bash
 #
-RETVAL=0
+declare -i RETVAL=0
 
 if [ "$1" = "--update" ] ; then
 	update="1"
 fi
 
 TMPFN=$(mktemp)
+trap "rm -f '$TMPFN'" EXIT
 
 for dir in testframework/* ; do
   if [ -d "$dir" ] ; then
-	  echo "---------------------------------------------------------------"
-	  echo "Testing $dir"
-	  echo "---------------------------------------------------------------"
+	  echo -n "Testing $dir "
 
-	  DIRNAME=$(basename $dir)
+	  DIRNAME=$(basename "$dir")
 	  MODULE="${DIRNAME:0:4}"
 
-	  ./ucslint.py -p "ucslint" -m $MODULE "${dir}" > $TMPFN
-	  ./ucslint-sort-output.py $TMPFN > ${dir}.test
+	  PYTHONPATH=. \
+	  bin/ucslint -p "ucslint" -m "$MODULE" "${dir}" >"$TMPFN" 2>/dev/null
+	  ./ucslint-sort-output.py "$TMPFN" >"${dir}.test"
 
-	  diff "${dir}.correct" "${dir}.test" > /dev/null
-	  RET="$?"
-	  echo -n "Testresult: "
-	  if [ ! "$RET" = "0" ] ; then
-          RETVAL=1
-		  echo "FAILED"
-	  else
+	  if diff "${dir}.correct" "${dir}.test" >/dev/null 2>&1
+	  then
 		  echo "OK"
+	  else
+		  echo "FAILED"
+		  RETVAL+=1
       fi
 
 	  if [ -n "$update" ] ; then
 		  echo "USING TESTRESULT AS NEW TEST TEMPLATE"
 		  cp "${dir}.test" "${dir}.correct"
 	  fi
-
-	  echo
   fi
 done
 
