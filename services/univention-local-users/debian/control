@@ -1,8 +1,9 @@
 Source: univention-local-users
 Section: univention
 Maintainer: Univention GmbH <packages@univention.de>
-Standards-Version: 3.5.5
-Build-Depends: debhelper
+Standards-Version: 3.8.2
+Priority: optional
+Build-Depends: debhelper, ucslint
 
 Package: univention-local-users
 Architecture: all

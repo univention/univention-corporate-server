@@ -3,7 +3,7 @@
 # Univention Local Users
 #  postinst script for the debian package
 #
-# Copyright 2003-2010 Univention GmbH
+# Copyright 2003-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,8 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-univention-baseconfig set local-user-sync/group?'admin'
-univention-baseconfig set local-user-sync/passwd?true
+univention-config-registry set local-user-sync/group?'admin'
+univention-config-registry set local-user-sync/passwd?true
 
 #DEBHELPER#
 

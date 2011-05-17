@@ -1,5 +1,5 @@
 Die Gruppe der zu replizierenden Benutzer kann ueber 
-'univention-baseconfig set local-user-sync/group="gruppe"' gesetzt werden.
+'univention-config-registry set local-user-sync/group="gruppe"' gesetzt werden.
 Während der Installation wird diese Variable auf den Wert admin gesetzt.
 Wird ein Benutzer aufgenommen, so wird ein lokales Konto erstellt; wird einer
 entfernt, so wird auch das lokale Konto entfernt.
