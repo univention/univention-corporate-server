@@ -1,3 +1,10 @@
+univention-directory-listener (6.0.1-1) unstable; urgency=low
+
+  * Added copyright block to conffiles/etc/runit/univention-directory-
+    listener/run (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 May 2011 19:45:59 +0200
+
 univention-directory-listener (6.0.0-1) unstable; urgency=low
 
   * Package cleanup for UCS 3.0 (Bug #22431)
