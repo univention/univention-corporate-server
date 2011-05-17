@@ -213,7 +213,7 @@ class access:
 	def __recode_entry(self, entry):
 		if isinstance(entry, tuple) and len(entry) == 3:
 			return ( entry[ 0 ], entry[ 1 ], self.__recode_attribute( entry[ 1 ], entry[ 2 ] ) )
-		elif isinstace(entry, tuple) and len(entry) == 2:
+		elif isinstance(entry, tuple) and len(entry) == 2:
 			return ( entry[ 0 ], self.__recode_attribute( entry[ 0 ], entry[ 1 ] ) )
 		elif isinstance( entry, (list, tuple)):
 			return map(self.__recode_entry, entry)
