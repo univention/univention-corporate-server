@@ -7,6 +7,8 @@
 # 
 #       /etc/univention/templates/files/etc/apache2/sites-available/default
 
+MaxClients @%@apache2/maxclients@%@
+
 ServerAdmin webmaster@@%@hostname@%@.@%@domainname@%@
 ServerSignature On
 

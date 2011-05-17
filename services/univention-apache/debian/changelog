@@ -1,3 +1,9 @@
+univention-apache (4.0.1-1) unstable; urgency=low
+
+  * add UCRV apache2/maxclients (Bug #18115)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 28 Feb 2011 16:31:36 +0100
+
 univention-apache (4.0.0-1) unstable; urgency=low
 
   * convert to GNU APGL V3 (Bug #17543)

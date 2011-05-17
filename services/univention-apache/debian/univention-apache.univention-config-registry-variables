@@ -39,3 +39,9 @@ Description[de]=Liste von Domainennamen, denen der Zugriff vom proxy Modul verwe
 Description[en]=List of domainnames that shall be denied access by the proxy module (space separated)
 Type=str
 Categories=service-apache
+
+[apache2/maxclients]
+Description[de]=Wie viele Verbindungen gleichzeitig verarbeitet werden
+Description[en]=Maximum number of connections that will be processed simultaneously
+Type=str
+Categories=service-apache
