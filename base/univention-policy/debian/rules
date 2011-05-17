@@ -3,7 +3,7 @@
 # Univention Policy
 #  rules file for the debian package
 #
-# Copyright 2003-2010 Univention GmbH
+# Copyright 2003-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,65 +30,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	aclocal-1.4
+%:
+	dh $@
+
+override_dh_auto_clean:
+	dh_auto_clean
+	$(RM) Makefile.in lib/Makefile.in include/Makefile.in include/univention/Makefile.in tools/Makefile.in
+	$(RM) configure
+	$(RM) aclocal.m4 config.* install-sh ltmain.sh missing mkinstalldirs depcomp
+
+override_dh_auto_configure:
+	libtoolize
+	aclocal
 	autoconf
-	automake-1.4 -a
-	./configure --prefix=/usr
-	touch configure-stamp
+	automake --add-missing
+	dh_auto_configure
 
-build: configure-stamp build-stamp
-build-stamp:
-	dh_testdir
-	make
-	touch build-stamp
-
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-	rm -f *~
-	test -f Makefile && make distclean || true
-	find -name Makefile.in -o -name Makefile | xargs rm -f
-	rm -f aclocal.m4 config.* install-sh ltmain.sh missing mkinstalldirs
-	dh_clean
-
-D=$(CURDIR)/debian/libunivention-policy
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	make install DESTDIR=`pwd`/debian/tmp
-	ln -fs univention_policy_result `pwd`/debian/tmp/usr/bin/univention-policy-result
-	install -m0644 include/univention/krb5.h debian/libunivention-policy-krb5-dev/usr/include/univention/
-
-binary-indep: build install
-
-binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_movefiles
-	dh_installdocs
-	dh_installexamples
-	dh_installmenu
-	dh_installcron
-	dh_installman
-	dh_installinfo
-	dh_installchangelogs
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+#override_dh_auto_test:
+#	ucslint # Bug (22498)

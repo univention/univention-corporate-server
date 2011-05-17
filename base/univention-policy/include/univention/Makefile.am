@@ -2,7 +2,7 @@
 # Univention Policy
 #  Makefile template for the debian package
 #
-# Copyright 2003-2010 Univention GmbH
+# Copyright 2003-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,4 +33,4 @@ AUTOMAKE_OPTIONS = foreign
 
 includedir = $(prefix)/include/univention
 
-include_HEADERS = policy.h ldap.h
+include_HEADERS = policy.h ldap.h krb5.h

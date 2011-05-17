@@ -1,3 +1,15 @@
+univention-policy (5.0.0-1) unstable; urgency=low
+
+  * bump version for UCS 3.0 (Bug #22160)
+  * Switch to automake-1.11.
+  * Switch to debhelper 7. 
+  * Switch to Python-2.6.
+  * Remove broken libunivention-policy-krb5-dev.
+  * Add manual page.
+  * Add linkting to liblber.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 17 May 2011 18:34:11 +0200
+
 univention-policy (4.0.2-1) unstable; urgency=low
 
   * fixed typo in univention-policy-result (Bug #11149)

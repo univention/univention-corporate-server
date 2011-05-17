@@ -2,7 +2,7 @@
  * Univention Policy
  *  C source of the univnetion policy libary
  *
- * Copyright 2003-2010 Univention GmbH
+ * Copyright 2003-2011 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include <univention/debug.h>
 #include <univention/policy.h>
@@ -41,7 +42,7 @@
 /*
  * returns parent dn of dn, NULL if dn doesn't have any parents
  */
-char* parent_dn(char* dn)
+static const char *parent_dn(const char *dn)
 {
 	char* pdn = strchr(dn, ',');
 	if (pdn != NULL)
@@ -133,17 +134,18 @@ void univention_policy_attribute_list_remove(struct univention_policy_attribute_
 	}
 }
 
-int in_string_array(char** object_classes, char* object_class)
+/** Check if object_classes contains object_class. */
+static bool in_string_array(char **object_classes, const char *object_class)
 {
 	int i;
 	if (object_classes != NULL)
 		for (i=0; object_classes[i] != NULL; i++)
 			if (strcmp(object_classes[i], object_class) == 0)
-				return 1;
-	return 0;
+				return true;
+	return false;
 }
 
-void print_string_array(char** object_classes)
+static void print_string_array(char **object_classes)
 {
 	int i;
 	for (i=0; object_classes[i] != NULL; i++)
@@ -201,7 +203,7 @@ void univention_policy_merge(LDAP* ld, char *dn, univention_policy_handle_t* han
 			struct univention_policy_list_s *policy = NULL;
 			char **fixed_attributes = NULL;
 			char **empty_attributes = NULL;
-			int apply=1;
+			bool apply = true;
 			int i;
 
 			if( ( l_dn=ldap_get_dn(ld, e) ) != NULL ) {
@@ -221,7 +223,7 @@ void univention_policy_merge(LDAP* ld, char *dn, univention_policy_handle_t* han
 						for (i=0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
 							if (!in_string_array(object_classes, vals[i]->bv_val)) {
 								univention_debug(UV_DEBUG_POLICY,UV_DEBUG_INFO,"objectclass %s is required\n",vals[i]->bv_val);
-								apply=0;
+								apply = false;
 								break;
 							}
 						}
@@ -229,7 +231,7 @@ void univention_policy_merge(LDAP* ld, char *dn, univention_policy_handle_t* han
 						for (i=0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
 							if (in_string_array(object_classes, vals[i]->bv_val)) {
 								univention_debug(UV_DEBUG_POLICY,UV_DEBUG_INFO,"objectclass %s is prohibited\n",vals[i]->bv_val);
-								apply=0;
+								apply = false;
 								break;
 							}
 						}
@@ -335,7 +337,7 @@ void univention_policy_merge(LDAP* ld, char *dn, univention_policy_handle_t* han
  */
 univention_policy_handle_t* univention_policy_open(LDAP* ld, char* base, char* dn)
 {
-	char* pdn;
+	const char* pdn;
 	int rc;
 	LDAPMessage *res;
 

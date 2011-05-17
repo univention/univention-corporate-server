@@ -2,7 +2,7 @@
  * Univention Policy
  *  C source of the univnetion policy libary
  *
- * Copyright 2003-2010 Univention GmbH
+ * Copyright 2003-2011 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -214,7 +214,7 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 	/* otherwise connect to host:port */
 	} else {
 		char uri[1024];
-		snprintf(uri,1024, "ldap://%s:%d", lp->host, lp->port);
+		snprintf(uri, sizeof(uri), "ldap://%s:%d", lp->host, lp->port);
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "connecting to ldap://%s:%d/", lp->host, lp->port);
 		if ((rv=ldap_initialize(&lp->ld, uri)) != LDAP_SUCCESS) {
 			ldap_unbind_ext(lp->ld, NULL, NULL);

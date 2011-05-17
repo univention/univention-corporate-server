@@ -2,7 +2,7 @@
 # Univention Policy
 #  configure template for the debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -44,6 +44,23 @@ AC_SUBST(LIB_AGE)
 AC_PROG_INSTALL
 AC_LANG_C
 AC_HEADER_STDC
-AC_CHECK_HEADERS(ldap.h)
+
+AC_CHECK_LIB(ldap, ldap_bind, [
+  AC_CHECK_HEADERS([ldap.h], [
+    LDAP_LIB=-lldap
+    AC_DEFINE([HAVE_LIBLDAP], [1], [libldap])
+    AC_DEFINE([HAVE_LDAP_H], [1])
+  ])
+])
+AC_SUBST(LDAP_LIB)
+
+AC_CHECK_LIB(lber, ber_free, [
+  AC_CHECK_HEADERS([lber.h], [
+    LBER_LIB=-llber
+    AC_DEFINE([HAVE_LIBLBER], [1], [liblber])
+    AC_DEFINE([HAVE_LBER_H], [1])
+  ])
+])
+AC_SUBST(LBER_LIB)
 
 AC_OUTPUT(Makefile include/univention/Makefile include/Makefile lib/Makefile tools/Makefile)
