@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 #
 # Univention Log Collector Server
 #   collects log file from other hosts
