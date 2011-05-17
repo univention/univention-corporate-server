@@ -3,7 +3,7 @@
 # Univention Log Collector Server
 #   collects log file from other hosts
 #
-# Copyright 2007-2010 Univention GmbH
+# Copyright 2007-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -35,7 +35,7 @@ import socket, fcntl, os, struct, cPickle, time
 
 # external packages
 from optparse import OptionParser
-import univention_baseconfig as ub
+import univention.config_registry as ub
 import inspect
 import notifier
 from OpenSSL import *

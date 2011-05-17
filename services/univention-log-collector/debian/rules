@@ -3,7 +3,7 @@
 # Univention Log Collector
 #  rules file for the debian package
 #
-# Copyright 2007-2010 Univention GmbH
+# Copyright 2007-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,59 +30,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-DS=$(CURDIR)/debian/univention-log-collector-server
-DC=$(CURDIR)/debian/univention-log-collector-client
+override_dh_auto_install:
+	univention-install-config-registry
+	dh_auto_install
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
+override_dh_auto_test:
+	ucslint
+	dh_auto_test
 
-	touch configure-stamp
+override_dh_auto_clean:
+	rm -f debian/univention-log-collector-client.conffiles debian/univention-log-collector-server.conffiles
+	dh_auto_clean
 
-
-build: build-stamp
-
-build-stamp: configure-stamp
-	dh_testdir
-
-	touch build-stamp
-
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-
-	dh_clean
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-	dh_installinit
-
-	cp log-collector-server.py $(DS)/usr/sbin/
-	cp log-collector-client.py $(DC)/usr/sbin/
-
-	univention-install-baseconfig
-
-
-# Build architecture-independent files here.
-binary-indep: build install
-
-# Build architecture-dependent files here.
-binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_installdocs
-	dh_installchangelogs
-	dh_strip
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+%:
+	dh $@
