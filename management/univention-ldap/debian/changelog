@@ -1,6 +1,13 @@
+univention-ldap (8.0.2-5) unstable; urgency=low
+
+  * add missing credentials to join script to make ucslint happy (Bug #21705)
+  * adjust formating of join script to improve readability
+
+ -- Arvid Requate <requate@univention.de>  Tue, 17 May 2011 09:57:39 +0200
+
 univention-ldap (8.0.2-4) unstable; urgency=low
 
-  * add copyright to init script to make ucs-test happy (Bug #21705)
+  * add copyright to init script to make ucslint happy (Bug #21705)
 
  -- Arvid Requate <requate@univention.de>  Mon, 16 May 2011 19:07:00 +0200
 
