@@ -3,7 +3,7 @@
 # Univention NFS HA
 #  postrm script for the debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+#DEBHELPER#
+
 # move lock-files back to /var/lib/nfs
 if [ -z "$2" -a -d /ha/nfs ]
 	then
@@ -41,3 +43,5 @@ if [ -z "$2" -a -d /ha/nfs ]
 		echo "WARNING: /var/lib/nfs seems to be no symbolic link to /ha/nfs, I don't touch it. You may need to move it by yourself."
 	fi
 fi
+
+exit 0

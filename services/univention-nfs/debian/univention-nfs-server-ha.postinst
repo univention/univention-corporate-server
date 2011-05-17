@@ -3,7 +3,7 @@
 # Univention NFS HA
 #  postinst script for the debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+#DEBHELPER#
+
 # move lock-files to the ha-directory
 if [ "$1" = "configure" -a -z "$2" ]
 	then
@@ -46,5 +48,7 @@ if [ "$1" = "configure" -a -z "$2" ]
 	fi
 fi
 
-univention-baseconfig commit /etc/init.d/nfs-kernel-server
-univention-baseconfig set nfsserver/ha/service?nfs-kernel-server
+univention-config-registry commit /etc/init.d/nfs-kernel-server
+univention-config-registry set nfsserver/ha/service?nfs-kernel-server
+
+exit 0

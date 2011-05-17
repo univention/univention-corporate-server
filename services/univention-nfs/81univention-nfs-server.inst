@@ -3,7 +3,7 @@
 # Univention NFS
 #  join script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,30 +32,24 @@
 
 VERSION=2
 
-if ! test -e "/usr/share/univention-join/.joined"; then
-	echo "The server has not joined yet"
-	exit 1
-fi
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
 
-touch /usr/lib/univention-install/.index.txt
+eval "$(univention-config-registry shell)"
 
-test -n "`grep "univention-nfs-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
-
-eval `univention-baseconfig shell`
-
-univention-admin policies/thinclient modify $@ --dn "cn=default-settings,cn=thinclient,cn=policies,$ldap_base" --set name=default-settings --append fileServer=$hostname.$domainname
+univention-directory-manager policies/thinclient modify "$@" --dn "cn=default-settings,cn=thinclient,cn=policies,$ldap_base" --set name=default-settings --append fileServer=$hostname.$domainname
 
 # make existing host share container a standard share container
 if ldapsearch -x -s base -b "cn=$hostname.$domainname,cn=shares,$ldap_base" > /dev/null; then
-	univention-admin container/cn modify $@ --dn "cn=$hostname.$domainname,cn=shares,$ldap_base" --set sharePath=1
+	univention-directory-manager container/cn modify "$@" --dn "cn=$hostname.$domainname,cn=shares,$ldap_base" --set sharePath=1
 fi
 
 if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
-	univention-admin container/cn create $@ --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname --set sharePath=1
-	univention-admin shares/share create $@ --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --set name=homes --set path=/home --set sambaName=homes --set host=$hostname.$domainname --set writeable=1 --set sambaWriteable=1
-	univention-baseconfig unset create/home/share
+	univention-directory-manager container/cn create "$@" --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname --set sharePath=1
+	univention-directory-manager shares/share create "$@" --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --set name=homes --set path=/home --set sambaName=homes --set host=$hostname.$domainname --set writeable=1 --set sambaWriteable=1
+	univention-config-registry unset create/home/share
 fi
 
-test -n "`grep "univention-nfs-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-nfs-server v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+joinscript_save_current_version
 
 exit 0
