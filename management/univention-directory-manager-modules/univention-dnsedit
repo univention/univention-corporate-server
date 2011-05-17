@@ -36,7 +36,7 @@ import os, sys, getopt, codecs, string, time
 import univention.debug
 univention.debug.init('/var/log/univention/admin-cmd.log', 1, 1)
 
-import univention_baseconfig
+import univention.config_registry
 import univention.admin.uldap
 import univention.admin.config
 import univention.admin.modules
@@ -110,19 +110,19 @@ if options['stoptls']:
 else:
 	start_tls=2
 
-baseConfig=univention_baseconfig.baseConfig()
-baseConfig.load()
+configRegistry=univention.config_registry.ConfigRegistry()
+configRegistry.load()
 
 timeout=time.time() + 120	# 2 minutes from now
 def bind():
 	if time.time() > timeout:
-		err = '%s: LDAP server %s unreachable, aborting' % (sys.argv[0], baseConfig['ldap/master'])
+		err = '%s: LDAP server %s unreachable, aborting' % (sys.argv[0], configRegistry['ldap/master'])
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, err)
 		print err
 		sys.exit(1)
 	if options['binddn'] and options['bindpwd']:
 		try:
-			lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseConfig['ldap/base'], binddn=options['binddn'], bindpw=options['bindpwd'], start_tls=start_tls)
+			lo=univention.admin.uldap.access(host=configRegistry['ldap/master'], base=configRegistry['ldap/base'], binddn=options['binddn'], bindpw=options['bindpwd'], start_tls=start_tls)
 			position=univention.admin.uldap.position(lo.base)
 			return lo, position
 		except univention.admin.uexceptions.authFail, e:
@@ -130,14 +130,14 @@ def bind():
 			print 'authentication error: %s' % str(e)
 			sys.exit(1)
 		except univention.admin.uexceptions.ldapError, e:
-			msg = '%s: timeout while trying to contact LDAP server %s' % (sys.argv[0], baseConfig['ldap/master'])
+			msg = '%s: timeout while trying to contact LDAP server %s' % (sys.argv[0], configRegistry['ldap/master'])
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, msg)
 			print msg
 			time.sleep(10)
 			lo, position = bind()
 			return lo, position
 		except univention.admin.uldap.ldap.LDAPError, e:
-			msg = '%s: timeout while trying to contact LDAP server %s' % (sys.argv[0], baseConfig['ldap/master'])
+			msg = '%s: timeout while trying to contact LDAP server %s' % (sys.argv[0], configRegistry['ldap/master'])
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, msg)
 			print msg
 			time.sleep(10)
@@ -152,14 +152,14 @@ def bind():
 			print 'authentication error: %s' % str(e)
 			sys.exit(1)
 		except univention.admin.uexceptions.ldapError, e:
-			msg = '%s: timeout while trying to contact LDAP server %s' % (sys.argv[0], baseConfig['ldap/master'])
+			msg = '%s: timeout while trying to contact LDAP server %s' % (sys.argv[0], configRegistry['ldap/master'])
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, msg)
 			print msg
 			time.sleep(10)
 			lo, position = bind()
 			return lo, position
 		except univention.admin.uldap.ldap.LDAPError, e:
-			msg = '%s: timeout while trying to contact LDAP server %s' % (sys.argv[0], baseConfig['ldap/master'])
+			msg = '%s: timeout while trying to contact LDAP server %s' % (sys.argv[0], configRegistry['ldap/master'])
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, msg)
 			print msg
 			time.sleep(10)

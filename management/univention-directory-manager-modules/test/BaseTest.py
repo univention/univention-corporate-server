@@ -36,7 +36,7 @@ from unittest import TestCase
 import os, random, string
 
 
-import univention_baseconfig
+import univention.config_registry
 import univention.admin.uexceptions as uex
 import univention.admin.config	    as uconf
 import univention.admin.modules     as umod
@@ -133,8 +133,8 @@ class BaseCase(TestCase):
 			return None
 
 	def __initBaseConfig(self):
-		self.__baseConfig = univention_baseconfig.baseConfig()
-		self.__baseConfig.load()
+		self.__configRegistry = univention.config_registry.ConfigRegistry()
+		self.__configRegistry.load()
 
 	def __initConfig(self):
 		self.__config = uconf.config(host = self.bc('ldap/master'))
@@ -166,7 +166,7 @@ class BaseCase(TestCase):
 
 		Return "default" if not "key" in Baseconfig. [default: None]
 		'''
-		return self.__baseConfig.get(key, default)
+		return self.__configRegistry.get(key, default)
 
 	def random(self, digits = 4):
 		'''Return a string of "Digit" random digits. [default: 4]

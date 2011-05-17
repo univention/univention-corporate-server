@@ -34,8 +34,8 @@
 
 #DEBHELPER#
 
-univention-config-registry set "directory/manager/cmd/debug/level" "0" \
-					"directory/manager/cmd/timeout" "300"
+univention-config-registry set "directory/manager/cmd/debug/level"?"0" \
+					"directory/manager/cmd/timeout"?"300"
 
 create_logfile /var/log/univention/admin-cmd.log "root:adm" 640
 create_logfile /var/log/univention/directory-manager-cmd.log "root:adm" 640

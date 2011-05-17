@@ -36,7 +36,7 @@ import univention.debug
 import univention.admin.license
 import univention.admin.uexceptions as uexceptions
 import univention.admin.uldap
-import univention_baseconfig
+import univention.config_registry
 import univention.license
 
 License = univention.admin.license.License
@@ -176,10 +176,10 @@ def check_license(lo, dn, list_dns, expired):
 
 def main(argv):
 	options = parse_options(argv)
-	baseConfig = univention_baseconfig.baseConfig()
-	baseConfig.load()
-	baseDN = baseConfig['ldap/base']
-	master = baseConfig['ldap/master']
+	configRegistry = univention.config_registry.ConfigRegistry()
+	configRegistry.load()
+	baseDN = configRegistry['ldap/base']
+	master = configRegistry['ldap/master']
 	binddn = options.get('binddn', 'cn=admin,%s' % baseDN)
 	bindpw = options.get('bindpw', None)
 	if bindpw is None:

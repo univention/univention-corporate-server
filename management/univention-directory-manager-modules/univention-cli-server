@@ -35,7 +35,7 @@
 import SocketServer, socket, select
 import os, sys, types, string, time
 import traceback
-import univention_baseconfig, univention.debug
+import univention.config_registry, univention.debug
 import univention.admincli.adduser
 import univention.admincli.admin
 import univention.admincli.passwd
@@ -115,10 +115,10 @@ def main():
 			print 'E: Server already running [Pid: %s]' % pid
 			sys.exit(1)
 
-	baseConfig=univention_baseconfig.baseConfig()
-	baseConfig.load()
-	if baseConfig.has_key('directory/manager/cmd/debug/level'):
-		debug_level=baseConfig['directory/manager/cmd/debug/level']
+	configRegistry=univention.config_registry.ConfigRegistry()
+	configRegistry.load()
+	if configRegistry.has_key('directory/manager/cmd/debug/level'):
+		debug_level=configRegistry['directory/manager/cmd/debug/level']
 	else:
 		debug_level=1
 	univention.debug.set_level(univention.debug.ADMIN, int(debug_level))
@@ -130,8 +130,8 @@ def main():
 	except:	
 		print 'E: Socket directory exists (%s)' % socket_dir
 	
-	if baseConfig.has_key('directory/manager/cmd/timeout'):
-		timeout=baseConfig['directory/manager/cmd/timeout']
+	if configRegistry.has_key('directory/manager/cmd/timeout'):
+		timeout=configRegistry['directory/manager/cmd/timeout']
 		if int(timeout) > 2147483647:
 			timeout=2147483647
 	else:

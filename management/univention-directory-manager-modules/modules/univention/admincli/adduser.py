@@ -34,7 +34,7 @@ import os, sys, getopt, codecs, string, types
 import univention.debug
 import univention.misc
 
-import univention_baseconfig
+import univention.config_registry
 import univention.admin.uldap
 import univention.admin.config
 import univention.admin.modules
@@ -94,8 +94,8 @@ def get_user_object(user, position, lo, co):
 def doit(arglist):
 	univention.debug.init('/var/log/univention/admin-cmd.log', 1, 1)
 	out=[]
-	baseConfig=univention_baseconfig.baseConfig()
-	baseConfig.load()
+	configRegistry=univention.config_registry.ConfigRegistry()
+	configRegistry.load()
 	op='add'
 	scope='user'
 	cmd=os.path.basename(arglist[0])
@@ -152,20 +152,20 @@ def doit(arglist):
 			machine=args[0]
 			if machine[-1] == '$':
 				machine=machine[0:-1]
-			if baseConfig.has_key('samba/defaultcontainer/computer') and baseConfig['samba/defaultcontainer/computer']:
-				position.setDn(baseConfig['samba/defaultcontainer/computer'])
+			if configRegistry.has_key('samba/defaultcontainer/computer') and configRegistry['samba/defaultcontainer/computer']:
+				position.setDn(configRegistry['samba/defaultcontainer/computer'])
 			else:
 				position.setDn(univention.admin.config.getDefaultContainer(lo, 'computers/windows'))
 		elif scope == 'group':
 			group=args[0]
-			if baseConfig.has_key('samba/defaultcontainer/group') and baseConfig['samba/defaultcontainer/group']:
-				position.setDn(baseConfig['samba/defaultcontainer/group'])
+			if configRegistry.has_key('samba/defaultcontainer/group') and configRegistry['samba/defaultcontainer/group']:
+				position.setDn(configRegistry['samba/defaultcontainer/group'])
 			else:
 				position.setDn(univention.admin.config.getDefaultContainer(lo, 'groups/group'))
 		else:
 			user=args[0]
-			if baseConfig.has_key('samba/defaultcontainer/user') and baseConfig['samba/defaultcontainer/user']:
-				position.setDn(baseConfig['samba/defaultcontainer/user'])
+			if configRegistry.has_key('samba/defaultcontainer/user') and configRegistry['samba/defaultcontainer/user']:
+				position.setDn(configRegistry['samba/defaultcontainer/user'])
 			else:
 				position.setDn(univention.admin.config.getDefaultContainer(lo, 'users/user'))
 		action=op+scope
@@ -223,8 +223,8 @@ def doit(arglist):
 		
 	elif action == 'addusertogroup':
 		ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group='samba/addusertogroup/filter/group'
-		if baseConfig.has_key(ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group) and baseConfig[ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group]:
-			if group in baseConfig[ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group].split(','):
+		if configRegistry.has_key(ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group) and configRegistry[ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group]:
+			if group in configRegistry[ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group].split(','):
 				out.append(status('addusertogroup: filter protects group "%s"' % (codecs.utf_8_encode(group)[0])))
 				return out
 		out.append(status('Adding user %s to group %s' % (codecs.utf_8_encode(user)[0], codecs.utf_8_encode(group)[0])))

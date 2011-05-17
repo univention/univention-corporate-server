@@ -34,12 +34,12 @@
 import ldap, string, sys
 from optparse import OptionParser
 
-import univention_baseconfig
+import univention.config_registry
 
 import univention.debug as ud
 
-baseConfig = univention_baseconfig.baseConfig()
-baseConfig.load()
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
 
 parser = OptionParser( usage = "usage: %prog [options]" )
 parser.add_option( '-t', '--test', action = 'store_true',
@@ -54,7 +54,7 @@ parser.add_option( '-c', '--continue', action = 'store_true',
 ud.init( '/var/log/univention/sync-memberuid.log', 1, 0 )
 ud.set_level( ud.ADMIN, options.debug )
 
-baseDN = baseConfig[ 'ldap/base' ]
+baseDN = configRegistry[ 'ldap/base' ]
 
 lo=ldap.open( 'localhost', 389 )
 bindpw=open( '/etc/ldap.secret' ).read()

@@ -39,8 +39,10 @@ import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
-import univention_baseconfig
+import univention.config_registry
 import univention.admin.ipaddress
+
+univention.admin.modules.update()
 
 # update choices-lists which are defined in LDAP
 univention.admin.syntax.update_choices()
@@ -358,9 +360,8 @@ def list_available_modules(o=[]):
 
 	o.append("Available Modules are:")
 	avail_modules = []
-	for mod in sys.modules.keys():
-		if mod[:26] == "univention/admin/handlers/":
-			avail_modules.append(mod[26:])
+	for mod in univention.admin.modules.modules.keys():
+		avail_modules.append(mod)
 	avail_modules.sort()
 	for mod in avail_modules:
 		o.append("  %s"%mod)
@@ -473,18 +474,18 @@ def doit(arglist):
 	else:
 		out.append("WARNING: no logfile specified")
 
-	baseConfig=univention_baseconfig.baseConfig()
-	baseConfig.load()
+	configRegistry=univention.config_registry.ConfigRegistry()
+	configRegistry.load()
 
-	if baseConfig.has_key('ldap/master') and baseConfig['ldap/master']:
-		co=univention.admin.config.config(baseConfig['ldap/master'])
+	if configRegistry.has_key('ldap/master') and configRegistry['ldap/master']:
+		co=univention.admin.config.config(configRegistry['ldap/master'])
 	else:
 		co=univention.admin.config.config()
 
-	baseDN=baseConfig['ldap/base']
+	baseDN=configRegistry['ldap/base']
 
-	if baseConfig.has_key('directory/manager/cmd/debug/level'):
-		debug_level=baseConfig['directory/manager/cmd/debug/level']
+	if configRegistry.has_key('directory/manager/cmd/debug/level'):
+		debug_level=configRegistry['directory/manager/cmd/debug/level']
 	else:
 		debug_level=0
 
@@ -494,7 +495,7 @@ def doit(arglist):
 	if binddn and bindpwd:
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using %s account" % binddn)
 		try:
-			lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseDN, binddn=binddn, start_tls=tls, bindpw=bindpwd)
+			lo=univention.admin.uldap.access(host=configRegistry['ldap/master'], base=baseDN, binddn=binddn, start_tls=tls, bindpw=bindpwd)
 		except Exception, e:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
 			out.append('authentication error: %s' % str(e))
@@ -506,9 +507,9 @@ def doit(arglist):
 			secretFileName='/etc/ldap.secret'
 			binddn='cn=admin,'+baseDN
 		elif os.path.exists('/etc/machine.secret'):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using %s account" % baseConfig['ldap/hostdn'])
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using %s account" % configRegistry['ldap/hostdn'])
 			secretFileName='/etc/machine.secret'
-			binddn=baseConfig['ldap/hostdn']
+			binddn=configRegistry['ldap/hostdn']
 
 		try:
 			secretFile=open(secretFileName,'r')
@@ -519,7 +520,7 @@ def doit(arglist):
 		pwd=re.sub('\n','',pwdLine)
 
 		try:
-			lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseDN, binddn=binddn, bindpw=pwd, start_tls=tls)
+			lo=univention.admin.uldap.access(host=configRegistry['ldap/master'], base=baseDN, binddn=binddn, bindpw=pwd, start_tls=tls)
 		except Exception, e:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
 			out.append('authentication error: %s' % str(e))
