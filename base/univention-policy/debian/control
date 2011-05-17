@@ -39,7 +39,7 @@ Description: UCS - group policy library (development files)
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
- 
+
 Package: univention-policy-tools
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}

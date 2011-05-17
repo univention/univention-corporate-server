@@ -44,11 +44,11 @@
 univention_krb5_parameters_t* univention_krb5_new(void)
 {
 	univention_krb5_parameters_t* kp;
-	if ((kp=malloc(sizeof(univention_krb5_parameters_t))) == NULL)
+	if ((kp = malloc(sizeof(univention_krb5_parameters_t))) == NULL)
 		return NULL;
-	kp->username=NULL;
-	kp->realm=NULL;
-	kp->password=NULL;
+	kp->username = NULL;
+	kp->realm = NULL;
+	kp->password = NULL;
 	return kp;
 }
 
@@ -56,7 +56,8 @@ static krb5_error_code kerb_prompter(krb5_context ctx, void *data,
 	       const char *name, const char *banner, int num_prompts,
 	       krb5_prompt prompts[])
 {
-	if (num_prompts == 0) return 0;
+	if (num_prompts == 0)
+		return 0;
 
 	memset(prompts[0].reply->data, 0, prompts[0].reply->length);
 	if (prompts[0].reply->length > 0) {
@@ -81,10 +82,10 @@ int univention_krb5_init(univention_krb5_parameters_t *kp)
 		if (pwd == NULL) {
 			return 1;
 		}
-		kp->username=strdup(pwd->pw_name);
+		kp->username = strdup(pwd->pw_name);
 	}
 	if (kp->realm == NULL) {
-		kp->realm=univention_config_get_string("kerberos/realm");
+		kp->realm = univention_config_get_string("kerberos/realm");
 		if (kp->realm == NULL) {
 			return 1;
 		}

@@ -2,7 +2,7 @@ univention-policy (5.0.0-1) unstable; urgency=low
 
   * bump version for UCS 3.0 (Bug #22160)
   * Switch to automake-1.11.
-  * Switch to debhelper 7. 
+  * Switch to debhelper 7.
   * Switch to Python-2.6.
   * Remove broken libunivention-policy-krb5-dev.
   * Add manual page.
@@ -31,7 +31,7 @@ univention-policy (4.0.0-1) unstable; urgency=low
 
 univention-policy (3.0.2-1) unstable; urgency=low
 
-  * shell escaping in ucr Bug #8417 
+  * shell escaping in ucr Bug #8417
 
  -- Felix Botner <botner@univention.de>  Mon, 22 Mar 2010 22:06:08 +0100
 
@@ -86,7 +86,7 @@ univention-policy (1.0.0-1) unstable; urgency=low
 
 univention-policy (0.7.1-1) unstable; urgency=low
 
-  * add GPL headers 
+  * add GPL headers
 
  -- Andreas BÃŒsching <buesching@univention.de>  Tue,  5 Dec 2006 11:26:18 +0100
 

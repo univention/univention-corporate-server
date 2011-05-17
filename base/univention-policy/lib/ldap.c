@@ -45,22 +45,22 @@
 univention_ldap_parameters_t* univention_ldap_new(void)
 {
 	univention_ldap_parameters_t* lp;
-	if ((lp=malloc(sizeof(univention_ldap_parameters_t))) == NULL)
+	if ((lp = malloc(sizeof(univention_ldap_parameters_t))) == NULL)
 		return NULL;
-	lp->ld=NULL;
-	lp->version=0;
-	lp->host=NULL;
-	lp->port=0;
-	lp->uri=NULL;
-	lp->start_tls=0;
-	lp->base=NULL;
-	lp->binddn=NULL;
-	lp->bindpw=NULL;
-	lp->authmethod=0;
-	lp->sasl_mech=NULL;
-	lp->sasl_realm=NULL;
-	lp->sasl_authcid=NULL;
-	lp->sasl_authzid=NULL;
+	lp->ld = NULL;
+	lp->version = 0;
+	lp->host = NULL;
+	lp->port = 0;
+	lp->uri = NULL;
+	lp->start_tls = 0;
+	lp->base = NULL;
+	lp->binddn = NULL;
+	lp->bindpw = NULL;
+	lp->authmethod = 0;
+	lp->sasl_mech = NULL;
+	lp->sasl_realm = NULL;
+	lp->sasl_authcid = NULL;
+	lp->sasl_authzid = NULL;
 	return lp;
 }
 
@@ -69,25 +69,30 @@ static int __sasl_interaction(unsigned flags, sasl_interact_t *interact, univent
 	const char *dflt = interact->defresult;
 
 	switch (interact->id) {
-	case SASL_CB_GETREALM:
-		if (lp) dflt = lp->sasl_realm;
-		break;
-	case SASL_CB_AUTHNAME:
-		if (lp) dflt = lp->sasl_authcid;
-		break;
-	case SASL_CB_PASS:
-		if (lp) dflt = lp->bindpw;
-		break;
-	case SASL_CB_USER:
-		if (lp) dflt = lp->sasl_authzid;
-		break;
-	case SASL_CB_NOECHOPROMPT:
-		break;
-	case SASL_CB_ECHOPROMPT:
-		break;
-        }
+		case SASL_CB_GETREALM:
+			if (lp)
+				dflt = lp->sasl_realm;
+			break;
+		case SASL_CB_AUTHNAME:
+			if (lp)
+				dflt = lp->sasl_authcid;
+			break;
+		case SASL_CB_PASS:
+			if (lp)
+				dflt = lp->bindpw;
+			break;
+		case SASL_CB_USER:
+			if (lp)
+				dflt = lp->sasl_authzid;
+			break;
+		case SASL_CB_NOECHOPROMPT:
+			break;
+		case SASL_CB_ECHOPROMPT:
+			break;
+	}
 
-	if (dflt && !*dflt) dflt = interact->defresult;
+	if (dflt && !*dflt)
+		dflt = interact->defresult;
 
 	interact->result = dflt;
 	interact->len = strlen(dflt);
@@ -101,7 +106,8 @@ static int sasl_interact(LDAP *ld, unsigned flags, void *defaults, void *in)
 
 	for (interact = in; interact->id != SASL_CB_LIST_END; interact++) {
 		int rc = __sasl_interaction(flags, interact, defaults);
-		if (rc) return rc;
+		if (rc)
+			return rc;
 	}
 
 	return LDAP_SUCCESS;
@@ -116,7 +122,7 @@ int univention_ldap_set_admin_connection( univention_ldap_parameters_t *lp )
 	if ( !base ) {
 		return 1;
 	}
-	lp->binddn=malloc( ( strlen(base)+strlen("cn=admin,")+1) * sizeof (char) );
+	lp->binddn = malloc( ( strlen(base) + strlen("cn=admin,") + 1) * sizeof (char) );
 	if ( !lp->binddn ) {
 		free(base);
 		return 1;
@@ -125,13 +131,13 @@ int univention_ldap_set_admin_connection( univention_ldap_parameters_t *lp )
 
 	free(base);
 
-	secret=fopen("/etc/ldap.secret", "r" );
+	secret = fopen("/etc/ldap.secret", "r" );
 
 	if ( !secret ) {
 		return 1;
 	}
 
-	lp->bindpw=malloc(25*sizeof(char));
+	lp->bindpw = malloc(25*sizeof(char));
 
 	if ( !lp->bindpw ) {
 		return 1;
@@ -139,19 +145,18 @@ int univention_ldap_set_admin_connection( univention_ldap_parameters_t *lp )
 
 	memset(lp->bindpw, 0, 25);
 
-	fread(lp->bindpw,24,1,secret);
+	fread(lp->bindpw, 24, 1, secret);
 
 	if ( lp->bindpw[strlen(lp->bindpw)-1] == '\r' ) {
-		lp->bindpw[strlen(lp->bindpw)-1]='\0';
+		lp->bindpw[strlen(lp->bindpw)-1] = '\0';
 	}
 	if ( lp->bindpw[strlen(lp->bindpw)-1] == '\n' ) {
-		lp->bindpw[strlen(lp->bindpw)-1]='\0';
+		lp->bindpw[strlen(lp->bindpw)-1] = '\0';
 	}
 
 	fclose(secret);
 
 	return 0;
-
 }
 
 int univention_ldap_open(univention_ldap_parameters_t *lp)
@@ -163,7 +168,7 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 		return 1;
 	if (lp->ld != NULL) {
 		ldap_unbind_ext(lp->ld, NULL, NULL);
-		lp->ld=NULL;
+		lp->ld = NULL;
 	}
 
 	/* connection defaults */
@@ -216,7 +221,7 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 		char uri[1024];
 		snprintf(uri, sizeof(uri), "ldap://%s:%d", lp->host, lp->port);
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "connecting to ldap://%s:%d/", lp->host, lp->port);
-		if ((rv=ldap_initialize(&lp->ld, uri)) != LDAP_SUCCESS) {
+		if ((rv = ldap_initialize(&lp->ld, uri)) != LDAP_SUCCESS) {
 			ldap_unbind_ext(lp->ld, NULL, NULL);
 			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_initialize: %s", ldap_err2string(rv));
 			return rv;
@@ -249,11 +254,11 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 	} else {
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "simple_bind as %s", lp->binddn);
 		if (lp->bindpw == NULL) {
-			cred.bv_val=NULL;
-			cred.bv_len=0;
+			cred.bv_val = NULL;
+			cred.bv_len = 0;
 		} else {
-			cred.bv_val=lp->bindpw;
-			cred.bv_len=strlen(lp->bindpw);
+			cred.bv_val = lp->bindpw;
+			cred.bv_len = strlen(lp->bindpw);
 		}
 
 		if ((rv = ldap_sasl_bind_s(lp->ld, lp->binddn, LDAP_SASL_SIMPLE, &cred, NULL, NULL, NULL) != LDAP_SUCCESS)) {
