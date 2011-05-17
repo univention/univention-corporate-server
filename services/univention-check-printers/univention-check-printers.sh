@@ -3,7 +3,7 @@
 # Univention Check Printers
 #  script monitoring local printers and re-activates stopped printers
 #
-# Copyright 2006-2010 Univention GmbH
+# Copyright 2006-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,7 +32,7 @@
 
 disabled=''
 
-eval `/usr/sbin/univention-config-registry shell cups/checkprinters/mail/subject cups/checkprinters/mail/address`
+eval "$(/usr/sbin/univention-config-registry shell cups/checkprinters/mail/subject cups/checkprinters/mail/address)"
 
 # search disabled printers
 for printer in $(lpstat -a 2>/dev/null | sed 's/ .*//'); do

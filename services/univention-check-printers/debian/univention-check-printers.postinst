@@ -3,7 +3,7 @@
 # Univention Check Printers
 #  postinst script for the univention-check-printers debian package
 #
-# Copyright 2006-2010 Univention GmbH
+# Copyright 2006-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -35,3 +35,5 @@
 univention-config-registry set "cups/checkprinters/cron?*/10 * * * *"
 univention-config-registry set "cups/checkprinters/mail/subject?[univention-check-printers] Deaktivierter Drucker"
 univention-config-registry set "cups/checkprinters/mail/address?root@localhost"
+
+exit 0
