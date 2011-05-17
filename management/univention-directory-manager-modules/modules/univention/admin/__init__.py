@@ -38,6 +38,9 @@ import univention.debug
 configRegistry=univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
+# baseconfig legacy
+baseConfig=configRegistry
+
 __path__.append("handlers")
 
 def ucr_overwrite_properties( module, lo ):

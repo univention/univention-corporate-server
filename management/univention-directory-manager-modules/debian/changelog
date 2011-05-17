@@ -1,3 +1,9 @@
+univention-directory-manager-modules (7.0.6-1) unstable; urgency=low
+
+  * Re-added baseConfig objekt to univention.admin (Bug #22431)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 May 2011 13:33:46 +0200
+
 univention-directory-manager-modules (7.0.5-1) unstable; urgency=low
 
   * Fixed typos in install files (Bug #22431)
