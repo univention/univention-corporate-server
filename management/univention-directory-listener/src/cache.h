@@ -42,7 +42,6 @@
 
 int	cache_init				(void);
 
-#ifdef WITH_DB48
 typedef struct _CacheMasterEntry {
 	NotifierID id;
 	NotifierID schema_id;
@@ -50,7 +49,6 @@ typedef struct _CacheMasterEntry {
 
 int	cache_get_master_entry			(CacheMasterEntry *master_entry);
 int	cache_update_master_entry		(CacheMasterEntry *master_entry, DB_TXN *dptxnp);
-#endif
 
 int	cache_update_entry			(NotifierID		  id,
 						 char			 *dn,

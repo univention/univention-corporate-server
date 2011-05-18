@@ -1,3 +1,12 @@
+univention-directory-listener (6.0.2-1) unstable; urgency=low
+
+  * More db48 issues and removed old DB3 code (Bug #22431)
+  * More baseconfig / ucr changes because univention_baseconfig is not
+    available at the moment
+  * Switch to new univention debug
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 May 2011 07:56:08 +0200
+
 univention-directory-listener (6.0.1-1) unstable; urgency=low
 
   * Added copyright block to conffiles/etc/runit/univention-directory-

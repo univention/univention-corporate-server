@@ -29,10 +29,13 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-import os, pwd, types, univention_baseconfig
+import os, pwd, types
+import univention.config_registry
 
-baseConfig = univention_baseconfig.baseConfig()
-baseConfig.load()
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
+
+baseConfig=configRegistry
 
 def setuid(uid):
 	if type(uid) == types.StringType:

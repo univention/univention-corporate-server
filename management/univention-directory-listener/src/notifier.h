@@ -39,10 +39,12 @@
 #else
 typedef void univention_krb5_parameters_t;
 #endif
+#include "cache.h"
 
 int	notifier_listen	(univention_ldap_parameters_t	*lp,
 			 univention_krb5_parameters_t	*kp,
 			 int				 write_transaction_file,
-			 univention_ldap_parameters_t *lp_local);
+			 univention_ldap_parameters_t *lp_local,
+			 CacheMasterEntry master_entry);
 
 #endif /* _NOTIFIER_H_ */

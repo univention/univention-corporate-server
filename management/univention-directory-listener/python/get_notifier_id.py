@@ -32,18 +32,18 @@
 # <http://www.gnu.org/licenses/>.
 
 import socket
-import univention_baseconfig
+import univention.config_registry
 import sys
 
-baseConfig = univention_baseconfig.baseConfig()
-baseConfig.load()
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
 
-if not baseConfig.has_key( 'ldap/master' ):
+if not configRegistry.has_key( 'ldap/master' ):
 	print 'Error: ldap/master not set'
 	sys.exit(-1)
 
 s = socket.socket( socket.AF_INET, socket.SOCK_STREAM );
-s.connect ( (baseConfig['ldap/master'], 6669) )
+s.connect ( (configRegistry['ldap/master'], 6669) )
 
 s.send('Version: 2\nCapabilities: \n\n')
 s.recv(100)

@@ -88,17 +88,13 @@ extern char *cache_dir;
 
 DB *dbp;
 DBC *dbc_cur = NULL;
-#ifdef WITH_DB48
 DB_ENV *dbenvp;
-#endif
 static FILE *lock_fp=NULL;
 
-#ifdef WITH_DB48
 static void cache_panic_call(DB_ENV *dbenvp, int errval)
 {
 	exit(1);
 }
-#endif
 
 char* _convert_to_lower(char *dn)
 {
@@ -116,11 +112,7 @@ char* _convert_to_lower(char *dn)
 	return lower_dn;
 }
 
-#ifdef WITH_DB48
 static void cache_error_message(const DB_ENV *dbenvp, const char *errpfx, const char *msg)
-#else
-static void cache_error_message(const char *errpfx, char *msg)
-#endif
 {
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
 			"database error: %s", msg);
@@ -150,7 +142,6 @@ int cache_init(void)
 	}
 	lockf(fileno(lock_fp), F_LOCK, 0);
 
-#ifdef WITH_DB48
 	if ((rv = db_env_create(&dbenvp, 0)) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
 				"creating database environment failed");
@@ -180,21 +171,6 @@ int cache_init(void)
 		// FIXME: free dbp
 		return rv;
 	}
-#else
-	if ((rv = db_create(&dbp, NULL, 0)) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"creating database handle failed");
-		return rv;
-	}
-	if ((rv = dbp->open(dbp, file, NULL, DB_BTREE, DB_CREATE, 0600)) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"opening database failed");
-		dbp->err(dbp, rv, "open");
-		// FIXME: free dbp
-		return rv;
-	}
-	dbp->set_errcall(dbp, cache_error_message);
-#endif
 	return 0;
 }
 
@@ -253,7 +229,6 @@ int cache_get_int(const char *key, long *value, const long def)
 	return fclose(fp);
 }
 
-#ifdef WITH_DB48
 int cache_get_master_entry(CacheMasterEntry *master_entry)
 {
 	DBT key, data;
@@ -302,11 +277,9 @@ int cache_update_master_entry(CacheMasterEntry *master_entry, DB_TXN *dbtxnp)
 	data.data=(void*)master_entry;
 	data.size=sizeof(CacheMasterEntry);
 
-#ifdef WITH_DB48
 	if (dbtxnp == NULL)
 		flags = DB_AUTO_COMMIT;
 	else
-#endif
 		flags = 0;
 	
 	if ((rv=dbp->put(dbp, dbtxnp, &key, &data, flags)) != 0) {
@@ -322,11 +295,9 @@ int cache_update_master_entry(CacheMasterEntry *master_entry, DB_TXN *dbtxnp)
 
 	return 0;
 }
-#endif
 
 DB_TXN* cache_new_transaction(NotifierID id, char *dn)
 {
-#ifdef WITH_DB48
 	DB_TXN			*dbtxnp;
 	CacheMasterEntry	 master_entry;
 	NotifierID		*old_id;
@@ -360,9 +331,6 @@ DB_TXN* cache_new_transaction(NotifierID id, char *dn)
 	}
 
 	return dbtxnp;
-#else
-	return NULL;
-#endif
 }
 
 
@@ -388,16 +356,12 @@ inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "put %d bytes", data.size);
 
 	signals_block();
-#ifdef WITH_DB48
 	dbtxnp = cache_new_transaction(id, dn);
 	if (dbtxnp == NULL) {
 		signals_unblock();
 		free(data.data);
 		return 1;
 	}
-#else
-	dbtxnp = NULL;
-#endif
 
 	key.data=dn;
 	key.size=strlen(dn)+1;
@@ -407,16 +371,12 @@ inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
 				"storing entry in database failed: %s", dn);
 		dbp->err(dbp, rv, "put");
-#ifdef WITH_DB48
 		dbtxnp->abort(dbtxnp);
-#endif
 		free(data.data);
 		return rv;
 	}
 
-#ifdef WITH_DB48
 	dbtxnp->commit(dbtxnp, 0);
-#endif
 	if ( !INIT_ONLY ) {
 		dbp->sync(dbp, 0);
 	}
@@ -450,15 +410,11 @@ int cache_delete_entry(NotifierID id, char *dn)
 	key.size=strlen(dn)+1;
 
 	signals_block();
-#ifdef WITH_DB48
 	dbtxnp = cache_new_transaction(id, dn);
 	if (dbtxnp == NULL) {
 		signals_unblock();
 		return 1;
 	}
-#else
-	dbtxnp = NULL;
-#endif
 
 	if ((rv=dbp->del(dbp, dbtxnp, &key, 0)) != 0 && rv != DB_NOTFOUND) {
 		signals_unblock();
@@ -467,9 +423,7 @@ int cache_delete_entry(NotifierID id, char *dn)
 		dbp->err(dbp, rv, "del");
 	}
 
-#ifdef WITH_DB48
 	dbtxnp->commit(dbtxnp, 0);
-#endif
 	if ( !INIT_ONLY ) {
 		dbp->sync(dbp, 0);
 	}
@@ -667,12 +621,10 @@ int cache_close(void)
 	if ((rv = dbp->close(dbp, 0)) != 0) {
 		dbp->err(dbp, rv, "close");
 	}
-#ifdef WITH_DB48
 	if ((rv = dbenvp->close(dbenvp, 0)) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
 				"closing database environment failed");
 	}
-#endif
 	if (lock_fp != NULL) {
 		int rc=lockf(fileno(lock_fp), F_ULOCK, 0);
 		if (rc == 0) {
