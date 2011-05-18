@@ -38,7 +38,7 @@
  *
  * import univention.debug
  *
- * univention.debug.init("stdout", univention.debug.DEBUG_NO_FLUSH, univention.debug.DEBUG_FUNCTION)
+ * fd = univention.debug.init("stdout", univention.debug.DEBUG_NO_FLUSH, univention.debug.DEBUG_FUNCTION)
  * univention.debug.set_level(univention.debug.LISTENER, univention.debug.ERROR)
  * univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Fatal error, var = '+j)
  *
@@ -64,15 +64,22 @@ static PyObject *py_univention_debug_init(PyObject *self, PyObject *args)
 {
     char *logfile;
     int flush, function;
+    FILE * fd;
+    PyObject * file;
 
     if (!PyArg_ParseTuple(args, "sii", &logfile, &flush, &function)) {
-        return NULL;
+        Py_RETURN_NONE;
     }
 
-    univention_debug_init(logfile, (char)flush, (char)function);
+    fd = univention_debug_init(logfile, (char)flush, (char)function);
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    if ( fd == NULL ) {
+        Py_RETURN_NONE;
+    } 
+
+    file = PyFile_FromFile( fd, logfile, "a+", NULL );
+
+    return file;
 }
 
 static PyObject *py_univention_debug_set_level(PyObject *self, PyObject *args)

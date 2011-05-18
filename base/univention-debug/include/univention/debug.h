@@ -106,7 +106,7 @@ void univention_debug_set_function(enum uv_debug_flag_function function);
 /**
  * Initialize debugging library.
  */
-void univention_debug_init(const char *logfile, enum uv_debug_flag_flush flush, enum uv_debug_flag_function function);
+FILE * univention_debug_init(const char *logfile, enum uv_debug_flag_flush flush, enum uv_debug_flag_function function);
 /**
  * Close old logfile and re-open it.
  */

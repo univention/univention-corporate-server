@@ -58,3 +58,4 @@ override_dh_auto_install:
 
 override_dh_auto_test:
 	[ ! -x /usr/bin/ucslint ] || /usr/bin/ucslint
+

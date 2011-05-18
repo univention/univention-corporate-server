@@ -2,9 +2,8 @@ Source: univention-debug
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Standards-Version: 3.5.5
+Standards-Version: 3.7.2
 Build-Depends: debhelper (>= 7.0.50~), autoconf, automake, libtool, python-all-dev, python-support
-XS-Python-Version: all
 
 Package: libunivention-debug1
 Architecture: any
