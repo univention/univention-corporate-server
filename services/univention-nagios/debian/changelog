@@ -1,3 +1,11 @@
+univention-nagios (4.0.13-2) unstable; urgency=low
+
+  * switch from check_univention_winbind to
+    check_univention_winbind_suidwrapper in NRPE config files during
+    update to version 4.0.13-* (Bug #21800)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 18 May 2011 11:33:29 +0200
+
 univention-nagios (4.0.13-1) unstable; urgency=low
 
   * added suidwrapper for check_univention_winbind (Bug #21800)

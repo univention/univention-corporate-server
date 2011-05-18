@@ -35,7 +35,7 @@ univention-baseconfig set 'nagios/client/checkraid?no' \
 
 #DEBHELPER#
 
-eval `univention-baseconfig shell`
+eval "$(ucr shell)"
 
 # create missing device file for raidutils
 if [ ! -e /dev/dpti0 ] ; then
@@ -51,6 +51,18 @@ if [ "$1" = "configure" ]; then
     for f in *cfg; do
         ucf $f /etc/nagios-plugins/config/$f
     done
+fi
+
+# switch from check_univention_winbind to check_univention_winbind_suidwrapper during update to version 4.0.13-*
+# Bug #21800
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.13; then
+	for fn in /etc/nagios/nrpe.univention.d/*.cfg ; do
+		if egrep -q "/usr/lib/nagios/plugins/check_univention_winbind( |$)" "$fn" ; then
+			echo -n "Updating $fn ..."
+			sed -i -e 's,/usr/lib/nagios/plugins/check_univention_winbind,/usr/lib/nagios/plugins/check_univention_winbind_suidwrapper,' "$fn"
+			echo " done"
+		fi
+	done
 fi
 
 if [ "$1" = "configure" ]; then
