@@ -51,6 +51,7 @@ configure-stamp:
 build: build-stamp
 build-stamp: configure-stamp
 	gcc -o usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper.c
+	gcc -o usr/lib/nagios/plugins/check_univention_winbind_suidwrapper usr/lib/nagios/plugins/check_univention_winbind_suidwrapper.c
 	dh_testdir
 	touch build-stamp
 
@@ -127,11 +128,14 @@ install-ext-%:
 	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_nfsstatus ${DC}/usr/lib/nagios/plugins/
 	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_ssl_certificate ${DC}/usr/lib/nagios/plugins/
 	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_winbind ${DC}/usr/lib/nagios/plugins/
+	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_winbind_suidwrapper ${DC}/usr/lib/nagios/plugins/
 	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_smbd ${DC}/usr/lib/nagios/plugins/
 	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_nmbd ${DC}/usr/lib/nagios/plugins/
 	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_joinstatus ${DC}/usr/lib/nagios/plugins/
 	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper ${DC}/usr/lib/nagios/plugins/
+
 	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper
+	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_winbind_suidwrapper
 
 	install -d -m 755 -o root -g root ${DC}/usr/share/nagios-plugins/templates-univention/
 	install -m 644 -o root -g root usr/share/nagios-plugins/templates-univention/univention.cfg ${DC}/usr/share/nagios-plugins/templates-univention/univention.cfg
@@ -170,7 +174,7 @@ binary-arch: build install
 	dh_link
 	dh_strip
 	dh_compress
-	dh_fixperms -X/usr/lib/nagios/plugins/check_univention_joinstatus_suidwrapper
+	dh_fixperms -Xsuidwrapper 
 	dh_installdeb
 	dh_shlibdeps
 	dh_gencontrol
