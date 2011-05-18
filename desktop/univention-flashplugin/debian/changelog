@@ -1,3 +1,9 @@
+univention-flashplugin (5.0.2-2) unstable; urgency=low
+
+  * Bump version for security update (Bug #22540)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 18 May 2011 16:51:11 +0200
+
 univention-flashplugin (5.0.2-1) unstable; urgency=low
 
   * Bump version for security update (Bug #22178)
