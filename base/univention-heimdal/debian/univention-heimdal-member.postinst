@@ -3,7 +3,7 @@
 # Univention Heimdal
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,15 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
-if [ "$1" = "configure" -a -n "$2" ]; then
-	eval `univention-baseconfig shell domainname`
-
-	realm=`echo $domainname | sed -e 's/dc=//g' | sed -e 's/,/./g' | tr "[:lower:]" "[:upper:]"`
-
-	univention-baseconfig set kerberos/realm?$realm
-fi
-
 #DEBHELPER#
+
+eval "$(univention-config-registry shell domainname)"
+
+realm="$(echo $domainname | tr "[:lower:]" "[:upper:]")"
+
+univention-config-registry set "kerberos/realm?$realm"
 
 exit 0

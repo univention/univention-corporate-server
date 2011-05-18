@@ -3,7 +3,7 @@
 # Univention Heimdal
 #  postinst script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,20 +32,14 @@
 
 #DEBHELPER#
 
-eval `univention-baseconfig shell`
+. /usr/share/univention-lib/all.sh
 
-univention-baseconfig set kerberos/autostart?yes
+eval "$(univention-config-registry shell)"
 
-if [ -n "$password_quality_credit_digist" ]
-then
-	/usr/sbin/univention-config-registry set password/quality/credit/digits="$password_quality_credit_digist"
-	/usr/sbin/univention-config-registry unset password/quality/credit/digist
-fi
+univention-config-registry set kerberos/autostart?yes
 
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	/usr/lib/univention-install/11univention-heimdal-init.inst || true
-	/usr/lib/univention-install/15univention-heimdal-kdc.inst || true
-fi
+call_joinscript 11univention-heimdal-init.inst
+call_joinscript 15univention-heimdal-kdc.inst
 
 # fix for http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=470404
 # fix for https://forge.univention.org/bugzilla/show_bug.cgi?id=16462
@@ -64,60 +58,7 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 	/etc/init.d/heimdal-kdc restart
 fi
 
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.6; then
-	if [ -e /usr/sbin/univention-directory-listener-ctrl ]; then
-		rm -f /etc/krb5.keytab
-		/usr/sbin/univention-directory-listener-ctrl resync keytab
-	fi
-fi
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.25.22; then
-	mv /etc/logrotate.d/heimdal-kdc /etc/logrotate.d/heimdal-kdc.new
-	dpkg-divert --rename --divert /etc/logrotate.d/heimdal-kdc.debian --remove /etc/logrotate.d/heimdal-kdc || true
-	dpkg-divert --rename --divert /etc/logrotate.d_heimdal-kdc.debian --add /etc/logrotate.d/heimdal-kdc || true
-	mv /etc/logrotate.d/heimdal-kdc.new /etc/logrotate.d/heimdal-kdc
-fi
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1; then
-	if [ -n "$kerberos_password_quality_ascii_lowercase" ]; then
-		univention-config-registry set password/quality/ascii_lowercase="$kerberos_password_quality_ascii_lowercase"
-		univention-config-registry unset kerberos/password/quality/ascii_lowercase
-	fi
-	if [ -n "$kerberos_password_quality_ascii_uppercase" ]; then
-		univention-config-registry set password/quality/ascii_uppercase="$kerberos_password_quality_ascii_uppercase"
-		univention-config-registry unset kerberos/password/quality/ascii_uppercase
-	fi
-	if [ -n "$kerberos_password_quality_diff_ok" ]; then
-		univention-config-registry set password/quality/diff_ok="$kerberos_password_quality_diff_ok"
-		univention-config-registry unset kerberos/password/quality/diff_ok
-	fi
-	if [ -n "$kerberos_password_quality_dig_credit" ]; then
-		univention-config-registry set password/quality/credit/digits="$kerberos_password_quality_dig_credit"
-		univention-config-registry unset kerberos/password/quality/dig_credit
-	fi
-	if [ -n "$kerberos_password_quality_low_credit" ]; then
-		univention-config-registry set password/quality/credit/lower="$kerberos_password_quality_low_credit"
-		univention-config-registry unset kerberos/password/quality/low_credit
-	fi
-	if [ -n "$kerberos_password_quality_oth_credit" ]; then
-		univention-config-registry set password/quality/credit/other="$kerberos_password_quality_oth_credit"
-		univention-config-registry unset kerberos/password/quality/oth_credit
-	fi
-	if [ -n "$kerberos_password_quality_up_credit" ]; then
-		univention-config-registry set password/quality/credit/upper="$kerberos_password_quality_up_credit"
-		univention-config-registry unset kerberos/password/quality/up_credit
-	fi
-	if [ -n "$kerberos_password_quality_min_length" ]; then
-		univention-config-registry set password/quality/length/min="$kerberos_password_quality_min_length"
-		univention-config-registry unset kerberos/password/quality/min_length
-	fi
-fi
-
 univention-config-registry set kerberos/password/quality/check?yes
-
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.1.2-4; then
-	/usr/sbin/update-inetd --disable telnet		# enabled in heimdal-servers postinst
-fi
 
 # Bug #19020, use $hostname.$domainname in kerberos/kdc
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3-1; then

@@ -1,10 +1,10 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
 # Univention Heimdal
 #  kerberos_now
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,16 +32,16 @@
 # <http://www.gnu.org/licenses/>.
 
 import ldap
-import univention_baseconfig
+import univention.config_registry
 import univention.debug
 univention.debug.init('/dev/null', 1, 1)
 import univention.uldap
 
-baseConfig = univention_baseconfig.baseConfig()
-baseConfig.load()
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
 lo = univention.uldap.getAdminConnection()
-krbbase='ou=krb5,'+baseConfig['ldap/base']
-realm=baseConfig['kerberos/realm']
+krbbase='ou=krb5,'+configRegistry['ldap/base']
+realm=configRegistry['kerberos/realm']
 
 def nt_password_to_arcfour_hmac_md5(nt_password):
 	

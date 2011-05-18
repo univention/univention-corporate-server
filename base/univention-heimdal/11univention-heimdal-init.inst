@@ -3,7 +3,7 @@
 # Univention Heimdal
 #  join script
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -41,18 +41,18 @@ touch /usr/lib/univention-install/.index.txt
 
 test -n "`grep "univention-heimdal-init v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
 if [ -z "$kerberos_realm" ]; then
                                                                                       #| FIXME for multi-doamin
-	realm=`echo $domainname | sed -e 's/dc=//g' | sed -e 's/,/./g' | tr "[:lower:]" "[:upper:]"`
+	realm="$(echo $domainname | tr "[:lower:]" "[:upper:]")"
 
-	univention-baseconfig set kerberos/realm?$realm
+	univention-config-registry set "kerberos/realm?$realm"
 fi
 
-univention-baseconfig set kerberos/kdc?$hostname.$domainname
+univention-config-registry set kerberos/kdc?$hostname.$domainname
 
-eval `univention-baseconfig shell kerberos/realm`
+eval "$(univention-config-registry shell kerberos/realm)"
 
 if ! kadmin -l dump | grep -q "^krbtgt/"; then
     kadmin -l init --realm-max-ticket-life=unlimited --realm-max-renewable-life=unlimited $kerberos_realm >/dev/null 2>&1

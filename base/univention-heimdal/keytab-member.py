@@ -3,7 +3,7 @@
 # Univention Heimdal
 #  listener script for generating memberserver keytab entry
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 import listener, os, pwd, types
 import univention.debug
-import univention_baseconfig
+import univention.config_registry
 
 name='keytab-member'
 description='Kerberos 5 keytab maintainance for memberserver'
@@ -46,10 +46,10 @@ def clean():
 def handler(dn, new, old):
 	global keytab
 
-	baseConfig = univention_baseconfig.baseConfig()
-	baseConfig.load()
+	configRegistry = univention.config_registry.ConfigRegistry()
+	configRegistry.load()
 
-	server_role = baseConfig['server/role']
+	server_role = configRegistry['server/role']
 	if server_role == 'domaincontroller_master':
 			
 		listener.setuid(0)

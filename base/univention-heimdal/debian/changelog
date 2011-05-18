@@ -1,3 +1,17 @@
+univention-heimdal (5.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22431)
+    * Bump version for UCS 3.0
+    * Replace univention-baseconfig with univention-config-registry
+    * Replace static UCR header in the UCR templates with '@%@UCRWARNING=#
+      @%@'
+    * Update copyright to 2011
+    * Update to debhelper 7
+    * Switch from python2.4 to python2.6
+    * Add ucslint
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 May 2011 15:48:58 +0200
+
 univention-heimdal (4.0.3-3) unstable; urgency=low
 
   * fixed typos and little errors for UCR-variable description (Bug #19009)
