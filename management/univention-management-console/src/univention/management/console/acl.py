@@ -34,9 +34,8 @@
 import os, sys, ldap, re
 import cPickle
 
-import univention.debug as ud
-
 import univention.management.console as umc
+from .log import *
 
 import univention.admin.modules
 import univention.admin.handlers.computers.domaincontroller_master as dc_master
@@ -49,6 +48,7 @@ import univention.admin.handlers.computers.mobileclient as mobileclient
 class ACLs:
 	# constants
 	( MATCH_NONE, MATCH_PART, MATCH_FULL ) = range( 3 )
+	CACHE_DIR = '/var/cache/univention-management-console/acls'
 
 	_systemroles = ( dc_master, dc_backup, dc_slave, memberserver, managedclient, mobileclient )
 
@@ -66,9 +66,8 @@ class ACLs:
 
 	def _expand_hostlist( self, hostlist ):
 		hosts = [ ]
-		if not self.__ldap_base:
-			if 'ldap/base' in umc.configRegistry:
-				self.__ldap_base = umc.baseconfig[ 'ldap/base' ]
+		if self.__ldap_base is None:
+			self.__ldap_base = umc.configRegistry.get( 'ldap/base', None )
 
 		servers = []
 		for host in hostlist:
@@ -87,20 +86,14 @@ class ACLs:
 				elif host == 'managedclient':
 					servers = managedclient.lookup( None, self.lo, None, base=self.__ldap_base )
 
-				if servers:
-					for server in servers:
-						if 'name' in server:
-							hosts.append( server[ 'name' ] )
+				hosts.extend( filter( lambda server: 'name' in server, servers ) )
 
 			elif host.startswith( 'service:' ):
 				host = host[ len( 'service:' ) : ]
 				for role in ACLs._systemroles:
 					servers += role.lookup( None, self.lo, 'univentionService=%s' % host, base=self.__ldap_base )
 
-				if servers:
-					for server in servers:
-						if 'name' in server:
-							hosts.append( server[ 'name' ] )
+				hosts.extend( filter( lambda server: 'name' in server, servers ) )
 
 			elif host == '*':
 				if not self.__ldap_base in self.__cache:
@@ -109,11 +102,9 @@ class ACLs:
 					for role in ACLs._systemroles:
 						servers += role.lookup( None, self.lo, None, base=self.__ldap_base )
 
-					if servers:
-						for server in servers:
-							if 'name' in server:
-								hosts.append( server[ 'name' ] )
-								self.__cache[ self.__ldap_base ].append( server[ 'name' ] )
+					new_hosts = filter( lambda server: 'name' in server, servers )
+					hosts.extend( new_hosts )
+					self.__cache[ self.__ldap_base ].extend( new_hosts )
 				else:
 					hosts += self.__cache[ self.__ldap_base ]
 
@@ -121,10 +112,7 @@ class ACLs:
 				for role in ACLs._systemroles:
 					servers += role.lookup( None, self.lo, 'cn=%s' % host, base=self.__ldap_base )
 
-				if servers:
-					for server in servers:
-						if 'name' in server:
-							hosts.append( server[ 'name' ] )
+				hosts.extend( filter( lambda server: 'name' in server, servers ) )
 
 		return hosts
 
@@ -156,13 +144,10 @@ class ACLs:
 						self.acls[ right ].append( new_rule )
 				else:
 					# if we append a group allow rule, then we check if the command was disallowed by the user
-					append_rule = True
 					for acl in self.acls[ left ]:
-						if acl[ 'fromUser' ]:
-							if acl[ 'host' ] == host:
-								if self.__command_match( acl[ 'command' ], command ) and self.__option_match( acl[ 'options' ], options ):
-									append_rule = False
-					if append_rule:
+						if acl[ 'fromUser' ] and acl[ 'host' ] == host and self.__command_match( acl[ 'command' ], command ) and self.__option_match( acl[ 'options' ], options ):
+							break
+					else:
 						new_rule = { 'fromUser': False, 'host': host, 'command': command, 'options': options }
 						# do not add rule multiple times
 						if not new_rule in self.acls[ right ]:
@@ -195,19 +180,20 @@ class ACLs:
 	def __option_match( self, opt_pattern, opts ):
 		match = ACLs.MATCH_FULL
 		for key, value in opt_pattern.items():
-			if key in opts:
-				if isinstance( opts[ key ], basestring ):
-					options = ( opts[ key ], )
-				else:
-					options = opts[ key ]
-				for option in options:
-					if not value[ -1 ] == '*':
-						if value != option:
-							return ACLs.MATCH_NONE
-					elif not option.startswith( value[ : -1 ] ):
+			if not key in opts:
+				continue
+			if isinstance( opts[ key ], basestring ):
+				options = ( opts[ key ], )
+			else:
+				options = opts[ key ]
+			for option in options:
+				if not value[ -1 ] == '*':
+					if value != option:
 						return ACLs.MATCH_NONE
-				else:
-					match = ACLs.MATCH_FULL
+				elif not option.startswith( value[ : -1 ] ):
+					return ACLs.MATCH_NONE
+			else:
+				match = ACLs.MATCH_FULL
 
 		return match
 
@@ -220,7 +206,7 @@ class ACLs:
 			return ACLs.MATCH_FULL
 
 		if cmd1[ -1 ] == '*':
-			if cmd2.startswith( cmd1[ 0:-2 ] ):
+			if cmd2.startswith( cmd1[ 0 :-2 ] ):
 				return ACLs.MATCH_PART
 
 		return ACLs.MATCH_NONE
@@ -231,49 +217,51 @@ class ACLs:
 		# first check if the command is disallowed and then check if an other rule is more important
 		disallowed_rule = False
 		for disallow in self.acls[ 'disallow' ]:
-			if disallow[ 'host' ] == hostname:
-				match = self.__command_match( disallow[ 'command' ], command )
-				if not match in ( ACLs.MATCH_FULL, ACLs.MATCH_PART ):
-					continue
-				opt_match = self.__option_match( disallow[ 'options' ], options )
-				if match == ACLs.MATCH_FULL and opt_match == ACLs.MATCH_FULL:
-					if disallow[ 'fromUser' ]:
-						# here we can exit
-						return False
-					else:
-						disallowed_rule = self.__compare_rules( disallowed_rule, disallow )
-				elif match == ACLs.MATCH_PART or opt_match == ACLs.MATCH_PART:
+			if disallow[ 'host' ] != hostname:
+				continue
+			match = self.__command_match( disallow[ 'command' ], command )
+			if not match in ( ACLs.MATCH_FULL, ACLs.MATCH_PART ):
+				continue
+			opt_match = self.__option_match( disallow[ 'options' ], options )
+			if match == ACLs.MATCH_FULL and opt_match == ACLs.MATCH_FULL:
+				if disallow[ 'fromUser' ]:
+					# here we can exit
+					return False
+				else:
 					disallowed_rule = self.__compare_rules( disallowed_rule, disallow )
+			elif match == ACLs.MATCH_PART or opt_match == ACLs.MATCH_PART:
+				disallowed_rule = self.__compare_rules( disallowed_rule, disallow )
 
 		for allow in self.acls[ 'allow' ]:
-			if not hostname or allow[ 'host' ] == hostname:
-				match = self.__command_match( allow[ 'command' ], command )
-				opt_match = self.__option_match( allow[ 'options' ], options )
-				if match == ACLs.MATCH_FULL and opt_match == ACLs.MATCH_FULL:
-					# if allow[ 'command' ] == command:
-					if [ 'fromUser' ]:
-						return True
-					else:
-						# check disallowed rule
-						if self.__compare_rules( disallowed_rule, allow ) == allow:
-							return True
-				elif match == ACLs.MATCH_PART or opt_match == ACLs.MATCH_PART:
+			if hostname and allow[ 'host' ] != hostname:
+				continue
+			match = self.__command_match( allow[ 'command' ], command )
+			opt_match = self.__option_match( allow[ 'options' ], options )
+			if match == ACLs.MATCH_FULL and opt_match == ACLs.MATCH_FULL:
+				# if allow[ 'command' ] == command:
+				if [ 'fromUser' ]:
+					return True
+				else:
+					# check disallowed rule
 					if self.__compare_rules( disallowed_rule, allow ) == allow:
 						return True
+			elif match == ACLs.MATCH_PART or opt_match == ACLs.MATCH_PART:
+				if self.__compare_rules( disallowed_rule, allow ) == allow:
+					return True
 
 		return False
 
 	def _dump( self ):
-		ud.debug( ud.ADMIN, ud.PROCESS, '          %10s -- %20s -- %20s -- %20s' % ( 'fromUser', 'Host', 'Command', 'Options' ))
-		ud.debug( ud.ADMIN, ud.PROCESS, '**********************************************************************************************')
+		ACL.process( '          %8s -- %20s -- %20s -- %20s' % ( 'fromUser', 'Host', 'Command', 'Options' ) )
+		ACL.process( '**********************************************************************************************')
 
 		for allow in self.acls[ 'allow' ]:
-			ud.debug( ud.ADMIN, ud.PROCESS, 'ALLOW:    %10s -- %20s -- %20s -- %20s' % ( allow[ 'fromUser' ], allow[ 'host' ], allow[ 'command' ], allow[ 'options' ] ))
+			ACL.process( 'ALLOW:    %8s -- %20s -- %20s -- %20s' % ( allow[ 'fromUser' ], allow[ 'host' ], allow[ 'command' ], allow[ 'options' ] ))
 		for disallow in self.acls[ 'disallow' ]:
-			ud.debug( ud.ADMIN, ud.PROCESS, 'DISALLOW: %10s -- %20s -- %20s -- %20s' % ( disallow[ 'fromUser' ], disallow[ 'host' ], disallow[ 'command' ], disallow[ 'options' ] ))
+			ACL.process( 'DISALLOW: %8s -- %20s -- %20s -- %20s' % ( disallow[ 'fromUser' ], disallow[ 'host' ], disallow[ 'command' ], disallow[ 'options' ] ))
 
 	def _read_from_file( self, username ):
-		filename = '/var/cache/univention-management-console/acls/%s' % username
+		filename = os.path.join( ACLs.CACHE_DIR,  username )
 
 		try:
 			file = open( filename, 'r' )
@@ -285,7 +273,7 @@ class ACLs:
 		file.close( )
 
 	def _write_to_file( self, username ):
-		filename='/var/cache/univention-management-console/acls/%s' % username
+		filename = os.path.join( ACLs.CACHE_DIR,  username )
 
 		file = os.open( filename, os.O_WRONLY | os.O_TRUNC | os.O_CREAT )
 		os.write( file, cPickle.dumps( self.acls ) )
@@ -295,14 +283,13 @@ class ACLs:
 		return self.acls
 
 class ConsoleACLs ( ACLs ):
+	FROM_USER = True
+	FROM_GROUP = False
 
 	def __init__( self, lo, username, ldap_base ):
 		ACLs.__init__( self, ldap_base )
 		self.lo = lo
 		self.username = username
-
-		self.FROM_USER=True
-		self.FROM_GROUP=False
 
 		if self.lo:
 			self._read_from_ldap( )
@@ -326,10 +313,10 @@ class ConsoleACLs ( ACLs ):
 		if policy:
 			if 'univentionConsoleAllow' in policy:
 				for value in policy[ 'univentionConsoleAllow' ][ 'value' ]:
-					self._append_allow( self.FROM_USER, self.lo.get( value ) ) #value.split( ':' )[ 0 ], value.split( ':' )[ 1], value.split( ':' )[ 2] )
+					self._append_allow( ConsoleACLs.FROM_USER, self.lo.get( value ) ) #value.split( ':' )[ 0 ], value.split( ':' )[ 1], value.split( ':' )[ 2] )
 			if 'univentionConsoleDisallow' in policy:
 				for value in policy[ 'univentionConsoleDisallow' ][ 'value' ]:
-					self._append_disallow( self.FROM_USER, self.lo.get( value ) ) #value.split( ':' )[ 0 ], value.split( ':' )[ 1], value.split( ':' )[ 2] )
+					self._append_disallow( ConsoleACLs.FROM_USER, self.lo.get( value ) ) #value.split( ':' )[ 0 ], value.split( ':' )[ 1], value.split( ':' )[ 2] )
 
 		# TODO: check for nested groups
 		groupDNs = self.lo.searchDn( filter='uniqueMember=%s' % self.lo.binddn )
@@ -338,14 +325,15 @@ class ConsoleACLs ( ACLs ):
 		# groupDisallow = [ ]
 		for gDN in groupDNs:
 			policy = self._get_policy_for_dn ( gDN )
-			if policy:
-				if 'univentionConsoleAllow' in policy:
-					# groupAllow.append( policy[ 'univentionConsoleAllow' ][ 'value' ] )
-					for value in policy[ 'univentionConsoleAllow' ][ 'value' ]:
-						self._append_allow( self.FROM_GROUP, self.lo.get( value ) )
-				if 'univentionConsoleDisallow' in policy:
-					for value in policy[ 'univentionConsoleDisallow' ][ 'value' ]:
-						self._append_disallow( self.FROM_GROUP, self.lo.get( value ) )
+			if not policy:
+				continue
+			if 'univentionConsoleAllow' in policy:
+				# groupAllow.append( policy[ 'univentionConsoleAllow' ][ 'value' ] )
+				for value in policy[ 'univentionConsoleAllow' ][ 'value' ]:
+					self._append_allow( ConsoleACLs.FROM_GROUP, self.lo.get( value ) )
+			if 'univentionConsoleDisallow' in policy:
+				for value in policy[ 'univentionConsoleDisallow' ][ 'value' ]:
+					self._append_disallow( ConsoleACLs.FROM_GROUP, self.lo.get( value ) )
 
 
 if __name__ == '__main__':

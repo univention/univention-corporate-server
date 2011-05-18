@@ -36,13 +36,12 @@ import notifier.threads as threads
 
 import PAM
 
+from .log import *
+from .locales import Translation
+
 __all__ = [ 'AuthHandler' ]
 
-import locales
-
-import univention.debug as ud
-
-_ = locales.Translation( 'univention.management.console' ).translate
+_ = Translation( 'univention.management.console' ).translate
 
 class Auth( signals.Provider ):
 	def __init__( self, username, password ):
@@ -91,15 +90,17 @@ class PAM_Auth( Auth ):
 
 	def _ask_pam( self ):
 		try:
+			AUTH.info( 'PAM: trying to authenticate %s' % self._username )
 			self._pam.authenticate()
 			self._pam.acct_mgmt()
 		except PAM.error, e:
-			ud.debug( ud.ADMIN, ud.ERROR, "PAM: authentication error: %s" % str( e ) )
+			AUTH.error( "PAM: authentication error: %s" % str( e ) )
 			return False
 		except Exception, e: # internal error
-			ud.debug( ud.ADMIN, ud.WARN, "PAM: global error: %s" % str( e ) )
+			AUTH.warn( "PAM: global error: %s" % str( e ) )
 			return False
 
+		AUTH.info( 'Authentication for %s was succcessful' % self._username )
 		return True
 
 class Baseconfig_Auth( Auth ):

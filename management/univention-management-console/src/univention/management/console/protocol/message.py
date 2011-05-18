@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import mimetypes
 import time
 import re
 
@@ -39,192 +40,13 @@ try:
 except:
 	import json
 
-from definitions import *
+from .definitions import *
+from ..locales import Translation
+from ..log import PARSER, PROTOCOL
 
-import univention.management.console.locales as locales
+_ = Translation( 'univention.management.console' ).translate
 
-_ = locales.Translation( 'univention.management.console' ).translate
-
-class Message( object ):
-	"""This class represents a protocol message of UMCP"""
-	RESPONSE, REQUEST = range( 0, 2 )
-
-	_header = re.compile( '(?P<type>REQUEST|RESPONSE)/(?P<id>[\d-]+)/(?P<length>\d+): ?(?P<command>\w+) ?(?P<arguments>[^\n]+)?', re.UNICODE )
-	__counter = 0
-
-	def __init__( self, type = REQUEST, command = '', data = None, arguments = [], options = {} ):
-		"""Parser for UMCP 2.0 messages """
-		self._id = None
-		self._length = 0
-		self._type = type
-		self.command = command
-		self.arguments = arguments
-		self.options = options
-		self.body = {}
-		if data:
-			self.parse( data )
-
-	def __str__( self ):
-		"""returns the formatted message"""
-		type = 'RESPONSE'
-		if self._type == Message.REQUEST:
-			type = 'REQUEST'
-		if self.options:
-			self.body[ '_options' ] = self.options
-
-		data = json.dumps( self.body )
-		args = ''
-		if self.arguments:
-			args = ' '.join( map( lambda x: str( x ), self.arguments ) )
-		return '%s/%s/%d: %s %s\n%s' % ( type, self._id, len( data ),
-										 self.command, args, data )
-
-	def _create_id( self ):
-		# cut off 'L' for long
-		self._id = '%lu-%d' % ( long( time.time() * 100000 ),
-								Message.__counter )
-		Message.__counter += 1
-
-	def recreate_id( self ):
-		self._create_id()
-
-	def isType( self, type ):
-		return ( self._type == type )
-
-	def id( self, num = None ):
-		if not num:
-			return self._id
-		else:
-			self._id = num
-
-	# property: message
-	def _set_message( self, msg ):
-		self.body[ '_message' ] = msg
-
-	def _get_message( self ):
-		return self.body.get( '_message' )
-
-	message = property( _get_message, _set_message )
-
-	# property: result
-	def _set_result( self, data ):
-		self.body[ '_result' ] = data
-
-	def _get_result( self ):
-		return self.body.get( '_result' )
-
-	result = property( _get_result, _set_result )
-
-	# property: status
-	def _set_status( self, code ):
-		self.body[ '_status' ] = int( code )
-
-	def _get_status( self ):
-		return self.body.get( '_status' )
-
-	status = property( _get_status, _set_status )
-
-	def parse( self, msg ):
-		import univention.debug as ud
-
-		lines = msg.split( '\n', 1 )
-
-		# is the format of the header line valid?
-		match = Message._header.match( lines[ 0 ] )
-		if not match:
-			raise ParseError( 551, 'unparsable message header' )
-
-		groups = match.groupdict()
-		if groups[ 'type' ] == 'REQUEST':
-			self._type = Message.REQUEST
-		else:
-			self._type = Message.RESPONSE
-		self._id = groups[ 'id' ]
-		self._length = int( groups[ 'length' ] )
-		self.command = groups[ 'command' ]
-
-		# known command?
-		if not command_is_known( self.command ):
-			raise UnknownCommandError( 552, 'unknown UMCP command: %s' % \
-									   self.command )
-
-		if groups.get( 'arguments' ):
-			if command_has_arguments( self.command ):
-				self.arguments = groups[ 'arguments' ].split( ' ' )
-			else:
-				raise InvalidArgumentsError( 553, _( "The command '%s' do not have any arguments" ) % self.command )
-		# invalid/missing message body?
-		if len( lines ) < 2 or self._length > len( lines[ 1 ] ):
-			raise IncompleteMessageError( 'Part of the body is missing' )
-
-		remains = ''
-		if len( lines[ 1 ] ) > self._length:
-			remains = lines[ 1 ][ self._length : ]
-		try:
-			if len( lines[ 1 ] ) > self._length:
-				self.body = json.loads( lines[ 1 ][ : self._length ] )
-			else:
-				self.body = json.loads( lines[ 1 ] )
-		except:
-			ud.debug( ud.ADMIN, ud.ERROR, 'values: ERROR: UMCP PARSING ERROR' )
-			raise ParseError( 554, 'error parsing UMCP message body' )
-
-		for key in ( '_options', ):
-			if key in self.body:
-				setattr( self, key[ 1 : ], self.body[ key ] )
-
-		return remains
-
-	def set_flag( self, key, value ):
-		if key and not key[ 0 ] == '_':
-			self.body[ key ] = value
-
-	def get_flag( self, key ):
-		return self.body[ key ]
-
-	def has_flag( self, option ):
-		return option in self.body
-
-class Request( Message ):
-	"""This class describes a request from the console frontend to the
-	console daemon"""
-
-	def __init__( self, command, args = [], opts = {} ):
-		if not command_is_known( command ):
-			raise UnknownCommandError( "'%s' is not a valid UMCP command" % command )
-		Message.__init__( self, Message.REQUEST, command, arguments = args, options = opts )
-		self._create_id()
-
-class Command( Request ):
-	def __init__( self, args = [], opts = {} ):
-		Request.__init__( self, 'COMMAND', args, opts )
-
-class SimpleCommand( Request ):
-	def __init__( self, command, options = {}, **flags ):
-		Request.__init__( self, 'COMMAND',  [ command ], options )
-		for k, v in flags.items():
-			self.set_flag( 'web:%s' % k, v )
-
-class Response( Message ):
-	"""This class describes a response to a request from the console
-	frontend to the console daemon"""
-	def __init__( self, request = None, data = None ):
-		Message.__init__( self, Message.RESPONSE )
-		if request:
-			self._id = request._id
-			self.command = request.command
-			self.arguments = request.arguments
-			self.options = request.options
-			if '_status' in request.body:
-				self.status = request.status
-		elif data:
-			self.parse( data )
-
-	def isFinal( self ):
-		return ( self._id and self.status != 210 )
-
-	recreate_id = None
-
+# Exceptions
 class ParseError( Exception ):
 	pass
 
@@ -237,12 +59,209 @@ class UnknownCommandError( Exception ):
 class InvalidArgumentsError( Exception ):
 	pass
 
+MIMETYPE_JSON = 'application/json'
+MIMETYPE_JPEG = 'image/jpeg'
+MIMETYPE_PNG = 'image/png'
+
+class Message( object ):
+	"""This class represents a protocol message of UMCP"""
+	RESPONSE, REQUEST = range( 0, 2 )
+	_header = re.compile( '(?P<type>REQUEST|RESPONSE)/(?P<id>[\d-]+)/(?P<length>\d+)(/(?P<mimetype>[a-z-/]+))?: ?(?P<command>\w+) ?(?P<arguments>[^\n]+)?', re.UNICODE )
+	__counter = 0
+
+	def __init__( self, type = REQUEST, command = '', mime_type = MIMETYPE_JSON, data = None, arguments = [], options = {} ):
+		self._id = None
+		self._length = 0
+		self._type = type
+		self.command = command
+		self.arguments = arguments
+		self.mimetype = mime_type
+		self.options = options
+		if mime_type == MIMETYPE_JSON:
+			self.body = {}
+		else:
+			self.body = ''
+		if data:
+			self.parse( data )
+
+	def __str__( self ):
+		'''Returns the formatted message'''
+		type = 'RESPONSE'
+		if self._type == Message.REQUEST:
+			type = 'REQUEST'
+		if self.mimetype == MIMETYPE_JSON:
+			data = json.dumps( self.body )
+		else:
+			data = self.body
+		args = ''
+		if self.arguments:
+			args = ' '.join( map( lambda x: str( x ), self.arguments ) )
+		return '%s/%s/%d/%s: %s %s\n%s' % ( type, self._id, len( data ), self.mimetype, self.command, args, data )
+
+	def _create_id( self ):
+		# cut off 'L' for long
+		self._id = '%lu-%d' % ( long( time.time() * 100000 ), Message.__counter )
+		Message.__counter += 1
+
+	def recreate_id( self ):
+		self._create_id()
+
+	def is_type( self, type ):
+		return ( self._type == type )
+
+	# property: id
+	def _set_id( self, id ):
+		self._id = id
+
+	def _get_id( self ):
+		return self._id
+
+	id = property( _get_id, _set_id )
+
+	# JSON body properties
+	def _set_key( self, key, value, cast = None ):
+		if self.mimetype == MIMETYPE_JSON:
+			if cast is not None:
+				self.body[ key ] = cast( value )
+			else:
+				self.body[ key ] = value
+		else:
+			PARSER.error( 'Attribute %s just available for MIME type %s' % ( key, MIMETYPE_JSON ) )
+			raise AttributeError( _( 'Attribute %s just available for MIME type %s' ) % ( key, MIMETYPE_JSON ) )
+
+	def _get_key( self, key ):
+		if self.mimetype == MIMETYPE_JSON:
+			return self.body.get( key )
+		else:
+			PARSER.error( 'Attribute %s just available for MIME type %s' % ( key, MIMETYPE_JSON ) )
+			raise AttributeError( _( 'Attribute %s just available for MIME type %s' ) % ( key, MIMETYPE_JSON ) )
+
+	# property: message
+	message = property( lambda self: self._get_key( 'message' ), lambda self, value: self._set_key( 'message', value ) )
+
+	# property: result
+	result = property( lambda self: self._get_key( 'result' ), lambda self, value: self._set_key( 'result', value ) )
+
+	# property: status
+	status = property( lambda self: self._get_key( 'status' ), lambda self, value: self._set_key( 'status', value, int ) )
+
+	# property: options
+	options = property( lambda self: self._get_key( 'options' ), lambda self, value: self._set_key( 'options', value, int ) )
+	def parse( self, msg ):
+		lines = msg.split( '\n', 1 )
+
+		# is the format of the header line valid?
+		match = Message._header.match( lines[ 0 ] )
+		if not match:
+			raise ParseError( 551, _( 'Unparsable message header' ) )
+
+		groups = match.groupdict()
+		self._type = groups[ 'type' ] == 'REQUEST' and Message.REQUEST or Message.RESPONSE
+		self._id = groups[ 'id' ]
+		try:
+			self._length = int( groups[ 'length' ] )
+		except ValueError:
+			PARSER.error( 'Invalid length information' )
+			raise ParseError( 551, _( 'Invalid length information' ) )
+		self.command = groups[ 'command' ]
+
+		# known command?
+		if not command_is_known( self.command ):
+			PROTOCOL.error( 'Unknown UMCP command: %s' % self.command )
+			raise UnknownCommandError( 552, _( 'Unknown UMCP command: %s' ) % self.command )
+
+		if groups.get( 'arguments' ):
+			if command_has_arguments( self.command ):
+				self.arguments = groups[ 'arguments' ].split( ' ' )
+			else:
+				PROTOCOL.error( "The command '%s' do not have any arguments" % self.command )
+				raise InvalidArgumentsError( 553, _( "The command '%s' do not have any arguments" ) % self.command )
+
+		# invalid/missing message body?
+		if len( lines ) < 2 or self._length > len( lines[ 1 ] ):
+			PARSER.error( 'Part of the body is missing' )
+			raise IncompleteMessageError( _( 'Part of the body is missing' ) )
+
+		remains = ''
+		if len( lines[ 1 ] ) > self._length:
+			remains = lines[ 1 ][ self._length : ]
+		if len( lines[ 1 ] ) > self._length:
+			self.body = lines[ 1 ][ : self._length ]
+		else:
+			self.body = lines[ 1 ]
+
+		if self.mimetype == MIMETYPE_JSON:
+			try:
+				self.body = json.loads( self.body )
+			except:
+				PARSER.error( 'Error parsing UMCP message body' )
+				raise ParseError( 554, _( 'error parsing UMCP message body' ) )
+
+		for key in ( 'options', ):
+			if key in self.body:
+				setattr( self, key[ 1 : ], self.body[ key ] )
+
+		return remains
+
+class Request( Message ):
+	'''Represents an UMCP request message'''
+
+	def __init__( self, command, arguments = [], options = {}, mime_type = MIMETYPE_JSON ):
+		if not command_is_known( command ):
+			PROTOCOL.error( "'%s' is not a valid UMCP command" % command )
+			raise UnknownCommandError( _( "'%s' is not a valid UMCP command" ) % command )
+		Message.__init__( self, Message.REQUEST, command, arguments = arguments, options = options, mime_type = mime_type )
+		self._create_id()
+
+class Command( Request ):
+	def __init__( self, arguments = [], options = {}, mime_type = MIMETYPE_JSON ):
+		Request.__init__( self, 'COMMAND', arguments, options )
+
+class SimpleCommand( Request ):
+	def __init__( self, command, options = {}, mime_type = MIMETYPE_JSON ):
+		Request.__init__( self, 'COMMAND',  [ command ], options )
+
+class Response( Message ):
+	"""This class describes a response to a request from the console
+	frontend to the console daemon"""
+	def __init__( self, request = None, data = None, mime_type = MIMETYPE_JSON ):
+		Message.__init__( self, Message.RESPONSE, mime_type = mime_type )
+		if request:
+			self._id = request._id
+			self.command = request.command
+			self.arguments = request.arguments
+			self.options = request.options
+			if 'status' in request.body:
+				self.status = request.status
+		elif data:
+			self.parse( data )
+
+	def is_final( self ):
+		return ( self._id and self.status != 210 )
+
+	recreate_id = None
+
+	def set_body( self, filename ):
+		'''Set body of response by guessing the mime type of the given
+		file and adding the content of the file to the body. The mime
+		type is guessed using the extension of the filename.'''
+		self.mimetype, encoding = mimetypes.guess_type( filename )
+
+		if self.mimetype is None:
+			PROTOCOL.error( 'Failed to guess MIME type of %s' % filename )
+			raise TypeError( _( 'Unknown mime type' ) )
+
+		fd = open( filename, 'b' )
+		# FIXME: should check size first
+		self.body = fd.read()
+		fd.close()
+
 if __name__ == '__main__':
 	# encode
 	auth = Request( 'AUTH' )
 	auth.body[ 'username' ] = 'fasel'
 	auth.body[ 'password' ] = 'secret'
-	req = Request( 'COMMAND', 'cups/list', args = [ 'slave.domain.tld' ] )
+	req = Request( 'COMMAND', arguments = [ 'cups/list' ], options = [ 'slave.domain.tld' ] )
 	res = Response( req )
 
 	for msg in ( req, res, auth ):

@@ -109,4 +109,6 @@ class ElementTree( ET.ElementTree ):
 		return default
 
 	def is_valid( self ):
+		'''This method may provide a way to check for inconsistencies in
+		the XML description'''
 		return True

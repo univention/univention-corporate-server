@@ -40,8 +40,6 @@ import univention.debug as ud
 import univention.config_registry as ucr
 from univention.config_registry_info import ConfigRegistryInfo, Variable
 
-import notifier.popen
-
 _ = umc.Translation( 'univention-management-console-modules-ucr' ).translate
 
 class Instance( umcm.Base ):
@@ -74,15 +72,16 @@ class Instance( umcm.Base ):
 			info.write_customized()
 
 	def set( self, request ):
-		if 'variables' in request.options:
-			for key, value in request.options[ 'variables' ].items():
-				if value == None:
-					value = ''
-				arg = [ '%s=%s' % ( key.encode(), value.encode() ) ]
-				ucr.handler_set( arg )
-				if request.options.get( 'descriptions', '' ) or request.options.get( 'type', '' ) or \
-					   request.options.get( 'categories', '' ):
-					self.__create_variable_info( request.options )
+		if isinstance( request.options, ( list, tuple ) ):
+			for var in request.options:
+				if 'value' in var:
+					value = var[ 'value' ]
+					if  value is None:
+						value = ''
+						arg = [ '%s=%s' % ( key.encode(), value.encode() ) ]
+						ucr.handler_set( arg )
+				if 'descriptions' in var or 'type' in var or 'categories' in var:
+					self.__create_variable_info( var )
 			request.status = 200
 			success = True
 		else:

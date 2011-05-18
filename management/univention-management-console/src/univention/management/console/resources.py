@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  main for the UMC daemon
+#  session handling
 #
 # Copyright 2006-2011 Univention GmbH
 #
@@ -31,56 +31,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os
-import signal
-import univention.debug as ud
+from .module import Manager as ModuleManager
+from .syntax import Manager as SyntaxManager
+from .category import Manager as CategoryManager
 
-'''helper function to daemonize a process'''
-
-def daemonize( name ):
-	try:
-		pid = os.fork()
-	except OSError, e:
-		ud.debug( ud.ADMIN, ud.ERROR, 'Daemon Mode Error: %s' % e.strerror)
-		return False
-
-	if (pid == 0):
-		os.setsid()
-		signal.signal(signal.SIGHUP, signal.SIG_IGN)
-		try:
-			pid = os.fork()
-		except OSError, e:
-			ud.debug( ud.ADMIN, ud.ERROR, 'Daemon Mode Error: %s' % e.strerror)
-			return False
-
-		if (pid == 0):
-			os.chdir("/")
-			os.umask(0)
-		else:
-			pf = open( '/var/run/univention-management-console/%s.pid' % name,
-					   'w+' )
-			pf.write( str( pid ) )
-			pf.close()
-			os._exit( 0 )
-	else:
-		os._exit(0)
-
-	__close_files()
-
-	os.open("/dev/null", os.O_RDONLY)
-	os.open("/dev/null", os.O_RDWR)
-	os.open("/dev/null", os.O_RDWR)
-
-	return True
-
-def __close_files():
-	try:
-		maxfd = os.sysconf( "SC_OPEN_MAX" )
-	except ( AttributeError, ValueError ):
-		maxfd = 256       # default maximum
-
-	for fd in range( 0, maxfd ):
-		try:
-			os.close( fd )
-		except OSError:   # ERROR (ignore)
-			pass
+moduleManager = ModuleManager()
+syntaxManager = SyntaxManager()
+categoryManager = CategoryManager()

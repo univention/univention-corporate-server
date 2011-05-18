@@ -30,12 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys
+import os
+import sys
 import xml.parsers.expat
 
-import univention.debug as ud
-
-from tools import ElementTree, JSON_Object, JSON_List
+from .tools import ElementTree, JSON_Object, JSON_List, JSON_Dict
+from .log import RESOURCES
 
 class Attribute( JSON_Object ):
 	'''Represents an command attribute'''
@@ -72,7 +72,7 @@ class Command( JSON_Object ):
 			self.attributes.append( attribute )
 
 class Flavor( JSON_Object ):
-	'''Defines a flavor of a module. i.e. a few option that influence the
+	'''Defines a flavor of a module. i.e. a few options that influence the
 	behaviour of the module'''
 	def __init__( self, id = '', icon = '', name = '', description = '', options = None ):
 		self.name = name
@@ -85,7 +85,7 @@ class Flavor( JSON_Object ):
 
 class Module( JSON_Object ):
 	'''Represents an command attribute'''
-	def __init__( self, id = '', name = '', description = '', icon = '', flavors = None, categories = None, flavors = None, commands = None ):
+	def __init__( self, id = '', name = '', description = '', icon = '', categories = None, flavors = None, commands = None ):
 		self.id = id
 		self.name = name
 		self.description = description
@@ -93,7 +93,8 @@ class Module( JSON_Object ):
 		if flavors is None:
 			self.flavors = JSON_List()
 		else:
-			self.flavors = flavors
+			self.flavors = JSON_List( flavors )
+
 		if categories is None:
 			self.categories = JSON_List()
 		else:
@@ -141,8 +142,8 @@ class XML_Definition( ElementTree ):
 			flavor = Flavor( elem.get( 'id' ), elem.get( 'icon' ) )
 			for opt in elem.findall( 'option' ):
 				flavor.options[ opt.get( 'name' ) ] = opt.get( 'value' )
-			flavor.name = flavor.get_localized( 'name' )
-			flavor.description = flavor.get_localized( 'description' )
+			flavor.name = simple_elem.get_localized( 'name' )
+			flavor.description = simple_elem.get_localized( 'description' )
 			flavors.append( flavor )
 
 		return flavors
@@ -192,33 +193,36 @@ class Manager( dict ):
 		dict.__init__( self )
 		self.load()
 
-	def get( self, name ):
-		if name in self:
-			return self[ name ].handler()
-
-		return None
-
 	def modules( self ):
+		'''Return list of module names'''
 		return self.keys()
 
 	def load( self ):
+		'''Load the list of available modules. As the list is cleared
+		before, the method can also be used for reloading'''
+		RESOURCES.info( 'Loading modules ...' )
 		self.clear()
 		for filename in os.listdir( Manager.DIRECTORY ):
 			if not filename.endswith( '.xml' ):
 				continue
 			try:
 				mod = XML_Definition( filename = os.path.join( Manager.DIRECTORY, filename ) )
-			except xml.parsers.expat.ExpatError:
+				RESOURCES.info( 'Loaded module %s' % filename )
+			except xml.parsers.expat.ExpatError, e:
+				RESOURCES.warn( 'Failed to load module %s: %s' % ( filename, str( e ) ) )
 				continue
 			if not mod.is_valid():
+				RESOURCES.warn( 'The module %s is not valid' % filename )
 				continue
 			self[ mod.id ] = mod
 
-	def get_command_descriptions( self, hostname, acls ):
-		'''Retrieves a list of all modules and commands available according to the ACLs
+	def permitted_commands( self, hostname, acls ):
+		'''Retrieves a list of all modules and commands available
+		according to the ACLs (instance of ConsoleACLs)
 
 		{ id : Module, ... }
 		'''
+		RESOURCES.info( 'Retrieving list of permitted commands' )
 		modules = {}
 		for module_id in self:
 			mod = self[ module_id ].get_module()
@@ -226,22 +230,23 @@ class Manager( dict ):
 				if acls.is_command_allowed( command, hostname ):
 					if not module_id in modules:
 						modules[ module_id ] = mod
-						print 'adding module', module_id, mod
 					cmd = self[ module_id ].get_command( command )
-					print 'adding command', cmd.name, module_id
 					modules[ module_id ].commands.append( cmd )
-		for mod in modules:
-			print 'Module:', mod, ', '.join( [ cmd.name for cmd in modules[ mod ].commands ] )
+
 		return modules
 
-	def search_command( self, commands, command ):
-		for module_id in commands:
-			print 'available commands', module_id, ', '.join( [ cmd.name for cmd in commands[ module_id ].commands ] )
-			for cmd in commands[ module_id ].commands:
+	def module_providing( self, modules, command ):
+		'''Searches a dictionary of modules (as returned by
+		permitted_commands) for the given command. If found, the id of
+		the module is returned, otherwise None'''
+		RESOURCES.info( 'Searching for module providing command %s' % command )
+		for module_id in modules:
+			for cmd in modules[ module_id ].commands:
 				if cmd.name == command:
-					print 'found command', command, module_id, cmd.name
+					RESOURCES.info( 'Found module %s' % module_id )
 					return module_id
 
+		RESOURCES.info( 'No module provides %s' % command )
 		return None
 
 if __name__ == '__main__':

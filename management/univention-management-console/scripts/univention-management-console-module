@@ -39,10 +39,10 @@ import locale, os, sys
 
 import notifier
 
-import univention_baseconfig
+from univention.config_registry import ConfigRegistry
 
-baseConfig = univention_baseconfig.baseConfig()
-baseConfig.load()
+ucr = ConfigRegistry()
+ucr.load()
 
 if __name__ == '__main__':
 	if os.getuid() != 0:
@@ -60,9 +60,6 @@ if __name__ == '__main__':
 	parser.add_option( '-m', '--module', type = 'string',
 					   action = 'store', dest = 'module',
 					   help = 'set the UMC daemon module to load' )
-	parser.add_option( '-i', '--interface', type = 'string',
-					   action = 'store', dest = 'interface', default = 'web',
-					   help = 'defines the client interface type' )
 	parser.add_option( '-d', '--debug', action = 'store', type = 'int',
 					   dest = 'debug', default = 0,
 					   help = 'if given debugging is activated and set to the specified level' )
@@ -70,31 +67,29 @@ if __name__ == '__main__':
 	( options, arguments ) = parser.parse_args()
 
 	if options.debug > 0:
-		ud.init( '/var/log/univention/management-console-module.log', 1, 1 )
+		ud.init( '/var/log/univention/management-console-module-%s.log' % options.module, 1, 1 )
 		ud.set_level( ud.ADMIN, options.debug )
 	else:
-		ud.init( '/dev/null', 0, 0 )
+		ud.init( os.devnull, 0, 0 )
 
 	localeok = False
 	try:
 		locale.setlocale( locale.LC_MESSAGES, locale.normalize( options.language ) )
 		localeok = True
 	except:
-		ud.debug(ud.ADMIN, ud.ERROR, 'univention-management-console-module.py: specified locale is not available (cmdline: %s)' % options.language)
-	if not localeok:
-		if baseConfig.get( 'umc/web/language' ):
-			try:
-				locale.setlocale( locale.LC_MESSAGES, locale.normalize( baseConfig['umc/web/language'] ) )
-				localeok = True
-			except:
-				ud.debug(ud.ADMIN, ud.ERROR, 'univention-management-console-module.py: specified locale is not available (baseconfig: %s)' % baseConfig['umc/web/language'])
+		ud.debug( ud.ADMIN, ud.ERROR, 'univention-management-console-module.py: specified locale is not available (cmdline: %s)' % options.language)
+	if not localeok and ucr.get( 'umc/web/language' ):
+		try:
+			locale.setlocale( locale.LC_MESSAGES, locale.normalize( ucr['umc/web/language'] ) )
+			localeok = True
+		except:
+			ud.debug( ud.ADMIN, ud.ERROR, 'univention-management-console-module.py: specified locale is not available (UCR: %s)' % ucr[ 'umc/web/language' ] )
 
 	import univention.management.console.protocol as umcp
 
 	if not options.socket:
 		raise SystemError( 'socket name is missing' )
 
-	module = umcp.ModuleServer( options.socket, options.module, options.interface,
-								check_acls = False )
+	module = umcp.ModuleServer( options.socket, options.module, check_acls = False )
 
 	notifier.loop()

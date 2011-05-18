@@ -46,7 +46,6 @@ class Base( signals.Provider ):
 	def __init__( self ):
 		signals.Provider.__init__( self )
 		self.signal_new( 'success' )
-		self.signal_new( 'partial' )
 		self.signal_new( 'failure' )
 		self._username = None
 		self._password = None
@@ -106,20 +105,16 @@ class Base( signals.Provider ):
 		del self.__requests[ object.id() ]
 
 	def finished( self, id, response, message = None, success = True ):
-		"""this method should be invoked by module to finish the
-		processing of a request. 'id' is the request command identifier,
-		'dialog' should contain the result as UMC dialog and 'success'
-		defines if the request could be fulfilled or not. If there is a
-		definition of a '_post' processing function it is called
-		immediately. After that a 'revamp' function is invoked if it
-		exists. In that cause the result is passed to this function and
-		not returned to the client, otherwise the result is encapsulated
-		in a dialog and send to the client."""
+		"""Should be invoked by module to finish the processing of a
+		request. 'id' is the request command identifier, 'dialog' should
+		contain the result as UMC dialog and 'success' defines if the
+		request could be fulfilled or not. If there is a definition of a
+		'_post' processing function it is called immediately."""
+
 		if not id in self.__requests:
 			return
 		object, method = self.__requests[ id ]
 
-		# FIXME: where to put the answer in this response
 		if not isinstance( response, umcp.Response ):
 			res = umcp.Response( object )
 			res.result = response

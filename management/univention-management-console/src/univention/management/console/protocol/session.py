@@ -31,7 +31,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import locale, sys, os, string, ldap
+import ldap
+import locale
+import os
+import string
+import sys
 
 import notifier
 import notifier.signals as signals
@@ -41,17 +45,18 @@ from OpenSSL import *
 
 import univention.uldap
 
-from message import *
-from client import *
-from version import *
-from definitions import *
+from .message import *
+from .client import *
+from .version import *
+from .definitions import *
 
-from univention.management.console.module import Manager as ModuleManager
-from univention.management.console.syntax import Manager as SyntaxManager
-from univention.management.console.category import Manager as CategoryManager
-from univention.management.console.verify import SyntaxVerificationError
-from univention.management.console.auth import AuthHandler
-from univention.management.console.acl import ConsoleACLs
+from ..resources import *
+from ..verify import SyntaxVerificationError
+from ..auth import AuthHandler
+from ..acl import ConsoleACLs
+from ..locales import Translation, LocaleNotFound
+from ..log import *
+
 import univention.management.console as umc
 
 class State( signals.Provider ):
@@ -68,9 +73,10 @@ class State( signals.Provider ):
 		self.authResponse = None
 		self.signal_new( 'authenticated' )
 		self.resend_queue = []
+		self.running = False
 
 	def __del__( self ):
-		ud.debug( ud.ADMIN, ud.PROCESS, 'State: dying' )
+		CORE.process( 'State: dying' )
 		del self.processor
 
 	def _authenticated( self, success ):
@@ -84,14 +90,12 @@ class State( signals.Provider ):
 
 
 class ModuleProcess( Client ):
-	COMMAND = '/usr/bin/univention-management-console-module'
+	COMMAND = '/usr/sbin/univention-management-console-module'
 
-	def __init__( self, module, interface, debug = '0', locale = None ):
-		socket = '/var/run/univention-management-console/%u-%lu.socket' % \
-				 ( os.getpid(), long( time.time() * 1000 ) )
+	def __init__( self, module, debug = '0', locale = None ):
+		socket = '/var/run/univention-management-console/%u-%lu.socket' % ( os.getpid(), long( time.time() * 1000 ) )
 		# determine locale settings
-		args = [ ModuleProcess.COMMAND, '-m', module, '-s', socket,
-				 '-i', interface, '-d', debug ]
+		args = [ ModuleProcess.COMMAND, '-m', module, '-s', socket, '-d', debug ]
 		if locale:
 			args.extend( ( '-l', '%s' % locale ) )
 			self.__locale = locale
@@ -99,7 +103,7 @@ class ModuleProcess( Client ):
 			self.__locale = None
 		Client.__init__( self, unix = socket, ssl = False, auth = False )
 		self.signal_connect( 'response', self._response )
-		ud.debug( ud.ADMIN, ud.PROCESS, 'running: %s' % args )
+		CORE.process( 'running: %s' % args )
 		self.__process = popen.RunIt( args, stdout = False )
 		self.__process.signal_connect( 'finished', self._died )
 		self.__pid = self.__process.start()
@@ -107,15 +111,17 @@ class ModuleProcess( Client ):
 		self.signal_new( 'result' )
 		self.signal_new( 'finished' )
 		self.name = module
+		self.running = False
+		self._queued_requests = []
 
 	def __del__( self ):
-		ud.debug( ud.ADMIN, ud.PROCESS, 'ModuleProcess: dying' )
+		CORE.process( 'ModuleProcess: dying' )
 		self.disconnect()
 		self.__process.stop()
-		ud.debug( ud.ADMIN, ud.PROCESS, 'ModuleProcess: child stopped' )
+		CORE.process( 'ModuleProcess: child stopped' )
 
 	def _died( self, pid, status ):
-		ud.debug( ud.ADMIN, ud.PROCESS, 'ModuleProcess: child died' )
+		CORE.process( 'ModuleProcess: child died' )
 		self.signal_emit( 'finished', pid, status, self.name )
 
 	def _response( self, msg ):
@@ -127,23 +133,16 @@ class ModuleProcess( Client ):
 	def pid( self ):
 		return self.__pid
 
-class Processor( signals.Provider ):
+class Processor( signals.Provider, Translation ):
 	'''Implements a proxy and command handler. It handles all internal
 	UMCP commands and passes the commands for a module to the
 	subprocess.'''
-	moduleManager = ModuleManager()
-	syntaxManager = SyntaxManager()
-	categoryManager = CategoryManager()
 
 	def __init__( self, username, password ):
 		self.__username = username
 		self.__password = password
-		# default interface is 'web'
-		self.__interface = 'web'
 		signals.Provider.__init__( self )
-
-		# # initialize the handler modules
-		# self.__manager = umc.ModuleManager()
+		Translation.__init__( self, 'univention-management-console' )
 
 		# stores the module processes [ modulename ] = <>
 		self.__processes = {}
@@ -166,18 +165,18 @@ class Processor( signals.Provider ):
 
 		# read the ACLs
 		self.acls = ConsoleACLs( self.lo, self.__username, umc.configRegistry[ 'ldap/base' ] )
-		self.__command_list = Processor.moduleManager.get_command_descriptions( umc.configRegistry[ 'hostname' ], self.acls )
+		self.__command_list = moduleManager.permitted_commands( umc.configRegistry[ 'hostname' ], self.acls )
 
 		self.signal_new( 'response' )
 
 
 	def __del__( self ):
-		ud.debug( ud.ADMIN, ud.PROCESS, 'Processor: dying' )
+		CORE.process( 'Processor: dying' )
 		for process in self.__processes.values():
 			del process
 
 	def get_module_name( self, command ):
-		return Processor.moduleManager.search_command( self.__comand_list, command )
+		return moduleManager.module_providing( self.__comand_list, command )
 
 	def request( self, msg ):
 		if msg.command == 'EXIT':
@@ -197,7 +196,7 @@ class Processor( signals.Provider ):
 
 	def _purge_child(self, module_name):
 		if module_name in self.__processes:
-			ud.debug( ud.ADMIN, ud.INFO, 'session.py: module %s is still running - purging module out of memory' % module_name)
+			CORE.process( 'module %s is still running - purging module out of memory' % module_name)
 			pid = self.__processes[ module_name ].pid()
 			os.kill(pid, 9)
 		return False
@@ -210,12 +209,12 @@ class Processor( signals.Provider ):
 		if module_name:
 			if module_name in self.__processes:
 				self.__processes[ module_name ].request( msg )
-				ud.debug( ud.ADMIN, ud.INFO, 'session.py: got EXIT: asked module %s to shutdown gracefully' % module_name)
+				CORE.info( 'session.py: got EXIT: asked module %s to shutdown gracefully' % module_name)
 				# added timer to kill away module after 3000ms
 				cb = notifier.Callback( self._purge_child, module_name )
 				self.__killtimer[ module_name ] = notifier.timer_add( 3000, cb )
 			else:
-				ud.debug( ud.ADMIN, ud.INFO, 'session.py: got EXIT: module %s is not running' % module_name )
+				CORE.info( 'session.py: got EXIT: module %s is not running' % module_name )
 
 	def handle_request_version( self, msg ):
 		res = Response( msg )
@@ -233,13 +232,13 @@ class Processor( signals.Provider ):
 			for id, module in self.__command_list.items():
 				modules[ id ] = { 'name' : module.name, 'description' : module.description, 'icon' : module.icon, 'categories' : module.categories }
 			res.body[ 'modules' ] = modules
-			res.body[ 'categories' ] = self.categoryManager.all()
-			ud.debug( ud.ADMIN, ud.INFO, 'session.py: modules: %s' % str( self.__command_list ) )
-			ud.debug( ud.ADMIN, ud.INFO, 'session.py: categories: %s' % str( res.body[ 'categories' ] ) )
+			res.body[ 'categories' ] = categoryManager.all()
+			CORE.info( 'session.py: modules: %s' % str( self.__command_list ) )
+			CORE.info( 'session.py: categories: %s' % str( res.body[ 'categories' ] ) )
 			res.status = 200 # Ok
 
 		elif 'categories/list' in msg.arguments:
-			res.body[ 'categories' ] = self.categoryManager.all()
+			res.body[ 'categories' ] = categoryManager.all()
 			res.status = 200 # Ok
 		elif 'syntax/verification' in msg.arguments:
 			syntax_name = msg.options.get( 'syntax' )
@@ -249,7 +248,7 @@ class Processor( signals.Provider ):
 			else:
 				res.status = 200
 				try:
-					self.syntaxManager.verify( syntax_name, value )
+					syntaxManager.verify( syntax_name, value )
 					res.result = True
 				except SyntaxVerificationError, e:
 					res.result = False
@@ -273,28 +272,16 @@ class Processor( signals.Provider ):
 			res.status = 200
 			self.__locale = msg.arguments[ 1 ]
 			try:
-				locale.setlocale( locale.LC_MESSAGES,
-								  locale.normalize( msg.arguments[ 1 ] ) )
-			except locale.Error:
+				self.set_language( msg.arguments[ 1 ] )
+			except LocaleNotFound, e:
 				# specified locale is not available
 				res.status = 601
-				ud.debug( ud.ADMIN, ud.WARN,
-						 'session.py: handle_request_set: setting locale: status=601: specified locale is not available (%s)' % \
-						 self.__locale )
+				CORE.warn( 'handle_request_set: setting locale: status=601: specified locale is not available (%s)' % self.__locale )
 			self.signal_emit( 'response', res )
 
 		elif msg.arguments[ 0 ] == 'sessionid':
 			res.status = 200
 			self.__sessionid = msg.arguments[ 1 ]
-			self.signal_emit( 'response', res )
-
-		elif msg.arguments[ 0 ] == 'interface':
-			if len( msg.arguments ) == 2 and msg.arguments[ 1 ]:
-				self.__interface = msg.arguments[ 1 ]
-				res.status = 200
-			else:
-				# invalid command arguments
-				res.status = 402
 			self.signal_emit( 'response', res )
 
 		else:
@@ -306,7 +293,7 @@ class Processor( signals.Provider ):
 		if len( msg.arguments ) > 0:
 			command = msg.arguments[ 0 ]
 
-		module_name = Processor.moduleManager.search_command( self.__command_list, command )
+		module_name = moduleManager.module_providing( self.__command_list, command )
 		if not module_name:
 			res = Response( msg )
 			res.status = 404 # unknown command
@@ -326,14 +313,8 @@ class Processor( signals.Provider ):
 				self.signal_emit( 'response', response )
 				return
 			if not module_name in self.__processes:
-				ud.debug( ud.ADMIN, ud.INFO, 'creating new module and passing new request to module %s: %s' % (module_name, str(msg._id)) )
-				if umc.configRegistry.get( 'umc/module/debug/level' ):
-					mod_proc = ModuleProcess( module_name, self.__interface,
-								  debug = umc.configRegistry[ 'umc/module/debug/level' ],
-								  locale = self.__locale )
-				else:
-					mod_proc = ModuleProcess( module_name, self.__interface,
-											  locale = self.__locale  )
+				CORE.info( 'creating new module and passing new request to module %s: %s' % (module_name, str(msg._id)) )
+				mod_proc = ModuleProcess( module_name, debug = umc.configRegistry.get( 'umc/module/debug/level', '0' ), locale = self.__locale )
 				mod_proc.signal_connect( 'result', self._mod_result )
 				cb = notifier.Callback( self._socket_died, module_name, msg )
 				mod_proc.signal_connect( 'closed', cb )
@@ -343,15 +324,18 @@ class Processor( signals.Provider ):
 				cb = notifier.Callback( self._mod_connect, mod_proc, msg )
 				notifier.timer_add( 50, cb )
 			else:
-				ud.debug( ud.ADMIN, ud.INFO, 'passing new request to running module %s' % module_name )
-				self.__processes[ module_name ].request( msg )
+				CORE.info( 'passing new request to running module %s' % module_name )
+				proc = self.__processes[ module_name ]
+				if proc.running:
+					proc.request( msg )
+				else:
+					proc._queued_requests.append( msg )
 
 	def _mod_connect( self, mod, msg ):
-		ud.debug( ud.ADMIN, ud.PROCESS, 'trying to connect' )
 		if not mod.connect():
-			ud.debug( ud.ADMIN, ud.PROCESS, 'failed' )
+			CORE.process( 'No connection to module process yet' )
 			if mod._connect_retries > 200:
-				ud.debug( ud.ADMIN, ud.ERROR, 'connection to module process failed')
+				CORE.error( 'Connection to module process failed' )
 				res = Response( msg )
 				res.status = 503 # error connecting to module process
 				res.message = status_information( 503 )
@@ -360,27 +344,32 @@ class Processor( signals.Provider ):
 				mod._connect_retries += 1
 				return True
 		else:
-			ud.debug( ud.ADMIN, ud.INFO, 'ok')
+			CORE.info( 'Connected to new module process')
+			mod.running = True
 
 			# send acls
-			req = Request( 'SET', args = [ 'commands/permitted' ], opts = { 'acls' : self.acls.json(), 'commands' : self.__command_list[ mod.name ].json() } )
+			req = Request( 'SET', arguments = [ 'commands/permitted' ], options = { 'acls' : self.acls.json(), 'commands' : self.__command_list[ mod.name ].json() } )
 			mod.request( req )
 
 			# set credentials
-			req = Request( 'SET', args = [ 'credentials' ], opts = { 'username' : self.__username, 'password' : self.__password } )
+			req = Request( 'SET', arguments = [ 'credentials' ], options = { 'username' : self.__username, 'password' : self.__password } )
 			mod.request( req )
 
 			# set locale
 			if self.__locale:
-				req = Request( 'SET', args = [ 'locale' ], opts = { 'locale' : self.__locale } )
+				req = Request( 'SET', arguments = [ 'locale' ], options = { 'locale' : self.__locale } )
 				mod.request( req )
 
 			# set sessionid
 			if self.__sessionid:
-				req = Request( 'SET', args = [ 'sessionid' ], opts = { 'sessionid' : self.__sessionid } )
+				req = Request( 'SET', arguments = [ 'sessionid' ], options = { 'sessionid' : self.__sessionid } )
 				mod.request( req )
 
 			mod.request( msg )
+			# send queued request that were received during start procedure
+			for req in mod._queued_requests:
+				mod.request( req )
+			mod._queued_requests = []
 
 		return False
 
@@ -388,24 +377,24 @@ class Processor( signals.Provider ):
 		self.signal_emit( 'response', msg )
 
 	def _socket_died( self, module_name, msg):
-		ud.debug( ud.ADMIN, ud.WARN, 'socket died (module=%s)' % module_name )
+		CORE.warn( 'socket died (module=%s)' % module_name )
 		res = Response( msg )
 		res.status = 502 # module process died unexpectedly
-		self._mod_died(0, 0, module_name, msg)
+		self._mod_died(0, 1, module_name, msg)
 
 	def _mod_died( self, pid, status, name, msg ):
 		if status:
-			ud.debug( ud.ADMIN, ud.WARN, 'module process died (%d): %s' % ( pid, str( status ) ) )
+			CORE.warn( 'Module process died (%d): %s' % ( pid, str( status ) ) )
 			res = Response( msg )
 			res.status = 502 # module process died unexpectedly
 		else:
-			ud.debug( ud.ADMIN, ud.INFO, 'module process died: everything fine' )
+			CORE.info( 'module process died: everything fine' )
 		if name in self.__processes:
-			ud.debug( ud.ADMIN, ud.WARN, 'module process died: cleaning up requests')
+			CORE.warn( 'module process died: cleaning up requests')
 			self.__processes[ name ].invalidate_all_requests()
 		# if killtimer has been set then remove it
 		if name in self.__killtimer:
-			ud.debug( ud.ADMIN, ud.INFO, 'module process died: stopping killtimer of "%s"' % name )
+			CORE.info( 'module process died: stopping killtimer of "%s"' % name )
 			notifier.timer_remove( self.__killtimer[ name ] )
 			del self.__killtimer[ name ]
 		if name in self.__processes:

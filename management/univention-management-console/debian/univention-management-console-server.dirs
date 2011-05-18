@@ -1,3 +1,2 @@
-etc/runit/univention-management-console-server/
-usr/sbin/
-usr/lib/univention-install/
+var/cache/univention-management-console/acls
+var/run/univention-management-console

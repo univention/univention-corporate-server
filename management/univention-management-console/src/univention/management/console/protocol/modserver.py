@@ -31,14 +31,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from server import *
-from message import *
-from definitions import *
+from .server import *
+from .message import *
+from .definitions import *
 
-import univention.management.console.acl as umc_acl
-import univention.management.console.module as umcm
+from ..acl import ACLs
+from ..module import Module
+from ..log import MODULE
 
-import univention.debug as ud
 import univention.config_registry
 
 configRegistry = univention.config_registry.ConfigRegistry()
@@ -49,13 +49,12 @@ import notifier
 import notifier.threads as threads
 
 class ModuleServer( Server ):
-	def __init__( self, socket, module, interface, timeout = 300,
-				  check_acls = True ):
+	def __init__( self, socket, module, timeout = 300, check_acls = True ):
 		Server.__init__( self, ssl = False, unix = socket, magic = False )
 		self.signal_connect( 'session_new', self._client )
 		self.__name = module
 		self.__module = module
-		self.__commands = umcm.Module()
+		self.__commands = Module()
 		self.__comm = None
 		self.__client = None
 		self.__buffer = ''
@@ -66,11 +65,10 @@ class ModuleServer( Server ):
 			self.__watchdog_timeout = 1000 * int( configRegistry.get('umc/module/watchdog/timeout', 3600) )
 		except:
 			self.__watchdog_timeout = 3600 * 1000
-		ud.debug( ud.ADMIN, ud.WARN, "modserver.py: __watchdog_timeout set to %d ms" % self.__watchdog_timeout )
+		MODULE.warn( "Watchdog_timeout set to %d ms" % self.__watchdog_timeout )
 		self.__watchdog_timer = notifier.timer_add( self.__watchdog_timeout, self._watchdog_timed_out )
 		self.__active_requests = 0
 		self.__check_acls = check_acls
-		self.__interface = interface
 		self.__queue = ''
 		self.__username = None
 		self.__password = None
@@ -111,14 +109,14 @@ class ModuleServer( Server ):
 		self.__watchdog_timer = notifier.timer_add( self.__watchdog_timeout, self._watchdog_timed_out )
 
 	def _watchdog_timed_out( self ):
-		ud.debug( ud.ADMIN, ud.ERROR, "modserver.py: _watchdog_timed_out: commiting suicide" )
-		ud.debug( ud.ADMIN, ud.ERROR, 'modserver.py: __timer = %s' % str(self.__timer) )
-		ud.debug( ud.ADMIN, ud.ERROR, 'modserver.py: __active_requests = %s' % str(self.__active_requests) )
+		MODULE.warn( "Watchdog: Commiting suicide" )
+		MODULE.info( '__timer = %s' % str(self.__timer) )
+		MODULE.info( '__active_requests = %s' % str(self.__active_requests) )
 		self.exit()
 		sys.exit( 0 )
 
 	def _timed_out( self ):
-		ud.debug( ud.ADMIN, ud.INFO, "modserver.py: _timed_out: commiting suicide" )
+		MODULE.info( "Commiting suicide" )
 		self.exit()
 		sys.exit( 0 )
 
@@ -148,11 +146,12 @@ class ModuleServer( Server ):
 			while self.__buffer:
 				msg = Message()
 				self.__buffer = msg.parse( self.__buffer )
-				ud.debug( ud.ADMIN, ud.INFO, "modserver.py: _recv: msg._id=%s" % msg.id() )
+				MODULE.info( "Received request %s" % msg.id() )
 				self.handle( msg )
 		except IncompleteMessageError, e:
-			pass
+			MODULE.error( 'Failed to parse incomplete message' )
 		except ( ParseError, UnknownCommandError ), e:
+			MODULE.error( 'Failed to parse message: %s' % str( e ) )
 			res = Response( msg )
 			res.id( -1 )
 			res.status = e.args[ 0 ]
@@ -163,7 +162,7 @@ class ModuleServer( Server ):
 	def handle( self, msg ):
 		if msg.command == 'EXIT':
 			shutdown_timeout = 100
-			ud.debug( ud.ADMIN, ud.INFO, "modserver.py: got EXIT: module shutdown in %dms" % shutdown_timeout )
+			MODULE.info( "EXIT: module shutdown in %dms" % shutdown_timeout )
 			# shutdown module after one second
 			resp = Response( msg )
 			resp.body = { 'status': 'module %s will shutdown in %dms' % (str(msg.arguments[0]), shutdown_timeout) }
@@ -196,7 +195,7 @@ class ModuleServer( Server ):
 				try:
 					locale.setlocale( locale.LC_MESSAGES, locale.normalize( self.__locale ) )
 				except locale.Error:
-					ud.debug( ud.ADMIN, ud.WARN, "modserver.py: specified locale is not available (%s)" % self.__locale )
+					MODULE.warn( "Specified locale is not available (%s)" % self.__locale )
 					# specified locale is not available
 					resp.status = 601
 			else:

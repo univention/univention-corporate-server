@@ -33,74 +33,123 @@
 
 # import univention.debug as ud
 
-import locale, os, sys, string, time
+import locale
+import os
+import sys
+import string
+import socket
+import signal
+import time
 
 from optparse import OptionParser
 
-import socket
-import signal
-
 import notifier
 import notifier.signals as signals
+from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
 
 import univention.config_registry as ucr
-import univention.debug as ud
+
+from univention.management.console.log import *
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
 server = None
 
-def main():
-	global server
+class UMC_Daemon( DaemonRunner ):
+	def __init__( self ):
+		self.parser = OptionParser()
+		self.parser.add_option( '-n', '--no-daemon', action = 'store_false',
+						   dest = 'daemon_mode', default = True,
+						   help = 'if set the process will not fork into the background' )
+		self.parser.add_option( '-p', '--port', action = 'store', type = 'int',
+						   dest = 'port', default = 6670,
+						   help = 'defines an alternative port number [default %default]' )
+		self.parser.add_option( '-l', '--language', type = 'string', action = 'store',
+						   dest = 'language', default = 'de_DE.utf8',
+						   help = 'defines the language to use [default: %default]' )
+		try:
+			default_debug = int( configRegistry.get( 'umc/server/debug/level', '1' ) )
+		except:
+			default_debug = 1
+		self.parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = default_debug,
+						   help = 'if given than debugging is activated and set to the specified level [default: %default]' )
+		self.parser.add_option( '-L', '--log-file', action = 'store',  dest = 'logfile', default = 'management-console-server',
+						   help = 'specifies an alternative log file [default: %default]' )
+		( self.options, self.arguments ) = self.parser.parse_args()
 
-	parser = OptionParser()
-	parser.add_option( '-n', '--no-daemon', action = 'store_false',
-					   dest = 'daemon_mode', default = True,
-					   help = 'if set the process will not fork into the background' )
-	parser.add_option( '-l', '--language', type = 'string', action = 'store',
-					   dest = 'language', default = 'de_DE.utf8',
-					   help = 'defines the language to use' )
-	parser.add_option( '-d', '--debug', action = 'store', type = 'int',
-					   dest = 'debug', default = 0,
-					   help = 'if given than debugging is activated and set to the specified level' )
+		# init logging
+		if not self.options.daemon_mode:
+			debug_fd = log_init( '/dev/stderr', self.options.debug )
+		else:
+			debug_fd = log_init( self.options.logfile, self.options.debug )
 
-	( options, args ) = parser.parse_args()
+		# default action: start
+		if not self.arguments:
+			sys.argv[ 1 ] = 'start'
+		elif self.arguments:
+			sys.argv[ 1 ] = self.arguments[ 0 ]
 
-	ud.init( '/var/log/univention/management-console-server.log', 1, 1 )
-	ud.set_level( ud.ADMIN, options.debug )
+		# for daemon runner
+		if self.options.daemon_mode:
+			self.stdin_path = os.path.devnull
+			self.stdout_path = os.path.devnull
+			self.stderr_path = os.path.devnull
+		else:
+			self.stdin_path = '/dev/stdin'
+			self.stdout_path = '/dev/stderr'
+			self.stderr_path = '/dev/stderr'
+		self.pidfile_path = '/var/run/umc-server.pid'
+		self.pidfile_timeout = 10
 
-	localeok = False
-	try:
-		locale.setlocale( locale.LC_MESSAGES, locale.normalize( options.language ) )
-		localeok = True
-	except:
-		ud.debug(ud.ADMIN, ud.ERROR, 'univention-management-console-server.py: specified locale is not available (cmdline: %s)' % options.language)
-	if not localeok:
-		if configRegistry.get( 'umc/web/language' ):
-			try:
-				locale.setlocale( locale.LC_MESSAGES, locale.normalize( configRegistry['umc/web/language'] ) )
-				localeok = True
-			except:
-				ud.debug(ud.ADMIN, ud.ERROR, 'univention-management-console-server.py: specified locale is not available (baseconfig: %s)' % configRegistry['umc/web/language'])
+		# init daemon runner
+		DaemonRunner.__init__( self, self )
+		self.action_funcs[ 'reload' ] = self._reload
+		self.daemon_context.detach_process = self.options.daemon_mode
+		self.daemon_context.files_preserve = [ debug_fd ]
+		self.daemon_context.singal_map = {
+			signal.SIGHUP : self.hang_up,
+			signal.SIGUSR1 : self.user1
+			}
+		# set locale
+		try:
+			locale.setlocale( locale.LC_MESSAGES, locale.normalize( self.options.language ) )
+		except:
+			CORE.error( 'Specified locale is not available (%s)' % self.options.language )
 
-	import univention.management.console.protocol as umcp
-	import univention.management.console as umc
+	def _reload( self ):
+		if self.pidfile.is_locked():
+			pid = self.pidfile.read_pid()
+			os.kill( pid, signal.SIGUSR1 )
+		else:
+			CORE.error( 'Reload failed: server ist not running' )
 
-	if options.daemon_mode:
-		umc.daemonize( 'server' )
+	def _usage_exit( self, argv ):
+		self.parser.error( 'invalid action' )
+		sys.exit( 1 )
 
-	notifier.init( notifier.GENERIC )
+	def run( self ):
+		from univention.management.console.protocol.server import Server
 
-	server = umcp.Server()
+		notifier.init( notifier.GENERIC )
 
-	notifier.loop()
+		self.server = Server( port = self.options.port )
 
-def sighandler( signum, frame):
-	global server
-	del server
-	sys.exit( 0 )
+		CORE.error( 'Server started' )
+		notifier.loop()
+
+	def hang_up( self, signal, frame ):
+		self.server.reload()
+
+	def user1( self, signal, frame ):
+		self.server.reload()
 
 if __name__ == "__main__":
-	signal.signal( signal.SIGTERM, sighandler)
-	main()
+	umc_daemon = UMC_Daemon()
+	try:
+		umc_daemon.do_action()
+	except DaemonRunnerStopFailureError, e:
+		CORE.error( 'Failed to shutdown server gracefully (may be its already dead): %s' % str( e ) )
+	except DaemonRunnerStartFailureError, e:
+		CORE.error( 'Failed to start server: %s' % str( e ) )
+

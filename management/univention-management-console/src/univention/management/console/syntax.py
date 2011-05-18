@@ -3,7 +3,7 @@
 # Univention Management Console
 #  UMC syntax definitions
 #
-# Copyright 2006-2010 Univention GmbH
+# Copyright 2006-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -36,8 +36,9 @@ import sys
 import locales
 import xml.parsers.expat
 
-from tools import ElementTree
-import verify
+from .tools import ElementTree
+from .verify import SyntaxVerificationError, import_verification_functions
+from .log import RESOURCES
 
 _ = locales.Translation( 'univention.management.console' ).translate
 
@@ -94,29 +95,31 @@ class Manager( dict ):
 		dict.__init__( self )
 		self.load()
 
-	def get( self, name ):
-		if name in self:
-			return self[ name ]
-
-		return None
-
 	def load( self ):
+		'''Load the list of available syntax definitions. As the list is
+		cleared before, the method can also be used for reloading'''
+		RESOURCES.info( 'Loading syntax definitions ...' )
 		self.clear()
 		for filename in os.listdir( Manager.DIRECTORY ):
 			if not filename.endswith( '.xml' ):
+				RESOURCES.warn( 'Invalid syntax definition file %s' % filename )
 				continue
 			try:
 				definitions = ElementTree( file = os.path.join( Manager.DIRECTORY, filename ) )
 				for syntax_elem in definitions.findall( 'definitions/syntax' ):
 					syntax = XML_Definition( root = syntax_elem )
 					self[ syntax.name ] = syntax
-			except xml.parsers.expat.ExpatError:
+				RESOURCES.info( 'Loaded syntax definitions from %s' % filename )
+			except xml.parsers.expat.ExpatError, e:
+				RESOURCES.error( 'Failed to parse syntax definition %s: %s' % ( filename, str( e ) ) )
 				continue
 
 	def verify( self, syntax_name, value ):
+		RESOURCES.info( "Verifying value '%s' is of syntax %s" % ( str( value ), syntax_name ) )
 		syntax = self.get( syntax_name )
 		if not syntax:
-			raise verify.SyntaxVerificationError( _( 'Unknown syntax %s' ) % syntax_name )
+			RESOURCES.info( 'Unknown syntax name %s' % syntax_name )
+			raise SyntaxVerificationError( _( 'Unknown syntax %s' ) % syntax_name )
 
 		verify_func = None
 		if not syntax.verify_function:
@@ -128,15 +131,21 @@ class Manager( dict ):
 			verify_func = syntax.verify_function
 
 		if not verify_func:
-			raise verify.SyntaxVerificationError( _( 'Base type verification failed (type %(base)s): no verify function defined' ) % { 'base' : syntax.name } )
+			RESOURCES.warn( 'No verification function specified for syntax %s' % syntax_name )
+			raise SyntaxVerificationError( _( 'Base type verification failed (type %(base)s): no verify function defined' ) % { 'base' : syntax.name } )
 
 		func = getattr( verify, verify_func )
 
 		if not func:
-			raise verify.SyntaxVerificationError( _( 'Base type verification failed (type %(base)s): function to verify syntax could not be found (%(function)s)' ) % { 'base' : syntax.name, 'function' : syntax.verify_function } )
+			RESOURCES.warn( 'Given verification function %s not found' % verify_func )
+			raise SyntaxVerificationError( _( 'Base type verification failed (type %(base)s): function to verify syntax could not be found (%(function)s)' ) % { 'base' : syntax.name, 'function' : syntax.verify_function } )
 
-		func( value, syntax, self.verify )
+		try:
+			func( value, syntax, self.verify )
+		except Exception, e:
+			RESOURCES.error( 'Given verification function %s failed: %s' % ( verify_func, str( e ) ) )
+			raise SyntaxVerificationError( _( 'Execution of verification function %(function)s for syntax %(base)s failed:' ) % { 'base' : syntax.name, 'function' : syntax.verify_function } )
 
 		return True
 
-verify.import_verification_functions()
+import_verification_functions()

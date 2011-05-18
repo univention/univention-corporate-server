@@ -3,7 +3,7 @@
 # Univention Management Console
 #  init script for the UMC server
 #
-# Copyright 2006-2010 Univention GmbH
+# Copyright 2006-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,40 +32,44 @@
 
 . /lib/lsb/init-functions
 
-if [ ! -e /etc/runit/univention/univention-management-console-server ]; then
-	exit 0
-fi
+DAEMON="/usr/sbin/univention-management-console-server"
+NAME="Univention Management Console Server"
 
-if [ ! -x /usr/sbin/univention-management-console-server ]; then
+if [ ! -x "$DAEMON" ]; then
 	exit 0
 fi
 
 case "$1" in
 	start)
-		log_action_msg "Starting Univention Management Console Server"
-		sv up	 univention-management-console-server
+		log_action_msg "Starting $NAME"
+		$DAEMON start
 		log_action_end_msg 0
 		;;
 	stop)
-		log_action_msg "Stopping Univention Management Console Server"
-		sv down univention-management-console-server
+		log_action_msg "Stopping $NAME"
+		$DAEMON stop
 		log_action_end_msg 0
 		;;
-	restart|force-reload)
-		log_action_msg "Restarting Univention Management Console Server"
-		sv restart univention-management-console-server
+	restart)
+		log_action_msg "Restarting $NAME"
+		univention-management-console-server restart
+		log_action_end_msg 0
+		;;
+	reload)
+		log_action_msg "Reloading $NAME"
+		univention-management-console-server reload
 		log_action_end_msg 0
 		;;
 	crestart)
-		if sv status univention-management-console-server | grep ^run: > /dev/null 2>&1
-			then
+		pid="$(</var/run/umc-server.pid)"
+		if [ -n "$pid" -a -d "/proc/$pid" ]; then
 			$0 restart
 		else
-			log_action_msg "Univention Management Console server not running, no need to restart."
+			log_action_msg "$NAME is not running, no need to restart."
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-management-console-server {start|stop|restart|crestart|force-reload}"
+		echo "Usage: /etc/init.d/univention-management-console-server {start|stop|restart|reload|crestart}"
 		exit 1
 		;;
 esac

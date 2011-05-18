@@ -3,7 +3,7 @@
 # Univention Management Console
 #  UMC syntax definitions
 #
-# Copyright 2006-2010 Univention GmbH
+# Copyright 2006-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,13 +33,10 @@
 import os
 import re
 import sys
-import locales
 import xml.parsers.expat
 
-from tools import ElementTree
-import verify
-
-_ = locales.Translation( 'univention.management.console' ).translate
+from .tools import ElementTree
+from .log import *
 
 class XML_Definition( ElementTree ):
 	'''Definition of a category class'''
@@ -70,13 +67,17 @@ class Manager( dict ):
 
 	def load( self ):
 		self.clear()
+		RESOURCES.info( 'Loading categories ...' )
 		for filename in os.listdir( Manager.DIRECTORY ):
 			if not filename.endswith( '.xml' ):
+				RESOURCES.info( 'Found file %s with wrong suffix' % filename )
 				continue
 			try:
 				definitions = ElementTree( file = os.path.join( Manager.DIRECTORY, filename ) )
 				for category_elem in definitions.findall( 'categories/category' ):
 					category = XML_Definition( root = category_elem )
 					self[ category.id ] = category
-			except xml.parsers.expat.ExpatError:
+				RESOURCES.info( 'Loaded categories from %s' % filename )
+			except xml.parsers.expat.ExpatError, e:
+				RESOURCES.warn( 'Failed to parse category file %s:' % ( filename, str( e ) ) )
 				continue

@@ -32,7 +32,10 @@
 # <http://www.gnu.org/licenses/>.
 
 # python packages
-import socket, os, sys, fcntl
+import fcntl
+import os
+import socket
+import sys
 
 # external packages
 import notifier
@@ -45,6 +48,8 @@ import message
 import univention.debug as ud
 
 import univention.management.console as umc
+from ..resources import *
+from ..log import *
 
 class MagicBucket( object ):
 	'''Manages a connection (session) to the UMC server. Therefor it
@@ -61,7 +66,7 @@ class MagicBucket( object ):
 	def new( self, client, socket ):
 		'''Is called by the Server object to annouce a new incoming
 		connetion.'''
-		ud.debug( ud.ADMIN, ud.PROCESS, 'established connection: %s' % client )
+		CORE.info( 'Established connection: %s' % client )
 		state = session.State( client, socket )
 		state.signal_connect( 'authenticated', self._authenticated )
 		self.__states[ socket ] = state
@@ -101,7 +106,7 @@ class MagicBucket( object ):
 			# this error can be ignored (SSL need to do something)
 			return True
 		except ( SSL.SysCallError, SSL.Error ), error:
-			ud.debug( ud.ADMIN, ud.INFO, 'SSL error: %s. Probably the socket was closed by the client.' % str( error ) )
+			CRYPT.warn( 'SSL error: %s. Probably the socket was closed by the client.' % str( error ) )
 			notifier.socket_remove( socket )
 			del self.__states[ socket ]
 			socket.close()
@@ -122,11 +127,12 @@ class MagicBucket( object ):
 				state.buffer = msg.parse( state.buffer )
 				self._handle( state, msg )
 		except message.IncompleteMessageError, e:
-			ud.debug( ud.ADMIN, ud.INFO, 'MagicBucket: incomplete message: %s' % str( e ) )
+			CORE.info( 'MagicBucket: incomplete message: %s' % str( e ) )
 		except ( message.ParseError, message.UnknownCommandError ), e:
+			CORE.error( 'Incomplete message: %s' % str( e ) )
 			res = message.Response( msg )
-			res.id( -1 )
-			res.status = e.args[ 0 ]
+			res.id = -1
+			res.status = 406 # Unknown command
 			self._response( res, state )
 
 		return True
@@ -134,12 +140,13 @@ class MagicBucket( object ):
 	def _handle( self, state, msg ):
 		'''Ensures that commands are only passed to the processor if a
 		successful authentication has been completed.'''
+		CORE.info( 'Incoming request of type %s' % msg.command )
 		if not state.authenticated and msg.command != 'AUTH':
 			res = message.Response( msg )
 			res.status = 401 # unauthorized
 			self._response( res, state )
 		elif msg.command == 'AUTH':
-			state.requests[ msg.id() ] = msg
+			state.requests[ msg.id ] = msg
 			state.authResponse = message.Response( msg )
 			state.authenticate( msg.body[ 'username' ],	msg.body[ 'password' ] )
 		else:
@@ -148,7 +155,7 @@ class MagicBucket( object ):
 				state.processor = self.__processorClass( *state.credentials() )
 				cb = notifier.Callback( self._response, state )
 				state.processor.signal_connect( 'response', cb )
-			state.requests[ msg.id() ] = msg
+			state.requests[ msg.id ] = msg
 			state.processor.request( msg )
 
 	def _do_send( self, socket ):
@@ -162,7 +169,7 @@ class MagicBucket( object ):
 				if id != -1:
 					del state.requests[ id ]
 		except (SSL.WantReadError, SSL.WantWriteError, SSL.WantX509LookupError):
-			ud.debug( ud.ADMIN, ud.INFO, 'UMCP: SSL error during re-send' )
+			CRYPT.info( 'UMCP: SSL error during re-send' )
 			state.resend_queue.insert( 0, ( id, first ) )
 			return True
 
@@ -173,7 +180,7 @@ class MagicBucket( object ):
 		module process is asking for exit. This method forfills the
 		request.'''
 		# FIXME: error handling is missing!!
-		if not msg.id() in state.requests and msg.id() != -1:
+		if not msg.id in state.requests and msg.id != -1:
 			return
 
 		try:
@@ -183,9 +190,9 @@ class MagicBucket( object ):
 			if ret < len( data ):
 				if not state.resend_queue:
 					notifier.socket_add( state.socket, self._do_send, notifier.IO_WRITE )
-				state.resend_queue.append( ( msg.id(), data[ ret : ] ) )
+				state.resend_queue.append( ( msg.id, data[ ret : ] ) )
 		except ( SSL.WantReadError, SSL.WantWriteError, SSL.WantX509LookupError ):
-			ud.debug( ud.ADMIN, ud.INFO, 'UMCP: SSL error need to re-send chunk' )
+			CRYPT.info( 'UMCP: SSL error need to re-send chunk' )
 			notifier.socket_add( state.socket, self._do_send, notifier.IO_WRITE )
 			state.resend_queue.append( data )
 
@@ -198,21 +205,19 @@ class MagicBucket( object ):
 class Server( signals.Provider ):
 	'''Handles incoming connections on UNIX or TCP sockets and passes
 	the control to the MagicBucket'''
-	def __verify_cert_cb( self, conn, cert, errnum, depth, ok ):
-		ud.debug( ud.ADMIN, ud.INFO, '__verify_cert_cb: Got certificate: %s' % cert.get_subject() )
-		ud.debug( ud.ADMIN, ud.INFO, '__verify_cert_cb: Got certificate issuer: %s' % cert.get_issuer() )
-		ud.debug( ud.ADMIN, ud.INFO, '__verify_cert_cb: errnum=%d  depth=%d  ok=%d' % (errnum, depth, ok) )
-		return ok
 
 	def __init__( self, port = 6670, ssl = True, unix = None, magic = True, magicClass = MagicBucket ):
 		'''Initializes the socket to listen for requests'''
 		signals.Provider.__init__( self )
+		CORE.info( 'Initialising server process' )
 		self.__port = port
 		self.__unix = unix
 		self.__ssl = ssl
 		if self.__unix:
+			CORE.info( 'Using a UNIX socket' )
 			self.__realsocket = socket.socket( socket.AF_UNIX, socket.SOCK_STREAM )
 		else:
+			CORE.info( 'Using a TCP socket' )
 			self.__realsocket = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
 
 		self.__realsocket.setsockopt( socket.SOL_SOCKET, socket.SO_REUSEADDR, 1 )
@@ -220,26 +225,24 @@ class Server( signals.Provider ):
 		fcntl.fcntl(self.__realsocket.fileno(), fcntl.F_SETFD, 1)
 
 		if self.__ssl and not self.__unix:
+			CORE.info( 'Setting up SSL configuration' )
 			self.crypto_context = SSL.Context( SSL.SSLv23_METHOD )
 			self.crypto_context.set_cipher_list('DEFAULT')
 			self.crypto_context.set_options( SSL.OP_NO_SSLv2 )
 			self.crypto_context.set_verify( SSL.VERIFY_PEER, self.__verify_cert_cb )
 			dir = '/etc/univention/ssl/%s.%s' % (umc.configRegistry[ 'hostname' ], umc.configRegistry[ 'domainname' ])
-# used for debugging purposes ==> cert that is not trustworthy
-#			self.crypto_context.use_privatekey_file( '/root/server.pkey' )
-#			self.crypto_context.use_certificate_file( '/root/server.cert' )
 			try:
 				self.crypto_context.use_privatekey_file( os.path.join( dir, 'private.key' ) )
 				self.crypto_context.use_certificate_file( os.path.join( dir, 'cert.pem' ) )
 				self.crypto_context.load_verify_locations( os.path.join( dir, '/etc/univention/ssl/ucsCA', 'CAcert.pem' ) )
 			except SSL.Error, e:
 				# SSL is not possible
-				ud.debug( ud.ADMIN, ud.ERROR, 'Setting up SSL configuration failed: %s' % str( e ) )
-				ud.debug( ud.ADMIN, ud.ERROR, 'Communication will not be encrypted!' )
+				CRYPT.error( 'Setting up SSL configuration failed: %s' % str( e ) )
+				CRYPT.warn( 'Communication will not be encrypted!' )
 				self.__ssl = False
 				self.crypto_context = None
 				self.__realsocket.bind( ( '', self.__port ) )
-				ud.debug( ud.ADMIN, ud.INFO, 'Server listening to connects' )
+				CRYPT.info( 'Server listening to unencrypted connections' )
 				self.__realsocket.listen( 10 )
 
 			if self.crypto_context:
@@ -247,7 +250,7 @@ class Server( signals.Provider ):
 				self.connection.setblocking(0)
 				self.connection.bind( ( '', self.__port ) )
 				self.connection.set_accept_state()
-				ud.debug( ud.ADMIN, ud.INFO, 'Server listening to SSL connects' )
+				CRYPT.info( 'Server listening to SSL connections' )
 				self.connection.listen( 10 )
 		else:
 			self.crypto_context = None
@@ -262,7 +265,7 @@ class Server( signals.Provider ):
 					os.unlink( self.__unix )
 			else:
 				self.__realsocket.bind( ( '', self.__port ) )
-			ud.debug( ud.ADMIN, ud.INFO, 'Server listening to connects' )
+			CRYPT.info(  'Server listening to connections' )
 			self.__realsocket.listen( 10 )
 
 		self.__magic = magic
@@ -282,6 +285,12 @@ class Server( signals.Provider ):
 		if self.__bucket:
 			del self.__bucket
 
+	def __verify_cert_cb( self, conn, cert, errnum, depth, ok ):
+		CORE.info( '__verify_cert_cb: Got certificate: %s' % cert.get_subject() )
+		CORE.info( '__verify_cert_cb: Got certificate issuer: %s' % cert.get_issuer() )
+		CORE.info( '__verify_cert_cb: errnum=%d  depth=%d	 ok=%d' % (errnum, depth, ok) )
+		return ok
+
 	def _connection( self, socket ):
 		'''Signal callback: Invoked on incoming connections.'''
 		socket, addr = socket.accept()
@@ -290,6 +299,7 @@ class Server( signals.Provider ):
 			client = '%s:%d' % ( addr[ 0 ], addr[ 1 ] )
 		else:
 			client = ''
+		CORE.info( 'Incoming connection from %s' % client )
 		if self.__magic:
 			self.__bucket.new( client, socket )
 		else:
@@ -298,6 +308,7 @@ class Server( signals.Provider ):
 
 	def exit( self ):
 		'''Shutdowns all open connections.'''
+		CORE.warn( 'Shutting down all open connections' )
 		if self.__ssl and not self.__unix:
 			notifier.socket_remove( self.connection )
 			self.connection.close()
@@ -309,3 +320,9 @@ class Server( signals.Provider ):
 
 		if self.__magic:
 			self.__bucket.exit()
+
+	def reload( self ):
+		CORE.info( 'Reloading resources: modules, syntax definitions, categories' )
+		moduleManager.load()
+		syntaxManager.load()
+		categoryManager.load()

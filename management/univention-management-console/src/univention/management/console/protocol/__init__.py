@@ -30,11 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
 from message import *
 from session import *
 from server import *
-from proxy import *
 from client import *
 from definitions import *
 from version import *

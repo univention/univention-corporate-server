@@ -2,23 +2,21 @@ Source: univention-management-console
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7),
-			   ucslint,
-			   python2.6-dev,
-			   python-support (>> 1.0.10),
-			   univention-config-dev
+Build-Depends: debhelper (>= 7.0.50~),
+ ucslint,
+ python2.6-dev,
+ python-support,
+ univention-config-dev
 Standards-Version: 3.7.2
 
 Package: univention-management-console
 Architecture: all
 Depends: python-univention-management-console (= ${source:Version}),
-	univention-management-console-server (= ${source:Version}),
-	univention-management-console-themes (= ${source:Version}),
-	univention-management-console-system-info,
-	python-elementtree,
-	python-pyopenssl,
-	openssl,
-	expect
+ univention-management-console-server (= ${source:Version}),
+ univention-management-console-themes (= ${source:Version}),
+ univention-management-console-system-info,
+ python-pyopenssl,
+ openssl
 Description: Univention Management Console - Web based computer administration tool
  Univention Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
@@ -32,7 +30,10 @@ Description: Univention Management Console - Web based computer administration t
 
 Package: univention-management-console-server
 Architecture: all
-Depends: python-univention-management-console, python-apt, python-pam, libpam-passwdcache, libnss-passwdcache, univention-runit, python-pyopenssl, procps, tightvncserver, xfonts-base, xterm, python-json
+Depends: python-univention-management-console (= ${source:Version}),
+ univention-runit,
+ python-cherrypy3,
+ python-daemon
 Description: Univention Management Console - server
  Univention Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
@@ -47,7 +48,15 @@ Description: Univention Management Console - server
 
 Package: python-univention-management-console
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}, python-univention-config-registry, univention-join, python-univention, python-univention-directory-manager, python-pyopenssl, python-notifier (>=0.8.0)
+Depends: ${python:Depends}, ${misc:Depends},
+ python-univention-config-registry,
+ univention-join,
+ python-univention,
+ python-pyopenssl,
+ python-elementtree,
+ python-json,
+ python-pam,
+ python-notifier (>= 0.8.0)
 Provides: ${python:Provides}
 Description: Univention Management Console - Python Modules
  Univention Console is a web based program to manage computers.

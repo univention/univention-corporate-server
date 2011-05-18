@@ -1,3 +1,16 @@
+univention-management-console (4.0.1-1) unstable; urgency=low
+
+  * support mime types in UMCP 2.0 message (default application/json)
+  * enhance logging functionality
+  * remove unused code
+  * cleanup in i18n code
+  * enhance command line client
+  * Use python-daemon
+  * setup signal handlers
+  * prepare code for reloading of modules, categories and syntax definitions; Bug #22460
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 11 May 2011 17:13:52 +0200
+
 univention-management-console (4.0.0-1) unstable; urgency=low
 
   * new generation of UMC
