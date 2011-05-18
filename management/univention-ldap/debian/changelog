@@ -1,3 +1,9 @@
+univention-ldap (8.0.3-1) unstable; urgency=low
+
+  * Removed copyright block from slapd init (Bug #21705)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 May 2011 15:09:30 +0200
+
 univention-ldap (8.0.2-5) unstable; urgency=low
 
   * add missing credentials to join script to make ucslint happy (Bug #21705)
