@@ -225,6 +225,11 @@ void univention_debug_set_level(enum uv_debug_category id, enum uv_debug_level l
 	univention_debug_level[id] = level;
 }
 
+enum uv_debug_level univention_debug_get_level(enum uv_debug_category id)
+{
+	return univention_debug_level[id];
+}
+
 void univention_debug_set_function(enum uv_debug_flag_function function)
 {
 	univention_debug_function = function;

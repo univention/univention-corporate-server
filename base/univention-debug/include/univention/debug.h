@@ -96,6 +96,10 @@ void univention_debug_end(const char *s);
  */
 void univention_debug_set_level(enum uv_debug_category id, enum uv_debug_level level);
 /**
+ * Get debug level of category id
+ */
+enum uv_debug_level univention_debug_get_level(enum uv_debug_category id);
+/**
  * Enable or disable logging of function begin and end.
  */
 void univention_debug_set_function(enum uv_debug_flag_function function);
