@@ -1,3 +1,15 @@
+univention-heimdal (4.0.3-3) unstable; urgency=low
+
+  * fixed typos and little errors for UCR-variable description (Bug #19009)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 16 Mar 2011 16:48:24 +0100
+
+univention-heimdal (4.0.3-2) unstable; urgency=low
+
+  * set kerberos/kdc to hostname.domain (with this update) Bug #19020 
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Feb 2011 10:56:29 +0100
+
 univention-heimdal (4.0.3-1) unstable; urgency=low
 
   * use fqdn (hostname.domain) for kerberos/kdc Bug #19020 

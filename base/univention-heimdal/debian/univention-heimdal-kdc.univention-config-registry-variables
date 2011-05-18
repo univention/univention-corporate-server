@@ -41,7 +41,7 @@ Type=str
 Categories=System
 
 [kerberos/password/quality/diff_ok]
-Description[de]=Die Anzahl von Zeichen die min. gegenüber dem vorherigen Passwort geändert sein müssen.
+Description[de]=Die Mindestanzahl von Zeichen, die gegenüber dem vorherigen Passwort geändert sein müssen.
 Description[en]=The minimum amount of characters changed in comparison to the previous password.
 Type=str
 Categories=System
@@ -59,13 +59,13 @@ Type=str
 Categories=System
 
 [kerberos/password/quality/min_length]
-Description[de]=Die Mindestpasswortlänge + 1
-Description[en]=Die minimum passwort length +1 
+Description[de]=Die Mindestpasswortlänge +1
+Description[en]=The minimum passwort length +1 
 Type=str
 Categories=System
 
 [kerberos/password/quality/oth_credit]
-Description[de]=Die Mindestanzahl an sonstigen Zeichen (keine Klein- oder Großbuchstaben und Ziffern) im neuen Passwort (anzugeben als negative Zahl!).
+Description[de]=Die Mindestanzahl an sonstigen Zeichen (keine Klein-/Großbuchstaben und Ziffern) im neuen Passwort (anzugeben als negative Zahl!).
 Description[en]=The minimum amount of other characters (neither lower/upper case characters, nor digits) in the new password (specified as a negative number!).
 Type=str
 Categories=System
@@ -120,8 +120,7 @@ Categories=System
 
 [kerberos/defaults/enctypes/tkt]
 Description[de]=Die Verschlüsselungsvariante im Session-Key für das Ticket Granting Ticket.
-Description[de]=The encryption types for the session key of the ticket granting ticket.
-Description[en]=
+Description[en]=The encryption types for the session key of the ticket granting ticket.
 Type=str
 Categories=System
 
