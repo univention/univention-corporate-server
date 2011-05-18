@@ -91,7 +91,7 @@ FILE * univention_debug_init(const char *logfile, enum uv_debug_flag_flush flush
 	struct tm tm;
 
 	if (univention_debug_ready) {
-		return;
+		return NULL;
 	}
 
 	univention_debug_level = malloc(DEBUG_MODUL_COUNT * sizeof(int));

@@ -1,3 +1,9 @@
+univention-debug (5.0.5-1) unstable; urgency=low
+
+  * fixed minor bug in debug_init: always return NULL on error; Bug #22552
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 18 May 2011 14:16:23 +0200
+
 univention-debug (5.0.4-1) unstable; urgency=low
 
   * univention_debug_init returns a pointer to the FILE struct of the
