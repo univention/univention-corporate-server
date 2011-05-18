@@ -14,4 +14,4 @@ AC_PROG_INSTALL
 AC_LANG_C
 AC_HEADER_STDC
 
-AC_OUTPUT(Makefile include/univention/Makefile include/Makefile lib/Makefile)
+AC_OUTPUT(Makefile include/univention/Makefile include/Makefile lib/Makefile tests/Makefile)

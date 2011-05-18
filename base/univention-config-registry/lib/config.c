@@ -30,6 +30,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -37,6 +38,7 @@
 # define __USE_GNU
 #endif
 #include <string.h>
+#include <sys/wait.h>
 
 #include <univention/config.h>
 #include <univention/debug.h>
@@ -47,130 +49,88 @@
 #define BASECONFIG_MAX_LINE 1024
 
 
-char* univention_config_get_string ( char *value )
+char *univention_config_get_string(const char *key)
 {
 	FILE *file;
 	char line[BASECONFIG_MAX_LINE];
 	char *nvalue;
 	int len;
+	char *ret = NULL;
 
-	if( (file=fopen(BASECONFIG_FILE,"r")) == NULL )
+	if ((file = fopen(BASECONFIG_FILE, "r")) == NULL)
 	{
-		univention_debug(UV_DEBUG_CONFIG,UV_DEBUG_ERROR,"Error on opening \"%s\n",BASECONFIG_FILE);
+		univention_debug(UV_DEBUG_CONFIG, UV_DEBUG_ERROR, "Error on opening \"%s\"", BASECONFIG_FILE);
 		return NULL;
 	}
-	
-	len = strlen(value);
 
-	nvalue = calloc(len + 2 /* ':' + '\0'*/, sizeof(char));
-	memcpy(nvalue, value, len);
-	nvalue[len] = ':';
+	len = asprintf(&nvalue, "%s: ", key);
+	if (len < 0)
+		goto err;
 
-	while( fgets(line, BASECONFIG_MAX_LINE, file) != NULL )
+	while (fgets(line, BASECONFIG_MAX_LINE, file) != NULL)
 	{
-		if( !strncmp(line, nvalue, strlen(nvalue) ) )
+		if (!strncmp(line, nvalue, len))
 		{
-			fclose (file);
-			free (nvalue);
-
-			return (char*)strndup(&(line[len+2]), strlen(line) - (len+2) - 1 );
-																								/* no newline */
+			ret = strndup(line + len, strlen(line) - len - 1 ); /* no newline */
+			goto done;
 		}
 	}
-
-	fclose (file);
-
-    univention_debug(UV_DEBUG_USERS, UV_DEBUG_INFO,"Did not find \"%s\"\n",value);
-
+    univention_debug(UV_DEBUG_USERS, UV_DEBUG_INFO, "Did not find \"%s\"", key);
+done:
 	free(nvalue);
-	return NULL;
+err:
+	fclose(file);
+	return ret;
 }
 
-int univention_config_get_int(char *value)
+int univention_config_get_int(const char *key)
 {
-	FILE *file;
-	char line[BASECONFIG_MAX_LINE];
-	char *s_var;
-	int var;
-
-	if( (file=fopen(BASECONFIG_FILE,"r")) == NULL )
-	{
-		univention_debug(UV_DEBUG_USERS,UV_DEBUG_ERROR,"Error on opening \"%s\n",BASECONFIG_FILE);
-		return -1;
+	int ret = -1;
+	char *s = univention_config_get_string(key);
+	if (s) {
+		ret = atoi(s);
+		free(s);
 	}
-
-	while( fgets(line, BASECONFIG_MAX_LINE, file) != NULL )
-	{
-		if( !strncmp(line, value, strlen(value) ) )
-		{
-			fclose (file);
-			s_var=(char*)strndup(&(line[strlen(value)+2]), strlen(line) - (strlen(value)+2) - 1 );
-			return atoi(s_var);
-		}
-	}
-
-	fclose (file);
-
-    univention_debug(UV_DEBUG_USERS, UV_DEBUG_INFO,"Did not find \"%s\"\n",value);
-
-	return -1;
+	return ret;
 }
 
-long univention_config_get_long(char *value)
+long univention_config_get_long(const char *key)
 {
-	FILE *file;
-	char line[BASECONFIG_MAX_LINE];
-	char *s_var;
-	long var;
-
-	if( (file=fopen(BASECONFIG_FILE,"r")) == NULL )
-	{
-		univention_debug(UV_DEBUG_USERS,UV_DEBUG_ERROR,"Error on opening \"%s\n",BASECONFIG_FILE);
-		return -1;
+	long ret = -1;
+	char *s = univention_config_get_string(key);
+	if (s) {
+		ret = atol(s);
+		free(s);
 	}
-
-	while( fgets(line, BASECONFIG_MAX_LINE, file) != NULL )
-	{
-		if( !strncmp(line, value, strlen(value) ) )
-		{
-			fclose (file);
-			s_var=(char*)strndup(&(line[strlen(value)+2]), strlen(line) - (strlen(value)+2) - 1 );
-			return atol(s_var);
-		}
-	}
-
-	fclose (file);
-
-    univention_debug(UV_DEBUG_USERS, UV_DEBUG_INFO,"Did not find \"%s\"\n",value);
-
-	return -1;
+	return ret;
 }
 
-int univention_config_set_string(char *key, char *value)
+int univention_config_set_string(const char *key, const char *value)
 {
+	size_t len;
 	char *str;
 	int pid, status;
 
-	
-	str=malloc((strlen(key)+strlen(value)+2) * sizeof(char));
-	strcpy(str, key);
-	strcat(str, "=");
-	strcat(str,value);
+	len = strlen(key) + strlen(value) + 2;
+	str = malloc(len);
+	if (!str)
+		return -1;
+	snprintf(str, len, "%s=%s", key, value);
 
 	pid = fork();
 	if (pid == -1)
 		return -1;
 	if (pid == 0) {
-		char *argv[5];
-		argv[0] = "sh";
-		argv[1] = "-c";
-		argv[2] = "univention-config-registry";
-		argv[2] = "set";
-		argv[3] = str;
-		argv[4] = 0;
-		execve("/bin/sh", argv, NULL);
+		/* child */
+		char *argv[4];
+		argv[0] = "univention-config-registry";
+		argv[1] = "set";
+		argv[2] = str;
+		argv[3] = NULL;
+		execve("/usr/sbin/univention-config-registry", argv, NULL);
 		exit(127);
 	}
+	/* parent */
 	do {
 		if (waitpid(pid, &status, 0) == -1) {
 			if (errno != EINTR)
@@ -181,4 +141,3 @@ int univention_config_set_string(char *key, char *value)
 
 	return 0;
 }
-

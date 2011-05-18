@@ -1,3 +1,12 @@
+univention-config-registry (7.0.7-1) unstable; urgency=low
+
+  * Fix network/interfaces IPv4 address splitting (Bug #22160)
+  * Fix memory leak and univention_config_registry_set_string() (Bug #22395)
+  * Re-add univention_baseconfig (Bug #22160)
+  * Add tests/.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 18 May 2011 12:29:44 +0200
+
 univention-config-registry (7.0.6-1) unstable; urgency=low
 
   * Re-add baseConfig compatibility (Bug #22160)

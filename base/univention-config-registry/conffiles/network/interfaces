@@ -5,7 +5,7 @@ auto lo
 iface lo inet loopback
 
 @!@
-from univention.dns import splitDotted, networkNumber
+from univention.dns import networkNumber
 
 eth_devices=[]
 
@@ -21,7 +21,7 @@ def check_gateway (ip, netmask, gateway):
 	"""
 	Check if the 'ip' is in the same network as the 'gatewy'.
 
-	>>> check_gateway([1,2,3,4], [255.255.255.0], [1,2,3,1])
+	>>> check_gateway('1.2.3.4', '255.255.255.0', '1.2.3.1')
 	True
 	"""
 	if not gateway:
@@ -62,7 +62,7 @@ for i in eth_devices:
 		if broadcast:
 			print '\tbroadcast %s' % broadcast
 		if address and netmask and gateway and not gateway_found:
-			if check_gateway(splitDotted(address), splitDotted(netmask), splitDotted(gateway)):
+			if check_gateway(address, netmask, gateway):
 				print '\tgateway %s' % gateway
 				gateway_found = True
 		configExists=True
