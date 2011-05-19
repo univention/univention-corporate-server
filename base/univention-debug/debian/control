@@ -20,8 +20,8 @@ Description: UCS - debugging and logging library
 Package: libunivention-debug-dev
 Architecture: any
 Depends: libunivention-debug1 (= ${binary:Version}), ${misc:Depends}
-Conflicts: libunivention-debug0
-Replaces: libunivention-debug0
+Replaces: libunivention-debug0 (<< 5)
+Breaks: libunivention-debug0 (<< 5)
 Description: UCS - debugging and logging library (development files)
  This package includes the development files for the
  Univention debugging and logging  library.
