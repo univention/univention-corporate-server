@@ -1,3 +1,9 @@
+univention-updater (6.0.85-1) unstable; urgency=low
+
+  * do not stop update if non-"current"-component is unavailable (Bug #22567)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 19 May 2011 13:55:38 +0200
+
 univention-updater (6.0.84-3) unstable; urgency=low
 
   * Fix spelling mistake: occur_r_ed (Bug #22225)

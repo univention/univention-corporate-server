@@ -590,7 +590,14 @@ class UniventionUpdater:
 		for server, ver in self._iterate_version_repositories(mmp_version, mmp_version, self.parts, archs):
 			result.append(ver.deb())
 		for component in components:
-			repos = self.get_component_repositories(component, [mmp_version], False)
+			repos = []
+			try:
+				repos = self.get_component_repositories(component, [mmp_version], False)
+			except (ConfigurationError, ProxyError, DownloadError):
+				# if component is marked as required (UCR variable "version" contains "current")
+				# then raise error, otherwise ignore it
+				if component in current_components:
+					raise
 			if not repos and component in current_components:
 				server = self._get_component_server(component)
 				uri = server.join('%s/component/%s/' % (version, component))
@@ -910,8 +917,14 @@ class UniventionUpdater:
 
 			struct = UCSRepoPool(prefix=server, patch=component)
 			for version in versions:
-				for ver in self._iterate_versions(struct, version, version, parts, archs, server):
-					yield server, ver
+				try:
+					for ver in self._iterate_versions(struct, version, version, parts, archs, server):
+						yield server, ver
+				except (ConfigurationError, ProxyError, DownloadError):
+					# if component is marked as required (UCR variable "version" contains "current")
+					# then raise error, otherwise ignore it
+					if component in self.get_current_components():
+						raise
 
 	def print_version_repositories( self, clean = False, dists = False, start = None, end = None ):
 		'''Return a string of Debian repository statements for all UCS versions
