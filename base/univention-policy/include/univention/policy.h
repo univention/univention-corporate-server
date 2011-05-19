@@ -41,27 +41,10 @@ typedef struct univention_policy_result_s {
 	char** values;
 } univention_policy_result_t;
 
-struct univention_policy_attribute_list_s;
-struct univention_policy_attribute_list_s {
-	struct univention_policy_attribute_list_s* next;
-	char* name;
-	univention_policy_result_t* values;
-};
+typedef struct univention_policy_handle_s univention_policy_handle_t;
 
-struct univention_policy_list_s;
-struct univention_policy_list_s {
-	struct univention_policy_list_s* next;
-	char* name;
-	struct univention_policy_attribute_list_s* attributes;
-};
-
-typedef struct univention_policy_handle_s {
-	struct univention_policy_list_s* policies;
-} univention_policy_handle_t;
-
-
-univention_policy_handle_t* univention_policy_open(LDAP* ld, char* base, char* dn);
-univention_policy_result_t* univention_policy_get(univention_policy_handle_t* handle, char* policy_name, char* attribute_name);
+univention_policy_handle_t* univention_policy_open(LDAP *ld, const char *base, const char *dn);
+univention_policy_result_t* univention_policy_get(univention_policy_handle_t *handle, const char *policy_name, const char *attribute_name);
 void univention_policy_close(univention_policy_handle_t* handle);
 
 #endif

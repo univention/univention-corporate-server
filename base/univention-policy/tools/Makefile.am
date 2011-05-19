@@ -8,4 +8,4 @@ bin_PROGRAMS = univention_policy_result
 
 LDADD = ../lib/libuniventionpolicy.la
 
-univention_policy_result_SOURCES = univention_policy_result.c
+univention_policy_result_SOURCES = univention_policy_result.c ../lib/internal.h

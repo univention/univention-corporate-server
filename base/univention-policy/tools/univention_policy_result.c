@@ -37,9 +37,9 @@
 
 #include <univention/debug.h>
 #include <univention/ldap.h>
-#include <univention/policy.h>
+#include "../lib/internal.h"
 
-void usage(void)
+static void usage(void)
 {
 	fprintf(stderr, "Usage: univention_policy_result [-h -D -w -s] dn\n");
 	fprintf(stderr, "\t-h\thost\n");
@@ -48,7 +48,7 @@ void usage(void)
 
 	fprintf(stderr, "\t-s\tShell output\n");
 	fprintf(stderr, "\t-b\tConfiguration Registry output\n");
-	exit(1);
+	fprintf(stderr, "\t-d\tEnable debug\n");
 }
 
 #define OUTPUT_VERBOSE 0
@@ -57,8 +57,7 @@ void usage(void)
 
 int main(int argc, char* argv[])
 {
-	LDAP* ld;
-	int rc;
+	int rc = 1;
 	char *dn;
 	univention_ldap_parameters_t* ldap_parameters;
 	univention_policy_handle_t* handle;
@@ -95,13 +94,17 @@ int main(int argc, char* argv[])
 				output = OUTPUT_BASECONFIG;
 				break;
 			default:
+				univention_ldap_close(ldap_parameters);
 				usage();
-				break;
+				goto err1;
 		}
 	}
 
-	if (optind + 1 != argc)
+	if (optind + 1 != argc) {
+		univention_ldap_close(ldap_parameters);
 		usage();
+		goto err1;
+	}
 
 	if (opt_debug) {
 		univention_debug_init("stderr", UV_DEBUG_FLUSH, UV_DEBUG_FUNCTION);
@@ -111,22 +114,24 @@ int main(int argc, char* argv[])
 		univention_debug_init("/dev/null", 0, 0);
 	}
 
-	dn = argv[argc-1];
+	dn = argv[argc - 1];
 
 	if (univention_ldap_open(ldap_parameters) != 0) {
 		if (output == OUTPUT_VERBOSE) {
 			printf("Return 1 %s\n\n", dn);
 		}
-		return 1;
+		goto err2;
 	}
 
 	timeout.tv_sec = 10;
 	timeout.tv_usec = 0;
 
-	if ( (rc = ldap_search_st( ldap_parameters->ld, dn, LDAP_SCOPE_BASE, "(objectClass=*)",  NULL, 0, &timeout, &res )) != LDAP_SUCCESS) {
-			printf("LDAP Error: %s\n", ldap_err2string(rc));
-			exit(1);
+	if ((rc = ldap_search_ext_s(ldap_parameters->ld, dn, LDAP_SCOPE_BASE, "(objectClass=*)",  NULL, 0, NULL, NULL, &timeout, 0, &res )) != LDAP_SUCCESS) {
+			fprintf(stderr, "LDAP Error: %s\n", ldap_err2string(rc));
+			ldap_msgfree(res);
+			goto err2;
 	}
+	ldap_msgfree(res);
 
 	if (output == OUTPUT_VERBOSE) {
 		printf("DN: %s\n\n", dn);
@@ -138,7 +143,6 @@ int main(int argc, char* argv[])
 	if ((handle = univention_policy_open(ldap_parameters->ld, ldap_parameters->base, dn)) != NULL) {
 		struct univention_policy_list_s* policy;
 		struct univention_policy_attribute_list_s* attribute;
-		univention_policy_result_t* result;
 
 		for (policy = handle->policies; policy != NULL; policy = policy->next) {
 			if (output == OUTPUT_BASECONFIG && policy != handle->policies)
@@ -155,7 +159,7 @@ int main(int argc, char* argv[])
 					printf("\n");
 				} else if (output == OUTPUT_SHELL) {
 					for (i = 0; attribute->values->values[i] != NULL; i++) {
-						for (j = 0; j<strlen(attribute->name); j++) {
+						for (j = 0; j < strlen(attribute->name); j++) {
 							if (attribute->name[j] == ';' || attribute->name[j] == '-') {
 								printf("_");
 							} else {
@@ -181,16 +185,20 @@ int main(int argc, char* argv[])
 					if (attribute != policy->attributes)
 						printf(" ");
 					for (i = 0; attribute->values->values[i] != NULL; i++) {
-						if (i>0)
+						if (i > 0)
 							printf(" ");
 						printf("%s=\"%s\"", attribute->name, attribute->values->values[i]);
 					}
 				}
 			}
 		}
-
 		univention_policy_close(handle);
+		rc = 0;
 	} else
-		return 1;
-	return 0;
+		rc = 1;
+err2:
+	univention_ldap_close(ldap_parameters);
+err1:
+	univention_debug_exit();
+	return rc;
 }

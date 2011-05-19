@@ -30,6 +30,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,30 +38,19 @@
 #include <sasl/sasl.h>
 #include <sys/types.h>
 #include <pwd.h>
+#include <unistd.h>
 
 #include <univention/config.h>
 #include <univention/ldap.h>
 #include <univention/debug.h>
 
+#include "internal.h"
+
 univention_ldap_parameters_t* univention_ldap_new(void)
 {
 	univention_ldap_parameters_t* lp;
-	if ((lp = malloc(sizeof(univention_ldap_parameters_t))) == NULL)
+	if ((lp = calloc(1, sizeof(univention_ldap_parameters_t))) == NULL)
 		return NULL;
-	lp->ld = NULL;
-	lp->version = 0;
-	lp->host = NULL;
-	lp->port = 0;
-	lp->uri = NULL;
-	lp->start_tls = 0;
-	lp->base = NULL;
-	lp->binddn = NULL;
-	lp->bindpw = NULL;
-	lp->authmethod = 0;
-	lp->sasl_mech = NULL;
-	lp->sasl_realm = NULL;
-	lp->sasl_authcid = NULL;
-	lp->sasl_authzid = NULL;
 	return lp;
 }
 
@@ -113,50 +103,57 @@ static int sasl_interact(LDAP *ld, unsigned flags, void *defaults, void *in)
 	return LDAP_SUCCESS;
 }
 
+#define _UNIVENTION_LDAP_SECRET_LEN_MAX 27
 int univention_ldap_set_admin_connection( univention_ldap_parameters_t *lp )
 {
 	FILE *secret;
-	char *base    = NULL;
+	char *base = NULL;
+	size_t len;
 
 	base = univention_config_get_string("ldap/base");
-	if ( !base ) {
-		return 1;
-	}
-	lp->binddn = malloc( ( strlen(base) + strlen("cn=admin,") + 1) * sizeof (char) );
-	if ( !lp->binddn ) {
+	if (!base)
+		goto err;
+	asprintf(&lp->binddn, "cn=admin,%s", base);
+	if (!lp->binddn) {
 		free(base);
-		return 1;
+		goto err;
 	}
-	sprintf(lp->binddn, "cn=admin,%s", base );
 
 	free(base);
 
 	secret = fopen("/etc/ldap.secret", "r" );
+	if (!secret)
+		goto err1;
 
-	if ( !secret ) {
-		return 1;
+	lp->bindpw = calloc(_UNIVENTION_LDAP_SECRET_LEN_MAX, sizeof(char));
+	if (!lp->bindpw) {
+		fclose(secret);
+		goto err1;
 	}
 
-	lp->bindpw = malloc(25*sizeof(char));
-
-	if ( !lp->bindpw ) {
-		return 1;
-	}
-
-	memset(lp->bindpw, 0, 25);
-
-	fread(lp->bindpw, 24, 1, secret);
-
-	if ( lp->bindpw[strlen(lp->bindpw)-1] == '\r' ) {
-		lp->bindpw[strlen(lp->bindpw)-1] = '\0';
-	}
-	if ( lp->bindpw[strlen(lp->bindpw)-1] == '\n' ) {
-		lp->bindpw[strlen(lp->bindpw)-1] = '\0';
-	}
-
+	len = fread(lp->bindpw, _UNIVENTION_LDAP_SECRET_LEN_MAX, sizeof(char), secret);
+	if (ferror(secret))
+		len = -1;
 	fclose(secret);
 
-	return 0;
+	for (; len >= 0; len--) {
+		switch (lp->bindpw[len]) {
+			case '\r':
+			case '\n':
+				lp->bindpw[len] = '\0';
+			case '\0':
+				continue;
+			default:
+				return 0;
+		}
+	}
+
+	/* password already cleared memory. */
+	FREE(lp->bindpw);
+err1:
+	FREE(lp->binddn);
+err:
+	return 1;
 }
 
 int univention_ldap_open(univention_ldap_parameters_t *lp)
@@ -193,13 +190,25 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 	}
 	if (lp->authmethod == LDAP_AUTH_SASL) {
 		if (lp->sasl_authzid == NULL) {
-			struct passwd *pwd;
-			pwd = getpwuid(getuid());
-			if (pwd == NULL) {
+			struct passwd pwd, *result;
+			char *buf;
+			size_t bufsize;
+			int s;
+
+			bufsize = sysconf(_SC_GETPW_R_SIZE_MAX);
+			if (bufsize == -1)
+				bufsize = 16384;
+			buf = malloc(bufsize);
+			if (buf == NULL)
+				return LDAP_OTHER;
+			s = getpwuid_r(getuid(), &pwd, buf, bufsize, &result);
+			if (result == NULL) {
 				univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "could not lookup username");
+				free(buf);
 				return LDAP_OTHER;
 			}
-			asprintf(&lp->sasl_authzid, "u:%s", (pwd->pw_name));
+			asprintf(&lp->sasl_authzid, "u:%s", pwd.pw_name);
+			free(buf);
 		}
 		if (lp->sasl_mech == NULL) {
 			lp->sasl_mech = strdup("GSSAPI");
@@ -274,6 +283,7 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 
 void univention_ldap_close(univention_ldap_parameters_t* lp)
 {
+	char *c;
 	if (lp == NULL)
 		return;
 	if (lp->ld != NULL) {
@@ -281,44 +291,17 @@ void univention_ldap_close(univention_ldap_parameters_t* lp)
 		ldap_unbind_ext(lp->ld, NULL, NULL);
 		lp->ld = NULL;
 	}
-	if (lp->uri != NULL) {
-		free(lp->uri);
-		lp->uri = NULL;
-	}
-	if (lp->host != NULL) {
-		free(lp->host);
-		lp->host = NULL;
-	}
-	if (lp->base != NULL) {
-		free(lp->base);
-		lp->base = NULL;
-	}
-	if (lp->binddn != NULL) {
-		free(lp->binddn);
-		lp->binddn = NULL;
-	}
-	if (lp->bindpw != NULL) {
-		free(lp->bindpw);
-		lp->bindpw = NULL;
-	}
-	if (lp->sasl_mech != NULL) {
-		free(lp->sasl_mech);
-		lp->sasl_mech = NULL;
-	}
-	if (lp->sasl_realm != NULL) {
-		free(lp->sasl_realm);
-		lp->sasl_realm = NULL;
-	}
-	if (lp->sasl_authcid != NULL) {
-		free(lp->sasl_authcid);
-		lp->sasl_authcid = NULL;
-	}
-	if (lp->sasl_authzid != NULL) {
-		free(lp->sasl_authzid);
-		lp->sasl_authzid = NULL;
-	}
-	if (lp != NULL) {
-		free(lp);
-		lp = NULL;
-	}
+	FREE(lp->uri);
+	FREE(lp->host);
+	FREE(lp->base);
+	FREE(lp->binddn);
+	/* clear password from memory. */
+	for (c = lp->bindpw; c && *c; c++)
+		*c = '\0';
+	FREE(lp->bindpw);
+	FREE(lp->sasl_mech);
+	FREE(lp->sasl_realm);
+	FREE(lp->sasl_authcid);
+	FREE(lp->sasl_authzid);
+	FREE(lp);
 }

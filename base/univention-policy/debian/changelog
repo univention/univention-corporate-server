@@ -1,3 +1,15 @@
+univention-policy (5.0.1-1) unstable; urgency=low
+
+  * Fix memory leaks and NULL pointer exceptions (Bug #22553)
+  * Simplify allocating and cleaning memory.
+  * Handle line termination in ldap.secret.
+  * Make univention_krb5_init() thread-save.
+  * Replace deprecated ldap_search_st() with ldap_search_ext_s().
+  * Update manual page to include debugging switch.
+  * Unexport and make internal functions static.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 19 May 2011 11:08:42 +0200
+
 univention-policy (5.0.0-1) unstable; urgency=low
 
   * bump version for UCS 3.0 (Bug #22160)

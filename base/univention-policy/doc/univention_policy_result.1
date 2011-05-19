@@ -1,19 +1,24 @@
 .\"                                      Hey, EMACS: -*- nroff -*-
-.TH UNIVENTION_POLICY_RESULT 1 2010-01-05 UCS
+.TH UNIVENTION_POLICY_RESULT 1 2011-05-19 UCS
+
 .SH NAME
 univention_policy_result \- policy aggregator
+
 .SH SYNOPSIS
 .B univention_policy_result
 .BI \fR[\fP\-h\  ldaphost \fR]\fP
 .BI \fR[\fP\-D\  bind-dn \fR]\fP
 .BI \fR[\fP\-w\  bind-password \fR]\fP
 .RB [ \-s | \-b ]
+.RB [ \-d ]
 .I dn
+
 .SH DESCRIPTION
 This manual page documents briefly the
 .B univention_policy_result
 command.
 It is a tool to calculate and show the result of applying all policies to the object specified by the \fIdn\fP.
+
 .SH OPTIONS
 A summary of options is included below.
 .TP
@@ -32,15 +37,22 @@ Convert key/value pairs into shell compatible format, e.g. ';' and '\-' are repl
 .B \-b
 Turn off verbose output, just print unescaped key/value pairs.
 .TP
+.B \-d
+Turn on verbose debugging output.
+.TP
 .I dn
 Distinguished Name of the entity, for which the result of applied policies should be determined.
 .SH BUG
-When using \fB\-s\fP, '$' and '"' aren't properly escape in values.
+Univention Config Registry variable names are not hex-unencoded when using \fB\-s\fP.
+.p
+Multi valued fields are exported as multiple single valued fields with the same name when using \fB\-s\fP.
+
 .SH SEE ALSO
 .BR univention\-admin (8),
-.BR udm (8).
+.BR univention\-directory\-manager (8).
 .br
 This program is documented fully in the
 .IR "Univention Corporate Server Manual" .
+
 .SH AUTHOR
-Copyright (c) 2001-2010 Univention GmbH, Germany
+Copyright (c) 2001-2011 Univention GmbH, Germany

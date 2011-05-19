@@ -30,6 +30,8 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+#define _GNU_SOURCE
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
@@ -44,11 +46,8 @@
 univention_krb5_parameters_t* univention_krb5_new(void)
 {
 	univention_krb5_parameters_t* kp;
-	if ((kp = malloc(sizeof(univention_krb5_parameters_t))) == NULL)
+	if ((kp = calloc(1, sizeof(univention_krb5_parameters_t))) == NULL)
 		return NULL;
-	kp->username = NULL;
-	kp->realm = NULL;
-	kp->password = NULL;
 	return kp;
 }
 
@@ -73,68 +72,68 @@ static krb5_error_code kerb_prompter(krb5_context ctx, void *data,
 
 int univention_krb5_init(univention_krb5_parameters_t *kp)
 {
-	krb5_error_code rv;
+	krb5_error_code rv = -1;
 	char *principal_name;
 
 	if (kp->username == NULL) {
-		struct passwd *pwd;
-		pwd = getpwuid(getuid());
-		if (pwd == NULL) {
-			return 1;
-		}
-		kp->username = strdup(pwd->pw_name);
+		struct passwd pwd, *result;
+		char *buf;
+		size_t bufsize;
+		int s;
+
+		bufsize = sysconf(_SC_GETPW_R_SIZE_MAX);
+		if (bufsize == -1)
+			bufsize = 16384;
+		buf = malloc(bufsize);
+		if (buf == NULL)
+			goto err;
+		s = getpwuid_r(getuid(), &pwd, buf, bufsize, &result);
+		if (result != NULL)
+			kp->username = strdup(pwd.pw_name);
+		free(buf);
 	}
-	if (kp->realm == NULL) {
+
+	if (kp->realm == NULL)
 		kp->realm = univention_config_get_string("kerberos/realm");
-		if (kp->realm == NULL) {
-			return 1;
-		}
-	}
+
+	if (kp->username == NULL || kp->realm == NULL)
+		goto err;
 	asprintf(&principal_name, "%s@%s", kp->username, kp->realm);
+	if (principal_name == NULL)
+		goto err;
 
 	univention_debug(UV_DEBUG_KERBEROS, UV_DEBUG_INFO, "receiving Kerberos ticket for %s", principal_name);
 
-	if ((rv = krb5_init_context(&kp->context))) {
-		free(principal_name);
-		return rv;
-	}
-	if ((rv = krb5_cc_default(kp->context, &kp->ccache))) {
-		free(principal_name);
-		krb5_free_context(kp->context);
-		return rv;
-	}
-	if ((rv = krb5_parse_name(kp->context, principal_name, &kp->principal))) {
-		free(principal_name);
-		krb5_free_context(kp->context);
-		return rv;
-	}
+	if ((rv = krb5_init_context(&kp->context)))
+		goto err1;
+	if ((rv = krb5_cc_default(kp->context, &kp->ccache)))
+		goto err2;
+	if ((rv = krb5_parse_name(kp->context, principal_name, &kp->principal)))
+		goto err2;
 	if ((rv = krb5_get_init_creds_password(kp->context, &kp->creds, kp->principal,
-					NULL, kerb_prompter, kp->password, 0, NULL, NULL))) {
-		free(principal_name);
-		krb5_free_principal(kp->context, kp->principal);
-		krb5_free_context(kp->context);
-		return rv;
-	}
-	if ((rv = krb5_cc_initialize(kp->context, kp->ccache, kp->principal))) {
-		free(principal_name);
-		krb5_free_cred_contents(kp->context, &kp->creds);
-		krb5_free_principal(kp->context, kp->principal);
-		krb5_free_context(kp->context);
-		return rv;
-	}
-	if ((rv = krb5_cc_store_cred(kp->context, kp->ccache, &kp->creds))) {
-		free(principal_name);
-		krb5_cc_close(kp->context, kp->ccache);
-		krb5_free_cred_contents(kp->context, &kp->creds);
-		krb5_free_principal(kp->context, kp->principal);
-		krb5_free_context(kp->context);
-		return rv;
-	}
+					NULL, kerb_prompter, kp->password, 0, NULL, NULL)))
+		goto err3;
+	if ((rv = krb5_cc_initialize(kp->context, kp->ccache, kp->principal)))
+		goto err4;
+	if ((rv = krb5_cc_store_cred(kp->context, kp->ccache, &kp->creds)))
+		goto err5;
 
-	free(principal_name);
+	rv = 0;
+
+err5:
 	krb5_cc_close(kp->context, kp->ccache);
+	kp->ccache = NULL;
+err4:
 	krb5_free_cred_contents(kp->context, &kp->creds);
+	kp->creds = NULL;
+err3:
 	krb5_free_principal(kp->context, kp->principal);
+	kp->principal = NULL;
+err2:
 	krb5_free_context(kp->context);
-	return 0;
+	kp->context = NULL;
+err1:
+	free(principal_name);
+err:
+	return rv;
 }

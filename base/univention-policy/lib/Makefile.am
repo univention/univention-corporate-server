@@ -35,5 +35,5 @@ INCLUDES = -I$(top_srcdir)/include
 
 lib_LTLIBRARIES = libuniventionpolicy.la
 
-libuniventionpolicy_la_SOURCES = policy.c ldap.c
+libuniventionpolicy_la_SOURCES = policy.c ldap.c internal.h
 libuniventionpolicy_la_LDFLAGS = -luniventiondebug -luniventionconfig @LDAP_LIB@ @LBER_LIB@  -version-info @LIB_CURRENT@:@LIB_REVISION@:@LIB_AGE@
