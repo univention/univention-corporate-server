@@ -3,7 +3,7 @@
 # Univention Package Database
 #  postinst script for the debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -41,13 +41,6 @@ then
     /var/lib/postgres/pkgdb.bash
   fi
 
-  if [ -n "$2" ] && dpkg --compare-versions "$2" lt 0.13; then
-  	su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.indexes-0.13"
-  fi
-  if [ -n "$2" ] && dpkg --compare-versions "$2" lt 2.0.2; then
-  	su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.indexes-2.0.2"
-  fi
-
   if [ -x /etc/init.d/postgresql-8.3 ]; then
     /etc/init.d/postgresql-8.3 reload
   fi
@@ -68,7 +61,7 @@ if [ -e /etc/postgresql/pkgdb.secret ] ;then
   chown postgres:www-data /etc/postgresql/pkgdb.secret
 fi
 
-eval `univention-baseconfig shell`
+eval "$(univention-config-registry shell)"
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
   /usr/lib/univention-install/50univention-pkgdb.inst || true

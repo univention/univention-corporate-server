@@ -1,0 +1,9 @@
+pkgdb.sql var/lib/postgres
+pkgdb.bash var/lib/postgres
+pkgdb.indexes-0.13 var/lib/postgres
+pkgdb.indexes-2.0.2 var/lib/postgres
+conffiles/etc/cron.d/univention-pkgdb-check etc/cron.d
+conffiles/etc/cron.weekly/univention-pkgdb-clean etc/cron.weekly
+50univention-pkgdb.inst usr/lib/univention-install
+pkgdb.py usr/lib/univention-directory-listener/system
+univention-pkgdb-check usr/sbin

@@ -3,7 +3,7 @@
 # Univention Package Database
 #  rules file for the debian package
 #
-# Copyright 2004-2010 Univention GmbH
+# Copyright 2004-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -40,50 +40,19 @@ UMC_MO_FILES=$(shell find modules/univention -name '*.po' | sed 's/\.po/\.mo/g')
 UMC_IMAGES=$(shell find images -name '*.gif' -o -name '*.png')
 
 D=${CURDIR}/debian/univention-pkgdb
-DT=${CURDIR}/debian/univention-pkgdb-tools
 
 %.mo:	%.po
 	msgfmt -o $@ $<
 
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -f debian/univention-pkgdb-tools.conffiles
+	rm -f debian/univention-pkgdb.conffiles
+	rm -f debian/univention-pkgdb-lib.conffiles
+	rm -f debian/python-univention-pkgdb.conffiles
 
-build: build-stamp $(UMC_MO_FILES)
-build-stamp:
-	dh_testdir
-	touch build-stamp
-
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-	rm -rf debian/tmp
-	rm -rf debian/univention-pkgdb
-	rm -rf debian/univention-lib
-	rm -rf debian/univention-pkgdb-tools
-	dh_clean
-
-install: install-stamp $(UMC_MO_FILES)
-install-stamp: build-stamp $(PYVERS:%=install-ext-%)
-install-ext-%: 
-	# don't install Univention Console module
-	# ./py_compile ./modpkgdb.py
-
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
-
-	# msgfmt -o pkgdb.mo pkgdb.po
-
-	# install -m 0644 pkgdb.mo ${D}/usr/share/locale/de/LC_MESSAGES
-	install -m 0444 pkgdb.sql ${D}/var/lib/postgres
-	install -m 0500 pkgdb.bash ${D}/var/lib/postgres
-	install -m 0700 pkgdb.indexes-0.13 ${D}/var/lib/postgres
-	install -m 0700 pkgdb.indexes-2.0.2 ${D}/var/lib/postgres
-	install -m 0400 conffiles/etc/cron.d/univention-pkgdb-check ${D}/etc/cron.d
-	install -m 0755 conffiles/etc/cron.weekly/univention-pkgdb-clean ${D}/etc/cron.weekly
-	install -m 0755 50univention-pkgdb.inst ${D}/usr/lib/univention-install
-	install -m 0755 pkgdb.py ${D}/usr/lib/univention-directory-listener/system
-
+override_dh_auto_install: $(UMC_MO_FILES)
+	dh_auto_install
 	# install Univention Management Console Module
 	install -d debian/$(PACKAGE_UMCMOD)/usr/share/pyshared
 	@for i in $(UMC_MODULES); do\
@@ -105,45 +74,27 @@ install-ext-%:
 		install -m755 $$i $$o;\
 	done
 
-
-	# don't install Univention Console Module
-	# install -m 0755 modpkgdb.pyo ${D}/usr/share/univention-console/uniconf
-	# install -m 0755 pkgdb.gif ${D}/usr/share/univention-webui-style/icon
-
-	install -m 0700 univention-pkgdb-check ${D}/usr/sbin
-
 #	 Set package_version
-	install -d debian/python-univention-pkgdb/usr/lib/python$*/site-packages/univention/
-	cat univention_pkgdb.py| sed -e "s/@%@package_version@%@/${version}/" > debian/python-univention-pkgdb/usr/lib/python$*/site-packages/univention/pkgdb.py
-	chmod 755 debian/python-univention-pkgdb/usr/lib/python$*/site-packages/univention/pkgdb.py
+	install -d debian/python-univention-pkgdb/usr/share/pyshared/univention/
+	cat univention_pkgdb.py| sed -e "s/@%@package_version@%@/${version}/" > debian/python-univention-pkgdb/usr/share/pyshared/univention/pkgdb.py
+	chmod 755 debian/python-univention-pkgdb/usr/share/pyshared/univention/pkgdb.py
 
-	install -m 0700 univention-pkgdb-scan ${DT}/usr/sbin
-	install -m 0755 98univention-pkgdb-tools.inst ${DT}/usr/lib/univention-install
-	install -m 0755 pkgdb-watch.py ${DT}/usr/lib/univention-directory-listener/system
 
 	univention-install-config-registry
 	univention-install-config-registry-info
 
-binary-indep: build install
+override_dh_auto_test:
+	dh_auto_test
+	ucslint
 
-binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_installdebconf
-	dh_installdocs
-	dh_installlogrotate
-	dh_installcron
-	dh_installchangelogs
-	dh_pycentral -Nunivention-pkgdb-tools
-	dh_link
-	dh_strip
-	dh_compress
+override_dh_fixperms:
 	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
+	chmod +x debian/univention-pkgdb/var/lib/postgres/pkgdb.bash
+	chmod +x debian/univention-pkgdb/usr/lib/univention-directory-listener/system/pkgdb.py
 
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+
+#TODO binary-arch: build install
+#	dh_pycentral -Nunivention-pkgdb-tools
+
+%:
+	dh $@
