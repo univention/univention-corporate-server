@@ -113,6 +113,7 @@ class ModuleProcess( Client ):
 		self.name = module
 		self.running = False
 		self._queued_requests = []
+		self._inactivity_timer = None
 
 	def __del__( self ):
 		CORE.process( 'ModuleProcess: dying' )
@@ -125,7 +126,11 @@ class ModuleProcess( Client ):
 		self.signal_emit( 'finished', pid, status, self.name )
 
 	def _response( self, msg ):
+		# these responses must not be send to the external client as
+		# this commands were generated within the server
 		if msg.command == 'SET' and 'commands/permitted' in msg.arguments:
+			return
+		if msg.command == 'exit' and 'internal' in msg.arguments:
 			return
 
 		self.signal_emit( 'result', msg )
@@ -137,6 +142,8 @@ class Processor( signals.Provider, Translation ):
 	'''Implements a proxy and command handler. It handles all internal
 	UMCP commands and passes the commands for a module to the
 	subprocess.'''
+
+	INACTIVITY_TIMER = 30000
 
 	def __init__( self, username, password ):
 		self.__username = username
@@ -223,7 +230,6 @@ class Processor( signals.Provider, Translation ):
 
 		self.signal_emit( 'response', res )
 
-
 	def handle_request_get( self, msg ):
 		res = Response( msg )
 
@@ -233,8 +239,8 @@ class Processor( signals.Provider, Translation ):
 				modules[ id ] = { 'name' : module.name, 'description' : module.description, 'icon' : module.icon, 'categories' : module.categories }
 			res.body[ 'modules' ] = modules
 			res.body[ 'categories' ] = categoryManager.all()
-			CORE.info( 'session.py: modules: %s' % str( self.__command_list ) )
-			CORE.info( 'session.py: categories: %s' % str( res.body[ 'categories' ] ) )
+			CORE.info( 'Modules: %s' % str( self.__command_list ) )
+			CORE.info( 'Categories: %s' % str( res.body[ 'categories' ] ) )
 			res.status = 200 # Ok
 
 		elif 'categories/list' in msg.arguments:
@@ -253,11 +259,6 @@ class Processor( signals.Provider, Translation ):
 				except SyntaxVerificationError, e:
 					res.result = False
 					res.message = str( e )
-		elif 'hosts/list' in msg.arguments:
-			# only support for localhost
-			res.body = { 'hosts': [ '%s' % umc.configRegistry[ 'hostname' ] ] }
-			res.status = 200 # Ok
-
 		else:
 			res.status = 402 # invalid command arguments
 
@@ -276,7 +277,7 @@ class Processor( signals.Provider, Translation ):
 			except LocaleNotFound, e:
 				# specified locale is not available
 				res.status = 601
-				CORE.warn( 'handle_request_set: setting locale: status=601: specified locale is not available (%s)' % self.__locale )
+				CORE.warn( 'Setting locale: specified locale is not available (%s)' % self.__locale )
 			self.signal_emit( 'response', res )
 
 		elif msg.arguments[ 0 ] == 'sessionid':
@@ -303,6 +304,12 @@ class Processor( signals.Provider, Translation ):
 
 		return module_name
 
+	def reset_inactivity_timer( self, module ):
+		if module._inactivity_timer is not None:
+			notifier.timer_remove( module._inactivity_timer )
+
+		module._inactivity_timer = notifier.timer_add( Processor.INACTIVITY_TIMER, notifier.Callback( self._mod_inactive, module ) )
+
 	def handle_request_command( self, msg ):
 		module_name = self.__is_command_known( msg )
 		if module_name and msg.arguments:
@@ -313,7 +320,7 @@ class Processor( signals.Provider, Translation ):
 				self.signal_emit( 'response', response )
 				return
 			if not module_name in self.__processes:
-				CORE.info( 'creating new module and passing new request to module %s: %s' % (module_name, str(msg._id)) )
+				CORE.info( 'Starting new module process and passing new request to module %s: %s' % (module_name, str(msg._id)) )
 				mod_proc = ModuleProcess( module_name, debug = umc.configRegistry.get( 'umc/module/debug/level', '0' ), locale = self.__locale )
 				mod_proc.signal_connect( 'result', self._mod_result )
 				cb = notifier.Callback( self._socket_died, module_name, msg )
@@ -324,22 +331,30 @@ class Processor( signals.Provider, Translation ):
 				cb = notifier.Callback( self._mod_connect, mod_proc, msg )
 				notifier.timer_add( 50, cb )
 			else:
-				CORE.info( 'passing new request to running module %s' % module_name )
 				proc = self.__processes[ module_name ]
 				if proc.running:
+					CORE.info( 'Passing new request to running module %s' % module_name )
 					proc.request( msg )
+					self.reset_inactivity_timer( proc )
 				else:
+					CORE.info( 'Queuing incoming request for module %s that is not yet ready to receive' % module_name )
 					proc._queued_requests.append( msg )
 
 	def _mod_connect( self, mod, msg ):
 		if not mod.connect():
-			CORE.process( 'No connection to module process yet' )
+			CORE.info( 'No connection to module process yet' )
 			if mod._connect_retries > 200:
-				CORE.error( 'Connection to module process failed' )
+				CORE.error( 'Connection to module %s process failed' % mod.name )
+				# inform client
 				res = Response( msg )
 				res.status = 503 # error connecting to module process
 				res.message = status_information( 503 )
 				self.signal_emit( 'response', res )
+				# cleanup module
+				mod.signal_disconnect( 'closed', notifier.Callback( self._socket_died ) )
+				mod.signal_disconnect( 'result', notifier.Callback( self._mod_result ) )
+				mod.signal_disconnect( 'finished', notifier.Callback( self._mod_died ) )
+				del self.__processes[ mod.name ]
 			else:
 				mod._connect_retries += 1
 				return True
@@ -371,13 +386,28 @@ class Processor( signals.Provider, Translation ):
 				mod.request( req )
 			mod._queued_requests = []
 
+			# watch the modules activity and kill it after X seconds inactivity
+			self.reset_inactivity_timer( mod )
+
+		return False
+
+	def _mod_inactive( self, module ):
+		CORE.info( 'The module %s is inactive for to long' % module.name )
+		if module.openRequests:
+			CORE.info( 'There are unfinished requests. Waiting ...' )
+			return True
+
+		# mark as internal so the response will not be send to the client
+		req = Request( 'EXIT', arguments = [ module.name, 'internal' ] )
+		self.handle_request_exit( req )
+
 		return False
 
 	def _mod_result( self, msg ):
 		self.signal_emit( 'response', msg )
 
 	def _socket_died( self, module_name, msg):
-		CORE.warn( 'socket died (module=%s)' % module_name )
+		CORE.warn( 'Socket died (module=%s)' % module_name )
 		res = Response( msg )
 		res.status = 502 # module process died unexpectedly
 		self._mod_died(0, 1, module_name, msg)
@@ -388,7 +418,8 @@ class Processor( signals.Provider, Translation ):
 			res = Response( msg )
 			res.status = 502 # module process died unexpectedly
 		else:
-			CORE.info( 'module process died: everything fine' )
+			CORE.info( 'Module process died on purpose' )
+
 		if name in self.__processes:
 			CORE.warn( 'module process died: cleaning up requests')
 			self.__processes[ name ].invalidate_all_requests()
@@ -399,21 +430,6 @@ class Processor( signals.Provider, Translation ):
 			del self.__killtimer[ name ]
 		if name in self.__processes:
 			del self.__processes[ name ]
-
-	def handle_request_status( self, msg ):
-
-		self.handle_request_unknown( msg )
-
-
-	def handle_request_cancel( self, msg ):
-
-		self.handle_request_unknown( msg )
-
-
-	def handle_request_close( self, msg ):
-
-		self.handle_request_unknown( msg )
-
 
 	def handle_request_unknown( self, msg ):
 		res = Response( msg )

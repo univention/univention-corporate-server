@@ -1,3 +1,11 @@
+univention-management-console (4.0.2-1) unstable; urgency=low
+
+  * server monitors modules an shutdown inactive modules to save
+    resources; Bug #22460
+  * add dev tool to package UMC modules; Bug #22455
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 19 May 2011 14:15:38 +0200
+
 univention-management-console (4.0.1-1) unstable; urgency=low
 
   * support mime types in UMCP 2.0 message (default application/json)

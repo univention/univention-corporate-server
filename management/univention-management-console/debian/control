@@ -83,3 +83,16 @@ Description: Univention Management Console - Theme Files
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-management-console-dev
+Architecture: all
+Description: Univention Management Console - development files
+ Univention Console is a web based program to manage computers.  It has
+ an extensible architecture, using modules to implement its
+ features. This package contains development files helping to implement
+ and package own UMC module
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

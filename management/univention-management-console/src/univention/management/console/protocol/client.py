@@ -61,8 +61,7 @@ class Client( signals.Provider ):
 			self.signal_emit( 'authenticated', False, 504, status_information( 504 ) )
 		return ok
 
-	def __init__( self, servername = 'localhost', port = 6670, unix = None,
-				  ssl = True, auth = True ):
+	def __init__( self, servername = 'localhost', port = 6670, unix = None, ssl = True, auth = True ):
 		'''Initialize a socket-connection to the server.'''
 		signals.Provider.__init__( self )
 		self.__authenticated = ( not auth )
@@ -94,6 +93,10 @@ class Client( signals.Provider ):
 		self.signal_new( 'authenticated' )
 		self.signal_new( 'error' )
 		self.signal_new( 'closed' )
+
+	@property
+	def openRequests( self ):
+		return self.__unfinishedRequests
 
 	def __nonzero__( self ):
 		if self.__ssl and not self.__crypto_context:
