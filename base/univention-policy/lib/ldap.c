@@ -196,7 +196,7 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 			struct passwd *pwd;
 			pwd = getpwuid(getuid());
 			if (pwd == NULL) {
-				univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "could not lookup username\n");
+				univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "could not lookup username");
 				return LDAP_OTHER;
 			}
 			asprintf(&lp->sasl_authzid, "u:%s", (pwd->pw_name));
@@ -211,7 +211,7 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 
 	/* if uri is given use that */
 	if (lp->uri != NULL) {
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "connecting to %s\n", lp->uri);
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "connecting to %s", lp->uri);
 		if ((rv = ldap_initialize(&lp->ld, lp->uri)) != LDAP_SUCCESS) {
 			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_initialize: %s", ldap_err2string(rv));
 			return rv;
