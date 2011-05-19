@@ -1,3 +1,10 @@
+univention-apache (5.0.0-0) unstable; urgency=low
+
+  * bump version for UCS 3.0
+  * update to UCS 3.0 policies (Bug #22525)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 18 May 2011 10:50:52 +0200
+
 univention-apache (4.0.1-1) unstable; urgency=low
 
   * add UCRV apache2/maxclients (Bug #18115)

@@ -2,8 +2,8 @@ Source: univention-apache
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0), univention-config-dev
-Standards-Version: 3.5.5
+Build-Depends: debhelper (>> 3.0.0), univention-config-dev, ucslint
+Standards-Version: 3.8.2
 
 Package: univention-apache
 Architecture: all

@@ -3,7 +3,7 @@
 # Univention Apache
 #  postrm file for the univention-apache debian package
 #
-# Copyright 2001-2010 Univention GmbH
+# Copyright 2001-2011 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -35,3 +35,5 @@ if [ "$1" = "purge" ]; then
 fi
 
 #DEBHELPER#
+
+exit 0
