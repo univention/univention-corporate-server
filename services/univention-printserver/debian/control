@@ -7,7 +7,7 @@ Standards-Version: 3.8.2
 
 Package: univention-printserver
 Architecture: all
-Depends: univention-config-registry (>=0.06), cups, cups-client, cups-bsd, foomatic-filters-ppds, foomatic-db-gutenprint, foomatic-db-hpijs, cups-driver-gutenprint, univention-directory-listener, univention-printclient, openprinting-ppds, linuxprinting.org-ppds, hp-ppd, hpijs-ppds, python-pexpect, ${python:Depends}
+Depends: univention-config-registry (>=0.06), cups, cups-client, cups-bsd, foomatic-filters-ppds, foomatic-db-gutenprint, foomatic-db-hpijs, cups-driver-gutenprint, univention-directory-listener, univention-printclient, openprinting-ppds, linuxprinting.org-ppds, hp-ppd, hpijs-ppds, python-pexpect, ${python:Depends}, shell-univention-lib
 Conflicts: univention-management-console (<<0.9.33-1)
 Recommends: univention-nagios-cups
 Description: UCS - print server
@@ -21,7 +21,7 @@ Description: UCS - print server
 
 Package: univention-printserver-pdf
 Architecture: all
-Depends: univention-printserver, cups-pdf
+Depends: univention-printserver, cups-pdf, shell-univention-lib
 Description: UCS - print server addons for pdf pseudo printer
  This packages provides configs and settings for a PDF printer.
  .
