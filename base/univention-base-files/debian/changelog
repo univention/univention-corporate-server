@@ -1,3 +1,11 @@
+univention-base-files (1.0.1-1) unstable; urgency=low
+
+  * Move scripts from univention-config-registry (Bug #22586)
+  * Add manual pages for univention-set-logfile-permissions and
+  	univention-keyboardmapping.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 May 2011 19:53:50 +0200
+
 univention-base-files (1.0.0-2) unstable; urgency=low
 
   * Revert accidentally committed cleanup from svn24387 (Bug #22586)

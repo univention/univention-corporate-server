@@ -53,8 +53,4 @@ override_dh_auto_install:
 	install -d debian/tmp/usr/share/pyshared/univention
 	sed -e 's/@%@package_version@%@/$(version)/' <python/univention/config_registry.py >debian/tmp/usr/share/pyshared/univention/config_registry.py
 
-	PYTHONPATH=$(CURDIR)/python \
-	PATH=$(CURDIR)/python:${PATH} \
-		 $(CURDIR)/python/univention-install-config-registry
-
 override_dh_installinit: ; # BUG: install -p -m755 debian/univention-config-registry.univention-config-registry debian/univention-config-registry/etc/init.d/univention-config-registry

@@ -38,8 +38,8 @@ FNLIST="/var/log/univention/directory-manager-web.log \
 
 for fn in $FNLIST ; do
 	if [ -f "$fn" ] ; then
-		chown www-data:adm $fn
-		chmod 640 $fn
+		chown www-data:adm "$fn"
+		chmod 640 "$fn"
 	fi
 done
 
@@ -47,8 +47,7 @@ STRICTLIST="/var/log/mail.err /var/log/mail.warn /var/log/mail.info /var/log/mai
 
 for fn in $STRICTLIST ; do
 	if [ -f "$fn" ] ; then
-		chown root:adm $fn
-		chmod 640 $fn
+		chown root:adm "$fn"
+		chmod 640 "$fn"
 	fi
 done
-

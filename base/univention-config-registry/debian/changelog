@@ -1,3 +1,11 @@
+univention-config-registry (7.0.9-1) unstable; urgency=low
+
+  * Move scripts to univention-base-files (Bug #22586)
+  * debian/rules: Remove call to univention-install-config-registry.
+  * Add manual pages for jitter and univention-check-templates.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 May 2011 19:53:17 +0200
+
 univention-config-registry (7.0.8-1) unstable; urgency=low
 
   * Move templates to univention-base-files (Bug #22586)

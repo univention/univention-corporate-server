@@ -1,0 +1,32 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH UNIVENTION\-KEYBOARDMAPPING 1 2011-05-20
+.SH NAME
+univention\-keyboardmapping \- Map keyboard layout from X to RDP
+
+.SH SYNOPSIS
+.B univention\-keyboardmapping
+.RB [ \-\-xtordp | \-\-x2rdp ]
+.I layout
+
+.SH DESCRIPTION
+This manual page documents briefly the
+.B univention\-keyboardmapping
+command.
+It translates the keyboard layout name as used by X to the name used RDP.
+
+.SH OPTIONS
+.TP
+.BR \-\-xtordp | \-\-x2rdp
+Chooses the translation from X to RDP.
+.TP
+.I layout
+Names the \fIlayout\fP as used by X, e.g. \fBde\fP, \fBen_US\fP.
+
+.SH BUGS
+Many mappings are not known, for which the programm just prints \fBcommon\fP.
+
+.SH SEE ALSO
+.BR rdesktop (1).
+
+.SH AUTHOR
+Copyright (c) 2001-2011 Univention GmbH, Germany

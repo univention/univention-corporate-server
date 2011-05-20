@@ -267,5 +267,4 @@ case $1 in
 		;;
 esac
 
-echo $output
-
+echo "$output"

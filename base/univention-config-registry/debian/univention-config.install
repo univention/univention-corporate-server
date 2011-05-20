@@ -1,8 +1,6 @@
 scripts/jitter usr/sbin/
-scripts/univention-set-logfile-permissions usr/sbin/
 scripts/ldapsearch-wrapper usr/bin/
 scripts/ldapsearch-decode64 usr/bin/
-scripts/univention-keyboardmapping usr/bin/
 scripts/univention-check-templates usr/sbin/
 python/univention-config-registry usr/sbin/
 etc/bash_completion.d/univention-config-registry etc/bash_completion.d/

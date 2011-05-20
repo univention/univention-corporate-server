@@ -1,0 +1,26 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH UNIVENTION\-CHECK\-TEMPLATES 8 2011-05-20
+.SH NAME
+univention\-check\-templates \- list modified and not updated UCR templates
+
+.SH SYNOPSIS
+.B univention\-check\-templates
+
+.SH DESCRIPTION
+This manual page documents briefly the
+.B univention\-check\-templates
+command.
+It scans the
+.I /etc/univention/templates/files/
+directory for templates, for which updates are available by newer packages, but which weren't updates during installation, because they contain local modifications.
+
+.SH FILES
+.TP
+.I /etc/univention/templates/files/
+Directory containing template files.
+
+.SH SEE ALSO
+.BR univention\-config\-registry (8).
+
+.SH AUTHOR
+Copyright (c) 2001-2011 Univention GmbH, Germany

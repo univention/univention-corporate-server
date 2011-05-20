@@ -23,8 +23,10 @@ Enhances: locales,
  psmisc,
  lsb-base,
  bash-completion,
-Conflicts: univention-config-registry (<= 7.0.7)
-Replaces: univention-config-registry (<= 7.0.7)
+Conflicts: univention-config-registry (<= 7.0.7),
+ univention-config (<= 7.0.8),
+Replaces: univention-config-registry (<= 7.0.7),
+ univention-config (<= 7.0.8)
 Provides: univention-config-registry
 Description: UCS - base configuration files
  This package contains the base configuration for UCS.
