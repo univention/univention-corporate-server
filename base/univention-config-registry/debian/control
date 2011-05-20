@@ -16,21 +16,11 @@ XS-Python-Version: all
 
 Package: univention-config-registry
 Architecture: all
-Depends: univention-config,
- ${misc:Depends}
-Enhances: locales,
- ntp, ntpdate, rdate,
- acl,
- xfsprogs,
- lsof,
- console-data, console-tools, console-common,
- bzip2,
- psmisc,
- lsb-base,
- bash-completion,
-Pre-Depends: cron (>= 3.0pl1-100), netbase (>= 4.29)
-Description: UCS - base configuration
- This package contains the base configuration for UCS.
+Depends: univention-base-files
+Description: UCS transition package - base configuration
+ This package can be savely removed, since all previously contained base
+ configuration files for UCS have been moved to the univention-base-files
+ package.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

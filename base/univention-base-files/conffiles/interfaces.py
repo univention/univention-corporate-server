@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import subprocess
 import os
 
 def interface(var):
@@ -39,33 +40,46 @@ def interface(var):
 
 def stop_iface(iface):
 	if iface:
-		os.system('ifdown %s >/dev/null 2>&1' % iface)
+		null = open(os.path.devnull, 'w')
+		try:
+			subprocess.call(['ifdown', iface], stdout=null, stderr=null)
+		finally:
+			null.close()
 
 def start_iface(iface):
 	if iface:
-		os.system('ifup %s' % iface)
+		subprocess.call(['ifup', iface])
 
 def point2point(old, new, netmask):
 	if netmask == "255.255.255.255":
-		os.system('ip route del %s' % old)
+		subprocess.call(['ip', 'route', 'del', old])
 		if new:
-			os.system('ip route add %s/32 dev eth0 ' % new)
+			subprocess.call(['ip', 'route', 'add', '%s/32' % new, 'dev', 'eth0']) # FIXME: hardcoded eth0
 
 def restore_gateway(gateway, netmask):
-	if type ( gateway ) == type ( () ):
+	try:
 		old, new = gateway
-		if new:
-			point2point(old, new, netmask)
-			os.system('route del default >/dev/null 2>&1')
-			os.system('route add default gw %s' % new)
-   		else:
-			point2point(old, False, netmask)
-			os.system('route del default >/dev/null 2>&1')
-	else:
+	except (TypeError, ValueError):
 		if gateway:
 			point2point(gateway, gateway, netmask)
-			os.system('route del default >/dev/null 2>&1')
-			os.system('route add default gw %s' % gateway)
+			null = open(os.path.devnull, 'w')
+			try:
+				subprocess.call(['route', 'del', 'default'], stdout=null, stderr=null)
+				subprocess.call(['route', 'add', 'default', 'gw', gateway])
+			finally:
+				null.close()
+	else:
+		null = open(os.path.devnull, 'w')
+		try:
+			if new:
+				point2point(old, new, netmask)
+				subprocess.call(['route', 'del', 'default'], stdout=null, stderr=null)
+				subprocess.call(['route', 'add', 'default', 'gw', new])
+			else:
+				point2point(old, False, netmask)
+				subprocess.call(['route', 'del', 'default'], stdout=null, stderr=null)
+		finally:
+			null.close()
 
 def preinst(configRegistry, changes):
 	for iface in set(changes):

@@ -30,10 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os
+import subprocess
 
 def handler(configRegistry, changes):
 	for keymap in set(changes):
 		if configRegistry.get(keymap):
-			os.system('/usr/sbin/install-keymap "%s"' % configRegistry[keymap])
-
+			subprocess.call(['/usr/sbin/install-keymap', configRegistry[keymap]])

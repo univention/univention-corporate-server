@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
+#!/bin/sh
 #
 # Univention Configuration Registry
-#  config registry module for the resolv.conf 
+#  preinst file
 #
 # Copyright 2004-2011 Univention GmbH
 #
@@ -30,15 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os
-import subprocess
+dpkg-divert --rename --quiet --divert /etc/motd.debian --add /etc/motd
 
-def postinst(configRegistry, changes):
-	if configRegistry.get( 'interfaces/handler', 'ifplugd' ) == 'networkmanager':
-		return
-	for key in configRegistry.keys():
-		if key.startswith('interfaces/') and key.endswith('/type'):
-			if configRegistry[key] == 'dhcp' and os.path.exists('/sbin/dhclient'):
-				iface=key.split('/')[1]
-				subprocess.call( [ 'ifdown', iface ] )
-				subprocess.call( [ 'ifup', iface ] )
+#DEBHELPER#
+
+#be sure the /etc/kernel-img.conf exists
+if [ ! -e /etc/kernel-img.conf ]; then
+	echo "do_initrd = yes" >>/etc/kernel-img.conf
+	echo "do_bootfloppy = no" >>/etc/kernel-img.conf
+	echo "silent_loader = yes" >>/etc/kernel-img.conf
+	echo "clobber_modules = yes" >>/etc/kernel-img.conf
+fi
+
+exit 0

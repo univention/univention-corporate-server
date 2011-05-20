@@ -44,5 +44,4 @@ print 'PATH="%s"' % path
 for key in configRegistry.keys():
 	if key.startswith('cron/'):
 		setup_cronjob(key)
-
 @!@

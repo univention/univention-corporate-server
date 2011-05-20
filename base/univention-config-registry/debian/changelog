@@ -1,3 +1,9 @@
+univention-config-registry (7.0.8-1) unstable; urgency=low
+
+  * Move templates to univention-base-files (Bug #22586)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 May 2011 18:09:51 +0200
+
 univention-config-registry (7.0.7-1) unstable; urgency=low
 
   * Fix network/interfaces IPv4 address splitting (Bug #22160)

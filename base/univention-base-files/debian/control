@@ -1,20 +1,15 @@
-Source: univention-config-registry
+Source: univention-base-files
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
+ univention-config-dev,
  python-support,
- autoconf,
- automake,
- locales,
- libtool,
- libunivention-debug-dev,
- python-univention-lib,
  python-all
 Standards-Version: 3.5.2
 XS-Python-Version: all
 
-Package: univention-config-registry
+Package: univention-base-files
 Architecture: all
 Depends: univention-config,
  ${misc:Depends}
@@ -28,77 +23,11 @@ Enhances: locales,
  psmisc,
  lsb-base,
  bash-completion,
-Pre-Depends: cron (>= 3.0pl1-100), netbase (>= 4.29)
-Description: UCS - base configuration
+Conflicts: univention-config-registry (<= 7.0.7)
+Replaces: univention-config-registry (<= 7.0.7)
+Provides: univention-config-registry
+Description: UCS - base configuration files
  This package contains the base configuration for UCS.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-config
-Architecture: all
-Depends: python-univention, pciutils, python-univention-config-registry,
- ${misc:Depends}, ${python:Depends}
-Replaces: univention-config-registry (<< 7)
-Description: UCS - configuration manager
- This package contains the univention-config configuration
- manager, primarily used by the UCS base configuration.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-config-dev
-Architecture: all
-Depends: univention-config (= ${binary:Version}),
- ${misc:Depends}, ${python:Depends}
-Description: UCS - configuration manager (development files)
- This package contains the files needed to develop packages
- that use univention-config.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: libunivention-config0
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: UCS - C library to configuration manager
- The included library provides a C API to access the
- UCS configuration manager.
- .
- This package is part of Univention Corporate Server (UCS),
- an integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: libunivention-config-dev
-Architecture: any
-Depends: libunivention-config0 (= ${binary:Version}),
- ${misc:Depends}
-Replaces: libunivention-config0 (<< 7)
-Description: UCS - C interface to configuration manager (development files)
- This package includes the development files to access
- the UCS configuration manager from C.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: python-univention-config-registry
-Architecture: all
-Depends: ${python:Depends}, ${misc:Depends},
- python-univention-lib
-Provides: ${python:Provides}
-XB-Python-Version: ${python:Versions}
-Description: UCS - Python interface to configuration registry
- This package includes the Python interface to the
- UCS configuration manager.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

@@ -21,7 +21,7 @@
 
 DAEMON=/usr/sbin/inetd
 
-[ -x $DAEMON -a -e /etc/inetd.conf ] || exit 0
+[ -x "$DAEMON" -a -e /etc/inetd.conf ] || exit 0
 
 [ -e /etc/default/openbsd-inetd ] && . /etc/default/openbsd-inetd
 
@@ -31,7 +31,6 @@ disablektelnet () {
   if ! grep -v -s "^ *#" /etc/inetd.conf | grep -q -s '^telnet[[:space:]].'; then
     return 0
   fi
-
 } 
 
 checkportmap () {
@@ -61,14 +60,14 @@ case "$1" in
     start)
 	# check ucr autostart setting
 	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-	    source "/usr/share/univention-config-registry/init-autostart.lib"
+	    . "/usr/share/univention-config-registry/init-autostart.lib"
 	    check_autostart inetd inetd/autostart
 	fi
 	checknoservices
         checkportmap
 	log_daemon_msg "Starting internet superserver" "inetd"
 	start-stop-daemon --start --quiet --pidfile /var/run/inetd.pid \
-	    --exec $DAEMON -- $OPTIONS
+	    --exec "$DAEMON" -- $OPTIONS
 	log_end_msg 0
 	;;
     stop)
@@ -91,12 +90,12 @@ case "$1" in
 	checknoservices
         # check ucr autostart setting
         if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-            source "/usr/share/univention-config-registry/init-autostart.lib"
+            . "/usr/share/univention-config-registry/init-autostart.lib"
             check_autostart inetd inetd/autostart
         fi
 	sleep 1
 	start-stop-daemon --start --quiet --pidfile /var/run/inetd.pid \
-	    --exec $DAEMON -- $OPTIONS
+	    --exec "$DAEMON" -- $OPTIONS
 	log_end_msg 0
 	;;
     *)
@@ -106,4 +105,3 @@ case "$1" in
 esac
 
 exit 0
-

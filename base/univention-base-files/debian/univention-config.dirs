@@ -1,8 +1,0 @@
-/usr/sbin
-/usr/bin
-/etc/univention
-/etc/univention/templates
-/etc/univention/templates/files
-/etc/univention/templates/scripts
-/etc/univention/templates/info
-/var/cache/univention-config

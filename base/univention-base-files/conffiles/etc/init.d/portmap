@@ -36,11 +36,11 @@ case "$1" in
     start)
         # check ucr autostart setting
         if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-            source "/usr/share/univention-config-registry/init-autostart.lib"
+            . "/usr/share/univention-config-registry/init-autostart.lib"
             check_autostart portmap portmap/autostart
         fi
 	log_begin_msg "Starting portmap daemon..."
-	pid=`pidof portmap`
+	pid=$(pidof portmap)
 	if [ -n "$pid" ] ; then
 	      log_begin_msg "Already running."
 	      log_end_msg 0
@@ -70,11 +70,11 @@ case "$1" in
 	log_end_msg $?
 	;;
     force-reload)
-	$0 restart
+	"$0" restart
 	;;
     restart)
-	$0 stop
-	$0 start
+	"$0" stop
+	"$0" start
 	;;
     *)
 	log_success_msg "Usage: /etc/init.d/portmap {start|stop|force-reload|restart}"
@@ -83,4 +83,3 @@ case "$1" in
 esac
 
 exit 0
-

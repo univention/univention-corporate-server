@@ -1,0 +1,13 @@
+@%@UCRWARNING=# @%@
+
+# Default settings for openssh-server. This file is sourced by /bin/sh from
+# /etc/init.d/ssh.
+
+# check ucr autostart setting
+if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+    . "/usr/share/univention-config-registry/init-autostart.lib"
+    check_autostart sshd sshd/autostart
+fi
+
+# Options to pass to sshd
+SSHD_OPTS=

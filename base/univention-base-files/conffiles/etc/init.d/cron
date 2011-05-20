@@ -21,7 +21,7 @@ case "$1" in
 start)	
 	# check ucr autostart setting
 	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-	    source "/usr/share/univention-config-registry/init-autostart.lib"
+	    . "/usr/share/univention-config-registry/init-autostart.lib"
 	    check_autostart cron cron/autostart
 	fi
 	log_action_msg "Starting periodic command scheduler: cron"
@@ -36,7 +36,7 @@ restart) log_action_msg "Restarting periodic command scheduler: cron"
         start-stop-daemon --stop --retry 5 --quiet --pidfile /var/run/crond.pid --name cron
         # check ucr autostart setting
         if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-            source "/usr/share/univention-config-registry/init-autostart.lib"
+            . "/usr/share/univention-config-registry/init-autostart.lib"
             check_autostart cron cron/autostart
         fi
         start-stop-daemon --start --quiet --pidfile /var/run/crond.pid --name cron --startas /usr/sbin/cron -- $LSBNAMES
@@ -50,4 +50,5 @@ reload|force-reload) echo -n "Reloading configuration files for periodic command
         exit 1 
         ;;
 esac
+
 exit 0
