@@ -1,3 +1,5 @@
+@%@UCRWARNING=' @%@
+
 Randomize
 @!@
 ldapserver = ""

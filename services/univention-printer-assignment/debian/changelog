@@ -1,3 +1,9 @@
+univention-printer-assignment (4.0.0-2) unstable; urgency=low
+
+  * added ucr header in config template Bug #22575 
+
+ -- Felix Botner <botner@univention.de>  Fri, 20 May 2011 16:50:54 +0200
+
 univention-printer-assignment (4.0.0-1) unstable; urgency=low
 
   * UCS 3.0-0 release Bug #22575
