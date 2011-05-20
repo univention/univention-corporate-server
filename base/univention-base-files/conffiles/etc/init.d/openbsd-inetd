@@ -21,7 +21,7 @@
 
 DAEMON=/usr/sbin/inetd
 
-[ -x "$DAEMON" -a -e /etc/inetd.conf ] || exit 0
+[ -x $DAEMON -a -e /etc/inetd.conf ] || exit 0
 
 [ -e /etc/default/openbsd-inetd ] && . /etc/default/openbsd-inetd
 
@@ -67,7 +67,7 @@ case "$1" in
         checkportmap
 	log_daemon_msg "Starting internet superserver" "inetd"
 	start-stop-daemon --start --quiet --pidfile /var/run/inetd.pid \
-	    --exec "$DAEMON" -- $OPTIONS
+	    --exec $DAEMON -- $OPTIONS
 	log_end_msg 0
 	;;
     stop)
@@ -95,7 +95,7 @@ case "$1" in
         fi
 	sleep 1
 	start-stop-daemon --start --quiet --pidfile /var/run/inetd.pid \
-	    --exec "$DAEMON" -- $OPTIONS
+	    --exec $DAEMON -- $OPTIONS
 	log_end_msg 0
 	;;
     *)

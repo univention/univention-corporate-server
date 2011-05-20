@@ -31,7 +31,8 @@ umask 022
 [ -x "$DAEMON" ] || exit 0
 [ -d /var/run/nscd ] || mkdir -p /var/run/nscd
 
-start () {
+start()
+{
 	# Return
 	#   0 if daemon has been started
 	#   1 if daemon was already running
@@ -56,7 +57,8 @@ start () {
 		$SECURE || return 2
 }
 
-stop () {
+stop()
+{
 	# Return
 	#   0 if daemon has been stopped
 	#   1 if daemon was already stopped
@@ -71,7 +73,8 @@ stop () {
 	return "$RETVAL"
 }
 
-status () {
+status()
+{
 	# Return
 	#   0 if daemon is stopped
 	#   1 if daemon is running
@@ -101,7 +104,7 @@ stop)
 restart|force-reload|reload)
 	log_daemon_msg "Restarting NSCD"
 	stop
-	"$DAEMON" --invalidate passwd --invalidate group
+	$DAEMON --invalidate passwd --invalidate group
 	case "$?" in
 	0|1)
 		start

@@ -33,8 +33,7 @@ else:
 	menutitle="Univention Corporate Server"
 
 if configRegistry.get('version/version'):
-	ver = '%(version/version)s-%(version/patchlevel)s-%(version/security-patchlevel)s' % configRegistry
-	print  '%s %s' % (menutitle, ver)
+	print  '%s %s-%s-%s' % (menutitle, configRegistry['version/version'], configRegistry['version/patchlevel'], configRegistry['version/security-patchlevel'])
 else:
 	print 'Univention Thin Client'
 

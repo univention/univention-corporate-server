@@ -30,21 +30,21 @@ set -e
 
 cycle=$((@%@log/rotate/weeks@%@*7))
 cd /var/log
-for LOG in $(syslogd-listfiles)
+for LOG in `syslogd-listfiles`
 do
-   if [ -s "$LOG" ]; then
-      savelog -g adm -m 640 -u root -c "$cycle" "$LOG" >/dev/null
+   if [ -s $LOG ]; then
+      savelog -g adm -m 640 -u root -c $cycle $LOG >/dev/null
    fi
 done
 
-for LOG in $(syslogd-listfiles --auth)
+for LOG in `syslogd-listfiles --auth`
 do
-   if [ -f "$LOG" ]; then
-      chown root:adm "$LOG"
-      chmod o-rwx "$LOG"
+   if [ -f $LOG ]; then
+      chown root:adm $LOG
+      chmod o-rwx $LOG
    fi
 done
 
 # Restart syslogd
 #
-invoke-rc.d sysklogd reload-or-restart > /dev/null
+/etc/init.d/sysklogd reload-or-restart > /dev/null

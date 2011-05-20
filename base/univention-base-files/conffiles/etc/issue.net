@@ -26,7 +26,6 @@ elif configRegistry['server/role'] =='memberserver':
 else:
 	menutitle="Univention Corporate Server"
 
-ver = '%(version/version)s-%(version/patchlevel)s-%(version/security-patchlevel)s' % configRegistry
-print  '%s %s' % (menutitle, ver)
+print  '%s %s-%s-%s' % (menutitle, configRegistry['version/version'], configRegistry['version/patchlevel'], configRegistry['version/security-patchlevel'])
 							
 @!@

@@ -13,6 +13,7 @@ def print_proxy(proxy):
 	print '}'
 
 proxy = configRegistry.get('proxy/http', None) 
+# Bug #18397: this will be removed
 if not proxy: # fallback
 	proxy = configRegistry.get('proxy/address', None)
 	port = configRegistry.get('proxy/port', None)

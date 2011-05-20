@@ -29,13 +29,13 @@ set -e
 
 cycle=@%@log/rotate/weeks@%@
 cd /var/log
-for LOG in $(syslogd-listfiles --weekly)
+for LOG in `syslogd-listfiles --weekly`
 do
-   if [ -s "$LOG" ]; then
-      savelog -g adm -m 640 -u root -c "$cycle" "$LOG" >/dev/null
+   if [ -s $LOG ]; then
+      savelog -g adm -m 640 -u root -c $cycle $LOG >/dev/null
    fi
 done
 
 # Restart syslogd
 #
-invoke-rc.d sysklogd reload-or-restart >/dev/null
+/etc/init.d/sysklogd reload-or-restart > /dev/null

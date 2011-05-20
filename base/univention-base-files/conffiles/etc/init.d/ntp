@@ -26,10 +26,10 @@ NAME=ntp
 DAEMON=/usr/sbin/ntpd
 PIDFILE=/var/run/ntpd.pid
 
-test -x "$DAEMON" || exit 5
+test -x $DAEMON || exit 5
 
-if [ -r "/etc/default/$NAME" ]; then
-	. "/etc/default/$NAME"
+if [ -r /etc/default/$NAME ]; then
+	. /etc/default/$NAME
 fi
 
 if [ -e /etc/ntp.conf.dhcp ]; then
@@ -37,9 +37,9 @@ if [ -e /etc/ntp.conf.dhcp ]; then
 fi
 
 RUNASUSER=ntp
-UGID=$(getent passwd "$RUNASUSER" | cut -f 3,4 -d:) || true
+UGID=$(getent passwd $RUNASUSER | cut -f 3,4 -d:) || true
 
-case "$1" in
+case $1 in
 	start)
 		# check ucr autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
@@ -51,21 +51,21 @@ case "$1" in
 			log_failure_msg "user \"$RUNASUSER\" does not exist"
 			exit 1
 		fi
-  		start-stop-daemon --start --quiet --oknodo --pidfile "$PIDFILE" --startas "$DAEMON" -- -p "$PIDFILE" -u "$UGID" $NTPD_OPTS
+  		start-stop-daemon --start --quiet --oknodo --pidfile $PIDFILE --startas $DAEMON -- -p $PIDFILE -u $UGID $NTPD_OPTS
 		log_end_msg $?
   		;;
 	stop)
 		log_daemon_msg "Stopping NTP server" "ntpd"
-  		start-stop-daemon --stop --quiet --oknodo --pidfile "$PIDFILE"
+  		start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
 		log_end_msg $?
-		rm -f "$PIDFILE"
+		rm -f $PIDFILE
   		;;
 	restart|force-reload)
-		"$0" stop && sleep 2 && "$0" start
+		$0 stop && sleep 2 && $0 start
   		;;
 	try-restart)
-		if "$0" status >/dev/null; then
-			"$0" restart
+		if $0 status >/dev/null; then
+			$0 restart
 		else
 			exit 0
 		fi
@@ -74,7 +74,7 @@ case "$1" in
 		exit 3
 		;;
 	status)
-		pidofproc -p "$PIDFILE" "$DAEMON" >/dev/null
+		pidofproc -p $PIDFILE $DAEMON >/dev/null
 		status=$?
 		if [ $status -eq 0 ]; then
 			log_success_msg "NTP server is running."

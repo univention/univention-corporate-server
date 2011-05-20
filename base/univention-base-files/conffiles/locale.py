@@ -31,17 +31,12 @@
 # <http://www.gnu.org/licenses/>.
 
 import os
-import subprocess
 
 def mk_locale_archive():
-	null = open(os.path.devnull, 'w')
-	try:
-		subprocess.call(['touch', '/usr/lib/locale/locale-archive'], stdout=null, stderr=null)
-	finally:
-		null.close()
+	os.system('touch /usr/lib/locale/locale-archive >/dev/null 2>&1')
 
 def locale_gen():
-	subprocess.call(['/usr/sbin/locale-gen'])
+	os.system('/usr/sbin/locale-gen')
 
 def handler(configRegistry, changes):
 	mk_locale_archive()

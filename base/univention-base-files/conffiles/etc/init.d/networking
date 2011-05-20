@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/sh -e
 # Warning: This file is auto-generated and might be overwritten by
 #          univention-config-registry.
 #          Please edit the following file instead:
@@ -24,16 +24,16 @@ PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
 
 . /lib/lsb/init-functions
 
-spoofprotect_rp_filter () {
+spoofprotect_rp_filter() {
     [ -e /proc/sys/net/ipv4/conf/all/rp_filter ] || return 1
     RC=0
     for f in /proc/sys/net/ipv4/conf/*/rp_filter; do
-	echo 1 >"$f" || RC=1
+	echo 1 > $f || RC=1
     done
     return $RC
 }
 
-spoofprotect () {
+spoofprotect() {
     log_action_begin_msg "Setting up IP spoofing protection"
     if spoofprotect_rp_filter; then
 	log_action_end_msg 0 "rp_filter"
@@ -42,7 +42,7 @@ spoofprotect () {
     fi
 }
 
-ip_forward () {
+ip_forward() {
     log_action_begin_msg "Enabling packet forwarding"
     if echo 1 > /proc/sys/net/ipv4/ip_forward; then
         log_action_end_msg 0
@@ -51,7 +51,7 @@ ip_forward () {
     fi
 }
 
-syncookies () {
+syncookies() {
     log_action_begin_msg "Enabling TCP SYN cookies"
     if echo 1 > /proc/sys/net/ipv4/tcp_syncookies; then
         log_action_end_msg 0
@@ -60,10 +60,10 @@ syncookies () {
     fi
 }
 
-doopt () {
+doopt() {
     optname=$1
     default=$2
-    opt=$(grep "^$optname=" /etc/network/options || true)
+    opt=`grep "^$optname=" /etc/network/options || true`
     if [ -z "$opt" ]; then
 	opt="$optname=$default"
     fi
@@ -78,13 +78,13 @@ domac () {
 
     for i in 0 1 2 3; do
         var=interfaces_eth${i}_mac
-        if [ ${!var} ]; then # FIXME: BASHism
-            ifconfig "eth${i}" hw ether ${!var}
+        if [ ${!var} ]; then
+            ifconfig eth${i} hw ether ${!var}
         fi
     done
 }
 
-process_options () {
+process_options() {
     [ -e /etc/network/options ] || return 0
     log_warning_msg "/etc/network/options is deprecated (see README.Debian of netbase)."
     doopt spoofprotect yes
