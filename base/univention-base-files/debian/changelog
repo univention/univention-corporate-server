@@ -1,3 +1,9 @@
+univention-base-files (1.0.1-2) unstable; urgency=low
+
+  * Fix univention-keyboard{,mapping} naming (Bug #22586)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 May 2011 20:11:53 +0200
+
 univention-base-files (1.0.1-1) unstable; urgency=low
 
   * Move scripts from univention-config-registry (Bug #22586)
